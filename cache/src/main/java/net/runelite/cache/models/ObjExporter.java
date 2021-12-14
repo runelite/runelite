@@ -53,9 +53,9 @@ public class ObjExporter
 
 		for (int i = 0; i < model.vertexCount; ++i)
 		{
-			objWriter.println("v " + model.vertexPositionsX[i] + " "
-				+ model.vertexPositionsY[i] * -1 + " "
-				+ model.vertexPositionsZ[i] * -1);
+			objWriter.println("v " + model.vertexX[i] + " "
+				+ model.vertexY[i] * -1 + " "
+				+ model.vertexZ[i] * -1);
 		}
 
 		if (model.faceTextures != null)
@@ -78,9 +78,9 @@ public class ObjExporter
 
 		for (int i = 0; i < model.faceCount; ++i)
 		{
-			int x = model.faceVertexIndices1[i] + 1;
-			int y = model.faceVertexIndices2[i] + 1;
-			int z = model.faceVertexIndices3[i] + 1;
+			int x = model.faceIndices1[i] + 1;
+			int y = model.faceIndices2[i] + 1;
+			int z = model.faceIndices3[i] + 1;
 
 			objWriter.println("usemtl m" + i);
 			if (model.faceTextures != null)
@@ -129,9 +129,9 @@ public class ObjExporter
 
 			int alpha = 0;
 
-			if (model.faceAlphas != null)
+			if (model.faceTransparencies != null)
 			{
-				alpha = model.faceAlphas[i] & 0xFF;
+				alpha = model.faceTransparencies[i] & 0xFF;
 			}
 
 			if (alpha != 0)

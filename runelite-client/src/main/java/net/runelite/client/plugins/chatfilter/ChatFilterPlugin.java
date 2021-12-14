@@ -201,6 +201,9 @@ public class ChatFilterPlugin extends Plugin
 			case NPC_EXAMINE:
 			case OBJECT_EXAMINE:
 			case SPAM:
+			case CLAN_MESSAGE:
+			case CLAN_GUEST_MESSAGE:
+			case CLAN_GIM_MESSAGE:
 				if (config.filterGameChat())
 				{
 					message = censorMessage(null, message);

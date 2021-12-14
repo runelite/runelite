@@ -94,6 +94,7 @@ enum Emoji
 	SPOON("--o"),
 	WEARY_FACE("Dx"),
 	COINS("$$"), //:$:
+	ROCKETSHIP("<gt>==<gt>"), // >==>
 	;
 
 	private static final Map<String, Emoji> emojiMap;

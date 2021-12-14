@@ -26,6 +26,12 @@ package net.runelite.client.plugins.party;
 
 import com.google.inject.Inject;
 import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -55,6 +61,9 @@ class PartyPanel extends PluginPanel
 	private final Map<UUID, PartyMemberBox> memberBoxes = new HashMap<>();
 
 	private final JButton startButton = new JButton();
+	private final JButton joinPartyButton = new JButton();
+	private final JButton rejoinPartyButton = new JButton();
+	private final JButton copyPartyIdButton = new JButton();
 
 	private final PluginErrorPanel noPartyPanel = new PluginErrorPanel();
 	private final PluginErrorPanel partyEmptyPanel = new PluginErrorPanel();
@@ -79,10 +88,29 @@ class PartyPanel extends PluginPanel
 
 		final JPanel topPanel = new JPanel();
 
-		topPanel.setBorder(new EmptyBorder(0, 0, 10, 0));
-		topPanel.setLayout(new BorderLayout());
+		topPanel.setBorder(new EmptyBorder(0, 0, 4, 0));
+		topPanel.setLayout(new GridBagLayout());
 
-		topPanel.add(startButton, BorderLayout.CENTER);
+		GridBagConstraints c = new GridBagConstraints();
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.insets = new Insets(0, 2, 4, 2);
+
+		c.gridx = 0;
+		c.gridy = 0;
+		topPanel.add(startButton, c);
+
+		c.gridx = 1;
+		c.gridy = 0;
+		topPanel.add(joinPartyButton, c);
+
+		c.gridx = 1;
+		c.gridy = 0;
+		topPanel.add(copyPartyIdButton, c);
+
+		c.gridx = 0;
+		c.gridy = 1;
+		c.gridwidth = 2;
+		topPanel.add(rejoinPartyButton, c);
 
 		layoutPanel.add(topPanel);
 		layoutPanel.add(requestBoxPanel);
@@ -91,7 +119,14 @@ class PartyPanel extends PluginPanel
 		startButton.setText(party.isInParty() ? BTN_LEAVE_TEXT : BTN_CREATE_TEXT);
 		startButton.setFocusable(false);
 
-		topPanel.add(startButton);
+		joinPartyButton.setText("Join party");
+		joinPartyButton.setFocusable(false);
+
+		rejoinPartyButton.setText("Join previous party");
+		rejoinPartyButton.setFocusable(false);
+
+		copyPartyIdButton.setText("Copy party id");
+		copyPartyIdButton.setFocusable(false);
 
 		startButton.addActionListener(e ->
 		{
@@ -115,6 +150,63 @@ class PartyPanel extends PluginPanel
 			}
 		});
 
+		joinPartyButton.addActionListener(e ->
+		{
+			if (!party.isInParty())
+			{
+				String s = (String) JOptionPane.showInputDialog(
+					joinPartyButton,
+					"Please enter the party id:",
+					"Party Id",
+					JOptionPane.PLAIN_MESSAGE,
+					null,
+					null,
+					"");
+
+				if (s == null)
+				{
+					return;
+				}
+
+				try
+				{
+					party.changeParty(UUID.fromString(s));
+				}
+				catch (IllegalArgumentException ex)
+				{
+					JOptionPane.showMessageDialog(joinPartyButton, "You have entered an invalid party id.", "Invalid Party Id",
+						JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+
+		rejoinPartyButton.addActionListener(e ->
+		{
+			if (!party.isInParty())
+			{
+				try
+				{
+					party.changeParty(UUID.fromString(config.previousPartyId()));
+				}
+				catch (IllegalArgumentException ex)
+				{
+					JOptionPane.showMessageDialog(rejoinPartyButton,
+						"Failed to join your previous party, create a new party or join a new one.",
+						"Failed to Join Party",
+						JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+
+		copyPartyIdButton.addActionListener(e ->
+		{
+			if (party.isInParty())
+			{
+				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+				clipboard.setContents(new StringSelection(String.valueOf(party.getPartyId())), null);
+			}
+		});
+
 		noPartyPanel.setContent("Not in a party", "Create a party to begin.");
 		partyEmptyPanel.setContent("Party created", "You can now invite friends!");
 
@@ -127,6 +219,9 @@ class PartyPanel extends PluginPanel
 		remove(partyEmptyPanel);
 
 		startButton.setText(party.isInParty() ? BTN_LEAVE_TEXT : BTN_CREATE_TEXT);
+		joinPartyButton.setVisible(!party.isInParty());
+		rejoinPartyButton.setVisible(!party.isInParty());
+		copyPartyIdButton.setVisible(party.isInParty());
 
 		if (!party.isInParty())
 		{

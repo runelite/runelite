@@ -118,6 +118,10 @@ class HiscoreResultBuilder
 			hiscoreResult.setKreearra(skills.get(index++));
 			hiscoreResult.setKrilTsutsaroth(skills.get(index++));
 			hiscoreResult.setMimic(skills.get(index++));
+			if (skills.size() > 83)
+			{
+				hiscoreResult.setNex(skills.get(index++));
+			}
 			hiscoreResult.setNightmare(skills.get(index++));
 			hiscoreResult.setPhosanisNightmare(skills.get(index++));
 			hiscoreResult.setObor(skills.get(index++));

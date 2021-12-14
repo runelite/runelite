@@ -138,7 +138,7 @@ public class TestMenuEntry implements MenuEntry
 	}
 
 	@Override
-	public void setDeprioritized(boolean deprioritized)
+	public MenuEntry setDeprioritized(boolean deprioritized)
 	{
 		if (deprioritized)
 		{
@@ -154,6 +154,8 @@ public class TestMenuEntry implements MenuEntry
 				type -= MenuAction.MENU_ACTION_DEPRIORITIZE_OFFSET;
 			}
 		}
+
+		return this;
 	}
 
 	@Override

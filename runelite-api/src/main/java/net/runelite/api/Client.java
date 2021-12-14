@@ -1089,7 +1089,7 @@ public interface Client extends GameEngine
 	 * @param id the ID of the animation. Any int is allowed, but implementations in the client
 	 * should be defined in {@link AnimationID}
 	 */
-	Sequence loadAnimation(int id);
+	Animation loadAnimation(int id);
 
 	/**
 	 * Gets the music volume
@@ -1276,7 +1276,7 @@ public interface Client extends GameEngine
 	 *
 	 * @return
 	 */
-	NameableContainer<Friend> getFriendContainer();
+	FriendContainer getFriendContainer();
 
 	/**
 	 * Retrieve the nameable container containing ignores

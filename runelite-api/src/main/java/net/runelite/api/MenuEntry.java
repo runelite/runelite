@@ -84,7 +84,7 @@ public interface MenuEntry
 	 * @return
 	 */
 	boolean isDeprioritized();
-	void setDeprioritized(boolean deprioritized);
+	MenuEntry setDeprioritized(boolean deprioritized);
 
 	/**
 	 * Set a callback to be called when this menu option is clicked

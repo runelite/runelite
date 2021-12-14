@@ -93,6 +93,7 @@ public class HiscoreResult
 	private Skill kreearra;
 	private Skill krilTsutsaroth;
 	private Skill mimic;
+	private Skill nex;
 	private Skill nightmare;
 	private Skill phosanisNightmare;
 	private Skill obor;
@@ -244,6 +245,8 @@ public class HiscoreResult
 				return krilTsutsaroth;
 			case MIMIC:
 				return mimic;
+			case NEX:
+				return nex;
 			case NIGHTMARE:
 				return nightmare;
 			case PHOSANIS_NIGHTMARE:
