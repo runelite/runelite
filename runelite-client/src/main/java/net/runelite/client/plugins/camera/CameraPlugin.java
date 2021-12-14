@@ -294,7 +294,7 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	{
 		for (MenuEntry menuEntry : menuEntries)
 		{
-			MenuAction action = MenuAction.of(menuEntry.getType());
+			MenuAction action = menuEntry.getType();
 			switch (action)
 			{
 				case CANCEL:

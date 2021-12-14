@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Trevor <https://github.com/Trevor159>
+ * Copyright (c) 2021, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,8 +25,13 @@
 package net.runelite.api;
 
 /**
- * Represents an animation of a renderable
+ * A nameable container of friends
  */
-public interface Sequence
+public interface FriendContainer extends NameableContainer<Friend>
 {
+	/**
+	 * Get the recent logins/logouts of friends from the last few seconds
+	 * @return
+	 */
+	Deque<PendingLogin> getPendingLogins();
 }

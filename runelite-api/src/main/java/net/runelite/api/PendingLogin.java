@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2021, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,73 +25,21 @@
 package net.runelite.api;
 
 /**
- * Represents the model of an object.
+ * A pending friend login/out. This is used to suppress world hop notifications
+ * by buffering the pending logins to try to match a pending logout with a pending
+ * login and cancel both.
  */
-public interface Model extends Renderable
+public interface PendingLogin
 {
-	int getVerticesCount();
+	/**
+	 * The name of the player
+	 * @return
+	 */
+	String getName();
 
-	int[] getVerticesX();
-
-	int[] getVerticesY();
-
-	int[] getVerticesZ();
-
-	int getFaceCount();
-
-	int[] getFaceIndices1();
-
-	int[] getFaceIndices2();
-
-	int[] getFaceIndices3();
-
-	int[] getFaceColors1();
-
-	int[] getFaceColors2();
-
-	int[] getFaceColors3();
-
-	byte[] getFaceTransparencies();
-
-	int getSceneId();
-	void setSceneId(int sceneId);
-
-	int getBufferOffset();
-	void setBufferOffset(int bufferOffset);
-
-	int getUvBufferOffset();
-	void setUvBufferOffset(int bufferOffset);
-
-	int getBottomY();
-
-	void calculateBoundsCylinder();
-
-	byte[] getFaceRenderPriorities();
-
-	int getRadius();
-
-	short[] getFaceTextures();
-
-	float[] getFaceTextureUVCoordinates();
-
-	void calculateExtreme(int orientation);
-
-	int getCenterX();
-	int getCenterY();
-	int getCenterZ();
-	int getExtremeX();
-	int getExtremeY();
-	int getExtremeZ();
-
-	int getXYZMag();
-	boolean isClickable();
-
-	int[] getVertexNormalsX();
-	int[] getVertexNormalsY();
-	int[] getVertexNormalsZ();
-
-	byte getOverrideAmount();
-	byte getOverrideHue();
-	byte getOverrideSaturation();
-	byte getOverrideLuminance();
+	/**
+	 * The world the player logged into, or 0 if a logout.
+	 * @return
+	 */
+	short getWorld();
 }

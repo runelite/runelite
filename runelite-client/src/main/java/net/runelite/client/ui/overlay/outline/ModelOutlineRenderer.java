@@ -564,11 +564,11 @@ public class ModelOutlineRenderer
 	 */
 	private void simulateModelRasterizationForOutline(Model model)
 	{
-		final int triangleCount = model.getTrianglesCount();
-		final int[] indices1 = model.getTrianglesX();
-		final int[] indices2 = model.getTrianglesY();
-		final int[] indices3 = model.getTrianglesZ();
-		final byte[] triangleTransparencies = model.getTriangleTransparencies();
+		final int triangleCount = model.getFaceCount();
+		final int[] indices1 = model.getFaceIndices1();
+		final int[] indices2 = model.getFaceIndices2();
+		final int[] indices3 = model.getFaceIndices3();
+		final byte[] triangleTransparencies = model.getFaceTransparencies();
 
 		for (int i = 0; i < triangleCount; i++)
 		{

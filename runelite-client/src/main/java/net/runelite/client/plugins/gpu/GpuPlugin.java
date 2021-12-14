@@ -1608,7 +1608,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				modelY = y + client.getCameraY2();
 				modelZ = z + client.getCameraZ2();
 				modelOrientation = orientation;
-				int triangleCount = model.getTrianglesCount();
+				int triangleCount = model.getFaceCount();
 				vertexBuffer.ensureCapacity(12 * triangleCount);
 				uvBuffer.ensureCapacity(12 * triangleCount);
 
@@ -1632,7 +1632,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			model.calculateExtreme(orientation);
 			client.checkClickbox(model, orientation, pitchSin, pitchCos, yawSin, yawCos, x, y, z, hash);
 
-			int tc = Math.min(MAX_TRIANGLE, model.getTrianglesCount());
+			int tc = Math.min(MAX_TRIANGLE, model.getFaceCount());
 			int uvOffset = model.getUvBufferOffset();
 
 			GpuIntBuffer b = bufferForTriangles(tc);
