@@ -56,7 +56,7 @@ import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
-import net.runelite.http.api.hiscore.HiscoreEndpoint;
+import net.runelite.client.hiscore.HiscoreEndpoint;
 
 @PluginDescriptor(
 	name = "HiScore",

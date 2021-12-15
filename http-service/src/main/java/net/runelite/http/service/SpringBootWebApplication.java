@@ -118,13 +118,6 @@ public class SpringBootWebApplication extends SpringBootServletInitializer
 		return new DataSourceProperties();
 	}
 
-	@ConfigurationProperties(prefix = "datasource.runelite-tracker")
-	@Bean("dataSourceRuneLiteTracker")
-	public DataSourceProperties dataSourcePropertiesTracker()
-	{
-		return new DataSourceProperties();
-	}
-
 	@Bean(value = "runelite", destroyMethod = "")
 	public DataSource runeliteDataSource(@Qualifier("dataSourceRuneLite") DataSourceProperties dataSourceProperties)
 	{
@@ -137,12 +130,6 @@ public class SpringBootWebApplication extends SpringBootServletInitializer
 		return getDataSource(dataSourceProperties);
 	}
 
-	@Bean(value = "runelite-tracker", destroyMethod = "")
-	public DataSource runeliteTrackerDataSource(@Qualifier("dataSourceRuneLiteTracker") DataSourceProperties dataSourceProperties)
-	{
-		return getDataSource(dataSourceProperties);
-	}
-
 	@Bean("Runelite SQL2O")
 	public Sql2o sql2o(@Qualifier("runelite") DataSource dataSource)
 	{
@@ -151,12 +138,6 @@ public class SpringBootWebApplication extends SpringBootServletInitializer
 
 	@Bean("Runelite Cache SQL2O")
 	public Sql2o cacheSql2o(@Qualifier("runelite-cache") DataSource dataSource)
-	{
-		return createSql2oFromDataSource(dataSource);
-	}
-
-	@Bean("Runelite XP Tracker SQL2O")
-	public Sql2o trackerSql2o(@Qualifier("runelite-tracker") DataSource dataSource)
 	{
 		return createSql2oFromDataSource(dataSource);
 	}

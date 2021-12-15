@@ -3,8 +3,6 @@ datasource:
     jndiName: java:comp/env/jdbc/runelite
   runelite-cache:
     jndiName: java:comp/env/jdbc/runelite-cache2
-  runelite-tracker:
-    jndiName: java:comp/env/jdbc/runelite-tracker
 
 # By default Spring tries to register the datasource as an MXBean,
 # so if multiple apis are deployed on one web container with

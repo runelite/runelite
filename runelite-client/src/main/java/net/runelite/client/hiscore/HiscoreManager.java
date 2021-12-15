@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.game;
+package net.runelite.client.hiscore;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.LoadingCache;
@@ -33,9 +33,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import net.runelite.http.api.hiscore.HiscoreClient;
-import net.runelite.http.api.hiscore.HiscoreEndpoint;
-import net.runelite.http.api.hiscore.HiscoreResult;
 import okhttp3.OkHttpClient;
 
 @Singleton
@@ -56,7 +53,7 @@ public class HiscoreManager
 	private final HiscoreClient hiscoreClient;
 
 	@Inject
-	public HiscoreManager(ScheduledExecutorService executor, OkHttpClient okHttpClient)
+	private HiscoreManager(ScheduledExecutorService executor, OkHttpClient okHttpClient)
 	{
 		hiscoreClient = new HiscoreClient(okHttpClient);
 		hiscoreCache = CacheBuilder.newBuilder()

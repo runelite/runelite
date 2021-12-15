@@ -111,6 +111,32 @@
 			<version>1.2</version>
 		</dependency>
 		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-csv</artifactId>
+			<version>1.4</version>
+		</dependency>
+		<dependency>
+			<groupId>net.runelite</groupId>
+			<artifactId>archive-patcher</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>net.java.dev.jna</groupId>
+			<artifactId>jna</artifactId>
+			<version>5.9.0</version>
+		</dependency>
+		<dependency>
+			<groupId>net.java.dev.jna</groupId>
+			<artifactId>jna-platform</artifactId>
+			<version>5.9.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.code.findbugs</groupId>
+			<artifactId>jsr305</artifactId>
+		</dependency>
+
+		<!-- JOGL -->
+		<dependency>
 			<groupId>net.runelite.jogl</groupId>
 			<artifactId>jogl-all</artifactId>
 			<version>2.4.0-rc-20200429</version>
@@ -174,6 +200,8 @@
 			<version>2.4.0-rc-20210117</version>
 			<scope>runtime</scope>
 		</dependency>
+
+		<!-- JOCL -->
 		<dependency>
 			<groupId>net.runelite.jocl</groupId>
 			<artifactId>jocl</artifactId>
@@ -192,25 +220,6 @@
 			<version>1.0</version>
 			<classifier>macos-arm64</classifier>
 			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>net.runelite</groupId>
-			<artifactId>archive-patcher</artifactId>
-			<version>1.0</version>
-		</dependency>
-		<dependency>
-			<groupId>net.java.dev.jna</groupId>
-			<artifactId>jna</artifactId>
-			<version>5.9.0</version>
-		</dependency>
-		<dependency>
-			<groupId>net.java.dev.jna</groupId>
-			<artifactId>jna-platform</artifactId>
-			<version>5.9.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.code.findbugs</groupId>
-			<artifactId>jsr305</artifactId>
 		</dependency>
 
 		<dependency>
