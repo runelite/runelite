@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.api.hiscore;
+package net.runelite.client.hiscore;
 
 import lombok.Data;
 
@@ -120,77 +120,77 @@ public class HiscoreResult
 		switch (skill)
 		{
 			case ATTACK:
-				return getAttack();
+				return attack;
 			case DEFENCE:
-				return getDefence();
+				return defence;
 			case STRENGTH:
-				return getStrength();
+				return strength;
 			case HITPOINTS:
-				return getHitpoints();
+				return hitpoints;
 			case RANGED:
-				return getRanged();
+				return ranged;
 			case PRAYER:
-				return getPrayer();
+				return prayer;
 			case MAGIC:
-				return getMagic();
+				return magic;
 			case COOKING:
-				return getCooking();
+				return cooking;
 			case WOODCUTTING:
-				return getWoodcutting();
+				return woodcutting;
 			case FLETCHING:
-				return getFletching();
+				return fletching;
 			case FISHING:
-				return getFishing();
+				return fishing;
 			case FIREMAKING:
-				return getFiremaking();
+				return firemaking;
 			case CRAFTING:
-				return getCrafting();
+				return crafting;
 			case SMITHING:
-				return getSmithing();
+				return smithing;
 			case MINING:
-				return getMining();
+				return mining;
 			case HERBLORE:
-				return getHerblore();
+				return herblore;
 			case AGILITY:
-				return getAgility();
+				return agility;
 			case THIEVING:
-				return getThieving();
+				return thieving;
 			case SLAYER:
-				return getSlayer();
+				return slayer;
 			case FARMING:
-				return getFarming();
+				return farming;
 			case RUNECRAFT:
-				return getRunecraft();
+				return runecraft;
 			case HUNTER:
-				return getHunter();
+				return hunter;
 			case CONSTRUCTION:
-				return getConstruction();
+				return construction;
 			case LEAGUE_POINTS:
-				return getLeaguePoints();
+				return leaguePoints;
 			case OVERALL:
-				return getOverall();
+				return overall;
 			case BOUNTY_HUNTER_HUNTER:
-				return getBountyHunterHunter();
+				return bountyHunterHunter;
 			case BOUNTY_HUNTER_ROGUE:
-				return getBountyHunterRogue();
+				return bountyHunterRogue;
 			case CLUE_SCROLL_ALL:
-				return getClueScrollAll();
+				return clueScrollAll;
 			case CLUE_SCROLL_BEGINNER:
-				return getClueScrollBeginner();
+				return clueScrollBeginner;
 			case CLUE_SCROLL_EASY:
-				return getClueScrollEasy();
+				return clueScrollEasy;
 			case CLUE_SCROLL_MEDIUM:
-				return getClueScrollMedium();
+				return clueScrollMedium;
 			case CLUE_SCROLL_HARD:
-				return getClueScrollHard();
+				return clueScrollHard;
 			case CLUE_SCROLL_ELITE:
-				return getClueScrollElite();
+				return clueScrollElite;
 			case CLUE_SCROLL_MASTER:
-				return getClueScrollMaster();
+				return clueScrollMaster;
 			case LAST_MAN_STANDING:
-				return getLastManStanding();
+				return lastManStanding;
 			case SOUL_WARS_ZEAL:
-				return getSoulWarsZeal();
+				return soulWarsZeal;
 			case ABYSSAL_SIRE:
 				return abyssalSire;
 			case ALCHEMICAL_HYDRA:

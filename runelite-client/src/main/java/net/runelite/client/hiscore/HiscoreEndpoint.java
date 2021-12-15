@@ -23,8 +23,7 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
-package net.runelite.http.api.hiscore;
+package net.runelite.client.hiscore;
 
 import lombok.Getter;
 import okhttp3.HttpUrl;
@@ -46,6 +45,6 @@ public enum HiscoreEndpoint
 	HiscoreEndpoint(String name, String hiscoreURL)
 	{
 		this.name = name;
-		this.hiscoreURL = HttpUrl.parse(hiscoreURL);
+		this.hiscoreURL = HttpUrl.get(hiscoreURL);
 	}
 }

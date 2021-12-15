@@ -22,13 +22,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.api.hiscore;
+package net.runelite.client.hiscore;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import static net.runelite.http.api.hiscore.HiscoreSkillType.SKILL;
-import static net.runelite.http.api.hiscore.HiscoreSkillType.ACTIVITY;
-import static net.runelite.http.api.hiscore.HiscoreSkillType.BOSS;
+import static net.runelite.client.hiscore.HiscoreSkillType.SKILL;
+import static net.runelite.client.hiscore.HiscoreSkillType.ACTIVITY;
+import static net.runelite.client.hiscore.HiscoreSkillType.BOSS;
 
 @AllArgsConstructor
 @Getter

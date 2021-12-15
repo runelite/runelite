@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.api.hiscore;
+package net.runelite.client.hiscore;
 
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
@@ -64,28 +64,6 @@ public class HiscoreClient
 		return lookup(username, HiscoreEndpoint.NORMAL);
 	}
 
-	public SingleHiscoreSkillResult lookup(String username, HiscoreSkill skill, HiscoreEndpoint endpoint) throws IOException
-	{
-		HiscoreResult result = lookupSync(username, endpoint.getHiscoreURL());
-
-		if (result == null)
-		{
-			return null;
-		}
-
-		Skill requested = result.getSkill(skill);
-		SingleHiscoreSkillResult skillResult = new SingleHiscoreSkillResult();
-		skillResult.setPlayer(username);
-		skillResult.setSkillName(skill.getName());
-		skillResult.setSkill(requested);
-		return skillResult;
-	}
-
-	public SingleHiscoreSkillResult lookup(String username, HiscoreSkill skill) throws IOException
-	{
-		return lookup(username, skill, HiscoreEndpoint.NORMAL);
-	}
-
 	private HiscoreResult lookupSync(String username, HttpUrl hiscoreUrl) throws IOException
 	{
 		try (Response response = client.newCall(buildRequest(username, hiscoreUrl)).execute())
@@ -109,7 +87,7 @@ public class HiscoreClient
 			@Override
 			public void onResponse(Call call, Response response) throws IOException
 			{
-				try
+				try // NOPMD: UseTryWithResources
 				{
 					future.complete(processResponse(username, response));
 				}
@@ -156,9 +134,7 @@ public class HiscoreClient
 	{
 		CSVParser parser = CSVParser.parse(responseStr, CSVFormat.DEFAULT);
 
-		HiscoreResultBuilder hiscoreBuilder = new HiscoreResultBuilder();
-		hiscoreBuilder.setPlayer(username);
-
+		HiscoreResultBuilder hiscoreBuilder = new HiscoreResultBuilder(username);
 		int count = 0;
 
 		for (CSVRecord record : parser.getRecords())

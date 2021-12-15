@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.game;
+package net.runelite.client.hiscore;
 
 import com.google.common.cache.CacheLoader;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -31,11 +31,8 @@ import com.google.common.util.concurrent.MoreExecutors;
 import java.io.IOException;
 import java.util.concurrent.ScheduledExecutorService;
 import lombok.extern.slf4j.Slf4j;
-import static net.runelite.client.game.HiscoreManager.EMPTY;
-import static net.runelite.client.game.HiscoreManager.NONE;
-import net.runelite.http.api.hiscore.HiscoreClient;
-import net.runelite.http.api.hiscore.HiscoreEndpoint;
-import net.runelite.http.api.hiscore.HiscoreResult;
+import static net.runelite.client.hiscore.HiscoreManager.EMPTY;
+import static net.runelite.client.hiscore.HiscoreManager.NONE;
 
 @Slf4j
 class HiscoreLoader extends CacheLoader<HiscoreManager.HiscoreKey, HiscoreResult>

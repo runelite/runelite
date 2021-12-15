@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2021, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,17 +22,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service.xp.beans;
+package net.runelite.client.hiscore;
 
-import java.time.Instant;
-import lombok.Data;
+import lombok.Value;
 
-@Data
-public class PlayerEntity
+@Value
+public class Skill
 {
-	private Integer id;
-	private String name;
-	private Instant tracked_since;
-	private Instant last_updated;
-	private Integer rank;
+	int rank;
+	int level;
+	long experience;
 }
