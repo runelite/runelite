@@ -51,8 +51,8 @@ LABEL35:
 
    sload                  0 ; examine
    sload                  1 ; Convenience fee
-   sload                  2 ; "<$string0><br><br><$string1>"
-   sconst                 "geExamineText"
+   sload                  2 ; "<$string0><br><br><$string1>" or "<$string0><br><$string1>"
+   sconst                 "geSellExamineText"
    runelite_callback     
    sstore                 2 ; final text
    pop_string               ; Convenience fee
@@ -157,6 +157,16 @@ LABEL35:
 LABEL131:
    sload                  0
    sstore                 2
+
+   sload                  0 ; examine
+   sload                  1 ; ""
+   sload                  2 ; examine
+   sconst                 "geBuyExamineText"
+   runelite_callback
+   sstore                 2 ; final text
+   pop_string               ; ""
+   pop_string               ; examine
+
    iconst                 1
    iload                  1
    if_sethide            
