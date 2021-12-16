@@ -156,9 +156,9 @@ public interface RuneLiteConfig extends Config
 		position = 17,
 		section = windowSettings
 	)
-	default boolean gameAlwaysOnTop()
+	default AlwaysOnTop gameAlwaysOnTop()
 	{
-		return false;
+		return AlwaysOnTop.OFF;
 	}
 
 	@ConfigItem(
