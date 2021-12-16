@@ -84,7 +84,7 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new AnagramClue("DRAGONS LAMENT", "Strange Old Man", new WorldPoint(3564, 3288, 0), "Barrows", "One pipe fills a barrel in 1 hour while another pipe can fill the same barrel in 2 hours. How many minutes will it take to fill the tank if both pipes are used?", "40"),
 		new AnagramClue("DT RUN B", "Brundt the Chieftain", new WorldPoint(2658, 3670, 0), "Rellekka, main hall", "How many people are waiting for the next bard to perform?", "4"),
 		new AnagramClue("DUO PLUG", "Dugopul", new WorldPoint(2803, 2744, 0), "Graveyard on Ape Atoll"),
-		new AnagramClue("EEK ZERO OP", "Zoo keeper", new WorldPoint(2613, 3269, 0), "Ardougne Zoo", "How many animals are in the Ardougne Zoo?", "40"),
+		new AnagramClue("EEK ZERO OP", "Zoo keeper", new WorldPoint(2613, 3269, 0), "Ardougne Zoo", "How many animals in total are there in the zoo?", "40"),
 		new AnagramClue("EL OW", "Lowe", new WorldPoint(3233, 3423, 0), "Varrock archery store"),
 		new AnagramClue("FORLUN", "Runolf", new WorldPoint(2512, 10256, 0), "Miscellania & Etceteria Dungeon"),
 		new AnagramClue("GOBLIN KERN", "King Bolren", new WorldPoint(2541, 3170, 0), "Tree Gnome Village"),
