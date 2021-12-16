@@ -339,7 +339,7 @@ public class GroundItemsPlugin extends Plugin
 			MenuAction menuType = menuEntry.getType();
 			if (menuType == MenuAction.GROUND_ITEM_FIRST_OPTION || menuType == MenuAction.GROUND_ITEM_SECOND_OPTION
 				|| menuType == MenuAction.GROUND_ITEM_THIRD_OPTION || menuType == MenuAction.GROUND_ITEM_FOURTH_OPTION
-				|| menuType == MenuAction.GROUND_ITEM_FIFTH_OPTION || menuType == MenuAction.SPELL_CAST_ON_GROUND_ITEM)
+				|| menuType == MenuAction.GROUND_ITEM_FIFTH_OPTION || menuType == MenuAction.EXAMINE_ITEM_GROUND)
 			{
 				for (MenuEntryWithCount entryWCount : newEntries)
 				{
