@@ -31,7 +31,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum AlwaysOnTop
+public enum PinToTop
 {
 	OFF("Off"),
 	WINDOWED_ONLY("Windowed only"),

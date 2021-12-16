@@ -1156,7 +1156,7 @@ public class ClientUI
 
 	private void updateAlwaysOnTop()
 	{
-		switch (config.gameAlwaysOnTop())
+		switch (config.gamePinToTop())
 		{
 			case OFF:
 				frame.setAlwaysOnTop(false);
