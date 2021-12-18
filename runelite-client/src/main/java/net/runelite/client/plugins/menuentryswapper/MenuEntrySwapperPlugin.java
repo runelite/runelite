@@ -29,7 +29,6 @@ package net.runelite.client.plugins.menuentryswapper;
 import com.google.common.annotations.VisibleForTesting;
 import static com.google.common.base.Predicates.alwaysTrue;
 import static com.google.common.base.Predicates.equalTo;
-import com.google.common.base.Strings;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.LinkedHashMultimap;
@@ -529,7 +528,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 			return;
 		}
 
-		MenuAction activeAction = MenuAction.ITEM_USE;
+		MenuAction activeAction = null;
 		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 
 		if (configuringShiftClick)
@@ -542,20 +541,18 @@ public class MenuEntrySwapperPlugin extends Plugin
 			{
 				activeAction = MenuAction.of(MenuAction.ITEM_FIRST_OPTION.getId() + shiftClickActionIndex);
 			}
+			else
+			{
+				// Otherwise it is possible that we have Use swap configured
+				Integer config = getSwapConfig(true, itemId);
+				if (config != null && config == -1)
+				{
+					activeAction = MenuAction.ITEM_USE;
+				}
+			}
 		}
 		else
 		{
-			// The default left click on items is the highest priority action 0-2, and otherwise is use.
-			final String[] actions = itemComposition.getInventoryActions();
-			for (int i = 0; i <= 2; ++i)
-			{
-				if (!Strings.isNullOrEmpty(actions[i]))
-				{
-					activeAction = MenuAction.of(MenuAction.ITEM_FIRST_OPTION.getId() + i);
-					break;
-				}
-			}
-
 			// Apply left click action from configuration
 			Integer config = getSwapConfig(false, itemId);
 			if (config != null)
