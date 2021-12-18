@@ -638,7 +638,7 @@ public class GrandExchangePlugin extends Plugin
 
 		GrandExchangeSearchMode searchMode = config.geSearchMode();
 		final String input = client.getVar(VarClientStr.INPUT_TEXT);
-		if (searchMode == GrandExchangeSearchMode.DEFAULT || input.isEmpty())
+		if (searchMode == GrandExchangeSearchMode.DEFAULT || input.isEmpty() || event.isConsumed())
 		{
 			return;
 		}
