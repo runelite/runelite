@@ -711,7 +711,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		if (itemOp)
 		{
 			Integer swapIndex = getSwapConfig(false, eventId);
-			if (swapIndex != null && index < menuEntries.length - 1)
+			if (swapIndex != null)
 			{
 				MenuAction swapAction = swapIndex >= 0
 					? MenuAction.of(MenuAction.ITEM_FIRST_OPTION.getId() + swapIndex)
@@ -720,8 +720,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 				if (menuAction == swapAction)
 				{
 					swap(optionIndexes, menuEntries, index, menuEntries.length - 1);
-					return;
 				}
+				return;
 			}
 		}
 
