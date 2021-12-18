@@ -53,7 +53,6 @@ import net.runelite.api.NPC;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOpened;
-import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.PostItemComposition;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
@@ -576,6 +575,13 @@ public class MenuEntrySwapperPlugin extends Plugin
 			if (ITEM_MENU_TYPES.contains(menuAction) && entry.getIdentifier() == itemId)
 			{
 				entry.setType(MenuAction.RUNELITE);
+				entry.onClick(e ->
+				{
+					int index = menuAction == MenuAction.ITEM_USE
+						? -1
+						: menuAction.getId() - MenuAction.ITEM_FIRST_OPTION.getId();
+					setSwapConfig(configuringShiftClick, itemId, index);
+				});
 
 				if (activeAction == menuAction)
 				{
@@ -659,49 +665,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 				client.setMenuEntries(menuEntries);
 				break;
-			}
-		}
-	}
-
-	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked event)
-	{
-		if (event.getMenuAction() != MenuAction.RUNELITE || event.getParam1() != WidgetInfo.INVENTORY.getId())
-		{
-			return;
-		}
-
-		int itemId = event.getId();
-
-		if (itemId == -1)
-		{
-			return;
-		}
-
-		String option = event.getMenuOption();
-		String target = event.getMenuTarget();
-		ItemComposition itemComposition = itemManager.getItemComposition(itemId);
-
-		if (!itemComposition.getName().equals(Text.removeTags(target)))
-		{
-			return;
-		}
-
-		if (option.equals("Use")) //because "Use" is not in inventoryActions
-		{
-			setSwapConfig(configuringShiftClick, itemId, -1);
-		}
-		else
-		{
-			String[] inventoryActions = itemComposition.getInventoryActions();
-
-			for (int index = 0; index < inventoryActions.length; index++)
-			{
-				if (option.equals(inventoryActions[index]))
-				{
-					setSwapConfig(configuringShiftClick, itemId, index);
-					break;
-				}
 			}
 		}
 	}
