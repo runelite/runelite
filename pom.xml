@@ -40,6 +40,8 @@
 		<project.build.outputTimestamp>1</project.build.outputTimestamp>
 		<java.release>8</java.release>
 		<lombok.version>1.18.20</lombok.version>
+		<logback.version>1.2.9</logback.version>
+		<slf4j.version>1.7.25</slf4j.version>
 
 		<maven.javadoc.skip>true</maven.javadoc.skip>
 		<checkstyle.skip>true</checkstyle.skip>
@@ -161,10 +163,23 @@
 			</dependency>
 			<dependency>
 				<groupId>ch.qos.logback</groupId>
-				<artifactId>logback-parent</artifactId>
-				<version>1.2.3</version>
-				<type>pom</type>
-				<scope>import</scope>
+				<artifactId>logback-classic</artifactId>
+				<version>${logback.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-core</artifactId>
+				<version>${logback.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-simple</artifactId>
+				<version>${slf4j.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.google.inject</groupId>
