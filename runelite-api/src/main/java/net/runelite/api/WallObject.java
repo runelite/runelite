@@ -33,10 +33,14 @@ public interface WallObject extends TileObject
 {
 	/**
 	 * A bitfield with the orientation of a wall
-	 * 1 = East
+	 * 1 = West
 	 * 2 = North
-	 * 4 = West
+	 * 4 = East
 	 * 8 = South
+	 * 16 = North-west
+	 * 32 = North-east
+	 * 64 = South-east
+	 * 128 = South-west
 	 */
 	int getOrientationA();
 
