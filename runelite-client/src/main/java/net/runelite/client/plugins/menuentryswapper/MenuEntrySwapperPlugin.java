@@ -29,7 +29,6 @@ package net.runelite.client.plugins.menuentryswapper;
 import com.google.common.annotations.VisibleForTesting;
 import static com.google.common.base.Predicates.alwaysTrue;
 import static com.google.common.base.Predicates.equalTo;
-import com.google.common.base.Strings;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.LinkedHashMultimap;
@@ -530,7 +529,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 			return;
 		}
 
-		MenuAction activeAction = MenuAction.ITEM_USE;
+		MenuAction activeAction = null;
 		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 
 		if (configuringShiftClick)
@@ -546,17 +545,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		}
 		else
 		{
-			// The default left click on items is the highest priority action 0-2, and otherwise is use.
-			final String[] actions = itemComposition.getInventoryActions();
-			for (int i = 0; i <= 2; ++i)
-			{
-				if (!Strings.isNullOrEmpty(actions[i]))
-				{
-					activeAction = MenuAction.of(MenuAction.ITEM_FIRST_OPTION.getId() + i);
-					break;
-				}
-			}
-
 			// Apply left click action from configuration
 			Integer config = getSwapConfig(false, itemId);
 			if (config != null)
@@ -751,17 +739,20 @@ public class MenuEntrySwapperPlugin extends Plugin
 		if (itemOp)
 		{
 			Integer swapIndex = getSwapConfig(false, eventId);
-			if (swapIndex != null && index < menuEntries.length - 1)
+			if (swapIndex != null)
 			{
-				MenuAction swapAction = swapIndex >= 0
-					? MenuAction.of(MenuAction.ITEM_FIRST_OPTION.getId() + swapIndex)
-					: MenuAction.ITEM_USE;
-
-				if (menuAction == swapAction)
+				if (index < menuEntries.length - 1)
 				{
-					swap(optionIndexes, menuEntries, index, menuEntries.length - 1);
-					return;
+					MenuAction swapAction = swapIndex >= 0
+						? MenuAction.of(MenuAction.ITEM_FIRST_OPTION.getId() + swapIndex)
+						: MenuAction.ITEM_USE;
+
+					if (menuAction == swapAction)
+					{
+						swap(optionIndexes, menuEntries, index, menuEntries.length - 1);
+					}
 				}
+				return; // skip any other swaps that might swap this item's menu entries.
 			}
 		}
 
