@@ -121,6 +121,7 @@ public class ChatMessageManager
 		final MessageNode messageNode = client.getMessages().get(uid);
 		assert messageNode != null : "chat message build for unknown message";
 
+		String message = stringStack[size - 2];
 		final String username = stringStack[size - 3];
 		final String channel = stringStack[size - 4];
 		final ChatMessageType chatMessageType = messageNode.getType();
@@ -191,10 +192,17 @@ public class ChatMessageManager
 				continue;
 			}
 
+			String prefix = "";
+			if (chatMessageType == ChatMessageType.CLAN_GIM_CHAT || chatMessageType == ChatMessageType.CLAN_GIM_MESSAGE)
+			{
+				message = message.substring(1); // remove |
+				prefix = "|";
+			}
+
 			// Replace </col> tags in the message with the new color so embedded </col> won't reset the color
 			final Color color = chatColor.getColor();
-			stringStack[size - 2] = ColorUtil.wrapWithColorTag(
-				stringStack[size - 2].replace(ColorUtil.CLOSING_COLOR_TAG, ColorUtil.colorTag(color)),
+			stringStack[size - 2] = prefix + ColorUtil.wrapWithColorTag(
+				message.replace(ColorUtil.CLOSING_COLOR_TAG, ColorUtil.colorTag(color)),
 				color);
 			break;
 		}
