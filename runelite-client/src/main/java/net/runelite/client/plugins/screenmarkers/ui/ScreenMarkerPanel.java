@@ -374,7 +374,6 @@ class ScreenMarkerPanel extends JPanel
 		JPanel rightActions = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
 		rightActions.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
-		visibilityLabel.setToolTipText(visible ? "Hide screen marker" : "Show screen marker");
 		visibilityLabel.addMouseListener(new MouseAdapter()
 		{
 			@Override
@@ -505,6 +504,7 @@ class ScreenMarkerPanel extends JPanel
 	private void updateVisibility()
 	{
 		visibilityLabel.setIcon(visible ? VISIBLE_ICON : INVISIBLE_ICON);
+		visibilityLabel.setToolTipText(visible ? "Hide screen marker" : "Show screen marker");
 	}
 
 	private void updateFill()
