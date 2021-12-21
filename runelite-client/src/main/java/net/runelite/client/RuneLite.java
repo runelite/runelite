@@ -30,15 +30,21 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import java.applet.Applet;
 import java.io.File;
+import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import static java.nio.file.StandardCopyOption.COPY_ATTRIBUTES;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 import java.util.Locale;
+import java.util.stream.Stream;
 import javax.annotation.Nullable;
 import javax.inject.Provider;
 import javax.inject.Singleton;
@@ -55,6 +61,7 @@ import joptsimple.util.EnumConverter;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.discord.DiscordService;
@@ -126,6 +133,10 @@ public class RuneLite
 
 	@Inject
 	private Provider<WorldMapOverlay> worldMapOverlay;
+
+	@Inject
+	@Nullable
+	private Applet applet;
 
 	@Inject
 	@Nullable
@@ -277,6 +288,28 @@ public class RuneLite
 		{
 			// Inject members into client
 			injector.injectMembers(client);
+		}
+
+		// Start the applet
+		if (applet != null)
+		{
+			copyJagexCache();
+
+			// Client size must be set prior to init
+			applet.setSize(Constants.GAME_FIXED_SIZE);
+
+			// Change user.home so the client places jagexcache in the .runelite directory
+			String oldHome = System.setProperty("user.home", RUNELITE_DIR.getAbsolutePath());
+			try
+			{
+				applet.init();
+			}
+			finally
+			{
+				System.setProperty("user.home", oldHome);
+			}
+
+			applet.start();
 		}
 
 		SplashScreen.stage(.57, null, "Loading configuration");
@@ -431,6 +464,38 @@ public class RuneLite
 		catch (NoSuchAlgorithmException | KeyManagementException ex)
 		{
 			log.warn("unable to setup insecure trust manager", ex);
+		}
+	}
+
+	private static void copyJagexCache()
+	{
+		Path from = Paths.get(System.getProperty("user.home"), "jagexcache");
+		Path to = Paths.get(System.getProperty("user.home"), ".runelite", "jagexcache");
+		if (Files.exists(to) || !Files.exists(from))
+		{
+			return;
+		}
+
+		log.info("Copying jagexcache from {} to {}", from, to);
+
+		// Recursively copy path https://stackoverflow.com/a/50418060
+		try (Stream<Path> stream = Files.walk(from))
+		{
+			stream.forEach(source ->
+			{
+				try
+				{
+					Files.copy(source, to.resolve(from.relativize(source)), COPY_ATTRIBUTES);
+				}
+				catch (IOException e)
+				{
+					throw new RuntimeException(e);
+				}
+			});
+		}
+		catch (Exception e)
+		{
+			log.warn("unable to copy jagexcache", e);
 		}
 	}
 }
