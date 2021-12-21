@@ -134,6 +134,7 @@ public class InfoBoxOverlay extends OverlayPanel
 
 			final InfoBoxComponent infoBoxComponent = new InfoBoxComponent();
 			infoBoxComponent.setText(text);
+			infoBoxComponent.setFont(config.infoboxFontType().getFont());
 			if (color != null)
 			{
 				infoBoxComponent.setColor(color);

@@ -333,10 +333,22 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "infoboxFontType",
+			name = "Infobox Font",
+			description = "Configures what font type is used for in-game interface overlays such as potion duration, stats drain, Imbued heart buff etc.",
+			position = 33,
+			section = overlaySettings
+	)
+	default FontType infoboxFontType()
+	{
+		return FontType.REGULAR;
+	}
+
+	@ConfigItem(
 		keyName = "menuEntryShift",
 		name = "Require Shift for overlay menu",
 		description = "Overlay right-click menu will require shift to be added",
-		position = 33,
+		position = 34,
 		section = overlaySettings
 	)
 	default boolean menuEntryShift()
@@ -348,7 +360,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "tooltipPosition",
 		name = "Tooltip Position",
 		description = "Configures whether to show the tooltip above or under the cursor",
-		position = 35,
+		position = 36,
 		section = overlaySettings
 	)
 	default TooltipPositionType tooltipPosition()
@@ -360,7 +372,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "infoBoxVertical",
 		name = "Display infoboxes vertically",
 		description = "Toggles the infoboxes to display vertically",
-		position = 40,
+		position = 41,
 		section = overlaySettings,
 		hidden = true
 	)
@@ -373,7 +385,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "infoBoxSize",
 		name = "Infobox size",
 		description = "Configures the size of each infobox in pixels",
-		position = 42,
+		position = 43,
 		section = overlaySettings
 	)
 	@Units(Units.PIXELS)
@@ -386,7 +398,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "infoBoxTextOutline",
 		name = "Outline infobox text",
 		description = "Draw a full outline instead of a simple shadow for infobox text",
-		position = 43,
+		position = 44,
 		section = overlaySettings
 	)
 	default boolean infoBoxTextOutline()
@@ -399,7 +411,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "overlayBackgroundColor",
 		name = "Overlay Color",
 		description = "Configures the background color of infoboxes and overlays",
-		position = 44,
+		position = 45,
 		section = overlaySettings
 	)
 	default Color overlayBackgroundColor()
@@ -411,7 +423,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "sidebarToggleKey",
 		name = "Sidebar Toggle Key",
 		description = "The key that will toggle the sidebar (accepts modifiers)",
-		position = 45,
+		position = 46,
 		section = windowSettings
 	)
 	default Keybind sidebarToggleKey()
@@ -423,7 +435,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "panelToggleKey",
 		name = "Plugin Panel Toggle Key",
 		description = "The key that will toggle the current or last opened plugin panel (accepts modifiers)",
-		position = 46,
+		position = 47,
 		section = windowSettings
 	)
 	default Keybind panelToggleKey()
@@ -435,7 +447,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "blockExtraMouseButtons",
 		name = "Block extra mouse buttons",
 		description = "Blocks extra mouse buttons (4 and above)",
-		position = 50
+		position = 51
 	)
 	default boolean blockExtraMouseButtons()
 	{
@@ -446,7 +458,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "useWikiItemPrices",
 		name = "Use actively traded price",
 		description = "Use actively traded prices, sourced from the RuneScape wiki, for item prices",
-		position = 51
+		position = 52
 	)
 	default boolean useWikiItemPrices()
 	{
