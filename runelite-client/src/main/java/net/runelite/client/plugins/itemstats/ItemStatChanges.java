@@ -110,10 +110,10 @@ public class ItemStatChanges
 		// Many of these retrieved from https://oldschool.runescape.wiki/w/User:Choppe/Sandbox2
 		add(combo(food(11), dec(ATTACK, 2)), JUG_OF_WINE);
 		add(combo(food(14), dec(ATTACK, 3)), BOTTLE_OF_WINE);
-		add(combo(2, food(5), boost(STRENGTH, 6), heal(ATTACK, -4)), PREMADE_WIZ_BLZD, WIZARD_BLIZZARD);
-		add(combo(2, food(5), boost(STRENGTH, 4), heal(ATTACK, -3)), PREMADE_SGG, SHORT_GREEN_GUY);
-		add(combo(2, food(5), boost(STRENGTH, 7), heal(ATTACK, -4)), PREMADE_DR_DRAGON, DRUNK_DRAGON);
-		add(combo(2, food(5), boost(STRENGTH, 7), heal(ATTACK, -4)), PREMADE_CHOC_SDY, CHOC_SATURDAY);
+		add(combo(2, food(5), new SimpleStatBoost(STRENGTH, true, perc(0.05, 1)), new BoostedStatBoost(ATTACK, false, perc(0.02, -3))), PREMADE_SGG, SHORT_GREEN_GUY);
+		add(combo(2, food(7), new SimpleStatBoost(STRENGTH, true, perc(0.05, 2)), new BoostedStatBoost(ATTACK, false, perc(0.02, -3))), PREMADE_BLURB_SP, BLURBERRY_SPECIAL);
+		add(combo(2, food(5), new SimpleStatBoost(STRENGTH, true, perc(0.05, 2)), new BoostedStatBoost(ATTACK, false, perc(0.02, -3))), PREMADE_DR_DRAGON, DRUNK_DRAGON, PREMADE_CHOC_SDY, CHOC_SATURDAY);
+		add(combo(2, food(5), new SimpleStatBoost(STRENGTH, true, perc(0.06, 1)), new BoostedStatBoost(ATTACK, false, perc(0.02, -3))), PREMADE_WIZ_BLZD, WIZARD_BLIZZARD);
 		add(combo(2, food(5), new SimpleStatBoost(STRENGTH, true, perc(0.05, 1)), new BoostedStatBoost(ATTACK, false, perc(0.02, -3))), BRANDY, GIN, VODKA, WHISKY);
 		add(combo(2, food(5), new SimpleStatBoost(STRENGTH, true, perc(0.04, 1)), new BoostedStatBoost(ATTACK, false, perc(0.05, -3))), GROG);
 		add(combo(2, food(1), boost(STRENGTH, perc(.02, 1)), new BoostedStatBoost(ATTACK, false, perc(.06, -1))), BEER);
