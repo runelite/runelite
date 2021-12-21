@@ -47,12 +47,6 @@ final class ClientPanel extends JPanel
 			return;
 		}
 
-		client.setLayout(null);
-		client.setSize(Constants.GAME_FIXED_SIZE);
-
-		client.init();
-		client.start();
-
 		add(client, BorderLayout.CENTER);
 
 		// This causes the whole game frame to be redrawn each frame instead
