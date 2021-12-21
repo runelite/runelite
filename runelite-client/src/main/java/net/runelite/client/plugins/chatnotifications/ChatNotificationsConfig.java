@@ -99,6 +99,17 @@ public interface ChatNotificationsConfig extends Config
 
 	@ConfigItem(
 		position = 4,
+		keyName = "notifyFor",
+		name = "Notify for",
+		description = "For which highlights to send notifications"
+	)
+	default ChatNotificationsScope notifyFor()
+	{
+		return ChatNotificationsScope.ALL_MESSAGES;
+	}
+
+	@ConfigItem(
+		position = 5,
 		keyName = "notifyOnTrade",
 		name = "Notify on trade",
 		description = "Notifies you whenever you are traded"
@@ -109,7 +120,7 @@ public interface ChatNotificationsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 5,
+		position = 6,
 		keyName = "notifyOnDuel",
 		name = "Notify on duel",
 		description = "Notifies you whenever you are challenged to a duel"
@@ -120,7 +131,7 @@ public interface ChatNotificationsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 6,
+		position = 7,
 		keyName = "notifyOnBroadcast",
 		name = "Notify on broadcast",
 		description = "Notifies you whenever you receive a broadcast message"
@@ -131,7 +142,7 @@ public interface ChatNotificationsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 7,
+		position = 8,
 		keyName = "notifyOnPM",
 		name = "Notify on private message",
 		description = "Notifies you whenever you receive a private message"
