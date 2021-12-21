@@ -409,7 +409,7 @@ class ScreenMarkerPanel extends JPanel
 		leftActions.add(labelIndicator);
 		leftActions.add(thicknessSpinner);
 
-		JPanel rightActions = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
+		JPanel rightActions = new JPanel(new FlowLayout(FlowLayout.RIGHT, 5, 0));
 		rightActions.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 		visibilityLabel.addMouseListener(new MouseAdapter()
