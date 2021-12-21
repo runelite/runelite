@@ -372,7 +372,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "infoBoxVertical",
 		name = "Display infoboxes vertically",
 		description = "Toggles the infoboxes to display vertically",
-		position = 41,
+		position = 40,
 		section = overlaySettings,
 		hidden = true
 	)
@@ -385,7 +385,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "infoBoxSize",
 		name = "Infobox size",
 		description = "Configures the size of each infobox in pixels",
-		position = 43,
+		position = 42,
 		section = overlaySettings
 	)
 	@Units(Units.PIXELS)
@@ -398,7 +398,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "infoBoxTextOutline",
 		name = "Outline infobox text",
 		description = "Draw a full outline instead of a simple shadow for infobox text",
-		position = 44,
+		position = 43,
 		section = overlaySettings
 	)
 	default boolean infoBoxTextOutline()
@@ -411,7 +411,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "overlayBackgroundColor",
 		name = "Overlay Color",
 		description = "Configures the background color of infoboxes and overlays",
-		position = 45,
+		position = 44,
 		section = overlaySettings
 	)
 	default Color overlayBackgroundColor()
@@ -423,7 +423,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "sidebarToggleKey",
 		name = "Sidebar Toggle Key",
 		description = "The key that will toggle the sidebar (accepts modifiers)",
-		position = 46,
+		position = 45,
 		section = windowSettings
 	)
 	default Keybind sidebarToggleKey()
@@ -435,7 +435,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "panelToggleKey",
 		name = "Plugin Panel Toggle Key",
 		description = "The key that will toggle the current or last opened plugin panel (accepts modifiers)",
-		position = 47,
+		position = 46,
 		section = windowSettings
 	)
 	default Keybind panelToggleKey()
@@ -447,7 +447,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "blockExtraMouseButtons",
 		name = "Block extra mouse buttons",
 		description = "Blocks extra mouse buttons (4 and above)",
-		position = 51
+		position = 50
 	)
 	default boolean blockExtraMouseButtons()
 	{
@@ -458,7 +458,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "useWikiItemPrices",
 		name = "Use actively traded price",
 		description = "Use actively traded prices, sourced from the RuneScape wiki, for item prices",
-		position = 52
+		position = 51
 	)
 	default boolean useWikiItemPrices()
 	{
