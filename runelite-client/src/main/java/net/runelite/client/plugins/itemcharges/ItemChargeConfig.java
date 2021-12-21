@@ -41,6 +41,7 @@ public interface ItemChargeConfig extends Config
 	String KEY_AMULET_OF_CHEMISTRY = "amuletOfChemistry";
 	String KEY_BINDING_NECKLACE = "bindingNecklace";
 	String KEY_BRACELET_OF_SLAUGHTER = "braceletOfSlaughter";
+	String KEY_CAMULET = "camulet";
 	String KEY_CHRONICLE = "chronicle";
 	String KEY_DODGY_NECKLACE = "dodgyNecklace";
 	String KEY_EXPEDITIOUS_BRACELET = "expeditiousBracelet";
