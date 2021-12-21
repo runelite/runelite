@@ -51,6 +51,7 @@ enum ItemChargeType
 	SACK(ItemChargeConfig::showSackCharges),
 	RING_OF_FORGING(ItemChargeConfig::showRingOfForgingCount),
 	POTION(ItemChargeConfig::showPotionDoseCount),
+	BRACELET_OF_CLAY(ItemChargeConfig::braceletOfClayCharges),
 	GUTHIX_REST(ItemChargeConfig::showGuthixRestDoses);
 
 	private final Predicate<ItemChargeConfig> enabled;
