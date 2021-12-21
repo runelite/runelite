@@ -78,6 +78,11 @@ class ScreenMarkerPanel extends JPanel
 	private static final ImageIcon NO_OPACITY_ICON;
 	private static final ImageIcon NO_OPACITY_HOVER_ICON;
 
+	private static final ImageIcon LABEL_ICON;
+	private static final ImageIcon LABEL_HOVER_ICON;
+	private static final ImageIcon NO_LABEL_ICON;
+	private static final ImageIcon NO_LABEL_HOVER_ICON;
+
 	private static final ImageIcon VISIBLE_ICON;
 	private static final ImageIcon VISIBLE_HOVER_ICON;
 	private static final ImageIcon INVISIBLE_ICON;
@@ -92,6 +97,7 @@ class ScreenMarkerPanel extends JPanel
 	private final JLabel borderColorIndicator = new JLabel();
 	private final JLabel fillColorIndicator = new JLabel();
 	private final JLabel opacityIndicator = new JLabel();
+	private final JLabel labelIndicator = new JLabel();
 	private final JLabel visibilityLabel = new JLabel();
 	private final JLabel deleteLabel = new JLabel();
 
@@ -104,6 +110,7 @@ class ScreenMarkerPanel extends JPanel
 	private final JSpinner thicknessSpinner = new JSpinner(spinnerModel);
 
 	private boolean visible;
+	private boolean showLabel;
 
 	static
 	{
@@ -131,6 +138,14 @@ class ScreenMarkerPanel extends JPanel
 		NO_OPACITY_ICON = new ImageIcon(opacityImgHover);
 		NO_OPACITY_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(opacityImgHover, -100));
 
+		final BufferedImage labelImg = ImageUtil.loadImageResource(ScreenMarkerPlugin.class, "label_icon.png");
+		final BufferedImage labelImgHover = ImageUtil.luminanceOffset(labelImg, -150);
+		LABEL_ICON = new ImageIcon(labelImg);
+		LABEL_HOVER_ICON = new ImageIcon(labelImgHover);
+
+		NO_LABEL_ICON = new ImageIcon(labelImgHover);
+		NO_LABEL_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(labelImgHover, -100));
+
 		final BufferedImage visibleImg = ImageUtil.loadImageResource(ScreenMarkerPlugin.class, "visible_icon.png");
 		VISIBLE_ICON = new ImageIcon(visibleImg);
 		VISIBLE_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(visibleImg, -100));
@@ -149,6 +164,7 @@ class ScreenMarkerPanel extends JPanel
 		this.plugin = plugin;
 		this.marker = marker;
 		this.visible = marker.getMarker().isVisible();
+		this.showLabel = marker.getMarker().isLabelled();
 
 		setLayout(new BorderLayout());
 		setBackground(ColorScheme.DARKER_GRAY_COLOR);
@@ -366,15 +382,36 @@ class ScreenMarkerPanel extends JPanel
 			}
 		});
 
+		labelIndicator.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent mouseEvent)
+			{
+				toggleLabelling(!showLabel);
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent mouseEvent)
+			{
+				labelIndicator.setIcon(showLabel ? LABEL_HOVER_ICON : NO_LABEL_HOVER_ICON);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent mouseEvent)
+			{
+				labelIndicator.setIcon(showLabel ? LABEL_ICON : NO_LABEL_ICON);
+			}
+		});
+
 		leftActions.add(borderColorIndicator);
 		leftActions.add(fillColorIndicator);
 		leftActions.add(opacityIndicator);
+		leftActions.add(labelIndicator);
 		leftActions.add(thicknessSpinner);
 
 		JPanel rightActions = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
 		rightActions.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
-		visibilityLabel.setToolTipText(visible ? "Hide screen marker" : "Show screen marker");
 		visibilityLabel.addMouseListener(new MouseAdapter()
 		{
 			@Override
@@ -439,7 +476,7 @@ class ScreenMarkerPanel extends JPanel
 		updateFill();
 		updateBorder();
 		updateBorder();
-
+		updateLabelling();
 	}
 
 	private void preview(boolean on)
@@ -458,6 +495,14 @@ class ScreenMarkerPanel extends JPanel
 		marker.getMarker().setVisible(visible);
 		plugin.updateConfig();
 		updateVisibility();
+	}
+
+	private void toggleLabelling(boolean on)
+	{
+		showLabel = on;
+		marker.getMarker().setLabelled(showLabel);
+		plugin.updateConfig();
+		updateLabelling();
 	}
 
 	private void save()
@@ -505,6 +550,13 @@ class ScreenMarkerPanel extends JPanel
 	private void updateVisibility()
 	{
 		visibilityLabel.setIcon(visible ? VISIBLE_ICON : INVISIBLE_ICON);
+		visibilityLabel.setToolTipText(visible ? "Hide screen marker" : "Show screen marker");
+	}
+
+	private void updateLabelling()
+	{
+		labelIndicator.setIcon(showLabel ? LABEL_ICON : NO_LABEL_ICON);
+		labelIndicator.setToolTipText(showLabel ? "Hide label" : "Show label");
 	}
 
 	private void updateFill()

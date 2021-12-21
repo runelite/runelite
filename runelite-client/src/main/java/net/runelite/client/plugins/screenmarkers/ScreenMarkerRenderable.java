@@ -55,6 +55,9 @@ public class ScreenMarkerRenderable implements LayoutableRenderableEntity
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
 	private Stroke stroke;
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
+	private String label;
 
 	@Getter
 	private final Rectangle bounds = new Rectangle();
@@ -77,6 +80,12 @@ public class ScreenMarkerRenderable implements LayoutableRenderableEntity
 		graphics.setStroke(stroke);
 		graphics.drawRect(offset, offset, width - thickness, height - thickness);
 		bounds.setSize(preferredSize);
+
+		if (!label.isEmpty())
+		{
+			graphics.drawString(label, (int) bounds.getX(), (int) bounds.getY());
+		}
+
 		return preferredSize;
 	}
 }
