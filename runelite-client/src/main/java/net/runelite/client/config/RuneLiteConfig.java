@@ -360,7 +360,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "tooltipPosition",
 		name = "Tooltip Position",
 		description = "Configures whether to show the tooltip above or under the cursor",
-		position = 36,
+		position = 35,
 		section = overlaySettings
 	)
 	default TooltipPositionType tooltipPosition()
