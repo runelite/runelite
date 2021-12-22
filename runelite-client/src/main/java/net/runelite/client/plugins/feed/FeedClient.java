@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Lotto <https://github.com/devLotto>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,37 +22,41 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.api.npc;
+package net.runelite.client.plugins.feed;
 
 import com.google.gson.JsonParseException;
-import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
-import java.util.Map;
-import lombok.Value;
+import javax.inject.Inject;
+import javax.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
+import net.runelite.http.api.feed.FeedResult;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
 @Slf4j
-@Value
-public class NpcInfoClient
+public class FeedClient
 {
 	private final OkHttpClient client;
+	private final HttpUrl apiBase;
 
-	public Map<Integer, NpcInfo> getNpcs() throws IOException
+	@Inject
+	private FeedClient(OkHttpClient client, @Named("runelite.api.base") HttpUrl apiBase)
 	{
-		HttpUrl.Builder urlBuilder = RuneLiteAPI.getStaticBase().newBuilder()
-			.addPathSegment("npcs")
-			.addPathSegment("npcs.min.json");
+		this.client = client;
+		this.apiBase = apiBase;
+	}
 
-		HttpUrl url = urlBuilder.build();
+	public FeedResult lookupFeed() throws IOException
+	{
+		HttpUrl url = apiBase.newBuilder()
+			.addPathSegment("feed.js")
+			.build();
 
 		log.debug("Built URI: {}", url);
 
@@ -64,15 +68,12 @@ public class NpcInfoClient
 		{
 			if (!response.isSuccessful())
 			{
-				log.warn("Error looking up npcs: {}", response);
+				log.debug("Error looking up feed: {}", response);
 				return null;
 			}
 
 			InputStream in = response.body().byteStream();
-			final Type typeToken = new TypeToken<Map<Integer, NpcInfo>>()
-			{
-			}.getType();
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), typeToken);
+			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), FeedResult.class);
 		}
 		catch (JsonParseException ex)
 		{

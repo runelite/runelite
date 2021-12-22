@@ -32,10 +32,10 @@ import java.io.InputStream;
 import java.time.Instant;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
+import lombok.Getter;
 import net.runelite.http.api.gson.ColorTypeAdapter;
-import net.runelite.http.api.gson.InstantTypeAdapter;
 import net.runelite.http.api.gson.IllegalReflectionExclusion;
-import okhttp3.HttpUrl;
+import net.runelite.http.api.gson.InstantTypeAdapter;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -56,10 +56,8 @@ public class RuneLiteAPI
 	public static final MediaType JSON = MediaType.parse("application/json");
 	public static String userAgent;
 
-	private static final String BASE = "https://api.runelite.net";
-	private static final String WSBASE = "https://api.runelite.net/ws";
-	private static final String STATICBASE = "https://static.runelite.net";
 	private static final Properties properties = new Properties();
+	@Getter
 	private static String version;
 
 	static
@@ -118,63 +116,4 @@ public class RuneLiteAPI
 
 		GSON = gsonBuilder.create();
 	}
-
-	public static HttpUrl getSessionBase()
-	{
-		final String prop = System.getProperty("runelite.session.url");
-
-		if (prop != null && !prop.isEmpty())
-		{
-			return HttpUrl.parse(prop);
-		}
-
-		return HttpUrl.parse(BASE + "/session");
-	}
-
-	public static HttpUrl getApiBase()
-	{
-		final String prop = System.getProperty("runelite.http-service.url");
-
-		if (prop != null && !prop.isEmpty())
-		{
-			return HttpUrl.parse(prop);
-		}
-
-		return HttpUrl.parse(BASE + "/runelite-" + getVersion());
-	}
-
-	public static HttpUrl getStaticBase()
-	{
-		final String prop = System.getProperty("runelite.static.url");
-
-		if (prop != null && !prop.isEmpty())
-		{
-			return HttpUrl.parse(prop);
-		}
-
-		return HttpUrl.parse(STATICBASE);
-	}
-
-	public static HttpUrl getWsEndpoint()
-	{
-		final String prop = System.getProperty("runelite.ws.url");
-
-		if (prop != null && !prop.isEmpty())
-		{
-			return HttpUrl.parse(prop);
-		}
-
-		return HttpUrl.parse(WSBASE);
-	}
-
-	public static String getVersion()
-	{
-		return version;
-	}
-
-	public static void setVersion(String version)
-	{
-		RuneLiteAPI.version = version;
-	}
-
 }

@@ -65,7 +65,6 @@ import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.SwingUtil;
 import net.runelite.http.api.loottracker.LootRecordType;
-import net.runelite.http.api.loottracker.LootTrackerClient;
 
 class LootTrackerPanel extends PluginPanel
 {

@@ -31,6 +31,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.UUID;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Singleton;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +41,7 @@ import net.runelite.http.api.ws.WebsocketGsonFactory;
 import net.runelite.http.api.ws.WebsocketMessage;
 import net.runelite.http.api.ws.messages.Handshake;
 import net.runelite.http.api.ws.messages.party.PartyMessage;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -52,6 +54,7 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 {
 	private final EventBus eventBus;
 	private final OkHttpClient okHttpClient;
+	private final HttpUrl runeliteWs;
 	private final Collection<Class<? extends WebsocketMessage>> messages = new HashSet<>();
 
 	private volatile Gson gson;
@@ -60,10 +63,11 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 	private WebSocket webSocket;
 
 	@Inject
-	private WSClient(EventBus eventBus, OkHttpClient okHttpClient)
+	private WSClient(EventBus eventBus, OkHttpClient okHttpClient, @Named("runelite.ws") HttpUrl runeliteWs)
 	{
 		this.eventBus = eventBus;
 		this.okHttpClient = okHttpClient;
+		this.runeliteWs = runeliteWs;
 		this.gson = WebsocketGsonFactory.build(WebsocketGsonFactory.factory(messages));
 	}
 
@@ -101,7 +105,7 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 		}
 
 		Request request = new Request.Builder()
-			.url(RuneLiteAPI.getWsEndpoint())
+			.url(runeliteWs)
 			.header("User-Agent", RuneLiteAPI.userAgent)
 			.build();
 

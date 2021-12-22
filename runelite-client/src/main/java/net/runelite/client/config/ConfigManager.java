@@ -72,6 +72,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -92,10 +93,8 @@ import net.runelite.client.events.ClientShutdown;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.RuneScapeProfileChanged;
 import net.runelite.client.util.ColorUtil;
-import net.runelite.http.api.config.ConfigClient;
 import net.runelite.http.api.config.ConfigEntry;
 import net.runelite.http.api.config.Configuration;
-import okhttp3.OkHttpClient;
 
 @Singleton
 @Slf4j
@@ -116,11 +115,11 @@ public class ConfigManager
 
 	private final File settingsFileInput;
 	private final EventBus eventBus;
-	private final OkHttpClient okHttpClient;
 	private final Gson gson;
+	@Nonnull
+	private final ConfigClient configClient;
 
 	private AccountSession session;
-	private ConfigClient configClient;
 	private File propertiesFile;
 
 	@Nullable
@@ -140,16 +139,16 @@ public class ConfigManager
 		@Named("config") File config,
 		ScheduledExecutorService scheduledExecutorService,
 		EventBus eventBus,
-		OkHttpClient okHttpClient,
 		@Nullable Client client,
-		Gson gson)
+		Gson gson,
+		ConfigClient configClient)
 	{
 		this.settingsFileInput = config;
 		this.eventBus = eventBus;
-		this.okHttpClient = okHttpClient;
 		this.client = client;
 		this.propertiesFile = getPropertiesFile();
 		this.gson = gson;
+		this.configClient = configClient;
 
 		scheduledExecutorService.scheduleWithFixedDelay(this::sendConfig, 30, 5 * 60, TimeUnit.SECONDS);
 	}
@@ -167,12 +166,12 @@ public class ConfigManager
 		if (session == null)
 		{
 			this.session = null;
-			this.configClient = null;
+			configClient.setUuid(null);
 		}
 		else
 		{
 			this.session = session;
-			this.configClient = new ConfigClient(okHttpClient, session.getUuid());
+			configClient.setUuid(session.getUuid());
 		}
 
 		this.propertiesFile = getPropertiesFile();
@@ -201,7 +200,7 @@ public class ConfigManager
 
 	public void load()
 	{
-		if (configClient == null)
+		if (session == null)
 		{
 			loadFromFile();
 			return;
@@ -909,7 +908,7 @@ public class ConfigManager
 				return null;
 			}
 
-			if (configClient != null)
+			if (session != null)
 			{
 				Configuration patch = new Configuration(pendingChanges.entrySet().stream()
 					.map(e -> new ConfigEntry(e.getKey(), e.getValue()))

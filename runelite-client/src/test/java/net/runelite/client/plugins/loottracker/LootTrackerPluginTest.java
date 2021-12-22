@@ -61,7 +61,6 @@ import net.runelite.client.game.SpriteManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.loottracker.LootRecordType;
-import net.runelite.http.api.loottracker.LootTrackerClient;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import org.junit.Before;

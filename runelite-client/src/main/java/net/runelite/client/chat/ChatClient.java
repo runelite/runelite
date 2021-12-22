@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.api.chat;
+package net.runelite.client.chat;
 
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
@@ -32,22 +32,33 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Set;
-import lombok.AllArgsConstructor;
+import javax.inject.Inject;
+import javax.inject.Named;
 import net.runelite.http.api.RuneLiteAPI;
+import net.runelite.http.api.chat.Duels;
+import net.runelite.http.api.chat.LayoutRoom;
+import net.runelite.http.api.chat.Task;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-@AllArgsConstructor
 public class ChatClient
 {
 	private final OkHttpClient client;
+	private final HttpUrl apiBase;
+
+	@Inject
+	private ChatClient(OkHttpClient client, @Named("runelite.api.base") HttpUrl apiBase)
+	{
+		this.client = client;
+		this.apiBase = apiBase;
+	}
 
 	public boolean submitKc(String username, String boss, int kc) throws IOException
 	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+		HttpUrl url = apiBase.newBuilder()
 			.addPathSegment("chat")
 			.addPathSegment("kc")
 			.addQueryParameter("name", username)
@@ -68,7 +79,7 @@ public class ChatClient
 
 	public int getKc(String username, String boss) throws IOException
 	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+		HttpUrl url = apiBase.newBuilder()
 			.addPathSegment("chat")
 			.addPathSegment("kc")
 			.addQueryParameter("name", username)
@@ -91,7 +102,7 @@ public class ChatClient
 
 	public boolean submitQp(String username, int qp) throws IOException
 	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+		HttpUrl url = apiBase.newBuilder()
 			.addPathSegment("chat")
 			.addPathSegment("qp")
 			.addQueryParameter("name", username)
@@ -111,7 +122,7 @@ public class ChatClient
 
 	public int getQp(String username) throws IOException
 	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+		HttpUrl url = apiBase.newBuilder()
 			.addPathSegment("chat")
 			.addPathSegment("qp")
 			.addQueryParameter("name", username)
@@ -133,7 +144,7 @@ public class ChatClient
 
 	public boolean submitTask(String username, String task, int amount, int initialAmount, String location) throws IOException
 	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+		HttpUrl url = apiBase.newBuilder()
 			.addPathSegment("chat")
 			.addPathSegment("task")
 			.addQueryParameter("name", username)
@@ -156,7 +167,7 @@ public class ChatClient
 
 	public Task getTask(String username) throws IOException
 	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+		HttpUrl url = apiBase.newBuilder()
 			.addPathSegment("chat")
 			.addPathSegment("task")
 			.addQueryParameter("name", username)
@@ -184,7 +195,7 @@ public class ChatClient
 
 	public boolean submitPb(String username, String boss, double pb) throws IOException
 	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+		HttpUrl url = apiBase.newBuilder()
 			.addPathSegment("chat")
 			.addPathSegment("pb")
 			.addQueryParameter("name", username)
@@ -205,7 +216,7 @@ public class ChatClient
 
 	public double getPb(String username, String boss) throws IOException
 	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+		HttpUrl url = apiBase.newBuilder()
 			.addPathSegment("chat")
 			.addPathSegment("pb")
 			.addQueryParameter("name", username)
@@ -228,7 +239,7 @@ public class ChatClient
 
 	public boolean submitGc(String username, int gc) throws IOException
 	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+		HttpUrl url = apiBase.newBuilder()
 			.addPathSegment("chat")
 			.addPathSegment("gc")
 			.addQueryParameter("name", username)
@@ -248,7 +259,7 @@ public class ChatClient
 
 	public int getGc(String username) throws IOException
 	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+		HttpUrl url = apiBase.newBuilder()
 			.addPathSegment("chat")
 			.addPathSegment("gc")
 			.addQueryParameter("name", username)
@@ -270,7 +281,7 @@ public class ChatClient
 
 	public boolean submitDuels(String username, int wins, int losses, int winningStreak, int losingStreak) throws IOException
 	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+		HttpUrl url = apiBase.newBuilder()
 			.addPathSegment("chat")
 			.addPathSegment("duels")
 			.addQueryParameter("name", username)
@@ -293,7 +304,7 @@ public class ChatClient
 
 	public Duels getDuels(String username) throws IOException
 	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+		HttpUrl url = apiBase.newBuilder()
 			.addPathSegment("chat")
 			.addPathSegment("duels")
 			.addQueryParameter("name", username)
@@ -321,7 +332,7 @@ public class ChatClient
 
 	public boolean submitLayout(String username, LayoutRoom[] rooms) throws IOException
 	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+		HttpUrl url = apiBase.newBuilder()
 			.addPathSegment("chat")
 			.addPathSegment("layout")
 			.addQueryParameter("name", username)
@@ -340,7 +351,7 @@ public class ChatClient
 
 	public LayoutRoom[] getLayout(String username) throws IOException
 	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+		HttpUrl url = apiBase.newBuilder()
 			.addPathSegment("chat")
 			.addPathSegment("layout")
 			.addQueryParameter("name", username)
@@ -368,7 +379,7 @@ public class ChatClient
 
 	public boolean submitPetList(String username, Collection<Integer> petList) throws IOException
 	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+		HttpUrl url = apiBase.newBuilder()
 			.addPathSegment("chat")
 			.addPathSegment("pets")
 			.addQueryParameter("name", username)
@@ -387,7 +398,7 @@ public class ChatClient
 
 	public Set<Integer> getPetList(String username) throws IOException
 	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+		HttpUrl url = apiBase.newBuilder()
 			.addPathSegment("chat")
 			.addPathSegment("pets")
 			.addQueryParameter("name", username)

@@ -24,6 +24,7 @@
  */
 package net.runelite.client;
 
+import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
@@ -35,6 +36,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
+import javax.inject.Named;
 import javax.inject.Singleton;
 import lombok.AllArgsConstructor;
 import net.runelite.api.Client;
@@ -53,7 +55,7 @@ import net.runelite.client.task.Scheduler;
 import net.runelite.client.util.DeferredEventBus;
 import net.runelite.client.util.ExecutorServiceExceptionLogger;
 import net.runelite.http.api.RuneLiteAPI;
-import net.runelite.http.api.chat.ChatClient;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 
 @AllArgsConstructor
@@ -129,9 +131,34 @@ public class RuneLiteModule extends AbstractModule
 	}
 
 	@Provides
-	@Singleton
-	ChatClient provideChatClient(OkHttpClient okHttpClient)
+	@Named("runelite.api.base")
+	HttpUrl provideApiBase(@Named("runelite.api.base") String s)
 	{
-		return new ChatClient(okHttpClient);
+		final String prop = System.getProperty("runelite.http-service.url");
+		return HttpUrl.get(Strings.isNullOrEmpty(prop) ? s : prop);
+	}
+
+	@Provides
+	@Named("runelite.session")
+	HttpUrl provideSession(@Named("runelite.session") String s)
+	{
+		final String prop = System.getProperty("runelite.session.url");
+		return HttpUrl.get(Strings.isNullOrEmpty(prop) ? s : prop);
+	}
+
+	@Provides
+	@Named("runelite.static.base")
+	HttpUrl provideStaticBase(@Named("runelite.static.base") String s)
+	{
+		final String prop = System.getProperty("runelite.static.url");
+		return HttpUrl.get(Strings.isNullOrEmpty(prop) ? s : prop);
+	}
+
+	@Provides
+	@Named("runelite.ws")
+	HttpUrl provideWs(@Named("runelite.ws") String s)
+	{
+		final String prop = System.getProperty("runelite.ws.url");
+		return HttpUrl.get(Strings.isNullOrEmpty(prop) ? s : prop);
 	}
 }

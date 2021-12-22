@@ -25,7 +25,7 @@
 package net.runelite.client.hiscore;
 
 import java.io.IOException;
-import net.runelite.http.api.RuneLiteAPI;
+import okhttp3.OkHttpClient;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import static org.junit.Assert.assertEquals;
@@ -132,7 +132,7 @@ public class HiscoreClientTest
 	@Test
 	public void testNormalLookup() throws Exception
 	{
-		HiscoreClient hiscoreClient = new HiscoreClient(RuneLiteAPI.CLIENT);
+		HiscoreClient hiscoreClient = new HiscoreClient(new OkHttpClient());
 
 		HiscoreResult result = hiscoreClient.lookup("zezima", server.url("/"));
 

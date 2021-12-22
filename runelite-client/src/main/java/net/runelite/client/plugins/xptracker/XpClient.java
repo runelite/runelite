@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
- * Copyright (c) 2018, Lotto <https://github.com/devLotto>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,53 +22,58 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.api.worlds;
+package net.runelite.client.plugins.xptracker;
 
-import com.google.gson.JsonParseException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import lombok.RequiredArgsConstructor;
+import javax.inject.Inject;
+import javax.inject.Named;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.http.api.RuneLiteAPI;
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
 @Slf4j
-@RequiredArgsConstructor
-public class WorldClient
+public class XpClient
 {
 	private final OkHttpClient client;
+	private final HttpUrl apiBase;
 
-	public WorldResult lookupWorlds() throws IOException
+	@Inject
+	private XpClient(OkHttpClient client, @Named("runelite.api.base") HttpUrl apiBase)
 	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("worlds.js")
-			.build();
+		this.client = client;
+		this.apiBase = apiBase;
+	}
 
-		log.debug("Built URI: {}", url);
+	public void update(String username)
+	{
+		HttpUrl url = apiBase.newBuilder()
+			.addPathSegment("xp")
+			.addPathSegment("update")
+			.addQueryParameter("username", username)
+			.build();
 
 		Request request = new Request.Builder()
 			.url(url)
 			.build();
 
-		try (Response response = client.newCall(request).execute())
+		client.newCall(request).enqueue(new Callback()
 		{
-			if (!response.isSuccessful())
+			@Override
+			public void onFailure(Call call, IOException e)
 			{
-				log.debug("Error looking up worlds: {}", response);
-				throw new IOException("unsuccessful response looking up worlds");
+				log.warn("Error submitting xp track", e);
 			}
 
-			InputStream in = response.body().byteStream();
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), WorldResult.class);
-		}
-		catch (JsonParseException ex)
-		{
-			throw new IOException(ex);
-		}
+			@Override
+			public void onResponse(Call call, Response response)
+			{
+				response.close();
+				log.debug("Submitted xp track for {}", username);
+			}
+		});
 	}
 }

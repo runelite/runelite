@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.api.loottracker;
+package net.runelite.client.plugins.loottracker;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
@@ -35,12 +35,15 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import javax.inject.Inject;
+import javax.inject.Named;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
 import static net.runelite.http.api.RuneLiteAPI.JSON;
+import net.runelite.http.api.loottracker.LootAggregate;
+import net.runelite.http.api.loottracker.LootRecord;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
@@ -50,21 +53,29 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 @Slf4j
-@RequiredArgsConstructor
 public class LootTrackerClient
 {
 	private static final Gson GSON = RuneLiteAPI.GSON;
 
 	private final OkHttpClient client;
+	private final HttpUrl apiBase;
+
 	@Getter
 	@Setter
 	private UUID uuid;
+
+	@Inject
+	private LootTrackerClient(OkHttpClient client, @Named("runelite.api.base") HttpUrl apiBase)
+	{
+		this.client = client;
+		this.apiBase = apiBase;
+	}
 
 	public CompletableFuture<Void> submit(Collection<LootRecord> lootRecords)
 	{
 		CompletableFuture<Void> future = new CompletableFuture<>();
 
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+		HttpUrl url = apiBase.newBuilder()
 			.addPathSegment("loottracker")
 			.build();
 
@@ -107,7 +118,7 @@ public class LootTrackerClient
 
 	public Collection<LootAggregate> get() throws IOException
 	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+		HttpUrl url = apiBase.newBuilder()
 			.addPathSegment("loottracker")
 			.build();
 
@@ -137,7 +148,7 @@ public class LootTrackerClient
 
 	public void delete(String eventId)
 	{
-		HttpUrl.Builder builder = RuneLiteAPI.getApiBase().newBuilder()
+		HttpUrl.Builder builder = apiBase.newBuilder()
 			.addPathSegment("loottracker");
 
 		if (eventId != null)
