@@ -27,7 +27,6 @@ package net.runelite.client.config;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Strings;
 import com.google.common.collect.ComparisonChain;
-import com.google.common.collect.ImmutableSet;
 import com.google.common.hash.Hasher;
 import com.google.common.hash.Hashing;
 import com.google.gson.Gson;
@@ -57,7 +56,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Date;
@@ -73,10 +71,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Predicate;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -307,8 +301,6 @@ public class ConfigManager
 				}
 			}
 		}
-
-		migrateConfig();
 	}
 
 	private void syncPropertiesFromFile(File propertiesFile)
@@ -1105,115 +1097,5 @@ public class ConfigManager
 			key = key.substring(i + 1);
 		}
 		return new String[]{group, profile, key};
-	}
-
-	private synchronized void migrateConfig()
-	{
-		String migrationKey = "profileMigrationDone";
-		if (getConfiguration("runelite", migrationKey) != null)
-		{
-			return;
-		}
-
-		Map<String, String> profiles = new HashMap<>();
-
-		AtomicInteger changes = new AtomicInteger();
-		List<Predicate<String>> migrators = new ArrayList<>();
-		for (String[] tpl : new String[][]
-			{
-				{"(grandexchange)\\.buylimit_(%)\\.(#)", "$1.buylimit.$3"},
-				{"(timetracking)\\.(%)\\.(autoweed|contract)", "$1.$3"},
-				{"(timetracking)\\.(%)\\.(#\\.#)", "$1.$3"},
-				{"(timetracking)\\.(%)\\.(birdhouse)\\.(#)", "$1.$3.$4"},
-				{"(killcount|personalbest)\\.(%)\\.([^.]+)", "$1.$3"},
-				{"(geoffer)\\.(%)\\.(#)", "$1.$3"},
-			})
-		{
-			String replace = tpl[1];
-			String pat = ("^" + tpl[0] + "$")
-				.replace("#", "-?[0-9]+")
-				.replace("(%)", "(?<login>.*)");
-			Pattern p = Pattern.compile(pat);
-
-			migrators.add(oldkey ->
-			{
-				Matcher m = p.matcher(oldkey);
-				if (!m.find())
-				{
-					return false;
-				}
-
-				String newKey = m.replaceFirst(replace);
-				String username = m.group("login").toLowerCase(Locale.US);
-
-				if (username.startsWith(RSPROFILE_GROUP + "."))
-				{
-					return false;
-				}
-
-				String profKey = profiles.computeIfAbsent(username, u ->
-					findRSProfile(getRSProfiles(), u, RuneScapeProfileType.STANDARD, u, true).getKey());
-
-				String[] oldKeySplit = splitKey(oldkey);
-				if (oldKeySplit == null)
-				{
-					log.warn("skipping migration of invalid key \"{}\"", oldkey);
-					return false;
-				}
-				if (oldKeySplit[KEY_SPLITTER_PROFILE] != null)
-				{
-					log.debug("skipping migrated key \"{}\"", oldkey);
-					return false;
-				}
-
-				String[] newKeySplit = splitKey(newKey);
-				if (newKeySplit == null || newKeySplit[KEY_SPLITTER_PROFILE] != null)
-				{
-					log.warn("migration produced a bad key: \"{}\" -> \"{}\"", oldkey, newKey);
-					return false;
-				}
-
-				if (changes.getAndAdd(1) <= 0)
-				{
-					File file = new File(propertiesFile.getParent(), propertiesFile.getName() + "." + TIME_FORMAT.format(new Date()));
-					log.info("backing up pre-migration config to {}", file);
-					try
-					{
-						saveToFile(file);
-					}
-					catch (IOException e)
-					{
-						log.error("Backup failed", e);
-						throw new RuntimeException(e);
-					}
-				}
-
-				String oldGroup = oldKeySplit[KEY_SPLITTER_GROUP];
-				String oldKeyPart = oldKeySplit[KEY_SPLITTER_KEY];
-				String value = getConfiguration(oldGroup, oldKeyPart);
-				setConfiguration(newKeySplit[KEY_SPLITTER_GROUP], profKey, newKeySplit[KEY_SPLITTER_KEY], value);
-				unsetConfiguration(oldGroup, oldKeyPart);
-				return true;
-			});
-		}
-
-		Set<String> keys = (Set<String>) ImmutableSet.copyOf((Set) properties.keySet());
-		keys:
-		for (String key : keys)
-		{
-			for (Predicate<String> mig : migrators)
-			{
-				if (mig.test(key))
-				{
-					continue keys;
-				}
-			}
-		}
-
-		if (changes.get() > 0)
-		{
-			log.info("migrated {} config keys", changes);
-		}
-		setConfiguration("runelite", migrationKey, 1);
 	}
 }
