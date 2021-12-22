@@ -47,3 +47,12 @@ runelite:
     url: https://prices.runescape.wiki/api/v1/osrs/latest
   price:
     cache: 30 # minutes
+  feed:
+    rssUrl: https://runelite.net/atom.xml
+  worlds:
+    url: http://www.runescape.com/g=oldscape/slr.ws?order=LPWM
+  osrsnews:
+    rssUrl: https://services.runescape.com/m=news/latest_news.rss?oldschool=true
+  item:
+    itemUrl: https://services.runescape.com/m=itemdb_oldschool/api/catalogue/detail.json
+    priceUrl: https://services.runescape.com/m=itemdb_oldschool/api/graph

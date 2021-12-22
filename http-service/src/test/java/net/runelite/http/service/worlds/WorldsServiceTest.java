@@ -29,6 +29,7 @@ import java.io.InputStream;
 import net.runelite.http.api.worlds.World;
 import net.runelite.http.api.worlds.WorldResult;
 import net.runelite.http.api.worlds.WorldType;
+import okhttp3.OkHttpClient;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okio.Buffer;
@@ -60,8 +61,7 @@ public class WorldsServiceTest
 	@Test
 	public void testListWorlds() throws Exception
 	{
-		WorldsService worlds = new WorldsService();
-		worlds.setUrl(server.url("/"));
+		WorldsService worlds = new WorldsService(new OkHttpClient(), server.url("/").toString());
 
 		WorldResult worldResult = worlds.getWorlds();
 		assertEquals(82, worldResult.getWorlds().size());

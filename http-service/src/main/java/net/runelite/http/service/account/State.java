@@ -25,29 +25,11 @@
 package net.runelite.http.service.account;
 
 import java.util.UUID;
+import lombok.Data;
 
+@Data
 public class State
 {
 	private UUID uuid;
 	private String apiVersion;
-
-	public UUID getUuid()
-	{
-		return uuid;
-	}
-
-	public void setUuid(UUID uuid)
-	{
-		this.uuid = uuid;
-	}
-
-	public String getApiVersion()
-	{
-		return apiVersion;
-	}
-
-	public void setApiVersion(String apiVersion)
-	{
-		this.apiVersion = apiVersion;
-	}
 }

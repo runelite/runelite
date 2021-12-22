@@ -39,10 +39,12 @@ import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.item.ItemType;
 import net.runelite.http.service.cache.CacheService;
 import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.sql2o.Connection;
@@ -53,10 +55,6 @@ import org.sql2o.Sql2o;
 @Slf4j
 public class ItemService
 {
-	private static final String BASE = "https://services.runescape.com/m=itemdb_oldschool";
-	private static final HttpUrl RS_ITEM_URL = HttpUrl.parse(BASE + "/api/catalogue/detail.json");
-	private static final HttpUrl RS_PRICE_URL = HttpUrl.parse(BASE + "/api/graph");
-
 	private static final String CREATE_ITEMS = "CREATE TABLE IF NOT EXISTS `items` (\n"
 		+ "  `id` int(11) NOT NULL,\n"
 		+ "  `name` tinytext NOT NULL,\n"
@@ -77,16 +75,27 @@ public class ItemService
 
 	private final Sql2o sql2o;
 	private final CacheService cacheService;
+	private final OkHttpClient okHttpClient;
+	private final HttpUrl itemUrl;
+	private final HttpUrl priceUrl;
 
 	private int[] tradeableItems;
 	private final Random random = new Random();
 
 	@Autowired
-	public ItemService(@Qualifier("Runelite SQL2O") Sql2o sql2o,
-		CacheService cacheService)
+	public ItemService(
+		@Qualifier("Runelite SQL2O") Sql2o sql2o,
+		CacheService cacheService,
+		OkHttpClient okHttpClient,
+		@Value("${runelite.item.itemUrl}") String itemUrl,
+		@Value("${runelite.item.priceUrl}") String priceUrl
+	)
 	{
 		this.sql2o = sql2o;
 		this.cacheService = cacheService;
+		this.okHttpClient = okHttpClient;
+		this.itemUrl = HttpUrl.get(itemUrl);
+		this.priceUrl = HttpUrl.get(priceUrl);
 
 		try (Connection con = sql2o.open())
 		{
@@ -195,7 +204,7 @@ public class ItemService
 
 	private RSItem fetchRSItem(int itemId) throws IOException
 	{
-		HttpUrl itemUrl = RS_ITEM_URL
+		HttpUrl itemUrl = this.itemUrl
 			.newBuilder()
 			.addQueryParameter("item", "" + itemId)
 			.build();
@@ -211,7 +220,7 @@ public class ItemService
 
 	private RSPrices fetchRSPrices(int itemId) throws IOException
 	{
-		HttpUrl priceUrl = RS_PRICE_URL
+		HttpUrl priceUrl = this.priceUrl
 			.newBuilder()
 			.addPathSegment(itemId + ".json")
 			.build();
@@ -223,9 +232,9 @@ public class ItemService
 		return fetchJson(request, RSPrices.class);
 	}
 
-	private static <T> T fetchJson(Request request, Class<T> clazz) throws IOException
+	private <T> T fetchJson(Request request, Class<T> clazz) throws IOException
 	{
-		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+		try (Response response = okHttpClient.newCall(request).execute())
 		{
 			if (!response.isSuccessful())
 			{
