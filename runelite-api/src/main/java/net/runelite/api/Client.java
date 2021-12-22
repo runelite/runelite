@@ -909,20 +909,6 @@ public interface Client extends GameEngine
 	long getOverallExperience();
 
 	/**
-	 * Gets the game drawing mode.
-	 *
-	 * @return the game drawing mode
-	 */
-	int getGameDrawingMode();
-
-	/**
-	 * Sets the games drawing mode.
-	 *
-	 * @param gameDrawingMode the new drawing mode
-	 */
-	void setGameDrawingMode(int gameDrawingMode);
-
-	/**
 	 * Refreshes the chat.
 	 */
 	void refreshChat();
