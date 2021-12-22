@@ -157,7 +157,7 @@ public class ConfigManager
 		this.propertiesFile = getPropertiesFile();
 		this.gson = gson;
 
-		scheduledExecutorService.scheduleWithFixedDelay(this::sendConfig, 30, 30, TimeUnit.SECONDS);
+		scheduledExecutorService.scheduleWithFixedDelay(this::sendConfig, 30, 5 * 60, TimeUnit.SECONDS);
 	}
 
 	public String getRSProfileKey()
