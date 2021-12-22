@@ -33,13 +33,15 @@ import java.util.List;
 import java.util.Locale;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.feed.FeedItem;
 import net.runelite.http.api.feed.FeedItemType;
 import net.runelite.http.service.util.exception.InternalServerErrorException;
 import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -50,16 +52,28 @@ import org.xml.sax.SAXException;
 @Service
 public class BlogService
 {
-	private static final HttpUrl RSS_URL = HttpUrl.parse("https://runelite.net/atom.xml");
 	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US);
+
+	private final OkHttpClient okHttpClient;
+	private final HttpUrl rssUrl;
+
+	@Autowired
+	public BlogService(
+		OkHttpClient okHttpClient,
+		@Value("${runelite.feed.rssUrl}") String rssUrl
+	)
+	{
+		this.okHttpClient = okHttpClient;
+		this.rssUrl = HttpUrl.get(rssUrl);
+	}
 
 	public List<FeedItem> getBlogPosts() throws IOException
 	{
 		Request request = new Request.Builder()
-			.url(RSS_URL)
+			.url(rssUrl)
 			.build();
 
-		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+		try (Response response = okHttpClient.newCall(request).execute())
 		{
 			if (!response.isSuccessful())
 			{

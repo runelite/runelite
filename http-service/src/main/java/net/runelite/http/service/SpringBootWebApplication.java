@@ -68,7 +68,7 @@ import org.sql2o.quirks.NoQuirks;
 public class SpringBootWebApplication extends SpringBootServletInitializer
 {
 	@Bean
-	protected ServletContextListener listener()
+	protected ServletContextListener listener(OkHttpClient client)
 	{
 		return new ServletContextListener()
 		{
@@ -82,7 +82,6 @@ public class SpringBootWebApplication extends SpringBootServletInitializer
 			public void contextDestroyed(ServletContextEvent sce)
 			{
 				// Destroy okhttp client
-				OkHttpClient client = RuneLiteAPI.CLIENT;
 				client.dispatcher().executorService().shutdown();
 				client.connectionPool().evictAll();
 				try
@@ -198,6 +197,12 @@ public class SpringBootWebApplication extends SpringBootServletInitializer
 			loggerContext.setPackagingDataEnabled(false);
 			log.debug("Disabling logback packaging data");
 		}
+	}
+
+	@Bean
+	public OkHttpClient okHttpClient()
+	{
+		return RuneLiteAPI.CLIENT;
 	}
 
 	public static void main(String[] args)

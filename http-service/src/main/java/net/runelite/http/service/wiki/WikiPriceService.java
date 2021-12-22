@@ -31,6 +31,7 @@ import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,14 +58,19 @@ public class WikiPriceService
 		") ENGINE=InnoDB;";
 
 	private final Sql2o sql2o;
-
-	@Value("${runelite.wiki.url}")
-	private String url;
+	private final OkHttpClient okHttpClient;
+	private final HttpUrl wikiUrl;
 
 	@Autowired
-	public WikiPriceService(@Qualifier("Runelite SQL2O") Sql2o sql2o)
+	public WikiPriceService(
+		@Qualifier("Runelite SQL2O") Sql2o sql2o,
+		OkHttpClient okHttpClient,
+		@Value("${runelite.wiki.url}") String url
+	)
 	{
 		this.sql2o = sql2o;
+		this.okHttpClient = okHttpClient;
+		this.wikiUrl = HttpUrl.get(url);
 
 		try (Connection con = sql2o.open())
 		{
@@ -112,13 +118,12 @@ public class WikiPriceService
 
 	private PriceResult getPrices() throws IOException
 	{
-		HttpUrl httpUrl = HttpUrl.parse(url);
 		Request request = new Request.Builder()
-			.url(httpUrl)
+			.url(wikiUrl)
 			.header("User-Agent", "RuneLite")
 			.build();
 
-		try (Response responseOk = RuneLiteAPI.CLIENT.newCall(request).execute())
+		try (Response responseOk = okHttpClient.newCall(request).execute())
 		{
 			if (!responseOk.isSuccessful())
 			{

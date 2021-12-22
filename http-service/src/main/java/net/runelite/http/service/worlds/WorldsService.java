@@ -29,21 +29,32 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
-import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.worlds.World;
 import net.runelite.http.api.worlds.WorldResult;
 import net.runelite.http.api.worlds.WorldType;
 import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class WorldsService
 {
-	private static final HttpUrl WORLD_URL = HttpUrl.parse("http://www.runescape.com/g=oldscape/slr.ws?order=LPWM");
+	private final OkHttpClient okHttpClient;
+	private final HttpUrl url;
 
-	private HttpUrl url = WORLD_URL;
+	@Autowired
+	public WorldsService(
+		OkHttpClient okHttpClient,
+		@Value("${runelite.worlds.url}") String url
+	)
+	{
+		this.okHttpClient = okHttpClient;
+		this.url = HttpUrl.get(url);
+	}
 
 	public WorldResult getWorlds() throws IOException
 	{
@@ -53,7 +64,7 @@ public class WorldsService
 
 		byte[] b;
 
-		try (Response okresponse = RuneLiteAPI.CLIENT.newCall(okrequest).execute())
+		try (Response okresponse = okHttpClient.newCall(okrequest).execute())
 		{
 			b = okresponse.body().bytes();
 		}
@@ -117,15 +128,5 @@ public class WorldsService
 		}
 
 		return sb.toString();
-	}
-
-	public HttpUrl getUrl()
-	{
-		return url;
-	}
-
-	public void setUrl(HttpUrl url)
-	{
-		this.url = url;
 	}
 }

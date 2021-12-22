@@ -39,6 +39,7 @@ import net.runelite.http.api.feed.FeedItemType;
 import net.runelite.http.service.util.exception.InternalServerErrorException;
 import okhttp3.FormBody;
 import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +55,7 @@ public class TwitterService
 
 	private final String credentials;
 	private final String listId;
+	private final OkHttpClient okHttpClient;
 
 	private String token;
 
@@ -61,11 +63,13 @@ public class TwitterService
 	public TwitterService(
 		@Value("${runelite.twitter.consumerkey}") String consumerKey,
 		@Value("${runelite.twitter.secretkey}") String consumerSecret,
-		@Value("${runelite.twitter.listid}") String listId
+		@Value("${runelite.twitter.listid}") String listId,
+		OkHttpClient okHttpClient
 	)
 	{
 		this.credentials = consumerKey + ":" + consumerSecret;
 		this.listId = listId;
+		this.okHttpClient = okHttpClient;
 	}
 
 	public List<FeedItem> getTweets() throws IOException
@@ -91,7 +95,7 @@ public class TwitterService
 			.header("Authorization", "Bearer " + token)
 			.build();
 
-		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+		try (Response response = okHttpClient.newCall(request).execute())
 		{
 			if (!response.isSuccessful())
 			{
@@ -143,7 +147,7 @@ public class TwitterService
 			.post(new FormBody.Builder().add("grant_type", "client_credentials").build())
 			.build();
 
-		try (Response response = RuneLiteAPI.CLIENT.newCall(request).execute())
+		try (Response response = okHttpClient.newCall(request).execute())
 		{
 			if (!response.isSuccessful())
 			{
