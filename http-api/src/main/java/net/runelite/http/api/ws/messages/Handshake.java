@@ -25,19 +25,11 @@
 package net.runelite.http.api.ws.messages;
 
 import java.util.UUID;
+import lombok.Data;
 import net.runelite.http.api.ws.WebsocketMessage;
 
+@Data
 public class Handshake extends WebsocketMessage
 {
 	private UUID session;
-
-	public UUID getSession()
-	{
-		return session;
-	}
-
-	public void setSession(UUID session)
-	{
-		this.session = session;
-	}
 }
