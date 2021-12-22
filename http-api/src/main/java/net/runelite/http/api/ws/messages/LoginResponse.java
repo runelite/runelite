@@ -24,29 +24,14 @@
  */
 package net.runelite.http.api.ws.messages;
 
+import lombok.Data;
 import net.runelite.http.api.ws.WebsocketMessage;
 
 /**
  * Called after a successful login to the server
- * @author Adam
  */
+@Data
 public class LoginResponse extends WebsocketMessage
 {
 	private String username;
-
-	public String getUsername()
-	{
-		return username;
-	}
-
-	public void setUsername(String username)
-	{
-		this.username = username;
-	}
-
-	@Override
-	public String toString()
-	{
-		return "LoginResponse{" + "username=" + username + '}';
-	}
 }

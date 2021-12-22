@@ -25,29 +25,11 @@
 package net.runelite.http.api.account;
 
 import java.util.UUID;
+import lombok.Data;
 
+@Data
 public class OAuthResponse
 {
 	private String oauthUrl;
 	private UUID uid;
-
-	public String getOauthUrl()
-	{
-		return oauthUrl;
-	}
-
-	public void setOauthUrl(String oauthUrl)
-	{
-		this.oauthUrl = oauthUrl;
-	}
-
-	public UUID getUid()
-	{
-		return uid;
-	}
-
-	public void setUid(UUID uid)
-	{
-		this.uid = uid;
-	}
 }
