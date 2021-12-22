@@ -22,41 +22,51 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.api.account;
+package net.runelite.client.game;
 
 import com.google.gson.JsonParseException;
+import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
-import java.util.UUID;
-import lombok.RequiredArgsConstructor;
+import java.util.Map;
+import javax.inject.Inject;
+import javax.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
+import net.runelite.http.api.item.ItemPrice;
+import net.runelite.http.api.item.ItemStats;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
 @Slf4j
-@RequiredArgsConstructor
-public class AccountClient
+public class ItemClient
 {
 	private final OkHttpClient client;
-	private UUID uuid;
+	private final HttpUrl apiBase, staticBase;
 
-	public void setUuid(UUID uuid)
+	@Inject
+	private ItemClient(OkHttpClient client,
+		@Named("runelite.api.base") HttpUrl apiBase,
+		@Named("runelite.static.base") HttpUrl staticBase
+	)
 	{
-		this.uuid = uuid;
+		this.client = client;
+		this.apiBase = apiBase;
+		this.staticBase = staticBase;
 	}
 
-	public OAuthResponse login() throws IOException
+	public ItemPrice[] getPrices() throws IOException
 	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("account")
-			.addPathSegment("login")
-			.addQueryParameter("uuid", uuid.toString())
-			.build();
+		HttpUrl.Builder urlBuilder = apiBase.newBuilder()
+			.addPathSegment("item")
+			.addPathSegment("prices.js");
+
+		HttpUrl url = urlBuilder.build();
 
 		log.debug("Built URI: {}", url);
 
@@ -66,8 +76,14 @@ public class AccountClient
 
 		try (Response response = client.newCall(request).execute())
 		{
+			if (!response.isSuccessful())
+			{
+				log.warn("Error looking up prices: {}", response);
+				return null;
+			}
+
 			InputStream in = response.body().byteStream();
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), OAuthResponse.class);
+			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), ItemPrice[].class);
 		}
 		catch (JsonParseException ex)
 		{
@@ -75,48 +91,38 @@ public class AccountClient
 		}
 	}
 
-	public void logout() throws IOException
+	public Map<Integer, ItemStats> getStats() throws IOException
 	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("account")
-			.addPathSegment("logout")
-			.build();
+		HttpUrl.Builder urlBuilder = staticBase.newBuilder()
+			.addPathSegment("item")
+			// TODO: Change this to stats.min.json later after release is undeployed
+			.addPathSegment("stats.ids.min.json");
+
+		HttpUrl url = urlBuilder.build();
 
 		log.debug("Built URI: {}", url);
 
 		Request request = new Request.Builder()
-			.header(RuneLiteAPI.RUNELITE_AUTH, uuid.toString())
 			.url(url)
 			.build();
 
 		try (Response response = client.newCall(request).execute())
 		{
-			log.debug("Sent logout request");
+			if (!response.isSuccessful())
+			{
+				log.warn("Error looking up item stats: {}", response);
+				return null;
+			}
+
+			InputStream in = response.body().byteStream();
+			final Type typeToken = new TypeToken<Map<Integer, ItemStats>>()
+			{
+			}.getType();
+			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), typeToken);
 		}
-	}
-
-	public boolean sessionCheck()
-	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("account")
-			.addPathSegment("session-check")
-			.build();
-
-		log.debug("Built URI: {}", url);
-
-		Request request = new Request.Builder()
-			.header(RuneLiteAPI.RUNELITE_AUTH, uuid.toString())
-			.url(url)
-			.build();
-
-		try (Response response = client.newCall(request).execute())
+		catch (JsonParseException ex)
 		{
-			return response.isSuccessful();
-		}
-		catch (IOException ex)
-		{
-			log.debug("Unable to verify session", ex);
-			return true; // assume it is still valid if the server is unreachable
+			throw new IOException(ex);
 		}
 	}
 }

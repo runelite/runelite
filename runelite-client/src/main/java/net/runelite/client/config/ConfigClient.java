@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.api.config;
+package net.runelite.client.config;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
@@ -32,9 +32,12 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import lombok.AllArgsConstructor;
+import javax.inject.Inject;
+import javax.inject.Named;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
+import net.runelite.http.api.config.Configuration;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
@@ -44,7 +47,6 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-@AllArgsConstructor
 @Slf4j
 public class ConfigClient
 {
@@ -52,11 +54,21 @@ public class ConfigClient
 	private static final Gson GSON = RuneLiteAPI.GSON;
 
 	private final OkHttpClient client;
-	private final UUID uuid;
+	private final HttpUrl apiBase;
+
+	@Setter
+	private UUID uuid;
+
+	@Inject
+	private ConfigClient(OkHttpClient client, @Named("runelite.api.base") HttpUrl apiBase)
+	{
+		this.client = client;
+		this.apiBase = apiBase;
+	}
 
 	public Configuration get() throws IOException
 	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+		HttpUrl url = apiBase.newBuilder()
 			.addPathSegment("config")
 			.build();
 
@@ -82,7 +94,7 @@ public class ConfigClient
 	{
 		CompletableFuture<Void> future = new CompletableFuture<>();
 
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+		HttpUrl url = apiBase.newBuilder()
 			.addPathSegment("config")
 			.addPathSegment(key)
 			.build();
@@ -120,7 +132,7 @@ public class ConfigClient
 	{
 		CompletableFuture<Void> future = new CompletableFuture<>();
 
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+		HttpUrl url = apiBase.newBuilder()
 			.addPathSegment("config")
 			.build();
 
@@ -173,7 +185,7 @@ public class ConfigClient
 	{
 		CompletableFuture<Void> future = new CompletableFuture<>();
 
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+		HttpUrl url = apiBase.newBuilder()
 			.addPathSegment("config")
 			.addPathSegment(key)
 			.build();

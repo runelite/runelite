@@ -46,6 +46,7 @@ import net.runelite.client.Notifier;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.ws.PartyService;
+import net.runelite.client.ws.WSClient;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -80,6 +81,10 @@ public class SpecialCounterPluginTest
 	@Mock
 	@Bind
 	private Notifier notifier;
+
+	@Mock
+	@Bind
+	private WSClient wsClient;
 
 	@Mock
 	@Bind

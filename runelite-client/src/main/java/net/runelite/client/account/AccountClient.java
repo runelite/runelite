@@ -22,37 +22,48 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.api.item;
+package net.runelite.client.account;
 
 import com.google.gson.JsonParseException;
-import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
-import java.util.Map;
-import lombok.AllArgsConstructor;
+import java.util.UUID;
+import javax.inject.Inject;
+import javax.inject.Named;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
+import net.runelite.http.api.account.OAuthResponse;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
 @Slf4j
-@AllArgsConstructor
-public class ItemClient
+public class AccountClient
 {
 	private final OkHttpClient client;
+	private final HttpUrl apiBase;
 
-	public ItemPrice[] getPrices() throws IOException
+	@Setter
+	private UUID uuid;
+
+	@Inject
+	private AccountClient(OkHttpClient client, @Named("runelite.api.base") HttpUrl apiBase)
 	{
-		HttpUrl.Builder urlBuilder = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("item")
-			.addPathSegment("prices.js");
+		this.client = client;
+		this.apiBase = apiBase;
+	}
 
-		HttpUrl url = urlBuilder.build();
+	public OAuthResponse login() throws IOException
+	{
+		HttpUrl url = apiBase.newBuilder()
+			.addPathSegment("account")
+			.addPathSegment("login")
+			.addQueryParameter("uuid", uuid.toString())
+			.build();
 
 		log.debug("Built URI: {}", url);
 
@@ -62,14 +73,8 @@ public class ItemClient
 
 		try (Response response = client.newCall(request).execute())
 		{
-			if (!response.isSuccessful())
-			{
-				log.warn("Error looking up prices: {}", response);
-				return null;
-			}
-
 			InputStream in = response.body().byteStream();
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), ItemPrice[].class);
+			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), OAuthResponse.class);
 		}
 		catch (JsonParseException ex)
 		{
@@ -77,38 +82,48 @@ public class ItemClient
 		}
 	}
 
-	public Map<Integer, ItemStats> getStats() throws IOException
+	public void logout() throws IOException
 	{
-		HttpUrl.Builder urlBuilder = RuneLiteAPI.getStaticBase().newBuilder()
-			.addPathSegment("item")
-			// TODO: Change this to stats.min.json later after release is undeployed
-			.addPathSegment("stats.ids.min.json");
-
-		HttpUrl url = urlBuilder.build();
+		HttpUrl url = apiBase.newBuilder()
+			.addPathSegment("account")
+			.addPathSegment("logout")
+			.build();
 
 		log.debug("Built URI: {}", url);
 
 		Request request = new Request.Builder()
+			.header(RuneLiteAPI.RUNELITE_AUTH, uuid.toString())
 			.url(url)
 			.build();
 
 		try (Response response = client.newCall(request).execute())
 		{
-			if (!response.isSuccessful())
-			{
-				log.warn("Error looking up item stats: {}", response);
-				return null;
-			}
-
-			InputStream in = response.body().byteStream();
-			final Type typeToken = new TypeToken<Map<Integer, ItemStats>>()
-			{
-			}.getType();
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), typeToken);
+			log.debug("Sent logout request");
 		}
-		catch (JsonParseException ex)
+	}
+
+	public boolean sessionCheck()
+	{
+		HttpUrl url = apiBase.newBuilder()
+			.addPathSegment("account")
+			.addPathSegment("session-check")
+			.build();
+
+		log.debug("Built URI: {}", url);
+
+		Request request = new Request.Builder()
+			.header(RuneLiteAPI.RUNELITE_AUTH, uuid.toString())
+			.url(url)
+			.build();
+
+		try (Response response = client.newCall(request).execute())
 		{
-			throw new IOException(ex);
+			return response.isSuccessful();
+		}
+		catch (IOException ex)
+		{
+			log.debug("Unable to verify session", ex);
+			return true; // assume it is still valid if the server is unreachable
 		}
 	}
 }

@@ -45,6 +45,7 @@ public class RuneLiteProperties
 	private static final String JAV_CONFIG_BACKUP = "runelite.jav_config_backup";
 	private static final String PLUGINHUB_BASE = "runelite.pluginhub.url";
 	private static final String PLUGINHUB_VERSION = "runelite.pluginhub.version";
+	private static final String API_BASE = "runelite.api.base";
 
 	@Getter(AccessLevel.PACKAGE)
 	private static final Properties properties = new Properties();
@@ -111,5 +112,10 @@ public class RuneLiteProperties
 	{
 		String version = System.getProperty(PLUGINHUB_VERSION, properties.getProperty(PLUGINHUB_VERSION));
 		return HttpUrl.parse(properties.get(PLUGINHUB_BASE) + "/" + version);
+	}
+
+	public static String getApiBase()
+	{
+		return properties.getProperty(API_BASE);
 	}
 }

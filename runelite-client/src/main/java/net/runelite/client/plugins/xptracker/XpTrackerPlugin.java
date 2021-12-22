@@ -69,8 +69,6 @@ import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
-import net.runelite.http.api.xp.XpClient;
-import okhttp3.OkHttpClient;
 
 @PluginDescriptor(
 	name = "XP Tracker",
@@ -137,12 +135,6 @@ public class XpTrackerPlugin extends Plugin
 	XpTrackerConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(XpTrackerConfig.class);
-	}
-
-	@Provides
-	XpClient provideXpClient(OkHttpClient okHttpClient)
-	{
-		return new XpClient(okHttpClient);
 	}
 
 	@Override

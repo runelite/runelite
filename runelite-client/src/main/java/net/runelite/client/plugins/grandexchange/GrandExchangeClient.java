@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Lotto <https://github.com/devLotto>
+ * Copyright (c) 2019, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,53 +22,81 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.api.feed;
+package net.runelite.client.plugins.grandexchange;
 
-import com.google.gson.JsonParseException;
+import com.google.gson.Gson;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import lombok.RequiredArgsConstructor;
+import java.util.UUID;
+import javax.inject.Inject;
+import javax.inject.Named;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
+import static net.runelite.http.api.RuneLiteAPI.JSON;
+import net.runelite.http.api.ge.GrandExchangeTrade;
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 @Slf4j
-@RequiredArgsConstructor
-public class FeedClient
+public class GrandExchangeClient
 {
-	private final OkHttpClient client;
+	private static final Gson GSON = RuneLiteAPI.GSON;
 
-	public FeedResult lookupFeed() throws IOException
+	private final OkHttpClient client;
+	private final HttpUrl apiBase;
+
+	@Setter
+	private UUID uuid;
+	@Setter
+	private String machineId;
+
+	@Inject
+	private GrandExchangeClient(OkHttpClient client, @Named("runelite.api.base") HttpUrl apiBase)
 	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("feed.js")
+		this.client = client;
+		this.apiBase = apiBase;
+	}
+
+	public void submit(GrandExchangeTrade grandExchangeTrade)
+	{
+		final HttpUrl url = apiBase.newBuilder()
+			.addPathSegment("ge")
 			.build();
 
-		log.debug("Built URI: {}", url);
+		Request.Builder builder = new Request.Builder();
+		if (uuid != null)
+		{
+			builder.header(RuneLiteAPI.RUNELITE_AUTH, uuid.toString());
+		}
+		if (machineId != null)
+		{
+			builder.header(RuneLiteAPI.RUNELITE_MACHINEID, machineId);
+		}
 
-		Request request = new Request.Builder()
+		Request request = builder
+			.post(RequestBody.create(JSON, GSON.toJson(grandExchangeTrade)))
 			.url(url)
 			.build();
 
-		try (Response response = client.newCall(request).execute())
+		client.newCall(request).enqueue(new Callback()
 		{
-			if (!response.isSuccessful())
+			@Override
+			public void onFailure(Call call, IOException e)
 			{
-				log.debug("Error looking up feed: {}", response);
-				return null;
+				log.debug("unable to submit trade", e);
 			}
 
-			InputStream in = response.body().byteStream();
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), FeedResult.class);
-		}
-		catch (JsonParseException ex)
-		{
-			throw new IOException(ex);
-		}
+			@Override
+			public void onResponse(Call call, Response response)
+			{
+				log.debug("Submitted trade");
+				response.close();
+			}
+		});
 	}
 }

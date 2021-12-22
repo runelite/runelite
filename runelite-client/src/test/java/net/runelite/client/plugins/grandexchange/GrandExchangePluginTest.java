@@ -51,7 +51,6 @@ import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import static net.runelite.client.plugins.grandexchange.GrandExchangePlugin.findFuzzyIndices;
 import static net.runelite.http.api.RuneLiteAPI.GSON;
-import net.runelite.http.api.ge.GrandExchangeClient;
 import net.runelite.http.api.ge.GrandExchangeTrade;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

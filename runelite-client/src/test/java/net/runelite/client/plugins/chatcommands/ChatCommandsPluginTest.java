@@ -49,17 +49,18 @@ import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetID.ADVENTURE_LOG_ID;
 import static net.runelite.api.widgets.WidgetID.DIARY_QUEST_GROUP_ID;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.chat.ChatClient;
 import net.runelite.client.chat.ChatCommandManager;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.hiscore.HiscoreClient;
 import net.runelite.client.hiscore.HiscoreEndpoint;
 import net.runelite.client.hiscore.HiscoreResult;
 import net.runelite.client.hiscore.Skill;
 import net.runelite.http.api.RuneLiteAPI;
-import net.runelite.http.api.chat.ChatClient;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
@@ -115,6 +116,10 @@ public class ChatCommandsPluginTest
 	@Mock
 	@Bind
 	RuneLiteConfig runeLiteConfig;
+
+	@Mock
+	@Bind
+	ItemManager itemManager;
 
 	@Mock
 	@Bind

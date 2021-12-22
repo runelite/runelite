@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,54 +22,69 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.api.xp;
+package net.runelite.client.game;
 
+import com.google.gson.JsonParseException;
+import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
+import java.util.Map;
+import javax.inject.Inject;
+import javax.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
 @Slf4j
-public class XpClient
+public class NpcInfoClient
 {
 	private final OkHttpClient client;
+	private final HttpUrl staticBase;
 
-	public XpClient(OkHttpClient client)
+	@Inject
+	private NpcInfoClient(OkHttpClient client, @Named("runelite.static.base") HttpUrl staticBase)
 	{
 		this.client = client;
+		this.staticBase = staticBase;
 	}
 
-	public void update(String username)
+	public Map<Integer, NpcInfo> getNpcs() throws IOException
 	{
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
-			.addPathSegment("xp")
-			.addPathSegment("update")
-			.addQueryParameter("username", username)
-			.build();
+		HttpUrl.Builder urlBuilder = staticBase.newBuilder()
+			.addPathSegment("npcs")
+			.addPathSegment("npcs.min.json");
+
+		HttpUrl url = urlBuilder.build();
+
+		log.debug("Built URI: {}", url);
 
 		Request request = new Request.Builder()
 			.url(url)
 			.build();
 
-		client.newCall(request).enqueue(new Callback()
+		try (Response response = client.newCall(request).execute())
 		{
-			@Override
-			public void onFailure(Call call, IOException e)
+			if (!response.isSuccessful())
 			{
-				log.warn("Error submitting xp track", e);
+				log.warn("Error looking up npcs: {}", response);
+				return null;
 			}
 
-			@Override
-			public void onResponse(Call call, Response response)
+			InputStream in = response.body().byteStream();
+			final Type typeToken = new TypeToken<Map<Integer, NpcInfo>>()
 			{
-				response.close();
-				log.debug("Submitted xp track for {}", username);
-			}
-		});
+			}.getType();
+			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), typeToken);
+		}
+		catch (JsonParseException ex)
+		{
+			throw new IOException(ex);
+		}
 	}
 }

@@ -47,10 +47,8 @@ import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.ws.WSClient;
-import net.runelite.http.api.account.AccountClient;
 import net.runelite.http.api.account.OAuthResponse;
 import net.runelite.http.api.ws.messages.LoginResponse;
-import okhttp3.OkHttpClient;
 
 @Singleton
 @Slf4j
@@ -72,14 +70,14 @@ public class SessionManager
 		ConfigManager configManager,
 		EventBus eventBus,
 		WSClient wsClient,
-		OkHttpClient okHttpClient,
+		AccountClient accountClient,
 		Gson gson)
 	{
 		this.configManager = configManager;
 		this.eventBus = eventBus;
 		this.wsClient = wsClient;
 		this.sessionFile = sessionfile;
-		this.accountClient = new AccountClient(okHttpClient);
+		this.accountClient = accountClient;
 		this.gson = gson;
 
 		eventBus.register(this);
