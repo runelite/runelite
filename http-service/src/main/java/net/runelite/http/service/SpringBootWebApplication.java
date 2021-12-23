@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import javax.naming.NamingException;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -39,10 +40,10 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.ServletException;
 import javax.sql.DataSource;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.service.util.InstantConverter;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import org.slf4j.ILoggerFactory;
 import org.slf4j.impl.StaticLoggerBinder;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -200,9 +201,24 @@ public class SpringBootWebApplication extends SpringBootServletInitializer
 	}
 
 	@Bean
-	public OkHttpClient okHttpClient()
+	public OkHttpClient okHttpClient(
+		@Value("${runelite.version}") String version,
+		@Value("${runelite.commit}") String commit,
+		@Value("${runelite.dirty}") boolean dirty
+	)
 	{
-		return RuneLiteAPI.CLIENT;
+		final String userAgent = "RuneLite/" + version + "-" + commit + (dirty ? "+" : "");
+		return new OkHttpClient.Builder()
+			.pingInterval(30, TimeUnit.SECONDS)
+			.addNetworkInterceptor(chain ->
+			{
+				Request userAgentRequest = chain.request()
+					.newBuilder()
+					.header("User-Agent", userAgent)
+					.build();
+				return chain.proceed(userAgentRequest);
+			})
+			.build();
 	}
 
 	public static void main(String[] args)

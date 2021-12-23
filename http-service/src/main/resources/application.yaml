@@ -33,6 +33,9 @@ mongo:
   database: runelite
 
 runelite:
+  version: @project.version@
+  commit: @git.commit.id.abbrev@
+  dirty: @git.dirty@
   # Twitter client for feed
   twitter:
     consumerkey:

@@ -35,8 +35,8 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.RuneLite;
 import net.runelite.client.eventbus.EventBus;
-import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.ws.WebsocketGsonFactory;
 import net.runelite.http.api.ws.WebsocketMessage;
 import net.runelite.http.api.ws.messages.Handshake;
@@ -106,7 +106,7 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 
 		Request request = new Request.Builder()
 			.url(runeliteWs)
-			.header("User-Agent", RuneLiteAPI.userAgent)
+			.header("User-Agent", RuneLite.USER_AGENT)
 			.build();
 
 		webSocket = okHttpClient.newWebSocket(request, this);

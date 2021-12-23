@@ -44,6 +44,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
 import javax.inject.Provider;
@@ -80,6 +81,7 @@ import net.runelite.client.ui.overlay.worldmap.WorldMapOverlay;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.Response;
 import org.slf4j.LoggerFactory;
 
@@ -97,6 +99,7 @@ public class RuneLite
 	public static final File DEFAULT_CONFIG_FILE = new File(RUNELITE_DIR, "settings.properties");
 
 	private static final int MAX_OKHTTP_CACHE_SIZE = 20 * 1024 * 1024; // 20mb
+	public static String USER_AGENT = "RuneLite/" + RuneLiteProperties.getVersion() + "-" + RuneLiteProperties.getCommit() + (RuneLiteProperties.isDirty() ? "+" : "");
 
 	@Getter
 	private static Injector injector;
@@ -203,16 +206,8 @@ public class RuneLite
 			}
 		});
 
-		OkHttpClient.Builder okHttpClientBuilder = RuneLiteAPI.CLIENT.newBuilder();
-		setupCache(okHttpClientBuilder, new File(CACHE_DIR, "okhttp"));
-
-		final boolean insecureSkipTlsVerification = options.has("insecure-skip-tls-verification");
-		if (insecureSkipTlsVerification || RuneLiteProperties.isInsecureSkipTlsVerification())
-		{
-			setupInsecureTrustManager(okHttpClientBuilder);
-		}
-
-		final OkHttpClient okHttpClient = okHttpClientBuilder.build();
+		final OkHttpClient okHttpClient = buildHttpClient(options.has("insecure-skip-tls-verification"));
+		RuneLiteAPI.CLIENT = okHttpClient;
 
 		SplashScreen.init();
 		SplashScreen.stage(0, "Retrieving client", "");
@@ -416,9 +411,20 @@ public class RuneLite
 	}
 
 	@VisibleForTesting
-	static void setupCache(OkHttpClient.Builder builder, File cacheDir)
+	static OkHttpClient buildHttpClient(boolean insecureSkipTlsVerification)
 	{
-		builder.cache(new Cache(cacheDir, MAX_OKHTTP_CACHE_SIZE))
+		OkHttpClient.Builder builder = new OkHttpClient.Builder()
+			.pingInterval(30, TimeUnit.SECONDS)
+			.addNetworkInterceptor(chain ->
+			{
+				Request userAgentRequest = chain.request()
+					.newBuilder()
+					.header("User-Agent", USER_AGENT)
+					.build();
+				return chain.proceed(userAgentRequest);
+			})
+			// Setup cache
+			.cache(new Cache(new File(CACHE_DIR, "okhttp"), MAX_OKHTTP_CACHE_SIZE))
 			.addNetworkInterceptor(chain ->
 			{
 				// This has to be a network interceptor so it gets hit before the cache tries to store stuff
@@ -432,6 +438,13 @@ public class RuneLite
 				}
 				return res;
 			});
+
+		if (insecureSkipTlsVerification || RuneLiteProperties.isInsecureSkipTlsVerification())
+		{
+			setupInsecureTrustManager(builder);
+		}
+
+		return builder.build();
 	}
 
 	private static void setupInsecureTrustManager(OkHttpClient.Builder okHttpClientBuilder)
