@@ -34,11 +34,6 @@
 	<name>Web API</name>
 	<artifactId>http-api</artifactId>
 
-	<properties>
-		<git.commit.id.abbrev>nogit</git.commit.id.abbrev>
-		<git.dirty>false</git.dirty>
-	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>com.squareup.okhttp3</groupId>
@@ -77,39 +72,4 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
-	<build>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-				<filtering>true</filtering>
-			</resource>
-		</resources>
-		<plugins>
-			<plugin>
-				<groupId>pl.project13.maven</groupId>
-				<artifactId>git-commit-id-plugin</artifactId>
-				<version>2.2.6</version>
-				<executions>
-					<execution>
-						<id>query-git-info</id>
-						<goals>
-							<goal>revision</goal>
-						</goals>
-						<configuration>
-							<failOnNoGitDirectory>false</failOnNoGitDirectory>
-							<failOnUnableToExtractRepoInfo>false</failOnUnableToExtractRepoInfo>
-							<gitDescribe>
-								<skip>true</skip>
-							</gitDescribe>
-							<includeOnlyProperties>
-								<includeOnlyProperty>git.commit.id.abbrev</includeOnlyProperty>
-								<includeOnlyProperty>git.dirty</includeOnlyProperty>
-							</includeOnlyProperties>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
 </project>

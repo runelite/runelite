@@ -30,7 +30,6 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
-import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -38,11 +37,12 @@ import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
 import org.junit.Assert;
+import static org.junit.Assert.assertTrue;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-public class OkHttpCacheSanityTest
+public class OkHttpTest
 {
 	@Rule
 	public TemporaryFolder cacheFolder = new TemporaryFolder();
@@ -71,9 +71,7 @@ public class OkHttpCacheSanityTest
 	@Test
 	public void testCacheSanity() throws IOException, InterruptedException
 	{
-		OkHttpClient.Builder builder = RuneLiteAPI.CLIENT.newBuilder();
-		RuneLite.setupCache(builder, cacheFolder.getRoot());
-		OkHttpClient client = builder.build();
+		OkHttpClient client = RuneLite.buildHttpClient(false);
 
 		Instant lastModified = Instant.now().minusSeconds(20);
 
@@ -121,5 +119,20 @@ public class OkHttpCacheSanityTest
 		req = server.takeRequest(1, TimeUnit.SECONDS);
 		Assert.assertNotNull("cache did not make a conditional request", req);
 		Assert.assertNotNull(req.getHeader("If-Modified-Since"));
+	}
+
+	@Test
+	public void testUserAgent() throws IOException, InterruptedException
+	{
+		server.enqueue(new MockResponse().setBody("OK"));
+
+		Request request = new Request.Builder()
+			.url(server.url("/"))
+			.build();
+		RuneLite.buildHttpClient(false)
+			.newCall(request).execute().close();
+
+		// rest of UA depends on if git is found
+		assertTrue(server.takeRequest().getHeader("User-Agent").startsWith("RuneLite/" + RuneLiteProperties.getVersion()));
 	}
 }

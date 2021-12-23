@@ -98,6 +98,7 @@ public class AccountService
 	private final String oauthClientId;
 	private final String oauthClientSecret;
 	private final String oauthCallback;
+	private final String runeliteVersion;
 	private final AuthFilter auth;
 	private final RedisPool jedisPool;
 
@@ -107,6 +108,7 @@ public class AccountService
 		@Value("${oauth.client-id}") String oauthClientId,
 		@Value("${oauth.client-secret}") String oauthClientSecret,
 		@Value("${oauth.callback}") String oauthCallback,
+		@Value("${runelite.version}") String runeliteVersion,
 		AuthFilter auth,
 		RedisPool jedisPool
 	)
@@ -115,6 +117,7 @@ public class AccountService
 		this.oauthClientId = oauthClientId;
 		this.oauthClientSecret = oauthClientSecret;
 		this.oauthCallback = oauthCallback;
+		this.runeliteVersion = runeliteVersion;
 		this.auth = auth;
 		this.jedisPool = jedisPool;
 
@@ -143,7 +146,7 @@ public class AccountService
 	{
 		State state = new State();
 		state.setUuid(uuid);
-		state.setApiVersion(RuneLiteAPI.getVersion());
+		state.setApiVersion(runeliteVersion);
 
 		OAuth20Service service = new ServiceBuilder()
 			.apiKey(oauthClientId)
