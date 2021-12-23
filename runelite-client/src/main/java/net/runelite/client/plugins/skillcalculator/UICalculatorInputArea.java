@@ -44,14 +44,20 @@ class UICalculatorInputArea extends JPanel
 	private final JTextField uiFieldCurrentXP;
 	private final JTextField uiFieldTargetLevel;
 	private final JTextField uiFieldTargetXP;
+	private final JTextField uiFieldNeededXP;
+	private final JTextField uiGoldPerXP;
+	private final JTextField uiGoldNeeded;
 
 	UICalculatorInputArea()
 	{
-		setLayout(new GridLayout(2, 2, 7, 7));
+		setLayout(new GridLayout(4, 2, 7, 7));
 		uiFieldCurrentLevel = addComponent("Current Level");
 		uiFieldCurrentXP = addComponent("Current Experience");
 		uiFieldTargetLevel = addComponent("Target Level");
 		uiFieldTargetXP = addComponent("Target Experience");
+		uiFieldNeededXP = addComponent("Needed Experience");
+		uiGoldPerXP = addComponent("GP/XP");
+		uiGoldNeeded = addComponent("GP Needed");
 	}
 
 	int getCurrentLevelInput()
@@ -96,7 +102,27 @@ class UICalculatorInputArea extends JPanel
 
 	void setNeededXP(Object value)
 	{
-		uiFieldTargetXP.setToolTipText((String) value);
+		setInput(uiFieldNeededXP, value);
+	}
+
+	int getGoldPerXP()
+	{
+		return getInput(uiGoldPerXP);
+	}
+
+	void setGoldPerXP(Object value)
+	{
+		setInput(uiGoldPerXP, value);
+	}
+
+	int getGoldNeeded()
+	{
+		return getInput(uiGoldNeeded);
+	}
+
+	void setGoldNeeded(Object value)
+	{
+		setInput(uiGoldNeeded, value);
 	}
 
 	private int getInput(JTextField field)

@@ -119,6 +119,12 @@ class SkillCalculator extends JPanel
 			uiInput.getUiFieldTargetXP().requestFocusInWindow();
 		});
 
+		uiInput.getUiGoldPerXP().addActionListener(e ->
+		{
+			onFieldGoldPerXPUpdated();
+			uiInput.getUiGoldNeeded().requestFocusInWindow();
+		});
+
 		uiInput.getUiFieldTargetLevel().addActionListener(e -> onFieldTargetLevelUpdated());
 		uiInput.getUiFieldTargetXP().addActionListener(e -> onFieldTargetXPUpdated());
 
@@ -127,6 +133,7 @@ class SkillCalculator extends JPanel
 		uiInput.getUiFieldCurrentXP().addFocusListener(buildFocusAdapter(e -> onFieldCurrentXPUpdated()));
 		uiInput.getUiFieldTargetLevel().addFocusListener(buildFocusAdapter(e -> onFieldTargetLevelUpdated()));
 		uiInput.getUiFieldTargetXP().addFocusListener(buildFocusAdapter(e -> onFieldTargetXPUpdated()));
+		uiInput.getUiGoldPerXP().addFocusListener(buildFocusAdapter(e -> onFieldGoldPerXPUpdated()));
 	}
 
 	void openCalculator(CalculatorType calculatorType)
@@ -382,7 +389,13 @@ class SkillCalculator extends JPanel
 		uiInput.setCurrentXPInput(cXP);
 		uiInput.setTargetLevelInput(targetLevel);
 		uiInput.setTargetXPInput(tXP);
-		uiInput.setNeededXP(nXP + " XP required to reach target XP");
+		uiInput.setNeededXP(nXP);
+		int gpPerXP = uiInput.getGoldPerXP();
+		if (gpPerXP > 0)
+		{
+			final String totalGP = String.format("%,d", (targetXP - currentXP) * gpPerXP);
+			uiInput.setGoldNeeded(totalGP);
+		}
 		calculate();
 	}
 
@@ -417,6 +430,11 @@ class SkillCalculator extends JPanel
 	{
 		targetXP = enforceXPBounds(uiInput.getTargetXPInput());
 		targetLevel = Experience.getLevelForXp(targetXP);
+		updateInputFields();
+	}
+
+	private void onFieldGoldPerXPUpdated()
+	{
 		updateInputFields();
 	}
 
