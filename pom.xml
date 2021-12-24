@@ -134,8 +134,6 @@
 		<module>runelite-client</module>
 		<module>runelite-jshell</module>
 		<module>runelite-script-assembler-plugin</module>
-		<module>http-api</module>
-		<module>http-service</module>
 	</modules>
 
 	<dependencyManagement>
