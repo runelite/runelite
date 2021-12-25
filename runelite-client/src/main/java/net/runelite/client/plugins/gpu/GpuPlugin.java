@@ -74,6 +74,7 @@ import net.runelite.api.SceneTilePaint;
 import net.runelite.api.Texture;
 import net.runelite.api.TextureProvider;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.ResizeableChanged;
 import net.runelite.api.hooks.DrawCallbacks;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -298,8 +299,10 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	{
 		clientThread.invoke(() ->
 		{
+			boolean stretched = client.isStretchedEnabled();
 			try
 			{
+				client.setStretchedEnabled(false);
 				fboSceneHandle = rboSceneHandle = -1; // AA FBO
 				targetBufferOffset = 0;
 				unorderedModels = smallModels = largeModels = 0;
@@ -466,6 +469,11 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				});
 
 				shutDown();
+			}
+			finally
+			{
+				client.setStretchedEnabled(stretched);
+				client.invalidateStretching(true);
 			}
 			return true;
 		});
@@ -1211,7 +1219,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				lastAnisotropicFilteringLevel = anisotropicFilteringLevel;
 			}
 
-			if (client.isStretchedEnabled())
+			if (client.isStretchedEnabled()
+				&& (OSType.getOSType() != OSType.MacOS || client.isResized()))
 			{
 				Dimension dim = client.getStretchedDimensions();
 				renderCanvasHeight = dim.height;
@@ -1389,7 +1398,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			(overlayColor >>> 24) / 255f
 		);
 
-		if (client.isStretchedEnabled())
+		if (client.isStretchedEnabled()
+			&& (OSType.getOSType() != OSType.MacOS || client.isResized()))
 		{
 			Dimension dim = client.getStretchedDimensions();
 			glDpiAwareViewport(0, 0, dim.width, dim.height);
@@ -1798,6 +1808,22 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		else if (data != null)
 		{
 			gl.glBufferSubData(target, 0, size, data);
+		}
+	}
+
+	@Subscribe
+	public void onResizeableChanged(ResizeableChanged event)
+	{
+		if (OSType.getOSType() == OSType.MacOS && !event.isResized())
+		{
+			clientThread.invokeLater(() ->
+			{
+				if (client.isStretchedEnabled())
+				{
+					shutDown();
+					startUp();
+				}
+			});
 		}
 	}
 }
