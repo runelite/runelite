@@ -546,7 +546,11 @@ public class ClientUI
 
 							// When Windows screen scaling is on, the position/bounds will be wrong when they are set.
 							// The bounds saved in shutdown are the full, non-scaled co-ordinates.
-							if (scale != 1)
+							// On MacOS the scaling is already applied and the position/bounds are correct on at least
+							// - 2015 x64 MBP JDK11 Mohave
+							// - 2020 m1 MBP JDK17 Big Sur
+							// Adjusting the scaling further results in the client position being incorrect
+							if (scale != 1 && OSType.getOSType() != OSType.MacOS)
 							{
 								clientBounds.setRect(
 									clientBounds.getX() / scale,
