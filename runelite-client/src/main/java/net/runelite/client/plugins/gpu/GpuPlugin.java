@@ -473,6 +473,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				if (OSType.getOSType() == OSType.MacOS)
 				{
 					SwingUtilities.invokeAndWait(() -> ((Component) client).addComponentListener(resizeListener));
+					needsReset = 5; // plugin startup races with ClientUI positioning, so do a reset in a little bit
 				}
 			}
 			catch (Throwable e)
