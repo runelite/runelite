@@ -27,28 +27,27 @@ package net.runelite.client.plugins.roofremoval;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
 
 @ConfigGroup(RoofRemovalConfig.CONFIG_GROUP)
 public interface RoofRemovalConfig extends Config
 {
 	String CONFIG_GROUP = "roofremoval";
 
-	@ConfigItem(
-		keyName = "removePosition",
-		name = "Player's position",
-		description = "Remove roofs above the player's position"
+	@ConfigSection(
+		name = "Locations",
+		description = "Always remove roofs in these locations",
+		position = 4
 	)
-	default boolean removePosition()
-	{
-		return true;
-	}
+	String locationsSection = "Locations";
 
 	@ConfigItem(
-		keyName = "removeHovered",
-		name = "Hovered tile",
-		description = "Remove roofs above the hovered tile"
+		keyName = "removeBetween",
+		name = "Between camera & player",
+		description = "Remove roofs between the camera and the player at low camera angles",
+		position = 0
 	)
-	default boolean removeHovered()
+	default boolean removeBetween()
 	{
 		return true;
 	}
@@ -56,7 +55,8 @@ public interface RoofRemovalConfig extends Config
 	@ConfigItem(
 		keyName = "removeDestination",
 		name = "Destination tile",
-		description = "Remove roofs above the destination tile"
+		description = "Remove roofs above the destination tile",
+		position = 1
 	)
 	default boolean removeDestination()
 	{
@@ -64,12 +64,36 @@ public interface RoofRemovalConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "removeBetween",
-		name = "Between camera & player",
-		description = "Remove roofs between the camera and the player at low camera angles"
+		keyName = "removeHovered",
+		name = "Hovered tile",
+		description = "Remove roofs above the hovered tile",
+		position = 2
 	)
-	default boolean removeBetween()
+	default boolean removeHovered()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		keyName = "removePosition",
+		name = "Player's position",
+		description = "Remove roofs above the player's position",
+		position = 3
+	)
+	default boolean removePosition()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "removePoh",
+		name = "Player-owned houses",
+		description = "Remove roofs in player-owned houses",
+		position = 5,
+		section = locationsSection
+	)
+	default boolean removePoh()
+	{
+		return false;
 	}
 }

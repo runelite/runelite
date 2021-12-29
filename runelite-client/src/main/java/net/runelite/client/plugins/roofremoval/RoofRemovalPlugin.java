@@ -128,6 +128,10 @@ public class RoofRemovalPlugin extends Plugin
 		if (e.getGameState() == GameState.LOGGED_IN)
 		{
 			performRoofRemoval();
+
+			// The game state changes when the player enters or exits a POH, so use this time to check if POH roofs
+			// should be removed.
+			client.getScene().setRoofRemovalMode(buildRoofRemovalFlags());
 		}
 	}
 
@@ -144,6 +148,11 @@ public class RoofRemovalPlugin extends Plugin
 
 	private int buildRoofRemovalFlags()
 	{
+		if (config.removePoh() && inPoh())
+		{
+			return 0;
+		}
+
 		int roofRemovalMode = 0;
 		if (config.removePosition())
 		{
@@ -180,7 +189,9 @@ public class RoofRemovalPlugin extends Plugin
 		{
 			final InputStreamReader data = new InputStreamReader(in, StandardCharsets.UTF_8);
 			//CHECKSTYLE:OFF
-			final Type type = new TypeToken<Map<Integer, List<FlaggedArea>>>() {}.getType();
+			final Type type = new TypeToken<Map<Integer, List<FlaggedArea>>>()
+			{
+			}.getType();
 			//CHECKSTYLE:ON
 			Map<Integer, List<FlaggedArea>> parsed = gson.fromJson(data, type);
 			overrides.clear();
@@ -267,5 +278,23 @@ public class RoofRemovalPlugin extends Plugin
 			}
 		}
 		log.debug("Roof override duration: {}", sw.stop());
+	}
+
+	private boolean inPoh()
+	{
+		if (client.getLocalPlayer() == null)
+		{
+			return false;
+		}
+
+		int POH_REGION_X1 = 1792;
+		int POH_REGION_X2 = 2047;
+		int POH_REGION_Y1 = 5696;
+		int POH_REGION_Y2 = 5823;
+
+		int x = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getX();
+		int y = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getY();
+
+		return POH_REGION_X1 <= x && x <= POH_REGION_X2 && POH_REGION_Y1 <= y && y <= POH_REGION_Y2;
 	}
 }
