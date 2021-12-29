@@ -27,10 +27,12 @@ package net.runelite.client.plugins.grounditems;
 import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
 import net.runelite.api.JagexColor;
+import net.runelite.api.Model;
 import net.runelite.api.RuneLiteObject;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import java.awt.Color;
+import net.runelite.client.callback.ClientThread;
 
 class Lootbeam
 {
@@ -39,11 +41,13 @@ class Lootbeam
 
 	private final RuneLiteObject runeLiteObject;
 	private final Client client;
+	private final ClientThread clientThread;
 	private Color color;
 
-	public Lootbeam(Client client, WorldPoint worldPoint, Color color)
+	public Lootbeam(Client client, ClientThread clientThread, WorldPoint worldPoint, Color color)
 	{
 		this.client = client;
+		this.clientThread = clientThread;
 		runeLiteObject = client.createRuneLiteObject();
 
 		setColor(color);
@@ -64,11 +68,21 @@ class Lootbeam
 		}
 
 		this.color = color;
-		runeLiteObject.setModel(client.loadModel(
-			RAID_LIGHT_MODEL,
-			new short[]{RAID_LIGHT_FIND_COLOR},
-			new short[]{JagexColor.rgbToHSL(color.getRGB(), 1.0d)}
-		));
+		clientThread.invoke(() ->
+		{
+			Model m = client.loadModel(
+				RAID_LIGHT_MODEL,
+				new short[]{RAID_LIGHT_FIND_COLOR},
+				new short[]{JagexColor.rgbToHSL(color.getRGB(), 1.0d)}
+			);
+			if (m == null)
+			{
+				return false;
+			}
+
+			runeLiteObject.setModel(m);
+			return true;
+		});
 	}
 
 	public void remove()
