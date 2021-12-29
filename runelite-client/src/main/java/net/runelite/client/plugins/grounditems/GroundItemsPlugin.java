@@ -800,7 +800,7 @@ public class GroundItemsPlugin extends Plugin
 		Lootbeam lootbeam = lootbeams.get(worldPoint);
 		if (lootbeam == null)
 		{
-			lootbeam = new Lootbeam(client, worldPoint, color);
+			lootbeam = new Lootbeam(client, clientThread, worldPoint, color);
 			lootbeams.put(worldPoint, lootbeam);
 		}
 		else
