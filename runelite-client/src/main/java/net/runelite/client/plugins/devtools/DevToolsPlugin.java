@@ -31,6 +31,9 @@ import com.google.common.primitives.Ints;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import static java.lang.Math.min;
+
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 import javax.inject.Inject;
@@ -53,6 +56,7 @@ import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.StatChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.kit.KitType;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
@@ -82,6 +86,9 @@ public class DevToolsPlugin extends Plugin
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private ClientThread clientThread;
 
 	@Inject
 	private ClientToolbar clientToolbar;
@@ -454,12 +461,31 @@ public class DevToolsPlugin extends Plugin
 			}
 			case "spawnobject":
 			{
-				int id = Integer.parseInt(args[0]);
-				RuneLiteObject newObject = client.createRuneLiteObject();
+				final int id = Integer.parseInt(args[0]);
+				final Instant loadTimeOutInstant = Instant.now().plus(Duration.ofSeconds(5));
 
-				newObject.setModel(client.loadModel(id));
-				newObject.setLocation(client.getLocalPlayer().getLocalLocation(), client.getPlane());
-				newObject.setActive(true);
+				clientThread.invoke(() ->
+				{
+					if (Instant.now().isAfter(loadTimeOutInstant))
+					{
+						return true;
+					}
+
+					Model newModel = client.loadModel(id);
+
+					if (newModel == null)
+					{
+						return false;
+					}
+
+					RuneLiteObject newObject = client.createRuneLiteObject();
+
+					newObject.setModel(client.loadModel(id));
+					newObject.setLocation(client.getLocalPlayer().getLocalLocation(), client.getPlane());
+					newObject.setActive(true);
+
+					return true;
+				});
 				break;
 			}
 		}
