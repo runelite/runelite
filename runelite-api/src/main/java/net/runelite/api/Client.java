@@ -909,20 +909,6 @@ public interface Client extends GameEngine
 	long getOverallExperience();
 
 	/**
-	 * Gets the game drawing mode.
-	 *
-	 * @return the game drawing mode
-	 */
-	int getGameDrawingMode();
-
-	/**
-	 * Sets the games drawing mode.
-	 *
-	 * @param gameDrawingMode the new drawing mode
-	 */
-	void setGameDrawingMode(int gameDrawingMode);
-
-	/**
 	 * Refreshes the chat.
 	 */
 	void refreshChat();
@@ -1071,7 +1057,9 @@ public interface Client extends GameEngine
 	 * Loads a model from the cache
 	 *
 	 * @param id the ID of the model
+	 * @return the model or null if it is loading or nonexistent
 	 */
+	@Nullable
 	Model loadModel(int id);
 
 	/**
@@ -1080,7 +1068,9 @@ public interface Client extends GameEngine
 	 * @param id the ID of the model
 	 * @param colorToFind array of hsl color values to find in the model to replace
 	 * @param colorToReplace array of hsl color values to replace in the model
+	 * @return the model or null if it is loading or nonexistent
 	 */
+	@Nullable
 	Model loadModel(int id, short[] colorToFind, short[] colorToReplace);
 
 	/**
@@ -1089,7 +1079,7 @@ public interface Client extends GameEngine
 	 * @param id the ID of the animation. Any int is allowed, but implementations in the client
 	 * should be defined in {@link AnimationID}
 	 */
-	Sequence loadAnimation(int id);
+	Animation loadAnimation(int id);
 
 	/**
 	 * Gets the music volume
@@ -1276,7 +1266,7 @@ public interface Client extends GameEngine
 	 *
 	 * @return
 	 */
-	NameableContainer<Friend> getFriendContainer();
+	FriendContainer getFriendContainer();
 
 	/**
 	 * Retrieve the nameable container containing ignores

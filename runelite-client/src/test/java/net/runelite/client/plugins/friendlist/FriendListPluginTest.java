@@ -31,9 +31,11 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Friend;
+import net.runelite.api.FriendContainer;
 import net.runelite.api.MessageNode;
-import net.runelite.api.NameableContainer;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.config.ConfigManager;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -53,6 +55,14 @@ public class FriendListPluginTest
 	@Mock
 	@Bind
 	private FriendListConfig config;
+
+	@Mock
+	@Bind
+	private ConfigManager configManager;
+
+	@Mock
+	@Bind
+	private ChatMessageManager chatMessageManager;
 
 	@Inject
 	private FriendListPlugin friendListPlugin;
@@ -78,7 +88,7 @@ public class FriendListPluginTest
 		Friend friend = mock(Friend.class);
 		when(friend.getWorld()).thenReturn(311);
 
-		NameableContainer<Friend> friendContainer = mock(NameableContainer.class);
+		FriendContainer friendContainer = mock(FriendContainer.class);
 		when(friendContainer.findByName("test\u00a0rsn")).thenReturn(friend);
 		when(client.getFriendContainer()).thenReturn(friendContainer);
 

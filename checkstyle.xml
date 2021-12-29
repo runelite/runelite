@@ -56,7 +56,4 @@
 		<property name="format" value="else[ \t]*[\r\n]+[ \t]*if"/>
 		<property name="message" value="Newline should not be between else and if"/>
 	</module>
-	<module name="SuppressionFilter">
-		<property name="file" value="suppressions.xml"/>
-	</module>
 </module>

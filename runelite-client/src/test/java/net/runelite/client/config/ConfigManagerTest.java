@@ -73,6 +73,10 @@ public class ConfigManagerTest
 	@Bind
 	Client client;
 
+	@Mock
+	@Bind
+	ConfigClient configClient;
+
 	@Inject
 	ConfigManager manager;
 

@@ -114,8 +114,6 @@ import net.runelite.http.api.loottracker.GameItem;
 import net.runelite.http.api.loottracker.LootAggregate;
 import net.runelite.http.api.loottracker.LootRecord;
 import net.runelite.http.api.loottracker.LootRecordType;
-import net.runelite.http.api.loottracker.LootTrackerClient;
-import okhttp3.OkHttpClient;
 import org.apache.commons.text.WordUtils;
 
 @PluginDescriptor(
@@ -338,12 +336,6 @@ public class LootTrackerPlugin extends Plugin
 		}
 
 		return list;
-	}
-
-	@Provides
-	LootTrackerClient provideLootTrackerClient(OkHttpClient okHttpClient)
-	{
-		return new LootTrackerClient(okHttpClient);
 	}
 
 	@Provides

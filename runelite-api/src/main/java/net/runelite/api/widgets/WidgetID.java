@@ -171,6 +171,7 @@ public final class WidgetID
 	public static final int GRAVESTONE_GROUP_ID = 672;
 	public static final int POH_TREASURE_CHEST_INVENTORY_GROUP_ID = 674;
 	public static final int GROUP_IRON_GROUP_ID = 726;
+	public static final int GROUP_STORAGE_GROUP_ID = 724;
 
 	static class WorldMap
 	{
@@ -292,6 +293,11 @@ public final class WidgetID
 		static final int EQUIPMENT_CONTENT_CONTAINER = 69;
 		static final int SETTINGS_BUTTON = 112;
 		static final int EQUIPMENT_BUTTON = 113;
+	}
+
+	static class GroupStorage
+	{
+		static final int ITEM_CONTAINER = 10;
 	}
 
 	static class GrandExchange
@@ -921,11 +927,15 @@ public final class WidgetID
 
 	static class Clan
 	{
+		static final int LAYER = 0;
+		static final int HEADER = 1;
 		static final int MEMBERS = 6;
 	}
 
 	static class ClanGuest
 	{
+		static final int LAYER = 0;
+		static final int HEADER = 1;
 		static final int MEMBERS = 6;
 	}
 }

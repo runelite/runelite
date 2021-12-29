@@ -198,7 +198,9 @@ public enum Quest
 	FAMILY_PEST(329, "Family Pest"),
 	MAGE_ARENA_II(330, "Mage Arena II"),
 	IN_SEARCH_OF_KNOWLEDGE(3143, "In Search of Knowledge"),
-	DADDYS_HOME(1688, "Daddy's Home");
+	DADDYS_HOME(1688, "Daddy's Home"),
+	THE_FROZEN_DOOR(3768, "The Frozen Door"),
+;
 
 	@Getter
 	private final int id;

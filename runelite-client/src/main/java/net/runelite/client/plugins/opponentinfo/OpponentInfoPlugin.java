@@ -49,7 +49,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
-import net.runelite.http.api.hiscore.HiscoreEndpoint;
+import net.runelite.client.hiscore.HiscoreEndpoint;
 
 @PluginDescriptor(
 	name = "Opponent Information",

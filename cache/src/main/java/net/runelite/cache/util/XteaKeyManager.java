@@ -24,12 +24,14 @@
  */
 package net.runelite.cache.util;
 
-import java.io.IOException;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import net.runelite.http.api.RuneLiteAPI;
-import net.runelite.http.api.xtea.XteaClient;
-import net.runelite.http.api.xtea.XteaKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,22 +41,16 @@ public class XteaKeyManager
 
 	private final Map<Integer, int[]> keys = new HashMap<>();
 
-	public void loadKeys()
+	public void loadKeys(InputStream in)
 	{
-		XteaClient xteaClient = new XteaClient(RuneLiteAPI.CLIENT);
+		// CHECKSTYLE:OFF
+		List<XteaKey> k = new Gson()
+			.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), new TypeToken<List<XteaKey>>() { }.getType());
+		// CHECKSTYLE:ON
 
-		try
+		for (XteaKey key : k)
 		{
-			for (XteaKey key : xteaClient.get())
-			{
-				keys.put(key.getRegion(), key.getKeys());
-			}
-		}
-		catch (IOException ex)
-		{
-			// happens on release when it is not deployed yet
-			logger.debug("unable to load xtea keys", ex);
-			return;
+			keys.put(key.getRegion(), key.getKeys());
 		}
 
 		logger.info("Loaded {} keys", keys.size());

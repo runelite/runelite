@@ -44,9 +44,13 @@ import com.jogamp.opengl.GLFBODrawable;
 import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.math.Matrix4;
 import java.awt.Canvas;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
@@ -293,6 +297,24 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int uniSmoothBanding;
 	private int uniTextureLightMode;
 
+	private int needsReset;
+
+	private final ComponentListener resizeListener = new ComponentAdapter()
+	{
+		@Override
+		public void componentResized(ComponentEvent e)
+		{
+			// forward to the JAWTWindow component listener on the canvas. The JAWTWindow component
+			// listener listens for resizes or movement of the component in order to resize and move
+			// the associated offscreen layer (calayer on macos only)
+			canvas.dispatchEvent(e);
+			// resetSize needs to be run awhile after the resize is completed.
+			// I've tried waiting until all EDT events are completed and even that is too soon.
+			// Not sure why, so we just wait a few frames.
+			needsReset = 5;
+		}
+	};
+
 	@Override
 	protected void startUp()
 	{
@@ -447,6 +469,12 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				{
 					invokeOnMainThread(this::uploadScene);
 				}
+
+				if (OSType.getOSType() == OSType.MacOS)
+				{
+					SwingUtilities.invokeAndWait(() -> ((Component) client).addComponentListener(resizeListener));
+					needsReset = 5; // plugin startup races with ClientUI positioning, so do a reset in a little bit
+				}
 			}
 			catch (Throwable e)
 			{
@@ -474,6 +502,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	@Override
 	protected void shutDown()
 	{
+		((Component) client).removeComponentListener(resizeListener);
 		clientThread.invoke(() ->
 		{
 			client.setGpu(false);
@@ -1091,16 +1120,22 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			gl.glBindTexture(gl.GL_TEXTURE_2D, interfaceTexture);
 			gl.glTexImage2D(gl.GL_TEXTURE_2D, 0, gl.GL_RGBA, canvasWidth, canvasHeight, 0, gl.GL_BGRA, gl.GL_UNSIGNED_BYTE, null);
 			gl.glBindTexture(gl.GL_TEXTURE_2D, 0);
+		}
 
-			if (OSType.getOSType() == OSType.MacOS && glDrawable instanceof GLFBODrawable)
+		if (needsReset > 0)
+		{
+			assert OSType.getOSType() == OSType.MacOS;
+			if (needsReset == 1 && glDrawable instanceof GLFBODrawable)
 			{
 				// GLDrawables created with createGLDrawable() do not have a resize listener
 				// I don't know why this works with Windows/Linux, but on OSX
 				// it prevents JOGL from resizing its FBOs and underlying GL textures. So,
 				// we manually trigger a resize here.
 				GLFBODrawable glfboDrawable = (GLFBODrawable) glDrawable;
+				log.debug("Resetting GLFBODrawable size");
 				glfboDrawable.resetSize(gl);
 			}
+			needsReset--;
 		}
 
 		final BufferProvider bufferProvider = client.getBufferProvider();
@@ -1608,7 +1643,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				modelY = y + client.getCameraY2();
 				modelZ = z + client.getCameraZ2();
 				modelOrientation = orientation;
-				int triangleCount = model.getTrianglesCount();
+				int triangleCount = model.getFaceCount();
 				vertexBuffer.ensureCapacity(12 * triangleCount);
 				uvBuffer.ensureCapacity(12 * triangleCount);
 
@@ -1632,7 +1667,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			model.calculateExtreme(orientation);
 			client.checkClickbox(model, orientation, pitchSin, pitchCos, yawSin, yawCos, x, y, z, hash);
 
-			int tc = Math.min(MAX_TRIANGLE, model.getTrianglesCount());
+			int tc = Math.min(MAX_TRIANGLE, model.getFaceCount());
 			int uvOffset = model.getUvBufferOffset();
 
 			GpuIntBuffer b = bufferForTriangles(tc);

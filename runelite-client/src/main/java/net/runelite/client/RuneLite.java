@@ -30,15 +30,22 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import java.applet.Applet;
 import java.io.File;
+import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import static java.nio.file.StandardCopyOption.COPY_ATTRIBUTES;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
 import javax.annotation.Nullable;
 import javax.inject.Provider;
 import javax.inject.Singleton;
@@ -55,6 +62,7 @@ import joptsimple.util.EnumConverter;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.discord.DiscordService;
@@ -73,6 +81,7 @@ import net.runelite.client.ui.overlay.worldmap.WorldMapOverlay;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.Response;
 import org.slf4j.LoggerFactory;
 
@@ -90,6 +99,7 @@ public class RuneLite
 	public static final File DEFAULT_CONFIG_FILE = new File(RUNELITE_DIR, "settings.properties");
 
 	private static final int MAX_OKHTTP_CACHE_SIZE = 20 * 1024 * 1024; // 20mb
+	public static String USER_AGENT = "RuneLite/" + RuneLiteProperties.getVersion() + "-" + RuneLiteProperties.getCommit() + (RuneLiteProperties.isDirty() ? "+" : "");
 
 	@Getter
 	private static Injector injector;
@@ -126,6 +136,10 @@ public class RuneLite
 
 	@Inject
 	private Provider<WorldMapOverlay> worldMapOverlay;
+
+	@Inject
+	@Nullable
+	private Applet applet;
 
 	@Inject
 	@Nullable
@@ -192,16 +206,8 @@ public class RuneLite
 			}
 		});
 
-		OkHttpClient.Builder okHttpClientBuilder = RuneLiteAPI.CLIENT.newBuilder();
-		setupCache(okHttpClientBuilder, new File(CACHE_DIR, "okhttp"));
-
-		final boolean insecureSkipTlsVerification = options.has("insecure-skip-tls-verification");
-		if (insecureSkipTlsVerification || RuneLiteProperties.isInsecureSkipTlsVerification())
-		{
-			setupInsecureTrustManager(okHttpClientBuilder);
-		}
-
-		final OkHttpClient okHttpClient = okHttpClientBuilder.build();
+		final OkHttpClient okHttpClient = buildHttpClient(options.has("insecure-skip-tls-verification"));
+		RuneLiteAPI.CLIENT = okHttpClient;
 
 		SplashScreen.init();
 		SplashScreen.stage(0, "Retrieving client", "");
@@ -277,6 +283,28 @@ public class RuneLite
 		{
 			// Inject members into client
 			injector.injectMembers(client);
+		}
+
+		// Start the applet
+		if (applet != null)
+		{
+			copyJagexCache();
+
+			// Client size must be set prior to init
+			applet.setSize(Constants.GAME_FIXED_SIZE);
+
+			// Change user.home so the client places jagexcache in the .runelite directory
+			String oldHome = System.setProperty("user.home", RUNELITE_DIR.getAbsolutePath());
+			try
+			{
+				applet.init();
+			}
+			finally
+			{
+				System.setProperty("user.home", oldHome);
+			}
+
+			applet.start();
 		}
 
 		SplashScreen.stage(.57, null, "Loading configuration");
@@ -383,9 +411,20 @@ public class RuneLite
 	}
 
 	@VisibleForTesting
-	static void setupCache(OkHttpClient.Builder builder, File cacheDir)
+	static OkHttpClient buildHttpClient(boolean insecureSkipTlsVerification)
 	{
-		builder.cache(new Cache(cacheDir, MAX_OKHTTP_CACHE_SIZE))
+		OkHttpClient.Builder builder = new OkHttpClient.Builder()
+			.pingInterval(30, TimeUnit.SECONDS)
+			.addNetworkInterceptor(chain ->
+			{
+				Request userAgentRequest = chain.request()
+					.newBuilder()
+					.header("User-Agent", USER_AGENT)
+					.build();
+				return chain.proceed(userAgentRequest);
+			})
+			// Setup cache
+			.cache(new Cache(new File(CACHE_DIR, "okhttp"), MAX_OKHTTP_CACHE_SIZE))
 			.addNetworkInterceptor(chain ->
 			{
 				// This has to be a network interceptor so it gets hit before the cache tries to store stuff
@@ -399,6 +438,13 @@ public class RuneLite
 				}
 				return res;
 			});
+
+		if (insecureSkipTlsVerification || RuneLiteProperties.isInsecureSkipTlsVerification())
+		{
+			setupInsecureTrustManager(builder);
+		}
+
+		return builder.build();
 	}
 
 	private static void setupInsecureTrustManager(OkHttpClient.Builder okHttpClientBuilder)
@@ -431,6 +477,38 @@ public class RuneLite
 		catch (NoSuchAlgorithmException | KeyManagementException ex)
 		{
 			log.warn("unable to setup insecure trust manager", ex);
+		}
+	}
+
+	private static void copyJagexCache()
+	{
+		Path from = Paths.get(System.getProperty("user.home"), "jagexcache");
+		Path to = Paths.get(System.getProperty("user.home"), ".runelite", "jagexcache");
+		if (Files.exists(to) || !Files.exists(from))
+		{
+			return;
+		}
+
+		log.info("Copying jagexcache from {} to {}", from, to);
+
+		// Recursively copy path https://stackoverflow.com/a/50418060
+		try (Stream<Path> stream = Files.walk(from))
+		{
+			stream.forEach(source ->
+			{
+				try
+				{
+					Files.copy(source, to.resolve(from.relativize(source)), COPY_ATTRIBUTES);
+				}
+				catch (IOException e)
+				{
+					throw new RuntimeException(e);
+				}
+			});
+		}
+		catch (Exception e)
+		{
+			log.warn("unable to copy jagexcache", e);
 		}
 	}
 }

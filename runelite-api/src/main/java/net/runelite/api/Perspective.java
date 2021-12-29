@@ -781,9 +781,9 @@ public class Perspective
 		final int radius = 5;
 
 		int[][] tris = new int[][]{
-			m.getTrianglesX(),
-			m.getTrianglesY(),
-			m.getTrianglesZ()
+			m.getFaceIndices1(),
+			m.getFaceIndices2(),
+			m.getFaceIndices3()
 		};
 
 		int vpX1 = client.getViewportXOffset();
@@ -791,10 +791,10 @@ public class Perspective
 		int vpX2 = vpX1 + client.getViewportWidth();
 		int vpY2 = vpY1 + client.getViewportHeight();
 
-		List<RectangleUnion.Rectangle> rects = new ArrayList<>(m.getTrianglesCount());
+		List<RectangleUnion.Rectangle> rects = new ArrayList<>(m.getFaceCount());
 
 		nextTri:
-		for (int tri = 0; tri < m.getTrianglesCount(); tri++)
+		for (int tri = 0; tri < m.getFaceCount(); tri++)
 		{
 			if (faceColors3[tri] == -2)
 			{

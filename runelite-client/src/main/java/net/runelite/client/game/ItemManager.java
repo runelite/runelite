@@ -55,10 +55,8 @@ import net.runelite.api.SpritePixels;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.util.AsyncBufferedImage;
-import net.runelite.http.api.item.ItemClient;
 import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.item.ItemStats;
-import okhttp3.OkHttpClient;
 
 @Singleton
 @Slf4j
@@ -167,11 +165,11 @@ public class ItemManager
 
 	@Inject
 	public ItemManager(Client client, ScheduledExecutorService scheduledExecutorService, ClientThread clientThread,
-		OkHttpClient okHttpClient, RuneLiteConfig runeLiteConfig)
+		ItemClient itemClient, RuneLiteConfig runeLiteConfig)
 	{
 		this.client = client;
 		this.clientThread = clientThread;
-		this.itemClient = new ItemClient(okHttpClient);
+		this.itemClient = itemClient;
 		this.runeLiteConfig = runeLiteConfig;
 
 		scheduledExecutorService.scheduleWithFixedDelay(this::loadPrices, 0, 30, TimeUnit.MINUTES);

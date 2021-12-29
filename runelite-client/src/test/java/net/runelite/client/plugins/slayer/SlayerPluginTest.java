@@ -52,6 +52,7 @@ import net.runelite.api.events.StatChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
+import net.runelite.client.chat.ChatClient;
 import net.runelite.client.chat.ChatCommandManager;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
@@ -59,7 +60,6 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.npcoverlay.NpcOverlayService;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
-import net.runelite.http.api.chat.ChatClient;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
@@ -141,6 +141,10 @@ public class SlayerPluginTest
 	@Mock
 	@Bind
 	SlayerOverlay overlay;
+
+	@Mock
+	@Bind
+	TargetWeaknessOverlay targetWeaknessOverlay;
 
 	@Mock
 	@Bind

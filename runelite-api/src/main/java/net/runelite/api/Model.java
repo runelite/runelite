@@ -37,13 +37,13 @@ public interface Model extends Renderable
 
 	int[] getVerticesZ();
 
-	int getTrianglesCount();
+	int getFaceCount();
 
-	int[] getTrianglesX();
+	int[] getFaceIndices1();
 
-	int[] getTrianglesY();
+	int[] getFaceIndices2();
 
-	int[] getTrianglesZ();
+	int[] getFaceIndices3();
 
 	int[] getFaceColors1();
 
@@ -51,7 +51,7 @@ public interface Model extends Renderable
 
 	int[] getFaceColors3();
 
-	byte[] getTriangleTransparencies();
+	byte[] getFaceTransparencies();
 
 	int getSceneId();
 	void setSceneId(int sceneId);
@@ -89,4 +89,9 @@ public interface Model extends Renderable
 	int[] getVertexNormalsX();
 	int[] getVertexNormalsY();
 	int[] getVertexNormalsZ();
+
+	byte getOverrideAmount();
+	byte getOverrideHue();
+	byte getOverrideSaturation();
+	byte getOverrideLuminance();
 }

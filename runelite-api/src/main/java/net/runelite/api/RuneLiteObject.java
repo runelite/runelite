@@ -41,7 +41,7 @@ public interface RuneLiteObject extends GraphicsObject
 	 * Sets the animation of the RuneLiteObject
 	 * If animation is null model will be static
 	 */
-	void setAnimation(Sequence animation);
+	void setAnimation(Animation animation);
 
 	/**
 	 * Sets whether the animation of the RuneLiteObject should loop when the animation ends.

@@ -99,4 +99,23 @@ public interface PartyConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "previousPartyId",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default String previousPartyId()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+		keyName = "previousPartyId",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	void setPreviousPartyId(String id);
 }
