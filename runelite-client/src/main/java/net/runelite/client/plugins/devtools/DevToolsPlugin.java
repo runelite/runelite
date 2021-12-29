@@ -41,8 +41,10 @@ import net.runelite.api.Experience;
 import net.runelite.api.IndexedSprite;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.Model;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
+import net.runelite.api.RuneLiteObject;
 import net.runelite.api.Skill;
 import net.runelite.api.VarbitComposition;
 import net.runelite.api.coords.WorldPoint;
@@ -448,6 +450,16 @@ public class DevToolsPlugin extends Plugin
 					.type(ChatMessageType.GAMEMESSAGE)
 					.runeLiteFormattedMessage(builder.build())
 					.build());
+				break;
+			}
+			case "spawnobject":
+			{
+				int id = Integer.parseInt(args[0]);
+				RuneLiteObject newObject = client.createRuneLiteObject();
+
+				newObject.setModel(client.loadModel(id));
+				newObject.setLocation(client.getLocalPlayer().getLocalLocation(), client.getPlane());
+				newObject.setActive(true);
 				break;
 			}
 		}
