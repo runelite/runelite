@@ -38,7 +38,7 @@ public interface CannonConfig extends Config
 	@ConfigItem(
 		keyName = "showEmptyCannonNotification",
 		name = "Enable cannon notifications",
-		description = "Configures whether to notify you when your cannon is low on cannonballs",
+		description = "Configures whether to notify you when your cannon is low on cannonballs or needs to be repaired.",
 		position = 1
 	)
 	default boolean showCannonNotifications()

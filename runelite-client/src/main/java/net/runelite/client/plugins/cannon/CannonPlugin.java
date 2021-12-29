@@ -44,6 +44,7 @@ import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.ObjectID;
 import static net.runelite.api.ObjectID.CANNON_BASE;
+import static net.runelite.api.ObjectID.BROKEN_MULTICANNON;
 import net.runelite.api.Player;
 import net.runelite.api.Projectile;
 import static net.runelite.api.ProjectileID.CANNONBALL;
@@ -262,6 +263,11 @@ public class CannonPlugin extends Plugin
 				cannonWorld = client.getWorld();
 				cannon = gameObject;
 			}
+		}
+
+		if (config.showCannonNotifications() && cannonPlaced && gameObject.getId() == BROKEN_MULTICANNON && cannonPosition.equals(gameObject.getWorldLocation()))
+		{
+			notifier.notify("Your cannon is broken and needs to be repaired!");
 		}
 	}
 	
