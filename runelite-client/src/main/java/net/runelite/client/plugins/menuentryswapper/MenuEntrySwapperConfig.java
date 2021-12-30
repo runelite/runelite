@@ -160,6 +160,17 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "swapBandageTableSoulWars",
+		name = "Bandage Table",
+		description = "Configurable Swap for Bandage Table in Soul Wars.",
+		section = objectSection
+	)
+	default BandageTableMode swapBandageTableSoulWars()
+	{
+		return BandageTableMode.TAKE_10;
+	}
+
+	@ConfigItem(
 		keyName = "swapBanker",
 		name = "Bank",
 		description = "Swap Talk-to with Bank on Bank NPC<br>Example: Banker",
