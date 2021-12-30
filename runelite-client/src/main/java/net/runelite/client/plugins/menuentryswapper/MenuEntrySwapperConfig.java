@@ -162,12 +162,12 @@ public interface MenuEntrySwapperConfig extends Config
 	@ConfigItem(
 		keyName = "swapBandageTableSoulWars",
 		name = "Bandage Table",
-		description = "Configurable Swap for Bandage Table in Soul Wars.",
+		description = "Configurable Swap for the Bandage Table in Soul Wars.",
 		section = objectSection
 	)
-	default BandageTableMode swapBandageTableSoulWars()
+	default SoulWarsTablesMode swapBandageTableSoulWars()
 	{
-		return BandageTableMode.TAKE_10;
+		return SoulWarsTablesMode.TAKE_10;
 	}
 
 	@ConfigItem(
@@ -234,6 +234,17 @@ public interface MenuEntrySwapperConfig extends Config
 	default boolean swapPrayerBook()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+			keyName = "swapPotionTableSoulWars",
+			name = "Potion Table",
+			description = "Configurable Swap for the Potion of Power Table in Soul Wars.",
+			section = objectSection
+	)
+	default SoulWarsTablesMode swapPotionTableSoulWars()
+	{
+		return SoulWarsTablesMode.TAKE_10;
 	}
 
 	@ConfigItem(

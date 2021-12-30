@@ -268,9 +268,13 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("enter", "portal", "build mode", () -> config.swapHomePortal() == HouseMode.BUILD_MODE);
 		swap("enter", "portal", "friend's house", () -> config.swapHomePortal() == HouseMode.FRIENDS_HOUSE);
 
-		swap("take-from", "bandage table", "take-1", () -> config.swapBandageTableSoulWars() == BandageTableMode.TAKE_1 );
-		swap("take-from", "bandage table", "take-5", () -> config.swapBandageTableSoulWars() == BandageTableMode.TAKE_5 );
-		swap("take-from", "bandage table", "take-10", () -> config.swapBandageTableSoulWars() == BandageTableMode.TAKE_10 );
+		swap("take-from", "bandage table", "take-1", () -> config.swapBandageTableSoulWars() == SoulWarsTablesMode.TAKE_1 );
+		swap("take-from", "bandage table", "take-5", () -> config.swapBandageTableSoulWars() == SoulWarsTablesMode.TAKE_5 );
+		swap("take-from", "bandage table", "take-10", () -> config.swapBandageTableSoulWars() == SoulWarsTablesMode.TAKE_10 );
+
+		swap("take-from", "potion of power table", "take-1", () -> config.swapPotionTableSoulWars() == SoulWarsTablesMode.TAKE_1 );
+		swap("take-from", "potion of power table", "take-5", () -> config.swapPotionTableSoulWars() == SoulWarsTablesMode.TAKE_5 );
+		swap("take-from", "potion of power table", "take-10", () -> config.swapPotionTableSoulWars() == SoulWarsTablesMode.TAKE_10 );
 
 		swap("view", "add-house", () -> config.swapHouseAdvertisement() == HouseAdvertisementMode.ADD_HOUSE);
 		swap("view", "visit-last", () -> config.swapHouseAdvertisement() == HouseAdvertisementMode.VISIT_LAST);

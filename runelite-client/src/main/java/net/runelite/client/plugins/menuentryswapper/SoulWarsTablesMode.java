@@ -29,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum BandageTableMode
+public enum SoulWarsTablesMode
 {
 	TAKE_FROM("Take-from"),
 	TAKE_1("Take-1"),
