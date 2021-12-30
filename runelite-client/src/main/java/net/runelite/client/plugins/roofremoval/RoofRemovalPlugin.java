@@ -250,15 +250,15 @@ public class RoofRemovalPlugin extends Plugin
 					// Properly account for instances shifting worldpoints around
 					final WorldPoint wp = WorldPoint.fromLocalInstance(client, tile.getLocalLocation(), tile.getPlane());
 
-					int regionID = wp.getRegionID() << 2 | z;
-					if (!overrides.containsKey(regionID))
+					int regionAndPlane = wp.getRegionID() << 2 | wp.getPlane();
+					if (!overrides.containsKey(regionAndPlane))
 					{
 						continue;
 					}
 
 					int rx = wp.getRegionX();
 					int ry = wp.getRegionY();
-					long[] region = overrides.get(regionID);
+					long[] region = overrides.get(regionAndPlane);
 					if ((region[ry] & (1L << rx)) != 0)
 					{
 						settings[z][x][y] |= Constants.TILE_FLAG_UNDER_ROOF;
