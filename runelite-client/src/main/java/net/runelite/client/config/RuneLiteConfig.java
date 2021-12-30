@@ -180,9 +180,9 @@ public interface RuneLiteConfig extends Config
 		position = 19,
 		section = windowSettings
 	)
-	default TitleConfig usernameInTitle()
+	default TitleMode usernameInTitle()
 	{
-		return TitleConfig.ALWAYS;
+		return TitleMode.ALWAYS;
 	}
 
 	@ConfigItem(

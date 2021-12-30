@@ -30,7 +30,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum TitleConfig
+public enum TitleMode
 {
 	OFF("Off"),
 	ALWAYS("Always"),
