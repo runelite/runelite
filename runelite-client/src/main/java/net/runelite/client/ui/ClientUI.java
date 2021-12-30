@@ -76,6 +76,7 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.ExpandResizeType;
 import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.config.TitleConfig;
 import net.runelite.client.config.WarningOnExit;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
@@ -268,8 +269,23 @@ public class ClientUI
 	@Subscribe
 	public void onGameStateChanged(final GameStateChanged event)
 	{
-		if (event.getGameState() != GameState.LOGGED_IN || !(client instanceof Client) || !config.usernameInTitle())
+		if (event.getGameState() == GameState.LOGIN_SCREEN && config.usernameInTitle() == TitleConfig.ONLY_WHEN_LOGGED_IN && client instanceof Client)
 		{
+			final ClientThread clientThread = clientThreadProvider.get();
+
+			clientThread.invokeLater(() ->
+			{
+				frame.setTitle(title);
+				return true;
+			});
+		}
+
+		if (event.getGameState() != GameState.LOGGED_IN || !(client instanceof Client))
+		{
+			return;
+		}
+
+		if (config.usernameInTitle() != TitleConfig.ALWAYS && config.usernameInTitle() != TitleConfig.ONLY_WHEN_LOGGED_IN) {
 			return;
 		}
 
@@ -1049,7 +1065,7 @@ public class ClientUI
 			frame.setOpacity(((float) config.windowOpacity()) / 100.0f);
 		}
 
-		if (config.usernameInTitle() && (client instanceof Client))
+		if ((config.usernameInTitle() ==  TitleConfig.ONLY_WHEN_LOGGED_IN || config.usernameInTitle() ==  TitleConfig.ALWAYS) && (client instanceof Client))
 		{
 			final Player player = ((Client)client).getLocalPlayer();
 
