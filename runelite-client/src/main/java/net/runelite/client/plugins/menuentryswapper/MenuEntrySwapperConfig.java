@@ -244,7 +244,7 @@ public interface MenuEntrySwapperConfig extends Config
 	)
 	default SoulWarsTablesMode swapPotionTableSoulWars()
 	{
-		return SoulWarsTablesMode.TAKE_10;
+		return SoulWarsTablesMode.TAKE_1;
 	}
 
 	@ConfigItem(
