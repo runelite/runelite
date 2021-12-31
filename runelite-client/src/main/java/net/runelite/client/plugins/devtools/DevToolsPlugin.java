@@ -50,6 +50,7 @@ import net.runelite.api.Player;
 import net.runelite.api.RuneLiteObject;
 import net.runelite.api.Skill;
 import net.runelite.api.VarbitComposition;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.MenuEntryAdded;
@@ -462,30 +463,46 @@ public class DevToolsPlugin extends Plugin
 			case "spawnobject":
 			{
 				final int id = Integer.parseInt(args[0]);
-				final Instant loadTimeOutInstant = Instant.now().plus(Duration.ofSeconds(5));
+				final LocalPoint objectLocation = client.getLocalPlayer().getLocalLocation();
 
-				clientThread.invoke(() ->
+				if (objectLocation == null)
 				{
-					if (Instant.now().isAfter(loadTimeOutInstant))
+					break;
+				}
+
+				final RuneLiteObject newObject = client.createRuneLiteObject();
+				Model newModel = client.loadModel(id);
+
+				if (newModel == null)
+				{
+					final Instant loadTimeOutInstant = Instant.now().plus(Duration.ofSeconds(5));
+
+					clientThread.invoke(() ->
 					{
+						if (Instant.now().isAfter(loadTimeOutInstant))
+						{
+							return true;
+						}
+
+						Model reloadedModel = client.loadModel(id);
+
+						if (reloadedModel == null)
+						{
+							return false;
+						}
+
+						newObject.setModel(reloadedModel);
+
 						return true;
-					}
+					});
+				}
+				else
+				{
+					newObject.setModel(newModel);
+				}
 
-					Model newModel = client.loadModel(id);
-
-					if (newModel == null)
-					{
-						return false;
-					}
-
-					RuneLiteObject newObject = client.createRuneLiteObject();
-
-					newObject.setModel(client.loadModel(id));
-					newObject.setLocation(client.getLocalPlayer().getLocalLocation(), client.getPlane());
-					newObject.setActive(true);
-
-					return true;
-				});
+				newObject.setLocation(objectLocation, client.getPlane());
+				newObject.setActive(true);
 				break;
 			}
 		}
