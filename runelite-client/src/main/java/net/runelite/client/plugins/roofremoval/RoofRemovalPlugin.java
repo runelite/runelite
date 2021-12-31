@@ -99,6 +99,7 @@ public class RoofRemovalPlugin extends Plugin
 	@Override
 	public void startUp() throws IOException
 	{
+		buildConfigOverrides();
 		loadRoofOverrides();
 		clientThread.invoke(() ->
 		{
