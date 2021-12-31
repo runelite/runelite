@@ -31,6 +31,7 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
+import javax.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -174,14 +175,45 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 
 	static final List<SkillChallengeClue> CLUES = ImmutableList.of(
 		// Charlie Tasks
-		new SkillChallengeClue(ChallengeType.CHARLIE, "i need to give charlie a cooked pike.", item(ItemID.PIKE)),
-		new SkillChallengeClue(ChallengeType.CHARLIE, "i need to give charlie a cooked trout.", item(ItemID.TROUT)),
-		new SkillChallengeClue(ChallengeType.CHARLIE, "i need to give charlie a leather body.", item(ItemID.LEATHER_ARMOUR)),
-		new SkillChallengeClue(ChallengeType.CHARLIE, "i need to give charlie some leather chaps.", item(ItemID.LEATHER_CHAPS)),
-		new SkillChallengeClue(ChallengeType.CHARLIE, "i need to give charlie a raw herring.", item(ItemID.RAW_HERRING)),
-		new SkillChallengeClue(ChallengeType.CHARLIE, "i need to give charlie a raw trout.", item(ItemID.RAW_TROUT)),
-		new SkillChallengeClue(ChallengeType.CHARLIE, "i need to give charlie a piece of iron ore.", item(ItemID.IRON_ORE)),
-		new SkillChallengeClue(ChallengeType.CHARLIE, "i need to give charlie one iron dagger.", item(ItemID.IRON_DAGGER)),
+		new SkillChallengeClue(ChallengeType.CHARLIE,
+			"i need to give charlie a cooked pike.",
+			"I really need a cooked pike.",
+			item(ItemID.PIKE)),
+		new SkillChallengeClue(
+			ChallengeType.CHARLIE,
+			"i need to give charlie a cooked trout.",
+			"I really need a cooked trout.",
+			item(ItemID.TROUT)),
+		new SkillChallengeClue(
+			ChallengeType.CHARLIE,
+			"i need to give charlie a leather body.",
+			"I really need a leather body.",
+			item(ItemID.LEATHER_ARMOUR)),
+		new SkillChallengeClue(
+			ChallengeType.CHARLIE,
+			"i need to give charlie some leather chaps.",
+			"I really need some leather chaps.",
+			item(ItemID.LEATHER_CHAPS)),
+		new SkillChallengeClue(
+			ChallengeType.CHARLIE,
+			"i need to give charlie a raw herring.",
+			"I really need a raw herring.",
+			item(ItemID.RAW_HERRING)),
+		new SkillChallengeClue(
+			ChallengeType.CHARLIE,
+			"i need to give charlie a raw trout.",
+			"I really need a raw trout.",
+			item(ItemID.RAW_TROUT)),
+		new SkillChallengeClue(
+			ChallengeType.CHARLIE,
+			"i need to give charlie a piece of iron ore.",
+			"I really need a piece of iron ore.",
+			item(ItemID.IRON_ORE)),
+		new SkillChallengeClue(
+			ChallengeType.CHARLIE,
+			"i need to give charlie one iron dagger.",
+			"I really need an iron dagger.",
+			item(ItemID.IRON_DAGGER)),
 		// Elite Sherlock Tasks
 		new SkillChallengeClue("Equip a Dragon Scimitar.", true, any("Any Dragon Scimitar", item(ItemID.DRAGON_SCIMITAR), item(ItemID.DRAGON_SCIMITAR_ORNAMENT))),
 		new SkillChallengeClue("Enchant some Dragonstone Jewellery.", "enchant a piece of dragonstone jewellery.",
@@ -270,6 +302,8 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 
 	private final ChallengeType type;
 	private final String challenge;
+	@Nullable
+	private final String chatboxChallenge;
 	private final String rawChallenge;
 	private final String returnText;
 	private final ItemRequirement[] itemRequirements;
@@ -281,13 +315,14 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 	private boolean challengeCompleted;
 
 	// Charlie Tasks
-	private SkillChallengeClue(ChallengeType challengeType, String clueText, SingleItemRequirement returnItem)
+	private SkillChallengeClue(ChallengeType challengeType, String clueText, String chatboxChallenge, SingleItemRequirement returnItem)
 	{
 		Preconditions.checkArgument(challengeType == ChallengeType.CHARLIE);
 		this.type = challengeType;
 		this.challenge = "";
 		this.rawChallenge = clueText;
 		this.returnText = clueText;
+		this.chatboxChallenge = chatboxChallenge;
 		this.itemRequirements = new ItemRequirement[0];
 		this.returnItem = returnItem;
 		this.challengeCompleted = true;
@@ -331,6 +366,7 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 	{
 		this.type = ChallengeType.SHERLOCK;
 		this.challenge = challenge;
+		this.chatboxChallenge = null;
 		this.rawChallenge = rawChallenge;
 		this.itemRequirements = itemRequirements;
 		this.challengeCompleted = false;
@@ -476,6 +512,28 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 			else if (text.equals(clue.rawChallenge))
 			{
 				clue.setChallengeCompleted(false);
+				return clue;
+			}
+		}
+		return null;
+	}
+
+	public static SkillChallengeClue forChatboxText(String sender, String dialogText)
+	{
+		if (!ChallengeType.CHARLIE.getName().equals(sender))
+		{
+			return null;
+		}
+
+		for (SkillChallengeClue clue : CLUES)
+		{
+			if (clue.getChatboxChallenge() == null)
+			{
+				continue;
+			}
+
+			if (clue.getChatboxChallenge().equalsIgnoreCase(dialogText))
+			{
 				return clue;
 			}
 		}
