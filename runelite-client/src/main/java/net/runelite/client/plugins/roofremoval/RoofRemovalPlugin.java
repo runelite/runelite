@@ -99,6 +99,7 @@ public class RoofRemovalPlugin extends Plugin
 	@Override
 	public void startUp() throws IOException
 	{
+		buildConfigOverrides();
 		loadRoofOverrides();
 		clientThread.invoke(() ->
 		{
@@ -247,9 +248,14 @@ public class RoofRemovalPlugin extends Plugin
 		outer:
 		for (int regionID : client.getMapRegions())
 		{
+			if (configOverrideRegions.contains(regionID))
+			{
+				regionsHaveOverrides = true;
+				break;
+			}
 			for (int z = 0; z < Constants.MAX_Z; z++)
 			{
-				if (overrides.containsKey(regionID << 2 | z) || configOverrideRegions.contains(regionID))
+				if (overrides.containsKey(regionID << 2 | z))
 				{
 					regionsHaveOverrides = true;
 					break outer;
