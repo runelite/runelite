@@ -332,6 +332,12 @@ public class ClientUI
 			frame.setResizable(true);
 
 			frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+			if (OSType.getOSType() == OSType.MacOS)
+			{
+				// Change the default quit strategy to CLOSE_ALL_WINDOWS so that ctrl+q
+				// triggers the listener below instead of exiting.
+				MacOSQuitStrategy.setup();
+			}
 			frame.addWindowListener(new WindowAdapter()
 			{
 				@Override
