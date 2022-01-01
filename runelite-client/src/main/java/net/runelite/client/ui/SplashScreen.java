@@ -46,6 +46,7 @@ import javax.swing.plaf.basic.BasicProgressBarUI;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.ui.skin.SubstanceRuneLiteLookAndFeel;
 import net.runelite.client.util.ImageUtil;
+import net.runelite.client.util.OSType;
 import org.pushingpixels.substance.internal.SubstanceSynapse;
 
 @Slf4j
@@ -162,6 +163,10 @@ public class SplashScreen extends JFrame implements ActionListener
 	{
 		try
 		{
+			if (OSType.getOSType() == OSType.MacOS)
+			{
+				System.setProperty("apple.eawt.quitStrategy", "CLOSE_ALL_WINDOWS");
+			}
 			SwingUtilities.invokeAndWait(() ->
 			{
 				if (INSTANCE != null)
