@@ -203,6 +203,11 @@ public class SplashScreen extends JFrame implements ActionListener
 				return;
 			}
 
+			// The instance sometimes sticks around after disposal.
+			// When it does, the EXIT_ON_CLOSE operation interferes with CMD+Q on MacOS.
+			// To get around this, set DO_NOTHING_ON_CLOSE before disposing.
+			INSTANCE.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
 			INSTANCE.timer.stop();
 			INSTANCE.dispose();
 			INSTANCE = null;
