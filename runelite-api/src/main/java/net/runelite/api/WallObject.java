@@ -32,14 +32,28 @@ import java.awt.Shape;
 public interface WallObject extends TileObject
 {
 	/**
-	 * The angle of the first wall
-	 * @see net.runelite.api.coords.Angle
+	 * A bitfield with the orientation of the first wall
+	 * 1 = West
+	 * 2 = North
+	 * 4 = East
+	 * 8 = South
+	 * 16 = North-west
+	 * 32 = North-east
+	 * 64 = South-east
+	 * 128 = South-west
 	 */
 	int getOrientationA();
 
 	/**
-	 * The angle of the second wall
-	 * @see net.runelite.api.coords.Angle
+	 * A bitfield with the orientation of the second wall
+	 * 1 = West
+	 * 2 = North
+	 * 4 = East
+	 * 8 = South
+	 * 16 = North-west
+	 * 32 = North-east
+	 * 64 = South-east
+	 * 128 = South-west
 	 */
 	int getOrientationB();
 
