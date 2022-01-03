@@ -1131,7 +1131,7 @@ public class ModelOutlineRenderer
 			{
 				drawModelOutline(model, lp.getX(), lp.getY(),
 					Perspective.getTileHeight(client, lp, wallObject.getPlane()),
-					wallObject.getOrientationA(), outlineWidth, color, feather);
+					0, outlineWidth, color, feather);
 			}
 		}
 
@@ -1143,7 +1143,7 @@ public class ModelOutlineRenderer
 			{
 				drawModelOutline(model, lp.getX(), lp.getY(),
 					Perspective.getTileHeight(client, lp, wallObject.getPlane()),
-					wallObject.getOrientationB(), outlineWidth, color, feather);
+					0, outlineWidth, color, feather);
 			}
 		}
 	}
