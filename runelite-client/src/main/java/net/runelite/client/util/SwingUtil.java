@@ -184,7 +184,7 @@ public class SwingUtil
 			@Override
 			public void mouseClicked(MouseEvent e)
 			{
-				if (OSType.getOSType() == OSType.MacOS)
+				if (OSType.getOSType() == OSType.MacOS && !frame.isFocused())
 				{
 					// On macOS, frame.setVisible(true) only restores focus when the visibility was previously false.
 					// The frame's visibility is not set to false when the window loses focus, so we set it manually.
