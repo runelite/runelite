@@ -127,7 +127,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		MenuAction.ITEM_THIRD_OPTION,
 		MenuAction.ITEM_FOURTH_OPTION,
 		MenuAction.ITEM_FIFTH_OPTION,
-		MenuAction.EXAMINE_ITEM,
 		MenuAction.ITEM_USE
 	);
 
@@ -781,7 +780,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		ItemComposition itemComposition = event.getItemComposition();
 		Integer option = getSwapConfig(true, itemComposition.getId());
 
-		if (option != null)
+		if (option != null && option < itemComposition.getInventoryActions().length)
 		{
 			itemComposition.setShiftClickActionIndex(option);
 		}
