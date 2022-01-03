@@ -38,9 +38,7 @@ import net.runelite.api.FriendsChatRank;
 import net.runelite.api.GameState;
 import net.runelite.api.IndexedSprite;
 import net.runelite.api.clan.ClanTitle;
-import net.runelite.api.events.GameStateChanged;
-import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.util.ImageUtil;
 
 @Singleton
@@ -55,15 +53,23 @@ public class ChatIconManager
 	private BufferedImage[] friendsChatRankImages;
 	private BufferedImage[] clanRankImages;
 
-	private int friendsChatOffset;
-	private int clanOffset;
+	private int friendsChatOffset = -1;
+	private int clanOffset = -1;
 
 	@Inject
-	private ChatIconManager(Client client, SpriteManager spriteManager, EventBus eventBus)
+	private ChatIconManager(Client client, SpriteManager spriteManager, ClientThread clientThread)
 	{
 		this.client = client;
 		this.spriteManager = spriteManager;
-		eventBus.register(this);
+		clientThread.invokeLater(() ->
+		{
+			if (client.getGameState().getState() >= GameState.LOGIN_SCREEN.getState())
+			{
+				loadRankIcons();
+				return true;
+			}
+			return false;
+		});
 	}
 
 	@Nullable
@@ -87,22 +93,13 @@ public class ChatIconManager
 
 	public int getIconNumber(final FriendsChatRank friendsChatRank)
 	{
-		return friendsChatOffset + friendsChatRank.ordinal() - 1;
+		return friendsChatOffset == -1 ? -1 : friendsChatOffset + friendsChatRank.ordinal() - 1;
 	}
 
 	public int getIconNumber(final ClanTitle clanTitle)
 	{
 		int rank = clanTitle.getId();
-		return clanOffset + clanRankToIdx(rank);
-	}
-
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
-	{
-		if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN && friendsChatOffset == 0)
-		{
-			loadRankIcons();
-		}
+		return clanOffset == -1 ? -1 : clanOffset + clanRankToIdx(rank);
 	}
 
 	private void loadRankIcons()
