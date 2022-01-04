@@ -40,8 +40,10 @@ import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Stream;
 import net.runelite.api.Client;
 import net.runelite.client.RuneLite;
 import net.runelite.client.RuneLiteModule;
@@ -145,6 +147,38 @@ public class PluginManagerTest
 			.filter(pd -> !pd.developerPlugin())
 			.count();
 		assertEquals(expected, plugins.size());
+	}
+
+	@PluginDescriptor(
+		name = "TestExtendsPlugin",
+		loadWhenOutdated = true
+	)
+	static class TestPluginChild extends Plugin
+	{
+		public TestPluginChild()
+		{
+		}
+	}
+
+	@PluginDescriptor(
+		name = "TestExtendsExtendsPlugin",
+		loadWhenOutdated = true
+	)
+	static class TestPluginGrandChild extends TestPluginChild
+	{
+		public TestPluginGrandChild()
+		{
+		}
+	}
+
+	@Test
+	public void testLoadSubSubClassOfPlugin() throws Exception
+	{
+		PluginManager pluginManager = new PluginManager(false, false, null, null, null, null);
+		pluginManager.setOutdated(true);
+
+		List<Plugin> loaded = pluginManager.loadPlugins(Stream.of(TestPluginGrandChild.class), null);
+		assertEquals(1, loaded.size());
 	}
 
 	@Test

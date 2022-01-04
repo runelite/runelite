@@ -26,7 +26,6 @@ package net.runelite.client.plugins;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
 import com.google.common.graph.Graph;
 import com.google.common.graph.GraphBuilder;
 import com.google.common.graph.Graphs;
@@ -57,6 +56,7 @@ import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Provider;
@@ -268,92 +268,92 @@ public class PluginManager
 		SplashScreen.stage(.59, null, "Loading Plugins");
 		ClassPath classPath = ClassPath.from(getClass().getClassLoader());
 
-		List<Class<?>> plugins = classPath.getTopLevelClassesRecursive(PLUGIN_PACKAGE).stream()
-			.map(ClassInfo::load)
-			.collect(Collectors.toList());
+		Stream<Class<?>> plugins = classPath.getTopLevelClassesRecursive(PLUGIN_PACKAGE).stream()
+			.filter((ClassPath.ClassInfo info) -> info.load().getSuperclass() == Plugin.class)
+			.map(ClassInfo::load);
 
 		loadPlugins(plugins, (loaded, total) ->
 			SplashScreen.stage(.60, .70, null, "Loading Plugins", loaded, total, false));
 	}
 
-	public List<Plugin> loadPlugins(List<Class<?>> plugins, BiConsumer<Integer, Integer> onPluginLoaded) throws PluginInstantiationException
+	public List<Plugin> loadPlugins(Stream<Class<?>> plugins, BiConsumer<Integer, Integer> onPluginLoaded) throws PluginInstantiationException
 	{
-		MutableGraph<Class<? extends Plugin>> graph = GraphBuilder
+		MutableGraph<Class<? extends Plugin>> DependencyGraph = GraphBuilder
 			.directed()
 			.build();
 
-		for (Class<?> clazz : plugins)
+		plugins.forEach((Class<?> pluginClass) ->
 		{
-			PluginDescriptor pluginDescriptor = clazz.getAnnotation(PluginDescriptor.class);
+			PluginDescriptor pluginDescriptor = pluginClass.getAnnotation(PluginDescriptor.class);
+			boolean isPlugin = Plugin.class.isAssignableFrom(pluginClass);
 
 			if (pluginDescriptor == null)
 			{
-				if (clazz.getSuperclass() == Plugin.class)
+				if (isPlugin)
 				{
-					log.warn("Class {} is a plugin, but has no plugin descriptor", clazz);
+					log.warn("Class {} is a plugin, but has no plugin descriptor", pluginClass);
 				}
-				continue;
+				return;
 			}
 
-			if (clazz.getSuperclass() != Plugin.class)
+			if (!isPlugin)
 			{
-				log.warn("Class {} has plugin descriptor, but is not a plugin", clazz);
-				continue;
+				log.warn("Class {} has plugin descriptor, but is not a plugin", pluginClass);
+				return;
 			}
 
 			if (!pluginDescriptor.loadWhenOutdated() && isOutdated)
 			{
-				continue;
+				return;
 			}
 
 			if (pluginDescriptor.developerPlugin() && !developerMode)
 			{
-				continue;
+				return;
 			}
 
 			if (safeMode && !pluginDescriptor.loadInSafeMode())
 			{
-				log.debug("Disabling {} due to safe mode", clazz);
+				log.debug("Disabling {} due to safe mode", pluginClass);
 				// also disable the plugin from autostarting later
 				configManager.unsetConfiguration(RuneLiteConfig.GROUP_NAME,
-					(Strings.isNullOrEmpty(pluginDescriptor.configName()) ? clazz.getSimpleName() : pluginDescriptor.configName()).toLowerCase());
-				continue;
+					(Strings.isNullOrEmpty(pluginDescriptor.configName()) ? pluginClass.getSimpleName() : pluginDescriptor.configName()).toLowerCase());
+				return;
 			}
+			DependencyGraph.addNode((Class<Plugin>) pluginClass);
+		});
 
-			Class<Plugin> pluginClass = (Class<Plugin>) clazz;
-			graph.addNode(pluginClass);
-		}
-
-		// Build plugin graph
-		for (Class<? extends Plugin> pluginClazz : graph.nodes())
+		for (Class<? extends Plugin> pluginClass : DependencyGraph.nodes())
 		{
-			PluginDependency[] pluginDependencies = pluginClazz.getAnnotationsByType(PluginDependency.class);
+			PluginDependency[] pluginDependencies = pluginClass.getAnnotationsByType(PluginDependency.class);
 
 			for (PluginDependency pluginDependency : pluginDependencies)
 			{
-				if (graph.nodes().contains(pluginDependency.value()))
+				if (DependencyGraph.nodes().contains(pluginDependency.value()))
 				{
-					graph.putEdge(pluginClazz, pluginDependency.value());
+					DependencyGraph.putEdge(pluginDependency.value(), pluginClass);
+				}
+				else
+				{
+					log.warn("Unmet dependency {}. {} depends on it", pluginDependency.value(), pluginClass);
 				}
 			}
 		}
 
-		if (Graphs.hasCycle(graph))
+		if (Graphs.hasCycle(DependencyGraph))
 		{
 			throw new PluginInstantiationException("Plugin dependency graph contains a cycle!");
 		}
 
-		List<Class<? extends Plugin>> sortedPlugins = topologicalSort(graph);
-		sortedPlugins = Lists.reverse(sortedPlugins);
+		List<Class<? extends Plugin>> sortedPlugins = topologicalSort(DependencyGraph);
 
 		int loaded = 0;
 		List<Plugin> newPlugins = new ArrayList<>();
-		for (Class<? extends Plugin> pluginClazz : sortedPlugins)
+		for (Class<? extends Plugin> pluginClass : sortedPlugins)
 		{
-			Plugin plugin;
 			try
 			{
-				plugin = instantiate(this.plugins, (Class<Plugin>) pluginClazz);
+				Plugin plugin = instantiate(this.plugins, (Class<Plugin>) pluginClass);
 				newPlugins.add(plugin);
 				this.plugins.add(plugin);
 			}
@@ -544,8 +544,7 @@ public class PluginManager
 				binder.bind(clazz).toInstance(plugin);
 				binder.install(plugin);
 			};
-			Injector pluginInjector = parent.createChildInjector(pluginModule);
-			plugin.injector = pluginInjector;
+			plugin.injector = parent.createChildInjector(pluginModule);
 		}
 		catch (CreationException ex)
 		{
@@ -631,14 +630,16 @@ public class PluginManager
 	/**
 	 * Topologically sort a graph. Uses Kahn's algorithm.
 	 *
-	 * @param graph
-	 * @param <T>
-	 * @return
+	 * @param graph - A directed graph
+	 * @param <T>   - The type of the item contained in the nodes of the graph
+	 * @return - A topologically sorted list corresponding to graph.
+	 * <p>
+	 * Multiple invocations may return lists that are not equal.
 	 */
 	private <T> List<T> topologicalSort(Graph<T> graph)
 	{
 		MutableGraph<T> graphCopy = Graphs.copyOf(graph);
-		List<T> l = new ArrayList<>();
+		List<T> sorted = new ArrayList<>();
 		Set<T> s = graphCopy.nodes().stream()
 			.filter(node -> graphCopy.inDegree(node) == 0)
 			.collect(Collectors.toSet());
@@ -648,9 +649,9 @@ public class PluginManager
 			T n = it.next();
 			it.remove();
 
-			l.add(n);
+			sorted.add(n);
 
-			for (T m : graphCopy.successors(n))
+			for (T m : new HashSet<>(graphCopy.successors(n)))
 			{
 				graphCopy.removeEdge(n, m);
 				if (graphCopy.inDegree(m) == 0)
@@ -663,7 +664,7 @@ public class PluginManager
 		{
 			throw new RuntimeException("Graph has at least one cycle");
 		}
-		return l;
+		return sorted;
 	}
 
 	public List<Plugin> conflictsForPlugin(Plugin plugin)

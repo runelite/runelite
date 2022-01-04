@@ -26,7 +26,6 @@ package net.runelite.client.externalplugins;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.google.common.hash.Hashing;
 import com.google.common.hash.HashingInputStream;
@@ -36,6 +35,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -117,7 +117,7 @@ public class ExternalPluginManager
 		if (builtinExternals != null)
 		{
 			// builtin external's don't actually have a manifest or a separate classloader...
-			pluginManager.loadPlugins(Lists.newArrayList(builtinExternals), null);
+			pluginManager.loadPlugins(Arrays.stream(builtinExternals), null);
 		}
 	}
 
@@ -310,7 +310,7 @@ public class ExternalPluginManager
 						clazzes.add(cl.loadClass(className));
 					}
 
-					List<Plugin> newPlugins2 = newPlugins = pluginManager.loadPlugins(clazzes, null);
+					List<Plugin> newPlugins2 = newPlugins = pluginManager.loadPlugins(clazzes.stream(), null);
 					if (!startup)
 					{
 						pluginManager.loadDefaultPluginConfiguration(newPlugins);
@@ -422,6 +422,7 @@ public class ExternalPluginManager
 		return null;
 	}
 
+	@SafeVarargs
 	public static void loadBuiltin(Class<? extends Plugin>... plugins)
 	{
 		boolean assertsEnabled = false;
