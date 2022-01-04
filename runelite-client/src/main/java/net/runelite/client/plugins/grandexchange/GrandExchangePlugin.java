@@ -623,14 +623,19 @@ public class GrandExchangePlugin extends Plugin
 		}
 	}
 
-	@Subscribe
+	@Subscribe(
+		// run after the bank tags plugin, and potentially anything
+		// else which wants to consume the event and override
+		// the search behavior
+		priority = -100
+	)
 	public void onGrandExchangeSearched(GrandExchangeSearched event)
 	{
 		wasFuzzySearch = false;
 
 		GrandExchangeSearchMode searchMode = config.geSearchMode();
 		final String input = client.getVar(VarClientStr.INPUT_TEXT);
-		if (searchMode == GrandExchangeSearchMode.DEFAULT || input.isEmpty())
+		if (searchMode == GrandExchangeSearchMode.DEFAULT || input.isEmpty() || event.isConsumed())
 		{
 			return;
 		}
