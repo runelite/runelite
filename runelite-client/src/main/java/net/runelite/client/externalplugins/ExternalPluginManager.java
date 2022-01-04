@@ -35,6 +35,8 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -167,6 +169,9 @@ public class ExternalPluginManager
 				SplashScreen.init();
 			}
 
+			Instant now = Instant.now();
+			Instant keepAfter = now.minus(3, ChronoUnit.DAYS);
+
 			SplashScreen.stage(splashStart, null, "Downloading external plugins");
 			Set<ExternalPluginManifest> externalPlugins = new HashSet<>();
 
@@ -189,6 +194,7 @@ public class ExternalPluginManager
 					{
 						externalPlugins.add(manifest);
 
+						manifest.getJarFile().setLastModified(now.toEpochMilli());
 						if (!manifest.isValid())
 						{
 							needsDownload.add(manifest);
@@ -206,7 +212,7 @@ public class ExternalPluginManager
 				{
 					for (File fi : files)
 					{
-						if (!keep.contains(fi))
+						if (!keep.contains(fi) && fi.lastModified() < keepAfter.toEpochMilli())
 						{
 							fi.delete();
 						}
