@@ -291,9 +291,11 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 		}
 		else if (config.loginScreen() == LoginScreenOverride.RANDOM)
 		{
-			Object[] filtered = Arrays.stream(LoginScreenOverride.values()).filter(x -> x.getFileName() != null).toArray();
-			LoginScreenOverride rand = (LoginScreenOverride) filtered[new Random().nextInt(filtered.length)];
-			pixels = getFileSpritePixels(rand.getFileName());
+			LoginScreenOverride[] filtered = Arrays.stream(LoginScreenOverride.values())
+				.filter(screen -> screen.getFileName() != null)
+				.toArray(LoginScreenOverride[]::new);
+			LoginScreenOverride randomScreen = filtered[new Random().nextInt(filtered.length)];
+			pixels = getFileSpritePixels(randomScreen.getFileName());
 		}
 		else
 		{
