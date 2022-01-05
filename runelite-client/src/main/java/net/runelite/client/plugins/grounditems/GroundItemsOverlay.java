@@ -84,6 +84,7 @@ public class GroundItemsOverlay extends Overlay
 	private static final int GRAARDOR_REGION = 11347;
 	private static final int KRIL_TSUTSAROTH_REGION = 11603;
 	private static final int KREEARRA_REGION = 11346;
+	private static final int NEX_REGION = 11601;
 	private static final int NIGHTMARE_REGION = 15515;
 	private static final int TEMPOROSS_REGION = 12078;
 
@@ -457,6 +458,7 @@ public class GroundItemsOverlay extends Overlay
 			}
 			else if (playerRegionID == ZILYANA_REGION || playerRegionID == GRAARDOR_REGION ||
 				playerRegionID == KRIL_TSUTSAROTH_REGION || playerRegionID == KREEARRA_REGION ||
+				playerRegionID == NEX_REGION ||
 				playerRegionID == NIGHTMARE_REGION ||  playerRegionID == TEMPOROSS_REGION ||
 				playerRegionID == CLAN_HALL_REGION)
 			{
