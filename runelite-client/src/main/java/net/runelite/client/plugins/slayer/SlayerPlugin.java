@@ -63,6 +63,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.CommandExecuted;
+import net.runelite.api.events.FakeXpDrop;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.HitsplatApplied;
@@ -550,6 +551,21 @@ public class SlayerPlugin extends Plugin
 		final int delta = slayerExp - cachedXp;
 		cachedXp = slayerExp;
 
+		xpChanged(delta);
+	}
+
+	@Subscribe
+	public void onFakeXpDrop(FakeXpDrop fakeXpDrop)
+	{
+		if (fakeXpDrop.getSkill() == SLAYER)
+		{
+			int delta = fakeXpDrop.getXp();
+			xpChanged(delta);
+		}
+	}
+
+	private void xpChanged(int delta)
+	{
 		log.debug("Slayer xp change delta: {}, killed npcs: {}", delta, taggedNpcsDiedPrevTick);
 
 		final Task task = Task.getTask(taskName);
