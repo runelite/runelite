@@ -1740,9 +1740,10 @@ public class ChatCommandsPlugin extends Plugin
 		if (chatMessage.getType() == ChatMessageType.PUBLICCHAT || chatMessage.getType() == ChatMessageType.MODCHAT)
 		{
 			// Public chat on a seasonal world is always seasonal or tournament hiscores, regardless of icon
-			if (client.getWorldType().contains(WorldType.SEASONAL))
+			HiscoreEndpoint endpoint = HiscoreEndpoint.fromWorldTypes(client.getWorldType());
+			if (endpoint != HiscoreEndpoint.NORMAL)
 			{
-				return new HiscoreLookup(player, HiscoreEndpoint.TOURNAMENT);
+				return new HiscoreLookup(player, endpoint);
 			}
 		}
 
@@ -1788,9 +1789,11 @@ public class ChatCommandsPlugin extends Plugin
 	private HiscoreEndpoint getLocalHiscoreEndpointType()
 	{
 		EnumSet<WorldType> worldType = client.getWorldType();
-		if (worldType.contains(WorldType.SEASONAL))
+		HiscoreEndpoint endpoint = HiscoreEndpoint.fromWorldTypes(worldType);
+		if (endpoint != HiscoreEndpoint.NORMAL)
 		{
-			return HiscoreEndpoint.TOURNAMENT;
+			// leagues/dmmt or dmm
+			return endpoint;
 		}
 
 		return toEndPoint(client.getAccountType());
