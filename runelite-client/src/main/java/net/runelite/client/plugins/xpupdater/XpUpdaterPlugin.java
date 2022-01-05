@@ -192,13 +192,13 @@ public class XpUpdaterPlugin extends Plugin
 	private void updateWom(String username, EnumSet<WorldType> worldTypes)
 	{
 		if (config.wiseoldman()
-			&& !worldTypes.contains(WorldType.SEASONAL)
 			&& !worldTypes.contains(WorldType.DEADMAN)
 			&& !worldTypes.contains(WorldType.NOSAVE_MODE))
 		{
+			String host = worldTypes.contains(WorldType.SEASONAL) ? "seasonal.wiseoldman.net" : "wiseoldman.net";
 			HttpUrl url = new HttpUrl.Builder()
 				.scheme("https")
-				.host("wiseoldman.net")
+				.host(host)
 				.addPathSegment("api")
 				.addPathSegment("players")
 				.addPathSegment("track")
