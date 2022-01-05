@@ -29,7 +29,6 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.EnumSet;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -39,17 +38,16 @@ import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
-import net.runelite.api.WorldType;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.hiscore.HiscoreEndpoint;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
-import net.runelite.client.hiscore.HiscoreEndpoint;
 
 @PluginDescriptor(
 	name = "Opponent Information",
@@ -115,19 +113,7 @@ public class OpponentInfoPlugin extends Plugin
 			return;
 		}
 
-		final EnumSet<WorldType> worldType = client.getWorldType();
-		if (worldType.contains(WorldType.SEASONAL))
-		{
-			hiscoreEndpoint = HiscoreEndpoint.TOURNAMENT;
-		}
-		else if (worldType.contains(WorldType.DEADMAN))
-		{
-			hiscoreEndpoint = HiscoreEndpoint.DEADMAN;
-		}
-		else
-		{
-			hiscoreEndpoint = HiscoreEndpoint.NORMAL;
-		}
+		hiscoreEndpoint = HiscoreEndpoint.fromWorldTypes(client.getWorldType());
 	}
 
 	@Subscribe

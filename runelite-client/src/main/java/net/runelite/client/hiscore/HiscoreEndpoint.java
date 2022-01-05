@@ -25,7 +25,9 @@
  */
 package net.runelite.client.hiscore;
 
+import java.util.Set;
 import lombok.Getter;
+import net.runelite.api.WorldType;
 import okhttp3.HttpUrl;
 
 @Getter
@@ -46,5 +48,22 @@ public enum HiscoreEndpoint
 	{
 		this.name = name;
 		this.hiscoreURL = HttpUrl.get(hiscoreURL);
+	}
+
+	public static HiscoreEndpoint fromWorldTypes(Set<WorldType> worldTypes)
+	{
+		if (worldTypes.contains(WorldType.SEASONAL))
+		{
+			// this changes between LEAGUE and TOURNAMENT
+			return HiscoreEndpoint.LEAGUE;
+		}
+		else if (worldTypes.contains(WorldType.DEADMAN))
+		{
+			return HiscoreEndpoint.DEADMAN;
+		}
+		else
+		{
+			return HiscoreEndpoint.NORMAL;
+		}
 	}
 }
