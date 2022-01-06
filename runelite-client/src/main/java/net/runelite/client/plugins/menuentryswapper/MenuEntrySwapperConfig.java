@@ -112,6 +112,13 @@ public interface MenuEntrySwapperConfig extends Config
 		NARDAH,
 		KALPHITE_CAVE,
 	}
+	
+	enum FaladorShieldMode
+	{
+		WEAR,
+		RECHARGE_PRAYER,
+		CHECK,
+	}
 
 	@ConfigItem(
 		position = -3,
@@ -542,6 +549,17 @@ public interface MenuEntrySwapperConfig extends Config
 	default DesertAmuletMode swapDesertAmuletMode()
 	{
 		return DesertAmuletMode.WEAR;
+	}
+	
+	@ConfigItem(
+			keyName = "swapFaladorShield",
+			name = "Falador Shield",
+			description = "Swap Wear with the Recharge-prayer on the Falador shield.",
+			section = itemSection
+	)
+	default FaladorShieldMode swapFaladorShieldMode()
+	{
+		return FaladorShieldMode.WEAR;
 	}
 
 	@ConfigItem(
