@@ -383,6 +383,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		swap("wear", "nardah", () -> config.swapDesertAmuletMode() == DesertAmuletMode.NARDAH);
 		swap("wear", "kalphite cave", () -> config.swapDesertAmuletMode() == DesertAmuletMode.KALPHITE_CAVE);
+		
+		swap("wear", "recharge-prayer", () -> config.swapFaladorShieldMode() == FaladorShieldMode.RECHARGE_PRAYER);
+		swap("wear", "check", () -> config.swapFaladorShieldMode() == FaladorShieldMode.CHECK);
 
 		swap("bury", "use", config::swapBones);
 
