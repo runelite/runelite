@@ -131,6 +131,13 @@ public class ItemChargePlugin extends Plugin
 	);
 	private static final String EXPEDITIOUS_BRACELET_BREAK_TEXT = "Your Expeditious Bracelet has crumbled to dust.";
 
+	private static final Pattern FALADOR_SHIELD_CHECK_PATTERN = Pattern.compile(
+		"You have (one|two) remaining charges? for today\\."
+	);
+
+	private static final String FALADOR_SHIELD_EMPTY_TEXT = "You have already used your charge for today.";
+	private static final String FALADOR_SHIELD_EMPTY_TEXT_RECHARGE = "You have already used all available recharges today. Try again tomorrow when the shield has recharged.";
+
 	private static final int MAX_DODGY_CHARGES = 10;
 	private static final int MAX_BINDING_CHARGES = 16;
 	private static final int MAX_EXPLORER_RING_CHARGES = 30;
@@ -138,6 +145,7 @@ public class ItemChargePlugin extends Plugin
 	private static final int MAX_AMULET_OF_CHEMISTRY_CHARGES = 5;
 	private static final int MAX_AMULET_OF_BOUNTY_CHARGES = 10;
 	private static final int MAX_SLAYER_BRACELET_CHARGES = 30;
+	private static final int MAX_FALADOR_SHIELD_CHARGES = 2;
 
 	private int lastExplorerRingCharge = -1;
 
@@ -227,6 +235,7 @@ public class ItemChargePlugin extends Plugin
 			Matcher slaughterCheckMatcher = BRACELET_OF_SLAUGHTER_CHECK_PATTERN.matcher(message);
 			Matcher expeditiousActivateMatcher = EXPEDITIOUS_BRACELET_ACTIVATE_PATTERN.matcher(message);
 			Matcher expeditiousCheckMatcher = EXPEDITIOUS_BRACELET_CHECK_PATTERN.matcher(message);
+			Matcher faladorShieldCheckMatcher = FALADOR_SHIELD_CHECK_PATTERN.matcher(message);
 
 			if (config.recoilNotification() && message.contains(RING_OF_RECOIL_BREAK_MESSAGE))
 			{
@@ -413,6 +422,22 @@ public class ItemChargePlugin extends Plugin
 			{
 				updateExpeditiousBraceletCharges(Integer.parseInt(expeditiousCheckMatcher.group(1)));
 			}
+			else if (faladorShieldCheckMatcher.find())
+			{
+				final String match = faladorShieldCheckMatcher.group(1);
+				if (match.equals("one"))
+				{
+					updateFaladorShieldCharges(1);
+				}
+				else if (match.equals("two"))
+				{
+					updateFaladorShieldCharges(2);
+				}
+			}
+			else if (message.equals(FALADOR_SHIELD_EMPTY_TEXT) || message.equals(FALADOR_SHIELD_EMPTY_TEXT_RECHARGE))
+			{
+				updateFaladorShieldCharges(0);
+			}
 		}
 	}
 
@@ -446,6 +471,7 @@ public class ItemChargePlugin extends Plugin
 	private void onVarbitChanged(VarbitChanged event)
 	{
 		int explorerRingCharge = client.getVar(Varbits.EXPLORER_RING_ALCHS);
+
 		if (lastExplorerRingCharge != explorerRingCharge)
 		{
 			lastExplorerRingCharge = explorerRingCharge;
@@ -537,6 +563,12 @@ public class ItemChargePlugin extends Plugin
 	private void updateExpeditiousBraceletCharges(final int value)
 	{
 		setItemCharges(ItemChargeConfig.KEY_EXPEDITIOUS_BRACELET, value);
+		updateInfoboxes();
+	}
+
+	private void updateFaladorShieldCharges(final int value)
+	{
+		setItemCharges(ItemChargeConfig.KEY_FALADOR_SHIELD, value);
 		updateInfoboxes();
 	}
 
