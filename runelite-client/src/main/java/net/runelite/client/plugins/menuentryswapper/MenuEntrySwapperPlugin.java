@@ -67,6 +67,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import static net.runelite.client.plugins.menuentryswapper.MenuEntrySwapperConfig.ArdougneCloakMode;
 import static net.runelite.client.plugins.menuentryswapper.MenuEntrySwapperConfig.DesertAmuletMode;
+import static net.runelite.client.plugins.menuentryswapper.MenuEntrySwapperConfig.FaladorShieldMode;
 import static net.runelite.client.plugins.menuentryswapper.MenuEntrySwapperConfig.KaramjaGlovesMode;
 import static net.runelite.client.plugins.menuentryswapper.MenuEntrySwapperConfig.MorytaniaLegsMode;
 import static net.runelite.client.plugins.menuentryswapper.MenuEntrySwapperConfig.RadasBlessingMode;
@@ -383,6 +384,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		swap("wear", "nardah", () -> config.swapDesertAmuletMode() == DesertAmuletMode.NARDAH);
 		swap("wear", "kalphite cave", () -> config.swapDesertAmuletMode() == DesertAmuletMode.KALPHITE_CAVE);
+		
+		swap("wear", "recharge-prayer", () -> config.swapFaladorShieldMode() == FaladorShieldMode.RECHARGE_PRAYER);
+		swap("wear", "check", () -> config.swapFaladorShieldMode() == FaladorShieldMode.CHECK);
 
 		swap("bury", "use", config::swapBones);
 
