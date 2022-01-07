@@ -59,6 +59,8 @@ import org.apache.commons.lang3.StringUtils;
 )
 public class RunEnergyPlugin extends Plugin
 {
+	static final String CONFIG_GROUP = "runenergy";
+
 	// TODO It would be nice if we have the IDs for just the equipped variants of the Graceful set items.
 	private static final ImmutableSet<Integer> ALL_GRACEFUL_HOODS = ImmutableSet.of(
 		GRACEFUL_HOOD_11851, GRACEFUL_HOOD_13579, GRACEFUL_HOOD_13580, GRACEFUL_HOOD_13591, GRACEFUL_HOOD_13592,
@@ -139,6 +141,7 @@ public class RunEnergyPlugin extends Plugin
 
 	private boolean localPlayerRunningToDestination;
 	private WorldPoint prevLocalPlayerLocation;
+	private String estimatedRunTime;
 
 	@Provides
 	RunEnergyConfig getConfig(ConfigManager configManager)
@@ -150,6 +153,11 @@ public class RunEnergyPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(energyOverlay);
+
+		if (energyConfig.replaceOrbText())
+		{
+			estimatedRunTime = getEstimatedRunTimeRemaining(true);
+		}
 	}
 
 	@Override
@@ -158,6 +166,7 @@ public class RunEnergyPlugin extends Plugin
 		overlayManager.remove(energyOverlay);
 		localPlayerRunningToDestination = false;
 		prevLocalPlayerLocation = null;
+		estimatedRunTime = null;
 		resetRunOrbText();
 	}
 
@@ -170,6 +179,11 @@ public class RunEnergyPlugin extends Plugin
 			prevLocalPlayerLocation.distanceTo(client.getLocalPlayer().getWorldLocation()) > 1;
 
 		prevLocalPlayerLocation = client.getLocalPlayer().getWorldLocation();
+
+		if (energyConfig.replaceOrbText())
+		{
+			estimatedRunTime = getEstimatedRunTimeRemaining(true);
+		}
 	}
 
 	@Subscribe
@@ -179,16 +193,23 @@ public class RunEnergyPlugin extends Plugin
 		// set the text before every frame is drawn to prevent flicker.
 		if (energyConfig.replaceOrbText())
 		{
-			setRunOrbText(getEstimatedRunTimeRemaining(true));
+			setRunOrbText(estimatedRunTime);
 		}
 	}
 
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getGroup().equals("runenergy") && !energyConfig.replaceOrbText())
+		if (event.getGroup().equals(CONFIG_GROUP))
 		{
-			resetRunOrbText();
+			if (energyConfig.replaceOrbText())
+			{
+				estimatedRunTime = getEstimatedRunTimeRemaining(true);
+			}
+			else
+			{
+				resetRunOrbText();
+			}
 		}
 	}
 
@@ -196,7 +217,7 @@ public class RunEnergyPlugin extends Plugin
 	{
 		Widget runOrbText = client.getWidget(WidgetInfo.MINIMAP_RUN_ORB_TEXT);
 
-		if (runOrbText != null)
+		if (runOrbText != null && text != null)
 		{
 			runOrbText.setText(text);
 		}

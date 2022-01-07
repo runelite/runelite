@@ -28,7 +28,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("runenergy")
+@ConfigGroup(RunEnergyPlugin.CONFIG_GROUP)
 public interface RunEnergyConfig extends Config
 {
 	@ConfigItem(
