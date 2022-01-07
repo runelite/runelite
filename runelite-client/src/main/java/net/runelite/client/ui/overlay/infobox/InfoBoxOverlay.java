@@ -124,6 +124,9 @@ public class InfoBoxOverlay extends OverlayPanel
 		panelComponent.setOrientation(orientation);
 
 		final Font font = config.infoboxFontType().getFont();
+		final boolean infoBoxTextOutline = config.infoBoxTextOutline();
+		final Color overlayBackgroundColor = config.overlayBackgroundColor();
+		final Dimension preferredSize = new Dimension(config.infoBoxSize(), config.infoBoxSize());
 		for (InfoBox box : infoBoxes)
 		{
 			if (!box.render())
@@ -141,11 +144,11 @@ public class InfoBoxOverlay extends OverlayPanel
 			{
 				infoBoxComponent.setColor(color);
 			}
-			infoBoxComponent.setOutline(config.infoBoxTextOutline());
+			infoBoxComponent.setOutline(infoBoxTextOutline);
 			infoBoxComponent.setImage(box.getScaledImage());
 			infoBoxComponent.setTooltip(box.getTooltip());
-			infoBoxComponent.setPreferredSize(new Dimension(config.infoBoxSize(), config.infoBoxSize()));
-			infoBoxComponent.setBackgroundColor(config.overlayBackgroundColor());
+			infoBoxComponent.setPreferredSize(preferredSize);
+			infoBoxComponent.setBackgroundColor(overlayBackgroundColor);
 			infoBoxComponent.setInfoBox(box);
 			panelComponent.getChildren().add(infoBoxComponent);
 		}
