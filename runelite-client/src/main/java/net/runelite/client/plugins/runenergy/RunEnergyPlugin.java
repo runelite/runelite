@@ -40,6 +40,7 @@ import static net.runelite.api.ItemID.*;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.BeforeRender;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
@@ -169,7 +170,13 @@ public class RunEnergyPlugin extends Plugin
 			prevLocalPlayerLocation.distanceTo(client.getLocalPlayer().getWorldLocation()) > 1;
 
 		prevLocalPlayerLocation = client.getLocalPlayer().getWorldLocation();
+	}
 
+	@Subscribe
+	public void onBeforeRender(BeforeRender beforeRender)
+	{
+		// This text is also set by the client script for updating the orbs,
+		// set the text before every frame is drawn to prevent flicker.
 		if (energyConfig.replaceOrbText())
 		{
 			setRunOrbText(getEstimatedRunTimeRemaining(true));
