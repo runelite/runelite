@@ -28,6 +28,7 @@ package net.runelite.client.ui.overlay.infobox;
 import com.google.common.base.Strings;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -122,6 +123,7 @@ public class InfoBoxOverlay extends OverlayPanel
 		panelComponent.setPreferredSize(new Dimension(DEFAULT_WRAP_COUNT * (config.infoBoxSize() + GAP), DEFAULT_WRAP_COUNT * (config.infoBoxSize() + GAP)));
 		panelComponent.setOrientation(orientation);
 
+		final Font font = config.infoboxFontType().getFont();
 		for (InfoBox box : infoBoxes)
 		{
 			if (!box.render())
@@ -134,6 +136,7 @@ public class InfoBoxOverlay extends OverlayPanel
 
 			final InfoBoxComponent infoBoxComponent = new InfoBoxComponent();
 			infoBoxComponent.setText(text);
+			infoBoxComponent.setFont(font);
 			if (color != null)
 			{
 				infoBoxComponent.setColor(color);
