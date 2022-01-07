@@ -333,10 +333,22 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "infoboxFontType",
+		name = "Infobox Font",
+		description = "Configures what font type is used for infoboxes.",
+		position = 33,
+		section = overlaySettings
+	)
+	default FontType infoboxFontType()
+	{
+		return FontType.REGULAR;
+	}
+
+	@ConfigItem(
 		keyName = "menuEntryShift",
 		name = "Require Shift for overlay menu",
 		description = "Overlay right-click menu will require shift to be added",
-		position = 33,
+		position = 34,
 		section = overlaySettings
 	)
 	default boolean menuEntryShift()
