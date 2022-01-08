@@ -44,6 +44,7 @@ public enum LoginScreenOverride
 	PRIFDDINAS("prifddinas.jpg"),
 	THEATRE_OF_BLOOD("tob.jpg"),
 	A_KINGDOM_DIVIDED("akd.jpg"),
+	NEX("nex.jpg"),
 	CUSTOM,
 	RANDOM;
 
