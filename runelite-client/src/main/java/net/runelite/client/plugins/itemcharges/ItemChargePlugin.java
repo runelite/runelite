@@ -627,7 +627,7 @@ public class ItemChargePlugin extends Plugin
 
 				final String name = itemManager.getItemComposition(id).getName();
 				final BufferedImage image = itemManager.getImage(id);
-				infobox = new ItemChargeInfobox(this, image, name, charges, id, slot);
+				infobox = new ItemChargeInfobox(this, image, name, charges, id);
 				infoBoxManager.addInfoBox(infobox);
 				infoboxes.put(slot, infobox);
 			}
