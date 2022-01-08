@@ -130,6 +130,13 @@ public class ItemChargePlugin extends Plugin
 		"Your expeditious bracelet has (\\d{1,2}) charges? left\\."
 	);
 	private static final String EXPEDITIOUS_BRACELET_BREAK_TEXT = "Your Expeditious Bracelet has crumbled to dust.";
+	private static final Pattern BLOOD_ESSENCE_CHECK_PATTERN = Pattern.compile(
+		"Your blood essence has (\\d{1,4}) charges? remaining"
+	);
+	private static final Pattern BLOOD_ESSENCE_EXTRACT_PATTERN = Pattern.compile(
+		"You manage to extract power from the Blood Essence and craft (\\d{1,3}) extra runes?\\."
+	);
+	private static final String BLOOD_ESSENCE_ACTIVATE_TEXT = "You activate the blood essence.";
 
 	private static final int MAX_DODGY_CHARGES = 10;
 	private static final int MAX_BINDING_CHARGES = 16;
@@ -138,6 +145,7 @@ public class ItemChargePlugin extends Plugin
 	private static final int MAX_AMULET_OF_CHEMISTRY_CHARGES = 5;
 	private static final int MAX_AMULET_OF_BOUNTY_CHARGES = 10;
 	private static final int MAX_SLAYER_BRACELET_CHARGES = 30;
+	private static final int MAX_BLOOD_ESSENCE_CHARGES = 1000;
 
 	private int lastExplorerRingCharge = -1;
 
@@ -227,6 +235,8 @@ public class ItemChargePlugin extends Plugin
 			Matcher slaughterCheckMatcher = BRACELET_OF_SLAUGHTER_CHECK_PATTERN.matcher(message);
 			Matcher expeditiousActivateMatcher = EXPEDITIOUS_BRACELET_ACTIVATE_PATTERN.matcher(message);
 			Matcher expeditiousCheckMatcher = EXPEDITIOUS_BRACELET_CHECK_PATTERN.matcher(message);
+			Matcher bloodEssenceCheckMatcher = BLOOD_ESSENCE_CHECK_PATTERN.matcher(message);
+			Matcher bloodEssenceExtractMatcher = BLOOD_ESSENCE_EXTRACT_PATTERN.matcher(message);
 
 			if (config.recoilNotification() && message.contains(RING_OF_RECOIL_BREAK_MESSAGE))
 			{
@@ -413,6 +423,18 @@ public class ItemChargePlugin extends Plugin
 			{
 				updateExpeditiousBraceletCharges(Integer.parseInt(expeditiousCheckMatcher.group(1)));
 			}
+			else if (bloodEssenceCheckMatcher.find())
+			{
+				updateBloodEssenceCharges(Integer.parseInt(bloodEssenceCheckMatcher.group(1)));
+			}
+			else if (bloodEssenceExtractMatcher.find())
+			{
+				updateBloodEssenceCharges(getItemCharges(ItemChargeConfig.KEY_BLOOD_ESSENCE) - Integer.parseInt(bloodEssenceExtractMatcher.group(1)));
+			}
+			else if (message.contains(BLOOD_ESSENCE_ACTIVATE_TEXT))
+			{
+				updateBloodEssenceCharges(MAX_BLOOD_ESSENCE_CHARGES);
+			}
 		}
 	}
 
@@ -537,6 +559,12 @@ public class ItemChargePlugin extends Plugin
 	private void updateExpeditiousBraceletCharges(final int value)
 	{
 		setItemCharges(ItemChargeConfig.KEY_EXPEDITIOUS_BRACELET, value);
+		updateInfoboxes();
+	}
+
+	private void updateBloodEssenceCharges(final int value)
+	{
+		setItemCharges(ItemChargeConfig.KEY_BLOOD_ESSENCE, value);
 		updateInfoboxes();
 	}
 
