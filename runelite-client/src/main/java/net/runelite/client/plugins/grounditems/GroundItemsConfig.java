@@ -446,6 +446,6 @@ public interface GroundItemsConfig extends Config
 	)
 	default Color highlightStackableColor()
 	{
-		return Color.YELLOW;
+		return Color.decode("#FFFDE500");
 	}
 }
