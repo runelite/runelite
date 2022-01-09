@@ -545,6 +545,7 @@ public class LootTrackerPlugin extends Plugin
 			.icon(icon)
 			.priority(5)
 			.panel(panel)
+			.plugin(this)
 			.build();
 
 		clientToolbar.addNavigation(navButton);

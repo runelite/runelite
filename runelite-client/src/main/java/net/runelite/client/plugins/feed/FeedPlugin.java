@@ -102,6 +102,7 @@ public class FeedPlugin extends Plugin
 			.icon(icon)
 			.priority(8)
 			.panel(feedPanel)
+			.plugin(this)
 			.build();
 
 		clientToolbar.addNavigation(navButton);

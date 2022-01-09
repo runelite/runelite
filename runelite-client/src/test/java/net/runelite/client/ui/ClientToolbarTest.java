@@ -19,7 +19,10 @@ public class ClientToolbarTest
 	@Test
 	public void testAddDefaultOptionsWithCustomOptions()
 	{
-		Runnable pluginDefinedRunnable = () -> {};
+		Runnable pluginDefinedRunnable = () ->
+		{
+
+		};
 		NavigationButton navigationButton = NavigationButton.builder()
 			.popup(ImmutableMap
 				.<String, Runnable>builder()

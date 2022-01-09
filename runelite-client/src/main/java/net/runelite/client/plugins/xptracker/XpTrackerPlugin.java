@@ -158,6 +158,7 @@ public class XpTrackerPlugin extends Plugin
 			.icon(icon)
 			.priority(2)
 			.panel(xpPanel)
+			.plugin(this)
 			.build();
 
 		clientToolbar.addNavigation(navButton);

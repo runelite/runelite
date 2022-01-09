@@ -200,6 +200,7 @@ public class WorldHopperPlugin extends Plugin
 			.icon(icon)
 			.priority(3)
 			.panel(panel)
+			.plugin(this)
 			.build();
 
 		if (config.showSidebar())

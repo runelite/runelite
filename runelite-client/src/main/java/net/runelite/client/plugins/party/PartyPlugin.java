@@ -191,6 +191,7 @@ public class PartyPlugin extends Plugin
 			.icon(icon)
 			.priority(9)
 			.panel(panel)
+			.plugin(this)
 			.build();
 
 		clientToolbar.addNavigation(navButton);

@@ -149,6 +149,7 @@ public class TimeTrackingPlugin extends Plugin
 			.icon(icon)
 			.panel(panel)
 			.priority(4)
+			.plugin(this)
 			.build();
 
 		clientToolbar.addNavigation(navButton);

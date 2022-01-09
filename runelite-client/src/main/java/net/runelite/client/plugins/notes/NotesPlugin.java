@@ -72,6 +72,7 @@ public class NotesPlugin extends Plugin
 			.icon(icon)
 			.priority(7)
 			.panel(panel)
+			.plugin(this)
 			.build();
 
 		clientToolbar.addNavigation(navButton);

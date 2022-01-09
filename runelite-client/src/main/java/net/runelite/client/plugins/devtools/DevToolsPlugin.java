@@ -209,6 +209,7 @@ public class DevToolsPlugin extends Plugin
 			.icon(icon)
 			.priority(1)
 			.panel(panel)
+			.plugin(this)
 			.build();
 
 		clientToolbar.addNavigation(navButton);

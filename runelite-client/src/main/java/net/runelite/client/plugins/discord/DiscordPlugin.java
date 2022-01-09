@@ -124,6 +124,7 @@ public class DiscordPlugin extends Plugin
 			.tooltip("Join Discord")
 			.icon(icon)
 			.onClick(() -> LinkBrowser.browse(discordInvite))
+			.plugin(this)
 			.build();
 
 		clientToolbar.addNavigation(discordButton);

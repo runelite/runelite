@@ -58,6 +58,7 @@ public class InfoPlugin extends Plugin
 			.icon(icon)
 			.priority(10)
 			.panel(panel)
+			.plugin(this)
 			.build();
 
 		clientToolbar.addNavigation(navButton);
