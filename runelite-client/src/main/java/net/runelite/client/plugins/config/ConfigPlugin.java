@@ -34,6 +34,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.OverlayMenuClicked;
+import net.runelite.client.events.PluginConfigClicked;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
@@ -115,14 +116,25 @@ public class ConfigPlugin extends Plugin
 			}
 
 			// Expand config panel for plugin
-			SwingUtilities.invokeLater(() ->
-			{
-				if (!navButton.isSelected())
-				{
-					navButton.getOnSelect().run();
-				}
-				pluginListPanel.openConfigurationPanel(plugin.getName());
-			});
+			openConfigurationPanelForPlugin(plugin.getClass());
 		}
+	}
+
+	@Subscribe
+	public void onPluginConfigClicked(PluginConfigClicked pluginConfigClicked)
+	{
+		openConfigurationPanelForPlugin(pluginConfigClicked.getPluginClass());
+	}
+
+	private void openConfigurationPanelForPlugin(Class<?> pluginClass)
+	{
+		SwingUtilities.invokeLater(() ->
+		{
+			if (!navButton.isSelected())
+			{
+				navButton.getOnSelect().run();
+			}
+			pluginListPanel.openConfigurationPanel(pluginClass);
+		});
 	}
 }

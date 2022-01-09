@@ -282,6 +282,18 @@ class PluginListPanel extends PluginPanel
 		}
 	}
 
+	void openConfigurationPanel(Class<?> pluginClass)
+	{
+		for (PluginListItem pluginListItem : pluginList)
+		{
+			if (pluginListItem.getPluginConfig().getPlugin() != null && pluginListItem.getPluginConfig().getPlugin().getClass().equals(pluginClass))
+			{
+				openConfigurationPanel(pluginListItem);
+				break;
+			}
+		}
+	}
+
 	void openConfigurationPanel(Plugin plugin)
 	{
 		for (PluginListItem pluginListItem : pluginList)
