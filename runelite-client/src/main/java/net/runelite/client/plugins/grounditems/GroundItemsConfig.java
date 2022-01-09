@@ -425,4 +425,27 @@ public interface GroundItemsConfig extends Config
 	{
 		return HighlightTier.HIGH;
 	}
+
+	@ConfigItem(
+			keyName = "highlightStackable",
+			name = "Highlight stackable in inventory",
+			description = "Highlight stackable ground items already in inventory",
+			position = 32
+	)
+	default boolean highlightStackable()
+	{
+		return false;
+	}
+
+	@Alpha
+	@ConfigItem(
+			keyName = "highlightStackableColor",
+			name = "Highlight stackable",
+			description = "Configures the color for highlighted stackable items",
+			position = 33
+	)
+	default Color highlightStackableColor()
+	{
+		return Color.decode("#FFFDE500");
+	}
 }
