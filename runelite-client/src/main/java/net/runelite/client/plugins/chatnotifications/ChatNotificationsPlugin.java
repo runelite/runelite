@@ -243,12 +243,24 @@ public class ChatNotificationsPlugin extends Plugin
 			Matcher matcher = usernameMatcher.matcher(message);
 			if (matcher.find())
 			{
-				final int start = matcher.start();
 				final String username = client.getLocalPlayer().getName();
-				final String closeColor = MoreObjects.firstNonNull(getLastColor(message.substring(0, start)), "<col" + ChatColorType.NORMAL + '>');
-				final String replacement = "<col" + ChatColorType.HIGHLIGHT.name() + "><u>" + username + "</u>" + closeColor;
-				messageNode.setValue(matcher.replaceAll(replacement));
+				StringBuffer stringBuffer = new StringBuffer();
+				do
+				{
+					final int start = matcher.start();
+					final String closeColor = MoreObjects.firstNonNull(
+						getLastColor(message.substring(0, start)),
+						"<col" + ChatColorType.NORMAL + '>');
+					final String replacement = "<col" + ChatColorType.HIGHLIGHT.name() + "><u>" + username + "</u>" + closeColor;
+					matcher.appendReplacement(stringBuffer, replacement);
+				}
+				while (matcher.find());
+
+				matcher.appendTail(stringBuffer);
+
+				messageNode.setValue(stringBuffer.toString());
 				update = true;
+
 				if (config.notifyOnOwnName() && (chatMessage.getType() == ChatMessageType.PUBLICCHAT
 					|| chatMessage.getType() == ChatMessageType.PRIVATECHAT
 					|| chatMessage.getType() == ChatMessageType.FRIENDSCHAT
