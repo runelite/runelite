@@ -247,7 +247,7 @@ public class ChatNotificationsPlugin extends Plugin
 				StringBuffer stringBuffer = new StringBuffer();
 				do
 				{
-					final int start = matcher.start();
+					final int start = matcher.start(); // start not end, since username won't contain a col tag
 					final String closeColor = MoreObjects.firstNonNull(
 						getLastColor(message.substring(0, start)),
 						"<col" + ChatColorType.NORMAL + '>');
@@ -291,26 +291,16 @@ public class ChatNotificationsPlugin extends Plugin
 
 			do
 			{
-				String value = matcher.group();
-
-				// Determine the ending color by:
-				// 1) use the color from value if it has one
-				// 2) use the last color from stringBuffer + <content between last match and current match>
-				// To do #2 we just search for the last col tag after calling appendReplacement
-				String endColor = getLastColor(value);
-
+				final int end = matcher.end();
+				// Determine the ending color by finding the last color tag up to and
+				// including the match.
+				final String closeColor = MoreObjects.firstNonNull(
+					getLastColor(nodeValue.substring(0, end)),
+					"<col" + ChatColorType.NORMAL + '>');
 				// Strip color tags from the highlighted region so that it remains highlighted correctly
-				value = stripColor(value);
+				final String value = stripColor(matcher.group());
 
-				matcher.appendReplacement(stringBuffer, "<col" + ChatColorType.HIGHLIGHT + '>' + value);
-
-				if (endColor == null)
-				{
-					endColor = getLastColor(stringBuffer.toString());
-				}
-
-				// Append end color
-				stringBuffer.append(endColor == null ? "<col" + ChatColorType.NORMAL + ">" : endColor);
+				matcher.appendReplacement(stringBuffer, "<col" + ChatColorType.HIGHLIGHT + '>' + value + closeColor);
 
 				update = true;
 				matchesHighlight = true;
