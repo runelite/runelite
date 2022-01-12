@@ -307,7 +307,7 @@ public class ChatNotificationsPluginTest
 		ChatMessage chatMessage = new ChatMessage(messageNode, ChatMessageType.GAMEMESSAGE, "", "", "", 0);
 		chatNotificationsPlugin.onChatMessage(chatMessage);
 
-		verify(messageNode).setValue("<colHIGHLIGHT><u>Logic Knot</u></col> received a drop: Adamant longsword");
+		verify(messageNode).setValue("<colHIGHLIGHT><u>Logic Knot</u><colNORMAL> received a drop: Adamant longsword");
 	}
 
 	@Test

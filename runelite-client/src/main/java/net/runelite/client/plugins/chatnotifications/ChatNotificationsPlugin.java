@@ -245,7 +245,7 @@ public class ChatNotificationsPlugin extends Plugin
 			{
 				final int start = matcher.start();
 				final String username = client.getLocalPlayer().getName();
-				final String closeColor = MoreObjects.firstNonNull(getLastColor(message.substring(0, start)), "</col>");
+				final String closeColor = MoreObjects.firstNonNull(getLastColor(message.substring(0, start)), "<col" + ChatColorType.NORMAL + '>');
 				final String replacement = "<col" + ChatColorType.HIGHLIGHT.name() + "><u>" + username + "</u>" + closeColor;
 				messageNode.setValue(matcher.replaceAll(replacement));
 				update = true;
