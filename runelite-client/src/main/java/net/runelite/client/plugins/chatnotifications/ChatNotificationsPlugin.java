@@ -47,7 +47,6 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.chat.ChatColorType;
-import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
@@ -68,9 +67,6 @@ public class ChatNotificationsPlugin extends Plugin
 
 	@Inject
 	private ChatNotificationsConfig config;
-
-	@Inject
-	private ChatMessageManager chatMessageManager;
 
 	@Inject
 	private Notifier notifier;
@@ -324,7 +320,6 @@ public class ChatNotificationsPlugin extends Plugin
 		if (update)
 		{
 			messageNode.setRuneLiteFormatMessage(messageNode.getValue());
-			chatMessageManager.update(messageNode);
 		}
 	}
 

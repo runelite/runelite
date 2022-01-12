@@ -77,7 +77,6 @@ import net.runelite.client.chat.ChatClient;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatCommandManager;
 import net.runelite.client.chat.ChatMessageBuilder;
-import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.Subscribe;
@@ -174,9 +173,6 @@ public class ChatCommandsPlugin extends Plugin
 
 	@Inject
 	private ItemManager itemManager;
-
-	@Inject
-	private ChatMessageManager chatMessageManager;
 
 	@Inject
 	private ChatCommandManager chatCommandManager;
@@ -840,7 +836,6 @@ public class ChatCommandsPlugin extends Plugin
 		log.debug("Setting response {}", response);
 		final MessageNode messageNode = chatMessage.getMessageNode();
 		messageNode.setRuneLiteFormatMessage(response);
-		chatMessageManager.update(messageNode);
 		client.refreshChat();
 	}
 
@@ -930,7 +925,6 @@ public class ChatCommandsPlugin extends Plugin
 		log.debug("Setting response {}", response);
 		final MessageNode messageNode = chatMessage.getMessageNode();
 		messageNode.setRuneLiteFormatMessage(response);
-		chatMessageManager.update(messageNode);
 		client.refreshChat();
 	}
 
@@ -974,7 +968,6 @@ public class ChatCommandsPlugin extends Plugin
 		log.debug("Setting response {}", response);
 		final MessageNode messageNode = chatMessage.getMessageNode();
 		messageNode.setRuneLiteFormatMessage(response);
-		chatMessageManager.update(messageNode);
 		client.refreshChat();
 	}
 
@@ -1061,7 +1054,6 @@ public class ChatCommandsPlugin extends Plugin
 		log.debug("Setting response {}", response);
 		final MessageNode messageNode = chatMessage.getMessageNode();
 		messageNode.setRuneLiteFormatMessage(response);
-		chatMessageManager.update(messageNode);
 		client.refreshChat();
 	}
 
@@ -1137,7 +1129,6 @@ public class ChatCommandsPlugin extends Plugin
 		log.debug("Setting response {}", response);
 		final MessageNode messageNode = chatMessage.getMessageNode();
 		messageNode.setRuneLiteFormatMessage(response);
-		chatMessageManager.update(messageNode);
 		client.refreshChat();
 	}
 
@@ -1231,7 +1222,6 @@ public class ChatCommandsPlugin extends Plugin
 		log.debug("Setting response {}", response);
 		final MessageNode messageNode = chatMessage.getMessageNode();
 		messageNode.setRuneLiteFormatMessage(response);
-		chatMessageManager.update(messageNode);
 		client.refreshChat();
 	}
 
@@ -1321,7 +1311,6 @@ public class ChatCommandsPlugin extends Plugin
 
 			log.debug("Setting response {}", response);
 			messageNode.setRuneLiteFormatMessage(response);
-			chatMessageManager.update(messageNode);
 			client.refreshChat();
 		}
 	}
@@ -1403,7 +1392,6 @@ public class ChatCommandsPlugin extends Plugin
 			log.debug("Setting response {}", response);
 			final MessageNode messageNode = chatMessage.getMessageNode();
 			messageNode.setRuneLiteFormatMessage(response);
-			chatMessageManager.update(messageNode);
 			client.refreshChat();
 		}
 		catch (IOException ex)
@@ -1488,7 +1476,6 @@ public class ChatCommandsPlugin extends Plugin
 			log.debug("Setting response {}", response);
 			final MessageNode messageNode = chatMessage.getMessageNode();
 			messageNode.setRuneLiteFormatMessage(response);
-			chatMessageManager.update(messageNode);
 			client.refreshChat();
 		}
 		catch (IOException ex)
@@ -1616,7 +1603,6 @@ public class ChatCommandsPlugin extends Plugin
 			log.debug("Setting response {}", response);
 			final MessageNode messageNode = chatMessage.getMessageNode();
 			messageNode.setRuneLiteFormatMessage(response);
-			chatMessageManager.update(messageNode);
 			client.refreshChat();
 		}
 		catch (IOException ex)
@@ -1710,7 +1696,6 @@ public class ChatCommandsPlugin extends Plugin
 			log.debug("Setting response {}", response);
 			final MessageNode messageNode = chatMessage.getMessageNode();
 			messageNode.setRuneLiteFormatMessage(response);
-			chatMessageManager.update(messageNode);
 			client.refreshChat();
 		}
 		catch (IOException ex)

@@ -440,14 +440,16 @@ LABEL391:
    if_icmpeq              LABEL406
    jump                   LABEL1751
 LABEL406:
+   iconst                  0 ; splitpmbox
    iload                  10 ; message uid
    sload                  17 ; message channel
    sload                  16 ; message name
    sload                  18 ; message
    sload                  21 ; message timestamp
    sconst                 "chatMessageBuilding"
-   runelite_callback     
+   runelite_callback
    pop_int                   ; pop uid
+   pop_int                   ; splitpmbox
    sstore                 21 ; message timestamp
    sstore                 18 ; message
    sstore                 16 ; message name

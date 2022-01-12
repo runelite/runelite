@@ -43,7 +43,6 @@ import org.junit.runner.RunWith;
 import static org.mockito.ArgumentMatchers.anyLong;
 import org.mockito.Mock;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -86,6 +85,7 @@ public class ChatMessageManagerTest
 			""
 		};
 		istack = new int[]{
+			0, // splitpmbox
 			1
 		};
 		when(client.getStringStack()).thenReturn(sstack);
@@ -183,12 +183,8 @@ public class ChatMessageManagerTest
 			.append("%)")
 			.build();
 
-		MessageNode messageNode = mock(MessageNode.class);
-		when(messageNode.getType()).thenReturn(ChatMessageType.FRIENDSCHATNOTIFICATION);
-		when(messageNode.getRuneLiteFormatMessage()).thenReturn(chatMessage);
+		String formattedMessage = chatMessageManager.formatRuneLiteMessage(chatMessage, ChatMessageType.FRIENDSCHATNOTIFICATION, false);
 
-		chatMessageManager.update(messageNode);
-
-		verify(messageNode).setValue("<col=000000>Total points: <col=ff0000>42<col=000000>, Personal points: <col=ff0000>43<col=000000> (<col=ff0000>44<col=000000>%)");
+		assertEquals("<col=000000>Total points: <col=ff0000>42<col=000000>, Personal points: <col=ff0000>43<col=000000> (<col=ff0000>44<col=000000>%)", formattedMessage);
 	}
 }

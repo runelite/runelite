@@ -413,14 +413,16 @@ CHAT_FILTER:
    if_icmpeq              LABEL369          ; Check if we are building this message
    jump                   LABEL555
 LABEL369:
+   iconst                  1 ; splitpmbox
    iload                  12 ; message uid
    sconst                 "" ; message channel
    sload                  1 ; message name
    sload                  0 ; message
    sload                  2 ; message timestamp
    sconst                 "chatMessageBuilding"
-   runelite_callback     
+   runelite_callback
    pop_int                  ; uid
+   pop_int                  ; splitpmbox
    sstore                 2 ; message timestamp
    sstore                 0 ; message
    sstore                 1 ; message name
