@@ -527,6 +527,11 @@ public class GroundItemsPlugin extends Plugin
 			{
 				lastEntry.setTarget(lastEntry.getTarget() + " (" + quantity + ")");
 			}
+
+			if (hidden != null && highlighted == null && config.deprioritizeHiddenItems())
+			{
+				lastEntry.setDeprioritized(true);
+			}
 		}
 	}
 
