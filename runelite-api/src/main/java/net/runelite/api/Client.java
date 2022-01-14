@@ -1039,14 +1039,14 @@ public interface Client extends GameEngine
 	 *
 	 * @return all projectiles
 	 */
-	List<Projectile> getProjectiles();
+	Deque<Projectile> getProjectiles();
 
 	/**
 	 * Gets a list of all graphics objects currently drawn.
 	 *
 	 * @return all graphics objects
 	 */
-	List<GraphicsObject> getGraphicsObjects();
+	Deque<GraphicsObject> getGraphicsObjects();
 
 	/**
 	 * Creates a RuneLiteObject, which is a modified {@link GraphicsObject}
