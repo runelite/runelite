@@ -1035,6 +1035,26 @@ public interface Client extends GameEngine
 	LocalPoint getLocalDestinationLocation();
 
 	/**
+	 * Create a projectile.
+	 * @param id projectile/spotanim id
+	 * @param plane plane the projectile is on
+	 * @param startX local x coordinate the projectile starts at
+	 * @param startY local y coordinate the projectile starts at
+	 * @param startZ local z coordinate the projectile starts at - includes tile height
+	 * @param startCycle cycle the project starts
+	 * @param endCycle cycle the projectile ends
+	 * @param slope
+	 * @param startHeight start height of projectile - excludes tile height
+	 * @param endHeight end height of projectile - excludes tile height
+	 * @param target optional actor target
+	 * @param targetX target x - if an actor target is supplied should be the target x
+	 * @param targetY taret y - if an actor target is supplied should be the target y
+	 * @return the new projectile
+	 */
+	Projectile createProjectile(int id, int plane, int startX, int startY, int startZ, int startCycle, int endCycle,
+		int slope, int startHeight, int endHeight, @Nullable Actor target, int targetX, int targetY);
+
+	/**
 	 * Gets a list of all projectiles currently spawned.
 	 *
 	 * @return all projectiles
