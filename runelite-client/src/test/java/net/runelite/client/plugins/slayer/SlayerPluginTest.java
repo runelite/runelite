@@ -639,6 +639,39 @@ public class SlayerPluginTest
 	}
 
 	@Test
+	public void testXpDropWithNoKnownTask()
+	{
+		final Player player = mock(Player.class);
+		when(player.getLocalLocation()).thenReturn(new LocalPoint(0, 0));
+		when(client.getLocalPlayer()).thenReturn(player);
+		lenient().when(slayerConfig.showInfobox()).thenReturn(true);
+
+		StatChanged statChanged = new StatChanged(
+				Skill.SLAYER,
+				100,
+				2,
+				2
+		);
+
+		slayerPlugin.onStatChanged(statChanged);
+
+		slayerPlugin.setTaskName("");
+		slayerPlugin.setAmount(98);
+
+		assert Task.getTask("") == null;
+
+		statChanged = new StatChanged(
+				Skill.SLAYER,
+				110,
+				2,
+				2
+		);
+		slayerPlugin.onStatChanged(statChanged);
+
+		assertEquals(97, slayerPlugin.getAmount());
+	}
+
+	@Test
 	public void testJadTaskKill()
 	{
 		final Player player = mock(Player.class);

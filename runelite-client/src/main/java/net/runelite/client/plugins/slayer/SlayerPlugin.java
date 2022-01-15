@@ -647,7 +647,7 @@ public class SlayerPlugin extends Plugin
 		// save changed value
 		setProfileConfig(SlayerConfig.AMOUNT_KEY, amount);
 
-		if (!config.showInfobox())
+		if (!config.showInfobox() || Task.getTask(taskName) == null)
 		{
 			return;
 		}
