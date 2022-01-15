@@ -33,7 +33,7 @@ public interface Projectile extends Renderable
 	 * Gets the ID of the projectile.
 	 *
 	 * @return the projectile ID
-	 * @see ProjectileID
+	 * @see GraphicID
 	 */
 	int getId();
 

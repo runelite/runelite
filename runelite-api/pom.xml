@@ -107,7 +107,6 @@
 								<exclude>net/runelite/api/ObjectID.class</exclude>
 								<exclude>net/runelite/api/Opcodes.class</exclude>
 								<exclude>net/runelite/api/ParamID.class</exclude>
-								<exclude>net/runelite/api/ProjectileID.class</exclude>
 								<exclude>net/runelite/api/ScriptID.class</exclude>
 								<exclude>net/runelite/api/SettingID.class</exclude>
 								<exclude>net/runelite/api/SoundEffectID.class</exclude>
