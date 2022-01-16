@@ -24,11 +24,12 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues;
 
-import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ImmutableList;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.util.Set;
+import java.util.List;
 import javax.annotation.Nullable;
+import lombok.Builder;
 import lombok.Getter;
 import net.runelite.api.NPC;
 import net.runelite.api.ObjectID;
@@ -46,111 +47,728 @@ import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
 @Getter
+@Builder
 public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueScroll, ObjectClueScroll
 {
 	private static final String ANAGRAM_TEXT = "This anagram reveals who to speak to next: ";
 	private static final String ANAGRAM_TEXT_BEGINNER = "The anagram reveals who to speak to next: ";
 
-	private static final Set<AnagramClue> CLUES = ImmutableSet.of(
-		new AnagramClue("A BAKER", "Baraek", new WorldPoint(3217, 3434, 0), "Varrock square", "How many stalls are there in Varrock Square?", "5"),
-		new AnagramClue("A BASIC ANTI POT", "Captain Tobias", new WorldPoint(3026, 3216, 0), "Port Sarim", "How many ships are there docked at Port Sarim currently?", "6"),
-		new AnagramClue("A ELF KNOWS", "Snowflake", new WorldPoint(2872, 3934, 0), "Weiss"),
-		new AnagramClue("A HEART", "Aretha", new WorldPoint(1814, 3851, 0), "Soul altar", "32 - 5x = 22, what is x?", "2"),
-		new AnagramClue("AHA JAR", "Jaraah", new WorldPoint(3359, 3276, 0), "Duel Arena hospital"),
-		new AnagramClue("ARC O LINE", "Caroline", new WorldPoint(2715, 3302, 0), "North Witchaven next to the row boat", "How many fishermen are there on the fishing platform?", "11"),
-		new AnagramClue("ARE COL", "Oracle", new WorldPoint(3013, 3501, 0), "Ice Mountain West of Edgeville", "If x is 15 and y is 3 what is 3x + y?", "48"),
-		new AnagramClue("ARMCHAIR THE PELT", "Charlie the Tramp", new WorldPoint(3209, 3392, 0), "South entrance of Varrock", "How many coins would I have if I have 0 coins and attempt to buy 10 loaves of bread for 3 coins each?", "0"),
-		new AnagramClue("AT HERG", "Regath", new WorldPoint(1719, 3723, 0), "General Store, Arceuus, Zeah", "What is -5 to the power of 2?", "25"),
-		new AnagramClue("A BAS", "Saba", new WorldPoint(2858, 3577, 0), "Death Plateau"),
-		new AnagramClue("AREA CHEF TREK", "Father Aereck", new WorldPoint(3243, 3208, 0), "Lumbridge Church", "How many gravestones are in the church graveyard?", "19 or 20"),
-		new AnagramClue("BAIL TRIMS", "Brimstail", new WorldPoint(2402, 3419, 0), "West of Stronghold Slayer Cave"),
-		new AnagramClue("BAKER CLIMB", "Brambickle", new WorldPoint(2783, 3861, 0), "Trollweiss mountain"),
-		new AnagramClue("BLUE GRIM GUIDED", "Lumbridge Guide", new WorldPoint(3238, 3220, 0), "Lumbridge"),
-		new AnagramClue("BY LOOK", "Bolkoy", new WorldPoint(2529, 3162, 0), "Tree Gnome Village general store", "How many flowers are there in the clearing below this platform?", "13"),
-		new AnagramClue("CALAMARI MADE MUD", "Madame Caldarium", new WorldPoint(2553, 2868, 0), "Corsair Cove", "What is 3(5-3)?", "6"),
-		new AnagramClue("CAR IF ICES", "Sacrifice", new WorldPoint(2209, 3056, 0), "Zul-Andra"),
-		new AnagramClue("CAREER IN MOON", "Oneiromancer", new WorldPoint(2150, 3866, 0), "Astral altar", "How many Suqah inhabit Lunar isle?", "25"),
-		new AnagramClue("CLASH ION", "Nicholas", new WorldPoint(1841, 3803, 0), "North of Port Piscarilius fishing shop", "How many windows are in Tynan's shop?", "4"),
-		new AnagramClue("C ON GAME HOC", "Gnome Coach", new WorldPoint(2395, 3486, 0), "Gnome Ball course", "How many gnomes on the Gnome ball field have red patches on their uniforms?", "6"),
-		new AnagramClue("COOL NERD", "Old crone", new WorldPoint(3462, 3557, 0), "East of the Slayer Tower", "What is the combined combat level of each species that live in Slayer tower?", "619"),
-		new AnagramClue("COPPER ORE CRYPTS", "Prospector Percy", new WorldPoint(3061, 3377, 0), "Motherlode Mine", "During a party, everyone shook hands with everybody else. There were 66 handshakes. How many people were at the party?", "12"),
-		new AnagramClue("DARN DRAKE", "Daer Krand", new WorldPoint(3728, 3302, 0), "Sisterhood Sanctuary (Slepe Dungeon, northeast of Nightmare Arena)"),
-		new AnagramClue("DED WAR", "Edward", new WorldPoint(3284, 3943, 0), "Inside Rogue's Castle"),
-		new AnagramClue("DEKAGRAM", "Dark mage", new WorldPoint(3039, 4835, 0), "Centre of the Abyss", "How many rifts are found here in the abyss?", "13"),
-		new AnagramClue("DO SAY MORE", "Doomsayer", new WorldPoint(3230, 3230, 0), "East of Lumbridge Castle", "What is 40 divided by 1/2 plus 15?", "95"),
-		new AnagramClue("DIM THARN", "Mandrith", new WorldPoint(3182, 3946, 0), "Wilderness Resource Area"),
-		new AnagramClue("DR HITMAN", "Mandrith", new WorldPoint(3182, 3946, 0), "Wilderness Resource Area", "How many scorpions live under the pit?", "28"),
-		new AnagramClue("DR WARDEN FUNK", "Drunken Dwarf", new WorldPoint(2913, 10221, 0), "East Side of Keldagrim"),
-		new AnagramClue("DRAGONS LAMENT", "Strange Old Man", new WorldPoint(3564, 3288, 0), "Barrows", "One pipe fills a barrel in 1 hour while another pipe can fill the same barrel in 2 hours. How many minutes will it take to fill the tank if both pipes are used?", "40"),
-		new AnagramClue("DT RUN B", "Brundt the Chieftain", new WorldPoint(2658, 3670, 0), "Rellekka, main hall", "How many people are waiting for the next bard to perform?", "4"),
-		new AnagramClue("DUO PLUG", "Dugopul", new WorldPoint(2803, 2744, 0), "Graveyard on Ape Atoll"),
-		new AnagramClue("EEK ZERO OP", "Zoo keeper", new WorldPoint(2613, 3269, 0), "Ardougne Zoo", "How many animals in total are there in the zoo?", "40"),
-		new AnagramClue("EL OW", "Lowe", new WorldPoint(3233, 3423, 0), "Varrock archery store"),
-		new AnagramClue("FORLUN", "Runolf", new WorldPoint(2512, 10256, 0), "Miscellania & Etceteria Dungeon"),
-		new AnagramClue("GOBLIN KERN", "King Bolren", new WorldPoint(2541, 3170, 0), "Tree Gnome Village"),
-		new AnagramClue("GOT A BOY", "Gabooty", new WorldPoint(2790, 3066, 0), "Centre of Tai Bwo Wannai", "How many buildings are in the village?", "11"),
-		new AnagramClue("GOBLETS ODD TOES", "Otto Godblessed", new WorldPoint(2501, 3487, 0), "Otto's Grotto", "How many types of dragon are there beneath the whirlpool's cavern?", "2"),
-		new AnagramClue("HALT US", "Luthas", new WorldPoint(2938, 3152, 0), "Banana plantation, Karamja"),
-		new AnagramClue("HEORIC", "Eohric", new WorldPoint(2900, 3565, 0), "Top floor of Burthorpe Castle", "King Arthur and Merlin sit down at the Round Table with 8 knights. How many degrees does each get?", "36"),
-		new AnagramClue("HIS PHOR", "Horphis", new WorldPoint(1639, 3812, 0), "Arceuus Library, Zeah", "On a scale of 1-10, how helpful is Logosia?", "1"),
-		new AnagramClue("I AM SIR", "Marisi", new WorldPoint(1737, 3557, 0), "Allotment patch, South of Hosidius chapel", "How many cities form the Kingdom of Great Kourend?", "5"),
-		new AnagramClue("ICY FE", "Fycie", new WorldPoint(2630, 2997, 0), "East Feldip Hills"),
-		new AnagramClue("I DOOM ICON INN", "Dominic Onion", new WorldPoint(2609, 3116, 0), "Nightmare Zone", "How many reward points does a herb box cost?", "9,500"),
-		new AnagramClue("I EVEN", "Nieve", new WorldPoint(2432, 3422, 0), "The slayer master in Gnome Stronghold", "How many farming patches are there in Gnome stronghold?", "2"),
-		new AnagramClue("IM N ZEZIM", "Immenizz", new WorldPoint(2592, 4324, 0), "The Imp inside Puro-Puro"),
-		new AnagramClue("KAY SIR", "Sir Kay", new WorldPoint(2760, 3496, 0), "The courtyard in Camelot Castle", "How many fountains are there within the grounds of Camelot castle?", "6"),
-		new AnagramClue("LEAKEY", "Kaylee", new WorldPoint(2957, 3370, 0), "Rising Sun Inn in Falador", "How many chairs are there in the Rising Sun?", "18"),
-		new AnagramClue("LARK IN DOG", "King Roald", new WorldPoint(3220, 3476, 0), "Ground floor of Varrock castle", "How many bookcases are there in the palace library?", "24"),
-		new AnagramClue("LOW LAG", "Gallow", new WorldPoint(1805, 3566, 0), "Vinery in the Great Kourend", "How many vine patches can you find in this vinery?", "12"),
-		new AnagramClue("LADDER MEMO GUV", "Guard Vemmeldo", new WorldPoint(2447, 3418, 1), "Gnome Stronghold Bank", "How many magic trees can you find inside the Gnome Stronghold?", "3"),
-		new AnagramClue("MAL IN TAU", "Luminata", new WorldPoint(3508, 3237, 0), "Near Burgh de Rott entrance"),
-		new AnagramClue("MACHETE CLAM", "Cam the Camel", new WorldPoint(3300, 3231, 0), "Outside Duel Arena", "How many items can carry water in Gielinor?", "6"),
-		new AnagramClue("ME IF", "Femi", new WorldPoint(2461, 3382, 0), "Gates of Tree Gnome Stronghold"),
-		new AnagramClue("MOLD LA RAN", "Old Man Ral", new WorldPoint(3602, 3209, 0), "Meiyerditch"),
-		new AnagramClue("MOTHERBOARD", "Brother Omad", new WorldPoint(2606, 3211, 0), "Monastery south of Ardougne", "What is the next number? 12, 13, 15, 17, 111, 113, 117, 119, 123....?", "129"),
-		new AnagramClue("MUS KIL READER", "Radimus Erkle", new WorldPoint(2726, 3368, 0), "Legends' Guild"),
-		new AnagramClue("MY MANGLE LAL", "Lammy Langle", new WorldPoint(1688, 3540, 0), "Hosidius spirit tree patch"),
-		new AnagramClue("NO OWNER", "Oronwen", new WorldPoint(1162, 3178, 0), "Lletya Seamstress shop in Lletya", "What is the minimum amount of quest points required to reach Lletya?", "20"),
-		new AnagramClue("NOD MED", "Edmond", new WorldPoint(2566, 3332, 0), "Behind the most NW house in East Ardougne", "How many pigeon cages are there around the back of Jerico's house?", "3"),
-		new AnagramClue("O BIRDZ A ZANY EN PC", "Cap'n Izzy No-Beard", new WorldPoint(2807, 3191, 0), "Brimhaven Agility Arena", "How many Banana Trees are there in the plantation?", "33"),
-		new AnagramClue("OK CO", "Cook", new WorldPoint(3207, 3214, 0), "Ground floor of Lumbridge Castle", "How many cannons does Lumbridge Castle have?", "9"),
-		new AnagramClue("OUR OWN NEEDS", "Nurse Wooned", new WorldPoint(1511, 3619, 0), "Shayzien Infirmary", "How many wounded soldiers are there in the camp?", "16"),
-		new AnagramClue("PACINNG A TAIE", "Captain Ginea", new WorldPoint(1504, 3632, 0), "Tent east of Shayzien Encampment war tent", "1 soldier can deal with 6 lizardmen. How many soldiers do we need for an army of 678 lizardmen?", "113"),
-		new AnagramClue("PEAK REFLEX", "Flax keeper", new WorldPoint(2744, 3444, 0), "Flax field south of Seers Village", "If I have 1014 flax, and I spin a third of them into bowstring, how many flax do I have left?", "676"),
-		new AnagramClue("PEATY PERT", "Party Pete", new WorldPoint(3047, 3376, 0), "Falador Party Room"),
-		new AnagramClue("QUIT HORRIBLE TYRANT", "Brother Tranquility", new WorldPoint(3681, 2963, 0), "Mos Le'Harmless or Harmony Island", "If I have 49 bottles of rum to share between 7 pirates, how many would each pirate get?", "7"),
-		new AnagramClue("QUE SIR", "Squire", new WorldPoint(2975, 3343, 0), "Falador Castle Courtyard", "White knights are superior to black knights. 2 white knights can handle 3 black knights. How many knights do we need for an army of 981 black knights?", "654"),
-		new AnagramClue("R AK MI", "Karim", new WorldPoint(3273, 3181, 0), "Al Kharid Kebab shop", "I have 16 kebabs, I eat one myself and then share the rest equally between 3 friends. How many do they have each?", "5"),
-		new AnagramClue("RAT MAT WITHIN", "Martin Thwait", new WorldPoint(2906, 3537, 0), "Rogues' Den", "How many natural fires burn in Rogue's Den?", "2"),
-		new AnagramClue("RATAI", "Taria", new WorldPoint(2940, 3223, 0), "Rimmington bush patch", "How many buildings are there in Rimmington?", "7"),
-		new AnagramClue("R SLICER", "Clerris", new WorldPoint(1761, 3850, 0), "Arceuus mine, Zeah", "If I have 1,000 blood runes, and cast 131 ice barrage spells, how many blood runes do I have left?", "738"),
-		new AnagramClue("RIP MAUL", "Primula", new WorldPoint(2454, 2853, 1), "Myth's Guild, first floor"),
-		new AnagramClue("SAND NUT", "Dunstan", new WorldPoint(2919, 3574, 0), "Anvil in north east Burthorpe", "How much smithing experience does one receive for smelting a blurite bar?", "8"),
-		new AnagramClue("SLAM DUSTER GRAIL", "Guildmaster Lars", new WorldPoint(1649, 3498, 0), "Woodcutting guild, Zeah"),
-		new AnagramClue("SLIDE WOMAN", "Wise Old Man", new WorldPoint(3088, 3253, 0), "Draynor Village", "How many bookcases are in the Wise Old Man's house?", "28"),
-		new AnagramClue("SNAKES SO I SAIL", "Lisse Isaakson", new WorldPoint(2351, 3801, 0), "Neitiznot", "How many arctic logs are required to make a large fremennik round shield?", "2"),
-		new AnagramClue("TAMED ROCKS", "Dockmaster", new WorldPoint(1822, 3739, 0), "Port Piscarilius, NE of General store", "What is the cube root of 125?", "5"),
-		new AnagramClue("TEN WIGS ON", "Wingstone", new WorldPoint(3389, 2877, 0), "Between Nardah & Agility Pyramid"),
-		new AnagramClue("THICKNO", "Hickton", new WorldPoint(2822, 3442, 0), "Catherby fletching shop", "How many ranges are there in Catherby?", "2"),
-		new AnagramClue("TWENTY CURE IRON", "New Recruit Tony", new WorldPoint(1503, 3553, 0), "Shayzien Graveyard"),
-		new AnagramClue("UNLEASH NIGHT MIST", "Sigli the Huntsman", new WorldPoint(2660, 3654, 0), "Rellekka", "What is the combined slayer requirement of every monster in the slayer cave?", "302"),
-		new AnagramClue("VESTE", "Steve", new WorldPoint(2432, 3423, 0), "Upstairs Wyvern Area or Stronghold Slayer Cave", "How many farming patches are there in Gnome stronghold?", "2"),
-		new AnagramClue("VEIL VEDA", "Evil Dave", new WorldPoint(3079, 9892, 0), "Doris' basement, Edgeville", "What is 333 multiplied by 2?", "666"),
-		new AnagramClue("WOO AN EGG KIWI", "Awowogei", ObjectID.AWOWOGEI, new WorldPoint(2802, 2765, 0), "Ape Atoll", "If I have 303 bananas, and share them between 31 friends evenly, only handing out full bananas. How many will I have left over?", "24"),
-		new AnagramClue("MAJORS LAVA BADS AIR", "Ambassador Alvijar", new WorldPoint(2736, 5351, 1), "Dorgesh-Kaan, NE Middle Level", "Double the miles before the initial Dorgeshuun veteran.", "2505"),
-		new AnagramClue("AN EARL", "Ranael", new WorldPoint(3315, 3163, 0), "Al Kharid skirt shop"),
-		new AnagramClue("CARPET AHOY", "Apothecary", new WorldPoint(3195, 3404, 0), "Southwest Varrock"),
-		new AnagramClue("DISORDER", "Sedridor", new WorldPoint(3102, 9570, 0), "Wizards' Tower basement"),
-		new AnagramClue("I CORD", "Doric", new WorldPoint(2951, 3450, 0), "North of Falador"),
-		new AnagramClue("IN BAR", "Brian", new WorldPoint(3026, 3246, 0), "Port Sarim battleaxe shop"),
-		new AnagramClue("RAIN COVE", "Veronica", new WorldPoint(3110, 3330, 0), "Outside Draynor Manor"),
-		new AnagramClue("RUG DETER", "Gertrude", new WorldPoint(3151, 3412, 0), "West of Varrock, south of the Cooks' Guild"),
-		new AnagramClue("SIR SHARE RED", "Hairdresser", new WorldPoint(2944, 3381, 0), "Western Falador"),
-		new AnagramClue("TAUNT ROOF", "Fortunato", new WorldPoint(3080, 3250, 0), "Draynor Village Market"),
-		new AnagramClue("HICK JET", "Jethick", new WorldPoint(2541, 3305, 0), "West Ardougne", "How many graves are there in the city graveyard?", "38"),
-		new AnagramClue("RUE GO", "Goreu", new WorldPoint(2335, 3162, 0), "Lletya"),
-		new AnagramClue("BRUCIE CATNAP", "Captain Bruce", new WorldPoint(1520, 3558, 0), "Graveyard of Heroes"),
-		new AnagramClue("UESNKRL NRIEDDO", "Drunken soldier", new WorldPoint(1551, 3565, 0), "Shayzien pub", "If 13 Shayzien Soldiers kill 46 Lizardmen each in a day, how many Lizardmen have they killed in total in a single day?", "598")
+	private static final List<AnagramClue> CLUES = ImmutableList.of(
+		AnagramClue.builder()
+			.text("A BAKER")
+			.npc("Baraek")
+			.location(new WorldPoint(3217, 3434, 0))
+			.area("Varrock square")
+			.question("How many stalls are there in Varrock Square?")
+			.answer("5")
+			.build(),
+		AnagramClue.builder()
+			.text("A BASIC ANTI POT")
+			.npc("Captain Tobias")
+			.location(new WorldPoint(3026, 3216, 0))
+			.area("Port Sarim")
+			.question("How many ships are there docked at Port Sarim currently?")
+			.answer("6")
+			.build(),
+		AnagramClue.builder()
+			.text("A ELF KNOWS")
+			.npc("Snowflake")
+			.location(new WorldPoint(2872, 3934, 0))
+			.area("Weiss")
+			.build(),
+		AnagramClue.builder()
+			.text("A HEART")
+			.npc("Aretha")
+			.location(new WorldPoint(1814, 3851, 0))
+			.area("Soul altar")
+			.question("32 - 5x = 22, what is x?")
+			.answer("2")
+			.build(),
+		AnagramClue.builder()
+			.text("AHA JAR")
+			.npc("Jaraah")
+			.location(new WorldPoint(3359, 3276, 0))
+			.area("Duel Arena hospital")
+			.build(),
+		AnagramClue.builder()
+			.text("ARC O LINE")
+			.npc("Caroline")
+			.location(new WorldPoint(2715, 3302, 0))
+			.area("North Witchaven next to the row boat")
+			.question("How many fishermen are there on the fishing platform?")
+			.answer("11")
+			.build(),
+		AnagramClue.builder()
+			.text("ARE COL")
+			.npc("Oracle")
+			.location(new WorldPoint(3013, 3501, 0))
+			.area("Ice Mountain West of Edgeville")
+			.question("If x is 15 and y is 3 what is 3x + y?")
+			.answer("48")
+			.build(),
+		AnagramClue.builder()
+			.text("ARMCHAIR THE PELT")
+			.npc("Charlie the Tramp")
+			.location(new WorldPoint(3209, 3392, 0))
+			.area("South entrance of Varrock")
+			.question("How many coins would I have if I have 0 coins and attempt to buy 10 loaves of bread for 3 coins each?")
+			.answer("0")
+			.build(),
+		AnagramClue.builder()
+			.text("AT HERG")
+			.npc("Regath")
+			.location(new WorldPoint(1719, 3723, 0))
+			.area("General Store, Arceuus, Zeah")
+			.question("What is -5 to the power of 2?")
+			.answer("25")
+			.build(),
+		AnagramClue.builder()
+			.text("A BAS")
+			.npc("Saba")
+			.location(new WorldPoint(2858, 3577, 0))
+			.area("Death Plateau")
+			.build(),
+		AnagramClue.builder()
+			.text("AREA CHEF TREK")
+			.npc("Father Aereck")
+			.location(new WorldPoint(3243, 3208, 0))
+			.area("Lumbridge Church")
+			.question("How many gravestones are in the church graveyard?")
+			.answer("19 or 20")
+			.build(),
+		AnagramClue.builder()
+			.text("BAIL TRIMS")
+			.npc("Brimstail")
+			.location(new WorldPoint(2402, 3419, 0))
+			.area("West of Stronghold Slayer Cave")
+			.build(),
+		AnagramClue.builder()
+			.text("BAKER CLIMB")
+			.npc("Brambickle")
+			.location(new WorldPoint(2783, 3861, 0))
+			.area("Trollweiss mountain")
+			.build(),
+		AnagramClue.builder()
+			.text("BLUE GRIM GUIDED")
+			.npc("Lumbridge Guide")
+			.location(new WorldPoint(3238, 3220, 0))
+			.area("Lumbridge")
+			.build(),
+		AnagramClue.builder()
+			.text("BY LOOK")
+			.npc("Bolkoy")
+			.location(new WorldPoint(2529, 3162, 0))
+			.area("Tree Gnome Village general store")
+			.question("How many flowers are there in the clearing below this platform?")
+			.answer("13")
+			.build(),
+		AnagramClue.builder()
+			.text("CALAMARI MADE MUD")
+			.npc("Madame Caldarium")
+			.location(new WorldPoint(2553, 2868, 0))
+			.area("Corsair Cove")
+			.question("What is 3(5-3)?")
+			.answer("6")
+			.build(),
+		AnagramClue.builder()
+			.text("CAR IF ICES")
+			.npc("Sacrifice")
+			.location(new WorldPoint(2209, 3056, 0))
+			.area("Zul-Andra")
+			.build(),
+		AnagramClue.builder()
+			.text("CAREER IN MOON")
+			.npc("Oneiromancer")
+			.location(new WorldPoint(2150, 3866, 0))
+			.area("Astral altar")
+			.question("How many Suqah inhabit Lunar isle?")
+			.answer("25")
+			.build(),
+		AnagramClue.builder()
+			.text("CLASH ION")
+			.npc("Nicholas")
+			.location(new WorldPoint(1841, 3803, 0))
+			.area("North of Port Piscarilius fishing shop")
+			.question("How many windows are in Tynan's shop?")
+			.answer("4")
+			.build(),
+		AnagramClue.builder()
+			.text("C ON GAME HOC")
+			.npc("Gnome Coach")
+			.location(new WorldPoint(2395, 3486, 0))
+			.area("Gnome Ball course")
+			.question("How many gnomes on the Gnome ball field have red patches on their uniforms?")
+			.answer("6")
+			.build(),
+		AnagramClue.builder()
+			.text("COOL NERD")
+			.npc("Old crone")
+			.location(new WorldPoint(3462, 3557, 0))
+			.area("East of the Slayer Tower")
+			.question("What is the combined combat level of each species that live in Slayer tower?")
+			.answer("619")
+			.build(),
+		AnagramClue.builder()
+			.text("COPPER ORE CRYPTS")
+			.npc("Prospector Percy")
+			.location(new WorldPoint(3061, 3377, 0))
+			.area("Motherlode Mine")
+			.question("During a party, everyone shook hands with everybody else. There were 66 handshakes. How many people were at the party?")
+			.answer("12")
+			.build(),
+		AnagramClue.builder()
+			.text("DARN DRAKE")
+			.npc("Daer Krand")
+			.location(new WorldPoint(3728, 3302, 0))
+			.area("Sisterhood Sanctuary (Slepe Dungeon, northeast of Nightmare Arena)")
+			.build(),
+		AnagramClue.builder()
+			.text("DED WAR")
+			.npc("Edward")
+			.location(new WorldPoint(3284, 3943, 0))
+			.area("Inside Rogue's Castle")
+			.build(),
+		AnagramClue.builder()
+			.text("DEKAGRAM")
+			.npc("Dark mage")
+			.location(new WorldPoint(3039, 4835, 0))
+			.area("Centre of the Abyss")
+			.question("How many rifts are found here in the abyss?")
+			.answer("13")
+			.build(),
+		AnagramClue.builder()
+			.text("DO SAY MORE")
+			.npc("Doomsayer")
+			.location(new WorldPoint(3230, 3230, 0))
+			.area("East of Lumbridge Castle")
+			.question("What is 40 divided by 1/2 plus 15?")
+			.answer("95")
+			.build(),
+		AnagramClue.builder()
+			.text("DIM THARN")
+			.npc("Mandrith")
+			.location(new WorldPoint(3182, 3946, 0))
+			.area("Wilderness Resource Area")
+			.build(),
+		AnagramClue.builder()
+			.text("DR HITMAN")
+			.npc("Mandrith")
+			.location(new WorldPoint(3182, 3946, 0))
+			.area("Wilderness Resource Area")
+			.question("How many scorpions live under the pit?")
+			.answer("28")
+			.build(),
+		AnagramClue.builder()
+			.text("DR WARDEN FUNK")
+			.npc("Drunken Dwarf")
+			.location(new WorldPoint(2913, 10221, 0))
+			.area("East Side of Keldagrim")
+			.build(),
+		AnagramClue.builder()
+			.text("DRAGONS LAMENT")
+			.npc("Strange Old Man")
+			.location(new WorldPoint(3564, 3288, 0))
+			.area("Barrows")
+			.question("One pipe fills a barrel in 1 hour while another pipe can fill the same barrel in 2 hours. How many minutes will it take to fill the tank if both pipes are used?")
+			.answer("40")
+			.build(),
+		AnagramClue.builder()
+			.text("DT RUN B")
+			.npc("Brundt the Chieftain")
+			.location(new WorldPoint(2658, 3670, 0))
+			.area("Rellekka, main hall")
+			.question("How many people are waiting for the next bard to perform?")
+			.answer("4")
+			.build(),
+		AnagramClue.builder()
+			.text("DUO PLUG")
+			.npc("Dugopul")
+			.location(new WorldPoint(2803, 2744, 0))
+			.area("Graveyard on Ape Atoll")
+			.build(),
+		AnagramClue.builder()
+			.text("EEK ZERO OP")
+			.npc("Zoo keeper")
+			.location(new WorldPoint(2613, 3269, 0))
+			.area("Ardougne Zoo")
+			.question("How many animals in total are there in the zoo?")
+			.answer("40")
+			.build(),
+		AnagramClue.builder()
+			.text("EL OW")
+			.npc("Lowe")
+			.location(new WorldPoint(3233, 3423, 0))
+			.area("Varrock archery store")
+			.build(),
+		AnagramClue.builder()
+			.text("FORLUN")
+			.npc("Runolf")
+			.location(new WorldPoint(2512, 10256, 0))
+			.area("Miscellania & Etceteria Dungeon")
+			.build(),
+		AnagramClue.builder()
+			.text("GOBLIN KERN")
+			.npc("King Bolren")
+			.location(new WorldPoint(2541, 3170, 0))
+			.area("Tree Gnome Village")
+			.build(),
+		AnagramClue.builder()
+			.text("GOT A BOY")
+			.npc("Gabooty")
+			.location(new WorldPoint(2790, 3066, 0))
+			.area("Centre of Tai Bwo Wannai")
+			.question("How many buildings are in the village?")
+			.answer("11")
+			.build(),
+		AnagramClue.builder()
+			.text("GOBLETS ODD TOES")
+			.npc("Otto Godblessed")
+			.location(new WorldPoint(2501, 3487, 0))
+			.area("Otto's Grotto")
+			.question("How many types of dragon are there beneath the whirlpool's cavern?")
+			.answer("2")
+			.build(),
+		AnagramClue.builder()
+			.text("HALT US")
+			.npc("Luthas")
+			.location(new WorldPoint(2938, 3152, 0))
+			.area("Banana plantation, Karamja")
+			.build(),
+		AnagramClue.builder()
+			.text("HEORIC")
+			.npc("Eohric")
+			.location(new WorldPoint(2900, 3565, 0))
+			.area("Top floor of Burthorpe Castle")
+			.question("King Arthur and Merlin sit down at the Round Table with 8 knights. How many degrees does each get?")
+			.answer("36")
+			.build(),
+		AnagramClue.builder()
+			.text("HIS PHOR")
+			.npc("Horphis")
+			.location(new WorldPoint(1639, 3812, 0))
+			.area("Arceuus Library, Zeah")
+			.question("On a scale of 1-10, how helpful is Logosia?")
+			.answer("1")
+			.build(),
+		AnagramClue.builder()
+			.text("I AM SIR")
+			.npc("Marisi")
+			.location(new WorldPoint(1737, 3557, 0))
+			.area("Allotment patch, South of Hosidius chapel")
+			.question("How many cities form the Kingdom of Great Kourend?")
+			.answer("5")
+			.build(),
+		AnagramClue.builder()
+			.text("ICY FE")
+			.npc("Fycie")
+			.location(new WorldPoint(2630, 2997, 0))
+			.area("East Feldip Hills")
+			.build(),
+		AnagramClue.builder()
+			.text("I DOOM ICON INN")
+			.npc("Dominic Onion")
+			.location(new WorldPoint(2609, 3116, 0))
+			.area("Nightmare Zone")
+			.question("How many reward points does a herb box cost?")
+			.answer("9,500")
+			.build(),
+		AnagramClue.builder()
+			.text("I EVEN")
+			.npc("Nieve")
+			.location(new WorldPoint(2432, 3422, 0))
+			.area("The slayer master in Gnome Stronghold")
+			.question("How many farming patches are there in Gnome stronghold?")
+			.answer("2")
+			.build(),
+		AnagramClue.builder()
+			.text("IM N ZEZIM")
+			.npc("Immenizz")
+			.location(new WorldPoint(2592, 4324, 0))
+			.area("The Imp inside Puro-Puro")
+			.build(),
+		AnagramClue.builder()
+			.text("KAY SIR")
+			.npc("Sir Kay")
+			.location(new WorldPoint(2760, 3496, 0))
+			.area("The courtyard in Camelot Castle")
+			.question("How many fountains are there within the grounds of Camelot castle?")
+			.answer("6")
+			.build(),
+		AnagramClue.builder()
+			.text("LEAKEY")
+			.npc("Kaylee")
+			.location(new WorldPoint(2957, 3370, 0))
+			.area("Rising Sun Inn in Falador")
+			.question("How many chairs are there in the Rising Sun?")
+			.answer("18")
+			.build(),
+		AnagramClue.builder()
+			.text("LARK IN DOG")
+			.npc("King Roald")
+			.location(new WorldPoint(3220, 3476, 0))
+			.area("Ground floor of Varrock castle")
+			.question("How many bookcases are there in the palace library?")
+			.answer("24")
+			.build(),
+		AnagramClue.builder()
+			.text("LOW LAG")
+			.npc("Gallow")
+			.location(new WorldPoint(1805, 3566, 0))
+			.area("Vinery in the Great Kourend")
+			.question("How many vine patches can you find in this vinery?")
+			.answer("12")
+			.build(),
+		AnagramClue.builder()
+			.text("LADDER MEMO GUV")
+			.npc("Guard Vemmeldo")
+			.location(new WorldPoint(2447, 3418, 1))
+			.area("Gnome Stronghold Bank")
+			.question("How many magic trees can you find inside the Gnome Stronghold?")
+			.answer("3")
+			.build(),
+		AnagramClue.builder()
+			.text("MAL IN TAU")
+			.npc("Luminata")
+			.location(new WorldPoint(3508, 3237, 0))
+			.area("Near Burgh de Rott entrance")
+			.build(),
+		AnagramClue.builder()
+			.text("MACHETE CLAM")
+			.npc("Cam the Camel")
+			.location(new WorldPoint(3300, 3231, 0))
+			.area("Outside Duel Arena")
+			.question("How many items can carry water in Gielinor?")
+			.answer("6")
+			.build(),
+		AnagramClue.builder()
+			.text("ME IF")
+			.npc("Femi")
+			.location(new WorldPoint(2461, 3382, 0))
+			.area("Gates of Tree Gnome Stronghold")
+			.build(),
+		AnagramClue.builder()
+			.text("MOLD LA RAN")
+			.npc("Old Man Ral")
+			.location(new WorldPoint(3602, 3209, 0))
+			.area("Meiyerditch")
+			.build(),
+		AnagramClue.builder()
+			.text("MOTHERBOARD")
+			.npc("Brother Omad")
+			.location(new WorldPoint(2606, 3211, 0))
+			.area("Monastery south of Ardougne")
+			.question("What is the next number? 12, 13, 15, 17, 111, 113, 117, 119, 123....?")
+			.answer("129")
+			.build(),
+		AnagramClue.builder()
+			.text("MUS KIL READER")
+			.npc("Radimus Erkle")
+			.location(new WorldPoint(2726, 3368, 0))
+			.area("Legends' Guild")
+			.build(),
+		AnagramClue.builder()
+			.text("MY MANGLE LAL")
+			.npc("Lammy Langle")
+			.location(new WorldPoint(1688, 3540, 0))
+			.area("Hosidius spirit tree patch")
+			.build(),
+		AnagramClue.builder()
+			.text("NO OWNER")
+			.npc("Oronwen")
+			.location(new WorldPoint(1162, 3178, 0))
+			.area("Lletya Seamstress shop in Lletya")
+			.question("What is the minimum amount of quest points required to reach Lletya?")
+			.answer("20")
+			.build(),
+		AnagramClue.builder()
+			.text("NOD MED")
+			.npc("Edmond")
+			.location(new WorldPoint(2566, 3332, 0))
+			.area("Behind the most NW house in East Ardougne")
+			.question("How many pigeon cages are there around the back of Jerico's house?")
+			.answer("3")
+			.build(),
+		AnagramClue.builder()
+			.text("O BIRDZ A ZANY EN PC")
+			.npc("Cap'n Izzy No-Beard")
+			.location(new WorldPoint(2807, 3191, 0))
+			.area("Brimhaven Agility Arena")
+			.question("How many Banana Trees are there in the plantation?")
+			.answer("33")
+			.build(),
+		AnagramClue.builder()
+			.text("OK CO")
+			.npc("Cook")
+			.location(new WorldPoint(3207, 3214, 0))
+			.area("Ground floor of Lumbridge Castle")
+			.question("How many cannons does Lumbridge Castle have?")
+			.answer("9")
+			.build(),
+		AnagramClue.builder()
+			.text("OUR OWN NEEDS")
+			.npc("Nurse Wooned")
+			.location(new WorldPoint(1511, 3619, 0))
+			.area("Shayzien Infirmary")
+			.question("How many wounded soldiers are there in the camp?")
+			.answer("16")
+			.build(),
+		AnagramClue.builder()
+			.text("PACINNG A TAIE")
+			.npc("Captain Ginea")
+			.location(new WorldPoint(1504, 3632, 0))
+			.area("Tent east of Shayzien Encampment war tent")
+			.question("1 soldier can deal with 6 lizardmen. How many soldiers do we need for an army of 678 lizardmen?")
+			.answer("113")
+			.build(),
+		AnagramClue.builder()
+			.text("PEAK REFLEX")
+			.npc("Flax keeper")
+			.location(new WorldPoint(2744, 3444, 0))
+			.area("Flax field south of Seers Village")
+			.question("If I have 1014 flax, and I spin a third of them into bowstring, how many flax do I have left?")
+			.answer("676")
+			.build(),
+		AnagramClue.builder()
+			.text("PEATY PERT")
+			.npc("Party Pete")
+			.location(new WorldPoint(3047, 3376, 0))
+			.area("Falador Party Room")
+			.build(),
+		AnagramClue.builder()
+			.text("QUIT HORRIBLE TYRANT")
+			.npc("Brother Tranquility")
+			.location(new WorldPoint(3681, 2963, 0))
+			.area("Mos Le'Harmless or Harmony Island")
+			.question("If I have 49 bottles of rum to share between 7 pirates, how many would each pirate get?")
+			.answer("7")
+			.build(),
+		AnagramClue.builder()
+			.text("QUE SIR")
+			.npc("Squire")
+			.location(new WorldPoint(2975, 3343, 0))
+			.area("Falador Castle Courtyard")
+			.question("White knights are superior to black knights. 2 white knights can handle 3 black knights. How many knights do we need for an army of 981 black knights?")
+			.answer("654")
+			.build(),
+		AnagramClue.builder()
+			.text("R AK MI")
+			.npc("Karim")
+			.location(new WorldPoint(3273, 3181, 0))
+			.area("Al Kharid Kebab shop")
+			.question("I have 16 kebabs, I eat one myself and then share the rest equally between 3 friends. How many do they have each?")
+			.answer("5")
+			.build(),
+		AnagramClue.builder()
+			.text("RAT MAT WITHIN")
+			.npc("Martin Thwait")
+			.location(new WorldPoint(2906, 3537, 0))
+			.area("Rogues' Den")
+			.question("How many natural fires burn in Rogue's Den?")
+			.answer("2")
+			.build(),
+		AnagramClue.builder()
+			.text("RATAI")
+			.npc("Taria")
+			.location(new WorldPoint(2940, 3223, 0))
+			.area("Rimmington bush patch")
+			.question("How many buildings are there in Rimmington?")
+			.answer("7")
+			.build(),
+		AnagramClue.builder()
+			.text("R SLICER")
+			.npc("Clerris")
+			.location(new WorldPoint(1761, 3850, 0))
+			.area("Arceuus mine, Zeah")
+			.question("If I have 1,000 blood runes, and cast 131 ice barrage spells, how many blood runes do I have left?")
+			.answer("738")
+			.build(),
+		AnagramClue.builder()
+			.text("RIP MAUL")
+			.npc("Primula")
+			.location(new WorldPoint(2454, 2853, 1))
+			.area("Myth's Guild, first floor")
+			.build(),
+		AnagramClue.builder()
+			.text("SAND NUT")
+			.npc("Dunstan")
+			.location(new WorldPoint(2919, 3574, 0))
+			.area("Anvil in north east Burthorpe")
+			.question("How much smithing experience does one receive for smelting a blurite bar?")
+			.answer("8")
+			.build(),
+		AnagramClue.builder()
+			.text("SLAM DUSTER GRAIL")
+			.npc("Guildmaster Lars")
+			.location(new WorldPoint(1649, 3498, 0))
+			.area("Woodcutting guild, Zeah")
+			.build(),
+		AnagramClue.builder()
+			.text("SLIDE WOMAN")
+			.npc("Wise Old Man")
+			.location(new WorldPoint(3088, 3253, 0))
+			.area("Draynor Village")
+			.question("How many bookcases are in the Wise Old Man's house?")
+			.answer("28")
+			.build(),
+		AnagramClue.builder()
+			.text("SNAKES SO I SAIL")
+			.npc("Lisse Isaakson")
+			.location(new WorldPoint(2351, 3801, 0))
+			.area("Neitiznot")
+			.question("How many arctic logs are required to make a large fremennik round shield?")
+			.answer("2")
+			.build(),
+		AnagramClue.builder()
+			.text("TAMED ROCKS")
+			.npc("Dockmaster")
+			.location(new WorldPoint(1822, 3739, 0))
+			.area("Port Piscarilius, NE of General store")
+			.question("What is the cube root of 125?")
+			.answer("5")
+			.build(),
+		AnagramClue.builder()
+			.text("TEN WIGS ON")
+			.npc("Wingstone")
+			.location(new WorldPoint(3389, 2877, 0))
+			.area("Between Nardah & Agility Pyramid")
+			.build(),
+		AnagramClue.builder()
+			.text("THICKNO")
+			.npc("Hickton")
+			.location(new WorldPoint(2822, 3442, 0))
+			.area("Catherby fletching shop")
+			.question("How many ranges are there in Catherby?")
+			.answer("2")
+			.build(),
+		AnagramClue.builder()
+			.text("TWENTY CURE IRON")
+			.npc("New Recruit Tony")
+			.location(new WorldPoint(1503, 3553, 0))
+			.area("Shayzien Graveyard")
+			.build(),
+		AnagramClue.builder()
+			.text("UNLEASH NIGHT MIST")
+			.npc("Sigli the Huntsman")
+			.location(new WorldPoint(2660, 3654, 0))
+			.area("Rellekka")
+			.question("What is the combined slayer requirement of every monster in the slayer cave?")
+			.answer("302")
+			.build(),
+		AnagramClue.builder()
+			.text("VESTE")
+			.npc("Steve")
+			.location(new WorldPoint(2432, 3423, 0))
+			.area("Upstairs Wyvern Area or Stronghold Slayer Cave")
+			.question("How many farming patches are there in Gnome stronghold?")
+			.answer("2")
+			.build(),
+		AnagramClue.builder()
+			.text("VEIL VEDA")
+			.npc("Evil Dave")
+			.location(new WorldPoint(3079, 9892, 0))
+			.area("Doris' basement, Edgeville")
+			.question("What is 333 multiplied by 2?")
+			.answer("666")
+			.build(),
+		AnagramClue.builder()
+			.text("WOO AN EGG KIWI")
+			.npc("Awowogei")
+			.objectId(ObjectID.AWOWOGEI)
+			.location(new WorldPoint(2802, 2765, 0))
+			.area("Ape Atoll")
+			.question("If I have 303 bananas, and share them between 31 friends evenly, only handing out full bananas. How many will I have left over?")
+			.answer("24")
+			.build(),
+		AnagramClue.builder()
+			.text("MAJORS LAVA BADS AIR")
+			.npc("Ambassador Alvijar")
+			.location(new WorldPoint(2736, 5351, 1))
+			.area("Dorgesh-Kaan, NE Middle Level")
+			.question("Double the miles before the initial Dorgeshuun veteran.")
+			.answer("2505")
+			.build(),
+		AnagramClue.builder()
+			.text("AN EARL")
+			.npc("Ranael")
+			.location(new WorldPoint(3315, 3163, 0))
+			.area("Al Kharid skirt shop")
+			.build(),
+		AnagramClue.builder()
+			.text("CARPET AHOY")
+			.npc("Apothecary")
+			.location(new WorldPoint(3195, 3404, 0))
+			.area("Southwest Varrock")
+			.build(),
+		AnagramClue.builder()
+			.text("DISORDER")
+			.npc("Sedridor")
+			.location(new WorldPoint(3102, 9570, 0))
+			.area("Wizards' Tower basement")
+			.build(),
+		AnagramClue.builder()
+			.text("I CORD")
+			.npc("Doric")
+			.location(new WorldPoint(2951, 3450, 0))
+			.area("North of Falador")
+			.build(),
+		AnagramClue.builder()
+			.text("IN BAR")
+			.npc("Brian")
+			.location(new WorldPoint(3026, 3246, 0))
+			.area("Port Sarim battleaxe shop")
+			.build(),
+		AnagramClue.builder()
+			.text("RAIN COVE")
+			.npc("Veronica")
+			.location(new WorldPoint(3110, 3330, 0))
+			.area("Outside Draynor Manor")
+			.build(),
+		AnagramClue.builder()
+			.text("RUG DETER")
+			.npc("Gertrude")
+			.location(new WorldPoint(3151, 3412, 0))
+			.area("West of Varrock, south of the Cooks' Guild")
+			.build(),
+		AnagramClue.builder()
+			.text("SIR SHARE RED")
+			.npc("Hairdresser")
+			.location(new WorldPoint(2944, 3381, 0))
+			.area("Western Falador")
+			.build(),
+		AnagramClue.builder()
+			.text("TAUNT ROOF")
+			.npc("Fortunato")
+			.location(new WorldPoint(3080, 3250, 0))
+			.area("Draynor Village Market")
+			.build(),
+		AnagramClue.builder()
+			.text("HICK JET")
+			.npc("Jethick")
+			.location(new WorldPoint(2541, 3305, 0))
+			.area("West Ardougne")
+			.question("How many graves are there in the city graveyard?")
+			.answer("38")
+			.build(),
+		AnagramClue.builder()
+			.text("RUE GO")
+			.npc("Goreu")
+			.location(new WorldPoint(2335, 3162, 0))
+			.area("Lletya")
+			.build(),
+		AnagramClue.builder()
+			.text("BRUCIE CATNAP")
+			.npc("Captain Bruce")
+			.location(new WorldPoint(1520, 3558, 0))
+			.area("Graveyard of Heroes")
+			.build(),
+		AnagramClue.builder()
+			.text("UESNKRL NRIEDDO")
+			.npc("Drunken soldier")
+			.location(new WorldPoint(1551, 3565, 0))
+			.area("Shayzien pub")
+			.question("If 13 Shayzien Soldiers kill 46 Lizardmen each in a day, how many Lizardmen have they killed in total in a single day?")
+			.answer("598")
+			.build()
 	);
 
 	private final String text;
@@ -161,29 +779,8 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 	private final String question;
 	@Nullable
 	private final String answer;
-	private int objectId;
-
-	private AnagramClue(String text, String npc, WorldPoint location, String area)
-	{
-		this(text, npc, location, area, null, null);
-	}
-
-	private AnagramClue(String text, String npc, WorldPoint location, String area, @Nullable String question, @Nullable String answer)
-	{
-		this.text = text;
-		this.npc = npc;
-		this.location = location;
-		this.area = area;
-		this.question = question;
-		this.answer = answer;
-		this.objectId = -1;
-	}
-
-	private AnagramClue(String text, String npc, int objectId, WorldPoint location, String area, String question, String answer)
-	{
-		this(text, npc, location, area, question, answer);
-		this.objectId = objectId;
-	}
+	@Builder.Default
+	private final int objectId = -1;
 
 	@Override
 	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin)
@@ -261,12 +858,12 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 	@Override
 	public String[] getNpcs()
 	{
-		return new String[] {npc};
+		return new String[]{npc};
 	}
 
 	@Override
 	public int[] getObjectIds()
 	{
-		return new int[] {objectId};
+		return new int[]{objectId};
 	}
 }
