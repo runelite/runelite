@@ -239,7 +239,9 @@ public class LootTrackerPlugin extends Plugin
 
 	private static final String CASKET_EVENT = "Casket";
 
+	// Wintertodt
 	private static final String WINTERTODT_SUPPLY_CRATE_EVENT = "Supply crate (Wintertodt)";
+	private int winterTodtSupplyCount;
 
 	// Soul Wars
 	private static final String SPOILS_OF_WAR_EVENT = "Spoils of war";
@@ -788,6 +790,17 @@ public class LootTrackerPlugin extends Plugin
 			return;
 		}
 
+		// User can choose not to open crate if there is not enough space
+		if (WINTERTODT_SUPPLY_CRATE_EVENT.equals(eventType))
+		{
+			int prevSupplyCount = winterTodtSupplyCount;
+			getWintertodtSupplyCrateCount();
+			if (prevSupplyCount == winterTodtSupplyCount)
+			{
+				resetEvent();
+			}
+		}
+
 		if (CHEST_EVENT_TYPES.containsValue(eventType)
 			|| SHADE_CHEST_OBJECTS.containsValue(eventType)
 			|| HALLOWED_SEPULCHRE_COFFIN_EVENT.equals(eventType)
@@ -857,6 +870,7 @@ public class LootTrackerPlugin extends Plugin
 					case ItemID.EXTRA_SUPPLY_CRATE:
 						setEvent(LootRecordType.EVENT, WINTERTODT_SUPPLY_CRATE_EVENT);
 						takeInventorySnapshot();
+						getWintertodtSupplyCrateCount();
 						break;
 					case ItemID.SPOILS_OF_WAR:
 						setEvent(LootRecordType.EVENT, SPOILS_OF_WAR_EVENT);
@@ -1152,5 +1166,14 @@ public class LootTrackerPlugin extends Plugin
 				.type(ChatMessageType.CONSOLE)
 				.runeLiteFormattedMessage(message)
 				.build());
+	}
+
+	private void getWintertodtSupplyCrateCount()
+	{
+		winterTodtSupplyCount = 0;
+		final Item[] inventoryItems = client.getItemContainer(InventoryID.INVENTORY).getItems();
+		for (Item item : inventoryItems) {
+			if(item.getId() == ItemID.SUPPLY_CRATE) winterTodtSupplyCount += 1;
+		}
 	}
 }
