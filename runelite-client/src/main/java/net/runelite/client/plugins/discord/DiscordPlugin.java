@@ -233,8 +233,10 @@ public class DiscordPlugin extends Plugin
 			return;
 		}
 
-		CharMatcher matcher = CharMatcher.anyOf("abcdef0123456789");
-		if (!matcher.matchesAllOf(event.getUserId()) || !matcher.matchesAllOf(event.getAvatarId()))
+		final CharMatcher matcher = CharMatcher.anyOf("abcdef0123456789");
+
+		// animated avatars contain a_ as prefix so we need to get rid of that first to check against matcher
+		if (!matcher.matchesAllOf(event.getUserId()) || !matcher.matchesAllOf(event.getAvatarId().replace("a_", "")))
 		{
 			// userid is actually a snowflake, but the matcher is sufficient
 			return;
