@@ -130,6 +130,13 @@ public class ItemChargePlugin extends Plugin
 		"Your expeditious bracelet has (\\d{1,2}) charges? left\\."
 	);
 	private static final String EXPEDITIOUS_BRACELET_BREAK_TEXT = "Your Expeditious Bracelet has crumbled to dust.";
+	private static final Pattern FLAMTAER_BRACELET_ACTIVATE_PATTERN = Pattern.compile(
+		"Your Flamtaer bracelet helps you build the temple quicker. (?:(?:It has (\\d{1,2}) charges? left)|(It then crumbles to dust))\\."
+	);
+	private static final Pattern FLAMTAER_BRACELET_CHECK_PATTERN = Pattern.compile(
+		"Your flamtaer bracelet has (\\d{1,2}) charges? left\\."
+	);
+	private static final String FLAMTAER_BRACELET_BREAK_TEXT = "Your Flamtaer Bracelet has crumbled to dust.";
 
 	private static final int MAX_DODGY_CHARGES = 10;
 	private static final int MAX_BINDING_CHARGES = 16;
@@ -138,6 +145,7 @@ public class ItemChargePlugin extends Plugin
 	private static final int MAX_AMULET_OF_CHEMISTRY_CHARGES = 5;
 	private static final int MAX_AMULET_OF_BOUNTY_CHARGES = 10;
 	private static final int MAX_SLAYER_BRACELET_CHARGES = 30;
+	private static final int MAX_FLAMTAER_BRACELET_CHARGES = 80;
 
 	private int lastExplorerRingCharge = -1;
 
@@ -227,6 +235,8 @@ public class ItemChargePlugin extends Plugin
 			Matcher slaughterCheckMatcher = BRACELET_OF_SLAUGHTER_CHECK_PATTERN.matcher(message);
 			Matcher expeditiousActivateMatcher = EXPEDITIOUS_BRACELET_ACTIVATE_PATTERN.matcher(message);
 			Matcher expeditiousCheckMatcher = EXPEDITIOUS_BRACELET_CHECK_PATTERN.matcher(message);
+			Matcher flamtaerActivateMatcher = FLAMTAER_BRACELET_ACTIVATE_PATTERN.matcher(message);
+			Matcher flamtaerCheckMatcher = FLAMTAER_BRACELET_CHECK_PATTERN.matcher(message);
 
 			if (config.recoilNotification() && message.contains(RING_OF_RECOIL_BREAK_MESSAGE))
 			{
@@ -413,6 +423,26 @@ public class ItemChargePlugin extends Plugin
 			{
 				updateExpeditiousBraceletCharges(Integer.parseInt(expeditiousCheckMatcher.group(1)));
 			}
+			else if (flamtaerActivateMatcher.find())
+			{
+				final String found = flamtaerActivateMatcher.group(1);
+				if (found == null)
+				{
+					updateFlamtaerBraceletCharges(MAX_FLAMTAER_BRACELET_CHARGES);
+					if (config.flamtaerNotification())
+					{
+						notifier.notify(FLAMTAER_BRACELET_BREAK_TEXT);
+					}
+				}
+				else
+				{
+					updateFlamtaerBraceletCharges(Integer.parseInt(found));
+				}
+			}
+			else if (flamtaerCheckMatcher.find())
+			{
+				updateFlamtaerBraceletCharges(Integer.parseInt(flamtaerCheckMatcher.group(1)));
+			}
 		}
 	}
 
@@ -485,6 +515,10 @@ public class ItemChargePlugin extends Plugin
 							log.debug("Reset expeditious bracelet");
 							updateExpeditiousBraceletCharges(MAX_SLAYER_BRACELET_CHARGES);
 							break;
+						case ItemID.FLAMTAER_BRACELET:
+							log.debug("Reset flamtaer bracelet");
+							updateFlamtaerBraceletCharges(MAX_FLAMTAER_BRACELET_CHARGES);
+							break;
 					}
 				}
 			});
@@ -537,6 +571,12 @@ public class ItemChargePlugin extends Plugin
 	private void updateExpeditiousBraceletCharges(final int value)
 	{
 		setItemCharges(ItemChargeConfig.KEY_EXPEDITIOUS_BRACELET, value);
+		updateInfoboxes();
+	}
+
+	private void updateFlamtaerBraceletCharges(final int value)
+	{
+		setItemCharges(ItemChargeConfig.KEY_FLAMTAER_BRACELET, value);
 		updateInfoboxes();
 	}
 
