@@ -117,4 +117,15 @@ public interface NpcAggroAreaConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "hideIfOutOfCombat",
+		name = "Hide when out of combat",
+		description = "Hides unaggressive area lines when out of combat.",
+		position = 8
+	)
+	default boolean hideIfOutOfCombat()
+	{
+		return false;
+	}
 }
