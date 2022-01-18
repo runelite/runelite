@@ -205,6 +205,7 @@ public final class AnimationID
 	public static final int LEAGUE_HOME_TELEPORT_5 = 8805;
 	public static final int LEAGUE_HOME_TELEPORT_6 = 8807;
 	public static final int RAID_LIGHT_ANIMATION = 3101;
+	public static final int LOOTBEAM_ANIMATION = 9260;
 
 	public static final int CONSTRUCTION = 3676;
 	public static final int CONSTRUCTION_IMCANDO = 8912;

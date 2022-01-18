@@ -436,4 +436,15 @@ public interface GroundItemsConfig extends Config
 	{
 		return HighlightTier.HIGH;
 	}
+
+	@ConfigItem(
+		keyName = "lootbeamStyle",
+		name = "Lootbeam Style",
+		description = "Style of lootbeam to use",
+		position = 32
+	)
+	default Lootbeam.Style lootbeamStyle()
+	{
+		return Lootbeam.Style.MODERN;
+	}
 }
