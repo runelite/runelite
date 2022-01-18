@@ -60,11 +60,6 @@
 			<artifactId>gson</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>io.netty</groupId>
-			<artifactId>netty-buffer</artifactId>
-			<version>4.1.0.Final</version>
-		</dependency>
-		<dependency>
 			<groupId>org.antlr</groupId>
 			<artifactId>antlr4-runtime</artifactId>
 			<version>${antlr4.version}</version>
