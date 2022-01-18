@@ -421,6 +421,11 @@ public interface Client extends GameEngine
 	IndexDataBase getIndexConfig();
 
 	/**
+	 * Gets an index by id
+	 */
+	IndexDataBase getIndex(int id);
+
+	/**
 	 * Returns the x-axis base coordinate.
 	 * <p>
 	 * This value is the x-axis world coordinate of tile (0, 0) in
