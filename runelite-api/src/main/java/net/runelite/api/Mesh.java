@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2022 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,53 +25,49 @@
 package net.runelite.api;
 
 /**
- * Represents the model of an object.
+ * A {@link Model} or {@link ModelData}
  */
-public interface Model extends Mesh, Renderable
+public interface Mesh<T extends Mesh<T>>
 {
-	int[] getFaceColors1();
+	int getVerticesCount();
+	int[] getVerticesX();
+	int[] getVerticesY();
+	int[] getVerticesZ();
 
-	int[] getFaceColors2();
+	int getFaceCount();
+	int[] getFaceIndices1();
+	int[] getFaceIndices2();
+	int[] getFaceIndices3();
+	byte[] getFaceTransparencies();
+	short[] getFaceTextures();
 
-	int[] getFaceColors3();
+	/**
+	 * Rotates this model 90 degrees around the vertical axis.
+	 * {@link ModelData#cloneVertices()} should be called before calling this method
+	 */
+	T rotateY90Ccw();
 
-	int getSceneId();
-	void setSceneId(int sceneId);
+	/**
+	 * Rotates this model 180 degrees around the vertical axis.
+	 * {@link ModelData#cloneVertices()} should be called before calling this method
+	 */
+	T rotateY180Ccw();
 
-	int getBufferOffset();
-	void setBufferOffset(int bufferOffset);
+	/**
+	 * Rotates this model 270 degrees around the vertical axis.
+	 * {@link ModelData#cloneVertices()} should be called before calling this method
+	 */
+	T rotateY270Ccw();
 
-	int getUvBufferOffset();
-	void setUvBufferOffset(int bufferOffset);
+	/**
+	 * Offsets this model by the passed amount (1/128ths of a tile).
+	 * {@link ModelData#cloneVertices()} should be called before calling this method
+	 */
+	T translate(int x, int y, int z);
 
-	int getBottomY();
-
-	void calculateBoundsCylinder();
-
-	byte[] getFaceRenderPriorities();
-
-	int getRadius();
-
-	float[] getFaceTextureUVCoordinates();
-
-	void calculateExtreme(int orientation);
-
-	int getCenterX();
-	int getCenterY();
-	int getCenterZ();
-	int getExtremeX();
-	int getExtremeY();
-	int getExtremeZ();
-
-	int getXYZMag();
-	boolean isClickable();
-
-	int[] getVertexNormalsX();
-	int[] getVertexNormalsY();
-	int[] getVertexNormalsZ();
-
-	byte getOverrideAmount();
-	byte getOverrideHue();
-	byte getOverrideSaturation();
-	byte getOverrideLuminance();
+	/**
+	 * Resizes this model by the passed amount (1/128ths).
+	 * {@link ModelData#cloneVertices()} should be called before calling this method
+	 */
+	T scale(int x, int y, int z);
 }
