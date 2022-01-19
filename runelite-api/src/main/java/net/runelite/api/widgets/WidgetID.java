@@ -761,6 +761,7 @@ public final class WidgetID
 	{
 		static final int LUMBRIDGE_HOME_TELEPORT = 6;
 		static final int KOUREND_HOME_TELEPORT = 4;
+		static final int CATHERBY_HOME_TELEPORT = 5;
 	}
 
 	static class AncientSpellBook
