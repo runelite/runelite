@@ -171,6 +171,7 @@ public final class WidgetID
 	public static final int GRAVESTONE_GROUP_ID = 672;
 	public static final int POH_TREASURE_CHEST_INVENTORY_GROUP_ID = 674;
 	public static final int GROUP_IRON_GROUP_ID = 726;
+	public static final int GROUP_STORAGE_INVENTORY_GROUP_ID = 725;
 	public static final int GROUP_STORAGE_GROUP_ID = 724;
 
 	static class WorldMap
