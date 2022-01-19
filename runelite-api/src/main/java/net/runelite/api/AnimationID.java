@@ -204,6 +204,12 @@ public final class AnimationID
 	public static final int LEAGUE_HOME_TELEPORT_4 = 8803;
 	public static final int LEAGUE_HOME_TELEPORT_5 = 8805;
 	public static final int LEAGUE_HOME_TELEPORT_6 = 8807;
+	public static final int SHATTERED_LEAGUE_HOME_TELEPORT_1 = 9209;
+	public static final int SHATTERED_LEAGUE_HOME_TELEPORT_2 = 9210;
+	public static final int SHATTERED_LEAGUE_HOME_TELEPORT_3 = 9211;
+	public static final int SHATTERED_LEAGUE_HOME_TELEPORT_4 = 9212;
+	public static final int SHATTERED_LEAGUE_HOME_TELEPORT_5 = 9213;
+	public static final int SHATTERED_LEAGUE_HOME_TELEPORT_6 = 9214;
 	public static final int RAID_LIGHT_ANIMATION = 3101;
 	public static final int LOOTBEAM_ANIMATION = 9260;
 
