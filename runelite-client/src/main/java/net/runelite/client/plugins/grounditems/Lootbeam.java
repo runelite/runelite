@@ -64,13 +64,15 @@ class Lootbeam
 
 			short hsl = JagexColor.rgbToHSL(l.color.getRGB(), 1.0d);
 			int hue = JagexColor.unpackHue(hsl);
-			int sat = Math.min(JagexColor.unpackSaturation(hsl) + 1, JagexColor.SATURATION_MAX);
+			int sat = JagexColor.unpackSaturation(hsl);
 			int lum = JagexColor.unpackLuminance(hsl);
+			int satDelta = sat > 2 ? 1 : 0;
 
 			return md.cloneColors()
-				.recolor((short) 26432, JagexColor.packHSL(hue, sat, Math.min(lum + 12, JagexColor.LUMINANCE_MAX)))
-				.recolor((short) 26584, JagexColor.packHSL(hue, sat - 1, Math.max(lum - 12, 0)))
-				.light(75, 1875, ModelData.DEFAULT_X, ModelData.DEFAULT_Y, ModelData.DEFAULT_Z);
+				.recolor((short) 26432, JagexColor.packHSL(hue, sat - satDelta, lum))
+				.recolor((short) 26584, JagexColor.packHSL(hue, sat, Math.min(lum + 24, JagexColor.LUMINANCE_MAX)))
+				.light(75 + ModelData.DEFAULT_AMBIENT, 1875 + ModelData.DEFAULT_CONTRAST,
+					ModelData.DEFAULT_X, ModelData.DEFAULT_Y, ModelData.DEFAULT_Z);
 		}, anim(AnimationID.LOOTBEAM_ANIMATION)),
 		;
 
