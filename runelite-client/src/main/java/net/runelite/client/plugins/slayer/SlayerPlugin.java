@@ -565,10 +565,10 @@ public class SlayerPlugin extends Plugin
 		log.debug("Slayer xp change delta: {}, killed npcs: {}", delta, taggedNpcsDiedPrevTick);
 
 		final Task task = Task.getTask(taskName);
-		if (task != null && task.getMinimumKillXp() > 0)
+		if (task != null && task.getXpMatcher() != null)
 		{
-			// Only decrement a kill if the xp drop is above the minimum threshold. This is for Tzhaar and Sire tasks.
-			if (delta >= task.getMinimumKillXp())
+			// Only decrement a kill if the xp drop delta passes the matcher. This is for Tzhaar and Sire tasks.
+			if (task.getXpMatcher().test(delta))
 			{
 				killed(max(taggedNpcsDiedPrevTick, 1));
 			}
