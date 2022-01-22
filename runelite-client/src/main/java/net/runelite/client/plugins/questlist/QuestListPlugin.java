@@ -272,8 +272,8 @@ public class QuestListPlugin extends Plugin
 		updateList(QuestContainer.MEMBER_QUESTS, filter);
 		updateList(QuestContainer.MINI_QUESTS, filter);
 
-		memberList.setOriginalY(freeList.getOriginalY() + freeList.getOriginalHeight() + ENTRY_PADDING);
-		miniList.setOriginalY(memberList.getOriginalY() + memberList.getOriginalHeight() + ENTRY_PADDING);
+		memberList.setOriginalY(freeList.getOriginalY() + freeList.getOriginalHeight() + (freeList.getOriginalHeight() == 0 ? 0 : ENTRY_PADDING));
+		miniList.setOriginalY(memberList.getOriginalY() + memberList.getOriginalHeight() + (memberList.getOriginalHeight() == 0 ? 0 : ENTRY_PADDING));
 
 		// originalHeight is changed within updateList so revalidate all lists
 		freeList.revalidate();
@@ -379,7 +379,10 @@ public class QuestListPlugin extends Plugin
 			}
 		}
 
-		list.setOriginalHeight(y);
+		long hiddenCount = quests.stream()
+			.filter(q -> q.getQuest().isHidden())
+			.count();
+		list.setOriginalHeight(hiddenCount == quests.size() ? 0 : y);
 	}
 
 	@AllArgsConstructor
