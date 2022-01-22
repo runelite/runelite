@@ -303,4 +303,26 @@ public interface ItemIdentificationConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "showJewellery",
+		name = "Jewellery (Unenchanted)",
+		description = "Show identification on unenchanted jewellery",
+		section = identificationSection
+	)
+	default boolean showJewellery()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showEnchantedJewellery",
+		name = "Jewellery (Enchanted)",
+		description = "Show identification on enchanted jewellery",
+		section = identificationSection
+	)
+	default boolean showEnchantedJewellery()
+	{
+		return false;
+	}
 }
