@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Trevor <https://github.com/Trevor159>
+ * Copyright (c) 2022, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,14 +25,13 @@
 package net.runelite.api;
 
 /**
- * Represents an animation of a renderable
+ * An animated object
  */
-public interface Animation
+public interface DynamicObject extends Renderable
 {
 	/**
-	 * Get the id for this animation
-	 * @see AnimationID
+	 * Get the animation applied to the object
 	 * @return
 	 */
-	int getId();
+	Animation getAnimation();
 }
