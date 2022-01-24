@@ -123,6 +123,8 @@ public class ChatCommandsPlugin extends Plugin
 	private static final Pattern HS_KC_FLOOR_PATTERN = Pattern.compile("You have completed Floor (\\d) of the Hallowed Sepulchre! Total completions: <col=ff0000>([0-9,]+)</col>\\.");
 	private static final Pattern HS_KC_GHC_PATTERN = Pattern.compile("You have opened the Grand Hallowed Coffin <col=ff0000>([0-9,]+)</col> times?!");
 	private static final Pattern COLLECTION_LOG_ITEM_PATTERN = Pattern.compile("New item added to your collection log: (.*)");
+	private static final Pattern CHARACTER_SUMMARY_PATTERN = Pattern.compile("<col=.*>(.*)/(.*)</col>");
+
 
 	private static final String TOTAL_LEVEL_COMMAND_STRING = "!total";
 	private static final String PRICE_COMMAND_STRING = "!price";
@@ -140,6 +142,7 @@ public class ChatCommandsPlugin extends Plugin
 	private static final String LEAGUE_POINTS_COMMAND = "!lp";
 	private static final String SOUL_WARS_ZEAL_COMMAND = "!sw";
 	private static final String PET_LIST_COMMAND = "!pets";
+	private static final String DIARIES_COMMAND = "!diaries";
 
 	@VisibleForTesting
 	static final int ADV_LOG_EXPLOITS_TEXT_INDEX = 1;
@@ -219,6 +222,7 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.registerCommandAsync(DUEL_ARENA_COMMAND, this::duelArenaLookup, this::duelArenaSubmit);
 		chatCommandManager.registerCommandAsync(SOUL_WARS_ZEAL_COMMAND, this::soulWarsZealLookup);
 		chatCommandManager.registerCommandAsync(PET_LIST_COMMAND, this::petListLookup, this::petListSubmit);
+		chatCommandManager.registerCommandAsync(DIARIES_COMMAND, this::diariesLookup, this::diariesSubmit);
 
 		clientThread.invoke(this::loadPetIcons);
 	}
@@ -247,6 +251,7 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.unregisterCommand(DUEL_ARENA_COMMAND);
 		chatCommandManager.unregisterCommand(SOUL_WARS_ZEAL_COMMAND);
 		chatCommandManager.unregisterCommand(PET_LIST_COMMAND);
+		chatCommandManager.unregisterCommand(DIARIES_COMMAND);
 	}
 
 	@Provides
@@ -2165,5 +2170,76 @@ public class ChatCommandsPlugin extends Plugin
 			default:
 				return WordUtils.capitalize(boss);
 		}
+	}
+
+	private void diariesLookup(ChatMessage chatMessage, String message)
+	{
+		if (!config.diaries())
+		{
+			return;
+		}
+
+		ChatMessageType type = chatMessage.getType();
+
+		final String player;
+		if (type.equals(ChatMessageType.PRIVATECHATOUT))
+		{
+			player = client.getLocalPlayer().getName();
+		}
+		else
+		{
+			player = Text.sanitize(chatMessage.getName());
+		}
+
+		int qp;
+		try
+		{
+			qp = chatClient.getDiaries(player);
+		}
+		catch (IOException ex)
+		{
+			log.debug("unable to lookup quest points", ex);
+			return;
+		}
+
+		String response = new ChatMessageBuilder()
+				.append(ChatColorType.NORMAL)
+				.append("Quest points: ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(Integer.toString(qp))
+				.build();
+
+		log.debug("Setting response {}", response);
+		final MessageNode messageNode = chatMessage.getMessageNode();
+		messageNode.setRuneLiteFormatMessage(response);
+		client.refreshChat();
+	}
+
+	private boolean diariesSubmit(ChatInput chatInput, String value)
+	{
+		//final int qp = client.getVar(VarPlayer.QUEST_POINTS);
+		final String playerName = client.getLocalPlayer().getName();
+
+		Widget characterSummaryWidget = client.getWidget(WidgetInfo.CHARACTER_SUMMARY_BOX);
+		int cs = WidgetInfo.CHARACTER_SUMMARY_ACHIEVEMENTS.getChildId();
+		String adt = characterSummaryWidget.getChild(cs).getText();
+		Matcher matcher = CHARACTER_SUMMARY_PATTERN.matcher(adt);
+
+		if (matcher.find()) {
+
+			final int qp = Integer.parseInt(matcher.group(1));
+
+			executor.execute(() ->
+			{
+				try {
+					chatClient.submitDiaries(playerName, qp);
+				} catch (Exception ex) {
+					log.warn("unable to submit quest points", ex);
+				} finally {
+					chatInput.resume();
+				}
+			});
+		}
+		return true;
 	}
 }

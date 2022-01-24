@@ -210,4 +210,12 @@ public interface ChatCommandsConfig extends Config
 	{
 		return new Keybind(KeyEvent.VK_BACK_SPACE, InputEvent.CTRL_DOWN_MASK);
 	}
+
+	@ConfigItem(
+			position = 22,
+			keyName = "diaries",
+			name = "Diaries Command",
+			description = "Configures whether the Diaries Command is enabled<br> !diaries<br>\" "
+	)
+	default boolean diaries(){ return true; }
 }

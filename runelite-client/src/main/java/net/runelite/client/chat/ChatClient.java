@@ -426,4 +426,46 @@ public class ChatClient
 			throw new IOException(ex);
 		}
 	}
+
+	public boolean submitDiaries(String username, int qp) throws IOException
+	{
+		HttpUrl url = apiBase.newBuilder()
+				.addPathSegment("chat")
+				.addPathSegment("qp")
+				.addQueryParameter("name", username)
+				.addQueryParameter("qp", Integer.toString(qp))
+				.build();
+
+		Request request = new Request.Builder()
+				.post(RequestBody.create(null, new byte[0]))
+				.url(url)
+				.build();
+
+		try (Response response = client.newCall(request).execute())
+		{
+			return response.isSuccessful();
+		}
+	}
+
+	public int getDiaries(String username) throws IOException
+	{
+		HttpUrl url = apiBase.newBuilder()
+				.addPathSegment("chat")
+				.addPathSegment("qp")
+				.addQueryParameter("name", username)
+				.build();
+
+		Request request = new Request.Builder()
+				.url(url)
+				.build();
+
+		try (Response response = client.newCall(request).execute())
+		{
+			if (!response.isSuccessful())
+			{
+				throw new IOException("Unable to look up quest points!");
+			}
+			return Integer.parseInt(response.body().string());
+		}
+	}
 }
