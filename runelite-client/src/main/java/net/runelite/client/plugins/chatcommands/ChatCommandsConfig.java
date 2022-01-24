@@ -218,5 +218,5 @@ public interface ChatCommandsConfig extends Config
 			description = "Configures whether the Character Summary Command is enabled<br> " +
 					"!diaries !quests !cbtasks !collections<br>\" "
 	)
-	default boolean diaries(){ return true; }
+	default boolean characterSummary(){ return true; }
 }

@@ -2184,8 +2184,8 @@ public class ChatCommandsPlugin extends Plugin
 	private String csTotal(int cs)
 	{
 		Widget characterSummaryWidget = client.getWidget(WidgetInfo.CHARACTER_SUMMARY_BOX);
-		String adt = characterSummaryWidget.getChild(cs).getText();
-		Matcher matcher = CHARACTER_SUMMARY_PATTERN.matcher(adt);
+		String cst = characterSummaryWidget.getChild(cs).getText();
+		Matcher matcher = CHARACTER_SUMMARY_PATTERN.matcher(cst);
 
 		if (matcher.find())
 		{
@@ -2194,13 +2194,9 @@ public class ChatCommandsPlugin extends Plugin
 		return "";
 	}
 
-	private void diariesLookup(ChatMessage chatMessage, String message)
+	private void characterSummaryLookup(ChatMessage chatMessage, String message,
+										String chatHeading, WidgetInfo widgetInfo)
 	{
-		if (!config.diaries())
-		{
-			return;
-		}
-
 		ChatMessageType type = chatMessage.getType();
 
 		final String player;
@@ -2213,272 +2209,129 @@ public class ChatCommandsPlugin extends Plugin
 			player = Text.sanitize(chatMessage.getName());
 		}
 
-		int qp;
+		int cs;
 		try
 		{
-			qp = chatClient.getCharacterSummary(player);
+			cs = chatClient.getQp(player);
 		}
 		catch (IOException ex)
 		{
-			log.debug("unable to lookup achievement diary tasks", ex);
+			log.debug("unable to lookup character summary", ex);
 			return;
 		}
 
 		String response = new ChatMessageBuilder()
 				.append(ChatColorType.NORMAL)
-				.append("Achievements Completed: ")
+				.append(chatHeading)
 				.append(ChatColorType.HIGHLIGHT)
-				.append(Integer.toString(qp))
+				.append(Integer.toString(cs))
 				.append("/")
-				.append(csTotal(WidgetInfo.CHARACTER_SUMMARY_ACHIEVEMENTS.getChildId()))
+				.append(csTotal(widgetInfo.getChildId()))
 				.build();
 
 		log.debug("Setting response {}", response);
 		final MessageNode messageNode = chatMessage.getMessageNode();
 		messageNode.setRuneLiteFormatMessage(response);
 		client.refreshChat();
+
 	}
 
-	private boolean diariesSubmit(ChatInput chatInput, String value)
+	private boolean characterSummarySubmit(ChatInput chatInput, String value, WidgetInfo widgetInfo)
 	{
 		final String playerName = client.getLocalPlayer().getName();
 
 		Widget characterSummaryWidget = client.getWidget(WidgetInfo.CHARACTER_SUMMARY_BOX);
-		int cs = WidgetInfo.CHARACTER_SUMMARY_ACHIEVEMENTS.getChildId();
-		String adt = characterSummaryWidget.getChild(cs).getText();
-		Matcher matcher = CHARACTER_SUMMARY_PATTERN.matcher(adt);
+		int cs = widgetInfo.getChildId();
+		String cst = characterSummaryWidget.getChild(cs).getText();
+		Matcher matcher = CHARACTER_SUMMARY_PATTERN.matcher(cst);
 
 		if (matcher.find()) {
 
-			final int qp = Integer.parseInt(matcher.group(1));
+			final int csv = Integer.parseInt(matcher.group(1));
 
 			executor.execute(() ->
 			{
 				try {
-					chatClient.submitCharacterSummary(playerName, qp);
+					chatClient.submitQp(playerName, csv);
 				} catch (Exception ex) {
-					log.warn("unable to submit achievement diaries completed", ex);
+					log.warn("unable to submit character summary", ex);
 				} finally {
 					chatInput.resume();
 				}
 			});
 		}
+		return true;
+	}
+
+	private void diariesLookup(ChatMessage chatMessage, String message)
+	{
+		if (!config.characterSummary())
+		{
+			return;
+		}
+
+		characterSummaryLookup(chatMessage, message, "Achievements Completed: ",
+				WidgetInfo.CHARACTER_SUMMARY_ACHIEVEMENTS);
+	}
+
+	private boolean diariesSubmit(ChatInput chatInput, String value)
+	{
+		characterSummarySubmit(chatInput, value, WidgetInfo.CHARACTER_SUMMARY_ACHIEVEMENTS);
+
 		return true;
 	}
 
 	private void questsLookup(ChatMessage chatMessage, String message)
 	{
-		if (!config.diaries())
+		if (!config.characterSummary())
 		{
 			return;
 		}
 
-		ChatMessageType type = chatMessage.getType();
-
-		final String player;
-		if (type.equals(ChatMessageType.PRIVATECHATOUT))
-		{
-			player = client.getLocalPlayer().getName();
-		}
-		else
-		{
-			player = Text.sanitize(chatMessage.getName());
-		}
-
-		int qp;
-		try
-		{
-			qp = chatClient.getCharacterSummary(player);
-		}
-		catch (IOException ex)
-		{
-			log.debug("unable to lookup quest points", ex);
-			return;
-		}
-
-		String response = new ChatMessageBuilder()
-				.append(ChatColorType.NORMAL)
-				.append("Quests Completed: ")
-				.append(ChatColorType.HIGHLIGHT)
-				.append(Integer.toString(qp))
-				.append("/")
-				.append(csTotal(WidgetInfo.CHARACTER_SUMMARY_QUESTS.getChildId()))
-				.build();
-
-		log.debug("Setting response {}", response);
-		final MessageNode messageNode = chatMessage.getMessageNode();
-		messageNode.setRuneLiteFormatMessage(response);
-		client.refreshChat();
+		characterSummaryLookup(chatMessage, message, "Quests Completed: ",
+				WidgetInfo.CHARACTER_SUMMARY_QUESTS);
 	}
 
 	private boolean questsSubmit(ChatInput chatInput, String value)
 	{
-		final String playerName = client.getLocalPlayer().getName();
+		characterSummarySubmit(chatInput, value, WidgetInfo.CHARACTER_SUMMARY_QUESTS);
 
-		Widget characterSummaryWidget = client.getWidget(WidgetInfo.CHARACTER_SUMMARY_BOX);
-		int cs = WidgetInfo.CHARACTER_SUMMARY_QUESTS.getChildId();
-		String adt = characterSummaryWidget.getChild(cs).getText();
-		Matcher matcher = CHARACTER_SUMMARY_PATTERN.matcher(adt);
-
-		if (matcher.find()) {
-
-			final int qp = Integer.parseInt(matcher.group(1));
-
-			executor.execute(() ->
-			{
-				try {
-					chatClient.submitCharacterSummary(playerName, qp);
-				} catch (Exception ex) {
-					log.warn("unable to submit quests completed", ex);
-				} finally {
-					chatInput.resume();
-				}
-			});
-		}
 		return true;
 	}
 
 	private void cbtasksLookup(ChatMessage chatMessage, String message)
 	{
-		if (!config.diaries())
+		if (!config.characterSummary())
 		{
 			return;
 		}
 
-		ChatMessageType type = chatMessage.getType();
-
-		final String player;
-		if (type.equals(ChatMessageType.PRIVATECHATOUT))
-		{
-			player = client.getLocalPlayer().getName();
-		}
-		else
-		{
-			player = Text.sanitize(chatMessage.getName());
-		}
-
-		int qp;
-		try
-		{
-			qp = chatClient.getCharacterSummary(player);
-		}
-		catch (IOException ex)
-		{
-			log.debug("unable to lookup combat task total", ex);
-			return;
-		}
-
-		String response = new ChatMessageBuilder()
-				.append(ChatColorType.NORMAL)
-				.append("Combat Tasks Completed: ")
-				.append(ChatColorType.HIGHLIGHT)
-				.append(Integer.toString(qp))
-				.append("/")
-				.append(csTotal(WidgetInfo.CHARACTER_SUMMARY_COMBAT_TASKS.getChildId()))
-				.build();
-
-		log.debug("Setting response {}", response);
-		final MessageNode messageNode = chatMessage.getMessageNode();
-		messageNode.setRuneLiteFormatMessage(response);
-		client.refreshChat();
+		characterSummaryLookup(chatMessage, message, "Combat Tasks Completed: ",
+				WidgetInfo.CHARACTER_SUMMARY_COMBAT_TASKS);
 	}
 
 	private boolean cbtasksSubmit(ChatInput chatInput, String value)
 	{
-		final String playerName = client.getLocalPlayer().getName();
+		characterSummarySubmit(chatInput, value, WidgetInfo.CHARACTER_SUMMARY_COMBAT_TASKS);
 
-		Widget characterSummaryWidget = client.getWidget(WidgetInfo.CHARACTER_SUMMARY_BOX);
-		int cs = WidgetInfo.CHARACTER_SUMMARY_COMBAT_TASKS.getChildId();
-		String adt = characterSummaryWidget.getChild(cs).getText();
-		Matcher matcher = CHARACTER_SUMMARY_PATTERN.matcher(adt);
-
-		if (matcher.find()) {
-
-			final int qp = Integer.parseInt(matcher.group(1));
-
-			executor.execute(() ->
-			{
-				try {
-					chatClient.submitCharacterSummary(playerName, qp);
-				} catch (Exception ex) {
-					log.warn("unable to submit combat task total", ex);
-				} finally {
-					chatInput.resume();
-				}
-			});
-		}
 		return true;
 	}
 
 	private void collectionsLookup(ChatMessage chatMessage, String message)
 	{
-		if (!config.diaries())
+		if (!config.characterSummary())
 		{
 			return;
 		}
 
-		ChatMessageType type = chatMessage.getType();
-
-		final String player;
-		if (type.equals(ChatMessageType.PRIVATECHATOUT))
-		{
-			player = client.getLocalPlayer().getName();
-		}
-		else
-		{
-			player = Text.sanitize(chatMessage.getName());
-		}
-
-		int qp;
-		try
-		{
-			qp = chatClient.getCharacterSummary(player);
-		}
-		catch (IOException ex)
-		{
-			log.debug("unable to lookup collections total", ex);
-			return;
-		}
-
-		String response = new ChatMessageBuilder()
-				.append(ChatColorType.NORMAL)
-				.append("Collections Logged: ")
-				.append(ChatColorType.HIGHLIGHT)
-				.append(Integer.toString(qp))
-				.append("/")
-				.append(csTotal(WidgetInfo.CHARACTER_SUMMARY_COLLECTIONS.getChildId()))
-				.build();
-
-		log.debug("Setting response {}", response);
-		final MessageNode messageNode = chatMessage.getMessageNode();
-		messageNode.setRuneLiteFormatMessage(response);
-		client.refreshChat();
+		characterSummaryLookup(chatMessage, message, "Collections Logged: ",
+				WidgetInfo.CHARACTER_SUMMARY_COLLECTIONS);
 	}
 
 	private boolean collectionsSubmit(ChatInput chatInput, String value)
 	{
-		final String playerName = client.getLocalPlayer().getName();
+		characterSummarySubmit(chatInput, value, WidgetInfo.CHARACTER_SUMMARY_COLLECTIONS);
 
-		Widget characterSummaryWidget = client.getWidget(WidgetInfo.CHARACTER_SUMMARY_BOX);
-		int cs = WidgetInfo.CHARACTER_SUMMARY_COLLECTIONS.getChildId();
-		String adt = characterSummaryWidget.getChild(cs).getText();
-		Matcher matcher = CHARACTER_SUMMARY_PATTERN.matcher(adt);
-
-		if (matcher.find()) {
-
-			final int qp = Integer.parseInt(matcher.group(1));
-
-			executor.execute(() ->
-			{
-				try {
-					chatClient.submitCharacterSummary(playerName, qp);
-				} catch (Exception ex) {
-					log.warn("unable to submit collections total", ex);
-				} finally {
-					chatInput.resume();
-				}
-			});
-		}
 		return true;
 	}
 }
