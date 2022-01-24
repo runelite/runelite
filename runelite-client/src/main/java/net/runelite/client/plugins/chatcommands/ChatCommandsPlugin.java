@@ -142,10 +142,10 @@ public class ChatCommandsPlugin extends Plugin
 	private static final String LEAGUE_POINTS_COMMAND = "!lp";
 	private static final String SOUL_WARS_ZEAL_COMMAND = "!sw";
 	private static final String PET_LIST_COMMAND = "!pets";
-	private static final String DIARIES_COMMAND = "!diaries";
+	private static final String DIARIES_COMMAND = "!ad";
 	private static final String QUESTS_COMMAND = "!quests";
-	private static final String COLLECTIONS_COMMAND = "!collections";
-	private static final String COMBAT_TASKS_COMMAND = "!cbtasks";
+	private static final String COLLECTIONS_COMMAND = "!col";
+	private static final String COMBAT_TASKS_COMMAND = "!ct";
 
 	@VisibleForTesting
 	static final int ADV_LOG_EXPLOITS_TEXT_INDEX = 1;
@@ -359,9 +359,7 @@ public class ChatCommandsPlugin extends Plugin
 		try
 		{
 			// CHECKSTYLE:OFF
-			petList = gson.fromJson(petListJson, new TypeToken<List<Pet>>()
-			{
-			}.getType());
+			petList = gson.fromJson(petListJson, new TypeToken<List<Pet>>() {}.getType());
 			// CHECKSTYLE:ON
 		}
 		catch (JsonSyntaxException ex)
@@ -2197,7 +2195,8 @@ public class ChatCommandsPlugin extends Plugin
 	}
 
 	private void characterSummaryLookup(ChatMessage chatMessage, String message,
-										String characterSummary, String chatHeading, WidgetInfo widgetInfo)
+										String characterSummary, String chatHeading,
+										WidgetInfo widgetInfo)
 	{
 		ChatMessageType type = chatMessage.getType();
 
@@ -2222,6 +2221,11 @@ public class ChatCommandsPlugin extends Plugin
 			return;
 		}
 
+		if (cs == 99999)
+		{
+			cs = 0;
+		}
+
 		String response = new ChatMessageBuilder()
 			.append(ChatColorType.NORMAL)
 			.append(chatHeading)
@@ -2235,10 +2239,10 @@ public class ChatCommandsPlugin extends Plugin
 		final MessageNode messageNode = chatMessage.getMessageNode();
 		messageNode.setRuneLiteFormatMessage(response);
 		client.refreshChat();
-
 	}
 
-	private boolean characterSummarySubmit(ChatInput chatInput, String characterSummary, WidgetInfo widgetInfo)
+	private boolean characterSummarySubmit(ChatInput chatInput, String characterSummary,
+										   WidgetInfo widgetInfo)
 	{
 		final String playerName = client.getLocalPlayer().getName();
 
@@ -2249,8 +2253,15 @@ public class ChatCommandsPlugin extends Plugin
 
 		if (matcher.find())
 		{
-
-			final int csv = Integer.parseInt(matcher.group(1));
+			int csv;
+			if (Integer.parseInt(matcher.group(1)) == 0)
+			{
+				csv = 99999;
+			}
+			else
+			{
+				csv = Integer.parseInt(matcher.group(1));
+			}
 
 			executor.execute(() ->
 			{
