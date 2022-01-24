@@ -359,7 +359,9 @@ public class ChatCommandsPlugin extends Plugin
 		try
 		{
 			// CHECKSTYLE:OFF
-			petList = gson.fromJson(petListJson, new TypeToken<List<Pet>>(){}.getType());
+			petList = gson.fromJson(petListJson, new TypeToken<List<Pet>>()
+			{
+			}.getType());
 			// CHECKSTYLE:ON
 		}
 		catch (JsonSyntaxException ex)
@@ -1277,7 +1279,7 @@ public class ChatCommandsPlugin extends Plugin
 	 * response.
 	 *
 	 * @param chatMessage The chat message containing the command.
-	 * @param message    The chat message
+	 * @param message     The chat message
 	 */
 	private void itemPriceLookup(ChatMessage chatMessage, String message)
 	{
@@ -1334,7 +1336,7 @@ public class ChatCommandsPlugin extends Plugin
 	 * response.
 	 *
 	 * @param chatMessage The chat message containing the command.
-	 * @param message    The chat message
+	 * @param message     The chat message
 	 */
 	@VisibleForTesting
 	void playerSkillLookup(ChatMessage chatMessage, String message)
@@ -2221,13 +2223,13 @@ public class ChatCommandsPlugin extends Plugin
 		}
 
 		String response = new ChatMessageBuilder()
-				.append(ChatColorType.NORMAL)
-				.append(chatHeading)
-				.append(ChatColorType.HIGHLIGHT)
-				.append(Integer.toString(cs))
-				.append("/")
-				.append(csTotal(widgetInfo.getChildId()))
-				.build();
+			.append(ChatColorType.NORMAL)
+			.append(chatHeading)
+			.append(ChatColorType.HIGHLIGHT)
+			.append(Integer.toString(cs))
+			.append("/")
+			.append(csTotal(widgetInfo.getChildId()))
+			.build();
 
 		log.debug("Setting response {}", response);
 		final MessageNode messageNode = chatMessage.getMessageNode();
@@ -2245,17 +2247,23 @@ public class ChatCommandsPlugin extends Plugin
 		String cst = characterSummaryWidget.getChild(cs).getText();
 		Matcher matcher = CHARACTER_SUMMARY_PATTERN.matcher(cst);
 
-		if (matcher.find()) {
+		if (matcher.find())
+		{
 
 			final int csv = Integer.parseInt(matcher.group(1));
 
 			executor.execute(() ->
 			{
-				try {
+				try
+				{
 					chatClient.submitQp(playerName, csv);
-				} catch (Exception ex) {
+				}
+				catch (Exception ex)
+				{
 					log.warn("unable to submit character summary", ex);
-				} finally {
+				}
+				finally
+				{
 					chatInput.resume();
 				}
 			});
@@ -2271,7 +2279,7 @@ public class ChatCommandsPlugin extends Plugin
 		}
 
 		characterSummaryLookup(chatMessage, message, "Achievements Completed: ",
-				WidgetInfo.CHARACTER_SUMMARY_ACHIEVEMENTS);
+			WidgetInfo.CHARACTER_SUMMARY_ACHIEVEMENTS);
 	}
 
 	private boolean diariesSubmit(ChatInput chatInput, String value)
@@ -2289,7 +2297,7 @@ public class ChatCommandsPlugin extends Plugin
 		}
 
 		characterSummaryLookup(chatMessage, message, "Quests Completed: ",
-				WidgetInfo.CHARACTER_SUMMARY_QUESTS);
+			WidgetInfo.CHARACTER_SUMMARY_QUESTS);
 	}
 
 	private boolean questsSubmit(ChatInput chatInput, String value)
@@ -2307,7 +2315,7 @@ public class ChatCommandsPlugin extends Plugin
 		}
 
 		characterSummaryLookup(chatMessage, message, "Combat Tasks Completed: ",
-				WidgetInfo.CHARACTER_SUMMARY_COMBAT_TASKS);
+			WidgetInfo.CHARACTER_SUMMARY_COMBAT_TASKS);
 	}
 
 	private boolean cbtasksSubmit(ChatInput chatInput, String value)
@@ -2325,7 +2333,7 @@ public class ChatCommandsPlugin extends Plugin
 		}
 
 		characterSummaryLookup(chatMessage, message, "Collections Logged: ",
-				WidgetInfo.CHARACTER_SUMMARY_COLLECTIONS);
+			WidgetInfo.CHARACTER_SUMMARY_COLLECTIONS);
 	}
 
 	private boolean collectionsSubmit(ChatInput chatInput, String value)
