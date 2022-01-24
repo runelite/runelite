@@ -359,7 +359,7 @@ public class ChatCommandsPlugin extends Plugin
 		try
 		{
 			// CHECKSTYLE:OFF
-			petList = gson.fromJson(petListJson, new TypeToken<List<Pet>>() {}.getType());
+			petList = gson.fromJson(petListJson, new TypeToken<List<Pet>>(){}.getType());
 			// CHECKSTYLE:ON
 		}
 		catch (JsonSyntaxException ex)
