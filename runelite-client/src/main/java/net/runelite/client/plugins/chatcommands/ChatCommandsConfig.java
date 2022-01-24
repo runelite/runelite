@@ -190,6 +190,15 @@ public interface ChatCommandsConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 14,
+		keyName = "characterSummary",
+		name = "Character Summary Command",
+		description = "Configures whether the Character Summary Command is enabled<br> " +
+			"!ad !quests !ct !col"
+	)
+	default boolean characterSummary() { return true; }
+
+	@ConfigItem(
 		position = 20,
 		keyName = "clearSingleWord",
 		name = "Clear Single Word",
@@ -210,13 +219,4 @@ public interface ChatCommandsConfig extends Config
 	{
 		return new Keybind(KeyEvent.VK_BACK_SPACE, InputEvent.CTRL_DOWN_MASK);
 	}
-
-	@ConfigItem(
-			position = 22,
-			keyName = "characterSummary",
-			name = "Character Summary Command",
-			description = "Configures whether the Character Summary Command is enabled<br> " +
-					"!ad !quests !ct !col"
-	)
-	default boolean characterSummary() { return true; }
 }
