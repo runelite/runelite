@@ -213,9 +213,10 @@ public interface ChatCommandsConfig extends Config
 
 	@ConfigItem(
 			position = 22,
-			keyName = "diaries",
-			name = "Diaries Command",
-			description = "Configures whether the Diaries Command is enabled<br> !diaries<br>\" "
+			keyName = "characterSummary",
+			name = "Character Summary Command",
+			description = "Configures whether the Character Summary Command is enabled<br> " +
+					"!diaries !quests !cbtasks !collections<br>\" "
 	)
 	default boolean diaries(){ return true; }
 }

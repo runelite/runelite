@@ -427,7 +427,7 @@ public class ChatClient
 		}
 	}
 
-	public boolean submitDiaries(String username, int qp) throws IOException
+	public boolean submitCharacterSummary(String username, int qp) throws IOException
 	{
 		HttpUrl url = apiBase.newBuilder()
 				.addPathSegment("chat")
@@ -447,7 +447,7 @@ public class ChatClient
 		}
 	}
 
-	public int getDiaries(String username) throws IOException
+	public int getCharacterSummary(String username) throws IOException
 	{
 		HttpUrl url = apiBase.newBuilder()
 				.addPathSegment("chat")
