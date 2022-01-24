@@ -2197,7 +2197,7 @@ public class ChatCommandsPlugin extends Plugin
 	}
 
 	private void characterSummaryLookup(ChatMessage chatMessage, String message,
-										String chatHeading, WidgetInfo widgetInfo)
+										String characterSummary, String chatHeading, WidgetInfo widgetInfo)
 	{
 		ChatMessageType type = chatMessage.getType();
 
@@ -2214,7 +2214,7 @@ public class ChatCommandsPlugin extends Plugin
 		int cs;
 		try
 		{
-			cs = chatClient.getQp(player);
+			cs = chatClient.getKc(player,characterSummary);
 		}
 		catch (IOException ex)
 		{
@@ -2238,7 +2238,7 @@ public class ChatCommandsPlugin extends Plugin
 
 	}
 
-	private boolean characterSummarySubmit(ChatInput chatInput, String value, WidgetInfo widgetInfo)
+	private boolean characterSummarySubmit(ChatInput chatInput, String characterSummary, WidgetInfo widgetInfo)
 	{
 		final String playerName = client.getLocalPlayer().getName();
 
@@ -2256,7 +2256,7 @@ public class ChatCommandsPlugin extends Plugin
 			{
 				try
 				{
-					chatClient.submitQp(playerName, csv);
+					chatClient.submitKc(playerName, characterSummary, csv);
 				}
 				catch (Exception ex)
 				{
@@ -2278,13 +2278,13 @@ public class ChatCommandsPlugin extends Plugin
 			return;
 		}
 
-		characterSummaryLookup(chatMessage, message, "Achievements Completed: ",
+		characterSummaryLookup(chatMessage, message, "achievements", "Achievements Completed: ",
 			WidgetInfo.CHARACTER_SUMMARY_ACHIEVEMENTS);
 	}
 
 	private boolean diariesSubmit(ChatInput chatInput, String value)
 	{
-		characterSummarySubmit(chatInput, value, WidgetInfo.CHARACTER_SUMMARY_ACHIEVEMENTS);
+		characterSummarySubmit(chatInput, "achievements", WidgetInfo.CHARACTER_SUMMARY_ACHIEVEMENTS);
 
 		return true;
 	}
@@ -2296,13 +2296,13 @@ public class ChatCommandsPlugin extends Plugin
 			return;
 		}
 
-		characterSummaryLookup(chatMessage, message, "Quests Completed: ",
+		characterSummaryLookup(chatMessage, message, "quests", "Quests Completed: ",
 			WidgetInfo.CHARACTER_SUMMARY_QUESTS);
 	}
 
 	private boolean questsSubmit(ChatInput chatInput, String value)
 	{
-		characterSummarySubmit(chatInput, value, WidgetInfo.CHARACTER_SUMMARY_QUESTS);
+		characterSummarySubmit(chatInput, "quests", WidgetInfo.CHARACTER_SUMMARY_QUESTS);
 
 		return true;
 	}
@@ -2314,13 +2314,13 @@ public class ChatCommandsPlugin extends Plugin
 			return;
 		}
 
-		characterSummaryLookup(chatMessage, message, "Combat Tasks Completed: ",
+		characterSummaryLookup(chatMessage, message, "combatTasks", "Combat Tasks Completed: ",
 			WidgetInfo.CHARACTER_SUMMARY_COMBAT_TASKS);
 	}
 
 	private boolean cbtasksSubmit(ChatInput chatInput, String value)
 	{
-		characterSummarySubmit(chatInput, value, WidgetInfo.CHARACTER_SUMMARY_COMBAT_TASKS);
+		characterSummarySubmit(chatInput, "combatTasks", WidgetInfo.CHARACTER_SUMMARY_COMBAT_TASKS);
 
 		return true;
 	}
@@ -2332,13 +2332,13 @@ public class ChatCommandsPlugin extends Plugin
 			return;
 		}
 
-		characterSummaryLookup(chatMessage, message, "Collections Logged: ",
+		characterSummaryLookup(chatMessage, message, "collections", "Collections Logged: ",
 			WidgetInfo.CHARACTER_SUMMARY_COLLECTIONS);
 	}
 
 	private boolean collectionsSubmit(ChatInput chatInput, String value)
 	{
-		characterSummarySubmit(chatInput, value, WidgetInfo.CHARACTER_SUMMARY_COLLECTIONS);
+		characterSummarySubmit(chatInput, "collections", WidgetInfo.CHARACTER_SUMMARY_COLLECTIONS);
 
 		return true;
 	}
