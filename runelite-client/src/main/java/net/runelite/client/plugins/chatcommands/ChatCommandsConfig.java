@@ -216,7 +216,7 @@ public interface ChatCommandsConfig extends Config
 			keyName = "characterSummary",
 			name = "Character Summary Command",
 			description = "Configures whether the Character Summary Command is enabled<br> " +
-					"!diaries !quests !cbtasks !collections<br>\" "
+					"!diaries !quests !cbtasks !collections"
 	)
 	default boolean characterSummary() { return true; }
 }
