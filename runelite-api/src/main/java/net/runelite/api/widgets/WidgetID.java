@@ -173,16 +173,6 @@ public final class WidgetID
 	public static final int GROUP_IRON_GROUP_ID = 726;
 	public static final int GROUP_STORAGE_INVENTORY_GROUP_ID = 725;
 	public static final int GROUP_STORAGE_GROUP_ID = 724;
-	public static final int CHARACTER_SUMMARY_GROUP_ID = 712;
-	public static final int CHARACTER_SUMMARY_CHILD_ID = 2;
-
-	static class CharacterSummary
-	{
-		static final int QUESTS_COMPLETED = 49;
-		static final int ACHIEVEMENTS_COMPLETED = 62;
-		static final int COMBAT_TASKS_COMPLETED = 75;
-		static final int COLLECTIONS_LOGGED = 88;
-	}
 
 	static class WorldMap
 	{

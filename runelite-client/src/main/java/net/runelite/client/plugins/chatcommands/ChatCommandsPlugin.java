@@ -63,6 +63,7 @@ import net.runelite.api.WorldType;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
@@ -146,6 +147,13 @@ public class ChatCommandsPlugin extends Plugin
 	private static final String QUESTS_COMMAND = "!quests";
 	private static final String COLLECTIONS_COMMAND = "!col";
 	private static final String COMBAT_TASKS_COMMAND = "!ct";
+
+	private int ACHIEVEMENTS_COMPLETED = 999;
+	private int ACHIEVEMENTS_TOTAL = 999;
+	private int QUESTS_COMPLETED = 999;
+	private int QUESTS_TOTAL = 999;
+	private int COMBAT_TASKS_COMPLETED = 999;
+	private int COMBAT_TASKS_TOTAL = 999;
 
 	@VisibleForTesting
 	static final int ADV_LOG_EXPLOITS_TEXT_INDEX = 1;
@@ -726,6 +734,49 @@ public class ChatCommandsPlugin extends Plugin
 						log.debug("Loaded {} pets", petList.size());
 					}
 				}
+			}
+		}
+	}
+
+	@Subscribe
+	public void onScriptCallbackEvent(ScriptCallbackEvent event)
+	{
+		String eventName = event.getEventName();
+
+		int[] intStack = client.getIntStack();
+		int intStackSize = client.getIntStackSize();
+
+		switch (eventName)
+		{
+			case "setQuestsCompleted":
+			{
+				QUESTS_COMPLETED = intStack[intStackSize - 1];
+				break;
+			}
+			case "setQuestsTotal":
+			{
+				QUESTS_TOTAL = intStack[intStackSize - 1];
+				break;
+			}
+			case "setAchievementsCompleted":
+			{
+				ACHIEVEMENTS_COMPLETED = intStack[intStackSize - 1];
+				break;
+			}
+			case "setAchievementsTotal":
+			{
+				 ACHIEVEMENTS_TOTAL = intStack[intStackSize - 1];
+				break;
+			}
+			case "setCombatTasksCompleted":
+			{
+				COMBAT_TASKS_COMPLETED = intStack[intStackSize - 1];
+				break;
+			}
+			case "setCombatTasksTotal":
+			{
+				COMBAT_TASKS_TOTAL = intStack[intStackSize - 1];
+				break;
 			}
 		}
 	}
@@ -2181,22 +2232,9 @@ public class ChatCommandsPlugin extends Plugin
 		}
 	}
 
-	private String csTotal(int cs)
-	{
-		Widget characterSummaryWidget = client.getWidget(WidgetInfo.CHARACTER_SUMMARY_BOX);
-		String cst = characterSummaryWidget.getChild(cs).getText();
-		Matcher matcher = CHARACTER_SUMMARY_PATTERN.matcher(cst);
-
-		if (matcher.find())
-		{
-			return matcher.group(2);
-		}
-		return "";
-	}
-
 	private void characterSummaryLookup(ChatMessage chatMessage, String message,
 										String characterSummary, String chatHeading,
-										WidgetInfo widgetInfo)
+										int i)
 	{
 		ChatMessageType type = chatMessage.getType();
 
@@ -2232,7 +2270,7 @@ public class ChatCommandsPlugin extends Plugin
 			.append(ChatColorType.HIGHLIGHT)
 			.append(Integer.toString(cs))
 			.append("/")
-			.append(csTotal(widgetInfo.getChildId()))
+			.append(Integer.toString(i))
 			.build();
 
 		log.debug("Setting response {}", response);
@@ -2242,43 +2280,36 @@ public class ChatCommandsPlugin extends Plugin
 	}
 
 	private boolean characterSummarySubmit(ChatInput chatInput, String characterSummary,
-										   WidgetInfo widgetInfo)
+							 int cs)
 	{
 		final String playerName = client.getLocalPlayer().getName();
 
-		Widget characterSummaryWidget = client.getWidget(WidgetInfo.CHARACTER_SUMMARY_BOX);
-		int cs = widgetInfo.getChildId();
-		String cst = characterSummaryWidget.getChild(cs).getText();
-		Matcher matcher = CHARACTER_SUMMARY_PATTERN.matcher(cst);
-
-		if (matcher.find())
+		int csv;
+		if (cs == 0)
 		{
-			int csv;
-			if (Integer.parseInt(matcher.group(1)) == 0)
-			{
-				csv = 99999;
-			}
-			else
-			{
-				csv = Integer.parseInt(matcher.group(1));
-			}
-
-			executor.execute(() ->
-			{
-				try
-				{
-					chatClient.submitKc(playerName, characterSummary, csv);
-				}
-				catch (Exception ex)
-				{
-					log.warn("unable to submit character summary", ex);
-				}
-				finally
-				{
-					chatInput.resume();
-				}
-			});
+			csv = 99999;
 		}
+		else
+		{
+			csv = cs;
+		}
+
+		executor.execute(() ->
+		{
+			try
+			{
+				chatClient.submitKc(playerName, characterSummary, csv);
+			}
+			catch (Exception ex)
+			{
+				log.warn("unable to submit character summary", ex);
+			}
+			finally
+			{
+				chatInput.resume();
+			}
+		});
+
 		return true;
 	}
 
@@ -2290,13 +2321,12 @@ public class ChatCommandsPlugin extends Plugin
 		}
 
 		characterSummaryLookup(chatMessage, message, "achievements", "Achievements Completed: ",
-			WidgetInfo.CHARACTER_SUMMARY_ACHIEVEMENTS);
+			ACHIEVEMENTS_TOTAL);
 	}
 
 	private boolean diariesSubmit(ChatInput chatInput, String value)
 	{
-		characterSummarySubmit(chatInput, "achievements", WidgetInfo.CHARACTER_SUMMARY_ACHIEVEMENTS);
-
+		characterSummarySubmit(chatInput, "achievements", ACHIEVEMENTS_COMPLETED);
 		return true;
 	}
 
@@ -2308,13 +2338,12 @@ public class ChatCommandsPlugin extends Plugin
 		}
 
 		characterSummaryLookup(chatMessage, message, "quests", "Quests Completed: ",
-			WidgetInfo.CHARACTER_SUMMARY_QUESTS);
+			QUESTS_TOTAL);
 	}
 
 	private boolean questsSubmit(ChatInput chatInput, String value)
 	{
-		characterSummarySubmit(chatInput, "quests", WidgetInfo.CHARACTER_SUMMARY_QUESTS);
-
+		characterSummarySubmit(chatInput, "quests", QUESTS_COMPLETED);
 		return true;
 	}
 
@@ -2326,13 +2355,12 @@ public class ChatCommandsPlugin extends Plugin
 		}
 
 		characterSummaryLookup(chatMessage, message, "combatTasks", "Combat Tasks Completed: ",
-			WidgetInfo.CHARACTER_SUMMARY_COMBAT_TASKS);
+			COMBAT_TASKS_TOTAL);
 	}
 
 	private boolean cbtasksSubmit(ChatInput chatInput, String value)
 	{
-		characterSummarySubmit(chatInput, "combatTasks", WidgetInfo.CHARACTER_SUMMARY_COMBAT_TASKS);
-
+		characterSummarySubmit(chatInput, "combatTasks", COMBAT_TASKS_COMPLETED);
 		return true;
 	}
 
@@ -2344,13 +2372,12 @@ public class ChatCommandsPlugin extends Plugin
 		}
 
 		characterSummaryLookup(chatMessage, message, "collections", "Collections Logged: ",
-			WidgetInfo.CHARACTER_SUMMARY_COLLECTIONS);
+			client.getVar(VarPlayer.COLLECTIONS_TOTAL));
 	}
 
 	private boolean collectionsSubmit(ChatInput chatInput, String value)
 	{
-		characterSummarySubmit(chatInput, "collections", WidgetInfo.CHARACTER_SUMMARY_COLLECTIONS);
-
+		characterSummarySubmit(chatInput, "collections", client.getVar(VarPlayer.COLLECTIONS_LOGGED));
 		return true;
 	}
 }

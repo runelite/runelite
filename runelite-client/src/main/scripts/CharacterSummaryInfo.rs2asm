@@ -1,0 +1,589 @@
+.id                 3310
+.int_stack_count    2
+.string_stack_count 0
+.int_var_count      17
+.string_var_count   0
+   iconst                 0
+   istore                 2
+   iconst                 0
+   istore                 3
+   iconst                 0
+   istore                 4
+   iconst                 0
+   istore                 5
+   iconst                 0
+   istore                 6
+   iconst                 26
+   istore                 7
+   iconst                 0
+   istore                 8
+   iconst                 0
+   istore                 9
+   iconst                 0
+   istore                 10
+   iconst                 0
+   istore                 11
+   invoke                 1007
+   istore                 12
+   iconst                 0
+   istore                 13
+   iconst                 0
+   istore                 14
+   invoke                 1008
+   istore                 14
+   istore                 13
+   invoke                 3971
+   istore                 15
+   invoke                 3980
+   istore                 16
+   iconst                 40
+   istore                 7
+   get_varc_int           52
+   iconst                 126
+   if_icmpeq              LABEL39
+   jump                   LABEL65
+LABEL39:
+   iload                  0
+   iload                  1
+   iload                  5
+   iload                  4
+   iload                  6
+   iload                  7
+   sconst                 "Combat Level:"
+   sconst                 ""
+   iconst                 3386
+   sconst                 "<col=0dc10d>"
+   get_varc_int           52
+   tostring              
+   sconst                 "</col>"
+   join_string            3
+   iload                  2
+   iload                  3
+   iconst                 0
+   invoke                 3950
+   istore                 9
+   istore                 8
+   istore                 11
+   istore                 4
+   istore                 5
+   istore                 3
+   istore                 2
+   jump                   LABEL90
+LABEL65:
+   iload                  0
+   iload                  1
+   iload                  5
+   iload                  4
+   iload                  6
+   iload                  7
+   sconst                 "Combat Level:"
+   sconst                 ""
+   iconst                 3386
+   sconst                 "<col=0dc10d>"
+   get_varc_int           52
+   tostring              
+   sconst                 "</col>"
+   join_string            3
+   iload                  2
+   iload                  3
+   iconst                 0
+   invoke                 3950
+   istore                 9
+   istore                 8
+   istore                 11
+   istore                 4
+   istore                 5
+   istore                 3
+   istore                 2
+LABEL90:
+   iload                  4
+   istore                 10
+   iload                  0
+   iload                  8
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL98
+   jump                   LABEL116
+LABEL98:
+   iconst                 3893
+   iconst                 -2147483645
+   iconst                 -2147483643
+   iload                  9
+   iload                  7
+   iconst                 0
+   iload                  11
+   iconst                 494
+   iconst                 0
+   iconst                 2
+   iconst                 1
+   iconst                 3
+   iconst                 5
+   iconst                 6
+   iconst                 4
+   iconst                 7
+   sconst                 "IiiiiifY"
+   cc_setonstattransmit  
+LABEL116:
+   iload                  12
+   iconst                 2277
+   if_icmpeq              LABEL120
+   jump                   LABEL146
+LABEL120:
+   iload                  0
+   iload                  1
+   iload                  5
+   iload                  4
+   iload                  6
+   iload                  7
+   sconst                 "Total Level:"
+   sconst                 ""
+   iconst                 3387
+   sconst                 "<col=0dc10d>"
+   iload                  12
+   tostring              
+   sconst                 "</col>"
+   join_string            3
+   iload                  2
+   iload                  3
+   iconst                 1
+   invoke                 3950
+   istore                 9
+   istore                 8
+   istore                 11
+   istore                 4
+   istore                 5
+   istore                 3
+   istore                 2
+   jump                   LABEL171
+LABEL146:
+   iload                  0
+   iload                  1
+   iload                  5
+   iload                  4
+   iload                  6
+   iload                  7
+   sconst                 "Total Level:"
+   sconst                 ""
+   iconst                 3387
+   sconst                 "<col=0dc10d>"
+   iload                  12
+   tostring              
+   sconst                 "</col>"
+   join_string            3
+   iload                  2
+   iload                  3
+   iconst                 1
+   invoke                 3950
+   istore                 9
+   istore                 8
+   istore                 11
+   istore                 4
+   istore                 5
+   istore                 3
+   istore                 2
+LABEL171:
+   iload                  0
+   iload                  8
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL177
+   jump                   LABEL187
+LABEL177:
+   iconst                 3946
+   iconst                 -2147483645
+   iconst                 -2147483643
+   iload                  9
+   iload                  7
+   iload                  10
+   iload                  11
+   iconst                 494
+   sconst                 "Iiiiiif"
+   cc_setonstattransmit  
+LABEL187:
+   iconst                 0
+   istore                 4
+   iconst                 26
+   istore                 7
+   iload                  13
+   iconst                 4
+   if_icmpeq              LABEL195
+   jump                   LABEL224
+LABEL195:
+   iload                  14
+   iconst                 600000000
+   if_icmpeq              LABEL199
+   jump                   LABEL224
+LABEL199:
+   iload                  0
+   iload                  1
+   iload                  5
+   iload                  6
+   iload                  7
+   iconst                 3388
+   sconst                 "Total XP: "
+   sconst                 "<col=0dc10d>"
+   iload                  13
+   iload                  14
+   invoke                 1009
+   sconst                 "</col>"
+   join_string            4
+   sconst                 ""
+   iload                  2
+   iload                  3
+   iconst                 494
+   iconst                 494
+   invoke                 3949
+   istore                 9
+   istore                 8
+   istore                 5
+   istore                 3
+   istore                 2
+   jump                   LABEL248
+LABEL224:
+   iload                  0
+   iload                  1
+   iload                  5
+   iload                  6
+   iload                  7
+   iconst                 3388
+   sconst                 "Total XP: "
+   sconst                 "<col=0dc10d>"
+   iload                  13
+   iload                  14
+   invoke                 1009
+   sconst                 "</col>"
+   join_string            4
+   sconst                 ""
+   iload                  2
+   iload                  3
+   iconst                 494
+   iconst                 494
+   invoke                 3949
+   istore                 9
+   istore                 8
+   istore                 5
+   istore                 3
+   istore                 2
+LABEL248:
+   iload                  0
+   iload                  8
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL254
+   jump                   LABEL262
+LABEL254:
+   iconst                 3427
+   iconst                 -2147483645
+   iconst                 -2147483643
+   iload                  9
+   iload                  7
+   iconst                 494
+   sconst                 "Iiiif"
+   cc_setonstattransmit  
+LABEL262:
+   iconst                 52
+   istore                 7
+   get_varp               101
+   get_varbit             1782
+   if_icmpeq              LABEL268
+   jump                   LABEL297
+LABEL268:
+   iload                  0
+   iload                  1
+   iload                  5
+   iload                  4
+   iload                  6
+   iload                  7
+   sconst                 "Quests Completed:"
+   sconst                 "Quest List"
+   iconst                 835
+   sconst                 "<col=0dc10d>"
+   get_varbit             6347
+   sconst				  "setQuestsCompleted"
+   runelite_callback
+   tostring              
+   sconst                 "/"
+   get_varbit             11877
+   sconst				  "setQuestsTotal"
+   runelite_callback
+   tostring              
+   sconst                 "</col>"
+   join_string            5
+   iload                  2
+   iload                  3
+   iconst                 0
+   invoke                 3950
+   istore                 9
+   istore                 8
+   istore                 11
+   istore                 4
+   istore                 5
+   istore                 3
+   istore                 2
+   jump                   LABEL325
+LABEL297:
+   iload                  0
+   iload                  1
+   iload                  5
+   iload                  4
+   iload                  6
+   iload                  7
+   sconst                 "Quests Completed:"
+   sconst                 "Quest List"
+   iconst                 835
+   sconst                 "<col=0dc10d>"
+   get_varbit             6347
+   sconst				  "setQuestsCompleted"
+   runelite_callback
+   tostring              
+   sconst                 "/"
+   get_varbit             11877
+   sconst				  "setQuestsTotal"
+   runelite_callback
+   tostring              
+   sconst                 "</col>"
+   join_string            5
+   iload                  2
+   iload                  3
+   iconst                 0
+   invoke                 3950
+   istore                 9
+   istore                 8
+   istore                 11
+   istore                 4
+   istore                 5
+   istore                 3
+   istore                 2
+LABEL325:
+   iload                  15
+   iload                  16
+   if_icmpeq              LABEL329
+   jump                   LABEL358
+LABEL329:
+   iload                  0
+   iload                  1
+   iload                  5
+   iload                  4
+   iload                  6
+   iload                  7
+   sconst                 "Achievements Completed:"
+   sconst                 "Achievement Diaries"
+   iconst                 836
+   sconst                 "<col=0dc10d>"
+   iload                  15
+   sconst				  "setAchievementsCompleted"
+   runelite_callback
+   tostring              
+   sconst                 "/"
+   iload                  16
+   sconst				  "setAchievementsTotal"
+   runelite_callback
+   tostring              
+   sconst                 "</col>"
+   join_string            5
+   iload                  2
+   iload                  3
+   iconst                 1
+   invoke                 3950
+   istore                 9
+   istore                 8
+   istore                 11
+   istore                 4
+   istore                 5
+   istore                 3
+   istore                 2
+   jump                   LABEL386
+LABEL358:
+   iload                  0
+   iload                  1
+   iload                  5
+   iload                  4
+   iload                  6
+   iload                  7
+   sconst                 "Achievements Completed:"
+   sconst                 "Achievement Diaries"
+   iconst                 836
+   sconst                 "<col=0dc10d>"
+   iload                  15
+   sconst				  "setAchievementsCompleted"
+   runelite_callback
+   tostring              
+   sconst                 "/"
+   iload                  16
+   sconst				  "setAchievementsTotal"
+   runelite_callback
+   tostring              
+   sconst                 "</col>"
+   join_string            5
+   iload                  2
+   iload                  3
+   iconst                 1
+   invoke                 3950
+   istore                 9
+   istore                 8
+   istore                 11
+   istore                 4
+   istore                 5
+   istore                 3
+   istore                 2
+LABEL386:
+   iconst                 0
+   istore                 4
+   iload                  0
+   iload                  1
+   iload                  5
+   iload                  4
+   iload                  6
+   iload                  7
+   sconst                 "Combat Tasks Completed:"
+   sconst                 "Overview"
+   iconst                 3389
+   sconst                 "<col=0dc10d>"
+   invoke                 4765
+   sconst				  "setCombatTasksCompleted"
+   runelite_callback
+   tostring              
+   sconst                 "/"
+   invoke                 4766
+   sconst				  "setCombatTasksTotal"
+   runelite_callback
+   tostring              
+   sconst                 "</col>"
+   join_string            5
+   iload                  2
+   iload                  3
+   iconst                 0
+   invoke                 3950
+   istore                 9
+   istore                 8
+   istore                 11
+   istore                 4
+   istore                 5
+   istore                 3
+   istore                 2
+   iload                  1
+   iload                  3
+   iconst                 1
+   sub                   
+   cc_find               
+   iconst                 1
+   if_icmpeq              LABEL424
+   jump                   LABEL433
+LABEL424:
+   iconst                 2
+   sconst                 "Bosses"
+   cc_setop              
+   iconst                 3
+   sconst                 "Tasks"
+   cc_setop              
+   iconst                 4
+   sconst                 "Rewards"
+   cc_setop              
+LABEL433:
+   iload                  0
+   iload                  1
+   iload                  5
+   iload                  4
+   iload                  6
+   iload                  7
+   sconst                 "Collections Logged:"
+   sconst                 "Collection Log"
+   iconst                 3390
+   sconst                 "<col=0dc10d>"
+   get_varp               2943
+   tostring              
+   sconst                 "/"
+   get_varp               2944
+   tostring              
+   sconst                 "</col>"
+   join_string            5
+   iload                  2
+   iload                  3
+   iconst                 1
+   invoke                 3950
+   istore                 9
+   istore                 8
+   istore                 11
+   istore                 4
+   istore                 5
+   istore                 3
+   istore                 2
+   iconst                 24
+   istore                 7
+   get_varbit             12933
+   iconst                 1
+   if_icmpeq              LABEL467
+   jump                   LABEL492
+LABEL467:
+   iload                  0
+   iload                  1
+   iload                  5
+   iload                  6
+   iload                  7
+   iconst                 -1
+   sconst                 "Time Played: "
+   sconst                 "<col=0dc10d>"
+   get_varc_int           526
+   iconst                 1
+   invoke                 494
+   sconst                 "</col>"
+   join_string            4
+   sconst                 "Hide"
+   iload                  2
+   iload                  3
+   iconst                 494
+   iconst                 494
+   invoke                 3949
+   istore                 9
+   istore                 8
+   istore                 5
+   istore                 3
+   istore                 2
+   jump                   LABEL533
+LABEL492:
+   invoke                 1972
+   iconst                 1
+   if_icmpeq              LABEL496
+   jump                   LABEL515
+LABEL496:
+   iload                  0
+   iload                  1
+   iload                  5
+   iload                  6
+   iload                  7
+   iconst                 -1
+   sconst                 "Time Played: Tap to reveal."
+   sconst                 "Reveal"
+   iload                  2
+   iload                  3
+   iconst                 494
+   iconst                 494
+   invoke                 3949
+   istore                 9
+   istore                 8
+   istore                 5
+   istore                 3
+   istore                 2
+   jump                   LABEL533
+LABEL515:
+   iload                  0
+   iload                  1
+   iload                  5
+   iload                  6
+   iload                  7
+   iconst                 -1
+   sconst                 "Time Played: Click to reveal."
+   sconst                 "Reveal"
+   iload                  2
+   iload                  3
+   iconst                 494
+   iconst                 494
+   invoke                 3949
+   istore                 9
+   istore                 8
+   istore                 5
+   istore                 3
+   istore                 2
+LABEL533:
+   iconst                 0
+   return                
