@@ -31,6 +31,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
@@ -155,6 +156,7 @@ public class FishingPlugin extends Plugin
 		overlayManager.remove(fishingSpotMinimapOverlay);
 		fishingSpots.clear();
 		minnowSpots.clear();
+		timerSpots.clear();
 		currentSpot = null;
 		trawlerStartTime = null;
 	}
@@ -167,6 +169,7 @@ public class FishingPlugin extends Plugin
 		{
 			fishingSpots.clear();
 			minnowSpots.clear();
+			timerSpots.clear();
 		}
 	}
 
@@ -380,10 +383,18 @@ public class FishingPlugin extends Plugin
 			log.debug("Minnow spot {} despawned", npc);
 		}
 
-		TimerSpot timerSpot = timerSpots.remove(npc.getIndex());
-		if (timerSpot != null)
+		Iterator<Integer> it = timerSpots.keySet().iterator();
+		while (it.hasNext())
 		{
-			log.debug("Timer spot {} despawned", npc);
+			TimerSpot spot = timerSpots.get(it.next());
+			if (spot != null)
+			{
+				Duration duration = Duration.between(spot.getTime(), Instant.now());
+				if (duration.compareTo(TIMER_MAX) > 0)
+				{
+					it.remove();
+				}
+			}
 		}
 	}
 

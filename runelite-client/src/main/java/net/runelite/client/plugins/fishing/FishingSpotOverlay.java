@@ -171,15 +171,16 @@ class FishingSpotOverlay extends Overlay
 				TimerSpot timerSpot = plugin.getTimerSpots().get(npc.getIndex());
 				if (timerSpot != null)
 				{
+					Color timerColor = Color.GREEN;
 					final Duration duration = Duration.between(timerSpot.getTime(), Instant.now());
 
 					if (duration.compareTo(plugin.getTIMER_MIN()) < 0)
 					{
-						color = Color.GREEN;
+						timerColor = Color.GREEN;
 					}
 					else if (duration.compareTo(plugin.getTIMER_MAX()) < 0)
 					{
-						color = Color.RED;
+						timerColor = Color.RED;
 					}
 
 					LocalPoint localPoint = npc.getLocalLocation();
@@ -188,8 +189,8 @@ class FishingSpotOverlay extends Overlay
 					if (location != null)
 					{
 						ProgressPieComponent pie = new ProgressPieComponent();
-						pie.setFill(color);
-						pie.setBorderColor(color);
+						pie.setFill(timerColor);
+						pie.setBorderColor(timerColor);
 						pie.setPosition(location);
 						pie.setProgress(1 - (duration.compareTo(plugin.getTIMER_MAX()) < 0
 							? (double) duration.toMillis() / plugin.getTIMER_MAX().toMillis()
