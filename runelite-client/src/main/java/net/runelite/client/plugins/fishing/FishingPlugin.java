@@ -335,6 +335,7 @@ public class FishingPlugin extends Plugin
 					FishingSpot.findSpot(npc.getId()) != FishingSpot.KARAMBWAN &&
 					FishingSpot.findSpot(npc.getId()) != FishingSpot.ANGLERFISH &&
 					FishingSpot.findSpot(npc.getId()) != FishingSpot.COMMON_TENCH &&
+					FishingSpot.findSpot(npc.getId()) != FishingSpot.DARK_CRAB &&
 					config.showSpotTimers()) {
 
 				final int id = npc.getIndex();

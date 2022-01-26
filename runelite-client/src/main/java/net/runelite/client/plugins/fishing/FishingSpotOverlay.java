@@ -164,6 +164,7 @@ class FishingSpotOverlay extends Overlay
 					FishingSpot.findSpot(npc.getId()) != FishingSpot.KARAMBWAN &&
 					FishingSpot.findSpot(npc.getId()) != FishingSpot.ANGLERFISH &&
 					FishingSpot.findSpot(npc.getId()) != FishingSpot.COMMON_TENCH &&
+					FishingSpot.findSpot(npc.getId()) != FishingSpot.DARK_CRAB &&
 					config.showSpotTimers()) {
 
 				TimerSpot timerSpot = plugin.getTimerSpots().get(npc.getIndex());
