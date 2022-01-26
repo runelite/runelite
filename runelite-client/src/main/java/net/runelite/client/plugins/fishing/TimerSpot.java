@@ -33,6 +33,6 @@ import net.runelite.api.coords.WorldPoint;
 @Value
 class TimerSpot
 {
-    private final WorldPoint loc;
-    private final Instant time;
+	private final WorldPoint loc;
+	private final Instant time;
 }

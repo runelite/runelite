@@ -161,20 +161,24 @@ class FishingSpotOverlay extends Overlay
 			}
 
 			if (FishingSpot.findSpot(npc.getId()) != FishingSpot.MINNOW &&
-					FishingSpot.findSpot(npc.getId()) != FishingSpot.KARAMBWAN &&
-					FishingSpot.findSpot(npc.getId()) != FishingSpot.ANGLERFISH &&
-					FishingSpot.findSpot(npc.getId()) != FishingSpot.COMMON_TENCH &&
-					FishingSpot.findSpot(npc.getId()) != FishingSpot.DARK_CRAB &&
-					config.showSpotTimers()) {
+				FishingSpot.findSpot(npc.getId()) != FishingSpot.KARAMBWAN &&
+				FishingSpot.findSpot(npc.getId()) != FishingSpot.ANGLERFISH &&
+				FishingSpot.findSpot(npc.getId()) != FishingSpot.COMMON_TENCH &&
+				FishingSpot.findSpot(npc.getId()) != FishingSpot.DARK_CRAB &&
+				config.showSpotTimers())
+			{
 
 				TimerSpot timerSpot = plugin.getTimerSpots().get(npc.getIndex());
 				if (timerSpot != null)
 				{
 					final Duration duration = Duration.between(timerSpot.getTime(), Instant.now());
 
-					if (duration.compareTo(plugin.getTIMER_MIN()) < 0) {
+					if (duration.compareTo(plugin.getTIMER_MIN()) < 0)
+					{
 						color = Color.GREEN;
-					} else if (duration.compareTo(plugin.getTIMER_MAX()) < 0) {
+					}
+					else if (duration.compareTo(plugin.getTIMER_MAX()) < 0)
+					{
 						color = Color.RED;
 					}
 
@@ -188,10 +192,11 @@ class FishingSpotOverlay extends Overlay
 						pie.setBorderColor(color);
 						pie.setPosition(location);
 						pie.setProgress(1 - (duration.compareTo(plugin.getTIMER_MAX()) < 0
-								? (double) duration.toMillis() / plugin.getTIMER_MAX().toMillis()
-								: 1));
+							? (double) duration.toMillis() / plugin.getTIMER_MAX().toMillis()
+							: 1));
 
-						if(duration.compareTo(plugin.getTIMER_MAX()) < 0) {
+						if (duration.compareTo(plugin.getTIMER_MAX()) < 0)
+						{
 							pie.render(graphics);
 						}
 					}

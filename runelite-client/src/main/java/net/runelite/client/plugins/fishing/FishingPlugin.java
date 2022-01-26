@@ -332,16 +332,18 @@ public class FishingPlugin extends Plugin
 			}
 
 			if (FishingSpot.findSpot(npc.getId()) != FishingSpot.MINNOW &&
-					FishingSpot.findSpot(npc.getId()) != FishingSpot.KARAMBWAN &&
-					FishingSpot.findSpot(npc.getId()) != FishingSpot.ANGLERFISH &&
-					FishingSpot.findSpot(npc.getId()) != FishingSpot.COMMON_TENCH &&
-					FishingSpot.findSpot(npc.getId()) != FishingSpot.DARK_CRAB &&
-					config.showSpotTimers()) {
+				FishingSpot.findSpot(npc.getId()) != FishingSpot.KARAMBWAN &&
+				FishingSpot.findSpot(npc.getId()) != FishingSpot.ANGLERFISH &&
+				FishingSpot.findSpot(npc.getId()) != FishingSpot.COMMON_TENCH &&
+				FishingSpot.findSpot(npc.getId()) != FishingSpot.DARK_CRAB &&
+				config.showSpotTimers())
+			{
 
 				final int id = npc.getIndex();
 				final TimerSpot timerSpot = timerSpots.get(id);
 
-				if(timerSpot == null || !timerSpot.getLoc().equals(npc.getWorldLocation())) {
+				if (timerSpot == null || !timerSpot.getLoc().equals(npc.getWorldLocation()))
+				{
 					timerSpots.put(id, new TimerSpot(npc.getWorldLocation(), Instant.now()));
 				}
 			}
@@ -379,7 +381,8 @@ public class FishingPlugin extends Plugin
 		}
 
 		TimerSpot timerSpot = timerSpots.remove(npc.getIndex());
-		if(timerSpot != null) {
+		if (timerSpot != null)
+		{
 			log.debug("Timer spot {} despawned", npc);
 		}
 	}

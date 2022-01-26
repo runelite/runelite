@@ -68,10 +68,10 @@ public interface FishingConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 3,
-			keyName = "showTimers",
-			name = "Display spot age timers",
-			description = "Configures whether timers for fishing spot ages are displayed"
+		position = 3,
+		keyName = "showTimers",
+		name = "Display spot age timers",
+		description = "Configures whether timers for fishing spot ages are displayed"
 	)
 	default boolean showSpotTimers()
 	{
