@@ -68,7 +68,18 @@ public interface FishingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 3,
+			position = 3,
+			keyName = "showTimers",
+			name = "Display spot age timers",
+			description = "Configures whether timers for fishing spot ages are displayed"
+	)
+	default boolean showSpotTimers()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 4,
 		keyName = "showNames",
 		name = "Display spot names",
 		description = "Configures whether names for fishing spots are displayed"
@@ -83,7 +94,7 @@ public interface FishingConfig extends Config
 		keyName = "overlayColor",
 		name = "Overlay Color",
 		description = "Color of overlays",
-		position = 4
+		position = 5
 	)
 	default Color getOverlayColor()
 	{
@@ -95,7 +106,7 @@ public interface FishingConfig extends Config
 		keyName = "minnowsOverlayColor",
 		name = "Minnows Overlay",
 		description = "Color of overlays for Minnows",
-		position = 5
+		position = 6
 	)
 	default Color getMinnowsOverlayColor()
 	{
@@ -107,7 +118,7 @@ public interface FishingConfig extends Config
 		keyName = "aerialOverlayColor",
 		name = "Aerial Overlay",
 		description = "Color of overlays when 1-tick aerial fishing",
-		position = 6
+		position = 7
 	)
 	default Color getAerialOverlayColor()
 	{
@@ -119,7 +130,7 @@ public interface FishingConfig extends Config
 		keyName = "harpoonfishOverlayColor",
 		name = "Harpoonfish Overlay",
 		description = "Color of overlays for bubbling Harpoonfish spots",
-		position = 6
+		position = 8
 	)
 	default Color getHarpoonfishOverlayColor()
 	{
@@ -127,7 +138,7 @@ public interface FishingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 7,
+		position = 9,
 		keyName = "statTimeout",
 		name = "Reset stats",
 		description = "The time until fishing session data is reset in minutes."
@@ -139,7 +150,7 @@ public interface FishingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 8,
+		position = 10,
 		keyName = "showFishingStats",
 		name = "Show Fishing session stats",
 		description = "Display the fishing session stats."
@@ -150,7 +161,7 @@ public interface FishingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 9,
+		position = 11,
 		keyName = "showMinnowOverlay",
 		name = "Show Minnow Movement overlay",
 		description = "Display the minnow progress pie overlay."
@@ -161,7 +172,7 @@ public interface FishingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 10,
+		position = 12,
 		keyName = "flyingFishNotification",
 		name = "Flying fish notification",
 		description = "Send a notification when a flying fish spawns on your fishing spot."
@@ -172,7 +183,7 @@ public interface FishingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 11,
+		position = 13,
 		keyName = "trawlerTimer",
 		name = "Trawler timer in M:SS",
 		description = "Trawler timer will display a more accurate timer in M:SS format."
@@ -183,7 +194,7 @@ public interface FishingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 12,
+		position = 14,
 		keyName = "trawlerContribution",
 		name = "Trawler contribution",
 		description = "Display the exact number of trawler contribution points gained."
