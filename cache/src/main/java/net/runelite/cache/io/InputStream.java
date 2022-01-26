@@ -200,6 +200,18 @@ public class InputStream extends java.io.InputStream
 		return sb.toString();
 	}
 
+	public String readString2()
+	{
+		if (this.readByte() != 0)
+		{
+			throw new IllegalStateException("Invalid jstr2");
+		}
+		else
+		{
+			return readString();
+		}
+	}
+
 	public String readStringOrNull()
 	{
 		if (this.peek() != 0)

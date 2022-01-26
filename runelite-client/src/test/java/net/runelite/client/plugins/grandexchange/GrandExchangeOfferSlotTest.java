@@ -28,13 +28,13 @@ package net.runelite.client.plugins.grandexchange;
 import net.runelite.api.GrandExchangeOffer;
 import net.runelite.api.GrandExchangeOfferState;
 import net.runelite.api.ItemComposition;
-import net.runelite.client.game.AsyncBufferedImage;
+import net.runelite.client.util.AsyncBufferedImage;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class GrandExchangeOfferSlotTest
@@ -47,7 +47,7 @@ public class GrandExchangeOfferSlotTest
 	{
 		when(offer.getState()).thenReturn(GrandExchangeOfferState.CANCELLED_BUY);
 
-		GrandExchangeOfferSlot offerSlot = new GrandExchangeOfferSlot();
+		GrandExchangeOfferSlot offerSlot = new GrandExchangeOfferSlot(mock(GrandExchangePlugin.class));
 		offerSlot.updateOffer(mock(ItemComposition.class), mock(AsyncBufferedImage.class), offer);
 	}
 

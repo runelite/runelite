@@ -28,6 +28,7 @@ package net.runelite.cache;
 import java.io.File;
 import java.io.IOException;
 import net.runelite.cache.fs.Store;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -42,6 +43,7 @@ public class ItemManagerTest
 	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
 
 	@Test
+	@Ignore
 	public void test() throws IOException
 	{
 		File dumpDir = folder.newFolder(),

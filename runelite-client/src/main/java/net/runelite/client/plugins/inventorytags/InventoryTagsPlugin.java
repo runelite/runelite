@@ -26,32 +26,25 @@ package net.runelite.client.plugins.inventorytags;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.Color;
+import java.util.Arrays;
 import java.util.List;
 import javax.inject.Inject;
-import lombok.AccessLevel;
-import lombok.Getter;
 import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
-import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
-import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOpened;
-import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.events.WidgetMenuOptionClicked;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.menus.WidgetMenuOption;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
-import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Inventory Tags",
@@ -67,6 +60,8 @@ public class InventoryTagsPlugin extends Plugin
 	private static final String SETNAME_GROUP_2 = "Group 2";
 	private static final String SETNAME_GROUP_3 = "Group 3";
 	private static final String SETNAME_GROUP_4 = "Group 4";
+	private static final String SETNAME_GROUP_5 = "Group 5";
+	private static final String SETNAME_GROUP_6 = "Group 6";
 
 	private static final String CONFIGURE = "Configure";
 	private static final String SAVE = "Save";
@@ -87,7 +82,7 @@ public class InventoryTagsPlugin extends Plugin
 	private static final WidgetMenuOption RESIZABLE_BOTTOM_LINE_INVENTORY_TAB_SAVE = new WidgetMenuOption(SAVE,
 		MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY_TAB);
 
-	private static final List<String> GROUPS = ImmutableList.of(SETNAME_GROUP_4, SETNAME_GROUP_3, SETNAME_GROUP_2, SETNAME_GROUP_1);
+	private static final List<String> GROUPS = ImmutableList.of(SETNAME_GROUP_6, SETNAME_GROUP_5, SETNAME_GROUP_4, SETNAME_GROUP_3, SETNAME_GROUP_2, SETNAME_GROUP_1);
 
 	@Inject
 	private Client client;
@@ -106,9 +101,6 @@ public class InventoryTagsPlugin extends Plugin
 
 	@Inject
 	private OverlayManager overlayManager;
-
-	@Getter(AccessLevel.PACKAGE)
-	private boolean hasTaggedItems;
 
 	private boolean editorMode;
 
@@ -151,42 +143,15 @@ public class InventoryTagsPlugin extends Plugin
 	{
 		removeInventoryMenuOptions();
 		overlayManager.remove(overlay);
-		hasTaggedItems = editorMode = false;
+		editorMode = false;
 	}
 
 	@Subscribe
-	public void onWidgetMenuOptionClicked(final WidgetMenuOptionClicked event)
+	public void onConfigChanged(ConfigChanged configChanged)
 	{
-		if (event.getWidget() == WidgetInfo.FIXED_VIEWPORT_INVENTORY_TAB
-			|| event.getWidget() == WidgetInfo.RESIZABLE_VIEWPORT_INVENTORY_TAB
-			|| event.getWidget() == WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY_TAB)
+		if (configChanged.getGroup().equals(InventoryTagsConfig.GROUP))
 		{
-			editorMode = event.getMenuOption().equals(CONFIGURE) && Text.removeTags(event.getMenuTarget()).equals(MENU_TARGET);
-			refreshInventoryMenuOptions();
-		}
-	}
-
-	@Subscribe
-	public void onMenuOptionClicked(final MenuOptionClicked event)
-	{
-		if (event.getMenuAction() != MenuAction.RUNELITE)
-		{
-			return;
-		}
-
-		final String selectedMenu = Text.removeTags(event.getMenuTarget());
-
-		if (event.getMenuOption().equals(MENU_SET))
-		{
-			setTag(event.getId(), selectedMenu);
-
-			hasTaggedItems = true;
-		}
-		else if (event.getMenuOption().equals(MENU_REMOVE))
-		{
-			unsetTag(event.getId());
-
-			checkForTags(client.getItemContainer(InventoryID.INVENTORY));
+			overlay.invalidateCache();
 		}
 	}
 
@@ -194,8 +159,7 @@ public class InventoryTagsPlugin extends Plugin
 	public void onMenuOpened(final MenuOpened event)
 	{
 		final MenuEntry firstEntry = event.getFirstEntry();
-
-		if (firstEntry == null)
+		if (firstEntry == null || !editorMode)
 		{
 			return;
 		}
@@ -203,7 +167,7 @@ public class InventoryTagsPlugin extends Plugin
 		final int widgetId = firstEntry.getParam1();
 
 		// Inventory item menu
-		if (widgetId == WidgetInfo.INVENTORY.getId() && editorMode)
+		if (widgetId == WidgetInfo.INVENTORY.getId())
 		{
 			int itemId = firstEntry.getIdentifier();
 
@@ -212,63 +176,29 @@ public class InventoryTagsPlugin extends Plugin
 				return;
 			}
 
-			MenuEntry[] menuList = new MenuEntry[GROUPS.size()];
-			int num = 0;
+			// Set menu to only be Cancel
+			client.setMenuEntries(Arrays.copyOf(client.getMenuEntries(), 1));
 
 			for (final String groupName : GROUPS)
 			{
 				final String group = getTag(itemId);
-				final MenuEntry newMenu = new MenuEntry();
 				final Color color = getGroupNameColor(groupName);
-				newMenu.setOption(groupName.equals(group) ? MENU_REMOVE : MENU_SET);
-				newMenu.setTarget(ColorUtil.prependColorTag(groupName, MoreObjects.firstNonNull(color, Color.WHITE)));
-				newMenu.setIdentifier(itemId);
-				newMenu.setParam1(widgetId);
-				newMenu.setType(MenuAction.RUNELITE.getId());
-				menuList[num++] = newMenu;
-			}
 
-			client.setMenuEntries(menuList);
-		}
-	}
-
-	@Subscribe
-	public void onItemContainerChanged(ItemContainerChanged itemContainerChanged)
-	{
-		ItemContainer itemContainer = itemContainerChanged.getItemContainer();
-		if (itemContainer == client.getItemContainer(InventoryID.INVENTORY))
-		{
-			checkForTags(itemContainer);
-		}
-	}
-
-	private void checkForTags(ItemContainer itemContainer)
-	{
-		hasTaggedItems = false;
-
-		if (itemContainer == null)
-		{
-			return;
-		}
-
-		Item[] items = itemContainer.getItems();
-		if (items != null)
-		{
-			for (Item item : items)
-			{
-				if (item == null)
-				{
-					continue;
-				}
-
-				String tag = getTag(item.getId());
-				if (tag == null)
-				{
-					continue;
-				}
-
-				hasTaggedItems = true;
-				return;
+				client.createMenuEntry(-1)
+					.setOption(groupName.equals(group) ? MENU_REMOVE : MENU_SET)
+					.setTarget(ColorUtil.prependColorTag(groupName, MoreObjects.firstNonNull(color, Color.WHITE)))
+					.setType(MenuAction.RUNELITE)
+					.onClick(e ->
+					{
+						if (e.getOption().equals(MENU_SET))
+						{
+							setTag(itemId, groupName);
+						}
+						else
+						{
+							unsetTag(itemId);
+						}
+					});
 			}
 		}
 	}
@@ -285,6 +215,10 @@ public class InventoryTagsPlugin extends Plugin
 				return config.getGroup3Color();
 			case SETNAME_GROUP_4:
 				return config.getGroup4Color();
+			case SETNAME_GROUP_5:
+				return config.getGroup5Color();
+			case SETNAME_GROUP_6:
+				return config.getGroup6Color();
 		}
 
 		return null;
@@ -305,15 +239,27 @@ public class InventoryTagsPlugin extends Plugin
 		removeInventoryMenuOptions();
 		if (editorMode)
 		{
-			menuManager.addManagedCustomMenu(FIXED_INVENTORY_TAB_SAVE);
-			menuManager.addManagedCustomMenu(RESIZABLE_INVENTORY_TAB_SAVE);
-			menuManager.addManagedCustomMenu(RESIZABLE_BOTTOM_LINE_INVENTORY_TAB_SAVE);
+			menuManager.addManagedCustomMenu(FIXED_INVENTORY_TAB_SAVE, this::save);
+			menuManager.addManagedCustomMenu(RESIZABLE_INVENTORY_TAB_SAVE, this::save);
+			menuManager.addManagedCustomMenu(RESIZABLE_BOTTOM_LINE_INVENTORY_TAB_SAVE, this::save);
 		}
 		else
 		{
-			menuManager.addManagedCustomMenu(FIXED_INVENTORY_TAB_CONFIGURE);
-			menuManager.addManagedCustomMenu(RESIZABLE_INVENTORY_TAB_CONFIGURE);
-			menuManager.addManagedCustomMenu(RESIZABLE_BOTTOM_LINE_INVENTORY_TAB_CONFIGURE);
+			menuManager.addManagedCustomMenu(FIXED_INVENTORY_TAB_CONFIGURE, this::configure);
+			menuManager.addManagedCustomMenu(RESIZABLE_INVENTORY_TAB_CONFIGURE, this::configure);
+			menuManager.addManagedCustomMenu(RESIZABLE_BOTTOM_LINE_INVENTORY_TAB_CONFIGURE, this::configure);
 		}
+	}
+
+	private void save(MenuEntry menuEntry)
+	{
+		editorMode = false;
+		refreshInventoryMenuOptions();
+	}
+
+	private void configure(MenuEntry menuEntry)
+	{
+		editorMode = true;
+		refreshInventoryMenuOptions();
 	}
 }

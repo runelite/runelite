@@ -59,8 +59,9 @@ public enum FairyRings
 	// C
 	CIP("(Island) Miscellania"),
 	CIQ("North-west of Yanille"),
-	CIS("North of the Arceuus House Library"),
-	CJR("Sinclair Mansion (east)"),
+	CIS("North of the Arceuus Library"),
+	CIR("North-east of the Farming Guild", "mount karuulm konar"),
+	CJR("Sinclair Mansion", "falo bard"),
 	CKP("Cosmic entity's plane"),
 	CKR("South of Tai Bwo Wannai Village"),
 	CKS("Canifis"),

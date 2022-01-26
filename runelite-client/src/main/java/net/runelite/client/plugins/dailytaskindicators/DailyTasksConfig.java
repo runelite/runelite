@@ -63,7 +63,7 @@ public interface DailyTasksConfig extends Config
 	)
 	default boolean showEssence()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
@@ -74,7 +74,7 @@ public interface DailyTasksConfig extends Config
 	)
 	default boolean showRunes()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
@@ -85,6 +85,50 @@ public interface DailyTasksConfig extends Config
 	)
 	default boolean showSand()
 	{
-		return true;
+		return false;
+	}
+
+	@ConfigItem(
+		position = 6,
+		keyName = "showFlax",
+		name = "Show Claimable Bow Strings",
+		description = "Show a message when you can convert noted flax to bow strings with the Flax keeper."
+	)
+	default boolean showFlax()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 7,
+		keyName = "showBonemeal",
+		name = "Show Claimable Bonemeal & Slime",
+		description = "Show a message when you can collect bonemeal & slime from Robin."
+	)
+	default boolean showBonemeal()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 8,
+		keyName = "showDynamite",
+		name = "Show Claimable Dynamite",
+		description = "Show a message when you can collect Dynamite from Thirus."
+	)
+	default boolean showDynamite()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 9,
+		keyName = "showArrows",
+		name = "Show Claimable Ogre Arrows",
+		description = "Show a message when you can collect ogre arrows from Rantz."
+	)
+	default boolean showArrows()
+	{
+		return false;
 	}
 }

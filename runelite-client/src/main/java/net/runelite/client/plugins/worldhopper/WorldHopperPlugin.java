@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * Copyright (c) 2018, Lotto <https://github.com/devLotto>
+ * Copyright (c) 2019, gregg1494 <https://github.com/gregg1494>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,42 +26,41 @@
  */
 package net.runelite.client.plugins.worldhopper;
 
+import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ObjectArrays;
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.time.Duration;
 import java.time.Instant;
-import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
-import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.ChatPlayer;
-import net.runelite.api.ClanMember;
 import net.runelite.api.Client;
 import net.runelite.api.Friend;
+import net.runelite.api.FriendsChatManager;
+import net.runelite.api.FriendsChatMember;
 import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
-import net.runelite.api.MenuEntry;
+import net.runelite.api.NameableContainer;
 import net.runelite.api.Varbits;
+import net.runelite.api.clan.ClanChannel;
+import net.runelite.api.clan.ClanChannelMember;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuEntryAdded;
-import net.runelite.api.events.PlayerMenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WorldListLoad;
 import net.runelite.api.widgets.WidgetInfo;
@@ -70,30 +70,36 @@ import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.events.WorldsFetch;
+import net.runelite.client.game.WorldService;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.worldhopper.ping.Ping;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
+import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.ExecutorServiceExceptionLogger;
 import net.runelite.client.util.HotkeyListener;
+import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
 import net.runelite.client.util.WorldUtil;
 import net.runelite.http.api.worlds.World;
-import net.runelite.http.api.worlds.WorldClient;
 import net.runelite.http.api.worlds.WorldResult;
 import net.runelite.http.api.worlds.WorldType;
-import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
 	name = "World Hopper",
-	description = "Allows you to quickly hop worlds"
+	description = "Allows you to quickly hop worlds",
+	tags = {"ping", "switcher"}
 )
 @Slf4j
 public class WorldHopperPlugin extends Plugin
 {
-	private static final int WORLD_FETCH_TIMER = 10;
-	private static final int REFRESH_THROTTLE = 60_000;  // ms
-	private static final int TICK_THROTTLE = (int) Duration.ofMinutes(10).toMillis();
+	private static final int REFRESH_THROTTLE = 60_000; // ms
+	private static final int MAX_PLAYER_COUNT = 1950;
 
 	private static final int DISPLAY_SWITCHER_MAX_ATTEMPTS = 3;
 
@@ -121,10 +127,18 @@ public class WorldHopperPlugin extends Plugin
 	private ChatMessageManager chatMessageManager;
 
 	@Inject
-	private ScheduledExecutorService executorService;
+	private WorldHopperConfig config;
 
 	@Inject
-	private WorldHopperConfig config;
+	private OverlayManager overlayManager;
+
+	@Inject
+	private WorldHopperPingOverlay worldHopperOverlay;
+
+	@Inject
+	private WorldService worldService;
+
+	private ScheduledExecutorService hopperExecutorService;
 
 	private NavigationButton navButton;
 	private WorldSwitcherPanel panel;
@@ -137,16 +151,21 @@ public class WorldHopperPlugin extends Plugin
 
 	private int favoriteWorld1, favoriteWorld2;
 
-	private ScheduledFuture<?> worldResultFuture;
-	private WorldResult worldResult;
+	private ScheduledFuture<?> pingFuture, currPingFuture;
+	private int currentWorld;
 	private Instant lastFetch;
+
+	@Getter(AccessLevel.PACKAGE)
+	private int currentPing;
+
+	private final Map<Integer, Integer> storedPings = new HashMap<>();
 
 	private final HotkeyListener previousKeyListener = new HotkeyListener(() -> config.previousKey())
 	{
 		@Override
 		public void hotkeyPressed()
 		{
-			hop(true);
+			clientThread.invoke(() -> hop(true));
 		}
 	};
 	private final HotkeyListener nextKeyListener = new HotkeyListener(() -> config.nextKey())
@@ -154,7 +173,7 @@ public class WorldHopperPlugin extends Plugin
 		@Override
 		public void hotkeyPressed()
 		{
-			hop(false);
+			clientThread.invoke(() -> hop(false));
 		}
 	};
 
@@ -167,19 +186,14 @@ public class WorldHopperPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		currentPing = -1;
+
 		keyManager.registerKeyListener(previousKeyListener);
 		keyManager.registerKeyListener(nextKeyListener);
 
-		worldResultFuture = executorService.scheduleAtFixedRate(this::tick, 0, WORLD_FETCH_TIMER, TimeUnit.MINUTES);
-
 		panel = new WorldSwitcherPanel(this);
 
-		final BufferedImage icon;
-		synchronized (ImageIO.class)
-		{
-			icon = ImageIO.read(getClass().getResourceAsStream("icon.png"));
-		}
-
+		BufferedImage icon = ImageUtil.loadImageResource(WorldHopperPlugin.class, "icon.png");
 		navButton = NavigationButton.builder()
 			.tooltip("World Switcher")
 			.icon(icon)
@@ -191,34 +205,80 @@ public class WorldHopperPlugin extends Plugin
 		{
 			clientToolbar.addNavigation(navButton);
 		}
+
+		overlayManager.add(worldHopperOverlay);
+
+		panel.setSubscriptionFilterMode(config.subscriptionFilter());
+		panel.setRegionFilterMode(config.regionFilter());
+
+		// The plugin has its own executor for pings, as it blocks for a long time
+		hopperExecutorService = new ExecutorServiceExceptionLogger(Executors.newSingleThreadScheduledExecutor());
+		// Run the first-run ping
+		hopperExecutorService.execute(this::pingInitialWorlds);
+
+		// Give some initial delay - this won't run until after pingInitialWorlds finishes from tick() anyway
+		pingFuture = hopperExecutorService.scheduleWithFixedDelay(this::pingNextWorld, 15, 3, TimeUnit.SECONDS);
+		currPingFuture = hopperExecutorService.scheduleWithFixedDelay(this::pingCurrentWorld, 15, 1, TimeUnit.SECONDS);
+
+		// populate initial world list
+		updateList();
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		pingFuture.cancel(true);
+		pingFuture = null;
+
+		currPingFuture.cancel(true);
+		currPingFuture = null;
+
+		overlayManager.remove(worldHopperOverlay);
+
 		keyManager.unregisterKeyListener(previousKeyListener);
 		keyManager.unregisterKeyListener(nextKeyListener);
 
-		worldResultFuture.cancel(true);
-		worldResultFuture = null;
-		worldResult = null;
-		lastFetch = null;
-
 		clientToolbar.removeNavigation(navButton);
+
+		hopperExecutorService.shutdown();
+		hopperExecutorService = null;
 	}
 
 	@Subscribe
 	public void onConfigChanged(final ConfigChanged event)
 	{
-		if (event.getGroup().equals(WorldHopperConfig.GROUP) && event.getKey().equals("showSidebar"))
+		if (event.getGroup().equals(WorldHopperConfig.GROUP))
 		{
-			if (config.showSidebar())
+			switch (event.getKey())
 			{
-				clientToolbar.addNavigation(navButton);
-			}
-			else
-			{
-				clientToolbar.removeNavigation(navButton);
+				case "showSidebar":
+					if (config.showSidebar())
+					{
+						clientToolbar.addNavigation(navButton);
+					}
+					else
+					{
+						clientToolbar.removeNavigation(navButton);
+					}
+					break;
+				case "ping":
+					if (config.ping())
+					{
+						SwingUtilities.invokeLater(() -> panel.showPing());
+					}
+					else
+					{
+						SwingUtilities.invokeLater(() -> panel.hidePing());
+					}
+					break;
+				case "subscriptionFilter":
+					panel.setSubscriptionFilterMode(config.subscriptionFilter());
+					updateList();
+					break;
+				case "regionFilter":
+					panel.setRegionFilterMode(config.regionFilter());
+					updateList();
+					break;
 			}
 		}
 	}
@@ -237,7 +297,6 @@ public class WorldHopperPlugin extends Plugin
 	private void clearFavoriteConfig(int world)
 	{
 		configManager.unsetConfiguration(WorldHopperConfig.GROUP, "favorite_" + world);
-		panel.resetAllFavoriteMenus();
 	}
 
 	boolean isFavorite(World world)
@@ -253,7 +312,7 @@ public class WorldHopperPlugin extends Plugin
 
 	void hopTo(World world)
 	{
-		hop(world.getId());
+		clientThread.invoke(() -> hop(world.getId()));
 	}
 
 	void addToFavorites(World world)
@@ -288,10 +347,17 @@ public class WorldHopperPlugin extends Plugin
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		int groupId = WidgetInfo.TO_GROUP(event.getActionParam1());
+		if (!config.menuOption())
+		{
+			return;
+		}
+
+		final int componentId = event.getActionParam1();
+		int groupId = WidgetInfo.TO_GROUP(componentId);
 		String option = event.getOption();
 
-		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() || groupId == WidgetInfo.CLAN_CHAT.getGroupId())
+		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() || groupId == WidgetInfo.FRIENDS_CHAT.getGroupId()
+			|| componentId == WidgetInfo.CLAN_MEMBER_LIST.getId() || componentId == WidgetInfo.CLAN_GUEST_MEMBER_LIST.getId())
 		{
 			boolean after;
 
@@ -310,49 +376,36 @@ public class WorldHopperPlugin extends Plugin
 
 			// Don't add entry if user is offline
 			ChatPlayer player = getChatPlayerFromName(event.getTarget());
+			WorldResult worldResult = worldService.getWorlds();
 
-			if (player == null || player.getWorld() == 0 || player.getWorld() == client.getWorld())
+			if (player == null || player.getWorld() == 0 || player.getWorld() == client.getWorld()
+				|| worldResult == null)
 			{
 				return;
 			}
 
-			final MenuEntry hopTo = new MenuEntry();
-			hopTo.setOption(HOP_TO);
-			hopTo.setTarget(event.getTarget());
-			hopTo.setType(MenuAction.RUNELITE.getId());
-			hopTo.setParam0(event.getActionParam0());
-			hopTo.setParam1(event.getActionParam1());
+			World currentWorld = worldResult.findWorld(client.getWorld());
+			World targetWorld = worldResult.findWorld(player.getWorld());
+			if (targetWorld == null || currentWorld == null
+				|| (!currentWorld.getTypes().contains(WorldType.PVP) && targetWorld.getTypes().contains(WorldType.PVP)))
+			{
+				// Disable Hop-to a PVP world from a regular world
+				return;
+			}
 
-			insertMenuEntry(hopTo, client.getMenuEntries(), after);
-		}
-	}
+			client.createMenuEntry(after ? -2 : -1)
+				.setOption(HOP_TO)
+				.setTarget(event.getTarget())
+				.setType(MenuAction.RUNELITE)
+				.onClick(e ->
+				{
+					ChatPlayer p = getChatPlayerFromName(e.getTarget());
 
-	private void insertMenuEntry(MenuEntry newEntry, MenuEntry[] entries, boolean after)
-	{
-		MenuEntry[] newMenu = ObjectArrays.concat(entries, newEntry);
-
-		if (after)
-		{
-			int menuEntryCount = newMenu.length;
-			ArrayUtils.swap(newMenu, menuEntryCount - 1, menuEntryCount - 2);
-		}
-
-		client.setMenuEntries(newMenu);
-	}
-
-	@Subscribe
-	public void onPlayerMenuOptionClicked(PlayerMenuOptionClicked event)
-	{
-		if (!event.getMenuOption().equals(HOP_TO))
-		{
-			return;
-		}
-
-		ChatPlayer player = getChatPlayerFromName(event.getMenuTarget());
-
-		if (player != null)
-		{
-			hop(player.getWorld());
+					if (p != null)
+					{
+						hop(p.getWorld());
+					}
+				});
 		}
 	}
 
@@ -390,18 +443,6 @@ public class WorldHopperPlugin extends Plugin
 		this.lastFetch = Instant.now(); // This counts as a fetch as it updates populations
 	}
 
-	private void tick()
-	{
-		Instant now = Instant.now();
-		if (lastFetch != null && now.toEpochMilli() - lastFetch.toEpochMilli() < TICK_THROTTLE)
-		{
-			log.debug("Throttling world refresh tick");
-			return;
-		}
-
-		fetchWorlds();
-	}
-
 	void refresh()
 	{
 		Instant now = Instant.now();
@@ -411,29 +452,14 @@ public class WorldHopperPlugin extends Plugin
 			return;
 		}
 
-		fetchWorlds();
+		lastFetch = now;
+		worldService.refresh();
 	}
 
-	private void fetchWorlds()
+	@Subscribe
+	public void onWorldsFetch(WorldsFetch worldsFetch)
 	{
-		log.debug("Fetching worlds");
-
-		try
-		{
-			WorldResult worldResult = new WorldClient().lookupWorlds();
-
-			if (worldResult != null)
-			{
-				worldResult.getWorlds().sort(Comparator.comparingInt(World::getId));
-				this.worldResult = worldResult;
-				this.lastFetch = Instant.now();
-				updateList();
-			}
-		}
-		catch (IOException ex)
-		{
-			log.warn("Error looking up worlds", ex);
-		}
+		updateList();
 	}
 
 	/**
@@ -441,11 +467,16 @@ public class WorldHopperPlugin extends Plugin
 	 */
 	private void updateList()
 	{
-		SwingUtilities.invokeLater(() -> panel.populate(worldResult.getWorlds()));
+		WorldResult worldResult = worldService.getWorlds();
+		if (worldResult != null)
+		{
+			SwingUtilities.invokeLater(() -> panel.populate(worldResult.getWorlds()));
+		}
 	}
 
 	private void hop(boolean previous)
 	{
+		WorldResult worldResult = worldService.getWorlds();
 		if (worldResult == null || client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
@@ -463,7 +494,7 @@ public class WorldHopperPlugin extends Plugin
 		if (config.quickhopOutOfDanger())
 		{
 			currentWorldTypes.remove(WorldType.PVP);
-			currentWorldTypes.remove(WorldType.PVP_HIGH_RISK);
+			currentWorldTypes.remove(WorldType.HIGH_RISK);
 		}
 		// Don't regard these worlds as a type that must be hopped between
 		currentWorldTypes.remove(WorldType.BOUNTY);
@@ -474,6 +505,8 @@ public class WorldHopperPlugin extends Plugin
 
 		int worldIdx = worlds.indexOf(currentWorld);
 		int totalLevel = client.getTotalLevel();
+
+		final Set<RegionFilterMode> regionFilter = config.quickHopRegionFilter();
 
 		World world;
 		do
@@ -505,6 +538,12 @@ public class WorldHopperPlugin extends Plugin
 
 			world = worlds.get(worldIdx);
 
+			// Check world region if filter is enabled
+			if (!regionFilter.isEmpty() && !regionFilter.contains(RegionFilterMode.of(world.getRegion())))
+			{
+				continue;
+			}
+
 			EnumSet<WorldType> types = world.getTypes().clone();
 
 			types.remove(WorldType.BOUNTY);
@@ -528,6 +567,12 @@ public class WorldHopperPlugin extends Plugin
 				}
 			}
 
+			// Avoid switching to near-max population worlds, as it will refuse to allow the hop if the world is full
+			if (world.getPlayers() >= MAX_PLAYER_COUNT)
+			{
+				continue;
+			}
+
 			// Break out if we've found a good world to hop to
 			if (currentWorldTypes.equals(types))
 			{
@@ -544,7 +589,7 @@ public class WorldHopperPlugin extends Plugin
 				.build();
 
 			chatMessageManager.queue(QueuedMessage.builder()
-				.type(ChatMessageType.GAME)
+				.type(ChatMessageType.CONSOLE)
 				.runeLiteFormattedMessage(chatMessage)
 				.build());
 		}
@@ -556,6 +601,9 @@ public class WorldHopperPlugin extends Plugin
 
 	private void hop(int worldId)
 	{
+		assert client.isClientThread();
+
+		WorldResult worldResult = worldService.getWorlds();
 		// Don't try to hop if the world doesn't exist
 		World world = worldResult.findWorld(worldId);
 		if (world == null)
@@ -578,20 +626,23 @@ public class WorldHopperPlugin extends Plugin
 			return;
 		}
 
-		String chatMessage = new ChatMessageBuilder()
-			.append(ChatColorType.NORMAL)
-			.append("Quick-hopping to World ")
-			.append(ChatColorType.HIGHLIGHT)
-			.append(Integer.toString(world.getId()))
-			.append(ChatColorType.NORMAL)
-			.append("..")
-			.build();
+		if (config.showWorldHopMessage())
+		{
+			String chatMessage = new ChatMessageBuilder()
+				.append(ChatColorType.NORMAL)
+				.append("Quick-hopping to World ")
+				.append(ChatColorType.HIGHLIGHT)
+				.append(Integer.toString(world.getId()))
+				.append(ChatColorType.NORMAL)
+				.append("..")
+				.build();
 
-		chatMessageManager
-			.queue(QueuedMessage.builder()
-				.type(ChatMessageType.GAME)
-				.runeLiteFormattedMessage(chatMessage)
-				.build());
+			chatMessageManager
+				.queue(QueuedMessage.builder()
+					.type(ChatMessageType.CONSOLE)
+					.runeLiteFormattedMessage(chatMessage)
+					.build());
+		}
 
 		quickHopTargetWorld = rsWorld;
 		displaySwitcherAttempts = 0;
@@ -622,7 +673,7 @@ public class WorldHopperPlugin extends Plugin
 
 				chatMessageManager
 					.queue(QueuedMessage.builder()
-						.type(ChatMessageType.GAME)
+						.type(ChatMessageType.CONSOLE)
 						.runeLiteFormattedMessage(chatMessage)
 						.build());
 
@@ -639,7 +690,7 @@ public class WorldHopperPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getType() != ChatMessageType.SERVER)
+		if (event.getType() != ChatMessageType.GAMEMESSAGE)
 		{
 			return;
 		}
@@ -660,34 +711,147 @@ public class WorldHopperPlugin extends Plugin
 	{
 		String cleanName = Text.removeTags(name);
 
-		// Search clan members first, because if a friend is in the clan chat but their private
-		// chat is 'off', then the hop-to option will not get shown in the menu (issue #5679).
-		ClanMember[] clanMembers = client.getClanMembers();
-
-		if (clanMembers != null)
+		// Search friends chat members first, because we can always get their world;
+		// friends worlds may be hidden if they have private off. (#5679)
+		FriendsChatManager friendsChatManager = client.getFriendsChatManager();
+		if (friendsChatManager != null)
 		{
-			for (ClanMember clanMember : clanMembers)
+			FriendsChatMember member = friendsChatManager.findByName(cleanName);
+			if (member != null)
 			{
-				if (clanMember != null && clanMember.getUsername().equals(cleanName))
-				{
-					return clanMember;
-				}
+				return member;
 			}
 		}
 
-		Friend[] friends = client.getFriends();
-
-		if (friends != null)
+		ClanChannel clanChannel = client.getClanChannel();
+		if (clanChannel != null)
 		{
-			for (Friend friend : friends)
+			ClanChannelMember member = clanChannel.findMember(cleanName);
+			if (member != null)
 			{
-				if (friend != null && friend.getName().equals(cleanName))
-				{
-					return friend;
-				}
+				return member;
 			}
+		}
+
+		clanChannel = client.getGuestClanChannel();
+		if (clanChannel != null)
+		{
+			ClanChannelMember member = clanChannel.findMember(cleanName);
+			if (member != null)
+			{
+				return member;
+			}
+		}
+
+		NameableContainer<Friend> friendContainer = client.getFriendContainer();
+		if (friendContainer != null)
+		{
+			return friendContainer.findByName(cleanName);
 		}
 
 		return null;
+	}
+
+	/**
+	 * Ping all worlds. This takes a long time and is only run on first run.
+	 */
+	private void pingInitialWorlds()
+	{
+		WorldResult worldResult = worldService.getWorlds();
+		if (worldResult == null || !config.showSidebar() || !config.ping())
+		{
+			return;
+		}
+
+		Stopwatch stopwatch = Stopwatch.createStarted();
+
+		for (World world : worldResult.getWorlds())
+		{
+			int ping = ping(world);
+			SwingUtilities.invokeLater(() -> panel.updatePing(world.getId(), ping));
+		}
+
+		stopwatch.stop();
+
+		log.debug("Done pinging worlds in {}", stopwatch.elapsed());
+	}
+
+	/**
+	 * Ping the next world
+	 */
+	private void pingNextWorld()
+	{
+		WorldResult worldResult = worldService.getWorlds();
+		if (worldResult == null || !config.showSidebar() || !config.ping())
+		{
+			return;
+		}
+
+		List<World> worlds = worldResult.getWorlds();
+		if (worlds.isEmpty())
+		{
+			return;
+		}
+
+		if (currentWorld >= worlds.size())
+		{
+			// Wrap back around
+			currentWorld = 0;
+		}
+
+		World world = worlds.get(currentWorld++);
+
+		// If we are displaying the ping overlay, there is a separate scheduled task for the current world
+		boolean displayPing = config.displayPing() && client.getGameState() == GameState.LOGGED_IN;
+		if (displayPing && client.getWorld() == world.getId())
+		{
+			return;
+		}
+
+		int ping = ping(world);
+		log.trace("Ping for world {} is: {}", world.getId(), ping);
+		SwingUtilities.invokeLater(() -> panel.updatePing(world.getId(), ping));
+	}
+
+	/**
+	 * Ping the current world for the ping overlay
+	 */
+	private void pingCurrentWorld()
+	{
+		WorldResult worldResult = worldService.getWorlds();
+		// There is no reason to ping the current world if not logged in, as the overlay doesn't draw
+		if (worldResult == null || !config.displayPing() || client.getGameState() != GameState.LOGGED_IN)
+		{
+			return;
+		}
+
+		final World currentWorld = worldResult.findWorld(client.getWorld());
+		if (currentWorld == null)
+		{
+			log.debug("unable to find current world: {}", client.getWorld());
+			return;
+		}
+
+		currentPing = ping(currentWorld);
+		log.trace("Ping for current world is: {}", currentPing);
+
+		SwingUtilities.invokeLater(() -> panel.updatePing(currentWorld.getId(), currentPing));
+	}
+
+	Integer getStoredPing(World world)
+	{
+		if (!config.ping())
+		{
+			return null;
+		}
+
+		return storedPings.get(world.getId());
+	}
+
+	private int ping(World world)
+	{
+		int ping = Ping.ping(world);
+		storedPings.put(world.getId(), ping);
+		return ping;
 	}
 }

@@ -24,30 +24,34 @@
  */
 package net.runelite.client.util;
 
+import com.google.common.collect.ImmutableMap;
 import java.awt.Color;
-import java.util.HashMap;
 import java.util.Map;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 public class ColorUtilTest
 {
-	private static final Map<Color, String> COLOR_HEXSTRING_MAP = new HashMap<Color, String>()
-	{{
-		put(Color.BLACK, "000000");
-		put(new Color(0x1), "000001");
-		put(new Color(0x100000), "100000");
-		put(Color.RED, "ff0000");
-		put(Color.GREEN, "00ff00");
-		put(Color.BLUE, "0000ff");
-		put(new Color(0xA1B2C3), "a1b2c3");
-		put(Color.WHITE, "ffffff");
-	}};
+	private static final Map<Color, String> COLOR_HEXSTRING_MAP = new ImmutableMap.Builder<Color, String>().
+		put(Color.BLACK, "000000").
+		put(new Color(0x1), "000001").
+		put(new Color(0x100000), "100000").
+		put(Color.RED, "ff0000").
+		put(Color.GREEN, "00ff00").
+		put(Color.BLUE, "0000ff").
+		put(new Color(0xA1B2C3), "a1b2c3").
+		put(Color.WHITE, "ffffff").build();
+
+	private static final Map<Color, String> COLOR_ALPHA_HEXSTRING_MAP = ImmutableMap.of(
+		new Color(0x00000000, true), "00000000",
+		new Color(0xA1B2C3D4, true), "a1b2c3d4"
+	);
 
 	@Test
 	public void colorTag()
 	{
-		COLOR_HEXSTRING_MAP.forEach((color, hex) -> {
+		COLOR_HEXSTRING_MAP.forEach((color, hex) ->
+		{
 			assertEquals("<col=" + hex + ">", ColorUtil.colorTag(color));
 		});
 	}
@@ -55,7 +59,8 @@ public class ColorUtilTest
 	@Test
 	public void prependColorTag()
 	{
-		COLOR_HEXSTRING_MAP.forEach((color, hex) -> {
+		COLOR_HEXSTRING_MAP.forEach((color, hex) ->
+		{
 			assertEquals("<col=" + hex + ">test", ColorUtil.prependColorTag("test", color));
 			assertEquals("<col=" + hex + ">", ColorUtil.prependColorTag("", color));
 		});
@@ -66,7 +71,8 @@ public class ColorUtilTest
 	@Test
 	public void wrapWithColorTag()
 	{
-		COLOR_HEXSTRING_MAP.forEach((color, hex) -> {
+		COLOR_HEXSTRING_MAP.forEach((color, hex) ->
+		{
 			assertEquals("<col=" + hex + ">test</col>", ColorUtil.wrapWithColorTag("test", color));
 			assertEquals("<col=" + hex + "></col>", ColorUtil.wrapWithColorTag("", color));
 		});
@@ -75,8 +81,31 @@ public class ColorUtilTest
 	@Test
 	public void toHexColor()
 	{
-		COLOR_HEXSTRING_MAP.forEach((color, hex) -> {
+		COLOR_HEXSTRING_MAP.forEach((color, hex) ->
+		{
 			assertEquals("#" + hex, ColorUtil.toHexColor(color));
+		});
+	}
+
+	@Test
+	public void colorWithAlpha()
+	{
+		int[] alpha = {73};
+
+		COLOR_HEXSTRING_MAP.forEach((color, hex) ->
+		{
+			assertEquals(new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha[0]),
+				ColorUtil.colorWithAlpha(color, alpha[0]));
+			alpha[0] += 73;
+			alpha[0] %= 255;
+		});
+
+		COLOR_ALPHA_HEXSTRING_MAP.forEach((color, hex) ->
+		{
+			assertEquals(new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha[0]),
+				ColorUtil.colorWithAlpha(color, alpha[0]));
+			alpha[0] += 73;
+			alpha[0] %= 255;
 		});
 	}
 
@@ -87,35 +116,15 @@ public class ColorUtilTest
 		assertEquals(new Color(128, 128, 128), ColorUtil.colorLerp(Color.BLACK, Color.WHITE, 0.5));
 		assertEquals(Color.BLACK, ColorUtil.colorLerp(Color.BLACK, Color.CYAN, 0));
 		assertEquals(Color.CYAN, ColorUtil.colorLerp(Color.BLACK, Color.CYAN, 1));
+		assertEquals(new Color(0x80800080, true), ColorUtil.colorLerp(new Color(0xff0000ff, true), new Color(0x00ff0000, true), 0.5));
 	}
 
 	@Test
 	public void colorToHexCode()
 	{
-		COLOR_HEXSTRING_MAP.forEach((color, hex) -> {
+		COLOR_HEXSTRING_MAP.forEach((color, hex) ->
+		{
 			assertEquals(hex, ColorUtil.colorToHexCode(color));
 		});
-	}
-
-	@Test
-	public void isFullyTransparent()
-	{
-		for (Color color : COLOR_HEXSTRING_MAP.keySet())
-		{
-			assert(!ColorUtil.isFullyTransparent(color));
-		}
-		assert(ColorUtil.isFullyTransparent(new Color(0, 0, 0, 0)));
-		assert(!ColorUtil.isFullyTransparent(new Color(0, 0, 0, 1)));
-	}
-
-	@Test
-	public void isNotFullyTransparent()
-	{
-		for (Color color : COLOR_HEXSTRING_MAP.keySet())
-		{
-			assert(ColorUtil.isNotFullyTransparent(color));
-		}
-		assert(!ColorUtil.isNotFullyTransparent(new Color(0, 0, 0, 0)));
-		assert(ColorUtil.isNotFullyTransparent(new Color(0, 0, 0, 1)));
 	}
 }

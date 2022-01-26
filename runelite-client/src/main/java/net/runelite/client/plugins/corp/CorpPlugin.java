@@ -24,10 +24,11 @@
  */
 package net.runelite.client.plugins.corp;
 
-import com.google.common.eventbus.Subscribe;
 import com.google.inject.Provides;
+import java.awt.Color;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Function;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -36,23 +37,23 @@ import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.MenuAction;
-import static net.runelite.api.MenuAction.MENU_ACTION_DEPRIORITIZE_OFFSET;
-import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.InteractingChanged;
-import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.npcoverlay.HighlightedNpc;
+import net.runelite.client.game.npcoverlay.NpcOverlayService;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -65,10 +66,6 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @Slf4j
 public class CorpPlugin extends Plugin
 {
-	private static final int NPC_SECTION_ACTION = MenuAction.NPC_SECOND_OPTION.getId();
-	private static final String ATTACK = "Attack";
-	private static final String DARK_ENERGY_CORE = "Dark energy core";
-
 	@Getter(AccessLevel.PACKAGE)
 	private NPC corp;
 
@@ -96,10 +93,24 @@ public class CorpPlugin extends Plugin
 	private CorpDamageOverlay corpOverlay;
 
 	@Inject
-	private CoreOverlay coreOverlay;
+	private CorpConfig config;
 
 	@Inject
-	private CorpConfig config;
+	private NpcOverlayService npcOverlayService;
+
+	private final Function<NPC, HighlightedNpc> isCore = (npc) ->
+	{
+		if (npc == core)
+		{
+			return HighlightedNpc.builder()
+				.npc(npc)
+				.tile(true)
+				.highlightColor(Color.RED.brighter())
+				.render(n -> config.markDarkCore())
+				.build();
+		}
+		return null;
+	};
 
 	@Provides
 	CorpConfig getConfig(ConfigManager configManager)
@@ -110,15 +121,15 @@ public class CorpPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		npcOverlayService.registerHighlighter(isCore);
 		overlayManager.add(corpOverlay);
-		overlayManager.add(coreOverlay);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
+		npcOverlayService.unregisterHighlighter(isCore);
 		overlayManager.remove(corpOverlay);
-		overlayManager.remove(coreOverlay);
 
 		corp = core = null;
 		yourDamage = 0;
@@ -181,7 +192,7 @@ public class CorpPlugin extends Plugin
 					.build();
 
 				chatMessageManager.queue(QueuedMessage.builder()
-					.type(ChatMessageType.GAME)
+					.type(ChatMessageType.CONSOLE)
 					.runeLiteFormattedMessage(message)
 					.build());
 			}
@@ -202,12 +213,6 @@ public class CorpPlugin extends Plugin
 			return;
 		}
 
-		int myDamage = client.getVar(Varbits.CORP_DAMAGE);
-		// sometimes hitsplats are applied after the damage counter has been reset
-		if (myDamage > 0)
-		{
-			yourDamage = myDamage;
-		}
 		totalDamage += hitsplatApplied.getHitsplat().getAmount();
 	}
 
@@ -226,26 +231,16 @@ public class CorpPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
+	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{
-		if (menuEntryAdded.getType() != NPC_SECTION_ACTION
-			|| !config.leftClickCore() || !menuEntryAdded.getOption().equals(ATTACK))
+		if (corp != null)
 		{
-			return;
+			int myDamage = client.getVar(Varbits.CORP_DAMAGE);
+			// avoid resetting our counter when the client's is reset
+			if (myDamage > 0)
+			{
+				yourDamage = myDamage;
+			}
 		}
-
-		final int npcIndex = menuEntryAdded.getIdentifier();
-		final NPC npc = client.getCachedNPCs()[npcIndex];
-		if (npc == null || !npc.getName().equals(DARK_ENERGY_CORE))
-		{
-			return;
-		}
-
-		// since this is the menu entry add event, this is the last menu entry
-		MenuEntry[] menuEntries = client.getMenuEntries();
-		MenuEntry menuEntry = menuEntries[menuEntries.length - 1];
-
-		menuEntry.setType(NPC_SECTION_ACTION + MENU_ACTION_DEPRIORITIZE_OFFSET);
-		client.setMenuEntries(menuEntries);
 	}
 }

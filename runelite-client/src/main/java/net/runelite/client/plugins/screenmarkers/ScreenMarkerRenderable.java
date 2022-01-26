@@ -28,6 +28,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.Stroke;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -55,6 +56,9 @@ public class ScreenMarkerRenderable implements LayoutableRenderableEntity
 	@Setter(AccessLevel.PACKAGE)
 	private Stroke stroke;
 
+	@Getter
+	private final Rectangle bounds = new Rectangle();
+
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
@@ -72,6 +76,7 @@ public class ScreenMarkerRenderable implements LayoutableRenderableEntity
 		graphics.setColor(color);
 		graphics.setStroke(stroke);
 		graphics.drawRect(offset, offset, width - thickness, height - thickness);
+		bounds.setSize(preferredSize);
 		return preferredSize;
 	}
 }

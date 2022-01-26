@@ -26,14 +26,17 @@ package net.runelite.api.widgets;
 
 import java.awt.Rectangle;
 import java.util.Collection;
+import javax.annotation.Nullable;
 import net.runelite.api.FontTypeFace;
 import net.runelite.api.Point;
+import org.intellij.lang.annotations.MagicConstant;
+import org.jetbrains.annotations.Range;
 
 /**
  * Represents an on-screen UI element that is drawn on the canvas.
  * <p>
- * It should be noted that unique RuneLite elements are note widgets
- * themselves, and that Widgets are primarily RuneScape elements.
+ * It should be noted that most RuneLite-added elements are not Widgets, but are
+ * an Overlay. Notable exceptions include bank tag tabs and chatbox inputs
  * <p>
  * Examples of Widgets include:
  * <ul>
@@ -49,7 +52,6 @@ public interface Widget
 	/**
 	 * Gets the widgets ID.
 	 *
-	 * @return the widget ID
 	 * @see WidgetID
 	 */
 	int getId();
@@ -57,44 +59,41 @@ public interface Widget
 	/**
 	 * Gets the type of the widget.
 	 *
-	 * @return the widget type
+	 * @see WidgetType
 	 */
+	@MagicConstant(valuesFromClass = WidgetType.class)
 	int getType();
 
 	/**
 	 * Sets the type of the widget.
 	 *
-	 * @param type the new widget type
+	 * @see WidgetType
 	 */
-	void setType(int type);
+	void setType(@MagicConstant(valuesFromClass = WidgetType.class) int type);
 
 	/**
 	 * Gets the type of content displayed by the widget.
-	 *
-	 * @return the content type
 	 */
 	int getContentType();
 
 	/**
 	 * Sets the type of content displayed by the widget.
-	 *
-	 * @param contentType the new content type
 	 */
-	void setContentType(int contentType);
+	Widget setContentType(int contentType);
 
 	/**
 	 * Gets the current click configuration of the widget.
-	 *
-	 * @return the click configuration
+	 * @see WidgetConfig
 	 */
+	@MagicConstant(flagsFromClass = WidgetConfig.class)
 	int getClickMask();
 
 	/**
 	 * Sets the click configuration of the widget.
 	 *
-	 * @param mask the new configuration
+	 * @see WidgetConfig
 	 */
-	void setClickMask(int mask);
+	Widget setClickMask(@MagicConstant(flagsFromClass = WidgetConfig.class) int mask);
 
 	/**
 	 * Gets the parent widget, if this widget is a child.
@@ -111,22 +110,20 @@ public interface Widget
 	int getParentId();
 
 	/**
-	 * Safely gets a child widget at a specific index from {@link #getChildren}.
+	 * Gets a dynamic child by index
 	 *
-	 * @param index the raw index into the array
-	 * @return child widget, or null if the index does not exist
+	 * @throws IndexOutOfBoundsException if the index is outside of the child array
 	 */
 	Widget getChild(int index);
 
 	/**
-	 * Gets all children of this widget.
-	 *
-	 * @return the widgets children
+	 * Gets the dynamic children of this widget in a sparse array
 	 */
+	@Nullable
 	Widget[] getChildren();
 
 	/**
-	 * Sets the widget children
+	 * Sets the dynamic children sparse array
 	 */
 	void setChildren(Widget[] children);
 
@@ -161,8 +158,11 @@ public interface Widget
 	/**
 	 * Sets the relative x-axis coordinate to the widgets parent.
 	 *
-	 * @param x the new relative coordinate
+	 * You do not want to use this. Use {@link #setOriginalX(int)}, {@link #setXPositionMode(int)}
+	 * and {@link #revalidate()}. Almost any interaction with this widget from a clientscript will
+	 * recalculate this value.
 	 */
+	@Deprecated
 	void setRelativeX(int x);
 
 	/**
@@ -175,8 +175,11 @@ public interface Widget
 	/**
 	 * Sets the relative y-axis coordinate to the widgets parent.
 	 *
-	 * @param y the new relative coordinate
+	 * You do not want to use this. Use {@link #setOriginalY(int)}, {@link #setYPositionMode(int)}
+	 * and {@link #revalidate()}. Almost any interaction with this widget from a clientscript will
+	 * recalculate this value.
 	 */
+	@Deprecated
 	void setRelativeY(int y);
 
 	/**
@@ -191,12 +194,12 @@ public interface Widget
 	 *
 	 * @param text the text to display
 	 */
-	void setText(String text);
+	Widget setText(String text);
 
 	/**
-	 * Gets the text color as an RGB value.
+	 * Gets the color as an RGB value.
 	 *
-	 * @return the text color
+	 * @return RGB24 color
 	 * @see java.awt.Color#getRGB()
 	 */
 	int getTextColor();
@@ -204,22 +207,27 @@ public interface Widget
 	/**
 	 * Sets the RGB color of the displayed text or rectangle.
 	 *
-	 * @param textColor the new text color
+	 * @param textColor RGB24 color
 	 * @see java.awt.Color#getRGB()
 	 */
-	void setTextColor(int textColor);
+	Widget setTextColor(int textColor);
 
 	/**
-	 * Sets the opacity of the rectangle
+	 * Gets the transparency of the rectangle
+	 *
+	 * @return 0 = fully opaque, 255 = fully transparent
 	 */
 	int getOpacity();
-	/**
-	 * Gets the opacity of the rectangle
-	 */
-	void setOpacity(int opacity);
 
 	/**
-	 * Gets the name of the widget.
+	 * Sets the transparency of the rectangle
+	 *
+	 * @param transparency 0 = fully opaque, 255 = fully transparent
+	 */
+	Widget setOpacity(int transparency);
+
+	/**
+	 * Gets the name "op base" of the widget.
 	 * <p>
 	 * The name of the widget is used in the tooltip when an action is
 	 * available. For example, the widget that activates quick prayers
@@ -235,14 +243,114 @@ public interface Widget
 	 *
 	 * @param name the new name
 	 */
-	void setName(String name);
+	Widget setName(String name);
 
 	/**
-	 * Gets the model ID displayed in the widget.
+	 * Gets the Model/NPC/Item ID displayed in the widget.
 	 *
-	 * @return the model ID
+	 * @see #getModelType()
 	 */
 	int getModelId();
+
+	/**
+	 * Sets the Model/NPC/Item ID displayed in the widget.
+	 *
+	 * @see WidgetModelType
+	 */
+	Widget setModelId(int id);
+
+	/**
+	 * Gets the model type of the widget.
+	 *
+	 * @see WidgetModelType
+	 */
+	@MagicConstant(valuesFromClass = WidgetModelType.class)
+	int getModelType();
+
+	/**
+	 * Sets the model type of the widget.
+	 *
+	 * @param type the new model type
+	 * @see WidgetModelType
+	 */
+	Widget setModelType(@MagicConstant(valuesFromClass = WidgetModelType.class) int type);
+
+	/**
+	 * Gets the sequence ID used to animate the model in the widget
+	 *
+	 * @see net.runelite.api.AnimationID
+	 */
+	int getAnimationId();
+
+	/**
+	 * Sets the sequence ID used to animate the model in the widget
+	 *
+	 * @see net.runelite.api.AnimationID
+	 */
+	Widget setAnimationId(int animationId);
+
+	/**
+	 * Gets the x rotation of the model displayed in the widget.
+	 * 0 = no rotation, 2047 = full rotation
+	 */
+	@Range(from = 0, to = 2047)
+	int getRotationX();
+
+	/**
+	 * Sets the x rotation of the model displayed in the widget.
+	 * <br>
+	 * Note: Setting this value outside of the input range defined by {@link Widget#getRotationX()} will cause a client
+	 *       crash.
+	 *
+	 * @param modelX the new model x rotation value
+	 */
+	Widget setRotationX(@Range(from = 0, to = 2047) int modelX);
+
+	/**
+	 * Gets the y rotation of the model displayed in the widget.
+	 * 0 = no rotation, 2047 = full rotation
+	 */
+	@Range(from = 0, to = 2047)
+	int getRotationY();
+
+	/**
+	 * Sets the y rotation of the model displayed in the widget.
+	 * <br>
+	 * Note: Setting this value outside of the input range defined by {@link Widget#getRotationY()} will cause a client
+	 *       crash.
+	 *
+	 * @param modelY the new model y rotation value
+	 */
+	Widget setRotationY(@Range(from = 0, to = 2047) int modelY);
+
+	/**
+	 * Gets the z rotation of the model displayed in the widget.
+	 * 0 = no rotation, 2047 = full rotation
+	 */
+	@Range(from = 0, to = 2047)
+	int getRotationZ();
+
+	/**
+	 * Sets the z rotation of the model displayed in the widget.
+	 * <br>
+	 * Note: Setting this value outside of the input range defined by {@link Widget#getRotationZ()} will cause a client
+	 *       crash.
+	 *
+	 * @param modelZ the new model z rotation value
+	 */
+	Widget setRotationZ(@Range(from = 0, to = 2047) int modelZ);
+
+	/**
+	 * Gets the amount zoomed in on the model displayed in the widget.
+	 */
+	int getModelZoom();
+
+	/**
+	 * Sets the amount zoomed in on the model displayed in the widget.
+	 *
+	 * @param modelZoom the new model zoom value
+	 */
+	Widget setModelZoom(int modelZoom);
 
 	/**
 	 * Gets the sprite ID displayed in the widget.
@@ -253,15 +361,27 @@ public interface Widget
 	int getSpriteId();
 
 	/**
+	 * Gets if sprites are repeated or stretched
+	 */
+	boolean getSpriteTiling();
+
+	/**
+	 * Sets if sprites are repeated or stretched
+	 */
+	Widget setSpriteTiling(boolean tiling);
+
+	/**
 	 * Sets the sprite ID displayed in the widget.
 	 *
 	 * @param spriteId the sprite ID
 	 * @see net.runelite.api.SpriteID
 	 */
-	void setSpriteId(int spriteId);
+	Widget setSpriteId(int spriteId);
 
 	/**
 	 * Checks whether this widget or any of its parents are hidden.
+	 *
+	 * This must be ran on the client thread
 	 *
 	 * @return true if this widget or any parent is hidden, false otherwise
 	 */
@@ -276,11 +396,11 @@ public interface Widget
 	boolean isSelfHidden();
 
 	/**
-	 * Sets the hidden state of this widget.
+	 * Sets the self-hidden state of this widget.
 	 *
 	 * @param hidden new hidden state
 	 */
-	void setHidden(boolean hidden);
+	Widget setHidden(boolean hidden);
 
 	/**
 	 * The index of this widget in it's parent's children array
@@ -310,8 +430,11 @@ public interface Widget
 	/**
 	 * Sets the width of the widget.
 	 *
-	 * @param width the new width
+	 * You do not want to use this. Use {@link #setOriginalWidth(int)}, {@link #setWidthMode(int)}
+	 * and {@link #revalidate()}. Almost any interaction with this widget from a clientscript will
+	 * recalculate this value.
 	 */
+	@Deprecated
 	void setWidth(int width);
 
 	/**
@@ -324,8 +447,11 @@ public interface Widget
 	/**
 	 * Sets the height of the widget.
 	 *
-	 * @param height the new height
+	 * You do not want to use this. Use {@link #setOriginalHeight(int)}, {@link #setHeightMode(int)}
+	 * and {@link #revalidate()}. Almost any interaction with this widget from a clientscript will
+	 * recalculate this value.
 	 */
+	@Deprecated
 	void setHeight(int height);
 
 	/**
@@ -348,6 +474,7 @@ public interface Widget
 	 * @param index index of the item
 	 * @return the widget item at index, or null if an item at index
 	 * does not exist
+	 * @throws IndexOutOfBoundsException if the index is out of bounds
 	 */
 	WidgetItem getWidgetItem(int index);
 
@@ -363,7 +490,7 @@ public interface Widget
 	 *
 	 * @param itemId the item ID
 	 */
-	void setItemId(int itemId);
+	Widget setItemId(int itemId);
 
 	/**
 	 * Gets the quantity of the item displayed by the widget.
@@ -377,11 +504,11 @@ public interface Widget
 	 *
 	 * @param quantity the quantity of the item
 	 */
-	void setItemQuantity(int quantity);
+	Widget setItemQuantity(int quantity);
 
 	/**
-	 * Checks whether or not the drawn area of this widget contains
-	 * a point on the canvas.
+	 * Checks if the passed canvas points is inside of this widget's
+	 * {@link #getBounds() bounds}
 	 *
 	 * @param point the canvas point
 	 * @return true if this widget contains the point, false otherwise
@@ -396,7 +523,7 @@ public interface Widget
 	/**
 	 * Sets the amount of pixels the widget is scrolled in the X axis
 	 */
-	void setScrollX(int scrollX);
+	Widget setScrollX(int scrollX);
 
 	/**
 	 * Gets the amount of pixels the widget is scrolled in the Y axis
@@ -406,7 +533,7 @@ public interface Widget
 	/**
 	 * sets the amount of pixels the widget is scrolled in the Y axis
 	 */
-	void setScrollY(int scrollY);
+	Widget setScrollY(int scrollY);
 
 	/**
 	 * Gets the size of the widget's viewport in the X axis
@@ -416,7 +543,7 @@ public interface Widget
 	/**
 	 * Sets the size of the widget's viewport in the X axis
 	 */
-	void setScrollWidth(int width);
+	Widget setScrollWidth(int width);
 
 	/**
 	 * Gets the size of the widget's viewport in the Y axis
@@ -426,68 +553,79 @@ public interface Widget
 	/**
 	 * Sets the size of the widget's viewport in the Y axis
 	 */
-	void setScrollHeight(int height);
+	Widget setScrollHeight(int height);
 
 	/**
-	 * Gets the original x-axis coordinate.
-	 *
-	 * @return the original coordinate
+	 * Gets the X coordinate of this widget before being adjusted by
+	 * {@link #getXPositionMode()}}.
 	 */
 	int getOriginalX();
 
 	/**
-	 * Sets the original x-axis coordinate.
+	 * Sets the X input to the {@link WidgetPositionMode}. {@link #revalidate()} must be
+	 * called for the new values to take effect.
 	 *
-	 * @param originalX the new coordinate
+	 * @see #setXPositionMode(int)
 	 */
-	void setOriginalX(int originalX);
+	Widget setOriginalX(int originalX);
 
 	/**
-	 * Gets the original y-axis coordinate.
-	 *
-	 * @return the original coordinate
+	 * Gets the Y coordinate of this widget before being adjusted by
+	 * {@link #getYPositionMode()}}
 	 */
 	int getOriginalY();
 
 	/**
-	 * Sets the original y-axis coordinate.
+	 * Sets the Y input to the {@link WidgetPositionMode}. {@link #revalidate()} must be
+	 * called for the new values to take effect.
 	 *
-	 * @param originalY the new coordinate
+	 * @see #setYPositionMode(int)
 	 */
-	void setOriginalY(int originalY);
+	Widget setOriginalY(int originalY);
 
 	/**
-	 * Gets the original height of the widget.
-	 *
-	 * @return the original height
+	 * Sets the X/Y coordinates
+	 */
+	Widget setPos(int x, int y);
+	Widget setPos(int x, int y,
+		@MagicConstant(valuesFromClass = WidgetPositionMode.class) int xMode,
+		@MagicConstant(valuesFromClass = WidgetPositionMode.class) int yMode);
+
+	/**
+	 * Gets the height coordinate of this widget before being adjusted by
+	 * {@link #getHeightMode()}
 	 */
 	int getOriginalHeight();
 
 	/**
-	 * Sets the original height of the widget.
+	 * Sets the height input to the {@link WidgetSizeMode}. {@link #revalidate()} must be
+	 * called for the new values to take effect.
 	 *
-	 * @param originalHeight the original height
+	 * @see #setHeightMode(int)
 	 */
-	void setOriginalHeight(int originalHeight);
+	Widget setOriginalHeight(int originalHeight);
 
 	/**
-	 * Gets the original width of the widget.
-	 *
-	 * @return the original width
+	 * Gets the width coordinate of this widget before being adjusted by
+	 * {@link #getWidthMode()}
 	 */
 	int getOriginalWidth();
 
 	/**
-	 * Sets the original width of the widget.
+	 * Sets the width input to the {@link WidgetSizeMode}. {@link #revalidate()} must be
+	 * called for the new values to take effect.
 	 *
-	 * @param originalWidth the original width
+	 * @see #setWidthMode(int)
 	 */
-	void setOriginalWidth(int originalWidth);
+	Widget setOriginalWidth(int originalWidth);
+
+	Widget setSize(int width, int height);
+	Widget setSize(int width, int height,
+		@MagicConstant(valuesFromClass = WidgetSizeMode.class) int widthMode,
+		@MagicConstant(valuesFromClass = WidgetSizeMode.class) int heightMode);
 
 	/**
-	 * Gets the actions available on the widget.
-	 *
-	 * @return the actions
+	 * Gets the menu options available on the widget as a sparse array.
 	 */
 	String[] getActions();
 
@@ -495,9 +633,16 @@ public interface Widget
 	 * Creates a dynamic widget child
 	 *
 	 * @param index the index of the new widget in the children list or -1 to append to the back
-	 * @param type  the type of the widget
+	 * @param type  the {@link WidgetType} of the widget
 	 */
-	Widget createChild(int index, int type);
+	Widget createChild(int index, @MagicConstant(valuesFromClass = WidgetType.class) int type);
+
+	/**
+	 * Creates a dynamic widget child at the end of the children list
+	 *
+	 * @param type  the {@link WidgetType} of the widget
+	 */
+	Widget createChild(@MagicConstant(valuesFromClass = WidgetType.class) int type);
 
 	/**
 	 * Removes all of this widget's dynamic children
@@ -505,10 +650,10 @@ public interface Widget
 	void deleteAllChildren();
 
 	/**
-	 * Creates a menu action on the widget
+	 * Creates a menu option on the widget
 	 *
 	 * @param index  The index of the menu
-	 * @param action The string to be displayed next to the widget's name in the context menu
+	 * @param action The verb to be displayed next to the widget's name in the context menu
 	 */
 	void setAction(int index, String action);
 
@@ -542,6 +687,13 @@ public interface Widget
 	void setOnMouseOverListener(Object... args);
 
 	/**
+	 * Sets a script to be ran every client tick when the mouse is in the widget bounds
+	 *
+	 * @param args A ScriptID, then the args for the script
+	 */
+	void setOnMouseRepeatListener(Object... args);
+
+	/**
 	 * Sets a script to be ran when the mouse leaves the widget bounds
 	 *
 	 * @param args A ScriptID, then the args for the script
@@ -549,11 +701,25 @@ public interface Widget
 	void setOnMouseLeaveListener(Object... args);
 
 	/**
-	 * Sets a script to be ran every frame
+	 * Sets a script to be ran every client tick
 	 *
 	 * @param args A ScriptID, then the args for the script
 	 */
 	void setOnTimerListener(Object... args);
+
+	/**
+	 * Sets a script to be ran when the target mode has been activated for this widget
+	 *
+	 * @param args A ScriptID, then the args for the script
+	 */
+	void setOnTargetEnterListener(Object... args);
+
+	/**
+	 * Sets a script to be ran when the target mode has been deactivated for this widget
+	 *
+	 * @param args A ScriptID, then the args for the script
+	 */
+	void setOnTargetLeaveListener(Object... args);
 
 	/**
 	 * If this widget has any listeners on it
@@ -563,7 +729,7 @@ public interface Widget
 	/**
 	 * Sets if the widget has any listeners. This should be called whenever a setXListener function is called
 	 */
-	void setHasListener(boolean hasListener);
+	Widget setHasListener(boolean hasListener);
 
 	/**
 	 * This is true if the widget is from an if3 interface, or is dynamically created
@@ -581,24 +747,46 @@ public interface Widget
 	void revalidateScroll();
 
 	/**
-	 * Array of widget key listeners
+	 * Gets the script and arguments to be ran when a menu action is clicked.
+	 *
+	 * @return
+	 */
+	Object[] getOnOpListener();
+
+	/**
+	 * Gets the script and arguments to be ran when a key is pressed.
+	 *
+	 * @return
 	 */
 	Object[] getOnKeyListener();
 
 	/**
-	 * Array of widget load listeners
+	 * Gets the script and arguments to be ran when a interface is loaded.
+	 *
+	 * @return
 	 */
 	Object[] getOnLoadListener();
 
 	/**
+	 * Gets the script and arguments to be ran when one of the listened for inventories changes.
+	 *
+	 * @return
+	 */
+	Object[] getOnInvTransmitListener();
+
+	/**
 	 * Returns the archive id of the font used
+	 *
+	 * @see net.runelite.api.FontID
 	 */
 	int getFontId();
 
 	/**
 	 * Sets the archive id of the font
+	 *
+	 * @see net.runelite.api.FontID
 	 */
-	void setFontId(int id);
+	Widget setFontId(int id);
 
 	/**
 	 * Returns the border type of item/sprite on the widget
@@ -621,7 +809,7 @@ public interface Widget
 	/**
 	 * Sets if text should be shadowed
 	 */
-	void setTextShadowed(boolean shadowed);
+	Widget setTextShadowed(boolean shadowed);
 
 	/**
 	 * Returns the widget drag dead zone
@@ -646,46 +834,67 @@ public interface Widget
 	/**
 	 * Returns widget {@link net.runelite.api.widgets.ItemQuantityMode}.
 	 */
+	@MagicConstant(valuesFromClass = ItemQuantityMode.class)
 	int getItemQuantityMode();
 
 	/**
 	 * Sets the widget {@link net.runelite.api.widgets.ItemQuantityMode}
 	 */
-	void setItemQuantityMode(int itemQuantityMode);
+	@MagicConstant(valuesFromClass = ItemQuantityMode.class)
+	Widget setItemQuantityMode(int itemQuantityMode);
 
 	/**
 	 * Gets the mode that the X position is calculated from the original X position
 	 *
 	 * @see WidgetPositionMode
 	 */
+	@MagicConstant(valuesFromClass = WidgetPositionMode.class)
 	int getXPositionMode();
 
 	/**
-	 * Sets the mode that the X position is calculated from the original X position
+	 * Sets the mode that the X position is calculated from the original X position.
+	 * {@link #revalidate()} must be called for new values to take effect.
 	 *
 	 * @see WidgetPositionMode
 	 */
-	void setXPositionMode(int xpm);
+	Widget setXPositionMode(@MagicConstant(valuesFromClass = WidgetPositionMode.class) int xpm);
 
 	/**
 	 * Gets the mode that the Y position is calculated from the original Y position
 	 *
 	 * @see WidgetPositionMode
 	 */
+	@MagicConstant(valuesFromClass = WidgetPositionMode.class)
 	int getYPositionMode();
 
 	/**
-	 * Sets the mode that the Y position is calculated from the original Y position
+	 * Sets the mode that the Y position is calculated from the original Y position.
+	 * {@link #revalidate()} must be called for new values to take effect.
 	 *
 	 * @see WidgetPositionMode
 	 */
-	void setYPositionMode(int ypm);
+	Widget setYPositionMode(@MagicConstant(valuesFromClass = WidgetPositionMode.class) int ypm);
+
+	/**
+	 * Get the line height for this widget.
+	 *
+	 * @return
+	 */
+	int getLineHeight();
+
+	/**
+	 * Set the line height for this widget. If set to 0, the line height is taken from the font instead.
+	 *
+	 * @param lineHeight
+	 */
+	Widget setLineHeight(int lineHeight);
 
 	/**
 	 * Gets the X axis text position mode
 	 *
 	 * @see WidgetTextAlignment
 	 */
+	@MagicConstant(valuesFromClass = WidgetTextAlignment.class)
 	int getXTextAlignment();
 
 	/**
@@ -693,13 +902,14 @@ public interface Widget
 	 *
 	 * @see WidgetTextAlignment
 	 */
-	void setXTextAlignment(int xta);
+	Widget setXTextAlignment(@MagicConstant(valuesFromClass = WidgetTextAlignment.class) int xta);
 
 	/**
 	 * Gets the Y axis text position mode
 	 *
 	 * @see WidgetTextAlignment
 	 */
+	@MagicConstant(valuesFromClass = WidgetTextAlignment.class)
 	int getYTextAlignment();
 
 	/**
@@ -707,35 +917,39 @@ public interface Widget
 	 *
 	 * @see WidgetTextAlignment
 	 */
-	void setYTextAlignment(int yta);
+	Widget setYTextAlignment(@MagicConstant(valuesFromClass = WidgetTextAlignment.class) int yta);
 
 	/**
 	 * Gets the mode controlling widget width
 	 *
 	 * @see WidgetSizeMode
 	 */
+	@MagicConstant(valuesFromClass = WidgetSizeMode.class)
 	int getWidthMode();
 
 	/**
-	 * Sets the mode controlling widget width
+	 * Sets the mode controlling widget width.
+	 * {@link #revalidate()} must be called for new values to take effect.
 	 *
 	 * @see WidgetSizeMode
 	 */
-	void setWidthMode(int widthMode);
+	Widget setWidthMode(@MagicConstant(valuesFromClass = WidgetSizeMode.class) int widthMode);
 
 	/**
 	 * Gets the mode controlling widget width
 	 *
 	 * @see WidgetSizeMode
 	 */
+	@MagicConstant(valuesFromClass = WidgetSizeMode.class)
 	int getHeightMode();
 
 	/**
-	 * Sets the mode controlling widget width
+	 * Sets the mode controlling widget width.
+	 * {@link #revalidate()} must be called for new values to take effect.
 	 *
 	 * @see WidgetSizeMode
 	 */
-	void setHeightMode(int heightMode);
+	Widget setHeightMode(@MagicConstant(valuesFromClass = WidgetSizeMode.class) int heightMode);
 
 	/**
 	 * Gets the font that this widget uses
@@ -750,5 +964,100 @@ public interface Widget
 	/**
 	 * Sets if the rectangle is filled or just stroked
 	 */
-	void setFilled(boolean filled);
+	Widget setFilled(boolean filled);
+
+	/**
+	 * Verb for spell targets
+	 */
+	String getTargetVerb();
+
+	/**
+	 * Verb for spell targets
+	 */
+	void setTargetVerb(String targetVerb);
+
+	/**
+	 * Can widgets under this widgets be clicked in this widgets bounding box
+	 */
+	boolean getNoClickThrough();
+
+	/**
+	 * Can widgets under this widgets be clicked in this widgets bounding box
+	 */
+	void setNoClickThrough(boolean noClickThrough);
+
+	/**
+	 * Can widgets under this widgets be scrolled in this widgets bounding box
+	 */
+	boolean getNoScrollThrough();
+
+	/**
+	 * Can widgets under this widgets be scrolled in this widgets bounding box
+	 */
+	void setNoScrollThrough(boolean noScrollThrough);
+
+	/**
+	 * {@link net.runelite.api.VarPlayer}s that triggers this widgets varTransmitListener
+	 */
+	void setVarTransmitTrigger(int ...trigger);
+
+	/**
+	 * Sets a script to be ran the first client tick the mouse is held ontop of this widget
+	 *
+	 * @param args A ScriptID, then the args for the script
+	 */
+	void setOnClickListener(Object ...args);
+
+	/**
+	 * Sets a script to be ran the every client tick the mouse is held ontop of this widget,
+	 * except the first client tick.
+	 *
+	 * @param args A ScriptID, then the args for the script
+	 */
+	void setOnHoldListener(Object ...args);
+
+	/**
+	 * Sets a script to be ran the first client tick the mouse is not held ontop of this widget
+	 *
+	 * @param args A ScriptID, then the args for the script
+	 */
+	void setOnReleaseListener(Object ...args);
+
+	/**
+	 * Sets a script to be ran when a drag operation is finished on this widget
+	 *
+	 * @param args A ScriptID, then the args for the script
+	 */
+	void setOnDragCompleteListener(Object ...args);
+
+	/**
+	 * Sets a script to be ran when this widget moves due to a drag
+	 *
+	 * @param args A ScriptID, then the args for the script
+	 */
+	void setOnDragListener(Object ...args);
+
+	/**
+	 * Container this can be dragged in
+	 */
+	Widget getDragParent();
+
+	/**
+	 * Container this can be dragged in
+	 */
+	Widget setDragParent(Widget dragParent);
+
+	/**
+	 * Gets the script and arguments to be ran when one of the listened for vars changes.
+	 *
+	 * @return
+	 */
+	Object[] getOnVarTransmitListener();
+
+	/**
+	 * Sets a script to be ran when a varplayer changes
+	 *
+	 * @param args A ScriptID, then the args for the script
+	 */
+	void setOnVarTransmitListener(Object ...args);
 }

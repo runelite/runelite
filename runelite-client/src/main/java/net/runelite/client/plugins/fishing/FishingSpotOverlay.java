@@ -37,20 +37,25 @@ import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.GraphicID;
 import net.runelite.api.NPC;
+import net.runelite.api.NpcID;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.game.FishingSpot;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.ProgressPieComponent;
+import net.runelite.client.util.ImageUtil;
 
 class FishingSpotOverlay extends Overlay
 {
 	private static final Duration MINNOW_MOVE = Duration.ofSeconds(15);
 	private static final Duration MINNOW_WARN = Duration.ofSeconds(3);
+	private static final int ONE_TICK_AERIAL_FISHING = 3;
 
 	private final FishingPlugin plugin;
 	private final FishingConfig config;
@@ -79,15 +84,11 @@ class FishingSpotOverlay extends Overlay
 			return null;
 		}
 
-		NPC[] fishingSpots = plugin.getFishingSpots();
-		if (fishingSpots == null)
+		FishingSpot previousSpot = null;
+		WorldPoint previousLocation = null;
+		for (NPC npc : plugin.getFishingSpots())
 		{
-			return null;
-		}
-
-		for (NPC npc : fishingSpots)
-		{
-			FishingSpot spot = FishingSpot.getSPOTS().get(npc.getId());
+			FishingSpot spot = FishingSpot.findSpot(npc.getId());
 
 			if (spot == null)
 			{
@@ -99,7 +100,29 @@ class FishingSpotOverlay extends Overlay
 				continue;
 			}
 
-			Color color = npc.getGraphic() == GraphicID.FLYING_FISH ? Color.RED : Color.CYAN;
+			// This relies on the sort order to keep identical npcs on the same tile adjacent to each other
+			if (previousSpot == spot && previousLocation.equals(npc.getWorldLocation()))
+			{
+				continue;
+			}
+
+			Color color;
+			if (npc.getGraphic() == GraphicID.FLYING_FISH)
+			{
+				color = config.getMinnowsOverlayColor();
+			}
+			else if (spot == FishingSpot.COMMON_TENCH && npc.getWorldLocation().distanceTo2D(client.getLocalPlayer().getWorldLocation()) <= ONE_TICK_AERIAL_FISHING)
+			{
+				color = config.getAerialOverlayColor();
+			}
+			else if (spot == FishingSpot.HARPOONFISH && npc.getId() == NpcID.FISHING_SPOT_10569)
+			{
+				color = config.getHarpoonfishOverlayColor();
+			}
+			else
+			{
+				color = config.getOverlayColor();
+			}
 
 			if (spot == FishingSpot.MINNOW && config.showMinnowOverlay())
 			{
@@ -130,6 +153,7 @@ class FishingSpotOverlay extends Overlay
 			if (config.showSpotTiles())
 			{
 				Polygon poly = npc.getCanvasTilePoly();
+
 				if (poly != null)
 				{
 					OverlayUtil.renderPolygon(graphics, poly, color.darker());
@@ -138,7 +162,14 @@ class FishingSpotOverlay extends Overlay
 
 			if (config.showSpotIcons())
 			{
-				BufferedImage fishImage = itemManager.getImage(spot.getFishSpriteId());;
+				BufferedImage fishImage = itemManager.getImage(spot.getFishSpriteId());
+
+				if (spot == FishingSpot.COMMON_TENCH
+					&& npc.getWorldLocation().distanceTo2D(client.getLocalPlayer().getWorldLocation()) <= ONE_TICK_AERIAL_FISHING)
+				{
+					fishImage = ImageUtil.outlineImage(itemManager.getImage(spot.getFishSpriteId()), color);
+				}
+
 				if (fishImage != null)
 				{
 					Point imageLocation = npc.getCanvasImageLocation(fishImage, npc.getLogicalHeight());
@@ -153,11 +184,15 @@ class FishingSpotOverlay extends Overlay
 			{
 				String text = spot.getName();
 				Point textLocation = npc.getCanvasTextLocation(graphics, text, npc.getLogicalHeight() + 40);
+
 				if (textLocation != null)
 				{
 					OverlayUtil.renderTextLocation(graphics, textLocation, text, color.darker());
 				}
 			}
+
+			previousSpot = spot;
+			previousLocation = npc.getWorldLocation();
 		}
 
 		return null;

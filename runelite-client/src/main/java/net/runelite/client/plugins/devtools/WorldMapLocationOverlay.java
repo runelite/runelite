@@ -35,6 +35,7 @@ import net.runelite.api.Point;
 import net.runelite.api.RenderOverview;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -55,14 +56,15 @@ public class WorldMapLocationOverlay extends Overlay
 		this.worldMapOverlay = worldMapOverlay;
 		this.plugin = plugin;
 		setPosition(OverlayPosition.DYNAMIC);
-		setPriority(OverlayPriority.HIGH);
-		setLayer(OverlayLayer.ALWAYS_ON_TOP);
+		setPriority(OverlayPriority.HIGHEST);
+		setLayer(OverlayLayer.MANUAL);
+		drawAfterInterface(WidgetID.WORLD_MAP_GROUP_ID);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!plugin.isToggleWorldMapLocation())
+		if (!plugin.getWorldMapLocation().isActive())
 		{
 			return null;
 		}

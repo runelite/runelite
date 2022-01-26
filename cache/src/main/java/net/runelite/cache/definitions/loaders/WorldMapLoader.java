@@ -60,14 +60,14 @@ public class WorldMapLoader
 
 		def.field450 = in.readInt();
 		in.readUnsignedByte();
-		def.field457 = in.readUnsignedByte() == 1;
-		def.field451 = in.readUnsignedByte();
+		def.isSurface = in.readUnsignedByte() == 1;
+		def.defaultZoom = in.readUnsignedByte();
 		int var3 = in.readUnsignedByte();
-		def.field458 = new LinkedList();
+		def.regionList = new LinkedList();
 
 		for (int var4 = 0; var4 < var3; ++var4)
 		{
-			def.field458.add(this.loadType(in));
+			def.regionList.add(this.loadType(in));
 		}
 
 		return def;
@@ -109,16 +109,16 @@ public class WorldMapLoader
 	{
 		WorldMapType0 wm = new WorldMapType0();
 
-		wm.field606 = in.readUnsignedByte();
-		wm.field605 = in.readUnsignedByte();
-		wm.field601 = in.readUnsignedShort();
-		wm.field602 = in.readUnsignedByte();
-		wm.field603 = in.readUnsignedShort();
-		wm.field607 = in.readUnsignedByte();
-		wm.field604 = in.readUnsignedShort();
-		wm.field600 = in.readUnsignedByte();
-		wm.field608 = in.readUnsignedShort();
-		wm.field609 = in.readUnsignedByte();
+		wm.plane = in.readUnsignedByte();
+		wm.numberOfPlanes = in.readUnsignedByte();
+		wm.xLow = in.readUnsignedShort();
+		wm.chunk_xLow = in.readUnsignedByte();
+		wm.yLow = in.readUnsignedShort();
+		wm.chunk_yLow = in.readUnsignedByte();
+		wm.xHigh = in.readUnsignedShort();
+		wm.chunk_xHigh = in.readUnsignedByte();
+		wm.yHigh = in.readUnsignedShort();
+		wm.chunk_yHigh = in.readUnsignedByte();
 
 		return wm;
 	}
@@ -127,16 +127,16 @@ public class WorldMapLoader
 	{
 		WorldMapType1 wm = new WorldMapType1();
 
-		wm.field434 = in.readUnsignedByte();
-		wm.field424 = in.readUnsignedByte();
-		wm.field425 = in.readUnsignedShort();
-		wm.field426 = in.readUnsignedShort();
-		wm.field427 = in.readUnsignedShort();
-		wm.field431 = in.readUnsignedShort();
-		wm.field429 = in.readUnsignedShort();
-		wm.field428 = in.readUnsignedShort();
-		wm.field433 = in.readUnsignedShort();
-		wm.field435 = in.readUnsignedShort();
+		wm.plane = in.readUnsignedByte();
+		wm.numberOfPlanes = in.readUnsignedByte();
+		wm.xLowerLeft = in.readUnsignedShort();
+		wm.yLowerLeft = in.readUnsignedShort();
+		wm.xLowerRight = in.readUnsignedShort();
+		wm.yUpperLeft = in.readUnsignedShort();
+		wm.xUpperLeft = in.readUnsignedShort();
+		wm.yLowerRight = in.readUnsignedShort();
+		wm.xUpperRight = in.readUnsignedShort();
+		wm.yUpperRight = in.readUnsignedShort();
 
 		return wm;
 	}
@@ -145,12 +145,12 @@ public class WorldMapLoader
 	{
 		WorldMapType2 wm = new WorldMapType2();
 
-		wm.field519 = in.readUnsignedByte();
-		wm.field511 = in.readUnsignedByte();
-		wm.field510 = in.readUnsignedShort();
-		wm.field512 = in.readUnsignedShort();
-		wm.field514 = in.readUnsignedShort();
-		wm.field515 = in.readUnsignedShort();
+		wm.plane = in.readUnsignedByte();
+		wm.numberOfPlanes = in.readUnsignedByte();
+		wm.xLow = in.readUnsignedShort();
+		wm.yLow = in.readUnsignedShort();
+		wm.xHigh = in.readUnsignedShort();
+		wm.yHigh = in.readUnsignedShort();
 
 		return wm;
 	}
@@ -159,20 +159,20 @@ public class WorldMapLoader
 	{
 		WorldMapType3 wm = new WorldMapType3();
 
-		wm.field387 = in.readUnsignedByte();
-		wm.field377 = in.readUnsignedByte();
-		wm.field378 = in.readUnsignedShort();
-		wm.field382 = in.readUnsignedByte();
-		wm.field376 = in.readUnsignedByte();
-		wm.field383 = in.readUnsignedShort();
-		wm.field385 = in.readUnsignedByte();
-		wm.field379 = in.readUnsignedByte();
-		wm.field380 = in.readUnsignedShort();
-		wm.field386 = in.readUnsignedByte();
-		wm.field388 = in.readUnsignedByte();
-		wm.field381 = in.readUnsignedShort();
-		wm.field384 = in.readUnsignedByte();
-		wm.field389 = in.readUnsignedByte();
+		wm.oldPlane = in.readUnsignedByte();
+		wm.numberOfPlanes = in.readUnsignedByte();
+		wm.oldX = in.readUnsignedShort();
+		wm.chunk_oldXLow = in.readUnsignedByte();
+		wm.chunk_oldXHigh = in.readUnsignedByte();
+		wm.oldY = in.readUnsignedShort();
+		wm.chunk_oldYLow = in.readUnsignedByte();
+		wm.chunk_oldYHigh = in.readUnsignedByte();
+		wm.newX = in.readUnsignedShort();
+		wm.chunk_newXLow = in.readUnsignedByte();
+		wm.chunk_newXHigh = in.readUnsignedByte();
+		wm.newY = in.readUnsignedShort();
+		wm.chunk_newYLow = in.readUnsignedByte();
+		wm.chunk_newYHigh = in.readUnsignedByte();
 
 		return wm;
 	}

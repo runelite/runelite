@@ -25,13 +25,19 @@
  */
 package net.runelite.client.plugins.groundmarkers;
 
+import com.google.common.base.Strings;
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
-import java.util.List;
+import java.awt.Stroke;
+import java.util.Collection;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
+import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
@@ -42,6 +48,8 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 
 public class GroundMarkerOverlay extends Overlay
 {
+	private static final int MAX_DRAW_DISTANCE = 32;
+
 	private final Client client;
 	private final GroundMarkerConfig config;
 	private final GroundMarkerPlugin plugin;
@@ -60,25 +68,39 @@ public class GroundMarkerOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		List<WorldPoint> points = plugin.getPoints();
-		for (WorldPoint point : points)
+		final Collection<ColorTileMarker> points = plugin.getPoints();
+		if (points.isEmpty())
 		{
-			if (point.getPlane() != client.getPlane())
+			return null;
+		}
+
+		Stroke stroke = new BasicStroke((float) config.borderWidth());
+		for (final ColorTileMarker point : points)
+		{
+			WorldPoint worldPoint = point.getWorldPoint();
+			if (worldPoint.getPlane() != client.getPlane())
 			{
 				continue;
 			}
 
-			drawTile(graphics, point);
+			Color tileColor = point.getColor();
+			if (tileColor == null || !config.rememberTileColors())
+			{
+				// If this is an old tile which has no color, or rememberTileColors is off, use marker color
+				tileColor = config.markerColor();
+			}
+
+			drawTile(graphics, worldPoint, tileColor, point.getLabel(), stroke);
 		}
 
 		return null;
 	}
 
-	private void drawTile(Graphics2D graphics, WorldPoint point)
+	private void drawTile(Graphics2D graphics, WorldPoint point, Color color, @Nullable String label, Stroke borderStroke)
 	{
 		WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
 
-		if (point.distanceTo(playerLocation) >= 32)
+		if (point.distanceTo(playerLocation) >= MAX_DRAW_DISTANCE)
 		{
 			return;
 		}
@@ -90,11 +112,18 @@ public class GroundMarkerOverlay extends Overlay
 		}
 
 		Polygon poly = Perspective.getCanvasTilePoly(client, lp);
-		if (poly == null)
+		if (poly != null)
 		{
-			return;
+			OverlayUtil.renderPolygon(graphics, poly, color, new Color(0, 0, 0, config.fillOpacity()), borderStroke);
 		}
 
-		OverlayUtil.renderPolygon(graphics, poly, config.markerColor());
+		if (!Strings.isNullOrEmpty(label))
+		{
+			Point canvasTextLocation = Perspective.getCanvasTextLocation(client, graphics, lp, label, 0);
+			if (canvasTextLocation != null)
+			{
+				OverlayUtil.renderTextLocation(graphics, canvasTextLocation, label, color);
+			}
+		}
 	}
 }

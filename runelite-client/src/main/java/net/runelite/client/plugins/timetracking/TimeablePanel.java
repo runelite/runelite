@@ -29,22 +29,33 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JToggleButton;
 import javax.swing.border.EmptyBorder;
 import lombok.Getter;
+import net.runelite.api.Constants;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.ThinProgressBar;
 import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
+import net.runelite.client.util.ImageUtil;
+import net.runelite.client.util.SwingUtil;
 
 @Getter
 public class TimeablePanel<T> extends JPanel
 {
+	private static final ImageIcon NOTIFY_ICON = new ImageIcon(ImageUtil.loadImageResource(TimeTrackingPlugin.class, "notify_icon.png"));
+	private static final ImageIcon NOTIFY_SELECTED_ICON = new ImageIcon(ImageUtil.loadImageResource(TimeTrackingPlugin.class, "notify_selected_icon.png"));
+
 	private final T timeable;
 	private final JLabel icon = new JLabel();
+	private final JLabel farmingContractIcon = new JLabel();
+	private final JToggleButton notifyButton = new JToggleButton();
 	private final JLabel estimate = new JLabel();
 	private final ThinProgressBar progress = new ThinProgressBar();
+	private final JLabel text;
 
 	public TimeablePanel(T timeable, String title, int maximumProgressValue)
 	{
@@ -58,23 +69,43 @@ public class TimeablePanel<T> extends JPanel
 		topContainer.setLayout(new BorderLayout());
 		topContainer.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
-		icon.setMinimumSize(new Dimension(36, 32));
+		icon.setMinimumSize(new Dimension(Constants.ITEM_SPRITE_WIDTH, Constants.ITEM_SPRITE_HEIGHT));
+		farmingContractIcon.setMinimumSize(new Dimension(Constants.ITEM_SPRITE_WIDTH, Constants.ITEM_SPRITE_HEIGHT));
 
 		JPanel infoPanel = new JPanel();
 		infoPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		infoPanel.setLayout(new GridLayout(2, 1));
 		infoPanel.setBorder(new EmptyBorder(4, 4, 4, 0));
 
-		final JLabel location = new JShadowedLabel(title);
-		location.setFont(FontManager.getRunescapeSmallFont());
-		location.setForeground(Color.WHITE);
+		text = new JShadowedLabel(title);
+		text.setFont(FontManager.getRunescapeSmallFont());
+		text.setForeground(Color.WHITE);
 
 		estimate.setFont(FontManager.getRunescapeSmallFont());
 		estimate.setForeground(Color.GRAY);
 
-		infoPanel.add(location);
+		infoPanel.add(text);
 		infoPanel.add(estimate);
 
+		notifyButton.setPreferredSize(new Dimension(30, 16));
+		notifyButton.setBorder(new EmptyBorder(0, 0, 0, 10));
+		notifyButton.setIcon(NOTIFY_ICON);
+		notifyButton.setSelectedIcon(NOTIFY_SELECTED_ICON);
+		SwingUtil.removeButtonDecorations(notifyButton);
+		SwingUtil.addModalTooltip(notifyButton, "Disable notifications", "Enable notifications");
+
+		JPanel notifyPanel = new JPanel();
+		notifyPanel.setLayout(new BorderLayout());
+		notifyPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		notifyPanel.add(notifyButton, BorderLayout.CENTER);
+
+		JPanel iconPanel = new JPanel();
+		iconPanel.setLayout(new BorderLayout());
+		iconPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		iconPanel.add(notifyPanel, BorderLayout.EAST);
+		iconPanel.add(farmingContractIcon, BorderLayout.WEST);
+
+		topContainer.add(iconPanel, BorderLayout.EAST);
 		topContainer.add(icon, BorderLayout.WEST);
 		topContainer.add(infoPanel, BorderLayout.CENTER);
 

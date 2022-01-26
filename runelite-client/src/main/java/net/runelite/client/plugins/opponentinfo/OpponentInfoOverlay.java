@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.opponentinfo;
 
+import com.google.common.base.Strings;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
@@ -34,22 +35,27 @@ import java.awt.Rectangle;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
+import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.NPC;
+import net.runelite.api.NPCComposition;
+import net.runelite.api.ParamID;
 import net.runelite.api.Player;
+import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
-import net.runelite.client.game.HiscoreManager;
+import net.runelite.client.hiscore.HiscoreManager;
 import net.runelite.client.game.NPCManager;
-import net.runelite.client.ui.overlay.Overlay;
+import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
+import net.runelite.client.ui.overlay.OverlayMenuEntry;
+import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.ComponentConstants;
-import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.ProgressBarComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 import net.runelite.client.util.Text;
-import net.runelite.http.api.hiscore.HiscoreResult;
+import net.runelite.client.hiscore.HiscoreResult;
 
-class OpponentInfoOverlay extends Overlay
+class OpponentInfoOverlay extends OverlayPanel
 {
 	private static final Color HP_GREEN = new Color(0, 146, 54, 230);
 	private static final Color HP_RED = new Color(102, 15, 16, 230);
@@ -60,13 +66,10 @@ class OpponentInfoOverlay extends Overlay
 	private final HiscoreManager hiscoreManager;
 	private final NPCManager npcManager;
 
-	private final PanelComponent panelComponent = new PanelComponent();
-
 	private Integer lastMaxHealth;
 	private int lastRatio = 0;
 	private int lastHealthScale = 0;
 	private String opponentName;
-	private String opponentsOpponentName;
 
 	@Inject
 	private OpponentInfoOverlay(
@@ -76,6 +79,7 @@ class OpponentInfoOverlay extends Overlay
 		HiscoreManager hiscoreManager,
 		NPCManager npcManager)
 	{
+		super(opponentInfoPlugin);
 		this.client = client;
 		this.opponentInfoPlugin = opponentInfoPlugin;
 		this.opponentInfoConfig = opponentInfoConfig;
@@ -87,6 +91,7 @@ class OpponentInfoOverlay extends Overlay
 
 		panelComponent.setBorder(new Rectangle(2, 2, 2, 2));
 		panelComponent.setGap(new Point(0, 2));
+		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Opponent info overlay"));
 	}
 
 	@Override
@@ -100,16 +105,25 @@ class OpponentInfoOverlay extends Overlay
 			return null;
 		}
 
-		if (opponent.getName() != null && opponent.getHealth() > 0)
+		if (opponent.getName() != null && opponent.getHealthScale() > 0)
 		{
 			lastRatio = opponent.getHealthRatio();
-			lastHealthScale = opponent.getHealth();
+			lastHealthScale = opponent.getHealthScale();
 			opponentName = Text.removeTags(opponent.getName());
 
 			lastMaxHealth = null;
 			if (opponent instanceof NPC)
 			{
-				lastMaxHealth = npcManager.getHealth(opponentName, opponent.getCombatLevel());
+				NPCComposition composition = ((NPC) opponent).getTransformedComposition();
+				if (composition != null)
+				{
+					String longName = composition.getStringValue(ParamID.NPC_HP_NAME);
+					if (!Strings.isNullOrEmpty(longName))
+					{
+						opponentName = longName;
+					}
+				}
+				lastMaxHealth = npcManager.getHealth(((NPC) opponent).getId());
 			}
 			else if (opponent instanceof Player)
 			{
@@ -123,31 +137,20 @@ class OpponentInfoOverlay extends Overlay
 					}
 				}
 			}
-
-			final Actor opponentsOpponent = opponent.getInteracting();
-			if (opponentsOpponent != null
-				&& (opponentsOpponent != client.getLocalPlayer() || client.getVar(Varbits.MULTICOMBAT_AREA) == 1))
-			{
-				opponentsOpponentName = Text.removeTags(opponentsOpponent.getName());
-			}
-			else
-			{
-				opponentsOpponentName = null;
-			}
 		}
 
-		if (opponentName == null)
+		// The in-game hp hud is more accurate than our overlay and duplicates all of the information on it,
+		// so hide ours if it is visible.
+		if (opponentName == null || hasHpHud(opponent))
 		{
 			return null;
 		}
 
 		final FontMetrics fontMetrics = graphics.getFontMetrics();
 
-		panelComponent.getChildren().clear();
-
 		// Opponent name
-		int textWidth = Math.max(ComponentConstants.STANDARD_WIDTH, fontMetrics.stringWidth(opponentName));
-		panelComponent.setPreferredSize(new Dimension(textWidth, 0));
+		int panelWidth = Math.max(ComponentConstants.STANDARD_WIDTH, fontMetrics.stringWidth(opponentName) + ComponentConstants.STANDARD_BORDER + ComponentConstants.STANDARD_BORDER);
+		panelComponent.setPreferredSize(new Dimension(panelWidth, 0));
 		panelComponent.getChildren().add(TitleComponent.builder()
 			.text(opponentName)
 			.build());
@@ -159,7 +162,10 @@ class OpponentInfoOverlay extends Overlay
 			progressBarComponent.setBackgroundColor(HP_RED);
 			progressBarComponent.setForegroundColor(HP_GREEN);
 
-			if (lastMaxHealth != null && !opponentInfoConfig.showPercent())
+			final HitpointsDisplayStyle displayStyle = opponentInfoConfig.hitpointsDisplayStyle();
+
+			if ((displayStyle == HitpointsDisplayStyle.HITPOINTS || displayStyle == HitpointsDisplayStyle.BOTH)
+				&& lastMaxHealth != null)
 			{
 				// This is the reverse of the calculation of healthRatio done by the server
 				// which is: healthRatio = 1 + (healthScale - 1) * health / maxHealth (if health > 0, 0 otherwise)
@@ -189,11 +195,15 @@ class OpponentInfoOverlay extends Overlay
 						// so we know nothing about the upper limit except that it can't be higher than maxHealth
 						maxHealth = lastMaxHealth;
 					}
-					// Take the average of min and max possible healts
+					// Take the average of min and max possible healths
 					health = (minHealth + maxHealth + 1) / 2;
 				}
 
-				progressBarComponent.setLabelDisplayMode(ProgressBarComponent.LabelDisplayMode.FULL);
+				// Show both the hitpoint and percentage values if enabled in the config
+				final ProgressBarComponent.LabelDisplayMode progressBarDisplayMode = displayStyle == HitpointsDisplayStyle.BOTH ?
+					ProgressBarComponent.LabelDisplayMode.BOTH : ProgressBarComponent.LabelDisplayMode.FULL;
+
+				progressBarComponent.setLabelDisplayMode(progressBarDisplayMode);
 				progressBarComponent.setMaximum(lastMaxHealth);
 				progressBarComponent.setValue(health);
 			}
@@ -206,16 +216,22 @@ class OpponentInfoOverlay extends Overlay
 			panelComponent.getChildren().add(progressBarComponent);
 		}
 
-		// Opponents opponent
-		if (opponentsOpponentName != null && opponentInfoConfig.showOpponentsOpponent())
-		{
-			textWidth = Math.max(textWidth, fontMetrics.stringWidth(opponentsOpponentName));
-			panelComponent.setPreferredSize(new Dimension(textWidth, 0));
-			panelComponent.getChildren().add(TitleComponent.builder()
-				.text(opponentsOpponentName)
-				.build());
-		}
+		return super.render(graphics);
+	}
 
-		return panelComponent.render(graphics);
+	/**
+	 * Check if the hp hud is active for an opponent
+	 * @param opponent
+	 * @return
+	 */
+	private boolean hasHpHud(Actor opponent)
+	{
+		boolean settingEnabled = client.getVar(Varbits.BOSS_HEALTH_OVERLAY) == 0;
+		if (settingEnabled && opponent instanceof NPC)
+		{
+			int opponentId = client.getVar(VarPlayer.HP_HUD_NPC_ID);
+			return opponentId != -1 && opponentId == ((NPC) opponent).getId();
+		}
+		return false;
 	}
 }

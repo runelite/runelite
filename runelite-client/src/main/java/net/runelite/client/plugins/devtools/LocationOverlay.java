@@ -32,35 +32,31 @@ import net.runelite.api.Client;
 import static net.runelite.api.Constants.CHUNK_SIZE;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.LineComponent;
-import net.runelite.client.ui.overlay.components.PanelComponent;
 
-public class LocationOverlay extends Overlay
+public class LocationOverlay extends OverlayPanel
 {
 	private final Client client;
 	private final DevToolsPlugin plugin;
-	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
 	LocationOverlay(Client client, DevToolsPlugin plugin)
 	{
 		this.client = client;
 		this.plugin = plugin;
-		panelComponent.setPreferredSize(new Dimension(150, 0));
 		setPosition(OverlayPosition.TOP_LEFT);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!plugin.isToggleLocation())
+		if (!plugin.getLocation().isActive())
 		{
 			return null;
 		}
 
-		panelComponent.getChildren().clear();
 		WorldPoint localWorld = client.getLocalPlayer().getWorldLocation();
 		LocalPoint localPoint = client.getLocalPlayer().getLocalLocation();
 
@@ -117,6 +113,6 @@ public class LocationOverlay extends Overlay
 				.build());
 		}
 
-		return panelComponent.render(graphics);
+		return super.render(graphics);
 	}
 }

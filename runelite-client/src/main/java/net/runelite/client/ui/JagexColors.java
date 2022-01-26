@@ -35,8 +35,9 @@ public class JagexColors
 	 * Colors of chat text when displayed on an opaque background.
 	 */
 	public static final Color CHAT_PUBLIC_TEXT_OPAQUE_BACKGROUND = Color.BLUE;
-	public static final Color CHAT_PRIVATE_MESSAGE_TEXT_OPAQUE_BACKGROUND = Color.CYAN;
-	public static final Color CHAT_CLAN_TEXT_OPAQUE_BACKGROUND = new Color(127, 0, 0);
+	public static final Color CHAT_PRIVATE_MESSAGE_TEXT_OPAQUE_BACKGROUND = new Color(0x7F0000); // in chatbox, not split chat
+	public static final Color CHAT_FC_TEXT_OPAQUE_BACKGROUND = new Color(127, 0, 0);
+	public static final Color CHAT_FC_NAME_OPAQUE_BACKGROUND = Color.BLUE;
 	public static final Color CHAT_GAME_EXAMINE_TEXT_OPAQUE_BACKGROUND = Color.BLACK;
 	public static final Color CHAT_TYPED_TEXT_OPAQUE_BACKGROUND = Color.BLUE;
 
@@ -44,15 +45,17 @@ public class JagexColors
 	 * Colors of chat text when displayed on a transparent background.
 	 */
 	public static final Color CHAT_PUBLIC_TEXT_TRANSPARENT_BACKGROUND = new Color(144, 144, 255);
-	public static final Color CHAT_PRIVATE_MESSAGE_TEXT_TRANSPARENT_BACKGROUND = Color.CYAN;
-	public static final Color CHAT_CLAN_TEXT_TRANSPARENT_BACKGROUND = new Color(127, 0, 0);
+	public static final Color CHAT_PRIVATE_MESSAGE_TEXT_TRANSPARENT_BACKGROUND = new Color(0xBF2020); // in chatbox, not split chat
+	public static final Color CHAT_FC_TEXT_TRANSPARENT_BACKGROUND = new Color(239, 80, 80);
+	public static final Color CHAT_FC_NAME_TRANSPARENT_BACKGROUND = new Color(144, 112, 255);
 	public static final Color CHAT_GAME_EXAMINE_TEXT_TRANSPARENT_BACKGROUND = Color.WHITE;
 	public static final Color CHAT_TYPED_TEXT_TRANSPARENT_BACKGROUND = new Color(144, 144, 255);
 
 	/*
 	 * Colors relating to right-click menus.
 	 */
-	public static final Color MENU_TARGET = new Color(255, 144, 64);
+	public static final Color MENU_TARGET = new Color(0xFF9040);
+	public static final String MENU_TARGET_TAG = "<col=ff9040>";
 
 	/*
 	 * Colors relating to tooltips.
@@ -60,4 +63,10 @@ public class JagexColors
 	public static final Color TOOLTIP_BACKGROUND = new Color(255, 255, 160);
 	public static final Color TOOLTIP_BORDER = Color.BLACK;
 	public static final Color TOOLTIP_TEXT = Color.BLACK;
+
+	/*
+	 * Colors used in interfaces
+	 */
+	public static final Color DARK_ORANGE_INTERFACE_TEXT = new Color(255, 152, 31);
+	public static final Color YELLOW_INTERFACE_TEXT = Color.YELLOW;
 }

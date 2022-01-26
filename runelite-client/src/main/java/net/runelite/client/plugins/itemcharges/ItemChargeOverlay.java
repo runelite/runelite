@@ -1,5 +1,7 @@
 /*
  * Copyright (c) 2017, Seth <Sethtroll3@gmail.com>
+ * Copyright (c) 2019, Aleios <https://github.com/aleios>
+ * Copyright (c) 2020, Unmoon <https://github.com/unmoon>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,137 +26,67 @@
  */
 package net.runelite.client.plugins.itemcharges;
 
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import javax.inject.Inject;
-import net.runelite.api.ItemID;
-import net.runelite.api.Query;
-import net.runelite.api.queries.EquipmentItemQuery;
-import net.runelite.api.queries.InventoryWidgetItemQuery;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
-import static net.runelite.client.plugins.itemcharges.ItemChargeType.*;
 import net.runelite.client.ui.FontManager;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayLayer;
-import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.WidgetItemOverlay;
 import net.runelite.client.ui.overlay.components.TextComponent;
-import net.runelite.client.util.QueryRunner;
 
-class ItemChargeOverlay extends Overlay
+class ItemChargeOverlay extends WidgetItemOverlay
 {
-	private final QueryRunner queryRunner;
 	private final ItemChargePlugin itemChargePlugin;
 	private final ItemChargeConfig config;
 
 	@Inject
-	ItemChargeOverlay(QueryRunner queryRunner, ItemChargePlugin itemChargePlugin, ItemChargeConfig config)
+	ItemChargeOverlay(ItemChargePlugin itemChargePlugin, ItemChargeConfig config)
 	{
-		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.ABOVE_WIDGETS);
-		this.queryRunner = queryRunner;
 		this.itemChargePlugin = itemChargePlugin;
 		this.config = config;
+		showOnInventory();
+		showOnEquipment();
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics)
+	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem widgetItem)
 	{
-		if (!displayOverlay())
+		int charges;
+		ItemWithConfig itemWithConfig = ItemWithConfig.findItem(itemId);
+		if (itemWithConfig != null)
 		{
-			return null;
+			if (!itemWithConfig.getType().getEnabled().test(config))
+			{
+				return;
+			}
+
+			charges = itemChargePlugin.getItemCharges(itemWithConfig.getConfigKey());
+		}
+		else
+		{
+			ItemWithCharge chargeItem = ItemWithCharge.findItem(itemId);
+			if (chargeItem == null)
+			{
+				return;
+			}
+
+			ItemChargeType type = chargeItem.getType();
+			if (!type.getEnabled().test(config))
+			{
+				return;
+			}
+
+			charges = chargeItem.getCharges();
 		}
 
 		graphics.setFont(FontManager.getRunescapeSmallFont());
 
-		for (WidgetItem item : getChargeWidgetItems())
-		{
-			int charges;
-			if (item.getId() == ItemID.DODGY_NECKLACE)
-			{
-				if (!config.showDodgyCount())
-				{
-					continue;
-				}
-
-				charges = itemChargePlugin.getDodgyCharges();
-			}
-			else
-			{
-				ItemWithCharge chargeItem = ItemWithCharge.findItem(item.getId());
-				if (chargeItem == null)
-				{
-					continue;
-				}
-
-				ItemChargeType type = chargeItem.getType();
-				if ((type == TELEPORT && !config.showTeleportCharges())
-					|| (type == FUNGICIDE_SPRAY && !config.showFungicideCharges())
-					|| (type == IMPBOX && !config.showImpCharges())
-					|| (type == WATERCAN && !config.showWateringCanCharges())
-					|| (type == WATERSKIN && !config.showWaterskinCharges())
-					|| (type == BELLOWS && !config.showBellowCharges())
-					|| (type == ABYSSAL_BRACELET && !config.showAbyssalBraceletCharges()))
-				{
-					continue;
-				}
-
-				charges = chargeItem.getCharges();
-			}
-
-			final Rectangle bounds = item.getCanvasBounds();
-			final TextComponent textComponent = new TextComponent();
-			textComponent.setPosition(new Point(bounds.x, bounds.y + 16));
-			textComponent.setText(charges < 0 ? "?" : String.valueOf(charges));
-			textComponent.setColor(getColor(charges));
-			textComponent.render(graphics);
-		}
-		return null;
-	}
-
-	private Collection<WidgetItem> getChargeWidgetItems()
-	{
-		Query inventoryQuery = new InventoryWidgetItemQuery();
-		WidgetItem[] inventoryWidgetItems = queryRunner.runQuery(inventoryQuery);
-
-		Query equipmentQuery = new EquipmentItemQuery().slotEquals(
-			WidgetInfo.EQUIPMENT_AMULET,
-			WidgetInfo.EQUIPMENT_RING,
-			WidgetInfo.EQUIPMENT_GLOVES,
-			WidgetInfo.EQUIPMENT_WEAPON
-		);
-		WidgetItem[] equipmentWidgetItems = queryRunner.runQuery(equipmentQuery);
-
-		Collection<WidgetItem> jewellery = new ArrayList<>();
-		jewellery.addAll(Arrays.asList(inventoryWidgetItems));
-		jewellery.addAll(Arrays.asList(equipmentWidgetItems));
-		return jewellery;
-	}
-
-	private Color getColor(int charges)
-	{
-		Color color = Color.WHITE;
-		if (charges <= config.veryLowWarning())
-		{
-			color = config.veryLowWarningColor();
-		}
-		else if (charges <= config.lowWarning())
-		{
-			color = config.lowWarningolor();
-		}
-		return color;
-	}
-
-	private boolean displayOverlay()
-	{
-		return config.showTeleportCharges() || config.showDodgyCount() || config.showFungicideCharges()
-			|| config.showImpCharges() || config.showWateringCanCharges() || config.showWaterskinCharges()
-			|| config.showBellowCharges() || config.showAbyssalBraceletCharges();
+		final Rectangle bounds = widgetItem.getCanvasBounds();
+		final TextComponent textComponent = new TextComponent();
+		textComponent.setPosition(new Point(bounds.x - 1, bounds.y + 15));
+		textComponent.setText(charges < 0 ? "?" : String.valueOf(charges));
+		textComponent.setColor(itemChargePlugin.getColor(charges));
+		textComponent.render(graphics);
 	}
 }

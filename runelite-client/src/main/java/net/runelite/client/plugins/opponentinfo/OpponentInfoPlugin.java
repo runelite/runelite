@@ -25,26 +25,29 @@
  */
 package net.runelite.client.plugins.opponentinfo;
 
-import com.google.common.eventbus.Subscribe;
+import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.EnumSet;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.WorldType;
+import net.runelite.api.MenuAction;
+import net.runelite.api.MenuEntry;
+import net.runelite.api.NPC;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.InteractingChanged;
+import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.hiscore.HiscoreEndpoint;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
-import net.runelite.http.api.hiscore.HiscoreEndpoint;
 
 @PluginDescriptor(
 	name = "Opponent Information",
@@ -76,6 +79,8 @@ public class OpponentInfoPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private Actor lastOpponent;
 
+	@Getter(AccessLevel.PACKAGE)
+	@VisibleForTesting
 	private Instant lastTime;
 
 	@Provides
@@ -108,19 +113,7 @@ public class OpponentInfoPlugin extends Plugin
 			return;
 		}
 
-		EnumSet<WorldType> worldType = client.getWorldType();
-		if (worldType.contains(WorldType.SEASONAL_DEADMAN))
-		{
-			hiscoreEndpoint = HiscoreEndpoint.SEASONAL_DEADMAN;
-		}
-		else if (worldType.contains(WorldType.DEADMAN))
-		{
-			hiscoreEndpoint = HiscoreEndpoint.DEADMAN;
-		}
-		else
-		{
-			hiscoreEndpoint = HiscoreEndpoint.NORMAL;
-		}
+		hiscoreEndpoint = HiscoreEndpoint.fromWorldTypes(client.getWorldType());
 	}
 
 	@Subscribe
@@ -153,6 +146,30 @@ public class OpponentInfoPlugin extends Plugin
 			{
 				lastOpponent = null;
 			}
+		}
+	}
+
+	@Subscribe
+	public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
+	{
+		if (menuEntryAdded.getType() != MenuAction.NPC_SECOND_OPTION.getId()
+			|| !menuEntryAdded.getOption().equals("Attack")
+			|| !config.showOpponentsInMenu())
+		{
+			return;
+		}
+
+		int npcIndex = menuEntryAdded.getIdentifier();
+		NPC npc = client.getCachedNPCs()[npcIndex];
+		if (npc == null)
+		{
+			return;
+		}
+
+		if (npc.getInteracting() == client.getLocalPlayer() || lastOpponent == npc)
+		{
+			MenuEntry[] menuEntries = client.getMenuEntries();
+			menuEntries[menuEntries.length - 1].setTarget("*" + menuEntries[menuEntries.length - 1].getTarget());
 		}
 	}
 }

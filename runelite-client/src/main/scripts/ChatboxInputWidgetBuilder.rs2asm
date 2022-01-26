@@ -1,168 +1,284 @@
 .id                 223
 .int_stack_count    0
 .string_stack_count 0
-.int_var_count      4
+.int_var_count      5
 .string_var_count   3
-   load_string            "<col=0000ff>"
+   sconst                 "<col=0000ff>"
    sstore                 0
-   load_int               0
+   iconst                 0
    istore                 0
-   load_int               6250335
+   iconst                 6250335
    istore                 1
    invoke                 921
-   load_int               1
+   iconst                 1
    if_icmpeq              LABEL10
    jump                   LABEL20
 LABEL10:
-   load_string            "<col=9090ff>"
-   load_int               16777215
-   load_int               12566463
+   sconst                 "<col=9090ff>"
+   iconst                 16777215
+   iconst                 12566463
    istore                 1
    istore                 0
    sstore                 0
-   load_int               1
-   load_int               10616889
-   widget_put_text_shadowed_widget
+   iconst                 1
+   iconst                 10616887
+   if_settextshadow      
    jump                   LABEL23
 LABEL20:
-   load_int               0
-   load_int               10616889
-   widget_put_text_shadowed_widget
+   iconst                 0
+   iconst                 10616887
+   if_settextshadow      
 LABEL23:
    iload                  0
-   load_int               10616889
-   widget_put_textcolor_widget
-   get_varc_string        1
+   iconst                 10616887
+   if_setcolour          
+   get_varc_string        335
    string_length         
    istore                 2
-   get_varc_string        1
-   appendtags            
+   get_varc_string        335
+   escape                
    sstore                 1
-   load_string            ""
+   sconst                 ""
    sstore                 2
-   load_int               0
+   iconst                 0
    istore                 3
-   get_varc               203
-   load_int               1
-   if_icmpeq              LABEL40
-   jump                   LABEL99
-LABEL40:
-   load_int               105
-   load_int               115
-   load_int               1894
+   invoke                 1972
+   istore                 4
+   get_varbit             8119
+   iconst                 1
+   if_icmpeq              LABEL42
+   jump                   LABEL184
+LABEL42:
+   invoke                 3160
+   iconst                 1
+   if_icmpeq              LABEL46
+   jump                   LABEL51
+LABEL46:
+   sconst                 "<img=22>"
+   chat_playername       
+   join_string            2
+   sstore                 2
+   jump                   LABEL59
+LABEL51:
+   iconst                 105
+   iconst                 115
+   iconst                 1894
    get_varbit             1777
-   get_enum_value        
-   get_localplayer_name  
-   load_string            ": "
+   enum                  
+   chat_playername       
+   join_string            2
+   sstore                 2
+LABEL59:
+   get_varc_int           945
+   switch                
+      1: LABEL62
+      2: LABEL67
+      3: LABEL72
+      4: LABEL77
+   jump                   LABEL88
+LABEL62:
+   sload                  2
+   sconst                 " (channel)"
+   append                
+   sstore                 2
+   jump                   LABEL88
+LABEL67:
+   sload                  2
+   sconst                 " (clan)"
+   append                
+   sstore                 2
+   jump                   LABEL88
+LABEL72:
+   sload                  2
+   sconst                 " (guest clan)"
+   append                
+   sstore                 2
+   jump                   LABEL88
+LABEL77:
+   invoke                 5262
+   iconst                 1
+   if_icmpeq              LABEL81
+   jump                   LABEL86
+LABEL81:
+   sload                  2
+   sconst                 " (group)"
+   append                
+   sstore                 2
+   jump                   LABEL88
+LABEL86:
+   iconst                 0
+   set_varc_int           945
+LABEL88:
+   iload                  4
+   iconst                 1
+   if_icmpeq              LABEL92
+   jump                   LABEL96
+LABEL92:
+   sload                  2
+   sconst                 "<img=19>"
+   append                
+   sstore                 2
+LABEL96:
+   sload                  2
+   sconst                 ": "
    sload                  0
    sload                  1
-   load_string            "</col>"
-   string_append          6
+   sconst                 "</col>"
+   join_string            4
+   append                
    sstore                 2
    iload                  2
-   load_int               80
-   if_icmplt              LABEL56
-   jump                   LABEL63
-LABEL56:
+   iconst                 80
+   if_icmplt              LABEL108
+   jump                   LABEL115
+LABEL108:
    sload                  2
    sload                  0
-   load_string            "*"
-   load_string            "</col>"
-   string_append          3
-   concat_string         
+   sconst                 "*"
+   sconst                 "</col>"
+   join_string            3
+   append                
    sstore                 2
-LABEL63:
+LABEL115:
    sload                  2
-   load_int               2147483647
-   load_int               495
-   get_max_line_width    
+   iconst                 2147483647
+   iconst                 495
+   parawidth             
    istore                 3
+   iload                  4
+   iconst                 1
+   if_icmpeq              LABEL124
+   jump                   LABEL141
+LABEL124:
+   iconst                 60
+   iconst                 5
    iload                  3
-   load_int               10616889
-   widget_get_width_widget
-   if_icmpgt              LABEL73
-   jump                   LABEL79
-LABEL73:
-   load_int               2
-   load_int               2
-   load_int               0
-   load_int               10616889
-   widget_put_text_alignment_widget
-   jump                   LABEL84
-LABEL79:
-   load_int               0
-   load_int               2
-   load_int               0
-   load_int               10616889
-   widget_put_text_alignment_widget
-LABEL84:
-   load_int               10616889
-   widget_put_actions_null_widget
-   load_int               -1
-   load_string            ""
-   load_int               10616889
-   widget_put_mouse_hover_listener_widget
-   load_int               -1
-   load_string            ""
-   load_int               10616889
-   widget_put_mouse_exit_listener_widget
-   load_int               -1
-   load_string            ""
-   load_int               10616889
-   widget_put_option_click_listener_widget
-   jump                   LABEL140
-LABEL99:
-   load_int               105
-   load_int               115
-   load_int               1894
-   get_varbit             1777
-   get_enum_value        
-   load_string            " You must set a name before you can chat."
-   string_append          2
+   add                   
+   invoke                 1045
+   iconst                 30
+   iconst                 0
+   iconst                 0
+   iconst                 10616868
+   if_setsize            
+   iconst                 0
+   iconst                 0
+   iconst                 0
+   iconst                 2
+   iconst                 10616868
+   if_setposition        
+   jump                   LABEL153
+LABEL141:
+   iconst                 0
+   iconst                 30
+   iconst                 0
+   iconst                 1
+   iconst                 10616868
+   if_setsize            
+   iconst                 0
+   iconst                 0
+   iconst                 0
+   iconst                 2
+   iconst                 10616868
+   if_setposition        
+LABEL153:
+   iload                  3
+   iconst                 10616887
+   if_getwidth           
+   if_icmpgt              LABEL158
+   jump                   LABEL164
+LABEL158:
+   iconst                 2
+   iconst                 2
+   iconst                 0
+   iconst                 10616887
+   if_settextalign       
+   jump                   LABEL169
+LABEL164:
+   iconst                 0
+   iconst                 2
+   iconst                 0
+   iconst                 10616887
+   if_settextalign       
+LABEL169:
+   iconst                 10616887
+   if_clearops           
+   iconst                 -1
+   sconst                 ""
+   iconst                 10616887
+   if_setonmouserepeat   
+   iconst                 -1
+   sconst                 ""
+   iconst                 10616887
+   if_setonmouseleave    
+   iconst                 -1
+   sconst                 ""
+   iconst                 10616887
+   if_setonop            
+   jump                   LABEL234
+LABEL184:
+   invoke                 3160
+   iconst                 1
+   if_icmpeq              LABEL188
+   jump                   LABEL193
+LABEL188:
+   sconst                 "<img=22>"
+   sconst                 " You must set a name before you can chat."
+   join_string            2
    sstore                 2
-   load_int               1
-   load_int               2
-   load_int               0
-   load_int               10616889
-   widget_put_text_alignment_widget
-   load_int               10
-   load_string            "Configure"
-   load_int               10616889
-   widget_put_action_widget
-   load_string            "<col=ff9040>"
-   load_string            "Display name"
-   load_string            "</col>"
-   string_append          3
-   load_int               10616889
-   widget_put_name_widget
-   load_int               45
-   load_int               -2147483645
+   jump                   LABEL201
+LABEL193:
+   iconst                 105
+   iconst                 115
+   iconst                 1894
+   get_varbit             1777
+   enum                  
+   sconst                 " You must set a name before you can chat."
+   join_string            2
+   sstore                 2
+LABEL201:
+   iconst                 1
+   iconst                 2
+   iconst                 0
+   iconst                 10616887
+   if_settextalign       
+   iconst                 10
+   sconst                 "Configure"
+   iconst                 10616887
+   if_setop              
+   sconst                 "<col=ff9040>"
+   sconst                 "Display name"
+   sconst                 "</col>"
+   join_string            3
+   iconst                 10616887
+   if_setopbase          
+   iconst                 45
+   iconst                 -2147483645
    iload                  1
-   load_string            "Ii"
-   load_int               10616889
-   widget_put_mouse_hover_listener_widget
-   load_int               45
-   load_int               -2147483645
+   sconst                 "Ii"
+   iconst                 10616887
+   if_setonmouserepeat   
+   iconst                 45
+   iconst                 -2147483645
    iload                  0
-   load_string            "Ii"
-   load_int               10616889
-   widget_put_mouse_exit_listener_widget
-   load_int               489
-   load_int               -2147483644
-   load_int               1024
-   load_string            "ii"
-   load_int               10616889
-   widget_put_option_click_listener_widget
-LABEL140:
+   sconst                 "Ii"
+   iconst                 10616887
+   if_setonmouseleave    
+   iconst                 489
+   iconst                 -2147483644
+   iconst                 1024
+   sconst                 "ii"
+   iconst                 10616887
+   if_setonop            
+LABEL234:
    sload                  2
-   load_int               10616889
-   widget_put_text_widget
-   load_string            "setChatboxInput"
+   iconst                 10616887
+   if_settext            
+   sconst                 "setChatboxInput"
    runelite_callback     
-   load_int               3
-   load_int               16
-   load_int               1
-   load_int               0
-   load_int               10616889
-   widget_put_size_widget
+   iconst                 3
+   iconst                 16
+   iconst                 1
+   iconst                 0
+   iconst                 10616887
+   if_setsize            
    return                

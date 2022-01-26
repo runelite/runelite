@@ -26,34 +26,33 @@
 package net.runelite.client.plugins.groundmarkers;
 
 import com.google.common.base.Strings;
-import com.google.common.eventbus.Subscribe;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Provides;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import static net.runelite.api.Constants.CHUNK_SIZE;
 import net.runelite.api.GameState;
+import net.runelite.api.KeyCode;
 import net.runelite.api.MenuAction;
-import net.runelite.api.MenuEntry;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MenuEntryAdded;
-import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.input.KeyManager;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -68,22 +67,19 @@ public class GroundMarkerPlugin extends Plugin
 {
 	private static final String CONFIG_GROUP = "groundMarker";
 	private static final String MARK = "Mark tile";
+	private static final String UNMARK = "Unmark tile";
+	private static final String LABEL = "Label tile";
 	private static final String WALK_HERE = "Walk here";
-
-	private static final Gson gson = new Gson();
-
-	@Getter(AccessLevel.PACKAGE)
-	@Setter(AccessLevel.PACKAGE)
-	private boolean hotKeyPressed;
+	private static final String REGION_PREFIX = "region_";
 
 	@Getter(AccessLevel.PACKAGE)
-	private final List<WorldPoint> points = new ArrayList<>();
+	private final List<ColorTileMarker> points = new ArrayList<>();
 
 	@Inject
 	private Client client;
 
 	@Inject
-	private GroundMarkerInputListener inputListener;
+	private GroundMarkerConfig config;
 
 	@Inject
 	private ConfigManager configManager;
@@ -95,30 +91,43 @@ public class GroundMarkerPlugin extends Plugin
 	private GroundMarkerOverlay overlay;
 
 	@Inject
-	private KeyManager keyManager;
+	private GroundMarkerMinimapOverlay minimapOverlay;
 
-	private void savePoints(int regionId, Collection<GroundMarkerPoint> points)
+	@Inject
+	private ChatboxPanelManager chatboxPanelManager;
+
+	@Inject
+	private EventBus eventBus;
+
+	@Inject
+	private GroundMarkerSharingManager sharingManager;
+
+	@Inject
+	private Gson gson;
+
+	void savePoints(int regionId, Collection<GroundMarkerPoint> points)
 	{
 		if (points == null || points.isEmpty())
 		{
-			configManager.unsetConfiguration(CONFIG_GROUP, "region_" + regionId);
+			configManager.unsetConfiguration(CONFIG_GROUP, REGION_PREFIX + regionId);
 			return;
 		}
 
 		String json = gson.toJson(points);
-		configManager.setConfiguration(CONFIG_GROUP, "region_" + regionId, json);
+		configManager.setConfiguration(CONFIG_GROUP, REGION_PREFIX + regionId, json);
 	}
 
-	private Collection<GroundMarkerPoint> getPoints(int regionId)
+	Collection<GroundMarkerPoint> getPoints(int regionId)
 	{
-		String json = configManager.getConfiguration(CONFIG_GROUP, "region_" + regionId);
+		String json = configManager.getConfiguration(CONFIG_GROUP, REGION_PREFIX + regionId);
 		if (Strings.isNullOrEmpty(json))
 		{
-			return Collections.EMPTY_LIST;
+			return Collections.emptyList();
 		}
-		return gson.fromJson(json, new TypeToken<List<GroundMarkerPoint>>()
-		{
-		}.getType());
+
+		// CHECKSTYLE:OFF
+		return gson.fromJson(json, new TypeToken<List<GroundMarkerPoint>>(){}.getType());
+		// CHECKSTYLE:ON
 	}
 
 	@Provides
@@ -127,115 +136,78 @@ public class GroundMarkerPlugin extends Plugin
 		return configManager.getConfig(GroundMarkerConfig.class);
 	}
 
-	private void loadPoints()
+	void loadPoints()
 	{
 		points.clear();
 
 		int[] regions = client.getMapRegions();
+
+		if (regions == null)
+		{
+			return;
+		}
+
 		for (int regionId : regions)
 		{
 			// load points for region
 			log.debug("Loading points for region {}", regionId);
 			Collection<GroundMarkerPoint> regionPoints = getPoints(regionId);
-			Collection<WorldPoint> worldPoints = translateToWorld(regionPoints);
-			points.addAll(worldPoints);
+			Collection<ColorTileMarker> colorTileMarkers = translateToColorTileMarker(regionPoints);
+			points.addAll(colorTileMarkers);
 		}
 	}
 
 	/**
-	 * Translate a collection of ground marker points to world points, accounting for instances
+	 * Translate a collection of ground marker points to color tile markers, accounting for instances
 	 *
-	 * @param points
-	 * @return
+	 * @param points {@link GroundMarkerPoint}s to be converted to {@link ColorTileMarker}s
+	 * @return A collection of color tile markers, converted from the passed ground marker points, accounting for local
+	 *         instance points. See {@link WorldPoint#toLocalInstance(Client, WorldPoint)}
 	 */
-	private Collection<WorldPoint> translateToWorld(Collection<GroundMarkerPoint> points)
+	private Collection<ColorTileMarker> translateToColorTileMarker(Collection<GroundMarkerPoint> points)
 	{
 		if (points.isEmpty())
 		{
-			return Collections.EMPTY_LIST;
+			return Collections.emptyList();
 		}
 
-		List<WorldPoint> worldPoints = new ArrayList<>();
-		for (GroundMarkerPoint point : points)
-		{
-			int regionId = point.getRegionId();
-			int regionX = point.getRegionX();
-			int regionY = point.getRegionY();
-			int z = point.getZ();
-
-			// world point of the tile marker
-			WorldPoint worldPoint = new WorldPoint(
-				((regionId >>> 8) << 6) + regionX,
-				((regionId & 0xff) << 6) + regionY,
-				z
-			);
-
-			if (!client.isInInstancedRegion())
+		return points.stream()
+			.map(point -> new ColorTileMarker(
+				WorldPoint.fromRegion(point.getRegionId(), point.getRegionX(), point.getRegionY(), point.getZ()),
+				point.getColor(), point.getLabel()))
+			.flatMap(colorTile ->
 			{
-				worldPoints.add(worldPoint);
-				continue;
-			}
-
-			// find instance chunks using the template point. there might be more than one.
-			int[][][] instanceTemplateChunks = client.getInstanceTemplateChunks();
-			for (int x = 0; x < instanceTemplateChunks[z].length; ++x)
-			{
-				for (int y = 0; y < instanceTemplateChunks[z][x].length; ++y)
-				{
-					int chunkData = instanceTemplateChunks[z][x][y];
-					int rotation = chunkData >> 1 & 0x3;
-					int templateChunkY = (chunkData >> 3 & 0x7FF) * CHUNK_SIZE;
-					int templateChunkX = (chunkData >> 14 & 0x3FF) * CHUNK_SIZE;
-					if (worldPoint.getX() >= templateChunkX && worldPoint.getX() < templateChunkX + CHUNK_SIZE
-						&& worldPoint.getY() >= templateChunkY && worldPoint.getY() < templateChunkY + CHUNK_SIZE)
-					{
-						WorldPoint p = new WorldPoint(client.getBaseX() + x * CHUNK_SIZE + (worldPoint.getX() & (CHUNK_SIZE - 1)),
-							client.getBaseY() + y * CHUNK_SIZE + (worldPoint.getY() & (CHUNK_SIZE - 1)),
-							worldPoint.getPlane());
-						p = rotate(p, rotation);
-						worldPoints.add(p);
-					}
-				}
-			}
-		}
-		return worldPoints;
+				final Collection<WorldPoint> localWorldPoints = WorldPoint.toLocalInstance(client, colorTile.getWorldPoint());
+				return localWorldPoints.stream().map(wp -> new ColorTileMarker(wp, colorTile.getColor(), colorTile.getLabel()));
+			})
+			.collect(Collectors.toList());
 	}
 
-	/**
-	 * Rotate the chunk containing the given point to rotation 0
-	 *
-	 * @param point point
-	 * @param rotation rotation
-	 * @return world point
-	 */
-	private static WorldPoint rotateInverse(WorldPoint point, int rotation)
+	@Override
+	public void startUp()
 	{
-		return rotate(point, 4 - rotation);
+		overlayManager.add(overlay);
+		overlayManager.add(minimapOverlay);
+		if (config.showImportExport())
+		{
+			sharingManager.addImportExportMenuOptions();
+		}
+		if (config.showClear())
+		{
+			sharingManager.addClearMenuOption();
+		}
+		loadPoints();
+		eventBus.register(sharingManager);
 	}
 
-	/**
-	 * Rotate the coordinates in the chunk according to chunk rotation
-	 *
-	 * @param point point
-	 * @param rotation rotation
-	 * @return world point
-	 */
-	private static WorldPoint rotate(WorldPoint point, int rotation)
+	@Override
+	public void shutDown()
 	{
-		int chunkX = point.getX() & ~(CHUNK_SIZE - 1);
-		int chunkY = point.getY() & ~(CHUNK_SIZE - 1);
-		int x = point.getX() & (CHUNK_SIZE - 1);
-		int y = point.getY() & (CHUNK_SIZE - 1);
-		switch (rotation)
-		{
-			case 1:
-				return new WorldPoint(chunkX + y, chunkY + (CHUNK_SIZE - 1 - x), point.getPlane());
-			case 2:
-				return new WorldPoint(chunkX + (CHUNK_SIZE - 1 - x), chunkY + (CHUNK_SIZE - 1 - y), point.getPlane());
-			case 3:
-				return new WorldPoint(chunkX + (CHUNK_SIZE - 1 - y), chunkY + x, point.getPlane());
-		}
-		return point;
+		eventBus.unregister(sharingManager);
+		overlayManager.remove(overlay);
+		overlayManager.remove(minimapOverlay);
+		sharingManager.removeMenuOptions();
+		points.clear();
 	}
 
 	@Subscribe
@@ -251,60 +223,76 @@ public class GroundMarkerPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onFocusChanged(FocusChanged focusChanged)
-	{
-		if (!focusChanged.isFocused())
-		{
-			hotKeyPressed = false;
-		}
-	}
-
-	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
+		final boolean hotKeyPressed = client.isKeyPressed(KeyCode.KC_SHIFT);
 		if (hotKeyPressed && event.getOption().equals(WALK_HERE))
 		{
-			MenuEntry[] menuEntries = client.getMenuEntries();
-			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
+			final Tile selectedSceneTile = client.getSelectedSceneTile();
 
-			MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
+			if (selectedSceneTile == null)
+			{
+				return;
+			}
 
-			menuEntry.setOption(MARK);
-			menuEntry.setTarget(event.getTarget());
-			menuEntry.setType(MenuAction.CANCEL.getId());
+			final WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, selectedSceneTile.getLocalLocation());
+			final int regionId = worldPoint.getRegionID();
+			final GroundMarkerPoint point = new GroundMarkerPoint(regionId, worldPoint.getRegionX(), worldPoint.getRegionY(), client.getPlane(), null, null);
+			final boolean exists = getPoints(regionId).contains(point);
 
-			client.setMenuEntries(menuEntries);
+			client.createMenuEntry(-1)
+				.setOption(exists ? UNMARK : MARK)
+				.setTarget(event.getTarget())
+				.setType(MenuAction.RUNELITE)
+				.onClick(e ->
+				{
+					Tile target = client.getSelectedSceneTile();
+					if (target != null)
+					{
+						markTile(target.getLocalLocation());
+					}
+				});
+
+			if (exists)
+			{
+				client.createMenuEntry(-2)
+					.setOption(LABEL)
+					.setTarget(event.getTarget())
+					.setType(MenuAction.RUNELITE)
+					.onClick(e ->
+					{
+						Tile target = client.getSelectedSceneTile();
+						if (target != null)
+						{
+							labelTile(target);
+						}
+					});
+			}
 		}
 	}
 
 	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked event)
+	public void onConfigChanged(ConfigChanged event)
 	{
-		if (!event.getMenuOption().equals(MARK))
+		if (event.getGroup().equals(GroundMarkerConfig.GROUND_MARKER_CONFIG_GROUP)
+			&& (event.getKey().equals(GroundMarkerConfig.SHOW_IMPORT_EXPORT_KEY_NAME)
+				|| event.getKey().equals(GroundMarkerConfig.SHOW_CLEAR_KEY_NAME)))
 		{
-			return;
+			// Maintain consistent menu option order by removing everything then adding according to config
+			sharingManager.removeMenuOptions();
+
+			if (config.showImportExport())
+			{
+				sharingManager.addImportExportMenuOptions();
+			}
+			if (config.showClear())
+			{
+				sharingManager.addClearMenuOption();
+			}
 		}
-
-		Tile target = client.getSelectedSceneTile();
-		markTile(target.getLocalLocation());
 	}
 
-	@Override
-	protected void startUp()
-	{
-		overlayManager.add(overlay);
-		keyManager.registerKeyListener(inputListener);
-	}
-
-	@Override
-	protected void shutDown()
-	{
-		overlayManager.remove(overlay);
-		keyManager.unregisterKeyListener(inputListener);
-	}
-
-
-	protected void markTile(LocalPoint localPoint)
+	private void markTile(LocalPoint localPoint)
 	{
 		if (localPoint == null)
 		{
@@ -314,21 +302,53 @@ public class GroundMarkerPlugin extends Plugin
 		WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, localPoint);
 
 		int regionId = worldPoint.getRegionID();
-		GroundMarkerPoint point = new GroundMarkerPoint(regionId, worldPoint.getX() & 0x3f, worldPoint.getY() & 0x3f, client.getPlane());
+		GroundMarkerPoint point = new GroundMarkerPoint(regionId, worldPoint.getRegionX(), worldPoint.getRegionY(), client.getPlane(), config.markerColor(), null);
 		log.debug("Updating point: {} - {}", point, worldPoint);
 
-		List<GroundMarkerPoint> points = new ArrayList<>(getPoints(regionId));
-		if (points.contains(point))
+		List<GroundMarkerPoint> groundMarkerPoints = new ArrayList<>(getPoints(regionId));
+		if (groundMarkerPoints.contains(point))
 		{
-			points.remove(point);
+			groundMarkerPoints.remove(point);
 		}
 		else
 		{
-			points.add(point);
+			groundMarkerPoints.add(point);
 		}
 
-		savePoints(regionId, points);
+		savePoints(regionId, groundMarkerPoints);
 
 		loadPoints();
+	}
+
+	private void labelTile(Tile tile)
+	{
+		LocalPoint localPoint = tile.getLocalLocation();
+		WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, localPoint);
+		final int regionId = worldPoint.getRegionID();
+
+		GroundMarkerPoint searchPoint = new GroundMarkerPoint(regionId, worldPoint.getRegionX(), worldPoint.getRegionY(), client.getPlane(), null, null);
+		Collection<GroundMarkerPoint> points = getPoints(regionId);
+		GroundMarkerPoint existing = points.stream()
+			.filter(p -> p.equals(searchPoint))
+			.findFirst().orElse(null);
+		if (existing == null)
+		{
+			return;
+		}
+
+		chatboxPanelManager.openTextInput("Tile label")
+			.value(Optional.ofNullable(existing.getLabel()).orElse(""))
+			.onDone((input) ->
+			{
+				input = Strings.emptyToNull(input);
+
+				GroundMarkerPoint newPoint = new GroundMarkerPoint(regionId, worldPoint.getRegionX(), worldPoint.getRegionY(), client.getPlane(), existing.getColor(), input);
+				points.remove(searchPoint);
+				points.add(newPoint);
+				savePoints(regionId, points);
+
+				loadPoints();
+			})
+			.build();
 	}
 }

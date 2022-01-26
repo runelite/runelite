@@ -28,14 +28,24 @@ package net.runelite.client.plugins.loottracker;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
 
 @ConfigGroup("loottracker")
 public interface LootTrackerConfig extends Config
 {
+	@ConfigSection(
+		name = "Ignored Entries",
+		description = "The Ignore items and Ignore groups options",
+		position = -2,
+		closedByDefault = true
+	)
+	String ignored = "ignored";
+
 	@ConfigItem(
 		keyName = "ignoredItems",
 		name = "Ignored items",
-		description = "Configures which items should be ignored when calculating loot prices."
+		description = "Configures which items should be ignored when calculating loot prices.",
+		section = ignored
 	)
 	default String getIgnoredItems()
 	{
@@ -48,4 +58,94 @@ public interface LootTrackerConfig extends Config
 		description = ""
 	)
 	void setIgnoredItems(String key);
+
+	@ConfigItem(
+		keyName = "priceType",
+		name = "Price Type",
+		description = "What type of price to use for calculating value."
+	)
+	default LootTrackerPriceType priceType()
+	{
+		return LootTrackerPriceType.GRAND_EXCHANGE;
+	}
+
+	@ConfigItem(
+		keyName = "showPriceType",
+		name = "Show Price Type",
+		description = "Whether to show a GE: or HA: next to the total values in the tracker"
+	)
+	default boolean showPriceType()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "saveLoot",
+		name = "Submit loot tracker data",
+		description = "Submit loot tracker data"
+	)
+	default boolean saveLoot()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "syncPanel",
+		name = "Synchronize panel contents",
+		description = "Synchronize your local loot tracker with your server data (requires being signed in).<br/>" +
+			" This means the panel is filled with portions of your remote data on startup<br/>" +
+			" and deleting data in the panel also deletes it on the server."
+	)
+	default boolean syncPanel()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "ignoredEvents",
+		name = "Ignored Loot Sources",
+		description = "Hide specific NPCs or sources of loot in the loot tracker (e.g., Goblin, Barrows Chest, H.A.M. Member).",
+		section = ignored
+	)
+	default String getIgnoredEvents()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+		keyName = "ignoredEvents",
+		name = "",
+		description = ""
+	)
+	void setIgnoredEvents(String key);
+
+	@ConfigItem(
+		keyName = "npcKillChatMessage",
+		name = "Show chat message for NPC kills",
+		description = "Adds a chat message with monster name and kill value when receiving loot from an NPC kill."
+	)
+	default boolean npcKillChatMessage()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "pvpKillChatMessage",
+		name = "Show chat message for PVP kills",
+		description = "Adds a chat message with player name and kill value when receiving loot from a player kill."
+	)
+	default boolean pvpKillChatMessage()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showRaidsLootValue",
+		name = "Show chat message for raids loot",
+		description = "Adds a chat message that displays the value of your loot at the end of the raid."
+	)
+	default boolean showRaidsLootValue()
+	{
+		return true;
+	}
 }

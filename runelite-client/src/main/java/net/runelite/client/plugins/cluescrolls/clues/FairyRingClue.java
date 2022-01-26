@@ -24,18 +24,15 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues;
 
-import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ImmutableList;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.util.Set;
+import java.util.List;
 import lombok.Getter;
-import net.runelite.api.ItemID;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
-import net.runelite.client.plugins.cluescrolls.clues.emote.ItemRequirement;
-import net.runelite.client.plugins.cluescrolls.clues.emote.SingleItemRequirement;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
@@ -44,7 +41,7 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 @Getter
 public class FairyRingClue extends ClueScroll implements TextClueScroll, LocationClueScroll
 {
-	private static final Set<FairyRingClue> CLUES = ImmutableSet.of(
+	private static final List<FairyRingClue> CLUES = ImmutableList.of(
 		new FairyRingClue("A I R 2 3 3 1", new WorldPoint(2702, 3246, 0)),
 		new FairyRingClue("A I Q 0 4 4 0", new WorldPoint(3000, 3110, 0)),
 		new FairyRingClue("A L P 1 1 4 0", new WorldPoint(2504, 3633, 0)),
@@ -59,12 +56,12 @@ public class FairyRingClue extends ClueScroll implements TextClueScroll, Locatio
 
 	private String text;
 	private WorldPoint location;
-	private static final ItemRequirement HAS_SPADE = new SingleItemRequirement(ItemID.SPADE);
 
 	private FairyRingClue(String text, WorldPoint location)
 	{
 		this.text = text;
 		this.location = location;
+		setRequiresSpade(true);
 	}
 
 	@Override
@@ -80,15 +77,6 @@ public class FairyRingClue extends ClueScroll implements TextClueScroll, Locatio
 		panelComponent.getChildren().add(LineComponent.builder()
 			.left("Travel to the fairy ring to see where to dig.")
 			.build());
-
-		if (plugin.getInventoryItems() != null)
-		{
-			if (!HAS_SPADE.fulfilledBy(plugin.getInventoryItems()))
-			{
-				panelComponent.getChildren().add(LineComponent.builder().left("").build());
-				panelComponent.getChildren().add(LineComponent.builder().left("Requires Spade!").leftColor(Color.RED).build());
-			}
-		}
 	}
 
 	@Override

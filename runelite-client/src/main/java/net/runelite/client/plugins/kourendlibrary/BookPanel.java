@@ -34,7 +34,7 @@ import net.runelite.client.ui.FontManager;
 
 class BookPanel extends JPanel
 {
-	private JLabel location = new JLabel();
+	private final JLabel location = new JLabel();
 
 	BookPanel(Book b)
 	{
@@ -77,6 +77,14 @@ class BookPanel extends JPanel
 
 	void setIsTarget(boolean target)
 	{
-		location.setForeground(target ? Color.GREEN : Color.WHITE);
+		location.setForeground(target ? Color.GREEN : Color.ORANGE);
+	}
+
+	void setIsHeld(boolean held)
+	{
+		if (held)
+		{
+			location.setForeground(Color.WHITE);
+		}
 	}
 }

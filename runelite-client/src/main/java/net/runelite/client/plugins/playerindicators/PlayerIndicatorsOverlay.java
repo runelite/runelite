@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2019, Jordan Atwood <nightfirecat@protonmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,29 +31,34 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import net.runelite.api.ClanMemberRank;
+import net.runelite.api.FriendsChatRank;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
-import net.runelite.client.game.ClanManager;
+import net.runelite.api.clan.ClanTitle;
+import net.runelite.client.game.ChatIconManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.util.Text;
 
 @Singleton
 public class PlayerIndicatorsOverlay extends Overlay
 {
+	private static final int ACTOR_OVERHEAD_TEXT_MARGIN = 40;
+	private static final int ACTOR_HORIZONTAL_TEXT_MARGIN = 10;
+
 	private final PlayerIndicatorsService playerIndicatorsService;
 	private final PlayerIndicatorsConfig config;
-	private final ClanManager clanManager;
+	private final ChatIconManager chatIconManager;
 
 	@Inject
 	private PlayerIndicatorsOverlay(PlayerIndicatorsConfig config, PlayerIndicatorsService playerIndicatorsService,
-		ClanManager clanManager)
+		ChatIconManager chatIconManager)
 	{
 		this.config = config;
 		this.playerIndicatorsService = playerIndicatorsService;
-		this.clanManager = clanManager;
+		this.chatIconManager = chatIconManager;
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.MED);
 	}
@@ -66,39 +72,87 @@ public class PlayerIndicatorsOverlay extends Overlay
 
 	private void renderPlayerOverlay(Graphics2D graphics, Player actor, Color color)
 	{
-		if (!config.drawOverheadPlayerNames())
+		final PlayerNameLocation drawPlayerNamesConfig = config.playerNamePosition();
+		if (drawPlayerNamesConfig == PlayerNameLocation.DISABLED)
 		{
 			return;
 		}
 
-		String name = actor.getName().replace('\u00A0', ' ');
-		int offset = actor.getLogicalHeight() + 40;
-		Point textLocation = actor.getCanvasTextLocation(graphics, name, offset);
-
-		if (textLocation != null)
+		final int zOffset;
+		switch (drawPlayerNamesConfig)
 		{
-			if (config.showClanRanks() && actor.isClanMember())
+			case MODEL_CENTER:
+			case MODEL_RIGHT:
+				zOffset = actor.getLogicalHeight() / 2;
+				break;
+			default:
+				zOffset = actor.getLogicalHeight() + ACTOR_OVERHEAD_TEXT_MARGIN;
+		}
+
+		final String name = Text.sanitize(actor.getName());
+		Point textLocation = actor.getCanvasTextLocation(graphics, name, zOffset);
+
+		if (drawPlayerNamesConfig == PlayerNameLocation.MODEL_RIGHT)
+		{
+			textLocation = actor.getCanvasTextLocation(graphics, "", zOffset);
+
+			if (textLocation == null)
 			{
-				ClanMemberRank rank = clanManager.getRank(name);
-
-				if (rank != ClanMemberRank.UNRANKED)
-				{
-					BufferedImage clanchatImage = clanManager.getClanImage(rank);
-
-					if (clanchatImage != null)
-					{
-						int width = clanchatImage.getWidth();
-						int textHeight = graphics.getFontMetrics().getHeight() - graphics.getFontMetrics().getMaxDescent();
-						Point imageLocation = new Point(textLocation.getX() - width / 2 - 1, textLocation.getY() - textHeight / 2 - clanchatImage.getHeight() / 2);
-						OverlayUtil.renderImageLocation(graphics, imageLocation, clanchatImage);
-
-						// move text
-						textLocation = new Point(textLocation.getX() + width / 2, textLocation.getY());
-					}
-				}
+				return;
 			}
 
-			OverlayUtil.renderTextLocation(graphics, textLocation, name, color);
+			textLocation = new Point(textLocation.getX() + ACTOR_HORIZONTAL_TEXT_MARGIN, textLocation.getY());
 		}
+
+		if (textLocation == null)
+		{
+			return;
+		}
+
+		BufferedImage rankImage = null;
+		if (actor.isFriendsChatMember() && config.highlightFriendsChat() && config.showFriendsChatRanks())
+		{
+			final FriendsChatRank rank = playerIndicatorsService.getFriendsChatRank(actor);
+
+			if (rank != FriendsChatRank.UNRANKED)
+			{
+				rankImage = chatIconManager.getRankImage(rank);
+			}
+		}
+		else if (actor.isClanMember() && config.highlightClanMembers() && config.showClanChatRanks())
+		{
+			ClanTitle clanTitle = playerIndicatorsService.getClanTitle(actor);
+			if (clanTitle != null)
+			{
+				rankImage = chatIconManager.getRankImage(clanTitle);
+			}
+		}
+
+		if (rankImage != null)
+		{
+			final int imageWidth = rankImage.getWidth();
+			final int imageTextMargin;
+			final int imageNegativeMargin;
+
+			if (drawPlayerNamesConfig == PlayerNameLocation.MODEL_RIGHT)
+			{
+				imageTextMargin = imageWidth;
+				imageNegativeMargin = 0;
+			}
+			else
+			{
+				imageTextMargin = imageWidth / 2;
+				imageNegativeMargin = imageWidth / 2;
+			}
+
+			final int textHeight = graphics.getFontMetrics().getHeight() - graphics.getFontMetrics().getMaxDescent();
+			final Point imageLocation = new Point(textLocation.getX() - imageNegativeMargin - 1, textLocation.getY() - textHeight / 2 - rankImage.getHeight() / 2);
+			OverlayUtil.renderImageLocation(graphics, imageLocation, rankImage);
+
+			// move text
+			textLocation = new Point(textLocation.getX() + imageTextMargin, textLocation.getY());
+		}
+
+		OverlayUtil.renderTextLocation(graphics, textLocation, name, color);
 	}
 }

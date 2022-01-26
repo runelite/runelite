@@ -34,11 +34,11 @@ import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.widgets.Widget;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.ProgressPieComponent;
+import net.runelite.client.util.ColorUtil;
 
 public class TitheFarmPlantOverlay extends Overlay
 {
@@ -67,17 +67,17 @@ public class TitheFarmPlantOverlay extends Overlay
 		fills.clear();
 
 		final Color colorUnwateredBorder = config.getColorUnwatered();
-		final Color colorUnwatered = new Color(colorUnwateredBorder.getRed(), colorUnwateredBorder.getGreen(), colorUnwateredBorder.getBlue(), 100);
+		final Color colorUnwatered = ColorUtil.colorWithAlpha(colorUnwateredBorder, (int) (colorUnwateredBorder.getAlpha() / 2.5));
 		borders.put(TitheFarmPlantState.UNWATERED, colorUnwateredBorder);
 		fills.put(TitheFarmPlantState.UNWATERED, colorUnwatered);
 
 		final Color colorWateredBorder = config.getColorWatered();
-		final Color colorWatered = new Color(colorWateredBorder.getRed(), colorWateredBorder.getGreen(), colorWateredBorder.getBlue(), 100);
+		final Color colorWatered = ColorUtil.colorWithAlpha(colorWateredBorder, (int) (colorWateredBorder.getAlpha() / 2.5));
 		borders.put(TitheFarmPlantState.WATERED, colorWateredBorder);
 		fills.put(TitheFarmPlantState.WATERED, colorWatered);
 
 		final Color colorGrownBorder = config.getColorGrown();
-		final Color colorGrown = new Color(colorGrownBorder.getRed(), colorGrownBorder.getGreen(), colorGrownBorder.getBlue(), 100);
+		final Color colorGrown = ColorUtil.colorWithAlpha(colorGrownBorder, (int) (colorGrownBorder.getAlpha() / 2.5));
 		borders.put(TitheFarmPlantState.GROWN, colorGrownBorder);
 		fills.put(TitheFarmPlantState.GROWN, colorGrown);
 	}
@@ -85,8 +85,6 @@ public class TitheFarmPlantOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		final Widget viewport = client.getViewportWidget();
-
 		for (TitheFarmPlant plant : plugin.getPlants())
 		{
 			if (plant.getState() == TitheFarmPlantState.DEAD)
@@ -103,7 +101,7 @@ public class TitheFarmPlantOverlay extends Overlay
 
 			final Point canvasLocation = Perspective.localToCanvas(client, localLocation, client.getPlane());
 
-			if (viewport != null && canvasLocation != null)
+			if (canvasLocation != null)
 			{
 				final ProgressPieComponent progressPieComponent = new ProgressPieComponent();
 				progressPieComponent.setPosition(canvasLocation);

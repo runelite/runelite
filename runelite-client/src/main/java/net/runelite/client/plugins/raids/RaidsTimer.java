@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.raids;
 
 import java.awt.Color;
-import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalTime;
@@ -34,22 +33,25 @@ import lombok.Setter;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.infobox.InfoBox;
 
-public class RaidsTimer extends InfoBox
+class RaidsTimer extends InfoBox
 {
 	private final Instant startTime;
+	private final RaidsConfig config;
 	private Instant floorTime;
 	private LocalTime time;
 	private LocalTime firstFloorTime;
 	private LocalTime secondFloorTime;
+	private LocalTime thirdFloorTime;
 	private LocalTime olmTime;
 
 	@Setter
 	private boolean stopped;
 
-	public RaidsTimer(BufferedImage image, Plugin plugin, Instant startTime)
+	public RaidsTimer(Plugin plugin, Instant startTime, RaidsConfig raidsConfig)
 	{
-		super(image, plugin);
+		super(null, plugin);
 		this.startTime = startTime;
+		this.config = raidsConfig;
 		floorTime = startTime;
 		stopped = false;
 	}
@@ -66,12 +68,18 @@ public class RaidsTimer extends InfoBox
 		{
 			secondFloorTime = LocalTime.ofSecondOfDay(elapsed.getSeconds());
 		}
-		else if (olmTime == null)
+		else if (thirdFloorTime == null)
 		{
-			olmTime = LocalTime.ofSecondOfDay(elapsed.getSeconds());
+			thirdFloorTime = LocalTime.ofSecondOfDay(elapsed.getSeconds());
 		}
 
 		floorTime = Instant.now();
+	}
+
+	public void timeOlm()
+	{
+		Duration elapsed = Duration.between(floorTime, Instant.now());
+		olmTime = LocalTime.ofSecondOfDay(elapsed.getSeconds());
 	}
 
 	@Override
@@ -126,6 +134,12 @@ public class RaidsTimer extends InfoBox
 			builder.append(secondFloorTime.format(DateTimeFormatter.ofPattern("mm:ss")));
 		}
 
+		if (thirdFloorTime != null)
+		{
+			builder.append("</br>Third floor: ");
+			builder.append(thirdFloorTime.format(DateTimeFormatter.ofPattern("mm:ss")));
+		}
+
 		if (olmTime != null)
 		{
 			builder.append("</br>Olm: ");
@@ -133,5 +147,11 @@ public class RaidsTimer extends InfoBox
 		}
 
 		return builder.toString();
+	}
+
+	@Override
+	public boolean render()
+	{
+		return config.raidsTimer();
 	}
 }

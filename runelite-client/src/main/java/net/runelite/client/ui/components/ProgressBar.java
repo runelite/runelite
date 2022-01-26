@@ -24,14 +24,15 @@
  */
 package net.runelite.client.ui.components;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.GridLayout;
+import java.util.Collections;
+import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-import lombok.Setter;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
 
@@ -40,11 +41,9 @@ import net.runelite.client.ui.components.shadowlabel.JShadowedLabel;
  */
 public class ProgressBar extends DimmableJPanel
 {
-	@Setter
 	private int maximumValue;
-
-	@Setter
 	private int value;
+	private List<Integer> positions = Collections.emptyList();
 
 	private final JLabel leftLabel = new JShadowedLabel();
 	private final JLabel rightLabel = new JShadowedLabel();
@@ -54,7 +53,7 @@ public class ProgressBar extends DimmableJPanel
 
 	public ProgressBar()
 	{
-		setLayout(new BorderLayout());
+		setLayout(new GridLayout(1, 3));
 		// The background color should be overridden
 		setBackground(Color.GREEN.darker());
 		setForeground(Color.GREEN.brighter());
@@ -67,6 +66,7 @@ public class ProgressBar extends DimmableJPanel
 
 		rightLabel.setFont(FontManager.getRunescapeSmallFont());
 		rightLabel.setForeground(Color.WHITE);
+		rightLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		rightLabel.setBorder(new EmptyBorder(2, 0, 0, 5));
 
 		centerLabel.setFont(FontManager.getRunescapeSmallFont());
@@ -75,20 +75,30 @@ public class ProgressBar extends DimmableJPanel
 		centerLabel.setBorder(new EmptyBorder(2, 0, 0, 0));
 
 		// Adds components to be automatically redrawn when paintComponents is called
-		add(leftLabel, BorderLayout.WEST);
-		add(centerLabel, BorderLayout.CENTER);
-		add(rightLabel, BorderLayout.EAST);
+		add(leftLabel);
+		add(centerLabel);
+		add(rightLabel);
 	}
 
 	@Override
 	public void paint(Graphics g)
 	{
-		double percentage = getPercentage();
-		int topWidth = (int) (getSize().width * (percentage / 100));
+		int percentage = getPercentage();
+		int topWidth = (int) (getSize().width * (percentage / 100f));
 
 		super.paint(g);
 		g.setColor(getForeground());
 		g.fillRect(0, 0, topWidth, 16);
+
+		for (final Integer position : positions)
+		{
+			final int xCord = getSize().width * position / maximumValue;
+			if (xCord > topWidth)
+			{
+				g.fillRect(xCord, 0, 1, 16);
+			}
+		}
+
 		super.paintComponents(g);
 	}
 
@@ -133,7 +143,7 @@ public class ProgressBar extends DimmableJPanel
 		centerLabel.setText(isDimmed() ? txt : centerLabelText);
 	}
 
-	public double getPercentage()
+	public int getPercentage()
 	{
 		if (value == 0)
 		{
@@ -141,5 +151,23 @@ public class ProgressBar extends DimmableJPanel
 		}
 
 		return (value * 100) / maximumValue;
+	}
+
+	public void setMaximumValue(int maximumValue)
+	{
+		this.maximumValue = maximumValue;
+		repaint();
+	}
+
+	public void setValue(int value)
+	{
+		this.value = value;
+		repaint();
+	}
+
+	public void setPositions(List<Integer> positions)
+	{
+		this.positions = positions;
+		repaint();
 	}
 }

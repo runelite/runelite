@@ -61,6 +61,6 @@ public class StatChangeIndicator extends InfoBox
 	public boolean render()
 	{
 		final int time = up ? plugin.getChangeUpTicks() : plugin.getChangeDownTicks();
-		return config.displayIndicators() && time != -1;
+		return config.displayInfoboxes() && time != -1;
 	}
 }

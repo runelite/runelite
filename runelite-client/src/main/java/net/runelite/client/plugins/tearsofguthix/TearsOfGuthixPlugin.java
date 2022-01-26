@@ -24,11 +24,11 @@
  */
 package net.runelite.client.plugins.tearsofguthix;
 
-import com.google.common.eventbus.Subscribe;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
+import com.google.inject.Provides;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.DecorativeObject;
@@ -36,6 +36,8 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -60,6 +62,12 @@ public class TearsOfGuthixPlugin extends Plugin
 
 	@Getter
 	private final Map<DecorativeObject, Instant> streams = new HashMap<>();
+
+	@Provides
+	TearsOfGuthixConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(TearsOfGuthixConfig.class);
+	}
 
 	@Override
 	protected void startUp()
@@ -91,8 +99,10 @@ public class TearsOfGuthixPlugin extends Plugin
 	{
 		DecorativeObject object = event.getDecorativeObject();
 
-		if (event.getDecorativeObject().getId() == ObjectID.BLUE_TEARS ||
-			event.getDecorativeObject().getId() == ObjectID.BLUE_TEARS_6665)
+		if (object.getId() == ObjectID.BLUE_TEARS ||
+			object.getId() == ObjectID.BLUE_TEARS_6665 ||
+			object.getId() == ObjectID.GREEN_TEARS ||
+			object.getId() == ObjectID.GREEN_TEARS_6666)
 		{
 			if (client.getLocalPlayer().getWorldLocation().getRegionID() == TOG_REGION)
 			{

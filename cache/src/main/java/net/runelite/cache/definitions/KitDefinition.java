@@ -24,21 +24,19 @@
  */
 package net.runelite.cache.definitions;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.Data;
 
-@RequiredArgsConstructor
+@Data
 public class KitDefinition
 {
-	@Getter
 	private final int id;
 	public short[] recolorToReplace;
 	public short[] recolorToFind;
 	public short[] retextureToFind;
 	public short[] retextureToReplace;
 	public int bodyPartId = -1;
-	public int[] modelIds;
-	public int[] models = new int[]
+	public int[] models;
+	public int[] chatheadModels = new int[]
 	{
 		-1, -1, -1, -1, -1
 	};

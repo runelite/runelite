@@ -1,0 +1,348 @@
+.id                 129
+.int_stack_count    7
+.string_stack_count 0
+.int_var_count      13
+.string_var_count   2
+; callback "friendsChatSetText"
+;   Fired just before the client pops the name off the stack
+;     Modified by the friendnotes plugin to show the icon
+; callback "friendsChatSetPosition"
+;   Fired just before the client sets the position of "ignored person changed their name" icon
+;     Modified by the friendnotes plugin to offset the name changed icon
+   iload                  1
+   iconst                 2
+   iconst                 3
+   sconst                 "Sort by name"
+   iload                  0
+   iload                  1
+   iload                  2
+   iload                  3
+   iload                  4
+   iload                  5
+   iload                  6
+   invoke                 1653
+   iload                  2
+   iconst                 0
+   iconst                 1
+   sconst                 "Legacy sort"
+   iload                  0
+   iload                  1
+   iload                  2
+   iload                  3
+   iload                  4
+   iload                  5
+   iload                  6
+   invoke                 1653
+   iload                  3
+   cc_deleteall          
+   iconst                 0
+   istore                 7
+   iconst                 0
+   istore                 8
+   sconst                 ""
+   sstore                 0
+   sconst                 ""
+   sstore                 1
+   iconst                 0
+   istore                 9
+   iconst                 15
+   istore                 10
+   iconst                 -1
+   istore                 11
+   ignore_count          
+   istore                 12
+   iload                  12
+   iconst                 0
+   if_icmplt              LABEL46
+   jump                   LABEL67
+LABEL46:
+   get_varbit             8119
+   iconst                 1
+   if_icmpeq              LABEL50
+   jump                   LABEL57
+LABEL50:
+   sconst                 "Loading ignore list"
+   sconst                 "<br>"
+   sconst                 "Please wait..."
+   join_string            3
+   iload                  5
+   if_settext            
+   jump                   LABEL63
+LABEL57:
+   sconst                 "You must set a name"
+   sconst                 "<br>"
+   sconst                 "before using this."
+   join_string            3
+   iload                  5
+   if_settext            
+LABEL63:
+   iconst                 1
+   iload                  0
+   if_sethide            
+   jump                   LABEL279
+LABEL67:
+   iload                  12
+   iconst                 0
+   if_icmpeq              LABEL71
+   jump                   LABEL83
+LABEL71:
+   sconst                 "You may ignore users by using the button below, or by "
+   sconst                 "right-clicking"
+   sconst                 "long pressing"
+   invoke                 1971
+   sconst                 " on a message from them and selecting to add them to your ignore list."
+   join_string            3
+   iload                  5
+   if_settext            
+   iconst                 1
+   iload                  0
+   if_sethide            
+   jump                   LABEL279
+LABEL83:
+   invoke                 1972
+   istore                 11
+   iload                  11
+   iconst                 1
+   if_icmpeq              LABEL89
+   jump                   LABEL94
+LABEL89:
+   iconst                 8
+   iconst                 5
+   iload                  10
+   scale                 
+   istore                 10
+LABEL94:
+   sconst                 ""
+   iload                  5
+   if_settext            
+   iconst                 0
+   iload                  0
+   if_sethide            
+   3640                  
+   get_varc_int           184
+   switch                
+      1: LABEL104
+      2: LABEL107
+      3: LABEL110
+   jump                   LABEL112
+LABEL104:
+   iconst                 0
+   3641                  
+   jump                   LABEL112
+LABEL107:
+   iconst                 1
+   3642                  
+   jump                   LABEL112
+LABEL110:
+   iconst                 0
+   3642                  
+LABEL112:
+   3643                  
+LABEL113:
+   iload                  7
+   iload                  12
+   if_icmplt              LABEL117
+   jump                   LABEL271
+LABEL117:
+   iload                  7
+   ignore_getname        
+   sstore                 1
+   sstore                 0
+   iload                  3
+   iconst                 4
+   iload                  8
+   cc_create             
+   iload                  8
+   iconst                 1
+   add                   
+   istore                 8
+   sload                  0
+   sconst                 "friendsChatSetText"
+   runelite_callback     
+   cc_settext            
+   iconst                 0
+   iload                  10
+   iconst                 1
+   iconst                 0
+   cc_setsize            
+   iconst                 0
+   iload                  9
+   iconst                 1
+   iconst                 0
+   cc_setposition        
+   iconst                 16777215
+   cc_setcolour          
+   iconst                 495
+   cc_settextfont        
+   iconst                 0
+   iconst                 1
+   iconst                 0
+   cc_settextalign       
+   iconst                 1
+   cc_settextshadow      
+   sconst                 "<col=ff9040>"
+   sload                  0
+   sconst                 "</col>"
+   join_string            3
+   cc_setopbase          
+   iconst                 1
+   sconst                 "Delete"
+   cc_setop              
+   iload                  3
+   iconst                 5
+   iload                  8
+   cc_create              1
+   iload                  8
+   iconst                 1
+   add                   
+   istore                 8
+   iconst                 14
+   iconst                 14
+   iconst                 0
+   iconst                 0
+   cc_setsize             1
+   sload                  0
+   iconst                 190
+   iconst                 495
+   parawidth             
+   iconst                 3
+   add                   
+   iload                  9
+   iload                  10
+   iconst                 14
+   sub                   
+   iconst                 2
+   div                   
+   add                   
+   iconst                 0
+   iconst                 0
+   sconst                 "friendsChatSetPosition"
+   runelite_callback     
+   cc_setposition         1
+   iconst                 1093
+   cc_setgraphic          1
+   iconst                 3355443
+   cc_setgraphicshadow    1
+   sload                  1
+   string_length         
+   iconst                 0
+   if_icmpgt              LABEL197
+   jump                   LABEL246
+LABEL197:
+   iload                  11
+   iconst                 1
+   if_icmpeq              LABEL201
+   jump                   LABEL215
+LABEL201:
+   iconst                 10
+   sconst                 "Reveal previous name"
+   cc_setop              
+   iconst                 130
+   iconst                 -2147483644
+   sconst                 "event_opbase"
+   iconst                 -2147483645
+   cc_getid              
+   cc_getid               1
+   sload                  1
+   sload                  0
+   sconst                 "isIiiss"
+   cc_setonop            
+   jump                   LABEL243
+LABEL215:
+   sconst                 "Previous name:"
+   sconst                 "<br>"
+   sload                  1
+   join_string            3
+   sstore                 1
+   iconst                 526
+   iconst                 -2147483645
+   iconst                 -2147483643
+   iload                  6
+   sload                  1
+   iconst                 25
+   iconst                 190
+   sconst                 "IiIsii"
+   cc_setonmouserepeat   
+   iconst                 40
+   iload                  6
+   sconst                 "I"
+   cc_setonmouseleave    
+   iconst                 130
+   iconst                 -2147483644
+   sconst                 "event_opbase"
+   iconst                 -1
+   iconst                 -1
+   iconst                 -1
+   sconst                 "null"
+   sconst                 "null"
+   sconst                 "isIiiss"
+   cc_setonop            
+LABEL243:
+   iconst                 0
+   cc_sethide             1
+   jump                   LABEL262
+LABEL246:
+   iconst                 40
+   iload                  6
+   sconst                 "I"
+   cc_setonmouseover     
+   iconst                 1
+   cc_sethide             1
+   iconst                 130
+   iconst                 -2147483644
+   sconst                 "event_opbase"
+   iconst                 -1
+   iconst                 -1
+   iconst                 -1
+   sconst                 "null"
+   sconst                 "null"
+   sconst                 "isIiiss"
+   cc_setonop            
+LABEL262:
+   iload                  7
+   iconst                 1
+   add                   
+   iload                  9
+   iload                  10
+   add                   
+   istore                 9
+   istore                 7
+   jump                   LABEL113
+LABEL271:
+   iload                  12
+   iconst                 1
+   if_icmpge              LABEL275
+   jump                   LABEL279
+LABEL275:
+   iload                  9
+   iconst                 5
+   add                   
+   istore                 9
+LABEL279:
+   iload                  9
+   iload                  3
+   if_getheight          
+   if_icmpgt              LABEL284
+   jump                   LABEL294
+LABEL284:
+   iconst                 0
+   iload                  9
+   iload                  3
+   if_setscrollsize      
+   iload                  4
+   iload                  3
+   iload                  3
+   if_getscrolly         
+   invoke                 72
+   jump                   LABEL302
+LABEL294:
+   iconst                 0
+   iconst                 0
+   iload                  3
+   if_setscrollsize      
+   iload                  4
+   iload                  3
+   iconst                 0
+   invoke                 72
+LABEL302:
+   return                

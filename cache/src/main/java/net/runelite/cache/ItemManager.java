@@ -96,16 +96,19 @@ public class ItemManager implements ItemProvider
 	public void java(File java) throws IOException
 	{
 		java.mkdirs();
-		try (IDClass ids = IDClass.create(java, "ItemID"))
+		try (IDClass ids = IDClass.create(java, "ItemID");
+			IDClass nulls = IDClass.create(java, "NullItemID"))
 		{
 			for (ItemDefinition def : items.values())
 			{
 				if (def.name.equalsIgnoreCase("NULL"))
 				{
-					continue;
+					nulls.add(def.name, def.id);
 				}
-
-				ids.add(def.name, def.id);
+				else
+				{
+					ids.add(def.name, def.id);
+				}
 			}
 		}
 	}

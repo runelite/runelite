@@ -29,7 +29,7 @@ import java.awt.Image;
 /**
  * Represents the clients primary image buffer.
  */
-public interface MainBufferProvider
+public interface MainBufferProvider extends BufferProvider
 {
 	/**
 	 * Gets the image currently loaded in the buffer.

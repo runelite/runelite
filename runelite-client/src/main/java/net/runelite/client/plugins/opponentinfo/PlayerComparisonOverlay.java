@@ -31,18 +31,21 @@ import java.awt.Graphics2D;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
+import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
-import net.runelite.client.game.HiscoreManager;
+import net.runelite.client.hiscore.HiscoreManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
+import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
+import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 import net.runelite.client.util.Text;
-import net.runelite.http.api.hiscore.HiscoreResult;
-import net.runelite.http.api.hiscore.HiscoreSkill;
+import net.runelite.client.hiscore.HiscoreResult;
+import net.runelite.client.hiscore.HiscoreSkill;
 
 class PlayerComparisonOverlay extends Overlay
 {
@@ -51,7 +54,7 @@ class PlayerComparisonOverlay extends Overlay
 	private static final Color NEUTRAL_TEXT_COLOR = Color.WHITE;
 	private static final Color HIGHLIGHT_COLOR = new Color(255, 200, 0, 255);
 
-	private static final Skill[] COMBAT_SKILLS = new Skill[]{
+	private static final Skill[] COMBAT_SKILLS = {
 		Skill.ATTACK,
 		Skill.STRENGTH,
 		Skill.DEFENCE,
@@ -61,7 +64,7 @@ class PlayerComparisonOverlay extends Overlay
 		Skill.PRAYER
 	};
 
-	private static final HiscoreSkill[] HISCORE_COMBAT_SKILLS = new HiscoreSkill[]{
+	private static final HiscoreSkill[] HISCORE_COMBAT_SKILLS = {
 		HiscoreSkill.ATTACK,
 		HiscoreSkill.STRENGTH,
 		HiscoreSkill.DEFENCE,
@@ -83,6 +86,7 @@ class PlayerComparisonOverlay extends Overlay
 	@Inject
 	private PlayerComparisonOverlay(Client client, OpponentInfoPlugin opponentInfoPlugin, OpponentInfoConfig config, HiscoreManager hiscoreManager)
 	{
+		super(opponentInfoPlugin);
 		this.client = client;
 		this.opponentInfoPlugin = opponentInfoPlugin;
 		this.config = config;
@@ -90,6 +94,7 @@ class PlayerComparisonOverlay extends Overlay
 
 		setPosition(OverlayPosition.BOTTOM_LEFT);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
+		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Opponent info overlay"));
 	}
 
 	@Override
@@ -148,7 +153,7 @@ class PlayerComparisonOverlay extends Overlay
 			final HiscoreSkill hiscoreSkill = HISCORE_COMBAT_SKILLS[i];
 			final Skill skill = COMBAT_SKILLS[i];
 
-			final net.runelite.http.api.hiscore.Skill opponentSkill = opponentSkills.getSkill(hiscoreSkill);
+			final net.runelite.client.hiscore.Skill opponentSkill = opponentSkills.getSkill(hiscoreSkill);
 
 			if (opponentSkill == null || opponentSkill.getLevel() == -1)
 			{

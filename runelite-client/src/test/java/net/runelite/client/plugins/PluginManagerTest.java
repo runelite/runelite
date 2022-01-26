@@ -28,7 +28,6 @@ import com.google.common.reflect.ClassPath;
 import com.google.common.reflect.ClassPath.ClassInfo;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.google.inject.Module;
 import com.google.inject.grapher.graphviz.GraphvizGrapher;
 import com.google.inject.grapher.graphviz.GraphvizModule;
 import com.google.inject.testing.fieldbinder.Bind;
@@ -38,24 +37,30 @@ import java.applet.Applet;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
+import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import net.runelite.api.Client;
 import net.runelite.client.RuneLite;
 import net.runelite.client.RuneLiteModule;
-import net.runelite.client.rs.ClientUpdateCheckMode;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigItem;
+import net.runelite.client.eventbus.EventBus;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
+import static org.mockito.ArgumentMatchers.any;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PluginManagerTest
@@ -73,19 +78,27 @@ public class PluginManagerTest
 	@Bind
 	public Client client;
 
-	private Set<Class> pluginClasses;
+	private Set<Class<?>> pluginClasses;
+	private Set<Class<?>> configClasses;
 
 	@Before
 	public void before() throws IOException
 	{
+		OkHttpClient okHttpClient = mock(OkHttpClient.class);
+		when(okHttpClient.newCall(any(Request.class)))
+			.thenThrow(new RuntimeException("in plugin manager test"));
+
 		Injector injector = Guice.createInjector(Modules
-			.override(new RuneLiteModule(ClientUpdateCheckMode.AUTO, true))
+			.override(new RuneLiteModule(okHttpClient, () -> null, true, false,
+				RuneLite.DEFAULT_SESSION_FILE,
+				RuneLite.DEFAULT_CONFIG_FILE))
 			.with(BoundFieldModule.of(this)));
 
 		RuneLite.setInjector(injector);
 
-		// Find plugins we expect to have
+		// Find plugins and configs we expect to have
 		pluginClasses = new HashSet<>();
+		configClasses = new HashSet<>();
 		Set<ClassInfo> classes = ClassPath.from(getClass().getClassLoader()).getTopLevelClassesRecursive(PLUGIN_PACKAGE);
 		for (ClassInfo classInfo : classes)
 		{
@@ -94,31 +107,40 @@ public class PluginManagerTest
 			if (pluginDescriptor != null)
 			{
 				pluginClasses.add(clazz);
+				continue;
+			}
+
+			if (Config.class.isAssignableFrom(clazz))
+			{
+				configClasses.add(clazz);
 			}
 		}
-
 	}
 
 	@Test
 	public void testLoadPlugins() throws Exception
 	{
-		PluginManager pluginManager = new PluginManager(false, null, null, null, null, null);
+		PluginManager pluginManager = new PluginManager(false, false, null, null, null, null);
 		pluginManager.setOutdated(true);
 		pluginManager.loadCorePlugins();
 		Collection<Plugin> plugins = pluginManager.getPlugins();
 		long expected = pluginClasses.stream()
-			.map(cl -> (PluginDescriptor) cl.getAnnotation(PluginDescriptor.class))
+			.map(cl -> cl.getAnnotation(PluginDescriptor.class))
 			.filter(Objects::nonNull)
 			.filter(PluginDescriptor::loadWhenOutdated)
 			.count();
 		assertEquals(expected, plugins.size());
 
-		pluginManager = new PluginManager(false, null, null, null, null, null);
+		pluginManager = new PluginManager(false, false, null, null, null, null);
 		pluginManager.loadCorePlugins();
 		plugins = pluginManager.getPlugins();
 
+		// Check that the plugins register with the eventbus without errors
+		EventBus eventBus = new EventBus();
+		plugins.forEach(eventBus::register);
+
 		expected = pluginClasses.stream()
-			.map(cl -> (PluginDescriptor) cl.getAnnotation(PluginDescriptor.class))
+			.map(cl -> cl.getAnnotation(PluginDescriptor.class))
 			.filter(Objects::nonNull)
 			.filter(pd -> !pd.developerPlugin())
 			.count();
@@ -128,25 +150,61 @@ public class PluginManagerTest
 	@Test
 	public void dumpGraph() throws Exception
 	{
-		List<Module> modules = new ArrayList<>();
-		modules.add(new GraphvizModule());
-		modules.add(new RuneLiteModule(ClientUpdateCheckMode.AUTO, true));
-
-		PluginManager pluginManager = new PluginManager(true, null, null, null, null, null);
+		PluginManager pluginManager = new PluginManager(true, false, null, null, null, null);
 		pluginManager.loadCorePlugins();
-		for (Plugin p : pluginManager.getPlugins())
+
+		Injector graphvizInjector = Guice.createInjector(new GraphvizModule());
+		GraphvizGrapher graphvizGrapher = graphvizInjector.getInstance(GraphvizGrapher.class);
+
+		File dotFolder = folder.newFolder();
+		try (PrintWriter out = new PrintWriter(new File(dotFolder, "runelite.dot"), "UTF-8"))
 		{
-			modules.add(p);
+			graphvizGrapher.setOut(out);
+			graphvizGrapher.setRankdir("TB");
+			graphvizGrapher.graph(RuneLite.getInjector());
 		}
 
-		File file = folder.newFile();
-		try (PrintWriter out = new PrintWriter(file, "UTF-8"))
+		for (Plugin p : pluginManager.getPlugins())
 		{
-			Injector injector = Guice.createInjector(modules);
-			GraphvizGrapher grapher = injector.getInstance(GraphvizGrapher.class);
-			grapher.setOut(out);
-			grapher.setRankdir("TB");
-			grapher.graph(injector);
+			try (PrintWriter out = new PrintWriter(new File(dotFolder, p.getName() + ".dot"), "UTF-8"))
+			{
+				graphvizGrapher.setOut(out);
+				graphvizGrapher.setRankdir("TB");
+				graphvizGrapher.graph(p.getInjector());
+			}
+		}
+	}
+
+	@Test
+	public void ensureNoDuplicateConfigKeyNames()
+	{
+		for (final Class<?> clazz : configClasses)
+		{
+			final Set<String> configKeyNames = new HashSet<>();
+
+			for (final Method method : clazz.getMethods())
+			{
+				if (!method.isDefault())
+				{
+					continue;
+				}
+
+				final ConfigItem annotation = method.getAnnotation(ConfigItem.class);
+
+				if (annotation == null)
+				{
+					continue;
+				}
+
+				final String configKeyName = annotation.keyName();
+
+				if (configKeyNames.contains(configKeyName))
+				{
+					throw new IllegalArgumentException("keyName " + configKeyName + " is duplicated in " + clazz);
+				}
+
+				configKeyNames.add(configKeyName);
+			}
 		}
 	}
 

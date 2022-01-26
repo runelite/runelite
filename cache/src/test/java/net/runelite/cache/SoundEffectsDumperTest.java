@@ -36,6 +36,7 @@ import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Storage;
 import net.runelite.cache.fs.Store;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -52,6 +53,7 @@ public class SoundEffectsDumperTest
 	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
 
 	@Test
+	@Ignore
 	public void test() throws IOException
 	{
 		File dumpDir = folder.newFolder();
@@ -71,7 +73,7 @@ public class SoundEffectsDumperTest
 				SoundEffectLoader soundEffectLoader = new SoundEffectLoader();
 				SoundEffectDefinition soundEffect = soundEffectLoader.load(contents);
 
-				Files.write(gson.toJson(soundEffect), new File(dumpDir, archive.getArchiveId() + ".json"), Charset.defaultCharset());
+				Files.asCharSink(new File(dumpDir, archive.getArchiveId() + ".json"), Charset.defaultCharset()).write(gson.toJson(soundEffect));
 				++count;
 			}
 		}

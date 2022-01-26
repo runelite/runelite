@@ -31,7 +31,7 @@ import static net.runelite.api.ItemID.*;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ItemVariationMappingTest
@@ -342,7 +342,8 @@ public class ItemVariationMappingTest
 	@Test
 	public void testMappedNames()
 	{
-		ITEMS_MAP.forEach((key, value) -> {
+		ITEMS_MAP.forEach((key, value) ->
+		{
 			assertEquals(value, (Integer) ItemVariationMapping.map(key));
 		});
 	}

@@ -49,7 +49,7 @@ class XpPauseState
 		return findPauseState(skill).isPaused();
 	}
 
-	void tickXp(Skill skill, int currentXp, int pauseAfterMinutes)
+	void tickXp(Skill skill, long currentXp, int pauseAfterMinutes)
 	{
 		final XpPauseStateSingle state = findPauseState(skill);
 

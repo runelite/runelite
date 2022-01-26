@@ -24,22 +24,9 @@
  */
 package net.runelite.client.plugins.runepouch.config;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
-@Getter
-@RequiredArgsConstructor
 public enum RunePouchOverlayMode
 {
-	INVENTORY("Inventory"),
-	MOUSE_HOVER("Mouse hover"),
-	BOTH("Both");
-
-	private final String name;
-
-	@Override
-	public String toString()
-	{
-		return name;
-	}
+	INVENTORY,
+	MOUSE_HOVER,
+	BOTH
 }

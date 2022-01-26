@@ -35,7 +35,7 @@ public @interface ConfigGroup
 {
 	/**
 	 * The key name of the config group used for storing configuration within the config group.
-	 * This should typically be a lowercased version of your plugin name, with all spaces removed.
+	 * This should typically be a lowercase version of your plugin name, with all spaces removed.
 	 * <p>
 	 * For example, the {@code Grand Exchange} plugin uses the key name {@code grandexchange}.
 	 */

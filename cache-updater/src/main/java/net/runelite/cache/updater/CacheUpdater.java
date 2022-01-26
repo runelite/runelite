@@ -39,7 +39,6 @@ import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.Store;
 import net.runelite.cache.updater.beans.CacheEntry;
 import net.runelite.cache.updater.beans.IndexEntry;
-import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.protocol.api.login.HandshakeResponseType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,6 +62,9 @@ public class CacheUpdater implements CommandLineRunner
 	@Value("${minio.bucket}")
 	private String minioBucket;
 
+	@Value("${rs.version}")
+	private int rsVersion;
+
 	@Autowired
 	public CacheUpdater(
 		@Qualifier("Runelite Cache SQL2O") Sql2o sql2o,
@@ -75,8 +77,6 @@ public class CacheUpdater implements CommandLineRunner
 
 	public void update() throws IOException, InvalidEndpointException, InvalidPortException, InterruptedException
 	{
-		int rsVersion = RuneLiteAPI.getRsVersion();
-
 		try (Connection con = sql2o.beginTransaction())
 		{
 			CacheDAO cacheDao = new CacheDAO();
@@ -120,7 +120,6 @@ public class CacheUpdater implements CommandLineRunner
 			CacheEntry newCache = created ? cache : cacheDao.createCache(con, rsVersion, Instant.now());
 
 			storage.setCacheEntry(newCache);
-			store.save();
 
 			// ensure objects are added to the store before they become
 			// visible in the database
@@ -129,6 +128,10 @@ public class CacheUpdater implements CommandLineRunner
 			{
 				logger.debug("Waiting for termination of executor...");
 			}
+
+			// CacheStorage requires archive hashes to be set, which is set in the executor tasks, so it must be
+			// run after shutdown
+			store.save();
 
 			// commit database
 			con.commit();

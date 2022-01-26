@@ -25,23 +25,23 @@
  */
 package net.runelite.client.plugins.achievementdiary;
 
-import com.google.common.eventbus.Subscribe;
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.FontTypeFace;
 import net.runelite.api.ScriptID;
-import net.runelite.api.Skill;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.achievementdiary.diaries.ArdougneDiaryRequirement;
@@ -50,12 +50,12 @@ import net.runelite.client.plugins.achievementdiary.diaries.FaladorDiaryRequirem
 import net.runelite.client.plugins.achievementdiary.diaries.FremennikDiaryRequirement;
 import net.runelite.client.plugins.achievementdiary.diaries.KandarinDiaryRequirement;
 import net.runelite.client.plugins.achievementdiary.diaries.KaramjaDiaryRequirement;
+import net.runelite.client.plugins.achievementdiary.diaries.KourendDiaryRequirement;
 import net.runelite.client.plugins.achievementdiary.diaries.LumbridgeDiaryRequirement;
 import net.runelite.client.plugins.achievementdiary.diaries.MorytaniaDiaryRequirement;
 import net.runelite.client.plugins.achievementdiary.diaries.VarrockDiaryRequirement;
 import net.runelite.client.plugins.achievementdiary.diaries.WesternDiaryRequirement;
 import net.runelite.client.plugins.achievementdiary.diaries.WildernessDiaryRequirement;
-import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
 
 @Slf4j
@@ -66,6 +66,9 @@ import net.runelite.client.util.Text;
 )
 public class DiaryRequirementsPlugin extends Plugin
 {
+	private static final String AND_JOINER = ", ";
+	private static final Pattern AND_JOINER_PATTERN = Pattern.compile("(?<=, )");
+
 	@Inject
 	private Client client;
 
@@ -100,6 +103,9 @@ public class DiaryRequirementsPlugin extends Plugin
 		{
 			return;
 		}
+
+		FontTypeFace font = titleWidget.getFont();
+		int maxWidth = titleWidget.getWidth();
 
 		List<String> originalAchievements = getOriginalAchievements(children);
 
@@ -137,21 +143,45 @@ public class DiaryRequirementsPlugin extends Plugin
 			{
 				String levelRequirement = skillRequirements.get(taskBuffer);
 				String task = originalAchievements.get(i);
-				if (Text.removeTags(task).length() + Text.removeTags(levelRequirement).length() <= 50)
+
+				int taskWidth = font.getTextWidth(task);
+				int ourWidth = font.getTextWidth(levelRequirement);
+				String strike = task.startsWith("<str>") ? "<str>" : "";
+
+				if (ourWidth + taskWidth < maxWidth)
 				{
+					// Merge onto 1 line
 					newRequirements.set(i + offset, task + levelRequirement);
+				}
+				else if (ourWidth < maxWidth)
+				{
+					// 2 line split
+					newRequirements.add(i + (++offset), strike + levelRequirement);
 				}
 				else
 				{
-					offset++;
-					if (task.startsWith("<str>"))
+					// Full text layout
+					StringBuilder b = new StringBuilder();
+					b.append(task);
+					int runningWidth = font.getTextWidth(b.toString());
+					for (String word : AND_JOINER_PATTERN.split(levelRequirement))
 					{
-						newRequirements.add(i + offset, "<str>" + levelRequirement);
+						int wordWidth = font.getTextWidth(word);
+						if (runningWidth == 0 || wordWidth + runningWidth < maxWidth)
+						{
+							runningWidth += wordWidth;
+							b.append(word);
+						}
+						else
+						{
+							newRequirements.add(i + (offset++), b.toString());
+							b.delete(0, b.length());
+							runningWidth = wordWidth;
+							b.append(strike);
+							b.append(word);
+						}
 					}
-					else
-					{
-						newRequirements.add(i + offset, levelRequirement);
-					}
+					newRequirements.set(i + offset, b.toString());
 				}
 			}
 		}
@@ -209,6 +239,9 @@ public class DiaryRequirementsPlugin extends Plugin
 			case "KARAMJA_AREA_TASKS":
 				diaryRequirementContainer = new KaramjaDiaryRequirement();
 				break;
+			case "KOUREND_&_KEBOS_TASKS":
+				diaryRequirementContainer = new KourendDiaryRequirement();
+				break;
 			case "LUMBRIDGE_&_DRAYNOR_TASKS":
 				diaryRequirementContainer = new LumbridgeDiaryRequirement();
 				break;
@@ -233,66 +266,28 @@ public class DiaryRequirementsPlugin extends Plugin
 	// returns a map of task -> level requirements
 	private Map<String, String> buildRequirements(Collection<DiaryRequirement> requirements)
 	{
-		Map<String, String> lineIndexRequirementMap = new HashMap<>();
+		Map<String, String> reqs = new HashMap<>();
 		for (DiaryRequirement req : requirements)
 		{
-			String reqTask = req.getTask();
-			List<RequirementStringBuilder> requirementBuilders = new ArrayList<>();
+			StringBuilder b = new StringBuilder();
+			b.append("<col=ffffff>(");
 
-			for (Requirement i : req.getSkillRequirements())
+			assert !req.getRequirements().isEmpty();
+			for (Requirement ireq : req.getRequirements())
 			{
-				RequirementStringBuilder requirementStringBuilder = new RequirementStringBuilder(i);
-
-				Skill skill = i.getSkill();
-				int realSkillLevel;
-				if (skill == null && i.getCustomRequirement().equals("Combat"))
-				{
-					realSkillLevel = client.getLocalPlayer().getCombatLevel();
-				}
-				else
-				{
-					realSkillLevel = client.getRealSkillLevel(skill);
-				}
-				List<Integer> altRealSkillLevels = null;
-				if (i.getAltRequirements() != null)
-				{
-					altRealSkillLevels = new ArrayList<>();
-					for (Requirement j : i.getAltRequirements())
-					{
-						altRealSkillLevels.add(client.getRealSkillLevel(j.getSkill()));
-					}
-				}
-
-				if (requirementStringBuilder.hasLevelRequirement(realSkillLevel, altRealSkillLevels))
-				{
-					requirementStringBuilder.strikeThroughRequirement();
-				}
-				else
-				{
-					requirementStringBuilder.colorRedRequirement();
-				}
-				requirementBuilders .add(requirementStringBuilder);
+				boolean satifisfied = ireq.satisfiesRequirement(client);
+				b.append(satifisfied ? "<col=000080><str>" : "<col=800000>");
+				b.append(ireq.toString());
+				b.append(satifisfied ? "</str>" : "<col=000080>");
+				b.append(AND_JOINER);
 			}
 
-			lineIndexRequirementMap.put(reqTask, combine(requirementBuilders ));
-		}
-		return lineIndexRequirementMap;
-	}
+			b.delete(b.length() - AND_JOINER.length(), b.length());
 
-	private String combine(List<RequirementStringBuilder> list)
-	{
-		StringBuilder requirementsString = new StringBuilder();
-		requirementsString.append(ColorUtil.prependColorTag(" (", Color.WHITE));
-		for (RequirementStringBuilder req : list)
-		{
-			requirementsString.append(ColorUtil.colorTag(new Color(0x80)))
-				.append(req.getRequirementString())
-				.append(", ");
-		}
-		requirementsString.deleteCharAt(requirementsString.length() - 1);
-		requirementsString.deleteCharAt(requirementsString.length() - 2);
-		requirementsString.append(ColorUtil.prependColorTag(")", Color.WHITE));
+			b.append("<col=ffffff>)");
 
-		return requirementsString.toString();
+			reqs.put(req.getTask(), b.toString());
+		}
+		return reqs;
 	}
 }

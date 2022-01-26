@@ -29,17 +29,19 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.client.game.ItemManager;
-import net.runelite.client.ui.overlay.Overlay;
+import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
+import net.runelite.client.ui.overlay.OverlayMenuEntry;
+import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.components.ComponentOrientation;
 import net.runelite.client.ui.overlay.components.ImageComponent;
-import net.runelite.client.ui.overlay.components.PanelComponent;
 
-class BlastFurnaceOverlay extends Overlay
+class BlastFurnaceOverlay extends OverlayPanel
 {
 	private final Client client;
 	private final BlastFurnacePlugin plugin;
-	private final PanelComponent imagePanelComponent = new PanelComponent();
 
 	@Inject
 	private ItemManager itemManager;
@@ -47,10 +49,12 @@ class BlastFurnaceOverlay extends Overlay
 	@Inject
 	BlastFurnaceOverlay(Client client, BlastFurnacePlugin plugin)
 	{
+		super(plugin);
 		this.plugin = plugin;
 		this.client = client;
 		setPosition(OverlayPosition.TOP_LEFT);
-		imagePanelComponent.setOrientation(PanelComponent.Orientation.HORIZONTAL);
+		panelComponent.setOrientation(ComponentOrientation.HORIZONTAL);
+		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Blast furnace overlay"));
 	}
 
 	@Override
@@ -61,8 +65,6 @@ class BlastFurnaceOverlay extends Overlay
 			return null;
 		}
 
-		imagePanelComponent.getChildren().clear();
-
 		for (BarsOres varbit : BarsOres.values())
 		{
 			int amount = client.getVar(varbit.getVarbit());
@@ -72,10 +74,10 @@ class BlastFurnaceOverlay extends Overlay
 				continue;
 			}
 
-			imagePanelComponent.getChildren().add(new ImageComponent(getImage(varbit.getItemID(), amount)));
+			panelComponent.getChildren().add(new ImageComponent(getImage(varbit.getItemID(), amount)));
 		}
 
-		return imagePanelComponent.render(graphics);
+		return super.render(graphics);
 	}
 
 	private BufferedImage getImage(int itemID, int amount)

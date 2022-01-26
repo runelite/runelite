@@ -33,17 +33,6 @@ import net.runelite.client.config.ConfigItem;
 public interface BarrowsConfig extends Config
 {
 	@ConfigItem(
-		keyName = "showMinimap",
-		name = "Show Minimap in tunnels",
-		description = "Configures whether or not the minimap is displayed",
-		position = 0
-	)
-	default boolean showMinimap()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "showBrotherLoc",
 		name = "Show Brothers location",
 		description = "Configures whether or not the brothers location is displayed",
@@ -85,5 +74,27 @@ public interface BarrowsConfig extends Config
 	default Color deadBrotherLocColor()
 	{
 		return Color.RED;
+	}
+
+	@ConfigItem(
+		keyName = "showPuzzleAnswer",
+		name = "Show Puzzle Answer",
+		description = "Configures if the puzzle answer should be shown.",
+		position = 5
+	)
+	default boolean showPuzzleAnswer()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showPrayerDrainTimer",
+		name = "Show Prayer Drain Timer",
+		description = "Configure whether or not a countdown until the next prayer drain is displayed",
+		position = 6
+	)
+	default boolean showPrayerDrainTimer()
+	{
+		return true;
 	}
 }

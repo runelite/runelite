@@ -31,8 +31,11 @@ import java.time.Instant;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Stream;
+import net.runelite.api.ItemID;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.timetracking.clocks.ClockManager;
+import net.runelite.client.plugins.timetracking.farming.CropState;
+import net.runelite.client.plugins.timetracking.farming.FarmingContractManager;
 import net.runelite.client.plugins.timetracking.farming.FarmingTracker;
 import net.runelite.client.plugins.timetracking.hunter.BirdHouseTracker;
 import net.runelite.client.ui.ColorScheme;
@@ -43,19 +46,23 @@ class OverviewTabPanel extends TabContentPanel
 	private final FarmingTracker farmingTracker;
 	private final BirdHouseTracker birdHouseTracker;
 	private final ClockManager clockManager;
+	private final FarmingContractManager farmingContractManager;
 
 	private final OverviewItemPanel timerOverview;
 	private final OverviewItemPanel stopwatchOverview;
 	private final Map<Tab, OverviewItemPanel> farmingOverviews;
 	private final OverviewItemPanel birdHouseOverview;
+	private final OverviewItemPanel farmingContractOverview;
 
 	OverviewTabPanel(ItemManager itemManager, TimeTrackingConfig config, TimeTrackingPanel pluginPanel,
-		FarmingTracker farmingTracker, BirdHouseTracker birdHouseTracker, ClockManager clockManager)
+		FarmingTracker farmingTracker, BirdHouseTracker birdHouseTracker, ClockManager clockManager,
+		FarmingContractManager farmingContractManager)
 	{
 		this.config = config;
 		this.farmingTracker = farmingTracker;
 		this.birdHouseTracker = birdHouseTracker;
 		this.clockManager = clockManager;
+		this.farmingContractManager = farmingContractManager;
 
 		setLayout(new GridLayout(0, 1, 0, 8));
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
@@ -80,6 +87,10 @@ class OverviewTabPanel extends TabContentPanel
 					return p;
 				}
 			));
+
+		farmingContractOverview = new OverviewItemPanel(itemManager, () -> pluginPanel.switchTab(farmingContractManager.getContractTab()),
+			farmingContractManager::hasContract, ItemID.SEED_PACK, "Farming Contract");
+		add(farmingContractOverview);
 	}
 
 	@Override
@@ -116,6 +127,7 @@ class OverviewTabPanel extends TabContentPanel
 			updateItemPanel(panel, farmingTracker.getSummary(patchType), farmingTracker.getCompletionTime(patchType)));
 
 		updateItemPanel(birdHouseOverview, birdHouseTracker.getSummary(), birdHouseTracker.getCompletionTime());
+		updateContractPanel();
 	}
 
 	private void updateItemPanel(OverviewItemPanel panel, SummaryState summary, long completionTime)
@@ -133,9 +145,8 @@ class OverviewTabPanel extends TabContentPanel
 				}
 				else
 				{
-					panel.updateStatus("Ready " + getFormattedEstimate(duration, config.estimateRelative()), Color.GRAY);
+					panel.updateStatus("Ready " + getFormattedEstimate(duration, config.timeFormatMode()), Color.GRAY);
 				}
-
 				break;
 			}
 			case EMPTY:
@@ -145,6 +156,47 @@ class OverviewTabPanel extends TabContentPanel
 			default:
 				panel.updateStatus("Unknown", Color.GRAY);
 				break;
+		}
+	}
+
+	private void updateContractPanel()
+	{
+		switch (farmingContractManager.getSummary())
+		{
+			case COMPLETED:
+			case IN_PROGRESS:
+				switch (farmingContractManager.getContractCropState())
+				{
+					case HARVESTABLE:
+					case GROWING:
+						long duration = farmingContractManager.getCompletionTime() - Instant.now().getEpochSecond();
+
+						if (duration <= 0)
+						{
+							farmingContractOverview.updateStatus("Ready", ColorScheme.PROGRESS_COMPLETE_COLOR);
+							return;
+						}
+
+						farmingContractOverview.updateStatus("Ready " + getFormattedEstimate(duration, config.timeFormatMode()), Color.GRAY);
+						return;
+					case DISEASED:
+						farmingContractOverview.updateStatus("Diseased", CropState.DISEASED.getColor());
+						return;
+					case DEAD:
+						farmingContractOverview.updateStatus("Dead", CropState.DEAD.getColor());
+						return;
+				}
+				// fallthrough
+			case UNKNOWN:
+			default:
+				farmingContractOverview.updateStatus("Unknown", Color.GRAY);
+				return;
+			case EMPTY:
+				farmingContractOverview.updateStatus(farmingContractManager.getContractName(), Color.GRAY);
+				return;
+			case OCCUPIED:
+				farmingContractOverview.updateStatus(farmingContractManager.getContractName(), Color.RED);
+				return;
 		}
 	}
 }

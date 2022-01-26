@@ -33,13 +33,15 @@ public class FarmingRegion
 {
 	private final String name;
 	private final int regionID;
+	private final boolean definite;
 	private final FarmingPatch[] patches;
 	private final Varbits[] varbits;
 
-	FarmingRegion(String name, int regionID, FarmingPatch... patches)
+	FarmingRegion(String name, int regionID, boolean definite, FarmingPatch... patches)
 	{
 		this.name = name;
 		this.regionID = regionID;
+		this.definite = definite;
 		this.patches = patches;
 		this.varbits = new Varbits[patches.length];
 		for (int i = 0; i < patches.length; i++)
@@ -53,5 +55,11 @@ public class FarmingRegion
 	public boolean isInBounds(WorldPoint loc)
 	{
 		return true;
+	}
+
+	@Override
+	public String toString()
+	{
+		return name;
 	}
 }

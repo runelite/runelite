@@ -24,13 +24,8 @@
  */
 package net.runelite.client.plugins.cluescrolls;
 
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.geom.Area;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.widgets.Widget;
@@ -40,21 +35,16 @@ import net.runelite.client.plugins.cluescrolls.clues.EmoteClue;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayUtil;
-import net.runelite.client.ui.overlay.components.TextComponent;
 
-public class ClueScrollEmoteOverlay extends Overlay
+class ClueScrollEmoteOverlay extends Overlay
 {
-	private static final Color HIGHLIGHT_BORDER_COLOR = Color.ORANGE;
-	private static final Color HIGHLIGHT_HOVER_BORDER_COLOR = HIGHLIGHT_BORDER_COLOR.darker();
-	private static final Color HIGHLIGHT_FILL_COLOR = new Color(0, 255, 0, 20);
-
 	private final ClueScrollPlugin plugin;
 	private final Client client;
-	private final TextComponent textComponent = new TextComponent();
+
+	private boolean hasScrolled;
 
 	@Inject
-	public ClueScrollEmoteOverlay(ClueScrollPlugin plugin, Client client)
+	private ClueScrollEmoteOverlay(ClueScrollPlugin plugin, Client client)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
@@ -67,8 +57,9 @@ public class ClueScrollEmoteOverlay extends Overlay
 	{
 		ClueScroll clue = plugin.getClue();
 
-		if (clue == null || !(clue instanceof EmoteClue))
+		if (!(clue instanceof EmoteClue))
 		{
+			hasScrolled = false;
 			return null;
 		}
 
@@ -93,60 +84,30 @@ public class ClueScrollEmoteOverlay extends Overlay
 			return null;
 		}
 
+		Widget firstEmoteWidget = null;
+		Widget secondEmoteWidget = null;
+
 		for (Widget emoteWidget : emoteContainer.getDynamicChildren())
 		{
 			if (emoteWidget.getSpriteId() == emoteClue.getFirstEmote().getSpriteId())
 			{
-				highlightWidget(graphics, emoteWindow, emoteWidget,
-					emoteClue.getSecondEmote() != null ? "1st" : "");
+				firstEmoteWidget = emoteWidget;
+				plugin.highlightWidget(graphics, emoteWidget, emoteWindow, null,
+					emoteClue.getSecondEmote() != null ? "1st" : null);
 			}
 			else if (emoteClue.getSecondEmote() != null
 				&& emoteWidget.getSpriteId() == emoteClue.getSecondEmote().getSpriteId())
 			{
-				highlightWidget(graphics, emoteWindow, emoteWidget, "2nd");
+				secondEmoteWidget = emoteWidget;
+				plugin.highlightWidget(graphics, emoteWidget, emoteWindow, null, "2nd");
 			}
+		}
+		if (!hasScrolled)
+		{
+			hasScrolled = true;
+			plugin.scrollToWidget(WidgetInfo.EMOTE_CONTAINER, WidgetInfo.EMOTE_SCROLLBAR, firstEmoteWidget, secondEmoteWidget);
 		}
 
 		return null;
-	}
-
-	private void highlightWidget(Graphics2D graphics, Widget window, Widget widget, String text)
-	{
-		net.runelite.api.Point canvasLocation = widget.getCanvasLocation();
-
-		if (canvasLocation == null)
-		{
-			return;
-		}
-
-		// Don't draw outside the emotes window
-		net.runelite.api.Point windowLocation = window.getCanvasLocation();
-
-		if (windowLocation.getY() > canvasLocation.getY() + widget.getHeight()
-			|| windowLocation.getY() + window.getHeight() < canvasLocation.getY())
-		{
-			return;
-		}
-
-		// Visible area of emote widget
-		Area widgetArea = new Area(
-			new Rectangle(
-				canvasLocation.getX(),
-				Math.max(canvasLocation.getY(), windowLocation.getY()),
-				widget.getWidth(),
-				Math.min(
-					Math.min(windowLocation.getY() + window.getHeight() - canvasLocation.getY(), widget.getHeight()),
-					Math.min(canvasLocation.getY() + widget.getHeight() - windowLocation.getY(), widget.getHeight()))));
-
-		OverlayUtil.renderHoverableArea(graphics, widgetArea, client.getMouseCanvasPosition(),
-				HIGHLIGHT_FILL_COLOR, HIGHLIGHT_BORDER_COLOR, HIGHLIGHT_HOVER_BORDER_COLOR);
-
-		FontMetrics fontMetrics = graphics.getFontMetrics();
-
-		textComponent.setPosition(new Point(
-			canvasLocation.getX() + widget.getWidth() / 2 - fontMetrics.stringWidth(text) / 2,
-			canvasLocation.getY() + fontMetrics.getHeight()));
-		textComponent.setText(text);
-		textComponent.render(graphics);
 	}
 }

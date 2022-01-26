@@ -24,15 +24,17 @@
  */
 package net.runelite.client.plugins.xptracker;
 
+import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.Map;
+import javax.inject.Inject;
 import lombok.NonNull;
 import net.runelite.api.NPC;
 import net.runelite.api.Skill;
 
 /**
  * Internal state for the XpTrackerPlugin
- *
+ * <p>
  * Note: This class's operations are not currently synchronized.
  * It is intended to be called by the XpTrackerPlugin on the client thread.
  */
@@ -40,43 +42,40 @@ class XpState
 {
 	private static final double DEFAULT_XP_MODIFIER = 4.0;
 	private static final double SHARED_XP_MODIFIER = DEFAULT_XP_MODIFIER / 3.0;
-	private final XpStateTotal xpTotal = new XpStateTotal();
 	private final Map<Skill, XpStateSingle> xpSkills = new EnumMap<>(Skill.class);
 	private NPC interactedNPC;
+
+	@Inject
+	private XpTrackerConfig xpTrackerConfig;
 
 	/**
 	 * Destroys all internal state, however any XpSnapshotSingle or XpSnapshotTotal remain unaffected.
 	 */
 	void reset()
 	{
-		xpTotal.reset();
 		xpSkills.clear();
 	}
 
 	/**
 	 * Resets a single skill
-	 * @param skill Skill to reset
+	 *
+	 * @param skill     Skill to reset
 	 * @param currentXp Current XP to set to, if unknown set to -1
 	 */
-	void resetSkill(Skill skill, int currentXp)
+	void resetSkill(Skill skill, long currentXp)
 	{
 		xpSkills.remove(skill);
 		xpSkills.put(skill, new XpStateSingle(skill, currentXp));
-		recalculateTotal();
 	}
 
 	/**
-	 * Calculates the total skill changes observed in this session or since the last reset
+	 * Resets the per hour rates of a single skill
+	 *
+	 * @param skill Skill to reset per hour rates
 	 */
-	void recalculateTotal()
+	void resetSkillPerHour(Skill skill)
 	{
-		xpTotal.reset();
-
-		for (XpStateSingle state : xpSkills.values())
-		{
-			xpTotal.addXpGainedInSession(state.getXpGained());
-			xpTotal.addXpPerHour(state.getXpHr());
-		}
+		xpSkills.get(skill).resetPerHour();
 	}
 
 	/**
@@ -84,19 +83,20 @@ class XpState
 	 * When the result of this operation is XpUpdateResult.UPDATED, the UI should be updated accordingly.
 	 * This is to distinguish events that reload all the skill's current values (such as world hopping)
 	 * and also first-login when the skills are not initialized (the start XP will be -1 in this case).
-	 * @param skill Skill to update
-	 * @param currentXp Current known XP for this skill
+	 *
+	 * @param skill       Skill to update
+	 * @param currentXp   Current known XP for this skill
 	 * @param goalStartXp Possible XP start goal
-	 * @param goalEndXp Possible XP end goal
+	 * @param goalEndXp   Possible XP end goal
 	 * @return Whether or not the skill has been initialized, there was no change, or it has been updated
 	 */
-	XpUpdateResult updateSkill(Skill skill, int currentXp, int goalStartXp, int goalEndXp)
+	XpUpdateResult updateSkill(Skill skill, long currentXp, int goalStartXp, int goalEndXp)
 	{
 		XpStateSingle state = getSkill(skill);
 
 		if (state.getStartXp() == -1)
 		{
-			if (currentXp > 0)
+			if (currentXp >= 0)
 			{
 				initializeSkill(skill, currentXp);
 				return XpUpdateResult.INITIALIZED;
@@ -108,8 +108,8 @@ class XpState
 		}
 		else
 		{
-			int startXp = state.getStartXp();
-			int gainedXp = state.getXpGained();
+			long startXp = state.getStartXp();
+			int gainedXp = state.getTotalXpGained();
 
 			if (startXp + gainedXp > currentXp)
 			{
@@ -136,11 +136,12 @@ class XpState
 
 	/**
 	 * Updates skill with average actions based on currently interacted NPC.
-	 * @param skill experience gained skill
-	 * @param npc currently interacted NPC
+	 *
+	 * @param skill     experience gained skill
+	 * @param npc       currently interacted NPC
 	 * @param npcHealth health of currently interacted NPC
 	 */
-	void updateNpcExperience(Skill skill, NPC npc, Integer npcHealth)
+	void updateNpcExperience(Skill skill, NPC npc, Integer npcHealth, int xpModifier)
 	{
 		if (npc == null || npc.getCombatLevel() <= 0 || npcHealth == null)
 		{
@@ -148,7 +149,7 @@ class XpState
 		}
 
 		final XpStateSingle state = getSkill(skill);
-		final int actionExp = (int) (npcHealth * getCombatXPModifier(skill));
+		final int actionExp = (int) (npcHealth * getCombatXPModifier(skill) * xpModifier);
 		final XpAction action = state.getXpAction(XpActionType.ACTOR_HEALTH);
 
 		if (action.isActionsHistoryInitialized())
@@ -163,10 +164,7 @@ class XpState
 		else
 		{
 			// So we have a decent average off the bat, lets populate all values with what we see.
-			for (int i = 0; i < action.getActionExps().length; i++)
-			{
-				action.getActionExps()[i] = actionExp;
-			}
+			Arrays.fill(action.getActionExps(), actionExp);
 
 			action.setActionsHistoryInitialized(true);
 		}
@@ -176,10 +174,11 @@ class XpState
 	}
 
 	/**
-	 * Update number of actions performed for skill (e.g amount of kills in this case) if last interacted
-	 * NPC died
-	 * @param skill skill to update actions for
-	 * @param npc npc that just died
+	 * Update number of actions performed for skill if last interacted NPC died.
+	 * (eg. amount of kills in this case)
+	 *
+	 * @param skill     skill to update actions for
+	 * @param npc       npc that just died
 	 * @param npcHealth max health of npc that just died
 	 * @return UPDATED in case new kill was successfully added
 	 */
@@ -187,30 +186,52 @@ class XpState
 	{
 		XpStateSingle state = getSkill(skill);
 
-		if (state.getXpGained() <= 0 || npcHealth == null || npc != interactedNPC)
+		if (state.getXpGainedSinceReset() <= 0 || npcHealth == null || npc != interactedNPC)
 		{
 			return XpUpdateResult.NO_CHANGE;
 		}
 
 		final XpAction xpAction = state.getXpAction(XpActionType.ACTOR_HEALTH);
-		xpAction.setActions(xpAction.getActions() + 1);
+		xpAction.setActionsSinceReset(xpAction.getActionsSinceReset() + 1);
 		return xpAction.isActionsHistoryInitialized() ? XpUpdateResult.UPDATED : XpUpdateResult.NO_CHANGE;
 	}
 
 	void tick(Skill skill, long delta)
 	{
-		getSkill(skill).tick(delta);
+		final XpStateSingle state = getSkill(skill);
+
+		state.tick(delta);
+
+		int resetAfterMinutes = xpTrackerConfig.resetSkillRateAfter();
+		if (resetAfterMinutes > 0)
+		{
+			final long now = System.currentTimeMillis();
+			final int resetAfterMillis = resetAfterMinutes * 60 * 1000;
+			final long lastChangeMillis = state.getLastChangeMillis();
+			// When pauseSkillAfter is 0, it is effectively disabled
+			if (lastChangeMillis != 0 && (now - lastChangeMillis) >= resetAfterMillis)
+			{
+				state.resetPerHour();
+			}
+		}
 	}
 
 	/**
 	 * Forcefully initialize a skill with a known start XP from the current XP.
 	 * This is used in resetAndInitState by the plugin. It should not result in showing the XP in the UI.
-	 * @param skill Skill to initialize
+	 *
+	 * @param skill     Skill to initialize
 	 * @param currentXp Current known XP for the skill
 	 */
-	void initializeSkill(Skill skill, int currentXp)
+	void initializeSkill(Skill skill, long currentXp)
 	{
 		xpSkills.put(skill, new XpStateSingle(skill, currentXp));
+	}
+
+	boolean isInitialized(Skill skill)
+	{
+		XpStateSingle xpStateSingle = xpSkills.get(skill);
+		return xpStateSingle != null && xpStateSingle.getStartXp() != -1;
 	}
 
 	@NonNull
@@ -222,6 +243,7 @@ class XpState
 	/**
 	 * Obtain an immutable snapshot of the provided skill
 	 * intended for use with the UI which operates on another thread
+	 *
 	 * @param skill Skill to obtain the snapshot for
 	 * @return An immutable snapshot of the specified skill for this session since first login or last reset
 	 */
@@ -234,11 +256,12 @@ class XpState
 	/**
 	 * Obtain an immutable snapshot of the provided skill
 	 * intended for use with the UI which operates on another thread
+	 *
 	 * @return An immutable snapshot of total information for this session since first login or last reset
 	 */
 	@NonNull
-	XpSnapshotTotal getTotalSnapshot()
+	XpSnapshotSingle getTotalSnapshot()
 	{
-		return xpTotal.snapshot();
+		return getSkill(Skill.OVERALL).snapshot();
 	}
 }

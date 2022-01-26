@@ -24,9 +24,17 @@
  */
 package net.runelite.client.plugins.attackstyles;
 
-import java.util.HashMap;
+import com.google.common.collect.ImmutableMap;
 import java.util.Map;
-import static net.runelite.client.plugins.attackstyles.AttackStyle.*;
+import static net.runelite.client.plugins.attackstyles.AttackStyle.ACCURATE;
+import static net.runelite.client.plugins.attackstyles.AttackStyle.AGGRESSIVE;
+import static net.runelite.client.plugins.attackstyles.AttackStyle.CASTING;
+import static net.runelite.client.plugins.attackstyles.AttackStyle.CONTROLLED;
+import static net.runelite.client.plugins.attackstyles.AttackStyle.DEFENSIVE;
+import static net.runelite.client.plugins.attackstyles.AttackStyle.DEFENSIVE_CASTING;
+import static net.runelite.client.plugins.attackstyles.AttackStyle.LONGRANGE;
+import static net.runelite.client.plugins.attackstyles.AttackStyle.OTHER;
+import static net.runelite.client.plugins.attackstyles.AttackStyle.RANGING;
 
 enum WeaponType
 {
@@ -36,7 +44,7 @@ enum WeaponType
 	TYPE_3(RANGING, RANGING, null, LONGRANGE),
 	TYPE_4(ACCURATE, AGGRESSIVE, CONTROLLED, DEFENSIVE),
 	TYPE_5(RANGING, RANGING, null, LONGRANGE),
-	TYPE_6(AGGRESSIVE, RANGING, DEFENSIVE_CASTING, null),
+	TYPE_6(AGGRESSIVE, RANGING, CASTING, null),
 	TYPE_7(RANGING, RANGING, null, LONGRANGE),
 	TYPE_8(OTHER, AGGRESSIVE, null, null),
 	TYPE_9(ACCURATE, AGGRESSIVE, CONTROLLED, DEFENSIVE),
@@ -59,16 +67,20 @@ enum WeaponType
 	TYPE_26(AGGRESSIVE, AGGRESSIVE, null, AGGRESSIVE),
 	TYPE_27(ACCURATE, null, null, OTHER);
 
-	private static final Map<Integer, WeaponType> weaponTypes = new HashMap<>();
-
 	private final AttackStyle[] attackStyles;
+
+	private static final Map<Integer, WeaponType> weaponTypes;
 
 	static
 	{
+		ImmutableMap.Builder<Integer, WeaponType> builder = new ImmutableMap.Builder<>();
+
 		for (WeaponType weaponType : values())
 		{
-			weaponTypes.put(weaponType.ordinal(), weaponType);
+			builder.put(weaponType.ordinal(), weaponType);
 		}
+
+		weaponTypes = builder.build();
 	}
 
 	WeaponType(AttackStyle... attackStyles)

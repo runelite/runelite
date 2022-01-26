@@ -95,16 +95,19 @@ public class NpcManager
 	public void java(File java) throws IOException
 	{
 		java.mkdirs();
-		try (IDClass ids = IDClass.create(java, "NpcID"))
+		try (IDClass ids = IDClass.create(java, "NpcID");
+			IDClass nulls = IDClass.create(java, "NullNpcID"))
 		{
 			for (NpcDefinition def : npcs.values())
 			{
 				if (def.name.equalsIgnoreCase("NULL"))
 				{
-					continue;
+					nulls.add(def.name, def.id);
 				}
-
-				ids.add(def.name, def.id);
+				else
+				{
+					ids.add(def.name, def.id);
+				}
 			}
 		}
 	}

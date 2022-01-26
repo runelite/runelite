@@ -28,7 +28,10 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.util.List;
 import net.runelite.api.MainBufferProvider;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetItem;
 
 /**
  * Interface of callbacks the injected client uses to send events
@@ -50,9 +53,14 @@ public interface Callbacks
 	void postDeferred(Object event);
 
 	/**
-	 * Called each client cycle.
+	 * Called each tick
 	 */
-	void clientMainLoop();
+	void tick();
+
+	/**
+	 * Called each frame
+	 */
+	void frame();
 
 	/**
 	 * Called after receiving update NPCs packet from server.
@@ -78,6 +86,20 @@ public interface Callbacks
 	 * @param y                  the y
 	 */
 	void draw(MainBufferProvider mainBufferProvider, Graphics graphics, int x, int y);
+
+	/**
+	 * Called after an interface has been drawn
+	 * @param interfaceId the interface id
+	 * @param widgetItems Widget items within the interface
+	 */
+	void drawInterface(int interfaceId, List<WidgetItem> widgetItems);
+
+	/**
+	 * Called after a widget layer has been drawn
+	 * @param layer The layer
+	 * @param widgetItems Widget items within the layer
+	 */
+	void drawLayer(Widget layer, List<WidgetItem> widgetItems);
 
 	/**
 	 * Mouse pressed event. If this event will be consumed it will not be propagated further to client.

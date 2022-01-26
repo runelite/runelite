@@ -29,7 +29,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-enum XpActionType
+public enum XpActionType
 {
 	EXPERIENCE("Actions"),
 	ACTOR_HEALTH("Kills");

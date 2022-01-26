@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.grounditems;
 
 import java.util.Arrays;
+import joptsimple.internal.Strings;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
@@ -32,14 +33,34 @@ import org.junit.Test;
 public class WildcardMatchLoaderTest
 {
 	@Test
-	public void testLoad()
+	public void testLoadItems()
 	{
 		WildcardMatchLoader loader = new WildcardMatchLoader(Arrays.asList("rune*", "Abyssal whip"));
-		assertTrue(loader.load("rune pouch"));
-		assertTrue(loader.load("Rune pouch"));
-		assertFalse(loader.load("Adamant dagger"));
-		assertTrue(loader.load("Runeite Ore"));
-		assertTrue(loader.load("Abyssal whip"));
-		assertFalse(loader.load("Abyssal dagger"));
+		assertTrue(loader.load(new NamedQuantity("rune pouch", 1)));
+		assertTrue(loader.load(new NamedQuantity("Rune pouch", 1)));
+		assertFalse(loader.load(new NamedQuantity("Adamant dagger", 1)));
+		assertTrue(loader.load(new NamedQuantity("Runeite Ore", 1)));
+		assertTrue(loader.load(new NamedQuantity("Abyssal whip", 1)));
+		assertFalse(loader.load(new NamedQuantity("Abyssal dagger", 1)));
+	}
+
+	@Test
+	public void testLoadQuantities()
+	{
+		WildcardMatchLoader loader = new WildcardMatchLoader(Arrays.asList("rune* < 3", "*whip>3", "nature*<5", "*rune > 30"));
+		assertTrue(loader.load(new NamedQuantity("Nature Rune", 50)));
+		assertFalse(loader.load(new NamedQuantity("Nature Impling", 5)));
+		assertTrue(loader.load(new NamedQuantity("Abyssal whip", 4)));
+		assertFalse(loader.load(new NamedQuantity("Abyssal dagger", 1)));
+		assertTrue(loader.load(new NamedQuantity("Rune Longsword", 2)));
+	}
+
+	@Test(timeout = 1000)
+	public void testExplosive()
+	{
+		String name = "archer" + Strings.repeat('e', 50000) + "s ring";
+		WildcardMatchLoader loader = new WildcardMatchLoader(Arrays.asList(name + "* < 100"));
+		assertTrue(loader.load(new NamedQuantity(name, 50)));
+		assertFalse(loader.load(new NamedQuantity(name, 150)));
 	}
 }
