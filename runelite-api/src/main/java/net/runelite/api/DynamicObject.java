@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Jordan Atwood <jordan.atwood423@gmail.com>
+ * Copyright (c) 2022, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,47 +22,16 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.timers;
+package net.runelite.api;
 
-import com.google.common.collect.ImmutableList;
-import java.util.Collection;
-import javax.annotation.Nullable;
-import net.runelite.api.widgets.WidgetInfo;
-
-enum TeleportWidget
+/**
+ * An animated object
+ */
+public interface DynamicObject extends Renderable
 {
-	HOME_TELEPORT,
-	MINIGAME_TELEPORT,
-	TRAILBLAZER_AREA_TELEPORT,
-	;
-
-	private static final Collection HOME_TELEPORT_IDS = ImmutableList.of(
-		WidgetInfo.SPELL_LUMBRIDGE_HOME_TELEPORT.getId(),
-		WidgetInfo.SPELL_EDGEVILLE_HOME_TELEPORT.getId(),
-		WidgetInfo.SPELL_LUNAR_HOME_TELEPORT.getId(),
-		WidgetInfo.SPELL_ARCEUUS_HOME_TELEPORT.getId(),
-		WidgetInfo.SPELL_KOUREND_HOME_TELEPORT.getId(),
-		WidgetInfo.SPELL_CATHERBY_HOME_TELEPORT.getId()
-	);
-	private static final Collection MINIGAME_TELEPORT_IDS = ImmutableList.of(
-		WidgetInfo.MINIGAME_TELEPORT_BUTTON.getId()
-	);
-
-	@Nullable
-	static TeleportWidget of(int widgetId)
-	{
-		if (HOME_TELEPORT_IDS.contains(widgetId))
-		{
-			return HOME_TELEPORT;
-		}
-		else if (MINIGAME_TELEPORT_IDS.contains(widgetId))
-		{
-			return MINIGAME_TELEPORT;
-		}
-		else if (widgetId == WidgetInfo.TRAILBLAZER_AREA_TELEPORT.getId())
-		{
-			return TRAILBLAZER_AREA_TELEPORT;
-		}
-		return null;
-	}
+	/**
+	 * Get the animation applied to the object
+	 * @return
+	 */
+	Animation getAnimation();
 }

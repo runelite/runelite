@@ -38,9 +38,11 @@ import java.util.List;
 import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import net.runelite.api.Animation;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.DecorativeObject;
+import net.runelite.api.DynamicObject;
 import net.runelite.api.GameObject;
 import net.runelite.api.GraphicsObject;
 import net.runelite.api.ItemLayer;
@@ -355,7 +357,21 @@ class DevToolsOverlay extends Overlay
 			{
 				if (gameObject != null && gameObject.getSceneMinLocation().equals(tile.getSceneLocation()))
 				{
-					renderTileObject(graphics, gameObject, player, GREEN);
+					if (player.getLocalLocation().distanceTo(gameObject.getLocalLocation()) <= MAX_DISTANCE)
+					{
+						StringBuilder stringBuilder = new StringBuilder();
+						stringBuilder.append("ID: ").append(gameObject.getId());
+						if (gameObject.getRenderable() instanceof DynamicObject)
+						{
+							Animation animation = ((DynamicObject) gameObject.getRenderable()).getAnimation();
+							if (animation != null)
+							{
+								stringBuilder.append(" A: ").append(animation.getId());
+							}
+						}
+
+						OverlayUtil.renderTileOverlay(graphics, gameObject, stringBuilder.toString(), GREEN);
+					}
 				}
 			}
 		}
