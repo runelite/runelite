@@ -27,6 +27,7 @@ package net.runelite.client.plugins.statusbars;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
 import net.runelite.client.config.Units;
 import net.runelite.client.plugins.statusbars.config.BarMode;
 
@@ -95,4 +96,70 @@ public interface StatusBarsConfig extends Config
 	{
 		return 0;
 	}
+
+	@ConfigItem(
+		keyName = "barHeight",
+		name = "Height of bars",
+		description = "Height of the status bars in classic mode",
+		section = resizeableClassicLayout
+	)
+	default int barHeight() {return 252;}
+
+	@ConfigItem(
+		keyName = "leftBarXOffset",
+		name = "Left bar X offset",
+		description = "X offset of left bar",
+		section = resizeableClassicLayout
+	)
+	default int leftBarXOffset() {return 45;}
+
+	@ConfigItem(
+		keyName = "rightBarXOffset",
+		name = "Right bar X offset",
+		description = "X offset of right bar in classic mode",
+		section = resizeableClassicLayout
+	)
+	default int rightBarXOffset() {return 43;}
+
+	@ConfigItem(
+		keyName = "leftBarYOffset",
+		name = "Left bar Y offset",
+		description = "Y offset of left bar",
+		section = resizeableClassicLayout
+	)
+	default int leftBarYOffset() {return 0;}
+
+	@ConfigItem(
+		keyName = "rightBarYOffset",
+		name = "Right bar Y offset",
+		description = "Y offset of right bar in classic mode",
+		section = resizeableClassicLayout
+	)
+	default int rightBarYOffset() {return 0;}
+
+	@ConfigItem(
+		keyName = "groupTogether",
+		name = "Left and Right bar grouped",
+		description = "Left and Right bar displayed beside each other on left of inventory",
+		section = resizeableClassicLayout
+	)
+	default boolean groupTogether() {return false;}
+
+	@ConfigItem(
+		keyName = "overlapPillar",
+		name = "Overlap inventory pillar",
+		description = "Should the right bar overlap the inventory pillar while grouped",
+		section = resizeableClassicLayout
+	)
+	default boolean overlapPillar() {return false;}
+
+	@ConfigSection(
+		name = "Resizable - Classic Layout",
+		description = "All options that swap item menu entries",
+		position = 0,
+		closedByDefault = true
+	)
+	String resizeableClassicLayout = "resizeableClassicLayout";
+
+
 }
