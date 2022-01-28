@@ -98,46 +98,6 @@ public interface StatusBarsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "barHeight",
-		name = "Height of bars",
-		description = "Height of the status bars in classic mode",
-		section = resizeableClassicLayout
-	)
-	default int barHeight() {return 252;}
-
-	@ConfigItem(
-		keyName = "leftBarXOffset",
-		name = "Left bar X offset",
-		description = "X offset of left bar",
-		section = resizeableClassicLayout
-	)
-	default int leftBarXOffset() {return 45;}
-
-	@ConfigItem(
-		keyName = "rightBarXOffset",
-		name = "Right bar X offset",
-		description = "X offset of right bar in classic mode",
-		section = resizeableClassicLayout
-	)
-	default int rightBarXOffset() {return 43;}
-
-	@ConfigItem(
-		keyName = "leftBarYOffset",
-		name = "Left bar Y offset",
-		description = "Y offset of left bar",
-		section = resizeableClassicLayout
-	)
-	default int leftBarYOffset() {return 0;}
-
-	@ConfigItem(
-		keyName = "rightBarYOffset",
-		name = "Right bar Y offset",
-		description = "Y offset of right bar in classic mode",
-		section = resizeableClassicLayout
-	)
-	default int rightBarYOffset() {return 0;}
-
-	@ConfigItem(
 		keyName = "groupTogether",
 		name = "Left and Right bar grouped",
 		description = "Left and Right bar displayed beside each other on left of inventory",
