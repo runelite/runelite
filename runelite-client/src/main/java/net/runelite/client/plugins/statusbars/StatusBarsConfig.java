@@ -100,7 +100,7 @@ public interface StatusBarsConfig extends Config
 	@ConfigItem(
 		keyName = "groupTogether",
 		name = "Left and Right bar grouped",
-		description = "Left and Right bar displayed beside each other on left of inventory",
+		description = "Left and right bar displayed beside each other on left of inventory.",
 		section = resizeableClassicLayout
 	)
 	default boolean groupTogether() {return false;}
@@ -108,18 +108,16 @@ public interface StatusBarsConfig extends Config
 	@ConfigItem(
 		keyName = "overlapPillar",
 		name = "Overlap inventory pillar",
-		description = "Should the right bar overlap the inventory pillar while grouped",
+		description = "Make the right bar overlap the inventory pillar.",
 		section = resizeableClassicLayout
 	)
 	default boolean overlapPillar() {return false;}
 
 	@ConfigSection(
 		name = "Resizable - Classic Layout",
-		description = "All options that swap item menu entries",
+		description = "Options to change the status bar locations when Game client layout is set to Resizeable - Classic Layout.",
 		position = 0,
 		closedByDefault = true
 	)
 	String resizeableClassicLayout = "resizeableClassicLayout";
-
-
 }
