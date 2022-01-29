@@ -833,5 +833,7 @@ public interface MenuEntrySwapperConfig extends Config
 			description = "Private instance for the GWD doors",
 			section = objectSection
 	)
-	default boolean privateInstance(){return false;}
+	default boolean privateInstance(){
+		return false;
+	}
 }
