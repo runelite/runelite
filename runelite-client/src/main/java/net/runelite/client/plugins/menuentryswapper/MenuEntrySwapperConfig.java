@@ -826,4 +826,12 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+			keyName = "privateInstance",
+			name = "Private Instance",
+			description = "Private instance for the GWD doors",
+			section = objectSection
+	)
+	default boolean privateInstance(){return false;}
 }

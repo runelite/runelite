@@ -418,6 +418,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		swap("climb", "climb-up", () -> (shiftModifier() ? config.swapStairsShiftClick() : config.swapStairsLeftClick()) == MenuEntrySwapperConfig.StairsMode.CLIMB_UP);
 		swap("climb", "climb-down", () -> (shiftModifier() ? config.swapStairsShiftClick() : config.swapStairsLeftClick()) == MenuEntrySwapperConfig.StairsMode.CLIMB_DOWN);
+
+		swap("pass (normal)", "pass (private)", config::privateInstance);
 	}
 
 	private void swap(String option, String swappedOption, Supplier<Boolean> enabled)
