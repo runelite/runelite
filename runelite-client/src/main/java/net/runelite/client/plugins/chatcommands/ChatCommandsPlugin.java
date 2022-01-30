@@ -1407,21 +1407,11 @@ public class ChatCommandsPlugin extends Plugin
 			return;
 		}
 
-		ChatMessageType type = chatMessage.getType();
-
-		String player;
-		if (type == ChatMessageType.PRIVATECHATOUT)
-		{
-			player = client.getLocalPlayer().getName();
-		}
-		else
-		{
-			player = Text.sanitize(chatMessage.getName());
-		}
+		final HiscoreLookup lookup = getCorrectLookupFor(chatMessage);
 
 		try
 		{
-			HiscoreResult playerStats = hiscoreClient.lookup(player);
+			HiscoreResult playerStats = hiscoreClient.lookup(lookup.getName(), lookup.getEndpoint());
 
 			if (playerStats == null)
 			{
