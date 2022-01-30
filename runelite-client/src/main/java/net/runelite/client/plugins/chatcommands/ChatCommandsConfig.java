@@ -190,6 +190,17 @@ public interface ChatCommandsConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 14,
+		keyName = "ping",
+		name = "Ping Command",
+		description = "Configures whether the ping command is enabled <br> !ping"
+	)
+	default boolean ping()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		position = 20,
 		keyName = "clearSingleWord",
 		name = "Clear Single Word",
