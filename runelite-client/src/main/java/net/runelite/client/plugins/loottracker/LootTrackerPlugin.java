@@ -137,7 +137,8 @@ public class LootTrackerPlugin extends Plugin
 	private static final Pattern HERBIBOAR_HERB_SACK_PATTERN = Pattern.compile(".+(Grimy .+?) herb.+");
 
 	// Master Farmer loot handling
-	private static final Pattern MASTER_FARMER_SEED_BOX_PATTERN = Pattern.compile("The following stolen loot gets added to your seed box: (.+?) x (\\d+)\\.");
+	private static final Pattern MASTER_FARMER_SEED_BOX_MULTIPLE_PATTERN = Pattern.compile("The following stolen loot gets added to your seed box: (.+?) x (\\d+)\\.");
+	private static final Pattern MASTER_FARMER_SEED_BOX_SINGLE_PATTERN = Pattern.compile("You put the stolen (.+?) into your seed box\\.");
 
 	// Seed Pack loot handling
 	private static final String SEEDPACK_EVENT = "Seed pack";
@@ -697,10 +698,16 @@ public class LootTrackerPlugin extends Plugin
 			return;
 		}
 
-		Matcher seedBoxMatcher = MASTER_FARMER_SEED_BOX_PATTERN.matcher(message);
-		if (seedBoxMatcher.matches())
+		Matcher multiSeedBoxMatcher = MASTER_FARMER_SEED_BOX_MULTIPLE_PATTERN.matcher(message);
+		if (multiSeedBoxMatcher.matches())
 		{
-			processMasterFarmerSeedBoxLoot(seedBoxMatcher);
+			processMasterFarmerSeedBoxLoot(multiSeedBoxMatcher.group(1), Integer.parseInt(multiSeedBoxMatcher.group(2)));
+			return;
+		}
+		Matcher singleSeedBoxMatcher = MASTER_FARMER_SEED_BOX_SINGLE_PATTERN.matcher(message);
+		if (singleSeedBoxMatcher.matches())
+		{
+			processMasterFarmerSeedBoxLoot(singleSeedBoxMatcher.group(1), 1);
 			return;
 		}
 
@@ -983,10 +990,9 @@ public class LootTrackerPlugin extends Plugin
 		return true;
 	}
 
-	private void processMasterFarmerSeedBoxLoot(Matcher matcher)
+	private void processMasterFarmerSeedBoxLoot(String itemName, int quantityStolen)
 	{
-		int quantityStolen = Integer.parseInt(matcher.group(2));
-		List<ItemStack> seeds = Collections.singletonList(new ItemStack(itemManager.search(matcher.group(1)).get(0).getId(), quantityStolen, client.getLocalPlayer().getLocalLocation()));
+		List<ItemStack> seeds = Collections.singletonList(new ItemStack(itemManager.search(itemName).get(0).getId(), quantityStolen, client.getLocalPlayer().getLocalLocation()));
 
 		addLoot(lastPickpocketTarget, -1, LootRecordType.PICKPOCKET, client.getBoostedSkillLevel(Skill.THIEVING), seeds);
 	}

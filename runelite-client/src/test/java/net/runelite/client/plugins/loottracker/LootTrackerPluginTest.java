@@ -165,19 +165,29 @@ public class LootTrackerPluginTest
 	{
 		when(client.getBoostedSkillLevel(Skill.THIEVING)).thenReturn(42);
 
-		final ItemPrice seedPrice = new ItemPrice();
-		seedPrice.setId(ItemID.POTATO_SEED);
-		seedPrice.setName("Potato seed");
-		when(itemManager.search("Potato seed")).thenReturn(Collections.singletonList(seedPrice));
+		final ItemPrice potatoSeedPrice = new ItemPrice();
+		potatoSeedPrice.setId(ItemID.POTATO_SEED);
+		potatoSeedPrice.setName("Potato seed");
+		when(itemManager.search("Potato seed")).thenReturn(Collections.singletonList(potatoSeedPrice));
+		final ItemPrice onionSeedPrice = new ItemPrice();
+		onionSeedPrice.setId(ItemID.ONION_SEED);
+		onionSeedPrice.setName("Onion seed");
+		when(itemManager.search("Onion seed")).thenReturn(Collections.singletonList(onionSeedPrice));
 
 		LootTrackerPlugin lootTrackerPluginSpy = spy(this.lootTrackerPlugin);
 		doNothing().when(lootTrackerPluginSpy).addLoot(any(), anyInt(), any(), any(), any());
 
-		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "The following stolen loot gets added to your seed box: Potato seed x 3.", "", 0);
-		lootTrackerPluginSpy.onChatMessage(chatMessage);
+		ChatMessage chatMessageMultipleSeeds = new ChatMessage(null, ChatMessageType.SPAM, "", "The following stolen loot gets added to your seed box: Potato seed x 3.", "", 0);
+		lootTrackerPluginSpy.onChatMessage(chatMessageMultipleSeeds);
+
+		ChatMessage chatMessageSingleSeeds = new ChatMessage(null, ChatMessageType.SPAM, "", "You put the stolen Onion seed into your seed box.", "", 0);
+		lootTrackerPluginSpy.onChatMessage(chatMessageSingleSeeds);
 
 		verify(lootTrackerPluginSpy).addLoot(null, -1, LootRecordType.PICKPOCKET, 42, Arrays.asList(
 			new ItemStack(ItemID.POTATO_SEED, 3, null)
+		));
+		verify(lootTrackerPluginSpy).addLoot(null, -1, LootRecordType.PICKPOCKET, 42, Arrays.asList(
+				new ItemStack(ItemID.ONION_SEED, 1, null)
 		));
 	}
 
