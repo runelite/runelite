@@ -29,6 +29,7 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
@@ -41,6 +42,7 @@ import javax.swing.border.EmptyBorder;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
+import net.runelite.api.WorldType;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
@@ -83,7 +85,7 @@ class XpPanel extends PluginPanel
 		// Create open xp tracker menu
 		final JMenuItem openXpTracker = new JMenuItem("Open Wise Old Man");
 		openXpTracker.addActionListener(e -> LinkBrowser.browse(XpPanel.buildXpTrackerUrl(
-			client.getLocalPlayer(), Skill.OVERALL)));
+			client.getWorldType(), client.getLocalPlayer(), Skill.OVERALL)));
 
 		// Create reset all menu
 		final JMenuItem reset = new JMenuItem("Reset All");
@@ -146,7 +148,7 @@ class XpPanel extends PluginPanel
 		add(errorPanel);
 	}
 
-	static String buildXpTrackerUrl(final Actor player, final Skill skill)
+	static String buildXpTrackerUrl(final Set<WorldType> worldTypes, final Actor player, final Skill skill)
 	{
 		if (player == null)
 		{
@@ -155,7 +157,7 @@ class XpPanel extends PluginPanel
 
 		return new HttpUrl.Builder()
 			.scheme("https")
-			.host("wiseoldman.net")
+			.host(worldTypes.contains(WorldType.SEASONAL) ? "seasonal.wiseoldman.net" : "wiseoldman.net")
 			.addPathSegment("players")
 			.addPathSegment(player.getName())
 			.addPathSegment("gained")
