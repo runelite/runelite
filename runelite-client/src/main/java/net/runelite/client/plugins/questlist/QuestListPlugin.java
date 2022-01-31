@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.questlist;
 
 import com.google.common.collect.ImmutableList;
+import com.google.inject.Provides;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
@@ -52,7 +53,9 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetPositionMode;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.game.chatbox.ChatboxTextInput;
 import net.runelite.client.plugins.Plugin;
@@ -65,6 +68,10 @@ import net.runelite.client.util.Text;
 )
 public class QuestListPlugin extends Plugin
 {
+	public static final String CONFIG_GROUP = "questlist";
+	public static final String LAST_FILTER_STATE_KEY = "lastFilterState";
+	public static final String REMEMBER_LAST_FILTER_STATE_KEY = "rememberLastFilterState";
+
 	private static final int ENTRY_PADDING = 8;
 	private static final List<String> QUEST_HEADERS = ImmutableList.of("Free Quests", "Members' Quests", "Miniquests");
 
@@ -80,10 +87,22 @@ public class QuestListPlugin extends Plugin
 	private Client client;
 
 	@Inject
+	private ConfigManager configManager;
+
+	@Inject
 	private ChatboxPanelManager chatboxPanelManager;
 
 	@Inject
 	private ClientThread clientThread;
+
+	@Inject
+	private QuestListConfig config;
+
+	@Provides
+	QuestListConfig getConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(QuestListConfig.class);
+	}
 
 	private ChatboxTextInput searchInput;
 	private Widget questSearchButton;
@@ -96,7 +115,7 @@ public class QuestListPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
-		currentFilterState = QuestState.ALL;
+		currentFilterState = getDefaultFilterState();
 		clientThread.invoke(this::addQuestButtons);
 	}
 
@@ -112,11 +131,24 @@ public class QuestListPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onConfigChanged(ConfigChanged e)
+	{
+		if (e.getGroup().equals(CONFIG_GROUP)
+			&& e.getKey().equals(REMEMBER_LAST_FILTER_STATE_KEY))
+		{
+			if (config.rememberLastFilterState() && client.getGameState() == GameState.LOGGED_IN)
+			{
+				configManager.setRSProfileConfiguration(CONFIG_GROUP, LAST_FILTER_STATE_KEY, currentFilterState);
+			}
+		}
+	}
+
+	@Subscribe
 	public void onGameStateChanged(GameStateChanged e)
 	{
 		if (e.getGameState() == GameState.LOGGING_IN)
 		{
-			currentFilterState = QuestState.ALL;
+			currentFilterState = getDefaultFilterState();
 		}
 	}
 
@@ -195,6 +227,11 @@ public class QuestListPlugin extends Plugin
 		QuestState[] questStates = QuestState.values();
 		int nextState = (currentFilterState.ordinal() + 1) % questStates.length;
 		currentFilterState = questStates[nextState];
+
+		if (config.rememberLastFilterState())
+		{
+			configManager.setRSProfileConfiguration(CONFIG_GROUP, LAST_FILTER_STATE_KEY, currentFilterState);
+		}
 
 		redrawHideButton();
 
@@ -380,6 +417,18 @@ public class QuestListPlugin extends Plugin
 		}
 
 		list.setOriginalHeight(y);
+	}
+
+	private QuestState getDefaultFilterState()
+	{
+		QuestState state = null;
+
+		if (config.rememberLastFilterState())
+		{
+			state = configManager.getRSProfileConfiguration(CONFIG_GROUP, LAST_FILTER_STATE_KEY, QuestState.class);
+		}
+
+		return state != null ? state : QuestState.ALL;
 	}
 
 	@AllArgsConstructor
