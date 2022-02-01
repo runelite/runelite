@@ -41,6 +41,7 @@ import static net.runelite.api.ObjectID.OAK_TREE_4540;
 import static net.runelite.api.ObjectID.REDWOOD_29670;
 import static net.runelite.api.ObjectID.TEAK;
 import static net.runelite.api.ObjectID.TEAK_36686;
+import static net.runelite.api.ObjectID.TEAK_40758;
 import static net.runelite.api.ObjectID.TREE;
 import static net.runelite.api.ObjectID.TREE_1277;
 import static net.runelite.api.ObjectID.TREE_1278;
@@ -69,7 +70,7 @@ enum Tree
 				return region == MISCELLANIA_REGION ? Duration.of(14, GAME_TICKS) : super.respawnTime;
 			}
 		},
-	TEAK_TREE(Duration.of(15, GAME_TICKS), TEAK, TEAK_36686),
+	TEAK_TREE(Duration.of(15, GAME_TICKS), TEAK, TEAK_36686, TEAK_40758),
 	MAHOGANY_TREE(Duration.of(14, GAME_TICKS), MAHOGANY, MAHOGANY_36688),
 	YEW_TREE(Duration.of(99, GAME_TICKS), YEW, NULL_10823, YEW_36683),
 	MAGIC_TREE(Duration.of(199, GAME_TICKS), MAGIC_TREE_10834, NULL_10835),
