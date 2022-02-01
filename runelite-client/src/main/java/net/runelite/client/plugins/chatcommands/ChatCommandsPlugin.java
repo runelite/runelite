@@ -1287,7 +1287,7 @@ public class ChatCommandsPlugin extends Plugin
 			ItemPrice item = retrieveFromList(results, search);
 
 			int itemId = item.getId();
-			int itemPrice = runeLiteConfig.useWikiItemPrices() && item.getWikiPrice() > 0 ? item.getWikiPrice() : item.getPrice();
+			int itemPrice = runeLiteConfig.useWikiItemPrices() ? itemManager.getWikiPrice(item) : item.getPrice();
 
 			final ChatMessageBuilder builder = new ChatMessageBuilder()
 				.append(ChatColorType.NORMAL)

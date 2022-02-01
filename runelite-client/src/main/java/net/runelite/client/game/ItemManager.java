@@ -28,6 +28,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.ImmutableMap;
+import com.google.inject.Inject;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -41,7 +42,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Singleton;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
@@ -83,6 +84,14 @@ public class ItemManager
 	private final ClientThread clientThread;
 	private final ItemClient itemClient;
 	private final RuneLiteConfig runeLiteConfig;
+
+	@Inject(optional = true)
+	@Named("activePriceThreshold")
+	private double activePriceThreshold = 5;
+
+	@Inject(optional = true)
+	@Named("lowPriceThreshold")
+	private int lowPriceThreshold = 1000;
 
 	private Map<Integer, ItemPrice> itemPrices = Collections.emptyMap();
 	private Map<Integer, ItemStats> itemStats = Collections.emptyMap();
@@ -288,7 +297,7 @@ public class ItemManager
 
 			if (ip != null)
 			{
-				price = useWikiPrice && ip.getWikiPrice() > 0 ? ip.getWikiPrice() : ip.getPrice();
+				price = useWikiPrice ? getWikiPrice(ip) : ip.getPrice();
 			}
 		}
 		else
@@ -300,6 +309,27 @@ public class ItemManager
 		}
 
 		return price;
+	}
+
+	/**
+	 * Get the wiki price for an item, with checks to try and avoid excessive price manipulation
+	 * @param itemPrice
+	 * @return
+	 */
+	public int getWikiPrice(ItemPrice itemPrice)
+	{
+		final int wikiPrice = itemPrice.getWikiPrice();
+		final int jagPrice = itemPrice.getPrice();
+		if (wikiPrice <= 0)
+		{
+			return jagPrice;
+		}
+		if (wikiPrice <= lowPriceThreshold)
+		{
+			return wikiPrice;
+		}
+		int d = jagPrice - (int) (jagPrice * activePriceThreshold);
+		return wikiPrice >= jagPrice - d && wikiPrice <= jagPrice + d ? wikiPrice : jagPrice;
 	}
 
 	/**
