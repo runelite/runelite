@@ -47,7 +47,7 @@ public interface ItemChargeConfig extends Config
 	String KEY_EXPLORERS_RING = "explorerRing";
 	String KEY_RING_OF_FORGING = "ringOfForging";
 	String KEY_BLOOD_ESSENCE = "bloodEssence";
-	String KEY_SKULL_SCEPTRE_I = "skullSceptre(i)";
+	String KEY_SKULL_SCEPTRE_I = "skullSceptreI";
 
 	@ConfigSection(
 		name = "Charge Settings",
