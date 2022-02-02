@@ -137,6 +137,10 @@ public class ItemChargePlugin extends Plugin
 		"You manage to extract power from the Blood Essence and craft (\\d{1,3}) extra runes?\\."
 	);
 	private static final String BLOOD_ESSENCE_ACTIVATE_TEXT = "You activate the blood essence.";
+	private static final Pattern SKULL_SCEPTRE_CHECK_PATTERN = Pattern.compile(
+			"Your Skull Sceptre has (\\d+) charges? left\\.");
+	private static final Pattern SKULL_SCEPTRE_EMPTY_PATTERN = Pattern.compile(
+			"Your imbued Skull Sceptre has run out of charges. You must use some more sceptre pieces or fragments on it to recharge it.");
 
 	private static final int MAX_DODGY_CHARGES = 10;
 	private static final int MAX_BINDING_CHARGES = 16;
@@ -146,6 +150,7 @@ public class ItemChargePlugin extends Plugin
 	private static final int MAX_AMULET_OF_BOUNTY_CHARGES = 10;
 	private static final int MAX_SLAYER_BRACELET_CHARGES = 30;
 	private static final int MAX_BLOOD_ESSENCE_CHARGES = 1000;
+	private static final int MIN_SKULL_SCEPTRE_CHARGES = 0;
 
 	private int lastExplorerRingCharge = -1;
 
@@ -237,10 +242,25 @@ public class ItemChargePlugin extends Plugin
 			Matcher expeditiousCheckMatcher = EXPEDITIOUS_BRACELET_CHECK_PATTERN.matcher(message);
 			Matcher bloodEssenceCheckMatcher = BLOOD_ESSENCE_CHECK_PATTERN.matcher(message);
 			Matcher bloodEssenceExtractMatcher = BLOOD_ESSENCE_EXTRACT_PATTERN.matcher(message);
+			Matcher skullSceptreCheckMatcher = SKULL_SCEPTRE_CHECK_PATTERN.matcher(message);
+			Matcher skullSceptreEmptyMatcher = SKULL_SCEPTRE_EMPTY_PATTERN.matcher(message);
 
 			if (config.recoilNotification() && message.contains(RING_OF_RECOIL_BREAK_MESSAGE))
 			{
 				notifier.notify("Your Ring of Recoil has shattered");
+			}
+			else if (skullSceptreEmptyMatcher.find())
+			{
+				if (config.skullSceptreNotification())
+				{
+					notifier.notify("Your skull sceptre is empty.");
+				}
+
+				updateSkullSceptreCharges(MIN_SKULL_SCEPTRE_CHARGES);
+			}
+			else if (skullSceptreCheckMatcher.find())
+			{
+				updateSkullSceptreCharges(Integer.parseInt(skullSceptreCheckMatcher.group(1)));
 			}
 			else if (dodgyBreakMatcher.find())
 			{
@@ -565,6 +585,12 @@ public class ItemChargePlugin extends Plugin
 	private void updateBloodEssenceCharges(final int value)
 	{
 		setItemCharges(ItemChargeConfig.KEY_BLOOD_ESSENCE, value);
+		updateInfoboxes();
+	}
+
+	private void updateSkullSceptreCharges(final int value)
+	{
+		setItemCharges(ItemChargeConfig.KEY_SKULL_SCEPTRE_I, value);
 		updateInfoboxes();
 	}
 
