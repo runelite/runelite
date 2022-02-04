@@ -25,68 +25,15 @@
 package net.runelite.client.plugins.grounditems;
 
 import java.awt.Point;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.time.Duration;
-import java.time.Instant;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
-import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.MouseAdapter;
 
-public class GroundItemInputListener extends MouseAdapter implements KeyListener
+class GroundItemMouseAdapter extends MouseAdapter
 {
-	private static final int HOTKEY = KeyEvent.VK_ALT;
-
-	private Instant lastPress;
-
 	@Inject
 	private GroundItemsPlugin plugin;
-
-	@Inject
-	private GroundItemsConfig config;
-
-	@Override
-	public void keyTyped(KeyEvent e)
-	{
-
-	}
-
-	@Override
-	public void keyPressed(KeyEvent e)
-	{
-		if (e.getKeyCode() == HOTKEY)
-		{
-			if (plugin.isHideAll())
-			{
-				plugin.setHideAll(false);
-				plugin.setHotKeyPressed(true);
-				lastPress = null;
-			}
-			else if (lastPress != null && !plugin.isHotKeyPressed() && config.doubleTapDelay() > 0 && Duration.between(lastPress, Instant.now()).compareTo(Duration.ofMillis(config.doubleTapDelay())) < 0)
-			{
-				plugin.setHideAll(true);
-				lastPress = null;
-			}
-			else
-			{
-				plugin.setHotKeyPressed(true);
-				lastPress = Instant.now();
-			}
-		}
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e)
-	{
-		if (e.getKeyCode() == HOTKEY)
-		{
-			plugin.setHotKeyPressed(false);
-			plugin.setTextBoxBounds(null);
-			plugin.setHiddenBoxBounds(null);
-			plugin.setHighlightBoxBounds(null);
-		}
-	}
 
 	@Override
 	public MouseEvent mousePressed(MouseEvent e)
@@ -134,4 +81,3 @@ public class GroundItemInputListener extends MouseAdapter implements KeyListener
 		return e;
 	}
 }
-

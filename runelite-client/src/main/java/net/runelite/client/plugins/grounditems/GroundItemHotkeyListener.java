@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Abex
+ * Copyright (c) 2018, Seth <https://github.com/sethtroll>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,78 +22,56 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.util;
+package net.runelite.client.plugins.grounditems;
 
-import java.awt.event.KeyEvent;
-import java.util.function.Supplier;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import net.runelite.client.config.Keybind;
-import net.runelite.client.input.KeyListener;
+import java.time.Duration;
+import java.time.Instant;
+import javax.inject.Inject;
+import net.runelite.client.util.HotkeyListener;
 
-@RequiredArgsConstructor
-public abstract class HotkeyListener implements KeyListener
+class GroundItemHotkeyListener extends HotkeyListener
 {
-	private final Supplier<Keybind> keybind;
+	private final GroundItemsPlugin plugin;
+	private final GroundItemsConfig config;
 
-	private boolean isPressed = false;
+	private Instant lastPress;
 
-	private boolean isConsumingTyped = false;
-
-	@Setter
-	private boolean enabledOnLoginScreen;
-
-	@Override
-	public boolean isEnabledOnLoginScreen()
+	@Inject
+	private GroundItemHotkeyListener(GroundItemsPlugin plugin, GroundItemsConfig config)
 	{
-		return enabledOnLoginScreen;
+		super(config::hotkey);
+
+		this.plugin = plugin;
+		this.config = config;
 	}
 
 	@Override
-	public void keyTyped(KeyEvent e)
-	{
-		if (isConsumingTyped)
-		{
-			e.consume();
-		}
-	}
-
-	@Override
-	public void keyPressed(KeyEvent e)
-	{
-		if (keybind.get().matches(e))
-		{
-			boolean wasPressed = isPressed;
-			isPressed = true;
-			if (!wasPressed)
-			{
-				hotkeyPressed();
-			}
-			if (Keybind.getModifierForKeyCode(e.getKeyCode()) == null)
-			{
-				isConsumingTyped = true;
-				// Only consume non modifier keys
-				e.consume();
-			}
-		}
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e)
-	{
-		if (keybind.get().matches(e))
-		{
-			isPressed = false;
-			isConsumingTyped = false;
-			hotkeyReleased();
-		}
-	}
-
 	public void hotkeyPressed()
 	{
+		if (plugin.isHideAll())
+		{
+			plugin.setHideAll(false);
+			plugin.setHotKeyPressed(true);
+			lastPress = null;
+		}
+		else if (lastPress != null && !plugin.isHotKeyPressed() && config.doubleTapDelay() > 0 && Duration.between(lastPress, Instant.now()).compareTo(Duration.ofMillis(config.doubleTapDelay())) < 0)
+		{
+			plugin.setHideAll(true);
+			lastPress = null;
+		}
+		else
+		{
+			plugin.setHotKeyPressed(true);
+			lastPress = Instant.now();
+		}
 	}
 
+	@Override
 	public void hotkeyReleased()
 	{
+		plugin.setHotKeyPressed(false);
+		plugin.setTextBoxBounds(null);
+		plugin.setHiddenBoxBounds(null);
+		plugin.setHighlightBoxBounds(null);
 	}
 }

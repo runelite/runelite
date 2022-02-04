@@ -30,8 +30,9 @@ import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.Units;
 import net.runelite.client.config.ConfigSection;
+import net.runelite.client.config.Keybind;
+import net.runelite.client.config.Units;
 import net.runelite.client.plugins.grounditems.config.DespawnTimerMode;
 import net.runelite.client.plugins.grounditems.config.HighlightTier;
 import net.runelite.client.plugins.grounditems.config.ItemHighlightMode;
@@ -446,5 +447,16 @@ public interface GroundItemsConfig extends Config
 	default Lootbeam.Style lootbeamStyle()
 	{
 		return Lootbeam.Style.MODERN;
+	}
+
+	@ConfigItem(
+		keyName = "hotkey",
+		name = "Hotkey",
+		description = "Configures the hotkey used by the Ground Items plugin",
+		position = 33
+	)
+	default Keybind hotkey()
+	{
+		return Keybind.ALT;
 	}
 }
