@@ -63,6 +63,21 @@ class ConfigInvocationHandler implements InvocationHandler
 
 		Class<?> iface = proxy.getClass().getInterfaces()[0];
 
+		if ("toString".equals(method.getName()) && args == null)
+		{
+			return iface.getSimpleName();
+		}
+
+		if ("hashCode".equals(method.getName()) && args == null)
+		{
+			return System.identityHashCode(proxy);
+		}
+
+		if ("equals".equals(method.getName()) && args != null && args.length == 1)
+		{
+			return proxy == args[0];
+		}
+
 		ConfigGroup group = iface.getAnnotation(ConfigGroup.class);
 		ConfigItem item = method.getAnnotation(ConfigItem.class);
 
