@@ -26,7 +26,6 @@ package net.runelite.client.plugins;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
 import com.google.common.graph.Graph;
 import com.google.common.graph.GraphBuilder;
 import com.google.common.graph.Graphs;
@@ -320,8 +319,7 @@ public class PluginManager
 				continue;
 			}
 
-			Class<Plugin> pluginClass = (Class<Plugin>) clazz;
-			graph.addNode(pluginClass);
+			graph.addNode((Class<Plugin>) clazz);
 		}
 
 		// Build plugin graph
@@ -333,7 +331,7 @@ public class PluginManager
 			{
 				if (graph.nodes().contains(pluginDependency.value()))
 				{
-					graph.putEdge(pluginClazz, pluginDependency.value());
+					graph.putEdge(pluginDependency.value(), pluginClazz);
 				}
 			}
 		}
@@ -344,7 +342,6 @@ public class PluginManager
 		}
 
 		List<Class<? extends Plugin>> sortedPlugins = topologicalSort(graph);
-		sortedPlugins = Lists.reverse(sortedPlugins);
 
 		int loaded = 0;
 		List<Plugin> newPlugins = new ArrayList<>();
