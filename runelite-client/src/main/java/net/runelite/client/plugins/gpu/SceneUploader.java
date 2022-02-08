@@ -147,13 +147,13 @@ class SceneUploader
 			Renderable renderable1 = wallObject.getRenderable1();
 			if (renderable1 instanceof Model)
 			{
-				uploadModel((Model) renderable1, vertexBuffer, uvBuffer);
+				uploadSceneModel((Model) renderable1, vertexBuffer, uvBuffer);
 			}
 
 			Renderable renderable2 = wallObject.getRenderable2();
 			if (renderable2 instanceof Model)
 			{
-				uploadModel((Model) renderable2, vertexBuffer, uvBuffer);
+				uploadSceneModel((Model) renderable2, vertexBuffer, uvBuffer);
 			}
 		}
 
@@ -163,7 +163,7 @@ class SceneUploader
 			Renderable renderable = groundObject.getRenderable();
 			if (renderable instanceof Model)
 			{
-				uploadModel((Model) renderable, vertexBuffer, uvBuffer);
+				uploadSceneModel((Model) renderable, vertexBuffer, uvBuffer);
 			}
 		}
 
@@ -173,13 +173,13 @@ class SceneUploader
 			Renderable renderable = decorativeObject.getRenderable();
 			if (renderable instanceof Model)
 			{
-				uploadModel((Model) renderable, vertexBuffer, uvBuffer);
+				uploadSceneModel((Model) renderable, vertexBuffer, uvBuffer);
 			}
 
 			Renderable renderable2 = decorativeObject.getRenderable2();
 			if (renderable2 instanceof Model)
 			{
-				uploadModel((Model) renderable2, vertexBuffer, uvBuffer);
+				uploadSceneModel((Model) renderable2, vertexBuffer, uvBuffer);
 			}
 		}
 
@@ -194,7 +194,7 @@ class SceneUploader
 			Renderable renderable = gameObject.getRenderable();
 			if (renderable instanceof Model)
 			{
-				uploadModel((Model) gameObject.getRenderable(), vertexBuffer, uvBuffer);
+				uploadSceneModel((Model) gameObject.getRenderable(), vertexBuffer, uvBuffer);
 			}
 		}
 	}
@@ -350,7 +350,7 @@ class SceneUploader
 		return cnt;
 	}
 
-	private void uploadModel(Model model, GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer)
+	private void uploadSceneModel(Model model, GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer)
 	{
 		if (model.getSceneId() == sceneId)
 		{
@@ -368,7 +368,18 @@ class SceneUploader
 		}
 		model.setSceneId(sceneId);
 
-		final int triangleCount = model.getTrianglesCount();
+		int len = pushModel(model, vertexBuffer, uvBuffer);
+
+		offset += len;
+		if (model.getFaceTextures() != null)
+		{
+			uvoffset += len;
+		}
+	}
+
+	public int pushModel(Model model, GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer)
+	{
+		final int triangleCount = Math.min(model.getFaceCount(), GpuPlugin.MAX_TRIANGLE);
 
 		vertexBuffer.ensureCapacity(triangleCount * 12);
 		uvBuffer.ensureCapacity(triangleCount * 12);
@@ -377,19 +388,24 @@ class SceneUploader
 		final int[] vertexY = model.getVerticesY();
 		final int[] vertexZ = model.getVerticesZ();
 
-		final int[] trianglesX = model.getTrianglesX();
-		final int[] trianglesY = model.getTrianglesY();
-		final int[] trianglesZ = model.getTrianglesZ();
+		final int[] indices1 = model.getFaceIndices1();
+		final int[] indices2 = model.getFaceIndices2();
+		final int[] indices3 = model.getFaceIndices3();
 
 		final int[] color1s = model.getFaceColors1();
 		final int[] color2s = model.getFaceColors2();
 		final int[] color3s = model.getFaceColors3();
 
-		final byte[] transparencies = model.getTriangleTransparencies();
+		final byte[] transparencies = model.getFaceTransparencies();
 		final short[] faceTextures = model.getFaceTextures();
 		final byte[] facePriorities = model.getFaceRenderPriorities();
 
 		float[] uv = model.getFaceTextureUVCoordinates();
+
+		final byte overrideAmount = model.getOverrideAmount();
+		final byte overrideHue = model.getOverrideHue();
+		final byte overrideSat = model.getOverrideSaturation();
+		final byte overrideLum = model.getOverrideLuminance();
 
 		int len = 0;
 		for (int face = 0; face < triangleCount; ++face)
@@ -418,12 +434,22 @@ class SceneUploader
 				len += 3;
 				continue;
 			}
+			// HSL override is not applied to flat shade faces or to textured faces
+			else if (faceTextures == null || faceTextures[face] == -1)
+			{
+				if (overrideAmount > 0)
+				{
+					color1 = interpolateHSL(color1, overrideHue, overrideSat, overrideLum, overrideAmount);
+					color2 = interpolateHSL(color2, overrideHue, overrideSat, overrideLum, overrideAmount);
+					color3 = interpolateHSL(color3, overrideHue, overrideSat, overrideLum, overrideAmount);
+				}
+			}
 
 			int packAlphaPriority = packAlphaPriority(faceTextures, transparencies, facePriorities, face);
 
-			int triangleA = trianglesX[face];
-			int triangleB = trianglesY[face];
-			int triangleC = trianglesZ[face];
+			int triangleA = indices1[face];
+			int triangleB = indices2[face];
+			int triangleC = indices3[face];
 
 			vertexBuffer.put(vertexX[triangleA], vertexY[triangleA], vertexZ[triangleA], packAlphaPriority | color1);
 			vertexBuffer.put(vertexX[triangleB], vertexY[triangleB], vertexZ[triangleB], packAlphaPriority | color2);
@@ -437,11 +463,7 @@ class SceneUploader
 			len += 3;
 		}
 
-		offset += len;
-		if (model.getFaceTextures() != null)
-		{
-			uvoffset += len;
-		}
+		return len;
 	}
 
 	int pushFace(Model model, int face, boolean padUvs, GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer,
@@ -451,25 +473,30 @@ class SceneUploader
 		final int[] vertexY = model.getVerticesY();
 		final int[] vertexZ = model.getVerticesZ();
 
-		final int[] trianglesX = model.getTrianglesX();
-		final int[] trianglesY = model.getTrianglesY();
-		final int[] trianglesZ = model.getTrianglesZ();
+		final int[] indices1 = model.getFaceIndices1();
+		final int[] indices2 = model.getFaceIndices2();
+		final int[] indices3 = model.getFaceIndices3();
 
 		final int[] color1s = model.getFaceColors1();
 		final int[] color2s = model.getFaceColors2();
 		final int[] color3s = model.getFaceColors3();
 
-		final byte[] transparencies = model.getTriangleTransparencies();
+		final byte[] transparencies = model.getFaceTransparencies();
 		final short[] faceTextures = model.getFaceTextures();
 		final byte[] facePriorities = model.getFaceRenderPriorities();
 
-		int triangleA = trianglesX[face];
-		int triangleB = trianglesY[face];
-		int triangleC = trianglesZ[face];
+		final int triangleA = indices1[face];
+		final int triangleB = indices2[face];
+		final int triangleC = indices3[face];
 
 		int color1 = color1s[face];
 		int color2 = color2s[face];
 		int color3 = color3s[face];
+
+		final byte overrideAmount = model.getOverrideAmount();
+		final byte overrideHue = model.getOverrideHue();
+		final byte overrideSat = model.getOverrideSaturation();
+		final byte overrideLum = model.getOverrideLuminance();
 
 		int packedAlphaPriority = packAlphaPriority(faceTextures, transparencies, facePriorities, face);
 
@@ -497,6 +524,16 @@ class SceneUploader
 				uvBuffer.put(0, 0, 0, 0f);
 			}
 			return 3;
+		}
+		// HSL override is not applied to flat shade faces or to textured faces
+		else if (faceTextures == null || faceTextures[face] == -1)
+		{
+			if (overrideAmount > 0)
+			{
+				color1 = interpolateHSL(color1, overrideHue, overrideSat, overrideLum, overrideAmount);
+				color2 = interpolateHSL(color2, overrideHue, overrideSat, overrideLum, overrideAmount);
+				color3 = interpolateHSL(color3, overrideHue, overrideSat, overrideLum, overrideAmount);
+			}
 		}
 
 		int a, b, c;
@@ -597,5 +634,29 @@ class SceneUploader
 			uvBuffer.put(0, 0, 0, 0);
 			uvBuffer.put(0, 0, 0, 0);
 		}
+	}
+
+	private static int interpolateHSL(int hsl, byte hue2, byte sat2, byte lum2, byte lerp)
+	{
+		int hue = hsl >> 10 & 63;
+		int sat = hsl >> 7 & 7;
+		int lum = hsl & 127;
+		int var9 = lerp & 255;
+		if (hue2 != -1)
+		{
+			hue += var9 * (hue2 - hue) >> 7;
+		}
+
+		if (sat2 != -1)
+		{
+			sat += var9 * (sat2 - sat) >> 7;
+		}
+
+		if (lum2 != -1)
+		{
+			lum += var9 * (lum2 - lum) >> 7;
+		}
+
+		return (hue << 10 | sat << 7 | lum) & 65535;
 	}
 }

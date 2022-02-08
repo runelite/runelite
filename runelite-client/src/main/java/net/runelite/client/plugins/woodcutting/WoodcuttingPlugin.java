@@ -51,6 +51,7 @@ import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ItemSpawned;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -58,6 +59,7 @@ import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.woodcutting.config.ClueNestTier;
 import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
@@ -107,6 +109,7 @@ public class WoodcuttingPlugin extends Plugin
 	private final List<TreeRespawn> respawns = new ArrayList<>();
 	private boolean recentlyLoggedIn;
 	private int currentPlane;
+	private ClueNestTier clueTierSpawned;
 
 	@Provides
 	WoodcuttingConfig getConfig(ConfigManager configManager)
@@ -130,6 +133,7 @@ public class WoodcuttingPlugin extends Plugin
 		treeObjects.clear();
 		session = null;
 		axe = null;
+		clueTierSpawned = null;
 	}
 
 	@Subscribe
@@ -148,6 +152,7 @@ public class WoodcuttingPlugin extends Plugin
 	public void onGameTick(GameTick gameTick)
 	{
 		recentlyLoggedIn = false;
+		clueTierSpawned = null;
 		currentPlane = client.getPlane();
 
 		respawns.removeIf(TreeRespawn::isExpired);
@@ -190,8 +195,23 @@ public class WoodcuttingPlugin extends Plugin
 
 			if (event.getMessage().contains("A bird's nest falls out of the tree") && config.showNestNotification())
 			{
-				notifier.notify("A bird nest has spawned!");
+				if (clueTierSpawned == null || clueTierSpawned.ordinal() >= config.clueNestNotifyTier().ordinal())
+				{
+					notifier.notify("A bird nest has spawned!");
+				}
+				// Clear the clue tier that has previously spawned
+				clueTierSpawned = null;
 			}
+		}
+	}
+
+	@Subscribe
+	public void onItemSpawned(ItemSpawned itemSpawned)
+	{
+		if (clueTierSpawned == null)
+		{
+			// This will be set only if one of the clue nests has spawned. It will then be reset the next game tick.
+			clueTierSpawned = ClueNestTier.getTierFromItem(itemSpawned.getItem().getId());
 		}
 	}
 

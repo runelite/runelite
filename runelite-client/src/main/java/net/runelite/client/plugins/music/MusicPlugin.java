@@ -61,6 +61,7 @@ import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.AreaSoundEffectPlayed;
 import net.runelite.api.events.BeforeRender;
+import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.PostStructComposition;
 import net.runelite.api.events.ScriptPreFired;
@@ -220,11 +221,20 @@ public class MusicPlugin extends Plugin
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
-		if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN)
+		GameState gameState = gameStateChanged.getGameState();
+		if (gameState == GameState.LOGIN_SCREEN)
 		{
 			// Reset music filter on logout
 			currentMusicFilter = MusicState.ALL;
 			tracks = null;
+		}
+		else if (gameState == GameState.LOGGED_IN)
+		{
+			if (musicConfig.muteAmbientSounds())
+			{
+				client.getAmbientSoundEffects()
+					.clear();
+			}
 		}
 	}
 
@@ -307,7 +317,7 @@ public class MusicPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged configChanged)
 	{
-		if ("music".equals(configChanged.getGroup()))
+		if (configChanged.getGroup().equals(MusicConfig.GROUP))
 		{
 			clientThread.invoke(() ->
 			{
@@ -321,6 +331,14 @@ public class MusicPlugin extends Plugin
 					else
 					{
 						teardownMusicOptions();
+					}
+				}
+				else if (MusicConfig.MUTE_AMBIENT_SOUNDS.equals(configChanged.getKey()))
+				{
+					// Reload the scene to reapply ambient sounds
+					if (client.getGameState() == GameState.LOGGED_IN)
+					{
+						client.setGameState(GameState.LOADING);
 					}
 				}
 				else
@@ -400,7 +418,7 @@ public class MusicPlugin extends Plugin
 		if (tracks == null)
 		{
 			tracks = Arrays.stream(musicList.getDynamicChildren())
-				.sorted(Comparator.comparing(Widget::getRelativeY))
+				.sorted(Comparator.comparingInt(Widget::getRelativeY))
 				.collect(Collectors.toList());
 		}
 
@@ -918,8 +936,13 @@ public class MusicPlugin extends Plugin
 		if (sliderTooltip != null)
 		{
 			tooltipManager.add(sliderTooltip);
-			sliderTooltip = null;
 		}
+	}
+
+	@Subscribe
+	public void onClientTick(ClientTick event)
+	{
+		sliderTooltip = null;
 	}
 
 	@Subscribe

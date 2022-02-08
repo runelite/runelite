@@ -43,6 +43,7 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -60,13 +61,13 @@ import net.runelite.client.ui.components.materialtabs.MaterialTab;
 import net.runelite.client.ui.components.materialtabs.MaterialTabGroup;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.QuantityFormatter;
-import net.runelite.http.api.hiscore.HiscoreClient;
-import net.runelite.http.api.hiscore.HiscoreEndpoint;
-import net.runelite.http.api.hiscore.HiscoreResult;
-import net.runelite.http.api.hiscore.HiscoreSkill;
-import static net.runelite.http.api.hiscore.HiscoreSkill.*;
-import net.runelite.http.api.hiscore.HiscoreSkillType;
-import net.runelite.http.api.hiscore.Skill;
+import net.runelite.client.hiscore.HiscoreClient;
+import net.runelite.client.hiscore.HiscoreEndpoint;
+import net.runelite.client.hiscore.HiscoreResult;
+import net.runelite.client.hiscore.HiscoreSkill;
+import static net.runelite.client.hiscore.HiscoreSkill.*;
+import net.runelite.client.hiscore.HiscoreSkillType;
+import net.runelite.client.hiscore.Skill;
 import okhttp3.OkHttpClient;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -104,13 +105,13 @@ public class HiscorePanel extends PluginPanel
 		GIANT_MOLE, GROTESQUE_GUARDIANS, HESPORI,
 		KALPHITE_QUEEN, KING_BLACK_DRAGON, KRAKEN,
 		KREEARRA, KRIL_TSUTSAROTH, MIMIC,
-		NIGHTMARE, PHOSANIS_NIGHTMARE, OBOR, SARACHNIS,
-		SCORPIA, SKOTIZO, TEMPOROSS,
-		THE_GAUNTLET, THE_CORRUPTED_GAUNTLET, THEATRE_OF_BLOOD,
-		THEATRE_OF_BLOOD_HARD_MODE, THERMONUCLEAR_SMOKE_DEVIL, TZKAL_ZUK,
-		TZTOK_JAD, VENENATIS, VETION,
-		VORKATH, WINTERTODT, ZALCANO,
-		ZULRAH
+		NEX, NIGHTMARE, PHOSANIS_NIGHTMARE,
+		OBOR, SARACHNIS, SCORPIA,
+		SKOTIZO, TEMPOROSS, THE_GAUNTLET,
+		THE_CORRUPTED_GAUNTLET, THEATRE_OF_BLOOD, THEATRE_OF_BLOOD_HARD_MODE,
+		THERMONUCLEAR_SMOKE_DEVIL, TZKAL_ZUK, TZTOK_JAD,
+		VENENATIS, VETION, VORKATH,
+		WINTERTODT, ZALCANO, ZULRAH
 	);
 
 	private static final HiscoreEndpoint[] ENDPOINTS = {
@@ -145,10 +146,7 @@ public class HiscorePanel extends PluginPanel
 		this.nameAutocompleter = nameAutocompleter;
 		this.hiscoreClient = new HiscoreClient(okHttpClient);
 
-		// The layout seems to be ignoring the top margin and only gives it
-		// a 2-3 pixel margin, so I set the value to 18 to compensate
-		// TODO: Figure out why this layout is ignoring most of the top margin
-		setBorder(new EmptyBorder(18, 10, 0, 10));
+		setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 		setLayout(new GridBagLayout());
 

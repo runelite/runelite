@@ -29,7 +29,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.7.26-SNAPSHOT</version>
+		<version>1.8.11-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>runelite-api</artifactId>
@@ -50,6 +50,12 @@
 			<artifactId>jsr305</artifactId>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.jetbrains</groupId>
+			<artifactId>annotations</artifactId>
+			<version>23.0.0</version>
+			<scope>provided</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>junit</groupId>
@@ -60,7 +66,6 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-simple</artifactId>
-			<version>1.7.12</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -108,7 +113,6 @@
 								<exclude>net/runelite/api/ObjectID.class</exclude>
 								<exclude>net/runelite/api/Opcodes.class</exclude>
 								<exclude>net/runelite/api/ParamID.class</exclude>
-								<exclude>net/runelite/api/ProjectileID.class</exclude>
 								<exclude>net/runelite/api/ScriptID.class</exclude>
 								<exclude>net/runelite/api/SettingID.class</exclude>
 								<exclude>net/runelite/api/SoundEffectID.class</exclude>

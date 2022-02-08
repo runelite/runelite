@@ -75,6 +75,28 @@ public interface ScreenshotConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "uploadScreenshot",
+		name = "Upload",
+		description = "Configures whether or not screenshots are uploaded to Imgur, or placed on your clipboard",
+		position = 3
+	)
+	default ImageUploadStyle uploadScreenshot()
+	{
+		return ImageUploadStyle.NEITHER;
+	}
+
+	@ConfigItem(
+		keyName = "hotkey",
+		name = "Screenshot hotkey",
+		description = "When you press this key a screenshot will be taken",
+		position = 4
+	)
+	default Keybind hotkey()
+	{
+		return Keybind.NOT_SET;
+	}
+
+	@ConfigItem(
 		keyName = "rewards",
 		name = "Screenshot Rewards",
 		description = "Configures whether screenshots are taken of clues, barrows, and quest completion",
@@ -120,17 +142,6 @@ public interface ScreenshotConfig extends Config
 	default boolean screenshotPet()
 	{
 		return true;
-	}
-
-	@ConfigItem(
-		keyName = "uploadScreenshot",
-		name = "Upload",
-		description = "Configures whether or not screenshots are uploaded to Imgur, or placed on your clipboard",
-		position = 7
-	)
-	default ImageUploadStyle uploadScreenshot()
-	{
-		return ImageUploadStyle.NEITHER;
 	}
 
 	@ConfigItem(
@@ -278,13 +289,14 @@ public interface ScreenshotConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "hotkey",
-		name = "Screenshot hotkey",
-		description = "When you press this key a screenshot will be taken",
-		position = 20
+		keyName = "combatAchievements",
+		name = "Screenshot combat achievements",
+		description = "Take a screenshot when completing a combat achievement task",
+		position = 20,
+		section = whatSection
 	)
-	default Keybind hotkey()
+	default boolean screenshotCombatAchievements()
 	{
-		return Keybind.NOT_SET;
+		return true;
 	}
 }

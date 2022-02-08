@@ -24,46 +24,72 @@
  */
 package net.runelite.api;
 
-import lombok.Data;
+import java.util.function.Consumer;
 
 /**
  * A menu entry in a right-click menu.
  */
-@Data
-public class MenuEntry
+public interface MenuEntry
 {
 	/**
 	 * The option text added to the menu. (ie. "Walk here", "Use")
 	 */
-	private String option;
+	String getOption();
+	MenuEntry setOption(String option);
+
 	/**
 	 * The target of the action. (ie. Item or Actor name)
 	 * <p>
 	 * If the option does not apply to any target, this field
 	 * will be set to empty string.
 	 */
-	private String target;
+	String getTarget();
+	MenuEntry setTarget(String target);
+
 	/**
 	 * An identifier value for the target of the action.
 	 */
-	private int identifier;
+	int getIdentifier();
+	MenuEntry setIdentifier(int identifier);
+
 	/**
 	 * The action the entry will trigger.
 	 */
-	private int type;
+	MenuAction getType();
+	MenuEntry setType(MenuAction type);
+
 	/**
 	 * An additional parameter for the action.
 	 */
-	private int param0;
+	int getParam0();
+	MenuEntry setParam0(int param0);
+
 	/**
 	 * A second additional parameter for the action.
 	 */
-	private int param1;
+	int getParam1();
+	MenuEntry setParam1(int param1);
+
 	/**
-	 * If this field is true and you have single mouse button on and this entry is
+	 * If this is true and you have single mouse button on and this entry is
 	 * the top entry the right click menu will not be opened when you left click
 	 *
 	 * This is used  for shift click
 	 */
-	private boolean forceLeftClick;
+	boolean isForceLeftClick();
+	MenuEntry setForceLeftClick(boolean forceLeftClick);
+
+	/**
+	 * Deprioritized menus are sorted in the menu to be below the other menu entries.
+	 * @return
+	 */
+	boolean isDeprioritized();
+	MenuEntry setDeprioritized(boolean deprioritized);
+
+	/**
+	 * Set a callback to be called when this menu option is clicked
+	 * @param callback
+	 * @return
+	 */
+	MenuEntry onClick(Consumer<MenuEntry> callback);
 }

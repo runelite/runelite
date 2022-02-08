@@ -63,6 +63,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.CommandExecuted;
+import net.runelite.api.events.FakeXpDrop;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.HitsplatApplied;
@@ -74,10 +75,10 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.chat.ChatClient;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatCommandManager;
 import net.runelite.client.chat.ChatMessageBuilder;
-import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ChatInput;
@@ -91,7 +92,6 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
-import net.runelite.http.api.chat.ChatClient;
 import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
@@ -159,9 +159,6 @@ public class SlayerPlugin extends Plugin
 
 	@Inject
 	private TargetWeaknessOverlay targetWeaknessOverlay;
-
-	@Inject
-	private ChatMessageManager chatMessageManager;
 
 	@Inject
 	private ChatCommandManager chatCommandManager;
@@ -550,13 +547,28 @@ public class SlayerPlugin extends Plugin
 		final int delta = slayerExp - cachedXp;
 		cachedXp = slayerExp;
 
+		xpChanged(delta);
+	}
+
+	@Subscribe
+	public void onFakeXpDrop(FakeXpDrop fakeXpDrop)
+	{
+		if (fakeXpDrop.getSkill() == SLAYER)
+		{
+			int delta = fakeXpDrop.getXp();
+			xpChanged(delta);
+		}
+	}
+
+	private void xpChanged(int delta)
+	{
 		log.debug("Slayer xp change delta: {}, killed npcs: {}", delta, taggedNpcsDiedPrevTick);
 
 		final Task task = Task.getTask(taskName);
-		if (task != null && task.getMinimumKillXp() > 0)
+		if (task != null && task.getXpMatcher() != null)
 		{
-			// Only decrement a kill if the xp drop is above the minimum threshold. This is for Tzhaar and Sire tasks.
-			if (delta >= task.getMinimumKillXp())
+			// Only decrement a kill if the xp drop delta passes the matcher. This is for Tzhaar and Sire tasks.
+			if (task.getXpMatcher().test(delta))
 			{
 				killed(max(taggedNpcsDiedPrevTick, 1));
 			}
@@ -859,7 +871,6 @@ public class SlayerPlugin extends Plugin
 
 		final MessageNode messageNode = chatMessage.getMessageNode();
 		messageNode.setRuneLiteFormatMessage(response);
-		chatMessageManager.update(messageNode);
 		client.refreshChat();
 	}
 

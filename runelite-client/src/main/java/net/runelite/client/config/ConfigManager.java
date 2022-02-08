@@ -27,9 +27,9 @@ package net.runelite.client.config;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Strings;
 import com.google.common.collect.ComparisonChain;
-import com.google.common.collect.ImmutableSet;
 import com.google.common.hash.Hasher;
 import com.google.common.hash.Hashing;
+import com.google.gson.Gson;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
@@ -43,7 +43,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Proxy;
+import java.lang.reflect.Type;
 import java.nio.channels.FileChannel;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.AtomicMoveNotSupportedException;
@@ -54,7 +56,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Date;
@@ -70,11 +71,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Predicate;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -95,10 +93,8 @@ import net.runelite.client.events.ClientShutdown;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.RuneScapeProfileChanged;
 import net.runelite.client.util.ColorUtil;
-import net.runelite.http.api.config.ConfigClient;
 import net.runelite.http.api.config.ConfigEntry;
 import net.runelite.http.api.config.Configuration;
-import okhttp3.OkHttpClient;
 
 @Singleton
 @Slf4j
@@ -119,10 +115,11 @@ public class ConfigManager
 
 	private final File settingsFileInput;
 	private final EventBus eventBus;
-	private final OkHttpClient okHttpClient;
+	private final Gson gson;
+	@Nonnull
+	private final ConfigClient configClient;
 
 	private AccountSession session;
-	private ConfigClient configClient;
 	private File propertiesFile;
 
 	@Nullable
@@ -142,16 +139,18 @@ public class ConfigManager
 		@Named("config") File config,
 		ScheduledExecutorService scheduledExecutorService,
 		EventBus eventBus,
-		OkHttpClient okHttpClient,
-		@Nullable Client client)
+		@Nullable Client client,
+		Gson gson,
+		ConfigClient configClient)
 	{
 		this.settingsFileInput = config;
 		this.eventBus = eventBus;
-		this.okHttpClient = okHttpClient;
 		this.client = client;
 		this.propertiesFile = getPropertiesFile();
+		this.gson = gson;
+		this.configClient = configClient;
 
-		scheduledExecutorService.scheduleWithFixedDelay(this::sendConfig, 30, 30, TimeUnit.SECONDS);
+		scheduledExecutorService.scheduleWithFixedDelay(this::sendConfig, 30, 5 * 60, TimeUnit.SECONDS);
 	}
 
 	public String getRSProfileKey()
@@ -167,12 +166,12 @@ public class ConfigManager
 		if (session == null)
 		{
 			this.session = null;
-			this.configClient = null;
+			configClient.setUuid(null);
 		}
 		else
 		{
 			this.session = session;
-			this.configClient = new ConfigClient(okHttpClient, session.getUuid());
+			configClient.setUuid(session.getUuid());
 		}
 
 		this.propertiesFile = getPropertiesFile();
@@ -201,7 +200,7 @@ public class ConfigManager
 
 	public void load()
 	{
-		if (configClient == null)
+		if (session == null)
 		{
 			loadFromFile();
 			return;
@@ -301,8 +300,6 @@ public class ConfigManager
 				}
 			}
 		}
-
-		migrateConfig();
 	}
 
 	private void syncPropertiesFromFile(File propertiesFile)
@@ -449,12 +446,12 @@ public class ConfigManager
 		return properties.getProperty(getWholeKey(groupName, profile, key));
 	}
 
-	public <T> T getConfiguration(String groupName, String key, Class<T> clazz)
+	public <T> T getConfiguration(String groupName, String key, Type clazz)
 	{
 		return getConfiguration(groupName, null, key, clazz);
 	}
 
-	public <T> T getRSProfileConfiguration(String groupName, String key, Class<T> clazz)
+	public <T> T getRSProfileConfiguration(String groupName, String key, Type clazz)
 	{
 		String rsProfileKey = this.rsProfileKey;
 		if (rsProfileKey == null)
@@ -465,14 +462,14 @@ public class ConfigManager
 		return getConfiguration(groupName, rsProfileKey, key, clazz);
 	}
 
-	public <T> T getConfiguration(String groupName, String profile, String key, Class<T> clazz)
+	public <T> T getConfiguration(String groupName, String profile, String key, Type type)
 	{
 		String value = getConfiguration(groupName, profile, key);
 		if (!Strings.isNullOrEmpty(value))
 		{
 			try
 			{
-				return (T) stringToObject(value, clazz);
+				return (T) stringToObject(value, type);
 			}
 			catch (Exception e)
 			{
@@ -525,17 +522,17 @@ public class ConfigManager
 		eventBus.post(configChanged);
 	}
 
-	public void setConfiguration(String groupName, String profile, String key, Object value)
+	public <T> void setConfiguration(String groupName, String profile, String key, T value)
 	{
 		setConfiguration(groupName, profile, key, objectToString(value));
 	}
 
-	public void setConfiguration(String groupName, String key, Object value)
+	public <T> void setConfiguration(String groupName, String key, T value)
 	{
 		setConfiguration(groupName, null, key, value);
 	}
 
-	public void setRSProfileConfiguration(String groupName, String key, Object value)
+	public <T> void setRSProfileConfiguration(String groupName, String key, T value)
 	{
 		String rsProfileKey = this.rsProfileKey;
 		if (rsProfileKey == null)
@@ -657,7 +654,7 @@ public class ConfigManager
 			.filter(m -> m.getParameterCount() == 0 && m.isAnnotationPresent(ConfigItem.class))
 			.map(m -> new ConfigItemDescriptor(
 				m.getDeclaredAnnotation(ConfigItem.class),
-				m.getReturnType(),
+				m.getGenericReturnType(),
 				m.getDeclaredAnnotation(Range.class),
 				m.getDeclaredAnnotation(Alpha.class),
 				m.getDeclaredAnnotation(Units.class)
@@ -714,7 +711,7 @@ public class ConfigManager
 			{
 				// This checks if it is set and is also unmarshallable to the correct type; so
 				// we will overwrite invalid config values with the default
-				Object current = getConfiguration(group.value(), item.keyName(), method.getReturnType());
+				Object current = getConfiguration(group.value(), item.keyName(), method.getGenericReturnType());
 				if (current != null)
 				{
 					continue; // something else is already set
@@ -748,7 +745,7 @@ public class ConfigManager
 		}
 	}
 
-	static Object stringToObject(String str, Class<?> type)
+	Object stringToObject(String str, Type type)
 	{
 		if (type == boolean.class || type == Boolean.class)
 		{
@@ -789,7 +786,7 @@ public class ConfigManager
 			int height = Integer.parseInt(splitStr[3]);
 			return new Rectangle(x, y, width, height);
 		}
-		if (type.isEnum())
+		if (type instanceof Class && ((Class<?>) type).isEnum())
 		{
 			return Enum.valueOf((Class<? extends Enum>) type, str);
 		}
@@ -824,11 +821,19 @@ public class ConfigManager
 		{
 			return Base64.getUrlDecoder().decode(str);
 		}
+		if (type instanceof ParameterizedType)
+		{
+			ParameterizedType parameterizedType = (ParameterizedType) type;
+			if (parameterizedType.getRawType() == Set.class)
+			{
+				return gson.fromJson(str, parameterizedType);
+			}
+		}
 		return str;
 	}
 
 	@Nullable
-	static String objectToString(Object object)
+	String objectToString(Object object)
 	{
 		if (object instanceof Color)
 		{
@@ -875,6 +880,10 @@ public class ConfigManager
 		{
 			return Base64.getUrlEncoder().encodeToString((byte[]) object);
 		}
+		if (object instanceof Set)
+		{
+			return gson.toJson(object, Set.class);
+		}
 		return object == null ? null : object.toString();
 	}
 
@@ -899,7 +908,7 @@ public class ConfigManager
 				return null;
 			}
 
-			if (configClient != null)
+			if (session != null)
 			{
 				Configuration patch = new Configuration(pendingChanges.entrySet().stream()
 					.map(e -> new ConfigEntry(e.getKey(), e.getValue()))
@@ -1087,115 +1096,5 @@ public class ConfigManager
 			key = key.substring(i + 1);
 		}
 		return new String[]{group, profile, key};
-	}
-
-	private synchronized void migrateConfig()
-	{
-		String migrationKey = "profileMigrationDone";
-		if (getConfiguration("runelite", migrationKey) != null)
-		{
-			return;
-		}
-
-		Map<String, String> profiles = new HashMap<>();
-
-		AtomicInteger changes = new AtomicInteger();
-		List<Predicate<String>> migrators = new ArrayList<>();
-		for (String[] tpl : new String[][]
-			{
-				{"(grandexchange)\\.buylimit_(%)\\.(#)", "$1.buylimit.$3"},
-				{"(timetracking)\\.(%)\\.(autoweed|contract)", "$1.$3"},
-				{"(timetracking)\\.(%)\\.(#\\.#)", "$1.$3"},
-				{"(timetracking)\\.(%)\\.(birdhouse)\\.(#)", "$1.$3.$4"},
-				{"(killcount|personalbest)\\.(%)\\.([^.]+)", "$1.$3"},
-				{"(geoffer)\\.(%)\\.(#)", "$1.$3"},
-			})
-		{
-			String replace = tpl[1];
-			String pat = ("^" + tpl[0] + "$")
-				.replace("#", "-?[0-9]+")
-				.replace("(%)", "(?<login>.*)");
-			Pattern p = Pattern.compile(pat);
-
-			migrators.add(oldkey ->
-			{
-				Matcher m = p.matcher(oldkey);
-				if (!m.find())
-				{
-					return false;
-				}
-
-				String newKey = m.replaceFirst(replace);
-				String username = m.group("login").toLowerCase(Locale.US);
-
-				if (username.startsWith(RSPROFILE_GROUP + "."))
-				{
-					return false;
-				}
-
-				String profKey = profiles.computeIfAbsent(username, u ->
-					findRSProfile(getRSProfiles(), u, RuneScapeProfileType.STANDARD, u, true).getKey());
-
-				String[] oldKeySplit = splitKey(oldkey);
-				if (oldKeySplit == null)
-				{
-					log.warn("skipping migration of invalid key \"{}\"", oldkey);
-					return false;
-				}
-				if (oldKeySplit[KEY_SPLITTER_PROFILE] != null)
-				{
-					log.debug("skipping migrated key \"{}\"", oldkey);
-					return false;
-				}
-
-				String[] newKeySplit = splitKey(newKey);
-				if (newKeySplit == null || newKeySplit[KEY_SPLITTER_PROFILE] != null)
-				{
-					log.warn("migration produced a bad key: \"{}\" -> \"{}\"", oldkey, newKey);
-					return false;
-				}
-
-				if (changes.getAndAdd(1) <= 0)
-				{
-					File file = new File(propertiesFile.getParent(), propertiesFile.getName() + "." + TIME_FORMAT.format(new Date()));
-					log.info("backing up pre-migration config to {}", file);
-					try
-					{
-						saveToFile(file);
-					}
-					catch (IOException e)
-					{
-						log.error("Backup failed", e);
-						throw new RuntimeException(e);
-					}
-				}
-
-				String oldGroup = oldKeySplit[KEY_SPLITTER_GROUP];
-				String oldKeyPart = oldKeySplit[KEY_SPLITTER_KEY];
-				String value = getConfiguration(oldGroup, oldKeyPart);
-				setConfiguration(newKeySplit[KEY_SPLITTER_GROUP], profKey, newKeySplit[KEY_SPLITTER_KEY], value);
-				unsetConfiguration(oldGroup, oldKeyPart);
-				return true;
-			});
-		}
-
-		Set<String> keys = (Set<String>) ImmutableSet.copyOf((Set) properties.keySet());
-		keys:
-		for (String key : keys)
-		{
-			for (Predicate<String> mig : migrators)
-			{
-				if (mig.test(key))
-				{
-					continue keys;
-				}
-			}
-		}
-
-		if (changes.get() > 0)
-		{
-			log.info("migrated {} config keys", changes);
-		}
-		setConfiguration("runelite", migrationKey, 1);
 	}
 }

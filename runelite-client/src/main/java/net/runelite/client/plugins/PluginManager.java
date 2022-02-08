@@ -26,7 +26,6 @@ package net.runelite.client.plugins;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
 import com.google.common.graph.Graph;
 import com.google.common.graph.GraphBuilder;
 import com.google.common.graph.Graphs;
@@ -320,8 +319,7 @@ public class PluginManager
 				continue;
 			}
 
-			Class<Plugin> pluginClass = (Class<Plugin>) clazz;
-			graph.addNode(pluginClass);
+			graph.addNode((Class<Plugin>) clazz);
 		}
 
 		// Build plugin graph
@@ -333,7 +331,7 @@ public class PluginManager
 			{
 				if (graph.nodes().contains(pluginDependency.value()))
 				{
-					graph.putEdge(pluginClazz, pluginDependency.value());
+					graph.putEdge(pluginDependency.value(), pluginClazz);
 				}
 			}
 		}
@@ -344,7 +342,6 @@ public class PluginManager
 		}
 
 		List<Class<? extends Plugin>> sortedPlugins = topologicalSort(graph);
-		sortedPlugins = Lists.reverse(sortedPlugins);
 
 		int loaded = 0;
 		List<Plugin> newPlugins = new ArrayList<>();
@@ -631,11 +628,14 @@ public class PluginManager
 	/**
 	 * Topologically sort a graph. Uses Kahn's algorithm.
 	 *
-	 * @param graph
-	 * @param <T>
-	 * @return
+	 * @param graph - A directed graph
+	 * @param <T>   - The type of the item contained in the nodes of the graph
+	 * @return - A topologically sorted list corresponding to graph.
+	 * <p>
+	 * Multiple invocations with the same arguments may return lists that are not equal.
 	 */
-	private <T> List<T> topologicalSort(Graph<T> graph)
+	@VisibleForTesting
+	static <T> List<T> topologicalSort(Graph<T> graph)
 	{
 		MutableGraph<T> graphCopy = Graphs.copyOf(graph);
 		List<T> l = new ArrayList<>();
@@ -650,7 +650,7 @@ public class PluginManager
 
 			l.add(n);
 
-			for (T m : graphCopy.successors(n))
+			for (T m : new HashSet<>(graphCopy.successors(n)))
 			{
 				graphCopy.removeEdge(n, m);
 				if (graphCopy.inDegree(m) == 0)

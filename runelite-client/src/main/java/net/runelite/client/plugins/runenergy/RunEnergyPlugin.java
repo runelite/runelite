@@ -40,12 +40,13 @@ import static net.runelite.api.ItemID.*;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.events.ConfigChanged;
+import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -138,6 +139,7 @@ public class RunEnergyPlugin extends Plugin
 
 	private boolean localPlayerRunningToDestination;
 	private WorldPoint prevLocalPlayerLocation;
+	private String runTimeRemaining;
 
 	@Provides
 	RunEnergyConfig getConfig(ConfigManager configManager)
@@ -170,9 +172,15 @@ public class RunEnergyPlugin extends Plugin
 
 		prevLocalPlayerLocation = client.getLocalPlayer().getWorldLocation();
 
-		if (energyConfig.replaceOrbText())
+		runTimeRemaining = energyConfig.replaceOrbText() ? getEstimatedRunTimeRemaining(true) : null;
+	}
+
+	@Subscribe
+	public void onBeforeRender(BeforeRender beforeRender)
+	{
+		if (runTimeRemaining != null)
 		{
-			setRunOrbText(getEstimatedRunTimeRemaining(true));
+			setRunOrbText(runTimeRemaining);
 		}
 	}
 
@@ -218,14 +226,13 @@ public class RunEnergyPlugin extends Plugin
 		// Return the text
 		if (inSeconds)
 		{
-			return Integer.toString((int) Math.floor(secondsLeft)) + "s";
+			return (int) Math.floor(secondsLeft) + "s";
 		}
 		else
 		{
 			final int minutes = (int) Math.floor(secondsLeft / 60.0);
 			final int seconds = (int) Math.floor(secondsLeft - (minutes * 60.0));
-
-			return Integer.toString(minutes) + ":" + StringUtils.leftPad(Integer.toString(seconds), 2, "0");
+			return minutes + ":" + StringUtils.leftPad(Integer.toString(seconds), 2, "0");
 		}
 	}
 

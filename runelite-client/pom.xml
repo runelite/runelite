@@ -29,7 +29,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.7.26-SNAPSHOT</version>
+		<version>1.8.11-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>client</artifactId>
@@ -38,6 +38,8 @@
 	<properties>
 		<jarsigner.skip>true</jarsigner.skip>
 		<pmd.skip>true</pmd.skip>
+		<git.commit.id.abbrev>nogit</git.commit.id.abbrev>
+		<git.dirty>false</git.dirty>
 	</properties>
 
 	<dependencies>
@@ -111,6 +113,32 @@
 			<version>1.2</version>
 		</dependency>
 		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-csv</artifactId>
+			<version>1.4</version>
+		</dependency>
+		<dependency>
+			<groupId>net.runelite</groupId>
+			<artifactId>archive-patcher</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>net.java.dev.jna</groupId>
+			<artifactId>jna</artifactId>
+			<version>5.9.0</version>
+		</dependency>
+		<dependency>
+			<groupId>net.java.dev.jna</groupId>
+			<artifactId>jna-platform</artifactId>
+			<version>5.9.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.code.findbugs</groupId>
+			<artifactId>jsr305</artifactId>
+		</dependency>
+
+		<!-- JOGL -->
+		<dependency>
 			<groupId>net.runelite.jogl</groupId>
 			<artifactId>jogl-all</artifactId>
 			<version>2.4.0-rc-20200429</version>
@@ -174,6 +202,8 @@
 			<version>2.4.0-rc-20210117</version>
 			<scope>runtime</scope>
 		</dependency>
+
+		<!-- JOCL -->
 		<dependency>
 			<groupId>net.runelite.jocl</groupId>
 			<artifactId>jocl</artifactId>
@@ -192,25 +222,6 @@
 			<version>1.0</version>
 			<classifier>macos-arm64</classifier>
 			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>net.runelite</groupId>
-			<artifactId>archive-patcher</artifactId>
-			<version>1.0</version>
-		</dependency>
-		<dependency>
-			<groupId>net.java.dev.jna</groupId>
-			<artifactId>jna</artifactId>
-			<version>5.9.0</version>
-		</dependency>
-		<dependency>
-			<groupId>net.java.dev.jna</groupId>
-			<artifactId>jna-platform</artifactId>
-			<version>5.9.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.code.findbugs</groupId>
-			<artifactId>jsr305</artifactId>
 		</dependency>
 
 		<dependency>
@@ -231,9 +242,9 @@
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
-			<groupId>net.runelite</groupId>
+			<groupId>net.runelite.arn</groupId>
 			<artifactId>http-api</artifactId>
-			<version>${project.version}</version>
+			<version>1.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>net.runelite</groupId>
@@ -330,6 +341,13 @@
 						</manifestEntries>
 					</archive>
 				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>test-jar</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -455,6 +473,30 @@
 						<goals>
 							<goal>check</goal>
 						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>pl.project13.maven</groupId>
+				<artifactId>git-commit-id-plugin</artifactId>
+				<version>2.2.6</version>
+				<executions>
+					<execution>
+						<id>query-git-info</id>
+						<goals>
+							<goal>revision</goal>
+						</goals>
+						<configuration>
+							<failOnNoGitDirectory>false</failOnNoGitDirectory>
+							<failOnUnableToExtractRepoInfo>false</failOnUnableToExtractRepoInfo>
+							<gitDescribe>
+								<skip>true</skip>
+							</gitDescribe>
+							<includeOnlyProperties>
+								<includeOnlyProperty>git.commit.id.abbrev</includeOnlyProperty>
+								<includeOnlyProperty>git.dirty</includeOnlyProperty>
+							</includeOnlyProperties>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>

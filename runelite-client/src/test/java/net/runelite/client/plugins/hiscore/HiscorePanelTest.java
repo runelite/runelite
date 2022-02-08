@@ -25,7 +25,7 @@
 package net.runelite.client.plugins.hiscore;
 
 import static net.runelite.client.plugins.hiscore.HiscorePanel.formatLevel;
-import net.runelite.http.api.hiscore.HiscoreEndpoint;
+import net.runelite.client.hiscore.HiscoreEndpoint;
 import okhttp3.OkHttpClient;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;

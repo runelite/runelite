@@ -127,7 +127,8 @@ public class CommandManager
 		int intStackCount = client.getIntStackSize();
 
 		final String typedText = stringStack[stringStackCount - 1];
-		final int chatType = intStack[intStackCount - 1];
+		final int chatType = intStack[intStackCount - 2];
+		final int clanTarget = intStack[intStackCount - 1];
 
 		ChatboxInput chatboxInput = new ChatboxInput(typedText, chatType)
 		{
@@ -142,7 +143,7 @@ public class CommandManager
 				}
 				resumed = true;
 
-				clientThread.invoke(() -> sendChatboxInput(chatType, typedText));
+				clientThread.invoke(() -> sendChatboxInput(typedText, chatType, clanTarget));
 			}
 		};
 		boolean stop = false;
@@ -198,12 +199,12 @@ public class CommandManager
 		}
 	}
 
-	private void sendChatboxInput(int chatType, String input)
+	private void sendChatboxInput(String input, int chatType, int clanTarget)
 	{
 		sending = true;
 		try
 		{
-			client.runScript(ScriptID.CHATBOX_INPUT, chatType, input);
+			client.runScript(ScriptID.CHAT_SEND, input, chatType, clanTarget, 0, -1);
 		}
 		finally
 		{

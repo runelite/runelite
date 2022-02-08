@@ -33,7 +33,6 @@ import net.runelite.api.Client;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.Notifier;
-import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.ui.overlay.OverlayManager;
 import org.junit.Before;
 import org.junit.Test;
@@ -61,10 +60,6 @@ public class WintertodtPluginTest
 	@Mock
 	@Bind
 	OverlayManager overlayManager;
-
-	@Mock
-	@Bind
-	ChatMessageManager chatMessageManager;
 
 	@Mock
 	@Bind

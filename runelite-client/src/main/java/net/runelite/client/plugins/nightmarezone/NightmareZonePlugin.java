@@ -33,6 +33,7 @@ import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
+import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
@@ -119,6 +120,21 @@ public class NightmareZonePlugin extends Plugin
 	NightmareZoneConfig getConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(NightmareZoneConfig.class);
+	}
+
+	@Subscribe
+	public void onBeforeRender(BeforeRender beforeRender)
+	{
+		if (!isInNightmareZone() || !config.moveOverlay())
+		{
+			return;
+		}
+
+		Widget nmzWidget = client.getWidget(WidgetInfo.NIGHTMARE_ZONE);
+		if (nmzWidget != null)
+		{
+			nmzWidget.setHidden(true);
+		}
 	}
 
 	@Subscribe

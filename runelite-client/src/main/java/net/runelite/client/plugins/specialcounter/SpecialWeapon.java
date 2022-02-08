@@ -40,7 +40,7 @@ enum SpecialWeapon
 	BARRELCHEST_ANCHOR("Barrelchest Anchor", new int[]{ItemID.BARRELCHEST_ANCHOR}, true, (c) -> 0),
 	BONE_DAGGER("Bone Dagger", new int[]{ItemID.BONE_DAGGER, ItemID.BONE_DAGGER_P, ItemID.BONE_DAGGER_P_8876, ItemID.BONE_DAGGER_P_8878}, true, (c) -> 0),
 	DORGESHUUN_CROSSBOW("Dorgeshuun Crossbow", new int[]{ItemID.DORGESHUUN_CROSSBOW}, true, (c) -> 0),
-	BULWARK("Dinh's Bulwark", new int[]{ItemID.DINHS_BULWARK}, false, c -> 0);
+	BULWARK("Dinh's Bulwark", new int[]{ItemID.DINHS_BULWARK}, false, SpecialCounterConfig::bulwarkThreshold);
 
 	private final String name;
 	private final int[] itemID;

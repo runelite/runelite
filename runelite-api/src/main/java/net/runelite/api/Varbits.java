@@ -530,6 +530,13 @@ public enum Varbits
 	CORRUPTION_COOLDOWN(12288),
 
 	/**
+	 * Imbued Heart cooldown
+	 * Number of game tick remaining on cooldown in intervals of 10; for a value X there are 10 * X game ticks remaining.
+	 * The heart regains its power once this reaches 0.
+	 */
+	IMBUED_HEART_COOLDOWN(5361),
+
+	/**
 	 * Amount of items in each bank tab
 	 */
 	BANK_TAB_ONE_COUNT(4171),
@@ -617,7 +624,22 @@ public enum Varbits
 	 * 2 = popup notification only
 	 * 3 = chat and popup
 	 */
-	COLLECTION_LOG_NOTIFICATION(11959);
+	COLLECTION_LOG_NOTIFICATION(11959),
+
+	/**
+	 * Combat Achievements popup settings whenever a new task is completed
+	 *
+	 * 0 = popup notification enabled
+	 * 1 = popup notification disabled
+	 */
+	COMBAT_ACHIEVEMENTS_POPUP(12455),
+
+	/**
+	 * Show boss health overlay setting
+	 * 0 = on
+	 * 1 = off
+	 */
+	BOSS_HEALTH_OVERLAY(12389);
 
 	/**
 	 * The raw varbit ID.

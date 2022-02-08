@@ -488,17 +488,14 @@ public class WorldMapPlugin extends Plugin
 		}
 
 		// Must setup the quest icons on the client thread, after the player has logged in.
-		clientThread.invokeLater(() ->
+		clientThread.invoke(() ->
 		{
-			if (client.getGameState() != GameState.LOGGED_IN)
+			if (client.getGameState() == GameState.LOGGED_IN)
 			{
-				return false;
+				Arrays.stream(QuestStartLocation.values())
+					.map(this::createQuestStartPoint)
+					.forEach(worldMapPointManager::add);
 			}
-
-			Arrays.stream(QuestStartLocation.values())
-				.map(this::createQuestStartPoint)
-				.forEach(worldMapPointManager::add);
-			return true;
 		});
 	}
 

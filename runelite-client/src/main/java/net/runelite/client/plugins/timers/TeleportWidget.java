@@ -41,7 +41,8 @@ enum TeleportWidget
 		WidgetInfo.SPELL_EDGEVILLE_HOME_TELEPORT.getId(),
 		WidgetInfo.SPELL_LUNAR_HOME_TELEPORT.getId(),
 		WidgetInfo.SPELL_ARCEUUS_HOME_TELEPORT.getId(),
-		WidgetInfo.SPELL_KOUREND_HOME_TELEPORT.getId()
+		WidgetInfo.SPELL_KOUREND_HOME_TELEPORT.getId(),
+		WidgetInfo.SPELL_CATHERBY_HOME_TELEPORT.getId()
 	);
 	private static final Collection MINIGAME_TELEPORT_IDS = ImmutableList.of(
 		WidgetInfo.MINIGAME_TELEPORT_BUTTON.getId()

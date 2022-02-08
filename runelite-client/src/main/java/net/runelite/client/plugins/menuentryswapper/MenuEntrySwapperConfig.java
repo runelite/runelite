@@ -114,6 +114,18 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+		position = -3,
+		keyName = "leftClickCustomization",
+		name = "Customizable left-click",
+		description = "Allows customization of left-clicks on items",
+		section = itemSection
+	)
+	default boolean leftClickCustomization()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		position = -2,
 		keyName = "shiftClickCustomization",
 		name = "Customizable shift-click",
@@ -773,6 +785,35 @@ public interface MenuEntrySwapperConfig extends Config
 	default boolean swapRowboatDive()
 	{
 		return false;
+	}
+
+	enum StairsMode
+	{
+		CLIMB,
+		CLIMB_UP,
+		CLIMB_DOWN,
+	}
+
+	@ConfigItem(
+		keyName = "swapStairsLeftClick",
+		name = "Stairs left-click",
+		description = "Swap this option when left-clicking stairs. Also works on ladders.",
+		section = objectSection
+	)
+	default StairsMode swapStairsLeftClick()
+	{
+		return StairsMode.CLIMB;
+	}
+
+	@ConfigItem(
+		keyName = "swapStairsShiftClick",
+		name = "Stairs shift-click",
+		description = "Swap this option when shift-clicking stairs. Also works on ladders.",
+		section = objectSection
+	)
+	default StairsMode swapStairsShiftClick()
+	{
+		return StairsMode.CLIMB;
 	}
 
 	@ConfigItem(

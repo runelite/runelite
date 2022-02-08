@@ -34,9 +34,11 @@ import net.runelite.client.plugins.gpu.config.AntiAliasingMode;
 import net.runelite.client.plugins.gpu.config.ColorBlindMode;
 import net.runelite.client.plugins.gpu.config.UIScalingMode;
 
-@ConfigGroup("gpu")
+@ConfigGroup(GpuPluginConfig.GROUP)
 public interface GpuPluginConfig extends Config
 {
+	String GROUP = "gpu";
+
 	@Range(
 		max = MAX_DISTANCE
 	)
@@ -145,5 +147,49 @@ public interface GpuPluginConfig extends Config
 	default boolean brightTextures()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "unlockFps",
+		name = "Unlock FPS",
+		description = "Removes the 50 FPS cap for camera movement",
+		position = 10
+	)
+	default boolean unlockFps()
+	{
+		return false;
+	}
+
+	enum SyncMode
+	{
+		OFF,
+		ON,
+		ADAPTIVE
+	}
+
+	@ConfigItem(
+		keyName = "vsyncMode",
+		name = "Vsync Mode",
+		description = "Method to synchronize frame rate with refresh rate",
+		position = 11
+	)
+	default SyncMode syncMode()
+	{
+		return SyncMode.ADAPTIVE;
+	}
+
+	@ConfigItem(
+		keyName = "fpsTarget",
+		name = "FPS Target",
+		description = "Target FPS when unlock FPS is enabled and Vsync mode is OFF",
+		position = 12
+	)
+	@Range(
+		min = 1,
+		max = 999
+	)
+	default int fpsTarget()
+	{
+		return 60;
 	}
 }

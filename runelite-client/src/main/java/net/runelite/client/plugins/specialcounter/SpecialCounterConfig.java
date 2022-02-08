@@ -86,4 +86,15 @@ public interface SpecialCounterConfig extends Config
 	{
 		return 0;
 	}
+
+	@ConfigItem(
+		position = 5,
+		keyName = "bulwarkThreshold",
+		name = "Dinh's Bulwark",
+		description = "Threshold for Dinh's Bulwark (0 to disable)"
+	)
+	default int bulwarkThreshold()
+	{
+		return 0;
+	}
 }

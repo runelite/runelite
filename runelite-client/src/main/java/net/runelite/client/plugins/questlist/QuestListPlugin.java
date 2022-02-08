@@ -336,7 +336,7 @@ public class QuestListPlugin extends Plugin
 		{
 			// Find all of the widgets that we care about, sorting by their Y value
 			quests = Arrays.stream(list.getDynamicChildren())
-				.sorted(Comparator.comparing(Widget::getRelativeY))
+				.sorted(Comparator.comparingInt(Widget::getRelativeY))
 				.filter(w -> !QUEST_HEADERS.contains(w.getText()))
 				.map(w -> new QuestWidget(w, Text.removeTags(w.getText()).toLowerCase()))
 				.collect(Collectors.toList());

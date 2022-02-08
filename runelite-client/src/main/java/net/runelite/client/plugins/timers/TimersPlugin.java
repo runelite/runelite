@@ -39,7 +39,6 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.EquipmentInventorySlot;
-import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
@@ -62,7 +61,6 @@ import net.runelite.api.events.GraphicChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcDespawned;
-import net.runelite.api.events.StatChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetInfo.PVP_WORLD_SAFE_ZONE;
@@ -105,7 +103,6 @@ public class TimersPlugin extends Plugin
 	private static final String FROZEN_MESSAGE = "<col=ef1020>You have been frozen!</col>";
 	private static final String GAUNTLET_ENTER_MESSAGE = "You enter the Gauntlet.";
 	private static final String GOD_WARS_ALTAR_MESSAGE = "you recharge your prayer.";
-	private static final String IMBUED_HEART_READY_MESSAGE = "<col=ef1020>Your imbued heart has regained its magical power.</col>";
 	private static final String MAGIC_IMBUE_EXPIRED_MESSAGE = "Your Magic Imbue charge has ended.";
 	private static final String MAGIC_IMBUE_MESSAGE = "You are charged to combine runes!";
 	private static final String STAFF_OF_THE_DEAD_SPEC_EXPIRED_MESSAGE = "Your protection fades away";
@@ -127,6 +124,7 @@ public class TimersPlugin extends Plugin
 	private static final String RESURRECT_THRALL_DISAPPEAR_MESSAGE_END = " thrall returns to the grave.</col>";
 	private static final String WARD_OF_ARCEUUS_MESSAGE = ">Your defence against Arceuus magic has been strengthened.</col>";
 	private static final String PICKPOCKET_FAILURE_MESSAGE = "You fail to pick the ";
+	private static final String DODGY_NECKLACE_PROTECTION_MESSAGE = "Your dodgy necklace protects you.";
 
 	private static final Pattern TELEBLOCK_PATTERN = Pattern.compile("A Tele Block spell has been cast on you(?: by .+)?\\. It will expire in (?<mins>\\d+) minutes?(?:, (?<secs>\\d+) seconds?)?\\.");
 	private static final Pattern DIVINE_POTION_PATTERN = Pattern.compile("You drink some of your divine (.+) potion\\.");
@@ -153,14 +151,14 @@ public class TimersPlugin extends Plugin
 	private int lastPoisonVarp;
 	private int lastPvpVarb;
 	private int lastCorruptionVarb;
+	private int lastImbuedHeartVarb;
+	private boolean imbuedHeartTimerActive;
 	private int nextPoisonTick;
 	private WorldPoint lastPoint;
 	private TeleportWidget lastTeleportClicked;
 	private int lastAnimation;
 	private boolean widgetHiddenChangedOnPvpWorld;
 	private ElapsedTimer tzhaarTimer;
-	private int imbuedHeartClickTick = -1;
-	private int lastBoostedMagicLevel = -1;
 
 	@Inject
 	private ItemManager itemManager;
@@ -186,10 +184,6 @@ public class TimersPlugin extends Plugin
 	@Override
 	public void startUp()
 	{
-		if (client.getGameState() == GameState.LOGGED_IN)
-		{
-			lastBoostedMagicLevel = client.getBoostedSkillLevel(Skill.MAGIC);
-		}
 	}
 
 	@Override
@@ -205,8 +199,8 @@ public class TimersPlugin extends Plugin
 		nextPoisonTick = 0;
 		removeTzhaarTimer();
 		staminaTimer = null;
-		imbuedHeartClickTick = -1;
-		lastBoostedMagicLevel = -1;
+		imbuedHeartTimerActive = false;
+		lastImbuedHeartVarb = 0;
 	}
 
 	@Subscribe
@@ -218,6 +212,7 @@ public class TimersPlugin extends Plugin
 		int poisonVarp = client.getVar(VarPlayer.POISON);
 		int pvpVarb = client.getVar(Varbits.PVP_SPEC_ORB);
 		int corruptionCooldownVarb = client.getVar(Varbits.CORRUPTION_COOLDOWN);
+		int imbuedHeartCooldownVarb = client.getVar(Varbits.IMBUED_HEART_COOLDOWN);
 
 		if (lastRaidVarb != raidVarb)
 		{
@@ -308,6 +303,22 @@ public class TimersPlugin extends Plugin
 
 			lastPvpVarb = pvpVarb;
 		}
+
+		if (lastImbuedHeartVarb != imbuedHeartCooldownVarb && config.showImbuedHeart())
+		{
+			if (imbuedHeartCooldownVarb == 0)
+			{
+				removeGameTimer(IMBUEDHEART);
+				imbuedHeartTimerActive = false;
+			}
+			else if (!imbuedHeartTimerActive)
+			{
+				createGameTimer(IMBUEDHEART, Duration.of(10L * imbuedHeartCooldownVarb, RSTimeUnit.GAME_TICKS));
+				imbuedHeartTimerActive = true;
+			}
+
+			lastImbuedHeartVarb = imbuedHeartCooldownVarb;
+		}
 	}
 
 	@Subscribe
@@ -375,6 +386,7 @@ public class TimersPlugin extends Plugin
 		if (!config.showImbuedHeart())
 		{
 			removeGameTimer(IMBUEDHEART);
+			imbuedHeartTimerActive = false;
 		}
 
 		if (!config.showStaffOfTheDead())
@@ -481,12 +493,6 @@ public class TimersPlugin extends Plugin
 			return;
 		}
 
-		if (event.getMenuOption().contains("Invigorate")
-			&& event.getId() == ItemID.IMBUED_HEART)
-		{
-			imbuedHeartClickTick = client.getTickCount();
-		}
-
 		TeleportWidget teleportWidget = TeleportWidget.of(event.getParam1());
 		if (teleportWidget != null)
 		{
@@ -501,6 +507,11 @@ public class TimersPlugin extends Plugin
 		if (event.getType() != ChatMessageType.SPAM && event.getType() != ChatMessageType.GAMEMESSAGE)
 		{
 			return;
+		}
+
+		if (message.contains(DODGY_NECKLACE_PROTECTION_MESSAGE))
+		{
+			removeGameTimer(PICKPOCKET_STUN);
 		}
 
 		if (message.contains(PICKPOCKET_FAILURE_MESSAGE) && config.showPickpocketStun() && message.contains("pocket"))
@@ -634,11 +645,6 @@ public class TimersPlugin extends Plugin
 		if (config.showAntiFire() && message.equals(SUPER_ANTIFIRE_EXPIRED_MESSAGE))
 		{
 			removeGameTimer(SUPERANTIFIRE);
-		}
-
-		if (config.showImbuedHeart() && message.equals(IMBUED_HEART_READY_MESSAGE))
-		{
-			removeGameTimer(IMBUEDHEART);
 		}
 
 		if (config.showPrayerEnhance() && message.startsWith("You drink some of your") && message.contains("prayer enhance"))
@@ -922,7 +928,6 @@ public class TimersPlugin extends Plugin
 				}
 				break;
 			case LOGIN_SCREEN:
-				lastBoostedMagicLevel = -1;
 				// fall through
 			case HOPPING:
 				// pause tzhaar timer if logged out without pausing
@@ -953,7 +958,8 @@ public class TimersPlugin extends Plugin
 			&& client.getLocalPlayer().getAnimation() == AnimationID.IDLE
 			&& (lastAnimation == AnimationID.BOOK_HOME_TELEPORT_5
 			|| lastAnimation == AnimationID.COW_HOME_TELEPORT_6
-			|| lastAnimation == AnimationID.LEAGUE_HOME_TELEPORT_6))
+			|| lastAnimation == AnimationID.LEAGUE_HOME_TELEPORT_6
+			|| lastAnimation == AnimationID.SHATTERED_LEAGUE_HOME_TELEPORT_6))
 		{
 			if (lastTeleportClicked == TeleportWidget.HOME_TELEPORT)
 			{
@@ -1098,37 +1104,6 @@ public class TimersPlugin extends Plugin
 		{
 			infoBoxManager.removeIf(t -> t instanceof TimerTimer && ((TimerTimer) t).getTimer().isRemovedOnDeath());
 		}
-	}
-
-	@Subscribe
-	public void onStatChanged(StatChanged statChanged)
-	{
-		if (statChanged.getSkill() != Skill.MAGIC)
-		{
-			return;
-		}
-
-		final int boostedMagicLevel = statChanged.getBoostedLevel();
-
-		if (imbuedHeartClickTick < 0
-			|| client.getTickCount() > imbuedHeartClickTick + 3 // allow for 2 ticks of lag
-			|| !config.showImbuedHeart())
-		{
-			lastBoostedMagicLevel = boostedMagicLevel;
-			return;
-		}
-
-		final int boostAmount = boostedMagicLevel - statChanged.getLevel();
-		final int boostChange = boostedMagicLevel - lastBoostedMagicLevel;
-		final int heartBoost = 1 + (statChanged.getLevel() / 10);
-
-		if ((boostAmount == heartBoost || (lastBoostedMagicLevel != -1 && boostChange == heartBoost))
-			&& boostChange > 0)
-		{
-			createGameTimer(IMBUEDHEART);
-		}
-
-		lastBoostedMagicLevel = boostedMagicLevel;
 	}
 
 	private void createStaminaTimer()

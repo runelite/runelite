@@ -41,7 +41,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import javax.inject.Inject;
-import lombok.AllArgsConstructor;
 import net.runelite.api.ChatLineBuffer;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.ChatPlayer;
@@ -77,8 +76,6 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageBuilder;
-import net.runelite.client.chat.ChatMessageManager;
-import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -123,9 +120,6 @@ public class ChatChannelPlugin extends Plugin
 	@Inject
 	private ChatColorConfig chatColorConfig;
 
-	@Inject
-	private ChatMessageManager chatMessageManager;
-
 	private List<String> chats;
 	/**
 	 * queue of temporary messages added to the client
@@ -135,21 +129,6 @@ public class ChatChannelPlugin extends Plugin
 	private int joinedTick;
 
 	private boolean kickConfirmed = false;
-
-	private boolean inputWarning;
-
-	@AllArgsConstructor
-	private enum InputMode
-	{
-		FRIEND("Friends Chat", ChatMessageType.FRIENDSCHAT),
-		CLAN("Clan Chat", ChatMessageType.CLAN_CHAT),
-		GUEST("Guest Clan Chat", ChatMessageType.CLAN_GUEST_CHAT);
-
-		private final String prompt;
-		private final ChatMessageType chatMessageType;
-	}
-
-	private InputMode inputMode;
 
 	@Provides
 	ChatChannelConfig getConfig(ConfigManager configManager)
@@ -166,6 +145,8 @@ public class ChatChannelPlugin extends Plugin
 		{
 			clientThread.invoke(() -> colorIgnoredPlayers(config.showIgnoresColor()));
 		}
+
+		rebuildClanTitle();
 	}
 
 	@Override
@@ -174,15 +155,7 @@ public class ChatChannelPlugin extends Plugin
 		chats = null;
 		clientThread.invoke(() -> colorIgnoredPlayers(Color.WHITE));
 		rebuildFriendsChat();
-
-		if (inputMode != null)
-		{
-			clientThread.invoke(() ->
-			{
-				switchTypingMode(null);
-				client.runScript(ScriptID.CHAT_PROMPT_INIT);
-			});
-		}
+		rebuildClanTitle();
 	}
 
 	@Subscribe
@@ -198,14 +171,7 @@ public class ChatChannelPlugin extends Plugin
 			Color ignoreColor = config.showIgnores() ? config.showIgnoresColor() : Color.WHITE;
 			clientThread.invoke(() -> colorIgnoredPlayers(ignoreColor));
 
-			if (inputMode != null && !config.targetMode())
-			{
-				clientThread.invoke(() ->
-				{
-					switchTypingMode(null);
-					client.runScript(ScriptID.CHAT_PROMPT_INIT);
-				});
-			}
+			rebuildClanTitle();
 		}
 	}
 
@@ -625,72 +591,6 @@ public class ChatChannelPlugin extends Plugin
 				clientThread.invokeLater(() -> confirmKickPlayer(kickPlayerName));
 				break;
 			}
-			case "preChatSendpublic":
-			{
-				if (!config.targetMode())
-				{
-					return;
-				}
-
-				final String chatboxInput = client.getVar(VarClientStr.CHATBOX_TYPED_TEXT);
-				switch (chatboxInput)
-				{
-					case "/p":
-						switchTypingMode(null);
-						break;
-					case "/f":
-						switchTypingMode(InputMode.FRIEND);
-						break;
-					case "/c":
-						switchTypingMode(InputMode.CLAN);
-						break;
-					case "/g":
-						switchTypingMode(InputMode.GUEST);
-						break;
-					default:
-						if (inputMode != null)
-						{
-							final int[] intStack = client.getIntStack();
-							final int intStackSize = client.getIntStackSize();
-							intStack[intStackSize - 1] = inputMode.chatMessageType.getType(); // chat message type
-							intStack[intStackSize - 2] = 0; // prefix length
-						}
-						break;
-				}
-				break;
-			}
-			case "setChatboxInput":
-			{
-				Widget chatboxInput = client.getWidget(WidgetInfo.CHATBOX_INPUT);
-				if (chatboxInput != null && inputMode != null)
-				{
-					String text = chatboxInput.getText();
-					int idx = text.indexOf(": ");
-					if (idx != -1)
-					{
-						String newText = inputMode.prompt + ": " + text.substring(idx + 2);
-						chatboxInput.setText(newText);
-					}
-				}
-				break;
-			}
-		}
-	}
-
-	private void switchTypingMode(InputMode mode)
-	{
-		inputMode = mode;
-		client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, "");
-
-		if (mode != null && !inputWarning)
-		{
-			inputWarning = true;
-
-			chatMessageManager.queue(QueuedMessage.builder()
-				.type(ChatMessageType.CONSOLE)
-				.runeLiteFormattedMessage("You've entered " + inputMode.prompt + " typing mode. All typed messages will be sent to your " +
-					inputMode.prompt.toLowerCase() + ". Use /p to reset to public chat.")
-				.build());
 		}
 	}
 
@@ -711,6 +611,18 @@ public class ChatChannelPlugin extends Plugin
 				chatTitle.setText(chatTitle.getText() + " (" + friendsChatManager.getCount() + "/100)");
 			}
 		}
+		else if (event.getScriptId() == ScriptID.CLAN_SIDEPANEL_DRAW)
+		{
+			if (config.clanChatShowOnlineMemberCount())
+			{
+				updateClanTitle(WidgetInfo.CLAN_HEADER, client.getClanChannel());
+			}
+
+			if (config.guestClanChatShowOnlineMemberCount())
+			{
+				updateClanTitle(WidgetInfo.CLAN_GUEST_HEADER, client.getGuestClanChannel());
+			}
+		}
 	}
 
 	private void insertRankIcon(final ChatMessage message)
@@ -720,18 +632,21 @@ public class ChatChannelPlugin extends Plugin
 		if (rank != null && rank != FriendsChatRank.UNRANKED)
 		{
 			int iconNumber = chatIconManager.getIconNumber(rank);
-			final String img = "<img=" + iconNumber + ">";
-			if (message.getType() == ChatMessageType.FRIENDSCHAT)
+			if (iconNumber > -1)
 			{
-				message.getMessageNode()
-					.setSender(message.getMessageNode().getSender() + " " + img);
+				final String img = "<img=" + iconNumber + ">";
+				if (message.getType() == ChatMessageType.FRIENDSCHAT)
+				{
+					message.getMessageNode()
+						.setSender(message.getMessageNode().getSender() + " " + img);
+				}
+				else
+				{
+					message.getMessageNode()
+						.setName(img + message.getMessageNode().getName());
+				}
+				client.refreshChat();
 			}
-			else
-			{
-				message.getMessageNode()
-					.setName(img + message.getMessageNode().getName());
-			}
-			client.refreshChat();
 		}
 	}
 
@@ -843,6 +758,37 @@ public class ChatChannelPlugin extends Plugin
 			}
 
 			listWidget.setTextColor(ignoreColor.getRGB());
+		}
+	}
+
+	private void rebuildClanTitle()
+	{
+		clientThread.invokeLater(() ->
+		{
+			Widget w = client.getWidget(WidgetInfo.CLAN_LAYER);
+			if (w != null)
+			{
+				client.runScript(w.getOnVarTransmitListener());
+			}
+		});
+
+		clientThread.invokeLater(() ->
+		{
+			Widget w = client.getWidget(WidgetInfo.CLAN_GUEST_LAYER);
+			if (w != null)
+			{
+				client.runScript(w.getOnVarTransmitListener());
+			}
+		});
+	}
+
+	private void updateClanTitle(WidgetInfo widget, ClanChannel channel)
+	{
+		Widget header = client.getWidget(widget);
+		if (header != null && channel != null)
+		{
+			Widget title = header.getChild(0);
+			title.setText(title.getText() + " (" + channel.getMembers().size() + ")");
 		}
 	}
 }

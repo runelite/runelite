@@ -67,7 +67,12 @@
 	<!-- design -->
 	<rule ref="category/java/design.xml/AvoidThrowingNewInstanceOfSameException"/>
 	<rule ref="category/java/design.xml/FinalFieldCouldBeStatic"/>
-	<rule ref="category/java/design.xml/ImmutableField"/>
+	<rule ref="category/java/design.xml/ImmutableField">
+		<properties>
+			<property name="ignoredAnnotations"
+					  value="lombok.Setter|lombok.Getter|lombok.Builder|lombok.Data|lombok.RequiredArgsConstructor|lombok.AllArgsConstructor|lombok.Value|lombok.NoArgsConstructor|javax.inject.Inject|com.google.inject.Inject"/>
+		</properties>
+	</rule>
 	<rule ref="category/java/design.xml/SimplifyBooleanExpressions"/>
 	<rule ref="category/java/design.xml/SimplifyConditional"/>
 	<rule ref="category/java/design.xml/UselessOverridingMethod"/>

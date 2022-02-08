@@ -33,6 +33,14 @@ import javax.annotation.Nullable;
 public interface ItemContainer extends Node
 {
 	/**
+	 * Get the item container id
+	 *
+	 * @return
+	 * @see InventoryID
+	 */
+	int getId();
+
+	/**
 	 * Gets an array of all items in the container.
 	 *
 	 * @return the items held

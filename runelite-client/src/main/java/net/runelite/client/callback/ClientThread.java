@@ -110,6 +110,10 @@ public class ClientThread
 			{
 				ir.remove();
 			}
+			else
+			{
+				log.trace("Deferring task {}", r);
+			}
 		}
 	}
 }

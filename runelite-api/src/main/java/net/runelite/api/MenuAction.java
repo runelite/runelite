@@ -232,6 +232,11 @@ public enum MenuAction
 	SPELL_CAST_ON_WIDGET(58),
 
 	/**
+	 * Menu action for high priority runelite options
+	 */
+	RUNELITE_HIGH_PRIORITY(999),
+
+	/**
 	 * Menu action triggered by examining an object.
 	 */
 	EXAMINE_OBJECT(1002),

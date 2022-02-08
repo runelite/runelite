@@ -53,9 +53,14 @@ public interface Callbacks
 	void postDeferred(Object event);
 
 	/**
-	 * Called each client cycle.
+	 * Called each tick
 	 */
-	void clientMainLoop();
+	void tick();
+
+	/**
+	 * Called each frame
+	 */
+	void frame();
 
 	/**
 	 * Called after receiving update NPCs packet from server.

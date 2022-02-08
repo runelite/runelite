@@ -81,6 +81,7 @@ enum DiscordGameEventType
 	BOSS_KRAKEN("Kraken", DiscordAreaType.BOSSES, 9116),
 	BOSS_KREEARRA("Kree'arra", DiscordAreaType.BOSSES, 11346),
 	BOSS_KRIL_TSUTSAROTH("K'ril Tsutsaroth", DiscordAreaType.BOSSES, 11603),
+	BOSS_NEX("Nex", DiscordAreaType.BOSSES, 11601),
 	BOSS_NIGHTMARE("Nightmare of Ashihama", DiscordAreaType.BOSSES, 15515),
 	BOSS_SARACHNIS("Sarachnis", DiscordAreaType.BOSSES, 7322),
 	BOSS_SKOTIZO("Skotizo", DiscordAreaType.BOSSES, 6810),

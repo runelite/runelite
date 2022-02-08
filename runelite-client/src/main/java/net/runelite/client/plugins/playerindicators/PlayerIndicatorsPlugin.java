@@ -31,8 +31,8 @@ import lombok.Value;
 import net.runelite.api.Client;
 import net.runelite.api.FriendsChatRank;
 import static net.runelite.api.FriendsChatRank.UNRANKED;
+import net.runelite.api.MenuAction;
 import static net.runelite.api.MenuAction.ITEM_USE_ON_PLAYER;
-import static net.runelite.api.MenuAction.MENU_ACTION_DEPRIORITIZE_OFFSET;
 import static net.runelite.api.MenuAction.PLAYER_EIGTH_OPTION;
 import static net.runelite.api.MenuAction.PLAYER_FIFTH_OPTION;
 import static net.runelite.api.MenuAction.PLAYER_FIRST_OPTION;
@@ -118,29 +118,23 @@ public class PlayerIndicatorsPlugin extends Plugin
 		}
 
 		MenuEntry[] menuEntries = client.getMenuEntries();
-		boolean modified = false;
 
 		for (MenuEntry entry : menuEntries)
 		{
-			int type = entry.getType();
+			MenuAction type = entry.getType();
 
-			if (type >= MENU_ACTION_DEPRIORITIZE_OFFSET)
-			{
-				type -= MENU_ACTION_DEPRIORITIZE_OFFSET;
-			}
-
-			if (type == WALK.getId()
-				|| type == SPELL_CAST_ON_PLAYER.getId()
-				|| type == ITEM_USE_ON_PLAYER.getId()
-				|| type == PLAYER_FIRST_OPTION.getId()
-				|| type == PLAYER_SECOND_OPTION.getId()
-				|| type == PLAYER_THIRD_OPTION.getId()
-				|| type == PLAYER_FOURTH_OPTION.getId()
-				|| type == PLAYER_FIFTH_OPTION.getId()
-				|| type == PLAYER_SIXTH_OPTION.getId()
-				|| type == PLAYER_SEVENTH_OPTION.getId()
-				|| type == PLAYER_EIGTH_OPTION.getId()
-				|| type == RUNELITE_PLAYER.getId())
+			if (type == WALK
+				|| type == SPELL_CAST_ON_PLAYER
+				|| type == ITEM_USE_ON_PLAYER
+				|| type == PLAYER_FIRST_OPTION
+				|| type == PLAYER_SECOND_OPTION
+				|| type == PLAYER_THIRD_OPTION
+				|| type == PLAYER_FOURTH_OPTION
+				|| type == PLAYER_FIFTH_OPTION
+				|| type == PLAYER_SIXTH_OPTION
+				|| type == PLAYER_SEVENTH_OPTION
+				|| type == PLAYER_EIGTH_OPTION
+				|| type == RUNELITE_PLAYER)
 			{
 				Player[] players = client.getCachedPlayers();
 				Player player = null;
@@ -149,7 +143,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 
 				// 'Walk here' identifiers are offset by 1 because the default
 				// identifier for this option is 0, which is also a player index.
-				if (type == WALK.getId())
+				if (type == WALK)
 				{
 					identifier--;
 				}
@@ -175,13 +169,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 				String newTarget = decorateTarget(oldTarget, decorations);
 
 				entry.setTarget(newTarget);
-				modified = true;
 			}
-		}
-
-		if (modified)
-		{
-			client.setMenuEntries(menuEntries);
 		}
 	}
 

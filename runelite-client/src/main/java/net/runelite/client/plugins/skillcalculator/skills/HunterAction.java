@@ -69,7 +69,7 @@ public enum HunterAction implements NamedSkillAction
 	MAHOGANY_BIRD_HOUSE("Mahogany Bird House", 49, 960, ItemID.MAHOGANY_BIRD_HOUSE),
 	ECLECTIC_IMPLING("Eclectic Impling", 50, 32, ItemID.ECLECTIC_IMPLING_JAR),
 	SABRE_TOOTHED_KEBBIT("Sabre-toothed Kebbit", 51, 200, ItemID.KEBBIT_9959),
-	CHINCHOMPA("Chinchompa", 53, 198.3f, ItemID.CHINCHOMPA),
+	CHINCHOMPA("Chinchompa", 53, 198.4f, ItemID.CHINCHOMPA),
 	SABRE_TOOTHED_KYATT("Sabre-toothed Kyatt", 55, 300, ItemID.KYATT_HAT),
 	DARK_KEBBIT("Dark Kebbit", 57, 132, ItemID.KEBBIT_9963),
 	NATURE_IMPLING("Nature Impling", 58, 34, ItemID.NATURE_IMPLING_JAR),

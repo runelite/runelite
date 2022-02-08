@@ -64,6 +64,7 @@ import net.runelite.api.Scene;
 import net.runelite.api.ScriptID;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
@@ -95,6 +96,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.RunepouchRune;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -143,6 +145,12 @@ public class ClueScrollPlugin extends Plugin
 	private static final Color HIGHLIGHT_HOVER_BORDER_COLOR = HIGHLIGHT_BORDER_COLOR.darker();
 	private static final Color HIGHLIGHT_FILL_COLOR = new Color(0, 255, 0, 20);
 	private static final String CLUE_TAG_NAME = "clue";
+	private static final Varbits[] RUNEPOUCH_AMOUNT_VARBITS = {
+		Varbits.RUNE_POUCH_AMOUNT1, Varbits.RUNE_POUCH_AMOUNT2, Varbits.RUNE_POUCH_AMOUNT3
+	};
+	private static final Varbits[] RUNEPOUCH_RUNE_VARBITS = {
+		Varbits.RUNE_POUCH_RUNE1, Varbits.RUNE_POUCH_RUNE2, Varbits.RUNE_POUCH_RUNE3
+	};
 
 	@Getter
 	private ClueScroll clue;
@@ -350,18 +358,43 @@ public class ClueScrollPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(final ItemContainerChanged event)
 	{
-		if (event.getItemContainer() == client.getItemContainer(InventoryID.EQUIPMENT))
+		if (event.getContainerId() == InventoryID.EQUIPMENT.getId())
 		{
 			equippedItems = event.getItemContainer().getItems();
 			return;
 		}
 
-		if (event.getItemContainer() != client.getItemContainer(InventoryID.INVENTORY))
+		if (event.getContainerId() != InventoryID.INVENTORY.getId())
 		{
 			return;
 		}
 
 		inventoryItems = event.getItemContainer().getItems();
+
+		// Add runes from rune pouch to inventoryItems
+		if (event.getItemContainer().contains(ItemID.RUNE_POUCH) || event.getItemContainer().contains(ItemID.RUNE_POUCH_L))
+		{
+			List<Item> runePouchContents = getRunepouchContents();
+
+			if (!runePouchContents.isEmpty())
+			{
+				for (int i = 0; i < inventoryItems.length; i++)
+				{
+					Item invItem = inventoryItems[i];
+					for (Item rune : runePouchContents)
+					{
+						if (invItem.getId() == rune.getId())
+						{
+							inventoryItems[i] = new Item(invItem.getId(), rune.getQuantity() + invItem.getQuantity());
+							runePouchContents.remove(rune);
+							break;
+						}
+					}
+				}
+
+				inventoryItems = ArrayUtils.addAll(inventoryItems, runePouchContents.toArray(new Item[0]));
+			}
+		}
 
 		// Check if item was removed from inventory
 		if (clue != null && clueItemId != null)
@@ -391,6 +424,30 @@ public class ClueScrollPlugin extends Plugin
 				checkClueNPCs(clue, client.getCachedNPCs());
 			}
 		}
+	}
+
+	private List<Item> getRunepouchContents()
+	{
+		List<Item> items = new ArrayList<>(RUNEPOUCH_AMOUNT_VARBITS.length);
+		for (int i = 0; i < RUNEPOUCH_AMOUNT_VARBITS.length; i++)
+		{
+			int amount = client.getVar(RUNEPOUCH_AMOUNT_VARBITS[i]);
+			if (amount <= 0)
+			{
+				continue;
+			}
+
+			int varbId = client.getVar(RUNEPOUCH_RUNE_VARBITS[i]);
+			RunepouchRune rune = RunepouchRune.getRune(varbId);
+			if (rune == null)
+			{
+				continue;
+			}
+
+			Item item = new Item(rune.getItemId(), amount);
+			items.add(item);
+		}
+		return items;
 	}
 
 	@Subscribe
