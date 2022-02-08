@@ -40,6 +40,7 @@ import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.config.ConfigGroup;
@@ -53,6 +54,7 @@ import net.runelite.client.events.PluginChanged;
  * Manages state of all game overlays
  */
 @Singleton
+@Slf4j
 public class OverlayManager
 {
 	public static final String OPTION_CONFIGURE = "Configure";
@@ -317,7 +319,18 @@ public class OverlayManager
 		final Dimension size = loadOverlaySize(overlay);
 		overlay.setPreferredSize(size);
 		final OverlayPosition position = loadOverlayPosition(overlay);
-		overlay.setPreferredPosition(position);
+		if (position != null)
+		{
+			if (overlay.getPosition() != OverlayPosition.DYNAMIC && overlay.getPosition() != OverlayPosition.TOOLTIP)
+			{
+				overlay.setPreferredPosition(position);
+			}
+			else
+			{
+				log.info("Resetting preferred position of dynamic overlay {}", overlay.getClass().getSimpleName());
+				saveOverlayPosition(overlay);
+			}
+		}
 	}
 
 	private void updateOverlayConfig(final Overlay overlay)
