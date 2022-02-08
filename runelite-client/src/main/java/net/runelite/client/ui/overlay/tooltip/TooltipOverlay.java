@@ -96,7 +96,7 @@ public class TooltipOverlay extends Overlay
 		final int tooltipX = Math.min(canvasWidth - prevBounds.width, mouseCanvasPosition.getX());
 		final int tooltipY = runeLiteConfig.tooltipPosition() == TooltipPositionType.ABOVE_CURSOR
 			? Math.max(0, mouseCanvasPosition.getY() - prevBounds.height)
-			: Math.min(canvasHeight - prevBounds.height, mouseCanvasPosition.getY() + UNDER_OFFSET);
+			: Math.min(canvasHeight - prevBounds.height - UNDER_OFFSET, mouseCanvasPosition.getY() + UNDER_OFFSET);
 
 		final Rectangle newBounds = new Rectangle(tooltipX, tooltipY, 0, 0);
 
