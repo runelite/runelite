@@ -78,6 +78,7 @@ import net.runelite.api.SceneTilePaint;
 import net.runelite.api.Texture;
 import net.runelite.api.TextureProvider;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.ResizeableChanged;
 import net.runelite.api.hooks.DrawCallbacks;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -1532,6 +1533,17 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			case LOGIN_SCREEN:
 				// Avoid drawing the last frame's buffer during LOADING after LOGIN_SCREEN
 				targetBufferOffset = 0;
+		}
+	}
+
+	@Subscribe
+	public void onResizeableChanged(ResizeableChanged resizeableChanged)
+	{
+		if (OSType.getOSType() == OSType.MacOS)
+		{
+			// switching resizable mode adjusts the canvas size, without adjusting
+			// the client size. queue the GLFBODrawable resize for later.
+			needsReset = 5;
 		}
 	}
 
