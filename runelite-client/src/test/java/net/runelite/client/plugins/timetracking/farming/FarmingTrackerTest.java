@@ -95,7 +95,7 @@ public class FarmingTrackerTest
 	@Test(expected = IllegalStateException.class)
 	public void testEmptyNotification()
 	{
-		RuneScapeProfile runeScapeProfile = new RuneScapeProfile("Adam", RuneScapeProfileType.STANDARD, null, null);
+		RuneScapeProfile runeScapeProfile = new RuneScapeProfile("Adam", RuneScapeProfileType.STANDARD, null, -1, null);
 
 		PatchPrediction patchPrediction = new PatchPrediction(Produce.EMPTY_COMPOST_BIN, CropState.EMPTY, 0L, 0, 0);
 		FarmingRegion region = new FarmingRegion("Ardougne", 10548, false,
@@ -113,7 +113,7 @@ public class FarmingTrackerTest
 	@Test
 	public void testHarvestableNotification()
 	{
-		RuneScapeProfile runeScapeProfile = new RuneScapeProfile("Adam", RuneScapeProfileType.STANDARD, null, null);
+		RuneScapeProfile runeScapeProfile = new RuneScapeProfile("Adam", RuneScapeProfileType.STANDARD, null, -1, null);
 
 		PatchPrediction patchPrediction = new PatchPrediction(Produce.RANARR, CropState.HARVESTABLE, 0L, 0, 0);
 		FarmingRegion region = new FarmingRegion("Ardougne", 10548, false,

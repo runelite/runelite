@@ -83,6 +83,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.AccountHashChanged;
 import net.runelite.api.events.PlayerChanged;
 import net.runelite.api.events.UsernameChanged;
 import net.runelite.api.events.WorldChanged;
@@ -107,6 +108,7 @@ public class ConfigManager
 	private static final String RSPROFILE_TYPE = "type";
 	private static final String RSPROFILE_LOGIN_HASH = "loginHash";
 	private static final String RSPROFILE_LOGIN_SALT = "loginSalt";
+	private static final String RSPROFILE_ACCOUNT_HASH = "accountHash";
 
 	private static final DateFormat TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
 
@@ -575,14 +577,13 @@ public class ConfigManager
 				displayName = p.getName();
 			}
 
-			String username = client.getUsername();
-			if (Strings.isNullOrEmpty(username))
+			RuneScapeProfile prof = findRSProfile(getRSProfiles(), RuneScapeProfileType.getCurrent(client), displayName, true);
+			if (prof == null)
 			{
-				log.warn("trying to create profile without a set username");
+				log.warn("trying to create a profile while not logged in");
 				return;
 			}
 
-			RuneScapeProfile prof = findRSProfile(getRSProfiles(), username, RuneScapeProfileType.getCurrent(client), displayName, true);
 			rsProfileKey = prof.getKey();
 			this.rsProfileKey = rsProfileKey;
 
@@ -777,6 +778,10 @@ public class ConfigManager
 		if (type == int.class || type == Integer.class)
 		{
 			return Integer.parseInt(str);
+		}
+		if (type == long.class || type == Long.class)
+		{
+			return Long.parseLong(str);
 		}
 		if (type == double.class || type == Double.class)
 		{
@@ -982,10 +987,12 @@ public class ConfigManager
 		return profileKeys.stream()
 			.map(key ->
 			{
+				Long accid = getConfiguration(RSPROFILE_GROUP, key, RSPROFILE_ACCOUNT_HASH, long.class);
 				RuneScapeProfile prof = new RuneScapeProfile(
 					getConfiguration(RSPROFILE_GROUP, key, RSPROFILE_DISPLAY_NAME),
 					getConfiguration(RSPROFILE_GROUP, key, RSPROFILE_TYPE, RuneScapeProfileType.class),
 					getConfiguration(RSPROFILE_GROUP, key, RSPROFILE_LOGIN_HASH, byte[].class),
+					accid == null ? RuneScapeProfile.ACCOUNT_HASH_INVALID : accid,
 					key
 				);
 
@@ -994,26 +1001,54 @@ public class ConfigManager
 			.collect(Collectors.toList());
 	}
 
-	private synchronized RuneScapeProfile findRSProfile(List<RuneScapeProfile> profiles, String username, RuneScapeProfileType type, String displayName, boolean create)
+	private synchronized RuneScapeProfile findRSProfile(List<RuneScapeProfile> profiles, RuneScapeProfileType type, String displayName, boolean create)
 	{
-		byte[] salt = getConfiguration(RSPROFILE_GROUP, RSPROFILE_LOGIN_SALT, byte[].class);
-		if (salt == null)
+		String username = client.getUsername();
+		long accountHash = client.getAccountHash();
+
+		if (accountHash == RuneScapeProfile.ACCOUNT_HASH_INVALID && username == null)
 		{
-			salt = new byte[15];
-			new SecureRandom()
-				.nextBytes(salt);
-			log.info("creating new salt as there is no existing one {}", Base64.getUrlEncoder().encodeToString(salt));
-			setConfiguration(RSPROFILE_GROUP, RSPROFILE_LOGIN_SALT, salt);
+			return null;
 		}
 
-		Hasher h = Hashing.sha512().newHasher();
-		h.putBytes(salt);
-		h.putString(username.toLowerCase(Locale.US), StandardCharsets.UTF_8);
-		byte[] loginHash = h.hash().asBytes();
+		final byte[] loginHash;
+		byte[] salt = null;
+		if (username != null)
+		{
+			salt = getConfiguration(RSPROFILE_GROUP, RSPROFILE_LOGIN_SALT, byte[].class);
+			if (salt == null)
+			{
+				salt = new byte[15];
+				new SecureRandom()
+					.nextBytes(salt);
+				log.info("creating new salt as there is no existing one {}", Base64.getUrlEncoder().encodeToString(salt));
+				setConfiguration(RSPROFILE_GROUP, RSPROFILE_LOGIN_SALT, salt);
+			}
 
-		Set<RuneScapeProfile> matches = profiles.stream()
-			.filter(p -> Arrays.equals(p.getLoginHash(), loginHash) && p.getType() == type)
-			.collect(Collectors.toSet());
+			Hasher h = Hashing.sha512().newHasher();
+			h.putBytes(salt);
+			h.putString(username.toLowerCase(Locale.US), StandardCharsets.UTF_8);
+			loginHash = h.hash().asBytes();
+		}
+		else
+		{
+			loginHash = null;
+		}
+
+		Set<RuneScapeProfile> matches = Collections.emptySet();
+		if (accountHash != RuneScapeProfile.ACCOUNT_HASH_INVALID)
+		{
+			matches = profiles.stream()
+				.filter(p -> p.getType() == type && accountHash == p.getAccountHash())
+				.collect(Collectors.toSet());
+		}
+
+		if (matches.isEmpty() && loginHash != null)
+		{
+			matches = profiles.stream()
+				.filter(p -> p.getType() == type && Arrays.equals(loginHash, p.getLoginHash()))
+				.collect(Collectors.toSet());
+		}
 
 		if (matches.size() > 1)
 		{
@@ -1022,7 +1057,21 @@ public class ConfigManager
 
 		if (matches.size() >= 1)
 		{
-			return matches.iterator().next();
+			RuneScapeProfile profile = matches.iterator().next();
+			if (profile.getAccountHash() == RuneScapeProfile.ACCOUNT_HASH_INVALID && accountHash != RuneScapeProfile.ACCOUNT_HASH_INVALID)
+			{
+				int upgrades = 0;
+				for (RuneScapeProfile p : profiles)
+				{
+					if (p.getAccountHash() == RuneScapeProfile.ACCOUNT_HASH_INVALID && Arrays.equals(p.getLoginHash(), loginHash))
+					{
+						setConfiguration(RSPROFILE_GROUP, p.getKey(), RSPROFILE_ACCOUNT_HASH, accountHash);
+						upgrades++;
+					}
+				}
+				log.info("Attaching account id to {} profiles", upgrades);
+			}
+			return profile;
 		}
 
 		if (!create)
@@ -1032,22 +1081,41 @@ public class ConfigManager
 
 		// generate the new key deterministically so if you "create" the same profile on 2 different clients it doesn't duplicate
 		Set<String> keys = profiles.stream().map(RuneScapeProfile::getKey).collect(Collectors.toSet());
-		byte[] key = Arrays.copyOf(loginHash, 6);
+		byte[] key = accountHash == RuneScapeProfile.ACCOUNT_HASH_INVALID
+			? Arrays.copyOf(loginHash, 6)
+			: new byte[]
+			{
+				(byte) accountHash,
+				(byte) (accountHash >> 8),
+				(byte) (accountHash >> 16),
+				(byte) (accountHash >> 24),
+				(byte) (accountHash >> 32),
+				(byte) (accountHash >> 40),
+			};
 		key[0] += type.ordinal();
 		for (int i = 0; i < 0xFF; i++, key[1]++)
 		{
 			String keyStr = RSPROFILE_GROUP + "." + Base64.getUrlEncoder().encodeToString(key);
 			if (!keys.contains(keyStr))
 			{
-				log.info("creating new profile {} for user {} ({}) salt {}", keyStr, username, type, Base64.getUrlEncoder().encodeToString(salt));
+				log.info("creating new profile {} for username {} account hash {} ({}) salt {}",
+					keyStr, username, accountHash, type,
+					salt == null ? "null" : Base64.getUrlEncoder().encodeToString(salt));
 
-				setConfiguration(RSPROFILE_GROUP, keyStr, RSPROFILE_LOGIN_HASH, loginHash);
+				if (loginHash != null)
+				{
+					setConfiguration(RSPROFILE_GROUP, keyStr, RSPROFILE_LOGIN_HASH, loginHash);
+				}
+				if (accountHash != RuneScapeProfile.ACCOUNT_HASH_INVALID)
+				{
+					setConfiguration(RSPROFILE_GROUP, keyStr, RSPROFILE_ACCOUNT_HASH, accountHash);
+				}
 				setConfiguration(RSPROFILE_GROUP, keyStr, RSPROFILE_TYPE, type);
 				if (displayName != null)
 				{
 					setConfiguration(RSPROFILE_GROUP, keyStr, RSPROFILE_DISPLAY_NAME, displayName);
 				}
-				return new RuneScapeProfile(displayName, type, loginHash, keyStr);
+				return new RuneScapeProfile(displayName, type, loginHash, accountHash, keyStr);
 			}
 		}
 		throw new RuntimeException("too many rs profiles");
@@ -1061,7 +1129,7 @@ public class ConfigManager
 		}
 
 		List<RuneScapeProfile> profiles = getRSProfiles();
-		RuneScapeProfile prof = findRSProfile(profiles, client.getUsername(), RuneScapeProfileType.getCurrent(client), null, false);
+		RuneScapeProfile prof = findRSProfile(profiles, RuneScapeProfileType.getCurrent(client), null, false);
 
 		String key = prof == null ? null : prof.getKey();
 		if (Objects.equals(key, rsProfileKey))
@@ -1075,6 +1143,12 @@ public class ConfigManager
 
 	@Subscribe
 	private void onUsernameChanged(UsernameChanged ev)
+	{
+		updateRSProfile();
+	}
+
+	@Subscribe
+	private void onAccountHashChanged(AccountHashChanged ev)
 	{
 		updateRSProfile();
 	}
