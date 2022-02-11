@@ -54,6 +54,7 @@ public enum FairyRings
 	BKR("Mort Myre Swamp, south of Canifis"),
 	BKS("Zanaris"),
 	BLP("TzHaar area"),
+	BLQ("Yu'biusk"),
 	BLR("Legends' Guild"),
 
 	// C
