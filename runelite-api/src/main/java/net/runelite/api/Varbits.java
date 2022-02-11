@@ -639,7 +639,133 @@ public enum Varbits
 	 * 0 = on
 	 * 1 = off
 	 */
-	BOSS_HEALTH_OVERLAY(12389);
+	BOSS_HEALTH_OVERLAY(12389),
+
+	/**
+	 * Achievement Diary Tasks Completed
+	 */
+
+	/**
+	 * Kandarin
+	 */
+	DIARY_1(6307),
+	DIARY_2(6308),
+	DIARY_3(6309),
+	DIARY_4(6310),
+
+	/**
+	 * Desert
+	 */
+	DIARY_5(6295),
+	DIARY_6(6296),
+	DIARY_7(6297),
+	DIARY_8(6298),
+
+	/**
+	 * Morytania
+	 */
+	DIARY_9(6315),
+	DIARY_0(6316),
+	DIARY_11(6317),
+	DIARY_12(6318),
+
+	/**
+	 * Fremennik
+	 */
+	DIARY_13(6303),
+	DIARY_14(6304),
+	DIARY_15(6305),
+	DIARY_16(6306),
+
+	/**
+	 * Lumbridge
+	 */
+	DIARY_17(6311),
+	DIARY_18(6312),
+	DIARY_19(6313),
+	DIARY_20(6314),
+
+	/**
+	 * Varrock
+	 */
+	DIARY_21(6319),
+	DIARY_22(6320),
+	DIARY_23(6321),
+	DIARY_24(6322),
+
+	/**
+	 * Kourend
+	 */
+	DIARY_25(7933),
+	DIARY_26(7934),
+	DIARY_27(7935),
+	DIARY_28(7936),
+
+	/**
+	 * Karamja
+	 */
+	DIARY_29(2423),
+	DIARY_30(6288),
+	DIARY_31(6289),
+	DIARY_32(6290),
+
+	/**
+	 * Ardougne
+	 */
+	DIARY_33(6291),
+	DIARY_34(6292),
+	DIARY_35(6293),
+	DIARY_36(6294),
+
+	/**
+	 * Falador
+	 */
+	DIARY_37(6299),
+	DIARY_38(6300),
+	DIARY_39(6301),
+	DIARY_40(6302),
+
+	/**
+	 * Western Provinces
+	 */
+	DIARY_41(6327),
+	DIARY_42(6328),
+	DIARY_43(6329),
+	DIARY_44(6330),
+
+	/**
+	 * Wilderness
+	 */
+	DIARY_45(6323),
+	DIARY_46(6324),
+	DIARY_47(6325),
+	DIARY_48(6326),
+
+	/**
+	 * Number of Quests Completed and total number of Quests
+	 */
+	QUESTS_COMPLETED(6347),
+	QUESTS_TOTAL(11877),
+
+	/**
+	 * Combat Tasks Completed
+	 */
+	COMBAT_TASK_EASY_COMPLETE(12885),
+	COMBAT_TASK_MEDIUM_COMPLETE(12886),
+	COMBAT_TASK_HARD_COMPLETE(12887),
+	COMBAT_TASK_ELITE_COMPLETE(12888),
+	COMBAT_TASK_MASTER_COMPLETE(12889),
+	COMBAT_TASK_GRANDMASTER_COMPLETE(12890),
+
+	/**
+	 * Combat Tasks Total
+	 */
+	COMBAT_TASK_EASY_TOTAL(3981),
+	COMBAT_TASK_MEDIUM_TOTAL(3982),
+	COMBAT_TASK_HARD_TOTAL(3983),
+	COMBAT_TASK_ELITE_TOTAL(3984),
+	COMBAT_TASK_MASTER_TOTAL(3985),
+	COMBAT_TASK_GRANDMASTER_TOTAL(3986);
 
 	/**
 	 * The raw varbit ID.

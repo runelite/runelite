@@ -79,6 +79,7 @@ import net.runelite.client.chat.ChatCommandManager;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ChatInput;
 import net.runelite.client.game.ItemManager;
@@ -88,6 +89,7 @@ import net.runelite.client.hiscore.HiscoreResult;
 import net.runelite.client.hiscore.HiscoreSkill;
 import net.runelite.client.hiscore.Skill;
 import net.runelite.client.input.KeyManager;
+import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.ImageUtil;
@@ -104,7 +106,7 @@ import org.apache.commons.text.WordUtils;
 	tags = {"grand", "exchange", "level", "prices"}
 )
 @Slf4j
-public class ChatCommandsPlugin extends Plugin
+public class ChatCommandsPlugin<Stringbuilder> extends Plugin
 {
 	private static final Pattern KILLCOUNT_PATTERN = Pattern.compile("Your (?:completion count for |subdued |completed )?(.+?) (?:(?:kill|harvest|lap|completion) )?(?:count )?is: <col=ff0000>(\\d+)</col>");
 	private static final String TEAM_SIZES = "(?:\\d+(?:\\+|-\\d+)? players|Solo)";
@@ -140,6 +142,15 @@ public class ChatCommandsPlugin extends Plugin
 	private static final String LEAGUE_POINTS_COMMAND = "!lp";
 	private static final String SOUL_WARS_ZEAL_COMMAND = "!sw";
 	private static final String PET_LIST_COMMAND = "!pets";
+	private static final String DIARIES_COMMAND = "!ad";
+	private static final String QUESTS_COMMAND = "!quests";
+	private static final String COLLECTIONS_COMMAND = "!col";
+	private static final String COMBAT_TASKS_COMMAND = "!ct";
+
+	private int ACHIEVEMENTS_TOTAL = 492;
+	private int ACHIEVEMENTS_COMPLETED;
+	private int QUESTS_TOTAL = 150;
+	private int COMBAT_TASKS_TOTAL = 410;
 
 	@VisibleForTesting
 	static final int ADV_LOG_EXPLOITS_TEXT_INDEX = 1;
@@ -219,8 +230,13 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.registerCommandAsync(DUEL_ARENA_COMMAND, this::duelArenaLookup, this::duelArenaSubmit);
 		chatCommandManager.registerCommandAsync(SOUL_WARS_ZEAL_COMMAND, this::soulWarsZealLookup);
 		chatCommandManager.registerCommandAsync(PET_LIST_COMMAND, this::petListLookup, this::petListSubmit);
+		chatCommandManager.registerCommandAsync(DIARIES_COMMAND, this::diariesLookup, this::diariesSubmit);
+		chatCommandManager.registerCommandAsync(QUESTS_COMMAND, this::questsLookup, this::questsSubmit);
+		chatCommandManager.registerCommandAsync(COLLECTIONS_COMMAND, this::collectionsLookup, this::collectionsSubmit);
+		chatCommandManager.registerCommandAsync(COMBAT_TASKS_COMMAND, this::cbtasksLookup, this::cbtasksSubmit);
 
 		clientThread.invoke(this::loadPetIcons);
+		clientThread.invoke(this::setAchievementsTotal);
 	}
 
 	@Override
@@ -247,6 +263,10 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.unregisterCommand(DUEL_ARENA_COMMAND);
 		chatCommandManager.unregisterCommand(SOUL_WARS_ZEAL_COMMAND);
 		chatCommandManager.unregisterCommand(PET_LIST_COMMAND);
+		chatCommandManager.unregisterCommand(DIARIES_COMMAND);
+		chatCommandManager.unregisterCommand(QUESTS_COMMAND);
+		chatCommandManager.unregisterCommand(COMBAT_TASKS_COMMAND);
+		chatCommandManager.unregisterCommand(COLLECTIONS_COMMAND);
 	}
 
 	@Provides
@@ -356,9 +376,15 @@ public class ChatCommandsPlugin extends Plugin
 		return petList != null ? petList : Collections.emptyList();
 	}
 
+
 	@Subscribe
 	public void onChatMessage(ChatMessage chatMessage)
 	{
+
+		if (chatMessage.getType() == ChatMessageType.WELCOME)
+		{
+			clientThread.invokeLater(this::setQuestsTotal);
+		}
 		if (chatMessage.getType() != ChatMessageType.TRADE
 			&& chatMessage.getType() != ChatMessageType.GAMEMESSAGE
 			&& chatMessage.getType() != ChatMessageType.SPAM
@@ -368,6 +394,7 @@ public class ChatCommandsPlugin extends Plugin
 		}
 
 		String message = chatMessage.getMessage();
+
 		Matcher matcher = KILLCOUNT_PATTERN.matcher(message);
 		if (matcher.find())
 		{
@@ -1135,6 +1162,7 @@ public class ChatCommandsPlugin extends Plugin
 	private boolean gambleCountSubmit(ChatInput chatInput, String value)
 	{
 		final int gc = client.getVar(Varbits.BA_GC);
+
 		final String playerName = client.getLocalPlayer().getName();
 
 		executor.execute(() ->
@@ -1263,7 +1291,7 @@ public class ChatCommandsPlugin extends Plugin
 	 * response.
 	 *
 	 * @param chatMessage The chat message containing the command.
-	 * @param message    The chat message
+	 * @param message     The chat message
 	 */
 	private void itemPriceLookup(ChatMessage chatMessage, String message)
 	{
@@ -1320,7 +1348,7 @@ public class ChatCommandsPlugin extends Plugin
 	 * response.
 	 *
 	 * @param chatMessage The chat message containing the command.
-	 * @param message    The chat message
+	 * @param message     The chat message
 	 */
 	@VisibleForTesting
 	void playerSkillLookup(ChatMessage chatMessage, String message)
@@ -2155,5 +2183,227 @@ public class ChatCommandsPlugin extends Plugin
 			default:
 				return WordUtils.capitalize(boss);
 		}
+	}
+
+	private void characterSummaryLookup(ChatMessage chatMessage, String csCompleted, int csTotal, String chatHeading)
+	{
+		ChatMessageType type = chatMessage.getType();
+
+		final String player;
+		if (type.equals(ChatMessageType.PRIVATECHATOUT))
+		{
+			player = client.getLocalPlayer().getName();
+		}
+		else
+		{
+			player = Text.sanitize(chatMessage.getName());
+		}
+
+		int cs;
+		try
+		{
+			cs = chatClient.getKc(player,csCompleted);
+		}
+		catch (IOException ex)
+		{
+			log.debug("unable to lookup character summary", ex);
+			return;
+		}
+
+		if (cs == 99999)
+		{
+			cs = 0;
+		}
+
+		String response = new ChatMessageBuilder()
+			.append(ChatColorType.NORMAL)
+			.append(chatHeading)
+			.append(ChatColorType.HIGHLIGHT)
+			.append(Integer.toString(cs))
+			.append("/")
+			.append(Integer.toString(csTotal))
+			.build();
+
+		log.debug("Setting response {}", response);
+		final MessageNode messageNode = chatMessage.getMessageNode();
+		messageNode.setRuneLiteFormatMessage(response);
+		client.refreshChat();
+	}
+
+	private boolean characterSummarySubmit(ChatInput chatInput, String csCompleted, int cs)
+	{
+		final String playerName = client.getLocalPlayer().getName();
+
+		int csv;
+		if (cs == 0)
+		{
+			csv = 99999;
+		}
+		else
+		{
+			csv = cs;
+		}
+
+		executor.execute(() ->
+		{
+			try
+			{
+				chatClient.submitKc(playerName, csCompleted, csv);
+			}
+			catch (Exception ex)
+			{
+				log.warn("unable to submit character summary", ex);
+			}
+			finally
+			{
+				chatInput.resume();
+			}
+		});
+
+		return true;
+	}
+
+	private void diariesLookup(ChatMessage chatMessage, String message)
+	{
+		if (!config.characterSummary())
+		{
+			return;
+		}
+
+		characterSummaryLookup(chatMessage,"achievements", ACHIEVEMENTS_TOTAL, "Achievements Completed: ");
+	}
+
+	private boolean diariesSubmit(ChatInput chatInput, String value)
+	{
+		setAchievementsCompleted();
+		characterSummarySubmit(chatInput, "achievements", ACHIEVEMENTS_COMPLETED);
+		return true;
+	}
+
+	private void questsLookup(ChatMessage chatMessage, String message)
+	{
+		if (!config.characterSummary())
+		{
+			return;
+		}
+
+		clientThread.invokeLater(this::setQuestsTotal);
+		characterSummaryLookup(chatMessage,"quests", QUESTS_TOTAL, "Quests Completed: ");
+	}
+
+	private boolean questsSubmit(ChatInput chatInput, String value)
+	{
+		clientThread.invokeLater(this::setQuestsTotal);
+		characterSummarySubmit(chatInput, "quests", client.getVar(Varbits.QUESTS_COMPLETED));
+		return true;
+	}
+
+	private void cbtasksLookup(ChatMessage chatMessage, String message)
+	{
+		if (!config.characterSummary())
+		{
+			return;
+		}
+		clientThread.invoke(this::setCombatTasksTotal);
+		characterSummaryLookup(chatMessage,"combatTasks", COMBAT_TASKS_TOTAL, "Combat Tasks Completed: ");
+	}
+
+	private boolean cbtasksSubmit(ChatInput chatInput, String value)
+	{
+		int COMBAT_TASKS_COMPLETED = (client.getVar(Varbits.COMBAT_TASK_EASY_COMPLETE) +
+			client.getVar(Varbits.COMBAT_TASK_MEDIUM_COMPLETE) +
+			client.getVar(Varbits.COMBAT_TASK_HARD_COMPLETE) +
+			client.getVar(Varbits.COMBAT_TASK_ELITE_COMPLETE) +
+			client.getVar(Varbits.COMBAT_TASK_MASTER_COMPLETE) +
+			client.getVar(Varbits.COMBAT_TASK_GRANDMASTER_COMPLETE));
+
+		characterSummarySubmit(chatInput, "combatTasks", COMBAT_TASKS_COMPLETED);
+
+		return true;
+	}
+
+	private void collectionsLookup(ChatMessage chatMessage, String message)
+	{
+		if (!config.characterSummary())
+		{
+			return;
+		}
+
+		characterSummaryLookup(chatMessage,"collections", client.getVar(VarPlayer.COLLECTIONS_TOTAL), "Collections Logged: ");
+	}
+
+	private boolean collectionsSubmit(ChatInput chatInput, String value)
+	{
+		characterSummarySubmit(chatInput, "collections", client.getVar(VarPlayer.COLLECTIONS_LOGGED));
+		return true;
+	}
+
+	private void setAchievementsTotal()
+	{
+		client.runScript(3980);
+		int[] stack = client.getIntStack();
+		ACHIEVEMENTS_TOTAL = stack[0];
+	}
+	private void setQuestsTotal()
+	{
+		QUESTS_TOTAL = client.getVar(Varbits.QUESTS_TOTAL);
+	}
+	private void setCombatTasksTotal()
+	{
+		client.runScript(4766);
+		int[] stack = client.getIntStack();
+		COMBAT_TASKS_TOTAL = stack[0];
+	}
+
+	private void setAchievementsCompleted()
+	{
+		ACHIEVEMENTS_COMPLETED = (client.getVar(Varbits.DIARY_1)+
+			client.getVar(Varbits.DIARY_2)+
+			client.getVar(Varbits.DIARY_3)+
+			client.getVar(Varbits.DIARY_4)+
+			client.getVar(Varbits.DIARY_5)+
+			client.getVar(Varbits.DIARY_6)+
+			client.getVar(Varbits.DIARY_7)+
+			client.getVar(Varbits.DIARY_8)+
+			client.getVar(Varbits.DIARY_9)+
+			client.getVar(Varbits.DIARY_0)+
+			client.getVar(Varbits.DIARY_11)+
+			client.getVar(Varbits.DIARY_12)+
+			client.getVar(Varbits.DIARY_13)+
+			client.getVar(Varbits.DIARY_14)+
+			client.getVar(Varbits.DIARY_15)+
+			client.getVar(Varbits.DIARY_16)+
+			client.getVar(Varbits.DIARY_17)+
+			client.getVar(Varbits.DIARY_18)+
+			client.getVar(Varbits.DIARY_19)+
+			client.getVar(Varbits.DIARY_20)+
+			client.getVar(Varbits.DIARY_21)+
+			client.getVar(Varbits.DIARY_22)+
+			client.getVar(Varbits.DIARY_23)+
+			client.getVar(Varbits.DIARY_24)+
+			client.getVar(Varbits.DIARY_25)+
+			client.getVar(Varbits.DIARY_26)+
+			client.getVar(Varbits.DIARY_27)+
+			client.getVar(Varbits.DIARY_28)+
+			client.getVar(Varbits.DIARY_29)+
+			client.getVar(Varbits.DIARY_30)+
+			client.getVar(Varbits.DIARY_31)+
+			client.getVar(Varbits.DIARY_32)+
+			client.getVar(Varbits.DIARY_33)+
+			client.getVar(Varbits.DIARY_34)+
+			client.getVar(Varbits.DIARY_35)+
+			client.getVar(Varbits.DIARY_36)+
+			client.getVar(Varbits.DIARY_37)+
+			client.getVar(Varbits.DIARY_38)+
+			client.getVar(Varbits.DIARY_39)+
+			client.getVar(Varbits.DIARY_40)+
+			client.getVar(Varbits.DIARY_41)+
+			client.getVar(Varbits.DIARY_42)+
+			client.getVar(Varbits.DIARY_43)+
+			client.getVar(Varbits.DIARY_44)+
+			client.getVar(Varbits.DIARY_45)+
+			client.getVar(Varbits.DIARY_46)+
+			client.getVar(Varbits.DIARY_47)+
+			client.getVar(Varbits.DIARY_48));
 	}
 }
