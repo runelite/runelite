@@ -434,8 +434,9 @@ class SceneUploader
 				len += 3;
 				continue;
 			}
-			// HSL override is not applied to flat shade faces or to textured faces
-			else if (faceTextures == null || faceTextures[face] == -1)
+
+			// HSL override is not applied to textured faces
+			if (faceTextures == null || faceTextures[face] == -1)
 			{
 				if (overrideAmount > 0)
 				{
@@ -525,8 +526,9 @@ class SceneUploader
 			}
 			return 3;
 		}
-		// HSL override is not applied to flat shade faces or to textured faces
-		else if (faceTextures == null || faceTextures[face] == -1)
+
+		// HSL override is not applied to textured faces
+		if (faceTextures == null || faceTextures[face] == -1)
 		{
 			if (overrideAmount > 0)
 			{
