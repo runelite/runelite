@@ -205,6 +205,8 @@ public class LootTrackerPlugin extends Plugin
 	private static final String HALLOWED_SEPULCHRE_COFFIN_EVENT = "Coffin (Hallowed Sepulchre)";
 	private static final Set<Integer> HALLOWED_SEPULCHRE_MAP_REGIONS = ImmutableSet.of(8797, 10077, 9308, 10074, 9050); // one map region per floor
 
+	private static final String HALLOWED_SACK_EVENT = "Hallowed Sack";
+
 	// Last man standing map regions
 	private static final Set<Integer> LAST_MAN_STANDING_REGIONS = ImmutableSet.of(13658, 13659, 13660, 13914, 13915, 13916, 13918, 13919, 13920, 14174, 14175, 14176, 14430, 14431, 14432);
 
@@ -791,6 +793,7 @@ public class LootTrackerPlugin extends Plugin
 		if (CHEST_EVENT_TYPES.containsValue(eventType)
 			|| SHADE_CHEST_OBJECTS.containsValue(eventType)
 			|| HALLOWED_SEPULCHRE_COFFIN_EVENT.equals(eventType)
+			|| HALLOWED_SACK_EVENT.equals(eventType)
 			|| HERBIBOAR_EVENT.equals(eventType)
 			|| HESPORI_EVENT.equals(eventType)
 			|| WINTERTODT_SUPPLY_CRATE_EVENT.equals(eventType)
@@ -874,6 +877,10 @@ public class LootTrackerPlugin extends Plugin
 						break;
 					case ItemID.SUPPLY_CRATE_24884:
 						setEvent(LootRecordType.EVENT, MAHOGANY_CRATE_EVENT, client.getBoostedSkillLevel(Skill.CONSTRUCTION));
+						takeInventorySnapshot();
+						break;
+					case ItemID.HALLOWED_SACK:
+						setEvent(LootRecordType.EVENT, HALLOWED_SACK_EVENT);
 						takeInventorySnapshot();
 						break;
 				}
