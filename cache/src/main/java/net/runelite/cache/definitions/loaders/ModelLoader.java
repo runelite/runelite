@@ -1088,325 +1088,314 @@ public class ModelLoader
 
 	}
 
-	void decodeOldFormat(ModelDefinition def, byte[] var1)
+	void decodeOldFormat(ModelDefinition def, byte[] inputData)
 	{
-		boolean var2 = false;
-		boolean var3 = false;
-		InputStream var4 = new InputStream(var1);
-		InputStream var5 = new InputStream(var1);
-		InputStream var6 = new InputStream(var1);
-		InputStream var7 = new InputStream(var1);
-		InputStream var8 = new InputStream(var1);
-		var4.setOffset(var1.length - 18);
-		int var9 = var4.readUnsignedShort();
-		int var10 = var4.readUnsignedShort();
-		int var11 = var4.readUnsignedByte();
-		int var12 = var4.readUnsignedByte();
-		int var13 = var4.readUnsignedByte();
-		int var14 = var4.readUnsignedByte();
-		int var15 = var4.readUnsignedByte();
-		int var16 = var4.readUnsignedByte();
-		int var17 = var4.readUnsignedShort();
-		int var18 = var4.readUnsignedShort();
-		int var19 = var4.readUnsignedShort();
-		int var20 = var4.readUnsignedShort();
-		byte var21 = 0;
-		int var22 = var21 + var9;
-		int var23 = var22;
-		var22 += var10;
-		int var24 = var22;
-		if (var13 == 255)
+		boolean usesFaceRenderTypes = false;
+		boolean usesFaceTextures = false;
+		InputStream stream1 = new InputStream(inputData);
+		InputStream stream2 = new InputStream(inputData);
+		InputStream stream3 = new InputStream(inputData);
+		InputStream stream4 = new InputStream(inputData);
+		InputStream stream5 = new InputStream(inputData);
+		stream1.setOffset(inputData.length - 18);
+		int vertexCount = stream1.readUnsignedShort();
+		int faceCount = stream1.readUnsignedShort();
+		int textureCount = stream1.readUnsignedByte();
+		int isTextured = stream1.readUnsignedByte();
+		int faceRenderPriority = stream1.readUnsignedByte();
+		int hasFaceTransparencies = stream1.readUnsignedByte();
+		int hasPackedTransparencyVertexGroups = stream1.readUnsignedByte();
+		int hasPackedVertexGroups = stream1.readUnsignedByte();
+		int vertexXDataByteCount = stream1.readUnsignedShort();
+		int vertexYDataByteCount = stream1.readUnsignedShort();
+		int vertezZDataByteCount = stream1.readUnsignedShort();
+		int faceIndexDataByteCount = stream1.readUnsignedShort();
+		byte offsetOfVertexFlags = 0;
+		int dataOffset = offsetOfVertexFlags + vertexCount;
+		int offsetOfFaceIndexCompressionTypes = dataOffset;
+		dataOffset += faceCount;
+		int offsetOfFaceRenderPriorities = dataOffset;
+		if (faceRenderPriority == 255)
 		{
-			var22 += var10;
+			dataOffset += faceCount;
 		}
 
-		int var25 = var22;
-		if (var15 == 1)
+		int offsetOfPackedTransparencyVertexGroups = dataOffset;
+		if (hasPackedTransparencyVertexGroups == 1)
 		{
-			var22 += var10;
+			dataOffset += faceCount;
 		}
 
-		int var26 = var22;
-		if (var12 == 1)
+		int offsetOfFaceTextureFlags = dataOffset;
+		if (isTextured == 1)
 		{
-			var22 += var10;
+			dataOffset += faceCount;
 		}
 
-		int var27 = var22;
-		if (var16 == 1)
+		int offsetOfPackedVertexGroups = dataOffset;
+		if (hasPackedVertexGroups == 1)
 		{
-			var22 += var9;
+			dataOffset += vertexCount;
 		}
 
-		int var28 = var22;
-		if (var14 == 1)
+		int offsetOfFaceTransparencies = dataOffset;
+		if (hasFaceTransparencies == 1)
 		{
-			var22 += var10;
+			dataOffset += faceCount;
 		}
 
-		int var29 = var22;
-		var22 += var20;
-		int var30 = var22;
-		var22 += var10 * 2;
-		int var31 = var22;
-		var22 += var11 * 6;
-		int var32 = var22;
-		var22 += var17;
-		int var33 = var22;
-		var22 += var18;
-		int var10000 = var22 + var19;
-		def.vertexCount = var9;
-		def.faceCount = var10;
-		def.numTextureFaces = var11;
-		def.vertexX = new int[var9];
-		def.vertexY = new int[var9];
-		def.vertexZ = new int[var9];
-		def.faceIndices1 = new int[var10];
-		def.faceIndices2 = new int[var10];
-		def.faceIndices3 = new int[var10];
-		if (var11 > 0)
+		int offsetOfFaceIndexData = dataOffset;
+		dataOffset += faceIndexDataByteCount;
+		int offsetOfFaceColorsOrFaceTextures = dataOffset;
+		dataOffset += faceCount * 2;
+		int offsetOfTextureIndices = dataOffset;
+		dataOffset += textureCount * 6;
+		int offsetOfVertexXData = dataOffset;
+		dataOffset += vertexXDataByteCount;
+		int offsetOfVertexYData = dataOffset;
+		dataOffset += vertexYDataByteCount;
+		int offsetOfVertexZData = dataOffset;
+		def.vertexCount = vertexCount;
+		def.faceCount = faceCount;
+		def.numTextureFaces = textureCount;
+		def.vertexX = new int[vertexCount];
+		def.vertexY = new int[vertexCount];
+		def.vertexZ = new int[vertexCount];
+		def.faceIndices1 = new int[faceCount];
+		def.faceIndices2 = new int[faceCount];
+		def.faceIndices3 = new int[faceCount];
+		if (textureCount > 0)
 		{
-			def.textureRenderTypes = new byte[var11];
-			def.texIndices1 = new short[var11];
-			def.texIndices2 = new short[var11];
-			def.texIndices3 = new short[var11];
+			def.textureRenderTypes = new byte[textureCount];
+			def.texIndices1 = new short[textureCount];
+			def.texIndices2 = new short[textureCount];
+			def.texIndices3 = new short[textureCount];
 		}
 
-		if (var16 == 1)
+		if (hasPackedVertexGroups == 1)
 		{
-			def.packedVertexGroups = new int[var9];
+			def.packedVertexGroups = new int[vertexCount];
 		}
 
-		if (var12 == 1)
+		if (isTextured == 1)
 		{
-			def.faceRenderTypes = new byte[var10];
-			def.textureCoords = new byte[var10];
-			def.faceTextures = new short[var10];
+			def.faceRenderTypes = new byte[faceCount];
+			def.textureCoords = new byte[faceCount];
+			def.faceTextures = new short[faceCount];
 		}
 
-		if (var13 == 255)
+		if (faceRenderPriority == 255)
 		{
-			def.faceRenderPriorities = new byte[var10];
+			def.faceRenderPriorities = new byte[faceCount];
 		}
 		else
 		{
-			def.priority = (byte) var13;
+			def.priority = (byte) faceRenderPriority;
 		}
 
-		if (var14 == 1)
+		if (hasFaceTransparencies == 1)
 		{
-			def.faceTransparencies = new byte[var10];
+			def.faceTransparencies = new byte[faceCount];
 		}
 
-		if (var15 == 1)
+		if (hasPackedTransparencyVertexGroups == 1)
 		{
-			def.packedTransparencyVertexGroups = new int[var10];
+			def.packedTransparencyVertexGroups = new int[faceCount];
 		}
 
-		def.faceColors = new short[var10];
-		var4.setOffset(var21);
-		var5.setOffset(var32);
-		var6.setOffset(var33);
-		var7.setOffset(var22);
-		var8.setOffset(var27);
-		int var35 = 0;
-		int var36 = 0;
-		int var37 = 0;
+		def.faceColors = new short[faceCount];
+		stream1.setOffset(offsetOfVertexFlags);
+		stream2.setOffset(offsetOfVertexXData);
+		stream3.setOffset(offsetOfVertexYData);
+		stream4.setOffset(offsetOfVertexZData);
+		stream5.setOffset(offsetOfPackedVertexGroups);
+		int previousVertexX = 0;
+		int previousVertexY = 0;
+		int previousVertexZ = 0;
 
-		int var38;
-		int var39;
-		int var40;
-		int var41;
-		int var42;
-		for (var38 = 0; var38 < var9; ++var38)
+		for (int i = 0; i < vertexCount; ++i)
 		{
-			var39 = var4.readUnsignedByte();
-			var40 = 0;
-			if ((var39 & 1) != 0)
+			int vertexFlags = stream1.readUnsignedByte();
+			int deltaX = 0;
+			if ((vertexFlags & 1) != 0)
 			{
-				var40 = var5.readShortSmart();
+				deltaX = stream2.readShortSmart();
 			}
 
-			var41 = 0;
-			if ((var39 & 2) != 0)
+			int deltaY = 0;
+			if ((vertexFlags & 2) != 0)
 			{
-				var41 = var6.readShortSmart();
+				deltaY = stream3.readShortSmart();
 			}
 
-			var42 = 0;
-			if ((var39 & 4) != 0)
+			int deltaZ = 0;
+			if ((vertexFlags & 4) != 0)
 			{
-				var42 = var7.readShortSmart();
+				deltaZ = stream4.readShortSmart();
 			}
 
-			def.vertexX[var38] = var35 + var40;
-			def.vertexY[var38] = var36 + var41;
-			def.vertexZ[var38] = var37 + var42;
-			var35 = def.vertexX[var38];
-			var36 = def.vertexY[var38];
-			var37 = def.vertexZ[var38];
-			if (var16 == 1)
+			def.vertexX[i] = previousVertexX + deltaX;
+			def.vertexY[i] = previousVertexY + deltaY;
+			def.vertexZ[i] = previousVertexZ + deltaZ;
+			previousVertexX = def.vertexX[i];
+			previousVertexY = def.vertexY[i];
+			previousVertexZ = def.vertexZ[i];
+			if (hasPackedVertexGroups == 1)
 			{
-				def.packedVertexGroups[var38] = var8.readUnsignedByte();
+				def.packedVertexGroups[i] = stream5.readUnsignedByte();
 			}
 		}
 
-		var4.setOffset(var30);
-		var5.setOffset(var26);
-		var6.setOffset(var24);
-		var7.setOffset(var28);
-		var8.setOffset(var25);
+		stream1.setOffset(offsetOfFaceColorsOrFaceTextures);
+		stream2.setOffset(offsetOfFaceTextureFlags);
+		stream3.setOffset(offsetOfFaceRenderPriorities);
+		stream4.setOffset(offsetOfFaceTransparencies);
+		stream5.setOffset(offsetOfPackedTransparencyVertexGroups);
 
-		for (var38 = 0; var38 < var10; ++var38)
+		for (int i = 0; i < faceCount; ++i)
 		{
-			def.faceColors[var38] = (short) var4.readUnsignedShort();
-			if (var12 == 1)
+			def.faceColors[i] = (short) stream1.readUnsignedShort();
+			if (isTextured == 1)
 			{
-				var39 = var5.readUnsignedByte();
-				if ((var39 & 1) == 1)
+				int faceTextureFlags = stream2.readUnsignedByte();
+				if ((faceTextureFlags & 1) == 1)
 				{
-					def.faceRenderTypes[var38] = 1;
-					var2 = true;
+					def.faceRenderTypes[i] = 1;
+					usesFaceRenderTypes = true;
 				}
 				else
 				{
-					def.faceRenderTypes[var38] = 0;
+					def.faceRenderTypes[i] = 0;
 				}
 
-				if ((var39 & 2) == 2)
+				if ((faceTextureFlags & 2) == 2)
 				{
-					def.textureCoords[var38] = (byte) (var39 >> 2);
-					def.faceTextures[var38] = def.faceColors[var38];
-					def.faceColors[var38] = 127;
-					if (def.faceTextures[var38] != -1)
+					def.textureCoords[i] = (byte) (faceTextureFlags >> 2);
+					def.faceTextures[i] = def.faceColors[i];
+					def.faceColors[i] = 127;
+					if (def.faceTextures[i] != -1)
 					{
-						var3 = true;
+						usesFaceTextures = true;
 					}
 				}
 				else
 				{
-					def.textureCoords[var38] = -1;
-					def.faceTextures[var38] = -1;
+					def.textureCoords[i] = -1;
+					def.faceTextures[i] = -1;
 				}
 			}
 
-			if (var13 == 255)
+			if (faceRenderPriority == 255)
 			{
-				def.faceRenderPriorities[var38] = var6.readByte();
+				def.faceRenderPriorities[i] = stream3.readByte();
 			}
 
-			if (var14 == 1)
+			if (hasFaceTransparencies == 1)
 			{
-				def.faceTransparencies[var38] = var7.readByte();
+				def.faceTransparencies[i] = stream4.readByte();
 			}
 
-			if (var15 == 1)
+			if (hasPackedTransparencyVertexGroups == 1)
 			{
-				def.packedTransparencyVertexGroups[var38] = var8.readUnsignedByte();
-			}
-		}
-
-		var4.setOffset(var29);
-		var5.setOffset(var23);
-		var38 = 0;
-		var39 = 0;
-		var40 = 0;
-		var41 = 0;
-
-		int var43;
-		int var44;
-		for (var42 = 0; var42 < var10; ++var42)
-		{
-			var43 = var5.readUnsignedByte();
-			if (var43 == 1)
-			{
-				var38 = var4.readShortSmart() + var41;
-				var39 = var4.readShortSmart() + var38;
-				var40 = var4.readShortSmart() + var39;
-				var41 = var40;
-				def.faceIndices1[var42] = var38;
-				def.faceIndices2[var42] = var39;
-				def.faceIndices3[var42] = var40;
-			}
-
-			if (var43 == 2)
-			{
-				var39 = var40;
-				var40 = var4.readShortSmart() + var41;
-				var41 = var40;
-				def.faceIndices1[var42] = var38;
-				def.faceIndices2[var42] = var39;
-				def.faceIndices3[var42] = var40;
-			}
-
-			if (var43 == 3)
-			{
-				var38 = var40;
-				var40 = var4.readShortSmart() + var41;
-				var41 = var40;
-				def.faceIndices1[var42] = var38;
-				def.faceIndices2[var42] = var39;
-				def.faceIndices3[var42] = var40;
-			}
-
-			if (var43 == 4)
-			{
-				var44 = var38;
-				var38 = var39;
-				var39 = var44;
-				var40 = var4.readShortSmart() + var41;
-				var41 = var40;
-				def.faceIndices1[var42] = var38;
-				def.faceIndices2[var42] = var44;
-				def.faceIndices3[var42] = var40;
+				def.packedTransparencyVertexGroups[i] = stream5.readUnsignedByte();
 			}
 		}
 
-		var4.setOffset(var31);
+		stream1.setOffset(offsetOfFaceIndexData);
+		stream2.setOffset(offsetOfFaceIndexCompressionTypes);
+		int previousIndex1 = 0;
+		int previousIndex2 = 0;
+		int previousIndex3 = 0;
 
-		for (var42 = 0; var42 < var11; ++var42)
+		for (int i = 0; i < faceCount; ++i)
 		{
-			def.textureRenderTypes[var42] = 0;
-			def.texIndices1[var42] = (short) var4.readUnsignedShort();
-			def.texIndices2[var42] = (short) var4.readUnsignedShort();
-			def.texIndices3[var42] = (short) var4.readUnsignedShort();
+			int faceIndexCompressionType = stream2.readUnsignedByte();
+			if (faceIndexCompressionType == 1)
+			{
+				previousIndex1 = stream1.readShortSmart() + previousIndex3;
+				previousIndex2 = stream1.readShortSmart() + previousIndex1;
+				previousIndex3 = stream1.readShortSmart() + previousIndex2;
+				def.faceIndices1[i] = previousIndex1;
+				def.faceIndices2[i] = previousIndex2;
+				def.faceIndices3[i] = previousIndex3;
+			}
+
+			if (faceIndexCompressionType == 2)
+			{
+				previousIndex2 = previousIndex3;
+				previousIndex3 = stream1.readShortSmart() + previousIndex3;
+				def.faceIndices1[i] = previousIndex1;
+				def.faceIndices2[i] = previousIndex2;
+				def.faceIndices3[i] = previousIndex3;
+			}
+
+			if (faceIndexCompressionType == 3)
+			{
+				previousIndex1 = previousIndex3;
+				previousIndex3 = stream1.readShortSmart() + previousIndex3;
+				def.faceIndices1[i] = previousIndex1;
+				def.faceIndices2[i] = previousIndex2;
+				def.faceIndices3[i] = previousIndex3;
+			}
+
+			if (faceIndexCompressionType == 4)
+			{
+				int swap = previousIndex1;
+				previousIndex1 = previousIndex2;
+				previousIndex2 = swap;
+				previousIndex3 = stream1.readShortSmart() + previousIndex3;
+				def.faceIndices1[i] = previousIndex1;
+				def.faceIndices2[i] = previousIndex2;
+				def.faceIndices3[i] = previousIndex3;
+			}
+		}
+
+		stream1.setOffset(offsetOfTextureIndices);
+
+		for (int i = 0; i < textureCount; ++i)
+		{
+			def.textureRenderTypes[i] = 0;
+			def.texIndices1[i] = (short) stream1.readUnsignedShort();
+			def.texIndices2[i] = (short) stream1.readUnsignedShort();
+			def.texIndices3[i] = (short) stream1.readUnsignedShort();
 		}
 
 		if (def.textureCoords != null)
 		{
-			boolean var45 = false;
+			boolean usesTextureCoords = false;
 
-			for (var43 = 0; var43 < var10; ++var43)
+			for (int i = 0; i < faceCount; ++i)
 			{
-				var44 = def.textureCoords[var43] & 255;
-				if (var44 != 255)
+				int coord = def.textureCoords[i] & 255;
+				if (coord != 255)
 				{
-					if (def.faceIndices1[var43] == (def.texIndices1[var44] & '\uffff') && def.faceIndices2[var43] == (def.texIndices2[var44] & '\uffff') && def.faceIndices3[var43] == (def.texIndices3[var44] & '\uffff'))
+					if (def.faceIndices1[i] == (def.texIndices1[coord] & '\uffff') && def.faceIndices2[i] == (def.texIndices2[coord] & '\uffff') && def.faceIndices3[i] == (def.texIndices3[coord] & '\uffff'))
 					{
-						def.textureCoords[var43] = -1;
+						def.textureCoords[i] = -1;
 					}
 					else
 					{
-						var45 = true;
+						usesTextureCoords = true;
 					}
 				}
 			}
 
-			if (!var45)
+			if (!usesTextureCoords)
 			{
 				def.textureCoords = null;
 			}
 		}
 
-		if (!var3)
+		if (!usesFaceTextures)
 		{
 			def.faceTextures = null;
 		}
 
-		if (!var2)
+		if (!usesFaceRenderTypes)
 		{
 			def.faceRenderTypes = null;
 		}
 
 	}
+
 }
