@@ -1283,9 +1283,13 @@ public final class SpriteID
 	public static final int EMOTE_SMOOTH_DANCE_LOCKED = 1355;
 	public static final int EMOTE_CRAZY_DANCE_LOCKED = 1356;
 	public static final int EMOTE_PREMIER_SHIELD_LOCKED = 1357;
-	/* Unmapped: 1358~1359 */
+	/* Unmapped: 1358~1357 */
+	public static final int HITSPLAT_BLUE_NO_DAMAGE = 1358;
+	public static final int HITSPLAT_RED_DAMAGE = 1359;
 	public static final int HITSPLAT_GREEN_POISON = 1360;
-	/* Unmapped: 1361~1363 */
+	public static final int HITSPLAT_ORANGE_DISEASE = 1361;
+	public static final int HITSPLAT_YELLOW_NIGHTMARE_TOTEM_HEAL = 1362;
+	public static final int HITSPLAT_GRAY_NIGHTMARE_TOTEM_DAMAGE = 1363;
 	public static final int BOUNTY_HUNTER_SKIP_TARGET = 1364;
 	public static final int BOUNTY_HUNTER_SKIP_TARGET_HOVERED = 1365;
 	public static final int HOUSE_VIEWER_ROTATE_CLOCKWISE = 1366;
@@ -1339,7 +1343,7 @@ public final class SpriteID
 	public static final int HEALTHBAR_COX_BLUE = 1416;
 	public static final int HEALTHBAR_COX_YELLOW = 1417;
 	public static final int HEALTHBAR_COX_RED = 1418;
-	/* Unmapped: 1419 */
+	public static final int HITSPLAT_SHIELD_DAMAGE = 1419;
 	public static final int PRAYER_RIGOUR = 1420;
 	public static final int PRAYER_AUGURY = 1421;
 	/* Unmapped: 1422, 1423 */
@@ -1532,9 +1536,15 @@ public final class SpriteID
 	public static final int MOBILE_FUNCTION_MODE_DISABLED = 1624;
 	public static final int MOBILE_YELLOW_TOUCH_ANIMATION_1 = 1625;
 	public static final int MOBILE_YELLOW_TOUCH_ANIMATION_2 = 1626;
-	/* Unmapped: 1627~1631 */
+	/* Unmapped: 1627 */
+	public static final int HITSPLAT_ZALCANO_ARMOR_DAMAGE = 1628;
+	public static final int HITSPLAT_NPC_HEAL = 1629;
+	public static final int HITSPLAT_TINTED_BLUE_NO_DAMAGE = 1630;
+	public static final int HITSPLAT_TINTED_RED_DAMAGE = 1631;
 	public static final int HITSPLAT_DARK_GREEN_VENOM = 1632;
-	/* Unmapped: 1633~1652 */
+	public static final int HITSPLAT_TINTED_ORANGE_DISEASE = 1633;
+	public static final int HITSPLAT_TINTED_YELLOW_NIGHTMARE_TOTEM_HEAL = 1634;
+	/* Unmapped: 1635~1652 */
 	public static final int MOBILE_FINGER_ON_INTERFACE = 1653;
 	/* Unmapped: 1627~1701 */
 	public static final int BUTTON_FRIENDS = 1702;
@@ -1560,7 +1570,9 @@ public final class SpriteID
 	public static final int HEALTHBAR_DEFAULT_BACK_140PX = 2189;
 	public static final int HEALTHBAR_DEFAULT_FRONT_160PX = 2190;
 	public static final int HEALTHBAR_DEFAULT_BACK_160PX = 2191;
-	/* Unmapped: 2192~2306 */
+	/* Unmapped: 2192~2269 */
+	public static final int HITSPLAT_CORRUPTION = 2270;
+	/* Unmapped: 2271~2306 */
 	public static final int TAB_CLAN_CHAT = 2307;
 	/* Unmapped: 2308~2419 */
 	public static final int WIKI_DESELECTED = 2420;
