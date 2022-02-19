@@ -331,6 +331,7 @@ class ScreenMarkerPanel extends JPanel
 		thicknessSpinner.setValue(marker.getMarker().getBorderThickness());
 		thicknessSpinner.setPreferredSize(new Dimension(50, 20));
 		thicknessSpinner.addChangeListener(ce -> updateThickness(true));
+		thicknessSpinner.setToolTipText("Border thickness");
 
 		opacityIndicator.setToolTipText("Toggle background transparency");
 		opacityIndicator.addMouseListener(new MouseAdapter()
