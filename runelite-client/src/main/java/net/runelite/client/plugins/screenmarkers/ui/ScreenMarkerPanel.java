@@ -53,6 +53,7 @@ import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.FlatTextField;
 import net.runelite.client.ui.components.colorpicker.RuneliteColorPicker;
+import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
 
 class ScreenMarkerPanel extends JPanel
@@ -73,11 +74,6 @@ class ScreenMarkerPanel extends JPanel
 	private static final ImageIcon NO_FILL_COLOR_ICON;
 	private static final ImageIcon NO_FILL_COLOR_HOVER_ICON;
 
-	private static final ImageIcon FULL_OPACITY_ICON;
-	private static final ImageIcon FULL_OPACITY_HOVER_ICON;
-	private static final ImageIcon NO_OPACITY_ICON;
-	private static final ImageIcon NO_OPACITY_HOVER_ICON;
-
 	private static final ImageIcon VISIBLE_ICON;
 	private static final ImageIcon VISIBLE_HOVER_ICON;
 	private static final ImageIcon INVISIBLE_ICON;
@@ -91,7 +87,6 @@ class ScreenMarkerPanel extends JPanel
 
 	private final JLabel borderColorIndicator = new JLabel();
 	private final JLabel fillColorIndicator = new JLabel();
-	private final JLabel opacityIndicator = new JLabel();
 	private final JLabel visibilityLabel = new JLabel();
 	private final JLabel deleteLabel = new JLabel();
 
@@ -122,14 +117,6 @@ class ScreenMarkerPanel extends JPanel
 
 		NO_FILL_COLOR_ICON = new ImageIcon(fillImgHover);
 		NO_FILL_COLOR_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(fillImgHover, -100));
-
-		final BufferedImage opacityImg = ImageUtil.loadImageResource(ScreenMarkerPlugin.class, "opacity_icon.png");
-		final BufferedImage opacityImgHover = ImageUtil.luminanceOffset(opacityImg, -150);
-		FULL_OPACITY_ICON = new ImageIcon(opacityImg);
-		FULL_OPACITY_HOVER_ICON = new ImageIcon(opacityImgHover);
-
-		NO_OPACITY_ICON = new ImageIcon(opacityImgHover);
-		NO_OPACITY_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(opacityImgHover, -100));
 
 		final BufferedImage visibleImg = ImageUtil.loadImageResource(ScreenMarkerPlugin.class, "visible_icon.png");
 		VISIBLE_ICON = new ImageIcon(visibleImg);
@@ -333,43 +320,8 @@ class ScreenMarkerPanel extends JPanel
 		thicknessSpinner.addChangeListener(ce -> updateThickness(true));
 		thicknessSpinner.setToolTipText("Border thickness");
 
-		opacityIndicator.setToolTipText("Toggle background transparency");
-		opacityIndicator.addMouseListener(new MouseAdapter()
-		{
-			@Override
-			public void mousePressed(MouseEvent mouseEvent)
-			{
-				final Color fill = marker.getMarker().getFill();
-
-				if (fill.getAlpha() == 0)
-				{
-					marker.getMarker().setFill(new Color(fill.getRed(), fill.getGreen(), fill.getBlue(), DEFAULT_FILL_OPACITY));
-				}
-				else
-				{
-					marker.getMarker().setFill(new Color(fill.getRed(), fill.getGreen(), fill.getBlue(), 0));
-				}
-
-				updateFill();
-				plugin.updateConfig();
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent mouseEvent)
-			{
-				opacityIndicator.setIcon(marker.getMarker().getFill().getAlpha() == 0 ? NO_OPACITY_HOVER_ICON : FULL_OPACITY_HOVER_ICON);
-			}
-
-			@Override
-			public void mouseExited(MouseEvent mouseEvent)
-			{
-				opacityIndicator.setIcon(marker.getMarker().getFill().getAlpha() == 0 ? NO_OPACITY_ICON : FULL_OPACITY_ICON);
-			}
-		});
-
 		leftActions.add(borderColorIndicator);
 		leftActions.add(fillColorIndicator);
-		leftActions.add(opacityIndicator);
 		leftActions.add(thicknessSpinner);
 
 		JPanel rightActions = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
@@ -524,7 +476,6 @@ class ScreenMarkerPanel extends JPanel
 		}
 
 		fillColorIndicator.setIcon(isFullyTransparent ? NO_FILL_COLOR_ICON : FILL_COLOR_ICON);
-		opacityIndicator.setIcon(isFullyTransparent ? NO_OPACITY_ICON : FULL_OPACITY_ICON);
 	}
 
 	private void updateBorder()
@@ -544,9 +495,10 @@ class ScreenMarkerPanel extends JPanel
 
 	private void openFillColorPicker()
 	{
+		final Color fillColor = marker.getMarker().getFill();
 		RuneliteColorPicker colorPicker = plugin.getColorPickerManager().create(
 			SwingUtilities.windowForComponent(this),
-			marker.getMarker().getFill(),
+			fillColor.getAlpha() == 0 ? ColorUtil.colorWithAlpha(fillColor, DEFAULT_FILL_OPACITY) : fillColor,
 			marker.getMarker().getName() + " Fill",
 			false);
 		colorPicker.setLocation(getLocationOnScreen());
