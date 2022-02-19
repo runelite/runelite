@@ -326,7 +326,8 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("A graceful man of many colours, his crates must be full of many delights.", "Hill Giant", CRATE_42067, new WorldPoint(1506, 3590, 2), "Kill any Hill Giant for a medium key. Then search the crate on the top floor of Osten's clothing shop in Shayzien."),
 		new CrypticClue("Search the basket of apples in an orchard, south of the unknown grave surrounded by white roses.", APPLE_BASKET, new WorldPoint(1718, 3626, 0), "Search the middle apple basket in the apple orchard north of Hosidius."),
 		new CrypticClue("Dig in the lair of red wings, within the temple of the Sun and Moon.", new WorldPoint(1820, 9935, 0), "Forthos Dungeon. In the center of the red dragons."),
-		new CrypticClue("Within the town of Lumbridge lives a man named Bob. He walks out of his door and takes 1 step east, 7 steps north, 5 steps west and 1 step south. Once he arrives, he digs a hole and buries his treasure.", new WorldPoint(3230, 3209, 0), "Just west of the bush outside Bob's axe shop in Lumbridge.")
+		new CrypticClue("Within the town of Lumbridge lives a man named Bob. He walks out of his door and takes 1 step east, 7 steps north, 5 steps west and 1 step south. Once he arrives, he digs a hole and buries his treasure.", new WorldPoint(3230, 3209, 0), "Just west of the bush outside Bob's axe shop in Lumbridge."),
+		new CrypticClue("Try not to let yourself be dazzled when you search these drawers.", DRAWERS_350, new WorldPoint(2561, 3323, 0), "Search the western drawers in Jimmy Dazzler's home near the East Ardougne Rat Pits.")
 	);
 
 	private final String text;
