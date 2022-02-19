@@ -327,7 +327,8 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Search the basket of apples in an orchard, south of the unknown grave surrounded by white roses.", APPLE_BASKET, new WorldPoint(1718, 3626, 0), "Search the middle apple basket in the apple orchard north of Hosidius."),
 		new CrypticClue("Dig in the lair of red wings, within the temple of the Sun and Moon.", new WorldPoint(1820, 9935, 0), "Forthos Dungeon. In the center of the red dragons."),
 		new CrypticClue("Within the town of Lumbridge lives a man named Bob. He walks out of his door and takes 1 step east, 7 steps north, 5 steps west and 1 step south. Once he arrives, he digs a hole and buries his treasure.", new WorldPoint(3230, 3209, 0), "Just west of the bush outside Bob's axe shop in Lumbridge."),
-		new CrypticClue("Try not to let yourself be dazzled when you search these drawers.", DRAWERS_350, new WorldPoint(2561, 3323, 0), "Search the western drawers in Jimmy Dazzler's home near the East Ardougne Rat Pits.")
+		new CrypticClue("Try not to let yourself be dazzled when you search these drawers.", DRAWERS_350, new WorldPoint(2561, 3323, 0), "Search the western drawers in Jimmy Dazzler's home near the East Ardougne Rat Pits."),
+		new CrypticClue("The Big High War God left his mark on this place.", new WorldPoint(3572, 4372, 0), "Dig anywhere in Yu'biusk. Fairy ring BLQ.")
 	);
 
 	private final String text;
