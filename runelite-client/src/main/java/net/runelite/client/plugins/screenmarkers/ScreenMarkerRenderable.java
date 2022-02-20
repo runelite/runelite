@@ -42,6 +42,7 @@ class ScreenMarkerRenderable implements RenderableEntity
 	private Color color;
 	private Color fill;
 	private Stroke stroke;
+	private String label;
 
 	@Override
 	public Dimension render(Graphics2D graphics)
@@ -60,6 +61,12 @@ class ScreenMarkerRenderable implements RenderableEntity
 		graphics.setColor(color);
 		graphics.setStroke(stroke);
 		graphics.drawRect(offset, offset, width - thickness, height - thickness);
+
+		if (!label.isEmpty())
+		{
+			graphics.drawString(label, 0, 0);
+		}
+
 		return size;
 	}
 }
