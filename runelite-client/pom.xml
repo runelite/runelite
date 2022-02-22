@@ -118,9 +118,9 @@
 			<version>1.4</version>
 		</dependency>
 		<dependency>
-			<groupId>net.runelite</groupId>
-			<artifactId>archive-patcher</artifactId>
-			<version>1.0</version>
+			<groupId>net.runelite.archive-patcher</groupId>
+			<artifactId>archive-patcher-applier</artifactId>
+			<version>1.2</version>
 		</dependency>
 		<dependency>
 			<groupId>net.java.dev.jna</groupId>
