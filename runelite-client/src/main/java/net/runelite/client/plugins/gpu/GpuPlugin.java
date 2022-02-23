@@ -353,6 +353,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 					System.setProperty("jogl.debug", "true");
 				}
 
+				System.setProperty("jogamp.gluegen.UseNativeExeFile", "true");
+
 				GLProfile.initSingleton();
 
 				invokeOnMainThread(() ->
