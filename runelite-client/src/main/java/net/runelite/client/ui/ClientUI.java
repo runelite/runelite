@@ -983,6 +983,13 @@ public class ClientUI
 
 		int width = panel.getWrappedPanel().getPreferredSize().width;
 		int expandBy = pluginPanel != null ? pluginPanel.getWrappedPanel().getPreferredSize().width - width : width;
+
+		// Deactivate previously active panel
+		if (pluginPanel != null)
+		{
+			pluginPanel.onDeactivate();
+		}
+
 		pluginPanel = panel;
 
 		// Expand sidebar
