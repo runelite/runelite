@@ -203,7 +203,7 @@ public class SlayerPlugin extends Plugin
 	private int cachedXp = -1;
 	private Instant infoTimer;
 	private boolean loginFlag;
-	private final List<String> targetNames = new ArrayList<>();
+	private final List<Pattern> targetNames = new ArrayList<>();
 
 	public final Function<NPC, HighlightedNpc> isTarget = (n) ->
 	{
@@ -664,7 +664,8 @@ public class SlayerPlugin extends Plugin
 			SlayerUnlock.GROTESQUE_GUARDIAN_DOUBLE_COUNT.isEnabled(client);
 	}
 
-	private boolean isTarget(NPC npc)
+	@VisibleForTesting
+	boolean isTarget(NPC npc)
 	{
 		if (targetNames.isEmpty())
 		{
@@ -681,16 +682,15 @@ public class SlayerPlugin extends Plugin
 			.replace('\u00A0', ' ')
 			.toLowerCase();
 
-		for (String target : targetNames)
+		for (Pattern target : targetNames)
 		{
-			if (name.contains(target))
-			{
-				if (ArrayUtils.contains(composition.getActions(), "Attack")
+			final Matcher targetMatcher = target.matcher(name);
+			if (targetMatcher.find()
+				&& (ArrayUtils.contains(composition.getActions(), "Attack")
 					// Pick action is for zygomite-fungi
-					|| ArrayUtils.contains(composition.getActions(), "Pick"))
-				{
-					return true;
-				}
+					|| ArrayUtils.contains(composition.getActions(), "Pick")))
+			{
+				return true;
 			}
 		}
 		return false;
@@ -703,11 +703,16 @@ public class SlayerPlugin extends Plugin
 		if (task != null)
 		{
 			Arrays.stream(task.getTargetNames())
-				.map(String::toLowerCase)
+				.map(SlayerPlugin::targetNamePattern)
 				.forEach(targetNames::add);
 
-			targetNames.add(taskName.toLowerCase().replaceAll("s$", ""));
+			targetNames.add(targetNamePattern(taskName.replaceAll("s$", "")));
 		}
+	}
+
+	private static Pattern targetNamePattern(final String targetName)
+	{
+		return Pattern.compile("(?:\\s|^)" + targetName + "(?:\\s|$)", Pattern.CASE_INSENSITIVE);
 	}
 
 	private void rebuildTargetList()
@@ -723,7 +728,8 @@ public class SlayerPlugin extends Plugin
 		}
 	}
 
-	private void setTask(String name, int amt, int initAmt)
+	@VisibleForTesting
+	void setTask(String name, int amt, int initAmt)
 	{
 		setTask(name, amt, initAmt, null);
 	}

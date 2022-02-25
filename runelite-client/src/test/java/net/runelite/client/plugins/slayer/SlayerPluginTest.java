@@ -60,6 +60,8 @@ import net.runelite.client.game.npcoverlay.NpcOverlayService;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -925,5 +927,31 @@ public class SlayerPluginTest
 
 		assertEquals("Suqahs", slayerPlugin.getTaskName());
 		assertEquals(229, slayerPlugin.getAmount()); // 2 kills
+	}
+
+	@Test
+	public void npcMatching()
+	{
+		assertTrue(matches("Abyssal demon", Task.ABYSSAL_DEMONS));
+		assertTrue(matches("Baby blue dragon", Task.BLUE_DRAGONS));
+		assertTrue(matches("Duck", Task.BIRDS));
+		assertTrue(matches("Donny the Lad", Task.BANDITS));
+
+		assertFalse(matches("Rat", Task.PIRATES));
+		assertFalse(matches("Wolf", Task.WEREWOLVES));
+		assertFalse(matches("Scorpia's offspring", Task.SCORPIA));
+		assertFalse(matches("Jonny the beard", Task.BEARS));
+	}
+
+	private boolean matches(final String npcName, final Task task)
+	{
+		final NPC npc = mock(NPC.class);
+		final NPCComposition comp = mock(NPCComposition.class);
+		when(npc.getTransformedComposition()).thenReturn(comp);
+		when(comp.getName()).thenReturn(npcName);
+		when(comp.getActions()).thenReturn(new String[] { "Attack" });
+
+		slayerPlugin.setTask(task.getName(), 0, 0);
+		return slayerPlugin.isTarget(npc);
 	}
 }
