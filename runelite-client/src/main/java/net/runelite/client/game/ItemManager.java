@@ -328,8 +328,7 @@ public class ItemManager
 		{
 			return wikiPrice;
 		}
-		int d = jagPrice - (int) (jagPrice * activePriceThreshold);
-		return wikiPrice >= jagPrice - d && wikiPrice <= jagPrice + d ? wikiPrice : jagPrice;
+		return wikiPrice < jagPrice * activePriceThreshold ? wikiPrice : jagPrice;
 	}
 
 	/**
