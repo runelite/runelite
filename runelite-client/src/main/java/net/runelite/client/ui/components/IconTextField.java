@@ -367,7 +367,9 @@ public class IconTextField extends JPanel
 		SEARCH("search.png"),
 		LOADING("loading_spinner.gif"),
 		LOADING_DARKER("loading_spinner_darker.gif"),
-		ERROR("error.png");
+		ERROR("error.png"),
+		SEARCH_ITEMS("search_items.png"),
+		SEARCH_EVENTS("search_events.png");
 
 		private final String file;
 	}
