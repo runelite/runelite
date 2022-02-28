@@ -37,6 +37,7 @@ import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
@@ -57,6 +58,7 @@ public class SkyboxPlugin extends Plugin
 	private SkyboxPluginConfig config;
 
 	private Skybox skybox;
+	private boolean hasLoggedIn;
 
 	@Override
 	public void startUp() throws IOException
@@ -98,7 +100,7 @@ public class SkyboxPlugin extends Plugin
 	@Subscribe
 	public void onBeforeRender(BeforeRender r)
 	{
-		if (skybox == null || client.getGameState() != GameState.LOGGED_IN)
+		if (skybox == null || !hasLoggedIn || client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
 		}
@@ -154,6 +156,16 @@ public class SkyboxPlugin extends Plugin
 		if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN)
 		{
 			client.setSkyboxColor(0);
+			hasLoggedIn = false;
+		}
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick gameTick)
+	{
+		if (!hasLoggedIn && client.getGameState() == GameState.LOGGED_IN)
+		{
+			hasLoggedIn = true;
 		}
 	}
 }
