@@ -37,6 +37,7 @@ import com.google.inject.CreationException;
 import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.Module;
+import java.io.File;
 import java.io.IOException;
 import java.lang.invoke.CallSite;
 import java.lang.invoke.LambdaMetafactory;
@@ -87,6 +88,7 @@ public class PluginManager
 	 * Base package where the core plugins are
 	 */
 	private static final String PLUGIN_PACKAGE = "net.runelite.client.plugins";
+	private static final File SIDELOADED_PLUGINS = new File(RuneLite.RUNELITE_DIR, "sideloaded-plugins");
 
 	private final boolean developerMode;
 	private final boolean safeMode;
@@ -273,6 +275,45 @@ public class PluginManager
 
 		loadPlugins(plugins, (loaded, total) ->
 			SplashScreen.stage(.60, .70, null, "Loading Plugins", loaded, total, false));
+	}
+
+	public void loadSideLoadPlugins()
+	{
+		if (!developerMode)
+		{
+			return;
+		}
+
+		File[] files = SIDELOADED_PLUGINS.listFiles();
+		if (files == null)
+		{
+			return;
+		}
+
+		for (File f : files)
+		{
+			if (f.getName().endsWith(".jar"))
+			{
+				log.info("Side-loading plugin {}", f);
+
+				try
+				{
+					ClassLoader classLoader = new PluginClassLoader(f, getClass().getClassLoader());
+
+					List<Class<?>> plugins = ClassPath.from(classLoader)
+						.getAllClasses()
+						.stream()
+						.map(ClassInfo::load)
+						.collect(Collectors.toList());
+
+					loadPlugins(plugins, null);
+				}
+				catch (PluginInstantiationException | IOException ex)
+				{
+					log.error("error sideloading plugin", ex);
+				}
+			}
+		}
 	}
 
 	public List<Plugin> loadPlugins(List<Class<?>> plugins, BiConsumer<Integer, Integer> onPluginLoaded) throws PluginInstantiationException
