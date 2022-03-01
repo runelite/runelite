@@ -32,11 +32,17 @@ import javax.annotation.Nullable;
 public interface ItemComposition extends ParamHolder
 {
 	/**
-	 * Gets the items name.
+	 * Gets the item's name.
 	 *
 	 * @return the name of the item
 	 */
 	String getName();
+
+	/**
+	 * Sets the item's name.
+	 * @param name the new name
+	 */
+	void setName(String name);
 
 	/**
 	 * Gets the items ID.
@@ -145,12 +151,6 @@ public interface ItemComposition extends ParamHolder
 	void setShiftClickActionIndex(int shiftClickActionIndex);
 
 	/**
-	 * Resets the menu action index of the shift-click action to its
-	 * default value.
-	 */
-	void resetShiftClickActionIndex();
-
-	/**
 	 * Gets the model ID of the inventory item.
 	 *
 	 * @return the model ID
@@ -158,20 +158,109 @@ public interface ItemComposition extends ParamHolder
 	int getInventoryModel();
 
 	/**
-	 * Since the client reuses item models, it stores colors that can be replaced.
-	 * This returns what colors the item model will be replaced with.
-	 *
+	 * Set the model ID of the inventory item. You will also need to flush the item model cache and the item
+	 * sprite cache to have the changes fully propagated after changing this value.
+	 * @see Client#getItemModelCache()
+	 * @see Client#getItemSpriteCache()
+	 */
+	void setInventoryModel(int model);
+
+	/**
+	 * Get the colors to be replaced on this item's model for this item.
+	 * @see JagexColor
+	 * @see ItemComposition#getColorToReplaceWith()
+	 * @return the colors to be replaced
+	 */
+	@Nullable
+	short[] getColorToReplace();
+
+	/**
+	 * Set the colors to be replaced on this item's model for this item.
+	 * @see JagexColor
+	 * @see ItemComposition#setColorToReplaceWith(short[])
+	 */
+	void setColorToReplace(short[] colorsToReplace);
+
+	/**
+	 * Get the colors applied to this item's model for this item.
+	 * @see JagexColor
+	 * @see ItemComposition#getColorToReplace()
 	 * @return the colors to replace with
 	 */
 	@Nullable
 	short[] getColorToReplaceWith();
 
 	/**
-	 * Since the client reuses item models, it stores textures that can be replaced.
-	 * This returns what textures the item model will be replaced with.
-	 *
+	 * Set the colors applied to this item's model for this item.
+	 * @see JagexColor
+	 * @see ItemComposition#setColorToReplace(short[])
+	 */
+	void setColorToReplaceWith(short[] colorToReplaceWith);
+
+	/**
+	 * Get the textures to be replaced on this item's model for this item.
+	 * @see ItemComposition#getTextureToReplaceWith()
+	 * @return the textures to be replaced
+	 */
+	@Nullable
+	short[] getTextureToReplace();
+
+	/**
+	 * Set the textures to be replaced on this item's model for this item.
+	 * @see ItemComposition#setTextureToReplaceWith(short[])
+	 */
+	void setTextureToReplace(short[] textureToFind);
+
+	/**
+	 * Get the textures applied to this item's model for this item.
+	 * @see ItemComposition#getTextureToReplace()
 	 * @return the textures to replace with
 	 */
 	@Nullable
 	short[] getTextureToReplaceWith();
+
+	/**
+	 * Set the textures applied to this item's model for this item.
+	 * @see ItemComposition#setTextureToReplace(short[])
+	 */
+	void setTextureToReplaceWith(short[] textureToReplaceWith);
+
+	/**
+	 * Get the x angle for 2d item sprites used in the inventory.
+	 * @see net.runelite.api.coords.Angle
+	 * @return
+	 */
+	int getXan2d();
+
+	/**
+	 * Get the y angle for 2d item sprites used in the inventory.
+	 * @see net.runelite.api.coords.Angle
+	 * @return
+	 */
+	int getYan2d();
+
+	/**
+	 * Get the z angle for 2d item sprites used in the inventory.
+	 * @see net.runelite.api.coords.Angle
+	 * @return
+	 */
+	int getZan2d();
+
+	/**
+	 * Set the x angle for 2d item sprites used in the inventory.
+	 * @see net.runelite.api.coords.Angle
+	 */
+	void setXan2d(int angle);
+
+	/**
+	 * Set the y angle for 2d item sprites used in the inventory.
+	 * @see net.runelite.api.coords.Angle
+	 */
+	void setYan2d(int angle);
+
+	/**
+	 * Set the z angle for 2d item sprites used in the inventory.
+	 * @see net.runelite.api.coords.Angle
+	 */
+	void setZan2d(int angle);
 }
