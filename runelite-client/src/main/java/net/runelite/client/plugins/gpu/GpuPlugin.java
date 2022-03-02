@@ -223,7 +223,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int textureArrayId;
 
 	private final GLBuffer uniformBuffer = new GLBuffer();
-	private final float[] textureOffsets = new float[256];
 
 	private GpuIntBuffer vertexBuffer;
 	private GpuFloatBuffer uvBuffer;
@@ -291,12 +290,13 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int uniTexTargetDimensions;
 	private int uniUiAlphaOverlay;
 	private int uniTextures;
-	private int uniTextureOffsets;
+	private int uniTextureAnimations;
 	private int uniBlockSmall;
 	private int uniBlockLarge;
 	private int uniBlockMain;
 	private int uniSmoothBanding;
 	private int uniTextureLightMode;
+	private int uniTick;
 
 	private int needsReset;
 
@@ -665,6 +665,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		uniDrawDistance = gl.glGetUniformLocation(glProgram, "drawDistance");
 		uniColorBlindMode = gl.glGetUniformLocation(glProgram, "colorBlindMode");
 		uniTextureLightMode = gl.glGetUniformLocation(glProgram, "textureLightMode");
+		uniTick = gl.glGetUniformLocation(glProgram, "tick");
 
 		uniTex = gl.glGetUniformLocation(glUiProgram, "tex");
 		uniTexSamplingMode = gl.glGetUniformLocation(glUiProgram, "samplingMode");
@@ -673,7 +674,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		uniUiColorBlindMode = gl.glGetUniformLocation(glUiProgram, "colorBlindMode");
 		uniUiAlphaOverlay = gl.glGetUniformLocation(glUiProgram, "alphaOverlay");
 		uniTextures = gl.glGetUniformLocation(glProgram, "textures");
-		uniTextureOffsets = gl.glGetUniformLocation(glProgram, "textureOffsets");
+		uniTextureAnimations = gl.glGetUniformLocation(glProgram, "textureAnimations");
 
 		uniBlockSmall = gl.glGetUniformBlockIndex(glSmallComputeProgram, "uniforms");
 		uniBlockLarge = gl.glGetUniformBlockIndex(glComputeProgram, "uniforms");
@@ -1222,18 +1223,25 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		gl.glClear(gl.GL_COLOR_BUFFER_BIT);
 
 		// Draw 3d scene
-		final TextureProvider textureProvider = client.getTextureProvider();
 		final GameState gameState = client.getGameState();
-		if (textureProvider != null && gameState.getState() >= GameState.LOADING.getState())
+		if (gameState.getState() >= GameState.LOADING.getState())
 		{
+			final TextureProvider textureProvider = client.getTextureProvider();
 			if (textureArrayId == -1)
 			{
 				// lazy init textures as they may not be loaded at plugin start.
 				// this will return -1 and retry if not all textures are loaded yet, too.
 				textureArrayId = textureManager.initTextureArray(textureProvider, gl);
+				if (textureArrayId > -1)
+				{
+					// if texture upload is successful, compute and set texture animations
+					float[] texAnims = textureManager.computeTextureAnimations(textureProvider);
+					gl.glUseProgram(glProgram);
+					gl.glUniform2fv(uniTextureAnimations, texAnims.length, texAnims, 0);
+					gl.glUseProgram(0);
+				}
 			}
 
-			final Texture[] textures = textureProvider.getTextures();
 			int renderWidthOff = viewportOffsetX;
 			int renderHeightOff = viewportOffsetY;
 			int renderCanvasHeight = canvasHeight;
@@ -1285,6 +1293,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			gl.glUniform1f(uniSmoothBanding, config.smoothBanding() ? 0f : 1f);
 			gl.glUniform1i(uniColorBlindMode, config.colorBlindMode().ordinal());
 			gl.glUniform1f(uniTextureLightMode, config.brightTextures() ? 1f : 0f);
+			gl.glUniform1i(uniTick, client.getGameCycle());
 
 			// Calculate projection matrix
 			Matrix4 projectionMatrix = new Matrix4();
@@ -1295,24 +1304,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			projectionMatrix.translate(-client.getCameraX2(), -client.getCameraY2(), -client.getCameraZ2());
 			gl.glUniformMatrix4fv(uniProjectionMatrix, 1, false, projectionMatrix.getMatrix(), 0);
 
-			for (int id = 0; id < textures.length; ++id)
-			{
-				Texture texture = textures[id];
-				if (texture == null)
-				{
-					continue;
-				}
-
-				textureProvider.load(id); // trips the texture load flag which lets textures animate
-
-				textureOffsets[id * 2] = texture.getU();
-				textureOffsets[id * 2 + 1] = texture.getV();
-			}
-
 			// Bind uniforms
 			gl.glUniformBlockBinding(glProgram, uniBlockMain, 0);
 			gl.glUniform1i(uniTextures, 1); // texture sampler array is bound to texture1
-			gl.glUniform2fv(uniTextureOffsets, textureOffsets.length, textureOffsets, 0);
 
 			// We just allow the GL to do face culling. Note this requires the priority renderer
 			// to have logic to disregard culled faces in the priority depth testing.
@@ -1518,7 +1512,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	@Override
 	public void animate(Texture texture, int diff)
 	{
-		textureManager.animate(texture, diff);
+		// texture animation happens on gpu
 	}
 
 	@Subscribe
