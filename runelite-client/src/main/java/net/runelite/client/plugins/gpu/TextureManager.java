@@ -208,35 +208,37 @@ class TextureManager
 	{
 		Texture[] textures = textureProvider.getTextures();
 		float[] anims = new float[TEXTURE_SIZE * 2];
-		int idx = 0;
-		for (Texture texture : textures)
+		for (int i = 0; i < textures.length; ++i)
 		{
-			if (texture != null)
+			Texture texture = textures[i];
+			if (texture == null)
 			{
-				float u = 0f, v = 0f;
-				switch (texture.getAnimationDirection())
-				{
-					case 1:
-						v = -1f;
-						break;
-					case 3:
-						v = 1f;
-						break;
-					case 2:
-						u = -1f;
-						break;
-					case 4:
-						u = 1f;
-						break;
-				}
-
-				int speed = texture.getAnimationSpeed();
-				u *= speed;
-				v *= speed;
-
-				anims[idx++] = u;
-				anims[idx++] = v;
+				continue;
 			}
+
+			float u = 0f, v = 0f;
+			switch (texture.getAnimationDirection())
+			{
+				case 1:
+					v = -1f;
+					break;
+				case 3:
+					v = 1f;
+					break;
+				case 2:
+					u = -1f;
+					break;
+				case 4:
+					u = 1f;
+					break;
+			}
+
+			int speed = texture.getAnimationSpeed();
+			u *= speed;
+			v *= speed;
+
+			anims[i * 2] = u;
+			anims[i * 2 + 1] = v;
 		}
 		return anims;
 	}
