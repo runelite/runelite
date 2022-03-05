@@ -1131,26 +1131,18 @@ public class LootTrackerPlugin extends Plugin
 		return false;
 	}
 
-	private long getTotalPrice(Collection<ItemStack> items)
-	{
-		long totalPrice = 0;
-
-		for (final ItemStack itemStack : items)
-		{
-			totalPrice += (long) itemManager.getItemPrice(itemStack.getId()) * itemStack.getQuantity();
-		}
-
-		return totalPrice;
-	}
-
 	private void lootReceivedChatMessage(final Collection<ItemStack> items, final String name)
 	{
+		long totalPrice = items.stream()
+			.mapToLong(is -> (long) itemManager.getItemPrice(is.getId()) * is.getQuantity())
+			.sum();
+
 		final String message = new ChatMessageBuilder()
 			.append(ChatColorType.HIGHLIGHT)
 			.append("You've killed ")
 			.append(name)
 			.append(" for ")
-			.append(QuantityFormatter.quantityToStackSize(getTotalPrice(items)))
+			.append(QuantityFormatter.quantityToStackSize(totalPrice))
 			.append(" loot.")
 			.build();
 
