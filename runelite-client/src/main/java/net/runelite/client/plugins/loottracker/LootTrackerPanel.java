@@ -95,17 +95,18 @@ class LootTrackerPanel extends PluginPanel
 	// When there is no loot, display this
 	private final PluginErrorPanel errorPanel = new PluginErrorPanel();
 
+	// When there is loot, display this. This contains the actions, overall, and log panel.
+	private final JPanel layoutPanel = new JPanel();
+
 	// Handle loot boxes
 	private final JPanel logsContainer = new JPanel();
 
 	// Handle overall session data
-	private final JPanel overallPanel = new JPanel();
 	private final JLabel overallKillsLabel = new JLabel();
 	private final JLabel overallGpLabel = new JLabel();
 	private final JLabel overallIcon = new JLabel();
 
 	// Details and navigation
-	private final JPanel actionsContainer = new JPanel();
 	private final JLabel detailsTitle = new JLabel();
 	private final JButton backBtn = new JButton();
 	private final JToggleButton viewHiddenBtn = new JToggleButton();
@@ -171,15 +172,36 @@ class LootTrackerPanel extends PluginPanel
 		setLayout(new BorderLayout());
 
 		// Create layout panel for wrapping
-		final JPanel layoutPanel = new JPanel();
 		layoutPanel.setLayout(new BoxLayout(layoutPanel, BoxLayout.Y_AXIS));
+		layoutPanel.setVisible(false);
 		add(layoutPanel, BorderLayout.NORTH);
 
+		final JPanel actionsPanel = buildActionsPanel();
+		final JPanel overallPanel = buildOverallPanel();
+
+		// Create loot boxes wrapper
+		logsContainer.setLayout(new BoxLayout(logsContainer, BoxLayout.Y_AXIS));
+		layoutPanel.add(actionsPanel);
+		layoutPanel.add(overallPanel);
+		layoutPanel.add(logsContainer);
+
+		// Add error pane
+		errorPanel.setContent("Loot tracker", "You have not received any loot yet.");
+		add(errorPanel);
+	}
+
+	/**
+	 * The actions panel includes the back/title label for the current view,
+	 * as well as the view controls panel which includes hidden, single/grouped, and
+	 * collapse buttons.
+	 */
+	private JPanel buildActionsPanel()
+	{
+		final JPanel actionsContainer = new JPanel();
 		actionsContainer.setLayout(new BorderLayout());
 		actionsContainer.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		actionsContainer.setPreferredSize(new Dimension(0, 30));
 		actionsContainer.setBorder(new EmptyBorder(5, 5, 5, 10));
-		actionsContainer.setVisible(false);
 
 		final JPanel viewControls = new JPanel(new GridLayout(1, 3, 10, 0));
 		viewControls.setBackground(ColorScheme.DARKER_GRAY_COLOR);
@@ -252,14 +274,19 @@ class LootTrackerPanel extends PluginPanel
 		actionsContainer.add(viewControls, BorderLayout.EAST);
 		actionsContainer.add(leftTitleContainer, BorderLayout.WEST);
 
+		return actionsContainer;
+	}
+
+	private JPanel buildOverallPanel()
+	{
 		// Create panel that will contain overall data
+		final JPanel overallPanel = new JPanel();
 		overallPanel.setBorder(BorderFactory.createCompoundBorder(
 			BorderFactory.createMatteBorder(5, 0, 0, 0, ColorScheme.DARK_GRAY_COLOR),
 			BorderFactory.createEmptyBorder(8, 10, 8, 10)
 		));
 		overallPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		overallPanel.setLayout(new BorderLayout());
-		overallPanel.setVisible(false);
 
 		// Add icon and contents
 		final JPanel overallInfo = new JPanel();
@@ -310,15 +337,7 @@ class LootTrackerPanel extends PluginPanel
 		popupMenu.add(reset);
 		overallPanel.setComponentPopupMenu(popupMenu);
 
-		// Create loot boxes wrapper
-		logsContainer.setLayout(new BoxLayout(logsContainer, BoxLayout.Y_AXIS));
-		layoutPanel.add(actionsContainer);
-		layoutPanel.add(overallPanel);
-		layoutPanel.add(logsContainer);
-
-		// Add error pane
-		errorPanel.setContent("Loot tracker", "You have not received any loot yet.");
-		add(errorPanel);
+		return overallPanel;
 	}
 
 	void updateCollapseText()
@@ -511,8 +530,7 @@ class LootTrackerPanel extends PluginPanel
 
 		// Show main view
 		remove(errorPanel);
-		actionsContainer.setVisible(true);
-		overallPanel.setVisible(true);
+		layoutPanel.setVisible(true);
 
 		// Create box
 		final LootTrackerBox box = new LootTrackerBox(itemManager, record.getTitle(), record.getType(), record.getSubTitle(),
@@ -555,7 +573,7 @@ class LootTrackerPanel extends PluginPanel
 		{
 			final LootTrackerClient client = plugin.getLootTrackerClient();
 			final boolean syncLoot = client.getUuid() != null && config.syncPanel();
-			final int result = JOptionPane.showOptionDialog(overallPanel,
+			final int result = JOptionPane.showOptionDialog(box,
 				syncLoot ? SYNC_RESET_ALL_WARNING_TEXT : NO_SYNC_RESET_ALL_WARNING_TEXT,
 				"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
 				null, new String[]{"Yes", "No"}, "No");
