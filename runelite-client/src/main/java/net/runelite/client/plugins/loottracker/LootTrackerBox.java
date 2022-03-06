@@ -316,6 +316,7 @@ class LootTrackerBox extends JPanel
 		itemContainer.removeAll();
 		itemContainer.setLayout(new GridLayout(rowSize, ITEMS_PER_ROW, 1, 1));
 
+		final EmptyBorder emptyBorder = new EmptyBorder(5, 5, 5, 5);
 		for (int i = 0; i < rowSize * ITEMS_PER_ROW; i++)
 		{
 			final JPanel slotContainer = new JPanel();
@@ -350,7 +351,7 @@ class LootTrackerBox extends JPanel
 
 				// Create popup menu
 				final JPopupMenu popupMenu = new JPopupMenu();
-				popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
+				popupMenu.setBorder(emptyBorder);
 				slotContainer.setComponentPopupMenu(popupMenu);
 
 				final JMenuItem toggle = new JMenuItem("Toggle item");
