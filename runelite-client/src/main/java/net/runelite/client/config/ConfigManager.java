@@ -564,6 +564,8 @@ public class ConfigManager
 			RuneScapeProfile prof = findRSProfile(getRSProfiles(), username, RuneScapeProfileType.getCurrent(client), displayName, true);
 			rsProfileKey = prof.getKey();
 			this.rsProfileKey = rsProfileKey;
+
+			eventBus.post(new RuneScapeProfileChanged());
 		}
 		setConfiguration(groupName, rsProfileKey, key, value);
 	}
