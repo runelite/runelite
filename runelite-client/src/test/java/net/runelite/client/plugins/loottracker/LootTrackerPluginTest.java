@@ -55,6 +55,7 @@ import net.runelite.api.widgets.WidgetID;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemStack;
 import net.runelite.client.game.SpriteManager;
@@ -138,6 +139,10 @@ public class LootTrackerPluginTest
 	@Mock
 	@Bind
 	private LootTrackerClient lootTrackerClient;
+
+	@Mock
+	@Bind
+	private ConfigManager configManager;
 
 	@Before
 	public void setUp()

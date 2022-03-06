@@ -58,6 +58,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -410,7 +411,27 @@ public class ConfigManager
 
 	public List<String> getConfigurationKeys(String prefix)
 	{
-		return properties.keySet().stream().filter(v -> ((String) v).startsWith(prefix)).map(String.class::cast).collect(Collectors.toList());
+		return properties.keySet().stream()
+			.map(String.class::cast)
+			.filter(k -> k.startsWith(prefix))
+			.collect(Collectors.toList());
+	}
+
+	public List<String> getRSProfileConfigurationKeys(String group, String profile, String keyPrefix)
+	{
+		if (profile == null)
+		{
+			return Collections.emptyList();
+		}
+
+		assert profile.startsWith(RSPROFILE_GROUP);
+
+		String prefix = group + "." + profile + "." + keyPrefix;
+		return properties.keySet().stream()
+			.map(String.class::cast)
+			.filter(k -> k.startsWith(prefix))
+			.map(k -> splitKey(k)[KEY_SPLITTER_KEY])
+			.collect(Collectors.toList());
 	}
 
 	public static String getWholeKey(String groupName, String profile, String key)

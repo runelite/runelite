@@ -30,9 +30,11 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
 
-@ConfigGroup("loottracker")
+@ConfigGroup(LootTrackerConfig.GROUP)
 public interface LootTrackerConfig extends Config
 {
+	String GROUP = "loottracker";
+
 	@ConfigSection(
 		name = "Ignored Entries",
 		description = "The Ignore items and Ignore groups options",
@@ -77,28 +79,6 @@ public interface LootTrackerConfig extends Config
 	default boolean showPriceType()
 	{
 		return false;
-	}
-
-	@ConfigItem(
-		keyName = "saveLoot",
-		name = "Submit loot tracker data",
-		description = "Submit loot tracker data"
-	)
-	default boolean saveLoot()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "syncPanel",
-		name = "Synchronize panel contents",
-		description = "Synchronize your local loot tracker with your server data (requires being signed in).<br/>" +
-			" This means the panel is filled with portions of your remote data on startup<br/>" +
-			" and deleting data in the panel also deletes it on the server."
-	)
-	default boolean syncPanel()
-	{
-		return true;
 	}
 
 	@ConfigItem(
