@@ -54,6 +54,11 @@ public interface TileObject
 	int getY();
 
 	/**
+	 * Gets the vertical coordinate of this object
+	 */
+	int getZ();
+
+	/**
 	 * Gets the plane of the tile that the object is on.
 	 */
 	int getPlane();

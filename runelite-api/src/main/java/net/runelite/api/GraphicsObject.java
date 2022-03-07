@@ -60,11 +60,9 @@ public interface GraphicsObject extends Renderable
 	int getLevel();
 
 	/**
-	 * Gets the height of the graphic.
-	 *
-	 * @return the height
+	 * Gets the z coordinate
 	 */
-	int getHeight();
+	int getZ();
 
 	/**
 	 * Checks if this spotanim is done animating
