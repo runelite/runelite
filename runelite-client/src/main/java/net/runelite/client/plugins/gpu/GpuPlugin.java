@@ -1293,7 +1293,11 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			gl.glUniform1f(uniSmoothBanding, config.smoothBanding() ? 0f : 1f);
 			gl.glUniform1i(uniColorBlindMode, config.colorBlindMode().ordinal());
 			gl.glUniform1f(uniTextureLightMode, config.brightTextures() ? 1f : 0f);
-			gl.glUniform1i(uniTick, client.getGameCycle());
+			if (gameState == GameState.LOGGED_IN)
+			{
+				// avoid textures animating during loading
+				gl.glUniform1i(uniTick, client.getGameCycle());
+			}
 
 			// Calculate projection matrix
 			Matrix4 projectionMatrix = new Matrix4();
