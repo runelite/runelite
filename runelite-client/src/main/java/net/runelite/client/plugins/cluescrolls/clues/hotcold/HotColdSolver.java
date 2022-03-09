@@ -93,19 +93,19 @@ public class HotColdSolver
 			switch (temperatureChange)
 			{
 				case COLDER:
-					// eliminate spots that are warmer
+					// eliminate spots that are warmer or same temperature
 					possibleLocations.removeIf(location ->
 					{
 						final WorldPoint locationPoint = location.getWorldPoint();
-						return locationPoint.distanceTo2D(worldPoint) < locationPoint.distanceTo2D(lastWorldPoint);
+						return locationPoint.distanceTo2D(worldPoint) <= locationPoint.distanceTo2D(lastWorldPoint);
 					});
 					break;
 				case WARMER:
-					// eliminate spots that are colder
+					// eliminate spots that are colder or same temperature
 					possibleLocations.removeIf(location ->
 					{
 						final WorldPoint locationPoint = location.getWorldPoint();
-						return locationPoint.distanceTo2D(worldPoint) > locationPoint.distanceTo2D(lastWorldPoint);
+						return locationPoint.distanceTo2D(worldPoint) >= locationPoint.distanceTo2D(lastWorldPoint);
 					});
 					break;
 				case SAME:
