@@ -70,6 +70,16 @@ public interface GroundMarkerConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "drawOnWorldmap",
+		name = "Draw tiles on world map",
+		description = "Configures whether marked tiles should be drawn on world map"
+	)
+	default boolean drawTileOnWorldmap()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = SHOW_IMPORT_EXPORT_KEY_NAME,
 		name = "Show Import/Export options",
 		description = "Show the Import/Export options on the minimap right-click menu"

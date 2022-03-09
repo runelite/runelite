@@ -297,7 +297,7 @@ public class WorldMapOverlay extends Overlay
 	 * @return              An {@link Area} representing <code>baseRectangle</code>, with the area
 	 *                      of visible widgets overlaying the world map clipped from it.
 	 */
-	private Area getWorldMapClipArea(Rectangle baseRectangle)
+	public Area getWorldMapClipArea(Rectangle baseRectangle)
 	{
 		final Widget overview = client.getWidget(WidgetInfo.WORLD_MAP_OVERVIEW_MAP);
 		final Widget surfaceSelector = client.getWidget(WidgetInfo.WORLD_MAP_SURFACE_SELECTOR);
