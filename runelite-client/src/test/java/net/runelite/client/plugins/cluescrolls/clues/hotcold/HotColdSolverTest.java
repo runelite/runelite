@@ -177,6 +177,33 @@ public class HotColdSolverTest
 			Sets.immutableEnumSet(HotColdLocation.ZEAH_SULPHR_MINE));
 	}
 
+	@Test
+	public void testBeginnerCowFieldNarrowing()
+	{
+		// Start with Cow field north of Lumbridge and Northeast of Al Kharid mine locations remaining
+		final Set<HotColdLocation> startingLocations = EnumSet.of(
+			HotColdLocation.LUMBRIDGE_COW_FIELD,
+			HotColdLocation.NORTHEAST_OF_AL_KHARID_MINE
+		);
+		HotColdSolver solver = new HotColdSolver(startingLocations);
+
+		assertEquals(startingLocations, solver.signal(new WorldPoint(3313, 3208, 0), HotColdTemperature.WARM, null));
+		assertEquals(Sets.immutableEnumSet(HotColdLocation.LUMBRIDGE_COW_FIELD), solver.signal(new WorldPoint(3312, 3208, 0), HotColdTemperature.WARM, HotColdTemperatureChange.WARMER));
+	}
+
+	@Test
+	public void testBeginnerDraynorWheatFieldNarrowing()
+	{
+		// Start with Wheat field next to Draynor Village and Atop Ice Mountain locations remaining
+		final Set<HotColdLocation> startingLocations = EnumSet.of(
+			HotColdLocation.DRAYNOR_WHEAT_FIELD,
+			HotColdLocation.ICE_MOUNTAIN
+		);
+		HotColdSolver solver = new HotColdSolver(startingLocations);
+
+		assertEquals(startingLocations, solver.signal(new WorldPoint(3148, 3415, 0), HotColdTemperature.WARM, null));
+		assertEquals(Sets.immutableEnumSet(HotColdLocation.DRAYNOR_WHEAT_FIELD), solver.signal(new WorldPoint(3148, 3416, 0), HotColdTemperature.WARM, HotColdTemperatureChange.COLDER));
+	}
 
 	/**
 	 * Tests a hot-cold solver by signalling a test point, temperature, and temperature change to it and asserting the
