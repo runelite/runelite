@@ -3436,5 +3436,15 @@
       "z1": 2,
       "z2": 2
     }
+  ],
+  "10292": [ // North & North of East Ardougne (south of Fishing Guild)
+    {
+      "rx1": 19,
+      "ry1": 16,
+      "rx2": 24,
+      "ry2": 20,
+      "z1": 0,
+      "z2": 0
+    }
   ]
 }
