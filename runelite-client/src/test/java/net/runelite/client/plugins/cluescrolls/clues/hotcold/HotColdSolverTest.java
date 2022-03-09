@@ -25,16 +25,11 @@
 package net.runelite.client.plugins.cluescrolls.clues.hotcold;
 
 import com.google.common.collect.Sets;
-import java.awt.Rectangle;
 import java.util.EnumSet;
 import java.util.Set;
 import java.util.stream.Collectors;
-import static junit.framework.TestCase.assertTrue;
 import net.runelite.api.coords.WorldPoint;
-import static net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdSolver.isFirstPointCloser;
-import static net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdSolver.isFirstPointCloserRect;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 
@@ -182,34 +177,6 @@ public class HotColdSolverTest
 			Sets.immutableEnumSet(HotColdLocation.ZEAH_SULPHR_MINE));
 	}
 
-	@Test
-	public void testIsFirstPointCloserRect()
-	{
-		assertFalse(isFirstPointCloserRect(new WorldPoint(0, 0, 0), new WorldPoint(0, 0, 0), new Rectangle(0, 0, 1, 1)));
-		assertFalse(isFirstPointCloserRect(new WorldPoint(1, 0, 0), new WorldPoint(5, 0, 0), new Rectangle(2, 1, 5, 5)));
-		assertFalse(isFirstPointCloserRect(new WorldPoint(1, 0, 0), new WorldPoint(0, 0, 0), new Rectangle(2, 0, 1, 2)));
-		assertFalse(isFirstPointCloserRect(new WorldPoint(0, 0, 0), new WorldPoint(1, 1, 1), new Rectangle(2, 2, 2, 2)));
-		assertFalse(isFirstPointCloserRect(new WorldPoint(0, 0, 0), new WorldPoint(4, 4, 4), new Rectangle(1, 1, 2, 2)));
-		assertFalse(isFirstPointCloserRect(new WorldPoint(3, 2, 0), new WorldPoint(1, 5, 0), new Rectangle(0, 0, 4, 4)));
-
-		assertTrue(isFirstPointCloserRect(new WorldPoint(1, 1, 0), new WorldPoint(0, 1, 0), new Rectangle(2, 0, 3, 2)));
-		assertTrue(isFirstPointCloserRect(new WorldPoint(4, 4, 0), new WorldPoint(1, 1, 0), new Rectangle(3, 3, 2, 2)));
-		assertTrue(isFirstPointCloserRect(new WorldPoint(3, 2, 0), new WorldPoint(7, 0, 0), new Rectangle(1, 3, 4, 2)));
-
-	}
-
-	@Test
-	public void testIsFirstPointCloser()
-	{
-		assertFalse(isFirstPointCloser(new WorldPoint(0, 0, 0), new WorldPoint(0, 0, 0), new WorldPoint(0, 0, 0)));
-		assertFalse(isFirstPointCloser(new WorldPoint(0, 0, 0), new WorldPoint(0, 0, 1), new WorldPoint(0, 0, 0)));
-		assertFalse(isFirstPointCloser(new WorldPoint(1, 0, 0), new WorldPoint(0, 0, 0), new WorldPoint(1, 1, 0)));
-		assertFalse(isFirstPointCloser(new WorldPoint(2, 2, 0), new WorldPoint(0, 0, 0), new WorldPoint(1, 1, 0)));
-
-		assertTrue(isFirstPointCloser(new WorldPoint(1, 0, 0), new WorldPoint(0, 0, 0), new WorldPoint(2, 0, 0)));
-		assertTrue(isFirstPointCloser(new WorldPoint(1, 1, 0), new WorldPoint(1, 0, 0), new WorldPoint(2, 2, 0)));
-		assertTrue(isFirstPointCloser(new WorldPoint(1, 1, 1), new WorldPoint(0, 1, 0), new WorldPoint(1, 1, 0)));
-	}
 
 	/**
 	 * Tests a hot-cold solver by signalling a test point, temperature, and temperature change to it and asserting the
