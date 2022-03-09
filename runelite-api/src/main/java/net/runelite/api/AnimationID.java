@@ -133,6 +133,7 @@ public final class AnimationID
 	public static final int FISHING_PEARL_FLY_ROD_2 = 8192;
 	public static final int FISHING_PEARL_BARBARIAN_ROD_2 = 8193;
 	public static final int FISHING_PEARL_OILY_ROD = 6932;
+	public static final int FISHING_BARBARIAN_ROD = 9350;
 	public static final int MINING_BRONZE_PICKAXE = 625;
 	public static final int MINING_IRON_PICKAXE = 626;
 	public static final int MINING_STEEL_PICKAXE = 627;
