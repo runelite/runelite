@@ -264,14 +264,14 @@ public class BankPlugin extends Plugin
 	{
 		if (event.getScriptId() == ScriptID.BANKMAIN_BUILD)
 		{
-			Price price = getContainerGEandAlchPrice(WidgetInfo.BANK_ITEM_CONTAINER, InventoryID.BANK);
+			ContainerPrices price = getContainerGEandAlchPrice(WidgetInfo.BANK_ITEM_CONTAINER, InventoryID.BANK);
 			if (price == null)
 			{
 				return;
 			}
 
 			Widget bankTitle = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
-			bankTitle.setText(bankTitle.getText() + createValueText(price.getGePrice(), price.getHaPrice()));
+			bankTitle.setText(bankTitle.getText() + createValueText(price.getGePrice(), price.getHighAlchPrice()));
 		}
 		else if (event.getScriptId() == ScriptID.BANKMAIN_SEARCH_REFRESH)
 		{
@@ -286,14 +286,14 @@ public class BankPlugin extends Plugin
 		}
 		else if (event.getScriptId() == ScriptID.GROUP_STORAGE_ITEM_CONTAINER)
 		{
-			Price price = getContainerGEandAlchPrice(WidgetInfo.GROUP_STORAGE_ITEM_CONTAINER, InventoryID.GROUP_STORAGE);
+			ContainerPrices price = getContainerGEandAlchPrice(WidgetInfo.GROUP_STORAGE_ITEM_CONTAINER, InventoryID.GROUP_STORAGE);
 			if (price == null)
 			{
 				return;
 			}
 
 			Widget bankTitle = client.getWidget(WidgetInfo.GROUP_STORAGE_TITLE_BAR).getChild(1);
-			bankTitle.setText(bankTitle.getText() + createValueText(price.getGePrice(), price.getHaPrice()));
+			bankTitle.setText(bankTitle.getText() + createValueText(price.getGePrice(), price.getHighAlchPrice()));
 		}
 	}
 
@@ -531,12 +531,12 @@ public class BankPlugin extends Plugin
 		}
 	}
 
-	private Price getContainerGEandAlchPrice(WidgetInfo widgetInfo, InventoryID inventoryID)
+	private ContainerPrices getContainerGEandAlchPrice(WidgetInfo widgetInfo, InventoryID inventoryID)
 	{
 		final Widget bankItemContainer = client.getWidget(widgetInfo);
 		final ItemContainer bankContainer = client.getItemContainer(inventoryID);
 		final Widget[] children = bankItemContainer.getChildren();
-		Price price = null;
+		ContainerPrices prices = null;
 
 		if (bankContainer != null && children != null)
 		{
@@ -556,9 +556,9 @@ public class BankPlugin extends Plugin
 				}
 			}
 
-			price = new Price(geTotal, haTotal);
+			prices = new ContainerPrices(geTotal, haTotal);
 		}
 
-		return price;
+		return prices;
 	}
 }
