@@ -89,4 +89,10 @@ public class BoostIndicator extends InfoBox
 	{
 		return config.displayInfoboxes() && plugin.canShowBoosts() && plugin.getSkillsToDisplay().contains(getSkill());
 	}
+
+	@Override
+	public String getName()
+	{
+		return "Boost " + skill.getName();
+	}
 }

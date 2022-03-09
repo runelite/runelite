@@ -182,7 +182,7 @@ public class QuantityFormatter
 	}
 
 	/**
-	 * Calculates, given a string with a value denominator (ex. 20K)
+	 * Calculates, given a string with a value denominator (for example, 20K)
 	 * the multiplier that the denominator represents (in this case 1000).
 	 *
 	 * @param string The string to check.

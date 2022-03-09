@@ -33,6 +33,7 @@ import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
+import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
@@ -89,6 +90,7 @@ public class NightmareZonePlugin extends Plugin
 		overlayManager.add(overlay);
 		overlay.removeAbsorptionCounter();
 
+		absorptionNotificationSend = true;
 		overloadNotificationSend = false;
 	}
 
@@ -121,6 +123,21 @@ public class NightmareZonePlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onBeforeRender(BeforeRender beforeRender)
+	{
+		if (!isInNightmareZone() || !config.moveOverlay())
+		{
+			return;
+		}
+
+		Widget nmzWidget = client.getWidget(WidgetInfo.NIGHTMARE_ZONE);
+		if (nmzWidget != null)
+		{
+			nmzWidget.setHidden(true);
+		}
+	}
+
+	@Subscribe
 	public void onGameTick(GameTick event)
 	{
 		if (!isInNightmareZone())
@@ -134,6 +151,8 @@ public class NightmareZonePlugin extends Plugin
 			{
 				resetPointsPerHour();
 			}
+
+			overloadNotificationSend = false;
 
 			return;
 		}

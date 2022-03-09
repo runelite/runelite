@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2021, Jonathan Rousseau <https://github.com/JoRouss>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,10 +25,14 @@
  */
 package net.runelite.client.ws;
 
+import com.google.common.base.Charsets;
+import com.google.common.hash.Hashing;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.Getter;
@@ -41,6 +46,8 @@ import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.PartyChanged;
+import net.runelite.client.util.Text;
+import net.runelite.client.events.PartyMemberAvatar;
 import static net.runelite.client.util.Text.JAGEX_PRINTABLE_CHAR_MATCHER;
 import net.runelite.http.api.ws.messages.party.Join;
 import net.runelite.http.api.ws.messages.party.Part;
@@ -55,6 +62,7 @@ public class PartyService
 {
 	public static final int PARTY_MAX = 15;
 	private static final int MAX_MESSAGE_LEN = 150;
+	private static final int MAX_USERNAME_LEN = 32; // same as Discord
 
 	private final WSClient wsClient;
 	private final SessionManager sessionManager;
@@ -66,7 +74,10 @@ public class PartyService
 	private UUID localPartyId = UUID.randomUUID();
 
 	@Getter
-	private UUID partyId = localPartyId;
+	private UUID publicPartyId; // public party id, for advertising on discord, derived from the secret
+
+	@Getter
+	private UUID partyId; // secret party id
 
 	@Setter
 	private String username;
@@ -78,10 +89,17 @@ public class PartyService
 		this.sessionManager = sessionManager;
 		this.eventBus = eventBus;
 		this.chat = chat;
+		eventBus.register(this);
 	}
 
-	public void changeParty(UUID newParty)
+	public void changeParty(@Nullable UUID newParty)
 	{
+		if (username == null)
+		{
+			log.warn("Tried to join a party with no username");
+			return;
+		}
+
 		if (wsClient.sessionExists())
 		{
 			wsClient.send(new Part());
@@ -90,11 +108,12 @@ public class PartyService
 		log.debug("Party change to {}", newParty);
 		members.clear();
 		partyId = newParty;
+		// The public party ID needs to be consistent across party members, but not a secret
+		publicPartyId = newParty != null ? UUID.nameUUIDFromBytes(Hashing.sha256().hashString(newParty.toString(), Charsets.UTF_8).asBytes()) : null;
 
 		if (partyId == null)
 		{
 			localPartyId = UUID.randomUUID(); // cycle local party id so that a new party is created now
-			partyId = localPartyId;
 
 			// close the websocket if the session id isn't for an account
 			if (sessionManager.getAccountSession() == null)
@@ -119,7 +138,7 @@ public class PartyService
 		wsClient.send(new Join(partyId, username));
 	}
 
-	@Subscribe
+	@Subscribe(priority = 1) // run prior to plugins so that the member is joined by the time the plugins see it.
 	public void onUserJoin(final UserJoin message)
 	{
 		if (!partyId.equals(message.getPartyId()))
@@ -129,7 +148,7 @@ public class PartyService
 			return;
 		}
 
-		final PartyMember partyMember = new PartyMember(message.getMemberId(), message.getName());
+		final PartyMember partyMember = new PartyMember(message.getMemberId(), cleanUsername(message.getName()));
 		members.add(partyMember);
 
 		final PartyMember localMember = getLocalMember();
@@ -143,7 +162,7 @@ public class PartyService
 		}
 	}
 
-	@Subscribe
+	@Subscribe(priority = 1) // run prior to plugins so that the member is removed by the time the plugins see it.
 	public void onUserPart(final UserPart message)
 	{
 		members.removeIf(member -> member.getMemberId().equals(message.getMemberId()));
@@ -206,8 +225,34 @@ public class PartyService
 		return Collections.unmodifiableList(members);
 	}
 
-	public boolean isOwner()
+	public boolean isInParty()
 	{
-		return partyId == null || localPartyId.equals(partyId);
+		return partyId != null;
+	}
+
+	public boolean isPartyOwner()
+	{
+		return localPartyId.equals(partyId);
+	}
+
+	public void setPartyMemberAvatar(UUID memberID, BufferedImage image)
+	{
+		final PartyMember memberById = getMemberById(memberID);
+
+		if (memberById != null)
+		{
+			memberById.setAvatar(image);
+			eventBus.post(new PartyMemberAvatar(memberID, image));
+		}
+	}
+
+	private static String cleanUsername(String username)
+	{
+		String s = Text.removeTags(JAGEX_PRINTABLE_CHAR_MATCHER.retainFrom(username));
+		if (s.length() >= MAX_USERNAME_LEN)
+		{
+			s = s.substring(0, MAX_USERNAME_LEN);
+		}
+		return s;
 	}
 }

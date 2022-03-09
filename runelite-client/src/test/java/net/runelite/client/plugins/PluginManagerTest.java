@@ -24,11 +24,12 @@
  */
 package net.runelite.client.plugins;
 
+import com.google.common.graph.GraphBuilder;
+import com.google.common.graph.MutableGraph;
 import com.google.common.reflect.ClassPath;
 import com.google.common.reflect.ClassPath.ClassInfo;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.google.inject.Module;
 import com.google.inject.grapher.graphviz.GraphvizGrapher;
 import com.google.inject.grapher.graphviz.GraphvizModule;
 import com.google.inject.testing.fieldbinder.Bind;
@@ -39,7 +40,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -54,6 +54,7 @@ import net.runelite.client.eventbus.EventBus;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -92,7 +93,7 @@ public class PluginManagerTest
 			.thenThrow(new RuntimeException("in plugin manager test"));
 
 		Injector injector = Guice.createInjector(Modules
-			.override(new RuneLiteModule(okHttpClient, () -> null, true, false,
+			.override(new RuneLiteModule(okHttpClient, () -> null, () -> null, true, false,
 				RuneLite.DEFAULT_SESSION_FILE,
 				RuneLite.DEFAULT_CONFIG_FILE))
 			.with(BoundFieldModule.of(this)));
@@ -123,7 +124,7 @@ public class PluginManagerTest
 	@Test
 	public void testLoadPlugins() throws Exception
 	{
-		PluginManager pluginManager = new PluginManager(false, false, null, null, null, null, null);
+		PluginManager pluginManager = new PluginManager(false, false, null, null, null, null);
 		pluginManager.setOutdated(true);
 		pluginManager.loadCorePlugins();
 		Collection<Plugin> plugins = pluginManager.getPlugins();
@@ -134,7 +135,7 @@ public class PluginManagerTest
 			.count();
 		assertEquals(expected, plugins.size());
 
-		pluginManager = new PluginManager(false, false, null, null, null, null, null);
+		pluginManager = new PluginManager(false, false, null, null, null, null);
 		pluginManager.loadCorePlugins();
 		plugins = pluginManager.getPlugins();
 
@@ -153,24 +154,28 @@ public class PluginManagerTest
 	@Test
 	public void dumpGraph() throws Exception
 	{
-		List<Module> modules = new ArrayList<>();
-		modules.add(new GraphvizModule());
-		modules.add(new RuneLiteModule(mock(OkHttpClient.class), () -> null, true, false,
-			RuneLite.DEFAULT_SESSION_FILE,
-			RuneLite.DEFAULT_CONFIG_FILE));
-
-		PluginManager pluginManager = new PluginManager(true, false, null, null, null, null, null);
+		PluginManager pluginManager = new PluginManager(true, false, null, null, null, null);
 		pluginManager.loadCorePlugins();
-		modules.addAll(pluginManager.getPlugins());
 
-		File file = folder.newFile();
-		try (PrintWriter out = new PrintWriter(file, "UTF-8"))
+		Injector graphvizInjector = Guice.createInjector(new GraphvizModule());
+		GraphvizGrapher graphvizGrapher = graphvizInjector.getInstance(GraphvizGrapher.class);
+
+		File dotFolder = folder.newFolder();
+		try (PrintWriter out = new PrintWriter(new File(dotFolder, "runelite.dot"), "UTF-8"))
 		{
-			Injector injector = Guice.createInjector(modules);
-			GraphvizGrapher grapher = injector.getInstance(GraphvizGrapher.class);
-			grapher.setOut(out);
-			grapher.setRankdir("TB");
-			grapher.graph(injector);
+			graphvizGrapher.setOut(out);
+			graphvizGrapher.setRankdir("TB");
+			graphvizGrapher.graph(RuneLite.getInjector());
+		}
+
+		for (Plugin p : pluginManager.getPlugins())
+		{
+			try (PrintWriter out = new PrintWriter(new File(dotFolder, p.getName() + ".dot"), "UTF-8"))
+			{
+				graphvizGrapher.setOut(out);
+				graphvizGrapher.setRankdir("TB");
+				graphvizGrapher.graph(p.getInjector());
+			}
 		}
 	}
 
@@ -207,4 +212,23 @@ public class PluginManagerTest
 		}
 	}
 
+	@Test
+	public void testTopologicalSort()
+	{
+		MutableGraph<Integer> graph = GraphBuilder
+			.directed()
+			.build();
+
+		graph.addNode(1);
+		graph.addNode(2);
+		graph.addNode(3);
+
+		graph.putEdge(1, 2);
+		graph.putEdge(1, 3);
+
+		List<Integer> sorted = PluginManager.topologicalSort(graph);
+
+		assertTrue(sorted.indexOf(1) < sorted.indexOf(2));
+		assertTrue(sorted.indexOf(1) < sorted.indexOf(3));
+	}
 }

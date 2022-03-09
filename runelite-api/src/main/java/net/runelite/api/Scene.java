@@ -38,4 +38,46 @@ public interface Scene
 
 	int getDrawDistance();
 	void setDrawDistance(int drawDistance);
+
+	/**
+	 * Get the minimum scene level which will be rendered
+	 *
+	 * @return the plane of the minimum level
+	 */
+	int getMinLevel();
+
+	/**
+	 * Set the minimum scene level which will be rendered
+	 *
+	 * @param minLevel the plane of the minimum level
+	 */
+	void setMinLevel(int minLevel);
+
+	/**
+	 * Remove a game object from the scene
+	 * @param gameObject
+	 */
+	void removeGameObject(GameObject gameObject);
+
+	void generateHouses();
+
+	void setRoofRemovalMode(int flags);
+
+	/**
+	 * Get the underlay ids for the scene. The value stored is id + 1, with 0 for no underlay.
+	 * @return
+	 */
+	byte[][][] getUnderlayIds();
+
+	/**
+	 * Get the overlay ids for the scene. The value stored is id + 1, with 0 for no overlay.
+	 * @return
+	 */
+	byte[][][] getOverlayIds();
+
+	/**
+	 * Get the shapes of the tiles for the scene.
+	 * @return
+	 */
+	byte[][][] getTileShapes();
 }

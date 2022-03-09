@@ -187,10 +187,6 @@ public enum MenuAction
 	 */
 	ITEM_FIFTH_OPTION(37),
 	/**
-	 * Menu action to drop an item (identical to ITEM_FIFTH_OPTION).
-	 */
-	ITEM_DROP(37),
-	/**
 	 * Menu action to use an item.
 	 */
 	ITEM_USE(38),
@@ -234,6 +230,11 @@ public enum MenuAction
 	 * Casting a spell / op target on a widget
 	 */
 	SPELL_CAST_ON_WIDGET(58),
+
+	/**
+	 * Menu action for high priority runelite options
+	 */
+	RUNELITE_HIGH_PRIORITY(999),
 
 	/**
 	 * Menu action triggered by examining an object.

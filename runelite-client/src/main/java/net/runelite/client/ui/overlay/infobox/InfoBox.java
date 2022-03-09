@@ -81,4 +81,11 @@ public abstract class InfoBox
 	{
 		return false;
 	}
+
+	public String getName()
+	{
+		// Use a combination of plugin name and infobox implementation name to try and make each infobox as unique
+		// as possible by default
+		return plugin.getClass().getSimpleName() + "_" + getClass().getSimpleName();
+	}
 }

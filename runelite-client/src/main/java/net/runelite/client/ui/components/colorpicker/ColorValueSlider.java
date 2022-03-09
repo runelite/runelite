@@ -98,7 +98,7 @@ public class ColorValueSlider extends JPanel
 		super.paint(g);
 
 		g.setColor(TRACK_COLOR);
-		g.fillRect(0, this.getHeight() / 2 - 2, this.getWidth() - KNOB_WIDTH, 5);
+		g.fillRect(0, this.getHeight() / 2 - 2, ColorUtil.MAX_RGB_VALUE + KNOB_WIDTH * 2, 5);
 
 		g.setColor(KNOB_COLOR);
 		g.fillRect(value - KNOB_WIDTH / 2, this.getHeight() / 2 - KNOB_HEIGHT / 2, KNOB_WIDTH, KNOB_HEIGHT);

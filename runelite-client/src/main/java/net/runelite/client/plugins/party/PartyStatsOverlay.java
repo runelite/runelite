@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2019, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2021, Jonathan Rousseau <https://github.com/JoRouss>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -68,11 +69,6 @@ public class PartyStatsOverlay extends OverlayPanel
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.stats())
-		{
-			return null;
-		}
-
 		final Map<UUID, PartyData> partyDataMap = plugin.getPartyDataMap();
 		if (partyDataMap.isEmpty())
 		{
@@ -81,22 +77,14 @@ public class PartyStatsOverlay extends OverlayPanel
 
 		panelComponent.setBackgroundColor(null);
 
-		boolean only1 = plugin.getPartyDataMap().size() == 1;
-
 		synchronized (plugin.getPartyDataMap())
 		{
 			partyDataMap.forEach((k, v) ->
 			{
-				if (party.getLocalMember() != null && party.getLocalMember().getMemberId().equals(k))
-				{
-					if (only1)
-					{
-						panelComponent.getChildren().add(TitleComponent.builder()
-							.text("No other party members")
-							.color(Color.RED)
-							.build());
-					}
+				boolean isSelf = party.getLocalMember() != null && party.getLocalMember().getMemberId().equals(k);
 
+				if (!v.isShowOverlay() || (!config.includeSelf() && isSelf))
+				{
 					return;
 				}
 
@@ -104,7 +92,7 @@ public class PartyStatsOverlay extends OverlayPanel
 				panel.getChildren().clear();
 
 				final TitleComponent name = TitleComponent.builder()
-					.text(v.getName())
+					.text(v.getCharacterName().isEmpty() ? v.getMember().getName() : v.getCharacterName())
 					.color(config.recolorNames() ? v.getColor() : Color.WHITE)
 					.build();
 

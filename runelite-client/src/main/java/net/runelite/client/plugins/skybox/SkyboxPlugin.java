@@ -25,13 +25,19 @@
 package net.runelite.client.plugins.skybox;
 
 import com.google.inject.Inject;
+import com.google.inject.Provides;
+import java.awt.Color;
 import java.io.IOException;
+import java.io.InputStream;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -47,12 +53,18 @@ public class SkyboxPlugin extends Plugin
 	@Inject
 	private Client client;
 
+	@Inject
+	private SkyboxPluginConfig config;
+
 	private Skybox skybox;
 
 	@Override
 	public void startUp() throws IOException
 	{
-		skybox = new Skybox(SkyboxPlugin.class.getResourceAsStream("skybox.txt"), "skybox.txt");
+		try (InputStream in = SkyboxPlugin.class.getResourceAsStream("skybox.txt"))
+		{
+			skybox = new Skybox(in, "skybox.txt");
+		}
 	}
 
 	@Override
@@ -60,6 +72,12 @@ public class SkyboxPlugin extends Plugin
 	{
 		client.setSkyboxColor(0);
 		skybox = null;
+	}
+
+	@Provides
+	SkyboxPluginConfig provideConfig(ConfigManager configManager)
+	{
+		return configManager.getConfig(SkyboxPluginConfig.class);
 	}
 
 	private int mapChunk(int cx, int cy, int plane)
@@ -91,6 +109,14 @@ public class SkyboxPlugin extends Plugin
 			return;
 		}
 
+		Color overrideColor = WorldPoint.getMirrorPoint(player.getWorldLocation(), true).getY() < Constants.OVERWORLD_MAX_Y
+			? config.customOverworldColor() : config.customOtherColor();
+		if (overrideColor != null)
+		{
+			client.setSkyboxColor(overrideColor.getRGB());
+			return;
+		}
+
 		int px, py;
 		if (client.getOculusOrbState() == 1)
 		{
@@ -99,7 +125,7 @@ public class SkyboxPlugin extends Plugin
 		}
 		else
 		{
-			LocalPoint p = client.getLocalPlayer().getLocalLocation();
+			LocalPoint p = player.getLocalLocation();
 			px = p.getX();
 			py = p.getY();
 		}

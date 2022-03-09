@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.timetracking.farming;
 
+import com.google.inject.Singleton;
 import java.time.Instant;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -47,6 +48,7 @@ import net.runelite.client.plugins.timetracking.TimeTrackingPlugin;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.Text;
 
+@Singleton
 public class FarmingContractManager
 {
 	private static final int GUILDMASTER_JANE_NPC_ID = NullNpcID.NULL_8628;
@@ -57,6 +59,9 @@ public class FarmingContractManager
 
 	@Getter
 	private SummaryState summary = SummaryState.UNKNOWN;
+
+	@Getter
+	private CropState contractCropState;
 
 	@Inject
 	private Client client;
@@ -229,7 +234,10 @@ public class FarmingContractManager
 		PatchImplementation patchImplementation = contract.getPatchImplementation();
 
 		boolean hasEmptyPatch = false;
+		boolean hasDiseasedPatch = false;
+		boolean hasDeadPatch = false;
 		completionTime = Long.MAX_VALUE;
+		contractCropState = null;
 		for (FarmingPatch patch : farmingWorld.getFarmingGuildRegion().getPatches())
 		{
 			if (patch.getImplementation() != patchImplementation)
@@ -244,43 +252,76 @@ public class FarmingContractManager
 			}
 
 			Produce produce = prediction.getProduce();
+			CropState state = prediction.getCropState();
 			if (completionTime == Long.MAX_VALUE)
 			{
 				if (produce == null || produce == Produce.WEEDS)
 				{
-					summary = SummaryState.EMPTY;
+					// Don't report the empty state if there's a dead or diseased one
+					if (!(hasDiseasedPatch || hasDeadPatch))
+					{
+						summary = SummaryState.EMPTY;
+					}
 					hasEmptyPatch = true;
 					continue;
 				}
 
-				if ((contract.requiresHealthCheck() && prediction.getCropState() == CropState.HARVESTABLE)
-					&& !hasEmptyPatch)
+				if ((contract.getPatchImplementation().isHealthCheckRequired() && state == CropState.HARVESTABLE)
+					&& !(hasEmptyPatch || hasDiseasedPatch || hasDeadPatch))
 				{
 					summary = SummaryState.OCCUPIED;
+					// Don't let this run into the "Completed" section!
+					continue;
 				}
 			}
 
-			if (produce != contract)
+			// Herbs always turn into ANYHERB when dead, so let them through.
+			if (produce != contract && produce != Produce.ANYHERB)
 			{
-				if (!hasEmptyPatch && completionTime == Long.MAX_VALUE)
+				if (!(hasEmptyPatch || hasDiseasedPatch || hasDeadPatch) && completionTime == Long.MAX_VALUE)
 				{
 					summary = SummaryState.OCCUPIED;
 				}
 			}
 			else
 			{
-				long estimatedTime = Math.min(prediction.getDoneEstimate(), completionTime);
-
-				if (estimatedTime <= Instant.now().getEpochSecond())
+				// Ignore if crop is dead but there's another one in progress (either normal or diseased)
+				if (state == CropState.DEAD && (hasDiseasedPatch || completionTime != Long.MAX_VALUE))
 				{
-					summary = SummaryState.COMPLETED;
-					completionTime = 0;
-					break;
+					continue;
+				}
+
+				// Ignore if crop is diseased but there's another patch in progress
+				if (state == CropState.DISEASED && completionTime != Long.MAX_VALUE)
+				{
+					continue;
+				}
+
+				contractCropState = state;
+				if (contractCropState == CropState.DISEASED)
+				{
+					hasDiseasedPatch = true;
+					summary = SummaryState.IN_PROGRESS;
+				}
+				else if (contractCropState == CropState.DEAD)
+				{
+					hasDeadPatch = true;
+					summary = SummaryState.IN_PROGRESS;
 				}
 				else
 				{
-					summary = SummaryState.IN_PROGRESS;
-					completionTime = estimatedTime;
+					long estimatedTime = Math.min(prediction.getDoneEstimate(), completionTime);
+					if (estimatedTime <= Instant.now().getEpochSecond())
+					{
+						summary = SummaryState.COMPLETED;
+						completionTime = 0;
+						break;
+					}
+					else
+					{
+						summary = SummaryState.IN_PROGRESS;
+						completionTime = estimatedTime;
+					}
 				}
 			}
 		}
@@ -292,7 +333,7 @@ public class FarmingContractManager
 	{
 		try
 		{
-			return Produce.getByItemID(Integer.parseInt(configManager.getConfiguration(getConfigGroup(), CONFIG_KEY_CONTRACT)));
+			return Produce.getByItemID(Integer.parseInt(configManager.getRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, CONFIG_KEY_CONTRACT)));
 		}
 		catch (NumberFormatException ignored)
 		{
@@ -304,17 +345,11 @@ public class FarmingContractManager
 	{
 		if (contract != null)
 		{
-			configManager.setConfiguration(getConfigGroup(), CONFIG_KEY_CONTRACT, String.valueOf(contract.getItemID()));
+			configManager.setRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, CONFIG_KEY_CONTRACT, String.valueOf(contract.getItemID()));
 		}
 		else
 		{
-			configManager.unsetConfiguration(getConfigGroup(), CONFIG_KEY_CONTRACT);
+			configManager.unsetRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, CONFIG_KEY_CONTRACT);
 		}
-	}
-
-	@Nonnull
-	private String getConfigGroup()
-	{
-		return TimeTrackingConfig.CONFIG_GROUP + "." + client.getUsername();
 	}
 }

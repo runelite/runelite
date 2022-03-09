@@ -57,8 +57,6 @@ import net.runelite.client.util.ColorUtil;
 public class KeyRemappingPlugin extends Plugin
 {
 	private static final String PRESS_ENTER_TO_CHAT = "Press Enter to Chat...";
-	private static final String SCRIPT_EVENT_SET_CHATBOX_INPUT = "setChatboxInput";
-	private static final String SCRIPT_EVENT_BLOCK_CHAT_INPUT = "blockChatInput";
 
 	@Inject
 	private Client client;
@@ -144,6 +142,11 @@ public class KeyRemappingPlugin extends Plugin
 			|| !isHidden(WidgetInfo.BANK_PIN_CONTAINER);
 	}
 
+	boolean isOptionsDialogOpen()
+	{
+		return client.getWidget(WidgetInfo.DIALOG_OPTION) != null;
+	}
+
 	private boolean isHidden(WidgetInfo widgetInfo)
 	{
 		Widget w = client.getWidget(widgetInfo);
@@ -155,17 +158,14 @@ public class KeyRemappingPlugin extends Plugin
 	{
 		switch (scriptCallbackEvent.getEventName())
 		{
-			case SCRIPT_EVENT_SET_CHATBOX_INPUT:
+			case "setChatboxInput":
 				Widget chatboxInput = client.getWidget(WidgetInfo.CHATBOX_INPUT);
-				if (chatboxInput != null)
+				if (chatboxInput != null && !typing)
 				{
-					if (chatboxFocused() && !typing)
-					{
-						setChatboxWidgetInput(chatboxInput, PRESS_ENTER_TO_CHAT);
-					}
+					setChatboxWidgetInput(chatboxInput, PRESS_ENTER_TO_CHAT);
 				}
 				break;
-			case SCRIPT_EVENT_BLOCK_CHAT_INPUT:
+			case "blockChatInput":
 				if (!typing)
 				{
 					int[] intStack = client.getIntStack();

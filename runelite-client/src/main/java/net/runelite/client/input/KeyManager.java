@@ -30,10 +30,12 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 
 @Singleton
+@Slf4j
 public class KeyManager
 {
 	private final Client client;
@@ -50,13 +52,18 @@ public class KeyManager
 	{
 		if (!keyListeners.contains(keyListener))
 		{
+			log.debug("Registering key listener: {}", keyListener);
 			keyListeners.add(keyListener);
 		}
 	}
 
 	public void unregisterKeyListener(KeyListener keyListener)
 	{
-		keyListeners.remove(keyListener);
+		final boolean unregistered = keyListeners.remove(keyListener);
+		if (unregistered)
+		{
+			log.debug("Unregistered key listener: {}", keyListener);
+		}
 	}
 
 	public void processKeyPressed(KeyEvent keyEvent)
@@ -73,9 +80,12 @@ public class KeyManager
 				continue;
 			}
 
+			log.trace("Processing key pressed {} for key listener {}", keyEvent.paramString(), keyListener);
+
 			keyListener.keyPressed(keyEvent);
 			if (keyEvent.isConsumed())
 			{
+				log.debug("Consuming key pressed {} for key listener {}", keyEvent.paramString(), keyListener);
 				break;
 			}
 		}
@@ -95,9 +105,12 @@ public class KeyManager
 				continue;
 			}
 
+			log.trace("Processing key released {} for key listener {}", keyEvent.paramString(), keyListener);
+
 			keyListener.keyReleased(keyEvent);
 			if (keyEvent.isConsumed())
 			{
+				log.debug("Consuming key released {} for listener {}", keyEvent.paramString(), keyListener);
 				break;
 			}
 		}
@@ -117,9 +130,12 @@ public class KeyManager
 				continue;
 			}
 
+			log.trace("Processing key typed {} for key listener {}", keyEvent.paramString(), keyListener);
+
 			keyListener.keyTyped(keyEvent);
 			if (keyEvent.isConsumed())
 			{
+				log.debug("Consuming key typed {} for key listener {}", keyEvent.paramString(), keyListener);
 				break;
 			}
 		}

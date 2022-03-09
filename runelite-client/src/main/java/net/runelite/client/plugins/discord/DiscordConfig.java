@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.discord;
 
+import lombok.AllArgsConstructor;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -32,11 +33,38 @@ import net.runelite.client.config.Units;
 @ConfigGroup("discord")
 public interface DiscordConfig extends Config
 {
+	@AllArgsConstructor
+	enum ElapsedTimeType
+	{
+		TOTAL("Total elapsed time"),
+		ACTIVITY("Per activity"),
+		HIDDEN("Hide elapsed time");
+
+		private final String value;
+
+		@Override
+		public String toString()
+		{
+			return value;
+		}
+	}
+
+	@ConfigItem(
+		keyName = "elapsedTime",
+		name = "Elapsed Time",
+		description = "Configures elapsed time shown.",
+		position = 1
+	)
+	default ElapsedTimeType elapsedTimeType()
+	{
+		return ElapsedTimeType.ACTIVITY;
+	}
+
 	@ConfigItem(
 		keyName = "actionTimeout",
-		name = "Action timeout",
-		description = "Configures after how long of not updating status will be reset (in minutes)",
-		position = 1
+		name = "Activity timeout",
+		description = "Configures after how long of not updating activity will be reset (in minutes)",
+		position = 2
 	)
 	@Units(Units.MINUTES)
 	default int actionTimeout()
@@ -45,21 +73,21 @@ public interface DiscordConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "hideElapsedTime",
-		name = "Hide elapsed time",
-		description = "Configures if the elapsed time of your activity should be hidden.",
-		position = 2
+		keyName = "showMainMenu",
+		name = "Main Menu",
+		description = "Show status when in main menu",
+		position = 3
 	)
-	default boolean hideElapsedTime()
+	default boolean showMainMenu()
 	{
-		return false;
+		return true;
 	}
 
 	@ConfigItem(
 		keyName = "showSkillActivity",
-		name = "Show activity while skilling",
-		description = "Configures if your activity while training skills should be shown.",
-		position = 3
+		name = "Skilling",
+		description = "Show your activity while training skills",
+		position = 4
 	)
 	default boolean showSkillingActivity()
 	{
@@ -68,9 +96,9 @@ public interface DiscordConfig extends Config
 
 	@ConfigItem(
 		keyName = "showBossActivity",
-		name = "Show activity at bosses",
-		description = "Configures if your activity at bosses should be shown.",
-		position = 4
+		name = "Bosses",
+		description = "Show your activity and location while at bosses",
+		position = 5
 	)
 	default boolean showBossActivity()
 	{
@@ -79,9 +107,9 @@ public interface DiscordConfig extends Config
 
 	@ConfigItem(
 		keyName = "showCityActivity",
-		name = "Show activity at cities",
-		description = "Configures if your activity at cities should be shown.",
-		position = 5
+		name = "Cities",
+		description = "Show your activity and location while in cities",
+		position = 6
 	)
 	default boolean showCityActivity()
 	{
@@ -90,9 +118,9 @@ public interface DiscordConfig extends Config
 
 	@ConfigItem(
 		keyName = "showDungeonActivity",
-		name = "Show activity at dungeons",
-		description = "Configures if your activity at dungeons should be shown.",
-		position = 6
+		name = "Dungeons",
+		description = "Show your activity and location while in dungeons",
+		position = 7
 	)
 	default boolean showDungeonActivity()
 	{
@@ -101,9 +129,9 @@ public interface DiscordConfig extends Config
 
 	@ConfigItem(
 		keyName = "showMinigameActivity",
-		name = "Show activity at minigames",
-		description = "Configures if your activity at minigames should be shown.",
-		position = 7
+		name = "Minigames",
+		description = "Show your activity and location while in minigames",
+		position = 8
 	)
 	default boolean showMinigameActivity()
 	{
@@ -112,11 +140,22 @@ public interface DiscordConfig extends Config
 
 	@ConfigItem(
 		keyName = "showRaidingActivity",
-		name = "Show activity at raids",
-		description = "Configures if your activity at raids should be shown.",
-		position = 8
+		name = "Raids",
+		description = "Show your activity and location while in Raids",
+		position = 9
 	)
 	default boolean showRaidingActivity()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showRegionsActivity",
+		name = "Regions",
+		description = "Show your activity and location while in other regions",
+		position = 10
+	)
+	default boolean showRegionsActivity()
 	{
 		return true;
 	}

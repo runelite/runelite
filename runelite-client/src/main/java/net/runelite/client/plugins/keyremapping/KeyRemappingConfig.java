@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.keyremapping;
 
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
@@ -285,5 +286,16 @@ public interface KeyRemappingConfig extends Config
 	default ModifierlessKeybind space()
 	{
 		return new ModifierlessKeybind(KeyEvent.VK_SPACE, 0);
+	}
+
+	@ConfigItem(
+		position = 21,
+		keyName = "control",
+		name = "Control",
+		description = "The key which will replace {Control}."
+	)
+	default ModifierlessKeybind control()
+	{
+		return new ModifierlessKeybind(KeyEvent.VK_UNDEFINED, InputEvent.CTRL_DOWN_MASK);
 	}
 }

@@ -98,6 +98,10 @@ public class NpcLoader
 			def.rotate90RightAnimation = stream.readUnsignedShort();
 			def.rotate90LeftAnimation = stream.readUnsignedShort();
 		}
+		else if (opcode == 18)
+		{
+			def.category = stream.readUnsignedShort();
+		}
 		else if (opcode >= 30 && opcode < 35)
 		{
 			def.actions[opcode - 30] = stream.readString();

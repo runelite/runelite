@@ -25,6 +25,7 @@
 package net.runelite.cache.script.assembler;
 
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import net.runelite.cache.definitions.ScriptDefinition;
 import net.runelite.cache.script.Instructions;
 import net.runelite.cache.script.disassembler.Disassembler;
@@ -76,7 +77,7 @@ public class AssemblerTest
 		in = AssemblerTest.class.getResourceAsStream(this.script);
 		Assert.assertNotNull(in);
 
-		String original = new String(IOUtils.toByteArray(in)).replaceAll("\r\n", "\n");
+		String original = new String(IOUtils.toByteArray(in), StandardCharsets.UTF_8).replaceAll("\r\n", "\n");
 
 		logger.info(original);
 		logger.info("-----------------------");

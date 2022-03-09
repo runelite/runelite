@@ -65,7 +65,7 @@ public class WesternDiaryRequirement extends GenericDiaryRequirement
 		add("Chop and burn some teak logs on Ape Atoll.",
 			new SkillRequirement(Skill.WOODCUTTING, 35),
 			new SkillRequirement(Skill.FIREMAKING, 35),
-			new QuestRequirement(Quest.MONKEY_MADNESS_I));
+			new QuestRequirement(Quest.MONKEY_MADNESS_I, true));
 		add("Complete an intermediate game of Pest Control.",
 			new CombatLevelRequirement(70));
 		add("Travel to the Feldip Hills by Gnome Glider.",

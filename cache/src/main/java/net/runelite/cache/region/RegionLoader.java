@@ -60,7 +60,6 @@ public class RegionLoader
 		this.store = store;
 		index = store.getIndex(IndexType.MAPS);
 		keyManager = new XteaKeyManager();
-		keyManager.loadKeys();
 	}
 
 	public void loadRegions() throws IOException

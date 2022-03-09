@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2021, Jonathan Rousseau <https://github.com/JoRouss>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,10 +32,10 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
+import javax.inject.Named;
 import lombok.Data;
-import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.discord.DiscordPresence;
 import net.runelite.client.discord.DiscordService;
 import net.runelite.client.ws.PartyService;
@@ -46,26 +47,35 @@ import static net.runelite.client.ws.PartyService.PARTY_MAX;
 class DiscordState
 {
 	@Data
-	private class EventWithTime
+	private static class EventWithTime
 	{
 		private final DiscordGameEventType type;
-		private final Instant start;
+		private Instant start;
 		private Instant updated;
 	}
 
-	private final UUID partyId = UUID.randomUUID();
 	private final List<EventWithTime> events = new ArrayList<>();
 	private final DiscordService discordService;
 	private final DiscordConfig config;
-	private PartyService party;
+	private final PartyService party;
+	private final String runeliteTitle;
+	private final String runeliteVersion;
 	private DiscordPresence lastPresence;
 
 	@Inject
-	private DiscordState(final DiscordService discordService, final DiscordConfig config, final PartyService party)
+	private DiscordState(
+		final DiscordService discordService,
+		final DiscordConfig config,
+		final PartyService party,
+		@Named("runelite.title") final String runeliteTitle,
+		@Named("runelite.version") final String runeliteVersion
+	)
 	{
 		this.discordService = discordService;
 		this.config = config;
 		this.party = party;
+		this.runeliteTitle = runeliteTitle;
+		this.runeliteVersion = runeliteVersion;
 	}
 
 	/**
@@ -94,14 +104,10 @@ class DiscordState
 			.largeImageText(lastPresence.getLargeImageText())
 			.startTimestamp(lastPresence.getStartTimestamp())
 			.smallImageKey(lastPresence.getSmallImageKey())
-			.partyMax(lastPresence.getPartyMax())
-			.partySize(party.getMembers().size());
+			.partyMax(lastPresence.getPartyMax());
 
-		if (party.isOwner())
-		{
-			presenceBuilder.partyId(partyId.toString());
-			presenceBuilder.joinSecret(party.getPartyId().toString());
-		}
+
+		setPresencePartyInfo(presenceBuilder);
 
 		discordService.updatePresence(presenceBuilder.build());
 	}
@@ -114,7 +120,7 @@ class DiscordState
 	void triggerEvent(final DiscordGameEventType eventType)
 	{
 		final Optional<EventWithTime> foundEvent = events.stream().filter(e -> e.type == eventType).findFirst();
-		EventWithTime event;
+		final EventWithTime event;
 
 		if (foundEvent.isPresent())
 		{
@@ -122,8 +128,8 @@ class DiscordState
 		}
 		else
 		{
-			event = new EventWithTime(eventType, Instant.now());
-
+			event = new EventWithTime(eventType);
+			event.setStart(Instant.now());
 			events.add(event);
 		}
 
@@ -131,7 +137,12 @@ class DiscordState
 
 		if (event.getType().isShouldClear())
 		{
-			events.removeIf(e -> e.getType() != eventType && e.getType().isShouldClear());
+			events.removeIf(e -> e.getType() != eventType && e.getType().isShouldBeCleared());
+		}
+
+		if (event.getType().isShouldRestart())
+		{
+			event.setStart(Instant.now());
 		}
 
 		events.sort((a, b) -> ComparisonChain.start()
@@ -139,7 +150,18 @@ class DiscordState
 			.compare(b.getUpdated(), a.getUpdated())
 			.result());
 
-		event = events.get(0);
+		updatePresenceWithLatestEvent();
+	}
+
+	private void updatePresenceWithLatestEvent()
+	{
+		if (events.isEmpty())
+		{
+			reset();
+			return;
+		}
+
+		final EventWithTime event = events.get(0);
 
 		String imageKey = null;
 		String state = null;
@@ -169,22 +191,41 @@ class DiscordState
 		}
 
 		// Replace snapshot with + to make tooltip shorter (so it will span only 1 line)
-		final String versionShortHand = RuneLiteProperties.getVersion().replace("-SNAPSHOT", "+");
+		final String versionShortHand = runeliteVersion.replace("-SNAPSHOT", "+");
 
 		final DiscordPresence.DiscordPresenceBuilder presenceBuilder = DiscordPresence.builder()
 			.state(MoreObjects.firstNonNull(state, ""))
 			.details(MoreObjects.firstNonNull(details, ""))
-			.largeImageText(RuneLiteProperties.getTitle() + " v" + versionShortHand)
-			.startTimestamp(config.hideElapsedTime() ? null : event.getStart())
+			.largeImageText(runeliteTitle + " v" + versionShortHand)
 			.smallImageKey(imageKey)
-			.partyMax(PARTY_MAX)
-			.partySize(party.getMembers().size());
+			.partyMax(PARTY_MAX);
 
-		if (party.isOwner())
+		final Instant startTime;
+		switch (config.elapsedTimeType())
 		{
-			presenceBuilder.partyId(partyId.toString());
-			presenceBuilder.joinSecret(party.getPartyId().toString());
+			case HIDDEN:
+				startTime = null;
+				break;
+			case TOTAL:
+				// We are tracking total time spent instead of per activity time so try to find
+				// root event as this indicates start of tracking and find last updated one
+				// to determine correct state we are in
+				startTime = events.stream()
+					.filter(e -> e.getType().isRoot())
+					.sorted((a, b) -> b.getUpdated().compareTo(a.getUpdated()))
+					.map(EventWithTime::getStart)
+					.findFirst()
+					.orElse(event.getStart());
+				break;
+			case ACTIVITY:
+			default:
+				startTime = event.getStart();
+				break;
 		}
+
+		presenceBuilder.startTimestamp(startTime);
+
+		setPresencePartyInfo(presenceBuilder);
 
 		final DiscordPresence presence = presenceBuilder.build();
 
@@ -208,19 +249,30 @@ class DiscordState
 
 		final Duration actionTimeout = Duration.ofMinutes(config.actionTimeout());
 		final Instant now = Instant.now();
-		final EventWithTime eventWithTime = events.get(0);
 
-		events.removeIf(event -> event.getType().isShouldTimeout() && now.isAfter(event.getUpdated().plus(actionTimeout)));
+		final boolean removedAny = events.removeAll(events.stream()
+			// Only include clearable events
+			.filter(event -> event.getType().isShouldBeCleared())
+			// Find only events that should time out
+			.filter(event -> event.getType().isShouldTimeout() && now.isAfter(event.getUpdated().plus(actionTimeout)))
+			.collect(Collectors.toList())
+		);
 
-		assert DiscordGameEventType.IN_MENU.getState() != null;
-		if (DiscordGameEventType.IN_MENU.getState().equals(eventWithTime.getType().getState()) && now.isAfter(eventWithTime.getStart().plus(actionTimeout)))
+		if (removedAny)
 		{
-			final DiscordPresence presence = lastPresence
-				.toBuilder()
-				.startTimestamp(null)
-				.build();
-			lastPresence = presence;
-			discordService.updatePresence(presence);
+			updatePresenceWithLatestEvent();
+		}
+	}
+
+	private void setPresencePartyInfo(DiscordPresence.DiscordPresenceBuilder presenceBuilder)
+	{
+		if (party.isInParty())
+		{
+			presenceBuilder.partySize(party.getMembers().size());
+
+			// Set public party id and secret
+			presenceBuilder.partyId(party.getPublicPartyId().toString());
+			presenceBuilder.joinSecret(party.getPartyId().toString());
 		}
 	}
 }

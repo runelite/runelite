@@ -60,7 +60,7 @@ public interface XpTrackerConfig extends Config
 	)
 	default boolean pauseOnLogout()
 	{
-		return false;
+		return true;
 	}
 
 	@ConfigItem(
@@ -88,6 +88,18 @@ public interface XpTrackerConfig extends Config
 
 	@ConfigItem(
 		position = 4,
+		keyName = "resetSkillRateAfter",
+		name = "Auto reset after",
+		description = "Configures how many minutes passes before resetting a skill's per hour rates while in game and there's no XP, 0 means disabled"
+	)
+	@Units(Units.MINUTES)
+	default int resetSkillRateAfter()
+	{
+		return 0;
+	}
+
+	@ConfigItem(
+		position = 5,
 		keyName = "skillTabOverlayMenuOptions",
 		name = "Add skill tab canvas menu option",
 		description = "Configures whether a menu option to show/hide canvas XP trackers will be added to skills on the skill tab",
@@ -99,7 +111,7 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 5,
+		position = 6,
 		keyName = "onScreenDisplayMode",
 		name = "On-screen tracker display mode (top)",
 		description = "Configures the information displayed in the first line of on-screen XP overlays",
@@ -111,7 +123,7 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 6,
+		position = 7,
 		keyName = "onScreenDisplayModeBottom",
 		name = "On-screen tracker display mode (bottom)",
 		description = "Configures the information displayed in the second line of on-screen XP overlays",
@@ -123,7 +135,7 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 7,
+		position = 8,
 		keyName = "xpPanelLabel1",
 		name = "Top-left XP info label",
 		description = "Configures the information displayed in the top-left of XP info box"
@@ -134,7 +146,7 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 8,
+		position = 9,
 		keyName = "xpPanelLabel2",
 		name = "Top-right XP info label",
 		description = "Configures the information displayed in the top-right of XP info box"
@@ -146,7 +158,7 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 9,
+		position = 10,
 		keyName = "xpPanelLabel3",
 		name = "Bottom-left XP info label",
 		description = "Configures the information displayed in the bottom-left of XP info box"
@@ -157,7 +169,7 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 10,
+		position = 11,
 		keyName = "xpPanelLabel4",
 		name = "Bottom-right XP info label",
 		description = "Configures the information displayed in the bottom-right of XP info box"
@@ -168,7 +180,7 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 11,
+		position = 12,
 		keyName = "progressBarLabel",
 		name = "Progress bar label",
 		description = "Configures the info box progress bar to show Time to goal or percentage complete"
@@ -179,7 +191,18 @@ public interface XpTrackerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 12,
+		position = 13,
+		keyName = "progressBarTooltipLabel",
+		name = "Tooltip label",
+		description = "Configures the info box progress bar tooltip to show Time to goal or percentage complete"
+	)
+	default XpProgressBarLabel progressBarTooltipLabel()
+	{
+		return XpProgressBarLabel.TIME_TO_LEVEL;
+	}
+
+	@ConfigItem(
+		position = 14,
 		keyName = "prioritizeRecentXpSkills",
 		name = "Move recently trained skills to top",
 		description = "Configures whether skills should be organized by most recently gained xp"

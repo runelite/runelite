@@ -71,7 +71,7 @@ class TeeInputStream extends FilterInputStream
 	{
 		byte[] buf = new byte[(int) Math.min(n, 0x4000)];
 		long total = 0;
-		for (; n > 0; )
+		while (n > 0)
 		{
 			int read = (int) Math.min(n, buf.length);
 

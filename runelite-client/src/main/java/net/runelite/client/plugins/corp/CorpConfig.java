@@ -28,16 +28,29 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("corp")
+@ConfigGroup(CorpConfig.GROUP)
 public interface CorpConfig extends Config
 {
+	String GROUP = "corp";
+
 	@ConfigItem(
 		keyName = "showDamage",
 		name = "Show damage overlay",
 		description = "Show total damage overlay",
-		position = 2
+		position = 0
 	)
 	default boolean showDamage()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "markDarkCore",
+		name = "Mark dark core",
+		description = "Marks the dark energy core.",
+		position = 1
+	)
+	default boolean markDarkCore()
 	{
 		return true;
 	}

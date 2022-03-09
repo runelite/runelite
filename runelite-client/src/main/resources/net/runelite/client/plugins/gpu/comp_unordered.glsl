@@ -29,8 +29,6 @@
 
 layout(local_size_x = 6) in;
 
-#include common.glsl
-
 void main() {
   uint groupId = gl_WorkGroupID.x;
   uint localId = gl_LocalInvocationID.x;
@@ -41,7 +39,6 @@ void main() {
   int outOffset = minfo.idx;
   int uvOffset = minfo.uvOffset;
   int flags = minfo.flags;
-  int orientation = flags & 0x7ff;
   ivec4 pos = ivec4(minfo.x, minfo.y, minfo.z, 0);
 
   if (localId >= size) {
@@ -62,16 +59,12 @@ void main() {
     thisC = tempvb[offset + ssboOffset * 3 + 2];
   }
 
-  ivec4 thisrvA = rotate(thisA, orientation);
-  ivec4 thisrvB = rotate(thisB, orientation);
-  ivec4 thisrvC = rotate(thisC, orientation);
-
   uint myOffset = localId;
 
   // position vertices in scene and write to out buffer
-  vout[outOffset + myOffset * 3]     = pos + thisrvA;
-  vout[outOffset + myOffset * 3 + 1] = pos + thisrvB;
-  vout[outOffset + myOffset * 3 + 2] = pos + thisrvC;
+  vout[outOffset + myOffset * 3]     = pos + thisA;
+  vout[outOffset + myOffset * 3 + 1] = pos + thisB;
+  vout[outOffset + myOffset * 3 + 2] = pos + thisC;
 
   if (uvOffset < 0) {
     uvout[outOffset + myOffset * 3]     = vec4(0, 0, 0, 0);

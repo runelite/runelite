@@ -47,7 +47,7 @@ public interface RaidsConfig extends Config
 	@ConfigItem(
 		position = 1,
 		keyName = "pointsMessage",
-		name = "Display points in chatbox after raid",
+		name = "Display points in chatbox",
 		description = "Display a message with total points, individual points and percentage at the end of a raid"
 	)
 	default boolean pointsMessage()
@@ -69,8 +69,8 @@ public interface RaidsConfig extends Config
 	@ConfigItem(
 		position = 3,
 		keyName = "scoutOverlayAtBank",
-		name = "Show scout overlay outside lobby",
-		description = "Keep the overlay active while at the raids area"
+		name = "Show scout overlay outside",
+		description = "Keep the overlay active outside of the raid starting room"
 	)
 	default boolean scoutOverlayAtBank()
 	{
@@ -168,8 +168,8 @@ public interface RaidsConfig extends Config
 	@ConfigItem(
 		position = 12,
 		keyName = "layoutMessage",
-		name = "Send raid layout message when entering raid",
-		description = "Sends game message with raid layout on entering new raid"
+		name = "Raid layout message",
+		description = "Sends a game message with the raid layout on entering a raid"
 	)
 	default boolean layoutMessage()
 	{
@@ -179,7 +179,7 @@ public interface RaidsConfig extends Config
 	@ConfigItem(
 		position = 13,
 		keyName = "screenshotHotkey",
-		name = "Scouter screenshot hotkey",
+		name = "Screenshot hotkey",
 		description = "Hotkey used to screenshot the scouting overlay"
 	)
 	default Keybind screenshotHotkey()
@@ -190,7 +190,7 @@ public interface RaidsConfig extends Config
 	@ConfigItem(
 		position = 14,
 		keyName = "uploadScreenshot",
-		name = "Upload scouting screenshot",
+		name = "Upload screenshot",
 		description = "Uploads the scouting screenshot to Imgur or the clipboard"
 	)
 	default ImageUploadStyle uploadScreenshot()

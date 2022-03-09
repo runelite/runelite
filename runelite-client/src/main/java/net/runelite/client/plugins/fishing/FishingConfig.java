@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.fishing;
 
 import java.awt.Color;
+import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -77,6 +78,7 @@ public interface FishingConfig extends Config
 		return false;
 	}
 
+	@Alpha
 	@ConfigItem(
 		keyName = "overlayColor",
 		name = "Overlay Color",
@@ -88,9 +90,10 @@ public interface FishingConfig extends Config
 		return Color.CYAN;
 	}
 
+	@Alpha
 	@ConfigItem(
 		keyName = "minnowsOverlayColor",
-		name = "Minnows Overlay Color",
+		name = "Minnows Overlay",
 		description = "Color of overlays for Minnows",
 		position = 5
 	)
@@ -99,13 +102,26 @@ public interface FishingConfig extends Config
 		return Color.RED;
 	}
 
+	@Alpha
 	@ConfigItem(
 		keyName = "aerialOverlayColor",
-		name = "Aerial Overlay Color",
+		name = "Aerial Overlay",
 		description = "Color of overlays when 1-tick aerial fishing",
 		position = 6
 	)
 	default Color getAerialOverlayColor()
+	{
+		return Color.GREEN;
+	}
+
+	@Alpha
+	@ConfigItem(
+		keyName = "harpoonfishOverlayColor",
+		name = "Harpoonfish Overlay",
+		description = "Color of overlays for bubbling Harpoonfish spots",
+		position = 6
+	)
+	default Color getHarpoonfishOverlayColor()
 	{
 		return Color.GREEN;
 	}
@@ -146,11 +162,11 @@ public interface FishingConfig extends Config
 
 	@ConfigItem(
 		position = 10,
-		keyName = "trawlerNotification",
-		name = "Trawler activity notification",
-		description = "Send a notification when fishing trawler activity drops below 15%."
+		keyName = "flyingFishNotification",
+		name = "Flying fish notification",
+		description = "Send a notification when a flying fish spawns on your fishing spot."
 	)
-	default boolean trawlerNotification()
+	default boolean flyingFishNotification()
 	{
 		return true;
 	}
@@ -158,10 +174,21 @@ public interface FishingConfig extends Config
 	@ConfigItem(
 		position = 11,
 		keyName = "trawlerTimer",
-		name = "Trawler timer in MM:SS",
-		description = "Trawler Timer will display a more accurate timer in MM:SS format."
+		name = "Trawler timer in M:SS",
+		description = "Trawler timer will display a more accurate timer in M:SS format."
 	)
 	default boolean trawlerTimer()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 12,
+		keyName = "trawlerContribution",
+		name = "Trawler contribution",
+		description = "Display the exact number of trawler contribution points gained."
+	)
+	default boolean trawlerContribution()
 	{
 		return true;
 	}

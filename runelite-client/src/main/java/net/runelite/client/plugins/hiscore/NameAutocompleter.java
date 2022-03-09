@@ -242,6 +242,7 @@ class NameAutocompleter implements KeyListener
 			autocompleteName = Arrays.stream(cachedPlayers)
 				.filter(Objects::nonNull)
 				.map(Player::getName)
+				.filter(Objects::nonNull)
 				.filter(n -> pattern.matcher(n).matches())
 				.findFirst();
 		}

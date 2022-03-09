@@ -42,9 +42,11 @@ import net.runelite.api.VarPlayer;
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.client.Notifier;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.ws.PartyService;
+import net.runelite.client.ws.WSClient;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -75,6 +77,18 @@ public class SpecialCounterPluginTest
 	@Mock
 	@Bind
 	private ItemManager itemManager;
+
+	@Mock
+	@Bind
+	private Notifier notifier;
+
+	@Mock
+	@Bind
+	private WSClient wsClient;
+
+	@Mock
+	@Bind
+	private SpecialCounterConfig specialCounterConfig;
 
 	@Inject
 	private SpecialCounterPlugin specialCounterPlugin;
@@ -226,5 +240,68 @@ public class SpecialCounterPluginTest
 		specialCounterPlugin.onHitsplatApplied(hitsplat(targetB, Hitsplat.HitsplatType.DAMAGE_ME));
 
 		verify(infoBoxManager).removeInfoBox(any(SpecialCounter.class));
+	}
+
+	@Test
+	public void testNotification()
+	{
+		// Create an enemy
+		NPC target = mock(NPC.class);
+
+		// Create player
+		Player player = mock(Player.class);
+		when(client.getLocalPlayer()).thenReturn(player);
+		when(specialCounterConfig.bandosGodswordThreshold()).thenReturn(2);
+		when(specialCounterConfig.thresholdNotification()).thenReturn(true);
+
+		// Attack enemy
+		when(player.getInteracting()).thenReturn(target);
+		specialCounterPlugin.onInteractingChanged(new InteractingChanged(player, target));
+
+		// First special attack
+		when(client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT)).thenReturn(50);
+		specialCounterPlugin.onVarbitChanged(new VarbitChanged());
+		specialCounterPlugin.onHitsplatApplied(hitsplat(target, Hitsplat.HitsplatType.DAMAGE_ME));
+
+		// Set up spec weapon as BGS(OR)
+		ItemContainer equipment = mock(ItemContainer.class);
+		when(equipment.getItem(EquipmentInventorySlot.WEAPON.getSlotIdx())).thenReturn(new Item(ItemID.BANDOS_GODSWORD_OR, 1));
+		when(client.getItemContainer(InventoryID.EQUIPMENT)).thenReturn(equipment);
+
+		// Second special attack
+		when(client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT)).thenReturn(0);
+		specialCounterPlugin.onVarbitChanged(new VarbitChanged());
+		specialCounterPlugin.onHitsplatApplied(hitsplat(target, Hitsplat.HitsplatType.DAMAGE_ME));
+
+		verify(notifier).notify("Bandos Godsword special attack threshold reached!");
+	}
+
+	@Test
+	public void testNotificationNotThreshold()
+	{
+		// Create an enemy
+		NPC target = mock(NPC.class);
+
+		// Create player
+		Player player = mock(Player.class);
+		when(client.getLocalPlayer()).thenReturn(player);
+		when(specialCounterConfig.bandosGodswordThreshold()).thenReturn(3);
+		lenient().when(specialCounterConfig.thresholdNotification()).thenReturn(true);
+
+		// Attack enemy
+		when(player.getInteracting()).thenReturn(target);
+		specialCounterPlugin.onInteractingChanged(new InteractingChanged(player, target));
+
+		// First special attack
+		when(client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT)).thenReturn(50);
+		specialCounterPlugin.onVarbitChanged(new VarbitChanged());
+		specialCounterPlugin.onHitsplatApplied(hitsplat(target, Hitsplat.HitsplatType.DAMAGE_ME));
+
+		// Second special attack
+		when(client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT)).thenReturn(0);
+		specialCounterPlugin.onVarbitChanged(new VarbitChanged());
+		specialCounterPlugin.onHitsplatApplied(hitsplat(target, Hitsplat.HitsplatType.DAMAGE_ME));
+
+		verify(notifier, never()).notify(any());
 	}
 }

@@ -34,6 +34,7 @@ import java.time.Instant;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
+import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.geometry.Geometry;
@@ -66,6 +67,12 @@ class NpcAggroAreaOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		if (!plugin.isActive() || plugin.getSafeCenters()[1] == null)
+		{
+			return null;
+		}
+
+		final Player localPlayer = client.getLocalPlayer();
+		if (localPlayer.getHealthScale() == -1 && config.hideIfOutOfCombat())
 		{
 			return null;
 		}

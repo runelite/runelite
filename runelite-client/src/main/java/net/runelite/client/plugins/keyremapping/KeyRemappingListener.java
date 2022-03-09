@@ -155,9 +155,16 @@ class KeyRemappingListener implements KeyListener
 				}
 			}
 
-			if (plugin.isDialogOpen() && config.space().matches(e))
+			// Do not remap to space key when the options dialog is open, since the options dialog never
+			// listens for space, and the remapped key may be one of keys it listens for.
+			if (plugin.isDialogOpen() && !plugin.isOptionsDialogOpen() && config.space().matches(e))
 			{
 				mappedKeyCode = KeyEvent.VK_SPACE;
+			}
+
+			if (config.control().matches(e))
+			{
+				mappedKeyCode = KeyEvent.VK_CONTROL;
 			}
 
 			if (mappedKeyCode != KeyEvent.VK_UNDEFINED && mappedKeyCode != e.getKeyCode())

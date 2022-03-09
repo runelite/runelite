@@ -44,7 +44,7 @@ public interface OpponentInfoConfig extends Config
 
 	@ConfigItem(
 		keyName = "hitpointsDisplayStyle",
-		name = "Hitpoints display style",
+		name = "Display style",
 		description = "Show opponent's hitpoints as a value (if known), percentage, or both",
 		position = 1
 	)

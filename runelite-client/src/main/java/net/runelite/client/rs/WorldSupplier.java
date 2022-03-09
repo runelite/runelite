@@ -35,9 +35,11 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.RuneLiteProperties;
 import net.runelite.http.api.worlds.World;
-import net.runelite.http.api.worlds.WorldClient;
+import net.runelite.client.game.WorldClient;
 import net.runelite.http.api.worlds.WorldType;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 
 @Slf4j
@@ -46,7 +48,7 @@ class WorldSupplier implements Supplier<World>
 {
 	private final OkHttpClient okHttpClient;
 	private final Random random = new Random(System.nanoTime());
-	private Queue<World> worlds = new ArrayDeque<>();
+	private final Queue<World> worlds = new ArrayDeque<>();
 
 	@Override
 	public World get()
@@ -58,7 +60,7 @@ class WorldSupplier implements Supplier<World>
 
 		try
 		{
-			List<World> newWorlds = new WorldClient(okHttpClient)
+			List<World> newWorlds = new WorldClient(okHttpClient, HttpUrl.get(RuneLiteProperties.getApiBase()))
 				.lookupWorlds()
 				.getWorlds()
 				.stream()

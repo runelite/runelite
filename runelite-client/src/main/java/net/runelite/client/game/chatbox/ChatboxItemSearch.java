@@ -47,6 +47,7 @@ import net.runelite.api.widgets.WidgetTextAlignment;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.ui.JagexColors;
 
 @Singleton
 public class ChatboxItemSearch extends ChatboxTextInput
@@ -62,7 +63,7 @@ public class ChatboxItemSearch extends ChatboxTextInput
 	private final ItemManager itemManager;
 	private final Client client;
 
-	private Map<Integer, ItemComposition> results = new LinkedHashMap<>();
+	private final Map<Integer, ItemComposition> results = new LinkedHashMap<>();
 	private String tooltipText;
 	private int index = -1;
 
@@ -141,7 +142,7 @@ public class ChatboxItemSearch extends ChatboxTextInput
 			item.setOriginalY(y + FONT_SIZE * 2);
 			item.setOriginalHeight(ICON_HEIGHT);
 			item.setOriginalWidth(ICON_WIDTH);
-			item.setName("<col=ff9040>" + itemComposition.getName());
+			item.setName(JagexColors.MENU_TARGET_TAG + itemComposition.getName());
 			item.setItemId(itemComposition.getId());
 			item.setItemQuantity(10000);
 			item.setItemQuantityMode(ItemQuantityMode.NEVER);

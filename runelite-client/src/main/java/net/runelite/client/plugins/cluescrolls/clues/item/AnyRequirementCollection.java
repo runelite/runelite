@@ -29,8 +29,8 @@ import net.runelite.api.Item;
 
 public class AnyRequirementCollection implements ItemRequirement
 {
-	private String name;
-	private ItemRequirement[] requirements;
+	private final String name;
+	private final ItemRequirement[] requirements;
 
 	public AnyRequirementCollection(String name, ItemRequirement... requirements)
 	{

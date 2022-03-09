@@ -35,13 +35,17 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -80,23 +84,33 @@ public class ExternalPluginManager
 	@Named("safeMode")
 	private boolean safeMode;
 
-	@Inject
-	private ConfigManager configManager;
+	private final ConfigManager configManager;
+	private final ExternalPluginClient externalPluginClient;
+	private final ScheduledExecutorService executor;
+	private final PluginManager pluginManager;
+	private final EventBus eventBus;
+	private final OkHttpClient okHttpClient;
 
 	@Inject
-	private ExternalPluginClient externalPluginClient;
+	private ExternalPluginManager(
+		ConfigManager configManager,
+		ExternalPluginClient externalPluginClient,
+		ScheduledExecutorService executor,
+		PluginManager pluginManager,
+		EventBus eventBus,
+		OkHttpClient okHttpClient
+	)
+	{
+		this.configManager = configManager;
+		this.externalPluginClient = externalPluginClient;
+		this.executor = executor;
+		this.pluginManager = pluginManager;
+		this.eventBus = eventBus;
+		this.okHttpClient = okHttpClient;
 
-	@Inject
-	private PluginManager pluginManager;
-
-	@Inject
-	private ScheduledExecutorService executor;
-
-	@Inject
-	private EventBus eventBus;
-
-	@Inject
-	private OkHttpClient okHttpClient;
+		executor.scheduleWithFixedDelay(() -> externalPluginClient.submitPlugins(getInstalledExternalPlugins()),
+			new Random().nextInt(60), 180, TimeUnit.MINUTES);
+	}
 
 	public void loadExternalPlugins() throws PluginInstantiationException
 	{
@@ -155,6 +169,9 @@ public class ExternalPluginManager
 				SplashScreen.init();
 			}
 
+			Instant now = Instant.now();
+			Instant keepAfter = now.minus(3, ChronoUnit.DAYS);
+
 			SplashScreen.stage(splashStart, null, "Downloading external plugins");
 			Set<ExternalPluginManifest> externalPlugins = new HashSet<>();
 
@@ -177,6 +194,7 @@ public class ExternalPluginManager
 					{
 						externalPlugins.add(manifest);
 
+						manifest.getJarFile().setLastModified(now.toEpochMilli());
 						if (!manifest.isValid())
 						{
 							needsDownload.add(manifest);
@@ -194,7 +212,7 @@ public class ExternalPluginManager
 				{
 					for (File fi : files)
 					{
-						if (!keep.contains(fi))
+						if (!keep.contains(fi) && fi.lastModified() < keepAfter.toEpochMilli())
 						{
 							fi.delete();
 						}
@@ -412,6 +430,13 @@ public class ExternalPluginManager
 
 	public static void loadBuiltin(Class<? extends Plugin>... plugins)
 	{
+		boolean assertsEnabled = false;
+		assert (assertsEnabled = true);
+		if (!assertsEnabled)
+		{
+			throw new RuntimeException("Assertions are not enabled, add '-ea' to your VM options. Enabling assertions during development catches undefined behavior and incorrect API usage.");
+		}
+
 		builtinExternals = plugins;
 	}
 }

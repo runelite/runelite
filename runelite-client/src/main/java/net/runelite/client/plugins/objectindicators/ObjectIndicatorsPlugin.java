@@ -31,7 +31,6 @@ import com.google.gson.reflect.TypeToken;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -65,13 +64,11 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GroundObjectDespawned;
 import net.runelite.api.events.GroundObjectSpawned;
 import net.runelite.api.events.MenuEntryAdded;
-import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.WallObjectChanged;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -89,7 +86,6 @@ public class ObjectIndicatorsPlugin extends Plugin
 	private static final String MARK = "Mark object";
 	private static final String UNMARK = "Unmark object";
 
-	private final Gson GSON = new Gson();
 	@Getter(AccessLevel.PACKAGE)
 	private final List<ColorTileObject> objects = new ArrayList<>();
 	private final Map<Integer, Set<ObjectPoint>> points = new HashMap<>();
@@ -107,10 +103,10 @@ public class ObjectIndicatorsPlugin extends Plugin
 	private ObjectIndicatorsOverlay overlay;
 
 	@Inject
-	private KeyManager keyManager;
+	private ObjectIndicatorsConfig config;
 
 	@Inject
-	private ObjectIndicatorsConfig config;
+	private Gson gson;
 
 	@Provides
 	ObjectIndicatorsConfig provideConfig(ConfigManager configManager)
@@ -210,7 +206,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 			}
 		}
 
-		if (gameStateChanged.getGameState() != GameState.LOGGED_IN)
+		if (gameStateChanged.getGameState() != GameState.LOGGED_IN && gameStateChanged.getGameState() != GameState.CONNECTION_LOST)
 		{
 			objects.clear();
 		}
@@ -232,35 +228,26 @@ public class ObjectIndicatorsPlugin extends Plugin
 			return;
 		}
 
-		MenuEntry[] menuEntries = client.getMenuEntries();
-		menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
-		MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
-		menuEntry.setOption(objects.stream().anyMatch(o -> o.getTileObject() == tileObject) ? UNMARK : MARK);
-		menuEntry.setTarget(event.getTarget());
-		menuEntry.setParam0(event.getActionParam0());
-		menuEntry.setParam1(event.getActionParam1());
-		menuEntry.setIdentifier(event.getIdentifier());
-		menuEntry.setType(MenuAction.RUNELITE.getId());
-		client.setMenuEntries(menuEntries);
+		client.createMenuEntry(-1)
+			.setOption(objects.stream().anyMatch(o -> o.getTileObject() == tileObject) ? UNMARK : MARK)
+			.setTarget(event.getTarget())
+			.setParam0(event.getActionParam0())
+			.setParam1(event.getActionParam1())
+			.setIdentifier(event.getIdentifier())
+			.setType(MenuAction.RUNELITE)
+			.onClick(this::markObject);
 	}
 
-	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked event)
+	private void markObject(MenuEntry entry)
 	{
-		if (event.getMenuAction() != MenuAction.RUNELITE
-			|| !(event.getMenuOption().equals(MARK) || event.getMenuOption().equals(UNMARK)))
-		{
-			return;
-		}
-
 		Scene scene = client.getScene();
 		Tile[][][] tiles = scene.getTiles();
-		final int x = event.getActionParam();
-		final int y = event.getWidgetId();
+		final int x = entry.getParam0();
+		final int y = entry.getParam1();
 		final int z = client.getPlane();
 		final Tile tile = tiles[z][x][y];
 
-		TileObject object = findTileObject(tile, event.getId());
+		TileObject object = findTileObject(tile, entry.getIdentifier());
 		if (object == null)
 		{
 			return;
@@ -282,7 +269,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 
 	private void checkObjectPoints(TileObject object)
 	{
-		final WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, object.getLocalLocation());
+		final WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, object.getLocalLocation(), object.getPlane());
 		final Set<ObjectPoint> objectPoints = points.get(worldPoint.getRegionID());
 
 		if (objectPoints == null)
@@ -290,20 +277,31 @@ public class ObjectIndicatorsPlugin extends Plugin
 			return;
 		}
 
+		ObjectComposition objectComposition = client.getObjectDefinition(object.getId());
+		if (objectComposition.getImpostorIds() == null)
+		{
+			// Multiloc names are instead checked in the overlay
+			String name = objectComposition.getName();
+			if (Strings.isNullOrEmpty(name) || name.equals("null"))
+			{
+				// was marked, but name has changed
+				return;
+			}
+		}
+
 		for (ObjectPoint objectPoint : objectPoints)
 		{
 			if (worldPoint.getRegionX() == objectPoint.getRegionX()
 					&& worldPoint.getRegionY() == objectPoint.getRegionY()
-					&& worldPoint.getPlane() == objectPoint.getZ())
+					&& worldPoint.getPlane() == objectPoint.getZ()
+					&& objectPoint.getId() == object.getId())
 			{
-				// Transform object to get the name which matches against what we've stored
-				ObjectComposition composition = getObjectComposition(object.getId());
-				if (composition != null && objectPoint.getName().equals(composition.getName()))
-				{
-					log.debug("Marking object {} due to matching {}", object, objectPoint);
-					objects.add(new ColorTileObject(object, objectPoint.getColor()));
-					break;
-				}
+				log.debug("Marking object {} due to matching {}", object, objectPoint);
+				objects.add(new ColorTileObject(object,
+					objectComposition,
+					objectPoint.getName(),
+					objectPoint.getColor()));
+				break;
 			}
 		}
 	}
@@ -417,7 +415,10 @@ public class ObjectIndicatorsPlugin extends Plugin
 		else
 		{
 			objectPoints.add(point);
-			objects.add(new ColorTileObject(object, color));
+			objects.add(new ColorTileObject(object,
+				client.getObjectDefinition(object.getId()),
+				name,
+				color));
 			log.debug("Marking object: {}", point);
 		}
 
@@ -432,7 +433,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 		}
 		else
 		{
-			final String json = GSON.toJson(points);
+			final String json = gson.toJson(points);
 			configManager.setConfiguration(CONFIG_GROUP, "region_" + id, json);
 		}
 	}
@@ -446,7 +447,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 			return null;
 		}
 
-		Set<ObjectPoint> points = GSON.fromJson(json, new TypeToken<Set<ObjectPoint>>()
+		Set<ObjectPoint> points = gson.fromJson(json, new TypeToken<Set<ObjectPoint>>()
 		{
 		}.getType());
 		// Prior to multiloc support the plugin would mark objects named "null", which breaks

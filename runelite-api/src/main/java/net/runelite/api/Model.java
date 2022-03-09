@@ -27,31 +27,13 @@ package net.runelite.api;
 /**
  * Represents the model of an object.
  */
-public interface Model extends Renderable
+public interface Model extends Mesh, Renderable
 {
-	int getVerticesCount();
-
-	int[] getVerticesX();
-
-	int[] getVerticesY();
-
-	int[] getVerticesZ();
-
-	int getTrianglesCount();
-
-	int[] getTrianglesX();
-
-	int[] getTrianglesY();
-
-	int[] getTrianglesZ();
-
 	int[] getFaceColors1();
 
 	int[] getFaceColors2();
 
 	int[] getFaceColors3();
-
-	byte[] getTriangleTransparencies();
 
 	int getSceneId();
 	void setSceneId(int sceneId);
@@ -62,7 +44,7 @@ public interface Model extends Renderable
 	int getUvBufferOffset();
 	void setUvBufferOffset(int bufferOffset);
 
-	int getModelHeight();
+	int getBottomY();
 
 	void calculateBoundsCylinder();
 
@@ -70,10 +52,7 @@ public interface Model extends Renderable
 
 	int getRadius();
 
-	short[] getFaceTextures();
-
-	float[][] getFaceTextureUCoordinates();
-	float[][] getFaceTextureVCoordinates();
+	float[] getFaceTextureUVCoordinates();
 
 	void calculateExtreme(int orientation);
 
@@ -86,4 +65,13 @@ public interface Model extends Renderable
 
 	int getXYZMag();
 	boolean isClickable();
+
+	int[] getVertexNormalsX();
+	int[] getVertexNormalsY();
+	int[] getVertexNormalsZ();
+
+	byte getOverrideAmount();
+	byte getOverrideHue();
+	byte getOverrideSaturation();
+	byte getOverrideLuminance();
 }

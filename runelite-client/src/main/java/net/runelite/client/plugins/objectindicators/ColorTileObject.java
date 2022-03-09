@@ -27,6 +27,7 @@ package net.runelite.client.plugins.objectindicators;
 import java.awt.Color;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
+import net.runelite.api.ObjectComposition;
 import net.runelite.api.TileObject;
 
 /**
@@ -38,5 +39,13 @@ import net.runelite.api.TileObject;
 class ColorTileObject
 {
 	private final TileObject tileObject;
+	/**
+	 * Non-transformed object composition for the object
+	 */
+	private final ObjectComposition composition;
+	/**
+	 * Name to highlight for multilocs
+	 */
+	private final String name;
 	private final Color color;
 }

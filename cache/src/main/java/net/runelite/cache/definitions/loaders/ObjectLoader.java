@@ -194,6 +194,10 @@ public class ObjectLoader
 			def.setRetextureToFind(retextureToFind);
 			def.setTextureToReplace(textureToReplace);
 		}
+		else if (opcode == 61)
+		{
+			def.setCategory(is.readUnsignedShort());
+		}
 		else if (opcode == 62)
 		{
 			def.setRotated(true);
@@ -296,7 +300,7 @@ public class ObjectLoader
 				anIntArray2084[index] = is.readUnsignedShort();
 			}
 
-			def.setAnIntArray2084(anIntArray2084);
+			def.setAmbientSoundIds(anIntArray2084);
 		}
 		else if (opcode == 81)
 		{
@@ -305,6 +309,10 @@ public class ObjectLoader
 		else if (opcode == 82)
 		{
 			def.setMapAreaId(is.readUnsignedShort());
+		}
+		else if (opcode == 89)
+		{
+			def.setRandomizeAnimStart(true);
 		}
 		else if (opcode == 92)
 		{

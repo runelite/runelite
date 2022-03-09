@@ -41,6 +41,7 @@ public class QuestPointRequirement implements Requirement
 		return qp + " " + "Quest points";
 	}
 
+	@Override
 	public boolean satisfiesRequirement(Client client)
 	{
 		return client.getVar(VarPlayer.QUEST_POINTS) >= qp;

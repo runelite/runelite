@@ -49,6 +49,7 @@ public class ScreenMarkerOverlay extends Overlay
 		setLayer(OverlayLayer.ALWAYS_ON_TOP);
 		setPriority(OverlayPriority.HIGH);
 		setResizable(true);
+		setMinimumSize(16);
 		setResettable(false);
 	}
 
@@ -77,7 +78,8 @@ public class ScreenMarkerOverlay extends Overlay
 		screenMarkerRenderable.setColor(marker.getColor());
 		screenMarkerRenderable.setFill(marker.getFill());
 		screenMarkerRenderable.setStroke(new BasicStroke(marker.getBorderThickness()));
-		screenMarkerRenderable.setPreferredSize(preferredSize);
+		screenMarkerRenderable.setSize(preferredSize);
+		screenMarkerRenderable.setLabel(marker.isLabelled() ? marker.getName() : "");
 		return screenMarkerRenderable.render(graphics);
 	}
 }

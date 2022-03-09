@@ -40,8 +40,7 @@ import net.runelite.client.plugins.itemstats.StatsChanges;
 @RequiredArgsConstructor
 public class SuperRestore implements Effect
 {
-	private static final Stat[] superRestoreStats = new Stat[]
-	{
+	private static final Stat[] superRestoreStats = {
 		ATTACK, DEFENCE, STRENGTH, RANGED, MAGIC, COOKING,
 		WOODCUTTING, FLETCHING, FISHING, FIREMAKING, CRAFTING, SMITHING, MINING,
 		HERBLORE, AGILITY, THIEVING, SLAYER, FARMING, RUNECRAFT, HUNTER,
@@ -69,7 +68,9 @@ public class SuperRestore implements Effect
 					return calc.effect(client);
 				})
 			).toArray(StatChange[]::new));
-		changes.setPositivity(Stream.of(changes.getStatChanges()).map(sc -> sc.getPositivity()).max(Comparator.comparing(Enum::ordinal)).get());
+		changes.setPositivity(Stream.of(changes.getStatChanges())
+			.map(sc -> sc.getPositivity())
+			.max(Comparator.naturalOrder()).get());
 		return changes;
 	}
 

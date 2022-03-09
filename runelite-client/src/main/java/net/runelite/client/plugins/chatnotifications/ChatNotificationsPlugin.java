@@ -26,23 +26,27 @@
 package net.runelite.client.plugins.chatnotifications;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.inject.Provides;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
+import javax.inject.Named;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.Notifier;
-import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.chat.ChatColorType;
-import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
@@ -65,15 +69,15 @@ public class ChatNotificationsPlugin extends Plugin
 	private ChatNotificationsConfig config;
 
 	@Inject
-	private ChatMessageManager chatMessageManager;
+	private Notifier notifier;
 
 	@Inject
-	private Notifier notifier;
+	@Named("runelite.title")
+	private String runeliteTitle;
 
 	//Custom Highlights
 	private Pattern usernameMatcher = null;
-	private String usernameReplacer = "";
-	private Pattern highlightMatcher = null;
+	private final List<Pattern> highlightPatterns = new ArrayList<>();
 
 	@Provides
 	ChatNotificationsConfig provideConfig(ConfigManager configManager)
@@ -85,6 +89,13 @@ public class ChatNotificationsPlugin extends Plugin
 	public void startUp()
 	{
 		updateHighlights();
+	}
+
+	@Override
+	protected void shutDown()
+	{
+		usernameMatcher = null;
+		highlightPatterns.clear();
 	}
 
 	@Subscribe
@@ -110,7 +121,7 @@ public class ChatNotificationsPlugin extends Plugin
 
 	private void updateHighlights()
 	{
-		highlightMatcher = null;
+		highlightPatterns.clear();
 
 		if (!config.highlightWordsString().trim().equals(""))
 		{
@@ -120,8 +131,29 @@ public class ChatNotificationsPlugin extends Plugin
 				.map(this::quoteAndIgnoreColor) // regex escape and ignore nested colors in the target message
 				.collect(Collectors.joining("|"));
 			// To match <word> \b doesn't work due to <> not being in \w,
-			// so match \b or \s
-			highlightMatcher = Pattern.compile("(?:\\b|(?<=\\s))(" + joined + ")(?:\\b|(?=\\s))", Pattern.CASE_INSENSITIVE);
+			// so match \b or \s, as well as \A and \z for beginning and end of input respectively
+			highlightPatterns.add(Pattern.compile("(?:\\b|(?<=\\s)|\\A)(?:" + joined + ")(?:\\b|(?=\\s)|\\z)", Pattern.CASE_INSENSITIVE));
+		}
+
+		Splitter
+			.on("\n")
+			.omitEmptyStrings()
+			.trimResults()
+			.splitToList(config.highlightRegexString()).stream()
+			.map(ChatNotificationsPlugin::compilePattern)
+			.filter(Objects::nonNull)
+			.forEach(highlightPatterns::add);
+	}
+
+	private static Pattern compilePattern(String pattern)
+	{
+		try
+		{
+			return Pattern.compile(pattern, Pattern.CASE_INSENSITIVE);
+		}
+		catch (PatternSyntaxException ex)
+		{
+			return null;
 		}
 	}
 
@@ -161,9 +193,31 @@ public class ChatNotificationsPlugin extends Plugin
 					notifier.notify(Text.removeFormattingTags(broadcast));
 				}
 				break;
+			case PRIVATECHAT:
+			case MODPRIVATECHAT:
+				if (config.notifyOnPM())
+				{
+					notifier.notify(Text.removeTags(chatMessage.getName()) + ": " + chatMessage.getMessage());
+				}
+				break;
+			case PRIVATECHATOUT:
+				return;
+			case MODCHAT:
+			case PUBLICCHAT:
+			case FRIENDSCHAT:
+			case CLAN_CHAT:
+			case CLAN_GUEST_CHAT:
+			case CLAN_GIM_CHAT:
+			case AUTOTYPER:
+			case MODAUTOTYPER:
+				if (client.getLocalPlayer() != null && Text.toJagexName(Text.removeTags(chatMessage.getName())).equals(client.getLocalPlayer().getName()))
+				{
+					return;
+				}
+				break;
 			case CONSOLE:
 				// Don't notify for notification messages
-				if (chatMessage.getName().equals(RuneLiteProperties.getTitle()))
+				if (chatMessage.getName().equals(runeliteTitle))
 				{
 					return;
 				}
@@ -177,77 +231,95 @@ public class ChatNotificationsPlugin extends Plugin
 				.map(s -> s.isEmpty() ? "" : Pattern.quote(s))
 				.collect(Collectors.joining("[\u00a0\u0020]")); // space or nbsp
 			usernameMatcher = Pattern.compile("\\b" + pattern + "\\b", Pattern.CASE_INSENSITIVE);
-			usernameReplacer = "<col" + ChatColorType.HIGHLIGHT.name() + "><u>" + username + "</u><col" + ChatColorType.NORMAL.name() + ">";
 		}
 
 		if (config.highlightOwnName() && usernameMatcher != null)
 		{
-			Matcher matcher = usernameMatcher.matcher(messageNode.getValue());
+			final String message = messageNode.getValue();
+			Matcher matcher = usernameMatcher.matcher(message);
 			if (matcher.find())
 			{
-				messageNode.setValue(matcher.replaceAll(usernameReplacer));
+				final String username = client.getLocalPlayer().getName();
+				StringBuffer stringBuffer = new StringBuffer();
+				do
+				{
+					final int start = matcher.start(); // start not end, since username won't contain a col tag
+					final String closeColor = MoreObjects.firstNonNull(
+						getLastColor(message.substring(0, start)),
+						"<col" + ChatColorType.NORMAL + '>');
+					final String replacement = "<col" + ChatColorType.HIGHLIGHT.name() + "><u>" + username + "</u>" + closeColor;
+					matcher.appendReplacement(stringBuffer, replacement);
+				}
+				while (matcher.find());
+
+				matcher.appendTail(stringBuffer);
+
+				messageNode.setValue(stringBuffer.toString());
 				update = true;
+
 				if (config.notifyOnOwnName() && (chatMessage.getType() == ChatMessageType.PUBLICCHAT
 					|| chatMessage.getType() == ChatMessageType.PRIVATECHAT
 					|| chatMessage.getType() == ChatMessageType.FRIENDSCHAT
 					|| chatMessage.getType() == ChatMessageType.MODCHAT
-					|| chatMessage.getType() == ChatMessageType.MODPRIVATECHAT))
+					|| chatMessage.getType() == ChatMessageType.MODPRIVATECHAT
+					|| chatMessage.getType() == ChatMessageType.CLAN_CHAT
+					|| chatMessage.getType() == ChatMessageType.CLAN_GUEST_CHAT))
 				{
 					sendNotification(chatMessage);
 				}
 			}
 		}
 
-		if (highlightMatcher != null)
+		boolean matchesHighlight = false;
+		// Get nodeValue to store and update in between the different pattern passes
+		// The messageNode value is only set after all patterns have been processed
+		String nodeValue = messageNode.getValue();
+
+		for (Pattern pattern : highlightPatterns)
 		{
-			String nodeValue = messageNode.getValue();
-			Matcher matcher = highlightMatcher.matcher(nodeValue);
-			boolean found = false;
-			StringBuffer stringBuffer = new StringBuffer();
-
-			while (matcher.find())
+			Matcher matcher = pattern.matcher(nodeValue);
+			if (!matcher.find())
 			{
-				String value = matcher.group();
-
-				// Determine the ending color by:
-				// 1) use the color from value if it has one
-				// 2) use the last color from stringBuffer + <content between last match and current match>
-				// To do #2 we just search for the last col tag after calling appendReplacement
-				String endColor = getLastColor(value);
-
-				// Strip color tags from the highlighted region so that it remains highlighted correctly
-				value = stripColor(value);
-
-				matcher.appendReplacement(stringBuffer, "<col" + ChatColorType.HIGHLIGHT + '>' + value);
-
-				if (endColor == null)
-				{
-					endColor = getLastColor(stringBuffer.toString());
-				}
-
-				// Append end color
-				stringBuffer.append(endColor == null ? "<col" + ChatColorType.NORMAL + ">" : endColor);
-
-				update = true;
-				found = true;
+				continue;
 			}
 
-			if (found)
-			{
-				matcher.appendTail(stringBuffer);
-				messageNode.setValue(stringBuffer.toString());
+			StringBuffer stringBuffer = new StringBuffer();
 
-				if (config.notifyOnHighlight())
-				{
-					sendNotification(chatMessage);
-				}
+			do
+			{
+				final int end = matcher.end();
+				// Determine the ending color by finding the last color tag up to and
+				// including the match.
+				final String closeColor = MoreObjects.firstNonNull(
+					getLastColor(nodeValue.substring(0, end)),
+					"<col" + ChatColorType.NORMAL + '>');
+				// Strip color tags from the highlighted region so that it remains highlighted correctly
+				final String value = stripColor(matcher.group());
+
+				matcher.appendReplacement(stringBuffer, "<col" + ChatColorType.HIGHLIGHT + '>' + value + closeColor);
+
+				update = true;
+				matchesHighlight = true;
+			}
+			while (matcher.find());
+
+			// Append stringBuffer with remainder of message and update nodeValue
+			matcher.appendTail(stringBuffer);
+			nodeValue = stringBuffer.toString();
+		}
+
+		if (matchesHighlight)
+		{
+			messageNode.setValue(nodeValue);
+			if (config.notifyOnHighlight())
+			{
+				sendNotification(chatMessage);
 			}
 		}
 
 		if (update)
 		{
 			messageNode.setRuneLiteFormatMessage(messageNode.getValue());
-			chatMessageManager.update(messageNode);
 		}
 	}
 
@@ -261,7 +333,7 @@ public class ChatNotificationsPlugin extends Plugin
 		{
 			stringBuilder.append('[').append(sender).append("] ");
 		}
-		
+
 		if (!Strings.isNullOrEmpty(name))
 		{
 			stringBuilder.append(name).append(": ");

@@ -28,9 +28,13 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("music")
+@ConfigGroup(MusicConfig.GROUP)
 public interface MusicConfig extends Config
 {
+	String GROUP = "music";
+	String GRANULAR_SLIDERS = "granularSliders";
+	String MUTE_AMBIENT_SOUNDS = "muteAmbientSounds";
+
 	@ConfigItem(
 		keyName = "muteOwnAreaSounds",
 		name = "Mute player area sounds",
@@ -76,14 +80,36 @@ public interface MusicConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = MUTE_AMBIENT_SOUNDS,
+		name = "Mute ambient sounds",
+		description = "Mute background noise such as magic trees and furnaces",
+		position = 4
+	)
+	default boolean muteAmbientSounds()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "mutePrayerSounds",
 		name = "Mute prayer sounds",
 		description = "Mute prayer activation and deactivation sounds",
-		position = 4
+		position = 5
 	)
 	default boolean mutePrayerSounds()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = GRANULAR_SLIDERS,
+		name = "Granular volume sliders",
+		description = "Make the volume sliders allow better control of volume",
+		position = 6
+	)
+	default boolean granularSliders()
+	{
+		return true;
 	}
 
 	@ConfigItem(

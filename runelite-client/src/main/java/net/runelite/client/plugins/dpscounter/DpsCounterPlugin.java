@@ -72,6 +72,7 @@ public class DpsCounterPlugin extends Plugin
 		CORPOREAL_BEAST,
 		CRAZY_ARCHAEOLOGIST,
 		CRYSTALLINE_HUNLLEF, CRYSTALLINE_HUNLLEF_9022, CRYSTALLINE_HUNLLEF_9023, CRYSTALLINE_HUNLLEF_9024,
+		CORRUPTED_HUNLLEF, CORRUPTED_HUNLLEF_9036, CORRUPTED_HUNLLEF_9037, CORRUPTED_HUNLLEF_9038,
 		DAGANNOTH_SUPREME, DAGANNOTH_PRIME, DAGANNOTH_REX, DAGANNOTH_SUPREME_6496, DAGANNOTH_PRIME_6497, DAGANNOTH_REX_6498,
 		DUSK, DAWN, DUSK_7851, DAWN_7852, DAWN_7853, DUSK_7854, DUSK_7855,
 		GENERAL_GRAARDOR, GENERAL_GRAARDOR_6494,
@@ -83,6 +84,7 @@ public class DpsCounterPlugin extends Plugin
 		KREEARRA, KREEARRA_6492,
 		KRIL_TSUTSAROTH, KRIL_TSUTSAROTH_6495,
 		THE_MIMIC, THE_MIMIC_8633,
+		NEX, NEX_11279, NEX_11280, NEX_11281, NEX_11282,
 		THE_NIGHTMARE, THE_NIGHTMARE_9426, THE_NIGHTMARE_9427, THE_NIGHTMARE_9428, THE_NIGHTMARE_9429, THE_NIGHTMARE_9430, THE_NIGHTMARE_9431, THE_NIGHTMARE_9432, THE_NIGHTMARE_9433,
 		OBOR,
 		SARACHNIS,
@@ -186,6 +188,13 @@ public class DpsCounterPlugin extends Plugin
 
 		if (hitsplat.isMine())
 		{
+			final int npcId = ((NPC) actor).getId();
+			boolean isBoss = BOSSES.contains(npcId);
+			if (dpsConfig.bossDamage() && !isBoss)
+			{
+				return;
+			}
+
 			int hit = hitsplat.getAmount();
 			// Update local member
 			PartyMember localMember = partyService.getLocalMember();
@@ -207,7 +216,7 @@ public class DpsCounterPlugin extends Plugin
 		{
 			final int npcId = ((NPC) actor).getId();
 			boolean isBoss = BOSSES.contains(npcId);
-			if (actor != player.getInteracting() && !isBoss)
+			if ((dpsConfig.bossDamage() || actor != player.getInteracting()) && !isBoss)
 			{
 				// only track damage to npcs we are attacking, or is a nearby common boss
 				return;
@@ -270,7 +279,12 @@ public class DpsCounterPlugin extends Plugin
 		{
 			log.debug("Boss has died!");
 
-			if (dpsConfig.autopause())
+			if (dpsConfig.autoreset())
+			{
+				members.values().forEach(DpsMember::reset);
+				total.reset();
+			}
+			else if (dpsConfig.autopause())
 			{
 				pause();
 			}

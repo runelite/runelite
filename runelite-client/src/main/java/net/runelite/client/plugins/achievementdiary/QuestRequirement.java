@@ -53,6 +53,7 @@ public class QuestRequirement implements Requirement
 		return quest.getName();
 	}
 
+	@Override
 	public boolean satisfiesRequirement(Client client)
 	{
 		QuestState questState = quest.getState(client);

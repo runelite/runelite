@@ -32,8 +32,6 @@ import com.google.inject.Singleton;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Enumeration;
@@ -43,7 +41,6 @@ import java.util.Stack;
 import java.util.stream.Stream;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -59,6 +56,8 @@ import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.SpriteID;
+import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
+import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
@@ -71,13 +70,12 @@ import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
 
 @Slf4j
 @Singleton
-class WidgetInspector extends JFrame
+class WidgetInspector extends DevToolsFrame
 {
 	private static final Map<Integer, WidgetInfo> widgetIdMap = new HashMap<>();
 
@@ -121,7 +119,6 @@ class WidgetInspector extends JFrame
 		ClientThread clientThread,
 		WidgetInfoTableModel infoTableModel,
 		DevToolsConfig config,
-		DevToolsPlugin plugin,
 		EventBus eventBus,
 		Provider<WidgetInspectorOverlay> overlay,
 		OverlayManager overlayManager)
@@ -136,18 +133,6 @@ class WidgetInspector extends JFrame
 		eventBus.register(this);
 
 		setTitle("RuneLite Widget Inspector");
-		setIconImage(ClientUI.ICON);
-
-		// Reset highlight on close
-		addWindowListener(new WindowAdapter()
-		{
-			@Override
-			public void windowClosing(WindowEvent e)
-			{
-				close();
-				plugin.getWidgetInspector().setActive(false);
-			}
-		});
 
 		setLayout(new BorderLayout());
 
@@ -345,7 +330,7 @@ class WidgetInspector extends JFrame
 
 			DefaultMutableTreeNode node = root;
 			deeper:
-			for (; !treePath.empty(); )
+			while (!treePath.empty())
 			{
 				Widget w = treePath.pop();
 				for (Enumeration<?> it = node.children(); it.hasMoreElements(); )
@@ -400,21 +385,21 @@ class WidgetInspector extends JFrame
 		return widgetIdMap.get(packedId);
 	}
 
+	@Override
 	public void open()
 	{
-		setVisible(true);
-		toFront();
-		repaint();
+		super.open();
 		overlayManager.add(this.overlay.get());
 		clientThread.invokeLater(this::addPickerWidget);
 	}
 
+	@Override
 	public void close()
 	{
 		overlayManager.remove(this.overlay.get());
 		clientThread.invokeLater(this::removePickerWidget);
 		setSelectedWidget(null, -1, false);
-		setVisible(false);
+		super.close();
 	}
 
 	private void removePickerWidget()
@@ -451,9 +436,9 @@ class WidgetInspector extends JFrame
 
 			parent = Stream.of(roots)
 				.filter(w -> w.getType() == WidgetType.LAYER && w.getContentType() == 0 && !w.isSelfHidden())
-				.sorted(Comparator.comparing((Widget w) -> w.getRelativeX() + w.getRelativeY())
+				.sorted(Comparator.comparingInt((Widget w) -> w.getRelativeX() + w.getRelativeY())
 					.reversed()
-					.thenComparing(Widget::getId)
+					.thenComparingInt(Widget::getId)
 					.reversed())
 				.findFirst().get();
 			x = 4;
@@ -502,7 +487,7 @@ class WidgetInspector extends JFrame
 		client.setSpellSelected(false);
 		ev.consume();
 
-		Object target = getWidgetOrWidgetItemForMenuOption(ev.getMenuAction().getId(), ev.getActionParam(), ev.getWidgetId());
+		Object target = getWidgetOrWidgetItemForMenuOption(ev.getMenuAction(), ev.getParam0(), ev.getParam1());
 		if (target == null)
 		{
 			return;
@@ -531,8 +516,8 @@ class WidgetInspector extends JFrame
 		for (int i = 0; i < menuEntries.length; i++)
 		{
 			MenuEntry entry = menuEntries[i];
-			if (entry.getType() != MenuAction.ITEM_USE_ON_WIDGET.getId()
-				&& entry.getType() != MenuAction.SPELL_CAST_ON_WIDGET.getId())
+			if (entry.getType() != MenuAction.ITEM_USE_ON_WIDGET
+				&& entry.getType() != MenuAction.SPELL_CAST_ON_WIDGET)
 			{
 				continue;
 			}
@@ -547,8 +532,6 @@ class WidgetInspector extends JFrame
 
 			entry.setTarget(ColorUtil.wrapWithColorTag(name, color));
 		}
-
-		client.setMenuEntries(menuEntries);
 	}
 
 	Color colorForWidget(int index, int length)
@@ -558,11 +541,11 @@ class WidgetInspector extends JFrame
 		return Color.getHSBColor(h, 1, 1);
 	}
 
-	Object getWidgetOrWidgetItemForMenuOption(int type, int param0, int param1)
+	Object getWidgetOrWidgetItemForMenuOption(MenuAction type, int param0, int param1)
 	{
-		if (type == MenuAction.SPELL_CAST_ON_WIDGET.getId())
+		if (type == MenuAction.SPELL_CAST_ON_WIDGET)
 		{
-			Widget w = client.getWidget(WidgetInfo.TO_GROUP(param1), WidgetInfo.TO_CHILD(param1));
+			Widget w = client.getWidget(param1);
 			if (param0 != -1)
 			{
 				w = w.getChild(param0);
@@ -570,12 +553,31 @@ class WidgetInspector extends JFrame
 
 			return w;
 		}
-		else if (type == MenuAction.ITEM_USE_ON_WIDGET.getId())
+		else if (type == MenuAction.ITEM_USE_ON_WIDGET)
 		{
-			Widget w = client.getWidget(WidgetInfo.TO_GROUP(param1), WidgetInfo.TO_CHILD(param1));
+			Widget w = client.getWidget(param1);
 			return w.getWidgetItem(param0);
 		}
 
 		return null;
+	}
+
+	public static String getWidgetIdentifier(Widget widget)
+	{
+		int id = widget.getId();
+		String str = TO_GROUP(id) + "." + TO_CHILD(id);
+
+		if (widget.getIndex() != -1)
+		{
+			str += "[" + widget.getIndex() + "]";
+		}
+
+		WidgetInfo info = WidgetInspector.getWidgetInfo(id);
+		if (info != null)
+		{
+			str += " " + info.name();
+		}
+
+		return str;
 	}
 }

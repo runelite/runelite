@@ -35,7 +35,6 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferInt;
 import java.util.Arrays;
-import java.util.function.Predicate;
 import javax.annotation.Nonnull;
 import org.apache.commons.lang3.ArrayUtils;
 import static org.junit.Assert.assertEquals;
@@ -256,11 +255,6 @@ public class ImageUtilTest
 		assertTrue(bufferedImagesEqual(centeredPixel(GRAY), ImageUtil.fillImage(centeredPixel(BLACK), GRAY)));
 		assertTrue(bufferedImagesEqual(solidColor(3, 3, GREEN), ImageUtil.fillImage(solidColor(3, 3, BLACK), GREEN)));
 		assertTrue(bufferedImagesEqual(oneByOne(BLACK_TRANSPARENT), ImageUtil.fillImage(oneByOne(BLACK_TRANSPARENT), WHITE)));
-
-		// fillImage(BufferedImage image, Color color, Predicate<Color> fillCondition)
-		BufferedImage expected = solidColor(CORNER_SIZE, CORNER_SIZE, WHITE);
-		expected.setRGB(0, 0, new Color(0, true).getRGB());
-		assertTrue(bufferedImagesEqual(expected, ImageUtil.fillImage(BLACK_PIXEL_TOP_LEFT, WHITE, ColorUtil::isFullyTransparent)));
 	}
 
 	@Test
@@ -287,39 +281,11 @@ public class ImageUtilTest
 		expected.setRGB(1, 1, new Color(0, true).getRGB());
 		assertTrue(bufferedImagesEqual(expected, ImageUtil.outlineImage(BLACK_PIXEL_TOP_LEFT, WHITE)));
 
-		// outlineImage(BufferedImage image, Color color, Predicate<Color> fillCondition)
-		BufferedImage test = new BufferedImage(CORNER_SIZE, CORNER_SIZE, BufferedImage.TYPE_INT_ARGB);
-		test.setRGB(0, 0, BLACK.getRGB());
-		test.setRGB(1, 0, GRAY.getRGB());
-		expected = test;
-		expected.setRGB(0, 1, BLUE.getRGB());
-		assertTrue(bufferedImagesEqual(expected, ImageUtil.outlineImage(test, BLUE, (color -> color.equals(BLACK)))));
-
 		// outlineImage(BufferedImage image, Color color, Boolean outlineCorners)
 		expected = solidColor(CORNER_SIZE, CORNER_SIZE, WHITE);
 		expected.setRGB(0, 0, BLACK.getRGB());
 		assertTrue(bufferedImagesEqual(expected, ImageUtil.outlineImage(BLACK_PIXEL_TOP_LEFT, WHITE, true)));
 		assertTrue(bufferedImagesEqual(solidColor(3, 3, BLACK), ImageUtil.outlineImage(centeredPixel(BLACK), BLACK, true)));
-
-		// outlineImage(BufferedImage image, Color color, Predicate<Color> fillCondition, Boolean outlineCorners)
-		test = new BufferedImage(5, 5, BufferedImage.TYPE_INT_ARGB);
-		test.setRGB(2, 2, BLACK.getRGB());
-		test.setRGB(1, 2, new Color(50, 50, 50).getRGB());
-		test.setRGB(3, 2, new Color(100, 100, 100).getRGB());
-		test.setRGB(2, 3, new Color(150, 150, 150).getRGB());
-		expected = test;
-		expected.setRGB(2, 1, RED.getRGB());
-		expected.setRGB(3, 1, RED.getRGB());
-		expected.setRGB(4, 1, RED.getRGB());
-		expected.setRGB(4, 2, RED.getRGB());
-		expected.setRGB(1, 3, RED.getRGB());
-		expected.setRGB(3, 3, RED.getRGB());
-		expected.setRGB(4, 3, RED.getRGB());
-		expected.setRGB(1, 4, RED.getRGB());
-		expected.setRGB(2, 4, RED.getRGB());
-		expected.setRGB(3, 4, RED.getRGB());
-		Predicate<Color> testPredicate = (color -> ColorUtil.isNotFullyTransparent(color) && color.getRed() > 75 && color.getGreen() > 75 && color.getBlue() > 75);
-		assertTrue(bufferedImagesEqual(expected, ImageUtil.outlineImage(test, RED, testPredicate, true)));
 	}
 
 	/**

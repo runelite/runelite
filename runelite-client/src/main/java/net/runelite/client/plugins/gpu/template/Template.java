@@ -24,19 +24,20 @@
  */
 package net.runelite.client.plugins.gpu.template;
 
+import com.google.common.io.CharStreams;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.function.Function;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class Template
 {
 	private final List<Function<String, String>> resourceLoaders = new ArrayList<>();
-
-	public Template()
-	{
-	}
 
 	public String process(String str)
 	{
@@ -81,10 +82,16 @@ public class Template
 	{
 		return add(f ->
 		{
-			InputStream is = clazz.getResourceAsStream(f);
-			if (is != null)
+			try (InputStream is = clazz.getResourceAsStream(f))
 			{
-				return inputStreamToString(is);
+				if (is != null)
+				{
+					return inputStreamToString(is);
+				}
+			}
+			catch (IOException ex)
+			{
+				log.warn(null, ex);
 			}
 			return null;
 		});
@@ -92,7 +99,13 @@ public class Template
 
 	private static String inputStreamToString(InputStream in)
 	{
-		Scanner scanner = new Scanner(in).useDelimiter("\\A");
-		return scanner.next();
+		try
+		{
+			return CharStreams.toString(new InputStreamReader(in, StandardCharsets.UTF_8));
+		}
+		catch (IOException e)
+		{
+			throw new RuntimeException(e);
+		}
 	}
 }

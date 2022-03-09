@@ -66,6 +66,65 @@ public interface MenuEntrySwapperConfig extends Config
 	)
 	String uiSection = "ui";
 
+	enum ArdougneCloakMode
+	{
+		WEAR,
+		MONASTERY,
+		FARM,
+	}
+
+	enum KaramjaGlovesMode
+	{
+		WEAR,
+		GEM_MINE,
+		DURADEL,
+	}
+
+	enum MorytaniaLegsMode
+	{
+		WEAR,
+		ECTOFUNTUS,
+		BURGH_DE_ROTT;
+
+		@Override
+		public String toString()
+		{
+			switch (this)
+			{
+				case BURGH_DE_ROTT:
+					return "Burgh de Rott";
+				default:
+					return name();
+			}
+		}
+	}
+
+	enum RadasBlessingMode
+	{
+		EQUIP,
+		KOUREND_WOODLAND,
+		MOUNT_KARUULM,
+	}
+
+	enum DesertAmuletMode
+	{
+		WEAR,
+		NARDAH,
+		KALPHITE_CAVE,
+	}
+
+	@ConfigItem(
+		position = -3,
+		keyName = "leftClickCustomization",
+		name = "Customizable left-click",
+		description = "Allows customization of left-clicks on items",
+		section = itemSection
+	)
+	default boolean leftClickCustomization()
+	{
+		return true;
+	}
+
 	@ConfigItem(
 		position = -2,
 		keyName = "shiftClickCustomization",
@@ -129,6 +188,39 @@ public interface MenuEntrySwapperConfig extends Config
 		section = itemSection
 	)
 	default boolean swapBones()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapHerbs",
+		name = "Clean",
+		description = "Swap Clean with Use on Herbs",
+		section = itemSection
+	)
+	default boolean swapHerbs()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapBattlestaves",
+		name = "Battlestaff",
+		description = "Swap Wield with Use on Battlestaves without orbs",
+		section = itemSection
+	)
+	default boolean swapBattlestaves()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapPrayerBook",
+		name = "Recite-Prayer",
+		description = "Swap Read with Recite-prayer on the Prayer Book from The Great Brain Robbery quest",
+		section = itemSection
+	)
+	default boolean swapPrayerBook()
 	{
 		return false;
 	}
@@ -255,6 +347,17 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "swapBait",
+		name = "Bait",
+		description = "Swap Lure, Small Net with Bait on Fishing spot",
+		section = objectSection
+	)
+	default boolean swapBait()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "swapHelp",
 		name = "Help",
 		description = "Swap Talk-to with Help on Arceuus library customers",
@@ -305,6 +408,17 @@ public interface MenuEntrySwapperConfig extends Config
 		section = objectSection
 	)
 	default boolean swapJewelleryBox()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapPortalNexus",
+		name = "Portal Nexus",
+		description =  "Swap Teleport options with Teleport Menu on the Portal Nexus",
+		section = objectSection
+	)
+	default boolean swapPortalNexus()
 	{
 		return false;
 	}
@@ -362,6 +476,72 @@ public interface MenuEntrySwapperConfig extends Config
 	default boolean swapTeleportItem()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapTeleToPoh",
+		name = "Tele to POH",
+		description = "Swap Wear with Tele to POH on the construction cape",
+		section = itemSection
+	)
+	default boolean swapTeleToPoh()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapKaramjaGloves",
+		name = "Karamja Gloves",
+		description = "Swap Wear with the Gem Mine or Duradel teleport on the Karamja Gloves 3 and 4",
+		section = itemSection
+	)
+	default KaramjaGlovesMode swapKaramjaGlovesMode()
+	{
+		return KaramjaGlovesMode.WEAR;
+	}
+
+	@ConfigItem(
+		keyName = "swapArdougneCloak",
+		name = "Ardougne Cloak",
+		description = "Swap Wear with Monastery Teleport or Farm Teleport on the Ardougne cloak.",
+		section = itemSection
+	)
+	default ArdougneCloakMode swapArdougneCloakMode()
+	{
+		return ArdougneCloakMode.WEAR;
+	}
+
+	@ConfigItem(
+		keyName = "swapRadasBlessing",
+		name = "Rada's Blessing",
+		description = "Swap Equip with the Woodland or Mount Karuulm teleport on Rada's Blessing.",
+		section = itemSection
+	)
+	default RadasBlessingMode swapRadasBlessingMode()
+	{
+		return RadasBlessingMode.EQUIP;
+	}
+
+	@ConfigItem(
+		keyName = "swapMorytaniaLegs",
+		name = "Morytania Legs",
+		description = "Swap Wear with the Ectofunctus or Burgh de Rott teleport on the Morytania Legs.",
+		section = itemSection
+	)
+	default MorytaniaLegsMode swapMorytaniaLegsMode()
+	{
+		return MorytaniaLegsMode.WEAR;
+	}
+
+	@ConfigItem(
+		keyName = "swapDesertAmulet",
+		name = "Desert Amulet",
+		description = "Swap Wear with the Nardah or Kalphite Cave teleport on Desert Amulet 4.",
+		section = itemSection
+	)
+	default DesertAmuletMode swapDesertAmuletMode()
+	{
+		return DesertAmuletMode.WEAR;
 	}
 
 	@ConfigItem(
@@ -570,6 +750,79 @@ public interface MenuEntrySwapperConfig extends Config
 		section = npcSection
 	)
 	default boolean swapCollectMiscellania()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapDepositItems",
+		name = "Deposit Items",
+		description = "Swap Talk-to with Deposit-items",
+		section = npcSection
+	)
+	default boolean swapDepositItems()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapRockCake",
+		name = "Dwarven rock cake",
+		description = "Swap Eat with Guzzle on the Dwarven rock cake",
+		section = itemSection
+	)
+	default boolean swapRockCake()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "swapRowboatDive",
+		name = "Fossil Island Rowboat Dive",
+		description = "Swap Travel with Dive on the rowboat found on the small island north-east of Fossil Island",
+		section = objectSection
+	)
+	default boolean swapRowboatDive()
+	{
+		return false;
+	}
+
+	enum StairsMode
+	{
+		CLIMB,
+		CLIMB_UP,
+		CLIMB_DOWN,
+	}
+
+	@ConfigItem(
+		keyName = "swapStairsLeftClick",
+		name = "Stairs left-click",
+		description = "Swap this option when left-clicking stairs. Also works on ladders.",
+		section = objectSection
+	)
+	default StairsMode swapStairsLeftClick()
+	{
+		return StairsMode.CLIMB;
+	}
+
+	@ConfigItem(
+		keyName = "swapStairsShiftClick",
+		name = "Stairs shift-click",
+		description = "Swap this option when shift-clicking stairs. Also works on ladders.",
+		section = objectSection
+	)
+	default StairsMode swapStairsShiftClick()
+	{
+		return StairsMode.CLIMB;
+	}
+
+	@ConfigItem(
+		keyName = "swapTemporossLeave",
+		name = "Tempoross Leave",
+		description = "Swap Talk-to with Leave after subduing Tempoross",
+		section = npcSection
+	)
+	default boolean swapTemporossLeave()
 	{
 		return false;
 	}

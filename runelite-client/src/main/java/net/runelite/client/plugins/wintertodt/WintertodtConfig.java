@@ -51,7 +51,7 @@ public interface WintertodtConfig extends Config
 	@ConfigItem(
 		position = 1,
 		keyName = "damageNotificationColor",
-		name = "Damage Notification Color",
+		name = "Damage Notification",
 		description = "Color of damage notification text in chat"
 	)
 	default Color damageNotificationColor()
@@ -62,7 +62,7 @@ public interface WintertodtConfig extends Config
 	@ConfigItem(
 		position = 2,
 		keyName = "roundNotification",
-		name = "Wintertodt round notification",
+		name = "Round notification",
 		description = "Notifies you before the round starts (in seconds)"
 	)
 	@Range(

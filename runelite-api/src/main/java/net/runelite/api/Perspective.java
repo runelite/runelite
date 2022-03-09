@@ -49,7 +49,7 @@ import net.runelite.api.widgets.WidgetInfo;
  */
 public class Perspective
 {
-	private static final double UNIT = Math.PI / 1024d; // How much of the circle each unit of SINE/COSINE is
+	public static final double UNIT = Math.PI / 1024d; // How much of the circle each unit of SINE/COSINE is
 
 	public static final int LOCAL_COORD_BITS = 7;
 	public static final int LOCAL_TILE_SIZE = 1 << LOCAL_COORD_BITS; // 128 - size of a tile in local coordinates
@@ -122,24 +122,25 @@ public class Perspective
 			y -= client.getCameraY();
 			z -= client.getCameraZ();
 
-			int cameraPitch = client.getCameraPitch();
-			int cameraYaw = client.getCameraYaw();
+			final int cameraPitch = client.getCameraPitch();
+			final int cameraYaw = client.getCameraYaw();
 
-			int pitchSin = SINE[cameraPitch];
-			int pitchCos = COSINE[cameraPitch];
-			int yawSin = SINE[cameraYaw];
-			int yawCos = COSINE[cameraYaw];
+			final int pitchSin = SINE[cameraPitch];
+			final int pitchCos = COSINE[cameraPitch];
+			final int yawSin = SINE[cameraYaw];
+			final int yawCos = COSINE[cameraYaw];
 
-			int var8 = yawCos * x + y * yawSin >> 16;
-			y = yawCos * y - yawSin * x >> 16;
-			x = var8;
-			var8 = pitchCos * z - y * pitchSin >> 16;
-			y = z * pitchSin + y * pitchCos >> 16;
+			final int
+				x1 = x * yawCos + y * yawSin >> 16,
+				y1 = y * yawCos - x * yawSin >> 16,
+				y2 = z * pitchCos - y1 * pitchSin >> 16,
+				z1 = y1 * pitchCos + z * pitchSin >> 16;
 
-			if (y >= 50)
+			if (z1 >= 50)
 			{
-				int pointX = client.getViewportWidth() / 2 + x * client.getScale() / y;
-				int pointY = client.getViewportHeight() / 2 + var8 * client.getScale() / y;
+				final int scale = client.getScale();
+				final int pointX = client.getViewportWidth() / 2 + x1 * scale / z1;
+				final int pointY = client.getViewportHeight() / 2 + y2 * scale / z1;
 				return new Point(
 					pointX + client.getViewportXOffset(),
 					pointY + client.getViewportYOffset());
@@ -150,9 +151,88 @@ public class Perspective
 	}
 
 	/**
-	 * Translates a model's vertices into 2d space
+	 * Translates a model's vertices into 2d space. There is a separate implementation for GPU since GPU
+	 * uses a slightly more precise projection that can cause features like model outlines being noticeably
+	 * off otherwise.
 	 */
 	public static void modelToCanvas(Client client, int end, int x3dCenter, int y3dCenter, int z3dCenter, int rotate, int[] x3d, int[] y3d, int[] z3d, int[] x2d, int[] y2d)
+	{
+		if (client.isGpu())
+		{
+			modelToCanvasGpu(client, end, x3dCenter, y3dCenter, z3dCenter, rotate, x3d, y3d, z3d, x2d, y2d);
+		}
+		else
+		{
+			modelToCanvasCpu(client, end, x3dCenter, y3dCenter, z3dCenter, rotate, x3d, y3d, z3d, x2d, y2d);
+		}
+	}
+
+	private static void modelToCanvasGpu(Client client, int end, int x3dCenter, int y3dCenter, int z3dCenter, int rotate, int[] x3d, int[] y3d, int[] z3d, int[] x2d, int[] y2d)
+	{
+		final int
+			cameraPitch = client.getCameraPitch(),
+			cameraYaw = client.getCameraYaw();
+		final float
+			pitchSin = SINE[cameraPitch] / 65536.0f,
+			pitchCos = COSINE[cameraPitch] / 65536.0f,
+			yawSin = SINE[cameraYaw] / 65536.0f,
+			yawCos = COSINE[cameraYaw] / 65536.0f,
+			rotateSin = SINE[rotate] / 65536.0f,
+			rotateCos = COSINE[rotate] / 65536.0f,
+
+			cx = x3dCenter - client.getCameraX(),
+			cy = y3dCenter - client.getCameraY(),
+			cz = z3dCenter - client.getCameraZ(),
+
+			viewportXMiddle = client.getViewportWidth() / 2f,
+			viewportYMiddle = client.getViewportHeight() / 2f,
+			viewportXOffset = client.getViewportXOffset(),
+			viewportYOffset = client.getViewportYOffset(),
+
+			zoom3d = client.getScale();
+
+		for (int i = 0; i < end; i++)
+		{
+			float x = x3d[i];
+			float y = y3d[i];
+			float z = z3d[i];
+
+			if (rotate != 0)
+			{
+				float x0 = x;
+				x = x0 * rotateCos + y * rotateSin;
+				y = y * rotateCos - x0 * rotateSin;
+			}
+
+			x += cx;
+			y += cy;
+			z += cz;
+
+			final float
+				x1 = x * yawCos + y * yawSin,
+				y1 = y * yawCos - x * yawSin,
+				y2 = z * pitchCos - y1 * pitchSin,
+				z1 = y1 * pitchCos + z * pitchSin;
+
+			int viewX, viewY;
+
+			if (z1 < 50)
+			{
+				viewX = Integer.MIN_VALUE;
+				viewY = Integer.MIN_VALUE;
+			}
+			else
+			{
+				viewX = Math.round((viewportXMiddle + x1 * zoom3d / z1) + viewportXOffset);
+				viewY = Math.round((viewportYMiddle + y2 * zoom3d / z1) + viewportYOffset);
+			}
+
+			x2d[i] = viewX;
+			y2d[i] = viewY;
+		}
+	}
+
+	private static void modelToCanvasCpu(Client client, int end, int x3dCenter, int y3dCenter, int z3dCenter, int rotate, int[] x3d, int[] y3d, int[] z3d, int[] x2d, int[] y2d)
 	{
 		final int
 			cameraPitch = client.getCameraPitch(),
@@ -365,6 +445,20 @@ public class Perspective
 	}
 
 	/**
+	 * Calculates a tile polygon from offset worldToScreen() points.
+	 *
+	 * @param client the game client
+	 * @param localLocation local location of the tile
+	 * @param zOffset offset from ground plane
+	 * @return a {@link Polygon} on screen corresponding to the given
+	 * localLocation.
+	 */
+	public static Polygon getCanvasTilePoly(@Nonnull Client client, @Nonnull LocalPoint localLocation, int zOffset)
+	{
+		return getCanvasTileAreaPoly(client, localLocation, 1, 1, client.getPlane(), zOffset);
+	}
+
+	/**
 	 * Returns a polygon representing an area.
 	 *
 	 * @param client the game client
@@ -374,29 +468,36 @@ public class Perspective
 	 */
 	public static Polygon getCanvasTileAreaPoly(@Nonnull Client client, @Nonnull LocalPoint localLocation, int size)
 	{
-		final int plane = client.getPlane();
+		return getCanvasTileAreaPoly(client, localLocation, size, size, client.getPlane(), 0);
+	}
 
-		final int swX = localLocation.getX() - (size * LOCAL_TILE_SIZE / 2);
-		final int swY = localLocation.getY() - (size * LOCAL_TILE_SIZE / 2);
-
-		final int neX = localLocation.getX() + (size * LOCAL_TILE_SIZE / 2);
-		final int neY = localLocation.getY() + (size * LOCAL_TILE_SIZE / 2);
-
-		final int seX = swX;
-		final int seY = neY;
-
-		final int nwX = neX;
-		final int nwY = swY;
-
-		final byte[][][] tileSettings = client.getTileSettings();
-
-		final int sceneX = localLocation.getSceneX();
-		final int sceneY = localLocation.getSceneY();
-
-		if (sceneX < 0 || sceneY < 0 || sceneX >= SCENE_SIZE || sceneY >= SCENE_SIZE)
+	/**
+	 * Returns a polygon representing an area.
+	 *
+	 * @param client the game client
+	 * @param localLocation the center location of the AoE
+	 * @param sizeX the size of the area in tiles on the x axis
+	 * @param sizeY the size of the area in tiles on the y axis
+	 * @param plane the plane of the area
+	 * @param zOffset offset from ground plane
+	 * @return a polygon representing the tiles in the area
+	 */
+	public static Polygon getCanvasTileAreaPoly(
+		@Nonnull Client client,
+		@Nonnull LocalPoint localLocation,
+		int sizeX,
+		int sizeY,
+		int plane,
+		int zOffset)
+	{
+		if (!localLocation.isInScene())
 		{
 			return null;
 		}
+
+		final byte[][][] tileSettings = client.getTileSettings();
+		final int sceneX = localLocation.getSceneX();
+		final int sceneY = localLocation.getSceneY();
 
 		int tilePlane = plane;
 		if (plane < Constants.MAX_Z - 1 && (tileSettings[1][sceneX][sceneY] & TILE_FLAG_BRIDGE) == TILE_FLAG_BRIDGE)
@@ -404,10 +505,22 @@ public class Perspective
 			tilePlane = plane + 1;
 		}
 
-		final int swHeight = getHeight(client, swX, swY, tilePlane);
-		final int nwHeight = getHeight(client, nwX, nwY, tilePlane);
-		final int neHeight = getHeight(client, neX, neY, tilePlane);
-		final int seHeight = getHeight(client, seX, seY, tilePlane);
+		final int swX = localLocation.getX() - (sizeX * LOCAL_TILE_SIZE / 2);
+		final int swY = localLocation.getY() - (sizeY * LOCAL_TILE_SIZE / 2);
+
+		final int neX = localLocation.getX() + (sizeX * LOCAL_TILE_SIZE / 2);
+		final int neY = localLocation.getY() + (sizeY * LOCAL_TILE_SIZE / 2);
+
+		final int seX = swX;
+		final int seY = neY;
+
+		final int nwX = neX;
+		final int nwY = swY;
+
+		final int swHeight = getHeight(client, swX, swY, tilePlane) - zOffset;
+		final int nwHeight = getHeight(client, nwX, nwY, tilePlane) - zOffset;
+		final int neHeight = getHeight(client, neX, neY, tilePlane) - zOffset;
+		final int seHeight = getHeight(client, seX, seY, tilePlane) - zOffset;
 
 		Point p1 = localToCanvas(client, swX, swY, swHeight);
 		Point p2 = localToCanvas(client, nwX, nwY, nwHeight);
@@ -656,6 +769,7 @@ public class Perspective
 	{
 		int[] x2d = new int[m.getVerticesCount()];
 		int[] y2d = new int[m.getVerticesCount()];
+		final int[] faceColors3 = m.getFaceColors3();
 
 		Perspective.modelToCanvas(client,
 			m.getVerticesCount(),
@@ -667,9 +781,9 @@ public class Perspective
 		final int radius = 5;
 
 		int[][] tris = new int[][]{
-			m.getTrianglesX(),
-			m.getTrianglesY(),
-			m.getTrianglesZ()
+			m.getFaceIndices1(),
+			m.getFaceIndices2(),
+			m.getFaceIndices3()
 		};
 
 		int vpX1 = client.getViewportXOffset();
@@ -677,11 +791,16 @@ public class Perspective
 		int vpX2 = vpX1 + client.getViewportWidth();
 		int vpY2 = vpY1 + client.getViewportHeight();
 
-		List<RectangleUnion.Rectangle> rects = new ArrayList<>(m.getTrianglesCount());
+		List<RectangleUnion.Rectangle> rects = new ArrayList<>(m.getFaceCount());
 
 		nextTri:
-		for (int tri = 0; tri < m.getTrianglesCount(); tri++)
+		for (int tri = 0; tri < m.getFaceCount(); tri++)
 		{
+			if (faceColors3[tri] == -2)
+			{
+				continue;
+			}
+
 			int
 				minX = Integer.MAX_VALUE,
 				minY = Integer.MAX_VALUE,

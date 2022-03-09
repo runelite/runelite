@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * Copyright (c) 2018, PandahRS <https://github.com/PandahRS>
+ * Copyright (c) 2021, Jonathan Rousseau <https://github.com/JoRouss>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,6 +26,7 @@
  */
 package net.runelite.client.plugins.discord;
 
+import com.google.common.base.CharMatcher;
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
@@ -37,6 +39,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import javax.imageio.ImageIO;
+import javax.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -45,12 +48,9 @@ import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.StatChanged;
-import net.runelite.api.events.VarbitChanged;
-import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.discord.DiscordService;
 import net.runelite.client.discord.events.DiscordJoinGame;
-import net.runelite.client.discord.events.DiscordJoinRequest;
 import net.runelite.client.discord.events.DiscordReady;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
@@ -106,7 +106,11 @@ public class DiscordPlugin extends Plugin
 	@Inject
 	private OkHttpClient okHttpClient;
 
-	private Map<Skill, Integer> skillExp = new HashMap<>();
+	@Inject
+	@Named("runelite.discord.invite")
+	private String discordInvite;
+
+	private final Map<Skill, Integer> skillExp = new HashMap<>();
 	private NavigationButton discordButton;
 	private boolean loginFlag;
 
@@ -119,16 +123,17 @@ public class DiscordPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		final BufferedImage icon = ImageUtil.getResourceStreamFromClass(getClass(), "discord.png");
+		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "discord.png");
 
 		discordButton = NavigationButton.builder()
 			.tab(false)
 			.tooltip("Join Discord")
 			.icon(icon)
-			.onClick(() -> LinkBrowser.browse(RuneLiteProperties.getDiscordInvite()))
+			.onClick(() -> LinkBrowser.browse(discordInvite))
 			.build();
 
 		clientToolbar.addNavigation(discordButton);
+		resetState();
 		checkForGameStateUpdate();
 		checkForAreaUpdate();
 
@@ -144,7 +149,7 @@ public class DiscordPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		clientToolbar.removeNavigation(discordButton);
-		discordState.reset();
+		resetState();
 		partyService.changeParty(null);
 		wsClient.unregisterMessage(DiscordUserInfo.class);
 	}
@@ -155,6 +160,7 @@ public class DiscordPlugin extends Plugin
 		switch (event.getGameState())
 		{
 			case LOGIN_SCREEN:
+				resetState();
 				checkForGameStateUpdate();
 				return;
 			case LOGGING_IN:
@@ -164,13 +170,12 @@ public class DiscordPlugin extends Plugin
 				if (loginFlag)
 				{
 					loginFlag = false;
+					resetState();
 					checkForGameStateUpdate();
 				}
-
+				checkForAreaUpdate();
 				break;
 		}
-
-		checkForAreaUpdate();
 	}
 
 	@Subscribe
@@ -178,6 +183,7 @@ public class DiscordPlugin extends Plugin
 	{
 		if (event.getGroup().equalsIgnoreCase("discord"))
 		{
+			resetState();
 			checkForGameStateUpdate();
 			checkForAreaUpdate();
 		}
@@ -204,43 +210,14 @@ public class DiscordPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onVarbitChanged(VarbitChanged event)
-	{
-		if (!config.showRaidingActivity())
-		{
-			return;
-		}
-
-		final DiscordGameEventType discordGameEventType = DiscordGameEventType.fromVarbit(client);
-
-		if (discordGameEventType != null)
-		{
-			discordState.triggerEvent(discordGameEventType);
-		}
-	}
-
-	@Subscribe
 	public void onDiscordReady(DiscordReady event)
 	{
 		partyService.setUsername(event.getUsername() + "#" + event.getDiscriminator());
 	}
 
 	@Subscribe
-	public void onDiscordJoinRequest(DiscordJoinRequest request)
-	{
-		log.debug("Got discord join request {}", request);
-		if (partyService.isOwner() && partyService.getMembers().isEmpty())
-		{
-			// First join, join also yourself
-			partyService.changeParty(partyService.getLocalPartyId());
-			updatePresence();
-		}
-	}
-
-	@Subscribe
 	public void onDiscordJoinGame(DiscordJoinGame joinGame)
 	{
-		log.debug("Got discord join game {}", joinGame);
 		UUID partyId = UUID.fromString(joinGame.getJoinSecret());
 		partyService.changeParty(partyId);
 		updatePresence();
@@ -256,18 +233,32 @@ public class DiscordPlugin extends Plugin
 			return;
 		}
 
-		String url = "https://cdn.discordapp.com/avatars/" + event.getUserId() + "/" + event.getAvatarId() + ".png";
+		final CharMatcher matcher = CharMatcher.anyOf("abcdef0123456789");
+
+		// animated avatars contain a_ as prefix so we need to get rid of that first to check against matcher
+		if (!matcher.matchesAllOf(event.getUserId()) || !matcher.matchesAllOf(event.getAvatarId().replace("a_", "")))
+		{
+			// userid is actually a snowflake, but the matcher is sufficient
+			return;
+		}
+
+		final String url;
 
 		if (Strings.isNullOrEmpty(event.getAvatarId()))
 		{
 			final String[] split = memberById.getName().split("#", 2);
-
-			if (split.length == 2)
+			if (split.length != 2)
 			{
-				int disc = Integer.valueOf(split[1]);
-				int avatarId = disc % 5;
-				url = "https://cdn.discordapp.com/embed/avatars/" + avatarId + ".png";
+				return;
 			}
+
+			int disc = Integer.parseInt(split[1]);
+			int avatarId = disc % 5;
+			url = "https://cdn.discordapp.com/embed/avatars/" + avatarId + ".png";
+		}
+		else
+		{
+			url = "https://cdn.discordapp.com/avatars/" + event.getUserId() + "/" + event.getAvatarId() + ".png";
 		}
 
 		log.debug("Got user avatar {}", url);
@@ -287,7 +278,7 @@ public class DiscordPlugin extends Plugin
 			@Override
 			public void onResponse(Call call, Response response) throws IOException
 			{
-				try
+				try // NOPMD: UseTryWithResources
 				{
 					if (!response.isSuccessful())
 					{
@@ -300,7 +291,8 @@ public class DiscordPlugin extends Plugin
 					{
 						image = ImageIO.read(inputStream);
 					}
-					memberById.setAvatar(image);
+
+					partyService.setPartyMemberAvatar(memberById.getMemberId(), image);
 				}
 				finally
 				{
@@ -361,13 +353,21 @@ public class DiscordPlugin extends Plugin
 		discordState.refresh();
 	}
 
+	private void resetState()
+	{
+		discordState.reset();
+	}
+
 	private void checkForGameStateUpdate()
 	{
-		// Game state update does also full reset of discord state
-		discordState.reset();
-		discordState.triggerEvent(client.getGameState() == GameState.LOGGED_IN
-			? DiscordGameEventType.IN_GAME
-			: DiscordGameEventType.IN_MENU);
+		final boolean isLoggedIn = client.getGameState() == GameState.LOGGED_IN;
+
+		if (config.showMainMenu() || isLoggedIn)
+		{
+			discordState.triggerEvent(isLoggedIn
+					? DiscordGameEventType.IN_GAME
+					: DiscordGameEventType.IN_MENU);
+		}
 	}
 
 	private void checkForAreaUpdate()
@@ -435,6 +435,8 @@ public class DiscordPlugin extends Plugin
 			case CITIES: return config.showCityActivity();
 			case DUNGEONS: return config.showDungeonActivity();
 			case MINIGAMES: return config.showMinigameActivity();
+			case REGIONS: return config.showRegionsActivity();
+			case RAIDS: return config.showRaidingActivity();
 		}
 
 		return false;

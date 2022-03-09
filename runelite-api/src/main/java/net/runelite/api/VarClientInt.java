@@ -62,6 +62,11 @@ public enum VarClientInt
 
 	INVENTORY_TAB(171),
 
+	/**
+	 * time to block keypresses til
+	 */
+	BLOCK_KEYPRESS(187),
+
 	WORLD_MAP_SEARCH_FOCUSED(190);
 
 	private final int index;

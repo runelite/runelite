@@ -70,6 +70,10 @@ public class ObsidianSkin extends SubstanceSkin
 		defaultSchemeBundle.registerColorScheme(activeScheme, 0.6f,
 			ComponentState.DISABLED_SELECTED);
 
+		// Selected and rollover
+		defaultSchemeBundle.registerHighlightColorScheme(schemes.get("RuneLite Highlight"),
+			ComponentState.SELECTED, ComponentState.ROLLOVER_SELECTED, ComponentState.ROLLOVER_UNSELECTED);
+
 		// borders
 		final SubstanceColorScheme borderDisabledSelectedScheme = schemes
 			.get("RuneLite Selected Disabled Border");

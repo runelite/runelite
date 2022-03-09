@@ -63,7 +63,6 @@ public class ClueScrollOverlay extends OverlayPanel
 		item(EMERALD_LANTERN_9065),
 		item(MINING_HELMET),
 		item(FIREMAKING_CAPE),
-		item(FIREMAKING_CAPE_10659),
 		item(FIREMAKING_CAPET),
 		item(KANDARIN_HEADGEAR_1),
 		item(KANDARIN_HEADGEAR_2),
@@ -71,7 +70,6 @@ public class ClueScrollOverlay extends OverlayPanel
 		item(KANDARIN_HEADGEAR_4),
 		item(BRUMA_TORCH),
 		item(MAX_CAPE),
-		item(MAX_CAPE_13282),
 		item(MAX_CAPE_13342));
 
 	public static final Color TITLED_CONTENT_COLOR = new Color(190, 190, 190);

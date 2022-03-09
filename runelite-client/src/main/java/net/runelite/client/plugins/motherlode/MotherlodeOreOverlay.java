@@ -27,8 +27,12 @@ package net.runelite.client.plugins.motherlode;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
+import net.runelite.api.ItemID;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.components.ComponentOrientation;
+import net.runelite.client.ui.overlay.components.ImageComponent;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
@@ -37,14 +41,16 @@ public class MotherlodeOreOverlay extends OverlayPanel
 	private final MotherlodePlugin plugin;
 	private final MotherlodeSession motherlodeSession;
 	private final MotherlodeConfig config;
+	private final ItemManager itemManager;
 
 	@Inject
-	MotherlodeOreOverlay(MotherlodePlugin plugin, MotherlodeSession motherlodeSession, MotherlodeConfig config)
+	MotherlodeOreOverlay(MotherlodePlugin plugin, MotherlodeSession motherlodeSession, MotherlodeConfig config, ItemManager itemManager)
 	{
 		setPosition(OverlayPosition.TOP_LEFT);
 		this.plugin = plugin;
 		this.motherlodeSession = motherlodeSession;
 		this.config = config;
+		this.itemManager = itemManager;
 	}
 
 	@Override
@@ -71,54 +77,80 @@ public class MotherlodeOreOverlay extends OverlayPanel
 			return null;
 		}
 
-		panelComponent.getChildren().add(TitleComponent.builder().text("Ores found").build());
-
-		if (nuggetsFound > 0)
+		if (config.showLootIcons())
 		{
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Nuggets:")
-				.right(Integer.toString(nuggetsFound))
-				.build());
+			panelComponent.setOrientation(ComponentOrientation.HORIZONTAL);
+			if (nuggetsFound > 0)
+			{
+				panelComponent.getChildren().add(new ImageComponent(itemManager.getImage(ItemID.GOLDEN_NUGGET, nuggetsFound, true)));
+			}
+			if (coalFound > 0)
+			{
+				panelComponent.getChildren().add(new ImageComponent(itemManager.getImage(ItemID.COAL, coalFound, true)));
+			}
+			if (goldFound > 0)
+			{
+				panelComponent.getChildren().add(new ImageComponent(itemManager.getImage(ItemID.GOLD_ORE, goldFound, true)));
+			}
+			if (mithrilFound > 0)
+			{
+				panelComponent.getChildren().add(new ImageComponent(itemManager.getImage(ItemID.MITHRIL_ORE, mithrilFound, true)));
+			}
+			if (adamantiteFound > 0)
+			{
+				panelComponent.getChildren().add(new ImageComponent(itemManager.getImage(ItemID.ADAMANTITE_ORE, adamantiteFound, true)));
+			}
+			if (runiteFound > 0)
+			{
+				panelComponent.getChildren().add(new ImageComponent(itemManager.getImage(ItemID.RUNITE_ORE, runiteFound, true)));
+			}
 		}
-
-		if (coalFound > 0)
+		else
 		{
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Coal:")
-				.right(Integer.toString(coalFound))
-				.build());
-		}
-
-		if (goldFound > 0)
-		{
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Gold:")
-				.right(Integer.toString(goldFound))
-				.build());
-		}
-
-		if (mithrilFound > 0)
-		{
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Mithril:")
-				.right(Integer.toString(mithrilFound))
-				.build());
-		}
-
-		if (adamantiteFound > 0)
-		{
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Adamantite:")
-				.right(Integer.toString(adamantiteFound))
-				.build());
-		}
-
-		if (runiteFound > 0)
-		{
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Runite:")
-				.right(Integer.toString(runiteFound))
-				.build());
+			panelComponent.setOrientation(ComponentOrientation.VERTICAL);
+			panelComponent.getChildren().add(TitleComponent.builder().text("Ores found").build());
+			if (nuggetsFound > 0)
+			{
+				panelComponent.getChildren().add(LineComponent.builder()
+					.left("Nuggets:")
+					.right(Integer.toString(nuggetsFound))
+					.build());
+			}
+			if (coalFound > 0)
+			{
+				panelComponent.getChildren().add(LineComponent.builder()
+					.left("Coal:")
+					.right(Integer.toString(coalFound))
+					.build());
+			}
+			if (goldFound > 0)
+			{
+				panelComponent.getChildren().add(LineComponent.builder()
+					.left("Gold:")
+					.right(Integer.toString(goldFound))
+					.build());
+			}
+			if (mithrilFound > 0)
+			{
+				panelComponent.getChildren().add(LineComponent.builder()
+					.left("Mithril:")
+					.right(Integer.toString(mithrilFound))
+					.build());
+			}
+			if (adamantiteFound > 0)
+			{
+				panelComponent.getChildren().add(LineComponent.builder()
+					.left("Adamantite:")
+					.right(Integer.toString(adamantiteFound))
+					.build());
+			}
+			if (runiteFound > 0)
+			{
+				panelComponent.getChildren().add(LineComponent.builder()
+					.left("Runite:")
+					.right(Integer.toString(runiteFound))
+					.build());
+			}
 		}
 
 		return super.render(graphics);

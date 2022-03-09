@@ -61,7 +61,7 @@ final class UnitFormatter extends JFormattedTextField.AbstractFormatter
 		}
 		catch (NumberFormatException e)
 		{
-			throw new ParseException(trimmedText + " is not an integer.", 0);
+			throw new ParseException(trimmedText + " is not an integer.", 0); // NOPMD: PreserveStackTrace
 		}
 	}
 

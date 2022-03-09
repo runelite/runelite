@@ -44,7 +44,6 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.NPC;
 import net.runelite.api.NullNpcID;
 import net.runelite.api.Player;
-import net.runelite.api.Skill;
 import static net.runelite.api.Skill.AGILITY;
 import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
@@ -159,7 +158,7 @@ public class AgilityPlugin extends Plugin
 	{
 		overlayManager.add(agilityOverlay);
 		overlayManager.add(lapCounterOverlay);
-		agilityLevel = client.getBoostedSkillLevel(Skill.AGILITY);
+		agilityLevel = client.getBoostedSkillLevel(AGILITY);
 	}
 
 	@Override
@@ -435,7 +434,7 @@ public class AgilityPlugin extends Plugin
 			return;
 		}
 
-		if (Obstacles.COURSE_OBSTACLE_IDS.contains(newObject.getId()) ||
+		if (Obstacles.OBSTACLE_IDS.contains(newObject.getId()) ||
 			Obstacles.PORTAL_OBSTACLE_IDS.contains(newObject.getId()) ||
 			(Obstacles.TRAP_OBSTACLE_IDS.contains(newObject.getId())
 				&& Obstacles.TRAP_OBSTACLE_REGIONS.contains(newObject.getWorldLocation().getRegionID())) ||
@@ -453,6 +452,11 @@ public class AgilityPlugin extends Plugin
 			// Find the closest shortcut to this object
 			for (AgilityShortcut shortcut : Obstacles.SHORTCUT_OBSTACLE_IDS.get(newObject.getId()))
 			{
+				if (!shortcut.matches(newObject))
+				{
+					continue;
+				}
+
 				if (shortcut.getWorldLocation() == null)
 				{
 					closestShortcut = shortcut;

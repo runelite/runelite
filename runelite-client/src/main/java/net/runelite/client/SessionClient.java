@@ -28,8 +28,10 @@ import com.google.gson.JsonParseException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
-import lombok.AllArgsConstructor;
+import javax.inject.Inject;
+import javax.inject.Named;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
@@ -38,14 +40,21 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
-@AllArgsConstructor
 class SessionClient
 {
-	private final OkHttpClient okHttpClient;
+	private final OkHttpClient client;
+	private final HttpUrl sessionUrl;
+
+	@Inject
+	private SessionClient(OkHttpClient client, @Named("runelite.session") HttpUrl sessionUrl)
+	{
+		this.client = client;
+		this.sessionUrl = sessionUrl;
+	}
 
 	UUID open() throws IOException
 	{
-		HttpUrl url = RuneLiteAPI.getSessionBase().newBuilder()
+		HttpUrl url = sessionUrl.newBuilder()
 			.build();
 
 		Request request = new Request.Builder()
@@ -53,12 +62,12 @@ class SessionClient
 			.url(url)
 			.build();
 
-		try (Response response = okHttpClient.newCall(request).execute())
+		try (Response response = client.newCall(request).execute())
 		{
 			ResponseBody body = response.body();
-			
+
 			InputStream in = body.byteStream();
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in), UUID.class);
+			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), UUID.class);
 		}
 		catch (JsonParseException | IllegalArgumentException ex) // UUID.fromString can throw IllegalArgumentException
 		{
@@ -68,7 +77,7 @@ class SessionClient
 
 	void ping(UUID uuid, boolean loggedIn) throws IOException
 	{
-		HttpUrl url = RuneLiteAPI.getSessionBase().newBuilder()
+		HttpUrl url = sessionUrl.newBuilder()
 			.addPathSegment("ping")
 			.addQueryParameter("session", uuid.toString())
 			.addQueryParameter("logged-in", String.valueOf(loggedIn))
@@ -79,7 +88,7 @@ class SessionClient
 			.url(url)
 			.build();
 
-		try (Response response = okHttpClient.newCall(request).execute())
+		try (Response response = client.newCall(request).execute())
 		{
 			if (!response.isSuccessful())
 			{
@@ -90,7 +99,7 @@ class SessionClient
 
 	void delete(UUID uuid) throws IOException
 	{
-		HttpUrl url = RuneLiteAPI.getSessionBase().newBuilder()
+		HttpUrl url = sessionUrl.newBuilder()
 			.addQueryParameter("session", uuid.toString())
 			.build();
 
@@ -99,6 +108,6 @@ class SessionClient
 			.url(url)
 			.build();
 
-		okHttpClient.newCall(request).execute().close();
+		client.newCall(request).execute().close();
 	}
 }

@@ -28,18 +28,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 import javax.annotation.Nullable;
+import lombok.AccessLevel;
+import lombok.Getter;
 import okhttp3.HttpUrl;
 
 public class RuneLiteProperties
 {
-	private static final String RUNELITE_TITLE = "runelite.title";
 	private static final String RUNELITE_VERSION = "runelite.version";
-	private static final String RUNESCAPE_VERSION = "runescape.version";
-	private static final String DISCORD_APP_ID = "runelite.discord.appid";
+	private static final String RUNELITE_COMMIT = "runelite.commit";
+	private static final String RUNELITE_DIRTY = "runelite.dirty";
 	private static final String DISCORD_INVITE = "runelite.discord.invite";
-	private static final String GITHUB_LINK = "runelite.github.link";
-	private static final String WIKI_LINK = "runelite.wiki.link";
-	private static final String PATREON_LINK = "runelite.patreon.link";
 	private static final String LAUNCHER_VERSION_PROPERTY = "runelite.launcher.version";
 	private static final String INSECURE_SKIP_TLS_VERIFICATION_PROPERTY = "runelite.insecure-skip-tls-verification";
 	private static final String TROUBLESHOOTING_LINK = "runelite.wiki.troubleshooting.link";
@@ -49,8 +47,10 @@ public class RuneLiteProperties
 	private static final String JAV_CONFIG_BACKUP = "runelite.jav_config_backup";
 	private static final String PLUGINHUB_BASE = "runelite.pluginhub.url";
 	private static final String PLUGINHUB_VERSION = "runelite.pluginhub.version";
-	private static final String IMGUR_CLIENT_ID = "runelite.imgur.client.id";
+	private static final String API_BASE = "runelite.api.base";
+	private static final String RUNELITE_CONFIG = "runelite.config";
 
+	@Getter(AccessLevel.PACKAGE)
 	private static final Properties properties = new Properties();
 
 	static
@@ -65,44 +65,24 @@ public class RuneLiteProperties
 		}
 	}
 
-	public static String getTitle()
-	{
-		return properties.getProperty(RUNELITE_TITLE);
-	}
-
 	public static String getVersion()
 	{
 		return properties.getProperty(RUNELITE_VERSION);
 	}
 
-	public static String getRunescapeVersion()
+	public static String getCommit()
 	{
-		return properties.getProperty(RUNESCAPE_VERSION);
+		return properties.getProperty(RUNELITE_COMMIT);
 	}
 
-	public static String getDiscordAppId()
+	public static boolean isDirty()
 	{
-		return properties.getProperty(DISCORD_APP_ID);
+		return Boolean.parseBoolean(properties.getProperty(RUNELITE_DIRTY));
 	}
 
 	public static String getDiscordInvite()
 	{
 		return properties.getProperty(DISCORD_INVITE);
-	}
-
-	public static String getGithubLink()
-	{
-		return properties.getProperty(GITHUB_LINK);
-	}
-
-	public static String getWikiLink()
-	{
-		return properties.getProperty(WIKI_LINK);
-	}
-
-	public static String getPatreonLink()
-	{
-		return properties.getProperty(PATREON_LINK);
 	}
 
 	@Nullable
@@ -147,8 +127,13 @@ public class RuneLiteProperties
 		return HttpUrl.parse(properties.get(PLUGINHUB_BASE) + "/" + version);
 	}
 
-	public static String getImgurClientId()
+	public static String getApiBase()
 	{
-		return properties.getProperty(IMGUR_CLIENT_ID);
+		return properties.getProperty(API_BASE);
+	}
+
+	public static String getRuneLiteConfig()
+	{
+		return properties.getProperty(RUNELITE_CONFIG);
 	}
 }

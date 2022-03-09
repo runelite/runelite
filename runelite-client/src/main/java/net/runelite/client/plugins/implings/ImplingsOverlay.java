@@ -28,13 +28,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
-import java.util.List;
 import javax.inject.Inject;
-import net.runelite.api.Actor;
 import net.runelite.api.Client;
-import net.runelite.api.NPC;
-import net.runelite.api.Point;
 import net.runelite.api.Perspective;
+import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
@@ -42,10 +39,7 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
-/**
- * @author robin
- */
-public class ImplingsOverlay extends Overlay
+class ImplingsOverlay extends Overlay
 {
 	private final Client client;
 	private final ImplingsConfig config;
@@ -64,25 +58,6 @@ public class ImplingsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		List<NPC> implings = plugin.getImplings();
-
-		if (implings.isEmpty())
-		{
-			return null;
-		}
-
-		for (NPC imp : implings)
-		{
-			Color color = plugin.npcToColor(imp);
-			if (!plugin.showNpc(imp) || color == null)
-			{
-				continue;
-			}
-
-			drawImp(graphics, imp, imp.getName(), color);
-		}
-
-		//Draw static spawns
 		if (config.showSpawn())
 		{
 			for (ImplingSpawn spawn : ImplingSpawn.values())
@@ -126,20 +101,4 @@ public class ImplingsOverlay extends Overlay
 			OverlayUtil.renderTextLocation(graphics, textPoint, text, color);
 		}
 	}
-
-	private void drawImp(Graphics2D graphics, Actor actor, String text, Color color)
-	{
-		Polygon poly = actor.getCanvasTilePoly();
-		if (poly != null)
-		{
-			OverlayUtil.renderPolygon(graphics, poly, color);
-		}
-
-		Point textLocation = actor.getCanvasTextLocation(graphics, text, actor.getLogicalHeight());
-		if (textLocation != null)
-		{
-			OverlayUtil.renderTextLocation(graphics, textLocation, text, color);
-		}
-	}
-
 }

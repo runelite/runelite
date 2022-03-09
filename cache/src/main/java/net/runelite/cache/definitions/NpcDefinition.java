@@ -64,4 +64,5 @@ public class NpcDefinition
 	public boolean rotationFlag = true;
 	public boolean isPet;
 	public Map<Integer, Object> params;
+	public int category;
 }

@@ -49,6 +49,7 @@ public class ModifierlessKeybind extends Keybind
 	 * KeyReleased event this returns if the event is this hotkey being
 	 * released
 	 */
+	@Override
 	public boolean matches(KeyEvent e)
 	{
 		return matches(e, true);

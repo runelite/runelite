@@ -81,7 +81,7 @@ public interface BoostsConfig extends Config
 
 	@ConfigItem(
 		keyName = "displayNextBuffChange",
-		name = "Display next buff change",
+		name = "Next buff change",
 		description = "Configures whether or not to display when the next buffed stat change will be",
 		position = 4
 	)
@@ -92,7 +92,7 @@ public interface BoostsConfig extends Config
 
 	@ConfigItem(
 		keyName = "displayNextDebuffChange",
-		name = "Display next debuff change",
+		name = "Next debuff change",
 		description = "Configures whether or not to display when the next debuffed stat change will be",
 		position = 5
 	)
@@ -103,7 +103,7 @@ public interface BoostsConfig extends Config
 
 	@ConfigItem(
 		keyName = "boostThreshold",
-		name = "Boost amount threshold",
+		name = "Boost threshold",
 		description = "The threshold at which boosted levels will be displayed in a different color. A value of 0 will disable the feature.",
 		position = 6
 	)

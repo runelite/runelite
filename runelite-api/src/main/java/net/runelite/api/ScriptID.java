@@ -40,12 +40,21 @@ public final class ScriptID
 	/**
 	 * Sends a chat message
 	 * <ul>
-	 * <li> int (byte) Flags </li>
 	 * <li> String Message to send </li>
+	 * <li> int modes </li>
+	 * <li> int (clan type) </li>
+	 * <li> int (boolean) use target</li>
+	 * <li> int set target </li>
 	 * </ul>
 	 */
-	@ScriptArguments(integer = 1, string = 1)
-	public static final int CHATBOX_INPUT = 96;
+	@ScriptArguments(integer = 4, string = 1)
+	public static final int CHAT_SEND = 5517;
+
+	/**
+	 * Rebuilds the chatbox and the pmbox
+	 */
+	@ScriptArguments()
+	public static final int SPLITPM_CHANGED = 83;
 
 	/**
 	 * Rebuilds the chatbox
@@ -78,20 +87,11 @@ public final class ScriptID
 	 * <ul>
 	 * <li> int (boolean) Clear the current text </li>
 	 * <li> int (boolean) Restore to chat view </li>
+	 * <li> int (boolean) Submit close to server </li>
 	 * </ul>
 	 */
-	@ScriptArguments(integer = 2)
+	@ScriptArguments(integer = 3)
 	public static final int MESSAGE_LAYER_CLOSE = 299;
-
-	/**
-	 * Sets the background for sound option bars
-	 * <ul>
-	 * <li> int  Value of the slider (0-4) </li>
-	 * <li> int (WidgetID) * 5, segments of the slider </li>
-	 * </ul>
-	 */
-	@ScriptArguments(integer = 6)
-	public static final int OPTIONS_ALLSOUNDS = 358;
 
 	/**
 	 * Readies the chatbox panel for things like the chatbox input
@@ -134,7 +134,7 @@ public final class ScriptID
 	 * </ul>
 	 */
 	@ScriptArguments(integer = 1)
-	public static final int QUESTLIST_PROGRESS = 2267;
+	public static final int QUEST_STATUS_GET = 4029;
 
 	/**
 	 * Updates the Diary/Quest interface's scrollbar
@@ -191,7 +191,7 @@ public final class ScriptID
 	 * </ul>
 	 */
 	@ScriptArguments(string = 1)
-	public static final int FRIENDS_CHAT_SEND_KICK = 215;
+	public static final int FRIENDS_CHAT_SEND_KICK = 3764;
 
 	/**
 	 * Builds the widget that holds all of the players inside a friends chat
@@ -200,9 +200,15 @@ public final class ScriptID
 	public static final int FRIENDS_CHAT_CHANNEL_REBUILD = 1658;
 
 	/**
+	 * Builds the widget that holds all of the players inside a clan chat
+	 */
+	@ScriptArguments(integer = 7)
+	public static final int CLAN_SIDEPANEL_DRAW = 4396;
+
+	/**
 	 * Builds the widget for making an offer in Grand Exchange
 	 */
-	@ScriptArguments(integer = 15)
+	@ScriptArguments(integer = 16)
 	public static final int GE_OFFERS_SETUP_BUILD = 779;
 
 	/**
@@ -299,4 +305,89 @@ public final class ScriptID
 
 	@ScriptArguments()
 	public static final int BANKMAIN_SEARCHING = 514;
+
+	/**
+	 * Toggles the bank search
+	 *
+	 * <ul>
+	 * <li>int 1 (must be 1 or script immediately returns)</li>
+	 * </ul>
+	 *
+	 * Also takes 17 widget IDs corresponding to various bank widgets.
+	 * These can be retrieved from the onInvTransmitListener of BANK_ITEM_CONTAINER. Note that this array also
+	 * contains the script ID for the bank layout script in the first index
+	 */
+	@ScriptArguments(integer = 18)
+	public static final int BANKMAIN_SEARCH_TOGGLE = 281;
+
+	/**
+	 * Chooses the click handler for a {@link ParamID#SETTING_SLIDER_CUSTOM_ONOP} = 1 settings slider
+	 *
+	 * The active widget is set to the track created by {@link ParamID#SETTING_FOREGROUND_CLICKZONE}
+	 * <ul>
+	 * <li>int {@link ParamID#SETTING_ID}</li>
+	 * <li>int (WidgetID) Slider handle ID</li>
+	 * <li>int (widget index) Slider handle index</li>
+	 * <li>int track width</li>
+	 * <li>int y offset</li>
+	 * <li>int x offset</li>
+	 * <li>int (WidgetID) drag parent</li>
+	 * </ul>
+	 */
+	@ScriptArguments(integer = 8, string = 1)
+	public static final int SETTINGS_SLIDER_CHOOSE_ONOP = 3885;
+
+	/**
+	 * Position and size the wiki button, as well as hide/unhide it
+	 */
+	@ScriptArguments(integer = 4)
+	public static final int WIKI_ICON_UPDATE = 3306;
+
+	/**
+	 * Builds a line in the chatbox when there is no username: prefix, such as 
+	 * a game or system message
+	 */
+	@ScriptArguments(integer = 11, string = 1)
+	public static final int CHATBOX_BUILD_LINE_WITHOUT_USER = 199;
+	
+	/**
+	 * Builds a line in the chatbox when there is a username: prefix
+	 */
+	@ScriptArguments(integer = 11, string = 2)
+	public static final int CHATBOX_BUILD_LINE_WITH_USER = 203;
+
+	/**
+	 * Builds a line in the chatbox when it from a clan
+	 */
+	@ScriptArguments(integer = 14, string = 3)
+	public static final int CHATBOX_BUILD_LINE_WITH_CLAN = 4483;
+
+	/**
+	 * Drag callback for the camera zoom slider in the options side panel.
+	 */
+	@ScriptArguments(integer = 3)
+	public static final int ZOOM_SLIDER_ONDRAG = 833;
+
+	/**
+	 * Drag callback for the camera zoom slider in the settings.
+	 */
+	@ScriptArguments(integer = 6)
+	public static final int SETTINGS_ZOOM_SLIDER_ONDRAG = 3896;
+
+	@ScriptArguments(integer = 6)
+	public static final int COLLECTION_DRAW_LIST = 2730;
+
+	/**
+	 * Draws the active notification in increasing sizes (increasing horizontally first, then vertically) to show a
+	 * starting animation.
+	 */
+	@ScriptArguments(integer = 3)
+	public static final int NOTIFICATION_START = 3346;
+
+	/**
+	 * Draws the active notification in full size for a specified number of client ticks. In essence, delayed between
+	 * the open and close animations.
+	 */
+	@ScriptArguments(integer = 1)
+	public static final int NOTIFICATION_DELAY = 3347;
 }

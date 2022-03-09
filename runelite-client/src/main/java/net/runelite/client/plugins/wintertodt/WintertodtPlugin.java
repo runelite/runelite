@@ -34,6 +34,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import static net.runelite.api.AnimationID.CONSTRUCTION;
+import static net.runelite.api.AnimationID.CONSTRUCTION_IMCANDO;
 import static net.runelite.api.AnimationID.FIREMAKING;
 import static net.runelite.api.AnimationID.FLETCHING_BOW_CUTTING;
 import static net.runelite.api.AnimationID.IDLE;
@@ -44,12 +45,14 @@ import static net.runelite.api.AnimationID.WOODCUTTING_BLACK;
 import static net.runelite.api.AnimationID.WOODCUTTING_BRONZE;
 import static net.runelite.api.AnimationID.WOODCUTTING_CRYSTAL;
 import static net.runelite.api.AnimationID.WOODCUTTING_DRAGON;
+import static net.runelite.api.AnimationID.WOODCUTTING_DRAGON_OR;
 import static net.runelite.api.AnimationID.WOODCUTTING_GILDED;
 import static net.runelite.api.AnimationID.WOODCUTTING_INFERNAL;
 import static net.runelite.api.AnimationID.WOODCUTTING_IRON;
 import static net.runelite.api.AnimationID.WOODCUTTING_MITHRIL;
 import static net.runelite.api.AnimationID.WOODCUTTING_RUNE;
 import static net.runelite.api.AnimationID.WOODCUTTING_STEEL;
+import static net.runelite.api.AnimationID.WOODCUTTING_TRAILBLAZER;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
@@ -66,7 +69,6 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.Notifier;
-import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
@@ -101,9 +103,6 @@ public class WintertodtPlugin extends Plugin
 
 	@Inject
 	private WintertodtConfig config;
-
-	@Inject
-	private ChatMessageManager chatMessageManager;
 
 	@Getter(AccessLevel.PACKAGE)
 	private WintertodtActivity currentActivity = WintertodtActivity.IDLE;
@@ -257,6 +256,12 @@ public class WintertodtPlugin extends Plugin
 		MessageNode messageNode = chatMessage.getMessageNode();
 		final WintertodtInterruptType interruptType;
 
+		if (messageNode.getValue().startsWith("You carefully fletch the root"))
+		{
+			setActivity(WintertodtActivity.FLETCHING);
+			return;
+		}
+
 		if (messageNode.getValue().startsWith("The cold of"))
 		{
 			interruptType = WintertodtInterruptType.COLD;
@@ -305,7 +310,6 @@ public class WintertodtPlugin extends Plugin
 
 				// Recolor message for damage notification
 				messageNode.setRuneLiteFormatMessage(ColorUtil.wrapWithColorTag(messageNode.getValue(), config.damageNotificationColor()));
-				chatMessageManager.update(messageNode);
 				client.refreshChat();
 
 				// all actions except woodcutting and idle are interrupted from damage
@@ -413,9 +417,11 @@ public class WintertodtPlugin extends Plugin
 			case WOODCUTTING_RUNE:
 			case WOODCUTTING_GILDED:
 			case WOODCUTTING_DRAGON:
+			case WOODCUTTING_DRAGON_OR:
 			case WOODCUTTING_INFERNAL:
 			case WOODCUTTING_3A_AXE:
 			case WOODCUTTING_CRYSTAL:
+			case WOODCUTTING_TRAILBLAZER:
 				setActivity(WintertodtActivity.WOODCUTTING);
 				break;
 
@@ -432,6 +438,7 @@ public class WintertodtPlugin extends Plugin
 				break;
 
 			case CONSTRUCTION:
+			case CONSTRUCTION_IMCANDO:
 				setActivity(WintertodtActivity.FIXING_BRAZIER);
 				break;
 		}

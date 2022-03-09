@@ -28,10 +28,10 @@ import com.google.common.base.Strings;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Singleton;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.discord.events.DiscordDisconnected;
 import net.runelite.client.discord.events.DiscordErrored;
 import net.runelite.client.discord.events.DiscordJoinGame;
@@ -50,6 +50,7 @@ public class DiscordService implements AutoCloseable
 {
 	private final EventBus eventBus;
 	private final ScheduledExecutorService executorService;
+	private final String discordAppId;
 	private final DiscordRPC discordRPC;
 
 	// Hold a reference to the event handlers to prevent the garbage collector from deleting them
@@ -61,11 +62,14 @@ public class DiscordService implements AutoCloseable
 	@Inject
 	private DiscordService(
 		final EventBus eventBus,
-		final ScheduledExecutorService executorService)
+		final ScheduledExecutorService executorService,
+		@Named("runelite.discord.appid") final String discordAppId
+	)
 	{
 
 		this.eventBus = eventBus;
 		this.executorService = executorService;
+		this.discordAppId = discordAppId;
 
 		DiscordRPC discordRPC = null;
 		DiscordEventHandlers discordEventHandlers = null;
@@ -103,7 +107,7 @@ public class DiscordService implements AutoCloseable
 		discordEventHandlers.joinGame = this::joinGame;
 		discordEventHandlers.spectateGame = this::spectateGame;
 		discordEventHandlers.joinRequest = this::joinRequest;
-		discordRPC.Discord_Initialize(RuneLiteProperties.getDiscordAppId(), discordEventHandlers, true, null);
+		discordRPC.Discord_Initialize(discordAppId, discordEventHandlers, true, null);
 		executorService.scheduleAtFixedRate(discordRPC::Discord_RunCallbacks, 0, 2, TimeUnit.SECONDS);
 	}
 
@@ -182,12 +186,15 @@ public class DiscordService implements AutoCloseable
 	 *
 	 * @param userId The id of the user to respond to
 	 * @param reply  The reply type
+	 * @see DiscordRPC#DISCORD_REPLY_NO
+	 * @see DiscordRPC#DISCORD_REPLY_YES
+	 * @see DiscordRPC#DISCORD_REPLY_IGNORE
 	 */
-	public void respondToRequest(String userId, DiscordReplyType reply)
+	public void respondToRequest(String userId, int reply)
 	{
 		if (discordRPC != null)
 		{
-			discordRPC.Discord_Respond(userId, reply.ordinal());
+			discordRPC.Discord_Respond(userId, reply);
 		}
 	}
 
@@ -204,6 +211,7 @@ public class DiscordService implements AutoCloseable
 
 	private void disconnected(int errorCode, String message)
 	{
+		log.debug("Discord disconnected {}: {}", errorCode, message);
 		eventBus.post(new DiscordDisconnected(errorCode, message));
 	}
 
@@ -215,16 +223,19 @@ public class DiscordService implements AutoCloseable
 
 	private void joinGame(String joinSecret)
 	{
+		log.debug("Discord join game: {}", joinSecret);
 		eventBus.post(new DiscordJoinGame(joinSecret));
 	}
 
 	private void spectateGame(String spectateSecret)
 	{
+		log.debug("Discord spectate game: {}", spectateSecret);
 		eventBus.post(new DiscordSpectateGame(spectateSecret));
 	}
 
 	private void joinRequest(DiscordUser user)
 	{
+		log.debug("Discord join request: {}", user);
 		eventBus.post(new DiscordJoinRequest(
 			user.userId,
 			user.username,

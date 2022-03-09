@@ -24,10 +24,10 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues;
 
-import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ImmutableList;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.util.Set;
+import java.util.List;
 import lombok.Getter;
 import static net.runelite.api.ItemID.*;
 import net.runelite.api.ObjectComposition;
@@ -58,7 +58,7 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 	public static final String WIZARDS_TOWER_DIS = "On the south side of the Wizard's Tower (DIS)";
 	public static final String SOUTH_OF_DRAYNOR_BANK = "South of Draynor Village Bank";
 
-	private static final Set<MapClue> CLUES = ImmutableSet.of(
+	private static final List<MapClue> CLUES = ImmutableList.of(
 		new MapClue(CLUE_SCROLL_EASY_12179, new WorldPoint(3300, 3291, 0), "Al Kharid mine"),
 		new MapClue(CLUE_SCROLL_EASY_2713, new WorldPoint(3166, 3361, 0), CHAMPIONS_GUILD),
 		new MapClue(CLUE_SCROLL_EASY_2716, new WorldPoint(3290, 3374, 0), VARROCK_EAST_MINE),
@@ -78,8 +78,7 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 		new MapClue(CLUE_SCROLL_MEDIUM_7292, new WorldPoint(2578, 3597, 0), "South-east of the Lighthouse. Fairy ring ALP"),
 		new MapClue(CLUE_SCROLL_MEDIUM_7294, new WorldPoint(2666, 3562, 0), "Between Seers' Village and Rellekka. South-west of Fairy ring CJR"),
 		new MapClue(CLUE_SCROLL_HARD, new WorldPoint(3309, 3503, 0), CRATE_2620, "A crate in the Lumber Yard, north-east of Varrock."),
-		new MapClue(CLUE_SCROLL_HARD_2729, new WorldPoint(3190, 3963, 0), "Behind the Magic axe hut in level 56 Wilderness."),
-		new MapClue(CLUE_SCROLL_HARD_3520, new WorldPoint(2615, 3078, 0), "Yanille anvils, south of the bank."),
+		new MapClue(CLUE_SCROLL_HARD_3520, new WorldPoint(2615, 3078, 0), "Yanille anvils, south of the bank. You can dig from inside the building."),
 		new MapClue(CLUE_SCROLL_HARD_3522, new WorldPoint(2488, 3308, 0), "In the western section of West Ardougne."),
 		new MapClue(CLUE_SCROLL_HARD_3524, new WorldPoint(2457, 3182, 0), CRATE_18506, "In a crate by the stairs to the Observatory Dungeon."),
 		new MapClue(CLUE_SCROLL_HARD_3525, new WorldPoint(3026, 3628, 0), CRATE_354, "In a crate at the Dark Warriors' Fortress in level 14 Wilderness."),
@@ -90,7 +89,9 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 		new MapClue(CLUE_SCROLL_ELITE_19783, new WorldPoint(2202, 3062, 0), "Zul-Andra. Fairy ring BJS"),
 		new MapClue(CLUE_SCROLL_ELITE_19784, new WorldPoint(1815, 3852, 0), "At the Soul Altar, north-east of the Arceuus essence mine."),
 		new MapClue(CLUE_SCROLL_ELITE_19785, new WorldPoint(3538, 3208, 0), "East of Burgh de Rott."),
-		new MapClue(CLUE_SCROLL_ELITE_19786, new WorldPoint(2703, 2716, 0), CRATE_6616, "The crate in south-western Ape Atoll")
+		new MapClue(CLUE_SCROLL_ELITE_19786, new WorldPoint(2703, 2716, 0), CRATE_6616, "The crate in south-western Ape Atoll"),
+		new MapClue(TREASURE_SCROLL_23068, new WorldPoint(3203, 3213, 0), "Behind Lumbridge Castle, just outside the kitchen door"),
+		new MapClue(MYSTERIOUS_ORB_23069, new WorldPoint(3108, 3262, 0), "South-west of the wheat field east of Draynor Village.")
 	);
 
 	private final int itemId;
@@ -208,6 +209,7 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 		return null;
 	}
 
+	@Override
 	public int[] getObjectIds()
 	{
 		return new int[] {objectId};

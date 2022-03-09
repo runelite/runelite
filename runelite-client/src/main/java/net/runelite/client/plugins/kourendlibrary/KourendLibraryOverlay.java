@@ -127,7 +127,8 @@ class KourendLibraryOverlay extends Overlay
 					bookIsKnown = true;
 				}
 
-				if (book == Book.VARLAMORE_ENVOY && config.hideVarlamoreEnvoy())
+				if ((book == Book.VARLAMORE_ENVOY && !plugin.showVarlamoreEnvoy())
+					|| (book != null && book.isDarkManuscript() && config.hideDarkManuscript()))
 				{
 					continue;
 				}

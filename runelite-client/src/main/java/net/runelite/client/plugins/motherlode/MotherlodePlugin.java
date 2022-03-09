@@ -49,6 +49,7 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
+import static net.runelite.api.ObjectID.BROKEN_STRUT;
 import static net.runelite.api.ObjectID.ORE_VEIN_26661;
 import static net.runelite.api.ObjectID.ORE_VEIN_26662;
 import static net.runelite.api.ObjectID.ORE_VEIN_26663;
@@ -109,7 +110,7 @@ public class MotherlodePlugin extends Plugin
 	private MotherlodeOverlay overlay;
 
 	@Inject
-	private MotherlodeRocksOverlay rocksOverlay;
+	private MotherlodeSceneOverlay sceneOverlay;
 
 	@Inject
 	private MotherlodeSackOverlay motherlodeSackOverlay;
@@ -148,6 +149,8 @@ public class MotherlodePlugin extends Plugin
 	private final Set<WallObject> veins = new HashSet<>();
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<GameObject> rocks = new HashSet<>();
+	@Getter(AccessLevel.PACKAGE)
+	private final Set<GameObject> brokenStruts = new HashSet<>();
 
 	@Provides
 	MotherlodeConfig getConfig(ConfigManager configManager)
@@ -159,7 +162,7 @@ public class MotherlodePlugin extends Plugin
 	protected void startUp()
 	{
 		overlayManager.add(overlay);
-		overlayManager.add(rocksOverlay);
+		overlayManager.add(sceneOverlay);
 		overlayManager.add(motherlodeGemOverlay);
 		overlayManager.add(motherlodeOreOverlay);
 		overlayManager.add(motherlodeSackOverlay);
@@ -176,12 +179,13 @@ public class MotherlodePlugin extends Plugin
 	protected void shutDown()
 	{
 		overlayManager.remove(overlay);
-		overlayManager.remove(rocksOverlay);
+		overlayManager.remove(sceneOverlay);
 		overlayManager.remove(motherlodeGemOverlay);
 		overlayManager.remove(motherlodeOreOverlay);
 		overlayManager.remove(motherlodeSackOverlay);
 		veins.clear();
 		rocks.clear();
+		brokenStruts.clear();
 
 		Widget sack = client.getWidget(WidgetInfo.MOTHERLODE_MINE);
 
@@ -345,11 +349,7 @@ public class MotherlodePlugin extends Plugin
 			return;
 		}
 
-		GameObject gameObject = event.getGameObject();
-		if (ROCK_OBSTACLES.contains(gameObject.getId()))
-		{
-			rocks.add(gameObject);
-		}
+		addGameObject(event.getGameObject());
 	}
 
 	@Subscribe
@@ -360,15 +360,8 @@ public class MotherlodePlugin extends Plugin
 			return;
 		}
 
-		GameObject previous = event.getPrevious();
-		GameObject gameObject = event.getGameObject();
-
-		rocks.remove(previous);
-		if (ROCK_OBSTACLES.contains(gameObject.getId()))
-		{
-			rocks.add(gameObject);
-		}
-
+		removeGameObject(event.getPrevious());
+		addGameObject(event.getGameObject());
 	}
 
 	@Subscribe
@@ -379,8 +372,7 @@ public class MotherlodePlugin extends Plugin
 			return;
 		}
 
-		GameObject gameObject = event.getGameObject();
-		rocks.remove(gameObject);
+		removeGameObject(event.getGameObject());
 	}
 
 	@Subscribe
@@ -391,6 +383,7 @@ public class MotherlodePlugin extends Plugin
 			// on region changes the tiles get set to null
 			veins.clear();
 			rocks.clear();
+			brokenStruts.clear();
 
 			inMlm = checkInMlm();
 		}
@@ -512,5 +505,24 @@ public class MotherlodePlugin extends Plugin
 	boolean isUpstairs(LocalPoint localPoint)
 	{
 		return Perspective.getTileHeight(client, localPoint, 0) < UPPER_FLOOR_HEIGHT;
+	}
+
+	private void addGameObject(GameObject gameObject)
+	{
+		if (ROCK_OBSTACLES.contains(gameObject.getId()))
+		{
+			rocks.add(gameObject);
+		}
+
+		if (BROKEN_STRUT == gameObject.getId())
+		{
+			brokenStruts.add(gameObject);
+		}
+	}
+
+	private void removeGameObject(GameObject gameObject)
+	{
+		rocks.remove(gameObject);
+		brokenStruts.remove(gameObject);
 	}
 }

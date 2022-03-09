@@ -51,7 +51,7 @@ public interface CannonConfig extends Config
 	)
 	@ConfigItem(
 		keyName = "lowWarningThreshold",
-		name = "Low Warning Threshold",
+		name = "Low warning threshold",
 		description = "Configures the number of cannonballs remaining before a notification is sent. <br>Regardless of this value, a notification will still be sent when your cannon is empty.",
 		position = 2
 	)
@@ -62,7 +62,7 @@ public interface CannonConfig extends Config
 
 	@ConfigItem(
 		keyName = "showInfobox",
-		name = "Show Cannonball infobox",
+		name = "Show cannonball infobox",
 		description = "Configures whether to show the cannonballs in an infobox",
 		position = 3
 	)
@@ -85,7 +85,7 @@ public interface CannonConfig extends Config
 	@Alpha
 	@ConfigItem(
 		keyName = "highlightDoubleHitColor",
-		name = "Color of double hit spots",
+		name = "Double hit spots",
 		description = "Configures the highlight color of double hit spots",
 		position = 5
 	)

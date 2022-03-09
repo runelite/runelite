@@ -30,15 +30,22 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import java.applet.Applet;
 import java.io.File;
+import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import static java.nio.file.StandardCopyOption.COPY_ATTRIBUTES;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
 import javax.annotation.Nullable;
 import javax.inject.Provider;
 import javax.inject.Singleton;
@@ -55,37 +62,27 @@ import joptsimple.util.EnumConverter;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.client.account.SessionManager;
-import net.runelite.client.callback.Hooks;
-import net.runelite.client.chat.ChatMessageManager;
-import net.runelite.client.chat.CommandManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.discord.DiscordService;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.externalplugins.ExternalPluginManager;
-import net.runelite.client.game.FriendChatManager;
-import net.runelite.client.game.ItemManager;
-import net.runelite.client.game.LootManager;
-import net.runelite.client.game.chatbox.ChatboxPanelManager;
-import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.rs.ClientLoader;
 import net.runelite.client.rs.ClientUpdateCheckMode;
 import net.runelite.client.ui.ClientUI;
-import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.FatalErrorDialog;
 import net.runelite.client.ui.SplashScreen;
 import net.runelite.client.ui.overlay.OverlayManager;
-import net.runelite.client.ui.overlay.OverlayRenderer;
 import net.runelite.client.ui.overlay.WidgetOverlay;
-import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
-import net.runelite.client.ui.overlay.infobox.InfoBoxOverlay;
 import net.runelite.client.ui.overlay.tooltip.TooltipOverlay;
 import net.runelite.client.ui.overlay.worldmap.WorldMapOverlay;
-import net.runelite.client.ws.PartyService;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import org.slf4j.LoggerFactory;
 
 @Singleton
@@ -102,6 +99,7 @@ public class RuneLite
 	public static final File DEFAULT_CONFIG_FILE = new File(RUNELITE_DIR, "settings.properties");
 
 	private static final int MAX_OKHTTP_CACHE_SIZE = 20 * 1024 * 1024; // 20mb
+	public static String USER_AGENT = "RuneLite/" + RuneLiteProperties.getVersion() + "-" + RuneLiteProperties.getCommit() + (RuneLiteProperties.isDirty() ? "+" : "");
 
 	@Getter
 	private static Injector injector;
@@ -119,9 +117,6 @@ public class RuneLite
 	private ConfigManager configManager;
 
 	@Inject
-	private DrawManager drawManager;
-
-	@Inject
 	private SessionManager sessionManager;
 
 	@Inject
@@ -134,34 +129,7 @@ public class RuneLite
 	private ClientUI clientUI;
 
 	@Inject
-	private InfoBoxManager infoBoxManager;
-
-	@Inject
 	private OverlayManager overlayManager;
-
-	@Inject
-	private Provider<PartyService> partyService;
-
-	@Inject
-	private Provider<ItemManager> itemManager;
-
-	@Inject
-	private Provider<OverlayRenderer> overlayRenderer;
-
-	@Inject
-	private Provider<FriendChatManager> friendsChatManager;
-
-	@Inject
-	private Provider<ChatMessageManager> chatMessageManager;
-
-	@Inject
-	private Provider<MenuManager> menuManager;
-
-	@Inject
-	private Provider<CommandManager> commandManager;
-
-	@Inject
-	private Provider<InfoBoxOverlay> infoBoxOverlay;
 
 	@Inject
 	private Provider<TooltipOverlay> tooltipOverlay;
@@ -170,13 +138,8 @@ public class RuneLite
 	private Provider<WorldMapOverlay> worldMapOverlay;
 
 	@Inject
-	private Provider<LootManager> lootManager;
-
-	@Inject
-	private Provider<ChatboxPanelManager> chatboxPanelManager;
-
-	@Inject
-	private Provider<Hooks> hooks;
+	@Nullable
+	private Applet applet;
 
 	@Inject
 	@Nullable
@@ -186,11 +149,14 @@ public class RuneLite
 	{
 		Locale.setDefault(Locale.ENGLISH);
 
-		final OptionParser parser = new OptionParser();
+		final OptionParser parser = new OptionParser(false);
 		parser.accepts("developer-mode", "Enable developer tools");
 		parser.accepts("debug", "Show extra debugging output");
 		parser.accepts("safe-mode", "Disables external plugins and the GPU plugin");
 		parser.accepts("insecure-skip-tls-verification", "Disables TLS verification");
+		parser.accepts("jav_config", "jav_config url")
+			.withRequiredArg()
+			.defaultsTo(RuneLiteProperties.getJavConfig());
 
 		final ArgumentAcceptingOptionSpec<File> sessionfile = parser.accepts("sessionfile", "Use a specified session file")
 			.withRequiredArg()
@@ -240,23 +206,16 @@ public class RuneLite
 			}
 		});
 
-		OkHttpClient.Builder okHttpClientBuilder = RuneLiteAPI.CLIENT.newBuilder()
-			.cache(new Cache(new File(CACHE_DIR, "okhttp"), MAX_OKHTTP_CACHE_SIZE));
-
-		final boolean insecureSkipTlsVerification = options.has("insecure-skip-tls-verification");
-		if (insecureSkipTlsVerification || RuneLiteProperties.isInsecureSkipTlsVerification())
-		{
-			setupInsecureTrustManager(okHttpClientBuilder);
-		}
-
-		final OkHttpClient okHttpClient = okHttpClientBuilder.build();
+		final OkHttpClient okHttpClient = buildHttpClient(options.has("insecure-skip-tls-verification"));
+		RuneLiteAPI.CLIENT = okHttpClient;
 
 		SplashScreen.init();
 		SplashScreen.stage(0, "Retrieving client", "");
 
 		try
 		{
-			final ClientLoader clientLoader = new ClientLoader(okHttpClient, options.valueOf(updateMode));
+			final ClientLoader clientLoader = new ClientLoader(okHttpClient, options.valueOf(updateMode), (String) options.valueOf("jav_config"));
+			final RuntimeConfigLoader runtimeConfigLoader = new RuntimeConfigLoader(okHttpClient);
 
 			new Thread(() ->
 			{
@@ -291,6 +250,7 @@ public class RuneLite
 			injector = Guice.createInjector(new RuneLiteModule(
 				okHttpClient,
 				clientLoader,
+				runtimeConfigLoader,
 				developerMode,
 				options.has("safe-mode"),
 				options.valueOf(sessionfile),
@@ -327,6 +287,28 @@ public class RuneLite
 			injector.injectMembers(client);
 		}
 
+		// Start the applet
+		if (applet != null)
+		{
+			copyJagexCache();
+
+			// Client size must be set prior to init
+			applet.setSize(Constants.GAME_FIXED_SIZE);
+
+			// Change user.home so the client places jagexcache in the .runelite directory
+			String oldHome = System.setProperty("user.home", RUNELITE_DIR.getAbsolutePath());
+			try
+			{
+				applet.init();
+			}
+			finally
+			{
+				System.setProperty("user.home", oldHome);
+			}
+
+			applet.start();
+		}
+
 		SplashScreen.stage(.57, null, "Loading configuration");
 
 		// Load user configuration
@@ -341,6 +323,7 @@ public class RuneLite
 		// Load the plugins, but does not start them yet.
 		// This will initialize configuration
 		pluginManager.loadCorePlugins();
+		pluginManager.loadSideLoadPlugins();
 		externalPluginManager.loadExternalPlugins();
 
 		SplashScreen.stage(.70, null, "Finalizing configuration");
@@ -366,31 +349,13 @@ public class RuneLite
 		eventBus.register(pluginManager);
 		eventBus.register(externalPluginManager);
 		eventBus.register(overlayManager);
-		eventBus.register(drawManager);
-		eventBus.register(infoBoxManager);
 		eventBus.register(configManager);
 		eventBus.register(discordService);
 
 		if (!isOutdated)
 		{
-			// Initialize chat colors
-			chatMessageManager.get().loadColors();
-
-			eventBus.register(partyService.get());
-			eventBus.register(overlayRenderer.get());
-			eventBus.register(friendsChatManager.get());
-			eventBus.register(itemManager.get());
-			eventBus.register(menuManager.get());
-			eventBus.register(chatMessageManager.get());
-			eventBus.register(commandManager.get());
-			eventBus.register(lootManager.get());
-			eventBus.register(chatboxPanelManager.get());
-			eventBus.register(hooks.get());
-			eventBus.register(infoBoxOverlay.get());
-
 			// Add core overlays
-			WidgetOverlay.createOverlays(client).forEach(overlayManager::add);
-			overlayManager.add(infoBoxOverlay.get());
+			WidgetOverlay.createOverlays(overlayManager, client).forEach(overlayManager::add);
 			overlayManager.add(worldMapOverlay.get());
 			overlayManager.add(tooltipOverlay.get());
 		}
@@ -448,6 +413,43 @@ public class RuneLite
 		}
 	}
 
+	@VisibleForTesting
+	static OkHttpClient buildHttpClient(boolean insecureSkipTlsVerification)
+	{
+		OkHttpClient.Builder builder = new OkHttpClient.Builder()
+			.pingInterval(30, TimeUnit.SECONDS)
+			.addNetworkInterceptor(chain ->
+			{
+				Request userAgentRequest = chain.request()
+					.newBuilder()
+					.header("User-Agent", USER_AGENT)
+					.build();
+				return chain.proceed(userAgentRequest);
+			})
+			// Setup cache
+			.cache(new Cache(new File(CACHE_DIR, "okhttp"), MAX_OKHTTP_CACHE_SIZE))
+			.addNetworkInterceptor(chain ->
+			{
+				// This has to be a network interceptor so it gets hit before the cache tries to store stuff
+				Response res = chain.proceed(chain.request());
+				if (res.code() >= 400 && "GET".equals(res.request().method()))
+				{
+					// if the request 404'd we don't want to cache it because its probably temporary
+					res = res.newBuilder()
+						.header("Cache-Control", "no-store")
+						.build();
+				}
+				return res;
+			});
+
+		if (insecureSkipTlsVerification || RuneLiteProperties.isInsecureSkipTlsVerification())
+		{
+			setupInsecureTrustManager(builder);
+		}
+
+		return builder.build();
+	}
+
 	private static void setupInsecureTrustManager(OkHttpClient.Builder okHttpClientBuilder)
 	{
 		try
@@ -478,6 +480,38 @@ public class RuneLite
 		catch (NoSuchAlgorithmException | KeyManagementException ex)
 		{
 			log.warn("unable to setup insecure trust manager", ex);
+		}
+	}
+
+	private static void copyJagexCache()
+	{
+		Path from = Paths.get(System.getProperty("user.home"), "jagexcache");
+		Path to = Paths.get(System.getProperty("user.home"), ".runelite", "jagexcache");
+		if (Files.exists(to) || !Files.exists(from))
+		{
+			return;
+		}
+
+		log.info("Copying jagexcache from {} to {}", from, to);
+
+		// Recursively copy path https://stackoverflow.com/a/50418060
+		try (Stream<Path> stream = Files.walk(from))
+		{
+			stream.forEach(source ->
+			{
+				try
+				{
+					Files.copy(source, to.resolve(from.relativize(source)), COPY_ATTRIBUTES);
+				}
+				catch (IOException e)
+				{
+					throw new RuntimeException(e);
+				}
+			});
+		}
+		catch (Exception e)
+		{
+			log.warn("unable to copy jagexcache", e);
 		}
 	}
 }

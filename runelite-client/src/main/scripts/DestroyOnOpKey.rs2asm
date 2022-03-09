@@ -35,7 +35,7 @@ LABEL24:
    iload                  3
    sconst                 "destroyOnOpKey"  ; load event name
    runelite_callback      ; invoke callback
-   pop_int
+   pop_int               
    iconst                 2266
    iconst                 1
    iconst                 0

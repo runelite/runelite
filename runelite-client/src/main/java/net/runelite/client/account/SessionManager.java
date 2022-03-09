@@ -27,9 +27,12 @@ package net.runelite.client.account;
 import com.google.gson.Gson;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.UUID;
 import javax.inject.Inject;
@@ -44,10 +47,8 @@ import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.ws.WSClient;
-import net.runelite.http.api.account.AccountClient;
 import net.runelite.http.api.account.OAuthResponse;
 import net.runelite.http.api.ws.messages.LoginResponse;
-import okhttp3.OkHttpClient;
 
 @Singleton
 @Slf4j
@@ -61,6 +62,7 @@ public class SessionManager
 	private final WSClient wsClient;
 	private final File sessionFile;
 	private final AccountClient accountClient;
+	private final Gson gson;
 
 	@Inject
 	private SessionManager(
@@ -68,13 +70,15 @@ public class SessionManager
 		ConfigManager configManager,
 		EventBus eventBus,
 		WSClient wsClient,
-		OkHttpClient okHttpClient)
+		AccountClient accountClient,
+		Gson gson)
 	{
 		this.configManager = configManager;
 		this.eventBus = eventBus;
 		this.wsClient = wsClient;
 		this.sessionFile = sessionfile;
-		this.accountClient = new AccountClient(okHttpClient);
+		this.accountClient = accountClient;
+		this.gson = gson;
 
 		eventBus.register(this);
 	}
@@ -91,7 +95,7 @@ public class SessionManager
 
 		try (FileInputStream in = new FileInputStream(sessionFile))
 		{
-			session = new Gson().fromJson(new InputStreamReader(in), AccountSession.class);
+			session = gson.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), AccountSession.class);
 
 			log.debug("Loaded session for {}", session.getUsername());
 		}
@@ -119,9 +123,9 @@ public class SessionManager
 			return;
 		}
 
-		try (FileWriter fw = new FileWriter(sessionFile))
+		try (Writer fw = new OutputStreamWriter(new FileOutputStream(sessionFile), StandardCharsets.UTF_8))
 		{
-			new Gson().toJson(accountSession, fw);
+			gson.toJson(accountSession, fw);
 
 			log.debug("Saved session to {}", sessionFile);
 		}
@@ -180,7 +184,7 @@ public class SessionManager
 		}
 		catch (IOException ex)
 		{
-			log.warn("Unable to logout of session", ex);
+			log.warn("Unable to sign out of session", ex);
 		}
 
 		accountSession = null; // No more account
@@ -219,7 +223,7 @@ public class SessionManager
 	@Subscribe
 	public void onLoginResponse(LoginResponse loginResponse)
 	{
-		log.debug("Now logged in as {}", loginResponse.getUsername());
+		log.debug("Now signed in as {}", loginResponse.getUsername());
 
 		AccountSession session = getAccountSession();
 		session.setUsername(loginResponse.getUsername());

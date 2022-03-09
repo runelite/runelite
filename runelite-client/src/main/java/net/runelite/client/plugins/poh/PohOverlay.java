@@ -40,14 +40,13 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 
 public class PohOverlay extends Overlay
 {
-	private static final PohIcons[] PORTALS = new PohIcons[]
-	{
+	private static final PohIcons[] PORTALS = {
 		PohIcons.LUMBRIDGE, PohIcons.FALADOR, PohIcons.VARROCK, PohIcons.CAMELOT, PohIcons.ARDOUGNE,
 		PohIcons.YANILLE, PohIcons.LUNARISLE, PohIcons.WATERBIRTH, PohIcons.FISHINGGUILD,
 		PohIcons.SENNTISTEN, PohIcons.KHARYLL, PohIcons.ANNAKARL, PohIcons.KOUREND, PohIcons.MARIM,
 		PohIcons.TROLLSTRONGHOLD, PohIcons.CARRALLANGAR, PohIcons.CATHERBY, PohIcons.WEISS, PohIcons.GHORROCK,
 		PohIcons.APEATOLLDUNGEON, PohIcons.BARROWS, PohIcons.BATTLEFRONT, PohIcons.CEMETERY, PohIcons.DRAYNORMANOR,
-		PohIcons.FENKENSTRAINSCASTLE, PohIcons.HARMONYISLAND, PohIcons.LUMBRIDGEGRAVEYARD, PohIcons.MINDALTAR, PohIcons.SALVEGRAVEYARD,
+		PohIcons.FENKENSTRAINSCASTLE, PohIcons.HARMONYISLAND, PohIcons.ARCEUUSLIBRARY, PohIcons.MINDALTAR, PohIcons.SALVEGRAVEYARD,
 		PohIcons.WESTARDOUGNE,
 	};
 

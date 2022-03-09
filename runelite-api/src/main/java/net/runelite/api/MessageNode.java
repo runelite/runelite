@@ -58,7 +58,7 @@ public interface MessageNode extends Node
 	void setName(String name);
 
 	/**
-	 * Gets the sender of the message (ie. friends chat name).
+	 * Gets the sender of the message. (ie. friends chat name)
 	 *
 	 * @return the message sender
 	 */

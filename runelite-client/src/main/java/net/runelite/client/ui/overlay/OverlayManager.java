@@ -25,35 +25,36 @@
 package net.runelite.client.ui.overlay;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.MoreObjects;
+import com.google.common.collect.ArrayListMultimap;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.EnumMap;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Predicate;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
-import net.runelite.api.MenuAction;
-import net.runelite.api.events.MenuOptionClicked;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
-import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
-import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.events.PluginChanged;
 
 /**
  * Manages state of all game overlays
  */
 @Singleton
+@Slf4j
 public class OverlayManager
 {
 	public static final String OPTION_CONFIGURE = "Configure";
@@ -66,13 +67,8 @@ public class OverlayManager
 	@VisibleForTesting
 	static final Comparator<Overlay> OVERLAY_COMPARATOR = (a, b) ->
 	{
-		final OverlayPosition aPos = a.getPreferredPosition() != null
-			? a.getPreferredPosition()
-			: a.getPosition();
-
-		final OverlayPosition bPos = b.getPreferredPosition() != null
-			? b.getPreferredPosition()
-			: b.getPosition();
+		final OverlayPosition aPos = MoreObjects.firstNonNull(a.getPreferredPosition(), a.getPosition());
+		final OverlayPosition bPos = MoreObjects.firstNonNull(b.getPreferredPosition(), b.getPosition());
 
 		if (aPos != bPos)
 		{
@@ -84,7 +80,7 @@ public class OverlayManager
 		// For dynamic overlays, higher priority means to
 		// draw *later* so it is on top.
 		// For non-dynamic overlays, higher priority means
-		// draw *first* so that they are closer to their
+		// draw *earlier* so that they are closer to their
 		// defined position.
 		return aPos == OverlayPosition.DYNAMIC
 			? a.getPriority().compareTo(b.getPriority())
@@ -98,19 +94,24 @@ public class OverlayManager
 	@Getter(AccessLevel.PACKAGE)
 	private final List<Overlay> overlays = new ArrayList<>();
 	@Getter
-	private final List<WidgetItem> itemWidgets = new ArrayList<>();
+	@Setter
+	private Collection<WidgetItem> widgetItems = Collections.emptyList();
 
-	private final Map<OverlayLayer, List<Overlay>> overlayLayers = new EnumMap<>(OverlayLayer.class);
+	/**
+	 * Valid keys are:
+	 * OverlayLayer ABOVE_SCENE, UNDER_WIDGETS, and ALWAYS_ON_TOP
+	 * A component id that is a layer
+	 * An interface id << 16 | 0xffff
+	 */
+	private ArrayListMultimap<Object, Overlay> overlayMap = ArrayListMultimap.create();
 
 	private final ConfigManager configManager;
-	private final EventBus eventBus;
 	private final RuneLiteConfig runeLiteConfig;
 
 	@Inject
-	private OverlayManager(final ConfigManager configManager, final EventBus eventBus, final RuneLiteConfig runeLiteConfig)
+	private OverlayManager(final ConfigManager configManager, final RuneLiteConfig runeLiteConfig)
 	{
 		this.configManager = configManager;
-		this.eventBus = eventBus;
 		this.runeLiteConfig = runeLiteConfig;
 	}
 
@@ -132,41 +133,25 @@ public class OverlayManager
 		rebuildOverlayLayers();
 	}
 
-	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked event)
-	{
-		MenuAction menuAction = event.getMenuAction();
-		if (menuAction != MenuAction.RUNELITE_OVERLAY && menuAction != MenuAction.RUNELITE_OVERLAY_CONFIG)
-		{
-			return;
-		}
-
-		event.consume();
-
-		Overlay overlay = overlays.get(event.getId());
-		if (overlay != null)
-		{
-			List<OverlayMenuEntry> menuEntries = overlay.getMenuEntries();
-			OverlayMenuEntry overlayMenuEntry = menuEntries.stream()
-				.filter(me -> me.getOption().equals(event.getMenuOption()))
-				.findAny()
-				.orElse(null);
-			if (overlayMenuEntry != null)
-			{
-				eventBus.post(new OverlayMenuClicked(overlayMenuEntry, overlay));
-			}
-		}
-	}
-
 	/**
 	 * Gets all of the overlays on a layer sorted by priority and position
 	 *
 	 * @param layer the layer
 	 * @return An immutable list of all of the overlays on that layer
 	 */
-	synchronized List<Overlay> getLayer(OverlayLayer layer)
+	Collection<Overlay> getLayer(OverlayLayer layer)
 	{
-		return overlayLayers.get(layer);
+		return Collections.unmodifiableCollection(overlayMap.get(layer));
+	}
+
+	Collection<Overlay> getForInterface(int interfaceId)
+	{
+		return Collections.unmodifiableCollection(overlayMap.get(interfaceId << 16 | 0xffff));
+	}
+
+	Collection<Overlay> getForLayer(int layerId)
+	{
+		return Collections.unmodifiableCollection(overlayMap.get(layerId));
 	}
 
 	/**
@@ -278,15 +263,12 @@ public class OverlayManager
 		overlay.setPreferredSize(null);
 		overlay.setPreferredLocation(null);
 		saveOverlay(overlay);
+		overlay.revalidate();
 	}
 
 	synchronized void rebuildOverlayLayers()
 	{
-		for (OverlayLayer l : OverlayLayer.values())
-		{
-			overlayLayers.put(l, new ArrayList<>());
-		}
-
+		ArrayListMultimap<Object, Overlay> overlayMap = ArrayListMultimap.create();
 		for (final Overlay overlay : overlays)
 		{
 			OverlayLayer layer = overlay.getLayer();
@@ -301,14 +283,33 @@ public class OverlayManager
 				}
 			}
 
-			overlayLayers.get(layer).add(overlay);
+			switch (layer)
+			{
+				case ABOVE_SCENE:
+				case UNDER_WIDGETS:
+				case ALWAYS_ON_TOP:
+					overlayMap.put(layer, overlay);
+					break;
+				case ABOVE_WIDGETS:
+					// draw after each of the top level interfaces
+					overlayMap.put(WidgetID.FIXED_VIEWPORT_GROUP_ID << 16 | 0xffff, overlay);
+					overlayMap.put(WidgetID.RESIZABLE_VIEWPORT_OLD_SCHOOL_BOX_GROUP_ID << 16 | 0xffff, overlay);
+					overlayMap.put(WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID << 16 | 0xffff, overlay);
+					break;
+			}
+
+			for (int drawHook : overlay.getDrawHooks())
+			{
+				overlayMap.put(drawHook, overlay);
+			}
 		}
 
-		overlayLayers.forEach((layer, value) ->
+		for (Object key : overlayMap.keys())
 		{
-			value.sort(OVERLAY_COMPARATOR);
-			overlayLayers.put(layer, Collections.unmodifiableList(value));
-		});
+			overlayMap.get(key).sort(OVERLAY_COMPARATOR);
+		}
+
+		this.overlayMap = overlayMap;
 	}
 
 	private void loadOverlay(final Overlay overlay)
@@ -318,7 +319,18 @@ public class OverlayManager
 		final Dimension size = loadOverlaySize(overlay);
 		overlay.setPreferredSize(size);
 		final OverlayPosition position = loadOverlayPosition(overlay);
-		overlay.setPreferredPosition(position);
+		if (position != null)
+		{
+			if (overlay.getPosition() != OverlayPosition.DYNAMIC && overlay.getPosition() != OverlayPosition.TOOLTIP)
+			{
+				overlay.setPreferredPosition(position);
+			}
+			else
+			{
+				log.info("Resetting preferred position of dynamic overlay {}", overlay.getClass().getSimpleName());
+				saveOverlayPosition(overlay);
+			}
+		}
 	}
 
 	private void updateOverlayConfig(final Overlay overlay)

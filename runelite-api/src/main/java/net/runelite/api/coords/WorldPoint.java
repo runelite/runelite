@@ -44,6 +44,14 @@ import net.runelite.api.Perspective;
 @Value
 public class WorldPoint
 {
+	private static final int[] REGION_MIRRORS = {
+		// Prifddinas
+		12894, 8755,
+		12895, 8756,
+		13150, 9011,
+		13151, 9012
+	};
+
 	/**
 	 * X-axis coordinate.
 	 */
@@ -164,6 +172,20 @@ public class WorldPoint
 	 */
 	public static WorldPoint fromLocalInstance(Client client, LocalPoint localPoint)
 	{
+		return fromLocalInstance(client, localPoint, client.getPlane());
+	}
+
+	/**
+	 * Gets the coordinate of the tile that contains the passed local point,
+	 * accounting for instances.
+	 *
+	 * @param client the client
+	 * @param localPoint the local coordinate
+	 * @param plane the plane for the returned point, if it is not an instance
+	 * @return the tile coordinate containing the local point
+	 */
+	public static WorldPoint fromLocalInstance(Client client, LocalPoint localPoint, int plane)
+	{
 		if (client.isInInstancedRegion())
 		{
 			// get position in the scene
@@ -176,23 +198,23 @@ public class WorldPoint
 
 			// get the template chunk for the chunk
 			int[][][] instanceTemplateChunks = client.getInstanceTemplateChunks();
-			int templateChunk = instanceTemplateChunks[client.getPlane()][chunkX][chunkY];
+			int templateChunk = instanceTemplateChunks[plane][chunkX][chunkY];
 
 			int rotation = templateChunk >> 1 & 0x3;
 			int templateChunkY = (templateChunk >> 3 & 0x7FF) * CHUNK_SIZE;
 			int templateChunkX = (templateChunk >> 14 & 0x3FF) * CHUNK_SIZE;
-			int plane = templateChunk >> 24 & 0x3;
+			int templateChunkPlane = templateChunk >> 24 & 0x3;
 
 			// calculate world point of the template
 			int x = templateChunkX + (sceneX & (CHUNK_SIZE - 1));
 			int y = templateChunkY + (sceneY & (CHUNK_SIZE - 1));
 
 			// create and rotate point back to 0, to match with template
-			return rotate(new WorldPoint(x, y, plane), 4 - rotation);
+			return rotate(new WorldPoint(x, y, templateChunkPlane), 4 - rotation);
 		}
 		else
 		{
-			return fromLocal(client, localPoint);
+			return fromLocal(client, localPoint.getX(), localPoint.getY(), plane);
 		}
 	}
 
@@ -358,5 +380,66 @@ public class WorldPoint
 	private static int getRegionOffset(final int position)
 	{
 		return position & (REGION_SIZE - 1);
+	}
+
+	/**
+	 * Translate a coordinate either between overworld and real, or real and overworld
+	 *
+	 * @param worldPoint
+	 * @param toOverworld whether to convert to overworld coordinates, or to real coordinates
+	 * @return
+	 */
+	public static WorldPoint getMirrorPoint(WorldPoint worldPoint, boolean toOverworld)
+	{
+		int region = worldPoint.getRegionID();
+		for (int i = 0; i < REGION_MIRRORS.length; i += 2)
+		{
+			int real = REGION_MIRRORS[i];
+			int overworld = REGION_MIRRORS[i + 1];
+
+			// Test against what we are converting from
+			if (region == (toOverworld ? real : overworld))
+			{
+				return fromRegion(toOverworld ? overworld : real,
+					worldPoint.getRegionX(), worldPoint.getRegionY(), worldPoint.getPlane());
+			}
+		}
+		return worldPoint;
+	}
+
+	/**
+	 * Checks whether this tile is located within any of the given areas.
+	 *
+	 * @param worldAreas areas to check within
+	 * @return {@code true} if any area contains this point, {@code false} otherwise.
+	 */
+	public boolean isInArea(WorldArea... worldAreas)
+	{
+		for (WorldArea area : worldAreas)
+		{
+			if (area.contains(this))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Checks whether this tile is located within any of the given areas, disregarding any plane differences.
+	 *
+	 * @param worldAreas areas to check within
+	 * @return {@code true} if any area contains this point, {@code false} otherwise.
+	 */
+	public boolean isInArea2D(WorldArea... worldAreas)
+	{
+		for (WorldArea area : worldAreas)
+		{
+			if (area.contains2D(this))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 }

@@ -53,7 +53,7 @@ import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.SwingUtil;
 
-class PluginListItem extends JPanel
+class PluginListItem extends JPanel implements SearchablePlugin
 {
 	private static final ImageIcon CONFIG_ICON;
 	private static final ImageIcon CONFIG_ICON_HOVER;
@@ -69,12 +69,12 @@ class PluginListItem extends JPanel
 	private final List<String> keywords = new ArrayList<>();
 
 	private final JToggleButton pinButton;
-	private final JToggleButton onOffToggle;
+	private final PluginToggleButton onOffToggle;
 
 	static
 	{
-		BufferedImage configIcon = ImageUtil.getResourceStreamFromClass(ConfigPanel.class, "config_edit_icon.png");
-		BufferedImage onStar = ImageUtil.getResourceStreamFromClass(ConfigPanel.class, "star_on.png");
+		BufferedImage configIcon = ImageUtil.loadImageResource(ConfigPanel.class, "config_edit_icon.png");
+		BufferedImage onStar = ImageUtil.loadImageResource(ConfigPanel.class, "star_on.png");
 		CONFIG_ICON = new ImageIcon(configIcon);
 		ON_STAR = new ImageIcon(onStar);
 		CONFIG_ICON_HOVER = new ImageIcon(ImageUtil.luminanceOffset(configIcon, -100));
@@ -97,7 +97,12 @@ class PluginListItem extends JPanel
 		ExternalPluginManifest mf = pluginConfig.getExternalPluginManifest();
 		if (mf != null)
 		{
+			keywords.add("pluginhub");
 			keywords.add(mf.getInternalName());
+		}
+		else
+		{
+			keywords.add("plugin"); // we don't want searching plugin to only show hub plugins
 		}
 
 		setLayout(new BorderLayout(3, 0));
@@ -162,6 +167,7 @@ class PluginListItem extends JPanel
 		add(nameLabel, BorderLayout.CENTER);
 
 		onOffToggle = new PluginToggleButton();
+		onOffToggle.setConflicts(pluginConfig.getConflicts());
 		buttonPanel.add(onOffToggle);
 		if (pluginConfig.getPlugin() != null)
 		{
@@ -183,7 +189,14 @@ class PluginListItem extends JPanel
 		}
 	}
 
-	boolean isPinned()
+	@Override
+	public String getSearchableName()
+	{
+		return pluginConfig.getName();
+	}
+
+	@Override
+	public boolean isPinned()
 	{
 		return pinButton.isSelected();
 	}

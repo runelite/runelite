@@ -49,11 +49,13 @@ import net.runelite.api.Skill;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemStack;
 import net.runelite.client.game.SpriteManager;
@@ -133,6 +135,14 @@ public class LootTrackerPluginTest
 	@Mock
 	@Bind
 	private ChatMessageManager chatMessageManager;
+
+	@Mock
+	@Bind
+	private LootTrackerClient lootTrackerClient;
+
+	@Mock
+	@Bind
+	private ConfigManager configManager;
 
 	@Before
 	public void setUp()
@@ -288,5 +298,117 @@ public class LootTrackerPluginTest
 
 		QueuedMessage queuedMessage = captor.getValue();
 		assertEquals("<colNORMAL>Your loot is worth around <colHIGHLIGHT>60,021,020<colNORMAL> coins.", queuedMessage.getRuneLiteFormattedMessage());
+	}
+
+	@Test
+	public void testBirdhouses()
+	{
+		// No bird nests
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You dismantle and discard the trap, retrieving 10 dead birds, 30 feathers and 1140 Hunter XP.", "", 0);
+		lootTrackerPlugin.onChatMessage(chatMessage);
+
+		assertEquals("Magic Bird House", lootTrackerPlugin.eventType);
+		assertEquals(LootRecordType.EVENT, lootTrackerPlugin.lootRecordType);
+
+		// Single bird nest
+		chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You dismantle and discard the trap, retrieving a nest, 10 dead birds, 50 feathers and 700 Hunter XP.", "", 0);
+		lootTrackerPlugin.onChatMessage(chatMessage);
+
+		assertEquals("Teak Bird House", lootTrackerPlugin.eventType);
+		assertEquals(LootRecordType.EVENT, lootTrackerPlugin.lootRecordType);
+
+		// Multiple nests
+		chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You dismantle and discard the trap, retrieving 2 nests, 10 dead birds, 40 feathers and 280 Hunter XP.", "", 0);
+		lootTrackerPlugin.onChatMessage(chatMessage);
+
+		assertEquals("Regular Bird House", lootTrackerPlugin.eventType);
+		assertEquals(LootRecordType.EVENT, lootTrackerPlugin.lootRecordType);
+	}
+
+	@Test
+	public void testGrubbyChest()
+	{
+		Player player = mock(Player.class);
+		when(player.getWorldLocation()).thenReturn(new WorldPoint(7323 >> 2, (7323 & 0xff) << 6, 0));
+		when(client.getLocalPlayer()).thenReturn(player);
+
+		LootTrackerPlugin lootTrackerPluginSpy = spy(this.lootTrackerPlugin);
+		doNothing().when(lootTrackerPluginSpy).addLoot(any(), anyInt(), any(), any(), any(Collection.class));
+
+		ItemContainer itemContainer = mock(ItemContainer.class);
+		when(itemContainer.getItems()).thenReturn(new Item[]{
+			new Item(ItemID.TWISTED_BOW, 1),
+			new Item(ItemID.GRUBBY_KEY, 1)
+		});
+		when(client.getItemContainer(InventoryID.INVENTORY)).thenReturn(itemContainer);
+
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You unlock the chest with your key.", "", 0);
+		lootTrackerPluginSpy.onChatMessage(chatMessage);
+
+		when(itemContainer.getItems()).thenReturn(new Item[]{
+			new Item(ItemID.TWISTED_BOW, 1)
+		});
+		lootTrackerPluginSpy.onItemContainerChanged(new ItemContainerChanged(InventoryID.INVENTORY.getId(), itemContainer));
+
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "You have opened the Grubby Chest 2 times.", "", 0);
+		lootTrackerPluginSpy.onChatMessage(chatMessage);
+
+		when(itemContainer.getItems()).thenReturn(new Item[]{
+			new Item(ItemID.TWISTED_BOW, 1),
+			new Item(ItemID.SHARK, 42)
+		});
+		lootTrackerPluginSpy.onItemContainerChanged(new ItemContainerChanged(InventoryID.INVENTORY.getId(), itemContainer));
+
+		verify(lootTrackerPluginSpy).addLoot("Grubby Chest", -1, LootRecordType.EVENT, null, Arrays.asList(
+			new ItemStack(ItemID.SHARK, 42, null)
+		));
+	}
+
+	@Test
+	public void testTemporossRewardPool()
+	{
+		Player player = mock(Player.class);
+		when(client.getLocalPlayer()).thenReturn(player);
+		when(client.getLocalPlayer().getWorldLocation()).thenReturn(new WorldPoint(3153, 2833, 0));
+		when(client.getBoostedSkillLevel(Skill.FISHING)).thenReturn(69);
+
+		LootTrackerPlugin lootTrackerPluginSpy = spy(this.lootTrackerPlugin);
+		doNothing().when(lootTrackerPluginSpy).addLoot(any(), anyInt(), any(), any(), any(Collection.class));
+
+		ItemContainer itemContainer = mock(ItemContainer.class);
+		when(itemContainer.getItems()).thenReturn(new Item[]{
+			new Item(ItemID.BUCKET_OF_WATER, 1),
+			new Item(ItemID.ROPE, 1)
+		});
+		when(client.getItemContainer(InventoryID.INVENTORY)).thenReturn(itemContainer);
+
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You found some loot: 30 x Raw tuna", "", 0);
+		lootTrackerPluginSpy.onChatMessage(chatMessage);
+
+		when(itemContainer.getItems()).thenReturn(new Item[]{
+			new Item(ItemID.BUCKET_OF_WATER, 1),
+			new Item(ItemID.ROPE, 1),
+			new Item(ItemID.RAW_TUNA, 30)
+		});
+		lootTrackerPluginSpy.onItemContainerChanged(new ItemContainerChanged(InventoryID.INVENTORY.getId(), itemContainer));
+
+		verify(lootTrackerPluginSpy).addLoot("Reward pool (Tempoross)", -1, LootRecordType.EVENT, 69, Arrays.asList(
+			new ItemStack(ItemID.RAW_TUNA, 30, null)
+		));
+
+		chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You found some loot: <col=ef1020>Tome of water (empty)</col>", "", 0);
+		lootTrackerPluginSpy.onChatMessage(chatMessage);
+
+		when(itemContainer.getItems()).thenReturn(new Item[]{
+			new Item(ItemID.BUCKET_OF_WATER, 1),
+			new Item(ItemID.ROPE, 1),
+			new Item(ItemID.RAW_TUNA, 30),
+			new Item(ItemID.TOME_OF_WATER_EMPTY, 1)
+		});
+		lootTrackerPluginSpy.onItemContainerChanged(new ItemContainerChanged(InventoryID.INVENTORY.getId(), itemContainer));
+
+		verify(lootTrackerPluginSpy).addLoot("Reward pool (Tempoross)", -1, LootRecordType.EVENT, 69, Arrays.asList(
+			new ItemStack(ItemID.TOME_OF_WATER_EMPTY, 1, null)
+		));
 	}
 }

@@ -210,7 +210,8 @@ public class DailyTasksPlugin extends Plugin
 
 	private void checkSand(boolean dailyReset)
 	{
-		if (client.getVar(Varbits.QUEST_THE_HAND_IN_THE_SAND) >= SAND_QUEST_COMPLETE
+		if (client.getAccountType() != AccountType.ULTIMATE_IRONMAN
+			&& client.getVar(Varbits.QUEST_THE_HAND_IN_THE_SAND) >= SAND_QUEST_COMPLETE
 			&& (client.getVar(Varbits.DAILY_SAND_COLLECTED) == 0
 			|| dailyReset))
 		{

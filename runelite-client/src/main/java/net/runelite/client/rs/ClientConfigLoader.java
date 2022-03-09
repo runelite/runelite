@@ -28,6 +28,7 @@ package net.runelite.client.rs;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import lombok.AllArgsConstructor;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
@@ -47,7 +48,7 @@ class ClientConfigLoader
 
 		final RSConfig config = new RSConfig();
 
-		try (final Response response = okHttpClient.newCall(request).execute())
+		try (Response response = okHttpClient.newCall(request).execute())
 		{
 			if (!response.isSuccessful())
 			{
@@ -55,7 +56,7 @@ class ClientConfigLoader
 			}
 
 			String str;
-			final BufferedReader in = new BufferedReader(new InputStreamReader(response.body().byteStream()));
+			final BufferedReader in = new BufferedReader(new InputStreamReader(response.body().byteStream(), StandardCharsets.UTF_8));
 			while ((str = in.readLine()) != null)
 			{
 				int idx = str.indexOf('=');

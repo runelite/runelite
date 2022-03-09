@@ -72,4 +72,10 @@ public interface GraphicsObject extends Renderable
 	 * @return
 	 */
 	boolean finished();
+
+	/**
+	 * Set if this spotanim is done animating. If finished, the spotanim will despawn next frame.
+	 * @param finished
+	 */
+	void setFinished(boolean finished);
 }

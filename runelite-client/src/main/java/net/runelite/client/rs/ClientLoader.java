@@ -87,15 +87,17 @@ public class ClientLoader implements Supplier<Applet>
 	private final ClientConfigLoader clientConfigLoader;
 	private ClientUpdateCheckMode updateCheckMode;
 	private final WorldSupplier worldSupplier;
+	private final String javConfigUrl;
 
 	private Object client;
 
-	public ClientLoader(OkHttpClient okHttpClient, ClientUpdateCheckMode updateCheckMode)
+	public ClientLoader(OkHttpClient okHttpClient, ClientUpdateCheckMode updateCheckMode, String javConfigUrl)
 	{
 		this.okHttpClient = okHttpClient;
 		this.clientConfigLoader = new ClientConfigLoader(okHttpClient);
 		this.updateCheckMode = updateCheckMode;
 		this.worldSupplier = new WorldSupplier(okHttpClient);
+		this.javConfigUrl = javConfigUrl;
 	}
 
 	@Override
@@ -141,7 +143,7 @@ public class ClientLoader implements Supplier<Applet>
 				catch (IOException ex)
 				{
 					// try again with the fallback config and gamepack
-					if (!config.isFallback())
+					if (javConfigUrl.equals(RuneLiteProperties.getJavConfig()) && !config.isFallback())
 					{
 						log.warn("Unable to download game client, attempting to use fallback config", ex);
 						config = downloadFallbackConfig();
@@ -186,7 +188,7 @@ public class ClientLoader implements Supplier<Applet>
 
 	private RSConfig downloadConfig() throws IOException
 	{
-		HttpUrl url = HttpUrl.parse(RuneLiteProperties.getJavConfig());
+		HttpUrl url = HttpUrl.parse(javConfigUrl);
 		IOException err = null;
 		for (int attempt = 0; attempt < NUM_ATTEMPTS; attempt++)
 		{
@@ -204,6 +206,12 @@ public class ClientLoader implements Supplier<Applet>
 			catch (IOException e)
 			{
 				log.info("Failed to get jav_config from host \"{}\" ({})", url.host(), e.getMessage());
+
+				if (!javConfigUrl.equals(RuneLiteProperties.getJavConfig()))
+				{
+					throw e;
+				}
+
 				String host = worldSupplier.get().getAddress();
 				url = url.newBuilder().host(host).build();
 				err = e;
@@ -251,7 +259,10 @@ public class ClientLoader implements Supplier<Applet>
 
 	private void updateVanilla(RSConfig config) throws IOException, VerificationException
 	{
-		Certificate[] jagexCertificateChain = getJagexCertificateChain();
+		Certificate[][] jagexCertificateChains = {
+			loadCertificateChain("jagex.crt"),
+			loadCertificateChain("jagex2021.crt")
+		};
 
 		// Get the mtime of the first thing in the vanilla cache
 		// we check this against what the server gives us to let us skip downloading and patching the whole thing
@@ -268,7 +279,7 @@ public class ClientLoader implements Supplier<Applet>
 				JarEntry je = vanillaCacheTest.getNextJarEntry();
 				if (je != null)
 				{
-					verifyJarEntry(je, jagexCertificateChain);
+					verifyJarEntry(je, jagexCertificateChains);
 					vanillaCacheMTime = je.getLastModifiedTime().toMillis();
 				}
 				else
@@ -347,7 +358,7 @@ public class ClientLoader implements Supplier<Applet>
 						}
 
 						networkJIS.skip(Long.MAX_VALUE);
-						verifyJarEntry(je, jagexCertificateChain);
+						verifyJarEntry(je, jagexCertificateChains);
 						long vanillaClientMTime = je.getLastModifiedTime().toMillis();
 						if (!vanillaCacheIsInvalid && vanillaClientMTime != vanillaCacheMTime)
 						{
@@ -364,7 +375,7 @@ public class ClientLoader implements Supplier<Applet>
 						{
 							// as with the request stream, its important to not early close vanilla too
 							JarInputStream vanillaCacheTest = new JarInputStream(Channels.newInputStream(vanilla));
-							verifyWholeJar(vanillaCacheTest, jagexCertificateChain);
+							verifyWholeJar(vanillaCacheTest, jagexCertificateChains);
 						}
 						catch (Exception e)
 						{
@@ -380,7 +391,7 @@ public class ClientLoader implements Supplier<Applet>
 						OutputStream out = Channels.newOutputStream(vanilla);
 						out.write(preRead.toByteArray());
 						copyStream.setOut(out);
-						verifyWholeJar(networkJIS, jagexCertificateChain);
+						verifyWholeJar(networkJIS, jagexCertificateChains);
 						copyStream.skip(Long.MAX_VALUE); // write the trailer to the file too
 						out.flush();
 						vanilla.truncate(vanilla.position());
@@ -396,7 +407,7 @@ public class ClientLoader implements Supplier<Applet>
 					log.warn("Failed to download gamepack from \"{}\"", url, e);
 
 					// With fallback config do 1 attempt (there are no additional urls to try)
-					if (config.isFallback() || attempt >= NUM_ATTEMPTS)
+					if (!javConfigUrl.equals(RuneLiteProperties.getJavConfig()) || config.isFallback() || attempt >= NUM_ATTEMPTS)
 					{
 						throw e;
 					}
@@ -525,7 +536,7 @@ public class ClientLoader implements Supplier<Applet>
 				if (name.endsWith(".class"))
 				{
 					name = name.substring(0, name.length() - 6);
-					classLoader.loadClass(name);
+					classLoader.loadClass(name.replace('/', '.'));
 				}
 			}
 
@@ -549,42 +560,47 @@ public class ClientLoader implements Supplier<Applet>
 		return rs;
 	}
 
-	private static Certificate[] getJagexCertificateChain()
+	private static Certificate[] loadCertificateChain(String name)
 	{
-		try
+		try (InputStream in = ClientLoader.class.getResourceAsStream(name))
 		{
 			CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
-			Collection<? extends Certificate> certificates = certificateFactory.generateCertificates(ClientLoader.class.getResourceAsStream("jagex.crt"));
+			Collection<? extends Certificate> certificates = certificateFactory.generateCertificates(in);
 			return certificates.toArray(new Certificate[0]);
 		}
-		catch (CertificateException e)
+		catch (CertificateException | IOException e)
 		{
 			throw new RuntimeException("Unable to parse pinned certificates", e);
 		}
 	}
 
-	private void verifyJarEntry(JarEntry je, Certificate[] certs) throws VerificationException
+	private void verifyJarEntry(JarEntry je, Certificate[][] chains) throws VerificationException
 	{
-		switch (je.getName())
+		if (je.getName().equals("META-INF/JAGEXLTD.SF") || je.getName().equals("META-INF/JAGEXLTD.RSA"))
 		{
-			case "META-INF/JAGEXLTD.SF":
-			case "META-INF/JAGEXLTD.RSA":
-				// You can't sign the signing files
-				return;
-			default:
-				if (!Arrays.equals(je.getCertificates(), certs))
-				{
-					throw new VerificationException("Unable to verify jar entry: " + je.getName());
-				}
+			// You can't sign the signing files
+			return;
 		}
+
+		// Jar entry must match one of the trusted certificate chains
+		Certificate[] entryCertificates = je.getCertificates();
+		for (Certificate[] chain : chains)
+		{
+			if (Arrays.equals(entryCertificates, chain))
+			{
+				return;
+			}
+		}
+
+		throw new VerificationException("Unable to verify jar entry: " + je.getName());
 	}
 
-	private void verifyWholeJar(JarInputStream jis, Certificate[] certs) throws IOException, VerificationException
+	private void verifyWholeJar(JarInputStream jis, Certificate[][] chains) throws IOException, VerificationException
 	{
 		for (JarEntry je; (je = jis.getNextJarEntry()) != null; )
 		{
 			jis.skip(Long.MAX_VALUE);
-			verifyJarEntry(je, certs);
+			verifyJarEntry(je, chains);
 		}
 	}
 }

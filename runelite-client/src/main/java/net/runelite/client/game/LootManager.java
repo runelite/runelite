@@ -84,6 +84,7 @@ public class LootManager
 	{
 		this.eventBus = eventBus;
 		this.client = client;
+		eventBus.register(this);
 	}
 
 	@Subscribe
@@ -236,7 +237,7 @@ public class LootManager
 	public void onNpcChanged(NpcChanged npcChanged)
 	{
 		final NPC npc = npcChanged.getNpc();
-		if (npc.getId() == NpcID.THE_NIGHTMARE_9433)
+		if (npc.getId() == NpcID.THE_NIGHTMARE_9433 || npc.getId() == NpcID.PHOSANIS_NIGHTMARE_9424)
 		{
 			delayedLootNpc = npc;
 			delayedLootTickLimit = 15;
@@ -352,6 +353,7 @@ public class LootManager
 			case NpcID.VORKATH_8059:
 			case NpcID.VORKATH_8060:
 			case NpcID.VORKATH_8061:
+			{
 				int x = worldLocation.getX() + 3;
 				int y = worldLocation.getY() + 3;
 				if (playerLocationLastTick.getX() < x)
@@ -372,6 +374,27 @@ public class LootManager
 				}
 				worldLocation = new WorldPoint(x, y, worldLocation.getPlane());
 				break;
+			}
+			case NpcID.NEX:
+			case NpcID.NEX_11279:
+			case NpcID.NEX_11280:
+			case NpcID.NEX_11281:
+			case NpcID.NEX_11282:
+			{
+				// Nex loot is under the player, or under nex
+				LocalPoint localPoint = LocalPoint.fromWorld(client, playerLocationLastTick);
+				if (localPoint != null)
+				{
+					int x = localPoint.getSceneX();
+					int y = localPoint.getSceneY();
+					final int packed = x << 8 | y;
+					if (itemSpawns.containsKey(packed))
+					{
+						return playerLocationLastTick;
+					}
+				}
+				break;
+			}
 		}
 
 		return worldLocation;

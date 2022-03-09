@@ -316,7 +316,7 @@ public enum Varbits
 	 */
 	FIRE_PIT_GIANT_MOLE(6532),
 	FIRE_PIT_LUMBRIDGE_SWAMP(6533),
-	FIRE_PIT_MOS_LE_HARMLESS(6544),
+	FIRE_PIT_MOS_LE_HARMLESS(6534),
 
 	/**
 	 * Theatre of Blood 1=In Party, 2=Inside/Spectator, 3=Dead Spectating
@@ -387,9 +387,10 @@ public enum Varbits
 	MULTICOMBAT_AREA(4605),
 
 	/**
-	 * Kingdom Management
+	 * Kingdom of Miscellania Management
+	 * Kingdom Approval is represented as a 7-bit unsigned integer; 127 corresponds to 100% approval
 	 */
-	KINGDOM_FAVOR(72),
+	KINGDOM_APPROVAL(72),
 	KINGDOM_COFFER(74),
 
 	/**
@@ -439,6 +440,7 @@ public enum Varbits
 	FARMING_7909(7909),
 	FARMING_7910(7910),
 	FARMING_7911(7911),
+	FARMING_7912(7912),
 
 	/**
 	 * Transmog controllers for grapes
@@ -525,6 +527,14 @@ public enum Varbits
 	 * Spell cooldowns
 	 */
 	VENGEANCE_COOLDOWN(2451),
+	CORRUPTION_COOLDOWN(12288),
+
+	/**
+	 * Imbued Heart cooldown
+	 * Number of game tick remaining on cooldown in intervals of 10; for a value X there are 10 * X game ticks remaining.
+	 * The heart regains its power once this reaches 0.
+	 */
+	IMBUED_HEART_COOLDOWN(5361),
 
 	/**
 	 * Amount of items in each bank tab
@@ -562,13 +572,39 @@ public enum Varbits
 	WINTERTODT_TIMER(7980),
 
 	/**
-	 * Twisted league
+	 * League relics
 	 */
-	TWISTED_LEAGUE_RELIC_1(10049),
-	TWISTED_LEAGUE_RELIC_2(10050),
-	TWISTED_LEAGUE_RELIC_3(10051),
-	TWISTED_LEAGUE_RELIC_4(10052),
-	TWISTED_LEAGUE_RELIC_5(10053),
+	LEAGUE_RELIC_1(10049),
+	LEAGUE_RELIC_2(10050),
+	LEAGUE_RELIC_3(10051),
+	LEAGUE_RELIC_4(10052),
+	LEAGUE_RELIC_5(10053),
+	LEAGUE_RELIC_6(11696),
+
+	/**
+	 * Muted volume restore values
+	 */
+	MUTED_MUSIC_VOLUME(9666),
+	MUTED_SOUND_EFFECT_VOLUME(9674),
+	MUTED_AREA_EFFECT_VOLUME(9675),
+
+	/**
+	 * Parasite infection status during nightmare of ashihama bossfight
+	 *
+	 * 0 = not infected
+	 * 1 = infected
+	 *
+	 */
+	PARASITE(10151),
+
+	/**
+	 * Whether the vanilla wiki entity lookup is displayed under the minimap
+	 *
+	 * 0 = Enabled
+	 * 1 = Disabled
+	 *
+	 */
+	WIKI_ENTITY_LOOKUP(10113),
 
 	/**
 	 * Whether the Special Attack orb is disabled due to being in a PvP area
@@ -578,7 +614,41 @@ public enum Varbits
 	 *
 	 * @see <a href="https://oldschool.runescape.wiki/w/Minimap#Special_attack_orb">The OSRS Wiki's Minimap page</a>
 	 */
-	PVP_SPEC_ORB(8121);
+	PVP_SPEC_ORB(8121),
+
+	/**
+	 * Collection Log notification settings whenever a new item is added
+	 *
+	 * 0 = no notification
+	 * 1 = chat notification only
+	 * 2 = popup notification only
+	 * 3 = chat and popup
+	 */
+	COLLECTION_LOG_NOTIFICATION(11959),
+
+	/**
+	 * Combat Achievements popup settings whenever a new task is completed
+	 *
+	 * 0 = popup notification enabled
+	 * 1 = popup notification disabled
+	 */
+	COMBAT_ACHIEVEMENTS_POPUP(12455),
+
+	/**
+	 * Show boss health overlay setting
+	 * 0 = on
+	 * 1 = off
+	 */
+	BOSS_HEALTH_OVERLAY(12389),
+
+	/**
+	 * Whether the PVP kill-death stats widget should be drawn while in the wilderness or in PVP worlds.
+	 *
+	 * 0 = Disabled
+	 * 1 = Enabled
+	 */
+	SHOW_PVP_KDR_STATS(4143),
+	;
 
 	/**
 	 * The raw varbit ID.

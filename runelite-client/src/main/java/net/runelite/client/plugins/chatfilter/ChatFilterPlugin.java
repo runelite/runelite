@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -50,15 +51,17 @@ import static net.runelite.api.ChatMessageType.OBJECT_EXAMINE;
 import static net.runelite.api.ChatMessageType.PUBLICCHAT;
 import static net.runelite.api.ChatMessageType.SPAM;
 import net.runelite.api.Client;
+import net.runelite.api.FriendsChatManager;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
+import net.runelite.api.clan.ClanChannel;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.OverheadTextChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
-import net.runelite.client.game.FriendChatManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.Text;
@@ -117,9 +120,6 @@ public class ChatFilterPlugin extends Plugin
 	@Inject
 	private ChatFilterConfig config;
 
-	@Inject
-	private FriendChatManager friendChatManager;
-
 	@Provides
 	ChatFilterConfig provideConfig(ConfigManager configManager)
 	{
@@ -139,6 +139,19 @@ public class ChatFilterPlugin extends Plugin
 		filteredPatterns.clear();
 		duplicateChatCache.clear();
 		client.refreshChat();
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	{
+		switch (gameStateChanged.getGameState())
+		{
+			// Login drops references to all messages and also resets the global message id counter.
+			// Invalidate the message id so it doesn't collide later when rebuilding the chatfilter.
+			case HOPPING:
+			case LOGGING_IN:
+				duplicateChatCache.values().forEach(d -> d.messageId = -1);
+		}
 	}
 
 	@Subscribe
@@ -173,16 +186,28 @@ public class ChatFilterPlugin extends Plugin
 			case PRIVATECHAT:
 			case MODPRIVATECHAT:
 			case FRIENDSCHAT:
-				if (shouldFilterPlayerMessage(name))
+			case CLAN_CHAT:
+			case CLAN_GUEST_CHAT:
+			case CLAN_GIM_CHAT:
+				if (shouldFilterPlayerMessage(Text.removeTags(name)))
 				{
 					message = censorMessage(name, message);
 					blockMessage = message == null;
 				}
 				break;
-			case LOGINLOGOUTNOTIFICATION:
-				if (config.filterLogin())
+			case GAMEMESSAGE:
+			case ENGINE:
+			case ITEM_EXAMINE:
+			case NPC_EXAMINE:
+			case OBJECT_EXAMINE:
+			case SPAM:
+			case CLAN_MESSAGE:
+			case CLAN_GUEST_MESSAGE:
+			case CLAN_GIM_MESSAGE:
+				if (config.filterGameChat())
 				{
-					blockMessage = true;
+					message = censorMessage(null, message);
+					blockMessage = message == null;
 				}
 				break;
 		}
@@ -193,7 +218,10 @@ public class ChatFilterPlugin extends Plugin
 		if (!blockMessage && shouldCollapse)
 		{
 			Duplicate duplicateCacheEntry = duplicateChatCache.get(name + ":" + message);
-			if (duplicateCacheEntry != null)
+			// If messageId is -1 then this is a replayed message, which we can't easily collapse since we don't know
+			// the most recent message. This is only for public chat since it is the only thing both replayed and also
+			// collapsed. Just allow uncollapsed playback.
+			if (duplicateCacheEntry != null && duplicateCacheEntry.messageId != -1)
 			{
 				blockMessage = duplicateCacheEntry.messageId != messageId ||
 					((chatMessageType == PUBLICCHAT || chatMessageType == MODCHAT) &&
@@ -262,14 +290,41 @@ public class ChatFilterPlugin extends Plugin
 		boolean isMessageFromSelf = playerName.equals(client.getLocalPlayer().getName());
 		return !isMessageFromSelf &&
 			(config.filterFriends() || !client.isFriended(playerName, false)) &&
-			(config.filterFriendsChat() || !friendChatManager.isMember(playerName));
+			(config.filterFriendsChat() || !isFriendsChatMember(playerName)) &&
+			(config.filterClanChat() || !isClanChatMember(playerName));
+	}
+
+	private boolean isFriendsChatMember(String name)
+	{
+		FriendsChatManager friendsChatManager = client.getFriendsChatManager();
+		return friendsChatManager != null && friendsChatManager.findByName(name) != null;
+	}
+
+	private boolean isClanChatMember(String name)
+	{
+		ClanChannel clanChannel = client.getClanChannel();
+		if (clanChannel != null && clanChannel.findMember(name) != null)
+		{
+			return true;
+		}
+
+		clanChannel = client.getGuestClanChannel();
+		if (clanChannel != null && clanChannel.findMember(name) != null)
+		{
+			return true;
+		}
+
+		return false;
 	}
 
 	String censorMessage(final String username, final String message)
 	{
 		String strippedMessage = jagexPrintableCharMatcher.retainFrom(message)
 			.replace('\u00A0', ' ');
-		if (shouldFilterByName(username))
+		String strippedAccents = StringUtils.stripAccents(strippedMessage);
+		assert strippedMessage.length() == strippedAccents.length();
+
+		if (username != null && shouldFilterByName(username))
 		{
 			switch (config.filterType())
 			{
@@ -285,16 +340,20 @@ public class ChatFilterPlugin extends Plugin
 		boolean filtered = false;
 		for (Pattern pattern : filteredPatterns)
 		{
-			Matcher m = pattern.matcher(strippedMessage);
+			Matcher m = pattern.matcher(strippedAccents);
 
-			StringBuffer sb = new StringBuffer();
+			StringBuilder sb = new StringBuilder();
+			int idx = 0;
 
 			while (m.find())
 			{
 				switch (config.filterType())
 				{
 					case CENSOR_WORDS:
-						m.appendReplacement(sb, StringUtils.repeat('*', m.group(0).length()));
+						MatchResult matchResult = m.toMatchResult();
+						sb.append(strippedMessage, idx, matchResult.start())
+							.append(StringUtils.repeat('*', matchResult.group().length()));
+						idx = m.end();
 						filtered = true;
 						break;
 					case CENSOR_MESSAGE:
@@ -303,9 +362,10 @@ public class ChatFilterPlugin extends Plugin
 						return null;
 				}
 			}
-			m.appendTail(sb);
+			sb.append(strippedMessage.substring(idx));
 
 			strippedMessage = sb.toString();
+			assert strippedMessage.length() == strippedAccents.length();
 		}
 
 		return filtered ? strippedMessage : message;
@@ -317,15 +377,18 @@ public class ChatFilterPlugin extends Plugin
 		filteredNamePatterns.clear();
 
 		Text.fromCSV(config.filteredWords()).stream()
+			.map(StringUtils::stripAccents)
 			.map(s -> Pattern.compile(Pattern.quote(s), Pattern.CASE_INSENSITIVE))
 			.forEach(filteredPatterns::add);
 
 		NEWLINE_SPLITTER.splitToList(config.filteredRegex()).stream()
+			.map(StringUtils::stripAccents)
 			.map(ChatFilterPlugin::compilePattern)
 			.filter(Objects::nonNull)
 			.forEach(filteredPatterns::add);
 
 		NEWLINE_SPLITTER.splitToList(config.filteredNames()).stream()
+			.map(StringUtils::stripAccents)
 			.map(ChatFilterPlugin::compilePattern)
 			.filter(Objects::nonNull)
 			.forEach(filteredNamePatterns::add);

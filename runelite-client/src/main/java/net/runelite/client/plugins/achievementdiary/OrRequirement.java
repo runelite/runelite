@@ -46,6 +46,7 @@ public class OrRequirement implements Requirement
 		return Joiner.on(" or ").join(requirements);
 	}
 
+	@Override
 	public boolean satisfiesRequirement(Client client)
 	{
 		for (Requirement r : getRequirements())

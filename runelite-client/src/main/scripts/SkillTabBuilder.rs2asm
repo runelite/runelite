@@ -21,6 +21,7 @@
    sconst                 "skillTabBaseLevel" ; push event name
    runelite_callback     ; invoke callback
    istore                 4                   ; store the (possibly) edited real skill level
+   pop_int                                    ; pop the skill id we pushed
    iload                  4
    tostring              
    cc_settext             1

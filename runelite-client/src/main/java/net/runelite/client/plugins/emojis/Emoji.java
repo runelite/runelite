@@ -91,6 +91,9 @@ enum Emoji
 	GORILLA(":G"),
 	PLEADING("(n_n)"),
 	XD("Xd"),
+	SPOON("--o"),
+	WEARY_FACE("Dx"),
+	ROCKETSHIP("<gt>==<gt>"), // >==>
 	;
 
 	private static final Map<String, Emoji> emojiMap;
@@ -116,7 +119,7 @@ enum Emoji
 
 	BufferedImage loadImage()
 	{
-		return ImageUtil.getResourceStreamFromClass(getClass(), this.name().toLowerCase() + ".png");
+		return ImageUtil.loadImageResource(getClass(), this.name().toLowerCase() + ".png");
 	}
 
 	static Emoji getEmoji(String trigger)
