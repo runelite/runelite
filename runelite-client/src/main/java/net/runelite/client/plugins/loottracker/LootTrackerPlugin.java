@@ -265,6 +265,22 @@ public class LootTrackerPlugin extends Plugin
 	// Mahogany Homes
 	private static final String MAHOGANY_CRATE_EVENT = "Supply crate (Mahogany Homes)";
 
+	// Impling jars
+	private static final Set<Integer> IMPLING_JARS = ImmutableSet.of(
+		ItemID.BABY_IMPLING_JAR,
+		ItemID.YOUNG_IMPLING_JAR,
+		ItemID.GOURMET_IMPLING_JAR,
+		ItemID.EARTH_IMPLING_JAR,
+		ItemID.ESSENCE_IMPLING_JAR,
+		ItemID.ECLECTIC_IMPLING_JAR,
+		ItemID.NATURE_IMPLING_JAR,
+		ItemID.MAGPIE_IMPLING_JAR,
+		ItemID.NINJA_IMPLING_JAR,
+		ItemID.CRYSTAL_IMPLING_JAR,
+		ItemID.DRAGON_IMPLING_JAR,
+		ItemID.LUCKY_IMPLING_JAR
+	);
+
 	private static final Set<Character> VOWELS = ImmutableSet.of('a', 'e', 'i', 'o', 'u');
 
 	@Inject
@@ -938,6 +954,11 @@ public class LootTrackerPlugin extends Plugin
 						onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, HALLOWED_SACK_EVENT));
 						break;
 				}
+			}
+			else if (event.getMenuOption().equals("Loot") && IMPLING_JARS.contains(event.getId()))
+			{
+				String name = itemManager.getItemComposition(event.getId()).getName();
+				onInvChange(collectInvItems(LootRecordType.EVENT, name));
 			}
 		}
 	}
