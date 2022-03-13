@@ -265,7 +265,7 @@ public class LootTrackerPlugin extends Plugin
 	// Mahogany Homes
 	private static final String MAHOGANY_CRATE_EVENT = "Supply crate (Mahogany Homes)";
 
-	// Impling jars
+	// Implings
 	private static final Set<Integer> IMPLING_JARS = ImmutableSet.of(
 		ItemID.BABY_IMPLING_JAR,
 		ItemID.YOUNG_IMPLING_JAR,
@@ -280,6 +280,7 @@ public class LootTrackerPlugin extends Plugin
 		ItemID.DRAGON_IMPLING_JAR,
 		ItemID.LUCKY_IMPLING_JAR
 	);
+	private static final String IMPLING_CATCH_MESSAGE = "You manage to catch the impling and acquire some loot.";
 
 	private static final Set<Character> VOWELS = ImmutableSet.of('a', 'e', 'i', 'o', 'u');
 
@@ -865,11 +866,19 @@ public class LootTrackerPlugin extends Plugin
 			}
 
 			onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, type, client.getBoostedSkillLevel(Skill.HUNTER)));
+			return;
 		}
 
 		if (regionID == TEMPOROSS_REGION && message.startsWith(TEMPOROSS_LOOT_STRING))
 		{
 			onInvChange(collectInvItems(LootRecordType.EVENT, TEMPOROSS_EVENT, client.getBoostedSkillLevel(Skill.FISHING)));
+			return;
+		}
+
+		if (message.equals(IMPLING_CATCH_MESSAGE))
+		{
+			onInvChange(collectInvItems(LootRecordType.EVENT, client.getLocalPlayer().getInteracting().getName()));
+			return;
 		}
 	}
 
