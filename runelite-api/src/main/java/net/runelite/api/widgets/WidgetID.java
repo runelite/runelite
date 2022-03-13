@@ -173,6 +173,7 @@ public final class WidgetID
 	public static final int GROUP_IRON_GROUP_ID = 726;
 	public static final int GROUP_STORAGE_INVENTORY_GROUP_ID = 725;
 	public static final int GROUP_STORAGE_GROUP_ID = 724;
+	public static final int WILDERNESS_LOOT_CHEST = 742;
 
 	static class WorldMap
 	{

@@ -688,6 +688,15 @@ public class LootTrackerPlugin extends Plugin
 				metadata = client.getBoostedSkillLevel(Skill.FISHING);
 				container = client.getItemContainer(InventoryID.DRIFT_NET_FISHING_REWARD);
 				break;
+			case WidgetID.WILDERNESS_LOOT_CHEST:
+				if (chestLooted)
+				{
+					return;
+				}
+				event = "Loot Chest";
+				container = client.getItemContainer(InventoryID.WILDERNESS_LOOT_CHEST);
+				chestLooted = true;
+				break;
 			default:
 				return;
 		}
@@ -885,6 +894,14 @@ public class LootTrackerPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
+		// when the wilderness chest empties, clear chest loot flag for the next key
+		if (event.getContainerId() == InventoryID.WILDERNESS_LOOT_CHEST.getId()
+			&& Arrays.stream(event.getItemContainer().getItems()).noneMatch(i -> i.getId() > -1))
+		{
+			log.debug("Resetting chest loot flag");
+			chestLooted = false;
+		}
+
 		if (inventoryId == null || event.getContainerId() != inventoryId.getId())
 		{
 			return;
