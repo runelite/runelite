@@ -572,8 +572,13 @@ public class LootTrackerPlugin extends Plugin
 
 	void addLoot(@NonNull String name, int combatLevel, LootRecordType type, Object metadata, Collection<ItemStack> items)
 	{
+		addLoot(name, combatLevel, type, metadata, items, 1);
+	}
+
+	void addLoot(@NonNull String name, int combatLevel, LootRecordType type, Object metadata, Collection<ItemStack> items, int amount)
+	{
 		final LootTrackerItem[] entries = buildEntries(stack(items));
-		SwingUtilities.invokeLater(() -> panel.add(name, type, combatLevel, entries));
+		SwingUtilities.invokeLater(() -> panel.add(name, type, combatLevel, entries, amount));
 
 		LootRecord lootRecord = new LootRecord(name, type, metadata, toGameItems(items), Instant.now(), getLootWorldId());
 		synchronized (queuedLoots)
@@ -581,7 +586,7 @@ public class LootTrackerPlugin extends Plugin
 			queuedLoots.add(lootRecord);
 		}
 
-		eventBus.post(new LootReceived(name, combatLevel, type, items));
+		eventBus.post(new LootReceived(name, combatLevel, type, items, amount));
 	}
 
 	private Integer getLootWorldId()
@@ -885,6 +890,7 @@ public class LootTrackerPlugin extends Plugin
 		final Collection<ItemStack> groundItems = lootManager.getItemSpawns(playerLocation);
 
 		final Multiset<Integer> diff = Multisets.difference(currentInventory, inventorySnapshot);
+		final Multiset<Integer> diffr = Multisets.difference(inventorySnapshot, currentInventory);
 
 		final List<ItemStack> items = diff.entrySet().stream()
 			.map(e -> new ItemStack(e.getElement(), e.getCount(), client.getLocalPlayer().getLocalLocation()))
@@ -894,7 +900,7 @@ public class LootTrackerPlugin extends Plugin
 
 		if (inventorySnapshotCb != null)
 		{
-			inventorySnapshotCb.accept(items, groundItems);
+			inventorySnapshotCb.accept(items, groundItems, diffr);
 		}
 
 		inventoryId = null;
@@ -957,8 +963,15 @@ public class LootTrackerPlugin extends Plugin
 			}
 			else if (event.getMenuOption().equals("Loot") && IMPLING_JARS.contains(event.getId()))
 			{
-				String name = itemManager.getItemComposition(event.getId()).getName();
-				onInvChange(collectInvItems(LootRecordType.EVENT, name));
+				onInvChange(((invItems, groundItems, removedItems) ->
+				{
+					int cnt = removedItems.count(event.getId());
+					if (cnt > 0)
+					{
+						String name = itemManager.getItemComposition(event.getId()).getName();
+						addLoot(name, -1, LootRecordType.EVENT, null, invItems, cnt);
+					}
+				}));
 			}
 		}
 	}
@@ -1064,7 +1077,7 @@ public class LootTrackerPlugin extends Plugin
 	@FunctionalInterface
 	interface InvChangeCallback
 	{
-		void accept(Collection<ItemStack> invItems, Collection<ItemStack> groundItems);
+		void accept(Collection<ItemStack> invItems, Collection<ItemStack> groundItems, Multiset<Integer> removedItems);
 	}
 
 	private InvChangeCallback collectInvItems(LootRecordType type, String event)
@@ -1074,7 +1087,7 @@ public class LootTrackerPlugin extends Plugin
 
 	private InvChangeCallback collectInvItems(LootRecordType type, String event, Object metadata)
 	{
-		return (invItems, groundItems) ->
+		return (invItems, groundItems, removedItems) ->
 			addLoot(event, -1, type, metadata, invItems);
 	}
 
@@ -1085,7 +1098,7 @@ public class LootTrackerPlugin extends Plugin
 
 	private InvChangeCallback collectInvAndGroundItems(LootRecordType type, String event, Object metadata)
 	{
-		return (invItems, groundItems) ->
+		return (invItems, groundItems, removedItems) ->
 		{
 			List<ItemStack> combined = new ArrayList<>();
 			combined.addAll(invItems);

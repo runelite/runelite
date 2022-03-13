@@ -400,7 +400,7 @@ class LootTrackerPanel extends PluginPanel
 	 * Creates a subtitle, adds a new entry and then passes off to the render methods, that will decide
 	 * how to display this new data.
 	 */
-	void add(final String eventName, final LootRecordType type, final int actorLevel, LootTrackerItem[] items)
+	void add(final String eventName, final LootRecordType type, final int actorLevel, LootTrackerItem[] items, int kills)
 	{
 		final String subTitle;
 		if (type == LootRecordType.PICKPOCKET)
@@ -411,7 +411,7 @@ class LootTrackerPanel extends PluginPanel
 		{
 			subTitle = actorLevel > -1 ? "(lvl-" + actorLevel + ")" : "";
 		}
-		final LootTrackerRecord record = new LootTrackerRecord(eventName, subTitle, type, items, 1);
+		final LootTrackerRecord record = new LootTrackerRecord(eventName, subTitle, type, items, kills);
 		sessionRecords.add(record);
 
 		if (hideIgnoredItems && plugin.isEventIgnored(eventName))
