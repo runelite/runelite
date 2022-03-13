@@ -331,7 +331,7 @@ class LootTrackerPanel extends PluginPanel
 			boxes.removeIf(b -> b.matches(currentView, currentType));
 			updateOverall();
 			logsContainer.removeAll();
-			logsContainer.repaint();
+			logsContainer.revalidate();
 
 			// Delete all loot, or loot matching the current view
 			if (currentView != null)
@@ -537,7 +537,6 @@ class LootTrackerPanel extends PluginPanel
 		boxes.forEach(LootTrackerBox::rebuild);
 		updateOverall();
 		logsContainer.revalidate();
-		logsContainer.repaint();
 	}
 
 	/**
@@ -638,7 +637,7 @@ class LootTrackerPanel extends PluginPanel
 			boxes.remove(box);
 			updateOverall();
 			logsContainer.remove(box);
-			logsContainer.repaint();
+			logsContainer.revalidate();
 
 			// Without loot being grouped we have no way to identify single kills to be deleted
 			if (groupLoot)
