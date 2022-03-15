@@ -32,4 +32,5 @@ import lombok.Data;
 public class RuntimeConfig
 {
 	private Map<String, ?> props = Collections.emptyMap();
+	private Map<String, String> sysProps = Collections.emptyMap();
 }

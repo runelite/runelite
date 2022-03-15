@@ -44,6 +44,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
@@ -144,6 +145,10 @@ public class RuneLite
 	@Inject
 	@Nullable
 	private Client client;
+
+	@Inject
+	@Nullable
+	private RuntimeConfig runtimeConfig;
 
 	public static void main(String[] args) throws Exception
 	{
@@ -286,6 +291,8 @@ public class RuneLite
 			// Inject members into client
 			injector.injectMembers(client);
 		}
+
+		setupSystemProps();
 
 		// Start the applet
 		if (applet != null)
@@ -512,6 +519,21 @@ public class RuneLite
 		catch (Exception e)
 		{
 			log.warn("unable to copy jagexcache", e);
+		}
+	}
+
+	private void setupSystemProps()
+	{
+		if (runtimeConfig == null || runtimeConfig.getSysProps() == null)
+		{
+			return;
+		}
+
+		for (Map.Entry<String, String> entry : runtimeConfig.getSysProps().entrySet())
+		{
+			String key = entry.getKey(), value = entry.getValue();
+			log.debug("Setting property {}={}", key, value);
+			System.setProperty(key, value);
 		}
 	}
 }
