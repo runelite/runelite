@@ -82,6 +82,16 @@ public interface LootTrackerConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "syncPanel",
+		name = "Remember loot",
+		description = "Saves loot between client sessions"
+	)
+	default boolean syncPanel()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "ignoredEvents",
 		name = "Ignored Loot Sources",
 		description = "Hide specific NPCs or sources of loot in the loot tracker (e.g., Goblin, Barrows Chest, H.A.M. Member).",

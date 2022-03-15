@@ -414,7 +414,6 @@ public class LootTrackerPlugin extends Plugin
 			return;
 		}
 
-		log.debug("Profile changed to {}", profileKey);
 		switchProfile(profileKey);
 	}
 
@@ -428,6 +427,11 @@ public class LootTrackerPlugin extends Plugin
 			this.profileKey = profileKey;
 
 			log.debug("Switched to profile {}", profileKey);
+
+			if (!config.syncPanel())
+			{
+				return;
+			}
 
 			int drops = 0;
 			List<ConfigLoot> loots = new ArrayList<>();
