@@ -3410,5 +3410,15 @@
       "z1": 1,
       "z2": 1
     }
+  ],
+  "11830": [ // Goblin Village & mind altar
+    { // Grim Tales tower
+      "rx1": 21,
+      "ry1": 10,
+      "rx2": 27,
+      "ry2": 15,
+      "z1": 2,
+      "z2": 2
+    }
   ]
 }
