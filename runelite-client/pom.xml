@@ -140,66 +140,70 @@
 		<!-- JOGL -->
 		<dependency>
 			<groupId>net.runelite.jogl</groupId>
-			<artifactId>jogl-all</artifactId>
-			<version>2.4.0-rc-20200429</version>
+			<artifactId>jogl-rl</artifactId>
+			<version>2.4.0-rc-20220318</version>
 		</dependency>
 		<dependency>
 			<groupId>net.runelite.jogl</groupId>
-			<artifactId>jogl-all</artifactId>
-			<version>2.4.0-rc-20200429</version>
+			<artifactId>jogl-rl</artifactId>
+			<version>2.4.0-rc-20220318</version>
 			<classifier>natives-windows-amd64</classifier>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>net.runelite.jogl</groupId>
-			<artifactId>jogl-all</artifactId>
-			<version>2.4.0-rc-20200429</version>
+			<artifactId>jogl-rl</artifactId>
+			<version>2.4.0-rc-20220318</version>
 			<classifier>natives-windows-i586</classifier>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>net.runelite.jogl</groupId>
-			<artifactId>jogl-all</artifactId>
-			<version>2.4.0-rc-20200429</version>
+			<artifactId>jogl-rl</artifactId>
+			<version>2.4.0-rc-20220318</version>
 			<classifier>natives-linux-amd64</classifier>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>net.runelite.jogl</groupId>
-			<artifactId>jogl-all-natives-macosx</artifactId>
-			<version>2.4.0-rc-20210117</version>
+			<artifactId>jogl-rl</artifactId>
+			<version>2.4.0-rc-20220318</version>
+			<classifier>natives-macosx-universal</classifier>
 			<scope>runtime</scope>
 		</dependency>
+
+		<!-- gluegen -->
 		<dependency>
 			<groupId>net.runelite.gluegen</groupId>
 			<artifactId>gluegen-rt</artifactId>
-			<version>2.4.0-rc-20200429</version>
+			<version>2.4.0-rc-20220318</version>
 		</dependency>
 		<dependency>
 			<groupId>net.runelite.gluegen</groupId>
 			<artifactId>gluegen-rt</artifactId>
-			<version>2.4.0-rc-20200429</version>
+			<version>2.4.0-rc-20220318</version>
 			<classifier>natives-windows-amd64</classifier>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>net.runelite.gluegen</groupId>
 			<artifactId>gluegen-rt</artifactId>
-			<version>2.4.0-rc-20200429</version>
+			<version>2.4.0-rc-20220318</version>
 			<classifier>natives-windows-i586</classifier>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>net.runelite.gluegen</groupId>
 			<artifactId>gluegen-rt</artifactId>
-			<version>2.4.0-rc-20200429</version>
+			<version>2.4.0-rc-20220318</version>
 			<classifier>natives-linux-amd64</classifier>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>net.runelite.gluegen</groupId>
-			<artifactId>gluegen-rt-natives-macosx</artifactId>
-			<version>2.4.0-rc-20210117</version>
+			<artifactId>gluegen-rt</artifactId>
+			<version>2.4.0-rc-20220318</version>
+			<classifier>natives-macosx-universal</classifier>
 			<scope>runtime</scope>
 		</dependency>
 
