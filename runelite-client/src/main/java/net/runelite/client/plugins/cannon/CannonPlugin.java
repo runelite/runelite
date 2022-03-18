@@ -46,6 +46,8 @@ import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.ObjectID;
 import static net.runelite.api.ObjectID.CANNON_BASE;
+import static net.runelite.api.ObjectID.CANNON_BASE_43029;
+
 import net.runelite.api.Player;
 import net.runelite.api.Projectile;
 import net.runelite.api.coords.LocalPoint;
@@ -173,6 +175,11 @@ public class CannonPlugin extends Plugin
 		boolean hasFurnace = false;
 		boolean hasAll = false;
 
+		boolean hasBaseOr = false;
+		boolean hasStandOr = false;
+		boolean hasBarrelsOr = false;
+		boolean hasFurnaceOr = false;
+
 		if (!cannonPlaced)
 		{
 			for (Item item : event.getItemContainer().getItems())
@@ -196,9 +203,22 @@ public class CannonPlugin extends Plugin
 					case ItemID.CANNON_FURNACE:
 						hasFurnace = true;
 						break;
+					case ItemID.CANNON_BASE_OR:
+						hasBaseOr = true;
+						break;
+					case ItemID.CANNON_STAND_OR:
+						hasStandOr = true;
+						break;
+					case ItemID.CANNON_BARRELS_OR:
+						hasBarrelsOr = true;
+						break;
+					case ItemID.CANNON_FURNACE_OR:
+						hasFurnaceOr = true;
+						break;
 				}
 
-				if (hasBase && hasStand && hasBarrels && hasFurnace)
+				if ((hasBaseOr && hasStandOr && hasBarrelsOr && hasFurnaceOr) ||
+						(hasBase && hasStand && hasBarrels && hasFurnace))
 				{
 					hasAll = true;
 					break;
@@ -253,7 +273,7 @@ public class CannonPlugin extends Plugin
 		GameObject gameObject = event.getGameObject();
 
 		Player localPlayer = client.getLocalPlayer();
-		if (gameObject.getId() == CANNON_BASE && !cannonPlaced)
+		if ((gameObject.getId() == CANNON_BASE || gameObject.getId() == CANNON_BASE_43029)  && !cannonPlaced)
 		{
 			if (localPlayer.getWorldLocation().distanceTo(gameObject.getWorldLocation()) <= 2
 				&& localPlayer.getAnimation() == AnimationID.BURYING_BONES)
@@ -264,11 +284,11 @@ public class CannonPlugin extends Plugin
 			}
 		}
 	}
-	
+
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (cannonPosition != null || event.getId() != ObjectID.DWARF_MULTICANNON)
+		if (cannonPosition != null || event.getId() != ObjectID.DWARF_MULTICANNON || event.getId() != ObjectID.DWARF_MULTICANNON_43027)
 		{
 			return;
 		}
