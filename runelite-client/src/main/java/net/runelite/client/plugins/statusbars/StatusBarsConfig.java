@@ -27,6 +27,7 @@ package net.runelite.client.plugins.statusbars;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
 import net.runelite.client.config.Units;
 import net.runelite.client.plugins.statusbars.config.BarMode;
 
@@ -95,4 +96,28 @@ public interface StatusBarsConfig extends Config
 	{
 		return 0;
 	}
+
+	@ConfigItem(
+		keyName = "groupTogether",
+		name = "Left and Right bar grouped",
+		description = "Left and right bar displayed beside each other on left of inventory.",
+		section = resizeableClassicLayout
+	)
+	default boolean groupTogether() {return false;}
+
+	@ConfigItem(
+		keyName = "overlapPillar",
+		name = "Overlap inventory pillar",
+		description = "Make the right bar overlap the inventory pillar.",
+		section = resizeableClassicLayout
+	)
+	default boolean overlapPillar() {return false;}
+
+	@ConfigSection(
+		name = "Resizable - Classic Layout",
+		description = "Options to change the status bar locations when Game client layout is set to Resizeable - Classic Layout.",
+		position = 0,
+		closedByDefault = true
+	)
+	String resizeableClassicLayout = "resizeableClassicLayout";
 }

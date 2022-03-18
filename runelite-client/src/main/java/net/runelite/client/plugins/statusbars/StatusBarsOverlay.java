@@ -76,6 +76,10 @@ class StatusBarsOverlay extends Overlay
 	private static final Dimension ICON_DIMENSIONS = new Dimension(26, 25);
 	private static final int RESIZED_BOTTOM_OFFSET_Y = 12;
 	private static final int RESIZED_BOTTOM_OFFSET_X = 10;
+	private static final int RESIZED_BOX_GROUP_OFFSET_LEFT_X = 48;
+	private static final int RESIZED_BOX_GROUP_OFFSET_RIGHT_X = 43;
+	private static final int RESIZED_BOX_OVERLAP_OFFSET_LEFT_X = 25;
+	private static final int RESIZED_BOX_OVERLAP_OFFSET_RIGHT_X = 20;
 	private static final int MAX_SPECIAL_ATTACK_VALUE = 100;
 	private static final int MAX_RUN_ENERGY_VALUE = 100;
 
@@ -254,6 +258,22 @@ class StatusBarsOverlay extends Overlay
 			offsetLeftBarY = (location.getY() - RESIZED_BOTTOM_OFFSET_Y - offsetLeft.getY());
 			offsetRightBarX = (location.getX() + RESIZED_BOTTOM_OFFSET_X - offsetRight.getX());
 			offsetRightBarY = (location.getY() - RESIZED_BOTTOM_OFFSET_Y - offsetRight.getY());
+		}
+		else if (curViewport == Viewport.RESIZED_BOX && config.groupTogether() && config.overlapPillar())
+		{
+			height = HEIGHT;
+			offsetLeftBarX = (location.getX() - RESIZED_BOX_OVERLAP_OFFSET_LEFT_X - offsetLeft.getX());
+			offsetLeftBarY = (location.getY() - offsetLeft.getY());
+			offsetRightBarX = (location.getX() - RESIZED_BOX_OVERLAP_OFFSET_RIGHT_X - offsetRight.getX());
+			offsetRightBarY = (location.getY() - offsetRight.getY());
+		}
+		else if (curViewport == Viewport.RESIZED_BOX && config.groupTogether())
+		{
+			height = HEIGHT;
+			offsetLeftBarX = (location.getX() - RESIZED_BOX_GROUP_OFFSET_LEFT_X - offsetLeft.getX());
+			offsetLeftBarY = (location.getY() - offsetLeft.getY());
+			offsetRightBarX = (location.getX() - RESIZED_BOX_GROUP_OFFSET_RIGHT_X - offsetRight.getX());
+			offsetRightBarY = (location.getY() - offsetRight.getY());
 		}
 		else
 		{
