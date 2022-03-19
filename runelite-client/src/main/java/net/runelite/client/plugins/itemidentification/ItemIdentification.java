@@ -256,7 +256,7 @@ enum ItemIdentification
 	ZENYTE(Type.GEM, "Zenyte", "Z", ItemID.UNCUT_ZENYTE, ItemID.ZENYTE),
 	SHADOW_DIAMOND(Type.GEM, "Shadow Diamond", "SHD", ItemID.SHADOW_DIAMOND),
 	BLOOD_DIAMOND(Type.GEM, "Blood Diamond", "BD", ItemID.BLOOD_DIAMOND),
-	ICE_DIAMOND(Type.GEM, "Ice Diamond", "SD", ItemID.ICE_DIAMOND),
+	ICE_DIAMOND(Type.GEM, "Ice Diamond", "ID", ItemID.ICE_DIAMOND),
 	SMOKE_DIAMOND(Type.GEM, "Smoke Diamond", "SMD", ItemID.SMOKE_DIAMOND),
 
 	// Potions
