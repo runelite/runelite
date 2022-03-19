@@ -254,6 +254,10 @@ enum ItemIdentification
 	DRAGONSTONE(Type.GEM, "Dragon", "DR", ItemID.UNCUT_DRAGONSTONE, ItemID.DRAGONSTONE),
 	ONYX(Type.GEM, "Onyx", "ON", ItemID.UNCUT_ONYX, ItemID.ONYX),
 	ZENYTE(Type.GEM, "Zenyte", "Z", ItemID.UNCUT_ZENYTE, ItemID.ZENYTE),
+	SHADOW_DIAMOND(Type.GEM, "Shadow Diamond", "SHD", ItemID.SHADOW_DIAMOND),
+	BLOOD_DIAMOND(Type.GEM, "Blood Diamond", "BD", ItemID.BLOOD_DIAMOND),
+	ICE_DIAMOND(Type.GEM, "Ice Diamond", "SD", ItemID.ICE_DIAMOND),
+	SMOKE_DIAMOND(Type.GEM, "Smoke Diamond", "SMD", ItemID.SMOKE_DIAMOND),
 
 	// Potions
 	ATTACK(Type.POTION, "Att", "A", ItemID.ATTACK_POTION4, ItemID.ATTACK_POTION3, ItemID.ATTACK_POTION2, ItemID.ATTACK_POTION1),
