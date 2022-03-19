@@ -211,4 +211,15 @@ public interface XpTrackerConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		position = 15,
+		keyName = "wiseOldManOpenOption",
+		name = "Wise Old Man Open Option",
+		description = "Adds an option to open Wise Old Man to the XP info box right-click menu"
+	)
+	default boolean wiseOldManOpenOption()
+	{
+		return true;
+	}
 }
