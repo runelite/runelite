@@ -30,6 +30,7 @@ import com.jogamp.nativewindow.AbstractGraphicsConfiguration;
 import com.jogamp.nativewindow.NativeWindowFactory;
 import com.jogamp.nativewindow.awt.AWTGraphicsConfiguration;
 import com.jogamp.nativewindow.awt.JAWTWindow;
+import com.jogamp.opengl.DebugGL4;
 import com.jogamp.opengl.GL;
 import static com.jogamp.opengl.GL.GL_ARRAY_BUFFER;
 import static com.jogamp.opengl.GL.GL_DYNAMIC_DRAW;
@@ -418,10 +419,17 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 					this.gl = glContext.getGL().getGL4();
 
-					setupSyncMode();
-
 					if (log.isDebugEnabled())
 					{
+						try
+						{
+							gl = new DebugGL4(gl);
+						}
+						catch (NoClassDefFoundError ex)
+						{
+							log.debug("Disabling DebugGL due to jogl-gldesktop-dbg not being present on the classpath");
+						}
+
 						gl.glEnable(gl.GL_DEBUG_OUTPUT);
 
 						//	GLDebugEvent[ id 0x20071
@@ -440,6 +448,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 						glContext.glDebugMessageControl(gl.GL_DEBUG_SOURCE_API, gl.GL_DEBUG_TYPE_PERFORMANCE,
 							gl.GL_DONT_CARE, 1, new int[]{0x20052}, 0, false);
 					}
+
+					setupSyncMode();
 
 					initVao();
 					try
