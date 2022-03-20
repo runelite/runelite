@@ -196,7 +196,7 @@ public enum STASHUnit
 	public ItemRequirement[] getBuildRequirements()
 	{
 
-		List<ItemRequirement> buildRequirements = new ArrayList<ItemRequirement>();
+		List<ItemRequirement> buildRequirements = new ArrayList<>();
 
 		switch (this.tier)
 		{
