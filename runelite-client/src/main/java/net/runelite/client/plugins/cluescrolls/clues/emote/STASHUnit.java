@@ -163,11 +163,12 @@ public enum STASHUnit
 		this.worldPoints = worldPoints;
 	}
 
-	public int getBuildLevelRequirement(){
+	public int getBuildLevelRequirement()
+	{
 
 		int req = 0;
 
-		switch(this.tier)
+		switch (this.tier)
 		{
 			case STASHUnitTier.BEGINNER:
 				req = 12;
@@ -176,7 +177,7 @@ public enum STASHUnit
 				req = 27;
 				break;
 			case STASHUnitTier.MEDIUM:
-				req =42;
+				req = 42;
 				break;
 			case STASHUnitTier.HARD:
 				req = 55;
@@ -192,11 +193,12 @@ public enum STASHUnit
 		return req;
 	}
 
-	public ItemRequirement[] getBuildRequirements(){
+	public ItemRequirement[] getBuildRequirements()
+	{
 
 		List<ItemRequirement> buildRequirements = new ArrayList<ItemRequirement>();
 
-		switch(this.tier)
+		switch (this.tier)
 		{
 			case STASHUnitTier.BEGINNER:
 				buildRequirements.add(new MultipleOfItemRequirement(PLANK, 2));

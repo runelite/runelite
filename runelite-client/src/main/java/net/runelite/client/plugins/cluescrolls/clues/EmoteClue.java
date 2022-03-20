@@ -298,7 +298,7 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 					.rightColor(stashUnitBuilt ? Color.GREEN : Color.RED)
 					.build());
 
-				if(!stashUnitBuilt)
+				if (!stashUnitBuilt)
 				{
 					showSTASHUnitRequirements(panelComponent, plugin, client);
 				}
@@ -341,7 +341,8 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 		}
 	}
 
-	private void showSTASHUnitRequirements(PanelComponent panelComponent, ClueScrollPlugin plugin, Client client){
+	private void showSTASHUnitRequirements(PanelComponent panelComponent, ClueScrollPlugin plugin, Client client)
+	{
 
 		Item[] inventory = plugin.getInventoryItems();
 		ItemRequirement[] requirements = stashUnit.getBuildRequirements();
@@ -358,7 +359,7 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 				.leftColor((client.getRealSkillLevel(Skill.CONSTRUCTION) >=  requiredLevel ) ? Color.GREEN : Color.RED)
 				.build());
 
-		for(ItemRequirement req : requirements)
+		for (ItemRequirement req : requirements)
 		{
 
 			boolean isFulfilled = req.fulfilledBy(inventory);
@@ -366,7 +367,7 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 			panelComponent.getChildren().add(LineComponent.builder()
 					.left(req.getCollectiveName(client))
 					.right(isFulfilled ? UNICODE_CHECK_MARK : UNICODE_BALLOT_X)
-					.rightColor(isFulfilled? Color.GREEN : Color.RED)
+					.rightColor(isFulfilled ? Color.GREEN : Color.RED)
 					.build());
 		}
 
