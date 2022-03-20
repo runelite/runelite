@@ -32,15 +32,12 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.Getter;
-import net.runelite.api.Client;
+import net.runelite.api.*;
+
 import static net.runelite.api.EquipmentInventorySlot.*;
 import static net.runelite.api.EquipmentInventorySlot.LEGS;
-import net.runelite.api.Item;
-import net.runelite.api.ItemID;
 import static net.runelite.api.ItemID.*;
-import net.runelite.api.Perspective;
-import net.runelite.api.ScriptID;
-import net.runelite.api.Varbits;
+
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
@@ -300,6 +297,11 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 					.rightFont(FontManager.getDefaultFont())
 					.rightColor(stashUnitBuilt ? Color.GREEN : Color.RED)
 					.build());
+
+				if(!stashUnitBuilt)
+				{
+					showSTASHUnitRequirements(panelComponent, plugin, client);
+				}
 			}
 
 			panelComponent.getChildren().add(LineComponent.builder().left("Equip:").build());
@@ -337,6 +339,38 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 					.build());
 			}
 		}
+	}
+
+	private void showSTASHUnitRequirements(PanelComponent panelComponent, ClueScrollPlugin plugin, Client client){
+
+		Item[] inventory = plugin.getInventoryItems();
+		ItemRequirement[] requirements = stashUnit.getBuildRequirements();
+		int requiredLevel = stashUnit.getBuildLevelRequirement();
+
+		panelComponent.getChildren().add(LineComponent.builder().left("").build());
+
+		panelComponent.getChildren().add(LineComponent.builder()
+				.left("To Build STASH Unit:")
+				.build());
+
+		panelComponent.getChildren().add(LineComponent.builder()
+				.left(requiredLevel + " Construction")
+				.leftColor((client.getRealSkillLevel(Skill.CONSTRUCTION) >=  requiredLevel ) ? Color.GREEN : Color.RED)
+				.build());
+
+		for(ItemRequirement req : requirements)
+		{
+
+			boolean isFulfilled = req.fulfilledBy(inventory);
+
+			panelComponent.getChildren().add(LineComponent.builder()
+					.left(req.getCollectiveName(client))
+					.right(isFulfilled ? UNICODE_CHECK_MARK : UNICODE_BALLOT_X)
+					.rightColor(isFulfilled? Color.GREEN : Color.RED)
+					.build());
+		}
+
+		panelComponent.getChildren().add(LineComponent.builder().left("").build());
 	}
 
 	@Override
