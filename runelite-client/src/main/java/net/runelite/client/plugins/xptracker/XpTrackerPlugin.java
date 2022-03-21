@@ -34,7 +34,6 @@ import java.awt.image.BufferedImage;
 import java.time.temporal.ChronoUnit;
 import java.util.EnumSet;
 import java.util.List;
-import java.util.Objects;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Setter;
@@ -123,7 +122,7 @@ public class XpTrackerPlugin extends Plugin
 	@VisibleForTesting
 	private XpPanel xpPanel;
 	private XpWorldType lastWorldType;
-	private String lastUsername;
+	private long lastAccount;
 	private long lastTickMillis = 0;
 	private boolean fetchXp; // fetch lastXp for the online xp tracker
 	private long lastXp = 0;
@@ -162,6 +161,7 @@ public class XpTrackerPlugin extends Plugin
 		// Initialize the tracker & last xp if already logged in
 		fetchXp = true;
 		initializeTracker = true;
+		lastAccount = -1L;
 	}
 
 	@Override
@@ -182,15 +182,15 @@ public class XpTrackerPlugin extends Plugin
 			// Check that the username changed or the world type changed.
 			XpWorldType type = worldSetToType(client.getWorldType());
 
-			if (!Objects.equals(client.getUsername(), lastUsername) || lastWorldType != type)
+			if (client.getAccountHash() != lastAccount || lastWorldType != type)
 			{
 				// Reset
 				log.debug("World change: {} -> {}, {} -> {}",
-					lastUsername, client.getUsername(),
+					lastAccount, client.getAccountHash(),
 					firstNonNull(lastWorldType, "<unknown>"),
 					firstNonNull(type, "<unknown>"));
 
-				lastUsername = client.getUsername();
+				lastAccount = client.getAccountHash();
 				// xp is not available until after login is finished, so fetch it on the next gametick
 				fetchXp = true;
 				lastWorldType = type;
