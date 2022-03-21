@@ -29,7 +29,6 @@ package net.runelite.client.plugins.xpupdater;
 import com.google.inject.Provides;
 import java.io.IOException;
 import java.util.EnumSet;
-import java.util.Objects;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -74,7 +73,7 @@ public class XpUpdaterPlugin extends Plugin
 	@Inject
 	private OkHttpClient okHttpClient;
 
-	private String lastUsername;
+	private long lastAccount;
 	private boolean fetchXp;
 	private long lastXp;
 
@@ -88,6 +87,7 @@ public class XpUpdaterPlugin extends Plugin
 	protected void startUp()
 	{
 		fetchXp = true;
+		lastAccount = -1L;
 	}
 
 	@Subscribe
@@ -96,9 +96,9 @@ public class XpUpdaterPlugin extends Plugin
 		GameState state = gameStateChanged.getGameState();
 		if (state == GameState.LOGGED_IN)
 		{
-			if (!Objects.equals(client.getUsername(), lastUsername))
+			if (lastAccount != client.getAccountHash())
 			{
-				lastUsername = client.getUsername();
+				lastAccount = client.getAccountHash();
 				fetchXp = true;
 			}
 		}
