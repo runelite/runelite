@@ -83,6 +83,7 @@ import net.runelite.api.SpriteID;
 import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
@@ -489,8 +490,6 @@ public class LootTrackerPlugin extends Plugin
 					panel.addRecords(records);
 				});
 			});
-
-			panel.toggleImportNotice(!hasImported());
 		});
 	}
 
@@ -1006,6 +1005,15 @@ public class LootTrackerPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onCommandExecuted(CommandExecuted commandExecuted)
+	{
+		if (commandExecuted.getCommand().equals("importloot"))
+		{
+			SwingUtilities.invokeLater(this::importLoot);
+		}
+	}
+
 	private static boolean isItemOp(MenuAction menuAction)
 	{
 		final int id = menuAction.getId();
@@ -1384,7 +1392,6 @@ public class LootTrackerPlugin extends Plugin
 		}
 
 		clearImported();
-		panel.toggleImportNotice(true);
 	}
 
 	void importLoot()
@@ -1456,7 +1463,6 @@ public class LootTrackerPlugin extends Plugin
 			SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(panel, "Imported " + lootRecords.size() + " loot entries."));
 
 			setHasImported();
-			panel.toggleImportNotice(false);
 		});
 	}
 

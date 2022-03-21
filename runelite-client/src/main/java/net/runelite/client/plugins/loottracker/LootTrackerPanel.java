@@ -52,7 +52,6 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButton;
 import javax.swing.JToggleButton;
-import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicButtonUI;
 import javax.swing.plaf.basic.BasicToggleButtonUI;
@@ -85,7 +84,6 @@ class LootTrackerPanel extends PluginPanel
 	private static final ImageIcon INVISIBLE_ICON_HOVER;
 	private static final ImageIcon COLLAPSE_ICON;
 	private static final ImageIcon EXPAND_ICON;
-	private static final ImageIcon IMPORT_ICON;
 
 	private static final String HTML_LABEL_TEMPLATE =
 		"<html><body style='color:%s'>%s<span style='color:white'>%s</span></body></html>";
@@ -116,8 +114,6 @@ class LootTrackerPanel extends PluginPanel
 	private final JRadioButton singleLootBtn = new JRadioButton();
 	private final JRadioButton groupedLootBtn = new JRadioButton();
 	private final JButton collapseBtn = new JButton();
-
-	private final JPanel importNoticePanel;
 
 	// Aggregate of all kills
 	private final List<LootTrackerRecord> aggregateRecords = new ArrayList<>();
@@ -163,8 +159,6 @@ class LootTrackerPanel extends PluginPanel
 
 		COLLAPSE_ICON = new ImageIcon(collapseImg);
 		EXPAND_ICON = new ImageIcon(expandedImg);
-
-		IMPORT_ICON = new ImageIcon(ImageUtil.loadImageResource(LootTrackerPlugin.class, "import_icon.png"));
 	}
 
 	LootTrackerPanel(final LootTrackerPlugin plugin, final ItemManager itemManager, final LootTrackerConfig config)
@@ -185,12 +179,10 @@ class LootTrackerPanel extends PluginPanel
 
 		actionsPanel = buildActionsPanel();
 		overallPanel = buildOverallPanel();
-		importNoticePanel = createImportNoticePanel();
 
 		// Create loot boxes wrapper
 		logsContainer.setLayout(new BoxLayout(logsContainer, BoxLayout.Y_AXIS));
 		layoutPanel.add(actionsPanel);
-		layoutPanel.add(importNoticePanel);
 		layoutPanel.add(overallPanel);
 		layoutPanel.add(logsContainer);
 
@@ -352,30 +344,6 @@ class LootTrackerPanel extends PluginPanel
 		overallPanel.setComponentPopupMenu(popupMenu);
 
 		return overallPanel;
-	}
-
-	private JPanel createImportNoticePanel()
-	{
-		JPanel panel = new JPanel();
-		panel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		panel.setBorder(BorderFactory.createCompoundBorder(
-			BorderFactory.createMatteBorder(5, 0, 0, 0, ColorScheme.DARK_GRAY_COLOR),
-			BorderFactory.createEmptyBorder(8, 10, 8, 10)
-		));
-		panel.setLayout(new BorderLayout());
-
-		final JLabel importLabel = new JLabel("<html>Missing saved loot? Click the<br>import button to import it.</html>");
-		importLabel.setForeground(Color.YELLOW);
-		panel.add(importLabel, BorderLayout.WEST);
-
-		JButton importButton = new JButton();
-		SwingUtil.removeButtonDecorations(importButton);
-		importButton.setIcon(IMPORT_ICON);
-		importButton.setToolTipText("Import old loot tracker data to current profile");
-		importButton.addActionListener(l -> plugin.importLoot());
-		panel.add(importButton, BorderLayout.EAST);
-
-		return panel;
 	}
 
 	void updateCollapseText()
@@ -734,10 +702,5 @@ class LootTrackerPanel extends PluginPanel
 	{
 		final String valueStr = QuantityFormatter.quantityToStackSize(value);
 		return String.format(HTML_LABEL_TEMPLATE, ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR), key, valueStr);
-	}
-
-	void toggleImportNotice(boolean on)
-	{
-		SwingUtilities.invokeLater(() -> importNoticePanel.setVisible(on));
 	}
 }
