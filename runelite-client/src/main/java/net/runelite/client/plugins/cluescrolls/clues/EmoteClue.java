@@ -33,7 +33,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 
-import com.google.inject.Provides;
 import lombok.Getter;
 import net.runelite.api.*;
 
