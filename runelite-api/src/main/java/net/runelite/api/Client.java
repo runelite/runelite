@@ -24,6 +24,7 @@
  */
 package net.runelite.api;
 
+import com.jagex.oldscape.pub.OAuthApi;
 import java.awt.Canvas;
 import java.awt.Dimension;
 import java.util.EnumSet;
@@ -50,7 +51,7 @@ import org.intellij.lang.annotations.MagicConstant;
 /**
  * Represents the RuneScape client.
  */
-public interface Client extends GameEngine
+public interface Client extends OAuthApi, GameEngine
 {
 	/**
 	 * The injected client invokes these callbacks to send events to us
