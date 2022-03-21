@@ -27,16 +27,12 @@ package net.runelite.client.plugins.cluescrolls.clues.emote;
 import lombok.Getter;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.plugins.cluescrolls.clues.item.AnyRequirementCollection;
-import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
-import net.runelite.client.plugins.cluescrolls.clues.item.MultipleOfItemRequirement;
-import net.runelite.client.plugins.cluescrolls.clues.item.SingleItemRequirement;
+import net.runelite.client.plugins.cluescrolls.clues.item.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static net.runelite.api.ItemID.*;
-import static net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements.item;
 
 @Getter
 public enum STASHUnit
@@ -221,13 +217,14 @@ public enum STASHUnit
 				break;
 		}
 
-		buildRequirements.add(new AnyRequirementCollection("Nails (10)",
-				item(BRONZE_NAILS),
-				item(IRON_NAILS),
-				item(STEEL_NAILS),
-				item(MITHRIL_NAILS),
-				item(ADAMANTITE_NAILS),
-				item(RUNE_NAILS)));
+		buildRequirements.add(new MultipleOfAnyItemRequirement("Nails (10)",
+				10,
+				BRONZE_NAILS,
+				IRON_NAILS,
+				STEEL_NAILS,
+				MITHRIL_NAILS,
+				ADAMANTITE_NAILS,
+				RUNE_NAILS));
 		buildRequirements.add(new SingleItemRequirement(SAW));
 		buildRequirements.add(new SingleItemRequirement(HAMMER));
 

@@ -1238,4 +1238,9 @@ public class ClueScrollPlugin extends Plugin
 
 		return false;
 	}
+
+	public ClueScrollConfig getConfig()
+	{
+		return this.config;
+	}
 }

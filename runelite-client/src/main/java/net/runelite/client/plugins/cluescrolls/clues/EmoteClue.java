@@ -31,6 +31,9 @@ import java.awt.Polygon;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.inject.Inject;
+
+import com.google.inject.Provides;
 import lombok.Getter;
 import net.runelite.api.*;
 
@@ -41,6 +44,9 @@ import static net.runelite.api.ItemID.*;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
+
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.plugins.cluescrolls.ClueScrollConfig;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import static net.runelite.client.plugins.cluescrolls.clues.Enemy.*;
 import net.runelite.client.plugins.cluescrolls.clues.emote.Emote;
@@ -228,6 +234,9 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 	private final Emote secondEmote;
 	private final ItemRequirement[] itemRequirements;
 
+	@Inject
+	private ConfigManager configManager;
+
 	private EmoteClue(String text, String locationName, STASHUnit stashUnit, WorldPoint location, Emote firstEmote, @Nonnull ItemRequirement... itemRequirements)
 	{
 		this(text, locationName, stashUnit, location, firstEmote, null, itemRequirements);
@@ -298,7 +307,9 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 					.rightColor(stashUnitBuilt ? Color.GREEN : Color.RED)
 					.build());
 
-				if (!stashUnitBuilt)
+				ClueScrollConfig config = plugin.getConfig();
+
+				if (!stashUnitBuilt && config.displaySTASHUnitBuildRequirements())
 				{
 					showSTASHUnitRequirements(panelComponent, plugin, client);
 				}

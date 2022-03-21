@@ -40,4 +40,11 @@ public interface ClueScrollConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "displaySTASHUnitBuildRequirements",
+		name = "Display requirements to build STASH Units",
+		description = "Configures whether or not the clue scroll overlay will display the items and levels required to build a STASH Unit"
+	)
+	default boolean displaySTASHUnitBuildRequirements() { return false; }
 }
