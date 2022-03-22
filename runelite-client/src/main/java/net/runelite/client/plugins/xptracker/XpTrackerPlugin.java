@@ -28,6 +28,7 @@ package net.runelite.client.plugins.xptracker;
 import com.google.common.annotations.VisibleForTesting;
 import static com.google.common.base.MoreObjects.firstNonNull;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
@@ -35,6 +36,11 @@ import java.time.temporal.ChronoUnit;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Setter;
@@ -128,6 +134,7 @@ public class XpTrackerPlugin extends Plugin
 	private boolean fetchXp; // fetch lastXp for the online xp tracker
 	private long lastXp = 0;
 	private boolean initializeTracker;
+	private final Map<Skill, Integer> skillToCurrentXpGained = new HashMap<>();
 
 	private final XpPauseState xpPauseState = new XpPauseState();
 
@@ -271,6 +278,34 @@ public class XpTrackerPlugin extends Plugin
 	boolean hasOverlay(final Skill skill)
 	{
 		return overlayManager.anyMatch(o -> o instanceof XpInfoBoxOverlay && ((XpInfoBoxOverlay) o).getSkill() == skill);
+	}
+
+	void sortByXp()
+	{
+		for (Skill skill : Skill.values())
+		{
+			int xpGained = xpState.getSkillSnapshot(skill).getXpGainedInSession();
+			if (xpGained != 0 && skill != Skill.OVERALL)
+			{
+				skillToCurrentXpGained.put(skill, xpGained);
+			}
+		}
+		xpPanel.sortByXp(sortMapByValue(skillToCurrentXpGained));
+	}
+
+	private <K, V extends Comparable<? super V>> Map<K, V> sortMapByValue(Map<K, V> map)
+	{
+		List<Map.Entry<K, V>> list = new ArrayList<>(map.entrySet());
+		list.sort(Map.Entry.comparingByValue());
+		list = Lists.reverse(list);
+
+		Map<K, V> result = new LinkedHashMap<>();
+		for (Map.Entry<K, V> entry : list)
+		{
+			result.put(entry.getKey(), entry.getValue());
+		}
+
+		return result;
 	}
 
 	/**

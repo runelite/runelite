@@ -87,6 +87,10 @@ class XpPanel extends PluginPanel
 		openXpTracker.addActionListener(e -> LinkBrowser.browse(XpPanel.buildXpTrackerUrl(
 			client.getWorldType(), client.getLocalPlayer(), Skill.OVERALL)));
 
+		// Sort by most xp gained
+		final JMenuItem sortByXp = new JMenuItem("Sort by XP");
+		sortByXp.addActionListener(e -> xpTrackerPlugin.sortByXp());
+
 		// Create reset all menu
 		final JMenuItem reset = new JMenuItem("Reset All");
 		reset.addActionListener(e -> xpTrackerPlugin.resetAndInitState());
@@ -108,6 +112,7 @@ class XpPanel extends PluginPanel
 		final JPopupMenu popupMenu = new JPopupMenu();
 		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
 		popupMenu.add(openXpTracker);
+		popupMenu.add(sortByXp);
 		popupMenu.add(reset);
 		popupMenu.add(resetPerHour);
 		popupMenu.add(pauseAll);
@@ -166,6 +171,17 @@ class XpPanel extends PluginPanel
 			.addQueryParameter("period", "week")
 			.build()
 			.toString();
+	}
+
+	void sortByXp(Map<Skill, Integer> skillToCurrentXpGained)
+	{
+		int i = 0;
+		for (Skill skill : skillToCurrentXpGained.keySet())
+		{
+			infoBoxes.get(skill).setInfoBoxPosition(i);
+			i++;
+		}
+		revalidate();
 	}
 
 	void resetAllInfoBoxes()
