@@ -203,7 +203,7 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 		new SkillChallengeClue("Activate the Chivalry prayer."),
 		new SkillChallengeClue("Hand in a Tier 2 or higher set of Shayzien supply armour. (Requires 11 lovakite bars)", "take the lovakengj armourers a boxed set of shayzien supply armour at tier 2 or above.", any("Shayzien Supply Set (Tier 2 or higher)", item(ItemID.SHAYZIEN_SUPPLY_SET_2), item(ItemID.SHAYZIEN_SUPPLY_SET_3), item(ItemID.SHAYZIEN_SUPPLY_SET_4), item(ItemID.SHAYZIEN_SUPPLY_SET_5))),
 		// Master Sherlock Tasks
-		new SkillChallengeClue("Equip an abyssal whip in front of the abyssal demons of the Slayer Tower.", true, any("Abyssal Whip", item(ItemID.ABYSSAL_WHIP), item(ItemID.FROZEN_ABYSSAL_WHIP), item(ItemID.VOLCANIC_ABYSSAL_WHIP))),
+		new SkillChallengeClue("Equip an abyssal whip in front of the abyssal demons of the Slayer Tower.", true, any("Abyssal Whip", item(ItemID.ABYSSAL_WHIP), item(ItemID.FROZEN_ABYSSAL_WHIP), item(ItemID.VOLCANIC_ABYSSAL_WHIP), item(ItemID.ABYSSAL_WHIP_OR))),
 		new SkillChallengeClue("Smith a runite med helm.", ANY_HAMMER, item(ItemID.RUNITE_BAR)),
 		new SkillChallengeClue("Teleport to a spirit tree you planted yourself."),
 		new SkillChallengeClue("Create a Barrows teleport tablet.", item(ItemID.DARK_ESSENCE_BLOCK), xOfItem(ItemID.BLOOD_RUNE, 1), xOfItem(ItemID.LAW_RUNE, 2), xOfItem(ItemID.SOUL_RUNE, 2)),
