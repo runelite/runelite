@@ -132,7 +132,6 @@ public final class WidgetID
 	public static final int SKOTIZO_GROUP_ID = 308;
 	public static final int ENTERING_HOUSE_GROUP_ID = 71;
 	public static final int FULLSCREEN_CONTAINER_TLI = 165;
-	public static final int QUESTLIST_GROUP_ID = 399;
 	public static final int SKILLS_GROUP_ID = 320;
 	public static final int MUSIC_GROUP_ID = 239;
 	public static final int BARROWS_PUZZLE_GROUP_ID = 25;
@@ -805,16 +804,6 @@ public final class WidgetID
 	static class Skotizo
 	{
 		static final int CONTAINER = 2;
-	}
-
-	static class QuestList
-	{
-		static final int BOX = 0;
-		static final int SCROLLBAR = 4;
-		static final int CONTAINER = 5;
-		static final int FREE_CONTAINER = 6;
-		static final int MEMBERS_CONTAINER = 7;
-		static final int MINIQUEST_CONTAINER = 8;
 	}
 
 	static class Music
