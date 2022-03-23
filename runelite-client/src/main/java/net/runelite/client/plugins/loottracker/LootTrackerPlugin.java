@@ -263,6 +263,12 @@ public class LootTrackerPlugin extends Plugin
 	private static final String TEMPOROSS_LOOT_STRING = "You found some loot: ";
 	private static final int TEMPOROSS_REGION = 12588;
 
+	// Guardians of the Rift
+	private static final String GUARDIANS_OF_THE_RIFT_EVENT = "Guardians of the Rift";
+	private static final String INTRICATE_POUCH_EVENT = "Intricate pouch";
+	private static final String GUARDIANS_OF_THE_RIFT_LOOT_STRING = "You found some loot: ";
+	private static final int GUARDIANS_OF_THE_RIFT_REGION = 14484;
+
 	// Mahogany Homes
 	private static final String MAHOGANY_CRATE_EVENT = "Supply crate (Mahogany Homes)";
 
@@ -887,6 +893,12 @@ public class LootTrackerPlugin extends Plugin
 			return;
 		}
 
+		if (regionID == GUARDIANS_OF_THE_RIFT_REGION && message.startsWith(GUARDIANS_OF_THE_RIFT_LOOT_STRING))
+		{
+			onInvChange(collectInvItems(LootRecordType.EVENT, GUARDIANS_OF_THE_RIFT_EVENT, client.getBoostedSkillLevel(Skill.RUNECRAFT)));
+			return;
+		}
+
 		if (message.equals(IMPLING_CATCH_MESSAGE))
 		{
 			onInvChange(collectInvItems(LootRecordType.EVENT, client.getLocalPlayer().getInteracting().getName()));
@@ -976,6 +988,9 @@ public class LootTrackerPlugin extends Plugin
 						break;
 					case ItemID.CASKET_25590:
 						onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, TEMPOROSS_CASKET_EVENT));
+						break;
+					case ItemID.INTRICATE_POUCH:
+						onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, INTRICATE_POUCH_EVENT));
 						break;
 					case ItemID.SIMPLE_LOCKBOX_25647:
 					case ItemID.ELABORATE_LOCKBOX_25649:
