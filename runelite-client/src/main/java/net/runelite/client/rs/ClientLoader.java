@@ -309,6 +309,11 @@ public class ClientLoader implements Supplier<Applet>
 			}
 			vanilla.position(0);
 
+			if (!vanillaCacheIsInvalid && "false".equals(System.getProperty("runelite.updateVanilla")))
+			{
+				return;
+			}
+
 			// Start downloading the vanilla client
 			HttpUrl url;
 			if (config.isFallback())
