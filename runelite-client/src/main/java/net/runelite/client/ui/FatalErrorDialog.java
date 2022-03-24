@@ -61,6 +61,7 @@ public class FatalErrorDialog extends JDialog
 
 	private final JPanel rightColumn = new JPanel();
 	private final Font font = new Font(Font.DIALOG, Font.PLAIN, 12);
+	private final JLabel title;
 
 	public FatalErrorDialog(String message)
 	{
@@ -114,7 +115,7 @@ public class FatalErrorDialog extends JDialog
 		leftPane.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		leftPane.setLayout(new BorderLayout());
 
-		JLabel title = new JLabel("There was a fatal error starting RuneLite");
+		title = new JLabel("There was a fatal error starting RuneLite");
 		title.setForeground(Color.WHITE);
 		title.setFont(font.deriveFont(16.f));
 		title.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -183,6 +184,13 @@ public class FatalErrorDialog extends JDialog
 		rightColumn.add(button);
 		rightColumn.revalidate();
 
+		return this;
+	}
+
+	public FatalErrorDialog setTitle(String windowTitle, String header)
+	{
+		super.setTitle(windowTitle);
+		title.setText(header);
 		return this;
 	}
 

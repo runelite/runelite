@@ -575,7 +575,7 @@ public class ClientLoader implements Supplier<Applet>
 		Class<?> clientClass = classLoader.loadClass(initialClass);
 
 		Applet rs = (Applet) clientClass.newInstance();
-		rs.setStub(new RSAppletStub(config));
+		rs.setStub(new RSAppletStub(config, runtimeConfigLoader));
 
 		if (rs instanceof Client)
 		{
