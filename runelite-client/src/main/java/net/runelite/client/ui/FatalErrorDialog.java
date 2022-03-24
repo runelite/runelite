@@ -137,13 +137,6 @@ public class FatalErrorDialog extends JDialog
 		rightColumn.setBackground(ColorScheme.DARK_GRAY_COLOR);
 		rightColumn.setMaximumSize(new Dimension(200, Integer.MAX_VALUE));
 
-		addButton("Open logs folder", () ->
-		{
-			LinkBrowser.open(RuneLite.LOGS_DIR.toString());
-		});
-		addButton("Get help on Discord", () -> LinkBrowser.browse(RuneLiteProperties.getDiscordInvite()));
-		addButton("Troubleshooting steps", () -> LinkBrowser.browse(RuneLiteProperties.getTroubleshootingLink()));
-
 		pane.add(rightColumn, BorderLayout.EAST);
 	}
 
@@ -193,6 +186,13 @@ public class FatalErrorDialog extends JDialog
 		return this;
 	}
 
+	public FatalErrorDialog addHelpButtons()
+	{
+		return addButton("Open logs folder", () -> LinkBrowser.open(RuneLite.LOGS_DIR.toString()))
+			.addButton("Get help on Discord", () -> LinkBrowser.browse(RuneLiteProperties.getDiscordInvite()))
+			.addButton("Troubleshooting steps", () -> LinkBrowser.browse(RuneLiteProperties.getTroubleshootingLink()));
+	}
+
 	public FatalErrorDialog addBuildingGuide()
 	{
 		return addButton("Building guide", () -> LinkBrowser.browse(RuneLiteProperties.getBuildingLink()));
@@ -205,6 +205,7 @@ public class FatalErrorDialog extends JDialog
 			new FatalErrorDialog("RuneLite was unable to verify the security of its connection to the internet while " +
 				action + ". You may have a misbehaving antivirus, internet service provider, a proxy, or an incomplete" +
 				" java installation.")
+				.addHelpButtons()
 				.open();
 			return;
 		}
@@ -213,6 +214,7 @@ public class FatalErrorDialog extends JDialog
 		{
 			new FatalErrorDialog("RuneLite is unable to connect to a required server while " + action + ". " +
 				"Please check your internet connection")
+				.addHelpButtons()
 				.open();
 			return;
 		}
@@ -222,11 +224,14 @@ public class FatalErrorDialog extends JDialog
 			new FatalErrorDialog("RuneLite is unable to resolve the address of a required server while " + action + ". " +
 				"Your DNS resolver may be misconfigured, pointing to an inaccurate resolver, or your internet connection may " +
 				"be down. ")
+				.addHelpButtons()
 				.addButton("Change your DNS resolver", () -> LinkBrowser.browse(RuneLiteProperties.getDNSChangeLink()))
 				.open();
 			return;
 		}
 
-		new FatalErrorDialog("RuneLite encountered a fatal error while " + action + ".").open();
+		new FatalErrorDialog("RuneLite encountered a fatal error while " + action + ".")
+			.addHelpButtons()
+			.open();
 	}
 }
