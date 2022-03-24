@@ -35,10 +35,12 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
 import net.runelite.client.Notifier;
+import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.timetracking.SummaryState;
 import net.runelite.client.plugins.timetracking.TimeTrackingConfig;
+import net.runelite.client.plugins.timetracking.TimeTrackingNotifier;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -80,6 +82,14 @@ public class FarmingContractManagerTest
 	@Mock
 	@Bind
 	private Notifier notifier;
+
+	@Mock
+	@Bind
+	private ChatMessageManager chatMessageManager;
+
+	@Mock
+	@Bind
+	private TimeTrackingNotifier timeTrackingNotifier;
 
 	@Mock
 	@Bind

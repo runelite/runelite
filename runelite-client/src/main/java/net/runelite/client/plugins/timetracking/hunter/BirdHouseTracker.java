@@ -38,11 +38,11 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.timetracking.SummaryState;
 import net.runelite.client.plugins.timetracking.TimeTrackingConfig;
+import net.runelite.client.plugins.timetracking.TimeTrackingNotifier;
 
 @Singleton
 public class BirdHouseTracker
@@ -56,7 +56,7 @@ public class BirdHouseTracker
 	private final ItemManager itemManager;
 	private final ConfigManager configManager;
 	private final TimeTrackingConfig config;
-	private final Notifier notifier;
+	private final TimeTrackingNotifier notifier;
 
 	@Getter(AccessLevel.PACKAGE)
 	private final ConcurrentMap<BirdHouseSpace, BirdHouseData> birdHouseData = new ConcurrentHashMap<>();
@@ -73,7 +73,7 @@ public class BirdHouseTracker
 
 	@Inject
 	private BirdHouseTracker(Client client, ItemManager itemManager, ConfigManager configManager,
-		TimeTrackingConfig config, Notifier notifier)
+		TimeTrackingConfig config, TimeTrackingNotifier notifier)
 	{
 		this.client = client;
 		this.itemManager = itemManager;
@@ -172,17 +172,19 @@ public class BirdHouseTracker
 	/**
 	 * Checks if the bird houses have become ready to be dismantled,
 	 * and sends a notification if required.
+	 * @param onLogin whether this check is performed on player login as part of persistent notifications
 	 */
-	public boolean checkCompletion()
+	public boolean checkCompletion(boolean onLogin)
 	{
-		if (summary == SummaryState.IN_PROGRESS && completionTime < Instant.now().getEpochSecond())
+		// if this is an 'on-login' check, we send notifications even if player was previously notified
+		if ((summary == SummaryState.IN_PROGRESS || onLogin && summary == SummaryState.COMPLETED) && completionTime < Instant.now().getEpochSecond())
 		{
 			summary = SummaryState.COMPLETED;
 			completionTime = 0;
 
 			if (Boolean.TRUE.equals(configManager.getRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, TimeTrackingConfig.BIRDHOUSE_NOTIFY, boolean.class)))
 			{
-				notifier.notify("Your bird houses are ready to be dismantled.");
+				notifier.notify("Your bird houses are ready to be dismantled.", onLogin);
 			}
 
 			return true;

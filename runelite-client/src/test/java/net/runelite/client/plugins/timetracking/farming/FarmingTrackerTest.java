@@ -35,11 +35,13 @@ import net.runelite.api.Player;
 import net.runelite.api.Varbits;
 import net.runelite.api.WorldType;
 import net.runelite.client.Notifier;
+import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneScapeProfile;
 import net.runelite.client.config.RuneScapeProfileType;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.timetracking.TimeTrackingConfig;
+import net.runelite.client.plugins.timetracking.TimeTrackingNotifier;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -79,6 +81,14 @@ public class FarmingTrackerTest
 	@Bind
 	private Notifier notifier;
 
+	@Mock
+	@Bind
+	private ChatMessageManager chatMessageManager;
+
+	@Mock
+	@Bind
+	private TimeTrackingNotifier timeTrackingNotifier;
+
 	@Before
 	public void before()
 	{
@@ -107,7 +117,7 @@ public class FarmingTrackerTest
 		);
 		FarmingPatch patch = region.getPatches()[4];
 		patch.setRegion(region);
-		farmingTracker.sendNotification(runeScapeProfile, patchPrediction, patch);
+		farmingTracker.sendNotification(runeScapeProfile, patchPrediction, patch, false);
 	}
 
 	@Test
@@ -125,8 +135,8 @@ public class FarmingTrackerTest
 		);
 		FarmingPatch patch = region.getPatches()[3];
 		patch.setRegion(region);
-		farmingTracker.sendNotification(runeScapeProfile, patchPrediction, patch);
+		farmingTracker.sendNotification(runeScapeProfile, patchPrediction, patch, false);
 
-		verify(notifier).notify("Your Ranarr is ready to harvest in Ardougne.");
+		verify(timeTrackingNotifier).notify("Your Ranarr is ready to harvest in Ardougne.", false);
 	}
 }
