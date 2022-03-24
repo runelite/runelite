@@ -1978,6 +1978,7 @@ public class ChatCommandsPlugin extends Plugin
 			case "tob hm":
 			case "tob hard mode":
 			case "tob hard":
+			case "hmt":
 				return "Theatre of Blood Hard Mode";
 
 			// agility course
