@@ -1074,4 +1074,13 @@ public class ChatCommandsPluginTest
 		verify(configManager).setRSProfileConfiguration("personalbest", "tempoross", 234.0);
 		verify(configManager).setRSProfileConfiguration("personalbest", "chambers of xeric", 1360.0); // the lowest time
 	}
+
+	@Test
+	public void testGuardiansOfTheRift()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Amount of Rifts you have closed: <col=ff0000>7</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("killcount", "guardians of the rift", 7);
+	}
 }
