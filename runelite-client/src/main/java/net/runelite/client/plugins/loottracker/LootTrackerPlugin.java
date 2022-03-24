@@ -486,6 +486,13 @@ public class LootTrackerPlugin extends Plugin
 
 			clientThread.invokeLater(() ->
 			{
+				// convertToLootTrackerRecord requires item compositions to be available to get the item name,
+				// so it can't be run while the client is starting
+				if (client.getGameState().getState() < GameState.LOGIN_SCREEN.getState())
+				{
+					return false;
+				}
+
 				// convertToLootTrackerRecord must be called on client thread
 				List<LootTrackerRecord> records = loots.stream()
 					.map(this::convertToLootTrackerRecord)
@@ -495,6 +502,8 @@ public class LootTrackerPlugin extends Plugin
 					panel.clearRecords();
 					panel.addRecords(records);
 				});
+
+				return true;
 			});
 		});
 	}
