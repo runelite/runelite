@@ -71,7 +71,7 @@ public class RuneLiteModule extends AbstractModule
 	private final boolean safeMode;
 	private final File sessionfile;
 	private final File config;
-
+	
 	@Override
 	protected void configure()
 	{
