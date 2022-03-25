@@ -171,33 +171,44 @@ public class RuneLiteModule extends AbstractModule
 
 	@Provides
 	@Named("runelite.api.base")
-	HttpUrl provideApiBase(@Named("runelite.api.base") String s)
-	{
-		final String prop = System.getProperty("runelite.http-service.url");
-		return HttpUrl.get(Strings.isNullOrEmpty(prop) ? s : prop);
-	}
+	HttpUrl provideApiBase(@Named("runelite.api.base") String s) { return RuneLiteHttpUrlProvider.provideApiBase(s); }
 
 	@Provides
 	@Named("runelite.session")
-	HttpUrl provideSession(@Named("runelite.session") String s)
-	{
-		final String prop = System.getProperty("runelite.session.url");
-		return HttpUrl.get(Strings.isNullOrEmpty(prop) ? s : prop);
-	}
+	HttpUrl provideSession(@Named("runelite.session") String s) { return RuneLiteHttpUrlProvider.provideSession(s);}
 
 	@Provides
 	@Named("runelite.static.base")
-	HttpUrl provideStaticBase(@Named("runelite.static.base") String s)
-	{
-		final String prop = System.getProperty("runelite.static.url");
-		return HttpUrl.get(Strings.isNullOrEmpty(prop) ? s : prop);
-	}
+	HttpUrl provideStaticBase(@Named("runelite.static.base") String s) { return RuneLiteHttpUrlProvider.provideStaticBase(s);}
 
 	@Provides
 	@Named("runelite.ws")
-	HttpUrl provideWs(@Named("runelite.ws") String s)
-	{
-		final String prop = System.getProperty("runelite.ws.url");
-		return HttpUrl.get(Strings.isNullOrEmpty(prop) ? s : prop);
+	HttpUrl provideWs(@Named("runelite.ws") String s) { return RuneLiteHttpUrlProvider.provideWs(s);}
+
+	public static class RuneLiteHttpUrlProvider {
+
+		static HttpUrl provideApiBase(@Named("runelite.api.base") String s)
+		{
+			final String prop = System.getProperty("runelite.http-service.url");
+			return HttpUrl.get(Strings.isNullOrEmpty(prop) ? s : prop);
+		}
+
+		static HttpUrl provideSession(@Named("runelite.session") String s)
+		{
+			final String prop = System.getProperty("runelite.session.url");
+			return HttpUrl.get(Strings.isNullOrEmpty(prop) ? s : prop);
+		}
+
+		static HttpUrl provideStaticBase(@Named("runelite.static.base") String s)
+		{
+			final String prop = System.getProperty("runelite.static.url");
+			return HttpUrl.get(Strings.isNullOrEmpty(prop) ? s : prop);
+		}
+
+		static HttpUrl provideWs(@Named("runelite.ws") String s)
+		{
+			final String prop = System.getProperty("runelite.ws.url");
+			return HttpUrl.get(Strings.isNullOrEmpty(prop) ? s : prop);
+		}
 	}
 }

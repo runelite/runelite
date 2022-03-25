@@ -76,7 +76,7 @@ public class CacheClient implements AutoCloseable
 
 	private ClientState state;
 
-	private final EventLoopGroup group = new NioEventLoopGroup(1);
+	private final EventLoopGroup eventLoopGroup = new NioEventLoopGroup(1);
 	private Channel channel;
 
 	private CompletableFuture<HandshakeResponseType> handshakeFuture;
@@ -103,7 +103,7 @@ public class CacheClient implements AutoCloseable
 	public void connect()
 	{
 		Bootstrap b = new Bootstrap();
-		b.group(group)
+		b.group(eventLoopGroup)
 			.channel(NioSocketChannel.class)
 			.option(ChannelOption.TCP_NODELAY, true)
 			.handler(new ChannelInitializer<SocketChannel>()
@@ -156,7 +156,7 @@ public class CacheClient implements AutoCloseable
 	public void close()
 	{
 		channel.close().syncUninterruptibly();
-		group.shutdownGracefully();
+		eventLoopGroup.shutdownGracefully();
 	}
 
 	public int getClientRevision()
@@ -213,32 +213,7 @@ public class CacheClient implements AutoCloseable
 
 			Index index = store.findIndex(i);
 
-			if (index == null)
-			{
-				logger.info("Index {} does not exist, creating", i);
-			}
-			else if (index.getRevision() != revision)
-			{
-				if (revision < index.getRevision())
-				{
-					logger.warn("Index {} revision is going BACKWARDS! (our revision {}, their revision {})", index.getId(), index.getRevision(), revision);
-				}
-				else
-				{
-					logger.info("Index {} has the wrong revision (our revision {}, their revision {})", index.getId(), index.getRevision(), revision);
-				}
-			}
-			else if (index.getCrc() != crc)
-			{
-				logger.warn("Index {} CRC has changed! (our crc {}, their crc {})",
-					index.getCrc(), index.getCrc(), crc);
-			}
-			else
-			{
-				// despite the index being up to date, not everything
-				// can be downloaded, eg. for tracks.
-				logger.info("Index {} is up to date", index.getId());
-			}
+			displayLoggerOfIndex(index, revision, i, crc);
 
 			logger.info("Downloading index {}", i);
 
@@ -275,44 +250,13 @@ public class CacheClient implements AutoCloseable
 
 				if (existing != null && existing.getRevision() == ad.getRevision()
 					&& existing.getCrc() == ad.getCrc()
-					&& existing.getNameHash() == ad.getNameHash())
-				{
+					&& existing.getNameHash() == ad.getNameHash()) {
 					logger.debug("Archive {}/{} in index {} is up to date",
-						ad.getId(), indexData.getArchives().length, index.getId());
+							ad.getId(), indexData.getArchives().length, index.getId());
 					continue;
 				}
 
-				if (existing == null)
-				{
-					logger.info("Archive {}/{} in index {} is out of date, downloading",
-						ad.getId(), indexData.getArchives().length, index.getId());
-				}
-				else if (ad.getRevision() < existing.getRevision())
-				{
-					logger.warn("Archive {}/{} in index {} revision is going BACKWARDS! (our revision {}, their revision {})",
-						ad.getId(), indexData.getArchives().length, index.getId(),
-						existing.getRevision(), ad.getRevision());
-				}
-				else
-				{
-					logger.info("Archive {}/{} in index {} is out of date, downloading. " +
-						"revision: ours: {} theirs: {}, crc: ours: {} theirs {}, name: ours {} theirs {}",
-						ad.getId(), indexData.getArchives().length, index.getId(),
-						existing.getRevision(), ad.getRevision(),
-						existing.getCrc(), ad.getCrc(),
-						existing.getNameHash(), ad.getNameHash());
-				}
-
-				final Archive archive = existing == null
-					? index.addArchive(ad.getId())
-					: existing;
-
-				archive.setRevision(ad.getRevision());
-				archive.setCrc(ad.getCrc());
-				archive.setNameHash(ad.getNameHash());
-
-				// Add files
-				archive.setFileData(ad.getFiles());
+				final Archive archive = getArchiveValue(existing, ad, indexData, index);
 
 				CompletableFuture<FileResult> future = requestFile(index.getId(), ad.getId(), false);
 				future.handle((fr, ex) ->
@@ -455,5 +399,67 @@ public class CacheClient implements AutoCloseable
 		logger.debug("File download finished for index {} file {}, length {}", index, file, compressedData.length);
 
 		pr.getFuture().complete(result);
+	}
+
+	private void displayLoggerOfIndex(Index index, int revision, int i, int crc) {
+		if (index == null)
+		{
+			logger.info("Index {} does not exist, creating", i);
+		}
+		else if (index.getRevision() != revision)
+		{
+			if (revision < index.getRevision())
+			{
+				logger.warn("Index {} revision is going BACKWARDS! (our revision {}, their revision {})", index.getId(), index.getRevision(), revision);
+			}
+			else
+			{
+				logger.info("Index {} has the wrong revision (our revision {}, their revision {})", index.getId(), index.getRevision(), revision);
+			}
+		}
+		else if (index.getCrc() != crc)
+		{
+			logger.warn("Index {} CRC has changed! (our crc {}, their crc {})",
+					index.getCrc(), index.getCrc(), crc);
+		}
+		else
+		{
+			// despite the index being up to date, not everything
+			// can be downloaded, eg. for tracks.
+			logger.info("Index {} is up to date", index.getId());
+		}
+	}
+
+	private Archive getArchiveValue(Archive existing, ArchiveData ad, IndexData indexData, Index index) {
+		if (existing == null)
+		{
+			logger.info("Archive {}/{} in index {} is out of date, downloading",
+					ad.getId(), indexData.getArchives().length, index.getId());
+		}
+		else if (ad.getRevision() < existing.getRevision())
+		{
+			logger.warn("Archive {}/{} in index {} revision is going BACKWARDS! (our revision {}, their revision {})",
+					ad.getId(), indexData.getArchives().length, index.getId(),
+					existing.getRevision(), ad.getRevision());
+		}
+		else
+		{
+			logger.info("Archive {}/{} in index {} is out of date, downloading. " +
+							"revision: ours: {} theirs: {}, crc: ours: {} theirs {}, name: ours {} theirs {}",
+					ad.getId(), indexData.getArchives().length, index.getId(),
+					existing.getRevision(), ad.getRevision(),
+					existing.getCrc(), ad.getCrc(),
+					existing.getNameHash(), ad.getNameHash());
+		}
+
+		final Archive archive = (existing == null) ? index.addArchive(ad.getId()) : existing;
+		archive.setRevision(ad.getRevision());
+		archive.setCrc(ad.getCrc());
+		archive.setNameHash(ad.getNameHash());
+
+		// Add files
+		archive.setFileData(ad.getFiles());
+
+		return archive;
 	}
 }

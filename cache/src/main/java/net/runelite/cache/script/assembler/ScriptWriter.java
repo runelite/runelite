@@ -36,7 +36,7 @@ import net.runelite.cache.script.Opcodes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ScriptWriter extends rs2asmBaseListener
+public class ScriptWriter extends Instructor
 {
 	private static final Logger logger = LoggerFactory.getLogger(ScriptWriter.class);
 
@@ -44,7 +44,6 @@ public class ScriptWriter extends rs2asmBaseListener
 	private final LabelVisitor labelVisitor;
 
 	private int id;
-	private int pos;
 	private int intStackCount;
 	private int stringStackCount;
 	private int localIntCount;
@@ -60,48 +59,36 @@ public class ScriptWriter extends rs2asmBaseListener
 		this.labelVisitor = labelVisitor;
 	}
 
-	@Override
 	public void enterId_value(rs2asmParser.Id_valueContext ctx)
 	{
 		int value = Integer.parseInt(ctx.getText());
 		id = value;
 	}
 
-	@Override
 	public void enterInt_stack_value(rs2asmParser.Int_stack_valueContext ctx)
 	{
 		int value = Integer.parseInt(ctx.getText());
 		intStackCount = value;
 	}
 
-	@Override
 	public void enterString_stack_value(rs2asmParser.String_stack_valueContext ctx)
 	{
 		int value = Integer.parseInt(ctx.getText());
 		stringStackCount = value;
 	}
 
-	@Override
 	public void enterInt_var_value(rs2asmParser.Int_var_valueContext ctx)
 	{
 		int value = Integer.parseInt(ctx.getText());
 		localIntCount = value;
 	}
 
-	@Override
 	public void enterString_var_value(rs2asmParser.String_var_valueContext ctx)
 	{
 		int value = Integer.parseInt(ctx.getText());
 		localStringCount = value;
 	}
 
-	@Override
-	public void exitInstruction(rs2asmParser.InstructionContext ctx)
-	{
-		++pos;
-	}
-
-	@Override
 	public void enterName_string(rs2asmParser.Name_stringContext ctx)
 	{
 		String text = ctx.getText();
@@ -116,7 +103,6 @@ public class ScriptWriter extends rs2asmBaseListener
 		addOpcode(opcode);
 	}
 
-	@Override
 	public void enterName_opcode(rs2asmParser.Name_opcodeContext ctx)
 	{
 		String text = ctx.getText();
@@ -126,10 +112,10 @@ public class ScriptWriter extends rs2asmBaseListener
 
 	private void addOpcode(int opcode)
 	{
-		assert opcodes.size() == pos;
-		assert iops.size() == pos;
-		assert sops.size() == pos;
-		assert switches.size() == pos;
+		assert opcodes.size() == this.pos;
+		assert iops.size() == this.pos;
+		assert sops.size() == this.pos;
+		assert switches.size() == this.pos;
 
 		opcodes.add(opcode);
 		iops.add(null);
@@ -137,23 +123,20 @@ public class ScriptWriter extends rs2asmBaseListener
 		switches.add(null);
 	}
 
-	@Override
 	public void enterOperand_int(rs2asmParser.Operand_intContext ctx)
 	{
 		String text = ctx.getText();
 		int value = Integer.parseInt(text);
-		iops.set(pos, value);
+		iops.set(this.pos, value);
 	}
 
-	@Override
 	public void enterOperand_qstring(rs2asmParser.Operand_qstringContext ctx)
 	{
 		String text = ctx.getText();
 		text = text.substring(1, text.length() - 1);
-		sops.set(pos, text);
+		sops.set(this.pos, text);
 	}
 
-	@Override
 	public void enterOperand_label(rs2asmParser.Operand_labelContext ctx)
 	{
 		String text = ctx.getText();
@@ -163,29 +146,27 @@ public class ScriptWriter extends rs2asmBaseListener
 			throw new RuntimeException("reference to unknown label " + text);
 		}
 
-		int target = instruction - pos - 1; // -1 to go to the instruction prior
-		iops.set(pos, target);
+		int target = instruction - this.pos - 1; // -1 to go to the instruction prior
+		iops.set(this.pos, target);
 	}
 
-	@Override
 	public void enterSwitch_lookup(rs2asmParser.Switch_lookupContext ctx)
 	{
-		if (switches.get(pos - 1) != null)
+		if (switches.get(this.pos - 1) != null)
 		{
 			return;
 		}
 
 		LookupSwitch ls = new LookupSwitch();
-		switches.set(pos - 1, ls);
+		switches.set(this.pos - 1, ls);
 	}
 
-	@Override
 	public void exitSwitch_key(rs2asmParser.Switch_keyContext ctx)
 	{
 		String text = ctx.getText();
 		int key = Integer.parseInt(text);
 
-		LookupSwitch ls = switches.get(pos - 1);
+		LookupSwitch ls = switches.get(this.pos - 1);
 		assert ls != null;
 
 		LookupCase scase = new LookupCase();
@@ -194,7 +175,6 @@ public class ScriptWriter extends rs2asmBaseListener
 		ls.getCases().add(scase);
 	}
 
-	@Override
 	public void exitSwitch_value(rs2asmParser.Switch_valueContext ctx)
 	{
 		String text = ctx.getText();
@@ -205,10 +185,10 @@ public class ScriptWriter extends rs2asmBaseListener
 		}
 
 		int target = instruction // target instruction index
-			- (pos - 1) // pos is already at the instruction after the switch, so - 1
+			- (this.pos - 1) // pos is already at the instruction after the switch, so - 1
 			- 1; // to go to the instruction prior to target
 
-		LookupSwitch ls = switches.get(pos - 1);
+		LookupSwitch ls = switches.get(this.pos - 1);
 		assert ls != null;
 
 		LookupCase scase = ls.getCases().get(ls.getCases().size() - 1);

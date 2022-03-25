@@ -29,28 +29,20 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class LabelVisitor extends rs2asmBaseListener
+public class LabelVisitor extends Instructor
 {
 	private static final Logger logger = LoggerFactory.getLogger(LabelVisitor.class);
 
-	private int pos;
 	private final Map<String, Integer> map = new HashMap<>();
 
-	@Override
-	public void exitInstruction(rs2asmParser.InstructionContext ctx)
-	{
-		++pos;
-	}
-
-	@Override
 	public void enterLabel(rs2asmParser.LabelContext ctx)
 	{
 		String text = ctx.getText();
 		text = text.substring(0, text.length() - 1); // remove trailing :
 
-		logger.debug("Label {} is on instruction {}", text, pos);
+		logger.debug("Label {} is on instruction {}", text, this.pos);
 
-		map.put(text, pos);
+		map.put(text, this.pos);
 	}
 
 	public Integer getInstructionForLabel(String label)

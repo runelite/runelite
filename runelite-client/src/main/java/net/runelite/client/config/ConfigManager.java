@@ -94,6 +94,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ClientShutdown;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.RuneScapeProfileChanged;
+import net.runelite.client.plugins.slayer.SlayerConfig;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.http.api.config.ConfigEntry;
 import net.runelite.http.api.config.Configuration;
@@ -1198,5 +1199,38 @@ public class ConfigManager
 			key = key.substring(i + 1);
 		}
 		return new String[]{group, profile, key};
+	}
+
+	public int getIntProfileConfig(String groupName, String key) {
+		Integer value = getRSProfileConfiguration(groupName, key, int.class);
+		return value == null ? -1 : value;
+	}
+
+	public String getStringProfileConfig(String groupName, String key) {
+		String value = getRSProfileConfiguration(groupName, key, String.class);
+		return value == null ? "" : value;
+	}
+
+	public void migrateConfigForSlayerGroup() {
+		migrateConfigKeyForSlayerGroup(SlayerConfig.TASK_NAME_KEY);
+		migrateConfigKeyForSlayerGroup(SlayerConfig.AMOUNT_KEY);
+		migrateConfigKeyForSlayerGroup(SlayerConfig.INIT_AMOUNT_KEY);
+		migrateConfigKeyForSlayerGroup(SlayerConfig.TASK_LOC_KEY);
+		migrateConfigKeyForSlayerGroup(SlayerConfig.STREAK_KEY);
+		migrateConfigKeyForSlayerGroup(SlayerConfig.POINTS_KEY);
+		unsetConfiguration(SlayerConfig.GROUP_NAME, "expeditious");
+		unsetConfiguration(SlayerConfig.GROUP_NAME, "slaughter");
+		unsetRSProfileConfiguration(SlayerConfig.GROUP_NAME, "expeditious");
+		unsetRSProfileConfiguration(SlayerConfig.GROUP_NAME, "slaughter");
+	}
+
+	private void migrateConfigKeyForSlayerGroup(String key)
+	{
+		Object value = getConfiguration(SlayerConfig.GROUP_NAME, key);
+		if (value != null)
+		{
+			unsetConfiguration(SlayerConfig.GROUP_NAME, key);
+			setRSProfileConfiguration(SlayerConfig.GROUP_NAME, key, value);
+		}
 	}
 }

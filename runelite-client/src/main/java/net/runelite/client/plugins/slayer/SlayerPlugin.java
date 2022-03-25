@@ -309,20 +309,6 @@ public class SlayerPlugin extends Plugin
 		}
 	}
 
-	@VisibleForTesting
-	int getIntProfileConfig(String key)
-	{
-		Integer value = configManager.getRSProfileConfiguration(SlayerConfig.GROUP_NAME, key, int.class);
-		return value == null ? -1 : value;
-	}
-
-	@VisibleForTesting
-	String getStringProfileConfig(String key)
-	{
-		String value = configManager.getRSProfileConfiguration(SlayerConfig.GROUP_NAME, key, String.class);
-		return value == null ? "" : value;
-	}
-
 	private void setProfileConfig(String key, Object value)
 	{
 		if (value != null)
@@ -914,27 +900,17 @@ public class SlayerPlugin extends Plugin
 		return str.substring(0, 1).toUpperCase() + str.substring(1);
 	}
 
-	private void migrateConfig()
+	@VisibleForTesting
+	int getIntProfileConfig(String key)
 	{
-		migrateConfigKey(SlayerConfig.TASK_NAME_KEY);
-		migrateConfigKey(SlayerConfig.AMOUNT_KEY);
-		migrateConfigKey(SlayerConfig.INIT_AMOUNT_KEY);
-		migrateConfigKey(SlayerConfig.TASK_LOC_KEY);
-		migrateConfigKey(SlayerConfig.STREAK_KEY);
-		migrateConfigKey(SlayerConfig.POINTS_KEY);
-		configManager.unsetConfiguration(SlayerConfig.GROUP_NAME, "expeditious");
-		configManager.unsetConfiguration(SlayerConfig.GROUP_NAME, "slaughter");
-		configManager.unsetRSProfileConfiguration(SlayerConfig.GROUP_NAME, "expeditious");
-		configManager.unsetRSProfileConfiguration(SlayerConfig.GROUP_NAME, "slaughter");
+		return configManager.getIntProfileConfig(SlayerConfig.GROUP_NAME, key);
 	}
 
-	private void migrateConfigKey(String key)
+	@VisibleForTesting
+	String getStringProfileConfig(String key)
 	{
-		Object value = configManager.getConfiguration(SlayerConfig.GROUP_NAME, key);
-		if (value != null)
-		{
-			configManager.unsetConfiguration(SlayerConfig.GROUP_NAME, key);
-			configManager.setRSProfileConfiguration(SlayerConfig.GROUP_NAME, key, value);
-		}
+		return configManager.getStringProfileConfig(SlayerConfig.GROUP_NAME, key);
 	}
+
+	private void migrateConfig() { configManager.migrateConfigForSlayerGroup();}
 }
