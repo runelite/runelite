@@ -852,7 +852,7 @@ public interface MenuEntrySwapperConfig extends Config
 		description = "Swap the take option when left-clicking Uncharged Cells in Guardians of the Rift.",
 		section = objectSection
 	)
-	default boolean swapUnchargedCells()
+	default UnchargedCellsMode swapUnchargedCells()
 	{
 		return UnchargedCellsMode.TAKE;
 	}
