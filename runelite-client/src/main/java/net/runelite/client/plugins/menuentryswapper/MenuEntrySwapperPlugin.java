@@ -70,6 +70,7 @@ import static net.runelite.client.plugins.menuentryswapper.MenuEntrySwapperConfi
 import static net.runelite.client.plugins.menuentryswapper.MenuEntrySwapperConfig.KaramjaGlovesMode;
 import static net.runelite.client.plugins.menuentryswapper.MenuEntrySwapperConfig.MorytaniaLegsMode;
 import static net.runelite.client.plugins.menuentryswapper.MenuEntrySwapperConfig.RadasBlessingMode;
+import static net.runelite.client.plugins.menuentryswapper.MenuEntrySwapperConfig.UnchargedCellsMode;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
