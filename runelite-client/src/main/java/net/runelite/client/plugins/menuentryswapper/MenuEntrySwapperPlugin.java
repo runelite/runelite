@@ -420,6 +420,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("climb", "climb-down", () -> (shiftModifier() ? config.swapStairsShiftClick() : config.swapStairsLeftClick()) == MenuEntrySwapperConfig.StairsMode.CLIMB_DOWN);
 
 		swap("deposit", "deposit-runes", config::swapDepositPool);
+
+		swap("take", "uncharged cells", "take-1", () -> config.swapUnchargedCells() == UnchargedCellsMode.TAKE_1);
+		swap("take", "uncharged cells", "take-5", () -> config.swapUnchargedCells() == UnchargedCellsMode.TAKE_5);
+		swap("take", "uncharged cells", "take-10", () -> config.swapUnchargedCells() == UnchargedCellsMode.TAKE_10);
 	}
 
 	private void swap(String option, String swappedOption, Supplier<Boolean> enabled)
