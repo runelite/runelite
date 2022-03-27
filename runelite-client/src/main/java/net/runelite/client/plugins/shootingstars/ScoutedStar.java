@@ -1,5 +1,6 @@
 package net.runelite.client.plugins.shootingstars;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import lombok.Value;
 import net.runelite.client.plugins.shootingstars.event.StarScoutEvent;
@@ -17,5 +18,11 @@ public class ScoutedStar
 		LocalDateTime now = LocalDateTime.now();
 
 		return new ScoutedStar(event.getWorld(), event.getRegion(), now.plus(event.getEarliest()), now.plus(event.getLatest()));
+	}
+
+	public boolean expired()
+	{
+		var now = LocalDateTime.now();
+		return Duration.between(now, latestTime).toMinutesPart() > 5;
 	}
 }

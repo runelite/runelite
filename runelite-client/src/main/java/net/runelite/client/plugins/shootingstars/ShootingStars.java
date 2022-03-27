@@ -46,6 +46,7 @@ import net.runelite.api.ItemID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
@@ -210,6 +211,17 @@ public class ShootingStars extends Plugin
 				log.debug("Clearing possible landing sites as we've found the star already.");
 				clearPossibleSites();
 			}
+		}
+	}
+
+	@Subscribe
+	public void onClientTick(ClientTick event)
+	{
+		if (client.getGameCycle() % 500 == 0)
+		{
+			// update panel every 500th client cycle (10 seconds)
+			scouts.removeIf(ScoutedStar::expired);
+			starsPanel.buildScoutedStarComponents(scouts);
 		}
 	}
 
