@@ -848,8 +848,8 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		keyName = "swapUnchargedCells",
-		name = "Uncharged Cells - Take X",
-		description = "Swap the take option when left-clicking Uncharged Cells in Guardians of the Rift.",
+		name = "Uncharged Cells",
+		description = "Swap the take option for Uncharged Cells in Guardians of the Rift.",
 		section = objectSection
 	)
 	default UnchargedCellsMode swapUnchargedCells()
