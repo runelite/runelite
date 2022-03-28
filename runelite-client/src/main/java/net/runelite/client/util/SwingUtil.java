@@ -78,6 +78,7 @@ public class SwingUtil
 		// Prevents them from being obscured by the game applet.
 		ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
 		ToolTipManager.sharedInstance().setInitialDelay(300);
+		ToolTipManager.sharedInstance().setDismissDelay(Integer.MAX_VALUE);
 		JPopupMenu.setDefaultLightWeightPopupEnabled(false);
 
 		UIManager.put("Button.foreground", Color.WHITE);
