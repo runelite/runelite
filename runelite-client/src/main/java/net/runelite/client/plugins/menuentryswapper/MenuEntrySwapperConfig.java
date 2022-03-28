@@ -837,4 +837,23 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return false;
 	}
+
+	enum UnchargedCellsMode
+	{
+		TAKE,
+		TAKE_1,
+		TAKE_5,
+		TAKE_10
+	}
+
+	@ConfigItem(
+		keyName = "swapUnchargedCells",
+		name = "Uncharged Cells",
+		description = "Swap the take option for Uncharged Cells in Guardians of the Rift.",
+		section = objectSection
+	)
+	default UnchargedCellsMode swapUnchargedCells()
+	{
+		return UnchargedCellsMode.TAKE;
+	}
 }
