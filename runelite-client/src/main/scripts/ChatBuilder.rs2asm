@@ -456,28 +456,28 @@ LABEL406:
    sstore                 17 ; message channel
    iload                  11
    switch                
-      1: LABEL409
       2: LABEL409
+      1: LABEL409
+      90: LABEL433
+      91: LABEL433
       3: LABEL457
+      7: LABEL457
       101: LABEL482
       5: LABEL503
       6: LABEL539
-      7: LABEL457
       103: LABEL564
       104: LABEL564
-      9: LABEL606
-      41: LABEL677
-      43: LABEL1061
-      107: LABEL1285
-      44: LABEL896
-      109: LABEL585
       110: LABEL564
-      46: LABEL1200
-      14: LABEL1255
+      109: LABEL585
+      9: LABEL606
       111: LABEL635
       112: LABEL656
-      90: LABEL433
-      91: LABEL433
+      41: LABEL677
+      44: LABEL896
+      43: LABEL1061
+      46: LABEL1200
+      14: LABEL1255
+      107: LABEL1285
    jump                   LABEL1324
 LABEL409:
    sload                  21
@@ -1481,22 +1481,22 @@ LABEL1341:
       1: LABEL1346
       2: LABEL1346
       3: LABEL1346
-      101: LABEL1450
       6: LABEL1346
       7: LABEL1346
-      103: LABEL1493
-      104: LABEL1493
       9: LABEL1346
-      41: LABEL1346
-      106: LABEL1346
-      44: LABEL1346
-      109: LABEL1596
-      110: LABEL1493
-      14: LABEL1536
-      111: LABEL1639
-      112: LABEL1682
       90: LABEL1346
       91: LABEL1346
+      106: LABEL1346
+      41: LABEL1346
+      44: LABEL1346
+      101: LABEL1450
+      103: LABEL1493
+      104: LABEL1493
+      110: LABEL1493
+      14: LABEL1536
+      109: LABEL1596
+      111: LABEL1639
+      112: LABEL1682
    jump                   LABEL1725
 LABEL1346:
    sconst                 "<col=ffffff>"
