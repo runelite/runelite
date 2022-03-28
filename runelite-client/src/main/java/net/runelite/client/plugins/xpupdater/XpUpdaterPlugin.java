@@ -114,8 +114,8 @@ public class XpUpdaterPlugin extends Plugin
 			// Don't submit update unless xp threshold is reached
 			if (Math.abs(totalXp - lastXp) > XP_THRESHOLD)
 			{
-				log.debug("Submitting update for {}", local.getName());
-				update(local.getName());
+				log.debug("Submitting update for {} accountHash {}", local.getName(), lastAccount);
+				update(lastAccount, local.getName());
 				lastXp = totalXp;
 			}
 		}
@@ -131,12 +131,12 @@ public class XpUpdaterPlugin extends Plugin
 		}
 	}
 
-	private void update(String username)
+	private void update(long accountHash, String username)
 	{
 		EnumSet<WorldType> worldTypes = client.getWorldType();
 		username = username.replace(" ", "_");
 		updateCml(username, worldTypes);
-		updateTempleosrs(username, worldTypes);
+		updateTempleosrs(accountHash, username, worldTypes);
 		updateWom(username, worldTypes);
 	}
 
@@ -165,7 +165,7 @@ public class XpUpdaterPlugin extends Plugin
 		}
 	}
 
-	private void updateTempleosrs(String username, EnumSet<WorldType> worldTypes)
+	private void updateTempleosrs(long accountHash, String username, EnumSet<WorldType> worldTypes)
 	{
 		if (config.templeosrs()
 			&& !worldTypes.contains(WorldType.SEASONAL)
@@ -178,6 +178,7 @@ public class XpUpdaterPlugin extends Plugin
 				.addPathSegment("php")
 				.addPathSegment("add_datapoint.php")
 				.addQueryParameter("player", username)
+				.addQueryParameter("accountHash", Long.toString(accountHash))
 				.build();
 
 			Request request = new Request.Builder()
