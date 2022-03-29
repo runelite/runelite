@@ -264,7 +264,7 @@ public class BankPlugin extends Plugin
 	{
 		if (event.getScriptId() == ScriptID.BANKMAIN_BUILD)
 		{
-			ContainerPrices price = getContainerGEandAlchPrice(WidgetInfo.BANK_ITEM_CONTAINER, InventoryID.BANK);
+			ContainerPrices price = getWidgetContainerPrices(WidgetInfo.BANK_ITEM_CONTAINER, InventoryID.BANK);
 			if (price == null)
 			{
 				return;
@@ -284,9 +284,9 @@ public class BankPlugin extends Plugin
 				searchString = inputText;
 			}
 		}
-		else if (event.getScriptId() == ScriptID.GROUP_STORAGE_ITEM_CONTAINER)
+		else if (event.getScriptId() == ScriptID.GROUP_IRONMAN_STORAGE_BUILD)
 		{
-			ContainerPrices price = getContainerGEandAlchPrice(WidgetInfo.GROUP_STORAGE_ITEM_CONTAINER, InventoryID.GROUP_STORAGE);
+			ContainerPrices price = getWidgetContainerPrices(WidgetInfo.GROUP_STORAGE_ITEM_CONTAINER, InventoryID.GROUP_STORAGE);
 			if (price == null)
 			{
 				return;
@@ -531,21 +531,21 @@ public class BankPlugin extends Plugin
 		}
 	}
 
-	private ContainerPrices getContainerGEandAlchPrice(WidgetInfo widgetInfo, InventoryID inventoryID)
+	private ContainerPrices getWidgetContainerPrices(WidgetInfo widgetInfo, InventoryID inventoryID)
 	{
-		final Widget bankItemContainer = client.getWidget(widgetInfo);
-		final ItemContainer bankContainer = client.getItemContainer(inventoryID);
-		final Widget[] children = bankItemContainer.getChildren();
+		final Widget widget = client.getWidget(widgetInfo);
+		final ItemContainer itemContainer = client.getItemContainer(inventoryID);
+		final Widget[] children = widget.getChildren();
 		ContainerPrices prices = null;
 
-		if (bankContainer != null && children != null)
+		if (itemContainer != null && children != null)
 		{
 			long geTotal = 0, haTotal = 0;
-			log.debug("Computing bank price of {} items", bankContainer.size());
+			log.debug("Computing bank price of {} items", itemContainer.size());
 
-			// The first components are the bank items, followed by tabs etc. There are always 816 components regardless
+			// In the bank, the first components are the bank items, followed by tabs etc. There are always 816 components regardless
 			// of bank size, but we only need to check up to the bank size.
-			for (int i = 0; i < bankContainer.size(); ++i)
+			for (int i = 0; i < itemContainer.size(); ++i)
 			{
 				Widget child = children[i];
 				if (child != null && !child.isSelfHidden() && child.getItemId() > -1)
