@@ -185,7 +185,7 @@ public class GrandExchangePlugin extends Plugin
 	private boolean wasFuzzySearch;
 
 	private String machineUuid;
-	private String lastUsername;
+	private long lastAccount;
 	private int tradeSeq;
 
 	/**
@@ -298,7 +298,8 @@ public class GrandExchangePlugin extends Plugin
 		clientToolbar.removeNavigation(button);
 		mouseManager.unregisterMouseListener(inputListener);
 		keyManager.unregisterKeyListener(inputListener);
-		lastUsername = machineUuid = null;
+		machineUuid = null;
+		lastAccount = -1L;
 		tradeSeq = 0;
 	}
 
@@ -893,13 +894,13 @@ public class GrandExchangePlugin extends Plugin
 
 	private String getMachineUuid()
 	{
-		String username = client.getUsername();
-		if (lastUsername == username)
+		long accountHash = client.getAccountHash();
+		if (lastAccount == accountHash)
 		{
 			return machineUuid;
 		}
 
-		lastUsername = username;
+		lastAccount = accountHash;
 
 		try
 		{
@@ -922,7 +923,7 @@ public class GrandExchangePlugin extends Plugin
 					hasher.putBytes(hardwareAddress);
 				}
 			}
-			hasher.putUnencodedChars(username);
+			hasher.putLong(accountHash);
 			machineUuid = hasher.hash().toString();
 			tradeSeq = 0;
 			return machineUuid;

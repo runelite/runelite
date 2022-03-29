@@ -69,7 +69,7 @@ public class ChatMessageManagerTest
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
 	}
 
-	private void setupVm(ChatMessageType type, String name, String message)
+	private MessageNode setupVm(ChatMessageType type, String name, String message)
 	{
 		MessageNode messageNode = mock(MessageNode.class);
 		when(messageNode.getType()).thenReturn(type);
@@ -92,6 +92,8 @@ public class ChatMessageManagerTest
 		when(client.getStringStackSize()).thenReturn(sstack.length);
 		when(client.getIntStack()).thenReturn(istack);
 		when(client.getIntStackSize()).thenReturn(istack.length);
+
+		return messageNode;
 	}
 
 	@Test
@@ -186,5 +188,25 @@ public class ChatMessageManagerTest
 		String formattedMessage = chatMessageManager.formatRuneLiteMessage(chatMessage, ChatMessageType.FRIENDSCHATNOTIFICATION, false);
 
 		assertEquals("<col=000000>Total points: <col=ff0000>42<col=000000>, Personal points: <col=ff0000>43<col=000000> (<col=ff0000>44<col=000000>%)", formattedMessage);
+	}
+
+	@Test
+	public void testGim()
+	{
+		when(chatColorConfig.opaqueClanChatInfo()).thenReturn(Color.RED);
+		when(chatColorConfig.opaqueClanChatInfoHighlight()).thenReturn(Color.BLUE);
+
+		// rebuild color cache
+		ConfigChanged configChanged = new ConfigChanged();
+		configChanged.setGroup("textrecolor");
+		chatMessageManager.onConfigChanged(configChanged);
+
+		MessageNode messageNode = setupVm(ChatMessageType.CLAN_GIM_MESSAGE, "", "rsn received a drop: 8 x Bronze bolts (16 coins).");
+		when(messageNode.getRuneLiteFormatMessage()).thenReturn("<colHIGHLIGHT><u>rsn</u><colNORMAL> received a drop: 8 x Bronze bolts (16 coins).");
+
+		chatMessageManager.colorChatMessage();
+
+		// | <chat color> <highlight color>
+		assertEquals("|<col=ff0000><col=0000ff><u>rsn</u><col=ff0000> received a drop: 8 x Bronze bolts (16 coins).</col>", sstack[2]);
 	}
 }

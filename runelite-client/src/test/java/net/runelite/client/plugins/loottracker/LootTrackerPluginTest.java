@@ -32,6 +32,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
@@ -59,11 +60,9 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemStack;
 import net.runelite.client.game.SpriteManager;
-import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.loottracker.LootRecordType;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -113,10 +112,6 @@ public class LootTrackerPluginTest
 	@Bind
 	private SpriteManager spriteManager;
 
-	@Mock
-	@Bind
-	private InfoBoxManager infoBoxManager;
-
 	@Inject
 	private LootTrackerPlugin lootTrackerPlugin;
 
@@ -152,6 +147,21 @@ public class LootTrackerPluginTest
 		Player player = mock(Player.class);
 		when(player.getWorldLocation()).thenReturn(new WorldPoint(0, 0, 0));
 		when(client.getLocalPlayer()).thenReturn(player);
+
+		lootTrackerPlugin = spy(lootTrackerPlugin);
+		doNothing().when(lootTrackerPlugin).addLoot(any(), anyInt(), any(), any(), any(Collection.class));
+	}
+
+	private void sendInvChange(InventoryID inv, Collection<ItemStack> items)
+	{
+		ItemContainer itemContainer = mock(ItemContainer.class);
+		when(itemContainer.getItems()).thenReturn(items.stream()
+			.map(is -> new Item(is.getId(), is.getQuantity()))
+			.toArray(Item[]::new));
+		when(client.getItemContainer(inv)).thenReturn(itemContainer);
+
+		ItemContainerChanged event = new ItemContainerChanged(inv.getId(), itemContainer);
+		lootTrackerPlugin.onItemContainerChanged(event);
 	}
 
 	@Test
@@ -160,8 +170,12 @@ public class LootTrackerPluginTest
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You pick the hero's pocket.", "", 0);
 		lootTrackerPlugin.onChatMessage(chatMessage);
 
-		assertEquals("Hero", lootTrackerPlugin.eventType);
-		assertEquals(LootRecordType.PICKPOCKET, lootTrackerPlugin.lootRecordType);
+		List<ItemStack> items = Collections.singletonList(
+			new ItemStack(ItemID.COINS_995, 1, null)
+		);
+		sendInvChange(InventoryID.INVENTORY, items);
+
+		verify(lootTrackerPlugin).addLoot("Hero", -1, LootRecordType.PICKPOCKET, null, items);
 	}
 
 	@Test
@@ -170,15 +184,12 @@ public class LootTrackerPluginTest
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "You have completed 1 master Treasure Trail.", "", 0);
 		lootTrackerPlugin.onChatMessage(chatMessage);
 
-		assertEquals("Clue Scroll (Master)", lootTrackerPlugin.eventType);
-		assertEquals(LootRecordType.EVENT, lootTrackerPlugin.lootRecordType);
-	}
+		List<ItemStack> items = Collections.singletonList(
+			new ItemStack(ItemID.COINS_995, 1, null)
+		);
+		sendInvChange(InventoryID.BARROWS_REWARD, items);
 
-	private static ItemComposition mockItem(String name)
-	{
-		ItemComposition itemComposition = mock(ItemComposition.class);
-		when(itemComposition.getName()).thenReturn(name);
-		return itemComposition;
+		verify(lootTrackerPlugin).addLoot("Clue Scroll (Master)", -1, LootRecordType.EVENT, null, items);
 	}
 
 	@Test
@@ -213,18 +224,13 @@ public class LootTrackerPluginTest
 			when(messageTable.iterator()).thenReturn(mockIterator);
 			when(client.getMessages()).thenReturn(messageTable);
 
-			LootTrackerPlugin lootTrackerPluginSpy = spy(this.lootTrackerPlugin);
-			doNothing().when(lootTrackerPluginSpy).addLoot(any(), anyInt(), any(), any(), any(Collection.class));
-
 			ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", LootTrackerPlugin.HERBIBOAR_LOOTED_MESSAGE, "", 0);
-			lootTrackerPluginSpy.onChatMessage(chatMessage);
+			lootTrackerPlugin.onChatMessage(chatMessage);
 
-			verify(lootTrackerPluginSpy).addLoot("Herbiboar", -1, LootRecordType.EVENT, 42, Arrays.asList(
+			verify(lootTrackerPlugin).addLoot("Herbiboar", -1, LootRecordType.EVENT, 42, Arrays.asList(
 				new ItemStack(id, 1, null),
 				new ItemStack(id, 1, null)
 			));
-			// Check the event type is null, which means the plugin isn't waiting on an inventory change event
-			assertNull(lootTrackerPlugin.eventType);
 		}
 	}
 
@@ -233,10 +239,6 @@ public class LootTrackerPluginTest
 	{
 		when(lootTrackerConfig.showRaidsLootValue()).thenReturn(true);
 		when(lootTrackerConfig.priceType()).thenReturn(LootTrackerPriceType.GRAND_EXCHANGE);
-
-		LootTrackerPlugin spyPlugin = Mockito.spy(lootTrackerPlugin);
-		// Make sure we don't execute addLoot, so we don't have to mock LootTrackerPanel and everything else also
-		doNothing().when(spyPlugin).addLoot(anyString(), anyInt(), any(LootRecordType.class), isNull(), anyCollection());
 
 		ItemContainer itemContainer = mock(ItemContainer.class);
 		when(itemContainer.getItems()).thenReturn(new Item[]{
@@ -250,7 +252,7 @@ public class LootTrackerPluginTest
 
 		WidgetLoaded widgetLoaded = new WidgetLoaded();
 		widgetLoaded.setGroupId(WidgetID.CHAMBERS_OF_XERIC_REWARD_GROUP_ID);
-		spyPlugin.onWidgetLoaded(widgetLoaded);
+		lootTrackerPlugin.onWidgetLoaded(widgetLoaded);
 
 		ArgumentCaptor<QueuedMessage> captor = ArgumentCaptor.forClass(QueuedMessage.class);
 		verify(chatMessageManager).queue(captor.capture());
@@ -303,26 +305,35 @@ public class LootTrackerPluginTest
 	@Test
 	public void testBirdhouses()
 	{
+		when(client.getBoostedSkillLevel(Skill.HUNTER)).thenReturn(42);
+		List<ItemStack> items = Collections.singletonList(
+			new ItemStack(ItemID.BIRD_NEST, 42, null)
+		);
+
 		// No bird nests
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You dismantle and discard the trap, retrieving 10 dead birds, 30 feathers and 1140 Hunter XP.", "", 0);
 		lootTrackerPlugin.onChatMessage(chatMessage);
 
-		assertEquals("Magic Bird House", lootTrackerPlugin.eventType);
-		assertEquals(LootRecordType.EVENT, lootTrackerPlugin.lootRecordType);
+		sendInvChange(InventoryID.INVENTORY, items);
+		verify(lootTrackerPlugin).addLoot("Magic Bird House", -1, LootRecordType.EVENT, 42, items);
+
+		when(client.getItemContainer(InventoryID.INVENTORY)).thenReturn(null);
 
 		// Single bird nest
 		chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You dismantle and discard the trap, retrieving a nest, 10 dead birds, 50 feathers and 700 Hunter XP.", "", 0);
 		lootTrackerPlugin.onChatMessage(chatMessage);
 
-		assertEquals("Teak Bird House", lootTrackerPlugin.eventType);
-		assertEquals(LootRecordType.EVENT, lootTrackerPlugin.lootRecordType);
+		sendInvChange(InventoryID.INVENTORY, items);
+		verify(lootTrackerPlugin).addLoot("Teak Bird House", -1, LootRecordType.EVENT, 42, items);
+
+		when(client.getItemContainer(InventoryID.INVENTORY)).thenReturn(null);
 
 		// Multiple nests
 		chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You dismantle and discard the trap, retrieving 2 nests, 10 dead birds, 40 feathers and 280 Hunter XP.", "", 0);
 		lootTrackerPlugin.onChatMessage(chatMessage);
 
-		assertEquals("Regular Bird House", lootTrackerPlugin.eventType);
-		assertEquals(LootRecordType.EVENT, lootTrackerPlugin.lootRecordType);
+		sendInvChange(InventoryID.INVENTORY, items);
+		verify(lootTrackerPlugin).addLoot("Regular Bird House", -1, LootRecordType.EVENT, 42, items);
 	}
 
 	@Test
@@ -372,8 +383,7 @@ public class LootTrackerPluginTest
 		when(client.getLocalPlayer().getWorldLocation()).thenReturn(new WorldPoint(3153, 2833, 0));
 		when(client.getBoostedSkillLevel(Skill.FISHING)).thenReturn(69);
 
-		LootTrackerPlugin lootTrackerPluginSpy = spy(this.lootTrackerPlugin);
-		doNothing().when(lootTrackerPluginSpy).addLoot(any(), anyInt(), any(), any(), any(Collection.class));
+		doNothing().when(lootTrackerPlugin).addLoot(any(), anyInt(), any(), any(), any(Collection.class));
 
 		ItemContainer itemContainer = mock(ItemContainer.class);
 		when(itemContainer.getItems()).thenReturn(new Item[]{
@@ -383,21 +393,21 @@ public class LootTrackerPluginTest
 		when(client.getItemContainer(InventoryID.INVENTORY)).thenReturn(itemContainer);
 
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You found some loot: 30 x Raw tuna", "", 0);
-		lootTrackerPluginSpy.onChatMessage(chatMessage);
+		lootTrackerPlugin.onChatMessage(chatMessage);
 
 		when(itemContainer.getItems()).thenReturn(new Item[]{
 			new Item(ItemID.BUCKET_OF_WATER, 1),
 			new Item(ItemID.ROPE, 1),
 			new Item(ItemID.RAW_TUNA, 30)
 		});
-		lootTrackerPluginSpy.onItemContainerChanged(new ItemContainerChanged(InventoryID.INVENTORY.getId(), itemContainer));
+		lootTrackerPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.INVENTORY.getId(), itemContainer));
 
-		verify(lootTrackerPluginSpy).addLoot("Reward pool (Tempoross)", -1, LootRecordType.EVENT, 69, Arrays.asList(
+		verify(lootTrackerPlugin).addLoot("Reward pool (Tempoross)", -1, LootRecordType.EVENT, 69, Arrays.asList(
 			new ItemStack(ItemID.RAW_TUNA, 30, null)
 		));
 
 		chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You found some loot: <col=ef1020>Tome of water (empty)</col>", "", 0);
-		lootTrackerPluginSpy.onChatMessage(chatMessage);
+		lootTrackerPlugin.onChatMessage(chatMessage);
 
 		when(itemContainer.getItems()).thenReturn(new Item[]{
 			new Item(ItemID.BUCKET_OF_WATER, 1),
@@ -405,9 +415,9 @@ public class LootTrackerPluginTest
 			new Item(ItemID.RAW_TUNA, 30),
 			new Item(ItemID.TOME_OF_WATER_EMPTY, 1)
 		});
-		lootTrackerPluginSpy.onItemContainerChanged(new ItemContainerChanged(InventoryID.INVENTORY.getId(), itemContainer));
+		lootTrackerPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.INVENTORY.getId(), itemContainer));
 
-		verify(lootTrackerPluginSpy).addLoot("Reward pool (Tempoross)", -1, LootRecordType.EVENT, 69, Arrays.asList(
+		verify(lootTrackerPlugin).addLoot("Reward pool (Tempoross)", -1, LootRecordType.EVENT, 69, Arrays.asList(
 			new ItemStack(ItemID.TOME_OF_WATER_EMPTY, 1, null)
 		));
 	}

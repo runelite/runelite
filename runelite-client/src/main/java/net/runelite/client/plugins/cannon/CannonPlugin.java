@@ -24,10 +24,12 @@
  */
 package net.runelite.client.plugins.cannon;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
@@ -37,18 +39,17 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
-import static net.runelite.api.GraphicID.CANNONBALL;
-import static net.runelite.api.GraphicID.GRANITE_CANNONBALL;
+import net.runelite.api.GraphicID;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.ObjectID;
-import static net.runelite.api.ObjectID.CANNON_BASE;
 import net.runelite.api.Player;
 import net.runelite.api.Projectile;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameObjectSpawned;
@@ -79,6 +80,11 @@ public class CannonPlugin extends Plugin
 	static final int MAX_OVERLAY_DISTANCE = 4100;
 	static final int MAX_CBALLS = 30;
 
+	private static final Set<Integer> CANNONBALL_PROJECTILE_IDS = ImmutableSet.of(
+		GraphicID.CANNONBALL, GraphicID.GRANITE_CANNONBALL,
+		GraphicID.CANNONBALL_OR, GraphicID.GRANITE_CANNONBALL_OR
+	);
+
 	private CannonCounter counter;
 	private boolean skipProjectileCheckThisTick;
 	private boolean cannonBallNotificationSent;
@@ -92,7 +98,7 @@ public class CannonPlugin extends Plugin
 	private boolean cannonPlaced;
 
 	@Getter
-	private WorldPoint cannonPosition;
+	private WorldArea cannonPosition;
 
 	@Getter
 	private int cannonWorld = -1;
@@ -185,15 +191,19 @@ public class CannonPlugin extends Plugin
 				switch (item.getId())
 				{
 					case ItemID.CANNON_BASE:
+					case ItemID.CANNON_BASE_OR:
 						hasBase = true;
 						break;
 					case ItemID.CANNON_STAND:
+					case ItemID.CANNON_STAND_OR:
 						hasStand = true;
 						break;
 					case ItemID.CANNON_BARRELS:
+					case ItemID.CANNON_BARRELS_OR:
 						hasBarrels = true;
 						break;
 					case ItemID.CANNON_FURNACE:
+					case ItemID.CANNON_FURNACE_OR:
 						hasFurnace = true;
 						break;
 				}
@@ -253,12 +263,12 @@ public class CannonPlugin extends Plugin
 		GameObject gameObject = event.getGameObject();
 
 		Player localPlayer = client.getLocalPlayer();
-		if (gameObject.getId() == CANNON_BASE && !cannonPlaced)
+		if ((gameObject.getId() == ObjectID.CANNON_BASE || gameObject.getId() == ObjectID.CANNON_BASE_43029) && !cannonPlaced)
 		{
 			if (localPlayer.getWorldLocation().distanceTo(gameObject.getWorldLocation()) <= 2
 				&& localPlayer.getAnimation() == AnimationID.BURYING_BONES)
 			{
-				cannonPosition = gameObject.getWorldLocation();
+				cannonPosition = buildCannonWorldArea(gameObject.getWorldLocation());
 				cannonWorld = client.getWorld();
 				cannon = gameObject;
 			}
@@ -268,7 +278,7 @@ public class CannonPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (cannonPosition != null || event.getId() != ObjectID.DWARF_MULTICANNON)
+		if (cannonPosition != null || (event.getId() != ObjectID.DWARF_MULTICANNON && event.getId() != ObjectID.DWARF_MULTICANNON_43027))
 		{
 			return;
 		}
@@ -303,12 +313,12 @@ public class CannonPlugin extends Plugin
 	{
 		Projectile projectile = event.getProjectile();
 
-		if ((projectile.getId() == CANNONBALL || projectile.getId() == GRANITE_CANNONBALL) && cannonPosition != null && cannonWorld == client.getWorld())
+		if (CANNONBALL_PROJECTILE_IDS.contains(projectile.getId()) && cannonPosition != null && cannonWorld == client.getWorld())
 		{
 			WorldPoint projectileLoc = WorldPoint.fromLocal(client, projectile.getX1(), projectile.getY1(), client.getPlane());
 
 			//Check to see if projectile x,y is 0 else it will continuously decrease while ball is flying.
-			if (projectileLoc.equals(cannonPosition) && projectile.getX() == 0 && projectile.getY() == 0)
+			if (cannonPosition.contains(projectileLoc) && projectile.getX() == 0 && projectile.getY() == 0)
 			{
 				// When there's a chat message about cannon reloaded/unloaded/out of ammo,
 				// the message event runs before the projectile event. However they run
@@ -393,7 +403,7 @@ public class CannonPlugin extends Plugin
 							cannonPlaced = true;
 							cannonWorld = client.getWorld();
 							cannon = objects[0];
-							cannonPosition = cannon.getWorldLocation();
+							cannonPosition = buildCannonWorldArea(cannon.getWorldLocation());
 						}
 					}
 				}
@@ -513,5 +523,10 @@ public class CannonPlugin extends Plugin
 
 		infoBoxManager.removeInfoBox(counter);
 		counter = null;
+	}
+
+	private static WorldArea buildCannonWorldArea(WorldPoint worldPoint)
+	{
+		return new WorldArea(worldPoint.getX() - 1, worldPoint.getY() - 1, 3, 3, worldPoint.getPlane());
 	}
 }

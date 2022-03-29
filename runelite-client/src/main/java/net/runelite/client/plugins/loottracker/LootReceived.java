@@ -41,4 +41,5 @@ public class LootReceived
 	private int combatLevel;
 	private LootRecordType type;
 	private Collection<ItemStack> items;
+	private int amount;
 }

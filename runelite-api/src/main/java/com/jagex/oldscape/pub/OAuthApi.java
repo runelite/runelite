@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Woox <https://github.com/wooxsolo>
+ * Copyright (c) 2022, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,58 +22,16 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package com.jagex.oldscape.pub;
 
-import net.runelite.api.coords.LocalPoint;
-
-/**
- * Represents a graphics object/spotanim.
- */
-public interface GraphicsObject extends Renderable
+public interface OAuthApi
 {
-	/**
-	 * The graphics object ID.
-	 *
-	 * @return the ID
-	 */
-	int getId();
+	boolean isOnLoginScreen();
+
+	void setOtlTokenRequester(OtlTokenRequester otlTokenRequester);
 
 	/**
-	 * The location of the object.
-	 *
-	 * @return the location
+	 * Gets a unique per-RuneScape-Account identifier or {@code -1} if the client has not logged in yet
 	 */
-	LocalPoint getLocation();
-
-	/**
-	 * Get the time this spotanim starts
-	 *
-	 * @return
-	 */
-	int getStartCycle();
-
-	/**
-	 * The plane the spotanim is on.
-	 *
-	 * @return
-	 */
-	int getLevel();
-
-	/**
-	 * Gets the z coordinate
-	 */
-	int getZ();
-
-	/**
-	 * Checks if this spotanim is done animating
-	 *
-	 * @return
-	 */
-	boolean finished();
-
-	/**
-	 * Set if this spotanim is done animating. If finished, the spotanim will despawn next frame.
-	 * @param finished
-	 */
-	void setFinished(boolean finished);
+	long getAccountHash();
 }

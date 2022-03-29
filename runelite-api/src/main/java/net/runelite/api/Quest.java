@@ -30,7 +30,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum Quest
 {
-	//Free Quests
 	BLACK_KNIGHTS_FORTRESS(299, "Black Knights' Fortress"),
 	COOKS_ASSISTANT(300, "Cook's Assistant"),
 	THE_CORSAIR_CURSE(301, "The Corsair Curse"),
@@ -53,8 +52,6 @@ public enum Quest
 	WITCHS_POTION(318, "Witch's Potion"),
 	X_MARKS_THE_SPOT(3155, "X Marks the Spot"),
 	BELOW_ICE_MOUNTAIN(2874, "Below Ice Mountain"),
-
-	//Members' Quests
 	ANIMAL_MAGNETISM(331, "Animal Magnetism"),
 	ANOTHER_SLICE_OF_HAM(332, "Another Slice of H.A.M."),
 	BETWEEN_A_ROCK(333, "Between a Rock..."),
@@ -184,8 +181,6 @@ public enum Quest
 	A_KINGDOM_DIVIDED(2971, "A Kingdom Divided"),
 	A_NIGHT_AT_THE_THEATRE(949, "A Night at the Theatre"),
 	LAND_OF_THE_GOBLINS(4135, "Land of the Goblins"),
-
-	//Miniquests
 	ENTER_THE_ABYSS(3140, "Enter the Abyss"),
 	ARCHITECTURAL_ALLIANCE(320, "Architectural Alliance"),
 	BEAR_YOUR_SOUL(1275, "Bear Your Soul"),
@@ -202,7 +197,8 @@ public enum Quest
 	DADDYS_HOME(1688, "Daddy's Home"),
 	THE_FROZEN_DOOR(3768, "The Frozen Door"),
 	HOPESPEARS_WILL(4136, "Hopespear's Will"),
-;
+	TEMPLE_OF_THE_EYE(4273, "Temple of the Eye"),
+	;
 
 	@Getter
 	private final int id;

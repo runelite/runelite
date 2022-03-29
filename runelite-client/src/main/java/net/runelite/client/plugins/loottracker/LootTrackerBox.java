@@ -242,8 +242,7 @@ class LootTrackerBox extends JPanel
 			subTitleLabel.setToolTipText(QuantityFormatter.formatNumber(totalPrice / kills) + " gp (average)");
 		}
 
-		validate();
-		repaint();
+		revalidate();
 	}
 
 	void collapse()
@@ -368,7 +367,7 @@ class LootTrackerBox extends JPanel
 			itemContainer.add(slotContainer);
 		}
 
-		itemContainer.repaint();
+		itemContainer.revalidate();
 	}
 
 	private static String buildToolTip(LootTrackerItem item)

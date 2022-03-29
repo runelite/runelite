@@ -164,9 +164,16 @@ public class ChatMessageManager
 			stringStack[size - 4] = ColorUtil.wrapWithColorTag(channel, channelColor);
 		}
 
+		String prefix = "";
+		if (chatMessageType == ChatMessageType.CLAN_GIM_CHAT || chatMessageType == ChatMessageType.CLAN_GIM_MESSAGE)
+		{
+			message = message.substring(1); // remove |
+			prefix = "|";
+		}
+
 		if (messageNode.getRuneLiteFormatMessage() != null)
 		{
-			stringStack[size - 2] = message = formatRuneLiteMessage(messageNode.getRuneLiteFormatMessage(),
+			message = formatRuneLiteMessage(messageNode.getRuneLiteFormatMessage(),
 				chatMessageType, splitpmbox);
 		}
 
@@ -178,20 +185,15 @@ public class ChatMessageManager
 				continue;
 			}
 
-			String prefix = "";
-			if (chatMessageType == ChatMessageType.CLAN_GIM_CHAT || chatMessageType == ChatMessageType.CLAN_GIM_MESSAGE)
-			{
-				message = message.substring(1); // remove |
-				prefix = "|";
-			}
-
 			// Replace </col> tags in the message with the new color so embedded </col> won't reset the color
 			final Color color = chatColor.getColor();
-			stringStack[size - 2] = prefix + ColorUtil.wrapWithColorTag(
+			message = ColorUtil.wrapWithColorTag(
 				message.replace(ColorUtil.CLOSING_COLOR_TAG, ColorUtil.colorTag(color)),
 				color);
 			break;
 		}
+
+		stringStack[size - 2] = prefix + message;
 	}
 
 	@Subscribe

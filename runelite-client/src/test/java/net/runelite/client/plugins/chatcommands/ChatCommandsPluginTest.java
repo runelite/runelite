@@ -165,11 +165,16 @@ public class ChatCommandsPluginTest
 	public void testTheatreOfBlood()
 	{
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "",
-			"Wave 'The Final Challenge' (Normal Mode) complete!<br>Duration: <col=ff0000>2:42.0</col><br>Theatre of Blood wave completion time: <col=ff0000>17:00.20</col> (new personal best)", null, 0);
+			"Wave 'The Final Challenge' (Normal Mode) complete!<br>" +
+				"Duration: <col=ff0000>2:42.0</col><br>" +
+				"Theatre of Blood completion time: <col=ff0000>17:00.20</col> (new personal best)", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
-		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Theatre of Blood count is: <col=ff0000>73</col>.", null, 0);
-		chatCommandsPlugin.onChatMessage(chatMessageEvent);
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Theatre of Blood total completion time: <col=ff0000>24:40.20</col>. Personal best: 20:45.00", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Theatre of Blood count is: <col=ff0000>73</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
 
 		verify(configManager).setRSProfileConfiguration("killcount", "theatre of blood", 73);
 		verify(configManager).setRSProfileConfiguration("personalbest", "theatre of blood", 17 * 60 + .2);
@@ -179,11 +184,16 @@ public class ChatCommandsPluginTest
 	public void testTheatreOfBloodNoPb()
 	{
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "",
-			"Wave 'The Final Challenge' (Normal Mode) complete!<br>Duration: <col=ff0000>2:42</col><br>Theatre of Blood wave completion time: <col=ff0000>17:00</col>. Personal best: 13:52.80", null, 0);
+			"Wave 'The Final Challenge' (Normal Mode) complete!<br>" +
+				"Duration: <col=ff0000>2:42</col><br>" +
+				"Theatre of Blood completion time: <col=ff0000>17:00</col>. Personal best: 13:52.80", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
-		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Theatre of Blood count is: <col=ff0000>73</col>.", null, 0);
-		chatCommandsPlugin.onChatMessage(chatMessageEvent);
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Theatre of Blood total completion time: <col=ff0000>24:40.20</col>. Personal best: 20:45.00", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Theatre of Blood count is: <col=ff0000>73</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
 
 		verify(configManager).setRSProfileConfiguration("killcount", "theatre of blood", 73);
 		verify(configManager).setRSProfileConfiguration("personalbest", "theatre of blood", 13 * 60 + 52.8);
@@ -193,11 +203,16 @@ public class ChatCommandsPluginTest
 	public void testTheatreOfBloodEntryMode()
 	{
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "",
-			"Wave 'The Final Challenge' (Entry Mode) complete!<br>Duration: <col=ff0000>2:42</col><br>Theatre of Blood wave completion time: <col=ff0000>17:00</col> (new personal best)", null, 0);
+			"Wave 'The Final Challenge' (Entry Mode) complete!<br>" +
+				"Duration: <col=ff0000>2:42</col><br>" +
+				"Theatre of Blood completion time: <col=ff0000>17:00</col> (new personal best)", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
-		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Theatre of Blood: Entry Mode count is: <col=ff0000>73</col>.", null, 0);
-		chatCommandsPlugin.onChatMessage(chatMessageEvent);
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Theatre of Blood total completion time: <col=ff0000>24:40.20</col>. Personal best: 20:45.00", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Theatre of Blood: Entry Mode count is: <col=ff0000>73</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
 
 		verify(configManager).setRSProfileConfiguration("killcount", "theatre of blood entry mode", 73);
 		verify(configManager).setRSProfileConfiguration("personalbest", "theatre of blood entry mode", 17 * 60.);
@@ -1073,5 +1088,14 @@ public class ChatCommandsPluginTest
 		verify(configManager).setRSProfileConfiguration("personalbest", "tztok-jad", 2033.0);
 		verify(configManager).setRSProfileConfiguration("personalbest", "tempoross", 234.0);
 		verify(configManager).setRSProfileConfiguration("personalbest", "chambers of xeric", 1360.0); // the lowest time
+	}
+
+	@Test
+	public void testGuardiansOfTheRift()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Amount of Rifts you have closed: <col=ff0000>7</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("killcount", "guardians of the rift", 7);
 	}
 }
