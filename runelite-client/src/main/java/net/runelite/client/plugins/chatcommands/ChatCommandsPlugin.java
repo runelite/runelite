@@ -27,6 +27,7 @@ package net.runelite.client.plugins.chatcommands;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.MoreObjects;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -42,6 +43,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -1353,13 +1355,27 @@ public class ChatCommandsPlugin extends Plugin
 			search = message.substring(LEVEL_COMMAND_STRING.length() + 1);
 		}
 
-		search = SkillAbbreviations.getFullName(search);
-		final HiscoreSkill skill;
-		try
+		final List<Function<String, String>> abbreviationFunctions = ImmutableList.of(
+			SkillAbbreviations::getFullName,
+			ChatCommandsPlugin::longBossName
+		);
+
+		HiscoreSkill skill = null;
+		for (final Function<String, String> abbreviationFunction : abbreviationFunctions)
 		{
-			skill = HiscoreSkill.valueOf(search.toUpperCase());
+			final String abbrev = abbreviationFunction.apply(search);
+			try
+			{
+				skill = HiscoreSkill.valueOf(abbrev.toUpperCase()
+					.replaceAll("[ -]", "_")
+					.replaceAll("[:']", ""));
+				break;
+			}
+			catch (IllegalArgumentException ignored)
+			{
+			}
 		}
-		catch (IllegalArgumentException i)
+		if (skill == null)
 		{
 			return;
 		}
