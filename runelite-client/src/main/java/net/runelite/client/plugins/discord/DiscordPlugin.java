@@ -52,6 +52,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.discord.DiscordService;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.game.GameArea;
 import net.runelite.client.party.PartyService;
 import net.runelite.client.party.WSClient;
 import net.runelite.client.party.messages.UserSync;
@@ -333,39 +334,32 @@ public class DiscordPlugin extends Plugin
 			return;
 		}
 
-		DiscordGameEventType discordGameEventType = DiscordGameEventType.fromPoint(playerWorldPoint);
+		GameArea gameArea = DiscordGameEventType.fromPoint(playerWorldPoint);
 
 		// NMZ uses the same region ID as KBD. KBD is always on plane 0 and NMZ is always above plane 0
 		// Since KBD requires going through the wilderness there is no EventType for it
-		if (DiscordGameEventType.MG_NIGHTMARE_ZONE == discordGameEventType
+		if (GameArea.MG_NIGHTMARE_ZONE == gameArea
 			&& client.getLocalPlayer().getWorldLocation().getPlane() == 0)
 		{
-			discordGameEventType = null;
+			gameArea = null;
 		}
 
-		if (discordGameEventType == null)
-		{
-			// Unknown region, reset to default in-game
-			discordState.triggerEvent(DiscordGameEventType.IN_GAME);
-			return;
-		}
-
-		if (!showArea(discordGameEventType))
+		if (!showArea(gameArea))
 		{
 			return;
 		}
 
-		discordState.triggerEvent(discordGameEventType);
+		discordState.updateArea(gameArea);
 	}
 
-	private boolean showArea(final DiscordGameEventType event)
+	private boolean showArea(final GameArea event)
 	{
 		if (event == null)
 		{
 			return false;
 		}
 
-		switch (event.getDiscordAreaType())
+		switch (event.getGameAreaType())
 		{
 			case BOSSES: return config.showBossActivity();
 			case CITIES: return config.showCityActivity();
