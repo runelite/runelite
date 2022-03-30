@@ -32,6 +32,7 @@ import javax.inject.Named;
 import net.runelite.api.Client;
 import net.runelite.client.discord.DiscordPresence;
 import net.runelite.client.discord.DiscordService;
+import net.runelite.client.game.GameArea;
 import net.runelite.client.party.PartyService;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
@@ -125,13 +126,13 @@ public class DiscordStateTest
 		verify(discordService, times(1)).updatePresence(captor.capture());
 		assertEquals(DiscordGameEventType.IN_GAME.getState(), captor.getValue().getState());
 
-		// IN_GAME -> CITY
-		discordState.triggerEvent(DiscordGameEventType.CITY_VARROCK);
+		// IN_GAME -> IN_GAME (CITY)
+		discordState.updateArea(GameArea.CITY_VARROCK);
 		verify(discordService, times(2)).updatePresence(captor.capture());
-		assertEquals(DiscordGameEventType.CITY_VARROCK.getState(), captor.getValue().getState());
+		assertEquals(GameArea.CITY_VARROCK.getState(), captor.getValue().getState());
 
-		// CITY -> IN_GAME
-		discordState.triggerEvent(DiscordGameEventType.IN_GAME);
+		// IN_GAME (CITY) -> IN_GAME
+		discordState.updateArea(null);
 		verify(discordService, times(3)).updatePresence(captor.capture());
 		assertEquals(DiscordGameEventType.IN_GAME.getState(), captor.getValue().getState());
 	}
@@ -141,28 +142,68 @@ public class DiscordStateTest
 	{
 		when(discordConfig.elapsedTimeType()).thenReturn(DiscordConfig.ElapsedTimeType.TOTAL);
 
-		// Start with state of CITY
+		// Start with state of IN_GAME
 		ArgumentCaptor<DiscordPresence> captor = ArgumentCaptor.forClass(DiscordPresence.class);
-		discordState.triggerEvent(DiscordGameEventType.CITY_VARROCK);
+		discordState.triggerEvent(DiscordGameEventType.IN_GAME);
 		verify(discordService, times(1)).updatePresence(captor.capture());
-		assertEquals(DiscordGameEventType.CITY_VARROCK.getState(), captor.getValue().getState());
+		assertEquals(DiscordGameEventType.IN_GAME.getState(), captor.getValue().getState());
+
+		// IN_GAME -> IN_GAME (CITY)
+		discordState.updateArea(GameArea.CITY_VARROCK);
+		verify(discordService, times(2)).updatePresence(captor.capture());
+		assertEquals(GameArea.CITY_VARROCK.getState(), captor.getValue().getState());
 
 		// Gain woodcutting xp
 		discordState.triggerEvent(DiscordGameEventType.TRAINING_WOODCUTTING);
-		verify(discordService, times(2)).updatePresence(captor.capture());
-		assertEquals(DiscordGameEventType.CITY_VARROCK.getState(), captor.getValue().getState());
+		verify(discordService, times(3)).updatePresence(captor.capture());
+		assertEquals(GameArea.CITY_VARROCK.getState(), captor.getValue().getState());
 		assertEquals(DiscordGameEventType.TRAINING_WOODCUTTING.getDetails(), captor.getValue().getDetails());
 
 		// CITY -> IN_GAME
-		discordState.triggerEvent(DiscordGameEventType.IN_GAME);
-		verify(discordService, times(3)).updatePresence(captor.capture());
+		discordState.updateArea(null);
+		verify(discordService, times(4)).updatePresence(captor.capture());
 		assertEquals(DiscordGameEventType.IN_GAME.getState(), captor.getValue().getState());
-		assertEquals("", captor.getValue().getDetails());
+		assertEquals(DiscordGameEventType.TRAINING_WOODCUTTING.getDetails(), captor.getValue().getDetails());
 
 		// Gain firemaking xp
 		discordState.triggerEvent(DiscordGameEventType.TRAINING_FIREMAKING);
-		verify(discordService, times(4)).updatePresence(captor.capture());
+		verify(discordService, times(5)).updatePresence(captor.capture());
 		assertEquals(DiscordGameEventType.IN_GAME.getState(), captor.getValue().getState());
 		assertEquals(DiscordGameEventType.TRAINING_FIREMAKING.getDetails(), captor.getValue().getDetails());
+	}
+
+	@Test
+	public void testEventAreaPersistence()
+	{
+		when(discordConfig.elapsedTimeType()).thenReturn(DiscordConfig.ElapsedTimeType.TOTAL);
+		ArgumentCaptor<DiscordPresence> captor = ArgumentCaptor.forClass(DiscordPresence.class);
+
+		// Start with state of IN_GAME
+		discordState.triggerEvent(DiscordGameEventType.IN_GAME);
+		verify(discordService, times(1)).updatePresence(captor.capture());
+		assertEquals(DiscordGameEventType.IN_GAME.getState(), captor.getValue().getState());
+
+		// IN_GAME -> IN_GAME (CITY)
+		discordState.updateArea(GameArea.CITY_VARROCK);
+		verify(discordService, times(2)).updatePresence(captor.capture());
+		assertEquals(GameArea.CITY_VARROCK.getState(), captor.getValue().getState());
+
+		// IN_GAME -> TRAINING_WOODCUTTING (CITY)
+		discordState.triggerEvent(DiscordGameEventType.TRAINING_WOODCUTTING);
+		verify(discordService, times(3)).updatePresence(captor.capture());
+		assertEquals(DiscordGameEventType.TRAINING_WOODCUTTING.getDetails(), captor.getValue().getDetails());
+		assertEquals(GameArea.CITY_VARROCK.getState(), captor.getValue().getState());
+
+		// TRAINING_WOODCUTTING (CITY) -> TRAINING_WOODCUTTING (GUILD)
+		discordState.updateArea(GameArea.REGION_WOODCUTTING_GUILD);
+		verify(discordService, times(4)).updatePresence(captor.capture());
+		assertEquals(DiscordGameEventType.TRAINING_WOODCUTTING.getDetails(), captor.getValue().getDetails());
+		assertEquals(GameArea.REGION_WOODCUTTING_GUILD.getState(), captor.getValue().getState());
+
+		// TRAINING_WOODCUTTING (GUILD) -> IN_GAME (GUILD)
+		discordState.triggerEvent(DiscordGameEventType.IN_GAME);
+		verify(discordService, times(5)).updatePresence(captor.capture());
+		assertEquals("", captor.getValue().getDetails());
+		assertEquals(GameArea.REGION_WOODCUTTING_GUILD.getState(), captor.getValue().getState());
 	}
 }
