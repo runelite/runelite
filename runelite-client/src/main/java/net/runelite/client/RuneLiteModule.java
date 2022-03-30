@@ -178,6 +178,14 @@ public class RuneLiteModule extends AbstractModule
 	}
 
 	@Provides
+	@Named("runelite.config-service.base")
+	HttpUrl provideConfigServiceBase(@Named("runelite.api.base") String s)
+	{
+		final String prop = System.getProperty("runelite.config-service.url");
+		return HttpUrl.get(Strings.isNullOrEmpty(prop) ? s : prop);
+	}
+
+	@Provides
 	@Named("runelite.session")
 	HttpUrl provideSession(@Named("runelite.session") String s)
 	{

@@ -60,7 +60,7 @@ public class ConfigClient
 	private UUID uuid;
 
 	@Inject
-	private ConfigClient(OkHttpClient client, @Named("runelite.api.base") HttpUrl apiBase)
+	private ConfigClient(OkHttpClient client, @Named("runelite.config-service.base") HttpUrl apiBase)
 	{
 		this.client = client;
 		this.apiBase = apiBase;
