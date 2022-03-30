@@ -27,7 +27,6 @@ package net.runelite.client.plugins.runecraft;
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Provides;
 import java.awt.Color;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -52,7 +51,6 @@ import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.npcoverlay.HighlightedNpc;
 import net.runelite.client.game.npcoverlay.NpcOverlayService;
 import net.runelite.client.plugins.Plugin;
@@ -76,9 +74,6 @@ public class RunecraftPlugin extends Plugin
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<DecorativeObject> abyssObjects = new HashSet<>();
-
-	@Getter(AccessLevel.PACKAGE)
-	private final Set<AbyssRifts> rifts = new HashSet<>();
 
 	private boolean degradedPouchInInventory;
 
@@ -114,7 +109,6 @@ public class RunecraftPlugin extends Plugin
 		npcOverlayService.registerHighlighter(highlightDarkMage);
 		overlayManager.add(abyssOverlay);
 		overlayManager.add(abyssMinimapOverlay);
-		updateRifts();
 	}
 
 	@Override
@@ -125,15 +119,6 @@ public class RunecraftPlugin extends Plugin
 		overlayManager.remove(abyssMinimapOverlay);
 		abyssObjects.clear();
 		degradedPouchInInventory = false;
-	}
-
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
-	{
-		if (event.getGroup().equals(RunecraftConfig.GROUP))
-		{
-			updateRifts();
-		}
 	}
 
 	@Subscribe
@@ -204,13 +189,5 @@ public class RunecraftPlugin extends Plugin
 				.build();
 		}
 		return null;
-	}
-
-	private void updateRifts()
-	{
-		rifts.clear();
-		Arrays.stream(AbyssRifts.values())
-			.filter(r -> r.getConfigEnabled().test(config))
-			.forEach(rifts::add);
 	}
 }
