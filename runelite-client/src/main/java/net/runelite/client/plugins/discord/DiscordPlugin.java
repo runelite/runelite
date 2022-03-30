@@ -338,7 +338,7 @@ public class DiscordPlugin extends Plugin
 
 		// NMZ uses the same region ID as KBD. KBD is always on plane 0 and NMZ is always above plane 0
 		// Since KBD requires going through the wilderness there is no EventType for it
-		if (GameArea.MG_NIGHTMARE_ZONE == gameArea
+		if (GameArea.NIGHTMARE_ZONE == gameArea
 			&& client.getLocalPlayer().getWorldLocation().getPlane() == 0)
 		{
 			gameArea = null;
