@@ -24,8 +24,8 @@ public class DiscordGameEventTypeTest
 				if (overlappingArea.isPresent())
 				{
 					final DiscordEventArea overlap = overlappingArea.get();
-					fail("Game event type " + discordEventArea.getEventType() + " has area " + discordEventArea.getArea()
-						+ " which overlaps the area of " + overlap.getEventType() + ": " + overlap.getArea());
+					fail("Game event type " + discordEventArea.getGameArea() + " has area " + discordEventArea.getArea()
+						+ " which overlaps the area of " + overlap.getGameArea() + ": " + overlap.getArea());
 				}
 			}
 		});
