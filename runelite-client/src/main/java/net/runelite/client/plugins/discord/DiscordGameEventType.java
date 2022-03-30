@@ -26,12 +26,21 @@
  */
 package net.runelite.client.plugins.discord;
 
-import com.google.common.collect.ImmutableMap;
-import java.util.Map;
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import net.runelite.api.Skill;
+import net.runelite.api.coords.WorldArea;
+import net.runelite.api.coords.WorldPoint;
 
 @AllArgsConstructor
 @Getter
@@ -70,19 +79,19 @@ enum DiscordGameEventType
 	BOSS_ABYSSAL_SIRE("Abyssal Sire", DiscordAreaType.BOSSES, 11851, 11850, 12363, 12362),
 	BOSS_ARAXXOR("Araxxor", DiscordAreaType.BOSSES, 14489),
 	BOSS_CERBERUS("Cerberus", DiscordAreaType.BOSSES, 4883, 5140, 5395),
-	BOSS_COMMANDER_ZILYANA("Commander Zilyana", DiscordAreaType.BOSSES, 11602),
+	BOSS_COMMANDER_ZILYANA("Commander Zilyana", DiscordAreaType.BOSSES, new RegionArea(11602, new WorldPoint(2889, 5258, 0), new WorldPoint(2907, 5275, 0))),
 	BOSS_CORP("Corporeal Beast", DiscordAreaType.BOSSES, 11842, 11844),
 	BOSS_DKS("Dagannoth Kings", DiscordAreaType.BOSSES, 11588, 11589),
 	BOSS_DUKE_SUCELLUS("Duke Sucellus", DiscordAreaType.BOSSES, 12132),
-	BOSS_GENERAL_GRAARDOR("General Graardor", DiscordAreaType.BOSSES, 11347),
+	BOSS_GENERAL_GRAARDOR("General Graardor", DiscordAreaType.BOSSES, new RegionArea(11347, new WorldPoint(2864, 5351, 2), new WorldPoint(2876, 5369, 2))),
 	BOSS_GIANT_MOLE("Giant Mole", DiscordAreaType.BOSSES, 6993, 6992),
 	BOSS_GROTESQUE_GUARDIANS("Grotesque Guardians", DiscordAreaType.BOSSES, 6727),
 	BOSS_HESPORI("Hespori", DiscordAreaType.BOSSES, 5021),
 	BOSS_HYDRA("Alchemical Hydra", DiscordAreaType.BOSSES, 5536),
 	BOSS_KQ("Kalphite Queen", DiscordAreaType.BOSSES, 13972),
 	BOSS_KRAKEN("Kraken", DiscordAreaType.BOSSES, 9116),
-	BOSS_KREEARRA("Kree'arra", DiscordAreaType.BOSSES, 11346),
-	BOSS_KRIL_TSUTSAROTH("K'ril Tsutsaroth", DiscordAreaType.BOSSES, 11603),
+	BOSS_KREEARRA("Kree'arra", DiscordAreaType.BOSSES, new RegionArea(11346, new WorldPoint(2824, 5296, 2), new WorldPoint(2842, 5308, 2))),
+	BOSS_KRIL_TSUTSAROTH("K'ril Tsutsaroth", DiscordAreaType.BOSSES, new RegionArea(11603, new WorldPoint(2918, 5318, 2), new WorldPoint(2936, 5333, 2))),
 	BOSS_NEX("Nex", DiscordAreaType.BOSSES, 11601),
 	BOSS_NIGHTMARE("Nightmare of Ashihama", DiscordAreaType.BOSSES, 15515),
 	BOSS_PHANTOM_MUSPAH("Phantom Muspah", DiscordAreaType.BOSSES, 11330),
@@ -160,7 +169,10 @@ enum DiscordGameEventType
 	CITY_SOPHANEM("Sophanem" , DiscordAreaType.CITIES, 13099),
 	CITY_TAI_BWO_WANNAI("Tai Bwo Wannai" , DiscordAreaType.CITIES, 11056, 11055),
 	CITY_TAVERLEY("Taverley" , DiscordAreaType.CITIES, 11574, 11573),
-	CITY_TREE_GNOME_STRONGHOLD("Tree Gnome Stronghold" , DiscordAreaType.CITIES, 9525, 9526, 9782, 9781),
+	CITY_TREE_GNOME_STRONGHOLD("Tree Gnome Stronghold" , DiscordAreaType.CITIES,
+		regionGameAreas(9525, 9526, 9782, 9781),
+		new RegionArea(9527, new WorldPoint(2374, 3520, 0), new WorldPoint(2399, 3537, 0)),
+		new RegionArea(9527, new WorldPoint(2400, 3520, 0), new WorldPoint(2431, 3550, 0))),
 	CITY_TREE_GNOME_VILLAGE("Tree Gnome Village" , DiscordAreaType.CITIES, 10033),
 	CITY_TROLL_STRONGHOLD("Troll Stronghold" , DiscordAreaType.CITIES, 11321, 11421),
 	CITY_UZER("Uzer" , DiscordAreaType.CITIES, 13872),
@@ -200,7 +212,11 @@ enum DiscordGameEventType
 	DUNGEON_CRASH_SITE_CAVERN("Crash Site Cavern", DiscordAreaType.DUNGEONS, 8280, 8536),
 	DUNGEON_CRUMBLING_TOWER("Crumbling Tower", DiscordAreaType.DUNGEONS, 7827),
 	DUNGEON_DAEYALT_ESSENCE_MINE("Daeyalt Essence Mine", DiscordAreaType.DUNGEONS, 14744),
-	DUNGEON_DIGSITE("Digsite Dungeon", DiscordAreaType.DUNGEONS, 13464, 13465),
+	DUNGEON_DIGSITE("Digsite Dungeon", DiscordAreaType.DUNGEONS,
+		regionGameAreas(13464, 13465),
+		new RegionArea(13621, new WorldPoint(3392, 3392, 0), new WorldPoint(3401, 3455, 0)),
+		new RegionArea(13621, new WorldPoint(3402, 3410, 0), new WorldPoint(3405, 3419, 0)),
+		new RegionArea(13621, new WorldPoint(3402, 3434, 0), new WorldPoint(3403, 3439, 0))),
 	DUNGEON_DORGESHKAAN("Dorgesh-Kaan South Dungeon", DiscordAreaType.DUNGEONS, 10833),
 	DUNGEON_DORGESHUUN_MINES("Dorgeshuun Mines", DiscordAreaType.DUNGEONS, 12950, 13206),
 	DUNGEON_DRAYNOR_SEWERS("Draynor Sewers", DiscordAreaType.DUNGEONS, 12439, 12438),
@@ -300,7 +316,9 @@ enum DiscordGameEventType
 	MG_BURTHORPE_GAMES_ROOM("Burthorpe Games Room", DiscordAreaType.MINIGAMES, 8781),
 	MG_CASTLE_WARS("Castle Wars", DiscordAreaType.MINIGAMES, 9520, 9620),
 	MG_CLAN_WARS("Clan Wars", DiscordAreaType.MINIGAMES, 12621, 12622, 12623, 13130, 13131, 13133, 13134, 13135, 13386, 13387, 13390, 13641, 13642, 13643, 13644, 13645, 13646, 13647, 13899, 13900, 14155, 14156),
-	MG_PVP_ARENA("PvP Arena", DiscordAreaType.MINIGAMES, 13362, 13363),
+	MG_PVP_ARENA("PvP Arena", DiscordAreaType.MINIGAMES,
+		regionGameAreas(13362, 13363),
+		new RegionArea(13618, new WorldPoint(3392, 3200, 0), new WorldPoint(3405, 3263, 0))),
 	MG_FISHING_TRAWLER("Fishing Trawler", DiscordAreaType.MINIGAMES, 7499),
 	MG_FORTIS_COLOSSEUM("Fortis Colosseum", DiscordAreaType.MINIGAMES, 7216),
 	MG_FORTIS_COLOSSEUM_LOBBY("Fortis Colosseum Lobby", DiscordAreaType.MINIGAMES, 7316),
@@ -349,6 +367,7 @@ enum DiscordGameEventType
 	REGION_AVIUM_SAVANNAH("Avium Savannah", DiscordAreaType.REGIONS, 5935, 5936, 5937, 6189, 6445, 6446, 6447, 6701, 6702, 6703, 6957, 6958, 6959, 7215),
 	REGION_BATTLEFIELD("Battlefield", DiscordAreaType.REGIONS, 10034),
 	REGION_BATTLEFRONT("Battlefront", DiscordAreaType.REGIONS, 5433, 5434),
+	REGION_BEEKEEPER("Beekeeper", DiscordAreaType.REGIONS, new RegionArea(7758, new WorldPoint(1920, 5036, 0), new WorldPoint(1934, 5051, 0))),
 	REGION_BLAST_MINE("Blast Mine", DiscordAreaType.REGIONS, 5948),
 	REGION_BODY_ALTAR("Body Altar", DiscordAreaType.REGIONS, 10059),
 	REGION_CHAOS_ALTAR("Chaos Altar", DiscordAreaType.REGIONS, 9035),
@@ -391,7 +410,8 @@ enum DiscordGameEventType
 	REGION_GHORROCK_DUNGEON("Ghorrock Dungeon", DiscordAreaType.REGIONS, 11681),
 	REGION_GORAKS_PLANE("Gorak's Plane", DiscordAreaType.REGIONS, 12115),
 	REGION_GRAND_EXCHANGE("Grand Exchange", DiscordAreaType.REGIONS, 12598),
-	REGION_GWD("God Wars Dungeon", DiscordAreaType.REGIONS, 11578),
+	REGION_GRAVEDIGGER("Gravedigger", DiscordAreaType.REGIONS, new RegionArea(7758, new WorldPoint(1921, 4993, 0), new WorldPoint(1934, 5006, 0))),
+	REGION_GWD("God Wars Dungeon", DiscordAreaType.REGIONS, 11578, 11346, 11347, 11602, 11603),
 	REGION_HARMONY("Harmony Island", DiscordAreaType.REGIONS, 15148),
 	REGION_HAZELMERE("Hazelmere's Island", DiscordAreaType.REGIONS, 10544),
 	REGION_HUNTER_GUILD("Hunter Guild", DiscordAreaType.REGIONS, 6191),
@@ -403,7 +423,9 @@ enum DiscordGameEventType
 	REGION_ISLE_OF_SOULS("Isle of Souls", DiscordAreaType.REGIONS, 8236, 8237, 8238, 8491, 8492, 8494, 8747, 8750, 9003, 9004, 9006, 9260, 9261, 9262),
 	REGION_JIGGIG("Jiggig" , DiscordAreaType.REGIONS, 9775),
 	REGION_KANDARIN("Kandarin", DiscordAreaType.REGIONS, 9268, 9269, 9014, 9263, 9264, 9519, 9524, 9527, 9776, 9783, 10037, 10290, 10294, 10546, 10551, 10805, 11062),
-	REGION_KARAMJA("Karamja" , DiscordAreaType.REGIONS, 10801, 10802, 11054, 11311, 11312, 11313, 11566, 11567, 11568, 11569, 11822),
+	REGION_KARAMJA("Karamja" , DiscordAreaType.REGIONS,
+		regionGameAreas(10801, 10802, 11054, 11311, 11312, 11313, 11566, 11567, 11568, 11569, 11822),
+		new RegionArea(11825, new WorldPoint(2944, 3142, 0), new WorldPoint(2960, 3159, 0))),
 	REGION_KEBOS_LOWLANDS("Kebos Lowlands", DiscordAreaType.REGIONS, 4665, 4666, 4667, 4921, 5178),
 	REGION_KEBOS_SWAMP("Kebos Swamp", DiscordAreaType.REGIONS, 4664, 4920, 5174, 5175, 5176, 5430, 5431),
 	REGION_KHARAZI_JUNGLE("Kharazi Jungle", DiscordAreaType.REGIONS, 11053, 11309, 11565, 11821),
@@ -416,7 +438,7 @@ enum DiscordGameEventType
 	REGION_LIGHTHOUSE("Lighthouse", DiscordAreaType.REGIONS, 10040),
 	REGION_LITHKREN("Lithkren", DiscordAreaType.REGIONS, 14142, 14398),
 	REGION_LUMBRIDGE_SWAMP("Lumbridge Swamp", DiscordAreaType.REGIONS, 12593, 12849),
-	REGION_MAX_ISLAND("Max Island", DiscordAreaType.REGIONS, 11063),
+	REGION_MAX_ISLAND("Max Island", DiscordAreaType.REGIONS, new RegionArea(11063, new WorldPoint(2786, 3535, 0), new WorldPoint(2796, 3543, 0))),
 	REGION_MCGRUBORS_WOOD("McGrubor's Wood", DiscordAreaType.REGIONS, 10550),
 	REGION_MIME_STAGE("Mime's Stage", DiscordAreaType.REGIONS, 8010),
 	REGION_MIND_ALTAR("Mind Altar", DiscordAreaType.REGIONS, 11083),
@@ -437,6 +459,7 @@ enum DiscordGameEventType
 	REGION_ORTUS_FARM("Ortus Farm", DiscordAreaType.REGIONS, 6192, 6193),
 	REGION_OTTOS_GROTTO("Otto's Grotto", DiscordAreaType.REGIONS, 10038),
 	REGION_OURANIA_HUNTER("Ourania Hunter Area", DiscordAreaType.REGIONS, 9778),
+	REGION_PINBALL_RANDOM("Pinball", DiscordAreaType.REGIONS, new RegionArea(7758, new WorldPoint(1964, 5038, 0), new WorldPoint(1980, 5053, 0))),
 	REGION_PIRATES_COVE("Pirates' Cove", DiscordAreaType.REGIONS, 8763),
 	REGION_PISCATORIS_HUNTER_AREA("Piscatoris Hunter Area", DiscordAreaType.REGIONS, 9015, 9016, 9271, 9272, 9528),
 	REGION_POH("Player Owned House", DiscordAreaType.REGIONS, 7513, 7514, 7769, 7770),
@@ -450,9 +473,7 @@ enum DiscordGameEventType
 	REGION_RUINS_OF_UNKAH("Ruins of Unkah", DiscordAreaType.REGIONS, 12588),
 	REGION_RUINS_OF_ULLEK("Ruins of Ullek", DiscordAreaType.REGIONS, 13355, 13611, 13612),
 	REGION_RUNE_ESSENCE_MINE("Rune Essence Mine", DiscordAreaType.REGIONS, 11595),
-	// The Beekeper, Pinball, and Gravedigger randoms share a region (7758), and although they are not technically ScapeRune, that name is most commonly
-	// associated with random events, so those three have been denoted ScapeRune to avoid leaving multiple random event regions without an assigned name.
-	REGION_SCAPERUNE("ScapeRune", DiscordAreaType.REGIONS, 10058, 7758, 8261),
+	REGION_SCAPERUNE("ScapeRune", DiscordAreaType.REGIONS, 10058, 8261),
 	REGION_SEA_SPIRIT_DOCK("Sea Spirit Dock", DiscordAreaType.REGIONS, 12332),
 	REGION_SHIP_YARD("Ship Yard", DiscordAreaType.REGIONS, 11823),
 	REGION_SILVAREA("Silvarea", DiscordAreaType.REGIONS, 13366),
@@ -470,29 +491,70 @@ enum DiscordGameEventType
 	REGION_UNDERWATER("Underwater", DiscordAreaType.REGIONS, 15008, 15264),
 	REGION_WATER_ALTAR("Water Altar", DiscordAreaType.REGIONS, 10827),
 	REGION_WATERBIRTH_ISLAND("Waterbirth Island", DiscordAreaType.REGIONS, 10042),
+	REGION_WHITE_WOLF_MOUNTAIN("White Wolf Mountain", DiscordAreaType.REGIONS,
+		new RegionArea(11062, new WorldPoint(2790, 3493, 0), new WorldPoint(2815, 3519, 0)),
+		new RegionArea(11063, new WorldPoint(2795, 3520, 0), new WorldPoint(2815, 3530, 0)),
+		new RegionArea(11317, new WorldPoint(2850, 3443, 0), new WorldPoint(2877, 3455, 0)),
+		new RegionArea(11318, new WorldPoint(2816, 3495, 0), new WorldPoint(2879, 3519, 0)),
+		new RegionArea(11318, new WorldPoint(2830, 3474, 0), new WorldPoint(2872, 3494, 0)),
+		new RegionArea(11318, new WorldPoint(2834, 3462, 0), new WorldPoint(2874, 3473, 0)),
+		new RegionArea(11318, new WorldPoint(2843, 3456, 0), new WorldPoint(2879, 3461, 0)),
+		new RegionArea(11319, new WorldPoint(2816, 3520, 0), new WorldPoint(2873, 3529, 0))),
 	REGION_WINTERTODT_CAMP("Wintertodt Camp", DiscordAreaType.REGIONS, 6461),
 	REGION_WIZARDS_TOWER("Wizards' Tower", DiscordAreaType.REGIONS, 12337),
 	REGION_WOODCUTTING_GUILD("Woodcutting Guild", DiscordAreaType.REGIONS, 6198, 6454),
 	REGION_WRATH_ALTAR("Wrath Altar", DiscordAreaType.REGIONS, 9291);
 
-	private static final Map<Integer, DiscordGameEventType> FROM_REGION;
+	@Value
+	@VisibleForTesting
+	static class DiscordEventArea
+	{
+		private final DiscordGameEventType eventType;
+		@Nullable
+		private final WorldArea area;
+	}
+
+	@Getter
+	@RequiredArgsConstructor
+	private static class RegionArea
+	{
+		private final int region;
+		@Nullable
+		private WorldArea area;
+
+		/**
+		 * Create a {@code RegionArea} in a given region of the area containing the given southwest and northeast corners.
+		 *
+		 * @param region   Region the area is within
+		 * @param swCorner Southwest corner of the area
+		 * @param neCorner Northeast corner of the area
+		 */
+		private RegionArea(final int region, final WorldPoint swCorner, final WorldPoint neCorner)
+		{
+			this.region = region;
+			this.area = new WorldArea(swCorner, neCorner.getX() - swCorner.getX() + 1, neCorner.getY() - swCorner.getY() + 1);
+		}
+	}
+
+	@VisibleForTesting
+	static final Multimap<Integer, DiscordEventArea> FROM_POINT;
 
 	static
 	{
-		ImmutableMap.Builder<Integer, DiscordGameEventType> regionMapBuilder = new ImmutableMap.Builder<>();
+		ImmutableMultimap.Builder<Integer, DiscordEventArea> pointMapBuilder = new ImmutableMultimap.Builder<>();
 		for (DiscordGameEventType discordGameEventType : DiscordGameEventType.values())
 		{
-			if (discordGameEventType.getRegionIds() == null)
+			if (discordGameEventType.getRegionAreas() == null)
 			{
 				continue;
 			}
 
-			for (int region : discordGameEventType.getRegionIds())
+			for (RegionArea regionArea : discordGameEventType.getRegionAreas())
 			{
-				regionMapBuilder.put(region, discordGameEventType);
+				pointMapBuilder.put(regionArea.getRegion(), new DiscordEventArea(discordGameEventType, regionArea.getArea()));
 			}
 		}
-		FROM_REGION = regionMapBuilder.build();
+		FROM_POINT = pointMapBuilder.build();
 	}
 
 	@Nullable
@@ -530,7 +592,7 @@ enum DiscordGameEventType
 	private DiscordAreaType discordAreaType;
 
 	@Nullable
-	private int[] regionIds;
+	private List<RegionArea> regionAreas;
 
 	DiscordGameEventType(Skill skill)
 	{
@@ -547,10 +609,24 @@ enum DiscordGameEventType
 
 	DiscordGameEventType(String areaName, DiscordAreaType areaType, int... regionIds)
 	{
+		this(areaName, areaType, regionGameAreas(regionIds));
+	}
+
+	DiscordGameEventType(String areaName, DiscordAreaType areaType, RegionArea... regionAreas)
+	{
+		this(areaName, areaType, ImmutableList.copyOf(regionAreas));
+	}
+
+	DiscordGameEventType(String areaName, DiscordAreaType areaType, List<RegionArea> regionAreas, RegionArea... regionArea)
+	{
+		final ImmutableList.Builder<RegionArea> allAreas = ImmutableList.builder();
+		allAreas.addAll(regionAreas);
+		allAreas.add(regionArea);
+
 		this.state = exploring(areaType, areaName);
 		this.priority = -2;
 		this.discordAreaType = areaType;
-		this.regionIds = regionIds;
+		this.regionAreas = allAreas.build();
 		this.shouldClear = true;
 	}
 
@@ -624,8 +700,30 @@ enum DiscordGameEventType
 		}
 	}
 
-	public static DiscordGameEventType fromRegion(final int regionId)
+	public static DiscordGameEventType fromPoint(final WorldPoint worldPoint)
 	{
-		return FROM_REGION.get(regionId);
+		DiscordGameEventType fullRegionArea = null;
+		for (DiscordEventArea area : FROM_POINT.get(worldPoint.getRegionID()))
+		{
+			if (area.getArea() == null)
+			{
+				fullRegionArea = area.getEventType();
+			}
+			else
+			{
+				if (area.getArea().contains2D(worldPoint))
+				{
+					return area.getEventType();
+				}
+			}
+		}
+		return fullRegionArea;
+	}
+
+	private static List<RegionArea> regionGameAreas(final int... regionIds)
+	{
+		return Arrays.stream(regionIds)
+			.mapToObj(RegionArea::new)
+			.collect(Collectors.toList());
 	}
 }

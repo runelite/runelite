@@ -46,6 +46,7 @@ import net.runelite.api.Skill;
 import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.StatChanged;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.discord.DiscordService;
@@ -160,9 +161,14 @@ public class DiscordPlugin extends Plugin
 					resetState();
 					checkForGameStateUpdate();
 				}
-				checkForAreaUpdate();
 				break;
 		}
+	}
+
+	@Subscribe
+	private void onGameTick(GameTick event)
+	{
+		checkForAreaUpdate();
 	}
 
 	@Subscribe
@@ -307,9 +313,9 @@ public class DiscordPlugin extends Plugin
 			return;
 		}
 
-		final int playerRegionID = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID();
+		final WorldPoint playerWorldPoint = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation());
 
-		if (playerRegionID == 0)
+		if (playerWorldPoint.getRegionID() == 0)
 		{
 			return;
 		}
@@ -327,7 +333,7 @@ public class DiscordPlugin extends Plugin
 			return;
 		}
 
-		DiscordGameEventType discordGameEventType = DiscordGameEventType.fromRegion(playerRegionID);
+		DiscordGameEventType discordGameEventType = DiscordGameEventType.fromPoint(playerWorldPoint);
 
 		// NMZ uses the same region ID as KBD. KBD is always on plane 0 and NMZ is always above plane 0
 		// Since KBD requires going through the wilderness there is no EventType for it
