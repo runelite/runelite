@@ -14,10 +14,10 @@
    istore                 4
    iload                  1
    switch                
-      1745: LABEL169
-      1129: LABEL149
-      1130: LABEL107
       1131: LABEL9
+      1130: LABEL107
+      1129: LABEL149
+      1745: LABEL169
    jump                   LABEL244
 LABEL9:
    iconst                 10747996
@@ -229,8 +229,8 @@ LABEL180:
    2308                  
    get_varbit             6255
    switch                
-      1: LABEL197
       2: LABEL189
+      1: LABEL197
       3: LABEL205
    jump                   LABEL213
 LABEL189:
