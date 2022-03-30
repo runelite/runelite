@@ -127,9 +127,9 @@ public class DiscordStateTest
 		assertEquals(DiscordGameEventType.IN_GAME.getState(), captor.getValue().getState());
 
 		// IN_GAME -> IN_GAME (CITY)
-		discordState.updateArea(GameArea.CITY_VARROCK);
+		discordState.updateArea(GameArea.VARROCK);
 		verify(discordService, times(2)).updatePresence(captor.capture());
-		assertEquals(GameArea.CITY_VARROCK.getState(), captor.getValue().getState());
+		assertEquals(GameArea.VARROCK.getState(), captor.getValue().getState());
 
 		// IN_GAME (CITY) -> IN_GAME
 		discordState.updateArea(null);
@@ -149,14 +149,14 @@ public class DiscordStateTest
 		assertEquals(DiscordGameEventType.IN_GAME.getState(), captor.getValue().getState());
 
 		// IN_GAME -> IN_GAME (CITY)
-		discordState.updateArea(GameArea.CITY_VARROCK);
+		discordState.updateArea(GameArea.VARROCK);
 		verify(discordService, times(2)).updatePresence(captor.capture());
-		assertEquals(GameArea.CITY_VARROCK.getState(), captor.getValue().getState());
+		assertEquals(GameArea.VARROCK.getState(), captor.getValue().getState());
 
 		// Gain woodcutting xp
 		discordState.triggerEvent(DiscordGameEventType.TRAINING_WOODCUTTING);
 		verify(discordService, times(3)).updatePresence(captor.capture());
-		assertEquals(GameArea.CITY_VARROCK.getState(), captor.getValue().getState());
+		assertEquals(GameArea.VARROCK.getState(), captor.getValue().getState());
 		assertEquals(DiscordGameEventType.TRAINING_WOODCUTTING.getDetails(), captor.getValue().getDetails());
 
 		// CITY -> IN_GAME
@@ -184,26 +184,26 @@ public class DiscordStateTest
 		assertEquals(DiscordGameEventType.IN_GAME.getState(), captor.getValue().getState());
 
 		// IN_GAME -> IN_GAME (CITY)
-		discordState.updateArea(GameArea.CITY_VARROCK);
+		discordState.updateArea(GameArea.VARROCK);
 		verify(discordService, times(2)).updatePresence(captor.capture());
-		assertEquals(GameArea.CITY_VARROCK.getState(), captor.getValue().getState());
+		assertEquals(GameArea.VARROCK.getState(), captor.getValue().getState());
 
 		// IN_GAME -> TRAINING_WOODCUTTING (CITY)
 		discordState.triggerEvent(DiscordGameEventType.TRAINING_WOODCUTTING);
 		verify(discordService, times(3)).updatePresence(captor.capture());
 		assertEquals(DiscordGameEventType.TRAINING_WOODCUTTING.getDetails(), captor.getValue().getDetails());
-		assertEquals(GameArea.CITY_VARROCK.getState(), captor.getValue().getState());
+		assertEquals(GameArea.VARROCK.getState(), captor.getValue().getState());
 
 		// TRAINING_WOODCUTTING (CITY) -> TRAINING_WOODCUTTING (GUILD)
-		discordState.updateArea(GameArea.REGION_WOODCUTTING_GUILD);
+		discordState.updateArea(GameArea.WOODCUTTING_GUILD);
 		verify(discordService, times(4)).updatePresence(captor.capture());
 		assertEquals(DiscordGameEventType.TRAINING_WOODCUTTING.getDetails(), captor.getValue().getDetails());
-		assertEquals(GameArea.REGION_WOODCUTTING_GUILD.getState(), captor.getValue().getState());
+		assertEquals(GameArea.WOODCUTTING_GUILD.getState(), captor.getValue().getState());
 
 		// TRAINING_WOODCUTTING (GUILD) -> IN_GAME (GUILD)
 		discordState.triggerEvent(DiscordGameEventType.IN_GAME);
 		verify(discordService, times(5)).updatePresence(captor.capture());
 		assertEquals("", captor.getValue().getDetails());
-		assertEquals(GameArea.REGION_WOODCUTTING_GUILD.getState(), captor.getValue().getState());
+		assertEquals(GameArea.WOODCUTTING_GUILD.getState(), captor.getValue().getState());
 	}
 }
