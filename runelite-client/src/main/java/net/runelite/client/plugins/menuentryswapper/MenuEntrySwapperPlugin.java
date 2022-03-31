@@ -472,7 +472,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		client.getItemCompositionCache().reset();
 	}
 
-	private Integer getSwapConfig(boolean shift, int itemId)
+	private Integer getItemSwapConfig(boolean shift, int itemId)
 	{
 		itemId = ItemVariationMapping.map(itemId);
 		String config = configManager.getConfiguration(shift ? SHIFTCLICK_CONFIG_GROUP : MenuEntrySwapperConfig.GROUP, ITEM_KEY_PREFIX + itemId);
@@ -484,13 +484,13 @@ public class MenuEntrySwapperPlugin extends Plugin
 		return Integer.parseInt(config);
 	}
 
-	private void setSwapConfig(boolean shift, int itemId, int index)
+	private void setItemSwapConfig(boolean shift, int itemId, int index)
 	{
 		itemId = ItemVariationMapping.map(itemId);
 		configManager.setConfiguration(shift ? SHIFTCLICK_CONFIG_GROUP : MenuEntrySwapperConfig.GROUP, ITEM_KEY_PREFIX + itemId, index);
 	}
 
-	private void unsetSwapConfig(boolean shift, int itemId)
+	private void unsetItemSwapConfig(boolean shift, int itemId)
 	{
 		itemId = ItemVariationMapping.map(itemId);
 		configManager.unsetConfiguration(shift ? SHIFTCLICK_CONFIG_GROUP : MenuEntrySwapperConfig.GROUP, ITEM_KEY_PREFIX + itemId);
@@ -553,7 +553,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 			else
 			{
 				// Otherwise it is possible that we have Use swap configured
-				Integer config = getSwapConfig(true, itemId);
+				Integer config = getItemSwapConfig(true, itemId);
 				if (config != null && config == -1)
 				{
 					activeAction = MenuAction.ITEM_USE;
@@ -563,7 +563,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		else
 		{
 			// Apply left click action from configuration
-			Integer config = getSwapConfig(false, itemId);
+			Integer config = getItemSwapConfig(false, itemId);
 			if (config != null)
 			{
 				activeAction = config >= 0
@@ -586,7 +586,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 					int index = menuAction == MenuAction.ITEM_USE
 						? -1
 						: menuAction.getId() - MenuAction.ITEM_FIRST_OPTION.getId();
-					setSwapConfig(configuringShiftClick, itemId, index);
+					setItemSwapConfig(configuringShiftClick, itemId, index);
 				});
 
 				if (activeAction == menuAction)
@@ -600,7 +600,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 			.setOption(RESET)
 			.setTarget(configuringShiftClick ? SHIFT_CLICK_MENU_TARGET : LEFT_CLICK_MENU_TARGET)
 			.setType(MenuAction.RUNELITE)
-			.onClick(e -> unsetSwapConfig(configuringShiftClick, itemId));
+			.onClick(e -> unsetItemSwapConfig(configuringShiftClick, itemId));
 	}
 
 	@Subscribe
@@ -705,7 +705,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 			// the client unable to perform the swap itself.
 			if (config.shiftClickCustomization() && !option.equals("use"))
 			{
-				Integer customOption = getSwapConfig(true, eventId);
+				Integer customOption = getItemSwapConfig(true, eventId);
 
 				if (customOption != null && customOption == -1)
 				{
@@ -721,7 +721,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		// Custom left-click item swap
 		if (itemOp)
 		{
-			Integer swapIndex = getSwapConfig(false, eventId);
+			Integer swapIndex = getItemSwapConfig(false, eventId);
 			if (swapIndex != null)
 			{
 				MenuAction swapAction = swapIndex >= 0
@@ -790,7 +790,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		}
 
 		ItemComposition itemComposition = event.getItemComposition();
-		Integer option = getSwapConfig(true, itemComposition.getId());
+		Integer option = getItemSwapConfig(true, itemComposition.getId());
 
 		if (option != null && option < itemComposition.getInventoryActions().length)
 		{
