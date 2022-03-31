@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.menuentryswapper;
 
+import java.util.List;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import lombok.Value;
@@ -36,4 +37,5 @@ class Swap
 	private String swappedOption;
 	private Supplier<Boolean> enabled;
 	private boolean strict;
+	private List<Integer> blocklist;
 }

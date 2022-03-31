@@ -34,11 +34,8 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 import com.google.inject.Provides;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import javax.inject.Inject;
@@ -294,7 +291,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("enter", "quick-enter", config::swapQuick);
 		swap("enter-crypt", "quick-enter", config::swapQuick);
 		swap("ring", "quick-start", config::swapQuick);
-		swap("pass", "quick-pass", config::swapQuick);
+		//Specifically ignore Guardians of the Rift entrance barrier
+		swap("pass", "quick-pass", config::swapQuick, Arrays.asList(43700, 43849));
 		swap("pass", "quick pass", config::swapQuick);
 		swap("open", "quick-open", config::swapQuick);
 		swap("climb-down", "quick-start", config::swapQuick);
@@ -437,14 +435,24 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap(option, equalTo(target), swappedOption, enabled);
 	}
 
+	private void swap(String option, String swappedOption, Supplier<Boolean> enabled, List<Integer> blocklist)
+	{
+		swapIgnoring(option, alwaysTrue(), swappedOption, enabled, blocklist);
+	}
+
 	private void swap(String option, Predicate<String> targetPredicate, String swappedOption, Supplier<Boolean> enabled)
 	{
-		swaps.put(option, new Swap(alwaysTrue(), targetPredicate, swappedOption, enabled, true));
+		swaps.put(option, new Swap(alwaysTrue(), targetPredicate, swappedOption, enabled, true, null));
+	}
+
+	private void swapIgnoring(String option, Predicate<String> targetPredicate, String swappedOption, Supplier<Boolean> enabled, List<Integer> blocklist)
+	{
+		swaps.put(option, new Swap(alwaysTrue(), targetPredicate, swappedOption, enabled, true, blocklist));
 	}
 
 	private void swapContains(String option, Predicate<String> targetPredicate, String swappedOption, Supplier<Boolean> enabled)
 	{
-		swaps.put(option, new Swap(alwaysTrue(), targetPredicate, swappedOption, enabled, false));
+		swaps.put(option, new Swap(alwaysTrue(), targetPredicate, swappedOption, enabled, false, null));
 	}
 
 	private void swapTeleport(String option, String swappedOption)
@@ -683,6 +691,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		final MenuAction menuAction = menuEntry.getType();
 		final String option = Text.removeTags(menuEntry.getOption()).toLowerCase();
 		final String target = Text.removeTags(menuEntry.getTarget()).toLowerCase();
+		final Integer object = menuEntry.getIdentifier();
 		final NPC hintArrowNpc = client.getHintArrowNpc();
 
 		// Don't swap on hint arrow npcs, usually they need "Talk-to" for clues.
@@ -740,6 +749,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 		Collection<Swap> swaps = this.swaps.get(option);
 		for (Swap swap : swaps)
 		{
+			List<Integer> blocklist = swap.getBlocklist();
+			if (blocklist != null && blocklist.contains(object))
+			{
+				continue;
+			}
 			if (swap.getTargetPredicate().test(target) && swap.getEnabled().get())
 			{
 				if (swap(menuEntries, swap.getSwappedOption(), target, index, swap.isStrict()))
