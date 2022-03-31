@@ -46,6 +46,7 @@ import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.game.GameArea;
 import net.runelite.client.plugins.grounditems.config.DespawnTimerMode;
 import static net.runelite.client.plugins.grounditems.config.ItemHighlightMode.MENU;
 import static net.runelite.client.plugins.grounditems.config.ItemHighlightMode.NONE;
@@ -77,18 +78,6 @@ public class GroundItemsOverlay extends Overlay
 	private static final Duration DESPAWN_TIME_LOOT = Duration.ofMinutes(2);
 	private static final Duration DESPAWN_TIME_DROP = Duration.ofMinutes(3);
 	private static final Duration DESPAWN_TIME_TABLE = Duration.ofMinutes(10);
-	private static final int KRAKEN_REGION = 9116;
-	private static final int CLAN_HALL_REGION = 6997;
-	private static final int KBD_NMZ_REGION = 9033;
-	private static final int ZILYANA_REGION = 11602;
-	private static final int GRAARDOR_REGION = 11347;
-	private static final int KRIL_TSUTSAROTH_REGION = 11603;
-	private static final int KREEARRA_REGION = 11346;
-	private static final int NEX_REGION = 11601;
-	private static final int NIGHTMARE_REGION = 15515;
-	private static final int TEMPOROSS_REGION = 12078;
-	private static final int KALPHITE_QUEEN_REGION = 13972;
-	private static final int INFERNO_REGION = 9043;
 
 	private final Client client;
 	private final GroundItemsPlugin plugin;
@@ -423,12 +412,12 @@ public class GroundItemsOverlay extends Overlay
 		if (client.isInInstancedRegion())
 		{
 			final int playerRegionID = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID();
-			if (playerRegionID == KRAKEN_REGION)
+			if (GameArea.KRAKEN.containsRegion(playerRegionID))
 			{
 				// Items in the Kraken instance never despawn
 				return null;
 			}
-			else if (playerRegionID == KBD_NMZ_REGION)
+			else if (GameArea.NIGHTMARE_ZONE.containsRegion(playerRegionID))
 			{
 				// NMZ and the KBD lair uses the same region ID but NMZ uses planes 1-3 and KBD uses plane 0
 				if (client.getLocalPlayer().getWorldLocation().getPlane() == 0)
@@ -448,15 +437,20 @@ public class GroundItemsOverlay extends Overlay
 					}
 				}
 			}
-			else if (playerRegionID == INFERNO_REGION)
+			else if (GameArea.INFERNO.containsRegion(playerRegionID))
 			{
 				despawnTime = spawnTime.plus(DESPAWN_TIME_INFERNO);
 			}
-			else if (playerRegionID == ZILYANA_REGION || playerRegionID == GRAARDOR_REGION ||
-				playerRegionID == KRIL_TSUTSAROTH_REGION || playerRegionID == KREEARRA_REGION ||
-				playerRegionID == NEX_REGION || playerRegionID == KALPHITE_QUEEN_REGION ||
-				playerRegionID == NIGHTMARE_REGION || playerRegionID == TEMPOROSS_REGION ||
-				playerRegionID == CLAN_HALL_REGION)
+			else if (GameArea.anyContainsRegion(playerRegionID,
+				GameArea.COMMANDER_ZILYANA,
+				GameArea.GENERAL_GRAARDOR,
+				GameArea.KRIL_TSUTSAROTH,
+				GameArea.KREEARRA,
+				GameArea.NEX,
+				GameArea.KALPHITE_QUEEN,
+				GameArea.NIGHTMARE,
+				GameArea.TEMPOROSS,
+				GameArea.CLAN_HALL))
 			{
 				// GWD, Kalphite Queen, Nightmare, and Tempoross instances use the normal despawn timers
 				despawnTime = spawnTime.plus(groundItem.getLootType() == LootType.DROPPED

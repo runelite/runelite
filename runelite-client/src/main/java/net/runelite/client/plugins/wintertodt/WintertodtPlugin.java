@@ -82,6 +82,7 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.GameArea;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.wintertodt.config.WintertodtNotifyDamage;
@@ -98,8 +99,6 @@ import net.runelite.client.util.ColorUtil;
 @Slf4j
 public class WintertodtPlugin extends Plugin
 {
-	private static final int WINTERTODT_REGION = 6462;
-
 	@Inject
 	private Notifier notifier;
 
@@ -170,12 +169,8 @@ public class WintertodtPlugin extends Plugin
 
 	private boolean isInWintertodtRegion()
 	{
-		if (client.getLocalPlayer() != null)
-		{
-			return client.getLocalPlayer().getWorldLocation().getRegionID() == WINTERTODT_REGION;
-		}
+		return client.getLocalPlayer() != null && GameArea.WINTERTODT.containsRegion(client.getLocalPlayer().getWorldLocation().getRegionID());
 
-		return false;
 	}
 
 	@Subscribe
