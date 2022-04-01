@@ -77,7 +77,7 @@ class InventoryViewerOverlay extends OverlayPanel
 		}
 
 		if ((client.getVar(VarClientInt.INVENTORY_TAB) == 3 || client.getWidget(WidgetInfo.BANK_CONTAINER) != null)
-			 && config.hideIfInventoryActive())
+				&& config.hideIfInventoryActive())
 		{
 			return null;
 		}
