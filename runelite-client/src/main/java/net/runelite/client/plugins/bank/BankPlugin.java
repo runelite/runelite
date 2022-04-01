@@ -292,7 +292,7 @@ public class BankPlugin extends Plugin
 				return;
 			}
 
-			Widget bankTitle = client.getWidget(WidgetInfo.GROUP_STORAGE_TITLE_BAR).getChild(1);
+			Widget bankTitle = client.getWidget(WidgetInfo.GROUP_STORAGE_UI_CONTAINER).getChild(1);
 			bankTitle.setText(bankTitle.getText() + createValueText(price.getGePrice(), price.getHighAlchPrice()));
 		}
 	}
