@@ -297,6 +297,7 @@ public final class WidgetID
 
 	static class GroupStorage
 	{
+		static final int UI = 2;
 		static final int ITEM_CONTAINER = 10;
 	}
 

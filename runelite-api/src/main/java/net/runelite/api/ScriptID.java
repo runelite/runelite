@@ -402,4 +402,7 @@ public final class ScriptID
 	 */
 	@ScriptArguments(integer = 4)
 	public static final int QUEST_FILTER = 3238;
+
+	@ScriptArguments(integer = 18, string = 1)
+	public static final int GROUP_IRONMAN_STORAGE_BUILD = 5269;
 }
