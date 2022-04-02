@@ -43,14 +43,12 @@ public interface MinimapConfig extends Config
 	)
 	String minimapDotSection = "minimapDotSection";
 
-
 	@ConfigSection(
 		name = "Minimap dot Sizes",
 		description = "The sizes of dots on the minimap.",
 		position = 1
 	)
 	String minimapDotSizeSection = "minimapDotSizeSection";
-
 
 	@ConfigItem(
 		keyName = "hideMinimap",
@@ -125,7 +123,6 @@ public interface MinimapConfig extends Config
 		section = minimapDotSection
 	)
 	Color clanChatColor();
-
 
 	@Range(
 		min = 3,
