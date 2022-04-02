@@ -29,6 +29,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
+import net.runelite.client.config.Range;
 
 @ConfigGroup(MinimapConfig.GROUP)
 public interface MinimapConfig extends Config
@@ -41,6 +42,14 @@ public interface MinimapConfig extends Config
 		position = 0
 	)
 	String minimapDotSection = "minimapDotSection";
+
+
+	@ConfigSection(
+			name = "Minimap dot Sizes",
+			description = "The sizes of dots on the minimap.",
+			position = 1
+	)
+	String minimapDotSizeSection = "minimapDotSizeSection";
 
 
 	@ConfigItem(
@@ -116,4 +125,21 @@ public interface MinimapConfig extends Config
 		section = minimapDotSection
 	)
 	Color clanChatColor();
+
+
+	@Range(
+			min = 3,
+			max = 8
+	)
+	@ConfigItem(
+			keyName = "localPlayerSize",
+			name = "Local Player",
+			description = "Local Player Icon Size",
+			section = minimapDotSizeSection
+	)
+	default int localPlayerSize()
+	{
+		return 3;
+	}
+
 }

@@ -49,9 +49,10 @@ class LocalPlayerMinimapOverlay extends Overlay
         {
             return;
         }
-        
+
+        int size = config.localPlayerSize();
         graphics.setColor(config.localColor());
-        graphics.fillRect(posOnMinimap.getX() - 1, posOnMinimap.getY() - 1, 3,3);
+        graphics.fillRect(posOnMinimap.getX() - 1, posOnMinimap.getY() - 1, size, size);
 
     }
 }
