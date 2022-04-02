@@ -45,9 +45,9 @@ public interface MinimapConfig extends Config
 
 
 	@ConfigSection(
-			name = "Minimap dot Sizes",
-			description = "The sizes of dots on the minimap.",
-			position = 1
+		name = "Minimap dot Sizes",
+		description = "The sizes of dots on the minimap.",
+		position = 1
 	)
 	String minimapDotSizeSection = "minimapDotSizeSection";
 
@@ -63,10 +63,10 @@ public interface MinimapConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "local",
-			name = "Local Player color",
-			description = "Set the minimap color your player is drawn in",
-			section = minimapDotSection
+		keyName = "local",
+		name = "Local Player color",
+		description = "Set the minimap color your player is drawn in",
+		section = minimapDotSection
 	)
 	Color localColor();
 
@@ -128,14 +128,14 @@ public interface MinimapConfig extends Config
 
 
 	@Range(
-			min = 3,
-			max = 8
+		min = 3,
+		max = 8
 	)
 	@ConfigItem(
-			keyName = "localPlayerSize",
-			name = "Local Player",
-			description = "Local Player Icon Size",
-			section = minimapDotSizeSection
+		keyName = "localPlayerSize",
+		name = "Local Player",
+		description = "Local Player Icon Size",
+		section = minimapDotSizeSection
 	)
 	default int localPlayerSize()
 	{
