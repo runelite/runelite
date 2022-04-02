@@ -34,6 +34,7 @@ import java.awt.event.KeyEvent;
 import java.text.ParseException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
@@ -212,6 +213,10 @@ public class BankPlugin extends Plugin
 				if (valueSearch(itemId, search))
 				{
 					// return true
+					intStack[intStackSize - 2] = 1;
+				}
+				if (regexSearch(itemId, search))
+				{
 					intStack[intStackSize - 2] = 1;
 				}
 
@@ -393,6 +398,29 @@ public class BankPlugin extends Plugin
 		return itemContainer.getItems();
 	}
 
+	boolean regexSearch(final int itemId, final String str)
+	{
+		if (!str.startsWith("/") || str.length() < 2)
+		{
+			return false;
+		}
+		final String query = str.endsWith("/") ? str.substring(1, str.length() - 1) : str.substring(1);
+		final String name = itemManager.getItemComposition(itemId).getName().toLowerCase();
+		try
+		{
+			final Pattern pattern = Pattern.compile(query);
+			if (!pattern.matcher(name).find(0))
+			{
+				return false;
+			}
+			return true;
+		}
+		catch (PatternSyntaxException e)
+		{
+			log.debug("User supplied query exception:", e);
+		}
+		return false;
+	}
 
 	@VisibleForTesting
 	boolean valueSearch(final int itemId, final String str)
