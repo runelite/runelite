@@ -42,6 +42,7 @@ public interface MinimapConfig extends Config
 	)
 	String minimapDotSection = "minimapDotSection";
 
+
 	@ConfigItem(
 		keyName = "hideMinimap",
 		name = "Hide minimap",
@@ -51,6 +52,14 @@ public interface MinimapConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+			keyName = "local",
+			name = "Local Player color",
+			description = "Set the minimap color your player is drawn in",
+			section = minimapDotSection
+	)
+	Color localColor();
 
 	@ConfigItem(
 		keyName = "item",
