@@ -16,14 +16,12 @@ class LocalPlayerMinimapOverlay extends Overlay
 
 	private final Client client;
 	private final MinimapConfig config;
-	private final MinimapPlugin plugin;
 
 	@Inject
-	private LocalPlayerMinimapOverlay(Client client, MinimapConfig config, MinimapPlugin plugin)
+	private LocalPlayerMinimapOverlay(Client client, MinimapConfig config)
 	{
 		this.client = client;
 		this.config = config;
-		this.plugin = plugin;
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.LOW);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
