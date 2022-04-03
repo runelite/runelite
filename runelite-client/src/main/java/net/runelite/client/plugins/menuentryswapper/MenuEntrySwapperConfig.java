@@ -601,6 +601,17 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "swapHouseTeleportSpell",
+			name = "Shift-click house teleport spell",
+			description = "Swap house teleport spell to a different destination on shift",
+			section = uiSection
+	)
+	default HouseTeleportMode swapHouseTeleportSpell()
+	{
+		return HouseTeleportMode.OUTSIDE;
+	}
+
+	@ConfigItem(
 		keyName = "swapTeleportSpell",
 		name = "Shift-click teleport spells",
 		description = "Swap teleport spells that have a second destination on shift",
@@ -647,8 +658,7 @@ public interface MenuEntrySwapperConfig extends Config
 	@ConfigItem(
 		keyName = "swapGEAbort",
 		name = "GE Abort",
-		description = "Swap abort offer on Grand Exchange offers when shift-clicking"
-		,
+		description = "Swap abort offer on Grand Exchange offers when shift-clicking",
 		section = uiSection
 	)
 	default boolean swapGEAbort()
