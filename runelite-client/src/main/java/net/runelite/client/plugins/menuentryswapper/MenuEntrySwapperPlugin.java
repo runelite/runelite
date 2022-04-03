@@ -423,7 +423,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swapTeleport("varrock teleport", "grand exchange");
 		swapTeleport("camelot teleport", "seers'");
 		swapTeleport("watchtower teleport", "yanille");
-		swapTeleport("teleport to house", "outside");
+
+		swapHouseTeleport("cast", () -> shiftModifier() && config.swapHouseTeleportSpell() == MenuEntrySwapperConfig.HouseTeleportMode.CAST);
+		swapHouseTeleport("outside", () -> shiftModifier() && config.swapHouseTeleportSpell() == MenuEntrySwapperConfig.HouseTeleportMode.OUTSIDE);
+		swapHouseTeleport("group: choose", () -> shiftModifier() && config.swapHouseTeleportSpell() == MenuEntrySwapperConfig.HouseTeleportMode.GROUP_CHOOSE);
+		swapHouseTeleport("group: previous", () -> shiftModifier() && config.swapHouseTeleportSpell() == MenuEntrySwapperConfig.HouseTeleportMode.GROUP_PREVIOUS);
 
 		swap("eat", "guzzle", config::swapRockCake);
 
@@ -457,6 +461,12 @@ public class MenuEntrySwapperPlugin extends Plugin
 	{
 		swap("cast", option, swappedOption, () -> shiftModifier() && config.swapTeleportSpell());
 		swap(swappedOption, option, "cast", () -> shiftModifier() && config.swapTeleportSpell());
+	}
+
+	private void swapHouseTeleport(String swappedOption, Supplier<Boolean> enabled)
+	{
+		swap("cast", "teleport to house", swappedOption, enabled);
+		swap("outside", "teleport to house", swappedOption, enabled);
 	}
 
 	@Subscribe
