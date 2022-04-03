@@ -82,6 +82,7 @@ import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ChatInput;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.WorldService;
 import net.runelite.client.hiscore.HiscoreClient;
 import net.runelite.client.hiscore.HiscoreEndpoint;
 import net.runelite.client.hiscore.HiscoreResult;
@@ -90,11 +91,13 @@ import net.runelite.client.hiscore.Skill;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.worldhopper.ping.Ping;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.Text;
 import net.runelite.http.api.chat.Duels;
 import net.runelite.http.api.item.ItemPrice;
+import net.runelite.http.api.worlds.WorldResult;
 import okhttp3.OkHttpClient;
 import org.apache.commons.text.WordUtils;
 
@@ -139,6 +142,7 @@ public class ChatCommandsPlugin extends Plugin
 	private static final String LEAGUE_POINTS_COMMAND = "!lp";
 	private static final String SOUL_WARS_ZEAL_COMMAND = "!sw";
 	private static final String PET_LIST_COMMAND = "!pets";
+	private static final String PING_COMMAND = "!ping";
 
 	@VisibleForTesting
 	static final int ADV_LOG_EXPLOITS_TEXT_INDEX = 1;
@@ -197,6 +201,9 @@ public class ChatCommandsPlugin extends Plugin
 	@Inject
 	private Gson gson;
 
+	@Inject
+	private WorldService worldService;
+
 	@Override
 	public void startUp()
 	{
@@ -218,6 +225,7 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.registerCommandAsync(DUEL_ARENA_COMMAND, this::duelArenaLookup, this::duelArenaSubmit);
 		chatCommandManager.registerCommandAsync(SOUL_WARS_ZEAL_COMMAND, this::soulWarsZealLookup);
 		chatCommandManager.registerCommandAsync(PET_LIST_COMMAND, this::petListLookup, this::petListSubmit);
+		chatCommandManager.registerCommandAsync(PING_COMMAND, this::pingLookup, this::pingSubmit);
 
 		clientThread.invoke(this::loadPetIcons);
 	}
@@ -246,6 +254,7 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.unregisterCommand(DUEL_ARENA_COMMAND);
 		chatCommandManager.unregisterCommand(SOUL_WARS_ZEAL_COMMAND);
 		chatCommandManager.unregisterCommand(PET_LIST_COMMAND);
+		chatCommandManager.unregisterCommand(PING_COMMAND);
 	}
 
 	@Provides
@@ -2155,5 +2164,80 @@ public class ChatCommandsPlugin extends Plugin
 			default:
 				return WordUtils.capitalize(boss);
 		}
+	}
+
+	private boolean pingSubmit(ChatInput chatInput, String s)
+	{
+//		WorldResult worldResult = worldService.getWorlds();
+//		int playerPing = Ping.ping(worldResult.findWorld(client.getWorld()));
+		final String playerName = client.getLocalPlayer().getName();
+		executor.execute(() ->
+		{
+			try
+			{
+				chatClient.submitKc(playerName, "ping", getCurrentPing());
+			}
+			catch (Exception ex)
+			{
+				log.warn("unable to submit ping", ex);
+			}
+			finally
+			{
+				chatInput.resume();
+			}
+		});
+		return true;
+	}
+
+	private void pingLookup(ChatMessage chatMessage, String s)
+	{
+		if (!config.ping())
+		{
+			return;
+		}
+
+		ChatMessageType type = chatMessage.getType();
+
+		final String player;
+		if (type.equals(ChatMessageType.PRIVATECHATOUT))
+		{
+			player = client.getLocalPlayer().getName();
+		}
+		else
+		{
+			player = Text.sanitize(chatMessage.getName());
+		}
+
+		int ping;
+		try
+		{
+			ping = chatClient.getKc(player, "ping");
+		}
+		catch (IOException ex)
+		{
+			log.debug("unable to lookup ping", ex);
+			return;
+		}
+
+		String response = new ChatMessageBuilder()
+			.append(ChatColorType.NORMAL)
+			.append("Ping: ")
+			.append(ChatColorType.HIGHLIGHT)
+			.append(Integer.toString(ping))
+			.append("ms")
+			.build();
+
+		log.debug("Setting response {}", response);
+		final MessageNode messageNode = chatMessage.getMessageNode();
+		messageNode.setRuneLiteFormatMessage(response);
+		client.refreshChat();
+	}
+
+	private int getCurrentPing()
+	{
+		WorldResult worldResult = worldService.getWorlds();
+		int currentPing = Ping.ping(worldResult.findWorld(client.getWorld()));
+
+		return currentPing;
 	}
 }

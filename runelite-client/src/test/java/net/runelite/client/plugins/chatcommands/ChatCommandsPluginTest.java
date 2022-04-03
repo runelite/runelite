@@ -55,6 +55,7 @@ import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.WorldService;
 import net.runelite.client.hiscore.HiscoreClient;
 import net.runelite.client.hiscore.HiscoreEndpoint;
 import net.runelite.client.hiscore.HiscoreResult;
@@ -119,6 +120,10 @@ public class ChatCommandsPluginTest
 	@Mock
 	@Bind
 	ChatCommandsConfig chatCommandsConfig;
+
+	@Mock
+	@Bind
+	WorldService worldService;
 
 	@Inject
 	ChatCommandsPlugin chatCommandsPlugin;
