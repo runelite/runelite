@@ -134,14 +134,17 @@ public class StatusOrbsPlugin extends Plugin
 
 		private static final int TOTAL_BOOSTS = Arrays.stream(values()).mapToInt(StatusOrbsPlugin.Graceful::getBoost).sum();
 
-		public static boolean hasFullSet(final ItemContainer equipment) {
-			if (equipment == null) {
+		public static boolean hasFullSet(final ItemContainer equipment)
+		{
+			if (equipment == null)
+			{
 				return false;
 			}
 
 			final Item[] items = equipment.getItems();
 
-			if (items.length <= EquipmentInventorySlot.BOOTS.getSlotIdx()) {
+			if (items.length <= EquipmentInventorySlot.BOOTS.getSlotIdx())
+			{
 				return false;
 			}
 
