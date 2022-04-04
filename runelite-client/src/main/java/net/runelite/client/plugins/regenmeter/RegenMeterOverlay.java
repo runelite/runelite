@@ -45,6 +45,7 @@ class RegenMeterOverlay extends Overlay
 {
 	private static final Color HITPOINTS_COLOR = brighter(0x9B0703);
 	private static final Color SPECIAL_COLOR = brighter(0x1E95B0);
+	private static final Color RUN_COLOR = brighter(0xfdbc00);
 	private static final Color OVERLAY_COLOR = new Color(255, 255, 255, 60);
 	private static final double DIAMETER = 26D;
 	private static final int OFFSET = 27;
@@ -100,6 +101,11 @@ class RegenMeterOverlay extends Overlay
 			renderRegen(g, WidgetInfo.MINIMAP_SPEC_ORB, plugin.getSpecialPercentage(), SPECIAL_COLOR);
 		}
 
+		if (config.showRun())
+		{
+			renderRegen(g, WidgetInfo.MINIMAP_RUN_ORB, plugin.getRunPercentage(), RUN_COLOR);
+		}
+
 		return null;
 	}
 
@@ -112,7 +118,7 @@ class RegenMeterOverlay extends Overlay
 		}
 		Rectangle bounds = widget.getBounds();
 
-		Arc2D.Double arc = new Arc2D.Double(bounds.x + OFFSET, bounds.y + (bounds.height / 2 - DIAMETER / 2), DIAMETER, DIAMETER, 90.d, -360.d * percent, Arc2D.OPEN);
+		Arc2D.Double arc = new Arc2D.Double(bounds.x + OFFSET, bounds.y + (bounds.height / 2.0 - DIAMETER / 2), DIAMETER, DIAMETER, 90.d, -360.d * percent, Arc2D.OPEN);
 		final Stroke STROKE = new BasicStroke(2f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER);
 		g.setStroke(STROKE);
 		g.setColor(color);
