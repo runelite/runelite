@@ -138,6 +138,11 @@ public class BankPlugin extends Plugin
 		public void keyReleased(KeyEvent e)
 		{
 		}
+
+		@Override
+		public Priority getPriority() {
+			return Priority.HIGH;
+		}
 	};
 
 	@Provides
