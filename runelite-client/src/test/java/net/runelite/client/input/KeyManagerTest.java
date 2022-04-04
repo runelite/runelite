@@ -10,260 +10,316 @@ import org.mockito.Mock;
 
 import static org.junit.Assert.assertEquals;
 
-public class KeyManagerTest {
+public class KeyManagerTest
+{
+	@Mock
+	@Bind
+	private Client client;
 
-    @Mock
-    @Bind
-    private Client client;
+	@Test
+	public void testRegistrationOrder()
+	{
+		KeyManager keyManager = new KeyManager(client);
 
-    @Test
-    public void testRegistrationOrder()
-    {
-        KeyManager keyManager = new KeyManager(client);
+		KeyListener keyListenerA = new KeyListener()
+		{
+			@Override
+			public void keyTyped(KeyEvent e)
+			{
+			}
 
-        KeyListener keyListenerA = new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-            }
+			@Override
+			public void keyPressed(KeyEvent e)
+			{
+			}
 
-            @Override
-            public void keyPressed(KeyEvent e) {
-            }
+			@Override
+			public void keyReleased(KeyEvent e)
+			{
+			}
+		};
 
-            @Override
-            public void keyReleased(KeyEvent e) {
-            }
-        };
+		KeyListener keyListenerB = new KeyListener()
+		{
+			@Override
+			public void keyTyped(KeyEvent e)
+			{
+			}
 
-        KeyListener keyListenerB = new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-            }
+			@Override
+			public void keyPressed(KeyEvent e)
+			{
+			}
 
-            @Override
-            public void keyPressed(KeyEvent e) {
-            }
+			@Override
+			public void keyReleased(KeyEvent e)
+			{
+			}
+		};
 
-            @Override
-            public void keyReleased(KeyEvent e) {
-            }
-        };
+		keyManager.registerKeyListener(keyListenerA);
+		keyManager.registerKeyListener(keyListenerB);
 
-        keyManager.registerKeyListener(keyListenerA);
-        keyManager.registerKeyListener(keyListenerB);
+		Iterator<KeyListener> iterator = keyManager.keyListenerMap.values().iterator();
 
-        Iterator<KeyListener> iterator = keyManager.keyListenerMap.values().iterator();
-
-        for (KeyListener keyListener : Arrays.asList(keyListenerA, keyListenerB)) {
-            assertEquals(iterator.next(), keyListener);
-        }
-    }
-
-
-    @Test
-    public void testPriorityOrder()
-    {
-        KeyManager keyManager = new KeyManager(client);
-
-        KeyListener keyListenerNone = new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-            }
-
-            @Override
-            public Priority getPriority() {
-                return Priority.NONE;
-            }
-        };
-
-        KeyListener keyListenerLow = new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-            }
-
-            @Override
-            public Priority getPriority() {
-                return Priority.LOW;
-            }
-        };
-
-        KeyListener keyListenerMedium = new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-            }
-
-            @Override
-            public Priority getPriority() {
-                return Priority.MEDIUM;
-            }
-        };
-
-        KeyListener keyListenerHigh = new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-            }
-
-            @Override
-            public Priority getPriority() {
-                return Priority.HIGH;
-            }
-        };
-
-        keyManager.registerKeyListener(keyListenerNone);
-        keyManager.registerKeyListener(keyListenerMedium);
-        keyManager.registerKeyListener(keyListenerHigh);
-        keyManager.registerKeyListener(keyListenerLow);
-
-        Iterator<KeyListener> iterator = keyManager.keyListenerMap.values().iterator();
-
-        for (KeyListener keyListener : Arrays.asList(keyListenerHigh, keyListenerMedium, keyListenerNone, keyListenerLow)) {
-            assertEquals(iterator.next(), keyListener);
-        }
-    }
+		for (KeyListener keyListener : Arrays.asList(keyListenerA, keyListenerB))
+		{
+			assertEquals(iterator.next(), keyListener);
+		}
+	}
 
 
-    @Test
-    public void testPriorityAndLoadOrder()
-    {
-        KeyManager keyManager = new KeyManager(client);
+	@Test
+	public void testPriorityOrder()
+	{
+		KeyManager keyManager = new KeyManager(client);
 
-        KeyListener keyListenerNone = new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-            }
+		KeyListener keyListenerNone = new KeyListener()
+		{
+			@Override
+			public void keyTyped(KeyEvent e)
+			{
+			}
 
-            @Override
-            public void keyPressed(KeyEvent e) {
-            }
+			@Override
+			public void keyPressed(KeyEvent e)
+			{
+			}
 
-            @Override
-            public void keyReleased(KeyEvent e) {
-            }
+			@Override
+			public void keyReleased(KeyEvent e)
+			{
+			}
 
-            @Override
-            public Priority getPriority() {
-                return Priority.NONE;
-            }
-        };
+			@Override
+			public Priority getPriority()
+			{
+				return Priority.NONE;
+			}
+		};
 
-        KeyListener keyListenerLow = new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-            }
+		KeyListener keyListenerLow = new KeyListener()
+		{
+			@Override
+			public void keyTyped(KeyEvent e)
+			{
+			}
 
-            @Override
-            public void keyPressed(KeyEvent e) {
-            }
+			@Override
+			public void keyPressed(KeyEvent e)
+			{
+			}
 
-            @Override
-            public void keyReleased(KeyEvent e) {
-            }
+			@Override
+			public void keyReleased(KeyEvent e)
+			{
+			}
 
-            @Override
-            public Priority getPriority() {
-                return Priority.LOW;
-            }
-        };
+			@Override
+			public Priority getPriority()
+			{
+				return Priority.LOW;
+			}
+		};
 
-        KeyListener keyListenerMediumA = new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-            }
+		KeyListener keyListenerMedium = new KeyListener()
+		{
+			@Override
+			public void keyTyped(KeyEvent e)
+			{
+			}
 
-            @Override
-            public void keyPressed(KeyEvent e) {
-            }
+			@Override
+			public void keyPressed(KeyEvent e)
+			{
+			}
 
-            @Override
-            public void keyReleased(KeyEvent e) {
-            }
+			@Override
+			public void keyReleased(KeyEvent e)
+			{
+			}
 
-            @Override
-            public Priority getPriority() {
-                return Priority.MEDIUM;
-            }
-        };
+			@Override
+			public Priority getPriority()
+			{
+				return Priority.MEDIUM;
+			}
+		};
 
-        KeyListener keyListenerMediumB = new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-            }
+		KeyListener keyListenerHigh = new KeyListener()
+		{
+			@Override
+			public void keyTyped(KeyEvent e)
+			{
+			}
 
-            @Override
-            public void keyPressed(KeyEvent e) {
-            }
+			@Override
+			public void keyPressed(KeyEvent e)
+			{
+			}
 
-            @Override
-            public void keyReleased(KeyEvent e) {
-            }
+			@Override
+			public void keyReleased(KeyEvent e)
+			{
+			}
 
-            @Override
-            public Priority getPriority() {
-                return Priority.MEDIUM;
-            }
-        };
+			@Override
+			public Priority getPriority()
+			{
+				return Priority.HIGH;
+			}
+		};
 
-        KeyListener keyListenerHigh = new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-            }
+		keyManager.registerKeyListener(keyListenerNone);
+		keyManager.registerKeyListener(keyListenerMedium);
+		keyManager.registerKeyListener(keyListenerHigh);
+		keyManager.registerKeyListener(keyListenerLow);
 
-            @Override
-            public void keyPressed(KeyEvent e) {
-            }
+		Iterator<KeyListener> iterator = keyManager.keyListenerMap.values().iterator();
 
-            @Override
-            public void keyReleased(KeyEvent e) {
-            }
+		for (KeyListener keyListener : Arrays.asList(keyListenerHigh, keyListenerMedium, keyListenerNone, keyListenerLow))
+		{
+			assertEquals(iterator.next(), keyListener);
+		}
+	}
 
-            @Override
-            public Priority getPriority() {
-                return Priority.HIGH;
-            }
-        };
 
-        keyManager.registerKeyListener(keyListenerNone);
-        keyManager.registerKeyListener(keyListenerMediumA);
-        keyManager.registerKeyListener(keyListenerHigh);
-        keyManager.registerKeyListener(keyListenerMediumB);
-        keyManager.registerKeyListener(keyListenerLow);
+	@Test
+	public void testPriorityAndLoadOrder()
+	{
+		KeyManager keyManager = new KeyManager(client);
 
-        Iterator<KeyListener> iterator = keyManager.keyListenerMap.values().iterator();
+		KeyListener keyListenerNone = new KeyListener()
+		{
+			@Override
+			public void keyTyped(KeyEvent e)
+			{
+			}
 
-        for (KeyListener keyListener : Arrays.asList(keyListenerHigh, keyListenerMediumA, keyListenerMediumB, keyListenerNone, keyListenerLow)) {
-            assertEquals(iterator.next(), keyListener);
-        }
-    }
+			@Override
+			public void keyPressed(KeyEvent e)
+			{
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e)
+			{
+			}
+
+			@Override
+			public Priority getPriority()
+			{
+				return Priority.NONE;
+			}
+		};
+
+		KeyListener keyListenerLow = new KeyListener()
+		{
+			@Override
+			public void keyTyped(KeyEvent e)
+			{
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e)
+			{
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e)
+			{
+			}
+
+			@Override
+			public Priority getPriority()
+			{
+				return Priority.LOW;
+			}
+		};
+
+		KeyListener keyListenerMediumA = new KeyListener()
+		{
+			@Override
+			public void keyTyped(KeyEvent e)
+			{
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e)
+			{
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e)
+			{
+			}
+
+			@Override
+			public Priority getPriority()
+			{
+				return Priority.MEDIUM;
+			}
+		};
+
+		KeyListener keyListenerMediumB = new KeyListener()
+		{
+			@Override
+			public void keyTyped(KeyEvent e)
+			{
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e)
+			{
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e)
+			{
+			}
+
+			@Override
+			public Priority getPriority()
+			{
+				return Priority.MEDIUM;
+			}
+		};
+
+		KeyListener keyListenerHigh = new KeyListener()
+		{
+			@Override
+			public void keyTyped(KeyEvent e)
+			{
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e)
+			{
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e)
+			{
+			}
+
+			@Override
+			public Priority getPriority()
+			{
+				return Priority.HIGH;
+			}
+		};
+
+		keyManager.registerKeyListener(keyListenerNone);
+		keyManager.registerKeyListener(keyListenerMediumA);
+		keyManager.registerKeyListener(keyListenerHigh);
+		keyManager.registerKeyListener(keyListenerMediumB);
+		keyManager.registerKeyListener(keyListenerLow);
+
+		Iterator<KeyListener> iterator = keyManager.keyListenerMap.values().iterator();
+
+		for (KeyListener keyListener : Arrays.asList(keyListenerHigh, keyListenerMediumA, keyListenerMediumB, keyListenerNone, keyListenerLow))
+		{
+			assertEquals(iterator.next(), keyListener);
+		}
+	}
 }

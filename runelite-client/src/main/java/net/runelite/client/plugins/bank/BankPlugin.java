@@ -140,7 +140,8 @@ public class BankPlugin extends Plugin
 		}
 
 		@Override
-		public Priority getPriority() {
+		public Priority getPriority()
+		{
 			return Priority.HIGH;
 		}
 	};

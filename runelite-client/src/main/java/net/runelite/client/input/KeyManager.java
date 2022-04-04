@@ -52,6 +52,7 @@ public class KeyManager
 
 	private final List<KeyListener> keyListeners = new CopyOnWriteArrayList<>();
 
+	// Map used to order KeyListeners by KeyListener::Priority natural enum order followed by registration order.
 	@VisibleForTesting
 	Multimap<KeyListener.Priority, KeyListener> keyListenerMap = MultimapBuilder.treeKeys().arrayListValues().build();
 

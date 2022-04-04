@@ -26,7 +26,8 @@ package net.runelite.client.input;
 
 public interface KeyListener extends java.awt.event.KeyListener
 {
-	enum Priority {
+	enum Priority
+	{
 		HIGH,
 		MEDIUM,
 		NONE,
