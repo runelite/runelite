@@ -57,7 +57,6 @@ import net.runelite.api.ObjectComposition;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOpened;
-import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.PostItemComposition;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
@@ -538,6 +537,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	{
 		if (!configuringShiftClick && !configuringLeftClick)
 		{
+			configureObjectClick(event);
 			return;
 		}
 
@@ -625,6 +625,80 @@ public class MenuEntrySwapperPlugin extends Plugin
 			.onClick(e -> unsetItemSwapConfig(configuringShiftClick, itemId));
 	}
 
+	private void configureObjectClick(MenuOpened event)
+	{
+		if (!shiftModifier() || !config.objectLeftClickCustomization())
+		{
+			return;
+		}
+
+		MenuEntry[] entries = event.getMenuEntries();
+		for (int idx = entries.length - 1; idx >= 0; --idx)
+		{
+			MenuEntry entry = entries[idx];
+			if (entry.getType() == MenuAction.EXAMINE_OBJECT)
+			{
+				final ObjectComposition composition = client.getObjectDefinition(entry.getIdentifier());
+				final String[] actions = composition.getActions();
+
+				final MenuAction currentAction;
+				Integer swapConfig = getObjectSwapConfig(composition.getId());
+				if (swapConfig != null)
+				{
+					currentAction = OBJECT_MENU_TYPES.get(swapConfig);
+				}
+				else
+				{
+					currentAction = defaultAction(composition);
+				}
+
+				for (int actionIdx = 0; actionIdx < OBJECT_MENU_TYPES.size(); ++actionIdx)
+				{
+					if (Strings.isNullOrEmpty(actions[actionIdx]))
+					{
+						continue;
+					}
+
+					final int menuIdx = actionIdx;
+					final MenuAction menuAction = OBJECT_MENU_TYPES.get(actionIdx);
+					if (currentAction == menuAction)
+					{
+						continue;
+					}
+
+					client.createMenuEntry(idx)
+						.setOption("Swap " + actions[actionIdx])
+						.setTarget(entry.getTarget())
+						.setType(MenuAction.RUNELITE)
+						.onClick(e ->
+						{
+							final String message = new ChatMessageBuilder()
+								.append("The default left click option for '").append(composition.getName()).append("' ")
+								.append("has been set to '").append(actions[menuIdx]).append("'.")
+								.build();
+
+							chatMessageManager.queue(QueuedMessage.builder()
+								.type(ChatMessageType.CONSOLE)
+								.runeLiteFormattedMessage(message)
+								.build());
+
+							log.debug("Set object swap for {} to {}", composition.getId(), menuAction);
+
+							final MenuAction defaultAction = defaultAction(composition);
+							if (defaultAction != menuAction)
+							{
+								setObjectSwapConfig(composition.getId(), menuIdx);
+							}
+							else
+							{
+								unsetObjectSwapConfig(composition.getId());
+							}
+						});
+				}
+			}
+		}
+	}
+
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
 	{
@@ -674,48 +748,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 				opId = shiftWithdrawMode.getIdentifier();
 			}
 			bankModeSwap(action, opId);
-		}
-	}
-
-	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
-	{
-		final MenuAction menuAction = menuOptionClicked.getMenuAction();
-		if (shiftModifier() && OBJECT_MENU_TYPES.contains(menuAction) && config.objectLeftClickCustomization())
-		{
-			// Get multiloc id
-			int objectId = menuOptionClicked.getId();
-			ObjectComposition objectDefinition = client.getObjectDefinition(objectId);
-			if (objectDefinition.getImpostorIds() != null)
-			{
-				objectDefinition = objectDefinition.getImpostor();
-				objectId = objectDefinition.getId();
-			}
-
-			final int actionIdx = OBJECT_MENU_TYPES.indexOf(menuAction);
-			String message = new ChatMessageBuilder()
-				.append("The default left click option for '").append(objectDefinition.getName()).append("' ")
-				.append("has been set to '").append(objectDefinition.getActions()[actionIdx]).append("'.")
-				.build();
-
-			chatMessageManager.queue(QueuedMessage.builder()
-				.type(ChatMessageType.CONSOLE)
-				.runeLiteFormattedMessage(message)
-				.build());
-
-			menuOptionClicked.consume();
-
-			log.debug("Set object swap for {} to {}", objectId, menuAction);
-
-			final MenuAction defaultAction = defaultAction(objectDefinition);
-			if (defaultAction != menuAction)
-			{
-				setObjectSwapConfig(objectId, OBJECT_MENU_TYPES.indexOf(menuAction));
-			}
-			else
-			{
-				unsetObjectSwapConfig(objectId);
-			}
 		}
 	}
 
@@ -1066,11 +1098,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private static MenuAction defaultAction(ObjectComposition objectComposition)
 	{
 		String[] actions = objectComposition.getActions();
-		for (int i = 0; i < actions.length; ++i)
+		for (int i = 0; i < OBJECT_MENU_TYPES.size(); ++i)
 		{
 			if (!Strings.isNullOrEmpty(actions[i]))
 			{
-				assert i < OBJECT_MENU_TYPES.size();
 				return OBJECT_MENU_TYPES.get(i);
 			}
 		}
