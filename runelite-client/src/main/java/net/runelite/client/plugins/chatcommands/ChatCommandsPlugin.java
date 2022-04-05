@@ -1967,11 +1967,6 @@ public class ChatCommandsPlugin extends Plugin
 			case "hmt":
 				return "Theatre of Blood Hard Mode";
 
-			// agility course
-			case "prif":
-			case "prifddinas":
-				return "Prifddinas Agility Course";
-
 			// The Gauntlet
 			case "gaunt":
 			case "gauntlet":
@@ -2021,6 +2016,26 @@ public class ChatCommandsPlugin extends Plugin
 			case "hs5":
 			case "hs 5":
 				return "Hallowed Sepulchre Floor 5";
+
+			// Prifddinas Agility Course
+			case "prif":
+			case "prifddinas":
+				return "Prifddinas Agility Course";
+
+			// Shayzien Basic Agility Course
+			case "shayb":
+			case "sbac":
+			case "shayzienbasic":
+			case "shayzien basic":
+				return "Shayzien Basic Agility Course";
+
+			// Shayzien Advanced Agility Course
+			case "shaya":
+			case "saac":
+			case "shayadv":
+			case "shayadvanced":
+			case "shayzien advanced":
+				return "Shayzien Advanced Agility Course";
 
 			// Ape Atoll Agility
 			case "aa":

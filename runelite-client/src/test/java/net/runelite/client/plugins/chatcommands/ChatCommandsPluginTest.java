@@ -390,6 +390,46 @@ public class ChatCommandsPluginTest
 	}
 
 	@Test
+	public void testShayzienAdvancedAgilityLap()
+	{
+		// This sets lastBoss
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Shayzien Advanced Agility Course lap count is: <col=ff0000>2</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Lap duration: <col=ff0000>1:01</col> (new personal best).", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("personalbest", "shayzien advanced agility course", 61.0);
+		verify(configManager).setRSProfileConfiguration("killcount", "shayzien advanced agility course", 2);
+
+		// Precise times
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Lap duration: <col=ff0000>1:01.20</col> (new personal best).", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("personalbest", "shayzien advanced agility course", 61.2);
+	}
+
+	@Test
+	public void testShayzienBasicAgilityLap()
+	{
+		// This sets lastBoss
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Shayzien Basic Agility Course lap count is: <col=ff0000>2</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Lap duration: <col=ff0000>1:01</col> (new personal best).", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("personalbest", "shayzien basic agility course", 61.0);
+		verify(configManager).setRSProfileConfiguration("killcount", "shayzien basic agility course", 2);
+
+		// Precise times
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Lap duration: <col=ff0000>1:01.20</col> (new personal best).", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("personalbest", "shayzien basic agility course", 61.2);
+	}
+
+	@Test
 	public void testZukNewPb()
 	{
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your TzKal-Zuk kill count is: <col=ff0000>2</col>.", null, 0);
