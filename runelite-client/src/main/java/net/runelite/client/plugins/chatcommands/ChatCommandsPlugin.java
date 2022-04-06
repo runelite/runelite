@@ -1339,13 +1339,8 @@ public class ChatCommandsPlugin extends Plugin
 			search = message.substring(LEVEL_COMMAND_STRING.length() + 1);
 		}
 
-		search = SkillAbbreviations.getFullName(search);
-		final HiscoreSkill skill;
-		try
-		{
-			skill = HiscoreSkill.valueOf(search.toUpperCase());
-		}
-		catch (IllegalArgumentException i)
+		final HiscoreSkill skill = findHiscoreSkill(search);
+		if (skill == null)
 		{
 			return;
 		}
@@ -2170,5 +2165,22 @@ public class ChatCommandsPlugin extends Plugin
 			default:
 				return WordUtils.capitalize(boss);
 		}
+	}
+
+	private static HiscoreSkill findHiscoreSkill(String search)
+	{
+		String s = SkillAbbreviations.getFullName(search);
+		if (s == search)
+		{
+			s = longBossName(search);
+		}
+		for (HiscoreSkill skill : HiscoreSkill.values())
+		{
+			if (skill.getName().equals(s))
+			{
+				return skill;
+			}
+		}
+		return null;
 	}
 }
