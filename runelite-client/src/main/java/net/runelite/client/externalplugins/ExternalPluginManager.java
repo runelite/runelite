@@ -26,7 +26,6 @@ package net.runelite.client.externalplugins;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.google.common.hash.Hashing;
 import com.google.common.hash.HashingInputStream;
@@ -37,7 +36,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -47,6 +46,7 @@ import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
+import java.util.stream.Stream;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -119,7 +119,7 @@ public class ExternalPluginManager
 		if (builtinExternals != null)
 		{
 			// builtin external's don't actually have a manifest or a separate classloader...
-			pluginManager.loadPlugins(Lists.newArrayList(builtinExternals), null);
+			pluginManager.loadPlugins(Arrays.stream(builtinExternals), null);
 		}
 	}
 
@@ -181,80 +181,80 @@ public class ExternalPluginManager
 			try
 			{
 				manifestList = externalPluginClient.downloadManifest();
-				Map<String, ExternalPluginManifest> manifests = manifestList
-					.stream().collect(ImmutableMap.toImmutableMap(ExternalPluginManifest::getInternalName, Function.identity()));
-
-				Set<ExternalPluginManifest> needsDownload = new HashSet<>();
-				Set<File> keep = new HashSet<>();
-
-				for (String name : installedIDs)
-				{
-					ExternalPluginManifest manifest = manifests.get(name);
-					if (manifest != null)
-					{
-						externalPlugins.add(manifest);
-
-						manifest.getJarFile().setLastModified(now.toEpochMilli());
-						if (!manifest.isValid())
-						{
-							needsDownload.add(manifest);
-						}
-						else
-						{
-							keep.add(manifest.getJarFile());
-						}
-					}
-				}
-
-				// delete old plugins
-				File[] files = RuneLite.PLUGINS_DIR.listFiles();
-				if (files != null)
-				{
-					for (File fi : files)
-					{
-						if (!keep.contains(fi) && fi.lastModified() < keepAfter.toEpochMilli())
-						{
-							fi.delete();
-						}
-					}
-				}
-
-				int toDownload = needsDownload.stream().mapToInt(ExternalPluginManifest::getSize).sum();
-				int downloaded = 0;
-
-				for (ExternalPluginManifest manifest : needsDownload)
-				{
-					HttpUrl url = RuneLiteProperties.getPluginHubBase().newBuilder()
-						.addPathSegment(manifest.getInternalName())
-						.addPathSegment(manifest.getCommit() + ".jar")
-						.build();
-
-					try (Response res = okHttpClient.newCall(new Request.Builder().url(url).build()).execute())
-					{
-						int fdownloaded = downloaded;
-						downloaded += manifest.getSize();
-						HashingInputStream his = new HashingInputStream(Hashing.sha256(),
-							new CountingInputStream(res.body().byteStream(), i ->
-								SplashScreen.stage(splashStart + (splashLength * .2), splashStart + (splashLength * .8),
-									null, "Downloading " + manifest.getDisplayName(),
-									i + fdownloaded, toDownload, true)));
-						Files.asByteSink(manifest.getJarFile()).writeFrom(his);
-						if (!his.hash().toString().equals(manifest.getHash()))
-						{
-							throw new VerificationException("Plugin " + manifest.getInternalName() + " didn't match its hash");
-						}
-					}
-					catch (IOException | VerificationException e)
-					{
-						externalPlugins.remove(manifest);
-						log.error("Unable to download external plugin \"{}\"", manifest.getInternalName(), e);
-					}
-				}
 			}
 			catch (IOException | VerificationException e)
 			{
 				log.error("Unable to download external plugins", e);
 				return;
+			}
+			Map<String, ExternalPluginManifest> manifests = manifestList
+				.stream().collect(ImmutableMap.toImmutableMap(ExternalPluginManifest::getInternalName, Function.identity()));
+
+			Set<ExternalPluginManifest> needsDownload = new HashSet<>();
+			Set<File> keep = new HashSet<>();
+
+			for (String name : installedIDs)
+			{
+				ExternalPluginManifest manifest = manifests.get(name);
+				if (manifest != null)
+				{
+					externalPlugins.add(manifest);
+
+					manifest.getJarFile().setLastModified(now.toEpochMilli());
+					if (!manifest.isValid())
+					{
+						needsDownload.add(manifest);
+					}
+					else
+					{
+						keep.add(manifest.getJarFile());
+					}
+				}
+			}
+
+			// delete old plugins
+			File[] files = RuneLite.PLUGINS_DIR.listFiles();
+			if (files != null)
+			{
+				for (File fi : files)
+				{
+					if (!keep.contains(fi) && fi.lastModified() < keepAfter.toEpochMilli())
+					{
+						fi.delete();
+					}
+				}
+			}
+
+			int toDownload = needsDownload.stream().mapToInt(ExternalPluginManifest::getSize).sum();
+			int downloaded = 0;
+
+			for (ExternalPluginManifest manifest : needsDownload)
+			{
+				HttpUrl url = RuneLiteProperties.getPluginHubBase().newBuilder()
+					.addPathSegment(manifest.getInternalName())
+					.addPathSegment(manifest.getCommit() + ".jar")
+					.build();
+
+				try (Response res = okHttpClient.newCall(new Request.Builder().url(url).build()).execute())
+				{
+					int fdownloaded = downloaded;
+					downloaded += manifest.getSize();
+					HashingInputStream his = new HashingInputStream(Hashing.sha256(),
+						new CountingInputStream(res.body().byteStream(), i ->
+							SplashScreen.stage(splashStart + (splashLength * .2), splashStart + (splashLength * .8),
+								null, "Downloading " + manifest.getDisplayName(),
+								i + fdownloaded, toDownload, true)));
+					Files.asByteSink(manifest.getJarFile()).writeFrom(his);
+					if (!his.hash().toString().equals(manifest.getHash()))
+					{
+						throw new VerificationException("Plugin " + manifest.getInternalName() + " didn't match its hash");
+					}
+				}
+				catch (IOException | VerificationException e)
+				{
+					externalPlugins.remove(manifest);
+					log.error("Unable to download external plugin \"{}\"", manifest.getInternalName(), e);
+				}
 			}
 
 			SplashScreen.stage(splashStart + (splashLength * .8), null, "Starting external plugins");
@@ -310,13 +310,22 @@ public class ExternalPluginManager
 				try
 				{
 					ClassLoader cl = new ExternalPluginClassLoader(manifest, new URL[]{manifest.getJarFile().toURI().toURL()});
-					List<Class<?>> clazzes = new ArrayList<>();
-					for (String className : manifest.getPlugins())
-					{
-						clazzes.add(cl.loadClass(className));
-					}
 
-					List<Plugin> newPlugins2 = newPlugins = pluginManager.loadPlugins(clazzes, null);
+					Stream<Class<?>> toLoad = Arrays.stream(manifest.getPlugins())
+						.parallel()
+						.map((String className) ->
+						{
+							try
+							{
+								return cl.loadClass(className);
+							}
+							catch (ClassNotFoundException e)
+							{
+								throw new RuntimeException(e);
+							}
+						});
+
+					List<Plugin> newPlugins2 = newPlugins = pluginManager.loadPlugins(toLoad, null);
 					if (!startup)
 					{
 						pluginManager.loadDefaultPluginConfiguration(newPlugins);

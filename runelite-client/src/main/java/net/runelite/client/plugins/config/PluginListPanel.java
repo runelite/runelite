@@ -202,7 +202,7 @@ class PluginListPanel extends PluginPanel
 					PluginDescriptor descriptor = plugin.getClass().getAnnotation(PluginDescriptor.class);
 					Config config = pluginManager.getPluginConfigProxy(plugin);
 					ConfigDescriptor configDescriptor = config == null ? null : configManager.getConfigDescriptor(config);
-					List<String> conflicts = pluginManager.conflictsForPlugin(plugin).stream()
+					List<String> conflicts = pluginManager.conflictsForPlugin(plugin)
 						.map(Plugin::getName)
 						.collect(Collectors.toList());
 

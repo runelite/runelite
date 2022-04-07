@@ -52,11 +52,18 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.BiConsumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Provider;
@@ -235,10 +242,10 @@ public class PluginManager
 
 	public void startPlugins()
 	{
-		List<Plugin> scannedPlugins = new ArrayList<>(plugins);
 		int loaded = 0;
-		for (Plugin plugin : scannedPlugins)
+		for (Iterator<Plugin> it = plugins.iterator(); it.hasNext(); )
 		{
+			Plugin plugin = it.next();
 			try
 			{
 				SwingUtilities.invokeAndWait(() ->
@@ -250,7 +257,7 @@ public class PluginManager
 					catch (PluginInstantiationException ex)
 					{
 						log.warn("Unable to start plugin {}", plugin.getClass().getSimpleName(), ex);
-						plugins.remove(plugin);
+						it.remove();
 					}
 				});
 			}
@@ -260,7 +267,7 @@ public class PluginManager
 			}
 
 			loaded++;
-			SplashScreen.stage(.80, 1, null, "Starting plugins", loaded, scannedPlugins.size(), false);
+			SplashScreen.stage(.80, 1, null, "Starting plugins", loaded, plugins.size(), false);
 		}
 	}
 
@@ -269,9 +276,8 @@ public class PluginManager
 		SplashScreen.stage(.59, null, "Loading Plugins");
 		ClassPath classPath = ClassPath.from(getClass().getClassLoader());
 
-		List<Class<?>> plugins = classPath.getTopLevelClassesRecursive(PLUGIN_PACKAGE).stream()
-			.map(ClassInfo::load)
-			.collect(Collectors.toList());
+		Stream<Class<?>> plugins = classPath.getTopLevelClassesRecursive(PLUGIN_PACKAGE).stream()
+			.map(ClassInfo::load);
 
 		loadPlugins(plugins, (loaded, total) ->
 			SplashScreen.stage(.60, .70, null, "Loading Plugins", loaded, total, false));
@@ -300,11 +306,10 @@ public class PluginManager
 				{
 					ClassLoader classLoader = new PluginClassLoader(f, getClass().getClassLoader());
 
-					List<Class<?>> plugins = ClassPath.from(classLoader)
+					Stream<Class<?>> plugins = ClassPath.from(classLoader)
 						.getAllClasses()
 						.stream()
-						.map(ClassInfo::load)
-						.collect(Collectors.toList());
+						.map(ClassInfo::load);
 
 					loadPlugins(plugins, null);
 				}
@@ -316,13 +321,17 @@ public class PluginManager
 		}
 	}
 
-	public List<Plugin> loadPlugins(List<Class<?>> plugins, BiConsumer<Integer, Integer> onPluginLoaded) throws PluginInstantiationException
+	public List<Plugin> loadPlugins(Stream<Class<?>> plugins, BiConsumer<Integer, Integer> onPluginLoaded) throws PluginInstantiationException
 	{
 		MutableGraph<Class<? extends Plugin>> graph = GraphBuilder
 			.directed()
 			.build();
+		// Plugin classes which have no dependencies, can be loaded in parallel
+		Set<Class<? extends Plugin>> independentPlugins = ConcurrentHashMap.newKeySet();
+		Lock lock = new ReentrantLock();
+		AtomicInteger numPlugins = new AtomicInteger(0);
 
-		for (Class<?> clazz : plugins)
+		plugins.parallel().forEach((Class<?> clazz) ->
 		{
 			PluginDescriptor pluginDescriptor = clazz.getAnnotation(PluginDescriptor.class);
 
@@ -332,23 +341,23 @@ public class PluginManager
 				{
 					log.warn("Class {} is a plugin, but has no plugin descriptor", clazz);
 				}
-				continue;
+				return;
 			}
 
 			if (clazz.getSuperclass() != Plugin.class)
 			{
 				log.warn("Class {} has plugin descriptor, but is not a plugin", clazz);
-				continue;
+				return;
 			}
 
 			if (!pluginDescriptor.loadWhenOutdated() && isOutdated)
 			{
-				continue;
+				return;
 			}
 
 			if (pluginDescriptor.developerPlugin() && !developerMode)
 			{
-				continue;
+				return;
 			}
 
 			if (safeMode && !pluginDescriptor.loadInSafeMode())
@@ -357,55 +366,74 @@ public class PluginManager
 				// also disable the plugin from autostarting later
 				configManager.unsetConfiguration(RuneLiteConfig.GROUP_NAME,
 					(Strings.isNullOrEmpty(pluginDescriptor.configName()) ? clazz.getSimpleName() : pluginDescriptor.configName()).toLowerCase());
-				continue;
+				return;
 			}
 
-			graph.addNode((Class<Plugin>) clazz);
-		}
+			Class<Plugin> pluginClazz = (Class<Plugin>) clazz;
+			numPlugins.getAndIncrement();
 
-		// Build plugin graph
-		for (Class<? extends Plugin> pluginClazz : graph.nodes())
-		{
 			PluginDependency[] pluginDependencies = pluginClazz.getAnnotationsByType(PluginDependency.class);
+			if (pluginDependencies.length == 0)
+			{
+				independentPlugins.add(pluginClazz);
+				return;
+			}
 
+			lock.lock();
 			for (PluginDependency pluginDependency : pluginDependencies)
 			{
-				if (graph.nodes().contains(pluginDependency.value()))
-				{
-					graph.putEdge(pluginDependency.value(), pluginClazz);
-				}
+
+				graph.addNode(pluginDependency.value());
+				graph.addNode(pluginClazz);
+				graph.putEdge(pluginDependency.value(), pluginClazz);
 			}
-		}
+			lock.unlock();
+		});
 
 		if (Graphs.hasCycle(graph))
 		{
 			throw new PluginInstantiationException("Plugin dependency graph contains a cycle!");
 		}
 
-		List<Class<? extends Plugin>> sortedPlugins = topologicalSort(graph);
+		Stream<Class<? extends Plugin>> sortedDependentPlugins = topologicalSort(graph)
+			.parallelStream()
+			.filter((plugin) -> !independentPlugins.contains(plugin));
 
-		int loaded = 0;
-		List<Plugin> newPlugins = new ArrayList<>();
-		for (Class<? extends Plugin> pluginClazz : sortedPlugins)
+		AtomicInteger loaded = new AtomicInteger(0);
+		Function<Class<?>, Plugin> loadPluginFromClazz = (Class<?> pluginClazz) ->
 		{
-			Plugin plugin;
 			try
 			{
-				plugin = instantiate(this.plugins, (Class<Plugin>) pluginClazz);
-				newPlugins.add(plugin);
-				this.plugins.add(plugin);
+				Plugin plugin = instantiate(this.plugins, (Class<Plugin>) pluginClazz);
+				loaded.getAndIncrement();
+				if (onPluginLoaded != null)
+				{
+					onPluginLoaded.accept(loaded.get(), numPlugins.get());
+				}
+				return plugin;
 			}
 			catch (PluginInstantiationException ex)
 			{
 				log.warn("Error instantiating plugin!", ex);
+				return null;
 			}
+		};
+		List<Plugin> newPlugins = independentPlugins
+			.parallelStream()
+			.filter(Objects::nonNull)
+			.map(loadPluginFromClazz)
+			.collect(Collectors.toCollection(ArrayList::new));
+		this.plugins.addAll(newPlugins);
 
-			loaded++;
-			if (onPluginLoaded != null)
+		sortedDependentPlugins.forEachOrdered(pluginClazz ->
+		{
+			Plugin plugin = loadPluginFromClazz.apply(pluginClazz);
+			if (plugin != null)
 			{
-				onPluginLoaded.accept(loaded, sortedPlugins.size());
+				newPlugins.add(plugin);
+				this.plugins.add(plugin);
 			}
-		}
+		});
 
 		return newPlugins;
 	}
@@ -420,8 +448,8 @@ public class PluginManager
 			return false;
 		}
 
-		List<Plugin> conflicts = conflictsForPlugin(plugin);
-		for (Plugin conflict : conflicts)
+		Stream<Plugin> conflicts = conflictsForPlugin(plugin);
+		for (Plugin conflict : (Iterable<Plugin>) conflicts::iterator)
 		{
 			if (isPluginEnabled(conflict))
 			{
@@ -501,8 +529,8 @@ public class PluginManager
 
 		if (enabled)
 		{
-			List<Plugin> conflicts = conflictsForPlugin(plugin);
-			for (Plugin conflict : conflicts)
+			Stream<Plugin> conflicts = conflictsForPlugin(plugin);
+			for (Plugin conflict : (Iterable<Plugin>) conflicts::iterator)
 			{
 				if (isPluginEnabled(conflict))
 				{
@@ -707,12 +735,14 @@ public class PluginManager
 		return l;
 	}
 
-	public List<Plugin> conflictsForPlugin(Plugin plugin)
+	// Loaded plugins this plugin lists as a conflict and plugins that list this plugin as a conflict
+	public Stream<Plugin> conflictsForPlugin(Plugin plugin)
 	{
 		Set<String> conflicts;
 		{
 			PluginDescriptor desc = plugin.getClass().getAnnotation(PluginDescriptor.class);
-			conflicts = new HashSet<>(Arrays.asList(desc.conflicts()));
+			conflicts = Arrays.stream(desc.conflicts())
+				.collect(Collectors.toCollection(HashSet::new));
 			conflicts.add(desc.name());
 		}
 
@@ -739,7 +769,6 @@ public class PluginManager
 				}
 
 				return false;
-			})
-			.collect(Collectors.toList());
+			});
 	}
 }
