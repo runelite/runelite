@@ -110,10 +110,8 @@ public class ChatCommandsPlugin extends Plugin
 	private static final String TEAM_SIZES = "(?:\\d+(?:\\+|-\\d+)? players|Solo)";
 	private static final Pattern RAIDS_PB_PATTERN = Pattern.compile("<col=ef20ff>Congratulations - your raid is complete!</col><br>Team size: <col=ff0000>" + TEAM_SIZES + "</col> Duration:</col> <col=ff0000>(?<pb>[0-9:]+(?:\\.[0-9]+)?)</col> \\(new personal best\\)</col>");
 	private static final Pattern RAIDS_DURATION_PATTERN = Pattern.compile("<col=ef20ff>Congratulations - your raid is complete!</col><br>Team size: <col=ff0000>" + TEAM_SIZES + "</col> Duration:</col> <col=ff0000>[0-9:.]+</col> Personal best: </col><col=ff0000>(?<pb>[0-9:]+(?:\\.[0-9]+)?)</col>");
-	private static final Pattern TOB_WAVE_PB_PATTERN = Pattern.compile("Theatre of Blood wave completion time: <col=ff0000>(?<pb>[0-9:]+(?:\\.[0-9]+)?)</col> \\(new personal best\\)");
-	private static final Pattern TOB_WAVE_DURATION_PATTERN = Pattern.compile("Theatre of Blood wave completion time: <col=ff0000>[0-9:.]+</col>\\. Personal best: (?<pb>[0-9:]+(?:\\.[0-9]+)?)");
-	private static final Pattern KILL_DURATION_PATTERN = Pattern.compile("(?i)(?:(?:Fight |Lap |Challenge |Corrupted challenge )?duration:|Subdued in) <col=[0-9a-f]{6}>[0-9:.]+</col>\\. Personal best: (?:<col=ff0000>)?(?<pb>[0-9:]+(?:\\.[0-9]+)?)");
-	private static final Pattern NEW_PB_PATTERN = Pattern.compile("(?i)(?:(?:Fight |Lap |Challenge |Corrupted challenge )?duration:|Subdued in) <col=[0-9a-f]{6}>(?<pb>[0-9:]+(?:\\.[0-9]+)?)</col> \\(new personal best\\)");
+	private static final Pattern KILL_DURATION_PATTERN = Pattern.compile("(?i)(?:(?:Fight |Lap |Challenge |Corrupted challenge )?duration:|Subdued in|(?<!total )completion time:) <col=[0-9a-f]{6}>[0-9:.]+</col>\\. Personal best: (?:<col=ff0000>)?(?<pb>[0-9:]+(?:\\.[0-9]+)?)");
+	private static final Pattern NEW_PB_PATTERN = Pattern.compile("(?i)(?:(?:Fight |Lap |Challenge |Corrupted challenge )?duration:|Subdued in|(?<!total )completion time:) <col=[0-9a-f]{6}>(?<pb>[0-9:]+(?:\\.[0-9]+)?)</col> \\(new personal best\\)");
 	private static final Pattern DUEL_ARENA_WINS_PATTERN = Pattern.compile("You (were defeated|won)! You have(?: now)? won ([\\d,]+|one) duels?");
 	private static final Pattern DUEL_ARENA_LOSSES_PATTERN = Pattern.compile("You have(?: now)? lost ([\\d,]+|one) duels?");
 	private static final Pattern ADVENTURE_LOG_TITLE_PATTERN = Pattern.compile("The Exploits of (.+)");
@@ -123,6 +121,7 @@ public class ChatCommandsPlugin extends Plugin
 	private static final Pattern HS_KC_FLOOR_PATTERN = Pattern.compile("You have completed Floor (\\d) of the Hallowed Sepulchre! Total completions: <col=ff0000>([0-9,]+)</col>\\.");
 	private static final Pattern HS_KC_GHC_PATTERN = Pattern.compile("You have opened the Grand Hallowed Coffin <col=ff0000>([0-9,]+)</col> times?!");
 	private static final Pattern COLLECTION_LOG_ITEM_PATTERN = Pattern.compile("New item added to your collection log: (.*)");
+	private static final Pattern GUARDIANS_OF_THE_RIFT_PATTERN = Pattern.compile("Amount of Rifts you have closed: <col=ff0000>([0-9,]+)</col>.");
 
 	private static final String TOTAL_LEVEL_COMMAND_STRING = "!total";
 	private static final String PRICE_COMMAND_STRING = "!price";
@@ -469,18 +468,6 @@ public class ChatCommandsPlugin extends Plugin
 			matchPb(matcher);
 		}
 
-		matcher = TOB_WAVE_PB_PATTERN.matcher(message);
-		if (matcher.find())
-		{
-			matchPb(matcher);
-		}
-
-		matcher = TOB_WAVE_DURATION_PATTERN.matcher(message);
-		if (matcher.find())
-		{
-			matchPb(matcher);
-		}
-
 		matcher = HS_PB_PATTERN.matcher(message);
 		if (matcher.find())
 		{
@@ -537,6 +524,13 @@ public class ChatCommandsPlugin extends Plugin
 					setPetList(petList);
 				}
 			}
+		}
+
+		matcher = GUARDIANS_OF_THE_RIFT_PATTERN.matcher(message);
+		if (matcher.find())
+		{
+			int kc = Integer.parseInt(matcher.group(1));
+			setKc("Guardians of the Rift", kc);
 		}
 	}
 
@@ -1345,13 +1339,8 @@ public class ChatCommandsPlugin extends Plugin
 			search = message.substring(LEVEL_COMMAND_STRING.length() + 1);
 		}
 
-		search = SkillAbbreviations.getFullName(search);
-		final HiscoreSkill skill;
-		try
-		{
-			skill = HiscoreSkill.valueOf(search.toUpperCase());
-		}
-		catch (IllegalArgumentException i)
+		final HiscoreSkill skill = findHiscoreSkill(search);
+		if (skill == null)
 		{
 			return;
 		}
@@ -1970,12 +1959,8 @@ public class ChatCommandsPlugin extends Plugin
 			case "tob hm":
 			case "tob hard mode":
 			case "tob hard":
+			case "hmt":
 				return "Theatre of Blood Hard Mode";
-
-			// agility course
-			case "prif":
-			case "prifddinas":
-				return "Prifddinas Agility Course";
 
 			// The Gauntlet
 			case "gaunt":
@@ -2026,6 +2011,26 @@ public class ChatCommandsPlugin extends Plugin
 			case "hs5":
 			case "hs 5":
 				return "Hallowed Sepulchre Floor 5";
+
+			// Prifddinas Agility Course
+			case "prif":
+			case "prifddinas":
+				return "Prifddinas Agility Course";
+
+			// Shayzien Basic Agility Course
+			case "shayb":
+			case "sbac":
+			case "shayzienbasic":
+			case "shayzien basic":
+				return "Shayzien Basic Agility Course";
+
+			// Shayzien Advanced Agility Course
+			case "shaya":
+			case "saac":
+			case "shayadv":
+			case "shayadvanced":
+			case "shayzien advanced":
+				return "Shayzien Advanced Agility Course";
 
 			// Ape Atoll Agility
 			case "aa":
@@ -2152,8 +2157,103 @@ public class ChatCommandsPlugin extends Plugin
 			case "jad 6":
 				return "TzHaar-Ket-Rak's Sixth Challenge";
 
+			// Guardians of the Rift
+			case "gotr":
+			case "runetodt":
+				return "Guardians of the Rift";
+
 			default:
 				return WordUtils.capitalize(boss);
 		}
+	}
+
+	private static String longSkillName(String skill)
+	{
+		switch (skill.toUpperCase())
+		{
+			case "ATK":
+			case "ATT":
+				return net.runelite.api.Skill.ATTACK.getName();
+			case "DEF":
+				return net.runelite.api.Skill.DEFENCE.getName();
+			case "STR":
+				return net.runelite.api.Skill.STRENGTH.getName();
+			case "HEALTH":
+			case "HIT":
+			case "HITPOINT":
+			case "HP":
+				return net.runelite.api.Skill.HITPOINTS.getName();
+			case "RANGE":
+			case "RANGING":
+			case "RNG":
+				return net.runelite.api.Skill.RANGED.getName();
+			case "PRAY":
+				return net.runelite.api.Skill.PRAYER.getName();
+			case "MAG":
+			case "MAGE":
+				return net.runelite.api.Skill.MAGIC.getName();
+			case "COOK":
+				return net.runelite.api.Skill.COOKING.getName();
+			case "WC":
+			case "WOOD":
+			case "WOODCUT":
+				return net.runelite.api.Skill.WOODCUTTING.getName();
+			case "FLETCH":
+				return net.runelite.api.Skill.FLETCHING.getName();
+			case "FISH":
+				return net.runelite.api.Skill.FISHING.getName();
+			case "FM":
+			case "FIRE":
+				return net.runelite.api.Skill.FIREMAKING.getName();
+			case "CRAFT":
+				return net.runelite.api.Skill.CRAFTING.getName();
+			case "SMITH":
+				return net.runelite.api.Skill.SMITHING.getName();
+			case "MINE":
+				return net.runelite.api.Skill.MINING.getName();
+			case "HL":
+			case "HERB":
+				return net.runelite.api.Skill.HERBLORE.getName();
+			case "AGI":
+			case "AGIL":
+				return net.runelite.api.Skill.AGILITY.getName();
+			case "THIEF":
+				return net.runelite.api.Skill.THIEVING.getName();
+			case "SLAY":
+				return net.runelite.api.Skill.SLAYER.getName();
+			case "FARM":
+				return net.runelite.api.Skill.FARMING.getName();
+			case "RC":
+			case "RUNE":
+			case "RUNECRAFTING":
+				return net.runelite.api.Skill.RUNECRAFT.getName();
+			case "HUNT":
+				return net.runelite.api.Skill.HUNTER.getName();
+			case "CON":
+			case "CONSTRUCT":
+				return net.runelite.api.Skill.CONSTRUCTION.getName();
+			case "ALL":
+			case "TOTAL":
+				return net.runelite.api.Skill.OVERALL.getName();
+			default:
+				return skill;
+		}
+	}
+
+	private static HiscoreSkill findHiscoreSkill(String search)
+	{
+		String s = longSkillName(search);
+		if (s == search)
+		{
+			s = longBossName(search);
+		}
+		for (HiscoreSkill skill : HiscoreSkill.values())
+		{
+			if (skill.getName().equals(s))
+			{
+				return skill;
+			}
+		}
+		return null;
 	}
 }

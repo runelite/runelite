@@ -46,8 +46,7 @@ public interface GroundItemsConfig extends Config
 	@ConfigSection(
 		name = "Item Lists",
 		description = "The highlighted and hidden item lists",
-		position = 0,
-		closedByDefault = true
+		position = 0
 	)
 	String itemLists = "itemLists";
 

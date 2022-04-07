@@ -185,7 +185,7 @@ public enum HotColdLocation
 	ZEAH_PISCARILUS_MINE(MASTER, new WorldPoint(1768, 3705, 0), ZEAH, "South of the Piscarilius mine.", ANCIENT_WIZARDS),
 	ZEAH_GOLDEN_FIELD_TAVERN(MASTER, new WorldPoint(1718, 3643, 0), ZEAH, "South of the gravestone in Kingstown.", BRASSICAN_MAGE),
 	ZEAH_MESS_HALL(MASTER, new WorldPoint(1656, 3621, 0), ZEAH, "East of the Mess hall.", BRASSICAN_MAGE),
-	ZEAH_WATSONS_HOUSE(MASTER, new WorldPoint(1653, 3573, 0), ZEAH, "East of Watson's house.", BRASSICAN_MAGE),
+	ZEAH_WATSONS_HOUSE(MASTER, new WorldPoint(1653, 3572, 0), ZEAH, "East of Watson's house.", BRASSICAN_MAGE),
 	ZEAH_VANNAHS_FARM_STORE(MASTER, new WorldPoint(1807, 3523, 0), ZEAH, "North of Tithe Farm, next to the pond.", BRASSICAN_MAGE),
 	ZEAH_FARMING_GUILD_W(MASTER, new WorldPoint(1208, 3736, 0), ZEAH, "West of the Farming Guild.", BRASSICAN_MAGE),
 	ZEAH_DAIRY_COW(MASTER, new WorldPoint(1324, 3722, 0), ZEAH, "North-east of the Kebos Lowlands, east of the dairy cow.", BRASSICAN_MAGE),

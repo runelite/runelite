@@ -312,6 +312,7 @@ enum DiscordGameEventType
 	MG_TZHAAR_FIGHT_PITS("Tzhaar Fight Pits", DiscordAreaType.MINIGAMES, 9552),
 	MG_VARROCK_RAT_PITS("Varrock Rat Pits", DiscordAreaType.MINIGAMES, 11599),
 	MG_VOLCANIC_MINE("Volcanic Mine", DiscordAreaType.MINIGAMES, 15263, 15262),
+	MG_GUARDIANS_OF_THE_RIFT("Guardians of the Rift", DiscordAreaType.MINIGAMES, 14484),
 
 	// Raids
 	RAIDS_CHAMBERS_OF_XERIC("Chambers of Xeric", DiscordAreaType.RAIDS, 12889, 13136, 13137, 13138, 13139, 13140, 13141, 13145, 13393, 13394, 13395, 13396, 13397, 13401),

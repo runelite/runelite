@@ -104,7 +104,7 @@ public class ClientThread
 			}
 			catch (Throwable e)
 			{
-				log.warn("Exception in invoke", e);
+				log.error("Exception in invoke", e);
 			}
 			if (remove)
 			{

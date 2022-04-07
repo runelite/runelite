@@ -94,7 +94,7 @@ public enum HiscoreSkill
 	KALPHITE_QUEEN("Kalphite Queen", BOSS),
 	KING_BLACK_DRAGON("King Black Dragon", BOSS),
 	KRAKEN("Kraken", BOSS),
-	KREEARRA("Kree'Arra", BOSS),
+	KREEARRA("Kree'arra", BOSS),
 	KRIL_TSUTSAROTH("K'ril Tsutsaroth", BOSS),
 	MIMIC("Mimic", BOSS),
 	NEX("Nex", BOSS),

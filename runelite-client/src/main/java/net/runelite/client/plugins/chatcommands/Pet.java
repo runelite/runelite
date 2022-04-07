@@ -80,7 +80,9 @@ enum Pet
 	LITTLE_NIGHTMARE("Little nightmare", ItemID.LITTLE_NIGHTMARE),
 	LIL_CREATOR("Lil' creator", ItemID.LIL_CREATOR),
 	TINY_TEMPOR("Tiny tempor", ItemID.TINY_TEMPOR),
-	NEXLING("Nexling", ItemID.NEXLING);
+	NEXLING("Nexling", ItemID.NEXLING),
+	ABYSSAL_PROTECTOR("Abyssal protector", ItemID.ABYSSAL_PROTECTOR),
+	;
 
 	private final String name;
 	private final Integer iconID;

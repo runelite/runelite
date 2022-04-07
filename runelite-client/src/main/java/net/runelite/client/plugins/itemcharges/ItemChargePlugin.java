@@ -83,7 +83,7 @@ public class ItemChargePlugin extends Plugin
 	private static final Pattern BINDING_CHECK_PATTERN = Pattern.compile(
 		"You have ([0-9]+|one) charges? left before your Binding necklace disintegrates\\.");
 	private static final Pattern BINDING_USED_PATTERN = Pattern.compile(
-		"You bind the temple's power into (mud|lava|steam|dust|smoke|mist) runes\\.");
+		"You (partially succeed to )?bind the temple's power into (mud|lava|steam|dust|smoke|mist) runes\\.");
 	private static final String BINDING_BREAK_TEXT = "Your Binding necklace has disintegrated.";
 	private static final Pattern RING_OF_FORGING_CHECK_PATTERN = Pattern.compile(
 		"You can smelt ([0-9]+|one) more pieces? of iron ore before a ring melts\\.");
@@ -303,7 +303,11 @@ public class ItemChargePlugin extends Plugin
 			}
 			else if (bindingNecklaceUsedMatcher.find())
 			{
-				updateBindingNecklaceCharges(getItemCharges(ItemChargeConfig.KEY_BINDING_NECKLACE) - 1);
+				final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
+				if (equipment.contains(ItemID.BINDING_NECKLACE))
+				{
+					updateBindingNecklaceCharges(getItemCharges(ItemChargeConfig.KEY_BINDING_NECKLACE) - 1);
+				}
 			}
 			else if (bindingNecklaceCheckMatcher.find())
 			{

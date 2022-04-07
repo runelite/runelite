@@ -42,6 +42,7 @@ import net.runelite.api.geometry.SimplePolygon;
 import net.runelite.api.model.Jarvis;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import org.jetbrains.annotations.ApiStatus;
 
 /**
  * A utility class containing methods to help with conversion between
@@ -677,20 +678,18 @@ public class Perspective
 	 * @param client      the game client
 	 * @param model       the model to calculate a clickbox for
 	 * @param orientation the orientation of the model (0-2048, where 0 is north)
-	 * @param point       the coordinate of the tile
+	 * @param x           x coord in local space
+	 * @param z           y coord in local space
 	 * @return the clickable area of the model
 	 */
 	@Nullable
-	public static Shape getClickbox(@Nonnull Client client, Model model, int orientation, LocalPoint point)
+	@ApiStatus.Internal
+	public static Shape getClickbox(@Nonnull Client client, Model model, int orientation, int x, int y, int z)
 	{
 		if (model == null)
 		{
 			return null;
 		}
-
-		int x = point.getX();
-		int y = point.getY();
-		int z = getTileHeight(client, point, client.getPlane());
 
 		SimplePolygon bounds = calculateAABB(client, model, orientation, x, y, z);
 

@@ -33,6 +33,7 @@ public final class ParamID
 	 * Long name for NPCs used in the HP hud
 	 */
 	public static final int NPC_HP_NAME = 510;
+	public static final int QUEST_NAME = 610;
 	/**
 	 * @see SettingID
 	 */
