@@ -34,6 +34,8 @@ import net.runelite.api.GameState;
 import net.runelite.api.KeyCode;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.NPC;
+import net.runelite.api.NPCComposition;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.MenuEntryAdded;
@@ -94,6 +96,11 @@ public class MenuEntrySwapperPluginTest
 
 		when(client.getGameState()).thenReturn(GameState.LOGGED_IN);
 		when(client.getObjectDefinition(anyInt())).thenReturn(mock(ObjectComposition.class));
+
+		NPC npc = mock(NPC.class);
+		NPCComposition composition = mock(NPCComposition.class);
+		when(npc.getTransformedComposition()).thenReturn(composition);
+		when(client.getCachedNPCs()).thenReturn(new NPC[] { npc });
 
 		when(client.getMenuEntries()).thenAnswer((Answer<MenuEntry[]>) invocationOnMock ->
 		{

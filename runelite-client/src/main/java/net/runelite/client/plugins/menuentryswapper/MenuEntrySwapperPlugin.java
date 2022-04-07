@@ -53,6 +53,7 @@ import net.runelite.api.KeyCode;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
+import net.runelite.api.NPCComposition;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.MenuEntryAdded;
@@ -98,6 +99,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private static final String SHIFTCLICK_CONFIG_GROUP = "shiftclick";
 	private static final String ITEM_KEY_PREFIX = "item_";
 	private static final String OBJECT_KEY_PREFIX = "object_";
+	private static final String NPC_KEY_PREFIX = "npc_";
 
 	// Shift click
 	private static final WidgetMenuOption FIXED_INVENTORY_TAB_CONFIGURE_SC = new WidgetMenuOption(CONFIGURE,
@@ -140,13 +142,13 @@ public class MenuEntrySwapperPlugin extends Plugin
 		MenuAction.ITEM_USE
 	);
 
-	private static final Set<MenuAction> NPC_MENU_TYPES = ImmutableSet.of(
+	private static final List<MenuAction> NPC_MENU_TYPES = ImmutableList.of(
 		MenuAction.NPC_FIRST_OPTION,
 		MenuAction.NPC_SECOND_OPTION,
 		MenuAction.NPC_THIRD_OPTION,
 		MenuAction.NPC_FOURTH_OPTION,
-		MenuAction.NPC_FIFTH_OPTION,
-		MenuAction.EXAMINE_NPC);
+		MenuAction.NPC_FIFTH_OPTION
+	);
 
 	private static final List<MenuAction> OBJECT_MENU_TYPES = ImmutableList.of(
 		MenuAction.GAME_OBJECT_FIRST_OPTION,
@@ -533,6 +535,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		if (!configuringShiftClick && !configuringLeftClick)
 		{
 			configureObjectClick(event);
+			configureNpcClick(event);
 			return;
 		}
 
@@ -636,16 +639,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 				final ObjectComposition composition = client.getObjectDefinition(entry.getIdentifier());
 				final String[] actions = composition.getActions();
 
-				final MenuAction currentAction;
-				Integer swapConfig = getObjectSwapConfig(composition.getId());
-				if (swapConfig != null)
-				{
-					currentAction = OBJECT_MENU_TYPES.get(swapConfig);
-				}
-				else
-				{
-					currentAction = defaultAction(composition);
-				}
+				final Integer swapConfig = getObjectSwapConfig(composition.getId());
+				final MenuAction currentAction = swapConfig != null ? OBJECT_MENU_TYPES.get(swapConfig) :
+					defaultAction(composition);
 
 				for (int actionIdx = 0; actionIdx < OBJECT_MENU_TYPES.size(); ++actionIdx)
 				{
@@ -688,6 +684,111 @@ public class MenuEntrySwapperPlugin extends Plugin
 							{
 								unsetObjectSwapConfig(composition.getId());
 							}
+						});
+				}
+			}
+		}
+	}
+
+	private void configureNpcClick(MenuOpened event)
+	{
+		if (!shiftModifier() || !config.npcLeftClickCustomization())
+		{
+			return;
+		}
+
+		MenuEntry[] entries = event.getMenuEntries();
+		for (int idx = entries.length - 1; idx >= 0; --idx)
+		{
+			final MenuEntry entry = entries[idx];
+			final MenuAction type = entry.getType();
+			final int id = entry.getIdentifier();
+
+			if (type == MenuAction.EXAMINE_NPC)
+			{
+				final NPC npc = client.getCachedNPCs()[id];
+				final NPCComposition composition = npc.getTransformedComposition();
+				final String[] actions = composition.getActions();
+
+				final Integer swapConfig = getNpcSwapConfig(composition.getId());
+				final boolean hasAttack = Arrays.stream(composition.getActions()).anyMatch("Attack"::equalsIgnoreCase);
+				final MenuAction currentAction = swapConfig != null ? NPC_MENU_TYPES.get(swapConfig) :
+					// Attackable NPCs always have Attack as the first, last (deprioritized), or when hidden, no, option.
+					// Due to this the default action would be either Attack or the first non-Attack option, based on
+					// the game settings. Since it may be valid to swap an option up to override Attack, even when Attack
+					// is left-click, we cannot assume any default currentAction on attackable NPCs.
+					// Non-attackable NPCS have a predictable default action which we can prevent a swap to if no swap
+					// config is set, which just avoids showing a Swap option on a 1-op NPC, which looks odd.
+					(hasAttack ? null : defaultAction(composition));
+
+				for (int actionIdx = 0; actionIdx < NPC_MENU_TYPES.size(); ++actionIdx)
+				{
+					// Attack can be swapped with the in-game settings, and this becomes very confusing if we try
+					// to swap Attack and the game also tries to swap it (by deprioritizing), so just use the in-game
+					// setting.
+					if (Strings.isNullOrEmpty(actions[actionIdx]) || "Attack".equalsIgnoreCase(actions[actionIdx]))
+					{
+						continue;
+					}
+
+					final int menuIdx = actionIdx;
+					final MenuAction menuAction = NPC_MENU_TYPES.get(actionIdx);
+					if (currentAction == menuAction)
+					{
+						continue;
+					}
+
+					if ("Pickpocket".equals(actions[actionIdx])
+						|| "Knock-Out".equals(actions[actionIdx])
+						|| "Lure".equals(actions[actionIdx]))
+					{
+						// https://secure.runescape.com/m=news/another-message-about-unofficial-clients?oldschool=1
+						continue;
+					}
+
+					client.createMenuEntry(idx)
+						.setOption("Swap " + actions[actionIdx])
+						.setTarget(entry.getTarget())
+						.setType(MenuAction.RUNELITE)
+						.onClick(e ->
+						{
+							final String message = new ChatMessageBuilder()
+								.append("The default left click option for '").append(composition.getName()).append("' ")
+								.append("has been set to '").append(actions[menuIdx]).append("'.")
+								.build();
+
+							chatMessageManager.queue(QueuedMessage.builder()
+								.type(ChatMessageType.CONSOLE)
+								.runeLiteFormattedMessage(message)
+								.build());
+
+							log.debug("Set npc swap for {} to {}", composition.getId(), menuAction);
+
+							setNpcSwapConfig(composition.getId(), menuIdx);
+						});
+				}
+
+				if (getNpcSwapConfig(composition.getId()) != null)
+				{
+					// Reset
+					client.createMenuEntry(idx)
+						.setOption("Reset swap")
+						.setTarget(entry.getTarget())
+						.setType(MenuAction.RUNELITE)
+						.onClick(e ->
+						{
+							final String message = new ChatMessageBuilder()
+								.append("The default left click option for '").append(composition.getName()).append("' ")
+								.append("has been reset.")
+								.build();
+
+							chatMessageManager.queue(QueuedMessage.builder()
+								.type(ChatMessageType.CONSOLE)
+								.runeLiteFormattedMessage(message)
+								.build());
+
+							log.debug("Unset npc swap for {}", composition.getId());
+							unsetNpcSwapConfig(composition.getId());
 						});
 				}
 			}
@@ -850,6 +951,33 @@ public class MenuEntrySwapperPlugin extends Plugin
 			}
 		}
 
+		if (NPC_MENU_TYPES.contains(menuAction))
+		{
+			final NPC npc = client.getCachedNPCs()[eventId];
+			final NPCComposition composition = npc.getTransformedComposition();
+
+			Integer customOption = getNpcSwapConfig(composition.getId());
+			if (customOption != null)
+			{
+				MenuAction swapAction = NPC_MENU_TYPES.get(customOption);
+				if (swapAction == menuAction)
+				{
+					// Advance to the top-most op for this NPC. Normally menuEntries.length - 1 is examine, and swapping
+					// with that works due to it being sorted later, but if other plugins like NPC indicators add additional
+					// menus before examine that are also >1000, like RUNELITE menus, that would result in the >1000 menus being
+					// reordered relative to each other.
+					int i = index;
+					while (i < menuEntries.length - 1 && NPC_MENU_TYPES.contains(menuEntries[i + 1].getType()))
+					{
+						++i;
+					}
+
+					swap(optionIndexes, menuEntries, index, i);
+					return;
+				}
+			}
+		}
+
 		// Built-in swaps
 		Collection<Swap> swaps = this.swaps.get(option);
 		for (Swap swap : swaps)
@@ -969,6 +1097,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	private void swap(ArrayListMultimap<String, Integer> optionIndexes, MenuEntry[] entries, int index1, int index2)
 	{
+		if (index1 == index2)
+		{
+			return;
+		}
+
 		MenuEntry entry1 = entries[index1],
 			entry2 = entries[index2];
 
@@ -1098,6 +1231,40 @@ public class MenuEntrySwapperPlugin extends Plugin
 			if (!Strings.isNullOrEmpty(actions[i]))
 			{
 				return OBJECT_MENU_TYPES.get(i);
+			}
+		}
+		return null;
+	}
+
+	private Integer getNpcSwapConfig(int npcId)
+	{
+		String config = configManager.getConfiguration(MenuEntrySwapperConfig.GROUP, NPC_KEY_PREFIX + npcId);
+		if (config == null || config.isEmpty())
+		{
+			return null;
+		}
+
+		return Integer.parseInt(config);
+	}
+
+	private void setNpcSwapConfig(int npcId, int index)
+	{
+		configManager.setConfiguration(MenuEntrySwapperConfig.GROUP, NPC_KEY_PREFIX + npcId, index);
+	}
+
+	private void unsetNpcSwapConfig(int npcId)
+	{
+		configManager.unsetConfiguration(MenuEntrySwapperConfig.GROUP, NPC_KEY_PREFIX + npcId);
+	}
+
+	private static MenuAction defaultAction(NPCComposition composition)
+	{
+		String[] actions = composition.getActions();
+		for (int i = 0; i < NPC_MENU_TYPES.size(); ++i)
+		{
+			if (!Strings.isNullOrEmpty(actions[i]) && !actions[i].equalsIgnoreCase("Attack"))
+			{
+				return NPC_MENU_TYPES.get(i);
 			}
 		}
 		return null;
