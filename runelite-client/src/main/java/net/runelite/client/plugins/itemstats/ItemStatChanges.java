@@ -33,11 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 import static net.runelite.api.ItemID.*;
 import static net.runelite.client.plugins.itemstats.Builders.*;
 import net.runelite.client.plugins.itemstats.food.Anglerfish;
-import net.runelite.client.plugins.itemstats.potions.GauntletPotion;
-import net.runelite.client.plugins.itemstats.potions.PrayerPotion;
-import net.runelite.client.plugins.itemstats.potions.SaradominBrew;
-import net.runelite.client.plugins.itemstats.potions.StaminaPotion;
-import net.runelite.client.plugins.itemstats.potions.SuperRestore;
+import net.runelite.client.plugins.itemstats.potions.*;
 import net.runelite.client.plugins.itemstats.special.CastleWarsBandage;
 import net.runelite.client.plugins.itemstats.special.SpicyStew;
 import static net.runelite.client.plugins.itemstats.stats.Stats.*;
@@ -162,6 +158,7 @@ public class ItemStatChanges
 			BLIGHTED_SUPER_RESTORE1, BLIGHTED_SUPER_RESTORE2, BLIGHTED_SUPER_RESTORE3, BLIGHTED_SUPER_RESTORE4);
 		add(new SuperRestore(.30, 4), SANFEW_SERUM1, SANFEW_SERUM2, SANFEW_SERUM3, SANFEW_SERUM4);
 		add(new StaminaPotion(), STAMINA_POTION1, STAMINA_POTION2, STAMINA_POTION3, STAMINA_POTION4);
+		add(new AncientBrew(.10, 2, .05, 2, .10, 2), ANCIENT_BREW1, ANCIENT_BREW2, ANCIENT_BREW3, ANCIENT_BREW4);
 
 		// Raids potions (+)
 		add(combo(5, boost(ATTACK, perc(.16, 6)), boost(STRENGTH, perc(.16, 6)), boost(DEFENCE, perc(.16, 6)), boost(RANGED, perc(.16, 6)), boost(MAGIC, perc(.16, 6)), heal(HITPOINTS, -50)), OVERLOAD_1_20993, OVERLOAD_2_20994, OVERLOAD_3_20995, OVERLOAD_4_20996);
