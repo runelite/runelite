@@ -62,15 +62,18 @@ public class ClientSessionManager
 
 	public void start()
 	{
-		try
+		executorService.execute(() ->
 		{
-			sessionId = sessionClient.open();
-			log.debug("Opened session {}", sessionId);
-		}
-		catch (IOException ex)
-		{
-			log.warn("error opening session", ex);
-		}
+			try
+			{
+				sessionId = sessionClient.open();
+				log.debug("Opened session {}", sessionId);
+			}
+			catch (IOException ex)
+			{
+				log.warn("error opening session", ex);
+			}
+		});
 
 		scheduledFuture = executorService.scheduleWithFixedDelay(RunnableExceptionLogger.wrap(this::ping), 1, 10, TimeUnit.MINUTES);
 	}
