@@ -31,6 +31,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum HouseTeleportMode
 {
+	CAST("Cast"),
 	OUTSIDE("Outside"),
 	GROUP_CHOOSE("Group: Choose"),
 	GROUP_PREVIOUS("Group: Previous");
