@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Sean Dewar <https://github.com/seandewar>
+ * Copyright (c) 2018 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,22 +22,70 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.runenergy;
+package net.runelite.client.plugins.statusorbs;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Units;
 
-@ConfigGroup("runenergy")
-public interface RunEnergyConfig extends Config
+@ConfigGroup("statusorbs")
+public interface StatusOrbsConfig extends Config
 {
 	@ConfigItem(
-		keyName = "replaceOrbText",
-		name = "Replace orb text with run time left",
-		description = "Show the remaining run time (in seconds) next in the energy orb."
+		keyName = "showHitpoints",
+		name = "Show hitpoints regen",
+		description = "Show a ring around the hitpoints orb")
+	default boolean showHitpoints()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showSpecial",
+		name = "Show Spec. Attack regen",
+		description = "Show a ring around the Special Attack orb")
+	default boolean showSpecial()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "showRun",
+			name = "Show Run regen",
+			description = "Show a ring around the Run Energy orb")
+	default boolean showRun()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "replaceOrbText",
+			name = "Replace orb text with run time left",
+			description = "Show the remaining run time (in seconds) next in the energy orb."
 	)
 	default boolean replaceOrbText()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showWhenNoChange",
+		name = "Show at full hitpoints",
+		description = "Always show the hitpoints regen orb, even if there will be no stat change")
+	default boolean showWhenNoChange()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "notifyBeforeHpRegenDuration",
+		name = "Hitpoint Notification",
+		description = "Notify approximately when your next hitpoint is about to regen. A value of 0 will disable notification."
+	)
+	@Units(Units.SECONDS)
+	default int getNotifyBeforeHpRegenSeconds()
+	{
+		return 0;
 	}
 }
