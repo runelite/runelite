@@ -41,6 +41,7 @@ import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
 import net.runelite.api.ScriptID;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptPostFired;
@@ -164,6 +165,9 @@ public class ChatCommandsPluginTest
 	@Test
 	public void testTheatreOfBlood()
 	{
+		when(client.getVarbitValue(Varbits.THEATRE_OF_BLOOD_ORB1)).thenReturn(1);
+		when(client.getVarbitValue(Varbits.THEATRE_OF_BLOOD_ORB2)).thenReturn(15);
+
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "",
 			"Wave 'The Final Challenge' (Normal Mode) complete!<br>" +
 				"Duration: <col=ff0000>2:42.0</col><br>" +
@@ -178,11 +182,14 @@ public class ChatCommandsPluginTest
 
 		verify(configManager).setRSProfileConfiguration("killcount", "theatre of blood", 73);
 		verify(configManager).setRSProfileConfiguration("personalbest", "theatre of blood", 17 * 60 + .2);
+		verify(configManager).setRSProfileConfiguration("personalbest", "theatre of blood 2 player", 17 * 60 + .2);
 	}
 
 	@Test
 	public void testTheatreOfBloodNoPb()
 	{
+		when(client.getVarbitValue(Varbits.THEATRE_OF_BLOOD_ORB1)).thenReturn(1);
+
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "",
 			"Wave 'The Final Challenge' (Normal Mode) complete!<br>" +
 				"Duration: <col=ff0000>2:42</col><br>" +
@@ -197,11 +204,14 @@ public class ChatCommandsPluginTest
 
 		verify(configManager).setRSProfileConfiguration("killcount", "theatre of blood", 73);
 		verify(configManager).setRSProfileConfiguration("personalbest", "theatre of blood", 13 * 60 + 52.8);
+		verify(configManager).setRSProfileConfiguration("personalbest", "theatre of blood solo", 13 * 60 + 52.8);
 	}
 
 	@Test
 	public void testTheatreOfBloodEntryMode()
 	{
+		when(client.getVarbitValue(Varbits.THEATRE_OF_BLOOD_ORB1)).thenReturn(1);
+
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "",
 			"Wave 'The Final Challenge' (Entry Mode) complete!<br>" +
 				"Duration: <col=ff0000>2:42</col><br>" +
@@ -216,6 +226,7 @@ public class ChatCommandsPluginTest
 
 		verify(configManager).setRSProfileConfiguration("killcount", "theatre of blood entry mode", 73);
 		verify(configManager).setRSProfileConfiguration("personalbest", "theatre of blood entry mode", 17 * 60.);
+		verify(configManager).setRSProfileConfiguration("personalbest", "theatre of blood entry mode solo", 17 * 60.);
 	}
 
 	@Test
@@ -556,45 +567,45 @@ public class ChatCommandsPluginTest
 	@Test
 	public void testCoXKill()
 	{
-		ChatMessage chatMessage = new ChatMessage(null, FRIENDSCHATNOTIFICATION, "", "<col=ef20ff>Congratulations - your raid is complete!</col><br>Team size: <col=ff0000>24+ players</col> Duration:</col> <col=ff0000>37:04</col> (new personal best)</col>>", null, 0);
+		ChatMessage chatMessage = new ChatMessage(null, FRIENDSCHATNOTIFICATION, "", "<col=ef20ff>Congratulations - your raid is complete!</col><br>Team size: <col=ff0000>24+ players</col> Duration:</col> <col=ff0000>37:04.20</col> (new personal best)</col>>", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
 		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Chambers of Xeric count is: <col=ff0000>51</col>.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
 		verify(configManager).setRSProfileConfiguration("killcount", "chambers of xeric", 51);
-		verify(configManager).setRSProfileConfiguration("personalbest", "chambers of xeric", 37 * 60 + 4.0);
-
-		// Precise times
-		chatMessage = new ChatMessage(null, FRIENDSCHATNOTIFICATION, "", "<col=ef20ff>Congratulations - your raid is complete!</col><br>Team size: <col=ff0000>24+ players</col> Duration:</col> <col=ff0000>37:04.20</col> (new personal best)</col>>", null, 0);
-		chatCommandsPlugin.onChatMessage(chatMessage);
-
-		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Chambers of Xeric count is: <col=ff0000>51</col>.", null, 0);
-		chatCommandsPlugin.onChatMessage(chatMessage);
-
 		verify(configManager).setRSProfileConfiguration("personalbest", "chambers of xeric", 37 * 60 + 4.2);
+		verify(configManager).setRSProfileConfiguration("personalbest", "chambers of xeric 24+ players", 37 * 60 + 4.2);
 	}
 
 	@Test
 	public void testCoXKillNoPb()
 	{
-		ChatMessage chatMessage = new ChatMessage(null, FRIENDSCHATNOTIFICATION, "", "<col=ef20ff>Congratulations - your raid is complete!</col><br>Team size: <col=ff0000>11-15 players</col> Duration:</col> <col=ff0000>23:25</col> Personal best: </col><col=ff0000>20:19</col>", null, 0);
+		ChatMessage chatMessage = new ChatMessage(null, FRIENDSCHATNOTIFICATION, "", "<col=ef20ff>Congratulations - your raid is complete!</col><br>Team size: <col=ff0000>11-15 players</col> Duration:</col> <col=ff0000>23:25.40</col> Personal best: </col><col=ff0000>20:19.20</col>", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
 		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Chambers of Xeric count is: <col=ff0000>52</col>.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
 		verify(configManager).setRSProfileConfiguration("killcount", "chambers of xeric", 52);
-		verify(configManager).setRSProfileConfiguration("personalbest", "chambers of xeric", 20 * 60 + 19.0);
-
-		// Precise times
-		chatMessage = new ChatMessage(null, FRIENDSCHATNOTIFICATION, "", "<col=ef20ff>Congratulations - your raid is complete!</col><br>Team size: <col=ff0000>11-15 players</col> Duration:</col> <col=ff0000>23:25.40</col> Personal best: </col><col=ff0000>20:19.20</col>", null, 0);
-		chatCommandsPlugin.onChatMessage(chatMessage);
-
-		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Chambers of Xeric count is: <col=ff0000>52</col>.", null, 0);
-		chatCommandsPlugin.onChatMessage(chatMessage);
-
 		verify(configManager).setRSProfileConfiguration("personalbest", "chambers of xeric", 20 * 60 + 19.2);
+		verify(configManager).setRSProfileConfiguration("personalbest", "chambers of xeric 11-15 players", 20 * 60 + 19.2);
+	}
+
+	@Test
+	public void testCoxCmNoPb()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, FRIENDSCHATNOTIFICATION, "",
+			"<col=ef20ff>Congratulations - your raid is complete!</col><br>Team size: <col=ff0000>3 players</col> Duration:</col> <col=ff0000>41:10</col> Personal best: </col><col=ff0000>40:03</col>", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "",
+			"Your completed Chambers of Xeric Challenge Mode count is: <col=ff0000>13</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("killcount", "chambers of xeric challenge mode", 13);
+		verify(configManager).setRSProfileConfiguration("personalbest", "chambers of xeric challenge mode", 40 * 60 + 3.);
+		verify(configManager).setRSProfileConfiguration("personalbest", "chambers of xeric challenge mode 3 players", 40 * 60 + 3.);
 	}
 
 	@Test

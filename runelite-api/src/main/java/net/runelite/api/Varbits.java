@@ -317,6 +317,15 @@ public final class Varbits
 	 * Theatre of Blood 1=In Party, 2=Inside/Spectator, 3=Dead Spectating
 	 */
 	public static final int THEATRE_OF_BLOOD = 6440;
+	/**
+	 * Theatre of Blood orb healths
+	 * 0=hide 1-27=% of health - 27 is 100% health and 1 is 0% health, 30=dead
+	 */
+	public static final int THEATRE_OF_BLOOD_ORB1 = 6442;
+	public static final int THEATRE_OF_BLOOD_ORB2 = 6443;
+	public static final int THEATRE_OF_BLOOD_ORB3 = 6444;
+	public static final int THEATRE_OF_BLOOD_ORB4 = 6445;
+	public static final int THEATRE_OF_BLOOD_ORB5 = 6446;
 
 	/**
 	 * Nightmare Zone

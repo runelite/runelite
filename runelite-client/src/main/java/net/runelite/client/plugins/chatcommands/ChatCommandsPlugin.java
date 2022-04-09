@@ -107,7 +107,7 @@ import org.apache.commons.text.WordUtils;
 public class ChatCommandsPlugin extends Plugin
 {
 	private static final Pattern KILLCOUNT_PATTERN = Pattern.compile("Your (?:completion count for |subdued |completed )?(.+?) (?:(?:kill|harvest|lap|completion) )?(?:count )?is: <col=ff0000>(\\d+)</col>");
-	private static final String TEAM_SIZES = "(?:\\d+(?:\\+|-\\d+)? players|Solo)";
+	private static final String TEAM_SIZES = "(?<teamsize>\\d+(?:\\+|-\\d+)? players|Solo)";
 	private static final Pattern RAIDS_PB_PATTERN = Pattern.compile("<col=ef20ff>Congratulations - your raid is complete!</col><br>Team size: <col=ff0000>" + TEAM_SIZES + "</col> Duration:</col> <col=ff0000>(?<pb>[0-9:]+(?:\\.[0-9]+)?)</col> \\(new personal best\\)</col>");
 	private static final Pattern RAIDS_DURATION_PATTERN = Pattern.compile("<col=ef20ff>Congratulations - your raid is complete!</col><br>Team size: <col=ff0000>" + TEAM_SIZES + "</col> Duration:</col> <col=ff0000>[0-9:.]+</col> Personal best: </col><col=ff0000>(?<pb>[0-9:]+(?:\\.[0-9]+)?)</col>");
 	private static final Pattern KILL_DURATION_PATTERN = Pattern.compile("(?i)(?:(?:Fight |Lap |Challenge |Corrupted challenge )?duration:|Subdued in|(?<!total )completion time:) <col=[0-9a-f]{6}>[0-9:.]+</col>\\. Personal best: (?:<col=ff0000>)?(?<pb>[0-9:]+(?:\\.[0-9]+)?)");
@@ -115,7 +115,7 @@ public class ChatCommandsPlugin extends Plugin
 	private static final Pattern DUEL_ARENA_WINS_PATTERN = Pattern.compile("You (were defeated|won)! You have(?: now)? won ([\\d,]+|one) duels?");
 	private static final Pattern DUEL_ARENA_LOSSES_PATTERN = Pattern.compile("You have(?: now)? lost ([\\d,]+|one) duels?");
 	private static final Pattern ADVENTURE_LOG_TITLE_PATTERN = Pattern.compile("The Exploits of (.+)");
-	private static final Pattern ADVENTURE_LOG_PB_PATTERN = Pattern.compile("Fastest (?:kill|run)(?: - \\(Team size: " + TEAM_SIZES + "\\))?: ([0-9:]+(?:\\.[0-9]+)?)");
+	private static final Pattern ADVENTURE_LOG_PB_PATTERN = Pattern.compile("Fastest (?:kill|run)(?: - \\(Team size: " + TEAM_SIZES + "\\))?: (?<time>[0-9:]+(?:\\.[0-9]+)?)");
 	private static final Pattern HS_PB_PATTERN = Pattern.compile("Floor (?<floor>\\d) time: <col=ff0000>(?<floortime>[0-9:]+(?:\\.[0-9]+)?)</col>(?: \\(new personal best\\)|. Personal best: (?<floorpb>[0-9:]+(?:\\.[0-9]+)?))" +
 		"(?:<br>Overall time: <col=ff0000>(?<otime>[0-9:]+(?:\\.[0-9]+)?)</col>(?: \\(new personal best\\)|. Personal best: (?<opb>[0-9:]+(?:\\.[0-9]+)?)))?");
 	private static final Pattern HS_KC_FLOOR_PATTERN = Pattern.compile("You have completed Floor (\\d) of the Hallowed Sepulchre! Total completions: <col=ff0000>([0-9,]+)</col>\\.");
@@ -156,6 +156,7 @@ public class ChatCommandsPlugin extends Plugin
 	private String lastBossKill;
 	private int lastBossTime = -1;
 	private double lastPb = -1;
+	private String lastTeamSize;
 	private int modIconIdx = -1;
 
 	@Inject
@@ -394,8 +395,30 @@ public class ChatCommandsPlugin extends Plugin
 			if (lastPb > -1)
 			{
 				log.debug("Got out-of-order personal best for {}: {}", renamedBoss, lastPb);
-				setPb(renamedBoss, lastPb);
+
+				if (renamedBoss.contains("Theatre of Blood"))
+				{
+					// TOB team size isn't sent in the kill message, but can be computed from varbits
+					int tobTeamSize = tobTeamSize();
+					lastTeamSize = tobTeamSize == 1 ? "Solo" : (tobTeamSize + " player");
+				}
+
+				final double pb = getPb(renamedBoss);
+				// If a raid with a team size, only update the pb if it is lower than the existing pb
+				// so that the pb is the overall lowest of any team size
+				if (lastTeamSize == null || pb == 0 || lastPb < pb)
+				{
+					log.debug("Setting overall pb (old: {})", pb);
+					setPb(renamedBoss, lastPb);
+				}
+				if (lastTeamSize != null)
+				{
+					log.debug("Setting team size pb: {}", lastTeamSize);
+					setPb(renamedBoss + " " + lastTeamSize, lastPb);
+				}
+
 				lastPb = -1;
+				lastTeamSize = null;
 			}
 			else
 			{
@@ -554,16 +577,26 @@ public class ChatCommandsPlugin extends Plugin
 		double seconds = timeStringToSeconds(matcher.group("pb"));
 		if (lastBossKill != null)
 		{
-			// Most bosses sent boss kill message, and then pb message, so we
+			// Most bosses send boss kill message, and then pb message, so we
 			// use the remembered lastBossKill
 			log.debug("Got personal best for {}: {}", lastBossKill, seconds);
 			setPb(lastBossKill, seconds);
 			lastPb = -1;
+			lastTeamSize = null;
 		}
 		else
 		{
 			// Some bosses send the pb message, and then the kill message!
 			lastPb = seconds;
+			try
+			{
+				lastTeamSize = matcher.group("teamsize");
+			}
+			catch (IllegalArgumentException ex)
+			{
+				// pattern has no team size
+				lastTeamSize = null;
+			}
 		}
 	}
 
@@ -654,7 +687,7 @@ public class ChatCommandsPlugin extends Plugin
 						Matcher matcher = ADVENTURE_LOG_PB_PATTERN.matcher(line);
 						if (matcher.find())
 						{
-							double s = timeStringToSeconds(matcher.group(1));
+							double s = timeStringToSeconds(matcher.group("time"));
 							pb = Math.min(pb, s);
 						}
 					}
@@ -1919,15 +1952,57 @@ public class ChatCommandsPlugin extends Plugin
 			case "herbi":
 				return "Herbiboar";
 
-			// cox
+			// Chambers of Xeric
 			case "cox":
 			case "xeric":
 			case "chambers":
 			case "olm":
 			case "raids":
 				return "Chambers of Xeric";
+			case "cox 1":
+			case "cox solo":
+				return "Chambers of Xeric Solo";
+			case "cox 2":
+			case "cox duo":
+				return "Chambers of Xeric 2 players";
+			case "cox 3":
+				return "Chambers of Xeric 3 players";
+			case "cox 4":
+				return "Chambers of Xeric 4 players";
+			case "cox 5":
+				return "Chambers of Xeric 5 players";
+			case "cox 6":
+				return "Chambers of Xeric 6 players";
+			case "cox 7":
+				return "Chambers of Xeric 7 players";
+			case "cox 8":
+				return "Chambers of Xeric 8 players";
+			case "cox 9":
+				return "Chambers of Xeric 9 players";
+			case "cox 10":
+				return "Chambers of Xeric 10 players";
+			case "cox 11-15":
+			case "cox 11":
+			case "cox 12":
+			case "cox 13":
+			case "cox 14":
+			case "cox 15":
+				return "Chambers of Xeric 11-15 players";
+			case "cox 16-23":
+			case "cox 16":
+			case "cox 17":
+			case "cox 18":
+			case "cox 19":
+			case "cox 20":
+			case "cox 21":
+			case "cox 22":
+			case "cox 23":
+				return "Chambers of Xeric 16-23 players";
+			case "cox 24":
+			case "cox 24+":
+				return "Chambers of Xeric 24+ players";
 
-			// cox cm
+			// Chambers of Xeric Challenge Mode
 			case "cox cm":
 			case "xeric cm":
 			case "chambers cm":
@@ -1935,15 +2010,70 @@ public class ChatCommandsPlugin extends Plugin
 			case "raids cm":
 			case "chambers of xeric - challenge mode":
 				return "Chambers of Xeric Challenge Mode";
+			case "cox cm 1":
+			case "cox cm solo":
+				return "Chambers of Xeric Challenge Mode Solo";
+			case "cox cm 2":
+			case "cox cm duo":
+				return "Chambers of Xeric Challenge Mode 2 players";
+			case "cox cm 3":
+				return "Chambers of Xeric Challenge Mode 3 players";
+			case "cox cm 4":
+				return "Chambers of Xeric Challenge Mode 4 players";
+			case "cox cm 5":
+				return "Chambers of Xeric Challenge Mode 5 players";
+			case "cox cm 6":
+				return "Chambers of Xeric Challenge Mode 6 players";
+			case "cox cm 7":
+				return "Chambers of Xeric Challenge Mode 7 players";
+			case "cox cm 8":
+				return "Chambers of Xeric Challenge Mode 8 players";
+			case "cox cm 9":
+				return "Chambers of Xeric Challenge Mode 9 players";
+			case "cox cm 10":
+				return "Chambers of Xeric Challenge Mode 10 players";
+			case "cox cm 11-15":
+			case "cox cm 11":
+			case "cox cm 12":
+			case "cox cm 13":
+			case "cox cm 14":
+			case "cox cm 15":
+				return "Chambers of Xeric Challenge Mode 11-15 players";
+			case "cox cm 16-23":
+			case "cox cm 16":
+			case "cox cm 17":
+			case "cox cm 18":
+			case "cox cm 19":
+			case "cox cm 20":
+			case "cox cm 21":
+			case "cox cm 22":
+			case "cox cm 23":
+				return "Chambers of Xeric Challenge Mode 16-23 players";
+			case "cox cm 24":
+			case "cox cm 24+":
+				return "Chambers of Xeric Challenge Mode 24+ players";
 
-			// tob
+			// Theatre of Blood
 			case "tob":
 			case "theatre":
 			case "verzik":
 			case "verzik vitur":
 			case "raids 2":
 				return "Theatre of Blood";
+			case "tob 1":
+			case "tob solo":
+				return "Theatre of Blood Solo";
+			case "tob 2":
+			case "tob duo":
+				return "Theatre of Blood 2 player";
+			case "tob 3":
+				return "Theatre of Blood 3 player";
+			case "tob 4":
+				return "Theatre of Blood 4 player";
+			case "tob 5":
+				return "Theatre of Blood 5 player";
 
+			// Theatre of Blood Entry Mode
 			case "theatre of blood: story mode":
 			case "tob sm":
 			case "tob story mode":
@@ -1954,6 +2084,7 @@ public class ChatCommandsPlugin extends Plugin
 			case "tob entry":
 				return "Theatre of Blood Entry Mode";
 
+			// Theatre of Blood Hard Mode
 			case "theatre of blood: hard mode":
 			case "tob cm":
 			case "tob hm":
@@ -1961,6 +2092,18 @@ public class ChatCommandsPlugin extends Plugin
 			case "tob hard":
 			case "hmt":
 				return "Theatre of Blood Hard Mode";
+			case "hmt 1":
+			case "hmt solo":
+				return "Theatre of Blood Hard Mode Solo";
+			case "hmt 2":
+			case "hmt duo":
+				return "Theatre of Blood Hard Mode 2 player";
+			case "hmt 3":
+				return "Theatre of Blood Hard Mode 3 player";
+			case "hmt 4":
+				return "Theatre of Blood Hard Mode 4 player";
+			case "hmt 5":
+				return "Theatre of Blood Hard Mode 5 player";
 
 			// The Gauntlet
 			case "gaunt":
@@ -2255,5 +2398,14 @@ public class ChatCommandsPlugin extends Plugin
 			}
 		}
 		return null;
+	}
+
+	private int tobTeamSize()
+	{
+		return Math.min(client.getVarbitValue(Varbits.THEATRE_OF_BLOOD_ORB1), 1) +
+			Math.min(client.getVarbitValue(Varbits.THEATRE_OF_BLOOD_ORB2), 1) +
+			Math.min(client.getVarbitValue(Varbits.THEATRE_OF_BLOOD_ORB3), 1) +
+			Math.min(client.getVarbitValue(Varbits.THEATRE_OF_BLOOD_ORB4), 1) +
+			Math.min(client.getVarbitValue(Varbits.THEATRE_OF_BLOOD_ORB5), 1);
 	}
 }
