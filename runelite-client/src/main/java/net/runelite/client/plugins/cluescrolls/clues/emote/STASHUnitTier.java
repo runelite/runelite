@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Seth <http://github.com/sethtroll>
+ * Copyright (c) 2018, Lotto <https://github.com/devLotto>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,32 +22,16 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.cluescrolls;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+package net.runelite.client.plugins.cluescrolls.clues.emote;
 
-@ConfigGroup("cluescroll")
-public interface ClueScrollConfig extends Config
+public class STASHUnitTier
 {
-	@ConfigItem(
-		keyName = "displayHintArrows",
-		name = "Display hint arrows",
-		description = "Configures whether or not to display hint arrows for clues"
-	)
-	default boolean displayHintArrows()
-	{
-		return true;
-	}
+	public static final int BEGINNER = 0;
+	public static final int EASY = 1;
+	public static final int MEDIUM = 2;
+	public static final int HARD = 3;
+	public static final int ELITE = 4;
+	public static final int MASTER = 5;
 
-	@ConfigItem(
-		keyName = "displaySTASHUnitBuildRequirements",
-		name = "Display requirements to build STASH Units",
-		description = "Configures whether or not the clue scroll overlay will display the items and levels required to build a STASH Unit"
-	)
-	default boolean displaySTASHUnitBuildRequirements()
-	{
-		return false;
-	}
 }
