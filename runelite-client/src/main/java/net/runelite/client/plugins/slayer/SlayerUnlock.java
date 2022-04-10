@@ -27,6 +27,7 @@ package net.runelite.client.plugins.slayer;
 import net.runelite.api.Client;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
+import net.runelite.api.annotations.Varbit;
 
 /**
  * Unlockables in the slayer interface
@@ -87,17 +88,19 @@ enum SlayerUnlock
 	VAMPYRE_EXTEND(49),
 	VAMPYRE_UNLOCK(50);
 
-	private final Varbits toggleVarbit;
+	@Varbit
+	private final int toggleVarbit;
 
 	SlayerUnlock(int index)
 	{
-		this(index, null);
+		assert index == ordinal();
+		this.toggleVarbit = -1;
 	}
 
-	SlayerUnlock(int index, Varbits toggleVarbit)
+	SlayerUnlock(int index, @Varbit int varbit)
 	{
 		assert index == ordinal();
-		this.toggleVarbit = toggleVarbit;
+		this.toggleVarbit = varbit;
 	}
 
 	/**
@@ -116,7 +119,7 @@ enum SlayerUnlock
 	{
 		if (isOwned(client))
 		{
-			if (toggleVarbit == null)
+			if (toggleVarbit == -1)
 			{
 				return true;
 			}

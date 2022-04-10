@@ -454,7 +454,6 @@ public class TimersPluginTest
 	public void testCorruptionCooldown()
 	{
 		when(timersConfig.showArceuusCooldown()).thenReturn(true);
-		when(client.getVar(any(Varbits.class))).thenReturn(0);
 		when(client.getVar(Varbits.CORRUPTION_COOLDOWN)).thenReturn(1);
 		timersPlugin.onVarbitChanged(new VarbitChanged());
 

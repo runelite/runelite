@@ -28,6 +28,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.ItemID;
 import net.runelite.api.Varbits;
+import net.runelite.api.annotations.Varbit;
 
 @AllArgsConstructor
 @Getter
@@ -51,6 +52,7 @@ enum BarsOres
 	SILVER_BAR(Varbits.BLAST_FURNACE_SILVER_BAR, ItemID.SILVER_BAR),
 	GOLD_BAR(Varbits.BLAST_FURNACE_GOLD_BAR, ItemID.GOLD_BAR);
 
-	private final Varbits varbit;
+	@Getter(onMethod_ = {@Varbit})
+	private final int varbit;
 	private final int itemID;
 }

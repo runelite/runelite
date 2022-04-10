@@ -28,7 +28,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import net.runelite.api.Varbits;
+import net.runelite.api.annotations.Varbit;
 import net.runelite.client.plugins.timetracking.TimeTrackingConfig;
 
 @RequiredArgsConstructor(
@@ -40,16 +40,17 @@ class FarmingPatch
 	@Setter(AccessLevel.PACKAGE)
 	private FarmingRegion region;
 	private final String name;
-	private final Varbits varbit;
+	@Getter(onMethod_ = {@Varbit})
+	private final int varbit;
 	private final PatchImplementation implementation;
 
 	String configKey()
 	{
-		return region.getRegionID() + "." + varbit.getId();
+		return region.getRegionID() + "." + varbit;
 	}
 
 	String notifyConfigKey()
 	{
-		return TimeTrackingConfig.NOTIFY + "." + region.getRegionID() + "." + varbit.getId();
+		return TimeTrackingConfig.NOTIFY + "." + region.getRegionID() + "." + varbit;
 	}
 }

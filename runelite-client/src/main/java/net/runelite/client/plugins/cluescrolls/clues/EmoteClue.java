@@ -41,6 +41,7 @@ import static net.runelite.api.ItemID.*;
 import net.runelite.api.Perspective;
 import net.runelite.api.ScriptID;
 import net.runelite.api.Varbits;
+import net.runelite.api.annotations.Varbit;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
@@ -253,11 +254,11 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 		this.itemRequirements = itemRequirements;
 	}
 
-	private EmoteClue(String text, String locationName, @Nullable STASHUnit stashUnit, WorldPoint location, Emote firstEmote, Emote secondEmote, @Nonnull Varbits firePit, @Nonnull ItemRequirement... itemRequirements)
+	private EmoteClue(String text, String locationName, @Nullable STASHUnit stashUnit, WorldPoint location, Emote firstEmote, Emote secondEmote, @Varbit int firePitVarbitId, @Nonnull ItemRequirement... itemRequirements)
 	{
 		this(text, locationName, stashUnit, location, firstEmote, secondEmote, itemRequirements);
 		setRequiresLight(true);
-		setHasFirePit(firePit);
+		setFirePitVarbitId(firePitVarbitId);
 	}
 
 	@Override

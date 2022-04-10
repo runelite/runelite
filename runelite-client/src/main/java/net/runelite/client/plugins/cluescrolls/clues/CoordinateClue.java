@@ -32,14 +32,21 @@ import javax.annotation.Nullable;
 import lombok.Getter;
 import lombok.NonNull;
 import net.runelite.api.Varbits;
+import net.runelite.api.annotations.Varbit;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
+import static net.runelite.client.plugins.cluescrolls.clues.Enemy.ANCIENT_WIZARDS;
+import static net.runelite.client.plugins.cluescrolls.clues.Enemy.ARMADYLEAN_GUARD;
+import static net.runelite.client.plugins.cluescrolls.clues.Enemy.ARMADYLEAN_OR_BANDOSIAN_GUARD;
+import static net.runelite.client.plugins.cluescrolls.clues.Enemy.BANDOSIAN_GUARD;
+import static net.runelite.client.plugins.cluescrolls.clues.Enemy.BRASSICAN_MAGE;
+import static net.runelite.client.plugins.cluescrolls.clues.Enemy.SARADOMIN_WIZARD;
+import static net.runelite.client.plugins.cluescrolls.clues.Enemy.ZAMORAK_WIZARD;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
-import static net.runelite.client.plugins.cluescrolls.clues.Enemy.*;
 
 @Getter
 public class CoordinateClue extends ClueScroll implements TextClueScroll, LocationClueScroll
@@ -49,7 +56,8 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 	{
 		private final String directions;
 		private final boolean lightRequired;
-		private final Varbits lightSource;
+		@Getter(onMethod_ = {@Varbit})
+		private final int lightSourceVarbitId;
 		private final Enemy enemy;
 
 		private CoordinateClueInfo(@NonNull String directions)
@@ -62,15 +70,15 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 			this.directions = directions;
 			this.enemy = enemy;
 			this.lightRequired = false;
-			this.lightSource = null;
+			this.lightSourceVarbitId = -1;
 		}
 
-		private CoordinateClueInfo(@Nonnull String directions, Enemy enemy, boolean lightRequired, Varbits lightSource)
+		private CoordinateClueInfo(@Nonnull String directions, Enemy enemy, boolean lightRequired, @Varbit int lightSourceVarbitId)
 		{
 			this.directions = directions;
 			this.enemy = enemy;
 			this.lightRequired = lightRequired;
-			this.lightSource = lightSource;
+			this.lightSourceVarbitId = lightSourceVarbitId;
 		}
 	}
 
@@ -257,7 +265,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		final CoordinateClueInfo clueInfo = CLUES.get(location);
 		if (clueInfo != null)
 		{
-			setHasFirePit(clueInfo.getLightSource());
+			setFirePitVarbitId(clueInfo.getLightSourceVarbitId());
 			setRequiresLight(clueInfo.lightRequired);
 			setEnemy(clueInfo.getEnemy());
 		}

@@ -144,7 +144,7 @@ public class FarmingTracker
 			for (FarmingPatch patch : region.getPatches())
 			{
 				// Write the config value if it doesn't match what is current, or it is more than 5 minutes old
-				Varbits varbit = patch.getVarbit();
+				int varbit = patch.getVarbit();
 				String key = patch.configKey();
 				String strVarbit = Integer.toString(client.getVar(varbit));
 				String storedValue = configManager.getRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, key);

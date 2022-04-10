@@ -120,6 +120,7 @@
 								<exclude>net/runelite/api/SoundEffectVolume.class</exclude>
 								<exclude>net/runelite/api/SpriteID.class</exclude>
 								<exclude>net/runelite/api/StructID.class</exclude>
+								<exclude>net/runelite/api/Varbits.class</exclude>
 							</excludes>
 						</configuration>
 					</execution>

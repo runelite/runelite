@@ -199,7 +199,7 @@ public class HerbiboarPlugin extends Plugin
 		{
 			for (TrailToSpot trail : spot.getTrails())
 			{
-				int value = client.getVar(trail.getVarbit());
+				int value = client.getVar(trail.getVarbitId());
 
 				if (value == trail.getValue())
 				{
