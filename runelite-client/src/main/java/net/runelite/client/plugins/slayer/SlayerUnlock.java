@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.vars;
+package net.runelite.client.plugins.slayer;
 
 import net.runelite.api.Client;
 import net.runelite.api.VarPlayer;
@@ -31,7 +31,7 @@ import net.runelite.api.Varbits;
 /**
  * Unlockables in the slayer interface
  */
-public enum SlayerUnlock
+enum SlayerUnlock
 {
 	// Copied from enum 834 in the cache
 	// enum 854 contains if you can disable the unlock
@@ -87,7 +87,7 @@ public enum SlayerUnlock
 	VAMPYRE_EXTEND(49),
 	VAMPYRE_UNLOCK(50);
 
-	private Varbits toggleVarbit;
+	private final Varbits toggleVarbit;
 
 	SlayerUnlock(int index)
 	{
