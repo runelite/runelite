@@ -427,13 +427,13 @@ public class ScreenshotPluginTest
 	{
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", COLLECTION_LOG_CHAT, null, 0);
 
-		when(client.getVar(Varbits.COLLECTION_LOG_NOTIFICATION)).thenReturn(1);
+		when(client.getVarbitValue(Varbits.COLLECTION_LOG_NOTIFICATION)).thenReturn(1);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
 		verify(screenshotPlugin).takeScreenshot("Collection log (Chompy bird hat)", "Collection Log");
 		reset(screenshotPlugin);
 
-		when(client.getVar(Varbits.COLLECTION_LOG_NOTIFICATION)).thenReturn(3);
+		when(client.getVarbitValue(Varbits.COLLECTION_LOG_NOTIFICATION)).thenReturn(3);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
 		verify(screenshotPlugin, never()).takeScreenshot(anyString(), anyString());
@@ -490,7 +490,7 @@ public class ScreenshotPluginTest
 	{
 		when(screenshotConfig.screenshotCombatAchievements()).thenReturn(true);
 
-		when(client.getVar(Varbits.COMBAT_ACHIEVEMENTS_POPUP)).thenReturn(1);
+		when(client.getVarbitValue(Varbits.COMBAT_ACHIEVEMENTS_POPUP)).thenReturn(1);
 
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "",
 			"Congratulations, you've completed an easy combat task: <col=06600c>Handyman</col>.", null, 0);

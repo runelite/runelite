@@ -123,7 +123,7 @@ enum SlayerUnlock
 			{
 				return true;
 			}
-			return client.getVar(toggleVarbit) == 0;
+			return client.getVarbitValue(toggleVarbit) == 0;
 		}
 		return false;
 	}

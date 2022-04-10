@@ -99,7 +99,7 @@ public class CrowdsourcingCooking
 
 			int cookingLevel = client.getBoostedSkillLevel(Skill.COOKING);
 			boolean hasCookingGauntlets = hasCookingGauntlets();
-			boolean kourendElite = client.getVar(Varbits.DIARY_KOUREND_ELITE) == 1;
+			boolean kourendElite = client.getVarbitValue(Varbits.DIARY_KOUREND_ELITE) == 1;
 			CookingData data = new CookingData(message, hasCookingGauntlets, inHosidiusKitchen, kourendElite, lastGameObjectClicked, cookingLevel);
 			manager.storeEvent(data);
 		}

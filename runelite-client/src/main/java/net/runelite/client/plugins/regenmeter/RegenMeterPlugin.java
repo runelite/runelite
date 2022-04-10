@@ -144,7 +144,7 @@ public class RegenMeterPlugin extends Plugin
 			ticksPerHPRegen /= 2;
 		}
 
-		if (client.getVar(Varbits.LEAGUE_RELIC_3) == TRAILBLAZER_LEAGUE_FLUID_STRIKES_RELIC)
+		if (client.getVarbitValue(Varbits.LEAGUE_RELIC_3) == TRAILBLAZER_LEAGUE_FLUID_STRIKES_RELIC)
 		{
 			ticksPerHPRegen /= 4;
 		}

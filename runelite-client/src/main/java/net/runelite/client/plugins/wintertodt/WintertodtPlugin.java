@@ -194,7 +194,7 @@ public class WintertodtPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{
-		int timerValue = client.getVar(Varbits.WINTERTODT_TIMER);
+		int timerValue = client.getVarbitValue(Varbits.WINTERTODT_TIMER);
 		if (timerValue != previousTimerValue)
 		{
 			int timeToNotify = config.roundNotification();

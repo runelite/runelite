@@ -110,8 +110,8 @@ public class KingdomPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		final int coffer = client.getVar(Varbits.KINGDOM_COFFER);
-		final int approval = client.getVar(Varbits.KINGDOM_APPROVAL);
+		final int coffer = client.getVarbitValue(Varbits.KINGDOM_COFFER);
+		final int approval = client.getVarbitValue(Varbits.KINGDOM_APPROVAL);
 
 		if (client.getGameState() == GameState.LOGGED_IN
 			&& isThroneOfMiscellaniaCompleted()

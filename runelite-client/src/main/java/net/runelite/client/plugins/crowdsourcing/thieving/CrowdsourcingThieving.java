@@ -82,10 +82,10 @@ public class CrowdsourcingThieving
 
 	private int getArdougneDiary()
 	{
-		int easy = client.getVar(Varbits.DIARY_ARDOUGNE_EASY);
-		int medium = client.getVar(Varbits.DIARY_ARDOUGNE_MEDIUM);
-		int hard = client.getVar(Varbits.DIARY_ARDOUGNE_HARD);
-		int elite = client.getVar(Varbits.DIARY_ARDOUGNE_ELITE);
+		int easy = client.getVarbitValue(Varbits.DIARY_ARDOUGNE_EASY);
+		int medium = client.getVarbitValue(Varbits.DIARY_ARDOUGNE_MEDIUM);
+		int hard = client.getVarbitValue(Varbits.DIARY_ARDOUGNE_HARD);
+		int elite = client.getVarbitValue(Varbits.DIARY_ARDOUGNE_ELITE);
 		return easy + 2 * medium + 4 * hard + 8 * elite;
 	}
 

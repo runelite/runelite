@@ -171,7 +171,7 @@ public class DailyTasksPlugin extends Plugin
 	{
 		if (client.getAccountType() == AccountType.NORMAL
 			&& client.getVar(VarPlayer.NMZ_REWARD_POINTS) >= HERB_BOX_COST
-			&& (client.getVar(Varbits.DAILY_HERB_BOXES_COLLECTED) < HERB_BOX_MAX
+			&& (client.getVarbitValue(Varbits.DAILY_HERB_BOXES_COLLECTED) < HERB_BOX_MAX
 			|| dailyReset))
 		{
 			sendChatMessage(HERB_BOX_MESSAGE);
@@ -180,8 +180,8 @@ public class DailyTasksPlugin extends Plugin
 
 	private void checkStaves(boolean dailyReset)
 	{
-		if (client.getVar(Varbits.DIARY_VARROCK_EASY) == 1
-			&& (client.getVar(Varbits.DAILY_STAVES_COLLECTED) == 0
+		if (client.getVarbitValue(Varbits.DIARY_VARROCK_EASY) == 1
+			&& (client.getVarbitValue(Varbits.DAILY_STAVES_COLLECTED) == 0
 			|| dailyReset))
 		{
 			sendChatMessage(STAVES_MESSAGE);
@@ -190,8 +190,8 @@ public class DailyTasksPlugin extends Plugin
 
 	private void checkEssence(boolean dailyReset)
 	{
-		if (client.getVar(Varbits.DIARY_ARDOUGNE_MEDIUM) == 1
-			&& (client.getVar(Varbits.DAILY_ESSENCE_COLLECTED) == 0
+		if (client.getVarbitValue(Varbits.DIARY_ARDOUGNE_MEDIUM) == 1
+			&& (client.getVarbitValue(Varbits.DAILY_ESSENCE_COLLECTED) == 0
 			|| dailyReset))
 		{
 			sendChatMessage(ESSENCE_MESSAGE);
@@ -200,8 +200,8 @@ public class DailyTasksPlugin extends Plugin
 
 	private void checkRunes(boolean dailyReset)
 	{
-		if (client.getVar(Varbits.DIARY_WILDERNESS_EASY) == 1
-			&& (client.getVar(Varbits.DAILY_RUNES_COLLECTED) == 0
+		if (client.getVarbitValue(Varbits.DIARY_WILDERNESS_EASY) == 1
+			&& (client.getVarbitValue(Varbits.DAILY_RUNES_COLLECTED) == 0
 			|| dailyReset))
 		{
 			sendChatMessage(RUNES_MESSAGE);
@@ -211,8 +211,8 @@ public class DailyTasksPlugin extends Plugin
 	private void checkSand(boolean dailyReset)
 	{
 		if (client.getAccountType() != AccountType.ULTIMATE_IRONMAN
-			&& client.getVar(Varbits.QUEST_THE_HAND_IN_THE_SAND) >= SAND_QUEST_COMPLETE
-			&& (client.getVar(Varbits.DAILY_SAND_COLLECTED) == 0
+			&& client.getVarbitValue(Varbits.QUEST_THE_HAND_IN_THE_SAND) >= SAND_QUEST_COMPLETE
+			&& (client.getVarbitValue(Varbits.DAILY_SAND_COLLECTED) == 0
 			|| dailyReset))
 		{
 			sendChatMessage(SAND_MESSAGE);
@@ -221,8 +221,8 @@ public class DailyTasksPlugin extends Plugin
 
 	private void checkFlax(boolean dailyReset)
 	{
-		if (client.getVar(Varbits.DIARY_KANDARIN_EASY) == 1
-			&& (client.getVar(Varbits.DAILY_FLAX_STATE) == 0
+		if (client.getVarbitValue(Varbits.DIARY_KANDARIN_EASY) == 1
+			&& (client.getVarbitValue(Varbits.DAILY_FLAX_STATE) == 0
 			|| dailyReset))
 		{
 			sendChatMessage(FLAX_MESSAGE);
@@ -231,8 +231,8 @@ public class DailyTasksPlugin extends Plugin
 
 	private void checkArrows(boolean dailyReset)
 	{
-		if (client.getVar(Varbits.DIARY_WESTERN_EASY) == 1
-			&& (client.getVar(Varbits.DAILY_ARROWS_STATE) == 0
+		if (client.getVarbitValue(Varbits.DIARY_WESTERN_EASY) == 1
+			&& (client.getVarbitValue(Varbits.DAILY_ARROWS_STATE) == 0
 			|| dailyReset))
 		{
 			sendChatMessage(ARROWS_MESSAGE);
@@ -241,14 +241,14 @@ public class DailyTasksPlugin extends Plugin
 
 	private void checkBonemeal(boolean dailyReset)
 	{
-		if (client.getVar(Varbits.DIARY_MORYTANIA_MEDIUM) == 1)
+		if (client.getVarbitValue(Varbits.DIARY_MORYTANIA_MEDIUM) == 1)
 		{
-			int collected = client.getVar(Varbits.DAILY_BONEMEAL_STATE);
+			int collected = client.getVarbitValue(Varbits.DAILY_BONEMEAL_STATE);
 			int max = BONEMEAL_PER_DIARY;
-			if (client.getVar(Varbits.DIARY_MORYTANIA_HARD) == 1)
+			if (client.getVarbitValue(Varbits.DIARY_MORYTANIA_HARD) == 1)
 			{
 				max += BONEMEAL_PER_DIARY;
-				if (client.getVar(Varbits.DIARY_MORYTANIA_ELITE) == 1)
+				if (client.getVarbitValue(Varbits.DIARY_MORYTANIA_ELITE) == 1)
 				{
 					max += BONEMEAL_PER_DIARY;
 				}
@@ -262,8 +262,8 @@ public class DailyTasksPlugin extends Plugin
 
 	private void checkDynamite(boolean dailyReset)
 	{
-		if (client.getVar(Varbits.DIARY_KOUREND_MEDIUM) == 1
-			&& (client.getVar(Varbits.DAILY_DYNAMITE_COLLECTED) == 0
+		if (client.getVarbitValue(Varbits.DIARY_KOUREND_MEDIUM) == 1
+			&& (client.getVarbitValue(Varbits.DAILY_DYNAMITE_COLLECTED) == 0
 			|| dailyReset))
 		{
 			sendChatMessage(DYNAMITE_MESSAGE);

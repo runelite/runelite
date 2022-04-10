@@ -131,7 +131,7 @@ public class WikiPlugin extends Plugin
 		children[0] = null;
 
 		Widget vanilla = client.getWidget(WidgetInfo.MINIMAP_WIKI_BANNER);
-		if (vanilla != null && client.getVar(Varbits.WIKI_ENTITY_LOOKUP) == 0)
+		if (vanilla != null && client.getVarbitValue(Varbits.WIKI_ENTITY_LOOKUP) == 0)
 		{
 			vanilla.setHidden(false);
 		}
@@ -157,7 +157,7 @@ public class WikiPlugin extends Plugin
 			return;
 		}
 
-		if (client.getVar(Varbits.WIKI_ENTITY_LOOKUP) == 1) // disabled
+		if (client.getVarbitValue(Varbits.WIKI_ENTITY_LOOKUP) == 1) // disabled
 		{
 			// when the wiki entity lookup option is disabled the banner parent layer,
 			// which is used for var transmit events, is not positioned. This is copied

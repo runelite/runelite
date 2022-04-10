@@ -431,13 +431,13 @@ public class ClueScrollPlugin extends Plugin
 		List<Item> items = new ArrayList<>(RUNEPOUCH_AMOUNT_VARBITS.length);
 		for (int i = 0; i < RUNEPOUCH_AMOUNT_VARBITS.length; i++)
 		{
-			int amount = client.getVar(RUNEPOUCH_AMOUNT_VARBITS[i]);
+			int amount = client.getVarbitValue(RUNEPOUCH_AMOUNT_VARBITS[i]);
 			if (amount <= 0)
 			{
 				continue;
 			}
 
-			int varbId = client.getVar(RUNEPOUCH_RUNE_VARBITS[i]);
+			int varbId = client.getVarbitValue(RUNEPOUCH_RUNE_VARBITS[i]);
 			RunepouchRune rune = RunepouchRune.getRune(varbId);
 			if (rune == null)
 			{

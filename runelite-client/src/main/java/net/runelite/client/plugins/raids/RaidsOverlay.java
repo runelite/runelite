@@ -206,7 +206,7 @@ class RaidsOverlay extends OverlayPanel
 		if (plugin.isInRaidChambers())
 		{
 			// If the raid has started
-			if (client.getVar(Varbits.RAID_STATE) > 0)
+			if (client.getVarbitValue(Varbits.RAID_STATE) > 0)
 			{
 				if (client.getPlane() == OLM_PLANE)
 				{

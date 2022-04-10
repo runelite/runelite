@@ -171,8 +171,8 @@ public class FairyRingPlugin extends Plugin
 			String destination;
 			try
 			{
-				FairyRings fairyRingDestination = getFairyRingDestination(client.getVar(Varbits.FAIRY_RING_DIAL_ADCB),
-					client.getVar(Varbits.FAIRY_RIGH_DIAL_ILJK), client.getVar(Varbits.FAIRY_RING_DIAL_PSRQ));
+				FairyRings fairyRingDestination = getFairyRingDestination(client.getVarbitValue(Varbits.FAIRY_RING_DIAL_ADCB),
+					client.getVarbitValue(Varbits.FAIRY_RIGH_DIAL_ILJK), client.getVarbitValue(Varbits.FAIRY_RING_DIAL_PSRQ));
 				destination = fairyRingDestination.getDestination();
 			}
 			catch (IllegalArgumentException ex)

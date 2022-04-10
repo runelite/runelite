@@ -826,7 +826,7 @@ public class MusicPlugin extends Plugin
 				int raw = client.getVar(var);
 				if (raw == 0)
 				{
-					raw = -client.getVar(mutedVarbitId);
+					raw = -client.getVarbitValue(mutedVarbitId);
 				}
 				value = raw * this.max / 100;
 

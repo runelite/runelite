@@ -90,14 +90,14 @@ public class RunepouchOverlay extends WidgetItemOverlay
 		for (int i = 0; i < AMOUNT_VARBITS.length; i++)
 		{
 			@Varbit int amountVarbit = AMOUNT_VARBITS[i];
-			int amount = client.getVar(amountVarbit);
+			int amount = client.getVarbitValue(amountVarbit);
 			if (amount <= 0)
 			{
 				continue;
 			}
 
 			@Varbit int runeVarbit = RUNE_VARBITS[i];
-			int runeId = client.getVar(runeVarbit);
+			int runeId = client.getVarbitValue(runeVarbit);
 			RunepouchRune rune = RunepouchRune.getRune(runeId);
 			if (rune == null)
 			{

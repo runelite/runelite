@@ -171,7 +171,7 @@ public class PyramidPlunderPlugin extends Plugin
 		{
 			if (timer == null)
 			{
-				int ppTimer = client.getVar(Varbits.PYRAMID_PLUNDER_TIMER);
+				int ppTimer = client.getVarbitValue(Varbits.PYRAMID_PLUNDER_TIMER);
 				Duration remaining = PYRAMID_PLUNDER_DURATION.minus(ppTimer, RSTimeUnit.GAME_TICKS);
 				timer = new PyramidPlunderTimer(remaining, itemManager.getImage(PHARAOHS_SCEPTRE), this,
 					config, client);
@@ -217,6 +217,6 @@ public class PyramidPlunderPlugin extends Plugin
 	{
 		return client.getLocalPlayer() != null
 			&& PYRAMID_PLUNDER_REGION == client.getLocalPlayer().getWorldLocation().getRegionID()
-			&& client.getVar(Varbits.PYRAMID_PLUNDER_TIMER) > 0;
+			&& client.getVarbitValue(Varbits.PYRAMID_PLUNDER_TIMER) > 0;
 	}
 }

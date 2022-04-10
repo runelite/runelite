@@ -778,8 +778,18 @@ public interface Client extends OAuthApi, GameEngine
 	 *
 	 * @param varbit the varbit id
 	 * @return the value
+	 * @see Client#getVarbitValue(int)
 	 */
+	@Deprecated
 	int getVar(@Varbit int varbit);
+
+	/**
+	 * Gets a value corresponding to the passed varbit.
+	 *
+	 * @param varbit the varbit id
+	 * @return the value
+	 */
+	int getVarbitValue(@Varbit int varbit);
 
 	/**
 	 * Gets an int value corresponding to the passed variable.
@@ -805,15 +815,6 @@ public interface Client extends OAuthApi, GameEngine
 	 */
 	@VisibleForExternalPlugins
 	int getVarpValue(int varpId);
-
-	/**
-	 * Gets the value of a given Varbit.
-	 *
-	 * @param varbitId the varbit id
-	 * @return the value
-	 */
-	@VisibleForExternalPlugins
-	int getVarbitValue(@Varbit int varbitId);
 
 	/**
 	 * Gets the value of a given VarClientInt

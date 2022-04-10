@@ -198,8 +198,8 @@ public class DriftNetPlugin extends Plugin
 
 		for (DriftNet net : NETS)
 		{
-			DriftNetStatus status = DriftNetStatus.of(client.getVar(net.getStatusVarbit()));
-			int count = client.getVar(net.getCountVarbit());
+			DriftNetStatus status = DriftNetStatus.of(client.getVarbitValue(net.getStatusVarbit()));
+			int count = client.getVarbitValue(net.getCountVarbit());
 
 			net.setStatus(status);
 			net.setCount(count);

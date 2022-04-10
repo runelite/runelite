@@ -216,10 +216,10 @@ public class ClueScrollPluginTest
 		when(container.getItems()).thenReturn(inventory);
 		when(container.contains(ItemID.RUNE_POUCH)).thenReturn(true);
 
-		when(client.getVar(Varbits.RUNE_POUCH_RUNE1)).thenReturn(9); // Cosmic Rune
-		when(client.getVar(Varbits.RUNE_POUCH_AMOUNT1)).thenReturn(20);
-		when(client.getVar(Varbits.RUNE_POUCH_RUNE3)).thenReturn(4); // Fire Rune
-		when(client.getVar(Varbits.RUNE_POUCH_AMOUNT3)).thenReturn(4000);
+		when(client.getVarbitValue(Varbits.RUNE_POUCH_RUNE1)).thenReturn(9); // Cosmic Rune
+		when(client.getVarbitValue(Varbits.RUNE_POUCH_AMOUNT1)).thenReturn(20);
+		when(client.getVarbitValue(Varbits.RUNE_POUCH_RUNE3)).thenReturn(4); // Fire Rune
+		when(client.getVarbitValue(Varbits.RUNE_POUCH_AMOUNT3)).thenReturn(4000);
 
 		plugin.onItemContainerChanged(event);
 
