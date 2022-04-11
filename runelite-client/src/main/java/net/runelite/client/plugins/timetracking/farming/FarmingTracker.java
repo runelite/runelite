@@ -42,7 +42,6 @@ import net.runelite.api.GameState;
 import net.runelite.api.Varbits;
 import net.runelite.api.WidgetNode;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.vars.Autoweed;
 import net.runelite.api.widgets.WidgetModalMode;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
