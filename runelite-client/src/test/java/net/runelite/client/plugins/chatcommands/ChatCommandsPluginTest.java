@@ -182,7 +182,7 @@ public class ChatCommandsPluginTest
 
 		verify(configManager).setRSProfileConfiguration("killcount", "theatre of blood", 73);
 		verify(configManager).setRSProfileConfiguration("personalbest", "theatre of blood", 17 * 60 + .2);
-		verify(configManager).setRSProfileConfiguration("personalbest", "theatre of blood 2 player", 17 * 60 + .2);
+		verify(configManager).setRSProfileConfiguration("personalbest", "theatre of blood 2 players", 17 * 60 + .2);
 	}
 
 	@Test

@@ -400,7 +400,7 @@ public class ChatCommandsPlugin extends Plugin
 				{
 					// TOB team size isn't sent in the kill message, but can be computed from varbits
 					int tobTeamSize = tobTeamSize();
-					lastTeamSize = tobTeamSize == 1 ? "Solo" : (tobTeamSize + " player");
+					lastTeamSize = tobTeamSize == 1 ? "Solo" : (tobTeamSize + " players");
 				}
 
 				final double pb = getPb(renamedBoss);
@@ -2065,13 +2065,13 @@ public class ChatCommandsPlugin extends Plugin
 				return "Theatre of Blood Solo";
 			case "tob 2":
 			case "tob duo":
-				return "Theatre of Blood 2 player";
+				return "Theatre of Blood 2 players";
 			case "tob 3":
-				return "Theatre of Blood 3 player";
+				return "Theatre of Blood 3 players";
 			case "tob 4":
-				return "Theatre of Blood 4 player";
+				return "Theatre of Blood 4 players";
 			case "tob 5":
-				return "Theatre of Blood 5 player";
+				return "Theatre of Blood 5 players";
 
 			// Theatre of Blood Entry Mode
 			case "theatre of blood: story mode":
@@ -2097,13 +2097,13 @@ public class ChatCommandsPlugin extends Plugin
 				return "Theatre of Blood Hard Mode Solo";
 			case "hmt 2":
 			case "hmt duo":
-				return "Theatre of Blood Hard Mode 2 player";
+				return "Theatre of Blood Hard Mode 2 players";
 			case "hmt 3":
-				return "Theatre of Blood Hard Mode 3 player";
+				return "Theatre of Blood Hard Mode 3 players";
 			case "hmt 4":
-				return "Theatre of Blood Hard Mode 4 player";
+				return "Theatre of Blood Hard Mode 4 players";
 			case "hmt 5":
-				return "Theatre of Blood Hard Mode 5 player";
+				return "Theatre of Blood Hard Mode 5 players";
 
 			// The Gauntlet
 			case "gaunt":
