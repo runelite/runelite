@@ -899,7 +899,7 @@ public class TimersPlugin extends Plugin
 	{
 		final GameTimer teleport;
 		final int time;
-		switch(varPlayer)
+		switch (varPlayer)
 		{
 			case LAST_HOME_TELEPORT:
 				teleport = HOME_TELEPORT;
