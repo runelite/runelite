@@ -41,7 +41,8 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @PluginDescriptor(
 	name = "Mage Training Arena",
 	description = "Show helpful information for the Mage Training Arena minigame",
-	tags = {"mta", "magic", "minigame", "overlay"}
+	tags = {"mta", "magic", "minigame", "overlay"},
+	enabledByDefault = false
 )
 public class MTAPlugin extends Plugin
 {
