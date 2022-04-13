@@ -107,7 +107,6 @@ class DevToolsPanel extends PluginPanel
 		container.add(plugin.getWalls());
 		container.add(plugin.getDecorations());
 
-		container.add(plugin.getInventory());
 		container.add(plugin.getProjectiles());
 
 		container.add(plugin.getLocation());
