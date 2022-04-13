@@ -471,11 +471,11 @@ public class Notifier
 				return;
 			}
 		}
-
-		// Using loop instead of start + setFramePosition prevents a the clip
+		// Using loop instead of start + setFramePosition prevents the clip
 		// from not being played sometimes, presumably a race condition in the
 		// underlying line driver
-		clip.loop(1);
+		clip.setFramePosition(0);
+		clip.loop(0);
 	}
 
 	private boolean tryLoadNotification()
