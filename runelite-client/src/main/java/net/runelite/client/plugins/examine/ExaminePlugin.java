@@ -40,7 +40,6 @@ import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
-import static net.runelite.api.widgets.WidgetInfo.SEED_VAULT_ITEM_CONTAINER;
 import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.api.widgets.WidgetItem;
@@ -126,7 +125,7 @@ public class ExaminePlugin extends Plugin
 				break;
 			case CC_OP_LOW_PRIORITY:
 			{
-				type = ExamineType.ITEM_BANK_EQ;
+				type = ExamineType.IF3_ITEM;
 				int[] qi = findItemFromWidget(event.getParam1(), event.getParam0());
 				if (qi == null)
 				{
@@ -173,7 +172,7 @@ public class ExaminePlugin extends Plugin
 				type = ExamineType.NPC;
 				break;
 			case GAMEMESSAGE:
-				type = ExamineType.ITEM_BANK_EQ;
+				type = ExamineType.IF3_ITEM;
 				break;
 			default:
 				return;
@@ -197,7 +196,7 @@ public class ExaminePlugin extends Plugin
 		log.debug("Got examine for {} {}: {}", pendingExamine.getType(), pendingExamine.getId(), event.getMessage());
 
 		// If it is an item, show the price of it
-		if (pendingExamine.getType() == ExamineType.ITEM || pendingExamine.getType() == ExamineType.ITEM_BANK_EQ)
+		if (pendingExamine.getType() == ExamineType.ITEM || pendingExamine.getType() == ExamineType.IF3_ITEM)
 		{
 			final int itemId = pendingExamine.getId();
 			final int itemQuantity = pendingExamine.getQuantity();
@@ -212,12 +211,10 @@ public class ExaminePlugin extends Plugin
 		}
 	}
 
-	private int[] findItemFromWidget(int widgetId, int actionParam)
+	private int[] findItemFromWidget(int widgetId, int childIdx)
 	{
-		int widgetGroup = TO_GROUP(widgetId);
-		int widgetChild = TO_CHILD(widgetId);
-		Widget widget = client.getWidget(widgetGroup, widgetChild);
-
+		final int widgetGroup = TO_GROUP(widgetId);
+		final Widget widget = client.getWidget(widgetId);
 		if (widget == null)
 		{
 			return null;
@@ -239,42 +236,18 @@ public class ExaminePlugin extends Plugin
 				return new int[]{widgetItem.getItemQuantity(), widgetItem.getItemId()};
 			}
 		}
-		else if (WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getGroupId() == widgetGroup
-			|| WidgetInfo.RUNE_POUCH_ITEM_CONTAINER.getGroupId() == widgetGroup)
-		{
-			Widget widgetItem = widget.getChild(actionParam);
-			if (widgetItem != null)
-			{
-				return new int[]{widgetItem.getItemQuantity(), widgetItem.getItemId()};
-			}
-		}
-		else if (WidgetInfo.BANK_ITEM_CONTAINER.getGroupId() == widgetGroup
-			|| WidgetInfo.CLUE_SCROLL_REWARD_ITEM_CONTAINER.getGroupId() == widgetGroup
-			|| WidgetInfo.LOOTING_BAG_CONTAINER.getGroupId() == widgetGroup
-			|| WidgetID.SEED_VAULT_INVENTORY_GROUP_ID == widgetGroup
-			|| WidgetID.SEED_BOX_GROUP_ID == widgetGroup
-			|| WidgetID.PLAYER_TRADE_SCREEN_GROUP_ID == widgetGroup
-			|| WidgetID.PLAYER_TRADE_INVENTORY_GROUP_ID == widgetGroup
-			|| WidgetID.POH_TREASURE_CHEST_INVENTORY_GROUP_ID == widgetGroup)
-		{
-			Widget widgetItem = widget.getChild(actionParam);
-			if (widgetItem != null)
-			{
-				return new int[]{widgetItem.getItemQuantity(), widgetItem.getItemId()};
-			}
-		}
 		else if (WidgetID.SHOP_GROUP_ID == widgetGroup)
 		{
-			Widget widgetItem = widget.getChild(actionParam);
+			Widget widgetItem = widget.getChild(childIdx);
 			if (widgetItem != null)
 			{
 				return new int[]{1, widgetItem.getItemId()};
 			}
 		}
-		else if (WidgetID.SEED_VAULT_GROUP_ID == widgetGroup)
+		else
 		{
-			Widget widgetItem = client.getWidget(SEED_VAULT_ITEM_CONTAINER).getChild(actionParam);
-			if (widgetItem != null)
+			Widget widgetItem = widget.getChild(childIdx);
+			if (widgetItem != null && widgetItem.getItemId() > -1)
 			{
 				return new int[]{widgetItem.getItemQuantity(), widgetItem.getItemId()};
 			}

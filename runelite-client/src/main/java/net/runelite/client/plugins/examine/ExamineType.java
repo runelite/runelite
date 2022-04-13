@@ -24,10 +24,10 @@
  */
 package net.runelite.client.plugins.examine;
 
-public enum ExamineType
+enum ExamineType
 {
 	ITEM,
-	ITEM_BANK_EQ,
+	IF3_ITEM,
 	NPC,
 	OBJECT;
 }
