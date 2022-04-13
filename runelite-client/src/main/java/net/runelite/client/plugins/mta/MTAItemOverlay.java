@@ -24,38 +24,31 @@
  */
 package net.runelite.client.plugins.mta;
 
-import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
-import net.runelite.client.ui.FontManager;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayLayer;
-import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.api.widgets.WidgetItem;
+import net.runelite.client.ui.overlay.WidgetItemOverlay;
 
-public class MTAInventoryOverlay extends Overlay
+class MTAItemOverlay extends WidgetItemOverlay
 {
 	private final MTAPlugin plugin;
 
 	@Inject
-	public MTAInventoryOverlay(MTAPlugin plugin)
+	public MTAItemOverlay(MTAPlugin plugin)
 	{
 		this.plugin = plugin;
-		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.ABOVE_WIDGETS);
+		showOnInventory();
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics)
+	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem widgetItem)
 	{
 		for (MTARoom room : plugin.getRooms())
 		{
 			if (room.inside())
 			{
-				graphics.setFont(FontManager.getRunescapeBoldFont());
-				room.over(graphics);
+				room.renderItemOverlay(graphics, itemId, widgetItem);
 			}
 		}
-
-		return null;
 	}
 }

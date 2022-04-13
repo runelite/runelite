@@ -62,7 +62,7 @@ public class MTAPlugin extends Plugin
 	@Inject
 	private MTASceneOverlay sceneOverlay;
 	@Inject
-	private MTAInventoryOverlay inventoryOverlay;
+	private MTAItemOverlay itemOverlay;
 
 	@Getter(AccessLevel.PROTECTED)
 	private MTARoom[] rooms;
@@ -77,7 +77,7 @@ public class MTAPlugin extends Plugin
 	public void startUp()
 	{
 		overlayManager.add(sceneOverlay);
-		overlayManager.add(inventoryOverlay);
+		overlayManager.add(itemOverlay);
 
 		this.rooms = new MTARoom[]{alchemyRoom, graveyardRoom, telekineticRoom, enchantmentRoom};
 
@@ -91,7 +91,7 @@ public class MTAPlugin extends Plugin
 	public void shutDown()
 	{
 		overlayManager.remove(sceneOverlay);
-		overlayManager.remove(inventoryOverlay);
+		overlayManager.remove(itemOverlay);
 
 		for (MTARoom room : rooms)
 		{
