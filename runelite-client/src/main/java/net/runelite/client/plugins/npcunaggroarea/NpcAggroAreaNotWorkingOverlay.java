@@ -37,6 +37,9 @@ class NpcAggroAreaNotWorkingOverlay extends OverlayPanel
 	private final NpcAggroAreaPlugin plugin;
 
 	@Inject
+	private NpcAggroAreaConfig config;
+
+	@Inject
 	private NpcAggroAreaNotWorkingOverlay(NpcAggroAreaPlugin plugin)
 	{
 		this.plugin = plugin;
@@ -53,7 +56,7 @@ class NpcAggroAreaNotWorkingOverlay extends OverlayPanel
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (plugin.getSafeCenters()[1] != null)
+		if (config.hideWarning() || plugin.getSafeCenters()[1] != null)
 		{
 			return null;
 		}

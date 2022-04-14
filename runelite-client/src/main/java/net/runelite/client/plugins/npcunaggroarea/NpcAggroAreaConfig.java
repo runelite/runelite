@@ -128,4 +128,15 @@ public interface NpcAggroAreaConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+			keyName = "hideWarning",
+			name = "Hide warning",
+			description = "Hides warning for plugin not working.",
+			position = 9
+	)
+	default boolean hideWarning()
+	{
+		return false;
+	}
 }
