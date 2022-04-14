@@ -130,10 +130,10 @@ public interface NpcAggroAreaConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "hideWarning",
-			name = "Hide warning",
-			description = "Hides warning for plugin not working.",
-			position = 9
+		keyName = "hideWarning",
+		name = "Hide warning",
+		description = "Hides warning for plugin not working.",
+		position = 9
 	)
 	default boolean hideWarning()
 	{
