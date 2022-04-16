@@ -199,7 +199,7 @@ public class ClientLoader implements Supplier<Applet>
 
 	private RSConfig downloadConfig() throws IOException
 	{
-		HttpUrl url = HttpUrl.parse(javConfigUrl);
+		HttpUrl url = HttpUrl.get(javConfigUrl);
 		IOException err = null;
 		for (int attempt = 0; attempt < NUM_ATTEMPTS; attempt++)
 		{
@@ -249,7 +249,7 @@ public class ClientLoader implements Supplier<Applet>
 	@Nonnull
 	private RSConfig downloadFallbackConfig() throws IOException
 	{
-		RSConfig backupConfig = clientConfigLoader.fetch(HttpUrl.parse(RuneLiteProperties.getJavConfigBackup()));
+		RSConfig backupConfig = clientConfigLoader.fetch(HttpUrl.get(RuneLiteProperties.getJavConfigBackup()));
 
 		if (Strings.isNullOrEmpty(backupConfig.getCodeBase()) || Strings.isNullOrEmpty(backupConfig.getInitialJar()) || Strings.isNullOrEmpty(backupConfig.getInitialClass()))
 		{
@@ -319,13 +319,13 @@ public class ClientLoader implements Supplier<Applet>
 			if (config.isFallback())
 			{
 				// If we are using the backup config, use our own gamepack and ignore the codebase
-				url = HttpUrl.parse(config.getRuneLiteGamepack());
+				url = HttpUrl.get(config.getRuneLiteGamepack());
 			}
 			else
 			{
 				String codebase = config.getCodeBase();
 				String initialJar = config.getInitialJar();
-				url = HttpUrl.parse(codebase + initialJar);
+				url = HttpUrl.get(codebase + initialJar);
 			}
 
 			for (int attempt = 0; ; attempt++)
