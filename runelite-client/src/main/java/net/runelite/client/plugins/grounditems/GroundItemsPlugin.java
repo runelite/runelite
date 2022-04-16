@@ -703,7 +703,7 @@ public class GroundItemsPlugin extends Plugin
 				return;
 			}
 
-			final Item clickedItem = inventory.getItem(menuOptionClicked.getSelectedItemIndex());
+			final Item clickedItem = inventory.getItem(client.getSelectedItemIndex());
 			if (clickedItem == null)
 			{
 				return;
