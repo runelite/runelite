@@ -26,8 +26,11 @@ package net.runelite.client.menus;
 
 import java.util.function.Consumer;
 import lombok.EqualsAndHashCode;
+import lombok.Setter;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.widgets.Widget;
+import org.jetbrains.annotations.Nullable;
 
 @EqualsAndHashCode
 public class TestMenuEntry implements MenuEntry
@@ -39,6 +42,8 @@ public class TestMenuEntry implements MenuEntry
 	private int param0;
 	private int param1;
 	private boolean forceLeftClick;
+	@Setter
+	private Widget widget;
 
 	@Override
 	public String getOption()
@@ -162,5 +167,12 @@ public class TestMenuEntry implements MenuEntry
 	public MenuEntry onClick(Consumer<MenuEntry> callback)
 	{
 		return this;
+	}
+
+	@Nullable
+	@Override
+	public Widget getWidget()
+	{
+		return widget;
 	}
 }

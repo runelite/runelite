@@ -25,6 +25,8 @@
 package net.runelite.api;
 
 import java.util.function.Consumer;
+import javax.annotation.Nullable;
+import net.runelite.api.widgets.Widget;
 
 /**
  * A menu entry in a right-click menu.
@@ -92,4 +94,12 @@ public interface MenuEntry
 	 * @return
 	 */
 	MenuEntry onClick(Consumer<MenuEntry> callback);
+
+	/**
+	 * Get the widget this menu entry is on, if this is a menu entry
+	 * with an associated widget. Such as eg, CC_OP.
+	 * @return
+	 */
+	@Nullable
+	Widget getWidget();
 }
