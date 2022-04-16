@@ -37,7 +37,6 @@ import net.runelite.api.GraphicID;
 import net.runelite.api.ItemID;
 import net.runelite.api.SpriteID;
 import net.runelite.client.util.ImageUtil;
-
 import static net.runelite.client.util.RSTimeUnit.GAME_TICKS;
 
 @Getter(AccessLevel.PACKAGE)
