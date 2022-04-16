@@ -27,7 +27,6 @@
 package net.runelite.client.plugins.timers;
 
 import com.google.inject.Provides;
-
 import java.time.Duration;
 import java.time.Instant;
 import java.util.regex.Matcher;
@@ -44,7 +43,6 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
-
 import static net.runelite.api.ItemID.FIRE_CAPE;
 import static net.runelite.api.ItemID.INFERNAL_CAPE;
 import net.runelite.api.NPC;
@@ -53,7 +51,6 @@ import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
-
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.AnimationChanged;
