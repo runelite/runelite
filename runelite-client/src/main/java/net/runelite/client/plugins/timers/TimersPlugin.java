@@ -27,30 +27,20 @@
 package net.runelite.client.plugins.timers;
 
 import com.google.inject.Provides;
+
+import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Actor;
-import net.runelite.api.AnimationID;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
-import net.runelite.api.Constants;
-import net.runelite.api.EquipmentInventorySlot;
-import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
-import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
+import net.runelite.api.*;
+
 import static net.runelite.api.ItemID.FIRE_CAPE;
 import static net.runelite.api.ItemID.INFERNAL_CAPE;
-import net.runelite.api.NPC;
-import net.runelite.api.NpcID;
-import net.runelite.api.Player;
-import net.runelite.api.Skill;
-import net.runelite.api.VarPlayer;
-import net.runelite.api.Varbits;
+
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.AnimationChanged;
@@ -74,6 +64,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import static net.runelite.client.plugins.timers.GameIndicator.VENGEANCE_ACTIVE;
 import static net.runelite.client.plugins.timers.GameTimer.*;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.RSTimeUnit;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -762,7 +753,15 @@ public class TimersPlugin extends Plugin
 			}
 			else if (message.endsWith(DEATH_CHARGE_MESSAGE))
 			{
+//				final BufferedImage deathChargeImage = spriteManager.getSprite(SpriteID.SPELL_DEATH_CHARGE, 0);
+//				final BufferedImage test = ImageUtil.alphaOffset(deathChargeImage, 100);
+//
+//				GameTimer gt = GameTimer(OVERLOAD(ItemID.OVERLOAD_4, GameTimerImageType.ITEM, "Overload", 5, ChronoUnit.MINUTES, true));
+//
+//				createGameTimer();
+
 				createGameTimer(DEATH_CHARGE_COOLDOWN);
+
 			}
 			else if (message.endsWith(WARD_OF_ARCEUUS_MESSAGE))
 			{
@@ -1133,6 +1132,9 @@ public class TimersPlugin extends Plugin
 				break;
 			case ITEM:
 				t.setImage(itemManager.getImage(timer.getImageId()));
+				break;
+			case RESOURCE:
+				t.setImage(timer.getImage());
 				break;
 		}
 		t.setTooltip(timer.getDescription());
