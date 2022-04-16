@@ -281,7 +281,7 @@ public interface TimersConfig extends Config
 	)
 	default boolean showArceuusCooldown()
 	{
-		return false;
+		return true;
 	}
 
 	@ConfigItem(
