@@ -1902,6 +1902,13 @@ public interface Client extends OAuthApi, GameEngine
 	int getSelectedItemIndex();
 
 	/**
+	 * Get the selected widget, such as a selected spell or selected item (eg. "Use")
+	 * @return the selected widget
+	 */
+	@Nullable
+	Widget getSelectedWidget();
+
+	/**
 	 * Returns client item composition cache
 	 */
 	NodeCache getItemCompositionCache();

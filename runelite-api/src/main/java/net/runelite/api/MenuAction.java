@@ -139,6 +139,7 @@ public enum MenuAction
 	WIDGET_TYPE_1(24),
 	/**
 	 * Select the widget for targeting other widgets/entites etc.
+	 * @see Client#getSelectedWidget()
 	 */
 	WIDGET_TARGET(25),
 	/**
