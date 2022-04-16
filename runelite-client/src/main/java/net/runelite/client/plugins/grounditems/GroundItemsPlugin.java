@@ -485,7 +485,7 @@ public class GroundItemsPlugin extends Plugin
 		MenuAction type = MenuAction.of(event.getType());
 		if (type == MenuAction.GROUND_ITEM_FIRST_OPTION || type == MenuAction.GROUND_ITEM_SECOND_OPTION ||
 			type == MenuAction.GROUND_ITEM_THIRD_OPTION || type == MenuAction.GROUND_ITEM_FOURTH_OPTION ||
-			type == MenuAction.GROUND_ITEM_FIFTH_OPTION || type == MenuAction.SPELL_CAST_ON_GROUND_ITEM)
+			type == MenuAction.GROUND_ITEM_FIFTH_OPTION || type == MenuAction.WIDGET_TARGET_ON_GROUND_ITEM)
 		{
 			final int itemId = event.getIdentifier();
 			final int sceneX = event.getActionParam0();

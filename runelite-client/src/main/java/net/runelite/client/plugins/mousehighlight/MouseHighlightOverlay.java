@@ -49,13 +49,13 @@ class MouseHighlightOverlay extends Overlay
 	 */
 	private static final Set<MenuAction> WIDGET_MENU_ACTIONS = ImmutableSet.of(
 		MenuAction.WIDGET_TYPE_1,
-		MenuAction.WIDGET_TYPE_2,
-		MenuAction.WIDGET_TYPE_3,
+		MenuAction.WIDGET_TARGET,
+		MenuAction.WIDGET_CLOSE,
 		MenuAction.WIDGET_TYPE_4,
 		MenuAction.WIDGET_TYPE_5,
-		MenuAction.WIDGET_TYPE_6,
-		MenuAction.ITEM_USE_ON_WIDGET_ITEM,
-		MenuAction.ITEM_USE_ON_WIDGET,
+		MenuAction.WIDGET_CONTINUE,
+		MenuAction.ITEM_USE_ON_ITEM,
+		MenuAction.WIDGET_USE_ON_ITEM,
 		MenuAction.ITEM_FIRST_OPTION,
 		MenuAction.ITEM_SECOND_OPTION,
 		MenuAction.ITEM_THIRD_OPTION,
@@ -68,7 +68,7 @@ class MouseHighlightOverlay extends Overlay
 		MenuAction.WIDGET_FOURTH_OPTION,
 		MenuAction.WIDGET_FIFTH_OPTION,
 		MenuAction.EXAMINE_ITEM,
-		MenuAction.SPELL_CAST_ON_WIDGET,
+		MenuAction.WIDGET_TARGET_ON_WIDGET,
 		MenuAction.CC_OP_LOW_PRIORITY,
 		MenuAction.CC_OP
 	);
