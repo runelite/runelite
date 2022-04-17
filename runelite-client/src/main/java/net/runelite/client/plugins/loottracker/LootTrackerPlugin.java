@@ -85,6 +85,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.WidgetLoaded;
@@ -164,6 +165,7 @@ public class LootTrackerPlugin extends Plugin
 	private static final String GRUBBY_CHEST_LOOTED_MESSAGE = "You have opened the Grubby Chest";
 	private static final Pattern HAM_CHEST_LOOTED_PATTERN = Pattern.compile("Your (?<key>[a-z]+) key breaks in the lock.*");
 	private static final int HAM_STOREROOM_REGION = 10321;
+	private static final int CORRUPTED_GAUNTLET_REGION = 7768;
 	private static final Map<Integer, String> CHEST_EVENT_TYPES = new ImmutableMap.Builder<Integer, String>().
 		put(5179, "Brimstone Chest").
 		put(11573, "Crystal Chest").
@@ -339,6 +341,8 @@ public class LootTrackerPlugin extends Plugin
 
 	private boolean chestLooted;
 	private String lastPickpocketTarget;
+	private int currentRegion = -1;
+	private int lastRegion = -1;
 
 	private List<String> ignoredItems = new ArrayList<>();
 	private List<String> ignoredEvents = new ArrayList<>();
@@ -568,6 +572,8 @@ public class LootTrackerPlugin extends Plugin
 		clientToolbar.removeNavigation(navButton);
 		lootTrackerClient.setUuid(null);
 		chestLooted = false;
+		currentRegion = -1;
+		lastRegion = -1;
 	}
 
 	@Subscribe
@@ -783,7 +789,14 @@ public class LootTrackerPlugin extends Plugin
 				return;
 			}
 
-			onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, CHEST_EVENT_TYPES.get(regionID)));
+			String chestEvent = CHEST_EVENT_TYPES.get(regionID);
+
+			if ("The Gauntlet".equals(chestEvent) && lastRegion == CORRUPTED_GAUNTLET_REGION)
+			{
+				chestEvent = "The Corrupted Gauntlet";
+			}
+
+			onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, chestEvent));
 			return;
 		}
 
@@ -1035,6 +1048,17 @@ public class LootTrackerPlugin extends Plugin
 		if (commandExecuted.getCommand().equals("importloot"))
 		{
 			SwingUtilities.invokeLater(this::importLoot);
+		}
+	}
+
+	@Subscribe
+	void onGameTick(GameTick event)
+	{
+		final int region = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID();
+		if (currentRegion != region)
+		{
+			lastRegion = currentRegion;
+			currentRegion = region;
 		}
 	}
 
