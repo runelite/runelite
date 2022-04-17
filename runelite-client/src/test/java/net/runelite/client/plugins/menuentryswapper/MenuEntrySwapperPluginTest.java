@@ -38,7 +38,6 @@ import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.events.ClientTick;
-import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
@@ -332,14 +331,7 @@ public class MenuEntrySwapperPluginTest
 			menu("Deposit-1", "Abyssal whip", MenuAction.CC_OP, 2),
 		};
 
-		menuEntrySwapperPlugin.onMenuEntryAdded(new MenuEntryAdded(
-			"Deposit-1",
-			"Abyssal whip",
-			MenuAction.CC_OP.getId(),
-			2,
-			-1,
-			-1
-		));
+		menuEntrySwapperPlugin.onClientTick(new ClientTick());
 
 		ArgumentCaptor<MenuEntry[]> argumentCaptor = ArgumentCaptor.forClass(MenuEntry[].class);
 		verify(client).setMenuEntries(argumentCaptor.capture());
@@ -364,14 +356,7 @@ public class MenuEntrySwapperPluginTest
 			menu("Deposit-1", "Rune arrow", MenuAction.CC_OP, 2),
 		};
 
-		menuEntrySwapperPlugin.onMenuEntryAdded(new MenuEntryAdded(
-			"Deposit-1",
-			"Rune arrow",
-			MenuAction.CC_OP.getId(),
-			2,
-			-1,
-			-1
-		));
+		menuEntrySwapperPlugin.onClientTick(new ClientTick());
 
 		ArgumentCaptor<MenuEntry[]> argumentCaptor = ArgumentCaptor.forClass(MenuEntry[].class);
 		verify(client).setMenuEntries(argumentCaptor.capture());

@@ -98,7 +98,7 @@ class ItemPricesOverlay extends Overlay
 		// Tooltip action type handling
 		switch (action)
 		{
-			case ITEM_USE_ON_WIDGET:
+			case WIDGET_USE_ON_ITEM:
 				if (!config.showWhileAlching() || !isAlching)
 				{
 					break;

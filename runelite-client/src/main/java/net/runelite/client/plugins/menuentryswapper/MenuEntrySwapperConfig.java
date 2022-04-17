@@ -850,15 +850,4 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return false;
 	}
-
-	@ConfigItem(
-		keyName = "swapDepositPool",
-		name = "Deposit Pool - Only Runes",
-		description = "Swap Deposit with Deposit Runes on the Deposit Pool in Guardians of the Rift.",
-		section = objectSection
-	)
-	default boolean swapDepositPool()
-	{
-		return false;
-	}
 }

@@ -266,8 +266,8 @@ public class WikiPlugin extends Plugin
 					break optarget;
 				case CANCEL:
 					return;
-				case ITEM_USE_ON_WIDGET:
-				case SPELL_CAST_ON_GROUND_ITEM:
+				case WIDGET_USE_ON_ITEM:
+				case WIDGET_TARGET_ON_GROUND_ITEM:
 				{
 					type = "item";
 					id = itemManager.canonicalize(ev.getId());
@@ -275,7 +275,7 @@ public class WikiPlugin extends Plugin
 					location = null;
 					break;
 				}
-				case SPELL_CAST_ON_NPC:
+				case WIDGET_TARGET_ON_NPC:
 				{
 					type = "npc";
 					NPC npc = client.getCachedNPCs()[ev.getId()];
@@ -285,7 +285,7 @@ public class WikiPlugin extends Plugin
 					location = npc.getWorldLocation();
 					break;
 				}
-				case SPELL_CAST_ON_GAME_OBJECT:
+				case WIDGET_TARGET_ON_GAME_OBJECT:
 				{
 					type = "object";
 					ObjectComposition lc = client.getObjectDefinition(ev.getId());
@@ -298,7 +298,7 @@ public class WikiPlugin extends Plugin
 					location = WorldPoint.fromScene(client, ev.getParam0(), ev.getParam1(), client.getPlane());
 					break;
 				}
-				case SPELL_CAST_ON_WIDGET:
+				case WIDGET_TARGET_ON_WIDGET:
 					Widget w = getWidget(ev.getParam1(), ev.getParam0());
 
 					if (w.getType() == WidgetType.GRAPHIC && w.getItemId() != -1)
@@ -359,7 +359,7 @@ public class WikiPlugin extends Plugin
 		int widgetIndex = event.getActionParam0();
 		int widgetID = event.getActionParam1();
 
-		if (wikiSelected && event.getType() == MenuAction.SPELL_CAST_ON_WIDGET.getId())
+		if (wikiSelected && event.getType() == MenuAction.WIDGET_TARGET_ON_WIDGET.getId())
 		{
 			MenuEntry[] menuEntries = client.getMenuEntries();
 			Widget w = getWidget(widgetID, widgetIndex);
@@ -368,7 +368,7 @@ public class WikiPlugin extends Plugin
 				for (int ourEntry = menuEntries.length - 1;ourEntry >= 0; ourEntry--)
 				{
 					MenuEntry entry = menuEntries[ourEntry];
-					if (entry.getType() == MenuAction.SPELL_CAST_ON_WIDGET)
+					if (entry.getType() == MenuAction.WIDGET_TARGET_ON_WIDGET)
 					{
 						int id = itemManager.canonicalize(w.getItemId());
 						String name = itemManager.getItemComposition(id).getName();
@@ -385,7 +385,7 @@ public class WikiPlugin extends Plugin
 				MenuEntry[] oldEntries = menuEntries;
 				menuEntries = Arrays.copyOf(menuEntries, menuEntries.length - 1);
 				for (int ourEntry = oldEntries.length - 1;
-					ourEntry >= 2 && oldEntries[oldEntries.length - 1].getType() != MenuAction.SPELL_CAST_ON_WIDGET;
+					ourEntry >= 2 && oldEntries[oldEntries.length - 1].getType() != MenuAction.WIDGET_TARGET_ON_WIDGET;
 					ourEntry--)
 				{
 					menuEntries[ourEntry - 1] = oldEntries[ourEntry];

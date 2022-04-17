@@ -63,6 +63,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.mockito.ArgumentMatchers.any;
 import org.mockito.Mock;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -164,10 +165,10 @@ public class ClueScrollPluginTest
 		plugin.onGameTick(new GameTick());
 
 		// Simulate clicking on the STASH
-		MenuOptionClicked menuOptionClicked = new MenuOptionClicked();
-		menuOptionClicked.setMenuOption("Search");
-		menuOptionClicked.setMenuTarget("<col=ffff>STASH unit (easy)");
-		menuOptionClicked.setId(NullObjectID.NULL_28983);
+		MenuOptionClicked menuOptionClicked = mock(MenuOptionClicked.class);
+		when(menuOptionClicked.getMenuOption()).thenReturn("Search");
+		lenient().when(menuOptionClicked.getMenuTarget()).thenReturn("<col=ffff>STASH unit (easy)");
+		when(menuOptionClicked.getId()).thenReturn(NullObjectID.NULL_28983);
 		plugin.onMenuOptionClicked(menuOptionClicked);
 
 		// Check that the STASH is stored after withdrawing

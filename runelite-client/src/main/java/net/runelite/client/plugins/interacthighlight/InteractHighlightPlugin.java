@@ -141,7 +141,7 @@ public class InteractHighlightPlugin extends Plugin
 		switch (menuOptionClicked.getMenuAction())
 		{
 			case ITEM_USE_ON_GAME_OBJECT:
-			case SPELL_CAST_ON_GAME_OBJECT:
+			case WIDGET_TARGET_ON_GAME_OBJECT:
 			case GAME_OBJECT_FIRST_OPTION:
 			case GAME_OBJECT_SECOND_OPTION:
 			case GAME_OBJECT_THIRD_OPTION:
@@ -158,7 +158,7 @@ public class InteractHighlightPlugin extends Plugin
 				break;
 			}
 			case ITEM_USE_ON_NPC:
-			case SPELL_CAST_ON_NPC:
+			case WIDGET_TARGET_ON_NPC:
 			case NPC_FIRST_OPTION:
 			case NPC_SECOND_OPTION:
 			case NPC_THIRD_OPTION:
@@ -168,7 +168,7 @@ public class InteractHighlightPlugin extends Plugin
 				int id = menuOptionClicked.getId();
 				interactedObject = null;
 				interactedNpc = findNpc(id);
-				attacked = menuOptionClicked.getMenuAction() == MenuAction.NPC_SECOND_OPTION || menuOptionClicked.getMenuAction() == MenuAction.SPELL_CAST_ON_NPC;
+				attacked = menuOptionClicked.getMenuAction() == MenuAction.NPC_SECOND_OPTION || menuOptionClicked.getMenuAction() == MenuAction.WIDGET_TARGET_ON_NPC;
 				clickTick = client.getTickCount();
 				gameCycle = client.getGameCycle();
 				break;

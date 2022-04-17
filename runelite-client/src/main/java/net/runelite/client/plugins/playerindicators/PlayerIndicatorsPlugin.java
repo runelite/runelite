@@ -42,7 +42,7 @@ import static net.runelite.api.MenuAction.PLAYER_SEVENTH_OPTION;
 import static net.runelite.api.MenuAction.PLAYER_SIXTH_OPTION;
 import static net.runelite.api.MenuAction.PLAYER_THIRD_OPTION;
 import static net.runelite.api.MenuAction.RUNELITE_PLAYER;
-import static net.runelite.api.MenuAction.SPELL_CAST_ON_PLAYER;
+import static net.runelite.api.MenuAction.WIDGET_TARGET_ON_PLAYER;
 import static net.runelite.api.MenuAction.WALK;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Player;
@@ -124,7 +124,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 			MenuAction type = entry.getType();
 
 			if (type == WALK
-				|| type == SPELL_CAST_ON_PLAYER
+				|| type == WIDGET_TARGET_ON_PLAYER
 				|| type == ITEM_USE_ON_PLAYER
 				|| type == PLAYER_FIRST_OPTION
 				|| type == PLAYER_SECOND_OPTION

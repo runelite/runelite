@@ -24,8 +24,11 @@
  */
 package net.runelite.api.events;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import net.runelite.api.MenuAction;
+import net.runelite.api.MenuEntry;
+import net.runelite.api.widgets.Widget;
 
 /**
  * An event where a menu option has been clicked.
@@ -38,41 +41,76 @@ import net.runelite.api.MenuAction;
  * By default, when there is no action performed when left-clicking,
  * it seems that this event still triggers with the "Cancel" action.
  */
-@Data
+@RequiredArgsConstructor
 public class MenuOptionClicked
 {
 	/**
-	 * Action parameter 0. Its value depends on the menuAction.
+	 * The clicked menu entry
 	 */
-	private int param0;
-	/**
-	 * Action parameter 1. Its value depends on the menuAction.
-	 */
-	private int param1;
-	/**
-	 * The option text added to the menu.
-	 */
-	private String menuOption;
-	/**
-	 * The target of the action.
-	 */
-	private String menuTarget;
-	/**
-	 * The action performed.
-	 */
-	private MenuAction menuAction;
-	/**
-	 * The ID of the object, actor, or item that the interaction targets.
-	 */
-	private int id;
-	/**
-	 * The selected item index at the time of the option click.
-	 */
-	private int selectedItemIndex;
+	private final MenuEntry menuEntry;
 	/**
 	 * Whether or not the event has been consumed by a subscriber.
 	 */
+	@Getter
 	private boolean consumed;
+
+	/**
+	 * Action parameter 0. Its value depends on the menuAction.
+	 */
+	public int getParam0()
+	{
+		return menuEntry.getParam0();
+	}
+
+	/**
+	 * Action parameter 1. Its value depends on the menuAction.
+	 */
+	public int getParam1()
+	{
+		return menuEntry.getParam1();
+	}
+
+	/**
+	 * The option text added to the menu.
+	 */
+	public String getMenuOption()
+	{
+		return menuEntry.getOption();
+	}
+
+	/**
+	 * The target of the action.
+	 */
+	public String getMenuTarget()
+	{
+		return menuEntry.getTarget();
+	}
+
+	/**
+	 * The action performed.
+	 */
+	public MenuAction getMenuAction()
+	{
+		return menuEntry.getType();
+	}
+
+	/**
+	 * The ID of the object, actor, or item that the interaction targets.
+	 */
+	public int getId()
+	{
+		return menuEntry.getIdentifier();
+	}
+
+	/**
+	 * Get the widget this menu entry is on, if this is a menu entry
+	 * with an associated widget. Such as eg, CC_OP.
+	 * @return
+	 */
+	public Widget getWidget()
+	{
+		return menuEntry.getWidget();
+	}
 
 	/**
 	 * Marks the event as having been consumed.
@@ -89,12 +127,12 @@ public class MenuOptionClicked
 	@Deprecated
 	public int getActionParam()
 	{
-		return param0;
+		return menuEntry.getParam0();
 	}
 
 	@Deprecated
 	public int getWidgetId()
 	{
-		return param1;
+		return menuEntry.getParam1();
 	}
 }
