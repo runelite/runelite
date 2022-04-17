@@ -179,7 +179,7 @@ class FarmingWorld
 				return loc.getPlane() == 0;
 			}
 		}, 14907, 14908, 15164, 14652, 14906, 14650, 15162, 15163);
-		add(new FarmingRegion("Seaweed", 15008, false,
+		add(new FarmingRegion("Underwater", 15008, false,
 			new FarmingPatch("North", Varbits.FARMING_4771, PatchImplementation.SEAWEED),
 			new FarmingPatch("South", Varbits.FARMING_4772, PatchImplementation.SEAWEED)
 		));

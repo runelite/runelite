@@ -92,29 +92,29 @@ public enum Produce
 	ANYHERB("Any herb", PatchImplementation.HERB, ItemID.GUAM_LEAF, 20, 5, 0, 3),
 
 	// Tree crops
-	OAK("Oak", "Oak tree", PatchImplementation.TREE, ItemID.OAK_LOGS, 40, 5),
-	WILLOW("Willow", "Willow tree", PatchImplementation.TREE, ItemID.WILLOW_LOGS, 40, 7),
-	MAPLE("Maple", "Maple tree", PatchImplementation.TREE, ItemID.MAPLE_LOGS, 40, 9),
-	YEW("Yew", "Yew tree", PatchImplementation.TREE, ItemID.YEW_LOGS, 40, 11),
-	MAGIC("Magic", "Magic tree", PatchImplementation.TREE, ItemID.MAGIC_LOGS, 40, 13),
+	OAK("Oak tree", "Oak tree", PatchImplementation.TREE, ItemID.OAK_LOGS, 40, 5),
+	WILLOW("Willow tree", "Willow tree", PatchImplementation.TREE, ItemID.WILLOW_LOGS, 40, 7),
+	MAPLE("Maple tree", "Maple tree", PatchImplementation.TREE, ItemID.MAPLE_LOGS, 40, 9),
+	YEW("Yew tree", "Yew tree", PatchImplementation.TREE, ItemID.YEW_LOGS, 40, 11),
+	MAGIC("Magic tree", "Magic tree", PatchImplementation.TREE, ItemID.MAGIC_LOGS, 40, 13),
 
 	// Fruit tree crops
-	APPLE("Apple", "Apple tree", PatchImplementation.FRUIT_TREE, ItemID.COOKING_APPLE, 160, 7, 45, 7),
-	BANANA("Banana", "Banana tree", PatchImplementation.FRUIT_TREE, ItemID.BANANA, 160, 7, 45, 7),
-	ORANGE("Orange", "Orange tree", PatchImplementation.FRUIT_TREE, ItemID.ORANGE, 160, 7, 45, 7),
-	CURRY("Curry", "Curry tree", PatchImplementation.FRUIT_TREE, ItemID.CURRY_LEAF, 160, 7, 45, 7),
-	PINEAPPLE("Pineapple", "Pineapple plant", PatchImplementation.FRUIT_TREE, ItemID.PINEAPPLE, 160, 7, 45, 7),
-	PAPAYA("Papaya", "Papaya tree", PatchImplementation.FRUIT_TREE, ItemID.PAPAYA_FRUIT, 160, 7, 45, 7),
-	PALM("Palm", "Palm tree", PatchImplementation.FRUIT_TREE, ItemID.COCONUT, 160, 7, 45, 7),
-	DRAGONFRUIT("Dragonfruit", "Dragonfruit tree", PatchImplementation.FRUIT_TREE, ItemID.DRAGONFRUIT, 160, 7, 45, 7),
+	APPLE("Apple tree", "Apple tree", PatchImplementation.FRUIT_TREE, ItemID.COOKING_APPLE, 160, 7, 45, 7),
+	BANANA("Banana tree", "Banana tree", PatchImplementation.FRUIT_TREE, ItemID.BANANA, 160, 7, 45, 7),
+	ORANGE("Orange tree", "Orange tree", PatchImplementation.FRUIT_TREE, ItemID.ORANGE, 160, 7, 45, 7),
+	CURRY("Curry tree", "Curry tree", PatchImplementation.FRUIT_TREE, ItemID.CURRY_LEAF, 160, 7, 45, 7),
+	PINEAPPLE("Pineapple tree", "Pineapple plant", PatchImplementation.FRUIT_TREE, ItemID.PINEAPPLE, 160, 7, 45, 7),
+	PAPAYA("Papaya tree", "Papaya tree", PatchImplementation.FRUIT_TREE, ItemID.PAPAYA_FRUIT, 160, 7, 45, 7),
+	PALM("Palm tree", "Palm tree", PatchImplementation.FRUIT_TREE, ItemID.COCONUT, 160, 7, 45, 7),
+	DRAGONFRUIT("Dragonfruit tree", "Dragonfruit tree", PatchImplementation.FRUIT_TREE, ItemID.DRAGONFRUIT, 160, 7, 45, 7),
 
 	// Cactus
 	CACTUS("Cactus", PatchImplementation.CACTUS, ItemID.CACTUS_SPINE, 80, 8, 20, 4),
 	POTATO_CACTUS("Potato cactus", "Potato cacti", PatchImplementation.CACTUS, ItemID.POTATO_CACTUS, 10, 8, 5, 7),
 
 	// Hardwood
-	TEAK("Teak", PatchImplementation.HARDWOOD_TREE, ItemID.TEAK_LOGS, 560, 8),
-	MAHOGANY("Mahogany", PatchImplementation.HARDWOOD_TREE, ItemID.MAHOGANY_LOGS, 640, 9),
+	TEAK("Teak tree", PatchImplementation.HARDWOOD_TREE, ItemID.TEAK_LOGS, 560, 8),
+	MAHOGANY("Mahogany tree", PatchImplementation.HARDWOOD_TREE, ItemID.MAHOGANY_LOGS, 640, 9),
 
 	// Anima
 	ATTAS("Attas", PatchImplementation.ANIMA, NullItemID.NULL_22940, 640, 9),
@@ -126,10 +126,10 @@ public enum Produce
 	GRAPE("Grape", PatchImplementation.GRAPES, ItemID.GRAPES, 5, 8, 0, 5),
 	MUSHROOM("Mushroom", PatchImplementation.MUSHROOM, ItemID.MUSHROOM, 40, 7, 0, 7),
 	BELLADONNA("Belladonna", PatchImplementation.BELLADONNA, ItemID.CAVE_NIGHTSHADE, 80, 5),
-	CALQUAT("Calquat", PatchImplementation.CALQUAT, ItemID.CALQUAT_FRUIT, 160, 9, 0, 7),
+	CALQUAT("Calquat tree", PatchImplementation.CALQUAT, ItemID.CALQUAT_FRUIT, 160, 9, 0, 7),
 	SPIRIT_TREE("Spirit tree", PatchImplementation.SPIRIT_TREE, ItemID.SPIRIT_TREE, 320, 13),
-	CELASTRUS("Celastrus", "Celastrus tree", PatchImplementation.CELASTRUS, ItemID.BATTLESTAFF, 160, 6, 0, 4),
-	REDWOOD("Redwood", "Redwood tree", PatchImplementation.REDWOOD, ItemID.REDWOOD_LOGS, 640, 11),
+	CELASTRUS("Celastrus tree", "Celastrus tree", PatchImplementation.CELASTRUS, ItemID.BATTLESTAFF, 160, 6, 0, 4),
+	REDWOOD("Redwood tree", "Redwood tree", PatchImplementation.REDWOOD, ItemID.REDWOOD_LOGS, 640, 11),
 	HESPORI("Hespori", PatchImplementation.HESPORI, NullItemID.NULL_23044, 640, 4, 0, 2),
 	CRYSTAL_TREE("Crystal tree", PatchImplementation.CRYSTAL_TREE, ItemID.CRYSTAL_SHARDS, 80, 7),
 
