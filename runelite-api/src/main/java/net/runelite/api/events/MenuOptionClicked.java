@@ -103,6 +103,35 @@ public class MenuOptionClicked
 	}
 
 	/**
+	 * Test if this menu entry is an item op. "Use" and "Examine" are not considered item ops.
+	 * @return
+	 */
+	public boolean isItemOp()
+	{
+		return menuEntry.isItemOp();
+	}
+
+	/**
+	 * If this menu entry is an item op, get the item op id
+	 * @return 1-5
+	 */
+	public int getItemOp()
+	{
+		return menuEntry.getItemOp();
+	}
+
+	/**
+	 * If this menu entry is an item op, get the item id
+	 * @return
+	 * @see net.runelite.api.ItemID
+	 * @see net.runelite.api.NullItemID
+	 */
+	public int getItemId()
+	{
+		return menuEntry.getItemId();
+	}
+
+	/**
 	 * Get the widget this menu entry is on, if this is a menu entry
 	 * with an associated widget. Such as eg, CC_OP.
 	 * @return
