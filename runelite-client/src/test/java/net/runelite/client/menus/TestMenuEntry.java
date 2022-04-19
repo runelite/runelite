@@ -43,6 +43,10 @@ public class TestMenuEntry implements MenuEntry
 	private int param1;
 	private boolean forceLeftClick;
 	@Setter
+	private int itemOp = -1;
+	@Setter
+	private int itemId = -1;
+	@Setter
 	private Widget widget;
 
 	@Override
@@ -167,6 +171,24 @@ public class TestMenuEntry implements MenuEntry
 	public MenuEntry onClick(Consumer<MenuEntry> callback)
 	{
 		return this;
+	}
+
+	@Override
+	public boolean isItemOp()
+	{
+		return itemOp != -1;
+	}
+
+	@Override
+	public int getItemOp()
+	{
+		return itemOp;
+	}
+
+	@Override
+	public int getItemId()
+	{
+		return itemId;
 	}
 
 	@Nullable

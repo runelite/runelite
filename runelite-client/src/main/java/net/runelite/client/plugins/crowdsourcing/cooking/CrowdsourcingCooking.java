@@ -37,6 +37,7 @@ import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.crowdsourcing.CrowdsourcingManager;
 
@@ -114,7 +115,8 @@ public class CrowdsourcingCooking
 			|| action == MenuAction.GAME_OBJECT_SECOND_OPTION
 			|| action == MenuAction.GAME_OBJECT_THIRD_OPTION
 			|| action == MenuAction.GAME_OBJECT_FOURTH_OPTION
-			|| action == MenuAction.GAME_OBJECT_FIFTH_OPTION)
+			|| action == MenuAction.GAME_OBJECT_FIFTH_OPTION
+			|| action == MenuAction.WIDGET_TARGET_ON_GAME_OBJECT && client.getSelectedWidget().getId() == WidgetInfo.INVENTORY.getId())
 		{
 			lastGameObjectClicked = menuOptionClicked.getId();
 		}

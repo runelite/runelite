@@ -971,19 +971,19 @@ public class LootTrackerPlugin extends Plugin
 		{
 			onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, SHADE_CHEST_OBJECTS.get(event.getId())));
 		}
-		else if (isItemOp(event.getMenuAction()))
+		else if (event.isItemOp())
 		{
-			if (event.getMenuOption().equals("Take") && event.getId() == ItemID.SEED_PACK)
+			if (event.getMenuOption().equals("Take") && event.getItemId() == ItemID.SEED_PACK)
 			{
 				onInvChange(collectInvItems(LootRecordType.EVENT, SEEDPACK_EVENT));
 			}
-			else if (event.getMenuOption().equals("Search") && BIRDNEST_IDS.contains(event.getId()))
+			else if (event.getMenuOption().equals("Search") && BIRDNEST_IDS.contains(event.getItemId()))
 			{
 				onInvChange(collectInvItems(LootRecordType.EVENT, BIRDNEST_EVENT));
 			}
 			else if (event.getMenuOption().equals("Open"))
 			{
-				switch (event.getId())
+				switch (event.getItemId())
 				{
 					case ItemID.CASKET:
 						onInvChange(collectInvItems(LootRecordType.EVENT, CASKET_EVENT));
@@ -1004,7 +1004,7 @@ public class LootTrackerPlugin extends Plugin
 					case ItemID.SIMPLE_LOCKBOX_25647:
 					case ItemID.ELABORATE_LOCKBOX_25649:
 					case ItemID.ORNATE_LOCKBOX_25651:
-						onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, itemManager.getItemComposition(event.getId()).getName()));
+						onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, itemManager.getItemComposition(event.getItemId()).getName()));
 						break;
 					case ItemID.SUPPLY_CRATE_24884:
 						onInvChange(collectInvItems(LootRecordType.EVENT, MAHOGANY_CRATE_EVENT, client.getBoostedSkillLevel(Skill.CONSTRUCTION)));
@@ -1014,14 +1014,14 @@ public class LootTrackerPlugin extends Plugin
 						break;
 				}
 			}
-			else if (event.getMenuOption().equals("Loot") && IMPLING_JARS.contains(event.getId()))
+			else if (event.getMenuOption().equals("Loot") && IMPLING_JARS.contains(event.getItemId()))
 			{
 				onInvChange(((invItems, groundItems, removedItems) ->
 				{
-					int cnt = removedItems.count(event.getId());
+					int cnt = removedItems.count(event.getItemId());
 					if (cnt > 0)
 					{
-						String name = itemManager.getItemComposition(event.getId()).getName();
+						String name = itemManager.getItemComposition(event.getItemId()).getName();
 						addLoot(name, -1, LootRecordType.EVENT, null, invItems, cnt);
 					}
 				}));
@@ -1036,12 +1036,6 @@ public class LootTrackerPlugin extends Plugin
 		{
 			SwingUtilities.invokeLater(this::importLoot);
 		}
-	}
-
-	private static boolean isItemOp(MenuAction menuAction)
-	{
-		final int id = menuAction.getId();
-		return id >= MenuAction.ITEM_FIRST_OPTION.getId() && id <= MenuAction.ITEM_FIFTH_OPTION.getId();
 	}
 
 	private static boolean isNPCOp(MenuAction menuAction)

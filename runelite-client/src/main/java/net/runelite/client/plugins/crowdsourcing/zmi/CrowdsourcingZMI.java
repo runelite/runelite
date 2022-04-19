@@ -77,7 +77,11 @@ public class CrowdsourcingZMI
 	public void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
 	{
 		MenuAction action = menuOptionClicked.getMenuAction();
-
+		if (menuOptionClicked.isItemOp())
+		{
+			illegalActionTick = client.getTickCount();
+			return;
+		}
 		switch (action)
 		{
 			case ITEM_FIRST_OPTION:

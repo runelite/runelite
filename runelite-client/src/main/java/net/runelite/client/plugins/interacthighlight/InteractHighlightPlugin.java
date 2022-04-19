@@ -176,8 +176,11 @@ public class InteractHighlightPlugin extends Plugin
 			// Any menu click which clears an interaction
 			case WALK:
 			case ITEM_USE:
+			case WIDGET_TARGET_ON_WIDGET:
 			case ITEM_USE_ON_GROUND_ITEM:
+			case WIDGET_TARGET_ON_GROUND_ITEM:
 			case ITEM_USE_ON_PLAYER:
+			case WIDGET_TARGET_ON_PLAYER:
 			case ITEM_FIRST_OPTION:
 			case ITEM_SECOND_OPTION:
 			case ITEM_THIRD_OPTION:
@@ -190,6 +193,13 @@ public class InteractHighlightPlugin extends Plugin
 			case GROUND_ITEM_FIFTH_OPTION:
 				interactedObject = null;
 				interactedNpc = null;
+				break;
+			default:
+				if (menuOptionClicked.isItemOp())
+				{
+					interactedObject = null;
+					interactedNpc = null;
+				}
 		}
 	}
 
