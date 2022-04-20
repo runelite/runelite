@@ -1117,6 +1117,18 @@ public class MenuEntrySwapperPlugin extends Plugin
 		entries[index1] = entry2;
 		entries[index2] = entry1;
 
+		// Item op4 and op5 are CC_OP_LOW_PRIORITY so they get added underneath Use,
+		// but this also causes them to get sorted after client tick. Change them to
+		// CC_OP to avoid this.
+		if (entry1.isItemOp() && entry1.getType() == MenuAction.CC_OP_LOW_PRIORITY)
+		{
+			entry1.setType(MenuAction.CC_OP);
+		}
+		if (entry2.isItemOp() && entry2.getType() == MenuAction.CC_OP_LOW_PRIORITY)
+		{
+			entry2.setType(MenuAction.CC_OP);
+		}
+
 		client.setMenuEntries(entries);
 
 		// Update optionIndexes
