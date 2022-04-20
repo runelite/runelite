@@ -140,6 +140,11 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 		}
 	}
 
+	private boolean isOverriding()
+	{
+		return (!config.onShiftOnly() || shiftHeld) && !ctrlHeld;
+	}
+
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
@@ -180,9 +185,14 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded widgetLoaded)
 	{
-		if ((widgetLoaded.getGroupId() == WidgetID.BANK_GROUP_ID ||
+		if (!isOverriding())
+		{
+			return;
+		}
+
+		if (widgetLoaded.getGroupId() == WidgetID.BANK_GROUP_ID ||
 			widgetLoaded.getGroupId() == WidgetID.BANK_INVENTORY_GROUP_ID ||
-			widgetLoaded.getGroupId() == WidgetID.DEPOSIT_BOX_GROUP_ID) && (!config.onShiftOnly() || shiftHeld) && !ctrlHeld)
+			widgetLoaded.getGroupId() == WidgetID.DEPOSIT_BOX_GROUP_ID)
 		{
 			setBankDragDelay(config.dragDelay());
 		}
@@ -199,11 +209,15 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 		{
 			Widget inv = client.getWidget(WidgetInfo.INVENTORY);
 			final int delay = config.dragDelay();
+			boolean overriding = isOverriding();
 			for (Widget child : inv.getDynamicChildren())
 			{
 				// disable [clientscript,inventory_antidrag_update] listener
 				child.setOnMouseRepeatListener((Object[]) null);
-				child.setDragDeadTime(delay);
+				if (overriding)
+				{
+					child.setDragDeadTime(delay);
+				}
 			}
 		}
 	}
