@@ -289,12 +289,18 @@ class StatusBarsOverlay extends Overlay
 	{
 		final MenuEntry[] menu = client.getMenuEntries();
 		final int menuSize = menu.length;
-		final MenuEntry entry = menuSize > 0 ? menu[menuSize - 1] : null;
+		if (menuSize == 0)
+		{
+			return 0;
+		}
+
+		final MenuEntry entry = menu[menuSize - 1];
+		final Widget widget = entry.getWidget();
 		int restoreValue = 0;
 
-		if (entry != null && entry.getParam1() == WidgetInfo.INVENTORY.getId())
+		if (widget != null && widget.getId() == WidgetInfo.INVENTORY.getId())
 		{
-			final Effect change = itemStatService.getItemStatChanges(entry.getIdentifier());
+			final Effect change = itemStatService.getItemStatChanges(widget.getItemId());
 
 			if (change != null)
 			{
