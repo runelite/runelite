@@ -328,7 +328,7 @@ public class ClueScrollPlugin extends Plugin
 		final boolean isXMarksTheSpotOrb = event.getItemId() == ItemID.MYSTERIOUS_ORB_23069;
 		if (isXMarksTheSpotOrb || event.getMenuOption().equals("Read"))
 		{
-			final ItemComposition itemComposition = itemManager.getItemComposition(event.getId());
+			final ItemComposition itemComposition = itemManager.getItemComposition(event.getItemId());
 
 			if (isXMarksTheSpotOrb
 				|| itemComposition.getName().startsWith("Clue scroll")
