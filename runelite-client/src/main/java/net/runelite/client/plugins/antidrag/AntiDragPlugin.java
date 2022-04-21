@@ -27,9 +27,12 @@ package net.runelite.client.plugins.antidrag;
 import com.google.inject.Provides;
 import java.awt.event.KeyEvent;
 import javax.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.ScriptID;
 import net.runelite.api.events.FocusChanged;
+import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
@@ -49,6 +52,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 	tags = {"antidrag", "delay", "inventory", "items"},
 	enabledByDefault = false
 )
+@Slf4j
 public class AntiDragPlugin extends Plugin implements KeyListener
 {
 	static final String CONFIG_GROUP = "antiDrag";
@@ -136,6 +140,11 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 		}
 	}
 
+	private boolean isOverriding()
+	{
+		return (!config.onShiftOnly() || shiftHeld) && !ctrlHeld;
+	}
+
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
@@ -176,11 +185,51 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded widgetLoaded)
 	{
-		if ((widgetLoaded.getGroupId() == WidgetID.BANK_GROUP_ID ||
+		if (!isOverriding())
+		{
+			return;
+		}
+
+		if (widgetLoaded.getGroupId() == WidgetID.BANK_GROUP_ID ||
 			widgetLoaded.getGroupId() == WidgetID.BANK_INVENTORY_GROUP_ID ||
-			widgetLoaded.getGroupId() == WidgetID.DEPOSIT_BOX_GROUP_ID) && (!config.onShiftOnly() || shiftHeld) && !ctrlHeld)
+			widgetLoaded.getGroupId() == WidgetID.DEPOSIT_BOX_GROUP_ID)
 		{
 			setBankDragDelay(config.dragDelay());
+		}
+		else if (widgetLoaded.getGroupId() == WidgetID.INVENTORY_GROUP_ID)
+		{
+			setInvDragDelay(config.dragDelay());
+		}
+	}
+
+	@Subscribe
+	private void onScriptPostFired(ScriptPostFired ev)
+	{
+		if (ev.getScriptId() == ScriptID.INVENTORY_DRAWITEM)
+		{
+			Widget inv = client.getWidget(WidgetInfo.INVENTORY);
+			final int delay = config.dragDelay();
+			boolean overriding = isOverriding();
+			for (Widget child : inv.getDynamicChildren())
+			{
+				// disable [clientscript,inventory_antidrag_update] listener
+				child.setOnMouseRepeatListener((Object[]) null);
+				if (overriding)
+				{
+					child.setDragDeadTime(delay);
+				}
+			}
+		}
+	}
+
+	private static void applyDragDelay(Widget widget, int delay)
+	{
+		if (widget != null)
+		{
+			for (Widget item : widget.getDynamicChildren())
+			{
+				item.setDragDeadTime(delay);
+			}
 		}
 	}
 
@@ -189,41 +238,32 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 		final Widget bankItemContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
 		final Widget bankInventoryItemsContainer = client.getWidget(WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER);
 		final Widget bankDepositContainer = client.getWidget(WidgetInfo.DEPOSIT_BOX_INVENTORY_ITEMS_CONTAINER);
-		if (bankItemContainer != null)
-		{
-			Widget[] items = bankItemContainer.getDynamicChildren();
-			for (Widget item : items)
-			{
-				item.setDragDeadTime(delay);
-			}
-		}
-		if (bankInventoryItemsContainer != null)
-		{
-			Widget[] items = bankInventoryItemsContainer.getDynamicChildren();
-			for (Widget item : items)
-			{
-				item.setDragDeadTime(delay);
-			}
-		}
-		if (bankDepositContainer != null)
-		{
-			Widget[] items = bankDepositContainer.getDynamicChildren();
-			for (Widget item : items)
-			{
-				item.setDragDeadTime(delay);
-			}
-		}
+
+		applyDragDelay(bankItemContainer, delay);
+		applyDragDelay(bankInventoryItemsContainer, delay);
+		applyDragDelay(bankDepositContainer, delay);
+	}
+
+	private void setInvDragDelay(int delay)
+	{
+		final Widget inventory = client.getWidget(WidgetInfo.INVENTORY);
+		applyDragDelay(inventory, delay);
 	}
 
 	private void setDragDelay()
 	{
-		client.setInventoryDragDelay(config.dragDelay());
-		setBankDragDelay(config.dragDelay());
+		final int delay = config.dragDelay();
+		log.debug("Set delay to {}", delay);
+		client.setInventoryDragDelay(delay);
+		setInvDragDelay(delay);
+		setBankDragDelay(delay);
 	}
 
 	private void resetDragDelay()
 	{
+		log.debug("Reset delay to {}", DEFAULT_DELAY);
 		client.setInventoryDragDelay(DEFAULT_DELAY);
+		setInvDragDelay(DEFAULT_DELAY);
 		setBankDragDelay(DEFAULT_DELAY);
 	}
 

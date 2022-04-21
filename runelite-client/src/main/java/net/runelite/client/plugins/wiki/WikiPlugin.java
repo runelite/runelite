@@ -35,6 +35,7 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
+import net.runelite.api.NullItemID;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.ScriptID;
 import net.runelite.api.SpriteID;
@@ -363,7 +364,7 @@ public class WikiPlugin extends Plugin
 		{
 			MenuEntry[] menuEntries = client.getMenuEntries();
 			Widget w = getWidget(widgetID, widgetIndex);
-			if (w.getType() == WidgetType.GRAPHIC && w.getItemId() != -1)
+			if (w.getType() == WidgetType.GRAPHIC && w.getItemId() != -1 && w.getItemId() != NullItemID.NULL_6512)
 			{
 				for (int ourEntry = menuEntries.length - 1;ourEntry >= 0; ourEntry--)
 				{

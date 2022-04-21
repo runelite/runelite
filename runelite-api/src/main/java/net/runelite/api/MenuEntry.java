@@ -96,6 +96,26 @@ public interface MenuEntry
 	MenuEntry onClick(Consumer<MenuEntry> callback);
 
 	/**
+	 * Test if this menu entry is an item op. "Use" and "Examine" are not considered item ops.
+	 * @return
+	 */
+	boolean isItemOp();
+
+	/**
+	 * If this menu entry is an item op, get the item op id
+	 * @return 1-5
+	 */
+	int getItemOp();
+
+	/**
+	 * If this menu entry is an item op, get the item id
+	 * @return
+	 * @see ItemID
+	 * @see NullItemID
+	 */
+	int getItemId();
+
+	/**
 	 * Get the widget this menu entry is on, if this is a menu entry
 	 * with an associated widget. Such as eg, CC_OP.
 	 * @return
