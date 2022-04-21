@@ -162,9 +162,6 @@ public class ExaminePlugin extends Plugin
 		ExamineType type;
 		switch (event.getType())
 		{
-			case ITEM_EXAMINE:
-				type = ExamineType.ITEM;
-				break;
 			case OBJECT_EXAMINE:
 				type = ExamineType.OBJECT;
 				break;
@@ -172,6 +169,7 @@ public class ExaminePlugin extends Plugin
 				type = ExamineType.NPC;
 				break;
 			case GAMEMESSAGE:
+			case ITEM_EXAMINE: // these are spoofed by us from a [proc,examine_item] script edit
 				type = ExamineType.IF3_ITEM;
 				break;
 			default:
