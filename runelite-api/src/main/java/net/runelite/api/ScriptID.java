@@ -408,4 +408,10 @@ public final class ScriptID
 
 	@ScriptArguments(integer = 6)
 	public static final int INVENTORY_DRAWITEM = 6011;
+
+	/**
+	 * Initializes the trade interface
+	 */
+	@ScriptArguments(integer = 6)
+	public static final int TRADE_MAIN_INIT = 755;
 }
