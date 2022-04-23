@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.examine;
 
 import com.google.common.annotations.VisibleForTesting;
-import java.time.Instant;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import javax.inject.Inject;
@@ -52,7 +51,6 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.QuantityFormatter;
-import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Examine",
@@ -82,18 +80,18 @@ public class ExaminePlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (!Text.removeTags(event.getMenuOption()).equals("Examine"))
+		if (!event.getMenuOption().equals("Examine"))
 		{
 			return;
 		}
 
-		ExamineType type;
+		final ChatMessageType type;
 		int id, quantity = -1;
 		switch (event.getMenuAction())
 		{
 			case EXAMINE_ITEM:
 			{
-				type = ExamineType.ITEM;
+				type = ChatMessageType.ITEM_EXAMINE;
 				id = event.getId();
 
 				int widgetId = event.getParam1();
@@ -120,12 +118,12 @@ public class ExaminePlugin extends Plugin
 				break;
 			}
 			case EXAMINE_ITEM_GROUND:
-				type = ExamineType.ITEM;
+				type = ChatMessageType.ITEM_EXAMINE;
 				id = event.getId();
 				break;
 			case CC_OP_LOW_PRIORITY:
 			{
-				type = ExamineType.IF3_ITEM;
+				type = ChatMessageType.ITEM_EXAMINE; // these are spoofed by us from a [proc,examine_item] script edit
 				int[] qi = findItemFromWidget(event.getParam1(), event.getParam0());
 				if (qi == null)
 				{
@@ -136,77 +134,45 @@ public class ExaminePlugin extends Plugin
 				id = qi[1];
 				break;
 			}
-			case EXAMINE_OBJECT:
-				type = ExamineType.OBJECT;
-				id = event.getId();
-				break;
-			case EXAMINE_NPC:
-				type = ExamineType.NPC;
-				id = event.getId();
-				break;
 			default:
 				return;
 		}
 
 		PendingExamine pendingExamine = new PendingExamine();
-		pendingExamine.setType(type);
+		pendingExamine.setResponseType(type);
 		pendingExamine.setId(id);
 		pendingExamine.setQuantity(quantity);
-		pendingExamine.setCreated(Instant.now());
 		pending.push(pendingExamine);
 	}
 
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		ExamineType type;
-		switch (event.getType())
-		{
-			case OBJECT_EXAMINE:
-				type = ExamineType.OBJECT;
-				break;
-			case NPC_EXAMINE:
-				type = ExamineType.NPC;
-				break;
-			case GAMEMESSAGE:
-			case ITEM_EXAMINE: // these are spoofed by us from a [proc,examine_item] script edit
-				type = ExamineType.IF3_ITEM;
-				break;
-			default:
-				return;
-		}
-
 		if (pending.isEmpty())
 		{
-			log.debug("Got examine without a pending examine?");
 			return;
 		}
 
-		PendingExamine pendingExamine = pending.pop();
-
-		if (pendingExamine.getType() != type)
+		PendingExamine pendingExamine = pending.poll();
+		if (pendingExamine.getResponseType() != event.getType())
 		{
-			log.debug("Type mismatch for pending examine: {} != {}", pendingExamine.getType(), type);
+			log.debug("Type mismatch for pending examine: {} != {}", pendingExamine.getResponseType(), event.getType());
 			pending.clear(); // eh
 			return;
 		}
 
-		log.debug("Got examine for {} {}: {}", pendingExamine.getType(), pendingExamine.getId(), event.getMessage());
+		log.debug("Got examine type {} {}: {}", pendingExamine.getResponseType(), pendingExamine.getId(), event.getMessage());
 
-		// If it is an item, show the price of it
-		if (pendingExamine.getType() == ExamineType.ITEM || pendingExamine.getType() == ExamineType.IF3_ITEM)
+		final int itemId = pendingExamine.getId();
+		final int itemQuantity = pendingExamine.getQuantity();
+
+		if (itemId == ItemID.COINS_995)
 		{
-			final int itemId = pendingExamine.getId();
-			final int itemQuantity = pendingExamine.getQuantity();
-
-			if (itemId == ItemID.COINS_995)
-			{
-				return;
-			}
-
-			final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
-			getItemPrice(itemComposition.getId(), itemComposition, itemQuantity);
+			return;
 		}
+
+		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
+		getItemPrice(itemComposition.getId(), itemComposition, itemQuantity);
 	}
 
 	private int[] findItemFromWidget(int widgetId, int childIdx)
