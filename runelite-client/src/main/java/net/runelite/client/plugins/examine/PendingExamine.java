@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.examine;
 
-import java.time.Instant;
 import lombok.Data;
 import net.runelite.api.ChatMessageType;
 
