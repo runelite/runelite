@@ -480,14 +480,14 @@ public class Notifier
 
 	private boolean tryLoadNotification()
 	{
+		// since we "loop" the clip, make sure it starts at the end for the first run
+		// to avoid double notification on the first play
 		if (NOTIFICATION_FILE.exists())
 		{
 			try (InputStream fileStream = new BufferedInputStream(new FileInputStream(NOTIFICATION_FILE));
 				AudioInputStream sound = AudioSystem.getAudioInputStream(fileStream))
 			{
 				clip.open(sound);
-				// since we "loop" the clip, make sure it starts at the end for the first run
-				// to avoid double notification on the first play
 				clip.setFramePosition(clip.getFrameLength() - 1);
 				return true;
 			}
@@ -502,6 +502,7 @@ public class Notifier
 			AudioInputStream sound = AudioSystem.getAudioInputStream(fileStream))
 		{
 			clip.open(sound);
+			clip.setFramePosition(clip.getFrameLength() - 1);
 			return true;
 		}
 		catch (UnsupportedAudioFileException | IOException | LineUnavailableException e)
