@@ -35,6 +35,8 @@ import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.Point;
 import net.runelite.api.TileObject;
+import net.runelite.api.widgets.WidgetID;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -116,7 +118,8 @@ class InteractHighlightOverlay extends Overlay
 				NPC npc = plugin.findNpc(id);
 				if (npc != null && config.npcShowHover() && (npc != plugin.getInteractedTarget() || !config.npcShowInteract()))
 				{
-					Color highlightColor = menuAction == MenuAction.NPC_SECOND_OPTION || menuAction == MenuAction.WIDGET_TARGET_ON_NPC
+					Color highlightColor = menuAction == MenuAction.NPC_SECOND_OPTION
+						|| menuAction == MenuAction.WIDGET_TARGET_ON_NPC && WidgetInfo.TO_GROUP(client.getSelectedWidget().getId()) == WidgetID.SPELLBOOK_GROUP_ID
 						? config.npcAttackHoverHighlightColor() : config.npcHoverHighlightColor();
 					modelOutlineRenderer.drawOutline(npc, config.borderWidth(), highlightColor, config.outlineFeather());
 				}
