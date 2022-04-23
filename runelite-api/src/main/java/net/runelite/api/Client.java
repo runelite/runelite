@@ -374,7 +374,6 @@ public interface Client extends OAuthApi, GameEngine
 	 *
 	 * @return the logged in player
 	 */
-	@Nullable
 	Player getLocalPlayer();
 
 	/**
