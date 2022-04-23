@@ -467,6 +467,7 @@ public class Notifier
 
 			if (!tryLoadNotification())
 			{
+				log.warn("Failed to load custom notification sound");
 				Toolkit.getDefaultToolkit().beep();
 				return;
 			}
@@ -474,8 +475,7 @@ public class Notifier
 		// Using loop instead of start + setFramePosition prevents the clip
 		// from not being played sometimes, presumably a race condition in the
 		// underlying line driver
-		clip.setFramePosition(0);
-		clip.loop(0);
+		clip.loop(1);
 	}
 
 	private boolean tryLoadNotification()
@@ -486,6 +486,9 @@ public class Notifier
 				AudioInputStream sound = AudioSystem.getAudioInputStream(fileStream))
 			{
 				clip.open(sound);
+				// since we "loop" the clip, make sure it starts at the end for the first run
+				// to avoid double notification on the first play
+				clip.setFramePosition(clip.getFrameLength() - 1);
 				return true;
 			}
 			catch (UnsupportedAudioFileException | IOException | LineUnavailableException e)
