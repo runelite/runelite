@@ -173,7 +173,7 @@ public class ItemStatOverlay extends Overlay
 						Duration highestDuration = durationRange.getHighestDuration();
 						if (lowestDuration != highestDuration)
 						{
-							sb.append("~");
+							sb.append('~');
 							sb.append(DurationFormatUtils.formatDuration(highestDuration.toMillis(), "m:ss"));
 						}
 					}
@@ -381,7 +381,7 @@ public class ItemStatOverlay extends Overlay
 		{
 			if (config.relative())
 			{
-				b.append("/");
+				b.append('/');
 			}
 			b.append(c.getFormattedTheoretical());
 		}
@@ -397,9 +397,9 @@ public class ItemStatOverlay extends Overlay
 
 		if (config.absolute() && (config.relative() || config.theoretical()))
 		{
-			b.append(")");
+			b.append(')');
 		}
-		b.append(" ").append(c.getStat().getName());
+		b.append(' ').append(c.getStat().getName());
 		b.append("</br>");
 
 		return b.toString();

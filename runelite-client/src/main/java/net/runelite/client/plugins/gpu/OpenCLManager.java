@@ -41,7 +41,6 @@ import jogamp.opengl.x11.glx.X11GLXContext;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.plugins.gpu.template.Template;
 import net.runelite.client.util.OSType;
-import org.jocl.CL;
 import static org.jocl.CL.*;
 import org.jocl.CLException;
 import org.jocl.Pointer;
@@ -96,7 +95,7 @@ class OpenCLManager
 
 	void init(GL4 gl)
 	{
-		CL.setExceptionsEnabled(true);
+		setExceptionsEnabled(true);
 
 		switch (OSType.getOSType())
 		{
@@ -121,55 +120,55 @@ class OpenCLManager
 	{
 		if (programUnordered != null)
 		{
-			CL.clReleaseProgram(programUnordered);
+			clReleaseProgram(programUnordered);
 			programUnordered = null;
 		}
 
 		if (programSmall != null)
 		{
-			CL.clReleaseProgram(programSmall);
+			clReleaseProgram(programSmall);
 			programSmall = null;
 		}
 
 		if (programLarge != null)
 		{
-			CL.clReleaseProgram(programLarge);
+			clReleaseProgram(programLarge);
 			programLarge = null;
 		}
 
 		if (kernelUnordered != null)
 		{
-			CL.clReleaseKernel(kernelUnordered);
+			clReleaseKernel(kernelUnordered);
 			kernelUnordered = null;
 		}
 
 		if (kernelSmall != null)
 		{
-			CL.clReleaseKernel(kernelSmall);
+			clReleaseKernel(kernelSmall);
 			kernelSmall = null;
 		}
 
 		if (kernelLarge != null)
 		{
-			CL.clReleaseKernel(kernelLarge);
+			clReleaseKernel(kernelLarge);
 			kernelLarge = null;
 		}
 
 		if (commandQueue != null)
 		{
-			CL.clReleaseCommandQueue(commandQueue);
+			clReleaseCommandQueue(commandQueue);
 			commandQueue = null;
 		}
 
 		if (context != null)
 		{
-			CL.clReleaseContext(context);
+			clReleaseContext(context);
 			context = null;
 		}
 
 		if (device != null)
 		{
-			CL.clReleaseDevice(device);
+			clReleaseDevice(device);
 			device = null;
 		}
 	}

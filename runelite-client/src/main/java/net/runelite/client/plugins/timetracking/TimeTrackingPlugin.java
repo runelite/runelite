@@ -187,8 +187,8 @@ public class TimeTrackingPlugin extends Plugin
 	{
 		if (commandExecuted.getCommand().equals("resetfarmtick"))
 		{
-			configManager.unsetRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, TimeTrackingConfig.FARM_TICK_OFFSET_PRECISION);
-			configManager.unsetRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, TimeTrackingConfig.FARM_TICK_OFFSET);
+			configManager.unsetRSProfileConfiguration(CONFIG_GROUP, TimeTrackingConfig.FARM_TICK_OFFSET_PRECISION);
+			configManager.unsetRSProfileConfiguration(CONFIG_GROUP, TimeTrackingConfig.FARM_TICK_OFFSET);
 		}
 	}
 

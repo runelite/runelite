@@ -144,7 +144,7 @@ public class Raid
 			}
 			else
 			{
-				builder.append(" ");
+				builder.append(' ');
 			}
 		}
 
