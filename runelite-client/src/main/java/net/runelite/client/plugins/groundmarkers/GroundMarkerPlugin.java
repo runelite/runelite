@@ -29,6 +29,7 @@ import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Provides;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -43,6 +44,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.KeyCode;
 import net.runelite.api.MenuAction;
+import net.runelite.api.MenuEntry;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
@@ -56,6 +58,7 @@ import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.ColorUtil;
 
 @Slf4j
 @PluginDescriptor(
@@ -225,23 +228,57 @@ public class GroundMarkerPlugin extends Plugin
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		final boolean hotKeyPressed = client.isKeyPressed(KeyCode.KC_SHIFT);
-		if (hotKeyPressed && event.getOption().equals(WALK_HERE))
+		if (!event.getOption().equals(WALK_HERE))
 		{
-			final Tile selectedSceneTile = client.getSelectedSceneTile();
+			return;
+		}
 
-			if (selectedSceneTile == null)
+		final Tile selectedSceneTile = client.getSelectedSceneTile();
+
+		if (selectedSceneTile == null)
+		{
+			return;
+		}
+
+		final WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, selectedSceneTile.getLocalLocation());
+		final ColorTileMarker point = getPoints().stream().filter(p -> p.getWorldPoint().equals(worldPoint)).findAny().orElse(null);
+
+		if (point != null && config.menuHighlight())
+		{
+			Color tileColor = point.getColor();
+			if (tileColor == null || !config.rememberTileColors())
 			{
-				return;
+				// If this is an old tile which has no color, or rememberTileColors is off, use marker color
+				tileColor = config.markerColor();
 			}
 
-			final WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, selectedSceneTile.getLocalLocation());
-			final int regionId = worldPoint.getRegionID();
-			final GroundMarkerPoint point = new GroundMarkerPoint(regionId, worldPoint.getRegionX(), worldPoint.getRegionY(), client.getPlane(), null, null);
-			final boolean exists = getPoints(regionId).contains(point);
+			MenuEntry[] menuEntries = client.getMenuEntries();
+			MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
+			lastEntry.setOption(ColorUtil.prependColorTag(lastEntry.getOption(), tileColor));
+		}
 
-			client.createMenuEntry(-1)
-				.setOption(exists ? UNMARK : MARK)
+		if (!client.isKeyPressed(KeyCode.KC_SHIFT))
+		{
+			return;
+		}
+
+		client.createMenuEntry(-1)
+			.setOption(point != null ? UNMARK : MARK)
+			.setTarget(event.getTarget())
+			.setType(MenuAction.RUNELITE)
+			.onClick(e ->
+			{
+				Tile target = client.getSelectedSceneTile();
+				if (target != null)
+				{
+					markTile(target.getLocalLocation());
+				}
+			});
+
+		if (point != null)
+		{
+			client.createMenuEntry(-2)
+				.setOption(LABEL)
 				.setTarget(event.getTarget())
 				.setType(MenuAction.RUNELITE)
 				.onClick(e ->
@@ -249,25 +286,9 @@ public class GroundMarkerPlugin extends Plugin
 					Tile target = client.getSelectedSceneTile();
 					if (target != null)
 					{
-						markTile(target.getLocalLocation());
+						labelTile(target);
 					}
 				});
-
-			if (exists)
-			{
-				client.createMenuEntry(-2)
-					.setOption(LABEL)
-					.setTarget(event.getTarget())
-					.setType(MenuAction.RUNELITE)
-					.onClick(e ->
-					{
-						Tile target = client.getSelectedSceneTile();
-						if (target != null)
-						{
-							labelTile(target);
-						}
-					});
-			}
 		}
 	}
 

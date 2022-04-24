@@ -108,4 +108,14 @@ public interface GroundMarkerConfig extends Config
 	{
 		return 50;
 	}
+
+	@ConfigItem(
+		keyName = "menuHighlight",
+		name = "Enable menu highlighting",
+		description = "Enables 'Walk Here' highlighting in right-click menu"
+	)
+	default boolean menuHighlight()
+	{
+		return false;
+	}
 }
