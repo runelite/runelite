@@ -40,6 +40,7 @@
 		<pmd.skip>true</pmd.skip>
 		<git.commit.id.abbrev>nogit</git.commit.id.abbrev>
 		<git.dirty>false</git.dirty>
+		<shade.skip>false</shade.skip>
 	</properties>
 
 	<dependencies>
@@ -381,7 +382,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
-				<version>3.2.3</version>
+				<version>3.3.0</version>
 				<executions>
 					<execution>
 						<phase>package</phase>
@@ -389,6 +390,7 @@
 							<goal>shade</goal>
 						</goals>
 						<configuration>
+							<skip>${shade.skip}</skip>
 							<shadedArtifactAttached>true</shadedArtifactAttached>
 							<shadedClassifierName>shaded</shadedClassifierName>
 
