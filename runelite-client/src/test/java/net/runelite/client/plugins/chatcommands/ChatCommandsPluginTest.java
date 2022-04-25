@@ -1087,6 +1087,10 @@ public class ChatCommandsPluginTest
 			"Theatre of Blood",
 			"Fastest Room time (former): <col=ffffff>18:45</col>",
 			"Fastest Wave time (former): <col=ffffff>22:01</col>",
+			"Fastest Room time - (Team size: (1 player): <col=ffffff>1:01:57.00</col>",
+			"Fastest Overall time - (Team size: 1 player): <col=ffffff>1:06:40.20</col>",
+			"Fastest Room time - (Team size: (2 player): <col=ffffff>22:43.80</col>",
+			"Fastest Overall time - (Team size: 2 player): <col=ffffff>27:36.60</col>",
 			"Fastest Room time - (Team size: (3 player): <col=ffffff>19:50</col>",
 			"Fastest Overall time - (Team size: 3 player): <col=ffffff>22:47</col>",
 			"Fastest Room time - (Team size: (4 player): <col=ffffff>17:38</col>",
@@ -1138,7 +1142,10 @@ public class ChatCommandsPluginTest
 
 		verify(configManager).setRSProfileConfiguration("personalbest", "tztok-jad", 2033.0);
 		verify(configManager).setRSProfileConfiguration("personalbest", "tempoross", 234.0);
-		verify(configManager).setRSProfileConfiguration("personalbest", "chambers of xeric", 1360.0); // the lowest time
+		verify(configManager).setRSProfileConfiguration("personalbest", "chambers of xeric solo", 60 * 28 + 7.);
+		verify(configManager).setRSProfileConfiguration("personalbest", "chambers of xeric 2 players", 60 * 24 + 40.);
+		verify(configManager).setRSProfileConfiguration("personalbest", "theatre of blood solo", 3600 + 60 + 57.);
+		verify(configManager).setRSProfileConfiguration("personalbest", "theatre of blood 3 players", 19 * 60 + 50.);
 	}
 
 	@Test
