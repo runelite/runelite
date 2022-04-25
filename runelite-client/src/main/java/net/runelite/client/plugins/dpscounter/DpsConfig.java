@@ -85,6 +85,18 @@ public interface DpsConfig extends Config
 
 	@ConfigItem(
 		position = 3,
+		keyName = "autoresetNextHit",
+		name = "Auto reset on next hit",
+		description = "Reset the DPS tracker on next boss hit after a boss dies",
+		section = bossSection
+	)
+	default boolean autoresetNextHit()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 4,
 		keyName = "bossDamage",
 		name = "Only boss damage",
 		description = "Only count damage done to the boss, and not to other NPCs",
