@@ -40,6 +40,7 @@ public interface ItemChargeConfig extends Config
 	String KEY_AMULET_OF_BOUNTY = "amuletOfBounty";
 	String KEY_AMULET_OF_CHEMISTRY = "amuletOfChemistry";
 	String KEY_BINDING_NECKLACE = "bindingNecklace";
+	String KEY_BRACELET_OF_CLAY = "braceletOfClay";
 	String KEY_BRACELET_OF_SLAUGHTER = "braceletOfSlaughter";
 	String KEY_CHRONICLE = "chronicle";
 	String KEY_DODGY_NECKLACE = "dodgyNecklace";
@@ -427,5 +428,27 @@ public interface ItemChargeConfig extends Config
 	default boolean showBloodEssenceCharges()
 	{
 		return true;
+	}
+	@ConfigItem(
+	keyNAme = "showBraceletOfClayCharges",
+	name = "Bracelet of Clay Charges",
+	description = "Show Bracelet of Slaughter item charges",
+	position = 31,
+	section = chargesSection
+	)
+	default boolean showBraceletofClayCharges()
+	{
+	return true;
+	}
+	@ConfigItem(
+	keyName = "braceletOfClayNotification",
+	name = "Bracelet of Clay Notficiation",
+	description = "Send a notification when a Bracelet of Clay breaks",
+	position = 32,
+	section = notificationSection
+	)
+	default boolean clayNotification()
+	{
+	return true;
 	}
 }
