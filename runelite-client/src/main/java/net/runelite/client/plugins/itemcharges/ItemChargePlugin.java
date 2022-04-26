@@ -137,10 +137,11 @@ public class ItemChargePlugin extends Plugin
 		"You manage to extract power from the Blood Essence and craft (\\d{1,3}) extra runes?\\."
 	);
 	private static final String BLOOD_ESSENCE_ACTIVATE_TEXT = "You activate the blood essence.";
-	private static final STRING BRACELET_OF_CLAY_CHECK_PATTERN = Pattern.compile(
-	"You can mine ([0-28]+|one) more pieces? of wet clay before your bracelet disintegrates\\.";
-	private static final String BRACELET_OF_CLAY_USE_TEXT = "You mine a piece of wet clay\\.";
-	private static final String BRACELET_OF_CLAY_BREAK_TEXT = "Your bracelet of clay disintegrates\\.";
+	private static final Pattern BRACELET_OF_CLAY_CHECK_PATTERN = Pattern.compile(
+	"You can mine ([0-28]+|one) more pieces? of soft clay before your bracelet crumbles to dust\\."
+	);
+	private static final String BRACELET_OF_CLAY_USE_TEXT = "You manage to mine some clay.";
+	private static final String BRACELET_OF_CLAY_BREAK_TEXT = "Your bracelet of clay crumbles to dust.";
 
 	private static final int MAX_DODGY_CHARGES = 10;
 	private static final int MAX_BINDING_CHARGES = 16;
@@ -445,18 +446,18 @@ public class ItemChargePlugin extends Plugin
 			{
 				updateBloodEssenceCharges(MAX_BLOOD_ESSENCE_CHARGES);
 			}
-			else if (ringOfForgingCheckMatcher.find())
+			else if (braceletOfClayCheckMatcher.find())
 			{
-				final String match = ringOfForgingCheckMatcher.group(1);
+				final String match = braceletOfClayCheckMatcher.group(1);
 
 				int charges = 1;
 				if (!match.equals("one"))
 				{
 					charges = Integer.parseInt(match);
 				}
-				updateRingOfForgingCharges(charges);
+				updateBraceletOfClayCharges(charges);
 			}
-			else if (message.equals(BRACELET_OF_CLAY_USED_TEXT))
+			else if (message.equals(BRACELET_OF_CLAY_USE_TEXT))
 			{
 				final ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
 				final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
@@ -466,20 +467,18 @@ public class ItemChargePlugin extends Plugin
 				{
 					return;
 				}
-
-				if (equipment.contains(ItemID.BRACELET_OF_CLAY) && (message.equals(BRACELET_OF_CLAY_USED_TEXT) || inventory.count(ItemID.IRON_ORE) > 1))
+				if (equipment.contains(ItemID.BRACELET_OF_CLAY) && (message.equals(BRACELET_OF_CLAY_USE_TEXT) || inventory.count(ItemID.SOFT_CLAY) > 1))
 				{
 					int charges = Ints.constrainToRange(getItemCharges(ItemChargeConfig.KEY_BRACELET_OF_CLAY) - 1, 0, MAX_BRACELET_OF_CLAY_CHARGES);
-					updateRingOfForgingCharges(charges);
+					updateBraceletOfClayCharges(charges);
 				}
 			}
 			else if (message.equals(BRACELET_OF_CLAY_BREAK_TEXT))
 			{
 				if (config.braceletOfClayNotification())
 				{
-					notifier.notify("Your bracelet of clay has disintegrated.");
+					notifier.notify("Your bracelet of clay has crumbled to dust");
 				}
-
 				updateBraceletOfClayCharges(MAX_BRACELET_OF_CLAY_CHARGES);
 			}
 		}
@@ -556,7 +555,7 @@ public class ItemChargePlugin extends Plugin
 							break;
 						case ItemID.BRACELET_OF_CLAY:
 						log.debug("Reset bracelet of clay");
-						updateBraceletOfClayCharges(MAX_BRACELET_OF_CLAY_CHARES);
+						updateBraceletOfClayCharges(MAX_BRACELET_OF_CLAY_CHARGES);
 						break;
 					}
 				}
@@ -618,7 +617,7 @@ public class ItemChargePlugin extends Plugin
 		setItemCharges(ItemChargeConfig.KEY_BLOOD_ESSENCE, value);
 		updateInfoboxes();
 	}
-	private void updateBraceOfClayCharges(final int value)
+	private void updateBraceletOfClayCharges(final int value)
 	{
 	setItemCharges(ItemChargeConfig.KEY_BRACELET_OF_CLAY, value);
 	updateInfoboxes();

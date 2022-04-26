@@ -430,13 +430,13 @@ public interface ItemChargeConfig extends Config
 		return true;
 	}
 	@ConfigItem(
-	keyNAme = "showBraceletOfClayCharges",
+	keyName = "showBraceletOfClayCharges",
 	name = "Bracelet of Clay Charges",
 	description = "Show Bracelet of Slaughter item charges",
 	position = 31,
 	section = chargesSection
 	)
-	default boolean showBraceletofClayCharges()
+	default boolean showBraceletOfClayCharges()
 	{
 	return true;
 	}
@@ -447,7 +447,7 @@ public interface ItemChargeConfig extends Config
 	position = 32,
 	section = notificationSection
 	)
-	default boolean clayNotification()
+	default boolean braceletOfClayNotification()
 	{
 	return true;
 	}
