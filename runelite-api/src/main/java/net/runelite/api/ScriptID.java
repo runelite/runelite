@@ -344,25 +344,6 @@ public final class ScriptID
 	public static final int WIKI_ICON_UPDATE = 3306;
 
 	/**
-	 * Builds a line in the chatbox when there is no username: prefix, such as 
-	 * a game or system message
-	 */
-	@ScriptArguments(integer = 11, string = 1)
-	public static final int CHATBOX_BUILD_LINE_WITHOUT_USER = 199;
-	
-	/**
-	 * Builds a line in the chatbox when there is a username: prefix
-	 */
-	@ScriptArguments(integer = 11, string = 2)
-	public static final int CHATBOX_BUILD_LINE_WITH_USER = 203;
-
-	/**
-	 * Builds a line in the chatbox when it from a clan
-	 */
-	@ScriptArguments(integer = 14, string = 3)
-	public static final int CHATBOX_BUILD_LINE_WITH_CLAN = 4483;
-
-	/**
 	 * Drag callback for the camera zoom slider in the options side panel.
 	 */
 	@ScriptArguments(integer = 3)
@@ -390,18 +371,6 @@ public final class ScriptID
 	 */
 	@ScriptArguments(integer = 1)
 	public static final int NOTIFICATION_DELAY = 3347;
-
-	/**
-	 * Check if a quest should be filtered from the quest list
-	 * <ul>
-	 * <li> int (StructID) Quest struct </li>
-	 * <li> int State filter </li>
-	 * <li> int Requirement filter </li>
-	 * <li> int Stats filter </li>
-	 * </ul>
-	 */
-	@ScriptArguments(integer = 4)
-	public static final int QUEST_FILTER = 3238;
 
 	@ScriptArguments(integer = 7)
 	public static final int GROUP_IRONMAN_STORAGE_BUILD = 5269;
