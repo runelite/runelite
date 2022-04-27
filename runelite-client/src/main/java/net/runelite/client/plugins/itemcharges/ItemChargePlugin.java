@@ -138,7 +138,7 @@ public class ItemChargePlugin extends Plugin
 	);
 	private static final String BLOOD_ESSENCE_ACTIVATE_TEXT = "You activate the blood essence.";
 	private static final Pattern BRACELET_OF_CLAY_CHECK_PATTERN = Pattern.compile(
-	"You can mine (\\d{1,2}|one) more pieces? of soft clay before your bracelet crumbles to dust\\."
+	"You can mine (\\d{1,2}) more pieces? of soft clay before your bracelet crumbles to dust."
 	);
 	private static final String BRACELET_OF_CLAY_USE_TEXT = "You manage to mine some clay.";
 	private static final String BRACELET_OF_CLAY_BREAK_TEXT = "Your bracelet of clay crumbles to dust.";
@@ -463,11 +463,7 @@ public class ItemChargePlugin extends Plugin
 				final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
 
 				// Determine if the player mined with a Bracelet of Clay equipped.
-				if (equipment == null)
-				{
-					return;
-				}
-				if (equipment.contains(ItemID.BRACELET_OF_CLAY) && (message.equals(BRACELET_OF_CLAY_USE_TEXT) || inventory.count(ItemID.SOFT_CLAY) > 1))
+				if (equipment.contains(ItemID.BRACELET_OF_CLAY))
 				{
 					int charges = Ints.constrainToRange(getItemCharges(ItemChargeConfig.KEY_BRACELET_OF_CLAY) - 1, 0, MAX_BRACELET_OF_CLAY_CHARGES);
 					updateBraceletOfClayCharges(charges);
@@ -554,9 +550,9 @@ public class ItemChargePlugin extends Plugin
 							updateExpeditiousBraceletCharges(MAX_SLAYER_BRACELET_CHARGES);
 							break;
 						case ItemID.BRACELET_OF_CLAY:
-						log.debug("Reset bracelet of clay");
-						updateBraceletOfClayCharges(MAX_BRACELET_OF_CLAY_CHARGES);
-						break;
+							log.debug("Reset bracelet of clay");
+							updateBraceletOfClayCharges(MAX_BRACELET_OF_CLAY_CHARGES);
+							break;
 					}
 				}
 			});
@@ -619,8 +615,8 @@ public class ItemChargePlugin extends Plugin
 	}
 	private void updateBraceletOfClayCharges(final int value)
 	{
-	setItemCharges(ItemChargeConfig.KEY_BRACELET_OF_CLAY, value);
-	updateInfoboxes();
+		setItemCharges(ItemChargeConfig.KEY_BRACELET_OF_CLAY, value);
+		updateInfoboxes();
 	}
 
 	private void checkDestroyWidget()
