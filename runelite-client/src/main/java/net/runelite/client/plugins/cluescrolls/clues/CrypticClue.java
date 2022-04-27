@@ -153,7 +153,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Search the crates in the Port Sarim Fishing shop.", CRATE_9534, new WorldPoint(3012, 3222, 0), "Search the crates, by the door, in Gerrant's Fishy Business in Port Sarim."),
 		new CrypticClue("Speak to The Lady of the Lake.", "The Lady of the Lake", new WorldPoint(2924, 3405, 0), "Talk to The Lady of the Lake in Taverley."),
 		new CrypticClue("Rotting next to a ditch. Dig next to the fish.", new WorldPoint(3547, 3183, 0), "Dig next to a fishing spot on the south-east side of Burgh de Rott."),
-		new CrypticClue("The King's magic won't be wasted by me.", "Guardian mummy", new WorldPoint(1934, 4427, 0), "Talk to the Guardian mummy inside the Pyramid Plunder minigame in Sophanem."),
+		new CrypticClue("The King's magic shouldn't be wasted by me.", "Guardian mummy", new WorldPoint(1934, 4427, 0), "Talk to the Guardian mummy inside the Pyramid Plunder minigame in Sophanem."),
 		new CrypticClue("Dig where the forces of Zamorak and Saradomin collide.", new WorldPoint(3049, 4839, 0), "Dig next to the law rift in the Abyss."),
 		new CrypticClue("Search the boxes in the goblin house near Lumbridge.", BOXES, new WorldPoint(3245, 3245, 0), "Goblin house on the eastern side of the river outside of Lumbridge."),
 		new CrypticClue("W marks the spot.", new WorldPoint(2867, 3546, 0), "Dig in the middle of the Warriors' Guild entrance hall."),
