@@ -72,11 +72,6 @@ public class ItemSpriteFactory
 			}
 		}
 
-		if (item.notedTemplate != -1)
-		{
-			item.updateNote(itemProvider.provide(item.notedTemplate), itemProvider.provide(item.notedID));
-		}
-
 		Model itemModel = getModel(modelProvider, item);
 		if (itemModel == null)
 		{
@@ -96,7 +91,7 @@ public class ItemSpriteFactory
 		else if (item.boughtTemplateId != -1)
 		{
 			auxSpritePixels = createSpritePixels(itemProvider, modelProvider, spriteProvider, textureProvider,
-				item.boughtId, quantity, border, shadowColor, false);
+				item.boughtId, quantity, border, 0, false);
 			if (auxSpritePixels == null)
 			{
 				return null;
