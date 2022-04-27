@@ -459,7 +459,6 @@ public class ItemChargePlugin extends Plugin
 			}
 			else if (message.equals(BRACELET_OF_CLAY_USE_TEXT))
 			{
-				final ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
 				final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
 
 				// Determine if the player mined with a Bracelet of Clay equipped.
