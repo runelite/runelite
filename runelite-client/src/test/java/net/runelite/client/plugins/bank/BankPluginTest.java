@@ -101,9 +101,15 @@ public class BankPluginTest
 		assertTrue(bankPlugin.valueSearch(itemId, "ha 500k - 20.6m"));
 		assertTrue(bankPlugin.valueSearch(itemId, "ha > 940k"));
 
+		assertTrue(bankPlugin.valueSearch(itemId, "qty=0"));
+		assertTrue(bankPlugin.valueSearch(itemId, "qty<600"));
+
 		assertFalse(bankPlugin.valueSearch(itemId, "<500k"));
 		assertFalse(bankPlugin.valueSearch(itemId, "ha >2m"));
 		assertFalse(bankPlugin.valueSearch(itemId, "ge > 0.02b"));
+
+		assertFalse(bankPlugin.valueSearch(itemId, "qty=1"));
+		assertFalse(bankPlugin.valueSearch(itemId, "qty>30"));
 
 		assertFalse(bankPlugin.valueSearch(itemId, "1000k"));
 	}
