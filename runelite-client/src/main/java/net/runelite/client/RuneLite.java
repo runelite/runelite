@@ -434,9 +434,15 @@ public class RuneLite
 	{
 		OkHttpClient.Builder builder = new OkHttpClient.Builder()
 			.pingInterval(30, TimeUnit.SECONDS)
-			.addNetworkInterceptor(chain ->
+			.addInterceptor(chain ->
 			{
-				Request userAgentRequest = chain.request()
+				Request request = chain.request();
+				if (request.header("User-Agent") != null)
+				{
+					return chain.proceed(request);
+				}
+
+				Request userAgentRequest = request
 					.newBuilder()
 					.header("User-Agent", USER_AGENT)
 					.build();
