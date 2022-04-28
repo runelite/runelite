@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2020 Adam <Adam@sigterm.info>
+ * Copyright (c) 2021, Jonathan Rousseau <https://github.com/JoRouss>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,6 +29,8 @@ import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.Collection;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -42,6 +45,7 @@ import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.events.PartyChanged;
 import net.runelite.client.plugins.Plugin;
@@ -144,7 +148,11 @@ public class DpsCounterPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private final Map<String, DpsMember> members = new ConcurrentHashMap<>();
 	@Getter(AccessLevel.PACKAGE)
+	private Collection<DpsMember> sortedMembers;
+	@Getter(AccessLevel.PACKAGE)
 	private final DpsMember total = new DpsMember("Total");
+
+	private boolean bossDied;
 
 	@Provides
 	DpsConfig provideConfig(ConfigManager configManager)
@@ -166,6 +174,13 @@ public class DpsCounterPlugin extends Plugin
 		wsClient.unregisterMessage(DpsUpdate.class);
 		overlayManager.remove(dpsOverlay);
 		members.clear();
+		bossDied = false;
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		sort();
 	}
 
 	@Subscribe
@@ -186,36 +201,45 @@ public class DpsCounterPlugin extends Plugin
 
 		Hitsplat hitsplat = hitsplatApplied.getHitsplat();
 
+		final int npcId = ((NPC) actor).getId();
+		boolean isBoss = BOSSES.contains(npcId);
+
+		// Reset if someone hit a boss and the previous one is dead
+		if (bossDied && isBoss && dpsConfig.autoresetNextHit())
+		{
+			bossDied = false;
+			members.clear();
+			total.reset();
+		}
+
 		if (hitsplat.isMine())
 		{
-			final int npcId = ((NPC) actor).getId();
-			boolean isBoss = BOSSES.contains(npcId);
+			int hit = hitsplat.getAmount();
+			PartyMember localMember = partyService.getLocalMember();
+
+			// broadcast damage
+			if (localMember != null)
+			{
+				final DpsUpdate dpsUpdate = new DpsUpdate(hit, isBoss);
+				dpsUpdate.setMemberId(localMember.getMemberId());
+				wsClient.send(dpsUpdate);
+			}
+
 			if (dpsConfig.bossDamage() && !isBoss)
 			{
 				return;
 			}
 
-			int hit = hitsplat.getAmount();
-			// Update local member
-			PartyMember localMember = partyService.getLocalMember();
 			// If not in a party, user local player name
 			final String name = localMember == null ? player.getName() : localMember.getName();
 			DpsMember dpsMember = members.computeIfAbsent(name, DpsMember::new);
 			dpsMember.addDamage(hit);
+			sort();
 
-			// broadcast damage
-			if (localMember != null)
-			{
-				final DpsUpdate specialCounterUpdate = new DpsUpdate(hit);
-				specialCounterUpdate.setMemberId(localMember.getMemberId());
-				wsClient.send(specialCounterUpdate);
-			}
 			// apply to total
 		}
 		else if (hitsplat.isOthers())
 		{
-			final int npcId = ((NPC) actor).getId();
-			boolean isBoss = BOSSES.contains(npcId);
 			if ((dpsConfig.bossDamage() || actor != player.getInteracting()) && !isBoss)
 			{
 				// only track damage to npcs we are attacking, or is a nearby common boss
@@ -246,10 +270,25 @@ public class DpsCounterPlugin extends Plugin
 			return;
 		}
 
+		// Reset if someone hit a boss and the previous one is dead
+		if (bossDied && dpsUpdate.isBoss() && dpsConfig.autoresetNextHit())
+		{
+			bossDied = false;
+			members.clear();
+			total.reset();
+		}
+
+		// Received non-boss damage, but we only want boss damage
+		if (!dpsUpdate.isBoss() && dpsConfig.bossDamage())
+		{
+			return;
+		}
+
 		unpause();
 
 		DpsMember dpsMember = members.computeIfAbsent(name, DpsMember::new);
 		dpsMember.addDamage(dpsUpdate.getHit());
+		sort();
 	}
 
 	@Subscribe
@@ -278,6 +317,7 @@ public class DpsCounterPlugin extends Plugin
 		if (npc.isDead() && BOSSES.contains(npc.getId()))
 		{
 			log.debug("Boss has died!");
+			bossDied = true;
 
 			if (dpsConfig.autoreset())
 			{
@@ -325,5 +365,33 @@ public class DpsCounterPlugin extends Plugin
 		total.unpause();
 
 		dpsOverlay.setPaused(false);
+	}
+
+	private void sort()
+	{
+		boolean inParty = !partyService.getMembers().isEmpty();
+		boolean showDamage = dpsConfig.showDamage();
+
+		if (inParty && dpsConfig.sortByDps())
+		{
+			if (showDamage)
+			{
+				sortedMembers = members.values()
+					.stream()
+					.sorted((e1, e2) -> Integer.compare(e2.getDamage(), e1.getDamage()))
+					.collect(Collectors.toList());
+			}
+			else
+			{
+				sortedMembers = members.values()
+					.stream()
+					.sorted((e1, e2) -> Float.compare(e2.getDps(), e1.getDps()))
+					.collect(Collectors.toList());
+			}
+		}
+		else
+		{
+			sortedMembers = members.values();
+		}
 	}
 }
