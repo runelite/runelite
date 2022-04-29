@@ -27,11 +27,9 @@ package net.runelite.client;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Strings;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import com.jagex.oldscape.pub.OAuthApi;
 import java.applet.Applet;
 import java.io.File;
 import java.io.IOException;
@@ -318,11 +316,6 @@ public class RuneLite
 			}
 
 			applet.start();
-
-			if (applet instanceof OAuthApi)
-			{
-				setupJxAuth((OAuthApi) applet);
-			}
 		}
 
 		SplashScreen.stage(.57, null, "Loading configuration");
@@ -549,23 +542,6 @@ public class RuneLite
 			String key = entry.getKey(), value = entry.getValue();
 			log.debug("Setting property {}={}", key, value);
 			System.setProperty(key, value);
-		}
-	}
-
-	private void setupJxAuth(OAuthApi oAuthApi)
-	{
-		String accessToken = System.getenv("JX_ACCESS_TOKEN");
-		if (Strings.isNullOrEmpty(accessToken))
-		{
-			return;
-		}
-
-		try
-		{
-		}
-		catch (LinkageError ex)
-		{
-			log.error("error setting up OTL requester", ex);
 		}
 	}
 }
