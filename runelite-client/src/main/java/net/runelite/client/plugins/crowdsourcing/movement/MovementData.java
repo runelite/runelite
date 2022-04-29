@@ -27,8 +27,8 @@ package net.runelite.client.plugins.crowdsourcing.movement;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import net.runelite.api.MenuAction;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.MenuOptionClicked;
 
 @Data
 @AllArgsConstructor
@@ -39,5 +39,10 @@ public class MovementData
 	private final boolean fromInstance;
 	private final boolean toInstance;
 	private final int ticks;
-	private MenuOptionClicked lastClick;
+	private MenuAction menuAction;
+	private int menuIdentifier;
+	private String menuOption;
+	private String menuTarget;
+	private int param0;
+	private int param1;
 }
