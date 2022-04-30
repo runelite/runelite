@@ -42,11 +42,6 @@
 			<artifactId>cache</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>net.runelite</groupId>
-			<artifactId>runelite-api</artifactId>
-			<version>${project.version}</version>
-		</dependency>
 
 		<dependency>
 			<groupId>org.apache.maven</groupId>
