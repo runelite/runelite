@@ -1016,12 +1016,13 @@ public class LootTrackerPlugin extends Plugin
 			}
 			else if (event.getMenuOption().equals("Loot") && IMPLING_JARS.contains(event.getItemId()))
 			{
+				final int itemId = event.getItemId();
 				onInvChange(((invItems, groundItems, removedItems) ->
 				{
-					int cnt = removedItems.count(event.getItemId());
+					int cnt = removedItems.count(itemId);
 					if (cnt > 0)
 					{
-						String name = itemManager.getItemComposition(event.getItemId()).getName();
+						String name = itemManager.getItemComposition(itemId).getName();
 						addLoot(name, -1, LootRecordType.EVENT, null, invItems, cnt);
 					}
 				}));
