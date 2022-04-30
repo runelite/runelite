@@ -445,7 +445,7 @@ public class FishingPlugin extends Plugin
 
 		if (seconds < 10)
 		{
-			trawlerText.append("0");
+			trawlerText.append('0');
 		}
 
 		trawlerText.append(seconds);

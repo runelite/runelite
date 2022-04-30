@@ -829,7 +829,7 @@ public class GrandExchangePlugin extends Plugin
 			if (resetTime != null)
 			{
 				Duration remaining = Duration.between(Instant.now(), resetTime);
-				sb.append(" (").append(DurationFormatUtils.formatDuration(remaining.toMillis(), "H:mm")).append(")");
+				sb.append(" (").append(DurationFormatUtils.formatDuration(remaining.toMillis(), "H:mm")).append(')');
 			}
 		}
 

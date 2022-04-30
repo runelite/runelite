@@ -42,12 +42,17 @@ import static net.runelite.api.MenuAction.PLAYER_SEVENTH_OPTION;
 import static net.runelite.api.MenuAction.PLAYER_SIXTH_OPTION;
 import static net.runelite.api.MenuAction.PLAYER_THIRD_OPTION;
 import static net.runelite.api.MenuAction.RUNELITE_PLAYER;
-import static net.runelite.api.MenuAction.WIDGET_TARGET_ON_PLAYER;
 import static net.runelite.api.MenuAction.WALK;
+import static net.runelite.api.MenuAction.WIDGET_TARGET_ON_PLAYER;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Player;
+import net.runelite.api.ScriptID;
 import net.runelite.api.clan.ClanTitle;
 import net.runelite.api.events.ClientTick;
+import net.runelite.api.events.ScriptPostFired;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ChatIconManager;
@@ -63,6 +68,8 @@ import net.runelite.client.util.ColorUtil;
 )
 public class PlayerIndicatorsPlugin extends Plugin
 {
+	private static final String TRADING_WITH_TEXT = "Trading with: ";
+
 	@Inject
 	private OverlayManager overlayManager;
 
@@ -86,6 +93,9 @@ public class PlayerIndicatorsPlugin extends Plugin
 
 	@Inject
 	private ChatIconManager chatIconManager;
+
+	@Inject
+	private ClientThread clientThread;
 
 	@Provides
 	PlayerIndicatorsConfig provideConfig(ConfigManager configManager)
@@ -247,6 +257,44 @@ public class PlayerIndicatorsPlugin extends Plugin
 		}
 
 		return newTarget;
+	}
+
+	@Subscribe
+	public void onScriptPostFired(ScriptPostFired event)
+	{
+		if (event.getScriptId() == ScriptID.TRADE_MAIN_INIT)
+		{
+			clientThread.invokeLater(() ->
+			{
+				Widget tradeTitle = client.getWidget(WidgetInfo.TRADE_WINDOW_HEADER);
+				String header = tradeTitle.getText();
+				String playerName = header.substring(TRADING_WITH_TEXT.length());
+
+				Player targetPlayer = findPlayer(playerName);
+				if (targetPlayer == null)
+				{
+					return;
+				}
+
+				Decorations playerColor = getDecorations(targetPlayer);
+				if (playerColor != null)
+				{
+					tradeTitle.setText(TRADING_WITH_TEXT + ColorUtil.wrapWithColorTag(playerName, playerColor.color));
+				}
+			});
+		}
+	}
+
+	private Player findPlayer(String name)
+	{
+		for (Player player : client.getPlayers())
+		{
+			if (player.getName().equals(name))
+			{
+				return player;
+			}
+		}
+		return null;
 	}
 
 	@Value

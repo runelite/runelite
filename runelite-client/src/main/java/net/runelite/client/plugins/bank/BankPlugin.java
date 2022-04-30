@@ -82,7 +82,7 @@ public class BankPlugin extends Plugin
 	private static final String SEED_VAULT_TITLE = "Seed Vault";
 
 	private static final String NUMBER_REGEX = "[0-9]+(\\.[0-9]+)?[kmb]?";
-	private static final Pattern VALUE_SEARCH_PATTERN = Pattern.compile("^(?<mode>ge|ha|alch)?" +
+	private static final Pattern VALUE_SEARCH_PATTERN = Pattern.compile("^(?<mode>qty|ge|ha|alch)?" +
 		" *(((?<op>[<>=]|>=|<=) *(?<num>" + NUMBER_REGEX + "))|" +
 		"((?<num1>" + NUMBER_REGEX + ") *- *(?<num2>" + NUMBER_REGEX + ")))$", Pattern.CASE_INSENSITIVE);
 
@@ -413,13 +413,26 @@ public class BankPlugin extends Plugin
 		final int qty = itemQuantities.count(itemId);
 		final long gePrice = (long) itemManager.getItemPrice(itemId) * qty;
 		final long haPrice = (long) itemComposition.getHaPrice() * qty;
+		final boolean isPlaceholder = itemComposition.getPlaceholderTemplateId() != -1;
 
 		long value = Math.max(gePrice, haPrice);
 
 		final String mode = matcher.group("mode");
 		if (mode != null)
 		{
-			value = mode.toLowerCase().equals("ge") ? gePrice : haPrice;
+			switch (mode.toLowerCase())
+			{
+				case "qty":
+					value = isPlaceholder ? 0 : qty;
+					break;
+				case "ge":
+					value = gePrice;
+					break;
+				case "ha":
+				case "alch":
+					value = haPrice;
+					break;
+			}
 		}
 
 		final String op = matcher.group("op");

@@ -96,6 +96,7 @@ public class Timer extends InfoBox
 
 	public void setDuration(Duration duration)
 	{
+		Preconditions.checkArgument(!duration.isNegative(), "negative duration");
 		this.duration = duration;
 		endTime = startTime.plus(duration);
 	}

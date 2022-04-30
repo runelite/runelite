@@ -198,6 +198,7 @@ public enum Quest
 	THE_FROZEN_DOOR(3768, "The Frozen Door"),
 	HOPESPEARS_WILL(4136, "Hopespear's Will"),
 	TEMPLE_OF_THE_EYE(4273, "Temple of the Eye"),
+	BENEATH_CURSED_SANDS(4287, "Beneath Cursed Sands"),
 	;
 
 	@Getter

@@ -550,7 +550,7 @@ public class FarmingTracker
 			// Same RS account but different profile type
 			if (profileType != RuneScapeProfileType.getCurrent(client))
 			{
-				stringBuilder.append("(")
+				stringBuilder.append('(')
 					.append(Text.titleCase(profile.getType()))
 					.append(") ");
 			}
@@ -564,13 +564,13 @@ public class FarmingTracker
 				//Don't print profile type when logged out if is STANDARD
 				if (client.getGameState() == GameState.LOGIN_SCREEN && profileType == RuneScapeProfileType.STANDARD)
 				{
-					stringBuilder.append("(")
+					stringBuilder.append('(')
 						.append(profile.getDisplayName())
 						.append(") ");
 				}
 				else
 				{
-					stringBuilder.append("(")
+					stringBuilder.append('(')
 						.append(profile.getDisplayName())
 						.append(" - ")
 						.append(Text.titleCase(profile.getType()))
@@ -580,7 +580,7 @@ public class FarmingTracker
 			// Different RS account but same profile type
 			else
 			{
-				stringBuilder.append("(")
+				stringBuilder.append('(')
 					.append(profile.getDisplayName())
 					.append(") ");
 			}
@@ -616,7 +616,7 @@ public class FarmingTracker
 
 		stringBuilder.append(patch.getRegion().isDefinite() ? "the " : "")
 			.append(patch.getRegion().getName())
-			.append(".");
+			.append('.');
 
 		notifier.notify(stringBuilder.toString());
 	}

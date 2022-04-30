@@ -45,6 +45,8 @@ Before you submit your pull request consider the following guidelines:
 
 * Search [GitHub](https://github.com/runelite/runelite/pulls) for an open or closed Pull Request
   that relates to your submission. You don't want to duplicate effort.
+* If adding a feature or enhancement, we recommend you first [start a discussion for
+  it](https://github.com/runelite/runelite/discussions) before submitting a Pull Request.
 * [Fork](https://help.github.com/articles/fork-a-repo/) this repo.
 * [Clone](https://help.github.com/articles/cloning-a-repository/) your copy.
     ```shell

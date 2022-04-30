@@ -36,6 +36,7 @@ public enum FairyRings
 	AJQ("Cave south of Dorgesh-Kaan"),
 	AJR("Slayer cave"),
 	AJS("Penguins near Miscellania"),
+	AKP("Necropolis"),
 	AKQ("Piscatoris Hunter area"),
 	AKS("Feldip Hunter area"),
 	ALP("(Island) Lighthouse"),

@@ -106,7 +106,7 @@ public class RunepouchOverlay extends WidgetItemOverlay
 
 			tooltipBuilder
 				.append(amount)
-				.append(" ")
+				.append(' ')
 				.append(ColorUtil.wrapWithColorTag(rune.getName(), Color.YELLOW))
 				.append("</br>");
 
