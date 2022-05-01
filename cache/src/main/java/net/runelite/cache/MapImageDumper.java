@@ -57,6 +57,7 @@ import net.runelite.cache.region.Location;
 import net.runelite.cache.region.Position;
 import net.runelite.cache.region.Region;
 import net.runelite.cache.region.RegionLoader;
+import net.runelite.cache.util.BigBufferedImage;
 import net.runelite.cache.util.KeyProvider;
 
 @Slf4j
@@ -109,6 +110,10 @@ public class MapImageDumper
 	@Getter
 	@Setter
 	private boolean transparency = false;
+
+	@Getter
+	@Setter
+	private boolean lowMemory = true;
 
 	public MapImageDumper(Store store, KeyProvider keyProvider)
 	{
@@ -172,7 +177,15 @@ public class MapImageDumper
 			MAP_SCALE, (pixelsX * pixelsY * 3 / 1024 / 1024),
 			Runtime.getRuntime().maxMemory() / 1024L / 1024L);
 
-		BufferedImage image = new BufferedImage(pixelsX, pixelsY, transparency ? BufferedImage.TYPE_INT_ARGB : BufferedImage.TYPE_INT_RGB);
+		BufferedImage image;
+		if (lowMemory)
+		{
+			image = BigBufferedImage.create(pixelsX, pixelsY, transparency ? BufferedImage.TYPE_INT_ARGB : BufferedImage.TYPE_INT_RGB);
+		}
+		else
+		{
+			image = new BufferedImage(pixelsX, pixelsY, transparency ? BufferedImage.TYPE_INT_ARGB : BufferedImage.TYPE_INT_RGB);
+		}
 
 		drawMap(image, z);
 		drawObjects(image, z);
