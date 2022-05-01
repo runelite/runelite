@@ -181,6 +181,17 @@ public class MapImageDumper
 		return image;
 	}
 
+	private void drawNeighborObjects(BufferedImage image, int rx, int ry, int dx, int dy, int z)
+	{
+		Region neighbor = regionLoader.findRegionForRegionCoordinates(rx + dx, ry + dy);
+		if (neighbor == null)
+		{
+			return;
+		}
+
+		drawObjects(image, Region.X * dx, Region.Y * -dy, neighbor, z);
+	}
+
 	public BufferedImage drawRegion(Region region, int z)
 	{
 		int pixelsX = Region.X * MAP_SCALE;
@@ -189,7 +200,16 @@ public class MapImageDumper
 		BufferedImage image = new BufferedImage(pixelsX, pixelsY, transparency ? BufferedImage.TYPE_INT_ARGB : BufferedImage.TYPE_INT_RGB);
 
 		drawMap(image, 0, 0, z, region);
+
+		drawNeighborObjects(image, region.getRegionX(), region.getRegionY(), -1, -1, z);
+		drawNeighborObjects(image, region.getRegionX(), region.getRegionY(), -1, 0, z);
+		drawNeighborObjects(image, region.getRegionX(), region.getRegionY(), -1, 1, z);
+		drawNeighborObjects(image, region.getRegionX(), region.getRegionY(), 0, -1, z);
 		drawObjects(image, 0, 0, region, z);
+		drawNeighborObjects(image, region.getRegionX(), region.getRegionY(), 0, 1, z);
+		drawNeighborObjects(image, region.getRegionX(), region.getRegionY(), 1, -1, z);
+		drawNeighborObjects(image, region.getRegionX(), region.getRegionY(), 1, 0, z);
+		drawNeighborObjects(image, region.getRegionX(), region.getRegionY(), 1, 1, z);
 		drawMapIcons(image, 0, 0, region, z);
 
 		return image;
@@ -607,7 +627,7 @@ public class MapImageDumper
 							{
 								blitMapDecoration(image, drawX, drawY, object);
 							}
-							else
+							else if (drawX >= 0 && drawY >= 0 && drawX < image.getWidth() && drawY < image.getHeight())
 							{
 								if (type == 0 || type == 2)
 								{
@@ -714,25 +734,28 @@ public class MapImageDumper
 								continue;
 							}
 
-							int rgb = 0xFFEE_EEEE;
-							if (object.getWallOrDoor() != 0)
+							if (drawX >= 0 && drawY >= 0 && drawX < image.getWidth() && drawY < image.getHeight())
 							{
-								rgb = 0xFFEE_0000;
-							}
+								int rgb = 0xFFEE_EEEE;
+								if (object.getWallOrDoor() != 0)
+								{
+									rgb = 0xFFEE_0000;
+								}
 
-							if (rotation != 0 && rotation != 2)
-							{
-								image.setRGB(drawX + 0, drawY + 0, rgb);
-								image.setRGB(drawX + 1, drawY + 1, rgb);
-								image.setRGB(drawX + 2, drawY + 2, rgb);
-								image.setRGB(drawX + 3, drawY + 3, rgb);
-							}
-							else
-							{
-								image.setRGB(drawX + 0, drawY + 3, rgb);
-								image.setRGB(drawX + 1, drawY + 2, rgb);
-								image.setRGB(drawX + 2, drawY + 1, rgb);
-								image.setRGB(drawX + 3, drawY + 0, rgb);
+								if (rotation != 0 && rotation != 2)
+								{
+									image.setRGB(drawX + 0, drawY + 0, rgb);
+									image.setRGB(drawX + 1, drawY + 1, rgb);
+									image.setRGB(drawX + 2, drawY + 2, rgb);
+									image.setRGB(drawX + 3, drawY + 3, rgb);
+								}
+								else
+								{
+									image.setRGB(drawX + 0, drawY + 3, rgb);
+									image.setRGB(drawX + 1, drawY + 2, rgb);
+									image.setRGB(drawX + 2, drawY + 1, rgb);
+									image.setRGB(drawX + 3, drawY + 0, rgb);
+								}
 							}
 						}
 					}
