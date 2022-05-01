@@ -52,6 +52,7 @@ import net.runelite.cache.item.RSTextureProvider;
 import net.runelite.cache.region.Location;
 import net.runelite.cache.region.Region;
 import net.runelite.cache.region.RegionLoader;
+import net.runelite.cache.util.BigBufferedImage;
 import net.runelite.cache.util.Djb2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -135,7 +136,7 @@ public class MapImageDumper
 			MAP_SCALE, (pixelsX * pixelsY * 3 / 1024 / 1024),
 			Runtime.getRuntime().maxMemory() / 1024L / 1024L);
 
-		BufferedImage image = new BufferedImage(pixelsX, pixelsY, BufferedImage.TYPE_INT_RGB);
+		BufferedImage image = BigBufferedImage.create(pixelsX, pixelsY, BufferedImage.TYPE_INT_RGB);
 
 		drawMap(image, z);
 		drawObjects(image, z);
@@ -149,7 +150,7 @@ public class MapImageDumper
 		int pixelsX = Region.X * MAP_SCALE;
 		int pixelsY = Region.Y * MAP_SCALE;
 
-		BufferedImage image = new BufferedImage(pixelsX, pixelsY, BufferedImage.TYPE_INT_RGB);
+		BufferedImage image = BigBufferedImage.create(pixelsX, pixelsY, BufferedImage.TYPE_INT_RGB);
 
 		drawMap(image, 0, 0, z, region);
 		drawObjects(image, 0, 0, region, z);
