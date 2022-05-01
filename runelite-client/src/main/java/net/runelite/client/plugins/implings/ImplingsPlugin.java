@@ -28,6 +28,7 @@ import com.google.inject.Provides;
 import java.awt.Color;
 import java.util.function.Function;
 import javax.inject.Inject;
+import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcSpawned;
@@ -62,6 +63,9 @@ public class ImplingsPlugin extends Plugin
 
 	@Inject
 	private NpcOverlayService npcOverlayService;
+
+	@Inject
+	private Client client;
 
 	public final Function<NPC, HighlightedNpc> isTarget = (npc) ->
 	{
@@ -116,14 +120,7 @@ public class ImplingsPlugin extends Plugin
 	{
 		NPC npc = npcSpawned.getNpc();
 		Impling impling = Impling.findImpling(npc.getId());
-
-		if (impling != null)
-		{
-			if (showImplingType(impling.getImplingType()) == ImplingsConfig.ImplingMode.NOTIFY)
-			{
-				notifier.notify(impling.getImplingType().getName() + " impling is in the area");
-			}
-		}
+		notify(impling);
 	}
 
 	@Subscribe
@@ -131,12 +128,21 @@ public class ImplingsPlugin extends Plugin
 	{
 		NPC npc = npcCompositionChanged.getNpc();
 		Impling impling = Impling.findImpling(npc.getId());
+		notify(impling);
+	}
 
+	private void notify(final Impling impling)
+	{
 		if (impling != null)
 		{
 			if (showImplingType(impling.getImplingType()) == ImplingsConfig.ImplingMode.NOTIFY)
 			{
-				notifier.notify(impling.getImplingType().getName() + " impling is in the area");
+				String msg = impling.getImplingType().getName() + " impling is in the area";
+				if (config.showWorld())
+				{
+					msg += String.format(" (World: %d)", client.getWorld());
+				}
+				notifier.notify(msg);
 			}
 		}
 	}

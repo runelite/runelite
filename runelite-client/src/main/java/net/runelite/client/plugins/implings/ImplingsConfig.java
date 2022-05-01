@@ -383,4 +383,15 @@ public interface ImplingsConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		position = 28,
+		keyName = "showworld",
+		name = "Include current world",
+		description = "Configures whether or not the current world is included in the notification message"
+	)
+	default boolean showWorld()
+	{
+		return false;
+	}
 }
