@@ -34,6 +34,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -58,6 +59,8 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ProjectileMoved;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -74,6 +77,7 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 	description = "Show information about cannon placement and/or amount of cannonballs",
 	tags = {"combat", "notifications", "ranged", "overlay"}
 )
+@Slf4j
 public class CannonPlugin extends Plugin
 {
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
@@ -284,16 +288,11 @@ public class CannonPlugin extends Plugin
 		}
 
 		// Check if cannonballs are being used on the cannon
-		if (event.getMenuAction() == MenuAction.ITEM_USE_ON_GAME_OBJECT)
+		if (event.getMenuAction() == MenuAction.WIDGET_TARGET_ON_GAME_OBJECT && client.getSelectedWidget().getId() == WidgetInfo.INVENTORY.getId())
 		{
-			final int idx = event.getSelectedItemIndex();
-			final ItemContainer items = client.getItemContainer(InventoryID.INVENTORY);
-			if (items == null)
-			{
-				return;
-			}
-			final Item item = items.getItem(idx);
-			if (item == null || (item.getId() != ItemID.CANNONBALL && item.getId() != ItemID.GRANITE_CANNONBALL))
+			final Widget selected = client.getSelectedWidget();
+			final int itemId = selected.getItemId();
+			if (itemId != ItemID.CANNONBALL && itemId != ItemID.GRANITE_CANNONBALL)
 			{
 				return;
 			}
@@ -306,6 +305,7 @@ public class CannonPlugin extends Plugin
 
 		// Store the click location as a WorldPoint to avoid issues with scene loads
 		clickedCannonLocation = WorldPoint.fromScene(client, event.getParam0(), event.getParam1(), client.getPlane());
+		log.debug("Updated cannon location: {}", clickedCannonLocation);
 	}
 
 	@Subscribe

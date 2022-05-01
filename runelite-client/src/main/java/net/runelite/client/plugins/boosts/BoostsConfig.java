@@ -54,7 +54,7 @@ public interface BoostsConfig extends Config
 	)
 	default DisplayBoosts displayBoosts()
 	{
-		return DisplayBoosts.BOTH;
+		return DisplayBoosts.COMBAT;
 	}
 
 	@ConfigItem(
@@ -76,7 +76,7 @@ public interface BoostsConfig extends Config
 	)
 	default boolean displayInfoboxes()
 	{
-		return false;
+		return true;
 	}
 
 	@ConfigItem(

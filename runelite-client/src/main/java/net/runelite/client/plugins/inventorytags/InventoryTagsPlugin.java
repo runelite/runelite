@@ -164,42 +164,43 @@ public class InventoryTagsPlugin extends Plugin
 			return;
 		}
 
-		final int widgetId = firstEntry.getParam1();
-
-		// Inventory item menu
-		if (widgetId == WidgetInfo.INVENTORY.getId())
+		final int itemId;
+		if (firstEntry.getType() == MenuAction.WIDGET_TARGET && firstEntry.getWidget().getId() == WidgetInfo.INVENTORY.getId())
 		{
-			int itemId = firstEntry.getIdentifier();
+			itemId = firstEntry.getWidget().getItemId();
+		}
+		else if (firstEntry.isItemOp())
+		{
+			itemId = firstEntry.getItemId();
+		}
+		else
+		{
+			return;
+		}
 
-			if (itemId == -1)
-			{
-				return;
-			}
+		// Set menu to only be Cancel
+		client.setMenuEntries(Arrays.copyOf(client.getMenuEntries(), 1));
 
-			// Set menu to only be Cancel
-			client.setMenuEntries(Arrays.copyOf(client.getMenuEntries(), 1));
+		for (final String groupName : GROUPS)
+		{
+			final String group = getTag(itemId);
+			final Color color = getGroupNameColor(groupName);
 
-			for (final String groupName : GROUPS)
-			{
-				final String group = getTag(itemId);
-				final Color color = getGroupNameColor(groupName);
-
-				client.createMenuEntry(-1)
-					.setOption(groupName.equals(group) ? MENU_REMOVE : MENU_SET)
-					.setTarget(ColorUtil.prependColorTag(groupName, MoreObjects.firstNonNull(color, Color.WHITE)))
-					.setType(MenuAction.RUNELITE)
-					.onClick(e ->
+			client.createMenuEntry(-1)
+				.setOption(groupName.equals(group) ? MENU_REMOVE : MENU_SET)
+				.setTarget(ColorUtil.prependColorTag(groupName, MoreObjects.firstNonNull(color, Color.WHITE)))
+				.setType(MenuAction.RUNELITE)
+				.onClick(e ->
+				{
+					if (e.getOption().equals(MENU_SET))
 					{
-						if (e.getOption().equals(MENU_SET))
-						{
-							setTag(itemId, groupName);
-						}
-						else
-						{
-							unsetTag(itemId);
-						}
-					});
-			}
+						setTag(itemId, groupName);
+					}
+					else
+					{
+						unsetTag(itemId);
+					}
+				});
 		}
 	}
 

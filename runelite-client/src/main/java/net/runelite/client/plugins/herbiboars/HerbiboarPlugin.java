@@ -199,7 +199,7 @@ public class HerbiboarPlugin extends Plugin
 		{
 			for (TrailToSpot trail : spot.getTrails())
 			{
-				int value = client.getVar(trail.getVarbit());
+				int value = client.getVarbitValue(trail.getVarbitId());
 
 				if (value == trail.getValue())
 				{
@@ -222,11 +222,11 @@ public class HerbiboarPlugin extends Plugin
 			}
 		}
 
-		finishId = client.getVar(Varbits.HB_FINISH);
+		finishId = client.getVarbitValue(Varbits.HB_FINISH);
 
 		// The started varbit doesn't get set until the first spot of the rotation has been searched
 		// so we need to use the current group as an indicator of the rotation being started
-		started = client.getVar(Varbits.HB_STARTED) > 0 || currentGroup != null;
+		started = client.getVarbitValue(Varbits.HB_STARTED) > 0 || currentGroup != null;
 		boolean finished = !pathActive && started;
 
 		if (!wasStarted && started)

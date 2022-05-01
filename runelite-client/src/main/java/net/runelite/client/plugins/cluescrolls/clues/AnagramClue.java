@@ -701,7 +701,7 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 			.build(),
 		AnagramClue.builder()
 			.text("DISORDER")
-			.npc("Sedridor")
+			.npc("Archmage Sedridor")
 			.location(new WorldPoint(3102, 9570, 0))
 			.area("Wizards' Tower basement")
 			.build(),

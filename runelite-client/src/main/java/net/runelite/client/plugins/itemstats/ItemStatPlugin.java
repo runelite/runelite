@@ -157,7 +157,7 @@ public class ItemStatPlugin extends Plugin
 		if (event.getScriptId() == ScriptID.GE_OFFERS_SETUP_BUILD && config.geStats())
 		{
 			int currentGeItem = client.getVar(VarPlayer.CURRENT_GE_ITEM);
-			if (currentGeItem != -1 && client.getVar(Varbits.GE_OFFER_CREATION_TYPE) == 0)
+			if (currentGeItem != -1 && client.getVarbitValue(Varbits.GE_OFFER_CREATION_TYPE) == 0)
 			{
 				createItemInformation(currentGeItem);
 			}
@@ -413,7 +413,7 @@ public class ItemStatPlugin extends Plugin
 	{
 		if (client.isResized())
 		{
-			if (client.getVar(Varbits.SIDE_PANELS) == 1)
+			if (client.getVarbitValue(Varbits.SIDE_PANELS) == 1)
 			{
 				return client.getWidget(WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY_CONTAINER);
 			}

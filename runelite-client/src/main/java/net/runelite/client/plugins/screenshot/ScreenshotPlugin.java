@@ -490,14 +490,14 @@ public class ScreenshotPlugin extends Plugin
 			}
 		}
 
-		if (config.screenshotCollectionLogEntries() && chatMessage.startsWith(COLLECTION_LOG_TEXT) && client.getVar(Varbits.COLLECTION_LOG_NOTIFICATION) == 1)
+		if (config.screenshotCollectionLogEntries() && chatMessage.startsWith(COLLECTION_LOG_TEXT) && client.getVarbitValue(Varbits.COLLECTION_LOG_NOTIFICATION) == 1)
 		{
 			String entry = Text.removeTags(chatMessage).substring(COLLECTION_LOG_TEXT.length());
 			String fileName = "Collection log (" + entry + ")";
 			takeScreenshot(fileName, SD_COLLECTION_LOG);
 		}
 
-		if (chatMessage.contains("combat task") && config.screenshotCombatAchievements() && client.getVar(Varbits.COMBAT_ACHIEVEMENTS_POPUP) == 1)
+		if (chatMessage.contains("combat task") && config.screenshotCombatAchievements() && client.getVarbitValue(Varbits.COMBAT_ACHIEVEMENTS_POPUP) == 1)
 		{
 			String fileName = parseCombatAchievementWidget(chatMessage);
 			if (!fileName.isEmpty())
@@ -663,7 +663,7 @@ public class ScreenshotPlugin extends Plugin
 					String fileName = "Collection log (" + entry + ")";
 					takeScreenshot(fileName, SD_COLLECTION_LOG);
 				}
-				if (topText.equalsIgnoreCase("Combat Task Completed!") && config.screenshotCombatAchievements() && client.getVar(Varbits.COMBAT_ACHIEVEMENTS_POPUP) == 0)
+				if (topText.equalsIgnoreCase("Combat Task Completed!") && config.screenshotCombatAchievements() && client.getVarbitValue(Varbits.COMBAT_ACHIEVEMENTS_POPUP) == 0)
 				{
 					String entry = Text.removeTags(bottomText).substring("Task Completed: ".length());
 					String fileName = "Combat task (" + entry.replaceAll("[:?]", "") + ")";

@@ -98,11 +98,20 @@ class ItemPricesOverlay extends Overlay
 		// Tooltip action type handling
 		switch (action)
 		{
-			case ITEM_USE_ON_WIDGET:
+			case WIDGET_TARGET_ON_WIDGET:
+				// Check target widget is the inventory
+				if (menuEntry.getWidget().getId() != WidgetInfo.INVENTORY.getId())
+				{
+					break;
+				}
+				// FALLTHROUGH
+			case WIDGET_USE_ON_ITEM:
+				// Require showWhileAlching and Cast High Level Alchemy
 				if (!config.showWhileAlching() || !isAlching)
 				{
 					break;
 				}
+				// FALLTHROUGH
 			case CC_OP:
 			case ITEM_USE:
 			case ITEM_FIRST_OPTION:
@@ -110,36 +119,47 @@ class ItemPricesOverlay extends Overlay
 			case ITEM_THIRD_OPTION:
 			case ITEM_FOURTH_OPTION:
 			case ITEM_FIFTH_OPTION:
-				// Item tooltip values
-				switch (groupId)
-				{
-					case WidgetID.EXPLORERS_RING_ALCH_GROUP_ID:
-						if (!config.showWhileAlching())
-						{
-							return null;
-						}
-					case WidgetID.INVENTORY_GROUP_ID:
-					case WidgetID.POH_TREASURE_CHEST_INVENTORY_GROUP_ID:
-						if (config.hideInventory() && !(config.showWhileAlching() && isAlching))
-						{
-							return null;
-						}
-						// intentional fallthrough
-					case WidgetID.BANK_GROUP_ID:
-					case WidgetID.BANK_INVENTORY_GROUP_ID:
-					case WidgetID.SEED_VAULT_GROUP_ID:
-					case WidgetID.SEED_VAULT_INVENTORY_GROUP_ID:
-						// Make tooltip
-						final String text = makeValueTooltip(menuEntry);
-						if (text != null)
-						{
-							tooltipManager.add(new Tooltip(ColorUtil.prependColorTag(text, new Color(238, 238, 238))));
-						}
-						break;
-				}
+				addTooltip(menuEntry, isAlching, groupId);
 				break;
+			case WIDGET_TARGET:
+				// Check that this is the inventory
+				if (menuEntry.getWidget().getId() == WidgetInfo.INVENTORY.getId())
+				{
+					addTooltip(menuEntry, isAlching, groupId);
+				}
 		}
+
 		return null;
+	}
+
+	private void addTooltip(MenuEntry menuEntry, boolean isAlching, int groupId)
+	{
+		// Item tooltip values
+		switch (groupId)
+		{
+			case WidgetID.EXPLORERS_RING_ALCH_GROUP_ID:
+				if (!config.showWhileAlching())
+				{
+					return;
+				}
+			case WidgetID.INVENTORY_GROUP_ID:
+			case WidgetID.POH_TREASURE_CHEST_INVENTORY_GROUP_ID:
+				if (config.hideInventory() && (!config.showWhileAlching() || !isAlching))
+				{
+					return;
+				}
+				// FALLTHROUGH
+			case WidgetID.BANK_GROUP_ID:
+			case WidgetID.BANK_INVENTORY_GROUP_ID:
+			case WidgetID.SEED_VAULT_GROUP_ID:
+			case WidgetID.SEED_VAULT_INVENTORY_GROUP_ID:
+				// Make tooltip
+				final String text = makeValueTooltip(menuEntry);
+				if (text != null)
+				{
+					tooltipManager.add(new Tooltip(ColorUtil.prependColorTag(text, new Color(238, 238, 238))));
+				}
+		}
 	}
 
 	private String makeValueTooltip(MenuEntry menuEntry)

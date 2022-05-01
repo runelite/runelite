@@ -113,7 +113,7 @@ public class ClueScrollOverlay extends OverlayPanel
 		}
 
 		if (clue.isRequiresLight()
-			&& ((clue.getHasFirePit() == null || client.getVar(clue.getHasFirePit()) != 1)
+			&& ((clue.getFirePitVarbitId() == -1 || client.getVarbitValue(clue.getFirePitVarbitId()) != 1)
 				&& (inventoryItems == null || !HAS_LIGHT.fulfilledBy(inventoryItems))
 					&& (equippedItems == null || !HAS_LIGHT.fulfilledBy(equippedItems))))
 		{

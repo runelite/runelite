@@ -24,6 +24,7 @@
  */
 package net.runelite.client.ui.overlay;
 
+import com.google.common.base.Preconditions;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -83,11 +84,47 @@ public abstract class Overlay implements LayoutableRenderableEntity
 		return this.getClass().getSimpleName();
 	}
 
+	/**
+	 * Configure to draw this overlay after the given interface is drawn. Except
+	 * in rare circumstances, you probably also want to {@link #setLayer(OverlayLayer)} to
+	 * {@link OverlayLayer#MANUAL} to avoid the overlay being drawn a 2nd time during the
+	 * default {@link OverlayLayer#UNDER_WIDGETS} pass.
+	 * @param interfaceId The interface id
+	 * @see net.runelite.api.widgets.WidgetID
+	 */
 	protected void drawAfterInterface(int interfaceId)
 	{
 		drawHooks.add(interfaceId << 16 | 0xffff);
 	}
 
+	/**
+	 * Configure to draw this overlay after the given layer is drawn. Except
+	 * in rare circumstances, you probably also want to {@link #setLayer(OverlayLayer)} to
+	 * {@link OverlayLayer#MANUAL} to avoid the overlay being drawn a 2nd time during the
+	 * default {@link OverlayLayer#UNDER_WIDGETS} pass.
+	 *
+	 * The layer must be a widget of {@link net.runelite.api.widgets.WidgetType} {@link net.runelite.api.widgets.WidgetType#LAYER}
+	 * @param groupId The widget group id
+	 * @param childId The widget child id
+	 * @see net.runelite.api.widgets.WidgetID
+	 */
+	protected void drawAfterLayer(int groupId, int childId)
+	{
+		Preconditions.checkArgument(groupId >= 0 && groupId <= 0xffff, "groupId outside of valid range");
+		Preconditions.checkArgument(childId >= 0 && childId <= 0xffff, "childId outside of valid range");
+		drawHooks.add(groupId << 16 | childId);
+	}
+
+	/**
+	 * Configure to draw this overlay after the given layer is drawn. Except
+	 * in rare circumstances, you probably also want to {@link #setLayer(OverlayLayer)} to
+	 * {@link OverlayLayer#MANUAL} to avoid the overlay being drawn a 2nd time during the
+	 * default {@link OverlayLayer#UNDER_WIDGETS} pass.
+	 *
+	 * The layer must be a widget of {@link net.runelite.api.widgets.WidgetType} {@link net.runelite.api.widgets.WidgetType#LAYER}
+	 * @param layer The layer
+	 * @see WidgetInfo
+	 */
 	protected void drawAfterLayer(WidgetInfo layer)
 	{
 		drawHooks.add(layer.getId());

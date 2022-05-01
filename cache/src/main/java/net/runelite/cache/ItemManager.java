@@ -70,6 +70,30 @@ public class ItemManager implements ItemProvider
 		}
 	}
 
+	public void link()
+	{
+		for (ItemDefinition oc : items.values())
+		{
+			link(oc);
+		}
+	}
+
+	private void link(ItemDefinition item)
+	{
+		if (item.notedTemplate != -1)
+		{
+			item.linkNote(getItem(item.notedTemplate), getItem(item.notedID));
+		}
+		if (item.boughtTemplateId != -1)
+		{
+			item.linkBought(getItem(item.boughtTemplateId), getItem(item.boughtId));
+		}
+		if (item.placeholderTemplateId != -1)
+		{
+			item.linkPlaceholder(getItem(item.placeholderTemplateId), getItem(item.placeholderId));
+		}
+	}
+
 	public Collection<ItemDefinition> getItems()
 	{
 		return Collections.unmodifiableCollection(items.values());

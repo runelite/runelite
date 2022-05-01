@@ -75,6 +75,7 @@ public enum HotColdLocation
 	DESERT_UZER(MASTER, new WorldPoint(3432, 3105, 0), DESERT, "West of Uzer.", BRASSICAN_MAGE),
 	DESERT_POLLNIVNEACH(MASTER, new WorldPoint(3288, 2976, 0), DESERT, "West of Pollnivneach.", BRASSICAN_MAGE),
 	DESERT_MTA(MASTER, new WorldPoint(3347, 3295, 0), DESERT, "Next to Mage Training Arena.", BRASSICAN_MAGE),
+	DESERT_RUINS_OF_ULLEK(MASTER, new WorldPoint(3428, 2773, 0), DESERT, "South-east of Ruins of Ullek.", BRASSICAN_MAGE),
 	DESERT_SHANTY(MASTER, new WorldPoint(3292, 3107, 0), DESERT, "South-west of Shantay Pass.", BRASSICAN_MAGE),
 	DRAYNOR_MANOR_MUSHROOMS(BEGINNER, new WorldPoint(3096, 3379, 0), MISTHALIN, "Patch of mushrooms just northwest of Draynor Manor"),
 	DRAYNOR_WHEAT_FIELD(BEGINNER, new WorldPoint(3120, 3282, 0), MISTHALIN, "Inside the wheat field next to Draynor Village"),

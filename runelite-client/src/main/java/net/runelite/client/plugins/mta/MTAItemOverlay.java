@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Jasper Ketelaar <Jasper0781@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,12 +22,33 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.examine;
+package net.runelite.client.plugins.mta;
 
-public enum ExamineType
+import java.awt.Graphics2D;
+import javax.inject.Inject;
+import net.runelite.api.widgets.WidgetItem;
+import net.runelite.client.ui.overlay.WidgetItemOverlay;
+
+class MTAItemOverlay extends WidgetItemOverlay
 {
-	ITEM,
-	ITEM_BANK_EQ,
-	NPC,
-	OBJECT;
+	private final MTAPlugin plugin;
+
+	@Inject
+	public MTAItemOverlay(MTAPlugin plugin)
+	{
+		this.plugin = plugin;
+		showOnInventory();
+	}
+
+	@Override
+	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem widgetItem)
+	{
+		for (MTARoom room : plugin.getRooms())
+		{
+			if (room.inside())
+			{
+				room.renderItemOverlay(graphics, itemId, widgetItem);
+			}
+		}
+	}
 }

@@ -406,7 +406,7 @@ public class ChatChannelPlugin extends Plugin
 		int rankIcon = -1;
 
 		// Use configured friends chat info colors if set, otherwise default to the jagex text and fc name colors
-		if (client.isResized() && client.getVar(Varbits.TRANSPARENT_CHATBOX) == 1)
+		if (client.isResized() && client.getVarbitValue(Varbits.TRANSPARENT_CHATBOX) == 1)
 		{
 			textColor = MoreObjects.firstNonNull(chatColorConfig.transparentFriendsChatInfo(), CHAT_FC_TEXT_TRANSPARENT_BACKGROUND);
 			channelColor = MoreObjects.firstNonNull(chatColorConfig.transparentFriendsChatChannelName(), CHAT_FC_NAME_TRANSPARENT_BACKGROUND);
@@ -462,7 +462,7 @@ public class ChatChannelPlugin extends Plugin
 
 		final Color textColor;
 		// Use configured clan chat info colors if set, otherwise default to the jagex text and fc name colors
-		if (client.isResized() && client.getVar(Varbits.TRANSPARENT_CHATBOX) == 1)
+		if (client.isResized() && client.getVarbitValue(Varbits.TRANSPARENT_CHATBOX) == 1)
 		{
 			textColor = MoreObjects.firstNonNull(
 				chatType == MemberActivity.ChatType.CLAN_CHAT ? chatColorConfig.transparentClanChatInfo() : chatColorConfig.transparentClanChatGuestInfo(),

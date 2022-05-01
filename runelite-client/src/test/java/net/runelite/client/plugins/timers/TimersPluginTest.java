@@ -454,8 +454,7 @@ public class TimersPluginTest
 	public void testCorruptionCooldown()
 	{
 		when(timersConfig.showArceuusCooldown()).thenReturn(true);
-		when(client.getVar(any(Varbits.class))).thenReturn(0);
-		when(client.getVar(Varbits.CORRUPTION_COOLDOWN)).thenReturn(1);
+		when(client.getVarbitValue(Varbits.CORRUPTION_COOLDOWN)).thenReturn(1);
 		timersPlugin.onVarbitChanged(new VarbitChanged());
 
 		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
@@ -540,7 +539,7 @@ public class TimersPluginTest
 	public void testImbuedHeartStart()
 	{
 		when(timersConfig.showImbuedHeart()).thenReturn(true);
-		when(client.getVar(Varbits.IMBUED_HEART_COOLDOWN)).thenReturn(70);
+		when(client.getVarbitValue(Varbits.IMBUED_HEART_COOLDOWN)).thenReturn(70);
 		timersPlugin.onVarbitChanged(new VarbitChanged());
 
 		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
@@ -555,7 +554,7 @@ public class TimersPluginTest
 	{
 		when(timersConfig.showImbuedHeart()).thenReturn(true);
 
-		when(client.getVar(Varbits.IMBUED_HEART_COOLDOWN)).thenReturn(70);
+		when(client.getVarbitValue(Varbits.IMBUED_HEART_COOLDOWN)).thenReturn(70);
 		timersPlugin.onVarbitChanged(new VarbitChanged()); // Calls removeIf once (on createGameTimer)
 
 		ArgumentCaptor<Predicate<InfoBox>> prcaptor = ArgumentCaptor.forClass(Predicate.class);
@@ -565,7 +564,7 @@ public class TimersPluginTest
 		Predicate<InfoBox> pred = prcaptor.getValue();
 		assertTrue(pred.test(imbuedHeartInfoBox));
 
-		when(client.getVar(Varbits.IMBUED_HEART_COOLDOWN)).thenReturn(0);
+		when(client.getVarbitValue(Varbits.IMBUED_HEART_COOLDOWN)).thenReturn(0);
 		timersPlugin.onVarbitChanged(new VarbitChanged()); // Calls removeIf once
 
 		verify(infoBoxManager, times(1)).addInfoBox(any());

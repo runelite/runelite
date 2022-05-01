@@ -280,6 +280,7 @@ public class HiscorePanel extends PluginPanel
 		minigamePanel.add(makeHiscorePanel(LEAGUE_POINTS));
 		minigamePanel.add(makeHiscorePanel(LAST_MAN_STANDING));
 		minigamePanel.add(makeHiscorePanel(SOUL_WARS_ZEAL));
+		minigamePanel.add(makeHiscorePanel(RIFTS_CLOSED));
 		minigamePanel.add(makeHiscorePanel(BOUNTY_HUNTER_ROGUE));
 		minigamePanel.add(makeHiscorePanel(BOUNTY_HUNTER_HUNTER));
 
@@ -602,6 +603,18 @@ public class HiscorePanel extends PluginPanel
 					if (soulWarsZeal.getLevel() > -1)
 					{
 						content += "<p><span style = 'color:white'>Score:</span> " + QuantityFormatter.formatNumber(soulWarsZeal.getLevel()) + "</p>";
+					}
+					break;
+				}
+				case RIFTS_CLOSED:
+				{
+					Skill riftsClosed = result.getRiftsClosed();
+					String rank = (riftsClosed.getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(riftsClosed.getRank());
+					content += "<p><span style = 'color:white'>Rifts closed</span></p>";
+					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
+					if (riftsClosed.getLevel() > -1)
+					{
+						content += "<p><span style = 'color:white'>Rifts:</span> " + QuantityFormatter.formatNumber(riftsClosed.getLevel()) + "</p>";
 					}
 					break;
 				}

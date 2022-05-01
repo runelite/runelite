@@ -59,6 +59,7 @@ import net.runelite.api.StructID;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
+import net.runelite.api.annotations.Varbit;
 import net.runelite.api.events.AreaSoundEffectPlayed;
 import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.ClientTick;
@@ -783,7 +784,8 @@ public class MusicPlugin extends Plugin
 		@Getter
 		private final String name;
 		private final VarPlayer var;
-		private final Varbits mutedVar;
+		@Varbit
+		private final int mutedVarbitId;
 		private final IntSupplier getter;
 		private final Consumer<Integer> setter;
 		private final IntConsumer volumeChanger;
@@ -797,14 +799,14 @@ public class MusicPlugin extends Plugin
 		private Slider windowSlider;
 
 		Channel(String name,
-			VarPlayer var, Varbits mutedVar,
+			VarPlayer var, @Varbit int mutedVarbitId,
 			IntSupplier getter, Consumer<Integer> setter,
 			IntConsumer volumeChanger, int max,
 			WidgetInfo sideRoot)
 		{
 			this.name = name;
 			this.var = var;
-			this.mutedVar = mutedVar;
+			this.mutedVarbitId = mutedVarbitId;
 			this.getter = getter;
 			this.setter = setter;
 			this.volumeChanger = volumeChanger;
@@ -824,7 +826,7 @@ public class MusicPlugin extends Plugin
 				int raw = client.getVar(var);
 				if (raw == 0)
 				{
-					raw = -client.getVar(mutedVar);
+					raw = -client.getVarbitValue(mutedVarbitId);
 				}
 				value = raw * this.max / 100;
 

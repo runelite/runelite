@@ -22,12 +22,12 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.vars;
+package net.runelite.client.plugins.timetracking.farming;
 
 /**
  * An enumeration of possible autoweed settings.
  */
-public enum Autoweed
+enum Autoweed
 {
 	/**
 	 * Access to autoweed has not been unlocked.

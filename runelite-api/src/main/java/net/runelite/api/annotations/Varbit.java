@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Jasper Ketelaar <Jasper0781@gmail.com>
+ * Copyright (c) 2022, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,40 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.mta;
+package net.runelite.api.annotations;
 
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import javax.inject.Inject;
-import net.runelite.client.ui.FontManager;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayLayer;
-import net.runelite.client.ui.overlay.OverlayPosition;
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import net.runelite.api.Varbits;
+import org.intellij.lang.annotations.MagicConstant;
 
-public class MTAInventoryOverlay extends Overlay
+@MagicConstant(valuesFromClass = Varbits.class)
+@Documented
+@Retention(RetentionPolicy.SOURCE)
+public @interface Varbit
 {
-	private final MTAPlugin plugin;
-
-	@Inject
-	public MTAInventoryOverlay(MTAPlugin plugin)
-	{
-		this.plugin = plugin;
-		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.ABOVE_WIDGETS);
-	}
-
-	@Override
-	public Dimension render(Graphics2D graphics)
-	{
-		for (MTARoom room : plugin.getRooms())
-		{
-			if (room.inside())
-			{
-				graphics.setFont(FontManager.getRunescapeBoldFont());
-				room.over(graphics);
-			}
-		}
-
-		return null;
-	}
 }

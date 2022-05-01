@@ -45,15 +45,15 @@ enum XpWorldType
 		@Override
 		int modifier(Client client)
 		{
-			if (client.getVar(Varbits.LEAGUE_RELIC_6) != 0)
+			if (client.getVarbitValue(Varbits.LEAGUE_RELIC_6) != 0)
 			{
 				return 16;
 			}
-			if (client.getVar(Varbits.LEAGUE_RELIC_4) != 0)
+			if (client.getVarbitValue(Varbits.LEAGUE_RELIC_4) != 0)
 			{
 				return 12;
 			}
-			if (client.getVar(Varbits.LEAGUE_RELIC_2) != 0)
+			if (client.getVarbitValue(Varbits.LEAGUE_RELIC_2) != 0)
 			{
 				return 8;
 			}

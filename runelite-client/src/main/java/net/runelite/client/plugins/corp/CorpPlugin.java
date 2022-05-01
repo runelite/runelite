@@ -235,7 +235,7 @@ public class CorpPlugin extends Plugin
 	{
 		if (corp != null)
 		{
-			int myDamage = client.getVar(Varbits.CORP_DAMAGE);
+			int myDamage = client.getVarbitValue(Varbits.CORP_DAMAGE);
 			// avoid resetting our counter when the client's is reset
 			if (myDamage > 0)
 			{

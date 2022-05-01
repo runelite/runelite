@@ -50,7 +50,7 @@ import okhttp3.Response;
 @Slf4j
 public class ConfigClient
 {
-	private static final MediaType TEXT_PLAIN = MediaType.parse("text/plain");
+	private static final MediaType TEXT_PLAIN = MediaType.get("text/plain");
 	private static final Gson GSON = RuneLiteAPI.GSON;
 
 	private final OkHttpClient client;

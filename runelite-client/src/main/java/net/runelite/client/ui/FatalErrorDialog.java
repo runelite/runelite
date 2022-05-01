@@ -27,7 +27,6 @@ package net.runelite.client.ui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.WindowAdapter;
@@ -45,7 +44,6 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLite;
@@ -53,6 +51,7 @@ import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.VerificationException;
+import org.pushingpixels.substance.internal.SubstanceSynapse;
 
 @Slf4j
 public class FatalErrorDialog extends JDialog
@@ -69,16 +68,6 @@ public class FatalErrorDialog extends JDialog
 		{
 			throw new IllegalStateException("Fatal error during fatal error: " + message);
 		}
-
-		try
-		{
-			UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-		}
-		catch (Exception e)
-		{
-		}
-
-		UIManager.put("Button.select", ColorScheme.DARKER_GRAY_COLOR);
 
 		try
 		{
@@ -108,8 +97,9 @@ public class FatalErrorDialog extends JDialog
 		setTitle("Fatal error starting RuneLite");
 		setLayout(new BorderLayout());
 
-		Container pane = getContentPane();
+		JPanel pane = (JPanel) getContentPane();
 		pane.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		pane.putClientProperty(SubstanceSynapse.COLORIZATION_FACTOR, 1.0);
 
 		JPanel leftPane = new JPanel();
 		leftPane.setBackground(ColorScheme.DARKER_GRAY_COLOR);
@@ -130,6 +120,7 @@ public class FatalErrorDialog extends JDialog
 		textArea.setWrapStyleWord(true);
 		textArea.setBorder(new EmptyBorder(10, 10, 10, 10));
 		textArea.setEditable(false);
+		textArea.setOpaque(false);
 		leftPane.add(textArea, BorderLayout.CENTER);
 
 		pane.add(leftPane, BorderLayout.CENTER);

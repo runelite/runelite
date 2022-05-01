@@ -29,7 +29,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.8.16-SNAPSHOT</version>
+		<version>1.8.19-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>runelite-api</artifactId>
@@ -91,6 +91,8 @@
 						<configuration>
 							<classifier>runtime</classifier>
 							<excludes>
+								<exclude>net/runelite/api/annotations/*.class</exclude>
+								<exclude>net/runelite/api/clan/ClanID.class</exclude>
 								<exclude>net/runelite/api/widgets/ItemQuantityMode.class</exclude>
 								<exclude>net/runelite/api/widgets/WidgetConfig.class</exclude>
 								<exclude>net/runelite/api/widgets/WidgetID*.class</exclude>
@@ -100,7 +102,6 @@
 								<exclude>net/runelite/api/widgets/WidgetSizeMode.class</exclude>
 								<exclude>net/runelite/api/widgets/WidgetTextAlignment.class</exclude>
 								<exclude>net/runelite/api/widgets/WidgetType.class</exclude>
-								<exclude>net/runelite/api/clan/ClanID.class</exclude>
 								<exclude>net/runelite/api/AnimationID.class</exclude>
 								<exclude>net/runelite/api/EnumID.class</exclude>
 								<exclude>net/runelite/api/FontID.class</exclude>
@@ -119,6 +120,7 @@
 								<exclude>net/runelite/api/SoundEffectVolume.class</exclude>
 								<exclude>net/runelite/api/SpriteID.class</exclude>
 								<exclude>net/runelite/api/StructID.class</exclude>
+								<exclude>net/runelite/api/Varbits.class</exclude>
 							</excludes>
 						</configuration>
 					</execution>

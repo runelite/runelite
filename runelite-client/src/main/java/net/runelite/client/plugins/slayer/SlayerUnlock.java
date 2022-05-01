@@ -22,16 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.vars;
+package net.runelite.client.plugins.slayer;
 
 import net.runelite.api.Client;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
+import net.runelite.api.annotations.Varbit;
 
 /**
  * Unlockables in the slayer interface
  */
-public enum SlayerUnlock
+enum SlayerUnlock
 {
 	// Copied from enum 834 in the cache
 	// enum 854 contains if you can disable the unlock
@@ -87,17 +88,19 @@ public enum SlayerUnlock
 	VAMPYRE_EXTEND(49),
 	VAMPYRE_UNLOCK(50);
 
-	private Varbits toggleVarbit;
+	@Varbit
+	private final int toggleVarbit;
 
 	SlayerUnlock(int index)
 	{
-		this(index, null);
+		assert index == ordinal();
+		this.toggleVarbit = -1;
 	}
 
-	SlayerUnlock(int index, Varbits toggleVarbit)
+	SlayerUnlock(int index, @Varbit int varbit)
 	{
 		assert index == ordinal();
-		this.toggleVarbit = toggleVarbit;
+		this.toggleVarbit = varbit;
 	}
 
 	/**
@@ -116,11 +119,11 @@ public enum SlayerUnlock
 	{
 		if (isOwned(client))
 		{
-			if (toggleVarbit == null)
+			if (toggleVarbit == -1)
 			{
 				return true;
 			}
-			return client.getVar(toggleVarbit) == 0;
+			return client.getVarbitValue(toggleVarbit) == 0;
 		}
 		return false;
 	}

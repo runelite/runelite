@@ -226,7 +226,7 @@ class OpponentInfoOverlay extends OverlayPanel
 	 */
 	private boolean hasHpHud(Actor opponent)
 	{
-		boolean settingEnabled = client.getVar(Varbits.BOSS_HEALTH_OVERLAY) == 0;
+		boolean settingEnabled = client.getVarbitValue(Varbits.BOSS_HEALTH_OVERLAY) == 0;
 		if (settingEnabled && opponent instanceof NPC)
 		{
 			int opponentId = client.getVar(VarPlayer.HP_HUD_NPC_ID);
