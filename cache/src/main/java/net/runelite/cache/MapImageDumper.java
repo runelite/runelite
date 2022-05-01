@@ -28,7 +28,10 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import javax.imageio.ImageIO;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.Getter;
@@ -54,6 +57,7 @@ import net.runelite.cache.region.Region;
 import net.runelite.cache.region.RegionLoader;
 import net.runelite.cache.util.BigBufferedImage;
 import net.runelite.cache.util.Djb2;
+import net.runelite.cache.util.XteaKeyManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -85,6 +89,7 @@ public class MapImageDumper
 	private final SpriteManager sprites;
 	private RSTextureProvider rsTextureProvider;
 	private final ObjectManager objectManager;
+	private final XteaKeyManager xteaKeyManager;
 
 	@Getter
 	@Setter
@@ -96,10 +101,56 @@ public class MapImageDumper
 
 	public MapImageDumper(Store store)
 	{
+		this(store, new XteaKeyManager());
+	}
+
+	public MapImageDumper(Store store, XteaKeyManager xteaKeyManager)
+	{
 		this.store = store;
 		this.areas = new AreaManager(store);
 		this.sprites = new SpriteManager(store);
 		objectManager = new ObjectManager(store);
+		this.xteaKeyManager = xteaKeyManager;
+	}
+
+	public static void main(String[] args) throws IOException
+	{
+		if (args.length != 3)
+		{
+			throw new IllegalArgumentException("Expected 3 arguments: <cache dir> <xtea path> <output dir>");
+		}
+
+		final String cacheDirectory = args[0];
+		final String xteaJSONPath = args[1];
+		final String outputDirectory = args[2];
+
+		XteaKeyManager xteaKeyManager = new XteaKeyManager();
+		try (FileInputStream fin = new FileInputStream(xteaJSONPath))
+		{
+			xteaKeyManager.loadKeys(fin);
+		}
+
+		File base = new File(cacheDirectory);
+		File outDir = new File(outputDirectory);
+		outDir.mkdirs();
+
+		try (Store store = new Store(base))
+		{
+			store.load();
+
+			MapImageDumper dumper = new MapImageDumper(store, xteaKeyManager);
+			dumper.load();
+
+			for (int i = 0; i < Region.Z; ++i)
+			{
+				BufferedImage image = dumper.drawMap(i);
+
+				File imageFile = new File(outDir, "img-" + i + ".png");
+
+				ImageIO.write(image, "png", imageFile);
+				logger.info("Wrote image {}", imageFile);
+			}
+		}
 	}
 
 	public void load() throws IOException
@@ -894,7 +945,7 @@ public class MapImageDumper
 
 	private void loadRegions(Store store) throws IOException
 	{
-		regionLoader = new RegionLoader(store);
+		regionLoader = new RegionLoader(store, xteaKeyManager);
 		regionLoader.loadRegions();
 		regionLoader.calculateBounds();
 
