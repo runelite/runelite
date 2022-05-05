@@ -252,7 +252,8 @@ public class WorldMapPlugin extends Plugin
 		{
 			Arrays.stream(AgilityShortcut.values())
 				.filter(value -> value.getWorldMapLocation() != null)
-				.map(l -> {
+				.map(l ->
+				{
 					boolean shouldShowIcon = agilityLevel > 0 &&
 						strengthLevel > 0 &&
 						rangedLevel > 0 &&
