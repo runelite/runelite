@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2022, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,17 +25,17 @@
 package net.runelite.api.events;
 
 import lombok.Value;
-import net.runelite.api.ItemComposition;
+import net.runelite.api.ObjectComposition;
 
 /**
- * An event called after a new {@link ItemComposition} is created and
+ * An event called after a new {@link ObjectComposition} is created and
  * its data is initialized.
  */
 @Value
-public class PostItemComposition
+public class PostObjectComposition
 {
 	/**
-	 * The newly created item.
+	 * The newly created object
 	 */
-	private ItemComposition itemComposition;
+	ObjectComposition objectComposition;
 }
