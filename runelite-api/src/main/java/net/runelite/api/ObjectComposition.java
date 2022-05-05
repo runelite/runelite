@@ -57,10 +57,24 @@ public interface ObjectComposition extends ParamHolder
 	int getMapSceneId();
 
 	/**
+	 * Set the map scene index into the {@link Client#getMapScene()}
+	 * array, or -1 if it has no map scene icon
+	 * @param mapSceneId
+	 */
+	void setMapSceneId(int mapSceneId);
+
+	/**
 	 * Gets the index of this object in the {@link Client#getMapIcons()}
 	 * array, or -1 if it has no full map icon
 	 */
 	int getMapIconId();
+
+	/**
+	 * Set the index of the object in the {@link Client#getMapIcons()}
+	 * array, or -1 if it has no map icon
+	 * @param mapIconId
+	 */
+	void setMapIconId(int mapIconId);
 
 	/**
 	 * Get the {@link ObjectID}s of objects this can transform into, depending
