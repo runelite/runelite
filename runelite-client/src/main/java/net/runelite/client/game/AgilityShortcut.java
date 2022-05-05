@@ -31,6 +31,8 @@ import static net.runelite.api.ObjectID.*;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
 
+// TODO: add item, quest, diary requirements
+
 @Getter
 public enum AgilityShortcut
 {
@@ -79,11 +81,11 @@ public enum AgilityShortcut
 	CAIRN_ISLE_CLIMBING_ROCKS(1, "Rocks", null, CLIMBING_ROCKS),
 	KARAMJA_GLIDER_LOG(1, "Log Balance", new WorldPoint(2906, 3050, 0), A_WOODEN_LOG ),
 	FALADOR_CRUMBLING_WALL(5, "Crumbling Wall", new WorldPoint(2936, 3357, 0), CRUMBLING_WALL_24222 ),
-	RIVER_LUM_GRAPPLE_WEST(8, "Grapple Broken Raft", new WorldPoint(3245, 3179, 0), BROKEN_RAFT),
-	RIVER_LUM_GRAPPLE_EAST(8, "Grapple Broken Raft", new WorldPoint(3258, 3179, 0), BROKEN_RAFT),
+	RIVER_LUM_GRAPPLE_WEST(8, 19, 37,"Grapple Broken Raft", new WorldPoint(3245, 3179, 0), BROKEN_RAFT),
+	RIVER_LUM_GRAPPLE_EAST(8, 19, 37, "Grapple Broken Raft", new WorldPoint(3258, 3179, 0), BROKEN_RAFT),
 	CORSAIR_COVE_ROCKS(10, "Rocks", new WorldPoint(2545, 2871, 0), ROCKS_31757),
 	KARAMJA_MOSS_GIANT_SWING(10, "Rope", null, ROPESWING_23568, ROPESWING_23569),
-	FALADOR_GRAPPLE_WALL(11, "Grapple Wall", new WorldPoint(3031, 3391, 0), WALL_17049, WALL_17050),
+	FALADOR_GRAPPLE_WALL(11, 37, 19, "Grapple Wall", new WorldPoint(3031, 3391, 0), WALL_17049, WALL_17050),
 	BRIMHAVEN_DUNGEON_STEPPING_STONES(12, "Stepping Stones", null, STEPPING_STONE_21738),
 	VARROCK_SOUTH_FENCE(13, "Fence", new WorldPoint(3239, 3334, 0), FENCE_16518),
 	GOBLIN_VILLAGE_WALL(14, "Wall", new WorldPoint(2925, 3523, 0), TIGHTGAP),
@@ -100,7 +102,7 @@ public enum AgilityShortcut
 	COAL_TRUCKS_LOG_BALANCE(20, "Log Balance", new WorldPoint(2598, 3475, 0), LOG_BALANCE_23274),
 	GRAND_EXCHANGE_UNDERWALL_TUNNEL(21, "Underwall Tunnel", new WorldPoint(3139, 3515, 0), UNDERWALL_TUNNEL_16529, UNDERWALL_TUNNEL_16530),
 	BRIMHAVEN_DUNGEON_PIPE(22, "Pipe Squeeze", new WorldPoint(2654, 9569, 0), PIPE_21728),
-	OBSERVATORY_SCALE_CLIFF(23, "Grapple Rocks", new WorldPoint(2447, 3155, 0), NULL_31849, NULL_31852),
+	OBSERVATORY_SCALE_CLIFF(23, 28, 24,"Grapple Rocks", new WorldPoint(2447, 3155, 0), NULL_31849, NULL_31852),
 	EAGLES_PEAK_ROCK_CLIMB(25, "Rock Climb", new WorldPoint(2320, 3499, 0), ROCKS_19849),
 	FALADOR_UNDERWALL_TUNNEL(26, "Underwall Tunnel", new WorldPoint(2947, 3313, 0), UNDERWALL_TUNNEL, UNDERWALL_TUNNEL_16528),
 	KOUREND_CATACOMBS_PILLAR_JUMP_NORTH(28, "Pillar Jump", new WorldPoint(1613, 10071, 0)),
@@ -111,16 +113,16 @@ public enum AgilityShortcut
 	BRIMHAVEN_DUNGEON_LOG_BALANCE(30, "Log Balance", null, LOG_BALANCE_20882),
 	AGILITY_PYRAMID_ROCKS_EAST(30, "Rocks", null, CLIMBING_ROCKS_11949),
 	DRAYNOR_MANOR_STEPPING_STONES(31, "Stepping Stones", new WorldPoint(3150, 3362, 0), STEPPING_STONE_16533),
-	CATHERBY_CLIFFSIDE_GRAPPLE(32, "Grapple Rock", new WorldPoint(2868, 3429, 0), ROCKS_17042),
+	CATHERBY_CLIFFSIDE_GRAPPLE(32, 35, 35,"Grapple Rock", new WorldPoint(2868, 3429, 0), ROCKS_17042),
 	CAIRN_ISLE_ROCKS(32, "Rocks", null, ROCKS_2231),
 	ARDOUGNE_LOG_BALANCE(33, "Log Balance", new WorldPoint(2602, 3336, 0), LOG_BALANCE_16546, LOG_BALANCE_16547, LOG_BALANCE_16548),
 	BRIMHAVEN_DUNGEON_MEDIUM_PIPE(34, "Pipe Squeeze", null, new WorldPoint(2698, 9501, 0), PIPE_21727),
 	KOUREND_CATACOMBS_NORTH_EAST_CREVICE_NORTH(34, "Crevice", new WorldPoint(1715, 10057, 0), CRACK_28892),
 	KOUREND_CATACOMBS_NORTH_EAST_CREVICE_SOUTH(34, "Crevice", new WorldPoint(1705, 10077, 0), CRACK_28892),
-	CATHERBY_OBELISK_GRAPPLE(36, "Grapple Rock", null, CROSSBOW_TREE_17062),
+	CATHERBY_OBELISK_GRAPPLE(36, 22, 39, "Grapple Rock", null, CROSSBOW_TREE_17062),
 	GNOME_STRONGHOLD_ROCKS(37, "Rocks", new WorldPoint(2485, 3515, 0), ROCKS_16534, ROCKS_16535),
 	AL_KHARID_MINING_PITCLIFF_SCRAMBLE(38, "Rocks", new WorldPoint(3305, 3315, 0), ROCKS_16549, ROCKS_16550),
-	YANILLE_WALL_GRAPPLE(39, "Grapple Wall", new WorldPoint(2552, 3072, 0), WALL_17047),
+	YANILLE_WALL_GRAPPLE(39, 38, 21, "Grapple Wall", new WorldPoint(2552, 3072, 0), WALL_17047),
 	NEITIZNOT_BRIDGE_REPAIR(0, "Bridge Repair - Quest", new WorldPoint(2315, 3828, 0), ROPE_BRIDGE_21306, ROPE_BRIDGE_21307),
 	NEITIZNOT_BRIDGE_SOUTHEAST(0, "Rope Bridge", null, ROPE_BRIDGE_21308, ROPE_BRIDGE_21309),
 	NEITIZNOT_BRIDGE_NORTHWEST(0, "Rope Bridge", null, ROPE_BRIDGE_21310, ROPE_BRIDGE_21311),
@@ -147,8 +149,8 @@ public enum AgilityShortcut
 	MORYTANIA_STEPPING_STONE(50, "Stepping Stone", new WorldPoint(3418, 3326, 0), STEPPING_STONE_13504),
 	VARROCK_SEWERS_PIPE_SQUEEZE(51, "Pipe Squeeze", new WorldPoint(3152, 9905, 0), OBSTACLE_PIPE_16511),
 	ARCEUUS_ESSENCE_MINE_EAST_SCRAMBLE(52, "Rock Climb", new WorldPoint(1770, 3851, 0), ROCKS_27987, ROCKS_27988),
-	KARAMJA_VOLCANO_GRAPPLE_NORTH(53, "Grapple Rock", new WorldPoint(2873, 3143, 0), STRONG_TREE_17074),
-	KARAMJA_VOLCANO_GRAPPLE_SOUTH(53, "Grapple Rock", new WorldPoint(2874, 3128, 0), STRONG_TREE_17074),
+	KARAMJA_VOLCANO_GRAPPLE_NORTH(53, 21, 42, "Grapple Rock", new WorldPoint(2873, 3143, 0), STRONG_TREE_17074),
+	KARAMJA_VOLCANO_GRAPPLE_SOUTH(53, 21, 42, "Grapple Rock", new WorldPoint(2874, 3128, 0), STRONG_TREE_17074),
 	MOTHERLODE_MINE_WALL_EAST(54, "Wall", new WorldPoint(3124, 9703, 0), DARK_TUNNEL_10047),
 	MOTHERLODE_MINE_WALL_WEST(54, "Wall", new WorldPoint(3118, 9702, 0), DARK_TUNNEL_10047),
 	MISCELLANIA_DOCK_STEPPING_STONE(55, "Stepping Stone", new WorldPoint(2572, 3862, 0), STEPPING_STONE_11768),
@@ -190,14 +192,14 @@ public enum AgilityShortcut
 	FOSSIL_ISLAND_HARDWOOD_NORTH(70, "Hole" , new WorldPoint(3712, 3828, 0), HOLE_31481, HOLE_31482),
 	FOSSIL_ISLAND_HARDWOOD_SOUTH(70, "Hole" , new WorldPoint(3714, 3816, 0), HOLE_31481, HOLE_31482),
 	AL_KHARID_WINDOW(70, "Window", new WorldPoint(3293, 3158, 0), BROKEN_WALL_33344, BIG_WINDOW)
-	{
-		@Override
-		public boolean matches(TileObject object)
-		{
-			// there are two BIG_WINDOW objects right next to each other here, but only this one is valid
-			return object.getId() != BIG_WINDOW || object.getWorldLocation().equals(new WorldPoint(3295, 3158, 0));
-		}
-	},
+			{
+				@Override
+				public boolean matches(TileObject object)
+				{
+					// there are two BIG_WINDOW objects right next to each other here, but only this one is valid
+					return object.getId() != BIG_WINDOW || object.getWorldLocation().equals(new WorldPoint(3295, 3158, 0));
+				}
+			},
 	GWD_SARADOMIN_ROPE_NORTH(70, "Rope Descent", new WorldPoint(2912, 5300, 0), NULL_26371, NULL_26561),
 	GWD_SARADOMIN_ROPE_SOUTH(70, "Rope Descent", new WorldPoint(2951, 5267, 0), NULL_26375, NULL_26562),
 	GU_TANOTH_CRUMBLING_WALL(71, "Rocks", new WorldPoint(2545, 3032, 0), CRUMBLING_WALL_40355, ROCKS_40356),
@@ -237,6 +239,19 @@ public enum AgilityShortcut
 	 */
 	@Getter
 	private final int level;
+
+	/**
+	 * The strength level required to pass the shortcut
+	 */
+	@Getter
+	private final int strengthLevel;
+
+	/**
+	 * The ranged level required to pass the shortcut
+	 */
+	@Getter
+	private final int rangedLevel;
+
 	/**
 	 * Brief description of the shortcut. (e.g. 'Rocks', 'Stepping Stones', 'Jump')
 	 */
@@ -260,23 +275,46 @@ public enum AgilityShortcut
 	@Getter
 	private final int[] obstacleIds;
 
-	AgilityShortcut(int level, String description, WorldPoint mapLocation, WorldPoint worldLocation, int... obstacleIds)
+	AgilityShortcut(int level, int strengthLevel, int rangedLevel, String description, WorldPoint mapLocation, WorldPoint worldLocation, int... obstacleIds)
 	{
 		this.level = level;
+		this.strengthLevel = strengthLevel;
+		this.rangedLevel = rangedLevel;
 		this.description = description;
 		this.worldMapLocation = mapLocation;
 		this.worldLocation = worldLocation;
 		this.obstacleIds = obstacleIds;
 	}
 
+	AgilityShortcut(int level, String description, WorldPoint mapLocation, WorldPoint worldLocation, int... obstacleIds)
+	{
+		this(level, 1, 1, description, mapLocation, worldLocation, obstacleIds);
+	}
+
+	AgilityShortcut(int level, int strengthLevel, int rangedLevel, String description, WorldPoint location, int... obstacleIds)
+	{
+		this(level, strengthLevel, rangedLevel, description, location, location, obstacleIds);
+	}
+
 	AgilityShortcut(int level, String description, WorldPoint location, int... obstacleIds)
 	{
-		this(level, description, location, location, obstacleIds);
+		this(level, 1, 1, description, location, location, obstacleIds);
 	}
 
 	public String getTooltip()
 	{
-		return description + " - Level " + level;
+		StringBuilder sb = new StringBuilder();
+		sb.append(description).append(" - Agility: ").append(level);
+
+		if (strengthLevel > 1) {
+			sb.append(", Strength: ").append(strengthLevel);
+		}
+
+		if (rangedLevel > 1) {
+			sb.append(", Ranged: ").append(rangedLevel);
+		}
+
+		return sb.toString();
 	}
 
 	public boolean matches(TileObject object)
