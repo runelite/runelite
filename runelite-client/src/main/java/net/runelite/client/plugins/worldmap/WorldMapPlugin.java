@@ -254,18 +254,18 @@ public class WorldMapPlugin extends Plugin
 				.filter(value -> value.getWorldMapLocation() != null)
 				.map(l -> {
 					boolean shouldShowIcon = agilityLevel > 0 &&
-							strengthLevel > 0 &&
-							rangedLevel > 0 &&
-							config.agilityShortcutLevelIcon();
+						strengthLevel > 0 &&
+						rangedLevel > 0 &&
+						config.agilityShortcutLevelIcon();
 
 					boolean isPlayerUsable = agilityLevel >= l.getLevel() && strengthLevel >= l.getStrengthLevel() && rangedLevel >= l.getRangedLevel();
 
 					return MapPoint.builder()
-							.type(MapPoint.Type.AGILITY_SHORTCUT)
-							.worldPoint(l.getWorldMapLocation())
-							.image(shouldShowIcon && !isPlayerUsable ? NOPE_ICON : BLANK_ICON)
-							.tooltip(config.agilityShortcutTooltips() ? l.getTooltip() : null)
-							.build();
+						.type(MapPoint.Type.AGILITY_SHORTCUT)
+						.worldPoint(l.getWorldMapLocation())
+						.image(shouldShowIcon && !isPlayerUsable ? NOPE_ICON : BLANK_ICON)
+						.tooltip(config.agilityShortcutTooltips() ? l.getTooltip() : null)
+						.build();
 				})
 				.forEach(worldMapPointManager::add);
 		}
