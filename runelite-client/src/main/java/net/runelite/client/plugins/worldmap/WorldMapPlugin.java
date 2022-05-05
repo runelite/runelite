@@ -144,6 +144,8 @@ public class WorldMapPlugin extends Plugin
 	private WorldMapPointManager worldMapPointManager;
 
 	private int agilityLevel = 0;
+	private int strengthLevel = 0;
+	private int rangedLevel = 0;
 	private int woodcuttingLevel = 0;
 
 	@Provides
@@ -156,6 +158,8 @@ public class WorldMapPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		agilityLevel = client.getRealSkillLevel(Skill.AGILITY);
+		strengthLevel = client.getRealSkillLevel(Skill.STRENGTH);
+		rangedLevel = client.getRealSkillLevel(Skill.RANGED);
 		woodcuttingLevel = client.getRealSkillLevel(Skill.WOODCUTTING);
 		updateShownIcons();
 	}
@@ -165,6 +169,8 @@ public class WorldMapPlugin extends Plugin
 	{
 		worldMapPointManager.removeIf(MapPoint.class::isInstance);
 		agilityLevel = 0;
+		strengthLevel = 0;
+		rangedLevel = 0;
 		woodcuttingLevel = 0;
 	}
 
@@ -204,6 +210,26 @@ public class WorldMapPlugin extends Plugin
 				}
 				break;
 			}
+			case STRENGTH:
+			{
+				int newStrengthLevel = statChanged.getBoostedLevel();
+				if (newStrengthLevel != strengthLevel)
+				{
+					strengthLevel = newStrengthLevel;
+					updateAgilityIcons();
+				}
+				break;
+			}
+			case RANGED:
+			{
+				int newRangedLevel = statChanged.getBoostedLevel();
+				if (newRangedLevel != rangedLevel)
+				{
+					rangedLevel = newRangedLevel;
+					updateAgilityIcons();
+				}
+				break;
+			}
 		}
 	}
 
@@ -226,14 +252,21 @@ public class WorldMapPlugin extends Plugin
 		{
 			Arrays.stream(AgilityShortcut.values())
 				.filter(value -> value.getWorldMapLocation() != null)
-				.map(l ->
-					MapPoint.builder()
-						.type(MapPoint.Type.AGILITY_SHORTCUT)
-						.worldPoint(l.getWorldMapLocation())
-						.image(agilityLevel > 0 && config.agilityShortcutLevelIcon() && l.getLevel() > agilityLevel ? NOPE_ICON : BLANK_ICON)
-						.tooltip(config.agilityShortcutTooltips() ? l.getTooltip() : null)
-						.build()
-				)
+				.map(l -> {
+					boolean shouldShowIcon = agilityLevel > 0 &&
+							strengthLevel > 0 &&
+							rangedLevel > 0 &&
+							config.agilityShortcutLevelIcon();
+
+					boolean isPlayerUsable = agilityLevel >= l.getLevel() && strengthLevel >= l.getStrengthLevel() && rangedLevel >= l.getRangedLevel();
+
+					return MapPoint.builder()
+							.type(MapPoint.Type.AGILITY_SHORTCUT)
+							.worldPoint(l.getWorldMapLocation())
+							.image(shouldShowIcon && !isPlayerUsable ? NOPE_ICON : BLANK_ICON)
+							.tooltip(config.agilityShortcutTooltips() ? l.getTooltip() : null)
+							.build();
+				})
 				.forEach(worldMapPointManager::add);
 		}
 	}
