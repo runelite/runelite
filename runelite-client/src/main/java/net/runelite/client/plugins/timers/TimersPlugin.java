@@ -897,16 +897,13 @@ public class TimersPlugin extends Plugin
 	private void checkTeleport(VarPlayer varPlayer)
 	{
 		final GameTimer teleport;
-		final int time;
 		switch (varPlayer)
 		{
 			case LAST_HOME_TELEPORT:
 				teleport = HOME_TELEPORT;
-				time = 30;
 				break;
 			case LAST_MINIGAME_TELEPORT:
 				teleport = MINIGAME_TELEPORT;
-				time = 20;
 				break;
 			default:
 				// Other var changes are not handled as teleports
@@ -915,7 +912,7 @@ public class TimersPlugin extends Plugin
 
 		int lastTeleport = client.getVar(varPlayer);
 		long lastTeleportSeconds = (long) lastTeleport * 60;
-		Instant teleportExpireInstant = Instant.ofEpochSecond(lastTeleportSeconds).plus(time, ChronoUnit.MINUTES);
+		Instant teleportExpireInstant = Instant.ofEpochSecond(lastTeleportSeconds).plus(teleport.getDuration().getSeconds(), ChronoUnit.SECONDS);
 		Duration remainingTime = Duration.between(Instant.now(), teleportExpireInstant);
 
 		if (remainingTime.getSeconds() > 0)
