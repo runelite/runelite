@@ -37,7 +37,6 @@ import net.runelite.api.IndexedSprite;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.OverheadTextChanged;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.Subscribe;
@@ -67,27 +66,27 @@ public class EmojiPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
-		clientThread.invoke(this::loadEmojiIcons);
-	}
-
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
-	{
-		if (gameStateChanged.getGameState() == GameState.LOGGED_IN)
+		clientThread.invoke(() ->
 		{
+			if (client.getModIcons() == null)
+			{
+				return false;
+			}
 			loadEmojiIcons();
-		}
+			return true;
+		});
 	}
 
 	private void loadEmojiIcons()
 	{
-		final IndexedSprite[] modIcons = client.getModIcons();
-		if (modIconsStart != -1 || modIcons == null)
+		if (modIconsStart != -1)
 		{
 			return;
 		}
 
 		final Emoji[] emojis = Emoji.values();
+		final IndexedSprite[] modIcons = client.getModIcons();
+		assert modIcons != null;
 		final IndexedSprite[] newModIcons = Arrays.copyOf(modIcons, modIcons.length + emojis.length);
 		modIconsStart = modIcons.length;
 
