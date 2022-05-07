@@ -37,6 +37,7 @@ import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.Player;
+import net.runelite.api.Point;
 import net.runelite.api.Scene;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.WorldPoint;
@@ -112,7 +113,7 @@ public class CompostTrackerTest
 
 	private static final int PATCH_ID = 12345;
 	private static final int PATCH_VARBIT = 54321;
-	private static final WorldPoint worldPoint = new WorldPoint(1, 2, 0); // can't be mocked
+	private static final WorldPoint worldPoint = new WorldPoint(1, 2, 0);
 
 	@Before
 	public void before()
@@ -127,16 +128,22 @@ public class CompostTrackerTest
 		when(player.getWorldLocation()).thenReturn(worldPoint);
 		when(client.getScene()).thenReturn(scene);
 		when(client.getObjectDefinition(PATCH_ID)).thenReturn(patchDef);
+
 		when(scene.getTiles()).thenReturn(new Tile[][][]{{null, {null, null, tile}}}); // indices match worldPoint
 		when(tile.getGameObjects()).thenReturn(new GameObject[]{patchObject});
+
 		when(farmingWorld.getRegionsForLocation(any())).thenReturn(Collections.singleton(farmingRegion));
+
 		when(farmingRegion.getPatches()).thenReturn(new FarmingPatch[]{farmingPatch});
+
 		when(farmingPatch.getVarbit()).thenReturn(PATCH_VARBIT);
 		when(farmingPatch.configKey()).thenReturn("MOCK");
-		when(patchObject.getWorldLocation()).thenReturn(worldPoint);
+
+		when(patchObject.getSceneMinLocation()).thenReturn(new Point(1, 2));
 		when(patchObject.getId()).thenReturn(PATCH_ID);
 		when(patchObject.sizeX()).thenReturn(1);
 		when(patchObject.sizeY()).thenReturn(1);
+
 		when(patchDef.getVarbitId()).thenReturn(PATCH_VARBIT);
 	}
 
