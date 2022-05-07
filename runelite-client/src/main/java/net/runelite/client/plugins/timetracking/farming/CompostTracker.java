@@ -43,7 +43,6 @@ import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.ItemID;
 import net.runelite.api.ObjectComposition;
-import net.runelite.api.Point;
 import net.runelite.api.Tile;
 import net.runelite.api.annotations.Varbit;
 import net.runelite.api.coords.LocalPoint;
@@ -247,8 +246,7 @@ public class CompostTracker
 		final int playerY = playerPos.getY();
 
 		// patch coords
-		final Point min = patchObject.getSceneMinLocation();
-		final WorldPoint patchBase = WorldPoint.fromScene(client, min.getX(), min.getY(), client.getPlane());
+		final WorldPoint patchBase = pendingCompost.getPatchLocation();
 		final int minX = patchBase.getX();
 		final int minY = patchBase.getY();
 		final int maxX = minX + patchObject.sizeX() - 1;
