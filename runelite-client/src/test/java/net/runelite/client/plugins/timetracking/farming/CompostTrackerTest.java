@@ -280,7 +280,7 @@ public class CompostTrackerTest
 	public void onChatMessage_handlesInspectMessages()
 	{
 		ChatMessage chatEvent = mock(ChatMessage.class);
-		when(chatEvent.getType()).thenReturn(ChatMessageType.GAMEMESSAGE);
+		when(chatEvent.getType()).thenReturn(ChatMessageType.SPAM);
 		when(chatEvent.getMessage()).thenReturn("This is a tree patch. The soil has been treated with ultracompost. The patch is empty and weeded.");
 
 		compostTracker.pendingCompostActions.put(farmingPatch, new CompostTracker.PendingCompost(Instant.MAX, worldPoint, farmingPatch));
@@ -293,7 +293,7 @@ public class CompostTrackerTest
 	public void onChatMessage_handlesBucketUseMessages()
 	{
 		ChatMessage chatEvent = mock(ChatMessage.class);
-		when(chatEvent.getType()).thenReturn(ChatMessageType.GAMEMESSAGE);
+		when(chatEvent.getType()).thenReturn(ChatMessageType.SPAM);
 		when(chatEvent.getMessage()).thenReturn("You treat the herb patch with compost.");
 
 		compostTracker.pendingCompostActions.put(farmingPatch, new CompostTracker.PendingCompost(Instant.MAX, worldPoint, farmingPatch));
@@ -306,7 +306,7 @@ public class CompostTrackerTest
 	public void onChatMessage_handlesFertileSoilMessages()
 	{
 		ChatMessage chatEvent = mock(ChatMessage.class);
-		when(chatEvent.getType()).thenReturn(ChatMessageType.GAMEMESSAGE);
+		when(chatEvent.getType()).thenReturn(ChatMessageType.SPAM);
 		when(chatEvent.getMessage()).thenReturn("The allotment has been treated with supercompost.");
 
 		compostTracker.pendingCompostActions.put(farmingPatch, new CompostTracker.PendingCompost(Instant.MAX, worldPoint, farmingPatch));
