@@ -66,7 +66,7 @@ public class WorldMapDumperTest
 			store.load();
 
 			Storage storage = store.getStorage();
-			Index index = store.getIndex(IndexType.WORLDMAP);
+			Index index = store.getIndex(IndexType.WORLDMAP_OLD);
 			Archive archive = index.getArchive(0); // there is also archive 1/2, but their data format is not this
 
 			byte[] archiveData = storage.loadArchive(archive);
