@@ -43,7 +43,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.ItemID;
 import net.runelite.api.ObjectComposition;
-import net.runelite.api.Player;
+import net.runelite.api.Point;
 import net.runelite.api.Tile;
 import net.runelite.api.annotations.Varbit;
 import net.runelite.api.coords.LocalPoint;
@@ -242,18 +242,19 @@ public class CompostTracker
 		assert patchObject != null;
 
 		// player coords
-		Player p = client.getLocalPlayer();
-		int playerX = p.getWorldLocation().getX();
-		int playerY = p.getWorldLocation().getY();
+		final WorldPoint playerPos = client.getLocalPlayer().getWorldLocation();
+		final int playerX = playerPos.getX();
+		final int playerY = playerPos.getY();
 
 		// patch coords
-		int minX = patchObject.getWorldLocation().getX();
-		int minY = patchObject.getWorldLocation().getY();
-		int maxX = minX + patchObject.sizeX() - 1;
-		int maxY = minY + patchObject.sizeY() - 1;
+		final Point min = patchObject.getSceneMinLocation();
+		final WorldPoint patchBase = WorldPoint.fromScene(client, min.getX(), min.getY(), client.getPlane());
+		final int minX = patchBase.getX();
+		final int minY = patchBase.getY();
+		final int maxX = minX + patchObject.sizeX() - 1;
+		final int maxY = minY + patchObject.sizeY() - 1;
 
 		// player should be within one tile of these coords
-		// todo corner detection?
 		return playerX >= (minX - 1) && playerX <= (maxX + 1) && playerY >= (minY - 1) && playerY <= (maxY + 1);
 	}
 
