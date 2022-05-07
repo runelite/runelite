@@ -37,7 +37,6 @@ import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.Player;
-import net.runelite.api.Point;
 import net.runelite.api.Scene;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.WorldPoint;
@@ -139,7 +138,6 @@ public class CompostTrackerTest
 		when(farmingPatch.getVarbit()).thenReturn(PATCH_VARBIT);
 		when(farmingPatch.configKey()).thenReturn("MOCK");
 
-		when(patchObject.getSceneMinLocation()).thenReturn(new Point(1, 2));
 		when(patchObject.getId()).thenReturn(PATCH_ID);
 		when(patchObject.sizeX()).thenReturn(1);
 		when(patchObject.sizeY()).thenReturn(1);
