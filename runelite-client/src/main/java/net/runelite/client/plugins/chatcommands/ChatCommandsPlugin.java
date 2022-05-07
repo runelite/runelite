@@ -90,6 +90,7 @@ import net.runelite.client.hiscore.Skill;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.Text;
@@ -220,7 +221,15 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.registerCommandAsync(SOUL_WARS_ZEAL_COMMAND, this::soulWarsZealLookup);
 		chatCommandManager.registerCommandAsync(PET_LIST_COMMAND, this::petListLookup, this::petListSubmit);
 
-		clientThread.invoke(this::loadPetIcons);
+		clientThread.invoke(() ->
+		{
+			if (client.getModIcons() == null)
+			{
+				return false;
+			}
+			loadPetIcons();
+			return true;
+		});
 	}
 
 	@Override
@@ -295,13 +304,14 @@ public class ChatCommandsPlugin extends Plugin
 
 	private void loadPetIcons()
 	{
-		final IndexedSprite[] modIcons = client.getModIcons();
-		if (modIconIdx != -1 || modIcons == null)
+		if (modIconIdx != -1)
 		{
 			return;
 		}
 
 		final Pet[] pets = Pet.values();
+		final IndexedSprite[] modIcons = client.getModIcons();
+		assert modIcons != null;
 		final IndexedSprite[] newModIcons = Arrays.copyOf(modIcons, modIcons.length + pets.length);
 		modIconIdx = modIcons.length;
 
@@ -309,9 +319,16 @@ public class ChatCommandsPlugin extends Plugin
 		{
 			final Pet pet = pets[i];
 
-			final BufferedImage image = ImageUtil.resizeImage(itemManager.getImage(pet.getIconID()), 18, 16);
-			final IndexedSprite sprite = ImageUtil.getImageIndexedSprite(image, client);
-			newModIcons[modIconIdx + i] = sprite;
+			final AsyncBufferedImage abi = itemManager.getImage(pet.getIconID());
+			final int idx = modIconIdx + i;
+			Runnable r = () ->
+			{
+				final BufferedImage image = ImageUtil.resizeImage(abi, 18, 16);
+				final IndexedSprite sprite = ImageUtil.getImageIndexedSprite(image, client);
+				newModIcons[idx] = sprite;
+			};
+			abi.onLoaded(r);
+			r.run();
 		}
 
 		client.setModIcons(newModIcons);
@@ -783,9 +800,6 @@ public class ChatCommandsPlugin extends Plugin
 			case LOADING:
 			case HOPPING:
 				pohOwner = null;
-				break;
-			case LOGGED_IN:
-				loadPetIcons();
 				break;
 		}
 	}
