@@ -230,7 +230,7 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 			.build(),
 		AnagramClue.builder()
 			.text("DEKAGRAM")
-			.npc("Dark mage")
+			.npc("Dark Mage")
 			.location(new WorldPoint(3039, 4835, 0))
 			.area("Centre of the Abyss")
 			.question("How many rifts are found here in the abyss?")
