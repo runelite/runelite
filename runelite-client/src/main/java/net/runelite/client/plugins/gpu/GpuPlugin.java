@@ -1183,7 +1183,19 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		final int viewportHeight = client.getViewportHeight();
 		final int viewportWidth = client.getViewportWidth();
 
-		prepareInterfaceTexture(canvasWidth, canvasHeight);
+		try
+		{
+			prepareInterfaceTexture(canvasWidth, canvasHeight);
+		}
+		catch (Exception ex)
+		{
+			// Fixes: https://github.com/runelite/runelite/issues/12930
+			// Gracefully Handle loss of opengl buffers and context
+			log.warn("prepareInterfaceTexture exception", ex);
+			shutDown();
+			startUp();
+			return;
+		}
 
 		// Setup anti-aliasing
 		final AntiAliasingMode antiAliasingMode = config.antiAliasingMode();
