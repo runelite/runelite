@@ -137,7 +137,6 @@ public class TimersPlugin extends Plugin
 	private static final int NMZ_MAP_REGION_ID = 9033;
 	private static final Pattern TZHAAR_WAVE_MESSAGE = Pattern.compile("Wave: (\\d+)");
 	private static final String TZHAAR_DEFEATED_MESSAGE = "You have been defeated!";
-	private static final Pattern TZHAAR_COMPLETE_MESSAGE = Pattern.compile("Your (?:TzTok-Jad|TzKal-Zuk) kill count is:");
 	private static final Pattern TZHAAR_PAUSED_MESSAGE = Pattern.compile("The (?:Inferno|Fight Cave) has been paused. You may now log out.");
 
 	private TimerTimer freezeTimer;
@@ -776,7 +775,7 @@ public class TimersPlugin extends Plugin
 			}
 		}
 
-		if (message.equals(TZHAAR_DEFEATED_MESSAGE) || TZHAAR_COMPLETE_MESSAGE.matcher(message).matches())
+		if (message.equals(TZHAAR_DEFEATED_MESSAGE))
 		{
 			log.debug("Stopping tzhaar timer");
 			removeTzhaarTimer();
