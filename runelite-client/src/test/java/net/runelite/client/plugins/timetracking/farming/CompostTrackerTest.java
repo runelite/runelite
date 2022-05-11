@@ -320,4 +320,16 @@ public class CompostTrackerTest
 		verify(configManager).setRSProfileConfiguration("timetracking", "MOCK.compost", CompostState.SUPERCOMPOST);
 	}
 
+	@Test
+	public void onChatMessage_volcanicAsh()
+	{
+		ChatMessage chatEvent = mock(ChatMessage.class);
+		when(chatEvent.getType()).thenReturn(ChatMessageType.SPAM);
+		when(chatEvent.getMessage()).thenReturn("The fruit tree patch has been treated with ultracompost consuming 2 of your volcanic ash.");
+
+		compostTracker.pendingCompostActions.put(farmingPatch, new CompostTracker.PendingCompost(Instant.MAX, worldPoint, farmingPatch));
+		compostTracker.onChatMessage(chatEvent);
+
+		verify(configManager).setRSProfileConfiguration("timetracking", "MOCK.compost", CompostState.ULTRACOMPOST);
+	}
 }

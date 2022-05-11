@@ -76,7 +76,7 @@ public class CompostTracker
 	private static final Pattern COMPOST_USED_ON_PATCH = Pattern.compile(
 		"You treat the .+ with (?<compostType>ultra|super|)compost\\.");
 	private static final Pattern FERTILE_SOIL_CAST = Pattern.compile(
-		"The .+ has been treated with (?<compostType>ultra|super|)compost\\.");
+		"^The .+ has been treated with (?<compostType>ultra|super|)compost");
 	private static final Pattern ALREADY_TREATED = Pattern.compile(
 		"This .+ has already been (treated|fertilised) with (?<compostType>ultra|super|)compost(?: - the spell can't make it any more fertile)?\\.");
 	private static final Pattern INSPECT_PATCH = Pattern.compile(
@@ -271,7 +271,7 @@ public class CompostTracker
 
 		Matcher matcher;
 		if ((matcher = COMPOST_USED_ON_PATCH.matcher(chatMessage)).matches() ||
-			(matcher = FERTILE_SOIL_CAST.matcher(chatMessage)).matches() ||
+			(matcher = FERTILE_SOIL_CAST.matcher(chatMessage)).find() ||
 			(matcher = ALREADY_TREATED.matcher(chatMessage)).matches() ||
 			(matcher = INSPECT_PATCH.matcher(chatMessage)).matches())
 		{
