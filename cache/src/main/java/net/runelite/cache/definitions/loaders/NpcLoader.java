@@ -85,18 +85,18 @@ public class NpcLoader
 		}
 		else if (opcode == 15)
 		{
-			def.rotateLeftAnimation = stream.readUnsignedShort();
+			def.idleRotateLeftAnimation = stream.readUnsignedShort();
 		}
 		else if (opcode == 16)
 		{
-			def.rotateRightAnimation = stream.readUnsignedShort();
+			def.idleRotateRightAnimation = stream.readUnsignedShort();
 		}
 		else if (opcode == 17)
 		{
 			def.walkingAnimation = stream.readUnsignedShort();
 			def.rotate180Animation = stream.readUnsignedShort();
-			def.rotate90RightAnimation = stream.readUnsignedShort();
-			def.rotate90LeftAnimation = stream.readUnsignedShort();
+			def.rotateLeftAnimation = stream.readUnsignedShort();
+			def.rotateRightAnimation = stream.readUnsignedShort();
 		}
 		else if (opcode == 18)
 		{
@@ -223,6 +223,28 @@ public class NpcLoader
 		else if (opcode == 111)
 		{
 			def.isPet = true;
+		}
+		else if (opcode == 114)
+		{
+			def.runAnimation = stream.readUnsignedShort();
+		}
+		else if (opcode == 115)
+		{
+			def.runAnimation = stream.readUnsignedShort();
+			def.runRotate180Animation = stream.readUnsignedShort();
+			def.runRotateLeftAnimation = stream.readUnsignedShort();
+			def.runRotateRightAnimation = stream.readUnsignedShort();
+		}
+		else if (opcode == 116)
+		{
+			def.crawlAnimation = stream.readUnsignedShort();
+		}
+		else if (opcode == 117)
+		{
+			def.crawlAnimation = stream.readUnsignedShort();
+			def.crawlRotate180Animation = stream.readUnsignedShort();
+			def.crawlRotateLeftAnimation = stream.readUnsignedShort();
+			def.crawlRotateRightAnimation = stream.readUnsignedShort();
 		}
 		else if (opcode == 118)
 		{
