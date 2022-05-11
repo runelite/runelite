@@ -9647,14 +9647,7 @@ public final class NpcID
 	public static final int ABYSSAL_WALKER_11454 = 11454;
 	public static final int THE_GREAT_GUARDIAN_11455 = 11455;
 	public static final int THE_GREAT_GUARDIAN_11456 = 11456;
-	public static final int SUSPICIOUS_CRATE = 11462;
-	public static final int SUSPICIOUS_CRATE_11463 = 11463;
-	public static final int PHOEBE_KAY = 11464;
-	public static final int XI_PLZPETDOGZ_XIX = 11465;
-	public static final int XI_PLZPETDOGZ_XIX_11466 = 11466;
-	public static final int CAMARST_11467 = 11467;
-	public static final int EASTER_BUNNY = 11468;
-	public static final int EASTER_BUNNY_11470 = 11470;
+	public static final int MENAPHITE_SHADOW = 11462;
 	public static final int TARIK_11473 = 11473;
 	public static final int MAISA_11474 = 11474;
 	public static final int MAISA_11475 = 11475;
@@ -9675,7 +9668,6 @@ public final class NpcID
 	public static final int MENAPHITE_AKH_11491 = 11491;
 	public static final int MENAPHITE_AKH_11492 = 11492;
 	public static final int MENAPHITE_AKH_11493 = 11493;
-	public static final int MENAPHITE_SHADOW = 11494;
 	public static final int MENAPHITE_AKH_11495 = 11495;
 	public static final int MENAPHITE_AKH_11496 = 11496;
 	public static final int MENAPHITE_AKH_11497 = 11497;
@@ -9739,7 +9731,6 @@ public final class NpcID
 	public static final int CITIZEN_11556 = 11556;
 	public static final int CITIZEN_11557 = 11557;
 	public static final int CITIZEN_11558 = 11558;
-	public static final int SCABARAS = 11560;
 	public static final int SELIM_11561 = 11561;
 	public static final int JEX_11562 = 11562;
 	public static final int JEX_11563 = 11563;
