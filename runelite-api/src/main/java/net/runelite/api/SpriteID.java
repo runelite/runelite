@@ -89,7 +89,7 @@ public final class SpriteID
 	public static final int SPELL_ENFEEBLE = 57;
 	public static final int SPELL_STUN = 58;
 	public static final int SPELL_FLAMES_OF_ZAMORAK = 59;
-	public static final int SPELL_CLAWS_OF_GUTHIC = 60;
+	public static final int SPELL_CLAWS_OF_GUTHIX = 60;
 	public static final int SPELL_SARADOMIN_STRIKE = 61;
 	public static final int UNUSED_SPELL_CALL_ANIMAL = 62;
 	public static final int UNUSED_SPELL_RAISE_SKELETON = 63;
@@ -139,7 +139,7 @@ public final class SpriteID
 	public static final int SPELL_ENFEEBLE_DISABLED = 107;
 	public static final int SPELL_STUN_DISABLED = 108;
 	public static final int SPELL_FLAMES_OF_ZAMORAK_DISABLED = 109;
-	public static final int SPELL_CLAWS_OF_GUTHIC_DISABLED = 110;
+	public static final int SPELL_CLAWS_OF_GUTHIX_DISABLED = 110;
 	public static final int SPELL_SARADOMIN_STRIKE_DISABLED = 111;
 	public static final int UNUSED_SPELL_CALL_ANIMAL_DISABLED = 112;
 	public static final int UNUSED_SPELL_RAISE_SKELETON_DISABLED = 113;
