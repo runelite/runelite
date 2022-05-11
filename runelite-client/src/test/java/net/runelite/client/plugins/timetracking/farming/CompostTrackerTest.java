@@ -55,6 +55,7 @@ import org.junit.runner.RunWith;
 import static org.mockito.ArgumentMatchers.any;
 import org.mockito.Mock;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
@@ -107,6 +108,9 @@ public class CompostTrackerTest
 	@Bind
 	private ObjectComposition patchDef;
 
+	@Mock
+	private Runnable callback;
+
 	@Rule
 	public ErrorCollector collector = new ErrorCollector();
 
@@ -119,6 +123,7 @@ public class CompostTrackerTest
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
 		compostTracker.pendingCompostActions.clear();
+		compostTracker.onCompostAction(callback);
 
 		when(client.getBaseX()).thenReturn(0);
 		when(client.getBaseY()).thenReturn(0);
@@ -292,6 +297,7 @@ public class CompostTrackerTest
 		compostTracker.onChatMessage(chatEvent);
 
 		verify(configManager).setRSProfileConfiguration("timetracking", "MOCK.compost", CompostState.ULTRACOMPOST);
+		verify(callback, times(1)).run();
 	}
 
 	@Test
@@ -305,6 +311,7 @@ public class CompostTrackerTest
 		compostTracker.onChatMessage(chatEvent);
 
 		verify(configManager).setRSProfileConfiguration("timetracking", "MOCK.compost", CompostState.COMPOST);
+		verify(callback, times(1)).run();
 	}
 
 	@Test
@@ -318,6 +325,7 @@ public class CompostTrackerTest
 		compostTracker.onChatMessage(chatEvent);
 
 		verify(configManager).setRSProfileConfiguration("timetracking", "MOCK.compost", CompostState.SUPERCOMPOST);
+		verify(callback, times(1)).run();
 	}
 
 	@Test
@@ -331,5 +339,6 @@ public class CompostTrackerTest
 		compostTracker.onChatMessage(chatEvent);
 
 		verify(configManager).setRSProfileConfiguration("timetracking", "MOCK.compost", CompostState.ULTRACOMPOST);
+		verify(callback, times(1)).run();
 	}
 }
