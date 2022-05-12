@@ -65,6 +65,9 @@ public class ChatKeyboardListener implements KeyListener
 
 			if (input != null)
 			{
+				// prevent the keypress from also modifying the chatbox as we alter the text
+				e.consume();
+
 				// remove trailing space
 				while (input.endsWith(" "))
 				{
@@ -80,6 +83,7 @@ public class ChatKeyboardListener implements KeyListener
 		}
 		else if (chatCommandsConfig.clearChatBox().matches(e))
 		{
+			e.consume();
 			int inputTye = client.getVar(VarClientInt.INPUT_TYPE);
 			clientThread.invoke(() -> applyText(inputTye, ""));
 		}
