@@ -1543,7 +1543,9 @@ public final class SpriteID
 	public static final int TAB_MAGIC_SPELLBOOK_ARCEUUS_UNUSED = 1708;
 	/* Unmapped: 1709, 1710 */
 	public static final int TAB_MAGIC_SPELLBOOK_ARCEUUS = 1711;
-	/* Unmapped: 1712~2175 */
+	/* Unmapped: 1712 */
+	public static final int TAB_QUESTS_ORANGE_ADVENTURE_PATHS = 1713;
+	/* Unmapped: 1714~2175 */
 	public static final int HEALTHBAR_DEFAULT_FRONT_30PX = 2176;
 	public static final int HEALTHBAR_DEFAULT_BACK_30PX = 2177;
 	public static final int HEALTHBAR_DEFAULT_FRONT_50PX = 2178;
@@ -1560,8 +1562,14 @@ public final class SpriteID
 	public static final int HEALTHBAR_DEFAULT_BACK_140PX = 2189;
 	public static final int HEALTHBAR_DEFAULT_FRONT_160PX = 2190;
 	public static final int HEALTHBAR_DEFAULT_BACK_160PX = 2191;
-	/* Unmapped: 2192~2306 */
+	/* Unmapped: 2192~2218 */
+	public static final int QUESTS_PAGE_ICON_ORANGE_ADVENTURE_PATHS = 2219;
+	/* Unmapped: 2220~2275 */
+	public static final int QUESTS_PAGE_ICON_BROWN_CHARACTER_SUMMARY = 2276;
+	/* Unmapped: 2277~2306 */
 	public static final int TAB_CLAN_CHAT = 2307;
+	/* Unmapped: 2308 */
+	public static final int TAB_QUESTS_BROWN_CHARACTER_SUMMARY = 2309;
 	/* Unmapped: 2308~2419 */
 	public static final int WIKI_DESELECTED = 2420;
 	public static final int WIKI_SELECTED = 2421;
