@@ -25,6 +25,7 @@
 package net.runelite.client.ui.overlay;
 
 import com.google.common.base.MoreObjects;
+import com.google.common.collect.ImmutableList;
 import com.google.common.primitives.Ints;
 import java.awt.Color;
 import java.awt.Composite;
@@ -40,6 +41,7 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -502,22 +504,24 @@ public class OverlayRenderer extends MouseAdapter
 	{
 		synchronized (overlayManager)
 		{
-			for (Overlay overlay : overlayManager.getOverlays())
-			{
-				if (overlay.getPosition() == OverlayPosition.DYNAMIC || overlay.getPosition() == OverlayPosition.TOOLTIP)
-				{
-					// never allow moving dynamic or tooltip overlays
-					continue;
-				}
-
-				final Rectangle bounds = overlay.getBounds();
-				if (bounds.contains(mousePoint))
-				{
-					return overlay;
-				}
-			}
+			// render order is roughly: under -> manual -> above -> always on top
+			final List<OverlayLayer> layerOrder = ImmutableList.of(OverlayLayer.UNDER_WIDGETS, OverlayLayer.MANUAL, OverlayLayer.ABOVE_WIDGETS, OverlayLayer.ALWAYS_ON_TOP);
+			return overlayManager.getOverlays()
+				.stream()
+				// ABOVE_SCENE overlays aren't managed
+				.filter(c -> layerOrder.contains(c.getLayer()))
+				// never allow moving dynamic or tooltip overlays
+				.filter(c -> c.getPosition() != OverlayPosition.DYNAMIC && c.getPosition() != OverlayPosition.TOOLTIP)
+				.sorted(
+					Comparator.<Overlay>comparingInt(c -> layerOrder.indexOf(c.getLayer()))
+						.thenComparing(OverlayManager.OVERLAY_COMPARATOR)
+						// pick order is reversed from render order
+						.reversed()
+				)
+				.filter(o -> o.getBounds().contains(mousePoint))
+				.findFirst()
+				.orElse(null);
 		}
-		return null;
 	}
 
 	@Override
