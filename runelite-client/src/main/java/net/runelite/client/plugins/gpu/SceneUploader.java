@@ -43,6 +43,8 @@ import net.runelite.api.SceneTilePaint;
 import net.runelite.api.Tile;
 import net.runelite.api.WallObject;
 
+import java.util.Random;
+
 @Singleton
 @Slf4j
 class SceneUploader
@@ -50,7 +52,7 @@ class SceneUploader
 	@Inject
 	private Client client;
 
-	int sceneId = (int) (System.currentTimeMillis() / 1000L);
+	int sceneId = new Random().nextInt();
 	private int offset;
 	private int uvoffset;
 
