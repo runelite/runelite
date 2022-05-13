@@ -178,4 +178,42 @@ public class ItemStatEffectTest
 			}
 		}
 	}
+
+	@Test
+	public void testAncientBrew()
+	{
+		final Effect ancientBrew = new ItemStatChanges().get(ItemID.ANCIENT_BREW4);
+
+		assertEquals(4, skillChange(Skill.PRAYER, 99, 99, ancientBrew));
+		assertEquals(11, skillChange(Skill.PRAYER, 99, 90, ancientBrew));
+		assertEquals(11, skillChange(Skill.PRAYER, 99, 0, ancientBrew));
+		assertEquals(2, skillChange(Skill.PRAYER, 50, 50, ancientBrew));
+		assertEquals(7, skillChange(Skill.PRAYER, 50, 40, ancientBrew));
+		assertEquals(0, skillChange(Skill.PRAYER, 1, 1, ancientBrew));
+		assertEquals(1, skillChange(Skill.PRAYER, 1, 0, ancientBrew));
+	}
+
+	private int skillChange(Skill skill, int maxValue, int currentValue, Effect effect)
+	{
+		if (effect == null)
+		{
+			throw new IllegalArgumentException("Applied effect is null");
+		}
+
+		when(client.getRealSkillLevel(skill)).thenReturn(maxValue);
+		when(client.getBoostedSkillLevel(skill)).thenReturn(currentValue);
+		final StatsChanges statsChanges = effect.calculate(client);
+
+		for (final StatChange statChange : statsChanges.getStatChanges())
+		{
+			if (!statChange.getStat().getName().equals(skill.getName()))
+			{
+				continue;
+			}
+
+			return statChange.getRelative();
+		}
+
+		return 0;
+	}
 }
