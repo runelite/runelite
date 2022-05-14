@@ -675,7 +675,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 						.onClick(e ->
 						{
 							final String message = new ChatMessageBuilder()
-								.append("The default left click option for '").append(composition.getName()).append("' ")
+								.append("The default left click option for '").append(Text.removeTags(composition.getName())).append("' ")
 								.append("has been set to '").append(actions[menuIdx]).append("'.")
 								.build();
 
@@ -764,7 +764,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 						.onClick(e ->
 						{
 							final String message = new ChatMessageBuilder()
-								.append("The default left click option for '").append(composition.getName()).append("' ")
+								.append("The default left click option for '").append(Text.removeTags(composition.getName())).append("' ")
 								.append("has been set to '").append(actions[menuIdx]).append("'.")
 								.build();
 
