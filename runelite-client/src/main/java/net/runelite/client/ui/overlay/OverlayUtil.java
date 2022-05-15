@@ -240,8 +240,6 @@ public class OverlayUtil
 
 		switch (position)
 		{
-			case DYNAMIC:
-			case TOOLTIP:
 			case TOP_LEFT:
 				break;
 			case TOP_CENTER:
@@ -258,6 +256,8 @@ public class OverlayUtil
 			case TOP_RIGHT:
 				result.x = -dimension.width;
 				break;
+			default:
+				throw new IllegalArgumentException();
 		}
 
 		return result;
