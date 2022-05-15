@@ -80,6 +80,7 @@ public class BankPlugin extends Plugin
 	private static final String DEPOSIT_INVENTORY = "Deposit inventory";
 	private static final String DEPOSIT_LOOT = "Deposit loot";
 	private static final String SEED_VAULT_TITLE = "Seed Vault";
+	private static final String SEARCH = "Search";
 
 	private static final String NUMBER_REGEX = "[0-9]+(\\.[0-9]+)?[kmb]?";
 	private static final Pattern VALUE_SEARCH_PATTERN = Pattern.compile("^(?<mode>qty|ge|ha|alch)?" +
@@ -176,7 +177,8 @@ public class BankPlugin extends Plugin
 		{
 			if ((entry.getOption().equals(DEPOSIT_WORN) && config.rightClickBankEquip())
 				|| (entry.getOption().equals(DEPOSIT_INVENTORY) && config.rightClickBankInventory())
-				|| (entry.getOption().equals(DEPOSIT_LOOT) && config.rightClickBankLoot()))
+				|| (entry.getOption().equals(DEPOSIT_LOOT) && config.rightClickBankLoot())
+				|| (entry.getOption().equals(SEARCH) && config.rightClickSearch()))
 			{
 				event.setForceRightClick(true);
 				return;
@@ -189,7 +191,8 @@ public class BankPlugin extends Plugin
 	{
 		if ((event.getOption().equals(DEPOSIT_WORN) && config.rightClickBankEquip())
 			|| (event.getOption().equals(DEPOSIT_INVENTORY) && config.rightClickBankInventory())
-			|| (event.getOption().equals(DEPOSIT_LOOT) && config.rightClickBankLoot()))
+			|| (event.getOption().equals(DEPOSIT_LOOT) && config.rightClickBankLoot())
+			|| (event.getOption().equals(SEARCH) && config.rightClickSearch()))
 		{
 			forceRightClickFlag = true;
 		}
