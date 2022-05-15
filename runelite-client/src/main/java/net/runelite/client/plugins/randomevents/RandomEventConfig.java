@@ -44,12 +44,17 @@ public interface RandomEventConfig extends Config
 		keyName = "removeMenuOptions",
 		name = "Remove others' menu options",
 		description = "Remove menu options from random events for other players.",
-		position = -3
+		position = -4
 	)
-	default boolean removeMenuOptions()
-	{
-		return true;
-	}
+	default boolean removeMenuOptions() { return true; }
+
+	@ConfigItem(
+			keyName = "hideAll",
+			name = "Remove self menu options",
+			description = "Remove menu options from random events for yourself.",
+			position = -3
+	)
+	default boolean HideAllEvents() { return false; }
 
 	@ConfigItem(
 			keyName = "notifyAll",
@@ -194,4 +199,12 @@ public interface RandomEventConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+			keyName = "notifyStrange",
+			name = "Notify on Strange Plant",
+			description = "",
+			section = notificationSection
+	)
+	default boolean notifyStrange() { return false; }
 }
