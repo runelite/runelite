@@ -313,21 +313,29 @@ public class OverlayManager
 	private void loadOverlay(final Overlay overlay)
 	{
 		final Point location = loadOverlayLocation(overlay);
-		overlay.setPreferredLocation(location);
 		final Dimension size = loadOverlaySize(overlay);
-		overlay.setPreferredSize(size);
 		final OverlayPosition position = loadOverlayPosition(overlay);
-		if (position != null)
+
+		if (overlay.isMovable())
 		{
-			if (overlay.getPosition() != OverlayPosition.DYNAMIC && overlay.getPosition() != OverlayPosition.TOOLTIP)
-			{
-				overlay.setPreferredPosition(position);
-			}
-			else
-			{
-				log.info("Resetting preferred position of dynamic overlay {}", overlay.getClass().getSimpleName());
-				saveOverlayPosition(overlay);
-			}
+			overlay.setPreferredLocation(location);
+		}
+		else
+		{
+			log.info("Resetting preferred location of non-movable overlay {} (class {})", overlay.getName(), overlay.getClass().getName());
+			saveOverlayLocation(overlay);
+		}
+
+		overlay.setPreferredSize(size);
+
+		if (overlay.isSnappable())
+		{
+			overlay.setPreferredPosition(position);
+		}
+		else
+		{
+			log.info("Resetting preferred position of non-snappable overlay {} (class {})", overlay.getName(), overlay.getClass().getName());
+			saveOverlayPosition(overlay);
 		}
 	}
 

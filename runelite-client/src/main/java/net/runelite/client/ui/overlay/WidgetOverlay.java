@@ -43,14 +43,14 @@ public class WidgetOverlay extends Overlay
 	{
 		return Arrays.asList(
 			// classic resizable
-			new WidgetOverlay(client, WidgetInfo.RESIZABLE_VIEWPORT_CHATBOX_PARENT, OverlayPosition.DETACHED, OverlayPriority.HIGH),
-			new WidgetOverlay(client, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_CHATBOX_PARENT, OverlayPosition.DETACHED, OverlayPriority.HIGH),
-			new WidgetOverlay(client, WidgetInfo.RESIZABLE_VIEWPORT_INVENTORY_PARENT, OverlayPosition.DETACHED),
+			new WidgetOverlay(client, WidgetInfo.RESIZABLE_VIEWPORT_CHATBOX_PARENT, OverlayPosition.DYNAMIC, OverlayPriority.HIGH),
+			new WidgetOverlay(client, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_CHATBOX_PARENT, OverlayPosition.DYNAMIC, OverlayPriority.HIGH),
+			new WidgetOverlay(client, WidgetInfo.RESIZABLE_VIEWPORT_INVENTORY_PARENT, OverlayPosition.DYNAMIC),
 			new WidgetOverlay(client, WidgetInfo.RESIZABLE_MINIMAP_WIDGET, OverlayPosition.CANVAS_TOP_RIGHT, OverlayPriority.MED),
 			// modern resizable
-			new WidgetOverlay(client, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_TABS1, OverlayPosition.DETACHED),
-			new WidgetOverlay(client, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_TABS2, OverlayPosition.DETACHED),
-			new WidgetOverlay(client, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY_PARENT, OverlayPosition.DETACHED),
+			new WidgetOverlay(client, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_TABS1, OverlayPosition.DYNAMIC),
+			new WidgetOverlay(client, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_TABS2, OverlayPosition.DYNAMIC),
+			new WidgetOverlay(client, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY_PARENT, OverlayPosition.DYNAMIC),
 			new WidgetOverlay(client, WidgetInfo.RESIZABLE_MINIMAP_STONES_WIDGET, OverlayPosition.CANVAS_TOP_RIGHT, OverlayPriority.MED),
 			// The client forces the oxygen bar below the xp tracker, so set its priority lower
 			new WidgetOverlay(client, WidgetInfo.FOSSIL_ISLAND_OXYGENBAR, OverlayPosition.TOP_CENTER, OverlayPriority.HIGH),
@@ -84,7 +84,7 @@ public class WidgetOverlay extends Overlay
 			new WidgetOverlay(client, WidgetInfo.TEMPOROSS_STATUS_INDICATOR, OverlayPosition.TOP_LEFT),
 			new WidgetOverlay(client, WidgetInfo.BA_HEAL_TEAMMATES, OverlayPosition.BOTTOM_LEFT),
 			new WidgetOverlay(client, WidgetInfo.BA_TEAM, OverlayPosition.TOP_RIGHT),
-			new WidgetOverlay(client, WidgetInfo.PVP_WILDERNESS_SKULL_CONTAINER, OverlayPosition.DETACHED)
+			new WidgetOverlay(client, WidgetInfo.PVP_WILDERNESS_SKULL_CONTAINER, OverlayPosition.DYNAMIC)
 		);
 	}
 
@@ -105,6 +105,8 @@ public class WidgetOverlay extends Overlay
 		setPriority(overlayPriority);
 		setLayer(OverlayLayer.UNDER_WIDGETS);
 		setPosition(overlayPosition);
+		setMovable(true);
+		setSnappable(true);
 		// It's almost possible to drawAfterInterface(widgetInfo.getGroupId()) here, but that fires
 		// *after* the native components are drawn, which is too late.
 	}

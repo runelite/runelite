@@ -256,7 +256,7 @@ public class OverlayRenderer extends MouseAdapter
 		OverlayUtil.setGraphicProperties(graphics);
 
 		// Draw snap corners
-		if (inOverlayDraggingMode && layer == OverlayLayer.UNDER_WIDGETS && currentManagedOverlay != null && currentManagedOverlay.getPosition() != OverlayPosition.DETACHED)
+		if (inOverlayDraggingMode && layer == OverlayLayer.UNDER_WIDGETS && currentManagedOverlay != null && currentManagedOverlay.isSnappable())
 		{
 			final OverlayBounds translatedSnapCorners = snapCorners.translated(
 				-SNAP_CORNER_SIZE.width,
@@ -288,102 +288,87 @@ public class OverlayRenderer extends MouseAdapter
 		for (Overlay overlay : overlays)
 		{
 			final OverlayPosition overlayPosition = getCorrectedOverlayPosition(overlay);
+			final Rectangle bounds = overlay.getBounds();
+			final Dimension dimension = bounds.getSize();
+			final Point preferredLocation = overlay.getPreferredLocation();
+			Point location;
+			Rectangle snapCorner = null;
 
-			if (overlayPosition == OverlayPosition.DYNAMIC || overlayPosition == OverlayPosition.TOOLTIP)
+			// If the final position is not modified, layout it
+			if (overlayPosition != OverlayPosition.DYNAMIC && overlayPosition != OverlayPosition.TOOLTIP
+				&& overlayPosition != OverlayPosition.DETACHED && preferredLocation == null)
 			{
-				safeRender(client, overlay, layer, graphics, new Point());
-
-				// Restore graphics2d properties
-				graphics.setTransform(transform);
-				graphics.setStroke(stroke);
-				graphics.setComposite(composite);
-				graphics.setPaint(paint);
-				graphics.setRenderingHints(renderingHints);
-				graphics.setBackground(background);
+				snapCorner = snapCorners.forPosition(overlayPosition);
+				final Point translation = OverlayUtil.transformPosition(overlayPosition, dimension); // offset from corner
+				// Target x/y to draw the overlay
+				int destX = snapCorner.x + translation.x;
+				int destY = snapCorner.y + translation.y;
+				// Clamp the target position to ensure it is on screen or within parent bounds
+				location = clampOverlayLocation(destX, destY, dimension.width, dimension.height, overlay);
 			}
 			else
 			{
-				final Rectangle bounds = overlay.getBounds();
-				final Dimension dimension = bounds.getSize();
-				final Point preferredLocation = overlay.getPreferredLocation();
-				Point location;
-				Rectangle snapCorner = null;
+				location = preferredLocation != null ? preferredLocation : bounds.getLocation();
 
-				// If the final position is not modified, layout it
-				if (overlayPosition != OverlayPosition.DETACHED && (preferredLocation == null || overlay.getPreferredPosition() != null))
+				// Clamp the overlay position to ensure it is on screen or within parent bounds
+				location = clampOverlayLocation(location.x, location.y, dimension.width, dimension.height, overlay);
+			}
+
+			if (overlay.getPreferredSize() != null)
+			{
+				bounds.setSize(overlay.getPreferredSize());
+			}
+
+			safeRender(client, overlay, layer, graphics, location);
+
+			// Adjust snap corner based on where the overlay was drawn
+			if (snapCorner != null && bounds.width + bounds.height > 0)
+			{
+				OverlayUtil.shiftSnapCorner(overlayPosition, snapCorner, bounds, PADDING);
+			}
+
+			// Restore graphics2d properties prior to drawing bounds
+			graphics.setTransform(transform);
+			graphics.setStroke(stroke);
+			graphics.setComposite(composite);
+			graphics.setPaint(paint);
+			graphics.setRenderingHints(renderingHints);
+			graphics.setBackground(background);
+
+			if (!bounds.isEmpty())
+			{
+				if (inOverlayManagingMode)
 				{
-					snapCorner = snapCorners.forPosition(overlayPosition);
-					final Point translation = OverlayUtil.transformPosition(overlayPosition, dimension); // offset from corner
-					// Target x/y to draw the overlay
-					int destX = snapCorner.x + translation.x;
-					int destY = snapCorner.y + translation.y;
-					// Clamp the target position to ensure it is on screen or within parent bounds
-					location = clampOverlayLocation(destX, destY, dimension.width, dimension.height, overlay);
-				}
-				else
-				{
-					location = preferredLocation != null ? preferredLocation : bounds.getLocation();
-
-					// Clamp the overlay position to ensure it is on screen or within parent bounds
-					location = clampOverlayLocation(location.x, location.y, dimension.width, dimension.height, overlay);
-				}
-
-				if (overlay.getPreferredSize() != null)
-				{
-					bounds.setSize(overlay.getPreferredSize());
-				}
-
-				safeRender(client, overlay, layer, graphics, location);
-
-				// Adjust snap corner based on where the overlay was drawn
-				if (snapCorner != null && bounds.width + bounds.height > 0)
-				{
-					OverlayUtil.shiftSnapCorner(overlayPosition, snapCorner, bounds, PADDING);
-				}
-
-				// Restore graphics2d properties prior to drawing bounds
-				graphics.setTransform(transform);
-				graphics.setStroke(stroke);
-				graphics.setComposite(composite);
-				graphics.setPaint(paint);
-				graphics.setRenderingHints(renderingHints);
-				graphics.setBackground(background);
-
-				if (!bounds.isEmpty())
-				{
-					if (inOverlayManagingMode)
+					Color boundsColor;
+					if (inOverlayResizingMode && currentManagedOverlay == overlay)
 					{
-						Color boundsColor;
-						if (inOverlayResizingMode && currentManagedOverlay == overlay)
-						{
-							boundsColor = MOVING_OVERLAY_RESIZING_COLOR;
-						}
-						else if (inOverlayDraggingMode && currentManagedOverlay == overlay)
-						{
-							boundsColor = MOVING_OVERLAY_ACTIVE_COLOR;
-						}
-						else if (inOverlayDraggingMode && overlay.isDragTargetable() && currentManagedOverlay.isDragTargetable()
-							&& currentManagedOverlay.getBounds().intersects(bounds))
-						{
-							boundsColor = MOVING_OVERLAY_TARGET_COLOR;
-							assert currentManagedOverlay != overlay;
-							dragTargetOverlay = overlay;
-						}
-						else
-						{
-							boundsColor = MOVING_OVERLAY_COLOR;
-						}
-
-						graphics.setColor(boundsColor);
-						graphics.draw(bounds);
-						graphics.setPaint(paint);
+						boundsColor = MOVING_OVERLAY_RESIZING_COLOR;
+					}
+					else if (inOverlayDraggingMode && currentManagedOverlay == overlay)
+					{
+						boundsColor = MOVING_OVERLAY_ACTIVE_COLOR;
+					}
+					else if (inOverlayDraggingMode && overlay.isDragTargetable() && currentManagedOverlay.isDragTargetable()
+						&& currentManagedOverlay.getBounds().intersects(bounds))
+					{
+						boundsColor = MOVING_OVERLAY_TARGET_COLOR;
+						assert currentManagedOverlay != overlay;
+						dragTargetOverlay = overlay;
+					}
+					else
+					{
+						boundsColor = MOVING_OVERLAY_COLOR;
 					}
 
-					if (!client.isMenuOpen() && !client.getSpellSelected() && bounds.contains(mouse))
-					{
-						hoveredOverlay = overlay;
-						overlay.onMouseOver();
-					}
+					graphics.setColor(boundsColor);
+					graphics.draw(bounds);
+					graphics.setPaint(paint);
+				}
+
+				if (!client.isMenuOpen() && !client.getSpellSelected() && bounds.contains(mouse))
+				{
+					hoveredOverlay = overlay;
+					overlay.onMouseOver();
 				}
 			}
 		}
@@ -511,7 +496,7 @@ public class OverlayRenderer extends MouseAdapter
 				// ABOVE_SCENE overlays aren't managed
 				.filter(c -> layerOrder.contains(c.getLayer()))
 				// never allow moving dynamic or tooltip overlays
-				.filter(c -> c.getPosition() != OverlayPosition.DYNAMIC && c.getPosition() != OverlayPosition.TOOLTIP)
+				.filter(Overlay::isMovable)
 				.sorted(
 					Comparator.<Overlay>comparingInt(c -> layerOrder.indexOf(c.getLayer()))
 						.thenComparing(OverlayManager.OVERLAY_COMPARATOR)
@@ -686,8 +671,8 @@ public class OverlayRenderer extends MouseAdapter
 			}
 		}
 
-		// Check if the overlay is over a snapcorner and move it if so, unless it is a detached overlay
-		if (currentManagedOverlay.getPosition() != OverlayPosition.DETACHED && inOverlayDraggingMode)
+		// Check if the overlay is over a snapcorner and snap it if so
+		if (currentManagedOverlay.isSnappable() && inOverlayDraggingMode)
 		{
 			final OverlayBounds snapCorners = this.emptySnapCorners.translated(-SNAP_CORNER_SIZE.width, -SNAP_CORNER_SIZE.height);
 
