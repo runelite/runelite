@@ -244,7 +244,7 @@ public class OverlayRenderer extends MouseAdapter
 		overlayManager.setWidgetItems(Collections.emptyList());
 	}
 
-	private void renderOverlays(Graphics2D graphics, Collection<Overlay> overlays, OverlayLayer layer)
+	private void renderOverlays(final Graphics2D graphics, Collection<Overlay> overlays, final OverlayLayer layer)
 	{
 		if (overlays == null
 			|| overlays.isEmpty()
@@ -285,6 +285,9 @@ public class OverlayRenderer extends MouseAdapter
 		final RenderingHints renderingHints = graphics.getRenderingHints();
 		final Color background = graphics.getBackground();
 
+		final Rectangle clip = clipBounds(layer);
+		graphics.setClip(clip);
+
 		for (Overlay overlay : overlays)
 		{
 			final OverlayPosition overlayPosition = getCorrectedOverlayPosition(overlay);
@@ -319,7 +322,7 @@ public class OverlayRenderer extends MouseAdapter
 				bounds.setSize(overlay.getPreferredSize());
 			}
 
-			safeRender(client, overlay, layer, graphics, location);
+			safeRender(overlay, graphics, location);
 
 			// Adjust snap corner based on where the overlay was drawn
 			if (snapCorner != null && bounds.width + bounds.height > 0)
@@ -334,6 +337,10 @@ public class OverlayRenderer extends MouseAdapter
 			graphics.setPaint(paint);
 			graphics.setRenderingHints(renderingHints);
 			graphics.setBackground(background);
+			if (!graphics.getClip().equals(clip))
+			{
+				graphics.setClip(clip);
+			}
 
 			if (!bounds.isEmpty())
 			{
@@ -702,20 +709,23 @@ public class OverlayRenderer extends MouseAdapter
 		return mouseEvent;
 	}
 
-	private void safeRender(Client client, Overlay overlay, OverlayLayer layer, Graphics2D graphics, Point point)
+	private Rectangle clipBounds(OverlayLayer layer)
 	{
 		if (!isResizeable && (layer == OverlayLayer.ABOVE_SCENE || layer == OverlayLayer.UNDER_WIDGETS))
 		{
-			graphics.setClip(client.getViewportXOffset(),
+			return new Rectangle(client.getViewportXOffset(),
 				client.getViewportYOffset(),
 				client.getViewportWidth(),
 				client.getViewportHeight());
 		}
 		else
 		{
-			graphics.setClip(0, 0, client.getCanvasWidth(), client.getCanvasHeight());
+			return new Rectangle(0, 0, client.getCanvasWidth(), client.getCanvasHeight());
 		}
+	}
 
+	private void safeRender(Overlay overlay, Graphics2D graphics, Point point)
+	{
 		final OverlayPosition position = overlay.getPosition();
 
 		// Set font based on configuration
