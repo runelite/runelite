@@ -213,19 +213,19 @@ public class OverlayUtil
 		switch (overlayPosition)
 		{
 			case BOTTOM_LEFT:
-				sX = bounds.x + bounds.width + padding;
+				sX = Math.max(sX, bounds.x + bounds.width + padding);
 				break;
 			case BOTTOM_RIGHT:
-				sX = bounds.x - padding;
+				sX = Math.min(sX, bounds.x - padding);
 				break;
 			case TOP_LEFT:
 			case TOP_CENTER:
 			case CANVAS_TOP_RIGHT:
 			case TOP_RIGHT:
-				sY = bounds.y + bounds.height + padding;
+				sY = Math.max(sY, bounds.y + bounds.height + padding);
 				break;
 			case ABOVE_CHATBOX_RIGHT:
-				sY = bounds.y - padding;
+				sY = Math.min(sY, bounds.y - padding);
 				break;
 			default:
 				throw new IllegalArgumentException();
