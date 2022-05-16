@@ -29,24 +29,49 @@ import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Provides;
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import javax.annotation.Nullable;
+import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.*;
+import net.runelite.api.Client;
+import net.runelite.api.DecorativeObject;
+import net.runelite.api.GameObject;
+import net.runelite.api.GameState;
+import net.runelite.api.GroundObject;
+import net.runelite.api.KeyCode;
+import net.runelite.api.MenuAction;
+import net.runelite.api.MenuEntry;
+import net.runelite.api.ObjectComposition;
+import net.runelite.api.Scene;
+import net.runelite.api.Tile;
+import net.runelite.api.TileObject;
+import net.runelite.api.WallObject;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.*;
+import net.runelite.api.events.DecorativeObjectDespawned;
+import net.runelite.api.events.DecorativeObjectSpawned;
+import net.runelite.api.events.GameObjectDespawned;
+import net.runelite.api.events.GameObjectSpawned;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GroundObjectDespawned;
+import net.runelite.api.events.GroundObjectSpawned;
+import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.WallObjectChanged;
+import net.runelite.api.events.WallObjectDespawned;
+import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
-
-import javax.annotation.Nullable;
-import javax.inject.Inject;
-import java.awt.*;
-import java.util.List;
-import java.util.*;
-import java.util.stream.Collectors;
 
 @PluginDescriptor(
 	name = "Object Markers",
@@ -82,11 +107,6 @@ public class ObjectIndicatorsPlugin extends Plugin
 
 	@Inject
 	private Gson gson;
-
-	/**
-	 * Highlight strings from the configuration
-	 */
-	private List<String> highlights = new ArrayList<>();
 
 	@Provides
 	ObjectIndicatorsConfig provideConfig(ConfigManager configManager)
@@ -280,8 +300,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 				objects.add(new ColorTileObject(object,
 					objectComposition,
 					objectPoint.getName(),
-					objectPoint.getColor(),
-						objectPoint.getFillColor()));
+					objectPoint.getColor()));
 				break;
 			}
 		}
@@ -366,7 +385,6 @@ public class ObjectIndicatorsPlugin extends Plugin
 		final WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, object.getLocalLocation());
 		final int regionId = worldPoint.getRegionID();
 		final Color color = config.markerColor();
-		final Color fillColor = config.fillColor();
 		final ObjectPoint point = new ObjectPoint(
 			object.getId(),
 			name,
@@ -374,8 +392,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 			worldPoint.getRegionX(),
 			worldPoint.getRegionY(),
 			worldPoint.getPlane(),
-			color,
-			fillColor);
+			color);
 
 		Set<ObjectPoint> objectPoints = points.computeIfAbsent(regionId, k -> new HashSet<>());
 
@@ -401,8 +418,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 			objects.add(new ColorTileObject(object,
 				client.getObjectDefinition(object.getId()),
 				name,
-				color,
-				fillColor));
+				color));
 			log.debug("Marking object: {}", point);
 		}
 

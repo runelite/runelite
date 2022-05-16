@@ -25,12 +25,26 @@
 package net.runelite.client.plugins.objectindicators;
 
 import com.google.common.base.Strings;
-import net.runelite.api.*;
-import net.runelite.client.ui.overlay.*;
-import net.runelite.client.ui.overlay.outline.ModelOutlineRenderer;
-
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Shape;
+import java.awt.Stroke;
 import javax.inject.Inject;
-import java.awt.*;
+import net.runelite.api.Client;
+import net.runelite.api.DecorativeObject;
+import net.runelite.api.GameObject;
+import net.runelite.api.GroundObject;
+import net.runelite.api.ObjectComposition;
+import net.runelite.api.TileObject;
+import net.runelite.api.WallObject;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
+import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.ui.overlay.outline.ModelOutlineRenderer;
 
 class ObjectIndicatorsOverlay extends Overlay
 {
@@ -60,7 +74,6 @@ class ObjectIndicatorsOverlay extends Overlay
 		{
 			TileObject object = colorTileObject.getTileObject();
 			Color color = colorTileObject.getColor();
-			Color fillColor = colorTileObject.getFillColor();
 
 			if (object.getPlane() != client.getPlane())
 			{
@@ -90,24 +103,19 @@ class ObjectIndicatorsOverlay extends Overlay
 
 			if (config.highlightHull())
 			{
-				renderConvexHull(graphics, object, color, new Color(0,0,0,0), stroke);
+				renderConvexHull(graphics, object, color, stroke);
 			}
 
 			if (config.highlightOutline())
 			{
 				modelOutlineRenderer.drawOutline(object, (int)config.borderWidth(), color, config.outlineFeather());
 			}
-
-			if (config.fillObject())
-			{
-				renderConvexHull(graphics, object, color, fillColor, stroke);
-			}
 		}
 
 		return null;
 	}
 
-	private void renderConvexHull(Graphics2D graphics, TileObject object, Color color, Color fillColor, Stroke stroke)
+	private void renderConvexHull(Graphics2D graphics, TileObject object, Color color, Stroke stroke)
 	{
 		final Shape polygon;
 		Shape polygon2 = null;
@@ -137,12 +145,12 @@ class ObjectIndicatorsOverlay extends Overlay
 
 		if (polygon != null)
 		{
-			OverlayUtil.renderPolygon(graphics, polygon, color, fillColor, stroke);
+			OverlayUtil.renderPolygon(graphics, polygon, color, stroke);
 		}
 
 		if (polygon2 != null)
 		{
-			OverlayUtil.renderPolygon(graphics, polygon2, color, fillColor, stroke);
+			OverlayUtil.renderPolygon(graphics, polygon2, color, stroke);
 		}
 	}
 }
