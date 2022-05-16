@@ -24,11 +24,12 @@
  */
 package net.runelite.client.plugins.objectindicators;
 
-import java.awt.Color;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.TileObject;
+
+import java.awt.*;
 
 /**
  * Used to denote marked objects and their colors.
@@ -48,4 +49,5 @@ class ColorTileObject
 	 */
 	private final String name;
 	private final Color color;
+	private final Color fillColor;
 }
