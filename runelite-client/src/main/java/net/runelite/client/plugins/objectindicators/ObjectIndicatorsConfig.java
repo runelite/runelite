@@ -37,18 +37,18 @@ import net.runelite.client.config.Range;
 public interface ObjectIndicatorsConfig extends Config
 {
 	@ConfigSection(
-		name = "Render style",
-		description = "The render style of object highlighting",
-		position = 0
+			name = "Render style",
+			description = "The render style of object highlighting",
+			position = 0
 	)
 	String renderStyleSection = "renderStyleSection";
 
 	@ConfigItem(
-		position = 0,
-		keyName = "highlightHull",
-		name = "Highlight hull",
-		description = "Configures whether or not object should be highlighted by hull",
-		section = renderStyleSection
+			position = 0,
+			keyName = "highlightHull",
+			name = "Highlight hull",
+			description = "Configures whether or not object should be highlighted by hull",
+			section = renderStyleSection
 	)
 	default boolean highlightHull()
 	{
@@ -56,36 +56,61 @@ public interface ObjectIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 1,
-		keyName = "highlightOutline",
-		name = "Highlight outline",
-		description = "Configures whether or not the model of the object should be highlighted by outline",
-		section = renderStyleSection
+			position = 1,
+			keyName = "highlightOutline",
+			name = "Highlight outline",
+			description = "Configures whether or not the model of the object should be highlighted by outline",
+			section = renderStyleSection
 	)
 	default boolean highlightOutline()
 	{
 		return false;
 	}
 
+	@ConfigItem(
+			position = 2,
+			keyName = "fillObject",
+			name = "Fill object",
+			description = "Configures whether or not the model of the object should be filled",
+			section = renderStyleSection
+	)
+	default boolean fillObject()
+	{
+		return false;
+	}
+
 	@Alpha
 	@ConfigItem(
-		position = 2,
-		keyName = "markerColor",
-		name = "Marker color",
-		description = "Configures the color of object marker",
-		section = renderStyleSection
+			position = 3,
+			keyName = "markerColor",
+			name = "Marker color",
+			description = "Configures the color of object marker",
+			section = renderStyleSection
 	)
 	default Color markerColor()
 	{
 		return Color.YELLOW;
 	}
 
+	@Alpha
 	@ConfigItem(
-		position = 3,
-		keyName = "borderWidth",
-		name = "Border Width",
-		description = "Width of the marked object border",
-		section = renderStyleSection
+			position = 4,
+			keyName = "fillColor",
+			name = "Fill color",
+			description = "Configures the color of the object fill",
+			section = renderStyleSection
+	)
+	default Color fillColor()
+	{
+		return new Color(255, 255, 255, 0);
+	}
+
+	@ConfigItem(
+			position = 5,
+			keyName = "borderWidth",
+			name = "Border Width",
+			description = "Width of the marked object border",
+			section = renderStyleSection
 	)
 	default double borderWidth()
 	{
@@ -93,15 +118,15 @@ public interface ObjectIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 4,
-		keyName = "outlineFeather",
-		name = "Outline feather",
-		description = "Specify between 0-4 how much of the model outline should be faded",
-		section = renderStyleSection
+			position = 6,
+			keyName = "outlineFeather",
+			name = "Outline feather",
+			description = "Specify between 0-4 how much of the model outline should be faded",
+			section = renderStyleSection
 	)
 	@Range(
-		min = 0,
-		max = 4
+			min = 0,
+			max = 4
 	)
 	default int outlineFeather()
 	{
@@ -109,10 +134,10 @@ public interface ObjectIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 5,
-		keyName = "rememberObjectColors",
-		name = "Remember color per object",
-		description = "Color objects using the color from time of marking"
+			position = 7,
+			keyName = "rememberObjectColors",
+			name = "Remember color per object",
+			description = "Color objects using the color from time of marking"
 	)
 	default boolean rememberObjectColors()
 	{
