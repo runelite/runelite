@@ -47,6 +47,7 @@ public interface ItemChargeConfig extends Config
 	String KEY_EXPLORERS_RING = "explorerRing";
 	String KEY_RING_OF_FORGING = "ringOfForging";
 	String KEY_BLOOD_ESSENCE = "bloodEssence";
+	String KEY_SKULL_SCEPTRE_I = "skullSceptreI";
 
 	@ConfigSection(
 		name = "Charge Settings",
@@ -425,6 +426,30 @@ public interface ItemChargeConfig extends Config
 		section = chargesSection
 	)
 	default boolean showBloodEssenceCharges()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "showSceptreCount",
+			name = "Skull sceptre Count",
+			description = "Show Skull sceptre(i) charges",
+			position = 31,
+			section = chargesSection
+	)
+	default boolean showSkullSceptreCount()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "sceptreNotification",
+			name = "Skull sceptre Notification",
+			description = "Send a notification when a Skull sceptre is low",
+			position = 32,
+			section = notificationSection
+	)
+	default boolean skullSceptreNotification()
 	{
 		return true;
 	}
