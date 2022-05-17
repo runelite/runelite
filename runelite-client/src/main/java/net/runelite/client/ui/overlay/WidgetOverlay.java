@@ -42,16 +42,16 @@ public class WidgetOverlay extends Overlay
 	public static Collection<WidgetOverlay> createOverlays(final OverlayManager overlayManager, final Client client)
 	{
 		return Arrays.asList(
-			// classic resizable
-			new WidgetOverlay(client, WidgetInfo.RESIZABLE_VIEWPORT_CHATBOX_PARENT, OverlayPosition.DYNAMIC, OverlayPriority.HIGH),
-			new WidgetOverlay(client, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_CHATBOX_PARENT, OverlayPosition.DYNAMIC, OverlayPriority.HIGH),
+			// classic resizable - these are in render order for managed overlay picking
+			new WidgetOverlay(client, WidgetInfo.RESIZABLE_VIEWPORT_CHATBOX_PARENT, OverlayPosition.DYNAMIC),
 			new WidgetOverlay(client, WidgetInfo.RESIZABLE_VIEWPORT_INVENTORY_PARENT, OverlayPosition.DYNAMIC),
-			new WidgetOverlay(client, WidgetInfo.RESIZABLE_MINIMAP_WIDGET, OverlayPosition.CANVAS_TOP_RIGHT, OverlayPriority.MED),
+			new WidgetOverlay(client, WidgetInfo.RESIZABLE_MINIMAP_STONES_WIDGET, OverlayPosition.CANVAS_TOP_RIGHT),
 			// modern resizable
+			new WidgetOverlay(client, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_CHATBOX_PARENT, OverlayPosition.DYNAMIC),
+			new WidgetOverlay(client, WidgetInfo.RESIZABLE_MINIMAP_WIDGET, OverlayPosition.CANVAS_TOP_RIGHT),
 			new WidgetOverlay(client, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_TABS1, OverlayPosition.DYNAMIC),
 			new WidgetOverlay(client, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_TABS2, OverlayPosition.DYNAMIC),
 			new WidgetOverlay(client, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY_PARENT, OverlayPosition.DYNAMIC),
-			new WidgetOverlay(client, WidgetInfo.RESIZABLE_MINIMAP_STONES_WIDGET, OverlayPosition.CANVAS_TOP_RIGHT, OverlayPriority.MED),
 			// The client forces the oxygen bar below the xp tracker, so set its priority lower
 			new WidgetOverlay(client, WidgetInfo.FOSSIL_ISLAND_OXYGENBAR, OverlayPosition.TOP_CENTER, OverlayPriority.HIGH),
 			new XpTrackerWidgetOverlay(overlayManager, client, WidgetInfo.EXPERIENCE_TRACKER_WIDGET, OverlayPosition.TOP_RIGHT),

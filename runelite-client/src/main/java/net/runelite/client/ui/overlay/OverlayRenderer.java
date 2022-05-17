@@ -25,7 +25,6 @@
 package net.runelite.client.ui.overlay;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.collect.ImmutableList;
 import com.google.common.primitives.Ints;
 import java.awt.Color;
 import java.awt.Composite;
@@ -41,7 +40,6 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -104,7 +102,8 @@ public class OverlayRenderer extends MouseAdapter
 	private boolean inOverlayResizingMode;
 	private boolean inOverlayDraggingMode;
 	private boolean startedMovingOverlay;
-	private Overlay hoveredOverlay; // for building menu entries
+	private Overlay curHoveredOverlay; // for building menu entries
+	private Overlay lastHoveredOverlay; // for off-thread access
 
 	// Overlay state validation
 	private Rectangle viewportBounds;
@@ -166,14 +165,16 @@ public class OverlayRenderer extends MouseAdapter
 				resetOverlayManagementMode();
 			}
 
-			hoveredOverlay = null;
+			curHoveredOverlay = null;
 		}
 	}
 
 	@Subscribe
 	protected void onClientTick(ClientTick t)
 	{
-		final Overlay overlay = hoveredOverlay;
+		lastHoveredOverlay = curHoveredOverlay;
+
+		final Overlay overlay = curHoveredOverlay;
 		if (overlay == null || client.isMenuOpen())
 		{
 			return;
@@ -207,7 +208,7 @@ public class OverlayRenderer extends MouseAdapter
 	@Subscribe
 	public void onBeforeRender(BeforeRender event)
 	{
-		hoveredOverlay = null;
+		curHoveredOverlay = null;
 
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
@@ -272,10 +273,6 @@ public class OverlayRenderer extends MouseAdapter
 
 			graphics.setColor(previous);
 		}
-
-		// Get mouse position
-		final net.runelite.api.Point mouseCanvasPosition = client.getMouseCanvasPosition();
-		final Point mouse = new Point(mouseCanvasPosition.getX(), mouseCanvasPosition.getY());
 
 		// Save graphics2d properties so we can restore them later
 		final AffineTransform transform = graphics.getTransform();
@@ -372,9 +369,9 @@ public class OverlayRenderer extends MouseAdapter
 					graphics.setPaint(paint);
 				}
 
-				if (!client.isMenuOpen() && !client.getSpellSelected() && bounds.contains(mouse))
+				if (!client.isMenuOpen() && !client.getSpellSelected() && bounds.contains(mousePosition))
 				{
-					hoveredOverlay = overlay;
+					curHoveredOverlay = overlay;
 					overlay.onMouseOver();
 				}
 			}
@@ -384,17 +381,16 @@ public class OverlayRenderer extends MouseAdapter
 	@Override
 	public MouseEvent mousePressed(MouseEvent mouseEvent)
 	{
+		final Point mousePoint = mouseEvent.getPoint();
+		mousePosition.setLocation(mousePoint);
+
 		if (!inOverlayManagingMode)
 		{
 			return mouseEvent;
 		}
 
-		final Point mousePoint = mouseEvent.getPoint();
-		mousePosition.setLocation(mousePoint);
-
 		// See if we've clicked on an overlay
-		currentManagedOverlay = findMangedOverlay(mousePoint);
-
+		currentManagedOverlay = lastHoveredOverlay;
 		if (currentManagedOverlay == null)
 		{
 			return mouseEvent;
@@ -430,17 +426,17 @@ public class OverlayRenderer extends MouseAdapter
 	@Override
 	public MouseEvent mouseMoved(MouseEvent mouseEvent)
 	{
+		final Point mousePoint = mouseEvent.getPoint();
+		mousePosition.setLocation(mousePoint);
+
 		if (!inOverlayManagingMode)
 		{
 			return mouseEvent;
 		}
 
-		final Point mousePoint = mouseEvent.getPoint();
-		mousePosition.setLocation(mousePoint);
-
 		if (!inOverlayResizingMode && !inOverlayDraggingMode)
 		{
-			currentManagedOverlay = findMangedOverlay(mousePoint);
+			currentManagedOverlay = lastHoveredOverlay;
 		}
 
 		if (currentManagedOverlay == null || !currentManagedOverlay.isResizable())
@@ -487,45 +483,16 @@ public class OverlayRenderer extends MouseAdapter
 		return mouseEvent;
 	}
 
-	/**
-	 * Find an overlay to manage which is under the given mouse point
-	 * @param mousePoint
-	 * @return
-	 */
-	private Overlay findMangedOverlay(Point mousePoint)
-	{
-		synchronized (overlayManager)
-		{
-			// render order is roughly: under -> manual -> above -> always on top
-			final List<OverlayLayer> layerOrder = ImmutableList.of(OverlayLayer.UNDER_WIDGETS, OverlayLayer.MANUAL, OverlayLayer.ABOVE_WIDGETS, OverlayLayer.ALWAYS_ON_TOP);
-			return overlayManager.getOverlays()
-				.stream()
-				// ABOVE_SCENE overlays aren't managed
-				.filter(c -> layerOrder.contains(c.getLayer()))
-				// never allow moving dynamic or tooltip overlays
-				.filter(Overlay::isMovable)
-				.sorted(
-					Comparator.<Overlay>comparingInt(c -> layerOrder.indexOf(c.getLayer()))
-						.thenComparing(OverlayManager.OVERLAY_COMPARATOR)
-						// pick order is reversed from render order
-						.reversed()
-				)
-				.filter(o -> o.getBounds().contains(mousePoint))
-				.findFirst()
-				.orElse(null);
-		}
-	}
-
 	@Override
 	public MouseEvent mouseDragged(MouseEvent mouseEvent)
 	{
+		final Point p = mouseEvent.getPoint();
+		mousePosition.setLocation(p);
+
 		if (!inOverlayManagingMode)
 		{
 			return mouseEvent;
 		}
-
-		final Point p = mouseEvent.getPoint();
-		mousePosition.setLocation(p);
 
 		if (currentManagedOverlay == null)
 		{
@@ -661,12 +628,13 @@ public class OverlayRenderer extends MouseAdapter
 	@Override
 	public MouseEvent mouseReleased(MouseEvent mouseEvent)
 	{
+		final Point mousePoint = mouseEvent.getPoint();
+		mousePosition.setLocation(mousePoint);
+
 		if (!inOverlayManagingMode || currentManagedOverlay == null || (!inOverlayDraggingMode && !inOverlayResizingMode))
 		{
 			return mouseEvent;
 		}
-
-		mousePosition.setLocation(-1, -1);
 
 		if (dragTargetOverlay != null)
 		{
@@ -685,7 +653,7 @@ public class OverlayRenderer extends MouseAdapter
 
 			for (Rectangle snapCorner : snapCorners.getBounds())
 			{
-				if (snapCorner.contains(mouseEvent.getPoint()))
+				if (snapCorner.contains(mousePoint))
 				{
 					OverlayPosition position = snapCorners.fromBounds(snapCorner);
 
