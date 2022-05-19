@@ -43,8 +43,6 @@ import net.runelite.api.SceneTilePaint;
 import net.runelite.api.Tile;
 import net.runelite.api.WallObject;
 
-import java.util.Random;
-
 @Singleton
 @Slf4j
 class SceneUploader
