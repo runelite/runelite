@@ -52,7 +52,7 @@ class SceneUploader
 	@Inject
 	private Client client;
 
-	int sceneId = new Random().nextInt();
+	int sceneId = (int) System.nanoTime();
 	private int offset;
 	private int uvoffset;
 
