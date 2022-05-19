@@ -277,7 +277,8 @@ public class NpcAggroAreaPlugin extends Plugin
 			return false;
 		}
 
-		if (config.showOnSlayerTask()){
+		if (config.showOnSlayerTask())
+		{
 			List<NPC> targets = slayerPluginService.getTargets();
 
 			if (targets.stream().anyMatch(target -> WildcardMatcher.matches(target.getName(), npcName)))
