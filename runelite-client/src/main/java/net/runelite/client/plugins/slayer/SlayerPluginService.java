@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.slayer;
 
-import javax.annotation.Nullable;
 import java.util.List;
 import net.runelite.api.NPC;
 
