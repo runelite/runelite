@@ -50,7 +50,7 @@ class SceneUploader
 	@Inject
 	private Client client;
 
-	int sceneId = (int) (System.currentTimeMillis() / 1000L);
+	int sceneId = (int) System.nanoTime();
 	private int offset;
 	private int uvoffset;
 
