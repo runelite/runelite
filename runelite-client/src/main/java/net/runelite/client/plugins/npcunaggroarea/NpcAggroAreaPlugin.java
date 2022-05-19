@@ -57,7 +57,10 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.slayer.SlayerPlugin;
+import net.runelite.client.plugins.slayer.SlayerPluginService;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.WildcardMatcher;
@@ -68,6 +71,7 @@ import net.runelite.client.util.WildcardMatcher;
 	tags = {"highlight", "lines", "unaggro", "aggro", "aggressive", "npcs", "area", "slayer"},
 	enabledByDefault = false
 )
+@PluginDependency(SlayerPlugin.class)
 public class NpcAggroAreaPlugin extends Plugin
 {
 	/*
@@ -113,6 +117,9 @@ public class NpcAggroAreaPlugin extends Plugin
 
 	@Inject
 	private Notifier notifier;
+
+	@Inject
+	private SlayerPluginService slayerPluginService;
 
 	@Getter
 	private final WorldPoint[] safeCenters = new WorldPoint[2];
@@ -188,7 +195,7 @@ public class NpcAggroAreaPlugin extends Plugin
 
 	private void transformWorldToLocal(float[] coords)
 	{
-		final LocalPoint lp = LocalPoint.fromWorld(client, (int)coords[0], (int)coords[1]);
+		final LocalPoint lp = LocalPoint.fromWorld(client, (int) coords[0], (int) coords[1]);
 		coords[0] = lp.getX() - Perspective.LOCAL_TILE_SIZE / 2f;
 		coords[1] = lp.getY() - Perspective.LOCAL_TILE_SIZE / 2f;
 	}
@@ -255,7 +262,7 @@ public class NpcAggroAreaPlugin extends Plugin
 			return false;
 		}
 
-		if (Strings.isNullOrEmpty(composition.getName()))
+		if (Strings.isNullOrEmpty(composition.getName()) && !config.showOnSlayerTask())
 		{
 			return false;
 		}
@@ -268,6 +275,20 @@ public class NpcAggroAreaPlugin extends Plugin
 		if (npcLvl > 0 && playerLvl > npcLvl * 2 && !isInWilderness(npc.getWorldLocation()))
 		{
 			return false;
+		}
+
+		if (config.showOnSlayerTask()){
+			List<NPC> targets = slayerPluginService.getTargets();
+
+			if (targets.stream().anyMatch(target -> WildcardMatcher.matches(target.getName(), npcName)))
+			{
+				return true;
+			}
+
+			if (Strings.isNullOrEmpty(composition.getName()))
+			{
+				return false;
+			}
 		}
 
 		for (String pattern : npcNamePatterns)
@@ -381,6 +402,7 @@ public class NpcAggroAreaPlugin extends Plugin
 		switch (key)
 		{
 			case "npcUnaggroAlwaysActive":
+			case "showOnSlayerTask":
 				recheckActive();
 				break;
 			case "npcUnaggroCollisionDetection":
