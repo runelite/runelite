@@ -26,6 +26,7 @@
 package net.runelite.client.plugins.slayer;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -221,6 +222,12 @@ public class SlayerPlugin extends Plugin
 		}
 		return null;
 	};
+
+	@Override
+	public void configure(Binder binder)
+	{
+		binder.bind(SlayerPluginService.class).to(SlayerPluginServiceImpl.class);
+	}
 
 	@Override
 	protected void startUp() throws Exception
