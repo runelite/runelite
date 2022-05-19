@@ -64,12 +64,25 @@ public abstract class Overlay implements LayoutableRenderableEntity
 	@Setter(AccessLevel.PROTECTED)
 	private boolean dragTargetable;
 
+	/**
+	 * Whether this overlay can be moved with alt
+	 */
+	@Setter(AccessLevel.PROTECTED)
+	private boolean movable = true;
+
+	/**
+	 * Whether this overlay can be moved to a snap corner
+	 * and have its preferredPosition changed
+	 */
+	@Setter(AccessLevel.PROTECTED)
+	private boolean snappable = true;
+
 	protected Overlay()
 	{
 		plugin = null;
 	}
 
-	protected Overlay(Plugin plugin)
+	protected Overlay(@Nullable Plugin plugin)
 	{
 		this.plugin = plugin;
 	}
@@ -160,5 +173,26 @@ public abstract class Overlay implements LayoutableRenderableEntity
 
 	public void revalidate()
 	{
+	}
+
+	public void setPosition(OverlayPosition position)
+	{
+		this.position = position;
+
+		switch (position)
+		{
+			case TOOLTIP:
+			case DYNAMIC:
+				movable = false;
+				snappable = false;
+				break;
+			case DETACHED:
+				movable = true;
+				snappable = false;
+				break;
+			default:
+				movable = true;
+				snappable = true;
+		}
 	}
 }

@@ -9648,6 +9648,7 @@ public final class NpcID
 	public static final int THE_GREAT_GUARDIAN_11455 = 11455;
 	public static final int THE_GREAT_GUARDIAN_11456 = 11456;
 	public static final int MENAPHITE_SHADOW = 11462;
+	public static final int REANIMATED_HELLHOUND = 11463;
 	public static final int TARIK_11473 = 11473;
 	public static final int MAISA_11474 = 11474;
 	public static final int MAISA_11475 = 11475;

@@ -48,6 +48,7 @@ public enum FairyRings
 	BIP("(Island) South-west of Mort Myre"),
 	BIQ("Kalphite Hive"),
 	BIS("Ardougne Zoo - Unicorns"),
+	BJP("(Island) Isle of Souls"),
 	BJR("Realm of the Fisher King"),
 	BJS("(Island) Near Zul-Andra", "zulrah"),
 	BKP("South of Castle Wars"),
