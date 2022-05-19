@@ -136,8 +136,7 @@ public class WidgetOverlay extends Overlay
 		if (getPreferredLocation() != null || getPreferredPosition() != null)
 		{
 			// The widget relative pos is relative to the parent
-			widget.setRelativeX(bounds.x - parent.x);
-			widget.setRelativeY(bounds.y - parent.y);
+			widget.setForcedPosition(bounds.x - parent.x, bounds.y - parent.y);
 		}
 		else
 		{
@@ -145,6 +144,7 @@ public class WidgetOverlay extends Overlay
 			{
 				revalidate = false;
 				log.debug("Revalidating {}", widgetInfo);
+				widget.setForcedPosition(-1, -1);
 				// Revalidate the widget to reposition it back to its normal location after an overlay reset
 				widget.revalidate();
 			}
