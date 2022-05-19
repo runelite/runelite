@@ -30,9 +30,10 @@ import net.runelite.api.NPC;
 
 public interface SlayerPluginService
 {
-    /**
-     * Get targets for current slayer task
-     * @return pattern list of target npc
-     */
-    List<NPC> getTargets();
+	/**
+	 * Get targets for current slayer task
+	 *
+	 * @return pattern list of target npc
+	 */
+	List<NPC> getTargets();
 }
