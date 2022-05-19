@@ -32,17 +32,17 @@ import net.runelite.api.NPC;
 @Singleton
 public class SlayerPluginServiceImpl implements SlayerPluginService
 {
-    private final SlayerPlugin plugin;
+	private final SlayerPlugin plugin;
 
-    @Inject
-    private SlayerPluginServiceImpl(final SlayerPlugin plugin)
-    {
-        this.plugin = plugin;
-    }
+	@Inject
+	private SlayerPluginServiceImpl(final SlayerPlugin plugin)
+	{
+		this.plugin = plugin;
+	}
 
-    @Override
-    public List<NPC> getTargets()
-    {
-        return plugin.getTargets();
-    }
+	@Override
+	public List<NPC> getTargets()
+	{
+		return plugin.getTargets();
+	}
 }
