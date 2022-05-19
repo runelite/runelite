@@ -655,9 +655,17 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 		if (computeMode == ComputeMode.OPENGL)
 		{
-			glComputeProgram = COMPUTE_PROGRAM.compile(gl, template);
-			glSmallComputeProgram = SMALL_COMPUTE_PROGRAM.compile(gl, template);
-			glUnorderedComputeProgram = UNORDERED_COMPUTE_PROGRAM.compile(gl, template);
+			try
+			{
+				glComputeProgram = COMPUTE_PROGRAM.compile(gl, template);
+				glSmallComputeProgram = SMALL_COMPUTE_PROGRAM.compile(gl, template);
+				glUnorderedComputeProgram = UNORDERED_COMPUTE_PROGRAM.compile(gl, template);
+			}
+			catch (ShaderException e)
+			{
+				log.warn("Failed to compile compute shaders, disabling", e);
+				useComputeShaders = false;
+			}
 		}
 		else if (computeMode == ComputeMode.OPENCL)
 		{
