@@ -1344,12 +1344,13 @@ public class ChatCommandsPlugin extends Plugin
 
 		MessageNode messageNode = chatMessage.getMessageNode();
 		String search = message.substring(PRICE_COMMAND_STRING.length() + 1);
+		String longItemName = longItemName(search);
 
-		List<ItemPrice> results = itemManager.search(search);
+		List<ItemPrice> results = itemManager.search(longItemName);
 
 		if (!results.isEmpty())
 		{
-			ItemPrice item = retrieveFromList(results, search);
+			ItemPrice item = retrieveFromList(results, longItemName);
 
 			int itemId = item.getId();
 			int itemPrice = runeLiteConfig.useWikiItemPrices() ? itemManager.getWikiPrice(item) : item.getPrice();
@@ -1890,6 +1891,59 @@ public class ChatCommandsPlugin extends Plugin
 	{
 		private final String name;
 		private final HiscoreEndpoint endpoint;
+	}
+
+	private static String longItemName(String item) {
+		switch (item.toUpperCase()) {
+			case "ACB":
+				return "Armadyl crossbow";
+			case "ACP":
+				return "Armadyl chestplate";
+			case "ACS":
+				return "Armadyl chainskirt";
+			case "AGS":
+				return "Armadyl godsword";
+			case "BCP":
+				return "Bandos chestplate";
+			case "BGS":
+				return "Bandos godsword";
+			case "BOWFA":
+				return "Bow of faerdhinen (inactive)";
+			case "BP":
+				return "Toxic blowpipe (empty)";
+			case "BRING":
+				return "Berserker ring";
+			case "DCLAWS":
+				return "Dragon claws";
+			case "DFS":
+				return "Dragonfire shield";
+			case "ELY":
+				return "Elysian spirit shield";
+			case "PEGS":
+				return "Pegasian boots";
+			case "PRIMS":
+				return "Primordial boots";
+			case "RANGERS":
+				return "Ranger boots";
+			case "ROBIN":
+				return "Robin Hood hat";
+			case "ROS":
+				return "Ring of suffering";
+			case "SCYTHE":
+				return "Scythe of vitur (uncharged)";
+			case "SOTD":
+				return "Staff of the dead";
+			case "TBOW":
+				return "Twisted bow";
+			case "WHIP":
+				return "Abyssal whip";
+			case "ZGS":
+				return "Zamorak godsword";
+			case "ZSPEAR":
+				return "Zamorakian spear";
+
+			default: return item;
+		}
 	}
 
 	private static String longBossName(String boss)
