@@ -223,6 +223,12 @@ public class SlayerPlugin extends Plugin
 	};
 
 	@Override
+	public void configure(Binder binder)
+	{
+		binder.bind(SlayerPluginService.class).to(SlayerPluginServiceImpl.class);
+	}
+
+	@Override
 	protected void startUp() throws Exception
 	{
 		chatCommandManager.registerCommandAsync(TASK_COMMAND_STRING, this::taskLookup, this::taskSubmit);
