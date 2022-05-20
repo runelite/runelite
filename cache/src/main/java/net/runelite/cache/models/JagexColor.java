@@ -29,7 +29,7 @@ public final class JagexColor
 	public static final double BRIGHTNESS_MAX = .6;
 	public static final double BRIGHTNESS_HIGH = .7;
 	public static final double BRIGHTNESS_LOW = .8;
-	public static final double BRIGTHNESS_MIN = .9;
+	public static final double BRIGHTNESS_MIN = .9;
 
 	private static final double HUE_OFFSET = (.5 / 64.D);
 	private static final double SATURATION_OFFSET = (.5 / 8.D);
@@ -132,5 +132,15 @@ public final class JagexColor
 		return ((int) (r * 256.0D) << 16)
 			| ((int) (g * 256.0D) << 8)
 			| (int) (b * 256.0D);
+	}
+
+	public static int[] createPalette(double brightness)
+	{
+		int[] colorPalette = new int[65536];
+		for (int i = 0; i < colorPalette.length; i++)
+		{
+			colorPalette[i] = HSLtoRGB((short) i, brightness);
+		}
+		return colorPalette;
 	}
 }

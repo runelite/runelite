@@ -69,7 +69,9 @@ public class CrowdsourcingMovement
 			int distance = nextPoint.distanceTo(lastPoint);
 			if (distance > 2 || nextIsInInstance != lastIsInInstance)
 			{
-				MovementData data = new MovementData(lastPoint, nextPoint, lastIsInInstance, nextIsInInstance, ticksStill, lastClick);
+				MovementData data = new MovementData(lastPoint, nextPoint, lastIsInInstance, nextIsInInstance,
+					ticksStill, lastClick.getMenuAction(), lastClick.getId(), lastClick.getMenuOption(),
+					lastClick.getMenuTarget(), lastClick.getParam0(), lastClick.getParam1());
 				manager.storeEvent(data);
 			}
 			if (distance > 0)

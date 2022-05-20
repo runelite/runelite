@@ -27,6 +27,7 @@ package net.runelite.client.plugins.chatcommands;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.MoreObjects;
+import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -90,6 +91,7 @@ import net.runelite.client.hiscore.Skill;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.Text;
@@ -106,7 +108,7 @@ import org.apache.commons.text.WordUtils;
 @Slf4j
 public class ChatCommandsPlugin extends Plugin
 {
-	private static final Pattern KILLCOUNT_PATTERN = Pattern.compile("Your (?:completion count for |subdued |completed )?(.+?) (?:(?:kill|harvest|lap|completion) )?(?:count )?is: <col=ff0000>(\\d+)</col>");
+	private static final Pattern KILLCOUNT_PATTERN = Pattern.compile("Your (?<pre>completion count for |subdued |completed )?(?<boss>.+?) (?<post>(?:(?:kill|harvest|lap|completion) )?(?:count )?)is: <col=ff0000>(?<kc>\\d+)</col>");
 	private static final String TEAM_SIZES = "(?<teamsize>\\d+(?:\\+|-\\d+)? players?|Solo)";
 	private static final Pattern RAIDS_PB_PATTERN = Pattern.compile("<col=ef20ff>Congratulations - your raid is complete!</col><br>Team size: <col=ff0000>" + TEAM_SIZES + "</col> Duration:</col> <col=ff0000>(?<pb>[0-9:]+(?:\\.[0-9]+)?)</col> \\(new personal best\\)</col>");
 	private static final Pattern RAIDS_DURATION_PATTERN = Pattern.compile("<col=ef20ff>Congratulations - your raid is complete!</col><br>Team size: <col=ff0000>" + TEAM_SIZES + "</col> Duration:</col> <col=ff0000>[0-9:.]+</col> Personal best: </col><col=ff0000>(?<pb>[0-9:]+(?:\\.[0-9]+)?)</col>");
@@ -220,7 +222,15 @@ public class ChatCommandsPlugin extends Plugin
 		chatCommandManager.registerCommandAsync(SOUL_WARS_ZEAL_COMMAND, this::soulWarsZealLookup);
 		chatCommandManager.registerCommandAsync(PET_LIST_COMMAND, this::petListLookup, this::petListSubmit);
 
-		clientThread.invoke(this::loadPetIcons);
+		clientThread.invoke(() ->
+		{
+			if (client.getModIcons() == null)
+			{
+				return false;
+			}
+			loadPetIcons();
+			return true;
+		});
 	}
 
 	@Override
@@ -295,13 +305,14 @@ public class ChatCommandsPlugin extends Plugin
 
 	private void loadPetIcons()
 	{
-		final IndexedSprite[] modIcons = client.getModIcons();
-		if (modIconIdx != -1 || modIcons == null)
+		if (modIconIdx != -1)
 		{
 			return;
 		}
 
 		final Pet[] pets = Pet.values();
+		final IndexedSprite[] modIcons = client.getModIcons();
+		assert modIcons != null;
 		final IndexedSprite[] newModIcons = Arrays.copyOf(modIcons, modIcons.length + pets.length);
 		modIconIdx = modIcons.length;
 
@@ -309,9 +320,16 @@ public class ChatCommandsPlugin extends Plugin
 		{
 			final Pet pet = pets[i];
 
-			final BufferedImage image = ImageUtil.resizeImage(itemManager.getImage(pet.getIconID()), 18, 16);
-			final IndexedSprite sprite = ImageUtil.getImageIndexedSprite(image, client);
-			newModIcons[modIconIdx + i] = sprite;
+			final AsyncBufferedImage abi = itemManager.getImage(pet.getIconID());
+			final int idx = modIconIdx + i;
+			Runnable r = () ->
+			{
+				final BufferedImage image = ImageUtil.resizeImage(abi, 18, 16);
+				final IndexedSprite sprite = ImageUtil.getImageIndexedSprite(image, client);
+				newModIcons[idx] = sprite;
+			};
+			abi.onLoaded(r);
+			r.run();
 		}
 
 		client.setModIcons(newModIcons);
@@ -371,8 +389,16 @@ public class ChatCommandsPlugin extends Plugin
 		Matcher matcher = KILLCOUNT_PATTERN.matcher(message);
 		if (matcher.find())
 		{
-			String boss = matcher.group(1);
-			int kc = Integer.parseInt(matcher.group(2));
+			final String boss = matcher.group("boss");
+			final int kc = Integer.parseInt(matcher.group("kc"));
+			final String pre = matcher.group("pre");
+			final String post = matcher.group("post");
+
+			if (Strings.isNullOrEmpty(pre) && Strings.isNullOrEmpty(post))
+			{
+				unsetKc(boss);
+				return;
+			}
 
 			String renamedBoss = KILLCOUNT_RENAMES
 				.getOrDefault(boss, boss)
@@ -783,9 +809,6 @@ public class ChatCommandsPlugin extends Plugin
 			case LOADING:
 			case HOPPING:
 				pohOwner = null;
-				break;
-			case LOGGED_IN:
-				loadPetIcons();
 				break;
 		}
 	}

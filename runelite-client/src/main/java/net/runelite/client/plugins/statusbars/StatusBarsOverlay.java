@@ -29,9 +29,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.util.EnumMap;
 import java.util.Map;
-import java.util.Objects;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.MenuEntry;
@@ -39,8 +39,8 @@ import net.runelite.api.Point;
 import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
 import net.runelite.api.SpriteID;
-import net.runelite.api.Varbits;
 import net.runelite.api.VarPlayer;
+import net.runelite.api.Varbits;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.game.AlternateSprites;
@@ -86,10 +86,10 @@ class StatusBarsOverlay extends Overlay
 	private final SpriteManager spriteManager;
 
 	private final Image prayerIcon;
+	private final Image heartDisease;
+	private final Image heartPoison;
+	private final Image heartVenom;
 	private Image heartIcon;
-	private Image heartDisease;
-	private Image heartPoison;
-	private Image heartVenom;
 	private Image specialIcon;
 	private Image energyIcon;
 	private final Map<BarMode, BarRenderer> barRenderers = new EnumMap<>(BarMode.class);
@@ -106,6 +106,10 @@ class StatusBarsOverlay extends Overlay
 		this.spriteManager = spriteManager;
 
 		prayerIcon = ImageUtil.resizeCanvas(ImageUtil.resizeImage(skillIconManager.getSkillImage(Skill.PRAYER, true), IMAGE_SIZE, IMAGE_SIZE), ICON_DIMENSIONS.width, ICON_DIMENSIONS.height);
+		heartDisease = ImageUtil.resizeCanvas(ImageUtil.loadImageResource(AlternateSprites.class, AlternateSprites.DISEASE_HEART), ICON_DIMENSIONS.width, ICON_DIMENSIONS.height);
+		heartPoison = ImageUtil.resizeCanvas(ImageUtil.loadImageResource(AlternateSprites.class, AlternateSprites.POISON_HEART), ICON_DIMENSIONS.width, ICON_DIMENSIONS.height);
+		heartVenom = ImageUtil.resizeCanvas(ImageUtil.loadImageResource(AlternateSprites.class, AlternateSprites.VENOM_HEART), ICON_DIMENSIONS.width, ICON_DIMENSIONS.height);
+
 		initRenderers();
 	}
 
@@ -321,16 +325,28 @@ class StatusBarsOverlay extends Overlay
 
 	private void buildIcons()
 	{
-		if (heartIcon != null && heartDisease != null && heartPoison != null && heartVenom != null && energyIcon != null && specialIcon != null)
+		if (heartIcon == null)
 		{
-			return;
+			heartIcon = loadAndResize(SpriteID.MINIMAP_ORB_HITPOINTS_ICON);
+		}
+		if (energyIcon == null)
+		{
+			energyIcon = loadAndResize(SpriteID.MINIMAP_ORB_WALK_ICON);
+		}
+		if (specialIcon == null)
+		{
+			specialIcon = loadAndResize(SpriteID.MINIMAP_ORB_SPECIAL_ICON);
+		}
+	}
+
+	private BufferedImage loadAndResize(int spriteId)
+	{
+		BufferedImage image = spriteManager.getSprite(spriteId, 0);
+		if (image == null)
+		{
+			return null;
 		}
 
-		heartIcon = ImageUtil.resizeCanvas(Objects.requireNonNull(spriteManager.getSprite(SpriteID.MINIMAP_ORB_HITPOINTS_ICON, 0)), ICON_DIMENSIONS.width, ICON_DIMENSIONS.height);
-		heartDisease = ImageUtil.resizeCanvas(ImageUtil.loadImageResource(AlternateSprites.class, AlternateSprites.DISEASE_HEART), ICON_DIMENSIONS.width, ICON_DIMENSIONS.height);
-		heartPoison = ImageUtil.resizeCanvas(ImageUtil.loadImageResource(AlternateSprites.class, AlternateSprites.POISON_HEART), ICON_DIMENSIONS.width, ICON_DIMENSIONS.height);
-		heartVenom = ImageUtil.resizeCanvas(ImageUtil.loadImageResource(AlternateSprites.class, AlternateSprites.VENOM_HEART), ICON_DIMENSIONS.width, ICON_DIMENSIONS.height);
-		energyIcon = ImageUtil.resizeCanvas(Objects.requireNonNull(spriteManager.getSprite(SpriteID.MINIMAP_ORB_WALK_ICON, 0)), ICON_DIMENSIONS.width, ICON_DIMENSIONS.height);
-		specialIcon = ImageUtil.resizeCanvas(Objects.requireNonNull(spriteManager.getSprite(SpriteID.MINIMAP_ORB_SPECIAL_ICON, 0)), ICON_DIMENSIONS.width, ICON_DIMENSIONS.height);
+		return ImageUtil.resizeCanvas(image, ICON_DIMENSIONS.width, ICON_DIMENSIONS.height);
 	}
 }

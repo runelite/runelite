@@ -26,10 +26,6 @@ package com.jagex.oldscape.pub;
 
 public interface OAuthApi
 {
-	boolean isOnLoginScreen();
-
-	void setOtlTokenRequester(OtlTokenRequester otlTokenRequester);
-
 	/**
 	 * Gets a unique per-RuneScape-Account identifier or {@code -1} if the client has not logged in yet
 	 */

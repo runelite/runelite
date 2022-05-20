@@ -42,8 +42,16 @@ public class WidgetOverlay extends Overlay
 	public static Collection<WidgetOverlay> createOverlays(final OverlayManager overlayManager, final Client client)
 	{
 		return Arrays.asList(
-			new WidgetOverlay(client, WidgetInfo.RESIZABLE_MINIMAP_WIDGET, OverlayPosition.CANVAS_TOP_RIGHT),
+			// classic resizable - these are in render order for managed overlay picking
+			new WidgetOverlay(client, WidgetInfo.RESIZABLE_VIEWPORT_CHATBOX_PARENT, OverlayPosition.DYNAMIC),
+			new WidgetOverlay(client, WidgetInfo.RESIZABLE_VIEWPORT_INVENTORY_PARENT, OverlayPosition.DYNAMIC),
 			new WidgetOverlay(client, WidgetInfo.RESIZABLE_MINIMAP_STONES_WIDGET, OverlayPosition.CANVAS_TOP_RIGHT),
+			// modern resizable
+			new WidgetOverlay(client, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_CHATBOX_PARENT, OverlayPosition.DYNAMIC),
+			new WidgetOverlay(client, WidgetInfo.RESIZABLE_MINIMAP_WIDGET, OverlayPosition.CANVAS_TOP_RIGHT),
+			new WidgetOverlay(client, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_TABS1, OverlayPosition.DYNAMIC),
+			new WidgetOverlay(client, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_TABS2, OverlayPosition.DYNAMIC),
+			new WidgetOverlay(client, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY_PARENT, OverlayPosition.DYNAMIC),
 			// The client forces the oxygen bar below the xp tracker, so set its priority lower
 			new WidgetOverlay(client, WidgetInfo.FOSSIL_ISLAND_OXYGENBAR, OverlayPosition.TOP_CENTER, OverlayPriority.HIGH),
 			new XpTrackerWidgetOverlay(overlayManager, client, WidgetInfo.EXPERIENCE_TRACKER_WIDGET, OverlayPosition.TOP_RIGHT),
@@ -76,7 +84,7 @@ public class WidgetOverlay extends Overlay
 			new WidgetOverlay(client, WidgetInfo.TEMPOROSS_STATUS_INDICATOR, OverlayPosition.TOP_LEFT),
 			new WidgetOverlay(client, WidgetInfo.BA_HEAL_TEAMMATES, OverlayPosition.BOTTOM_LEFT),
 			new WidgetOverlay(client, WidgetInfo.BA_TEAM, OverlayPosition.TOP_RIGHT),
-			new WidgetOverlay(client, WidgetInfo.PVP_WILDERNESS_SKULL_CONTAINER, OverlayPosition.DETACHED)
+			new WidgetOverlay(client, WidgetInfo.PVP_WILDERNESS_SKULL_CONTAINER, OverlayPosition.DYNAMIC)
 		);
 	}
 
@@ -97,6 +105,8 @@ public class WidgetOverlay extends Overlay
 		setPriority(overlayPriority);
 		setLayer(OverlayLayer.UNDER_WIDGETS);
 		setPosition(overlayPosition);
+		setMovable(true);
+		setSnappable(true);
 		// It's almost possible to drawAfterInterface(widgetInfo.getGroupId()) here, but that fires
 		// *after* the native components are drawn, which is too late.
 	}
@@ -126,8 +136,7 @@ public class WidgetOverlay extends Overlay
 		if (getPreferredLocation() != null || getPreferredPosition() != null)
 		{
 			// The widget relative pos is relative to the parent
-			widget.setRelativeX(bounds.x - parent.x);
-			widget.setRelativeY(bounds.y - parent.y);
+			widget.setForcedPosition(bounds.x - parent.x, bounds.y - parent.y);
 		}
 		else
 		{
@@ -135,6 +144,7 @@ public class WidgetOverlay extends Overlay
 			{
 				revalidate = false;
 				log.debug("Revalidating {}", widgetInfo);
+				widget.setForcedPosition(-1, -1);
 				// Revalidate the widget to reposition it back to its normal location after an overlay reset
 				widget.revalidate();
 			}

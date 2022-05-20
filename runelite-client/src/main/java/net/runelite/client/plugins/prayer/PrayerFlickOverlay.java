@@ -91,7 +91,6 @@ class PrayerFlickOverlay extends Overlay
 
 		graphics.setColor(Color.cyan);
 		graphics.fillRect(orbInnerX + xOffset, orbInnerY + yOffset, 1, indicatorHeight);
-
-		return new Dimension((int) bounds.getWidth(), (int) bounds.getHeight());
+		return null;
 	}
 }

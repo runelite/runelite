@@ -22,11 +22,20 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.jagex.oldscape.pub;
+package net.runelite.api.events;
 
-public interface OtlTokenResponse
+import lombok.Value;
+import net.runelite.api.ObjectComposition;
+
+/**
+ * An event called after a new {@link ObjectComposition} is created and
+ * its data is initialized.
+ */
+@Value
+public class PostObjectComposition
 {
-	boolean isSuccess();
-
-	String getToken();
+	/**
+	 * The newly created object
+	 */
+	ObjectComposition objectComposition;
 }

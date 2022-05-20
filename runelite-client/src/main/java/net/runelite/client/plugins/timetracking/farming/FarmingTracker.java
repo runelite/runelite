@@ -63,6 +63,7 @@ public class FarmingTracker
 	private final TimeTrackingConfig config;
 	private final FarmingWorld farmingWorld;
 	private final Notifier notifier;
+	private final CompostTracker compostTracker;
 
 	private final Map<Tab, SummaryState> summaries = new EnumMap<>(Tab.class);
 
@@ -78,7 +79,7 @@ public class FarmingTracker
 	private boolean firstNotifyCheck = true;
 
 	@Inject
-	private FarmingTracker(Client client, ItemManager itemManager, ConfigManager configManager, TimeTrackingConfig config, FarmingWorld farmingWorld, Notifier notifier)
+	private FarmingTracker(Client client, ItemManager itemManager, ConfigManager configManager, TimeTrackingConfig config, FarmingWorld farmingWorld, Notifier notifier, CompostTracker compostTracker)
 	{
 		this.client = client;
 		this.itemManager = itemManager;
@@ -86,11 +87,12 @@ public class FarmingTracker
 		this.config = config;
 		this.farmingWorld = farmingWorld;
 		this.notifier = notifier;
+		this.compostTracker = compostTracker;
 	}
 
 	public FarmingTabPanel createTabPanel(Tab tab, FarmingContractManager farmingContractManager)
 	{
-		return new FarmingTabPanel(this, itemManager, configManager, config, farmingWorld.getTabs().get(tab), farmingContractManager);
+		return new FarmingTabPanel(this, compostTracker, itemManager, configManager, config, farmingWorld.getTabs().get(tab), farmingContractManager);
 	}
 
 	/**
@@ -148,6 +150,12 @@ public class FarmingTracker
 				String strVarbit = Integer.toString(client.getVarbitValue(varbit));
 				String storedValue = configManager.getRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, key);
 
+				PatchState currentPatchState = patch.getImplementation().forVarbitValue(client.getVarbitValue(varbit));
+				if (currentPatchState == null)
+				{
+					continue;
+				}
+
 				if (storedValue != null)
 				{
 					String[] parts = storedValue.split(":");
@@ -172,9 +180,8 @@ public class FarmingTracker
 						else if (!newRegionLoaded && timeSinceModalClose > 1)
 						{
 							PatchState previousPatchState = patch.getImplementation().forVarbitValue(Integer.parseInt(parts[0]));
-							PatchState currentPatchState = patch.getImplementation().forVarbitValue(client.getVarbitValue(varbit));
 
-							if (previousPatchState == null || currentPatchState == null)
+							if (previousPatchState == null)
 							{
 								continue;
 							}
@@ -215,6 +222,11 @@ public class FarmingTracker
 							log.debug("ignoring growth tick for offset calculation; newRegionLoaded={} timeSinceModalClose={}", newRegionLoaded, timeSinceModalClose);
 						}
 					}
+				}
+
+				if (currentPatchState.getCropState() == CropState.DEAD || currentPatchState.getCropState() == CropState.HARVESTABLE)
+				{
+					compostTracker.setCompostState(patch, null);
 				}
 
 				String value = strVarbit + ":" + unixNow;

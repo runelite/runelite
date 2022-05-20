@@ -24,6 +24,8 @@
  */
 package net.runelite.api;
 
+import net.runelite.api.annotations.Varbit;
+
 /**
  * Information about a specific {@link ObjectID}
  */
@@ -55,10 +57,24 @@ public interface ObjectComposition extends ParamHolder
 	int getMapSceneId();
 
 	/**
+	 * Set the map scene index into the {@link Client#getMapScene()}
+	 * array, or -1 if it has no map scene icon
+	 * @param mapSceneId
+	 */
+	void setMapSceneId(int mapSceneId);
+
+	/**
 	 * Gets the index of this object in the {@link Client#getMapIcons()}
 	 * array, or -1 if it has no full map icon
 	 */
 	int getMapIconId();
+
+	/**
+	 * Set the index of the object in the {@link Client#getMapIcons()}
+	 * array, or -1 if it has no map icon
+	 * @param mapIconId
+	 */
+	void setMapIconId(int mapIconId);
 
 	/**
 	 * Get the {@link ObjectID}s of objects this can transform into, depending
@@ -73,4 +89,21 @@ public interface ObjectComposition extends ParamHolder
 	 * @throws NullPointerException if {@link #getImpostorIds()} is null
 	 */
 	ObjectComposition getImpostor();
+
+	/**
+	 * Gets the {@link Varbits} used to switch this multiloc, or {@code -1} if this is not switched by a Varbit
+	 *
+	 * @see #getImpostor()
+	 * @see #getImpostorIds()
+	 */
+	@Varbit
+	int getVarbitId();
+
+	/**
+	 * Gets the {@link VarPlayer} used to switch this multiloc, or {@code -1} if this is not switched by a VarPlayer
+	 *
+	 * @see #getImpostor()
+	 * @see #getImpostorIds()
+	 */
+	int getVarPlayerId();
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022, Adam <Adam@sigterm.info>
+ * Copyright (c) 2022 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,12 +22,9 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.jagex.oldscape.pub;
+package net.runelite.cache.util;
 
-import java.net.URL;
-import java.util.concurrent.Future;
-
-public interface OtlTokenRequester
+public interface KeyProvider
 {
-	Future<OtlTokenResponse> request(URL url);
+	int[] getKey(int region);
 }
