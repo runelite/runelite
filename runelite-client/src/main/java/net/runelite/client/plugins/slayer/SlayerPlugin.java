@@ -26,6 +26,7 @@
 package net.runelite.client.plugins.slayer;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -692,8 +693,8 @@ public class SlayerPlugin extends Plugin
 			final Matcher targetMatcher = target.matcher(name);
 			if (targetMatcher.find()
 				&& (ArrayUtils.contains(composition.getActions(), "Attack")
-					// Pick action is for zygomite-fungi
-					|| ArrayUtils.contains(composition.getActions(), "Pick")))
+				// Pick action is for zygomite-fungi
+				|| ArrayUtils.contains(composition.getActions(), "Pick")))
 			{
 				return true;
 			}
