@@ -151,8 +151,7 @@ class PrayerDoseOverlay extends Overlay
 		graphics.setColor(ColorUtil.colorLerp(START_COLOR, END_COLOR, Math.sin(t)));
 		graphics.setStroke(new BasicStroke(2));
 		graphics.drawOval(orbInnerX, orbInnerY, orbInnerSize, orbInnerSize);
-
-		return new Dimension((int) bounds.getWidth(), (int) bounds.getHeight());
+		return null;
 	}
 
 }
