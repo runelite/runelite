@@ -1893,8 +1893,10 @@ public class ChatCommandsPlugin extends Plugin
 		private final HiscoreEndpoint endpoint;
 	}
 
-	private static String longItemName(String item) {
-		switch (item.toUpperCase()) {
+	private static String longItemName(String item)
+	{
+		switch (item.toUpperCase())
+		{
 			case "ACB":
 				return "Armadyl crossbow";
 			case "ACP":
