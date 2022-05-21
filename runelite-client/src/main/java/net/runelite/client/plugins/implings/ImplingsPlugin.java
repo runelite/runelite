@@ -28,7 +28,9 @@ import com.google.inject.Provides;
 import java.awt.Color;
 import java.util.function.Function;
 import javax.inject.Inject;
+import net.runelite.api.Client;
 import net.runelite.api.NPC;
+import net.runelite.api.Skill;
 import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.Notifier;
@@ -62,6 +64,9 @@ public class ImplingsPlugin extends Plugin
 
 	@Inject
 	private NpcOverlayService npcOverlayService;
+
+	@Inject
+	private Client client;
 
 	public final Function<NPC, HighlightedNpc> isTarget = (npc) ->
 	{
@@ -119,9 +124,13 @@ public class ImplingsPlugin extends Plugin
 
 		if (impling != null)
 		{
-			if (showImplingType(impling.getImplingType()) == ImplingsConfig.ImplingMode.NOTIFY)
+			ImplingType implingType = impling.getImplingType();
+			if (showImplingType(implingType) == ImplingsConfig.ImplingMode.NOTIFY)
 			{
-				notifier.notify(impling.getImplingType().getName() + " impling is in the area");
+				if (!shouldOverrideNotification(implingType))
+				{
+					notifier.notify(implingType.getName() + " impling is in the area");
+				}
 			}
 		}
 	}
@@ -134,9 +143,13 @@ public class ImplingsPlugin extends Plugin
 
 		if (impling != null)
 		{
-			if (showImplingType(impling.getImplingType()) == ImplingsConfig.ImplingMode.NOTIFY)
+			ImplingType implingType = impling.getImplingType();
+			if (showImplingType(implingType) == ImplingsConfig.ImplingMode.NOTIFY)
 			{
-				notifier.notify(impling.getImplingType().getName() + " impling is in the area");
+				if (!shouldOverrideNotification(implingType))
+				{
+					notifier.notify(implingType.getName() + " impling is in the area");
+				}
 			}
 		}
 	}
@@ -212,4 +225,19 @@ public class ImplingsPlugin extends Plugin
 				throw new IllegalArgumentException();
 		}
 	}
+
+	private boolean shouldOverrideNotification(ImplingType implingType)
+	{
+		int hunterLevel = client.getBoostedSkillLevel(Skill.HUNTER);
+		if (config.notificationLevelOverride() == ImplingsConfig.ImplingNotificationLevelOverride.BAREHANDED)
+		{
+			return hunterLevel < implingType.getBareHandedLevelRequirement();
+		}
+		else if (config.notificationLevelOverride() == ImplingsConfig.ImplingNotificationLevelOverride.BUTTERFLY_NET)
+		{
+			return hunterLevel < implingType.getLevelRequirement();
+		}
+		return false;
+	}
+
 }
