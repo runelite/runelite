@@ -1905,13 +1905,20 @@ public class ChatCommandsPlugin extends Plugin
 				return "Armadyl chainskirt";
 			case "AGS":
 				return "Armadyl godsword";
+			case "ANGUISH":
+				return "Necklace of anguish";
+			case "ARCANE":
+				return "Arcane spirit shield";
 			case "BCP":
 				return "Bandos chestplate";
 			case "BGS":
 				return "Bandos godsword";
+			case "BLADE":
+				return "Blade of saeldor (inactive)";
 			case "BOWFA":
 				return "Bow of faerdhinen (inactive)";
 			case "BP":
+			case "BLOWPIPE":
 				return "Toxic blowpipe (empty)";
 			case "BRING":
 				return "Berserker ring";
@@ -1919,24 +1926,50 @@ public class ChatCommandsPlugin extends Plugin
 				return "Dragon claws";
 			case "DFS":
 				return "Dragonfire shield";
+			case "DHCB":
+				return "Dragon hunter crossbow";
+			case "DHL":
+				return "Dragon hunter lance";
+			case "DWH":
+				return "Dragon warhammer";
 			case "ELY":
 				return "Elysian spirit shield";
+			case "FURY":
+				return "Amulet of fury";
+			case "KODAI":
+				return "Kodai wand";
+			case "OCCULT":
+				return "Occult necklace";
 			case "PEGS":
 				return "Pegasian boots";
 			case "PRIMS":
 				return "Primordial boots";
 			case "RANGERS":
 				return "Ranger boots";
+			case "RAPIER":
+				return "Ghrazi rapier";
 			case "ROBIN":
 				return "Robin Hood hat";
 			case "ROS":
+			case "SUFFERING":
 				return "Ring of suffering";
 			case "SCYTHE":
 				return "Scythe of vitur (uncharged)";
+			case "SERP":
+				return "Serpentine helm (uncharged)";
 			case "SOTD":
 				return "Staff of the dead";
+			case "SPECTRAL":
+				return "Spectral spirit shield";
 			case "TBOW":
 				return "Twisted bow";
+			case "TOME":
+				return "Tome of fire (empty)";
+			case "TORM":
+				return "Tormented bracelet";
+			case "TORT":
+			case "TORTURE":
+				return "Amulet of torture";
 			case "WHIP":
 				return "Abyssal whip";
 			case "ZGS":
