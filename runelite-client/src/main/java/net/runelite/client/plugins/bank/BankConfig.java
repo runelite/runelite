@@ -91,10 +91,10 @@ public interface BankConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "rightClickBankLoot",
-			name = "Disable left click bank looting bag",
-			description = "Configures whether the bank looting bag button will bank your looting bag contents on left click",
-			position = 6
+		keyName = "rightClickBankLoot",
+		name = "Disable left click bank looting bag",
+		description = "Configures whether the bank looting bag button will bank your looting bag contents on left click",
+		position = 6
 	)
 	default boolean rightClickBankLoot()
 	{
@@ -102,10 +102,10 @@ public interface BankConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "rightClickPlaceholders",
-			name = "Disable left click placeholders button",
-			description = "Configures whether the placeholders button will be toggled on left click",
-			position = 7
+		keyName = "rightClickPlaceholders",
+		name = "Disable left click placeholders button",
+		description = "Configures whether the placeholders button will be toggled on left click",
+		position = 7
 	)
 	default boolean rightClickPlaceholders()
 	{
