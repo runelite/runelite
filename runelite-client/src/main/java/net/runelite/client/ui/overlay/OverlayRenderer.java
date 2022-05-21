@@ -25,7 +25,6 @@
 package net.runelite.client.ui.overlay;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.collect.ImmutableList;
 import com.google.common.primitives.Ints;
 import java.awt.Color;
 import java.awt.Composite;
@@ -41,7 +40,6 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -104,7 +102,8 @@ public class OverlayRenderer extends MouseAdapter
 	private boolean inOverlayResizingMode;
 	private boolean inOverlayDraggingMode;
 	private boolean startedMovingOverlay;
-	private Overlay hoveredOverlay; // for building menu entries
+	private Overlay curHoveredOverlay; // for building menu entries
+	private Overlay lastHoveredOverlay; // for off-thread access
 
 	// Overlay state validation
 	private Rectangle viewportBounds;
@@ -166,14 +165,16 @@ public class OverlayRenderer extends MouseAdapter
 				resetOverlayManagementMode();
 			}
 
-			hoveredOverlay = null;
+			curHoveredOverlay = null;
 		}
 	}
 
 	@Subscribe
 	protected void onClientTick(ClientTick t)
 	{
-		final Overlay overlay = hoveredOverlay;
+		lastHoveredOverlay = curHoveredOverlay;
+
+		final Overlay overlay = curHoveredOverlay;
 		if (overlay == null || client.isMenuOpen())
 		{
 			return;
@@ -207,7 +208,7 @@ public class OverlayRenderer extends MouseAdapter
 	@Subscribe
 	public void onBeforeRender(BeforeRender event)
 	{
-		hoveredOverlay = null;
+		curHoveredOverlay = null;
 
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
@@ -244,7 +245,7 @@ public class OverlayRenderer extends MouseAdapter
 		overlayManager.setWidgetItems(Collections.emptyList());
 	}
 
-	private void renderOverlays(Graphics2D graphics, Collection<Overlay> overlays, OverlayLayer layer)
+	private void renderOverlays(final Graphics2D graphics, Collection<Overlay> overlays, final OverlayLayer layer)
 	{
 		if (overlays == null
 			|| overlays.isEmpty()
@@ -256,7 +257,7 @@ public class OverlayRenderer extends MouseAdapter
 		OverlayUtil.setGraphicProperties(graphics);
 
 		// Draw snap corners
-		if (inOverlayDraggingMode && layer == OverlayLayer.UNDER_WIDGETS && currentManagedOverlay != null && currentManagedOverlay.getPosition() != OverlayPosition.DETACHED)
+		if (inOverlayDraggingMode && layer == OverlayLayer.UNDER_WIDGETS && currentManagedOverlay != null && currentManagedOverlay.isSnappable())
 		{
 			final OverlayBounds translatedSnapCorners = snapCorners.translated(
 				-SNAP_CORNER_SIZE.width,
@@ -273,10 +274,6 @@ public class OverlayRenderer extends MouseAdapter
 			graphics.setColor(previous);
 		}
 
-		// Get mouse position
-		final net.runelite.api.Point mouseCanvasPosition = client.getMouseCanvasPosition();
-		final Point mouse = new Point(mouseCanvasPosition.getX(), mouseCanvasPosition.getY());
-
 		// Save graphics2d properties so we can restore them later
 		final AffineTransform transform = graphics.getTransform();
 		final Stroke stroke = graphics.getStroke();
@@ -285,105 +282,97 @@ public class OverlayRenderer extends MouseAdapter
 		final RenderingHints renderingHints = graphics.getRenderingHints();
 		final Color background = graphics.getBackground();
 
+		final Rectangle clip = clipBounds(layer);
+		graphics.setClip(clip);
+
 		for (Overlay overlay : overlays)
 		{
 			final OverlayPosition overlayPosition = getCorrectedOverlayPosition(overlay);
+			final Rectangle bounds = overlay.getBounds();
+			final Dimension dimension = bounds.getSize();
+			final Point preferredLocation = overlay.getPreferredLocation();
+			Point location;
+			Rectangle snapCorner = null;
 
-			if (overlayPosition == OverlayPosition.DYNAMIC || overlayPosition == OverlayPosition.TOOLTIP)
+			// If the final position is not modified, layout it
+			if (overlayPosition != OverlayPosition.DYNAMIC && overlayPosition != OverlayPosition.TOOLTIP
+				&& overlayPosition != OverlayPosition.DETACHED && preferredLocation == null)
 			{
-				safeRender(client, overlay, layer, graphics, new Point());
-
-				// Restore graphics2d properties
-				graphics.setTransform(transform);
-				graphics.setStroke(stroke);
-				graphics.setComposite(composite);
-				graphics.setPaint(paint);
-				graphics.setRenderingHints(renderingHints);
-				graphics.setBackground(background);
+				snapCorner = snapCorners.forPosition(overlayPosition);
+				final Point translation = OverlayUtil.transformPosition(overlayPosition, dimension); // offset from corner
+				// Target x/y to draw the overlay
+				int destX = snapCorner.x + translation.x;
+				int destY = snapCorner.y + translation.y;
+				// Clamp the target position to ensure it is on screen or within parent bounds
+				location = clampOverlayLocation(destX, destY, dimension.width, dimension.height, overlay);
 			}
 			else
 			{
-				final Rectangle bounds = overlay.getBounds();
-				final Dimension dimension = bounds.getSize();
-				final Point preferredLocation = overlay.getPreferredLocation();
-				Point location;
-				Rectangle snapCorner = null;
+				location = preferredLocation != null ? preferredLocation : bounds.getLocation();
 
-				// If the final position is not modified, layout it
-				if (overlayPosition != OverlayPosition.DETACHED && (preferredLocation == null || overlay.getPreferredPosition() != null))
+				// Clamp the overlay position to ensure it is on screen or within parent bounds
+				location = clampOverlayLocation(location.x, location.y, dimension.width, dimension.height, overlay);
+			}
+
+			if (overlay.getPreferredSize() != null)
+			{
+				bounds.setSize(overlay.getPreferredSize());
+			}
+
+			safeRender(overlay, graphics, location);
+
+			// Adjust snap corner based on where the overlay was drawn
+			if (snapCorner != null && bounds.width + bounds.height > 0)
+			{
+				OverlayUtil.shiftSnapCorner(overlayPosition, snapCorner, bounds, PADDING);
+			}
+
+			// Restore graphics2d properties prior to drawing bounds
+			graphics.setTransform(transform);
+			graphics.setStroke(stroke);
+			graphics.setComposite(composite);
+			graphics.setPaint(paint);
+			graphics.setRenderingHints(renderingHints);
+			graphics.setBackground(background);
+			if (!graphics.getClip().equals(clip))
+			{
+				graphics.setClip(clip);
+			}
+
+			if (!bounds.isEmpty())
+			{
+				if (inOverlayManagingMode && overlay.isMovable())
 				{
-					snapCorner = snapCorners.forPosition(overlayPosition);
-					final Point translation = OverlayUtil.transformPosition(overlayPosition, dimension); // offset from corner
-					// Target x/y to draw the overlay
-					int destX = snapCorner.x + translation.x;
-					int destY = snapCorner.y + translation.y;
-					// Clamp the target position to ensure it is on screen or within parent bounds
-					location = clampOverlayLocation(destX, destY, dimension.width, dimension.height, overlay);
-				}
-				else
-				{
-					location = preferredLocation != null ? preferredLocation : bounds.getLocation();
-
-					// Clamp the overlay position to ensure it is on screen or within parent bounds
-					location = clampOverlayLocation(location.x, location.y, dimension.width, dimension.height, overlay);
-				}
-
-				if (overlay.getPreferredSize() != null)
-				{
-					bounds.setSize(overlay.getPreferredSize());
-				}
-
-				safeRender(client, overlay, layer, graphics, location);
-
-				// Adjust snap corner based on where the overlay was drawn
-				if (snapCorner != null && bounds.width + bounds.height > 0)
-				{
-					OverlayUtil.shiftSnapCorner(overlayPosition, snapCorner, bounds, PADDING);
-				}
-
-				// Restore graphics2d properties prior to drawing bounds
-				graphics.setTransform(transform);
-				graphics.setStroke(stroke);
-				graphics.setComposite(composite);
-				graphics.setPaint(paint);
-				graphics.setRenderingHints(renderingHints);
-				graphics.setBackground(background);
-
-				if (!bounds.isEmpty())
-				{
-					if (inOverlayManagingMode)
+					Color boundsColor;
+					if (inOverlayResizingMode && currentManagedOverlay == overlay)
 					{
-						Color boundsColor;
-						if (inOverlayResizingMode && currentManagedOverlay == overlay)
-						{
-							boundsColor = MOVING_OVERLAY_RESIZING_COLOR;
-						}
-						else if (inOverlayDraggingMode && currentManagedOverlay == overlay)
-						{
-							boundsColor = MOVING_OVERLAY_ACTIVE_COLOR;
-						}
-						else if (inOverlayDraggingMode && overlay.isDragTargetable() && currentManagedOverlay.isDragTargetable()
-							&& currentManagedOverlay.getBounds().intersects(bounds))
-						{
-							boundsColor = MOVING_OVERLAY_TARGET_COLOR;
-							assert currentManagedOverlay != overlay;
-							dragTargetOverlay = overlay;
-						}
-						else
-						{
-							boundsColor = MOVING_OVERLAY_COLOR;
-						}
-
-						graphics.setColor(boundsColor);
-						graphics.draw(bounds);
-						graphics.setPaint(paint);
+						boundsColor = MOVING_OVERLAY_RESIZING_COLOR;
+					}
+					else if (inOverlayDraggingMode && currentManagedOverlay == overlay)
+					{
+						boundsColor = MOVING_OVERLAY_ACTIVE_COLOR;
+					}
+					else if (inOverlayDraggingMode && overlay.isDragTargetable() && currentManagedOverlay.isDragTargetable()
+						&& currentManagedOverlay.getBounds().intersects(bounds))
+					{
+						boundsColor = MOVING_OVERLAY_TARGET_COLOR;
+						assert currentManagedOverlay != overlay;
+						dragTargetOverlay = overlay;
+					}
+					else
+					{
+						boundsColor = MOVING_OVERLAY_COLOR;
 					}
 
-					if (!client.isMenuOpen() && !client.getSpellSelected() && bounds.contains(mouse))
-					{
-						hoveredOverlay = overlay;
-						overlay.onMouseOver();
-					}
+					graphics.setColor(boundsColor);
+					graphics.draw(bounds);
+					graphics.setPaint(paint);
+				}
+
+				if (!client.isMenuOpen() && !client.getSpellSelected() && bounds.contains(mousePosition))
+				{
+					curHoveredOverlay = overlay;
+					overlay.onMouseOver();
 				}
 			}
 		}
@@ -392,18 +381,17 @@ public class OverlayRenderer extends MouseAdapter
 	@Override
 	public MouseEvent mousePressed(MouseEvent mouseEvent)
 	{
+		final Point mousePoint = mouseEvent.getPoint();
+		mousePosition.setLocation(mousePoint);
+
 		if (!inOverlayManagingMode)
 		{
 			return mouseEvent;
 		}
 
-		final Point mousePoint = mouseEvent.getPoint();
-		mousePosition.setLocation(mousePoint);
-
 		// See if we've clicked on an overlay
-		currentManagedOverlay = findMangedOverlay(mousePoint);
-
-		if (currentManagedOverlay == null)
+		currentManagedOverlay = lastHoveredOverlay;
+		if (currentManagedOverlay == null || !currentManagedOverlay.isMovable())
 		{
 			return mouseEvent;
 		}
@@ -438,17 +426,17 @@ public class OverlayRenderer extends MouseAdapter
 	@Override
 	public MouseEvent mouseMoved(MouseEvent mouseEvent)
 	{
+		final Point mousePoint = mouseEvent.getPoint();
+		mousePosition.setLocation(mousePoint);
+
 		if (!inOverlayManagingMode)
 		{
 			return mouseEvent;
 		}
 
-		final Point mousePoint = mouseEvent.getPoint();
-		mousePosition.setLocation(mousePoint);
-
 		if (!inOverlayResizingMode && !inOverlayDraggingMode)
 		{
-			currentManagedOverlay = findMangedOverlay(mousePoint);
+			currentManagedOverlay = lastHoveredOverlay;
 		}
 
 		if (currentManagedOverlay == null || !currentManagedOverlay.isResizable())
@@ -495,45 +483,16 @@ public class OverlayRenderer extends MouseAdapter
 		return mouseEvent;
 	}
 
-	/**
-	 * Find an overlay to manage which is under the given mouse point
-	 * @param mousePoint
-	 * @return
-	 */
-	private Overlay findMangedOverlay(Point mousePoint)
-	{
-		synchronized (overlayManager)
-		{
-			// render order is roughly: under -> manual -> above -> always on top
-			final List<OverlayLayer> layerOrder = ImmutableList.of(OverlayLayer.UNDER_WIDGETS, OverlayLayer.MANUAL, OverlayLayer.ABOVE_WIDGETS, OverlayLayer.ALWAYS_ON_TOP);
-			return overlayManager.getOverlays()
-				.stream()
-				// ABOVE_SCENE overlays aren't managed
-				.filter(c -> layerOrder.contains(c.getLayer()))
-				// never allow moving dynamic or tooltip overlays
-				.filter(c -> c.getPosition() != OverlayPosition.DYNAMIC && c.getPosition() != OverlayPosition.TOOLTIP)
-				.sorted(
-					Comparator.<Overlay>comparingInt(c -> layerOrder.indexOf(c.getLayer()))
-						.thenComparing(OverlayManager.OVERLAY_COMPARATOR)
-						// pick order is reversed from render order
-						.reversed()
-				)
-				.filter(o -> o.getBounds().contains(mousePoint))
-				.findFirst()
-				.orElse(null);
-		}
-	}
-
 	@Override
 	public MouseEvent mouseDragged(MouseEvent mouseEvent)
 	{
+		final Point p = mouseEvent.getPoint();
+		mousePosition.setLocation(p);
+
 		if (!inOverlayManagingMode)
 		{
 			return mouseEvent;
 		}
-
-		final Point p = mouseEvent.getPoint();
-		mousePosition.setLocation(p);
 
 		if (currentManagedOverlay == null)
 		{
@@ -669,12 +628,13 @@ public class OverlayRenderer extends MouseAdapter
 	@Override
 	public MouseEvent mouseReleased(MouseEvent mouseEvent)
 	{
+		final Point mousePoint = mouseEvent.getPoint();
+		mousePosition.setLocation(mousePoint);
+
 		if (!inOverlayManagingMode || currentManagedOverlay == null || (!inOverlayDraggingMode && !inOverlayResizingMode))
 		{
 			return mouseEvent;
 		}
-
-		mousePosition.setLocation(-1, -1);
 
 		if (dragTargetOverlay != null)
 		{
@@ -686,14 +646,14 @@ public class OverlayRenderer extends MouseAdapter
 			}
 		}
 
-		// Check if the overlay is over a snapcorner and move it if so, unless it is a detached overlay
-		if (currentManagedOverlay.getPosition() != OverlayPosition.DETACHED && inOverlayDraggingMode)
+		// Check if the overlay is over a snapcorner and snap it if so
+		if (currentManagedOverlay.isSnappable() && inOverlayDraggingMode)
 		{
 			final OverlayBounds snapCorners = this.emptySnapCorners.translated(-SNAP_CORNER_SIZE.width, -SNAP_CORNER_SIZE.height);
 
 			for (Rectangle snapCorner : snapCorners.getBounds())
 			{
-				if (snapCorner.contains(mouseEvent.getPoint()))
+				if (snapCorner.contains(mousePoint))
 				{
 					OverlayPosition position = snapCorners.fromBounds(snapCorner);
 
@@ -717,20 +677,23 @@ public class OverlayRenderer extends MouseAdapter
 		return mouseEvent;
 	}
 
-	private void safeRender(Client client, Overlay overlay, OverlayLayer layer, Graphics2D graphics, Point point)
+	private Rectangle clipBounds(OverlayLayer layer)
 	{
 		if (!isResizeable && (layer == OverlayLayer.ABOVE_SCENE || layer == OverlayLayer.UNDER_WIDGETS))
 		{
-			graphics.setClip(client.getViewportXOffset(),
+			return new Rectangle(client.getViewportXOffset(),
 				client.getViewportYOffset(),
 				client.getViewportWidth(),
 				client.getViewportHeight());
 		}
 		else
 		{
-			graphics.setClip(0, 0, client.getCanvasWidth(), client.getCanvasHeight());
+			return new Rectangle(0, 0, client.getCanvasWidth(), client.getCanvasHeight());
 		}
+	}
 
+	private void safeRender(Overlay overlay, Graphics2D graphics, Point point)
+	{
 		final OverlayPosition position = overlay.getPosition();
 
 		// Set font based on configuration
