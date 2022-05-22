@@ -448,14 +448,7 @@ public class ItemChargePlugin extends Plugin
 			}
 			else if (braceletOfClayCheckMatcher.find())
 			{
-				final String match = braceletOfClayCheckMatcher.group(1);
-
-				int charges = 1;
-				if (!match.equals("one"))
-				{
-					charges = Integer.parseInt(match);
-				}
-				updateBraceletOfClayCharges(charges);
+				updateBraceletOfClayCharges(Integer.parseInt(braceletOfClayCheckMatcher.group(1)));
 			}
 			else if (message.equals(BRACELET_OF_CLAY_USE_TEXT))
 			{
