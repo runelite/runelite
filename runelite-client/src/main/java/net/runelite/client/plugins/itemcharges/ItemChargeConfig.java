@@ -429,12 +429,4 @@ public interface ItemChargeConfig extends Config {
 			section = chargesSection
 	)
 	default boolean showCastleWarsBraceletCharges() { return true; }
-	@ConfigItem(
-			keyName = "castleWarsBraceletNotification",
-			name = "Castle Wars Bracelet Notification",
-			description = "Send a notification when a Castle Wars Bracelet Breaks",
-			position = 34,
-			section = notificationSection
-	)
-	default boolean castleWarsBraceletNotification() { return true; }
 }
