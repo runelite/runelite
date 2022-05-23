@@ -33,7 +33,8 @@ import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
 
 @ConfigGroup(ItemChargeConfig.GROUP)
-public interface ItemChargeConfig extends Config {
+public interface ItemChargeConfig extends Config
+{
 	String GROUP = "itemCharge";
 
 	String KEY_AMULET_OF_BOUNTY = "amuletOfBounty";
@@ -68,7 +69,8 @@ public interface ItemChargeConfig extends Config {
 		description = "The color of the overlay when charges are very low",
 		position = 1
 	)
-	default Color veryLowWarningColor() {
+	default Color veryLowWarningColor()
+	{
 		return Color.RED;
 	}
 
@@ -78,7 +80,8 @@ public interface ItemChargeConfig extends Config {
 		description = "The color of the overlay when charges are low",
 		position = 2
 	)
-	default Color lowWarningolor() {
+	default Color lowWarningolor()
+	{
 		return Color.YELLOW;
 	}
 
@@ -88,7 +91,8 @@ public interface ItemChargeConfig extends Config {
 		description = "The charge count for the very low warning color",
 		position = 3
 	)
-	default int veryLowWarning() {
+	default int veryLowWarning()
+	{
 		return 1;
 	}
 
@@ -98,7 +102,8 @@ public interface ItemChargeConfig extends Config {
 		description = "The charge count for the low warning color",
 		position = 4
 	)
-	default int lowWarning() {
+	default int lowWarning()
+	{
 		return 2;
 	}
 
@@ -109,7 +114,8 @@ public interface ItemChargeConfig extends Config {
 		position = 5,
 		section = chargesSection
 	)
-	default boolean showTeleportCharges() {
+	default boolean showTeleportCharges()
+	{
 		return true;
 	}
 
@@ -121,7 +127,8 @@ public interface ItemChargeConfig extends Config {
 		section = chargesSection
 
 	)
-	default boolean showDodgyCount() {
+	default boolean showDodgyCount()
+	{
 		return true;
 	}
 
@@ -132,7 +139,8 @@ public interface ItemChargeConfig extends Config {
 		position = 7,
 		section = notificationSection
 	)
-	default boolean dodgyNotification() {
+	default boolean dodgyNotification()
+	{
 		return true;
 	}
 
@@ -143,7 +151,8 @@ public interface ItemChargeConfig extends Config {
 		position = 8,
 		section = chargesSection
 	)
-	default boolean showImpCharges() {
+	default boolean showImpCharges()
+	{
 		return true;
 	}
 
@@ -154,7 +163,8 @@ public interface ItemChargeConfig extends Config {
 		position = 9,
 		section = chargesSection
 	)
-	default boolean showFungicideCharges() {
+	default boolean showFungicideCharges()
+	{
 		return true;
 	}
 
@@ -165,7 +175,8 @@ public interface ItemChargeConfig extends Config {
 		position = 10,
 		section = chargesSection
 	)
-	default boolean showWateringCanCharges() {
+	default boolean showWateringCanCharges()
+	{
 		return true;
 	}
 
@@ -176,7 +187,8 @@ public interface ItemChargeConfig extends Config {
 		position = 11,
 		section = chargesSection
 	)
-	default boolean showWaterskinCharges() {
+	default boolean showWaterskinCharges()
+	{
 		return true;
 	}
 
@@ -187,7 +199,8 @@ public interface ItemChargeConfig extends Config {
 		position = 12,
 		section = chargesSection
 	)
-	default boolean showBellowCharges() {
+	default boolean showBellowCharges()
+	{
 		return true;
 	}
 
@@ -198,7 +211,8 @@ public interface ItemChargeConfig extends Config {
 		position = 13,
 		section = chargesSection
 	)
-	default boolean showBasketCharges() {
+	default boolean showBasketCharges()
+	{
 		return true;
 	}
 
@@ -209,7 +223,8 @@ public interface ItemChargeConfig extends Config {
 		position = 14,
 		section = chargesSection
 	)
-	default boolean showSackCharges() {
+	default boolean showSackCharges()
+	{
 		return true;
 	}
 
@@ -220,7 +235,8 @@ public interface ItemChargeConfig extends Config {
 		position = 15,
 		section = chargesSection
 	)
-	default boolean showAbyssalBraceletCharges() {
+	default boolean showAbyssalBraceletCharges()
+	{
 		return true;
 	}
 
@@ -231,7 +247,8 @@ public interface ItemChargeConfig extends Config {
 		position = 16,
 		section = chargesSection
 	)
-	default boolean showAmuletOfChemistryCharges() {
+	default boolean showAmuletOfChemistryCharges()
+	{
 		return true;
 	}
 
@@ -242,7 +259,8 @@ public interface ItemChargeConfig extends Config {
 		position = 17,
 		section = chargesSection
 	)
-	default boolean showAmuletOfBountyCharges() {
+	default boolean showAmuletOfBountyCharges()
+	{
 		return true;
 	}
 
@@ -253,7 +271,8 @@ public interface ItemChargeConfig extends Config {
 		position = 18,
 		section = notificationSection
 	)
-	default boolean recoilNotification() {
+	default boolean recoilNotification()
+	{
 		return false;
 	}
 
@@ -264,7 +283,8 @@ public interface ItemChargeConfig extends Config {
 		position = 19,
 		section = chargesSection
 	)
-	default boolean showBindingNecklaceCharges() {
+	default boolean showBindingNecklaceCharges()
+	{
 		return true;
 	}
 
@@ -275,7 +295,8 @@ public interface ItemChargeConfig extends Config {
 		position = 20,
 		section = notificationSection
 	)
-	default boolean bindingNotification() {
+	default boolean bindingNotification()
+	{
 		return true;
 	}
 
@@ -286,7 +307,8 @@ public interface ItemChargeConfig extends Config {
 		position = 21,
 		section = chargesSection
 	)
-	default boolean showExplorerRingCharges() {
+	default boolean showExplorerRingCharges()
+	{
 		return true;
 	}
 
@@ -297,7 +319,8 @@ public interface ItemChargeConfig extends Config {
 		position = 22,
 		section = chargesSection
 	)
-	default boolean showRingOfForgingCount() {
+	default boolean showRingOfForgingCount()
+	{
 		return true;
 	}
 
@@ -308,7 +331,8 @@ public interface ItemChargeConfig extends Config {
 		position = 23,
 		section = notificationSection
 	)
-	default boolean ringOfForgingNotification() {
+	default boolean ringOfForgingNotification()
+	{
 		return true;
 	}
 
@@ -318,7 +342,8 @@ public interface ItemChargeConfig extends Config {
 		description = "Show an infobox with remaining charges for equipped items",
 		position = 24
 	)
-	default boolean showInfoboxes() {
+	default boolean showInfoboxes()
+	{
 		return false;
 	}
 
@@ -329,7 +354,8 @@ public interface ItemChargeConfig extends Config {
 		position = 25,
 		section = chargesSection
 	)
-	default boolean showPotionDoseCount() {
+	default boolean showPotionDoseCount()
+	{
 		return false;
 	}
 
@@ -340,7 +366,8 @@ public interface ItemChargeConfig extends Config {
 		position = 26,
 		section = chargesSection
 	)
-	default boolean showBraceletOfSlaughterCharges() {
+	default boolean showBraceletOfSlaughterCharges()
+	{
 		return true;
 	}
 
@@ -351,7 +378,8 @@ public interface ItemChargeConfig extends Config {
 		position = 27,
 		section = notificationSection
 	)
-	default boolean slaughterNotification() {
+	default boolean slaughterNotification()
+	{
 		return true;
 	}
 
@@ -362,7 +390,8 @@ public interface ItemChargeConfig extends Config {
 		position = 28,
 		section = chargesSection
 	)
-	default boolean showExpeditiousBraceletCharges() {
+	default boolean showExpeditiousBraceletCharges()
+	{
 		return true;
 	}
 
@@ -373,7 +402,8 @@ public interface ItemChargeConfig extends Config {
 		position = 29,
 		section = notificationSection
 	)
-	default boolean expeditiousNotification() {
+	default boolean expeditiousNotification()
+	{
 		return true;
 	}
 
@@ -384,7 +414,8 @@ public interface ItemChargeConfig extends Config {
 		position = 29,
 		section = chargesSection
 	)
-	default boolean showGuthixRestDoses() {
+	default boolean showGuthixRestDoses()
+	{
 		return true;
 	}
 
@@ -395,7 +426,8 @@ public interface ItemChargeConfig extends Config {
 		position = 30,
 		section = chargesSection
 	)
-	default boolean showBloodEssenceCharges() {
+	default boolean showBloodEssenceCharges()
+	{
 		return true;
 	}
 
@@ -406,7 +438,8 @@ public interface ItemChargeConfig extends Config {
 		position = 31,
 		section = chargesSection
 	)
-	default boolean showBraceletOfClayCharges() {
+	default boolean showBraceletOfClayCharges()
+	{
 		return true;
 	}
 
@@ -417,7 +450,8 @@ public interface ItemChargeConfig extends Config {
 		position = 32,
 		section = notificationSection
 	)
-	default boolean braceletOfClayNotification() {
+	default boolean braceletOfClayNotification()
+	{
 		return true;
 	}
 
@@ -428,5 +462,8 @@ public interface ItemChargeConfig extends Config {
 		position = 33,
 		section = chargesSection
 	)
-	default boolean showCastleWarsBraceletCharges() { return true; }
+	default boolean showCastleWarsBraceletCharges()
+	{
+		return true;
+	}
 }
