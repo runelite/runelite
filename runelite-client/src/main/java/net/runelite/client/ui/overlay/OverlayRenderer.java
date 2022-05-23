@@ -81,6 +81,7 @@ public class OverlayRenderer extends MouseAdapter
 	private static final Dimension SNAP_CORNER_SIZE = new Dimension(80, 80);
 	private static final Color SNAP_CORNER_COLOR = new Color(0, 255, 255, 50);
 	private static final Color SNAP_CORNER_ACTIVE_COLOR = new Color(0, 255, 0, 100);
+	public static final String OVERLAY_RESET_POSITION_INSTRUCTIONS = "hold alt and right-click an overlay to reset its position";
 	private static final Color MOVING_OVERLAY_COLOR = new Color(255, 255, 0, 100);
 	private static final Color MOVING_OVERLAY_ACTIVE_COLOR = new Color(255, 255, 0, 200);
 	private static final Color MOVING_OVERLAY_TARGET_COLOR = Color.RED;
@@ -259,6 +260,8 @@ public class OverlayRenderer extends MouseAdapter
 		// Draw snap corners
 		if (inOverlayDraggingMode && layer == OverlayLayer.UNDER_WIDGETS && currentManagedOverlay != null && currentManagedOverlay.isSnappable())
 		{
+			drawOverlayResetPositionInstructions(graphics);
+
 			final OverlayBounds translatedSnapCorners = snapCorners.translated(
 				-SNAP_CORNER_SIZE.width,
 				-SNAP_CORNER_SIZE.height);
@@ -376,6 +379,18 @@ public class OverlayRenderer extends MouseAdapter
 				}
 			}
 		}
+	}
+
+	private void drawOverlayResetPositionInstructions(Graphics2D graphics)
+	{
+		// This draws the message near the top center of the viewport, but not on top of any of the snap corners.
+		Widget viewportWidget = client.isResized() ? client.getWidget(WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE) : client.getWidget(WidgetInfo.FIXED_VIEWPORT);
+		Rectangle viewportBounds = viewportWidget.getBounds();
+		int stringWidth = graphics.getFontMetrics().stringWidth(OVERLAY_RESET_POSITION_INSTRUCTIONS);
+		int x = (int) (viewportBounds.getX() + viewportBounds.getWidth() / 2 - (stringWidth / 2));
+		int y = (int) viewportBounds.getY();
+		graphics.setColor(Color.WHITE);
+		graphics.drawString(OVERLAY_RESET_POSITION_INSTRUCTIONS, x, y + 150);
 	}
 
 	@Override
