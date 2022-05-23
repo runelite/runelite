@@ -122,4 +122,11 @@ public interface MenuEntry
 	 */
 	@Nullable
 	Widget getWidget();
+
+	/**
+	 * Get the {@link NPC} this menu entry is targeting, if any.
+	 * @return
+	 */
+	@Nullable
+	NPC getNpc();
 }

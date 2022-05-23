@@ -25,6 +25,7 @@
 package net.runelite.api.events;
 
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import net.runelite.api.MenuEntry;
@@ -37,6 +38,7 @@ import net.runelite.api.MenuEntry;
 @ToString(onlyExplicitlyIncluded = true)
 public class MenuEntryAdded
 {
+	@Getter
 	private final MenuEntry menuEntry;
 
 	/**

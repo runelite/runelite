@@ -34,7 +34,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
-import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.NpcChanged;
@@ -107,11 +106,12 @@ public class NpcIndicatorsPluginTest
 		when(npc.isDead()).thenReturn(true);
 		npcIndicatorsPlugin.onNpcSpawned(new NpcSpawned(npc));
 
-		when(client.getCachedNPCs()).thenReturn(new NPC[]{npc}); // id 0
+		TestMenuEntry entry = new TestMenuEntry();
+		entry.setTarget("Goblin");
+		entry.setIdentifier(MenuAction.NPC_FIRST_OPTION.getId());
+		entry.setNpc(npc);
 
-		MenuEntry entry = new TestMenuEntry();
-		when(client.getMenuEntries()).thenReturn(new MenuEntry[]{entry});
-		MenuEntryAdded menuEntryAdded = new MenuEntryAdded("", "Goblin", MenuAction.NPC_FIRST_OPTION.getId(), 0, -1, -1);
+		MenuEntryAdded menuEntryAdded = new MenuEntryAdded(entry);
 		npcIndicatorsPlugin.onMenuEntryAdded(menuEntryAdded);
 
 		assertEquals("<col=ff0000>Goblin", entry.getTarget()); // red
@@ -130,11 +130,12 @@ public class NpcIndicatorsPluginTest
 		when(npc.getName()).thenReturn("Goblin");
 		npcIndicatorsPlugin.onNpcSpawned(new NpcSpawned(npc));
 
-		when(client.getCachedNPCs()).thenReturn(new NPC[]{npc}); // id 0
+		TestMenuEntry entry = new TestMenuEntry();
+		entry.setTarget("Goblin");
+		entry.setIdentifier(MenuAction.NPC_FIRST_OPTION.getId());
+		entry.setNpc(npc);
 
-		MenuEntry entry = new TestMenuEntry();
-		when(client.getMenuEntries()).thenReturn(new MenuEntry[]{entry});
-		MenuEntryAdded menuEntryAdded = new MenuEntryAdded("", "Goblin", MenuAction.NPC_FIRST_OPTION.getId(), 0, -1, -1);
+		MenuEntryAdded menuEntryAdded = new MenuEntryAdded(entry);
 		npcIndicatorsPlugin.onMenuEntryAdded(menuEntryAdded);
 
 		assertEquals("<col=0000ff>Goblin", entry.getTarget()); // blue

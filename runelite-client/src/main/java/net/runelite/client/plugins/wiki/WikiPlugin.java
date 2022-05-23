@@ -279,7 +279,8 @@ public class WikiPlugin extends Plugin
 				case WIDGET_TARGET_ON_NPC:
 				{
 					type = "npc";
-					NPC npc = client.getCachedNPCs()[ev.getId()];
+					NPC npc = ev.getMenuEntry().getNpc();
+					assert npc != null;
 					NPCComposition nc = npc.getTransformedComposition();
 					id = nc.getId();
 					name = nc.getName();

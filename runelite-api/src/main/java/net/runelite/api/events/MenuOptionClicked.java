@@ -52,6 +52,7 @@ public class MenuOptionClicked
 	/**
 	 * The clicked menu entry
 	 */
+	@Getter
 	private final MenuEntry menuEntry;
 
 	/**
