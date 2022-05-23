@@ -129,4 +129,18 @@ public interface MenuEntry
 	 */
 	@Nullable
 	NPC getNpc();
+
+	/**
+	 * Get the {@link Player} this menu entry is targeting, if any.
+	 * @return
+	 */
+	@Nullable
+	Player getPlayer();
+
+	/**
+	 * Get the {@link Actor} this menu entry is targeting, if any.
+	 * @return
+	 */
+	@Nullable
+	Actor getActor();
 }

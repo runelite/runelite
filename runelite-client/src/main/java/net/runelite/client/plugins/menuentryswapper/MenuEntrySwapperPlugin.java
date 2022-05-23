@@ -713,7 +713,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			final MenuEntry entry = entries[idx];
 			final MenuAction type = entry.getType();
-			final int id = entry.getIdentifier();
 
 			if (type == MenuAction.EXAMINE_NPC)
 			{

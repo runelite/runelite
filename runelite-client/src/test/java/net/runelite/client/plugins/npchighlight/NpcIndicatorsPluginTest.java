@@ -109,7 +109,7 @@ public class NpcIndicatorsPluginTest
 		TestMenuEntry entry = new TestMenuEntry();
 		entry.setTarget("Goblin");
 		entry.setIdentifier(MenuAction.NPC_FIRST_OPTION.getId());
-		entry.setNpc(npc);
+		entry.setActor(npc);
 
 		MenuEntryAdded menuEntryAdded = new MenuEntryAdded(entry);
 		npcIndicatorsPlugin.onMenuEntryAdded(menuEntryAdded);
@@ -133,7 +133,7 @@ public class NpcIndicatorsPluginTest
 		TestMenuEntry entry = new TestMenuEntry();
 		entry.setTarget("Goblin");
 		entry.setIdentifier(MenuAction.NPC_FIRST_OPTION.getId());
-		entry.setNpc(npc);
+		entry.setActor(npc);
 
 		MenuEntryAdded menuEntryAdded = new MenuEntryAdded(entry);
 		npcIndicatorsPlugin.onMenuEntryAdded(menuEntryAdded);

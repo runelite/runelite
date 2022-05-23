@@ -129,7 +129,7 @@ public class MenuEntrySwapperPluginTest
 		menuEntry.setTarget(target);
 		menuEntry.setType(menuAction);
 		menuEntry.setIdentifier(identifier);
-		menuEntry.setNpc(npc);
+		menuEntry.setActor(npc);
 		return menuEntry;
 	}
 
