@@ -45,10 +45,21 @@ class PartyWorldMapPoint extends WorldMapPoint
 		this.member = member;
 		this.setSnapToEdge(true);
 		this.setJumpOnClick(true);
-		this.setName(member.getName());
 		this.setImagePoint(new Point(
 			ARROW.getWidth() / 2,
 			ARROW.getHeight()));
+	}
+
+	@Override
+	public String getName()
+	{
+		return member.getDisplayName();
+	}
+
+	@Override
+	public String getTooltip()
+	{
+		return member.getDisplayName();
 	}
 
 	@Override

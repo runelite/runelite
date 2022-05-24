@@ -57,7 +57,6 @@ class PartyPanel extends PluginPanel
 	private final PartyService party;
 	private final PartyConfig config;
 
-	private final Map<String, PartyRequestBox> requestBoxes = new HashMap<>();
 	private final Map<UUID, PartyMemberBox> memberBoxes = new HashMap<>();
 
 	private final JButton startButton = new JButton();
@@ -68,7 +67,6 @@ class PartyPanel extends PluginPanel
 	private final PluginErrorPanel noPartyPanel = new PluginErrorPanel();
 	private final PluginErrorPanel partyEmptyPanel = new PluginErrorPanel();
 	private final JComponent memberBoxPanel = new DragAndDropReorderPane();
-	private final JComponent requestBoxPanel = new DragAndDropReorderPane();
 
 	@Inject
 	PartyPanel(final PartyPlugin plugin, final PartyConfig config, final PartyService party)
@@ -113,7 +111,6 @@ class PartyPanel extends PluginPanel
 		topPanel.add(rejoinPartyButton, c);
 
 		layoutPanel.add(topPanel);
-		layoutPanel.add(requestBoxPanel);
 		layoutPanel.add(memberBoxPanel);
 
 		startButton.setText(party.isInParty() ? BTN_LEAVE_TEXT : BTN_CREATE_TEXT);
@@ -279,31 +276,5 @@ class PartyPanel extends PluginPanel
 	void updateAll()
 	{
 		memberBoxes.forEach((key, value) -> value.update());
-	}
-
-	void addRequest(String userId, String userName)
-	{
-		PartyRequestBox partyRequestBox = new PartyRequestBox(plugin, requestBoxPanel, userId, userName);
-		requestBoxes.put(userId, partyRequestBox);
-		requestBoxPanel.add(partyRequestBox);
-		requestBoxPanel.revalidate();
-	}
-
-	void removeAllRequests()
-	{
-		requestBoxes.forEach((key, value) -> requestBoxPanel.remove(value));
-		requestBoxPanel.revalidate();
-		requestBoxes.clear();
-	}
-
-	void removeRequest(String userId)
-	{
-		final PartyRequestBox requestBox = requestBoxes.remove(userId);
-
-		if (requestBox != null)
-		{
-			requestBoxPanel.remove(requestBox);
-			requestBoxPanel.revalidate();
-		}
 	}
 }

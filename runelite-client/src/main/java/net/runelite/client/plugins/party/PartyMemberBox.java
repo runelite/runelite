@@ -40,6 +40,7 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import lombok.AccessLevel;
 import lombok.Getter;
+import net.runelite.client.ws.PartyMember;
 import net.runelite.client.plugins.party.data.PartyData;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
@@ -61,9 +62,7 @@ class PartyMemberBox extends JPanel
 	private final ProgressBar hpBar = new ProgressBar();
 	private final ProgressBar prayerBar = new ProgressBar();
 
-	private final JLabel topName = new JLabel();
-	private final JLabel bottomName = new JLabel();
-
+	private final JLabel name = new JLabel();
 	private final JLabel avatar = new JLabel();
 
 	private final PartyConfig config;
@@ -113,14 +112,10 @@ class PartyMemberBox extends JPanel
 		namesPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		namesPanel.setBorder(new EmptyBorder(2, 5, 2, 5));
 
-		topName.setFont(FontManager.getRunescapeSmallFont());
-		bottomName.setFont(FontManager.getRunescapeSmallFont());
+		name.setFont(FontManager.getRunescapeSmallFont());
+		name.putClientProperty("html.disable", Boolean.TRUE);
 
-		topName.putClientProperty("html.disable", Boolean.TRUE);
-		bottomName.putClientProperty("html.disable", Boolean.TRUE);
-
-		namesPanel.add(topName);     // top
-		namesPanel.add(bottomName);  // bottom
+		namesPanel.add(name);
 
 		headerPanel.add(avatar, BorderLayout.WEST);
 		headerPanel.add(namesPanel, BorderLayout.CENTER);
@@ -155,10 +150,12 @@ class PartyMemberBox extends JPanel
 
 	void update()
 	{
+		final PartyMember member = memberPartyData.getMember();
+
 		// Avatar
-		if (!avatarSet && memberPartyData.getMember().getAvatar() != null)
+		if (!avatarSet && member.getAvatar() != null)
 		{
-			ImageIcon icon = new ImageIcon(ImageUtil.resizeImage(memberPartyData.getMember().getAvatar(), 32, 32));
+			ImageIcon icon = new ImageIcon(ImageUtil.resizeImage(member.getAvatar(), 32, 32));
 			icon.getImage().flush();
 			avatar.setIcon(icon);
 
@@ -174,15 +171,12 @@ class PartyMemberBox extends JPanel
 		prayerBar.setMaximumValue(memberPartyData.getMaxPrayer());
 		prayerBar.setCenterLabel(progressBarLabel(memberPartyData.getPrayer(), memberPartyData.getMaxPrayer()));
 
-		// Update name labels
+		// Update name label
 		Color playerColor = config.recolorNames() ? memberPartyData.getColor() : Color.WHITE;
-		boolean isLoggedIn = !memberPartyData.getCharacterName().isEmpty();
+		boolean isLoggedIn = member.isLoggedIn();
 
-		topName.setForeground(playerColor);
-		topName.setText(memberPartyData.getMember().getName());
-
-		bottomName.setForeground(isLoggedIn ? playerColor : Color.GRAY);
-		bottomName.setText(isLoggedIn ? memberPartyData.getCharacterName() : "Logged out");
+		name.setForeground(isLoggedIn ? playerColor : Color.GRAY);
+		name.setText(member.getDisplayName());
 	}
 
 	private static String progressBarLabel(int current, int max)

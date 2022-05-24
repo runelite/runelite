@@ -41,7 +41,7 @@ import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.ProgressBarComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
-import net.runelite.client.ws.PartyService;
+import net.runelite.client.ws.PartyMember;
 
 public class PartyStatsOverlay extends OverlayPanel
 {
@@ -51,15 +51,13 @@ public class PartyStatsOverlay extends OverlayPanel
 	private static final Color PRAY_BG = Color.black;
 
 	private final PartyPlugin plugin;
-	private final PartyService party;
 	private final PartyConfig config;
 
 	@Inject
-	private PartyStatsOverlay(final PartyPlugin plugin, final PartyService party, final PartyConfig config)
+	private PartyStatsOverlay(final PartyPlugin plugin, final PartyConfig config)
 	{
 		super(plugin);
 		this.plugin = plugin;
-		this.party = party;
 		this.config = config;
 		panelComponent.setBorder(new Rectangle());
 		panelComponent.setGap(new Point(0, ComponentConstants.STANDARD_BORDER / 2));
@@ -81,9 +79,9 @@ public class PartyStatsOverlay extends OverlayPanel
 		{
 			partyDataMap.forEach((k, v) ->
 			{
-				boolean isSelf = party.getLocalMember() != null && party.getLocalMember().getMemberId().equals(k);
+				final PartyMember member = v.getMember();
 
-				if (!v.isShowOverlay() || (!config.includeSelf() && isSelf))
+				if (!v.isShowOverlay())
 				{
 					return;
 				}
@@ -92,7 +90,7 @@ public class PartyStatsOverlay extends OverlayPanel
 				panel.getChildren().clear();
 
 				final TitleComponent name = TitleComponent.builder()
-					.text(v.getCharacterName().isEmpty() ? v.getMember().getName() : v.getCharacterName())
+					.text(member.getDisplayName())
 					.color(config.recolorNames() ? v.getColor() : Color.WHITE)
 					.build();
 

@@ -25,18 +25,16 @@
  */
 package net.runelite.client.ws;
 
-import com.google.common.base.Charsets;
-import com.google.common.hash.Hashing;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.client.account.AccountSession;
@@ -46,8 +44,8 @@ import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.PartyChanged;
-import net.runelite.client.util.Text;
 import net.runelite.client.events.PartyMemberAvatar;
+import net.runelite.client.util.Text;
 import static net.runelite.client.util.Text.JAGEX_PRINTABLE_CHAR_MATCHER;
 import net.runelite.http.api.ws.messages.party.Join;
 import net.runelite.http.api.ws.messages.party.Part;
@@ -60,9 +58,9 @@ import net.runelite.http.api.ws.messages.party.UserSync;
 @Singleton
 public class PartyService
 {
-	public static final int PARTY_MAX = 15;
 	private static final int MAX_MESSAGE_LEN = 150;
 	private static final int MAX_USERNAME_LEN = 32; // same as Discord
+	private static final String USERNAME = "rluser-" + new Random().nextInt(Integer.MAX_VALUE);
 
 	private final WSClient wsClient;
 	private final SessionManager sessionManager;
@@ -74,13 +72,7 @@ public class PartyService
 	private UUID localPartyId = UUID.randomUUID();
 
 	@Getter
-	private UUID publicPartyId; // public party id, for advertising on discord, derived from the secret
-
-	@Getter
 	private UUID partyId; // secret party id
-
-	@Setter
-	private String username;
 
 	@Inject
 	private PartyService(final WSClient wsClient, final SessionManager sessionManager, final EventBus eventBus, final ChatMessageManager chat)
@@ -94,12 +86,6 @@ public class PartyService
 
 	public void changeParty(@Nullable UUID newParty)
 	{
-		if (username == null)
-		{
-			log.warn("Tried to join a party with no username");
-			return;
-		}
-
 		if (wsClient.sessionExists())
 		{
 			wsClient.send(new Part());
@@ -108,8 +94,6 @@ public class PartyService
 		log.debug("Party change to {}", newParty);
 		members.clear();
 		partyId = newParty;
-		// The public party ID needs to be consistent across party members, but not a secret
-		publicPartyId = newParty != null ? UUID.nameUUIDFromBytes(Hashing.sha256().hashString(newParty.toString(), Charsets.UTF_8).asBytes()) : null;
 
 		if (partyId == null)
 		{
@@ -135,7 +119,7 @@ public class PartyService
 		}
 
 		eventBus.post(new PartyChanged(partyId));
-		wsClient.send(new Join(partyId, username));
+		wsClient.send(new Join(partyId, USERNAME));
 	}
 
 	@Subscribe(priority = 1) // run prior to plugins so that the member is joined by the time the plugins see it.
@@ -171,11 +155,18 @@ public class PartyService
 	@Subscribe
 	public void onPartyChatMessage(final PartyChatMessage message)
 	{
+		final PartyMember member = getMemberById(message.getMemberId());
+		if (member == null || !member.isLoggedIn())
+		{
+			log.debug("Dropping party chat from non logged-in member");
+			return;
+		}
+
 		// Remove non-printable characters, and <img> tags from message
 		String sentMesage = JAGEX_PRINTABLE_CHAR_MATCHER.retainFrom(message.getValue())
 			.replaceAll("<img=.+>", "");
 
-		// Cap the mesage length
+		// Cap the message length
 		if (sentMesage.length() > MAX_MESSAGE_LEN)
 		{
 			sentMesage = sentMesage.substring(0, MAX_MESSAGE_LEN);
@@ -184,14 +175,14 @@ public class PartyService
 		chat.queue(QueuedMessage.builder()
 			.type(ChatMessageType.FRIENDSCHAT)
 			.sender("Party")
-			.name(getMemberById(message.getMemberId()).getName())
+			.name(member.getDisplayName())
 			.runeLiteFormattedMessage(sentMesage)
 			.build());
 	}
 
 	public PartyMember getLocalMember()
 	{
-		return getMemberByName(username);
+		return getMemberByName(USERNAME);
 	}
 
 	public PartyMember getMemberById(final UUID id)

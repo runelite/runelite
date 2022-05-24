@@ -315,7 +315,7 @@ public class SpecialCounterPlugin extends Plugin
 			return;
 		}
 
-		String name = party.getMemberById(event.getMemberId()).getName();
+		String name = party.getMemberById(event.getMemberId()).getDisplayName();
 		if (name == null)
 		{
 			return;
