@@ -32,6 +32,7 @@ import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import static net.runelite.api.ItemID.*;
 import static net.runelite.client.plugins.itemstats.Builders.*;
+import net.runelite.client.plugins.itemstats.delta.DeltaPercentage;
 import net.runelite.client.plugins.itemstats.food.Anglerfish;
 import net.runelite.client.plugins.itemstats.potions.AncientBrew;
 import net.runelite.client.plugins.itemstats.potions.GauntletPotion;
@@ -164,49 +165,59 @@ public class ItemStatChanges
 		add(combo(heal(RUN_ENERGY, 20), boost(THIEVING, 3)), SUMMER_SQIRKJUICE);
 
 		// Combat potions
-		add(boost(ATTACK, perc(.10, 3)), ATTACK_POTION1, ATTACK_POTION2, ATTACK_POTION3, ATTACK_POTION4);
-		add(boost(STRENGTH, perc(.10, 3)), STRENGTH_POTION1, STRENGTH_POTION2, STRENGTH_POTION3, STRENGTH_POTION4);
+		final SingleEffect attackPot = boost(ATTACK, perc(.10, 3));
+		final SingleEffect strengthPot = boost(STRENGTH, perc(.10, 3));
+		final SingleEffect magicPot = boost(MAGIC, 4);
+		final SingleEffect imbuedHeart = boost(MAGIC, perc(.10, 1));
+		final SingleEffect rangingPot = boost(RANGED, perc(.10, 4));
+		final SingleEffect superAttackPot = boost(ATTACK, perc(.15, 5));
+		final SingleEffect superStrengthPot = boost(STRENGTH, perc(.15, 5));
+		final SingleEffect superDefencePot = boost(DEFENCE, perc(.15, 5));
+		final SingleEffect superMagicPot = boost(MAGIC, perc(.15, 5));
+		final SingleEffect superRangingPot = boost(RANGED, perc(.15, 5));
+		final SingleEffect divinePot = heal(HITPOINTS, -10);
+		add(attackPot, ATTACK_POTION1, ATTACK_POTION2, ATTACK_POTION3, ATTACK_POTION4);
+		add(strengthPot, STRENGTH_POTION1, STRENGTH_POTION2, STRENGTH_POTION3, STRENGTH_POTION4);
 		add(boost(DEFENCE, perc(.10, 3)), DEFENCE_POTION1, DEFENCE_POTION2, DEFENCE_POTION3, DEFENCE_POTION4);
-		add(boost(MAGIC, 4), MAGIC_POTION1, MAGIC_POTION2, MAGIC_POTION3, MAGIC_POTION4);
-		add(boost(RANGED, perc(.10, 4)), RANGING_POTION1, RANGING_POTION2, RANGING_POTION3, RANGING_POTION4,
+		add(magicPot, MAGIC_POTION1, MAGIC_POTION2, MAGIC_POTION3, MAGIC_POTION4);
+		add(rangingPot, RANGING_POTION1, RANGING_POTION2, RANGING_POTION3, RANGING_POTION4,
 			RANGING_POTION4_23551, RANGING_POTION3_23553, RANGING_POTION2_23555, RANGING_POTION1_23557 /* LMS */);
-		add(combo(2, boost(ATTACK, perc(.10, 3)), boost(STRENGTH, perc(.10, 3))),
-			COMBAT_POTION1, COMBAT_POTION2, COMBAT_POTION3, COMBAT_POTION4,
+		add(combo(2, attackPot, strengthPot), COMBAT_POTION1, COMBAT_POTION2, COMBAT_POTION3, COMBAT_POTION4,
 			COMBAT_POTION4_26150, COMBAT_POTION3_26151, COMBAT_POTION2_26152, COMBAT_POTION1_26153 /* Deadman starter pack */);
-		add(boost(ATTACK, perc(.15, 5)), SUPER_ATTACK1, SUPER_ATTACK2, SUPER_ATTACK3, SUPER_ATTACK4);
-		add(boost(STRENGTH, perc(.15, 5)), SUPER_STRENGTH1, SUPER_STRENGTH2, SUPER_STRENGTH3, SUPER_STRENGTH4);
-		add(boost(DEFENCE, perc(.15, 5)), SUPER_DEFENCE1, SUPER_DEFENCE2, SUPER_DEFENCE3, SUPER_DEFENCE4);
+		add(superAttackPot, SUPER_ATTACK1, SUPER_ATTACK2, SUPER_ATTACK3, SUPER_ATTACK4);
+		add(superStrengthPot, SUPER_STRENGTH1, SUPER_STRENGTH2, SUPER_STRENGTH3, SUPER_STRENGTH4);
+		add(superDefencePot, SUPER_DEFENCE1, SUPER_DEFENCE2, SUPER_DEFENCE3, SUPER_DEFENCE4);
 		add(boost(MAGIC, 3), MAGIC_ESSENCE1, MAGIC_ESSENCE2, MAGIC_ESSENCE3, MAGIC_ESSENCE4);
-		add(combo(3, boost(ATTACK, perc(.15, 5)), boost(STRENGTH, perc(.15, 5)), boost(DEFENCE, perc(.15, 5))), SUPER_COMBAT_POTION1, SUPER_COMBAT_POTION2, SUPER_COMBAT_POTION3, SUPER_COMBAT_POTION4);
+		add(combo(3, superAttackPot, superStrengthPot, superDefencePot), SUPER_COMBAT_POTION1, SUPER_COMBAT_POTION2, SUPER_COMBAT_POTION3, SUPER_COMBAT_POTION4);
 		add(combo(3, boost(ATTACK, perc(.20, 2)), boost(STRENGTH, perc(.12, 2)), heal(PRAYER, perc(.10, 0)), new BoostedStatBoost(DEFENCE, false, perc(.10, -2)), new BoostedStatBoost(HITPOINTS, false, perc(-.12, 0))), ZAMORAK_BREW1, ZAMORAK_BREW2, ZAMORAK_BREW3, ZAMORAK_BREW4);
 		add(new SaradominBrew(0.15, 0.2, 0.1, 2, 2), SARADOMIN_BREW1, SARADOMIN_BREW2, SARADOMIN_BREW3,
 			SARADOMIN_BREW4, SARADOMIN_BREW4_23575, SARADOMIN_BREW3_23577, SARADOMIN_BREW2_23579, SARADOMIN_BREW1_23581 /* LMS */);
-		add(boost(RANGED, perc(.15, 5)), SUPER_RANGING_1, SUPER_RANGING_2, SUPER_RANGING_3, SUPER_RANGING_4);
-		add(boost(MAGIC, perc(.15, 5)), SUPER_MAGIC_POTION_1, SUPER_MAGIC_POTION_2, SUPER_MAGIC_POTION_3, SUPER_MAGIC_POTION_4);
-		add(combo(2, boost(RANGED, perc(0.1, 4)), boost(DEFENCE, perc(0.15, 5))), BASTION_POTION1, BASTION_POTION2, BASTION_POTION3, BASTION_POTION4);
-		add(combo(2, boost(MAGIC, 4), boost(DEFENCE, perc(0.15, 5))), BATTLEMAGE_POTION1, BATTLEMAGE_POTION2, BATTLEMAGE_POTION3, BATTLEMAGE_POTION4);
-		add(combo(boost(MAGIC, 4), heal(HITPOINTS, -10)), DIVINE_MAGIC_POTION1, DIVINE_MAGIC_POTION2, DIVINE_MAGIC_POTION3, DIVINE_MAGIC_POTION4);
-		add(combo(boost(RANGED, perc(.10, 4)), heal(HITPOINTS, -10)), DIVINE_RANGING_POTION1, DIVINE_RANGING_POTION2, DIVINE_RANGING_POTION3, DIVINE_RANGING_POTION4);
-		add(combo(boost(ATTACK, perc(.15, 5)), heal(HITPOINTS, -10)), DIVINE_SUPER_ATTACK_POTION1, DIVINE_SUPER_ATTACK_POTION2, DIVINE_SUPER_ATTACK_POTION3, DIVINE_SUPER_ATTACK_POTION4);
-		add(combo(boost(STRENGTH, perc(.15, 5)), heal(HITPOINTS, -10)), DIVINE_SUPER_STRENGTH_POTION1, DIVINE_SUPER_STRENGTH_POTION2, DIVINE_SUPER_STRENGTH_POTION3, DIVINE_SUPER_STRENGTH_POTION4);
-		add(combo(boost(DEFENCE, perc(.15, 5)), heal(HITPOINTS, -10)), DIVINE_SUPER_DEFENCE_POTION1, DIVINE_SUPER_DEFENCE_POTION2, DIVINE_SUPER_DEFENCE_POTION3, DIVINE_SUPER_DEFENCE_POTION4);
-		add(combo(3, boost(ATTACK, perc(.15, 5)), boost(STRENGTH, perc(.15, 5)), boost(DEFENCE, perc(.15, 5)), heal(HITPOINTS, -10)), DIVINE_SUPER_COMBAT_POTION1, DIVINE_SUPER_COMBAT_POTION2, DIVINE_SUPER_COMBAT_POTION3, DIVINE_SUPER_COMBAT_POTION4);
-		add(combo(2, boost(RANGED, perc(0.1, 4)), boost(DEFENCE, perc(0.15, 5)), heal(HITPOINTS, -10)), DIVINE_BASTION_POTION1, DIVINE_BASTION_POTION2, DIVINE_BASTION_POTION3, DIVINE_BASTION_POTION4);
-		add(combo(2, boost(MAGIC, 4), boost(DEFENCE, perc(0.15, 5)), heal(HITPOINTS, -10)), DIVINE_BATTLEMAGE_POTION1, DIVINE_BATTLEMAGE_POTION2, DIVINE_BATTLEMAGE_POTION3, DIVINE_BATTLEMAGE_POTION4);
-		add(combo(5, boost(ATTACK, perc(0.15, 5)), boost(STRENGTH, perc(0.15, 5)), boost(DEFENCE, perc(0.15, 5)), boost(RANGED, perc(0.1, 4)), boost(MAGIC, perc(0.1, 1))),
+		add(superRangingPot, SUPER_RANGING_1, SUPER_RANGING_2, SUPER_RANGING_3, SUPER_RANGING_4);
+		add(superMagicPot, SUPER_MAGIC_POTION_1, SUPER_MAGIC_POTION_2, SUPER_MAGIC_POTION_3, SUPER_MAGIC_POTION_4);
+		add(combo(2, rangingPot, superDefencePot), BASTION_POTION1, BASTION_POTION2, BASTION_POTION3, BASTION_POTION4);
+		add(combo(2, magicPot, superDefencePot), BATTLEMAGE_POTION1, BATTLEMAGE_POTION2, BATTLEMAGE_POTION3, BATTLEMAGE_POTION4);
+		add(combo(magicPot, divinePot), DIVINE_MAGIC_POTION1, DIVINE_MAGIC_POTION2, DIVINE_MAGIC_POTION3, DIVINE_MAGIC_POTION4);
+		add(combo(rangingPot, divinePot), DIVINE_RANGING_POTION1, DIVINE_RANGING_POTION2, DIVINE_RANGING_POTION3, DIVINE_RANGING_POTION4);
+		add(combo(superAttackPot, divinePot), DIVINE_SUPER_ATTACK_POTION1, DIVINE_SUPER_ATTACK_POTION2, DIVINE_SUPER_ATTACK_POTION3, DIVINE_SUPER_ATTACK_POTION4);
+		add(combo(superStrengthPot, divinePot), DIVINE_SUPER_STRENGTH_POTION1, DIVINE_SUPER_STRENGTH_POTION2, DIVINE_SUPER_STRENGTH_POTION3, DIVINE_SUPER_STRENGTH_POTION4);
+		add(combo(superDefencePot, divinePot), DIVINE_SUPER_DEFENCE_POTION1, DIVINE_SUPER_DEFENCE_POTION2, DIVINE_SUPER_DEFENCE_POTION3, DIVINE_SUPER_DEFENCE_POTION4);
+		add(combo(3, superAttackPot, superStrengthPot, superDefencePot, divinePot), DIVINE_SUPER_COMBAT_POTION1, DIVINE_SUPER_COMBAT_POTION2, DIVINE_SUPER_COMBAT_POTION3, DIVINE_SUPER_COMBAT_POTION4);
+		add(combo(2, rangingPot, superDefencePot, divinePot), DIVINE_BASTION_POTION1, DIVINE_BASTION_POTION2, DIVINE_BASTION_POTION3, DIVINE_BASTION_POTION4);
+		add(combo(2, magicPot, superDefencePot, divinePot), DIVINE_BATTLEMAGE_POTION1, DIVINE_BATTLEMAGE_POTION2, DIVINE_BATTLEMAGE_POTION3, DIVINE_BATTLEMAGE_POTION4);
+		add(combo(5, superAttackPot, superStrengthPot, superDefencePot, rangingPot, imbuedHeart),
 			CASTLEWARS_BREW4, CASTLEWARS_BREW3, CASTLEWARS_BREW2, CASTLEWARS_BREW1);
-		add(combo(2, boost(ATTACK, perc(0.15, 5)), boost(STRENGTH, perc(0.15, 5))),
+		add(combo(2, superAttackPot, superStrengthPot),
 			SUPER_COMBAT_POTION4_23543, SUPER_COMBAT_POTION3_23545, SUPER_COMBAT_POTION2_23547, SUPER_COMBAT_POTION1_23549 /* LMS */);
 		add(new AncientBrew(), ANCIENT_BREW1, ANCIENT_BREW2, ANCIENT_BREW3, ANCIENT_BREW4);
 
 		// Regular overload (NMZ)
-		add(combo(5, boost(ATTACK, perc(.15, 5)), boost(STRENGTH, perc(.15, 5)), boost(DEFENCE, perc(.15, 5)), boost(RANGED, perc(.15, 5)), boost(MAGIC, perc(.15, 5)), heal(HITPOINTS, -50)), OVERLOAD_1, OVERLOAD_2, OVERLOAD_3, OVERLOAD_4);
+		add(combo(5, superAttackPot, superStrengthPot, superDefencePot, superRangingPot, superMagicPot, heal(HITPOINTS, -50)), OVERLOAD_1, OVERLOAD_2, OVERLOAD_3, OVERLOAD_4);
 
 		// Bandages (Castle Wars)
 		add(new CastleWarsBandage(), BANDAGES);
 
 		// Bandages (Theatre of Blood entry mode)
-		add(combo(8, food(20), heal(PRAYER, perc(0.25, 5)), heal(RUN_ENERGY, 20), boost(ATTACK, perc(0.15, 4)), boost(STRENGTH, perc(0.15, 4)), boost(DEFENCE, perc(0.15, 4)), boost(RANGED, perc(0.1, 4)), boost(MAGIC, 4)), BANDAGES_25730);
+		add(combo(8, food(20), heal(PRAYER, perc(0.25, 5)), heal(RUN_ENERGY, 20), boost(ATTACK, perc(0.15, 4)), boost(STRENGTH, perc(0.15, 4)), boost(DEFENCE, perc(0.15, 4)), rangingPot, magicPot), BANDAGES_25730);
 
 		// Recovery potions
 		add(combo(5, heal(ATTACK, perc(.30, 10)), heal(STRENGTH, perc(.30, 10)), heal(DEFENCE, perc(.30, 10)), heal(RANGED, perc(.30, 10)), heal(MAGIC, perc(.30, 10))), RESTORE_POTION1, RESTORE_POTION2, RESTORE_POTION3, RESTORE_POTION4);
@@ -221,24 +232,27 @@ public class ItemStatChanges
 		add(new StaminaPotion(), STAMINA_POTION1, STAMINA_POTION2, STAMINA_POTION3, STAMINA_POTION4);
 
 		// Raids potions (+)
-		add(combo(5, boost(ATTACK, perc(.16, 6)), boost(STRENGTH, perc(.16, 6)), boost(DEFENCE, perc(.16, 6)), boost(RANGED, perc(.16, 6)), boost(MAGIC, perc(.16, 6)), heal(HITPOINTS, -50)), OVERLOAD_1_20993, OVERLOAD_2_20994, OVERLOAD_3_20995, OVERLOAD_4_20996);
-		add(combo(3, boost(ATTACK, perc(.16, 6)), boost(STRENGTH, perc(.16, 6)), boost(DEFENCE, perc(.16, 6))), ELDER_1_20921, ELDER_2_20922, ELDER_3_20923, ELDER_4_20924);
-		add(combo(2, boost(RANGED, perc(.16, 6)), boost(DEFENCE, perc(.16, 6))), TWISTED_1_20933, TWISTED_2_20934, TWISTED_3_20935, TWISTED_4_20936);
-		add(combo(2, boost(MAGIC, perc(.16, 6)), boost(DEFENCE, perc(.16, 6))), KODAI_1_20945, KODAI_2_20946, KODAI_3_20947, KODAI_4_20948);
+		final DeltaPercentage coxPlusPotionBoost = perc(.16, 6);
+		add(combo(5, boost(ATTACK, coxPlusPotionBoost), boost(STRENGTH, coxPlusPotionBoost), boost(DEFENCE, coxPlusPotionBoost), boost(RANGED, coxPlusPotionBoost), boost(MAGIC, coxPlusPotionBoost), heal(HITPOINTS, -50)), OVERLOAD_1_20993, OVERLOAD_2_20994, OVERLOAD_3_20995, OVERLOAD_4_20996);
+		add(combo(3, boost(ATTACK, coxPlusPotionBoost), boost(STRENGTH, coxPlusPotionBoost), boost(DEFENCE, coxPlusPotionBoost)), ELDER_1_20921, ELDER_2_20922, ELDER_3_20923, ELDER_4_20924);
+		add(combo(2, boost(RANGED, coxPlusPotionBoost), boost(DEFENCE, coxPlusPotionBoost)), TWISTED_1_20933, TWISTED_2_20934, TWISTED_3_20935, TWISTED_4_20936);
+		add(combo(2, boost(MAGIC, coxPlusPotionBoost), boost(DEFENCE, coxPlusPotionBoost)), KODAI_1_20945, KODAI_2_20946, KODAI_3_20947, KODAI_4_20948);
 		add(new SuperRestore(.30, 11), REVITALISATION_1_20957, REVITALISATION_2_20958, REVITALISATION_3_20959, REVITALISATION_4_20960);
 		add(new SaradominBrew(0.15, 0.2, 0.1, 5, 4), XERICS_AID_1_20981, XERICS_AID_2_20982, XERICS_AID_3_20983, XERICS_AID_4_20984);
 
 		// Raids potions
-		add(combo(5, boost(ATTACK, perc(.13, 5)), boost(STRENGTH, perc(.13, 5)), boost(DEFENCE, perc(.13, 5)), boost(RANGED, perc(.13, 5)), boost(MAGIC, perc(.13, 5)), heal(HITPOINTS, -50)), OVERLOAD_1_20989, OVERLOAD_2_20990, OVERLOAD_3_20991, OVERLOAD_4_20992);
-		add(combo(3, boost(ATTACK, perc(.13, 5)), boost(STRENGTH, perc(.13, 5)), boost(DEFENCE, perc(.13, 5))), ELDER_POTION_1, ELDER_POTION_2, ELDER_POTION_3, ELDER_POTION_4);
-		add(combo(2, boost(RANGED, perc(.13, 5)), boost(DEFENCE, perc(.13, 5))), TWISTED_POTION_1, TWISTED_POTION_2, TWISTED_POTION_3, TWISTED_POTION_4);
-		add(combo(2, boost(MAGIC, perc(.13, 5)), boost(DEFENCE, perc(.13, 5))), KODAI_POTION_1, KODAI_POTION_2, KODAI_POTION_3, KODAI_POTION_4);
+		final DeltaPercentage coxPotionBoost = perc(.13, 5);
+		add(combo(5, boost(ATTACK, coxPotionBoost), boost(STRENGTH, coxPotionBoost), boost(DEFENCE, coxPotionBoost), boost(RANGED, coxPotionBoost), boost(MAGIC, coxPotionBoost), heal(HITPOINTS, -50)), OVERLOAD_1_20989, OVERLOAD_2_20990, OVERLOAD_3_20991, OVERLOAD_4_20992);
+		add(combo(3, boost(ATTACK, coxPotionBoost), boost(STRENGTH, coxPotionBoost), boost(DEFENCE, coxPotionBoost)), ELDER_POTION_1, ELDER_POTION_2, ELDER_POTION_3, ELDER_POTION_4);
+		add(combo(2, boost(RANGED, coxPotionBoost), boost(DEFENCE, coxPotionBoost)), TWISTED_POTION_1, TWISTED_POTION_2, TWISTED_POTION_3, TWISTED_POTION_4);
+		add(combo(2, boost(MAGIC, coxPotionBoost), boost(DEFENCE, coxPotionBoost)), KODAI_POTION_1, KODAI_POTION_2, KODAI_POTION_3, KODAI_POTION_4);
 
 		// Raids potions (-)
-		add(combo(5, boost(ATTACK, perc(.10, 4)), boost(STRENGTH, perc(.10, 4)), boost(DEFENCE, perc(.10, 4)), boost(RANGED, perc(.10, 4)), boost(MAGIC, perc(.10, 4)), heal(HITPOINTS, -50)), OVERLOAD_1_20985, OVERLOAD_2_20986, OVERLOAD_3_20987, OVERLOAD_4_20988);
-		add(combo(3, boost(ATTACK, perc(.10, 4)), boost(STRENGTH, perc(.10, 4)), boost(DEFENCE, perc(.10, 4))), ELDER_1, ELDER_2, ELDER_3, ELDER_4);
-		add(combo(3, boost(RANGED, perc(.10, 4)), boost(DEFENCE, perc(.10, 4))), TWISTED_1, TWISTED_2, TWISTED_3, TWISTED_4);
-		add(combo(3, boost(MAGIC, perc(.10, 4)), boost(DEFENCE, perc(.10, 4))), KODAI_1, KODAI_2, KODAI_3, KODAI_4);
+		final DeltaPercentage coxMinusPotionBoost = perc(.10, 4);
+		add(combo(5, boost(ATTACK, coxMinusPotionBoost), boost(STRENGTH, coxMinusPotionBoost), boost(DEFENCE, coxMinusPotionBoost), boost(RANGED, coxMinusPotionBoost), boost(MAGIC, coxMinusPotionBoost), heal(HITPOINTS, -50)), OVERLOAD_1_20985, OVERLOAD_2_20986, OVERLOAD_3_20987, OVERLOAD_4_20988);
+		add(combo(3, boost(ATTACK, coxMinusPotionBoost), boost(STRENGTH, coxMinusPotionBoost), boost(DEFENCE, coxMinusPotionBoost)), ELDER_1, ELDER_2, ELDER_3, ELDER_4);
+		add(combo(3, boost(RANGED, coxMinusPotionBoost), boost(DEFENCE, coxMinusPotionBoost)), TWISTED_1, TWISTED_2, TWISTED_3, TWISTED_4);
+		add(combo(3, boost(MAGIC, coxMinusPotionBoost), boost(DEFENCE, coxMinusPotionBoost)), KODAI_1, KODAI_2, KODAI_3, KODAI_4);
 
 		// Skill potions
 		add(boost(AGILITY, 3), AGILITY_POTION1, AGILITY_POTION2, AGILITY_POTION3, AGILITY_POTION4);
@@ -265,7 +279,7 @@ public class ItemStatChanges
 		// Other
 		add(combo(range(food(1), food(3)), heal(RUN_ENERGY, 10)), PURPLE_SWEETS_10476);
 		add(new SpicyStew(), SPICY_STEW);
-		add(boost(MAGIC, perc(.10, 1)), IMBUED_HEART);
+		add(imbuedHeart, IMBUED_HEART);
 		add(combo(boost(ATTACK, 2), boost(STRENGTH, 1), heal(PRAYER, 1), heal(DEFENCE, -1)), JANGERBERRIES);
 		add(new CaveNightshade(), CAVE_NIGHTSHADE);
 
