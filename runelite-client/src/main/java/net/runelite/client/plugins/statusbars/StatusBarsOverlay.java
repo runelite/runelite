@@ -34,6 +34,7 @@ import java.util.EnumMap;
 import java.util.Map;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.Experience;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Point;
 import net.runelite.api.Prayer;
@@ -117,7 +118,7 @@ class StatusBarsOverlay extends Overlay
 	{
 		barRenderers.put(BarMode.DISABLED, null);
 		barRenderers.put(BarMode.HITPOINTS, new BarRenderer(
-			() -> client.getRealSkillLevel(Skill.HITPOINTS),
+			() -> inLms() ? Experience.MAX_REAL_LEVEL : client.getRealSkillLevel(Skill.HITPOINTS),
 			() -> client.getBoostedSkillLevel(Skill.HITPOINTS),
 			() -> getRestoreValue(Skill.HITPOINTS.getName()),
 			() ->
@@ -170,7 +171,7 @@ class StatusBarsOverlay extends Overlay
 			}
 		));
 		barRenderers.put(BarMode.PRAYER, new BarRenderer(
-			() -> client.getRealSkillLevel(Skill.PRAYER),
+			() -> inLms() ? Experience.MAX_REAL_LEVEL : client.getRealSkillLevel(Skill.PRAYER),
 			() -> client.getBoostedSkillLevel(Skill.PRAYER),
 			() -> getRestoreValue(Skill.PRAYER.getName()),
 			() ->
@@ -348,5 +349,10 @@ class StatusBarsOverlay extends Overlay
 		}
 
 		return ImageUtil.resizeCanvas(image, ICON_DIMENSIONS.width, ICON_DIMENSIONS.height);
+	}
+
+	private boolean inLms()
+	{
+		return client.getWidget(WidgetInfo.LMS_KDA) != null;
 	}
 }
