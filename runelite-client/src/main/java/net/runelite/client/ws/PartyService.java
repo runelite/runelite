@@ -25,10 +25,14 @@
  */
 package net.runelite.client.ws;
 
+import com.google.common.base.CharMatcher;
+import com.google.common.hash.Hashing;
 import java.awt.image.BufferedImage;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 import java.util.UUID;
 import javax.annotation.Nullable;
@@ -37,6 +41,9 @@ import javax.inject.Singleton;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.api.ItemComposition;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.chat.ChatMessageManager;
@@ -61,7 +68,9 @@ public class PartyService
 	private static final int MAX_MESSAGE_LEN = 150;
 	private static final int MAX_USERNAME_LEN = 32; // same as Discord
 	private static final String USERNAME = "rluser-" + new Random().nextInt(Integer.MAX_VALUE);
+	private static final String ALPHABET = "bcdfghjklmnpqrstvwxyz";
 
+	private final Client client;
 	private final WSClient wsClient;
 	private final SessionManager sessionManager;
 	private final EventBus eventBus;
@@ -69,14 +78,14 @@ public class PartyService
 	private final List<PartyMember> members = new ArrayList<>();
 
 	@Getter
-	private UUID localPartyId = UUID.randomUUID();
-
-	@Getter
 	private UUID partyId; // secret party id
+	@Getter
+	private String partyPassphrase;
 
 	@Inject
-	private PartyService(final WSClient wsClient, final SessionManager sessionManager, final EventBus eventBus, final ChatMessageManager chat)
+	private PartyService(final Client client, final WSClient wsClient, final SessionManager sessionManager, final EventBus eventBus, final ChatMessageManager chat)
 	{
+		this.client = client;
 		this.wsClient = wsClient;
 		this.sessionManager = sessionManager;
 		this.eventBus = eventBus;
@@ -84,28 +93,89 @@ public class PartyService
 		eventBus.register(this);
 	}
 
-	public void changeParty(@Nullable UUID newParty)
+	public String generatePasspharse()
+	{
+		assert client.isClientThread();
+
+		Random r = new Random();
+		StringBuilder sb = new StringBuilder();
+
+		if (client.getGameState().getState() >= GameState.LOGIN_SCREEN.getState())
+		{
+			int len = 0;
+			final CharMatcher matcher = CharMatcher.javaLetter();
+			do
+			{
+				final int itemId = r.nextInt(client.getItemCount());
+				final ItemComposition def = client.getItemDefinition(itemId);
+				final String name = def.getName();
+				if (name == null || name.isEmpty() || name.equals("null"))
+				{
+					continue;
+				}
+
+				final String[] split = name.split(" ");
+				final String token = split[r.nextInt(split.length)];
+				if (!matcher.matchesAllOf(token) || token.length() <= 2)
+				{
+					continue;
+				}
+
+				if (sb.length() > 0)
+				{
+					sb.append('-');
+				}
+				sb.append(token.toLowerCase(Locale.US));
+				++len;
+			}
+			while (len < 4);
+		}
+		else
+		{
+			int len = 0;
+			do
+			{
+				if (sb.length() > 0)
+				{
+					sb.append('-');
+				}
+				for (int i = 0; i < 5; ++i)
+				{
+					sb.append(ALPHABET.charAt(r.nextInt(ALPHABET.length())));
+				}
+				++len;
+			}
+			while (len < 4);
+		}
+
+		String partyPassphrase = sb.toString();
+		log.debug("Generated party passpharse {}", partyPassphrase);
+		return partyPassphrase;
+	}
+
+	public void changeParty(@Nullable String passphrase)
 	{
 		if (wsClient.sessionExists())
 		{
 			wsClient.send(new Part());
 		}
 
-		log.debug("Party change to {}", newParty);
+		UUID id = passphrase != null ? passphraseToId(passphrase) : null;
+
+		log.debug("Party change to {} (id {})", passphrase, id);
 		members.clear();
-		partyId = newParty;
+		partyId = id;
+		partyPassphrase = passphrase;
 
 		if (partyId == null)
 		{
-			localPartyId = UUID.randomUUID(); // cycle local party id so that a new party is created now
-
 			// close the websocket if the session id isn't for an account
 			if (sessionManager.getAccountSession() == null)
 			{
 				wsClient.changeSession(null);
 			}
 
-			eventBus.post(new PartyChanged(partyId));
+			eventBus.post(new PartyChanged(partyPassphrase, partyId));
 			return;
 		}
 
@@ -118,7 +188,7 @@ public class PartyService
 			wsClient.changeSession(uuid);
 		}
 
-		eventBus.post(new PartyChanged(partyId));
+		eventBus.post(new PartyChanged(partyPassphrase, partyId));
 		wsClient.send(new Join(partyId, USERNAME));
 	}
 
@@ -221,11 +291,6 @@ public class PartyService
 		return partyId != null;
 	}
 
-	public boolean isPartyOwner()
-	{
-		return localPartyId.equals(partyId);
-	}
-
 	public void setPartyMemberAvatar(UUID memberID, BufferedImage image)
 	{
 		final PartyMember memberById = getMemberById(memberID);
@@ -245,5 +310,14 @@ public class PartyService
 			s = s.substring(0, MAX_USERNAME_LEN);
 		}
 		return s;
+	}
+
+	private static UUID passphraseToId(String passphrase)
+	{
+		return UUID.nameUUIDFromBytes(
+			Hashing.sha256().hashBytes(
+				passphrase.getBytes(StandardCharsets.UTF_8)
+			).asBytes()
+		);
 	}
 }

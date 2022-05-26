@@ -493,7 +493,7 @@ public class PartyPlugin extends Plugin
 
 		if (event.getPartyId() != null)
 		{
-			config.setPreviousPartyId(String.valueOf(event.getPartyId()));
+			config.setPreviousPartyId(event.getPassphrase());
 		}
 
 		SwingUtilities.invokeLater(panel::removeAllMembers);
@@ -507,8 +507,7 @@ public class PartyPlugin extends Plugin
 			return;
 		}
 
-		chatMessageManager.queue(QueuedMessage.builder().type(ChatMessageType.GAMEMESSAGE).value("Party " + party.getPartyId()).build());
-		chatMessageManager.queue(QueuedMessage.builder().type(ChatMessageType.GAMEMESSAGE).value("Local Party " + party.getLocalPartyId()).build());
+		chatMessageManager.queue(QueuedMessage.builder().type(ChatMessageType.GAMEMESSAGE).value("Party " + party.getPartyPassphrase() + " ID " + party.getPartyId()).build());
 		chatMessageManager.queue(QueuedMessage.builder().type(ChatMessageType.GAMEMESSAGE).value("Local ID " + party.getLocalMember().getMemberId()).build());
 		for (PartyMember partyMember : party.getMembers())
 		{
