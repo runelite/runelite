@@ -29,6 +29,7 @@ package net.runelite.client.plugins.timers;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
@@ -45,7 +46,6 @@ import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import static net.runelite.api.ItemID.FIRE_CAPE;
 import static net.runelite.api.ItemID.INFERNAL_CAPE;
-import net.runelite.api.MenuAction;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import net.runelite.api.Player;
@@ -152,11 +152,12 @@ public class TimersPlugin extends Plugin
 	private int lastPoisonVarp;
 	private int lastPvpVarb;
 	private int lastCorruptionVarb;
+	private int lastHomeTeleport;
+	private int lastMinigameTeleport;
 	private int lastImbuedHeartVarb;
 	private boolean imbuedHeartTimerActive;
 	private int nextPoisonTick;
 	private WorldPoint lastPoint;
-	private TeleportWidget lastTeleportClicked;
 	private int lastAnimation;
 	private boolean widgetHiddenChangedOnPvpWorld;
 	private ElapsedTimer tzhaarTimer;
@@ -185,6 +186,11 @@ public class TimersPlugin extends Plugin
 	@Override
 	public void startUp()
 	{
+		if (config.showHomeMinigameTeleports())
+		{
+			checkTeleport(VarPlayer.LAST_HOME_TELEPORT);
+			checkTeleport(VarPlayer.LAST_MINIGAME_TELEPORT);
+		}
 	}
 
 	@Override
@@ -193,7 +199,6 @@ public class TimersPlugin extends Plugin
 		infoBoxManager.removeIf(t -> t instanceof TimerTimer);
 		lastRaidVarb = -1;
 		lastPoint = null;
-		lastTeleportClicked = null;
 		lastAnimation = -1;
 		widgetHiddenChangedOnPvpWorld = false;
 		lastPoisonVarp = 0;
@@ -202,6 +207,8 @@ public class TimersPlugin extends Plugin
 		staminaTimer = null;
 		imbuedHeartTimerActive = false;
 		lastImbuedHeartVarb = 0;
+		lastHomeTeleport = 0;
+		lastMinigameTeleport = 0;
 	}
 
 	@Subscribe
@@ -214,6 +221,8 @@ public class TimersPlugin extends Plugin
 		int pvpVarb = client.getVarbitValue(Varbits.PVP_SPEC_ORB);
 		int corruptionCooldownVarb = client.getVarbitValue(Varbits.CORRUPTION_COOLDOWN);
 		int imbuedHeartCooldownVarb = client.getVarbitValue(Varbits.IMBUED_HEART_COOLDOWN);
+		int homeTeleportVarp = client.getVar(VarPlayer.LAST_HOME_TELEPORT);
+		int minigameTeleportVarp = client.getVar(VarPlayer.LAST_MINIGAME_TELEPORT);
 
 		if (lastRaidVarb != raidVarb)
 		{
@@ -320,6 +329,18 @@ public class TimersPlugin extends Plugin
 
 			lastImbuedHeartVarb = imbuedHeartCooldownVarb;
 		}
+
+		if (lastHomeTeleport != homeTeleportVarp)
+		{
+			checkTeleport(VarPlayer.LAST_HOME_TELEPORT);
+			lastHomeTeleport = homeTeleportVarp;
+		}
+
+		if (lastMinigameTeleport != minigameTeleportVarp)
+		{
+			checkTeleport(VarPlayer.LAST_MINIGAME_TELEPORT);
+			lastMinigameTeleport = minigameTeleportVarp;
+		}
 	}
 
 	@Subscribe
@@ -334,6 +355,11 @@ public class TimersPlugin extends Plugin
 		{
 			removeGameTimer(HOME_TELEPORT);
 			removeGameTimer(MINIGAME_TELEPORT);
+		}
+		else
+		{
+			checkTeleport(VarPlayer.LAST_HOME_TELEPORT);
+			checkTeleport(VarPlayer.LAST_MINIGAME_TELEPORT);
 		}
 
 		if (!config.showAntiFire())
@@ -489,15 +515,6 @@ public class TimersPlugin extends Plugin
 				// Needs menu option hook because mixes use a common drink message, distinct from their standard potion messages
 				createGameTimer(EXSUPERANTIFIRE);
 				return;
-			}
-		}
-
-		if (event.getMenuAction() == MenuAction.CC_OP)
-		{
-			TeleportWidget teleportWidget = TeleportWidget.of(event.getParam1());
-			if (teleportWidget != null)
-			{
-				lastTeleportClicked = teleportWidget;
 			}
 		}
 	}
@@ -877,6 +894,37 @@ public class TimersPlugin extends Plugin
 		}
 	}
 
+	private void checkTeleport(VarPlayer varPlayer)
+	{
+		final GameTimer teleport;
+		switch (varPlayer)
+		{
+			case LAST_HOME_TELEPORT:
+				teleport = HOME_TELEPORT;
+				break;
+			case LAST_MINIGAME_TELEPORT:
+				teleport = MINIGAME_TELEPORT;
+				break;
+			default:
+				// Other var changes are not handled as teleports
+				return;
+		}
+
+		int lastTeleport = client.getVar(varPlayer);
+		long lastTeleportSeconds = (long) lastTeleport * 60;
+		Instant teleportExpireInstant = Instant.ofEpochSecond(lastTeleportSeconds).plus(teleport.getDuration().getSeconds(), ChronoUnit.SECONDS);
+		Duration remainingTime = Duration.between(Instant.now(), teleportExpireInstant);
+
+		if (remainingTime.getSeconds() > 0)
+		{
+			createGameTimer(teleport, remainingTime);
+		}
+		else
+		{
+			removeGameTimer(teleport);
+		}
+	}
+
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
@@ -954,23 +1002,6 @@ public class TimersPlugin extends Plugin
 		if (actor != client.getLocalPlayer())
 		{
 			return;
-		}
-
-		if (config.showHomeMinigameTeleports()
-			&& client.getLocalPlayer().getAnimation() == AnimationID.IDLE
-			&& (lastAnimation == AnimationID.BOOK_HOME_TELEPORT_5
-			|| lastAnimation == AnimationID.COW_HOME_TELEPORT_6
-			|| lastAnimation == AnimationID.LEAGUE_HOME_TELEPORT_6
-			|| lastAnimation == AnimationID.SHATTERED_LEAGUE_HOME_TELEPORT_6))
-		{
-			if (lastTeleportClicked == TeleportWidget.HOME_TELEPORT)
-			{
-				createGameTimer(HOME_TELEPORT);
-			}
-			else if (lastTeleportClicked == TeleportWidget.MINIGAME_TELEPORT)
-			{
-				createGameTimer(MINIGAME_TELEPORT);
-			}
 		}
 
 		if (config.showDFSSpecial() && lastAnimation == AnimationID.DRAGONFIRE_SHIELD_SPECIAL)
