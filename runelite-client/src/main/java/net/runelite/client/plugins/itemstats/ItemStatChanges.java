@@ -36,6 +36,7 @@ import net.runelite.client.plugins.itemstats.delta.DeltaPercentage;
 import net.runelite.client.plugins.itemstats.food.Anglerfish;
 import net.runelite.client.plugins.itemstats.potions.AncientBrew;
 import net.runelite.client.plugins.itemstats.potions.GauntletPotion;
+import net.runelite.client.plugins.itemstats.potions.MixedPotion;
 import net.runelite.client.plugins.itemstats.potions.PrayerPotion;
 import net.runelite.client.plugins.itemstats.potions.SaradominBrew;
 import net.runelite.client.plugins.itemstats.potions.StaminaPotion;
@@ -64,7 +65,8 @@ public class ItemStatChanges
 			PINEAPPLE_RING, PINEAPPLE_CHUNKS, SPICY_SAUCE, CHEESE, SPINACH_ROLL, LEMON, LEMON_CHUNKS, LEMON_SLICES,
 			LIME, LIME_CHUNKS, LIME_SLICES, DWELLBERRIES, KING_WORM, MINCED_MEAT, SPICY_TOMATO, WHITE_PEARL);
 		add(food(3), SHRIMPS, COOKED_MEAT, COOKED_CHICKEN, ROE, CHOCOLATE_BAR, UGTHANKI_MEAT, TOADS_LEGS, ONION__TOMATO,
-			SPICY_MINCED_MEAT, SLICE_OF_BIRTHDAY_CAKE, LOCUST_MEAT);
+			SPICY_MINCED_MEAT, SLICE_OF_BIRTHDAY_CAKE, LOCUST_MEAT, RELICYMS_MIX1, RELICYMS_MIX2, ANTIPOISON_MIX1,
+			ANTIPOISON_MIX2);
 		add(food(4), SARDINE, CAKE, _23_CAKE, SLICE_OF_CAKE, CHOCOLATEY_MILK, BAKED_POTATO, EDIBLE_SEAWEED, MOONLIGHT_MEAD,
 			MOONLIGHT_MEAD4, MOONLIGHT_MEAD3, MOONLIGHT_MEAD2, MOONLIGHT_MEAD1, MONKEY_NUTS);
 		add(food(5), BREAD, HERRING, CHOCOLATE_CAKE, _23_CHOCOLATE_CAKE, CHOCOLATE_SLICE, COOKED_RABBIT, CHILLI_CON_CARNE,
@@ -72,7 +74,9 @@ public class ItemStatChanges
 			SCRAMBLED_EGG, MONKEY_BAR, TCHIKI_MONKEY_NUTS, TCHIKI_NUT_PASTE, RED_BANANA, SLICED_RED_BANANA);
 		add(food(6), CHOCICE, MACKEREL, MEAT_PIE, HALF_A_MEAT_PIE, GUANIC_BAT_0, ROAST_BIRD_MEAT, SQUARE_SANDWICH,
 			ROLL, BAGUETTE, TRIANGLE_SANDWICH, GIANT_CARP, MOONLIGHT_MEADM, MOONLIGHT_MEADM4, MOONLIGHT_MEADM3, MOONLIGHT_MEADM2,
-			MOONLIGHT_MEADM1, STEAK_SANDWICH, GIANT_FROG_LEGS);
+			MOONLIGHT_MEADM1, STEAK_SANDWICH, GIANT_FROG_LEGS, ANTIFIRE_MIX1, ANTIFIRE_MIX2, EXTENDED_ANTIFIRE_MIX1,
+			EXTENDED_ANTIFIRE_MIX2, SUPER_ANTIFIRE_MIX1, SUPER_ANTIFIRE_MIX2, EXTENDED_SUPER_ANTIFIRE_MIX1,
+			EXTENDED_SUPER_ANTIFIRE_MIX2, ANTIPOISON_SUPERMIX1, ANTIPOISON_SUPERMIX2, ANTIDOTE_MIX1, ANTIDOTE_MIX2);
 		add(food(7), TROUT, COD, PLAIN_PIZZA, _12_PLAIN_PIZZA, APPLE_PIE, HALF_AN_APPLE_PIE, ROAST_RABBIT,
 			PREMADE_CH_CRUNCH, CHOCCHIP_CRUNCHIES, PREMADE_SY_CRUNCH, SPICY_CRUNCHIES);
 		add(food(8), PIKE, ROAST_BEAST_MEAT, MEAT_PIZZA, _12_MEAT_PIZZA, PREMADE_WM_CRUN, WORM_CRUNCHIES, PREMADE_TD_CRUNCH,
@@ -167,6 +171,9 @@ public class ItemStatChanges
 		// Combat potions
 		final SingleEffect attackPot = boost(ATTACK, perc(.10, 3));
 		final SingleEffect strengthPot = boost(STRENGTH, perc(.10, 3));
+		final SingleEffect defencePot = boost(DEFENCE, perc(.10, 3));
+		final Effect combatPot = combo(2, attackPot, strengthPot);
+		final Effect magicEssence = boost(MAGIC, 3);
 		final SingleEffect magicPot = boost(MAGIC, 4);
 		final SingleEffect imbuedHeart = boost(MAGIC, perc(.10, 1));
 		final SingleEffect rangingPot = boost(RANGED, perc(.10, 4));
@@ -176,20 +183,22 @@ public class ItemStatChanges
 		final SingleEffect superMagicPot = boost(MAGIC, perc(.15, 5));
 		final SingleEffect superRangingPot = boost(RANGED, perc(.15, 5));
 		final SingleEffect divinePot = heal(HITPOINTS, -10);
+		final Effect zamorakBrew = combo(3, boost(ATTACK, perc(.20, 2)), boost(STRENGTH, perc(.12, 2)), heal(PRAYER, perc(.10, 0)), new BoostedStatBoost(DEFENCE, false, perc(.10, -2)), new BoostedStatBoost(HITPOINTS, false, perc(-.12, 0)));
+		final Effect ancientBrew = new AncientBrew();
 		add(attackPot, ATTACK_POTION1, ATTACK_POTION2, ATTACK_POTION3, ATTACK_POTION4);
 		add(strengthPot, STRENGTH_POTION1, STRENGTH_POTION2, STRENGTH_POTION3, STRENGTH_POTION4);
-		add(boost(DEFENCE, perc(.10, 3)), DEFENCE_POTION1, DEFENCE_POTION2, DEFENCE_POTION3, DEFENCE_POTION4);
+		add(defencePot, DEFENCE_POTION1, DEFENCE_POTION2, DEFENCE_POTION3, DEFENCE_POTION4);
 		add(magicPot, MAGIC_POTION1, MAGIC_POTION2, MAGIC_POTION3, MAGIC_POTION4);
 		add(rangingPot, RANGING_POTION1, RANGING_POTION2, RANGING_POTION3, RANGING_POTION4,
 			RANGING_POTION4_23551, RANGING_POTION3_23553, RANGING_POTION2_23555, RANGING_POTION1_23557 /* LMS */);
-		add(combo(2, attackPot, strengthPot), COMBAT_POTION1, COMBAT_POTION2, COMBAT_POTION3, COMBAT_POTION4,
+		add(combatPot, COMBAT_POTION1, COMBAT_POTION2, COMBAT_POTION3, COMBAT_POTION4,
 			COMBAT_POTION4_26150, COMBAT_POTION3_26151, COMBAT_POTION2_26152, COMBAT_POTION1_26153 /* Deadman starter pack */);
 		add(superAttackPot, SUPER_ATTACK1, SUPER_ATTACK2, SUPER_ATTACK3, SUPER_ATTACK4);
 		add(superStrengthPot, SUPER_STRENGTH1, SUPER_STRENGTH2, SUPER_STRENGTH3, SUPER_STRENGTH4);
 		add(superDefencePot, SUPER_DEFENCE1, SUPER_DEFENCE2, SUPER_DEFENCE3, SUPER_DEFENCE4);
-		add(boost(MAGIC, 3), MAGIC_ESSENCE1, MAGIC_ESSENCE2, MAGIC_ESSENCE3, MAGIC_ESSENCE4);
+		add(magicEssence, MAGIC_ESSENCE1, MAGIC_ESSENCE2, MAGIC_ESSENCE3, MAGIC_ESSENCE4);
 		add(combo(3, superAttackPot, superStrengthPot, superDefencePot), SUPER_COMBAT_POTION1, SUPER_COMBAT_POTION2, SUPER_COMBAT_POTION3, SUPER_COMBAT_POTION4);
-		add(combo(3, boost(ATTACK, perc(.20, 2)), boost(STRENGTH, perc(.12, 2)), heal(PRAYER, perc(.10, 0)), new BoostedStatBoost(DEFENCE, false, perc(.10, -2)), new BoostedStatBoost(HITPOINTS, false, perc(-.12, 0))), ZAMORAK_BREW1, ZAMORAK_BREW2, ZAMORAK_BREW3, ZAMORAK_BREW4);
+		add(zamorakBrew, ZAMORAK_BREW1, ZAMORAK_BREW2, ZAMORAK_BREW3, ZAMORAK_BREW4);
 		add(new SaradominBrew(0.15, 0.2, 0.1, 2, 2), SARADOMIN_BREW1, SARADOMIN_BREW2, SARADOMIN_BREW3,
 			SARADOMIN_BREW4, SARADOMIN_BREW4_23575, SARADOMIN_BREW3_23577, SARADOMIN_BREW2_23579, SARADOMIN_BREW1_23581 /* LMS */);
 		add(superRangingPot, SUPER_RANGING_1, SUPER_RANGING_2, SUPER_RANGING_3, SUPER_RANGING_4);
@@ -208,7 +217,21 @@ public class ItemStatChanges
 			CASTLEWARS_BREW4, CASTLEWARS_BREW3, CASTLEWARS_BREW2, CASTLEWARS_BREW1);
 		add(combo(2, superAttackPot, superStrengthPot),
 			SUPER_COMBAT_POTION4_23543, SUPER_COMBAT_POTION3_23545, SUPER_COMBAT_POTION2_23547, SUPER_COMBAT_POTION1_23549 /* LMS */);
-		add(new AncientBrew(), ANCIENT_BREW1, ANCIENT_BREW2, ANCIENT_BREW3, ANCIENT_BREW4);
+		add(ancientBrew, ANCIENT_BREW1, ANCIENT_BREW2, ANCIENT_BREW3, ANCIENT_BREW4);
+
+		// Mixed combat potions
+		add(new MixedPotion(3, attackPot), ATTACK_MIX1, ATTACK_MIX2);
+		add(new MixedPotion(3, strengthPot), STRENGTH_MIX1, STRENGTH_MIX2);
+		add(new MixedPotion(6, defencePot), DEFENCE_MIX1, DEFENCE_MIX2);
+		add(new MixedPotion(6, magicPot), MAGIC_MIX1, MAGIC_MIX2);
+		add(new MixedPotion(6, rangingPot), RANGING_MIX1, RANGING_MIX2);
+		add(new MixedPotion(6, combatPot), COMBAT_MIX1, COMBAT_MIX2);
+		add(new MixedPotion(6, superAttackPot), SUPERATTACK_MIX1, SUPERATTACK_MIX2);
+		add(new MixedPotion(6, superStrengthPot), SUPER_STR_MIX1, SUPER_STR_MIX2);
+		add(new MixedPotion(6, superDefencePot), SUPER_DEF_MIX1, SUPER_DEF_MIX2);
+		add(new MixedPotion(6, magicEssence), MAGIC_ESSENCE_MIX1, MAGIC_ESSENCE_MIX2);
+		add(new MixedPotion(6, zamorakBrew), ZAMORAK_MIX1, ZAMORAK_MIX2);
+		add(new MixedPotion(6, ancientBrew), ANCIENT_MIX1, ANCIENT_MIX2);
 
 		// Regular overload (NMZ)
 		add(combo(5, superAttackPot, superStrengthPot, superDefencePot, superRangingPot, superMagicPot, heal(HITPOINTS, -50)), OVERLOAD_1, OVERLOAD_2, OVERLOAD_3, OVERLOAD_4);
@@ -220,16 +243,30 @@ public class ItemStatChanges
 		add(combo(8, food(20), heal(PRAYER, perc(0.25, 5)), heal(RUN_ENERGY, 20), boost(ATTACK, perc(0.15, 4)), boost(STRENGTH, perc(0.15, 4)), boost(DEFENCE, perc(0.15, 4)), rangingPot, magicPot), BANDAGES_25730);
 
 		// Recovery potions
-		add(combo(5, heal(ATTACK, perc(.30, 10)), heal(STRENGTH, perc(.30, 10)), heal(DEFENCE, perc(.30, 10)), heal(RANGED, perc(.30, 10)), heal(MAGIC, perc(.30, 10))), RESTORE_POTION1, RESTORE_POTION2, RESTORE_POTION3, RESTORE_POTION4);
-		add(heal(RUN_ENERGY, 10), ENERGY_POTION1, ENERGY_POTION2, ENERGY_POTION3, ENERGY_POTION4);
-		add(new PrayerPotion(7), PRAYER_POTION1, PRAYER_POTION2, PRAYER_POTION3, PRAYER_POTION4);
-		add(heal(RUN_ENERGY, 20), SUPER_ENERGY1, SUPER_ENERGY2, SUPER_ENERGY3, SUPER_ENERGY4);
-		add(new SuperRestore(.25, 8), SUPER_RESTORE1, SUPER_RESTORE2, SUPER_RESTORE3, SUPER_RESTORE4,
+		final Effect restorePot = combo(5, heal(ATTACK, perc(.30, 10)), heal(STRENGTH, perc(.30, 10)), heal(DEFENCE, perc(.30, 10)), heal(RANGED, perc(.30, 10)), heal(MAGIC, perc(.30, 10)));
+		final Effect energyPot = heal(RUN_ENERGY, 10);
+		final Effect prayerPot = new PrayerPotion(7);
+		final Effect superEnergyPot = heal(RUN_ENERGY, 20);
+		final Effect superRestorePot = new SuperRestore(.25, 8);
+		final Effect staminaPot = new StaminaPotion();
+		add(restorePot, RESTORE_POTION1, RESTORE_POTION2, RESTORE_POTION3, RESTORE_POTION4);
+		add(energyPot, ENERGY_POTION1, ENERGY_POTION2, ENERGY_POTION3, ENERGY_POTION4);
+		add(prayerPot, PRAYER_POTION1, PRAYER_POTION2, PRAYER_POTION3, PRAYER_POTION4);
+		add(superEnergyPot, SUPER_ENERGY1, SUPER_ENERGY2, SUPER_ENERGY3, SUPER_ENERGY4);
+		add(superRestorePot, SUPER_RESTORE1, SUPER_RESTORE2, SUPER_RESTORE3, SUPER_RESTORE4,
 			BLIGHTED_SUPER_RESTORE1, BLIGHTED_SUPER_RESTORE2, BLIGHTED_SUPER_RESTORE3, BLIGHTED_SUPER_RESTORE4,
 			SUPER_RESTORE4_23567, SUPER_RESTORE3_23569, SUPER_RESTORE2_23571, SUPER_RESTORE1_23573 /* LMS */);
 		add(new SuperRestore(.30, 4), SANFEW_SERUM1, SANFEW_SERUM2, SANFEW_SERUM3, SANFEW_SERUM4,
 			SANFEW_SERUM4_23559, SANFEW_SERUM3_23561, SANFEW_SERUM2_23563, SANFEW_SERUM1_23565 /* LMS */);
-		add(new StaminaPotion(), STAMINA_POTION1, STAMINA_POTION2, STAMINA_POTION3, STAMINA_POTION4);
+		add(staminaPot, STAMINA_POTION1, STAMINA_POTION2, STAMINA_POTION3, STAMINA_POTION4);
+
+		// Mixed recovery potions
+		add(new MixedPotion(3, restorePot), RESTORE_MIX1, RESTORE_MIX2);
+		add(new MixedPotion(6, energyPot), ENERGY_MIX1, ENERGY_MIX2);
+		add(new MixedPotion(6, prayerPot), PRAYER_MIX1, PRAYER_MIX2);
+		add(new MixedPotion(6, superEnergyPot), SUPER_ENERGY_MIX1, SUPER_ENERGY_MIX2);
+		add(new MixedPotion(6, superRestorePot), SUPER_RESTORE_MIX1, SUPER_RESTORE_MIX2);
+		add(new MixedPotion(6, staminaPot), STAMINA_MIX1, STAMINA_MIX2);
 
 		// Raids potions (+)
 		final DeltaPercentage coxPlusPotionBoost = perc(.16, 6);
@@ -255,10 +292,18 @@ public class ItemStatChanges
 		add(combo(3, boost(MAGIC, coxMinusPotionBoost), boost(DEFENCE, coxMinusPotionBoost)), KODAI_1, KODAI_2, KODAI_3, KODAI_4);
 
 		// Skill potions
-		add(boost(AGILITY, 3), AGILITY_POTION1, AGILITY_POTION2, AGILITY_POTION3, AGILITY_POTION4);
-		add(boost(FISHING, 3), FISHING_POTION1, FISHING_POTION2, FISHING_POTION3, FISHING_POTION4);
-		add(boost(HUNTER, 3), HUNTER_POTION1, HUNTER_POTION2, HUNTER_POTION3, HUNTER_POTION4);
+		final Effect agilityPot = boost(AGILITY, 3);
+		final Effect fishingPot = boost(FISHING, 3);
+		final Effect hunterPot = boost(HUNTER, 3);
+		add(agilityPot, AGILITY_POTION1, AGILITY_POTION2, AGILITY_POTION3, AGILITY_POTION4);
+		add(fishingPot, FISHING_POTION1, FISHING_POTION2, FISHING_POTION3, FISHING_POTION4);
+		add(hunterPot, HUNTER_POTION1, HUNTER_POTION2, HUNTER_POTION3, HUNTER_POTION4);
 		add(combo(2, boost(HITPOINTS, 5), heal(RUN_ENERGY, 5)), GUTHIX_REST1, GUTHIX_REST2, GUTHIX_REST3, GUTHIX_REST4);
+
+		// Mixed skill potions
+		add(new MixedPotion(6, agilityPot), AGILITY_MIX1, AGILITY_MIX2);
+		add(new MixedPotion(6, fishingPot), FISHING_MIX1, FISHING_MIX2);
+		add(new MixedPotion(6, hunterPot), HUNTING_MIX1, HUNTING_MIX2);
 
 		// Misc/run energy
 		add(combo(food(3), range(heal(RUN_ENERGY, 5), heal(RUN_ENERGY, 10))), WHITE_TREE_FRUIT);
