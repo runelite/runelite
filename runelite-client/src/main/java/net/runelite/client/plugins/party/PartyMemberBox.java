@@ -32,15 +32,12 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import lombok.AccessLevel;
 import lombok.Getter;
-import net.runelite.client.ws.PartyMember;
 import net.runelite.client.plugins.party.data.PartyData;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
@@ -48,6 +45,7 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.MouseDragEventForwarder;
 import net.runelite.client.ui.components.ProgressBar;
 import net.runelite.client.util.ImageUtil;
+import net.runelite.client.ws.PartyMember;
 
 class PartyMemberBox extends JPanel
 {
@@ -82,15 +80,6 @@ class PartyMemberBox extends JPanel
 		container.setLayout(new BorderLayout());
 		container.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		container.setBorder(new EmptyBorder(5, 5, 5, 5));
-
-		// Create Toggle overlay
-		final JMenuItem overlay = new JMenuItem("Toggle overlay");
-		overlay.addActionListener(e -> memberPartyData.setShowOverlay(!memberPartyData.isShowOverlay()));
-
-		// Create popup menu
-		final JPopupMenu popupMenu = new JPopupMenu();
-		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
-		popupMenu.add(overlay);
 
 		// create a line border with the specified color and width
 		Border border = BorderFactory.createLineBorder(Color.gray, 1);
@@ -135,8 +124,6 @@ class PartyMemberBox extends JPanel
 
 		container.add(headerPanel, BorderLayout.NORTH);
 		container.add(progressWrapper, BorderLayout.SOUTH);
-
-		container.setComponentPopupMenu(popupMenu);
 
 		// forward mouse drag events to parent panel for drag and drop reordering
 		MouseDragEventForwarder mouseDragEventForwarder = new MouseDragEventForwarder(panel);

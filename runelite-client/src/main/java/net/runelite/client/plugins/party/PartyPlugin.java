@@ -111,9 +111,6 @@ public class PartyPlugin extends Plugin
 	private OverlayManager overlayManager;
 
 	@Inject
-	private PartyStatsOverlay partyStatsOverlay;
-
-	@Inject
 	private PartyPingOverlay partyPingOverlay;
 
 	@Inject
@@ -173,7 +170,6 @@ public class PartyPlugin extends Plugin
 
 		clientToolbar.addNavigation(navButton);
 
-		overlayManager.add(partyStatsOverlay);
 		overlayManager.add(partyPingOverlay);
 		wsClient.registerMessage(SkillUpdate.class);
 		wsClient.registerMessage(TilePing.class);
@@ -193,7 +189,6 @@ public class PartyPlugin extends Plugin
 		partyDataMap.clear();
 		pendingTilePings.clear();
 		worldMapManager.removeIf(PartyWorldMapPoint.class::isInstance);
-		overlayManager.remove(partyStatsOverlay);
 		overlayManager.remove(partyPingOverlay);
 		wsClient.unregisterMessage(SkillUpdate.class);
 		wsClient.unregisterMessage(TilePing.class);
@@ -549,7 +544,6 @@ public class PartyPlugin extends Plugin
 			}
 
 			PartyData partyData = new PartyData(memberById, worldMapPoint);
-			partyData.setShowOverlay(config.autoOverlay());
 
 			SwingUtilities.invokeLater(() -> panel.addMember(partyData));
 			return partyData;

@@ -47,5 +47,4 @@ public class PartyData
 	private int maxHitpoints;
 	private int prayer;
 	private int maxPrayer;
-	private boolean showOverlay;
 }

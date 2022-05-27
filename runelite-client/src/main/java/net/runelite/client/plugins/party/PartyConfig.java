@@ -68,17 +68,6 @@ public interface PartyConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "autoOverlay",
-		name = "Auto overlay",
-		description = "Automatically add an overlay with player data when a member joins",
-		position = 5
-	)
-	default boolean autoOverlay()
-	{
-		return false;
-	}
-
-	@ConfigItem(
 		keyName = "previousPartyId",
 		name = "",
 		description = "",
