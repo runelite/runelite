@@ -26,6 +26,7 @@ package net.runelite.client.plugins.specialcounter;
 
 import com.google.inject.Guice;
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.awt.image.BufferedImage;
@@ -69,6 +70,10 @@ public class SpecialCounterPluginTest
 	@Mock
 	@Bind
 	private Client client;
+
+	@Bind
+	@Named("developerMode")
+	boolean developerMode;
 
 	@Mock
 	@Bind
