@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
+import javax.inject.Named;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -135,6 +136,10 @@ public class SpecialCounterPlugin extends Plugin
 
 	@Inject
 	private PlayerInfoDropOverlay playerInfoDropOverlay;
+
+	@Inject
+	@Named("developerMode")
+	boolean developerMode;
 
 	@Provides
 	SpecialCounterConfig getConfig(ConfigManager configManager)
@@ -367,7 +372,7 @@ public class SpecialCounterPlugin extends Plugin
 	@Subscribe
 	public void onCommandExecuted(CommandExecuted commandExecuted)
 	{
-		if (commandExecuted.getCommand().equals("spec"))
+		if (developerMode && commandExecuted.getCommand().equals("spec"))
 		{
 			playerInfoDrops.add(createSpecInfoDrop(SpecialWeapon.BANDOS_GODSWORD, 42, client.getLocalPlayer().getId()));
 		}
