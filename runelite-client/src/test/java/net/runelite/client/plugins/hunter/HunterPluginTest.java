@@ -93,14 +93,13 @@ public class HunterPluginTest
 		plugin.onInteractingChanged(new InteractingChanged(box1.getNpc(), chin));
 
 		// TICK 2
-		// Box 1 untargets chin, chin targets box 1, box 2 targets chin
-		plugin.onInteractingChanged(new InteractingChanged(box1.getNpc(), null));
+		// Chin targets box 1, box 1 untargets chin, box 2 targets chin
 		plugin.onInteractingChanged(new InteractingChanged(chin, box1.getNpc()));
+		plugin.onInteractingChanged(new InteractingChanged(box1.getNpc(), null));
 		plugin.onInteractingChanged(new InteractingChanged(box2.getNpc(), chin));
 
 		// TICK 3
 		// Chin despawns, box 1 object transitions to shaking box, box 2 untargets chin
-		plugin.onInteractingChanged(new InteractingChanged(chin, null));
 		plugin.onInteractingChanged(new InteractingChanged(box2.getNpc(), null));
 		plugin.onNpcDespawned(new NpcDespawned(chin));
 		spawnShakingBox(box1.getWorldLocation());
@@ -158,20 +157,21 @@ public class HunterPluginTest
 
 		// TICK ~3-9
 		// Chin is stuck trying to path to box 1. It is behind a bush, or around the corner of a tree and is
-		// inaccessible to the chin.
+		// inaccessible to the chin. During this time, the box fires InteractingChanged once per tick to the chin.
+		plugin.onInteractingChanged(new InteractingChanged(box1.getNpc(), chin));
+		plugin.onInteractingChanged(new InteractingChanged(box1.getNpc(), chin));
 
 		// TICK 10
 		// Chin untargets box 1
 		plugin.onInteractingChanged(new InteractingChanged(chin, null));
 
 		// TICK 11
-		// Box 2 untargets chin, chin targets box 2
-		plugin.onInteractingChanged(new InteractingChanged(box2.getNpc(), null));
+		// Chin targets box 2, box 2 untargets chin
 		plugin.onInteractingChanged(new InteractingChanged(chin, box2.getNpc()));
+		plugin.onInteractingChanged(new InteractingChanged(box2.getNpc(), null));
 
 		// TICK 12
 		// Chin despawns, box 2 object transitions to shaking box, box 1 untargets chin
-		plugin.onInteractingChanged(new InteractingChanged(chin, null));
 		plugin.onInteractingChanged(new InteractingChanged(box1.getNpc(), null));
 		plugin.onNpcDespawned(new NpcDespawned(chin));
 		spawnShakingBox(box2.getWorldLocation());
