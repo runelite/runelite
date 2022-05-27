@@ -221,6 +221,16 @@ public enum VarPlayer
 	SETTINGS_TRANSPARENT_CHAT_TRADE_REQUEST(3006),
 	SETTINGS_TRANSPARENT_CHAT_CHALLENGE_REQUEST(3007),
 
+	/**
+	 * The difference, measured in minutes, between the time home teleport spell was last used and midnight, January 1, 1970 UTC.
+	 */
+	LAST_HOME_TELEPORT(892),
+
+	/**
+	 * The difference, measured in minutes, between the time minigame teleport was last used and midnight, January 1, 1970 UTC.
+	 */
+	LAST_MINIGAME_TELEPORT(888),
+
 	;
 
 	private final int id;

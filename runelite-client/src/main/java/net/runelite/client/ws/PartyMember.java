@@ -33,5 +33,7 @@ public class PartyMember
 {
 	private final UUID memberId;
 	private final String name;
+	private String displayName = "<unknown>";
+	private boolean loggedIn;
 	private BufferedImage avatar;
 }

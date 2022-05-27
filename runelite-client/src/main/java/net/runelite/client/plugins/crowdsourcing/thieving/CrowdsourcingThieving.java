@@ -118,9 +118,8 @@ public class CrowdsourcingThieving
 	{
 		if (event.getMenuOption().equals("Pickpocket") || event.getMenuOption().equals("Knock-Out"))
 		{
-			NPC[] cachedNPCs = client.getCachedNPCs();
-			NPC npc = cachedNPCs[event.getId()];
-			lastPickpocketTarget = npc.getId();
+			NPC npc = event.getMenuEntry().getNpc();
+			lastPickpocketTarget = npc != null ? npc.getId() : -1;
 		}
 	}
 }

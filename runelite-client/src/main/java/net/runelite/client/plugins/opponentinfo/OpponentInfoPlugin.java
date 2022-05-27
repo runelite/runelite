@@ -159,8 +159,7 @@ public class OpponentInfoPlugin extends Plugin
 			return;
 		}
 
-		int npcIndex = menuEntryAdded.getIdentifier();
-		NPC npc = client.getCachedNPCs()[npcIndex];
+		NPC npc = menuEntryAdded.getMenuEntry().getNpc();
 		if (npc == null)
 		{
 			return;

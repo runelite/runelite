@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2016-2022, emerald000
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,18 +22,31 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.discord;
+package net.runelite.client.plugins.itemstats.special;
 
-import lombok.EqualsAndHashCode;
-import lombok.Value;
-import net.runelite.http.api.ws.messages.party.PartyMemberMessage;
+import net.runelite.api.Client;
+import net.runelite.client.plugins.itemstats.StatBoost;
+import static net.runelite.client.plugins.itemstats.stats.Stats.HITPOINTS;
 
-@Value
-@EqualsAndHashCode(callSuper = true)
-class DiscordUserInfo extends PartyMemberMessage
+public class CaveNightshade extends StatBoost
 {
-	private final String userId;
-	private final String username;
-	private final String discriminator;
-	private final String avatarId;
+	public CaveNightshade()
+	{
+		super(HITPOINTS, false);
+	}
+
+	@Override
+	public int heals(Client client)
+	{
+		int currentHP = this.getStat().getValue(client);
+
+		if (currentHP < 20)
+		{
+			return -currentHP / 2;
+		}
+		else
+		{
+			return -15;
+		}
+	}
 }

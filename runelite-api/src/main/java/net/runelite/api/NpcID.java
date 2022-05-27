@@ -9616,7 +9616,6 @@ public final class NpcID
 	public static final int MEDIUM_ELEMENTAL_GUARDIAN = 11415;
 	public static final int STRONG_ELEMENTAL_GUARDIAN = 11416;
 	public static final int OVERCHARGED_ELEMENTAL_GUARDIAN = 11417;
-	public static final int APPRENTICE_TAMARA = 11426;
 	public static final int APPRENTICE_CORDELIA = 11427;
 	public static final int GREATISH_GUARDIAN_11428 = 11428;
 	public static final int ABYSSAL_PROTECTOR_11429 = 11429;
@@ -9630,7 +9629,7 @@ public final class NpcID
 	public static final int WIZARD_PERSTEN_11437 = 11437;
 	public static final int WIZARD_PERSTEN_11438 = 11438;
 	public static final int WIZARD_PERSTEN_11439 = 11439;
-	public static final int APPRENTICE_TAMARA_11440 = 11440;
+	public static final int APPRENTICE_TAMARA = 11440;
 	public static final int APPRENTICE_TAMARA_11441 = 11441;
 	public static final int APPRENTICE_TAMARA_11442 = 11442;
 	public static final int APPRENTICE_CORDELIA_11443 = 11443;
@@ -9649,6 +9648,8 @@ public final class NpcID
 	public static final int THE_GREAT_GUARDIAN_11456 = 11456;
 	public static final int MENAPHITE_SHADOW = 11462;
 	public static final int REANIMATED_HELLHOUND = 11463;
+	public static final int APPRENTICE_TAMARA_11464 = 11464;
+	public static final int APPRENTICE_TAMARA_11465 = 11465;
 	public static final int TARIK_11473 = 11473;
 	public static final int MAISA_11474 = 11474;
 	public static final int MAISA_11475 = 11475;

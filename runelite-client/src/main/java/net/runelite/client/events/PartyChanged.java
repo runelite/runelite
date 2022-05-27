@@ -30,5 +30,6 @@ import lombok.Value;
 @Value
 public class PartyChanged
 {
+	private final String passphrase;
 	private final UUID partyId;
 }

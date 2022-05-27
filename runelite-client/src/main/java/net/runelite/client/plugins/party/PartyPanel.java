@@ -41,6 +41,7 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.plugins.party.data.PartyData;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
@@ -51,13 +52,12 @@ import net.runelite.client.ws.PartyService;
 class PartyPanel extends PluginPanel
 {
 	private static final String BTN_CREATE_TEXT = "Create party";
-	private static final String BTN_LEAVE_TEXT = "Leave party";
+	private static final String BTN_LEAVE_TEXT = "Leave";
 
 	private final PartyPlugin plugin;
 	private final PartyService party;
 	private final PartyConfig config;
 
-	private final Map<String, PartyRequestBox> requestBoxes = new HashMap<>();
 	private final Map<UUID, PartyMemberBox> memberBoxes = new HashMap<>();
 
 	private final JButton startButton = new JButton();
@@ -68,10 +68,9 @@ class PartyPanel extends PluginPanel
 	private final PluginErrorPanel noPartyPanel = new PluginErrorPanel();
 	private final PluginErrorPanel partyEmptyPanel = new PluginErrorPanel();
 	private final JComponent memberBoxPanel = new DragAndDropReorderPane();
-	private final JComponent requestBoxPanel = new DragAndDropReorderPane();
 
 	@Inject
-	PartyPanel(final PartyPlugin plugin, final PartyConfig config, final PartyService party)
+	PartyPanel(final ClientThread clientThread, final PartyPlugin plugin, final PartyConfig config, final PartyService party)
 	{
 		this.plugin = plugin;
 		this.party = party;
@@ -113,7 +112,6 @@ class PartyPanel extends PluginPanel
 		topPanel.add(rejoinPartyButton, c);
 
 		layoutPanel.add(topPanel);
-		layoutPanel.add(requestBoxPanel);
 		layoutPanel.add(memberBoxPanel);
 
 		startButton.setText(party.isInParty() ? BTN_LEAVE_TEXT : BTN_CREATE_TEXT);
@@ -125,7 +123,7 @@ class PartyPanel extends PluginPanel
 		rejoinPartyButton.setText("Join previous party");
 		rejoinPartyButton.setFocusable(false);
 
-		copyPartyIdButton.setText("Copy party id");
+		copyPartyIdButton.setText("Copy passphrase");
 		copyPartyIdButton.setFocusable(false);
 
 		startButton.addActionListener(e ->
@@ -146,7 +144,7 @@ class PartyPanel extends PluginPanel
 			else
 			{
 				// Create party
-				party.changeParty(party.getLocalPartyId());
+				clientThread.invokeLater(() -> party.changeParty(party.generatePasspharse()));
 			}
 		});
 
@@ -156,8 +154,8 @@ class PartyPanel extends PluginPanel
 			{
 				String s = (String) JOptionPane.showInputDialog(
 					joinPartyButton,
-					"Please enter the party id:",
-					"Party Id",
+					"Please enter the party passphrase:",
+					"Party Passphrase",
 					JOptionPane.PLAIN_MESSAGE,
 					null,
 					null,
@@ -168,15 +166,7 @@ class PartyPanel extends PluginPanel
 					return;
 				}
 
-				try
-				{
-					party.changeParty(UUID.fromString(s));
-				}
-				catch (IllegalArgumentException ex)
-				{
-					JOptionPane.showMessageDialog(joinPartyButton, "You have entered an invalid party id.", "Invalid Party Id",
-						JOptionPane.ERROR_MESSAGE);
-				}
+				party.changeParty(s);
 			}
 		});
 
@@ -184,17 +174,7 @@ class PartyPanel extends PluginPanel
 		{
 			if (!party.isInParty())
 			{
-				try
-				{
-					party.changeParty(UUID.fromString(config.previousPartyId()));
-				}
-				catch (IllegalArgumentException ex)
-				{
-					JOptionPane.showMessageDialog(rejoinPartyButton,
-						"Failed to join your previous party, create a new party or join a new one.",
-						"Failed to Join Party",
-						JOptionPane.ERROR_MESSAGE);
-				}
+				party.changeParty(config.previousPartyId());
 			}
 		});
 
@@ -203,12 +183,11 @@ class PartyPanel extends PluginPanel
 			if (party.isInParty())
 			{
 				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-				clipboard.setContents(new StringSelection(String.valueOf(party.getPartyId())), null);
+				clipboard.setContents(new StringSelection(party.getPartyPassphrase()), null);
 			}
 		});
 
 		noPartyPanel.setContent("Not in a party", "Create a party to begin.");
-		partyEmptyPanel.setContent("Party created", "You can now invite friends!");
 
 		updateParty();
 	}
@@ -229,6 +208,8 @@ class PartyPanel extends PluginPanel
 		}
 		else if (plugin.getPartyDataMap().size() <= 1)
 		{
+			partyEmptyPanel.setContent("Party created", "You can now invite friends!<br/>" +
+					"Your party passphrase is: " + party.getPartyPassphrase() + ".");
 			add(partyEmptyPanel);
 		}
 	}
@@ -279,31 +260,5 @@ class PartyPanel extends PluginPanel
 	void updateAll()
 	{
 		memberBoxes.forEach((key, value) -> value.update());
-	}
-
-	void addRequest(String userId, String userName)
-	{
-		PartyRequestBox partyRequestBox = new PartyRequestBox(plugin, requestBoxPanel, userId, userName);
-		requestBoxes.put(userId, partyRequestBox);
-		requestBoxPanel.add(partyRequestBox);
-		requestBoxPanel.revalidate();
-	}
-
-	void removeAllRequests()
-	{
-		requestBoxes.forEach((key, value) -> requestBoxPanel.remove(value));
-		requestBoxPanel.revalidate();
-		requestBoxes.clear();
-	}
-
-	void removeRequest(String userId)
-	{
-		final PartyRequestBox requestBox = requestBoxes.remove(userId);
-
-		if (requestBox != null)
-		{
-			requestBoxPanel.remove(requestBox);
-			requestBoxPanel.revalidate();
-		}
 	}
 }

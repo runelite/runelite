@@ -167,9 +167,8 @@ public class InteractHighlightPlugin extends Plugin
 			case NPC_FOURTH_OPTION:
 			case NPC_FIFTH_OPTION:
 			{
-				int id = menuOptionClicked.getId();
 				interactedObject = null;
-				interactedNpc = findNpc(id);
+				interactedNpc = menuOptionClicked.getMenuEntry().getNpc();
 				attacked = menuOptionClicked.getMenuAction() == MenuAction.NPC_SECOND_OPTION ||
 					menuOptionClicked.getMenuAction() == MenuAction.WIDGET_TARGET_ON_NPC && WidgetInfo.TO_GROUP(client.getSelectedWidget().getId()) == WidgetID.SPELLBOOK_GROUP_ID;
 				clickTick = client.getTickCount();
@@ -240,11 +239,6 @@ public class InteractHighlightPlugin extends Plugin
 			}
 		}
 		return null;
-	}
-
-	NPC findNpc(int id)
-	{
-		return client.getCachedNPCs()[id];
 	}
 
 	@Nullable

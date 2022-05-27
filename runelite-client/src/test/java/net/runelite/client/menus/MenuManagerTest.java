@@ -33,7 +33,6 @@ import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
-import static net.runelite.api.MenuAction.CC_OP;
 import static net.runelite.api.MenuAction.RUNELITE;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.events.MenuEntryAdded;
@@ -99,13 +98,7 @@ public class MenuManagerTest
 		menuManager.addManagedCustomMenu(new WidgetMenuOption(second.getOption(), second.getTarget(), MINIMAP_WORLDMAP_OPTIONS), null);
 		menuManager.addManagedCustomMenu(new WidgetMenuOption(third.getOption(), third.getTarget(), MINIMAP_WORLDMAP_OPTIONS), null);
 
-		menuManager.onMenuEntryAdded(new MenuEntryAdded(
-			CANCEL.getOption(),
-			CANCEL.getTarget(),
-			CC_OP.getId(),
-			CANCEL.getIdentifier(),
-			CANCEL.getParam0(),
-			CANCEL.getParam1()));
+		menuManager.onMenuEntryAdded(new MenuEntryAdded(createMenuEntry("Cancel", "", MenuAction.CC_OP, MINIMAP_WORLDMAP_OPTIONS.getPackedId())));
 
 		verify(client, times(3)).createMenuEntry(anyInt());
 

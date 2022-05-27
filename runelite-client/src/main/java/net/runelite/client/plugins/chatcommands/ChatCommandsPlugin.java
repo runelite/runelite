@@ -313,8 +313,11 @@ public class ChatCommandsPlugin extends Plugin
 		final Pet[] pets = Pet.values();
 		final IndexedSprite[] modIcons = client.getModIcons();
 		assert modIcons != null;
+
 		final IndexedSprite[] newModIcons = Arrays.copyOf(modIcons, modIcons.length + pets.length);
 		modIconIdx = modIcons.length;
+
+		client.setModIcons(newModIcons);
 
 		for (int i = 0; i < pets.length; i++)
 		{
@@ -326,13 +329,13 @@ public class ChatCommandsPlugin extends Plugin
 			{
 				final BufferedImage image = ImageUtil.resizeImage(abi, 18, 16);
 				final IndexedSprite sprite = ImageUtil.getImageIndexedSprite(image, client);
-				newModIcons[idx] = sprite;
+				// modicons array might be replaced in between when we assign it and the callback,
+				// so fetch modicons again
+				client.getModIcons()[idx] = sprite;
 			};
 			abi.onLoaded(r);
 			r.run();
 		}
-
-		client.setModIcons(newModIcons);
 	}
 
 	/**

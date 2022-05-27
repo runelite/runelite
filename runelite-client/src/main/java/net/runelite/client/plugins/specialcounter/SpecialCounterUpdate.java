@@ -35,4 +35,6 @@ public class SpecialCounterUpdate extends PartyMemberMessage
 	private final int npcId;
 	private final SpecialWeapon weapon;
 	private final int hit;
+	private final int world;
+	private final int playerId;
 }

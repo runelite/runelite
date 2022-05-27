@@ -114,8 +114,7 @@ class InteractHighlightOverlay extends Overlay
 			case NPC_FIFTH_OPTION:
 			case EXAMINE_NPC:
 			{
-				int id = entry.getIdentifier();
-				NPC npc = plugin.findNpc(id);
+				NPC npc = entry.getNpc();
 				if (npc != null && config.npcShowHover() && (npc != plugin.getInteractedTarget() || !config.npcShowInteract()))
 				{
 					Color highlightColor = menuAction == MenuAction.NPC_SECOND_OPTION

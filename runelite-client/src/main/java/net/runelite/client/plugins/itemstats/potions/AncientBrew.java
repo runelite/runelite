@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2022 Hydrox6 <ikada@protonmail.ch>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,48 +24,47 @@
  */
 package net.runelite.client.plugins.itemstats.potions;
 
-import java.util.Comparator;
-import java.util.stream.Stream;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import net.runelite.api.Client;
+import net.runelite.client.plugins.itemstats.BoostedStatBoost;
 import static net.runelite.client.plugins.itemstats.Builders.perc;
+import net.runelite.client.plugins.itemstats.CappedStatBoost;
 import net.runelite.client.plugins.itemstats.Effect;
 import net.runelite.client.plugins.itemstats.SimpleStatBoost;
-import net.runelite.client.plugins.itemstats.BoostedStatBoost;
-import net.runelite.client.plugins.itemstats.stats.Stat;
 import net.runelite.client.plugins.itemstats.StatChange;
-import static net.runelite.client.plugins.itemstats.stats.Stats.*;
 import net.runelite.client.plugins.itemstats.StatsChanges;
+import net.runelite.client.plugins.itemstats.stats.Stat;
+import static net.runelite.client.plugins.itemstats.stats.Stats.ATTACK;
+import static net.runelite.client.plugins.itemstats.stats.Stats.DEFENCE;
+import static net.runelite.client.plugins.itemstats.stats.Stats.MAGIC;
+import static net.runelite.client.plugins.itemstats.stats.Stats.PRAYER;
+import static net.runelite.client.plugins.itemstats.stats.Stats.STRENGTH;
+import java.util.Comparator;
+import java.util.stream.Stream;
 
-@RequiredArgsConstructor
-public class SaradominBrew implements Effect
+@NoArgsConstructor
+public class AncientBrew implements Effect
 {
-	private static final Stat[] saradominBrewStats = {
-		ATTACK, STRENGTH, RANGED, MAGIC
+	private static final Stat[] LOWERED_STATS = {
+		ATTACK, STRENGTH, DEFENCE
 	};
-
-	private final double percH; //percentage heal
-	private final double percD; //percentage defence boost
-	private final double percSD; //percentage stat drain
-	private final int deltaB; //delta boosted
-	private final int deltaR; //delta reduced
+	private static final CappedStatBoost PRAYER_BOOST = new CappedStatBoost(PRAYER, perc(.1, 2), perc(.05, 0));
+	private static final SimpleStatBoost MAGIC_BOOST = new SimpleStatBoost(MAGIC, true, perc(.05, 2));
+	private static final BoostedStatBoost MELEE_DRAIN = new BoostedStatBoost(null, false, perc(.1, -2));
 
 	@Override
 	public StatsChanges calculate(Client client)
 	{
 		StatsChanges changes = new StatsChanges(0);
-		SimpleStatBoost hitpoints = new SimpleStatBoost(HITPOINTS, true, perc(percH, deltaB));
-		SimpleStatBoost defence = new SimpleStatBoost(DEFENCE, true, perc(percD, deltaB));
-		BoostedStatBoost calc = new BoostedStatBoost(null, false, perc(percSD, -deltaR));
 		changes.setStatChanges(Stream.of(
-			Stream.of(hitpoints.effect(client)),
-			Stream.of(defence.effect(client)),
-			Stream.of(saradominBrewStats)
+			Stream.of(PRAYER_BOOST.effect(client)),
+			Stream.of(MAGIC_BOOST.effect(client)),
+			Stream.of(LOWERED_STATS)
 				.filter(stat -> 1 < stat.getValue(client))
 				.map(stat ->
 				{
-					calc.setStat(stat);
-					return calc.effect(client);
+					MELEE_DRAIN.setStat(stat);
+					return MELEE_DRAIN.effect(client);
 				}))
 			.reduce(Stream::concat)
 			.orElseGet(Stream::empty)

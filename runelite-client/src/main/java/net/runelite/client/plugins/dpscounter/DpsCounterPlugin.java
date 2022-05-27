@@ -208,7 +208,7 @@ public class DpsCounterPlugin extends Plugin
 			}
 
 			// If not in a party, user local player name
-			final String name = localMember == null ? player.getName() : localMember.getName();
+			final String name = localMember == null ? player.getName() : localMember.getDisplayName();
 			DpsMember dpsMember = members.computeIfAbsent(name, DpsMember::new);
 			dpsMember.addDamage(hit);
 
@@ -240,7 +240,7 @@ public class DpsCounterPlugin extends Plugin
 			return;
 		}
 
-		String name = partyService.getMemberById(dpsUpdate.getMemberId()).getName();
+		String name = partyService.getMemberById(dpsUpdate.getMemberId()).getDisplayName();
 		if (name == null)
 		{
 			return;

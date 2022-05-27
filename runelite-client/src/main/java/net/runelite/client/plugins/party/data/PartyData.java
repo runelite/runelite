@@ -41,12 +41,10 @@ public class PartyData
 	private final PartyMember member;
 	private final WorldMapPoint worldMapPoint;
 	private final PanelComponent panel = new PanelComponent();
-	private final Color color;
+	private Color color = Color.WHITE;
 
 	private int hitpoints;
 	private int maxHitpoints;
 	private int prayer;
 	private int maxPrayer;
-	private String characterName = "";
-	private boolean showOverlay;
 }

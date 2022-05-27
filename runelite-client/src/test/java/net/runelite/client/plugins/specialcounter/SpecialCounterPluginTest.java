@@ -26,8 +26,10 @@ package net.runelite.client.plugins.specialcounter;
 
 import com.google.inject.Guice;
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import java.awt.image.BufferedImage;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
@@ -44,13 +46,16 @@ import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.client.ws.PartyService;
 import net.runelite.client.ws.WSClient;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import org.mockito.Mock;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
@@ -65,6 +70,10 @@ public class SpecialCounterPluginTest
 	@Mock
 	@Bind
 	private Client client;
+
+	@Bind
+	@Named("developerMode")
+	boolean developerMode;
 
 	@Mock
 	@Bind
@@ -90,6 +99,14 @@ public class SpecialCounterPluginTest
 	@Bind
 	private SpecialCounterConfig specialCounterConfig;
 
+	@Mock
+	@Bind
+	private OverlayManager overlayManager;
+
+	@Mock
+	@Bind
+	private PlayerInfoDropOverlay playerInfoDropOverlay;
+
 	@Inject
 	private SpecialCounterPlugin specialCounterPlugin;
 
@@ -107,6 +124,8 @@ public class SpecialCounterPluginTest
 		when(client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT)).thenReturn(100);
 		specialCounterPlugin.onVarbitChanged(new VarbitChanged());
 
+		// Set up item image for spec info drop
+		when(itemManager.getImage(anyInt())).thenReturn(new AsyncBufferedImage(24, 24, BufferedImage.TYPE_INT_ARGB));
 	}
 
 	private static HitsplatApplied hitsplat(Actor target, Hitsplat.HitsplatType type)
