@@ -419,7 +419,7 @@ public class HunterPlugin extends Plugin
 			}
 			if (target == trap.getNpc())
 			{
-				log.debug("Chin {} targets trap {}", source, target);
+				log.debug("Chin {} targets trap {}", source, trap);
 				trap.setInteracting(null);
 			}
 		}
