@@ -57,6 +57,7 @@ public class TrapOverlay extends Overlay
 	private Color colorOpen, colorOpenBorder;
 	private Color colorEmpty, colorEmptyBorder;
 	private Color colorFull, colorFullBorder;
+	private Color colorDead, colorDeadBorder;
 	private Color colorTrans, colorTransBorder;
 
 	@Inject
@@ -87,6 +88,8 @@ public class TrapOverlay extends Overlay
 		colorFull = ColorUtil.colorWithAlpha(colorFullBorder, (int)(colorFullBorder.getAlpha() / 2.5));
 		colorOpenBorder = config.getOpenTrapColor();
 		colorOpen = ColorUtil.colorWithAlpha(colorOpenBorder, (int)(colorOpenBorder.getAlpha() / 2.5));
+		colorDeadBorder = config.getDeadTrapColor();
+		colorDead = ColorUtil.colorWithAlpha(colorDeadBorder, (int)(colorDeadBorder.getAlpha() / 2.5));
 		colorTransBorder = config.getTransTrapColor();
 		colorTrans = ColorUtil.colorWithAlpha(colorTransBorder, (int)(colorTransBorder.getAlpha() / 2.5));
 	}
@@ -113,6 +116,9 @@ public class TrapOverlay extends Overlay
 					break;
 				case FULL:
 					drawTimerOnTrap(graphics, trap, colorFull, colorFullBorder, colorFull, colorFullBorder);
+					break;
+				case DEAD:
+					drawTimerOnTrap(graphics, trap, colorDead, colorDeadBorder, colorDead, colorDeadBorder);
 					break;
 				case TRANSITION:
 					drawCircleOnTrap(graphics, trap, colorTrans, colorTransBorder);
