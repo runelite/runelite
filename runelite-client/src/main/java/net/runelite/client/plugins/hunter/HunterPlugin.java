@@ -24,13 +24,16 @@
  */
 package net.runelite.client.plugins.hunter;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Provides;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import javax.inject.Inject;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
@@ -82,6 +85,8 @@ public class HunterPlugin extends Plugin
 	@Getter
 	private final Map<WorldPoint, HunterTrap> traps = new HashMap<>();
 
+	@VisibleForTesting
+	@Setter(AccessLevel.PACKAGE)
 	private WorldPoint lastTickLocalPlayerLocation;
 
 	@Provides
