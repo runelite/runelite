@@ -136,6 +136,50 @@ public class HunterPluginTest
 		assertEquals(HunterTrap.State.OPEN, box.getState());
 	}
 
+	@Test
+	public void blockedNonDeadTrap2()
+	{
+		final NPC chin = mock(NPC.class);
+
+		// Box 1 is visible, but has pathing blocked to chin--it will target the chin which will fail to path to it.
+		// After failing to path to it, it will target box 2 and be caught in that box instead. Box 1 is not dead, as it
+		// can still lure and catch other chins.
+		final HunterTrap box1 = layBoxTrap(new WorldPoint(1, 0, 0));
+		final HunterTrap box2 = layBoxTrap(new WorldPoint(2, 0, 0));
+
+		// TICK 1
+		// Boxes 1 and 2 target chin
+		plugin.onInteractingChanged(new InteractingChanged(box1.getNpc(), chin));
+		plugin.onInteractingChanged(new InteractingChanged(box2.getNpc(), chin));
+
+		// TICK 2
+		// Chin targets box 1 (which is still targeting chin)
+		plugin.onInteractingChanged(new InteractingChanged(chin, box1.getNpc()));
+
+		// TICK ~3-9
+		// Chin is stuck trying to path to box 1. It is behind a bush, or around the corner of a tree and is
+		// inaccessible to the chin.
+
+		// TICK 10
+		// Chin untargets box 1
+		plugin.onInteractingChanged(new InteractingChanged(chin, null));
+
+		// TICK 11
+		// Box 2 untargets chin, chin targets box 2
+		plugin.onInteractingChanged(new InteractingChanged(box2.getNpc(), null));
+		plugin.onInteractingChanged(new InteractingChanged(chin, box2.getNpc()));
+
+		// TICK 12
+		// Chin despawns, box 2 object transitions to shaking box, box 1 untargets chin
+		plugin.onInteractingChanged(new InteractingChanged(chin, null));
+		plugin.onInteractingChanged(new InteractingChanged(box1.getNpc(), null));
+		plugin.onNpcDespawned(new NpcDespawned(chin));
+		spawnShakingBox(box2.getWorldLocation());
+
+		assertEquals(HunterTrap.State.OPEN, box1.getState());
+		assertEquals(HunterTrap.State.TRANSITION, box2.getState());
+	}
+
 	/**
 	 * Spawn a box trap object and NPC at the given point.
 	 *
