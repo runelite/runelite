@@ -35,5 +35,5 @@ public class AccountSession
 {
 	private final UUID uuid;
 	private final Instant created;
-	private String username;
+	private final String username;
 }
