@@ -432,7 +432,14 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 							log.debug("Disabling DebugGL due to jogl-gldesktop-dbg not being present on the classpath");
 						}
 
-						gl.glEnable(gl.GL_DEBUG_OUTPUT);
+						try
+						{
+							gl.glEnable(gl.GL_DEBUG_OUTPUT);
+						}
+						catch (GLException ex)
+						{
+							// macos doesn't support GL_DEBUG_OUTPUT
+						}
 
 						//	GLDebugEvent[ id 0x20071
 						//		type Warning: generic
@@ -689,9 +696,12 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		uniTextures = gl.glGetUniformLocation(glProgram, "textures");
 		uniTextureAnimations = gl.glGetUniformLocation(glProgram, "textureAnimations");
 
-		uniBlockSmall = gl.glGetUniformBlockIndex(glSmallComputeProgram, "uniforms");
-		uniBlockLarge = gl.glGetUniformBlockIndex(glComputeProgram, "uniforms");
-		uniBlockMain = gl.glGetUniformBlockIndex(glProgram, "uniforms");
+		if (computeMode == ComputeMode.OPENGL)
+		{
+			uniBlockSmall = gl.glGetUniformBlockIndex(glSmallComputeProgram, "uniforms");
+			uniBlockLarge = gl.glGetUniformBlockIndex(glComputeProgram, "uniforms");
+			uniBlockMain = gl.glGetUniformBlockIndex(glProgram, "uniforms");
+		}
 	}
 
 	private void shutdownProgram()
@@ -855,7 +865,11 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		// Create color render buffer
 		rboSceneHandle = glGenRenderbuffer(gl);
 		gl.glBindRenderbuffer(gl.GL_RENDERBUFFER, rboSceneHandle);
-		gl.glRenderbufferStorageMultisample(gl.GL_RENDERBUFFER, aaSamples, gl.GL_RGBA, width, height);
+		gl.glRenderbufferStorageMultisample(gl.GL_RENDERBUFFER, aaSamples,
+			// on macos glBlitFramebuffer errors with GL_INVALID_OPERATION if the alpha channel
+			// is enabled on the rbo
+			OSType.getOSType() == OSType.MacOS ? gl.GL_RGB : gl.GL_RGBA,
+			width, height);
 		gl.glFramebufferRenderbuffer(gl.GL_FRAMEBUFFER, gl.GL_COLOR_ATTACHMENT0, gl.GL_RENDERBUFFER, rboSceneHandle);
 
 		// Reset
