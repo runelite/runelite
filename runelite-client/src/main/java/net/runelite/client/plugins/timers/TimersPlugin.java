@@ -348,11 +348,11 @@ public class TimersPlugin extends Plugin
 		{
 			final Duration staminaDuration = Duration.of(10L * totalStaminaEffect, RSTimeUnit.GAME_TICKS);
 
-			if (staminaTimer == null && !staminaDuration.isZero())
+			if (staminaTimer == null && totalStaminaEffect > 0)
 			{
 				staminaTimer = createGameTimer(STAMINA, staminaDuration);
 			}
-			else if (staminaDuration.isZero())
+			else if (totalStaminaEffect == 0)
 			{
 				removeGameTimer(STAMINA);
 				staminaTimer = null;

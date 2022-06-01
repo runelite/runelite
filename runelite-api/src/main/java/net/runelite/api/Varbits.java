@@ -49,7 +49,7 @@ public final class Varbits
 
 	/**
 	 * Stamina effect timer
-	 * Number of game tick remaining on stamina effect in intervals of 10; for a value X there are 10 * X game ticks remaining.
+	 * Number of game ticks remaining on stamina effect in intervals of 10; for a value X there are 10 * X game ticks remaining.
 	 * The stamina effect expires once this reaches 0.
 	 */
 	public static final int STAMINA_EFFECT = 24;
