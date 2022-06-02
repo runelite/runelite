@@ -343,7 +343,7 @@ public class TimersPlugin extends Plugin
 			lastMinigameTeleport = minigameTeleportVarp;
 		}
 
-		//staminaEffectActive value is checked to follow https://github.com/Joshua-F/cs2-scripts/blob/741271f0c3395048c1bad4af7881a13734516adf/scripts/%5Bproc%2Cbuff_bar_get_value%5D.cs2#L25
+		// staminaEffectActive is checked to match https://github.com/Joshua-F/cs2-scripts/blob/741271f0c3395048c1bad4af7881a13734516adf/scripts/%5Bproc%2Cbuff_bar_get_value%5D.cs2#L25
 		if (staminaEffectActive == 1 && lastStaminaEffect != totalStaminaEffect && config.showStamina())
 		{
 			final Duration staminaDuration = Duration.of(10L * totalStaminaEffect, RSTimeUnit.GAME_TICKS);
