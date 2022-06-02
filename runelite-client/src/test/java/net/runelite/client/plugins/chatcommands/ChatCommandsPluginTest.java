@@ -618,7 +618,7 @@ public class ChatCommandsPluginTest
 
 		HiscoreResult hiscoreResult = new HiscoreResult();
 		hiscoreResult.setPlayer(PLAYER_NAME);
-		hiscoreResult.setZulrah(new Skill(10, 1000, -1));
+		hiscoreResult.setChambersOfXericChallengeMode(new Skill(10, 1000, -1));
 
 		when(hiscoreClient.lookup(eq(PLAYER_NAME), nullable(HiscoreEndpoint.class))).thenReturn(hiscoreResult);
 
@@ -628,9 +628,9 @@ public class ChatCommandsPluginTest
 		chatMessage.setType(ChatMessageType.PUBLICCHAT);
 		chatMessage.setName(PLAYER_NAME);
 		chatMessage.setMessageNode(messageNode);
-		chatCommandsPlugin.playerSkillLookup(chatMessage, "!lvl zulrah");
+		chatCommandsPlugin.playerSkillLookup(chatMessage, "!lvl cox cm");
 
-		verify(messageNode).setRuneLiteFormatMessage("<colNORMAL>Level <colHIGHLIGHT>Zulrah: 1000<colNORMAL> Rank: <colHIGHLIGHT>10");
+		verify(messageNode).setRuneLiteFormatMessage("<colNORMAL>Level <colHIGHLIGHT>Chambers of Xeric: Challenge Mode: 1000<colNORMAL> Rank: <colHIGHLIGHT>10");
 	}
 
 	@Test

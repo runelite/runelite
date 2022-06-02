@@ -2044,6 +2044,7 @@ public class ChatCommandsPlugin extends Plugin
 				return "Chambers of Xeric 24+ players";
 
 			// Chambers of Xeric Challenge Mode
+			case "chambers of xeric: challenge mode":
 			case "cox cm":
 			case "xeric cm":
 			case "chambers cm":
@@ -2433,7 +2434,9 @@ public class ChatCommandsPlugin extends Plugin
 		}
 		for (HiscoreSkill skill : HiscoreSkill.values())
 		{
-			if (skill.getName().equals(s))
+			// longBossName the skill name to normalize from hiscore name
+			// to our internal name (removing the colon)
+			if (longBossName(skill.getName()).equals(s))
 			{
 				return skill;
 			}
