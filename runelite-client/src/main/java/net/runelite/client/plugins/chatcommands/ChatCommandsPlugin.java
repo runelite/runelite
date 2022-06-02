@@ -2345,6 +2345,7 @@ public class ChatCommandsPlugin extends Plugin
 			// Guardians of the Rift
 			case "gotr":
 			case "runetodt":
+			case "rifts closed":
 				return "Guardians of the Rift";
 
 			default:
