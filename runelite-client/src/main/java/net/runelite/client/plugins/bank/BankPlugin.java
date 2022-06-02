@@ -178,7 +178,7 @@ public class BankPlugin extends Plugin
 			if ((entry.getOption().equals(DEPOSIT_WORN) && config.rightClickBankEquip())
 				|| (entry.getOption().equals(DEPOSIT_INVENTORY) && config.rightClickBankInventory())
 				|| (entry.getOption().equals(DEPOSIT_LOOT) && config.rightClickBankLoot())
-				|| (entry.getOption().matches(PLACEHOLDERS_SETTING_REGEX) && config.rightClickPlaceHoldersSetting()))
+				|| (client.getWidget(WidgetInfo.BANK_CONTAINER) != null && entry.getOption().matches(PLACEHOLDERS_SETTING_REGEX) && config.rightClickPlaceHoldersSetting()))
 			{
 				event.setForceRightClick(true);
 				return;
@@ -192,7 +192,7 @@ public class BankPlugin extends Plugin
 		if ((event.getOption().equals(DEPOSIT_WORN) && config.rightClickBankEquip())
 			|| (event.getOption().equals(DEPOSIT_INVENTORY) && config.rightClickBankInventory())
 			|| (event.getOption().equals(DEPOSIT_LOOT) && config.rightClickBankLoot())
-			|| (event.getOption().matches(PLACEHOLDERS_SETTING_REGEX) && config.rightClickPlaceHoldersSetting()))
+			|| (client.getWidget(WidgetInfo.BANK_CONTAINER) != null && event.getOption().matches(PLACEHOLDERS_SETTING_REGEX) && config.rightClickPlaceHoldersSetting()))
 		{
 			forceRightClickFlag = true;
 		}
