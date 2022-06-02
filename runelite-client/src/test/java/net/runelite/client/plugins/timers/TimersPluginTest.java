@@ -33,12 +33,9 @@ import java.time.Instant;
 import java.util.function.Predicate;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
-import net.runelite.api.ItemContainer;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
@@ -59,7 +56,6 @@ import static org.mockito.ArgumentMatchers.nullable;
 import org.mockito.Mock;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -236,8 +232,10 @@ public class TimersPluginTest
 	public void testStamina()
 	{
 		when(timersConfig.showStamina()).thenReturn(true);
-		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You drink some of your stamina potion.", "", 0);
-		timersPlugin.onChatMessage(chatMessage);
+		when(client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE)).thenReturn(1);
+		when(client.getVarbitValue(Varbits.STAMINA_EFFECT)).thenReturn(20);
+		when(client.getVarbitValue(Varbits.RING_OF_ENDURANCE_EFFECT)).thenReturn(0);
+		timersPlugin.onVarbitChanged(new VarbitChanged());
 
 		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
 		verify(infoBoxManager).addInfoBox(captor.capture());
@@ -264,12 +262,10 @@ public class TimersPluginTest
 	public void testEndurance()
 	{
 		when(timersConfig.showStamina()).thenReturn(true);
-
-		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "Your Ring of endurance doubles the duration of your stamina potion's effect.", "", 0);
-		timersPlugin.onChatMessage(chatMessage);
-
-		chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You drink some of your stamina potion.", "", 0);
-		timersPlugin.onChatMessage(chatMessage);
+		when(client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE)).thenReturn(1);
+		when(client.getVarbitValue(Varbits.STAMINA_EFFECT)).thenReturn(20);
+		when(client.getVarbitValue(Varbits.RING_OF_ENDURANCE_EFFECT)).thenReturn(20);
+		timersPlugin.onVarbitChanged(new VarbitChanged());
 
 		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
 		verify(infoBoxManager).addInfoBox(captor.capture());
@@ -278,10 +274,10 @@ public class TimersPluginTest
 		assertEquals(Duration.ofMinutes(4), infoBox.getDuration());
 
 		// unwield ring
-		timersPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.EQUIPMENT.getId(), mock(ItemContainer.class)));
-		// some time has elapsed in the test; this should be just under 2 mins
+		when(client.getVarbitValue(Varbits.RING_OF_ENDURANCE_EFFECT)).thenReturn(0);
+		timersPlugin.onVarbitChanged(new VarbitChanged());
 		int mins = (int) infoBox.getDuration().toMinutes();
-		assertTrue(mins == 1 || mins == 2);
+		assertEquals(2, mins);
 	}
 
 	@Test

@@ -48,6 +48,21 @@ public final class Varbits
 	public static final int RUN_SLOWED_DEPLETION_ACTIVE = 25;
 
 	/**
+	 * Stamina effect timer
+	 * Number of game ticks remaining on stamina effect in intervals of 10; for a value X there are 10 * X game ticks remaining.
+	 * The stamina effect expires once this reaches 0.
+	 */
+	public static final int STAMINA_EFFECT = 24;
+
+	/**
+	 * Ring of endurance effect timer, stamina duration extended from using the ring of endurance
+	 * Number of game ticks remaining on ring of endurance effect in intervals of 10; for a value X there are 10 * X game ticks remaining.
+	 * Unequipping the ring of endurance will cause this to change to 0.
+	 * When this reaches 0, {@link #STAMINA_EFFECT} will begin counting down.
+	 */
+	public static final int RING_OF_ENDURANCE_EFFECT = 10385;
+
+	/**
 	 * If scrollbar in resizable mode chat is on the left
 	 */
 	public static final int CHAT_SCROLLBAR_ON_LEFT = 6374;

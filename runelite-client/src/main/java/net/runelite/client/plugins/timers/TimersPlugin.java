@@ -102,20 +102,15 @@ public class TimersPlugin extends Plugin
 	private static final String EXTENDED_ANTIFIRE_DRINK_MESSAGE = "You drink some of your extended antifire potion.";
 	private static final String EXTENDED_SUPER_ANTIFIRE_DRINK_MESSAGE = "You drink some of your extended super antifire potion.";
 	private static final String FROZEN_MESSAGE = "<col=ef1020>You have been frozen!</col>";
-	private static final String GAUNTLET_ENTER_MESSAGE = "You enter the Gauntlet.";
 	private static final String GOD_WARS_ALTAR_MESSAGE = "you recharge your prayer.";
 	private static final String MAGIC_IMBUE_EXPIRED_MESSAGE = "Your Magic Imbue charge has ended.";
 	private static final String MAGIC_IMBUE_MESSAGE = "You are charged to combine runes!";
 	private static final String STAFF_OF_THE_DEAD_SPEC_EXPIRED_MESSAGE = "Your protection fades away";
 	private static final String STAFF_OF_THE_DEAD_SPEC_MESSAGE = "Spirits of deceased evildoers offer you their protection";
-	private static final String STAMINA_DRINK_MESSAGE = "You drink some of your stamina potion.";
-	private static final String STAMINA_SHARED_DRINK_MESSAGE = "You have received a shared dose of stamina potion.";
-	private static final String STAMINA_EXPIRED_MESSAGE = "<col=8f4808>Your stamina potion has expired.</col>";
 	private static final String SUPER_ANTIFIRE_DRINK_MESSAGE = "You drink some of your super antifire potion";
 	private static final String SUPER_ANTIFIRE_EXPIRED_MESSAGE = "<col=7f007f>Your super antifire potion has expired.</col>";
 	private static final String KILLED_TELEBLOCK_OPPONENT_TEXT = "Your Tele Block has been removed because you killed ";
 	private static final String PRAYER_ENHANCE_EXPIRED = "<col=ff0000>Your prayer enhance effect has worn off.</col>";
-	private static final String ENDURANCE_EFFECT_MESSAGE = "Your Ring of endurance doubles the duration of your stamina potion's effect.";
 	private static final String SHADOW_VEIL_MESSAGE = ">Your thieving abilities have been enhanced.</col>";
 	private static final String DEATH_CHARGE_MESSAGE = ">Upon the death of your next foe, some of your special attack energy will be restored.</col>";
 	private static final String DEATH_CHARGE_ACTIVATE_MESSAGE = ">Some of your special attack energy has been restored.</col>";
@@ -144,7 +139,6 @@ public class TimersPlugin extends Plugin
 	private int freezeTime = -1; // time frozen, in game ticks
 
 	private TimerTimer staminaTimer;
-	private boolean wasWearingEndurance;
 
 	private int lastRaidVarb;
 	private int lastVengCooldownVarb;
@@ -154,6 +148,7 @@ public class TimersPlugin extends Plugin
 	private int lastCorruptionVarb;
 	private int lastHomeTeleport;
 	private int lastMinigameTeleport;
+	private int lastStaminaEffect;
 	private int lastImbuedHeartVarb;
 	private boolean imbuedHeartTimerActive;
 	private int nextPoisonTick;
@@ -209,6 +204,7 @@ public class TimersPlugin extends Plugin
 		lastImbuedHeartVarb = 0;
 		lastHomeTeleport = 0;
 		lastMinigameTeleport = 0;
+		lastStaminaEffect = 0;
 	}
 
 	@Subscribe
@@ -223,6 +219,11 @@ public class TimersPlugin extends Plugin
 		int imbuedHeartCooldownVarb = client.getVarbitValue(Varbits.IMBUED_HEART_COOLDOWN);
 		int homeTeleportVarp = client.getVar(VarPlayer.LAST_HOME_TELEPORT);
 		int minigameTeleportVarp = client.getVar(VarPlayer.LAST_MINIGAME_TELEPORT);
+		int staminaEffectActive = client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE);
+		int staminaPotionEffectVarb = client.getVarbitValue(Varbits.STAMINA_EFFECT);
+		int enduranceRingEffectVarb = client.getVarbitValue(Varbits.RING_OF_ENDURANCE_EFFECT);
+
+		final int totalStaminaEffect = staminaPotionEffectVarb + enduranceRingEffectVarb;
 
 		if (lastRaidVarb != raidVarb)
 		{
@@ -341,6 +342,33 @@ public class TimersPlugin extends Plugin
 			checkTeleport(VarPlayer.LAST_MINIGAME_TELEPORT);
 			lastMinigameTeleport = minigameTeleportVarp;
 		}
+
+		// staminaEffectActive is checked to match https://github.com/Joshua-F/cs2-scripts/blob/741271f0c3395048c1bad4af7881a13734516adf/scripts/%5Bproc%2Cbuff_bar_get_value%5D.cs2#L25
+		if (staminaEffectActive == 1 && lastStaminaEffect != totalStaminaEffect && config.showStamina())
+		{
+			final Duration staminaDuration = Duration.of(10L * totalStaminaEffect, RSTimeUnit.GAME_TICKS);
+
+			if (staminaTimer == null && totalStaminaEffect > 0)
+			{
+				staminaTimer = createGameTimer(STAMINA, staminaDuration);
+			}
+			else if (totalStaminaEffect == 0)
+			{
+				removeGameTimer(STAMINA);
+				staminaTimer = null;
+			}
+			else
+			{
+				Instant endInstant = Instant.now().plus(staminaDuration);
+				int timeDifference = (int) Duration.between(staminaTimer.getEndTime(), endInstant).getSeconds();
+				if (timeDifference != 0)
+				{
+					Duration remainingDuration = Duration.between(staminaTimer.getStartTime(), endInstant);
+					staminaTimer.setDuration(remainingDuration);
+				}
+			}
+			lastStaminaEffect = totalStaminaEffect;
+		}
 	}
 
 	@Subscribe
@@ -372,6 +400,7 @@ public class TimersPlugin extends Plugin
 		if (!config.showStamina())
 		{
 			removeGameTimer(STAMINA);
+			staminaTimer = null;
 		}
 
 		if (!config.showOverload())
@@ -468,18 +497,6 @@ public class TimersPlugin extends Plugin
 	{
 		if (event.isItemOp() && event.getMenuOption().equals("Drink"))
 		{
-			if ((event.getItemId() == ItemID.STAMINA_MIX1
-				|| event.getItemId() == ItemID.STAMINA_MIX2
-				|| event.getItemId() == ItemID.EGNIOL_POTION_1
-				|| event.getItemId() == ItemID.EGNIOL_POTION_2
-				|| event.getItemId() == ItemID.EGNIOL_POTION_3
-				|| event.getItemId() == ItemID.EGNIOL_POTION_4)
-				&& config.showStamina())
-			{
-				// Needs menu option hook because mixes use a common drink message, distinct from their standard potion messages
-				createStaminaTimer();
-				return;
-			}
 
 			if ((event.getItemId() == ItemID.ANTIFIRE_MIX1
 				|| event.getItemId() == ItemID.ANTIFIRE_MIX2)
@@ -548,22 +565,6 @@ public class TimersPlugin extends Plugin
 		if (message.equals(ABYSSAL_SIRE_STUN_MESSAGE) && config.showAbyssalSireStun())
 		{
 			createGameTimer(ABYSSAL_SIRE_STUN);
-		}
-
-		if (message.equals(ENDURANCE_EFFECT_MESSAGE))
-		{
-			wasWearingEndurance = true;
-		}
-
-		if (config.showStamina() && (message.equals(STAMINA_DRINK_MESSAGE) || message.equals(STAMINA_SHARED_DRINK_MESSAGE)))
-		{
-			createStaminaTimer();
-		}
-
-		if (message.equals(STAMINA_EXPIRED_MESSAGE) || message.equals(GAUNTLET_ENTER_MESSAGE))
-		{
-			removeGameTimer(STAMINA);
-			staminaTimer = null;
 		}
 
 		if (config.showAntiFire() && message.equals(ANTIFIRE_DRINK_MESSAGE))
@@ -1064,7 +1065,7 @@ public class TimersPlugin extends Plugin
 	}
 
 	/**
-	 * Remove SOTD timer and update stamina timer when equipment is changed.
+	 * Remove SOTD timer when equipment is changed.
 	 */
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged itemContainerChanged)
@@ -1087,29 +1088,6 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(STAFF_OF_THE_DEAD);
 		}
 
-		if (wasWearingEndurance)
-		{
-			Item ring = container.getItem(EquipmentInventorySlot.RING.getSlotIdx());
-
-			// when using the last ring charge the ring changes to the uncharged version, ignore that and don't
-			// halve the timer
-			if (ring == null || (ring.getId() != ItemID.RING_OF_ENDURANCE && ring.getId() != ItemID.RING_OF_ENDURANCE_UNCHARGED_24844))
-			{
-				wasWearingEndurance = false;
-				if (staminaTimer != null)
-				{
-					// Remaining duration gets divided by 2
-					Duration remainingDuration = Duration.between(Instant.now(), staminaTimer.getEndTime()).dividedBy(2);
-					// This relies on the chat message to be removed, which could be after the timer has been culled;
-					// so check there is still remaining time
-					if (!remainingDuration.isNegative() && !remainingDuration.isZero())
-					{
-						log.debug("Halving stamina timer");
-						staminaTimer.setDuration(remainingDuration);
-					}
-				}
-			}
-		}
 	}
 
 	@Subscribe
@@ -1137,12 +1115,6 @@ public class TimersPlugin extends Plugin
 		{
 			infoBoxManager.removeIf(t -> t instanceof TimerTimer && ((TimerTimer) t).getTimer().isRemovedOnDeath());
 		}
-	}
-
-	private void createStaminaTimer()
-	{
-		Duration duration = Duration.ofMinutes(wasWearingEndurance ? 4 : 2);
-		staminaTimer = createGameTimer(STAMINA, duration);
 	}
 
 	private TimerTimer createGameTimer(final GameTimer timer)
