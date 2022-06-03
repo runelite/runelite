@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018, Ron Young <https://github.com/raiyni>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,66 +25,53 @@
  */
 package net.runelite.client.plugins.bosstimer;
 
-import java.awt.image.BufferedImage;
-import java.time.Duration;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.ui.overlay.infobox.Timer;
+import lombok.AccessLevel;
+import lombok.Getter;
 
-class RespawnTimer extends Timer
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+class RespawnTimersSession
 {
-	private final Boss boss;
-	private final int world;
-	private final Instant endTime;
-	private String bossName;
-	private boolean showTimer;
+	@Getter(AccessLevel.PACKAGE)
+	private Map<String, ArrayList<RespawnTimer>> timersMap = new HashMap<>();
 
-	public RespawnTimer(Boss boss, int world, String bossName, BufferedImage bossImage, Plugin plugin)
+	boolean isEmpty()
 	{
-		super(boss.getSpawnTime().toMillis(), ChronoUnit.MILLIS, bossImage, plugin);
-		this.boss = boss;
-		this.world = world;
-		this.bossName = bossName;
-		showTimer = true;
-		endTime = Instant.now().plus(Duration.of(boss.getSpawnTime().toMillis(), ChronoUnit.MILLIS));
+		return timersMap.isEmpty();
 	}
 
-	@Override
-	public String getText()
+	void addBossTimer(RespawnTimer respawnTimer)
 	{
-		if (showTimer)
+		timersMap.computeIfAbsent(respawnTimer.getBossName(), k -> new ArrayList<>());
+		timersMap.get(respawnTimer.getBossName()).add(respawnTimer);
+	}
+
+	void cull()
+	{
+		Iterator<HashMap.Entry<String, ArrayList<RespawnTimer>>> mapIterator = timersMap.entrySet().iterator();
+
+		while (mapIterator.hasNext())
 		{
-			return super.getText();
+			final HashMap.Entry<String, ArrayList<RespawnTimer>> entry = mapIterator.next();
+			Iterator<RespawnTimer> valueIterator = entry.getValue().iterator();
+
+			while (valueIterator.hasNext())
+			{
+				final RespawnTimer respawnTimer = valueIterator.next();
+
+				if (respawnTimer.cull())
+				{
+					valueIterator.remove();
+
+					if (entry.getValue().size() == 0)
+					{
+						mapIterator.remove();
+					}
+				}
+			}
 		}
-		else
-		{
-			return null;
-		}
-	}
-
-	public void setShowTimer(boolean showTimer)
-	{
-		this.showTimer = showTimer;
-	}
-
-	public Boss getBoss()
-	{
-		return boss;
-	}
-
-	public int getWorld()
-	{
-		return world;
-	}
-
-	public String getBossName()
-	{
-		return bossName;
-	}
-
-	public Instant getEndTime()
-	{
-		return endTime;
 	}
 }
