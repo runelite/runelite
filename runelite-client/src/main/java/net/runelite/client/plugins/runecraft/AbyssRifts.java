@@ -42,13 +42,14 @@ import static net.runelite.api.ItemID.MIND_RUNE;
 import static net.runelite.api.ItemID.NATURE_RUNE;
 import static net.runelite.api.ItemID.SOUL_RUNE;
 import static net.runelite.api.ItemID.WATER_RUNE;
+import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 
 @AllArgsConstructor
 enum AbyssRifts
 {
 	AIR_RIFT(ObjectID.AIR_RIFT, AIR_RUNE, RunecraftConfig::showAir),
-	BLOOD_RIFT(ObjectID.BLOOD_RIFT, BLOOD_RUNE, RunecraftConfig::showBlood),
+	BLOOD_RIFT(NullObjectID.NULL_43848, BLOOD_RUNE, RunecraftConfig::showBlood),
 	BODY_RIFT(ObjectID.BODY_RIFT, BODY_RUNE, RunecraftConfig::showBody),
 	CHAOS_RIFT(ObjectID.CHAOS_RIFT, CHAOS_RUNE, RunecraftConfig::showChaos),
 	COSMIC_RIFT(ObjectID.COSMIC_RIFT, COSMIC_RUNE, RunecraftConfig::showCosmic),

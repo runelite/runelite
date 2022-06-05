@@ -1,0 +1,142 @@
+.id                 3238
+.int_stack_count    5
+.string_stack_count 0
+.int_var_count      6 ; +1 for filter result
+.string_var_count   0
+   iconst                 -1       ; set to 1 to hide, 0 to show
+   iload                  0       ; quest struct
+   sconst                 "questFilter"
+   runelite_callback     
+   pop_int                        ; quest struct
+   istore                 5       ; save result
+   ; compare with -1
+   iload                  5       ; load result
+   iconst                 -1
+   if_icmpeq              continue
+   ; return value
+   iload                  5
+   return                
+
+continue:
+   iload                  0
+   iconst                 611
+   struct_param          
+   iconst                 1
+   if_icmpeq              LABEL6
+   jump                   LABEL12
+LABEL6:
+   invoke                 4025
+   iconst                 1
+   if_icmpeq              LABEL10
+   jump                   LABEL12
+LABEL10:
+   iconst                 1
+   return                
+LABEL12:
+   iload                  0
+   iconst                 611
+   struct_param          
+   iconst                 0
+   if_icmpeq              LABEL18
+   jump                   LABEL24
+LABEL18:
+   get_varbit             13774
+   iconst                 1
+   if_icmpeq              LABEL22
+   jump                   LABEL24
+LABEL22:
+   iconst                 1
+   return                
+LABEL24:
+   iload                  4
+   iconst                 1
+   if_icmpeq              LABEL28
+   jump                   LABEL34
+LABEL28:
+   get_varbit             13890
+   iconst                 1
+   if_icmpeq              LABEL32
+   jump                   LABEL34
+LABEL32:
+   iconst                 1
+   return                
+LABEL34:
+   iload                  1
+   iconst                 0
+   if_icmpeq              LABEL38
+   jump                   LABEL44
+LABEL38:
+   get_varbit             13775
+   iconst                 1
+   if_icmpeq              LABEL42
+   jump                   LABEL44
+LABEL42:
+   iconst                 1
+   return                
+LABEL44:
+   iload                  1
+   iconst                 1
+   if_icmpeq              LABEL48
+   jump                   LABEL54
+LABEL48:
+   get_varbit             13776
+   iconst                 1
+   if_icmpeq              LABEL52
+   jump                   LABEL54
+LABEL52:
+   iconst                 1
+   return                
+LABEL54:
+   iload                  1
+   iconst                 2
+   if_icmpeq              LABEL58
+   jump                   LABEL64
+LABEL58:
+   get_varbit             13777
+   iconst                 1
+   if_icmpeq              LABEL62
+   jump                   LABEL64
+LABEL62:
+   iconst                 1
+   return                
+LABEL64:
+   iload                  1
+   iconst                 1
+   if_icmpeq              LABEL68
+   jump                   LABEL78
+LABEL68:
+   get_varbit             13778
+   iconst                 2
+   if_icmpeq              LABEL72
+   jump                   LABEL78
+LABEL72:
+   iload                  2
+   iconst                 0
+   if_icmpeq              LABEL76
+   jump                   LABEL78
+LABEL76:
+   iconst                 1
+   return                
+LABEL78:
+   iload                  1
+   iconst                 1
+   if_icmpeq              LABEL82
+   jump                   LABEL92
+LABEL82:
+   get_varbit             13779
+   iconst                 2
+   if_icmpeq              LABEL86
+   jump                   LABEL92
+LABEL86:
+   iload                  3
+   iconst                 0
+   if_icmpeq              LABEL90
+   jump                   LABEL92
+LABEL90:
+   iconst                 1
+   return                
+LABEL92:
+   iconst                 0
+   return                
+   iconst                 -1
+   return                

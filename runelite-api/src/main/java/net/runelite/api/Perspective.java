@@ -42,6 +42,7 @@ import net.runelite.api.geometry.SimplePolygon;
 import net.runelite.api.model.Jarvis;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import org.jetbrains.annotations.ApiStatus;
 
 /**
  * A utility class containing methods to help with conversion between
@@ -335,7 +336,7 @@ public class Perspective
 			Widget minimapDrawWidget;
 			if (client.isResized())
 			{
-				if (client.getVar(Varbits.SIDE_PANELS) == 1)
+				if (client.getVarbitValue(Varbits.SIDE_PANELS) == 1)
 				{
 					minimapDrawWidget = client.getWidget(WidgetInfo.RESIZABLE_MINIMAP_DRAW_AREA);
 				}
@@ -677,20 +678,18 @@ public class Perspective
 	 * @param client      the game client
 	 * @param model       the model to calculate a clickbox for
 	 * @param orientation the orientation of the model (0-2048, where 0 is north)
-	 * @param point       the coordinate of the tile
+	 * @param x           x coord in local space
+	 * @param z           y coord in local space
 	 * @return the clickable area of the model
 	 */
 	@Nullable
-	public static Shape getClickbox(@Nonnull Client client, Model model, int orientation, LocalPoint point)
+	@ApiStatus.Internal
+	public static Shape getClickbox(@Nonnull Client client, Model model, int orientation, int x, int y, int z)
 	{
 		if (model == null)
 		{
 			return null;
 		}
-
-		int x = point.getX();
-		int y = point.getY();
-		int z = getTileHeight(client, point, client.getPlane());
 
 		SimplePolygon bounds = calculateAABB(client, model, orientation, x, y, z);
 
@@ -720,19 +719,13 @@ public class Perspective
 
 	private static SimplePolygon calculateAABB(Client client, Model m, int jauOrient, int x, int y, int z)
 	{
-		int ex = m.getExtremeX();
-		if (ex == -1)
-		{
-			// dynamic models don't get stored when they render where this normally happens
-			m.calculateBoundsCylinder();
-			m.calculateExtreme(0);
-			ex = m.getExtremeX();
-		}
+		m.calculateExtreme(jauOrient);
 
 		int x1 = m.getCenterX();
 		int y1 = m.getCenterZ();
 		int z1 = m.getCenterY();
 
+		int ex = m.getExtremeX();
 		int ey = m.getExtremeZ();
 		int ez = m.getExtremeY();
 
@@ -760,7 +753,7 @@ public class Perspective
 		int[] x2d = new int[8];
 		int[] y2d = new int[8];
 
-		modelToCanvas(client, 8, x, y, z, jauOrient, xa, ya, za, x2d, y2d);
+		modelToCanvasCpu(client, 8, x, y, z, 0, xa, ya, za, x2d, y2d);
 
 		return Jarvis.convexHull(x2d, y2d);
 	}
@@ -771,7 +764,7 @@ public class Perspective
 		int[] y2d = new int[m.getVerticesCount()];
 		final int[] faceColors3 = m.getFaceColors3();
 
-		Perspective.modelToCanvas(client,
+		Perspective.modelToCanvasCpu(client,
 			m.getVerticesCount(),
 			x, y, z,
 			jauOrient,

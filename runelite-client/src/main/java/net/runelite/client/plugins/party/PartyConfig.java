@@ -57,17 +57,6 @@ public interface PartyConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "messages",
-		name = "Join messages",
-		description = "Enables members join/leave game messages",
-		position = 3
-	)
-	default boolean messages()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "recolorNames",
 		name = "Recolor names",
 		description = "Recolor party members names based on unique color hash",
@@ -76,28 +65,6 @@ public interface PartyConfig extends Config
 	default boolean recolorNames()
 	{
 		return true;
-	}
-
-	@ConfigItem(
-		keyName = "autoOverlay",
-		name = "Auto overlay",
-		description = "Automatically add an overlay with player data when a member joins",
-		position = 5
-	)
-	default boolean autoOverlay()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "includeSelf",
-		name = "Include yourself",
-		description = "Shows yourself in the panel as part of the party",
-		position = 6
-	)
-	default boolean includeSelf()
-	{
-		return false;
 	}
 
 	@ConfigItem(

@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2020, TheStonedTurtle <https://github.com/TheStonedTurtle>
+ * Copyright (c) 2022, Jordan Atwood <nightfirecat@nightfirec.at>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -177,5 +178,74 @@ public class ItemStatEffectTest
 				assertEquals(theoretical, change.getTheoretical());
 			}
 		}
+	}
+
+	@Test
+	public void testAncientBrew()
+	{
+		final Effect ancientBrew = new ItemStatChanges().get(ItemID.ANCIENT_BREW4);
+
+		assertEquals(4, skillChange(Skill.PRAYER, 99, 99, ancientBrew));
+		assertEquals(11, skillChange(Skill.PRAYER, 99, 90, ancientBrew));
+		assertEquals(11, skillChange(Skill.PRAYER, 99, 0, ancientBrew));
+		assertEquals(2, skillChange(Skill.PRAYER, 50, 50, ancientBrew));
+		assertEquals(7, skillChange(Skill.PRAYER, 50, 40, ancientBrew));
+		assertEquals(0, skillChange(Skill.PRAYER, 1, 1, ancientBrew));
+		assertEquals(1, skillChange(Skill.PRAYER, 1, 0, ancientBrew));
+	}
+
+	@Test
+	public void testZamorakBrew()
+	{
+		final Effect zamorakBrew = new ItemStatChanges().get(ItemID.ZAMORAK_BREW4);
+
+		assertEquals(-10, skillChange(Skill.HITPOINTS, 91, 91, zamorakBrew));
+		assertEquals(-9, skillChange(Skill.HITPOINTS, 91, 81, zamorakBrew));
+		assertEquals(-8, skillChange(Skill.HITPOINTS, 91, 72, zamorakBrew));
+		assertEquals(-7, skillChange(Skill.HITPOINTS, 91, 64, zamorakBrew));
+		assertEquals(-3, skillChange(Skill.HITPOINTS, 91, 31, zamorakBrew));
+		assertEquals(-3, skillChange(Skill.HITPOINTS, 91, 28, zamorakBrew));
+		assertEquals(-3, skillChange(Skill.HITPOINTS, 91, 25, zamorakBrew));
+		assertEquals(-2, skillChange(Skill.HITPOINTS, 91, 22, zamorakBrew));
+	}
+
+	@Test
+	public void testZamorakMix()
+	{
+		final Effect zamorakMix = new ItemStatChanges().get(ItemID.ZAMORAK_MIX2);
+
+		assertEquals(-10, skillChange(Skill.HITPOINTS, 91, 91, zamorakMix));
+		assertEquals(-3, skillChange(Skill.HITPOINTS, 91, 81, zamorakMix));
+		assertEquals(-3, skillChange(Skill.HITPOINTS, 91, 78, zamorakMix));
+		assertEquals(-3, skillChange(Skill.HITPOINTS, 91, 75, zamorakMix));
+		assertEquals(3, skillChange(Skill.HITPOINTS, 91, 31, zamorakMix));
+		assertEquals(2, skillChange(Skill.HITPOINTS, 91, 34, zamorakMix));
+		assertEquals(2, skillChange(Skill.HITPOINTS, 91, 36, zamorakMix));
+		assertEquals(2, skillChange(Skill.HITPOINTS, 91, 38, zamorakMix));
+		assertEquals(0, skillChange(Skill.HITPOINTS, 91, 50, zamorakMix));
+	}
+
+	private int skillChange(Skill skill, int maxValue, int currentValue, Effect effect)
+	{
+		if (effect == null)
+		{
+			throw new IllegalArgumentException("Applied effect is null");
+		}
+
+		when(client.getRealSkillLevel(skill)).thenReturn(maxValue);
+		when(client.getBoostedSkillLevel(skill)).thenReturn(currentValue);
+		final StatsChanges statsChanges = effect.calculate(client);
+
+		for (final StatChange statChange : statsChanges.getStatChanges())
+		{
+			if (!statChange.getStat().getName().equals(skill.getName()))
+			{
+				continue;
+			}
+
+			return statChange.getRelative();
+		}
+
+		return 0;
 	}
 }

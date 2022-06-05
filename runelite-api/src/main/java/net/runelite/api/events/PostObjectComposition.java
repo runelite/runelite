@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2022, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,12 +22,20 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.examine;
+package net.runelite.api.events;
 
-public enum ExamineType
+import lombok.Value;
+import net.runelite.api.ObjectComposition;
+
+/**
+ * An event called after a new {@link ObjectComposition} is created and
+ * its data is initialized.
+ */
+@Value
+public class PostObjectComposition
 {
-	ITEM,
-	ITEM_BANK_EQ,
-	NPC,
-	OBJECT;
+	/**
+	 * The newly created object
+	 */
+	ObjectComposition objectComposition;
 }

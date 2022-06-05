@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Abex
+ * Copyright (c) 2022 LlemonDuck
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,23 +22,22 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.vars;
+package net.runelite.client.plugins.timetracking.farming;
 
-/**
- * An enumeration of possible autoweed settings.
- */
-public enum Autoweed
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import net.runelite.api.ItemID;
+
+@RequiredArgsConstructor
+@Getter
+public enum CompostState
 {
-	/**
-	 * Access to autoweed has not been unlocked.
-	 */
-	UNOWNED,
-	/**
-	 * Autoweed is disabled.
-	 */
-	OFF,
-	/**
-	 * Autoweed is enabled.
-	 */
-	ON
+
+	COMPOST(ItemID.COMPOST),
+	SUPERCOMPOST(ItemID.SUPERCOMPOST),
+	ULTRACOMPOST(ItemID.ULTRACOMPOST),
+	;
+
+	private final int itemId;
+
 }

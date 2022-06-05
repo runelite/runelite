@@ -60,7 +60,7 @@ class BlastFurnaceClickBoxOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		int dispenserState = client.getVar(Varbits.BAR_DISPENSER);
+		int dispenserState = client.getVarbitValue(Varbits.BAR_DISPENSER);
 
 		if (config.showConveyorBelt() && plugin.getConveyorBelt() != null)
 		{

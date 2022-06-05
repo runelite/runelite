@@ -45,9 +45,10 @@ public class ScreenMarkerOverlay extends Overlay
 	{
 		this.marker = marker;
 		this.screenMarkerRenderable = new ScreenMarkerRenderable();
-		setPosition(OverlayPosition.DETACHED);
+		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ALWAYS_ON_TOP);
 		setPriority(OverlayPriority.HIGH);
+		setMovable(true);
 		setResizable(true);
 		setMinimumSize(16);
 		setResettable(false);

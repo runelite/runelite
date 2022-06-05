@@ -34,6 +34,7 @@ import net.runelite.api.Perspective;
 import static net.runelite.api.Perspective.LOCAL_TILE_SIZE;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
@@ -66,7 +67,9 @@ class CannonOverlay extends Overlay
 			return null;
 		}
 
-		LocalPoint cannonPoint = LocalPoint.fromWorld(client, plugin.getCannonPosition());
+		// WorldAreas return the SW point, whereas we want the centre point
+		WorldPoint cannonLocation = plugin.getCannonPosition().toWorldPoint().dx(1).dy(1);
+		LocalPoint cannonPoint = LocalPoint.fromWorld(client, cannonLocation);
 
 		if (cannonPoint == null)
 		{

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Jasper Ketelaar <Jasper0781@gmail.com>
+ * Copyright (c) 2022 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,40 +22,9 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.mta;
+package net.runelite.cache.util;
 
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import javax.inject.Inject;
-import net.runelite.client.ui.FontManager;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.OverlayLayer;
-import net.runelite.client.ui.overlay.OverlayPosition;
-
-public class MTAInventoryOverlay extends Overlay
+public interface KeyProvider
 {
-	private final MTAPlugin plugin;
-
-	@Inject
-	public MTAInventoryOverlay(MTAPlugin plugin)
-	{
-		this.plugin = plugin;
-		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.ABOVE_WIDGETS);
-	}
-
-	@Override
-	public Dimension render(Graphics2D graphics)
-	{
-		for (MTARoom room : plugin.getRooms())
-		{
-			if (room.inside())
-			{
-				graphics.setFont(FontManager.getRunescapeBoldFont());
-				room.over(graphics);
-			}
-		}
-
-		return null;
-	}
+	int[] getKey(int region);
 }

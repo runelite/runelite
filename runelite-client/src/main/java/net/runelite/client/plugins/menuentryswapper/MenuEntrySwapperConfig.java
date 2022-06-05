@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.menuentryswapper;
 
+import lombok.RequiredArgsConstructor;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -133,6 +134,30 @@ public interface MenuEntrySwapperConfig extends Config
 		section = itemSection
 	)
 	default boolean shiftClickCustomization()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = -2,
+		keyName = "objectLeftClickCustomization",
+		name = "Customizable left-click",
+		description = "Allows customization of left-clicks on objects",
+		section = objectSection
+	)
+	default boolean objectLeftClickCustomization()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = -2,
+		keyName = "npcLeftClickCustomization",
+		name = "Customizable left-click",
+		description = "Allows customization of left-clicks on NPCs",
+		section = npcSection
+	)
+	default boolean npcLeftClickCustomization()
 	{
 		return true;
 	}
@@ -588,10 +613,38 @@ public interface MenuEntrySwapperConfig extends Config
 		return true;
 	}
 
+	@RequiredArgsConstructor
+	enum HouseTeleportMode
+	{
+		CAST("Cast"),
+		OUTSIDE("Outside"),
+		GROUP_CHOOSE("Group: Choose"),
+		GROUP_PREVIOUS("Group: Previous");
+
+		private final String name;
+
+		@Override
+		public String toString()
+		{
+			return name;
+		}
+	}
+
+	@ConfigItem(
+		keyName = "swapHouseTeleportSpell",
+		name = "House teleport",
+		description = "Swap house teleport spell to a different destination on shift",
+		section = uiSection
+	)
+	default HouseTeleportMode swapHouseTeleportSpell()
+	{
+		return HouseTeleportMode.OUTSIDE;
+	}
+
 	@ConfigItem(
 		keyName = "swapTeleportSpell",
 		name = "Shift-click teleport spells",
-		description = "Swap teleport spells that have a second destination on shift",
+		description = "Swap teleport spells that have a second destination, except for teleport to house, on shift",
 		section = uiSection
 	)
 	default boolean swapTeleportSpell()
@@ -635,8 +688,7 @@ public interface MenuEntrySwapperConfig extends Config
 	@ConfigItem(
 		keyName = "swapGEAbort",
 		name = "GE Abort",
-		description = "Swap abort offer on Grand Exchange offers when shift-clicking"
-		,
+		description = "Swap abort offer on Grand Exchange offers when shift-clicking",
 		section = uiSection
 	)
 	default boolean swapGEAbort()

@@ -788,7 +788,7 @@ public class TabInterface
 			return;
 		}
 
-		if (client.getVar(Varbits.BANK_REARRANGE_MODE) == 0)
+		if (client.getVarbitValue(Varbits.BANK_REARRANGE_MODE) == 0)
 		{
 			tabManager.swap(source.getName(), dest.getName());
 		}

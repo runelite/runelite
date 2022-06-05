@@ -26,11 +26,17 @@ package net.runelite.client.plugins.specialcounter;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
+import javax.inject.Named;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
@@ -44,6 +50,7 @@ import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.HitsplatApplied;
@@ -57,7 +64,9 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import net.runelite.client.util.ImageUtil;
 import net.runelite.client.ws.PartyService;
 import net.runelite.client.ws.WSClient;
 
@@ -95,6 +104,9 @@ public class SpecialCounterPlugin extends Plugin
 	private final Set<Integer> interactedNpcIds = new HashSet<>();
 	private final SpecialCounter[] specialCounter = new SpecialCounter[SpecialWeapon.values().length];
 
+	@Getter(AccessLevel.PACKAGE)
+	private final List<PlayerInfoDrop> playerInfoDrops = new ArrayList<>();
+
 	@Inject
 	private Client client;
 
@@ -119,6 +131,16 @@ public class SpecialCounterPlugin extends Plugin
 	@Inject
 	private SpecialCounterConfig config;
 
+	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
+	private PlayerInfoDropOverlay playerInfoDropOverlay;
+
+	@Inject
+	@Named("developerMode")
+	boolean developerMode;
+
 	@Provides
 	SpecialCounterConfig getConfig(ConfigManager configManager)
 	{
@@ -128,6 +150,7 @@ public class SpecialCounterPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
+		overlayManager.add(playerInfoDropOverlay);
 		wsClient.registerMessage(SpecialCounterUpdate.class);
 		currentWorld = -1;
 		specialPercentage = -1;
@@ -140,6 +163,7 @@ public class SpecialCounterPlugin extends Plugin
 	protected void shutDown()
 	{
 		removeCounters();
+		overlayManager.remove(playerInfoDropOverlay);
 		wsClient.unregisterMessage(SpecialCounterUpdate.class);
 	}
 	
@@ -267,15 +291,18 @@ public class SpecialCounterPlugin extends Plugin
 		if (wasSpec && specialWeapon != null && hitsplat.getAmount() > 0)
 		{
 			int hit = getHit(specialWeapon, hitsplat);
+			int localPlayerId = client.getLocalPlayer().getId();
 
 			updateCounter(specialWeapon, null, hit);
 
 			if (!party.getMembers().isEmpty())
 			{
-				final SpecialCounterUpdate specialCounterUpdate = new SpecialCounterUpdate(interactingId, specialWeapon, hit);
+				final SpecialCounterUpdate specialCounterUpdate = new SpecialCounterUpdate(interactingId, specialWeapon, hit, client.getWorld(), localPlayerId);
 				specialCounterUpdate.setMemberId(party.getLocalMember().getMemberId());
 				wsClient.send(specialCounterUpdate);
 			}
+
+			playerInfoDrops.add(createSpecInfoDrop(specialWeapon, hit, localPlayerId));
 		}
 	}
 
@@ -315,7 +342,7 @@ public class SpecialCounterPlugin extends Plugin
 			return;
 		}
 
-		String name = party.getMemberById(event.getMemberId()).getName();
+		String name = party.getMemberById(event.getMemberId()).getDisplayName();
 		if (name == null)
 		{
 			return;
@@ -334,7 +361,21 @@ public class SpecialCounterPlugin extends Plugin
 			{
 				updateCounter(event.getWeapon(), name, event.getHit());
 			}
+
+			if (event.getWorld() == client.getWorld())
+			{
+				playerInfoDrops.add(createSpecInfoDrop(event.getWeapon(), event.getHit(), event.getPlayerId()));
+			}
 		});
+	}
+
+	@Subscribe
+	public void onCommandExecuted(CommandExecuted commandExecuted)
+	{
+		if (developerMode && commandExecuted.getCommand().equals("spec"))
+		{
+			playerInfoDrops.add(createSpecInfoDrop(SpecialWeapon.BANDOS_GODSWORD, 42, client.getLocalPlayer().getId()));
+		}
 	}
 
 	private SpecialWeapon usedSpecialWeapon()
@@ -423,5 +464,18 @@ public class SpecialCounterPlugin extends Plugin
 	private int getHit(SpecialWeapon specialWeapon, Hitsplat hitsplat)
 	{
 		return specialWeapon.isDamage() ? hitsplat.getAmount() : 1;
+	}
+
+	private PlayerInfoDrop createSpecInfoDrop(SpecialWeapon weapon, int hit, int playerId)
+	{
+		int cycle = client.getGameCycle();
+		BufferedImage image = ImageUtil.resizeImage(itemManager.getImage(weapon.getItemID()[0]), 24, 24);
+
+		return PlayerInfoDrop.builder(cycle, cycle + 100, playerId, Integer.toString(hit))
+			.color(config.specDropColor())
+			.startHeightOffset(100)
+			.endHeightOffset(400)
+			.image(image)
+			.build();
 	}
 }

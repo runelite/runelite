@@ -185,9 +185,7 @@ public class HiscorePlugin extends Plugin
 	{
 		if (event.getMenuAction() == MenuAction.RUNELITE_PLAYER && event.getMenuOption().equals(LOOKUP))
 		{
-			// The player id is included in the event, so we can use that to get the player name,
-			// which avoids having to parse out the combat level and any icons preceding the name.
-			Player player = client.getCachedPlayers()[event.getId()];
+			Player player = event.getMenuEntry().getPlayer();
 			if (player == null)
 			{
 				return;

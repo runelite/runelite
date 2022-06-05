@@ -32,9 +32,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
@@ -47,6 +45,7 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.MouseDragEventForwarder;
 import net.runelite.client.ui.components.ProgressBar;
 import net.runelite.client.util.ImageUtil;
+import net.runelite.client.ws.PartyMember;
 
 class PartyMemberBox extends JPanel
 {
@@ -61,9 +60,7 @@ class PartyMemberBox extends JPanel
 	private final ProgressBar hpBar = new ProgressBar();
 	private final ProgressBar prayerBar = new ProgressBar();
 
-	private final JLabel topName = new JLabel();
-	private final JLabel bottomName = new JLabel();
-
+	private final JLabel name = new JLabel();
 	private final JLabel avatar = new JLabel();
 
 	private final PartyConfig config;
@@ -83,15 +80,6 @@ class PartyMemberBox extends JPanel
 		container.setLayout(new BorderLayout());
 		container.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		container.setBorder(new EmptyBorder(5, 5, 5, 5));
-
-		// Create Toggle overlay
-		final JMenuItem overlay = new JMenuItem("Toggle overlay");
-		overlay.addActionListener(e -> memberPartyData.setShowOverlay(!memberPartyData.isShowOverlay()));
-
-		// Create popup menu
-		final JPopupMenu popupMenu = new JPopupMenu();
-		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
-		popupMenu.add(overlay);
 
 		// create a line border with the specified color and width
 		Border border = BorderFactory.createLineBorder(Color.gray, 1);
@@ -113,14 +101,10 @@ class PartyMemberBox extends JPanel
 		namesPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		namesPanel.setBorder(new EmptyBorder(2, 5, 2, 5));
 
-		topName.setFont(FontManager.getRunescapeSmallFont());
-		bottomName.setFont(FontManager.getRunescapeSmallFont());
+		name.setFont(FontManager.getRunescapeSmallFont());
+		name.putClientProperty("html.disable", Boolean.TRUE);
 
-		topName.putClientProperty("html.disable", Boolean.TRUE);
-		bottomName.putClientProperty("html.disable", Boolean.TRUE);
-
-		namesPanel.add(topName);     // top
-		namesPanel.add(bottomName);  // bottom
+		namesPanel.add(name);
 
 		headerPanel.add(avatar, BorderLayout.WEST);
 		headerPanel.add(namesPanel, BorderLayout.CENTER);
@@ -141,8 +125,6 @@ class PartyMemberBox extends JPanel
 		container.add(headerPanel, BorderLayout.NORTH);
 		container.add(progressWrapper, BorderLayout.SOUTH);
 
-		container.setComponentPopupMenu(popupMenu);
-
 		// forward mouse drag events to parent panel for drag and drop reordering
 		MouseDragEventForwarder mouseDragEventForwarder = new MouseDragEventForwarder(panel);
 		container.addMouseListener(mouseDragEventForwarder);
@@ -155,10 +137,12 @@ class PartyMemberBox extends JPanel
 
 	void update()
 	{
+		final PartyMember member = memberPartyData.getMember();
+
 		// Avatar
-		if (!avatarSet && memberPartyData.getMember().getAvatar() != null)
+		if (!avatarSet && member.getAvatar() != null)
 		{
-			ImageIcon icon = new ImageIcon(ImageUtil.resizeImage(memberPartyData.getMember().getAvatar(), 32, 32));
+			ImageIcon icon = new ImageIcon(ImageUtil.resizeImage(member.getAvatar(), 32, 32));
 			icon.getImage().flush();
 			avatar.setIcon(icon);
 
@@ -174,15 +158,12 @@ class PartyMemberBox extends JPanel
 		prayerBar.setMaximumValue(memberPartyData.getMaxPrayer());
 		prayerBar.setCenterLabel(progressBarLabel(memberPartyData.getPrayer(), memberPartyData.getMaxPrayer()));
 
-		// Update name labels
+		// Update name label
 		Color playerColor = config.recolorNames() ? memberPartyData.getColor() : Color.WHITE;
-		boolean isLoggedIn = !memberPartyData.getCharacterName().isEmpty();
+		boolean isLoggedIn = member.isLoggedIn();
 
-		topName.setForeground(playerColor);
-		topName.setText(memberPartyData.getMember().getName());
-
-		bottomName.setForeground(isLoggedIn ? playerColor : Color.GRAY);
-		bottomName.setText(isLoggedIn ? memberPartyData.getCharacterName() : "Logged out");
+		name.setForeground(isLoggedIn ? playerColor : Color.GRAY);
+		name.setText(member.getDisplayName());
 	}
 
 	private static String progressBarLabel(int current, int max)

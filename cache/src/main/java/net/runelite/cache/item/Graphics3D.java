@@ -24,6 +24,8 @@
  */
 package net.runelite.cache.item;
 
+import net.runelite.cache.models.JagexColor;
+
 class Graphics3D extends Rasterizer2D
 {
 	private static final double UNIT = Math.PI / 1024d; // How much of the circle each unit of SINE/COSINE is
@@ -132,9 +134,9 @@ class Graphics3D extends Rasterizer2D
 		Rasterizer3D_clipMidY2 = Rasterizer3D_clipHeight - centerY;
 	}
 
-	public final void setBrightness(double var0)
+	public final void setBrightness(double brightness)
 	{
-		colorPalette = new ColorPalette(var0, 0, 512).getColorPalette();
+		colorPalette = JagexColor.createPalette(brightness);
 	}
 
 	final void rasterGouraud(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8)

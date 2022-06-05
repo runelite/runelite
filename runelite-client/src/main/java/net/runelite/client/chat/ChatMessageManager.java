@@ -106,7 +106,7 @@ public class ChatMessageManager
 		final String channel = stringStack[size - 4];
 		final ChatMessageType chatMessageType = messageNode.getType();
 
-		final boolean isChatboxTransparent = client.isResized() && client.getVar(Varbits.TRANSPARENT_CHATBOX) == 1;
+		final boolean isChatboxTransparent = client.isResized() && client.getVarbitValue(Varbits.TRANSPARENT_CHATBOX) == 1;
 		Color usernameColor = null;
 		Color channelColor = null;
 
@@ -164,9 +164,16 @@ public class ChatMessageManager
 			stringStack[size - 4] = ColorUtil.wrapWithColorTag(channel, channelColor);
 		}
 
+		String prefix = "";
+		if (chatMessageType == ChatMessageType.CLAN_GIM_CHAT || chatMessageType == ChatMessageType.CLAN_GIM_MESSAGE)
+		{
+			message = message.substring(1); // remove |
+			prefix = "|";
+		}
+
 		if (messageNode.getRuneLiteFormatMessage() != null)
 		{
-			stringStack[size - 2] = message = formatRuneLiteMessage(messageNode.getRuneLiteFormatMessage(),
+			message = formatRuneLiteMessage(messageNode.getRuneLiteFormatMessage(),
 				chatMessageType, splitpmbox);
 		}
 
@@ -178,20 +185,15 @@ public class ChatMessageManager
 				continue;
 			}
 
-			String prefix = "";
-			if (chatMessageType == ChatMessageType.CLAN_GIM_CHAT || chatMessageType == ChatMessageType.CLAN_GIM_MESSAGE)
-			{
-				message = message.substring(1); // remove |
-				prefix = "|";
-			}
-
 			// Replace </col> tags in the message with the new color so embedded </col> won't reset the color
 			final Color color = chatColor.getColor();
-			stringStack[size - 2] = prefix + ColorUtil.wrapWithColorTag(
+			message = ColorUtil.wrapWithColorTag(
 				message.replace(ColorUtil.CLOSING_COLOR_TAG, ColorUtil.colorTag(color)),
 				color);
 			break;
 		}
+
+		stringStack[size - 2] = prefix + message;
 	}
 
 	@Subscribe
@@ -215,7 +217,7 @@ public class ChatMessageManager
 				return;
 		}
 
-		boolean isChatboxTransparent = client.isResized() && client.getVar(Varbits.TRANSPARENT_CHATBOX) == 1;
+		boolean isChatboxTransparent = client.isResized() && client.getVarbitValue(Varbits.TRANSPARENT_CHATBOX) == 1;
 		Color usernameColor = isChatboxTransparent ? chatColorConfig.transparentPrivateUsernames() : chatColorConfig.opaquePrivateUsernames();
 		if (usernameColor == null)
 		{
@@ -840,7 +842,7 @@ public class ChatMessageManager
 	@VisibleForTesting
 	String formatRuneLiteMessage(String runeLiteFormatMessage, ChatMessageType type, boolean pmbox)
 	{
-		final boolean transparentChatbox = client.getVar(Varbits.TRANSPARENT_CHATBOX) != 0;
+		final boolean transparentChatbox = client.getVarbitValue(Varbits.TRANSPARENT_CHATBOX) != 0;
 		final boolean transparent = client.isResized() && transparentChatbox;
 		final Collection<ChatColor> chatColors = colorCache.get(type);
 		for (ChatColor chatColor : chatColors)

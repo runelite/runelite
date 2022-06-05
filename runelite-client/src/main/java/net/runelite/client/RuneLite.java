@@ -44,6 +44,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
@@ -145,6 +146,10 @@ public class RuneLite
 	@Nullable
 	private Client client;
 
+	@Inject
+	@Nullable
+	private RuntimeConfig runtimeConfig;
+
 	public static void main(String[] args) throws Exception
 	{
 		Locale.setDefault(Locale.ENGLISH);
@@ -214,8 +219,8 @@ public class RuneLite
 
 		try
 		{
-			final ClientLoader clientLoader = new ClientLoader(okHttpClient, options.valueOf(updateMode), (String) options.valueOf("jav_config"));
 			final RuntimeConfigLoader runtimeConfigLoader = new RuntimeConfigLoader(okHttpClient);
+			final ClientLoader clientLoader = new ClientLoader(okHttpClient, options.valueOf(updateMode), runtimeConfigLoader, (String) options.valueOf("jav_config"));
 
 			new Thread(() ->
 			{
@@ -233,6 +238,7 @@ public class RuneLite
 				{
 					SwingUtilities.invokeLater(() ->
 						new FatalErrorDialog("Developers should enable assertions; Add `-ea` to your JVM arguments`")
+							.addHelpButtons()
 							.addBuildingGuide()
 							.open());
 					return;
@@ -268,6 +274,7 @@ public class RuneLite
 			log.error("Failure during startup", e);
 			SwingUtilities.invokeLater(() ->
 				new FatalErrorDialog("RuneLite has encountered an unexpected error during startup.")
+					.addHelpButtons()
 					.open());
 		}
 		finally
@@ -286,6 +293,8 @@ public class RuneLite
 			// Inject members into client
 			injector.injectMembers(client);
 		}
+
+		setupSystemProps();
 
 		// Start the applet
 		if (applet != null)
@@ -418,9 +427,15 @@ public class RuneLite
 	{
 		OkHttpClient.Builder builder = new OkHttpClient.Builder()
 			.pingInterval(30, TimeUnit.SECONDS)
-			.addNetworkInterceptor(chain ->
+			.addInterceptor(chain ->
 			{
-				Request userAgentRequest = chain.request()
+				Request request = chain.request();
+				if (request.header("User-Agent") != null)
+				{
+					return chain.proceed(request);
+				}
+
+				Request userAgentRequest = request
 					.newBuilder()
 					.header("User-Agent", USER_AGENT)
 					.build();
@@ -512,6 +527,21 @@ public class RuneLite
 		catch (Exception e)
 		{
 			log.warn("unable to copy jagexcache", e);
+		}
+	}
+
+	private void setupSystemProps()
+	{
+		if (runtimeConfig == null || runtimeConfig.getSysProps() == null)
+		{
+			return;
+		}
+
+		for (Map.Entry<String, String> entry : runtimeConfig.getSysProps().entrySet())
+		{
+			String key = entry.getKey(), value = entry.getValue();
+			log.debug("Setting property {}={}", key, value);
+			System.setProperty(key, value);
 		}
 	}
 }

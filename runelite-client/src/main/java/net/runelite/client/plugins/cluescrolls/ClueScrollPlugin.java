@@ -145,10 +145,10 @@ public class ClueScrollPlugin extends Plugin
 	private static final Color HIGHLIGHT_HOVER_BORDER_COLOR = HIGHLIGHT_BORDER_COLOR.darker();
 	private static final Color HIGHLIGHT_FILL_COLOR = new Color(0, 255, 0, 20);
 	private static final String CLUE_TAG_NAME = "clue";
-	private static final Varbits[] RUNEPOUCH_AMOUNT_VARBITS = {
+	private static final int[] RUNEPOUCH_AMOUNT_VARBITS = {
 		Varbits.RUNE_POUCH_AMOUNT1, Varbits.RUNE_POUCH_AMOUNT2, Varbits.RUNE_POUCH_AMOUNT3
 	};
-	private static final Varbits[] RUNEPOUCH_RUNE_VARBITS = {
+	private static final int[] RUNEPOUCH_RUNE_VARBITS = {
 		Varbits.RUNE_POUCH_RUNE1, Varbits.RUNE_POUCH_RUNE2, Varbits.RUNE_POUCH_RUNE3
 	};
 
@@ -325,16 +325,10 @@ public class ClueScrollPlugin extends Plugin
 			return;
 		}
 
-		final boolean itemClicked = event.getMenuAction() == MenuAction.ITEM_FIRST_OPTION
-			|| event.getMenuAction() == MenuAction.ITEM_SECOND_OPTION
-			|| event.getMenuAction() == MenuAction.ITEM_THIRD_OPTION
-			|| event.getMenuAction() == MenuAction.ITEM_FOURTH_OPTION
-			|| event.getMenuAction() == MenuAction.ITEM_FIFTH_OPTION;
-		final boolean isXMarksTheSpotOrb = event.getId() == ItemID.MYSTERIOUS_ORB_23069;
-
-		if (itemClicked && (isXMarksTheSpotOrb || event.getMenuOption().equals("Read")))
+		final boolean isXMarksTheSpotOrb = event.getItemId() == ItemID.MYSTERIOUS_ORB_23069;
+		if (isXMarksTheSpotOrb || event.getMenuOption().equals("Read"))
 		{
-			final ItemComposition itemComposition = itemManager.getItemComposition(event.getId());
+			final ItemComposition itemComposition = itemManager.getItemComposition(event.getItemId());
 
 			if (isXMarksTheSpotOrb
 				|| itemComposition.getName().startsWith("Clue scroll")
@@ -431,13 +425,13 @@ public class ClueScrollPlugin extends Plugin
 		List<Item> items = new ArrayList<>(RUNEPOUCH_AMOUNT_VARBITS.length);
 		for (int i = 0; i < RUNEPOUCH_AMOUNT_VARBITS.length; i++)
 		{
-			int amount = client.getVar(RUNEPOUCH_AMOUNT_VARBITS[i]);
+			int amount = client.getVarbitValue(RUNEPOUCH_AMOUNT_VARBITS[i]);
 			if (amount <= 0)
 			{
 				continue;
 			}
 
-			int varbId = client.getVar(RUNEPOUCH_RUNE_VARBITS[i]);
+			int varbId = client.getVarbitValue(RUNEPOUCH_RUNE_VARBITS[i]);
 			RunepouchRune rune = RunepouchRune.getRune(varbId);
 			if (rune == null)
 			{

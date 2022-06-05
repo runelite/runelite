@@ -28,12 +28,9 @@ package net.runelite.client.plugins.devtools;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
-import java.awt.Rectangle;
 import java.awt.Shape;
-import java.awt.geom.Rectangle2D;
 import java.util.List;
 import java.util.Set;
 import javax.inject.Inject;
@@ -59,9 +56,6 @@ import net.runelite.api.TileItem;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -120,11 +114,6 @@ class DevToolsOverlay extends Overlay
 		if (plugin.getGroundItems().isActive() || plugin.getGroundObjects().isActive() || plugin.getGameObjects().isActive() || plugin.getWalls().isActive() || plugin.getDecorations().isActive() || plugin.getTileLocation().isActive() || plugin.getMovementFlags().isActive())
 		{
 			renderTileObjects(graphics);
-		}
-
-		if (plugin.getInventory().isActive())
-		{
-			renderInventory(graphics);
 		}
 
 		if (plugin.getProjectiles().isActive())
@@ -409,35 +398,6 @@ class DevToolsOverlay extends Overlay
 			{
 				graphics.draw(p);
 			}
-		}
-	}
-
-	private void renderInventory(Graphics2D graphics)
-	{
-		Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
-		if (inventoryWidget == null || inventoryWidget.isHidden())
-		{
-			return;
-		}
-
-		for (WidgetItem item : inventoryWidget.getWidgetItems())
-		{
-			Rectangle slotBounds = item.getCanvasBounds();
-
-			String idText = "" + item.getId();
-			FontMetrics fm = graphics.getFontMetrics();
-			Rectangle2D textBounds = fm.getStringBounds(idText, graphics);
-
-			int textX = (int) (slotBounds.getX() + (slotBounds.getWidth() / 2) - (textBounds.getWidth() / 2));
-			int textY = (int) (slotBounds.getY() + (slotBounds.getHeight() / 2) + (textBounds.getHeight() / 2));
-
-			graphics.setColor(new Color(255, 255, 255, 65));
-			graphics.fill(slotBounds);
-
-			graphics.setColor(Color.BLACK);
-			graphics.drawString(idText, textX + 1, textY + 1);
-			graphics.setColor(YELLOW);
-			graphics.drawString(idText, textX, textY);
 		}
 	}
 

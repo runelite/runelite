@@ -215,7 +215,7 @@ public class RunEnergyPlugin extends Plugin
 		final int effectiveWeight = Math.max(client.getWeight(), 0);
 		double lossRate = (Math.min(effectiveWeight, 64) / 100.0) + 0.64;
 
-		if (client.getVar(Varbits.RUN_SLOWED_DEPLETION_ACTIVE) != 0)
+		if (client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE) != 0)
 		{
 			lossRate *= 0.3; // Stamina effect reduces energy depletion to 30%
 		}

@@ -71,6 +71,7 @@ public class HiscoreClientTest
 		+ "254,92\n"
 		+ "-1,-1\n" // lms
 		+ "1,241\n" // soul wars
+		+ "1,2739\n" // gotr
 		+ "24870,37\n"
 		+ "15020,388\n"
 		+ "50463,147\n"
@@ -148,6 +149,7 @@ public class HiscoreClientTest
 		assertEquals(254, result.getClueScrollMaster().getRank());
 		assertEquals(-1, result.getLastManStanding().getLevel());
 		assertEquals(241, result.getSoulWarsZeal().getLevel());
+		assertEquals(2739, result.getRiftsClosed().getLevel());
 		assertEquals(2460, result.getLeaguePoints().getLevel());
 		assertEquals(37, result.getAbyssalSire().getLevel());
 		assertEquals(92357, result.getCallisto().getRank());

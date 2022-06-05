@@ -73,7 +73,7 @@ class AbyssOverlay extends Overlay
 	private void renderRift(Graphics2D graphics, DecorativeObject object)
 	{
 		AbyssRifts rift = AbyssRifts.getRift(object.getId());
-		if (rift == null || !plugin.getRifts().contains(rift))
+		if (rift == null || !rift.getConfigEnabled().test(config))
 		{
 			return;
 		}

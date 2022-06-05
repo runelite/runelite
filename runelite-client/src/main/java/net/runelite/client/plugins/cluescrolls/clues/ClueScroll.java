@@ -28,7 +28,7 @@ import java.awt.Graphics2D;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import net.runelite.api.Varbits;
+import net.runelite.api.annotations.Varbit;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
@@ -43,8 +43,8 @@ public abstract class ClueScroll
 	private boolean requiresLight;
 
 	@Setter(AccessLevel.PROTECTED)
-	@Getter(AccessLevel.PUBLIC)
-	private Varbits hasFirePit;
+	@Getter(onMethod_ = {@Varbit}, value = AccessLevel.PUBLIC)
+	private int firePitVarbitId = -1;
 
 	@Setter(AccessLevel.PROTECTED)
 	@Getter(AccessLevel.PUBLIC)

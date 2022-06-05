@@ -70,7 +70,6 @@ import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.StatChanged;
-import net.runelite.api.vars.SlayerUnlock;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
@@ -856,7 +855,7 @@ public class SlayerPlugin extends Plugin
 		sb.append(task.getTask());
 		if (!Strings.isNullOrEmpty(task.getLocation()))
 		{
-			sb.append(" (").append(task.getLocation()).append(")");
+			sb.append(" (").append(task.getLocation()).append(')');
 		}
 		sb.append(": ");
 		if (killed < 0)

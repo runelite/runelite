@@ -191,6 +191,7 @@ public class ChatFilterPluginTest
 	{
 		when(chatFilterConfig.filterType()).thenReturn(ChatFilterType.CENSOR_WORDS);
 		when(chatFilterConfig.filteredWords()).thenReturn("filterme");
+		when(chatFilterConfig.stripAccents()).thenReturn(true);
 
 		chatFilterPlugin.updateFilteredPatterns();
 		assertEquals("plëäsë ******** plügïn", chatFilterPlugin.censorMessage("Blue", "plëäsë fïltërmë plügïn"));
@@ -211,6 +212,7 @@ public class ChatFilterPluginTest
 	{
 		when(chatFilterConfig.filterType()).thenReturn(ChatFilterType.CENSOR_WORDS);
 		when(chatFilterConfig.filteredWords()).thenReturn("plëäsë, filterme");
+		when(chatFilterConfig.stripAccents()).thenReturn(true);
 
 		chatFilterPlugin.updateFilteredPatterns();
 		assertEquals("****** ******** plügïn", chatFilterPlugin.censorMessage("Blue", "plëäsë fïltërmë plügïn"));

@@ -63,6 +63,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.mockito.ArgumentMatchers.any;
 import org.mockito.Mock;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -164,10 +165,10 @@ public class ClueScrollPluginTest
 		plugin.onGameTick(new GameTick());
 
 		// Simulate clicking on the STASH
-		MenuOptionClicked menuOptionClicked = new MenuOptionClicked();
-		menuOptionClicked.setMenuOption("Search");
-		menuOptionClicked.setMenuTarget("<col=ffff>STASH unit (easy)");
-		menuOptionClicked.setId(NullObjectID.NULL_28983);
+		MenuOptionClicked menuOptionClicked = mock(MenuOptionClicked.class);
+		when(menuOptionClicked.getMenuOption()).thenReturn("Search");
+		lenient().when(menuOptionClicked.getMenuTarget()).thenReturn("<col=ffff>STASH unit (easy)");
+		when(menuOptionClicked.getId()).thenReturn(NullObjectID.NULL_28983);
 		plugin.onMenuOptionClicked(menuOptionClicked);
 
 		// Check that the STASH is stored after withdrawing
@@ -216,10 +217,10 @@ public class ClueScrollPluginTest
 		when(container.getItems()).thenReturn(inventory);
 		when(container.contains(ItemID.RUNE_POUCH)).thenReturn(true);
 
-		when(client.getVar(Varbits.RUNE_POUCH_RUNE1)).thenReturn(9); // Cosmic Rune
-		when(client.getVar(Varbits.RUNE_POUCH_AMOUNT1)).thenReturn(20);
-		when(client.getVar(Varbits.RUNE_POUCH_RUNE3)).thenReturn(4); // Fire Rune
-		when(client.getVar(Varbits.RUNE_POUCH_AMOUNT3)).thenReturn(4000);
+		when(client.getVarbitValue(Varbits.RUNE_POUCH_RUNE1)).thenReturn(9); // Cosmic Rune
+		when(client.getVarbitValue(Varbits.RUNE_POUCH_AMOUNT1)).thenReturn(20);
+		when(client.getVarbitValue(Varbits.RUNE_POUCH_RUNE3)).thenReturn(4); // Fire Rune
+		when(client.getVarbitValue(Varbits.RUNE_POUCH_AMOUNT3)).thenReturn(4000);
 
 		plugin.onItemContainerChanged(event);
 

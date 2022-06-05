@@ -27,12 +27,12 @@ package net.runelite.client.account;
 import com.google.gson.Gson;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.time.Instant;
 import java.util.UUID;
 import javax.inject.Inject;
@@ -123,7 +123,7 @@ public class SessionManager
 			return;
 		}
 
-		try (Writer fw = new OutputStreamWriter(new FileOutputStream(sessionFile), StandardCharsets.UTF_8))
+		try (Writer fw = new OutputStreamWriter(Files.newOutputStream(sessionFile.toPath()), StandardCharsets.UTF_8))
 		{
 			gson.toJson(accountSession, fw);
 

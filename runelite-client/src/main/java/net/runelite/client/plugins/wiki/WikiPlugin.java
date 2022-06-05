@@ -35,6 +35,7 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
+import net.runelite.api.NullItemID;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.ScriptID;
 import net.runelite.api.SpriteID;
@@ -131,7 +132,7 @@ public class WikiPlugin extends Plugin
 		children[0] = null;
 
 		Widget vanilla = client.getWidget(WidgetInfo.MINIMAP_WIKI_BANNER);
-		if (vanilla != null && client.getVar(Varbits.WIKI_ENTITY_LOOKUP) == 0)
+		if (vanilla != null && client.getVarbitValue(Varbits.WIKI_ENTITY_LOOKUP) == 0)
 		{
 			vanilla.setHidden(false);
 		}
@@ -157,7 +158,7 @@ public class WikiPlugin extends Plugin
 			return;
 		}
 
-		if (client.getVar(Varbits.WIKI_ENTITY_LOOKUP) == 1) // disabled
+		if (client.getVarbitValue(Varbits.WIKI_ENTITY_LOOKUP) == 1) // disabled
 		{
 			// when the wiki entity lookup option is disabled the banner parent layer,
 			// which is used for var transmit events, is not positioned. This is copied
@@ -266,8 +267,8 @@ public class WikiPlugin extends Plugin
 					break optarget;
 				case CANCEL:
 					return;
-				case ITEM_USE_ON_WIDGET:
-				case SPELL_CAST_ON_GROUND_ITEM:
+				case WIDGET_USE_ON_ITEM:
+				case WIDGET_TARGET_ON_GROUND_ITEM:
 				{
 					type = "item";
 					id = itemManager.canonicalize(ev.getId());
@@ -275,17 +276,18 @@ public class WikiPlugin extends Plugin
 					location = null;
 					break;
 				}
-				case SPELL_CAST_ON_NPC:
+				case WIDGET_TARGET_ON_NPC:
 				{
 					type = "npc";
-					NPC npc = client.getCachedNPCs()[ev.getId()];
+					NPC npc = ev.getMenuEntry().getNpc();
+					assert npc != null;
 					NPCComposition nc = npc.getTransformedComposition();
 					id = nc.getId();
 					name = nc.getName();
 					location = npc.getWorldLocation();
 					break;
 				}
-				case SPELL_CAST_ON_GAME_OBJECT:
+				case WIDGET_TARGET_ON_GAME_OBJECT:
 				{
 					type = "object";
 					ObjectComposition lc = client.getObjectDefinition(ev.getId());
@@ -298,7 +300,7 @@ public class WikiPlugin extends Plugin
 					location = WorldPoint.fromScene(client, ev.getParam0(), ev.getParam1(), client.getPlane());
 					break;
 				}
-				case SPELL_CAST_ON_WIDGET:
+				case WIDGET_TARGET_ON_WIDGET:
 					Widget w = getWidget(ev.getParam1(), ev.getParam0());
 
 					if (w.getType() == WidgetType.GRAPHIC && w.getItemId() != -1)
@@ -359,16 +361,16 @@ public class WikiPlugin extends Plugin
 		int widgetIndex = event.getActionParam0();
 		int widgetID = event.getActionParam1();
 
-		if (wikiSelected && event.getType() == MenuAction.SPELL_CAST_ON_WIDGET.getId())
+		if (wikiSelected && event.getType() == MenuAction.WIDGET_TARGET_ON_WIDGET.getId())
 		{
 			MenuEntry[] menuEntries = client.getMenuEntries();
 			Widget w = getWidget(widgetID, widgetIndex);
-			if (w.getType() == WidgetType.GRAPHIC && w.getItemId() != -1)
+			if (w.getType() == WidgetType.GRAPHIC && w.getItemId() != -1 && w.getItemId() != NullItemID.NULL_6512)
 			{
 				for (int ourEntry = menuEntries.length - 1;ourEntry >= 0; ourEntry--)
 				{
 					MenuEntry entry = menuEntries[ourEntry];
-					if (entry.getType() == MenuAction.SPELL_CAST_ON_WIDGET)
+					if (entry.getType() == MenuAction.WIDGET_TARGET_ON_WIDGET)
 					{
 						int id = itemManager.canonicalize(w.getItemId());
 						String name = itemManager.getItemComposition(id).getName();
@@ -385,7 +387,7 @@ public class WikiPlugin extends Plugin
 				MenuEntry[] oldEntries = menuEntries;
 				menuEntries = Arrays.copyOf(menuEntries, menuEntries.length - 1);
 				for (int ourEntry = oldEntries.length - 1;
-					ourEntry >= 2 && oldEntries[oldEntries.length - 1].getType() != MenuAction.SPELL_CAST_ON_WIDGET;
+					ourEntry >= 2 && oldEntries[oldEntries.length - 1].getType() != MenuAction.WIDGET_TARGET_ON_WIDGET;
 					ourEntry--)
 				{
 					menuEntries[ourEntry - 1] = oldEntries[ourEntry];

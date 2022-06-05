@@ -33,5 +33,7 @@ import net.runelite.http.api.ws.messages.party.PartyMemberMessage;
 class DiscordUserInfo extends PartyMemberMessage
 {
 	private final String userId;
+	private final String username;
+	private final String discriminator;
 	private final String avatarId;
 }

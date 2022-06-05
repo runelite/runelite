@@ -430,9 +430,9 @@ LABEL369:
    iload                  18
    switch                
       3: LABEL372
-      5: LABEL430
-      6: LABEL401
       7: LABEL372
+      6: LABEL401
+      5: LABEL430
    jump                   LABEL468
 LABEL372:
    iload                  7

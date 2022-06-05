@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2022 Hydrox6 <ikada@protonmail.ch>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,50 +22,41 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.examine;
+package net.runelite.client.plugins.itemstats;
 
-import java.util.Objects;
+import net.runelite.api.Client;
+import net.runelite.client.plugins.itemstats.delta.DeltaCalculator;
+import net.runelite.client.plugins.itemstats.stats.Stat;
 
-class CacheKey
+/**
+ * A stat boost using the real stat level, that can only boost a certain amount above the stat level.
+ */
+public class CappedStatBoost extends StatBoost
 {
-	private final ExamineType type;
-	private final int id;
+	private final DeltaCalculator deltaCalculator;
+	private final DeltaCalculator capCalculator;
 
-	public CacheKey(ExamineType type, int id)
+	public CappedStatBoost(Stat stat, DeltaCalculator deltaCalculator, DeltaCalculator capCalculator)
 	{
-		this.type = type;
-		this.id = id;
+		super(stat, true);
+		this.deltaCalculator = deltaCalculator;
+		this.capCalculator = capCalculator;
 	}
 
 	@Override
-	public int hashCode()
+	public int heals(Client client)
 	{
-		int hash = 3;
-		hash = 23 * hash + Objects.hashCode(this.type);
-		hash = 23 * hash + this.id;
-		return hash;
+		final int current = getStat().getValue(client);
+		final int max = getStat().getMaximum(client);
+		final int delta = deltaCalculator.calculateDelta(max);
+		final int cap = capCalculator.calculateDelta(max);
+
+		if (delta + current <= max + cap)
+		{
+			return delta;
+		}
+
+		return max + cap - current;
 	}
 
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (this == obj)
-		{
-			return true;
-		}
-		if (obj == null)
-		{
-			return false;
-		}
-		if (getClass() != obj.getClass())
-		{
-			return false;
-		}
-		final CacheKey other = (CacheKey) obj;
-		if (this.id != other.id)
-		{
-			return false;
-		}
-		return this.type == other.type;
-	}
 }
