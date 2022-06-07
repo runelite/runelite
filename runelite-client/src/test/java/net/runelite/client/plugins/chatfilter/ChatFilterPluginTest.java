@@ -453,4 +453,15 @@ public class ChatFilterPluginTest
 		chatFilterPlugin.onScriptCallbackEvent(event);
 		assertEquals(1, client.getIntStack()[client.getIntStackSize() - 3]); // not filtered
 	}
+
+	@Test
+	public void testLtGt()
+	{
+		when(chatFilterConfig.filteredWords()).thenReturn("f<ilte>r");
+
+		chatFilterPlugin.updateFilteredPatterns();
+
+		String message = chatFilterPlugin.censorMessage("Adam", "start f<lt>ilte<gt>r end");
+		assertEquals("start ******** end", message);
+	}
 }
