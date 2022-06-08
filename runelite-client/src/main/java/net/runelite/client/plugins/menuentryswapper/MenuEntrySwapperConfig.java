@@ -878,4 +878,15 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "removeDeadNpcMenus",
+		name = "Remove dead npc menus",
+		description = "Remove menu options such as Attack and Talk-to from dead npcs",
+		section = npcSection
+	)
+	default boolean removeDeadNpcMenus()
+	{
+		return false;
+	}
 }
