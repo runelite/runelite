@@ -296,12 +296,15 @@ public class CannonPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{
-		cballsLeft = client.getVarpValue(VarPlayer.CANNON_AMMO.getId());
-
-		if (config.showCannonNotifications() && !cannonBallNotificationSent && cballsLeft > 0 && config.lowWarningThreshold() >= cballsLeft)
+		if (varbitChanged.getIndex() == VarPlayer.CANNON_AMMO.getId())
 		{
-			notifier.notify(String.format("Your cannon has %d cannon balls remaining!", cballsLeft));
-			cannonBallNotificationSent = true;
+			cballsLeft = client.getVarpValue(VarPlayer.CANNON_AMMO.getId());
+
+			if (config.showCannonNotifications() && !cannonBallNotificationSent && cballsLeft > 0 && config.lowWarningThreshold() >= cballsLeft)
+			{
+				notifier.notify(String.format("Your cannon has %d cannon balls remaining!", cballsLeft));
+				cannonBallNotificationSent = true;
+			}
 		}
 	}
 
