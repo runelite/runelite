@@ -24,13 +24,10 @@
  */
 package net.runelite.client.plugins.cannon;
 
-import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.regex.Pattern;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +36,6 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
-import net.runelite.api.GraphicID;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemID;
