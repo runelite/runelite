@@ -749,8 +749,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 						continue;
 					}
 
-					if ("Pickpocket".equals(actions[actionIdx])
-						|| "Knock-Out".equals(actions[actionIdx])
+					if ("Knock-Out".equals(actions[actionIdx])
 						|| "Lure".equals(actions[actionIdx]))
 					{
 						// https://secure.runescape.com/m=news/another-message-about-unofficial-clients?oldschool=1
