@@ -57,9 +57,11 @@ import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectComposition;
+import net.runelite.api.ParamID;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.PostItemComposition;
+import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
@@ -102,6 +104,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private static final String OBJECT_KEY_PREFIX = "object_";
 	private static final String NPC_KEY_PREFIX = "npc_";
 	private static final String NPC_SHIFT_KEY_PREFIX = "npc_shift_";
+	private static final String WORN_ITEM_KEY_PREFIX = "wornitem_";
+	private static final String WORN_ITEM_SHIFT_KEY_PREFIX = "wornitem_shift_";
 
 	// Shift click
 	private static final WidgetMenuOption FIXED_INVENTORY_TAB_CONFIGURE_SC = new WidgetMenuOption(CONFIGURE,
@@ -515,6 +519,33 @@ public class MenuEntrySwapperPlugin extends Plugin
 		configManager.unsetConfiguration(shift ? SHIFTCLICK_CONFIG_GROUP : MenuEntrySwapperConfig.GROUP, ITEM_KEY_PREFIX + itemId);
 	}
 
+	private Integer getWornItemSwapConfig(boolean shift, int itemId)
+	{
+		itemId = ItemVariationMapping.map(itemId);
+		String config = configManager.getConfiguration(MenuEntrySwapperConfig.GROUP,
+			(shift ? WORN_ITEM_SHIFT_KEY_PREFIX : WORN_ITEM_KEY_PREFIX) + itemId);
+		if (config == null || config.isEmpty())
+		{
+			return null;
+		}
+
+		return Integer.parseInt(config);
+	}
+
+	private void setWornItemSwapConfig(boolean shift, int itemId, int index)
+	{
+		itemId = ItemVariationMapping.map(itemId);
+		configManager.setConfiguration(MenuEntrySwapperConfig.GROUP,
+			(shift ? WORN_ITEM_SHIFT_KEY_PREFIX : WORN_ITEM_KEY_PREFIX) + itemId, index);
+	}
+
+	private void unsetWornItemSwapConfig(boolean shift, int itemId)
+	{
+		itemId = ItemVariationMapping.map(itemId);
+		configManager.unsetConfiguration(MenuEntrySwapperConfig.GROUP,
+			(shift ? WORN_ITEM_SHIFT_KEY_PREFIX : WORN_ITEM_KEY_PREFIX) + itemId);
+	}
+
 	private void enableCustomization()
 	{
 		rebuildCustomizationMenus();
@@ -537,6 +568,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			configureObjectClick(event);
 			configureNpcClick(event);
+			configureWornItems(event);
 			return;
 		}
 
@@ -843,6 +875,121 @@ public class MenuEntrySwapperPlugin extends Plugin
 		}
 	}
 
+	private void configureWornItems(MenuOpened event)
+	{
+		if (!shiftModifier())
+		{
+			return;
+		}
+
+		final MenuEntry[] entries = event.getMenuEntries();
+		for (int idx = entries.length - 1; idx >= 0; --idx)
+		{
+			final MenuEntry entry = entries[idx];
+			Widget w = entry.getWidget();
+
+			if (w != null && WidgetInfo.TO_GROUP(w.getId()) == WidgetID.EQUIPMENT_GROUP_ID
+				&& "Examine".equals(entry.getOption()) && entry.getIdentifier() == 10)
+			{
+				w = w.getChild(1);
+				if (w != null && w.getItemId() > -1)
+				{
+					final ItemComposition itemComposition = itemManager.getItemComposition(w.getItemId());
+					final Integer leftClickOp = getWornItemSwapConfig(false, itemComposition.getId());
+					final Integer shiftClickOp = getWornItemSwapConfig(true, itemComposition.getId());
+
+					for (int paramId = ParamID.OC_ITEM_OP1, opId = 2; paramId <= ParamID.OC_ITEM_OP8; ++paramId, ++opId)
+					{
+						final String opName = itemComposition.getStringValue(paramId);
+						if (!Strings.isNullOrEmpty(opName))
+						{
+							if (leftClickOp == null || leftClickOp != opId)
+							{
+								client.createMenuEntry(idx)
+									.setOption("Swap left click " + opName)
+									.setTarget(entry.getTarget())
+									.setType(MenuAction.RUNELITE)
+									.onClick(wornItemConsumer(itemComposition, opName, opId, false));
+							}
+							if (shiftClickOp == null || shiftClickOp != opId)
+							{
+								client.createMenuEntry(idx)
+									.setOption("Swap shift click " + opName)
+									.setTarget(entry.getTarget())
+									.setType(MenuAction.RUNELITE)
+									.onClick(wornItemConsumer(itemComposition, opName, opId, true));
+							}
+						}
+					}
+
+					if (leftClickOp != null)
+					{
+						client.createMenuEntry(idx)
+							.setOption("Reset swap left click")
+							.setTarget(entry.getTarget())
+							.setType(MenuAction.RUNELITE)
+							.onClick(e ->
+							{
+								final String message = new ChatMessageBuilder()
+									.append("The default worn left click option for '").append(itemComposition.getName()).append("' ")
+									.append("has been reset.")
+									.build();
+
+								chatMessageManager.queue(QueuedMessage.builder()
+									.type(ChatMessageType.CONSOLE)
+									.runeLiteFormattedMessage(message)
+									.build());
+
+								log.debug("Unset worn item left swap for {}", itemComposition.getName());
+								unsetWornItemSwapConfig(false, itemComposition.getId());
+							});
+					}
+					if (shiftClickOp != null)
+					{
+						client.createMenuEntry(idx)
+							.setOption("Reset swap shift click")
+							.setTarget(entry.getTarget())
+							.setType(MenuAction.RUNELITE)
+							.onClick(e ->
+							{
+								final String message = new ChatMessageBuilder()
+									.append("The default worn shift click option for '").append(itemComposition.getName()).append("' ")
+									.append("has been reset.")
+									.build();
+
+								chatMessageManager.queue(QueuedMessage.builder()
+									.type(ChatMessageType.CONSOLE)
+									.runeLiteFormattedMessage(message)
+									.build());
+
+								log.debug("Unset worn item shift swap for {}", itemComposition.getName());
+								unsetWornItemSwapConfig(true, itemComposition.getId());
+							});
+					}
+				}
+			}
+		}
+	}
+
+	private Consumer<MenuEntry> wornItemConsumer(ItemComposition itemComposition, String opName, int opIdx, boolean shift)
+	{
+		return e ->
+		{
+			final String message = new ChatMessageBuilder()
+				.append("The default worn ").append(shift ? "shift" : "left").append(" click option for '").append(Text.removeTags(itemComposition.getName())).append("' ")
+				.append("has been set to '").append(opName).append("'.")
+				.build();
+
+			chatMessageManager.queue(QueuedMessage.builder()
+				.type(ChatMessageType.CONSOLE)
+				.runeLiteFormattedMessage(message)
+				.build());
+
+			log.debug("Set worn item {} swap for {} to {}", shift ? "shift" : "left", itemComposition.getName(), opIdx);
+			setWornItemSwapConfig(shift, itemComposition.getId(), opIdx);
+		};
+	}
+
 	private boolean swapBank(MenuEntry menuEntry, MenuAction type)
 	{
 		if (type != MenuAction.CC_OP && type != MenuAction.CC_OP_LOW_PRIORITY)
@@ -976,6 +1123,25 @@ public class MenuEntrySwapperPlugin extends Plugin
 					swap(optionIndexes, menuEntries, index, menuEntries.length - 1);
 				}
 				return;
+			}
+		}
+
+		// Worn items swap
+		Widget w = menuEntry.getWidget();
+		if (w != null && WidgetInfo.TO_GROUP(w.getId()) == WidgetID.EQUIPMENT_GROUP_ID)
+		{
+			w = w.getChild(1);
+			if (w != null && w.getItemId() > -1)
+			{
+				final Integer wornItemSwapConfig = getWornItemSwapConfig(shiftModifier(), w.getItemId());
+				if (wornItemSwapConfig != null)
+				{
+					if (wornItemSwapConfig == menuEntry.getIdentifier())
+					{
+						swap(optionIndexes, menuEntries, index, menuEntries.length - 1);
+					}
+					return;
+				}
 			}
 		}
 
