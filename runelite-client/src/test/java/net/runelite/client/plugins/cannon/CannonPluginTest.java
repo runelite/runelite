@@ -39,7 +39,6 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
@@ -97,7 +96,8 @@ public class CannonPluginTest
 	}
 
 	@Test
-	public void testAmmoCountOnPlace() {
+	public void testAmmoCountOnPlace()
+	{
 		ChatMessage ADD_FURNACE = new ChatMessage();
 		ADD_FURNACE.setType(ChatMessageType.SPAM);
 		ADD_FURNACE.setMessage("You add the furnace.");
@@ -116,7 +116,8 @@ public class CannonPluginTest
 	}
 
 	@Test
-	public void testCannonInfoBox() {
+	public void testCannonInfoBox()
+	{
 		when(config.showInfobox()).thenReturn(true);
 
 		ChatMessage ADD_FURNACE = new ChatMessage();
@@ -129,8 +130,10 @@ public class CannonPluginTest
 		assertEquals(0, plugin.getCballsLeft());
 		verify(infoBoxManager).addInfoBox(any(CannonCounter.class));
 	}
+
 	@Test
-	public void testThresholdNotificationShouldNotify() {
+	public void testThresholdNotificationShouldNotify()
+	{
 		when(config.showCannonNotifications()).thenReturn(true);
 		when(config.lowWarningThreshold()).thenReturn(10);
 
@@ -143,7 +146,8 @@ public class CannonPluginTest
 	}
 
 	@Test
-	public void testThresholdNotificationShouldNotifyOnce() {
+	public void testThresholdNotificationShouldNotifyOnce()
+	{
 		when(config.showCannonNotifications()).thenReturn(true);
 		when(config.lowWarningThreshold()).thenReturn(10);
 
@@ -168,7 +172,8 @@ public class CannonPluginTest
 	}
 
 	@Test
-	public void testThresholdNotificationsShouldNotNotify() {
+	public void testThresholdNotificationsShouldNotNotify()
+	{
 		when(config.showCannonNotifications()).thenReturn(true);
 		when(config.lowWarningThreshold()).thenReturn(0);
 
@@ -181,7 +186,8 @@ public class CannonPluginTest
 	}
 
 	@Test
-	public void testCannonOutOfAmmo() {
+	public void testCannonOutOfAmmo()
+	{
 		when(config.showCannonNotifications()).thenReturn(true);
 		ChatMessage cannonOutOfAmmo = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "Your cannon is out of ammo!", "", 0);
 
