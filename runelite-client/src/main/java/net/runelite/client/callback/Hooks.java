@@ -568,12 +568,19 @@ public class Hooks implements Callbacks
 	@Override
 	public boolean draw(Renderable renderable, boolean drawingUi)
 	{
-		for (RenderableDrawListener renderableDrawListener : renderableDrawListeners)
+		try
 		{
-			if (!renderableDrawListener.draw(renderable, drawingUi))
+			for (RenderableDrawListener renderableDrawListener : renderableDrawListeners)
 			{
-				return false;
+				if (!renderableDrawListener.draw(renderable, drawingUi))
+				{
+					return false;
+				}
 			}
+		}
+		catch (Exception ex)
+		{
+			log.error("exception from renderable draw listener", ex);
 		}
 		return true;
 	}
