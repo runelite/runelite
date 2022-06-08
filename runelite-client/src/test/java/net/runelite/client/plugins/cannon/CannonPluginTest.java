@@ -41,6 +41,7 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.mockito.ArgumentMatchers.any;
@@ -89,6 +90,14 @@ public class CannonPluginTest
 	@Bind
 	private OverlayManager overlayManager;
 
+	private static final VarbitChanged cannonAmmoChanged = new VarbitChanged();
+
+	@BeforeClass
+	public static void cannonVarpSetup()
+	{
+		cannonAmmoChanged.setIndex(VarPlayer.CANNON_AMMO.getId());
+	}
+
 	@Before
 	public void before()
 	{
@@ -105,13 +114,13 @@ public class CannonPluginTest
 		plugin.onChatMessage(ADD_FURNACE);
 		assertTrue(plugin.isCannonPlaced());
 
-		plugin.onVarbitChanged(new VarbitChanged());
+		plugin.onVarbitChanged(cannonAmmoChanged);
 		assertEquals(0, plugin.getCballsLeft());
 
 		// Some time passes...
 
 		when(client.getVarpValue(VarPlayer.CANNON_AMMO.getId())).thenReturn(30);
-		plugin.onVarbitChanged(new VarbitChanged());
+		plugin.onVarbitChanged(cannonAmmoChanged);
 		assertEquals(30, plugin.getCballsLeft());
 	}
 
@@ -138,9 +147,9 @@ public class CannonPluginTest
 		when(config.lowWarningThreshold()).thenReturn(10);
 
 		when(client.getVarpValue(VarPlayer.CANNON_AMMO.getId())).thenReturn(30);
-		plugin.onVarbitChanged(new VarbitChanged());
+		plugin.onVarbitChanged(cannonAmmoChanged);
 		when(client.getVarpValue(VarPlayer.CANNON_AMMO.getId())).thenReturn(10);
-		plugin.onVarbitChanged(new VarbitChanged());
+		plugin.onVarbitChanged(cannonAmmoChanged);
 
 		verify(notifier, times(1)).notify("Your cannon has 10 cannon balls remaining!");
 	}
@@ -152,21 +161,21 @@ public class CannonPluginTest
 		when(config.lowWarningThreshold()).thenReturn(10);
 
 		when(client.getVarpValue(VarPlayer.CANNON_AMMO.getId())).thenReturn(15);
-		plugin.onVarbitChanged(new VarbitChanged());
+		plugin.onVarbitChanged(cannonAmmoChanged);
 		when(client.getVarpValue(VarPlayer.CANNON_AMMO.getId())).thenReturn(14);
-		plugin.onVarbitChanged(new VarbitChanged());
+		plugin.onVarbitChanged(cannonAmmoChanged);
 		when(client.getVarpValue(VarPlayer.CANNON_AMMO.getId())).thenReturn(13);
-		plugin.onVarbitChanged(new VarbitChanged());
+		plugin.onVarbitChanged(cannonAmmoChanged);
 		when(client.getVarpValue(VarPlayer.CANNON_AMMO.getId())).thenReturn(12);
-		plugin.onVarbitChanged(new VarbitChanged());
+		plugin.onVarbitChanged(cannonAmmoChanged);
 		when(client.getVarpValue(VarPlayer.CANNON_AMMO.getId())).thenReturn(11);
-		plugin.onVarbitChanged(new VarbitChanged());
+		plugin.onVarbitChanged(cannonAmmoChanged);
 		when(client.getVarpValue(VarPlayer.CANNON_AMMO.getId())).thenReturn(10);
-		plugin.onVarbitChanged(new VarbitChanged());
+		plugin.onVarbitChanged(cannonAmmoChanged);
 		when(client.getVarpValue(VarPlayer.CANNON_AMMO.getId())).thenReturn(9);
-		plugin.onVarbitChanged(new VarbitChanged());
+		plugin.onVarbitChanged(cannonAmmoChanged);
 		when(client.getVarpValue(VarPlayer.CANNON_AMMO.getId())).thenReturn(8);
-		plugin.onVarbitChanged(new VarbitChanged());
+		plugin.onVarbitChanged(cannonAmmoChanged);
 
 		verify(notifier, times(1)).notify("Your cannon has 10 cannon balls remaining!");
 	}
@@ -178,9 +187,9 @@ public class CannonPluginTest
 		when(config.lowWarningThreshold()).thenReturn(0);
 
 		when(client.getVarpValue(VarPlayer.CANNON_AMMO.getId())).thenReturn(30);
-		plugin.onVarbitChanged(new VarbitChanged());
+		plugin.onVarbitChanged(cannonAmmoChanged);
 		when(client.getVarpValue(VarPlayer.CANNON_AMMO.getId())).thenReturn(10);
-		plugin.onVarbitChanged(new VarbitChanged());
+		plugin.onVarbitChanged(cannonAmmoChanged);
 
 		verify(notifier, times(0)).notify("Your cannon has 10 cannon balls remaining!");
 	}
