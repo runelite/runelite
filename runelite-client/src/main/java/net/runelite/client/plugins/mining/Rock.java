@@ -98,7 +98,8 @@ enum Rock
 	TE_SALT(Duration.of(9, GAME_TICKS), 0, ROCKS_33256),
 	BASALT(Duration.of(9, GAME_TICKS), 0, ROCKS_33257),
 	DAEYALT_ESSENCE(Duration.of(MiningRocksOverlay.DAEYALT_MAX_RESPAWN_TIME, GAME_TICKS), 0, DAEYALT_ESSENCE_39095),
-	BARRONITE(Duration.of(89, GAME_TICKS), 140);
+	BARRONITE(Duration.of(89, GAME_TICKS), 140),
+	MINERAL_VEIN(Duration.of(100, GAME_TICKS), 150);
 
 	private static final int WILDERNESS_RESOURCE_AREA = 12605;
 	private static final int MISCELLANIA = 10044;
