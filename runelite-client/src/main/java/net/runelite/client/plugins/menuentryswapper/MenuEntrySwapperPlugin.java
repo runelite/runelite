@@ -41,6 +41,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import javax.inject.Inject;
@@ -100,6 +101,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private static final String ITEM_KEY_PREFIX = "item_";
 	private static final String OBJECT_KEY_PREFIX = "object_";
 	private static final String NPC_KEY_PREFIX = "npc_";
+	private static final String NPC_SHIFT_KEY_PREFIX = "npc_shift_";
 
 	// Shift click
 	private static final WidgetMenuOption FIXED_INVENTORY_TAB_CONFIGURE_SC = new WidgetMenuOption(CONFIGURE,
@@ -702,6 +704,26 @@ public class MenuEntrySwapperPlugin extends Plugin
 		}
 	}
 
+	private Consumer<MenuEntry> walkHereConsumer(boolean shift, NPCComposition composition)
+	{
+		return e ->
+		{
+			final String message = new ChatMessageBuilder()
+				.append("The default ").append(shift ? "shift" : "left").append(" click option for '").append(Text.removeTags(composition.getName())).append("' ")
+				.append("has been set to Walk here.")
+				.build();
+
+			chatMessageManager.queue(QueuedMessage.builder()
+				.type(ChatMessageType.CONSOLE)
+				.runeLiteFormattedMessage(message)
+				.build());
+
+			log.debug("Set npc {} click swap for {} to Walk here", shift ? "shift" : "left", composition.getId());
+
+			setNpcSwapConfig(shift, composition.getId(), -1);
+		};
+	}
+
 	private void configureNpcClick(MenuOpened event)
 	{
 		if (!shiftModifier() || !config.npcLeftClickCustomization())
@@ -722,16 +744,17 @@ public class MenuEntrySwapperPlugin extends Plugin
 				final NPCComposition composition = npc.getTransformedComposition();
 				final String[] actions = composition.getActions();
 
-				final Integer swapConfig = getNpcSwapConfig(composition.getId());
+				final Integer swapConfig = getNpcSwapConfig(false, composition.getId());
 				final boolean hasAttack = Arrays.stream(composition.getActions()).anyMatch("Attack"::equalsIgnoreCase);
-				final MenuAction currentAction = swapConfig != null ? NPC_MENU_TYPES.get(swapConfig) :
+				final MenuAction currentAction = swapConfig == null ?
 					// Attackable NPCs always have Attack as the first, last (deprioritized), or when hidden, no, option.
 					// Due to this the default action would be either Attack or the first non-Attack option, based on
 					// the game settings. Since it may be valid to swap an option up to override Attack, even when Attack
 					// is left-click, we cannot assume any default currentAction on attackable NPCs.
 					// Non-attackable NPCS have a predictable default action which we can prevent a swap to if no swap
 					// config is set, which just avoids showing a Swap option on a 1-op NPC, which looks odd.
-					(hasAttack ? null : defaultAction(composition));
+					(hasAttack ? null : defaultAction(composition)) :
+					(swapConfig == -1 ? MenuAction.WALK : NPC_MENU_TYPES.get(swapConfig));
 
 				for (int actionIdx = 0; actionIdx < NPC_MENU_TYPES.size(); ++actionIdx)
 				{
@@ -775,11 +798,24 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 							log.debug("Set npc swap for {} to {}", composition.getId(), menuAction);
 
-							setNpcSwapConfig(composition.getId(), menuIdx);
+							setNpcSwapConfig(false, composition.getId(), menuIdx);
 						});
 				}
 
-				if (getNpcSwapConfig(composition.getId()) != null)
+				// Walk here swap
+				client.createMenuEntry(idx)
+					.setOption("Swap left click Walk here")
+					.setTarget(entry.getTarget())
+					.setType(MenuAction.RUNELITE)
+					.onClick(walkHereConsumer(false, composition));
+
+				client.createMenuEntry(idx)
+					.setOption("Swap shift click Walk here")
+					.setTarget(entry.getTarget())
+					.setType(MenuAction.RUNELITE)
+					.onClick(walkHereConsumer(true, composition));
+
+				if (getNpcSwapConfig(true, composition.getId()) != null || getNpcSwapConfig(false, composition.getId()) != null)
 				{
 					// Reset
 					client.createMenuEntry(idx)
@@ -789,8 +825,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 						.onClick(e ->
 						{
 							final String message = new ChatMessageBuilder()
-								.append("The default left click option for '").append(Text.removeTags(composition.getName())).append("' ")
-								.append("has been reset.")
+								.append("The default left and shift click options for '").append(Text.removeTags(composition.getName())).append("' ")
+								.append("have been reset.")
 								.build();
 
 							chatMessageManager.queue(QueuedMessage.builder()
@@ -799,7 +835,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 								.build());
 
 							log.debug("Unset npc swap for {}", composition.getId());
-							unsetNpcSwapConfig(composition.getId());
+							unsetNpcSwapConfig(true, composition.getId());
+							unsetNpcSwapConfig(false, composition.getId());
 						});
 				}
 			}
@@ -971,24 +1008,33 @@ public class MenuEntrySwapperPlugin extends Plugin
 			assert npc != null;
 			final NPCComposition composition = npc.getTransformedComposition();
 
-			Integer customOption = getNpcSwapConfig(composition.getId());
+			Integer customOption = getNpcSwapConfig(shiftModifier(), composition.getId());
 			if (customOption != null)
 			{
-				MenuAction swapAction = NPC_MENU_TYPES.get(customOption);
-				if (swapAction == menuAction)
+				// Walk here swap
+				if (customOption == -1)
 				{
-					// Advance to the top-most op for this NPC. Normally menuEntries.length - 1 is examine, and swapping
-					// with that works due to it being sorted later, but if other plugins like NPC indicators add additional
-					// menus before examine that are also >1000, like RUNELITE menus, that would result in the >1000 menus being
-					// reordered relative to each other.
-					int i = index;
-					while (i < menuEntries.length - 1 && NPC_MENU_TYPES.contains(menuEntries[i + 1].getType()))
+					// we can achieve this by just deprioritizing the normal npc menus
+					menuEntry.setDeprioritized(true);
+				}
+				else
+				{
+					MenuAction swapAction = NPC_MENU_TYPES.get(customOption);
+					if (swapAction == menuAction)
 					{
-						++i;
-					}
+						// Advance to the top-most op for this NPC. Normally menuEntries.length - 1 is examine, and swapping
+						// with that works due to it being sorted later, but if other plugins like NPC indicators add additional
+						// menus before examine that are also >1000, like RUNELITE menus, that would result in the >1000 menus being
+						// reordered relative to each other.
+						int i = index;
+						while (i < menuEntries.length - 1 && NPC_MENU_TYPES.contains(menuEntries[i + 1].getType()))
+						{
+							++i;
+						}
 
-					swap(optionIndexes, menuEntries, index, i);
-					return;
+						swap(optionIndexes, menuEntries, index, i);
+						return;
+					}
 				}
 			}
 		}
@@ -1315,9 +1361,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		return null;
 	}
 
-	private Integer getNpcSwapConfig(int npcId)
+	private Integer getNpcSwapConfig(boolean shift, int npcId)
 	{
-		String config = configManager.getConfiguration(MenuEntrySwapperConfig.GROUP, NPC_KEY_PREFIX + npcId);
+		String config = configManager.getConfiguration(MenuEntrySwapperConfig.GROUP,
+			(shift ? NPC_SHIFT_KEY_PREFIX : NPC_KEY_PREFIX) + npcId);
 		if (config == null || config.isEmpty())
 		{
 			return null;
@@ -1326,14 +1373,14 @@ public class MenuEntrySwapperPlugin extends Plugin
 		return Integer.parseInt(config);
 	}
 
-	private void setNpcSwapConfig(int npcId, int index)
+	private void setNpcSwapConfig(boolean shift, int npcId, int index)
 	{
-		configManager.setConfiguration(MenuEntrySwapperConfig.GROUP, NPC_KEY_PREFIX + npcId, index);
+		configManager.setConfiguration(MenuEntrySwapperConfig.GROUP, (shift ? NPC_SHIFT_KEY_PREFIX : NPC_KEY_PREFIX) + npcId, index);
 	}
 
-	private void unsetNpcSwapConfig(int npcId)
+	private void unsetNpcSwapConfig(boolean shift, int npcId)
 	{
-		configManager.unsetConfiguration(MenuEntrySwapperConfig.GROUP, NPC_KEY_PREFIX + npcId);
+		configManager.unsetConfiguration(MenuEntrySwapperConfig.GROUP, (shift ? NPC_SHIFT_KEY_PREFIX : NPC_KEY_PREFIX) + npcId);
 	}
 
 	private static MenuAction defaultAction(NPCComposition composition)
