@@ -9650,6 +9650,12 @@ public final class NpcID
 	public static final int REANIMATED_HELLHOUND = 11463;
 	public static final int APPRENTICE_TAMARA_11464 = 11464;
 	public static final int APPRENTICE_TAMARA_11465 = 11465;
+	public static final int SMITHING_CATALYST = 11466;
+	public static final int HILL_GIANT_11467 = 11467;
+	public static final int KOVAC = 11468;
+	public static final int KOVAC_11469 = 11469;
+	public static final int KOVAC_11470 = 11470;
+	public static final int KOVAC_11472 = 11472;
 	public static final int TARIK_11473 = 11473;
 	public static final int MAISA_11474 = 11474;
 	public static final int MAISA_11475 = 11475;

@@ -1801,8 +1801,10 @@ public final class NullNpcID
 	public static final int NULL_11461 = 11461;
 	public static final int NULL_11471 = 11471;
 	public static final int NULL_11488 = 11488;
+	public static final int NULL_11494 = 11494;
 	public static final int NULL_11512 = 11512;
 	public static final int NULL_11559 = 11559;
+	public static final int NULL_11560 = 11560;
 	public static final int NULL_11567 = 11567;
 	public static final int NULL_11568 = 11568;
 	public static final int NULL_11611 = 11611;
