@@ -302,7 +302,7 @@ public class SpecialCounterPlugin extends Plugin
 			{
 				final SpecialCounterUpdate specialCounterUpdate = new SpecialCounterUpdate(interactingId, specialWeapon, hit, client.getWorld(), localPlayerId);
 				specialCounterUpdate.setMemberId(party.getLocalMember().getMemberId());
-				wsClient.send(specialCounterUpdate);
+				party.send(specialCounterUpdate);
 			}
 
 			playerInfoDrops.add(createSpecInfoDrop(specialWeapon, hit, localPlayerId));

@@ -281,7 +281,7 @@ public class DiscordPlugin extends Plugin
 					discordUser.avatar
 				);
 				userInfo.setMemberId(localMember.getMemberId());
-				wsClient.send(userInfo);
+				partyService.send(userInfo);
 			}
 		}
 	}

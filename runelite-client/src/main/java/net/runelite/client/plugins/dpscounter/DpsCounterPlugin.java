@@ -199,7 +199,7 @@ public class DpsCounterPlugin extends Plugin
 			{
 				final DpsUpdate dpsUpdate = new DpsUpdate(hit, isBoss);
 				dpsUpdate.setMemberId(localMember.getMemberId());
-				wsClient.send(dpsUpdate);
+				partyService.send(dpsUpdate);
 			}
 
 			if (dpsConfig.bossDamage() && !isBoss)

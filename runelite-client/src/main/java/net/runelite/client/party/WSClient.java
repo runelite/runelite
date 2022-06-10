@@ -96,7 +96,7 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 		}
 	}
 
-	private void connect()
+	void connect()
 	{
 		if (sessionId == null)
 		{
@@ -113,6 +113,11 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 		Handshake handshake = new Handshake();
 		handshake.setSession(sessionId);
 		send(handshake);
+	}
+
+	boolean isOpen()
+	{
+		return webSocket != null;
 	}
 
 	public void registerMessage(final Class<? extends WebsocketMessage> message)

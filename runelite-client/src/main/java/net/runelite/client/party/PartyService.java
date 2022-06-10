@@ -53,6 +53,7 @@ import net.runelite.client.events.PartyMemberAvatar;
 import net.runelite.client.party.messages.Join;
 import net.runelite.client.party.messages.Part;
 import net.runelite.client.party.messages.PartyChatMessage;
+import net.runelite.client.party.messages.PartyMessage;
 import net.runelite.client.party.messages.UserJoin;
 import net.runelite.client.party.messages.UserPart;
 import net.runelite.client.party.messages.UserSync;
@@ -180,6 +181,22 @@ public class PartyService
 		wsClient.send(new Join(partyId, USERNAME));
 	}
 
+	public <T extends PartyMessage> void send(T message)
+	{
+		if (!wsClient.isOpen())
+		{
+			log.debug("Reconnecting to server");
+
+			PartyMember local = getLocalMember();
+			members.removeIf(m -> m != local);
+
+			wsClient.connect();
+			wsClient.send(new Join(partyId, USERNAME));
+		}
+
+		wsClient.send(message);
+	}
+
 	@Subscribe(priority = 1) // run prior to plugins so that the member is joined by the time the plugins see it.
 	public void onUserJoin(final UserJoin message)
 	{
@@ -190,13 +207,17 @@ public class PartyService
 			return;
 		}
 
-		final PartyMember partyMember = new PartyMember(message.getMemberId(), cleanUsername(message.getName()));
-		members.add(partyMember);
+		PartyMember partyMember = getMemberById(message.getMemberId());
+		if (partyMember == null)
+		{
+			partyMember = new PartyMember(message.getMemberId(), cleanUsername(message.getName()));
+			members.add(partyMember);
+			log.debug("User {} joins party, {} members", partyMember, members.size());
+		}
 
 		final PartyMember localMember = getLocalMember();
-
 		// Send info to other clients that this user successfully finished joining party
-		if (localMember != null && message.getMemberId().equals(localMember.getMemberId()))
+		if (localMember != null && localMember == partyMember)
 		{
 			final UserSync userSync = new UserSync();
 			userSync.setMemberId(message.getMemberId());
@@ -207,7 +228,10 @@ public class PartyService
 	@Subscribe(priority = 1) // run prior to plugins so that the member is removed by the time the plugins see it.
 	public void onUserPart(final UserPart message)
 	{
-		members.removeIf(member -> member.getMemberId().equals(message.getMemberId()));
+		if (members.removeIf(member -> member.getMemberId().equals(message.getMemberId())))
+		{
+			log.debug("User {} leaves party, {} members", message.getMemberId(), members.size());
+		}
 	}
 
 	@Subscribe

@@ -84,7 +84,6 @@ import net.runelite.client.game.SpriteManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.party.PartyMember;
 import net.runelite.client.party.PartyService;
-import net.runelite.client.party.WSClient;
 import net.runelite.client.party.messages.PartyChatMessage;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -155,9 +154,6 @@ public class RaidsPlugin extends Plugin
 
 	@Inject
 	private PartyService party;
-
-	@Inject
-	private WSClient ws;
 
 	@Inject
 	private ChatCommandManager chatCommandManager;
@@ -494,7 +490,7 @@ public class RaidsPlugin extends Plugin
 		{
 			final PartyChatMessage message = new PartyChatMessage(layoutMessage);
 			message.setMemberId(localMember.getMemberId());
-			ws.send(message);
+			party.send(message);
 		}
 	}
 

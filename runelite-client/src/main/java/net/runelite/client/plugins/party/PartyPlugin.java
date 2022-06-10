@@ -105,9 +105,6 @@ public class PartyPlugin extends Plugin
 	private PartyService party;
 
 	@Inject
-	private WSClient ws;
-
-	@Inject
 	private OverlayManager overlayManager;
 
 	@Inject
@@ -266,7 +263,7 @@ public class PartyPlugin extends Plugin
 		event.consume();
 		final TilePing tilePing = new TilePing(selectedSceneTile.getWorldLocation());
 		tilePing.setMemberId(party.getLocalMember().getMemberId());
-		wsClient.send(tilePing);
+		party.send(tilePing);
 	}
 
 	@Subscribe
@@ -326,7 +323,7 @@ public class PartyPlugin extends Plugin
 
 		final LocationUpdate locationUpdate = new LocationUpdate(location);
 		locationUpdate.setMemberId(localMember.getMemberId());
-		wsClient.send(locationUpdate);
+		party.send(locationUpdate);
 	}
 
 	@Subscribe
@@ -342,7 +339,7 @@ public class PartyPlugin extends Plugin
 			// Request sync
 			final UserSync userSync = new UserSync();
 			userSync.setMemberId(party.getLocalMember().getMemberId());
-			ws.send(userSync);
+			party.send(userSync);
 		}
 	}
 
@@ -442,21 +439,21 @@ public class PartyPlugin extends Plugin
 			{
 				final SkillUpdate update = new SkillUpdate(Skill.HITPOINTS, currentHealth, realHealth);
 				update.setMemberId(localMember.getMemberId());
-				ws.send(update);
+				party.send(update);
 			}
 
 			if (forceSend || currentPrayer != lastPray)
 			{
 				final SkillUpdate update = new SkillUpdate(Skill.PRAYER, currentPrayer, realPrayer);
 				update.setMemberId(localMember.getMemberId());
-				ws.send(update);
+				party.send(update);
 			}
 
 			if (forceSend || !characterName.equals(lastCharacterName))
 			{
 				final CharacterNameUpdate update = new CharacterNameUpdate(characterName);
 				update.setMemberId(localMember.getMemberId());
-				ws.send(update);
+				party.send(update);
 			}
 		}
 
