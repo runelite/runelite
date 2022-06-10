@@ -45,7 +45,7 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.MouseDragEventForwarder;
 import net.runelite.client.ui.components.ProgressBar;
 import net.runelite.client.util.ImageUtil;
-import net.runelite.client.ws.PartyMember;
+import net.runelite.client.party.PartyMember;
 
 class PartyMemberBox extends JPanel
 {

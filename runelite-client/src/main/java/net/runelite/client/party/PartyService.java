@@ -23,7 +23,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ws;
+package net.runelite.client.party;
 
 import com.google.common.base.CharMatcher;
 import com.google.common.hash.Hashing;
@@ -52,14 +52,14 @@ import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.PartyChanged;
 import net.runelite.client.events.PartyMemberAvatar;
+import net.runelite.client.party.messages.Join;
+import net.runelite.client.party.messages.Part;
+import net.runelite.client.party.messages.PartyChatMessage;
+import net.runelite.client.party.messages.UserJoin;
+import net.runelite.client.party.messages.UserPart;
+import net.runelite.client.party.messages.UserSync;
 import net.runelite.client.util.Text;
 import static net.runelite.client.util.Text.JAGEX_PRINTABLE_CHAR_MATCHER;
-import net.runelite.http.api.ws.messages.party.Join;
-import net.runelite.http.api.ws.messages.party.Part;
-import net.runelite.http.api.ws.messages.party.PartyChatMessage;
-import net.runelite.http.api.ws.messages.party.UserJoin;
-import net.runelite.http.api.ws.messages.party.UserPart;
-import net.runelite.http.api.ws.messages.party.UserSync;
 
 @Slf4j
 @Singleton

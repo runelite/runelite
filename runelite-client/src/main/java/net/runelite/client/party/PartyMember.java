@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,18 +22,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.discord;
+package net.runelite.client.party;
 
-import lombok.EqualsAndHashCode;
-import lombok.Value;
-import net.runelite.client.party.messages.PartyMemberMessage;
+import java.awt.image.BufferedImage;
+import java.util.UUID;
+import lombok.Data;
 
-@Value
-@EqualsAndHashCode(callSuper = true)
-class DiscordUserInfo extends PartyMemberMessage
+@Data
+public class PartyMember
 {
-	private final String userId;
-	private final String username;
-	private final String discriminator;
-	private final String avatarId;
+	private final UUID memberId;
+	private final String name;
+	private String displayName = "<unknown>";
+	private boolean loggedIn;
+	private BufferedImage avatar;
 }

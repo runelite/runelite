@@ -47,7 +47,7 @@ import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.DragAndDropReorderPane;
 import net.runelite.client.ui.components.PluginErrorPanel;
-import net.runelite.client.ws.PartyService;
+import net.runelite.client.party.PartyService;
 
 class PartyPanel extends PluginPanel
 {

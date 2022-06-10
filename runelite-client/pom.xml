@@ -261,7 +261,7 @@
 		<dependency>
 			<groupId>net.runelite.arn</groupId>
 			<artifactId>http-api</artifactId>
-			<version>1.0.0</version>
+			<version>1.0.6</version>
 		</dependency>
 		<dependency>
 			<groupId>net.runelite</groupId>
@@ -486,6 +486,9 @@
 					</rulesets>
 					<linkXRef>false</linkXRef>
 					<analysisCache>true</analysisCache>
+					<excludes>
+						<exclude>**/RuntimeTypeAdapterFactory.java</exclude>
+					</excludes>
 				</configuration>
 				<executions>
 					<execution>

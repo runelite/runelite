@@ -30,7 +30,7 @@ import net.runelite.api.Point;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
 import net.runelite.client.util.ImageUtil;
-import net.runelite.client.ws.PartyMember;
+import net.runelite.client.party.PartyMember;
 
 class PartyWorldMapPoint extends WorldMapPoint
 {

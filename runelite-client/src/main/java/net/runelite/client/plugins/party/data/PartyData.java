@@ -31,7 +31,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
-import net.runelite.client.ws.PartyMember;
+import net.runelite.client.party.PartyMember;
 
 @Setter
 @Getter

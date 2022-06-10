@@ -26,7 +26,7 @@ package net.runelite.client.plugins.specialcounter;
 
 import lombok.EqualsAndHashCode;
 import lombok.Value;
-import net.runelite.http.api.ws.messages.party.PartyMemberMessage;
+import net.runelite.client.party.messages.PartyMemberMessage;
 
 @Value
 @EqualsAndHashCode(callSuper = true)

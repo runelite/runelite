@@ -32,7 +32,7 @@ import javax.inject.Named;
 import net.runelite.api.Client;
 import net.runelite.client.discord.DiscordPresence;
 import net.runelite.client.discord.DiscordService;
-import net.runelite.client.ws.PartyService;
+import net.runelite.client.party.PartyService;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
