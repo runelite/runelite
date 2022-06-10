@@ -293,7 +293,10 @@ public class SpecialCounterPlugin extends Plugin
 			int hit = getHit(specialWeapon, hitsplat);
 			int localPlayerId = client.getLocalPlayer().getId();
 
-			updateCounter(specialWeapon, null, hit);
+			if (config.infobox())
+			{
+				updateCounter(specialWeapon, null, hit);
+			}
 
 			if (!party.getMembers().isEmpty())
 			{
@@ -359,7 +362,10 @@ public class SpecialCounterPlugin extends Plugin
 			// Otherwise we only add the count if it is against a npc we are already tracking
 			if (interactedNpcIds.contains(event.getNpcId()))
 			{
-				updateCounter(event.getWeapon(), name, event.getHit());
+				if (config.infobox())
+				{
+					updateCounter(event.getWeapon(), name, event.getHit());
+				}
 			}
 
 			if (event.getWorld() == client.getWorld())

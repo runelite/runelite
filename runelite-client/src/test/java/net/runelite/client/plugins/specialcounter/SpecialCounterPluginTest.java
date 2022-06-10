@@ -115,6 +115,8 @@ public class SpecialCounterPluginTest
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
 
+		when(specialCounterConfig.infobox()).thenReturn(true);
+
 		// Set up spec weapon
 		ItemContainer equipment = mock(ItemContainer.class);
 		when(equipment.getItem(EquipmentInventorySlot.WEAPON.getSlotIdx())).thenReturn(new Item(ItemID.BANDOS_GODSWORD, 1));
