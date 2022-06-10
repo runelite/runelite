@@ -44,8 +44,6 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
-import net.runelite.client.account.AccountSession;
-import net.runelite.client.account.SessionManager;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.eventbus.EventBus;
@@ -72,7 +70,6 @@ public class PartyService
 
 	private final Client client;
 	private final WSClient wsClient;
-	private final SessionManager sessionManager;
 	private final EventBus eventBus;
 	private final ChatMessageManager chat;
 	private final List<PartyMember> members = new ArrayList<>();
@@ -83,11 +80,10 @@ public class PartyService
 	private String partyPassphrase;
 
 	@Inject
-	private PartyService(final Client client, final WSClient wsClient, final SessionManager sessionManager, final EventBus eventBus, final ChatMessageManager chat)
+	private PartyService(final Client client, final WSClient wsClient, final EventBus eventBus, final ChatMessageManager chat)
 	{
 		this.client = client;
 		this.wsClient = wsClient;
-		this.sessionManager = sessionManager;
 		this.eventBus = eventBus;
 		this.chat = chat;
 		eventBus.register(this);
@@ -169,12 +165,7 @@ public class PartyService
 
 		if (partyId == null)
 		{
-			// close the websocket if the session id isn't for an account
-			if (sessionManager.getAccountSession() == null)
-			{
-				wsClient.changeSession(null);
-			}
-
+			wsClient.changeSession(null);
 			eventBus.post(new PartyChanged(partyPassphrase, partyId));
 			return;
 		}
@@ -182,10 +173,7 @@ public class PartyService
 		// If there isn't already a session open, open one
 		if (!wsClient.sessionExists())
 		{
-			AccountSession accountSession = sessionManager.getAccountSession();
-			// Use the existing account session, if it exists, otherwise generate a new session id
-			UUID uuid = accountSession != null ? accountSession.getUuid() : UUID.randomUUID();
-			wsClient.changeSession(uuid);
+			wsClient.changeSession(UUID.randomUUID());
 		}
 
 		eventBus.post(new PartyChanged(partyPassphrase, partyId));
