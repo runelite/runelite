@@ -105,15 +105,12 @@ class NpcOverlay extends Overlay
 
 		if (highlightedNpc.isSwTile())
 		{
-			int size = npcComposition.getSize();
-			LocalPoint lp = actor.getLocalLocation();
-
-			int x = lp.getX() - ((size - 1) * Perspective.LOCAL_TILE_SIZE / 2);
-			int y = lp.getY() - ((size - 1) * Perspective.LOCAL_TILE_SIZE / 2);
-
-			Polygon southWestTilePoly = Perspective.getCanvasTilePoly(client, new LocalPoint(x, y));
-
-			renderPoly(graphics, borderColor, borderWidth, fillColor, southWestTilePoly);
+			LocalPoint lp = LocalPoint.fromWorld(client, actor.getWorldLocation());
+			if (lp != null)
+			{
+				Polygon tilePoly = Perspective.getCanvasTilePoly(client, lp);
+				renderPoly(graphics, borderColor, borderWidth, fillColor, tilePoly);
+			}
 		}
 
 		if (highlightedNpc.isOutline())
