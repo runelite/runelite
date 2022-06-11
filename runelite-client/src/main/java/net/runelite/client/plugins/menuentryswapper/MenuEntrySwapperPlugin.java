@@ -817,6 +817,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		final boolean isDepositBoxPlayerInventory = widgetGroupId == WidgetID.DEPOSIT_BOX_GROUP_ID;
 		final boolean isChambersOfXericStorageUnitPlayerInventory = widgetGroupId == WidgetID.CHAMBERS_OF_XERIC_STORAGE_UNIT_INVENTORY_GROUP_ID;
 		final boolean isGroupStoragePlayerInventory = widgetGroupId == WidgetID.GROUP_STORAGE_INVENTORY_GROUP_ID;
+		final boolean isSeedVaultPlayerInventory = widgetGroupId == WidgetID.SEED_VAULT_INVENTORY_GROUP_ID;
 		// Swap to shift-click deposit behavior
 		// Deposit- op 1 is the current withdraw amount 1/5/10/x for deposit box interface and chambers of xeric storage unit.
 		// Deposit- op 2 is the current withdraw amount 1/5/10/x for bank interface
@@ -829,6 +830,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 			final int opId = isDepositBoxPlayerInventory ? shiftDepositMode.getIdentifierDepositBox()
 				: isChambersOfXericStorageUnitPlayerInventory ? shiftDepositMode.getIdentifierChambersStorageUnit()
 				: isGroupStoragePlayerInventory ? shiftDepositMode.getIdentifierGroupStorage()
+				: isSeedVaultPlayerInventory ? shiftDepositMode.getIdentifierSeedVault()
 				: shiftDepositMode.getIdentifier();
 			final MenuAction action = opId >= 6 ? MenuAction.CC_OP_LOW_PRIORITY : MenuAction.CC_OP;
 			bankModeSwap(action, opId);
@@ -838,7 +840,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		// Swap to shift-click withdraw behavior
 		// Deposit- op 1 is the current withdraw amount 1/5/10/x
 		if (shiftModifier() && config.bankWithdrawShiftClick() != ShiftWithdrawMode.OFF
-			&& type == MenuAction.CC_OP && menuEntry.getIdentifier() == 1
+			&& type == MenuAction.CC_OP && (menuEntry.getIdentifier() == 1 || menuEntry.getIdentifier() == 2)
 			&& menuEntry.getOption().startsWith("Withdraw"))
 		{
 			ShiftWithdrawMode shiftWithdrawMode = config.bankWithdrawShiftClick();
@@ -852,7 +854,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 			else
 			{
 				action = shiftWithdrawMode.getMenuAction();
-				opId = shiftWithdrawMode.getIdentifier();
+				opId = isSeedVaultPlayerInventory ? shiftWithdrawMode.getIdentifierSeedVault() : shiftWithdrawMode.getIdentifier();
 			}
 			bankModeSwap(action, opId);
 			return true;
