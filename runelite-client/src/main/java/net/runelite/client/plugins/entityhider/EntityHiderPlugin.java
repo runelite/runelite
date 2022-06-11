@@ -182,7 +182,7 @@ public class EntityHiderPlugin extends Plugin
 		{
 			NPC npc = (NPC) renderable;
 
-			if (npc.getComposition().isFollower() && npc == client.getFollower())
+			if (npc.getComposition().isFollower() && npc != client.getFollower())
 			{
 				return !hidePets;
 			}
