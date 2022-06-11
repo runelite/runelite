@@ -40,6 +40,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.border.EmptyBorder;
 import lombok.AccessLevel;
 import lombok.Getter;
+import net.runelite.client.game.WorldService;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.http.api.worlds.World;
@@ -51,6 +52,8 @@ class WorldTableRow extends JPanel
 	private static final ImageIcon FLAG_AUS;
 	private static final ImageIcon FLAG_UK;
 	private static final ImageIcon FLAG_US;
+	private static final ImageIcon FLAG_US_EAST;
+	private static final ImageIcon FLAG_US_WEST;
 	private static final ImageIcon FLAG_GER;
 
 	private static final int WORLD_COLUMN_WIDTH = 60;
@@ -69,6 +72,8 @@ class WorldTableRow extends JPanel
 		FLAG_AUS = new ImageIcon(ImageUtil.loadImageResource(WorldHopperPlugin.class, "flag_aus.png"));
 		FLAG_UK = new ImageIcon(ImageUtil.loadImageResource(WorldHopperPlugin.class, "flag_uk.png"));
 		FLAG_US = new ImageIcon(ImageUtil.loadImageResource(WorldHopperPlugin.class, "flag_us.png"));
+		FLAG_US_EAST = new ImageIcon(ImageUtil.loadImageResource(WorldHopperPlugin.class, "flag_us_east.png"));
+		FLAG_US_WEST = new ImageIcon(ImageUtil.loadImageResource(WorldHopperPlugin.class, "flag_us_west.png"));
 		FLAG_GER = new ImageIcon(ImageUtil.loadImageResource(WorldHopperPlugin.class, "flag_ger.png"));
 	}
 
@@ -367,7 +372,7 @@ class WorldTableRow extends JPanel
 
 		worldField = new JLabel(world.getId() + "");
 
-		ImageIcon flagIcon = getFlag(world.getRegion());
+		ImageIcon flagIcon = getFlag(world.getRegion(), world.getId());
 		if (flagIcon != null)
 		{
 			JLabel flag = new JLabel(flagIcon);
@@ -378,7 +383,7 @@ class WorldTableRow extends JPanel
 		return column;
 	}
 
-	private static ImageIcon getFlag(WorldRegion region)
+	private static ImageIcon getFlag(WorldRegion region, int worldId)
 	{
 		if (region == null)
 		{
@@ -388,7 +393,7 @@ class WorldTableRow extends JPanel
 		switch (region)
 		{
 			case UNITED_STATES_OF_AMERICA:
-				return FLAG_US;
+				return getUSFlag(worldId);
 			case UNITED_KINGDOM:
 				return FLAG_UK;
 			case AUSTRALIA:
@@ -398,5 +403,30 @@ class WorldTableRow extends JPanel
 			default:
 				return null;
 		}
+	}
+
+	/**
+	 * Chooses the appropriate US flag icon based on world.
+	 *
+	 * It would be much smarter to use pings to determine this so that when worlds are added, their pings can be used
+	 * to detect US East/West without having to change the binary.
+	 */
+	private static ImageIcon getUSFlag(final int worldId)
+	{
+		for (final int worldEast : WorldService.US_EAST_WORLDS)
+		{
+			if (worldEast == worldId)
+			{
+				return FLAG_US_EAST;
+			}
+		}
+		for (final int worldWest : WorldService.US_WEST_WORLDS)
+		{
+			if (worldWest == worldId)
+			{
+				return FLAG_US_WEST;
+			}
+		}
+		return FLAG_US;
 	}
 }

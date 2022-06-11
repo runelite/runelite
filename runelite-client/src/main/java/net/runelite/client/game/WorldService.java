@@ -25,6 +25,9 @@
 package net.runelite.client.game;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Comparator;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -51,6 +54,17 @@ import okhttp3.OkHttpClient;
 public class WorldService
 {
 	private static final int WORLD_FETCH_TIMER = 10; // minutes
+	private static final List<Integer> USEastWorlds = Arrays.asList(
+			301, 305, 314, 321, 322, 329, 330, 337, 345, 346, 353, 354, 361, 362, 369, 370, 377, 386, 393, 394,
+			401, 415, 416, 417, 467, 468, 469, 470, 471, 472, 473, 474, 475, 476, 477, 478, 479,
+			480, 481, 482, 483, 484, 485, 486, 487, 488, 489, 490, 491, 492, 493, 494, 495, 496,
+			539, 573, 574, 575, 576, 577);
+	private static final List<Integer> USWestWorlds = Arrays.asList(
+			306, 307, 313, 315, 319, 320, 323, 324, 331, 332, 338, 339, 340, 347, 348, 355, 356, 357, 374, 378,
+			409, 418, 419, 420, 421, 422, 428, 429, 430, 431, 432, 433, 434, 435, 436, 437, 443, 444, 445, 446,
+			542, 543, 544, 545, 546, 547);
+	public static final List<Integer> US_EAST_WORLDS = Collections.unmodifiableList(USEastWorlds);
+	public static final List<Integer> US_WEST_WORLDS = Collections.unmodifiableList(USWestWorlds);
 
 	private final Client client;
 	private final ScheduledExecutorService scheduledExecutorService;
