@@ -246,7 +246,12 @@ public class SessionManager
 				// Save session to disk
 				saveSession();
 
-				req.getResponseHeaders().set("Location", oauthRedirect);
+				final HttpUrl redirect = HttpUrl.get(oauthRedirect).newBuilder()
+					.addQueryParameter("username", username)
+					.addQueryParameter("sessionId", sessionId.toString())
+					.build();
+
+				req.getResponseHeaders().set("Location", redirect.toString());
 				req.sendResponseHeaders(302, 0);
 			}
 			catch (Exception e)
