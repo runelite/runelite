@@ -241,14 +241,16 @@ public class LootTrackerPluginTest
 		when(lootTrackerConfig.priceType()).thenReturn(LootTrackerPriceType.GRAND_EXCHANGE);
 
 		ItemContainer itemContainer = mock(ItemContainer.class);
+		int twistedBowQty = 1;
+		int pureEssenceQty = 42;
 		when(itemContainer.getItems()).thenReturn(new Item[]{
-			new Item(ItemID.TWISTED_BOW, 1),
-			new Item(ItemID.PURE_ESSENCE, 42)
+			new Item(ItemID.TWISTED_BOW, twistedBowQty),
+			new Item(ItemID.PURE_ESSENCE, pureEssenceQty)
 		});
 		when(client.getItemContainer(InventoryID.CHAMBERS_OF_XERIC_CHEST)).thenReturn(itemContainer);
 
-		when(itemManager.getItemPrice(ItemID.TWISTED_BOW)).thenReturn(1_100_000_000);
-		when(itemManager.getItemPrice(ItemID.PURE_ESSENCE)).thenReturn(6);
+		when(itemManager.getItemPriceLong(ItemID.TWISTED_BOW, twistedBowQty)).thenReturn(1_100_000_000L);
+		when(itemManager.getItemPriceLong(ItemID.PURE_ESSENCE, pureEssenceQty)).thenReturn(6L * pureEssenceQty);
 
 		WidgetLoaded widgetLoaded = new WidgetLoaded();
 		widgetLoaded.setGroupId(WidgetID.CHAMBERS_OF_XERIC_REWARD_GROUP_ID);

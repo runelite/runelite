@@ -174,6 +174,10 @@ public class ItemManager
 		put(AGILITY_CAPE_13340, AGILITY_CAPE).
 		build();
 
+	/**
+	 * Map scrollbook varbit (representing quantity) to item ID. Excludes key master
+	 * tele which is untradeable.
+	 */
 	private static final ImmutableMap<Integer, Integer> SCROLL_BOOK_VARBITS = ImmutableMap.<Integer, Integer>builder().
 		put(Varbits.SCROLL_BOOK_NARDAH, NARDAH_TELEPORT).
 		put(Varbits.SCROLL_BOOK_DIGSITE, DIGSITE_TELEPORT).
@@ -187,7 +191,6 @@ public class ItemManager
 		put(Varbits.SCROLL_BOOK_MOS_LEHARMLESS, MOS_LEHARMLESS_TELEPORT).
 		put(Varbits.SCROLL_BOOK_LUMBERYARD, LUMBERYARD_TELEPORT).
 		put(Varbits.SCROLL_BOOK_ZULANDRA, ZULANDRA_TELEPORT).
-		put(Varbits.SCROLL_BOOK_KEY_MASTER, KEY_MASTER_TELEPORT).
 		put(Varbits.SCROLL_BOOK_REVENANT_CAVES, REVENANT_CAVE_TELEPORT).
 		put(Varbits.SCROLL_BOOK_WATSON, WATSON_TELEPORT).
 		build();
@@ -279,6 +282,49 @@ public class ItemManager
 	public int getItemPrice(int itemID)
 	{
 		return getItemPriceWithSource(itemID, runeLiteConfig.useWikiItemPrices());
+	}
+
+	/**
+	 * Look up an item's price
+	 *
+	 * @param itemID item id
+	 * @return item price
+	 */
+	public long getItemPriceLong(int itemID)
+	{
+		return getItemPriceLong(itemID, 1);
+	}
+
+	/**
+	 * Look up an item's price
+	 *
+	 * @param itemID item id
+	 * @param quantity item quantity
+	 * @return item price
+	 */
+	public long getItemPriceLong(int itemID, int quantity)
+	{
+		return getItemPriceWithSourceLong(itemID, quantity, runeLiteConfig.useWikiItemPrices());
+	}
+
+	/**
+	 * Look up an item's price
+	 *
+	 * @param itemID item id
+	 * @param quantity item quantity
+	 * @param useWikiPrice use the actively traded/wiki price
+	 * @return item price
+	 */
+	public long getItemPriceWithSourceLong(int itemID, int quantity, boolean useWikiPrice)
+	{
+		if (itemID == MASTER_SCROLL_BOOK)
+		{
+			// Existing implementation just calculates price of the scrolls, add in price
+			// of the books
+			final long bookPrice = (long) getItemPriceWithSource(MASTER_SCROLL_BOOK_EMPTY, useWikiPrice) * quantity;
+			return bookPrice + (long) getItemPriceWithSource(itemID, useWikiPrice);
+		}
+		return (long) getItemPrice(itemID) * quantity;
 	}
 
 	/**
