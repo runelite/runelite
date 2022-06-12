@@ -331,13 +331,13 @@ public class TimersPlugin extends Plugin
 			lastImbuedHeartVarb = imbuedHeartCooldownVarb;
 		}
 
-		if (lastHomeTeleport != homeTeleportVarp)
+		if (config.showHomeMinigameTeleports() && lastHomeTeleport != homeTeleportVarp)
 		{
 			checkTeleport(VarPlayer.LAST_HOME_TELEPORT);
 			lastHomeTeleport = homeTeleportVarp;
 		}
 
-		if (lastMinigameTeleport != minigameTeleportVarp)
+		if (config.showHomeMinigameTeleports() && lastMinigameTeleport != minigameTeleportVarp)
 		{
 			checkTeleport(VarPlayer.LAST_MINIGAME_TELEPORT);
 			lastMinigameTeleport = minigameTeleportVarp;
