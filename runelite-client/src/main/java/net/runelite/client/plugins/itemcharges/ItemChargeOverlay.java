@@ -97,8 +97,8 @@ class ItemChargeOverlay extends WidgetItemOverlay
 		textComponents.add(textComponent3);
 		textComponents.get(0).setPosition(new Point(bounds.x - 1, bounds.y + 15));
 		textComponents.get(1).setPosition(new Point(bounds.x - 1, bounds.y + 30));
-		textComponents.get(2).setPosition(new Point(bounds.x - 16, bounds.y + 15));
-		textComponents.get(3).setPosition(new Point(bounds.x - 16, bounds.y + 30));
+		textComponents.get(2).setPosition(new Point(bounds.x + 20, bounds.y + 15));
+		textComponents.get(3).setPosition(new Point(bounds.x + 20, bounds.y + 30));
 
 		for (int i = 0; i < chargesList.size(); i++)
 		{
