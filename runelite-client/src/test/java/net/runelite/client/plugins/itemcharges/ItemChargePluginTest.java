@@ -96,10 +96,10 @@ public class ItemChargePluginTest
 	private static final String ACTIVATE_BLOOD_ESSENCE = "You activate the blood essence.";
 	private static final String EXTRACT_BLOOD_ESSENCE = "You manage to extract power from the Blood Essence and craft 67 extra runes.";
 	private static final String CHECK_BLOOD_ESSENCE = "Your blood essence has 56 charges remaining";
+	private static final String EMPTY_EXPLORER_ENERGY = "You have exhausted the ring's run restore power for today.";
 	private static final String CHECK_BRACELET_OF_CLAY = "You can mine 13 more pieces of soft clay before your bracelet crumbles to dust.";
 	private static final String USED_BRACELET_OF_CLAY = "You manage to mine some clay.";
 	private static final String BREAK_BRACELET_OF_CLAY = "Your bracelet of clay crumbles to dust.";
-
 	@Mock
 	@Bind
 	private Client client;
@@ -143,7 +143,7 @@ public class ItemChargePluginTest
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHECK, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_DODGY_NECKLACE, 10);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_DODGY_NECKLACE_LIST[0], 10);
 	}
 
 	@Test
@@ -151,7 +151,7 @@ public class ItemChargePluginTest
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", PROTECT, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_DODGY_NECKLACE, 9);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_DODGY_NECKLACE_LIST[0], 9);
 	}
 
 	@Test
@@ -159,7 +159,7 @@ public class ItemChargePluginTest
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", PROTECT_1, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_DODGY_NECKLACE, 1);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_DODGY_NECKLACE_LIST[0], 1);
 	}
 
 	@Test
@@ -167,7 +167,7 @@ public class ItemChargePluginTest
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BREAK, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_DODGY_NECKLACE, 10);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_DODGY_NECKLACE_LIST[0], 10);
 	}
 
 	// Ring of forging
@@ -176,7 +176,7 @@ public class ItemChargePluginTest
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHECK_RING_OF_FORGING_ONE, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_RING_OF_FORGING, 1);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_RING_OF_FORGING_LIST[0], 1);
 	}
 
 	@Test
@@ -184,13 +184,13 @@ public class ItemChargePluginTest
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHECK_RING_OF_FORGING_FULL, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_RING_OF_FORGING, 140);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_RING_OF_FORGING_LIST[0], 140);
 	}
 
 	@Test
 	public void testRof()
 	{
-		when(configManager.getRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_RING_OF_FORGING, Integer.class)).thenReturn(90);
+		when(configManager.getRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_RING_OF_FORGING_LIST[0], Integer.class)).thenReturn(90);
 		// Create equipment inventory with ring of forging
 		ItemContainer equipmentItemContainer = mock(ItemContainer.class);
 		when(client.getItemContainer(InventoryID.EQUIPMENT)).thenReturn(equipmentItemContainer);
@@ -199,7 +199,7 @@ public class ItemChargePluginTest
 		// Run message
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", USED_RING_OF_FORGING, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_RING_OF_FORGING, 89);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_RING_OF_FORGING_LIST[0], 89);
 	}
 
 	@Test
@@ -207,7 +207,7 @@ public class ItemChargePluginTest
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BREAK_RING_OF_FORGING, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_RING_OF_FORGING, 140);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_RING_OF_FORGING_LIST[0], 140);
 	}
 
 	// Chemistry
@@ -216,7 +216,7 @@ public class ItemChargePluginTest
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHECK_AMULET_OF_CHEMISTRY, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_AMULET_OF_CHEMISTRY, 5);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_AMULET_OF_CHEMISTRY_LIST[0], 5);
 	}
 
 	@Test
@@ -224,7 +224,7 @@ public class ItemChargePluginTest
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHECK_AMULET_OF_CHEMISTRY_1, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_AMULET_OF_CHEMISTRY, 1);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_AMULET_OF_CHEMISTRY_LIST[0], 1);
 	}
 
 	@Test
@@ -232,7 +232,7 @@ public class ItemChargePluginTest
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", USED_AMULET_OF_CHEMISTRY, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_AMULET_OF_CHEMISTRY, 4);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_AMULET_OF_CHEMISTRY_LIST[0], 4);
 	}
 
 	@Test
@@ -240,7 +240,7 @@ public class ItemChargePluginTest
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", USED_AMULET_OF_CHEMISTRY_3_DOSES, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_AMULET_OF_CHEMISTRY, 2);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_AMULET_OF_CHEMISTRY_LIST[0], 2);
 	}
 
 	@Test
@@ -248,7 +248,7 @@ public class ItemChargePluginTest
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", USED_AMULET_OF_CHEMISTRY_2_DOSES, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_AMULET_OF_CHEMISTRY, 1);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_AMULET_OF_CHEMISTRY_LIST[0], 1);
 	}
 
 	@Test
@@ -256,7 +256,7 @@ public class ItemChargePluginTest
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BREAK_AMULET_OF_CHEMISTRY, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_AMULET_OF_CHEMISTRY, 5);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_AMULET_OF_CHEMISTRY_LIST[0], 5);
 	}
 
 	@Test
@@ -271,7 +271,7 @@ public class ItemChargePluginTest
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BREAK_AMULET_OF_CHEMISTRY_2_DOSES, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_AMULET_OF_CHEMISTRY, 5);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_AMULET_OF_CHEMISTRY_LIST[0], 5);
 	}
 
 	// Chronicle
@@ -280,7 +280,7 @@ public class ItemChargePluginTest
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHRONICLE_CHECK_CHARGES_FULL, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_CHRONICLE, 1000);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_CHRONICLE_LIST[0], 1000);
 	}
 
 	@Test
@@ -288,7 +288,7 @@ public class ItemChargePluginTest
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHRONICLE_CHECK_CHARGES_ONE, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_CHRONICLE, 1);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_CHRONICLE_LIST[0], 1);
 	}
 
 	@Test
@@ -296,7 +296,7 @@ public class ItemChargePluginTest
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHRONICLE_CHECK_CHARGES_EMPTY, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_CHRONICLE, 0);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_CHRONICLE_LIST[0], 0);
 	}
 
 	@Test
@@ -304,7 +304,7 @@ public class ItemChargePluginTest
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHRONICLE_TELEPORT, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_CHRONICLE, 999);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_CHRONICLE_LIST[0], 999);
 	}
 
 	@Test
@@ -312,7 +312,7 @@ public class ItemChargePluginTest
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHRONICLE_TELEPORT_ONE, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_CHRONICLE, 1);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_CHRONICLE_LIST[0], 1);
 	}
 
 	@Test
@@ -320,7 +320,7 @@ public class ItemChargePluginTest
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHRONICLE_TELEPORT_EMPTY, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_CHRONICLE, 0);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_CHRONICLE_LIST[0], 0);
 	}
 
 	@Test
@@ -328,7 +328,7 @@ public class ItemChargePluginTest
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHRONICLE_TELEPORT_FAIL, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_CHRONICLE, 0);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_CHRONICLE_LIST[0], 0);
 	}
 
 	@Test
@@ -336,7 +336,7 @@ public class ItemChargePluginTest
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHRONICLE_ADD_SINGLE_CHARGE, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_CHRONICLE, 1);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_CHRONICLE_LIST[0], 1);
 	}
 
 	@Test
@@ -344,7 +344,7 @@ public class ItemChargePluginTest
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHRONICLE_ADD_SINGLE_CHARGE_FULL, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_CHRONICLE, 1000);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_CHRONICLE_LIST[0], 1000);
 	}
 
 	@Test
@@ -352,7 +352,7 @@ public class ItemChargePluginTest
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHRONICLE_ADD_MULTIPLE_CHARGES, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_CHRONICLE, 5);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_CHRONICLE_LIST[0], 5);
 	}
 
 	@Test
@@ -360,7 +360,7 @@ public class ItemChargePluginTest
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHRONICLE_ADD_FULL, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_CHRONICLE, 1000);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_CHRONICLE_LIST[0], 1000);
 	}
 
 	// Bracelet of Slaughter
@@ -369,7 +369,7 @@ public class ItemChargePluginTest
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHECK_BRACELET_OF_SLAUGHTER, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BRACELET_OF_SLAUGHTER, 25);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BRACELET_OF_SLAUGHTER_LIST[0], 25);
 	}
 
 	@Test
@@ -377,7 +377,7 @@ public class ItemChargePluginTest
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHECK_BRACELET_OF_SLAUGHTER_1, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BRACELET_OF_SLAUGHTER, 1);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BRACELET_OF_SLAUGHTER_LIST[0], 1);
 	}
 
 	@Test
@@ -385,7 +385,7 @@ public class ItemChargePluginTest
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", ACTIVATE_BRACELET_OF_SLAUGHTER, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BRACELET_OF_SLAUGHTER, 16);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BRACELET_OF_SLAUGHTER_LIST[0], 16);
 	}
 
 	@Test
@@ -393,7 +393,7 @@ public class ItemChargePluginTest
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BREAK_BRACELET_OF_SLAUGHTER, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BRACELET_OF_SLAUGHTER, 30);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BRACELET_OF_SLAUGHTER_LIST[0], 30);
 	}
 
 	// Expeditious Bracelet
@@ -402,7 +402,7 @@ public class ItemChargePluginTest
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHECK_EXPEDITIOUS_BRACELET, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_EXPEDITIOUS_BRACELET, 6);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_EXPEDITIOUS_BRACELET_LIST[0], 6);
 	}
 
 	@Test
@@ -410,7 +410,7 @@ public class ItemChargePluginTest
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHECK_EXPEDITIOUS_BRACELET_1, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_EXPEDITIOUS_BRACELET, 1);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_EXPEDITIOUS_BRACELET_LIST[0], 1);
 	}
 
 	@Test
@@ -418,7 +418,7 @@ public class ItemChargePluginTest
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", ACTIVATE_EXPEDITIOUS_BRACELET, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_EXPEDITIOUS_BRACELET, 11);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_EXPEDITIOUS_BRACELET_LIST[0], 11);
 	}
 
 	@Test
@@ -426,7 +426,7 @@ public class ItemChargePluginTest
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BREAK_EXPEDITIOUS_BRACELET, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_EXPEDITIOUS_BRACELET, 30);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_EXPEDITIOUS_BRACELET_LIST[0], 30);
 	}
 
 	@Test
@@ -434,16 +434,16 @@ public class ItemChargePluginTest
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", ACTIVATE_BLOOD_ESSENCE, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BLOOD_ESSENCE, 1000);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BLOOD_ESSENCE_LIST[0], 1000);
 	}
 
 	@Test
 	public void testBloodEssenceExtract()
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", EXTRACT_BLOOD_ESSENCE, "", 0);
-		when(configManager.getConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BLOOD_ESSENCE, Integer.class)).thenReturn(1000);
+		when(configManager.getConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BLOOD_ESSENCE_LIST[0], Integer.class)).thenReturn(1000);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BLOOD_ESSENCE, 933);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BLOOD_ESSENCE_LIST[0], 933);
 	}
 
 	@Test
@@ -451,20 +451,29 @@ public class ItemChargePluginTest
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHECK_BLOOD_ESSENCE, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BLOOD_ESSENCE, 56);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BLOOD_ESSENCE_LIST[0], 56);
 	}
+
+	@Test
+	public void testExplorerRingEnergyEmpty()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", EMPTY_EXPLORER_ENERGY, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_EXPLORERS_RING_LIST[1], 0);
+	}
+
 	@Test
 	public void testBraceletOfClayCheck()
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHECK_BRACELET_OF_CLAY, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BRACELET_OF_CLAY, 13);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BRACELET_OF_CLAY_LIST[0], 13);
 	}
 
 	@Test
 	public void testBraceletOfClayUsed()
 	{
-		when(configManager.getRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BRACELET_OF_CLAY, Integer.class)).thenReturn(25);
+		when(configManager.getRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BRACELET_OF_CLAY_LIST[0], Integer.class)).thenReturn(25);
 		// Create equipment inventory with bracelet of clay
 		ItemContainer equipmentItemContainer = mock(ItemContainer.class);
 		when(client.getItemContainer(InventoryID.EQUIPMENT)).thenReturn(equipmentItemContainer);
@@ -473,7 +482,7 @@ public class ItemChargePluginTest
 		// Run message
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", USED_BRACELET_OF_CLAY, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BRACELET_OF_CLAY, 24);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BRACELET_OF_CLAY_LIST[0], 24);
 	}
 
 	@Test
@@ -481,6 +490,6 @@ public class ItemChargePluginTest
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BREAK_BRACELET_OF_CLAY, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BRACELET_OF_CLAY, 28);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BRACELET_OF_CLAY_LIST[0], 28);
 	}
 }

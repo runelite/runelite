@@ -45,9 +45,22 @@ public interface ItemChargeConfig extends Config
 	String KEY_CHRONICLE = "chronicle";
 	String KEY_DODGY_NECKLACE = "dodgyNecklace";
 	String KEY_EXPEDITIOUS_BRACELET = "expeditiousBracelet";
-	String KEY_EXPLORERS_RING = "explorerRing";
+	String KEY_EXPLORERS_RING_ALCH = "explorersRingAlch";
+	String KEY_EXPLORERS_RING_ENERGY = "explorersRingEnergy";
+	String KEY_EXPLORERS_RING_TELE = "explorersRingTele";
 	String KEY_RING_OF_FORGING = "ringOfForging";
 	String KEY_BLOOD_ESSENCE = "bloodEssence";
+	String[] KEY_AMULET_OF_BOUNTY_LIST = {KEY_AMULET_OF_BOUNTY};
+	String[] KEY_AMULET_OF_CHEMISTRY_LIST = {KEY_AMULET_OF_CHEMISTRY};
+	String[] KEY_BINDING_NECKLACE_LIST = {KEY_BINDING_NECKLACE};
+	String[] KEY_BRACELET_OF_SLAUGHTER_LIST = {KEY_BRACELET_OF_SLAUGHTER};
+	String[] KEY_CHRONICLE_LIST = {KEY_CHRONICLE};
+	String[] KEY_DODGY_NECKLACE_LIST = {KEY_DODGY_NECKLACE};
+	String[] KEY_EXPEDITIOUS_BRACELET_LIST = {KEY_EXPEDITIOUS_BRACELET};
+	String[] KEY_EXPLORERS_RING_LIST = {KEY_EXPLORERS_RING_ALCH, KEY_EXPLORERS_RING_ENERGY, KEY_EXPLORERS_RING_TELE};
+	String[] KEY_RING_OF_FORGING_LIST = {KEY_RING_OF_FORGING};
+	String[] KEY_BLOOD_ESSENCE_LIST = {KEY_BLOOD_ESSENCE};
+	String[] KEY_BRACELET_OF_CLAY_LIST = {KEY_BRACELET_OF_CLAY};
 
 	@ConfigSection(
 		name = "Charge Settings",
@@ -125,7 +138,6 @@ public interface ItemChargeConfig extends Config
 		description = "Show Dodgy necklace charges",
 		position = 6,
 		section = chargesSection
-
 	)
 	default boolean showDodgyCount()
 	{
@@ -301,8 +313,8 @@ public interface ItemChargeConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showExplorerRingCharges",
-		name = "Explorer's Ring Alch Charges",
+		keyName = "showExplorersRingCharges",
+		name = "Explorer's Ring Charges",
 		description = "Show Explorer's ring alchemy charges",
 		position = 21,
 		section = chargesSection

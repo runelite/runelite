@@ -31,8 +31,10 @@ import com.google.common.primitives.Ints;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.util.EnumMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
@@ -45,7 +47,9 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.Varbits;
+import net.runelite.api.VarClientInt;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.VarbitChanged;
@@ -137,23 +141,27 @@ public class ItemChargePlugin extends Plugin
 		"You manage to extract power from the Blood Essence and craft (\\d{1,3}) extra runes?\\."
 	);
 	private static final String BLOOD_ESSENCE_ACTIVATE_TEXT = "You activate the blood essence.";
-	private static final Pattern BRACELET_OF_CLAY_CHECK_PATTERN = Pattern.compile(
-	"You can mine (\\d{1,2}) more pieces? of soft clay before your bracelet crumbles to dust."
-	);
+	private static final String EXPLORERS_RING_ENERGY_EMPTY_TEXT = "You have exhausted the ring's run restore power for today.";
 	private static final String BRACELET_OF_CLAY_USE_TEXT = "You manage to mine some clay.";
 	private static final String BRACELET_OF_CLAY_BREAK_TEXT = "Your bracelet of clay crumbles to dust.";
+	private static final Pattern BRACELET_OF_CLAY_CHECK_PATTERN = Pattern.compile(
+		"You can mine (\\d{1,2}) more pieces? of soft clay before your bracelet crumbles to dust."
+	);
 
 	private static final int MAX_DODGY_CHARGES = 10;
 	private static final int MAX_BINDING_CHARGES = 16;
-	private static final int MAX_EXPLORER_RING_CHARGES = 30;
+	private static final int MAX_EXPLORERS_RING_ALCH_CHARGES = 30;
+	private static final int MAX_EXPLORERS_RING_TELE_CHARGES = 3;
 	private static final int MAX_RING_OF_FORGING_CHARGES = 140;
 	private static final int MAX_AMULET_OF_CHEMISTRY_CHARGES = 5;
 	private static final int MAX_AMULET_OF_BOUNTY_CHARGES = 10;
 	private static final int MAX_SLAYER_BRACELET_CHARGES = 30;
 	private static final int MAX_BLOOD_ESSENCE_CHARGES = 1000;
 	private static final int MAX_BRACELET_OF_CLAY_CHARGES = 28;
-
-	private int lastExplorerRingCharge = -1;
+	private static final int ONE_DAY = 86400000;
+	private int lastExplorerRingAlchCharge = -1;
+	private int lastExplorerRingEnergyCharges = -1;
+	private int lastExplorerRingTeleCharges = -1;
 
 	@Inject
 	private Client client;
@@ -184,7 +192,9 @@ public class ItemChargePlugin extends Plugin
 
 	// Limits destroy callback to once per tick
 	private int lastCheckTick;
-	private final Map<EquipmentInventorySlot, ItemChargeInfobox> infoboxes = new EnumMap<>(EquipmentInventorySlot.class);
+	static private ConcurrentMap<String, ItemChargeInfobox> infoboxes = new ConcurrentSkipListMap<>();
+	private long lastReset;
+	private boolean loggingIn;
 
 	@Provides
 	ItemChargeConfig getConfig(ConfigManager configManager)
@@ -244,6 +254,7 @@ public class ItemChargePlugin extends Plugin
 			Matcher bloodEssenceCheckMatcher = BLOOD_ESSENCE_CHECK_PATTERN.matcher(message);
 			Matcher bloodEssenceExtractMatcher = BLOOD_ESSENCE_EXTRACT_PATTERN.matcher(message);
 			Matcher braceletOfClayCheckMatcher = BRACELET_OF_CLAY_CHECK_PATTERN.matcher(message);
+
 
 			if (config.recoilNotification() && message.contains(RING_OF_RECOIL_BREAK_MESSAGE))
 			{
@@ -313,7 +324,7 @@ public class ItemChargePlugin extends Plugin
 				final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
 				if (equipment.contains(ItemID.BINDING_NECKLACE))
 				{
-					updateBindingNecklaceCharges(getItemCharges(ItemChargeConfig.KEY_BINDING_NECKLACE) - 1);
+					updateBindingNecklaceCharges(getItemCharges(ItemChargeConfig.KEY_BINDING_NECKLACE_LIST[0]) - 1);
 				}
 			}
 			else if (bindingNecklaceCheckMatcher.find())
@@ -352,7 +363,7 @@ public class ItemChargePlugin extends Plugin
 
 				if (equipment.contains(ItemID.RING_OF_FORGING) && (message.equals(RING_OF_FORGING_USED_TEXT) || inventory.count(ItemID.IRON_ORE) > 1))
 				{
-					int charges = Ints.constrainToRange(getItemCharges(ItemChargeConfig.KEY_RING_OF_FORGING) - 1, 0, MAX_RING_OF_FORGING_CHARGES);
+					int charges = Ints.constrainToRange(getItemCharges(ItemChargeConfig.KEY_RING_OF_FORGING_LIST[0]) - 1, 0, MAX_RING_OF_FORGING_CHARGES);
 					updateRingOfForgingCharges(charges);
 				}
 			}
@@ -371,28 +382,28 @@ public class ItemChargePlugin extends Plugin
 
 				if (match.equals("one"))
 				{
-					setItemCharges(ItemChargeConfig.KEY_CHRONICLE, 1);
+					setItemCharges(ItemChargeConfig.KEY_CHRONICLE_LIST[0], 1);
 				}
 				else
 				{
-					setItemCharges(ItemChargeConfig.KEY_CHRONICLE, Integer.parseInt(match));
+					setItemCharges(ItemChargeConfig.KEY_CHRONICLE_LIST[0], Integer.parseInt(match));
 				}
 			}
 			else if (chronicleUseAndCheckMatcher.find())
 			{
-				setItemCharges(ItemChargeConfig.KEY_CHRONICLE, Integer.parseInt(chronicleUseAndCheckMatcher.group(1)));
+				setItemCharges(ItemChargeConfig.KEY_CHRONICLE_LIST[0], Integer.parseInt(chronicleUseAndCheckMatcher.group(1)));
 			}
 			else if (message.equals(CHRONICLE_ONE_CHARGE_TEXT))
 			{
-				setItemCharges(ItemChargeConfig.KEY_CHRONICLE, 1);
+				setItemCharges(ItemChargeConfig.KEY_CHRONICLE_LIST[0], 1);
 			}
 			else if (message.equals(CHRONICLE_EMPTY_TEXT) || message.equals(CHRONICLE_NO_CHARGES_TEXT))
 			{
-				setItemCharges(ItemChargeConfig.KEY_CHRONICLE, 0);
+				setItemCharges(ItemChargeConfig.KEY_CHRONICLE_LIST[0], 0);
 			}
 			else if (message.equals(CHRONICLE_FULL_TEXT))
 			{
-				setItemCharges(ItemChargeConfig.KEY_CHRONICLE, 1000);
+				setItemCharges(ItemChargeConfig.KEY_CHRONICLE_LIST[0], 1000);
 			}
 			else if (slaughterActivateMatcher.find())
 			{
@@ -440,11 +451,16 @@ public class ItemChargePlugin extends Plugin
 			}
 			else if (bloodEssenceExtractMatcher.find())
 			{
-				updateBloodEssenceCharges(getItemCharges(ItemChargeConfig.KEY_BLOOD_ESSENCE) - Integer.parseInt(bloodEssenceExtractMatcher.group(1)));
+				updateBloodEssenceCharges(getItemCharges(ItemChargeConfig.KEY_BLOOD_ESSENCE_LIST[0]) - Integer.parseInt(bloodEssenceExtractMatcher.group(1)));
 			}
 			else if (message.contains(BLOOD_ESSENCE_ACTIVATE_TEXT))
 			{
 				updateBloodEssenceCharges(MAX_BLOOD_ESSENCE_CHARGES);
+			}
+			else if (message.contains(EXPLORERS_RING_ENERGY_EMPTY_TEXT))
+			{
+				setItemCharges(ItemChargeConfig.KEY_EXPLORERS_RING_LIST[1], 0);
+				updateInfoboxes();
 			}
 			else if (braceletOfClayCheckMatcher.find())
 			{
@@ -461,7 +477,7 @@ public class ItemChargePlugin extends Plugin
 				}
 				if (equipment.contains(ItemID.BRACELET_OF_CLAY))
 				{
-					int charges = Ints.constrainToRange(getItemCharges(ItemChargeConfig.KEY_BRACELET_OF_CLAY) - 1, 0, MAX_BRACELET_OF_CLAY_CHARGES);
+					int charges = Ints.constrainToRange(getItemCharges(ItemChargeConfig.KEY_BRACELET_OF_CLAY_LIST[0]) - 1, 0, MAX_BRACELET_OF_CLAY_CHARGES);
 					updateBraceletOfClayCharges(charges);
 				}
 			}
@@ -505,11 +521,23 @@ public class ItemChargePlugin extends Plugin
 	@Subscribe
 	private void onVarbitChanged(VarbitChanged event)
 	{
-		int explorerRingCharge = client.getVarbitValue(Varbits.EXPLORER_RING_ALCHS);
-		if (lastExplorerRingCharge != explorerRingCharge)
+		int explorerRingAlchCharge = client.getVarbitValue(Varbits.EXPLORER_RING_ALCHS);
+		int explorerRingEnergyCharge = client.getVarbitValue(Varbits.EXPLORER_RING_RUNENERGY);
+		int explorerRingTeleCharge = client.getVarbitValue(Varbits.EXPLORER_RING_TELEPORTS);
+		if (lastExplorerRingAlchCharge != explorerRingAlchCharge)
 		{
-			lastExplorerRingCharge = explorerRingCharge;
-			updateExplorerRingCharges(explorerRingCharge);
+			lastExplorerRingAlchCharge = explorerRingAlchCharge;
+			updateExplorerRingAlchCharges(explorerRingAlchCharge);
+		}
+		if (lastExplorerRingEnergyCharges != explorerRingEnergyCharge)
+		{
+			lastExplorerRingEnergyCharges = explorerRingEnergyCharge;
+			updateExplorerRingEnergyCharges(explorerRingEnergyCharge);
+		}
+		if (lastExplorerRingTeleCharges != explorerRingTeleCharge)
+		{
+			lastExplorerRingTeleCharges = explorerRingTeleCharge;
+			updateExplorerRingTeleCharges(explorerRingTeleCharge);
 		}
 	}
 
@@ -555,63 +583,114 @@ public class ItemChargePlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	private void onGameTick(GameTick event)
+	{
+		long currentTime = System.currentTimeMillis();
+		boolean dailyReset = !loggingIn && currentTime - lastReset > ONE_DAY;
+
+		if ((dailyReset || loggingIn)
+			&& client.getVar(VarClientInt.MEMBERSHIP_STATUS) == 1)
+		{
+			// Round down to the nearest day
+			lastReset = (long) Math.floor(currentTime / ONE_DAY) * ONE_DAY;
+			loggingIn = false;
+
+			checkExplorersRingEnergyCharges(dailyReset);
+		}
+	}
+
 	private void updateDodgyNecklaceCharges(final int value)
 	{
-		setItemCharges(ItemChargeConfig.KEY_DODGY_NECKLACE, value);
+		setItemCharges(ItemChargeConfig.KEY_DODGY_NECKLACE_LIST[0], value);
 		updateInfoboxes();
 	}
 
 	private void updateAmuletOfChemistryCharges(final int value)
 	{
-		setItemCharges(ItemChargeConfig.KEY_AMULET_OF_CHEMISTRY, value);
+		setItemCharges(ItemChargeConfig.KEY_AMULET_OF_CHEMISTRY_LIST[0], value);
 		updateInfoboxes();
 	}
 
 	private void updateAmuletOfBountyCharges(final int value)
 	{
-		setItemCharges(ItemChargeConfig.KEY_AMULET_OF_BOUNTY, value);
+		setItemCharges(ItemChargeConfig.KEY_AMULET_OF_BOUNTY_LIST[0], value);
 		updateInfoboxes();
 	}
 
 	private void updateBindingNecklaceCharges(final int value)
 	{
-		setItemCharges(ItemChargeConfig.KEY_BINDING_NECKLACE, value);
+		setItemCharges(ItemChargeConfig.KEY_BINDING_NECKLACE_LIST[0], value);
 		updateInfoboxes();
 	}
 
-	private void updateExplorerRingCharges(final int value)
+	private void checkExplorersRingEnergyCharges(boolean dailyReset)
+	{
+		if (dailyReset)
+		{
+			updateExplorerRingEnergyCharges(0);
+		}
+	}
+
+	private void updateExplorerRingAlchCharges(final int value)
 	{
 		// Note: Varbit counts upwards. We count down from the maximum charges.
-		setItemCharges(ItemChargeConfig.KEY_EXPLORERS_RING, MAX_EXPLORER_RING_CHARGES - value);
+		setItemCharges(ItemChargeConfig.KEY_EXPLORERS_RING_LIST[0], MAX_EXPLORERS_RING_ALCH_CHARGES - value);
 		updateInfoboxes();
+	}
+
+	private void updateExplorerRingEnergyCharges(final int value)
+	{
+		final int maxCharges = client.getVarbitValue(Varbits.DIARY_LUMBRIDGE_EASY) == 1
+			? 2 : client.getVarbitValue(Varbits.DIARY_LUMBRIDGE_MEDIUM) == 1
+			? 3 : client.getVarbitValue(Varbits.DIARY_LUMBRIDGE_HARD) == 1
+			? 4 : 3;
+
+		setItemCharges(ItemChargeConfig.KEY_EXPLORERS_RING_LIST[1], maxCharges - value);
+		updateInfoboxes();
+	}
+
+	private void updateExplorerRingTeleCharges(final int value)
+	{
+		final int maxCharges;
+		if (client.getVarbitValue(Varbits.DIARY_LUMBRIDGE_MEDIUM) == 1 && client.getVarbitValue(Varbits.DIARY_LUMBRIDGE_HARD) != 1)
+		{
+			maxCharges = MAX_EXPLORERS_RING_TELE_CHARGES;
+		}
+		else
+		{
+			maxCharges = 0;
+		}
+		setItemCharges(ItemChargeConfig.KEY_EXPLORERS_RING_LIST[2], maxCharges - value);
 	}
 
 	private void updateRingOfForgingCharges(final int value)
 	{
-		setItemCharges(ItemChargeConfig.KEY_RING_OF_FORGING, value);
+		setItemCharges(ItemChargeConfig.KEY_RING_OF_FORGING_LIST[0], value);
 		updateInfoboxes();
 	}
 
 	private void updateBraceletOfSlaughterCharges(final int value)
 	{
-		setItemCharges(ItemChargeConfig.KEY_BRACELET_OF_SLAUGHTER, value);
+		setItemCharges(ItemChargeConfig.KEY_BRACELET_OF_SLAUGHTER_LIST[0], value);
 		updateInfoboxes();
 	}
 
 	private void updateExpeditiousBraceletCharges(final int value)
 	{
-		setItemCharges(ItemChargeConfig.KEY_EXPEDITIOUS_BRACELET, value);
+		setItemCharges(ItemChargeConfig.KEY_EXPEDITIOUS_BRACELET_LIST[0], value);
 		updateInfoboxes();
 	}
 
 	private void updateBloodEssenceCharges(final int value)
 	{
-		setItemCharges(ItemChargeConfig.KEY_BLOOD_ESSENCE, value);
+		setItemCharges(ItemChargeConfig.KEY_BLOOD_ESSENCE_LIST[0], value);
 		updateInfoboxes();
 	}
+
 	private void updateBraceletOfClayCharges(final int value)
 	{
-		setItemCharges(ItemChargeConfig.KEY_BRACELET_OF_CLAY, value);
+		setItemCharges(ItemChargeConfig.KEY_BRACELET_OF_CLAY_LIST[0], value);
 		updateInfoboxes();
 	}
 
@@ -648,8 +727,10 @@ public class ItemChargePlugin extends Plugin
 
 		final Item[] items = itemContainer.getItems();
 		boolean showInfoboxes = config.showInfoboxes();
+		ArrayList<Integer> charges = new ArrayList<>(Arrays.asList(-1, -1, -1, -1));
 		for (EquipmentInventorySlot slot : EquipmentInventorySlot.values())
 		{
+			String concurrentMapKey = String.valueOf(slot.getSlotIdx()).concat(String.valueOf(0));
 			if (slot.getSlotIdx() >= items.length)
 			{
 				break;
@@ -658,13 +739,12 @@ public class ItemChargePlugin extends Plugin
 			Item i = items[slot.getSlotIdx()];
 			int id = i.getId();
 			ItemChargeType type = null;
-			int charges = -1;
 
 			final ItemWithCharge itemWithCharge = ItemWithCharge.findItem(id);
 			if (itemWithCharge != null)
 			{
 				type = itemWithCharge.getType();
-				charges = itemWithCharge.getCharges();
+				charges.set(0, itemWithCharge.getCharges());
 			}
 			else
 			{
@@ -672,47 +752,55 @@ public class ItemChargePlugin extends Plugin
 				if (itemWithConfig != null)
 				{
 					type = itemWithConfig.getType();
-					charges = getItemCharges(itemWithConfig.getConfigKey());
+					for (int j = 0; j < itemWithConfig.getConfigKey().length; j++)
+					{
+						charges.set(j, getItemCharges(itemWithConfig.getConfigKey()[j]));
+					}
 				}
 			}
 
 			boolean enabled = type != null && type.getEnabled().test(config);
 
-			if (showInfoboxes && enabled && charges > 0)
+			for (int j = 0; j < 4; j++)
 			{
-				ItemChargeInfobox infobox = infoboxes.get(slot);
-				if (infobox != null)
+				if (showInfoboxes && enabled && charges.get(j) > 0)
 				{
-					if (infobox.getItem() == id)
+					concurrentMapKey = String.valueOf(slot.getSlotIdx()).concat(String.valueOf(j));
+					ItemChargeInfobox infobox = infoboxes.get(concurrentMapKey);
+					if (infobox != null)
 					{
-						if (infobox.getCount() == charges)
+						if (infobox.getItem() == id)
 						{
+							if (infobox.getCount() == charges.get(j))
+							{
+								continue;
+							}
+
+							log.debug("Updating infobox count for {}", infobox);
+							infobox.setCount(charges.get(j));
 							continue;
 						}
 
-						log.debug("Updating infobox count for {}", infobox);
-						infobox.setCount(charges);
-						continue;
+						log.debug("Rebuilding infobox {}", infobox);
+						infoBoxManager.removeInfoBox(infobox);
+						infoboxes.remove(concurrentMapKey);
 					}
-
-					log.debug("Rebuilding infobox {}", infobox);
-					infoBoxManager.removeInfoBox(infobox);
-					infoboxes.remove(slot);
+					final String name = itemManager.getItemComposition(id).getName();
+					final BufferedImage image = itemManager.getImage(id);
+					infobox = new ItemChargeInfobox(this, image, name, charges.get(j), id);
+					infoBoxManager.addInfoBox(infobox);
+					infoboxes.put(concurrentMapKey, infobox);
 				}
-
-				final String name = itemManager.getItemComposition(id).getName();
-				final BufferedImage image = itemManager.getImage(id);
-				infobox = new ItemChargeInfobox(this, image, name, charges, id);
-				infoBoxManager.addInfoBox(infobox);
-				infoboxes.put(slot, infobox);
-			}
-			else
-			{
-				ItemChargeInfobox infobox = infoboxes.remove(slot);
-				if (infobox != null)
+				else
 				{
-					log.debug("Removing infobox {}", infobox);
-					infoBoxManager.removeInfoBox(infobox);
+					concurrentMapKey = String.valueOf(slot.getSlotIdx()).concat(String.valueOf(j));
+					ItemChargeInfobox infobox = infoboxes.get(concurrentMapKey);
+					if (infobox != null)
+					{
+						log.debug("Removing infobox {}", infobox);
+						infoBoxManager.removeInfoBox(infobox);
+						infoboxes.remove(concurrentMapKey);
+					}
 				}
 			}
 		}
