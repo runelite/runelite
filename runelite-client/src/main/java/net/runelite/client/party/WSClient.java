@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ws;
+package net.runelite.client.party;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
@@ -37,10 +37,9 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLite;
 import net.runelite.client.eventbus.EventBus;
-import net.runelite.http.api.ws.WebsocketGsonFactory;
-import net.runelite.http.api.ws.WebsocketMessage;
-import net.runelite.http.api.ws.messages.Handshake;
-import net.runelite.http.api.ws.messages.party.PartyMessage;
+import net.runelite.client.party.messages.Handshake;
+import net.runelite.client.party.messages.PartyMessage;
+import net.runelite.client.party.messages.WebsocketMessage;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -97,7 +96,7 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 		}
 	}
 
-	private void connect()
+	void connect()
 	{
 		if (sessionId == null)
 		{
@@ -114,6 +113,11 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 		Handshake handshake = new Handshake();
 		handshake.setSession(sessionId);
 		send(handshake);
+	}
+
+	boolean isOpen()
+	{
+		return webSocket != null;
 	}
 
 	public void registerMessage(final Class<? extends WebsocketMessage> message)

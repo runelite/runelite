@@ -40,11 +40,6 @@ public class Builders
 		return new Food(p);
 	}
 
-	public static Effect combo(int primaries, SingleEffect... effect)
-	{
-		return new Combo(primaries, effect);
-	}
-
 	public static Effect combo(SingleEffect... effect)
 	{
 		return new Combo(effect);

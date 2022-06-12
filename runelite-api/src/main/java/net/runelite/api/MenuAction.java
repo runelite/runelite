@@ -35,6 +35,7 @@ public enum MenuAction
 	/**
 	 * Menu action for using an item in your inventory on a tile object (GameObject or GroundObject).
 	 */
+	@Deprecated
 	ITEM_USE_ON_GAME_OBJECT(1),
 	/**
 	 * Menu action for using a widget on a tile object (GameObject or GroundObject).
@@ -64,6 +65,7 @@ public enum MenuAction
 	/**
 	 * Menu action for using an item in your inventory on an NPC.
 	 */
+	@Deprecated
 	ITEM_USE_ON_NPC(7),
 	/**
 	 * Menu action for using a widget on an NPC.
@@ -93,6 +95,7 @@ public enum MenuAction
 	/**
 	 * Menu action for using an item on a player.
 	 */
+	@Deprecated
 	ITEM_USE_ON_PLAYER(14),
 	/**
 	 * Menu action for using a widget on a player.
@@ -102,6 +105,7 @@ public enum MenuAction
 	/**
 	 * Menu action for using an item on an item on the ground.
 	 */
+	@Deprecated
 	ITEM_USE_ON_GROUND_ITEM(16),
 	/**
 	 * Menu action for using a widget on an item on the ground.
@@ -161,6 +165,7 @@ public enum MenuAction
 	/**
 	 * Menu action when using an item on another item
 	 */
+	@Deprecated
 	ITEM_USE_ON_ITEM(31),
 	/**
 	 * Menu action when using a component on an item
@@ -170,26 +175,32 @@ public enum MenuAction
 	/**
 	 * First menu action for an item.
 	 */
+	@Deprecated
 	ITEM_FIRST_OPTION(33),
 	/**
 	 * Second menu action for an item.
 	 */
+	@Deprecated
 	ITEM_SECOND_OPTION(34),
 	/**
 	 * Third menu action for an item.
 	 */
+	@Deprecated
 	ITEM_THIRD_OPTION(35),
 	/**
 	 * Fourth menu action for an item.
 	 */
+	@Deprecated
 	ITEM_FOURTH_OPTION(36),
 	/**
 	 * Fifth menu action for an item.
 	 */
+	@Deprecated
 	ITEM_FIFTH_OPTION(37),
 	/**
 	 * Menu action to use an item.
 	 */
+	@Deprecated
 	ITEM_USE(38),
 
 	/**
@@ -252,6 +263,7 @@ public enum MenuAction
 	/**
 	 * Menu action triggered by examining item in inventory.
 	 */
+	@Deprecated
 	EXAMINE_ITEM(1005),
 	/**
 	 * Menu action triggered by canceling a menu.

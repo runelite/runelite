@@ -86,6 +86,7 @@ public class MenuEntrySwapperPluginTest
 	@Inject
 	MenuEntrySwapperPlugin menuEntrySwapperPlugin;
 
+	private NPC npc;
 	private MenuEntry[] entries;
 
 	@Before
@@ -96,10 +97,9 @@ public class MenuEntrySwapperPluginTest
 		when(client.getGameState()).thenReturn(GameState.LOGGED_IN);
 		when(client.getObjectDefinition(anyInt())).thenReturn(mock(ObjectComposition.class));
 
-		NPC npc = mock(NPC.class);
+		npc = mock(NPC.class);
 		NPCComposition composition = mock(NPCComposition.class);
 		when(npc.getTransformedComposition()).thenReturn(composition);
-		when(client.getCachedNPCs()).thenReturn(new NPC[] { npc });
 
 		when(client.getMenuEntries()).thenAnswer((Answer<MenuEntry[]>) invocationOnMock ->
 		{
@@ -117,18 +117,19 @@ public class MenuEntrySwapperPluginTest
 		menuEntrySwapperPlugin.setupSwaps();
 	}
 
-	private static MenuEntry menu(String option, String target, MenuAction menuAction)
+	private MenuEntry menu(String option, String target, MenuAction menuAction)
 	{
 		return menu(option, target, menuAction, 0);
 	}
 
-	private static MenuEntry menu(String option, String target, MenuAction menuAction, int identifier)
+	private MenuEntry menu(String option, String target, MenuAction menuAction, int identifier)
 	{
-		MenuEntry menuEntry = new TestMenuEntry();
+		TestMenuEntry menuEntry = new TestMenuEntry();
 		menuEntry.setOption(option);
 		menuEntry.setTarget(target);
 		menuEntry.setType(menuAction);
 		menuEntry.setIdentifier(identifier);
+		menuEntry.setActor(npc);
 		return menuEntry;
 	}
 

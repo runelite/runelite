@@ -125,14 +125,13 @@ public class ChatIconManager
 		friendsChatRankImages = new BufferedImage[friendsChatIcons.size()];
 		clanRankImages = new BufferedImage[clanIcons.size()];
 
-		final IndexedSprite[] modIcons = client.getModIcons();
-
 		for (int i = 0; i < friendsChatIcons.size(); i++)
 		{
 			final int fi = i;
 
 			spriteManager.getSpriteAsync(friendsChatIcons.getIntValue(friendsChatIcons.getKeys()[i]), 0, sprite ->
 			{
+				final IndexedSprite[] modIcons = client.getModIcons();
 				friendsChatRankImages[fi] = friendsChatImageFromSprite(sprite);
 				modIcons[friendsChatOffset + fi] = ImageUtil.getImageIndexedSprite(friendsChatRankImages[fi], client);
 			});
@@ -147,6 +146,7 @@ public class ChatIconManager
 
 			spriteManager.getSpriteAsync(clanIcons.getIntValue(key), 0, sprite ->
 			{
+				final IndexedSprite[] modIcons = client.getModIcons();
 				final BufferedImage img = ImageUtil.resizeCanvas(sprite, IMAGE_DIMENSION.width, IMAGE_DIMENSION.height);
 				clanRankImages[idx] = img;
 				modIcons[clanOffset + idx] = ImageUtil.getImageIndexedSprite(img, client);

@@ -472,7 +472,8 @@ public class DevToolsPlugin extends Plugin
 
 			if (action == MenuAction.EXAMINE_NPC)
 			{
-				NPC npc = client.getCachedNPCs()[identifier];
+				NPC npc = entry.getNpc();
+				assert npc != null;
 				info += npc.getId();
 			}
 			else

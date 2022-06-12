@@ -58,18 +58,20 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.client.callback.ClientThread;
-import net.runelite.client.chat.ChatColorType;
-import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
-import net.runelite.client.discord.DiscordService;
-import net.runelite.client.discord.events.DiscordJoinRequest;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.events.PartyChanged;
 import net.runelite.client.events.PartyMemberAvatar;
+import net.runelite.client.party.PartyMember;
+import net.runelite.client.party.PartyService;
+import net.runelite.client.party.WSClient;
+import net.runelite.client.party.messages.UserJoin;
+import net.runelite.client.party.messages.UserPart;
+import net.runelite.client.party.messages.UserSync;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.party.data.PartyData;
@@ -87,12 +89,6 @@ import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
-import net.runelite.client.ws.PartyMember;
-import net.runelite.client.ws.PartyService;
-import net.runelite.client.ws.WSClient;
-import net.runelite.http.api.ws.messages.party.UserJoin;
-import net.runelite.http.api.ws.messages.party.UserPart;
-import net.runelite.http.api.ws.messages.party.UserSync;
 
 @PluginDescriptor(
 	name = "Party",
@@ -109,13 +105,7 @@ public class PartyPlugin extends Plugin
 	private PartyService party;
 
 	@Inject
-	private WSClient ws;
-
-	@Inject
 	private OverlayManager overlayManager;
-
-	@Inject
-	private PartyStatsOverlay partyStatsOverlay;
 
 	@Inject
 	private PartyPingOverlay partyPingOverlay;
@@ -139,9 +129,6 @@ public class PartyPlugin extends Plugin
 	private ClientToolbar clientToolbar;
 
 	@Inject
-	private DiscordService discordService;
-
-	@Inject
 	@Named("developerMode")
 	boolean developerMode;
 
@@ -157,7 +144,6 @@ public class PartyPlugin extends Plugin
 	private int lastHp, lastPray;
 	private String lastCharacterName = "";
 	private WorldPoint lastLocation;
-	private boolean sendAlert;
 
 	@Override
 	public void configure(Binder binder)
@@ -181,7 +167,6 @@ public class PartyPlugin extends Plugin
 
 		clientToolbar.addNavigation(navButton);
 
-		overlayManager.add(partyStatsOverlay);
 		overlayManager.add(partyPingOverlay);
 		wsClient.registerMessage(SkillUpdate.class);
 		wsClient.registerMessage(TilePing.class);
@@ -201,13 +186,11 @@ public class PartyPlugin extends Plugin
 		partyDataMap.clear();
 		pendingTilePings.clear();
 		worldMapManager.removeIf(PartyWorldMapPoint.class::isInstance);
-		overlayManager.remove(partyStatsOverlay);
 		overlayManager.remove(partyPingOverlay);
 		wsClient.unregisterMessage(SkillUpdate.class);
 		wsClient.unregisterMessage(TilePing.class);
 		wsClient.unregisterMessage(LocationUpdate.class);
 		wsClient.unregisterMessage(CharacterNameUpdate.class);
-		sendAlert = false;
 		lastLocation = null;
 	}
 
@@ -231,21 +214,6 @@ public class PartyPlugin extends Plugin
 	void leaveParty()
 	{
 		party.changeParty(null);
-
-		if (!config.messages())
-		{
-			return;
-		}
-
-		final String leaveMessage = new ChatMessageBuilder()
-			.append(ChatColorType.HIGHLIGHT)
-			.append("You have left the party.")
-			.build();
-
-		chatMessageManager.queue(QueuedMessage.builder()
-			.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
-			.runeLiteFormattedMessage(leaveMessage)
-			.build());
 	}
 
 	@Subscribe
@@ -253,22 +221,6 @@ public class PartyPlugin extends Plugin
 	{
 		if (event.getGroup().equals(PartyConfig.GROUP))
 		{
-			final PartyMember localMember = party.getLocalMember();
-
-			if (localMember != null)
-			{
-				if (config.includeSelf())
-				{
-					final PartyData partyData = getPartyData(localMember.getMemberId());
-					assert partyData != null;
-					SwingUtilities.invokeLater(() -> panel.addMember(partyData));
-				}
-				else
-				{
-					SwingUtilities.invokeLater(() -> panel.removeMember(localMember.getMemberId()));
-				}
-			}
-
 			// rebuild the panel in the event the "Recolor names" option changes
 			SwingUtilities.invokeLater(panel::updateAll);
 		}
@@ -311,36 +263,13 @@ public class PartyPlugin extends Plugin
 		event.consume();
 		final TilePing tilePing = new TilePing(selectedSceneTile.getWorldLocation());
 		tilePing.setMemberId(party.getLocalMember().getMemberId());
-		wsClient.send(tilePing);
-	}
-
-	@Subscribe
-	public void onDiscordJoinRequest(DiscordJoinRequest request)
-	{
-		final String requestMessage = new ChatMessageBuilder()
-			.append(ChatColorType.HIGHLIGHT)
-			.append("New join request received. Check your Party panel.")
-			.build();
-
-		chatMessageManager.queue(QueuedMessage.builder()
-			.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
-			.runeLiteFormattedMessage(requestMessage)
-			.build());
-
-		String userName = request.getUsername() + "#" + request.getDiscriminator();
-		SwingUtilities.invokeLater(() -> panel.addRequest(request.getUserId(), userName));
+		party.send(tilePing);
 	}
 
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
 		checkStateChanged(false);
-	}
-
-	public void replyToRequest(String userId, int reply)
-	{
-		discordService.respondToRequest(userId, reply);
-		panel.removeRequest(userId);
 	}
 
 	@Subscribe
@@ -394,18 +323,12 @@ public class PartyPlugin extends Plugin
 
 		final LocationUpdate locationUpdate = new LocationUpdate(location);
 		locationUpdate.setMemberId(localMember.getMemberId());
-		wsClient.send(locationUpdate);
+		party.send(locationUpdate);
 	}
 
 	@Subscribe
 	public void onGameTick(final GameTick event)
 	{
-		if (sendAlert && client.getGameState() == GameState.LOGGED_IN)
-		{
-			sendAlert = false;
-			sendInstructionMessage();
-		}
-
 		checkStateChanged(false);
 	}
 
@@ -416,7 +339,7 @@ public class PartyPlugin extends Plugin
 			// Request sync
 			final UserSync userSync = new UserSync();
 			userSync.setMemberId(party.getLocalMember().getMemberId());
-			ws.send(userSync);
+			party.send(userSync);
 		}
 	}
 
@@ -430,11 +353,22 @@ public class PartyPlugin extends Plugin
 			return;
 		}
 
-		String name = event.getCharacterName();
-		name = Text.removeTags(Text.toJagexName(name));
+		final String name = Text.removeTags(Text.toJagexName(event.getCharacterName()));
+		final PartyMember member = partyData.getMember();
 
-		partyData.setCharacterName(name);
-		SwingUtilities.invokeLater(() -> panel.updateMember(partyData.getMember().getMemberId()));
+		if (!name.isEmpty())
+		{
+			member.setDisplayName(name);
+			member.setLoggedIn(true);
+			partyData.setColor(ColorUtil.fromObject(name));
+		}
+		else
+		{
+			member.setLoggedIn(false);
+			partyData.setColor(Color.WHITE);
+		}
+
+		SwingUtilities.invokeLater(() -> panel.updateMember(member.getMemberId()));
 	}
 
 	@Subscribe
@@ -477,30 +411,8 @@ public class PartyPlugin extends Plugin
 	@Subscribe
 	public void onUserJoin(final UserJoin event)
 	{
-		final PartyData partyData = getPartyData(event.getMemberId());
-
-		if (partyData == null || !config.messages())
-		{
-			return;
-		}
-
-		final String joinMessage = new ChatMessageBuilder()
-			.append(ChatColorType.HIGHLIGHT)
-			.append(partyData.getMember().getName())
-			.append(" has joined the party!")
-			.build();
-
-		chatMessageManager.queue(QueuedMessage.builder()
-			.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
-			.runeLiteFormattedMessage(joinMessage)
-			.build());
-
-		final PartyMember localMember = party.getLocalMember();
-
-		if (localMember != null && partyData.getMember().getMemberId().equals(localMember.getMemberId()))
-		{
-			sendAlert = true;
-		}
+		// this has a side effect of creating the party data
+		getPartyData(event.getMemberId());
 	}
 
 	@Subscribe
@@ -527,21 +439,21 @@ public class PartyPlugin extends Plugin
 			{
 				final SkillUpdate update = new SkillUpdate(Skill.HITPOINTS, currentHealth, realHealth);
 				update.setMemberId(localMember.getMemberId());
-				ws.send(update);
+				party.send(update);
 			}
 
 			if (forceSend || currentPrayer != lastPray)
 			{
 				final SkillUpdate update = new SkillUpdate(Skill.PRAYER, currentPrayer, realPrayer);
 				update.setMemberId(localMember.getMemberId());
-				ws.send(update);
+				party.send(update);
 			}
 
 			if (forceSend || !characterName.equals(lastCharacterName))
 			{
 				final CharacterNameUpdate update = new CharacterNameUpdate(characterName);
 				update.setMemberId(localMember.getMemberId());
-				ws.send(update);
+				party.send(update);
 			}
 		}
 
@@ -557,20 +469,6 @@ public class PartyPlugin extends Plugin
 
 		if (removed != null)
 		{
-			if (config.messages())
-			{
-				final String joinMessage = new ChatMessageBuilder()
-					.append(ChatColorType.HIGHLIGHT)
-					.append(removed.getMember().getName())
-					.append(" has left the party!")
-					.build();
-
-				chatMessageManager.queue(QueuedMessage.builder()
-					.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
-					.runeLiteFormattedMessage(joinMessage)
-					.build());
-			}
-
 			worldMapManager.remove(removed.getWorldMapPoint());
 
 			SwingUtilities.invokeLater(() -> panel.removeMember(event.getMemberId()));
@@ -587,14 +485,10 @@ public class PartyPlugin extends Plugin
 
 		if (event.getPartyId() != null)
 		{
-			config.setPreviousPartyId(String.valueOf(event.getPartyId()));
+			config.setPreviousPartyId(event.getPassphrase());
 		}
 
-		SwingUtilities.invokeLater(() ->
-		{
-			panel.removeAllMembers();
-			panel.removeAllRequests();
-		});
+		SwingUtilities.invokeLater(panel::removeAllMembers);
 	}
 
 	@Subscribe
@@ -605,12 +499,11 @@ public class PartyPlugin extends Plugin
 			return;
 		}
 
-		chatMessageManager.queue(QueuedMessage.builder().type(ChatMessageType.GAMEMESSAGE).value("Party " + party.getPartyId()).build());
-		chatMessageManager.queue(QueuedMessage.builder().type(ChatMessageType.GAMEMESSAGE).value("Local Party " + party.getLocalPartyId()).build());
+		chatMessageManager.queue(QueuedMessage.builder().type(ChatMessageType.GAMEMESSAGE).value("Party " + party.getPartyPassphrase() + " ID " + party.getPartyId()).build());
 		chatMessageManager.queue(QueuedMessage.builder().type(ChatMessageType.GAMEMESSAGE).value("Local ID " + party.getLocalMember().getMemberId()).build());
 		for (PartyMember partyMember : party.getMembers())
 		{
-			chatMessageManager.queue(QueuedMessage.builder().type(ChatMessageType.GAMEMESSAGE).value(" " + partyMember.getName() + " " + partyMember.getMemberId()).build());
+			chatMessageManager.queue(QueuedMessage.builder().type(ChatMessageType.GAMEMESSAGE).value("Member " + partyMember.getName() + " " + partyMember.getDisplayName() + " " + partyMember.getMemberId()).build());
 		}
 	}
 
@@ -636,7 +529,6 @@ public class PartyPlugin extends Plugin
 		return partyDataMap.computeIfAbsent(uuid, (u) ->
 		{
 			final WorldMapPoint worldMapPoint = new PartyWorldMapPoint(new WorldPoint(0, 0, 0), memberById);
-			worldMapPoint.setTooltip(memberById.getName());
 
 			// When first joining a party, other members can join before getting a join for self
 			PartyMember partyMember = party.getLocalMember();
@@ -648,32 +540,10 @@ public class PartyPlugin extends Plugin
 				worldMapManager.add(worldMapPoint);
 			}
 
-			PartyData partyData = new PartyData(memberById, worldMapPoint, ColorUtil.fromObject(memberById.getName()));
-			partyData.setShowOverlay(config.autoOverlay());
+			PartyData partyData = new PartyData(memberById, worldMapPoint);
 
-			if (config.includeSelf() || !isSelf)
-			{
-				SwingUtilities.invokeLater(() -> panel.addMember(partyData));
-			}
-			else
-			{
-				SwingUtilities.invokeLater(panel::updateParty);
-			}
-
+			SwingUtilities.invokeLater(() -> panel.addMember(partyData));
 			return partyData;
 		});
-	}
-
-	private void sendInstructionMessage()
-	{
-		final String helpMessage = new ChatMessageBuilder()
-			.append(ChatColorType.HIGHLIGHT)
-			.append("To leave the party, click \"Leave party\" on the party panel.")
-			.build();
-
-		chatMessageManager.queue(QueuedMessage.builder()
-			.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
-			.runeLiteFormattedMessage(helpMessage)
-			.build());
 	}
 }

@@ -57,12 +57,12 @@ public class AccountClient
 		this.apiBase = apiBase;
 	}
 
-	public OAuthResponse login() throws IOException
+	public OAuthResponse login(int port) throws IOException
 	{
 		HttpUrl url = apiBase.newBuilder()
 			.addPathSegment("account")
 			.addPathSegment("login")
-			.addQueryParameter("uuid", uuid.toString())
+			.addQueryParameter("port", Integer.toString(port))
 			.build();
 
 		log.debug("Built URI: {}", url);

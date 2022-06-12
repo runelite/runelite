@@ -41,11 +41,15 @@ import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
 import static net.runelite.api.HintArrowType.WORLD_POSITION;
 import net.runelite.api.MenuAction;
+import static net.runelite.api.ObjectID.DEPLETED_VEIN;
 import static net.runelite.api.ObjectID.DEPLETED_VEIN_26665;
 import static net.runelite.api.ObjectID.DEPLETED_VEIN_26666;
 import static net.runelite.api.ObjectID.DEPLETED_VEIN_26667;
 import static net.runelite.api.ObjectID.DEPLETED_VEIN_26668;
 import static net.runelite.api.ObjectID.EMPTY_WALL;
+import static net.runelite.api.ObjectID.MINERAL_VEIN;
+import static net.runelite.api.ObjectID.MINERAL_VEIN_5990;
+import static net.runelite.api.ObjectID.MINERAL_VEIN_5991;
 import static net.runelite.api.ObjectID.ORE_VEIN_26661;
 import static net.runelite.api.ObjectID.ORE_VEIN_26662;
 import static net.runelite.api.ObjectID.ORE_VEIN_26663;
@@ -355,12 +359,22 @@ public class MiningPlugin extends Plugin
 				respawns.add(rockRespawn);
 				break;
 			}
+			case DEPLETED_VEIN: // Depleted gold vein
+			{
+				Rock rock = Rock.MINERAL_VEIN;
+				RockRespawn rockRespawn = new RockRespawn(rock, object.getWorldLocation(), Instant.now(), (int) rock.getRespawnTime(region).toMillis(), rock.getZOffset());
+				respawns.add(rockRespawn);
+				break;
+			}
 			case ORE_VEIN_26661: // Motherlode vein
 			case ORE_VEIN_26662: // Motherlode vein
 			case ORE_VEIN_26663: // Motherlode vein
 			case ORE_VEIN_26664: // Motherlode vein
 			case ROCKS_41547: // Barronite vein
 			case ROCKS_41548: // Barronite vein
+			case MINERAL_VEIN: // Arzinian gold vein
+			case MINERAL_VEIN_5990: // Gold vein
+			case MINERAL_VEIN_5991: // Gold vein
 			{
 				// If the vein respawns before the timer is up, remove it
 				final WorldPoint point = object.getWorldLocation();

@@ -47,9 +47,9 @@ import net.runelite.client.events.PartyChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
-import net.runelite.client.ws.PartyMember;
-import net.runelite.client.ws.PartyService;
-import net.runelite.client.ws.WSClient;
+import net.runelite.client.party.PartyMember;
+import net.runelite.client.party.PartyService;
+import net.runelite.client.party.WSClient;
 
 @PluginDescriptor(
 	name = "DPS Counter",
@@ -199,7 +199,7 @@ public class DpsCounterPlugin extends Plugin
 			{
 				final DpsUpdate dpsUpdate = new DpsUpdate(hit, isBoss);
 				dpsUpdate.setMemberId(localMember.getMemberId());
-				wsClient.send(dpsUpdate);
+				partyService.send(dpsUpdate);
 			}
 
 			if (dpsConfig.bossDamage() && !isBoss)
@@ -208,7 +208,7 @@ public class DpsCounterPlugin extends Plugin
 			}
 
 			// If not in a party, user local player name
-			final String name = localMember == null ? player.getName() : localMember.getName();
+			final String name = localMember == null ? player.getName() : localMember.getDisplayName();
 			DpsMember dpsMember = members.computeIfAbsent(name, DpsMember::new);
 			dpsMember.addDamage(hit);
 
@@ -240,7 +240,7 @@ public class DpsCounterPlugin extends Plugin
 			return;
 		}
 
-		String name = partyService.getMemberById(dpsUpdate.getMemberId()).getName();
+		String name = partyService.getMemberById(dpsUpdate.getMemberId()).getDisplayName();
 		if (name == null)
 		{
 			return;

@@ -313,8 +313,11 @@ public class ChatCommandsPlugin extends Plugin
 		final Pet[] pets = Pet.values();
 		final IndexedSprite[] modIcons = client.getModIcons();
 		assert modIcons != null;
+
 		final IndexedSprite[] newModIcons = Arrays.copyOf(modIcons, modIcons.length + pets.length);
 		modIconIdx = modIcons.length;
+
+		client.setModIcons(newModIcons);
 
 		for (int i = 0; i < pets.length; i++)
 		{
@@ -326,13 +329,13 @@ public class ChatCommandsPlugin extends Plugin
 			{
 				final BufferedImage image = ImageUtil.resizeImage(abi, 18, 16);
 				final IndexedSprite sprite = ImageUtil.getImageIndexedSprite(image, client);
-				newModIcons[idx] = sprite;
+				// modicons array might be replaced in between when we assign it and the callback,
+				// so fetch modicons again
+				client.getModIcons()[idx] = sprite;
 			};
 			abi.onLoaded(r);
 			r.run();
 		}
-
-		client.setModIcons(newModIcons);
 	}
 
 	/**
@@ -2041,6 +2044,7 @@ public class ChatCommandsPlugin extends Plugin
 				return "Chambers of Xeric 24+ players";
 
 			// Chambers of Xeric Challenge Mode
+			case "chambers of xeric: challenge mode":
 			case "cox cm":
 			case "xeric cm":
 			case "chambers cm":
@@ -2341,6 +2345,7 @@ public class ChatCommandsPlugin extends Plugin
 			// Guardians of the Rift
 			case "gotr":
 			case "runetodt":
+			case "rifts closed":
 				return "Guardians of the Rift";
 
 			default:
@@ -2430,7 +2435,9 @@ public class ChatCommandsPlugin extends Plugin
 		}
 		for (HiscoreSkill skill : HiscoreSkill.values())
 		{
-			if (skill.getName().equals(s))
+			// longBossName the skill name to normalize from hiscore name
+			// to our internal name (removing the colon)
+			if (longBossName(skill.getName()).equals(s))
 			{
 				return skill;
 			}
