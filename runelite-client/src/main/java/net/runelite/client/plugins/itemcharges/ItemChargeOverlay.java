@@ -29,6 +29,7 @@ package net.runelite.client.plugins.itemcharges;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.ArrayList;
 import javax.inject.Inject;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.ui.FontManager;
@@ -52,7 +53,7 @@ class ItemChargeOverlay extends WidgetItemOverlay
 	@Override
 	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem widgetItem)
 	{
-		int charges;
+		ArrayList<Integer> chargesList = new ArrayList<>();
 		ItemWithConfig itemWithConfig = ItemWithConfig.findItem(itemId);
 		if (itemWithConfig != null)
 		{
@@ -60,8 +61,10 @@ class ItemChargeOverlay extends WidgetItemOverlay
 			{
 				return;
 			}
-
-			charges = itemChargePlugin.getItemCharges(itemWithConfig.getConfigKey());
+			for (int i = 0; i < itemWithConfig.getConfigKey().length; i++)
+			{
+				chargesList.add(i, itemChargePlugin.getItemCharges(itemWithConfig.getConfigKey()[i]));
+			}
 		}
 		else
 		{
@@ -77,16 +80,31 @@ class ItemChargeOverlay extends WidgetItemOverlay
 				return;
 			}
 
-			charges = chargeItem.getCharges();
+			chargesList.add(0, chargeItem.getCharges());
 		}
 
 		graphics.setFont(FontManager.getRunescapeSmallFont());
 
 		final Rectangle bounds = widgetItem.getCanvasBounds();
-		final TextComponent textComponent = new TextComponent();
-		textComponent.setPosition(new Point(bounds.x - 1, bounds.y + 15));
-		textComponent.setText(charges < 0 ? "?" : String.valueOf(charges));
-		textComponent.setColor(itemChargePlugin.getColor(charges));
-		textComponent.render(graphics);
+		ArrayList<TextComponent> textComponents = new ArrayList<>();
+		final TextComponent textComponent0 = new TextComponent();
+		final TextComponent textComponent1 = new TextComponent();
+		final TextComponent textComponent2 = new TextComponent();
+		final TextComponent textComponent3 = new TextComponent();
+		textComponents.add(textComponent0);
+		textComponents.add(textComponent1);
+		textComponents.add(textComponent2);
+		textComponents.add(textComponent3);
+		textComponents.get(0).setPosition(new Point(bounds.x - 1, bounds.y + 15));
+		textComponents.get(1).setPosition(new Point(bounds.x - 1, bounds.y + 30));
+		textComponents.get(2).setPosition(new Point(bounds.x + 20, bounds.y + 15));
+		textComponents.get(3).setPosition(new Point(bounds.x + 20, bounds.y + 30));
+
+		for (int i = 0; i < chargesList.size(); i++)
+		{
+			textComponents.get(i).setText((chargesList.get(i) < 0) ? " " : String.valueOf(chargesList.get(i)));
+			textComponents.get(i).setColor(itemChargePlugin.getColor(chargesList.get(i)));
+			textComponents.get(i).render(graphics);
+		}
 	}
 }
