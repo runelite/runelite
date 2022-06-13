@@ -53,7 +53,6 @@ import net.runelite.client.util.ImageUtil;
 
 class FishingSpotOverlay extends Overlay
 {
-	private static final Duration MINNOW_MOVE = Duration.ofSeconds(15);
 	private static final float WARN_FRAC = 0.2f;
 	private static final int ONE_TICK_AERIAL_FISHING = 3;
 
