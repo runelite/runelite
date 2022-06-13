@@ -381,6 +381,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("value", "sell 10", () -> shiftModifier() && config.shopSell() == SellMode.SELL_10);
 		swap("value", "sell 50", () -> shiftModifier() && config.shopSell() == SellMode.SELL_50);
 
+		swap("value", "buy-1", () -> shiftModifier() && config.tobSupplyChestBuy() == TobChestBuyMode.BUY_1);
+		swap("value", "buy-all", () -> shiftModifier() && config.tobSupplyChestBuy() == TobChestBuyMode.BUY_ALL);
+		swap("value", "buy-x", () -> shiftModifier() && config.tobSupplyChestBuy() == TobChestBuyMode.BUY_X);
+
 		swap("wear", "tele to poh", config::swapTeleToPoh);
 
 		swap("wear", "rub", config::swapTeleportItem);

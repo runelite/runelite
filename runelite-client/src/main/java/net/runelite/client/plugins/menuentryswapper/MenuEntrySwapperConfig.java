@@ -752,6 +752,17 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "tobSupplyChestBuy",
+		name = "TOB Supply Chest Shift-Click",
+		description = "Swaps the Buy options with Value on items in shops when shift is held.",
+		section = uiSection
+	)
+	default TobChestBuyMode tobSupplyChestBuy()
+	{
+		return TobChestBuyMode.OFF;
+	}
+
+	@ConfigItem(
 		keyName = "swapEssenceMineTeleport",
 		name = "Essence Mine Teleport",
 		description = "Swaps Talk-To with Teleport for NPCs which teleport you to the essence mine",
