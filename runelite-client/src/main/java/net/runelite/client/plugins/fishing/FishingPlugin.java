@@ -28,8 +28,6 @@ package net.runelite.client.plugins.fishing;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -321,7 +319,7 @@ public class FishingPlugin extends Plugin
 				if (trackedFishingSpot == null
 					|| !trackedFishingSpot.getLoc().equals(npc.getWorldLocation()))
 				{
-					if(trackedFishingSpot != null)
+					if( trackedFishingSpot != null)
 					{
 						// Logging to help measure unknown fishing spot durations.
 						Duration duration = Duration.between(trackedFishingSpot.getTime(), Instant.now());
@@ -486,7 +484,7 @@ public class FishingPlugin extends Plugin
 
 	public boolean shouldDrawTimer(FishingSpot spot)
 	{
-		switch(spot)
+		switch (spot)
 		{
 			case KARAMBWAN: // Karambwan spots never move
 			case QUEST_FISHING_CONTEST: // Don't bother with quest spots.  These are hard to test and an uncommon use case.

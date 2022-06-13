@@ -185,7 +185,7 @@ class FishingSpotOverlay extends Overlay
 						final float[] a = color.getRGBComponents(null);
 						final float[] b = warnColor.getRGBComponents(null);
 						float[] lerpComponents = {0f, 0f, 0f, 0f};
-						for(int i = 0; i < 4; ++i)
+						for (int i = 0; i < 4; ++i)
 						{
 							lerpComponents[i] = a[i] + lerpFrac * (b[i] - a[i]);
 						}
@@ -220,7 +220,7 @@ class FishingSpotOverlay extends Overlay
 
 	public Duration getMaxSpotTime(FishingSpot spot)
 	{
-		switch(spot)
+		switch (spot)
 		{
 			case MINNOW:
 				return Duration.ofSeconds(15);
