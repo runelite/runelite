@@ -319,7 +319,7 @@ public class FishingPlugin extends Plugin
 				if (trackedFishingSpot == null
 					|| !trackedFishingSpot.getLoc().equals(npc.getWorldLocation()))
 				{
-					if( trackedFishingSpot != null)
+					if (trackedFishingSpot != null)
 					{
 						// Logging to help measure unknown fishing spot durations.
 						Duration duration = Duration.between(trackedFishingSpot.getTime(), Instant.now());
