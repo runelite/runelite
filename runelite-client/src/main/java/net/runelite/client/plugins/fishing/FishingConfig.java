@@ -126,8 +126,20 @@ public interface FishingConfig extends Config
 		return Color.GREEN;
 	}
 
+	@Alpha
 	@ConfigItem(
-		position = 7,
+			keyName = "warningOverlayColor",
+			name = "Warning Overlay",
+			description = "Warning overlay color for spots that are about to move.",
+			position = 7
+	)
+	default Color getWarningOverlayColor()
+	{
+		return Color.ORANGE;
+	}
+
+	@ConfigItem(
+		position = 8,
 		keyName = "statTimeout",
 		name = "Reset stats",
 		description = "The time until fishing session data is reset in minutes."
@@ -139,7 +151,7 @@ public interface FishingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 8,
+		position = 9,
 		keyName = "showFishingStats",
 		name = "Show Fishing session stats",
 		description = "Display the fishing session stats."
@@ -150,7 +162,7 @@ public interface FishingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 9,
+		position = 10,
 		keyName = "showMinnowOverlay",
 		name = "Show Minnow Movement overlay",
 		description = "Display the minnow progress pie overlay."
@@ -161,7 +173,7 @@ public interface FishingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 10,
+		position = 11,
 		keyName = "flyingFishNotification",
 		name = "Flying fish notification",
 		description = "Send a notification when a flying fish spawns on your fishing spot."
@@ -172,7 +184,7 @@ public interface FishingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 11,
+		position = 12,
 		keyName = "trawlerTimer",
 		name = "Trawler timer in M:SS",
 		description = "Trawler timer will display a more accurate timer in M:SS format."
@@ -183,7 +195,7 @@ public interface FishingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 12,
+		position = 13,
 		keyName = "trawlerContribution",
 		name = "Trawler contribution",
 		description = "Display the exact number of trawler contribution points gained."
@@ -191,5 +203,16 @@ public interface FishingConfig extends Config
 	default boolean trawlerContribution()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+			position = 14,
+			keyName = "showSpotTimer",
+			name = "Show spot timer ",
+			description = "Displays a progress pie overlay showing how long it has been since the spot last moved."
+	)
+	default boolean showSpotTimer()
+	{
+		return false;
 	}
 }
