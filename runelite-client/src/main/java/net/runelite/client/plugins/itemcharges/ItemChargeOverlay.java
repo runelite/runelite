@@ -63,7 +63,7 @@ class ItemChargeOverlay extends WidgetItemOverlay
 			}
 			for (int i = 0; i < itemWithConfig.getConfigKey().length; i++)
 			{
-				chargesList.add(i, itemChargePlugin.getItemCharges(itemWithConfig.getConfigKey()[i]));
+				chargesList.set(i, itemChargePlugin.getItemCharges(itemWithConfig.getConfigKey()[i]));
 			}
 		}
 		else
@@ -80,7 +80,7 @@ class ItemChargeOverlay extends WidgetItemOverlay
 				return;
 			}
 
-			chargesList.add(0, chargeItem.getCharges());
+			chargesList.set(0, chargeItem.getCharges());
 		}
 
 		graphics.setFont(FontManager.getRunescapeSmallFont());

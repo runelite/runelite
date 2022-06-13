@@ -96,6 +96,7 @@ public class ItemChargePluginTest
 	private static final String ACTIVATE_BLOOD_ESSENCE = "You activate the blood essence.";
 	private static final String EXTRACT_BLOOD_ESSENCE = "You manage to extract power from the Blood Essence and craft 67 extra runes.";
 	private static final String CHECK_BLOOD_ESSENCE = "Your blood essence has 56 charges remaining";
+	private static final String EMPTY_EXPLORER_ENERGY = "You have exhausted the ring's run restore power for today.";
 
 	@Mock
 	@Bind
@@ -449,5 +450,13 @@ public class ItemChargePluginTest
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHECK_BLOOD_ESSENCE, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
 		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BLOOD_ESSENCE, 56);
+	}
+
+	@Test
+	public void testExplorerRingEnergyEmpty()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", EMPTY_EXPLORER_ENERGY, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_EXPLORERS_RING_ENERGY, 0);
 	}
 }

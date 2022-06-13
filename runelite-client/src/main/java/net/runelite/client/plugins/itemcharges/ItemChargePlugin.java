@@ -146,17 +146,14 @@ public class ItemChargePlugin extends Plugin
 	private static final int MAX_DODGY_CHARGES = 10;
 	private static final int MAX_BINDING_CHARGES = 16;
 	private static final int MAX_EXPLORERS_RING_ALCH_CHARGES = 30;
-	private static final int MAX_EXPLORERS_RING_TELE_CHARGES = 3;
 	private static final int MAX_RING_OF_FORGING_CHARGES = 140;
 	private static final int MAX_AMULET_OF_CHEMISTRY_CHARGES = 5;
 	private static final int MAX_AMULET_OF_BOUNTY_CHARGES = 10;
 	private static final int MAX_SLAYER_BRACELET_CHARGES = 30;
 	private static final int MAX_BLOOD_ESSENCE_CHARGES = 1000;
-	private static final int MAX_BRACELET_OF_CLAY_CHARGES = 28;
 	private static final int ONE_DAY = 86400000;
 	private int lastExplorerRingAlchCharge = -1;
 	private int lastExplorerRingEnergyCharges = -1;
-	private int lastExplorerRingTeleCharges = -1;
 
 	@Inject
 	private Client client;
@@ -317,7 +314,7 @@ public class ItemChargePlugin extends Plugin
 				final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
 				if (equipment.contains(ItemID.BINDING_NECKLACE))
 				{
-					updateBindingNecklaceCharges(getItemCharges(ItemChargeConfig.KEY_BINDING_NECKLACE_LIST[0]) - 1);
+					updateBindingNecklaceCharges(getItemCharges(ItemChargeConfig.KEY_BINDING_NECKLACE) - 1);
 				}
 			}
 			else if (bindingNecklaceCheckMatcher.find())
@@ -356,7 +353,7 @@ public class ItemChargePlugin extends Plugin
 
 				if (equipment.contains(ItemID.RING_OF_FORGING) && (message.equals(RING_OF_FORGING_USED_TEXT) || inventory.count(ItemID.IRON_ORE) > 1))
 				{
-					int charges = Ints.constrainToRange(getItemCharges(ItemChargeConfig.KEY_RING_OF_FORGING_LIST[0]) - 1, 0, MAX_RING_OF_FORGING_CHARGES);
+					int charges = Ints.constrainToRange(getItemCharges(ItemChargeConfig.KEY_RING_OF_FORGING) - 1, 0, MAX_RING_OF_FORGING_CHARGES);
 					updateRingOfForgingCharges(charges);
 				}
 			}
@@ -375,28 +372,28 @@ public class ItemChargePlugin extends Plugin
 
 				if (match.equals("one"))
 				{
-					setItemCharges(ItemChargeConfig.KEY_CHRONICLE_LIST[0], 1);
+					setItemCharges(ItemChargeConfig.KEY_CHRONICLE, 1);
 				}
 				else
 				{
-					setItemCharges(ItemChargeConfig.KEY_CHRONICLE_LIST[0], Integer.parseInt(match));
+					setItemCharges(ItemChargeConfig.KEY_CHRONICLE, Integer.parseInt(match));
 				}
 			}
 			else if (chronicleUseAndCheckMatcher.find())
 			{
-				setItemCharges(ItemChargeConfig.KEY_CHRONICLE_LIST[0], Integer.parseInt(chronicleUseAndCheckMatcher.group(1)));
+				setItemCharges(ItemChargeConfig.KEY_CHRONICLE, Integer.parseInt(chronicleUseAndCheckMatcher.group(1)));
 			}
 			else if (message.equals(CHRONICLE_ONE_CHARGE_TEXT))
 			{
-				setItemCharges(ItemChargeConfig.KEY_CHRONICLE_LIST[0], 1);
+				setItemCharges(ItemChargeConfig.KEY_CHRONICLE, 1);
 			}
 			else if (message.equals(CHRONICLE_EMPTY_TEXT) || message.equals(CHRONICLE_NO_CHARGES_TEXT))
 			{
-				setItemCharges(ItemChargeConfig.KEY_CHRONICLE_LIST[0], 0);
+				setItemCharges(ItemChargeConfig.KEY_CHRONICLE, 0);
 			}
 			else if (message.equals(CHRONICLE_FULL_TEXT))
 			{
-				setItemCharges(ItemChargeConfig.KEY_CHRONICLE_LIST[0], 1000);
+				setItemCharges(ItemChargeConfig.KEY_CHRONICLE, 1000);
 			}
 			else if (slaughterActivateMatcher.find())
 			{
@@ -444,7 +441,7 @@ public class ItemChargePlugin extends Plugin
 			}
 			else if (bloodEssenceExtractMatcher.find())
 			{
-				updateBloodEssenceCharges(getItemCharges(ItemChargeConfig.KEY_BLOOD_ESSENCE_LIST[0]) - Integer.parseInt(bloodEssenceExtractMatcher.group(1)));
+				updateBloodEssenceCharges(getItemCharges(ItemChargeConfig.KEY_BLOOD_ESSENCE) - Integer.parseInt(bloodEssenceExtractMatcher.group(1)));
 			}
 			else if (message.contains(BLOOD_ESSENCE_ACTIVATE_TEXT))
 			{
@@ -452,7 +449,7 @@ public class ItemChargePlugin extends Plugin
 			}
 			else if (message.contains(EXPLORERS_RING_ENERGY_EMPTY_TEXT))
 			{
-				setItemCharges(ItemChargeConfig.KEY_EXPLORERS_RING_LIST[1], 0);
+				setItemCharges(ItemChargeConfig.KEY_EXPLORERS_RING_ENERGY, 0);
 				updateInfoboxes();
 			}
 		}
@@ -489,7 +486,6 @@ public class ItemChargePlugin extends Plugin
 	{
 		int explorerRingAlchCharge = client.getVarbitValue(Varbits.EXPLORER_RING_ALCHS);
 		int explorerRingEnergyCharge = client.getVarbitValue(Varbits.EXPLORER_RING_RUNENERGY);
-		int explorerRingTeleCharge = client.getVarbitValue(Varbits.EXPLORER_RING_TELEPORTS);
 		if (lastExplorerRingAlchCharge != explorerRingAlchCharge)
 		{
 			lastExplorerRingAlchCharge = explorerRingAlchCharge;
@@ -499,11 +495,6 @@ public class ItemChargePlugin extends Plugin
 		{
 			lastExplorerRingEnergyCharges = explorerRingEnergyCharge;
 			updateExplorerRingEnergyCharges(explorerRingEnergyCharge);
-		}
-		if (lastExplorerRingTeleCharges != explorerRingTeleCharge)
-		{
-			lastExplorerRingTeleCharges = explorerRingTeleCharge;
-			updateExplorerRingTeleCharges(explorerRingTeleCharge);
 		}
 	}
 
@@ -564,25 +555,25 @@ public class ItemChargePlugin extends Plugin
 
 	private void updateDodgyNecklaceCharges(final int value)
 	{
-		setItemCharges(ItemChargeConfig.KEY_DODGY_NECKLACE_LIST[0], value);
+		setItemCharges(ItemChargeConfig.KEY_DODGY_NECKLACE, value);
 		updateInfoboxes();
 	}
 
 	private void updateAmuletOfChemistryCharges(final int value)
 	{
-		setItemCharges(ItemChargeConfig.KEY_AMULET_OF_CHEMISTRY_LIST[0], value);
+		setItemCharges(ItemChargeConfig.KEY_AMULET_OF_CHEMISTRY, value);
 		updateInfoboxes();
 	}
 
 	private void updateAmuletOfBountyCharges(final int value)
 	{
-		setItemCharges(ItemChargeConfig.KEY_AMULET_OF_BOUNTY_LIST[0], value);
+		setItemCharges(ItemChargeConfig.KEY_AMULET_OF_BOUNTY, value);
 		updateInfoboxes();
 	}
 
 	private void updateBindingNecklaceCharges(final int value)
 	{
-		setItemCharges(ItemChargeConfig.KEY_BINDING_NECKLACE_LIST[0], value);
+		setItemCharges(ItemChargeConfig.KEY_BINDING_NECKLACE, value);
 		updateInfoboxes();
 	}
 
@@ -597,7 +588,7 @@ public class ItemChargePlugin extends Plugin
 	private void updateExplorerRingAlchCharges(final int value)
 	{
 		// Note: Varbit counts upwards. We count down from the maximum charges.
-		setItemCharges(ItemChargeConfig.KEY_EXPLORERS_RING_LIST[0], MAX_EXPLORERS_RING_ALCH_CHARGES - value);
+		setItemCharges(ItemChargeConfig.KEY_EXPLORERS_RING_ALCH, MAX_EXPLORERS_RING_ALCH_CHARGES - value);
 		updateInfoboxes();
 	}
 
@@ -608,45 +599,32 @@ public class ItemChargePlugin extends Plugin
 			? 3 : client.getVarbitValue(Varbits.DIARY_LUMBRIDGE_HARD) == 1
 			? 4 : 3;
 
-		setItemCharges(ItemChargeConfig.KEY_EXPLORERS_RING_LIST[1], maxCharges - value);
+		setItemCharges(ItemChargeConfig.KEY_EXPLORERS_RING_ENERGY, maxCharges - value);
 		updateInfoboxes();
 	}
 
-	private void updateExplorerRingTeleCharges(final int value)
-	{
-		final int maxCharges;
-		if (client.getVarbitValue(Varbits.DIARY_LUMBRIDGE_MEDIUM) == 1 && client.getVarbitValue(Varbits.DIARY_LUMBRIDGE_HARD) != 1)
-		{
-			maxCharges = MAX_EXPLORERS_RING_TELE_CHARGES;
-		}
-		else
-		{
-			maxCharges = 0;
-		}
-		setItemCharges(ItemChargeConfig.KEY_EXPLORERS_RING_LIST[2], maxCharges - value);
-	}
 
 	private void updateRingOfForgingCharges(final int value)
 	{
-		setItemCharges(ItemChargeConfig.KEY_RING_OF_FORGING_LIST[0], value);
+		setItemCharges(ItemChargeConfig.KEY_RING_OF_FORGING, value);
 		updateInfoboxes();
 	}
 
 	private void updateBraceletOfSlaughterCharges(final int value)
 	{
-		setItemCharges(ItemChargeConfig.KEY_BRACELET_OF_SLAUGHTER_LIST[0], value);
+		setItemCharges(ItemChargeConfig.KEY_BRACELET_OF_SLAUGHTER, value);
 		updateInfoboxes();
 	}
 
 	private void updateExpeditiousBraceletCharges(final int value)
 	{
-		setItemCharges(ItemChargeConfig.KEY_EXPEDITIOUS_BRACELET_LIST[0], value);
+		setItemCharges(ItemChargeConfig.KEY_EXPEDITIOUS_BRACELET, value);
 		updateInfoboxes();
 	}
 
 	private void updateBloodEssenceCharges(final int value)
 	{
-		setItemCharges(ItemChargeConfig.KEY_BLOOD_ESSENCE_LIST[0], value);
+		setItemCharges(ItemChargeConfig.KEY_BLOOD_ESSENCE, value);
 		updateInfoboxes();
 	}
 
