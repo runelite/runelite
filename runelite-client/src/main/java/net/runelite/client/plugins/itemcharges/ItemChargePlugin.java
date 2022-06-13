@@ -571,7 +571,7 @@ public class ItemChargePlugin extends Plugin
 
 	private void updateBindingNecklaceCharges(final int value)
 	{
-		setItemCharges(ItemChargeConfig.KEY_BINDING_NECKLACE_LIST[0], value);
+		setItemCharges(ItemChargeConfig.KEY_BINDING_NECKLACE_LIST[0], MAX_EXPLORERS_RING_TELE_CHARGES - value);
 		updateInfoboxes();
 	}
 
