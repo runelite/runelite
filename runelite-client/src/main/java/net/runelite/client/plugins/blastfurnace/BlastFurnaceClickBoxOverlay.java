@@ -42,7 +42,6 @@ import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
-@Slf4j
 class BlastFurnaceClickBoxOverlay extends Overlay
 {
 	private static final int MAX_DISTANCE = 2350;
