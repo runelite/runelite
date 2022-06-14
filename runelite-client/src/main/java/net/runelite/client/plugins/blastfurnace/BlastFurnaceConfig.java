@@ -70,5 +70,8 @@ public interface BlastFurnaceConfig extends Config
 		description = "Configures whether or not the clickboxes for the pipes, drive belt and cogs are displayed.",
 		position = 4
 	)
-	default boolean showPipes() { return false; }
+	default boolean showPipes() 
+	{ 
+		return false; 
+	}
 }
