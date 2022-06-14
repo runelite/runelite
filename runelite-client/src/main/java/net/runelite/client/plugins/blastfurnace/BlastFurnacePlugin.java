@@ -35,7 +35,8 @@ import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
 import static net.runelite.api.NullObjectID.NULL_9092;
-import static net.runelite.api.ObjectID.CONVEYOR_BELT;
+import static net.runelite.api.ObjectID.*;
+
 import net.runelite.api.Skill;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
@@ -67,6 +68,26 @@ public class BlastFurnacePlugin extends Plugin
 
 	@Getter(AccessLevel.PACKAGE)
 	private GameObject barDispenser;
+
+	@Getter(AccessLevel.PACKAGE)
+	private GameObject westPipesFixed;
+	@Getter(AccessLevel.PACKAGE)
+	private GameObject westPipesBroken;
+
+	@Getter(AccessLevel.PACKAGE)
+	private GameObject eastPipesFixed;
+	@Getter(AccessLevel.PACKAGE)
+	private GameObject eastPipesBroken;
+
+	@Getter(AccessLevel.PACKAGE)
+	private GameObject cogsFixed;
+	@Getter(AccessLevel.PACKAGE)
+	private GameObject cogsBroken;
+
+	@Getter(AccessLevel.PACKAGE)
+	private GameObject driveBeltFixed;
+	@Getter(AccessLevel.PACKAGE)
+	private GameObject driveBeltBroken;
 
 	private ForemanTimer foremanTimer;
 
@@ -109,6 +130,8 @@ public class BlastFurnacePlugin extends Plugin
 		conveyorBelt = null;
 		barDispenser = null;
 		foremanTimer = null;
+		westPipesFixed = null;
+		eastPipesFixed = null;
 	}
 
 	@Provides
@@ -131,6 +154,40 @@ public class BlastFurnacePlugin extends Plugin
 			case BAR_DISPENSER:
 				barDispenser = gameObject;
 				break;
+
+			case PIPES:
+				westPipesFixed = gameObject;
+				break;
+
+			case PIPES_9117:
+				westPipesBroken = gameObject;
+				break;
+
+			case PIPES_9120:
+				eastPipesFixed = gameObject;
+				break;
+
+			case PIPES_9121:
+				eastPipesBroken = gameObject;
+				break;
+
+			case DRIVE_BELT:
+				driveBeltFixed = gameObject;
+				break;
+
+			case DRIVE_BELT_9103: // falls through
+			case DRIVE_BELT_9107:
+				driveBeltBroken = gameObject;
+				break;
+
+			case COGS:
+				cogsFixed = gameObject;
+				break;
+
+			case COGS_9105: // falls through
+			case COGS_9108:
+				cogsBroken = gameObject;
+				break;
 		}
 	}
 
@@ -148,6 +205,40 @@ public class BlastFurnacePlugin extends Plugin
 			case BAR_DISPENSER:
 				barDispenser = null;
 				break;
+
+			case PIPES:
+				westPipesFixed = null;
+				break;
+
+			case PIPES_9117:
+				westPipesBroken = null;
+				break;
+
+			case PIPES_9120:
+				eastPipesFixed = null;
+				break;
+
+			case PIPES_9121:
+				eastPipesBroken = null;
+				break;
+
+			case DRIVE_BELT:
+				driveBeltFixed = null;
+				break;
+
+			case DRIVE_BELT_9103: // falls through
+			case DRIVE_BELT_9107:
+				driveBeltBroken = null;
+				break;
+
+			case COGS:
+				cogsFixed = null;
+				break;
+
+			case COGS_9105: // falls through
+			case COGS_9108:
+				cogsBroken = null;
+				break;
 		}
 	}
 
@@ -158,6 +249,10 @@ public class BlastFurnacePlugin extends Plugin
 		{
 			conveyorBelt = null;
 			barDispenser = null;
+			westPipesFixed = null;
+			eastPipesFixed = null;
+			driveBeltFixed = null;
+			cogsFixed = null;
 		}
 	}
 

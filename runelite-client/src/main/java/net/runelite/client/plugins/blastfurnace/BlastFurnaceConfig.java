@@ -63,4 +63,12 @@ public interface BlastFurnaceConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showPipes",
+		name = "Show pipes, drive belt and cogs clickboxes.",
+		description = "Configures whether or not the clickboxes for the pipes, drive belt and cogs are displayed.",
+		position = 4
+	)
+	default boolean showPipes() { return false; }
 }

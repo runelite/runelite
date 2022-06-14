@@ -29,6 +29,8 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import javax.inject.Inject;
+
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.InventoryID;
@@ -40,6 +42,7 @@ import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
+@Slf4j
 class BlastFurnaceClickBoxOverlay extends Overlay
 {
 	private static final int MAX_DISTANCE = 2350;
@@ -68,12 +71,38 @@ class BlastFurnaceClickBoxOverlay extends Overlay
 			renderObject(plugin.getConveyorBelt(), graphics, color);
 		}
 
-		if (config.showBarDispenser() && plugin.getBarDispenser() != null)
-		{
+		if (config.showBarDispenser() && plugin.getBarDispenser() != null) {
 			boolean hasIceGloves = hasIceGloves();
 			Color color = dispenserState == 2 && hasIceGloves ? Color.GREEN : (dispenserState == 3 ? Color.GREEN : Color.RED);
 
 			renderObject(plugin.getBarDispenser(), graphics, color);
+		}
+
+		if (config.showPipes())
+		{
+			// west pipes
+			if (plugin.getWestPipesFixed() != null)
+				renderObject(plugin.getWestPipesFixed(), graphics, Color.GREEN);
+			if (plugin.getWestPipesBroken() != null)
+				renderObject(plugin.getWestPipesBroken(), graphics, Color.RED);
+
+			// east pipes
+			if (plugin.getEastPipesFixed() != null)
+				renderObject(plugin.getEastPipesFixed(), graphics, Color.GREEN);
+			if (plugin.getEastPipesBroken() != null)
+				renderObject(plugin.getEastPipesBroken(), graphics, Color.RED);
+
+			// drive belt
+			if (plugin.getDriveBeltFixed() != null)
+				renderObject(plugin.getDriveBeltFixed(), graphics, Color.GREEN);
+			if (plugin.getDriveBeltBroken() != null)
+				renderObject(plugin.getDriveBeltBroken(), graphics, Color.RED);
+
+			// cogs
+			if (plugin.getCogsFixed() != null)
+				renderObject(plugin.getCogsFixed(), graphics, Color.GREEN);
+			if (plugin.getCogsBroken() != null)
+				renderObject(plugin.getCogsBroken(), graphics, Color.RED);
 		}
 
 		return null;

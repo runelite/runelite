@@ -268,6 +268,15 @@ public final class Varbits
 	public static final int BAR_DISPENSER = 936;
 
 	/**
+	 * Blast Furnace Pipe
+	 */
+	public static final int BLAST_FURNACE_WEST_PIPE = 938;
+	public static final int BLAST_FURNACE_EAST_PIPE = 939;
+	public static final int BLAST_FURNACE_DRIVE_BELT = 934; // 8354
+	public static final int BLAST_FURNACE_COGS = 933;
+
+
+	/**
 	 * Motherlode mine sack
 	 */
 	public static final int SACK_NUMBER = 5558;
