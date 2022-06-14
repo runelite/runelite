@@ -157,8 +157,6 @@ public class ItemChargePlugin extends Plugin
 	private static final int MAX_SLAYER_BRACELET_CHARGES = 30;
 	private static final int MAX_BLOOD_ESSENCE_CHARGES = 1000;
 	private static final int MAX_BRACELET_OF_CLAY_CHARGES = 28;
-
-	private int lastExplorerRingCharge = -1;
 	private static final int ONE_DAY = 86400000;
 	private int lastExplorerRingAlchCharge = -1;
 	private int lastExplorerRingEnergyCharges = -1;
