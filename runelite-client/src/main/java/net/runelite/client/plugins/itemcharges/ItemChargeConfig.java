@@ -48,6 +48,7 @@ public interface ItemChargeConfig extends Config
 	String KEY_EXPLORERS_RING_TELE = "explorerRingTele";
 	String KEY_RING_OF_FORGING = "ringOfForging";
 	String KEY_BLOOD_ESSENCE = "bloodEssence";
+	String KEY_BRACELET_OF_CLAY = "braceletOfClay";
 	String[] KEY_AMULET_OF_BOUNTY_LIST = {KEY_AMULET_OF_BOUNTY};
 	String[] KEY_AMULET_OF_CHEMISTRY_LIST = {KEY_AMULET_OF_CHEMISTRY};
 	String[] KEY_BINDING_NECKLACE_LIST = {KEY_BINDING_NECKLACE};
@@ -58,6 +59,7 @@ public interface ItemChargeConfig extends Config
 	String[] KEY_EXPLORERS_RING_LIST = {KEY_EXPLORERS_RING_ALCH, KEY_EXPLORERS_RING_TELE};
 	String[] KEY_RING_OF_FORGING_LIST = {KEY_RING_OF_FORGING};
 	String[] KEY_BLOOD_ESSENCE_LIST = {KEY_BLOOD_ESSENCE};
+	String[] KEY_BRACELEY_OF_CLAY_LIST = {KEY_BRACELET_OF_CLAY};
 
 	@ConfigSection(
 		name = "Charge Settings",
@@ -436,6 +438,30 @@ public interface ItemChargeConfig extends Config
 		section = chargesSection
 	)
 	default boolean showBloodEssenceCharges()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showBraceletOfClayCharges",
+		name = "Bracelet of Clay Charges",
+		description = "Show Bracelet of Clay item charges",
+		position = 31,
+		section = chargesSection
+	)
+	default boolean showBraceletOfClayCharges()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "braceletOfClayNotification",
+		name = "Bracelet of Clay Notification",
+		description = "Send a notification when a Bracelet of Clay breaks",
+		position = 32,
+		section = notificationSection
+	)
+	default boolean braceletOfClayNotification()
 	{
 		return true;
 	}

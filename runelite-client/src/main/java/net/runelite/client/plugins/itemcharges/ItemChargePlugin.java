@@ -141,6 +141,11 @@ public class ItemChargePlugin extends Plugin
 		"You manage to extract power from the Blood Essence and craft (\\d{1,3}) extra runes?\\."
 	);
 	private static final String BLOOD_ESSENCE_ACTIVATE_TEXT = "You activate the blood essence.";
+	private static final String BRACELET_OF_CLAY_USE_TEXT = "You manage to mine some clay.";
+	private static final String BRACELET_OF_CLAY_BREAK_TEXT = "Your bracelet of clay crumbles to dust.";
+	private static final Pattern BRACELET_OF_CLAY_CHECK_PATTERN = Pattern.compile(
+		"You can mine (\\d{1,2}) more pieces? of soft clay before your bracelet crumbles to dust\\."
+	);
 
 	private static final int MAX_DODGY_CHARGES = 10;
 	private static final int MAX_BINDING_CHARGES = 16;
@@ -151,6 +156,7 @@ public class ItemChargePlugin extends Plugin
 	private static final int MAX_AMULET_OF_BOUNTY_CHARGES = 10;
 	private static final int MAX_SLAYER_BRACELET_CHARGES = 30;
 	private static final int MAX_BLOOD_ESSENCE_CHARGES = 1000;
+	private static final int MAX_BRACELET_OF_CLAY_CHARGES = 28;
 	private static final int ONE_DAY = 86400000;
 
 	private int lastExplorerRingAlchCharge = -1;
@@ -246,6 +252,7 @@ public class ItemChargePlugin extends Plugin
 			Matcher expeditiousCheckMatcher = EXPEDITIOUS_BRACELET_CHECK_PATTERN.matcher(message);
 			Matcher bloodEssenceCheckMatcher = BLOOD_ESSENCE_CHECK_PATTERN.matcher(message);
 			Matcher bloodEssenceExtractMatcher = BLOOD_ESSENCE_EXTRACT_PATTERN.matcher(message);
+			Matcher braceletOfClayCheckMatcher = BRACELET_OF_CLAY_CHECK_PATTERN.matcher(message);
 
 			if (config.recoilNotification() && message.contains(RING_OF_RECOIL_BREAK_MESSAGE))
 			{
@@ -315,7 +322,7 @@ public class ItemChargePlugin extends Plugin
 				final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
 				if (equipment.contains(ItemID.BINDING_NECKLACE))
 				{
-					updateBindingNecklaceCharges(getItemCharges(ItemChargeConfig.KEY_BINDING_NECKLACE_LIST[0]) - 1);
+					updateBindingNecklaceCharges(getItemCharges(ItemChargeConfig.KEY_BINDING_NECKLACE) - 1);
 				}
 			}
 			else if (bindingNecklaceCheckMatcher.find())
@@ -354,7 +361,7 @@ public class ItemChargePlugin extends Plugin
 
 				if (equipment.contains(ItemID.RING_OF_FORGING) && (message.equals(RING_OF_FORGING_USED_TEXT) || inventory.count(ItemID.IRON_ORE) > 1))
 				{
-					int charges = Ints.constrainToRange(getItemCharges(ItemChargeConfig.KEY_RING_OF_FORGING_LIST[0]) - 1, 0, MAX_RING_OF_FORGING_CHARGES);
+					int charges = Ints.constrainToRange(getItemCharges(ItemChargeConfig.KEY_RING_OF_FORGING) - 1, 0, MAX_RING_OF_FORGING_CHARGES);
 					updateRingOfForgingCharges(charges);
 				}
 			}
@@ -373,28 +380,28 @@ public class ItemChargePlugin extends Plugin
 
 				if (match.equals("one"))
 				{
-					setItemCharges(ItemChargeConfig.KEY_CHRONICLE_LIST[0], 1);
+					setItemCharges(ItemChargeConfig.KEY_CHRONICLE, 1);
 				}
 				else
 				{
-					setItemCharges(ItemChargeConfig.KEY_CHRONICLE_LIST[0], Integer.parseInt(match));
+					setItemCharges(ItemChargeConfig.KEY_CHRONICLE, Integer.parseInt(match));
 				}
 			}
 			else if (chronicleUseAndCheckMatcher.find())
 			{
-				setItemCharges(ItemChargeConfig.KEY_CHRONICLE_LIST[0], Integer.parseInt(chronicleUseAndCheckMatcher.group(1)));
+				setItemCharges(ItemChargeConfig.KEY_CHRONICLE, Integer.parseInt(chronicleUseAndCheckMatcher.group(1)));
 			}
 			else if (message.equals(CHRONICLE_ONE_CHARGE_TEXT))
 			{
-				setItemCharges(ItemChargeConfig.KEY_CHRONICLE_LIST[0], 1);
+				setItemCharges(ItemChargeConfig.KEY_CHRONICLE, 1);
 			}
 			else if (message.equals(CHRONICLE_EMPTY_TEXT) || message.equals(CHRONICLE_NO_CHARGES_TEXT))
 			{
-				setItemCharges(ItemChargeConfig.KEY_CHRONICLE_LIST[0], 0);
+				setItemCharges(ItemChargeConfig.KEY_CHRONICLE, 0);
 			}
 			else if (message.equals(CHRONICLE_FULL_TEXT))
 			{
-				setItemCharges(ItemChargeConfig.KEY_CHRONICLE_LIST[0], 1000);
+				setItemCharges(ItemChargeConfig.KEY_CHRONICLE, 1000);
 			}
 			else if (slaughterActivateMatcher.find())
 			{
@@ -442,11 +449,34 @@ public class ItemChargePlugin extends Plugin
 			}
 			else if (bloodEssenceExtractMatcher.find())
 			{
-				updateBloodEssenceCharges(getItemCharges(ItemChargeConfig.KEY_BLOOD_ESSENCE_LIST[0]) - Integer.parseInt(bloodEssenceExtractMatcher.group(1)));
+				updateBloodEssenceCharges(getItemCharges(ItemChargeConfig.KEY_BLOOD_ESSENCE) - Integer.parseInt(bloodEssenceExtractMatcher.group(1)));
 			}
 			else if (message.contains(BLOOD_ESSENCE_ACTIVATE_TEXT))
 			{
 				updateBloodEssenceCharges(MAX_BLOOD_ESSENCE_CHARGES);
+			}
+			else if (braceletOfClayCheckMatcher.find())
+			{
+				updateBraceletOfClayCharges(Integer.parseInt(braceletOfClayCheckMatcher.group(1)));
+			}
+			else if (message.equals(BRACELET_OF_CLAY_USE_TEXT))
+			{
+				final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
+
+				// Determine if the player mined with a Bracelet of Clay equipped.
+				if (equipment != null && equipment.contains(ItemID.BRACELET_OF_CLAY))
+				{
+					int charges = Ints.constrainToRange(getItemCharges(ItemChargeConfig.KEY_BRACELET_OF_CLAY) - 1, 0, MAX_BRACELET_OF_CLAY_CHARGES);
+					updateBraceletOfClayCharges(charges);
+				}
+			}
+			else if (message.equals(BRACELET_OF_CLAY_BREAK_TEXT))
+			{
+				if (config.braceletOfClayNotification())
+				{
+					notifier.notify("Your bracelet of clay has crumbled to dust");
+				}
+				updateBraceletOfClayCharges(MAX_BRACELET_OF_CLAY_CHARGES);
 			}
 		}
 	}
@@ -551,25 +581,25 @@ public class ItemChargePlugin extends Plugin
 
 	private void updateDodgyNecklaceCharges(final int value)
 	{
-		setItemCharges(ItemChargeConfig.KEY_DODGY_NECKLACE_LIST[0], value);
+		setItemCharges(ItemChargeConfig.KEY_DODGY_NECKLACE, value);
 		updateInfoboxes();
 	}
 
 	private void updateAmuletOfChemistryCharges(final int value)
 	{
-		setItemCharges(ItemChargeConfig.KEY_AMULET_OF_CHEMISTRY_LIST[0], value);
+		setItemCharges(ItemChargeConfig.KEY_AMULET_OF_CHEMISTRY, value);
 		updateInfoboxes();
 	}
 
 	private void updateAmuletOfBountyCharges(final int value)
 	{
-		setItemCharges(ItemChargeConfig.KEY_AMULET_OF_BOUNTY_LIST[0], value);
+		setItemCharges(ItemChargeConfig.KEY_AMULET_OF_BOUNTY, value);
 		updateInfoboxes();
 	}
 
 	private void updateBindingNecklaceCharges(final int value)
 	{
-		setItemCharges(ItemChargeConfig.KEY_BINDING_NECKLACE_LIST[0], MAX_EXPLORERS_RING_TELE_CHARGES - value);
+		setItemCharges(ItemChargeConfig.KEY_BINDING_NECKLACE, value);
 		updateInfoboxes();
 	}
 
@@ -577,7 +607,7 @@ public class ItemChargePlugin extends Plugin
 	private void updateExplorerRingAlchCharges(final int value)
 	{
 		// Note: Varbit counts upwards. We count down from the maximum charges.
-		setItemCharges(ItemChargeConfig.KEY_EXPLORERS_RING_LIST[0], MAX_EXPLORERS_RING_ALCH_CHARGES - value);
+		setItemCharges(ItemChargeConfig.KEY_EXPLORERS_RING_ALCH, MAX_EXPLORERS_RING_ALCH_CHARGES - value);
 		updateInfoboxes();
 	}
 
@@ -593,33 +623,38 @@ public class ItemChargePlugin extends Plugin
 		{
 			maxCharges = 0;
 		}
-		setItemCharges(ItemChargeConfig.KEY_EXPLORERS_RING_LIST[1], maxCharges - value);
+		setItemCharges(ItemChargeConfig.KEY_EXPLORERS_RING_TELE, maxCharges - value);
 	}
 
 	private void updateRingOfForgingCharges(final int value)
 	{
-		setItemCharges(ItemChargeConfig.KEY_RING_OF_FORGING_LIST[0], value);
+		setItemCharges(ItemChargeConfig.KEY_RING_OF_FORGING, value);
 		updateInfoboxes();
 	}
 
 	private void updateBraceletOfSlaughterCharges(final int value)
 	{
-		setItemCharges(ItemChargeConfig.KEY_BRACELET_OF_SLAUGHTER_LIST[0], value);
+		setItemCharges(ItemChargeConfig.KEY_BRACELET_OF_SLAUGHTER, value);
 		updateInfoboxes();
 	}
 
 	private void updateExpeditiousBraceletCharges(final int value)
 	{
-		setItemCharges(ItemChargeConfig.KEY_EXPEDITIOUS_BRACELET_LIST[0], value);
+		setItemCharges(ItemChargeConfig.KEY_EXPEDITIOUS_BRACELET, value);
 		updateInfoboxes();
 	}
 
 	private void updateBloodEssenceCharges(final int value)
 	{
-		setItemCharges(ItemChargeConfig.KEY_BLOOD_ESSENCE_LIST[0], value);
+		setItemCharges(ItemChargeConfig.KEY_BLOOD_ESSENCE, value);
 		updateInfoboxes();
 	}
 
+	private void updateBraceletOfClayCharges(final int value)
+	{
+		setItemCharges(ItemChargeConfig.KEY_BRACELET_OF_CLAY, value);
+		updateInfoboxes();
+	}
 
 	private void checkDestroyWidget()
 	{
