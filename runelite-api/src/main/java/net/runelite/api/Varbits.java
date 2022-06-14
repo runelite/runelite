@@ -272,7 +272,7 @@ public final class Varbits
 	 */
 	public static final int BLAST_FURNACE_WEST_PIPE = 938;
 	public static final int BLAST_FURNACE_EAST_PIPE = 939;
-	public static final int BLAST_FURNACE_DRIVE_BELT = 934; // 8354
+	public static final int BLAST_FURNACE_DRIVE_BELT = 934;
 	public static final int BLAST_FURNACE_COGS = 933;
 
 
