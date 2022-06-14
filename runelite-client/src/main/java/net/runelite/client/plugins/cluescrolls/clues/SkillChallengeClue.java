@@ -198,7 +198,7 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 		new SkillChallengeClue("Fix a magical lamp in Dorgesh-Kaan.", new String[] { "Broken lamp" }, new int[] { 10834, 10835 }, item(ItemID.LIGHT_ORB)),
 		new SkillChallengeClue("Burn a yew log.", item(ItemID.YEW_LOGS), item(ItemID.TINDERBOX)),
 		new SkillChallengeClue("Cook a swordfish", "cook a swordfish", item(ItemID.RAW_SWORDFISH)),
-		new SkillChallengeClue("Craft multiple cosmic runes from a single essence.", item(ItemID.PURE_ESSENCE)),
+		new SkillChallengeClue("Craft multiple cosmic runes from a single essence.", any("Pure Essence or Daeyalt Essence", item(ItemID.PURE_ESSENCE), item(ItemID.DAEYALT_ESSENCE))),
 		new SkillChallengeClue("Plant a watermelon seed.", item(ItemID.RAKE), item(ItemID.SEED_DIBBER), xOfItem(ItemID.WATERMELON_SEED, 3)),
 		new SkillChallengeClue("Activate the Chivalry prayer."),
 		new SkillChallengeClue("Hand in a Tier 2 or higher set of Shayzien supply armour. (Requires 11 lovakite bars)", "take the lovakengj armourers a boxed set of shayzien supply armour at tier 2 or above.", any("Shayzien Supply Set (Tier 2 or higher)", item(ItemID.SHAYZIEN_SUPPLY_SET_2), item(ItemID.SHAYZIEN_SUPPLY_SET_3), item(ItemID.SHAYZIEN_SUPPLY_SET_4), item(ItemID.SHAYZIEN_SUPPLY_SET_5))),
