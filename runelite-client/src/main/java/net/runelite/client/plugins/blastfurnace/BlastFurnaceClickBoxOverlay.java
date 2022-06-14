@@ -69,7 +69,7 @@ class BlastFurnaceClickBoxOverlay extends Overlay
 			renderObject(plugin.getConveyorBelt(), graphics, color);
 		}
 
-		if (config.showBarDispenser() && plugin.getBarDispenser() != null) 
+		if (config.showBarDispenser() && plugin.getBarDispenser() != null)
 		{
 			boolean hasIceGloves = hasIceGloves();
 			Color color = dispenserState == 2 && hasIceGloves ? Color.GREEN : (dispenserState == 3 ? Color.GREEN : Color.RED);
