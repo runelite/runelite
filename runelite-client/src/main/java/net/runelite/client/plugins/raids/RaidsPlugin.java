@@ -82,9 +82,6 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.input.KeyManager;
-import net.runelite.client.party.PartyMember;
-import net.runelite.client.party.PartyService;
-import net.runelite.client.party.messages.PartyChatMessage;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.raids.events.RaidReset;
@@ -151,9 +148,6 @@ public class RaidsPlugin extends Plugin
 
 	@Inject
 	private ClientThread clientThread;
-
-	@Inject
-	private PartyService party;
 
 	@Inject
 	private ChatCommandManager chatCommandManager;
@@ -357,11 +351,7 @@ public class RaidsPlugin extends Plugin
 			return;
 		}
 
-		if (event.getEntry().getOption().equals(RaidsOverlay.BROADCAST_ACTION))
-		{
-			sendRaidLayoutMessage();
-		}
-		else if (event.getEntry().getOption().equals(RaidsOverlay.SCREENSHOT_ACTION))
+		if (event.getEntry().getOption().equals(RaidsOverlay.SCREENSHOT_ACTION))
 		{
 			screenshotScoutOverlay();
 		}
@@ -477,21 +467,11 @@ public class RaidsPlugin extends Plugin
 			.append(raidData)
 			.build();
 
-		final PartyMember localMember = party.getLocalMember();
+		chatMessageManager.queue(QueuedMessage.builder()
+			.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
+			.runeLiteFormattedMessage(layoutMessage)
+			.build());
 
-		if (party.getMembers().isEmpty() || localMember == null)
-		{
-			chatMessageManager.queue(QueuedMessage.builder()
-				.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
-				.runeLiteFormattedMessage(layoutMessage)
-				.build());
-		}
-		else
-		{
-			final PartyChatMessage message = new PartyChatMessage(layoutMessage);
-			message.setMemberId(localMember.getMemberId());
-			party.send(message);
-		}
 	}
 
 	private void updateInfoBoxState()

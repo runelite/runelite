@@ -52,7 +52,6 @@ import net.runelite.http.api.worlds.WorldResult;
 class RaidsOverlay extends OverlayPanel
 {
 	private static final int OLM_PLANE = 0;
-	static final String BROADCAST_ACTION = "Broadcast layout";
 	static final String SCREENSHOT_ACTION = "Screenshot";
 
 	private final Client client;
@@ -74,7 +73,6 @@ class RaidsOverlay extends OverlayPanel
 		this.config = config;
 		this.worldService = worldService;
 		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Raids overlay"));
-		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY, BROADCAST_ACTION, "Raids overlay"));
 		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY, SCREENSHOT_ACTION, "Raids overlay"));
 	}
 
