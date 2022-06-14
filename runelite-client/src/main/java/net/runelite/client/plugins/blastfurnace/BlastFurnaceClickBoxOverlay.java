@@ -30,7 +30,6 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import javax.inject.Inject;
 
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.InventoryID;
@@ -70,7 +69,8 @@ class BlastFurnaceClickBoxOverlay extends Overlay
 			renderObject(plugin.getConveyorBelt(), graphics, color);
 		}
 
-		if (config.showBarDispenser() && plugin.getBarDispenser() != null) {
+		if (config.showBarDispenser() && plugin.getBarDispenser() != null) 
+		{
 			boolean hasIceGloves = hasIceGloves();
 			Color color = dispenserState == 2 && hasIceGloves ? Color.GREEN : (dispenserState == 3 ? Color.GREEN : Color.RED);
 
