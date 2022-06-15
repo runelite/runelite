@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.worldhopper;
 
 import com.google.common.collect.Ordering;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -37,11 +38,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.border.EmptyBorder;
+
 import lombok.AccessLevel;
 import lombok.Setter;
 import net.runelite.client.ui.ColorScheme;
-import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.http.api.worlds.World;
 import net.runelite.http.api.worlds.WorldType;
@@ -54,7 +58,9 @@ class WorldSwitcherPanel extends PluginPanel
 	private static final int PLAYERS_COLUMN_WIDTH = 40;
 	private static final int PING_COLUMN_WIDTH = 47;
 
-	private final JPanel listContainer = new JPanel();
+	private final JPanel favouriteWorldsContainer = new JPanel();
+	private final JPanel worldsContainer = new JPanel();
+	private final JPanel headerContainer = new JPanel(new BorderLayout());
 
 	private WorldTableHeader worldHeader;
 	private WorldTableHeader playersHeader;
@@ -65,7 +71,7 @@ class WorldSwitcherPanel extends PluginPanel
 	private boolean ascendingOrder = true;
 
 	private final ArrayList<WorldTableRow> rows = new ArrayList<>();
-	private final WorldHopperPlugin plugin;
+	private final transient WorldHopperPlugin plugin;
 	@Setter(AccessLevel.PACKAGE)
 	private SubscriptionFilterMode subscriptionFilterMode;
 	@Setter(AccessLevel.PACKAGE)
@@ -73,17 +79,35 @@ class WorldSwitcherPanel extends PluginPanel
 
 	WorldSwitcherPanel(WorldHopperPlugin plugin)
 	{
+		super(false);
+
 		this.plugin = plugin;
 
 		setBorder(null);
-		setLayout(new DynamicGridLayout(0, 1));
+		setLayout(new BorderLayout());
 
-		JPanel headerContainer = buildHeader();
+		favouriteWorldsContainer.setLayout(new GridLayout(0, 1));
+		worldsContainer.setLayout(new GridLayout(0, 1));
 
-		listContainer.setLayout(new GridLayout(0, 1));
+		JPanel wrappedFavouriteWorldsContainer = new FixedWidthPanel();
+		wrappedFavouriteWorldsContainer.setLayout(new BorderLayout());
+		wrappedFavouriteWorldsContainer.add(favouriteWorldsContainer, BorderLayout.NORTH);
 
-		add(headerContainer);
-		add(listContainer);
+		JScrollPane favouriteWorldsScrollPane = new JScrollPane(wrappedFavouriteWorldsContainer);
+		favouriteWorldsScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+		JPanel wrappedWorldsContainer = new FixedWidthPanel();
+		wrappedWorldsContainer.setLayout(new BorderLayout());
+		wrappedWorldsContainer.add(worldsContainer, BorderLayout.NORTH);
+
+		JScrollPane worldsScrollPane = new JScrollPane(wrappedWorldsContainer);
+		worldsScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+		headerContainer.add(buildHeader(), BorderLayout.NORTH);
+		headerContainer.add(favouriteWorldsScrollPane, BorderLayout.CENTER);
+
+		add(headerContainer, BorderLayout.NORTH);
+		add(worldsScrollPane, BorderLayout.CENTER);
 	}
 
 	void switchCurrentHighlight(int newWorld, int lastWorld)
@@ -191,17 +215,21 @@ class WorldSwitcherPanel extends PluginPanel
 			return Boolean.compare(b2, b1);
 		});
 
-		listContainer.removeAll();
+		favouriteWorldsContainer.removeAll();
+		worldsContainer.removeAll();
 
 		for (int i = 0; i < rows.size(); i++)
 		{
 			WorldTableRow row = rows.get(i);
 			row.setBackground(i % 2 == 0 ? ODD_ROW : ColorScheme.DARK_GRAY_COLOR);
-			listContainer.add(row);
+			(plugin.isFavorite(row.getWorld()) ? favouriteWorldsContainer : worldsContainer).add(row);
 		}
 
-		listContainer.revalidate();
-		listContainer.repaint();
+		int borderSize = favouriteWorldsContainer.getComponentCount() > 0 ? 12 : 0;
+		headerContainer.setBorder(new EmptyBorder(0, 0, borderSize, 0));
+		headerContainer.setPreferredSize(new Dimension(0, Math.min(18 + borderSize + favouriteWorldsContainer.getComponentCount() * 26, 290)));
+
+		revalidate();
 	}
 
 	private int getCompareValue(WorldTableRow row1, WorldTableRow row2, Function<WorldTableRow, Comparable> compareByFn)
