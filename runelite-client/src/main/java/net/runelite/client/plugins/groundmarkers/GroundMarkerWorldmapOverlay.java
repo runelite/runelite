@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.awt.Shape;
 import net.runelite.api.Client;
 import net.runelite.api.Point;
 import net.runelite.api.coords.WorldPoint;
@@ -64,15 +63,15 @@ public class GroundMarkerWorldmapOverlay extends Overlay
 			return;
 		}
 
-		final Shape mapClipArea = worldMapOverlay.getWorldMapClipArea(bounds);
+		graphics.setClip(worldMapOverlay.getWorldMapClipArea(bounds));
 
 		for (ColorTileMarker marker : plugin.getPoints())
 		{
-			drawTile(graphics, marker.getWorldPoint(), marker.getColor(), mapClipArea);
+			drawTile(graphics, marker.getWorldPoint(), marker.getColor());
 		}
 	}
 
-	private void drawTile(Graphics2D graphics, WorldPoint point, Color color, Shape mapClipArea)
+	private void drawTile(Graphics2D graphics, WorldPoint point, Color color)
 	{
 		final Point start = worldMapOverlay.mapWorldPointToGraphicsPoint(point);
 		final Point end = worldMapOverlay.mapWorldPointToGraphicsPoint(point.dx(1).dy(-1));
@@ -87,10 +86,6 @@ public class GroundMarkerWorldmapOverlay extends Overlay
 		final int width = end.getX() - x;
 		final int height = end.getY() - y;
 		x -= width / 2;
-		if (!mapClipArea.contains(x, y))
-		{
-			return;
-		}
 		y -= height / 2;
 
 		graphics.setColor(color);
