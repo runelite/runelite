@@ -45,9 +45,9 @@ class SmeltingSession
 		lastItemSmelted = Instant.now();
 	}
 
-	void increaseCannonBallsSmelted()
+	void increaseCannonBallsSmelted(boolean usingDoubleMould)
 	{
-		cannonBallsSmelted += 4;
+		cannonBallsSmelted += usingDoubleMould ? 8 : 4;
 		lastItemSmelted = Instant.now();
 	}
 }
