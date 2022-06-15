@@ -23,7 +23,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ws;
+package net.runelite.client.party;
 
 import com.google.common.base.CharMatcher;
 import com.google.common.hash.Hashing;
@@ -44,22 +44,21 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
-import net.runelite.client.account.AccountSession;
-import net.runelite.client.account.SessionManager;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.PartyChanged;
 import net.runelite.client.events.PartyMemberAvatar;
+import net.runelite.client.party.messages.Join;
+import net.runelite.client.party.messages.Part;
+import net.runelite.client.party.messages.PartyChatMessage;
+import net.runelite.client.party.messages.PartyMessage;
+import net.runelite.client.party.messages.UserJoin;
+import net.runelite.client.party.messages.UserPart;
+import net.runelite.client.party.messages.UserSync;
 import net.runelite.client.util.Text;
 import static net.runelite.client.util.Text.JAGEX_PRINTABLE_CHAR_MATCHER;
-import net.runelite.http.api.ws.messages.party.Join;
-import net.runelite.http.api.ws.messages.party.Part;
-import net.runelite.http.api.ws.messages.party.PartyChatMessage;
-import net.runelite.http.api.ws.messages.party.UserJoin;
-import net.runelite.http.api.ws.messages.party.UserPart;
-import net.runelite.http.api.ws.messages.party.UserSync;
 
 @Slf4j
 @Singleton
@@ -72,7 +71,6 @@ public class PartyService
 
 	private final Client client;
 	private final WSClient wsClient;
-	private final SessionManager sessionManager;
 	private final EventBus eventBus;
 	private final ChatMessageManager chat;
 	private final List<PartyMember> members = new ArrayList<>();
@@ -83,11 +81,10 @@ public class PartyService
 	private String partyPassphrase;
 
 	@Inject
-	private PartyService(final Client client, final WSClient wsClient, final SessionManager sessionManager, final EventBus eventBus, final ChatMessageManager chat)
+	private PartyService(final Client client, final WSClient wsClient, final EventBus eventBus, final ChatMessageManager chat)
 	{
 		this.client = client;
 		this.wsClient = wsClient;
-		this.sessionManager = sessionManager;
 		this.eventBus = eventBus;
 		this.chat = chat;
 		eventBus.register(this);
@@ -169,12 +166,7 @@ public class PartyService
 
 		if (partyId == null)
 		{
-			// close the websocket if the session id isn't for an account
-			if (sessionManager.getAccountSession() == null)
-			{
-				wsClient.changeSession(null);
-			}
-
+			wsClient.changeSession(null);
 			eventBus.post(new PartyChanged(partyPassphrase, partyId));
 			return;
 		}
@@ -182,14 +174,27 @@ public class PartyService
 		// If there isn't already a session open, open one
 		if (!wsClient.sessionExists())
 		{
-			AccountSession accountSession = sessionManager.getAccountSession();
-			// Use the existing account session, if it exists, otherwise generate a new session id
-			UUID uuid = accountSession != null ? accountSession.getUuid() : UUID.randomUUID();
-			wsClient.changeSession(uuid);
+			wsClient.changeSession(UUID.randomUUID());
 		}
 
 		eventBus.post(new PartyChanged(partyPassphrase, partyId));
 		wsClient.send(new Join(partyId, USERNAME));
+	}
+
+	public <T extends PartyMessage> void send(T message)
+	{
+		if (!wsClient.isOpen())
+		{
+			log.debug("Reconnecting to server");
+
+			PartyMember local = getLocalMember();
+			members.removeIf(m -> m != local);
+
+			wsClient.connect();
+			wsClient.send(new Join(partyId, USERNAME));
+		}
+
+		wsClient.send(message);
 	}
 
 	@Subscribe(priority = 1) // run prior to plugins so that the member is joined by the time the plugins see it.
@@ -202,13 +207,17 @@ public class PartyService
 			return;
 		}
 
-		final PartyMember partyMember = new PartyMember(message.getMemberId(), cleanUsername(message.getName()));
-		members.add(partyMember);
+		PartyMember partyMember = getMemberById(message.getMemberId());
+		if (partyMember == null)
+		{
+			partyMember = new PartyMember(message.getMemberId(), cleanUsername(message.getName()));
+			members.add(partyMember);
+			log.debug("User {} joins party, {} members", partyMember, members.size());
+		}
 
 		final PartyMember localMember = getLocalMember();
-
 		// Send info to other clients that this user successfully finished joining party
-		if (localMember != null && message.getMemberId().equals(localMember.getMemberId()))
+		if (localMember != null && localMember == partyMember)
 		{
 			final UserSync userSync = new UserSync();
 			userSync.setMemberId(message.getMemberId());
@@ -219,7 +228,10 @@ public class PartyService
 	@Subscribe(priority = 1) // run prior to plugins so that the member is removed by the time the plugins see it.
 	public void onUserPart(final UserPart message)
 	{
-		members.removeIf(member -> member.getMemberId().equals(message.getMemberId()));
+		if (members.removeIf(member -> member.getMemberId().equals(message.getMemberId())))
+		{
+			log.debug("User {} leaves party, {} members", message.getMemberId(), members.size());
+		}
 	}
 
 	@Subscribe

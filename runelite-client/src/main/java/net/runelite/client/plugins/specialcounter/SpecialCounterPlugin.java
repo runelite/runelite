@@ -67,8 +67,8 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.ImageUtil;
-import net.runelite.client.ws.PartyService;
-import net.runelite.client.ws.WSClient;
+import net.runelite.client.party.PartyService;
+import net.runelite.client.party.WSClient;
 
 @PluginDescriptor(
 	name = "Special Attack Counter",
@@ -293,13 +293,16 @@ public class SpecialCounterPlugin extends Plugin
 			int hit = getHit(specialWeapon, hitsplat);
 			int localPlayerId = client.getLocalPlayer().getId();
 
-			updateCounter(specialWeapon, null, hit);
+			if (config.infobox())
+			{
+				updateCounter(specialWeapon, null, hit);
+			}
 
 			if (!party.getMembers().isEmpty())
 			{
 				final SpecialCounterUpdate specialCounterUpdate = new SpecialCounterUpdate(interactingId, specialWeapon, hit, client.getWorld(), localPlayerId);
 				specialCounterUpdate.setMemberId(party.getLocalMember().getMemberId());
-				wsClient.send(specialCounterUpdate);
+				party.send(specialCounterUpdate);
 			}
 
 			playerInfoDrops.add(createSpecInfoDrop(specialWeapon, hit, localPlayerId));
@@ -359,7 +362,10 @@ public class SpecialCounterPlugin extends Plugin
 			// Otherwise we only add the count if it is against a npc we are already tracking
 			if (interactedNpcIds.contains(event.getNpcId()))
 			{
-				updateCounter(event.getWeapon(), name, event.getHit());
+				if (config.infobox())
+				{
+					updateCounter(event.getWeapon(), name, event.getHit());
+				}
 			}
 
 			if (event.getWorld() == client.getWorld())

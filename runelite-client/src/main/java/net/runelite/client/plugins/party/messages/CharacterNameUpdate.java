@@ -25,7 +25,7 @@
 package net.runelite.client.plugins.party.messages;
 
 import lombok.Data;
-import net.runelite.http.api.ws.messages.party.PartyMemberMessage;
+import net.runelite.client.party.messages.PartyMemberMessage;
 
 @Data
 public class CharacterNameUpdate extends PartyMemberMessage

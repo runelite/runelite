@@ -29,7 +29,6 @@ package net.runelite.client.plugins.timers;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
@@ -146,8 +145,6 @@ public class TimersPlugin extends Plugin
 	private int lastPoisonVarp;
 	private int lastPvpVarb;
 	private int lastCorruptionVarb;
-	private int lastHomeTeleport;
-	private int lastMinigameTeleport;
 	private int lastStaminaEffect;
 	private int lastImbuedHeartVarb;
 	private boolean imbuedHeartTimerActive;
@@ -202,8 +199,6 @@ public class TimersPlugin extends Plugin
 		staminaTimer = null;
 		imbuedHeartTimerActive = false;
 		lastImbuedHeartVarb = 0;
-		lastHomeTeleport = 0;
-		lastMinigameTeleport = 0;
 		lastStaminaEffect = 0;
 	}
 
@@ -217,8 +212,6 @@ public class TimersPlugin extends Plugin
 		int pvpVarb = client.getVarbitValue(Varbits.PVP_SPEC_ORB);
 		int corruptionCooldownVarb = client.getVarbitValue(Varbits.CORRUPTION_COOLDOWN);
 		int imbuedHeartCooldownVarb = client.getVarbitValue(Varbits.IMBUED_HEART_COOLDOWN);
-		int homeTeleportVarp = client.getVar(VarPlayer.LAST_HOME_TELEPORT);
-		int minigameTeleportVarp = client.getVar(VarPlayer.LAST_MINIGAME_TELEPORT);
 		int staminaEffectActive = client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE);
 		int staminaPotionEffectVarb = client.getVarbitValue(Varbits.STAMINA_EFFECT);
 		int enduranceRingEffectVarb = client.getVarbitValue(Varbits.RING_OF_ENDURANCE_EFFECT);
@@ -331,16 +324,14 @@ public class TimersPlugin extends Plugin
 			lastImbuedHeartVarb = imbuedHeartCooldownVarb;
 		}
 
-		if (lastHomeTeleport != homeTeleportVarp)
+		if (event.getIndex() == VarPlayer.LAST_HOME_TELEPORT.getId() && config.showHomeMinigameTeleports())
 		{
 			checkTeleport(VarPlayer.LAST_HOME_TELEPORT);
-			lastHomeTeleport = homeTeleportVarp;
 		}
 
-		if (lastMinigameTeleport != minigameTeleportVarp)
+		if (event.getIndex() == VarPlayer.LAST_MINIGAME_TELEPORT.getId() && config.showHomeMinigameTeleports())
 		{
 			checkTeleport(VarPlayer.LAST_MINIGAME_TELEPORT);
-			lastMinigameTeleport = minigameTeleportVarp;
 		}
 
 		// staminaEffectActive is checked to match https://github.com/Joshua-F/cs2-scripts/blob/741271f0c3395048c1bad4af7881a13734516adf/scripts/%5Bproc%2Cbuff_bar_get_value%5D.cs2#L25
@@ -913,7 +904,7 @@ public class TimersPlugin extends Plugin
 
 		int lastTeleport = client.getVar(varPlayer);
 		long lastTeleportSeconds = (long) lastTeleport * 60;
-		Instant teleportExpireInstant = Instant.ofEpochSecond(lastTeleportSeconds).plus(teleport.getDuration().getSeconds(), ChronoUnit.SECONDS);
+		Instant teleportExpireInstant = Instant.ofEpochSecond(lastTeleportSeconds).plus(teleport.getDuration());
 		Duration remainingTime = Duration.between(Instant.now(), teleportExpireInstant);
 
 		if (remainingTime.getSeconds() > 0)

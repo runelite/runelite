@@ -128,4 +128,15 @@ public interface NpcAggroAreaConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "showOnSlayerTask",
+		name = "Show on slayer task",
+		description = "Enable for current slayer task NPCs",
+		position = 9
+	)
+	default boolean showOnSlayerTask()
+	{
+		return false;
+	}
 }

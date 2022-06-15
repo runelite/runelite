@@ -320,7 +320,9 @@ public class ChatFilterPlugin extends Plugin
 	String censorMessage(final String username, final String message)
 	{
 		String strippedMessage = jagexPrintableCharMatcher.retainFrom(message)
-			.replace('\u00A0', ' ');
+			.replace('\u00A0', ' ')
+			.replaceAll("<lt>", "<")
+			.replaceAll("<gt>", ">");
 		String strippedAccents = stripAccents(strippedMessage);
 		assert strippedMessage.length() == strippedAccents.length();
 

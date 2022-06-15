@@ -67,6 +67,17 @@ public interface SpecialCounterConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 3,
+		keyName = "infobox",
+		name = "Infobox",
+		description = "Adds an infobox counting special attacks"
+	)
+	default boolean infobox()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		position = 10,
 		keyName = "dragonWarhammerThreshold",
 		name = "Dragon Warhammer",

@@ -37,8 +37,6 @@ import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.ImageCapture;
-import net.runelite.client.ws.PartyService;
-import net.runelite.client.ws.WSClient;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
@@ -86,15 +84,7 @@ public class RaidsPluginTest
 
 	@Mock
 	@Bind
-	PartyService partyService;
-
-	@Mock
-	@Bind
 	OverlayManager overlayManager;
-
-	@Mock
-	@Bind
-	WSClient wsClient;
 
 	@Mock
 	@Bind

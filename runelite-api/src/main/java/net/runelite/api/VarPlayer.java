@@ -39,6 +39,7 @@ import lombok.Getter;
 @Getter
 public enum VarPlayer
 {
+	CANNON_AMMO(3),
 	ATTACK_STYLE(43),
 	QUEST_POINTS(101),
 	IS_POISONED(102),

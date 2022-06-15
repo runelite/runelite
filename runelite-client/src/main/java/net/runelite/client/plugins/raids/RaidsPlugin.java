@@ -94,11 +94,7 @@ import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.ImageCapture;
 import net.runelite.client.util.Text;
 import static net.runelite.client.util.Text.sanitize;
-import net.runelite.client.ws.PartyMember;
-import net.runelite.client.ws.PartyService;
-import net.runelite.client.ws.WSClient;
 import net.runelite.http.api.chat.LayoutRoom;
-import net.runelite.http.api.ws.messages.party.PartyChatMessage;
 
 @PluginDescriptor(
 	name = "Chambers Of Xeric",
@@ -152,12 +148,6 @@ public class RaidsPlugin extends Plugin
 
 	@Inject
 	private ClientThread clientThread;
-
-	@Inject
-	private PartyService party;
-
-	@Inject
-	private WSClient ws;
 
 	@Inject
 	private ChatCommandManager chatCommandManager;
@@ -361,11 +351,7 @@ public class RaidsPlugin extends Plugin
 			return;
 		}
 
-		if (event.getEntry().getOption().equals(RaidsOverlay.BROADCAST_ACTION))
-		{
-			sendRaidLayoutMessage();
-		}
-		else if (event.getEntry().getOption().equals(RaidsOverlay.SCREENSHOT_ACTION))
+		if (event.getEntry().getOption().equals(RaidsOverlay.SCREENSHOT_ACTION))
 		{
 			screenshotScoutOverlay();
 		}
@@ -481,21 +467,11 @@ public class RaidsPlugin extends Plugin
 			.append(raidData)
 			.build();
 
-		final PartyMember localMember = party.getLocalMember();
+		chatMessageManager.queue(QueuedMessage.builder()
+			.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
+			.runeLiteFormattedMessage(layoutMessage)
+			.build());
 
-		if (party.getMembers().isEmpty() || localMember == null)
-		{
-			chatMessageManager.queue(QueuedMessage.builder()
-				.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
-				.runeLiteFormattedMessage(layoutMessage)
-				.build());
-		}
-		else
-		{
-			final PartyChatMessage message = new PartyChatMessage(layoutMessage);
-			message.setMemberId(localMember.getMemberId());
-			ws.send(message);
-		}
 	}
 
 	private void updateInfoBoxState()

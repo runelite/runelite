@@ -66,6 +66,12 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.events.PartyChanged;
 import net.runelite.client.events.PartyMemberAvatar;
+import net.runelite.client.party.PartyMember;
+import net.runelite.client.party.PartyService;
+import net.runelite.client.party.WSClient;
+import net.runelite.client.party.messages.UserJoin;
+import net.runelite.client.party.messages.UserPart;
+import net.runelite.client.party.messages.UserSync;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.party.data.PartyData;
@@ -83,12 +89,6 @@ import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
-import net.runelite.client.ws.PartyMember;
-import net.runelite.client.ws.PartyService;
-import net.runelite.client.ws.WSClient;
-import net.runelite.http.api.ws.messages.party.UserJoin;
-import net.runelite.http.api.ws.messages.party.UserPart;
-import net.runelite.http.api.ws.messages.party.UserSync;
 
 @PluginDescriptor(
 	name = "Party",
@@ -103,9 +103,6 @@ public class PartyPlugin extends Plugin
 
 	@Inject
 	private PartyService party;
-
-	@Inject
-	private WSClient ws;
 
 	@Inject
 	private OverlayManager overlayManager;
@@ -266,7 +263,7 @@ public class PartyPlugin extends Plugin
 		event.consume();
 		final TilePing tilePing = new TilePing(selectedSceneTile.getWorldLocation());
 		tilePing.setMemberId(party.getLocalMember().getMemberId());
-		wsClient.send(tilePing);
+		party.send(tilePing);
 	}
 
 	@Subscribe
@@ -326,7 +323,7 @@ public class PartyPlugin extends Plugin
 
 		final LocationUpdate locationUpdate = new LocationUpdate(location);
 		locationUpdate.setMemberId(localMember.getMemberId());
-		wsClient.send(locationUpdate);
+		party.send(locationUpdate);
 	}
 
 	@Subscribe
@@ -342,7 +339,7 @@ public class PartyPlugin extends Plugin
 			// Request sync
 			final UserSync userSync = new UserSync();
 			userSync.setMemberId(party.getLocalMember().getMemberId());
-			ws.send(userSync);
+			party.send(userSync);
 		}
 	}
 
@@ -442,21 +439,21 @@ public class PartyPlugin extends Plugin
 			{
 				final SkillUpdate update = new SkillUpdate(Skill.HITPOINTS, currentHealth, realHealth);
 				update.setMemberId(localMember.getMemberId());
-				ws.send(update);
+				party.send(update);
 			}
 
 			if (forceSend || currentPrayer != lastPray)
 			{
 				final SkillUpdate update = new SkillUpdate(Skill.PRAYER, currentPrayer, realPrayer);
 				update.setMemberId(localMember.getMemberId());
-				ws.send(update);
+				party.send(update);
 			}
 
 			if (forceSend || !characterName.equals(lastCharacterName))
 			{
 				final CharacterNameUpdate update = new CharacterNameUpdate(characterName);
 				update.setMemberId(localMember.getMemberId());
-				ws.send(update);
+				party.send(update);
 			}
 		}
 

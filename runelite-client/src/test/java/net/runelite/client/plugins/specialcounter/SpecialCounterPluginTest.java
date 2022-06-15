@@ -49,8 +49,8 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.AsyncBufferedImage;
-import net.runelite.client.ws.PartyService;
-import net.runelite.client.ws.WSClient;
+import net.runelite.client.party.PartyService;
+import net.runelite.client.party.WSClient;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -114,6 +114,8 @@ public class SpecialCounterPluginTest
 	public void before()
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
+
+		when(specialCounterConfig.infobox()).thenReturn(true);
 
 		// Set up spec weapon
 		ItemContainer equipment = mock(ItemContainer.class);
