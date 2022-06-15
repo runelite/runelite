@@ -28,15 +28,26 @@ import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import javax.inject.Inject;
+
 import net.runelite.api.ChatMessageType;
+import net.runelite.api.Client;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
+import net.runelite.api.ItemID;
+import net.runelite.api.Node;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.ui.overlay.OverlayManager;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -60,6 +71,10 @@ public class SmeltingPluginTest
 	@Bind
 	OverlayManager overlayManager;
 
+	@Mock
+	@Bind
+	Client client;
+
 	@Before
 	public void before()
 	{
@@ -75,6 +90,76 @@ public class SmeltingPluginTest
 		SmeltingSession smeltingSession = smeltingPlugin.getSession();
 		assertNotNull(smeltingSession);
 		assertEquals(4, smeltingSession.getCannonBallsSmelted());
+	}
+
+	@Test
+	public void testCannonballsWithDoubleMould()
+	{
+		when(client.getItemContainer(InventoryID.INVENTORY)).thenReturn(new ItemContainer()
+		{
+			@Override
+			public int getId()
+			{
+				return 0;
+			}
+
+			@NotNull
+			@Override
+			public Item[] getItems()
+			{
+				return new Item[0];
+			}
+
+			@Nullable
+			@Override
+			public Item getItem(int slot)
+			{
+				return null;
+			}
+
+			@Override
+			public boolean contains(int itemId)
+			{
+				return itemId == ItemID.DOUBLE_AMMO_MOULD;
+			}
+
+			@Override
+			public int count(int itemId)
+			{
+				return 0;
+			}
+
+			@Override
+			public int size()
+			{
+				return 0;
+			}
+
+			@Override
+			public Node getNext()
+			{
+				return null;
+			}
+
+			@Override
+			public Node getPrevious()
+			{
+				return null;
+			}
+
+			@Override
+			public long getHash()
+			{
+				return 0;
+			}
+		});
+
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", SMELT_CANNONBALL, "", 0);
+		smeltingPlugin.onChatMessage(chatMessage);
+
+		SmeltingSession smeltingSession = smeltingPlugin.getSession();
+		assertNotNull(smeltingSession);
+		assertEquals(8, smeltingSession.getCannonBallsSmelted());
 	}
 
 	@Test
