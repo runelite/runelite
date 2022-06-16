@@ -204,7 +204,7 @@ class XpStateSingle
 				// return time remaining in hh:mm:ss or mm:ss format where hh can be > 24
 				if (durationHoursTotal > 0)
 				{
-					return String.format("%02d:%02d:%02d", durationHoursTotal, durationMinutes, durationSeconds);
+					return String.format("%d:%02d:%02d", durationHoursTotal, durationMinutes, durationSeconds);
 				}
 
 				// Minutes and seconds will always be present
