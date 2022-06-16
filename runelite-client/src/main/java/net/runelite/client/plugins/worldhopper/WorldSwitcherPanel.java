@@ -58,14 +58,14 @@ class WorldSwitcherPanel extends PluginPanel
 	private static final int PLAYERS_COLUMN_WIDTH = 40;
 	private static final int PING_COLUMN_WIDTH = 47;
 
-	private final JPanel favouriteWorldsContainer = new JPanel();
-	private final JPanel worldsContainer = new JPanel();
-	private final JPanel headerContainer = new JPanel(new BorderLayout());
+	private final JPanel favoriteWorldsContainer = new JPanel(new BorderLayout());
+	private final JPanel favoriteWorldsList = new JPanel();
+	private final JPanel worldsList = new JPanel();
 
-	private WorldTableHeader worldHeader;
-	private WorldTableHeader playersHeader;
-	private WorldTableHeader activityHeader;
-	private WorldTableHeader pingHeader;
+	private final List<WorldTableHeader> worldHeaders = new ArrayList<>();
+	private final List<WorldTableHeader> playersHeaders = new ArrayList<>();
+	private final List<WorldTableHeader> activityHeaders = new ArrayList<>();
+	private final List<WorldTableHeader> pingHeaders = new ArrayList<>();
 
 	private WorldOrder orderIndex = WorldOrder.WORLD;
 	private boolean ascendingOrder = true;
@@ -86,28 +86,33 @@ class WorldSwitcherPanel extends PluginPanel
 		setBorder(null);
 		setLayout(new BorderLayout());
 
-		favouriteWorldsContainer.setLayout(new GridLayout(0, 1));
-		worldsContainer.setLayout(new GridLayout(0, 1));
+		favoriteWorldsList.setLayout(new GridLayout(0, 1));
+		worldsList.setLayout(new GridLayout(0, 1));
 
-		JPanel wrappedFavouriteWorldsContainer = new FixedWidthPanel();
-		wrappedFavouriteWorldsContainer.setLayout(new BorderLayout());
-		wrappedFavouriteWorldsContainer.add(favouriteWorldsContainer, BorderLayout.NORTH);
+		JPanel wrappedFavoriteWorldsList = new FixedWidthPanel();
+		wrappedFavoriteWorldsList.setLayout(new BorderLayout());
+		wrappedFavoriteWorldsList.add(favoriteWorldsList, BorderLayout.NORTH);
 
-		JScrollPane favouriteWorldsScrollPane = new JScrollPane(wrappedFavouriteWorldsContainer);
-		favouriteWorldsScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		JScrollPane favoriteWorldsScrollPane = new JScrollPane(wrappedFavoriteWorldsList);
+		favoriteWorldsScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-		JPanel wrappedWorldsContainer = new FixedWidthPanel();
-		wrappedWorldsContainer.setLayout(new BorderLayout());
-		wrappedWorldsContainer.add(worldsContainer, BorderLayout.NORTH);
+		JPanel wrappedWorldsList = new FixedWidthPanel();
+		wrappedWorldsList.setLayout(new BorderLayout());
+		wrappedWorldsList.add(worldsList, BorderLayout.NORTH);
 
-		JScrollPane worldsScrollPane = new JScrollPane(wrappedWorldsContainer);
+		JScrollPane worldsScrollPane = new JScrollPane(wrappedWorldsList);
 		worldsScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-		headerContainer.add(buildHeader(), BorderLayout.NORTH);
-		headerContainer.add(favouriteWorldsScrollPane, BorderLayout.CENTER);
+		favoriteWorldsContainer.setBorder(new EmptyBorder(0, 0, 12, 0));
+		favoriteWorldsContainer.add(buildHeader(), BorderLayout.NORTH);
+		favoriteWorldsContainer.add(favoriteWorldsScrollPane, BorderLayout.CENTER);
 
-		add(headerContainer, BorderLayout.NORTH);
-		add(worldsScrollPane, BorderLayout.CENTER);
+		JPanel worldsContainer = new JPanel(new BorderLayout());
+		worldsContainer.add(buildHeader(), BorderLayout.NORTH);
+		worldsContainer.add(worldsScrollPane, BorderLayout.CENTER);
+
+		add(favoriteWorldsContainer, BorderLayout.NORTH);
+		add(worldsContainer, BorderLayout.CENTER);
 	}
 
 	void switchCurrentHighlight(int newWorld, int lastWorld)
@@ -208,26 +213,36 @@ class WorldSwitcherPanel extends PluginPanel
 			}
 		});
 
-		rows.sort((r1, r2) ->
-		{
-			boolean b1 = plugin.isFavorite(r1.getWorld());
-			boolean b2 = plugin.isFavorite(r2.getWorld());
-			return Boolean.compare(b2, b1);
-		});
+		favoriteWorldsList.removeAll();
+		worldsList.removeAll();
 
-		favouriteWorldsContainer.removeAll();
-		worldsContainer.removeAll();
-
-		for (int i = 0; i < rows.size(); i++)
+		int worldIndex = 0;
+		int favoriteWorldIndex = 0;
+		for (WorldTableRow row : rows)
 		{
-			WorldTableRow row = rows.get(i);
-			row.setBackground(i % 2 == 0 ? ODD_ROW : ColorScheme.DARK_GRAY_COLOR);
-			(plugin.isFavorite(row.getWorld()) ? favouriteWorldsContainer : worldsContainer).add(row);
+			if (plugin.isFavorite(row.getWorld()))
+			{
+				row.setBackground(favoriteWorldIndex % 2 == 0 ? ODD_ROW : ColorScheme.DARK_GRAY_COLOR);
+				favoriteWorldsList.add(row);
+				favoriteWorldIndex++;
+			}
+			else
+			{
+				row.setBackground(worldIndex % 2 == 0 ? ODD_ROW : ColorScheme.DARK_GRAY_COLOR);
+				worldsList.add(row);
+				worldIndex++;
+			}
 		}
 
-		int borderSize = favouriteWorldsContainer.getComponentCount() > 0 ? 12 : 0;
-		headerContainer.setBorder(new EmptyBorder(0, 0, borderSize, 0));
-		headerContainer.setPreferredSize(new Dimension(0, Math.min(18 + borderSize + favouriteWorldsContainer.getComponentCount() * 26, 290)));
+		if (favoriteWorldIndex == 0)
+		{
+			favoriteWorldsContainer.setVisible(false);
+		}
+		else
+		{
+			favoriteWorldsContainer.setVisible(true);
+			favoriteWorldsContainer.setPreferredSize(new Dimension(0, Math.min(30 + favoriteWorldIndex * 26, 290)));
+		}
 
 		revalidate();
 	}
@@ -291,26 +306,10 @@ class WorldSwitcherPanel extends PluginPanel
 
 	private void orderBy(WorldOrder order)
 	{
-		pingHeader.highlight(false, ascendingOrder);
-		worldHeader.highlight(false, ascendingOrder);
-		playersHeader.highlight(false, ascendingOrder);
-		activityHeader.highlight(false, ascendingOrder);
-
-		switch (order)
-		{
-			case PING:
-				pingHeader.highlight(true, ascendingOrder);
-				break;
-			case WORLD:
-				worldHeader.highlight(true, ascendingOrder);
-				break;
-			case PLAYERS:
-				playersHeader.highlight(true, ascendingOrder);
-				break;
-			case ACTIVITY:
-				activityHeader.highlight(true, ascendingOrder);
-				break;
-		}
+		pingHeaders.forEach(header -> header.highlight(order == WorldOrder.PING, ascendingOrder));
+		worldHeaders.forEach(header -> header.highlight(order == WorldOrder.WORLD, ascendingOrder));
+		playersHeaders.forEach(header -> header.highlight(order == WorldOrder.PLAYERS, ascendingOrder));
+		activityHeaders.forEach(header -> header.highlight(order == WorldOrder.ACTIVITY, ascendingOrder));
 
 		orderIndex = order;
 		updateList();
@@ -325,7 +324,7 @@ class WorldSwitcherPanel extends PluginPanel
 		JPanel leftSide = new JPanel(new BorderLayout());
 		JPanel rightSide = new JPanel(new BorderLayout());
 
-		pingHeader = new WorldTableHeader("Ping", orderIndex == WorldOrder.PING, ascendingOrder, plugin::refresh);
+		WorldTableHeader pingHeader = new WorldTableHeader("Ping", orderIndex == WorldOrder.PING, ascendingOrder, plugin::refresh);
 		pingHeader.setPreferredSize(new Dimension(PING_COLUMN_WIDTH, 0));
 		pingHeader.addMouseListener(new MouseAdapter()
 		{
@@ -340,8 +339,9 @@ class WorldSwitcherPanel extends PluginPanel
 				orderBy(WorldOrder.PING);
 			}
 		});
+		pingHeaders.add(pingHeader);
 
-		worldHeader = new WorldTableHeader("World", orderIndex == WorldOrder.WORLD, ascendingOrder, plugin::refresh);
+		WorldTableHeader worldHeader = new WorldTableHeader("World", orderIndex == WorldOrder.WORLD, ascendingOrder, plugin::refresh);
 		worldHeader.setPreferredSize(new Dimension(WORLD_COLUMN_WIDTH, 0));
 		worldHeader.addMouseListener(new MouseAdapter()
 		{
@@ -356,8 +356,9 @@ class WorldSwitcherPanel extends PluginPanel
 				orderBy(WorldOrder.WORLD);
 			}
 		});
+		worldHeaders.add(worldHeader);
 
-		playersHeader = new WorldTableHeader("#", orderIndex == WorldOrder.PLAYERS, ascendingOrder, plugin::refresh);
+		WorldTableHeader playersHeader = new WorldTableHeader("#", orderIndex == WorldOrder.PLAYERS, ascendingOrder, plugin::refresh);
 		playersHeader.setPreferredSize(new Dimension(PLAYERS_COLUMN_WIDTH, 0));
 		playersHeader.addMouseListener(new MouseAdapter()
 		{
@@ -372,8 +373,9 @@ class WorldSwitcherPanel extends PluginPanel
 				orderBy(WorldOrder.PLAYERS);
 			}
 		});
+		playersHeaders.add(playersHeader);
 
-		activityHeader = new WorldTableHeader("Activity", orderIndex == WorldOrder.ACTIVITY, ascendingOrder, plugin::refresh);
+		WorldTableHeader activityHeader = new WorldTableHeader("Activity", orderIndex == WorldOrder.ACTIVITY, ascendingOrder, plugin::refresh);
 		activityHeader.addMouseListener(new MouseAdapter()
 		{
 			@Override
@@ -387,6 +389,7 @@ class WorldSwitcherPanel extends PluginPanel
 				orderBy(WorldOrder.ACTIVITY);
 			}
 		});
+		activityHeaders.add(activityHeader);
 
 		leftSide.add(worldHeader, BorderLayout.WEST);
 		leftSide.add(playersHeader, BorderLayout.CENTER);
