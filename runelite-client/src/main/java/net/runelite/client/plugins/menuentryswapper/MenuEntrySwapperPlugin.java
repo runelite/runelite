@@ -55,7 +55,6 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
-import net.runelite.api.NpcID;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.ParamID;
 import net.runelite.api.events.ClientTick;
@@ -73,6 +72,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemVariationMapping;
+import net.runelite.client.game.NpcUtil;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.menus.WidgetMenuOption;
 import net.runelite.client.plugins.Plugin;
@@ -1275,33 +1275,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 			.filter(e ->
 			{
 				final NPC npc = e.getNpc();
-				if (npc == null)
-				{
-					return true;
-				}
-
-				final int id = npc.getId();
-				switch (id)
-				{
-					// These NPCs hit 0hp but don't actually die
-					case NpcID.GARGOYLE:
-					case NpcID.GARGOYLE_413:
-					case NpcID.GARGOYLE_1543:
-					case NpcID.ZYGOMITE:
-					case NpcID.ZYGOMITE_1024:
-					case NpcID.ANCIENT_ZYGOMITE:
-					case NpcID.ROCKSLUG:
-					case NpcID.ROCKSLUG_422:
-					case NpcID.DESERT_LIZARD:
-					case NpcID.DESERT_LIZARD_460:
-					case NpcID.DESERT_LIZARD_461:
-					case NpcID.ICE_DEMON:
-					case NpcID.ICE_DEMON_7585:
-						return true;
-					default:
-						return !npc.isDead();
-
-				}
+				return npc == null || !NpcUtil.isDying(npc);
 			})
 			.toArray(MenuEntry[]::new);
 		if (oldEntries.length != newEntries.length)
