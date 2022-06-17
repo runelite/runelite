@@ -255,7 +255,7 @@ public class ScreenMarkerPlugin extends Plugin
 
 	public void deleteAllMarkers()
 	{
-		for(ScreenMarkerOverlay screenMarker : screenMarkers)
+		for (ScreenMarkerOverlay screenMarker : screenMarkers)
 		{
 			overlayManager.remove(screenMarker);
 			overlayManager.resetOverlay(screenMarker);
