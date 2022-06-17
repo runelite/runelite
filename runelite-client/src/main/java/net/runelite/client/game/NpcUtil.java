@@ -47,6 +47,23 @@ public class NpcUtil
 			case NpcID.GARGOYLE:
 			case NpcID.GARGOYLE_413:
 			case NpcID.GARGOYLE_1543:
+			case NpcID.MARBLE_GARGOYLE:
+			case NpcID.MARBLE_GARGOYLE_7408:
+			case NpcID.DAWN:
+			case NpcID.DAWN_7852:
+			case NpcID.DAWN_7853:
+			case NpcID.DAWN_7884:
+			case NpcID.DAWN_7885:
+			case NpcID.DUSK:
+			case NpcID.DUSK_7851:
+			case NpcID.DUSK_7854:
+			case NpcID.DUSK_7855:
+			case NpcID.DUSK_7882:
+			case NpcID.DUSK_7883:
+			case NpcID.DUSK_7886:
+			case NpcID.DUSK_7887:
+			case NpcID.DUSK_7888:
+			case NpcID.DUSK_7889:
 			case NpcID.ZYGOMITE:
 			case NpcID.ZYGOMITE_1024:
 			case NpcID.ANCIENT_ZYGOMITE:
@@ -55,8 +72,11 @@ public class NpcUtil
 			case NpcID.DESERT_LIZARD:
 			case NpcID.DESERT_LIZARD_460:
 			case NpcID.DESERT_LIZARD_461:
-			case NpcID.ICE_DEMON:
-			case NpcID.ICE_DEMON_7585:
+			case NpcID.GROWTHLING:
+			case NpcID.KALPHITE_QUEEN_963:
+			case NpcID.KALPHITE_QUEEN_965:
+			case NpcID.VETION:
+			case NpcID.VETION_REBORN:
 				return false;
 			default:
 				return npc.isDead();
