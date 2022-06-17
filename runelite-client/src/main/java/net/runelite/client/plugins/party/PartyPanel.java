@@ -143,7 +143,7 @@ class PartyPanel extends PluginPanel
 			else
 			{
 				// Create party
-				clientThread.invokeLater(() -> party.changeParty(party.generatePasspharse()));
+				clientThread.invokeLater(() -> party.changeParty(party.generatePassphrase()));
 			}
 		});
 
