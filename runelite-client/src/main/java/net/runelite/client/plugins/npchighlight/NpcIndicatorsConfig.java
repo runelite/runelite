@@ -92,6 +92,18 @@ public interface NpcIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 4,
+		keyName = "highlightSouthWestTrueTile",
+		name = "Highlight south west true tile",
+		description = "Configures whether or not NPC should be highlighted by south western true tile",
+		section = renderStyleSection
+	)
+	default boolean highlightSouthWestTrueTile()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 5,
 		keyName = "highlightOutline",
 		name = "Highlight outline",
 		description = "Configures whether or not the model of the NPC should be highlighted by outline",
