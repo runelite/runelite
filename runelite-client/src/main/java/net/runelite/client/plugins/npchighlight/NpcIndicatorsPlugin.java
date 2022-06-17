@@ -662,6 +662,7 @@ public class NpcIndicatorsPlugin extends Plugin
 			.tile(config.highlightTile())
 			.trueTile(config.highlightTrueTile())
 			.swTile(config.highlightSouthWestTile())
+			.swTrueTile(config.highlightSouthWestTrueTile())
 			.outline(config.highlightOutline())
 			.name(config.drawNames())
 			.nameOnMinimap(config.drawMinimapNames())

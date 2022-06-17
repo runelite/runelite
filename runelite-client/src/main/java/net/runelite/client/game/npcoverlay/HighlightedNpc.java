@@ -45,6 +45,7 @@ public class HighlightedNpc
 	boolean tile;
 	boolean trueTile;
 	boolean swTile;
+	boolean swTrueTile;
 	boolean outline;
 	boolean name;
 	boolean nameOnMinimap;
