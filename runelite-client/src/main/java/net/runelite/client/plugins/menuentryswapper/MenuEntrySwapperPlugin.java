@@ -1174,9 +1174,18 @@ public class MenuEntrySwapperPlugin extends Plugin
 			final NPC npc = menuEntry.getNpc();
 			assert npc != null;
 			final NPCComposition composition = npc.getTransformedComposition();
+			assert composition != null;
 
 			Integer customOption = getNpcSwapConfig(shiftModifier(), composition.getId());
-			if (customOption != null)
+			if (customOption == null)
+			{
+				if (shiftModifier() && config.npcShiftClickWalkHere())
+				{
+					// we can achieve this by just deprioritizing the normal npc menus
+					menuEntry.setDeprioritized(true);
+				}
+			}
+			else
 			{
 				// Walk here swap
 				if (customOption == -1)
