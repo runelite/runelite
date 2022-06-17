@@ -38,6 +38,7 @@ import net.runelite.client.callback.Hooks;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.game.NpcUtil;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
@@ -190,7 +191,7 @@ public class EntityHiderPlugin extends Plugin
 			}
 
 			// dead npcs can also be interacting so prioritize it over the interacting check
-			if (npc.isDead() && hideDeadNpcs)
+			if (NpcUtil.isDying(npc) && hideDeadNpcs)
 			{
 				return false;
 			}
