@@ -103,6 +103,20 @@ class NpcOverlay extends Overlay
 			renderPoly(graphics, borderColor, borderWidth, fillColor, tilePoly);
 		}
 
+		if (highlightedNpc.isTrueTile())
+		{
+			LocalPoint lp = LocalPoint.fromWorld(client, actor.getWorldLocation()); // centered on sw tile
+			if (lp != null)
+			{
+				final int size = npcComposition.getSize();
+				final LocalPoint centerLp = new LocalPoint(
+					lp.getX() + Perspective.LOCAL_TILE_SIZE * (size - 1) / 2,
+					lp.getY() + Perspective.LOCAL_TILE_SIZE * (size - 1) / 2);
+				Polygon tilePoly = Perspective.getCanvasTileAreaPoly(client, centerLp, size);
+				renderPoly(graphics, borderColor, borderWidth, fillColor, tilePoly);
+			}
+		}
+
 		if (highlightedNpc.isSwTile())
 		{
 			LocalPoint lp = LocalPoint.fromWorld(client, actor.getWorldLocation());
