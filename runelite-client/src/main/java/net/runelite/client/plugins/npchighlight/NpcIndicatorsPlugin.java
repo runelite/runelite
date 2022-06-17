@@ -660,6 +660,7 @@ public class NpcIndicatorsPlugin extends Plugin
 			.fillColor(config.fillColor())
 			.hull(config.highlightHull())
 			.tile(config.highlightTile())
+			.trueTile(config.highlightTrueTile())
 			.swTile(config.highlightSouthWestTile())
 			.outline(config.highlightOutline())
 			.name(config.drawNames())
