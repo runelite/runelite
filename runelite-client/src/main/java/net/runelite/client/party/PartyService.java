@@ -90,7 +90,7 @@ public class PartyService
 		eventBus.register(this);
 	}
 
-	public String generatePasspharse()
+	public String generatePassphrase()
 	{
 		assert client.isClientThread();
 
