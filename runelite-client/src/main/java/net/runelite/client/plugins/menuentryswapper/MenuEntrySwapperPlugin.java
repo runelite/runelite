@@ -774,6 +774,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 				final NPC npc = entry.getNpc();
 				assert npc != null;
 				final NPCComposition composition = npc.getTransformedComposition();
+				assert composition != null;
 				final String[] actions = composition.getActions();
 
 				final Integer swapConfig = getNpcSwapConfig(false, composition.getId());
@@ -847,7 +848,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 					.setType(MenuAction.RUNELITE)
 					.onClick(walkHereConsumer(true, composition));
 
-				if (getNpcSwapConfig(true, composition.getId()) != null || getNpcSwapConfig(false, composition.getId()) != null)
+				if (getNpcSwapConfig(true, composition.getId()) != null || getNpcSwapConfig(false, composition.getId()) != null) // NOPMD: BrokenNullCheck
 				{
 					// Reset
 					client.createMenuEntry(idx)
