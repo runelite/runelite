@@ -138,87 +138,8 @@ public interface Actor extends Renderable
 	@VisibleForDevtools
 	void setPoseAnimation(int animation);
 
-	/**
-	 * The idle pose animation. If the actor is not walking or otherwise animating, this will be used
-	 * for their pose animation.
-	 *
-	 * @return the animation ID
-	 * @see AnimationID
-	 */
-	int getIdlePoseAnimation();
-
 	@VisibleForDevtools
 	void setIdlePoseAnimation(int animation);
-
-	/**
-	 * Animation used for rotating left if the actor is also not walking
-	 *
-	 * @return the animation ID
-	 * @see AnimationID
-	 */
-	int getIdleRotateLeft();
-
-	void setIdleRotateLeft(int animationID);
-
-	/**
-	 * Animation used for rotating right if the actor is also not walking
-	 *
-	 * @return the animation ID
-	 * @see AnimationID
-	 */
-	int getIdleRotateRight();
-
-	void setIdleRotateRight(int animationID);
-
-	/**
-	 * Animation used for walking
-	 *
-	 * @return the animation ID
-	 * @see AnimationID
-	 */
-	int getWalkAnimation();
-
-	void setWalkAnimation(int animationID);
-
-	/**
-	 * Animation used for rotating left while walking
-	 *
-	 * @return the animation ID
-	 * @see AnimationID
-	 */
-	int getWalkRotateLeft();
-
-	void setWalkRotateLeft(int animationID);
-
-	/**
-	 * Animation used for rotating right while walking
-	 *
-	 * @return the animation ID
-	 * @see AnimationID
-	 */
-	int getWalkRotateRight();
-
-	void setWalkRotateRight(int animationID);
-
-	/**
-	 * Animation used for an about-face while walking
-	 *
-	 * @return the animation ID
-	 * @see AnimationID
-	 */
-	int getWalkRotate180();
-
-	void setWalkRotate180(int animationID);
-
-	/**
-	 * Animation used for running
-	 *
-	 * @return the animation ID
-	 * @see AnimationID
-	 */
-	int getRunAnimation();
-
-	void setRunAnimation(int animationID);
 
 	/**
 	 * Sets an animation for the actor to perform.
@@ -228,13 +149,6 @@ public interface Actor extends Renderable
 	 */
 	@VisibleForDevtools
 	void setAnimation(int animation);
-
-	/**
-	 * Get the frame of the animation the actor is performing
-	 *
-	 * @return the frame
-	 */
-	int getAnimationFrame();
 
 	/**
 	 * Sets the frame of the animation the actor is performing.
@@ -267,25 +181,6 @@ public interface Actor extends Renderable
 	 * @see GraphicID
 	 */
 	void setGraphic(int graphic);
-
-	/**
-	 * Get the height of the graphic/spotanim on the actor
-	 * @return
-	 */
-	int getGraphicHeight();
-
-	/**
-	 * Set the height of the graphic/spotanim on the actor
-	 * @param height
-	 */
-	void setGraphicHeight(int height);
-
-	/**
-	 * Get the frame of the currently playing spotanim
-	 *
-	 * @return
-	 */
-	int getSpotAnimFrame();
 
 	/**
 	 * Set the frame of the currently playing spotanim
@@ -322,18 +217,6 @@ public interface Actor extends Renderable
 	 * @return the image drawing location
 	 */
 	Point getCanvasImageLocation(BufferedImage image, int zOffset);
-
-
-	/**
-	 * Gets the point at which a sprite should be drawn, relative to the
-	 * current location with the given z-axis offset.
-	 *
-	 * @param sprite the sprite to draw
-	 * @param zOffset the z-axis offset
-	 * @return the sprite drawing location
-	 */
-	Point getCanvasSpriteLocation(SpritePixels sprite, int zOffset);
-
 	/**
 	 * Gets a point on the canvas of where this actors mini-map indicator
 	 * should appear.
@@ -368,32 +251,11 @@ public interface Actor extends Renderable
 	WorldArea getWorldArea();
 
 	/**
-	 * Gets the overhead text that is displayed above the actor
-	 *
-	 * @return the overhead text
-	 */
-	String getOverheadText();
-
-	/**
 	 * Sets the overhead text that is displayed above the actor
 	 *
 	 * @param overheadText the overhead text
 	 */
 	void setOverheadText(String overheadText);
-
-	/**
-	 * Get the number of cycles/client ticks remaining before the overhead text is timed out
-	 *
-	 * @return
-	 */
-	int getOverheadCycle();
-
-	/**
-	 * Set the number of cycles/client ticks before the overhead text is timed out
-	 *
-	 * @param cycles
-	 */
-	void setOverheadCycle(int cycles);
 
 	/**
 	 * Returns true if this actor has died
