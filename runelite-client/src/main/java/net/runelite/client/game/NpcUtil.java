@@ -72,6 +72,9 @@ public class NpcUtil
 			case NpcID.DESERT_LIZARD:
 			case NpcID.DESERT_LIZARD_460:
 			case NpcID.DESERT_LIZARD_461:
+			case NpcID.LIZARD:
+			case NpcID.SMALL_LIZARD:
+			case NpcID.SMALL_LIZARD_463:
 			case NpcID.GROWTHLING:
 			case NpcID.KALPHITE_QUEEN_963:
 			case NpcID.KALPHITE_QUEEN_965:
