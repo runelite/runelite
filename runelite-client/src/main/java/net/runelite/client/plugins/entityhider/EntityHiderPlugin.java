@@ -38,6 +38,7 @@ import net.runelite.client.callback.Hooks;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.game.NpcUtil;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
@@ -68,6 +69,7 @@ public class EntityHiderPlugin extends Plugin
 	private boolean hideLocalPlayer2D;
 	private boolean hideNPCs;
 	private boolean hideNPCs2D;
+	private boolean hideDeadNpcs;
 	private boolean hidePets;
 	private boolean hideAttackers;
 	private boolean hideProjectiles;
@@ -118,6 +120,7 @@ public class EntityHiderPlugin extends Plugin
 
 		hideNPCs = config.hideNPCs();
 		hideNPCs2D = config.hideNPCs2D();
+		hideDeadNpcs = config.hideDeadNpcs();
 
 		hidePets = config.hidePets();
 
@@ -185,6 +188,12 @@ public class EntityHiderPlugin extends Plugin
 			if (npc.getComposition().isFollower() && npc != client.getFollower())
 			{
 				return !hidePets;
+			}
+
+			// dead npcs can also be interacting so prioritize it over the interacting check
+			if (NpcUtil.isDying(npc) && hideDeadNpcs)
+			{
+				return false;
 			}
 
 			if (npc.getInteracting() == client.getLocalPlayer())

@@ -176,4 +176,15 @@ public interface EntityHiderConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		position = 14,
+		keyName = "hideDeadNpcs",
+		name = "Hide Dead NPCs",
+		description = "Hides NPCs when their health reaches 0"
+	)
+	default boolean hideDeadNpcs()
+	{
+		return false;
+	}
 }

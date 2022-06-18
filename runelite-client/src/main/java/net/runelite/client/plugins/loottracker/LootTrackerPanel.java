@@ -211,7 +211,7 @@ class LootTrackerPanel extends PluginPanel
 		SwingUtil.removeButtonDecorations(collapseBtn);
 		collapseBtn.setIcon(EXPAND_ICON);
 		collapseBtn.setSelectedIcon(COLLAPSE_ICON);
-		SwingUtil.addModalTooltip(collapseBtn, "Collapse All", "Un-Collapse All");
+		SwingUtil.addModalTooltip(collapseBtn, "Expand All", "Collapse All");
 		collapseBtn.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		collapseBtn.setUI(new BasicButtonUI()); // substance breaks the layout
 		collapseBtn.addActionListener(ev -> changeCollapse());
