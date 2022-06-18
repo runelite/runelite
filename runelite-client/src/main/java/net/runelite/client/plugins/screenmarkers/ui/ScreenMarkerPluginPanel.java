@@ -221,6 +221,7 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 
 		repaint();
 		revalidate();
+		updateRemoveAllButtonVisibility();
 	}
 
 	/* Enables/Disables new marker creation mode */
@@ -239,7 +240,7 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 		}
 
 		creationPanel.setVisible(on);
-		addMarker.setVisible(!on);
+		markerControls.setVisible(!on);
 
 		if (on)
 		{
@@ -247,5 +248,10 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 			plugin.setMouseListenerEnabled(true);
 			plugin.setCreatingScreenMarker(true);
 		}
+	}
+
+	public void updateRemoveAllButtonVisibility()
+	{
+		removeAllMarkers.setVisible((plugin.getScreenMarkers().size() > 0));
 	}
 }
