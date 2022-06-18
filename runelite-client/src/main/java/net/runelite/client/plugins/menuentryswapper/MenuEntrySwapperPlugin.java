@@ -409,6 +409,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("wield", "battlestaff", "use", config::swapBattlestaves);
 
 		swap("clean", "use", config::swapHerbs);
+		
+		swap("eat", "potato", "use", config::swapPotatoes);
+		swap("eat", "baked potato", "use", config::swapPotatoes);
+		swap("eat", "potato with butter", "use", config::swapPotatoes);
 
 		swap("read", "recite-prayer", config::swapPrayerBook);
 
