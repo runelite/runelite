@@ -198,7 +198,6 @@ public class DpsCounterPlugin extends Plugin
 			if (localMember != null)
 			{
 				final DpsUpdate dpsUpdate = new DpsUpdate(hit, isBoss);
-				dpsUpdate.setMemberId(localMember.getMemberId());
 				partyService.send(dpsUpdate);
 			}
 
@@ -235,7 +234,7 @@ public class DpsCounterPlugin extends Plugin
 	@Subscribe
 	public void onDpsUpdate(DpsUpdate dpsUpdate)
 	{
-		if (partyService.getLocalMember().getMemberId().equals(dpsUpdate.getMemberId()))
+		if (partyService.getLocalMember().getMemberId() == dpsUpdate.getMemberId())
 		{
 			return;
 		}

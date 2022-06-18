@@ -26,6 +26,8 @@ package net.runelite.client.party;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
+import com.google.protobuf.InvalidProtocolBufferException;
+import java.io.InputStreamReader;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
@@ -37,8 +39,9 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLite;
 import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.party.messages.Handshake;
-import net.runelite.client.party.messages.PartyMessage;
+import net.runelite.client.party.events.UserJoin;
+import net.runelite.client.party.events.UserPart;
+import net.runelite.client.party.messages.PartyMemberMessage;
 import net.runelite.client.party.messages.WebsocketMessage;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
@@ -46,6 +49,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
+import okio.ByteString;
 
 @Slf4j
 @Singleton
@@ -104,15 +108,13 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 		}
 
 		Request request = new Request.Builder()
-			.url(runeliteWs)
+			.url(runeliteWs.newBuilder()
+				.addQueryParameter("sessionId", sessionId.toString())
+				.build())
 			.header("User-Agent", RuneLite.USER_AGENT)
 			.build();
 
 		webSocket = okHttpClient.newWebSocket(request, this);
-
-		Handshake handshake = new Handshake();
-		handshake.setSession(sessionId);
-		send(handshake);
 	}
 
 	boolean isOpen()
@@ -136,7 +138,42 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 		}
 	}
 
-	public void send(WebsocketMessage message)
+	void join(long partyId, long memberId)
+	{
+		final Party.Join join = Party.Join.newBuilder()
+			.setPartyId(partyId)
+			.setMemberId(memberId)
+			.build();
+		final Party.C2S c2s = Party.C2S.newBuilder()
+			.setJoin(join)
+			.build();
+		send(c2s);
+	}
+
+	void part()
+	{
+		final Party.Part part = Party.Part.newBuilder()
+			.build();
+		final Party.C2S c2s = Party.C2S.newBuilder()
+			.setPart(part)
+			.build();
+		send(c2s);
+	}
+
+	void send(WebsocketMessage message)
+	{
+		log.debug("Sending: {}", message);
+		final String json = gson.toJson(message, WebsocketMessage.class);
+		final Party.Data data = Party.Data.newBuilder()
+			.setData(com.google.protobuf.ByteString.copyFromUtf8(json))
+			.build();
+		final Party.C2S c2s = Party.C2S.newBuilder()
+			.setData(data)
+			.build();
+		send(c2s);
+	}
+
+	private void send(Party.C2S message)
 	{
 		if (webSocket == null)
 		{
@@ -144,9 +181,7 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 			connect();
 		}
 
-		final String json = gson.toJson(message, WebsocketMessage.class);
-		webSocket.send(json);
-		log.debug("Sent: {}", json);
+		webSocket.send(ByteString.of(message.toByteArray()));
 	}
 
 	@Override
@@ -165,28 +200,55 @@ public class WSClient extends WebSocketListener implements AutoCloseable
 	}
 
 	@Override
-	public void onMessage(WebSocket webSocket, String text)
+	public void onMessage(WebSocket webSocket, ByteString bytes)
 	{
-		final WebsocketMessage message;
-
+		Party.S2C s2c;
 		try
 		{
-			message = gson.fromJson(text, WebsocketMessage.class);
+			s2c = Party.S2C.parseFrom(bytes.toByteArray());
 		}
-		catch (JsonParseException e)
+		catch (InvalidProtocolBufferException e)
 		{
 			log.debug("Failed to deserialize message", e);
 			return;
 		}
 
-		if (message.isParty() && !(message instanceof PartyMessage))
+		switch (s2c.getMsgCase())
 		{
-			// spoofed message?
-			return;
-		}
+			case JOIN:
+				Party.UserJoin join = s2c.getJoin();
+				UserJoin userJoin = new UserJoin(join.getPartyId(), join.getMemberId());
+				log.debug("Got: {}", userJoin);
+				eventBus.post(userJoin);
+				break;
+			case PART:
+				Party.UserPart part = s2c.getPart();
+				UserPart userPart = new UserPart(part.getMemberId());
+				log.debug("Got: {}", userPart);
+				eventBus.post(userPart);
+				break;
+			case DATA:
+				Party.PartyData data = s2c.getData();
+				final WebsocketMessage message;
 
-		log.debug("Got: {}", text);
-		eventBus.post(message);
+				try
+				{
+					message = gson.fromJson(new InputStreamReader(data.getData().newInput()), WebsocketMessage.class);
+				}
+				catch (JsonParseException e)
+				{
+					log.debug("Failed to deserialize message", e);
+					return;
+				}
+
+				if (message instanceof PartyMemberMessage)
+				{
+					((PartyMemberMessage) message).setMemberId(data.getMemberId());
+				}
+
+				log.debug("Got: {}", message);
+				eventBus.post(message);
+		}
 	}
 
 	@Override

@@ -280,7 +280,6 @@ public class DiscordPlugin extends Plugin
 					discordUser.discriminator,
 					discordUser.avatar
 				);
-				userInfo.setMemberId(localMember.getMemberId());
 				partyService.send(userInfo);
 			}
 		}

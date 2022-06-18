@@ -143,6 +143,11 @@
 			<version>23.0.0</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.google.protobuf</groupId>
+			<artifactId>protobuf-javalite</artifactId>
+			<version>3.21.1</version>
+		</dependency>
 
 		<!-- JOGL -->
 		<dependency>
@@ -488,6 +493,7 @@
 					<analysisCache>true</analysisCache>
 					<excludes>
 						<exclude>**/RuntimeTypeAdapterFactory.java</exclude>
+						<exclude>net/runelite/client/party/Party.java</exclude>
 					</excludes>
 				</configuration>
 				<executions>
