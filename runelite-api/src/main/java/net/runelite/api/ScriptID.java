@@ -383,4 +383,10 @@ public final class ScriptID
 	 */
 	@ScriptArguments(integer = 6)
 	public static final int TRADE_MAIN_INIT = 755;
+
+	/**
+	 * Transitions the tob hud into the white flash that happens when sotetseg teleports the players to the maze.
+	 */
+	@ScriptArguments(string = 1)
+	public static final int TOB_HUD_SOTETSEG_FADE = 2308;
 }
