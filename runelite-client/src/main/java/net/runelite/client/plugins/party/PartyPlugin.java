@@ -36,7 +36,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -70,8 +69,8 @@ import net.runelite.client.input.KeyManager;
 import net.runelite.client.party.PartyMember;
 import net.runelite.client.party.PartyService;
 import net.runelite.client.party.WSClient;
-import net.runelite.client.party.messages.UserJoin;
-import net.runelite.client.party.messages.UserPart;
+import net.runelite.client.party.events.UserJoin;
+import net.runelite.client.party.events.UserPart;
 import net.runelite.client.party.messages.UserSync;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -138,7 +137,7 @@ public class PartyPlugin extends Plugin
 	boolean developerMode;
 
 	@Getter
-	private final Map<UUID, PartyData> partyDataMap = Collections.synchronizedMap(new HashMap<>());
+	private final Map<Long, PartyData> partyDataMap = Collections.synchronizedMap(new HashMap<>());
 
 	@Getter
 	private final List<PartyTilePingData> pendingTilePings = Collections.synchronizedList(new ArrayList<>());
@@ -295,7 +294,6 @@ public class PartyPlugin extends Plugin
 
 		event.consume();
 		final TilePing tilePing = new TilePing(selectedSceneTile.getWorldLocation());
-		tilePing.setMemberId(party.getLocalMember().getMemberId());
 		party.send(tilePing);
 	}
 
@@ -355,7 +353,6 @@ public class PartyPlugin extends Plugin
 		lastLocation = location;
 
 		final LocationUpdate locationUpdate = new LocationUpdate(location);
-		locationUpdate.setMemberId(localMember.getMemberId());
 		party.send(locationUpdate);
 	}
 
@@ -371,7 +368,6 @@ public class PartyPlugin extends Plugin
 		{
 			// Request sync
 			final UserSync userSync = new UserSync();
-			userSync.setMemberId(party.getLocalMember().getMemberId());
 			party.send(userSync);
 		}
 	}
@@ -380,28 +376,29 @@ public class PartyPlugin extends Plugin
 	public void onCharacterNameUpdate(final CharacterNameUpdate event)
 	{
 		final PartyData partyData = getPartyData(event.getMemberId());
-
 		if (partyData == null)
 		{
 			return;
 		}
 
-		final String name = Text.removeTags(Text.toJagexName(event.getCharacterName()));
-		final PartyMember member = partyData.getMember();
-
-		if (!name.isEmpty())
+		final PartyMember member = party.getMemberById(event.getMemberId());
+		if (member != null)
 		{
-			member.setDisplayName(name);
-			member.setLoggedIn(true);
-			partyData.setColor(ColorUtil.fromObject(name));
-		}
-		else
-		{
-			member.setLoggedIn(false);
-			partyData.setColor(Color.WHITE);
+			final String name = Text.removeTags(Text.toJagexName(event.getCharacterName()));
+			if (!name.isEmpty())
+			{
+				member.setDisplayName(name);
+				member.setLoggedIn(true);
+				partyData.setColor(ColorUtil.fromObject(name));
+			}
+			else
+			{
+				member.setLoggedIn(false);
+				partyData.setColor(Color.WHITE);
+			}
 		}
 
-		SwingUtilities.invokeLater(() -> panel.updateMember(member.getMemberId()));
+		SwingUtilities.invokeLater(() -> panel.updateMember(event.getMemberId()));
 	}
 
 	@Subscribe
@@ -425,7 +422,7 @@ public class PartyPlugin extends Plugin
 			partyData.setMaxPrayer(event.getMax());
 		}
 
-		SwingUtilities.invokeLater(() -> panel.updateMember(partyData.getMember().getMemberId()));
+		SwingUtilities.invokeLater(() -> panel.updateMember(partyData.getMemberId()));
 	}
 
 	@Subscribe
@@ -471,21 +468,18 @@ public class PartyPlugin extends Plugin
 			if (forceSend || currentHealth != lastHp)
 			{
 				final SkillUpdate update = new SkillUpdate(Skill.HITPOINTS, currentHealth, realHealth);
-				update.setMemberId(localMember.getMemberId());
 				party.send(update);
 			}
 
 			if (forceSend || currentPrayer != lastPray)
 			{
 				final SkillUpdate update = new SkillUpdate(Skill.PRAYER, currentPrayer, realPrayer);
-				update.setMemberId(localMember.getMemberId());
 				party.send(update);
 			}
 
 			if (forceSend || !characterName.equals(lastCharacterName))
 			{
 				final CharacterNameUpdate update = new CharacterNameUpdate(characterName);
-				update.setMemberId(localMember.getMemberId());
 				party.send(update);
 			}
 		}
@@ -536,7 +530,7 @@ public class PartyPlugin extends Plugin
 		chatMessageManager.queue(QueuedMessage.builder().type(ChatMessageType.GAMEMESSAGE).value("Local ID " + party.getLocalMember().getMemberId()).build());
 		for (PartyMember partyMember : party.getMembers())
 		{
-			chatMessageManager.queue(QueuedMessage.builder().type(ChatMessageType.GAMEMESSAGE).value("Member " + partyMember.getName() + " " + partyMember.getDisplayName() + " " + partyMember.getMemberId()).build());
+			chatMessageManager.queue(QueuedMessage.builder().type(ChatMessageType.GAMEMESSAGE).value("Member " + partyMember.getDisplayName() + " " + partyMember.getMemberId()).build());
 		}
 	}
 
@@ -547,7 +541,7 @@ public class PartyPlugin extends Plugin
 	}
 
 	@Nullable
-	PartyData getPartyData(final UUID uuid)
+	PartyData getPartyData(final long uuid)
 	{
 		final PartyMember memberById = party.getMemberById(uuid);
 
@@ -573,7 +567,7 @@ public class PartyPlugin extends Plugin
 				worldMapManager.add(worldMapPoint);
 			}
 
-			PartyData partyData = new PartyData(memberById, worldMapPoint);
+			PartyData partyData = new PartyData(uuid, worldMapPoint);
 
 			SwingUtilities.invokeLater(() -> panel.addMember(partyData));
 			return partyData;

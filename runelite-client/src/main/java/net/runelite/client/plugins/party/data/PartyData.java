@@ -31,14 +31,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
-import net.runelite.client.party.PartyMember;
 
 @Setter
 @Getter
 @RequiredArgsConstructor
 public class PartyData
 {
-	private final PartyMember member;
+	private final long memberId;
 	private final WorldMapPoint worldMapPoint;
 	private final PanelComponent panel = new PanelComponent();
 	private Color color = Color.WHITE;

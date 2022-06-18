@@ -38,6 +38,8 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import lombok.AccessLevel;
 import lombok.Getter;
+import net.runelite.client.party.PartyMember;
+import net.runelite.client.party.PartyService;
 import net.runelite.client.plugins.party.data.PartyData;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
@@ -45,7 +47,6 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.components.MouseDragEventForwarder;
 import net.runelite.client.ui.components.ProgressBar;
 import net.runelite.client.util.ImageUtil;
-import net.runelite.client.party.PartyMember;
 
 class PartyMemberBox extends JPanel
 {
@@ -56,6 +57,7 @@ class PartyMemberBox extends JPanel
 
 	@Getter(AccessLevel.PACKAGE)
 	private final PartyData memberPartyData;
+	private final PartyService partyService;
 
 	private final ProgressBar hpBar = new ProgressBar();
 	private final ProgressBar prayerBar = new ProgressBar();
@@ -67,10 +69,12 @@ class PartyMemberBox extends JPanel
 
 	private boolean avatarSet;
 
-	PartyMemberBox(final PartyConfig config, final JComponent panel, final PartyData memberPartyData)
+	PartyMemberBox(final PartyConfig config, final JComponent panel, final PartyData memberPartyData,
+		final PartyService partyService)
 	{
 		this.config = config;
 		this.memberPartyData = memberPartyData;
+		this.partyService = partyService;
 
 		setLayout(new BorderLayout());
 		setBorder(new EmptyBorder(5, 0, 0, 0));
@@ -137,7 +141,7 @@ class PartyMemberBox extends JPanel
 
 	void update()
 	{
-		final PartyMember member = memberPartyData.getMember();
+		final PartyMember member = partyService.getMemberById(memberPartyData.getMemberId());
 
 		// Avatar
 		if (!avatarSet && member.getAvatar() != null)

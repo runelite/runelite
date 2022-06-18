@@ -22,17 +22,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.party.messages;
+package net.runelite.client.party.events;
 
-import java.util.UUID;
-import lombok.EqualsAndHashCode;
 import lombok.Value;
 
 @Value
-@EqualsAndHashCode(callSuper = true)
-public class UserJoin extends WebsocketMessage
+public class UserJoin
 {
-	private final UUID memberId;
-	private final UUID partyId;
-	private final String name;
+	long partyId;
+	long memberId;
 }

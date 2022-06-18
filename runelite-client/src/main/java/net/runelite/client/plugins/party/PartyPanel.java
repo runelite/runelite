@@ -34,7 +34,6 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -42,12 +41,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.party.PartyService;
 import net.runelite.client.plugins.party.data.PartyData;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.DragAndDropReorderPane;
 import net.runelite.client.ui.components.PluginErrorPanel;
-import net.runelite.client.party.PartyService;
 
 class PartyPanel extends PluginPanel
 {
@@ -58,7 +57,7 @@ class PartyPanel extends PluginPanel
 	private final PartyService party;
 	private final PartyConfig config;
 
-	private final Map<UUID, PartyMemberBox> memberBoxes = new HashMap<>();
+	private final Map<Long, PartyMemberBox> memberBoxes = new HashMap<>();
 
 	private final JButton startButton = new JButton();
 	private final JButton joinPartyButton = new JButton();
@@ -216,10 +215,10 @@ class PartyPanel extends PluginPanel
 
 	void addMember(PartyData partyData)
 	{
-		if (!memberBoxes.containsKey(partyData.getMember().getMemberId()))
+		if (!memberBoxes.containsKey(partyData.getMemberId()))
 		{
-			PartyMemberBox partyMemberBox = new PartyMemberBox(config, memberBoxPanel, partyData);
-			memberBoxes.put(partyData.getMember().getMemberId(), partyMemberBox);
+			PartyMemberBox partyMemberBox = new PartyMemberBox(config, memberBoxPanel, partyData, party);
+			memberBoxes.put(partyData.getMemberId(), partyMemberBox);
 			memberBoxPanel.add(partyMemberBox);
 			memberBoxPanel.revalidate();
 		}
@@ -234,7 +233,7 @@ class PartyPanel extends PluginPanel
 		updateParty();
 	}
 
-	void removeMember(UUID memberId)
+	void removeMember(long memberId)
 	{
 		final PartyMemberBox memberBox = memberBoxes.remove(memberId);
 
@@ -247,7 +246,7 @@ class PartyPanel extends PluginPanel
 		updateParty();
 	}
 
-	void updateMember(UUID userId)
+	void updateMember(long userId)
 	{
 		final PartyMemberBox memberBox = memberBoxes.get(userId);
 
