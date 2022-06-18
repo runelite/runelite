@@ -228,6 +228,17 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return false;
 	}
+	
+	@ConfigItem(
+	keyName = "swapPotatoes",
+	name = "Potatoes",
+	description = "Swap Eat with Use on Raw, Baked, and Butter Potatoes",
+	section = itemSection
+	)
+	default boolean swapPotatoes()
+	{
+		return false;
+	}
 
 	@ConfigItem(
 		keyName = "swapHerbs",
