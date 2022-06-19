@@ -238,6 +238,20 @@ public class InputStream extends java.io.InputStream
 		return var2 | var1;
 	}
 
+	public int readVarInt2()
+	{
+		int value = 0;
+		int bits = 0;
+		int read;
+		do
+		{
+			read = readUnsignedByte();
+			value |= (read & 0x7F) << bits;
+			bits += 7;
+		} while (read > 127);
+		return value;
+	}
+
 	public byte[] getRemaining()
 	{
 		byte[] b = new byte[buffer.remaining()];
