@@ -669,7 +669,7 @@ public class NpcIndicatorsPlugin extends Plugin
 			.nameOnMinimap(config.drawMinimapNames())
 			.borderWidth((float) config.borderWidth())
 			.outlineFeather(config.outlineFeather())
-			.render(n -> !n.isDead() || !config.ignoreDeadNpcs())
+			.render(n -> !NpcUtil.isDying(n) || !config.ignoreDeadNpcs())
 			.build();
 	}
 }
