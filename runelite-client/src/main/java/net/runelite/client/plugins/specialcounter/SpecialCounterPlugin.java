@@ -101,7 +101,7 @@ public class SpecialCounterPlugin extends Plugin
 	private boolean wasInInstance;
 
 	private SpecialWeapon specialWeapon;
-	private final Set<Integer> interactedNpcIds = new HashSet<>();
+	private final Set<Integer> interactedNpcIndexes = new HashSet<>();
 	private final SpecialCounter[] specialCounter = new SpecialCounter[SpecialWeapon.values().length];
 
 	@Getter(AccessLevel.PACKAGE)
@@ -156,7 +156,7 @@ public class SpecialCounterPlugin extends Plugin
 		specialPercentage = -1;
 		lastSpecTarget = null;
 		lastSpecTick = -1;
-		interactedNpcIds.clear();
+		interactedNpcIndexes.clear();
 	}
 
 	@Override
@@ -275,6 +275,7 @@ public class SpecialCounterPlugin extends Plugin
 
 		NPC npc = (NPC) target;
 		int interactingId = npc.getId();
+		int npcIndex = npc.getIndex();
 
 		if (IGNORED_NPCS.contains(interactingId))
 		{
@@ -282,10 +283,10 @@ public class SpecialCounterPlugin extends Plugin
 		}
 
 		// If this is a new NPC reset the counters
-		if (!interactedNpcIds.contains(interactingId))
+		if (!interactedNpcIndexes.contains(npcIndex))
 		{
 			removeCounters();
-			addInteracting(interactingId);
+			interactedNpcIndexes.add(npcIndex);
 		}
 
 		if (wasSpec && specialWeapon != null && hitsplat.getAmount() > 0)
@@ -300,24 +301,12 @@ public class SpecialCounterPlugin extends Plugin
 
 			if (!party.getMembers().isEmpty())
 			{
-				final SpecialCounterUpdate specialCounterUpdate = new SpecialCounterUpdate(interactingId, specialWeapon, hit, client.getWorld(), localPlayerId);
+				final SpecialCounterUpdate specialCounterUpdate = new SpecialCounterUpdate(npcIndex, specialWeapon, hit, client.getWorld(), localPlayerId);
 				specialCounterUpdate.setMemberId(party.getLocalMember().getMemberId());
 				party.send(specialCounterUpdate);
 			}
 
 			playerInfoDrops.add(createSpecInfoDrop(specialWeapon, hit, localPlayerId));
-		}
-	}
-
-	private void addInteracting(int npcId)
-	{
-		interactedNpcIds.add(npcId);
-
-		// Add alternate forms of bosses
-		final Boss boss = Boss.getBoss(npcId);
-		if (boss != null)
-		{
-			interactedNpcIds.addAll(boss.getIds());
 		}
 	}
 
@@ -331,7 +320,7 @@ public class SpecialCounterPlugin extends Plugin
 			lastSpecTarget = null;
 		}
 
-		if (actor.isDead() && interactedNpcIds.contains(actor.getId()))
+		if (actor.isDead() && interactedNpcIndexes.contains(actor.getIndex()))
 		{
 			removeCounters();
 		}
@@ -340,7 +329,8 @@ public class SpecialCounterPlugin extends Plugin
 	@Subscribe
 	public void onSpecialCounterUpdate(SpecialCounterUpdate event)
 	{
-		if (party.getLocalMember().getMemberId().equals(event.getMemberId()))
+		if (party.getLocalMember().getMemberId().equals(event.getMemberId())
+			|| event.getWorld() != client.getWorld())
 		{
 			return;
 		}
@@ -354,13 +344,13 @@ public class SpecialCounterPlugin extends Plugin
 		clientThread.invoke(() ->
 		{
 			// If not interacting with any npcs currently, add to interacting list
-			if (interactedNpcIds.isEmpty())
+			if (interactedNpcIndexes.isEmpty())
 			{
-				addInteracting(event.getNpcId());
+				interactedNpcIndexes.add(event.getNpcIndex());
 			}
 
 			// Otherwise we only add the count if it is against a npc we are already tracking
-			if (interactedNpcIds.contains(event.getNpcId()))
+			if (interactedNpcIndexes.contains(event.getNpcIndex()))
 			{
 				if (config.infobox())
 				{
@@ -368,10 +358,7 @@ public class SpecialCounterPlugin extends Plugin
 				}
 			}
 
-			if (event.getWorld() == client.getWorld())
-			{
-				playerInfoDrops.add(createSpecInfoDrop(event.getWeapon(), event.getHit(), event.getPlayerId()));
-			}
+			playerInfoDrops.add(createSpecInfoDrop(event.getWeapon(), event.getHit(), event.getPlayerId()));
 		});
 	}
 
@@ -453,7 +440,7 @@ public class SpecialCounterPlugin extends Plugin
 
 	private void removeCounters()
 	{
-		interactedNpcIds.clear();
+		interactedNpcIndexes.clear();
 
 		for (int i = 0; i < specialCounter.length; ++i)
 		{
