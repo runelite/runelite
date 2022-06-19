@@ -28,8 +28,10 @@ package net.runelite.client.game;
 import java.util.Set;
 import javax.inject.Inject;
 import net.runelite.api.NPC;
+import net.runelite.api.NPCComposition;
 import net.runelite.api.NpcID;
 import net.runelite.client.RuntimeConfig;
+import org.apache.commons.lang3.ArrayUtils;
 
 public class NpcUtil
 {
@@ -96,7 +98,9 @@ public class NpcUtil
 					return false;
 				}
 
-				return npc.isDead();
+				final NPCComposition npcComposition = npc.getTransformedComposition();
+				boolean hasAttack = npcComposition != null && ArrayUtils.contains(npcComposition.getActions(), "Attack");
+				return hasAttack && npc.isDead();
 		}
 	}
 }
