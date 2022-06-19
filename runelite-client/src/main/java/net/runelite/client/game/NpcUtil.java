@@ -25,11 +25,22 @@
  */
 package net.runelite.client.game;
 
+import java.util.Set;
+import javax.inject.Inject;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
+import net.runelite.client.RuntimeConfig;
 
 public class NpcUtil
 {
+	private final RuntimeConfig runtimeConfig;
+
+	@Inject
+	private NpcUtil(RuntimeConfig runtimeConfig)
+	{
+		this.runtimeConfig = runtimeConfig;
+	}
+
 	/**
 	 * Returns whether an NPC is dying and can no longer be interacted with, or if it is still alive or in some special
 	 * state where it can be 0hp without dying. (For example, Gargoyles and other slayer monsters with item weaknesses
@@ -38,7 +49,7 @@ public class NpcUtil
 	 * @param npc NPC to check whether it is dying
 	 * @return {@code true} if the NPC is dying
 	 */
-	public static boolean isDying(final NPC npc)
+	public boolean isDying(final NPC npc)
 	{
 		final int id = npc.getId();
 		switch (id)
@@ -79,6 +90,12 @@ public class NpcUtil
 			case NpcID.KALPHITE_QUEEN_963: // KQ's first form sometimes regenerates 1hp after reaching 0hp, thus not dying
 				return false;
 			default:
+				Set<Integer> ignoredNpcs = runtimeConfig.getIgnoreDeadNpcs();
+				if (ignoredNpcs != null && ignoredNpcs.contains(id))
+				{
+					return false;
+				}
+
 				return npc.isDead();
 		}
 	}

@@ -27,6 +27,7 @@ package net.runelite.client;
 import com.google.common.base.Strings;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Set;
 import javax.swing.SwingUtilities;
 import lombok.Data;
 import net.runelite.client.ui.FatalErrorDialog;
@@ -40,6 +41,8 @@ public class RuntimeConfig
 
 	private String outageMessage;
 	private Map<String, String> outageLinks;
+
+	private Set<Integer> ignoreDeadNpcs;
 
 	public boolean showOutageMessage()
 	{

@@ -48,6 +48,7 @@ import java.util.Set;
 import net.runelite.api.Client;
 import net.runelite.client.RuneLite;
 import net.runelite.client.RuneLiteModule;
+import net.runelite.client.RuntimeConfig;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.eventbus.EventBus;
@@ -93,7 +94,7 @@ public class PluginManagerTest
 			.thenThrow(new RuntimeException("in plugin manager test"));
 
 		Injector injector = Guice.createInjector(Modules
-			.override(new RuneLiteModule(okHttpClient, () -> null, () -> null, true, false,
+			.override(new RuneLiteModule(okHttpClient, () -> null, () -> mock(RuntimeConfig.class), true, false,
 				RuneLite.DEFAULT_SESSION_FILE,
 				RuneLite.DEFAULT_CONFIG_FILE))
 			.with(BoundFieldModule.of(this)));

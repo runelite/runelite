@@ -59,6 +59,9 @@ public class EntityHiderPlugin extends Plugin
 	@Inject
 	private Hooks hooks;
 
+	@Inject
+	private NpcUtil npcUtil;
+
 	private boolean hideOthers;
 	private boolean hideOthers2D;
 	private boolean hideFriends;
@@ -191,7 +194,7 @@ public class EntityHiderPlugin extends Plugin
 			}
 
 			// dead npcs can also be interacting so prioritize it over the interacting check
-			if (NpcUtil.isDying(npc) && hideDeadNpcs)
+			if (npcUtil.isDying(npc) && hideDeadNpcs)
 			{
 				return false;
 			}
