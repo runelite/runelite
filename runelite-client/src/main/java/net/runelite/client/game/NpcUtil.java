@@ -76,10 +76,7 @@ public class NpcUtil
 			case NpcID.SMALL_LIZARD:
 			case NpcID.SMALL_LIZARD_463:
 			case NpcID.GROWTHLING:
-			case NpcID.KALPHITE_QUEEN_963:
-			case NpcID.KALPHITE_QUEEN_965:
-			case NpcID.VETION:
-			case NpcID.VETION_REBORN:
+			case NpcID.KALPHITE_QUEEN_963: // KQ's first form sometimes regenerates 1hp after reaching 0hp, thus not dying
 				return false;
 			default:
 				return npc.isDead();
