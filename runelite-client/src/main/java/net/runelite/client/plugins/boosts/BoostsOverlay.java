@@ -61,13 +61,13 @@ class BoostsOverlay extends OverlayPanel
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (config.displayInfoboxes())
+		final Set<Skill> boostedSkills = plugin.getSkillsToDisplay();
+		if (boostedSkills.isEmpty() || !config.displayPanel())
 		{
 			return null;
 		}
 
 		int nextChange = plugin.getChangeDownTicks();
-
 		if (nextChange != -1)
 		{
 			panelComponent.getChildren().add(LineComponent.builder()
@@ -77,20 +77,12 @@ class BoostsOverlay extends OverlayPanel
 		}
 
 		nextChange = plugin.getChangeUpTicks();
-
 		if (nextChange != -1)
 		{
 			panelComponent.getChildren().add(LineComponent.builder()
 				.left("Next - restore in")
 				.right(String.valueOf(plugin.getChangeTime(nextChange)))
 				.build());
-		}
-
-		final Set<Skill> boostedSkills = plugin.getSkillsToDisplay();
-
-		if (boostedSkills.isEmpty())
-		{
-			return super.render(graphics);
 		}
 
 		if (plugin.canShowBoosts())
@@ -136,6 +128,5 @@ class BoostsOverlay extends OverlayPanel
 		}
 
 		return boost <= config.boostThreshold() ? Color.YELLOW : Color.GREEN;
-
 	}
 }
