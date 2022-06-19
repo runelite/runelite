@@ -45,7 +45,6 @@ import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.KeyCode;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Player;
@@ -54,6 +53,7 @@ import net.runelite.api.SoundEffectID;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.CommandExecuted;
+import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuOptionClicked;
@@ -66,6 +66,7 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.events.PartyChanged;
 import net.runelite.client.events.PartyMemberAvatar;
+import net.runelite.client.input.KeyManager;
 import net.runelite.client.party.PartyMember;
 import net.runelite.client.party.PartyService;
 import net.runelite.client.party.WSClient;
@@ -87,6 +88,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 import net.runelite.client.util.ColorUtil;
+import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
 
@@ -129,6 +131,9 @@ public class PartyPlugin extends Plugin
 	private ClientToolbar clientToolbar;
 
 	@Inject
+	private KeyManager keyManager;
+
+	@Inject
 	@Named("developerMode")
 	boolean developerMode;
 
@@ -144,6 +149,23 @@ public class PartyPlugin extends Plugin
 	private int lastHp, lastPray;
 	private String lastCharacterName = "";
 	private WorldPoint lastLocation;
+
+	private final HotkeyListener hotkeyListener = new HotkeyListener(() -> config.pingHotkey())
+	{
+		@Override
+		public void hotkeyPressed()
+		{
+			hotkeyPressed = true;
+		}
+
+		@Override
+		public void hotkeyReleased()
+		{
+			hotkeyPressed = false;
+		}
+	};
+
+	private boolean hotkeyPressed = false;
 
 	@Override
 	public void configure(Binder binder)
@@ -168,6 +190,7 @@ public class PartyPlugin extends Plugin
 		clientToolbar.addNavigation(navButton);
 
 		overlayManager.add(partyPingOverlay);
+		keyManager.registerKeyListener(hotkeyListener);
 		wsClient.registerMessage(SkillUpdate.class);
 		wsClient.registerMessage(TilePing.class);
 		wsClient.registerMessage(LocationUpdate.class);
@@ -187,6 +210,7 @@ public class PartyPlugin extends Plugin
 		pendingTilePings.clear();
 		worldMapManager.removeIf(PartyWorldMapPoint.class::isInstance);
 		overlayManager.remove(partyPingOverlay);
+		keyManager.unregisterKeyListener(hotkeyListener);
 		wsClient.unregisterMessage(SkillUpdate.class);
 		wsClient.unregisterMessage(TilePing.class);
 		wsClient.unregisterMessage(LocationUpdate.class);
@@ -198,6 +222,15 @@ public class PartyPlugin extends Plugin
 	public PartyConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(PartyConfig.class);
+	}
+
+	@Subscribe
+	public void onFocusChanged(FocusChanged focusChanged)
+	{
+		if (!focusChanged.isFocused())
+		{
+			hotkeyPressed = false;
+		}
 	}
 
 	@Subscribe
@@ -229,7 +262,7 @@ public class PartyPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (!client.isKeyPressed(KeyCode.KC_SHIFT) || client.isMenuOpen() || party.getMembers().isEmpty() || !config.pings())
+		if (!hotkeyPressed || client.isMenuOpen() || party.getMembers().isEmpty() || !config.pings())
 		{
 			return;
 		}

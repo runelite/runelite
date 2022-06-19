@@ -28,6 +28,7 @@ package net.runelite.client.plugins.party;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Keybind;
 
 @ConfigGroup(PartyConfig.GROUP)
 public interface PartyConfig extends Config
@@ -37,7 +38,7 @@ public interface PartyConfig extends Config
 	@ConfigItem(
 		keyName = "pings",
 		name = "Pings",
-		description = "Enables party pings (shift + left-click)",
+		description = "Enables party pings",
 		position = 1
 	)
 	default boolean pings()
@@ -60,11 +61,22 @@ public interface PartyConfig extends Config
 		keyName = "recolorNames",
 		name = "Recolor names",
 		description = "Recolor party members names based on unique color hash",
-		position = 4
+		position = 3
 	)
 	default boolean recolorNames()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		keyName = "pingHotkey",
+		name = "Ping hotkey",
+		description = "Key to hold to send a tile ping",
+		position = 4
+	)
+	default Keybind pingHotkey()
+	{
+		return Keybind.NOT_SET;
 	}
 
 	@ConfigItem(
