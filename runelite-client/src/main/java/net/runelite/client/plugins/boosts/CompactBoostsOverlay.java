@@ -28,6 +28,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.Set;
 import javax.inject.Inject;
@@ -37,9 +38,17 @@ import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.components.TextComponent;
+import net.runelite.client.util.ImageUtil;
 
 class CompactBoostsOverlay extends Overlay
 {
+	private static final int H_PADDING = 2;
+	private static final int V_PADDING = 1;
+	private static final int TEXT_WIDTH = 22;
+	private static final BufferedImage BUFFED = ImageUtil.loadImageResource(CompactBoostsOverlay.class, "buffedsmall.png");
+	private static final BufferedImage DEBUFFED = ImageUtil.loadImageResource(CompactBoostsOverlay.class, "debuffedsmall.png");
+
 	private final Client client;
 	private final BoostsConfig config;
 	private final BoostsPlugin plugin;
@@ -94,18 +103,18 @@ class CompactBoostsOverlay extends Overlay
 		if (time != -1)
 		{
 			drawBoost(graphics, fontMetrics, fontHeight,
-				plugin.getBuffed(),
+				BUFFED,
 				time < 10 ? Color.RED.brighter() : Color.WHITE,
-				String.format("%02d", plugin.getChangeTime(time)));
+				Integer.toString(plugin.getChangeTime(time)));
 		}
 
 		time = plugin.getChangeDownTicks();
 		if (time != -1)
 		{
 			drawBoost(graphics, fontMetrics, fontHeight,
-				plugin.getDebuffed(),
+				DEBUFFED,
 				time < 10 ? Color.RED.brighter() : Color.WHITE,
-				String.format("%02d", plugin.getChangeTime(time)));
+				Integer.toString(plugin.getChangeTime(time)));
 		}
 
 		return new Dimension(maxX, curY);
@@ -115,17 +124,23 @@ class CompactBoostsOverlay extends Overlay
 	{
 		graphics.drawImage(image, 0, curY, null);
 
-		// add a little bit of padding to get the text off the side of the image
-		final int x = image.getWidth() + 6;
-		graphics.setColor(color);
-		graphics.drawString(text, x,
+		final int stringWidth = fontMetrics.stringWidth(text);
+		final TextComponent textComponent = new TextComponent();
+		textComponent.setColor(color);
+		textComponent.setText(text);
+		textComponent.setOutline(true);
+		textComponent.setPosition(new Point(
+			image.getWidth()
+				+ H_PADDING // add a little bit of padding to get the text off the side of the image
+				+ (TEXT_WIDTH - stringWidth), // right justify to TEXT_WIDTH
 			// this really should be y + (image.getHeight() / 2) + (fontHeight / 2), but in practice
 			// it is the same
-			curY + fontHeight);
+			curY + fontHeight));
+		textComponent.render(graphics);
 
 		curY += Math.max(image.getHeight(), fontHeight)
-			+ 1; // padding to keep images from touching
-		maxX = Math.max(maxX, x + fontMetrics.stringWidth(text));
+			+ V_PADDING; // padding to keep images from touching
+		maxX = Math.max(maxX, image.getWidth() + H_PADDING + TEXT_WIDTH);
 	}
 
 	private String getBoostText(int boost, int base, int boosted)

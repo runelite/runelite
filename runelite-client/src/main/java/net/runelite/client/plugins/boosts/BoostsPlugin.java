@@ -26,13 +26,11 @@ package net.runelite.client.plugins.boosts;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
-import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
@@ -104,9 +102,6 @@ public class BoostsPlugin extends Plugin
 
 	private final Set<Skill> shownSkills = EnumSet.noneOf(Skill.class);
 
-	@Getter(AccessLevel.PACKAGE)
-	private BufferedImage buffed, debuffed;
-
 	private boolean isChangedDown = false;
 	private boolean isChangedUp = false;
 	private final int[] lastSkillLevels = new int[Skill.values().length - 1];
@@ -135,12 +130,9 @@ public class BoostsPlugin extends Plugin
 		updateShownSkills();
 		Arrays.fill(lastSkillLevels, -1);
 
-		buffed = ImageUtil.loadImageResource(getClass(), "buffed.png");
-		debuffed = ImageUtil.loadImageResource(getClass(), "debuffed.png");
-
 		// Add infoboxes for everything at startup and then determine inside if it will be rendered
-		infoBoxManager.addInfoBox(new StatChangeIndicator(true, buffed, this, config));
-		infoBoxManager.addInfoBox(new StatChangeIndicator(false, debuffed, this, config));
+		infoBoxManager.addInfoBox(new StatChangeIndicator(true, ImageUtil.loadImageResource(getClass(), "buffed.png"), this, config));
+		infoBoxManager.addInfoBox(new StatChangeIndicator(false, ImageUtil.loadImageResource(getClass(), "debuffed.png"), this, config));
 
 		for (final Skill skill : Skill.values())
 		{
@@ -165,7 +157,6 @@ public class BoostsPlugin extends Plugin
 		isChangedUp = false;
 		isChangedDown = false;
 		skillsToDisplay.clear();
-		buffed = debuffed = null;
 	}
 
 	@Subscribe
