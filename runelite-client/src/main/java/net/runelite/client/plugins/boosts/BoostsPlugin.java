@@ -26,27 +26,32 @@ package net.runelite.client.plugins.boosts;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
+import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
+import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.StatChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
+import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.ImageUtil;
 
@@ -86,6 +91,9 @@ public class BoostsPlugin extends Plugin
 	private BoostsOverlay boostsOverlay;
 
 	@Inject
+	private CompactBoostsOverlay compactBoostsOverlay;
+
+	@Inject
 	private BoostsConfig config;
 
 	@Inject
@@ -95,6 +103,9 @@ public class BoostsPlugin extends Plugin
 	private final Set<Skill> skillsToDisplay = EnumSet.noneOf(Skill.class);
 
 	private final Set<Skill> shownSkills = EnumSet.noneOf(Skill.class);
+
+	@Getter(AccessLevel.PACKAGE)
+	private BufferedImage buffed, debuffed;
 
 	private boolean isChangedDown = false;
 	private boolean isChangedUp = false;
@@ -113,14 +124,23 @@ public class BoostsPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		OverlayMenuEntry menuEntry = new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Boosts overlay");
+
+		boostsOverlay.getMenuEntries().add(menuEntry);
+		compactBoostsOverlay.getMenuEntries().add(menuEntry);;
+
 		overlayManager.add(boostsOverlay);
+		overlayManager.add(compactBoostsOverlay);
 
 		updateShownSkills();
 		Arrays.fill(lastSkillLevels, -1);
 
+		buffed = ImageUtil.loadImageResource(getClass(), "buffed.png");
+		debuffed = ImageUtil.loadImageResource(getClass(), "debuffed.png");
+
 		// Add infoboxes for everything at startup and then determine inside if it will be rendered
-		infoBoxManager.addInfoBox(new StatChangeIndicator(true, ImageUtil.loadImageResource(getClass(), "debuffed.png"), this, config));
-		infoBoxManager.addInfoBox(new StatChangeIndicator(false, ImageUtil.loadImageResource(getClass(), "buffed.png"), this, config));
+		infoBoxManager.addInfoBox(new StatChangeIndicator(true, buffed, this, config));
+		infoBoxManager.addInfoBox(new StatChangeIndicator(false, debuffed, this, config));
 
 		for (final Skill skill : Skill.values())
 		{
@@ -134,7 +154,10 @@ public class BoostsPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		boostsOverlay.getMenuEntries().clear();
+		compactBoostsOverlay.getMenuEntries().clear();
 		overlayManager.remove(boostsOverlay);
+		overlayManager.remove(compactBoostsOverlay);
 		infoBoxManager.removeIf(t -> t instanceof BoostIndicator || t instanceof StatChangeIndicator);
 		preserveBeenActive = false;
 		lastChangeDown = -1;
@@ -142,6 +165,7 @@ public class BoostsPlugin extends Plugin
 		isChangedUp = false;
 		isChangedDown = false;
 		skillsToDisplay.clear();
+		buffed = debuffed = null;
 	}
 
 	@Subscribe
