@@ -329,7 +329,8 @@ public class SpecialCounterPlugin extends Plugin
 	@Subscribe
 	public void onSpecialCounterUpdate(SpecialCounterUpdate event)
 	{
-		if (party.getLocalMember().getMemberId().equals(event.getMemberId()))
+		if (party.getLocalMember().getMemberId().equals(event.getMemberId())
+			|| event.getWorld() != client.getWorld())
 		{
 			return;
 		}
@@ -357,10 +358,7 @@ public class SpecialCounterPlugin extends Plugin
 				}
 			}
 
-			if (event.getWorld() == client.getWorld())
-			{
-				playerInfoDrops.add(createSpecInfoDrop(event.getWeapon(), event.getHit(), event.getPlayerId()));
-			}
+			playerInfoDrops.add(createSpecInfoDrop(event.getWeapon(), event.getHit(), event.getPlayerId()));
 		});
 	}
 
