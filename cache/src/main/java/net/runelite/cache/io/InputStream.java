@@ -125,6 +125,11 @@ public class InputStream extends java.io.InputStream
 		return buffer.getInt();
 	}
 
+	public long readLong()
+	{
+		return buffer.getLong();
+	}
+
 	public byte peek()
 	{
 		return buffer.get(buffer.position());

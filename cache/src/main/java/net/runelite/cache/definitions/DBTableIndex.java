@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2022, Joshua Filby <joshua@filby.me>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,42 +22,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.cache.definitions;
 
-package net.runelite.cache;
+import java.util.List;
+import java.util.Map;
+import lombok.Data;
+import net.runelite.cache.util.BaseVarType;
 
-public enum IndexType
+@Data
+public class DBTableIndex
 {
-	ANIMATIONS(0),
-	SKELETONS(1),
-	CONFIGS(2),
-	INTERFACES(3),
-	SOUNDEFFECTS(4),
-	MAPS(5),
-	MUSIC_TRACKS(6),
-	MODELS(7),
-	SPRITES(8),
-	TEXTURES(9),
-	BINARY(10),
-	MUSIC_JINGLES(11),
-	CLIENTSCRIPT(12),
-	FONTS(13),
-	MUSIC_SAMPLES(14),
-	MUSIC_PATCHES(15),
-	WORLDMAP_OLD(16), // looks unused
-	WORLDMAP_GEOGRAPHY(18),
-	WORLDMAP(19),
-	WORLDMAP_GROUND(20),
-	DBTABLEINDEX(21);
-
-	private int id;
-	
-	IndexType(int id)
-	{
-		this.id = id;
-	}
-	
-	public int getNumber()
-	{
-		return id;
-	}
+	private final int tableId;
+	private final int columnId;
+	private BaseVarType[] tupleTypes;
+	private List<Map<Object, List<Integer>>> tupleIndexes;
 }
