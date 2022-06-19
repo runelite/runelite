@@ -195,7 +195,7 @@ public class FarmingTabPanel extends TabContentPanel
 				switch (prediction.getCropState())
 				{
 					case HARVESTABLE:
-						panel.getEstimate().setText("Done");
+						panel.getEstimate().setText("Harvestable");
 						break;
 					case GROWING:
 						if (prediction.getDoneEstimate() < unixNow)
