@@ -238,7 +238,10 @@ public class SpecialCounterPluginTest
 	{
 		NPC targetA = mock(NPC.class);
 		NPC targetB = mock(NPC.class);
-		when(targetB.getId()).thenReturn(1); // a different npc type
+
+		// a different npc type
+		when(targetB.getId()).thenReturn(1);
+		when(targetB.getIndex()).thenReturn(1);
 
 		Player player = mock(Player.class);
 		when(client.getLocalPlayer()).thenReturn(player);
