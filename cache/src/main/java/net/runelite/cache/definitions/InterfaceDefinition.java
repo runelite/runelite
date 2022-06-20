@@ -104,7 +104,7 @@ public class InterfaceDefinition
 	public int[] invTransmitTriggers;
 	public int[] statTransmitTriggers;
 	public boolean hasListener;
-	
+
 	public int menuType;
 	// This is set to a siblings' child id when that widget should get a hover effect when this one is hovered
 	public int hoveredSiblingId;
