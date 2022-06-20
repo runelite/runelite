@@ -49,14 +49,14 @@ public class GZip
 		{
 			IOUtils.copy(is, os);
 		}
-		
+
 		return bout.toByteArray();
 	}
 
 	public static byte[] decompress(byte[] bytes, int len) throws IOException
 	{
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
-		
+
 		try (InputStream is = new GZIPInputStream(new ByteArrayInputStream(bytes, 0, len)))
 		{
 			IOUtils.copy(is, os);

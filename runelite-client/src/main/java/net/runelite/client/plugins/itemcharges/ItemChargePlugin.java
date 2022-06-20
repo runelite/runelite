@@ -388,7 +388,7 @@ public class ItemChargePlugin extends Plugin
 				{
 					notifier.notify("Your ring of forging has melted.");
 				}
-				
+
 				// This chat message triggers before the used message so add 1 to the max charges to ensure proper sync
 				updateRingOfForgingCharges(MAX_RING_OF_FORGING_CHARGES + 1);
 			}

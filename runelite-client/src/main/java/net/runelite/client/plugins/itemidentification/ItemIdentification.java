@@ -139,7 +139,7 @@ enum ItemIdentification
 	SITO_FOIL(Type.HERB, "Sito", "SF", ItemID.SITO_FOIL, ItemID.GRIMY_SITO_FOIL),
 	SNAKE_WEED(Type.HERB, "Snake", "SW", ItemID.SNAKE_WEED, ItemID.GRIMY_SNAKE_WEED),
 	VOLENCIA_MOSS(Type.HERB, "Volenc", "V", ItemID.VOLENCIA_MOSS, ItemID.GRIMY_VOLENCIA_MOSS),
-	
+
 	//Logs
 	RED_LOGS(Type.LOGS, "Red", "RED", ItemID.RED_LOGS),
 	GREEN_LOGS(Type.LOGS, "Green", "GRE", ItemID.GREEN_LOGS),

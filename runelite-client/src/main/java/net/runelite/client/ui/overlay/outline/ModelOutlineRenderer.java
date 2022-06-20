@@ -78,7 +78,7 @@ public class ModelOutlineRenderer
 	private static final int DIRECT_WRITE_OUTLINE_WIDTH_THRESHOLD = 10;
 
 	private final Client client;
-	
+
 	// Vertex positions projected on the screen.
 	private final int[] projectedVerticesX = new int[6500];
 	private final int[] projectedVerticesY = new int[6500];

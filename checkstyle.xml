@@ -41,7 +41,7 @@
 			<property name="ignoreComments" value="true"/>
 		</module>
 		<module name="RegexpSinglelineJava">
-			<property name="format" value="[^\s]\s+$"/>
+			<property name="format" value=".*\s+$"/>
 			<property name="message" value="No trailing whitespace"/>
 			<property name="ignoreComments" value="true"/>
 		</module>

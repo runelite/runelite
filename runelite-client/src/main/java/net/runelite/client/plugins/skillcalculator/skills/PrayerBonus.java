@@ -40,7 +40,7 @@ public enum PrayerBonus implements SkillBonus
 	DEMONIC_OFFERING("Demonic Offering (300%)", 3),
 	SACRED_BONE_BURNER("Sacred Bone Burner (300%)", 3),
 	;
-	
+
 	static final PrayerBonus[] BONE_BONUSES = {
 		LIT_GILDED_ALTAR,
 		ECTOFUNTUS,
