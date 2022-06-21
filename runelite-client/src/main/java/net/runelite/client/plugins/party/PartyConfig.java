@@ -69,10 +69,21 @@ public interface PartyConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "autoJoinLastParty",
+			name = "Auto-join last party",
+			description = "Automatically join the last party at log on",
+			position = 4
+	)
+	default boolean autoJoinLastParty()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "pingHotkey",
 		name = "Ping hotkey",
 		description = "Key to hold to send a tile ping",
-		position = 4
+		position = 5
 	)
 	default Keybind pingHotkey()
 	{

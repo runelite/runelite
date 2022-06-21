@@ -301,6 +301,13 @@ public class PartyPlugin extends Plugin
 	public void onGameStateChanged(GameStateChanged event)
 	{
 		checkStateChanged(false);
+		GameState state = event.getGameState();
+		if (state == GameState.LOGGED_IN)
+		{
+			if (config.autoJoinLastParty()) {
+				party.changeParty(config.previousPartyId());
+			}
+		}
 	}
 
 	@Subscribe
