@@ -165,6 +165,19 @@ class PartyPanel extends PluginPanel
 					return;
 				}
 
+				for (int i = 0; i < s.length(); ++i)
+				{
+					char ch = s.charAt(i);
+					if (!Character.isLetter(ch) && !Character.isDigit(ch) && ch != '-')
+					{
+						JOptionPane.showMessageDialog(joinPartyButton,
+							"Party passphrase must be a combination of alphanumeric or hyphen characters.",
+							"Invalid party passphrase",
+							JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+				}
+
 				party.changeParty(s);
 			}
 		});
