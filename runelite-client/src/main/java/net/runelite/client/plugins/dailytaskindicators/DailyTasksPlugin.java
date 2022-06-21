@@ -114,16 +114,15 @@ public class DailyTasksPlugin extends Plugin
 		boolean dailyReset = !loggingIn && currentTime - lastReset > ONE_DAY;
 
 		if (dailyReset) {
-			checkConfigDaily(currentTime, dailyReset);
+			checkConfigDaily(currentTime);
 		} else {
-			checkConfigLogin(currentTime, dailyReset);
+			checkConfigLogin(currentTime);
 		}
 	}
 
-	private void checkConfigDaily(long currentTime, boolean dailyReset)
+	private void checkConfigDaily(long currentTime)
 	{
-		if ((dailyReset || loggingIn)
-			&& client.getVar(VarClientInt.MEMBERSHIP_STATUS) == 1)
+		if (client.getVar(VarClientInt.MEMBERSHIP_STATUS) == 1)
 		{
 			// Round down to the nearest day
 			lastReset = (long) Math.floor(currentTime / ONE_DAY) * ONE_DAY;
@@ -131,55 +130,54 @@ public class DailyTasksPlugin extends Plugin
 
 			if (config.showHerbBoxes())
 			{
-				checkHerbBoxes(dailyReset);
+				checkHerbBoxes(true);
 			}
 
 			if (config.showStaves())
 			{
-				checkStaves(dailyReset);
+				checkStaves(true);
 			}
 
 			if (config.showEssence())
 			{
-				checkEssence(dailyReset);
+				checkEssence(true);
 			}
 
 			if (config.showRunes())
 			{
-				checkRunes(dailyReset);
+				checkRunes(true);
 			}
 
 			if (config.showSand())
 			{
-				checkSand(dailyReset);
+				checkSand(true);
 			}
 
 			if (config.showFlax())
 			{
-				checkFlax(dailyReset);
+				checkFlax(true);
 			}
 
 			if (config.showBonemeal())
 			{
-				checkBonemeal(dailyReset);
+				checkBonemeal(true);
 			}
 
 			if (config.showDynamite())
 			{
-				checkDynamite(dailyReset);
+				checkDynamite(true);
 			}
 
 			if (config.showArrows())
 			{
-				checkArrows(dailyReset);
+				checkArrows(true);
 			}
 		}
 	}
 
-	private void checkConfigLogin(long currentTime, boolean dailyReset)
+	private void checkConfigLogin(long currentTime)
 	{
-		if ((dailyReset || loggingIn)
-				&& client.getVar(VarClientInt.MEMBERSHIP_STATUS) == 1)
+		if (loggingIn && client.getVar(VarClientInt.MEMBERSHIP_STATUS) == 1)
 		{
 			// Round down to the nearest day
 			lastReset = (long) Math.floor(currentTime / ONE_DAY) * ONE_DAY;
@@ -187,47 +185,47 @@ public class DailyTasksPlugin extends Plugin
 
 			if (config.showHerbBoxes())
 			{
-				checkHerbBoxes(dailyReset);
+				checkHerbBoxes(false);
 			}
 
 			if (config.showStaves())
 			{
-				checkStaves(dailyReset);
+				checkStaves(false);
 			}
 
 			if (config.showEssence())
 			{
-				checkEssence(dailyReset);
+				checkEssence(false);
 			}
 
 			if (config.showRunes())
 			{
-				checkRunes(dailyReset);
+				checkRunes(false);
 			}
 
 			if (config.showSand())
 			{
-				checkSand(dailyReset);
+				checkSand(false);
 			}
 
 			if (config.showFlax())
 			{
-				checkFlax(dailyReset);
+				checkFlax(false);
 			}
 
 			if (config.showBonemeal())
 			{
-				checkBonemeal(dailyReset);
+				checkBonemeal(false);
 			}
 
 			if (config.showDynamite())
 			{
-				checkDynamite(dailyReset);
+				checkDynamite(false);
 			}
 
 			if (config.showArrows())
 			{
-				checkArrows(dailyReset);
+				checkArrows(false);
 			}
 		}
 	}
