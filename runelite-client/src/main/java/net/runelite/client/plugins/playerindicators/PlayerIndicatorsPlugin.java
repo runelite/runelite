@@ -192,11 +192,11 @@ public class PlayerIndicatorsPlugin extends Plugin
 	{
 		if (config.highlightClanGuests())
 		{
-			clanGuestTracker.updateClan();
+			clanGuestTracker.updateClan(false);
 		}
 		if (config.highlightGuestClanGuests() || config.highlightGuestClanGuests())
 		{
-			clanGuestTracker.updateGuestClan();
+			clanGuestTracker.updateClan(true);
 		}
 	}
 
