@@ -109,6 +109,12 @@ public class NpcUtil
 					{
 						return false;
 					}
+
+					Set<Integer> forceDeadNpcs = runtimeConfig.getForceDeadNpcs();
+					if (forceDeadNpcs != null && forceDeadNpcs.contains(id))
+					{
+						return true;
+					}
 				}
 
 				final NPCComposition npcComposition = npc.getTransformedComposition();

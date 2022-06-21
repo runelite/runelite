@@ -43,6 +43,7 @@ public class RuntimeConfig
 	private Map<String, String> outageLinks;
 
 	private Set<Integer> ignoreDeadNpcs;
+	private Set<Integer> forceDeadNpcs;
 
 	public boolean showOutageMessage()
 	{
