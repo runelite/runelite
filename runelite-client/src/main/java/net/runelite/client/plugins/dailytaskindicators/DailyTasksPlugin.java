@@ -150,7 +150,7 @@ public class DailyTasksPlugin extends Plugin
 
 			if (config.showSand())
 			{
-				checkSand(true);
+				checkSandDaily(true);
 			}
 
 			if (config.showFlax())
@@ -205,7 +205,7 @@ public class DailyTasksPlugin extends Plugin
 
 			if (config.showSand())
 			{
-				checkSand(false);
+				checkSandLogin(false);
 			}
 
 			if (config.showFlax())
@@ -312,12 +312,23 @@ public class DailyTasksPlugin extends Plugin
 		}
 	}
 
-	private void checkSand(boolean dailyReset)
+	private void checkSandDaily(boolean dailyReset)
 	{
 		if (client.getAccountType() != AccountType.ULTIMATE_IRONMAN
 			&& client.getVarbitValue(Varbits.QUEST_THE_HAND_IN_THE_SAND) >= SAND_QUEST_COMPLETE
 			&& (client.getVarbitValue(Varbits.DAILY_SAND_COLLECTED) == 0
 			|| dailyReset))
+		{
+			sendChatMessage(SAND_MESSAGE);
+		}
+	}
+
+	private void checkSandLogin(boolean dailyReset)
+	{
+		if (client.getAccountType() != AccountType.ULTIMATE_IRONMAN
+				&& client.getVarbitValue(Varbits.QUEST_THE_HAND_IN_THE_SAND) >= SAND_QUEST_COMPLETE
+				&& (client.getVarbitValue(Varbits.DAILY_SAND_COLLECTED) == 0
+				|| dailyReset))
 		{
 			sendChatMessage(SAND_MESSAGE);
 		}
