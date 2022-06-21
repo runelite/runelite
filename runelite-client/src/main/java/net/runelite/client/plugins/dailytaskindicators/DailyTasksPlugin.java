@@ -158,6 +158,11 @@ public class DailyTasksPlugin extends Plugin
 				checkFlaxDaily(true);
 			}
 
+			if (config.showArrows())
+			{
+				checkArrowsDaily(true);
+			}
+
 			if (config.showBonemeal())
 			{
 				checkBonemeal(true);
@@ -166,11 +171,6 @@ public class DailyTasksPlugin extends Plugin
 			if (config.showDynamite())
 			{
 				checkDynamite(true);
-			}
-
-			if (config.showArrows())
-			{
-				checkArrows(true);
 			}
 		}
 	}
@@ -213,6 +213,11 @@ public class DailyTasksPlugin extends Plugin
 				checkFlaxLogin(false);
 			}
 
+			if (config.showArrows())
+			{
+				checkArrowsLogin(false);
+			}
+
 			if (config.showBonemeal())
 			{
 				checkBonemeal(false);
@@ -221,11 +226,6 @@ public class DailyTasksPlugin extends Plugin
 			if (config.showDynamite())
 			{
 				checkDynamite(false);
-			}
-
-			if (config.showArrows())
-			{
-				checkArrows(false);
 			}
 		}
 	}
@@ -354,11 +354,21 @@ public class DailyTasksPlugin extends Plugin
 		}
 	}
 
-	private void checkArrows(boolean dailyReset)
+	private void checkArrowsDaily(boolean dailyReset)
 	{
 		if (client.getVarbitValue(Varbits.DIARY_WESTERN_EASY) == 1
 			&& (client.getVarbitValue(Varbits.DAILY_ARROWS_STATE) == 0
 			|| dailyReset))
+		{
+			sendChatMessage(ARROWS_MESSAGE);
+		}
+	}
+
+	private void checkArrowsLogin(boolean dailyReset)
+	{
+		if (client.getVarbitValue(Varbits.DIARY_WESTERN_EASY) == 1
+				&& (client.getVarbitValue(Varbits.DAILY_ARROWS_STATE) == 0
+				|| dailyReset))
 		{
 			sendChatMessage(ARROWS_MESSAGE);
 		}
