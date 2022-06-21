@@ -369,7 +369,7 @@ public class OverlayRenderer extends MouseAdapter
 					graphics.setPaint(paint);
 				}
 
-				if (!client.isMenuOpen() && !client.getSpellSelected() && bounds.contains(mousePosition))
+				if (!client.isMenuOpen() && !client.getSpellSelected() && bounds.contains(mousePosition) && overlay.isMovable())
 				{
 					curHoveredOverlay = overlay;
 					overlay.onMouseOver();
