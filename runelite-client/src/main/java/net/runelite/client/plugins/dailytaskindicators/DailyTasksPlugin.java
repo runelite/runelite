@@ -110,12 +110,12 @@ public class DailyTasksPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		long currentTime = System.currentTimeMillis();
-		boolean dailyReset = !loggingIn && currentTime - lastReset > ONE_DAY;
-
 		boolean isMember = client.getVar(VarClientInt.MEMBERSHIP_STATUS) == 1;
 		if (isMember)
 		{
+			long currentTime = System.currentTimeMillis();
+			boolean dailyReset = !loggingIn && currentTime - lastReset > ONE_DAY;
+
 			// Round down to the nearest day
 			lastReset = (long) Math.floor(currentTime / ONE_DAY) * ONE_DAY;
 			loggingIn = false;
