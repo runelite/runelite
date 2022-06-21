@@ -249,7 +249,7 @@ public class DailyTasksPlugin extends Plugin
 
 	private void checkStavesDaily()
 	{
-		if (client.getVarbitValue(Varbits.DIARY_VARROCK_EASY) == 1)
+		if (hasCompletedDiary(Varbits.DIARY_VARROCK_EASY))
 		{
 			sendChatMessage(STAVES_MESSAGE);
 		}
@@ -265,7 +265,7 @@ public class DailyTasksPlugin extends Plugin
 
 	private void checkEssenceDaily()
 	{
-		if (client.getVarbitValue(Varbits.DIARY_ARDOUGNE_MEDIUM) == 1)
+		if (hasCompletedDiary(Varbits.DIARY_ARDOUGNE_MEDIUM))
 		{
 			sendChatMessage(ESSENCE_MESSAGE);
 		}
@@ -281,7 +281,7 @@ public class DailyTasksPlugin extends Plugin
 
 	private void checkRunesDaily()
 	{
-		if (client.getVarbitValue(Varbits.DIARY_WILDERNESS_EASY) == 1)
+		if (hasCompletedDiary(Varbits.DIARY_WILDERNESS_EASY))
 		{
 			sendChatMessage(RUNES_MESSAGE);
 		}
@@ -314,7 +314,7 @@ public class DailyTasksPlugin extends Plugin
 
 	private void checkFlaxDaily()
 	{
-		if (client.getVarbitValue(Varbits.DIARY_KANDARIN_EASY) == 1)
+		if (hasCompletedDiary(Varbits.DIARY_KANDARIN_EASY))
 		{
 			sendChatMessage(FLAX_MESSAGE);
 		}
@@ -330,7 +330,7 @@ public class DailyTasksPlugin extends Plugin
 
 	private void checkArrowsDaily()
 	{
-		if (client.getVarbitValue(Varbits.DIARY_WESTERN_EASY) == 1)
+		if (hasCompletedDiary(Varbits.DIARY_WESTERN_EASY))
 		{
 			sendChatMessage(ARROWS_MESSAGE);
 		}
@@ -346,7 +346,7 @@ public class DailyTasksPlugin extends Plugin
 
 	private void checkBonemealDaily()
 	{
-		if (client.getVarbitValue(Varbits.DIARY_MORYTANIA_MEDIUM) == 1)
+		if (hasCompletedDiary(Varbits.DIARY_MORYTANIA_MEDIUM))
 		{
 			sendChatMessage(BONEMEAL_MESSAGE);
 		}
@@ -354,14 +354,14 @@ public class DailyTasksPlugin extends Plugin
 
 	private void checkBonemealLogin()
 	{
-		if (client.getVarbitValue(Varbits.DIARY_MORYTANIA_MEDIUM) == 1)
+		if (hasCompletedDiary(Varbits.DIARY_MORYTANIA_MEDIUM))
 		{
 			int collected = client.getVarbitValue(Varbits.DAILY_BONEMEAL_STATE);
 			int max = BONEMEAL_PER_DIARY;
-			if (client.getVarbitValue(Varbits.DIARY_MORYTANIA_HARD) == 1)
+			if (hasCompletedDiary(Varbits.DIARY_MORYTANIA_HARD))
 			{
 				max += BONEMEAL_PER_DIARY;
-				if (client.getVarbitValue(Varbits.DIARY_MORYTANIA_ELITE) == 1)
+				if (hasCompletedDiary(Varbits.DIARY_MORYTANIA_ELITE))
 				{
 					max += BONEMEAL_PER_DIARY;
 				}
@@ -375,7 +375,7 @@ public class DailyTasksPlugin extends Plugin
 
 	private void checkDynamiteDaily()
 	{
-		if (client.getVarbitValue(Varbits.DIARY_KOUREND_MEDIUM) == 1)
+		if (hasCompletedDiary(Varbits.DIARY_KOUREND_MEDIUM))
 		{
 			sendChatMessage(DYNAMITE_MESSAGE);
 		}

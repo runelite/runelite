@@ -27,11 +27,16 @@ package net.runelite.client.plugins;
 import com.google.inject.Binder;
 import com.google.inject.Injector;
 import com.google.inject.Module;
+import net.runelite.api.Client;
+
+import javax.inject.Inject;
 
 public abstract class Plugin implements Module
 {
 	protected Injector injector;
 
+	@Inject
+	public Client client;
 	@Override
 	public final int hashCode()
 	{
@@ -64,6 +69,11 @@ public abstract class Plugin implements Module
 	public final Injector getInjector()
 	{
 		return injector;
+	}
+
+	public boolean hasCompletedDiary(int diary)
+	{
+		return client.getVarbitValue(diary) == 1;
 	}
 
 	public String getName()
