@@ -113,120 +113,114 @@ public class DailyTasksPlugin extends Plugin
 		long currentTime = System.currentTimeMillis();
 		boolean dailyReset = !loggingIn && currentTime - lastReset > ONE_DAY;
 
-		if (dailyReset) {
-			checkConfigDaily(currentTime);
-		} else {
-			checkConfigLogin(currentTime);
-		}
-	}
-
-	private void checkConfigDaily(long currentTime)
-	{
-		if (client.getVar(VarClientInt.MEMBERSHIP_STATUS) == 1)
+		boolean isMember = client.getVar(VarClientInt.MEMBERSHIP_STATUS) == 1;
+		if (isMember)
 		{
 			// Round down to the nearest day
 			lastReset = (long) Math.floor(currentTime / ONE_DAY) * ONE_DAY;
 			loggingIn = false;
 
-			if (config.showHerbBoxes())
-			{
-				checkHerbBoxesDaily();
-			}
-
-			if (config.showStaves())
-			{
-				checkStavesDaily();
-			}
-
-			if (config.showEssence())
-			{
-				checkEssenceDaily();
-			}
-
-			if (config.showRunes())
-			{
-				checkRunesDaily();
-			}
-
-			if (config.showSand())
-			{
-				checkSandDaily();
-			}
-
-			if (config.showFlax())
-			{
-				checkFlaxDaily();
-			}
-
-			if (config.showArrows())
-			{
-				checkArrowsDaily();
-			}
-
-			if (config.showBonemeal())
-			{
-				checkBonemealDaily();
-			}
-
-			if (config.showDynamite())
-			{
-				checkDynamiteDaily();
+			if (dailyReset) {
+				checkConfigDaily();
+			} else {
+				checkConfigLogin();
 			}
 		}
 	}
 
-	private void checkConfigLogin(long currentTime)
+	private void checkConfigDaily()
 	{
-		if (loggingIn && client.getVar(VarClientInt.MEMBERSHIP_STATUS) == 1)
+		if (config.showHerbBoxes())
 		{
-			// Round down to the nearest day
-			lastReset = (long) Math.floor(currentTime / ONE_DAY) * ONE_DAY;
-			loggingIn = false;
+			checkHerbBoxesDaily();
+		}
 
-			if (config.showHerbBoxes())
-			{
-				checkHerbBoxesLogin();
-			}
+		if (config.showStaves())
+		{
+			checkStavesDaily();
+		}
 
-			if (config.showStaves())
-			{
-				checkStavesLogin();
-			}
+		if (config.showEssence())
+		{
+			checkEssenceDaily();
+		}
 
-			if (config.showEssence())
-			{
-				checkEssenceLogin();
-			}
+		if (config.showRunes())
+		{
+			checkRunesDaily();
+		}
 
-			if (config.showRunes())
-			{
-				checkRunesLogin();
-			}
+		if (config.showSand())
+		{
+			checkSandDaily();
+		}
 
-			if (config.showSand())
-			{
-				checkSandLogin();
-			}
+		if (config.showFlax())
+		{
+			checkFlaxDaily();
+		}
 
-			if (config.showFlax())
-			{
-				checkFlaxLogin();
-			}
+		if (config.showArrows())
+		{
+			checkArrowsDaily();
+		}
 
-			if (config.showArrows())
-			{
-				checkArrowsLogin();
-			}
+		if (config.showBonemeal())
+		{
+			checkBonemealDaily();
+		}
 
-			if (config.showBonemeal())
-			{
-				checkBonemealLogin();
-			}
+		if (config.showDynamite())
+		{
+			checkDynamiteDaily();
+		}
+	}
 
-			if (config.showDynamite())
-			{
-				checkDynamiteLogin();
-			}
+	private void checkConfigLogin()
+	{
+		if (config.showHerbBoxes())
+		{
+			checkHerbBoxesLogin();
+		}
+
+		if (config.showStaves())
+		{
+			checkStavesLogin();
+		}
+
+		if (config.showEssence())
+		{
+			checkEssenceLogin();
+		}
+
+		if (config.showRunes())
+		{
+			checkRunesLogin();
+		}
+
+		if (config.showSand())
+		{
+			checkSandLogin();
+		}
+
+		if (config.showFlax())
+		{
+			checkFlaxLogin();
+		}
+
+		if (config.showArrows())
+		{
+			checkArrowsLogin();
+		}
+
+		if (config.showBonemeal())
+		{
+			checkBonemealLogin();
+		}
+
+		if (config.showDynamite())
+		{
+			checkDynamiteLogin();
 		}
 	}
 
