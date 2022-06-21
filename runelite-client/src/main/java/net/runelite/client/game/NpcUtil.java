@@ -85,6 +85,7 @@ public class NpcUtil
 			case NpcID.ANCIENT_ZYGOMITE:
 			case NpcID.ROCKSLUG:
 			case NpcID.ROCKSLUG_422:
+			case NpcID.GIANT_ROCKSLUG:
 			case NpcID.DESERT_LIZARD:
 			case NpcID.DESERT_LIZARD_460:
 			case NpcID.DESERT_LIZARD_461:
