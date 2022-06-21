@@ -155,7 +155,7 @@ public class DailyTasksPlugin extends Plugin
 
 			if (config.showFlax())
 			{
-				checkFlax(true);
+				checkFlaxDaily(true);
 			}
 
 			if (config.showBonemeal())
@@ -210,7 +210,7 @@ public class DailyTasksPlugin extends Plugin
 
 			if (config.showFlax())
 			{
-				checkFlax(false);
+				checkFlaxLogin(false);
 			}
 
 			if (config.showBonemeal())
@@ -334,11 +334,21 @@ public class DailyTasksPlugin extends Plugin
 		}
 	}
 
-	private void checkFlax(boolean dailyReset)
+	private void checkFlaxDaily(boolean dailyReset)
 	{
 		if (client.getVarbitValue(Varbits.DIARY_KANDARIN_EASY) == 1
 			&& (client.getVarbitValue(Varbits.DAILY_FLAX_STATE) == 0
 			|| dailyReset))
+		{
+			sendChatMessage(FLAX_MESSAGE);
+		}
+	}
+
+	private void checkFlaxLogin(boolean dailyReset)
+	{
+		if (client.getVarbitValue(Varbits.DIARY_KANDARIN_EASY) == 1
+				&& (client.getVarbitValue(Varbits.DAILY_FLAX_STATE) == 0
+				|| dailyReset))
 		{
 			sendChatMessage(FLAX_MESSAGE);
 		}
