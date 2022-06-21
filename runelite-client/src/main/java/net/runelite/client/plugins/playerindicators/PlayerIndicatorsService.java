@@ -45,19 +45,22 @@ public class PlayerIndicatorsService
 {
 	private final Client client;
 	private final PlayerIndicatorsConfig config;
+	private final ClanGuestTracker clanGuestTracker;
 
 	@Inject
-	private PlayerIndicatorsService(Client client, PlayerIndicatorsConfig config)
+	private PlayerIndicatorsService(Client client, PlayerIndicatorsConfig config, ClanGuestTracker clanGuestTracker)
 	{
 		this.config = config;
 		this.client = client;
+		this.clanGuestTracker = clanGuestTracker;
 	}
 
 	public void forEachPlayer(final BiConsumer<Player, Color> consumer)
 	{
 		if (!config.highlightOwnPlayer() && !config.highlightFriendsChat()
 			&& !config.highlightFriends() && !config.highlightOthers()
-			&& !config.highlightClanMembers())
+			&& !config.highlightClanMembers() && !config.highlightClanGuests()
+			&& !config.highlightGuestClanMembers() && !config.highlightGuestClanGuests())
 		{
 			return;
 		}
@@ -96,6 +99,18 @@ public class PlayerIndicatorsService
 			else if (config.highlightClanMembers() && isClanMember)
 			{
 				consumer.accept(player, config.getClanMemberColor());
+			}
+			else if (config.highlightGuestClanMembers() && clanGuestTracker.isGuestClanMember(player))
+			{
+				consumer.accept(player, config.getGuestClanMemberColor());
+			}
+			else if (config.highlightClanGuests() && clanGuestTracker.isClanGuest(player))
+			{
+				consumer.accept(player, config.getClanGuestColor());
+			}
+			else if (config.highlightGuestClanGuests() && clanGuestTracker.isGuestClanGuest(player))
+			{
+				consumer.accept(player, config.getGuestClanGuestColor());
 			}
 			else if (config.highlightOthers() && !isFriendsChatMember && !isClanMember)
 			{

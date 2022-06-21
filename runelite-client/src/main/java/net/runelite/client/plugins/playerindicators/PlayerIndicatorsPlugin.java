@@ -49,6 +49,7 @@ import net.runelite.api.Player;
 import net.runelite.api.ScriptID;
 import net.runelite.api.clan.ClanTitle;
 import net.runelite.api.events.ClientTick;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -96,6 +97,9 @@ public class PlayerIndicatorsPlugin extends Plugin
 
 	@Inject
 	private ClientThread clientThread;
+
+	@Inject
+	private ClanGuestTracker clanGuestTracker;
 
 	@Provides
 	PlayerIndicatorsConfig provideConfig(ConfigManager configManager)
@@ -180,6 +184,19 @@ public class PlayerIndicatorsPlugin extends Plugin
 
 				entry.setTarget(newTarget);
 			}
+		}
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		if (config.highlightClanGuests())
+		{
+			clanGuestTracker.updateClan();
+		}
+		if (config.highlightGuestClanGuests() || config.highlightGuestClanGuests())
+		{
+			clanGuestTracker.updateGuestClan();
 		}
 	}
 
