@@ -140,7 +140,7 @@ public class DailyTasksPlugin extends Plugin
 
 			if (config.showEssence())
 			{
-				checkEssence(true);
+				checkEssenceDaily(true);
 			}
 
 			if (config.showRunes())
@@ -195,7 +195,7 @@ public class DailyTasksPlugin extends Plugin
 
 			if (config.showEssence())
 			{
-				checkEssence(false);
+				checkEssenceLogin(false);
 			}
 
 			if (config.showRunes())
@@ -272,11 +272,21 @@ public class DailyTasksPlugin extends Plugin
 		}
 	}
 
-	private void checkEssence(boolean dailyReset)
+	private void checkEssenceDaily(boolean dailyReset)
 	{
 		if (client.getVarbitValue(Varbits.DIARY_ARDOUGNE_MEDIUM) == 1
 			&& (client.getVarbitValue(Varbits.DAILY_ESSENCE_COLLECTED) == 0
 			|| dailyReset))
+		{
+			sendChatMessage(ESSENCE_MESSAGE);
+		}
+	}
+
+	private void checkEssenceLogin(boolean dailyReset)
+	{
+		if (client.getVarbitValue(Varbits.DIARY_ARDOUGNE_MEDIUM) == 1
+				&& (client.getVarbitValue(Varbits.DAILY_ESSENCE_COLLECTED) == 0
+				|| dailyReset))
 		{
 			sendChatMessage(ESSENCE_MESSAGE);
 		}
