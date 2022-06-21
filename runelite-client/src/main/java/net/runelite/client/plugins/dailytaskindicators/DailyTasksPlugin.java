@@ -170,7 +170,7 @@ public class DailyTasksPlugin extends Plugin
 
 			if (config.showDynamite())
 			{
-				checkDynamite(true);
+				checkDynamiteDaily(true);
 			}
 		}
 	}
@@ -225,7 +225,7 @@ public class DailyTasksPlugin extends Plugin
 
 			if (config.showDynamite())
 			{
-				checkDynamite(false);
+				checkDynamiteLogin(false);
 			}
 		}
 	}
@@ -416,11 +416,21 @@ public class DailyTasksPlugin extends Plugin
 		}
 	}
 
-	private void checkDynamite(boolean dailyReset)
+	private void checkDynamiteDaily(boolean dailyReset)
 	{
 		if (client.getVarbitValue(Varbits.DIARY_KOUREND_MEDIUM) == 1
 			&& (client.getVarbitValue(Varbits.DAILY_DYNAMITE_COLLECTED) == 0
 			|| dailyReset))
+		{
+			sendChatMessage(DYNAMITE_MESSAGE);
+		}
+	}
+
+	private void checkDynamiteLogin(boolean dailyReset)
+	{
+		if (client.getVarbitValue(Varbits.DIARY_KOUREND_MEDIUM) == 1
+				&& (client.getVarbitValue(Varbits.DAILY_DYNAMITE_COLLECTED) == 0
+				|| dailyReset))
 		{
 			sendChatMessage(DYNAMITE_MESSAGE);
 		}
