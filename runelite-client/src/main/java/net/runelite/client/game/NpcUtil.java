@@ -26,19 +26,22 @@
 package net.runelite.client.game;
 
 import java.util.Set;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.NpcID;
 import net.runelite.client.RuntimeConfig;
 import org.apache.commons.lang3.ArrayUtils;
 
+@Singleton
 public class NpcUtil
 {
 	private final RuntimeConfig runtimeConfig;
 
 	@Inject
-	private NpcUtil(RuntimeConfig runtimeConfig)
+	private NpcUtil(@Nullable RuntimeConfig runtimeConfig)
 	{
 		this.runtimeConfig = runtimeConfig;
 	}
@@ -92,10 +95,13 @@ public class NpcUtil
 			case NpcID.KALPHITE_QUEEN_963: // KQ's first form sometimes regenerates 1hp after reaching 0hp, thus not dying
 				return false;
 			default:
-				Set<Integer> ignoredNpcs = runtimeConfig.getIgnoreDeadNpcs();
-				if (ignoredNpcs != null && ignoredNpcs.contains(id))
+				if (runtimeConfig != null)
 				{
-					return false;
+					Set<Integer> ignoredNpcs = runtimeConfig.getIgnoreDeadNpcs();
+					if (ignoredNpcs != null && ignoredNpcs.contains(id))
+					{
+						return false;
+					}
 				}
 
 				final NPCComposition npcComposition = npc.getTransformedComposition();
