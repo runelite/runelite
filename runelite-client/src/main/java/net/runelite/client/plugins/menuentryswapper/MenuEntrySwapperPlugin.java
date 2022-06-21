@@ -817,25 +817,16 @@ public class MenuEntrySwapperPlugin extends Plugin
 					}
 
 					client.createMenuEntry(idx)
-						.setOption("Swap " + actions[actionIdx])
+						.setOption("Swap left click " + actions[actionIdx])
 						.setTarget(entry.getTarget())
 						.setType(MenuAction.RUNELITE)
-						.onClick(e ->
-						{
-							final String message = new ChatMessageBuilder()
-								.append("The default left click option for '").append(Text.removeTags(composition.getName())).append("' ")
-								.append("has been set to '").append(actions[menuIdx]).append("'.")
-								.build();
+						.onClick(npcConsumer(composition, actions, menuIdx, menuAction, false));
 
-							chatMessageManager.queue(QueuedMessage.builder()
-								.type(ChatMessageType.CONSOLE)
-								.runeLiteFormattedMessage(message)
-								.build());
-
-							log.debug("Set npc swap for {} to {}", composition.getId(), menuAction);
-
-							setNpcSwapConfig(false, composition.getId(), menuIdx);
-						});
+					client.createMenuEntry(idx)
+						.setOption("Swap shift click " + actions[actionIdx])
+						.setTarget(entry.getTarget())
+						.setType(MenuAction.RUNELITE)
+						.onClick(npcConsumer(composition, actions, menuIdx, menuAction, true));
 				}
 
 				// Walk here swap
@@ -877,6 +868,27 @@ public class MenuEntrySwapperPlugin extends Plugin
 				}
 			}
 		}
+	}
+
+	private Consumer<MenuEntry> npcConsumer(NPCComposition composition, String[] actions, int menuIdx,
+		MenuAction menuAction, boolean shift)
+	{
+		return e ->
+		{
+			final String message = new ChatMessageBuilder()
+				.append("The default ").append(shift ? "shift" : "left").append(" click option for '").append(Text.removeTags(composition.getName())).append("' ")
+				.append("has been set to '").append(actions[menuIdx]).append("'.")
+				.build();
+
+			chatMessageManager.queue(QueuedMessage.builder()
+				.type(ChatMessageType.CONSOLE)
+				.runeLiteFormattedMessage(message)
+				.build());
+
+			log.debug("Set npc {} swap for {} to {}", shift ? "shift" : "left", composition.getId(), menuAction);
+
+			setNpcSwapConfig(shift, composition.getId(), menuIdx);
+		};
 	}
 
 	private void configureWornItems(MenuOpened event)
