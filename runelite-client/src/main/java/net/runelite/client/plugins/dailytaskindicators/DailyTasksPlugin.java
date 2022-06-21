@@ -235,7 +235,7 @@ public class DailyTasksPlugin extends Plugin
 
 	private void checkHerbBoxesLogin()
 	{
-		if (client.getVarbitValue(Varbits.DAILY_HERB_BOXES_COLLECTED) < HERB_BOX_MAX)
+		if (hasCollectedPartially(Varbits.DAILY_HERB_BOXES_COLLECTED, HERB_BOX_MAX))
 		{
 			checkHerbBoxesDaily();
 		}
@@ -360,7 +360,7 @@ public class DailyTasksPlugin extends Plugin
 					max += BONEMEAL_PER_DIARY;
 				}
 			}
-			if (collected < max)
+			if (hasCollectedPartially(collected, max))
 			{
 				sendChatMessage(BONEMEAL_MESSAGE);
 			}
@@ -386,6 +386,11 @@ public class DailyTasksPlugin extends Plugin
 	private boolean hasCollectedNone(int item)
 	{
 		return client.getVarbitValue(item) == 0;
+	}
+
+	private boolean hasCollectedPartially(int itemCount, int itemMax)
+	{
+		return client.getVarbitValue(itemCount) < itemMax;
 	}
 
 	private void sendChatMessage(String chatMessage)
