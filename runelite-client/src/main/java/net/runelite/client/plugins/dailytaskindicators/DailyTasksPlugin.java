@@ -130,47 +130,47 @@ public class DailyTasksPlugin extends Plugin
 
 			if (config.showHerbBoxes())
 			{
-				checkHerbBoxesDaily(true);
+				checkHerbBoxesDaily();
 			}
 
 			if (config.showStaves())
 			{
-				checkStavesDaily(true);
+				checkStavesDaily();
 			}
 
 			if (config.showEssence())
 			{
-				checkEssenceDaily(true);
+				checkEssenceDaily();
 			}
 
 			if (config.showRunes())
 			{
-				checkRunesDaily(true);
+				checkRunesDaily();
 			}
 
 			if (config.showSand())
 			{
-				checkSandDaily(true);
+				checkSandDaily();
 			}
 
 			if (config.showFlax())
 			{
-				checkFlaxDaily(true);
+				checkFlaxDaily();
 			}
 
 			if (config.showArrows())
 			{
-				checkArrowsDaily(true);
+				checkArrowsDaily();
 			}
 
 			if (config.showBonemeal())
 			{
-				checkBonemealDaily(true);
+				checkBonemealDaily();
 			}
 
 			if (config.showDynamite())
 			{
-				checkDynamiteDaily(true);
+				checkDynamiteDaily();
 			}
 		}
 	}
@@ -185,196 +185,183 @@ public class DailyTasksPlugin extends Plugin
 
 			if (config.showHerbBoxes())
 			{
-				checkHerbBoxesLogin(false);
+				checkHerbBoxesLogin();
 			}
 
 			if (config.showStaves())
 			{
-				checkStavesLogin(false);
+				checkStavesLogin();
 			}
 
 			if (config.showEssence())
 			{
-				checkEssenceLogin(false);
+				checkEssenceLogin();
 			}
 
 			if (config.showRunes())
 			{
-				checkRunesLogin(false);
+				checkRunesLogin();
 			}
 
 			if (config.showSand())
 			{
-				checkSandLogin(false);
+				checkSandLogin();
 			}
 
 			if (config.showFlax())
 			{
-				checkFlaxLogin(false);
+				checkFlaxLogin();
 			}
 
 			if (config.showArrows())
 			{
-				checkArrowsLogin(false);
+				checkArrowsLogin();
 			}
 
 			if (config.showBonemeal())
 			{
-				checkBonemealLogin(false);
+				checkBonemealLogin();
 			}
 
 			if (config.showDynamite())
 			{
-				checkDynamiteLogin(false);
+				checkDynamiteLogin();
 			}
 		}
 	}
 
-	private void checkHerbBoxesDaily(boolean dailyReset)
+	private void checkHerbBoxesDaily()
 	{
 		if (client.getAccountType() == AccountType.NORMAL
-			&& client.getVar(VarPlayer.NMZ_REWARD_POINTS) >= HERB_BOX_COST
-			&& (client.getVarbitValue(Varbits.DAILY_HERB_BOXES_COLLECTED) < HERB_BOX_MAX
-			|| dailyReset))
+			&& client.getVar(VarPlayer.NMZ_REWARD_POINTS) >= HERB_BOX_COST)
 		{
 			sendChatMessage(HERB_BOX_MESSAGE);
 		}
 	}
 
-	private void checkHerbBoxesLogin(boolean dailyReset)
+	private void checkHerbBoxesLogin()
 	{
 		if (client.getAccountType() == AccountType.NORMAL
 				&& client.getVar(VarPlayer.NMZ_REWARD_POINTS) >= HERB_BOX_COST
-				&& (client.getVarbitValue(Varbits.DAILY_HERB_BOXES_COLLECTED) < HERB_BOX_MAX
-				|| dailyReset))
+				&& client.getVarbitValue(Varbits.DAILY_HERB_BOXES_COLLECTED) < HERB_BOX_MAX)
 		{
 			sendChatMessage(HERB_BOX_MESSAGE);
 		}
 	}
 
-	private void checkStavesDaily(boolean dailyReset)
+	private void checkStavesDaily()
 	{
-		if (client.getVarbitValue(Varbits.DIARY_VARROCK_EASY) == 1
-			&& (client.getVarbitValue(Varbits.DAILY_STAVES_COLLECTED) == 0
-			|| dailyReset))
+		if (client.getVarbitValue(Varbits.DIARY_VARROCK_EASY) == 1)
 		{
 			sendChatMessage(STAVES_MESSAGE);
 		}
 	}
 
-	private void checkStavesLogin(boolean dailyReset)
+	private void checkStavesLogin()
 	{
 		if (client.getVarbitValue(Varbits.DIARY_VARROCK_EASY) == 1
-				&& (client.getVarbitValue(Varbits.DAILY_STAVES_COLLECTED) == 0
-				|| dailyReset))
+				&& client.getVarbitValue(Varbits.DAILY_STAVES_COLLECTED) == 0)
 		{
 			sendChatMessage(STAVES_MESSAGE);
 		}
 	}
 
-	private void checkEssenceDaily(boolean dailyReset)
+	private void checkEssenceDaily()
 	{
-		if (client.getVarbitValue(Varbits.DIARY_ARDOUGNE_MEDIUM) == 1
-			&& (client.getVarbitValue(Varbits.DAILY_ESSENCE_COLLECTED) == 0
-			|| dailyReset))
+		if (client.getVarbitValue(Varbits.DIARY_ARDOUGNE_MEDIUM) == 1)
 		{
 			sendChatMessage(ESSENCE_MESSAGE);
 		}
 	}
 
-	private void checkEssenceLogin(boolean dailyReset)
+	private void checkEssenceLogin()
 	{
 		if (client.getVarbitValue(Varbits.DIARY_ARDOUGNE_MEDIUM) == 1
-				&& (client.getVarbitValue(Varbits.DAILY_ESSENCE_COLLECTED) == 0
-				|| dailyReset))
+				&& client.getVarbitValue(Varbits.DAILY_ESSENCE_COLLECTED) == 0)
 		{
 			sendChatMessage(ESSENCE_MESSAGE);
 		}
 	}
 
-	private void checkRunesDaily(boolean dailyReset)
+	private void checkRunesDaily()
 	{
-		if (client.getVarbitValue(Varbits.DIARY_WILDERNESS_EASY) == 1
-			&& (client.getVarbitValue(Varbits.DAILY_RUNES_COLLECTED) == 0
-			|| dailyReset))
+		if (client.getVarbitValue(Varbits.DIARY_WILDERNESS_EASY) == 1)
 		{
 			sendChatMessage(RUNES_MESSAGE);
 		}
 	}
 
-	private void checkRunesLogin(boolean dailyReset)
+	private void checkRunesLogin()
 	{
 		if (client.getVarbitValue(Varbits.DIARY_WILDERNESS_EASY) == 1
-				&& (client.getVarbitValue(Varbits.DAILY_RUNES_COLLECTED) == 0
-				|| dailyReset))
+				&& client.getVarbitValue(Varbits.DAILY_RUNES_COLLECTED) == 0)
 		{
 			sendChatMessage(RUNES_MESSAGE);
 		}
 	}
 
-	private void checkSandDaily(boolean dailyReset)
+	private void checkSandDaily()
 	{
 		if (client.getAccountType() != AccountType.ULTIMATE_IRONMAN
-			&& client.getVarbitValue(Varbits.QUEST_THE_HAND_IN_THE_SAND) >= SAND_QUEST_COMPLETE
-			&& (client.getVarbitValue(Varbits.DAILY_SAND_COLLECTED) == 0
-			|| dailyReset))
+			&& client.getVarbitValue(Varbits.QUEST_THE_HAND_IN_THE_SAND) >= SAND_QUEST_COMPLETE)
 		{
 			sendChatMessage(SAND_MESSAGE);
 		}
 	}
 
-	private void checkSandLogin(boolean dailyReset)
+	private void checkSandLogin()
 	{
 		if (client.getAccountType() != AccountType.ULTIMATE_IRONMAN
 				&& client.getVarbitValue(Varbits.QUEST_THE_HAND_IN_THE_SAND) >= SAND_QUEST_COMPLETE
-				&& (client.getVarbitValue(Varbits.DAILY_SAND_COLLECTED) == 0
-				|| dailyReset))
+				&& client.getVarbitValue(Varbits.DAILY_SAND_COLLECTED) == 0)
 		{
 			sendChatMessage(SAND_MESSAGE);
 		}
 	}
 
-	private void checkFlaxDaily(boolean dailyReset)
+	private void checkFlaxDaily()
 	{
-		if (client.getVarbitValue(Varbits.DIARY_KANDARIN_EASY) == 1
-			&& (client.getVarbitValue(Varbits.DAILY_FLAX_STATE) == 0
-			|| dailyReset))
+		if (client.getVarbitValue(Varbits.DIARY_KANDARIN_EASY) == 1)
 		{
 			sendChatMessage(FLAX_MESSAGE);
 		}
 	}
 
-	private void checkFlaxLogin(boolean dailyReset)
+	private void checkFlaxLogin()
 	{
 		if (client.getVarbitValue(Varbits.DIARY_KANDARIN_EASY) == 1
-				&& (client.getVarbitValue(Varbits.DAILY_FLAX_STATE) == 0
-				|| dailyReset))
+				&& client.getVarbitValue(Varbits.DAILY_FLAX_STATE) == 0)
 		{
 			sendChatMessage(FLAX_MESSAGE);
 		}
 	}
 
-	private void checkArrowsDaily(boolean dailyReset)
+	private void checkArrowsDaily()
 	{
-		if (client.getVarbitValue(Varbits.DIARY_WESTERN_EASY) == 1
-			&& (client.getVarbitValue(Varbits.DAILY_ARROWS_STATE) == 0
-			|| dailyReset))
+		if (client.getVarbitValue(Varbits.DIARY_WESTERN_EASY) == 1)
 		{
 			sendChatMessage(ARROWS_MESSAGE);
 		}
 	}
 
-	private void checkArrowsLogin(boolean dailyReset)
+	private void checkArrowsLogin()
 	{
 		if (client.getVarbitValue(Varbits.DIARY_WESTERN_EASY) == 1
-				&& (client.getVarbitValue(Varbits.DAILY_ARROWS_STATE) == 0
-				|| dailyReset))
+				&& client.getVarbitValue(Varbits.DAILY_ARROWS_STATE) == 0)
 		{
 			sendChatMessage(ARROWS_MESSAGE);
 		}
 	}
 
-	private void checkBonemealDaily(boolean dailyReset)
+	private void checkBonemealDaily()
+	{
+		if (client.getVarbitValue(Varbits.DIARY_MORYTANIA_MEDIUM) == 1)
+		{
+			sendChatMessage(BONEMEAL_MESSAGE);
+		}
+	}
+
+	private void checkBonemealLogin()
 	{
 		if (client.getVarbitValue(Varbits.DIARY_MORYTANIA_MEDIUM) == 1)
 		{
@@ -388,49 +375,25 @@ public class DailyTasksPlugin extends Plugin
 					max += BONEMEAL_PER_DIARY;
 				}
 			}
-			if (collected < max || dailyReset)
+			if (collected < max)
 			{
 				sendChatMessage(BONEMEAL_MESSAGE);
 			}
 		}
 	}
 
-	private void checkBonemealLogin(boolean dailyReset)
+	private void checkDynamiteDaily()
 	{
-		if (client.getVarbitValue(Varbits.DIARY_MORYTANIA_MEDIUM) == 1)
-		{
-			int collected = client.getVarbitValue(Varbits.DAILY_BONEMEAL_STATE);
-			int max = BONEMEAL_PER_DIARY;
-			if (client.getVarbitValue(Varbits.DIARY_MORYTANIA_HARD) == 1)
-			{
-				max += BONEMEAL_PER_DIARY;
-				if (client.getVarbitValue(Varbits.DIARY_MORYTANIA_ELITE) == 1)
-				{
-					max += BONEMEAL_PER_DIARY;
-				}
-			}
-			if (collected < max || dailyReset)
-			{
-				sendChatMessage(BONEMEAL_MESSAGE);
-			}
-		}
-	}
-
-	private void checkDynamiteDaily(boolean dailyReset)
-	{
-		if (client.getVarbitValue(Varbits.DIARY_KOUREND_MEDIUM) == 1
-			&& (client.getVarbitValue(Varbits.DAILY_DYNAMITE_COLLECTED) == 0
-			|| dailyReset))
+		if (client.getVarbitValue(Varbits.DIARY_KOUREND_MEDIUM) == 1)
 		{
 			sendChatMessage(DYNAMITE_MESSAGE);
 		}
 	}
 
-	private void checkDynamiteLogin(boolean dailyReset)
+	private void checkDynamiteLogin()
 	{
 		if (client.getVarbitValue(Varbits.DIARY_KOUREND_MEDIUM) == 1
-				&& (client.getVarbitValue(Varbits.DAILY_DYNAMITE_COLLECTED) == 0
-				|| dailyReset))
+				&& client.getVarbitValue(Varbits.DAILY_DYNAMITE_COLLECTED) == 0)
 		{
 			sendChatMessage(DYNAMITE_MESSAGE);
 		}
