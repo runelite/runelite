@@ -76,6 +76,11 @@ public abstract class Plugin implements Module
 		return client.getVarbitValue(diary) == 1;
 	}
 
+	public boolean hasCompletedQuest(int quest, int questThreshold)
+	{
+		return client.getVarbitValue(quest) >= questThreshold;
+	}
+
 	public String getName()
 	{
 		return getClass().getAnnotation(PluginDescriptor.class).name();

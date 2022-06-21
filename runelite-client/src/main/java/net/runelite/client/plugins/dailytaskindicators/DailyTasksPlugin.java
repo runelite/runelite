@@ -298,7 +298,7 @@ public class DailyTasksPlugin extends Plugin
 	private void checkSandDaily()
 	{
 		if (client.getAccountType() != AccountType.ULTIMATE_IRONMAN
-			&& client.getVarbitValue(Varbits.QUEST_THE_HAND_IN_THE_SAND) >= SAND_QUEST_COMPLETE)
+			&& hasCompletedQuest(Varbits.QUEST_THE_HAND_IN_THE_SAND, SAND_QUEST_COMPLETE))
 		{
 			sendChatMessage(SAND_MESSAGE);
 		}
