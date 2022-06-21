@@ -113,6 +113,11 @@ public class DailyTasksPlugin extends Plugin
 		long currentTime = System.currentTimeMillis();
 		boolean dailyReset = !loggingIn && currentTime - lastReset > ONE_DAY;
 
+		checkConfigDaily(currentTime, dailyReset);
+	}
+
+	private void checkConfigDaily(long currentTime, boolean dailyReset)
+	{
 		if ((dailyReset || loggingIn)
 			&& client.getVar(VarClientInt.MEMBERSHIP_STATUS) == 1)
 		{
