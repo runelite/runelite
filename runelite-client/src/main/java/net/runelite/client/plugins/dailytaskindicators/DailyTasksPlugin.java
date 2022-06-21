@@ -118,12 +118,12 @@ public class DailyTasksPlugin extends Plugin
 
 			// Round down to the nearest day
 			lastReset = (long) Math.floor(currentTime / ONE_DAY) * ONE_DAY;
-			loggingIn = false;
 
 			if (dailyReset) {
 				checkConfigDaily();
-			} else {
+			} else if (loggingIn) {
 				checkConfigLogin();
+				loggingIn = false;
 			}
 		}
 	}
