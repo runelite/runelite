@@ -239,7 +239,48 @@ public class PlayerIndicatorsPlugin extends Plugin
 				}
 			}
 		}
-		else if (!player.isFriendsChatMember() && !player.isClanMember() && config.highlightOthers())
+		else if (config.highlightClanGuests() && clanGuestTracker.isClanGuest(player))
+		{
+			color = config.getClanGuestColor();
+
+			if (config.showClanChatRanks())
+			{
+				ClanTitle clanTitle = playerIndicatorsService.getClanTitle(player);
+				if (clanTitle != null)
+				{
+					image = chatIconManager.getIconNumber(clanTitle);
+				}
+			}
+		}
+		else if (config.highlightGuestClanMembers() && clanGuestTracker.isGuestClanMember(player))
+		{
+			color = config.getGuestClanMemberColor();
+
+			if (config.showGuestClanChatRanks())
+			{
+				ClanTitle clanTitle = playerIndicatorsService.getGuestClanTitle(player);
+				if (clanTitle != null)
+				{
+					image = chatIconManager.getIconNumber(clanTitle);
+				}
+			}
+		}
+		else if (config.highlightGuestClanGuests() && clanGuestTracker.isGuestClanGuest(player))
+		{
+			color = config.getGuestClanGuestColor();
+
+			if (config.showGuestClanChatRanks())
+			{
+				ClanTitle clanTitle = playerIndicatorsService.getGuestClanTitle(player);
+				if (clanTitle != null)
+				{
+					image = chatIconManager.getIconNumber(clanTitle);
+				}
+			}
+		}
+		else if (config.highlightOthers() && !player.isFriendsChatMember() && !player.isClanMember()
+			&& !clanGuestTracker.isClanGuest(player) && !clanGuestTracker.isGuestClanMember(player)
+			&& !clanGuestTracker.isGuestClanGuest(player))
 		{
 			color = config.getOthersColor();
 		}

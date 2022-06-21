@@ -51,14 +51,16 @@ public class PlayerIndicatorsOverlay extends Overlay
 	private final PlayerIndicatorsService playerIndicatorsService;
 	private final PlayerIndicatorsConfig config;
 	private final ChatIconManager chatIconManager;
+	private final ClanGuestTracker clanGuestTracker;
 
 	@Inject
 	private PlayerIndicatorsOverlay(PlayerIndicatorsConfig config, PlayerIndicatorsService playerIndicatorsService,
-		ChatIconManager chatIconManager)
+									ChatIconManager chatIconManager, ClanGuestTracker clanGuestTracker)
 	{
 		this.config = config;
 		this.playerIndicatorsService = playerIndicatorsService;
 		this.chatIconManager = chatIconManager;
+		this.clanGuestTracker = clanGuestTracker;
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.MED);
 	}
@@ -119,9 +121,20 @@ public class PlayerIndicatorsOverlay extends Overlay
 				rankImage = chatIconManager.getRankImage(rank);
 			}
 		}
-		else if (actor.isClanMember() && config.highlightClanMembers() && config.showClanChatRanks())
+		else if (config.showClanChatRanks() && (actor.isClanMember() && config.highlightClanMembers()
+			|| clanGuestTracker.isClanGuest(actor) && config.highlightClanGuests()))
 		{
 			ClanTitle clanTitle = playerIndicatorsService.getClanTitle(actor);
+			if (clanTitle != null)
+			{
+				rankImage = chatIconManager.getRankImage(clanTitle);
+			}
+		}
+		else if (config.showGuestClanChatRanks()
+			&& (clanGuestTracker.isGuestClanMember(actor) && config.highlightGuestClanMembers()
+			|| clanGuestTracker.isGuestClanGuest(actor) && clanGuestTracker.isGuestClanGuest(actor)))
+		{
+			ClanTitle clanTitle = playerIndicatorsService.getGuestClanTitle(actor);
 			if (clanTitle != null)
 			{
 				rankImage = chatIconManager.getRankImage(clanTitle);

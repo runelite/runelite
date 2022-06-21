@@ -321,4 +321,15 @@ public interface PlayerIndicatorsConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		position = 16,
+		keyName = "guestClanchatMenuIcons",
+		name = "Show guest clan chat ranks",
+		description = "Add guest clan chat rank to right click menu and next to player names"
+	)
+	default boolean showGuestClanChatRanks()
+	{
+		return false;
+	}
 }
