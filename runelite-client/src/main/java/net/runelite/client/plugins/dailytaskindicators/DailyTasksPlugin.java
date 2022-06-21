@@ -113,13 +113,73 @@ public class DailyTasksPlugin extends Plugin
 		long currentTime = System.currentTimeMillis();
 		boolean dailyReset = !loggingIn && currentTime - lastReset > ONE_DAY;
 
-		checkConfigDaily(currentTime, dailyReset);
+		if (dailyReset) {
+			checkConfigDaily(currentTime, dailyReset);
+		} else {
+			checkConfigLogin(currentTime, dailyReset);
+		}
 	}
 
 	private void checkConfigDaily(long currentTime, boolean dailyReset)
 	{
 		if ((dailyReset || loggingIn)
 			&& client.getVar(VarClientInt.MEMBERSHIP_STATUS) == 1)
+		{
+			// Round down to the nearest day
+			lastReset = (long) Math.floor(currentTime / ONE_DAY) * ONE_DAY;
+			loggingIn = false;
+
+			if (config.showHerbBoxes())
+			{
+				checkHerbBoxes(dailyReset);
+			}
+
+			if (config.showStaves())
+			{
+				checkStaves(dailyReset);
+			}
+
+			if (config.showEssence())
+			{
+				checkEssence(dailyReset);
+			}
+
+			if (config.showRunes())
+			{
+				checkRunes(dailyReset);
+			}
+
+			if (config.showSand())
+			{
+				checkSand(dailyReset);
+			}
+
+			if (config.showFlax())
+			{
+				checkFlax(dailyReset);
+			}
+
+			if (config.showBonemeal())
+			{
+				checkBonemeal(dailyReset);
+			}
+
+			if (config.showDynamite())
+			{
+				checkDynamite(dailyReset);
+			}
+
+			if (config.showArrows())
+			{
+				checkArrows(dailyReset);
+			}
+		}
+	}
+
+	private void checkConfigLogin(long currentTime, boolean dailyReset)
+	{
+		if ((dailyReset || loggingIn)
+				&& client.getVar(VarClientInt.MEMBERSHIP_STATUS) == 1)
 		{
 			// Round down to the nearest day
 			lastReset = (long) Math.floor(currentTime / ONE_DAY) * ONE_DAY;
