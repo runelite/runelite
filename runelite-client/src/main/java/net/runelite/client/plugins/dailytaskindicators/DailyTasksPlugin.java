@@ -251,7 +251,7 @@ public class DailyTasksPlugin extends Plugin
 
 	private void checkStavesLogin()
 	{
-		if (client.getVarbitValue(Varbits.DAILY_STAVES_COLLECTED) == 0)
+		if (hasCollectedNone(Varbits.DAILY_STAVES_COLLECTED))
 		{
 			checkStavesDaily();
 		}
@@ -267,7 +267,7 @@ public class DailyTasksPlugin extends Plugin
 
 	private void checkEssenceLogin()
 	{
-		if (client.getVarbitValue(Varbits.DAILY_ESSENCE_COLLECTED) == 0)
+		if (hasCollectedNone(Varbits.DAILY_ESSENCE_COLLECTED))
 		{
 			checkEssenceDaily();
 		}
@@ -283,7 +283,7 @@ public class DailyTasksPlugin extends Plugin
 
 	private void checkRunesLogin()
 	{
-		if (client.getVarbitValue(Varbits.DAILY_RUNES_COLLECTED) == 0)
+		if (hasCollectedNone(Varbits.DAILY_RUNES_COLLECTED))
 		{
 			checkRunesDaily();
 		}
@@ -300,7 +300,7 @@ public class DailyTasksPlugin extends Plugin
 
 	private void checkSandLogin()
 	{
-		if (client.getVarbitValue(Varbits.DAILY_SAND_COLLECTED) == 0)
+		if (hasCollectedNone(Varbits.DAILY_SAND_COLLECTED))
 		{
 			checkSandDaily();
 		}
@@ -316,7 +316,7 @@ public class DailyTasksPlugin extends Plugin
 
 	private void checkFlaxLogin()
 	{
-		if (client.getVarbitValue(Varbits.DAILY_FLAX_STATE) == 0)
+		if (hasCollectedNone(Varbits.DAILY_FLAX_STATE))
 		{
 			checkFlaxDaily();
 		}
@@ -332,7 +332,7 @@ public class DailyTasksPlugin extends Plugin
 
 	private void checkArrowsLogin()
 	{
-		if (client.getVarbitValue(Varbits.DAILY_ARROWS_STATE) == 0)
+		if (hasCollectedNone(Varbits.DAILY_ARROWS_STATE))
 		{
 			checkArrowsDaily();
 		}
@@ -377,10 +377,15 @@ public class DailyTasksPlugin extends Plugin
 
 	private void checkDynamiteLogin()
 	{
-		if (client.getVarbitValue(Varbits.DAILY_DYNAMITE_COLLECTED) == 0)
+		if (hasCollectedNone(Varbits.DAILY_DYNAMITE_COLLECTED))
 		{
 			checkDynamiteDaily();
 		}
+	}
+
+	private boolean hasCollectedNone(int item)
+	{
+		return client.getVarbitValue(item) == 0;
 	}
 
 	private void sendChatMessage(String chatMessage)
