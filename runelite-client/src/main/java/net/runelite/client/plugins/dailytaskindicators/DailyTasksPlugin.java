@@ -135,7 +135,7 @@ public class DailyTasksPlugin extends Plugin
 
 			if (config.showStaves())
 			{
-				checkStaves(true);
+				checkStavesDaily(true);
 			}
 
 			if (config.showEssence())
@@ -190,7 +190,7 @@ public class DailyTasksPlugin extends Plugin
 
 			if (config.showStaves())
 			{
-				checkStaves(false);
+				checkStavesLogin(false);
 			}
 
 			if (config.showEssence())
@@ -252,11 +252,21 @@ public class DailyTasksPlugin extends Plugin
 		}
 	}
 
-	private void checkStaves(boolean dailyReset)
+	private void checkStavesDaily(boolean dailyReset)
 	{
 		if (client.getVarbitValue(Varbits.DIARY_VARROCK_EASY) == 1
 			&& (client.getVarbitValue(Varbits.DAILY_STAVES_COLLECTED) == 0
 			|| dailyReset))
+		{
+			sendChatMessage(STAVES_MESSAGE);
+		}
+	}
+
+	private void checkStavesLogin(boolean dailyReset)
+	{
+		if (client.getVarbitValue(Varbits.DIARY_VARROCK_EASY) == 1
+				&& (client.getVarbitValue(Varbits.DAILY_STAVES_COLLECTED) == 0
+				|| dailyReset))
 		{
 			sendChatMessage(STAVES_MESSAGE);
 		}
