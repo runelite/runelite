@@ -165,7 +165,7 @@ public class DailyTasksPlugin extends Plugin
 
 			if (config.showBonemeal())
 			{
-				checkBonemeal(true);
+				checkBonemealDaily(true);
 			}
 
 			if (config.showDynamite())
@@ -220,7 +220,7 @@ public class DailyTasksPlugin extends Plugin
 
 			if (config.showBonemeal())
 			{
-				checkBonemeal(false);
+				checkBonemealLogin(false);
 			}
 
 			if (config.showDynamite())
@@ -374,7 +374,28 @@ public class DailyTasksPlugin extends Plugin
 		}
 	}
 
-	private void checkBonemeal(boolean dailyReset)
+	private void checkBonemealDaily(boolean dailyReset)
+	{
+		if (client.getVarbitValue(Varbits.DIARY_MORYTANIA_MEDIUM) == 1)
+		{
+			int collected = client.getVarbitValue(Varbits.DAILY_BONEMEAL_STATE);
+			int max = BONEMEAL_PER_DIARY;
+			if (client.getVarbitValue(Varbits.DIARY_MORYTANIA_HARD) == 1)
+			{
+				max += BONEMEAL_PER_DIARY;
+				if (client.getVarbitValue(Varbits.DIARY_MORYTANIA_ELITE) == 1)
+				{
+					max += BONEMEAL_PER_DIARY;
+				}
+			}
+			if (collected < max || dailyReset)
+			{
+				sendChatMessage(BONEMEAL_MESSAGE);
+			}
+		}
+	}
+
+	private void checkBonemealLogin(boolean dailyReset)
 	{
 		if (client.getVarbitValue(Varbits.DIARY_MORYTANIA_MEDIUM) == 1)
 		{
