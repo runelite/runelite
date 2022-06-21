@@ -48,6 +48,7 @@ public class ClanGuestTracker
 	{
 		if (client.getClanChannel() == null)
 		{
+			clanGuests.clear();
 			return;
 		}
 
@@ -66,6 +67,7 @@ public class ClanGuestTracker
 	{
 		if (client.getGuestClanChannel() == null)
 		{
+			guestClanPlayersToRank.clear();
 			return;
 		}
 
