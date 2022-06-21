@@ -145,7 +145,7 @@ public class DailyTasksPlugin extends Plugin
 
 			if (config.showRunes())
 			{
-				checkRunes(true);
+				checkRunesDaily(true);
 			}
 
 			if (config.showSand())
@@ -200,7 +200,7 @@ public class DailyTasksPlugin extends Plugin
 
 			if (config.showRunes())
 			{
-				checkRunes(false);
+				checkRunesLogin(false);
 			}
 
 			if (config.showSand())
@@ -292,11 +292,21 @@ public class DailyTasksPlugin extends Plugin
 		}
 	}
 
-	private void checkRunes(boolean dailyReset)
+	private void checkRunesDaily(boolean dailyReset)
 	{
 		if (client.getVarbitValue(Varbits.DIARY_WILDERNESS_EASY) == 1
 			&& (client.getVarbitValue(Varbits.DAILY_RUNES_COLLECTED) == 0
 			|| dailyReset))
+		{
+			sendChatMessage(RUNES_MESSAGE);
+		}
+	}
+
+	private void checkRunesLogin(boolean dailyReset)
+	{
+		if (client.getVarbitValue(Varbits.DIARY_WILDERNESS_EASY) == 1
+				&& (client.getVarbitValue(Varbits.DAILY_RUNES_COLLECTED) == 0
+				|| dailyReset))
 		{
 			sendChatMessage(RUNES_MESSAGE);
 		}
