@@ -27,38 +27,16 @@ package net.runelite.client.plugins.specialcounter;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import javax.inject.Inject;
 import javax.inject.Named;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Actor;
-import net.runelite.api.Client;
-import net.runelite.api.EquipmentInventorySlot;
-import net.runelite.api.GameState;
-import net.runelite.api.Hitsplat;
-import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
-import net.runelite.api.ItemContainer;
-import net.runelite.api.NPC;
-import net.runelite.api.NpcID;
-import net.runelite.api.ScriptID;
-import net.runelite.api.VarPlayer;
+import net.runelite.api.*;
+import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.CommandExecuted;
-import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.GameTick;
-import net.runelite.api.events.HitsplatApplied;
-import net.runelite.api.events.InteractingChanged;
-import net.runelite.api.events.NpcDespawned;
-import net.runelite.api.events.ScriptPostFired;
-import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.events.*;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -82,22 +60,24 @@ import net.runelite.client.party.WSClient;
 public class SpecialCounterPlugin extends Plugin
 {
 	private static final Set<Integer> IGNORED_NPCS = ImmutableSet.of(
-		NpcID.DARK_ENERGY_CORE, // corp 
+		NpcID.DARK_ENERGY_CORE, // corp
 		NpcID.ZOMBIFIED_SPAWN, NpcID.ZOMBIFIED_SPAWN_8063, // vorkath
 		NpcID.COMBAT_DUMMY, NpcID.UNDEAD_COMBAT_DUMMY, // poh
 		NpcID.SKELETON_HELLHOUND_6613, NpcID.GREATER_SKELETON_HELLHOUND, // vetion
 		NpcID.SPAWN, NpcID.SCION // abyssal sire
 	);
-	
+
 	private static final Set<Integer> RESET_ON_LEAVE_INSTANCED_REGIONS = ImmutableSet.of(
-			9023, // vorkath
-			5536 // hydra
+		9023, // vorkath
+		5536 // hydra
 	);
 
 	private int currentWorld;
 	private int specialPercentage;
 	private Actor lastSpecTarget;
 	private int lastSpecTick;
+	private int damage;
+	private int hitsplatDelay;
 
 	private int previousRegion;
 	private boolean wasInInstance;
@@ -158,6 +138,7 @@ public class SpecialCounterPlugin extends Plugin
 		specialPercentage = -1;
 		lastSpecTarget = null;
 		lastSpecTick = -1;
+		hitsplatDelay = -1;
 		interactedNpcIndexes.clear();
 	}
 
@@ -170,38 +151,62 @@ public class SpecialCounterPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onScriptPostFired(ScriptPostFired event)
+	public void onGameTick(GameTick event)
 	{
-		if (event.getScriptId() == ScriptID.TOB_HUD_SOTETSEG_FADE)
+		if (this.specialWeapon == null)
 		{
-			log.debug("Resetting spec counter as sotetseg maze script was ran");
-			removeCounters();
+			reset();
+			return;
+		}
+
+		if (this.client.getTickCount() == (lastSpecTick + hitsplatDelay))
+		{
+			if (!(this.lastSpecTarget instanceof NPC))
+			{
+				reset();
+				return;
+			}
+
+			NPC npc = (NPC) this.lastSpecTarget;
+
+			Player player = client.getLocalPlayer();
+			if (player == null)
+			{
+				reset();
+				return;
+			}
+
+			final int localPlayerId = player.getId();
+			final int hit = getHit(specialWeapon, damage);
+
+			if (config.infobox())
+			{
+				updateCounter(specialWeapon, null, hit);
+			}
+
+			if (!party.getMembers().isEmpty())
+			{
+				final SpecialCounterUpdate specialCounterUpdate = new SpecialCounterUpdate(
+					npc.getIndex(), specialWeapon, hit, client.getWorld(), localPlayerId);
+				specialCounterUpdate.setMemberId(party.getLocalMember().getMemberId());
+				party.send(specialCounterUpdate);
+			}
+
+			playerInfoDrops.add(createSpecInfoDrop(specialWeapon, hit, localPlayerId));
+		}
+		else if (this.client.getTickCount() > (lastSpecTick + hitsplatDelay))
+		{
+			reset();
 		}
 	}
 
-	@Subscribe
-	public void onGameTick(GameTick event)
+	private void reset()
 	{
-		if (client.getGameState() != GameState.LOGGED_IN)
-		{
-			return;
-		}
-		
-		assert client.getLocalPlayer() != null;
-		int currentRegion = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID();
-		boolean inInstance = client.isInInstancedRegion();
-		
-		// if the player left the region/instance and was fighting boss that resets, reset specs
-		if (currentRegion != previousRegion || (wasInInstance && !inInstance))
-		{
-			if (RESET_ON_LEAVE_INSTANCED_REGIONS.contains(previousRegion))
-			{
-				removeCounters();
-			}
-		}
-		
-		previousRegion = currentRegion;
-		wasInInstance = inInstance;
+		this.damage = 0;
+		this.specialWeapon = null;
+		this.lastSpecTick = -1;
+		this.lastSpecTarget = null;
+		this.hitsplatDelay = -1;
 	}
 
 	@Subscribe
@@ -209,6 +214,22 @@ public class SpecialCounterPlugin extends Plugin
 	{
 		if (event.getGameState() == GameState.LOGGED_IN)
 		{
+			assert client.getLocalPlayer() != null;
+			int currentRegion = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID();
+			boolean inInstance = client.isInInstancedRegion();
+
+			// if the player left the region/instance and was fighting boss that resets, reset specs
+			if (currentRegion != previousRegion || (wasInInstance && !inInstance))
+			{
+				if (RESET_ON_LEAVE_INSTANCED_REGIONS.contains(previousRegion))
+				{
+					removeCounters();
+				}
+			}
+
+			previousRegion = currentRegion;
+			wasInInstance = inInstance;
+
 			if (currentWorld == -1)
 			{
 				currentWorld = client.getWorld();
@@ -233,6 +254,9 @@ public class SpecialCounterPlugin extends Plugin
 
 		log.debug("Updating last spec target to {} (was {})", target.getName(), lastSpecTarget);
 		lastSpecTarget = target;
+
+		if (lastSpecTarget instanceof NPC)
+			hitsplatDelay = getHitDelay(specialWeapon, (NPC) lastSpecTarget);
 	}
 
 	@Subscribe
@@ -256,6 +280,9 @@ public class SpecialCounterPlugin extends Plugin
 		// otherwise it is what we are currently interacting with
 		lastSpecTarget = client.getLocalPlayer().getInteracting();
 		lastSpecTick = client.getTickCount();
+
+		if (lastSpecTarget instanceof NPC)
+			hitsplatDelay = getHitDelay(specialWeapon, (NPC) lastSpecTarget);
 	}
 
 	@Subscribe
@@ -263,6 +290,7 @@ public class SpecialCounterPlugin extends Plugin
 	{
 		Actor target = hitsplatApplied.getActor();
 		Hitsplat hitsplat = hitsplatApplied.getHitsplat();
+
 		// Ignore all hitsplats other than mine
 		if (!hitsplat.isMine() || target == client.getLocalPlayer())
 		{
@@ -276,9 +304,6 @@ public class SpecialCounterPlugin extends Plugin
 		{
 			return;
 		}
-
-		boolean wasSpec = lastSpecTarget != null;
-		lastSpecTarget = null;
 
 		if (!(target instanceof NPC))
 		{
@@ -301,24 +326,17 @@ public class SpecialCounterPlugin extends Plugin
 			interactedNpcIndexes.add(npcIndex);
 		}
 
-		if (wasSpec && specialWeapon != null && hitsplat.getAmount() > 0)
+		if (this.specialWeapon == null)
 		{
-			int hit = getHit(specialWeapon, hitsplat);
-			int localPlayerId = client.getLocalPlayer().getId();
-
-			if (config.infobox())
-			{
-				updateCounter(specialWeapon, null, hit);
-			}
-
-			if (!party.getMembers().isEmpty())
-			{
-				final SpecialCounterUpdate specialCounterUpdate = new SpecialCounterUpdate(npcIndex, specialWeapon, hit, client.getWorld(), localPlayerId);
-				party.send(specialCounterUpdate);
-			}
-
-			playerInfoDrops.add(createSpecInfoDrop(specialWeapon, hit, localPlayerId));
+			return;
 		}
+
+		if (lastSpecTick + hitsplatDelay != this.client.getTickCount())
+			return;
+
+		// The last hitsplat in the expected game tick will be the
+		// players damage, and not hits from thralls and vengeance.
+		damage = hitsplat.getAmount();
 	}
 
 	@Subscribe
@@ -465,9 +483,35 @@ public class SpecialCounterPlugin extends Plugin
 		}
 	}
 
-	private int getHit(SpecialWeapon specialWeapon, Hitsplat hitsplat)
+	private int getHit(SpecialWeapon specialWeapon, final int damage)
 	{
-		return specialWeapon.isDamage() ? hitsplat.getAmount() : 1;
+		if (damage == 0)
+		{
+			return 0;
+		}
+		return specialWeapon.isDamage() ? damage : 1;
+	}
+
+	private int getHitDelay(SpecialWeapon specialWeapon, NPC target)
+	{
+		if (specialWeapon != SpecialWeapon.DORGESHUUN_CROSSBOW)
+			return 1;
+
+		Player player = this.client.getLocalPlayer();
+		if (player == null)
+			return 1;
+
+		WorldPoint playerWp = player.getWorldLocation();
+		if (playerWp == null)
+			return 1;
+
+		WorldArea targetArea = target.getWorldArea();
+		if (targetArea == null)
+			return 1;
+
+		// https://oldschool.runescape.wiki/w/Hit_delay
+		final int distance = targetArea.distanceTo(playerWp);
+		return (int) (1 + Math.floor((double)(3 + distance) / 6));
 	}
 
 	private PlayerInfoDrop createSpecInfoDrop(SpecialWeapon weapon, int hit, int playerId)

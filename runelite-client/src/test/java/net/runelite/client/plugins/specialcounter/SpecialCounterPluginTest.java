@@ -41,16 +41,17 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.VarPlayer;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.party.PartyService;
+import net.runelite.client.party.WSClient;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.AsyncBufferedImage;
-import net.runelite.client.party.PartyService;
-import net.runelite.client.party.WSClient;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -139,6 +140,15 @@ public class SpecialCounterPluginTest
 		return hitsplatApplied;
 	}
 
+	private static HitsplatApplied hitsplat(Actor target, int damage)
+	{
+		Hitsplat hitsplat = new Hitsplat(Hitsplat.HitsplatType.DAMAGE_ME, damage, 42);
+		HitsplatApplied hitsplatApplied = new HitsplatApplied();
+		hitsplatApplied.setActor(target);
+		hitsplatApplied.setHitsplat(hitsplat);
+		return hitsplatApplied;
+	}
+
 	@Test
 	public void testSpecDamage()
 	{
@@ -147,14 +157,19 @@ public class SpecialCounterPluginTest
 		Player player = mock(Player.class);
 		when(client.getLocalPlayer()).thenReturn(player);
 
-		// spec npc
+		// Tick 1: Spec NPC
+		when(client.getTickCount()).thenReturn(1);
 		when(client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT)).thenReturn(50);
 		specialCounterPlugin.onVarbitChanged(new VarbitChanged());
 		lenient().when(player.getInteracting()).thenReturn(target);
 		specialCounterPlugin.onInteractingChanged(new InteractingChanged(player, target));
+		specialCounterPlugin.onGameTick(new GameTick());
 
-		// hit 1
+		// Tick 2: Land a hitsplat on the next tick
+		when(client.getTickCount()).thenReturn(2);
 		specialCounterPlugin.onHitsplatApplied(hitsplat(target, Hitsplat.HitsplatType.DAMAGE_ME));
+
+		specialCounterPlugin.onGameTick(new GameTick());
 
 		verify(infoBoxManager).addInfoBox(any(SpecialCounter.class));
 	}
@@ -167,17 +182,22 @@ public class SpecialCounterPluginTest
 		Player player = mock(Player.class);
 		when(client.getLocalPlayer()).thenReturn(player);
 
-		// spec npc
+		// Tick 1: Spec NPC
+		when(client.getTickCount()).thenReturn(1);
 		when(client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT)).thenReturn(50);
 		specialCounterPlugin.onVarbitChanged(new VarbitChanged());
 		lenient().when(player.getInteracting()).thenReturn(target);
 		specialCounterPlugin.onInteractingChanged(new InteractingChanged(player, target));
 
-		// block 0
+		specialCounterPlugin.onGameTick(new GameTick());
+
+		// Tick 2: Block 0
 		specialCounterPlugin.onHitsplatApplied(hitsplat(target, Hitsplat.HitsplatType.BLOCK_ME));
 
-		// hit 1
+		// Tick 2: Hit 1
 		specialCounterPlugin.onHitsplatApplied(hitsplat(target, Hitsplat.HitsplatType.DAMAGE_ME));
+
+		specialCounterPlugin.onGameTick(new GameTick());
 
 		verify(infoBoxManager, never()).addInfoBox(any(SpecialCounter.class));
 	}
@@ -190,18 +210,26 @@ public class SpecialCounterPluginTest
 		Player player = mock(Player.class);
 		when(client.getLocalPlayer()).thenReturn(player);
 
-		// tick 1: attack npc
+		// Tick 1: Attack NPC
+		when(client.getTickCount()).thenReturn(1);
 		when(player.getInteracting()).thenReturn(target);
 		specialCounterPlugin.onInteractingChanged(new InteractingChanged(player, target));
 
-		// tick 2: spec fires and un-interact npc
+		specialCounterPlugin.onGameTick(new GameTick());
+
+		// Tick 2: Spec fires and un-interact NPC
+		when(client.getTickCount()).thenReturn(2);
 		when(client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT)).thenReturn(50);
 		specialCounterPlugin.onVarbitChanged(new VarbitChanged());
 		lenient().when(player.getInteracting()).thenReturn(null);
 		specialCounterPlugin.onInteractingChanged(new InteractingChanged(player, null));
+		specialCounterPlugin.onGameTick(new GameTick());
 
-		// tick 3: hit 1
+		// Tick 3: Land a hitsplat on the next tick
+		when(client.getTickCount()).thenReturn(3);
 		specialCounterPlugin.onHitsplatApplied(hitsplat(target, Hitsplat.HitsplatType.DAMAGE_ME));
+
+		specialCounterPlugin.onGameTick(new GameTick());
 
 		verify(infoBoxManager).addInfoBox(any(SpecialCounter.class));
 	}
@@ -214,23 +242,36 @@ public class SpecialCounterPluginTest
 
 		Player player = mock(Player.class);
 		when(client.getLocalPlayer()).thenReturn(player);
+		when(specialCounterConfig.bandosGodswordThreshold()).thenReturn(15);
+		lenient().when(specialCounterConfig.thresholdNotification()).thenReturn(true);
 
-		// tick 1: attack npc A
+		// Tick 0: Reset
+		when(client.getTickCount()).thenReturn(0);
+		specialCounterPlugin.onGameTick(new GameTick());
+
+		// Tick 1: Attack NPC A
+		when(client.getTickCount()).thenReturn(1);
 		when(player.getInteracting()).thenReturn(targetA);
 		specialCounterPlugin.onInteractingChanged(new InteractingChanged(player, targetA));
+		specialCounterPlugin.onGameTick(new GameTick());
 
-		// tick 2: spec npc B
+		// Tick 2: Spec NPC B
+		when(client.getTickCount()).thenReturn(2);
 		when(client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT)).thenReturn(50);
 		specialCounterPlugin.onVarbitChanged(new VarbitChanged());
 		lenient().when(player.getInteracting()).thenReturn(targetB);
 		specialCounterPlugin.onInteractingChanged(new InteractingChanged(player, targetB));
+		specialCounterPlugin.onGameTick(new GameTick());
 
-		// tick 3: hitsplat A, hitsplat B
-		specialCounterPlugin.onHitsplatApplied(hitsplat(targetA, Hitsplat.HitsplatType.DAMAGE_ME));
-		verify(infoBoxManager, never()).addInfoBox(any(SpecialCounter.class));
+		// Tick 3: hitsplat A, hitsplat B
+		when(client.getTickCount()).thenReturn(3);
+		specialCounterPlugin.onHitsplatApplied(hitsplat(targetA, 20));
+		specialCounterPlugin.onHitsplatApplied(hitsplat(targetB, 10));
 
-		specialCounterPlugin.onHitsplatApplied(hitsplat(targetB, Hitsplat.HitsplatType.DAMAGE_ME));
+		specialCounterPlugin.onGameTick(new GameTick());
+
 		verify(infoBoxManager).addInfoBox(any(SpecialCounter.class));
+		verify(notifier, never()).notify("Bandos Godsword special attack threshold reached!");
 	}
 
 	@Test
@@ -246,22 +287,34 @@ public class SpecialCounterPluginTest
 		Player player = mock(Player.class);
 		when(client.getLocalPlayer()).thenReturn(player);
 
-		// spec npc
+		// Tick 0: Reset
+		when(client.getTickCount()).thenReturn(0);
+		specialCounterPlugin.onGameTick(new GameTick());
+
+		// Tick 1: Spec NPC A
+		when(client.getTickCount()).thenReturn(1);
 		when(client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT)).thenReturn(50);
 		specialCounterPlugin.onVarbitChanged(new VarbitChanged());
 		lenient().when(player.getInteracting()).thenReturn(targetA);
 		specialCounterPlugin.onInteractingChanged(new InteractingChanged(player, targetA));
+		specialCounterPlugin.onGameTick(new GameTick());
 
-		// hit 1
+		// Tick 2: Hitsplat on NPC A
+		when(client.getTickCount()).thenReturn(2);
 		specialCounterPlugin.onHitsplatApplied(hitsplat(targetA, Hitsplat.HitsplatType.DAMAGE_ME));
-
+		specialCounterPlugin.onGameTick(new GameTick());
 		verify(infoBoxManager).addInfoBox(any(SpecialCounter.class));
 
-		// attack npc 2
+		// Tick 3: Attack NPC B
+		when(client.getTickCount()).thenReturn(3);
+		lenient().when(player.getInteracting()).thenReturn(targetB);
 		specialCounterPlugin.onInteractingChanged(new InteractingChanged(player, targetB));
+		specialCounterPlugin.onGameTick(new GameTick());
 
-		// hit 1
+		// Tick 4: Hitsplat on NPC B
+		lenient().when(client.getTickCount()).thenReturn(4);
 		specialCounterPlugin.onHitsplatApplied(hitsplat(targetB, Hitsplat.HitsplatType.DAMAGE_ME));
+		specialCounterPlugin.onGameTick(new GameTick());
 
 		verify(infoBoxManager).removeInfoBox(any(SpecialCounter.class));
 	}
@@ -275,27 +328,46 @@ public class SpecialCounterPluginTest
 		// Create player
 		Player player = mock(Player.class);
 		when(client.getLocalPlayer()).thenReturn(player);
-		when(specialCounterConfig.bandosGodswordThreshold()).thenReturn(2);
+		when(specialCounterConfig.bandosGodswordThreshold()).thenReturn(25);
 		when(specialCounterConfig.thresholdNotification()).thenReturn(true);
 
-		// Attack enemy
+		// Tick 0: Reset
+		when(client.getTickCount()).thenReturn(0);
+		specialCounterPlugin.onGameTick(new GameTick());
+
+		// Tick 1: Attack Target
+		when(client.getTickCount()).thenReturn(1);
 		when(player.getInteracting()).thenReturn(target);
 		specialCounterPlugin.onInteractingChanged(new InteractingChanged(player, target));
+		specialCounterPlugin.onGameTick(new GameTick());
 
-		// First special attack
+		// Tick 2: Spec Target
+		when(client.getTickCount()).thenReturn(2);
 		when(client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT)).thenReturn(50);
 		specialCounterPlugin.onVarbitChanged(new VarbitChanged());
-		specialCounterPlugin.onHitsplatApplied(hitsplat(target, Hitsplat.HitsplatType.DAMAGE_ME));
+		lenient().when(player.getInteracting()).thenReturn(target);
+		specialCounterPlugin.onInteractingChanged(new InteractingChanged(player, target));
+		specialCounterPlugin.onGameTick(new GameTick());
 
-		// Set up spec weapon as BGS(OR)
-		ItemContainer equipment = mock(ItemContainer.class);
-		when(equipment.getItem(EquipmentInventorySlot.WEAPON.getSlotIdx())).thenReturn(new Item(ItemID.BANDOS_GODSWORD_OR, 1));
-		when(client.getItemContainer(InventoryID.EQUIPMENT)).thenReturn(equipment);
+		// Tick 3: Hitsplat on Target
+		when(client.getTickCount()).thenReturn(3);
+		specialCounterPlugin.onHitsplatApplied(hitsplat(target, 10));
 
-		// Second special attack
+		specialCounterPlugin.onGameTick(new GameTick());
+
+		// Tick 4: Spec Target
+		when(client.getTickCount()).thenReturn(4);
 		when(client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT)).thenReturn(0);
 		specialCounterPlugin.onVarbitChanged(new VarbitChanged());
-		specialCounterPlugin.onHitsplatApplied(hitsplat(target, Hitsplat.HitsplatType.DAMAGE_ME));
+		lenient().when(player.getInteracting()).thenReturn(target);
+		specialCounterPlugin.onInteractingChanged(new InteractingChanged(player, target));
+		specialCounterPlugin.onGameTick(new GameTick());
+
+		// Tick 5: Hitsplat on Target
+		when(client.getTickCount()).thenReturn(5);
+		specialCounterPlugin.onHitsplatApplied(hitsplat(target, 20));
+
+		specialCounterPlugin.onGameTick(new GameTick());
 
 		verify(notifier).notify("Bandos Godsword special attack threshold reached!");
 	}
@@ -309,22 +381,40 @@ public class SpecialCounterPluginTest
 		// Create player
 		Player player = mock(Player.class);
 		when(client.getLocalPlayer()).thenReturn(player);
-		when(specialCounterConfig.bandosGodswordThreshold()).thenReturn(3);
+		when(specialCounterConfig.bandosGodswordThreshold()).thenReturn(25);
 		lenient().when(specialCounterConfig.thresholdNotification()).thenReturn(true);
 
-		// Attack enemy
-		when(player.getInteracting()).thenReturn(target);
-		specialCounterPlugin.onInteractingChanged(new InteractingChanged(player, target));
+		// Tick 0: Reset
+		when(client.getTickCount()).thenReturn(0);
+		specialCounterPlugin.onGameTick(new GameTick());
 
-		// First special attack
+		// Tick 1: Spec Target
+		when(client.getTickCount()).thenReturn(1);
 		when(client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT)).thenReturn(50);
 		specialCounterPlugin.onVarbitChanged(new VarbitChanged());
-		specialCounterPlugin.onHitsplatApplied(hitsplat(target, Hitsplat.HitsplatType.DAMAGE_ME));
+		lenient().when(player.getInteracting()).thenReturn(target);
+		specialCounterPlugin.onInteractingChanged(new InteractingChanged(player, target));
+		specialCounterPlugin.onGameTick(new GameTick());
 
-		// Second special attack
+		// Tick 3: Hitsplat on Target
+		when(client.getTickCount()).thenReturn(2);
+		specialCounterPlugin.onHitsplatApplied(hitsplat(target, 10));
+
+		specialCounterPlugin.onGameTick(new GameTick());
+
+		// Tick 4: Spec Target
+		when(client.getTickCount()).thenReturn(3);
 		when(client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT)).thenReturn(0);
 		specialCounterPlugin.onVarbitChanged(new VarbitChanged());
-		specialCounterPlugin.onHitsplatApplied(hitsplat(target, Hitsplat.HitsplatType.DAMAGE_ME));
+		lenient().when(player.getInteracting()).thenReturn(target);
+		specialCounterPlugin.onInteractingChanged(new InteractingChanged(player, target));
+		specialCounterPlugin.onGameTick(new GameTick());
+
+		// Tick 5: Hitsplat on Target
+		when(client.getTickCount()).thenReturn(4);
+		specialCounterPlugin.onHitsplatApplied(hitsplat(target, 10));
+
+		specialCounterPlugin.onGameTick(new GameTick());
 
 		verify(notifier, never()).notify(any());
 	}
