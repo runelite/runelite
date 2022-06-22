@@ -88,11 +88,4 @@ public final class WidgetConfig
 	 * Is the widget an (inventory?) item
 	 */
 	public static final int ITEM = 1 << 30;
-
-	/**
-	 * Add a USE option
-	 *
-	 * @see MenuAction#ITEM_USE
-	 */
-	public static final int ITEM_USE_OP = 1 << 31;
 }

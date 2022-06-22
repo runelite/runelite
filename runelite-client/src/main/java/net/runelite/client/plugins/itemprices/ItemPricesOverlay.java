@@ -113,12 +113,6 @@ class ItemPricesOverlay extends Overlay
 				}
 				// FALLTHROUGH
 			case CC_OP:
-			case ITEM_USE:
-			case ITEM_FIRST_OPTION:
-			case ITEM_SECOND_OPTION:
-			case ITEM_THIRD_OPTION:
-			case ITEM_FOURTH_OPTION:
-			case ITEM_FIFTH_OPTION:
 				addTooltip(menuEntry, isAlching, groupId);
 				break;
 			case WIDGET_TARGET:

@@ -32,7 +32,6 @@ import net.runelite.api.Client;
 import net.runelite.api.FriendsChatRank;
 import static net.runelite.api.FriendsChatRank.UNRANKED;
 import net.runelite.api.MenuAction;
-import static net.runelite.api.MenuAction.ITEM_USE_ON_PLAYER;
 import static net.runelite.api.MenuAction.PLAYER_EIGTH_OPTION;
 import static net.runelite.api.MenuAction.PLAYER_FIFTH_OPTION;
 import static net.runelite.api.MenuAction.PLAYER_FIRST_OPTION;
@@ -135,7 +134,6 @@ public class PlayerIndicatorsPlugin extends Plugin
 
 			if (type == WALK
 				|| type == WIDGET_TARGET_ON_PLAYER
-				|| type == ITEM_USE_ON_PLAYER
 				|| type == PLAYER_FIRST_OPTION
 				|| type == PLAYER_SECOND_OPTION
 				|| type == PLAYER_THIRD_OPTION

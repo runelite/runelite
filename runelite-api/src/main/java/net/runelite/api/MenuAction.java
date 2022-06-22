@@ -33,11 +33,6 @@ import java.util.Map;
 public enum MenuAction
 {
 	/**
-	 * Menu action for using an item in your inventory on a tile object (GameObject or GroundObject).
-	 */
-	@Deprecated
-	ITEM_USE_ON_GAME_OBJECT(1),
-	/**
 	 * Menu action for using a widget on a tile object (GameObject or GroundObject).
 	 */
 	WIDGET_TARGET_ON_GAME_OBJECT(2),
@@ -62,11 +57,6 @@ public enum MenuAction
 	 */
 	GAME_OBJECT_FIFTH_OPTION(1001),
 
-	/**
-	 * Menu action for using an item in your inventory on an NPC.
-	 */
-	@Deprecated
-	ITEM_USE_ON_NPC(7),
 	/**
 	 * Menu action for using a widget on an NPC.
 	 */
@@ -93,20 +83,10 @@ public enum MenuAction
 	NPC_FIFTH_OPTION(13),
 
 	/**
-	 * Menu action for using an item on a player.
-	 */
-	@Deprecated
-	ITEM_USE_ON_PLAYER(14),
-	/**
 	 * Menu action for using a widget on a player.
 	 */
 	WIDGET_TARGET_ON_PLAYER(15),
 
-	/**
-	 * Menu action for using an item on an item on the ground.
-	 */
-	@Deprecated
-	ITEM_USE_ON_GROUND_ITEM(16),
 	/**
 	 * Menu action for using a widget on an item on the ground.
 	 */
@@ -163,45 +143,9 @@ public enum MenuAction
 	 */
 	WIDGET_CONTINUE(30),
 	/**
-	 * Menu action when using an item on another item
-	 */
-	@Deprecated
-	ITEM_USE_ON_ITEM(31),
-	/**
 	 * Menu action when using a component on an item
 	 */
 	WIDGET_USE_ON_ITEM(32),
-
-	/**
-	 * First menu action for an item.
-	 */
-	@Deprecated
-	ITEM_FIRST_OPTION(33),
-	/**
-	 * Second menu action for an item.
-	 */
-	@Deprecated
-	ITEM_SECOND_OPTION(34),
-	/**
-	 * Third menu action for an item.
-	 */
-	@Deprecated
-	ITEM_THIRD_OPTION(35),
-	/**
-	 * Fourth menu action for an item.
-	 */
-	@Deprecated
-	ITEM_FOURTH_OPTION(36),
-	/**
-	 * Fifth menu action for an item.
-	 */
-	@Deprecated
-	ITEM_FIFTH_OPTION(37),
-	/**
-	 * Menu action to use an item.
-	 */
-	@Deprecated
-	ITEM_USE(38),
 
 	/**
 	 * First menu action for a widget.

@@ -84,11 +84,6 @@ public class CrowdsourcingZMI
 		}
 		switch (action)
 		{
-			case ITEM_FIRST_OPTION:
-			case ITEM_SECOND_OPTION:
-			case ITEM_THIRD_OPTION:
-			case ITEM_FOURTH_OPTION:
-			case ITEM_FIFTH_OPTION:
 			case GROUND_ITEM_FIRST_OPTION:
 			case GROUND_ITEM_SECOND_OPTION:
 			case GROUND_ITEM_THIRD_OPTION:
