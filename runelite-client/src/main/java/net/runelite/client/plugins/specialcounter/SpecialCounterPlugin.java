@@ -62,6 +62,7 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
@@ -138,6 +139,9 @@ public class SpecialCounterPlugin extends Plugin
 
 	@Inject
 	private PlayerInfoDropOverlay playerInfoDropOverlay;
+
+	@Inject
+	private EventBus eventBus;
 
 	@Inject
 	@Named("developerMode")
@@ -311,10 +315,14 @@ public class SpecialCounterPlugin extends Plugin
 				updateCounter(specialWeapon, null, hit);
 			}
 
+			final SpecialCounterUpdate specialCounterUpdate = new SpecialCounterUpdate(npcIndex, specialWeapon, hit, client.getWorld(), localPlayerId);
 			if (!party.getMembers().isEmpty())
 			{
-				final SpecialCounterUpdate specialCounterUpdate = new SpecialCounterUpdate(npcIndex, specialWeapon, hit, client.getWorld(), localPlayerId);
 				party.send(specialCounterUpdate);
+			}
+			else
+			{
+				eventBus.post(specialCounterUpdate);
 			}
 
 			playerInfoDrops.add(createSpecInfoDrop(specialWeapon, hit, localPlayerId));
