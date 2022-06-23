@@ -41,19 +41,22 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.VarPlayer;
+import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.HitsplatApplied;
-import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.Notifier;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.party.PartyService;
+import net.runelite.client.party.WSClient;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.AsyncBufferedImage;
-import net.runelite.client.party.PartyService;
-import net.runelite.client.party.WSClient;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import org.mockito.Mock;
@@ -70,6 +73,10 @@ public class SpecialCounterPluginTest
 	@Mock
 	@Bind
 	private Client client;
+
+	@Mock
+	@Bind
+	private ClientThread clientThread;
 
 	@Bind
 	@Named("developerMode")
@@ -142,128 +149,27 @@ public class SpecialCounterPluginTest
 	@Test
 	public void testSpecDamage()
 	{
-		NPC target = mock(NPC.class);
-
 		Player player = mock(Player.class);
+		when(player.getLocalLocation()).thenReturn(new LocalPoint(0, 0));
+
 		when(client.getLocalPlayer()).thenReturn(player);
 
 		// spec npc
 		when(client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT)).thenReturn(50);
 		specialCounterPlugin.onVarbitChanged(new VarbitChanged());
-		lenient().when(player.getInteracting()).thenReturn(target);
-		specialCounterPlugin.onInteractingChanged(new InteractingChanged(player, target));
+
+		// clientthread callback
+		ArgumentCaptor<Runnable> captor = ArgumentCaptor.forClass(Runnable.class);
+		verify(clientThread).invokeLater(captor.capture());
+		captor.getValue().run();
 
 		// hit 1
-		specialCounterPlugin.onHitsplatApplied(hitsplat(target, Hitsplat.HitsplatType.DAMAGE_ME));
-
-		verify(infoBoxManager).addInfoBox(any(SpecialCounter.class));
-	}
-
-	@Test
-	public void testSpecBlock()
-	{
 		NPC target = mock(NPC.class);
-
-		Player player = mock(Player.class);
-		when(client.getLocalPlayer()).thenReturn(player);
-
-		// spec npc
-		when(client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT)).thenReturn(50);
-		specialCounterPlugin.onVarbitChanged(new VarbitChanged());
-		lenient().when(player.getInteracting()).thenReturn(target);
-		specialCounterPlugin.onInteractingChanged(new InteractingChanged(player, target));
-
-		// block 0
-		specialCounterPlugin.onHitsplatApplied(hitsplat(target, Hitsplat.HitsplatType.BLOCK_ME));
-
-		// hit 1
 		specialCounterPlugin.onHitsplatApplied(hitsplat(target, Hitsplat.HitsplatType.DAMAGE_ME));
 
-		verify(infoBoxManager, never()).addInfoBox(any(SpecialCounter.class));
-	}
-
-	@Test
-	public void testUnaggro()
-	{
-		NPC target = mock(NPC.class);
-
-		Player player = mock(Player.class);
-		when(client.getLocalPlayer()).thenReturn(player);
-
-		// tick 1: attack npc
-		when(player.getInteracting()).thenReturn(target);
-		specialCounterPlugin.onInteractingChanged(new InteractingChanged(player, target));
-
-		// tick 2: spec fires and un-interact npc
-		when(client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT)).thenReturn(50);
-		specialCounterPlugin.onVarbitChanged(new VarbitChanged());
-		lenient().when(player.getInteracting()).thenReturn(null);
-		specialCounterPlugin.onInteractingChanged(new InteractingChanged(player, null));
-
-		// tick 3: hit 1
-		specialCounterPlugin.onHitsplatApplied(hitsplat(target, Hitsplat.HitsplatType.DAMAGE_ME));
+		specialCounterPlugin.onGameTick(new GameTick());
 
 		verify(infoBoxManager).addInfoBox(any(SpecialCounter.class));
-	}
-
-	@Test
-	public void testSameTick()
-	{
-		NPC targetA = mock(NPC.class);
-		NPC targetB = mock(NPC.class);
-
-		Player player = mock(Player.class);
-		when(client.getLocalPlayer()).thenReturn(player);
-
-		// tick 1: attack npc A
-		when(player.getInteracting()).thenReturn(targetA);
-		specialCounterPlugin.onInteractingChanged(new InteractingChanged(player, targetA));
-
-		// tick 2: spec npc B
-		when(client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT)).thenReturn(50);
-		specialCounterPlugin.onVarbitChanged(new VarbitChanged());
-		lenient().when(player.getInteracting()).thenReturn(targetB);
-		specialCounterPlugin.onInteractingChanged(new InteractingChanged(player, targetB));
-
-		// tick 3: hitsplat A, hitsplat B
-		specialCounterPlugin.onHitsplatApplied(hitsplat(targetA, Hitsplat.HitsplatType.DAMAGE_ME));
-		verify(infoBoxManager, never()).addInfoBox(any(SpecialCounter.class));
-
-		specialCounterPlugin.onHitsplatApplied(hitsplat(targetB, Hitsplat.HitsplatType.DAMAGE_ME));
-		verify(infoBoxManager).addInfoBox(any(SpecialCounter.class));
-	}
-
-	@Test
-	public void testReset()
-	{
-		NPC targetA = mock(NPC.class);
-		NPC targetB = mock(NPC.class);
-
-		// a different npc type
-		when(targetB.getId()).thenReturn(1);
-		when(targetB.getIndex()).thenReturn(1);
-
-		Player player = mock(Player.class);
-		when(client.getLocalPlayer()).thenReturn(player);
-
-		// spec npc
-		when(client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT)).thenReturn(50);
-		specialCounterPlugin.onVarbitChanged(new VarbitChanged());
-		lenient().when(player.getInteracting()).thenReturn(targetA);
-		specialCounterPlugin.onInteractingChanged(new InteractingChanged(player, targetA));
-
-		// hit 1
-		specialCounterPlugin.onHitsplatApplied(hitsplat(targetA, Hitsplat.HitsplatType.DAMAGE_ME));
-
-		verify(infoBoxManager).addInfoBox(any(SpecialCounter.class));
-
-		// attack npc 2
-		specialCounterPlugin.onInteractingChanged(new InteractingChanged(player, targetB));
-
-		// hit 1
-		specialCounterPlugin.onHitsplatApplied(hitsplat(targetB, Hitsplat.HitsplatType.DAMAGE_ME));
-
-		verify(infoBoxManager).removeInfoBox(any(SpecialCounter.class));
 	}
 
 	@Test
@@ -274,18 +180,18 @@ public class SpecialCounterPluginTest
 
 		// Create player
 		Player player = mock(Player.class);
+		when(player.getLocalLocation()).thenReturn(new LocalPoint(0, 0));
+
 		when(client.getLocalPlayer()).thenReturn(player);
 		when(specialCounterConfig.bandosGodswordThreshold()).thenReturn(2);
 		when(specialCounterConfig.thresholdNotification()).thenReturn(true);
-
-		// Attack enemy
-		when(player.getInteracting()).thenReturn(target);
-		specialCounterPlugin.onInteractingChanged(new InteractingChanged(player, target));
 
 		// First special attack
 		when(client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT)).thenReturn(50);
 		specialCounterPlugin.onVarbitChanged(new VarbitChanged());
 		specialCounterPlugin.onHitsplatApplied(hitsplat(target, Hitsplat.HitsplatType.DAMAGE_ME));
+
+		specialCounterPlugin.onGameTick(new GameTick());
 
 		// Set up spec weapon as BGS(OR)
 		ItemContainer equipment = mock(ItemContainer.class);
@@ -297,34 +203,37 @@ public class SpecialCounterPluginTest
 		specialCounterPlugin.onVarbitChanged(new VarbitChanged());
 		specialCounterPlugin.onHitsplatApplied(hitsplat(target, Hitsplat.HitsplatType.DAMAGE_ME));
 
+		specialCounterPlugin.onGameTick(new GameTick());
+
 		verify(notifier).notify("Bandos Godsword special attack threshold reached!");
 	}
 
 	@Test
 	public void testNotificationNotThreshold()
 	{
-		// Create an enemy
-		NPC target = mock(NPC.class);
-
 		// Create player
 		Player player = mock(Player.class);
+		when(player.getLocalLocation()).thenReturn(new LocalPoint(0, 0));
+
 		when(client.getLocalPlayer()).thenReturn(player);
 		when(specialCounterConfig.bandosGodswordThreshold()).thenReturn(3);
 		lenient().when(specialCounterConfig.thresholdNotification()).thenReturn(true);
 
-		// Attack enemy
-		when(player.getInteracting()).thenReturn(target);
-		specialCounterPlugin.onInteractingChanged(new InteractingChanged(player, target));
-
 		// First special attack
 		when(client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT)).thenReturn(50);
 		specialCounterPlugin.onVarbitChanged(new VarbitChanged());
+
+		NPC target = mock(NPC.class);
 		specialCounterPlugin.onHitsplatApplied(hitsplat(target, Hitsplat.HitsplatType.DAMAGE_ME));
+
+		specialCounterPlugin.onGameTick(new GameTick());
 
 		// Second special attack
 		when(client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT)).thenReturn(0);
 		specialCounterPlugin.onVarbitChanged(new VarbitChanged());
 		specialCounterPlugin.onHitsplatApplied(hitsplat(target, Hitsplat.HitsplatType.DAMAGE_ME));
+
+		specialCounterPlugin.onGameTick(new GameTick());
 
 		verify(notifier, never()).notify(any());
 	}

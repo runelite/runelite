@@ -48,14 +48,15 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
+import net.runelite.api.Player;
 import net.runelite.api.ScriptID;
 import net.runelite.api.VarPlayer;
+import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.HitsplatApplied;
-import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.VarbitChanged;
@@ -64,13 +65,13 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.party.PartyService;
+import net.runelite.client.party.WSClient;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.ImageUtil;
-import net.runelite.client.party.PartyService;
-import net.runelite.client.party.WSClient;
 
 @PluginDescriptor(
 	name = "Special Attack Counter",
@@ -96,13 +97,17 @@ public class SpecialCounterPlugin extends Plugin
 
 	private int currentWorld;
 	private int specialPercentage;
-	private Actor lastSpecTarget;
-	private int lastSpecTick;
+
+	private SpecialWeapon specialWeapon;
+	// expected tick the hitsplat will happen on
+	private int hitsplatTick;
+	// most recent hitsplat and the target it was on
+	private Hitsplat lastSpecHitsplat;
+	private NPC lastSpecTarget;
 
 	private int previousRegion;
 	private boolean wasInInstance;
 
-	private SpecialWeapon specialWeapon;
 	private final Set<Integer> interactedNpcIndexes = new HashSet<>();
 	private final SpecialCounter[] specialCounter = new SpecialCounter[SpecialWeapon.values().length];
 
@@ -156,14 +161,15 @@ public class SpecialCounterPlugin extends Plugin
 		wsClient.registerMessage(SpecialCounterUpdate.class);
 		currentWorld = -1;
 		specialPercentage = -1;
-		lastSpecTarget = null;
-		lastSpecTick = -1;
 		interactedNpcIndexes.clear();
 	}
 
 	@Override
 	protected void shutDown()
 	{
+		specialWeapon = null;
+		lastSpecTarget = null;
+		lastSpecHitsplat = null;
 		removeCounters();
 		overlayManager.remove(playerInfoDropOverlay);
 		wsClient.unregisterMessage(SpecialCounterUpdate.class);
@@ -182,11 +188,6 @@ public class SpecialCounterPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN)
-		{
-			return;
-		}
-		
 		assert client.getLocalPlayer() != null;
 		int currentRegion = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID();
 		boolean inInstance = client.isInInstancedRegion();
@@ -202,6 +203,18 @@ public class SpecialCounterPlugin extends Plugin
 		
 		previousRegion = currentRegion;
 		wasInInstance = inInstance;
+
+		if (lastSpecHitsplat != null)
+		{
+			if (lastSpecHitsplat.getAmount() > 0)
+			{
+				specialAttackHit(specialWeapon, lastSpecHitsplat, lastSpecTarget);
+			}
+
+			specialWeapon = null;
+			lastSpecHitsplat = null;
+			lastSpecTarget = null;
+		}
 	}
 
 	@Subscribe
@@ -222,20 +235,6 @@ public class SpecialCounterPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onInteractingChanged(InteractingChanged interactingChanged)
-	{
-		Actor source = interactingChanged.getSource();
-		Actor target = interactingChanged.getTarget();
-		if (lastSpecTick != client.getTickCount() || source != client.getLocalPlayer() || target == null)
-		{
-			return;
-		}
-
-		log.debug("Updating last spec target to {} (was {})", target.getName(), lastSpecTarget);
-		lastSpecTarget = target;
-	}
-
-	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
 		int specialPercentage = client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT);
@@ -251,11 +250,10 @@ public class SpecialCounterPlugin extends Plugin
 
 		log.debug("Special attack used - percent: {} weapon: {}", specialPercentage, specialWeapon);
 
-		// spec was used; since the varbit change event fires before the interact change event,
-		// this will be specing on the target of interact changed *if* it fires this tick,
-		// otherwise it is what we are currently interacting with
-		lastSpecTarget = client.getLocalPlayer().getInteracting();
-		lastSpecTick = client.getTickCount();
+		// invokeLater because the varbit event happens prior to interact changed, so we can't always see what npc
+		// the player is attacking yet.
+		clientThread.invokeLater(() ->
+			hitsplatTick = client.getTickCount() + getHitDelay(specialWeapon, client.getLocalPlayer().getInteracting()));
 	}
 
 	@Subscribe
@@ -268,17 +266,6 @@ public class SpecialCounterPlugin extends Plugin
 		{
 			return;
 		}
-
-		log.debug("Hitsplat target: {} spec target: {}", target, lastSpecTarget);
-
-		// If waiting for a spec, ignore hitsplats not on the actor we specced
-		if (lastSpecTarget != null && lastSpecTarget != target)
-		{
-			return;
-		}
-
-		boolean wasSpec = lastSpecTarget != null;
-		lastSpecTarget = null;
 
 		if (!(target instanceof NPC))
 		{
@@ -301,24 +288,35 @@ public class SpecialCounterPlugin extends Plugin
 			interactedNpcIndexes.add(npcIndex);
 		}
 
-		if (wasSpec && specialWeapon != null && hitsplat.getAmount() > 0)
+		// The weapon hitsplat is always last, after other hitsplats which occur on the same tick such as from
+		// venge or thralls.
+		if (hitsplatTick == client.getTickCount())
 		{
-			int hit = getHit(specialWeapon, hitsplat);
-			int localPlayerId = client.getLocalPlayer().getId();
-
-			if (config.infobox())
-			{
-				updateCounter(specialWeapon, null, hit);
-			}
-
-			if (!party.getMembers().isEmpty())
-			{
-				final SpecialCounterUpdate specialCounterUpdate = new SpecialCounterUpdate(npcIndex, specialWeapon, hit, client.getWorld(), localPlayerId);
-				party.send(specialCounterUpdate);
-			}
-
-			playerInfoDrops.add(createSpecInfoDrop(specialWeapon, hit, localPlayerId));
+			lastSpecHitsplat = hitsplat;
+			lastSpecTarget = npc;
 		}
+	}
+
+	private void specialAttackHit(SpecialWeapon specialWeapon, Hitsplat hitsplat, NPC target)
+	{
+		int hit = getHit(specialWeapon, hitsplat);
+		int localPlayerId = client.getLocalPlayer().getId();
+
+		log.debug("Special attack hit {} hitsplat {}", specialWeapon, hitsplat.getAmount());
+
+		if (config.infobox())
+		{
+			updateCounter(specialWeapon, null, hit);
+		}
+
+		if (!party.getMembers().isEmpty())
+		{
+			final int npcIndex = target.getIndex();
+			final SpecialCounterUpdate specialCounterUpdate = new SpecialCounterUpdate(npcIndex, specialWeapon, hit, client.getWorld(), localPlayerId);
+			party.send(specialCounterUpdate);
+		}
+
+		playerInfoDrops.add(createSpecInfoDrop(specialWeapon, hit, localPlayerId));
 	}
 
 	@Subscribe
@@ -481,5 +479,30 @@ public class SpecialCounterPlugin extends Plugin
 			.endHeightOffset(400)
 			.image(image)
 			.build();
+	}
+
+	private int getHitDelay(SpecialWeapon specialWeapon, Actor target)
+	{
+		// DORGESHUUN_CROSSBOW is the only ranged wep we support, so everything else is just melee and delay 0
+		if (specialWeapon != SpecialWeapon.DORGESHUUN_CROSSBOW || target == null)
+			return 0;
+
+		Player player = client.getLocalPlayer();
+		if (player == null)
+			return 0;
+
+		WorldPoint playerWp = player.getWorldLocation();
+		if (playerWp == null)
+			return 0;
+
+		WorldArea targetArea = target.getWorldArea();
+		if (targetArea == null)
+			return 0;
+
+		final int distance = targetArea.distanceTo(playerWp);
+		// Dorgeshuun special attack projectile cycles is 19 + distance * 3
+		final int cycles = 19 + distance * 3;
+		// Round up to nearest server tick and convert to server ticks
+		return (cycles + 29) / 30;
 	}
 }
