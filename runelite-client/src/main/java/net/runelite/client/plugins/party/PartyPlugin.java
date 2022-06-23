@@ -50,6 +50,7 @@ import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.SoundEffectID;
 import net.runelite.api.Tile;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.FocusChanged;
@@ -292,7 +293,10 @@ public class PartyPlugin extends Plugin
 			return;
 		}
 
-		event.consume();
+		if (!config.navigateToPingedTile()) {
+			event.consume();
+		}
+
 		final TilePing tilePing = new TilePing(selectedSceneTile.getWorldLocation());
 		party.send(tilePing);
 	}
