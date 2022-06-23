@@ -163,6 +163,27 @@ public class SpecialCounterPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
+		if (client.getGameState() != GameState.LOGGED_IN)
+		{
+			return;
+		}
+
+		assert client.getLocalPlayer() != null;
+		int currentRegion = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID();
+		boolean inInstance = client.isInInstancedRegion();
+
+		// if the player left the region/instance and was fighting boss that resets, reset specs
+		if (currentRegion != previousRegion || (wasInInstance && !inInstance))
+		{
+			if (RESET_ON_LEAVE_INSTANCED_REGIONS.contains(previousRegion))
+			{
+				removeCounters();
+			}
+		}
+
+		previousRegion = currentRegion;
+		wasInInstance = inInstance;
+
 		if (this.specialWeapon == null)
 		{
 			reset();
@@ -224,22 +245,6 @@ public class SpecialCounterPlugin extends Plugin
 	{
 		if (event.getGameState() == GameState.LOGGED_IN)
 		{
-			assert client.getLocalPlayer() != null;
-			int currentRegion = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID();
-			boolean inInstance = client.isInInstancedRegion();
-
-			// if the player left the region/instance and was fighting boss that resets, reset specs
-			if (currentRegion != previousRegion || (wasInInstance && !inInstance))
-			{
-				if (RESET_ON_LEAVE_INSTANCED_REGIONS.contains(previousRegion))
-				{
-					removeCounters();
-				}
-			}
-
-			previousRegion = currentRegion;
-			wasInInstance = inInstance;
-
 			if (currentWorld == -1)
 			{
 				currentWorld = client.getWorld();
@@ -300,7 +305,6 @@ public class SpecialCounterPlugin extends Plugin
 	{
 		Actor target = hitsplatApplied.getActor();
 		Hitsplat hitsplat = hitsplatApplied.getHitsplat();
-
 		// Ignore all hitsplats other than mine
 		if (!hitsplat.isMine() || target == client.getLocalPlayer())
 		{

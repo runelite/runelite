@@ -33,6 +33,7 @@ import java.awt.image.BufferedImage;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
+import net.runelite.api.GameState;
 import net.runelite.api.Hitsplat;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
@@ -41,6 +42,8 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.VarPlayer;
+import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.InteractingChanged;
@@ -116,6 +119,15 @@ public class SpecialCounterPluginTest
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
 
+		when(client.getGameState()).thenReturn(GameState.LOGGED_IN);
+
+		Player player = mock(Player.class);
+		when(client.getLocalPlayer()).thenReturn(player);
+
+		when(client.getBaseX()).thenReturn(0);
+		when(client.getBaseY()).thenReturn(0);
+		when(player.getLocalLocation()).thenReturn(new LocalPoint(0, 0));
+
 		when(specialCounterConfig.infobox()).thenReturn(true);
 
 		// Set up spec weapon
@@ -153,9 +165,7 @@ public class SpecialCounterPluginTest
 	public void testSpecDamage()
 	{
 		NPC target = mock(NPC.class);
-
-		Player player = mock(Player.class);
-		when(client.getLocalPlayer()).thenReturn(player);
+		Player player = client.getLocalPlayer();
 
 		// Tick 1: Spec NPC
 		when(client.getTickCount()).thenReturn(1);
@@ -178,9 +188,7 @@ public class SpecialCounterPluginTest
 	public void testSpecBlock()
 	{
 		NPC target = mock(NPC.class);
-
-		Player player = mock(Player.class);
-		when(client.getLocalPlayer()).thenReturn(player);
+		Player player = client.getLocalPlayer();
 
 		// Tick 1: Spec NPC
 		when(client.getTickCount()).thenReturn(1);
@@ -206,9 +214,7 @@ public class SpecialCounterPluginTest
 	public void testUnaggro()
 	{
 		NPC target = mock(NPC.class);
-
-		Player player = mock(Player.class);
-		when(client.getLocalPlayer()).thenReturn(player);
+		Player player = client.getLocalPlayer();
 
 		// Tick 1: Attack NPC
 		when(client.getTickCount()).thenReturn(1);
@@ -240,8 +246,7 @@ public class SpecialCounterPluginTest
 		NPC targetA = mock(NPC.class);
 		NPC targetB = mock(NPC.class);
 
-		Player player = mock(Player.class);
-		when(client.getLocalPlayer()).thenReturn(player);
+		Player player = client.getLocalPlayer();
 		when(specialCounterConfig.bandosGodswordThreshold()).thenReturn(15);
 		lenient().when(specialCounterConfig.thresholdNotification()).thenReturn(true);
 
@@ -284,8 +289,7 @@ public class SpecialCounterPluginTest
 		when(targetB.getId()).thenReturn(1);
 		when(targetB.getIndex()).thenReturn(1);
 
-		Player player = mock(Player.class);
-		when(client.getLocalPlayer()).thenReturn(player);
+		Player player = client.getLocalPlayer();
 
 		// Tick 0: Reset
 		when(client.getTickCount()).thenReturn(0);
@@ -326,8 +330,7 @@ public class SpecialCounterPluginTest
 		NPC target = mock(NPC.class);
 
 		// Create player
-		Player player = mock(Player.class);
-		when(client.getLocalPlayer()).thenReturn(player);
+		Player player = client.getLocalPlayer();
 		when(specialCounterConfig.bandosGodswordThreshold()).thenReturn(25);
 		when(specialCounterConfig.thresholdNotification()).thenReturn(true);
 
@@ -379,8 +382,7 @@ public class SpecialCounterPluginTest
 		NPC target = mock(NPC.class);
 
 		// Create player
-		Player player = mock(Player.class);
-		when(client.getLocalPlayer()).thenReturn(player);
+		Player player = client.getLocalPlayer();
 		when(specialCounterConfig.bandosGodswordThreshold()).thenReturn(25);
 		lenient().when(specialCounterConfig.thresholdNotification()).thenReturn(true);
 
