@@ -41,7 +41,6 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.VarPlayer;
-import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.VarbitChanged;
@@ -150,7 +149,6 @@ public class SpecialCounterPluginTest
 	public void testSpecDamage()
 	{
 		Player player = mock(Player.class);
-		when(player.getLocalLocation()).thenReturn(new LocalPoint(0, 0));
 
 		when(client.getLocalPlayer()).thenReturn(player);
 
@@ -180,7 +178,6 @@ public class SpecialCounterPluginTest
 
 		// Create player
 		Player player = mock(Player.class);
-		when(player.getLocalLocation()).thenReturn(new LocalPoint(0, 0));
 
 		when(client.getLocalPlayer()).thenReturn(player);
 		when(specialCounterConfig.bandosGodswordThreshold()).thenReturn(2);
@@ -213,7 +210,6 @@ public class SpecialCounterPluginTest
 	{
 		// Create player
 		Player player = mock(Player.class);
-		when(player.getLocalLocation()).thenReturn(new LocalPoint(0, 0));
 
 		when(client.getLocalPlayer()).thenReturn(player);
 		when(specialCounterConfig.bandosGodswordThreshold()).thenReturn(3);

@@ -89,11 +89,6 @@ public class SpecialCounterPlugin extends Plugin
 		NpcID.SKELETON_HELLHOUND_6613, NpcID.GREATER_SKELETON_HELLHOUND, // vetion
 		NpcID.SPAWN, NpcID.SCION // abyssal sire
 	);
-	
-	private static final Set<Integer> RESET_ON_LEAVE_INSTANCED_REGIONS = ImmutableSet.of(
-			9023, // vorkath
-			5536 // hydra
-	);
 
 	private int currentWorld;
 	private int specialPercentage;
@@ -104,9 +99,6 @@ public class SpecialCounterPlugin extends Plugin
 	// most recent hitsplat and the target it was on
 	private Hitsplat lastSpecHitsplat;
 	private NPC lastSpecTarget;
-
-	private int previousRegion;
-	private boolean wasInInstance;
 
 	private final Set<Integer> interactedNpcIndexes = new HashSet<>();
 	private final SpecialCounter[] specialCounter = new SpecialCounter[SpecialWeapon.values().length];
@@ -188,22 +180,6 @@ public class SpecialCounterPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		assert client.getLocalPlayer() != null;
-		int currentRegion = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID();
-		boolean inInstance = client.isInInstancedRegion();
-		
-		// if the player left the region/instance and was fighting boss that resets, reset specs
-		if (currentRegion != previousRegion || (wasInInstance && !inInstance))
-		{
-			if (RESET_ON_LEAVE_INSTANCED_REGIONS.contains(previousRegion))
-			{
-				removeCounters();
-			}
-		}
-		
-		previousRegion = currentRegion;
-		wasInInstance = inInstance;
-
 		if (lastSpecHitsplat != null)
 		{
 			if (lastSpecHitsplat.getAmount() > 0)
