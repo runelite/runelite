@@ -210,13 +210,20 @@ public class SlayerPlugin extends Plugin
 		if ((config.highlightHull() || config.highlightTile() || config.highlightOutline()) && targets.contains(n))
 		{
 			Color color = config.getTargetColor();
+			Color fillColor = config.targetFillColor();
 			return HighlightedNpc.builder()
 				.npc(n)
 				.highlightColor(color)
-				.fillColor(ColorUtil.colorWithAlpha(color, color.getAlpha() / 12))
+				.fillColor(fillColor)
 				.hull(config.highlightHull())
 				.tile(config.highlightTile())
+				.trueTile(config.highlightTrueTile())
+				.swTile(config.highlightSouthWestTile())
+				.swTrueTile(config.highlightSouthWestTrueTile())
 				.outline(config.highlightOutline())
+				.borderWidth((float) config.borderWidth())
+				.outlineFeather(config.outlineFeather())
+				.render(npc -> !npc.isDead() || !config.ignoreDeadTargets())
 				.build();
 
 		}
@@ -693,8 +700,8 @@ public class SlayerPlugin extends Plugin
 			final Matcher targetMatcher = target.matcher(name);
 			if (targetMatcher.find()
 				&& (ArrayUtils.contains(composition.getActions(), "Attack")
-					// Pick action is for zygomite-fungi
-					|| ArrayUtils.contains(composition.getActions(), "Pick")))
+				// Pick action is for zygomite-fungi
+				|| ArrayUtils.contains(composition.getActions(), "Pick")))
 			{
 				return true;
 			}
