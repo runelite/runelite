@@ -151,6 +151,16 @@ public class SpecialCounterPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onScriptPostFired(ScriptPostFired event)
+	{
+		if (event.getScriptId() == ScriptID.TOB_HUD_SOTETSEG_FADE)
+		{
+			log.debug("Resetting spec counter as sotetseg maze script was ran");
+			removeCounters();
+		}
+	}
+
+	@Subscribe
 	public void onGameTick(GameTick event)
 	{
 		if (this.specialWeapon == null)
