@@ -292,7 +292,8 @@ public class PartyPlugin extends Plugin
 			return;
 		}
 
-		if (!config.navigateToPingedTile()) {
+		if (!config.navigateToPingedTile())
+		{
 			event.consume();
 		}
 
