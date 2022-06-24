@@ -143,6 +143,11 @@ public class Ping
 				throw new IOException("failed to set SO_RCVTIMEO");
 			}
 
+			if (libc.setsockopt(sock, libc.SOL_SOCKET, libc.SO_SNDTIMEO, tv.getPointer(), tv.size()) < 0)
+			{
+				throw new IOException("failed to set SO_SNDTIMEO");
+			}
+
 			short seqno = seq++;
 
 			// struct icmphdr
