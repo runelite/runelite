@@ -33,8 +33,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.Getter;
 import net.runelite.api.Client;
-import static net.runelite.api.EquipmentInventorySlot.*;
 import static net.runelite.api.EquipmentInventorySlot.LEGS;
+import static net.runelite.api.EquipmentInventorySlot.*;
 import net.runelite.api.Item;
 import net.runelite.api.ItemID;
 import static net.runelite.api.ItemID.*;
@@ -46,16 +46,23 @@ import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
-import static net.runelite.client.plugins.cluescrolls.clues.Enemy.*;
+import static net.runelite.client.plugins.cluescrolls.clues.Enemy.DOUBLE_AGENT_108;
+import static net.runelite.client.plugins.cluescrolls.clues.Enemy.DOUBLE_AGENT_141;
+import static net.runelite.client.plugins.cluescrolls.clues.Enemy.DOUBLE_AGENT_65;
 import net.runelite.client.plugins.cluescrolls.clues.emote.Emote;
-import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.*;
 import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.BULL_ROARER;
+import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.*;
 import net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit;
-import static net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit.*;
 import static net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit.SHANTAY_PASS;
+import static net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit.*;
+import net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnitRequirements;
 import net.runelite.client.plugins.cluescrolls.clues.item.AnyRequirementCollection;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
-import static net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements.*;
+import static net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements.all;
+import static net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements.any;
+import static net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements.emptySlot;
+import static net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements.item;
+import static net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements.range;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.LineComponent;
@@ -288,23 +295,6 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 		if (itemRequirements.length > 0)
 		{
 			Client client = plugin.getClient();
-
-			if (stashUnit != null)
-			{
-				client.runScript(ScriptID.WATSON_STASH_UNIT_CHECK, stashUnit.getObjectId(), 0, 0, 0);
-				int[] intStack = client.getIntStack();
-				boolean stashUnitBuilt = intStack[0] == 1;
-
-				panelComponent.getChildren().add(LineComponent.builder()
-					.left("STASH Unit:")
-					.right(stashUnitBuilt ? UNICODE_CHECK_MARK : UNICODE_BALLOT_X)
-					.rightFont(FontManager.getDefaultFont())
-					.rightColor(stashUnitBuilt ? Color.GREEN : Color.RED)
-					.build());
-			}
-
-			panelComponent.getChildren().add(LineComponent.builder().left("Equip:").build());
-
 			Item[] equipment = plugin.getEquippedItems();
 			Item[] inventory = plugin.getInventoryItems();
 
@@ -319,6 +309,49 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 			{
 				inventory = new Item[0];
 			}
+
+			if (stashUnit != null)
+			{
+				client.runScript(ScriptID.WATSON_STASH_UNIT_CHECK, stashUnit.getObjectId(), 0, 0, 0);
+				int[] intStack = client.getIntStack();
+				boolean stashUnitBuilt = intStack[0] == 1;
+
+				panelComponent.getChildren().add(LineComponent.builder()
+					.left("STASH Unit:")
+					.right(stashUnitBuilt ? UNICODE_CHECK_MARK : UNICODE_BALLOT_X)
+					.rightFont(FontManager.getDefaultFont())
+					.rightColor(stashUnitBuilt ? Color.GREEN : Color.RED)
+					.build());
+				if (!stashUnitBuilt)
+				{
+					STASHUnitRequirements stashRequirements = stashUnit.getUnitRequirements();
+					ItemRequirement[] buildingMaterials = { stashRequirements.getSaw(), stashRequirements.getHammer(), stashRequirements.getPlanks(), stashRequirements.getNails(), stashRequirements.getGoldLeaf() };
+
+					panelComponent.getChildren().add(LineComponent.builder().left("Construction Level:").build());
+					panelComponent.getChildren().add(LineComponent.builder()
+						.left(Integer.toString(stashRequirements.getRequiredConLevel())).leftColor(TITLED_CONTENT_COLOR).build());
+					panelComponent.getChildren().add(LineComponent.builder().left("Required Materials:").build());
+
+					for (ItemRequirement requirement : buildingMaterials)
+					{
+						// not all stashes require a gold leaf
+						if (requirement == null)
+						{
+							continue;
+						}
+						boolean fulfilled = requirement.fulfilledBy(inventory);
+						panelComponent.getChildren().add(LineComponent.builder()
+							.left(requirement.getCollectiveName(client))
+							.leftColor(TITLED_CONTENT_COLOR)
+							.right(fulfilled ? UNICODE_CHECK_MARK : UNICODE_BALLOT_X)
+							.rightFont(FontManager.getDefaultFont())
+							.rightColor(fulfilled ? Color.GREEN : Color.RED)
+							.build());
+					}
+				}
+			}
+
+			panelComponent.getChildren().add(LineComponent.builder().left("Equip:").build());
 
 			Item[] combined = new Item[equipment.length + inventory.length];
 			System.arraycopy(equipment, 0, combined, 0, equipment.length);
