@@ -86,7 +86,7 @@ public class KeyRemappingPlugin extends Plugin
 			{
 				lockChat();
 				// Clear any typed text
-				client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, "");
+				client.setVarcStrValue(VarClientStr.CHATBOX_TYPED_TEXT, "");
 			}
 		});
 	}

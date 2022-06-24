@@ -32,6 +32,8 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import net.runelite.api.annotations.VarCInt;
+import net.runelite.api.annotations.VarCStr;
 import net.runelite.api.annotations.Varbit;
 import net.runelite.api.annotations.VisibleForDevtools;
 import net.runelite.api.annotations.VisibleForExternalPlugins;
@@ -836,22 +838,6 @@ public interface Client extends OAuthApi, GameEngine
 	int getServerVarbitValue(@Varbit int varbit);
 
 	/**
-	 * Gets an int value corresponding to the passed variable.
-	 *
-	 * @param varClientInt the variable
-	 * @return the value
-	 */
-	int getVar(VarClientInt varClientInt);
-
-	/**
-	 * Gets a String value corresponding to the passed variable.
-	 *
-	 * @param varClientStr the variable
-	 * @return the value
-	 */
-	String getVar(VarClientStr varClientStr);
-
-	/**
 	 * Gets the value of a given VarPlayer.
 	 *
 	 * @param varpId the VarPlayer id
@@ -875,30 +861,34 @@ public interface Client extends OAuthApi, GameEngine
 	/**
 	 * Gets the value of a given VarClientInt
 	 *
-	 * @param varcIntId the VarClientInt id
+	 * @param var the {@link VarClientInt}
 	 * @return the value
 	 */
-	@VisibleForExternalPlugins
-	int getVarcIntValue(int varcIntId);
+	int getVarcIntValue(@VarCInt int var);
 
 	/**
 	 * Gets the value of a given VarClientStr
 	 *
-	 * @param varcStrId the VarClientStr id
+	 * @param var the {@link VarClientStr}
 	 * @return the value
 	 */
-	@VisibleForExternalPlugins
-	String getVarcStrValue(int varcStrId);
+	String getVarcStrValue(@VarCStr int var);
 
 	/**
 	 * Sets a VarClientString to the passed value
+	 *
+	 * @param var the {@link VarClientStr}
+	 * @param value the new value
 	 */
-	void setVar(VarClientStr varClientStr, String value);
+	void setVarcStrValue(@VarCStr int var, String value);
 
 	/**
 	 * Sets a VarClientInt to the passed value
+	 *
+	 * @param var the {@link VarClientInt}
+	 * @param value the new value
 	 */
-	void setVar(VarClientInt varClientStr, int value);
+	void setVarcIntValue(@VarCInt int var, int value);
 
 	/**
 	 * Sets the value of a varbit

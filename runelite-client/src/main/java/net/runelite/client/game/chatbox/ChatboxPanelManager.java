@@ -126,7 +126,7 @@ public class ChatboxPanelManager
 		}
 
 		currentInput = input;
-		client.setVar(VarClientInt.INPUT_TYPE, InputType.RUNELITE_CHATBOX_PANEL.getType());
+		client.setVarcIntValue(VarClientInt.INPUT_TYPE, InputType.RUNELITE_CHATBOX_PANEL.getType());
 		client.getWidget(WidgetInfo.CHATBOX_TITLE).setHidden(true);
 		client.getWidget(WidgetInfo.CHATBOX_FULL_INPUT).setHidden(true);
 
