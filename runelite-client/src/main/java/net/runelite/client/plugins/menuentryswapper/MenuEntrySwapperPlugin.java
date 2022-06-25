@@ -675,7 +675,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	private void configureObjectClick(MenuOpened event)
 	{
-		if (!shiftModifier() || !config.objectLeftClickCustomization())
+		if (!shiftModifier() || !config.objectCustomization())
 		{
 			return;
 		}
@@ -795,7 +795,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	private void configureNpcClick(MenuOpened event)
 	{
-		if (!shiftModifier() || !config.npcLeftClickCustomization())
+		if (!shiftModifier() || !config.npcCustomization())
 		{
 			return;
 		}

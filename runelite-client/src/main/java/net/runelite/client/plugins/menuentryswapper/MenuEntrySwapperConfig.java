@@ -141,11 +141,11 @@ public interface MenuEntrySwapperConfig extends Config
 	@ConfigItem(
 		position = -2,
 		keyName = "objectLeftClickCustomization",
-		name = "Customizable left-click",
+		name = "Customizable left and shift click",
 		description = "Allows customization of left-clicks on objects",
 		section = objectSection
 	)
-	default boolean objectLeftClickCustomization()
+	default boolean objectCustomization()
 	{
 		return true;
 	}
@@ -153,11 +153,11 @@ public interface MenuEntrySwapperConfig extends Config
 	@ConfigItem(
 		position = -3,
 		keyName = "npcLeftClickCustomization",
-		name = "Customizable left-click",
+		name = "Customizable left and shift click",
 		description = "Allows customization of left-clicks on NPCs",
 		section = npcSection
 	)
-	default boolean npcLeftClickCustomization()
+	default boolean npcCustomization()
 	{
 		return true;
 	}
