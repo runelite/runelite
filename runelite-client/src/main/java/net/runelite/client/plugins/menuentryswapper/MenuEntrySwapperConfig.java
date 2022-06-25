@@ -67,6 +67,14 @@ public interface MenuEntrySwapperConfig extends Config
 	)
 	String uiSection = "ui";
 
+	@ConfigSection(
+		name = "Ground Item Swaps",
+		description = "All options that swap ground item menu entries",
+		position = 4,
+		closedByDefault = true
+	)
+	String groundItemSection = "groundItems";
+
 	enum ArdougneCloakMode
 	{
 		WEAR,
@@ -910,6 +918,18 @@ public interface MenuEntrySwapperConfig extends Config
 		section = npcSection
 	)
 	default boolean removeDeadNpcMenus()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = -1,
+		keyName = "groundItemShiftClickWalkHere",
+		name = "Shift click Walk here",
+		description = "Swaps Walk here on shift click on all ground items",
+		section = groundItemSection
+	)
+	default boolean groundItemShiftClickWalkHere()
 	{
 		return false;
 	}

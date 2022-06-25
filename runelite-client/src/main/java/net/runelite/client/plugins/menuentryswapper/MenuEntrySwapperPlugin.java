@@ -1268,6 +1268,16 @@ public class MenuEntrySwapperPlugin extends Plugin
 			}
 		}
 
+		if (menuAction == MenuAction.GROUND_ITEM_FIRST_OPTION || menuAction == MenuAction.GROUND_ITEM_SECOND_OPTION
+			|| menuAction == MenuAction.GROUND_ITEM_THIRD_OPTION || menuAction == MenuAction.GROUND_ITEM_FOURTH_OPTION
+			|| menuAction == MenuAction.GROUND_ITEM_FIFTH_OPTION)
+		{
+			if (shiftModifier() && config.groundItemShiftClickWalkHere())
+			{
+				menuEntry.setDeprioritized(true);
+			}
+		}
+
 		if (swapBank(menuEntry, menuAction))
 		{
 			return;
