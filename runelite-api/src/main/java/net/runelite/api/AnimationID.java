@@ -266,6 +266,12 @@ public final class AnimationID
 	public static final int ROCKSLUG_DEATH = 1568;
 	public static final int ZYGOMITE_DEATH = 3327;
 	public static final int IMP_DEATH = 172;
+	public static final int VERZIK_P2_BLUE_NYLO_EXPLOSION = 7992;
+	public static final int VERZIK_P2_GREEN_NYLO_EXPLOSION = 8000;
+	public static final int VERZIK_P2_WHITE_NYLO_EXPLOSION = 8006;
+	public static final int VERZIK_P2_PURPLE_NYLO_EXPLOSION = 8078;
+	public static final int VERZIK_P2_RED_NYLO_EXPLOSION = 8097;
+
 
 	// POH Animations
 	public static final int INCENSE_BURNER = 3687;

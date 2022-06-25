@@ -29,10 +29,15 @@ import java.util.Set;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import net.runelite.api.Actor;
+import net.runelite.api.AnimationID;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.NpcID;
+import net.runelite.api.events.AnimationChanged;
 import net.runelite.client.RuntimeConfig;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import org.apache.commons.lang3.ArrayUtils;
 
 @Singleton
@@ -41,9 +46,10 @@ public class NpcUtil
 	private final RuntimeConfig runtimeConfig;
 
 	@Inject
-	private NpcUtil(@Nullable RuntimeConfig runtimeConfig)
+	private NpcUtil(@Nullable RuntimeConfig runtimeConfig, EventBus eventBus)
 	{
 		this.runtimeConfig = runtimeConfig;
+		eventBus.register(this);
 	}
 
 	/**
@@ -120,6 +126,33 @@ public class NpcUtil
 				final NPCComposition npcComposition = npc.getTransformedComposition();
 				boolean hasAttack = npcComposition != null && ArrayUtils.contains(npcComposition.getActions(), "Attack");
 				return hasAttack && npc.isDead();
+		}
+	}
+
+	@Subscribe
+	public void onAnimationChanged(AnimationChanged animationChanged)
+	{
+		final Actor actor = animationChanged.getActor();
+		final int anim = actor.getAnimation();
+		switch (anim)
+		{
+			case AnimationID.VERZIK_P2_BLUE_NYLO_EXPLOSION:
+			case AnimationID.VERZIK_P2_GREEN_NYLO_EXPLOSION:
+			case AnimationID.VERZIK_P2_WHITE_NYLO_EXPLOSION:
+			case AnimationID.VERZIK_P2_PURPLE_NYLO_EXPLOSION:
+			case AnimationID.VERZIK_P2_RED_NYLO_EXPLOSION:
+				actor.setDead(true);
+				break;
+			default:
+				if (runtimeConfig != null)
+				{
+					Set<Integer> forceDeadAnimations = runtimeConfig.getForceDeadAnimations();
+					if (forceDeadAnimations != null && forceDeadAnimations.contains(anim))
+					{
+						actor.setDead(true);
+					}
+				}
+				break;
 		}
 	}
 }

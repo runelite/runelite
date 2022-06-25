@@ -44,6 +44,7 @@ public class RuntimeConfig
 
 	private Set<Integer> ignoreDeadNpcs;
 	private Set<Integer> forceDeadNpcs;
+	private Set<Integer> forceDeadAnimations;
 
 	public boolean showOutageMessage()
 	{
