@@ -269,6 +269,12 @@ public class ObjectIndicatorsPlugin extends Plugin
 
 	private void checkObjectPoints(TileObject object)
 	{
+		if (object.getPlane() < 0)
+		{
+			// object is under a bridge, which can't be marked anyway
+			return;
+		}
+
 		final WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, object.getLocalLocation(), object.getPlane());
 		final Set<ObjectPoint> objectPoints = points.get(worldPoint.getRegionID());
 
