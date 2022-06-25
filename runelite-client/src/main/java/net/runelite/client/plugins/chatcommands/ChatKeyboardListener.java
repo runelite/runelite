@@ -84,7 +84,7 @@ public class ChatKeyboardListener implements KeyListener
 		else if (chatCommandsConfig.clearChatBox().matches(e))
 		{
 			e.consume();
-			int inputTye = client.getVar(VarClientInt.INPUT_TYPE);
+			int inputTye = client.getVarcIntValue(VarClientInt.INPUT_TYPE);
 			clientThread.invoke(() -> applyText(inputTye, ""));
 		}
 	}

@@ -353,7 +353,7 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 			return;
 		}
 
-		if (client.getVar(VarClientInt.INPUT_TYPE) != InputType.PRIVATE_MESSAGE.getType())
+		if (client.getVarcIntValue(VarClientInt.INPUT_TYPE) != InputType.PRIVATE_MESSAGE.getType())
 		{
 			return;
 		}
