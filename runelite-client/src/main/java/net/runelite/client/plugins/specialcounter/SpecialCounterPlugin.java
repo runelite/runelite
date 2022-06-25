@@ -180,7 +180,7 @@ public class SpecialCounterPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (lastSpecHitsplat != null)
+		if (specialWeapon != null && lastSpecHitsplat != null)
 		{
 			if (lastSpecHitsplat.getAmount() > 0)
 			{
