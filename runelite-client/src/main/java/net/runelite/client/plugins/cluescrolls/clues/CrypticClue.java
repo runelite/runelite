@@ -148,7 +148,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Speak to Kangai Mau.", "Kangai Mau", new WorldPoint(2791, 3183, 0), "Kangai Mau is found in the Shrimp and Parrot in Brimhaven."),
 		new CrypticClue("Speak to Hajedy.", "Hajedy", new WorldPoint(2779, 3211, 0), "Hajedy is found by the cart, located just south of the Brimhaven docks."),
 		new CrypticClue("Must be full of railings.", BOXES_6176, new WorldPoint(2576, 3464, 0), "Search the boxes around the hut where the broken Dwarf Cannon is, close to the start of the Dwarf Cannon quest."),
-		new CrypticClue("I wonder how many bronze swords he has handed out.", "Vannaka", new WorldPoint(3164, 9913, 0), "Talk to Vannaka. He can be found in Edgeville Dungeon."),
+		new CrypticClue("I wonder how many bronze swords he has handed out.", "Vannaka", new WorldPoint(3146, 9913, 0), "Talk to Vannaka. He can be found in Edgeville Dungeon."),
 		new CrypticClue("Read 'How to breed scorpions.' By O.W.Thathurt.", BOOKCASE_380, new WorldPoint(2703, 3409, 1), "Search the northern bookcase on the first floor of the Sorcerer's Tower."),
 		new CrypticClue("Search the crates in the Port Sarim Fishing shop.", CRATE_9534, new WorldPoint(3012, 3222, 0), "Search the crates, by the door, in Gerrant's Fishy Business in Port Sarim."),
 		new CrypticClue("Speak to The Lady of the Lake.", "The Lady of the Lake", new WorldPoint(2924, 3405, 0), "Talk to The Lady of the Lake in Taverley."),
