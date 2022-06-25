@@ -1216,6 +1216,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 					return;
 				}
 			}
+			else if (shiftModifier() && config.objectShiftClickWalkHere())
+			{
+				menuEntry.setDeprioritized(true);
+			}
 		}
 
 		if (NPC_MENU_TYPES.contains(menuAction))

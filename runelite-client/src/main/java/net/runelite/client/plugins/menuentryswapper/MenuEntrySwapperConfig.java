@@ -151,6 +151,18 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+		position = -2,
+		keyName = "objectShiftClickWalkHere",
+		name = "Shift click Walk here",
+		description = "Swaps Walk here on shift click on all objects",
+		section = objectSection
+	)
+	default boolean objectShiftClickWalkHere()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		position = -3,
 		keyName = "npcLeftClickCustomization",
 		name = "Customizable left and shift click",
