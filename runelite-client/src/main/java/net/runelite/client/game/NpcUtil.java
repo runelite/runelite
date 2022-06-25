@@ -104,7 +104,7 @@ public class NpcUtil
 			// These NPCs transform and have their `isDead()` reset to `false` despite actually being dead in these forms
 			case NpcID.DRAKE_8613:
 			case NpcID.GUARDIAN_DRAKE_10401:
-			case NpcID.ALCHEMICAL_HYDRA_8634:
+			case NpcID.ALCHEMICAL_HYDRA_8622:
 			case NpcID.NEX_11282:
 				return true;
 			default:
