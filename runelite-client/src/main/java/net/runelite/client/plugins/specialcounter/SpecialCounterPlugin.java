@@ -180,7 +180,7 @@ public class SpecialCounterPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (lastSpecHitsplat != null)
+		if (lastSpecHitsplat != null && specialWeapon != null && lastSpecTarget != null)
 		{
 			if (lastSpecHitsplat.getAmount() > 0)
 			{
@@ -223,6 +223,12 @@ public class SpecialCounterPlugin extends Plugin
 
 		this.specialPercentage = specialPercentage;
 		this.specialWeapon = usedSpecialWeapon();
+
+		if (this.specialWeapon == null)
+		{
+			// unrecognized special attack weapon
+			return;
+		}
 
 		log.debug("Special attack used - percent: {} weapon: {}", specialPercentage, specialWeapon);
 
