@@ -46,4 +46,7 @@ public class PartyData
 	private int maxHitpoints;
 	private int prayer;
 	private int maxPrayer;
+	private int runEnergy;
+	private int specEnergy;
+	private boolean vengeanceActive;
 }

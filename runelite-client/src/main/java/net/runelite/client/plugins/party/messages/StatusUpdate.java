@@ -54,4 +54,13 @@ public class StatusUpdate extends PartyMemberMessage
 	@SerializedName("pm")
 	private Integer prayerMax = null;
 
+	@SerializedName("r")
+	private Integer runEnergy = null;
+
+	@SerializedName("s")
+	private Integer specEnergy = null;
+
+	@SerializedName("v")
+	private Boolean vengeanceActive = null;
+
 }
