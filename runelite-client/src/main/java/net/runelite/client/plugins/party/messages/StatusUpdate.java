@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Jonathan Rousseau <https://github.com/JoRouss>
+ * Copyright (c) 2022, LlemonDuck <napkinorton@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,11 +24,34 @@
  */
 package net.runelite.client.plugins.party.messages;
 
+import com.google.gson.annotations.SerializedName;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import net.runelite.client.party.messages.PartyMemberMessage;
 
 @Data
-public class CharacterNameUpdate extends PartyMemberMessage
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+public class StatusUpdate extends PartyMemberMessage
 {
-	private final String characterName;
+
+	// we use boxed fields to null out properties that haven't changed
+	@SerializedName("n")
+	private String characterName = null;
+
+	@SerializedName("hc")
+	private Integer healthCurrent = null;
+
+	@SerializedName("hm")
+	private Integer healthMax = null;
+
+	@SerializedName("pc")
+	private Integer prayerCurrent = null;
+
+	@SerializedName("pm")
+	private Integer prayerMax = null;
+
 }

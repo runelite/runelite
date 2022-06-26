@@ -76,9 +76,8 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.party.data.PartyData;
 import net.runelite.client.plugins.party.data.PartyTilePingData;
-import net.runelite.client.plugins.party.messages.CharacterNameUpdate;
 import net.runelite.client.plugins.party.messages.LocationUpdate;
-import net.runelite.client.plugins.party.messages.SkillUpdate;
+import net.runelite.client.plugins.party.messages.StatusUpdate;
 import net.runelite.client.plugins.party.messages.TilePing;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.ClientToolbar;
@@ -145,9 +144,8 @@ public class PartyPlugin extends Plugin
 	private PartyPanel panel;
 	private NavigationButton navButton;
 
-	private int lastHp, lastPray;
-	private String lastCharacterName = "";
 	private WorldPoint lastLocation;
+	private StatusUpdate lastStatus;
 
 	private final HotkeyListener hotkeyListener = new HotkeyListener(() -> config.pingHotkey())
 	{
@@ -190,10 +188,9 @@ public class PartyPlugin extends Plugin
 
 		overlayManager.add(partyPingOverlay);
 		keyManager.registerKeyListener(hotkeyListener);
-		wsClient.registerMessage(SkillUpdate.class);
 		wsClient.registerMessage(TilePing.class);
 		wsClient.registerMessage(LocationUpdate.class);
-		wsClient.registerMessage(CharacterNameUpdate.class);
+		wsClient.registerMessage(StatusUpdate.class);
 		// Delay sync so the eventbus can register prior to the sync response
 		SwingUtilities.invokeLater(this::requestSync);
 	}
@@ -210,11 +207,11 @@ public class PartyPlugin extends Plugin
 		worldMapManager.removeIf(PartyWorldMapPoint.class::isInstance);
 		overlayManager.remove(partyPingOverlay);
 		keyManager.unregisterKeyListener(hotkeyListener);
-		wsClient.unregisterMessage(SkillUpdate.class);
 		wsClient.unregisterMessage(TilePing.class);
 		wsClient.unregisterMessage(LocationUpdate.class);
-		wsClient.unregisterMessage(CharacterNameUpdate.class);
+		wsClient.unregisterMessage(StatusUpdate.class);
 		lastLocation = null;
+		lastStatus = null;
 	}
 
 	@Provides
@@ -373,7 +370,7 @@ public class PartyPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onCharacterNameUpdate(final CharacterNameUpdate event)
+	public void onStatusUpdate(final StatusUpdate event)
 	{
 		final PartyData partyData = getPartyData(event.getMemberId());
 		if (partyData == null)
@@ -381,8 +378,25 @@ public class PartyPlugin extends Plugin
 			return;
 		}
 
+		if (event.getHealthCurrent() != null)
+		{
+			partyData.setHitpoints(event.getHealthCurrent());
+		}
+		if (event.getHealthMax() != null)
+		{
+			partyData.setMaxHitpoints(event.getHealthMax());
+		}
+		if (event.getPrayerCurrent() != null)
+		{
+			partyData.setPrayer(event.getPrayerCurrent());
+		}
+		if (event.getPrayerMax() != null)
+		{
+			partyData.setMaxPrayer(event.getPrayerMax());
+		}
+
 		final PartyMember member = party.getMemberById(event.getMemberId());
-		if (member != null)
+		if (event.getCharacterName() != null)
 		{
 			final String name = Text.removeTags(Text.toJagexName(event.getCharacterName()));
 			if (!name.isEmpty())
@@ -399,30 +413,6 @@ public class PartyPlugin extends Plugin
 		}
 
 		SwingUtilities.invokeLater(() -> panel.updateMember(event.getMemberId()));
-	}
-
-	@Subscribe
-	public void onSkillUpdate(final SkillUpdate event)
-	{
-		final PartyData partyData = getPartyData(event.getMemberId());
-
-		if (partyData == null)
-		{
-			return;
-		}
-
-		if (event.getSkill() == Skill.HITPOINTS)
-		{
-			partyData.setHitpoints(event.getValue());
-			partyData.setMaxHitpoints(event.getMax());
-		}
-		else if (event.getSkill() == Skill.PRAYER)
-		{
-			partyData.setPrayer(event.getValue());
-			partyData.setMaxPrayer(event.getMax());
-		}
-
-		SwingUtilities.invokeLater(() -> panel.updateMember(partyData.getMemberId()));
 	}
 
 	@Subscribe
@@ -454,39 +444,65 @@ public class PartyPlugin extends Plugin
 
 	private void checkStateChanged(boolean forceSend)
 	{
-		final int currentHealth = client.getBoostedSkillLevel(Skill.HITPOINTS);
-		final int currentPrayer = client.getBoostedSkillLevel(Skill.PRAYER);
-		final int realHealth = client.getRealSkillLevel(Skill.HITPOINTS);
-		final int realPrayer = client.getRealSkillLevel(Skill.PRAYER);
+		if (lastStatus == null)
+		{
+			forceSend = true;
+		}
+
 		final PartyMember localMember = party.getLocalMember();
+		if (localMember == null)
+		{
+			return;
+		}
+
+		final int healthCurrent = client.getBoostedSkillLevel(Skill.HITPOINTS);
+		final int prayerCurrent = client.getBoostedSkillLevel(Skill.PRAYER);
+		final int healthMax = client.getRealSkillLevel(Skill.HITPOINTS);
+		final int prayerMax = client.getRealSkillLevel(Skill.PRAYER);
 
 		final Player localPlayer = client.getLocalPlayer();
 		final String characterName = Strings.nullToEmpty(localPlayer != null && client.getGameState().getState() >= GameState.LOADING.getState() ? localPlayer.getName() : null);
 
-		if (localMember != null)
+		boolean shouldSend = false;
+		final StatusUpdate update = new StatusUpdate();
+		if (forceSend || !characterName.equals(lastStatus.getCharacterName()))
 		{
-			if (forceSend || currentHealth != lastHp)
-			{
-				final SkillUpdate update = new SkillUpdate(Skill.HITPOINTS, currentHealth, realHealth);
-				party.send(update);
-			}
-
-			if (forceSend || currentPrayer != lastPray)
-			{
-				final SkillUpdate update = new SkillUpdate(Skill.PRAYER, currentPrayer, realPrayer);
-				party.send(update);
-			}
-
-			if (forceSend || !characterName.equals(lastCharacterName))
-			{
-				final CharacterNameUpdate update = new CharacterNameUpdate(characterName);
-				party.send(update);
-			}
+			shouldSend = true;
+			update.setCharacterName(characterName);
+		}
+		if (forceSend || healthCurrent != lastStatus.getHealthCurrent())
+		{
+			shouldSend = true;
+			update.setHealthCurrent(healthCurrent);
+		}
+		if (forceSend || healthMax != lastStatus.getHealthMax())
+		{
+			shouldSend = true;
+			update.setHealthMax(healthMax);
+		}
+		if (forceSend || prayerCurrent != lastStatus.getPrayerCurrent())
+		{
+			shouldSend = true;
+			update.setPrayerCurrent(prayerCurrent);
+		}
+		if (forceSend || prayerMax != lastStatus.getPrayerMax())
+		{
+			shouldSend = true;
+			update.setPrayerMax(prayerMax);
 		}
 
-		lastHp = currentHealth;
-		lastPray = currentPrayer;
-		lastCharacterName = characterName;
+		if (shouldSend)
+		{
+			party.send(update);
+			// non-null values for next-tick comparison
+			lastStatus = new StatusUpdate(
+				characterName,
+				healthCurrent,
+				healthMax,
+				prayerCurrent,
+				prayerMax
+			);
+		}
 	}
 
 	@Subscribe
