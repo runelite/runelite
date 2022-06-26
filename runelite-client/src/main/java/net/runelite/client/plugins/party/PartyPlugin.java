@@ -50,6 +50,8 @@ import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.SoundEffectID;
 import net.runelite.api.Tile;
+import net.runelite.api.VarPlayer;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.FocusChanged;
@@ -109,6 +111,9 @@ public class PartyPlugin extends Plugin
 
 	@Inject
 	private PartyPingOverlay partyPingOverlay;
+
+	@Inject
+	private PartyStatusOverlay partyStatusOverlay;
 
 	@Inject
 	private WSClient wsClient;
@@ -187,6 +192,7 @@ public class PartyPlugin extends Plugin
 		clientToolbar.addNavigation(navButton);
 
 		overlayManager.add(partyPingOverlay);
+		overlayManager.add(partyStatusOverlay);
 		keyManager.registerKeyListener(hotkeyListener);
 		wsClient.registerMessage(TilePing.class);
 		wsClient.registerMessage(LocationUpdate.class);
@@ -206,6 +212,7 @@ public class PartyPlugin extends Plugin
 		pendingTilePings.clear();
 		worldMapManager.removeIf(PartyWorldMapPoint.class::isInstance);
 		overlayManager.remove(partyPingOverlay);
+		overlayManager.remove(partyStatusOverlay);
 		keyManager.unregisterKeyListener(hotkeyListener);
 		wsClient.unregisterMessage(TilePing.class);
 		wsClient.unregisterMessage(LocationUpdate.class);
@@ -250,6 +257,7 @@ public class PartyPlugin extends Plugin
 	{
 		if (event.getGroup().equals(PartyConfig.GROUP))
 		{
+			partyStatusOverlay.updateConfig();
 			// rebuild the panel in the event the "Recolor names" option changes
 			SwingUtilities.invokeLater(panel::updateAll);
 		}
@@ -394,6 +402,18 @@ public class PartyPlugin extends Plugin
 		{
 			partyData.setMaxPrayer(event.getPrayerMax());
 		}
+		if (event.getRunEnergy() != null)
+		{
+			partyData.setRunEnergy(event.getRunEnergy());
+		}
+		if (event.getSpecEnergy() != null)
+		{
+			partyData.setSpecEnergy(event.getSpecEnergy());
+		}
+		if (event.getVengeanceActive() != null)
+		{
+			partyData.setVengeanceActive(event.getVengeanceActive());
+		}
 
 		final PartyMember member = party.getMemberById(event.getMemberId());
 		if (event.getCharacterName() != null)
@@ -438,7 +458,7 @@ public class PartyPlugin extends Plugin
 	@Subscribe
 	public void onUserSync(final UserSync event)
 	{
-		checkStateChanged(true);
+		clientThread.invokeLater(() -> checkStateChanged(true));
 		lastLocation = null;
 	}
 
@@ -459,6 +479,9 @@ public class PartyPlugin extends Plugin
 		final int prayerCurrent = client.getBoostedSkillLevel(Skill.PRAYER);
 		final int healthMax = client.getRealSkillLevel(Skill.HITPOINTS);
 		final int prayerMax = client.getRealSkillLevel(Skill.PRAYER);
+		final int runEnergy = (int) Math.ceil(client.getEnergy() / 10.0) * 10; // flatten to reduce network load
+		final int specEnergy = client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT) / 10;
+		final boolean vengActive = client.getVarbitValue(Varbits.VENGEANCE_ACTIVE) == 1;
 
 		final Player localPlayer = client.getLocalPlayer();
 		final String characterName = Strings.nullToEmpty(localPlayer != null && client.getGameState().getState() >= GameState.LOADING.getState() ? localPlayer.getName() : null);
@@ -490,6 +513,21 @@ public class PartyPlugin extends Plugin
 			shouldSend = true;
 			update.setPrayerMax(prayerMax);
 		}
+		if (forceSend || runEnergy != lastStatus.getRunEnergy())
+		{
+			shouldSend = true;
+			update.setRunEnergy(runEnergy);
+		}
+		if (forceSend || specEnergy != lastStatus.getSpecEnergy())
+		{
+			shouldSend = true;
+			update.setSpecEnergy(specEnergy);
+		}
+		if (forceSend || vengActive != lastStatus.getVengeanceActive())
+		{
+			shouldSend = true;
+			update.setVengeanceActive(vengActive);
+		}
 
 		if (shouldSend)
 		{
@@ -500,7 +538,10 @@ public class PartyPlugin extends Plugin
 				healthCurrent,
 				healthMax,
 				prayerCurrent,
-				prayerMax
+				prayerMax,
+				runEnergy,
+				specEnergy,
+				vengActive
 			);
 		}
 	}

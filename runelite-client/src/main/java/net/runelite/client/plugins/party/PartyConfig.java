@@ -28,6 +28,7 @@ package net.runelite.client.plugins.party;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
 import net.runelite.client.config.Keybind;
 
 @ConfigGroup(PartyConfig.GROUP)
@@ -77,6 +78,85 @@ public interface PartyConfig extends Config
 	default Keybind pingHotkey()
 	{
 		return Keybind.NOT_SET;
+	}
+
+	@ConfigSection(
+		name = "Player Status Overlay",
+		description = "Player status such as health, prayer, and special attack energy drawn on player models.",
+		position = 5
+	)
+	String SECTION_STATUS_OVERLAY = "statusOverlay";
+
+	@ConfigItem(
+		section = SECTION_STATUS_OVERLAY,
+		keyName = "statusOverlayHealth",
+		name = "Show Health",
+		description = "Show health of party members on the player model.",
+		position = 6
+	)
+	default boolean statusOverlayHealth()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		section = SECTION_STATUS_OVERLAY,
+		keyName = "statusOverlayPrayer",
+		name = "Show Prayer",
+		description = "Show prayer of party members on the player model.",
+		position = 7
+	)
+	default boolean statusOverlayPrayer()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		section = SECTION_STATUS_OVERLAY,
+		keyName = "statusOverlayStamina",
+		name = "Show Run Energy",
+		description = "Show run energy (stamina) of party members on the player model.",
+		position = 8
+	)
+	default boolean statusOverlayStamina()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		section = SECTION_STATUS_OVERLAY,
+		keyName = "statusOverlaySpec",
+		name = "Show Spec Energy",
+		description = "Show special attack energy of party members on the player model.",
+		position = 9
+	)
+	default boolean statusOverlaySpec()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		section = SECTION_STATUS_OVERLAY,
+		keyName = "statusOverlayVeng",
+		name = "Show Vengeance",
+		description = "Show vengeance status (active/inactive) of party members on the player model.",
+		position = 10
+	)
+	default boolean statusOverlayVeng()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		section = SECTION_STATUS_OVERLAY,
+		keyName = "statusOverlayRenderSelf",
+		name = "Show On Self",
+		description = "Show above activated status overlays on your local player.",
+		position = 11
+	)
+	default boolean statusOverlayRenderSelf()
+	{
+		return true;
 	}
 
 	@ConfigItem(
