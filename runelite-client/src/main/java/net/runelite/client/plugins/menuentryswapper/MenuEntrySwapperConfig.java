@@ -171,7 +171,7 @@ public interface MenuEntrySwapperConfig extends Config
 	)
 	default boolean npcShiftClickWalkHere()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
