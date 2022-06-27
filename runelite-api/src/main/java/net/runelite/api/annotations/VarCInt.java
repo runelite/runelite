@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Jonathan Rousseau <https://github.com/JoRouss>
+ * Copyright (c) 2022, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,13 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.party.messages;
+package net.runelite.api.annotations;
 
-import lombok.Data;
-import net.runelite.client.party.messages.PartyMemberMessage;
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import net.runelite.api.VarClientInt;
+import org.intellij.lang.annotations.MagicConstant;
 
-@Data
-public class CharacterNameUpdate extends PartyMemberMessage
+@MagicConstant(valuesFromClass = VarClientInt.class)
+@Documented
+@Retention(RetentionPolicy.SOURCE)
+public @interface VarCInt
 {
-	private final String characterName;
 }

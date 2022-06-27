@@ -131,7 +131,7 @@ public class QuestListPlugin extends Plugin
 	@Subscribe
 	public void onVarClientIntChanged(VarClientIntChanged varClientIntChanged)
 	{
-		if (varClientIntChanged.getIndex() == VarClientInt.INVENTORY_TAB.getIndex())
+		if (varClientIntChanged.getIndex() == VarClientInt.INVENTORY_TAB)
 		{
 			if (isChatboxOpen() && !isOnQuestTab())
 			{
@@ -166,7 +166,7 @@ public class QuestListPlugin extends Plugin
 
 	private boolean isOnQuestTab()
 	{
-		return client.getVarbitValue(Varbits.QUEST_TAB) == 0 && client.getVar(VarClientInt.INVENTORY_TAB) == 2;
+		return client.getVarbitValue(Varbits.QUEST_TAB) == 0 && client.getVarcIntValue(VarClientInt.INVENTORY_TAB) == 2;
 	}
 
 	private boolean isChatboxOpen()

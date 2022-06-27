@@ -655,8 +655,8 @@ public class ScreenshotPlugin extends Plugin
 				{
 					return;
 				}
-				String topText = client.getVar(VarClientStr.NOTIFICATION_TOP_TEXT);
-				String bottomText = client.getVar(VarClientStr.NOTIFICATION_BOTTOM_TEXT);
+				String topText = client.getVarcStrValue(VarClientStr.NOTIFICATION_TOP_TEXT);
+				String bottomText = client.getVarcStrValue(VarClientStr.NOTIFICATION_BOTTOM_TEXT);
 				if (topText.equalsIgnoreCase("Collection log") && config.screenshotCollectionLogEntries())
 				{
 					String entry = Text.removeTags(bottomText).substring("New item:".length());

@@ -67,6 +67,14 @@ public interface MenuEntrySwapperConfig extends Config
 	)
 	String uiSection = "ui";
 
+	@ConfigSection(
+		name = "Ground Item Swaps",
+		description = "All options that swap ground item menu entries",
+		position = 4,
+		closedByDefault = true
+	)
+	String groundItemSection = "groundItems";
+
 	enum ArdougneCloakMode
 	{
 		WEAR,
@@ -141,23 +149,35 @@ public interface MenuEntrySwapperConfig extends Config
 	@ConfigItem(
 		position = -2,
 		keyName = "objectLeftClickCustomization",
-		name = "Customizable left-click",
+		name = "Customizable left and shift click",
 		description = "Allows customization of left-clicks on objects",
 		section = objectSection
 	)
-	default boolean objectLeftClickCustomization()
+	default boolean objectCustomization()
 	{
 		return true;
 	}
 
 	@ConfigItem(
+		position = -2,
+		keyName = "objectShiftClickWalkHere",
+		name = "Shift click Walk here",
+		description = "Swaps Walk here on shift click on all objects",
+		section = objectSection
+	)
+	default boolean objectShiftClickWalkHere()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		position = -3,
 		keyName = "npcLeftClickCustomization",
-		name = "Customizable left-click",
+		name = "Customizable left and shift click",
 		description = "Allows customization of left-clicks on NPCs",
 		section = npcSection
 	)
-	default boolean npcLeftClickCustomization()
+	default boolean npcCustomization()
 	{
 		return true;
 	}
@@ -171,7 +191,7 @@ public interface MenuEntrySwapperConfig extends Config
 	)
 	default boolean npcShiftClickWalkHere()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
@@ -898,6 +918,18 @@ public interface MenuEntrySwapperConfig extends Config
 		section = npcSection
 	)
 	default boolean removeDeadNpcMenus()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = -1,
+		keyName = "groundItemShiftClickWalkHere",
+		name = "Shift click Walk here",
+		description = "Swaps Walk here on shift click on all ground items",
+		section = groundItemSection
+	)
+	default boolean groundItemShiftClickWalkHere()
 	{
 		return false;
 	}

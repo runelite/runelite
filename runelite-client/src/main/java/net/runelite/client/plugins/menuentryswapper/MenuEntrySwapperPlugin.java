@@ -675,7 +675,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	private void configureObjectClick(MenuOpened event)
 	{
-		if (!shiftModifier() || !config.objectLeftClickCustomization())
+		if (!shiftModifier() || !config.objectCustomization())
 		{
 			return;
 		}
@@ -795,7 +795,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	private void configureNpcClick(MenuOpened event)
 	{
-		if (!shiftModifier() || !config.npcLeftClickCustomization())
+		if (!shiftModifier() || !config.npcCustomization())
 		{
 			return;
 		}
@@ -1216,6 +1216,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 					return;
 				}
 			}
+			else if (shiftModifier() && config.objectShiftClickWalkHere())
+			{
+				menuEntry.setDeprioritized(true);
+			}
 		}
 
 		if (NPC_MENU_TYPES.contains(menuAction))
@@ -1261,6 +1265,16 @@ public class MenuEntrySwapperPlugin extends Plugin
 						return;
 					}
 				}
+			}
+		}
+
+		if (menuAction == MenuAction.GROUND_ITEM_FIRST_OPTION || menuAction == MenuAction.GROUND_ITEM_SECOND_OPTION
+			|| menuAction == MenuAction.GROUND_ITEM_THIRD_OPTION || menuAction == MenuAction.GROUND_ITEM_FOURTH_OPTION
+			|| menuAction == MenuAction.GROUND_ITEM_FIFTH_OPTION)
+		{
+			if (shiftModifier() && config.groundItemShiftClickWalkHere())
+			{
+				menuEntry.setDeprioritized(true);
 			}
 		}
 

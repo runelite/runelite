@@ -89,24 +89,40 @@ class VarInspector extends DevToolsFrame
 	private final static int MAX_LOG_ENTRIES = 10_000;
 	private static final int VARBITS_ARCHIVE_ID = 14;
 	private static final Map<Integer, String> VARBIT_NAMES;
+	private static final Map<Integer, String> VARCINT_NAMES;
+	private static final Map<Integer, String> VARCSTR_NAMES;
 
 	static
 	{
-		ImmutableMap.Builder<Integer, String> builder = new ImmutableMap.Builder<>();
+		ImmutableMap.Builder<Integer, String> varbits = new ImmutableMap.Builder<>();
+		ImmutableMap.Builder<Integer, String> varcint = new ImmutableMap.Builder<>();
+		ImmutableMap.Builder<Integer, String> varcstr = new ImmutableMap.Builder<>();
 
 		try
 		{
 			for (Field f : Varbits.class.getDeclaredFields())
 			{
-				builder.put(f.getInt(null), f.getName());
+				varbits.put(f.getInt(null), f.getName());
+			}
+
+			for (Field f : VarClientInt.class.getDeclaredFields())
+			{
+				varcint.put(f.getInt(null), f.getName());
+			}
+
+			for (Field f : VarClientStr.class.getDeclaredFields())
+			{
+				varcstr.put(f.getInt(null), f.getName());
 			}
 		}
 		catch (IllegalAccessException ex)
 		{
-			log.error("error setting up varbit names", ex);
+			log.error("error setting up var names", ex);
 		}
 
-		VARBIT_NAMES = builder.build();
+		VARBIT_NAMES = varbits.build();
+		VARCINT_NAMES = varcint.build();
+		VARCSTR_NAMES = varcstr.build();
 	}
 
 	private final Client client;
@@ -278,15 +294,7 @@ class VarInspector extends DevToolsFrame
 
 		if (old != neew)
 		{
-			String name = String.format("%d", idx);
-			for (VarClientInt varc : VarClientInt.values())
-			{
-				if (varc.getIndex() == idx)
-				{
-					name = String.format("%s(%d)", varc.name(), idx);
-					break;
-				}
-			}
+			final String name = VARCINT_NAMES.getOrDefault(idx, Integer.toString(idx));
 			addVarLog(VarType.VARCINT, name, old, neew);
 		}
 	}
@@ -301,15 +309,7 @@ class VarInspector extends DevToolsFrame
 
 		if (!Objects.equals(old, neew))
 		{
-			String name = String.format("%d", idx);
-			for (VarClientStr varc : VarClientStr.values())
-			{
-				if (varc.getIndex() == idx)
-				{
-					name = String.format("%s(%d)", varc.name(), idx);
-					break;
-				}
-			}
+			final String name = VARCSTR_NAMES.getOrDefault(idx, Integer.toString(idx));
 			if (old != null)
 			{
 				old = "\"" + old + "\"";

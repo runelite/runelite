@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2022, LlemonDuck <napkinorton@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,16 +24,43 @@
  */
 package net.runelite.client.plugins.party.messages;
 
+import com.google.gson.annotations.SerializedName;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import net.runelite.api.Skill;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import net.runelite.client.party.messages.PartyMemberMessage;
 
+@Data
+@NoArgsConstructor
 @AllArgsConstructor
-@Getter
-public class SkillUpdate extends PartyMemberMessage
+@EqualsAndHashCode(callSuper = true)
+public class StatusUpdate extends PartyMemberMessage
 {
-	private final Skill skill;
-	private final int value;
-	private final int max;
+
+	// we use boxed fields to null out properties that haven't changed
+	@SerializedName("n")
+	private String characterName = null;
+
+	@SerializedName("hc")
+	private Integer healthCurrent = null;
+
+	@SerializedName("hm")
+	private Integer healthMax = null;
+
+	@SerializedName("pc")
+	private Integer prayerCurrent = null;
+
+	@SerializedName("pm")
+	private Integer prayerMax = null;
+
+	@SerializedName("r")
+	private Integer runEnergy = null;
+
+	@SerializedName("s")
+	private Integer specEnergy = null;
+
+	@SerializedName("v")
+	private Boolean vengeanceActive = null;
+
 }
