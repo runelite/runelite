@@ -276,6 +276,19 @@ public class PartyService
 		return null;
 	}
 
+	public PartyMember getMemberByDisplayName(final String name)
+	{
+		for (PartyMember member : members)
+		{
+			if (member.isLoggedIn() && name.equals(member.getDisplayName()))
+			{
+				return member;
+			}
+		}
+
+		return null;
+	}
+
 	public List<PartyMember> getMembers()
 	{
 		return Collections.unmodifiableList(members);
