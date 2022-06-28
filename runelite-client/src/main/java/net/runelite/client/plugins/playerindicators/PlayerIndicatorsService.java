@@ -45,19 +45,22 @@ public class PlayerIndicatorsService
 {
 	private final Client client;
 	private final PlayerIndicatorsConfig config;
+	private final ClanGuestTracker clanGuestTracker;
 
 	@Inject
-	private PlayerIndicatorsService(Client client, PlayerIndicatorsConfig config)
+	private PlayerIndicatorsService(Client client, PlayerIndicatorsConfig config, ClanGuestTracker clanGuestTracker)
 	{
 		this.config = config;
 		this.client = client;
+		this.clanGuestTracker = clanGuestTracker;
 	}
 
 	public void forEachPlayer(final BiConsumer<Player, Color> consumer)
 	{
 		if (!config.highlightOwnPlayer() && !config.highlightFriendsChat()
 			&& !config.highlightFriends() && !config.highlightOthers()
-			&& !config.highlightClanMembers())
+			&& !config.highlightClanMembers() && !config.highlightClanGuests()
+			&& !config.highlightGuestClanMembers() && !config.highlightGuestClanGuests())
 		{
 			return;
 		}
@@ -73,6 +76,9 @@ public class PlayerIndicatorsService
 
 			boolean isFriendsChatMember = player.isFriendsChatMember();
 			boolean isClanMember = player.isClanMember();
+			boolean isClanGuest = clanGuestTracker.isClanGuest(player);
+			boolean isGuestClanMember = clanGuestTracker.isGuestClanMember(player);
+			boolean isGuestClanGuest = clanGuestTracker.isGuestClanGuest(player);
 
 			if (player == localPlayer)
 			{
@@ -97,7 +103,20 @@ public class PlayerIndicatorsService
 			{
 				consumer.accept(player, config.getClanMemberColor());
 			}
-			else if (config.highlightOthers() && !isFriendsChatMember && !isClanMember)
+			else if (config.highlightGuestClanMembers() && isGuestClanMember)
+			{
+				consumer.accept(player, config.getGuestClanMemberColor());
+			}
+			else if (config.highlightClanGuests() && isClanGuest)
+			{
+				consumer.accept(player, config.getClanGuestColor());
+			}
+			else if (config.highlightGuestClanGuests() && isGuestClanGuest)
+			{
+				consumer.accept(player, config.getGuestClanGuestColor());
+			}
+			else if (config.highlightOthers() && !isFriendsChatMember && !isClanMember && !isClanGuest
+				&& !isGuestClanMember && !isGuestClanGuest)
 			{
 				consumer.accept(player, config.getOthersColor());
 			}
@@ -106,8 +125,16 @@ public class PlayerIndicatorsService
 
 	ClanTitle getClanTitle(Player player)
 	{
-		ClanChannel clanChannel = client.getClanChannel();
-		ClanSettings clanSettings = client.getClanSettings();
+		return getChatTitle(player, client.getClanChannel(), client.getClanSettings());
+	}
+
+	ClanTitle getGuestClanTitle(Player player)
+	{
+		return getChatTitle(player, client.getGuestClanChannel(), client.getGuestClanSettings());
+	}
+
+	private ClanTitle getChatTitle(Player player, ClanChannel clanChannel, ClanSettings clanSettings)
+	{
 		if (clanChannel == null || clanSettings == null)
 		{
 			return null;
