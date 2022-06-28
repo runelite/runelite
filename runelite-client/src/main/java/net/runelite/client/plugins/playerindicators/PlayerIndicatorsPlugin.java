@@ -56,6 +56,7 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ChatIconManager;
+import net.runelite.client.party.PartyService;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -96,6 +97,9 @@ public class PlayerIndicatorsPlugin extends Plugin
 
 	@Inject
 	private ClientThread clientThread;
+
+	@Inject
+	private PartyService partyService;
 
 	@Provides
 	PlayerIndicatorsConfig provideConfig(ConfigManager configManager)
@@ -188,7 +192,15 @@ public class PlayerIndicatorsPlugin extends Plugin
 		int image = -1;
 		Color color = null;
 
-		if (player.isFriend() && config.highlightFriends())
+		boolean isPartyMember = partyService.isInParty() &&
+			player.getName() != null &&
+			config.highlightPartyMembers() &&
+			partyService.getMemberByDisplayName(player.getName()) != null;
+		if (isPartyMember)
+		{
+			color = config.getPartyMemberColor();
+		}
+		else if (player.isFriend() && config.highlightFriends())
 		{
 			color = config.getFriendColor();
 		}
