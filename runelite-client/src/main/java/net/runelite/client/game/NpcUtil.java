@@ -213,6 +213,14 @@ public class NpcUtil
 		final int anim = actor.getAnimation();
 		switch (anim)
 		{
+			// Corp frequently dies in masses with hitpoints remaining, so additionally use the death anim
+			// to determine if it is dead
+			case AnimationID.CORP_DEATH:
+				if (!(actor instanceof NPC) || ((NPC) actor).getId() != NpcID.CORPOREAL_BEAST)
+				{
+					break;
+				}
+				// intentional fallthrough
 			case AnimationID.VERZIK_P2_BLUE_NYLO_EXPLOSION:
 			case AnimationID.VERZIK_P2_GREEN_NYLO_EXPLOSION:
 			case AnimationID.VERZIK_P2_WHITE_NYLO_EXPLOSION:
