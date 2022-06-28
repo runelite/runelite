@@ -37,7 +37,8 @@ public enum PrayerBonus implements SkillBonus
 	MORYTANIA_DIARY_3_SHADES("Morytania Diary 3 Shades(150%)", 0.5f),
 	BONECRUSHER("Bonecrusher (50%)", -0.5f),
 	SINISTER_OFFERING("Sinister Offering (300%)", 2),
-	DEMONIC_OFFERING("Demonic Offering (300%)", 2);
+	DEMONIC_OFFERING("Demonic Offering (300%)", 2),
+	SACRED_BONE_BURNER("Sacred Bone Burner (300%)", 2);
 
 	private final String name;
 	private final float value;
