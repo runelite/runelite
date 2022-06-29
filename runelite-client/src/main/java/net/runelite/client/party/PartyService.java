@@ -102,7 +102,7 @@ public class PartyService
 				final int itemId = r.nextInt(client.getItemCount());
 				final ItemComposition def = client.getItemDefinition(itemId);
 				final String name = def.getName();
-				if (name == null || name.isEmpty() || name.equals("null"))
+				if (name == null || name.isEmpty() || name.equalsIgnoreCase("null"))
 				{
 					continue;
 				}
