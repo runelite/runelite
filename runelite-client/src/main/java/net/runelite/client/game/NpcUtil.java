@@ -145,6 +145,8 @@ public class NpcUtil
 			case NpcID.THE_NIGHTMARE_9433:
 			case NpcID.PHOSANIS_NIGHTMARE_9424:
 				return true;
+			case NpcID.ZALCANO_9050:
+				return npc.isDead();
 			default:
 				if (runtimeConfig != null)
 				{
@@ -158,6 +160,12 @@ public class NpcUtil
 					if (forceDeadNpcs != null && forceDeadNpcs.contains(id))
 					{
 						return true;
+					}
+
+					Set<Integer> pureIsDeadNpcs = runtimeConfig.getNonAttackNpcs();
+					if (pureIsDeadNpcs != null && pureIsDeadNpcs.contains(id))
+					{
+						return npc.isDead();
 					}
 				}
 
