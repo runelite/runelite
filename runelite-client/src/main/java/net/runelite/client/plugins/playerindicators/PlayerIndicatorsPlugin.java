@@ -207,15 +207,6 @@ public class PlayerIndicatorsPlugin extends Plugin
 		else if (player.isFriendsChatMember() && config.highlightFriendsChat())
 		{
 			color = config.getFriendsChatMemberColor();
-
-			if (config.showFriendsChatRanks())
-			{
-				FriendsChatRank rank = playerIndicatorsService.getFriendsChatRank(player);
-				if (rank != UNRANKED)
-				{
-					image = chatIconManager.getIconNumber(rank);
-				}
-			}
 		}
 		else if (player.getTeam() > 0 && client.getLocalPlayer().getTeam() == player.getTeam() && config.highlightTeamMembers())
 		{
@@ -224,19 +215,27 @@ public class PlayerIndicatorsPlugin extends Plugin
 		else if (player.isClanMember() && config.highlightClanMembers())
 		{
 			color = config.getClanMemberColor();
-
-			if (config.showClanChatRanks())
-			{
-				ClanTitle clanTitle = playerIndicatorsService.getClanTitle(player);
-				if (clanTitle != null)
-				{
-					image = chatIconManager.getIconNumber(clanTitle);
-				}
-			}
 		}
 		else if (!player.isFriendsChatMember() && !player.isClanMember() && config.highlightOthers())
 		{
 			color = config.getOthersColor();
+		}
+
+		if (player.isFriendsChatMember() && config.showFriendsChatRanks())
+		{
+			FriendsChatRank rank = playerIndicatorsService.getFriendsChatRank(player);
+			if (rank != UNRANKED)
+			{
+				image = chatIconManager.getIconNumber(rank);
+			}
+		}
+		if (player.isClanMember() && config.showClanChatRanks() && image == -1)
+		{
+			ClanTitle clanTitle = playerIndicatorsService.getClanTitle(player);
+			if (clanTitle != null)
+			{
+				image = chatIconManager.getIconNumber(clanTitle);
+			}
 		}
 
 		if (image == -1 && color == null)
