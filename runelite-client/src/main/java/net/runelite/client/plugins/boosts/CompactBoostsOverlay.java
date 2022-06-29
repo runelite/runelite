@@ -103,7 +103,7 @@ class CompactBoostsOverlay extends Overlay
 		if (time != -1)
 		{
 			drawBoost(graphics, fontMetrics, fontHeight,
-				BUFFED,
+				DEBUFFED,
 				time < 10 ? Color.RED.brighter() : Color.WHITE,
 				Integer.toString(plugin.getChangeTime(time)));
 		}
@@ -112,7 +112,7 @@ class CompactBoostsOverlay extends Overlay
 		if (time != -1)
 		{
 			drawBoost(graphics, fontMetrics, fontHeight,
-				DEBUFFED,
+				BUFFED,
 				time < 10 ? Color.RED.brighter() : Color.WHITE,
 				Integer.toString(plugin.getChangeTime(time)));
 		}
