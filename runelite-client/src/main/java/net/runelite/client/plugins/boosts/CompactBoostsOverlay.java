@@ -147,7 +147,7 @@ class CompactBoostsOverlay extends Overlay
 	{
 		if (config.useRelativeBoost())
 		{
-			return boost > 0 ? "+" + boost : "-" + boost;
+			return boost > 0 ? "+" + boost : Integer.toString(boost);
 		}
 		else
 		{
