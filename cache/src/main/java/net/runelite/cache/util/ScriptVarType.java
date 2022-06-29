@@ -27,8 +27,10 @@ package net.runelite.cache.util;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 @AllArgsConstructor
+@Getter
 public enum ScriptVarType
 {
 	INTEGER(0, 'i', "integer"),
@@ -41,6 +43,10 @@ public enum ScriptVarType
 	COMPONENT(9, 'I', "component"),
 	IDKIT(10, 'K', "idkit"),
 	MIDI(11, 'M', "midi"),
+	/**
+	 * Another version of {@code OBJ}, but means that on Jagex's side they used the internal name for an item.
+	 */
+	NAMEDOBJ(13, 'O', "namedobj"),
 	SYNTH(14, 'P', "synth"),
 	STAT(17, 'S', "stat"),
 	COORDGRID(22, 'c', "coordgrid"),
@@ -58,10 +64,6 @@ public enum ScriptVarType
 	 * Also known as {@code Item}.
 	 */
 	OBJ(33, 'o', "obj"),
-	/**
-	 * Another version of {@code OBJ}, but means that on Jagex's side they used the internal name for an item.
-	 */
-	NAMEDOBJ(13, 'O', "namedobj"),
 	STRING(36, 's', "string"),
 	SPOTANIM(37, 't', "spotanim"),
 	INV(39, 'v', "inv"),
@@ -70,7 +72,9 @@ public enum ScriptVarType
 	MAPSCENEICON(55, '£', "mapsceneicon"),
 	MAPELEMENT(59, 'µ', "mapelement"),
 	HITMARK(62, '×', "hitmark"),
-	STRUCT(73, 'J', "struct");
+	STRUCT(73, 'J', "struct"),
+	DBROW(74, 'Ð', "dbrow"),
+	;
 
 	private static final Map<Integer, ScriptVarType> idToTypeMap = new HashMap<>();
 	private static final Map<Character, ScriptVarType> keyToTypeMap = new HashMap<>();
