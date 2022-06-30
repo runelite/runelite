@@ -54,6 +54,7 @@ public enum STASHUnitRequirements
 		new MultipleOfItemRequirement(IRON_NAILS, 10),
 		new MultipleOfItemRequirement(STEEL_NAILS, 10),
 		new MultipleOfItemRequirement(BLACK_NAILS, 10),
+		new MultipleOfItemRequirement(MITHRIL_NAILS, 10),
 		new MultipleOfItemRequirement(ADAMANTITE_NAILS, 10),
 		new MultipleOfItemRequirement(RUNE_NAILS, 10));
 
