@@ -24,9 +24,9 @@
  */
 package net.runelite.api;
 
-public class DBTableID
+public final class DBTableID
 {
-	public static interface Quest
+	public interface Quest
 	{
 		int NAME = 2;
 	}
