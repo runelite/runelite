@@ -160,18 +160,6 @@ public interface PartyConfig extends Config
 	}
 
 	@ConfigItem(
-		section = SECTION_STATUS_OVERLAY,
-		keyName = "statusOverlayCompact",
-		name = "Compact Status Display",
-		description = "Show above activated status overlays in a smaller and stacked format.",
-		position = 12
-	)
-	default boolean statusOverlayCompact()
-	{
-		return false;
-	}
-
-	@ConfigItem(
 		keyName = "previousPartyId",
 		name = "",
 		description = "",
