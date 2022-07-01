@@ -29,10 +29,16 @@ import java.util.Set;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import net.runelite.api.Actor;
+import net.runelite.api.AnimationID;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.NpcID;
+import net.runelite.api.events.AnimationChanged;
+import net.runelite.api.events.NpcChanged;
 import net.runelite.client.RuntimeConfig;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 import org.apache.commons.lang3.ArrayUtils;
 
 @Singleton
@@ -41,9 +47,10 @@ public class NpcUtil
 	private final RuntimeConfig runtimeConfig;
 
 	@Inject
-	private NpcUtil(@Nullable RuntimeConfig runtimeConfig)
+	private NpcUtil(@Nullable RuntimeConfig runtimeConfig, EventBus eventBus)
 	{
 		this.runtimeConfig = runtimeConfig;
+		eventBus.register(this);
 	}
 
 	/**
@@ -93,14 +100,53 @@ public class NpcUtil
 			case NpcID.SMALL_LIZARD:
 			case NpcID.SMALL_LIZARD_463:
 			case NpcID.GROWTHLING:
-			case NpcID.KALPHITE_QUEEN_963: // KQ's first form sometimes regenerates 1hp after reaching 0hp, thus not dying
+			// These NPCs die, but transform into forms which are attackable or interactable, so it would be jarring for
+			// them to be considered dead when reaching 0hp.
+			case NpcID.KALPHITE_QUEEN_963:
+			case NpcID.VETION:
+			case NpcID.WITCHS_EXPERIMENT:
+			case NpcID.WITCHS_EXPERIMENT_6394:
+			case NpcID.WITCHS_EXPERIMENT_HARD:
+			case NpcID.WITCHS_EXPERIMENT_SECOND_FORM:
+			case NpcID.WITCHS_EXPERIMENT_SECOND_FORM_6395:
+			case NpcID.WITCHS_EXPERIMENT_SECOND_FORM_HARD:
+			case NpcID.WITCHS_EXPERIMENT_THIRD_FORM:
+			case NpcID.WITCHS_EXPERIMENT_THIRD_FORM_6396:
+			case NpcID.WITCHS_EXPERIMENT_THIRD_FORM_HARD:
+			case NpcID.NAZASTAROOL:
+			case NpcID.NAZASTAROOL_5354:
+			case NpcID.NAZASTAROOL_6398:
+			case NpcID.NAZASTAROOL_6399:
+			case NpcID.NAZASTAROOL_HARD:
+			case NpcID.NAZASTAROOL_HARD_6338:
+			case NpcID.KOLODION_1605:
+			case NpcID.KOLODION_1606:
+			case NpcID.KOLODION_1607:
+			case NpcID.KOLODION_1608:
+			case NpcID.MUTANT_TARN:
+			case NpcID.XAMPHUR_10955:
+			case NpcID.XAMPHUR_10956:
+			case NpcID.KOSCHEI_THE_DEATHLESS:
+			case NpcID.KOSCHEI_THE_DEATHLESS_3898:
+			case NpcID.KOSCHEI_THE_DEATHLESS_3899:
+			case NpcID.CHOMPY_BIRD:
+			case NpcID.JUBBLY_BIRD:
+			case NpcID.ENT:
+			case NpcID.ENT_7234:
 				return false;
-			// These NPCs transform and have their `isDead()` reset to `false` despite actually being dead in these forms
+			// These NPCs have no attack options, but are the dead and uninteractable form of otherwise attackable NPCs,
+			// thus should not be considered alive.
 			case NpcID.DRAKE_8613:
 			case NpcID.GUARDIAN_DRAKE_10401:
-			case NpcID.ALCHEMICAL_HYDRA_8634:
-			case NpcID.NEX_11282:
+			case NpcID.ALCHEMICAL_HYDRA_8622:
+			case NpcID.XARPUS_8341:
+			case NpcID.XARPUS_10769:
+			case NpcID.XARPUS_10773:
+			case NpcID.THE_NIGHTMARE_9433:
+			case NpcID.PHOSANIS_NIGHTMARE_9424:
 				return true;
+			case NpcID.ZALCANO_9050:
+				return npc.isDead();
 			default:
 				if (runtimeConfig != null)
 				{
@@ -115,11 +161,91 @@ public class NpcUtil
 					{
 						return true;
 					}
+
+					Set<Integer> pureIsDeadNpcs = runtimeConfig.getNonAttackNpcs();
+					if (pureIsDeadNpcs != null && pureIsDeadNpcs.contains(id))
+					{
+						return npc.isDead();
+					}
 				}
 
 				final NPCComposition npcComposition = npc.getTransformedComposition();
 				boolean hasAttack = npcComposition != null && ArrayUtils.contains(npcComposition.getActions(), "Attack");
 				return hasAttack && npc.isDead();
+		}
+	}
+
+	@Subscribe
+	void onNpcChanged(NpcChanged e)
+	{
+		final NPC npc = e.getNpc();
+		final int id = npc.getId();
+		switch (id)
+		{
+			// These NPCs are final new forms of previous NPCs and should not be considered dead upon transformation.
+			// Prior form(s) should be added to the `isDying()` exceptions list above to ensure they are not hidden or
+			// made uninteractable during their death animations.
+			case NpcID.KALPHITE_QUEEN_965:
+			case NpcID.VETION_REBORN:
+			case NpcID.WITCHS_EXPERIMENT_FOURTH_FORM:
+			case NpcID.WITCHS_EXPERIMENT_FOURTH_FORM_6397:
+			case NpcID.WITCHS_EXPERIMENT_FOURTH_FORM_HARD:
+			case NpcID.NAZASTAROOL_5355:
+			case NpcID.NAZASTAROOL_6400:
+			case NpcID.NAZASTAROOL_HARD_6339:
+			case NpcID.KOLODION_1609:
+			case NpcID.TARN_6476:
+			case NpcID.KOSCHEI_THE_DEATHLESS_3900:
+			// The Nightmare should be considered alive again once reaching its sleeping form
+			case NpcID.THE_NIGHTMARE:
+			case NpcID.PHOSANIS_NIGHTMARE:
+				npc.setDead(false);
+				break;
+			default:
+				if (runtimeConfig != null)
+				{
+					Set<Integer> resetDeadOnChangeNpcs = runtimeConfig.getResetDeadOnChangeNpcs();
+					if (resetDeadOnChangeNpcs != null && resetDeadOnChangeNpcs.contains(id))
+					{
+						npc.setDead(false);
+					}
+				}
+				break;
+		}
+	}
+
+	@Subscribe
+	public void onAnimationChanged(AnimationChanged animationChanged)
+	{
+		final Actor actor = animationChanged.getActor();
+		final int anim = actor.getAnimation();
+		switch (anim)
+		{
+			// Corp frequently dies in masses with hitpoints remaining, so additionally use the death anim
+			// to determine if it is dead
+			case AnimationID.CORP_DEATH:
+				if (!(actor instanceof NPC) || ((NPC) actor).getId() != NpcID.CORPOREAL_BEAST)
+				{
+					break;
+				}
+				// intentional fallthrough
+			case AnimationID.VERZIK_P2_BLUE_NYLO_EXPLOSION:
+			case AnimationID.VERZIK_P2_GREEN_NYLO_EXPLOSION:
+			case AnimationID.VERZIK_P2_WHITE_NYLO_EXPLOSION:
+			case AnimationID.VERZIK_P2_PURPLE_NYLO_EXPLOSION:
+			case AnimationID.VERZIK_P2_RED_NYLO_EXPLOSION:
+				actor.setDead(true);
+				break;
+			default:
+				if (runtimeConfig != null)
+				{
+					Set<Integer> forceDeadAnimations = runtimeConfig.getForceDeadAnimations();
+					if (forceDeadAnimations != null && forceDeadAnimations.contains(anim))
+					{
+						actor.setDead(true);
+					}
+				}
+				break;
 		}
 	}
 }

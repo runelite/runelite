@@ -30,7 +30,6 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
@@ -103,7 +102,6 @@ class PartyStatusOverlay extends Overlay
 			return null;
 		}
 
-		List<PartyMember> partyMembers = partyService.getMembers();
 		for (Player player : client.getPlayers())
 		{
 			if (!renderSelf && player == client.getLocalPlayer())
@@ -111,7 +109,7 @@ class PartyStatusOverlay extends Overlay
 				continue;
 			}
 
-			PartyMember partyMember = findPartyMember(partyMembers, player);
+			PartyMember partyMember = findPartyMember(player);
 			if (partyMember == null)
 			{
 				continue;
@@ -156,22 +154,14 @@ class PartyStatusOverlay extends Overlay
 		return null;
 	}
 
-	private PartyMember findPartyMember(List<PartyMember> partyMembers, Player p)
+	private PartyMember findPartyMember(Player p)
 	{
 		if (p == null || p.getName() == null)
 		{
 			return null;
 		}
 
-		for (PartyMember partyMember : partyMembers)
-		{
-			if (partyMember.isLoggedIn() && p.getName().equals(partyMember.getDisplayName()))
-			{
-				return partyMember;
-			}
-		}
-
-		return null;
+		return partyService.getMemberByDisplayName(p.getName());
 	}
 
 	// relative to center of model

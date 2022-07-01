@@ -10397,11 +10397,27 @@
     26146,
     26147
   ],
+  "group iron helm": [
+    26156,
+    27042
+  ],
   "group iron platebody": [
     26158,
     26160,
     26162,
-    26164
+    26164,
+    27048,
+    27050,
+    27052,
+    27054
+  ],
+  "group iron platelegs": [
+    26166,
+    27044
+  ],
+  "group iron bracers": [
+    26168,
+    27046
   ],
   "hardcore group iron platebody": [
     26172,

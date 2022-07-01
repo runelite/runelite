@@ -56,6 +56,7 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ChatIconManager;
+import net.runelite.client.party.PartyService;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -96,6 +97,9 @@ public class PlayerIndicatorsPlugin extends Plugin
 
 	@Inject
 	private ClientThread clientThread;
+
+	@Inject
+	private PartyService partyService;
 
 	@Provides
 	PlayerIndicatorsConfig provideConfig(ConfigManager configManager)
@@ -188,22 +192,21 @@ public class PlayerIndicatorsPlugin extends Plugin
 		int image = -1;
 		Color color = null;
 
-		if (player.isFriend() && config.highlightFriends())
+		boolean isPartyMember = partyService.isInParty() &&
+			player.getName() != null &&
+			config.highlightPartyMembers() &&
+			partyService.getMemberByDisplayName(player.getName()) != null;
+		if (isPartyMember)
+		{
+			color = config.getPartyMemberColor();
+		}
+		else if (player.isFriend() && config.highlightFriends())
 		{
 			color = config.getFriendColor();
 		}
 		else if (player.isFriendsChatMember() && config.highlightFriendsChat())
 		{
 			color = config.getFriendsChatMemberColor();
-
-			if (config.showFriendsChatRanks())
-			{
-				FriendsChatRank rank = playerIndicatorsService.getFriendsChatRank(player);
-				if (rank != UNRANKED)
-				{
-					image = chatIconManager.getIconNumber(rank);
-				}
-			}
 		}
 		else if (player.getTeam() > 0 && client.getLocalPlayer().getTeam() == player.getTeam() && config.highlightTeamMembers())
 		{
@@ -212,19 +215,27 @@ public class PlayerIndicatorsPlugin extends Plugin
 		else if (player.isClanMember() && config.highlightClanMembers())
 		{
 			color = config.getClanMemberColor();
-
-			if (config.showClanChatRanks())
-			{
-				ClanTitle clanTitle = playerIndicatorsService.getClanTitle(player);
-				if (clanTitle != null)
-				{
-					image = chatIconManager.getIconNumber(clanTitle);
-				}
-			}
 		}
 		else if (!player.isFriendsChatMember() && !player.isClanMember() && config.highlightOthers())
 		{
 			color = config.getOthersColor();
+		}
+
+		if (player.isFriendsChatMember() && config.showFriendsChatRanks())
+		{
+			FriendsChatRank rank = playerIndicatorsService.getFriendsChatRank(player);
+			if (rank != UNRANKED)
+			{
+				image = chatIconManager.getIconNumber(rank);
+			}
+		}
+		if (player.isClanMember() && config.showClanChatRanks() && image == -1)
+		{
+			ClanTitle clanTitle = playerIndicatorsService.getClanTitle(player);
+			if (clanTitle != null)
+			{
+				image = chatIconManager.getIconNumber(clanTitle);
+			}
 		}
 
 		if (image == -1 && color == null)

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Adam <Adam@sigterm.info>
+ * Copyright (c) 2022, Joshua Filby <joshua@filby.me>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,41 +24,62 @@
  */
 package net.runelite.cache.definitions.loaders;
 
-import net.runelite.cache.definitions.ParamDefinition;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.cache.definitions.DBRowDefinition;
 import net.runelite.cache.io.InputStream;
 import net.runelite.cache.util.ScriptVarType;
 
-public class ParamLoader
+@Slf4j
+public class DBRowLoader
 {
-	public ParamDefinition load(byte[] data)
+	public DBRowDefinition load(int id, byte[] b)
 	{
-		ParamDefinition def = new ParamDefinition();
-		InputStream b = new InputStream(data);
+		DBRowDefinition def = new DBRowDefinition(id);
+		InputStream is = new InputStream(b);
 
-		for (; ; )
+		while (true)
 		{
-			int opcode = b.readUnsignedByte();
-
-			switch (opcode)
+			int opcode = is.readUnsignedByte();
+			if (opcode == 0)
 			{
-				case 0:
-					return def;
-				case 1:
-				{
-					int idx = b.readUnsignedByte();
-					def.setType(ScriptVarType.forCharKey((char) idx));
-					break;
-				}
-				case 2:
-					def.setDefaultInt(b.readInt());
-					break;
-				case 4:
-					def.setMembers(false);
-					break;
-				case 5:
-					def.setDefaultString(b.readString());
-					break;
+				break;
 			}
+
+			this.decode(opcode, def, is);
+		}
+
+		return def;
+	}
+
+	private void decode(int opcode, DBRowDefinition def, InputStream stream)
+	{
+		switch (opcode)
+		{
+			case 3:
+				int numColumns = stream.readUnsignedByte();
+				ScriptVarType[][] types = new ScriptVarType[numColumns][];
+				Object[][] columnValues = new Object[numColumns][];
+
+				for (int columnId = stream.readUnsignedByte(); columnId != 255; columnId = stream.readUnsignedByte())
+				{
+					ScriptVarType[] columnTypes = new ScriptVarType[stream.readUnsignedByte()];
+					for (int i = 0; i < columnTypes.length; i++)
+					{
+						columnTypes[i] = ScriptVarType.forId(stream.readUnsignedShortSmart());
+					}
+					types[columnId] = columnTypes;
+					columnValues[columnId] = DBTableLoader.decodeColumnFields(stream, columnTypes);
+				}
+
+				def.setColumnTypes(types);
+				def.setColumnValues(columnValues);
+				break;
+			case 4:
+				def.setTableId(stream.readVarInt2());
+				break;
+			default:
+				log.warn("Unrecognized dbrow opcode {}", opcode);
+				break;
 		}
 	}
 }
