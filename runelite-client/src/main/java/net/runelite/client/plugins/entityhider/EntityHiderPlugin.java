@@ -29,6 +29,8 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Provides;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.GraphicID;
+import net.runelite.api.GraphicsObject;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.Projectile;
@@ -208,6 +210,26 @@ public class EntityHiderPlugin extends Plugin
 		else if (renderable instanceof Projectile)
 		{
 			return !hideProjectiles;
+		}
+		else if (renderable instanceof GraphicsObject)
+		{
+			if (!hideDeadNpcs)
+			{
+				return true;
+			}
+
+			switch (((GraphicsObject) renderable).getId())
+			{
+				case GraphicID.MELEE_NYLO_DEATH:
+				case GraphicID.RANGE_NYLO_DEATH:
+				case GraphicID.MAGE_NYLO_DEATH:
+				case GraphicID.MELEE_NYLO_EXPLOSION:
+				case GraphicID.RANGE_NYLO_EXPLOSION:
+				case GraphicID.MAGE_NYLO_EXPLOSION:
+					return false;
+				default:
+					return true;
+			}
 		}
 
 		return true;

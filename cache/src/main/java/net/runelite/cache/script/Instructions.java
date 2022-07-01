@@ -575,6 +575,17 @@ public class Instructions implements Opcodes
 		add(MEC_SPRITE, "mec_sprite");
 		add(WORLDMAP_ELEMENT, "worldmap_element");
 		add(WORLDMAP_ELEMENTCOORD, "worldmap_elementcoord");
+		add(DB_FIND_WITH_COUNT, "db_find_with_count");
+		add(DB_FINDNEXT, "db_findnext");
+		add(DB_GETFIELD, "db_getfield");
+		add(DB_GETFIELDCOUNT, "db_getfieldcount");
+		add(DB_FINDALL_WITH_COUNT, "db_findall_with_count");
+		add(DB_GETROWTABLE, "db_getrowtable");
+		add(DB_GETROW, "db_getrow");
+		add(DB_FIND_FILTER_WITH_COUNT, "db_find_filter_with_count");
+		add(DB_FIND, "db_find");
+		add(DB_FINDALL, "db_findall");
+		add(DB_FIND_FILTER, "db_find_filter");
 	}
 
 	protected void add(int opcode, String name)

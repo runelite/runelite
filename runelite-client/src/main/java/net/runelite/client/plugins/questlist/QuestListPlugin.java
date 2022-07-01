@@ -28,7 +28,7 @@ package net.runelite.client.plugins.questlist;
 import com.google.common.base.Strings;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.ParamID;
+import net.runelite.api.DBTableID;
 import net.runelite.api.ScriptID;
 import net.runelite.api.SoundEffectID;
 import net.runelite.api.SpriteID;
@@ -157,9 +157,8 @@ public class QuestListPlugin extends Plugin
 		final int[] intStack = client.getIntStack();
 		final int intStackSize = client.getIntStackSize();
 
-		final int questStruct = intStack[intStackSize - 1];
-		final String questName = client.getStructComposition(questStruct)
-			.getStringValue(ParamID.QUEST_NAME);
+		final int row = intStack[intStackSize - 1];
+		final String questName = (String) client.getDBTableField(row, DBTableID.Quest.NAME, 0, 0);
 
 		intStack[intStackSize - 2] = questName.toLowerCase().contains(filter.toLowerCase()) ? 0 : 1;
 	}

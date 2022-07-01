@@ -401,4 +401,12 @@ public interface Actor extends Renderable
 	 * @return
 	 */
 	boolean isDead();
+
+	/**
+	 * Sets the dead status of this actor
+	 *
+	 * @param dead
+	 * @see #isDead()
+	 */
+	void setDead(boolean dead);
 }
