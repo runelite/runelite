@@ -55,6 +55,7 @@ import net.runelite.client.party.messages.PartyMessage;
 import net.runelite.client.party.events.UserJoin;
 import net.runelite.client.party.events.UserPart;
 import net.runelite.client.party.messages.UserSync;
+import net.runelite.client.util.Text;
 import static net.runelite.client.util.Text.JAGEX_PRINTABLE_CHAR_MATCHER;
 
 @Slf4j
@@ -278,9 +279,10 @@ public class PartyService
 
 	public PartyMember getMemberByDisplayName(final String name)
 	{
+		String sanitized = Text.removeTags(Text.toJagexName(name));
 		for (PartyMember member : members)
 		{
-			if (member.isLoggedIn() && name.equals(member.getDisplayName()))
+			if (member.isLoggedIn() && sanitized.equals(member.getDisplayName()))
 			{
 				return member;
 			}
