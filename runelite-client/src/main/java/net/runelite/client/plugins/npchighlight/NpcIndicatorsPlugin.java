@@ -106,6 +106,9 @@ public class NpcIndicatorsPlugin extends Plugin
 	@Inject
 	private NpcOverlayService npcOverlayService;
 
+	@Inject
+	private NpcUtil npcUtil;
+
 	/**
 	 * NPCs to highlight
 	 */
@@ -277,12 +280,12 @@ public class NpcIndicatorsPlugin extends Plugin
 		else
 		{
 			Color color = null;
-			if (NpcUtil.isDying(npc))
+			if (npcUtil.isDying(npc))
 			{
 				color = config.deadNpcMenuColor();
 			}
 
-			if (color == null && highlightedNpcs.containsKey(npc) && config.highlightMenuNames() && (!NpcUtil.isDying(npc) || !config.ignoreDeadNpcs()))
+			if (color == null && highlightedNpcs.containsKey(npc) && config.highlightMenuNames() && (!npcUtil.isDying(npc) || !config.ignoreDeadNpcs()))
 			{
 				color = config.highlightColor();
 			}
@@ -669,7 +672,7 @@ public class NpcIndicatorsPlugin extends Plugin
 			.nameOnMinimap(config.drawMinimapNames())
 			.borderWidth((float) config.borderWidth())
 			.outlineFeather(config.outlineFeather())
-			.render(n -> !NpcUtil.isDying(n) || !config.ignoreDeadNpcs())
+			.render(n -> !npcUtil.isDying(n) || !config.ignoreDeadNpcs())
 			.build();
 	}
 }
