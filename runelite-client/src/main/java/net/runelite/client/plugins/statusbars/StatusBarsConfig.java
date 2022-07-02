@@ -318,9 +318,4 @@ public interface StatusBarsConfig extends Config
 	{
 		return new Color(196, 62, 109, 181);
 	}
-
-
-
-
-
 }
