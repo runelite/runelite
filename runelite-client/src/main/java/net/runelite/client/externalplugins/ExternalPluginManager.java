@@ -38,6 +38,7 @@ import java.net.URL;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -143,6 +144,15 @@ public class ExternalPluginManager
 			return;
 		}
 
+		Set<String> builtinExternalClasses = new HashSet<>();
+		if (builtinExternals != null)
+		{
+			for (Class<? extends Plugin> pluginClass : builtinExternals)
+			{
+				builtinExternalClasses.add(pluginClass.getName());
+			}
+		}
+
 		Multimap<ExternalPluginManifest, Plugin> loadedExternalPlugins = HashMultimap.create();
 		for (Plugin p : pluginManager.getPlugins())
 		{
@@ -192,6 +202,12 @@ public class ExternalPluginManager
 					ExternalPluginManifest manifest = manifests.get(name);
 					if (manifest != null)
 					{
+						if (Arrays.stream(manifest.getPlugins()).anyMatch(builtinExternalClasses::contains))
+						{
+							log.debug("Skipping loading [{}] from hub as a conflicting builtin external is present", manifest.getInternalName());
+							continue;
+						}
+
 						externalPlugins.add(manifest);
 
 						manifest.getJarFile().setLastModified(now.toEpochMilli());

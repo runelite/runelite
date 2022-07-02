@@ -35,6 +35,7 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.NPC;
+import net.runelite.api.NPCComposition;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcSpawned;
@@ -101,9 +102,12 @@ public class NpcIndicatorsPluginTest
 
 		npcIndicatorsPlugin.rebuild();
 
+		NPCComposition comp = mock(NPCComposition.class);
+		when(comp.getActions()).thenReturn(new String[] {"Attack"});
 		NPC npc = mock(NPC.class);
 		when(npc.getName()).thenReturn("Goblin");
 		when(npc.isDead()).thenReturn(true);
+		when(npc.getTransformedComposition()).thenReturn(comp);
 		npcIndicatorsPlugin.onNpcSpawned(new NpcSpawned(npc));
 
 		TestMenuEntry entry = new TestMenuEntry();

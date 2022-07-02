@@ -61,6 +61,7 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.game.NpcUtil;
 import net.runelite.client.game.npcoverlay.HighlightedNpc;
 import net.runelite.client.game.npcoverlay.NpcOverlayService;
 import net.runelite.client.plugins.Plugin;
@@ -104,6 +105,9 @@ public class NpcIndicatorsPlugin extends Plugin
 
 	@Inject
 	private NpcOverlayService npcOverlayService;
+
+	@Inject
+	private NpcUtil npcUtil;
 
 	/**
 	 * NPCs to highlight
@@ -276,12 +280,12 @@ public class NpcIndicatorsPlugin extends Plugin
 		else
 		{
 			Color color = null;
-			if (npc.isDead())
+			if (npcUtil.isDying(npc))
 			{
 				color = config.deadNpcMenuColor();
 			}
 
-			if (color == null && highlightedNpcs.containsKey(npc) && config.highlightMenuNames() && (!npc.isDead() || !config.ignoreDeadNpcs()))
+			if (color == null && highlightedNpcs.containsKey(npc) && config.highlightMenuNames() && (!npcUtil.isDying(npc) || !config.ignoreDeadNpcs()))
 			{
 				color = config.highlightColor();
 			}
@@ -668,7 +672,7 @@ public class NpcIndicatorsPlugin extends Plugin
 			.nameOnMinimap(config.drawMinimapNames())
 			.borderWidth((float) config.borderWidth())
 			.outlineFeather(config.outlineFeather())
-			.render(n -> !n.isDead() || !config.ignoreDeadNpcs())
+			.render(n -> !npcUtil.isDying(n) || !config.ignoreDeadNpcs())
 			.build();
 	}
 }

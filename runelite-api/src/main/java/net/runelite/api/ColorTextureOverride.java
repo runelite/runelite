@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2022, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,18 +22,15 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.party.messages;
+package net.runelite.api;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import net.runelite.api.Skill;
-import net.runelite.client.party.messages.PartyMemberMessage;
-
-@AllArgsConstructor
-@Getter
-public class SkillUpdate extends PartyMemberMessage
+/**
+ * Represents overridden color/texture replacements for an item. These overrides are used instead
+ * of the normal ones configured in the item composition.
+ */
+public interface ColorTextureOverride
 {
-	private final Skill skill;
-	private final int value;
-	private final int max;
+	short[] getColorToReplaceWith();
+
+	short[] getTextureToReplaceWith();
 }

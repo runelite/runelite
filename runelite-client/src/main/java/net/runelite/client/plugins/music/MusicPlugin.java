@@ -352,7 +352,7 @@ public class MusicPlugin extends Plugin
 
 	private boolean isOnMusicTab()
 	{
-		return client.getVar(VarClientInt.INVENTORY_TAB) == 13;
+		return client.getVarcIntValue(VarClientInt.INVENTORY_TAB) == 13;
 	}
 
 	private boolean isChatboxOpen()

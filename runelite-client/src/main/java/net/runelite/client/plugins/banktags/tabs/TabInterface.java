@@ -700,8 +700,8 @@ public class TabInterface
 			activateTab(null);
 			// This ensures that when clicking Search when tab is selected, the search input is opened rather
 			// than client trying to close it first
-			client.setVar(VarClientStr.INPUT_TEXT, "");
-			client.setVar(VarClientInt.INPUT_TYPE, 0);
+			client.setVarcStrValue(VarClientStr.INPUT_TEXT, "");
+			client.setVarcIntValue(VarClientInt.INPUT_TYPE, 0);
 		}
 	}
 

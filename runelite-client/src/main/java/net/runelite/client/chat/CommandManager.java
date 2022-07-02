@@ -100,7 +100,7 @@ public class CommandManager
 
 	private void runCommand()
 	{
-		String typedText = client.getVar(VarClientStr.CHATBOX_TYPED_TEXT).substring(2); // strip ::
+		String typedText = client.getVarcStrValue(VarClientStr.CHATBOX_TYPED_TEXT).substring(2); // strip ::
 
 		log.debug("Command: {}", typedText);
 

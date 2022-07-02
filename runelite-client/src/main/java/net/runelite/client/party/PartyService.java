@@ -102,7 +102,7 @@ public class PartyService
 				final int itemId = r.nextInt(client.getItemCount());
 				final ItemComposition def = client.getItemDefinition(itemId);
 				final String name = def.getName();
-				if (name == null || name.isEmpty() || name.equals("null"))
+				if (name == null || name.isEmpty() || name.equalsIgnoreCase("null"))
 				{
 					continue;
 				}
@@ -268,6 +268,19 @@ public class PartyService
 		for (PartyMember member : members)
 		{
 			if (id == member.getMemberId())
+			{
+				return member;
+			}
+		}
+
+		return null;
+	}
+
+	public PartyMember getMemberByDisplayName(final String name)
+	{
+		for (PartyMember member : members)
+		{
+			if (member.isLoggedIn() && name.equals(member.getDisplayName()))
 			{
 				return member;
 			}

@@ -389,4 +389,7 @@ public final class ScriptID
 	 */
 	@ScriptArguments(string = 1)
 	public static final int TOB_HUD_SOTETSEG_FADE = 2308;
+
+	@ScriptArguments(integer = 3)
+	public static final int RAIDS_STORAGE_PRIVATE_ITEMS = 1607;
 }

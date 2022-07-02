@@ -38,7 +38,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -60,7 +59,6 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
-import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -83,7 +81,6 @@ import net.runelite.api.SpriteID;
 import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
@@ -349,7 +346,6 @@ public class LootTrackerPlugin extends Plugin
 
 	private final List<LootRecord> queuedLoots = new ArrayList<>();
 	private String profileKey;
-	private Instant lastLootImport = Instant.now().minus(1, ChronoUnit.MINUTES);
 
 	private static Collection<ItemStack> stack(Collection<ItemStack> items)
 	{
@@ -1030,15 +1026,6 @@ public class LootTrackerPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onCommandExecuted(CommandExecuted commandExecuted)
-	{
-		if (commandExecuted.getCommand().equals("importloot"))
-		{
-			SwingUtilities.invokeLater(this::importLoot);
-		}
-	}
-
 	private static boolean isNPCOp(MenuAction menuAction)
 	{
 		final int id = menuAction.getId();
@@ -1409,113 +1396,5 @@ public class LootTrackerPlugin extends Plugin
 		{
 			configManager.unsetConfiguration(LootTrackerConfig.GROUP, profile, key);
 		}
-
-		clearImported();
-	}
-
-	void importLoot()
-	{
-		if (configManager.getRSProfileKey() == null)
-		{
-			JOptionPane.showMessageDialog(panel, "You do not have an active profile to import loot into; log in to the game first.");
-			return;
-		}
-
-		if (lootTrackerClient.getUuid() == null)
-		{
-			JOptionPane.showMessageDialog(panel, "You are not logged into RuneLite, so loot can not be imported from your account. Log in first.");
-			return;
-		}
-
-		if (lastLootImport.isAfter(Instant.now().minus(1, ChronoUnit.MINUTES)))
-		{
-			JOptionPane.showMessageDialog(panel, "You imported too recently. Wait a minute and try again.");
-			return;
-		}
-
-		lastLootImport = Instant.now();
-
-		executor.execute(() ->
-		{
-			if (hasImported())
-			{
-				SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(panel, "You already have imported loot."));
-				return;
-			}
-
-			Collection<LootAggregate> lootRecords;
-			try
-			{
-				lootRecords = lootTrackerClient.get();
-			}
-			catch (IOException e)
-			{
-				log.debug("Unable to look up loot", e);
-				return;
-			}
-
-			log.debug("Loaded {} data entries", lootRecords.size());
-
-			for (LootAggregate record : lootRecords)
-			{
-				ConfigLoot lootConfig = getLootConfig(record.getType(), record.getEventId());
-				if (lootConfig == null)
-				{
-					lootConfig = new ConfigLoot(record.getType(), record.getEventId());
-				}
-				lootConfig.first = record.getFirst_time();
-				lootConfig.last = record.getLast_time();
-				lootConfig.kills += record.getAmount();
-				for (GameItem gameItem : record.getDrops())
-				{
-					lootConfig.add(gameItem.getId(), gameItem.getQty());
-				}
-				setLootConfig(record.getType(), record.getEventId(), lootConfig);
-			}
-
-			clientThread.invokeLater(() ->
-			{
-				Collection<LootTrackerRecord> records = convertToLootTrackerRecord(lootRecords);
-				SwingUtilities.invokeLater(() -> panel.addRecords(records));
-			});
-
-			SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(panel, "Imported " + lootRecords.size() + " loot entries."));
-
-			setHasImported();
-		});
-	}
-
-	void setHasImported()
-	{
-		String profile = profileKey;
-		if (Strings.isNullOrEmpty(profile))
-		{
-			return;
-		}
-
-		configManager.setConfiguration(LootTrackerConfig.GROUP, profile, "imported", 1);
-	}
-
-	boolean hasImported()
-	{
-		String profile = profileKey;
-		if (Strings.isNullOrEmpty(profile))
-		{
-			return false;
-		}
-
-		Integer i = configManager.getConfiguration(LootTrackerConfig.GROUP, profile, "imported", Integer.class);
-		return i != null && i == 1;
-	}
-
-	void clearImported()
-	{
-		String profile = profileKey;
-		if (Strings.isNullOrEmpty(profile))
-		{
-			return;
-		}
-
-		configManager.unsetConfiguration(LootTrackerConfig.GROUP, profile, "imported");
 	}
 }

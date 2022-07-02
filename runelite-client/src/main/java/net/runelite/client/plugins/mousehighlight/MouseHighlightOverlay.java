@@ -158,14 +158,14 @@ class MouseHighlightOverlay extends Overlay
 		}
 
 		// If this varc is set, a tooltip will be displayed soon
-		int tooltipTimeout = client.getVar(VarClientInt.TOOLTIP_TIMEOUT);
+		int tooltipTimeout = client.getVarcIntValue(VarClientInt.TOOLTIP_TIMEOUT);
 		if (tooltipTimeout > client.getGameCycle())
 		{
 			return null;
 		}
 
 		// If this varc is set, a tooltip is already being displayed
-		int tooltipDisplayed = client.getVar(VarClientInt.TOOLTIP_VISIBLE);
+		int tooltipDisplayed = client.getVarcIntValue(VarClientInt.TOOLTIP_VISIBLE);
 		if (tooltipDisplayed == 1)
 		{
 			return null;
