@@ -84,6 +84,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ChatInput;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.NpcUtil;
 import net.runelite.client.game.npcoverlay.HighlightedNpc;
 import net.runelite.client.game.npcoverlay.NpcOverlayService;
 import net.runelite.client.plugins.Plugin;
@@ -172,6 +173,9 @@ public class SlayerPlugin extends Plugin
 	@Inject
 	private NpcOverlayService npcOverlayService;
 
+	@Inject
+	private NpcUtil npcUtil;
+
 	@Getter(AccessLevel.PACKAGE)
 	private final List<NPC> targets = new ArrayList<>();
 
@@ -223,7 +227,7 @@ public class SlayerPlugin extends Plugin
 				.outline(config.highlightOutline())
 				.borderWidth((float) config.borderWidth())
 				.outlineFeather(config.outlineFeather())
-				.render(npc -> !npc.isDead() || !config.ignoreDeadTargets())
+				.render(npc -> !npcUtil.isDying(npc) || !config.ignoreDeadTargets())
 				.build();
 
 		}
