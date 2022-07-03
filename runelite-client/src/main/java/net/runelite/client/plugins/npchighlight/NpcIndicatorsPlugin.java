@@ -376,7 +376,7 @@ public class NpcIndicatorsPlugin extends Plugin
 	{
 		final NPC npc = npcDespawned.getNpc();
 
-		if (memorizedNpcs.containsKey(npc.getIndex()))
+		if (memorizedNpcs.containsKey(npc.getIndex()) && npcUtil.isDying(npc))
 		{
 			despawnedNpcsThisTick.add(npc);
 		}
