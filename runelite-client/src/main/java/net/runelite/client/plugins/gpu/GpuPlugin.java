@@ -1199,7 +1199,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 			// Enable blending for alpha
 			GL43C.glEnable(GL43C.GL_BLEND);
-			GL43C.glBlendFunc(GL43C.GL_SRC_ALPHA, GL43C.GL_ONE_MINUS_SRC_ALPHA);
+			GL43C.glBlendFuncSeparate(GL43C.GL_SRC_ALPHA, GL43C.GL_ONE_MINUS_SRC_ALPHA, GL43C.GL_ONE, GL43C.GL_ONE);
 
 			// Draw buffers
 			GL43C.glBindVertexArray(vaoHandle);
