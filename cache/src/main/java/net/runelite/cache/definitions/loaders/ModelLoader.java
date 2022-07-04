@@ -222,27 +222,27 @@ public class ModelLoader
 		for (int i = 0; i < vertexCount; ++i)
 		{
 			int flags = stream1.readUnsignedByte();
-			int d1 = 0;
+			int vertX = 0;
 			if ((flags & 1) != 0)
 			{
-				d1 = stream2.readShortSmart();
+				vertX = stream2.readShortSmart();
 			}
 
-			int d2 = 0;
+			int vertY = 0;
 			if ((flags & 2) != 0)
 			{
-				d2 = stream3.readShortSmart();
+				vertY = stream3.readShortSmart();
 			}
 
-			int d3 = 0;
+			int vertZ = 0;
 			if ((flags & 4) != 0)
 			{
-				d3 = stream4.readShortSmart();
+				vertZ = stream4.readShortSmart();
 			}
 
-			def.vertexX[i] = previousVertexX + d1;
-			def.vertexY[i] = previousVertexY + d2;
-			def.vertexZ[i] = previousVertexZ + d3;
+			def.vertexX[i] = previousVertexX + vertX;
+			def.vertexY[i] = previousVertexY + vertY;
+			def.vertexZ[i] = previousVertexZ + vertZ;
 			previousVertexX = def.vertexX[i];
 			previousVertexY = def.vertexY[i];
 			previousVertexZ = def.vertexZ[i];
@@ -522,27 +522,27 @@ public class ModelLoader
 		for (int i = 0; i < vertexCount; ++i)
 		{
 			int vertexFlags = stream1.readUnsignedByte();
-			int deltaX = 0;
+			int vertX = 0;
 			if ((vertexFlags & 1) != 0)
 			{
-				deltaX = stream2.readShortSmart();
+				vertX = stream2.readShortSmart();
 			}
 
-			int deltaY = 0;
+			int vertY = 0;
 			if ((vertexFlags & 2) != 0)
 			{
-				deltaY = stream3.readShortSmart();
+				vertY = stream3.readShortSmart();
 			}
 
-			int deltaZ = 0;
+			int vertZ = 0;
 			if ((vertexFlags & 4) != 0)
 			{
-				deltaZ = stream4.readShortSmart();
+				vertZ = stream4.readShortSmart();
 			}
 
-			def.vertexX[i] = previousVertexX + deltaX;
-			def.vertexY[i] = previousVertexY + deltaY;
-			def.vertexZ[i] = previousVertexZ + deltaZ;
+			def.vertexX[i] = previousVertexX + vertX;
+			def.vertexY[i] = previousVertexY + vertY;
+			def.vertexZ[i] = previousVertexZ + vertZ;
 			previousVertexX = def.vertexX[i];
 			previousVertexY = def.vertexY[i];
 			previousVertexZ = def.vertexZ[i];
@@ -906,27 +906,27 @@ public class ModelLoader
 		for (int i = 0; i < vertexCount; ++i)
 		{
 			int vertexFlags = stream1.readUnsignedByte();
-			int deltaX = 0;
+			int vertX = 0;
 			if ((vertexFlags & 1) != 0)
 			{
-				deltaX = stream2.readShortSmart();
+				vertX = stream2.readShortSmart();
 			}
 
-			int deltaY = 0;
+			int vertY = 0;
 			if ((vertexFlags & 2) != 0)
 			{
-				deltaY = stream3.readShortSmart();
+				vertY = stream3.readShortSmart();
 			}
 
-			int deltaZ = 0;
+			int vertZ = 0;
 			if ((vertexFlags & 4) != 0)
 			{
-				deltaZ = stream4.readShortSmart();
+				vertZ = stream4.readShortSmart();
 			}
 
-			def.vertexX[i] = previousVertexX + deltaX;
-			def.vertexY[i] = previousVertexY + deltaY;
-			def.vertexZ[i] = previousVertexZ + deltaZ;
+			def.vertexX[i] = previousVertexX + vertX;
+			def.vertexY[i] = previousVertexY + vertY;
+			def.vertexZ[i] = previousVertexZ + vertZ;
 			previousVertexX = def.vertexX[i];
 			previousVertexY = def.vertexY[i];
 			previousVertexZ = def.vertexZ[i];
@@ -1186,27 +1186,27 @@ public class ModelLoader
 		for (int i = 0; i < vertexCount; ++i)
 		{
 			int vertexFlags = stream1.readUnsignedByte();
-			int deltaX = 0;
+			int vertX = 0;
 			if ((vertexFlags & 1) != 0)
 			{
-				deltaX = stream2.readShortSmart();
+				vertX = stream2.readShortSmart();
 			}
 
-			int deltaY = 0;
+			int vertY = 0;
 			if ((vertexFlags & 2) != 0)
 			{
-				deltaY = stream3.readShortSmart();
+				vertY = stream3.readShortSmart();
 			}
 
-			int deltaZ = 0;
+			int vertZ = 0;
 			if ((vertexFlags & 4) != 0)
 			{
-				deltaZ = stream4.readShortSmart();
+				vertZ = stream4.readShortSmart();
 			}
 
-			def.vertexX[i] = previousVertexX + deltaX;
-			def.vertexY[i] = previousVertexY + deltaY;
-			def.vertexZ[i] = previousVertexZ + deltaZ;
+			def.vertexX[i] = previousVertexX + vertX;
+			def.vertexY[i] = previousVertexY + vertY;
+			def.vertexZ[i] = previousVertexZ + vertZ;
 			previousVertexX = def.vertexX[i];
 			previousVertexY = def.vertexY[i];
 			previousVertexZ = def.vertexZ[i];
