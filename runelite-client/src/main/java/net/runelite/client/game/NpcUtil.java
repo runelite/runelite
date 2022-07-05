@@ -133,6 +133,8 @@ public class NpcUtil
 			case NpcID.JUBBLY_BIRD:
 			case NpcID.ENT:
 			case NpcID.ENT_7234:
+			case NpcID.HOPELESS_CREATURE:
+			case NpcID.HOPELESS_CREATURE_1073:
 				return false;
 			// These NPCs have no attack options, but are the dead and uninteractable form of otherwise attackable NPCs,
 			// thus should not be considered alive.
@@ -196,6 +198,7 @@ public class NpcUtil
 			case NpcID.KOLODION_1609:
 			case NpcID.TARN_6476:
 			case NpcID.KOSCHEI_THE_DEATHLESS_3900:
+			case NpcID.HOPELESS_CREATURE_1074:
 			// The Nightmare should be considered alive again once reaching its sleeping form
 			case NpcID.THE_NIGHTMARE:
 			case NpcID.PHOSANIS_NIGHTMARE:
