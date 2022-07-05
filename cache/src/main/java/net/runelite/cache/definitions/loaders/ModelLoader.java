@@ -51,14 +51,14 @@ public class ModelLoader
 		int faceRenderPriority = stream1.readUnsignedByte();
 		int hasFaceTransparencies = stream1.readUnsignedByte();
 		int hasPackedTransparencyVertexGroups = stream1.readUnsignedByte();
-		int _hasFaceTexturesNEW = stream1.readUnsignedByte();
+		int _modelVertexSkins = stream1.readUnsignedByte();
 		int hasPackedVertexGroups = stream1.readUnsignedByte();// 7th byte
-		int _hasAnimsNEW = stream1.readUnsignedByte();//8th byte
+		int _hasAnims = stream1.readUnsignedByte();//8th byte
 		int vertezXDataByteCount = stream1.readUnsignedShort();
 		int vertexYDataByteCount = stream1.readUnsignedShort();
 		int vertexZDataByteCount = stream1.readUnsignedShort();
+		int faceIndexDataByteCount = stream1.readUnsignedShort();
 		int _vertCount = stream1.readUnsignedShort();
-		int newstuffACount = stream1.readUnsignedShort();
 		int newstuffBCount = stream1.readUnsignedShort();
 		int textureAmount = 0;
 		int newCountA = 0;
@@ -112,6 +112,7 @@ public class ModelLoader
 
 		int offsetOfFaceTextureFlags = dataOffset;
 		dataOffset += newstuffBCount;
+
 		int alphaPos = dataOffset;
 		if (hasFaceTransparencies == 1)
 		{
@@ -119,22 +120,22 @@ public class ModelLoader
 		}
 
 		int offsetOfPackedVertexGroups = dataOffset;
-		dataOffset += _vertCount;
+		dataOffset += faceIndexDataByteCount;
 		int texturePos = dataOffset;
-		if (_hasFaceTexturesNEW == 1)
+		if (_modelVertexSkins == 1)
 		{
 			dataOffset += faceCount * 2;
 		}
 
 		int textureCoordPos = dataOffset;
-		dataOffset += newstuffACount;
+		dataOffset += _vertCount;
 		int colorPos = dataOffset;
 		dataOffset += faceCount * 2;
-		int o2b = dataOffset;
+		int offsetOfVertexXData = dataOffset;
 		dataOffset += vertezXDataByteCount;
-		int o3b = dataOffset;
+		int offsetOfVertexYData = dataOffset;
 		dataOffset += vertexYDataByteCount;
-		int o4b = dataOffset;
+		int offsetOfVertexZData = dataOffset;
 		dataOffset += vertexZDataByteCount;
 		int offsetRenderTypes = dataOffset;
 		dataOffset += textureAmount * 6;
@@ -186,17 +187,17 @@ public class ModelLoader
 			def.packedTransparencyVertexGroups = new int[faceCount];
 		}
 
-		if (_hasFaceTexturesNEW == 1)
+		if (_modelVertexSkins == 1)
 		{
 			def.faceTextures = new short[faceCount];
 		}
 
-		if (_hasFaceTexturesNEW == 1 && textureCount > 0)
+		if (_modelVertexSkins == 1 && textureCount > 0)
 		{
 			def.textureCoords = new byte[faceCount];
 		}
 
-		if (_hasAnimsNEW == 1)
+		if (_hasAnims == 1)
 		{
 			def.animayaGroups = new int[vertexCount][];
 			def.animayaScales = new int[vertexCount][];
@@ -211,9 +212,9 @@ public class ModelLoader
 		}
 
 		stream1.setOffset(textureCount);
-		stream2.setOffset(o2b);
-		stream3.setOffset(o3b);
-		stream4.setOffset(o4b);
+		stream2.setOffset(offsetOfVertexXData);
+		stream3.setOffset(offsetOfVertexYData);
+		stream4.setOffset(offsetOfVertexZData);
 		stream5.setOffset(offsetOfFaceTextureFlags);
 		int previousVertexX = 0;
 		int previousVertexY = 0;
@@ -252,7 +253,7 @@ public class ModelLoader
 			}
 		}
 
-		if (_hasAnimsNEW == 1)
+		if (_hasAnims == 1)
 		{
 			for (int i = 0; i < vertexCount; ++i)
 			{
@@ -299,7 +300,7 @@ public class ModelLoader
 				def.packedTransparencyVertexGroups[i] = stream5.readUnsignedByte();
 			}
 
-			if (_hasFaceTexturesNEW == 1)
+			if (_modelVertexSkins == 1)
 			{
 				def.faceTextures[i] = (short) (stream6.readUnsignedShort() - 1);
 			}
@@ -513,7 +514,7 @@ public class ModelLoader
 		stream1.setOffset(offsetOfVertexFlags);
 		stream2.setOffset(offsetOfVertexXData);
 		stream3.setOffset(offsetOfVertexYData);
-		stream4.setOffset(dataOffset);
+		stream4.setOffset(offsetOfVertexZData);
 		stream5.setOffset(offsetOfPackedVertexGroups);
 		int previousVertexX = 0;
 		int previousVertexY = 0;
@@ -739,8 +740,8 @@ public class ModelLoader
 		int faceRenderPriority = stream1.readUnsignedByte();
 		int hasFaceTransparencies = stream1.readUnsignedByte();
 		int hasPackedTransparencyVertexGroups = stream1.readUnsignedByte();
-		int modelVertexSkins = stream1.readUnsignedByte();
-		int _hasPackedVertexGroupsNEW = stream1.readUnsignedByte(); // 7th bytes
+		int _modelVertexSkins = stream1.readUnsignedByte();
+		int hasPackedVertexGroups = stream1.readUnsignedByte(); // 7th bytes
 		int vertexXDataByteCount = stream1.readUnsignedShort();
 		int vertezYDataByteCount = stream1.readUnsignedShort();
 		int vertexZDataByteCount = stream1.readUnsignedShort();
@@ -797,7 +798,7 @@ public class ModelLoader
 		}
 
 		int offsetOfFaceTextureFlags = dataOffset;
-		if (_hasPackedVertexGroupsNEW == 1)
+		if (hasPackedVertexGroups == 1)
 		{
 			dataOffset += vertexCount;
 		}
@@ -811,7 +812,7 @@ public class ModelLoader
 		int offsetOfPackedVertexGroups = dataOffset;
 		dataOffset += faceIndexDataByteCount;
 		int texturePos = dataOffset;
-		if (modelVertexSkins == 1)
+		if (_modelVertexSkins == 1)
 		{
 			dataOffset += faceCount * 2;
 		}
@@ -847,7 +848,7 @@ public class ModelLoader
 		def.faceIndices1 = new int[faceCount];
 		def.faceIndices2 = new int[faceCount];
 		def.faceIndices3 = new int[faceCount];
-		if (_hasPackedVertexGroupsNEW == 1)
+		if (hasPackedVertexGroups == 1)
 		{
 			def.packedVertexGroups = new int[vertexCount];
 		}
@@ -876,12 +877,12 @@ public class ModelLoader
 			def.packedTransparencyVertexGroups = new int[faceCount];
 		}
 
-		if (modelVertexSkins == 1)
+		if (_modelVertexSkins == 1)
 		{
 			def.faceTextures = new short[faceCount];
 		}
 
-		if (modelVertexSkins == 1 && textureCount > 0)
+		if (_modelVertexSkins == 1 && textureCount > 0)
 		{
 			def.textureCoords = new byte[faceCount];
 		}
@@ -930,7 +931,7 @@ public class ModelLoader
 			previousVertexX = def.vertexX[i];
 			previousVertexY = def.vertexY[i];
 			previousVertexZ = def.vertexZ[i];
-			if (_hasPackedVertexGroupsNEW == 1)
+			if (hasPackedVertexGroups == 1)
 			{
 				def.packedVertexGroups[i] = stream5.readUnsignedByte();
 			}
@@ -967,7 +968,7 @@ public class ModelLoader
 				def.packedTransparencyVertexGroups[i] = stream5.readUnsignedByte();
 			}
 
-			if (modelVertexSkins == 1)
+			if (_modelVertexSkins == 1)
 			{
 				def.faceTextures[i] = (short) (stream6.readUnsignedShort() - 1);
 			}
