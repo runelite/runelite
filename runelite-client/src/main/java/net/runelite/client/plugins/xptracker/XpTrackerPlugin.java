@@ -55,6 +55,7 @@ import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.StatChanged;
 import net.runelite.api.widgets.WidgetID;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.NPCManager;
@@ -98,6 +99,9 @@ public class XpTrackerPlugin extends Plugin
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private ClientThread clientThread;
 
 	@Inject
 	private SkillIconManager skillIconManager;
@@ -162,6 +166,14 @@ public class XpTrackerPlugin extends Plugin
 		fetchXp = true;
 		initializeTracker = true;
 		lastAccount = -1L;
+		clientThread.invokeLater(() ->
+		{
+			if (client.getGameState() == GameState.LOGGED_IN)
+			{
+				lastAccount = client.getAccountHash();
+				lastWorldType = worldSetToType(client.getWorldType());
+			}
+		});
 	}
 
 	@Override
