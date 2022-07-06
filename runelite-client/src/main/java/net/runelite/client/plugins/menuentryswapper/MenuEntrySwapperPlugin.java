@@ -1098,15 +1098,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		final MenuAction menuAction = menuEntry.getType();
 		final String option = Text.removeTags(menuEntry.getOption()).toLowerCase();
 		final String target = Text.removeTags(menuEntry.getTarget()).toLowerCase();
-		final NPC hintArrowNpc = client.getHintArrowNpc();
-
-		// Don't swap on hint arrow npcs, usually they need "Talk-to" for clues.
-		if (hintArrowNpc != null
-			&& hintArrowNpc.getIndex() == eventId
-			&& NPC_MENU_TYPES.contains(menuAction))
-		{
-			return;
-		}
 
 		final boolean itemOp = menuEntry.isItemOp();
 		// Custom shift-click item swap
@@ -1254,6 +1245,16 @@ public class MenuEntrySwapperPlugin extends Plugin
 		}
 
 		if (swapBank(menuEntry, menuAction))
+		{
+			return;
+		}
+
+		final NPC hintArrowNpc = client.getHintArrowNpc();
+
+		// Don't swap on hint arrow npcs, usually they need "Talk-to" for clues.
+		if (hintArrowNpc != null
+			&& hintArrowNpc.getIndex() == eventId
+			&& NPC_MENU_TYPES.contains(menuAction))
 		{
 			return;
 		}
