@@ -313,51 +313,55 @@ public class ModelLoader
 
 		stream1.setOffset(offsetOfPackedVertexGroups);
 		stream2.setOffset(offsetFaceTypes);
+		int index1 = 0;
+		int index2 = 0;
+		int index3 = 0;
+		int lastIndex3 = 0;
 
 		for (int i = 0; i < faceCount; ++i)
 		{
 			int faceIndexCompressionType = stream2.readUnsignedByte();
 			if (faceIndexCompressionType == 1)
 			{
-				previousVertexX = stream1.readShortSmart() + previousVertexZ;
-				previousVertexY = stream1.readShortSmart() + previousVertexX;
-				previousVertexZ = stream1.readShortSmart() + previousVertexY;
-				previousVertexZ = previousVertexZ;
-				def.faceIndices1[i] = previousVertexX;
-				def.faceIndices2[i] = previousVertexY;
-				def.faceIndices3[i] = previousVertexZ;
+				index1 = stream1.readShortSmart() + lastIndex3;
+				index2 = stream1.readShortSmart() + index1;
+				index3 = stream1.readShortSmart() + index2;
+				lastIndex3 = index3;
+				def.faceIndices1[i] = index1;
+				def.faceIndices2[i] = index2;
+				def.faceIndices3[i] = index3;
 			}
 
 			if (faceIndexCompressionType == 2)
 			{
-				previousVertexY = previousVertexZ;
-				previousVertexZ = stream1.readShortSmart() + previousVertexZ;
-				previousVertexZ = previousVertexZ;
-				def.faceIndices1[i] = previousVertexX;
-				def.faceIndices2[i] = previousVertexY;
-				def.faceIndices3[i] = previousVertexZ;
+				index2 = index3;
+				index3 = stream1.readShortSmart() + lastIndex3;
+				lastIndex3 = index3;
+				def.faceIndices1[i] = index1;
+				def.faceIndices2[i] = index2;
+				def.faceIndices3[i] = index3;
 			}
 
 			if (faceIndexCompressionType == 3)
 			{
-				previousVertexX = previousVertexZ;
-				previousVertexZ = stream1.readShortSmart() + previousVertexZ;
-				previousVertexZ = previousVertexZ;
-				def.faceIndices1[i] = previousVertexX;
-				def.faceIndices2[i] = previousVertexY;
-				def.faceIndices3[i] = previousVertexZ;
+				index1 = index3;
+				index3 = stream1.readShortSmart() + lastIndex3;
+				lastIndex3 = index3;
+				def.faceIndices1[i] = index1;
+				def.faceIndices2[i] = index2;
+				def.faceIndices3[i] = index3;
 			}
 
 			if (faceIndexCompressionType == 4)
 			{
-				int swap = previousVertexX;
-				previousVertexX = previousVertexY;
-				previousVertexY = swap;
-				previousVertexZ = stream1.readShortSmart() + previousVertexZ;
-				previousVertexZ = previousVertexZ;
-				def.faceIndices1[i] = previousVertexX;
-				def.faceIndices2[i] = previousVertexY;
-				def.faceIndices3[i] = previousVertexZ;
+				int swap = index1;
+				index1 = index2;
+				index2 = swap;
+				index3 = stream1.readShortSmart() + lastIndex3;
+				lastIndex3 = index3;
+				def.faceIndices1[i] = index1;
+				def.faceIndices2[i] = swap;
+				def.faceIndices3[i] = index3;
 			}
 		}
 
@@ -627,51 +631,55 @@ public class ModelLoader
 
 		stream1.setOffset(offsetOfFaceIndexData);
 		stream2.setOffset(offsetOfFaceIndexCompressionTypes);
+		int index1 = 0;
+		int index2 = 0;
+		int index3 = 0;
+		int lastIndex3 = 0;
 
 		for (int i2 = 0; i2 < faceCount; ++i2)
 		{
 			int faceIndexCompressionType = stream2.readUnsignedByte();
 			if (faceIndexCompressionType == 1)
 			{
-				previousVertexX = stream1.readShortSmart() + previousVertexZ;
-				previousVertexY = stream1.readShortSmart() + previousVertexX;
-				previousVertexZ = stream1.readShortSmart() + previousVertexY;
-				previousVertexZ = previousVertexZ;
-				def.faceIndices1[i2] = previousVertexX;
-				def.faceIndices2[i2] = previousVertexY;
-				def.faceIndices3[i2] = previousVertexZ;
+				index1 = stream1.readShortSmart() + lastIndex3;
+				index2 = stream1.readShortSmart() + index1;
+				index3 = stream1.readShortSmart() + index2;
+				lastIndex3 = index3;
+				def.faceIndices1[i2] = index1;
+				def.faceIndices2[i2] = index2;
+				def.faceIndices3[i2] = index3;
 			}
 
 			if (faceIndexCompressionType == 2)
 			{
-				previousVertexY = previousVertexZ;
-				previousVertexZ = stream1.readShortSmart() + previousVertexZ;
-				previousVertexZ = previousVertexZ;
-				def.faceIndices1[i2] = previousVertexX;
-				def.faceIndices2[i2] = previousVertexY;
-				def.faceIndices3[i2] = previousVertexZ;
+				index2 = index3;
+				index3 = stream1.readShortSmart() + lastIndex3;
+				lastIndex3 = index3;
+				def.faceIndices1[i2] = index1;
+				def.faceIndices2[i2] = index2;
+				def.faceIndices3[i2] = index3;
 			}
 
 			if (faceIndexCompressionType == 3)
 			{
-				previousVertexX = previousVertexZ;
-				previousVertexZ = stream1.readShortSmart() + previousVertexZ;
-				previousVertexZ = previousVertexZ;
-				def.faceIndices1[i2] = previousVertexX;
-				def.faceIndices2[i2] = previousVertexY;
-				def.faceIndices3[i2] = previousVertexZ;
+				index1 = index3;
+				index3 = stream1.readShortSmart() + lastIndex3;
+				lastIndex3 = index3;
+				def.faceIndices1[i2] = index1;
+				def.faceIndices2[i2] = index2;
+				def.faceIndices3[i2] = index3;
 			}
 
 			if (faceIndexCompressionType == 4)
 			{
-				int swap = previousVertexX;
-				previousVertexX = previousVertexY;
-				previousVertexY = swap;
-				previousVertexZ = stream1.readShortSmart() + previousVertexZ;
-				previousVertexZ = previousVertexZ;
-				def.faceIndices1[i2] = previousVertexX;
-				def.faceIndices2[i2] = previousVertexY;
-				def.faceIndices3[i2] = previousVertexZ;
+				int swap = index1;
+				index1 = index2;
+				index2 = swap;
+				index3 = stream1.readShortSmart() + lastIndex3;
+				lastIndex3 = index3;
+				def.faceIndices1[i2] = index1;
+				def.faceIndices2[i2] = swap;
+				def.faceIndices3[i2] = index3;
 			}
 		}
 
@@ -981,51 +989,55 @@ public class ModelLoader
 
 		stream1.setOffset(offsetOfPackedVertexGroups);
 		stream2.setOffset(offsetFaceTypes);
+		int index1 = 0;
+		int index2 = 0;
+		int index3 = 0;
+		int lastIndex3 = 0;
 
 		for (int i = 0; i < faceCount; ++i)
 		{
 			int faceIndexCompressionType = stream2.readUnsignedByte();
 			if (faceIndexCompressionType == 1)
 			{
-				previousVertexX = stream1.readShortSmart() + previousVertexZ;
-				previousVertexY = stream1.readShortSmart() + previousVertexX;
-				previousVertexZ = stream1.readShortSmart() + previousVertexY;
-				previousVertexZ = previousVertexZ;
-				def.faceIndices1[i] = previousVertexX;
-				def.faceIndices2[i] = previousVertexY;
-				def.faceIndices3[i] = previousVertexZ;
+				index1 = stream1.readShortSmart() + lastIndex3;
+				index2 = stream1.readShortSmart() + index1;
+				index3 = stream1.readShortSmart() + index2;
+				lastIndex3 = index3;
+				def.faceIndices1[i] = index1;
+				def.faceIndices2[i] = index2;
+				def.faceIndices3[i] = index3;
 			}
 
 			if (faceIndexCompressionType == 2)
 			{
-				previousVertexY = previousVertexZ;
-				previousVertexZ = stream1.readShortSmart() + previousVertexZ;
-				previousVertexZ = previousVertexZ;
-				def.faceIndices1[i] = previousVertexX;
-				def.faceIndices2[i] = previousVertexY;
-				def.faceIndices3[i] = previousVertexZ;
+				index2 = index3;
+				index3 = stream1.readShortSmart() + lastIndex3;
+				lastIndex3 = index3;
+				def.faceIndices1[i] = index1;
+				def.faceIndices2[i] = index2;
+				def.faceIndices3[i] = index3;
 			}
 
 			if (faceIndexCompressionType == 3)
 			{
-				previousVertexX = previousVertexZ;
-				previousVertexZ = stream1.readShortSmart() + previousVertexZ;
-				previousVertexZ = previousVertexZ;
-				def.faceIndices1[i] = previousVertexX;
-				def.faceIndices2[i] = previousVertexY;
-				def.faceIndices3[i] = previousVertexZ;
+				index1 = index3;
+				index3 = stream1.readShortSmart() + lastIndex3;
+				lastIndex3 = index3;
+				def.faceIndices1[i] = index1;
+				def.faceIndices2[i] = index2;
+				def.faceIndices3[i] = index3;
 			}
 
 			if (faceIndexCompressionType == 4)
 			{
-				int swap = previousVertexX;
-				previousVertexX = previousVertexY;
-				previousVertexY = swap;
-				previousVertexZ = stream1.readShortSmart() + previousVertexZ;
-				previousVertexZ = previousVertexZ;
-				def.faceIndices1[i] = previousVertexX;
-				def.faceIndices2[i] = previousVertexY;
-				def.faceIndices3[i] = previousVertexZ;
+				int swap = index1;
+				index1 = index2;
+				index2 = swap;
+				index3 = stream1.readShortSmart() + lastIndex3;
+				lastIndex3 = index3;
+				def.faceIndices1[i] = index1;
+				def.faceIndices2[i] = swap;
+				def.faceIndices3[i] = index3;
 			}
 		}
 
