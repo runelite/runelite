@@ -114,6 +114,8 @@ LABEL71:
    iconst                 1
    iconst                 0
    iload                  4
+   sconst                 "bankButtonsContainerWidth"
+   runelite_callback
    if_setsize            
    jump                   LABEL130
 LABEL94:
@@ -132,6 +134,8 @@ LABEL102:
    iconst                 1
    iconst                 0
    iload                  4
+   sconst                 "bankButtonsContainerWidth"
+   runelite_callback
    if_setsize            
    jump                   LABEL130
 LABEL109:
@@ -150,6 +154,8 @@ LABEL117:
    iconst                 1
    iconst                 0
    iload                  4
+   sconst                 "bankButtonsContainerWidth"
+   runelite_callback
    if_setsize            
    jump                   LABEL130
 LABEL124:
@@ -158,6 +164,8 @@ LABEL124:
    iconst                 1
    iconst                 0
    iload                  4
+   sconst                 "bankButtonsContainerWidth"
+   runelite_callback
    if_setsize            
 LABEL130:
    iconst                 1
@@ -225,6 +233,8 @@ LABEL180:
    iconst                 0
    iconst                 1
    iload                  2
+   sconst                 "bankItemContainerSize"
+   runelite_callback
    if_setsize            
    iconst                 16
    iconst                 39
@@ -248,6 +258,8 @@ LABEL204:
    iconst                 0
    iconst                 1
    iload                  2
+   sconst                 "bankItemContainerSize"
+   runelite_callback
    if_setsize            
    iconst                 16
    iconst                 81
@@ -298,9 +310,12 @@ LABEL253:
    iconst                 0
    istore                 20
    iconst                 8
+   sconst                 "bankMaxItemsPerRow"
+   runelite_callback
    iconst                 1
    sub                   
    istore                 22
+
    iload                  2
    if_getwidth           
    iconst                 51
@@ -310,6 +325,8 @@ LABEL253:
    istore                 23
    iload                  23
    iconst                 8
+   sconst                 "bankMaxItemsPerRow"
+   runelite_callback
    iconst                 36
    multiply              
    sub                   

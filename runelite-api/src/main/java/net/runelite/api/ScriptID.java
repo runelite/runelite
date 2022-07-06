@@ -321,6 +321,12 @@ public final class ScriptID
 	public static final int BANKMAIN_SEARCH_TOGGLE = 281;
 
 	/**
+	 * Checks if the bank interface needs to perform any resizing
+	 */
+	@ScriptArguments(integer = 6)
+	public static final int BANKMAIN_SIZE_CHECK = 839;
+
+	/**
 	 * Chooses the click handler for a {@link ParamID#SETTING_SLIDER_CUSTOM_ONOP} = 1 settings slider
 	 *
 	 * The active widget is set to the track created by {@link ParamID#SETTING_FOREGROUND_CLICKZONE}

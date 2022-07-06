@@ -274,6 +274,7 @@ public final class WidgetID
 
 	static class Bank
 	{
+		static final int ROOT = 0;
 		static final int BANK_CONTAINER = 1;
 		static final int INVENTORY_ITEM_CONTAINER = 3;
 		static final int BANK_TITLE_BAR = 3;
@@ -284,8 +285,10 @@ public final class WidgetID
 		static final int GROUP_STORAGE_BUTTON = 8;
 		static final int CONTENT_CONTAINER = 10;
 		static final int TAB_CONTAINER = 11;
+		static final int TAB_LINE = 12;
 		static final int ITEM_CONTAINER = 13;
 		static final int SCROLLBAR = 14;
+		static final int BUTTONS_CONTAINER = 15;
 		static final int SEARCH_BUTTON_BACKGROUND = 40;
 		static final int DEPOSIT_INVENTORY = 42;
 		static final int DEPOSIT_EQUIPMENT = 44;

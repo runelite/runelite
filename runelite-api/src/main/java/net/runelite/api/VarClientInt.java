@@ -57,6 +57,8 @@ public final class VarClientInt
 
 	public static final int INVENTORY_TAB = 171;
 
+	public static final int TOPLEVEL_MAIMODAL_SIZE_MODE = 173;
+
 	/**
 	 * time to block keypresses til
 	 */

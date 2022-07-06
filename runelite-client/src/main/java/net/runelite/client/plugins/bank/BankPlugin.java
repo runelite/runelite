@@ -57,10 +57,13 @@ import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.WidgetPositionMode;
+import net.runelite.api.widgets.WidgetSizeMode;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.Keybind;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
@@ -86,6 +89,12 @@ public class BankPlugin extends Plugin
 	private static final Pattern VALUE_SEARCH_PATTERN = Pattern.compile("^(?<mode>qty|ge|ha|alch)?" +
 		" *(((?<op>[<>=]|>=|<=) *(?<num>" + NUMBER_REGEX + "))|" +
 		"((?<num1>" + NUMBER_REGEX + ") *- *(?<num2>" + NUMBER_REGEX + ")))$", Pattern.CASE_INSENSITIVE);
+
+	private static final int FIXED_WIDTH = 488;
+	private static final int FIXED_CONTENT_WIDTH = FIXED_WIDTH - 10;
+	private static final int FIXED_ITEM_CONTAINER_WIDTH = FIXED_CONTENT_WIDTH - 18;
+	private static final int ITEM_ROW_OFFSET = 51;
+	public static final double ITEM_SLOT_WIDTH = 36 + (FIXED_ITEM_CONTAINER_WIDTH - ITEM_ROW_OFFSET - 35 - 8 * 36) / 7.0;
 
 	@Inject
 	private Client client;
@@ -250,12 +259,68 @@ public class BankPlugin extends Plugin
 				});
 				break;
 			}
+			case "bankWidth":
+			{
+				if (!config.variableWidth())
+				{
+					return;
+				}
+				int containerWidth = intStack[intStackSize - 1];
+				intStack[intStackSize - 2] = Math.min(800, containerWidth - 24);
+				break;
+			}
+			case "bankItemContainerSize":
+			{
+				if (!config.variableWidth())
+				{
+					return;
+				}
+				intStack[intStackSize - 3] = 1;
+				intStack[intStackSize - 5] = 18;
+				break;
+			}
+			case "bankMaxItemsPerRow":
+			{
+				if (!config.variableWidth())
+				{
+					return;
+				}
+				Widget itemContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
+				int totalWidth = itemContainer.getWidth() - ITEM_ROW_OFFSET;
+				intStack[intStackSize - 1] = (int) (totalWidth / ITEM_SLOT_WIDTH);
+				break;
+			}
+			case "bankButtonsContainerWidth":
+			{
+				if (!config.variableWidth())
+				{
+					return;
+				}
+				// switch from setsize_minus to setsize_abs for width
+				intStack[intStackSize - 3] = 0;
+				// pre-compute the width, the parent container size is expected to be FIXED_CONTENT_WIDTH
+				intStack[intStackSize - 5] = FIXED_CONTENT_WIDTH - intStack[intStackSize - 5];
+				break;
+			}
+			case "bankOnResize":
+			{
+				if (!config.variableWidth())
+				{
+					return;
+				}
+				clientThread.invokeLater(bankSearch::layoutBank);
+				break;
+			}
 		}
 	}
 
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
+		if (event.getGroupId() == WidgetID.BANK_GROUP_ID && config.variableWidth())
+		{
+			updateVariableWidth();
+		}
 		if (event.getGroupId() != WidgetID.SEED_VAULT_GROUP_ID || !config.seedVaultValue())
 		{
 			return;
@@ -300,6 +365,40 @@ public class BankPlugin extends Plugin
 			Widget bankTitle = client.getWidget(WidgetInfo.GROUP_STORAGE_UI).getChild(1);
 			bankTitle.setText(bankTitle.getText() + createValueText(price.getGePrice(), price.getHighAlchPrice()));
 		}
+		else if (event.getScriptId() == ScriptID.BANKMAIN_FINISHBUILDING)
+		{
+			if (!config.variableWidth())
+			{
+				return;
+			}
+			// The tab offset is calculated as follows: (FIXED_CONTENT_WIDTH - 40 * 10) / 2
+			// in normal width, it would result in 39 offset, but with variable width
+			// we need to hardcode it to 39 instead
+			Widget tabContainer = client.getWidget(WidgetInfo.BANK_TAB_CONTAINER);
+			Widget[] children = tabContainer.getDynamicChildren();
+			for (int i = 0; i < 10; i++)
+			{
+				Widget widget = children[i];
+				widget.setOriginalX(39 + i * 40);
+			}
+			for (int i = 0; i < 10; i++)
+			{
+				Widget widget = children[i + 10];
+				int x = 1 + (i + 1) * 40;
+				if (i > 0)
+				{
+					x++;
+				}
+				widget.setOriginalX(x);
+			}
+			clientThread.invoke(() ->
+			{
+				for (Widget widget : children)
+				{
+					widget.revalidate();
+				}
+			});
+		}
 	}
 
 	@Subscribe
@@ -315,6 +414,100 @@ public class BankPlugin extends Plugin
 		{
 			updateSeedVaultTotal();
 		}
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged changed)
+	{
+		if (!changed.getGroup().equals("bank"))
+		{
+			return;
+		}
+		if (changed.getKey().equals("variableWidth"))
+		{
+			updateVariableWidth();
+		}
+	}
+
+	public void updateVariableWidth()
+	{
+		final Widget root = client.getWidget(WidgetInfo.BANK_ROOT);
+		if (root == null)
+		{
+			return;
+		}
+		final Widget tabContainer = client.getWidget(WidgetInfo.BANK_TAB_CONTAINER);
+		final Widget tabLine = client.getWidget(WidgetInfo.BANK_TAB_LINE);
+		final Widget itemContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
+		final Widget buttonsContainer = client.getWidget(WidgetInfo.BANK_BUTTONS_CONTAINER);
+		if (config.variableWidth())
+		{
+			client.setVarcIntValue(VarClientInt.TOPLEVEL_MAIMODAL_SIZE_MODE, -3);
+
+			tabContainer.setWidthMode(WidgetSizeMode.MINUS);
+			tabContainer.setOriginalWidth(0);
+
+			tabLine.setWidthMode(WidgetSizeMode.MINUS);
+			tabLine.setOriginalWidth(0);
+
+			itemContainer.setWidthMode(WidgetSizeMode.MINUS);
+			itemContainer.setOriginalWidth(28);
+
+			// Adjust the tab line separators
+			Widget[] itemContainerChildren = itemContainer.getDynamicChildren();
+			for (int i = 0; i < 18; i++)
+			{
+				Widget widget = itemContainerChildren[1200 + i];
+				widget.setWidthMode(WidgetSizeMode.MINUS);
+				widget.setOriginalWidth(ITEM_ROW_OFFSET + 35);
+			}
+
+			buttonsContainer.setWidthMode(WidgetSizeMode.ABSOLUTE);
+			buttonsContainer.setOriginalWidth(FIXED_CONTENT_WIDTH);
+			buttonsContainer.setXPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
+			buttonsContainer.setOriginalX(0);
+		}
+		else
+		{
+			client.setVarcIntValue(VarClientInt.TOPLEVEL_MAIMODAL_SIZE_MODE, -2);
+
+			tabContainer.setXPositionMode(WidgetPositionMode.ABSOLUTE_CENTER);
+			tabContainer.setWidthMode(WidgetSizeMode.ABSOLUTE);
+			tabContainer.setOriginalWidth(FIXED_CONTENT_WIDTH);
+
+			tabLine.setWidthMode(WidgetSizeMode.ABSOLUTE);
+			tabLine.setOriginalWidth(FIXED_WIDTH);
+
+			itemContainer.setWidthMode(WidgetSizeMode.ABSOLUTE);
+			itemContainer.setOriginalWidth(FIXED_ITEM_CONTAINER_WIDTH);
+
+			buttonsContainer.setWidthMode(WidgetSizeMode.MINUS);
+			buttonsContainer.setOriginalWidth(0);
+		}
+		clientThread.invokeLater(() ->
+		{
+			checkBankResize();
+
+			// we should trigger a top level resize here, but right now, there is no  way to do that.
+
+			// this is necessary since the check fails in bankOnResize script callback
+			if (!config.variableWidth())
+			{
+				clientThread.invokeLater(bankSearch::layoutBank);
+			}
+		});
+	}
+
+	private void checkBankResize()
+	{
+		client.runScript(ScriptID.BANKMAIN_SIZE_CHECK,
+				WidgetInfo.BANK_CONTAINER.getPackedId(),
+				WidgetInfo.BANK_ROOT.getPackedId(),
+				-1, // last known width
+				-1, // last known height
+				WidgetInfo.BANK_SCROLLBAR.getPackedId(),
+				WidgetInfo.BANK_ITEM_CONTAINER.getPackedId());
+
 	}
 
 	private String createValueText(long gePrice, long haPrice)

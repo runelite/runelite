@@ -76,6 +76,7 @@ import net.runelite.client.input.MouseManager;
 import net.runelite.client.input.MouseWheelListener;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.bank.BankPlugin;
 import net.runelite.client.plugins.banktags.tabs.TabInterface;
 import static net.runelite.client.plugins.banktags.tabs.TabInterface.FILTERED_CHARS;
 import net.runelite.client.plugins.banktags.tabs.TabSprites;
@@ -95,7 +96,6 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 	public static final String ICON_SEARCH = "icon_";
 	public static final String TAG_TABS_CONFIG = "tagtabs";
 	public static final String VAR_TAG_SUFFIX = "*";
-	private static final int ITEMS_PER_ROW = 8;
 	private static final int ITEM_VERTICAL_SPACING = 36;
 	private static final int ITEM_HORIZONTAL_SPACING = 48;
 	private static final int ITEM_ROW_START = 51;
@@ -485,7 +485,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 				}
 
 				// New scroll height for if_setscrollsize
-				final int adjustedScrollHeight = (Math.max(0, items - 1) / ITEMS_PER_ROW) * ITEM_VERTICAL_SPACING +
+				final int adjustedScrollHeight = (Math.max(0, items - 1) / calculateItemsPerRow()) * ITEM_VERTICAL_SPACING +
 					ITEM_VERTICAL_SPACING + ITEM_CONTAINER_BOTTOM_PADDING;
 
 				// This is prior to bankmain_finishbuilding running, so the arguments are still on the stack. Overwrite
@@ -540,13 +540,15 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 		Arrays.sort(containerChildren, Comparator.comparingInt(Widget::getOriginalY)
 			.thenComparingInt(Widget::getOriginalX));
 
+		int itemsPerRow = calculateItemsPerRow();
+
 		for (Widget child : containerChildren)
 		{
 			if (child.getItemId() != -1 && !child.isHidden())
 			{
 				// calculate correct item position as if this was a normal tab
-				int adjYOffset = (items / ITEMS_PER_ROW) * ITEM_VERTICAL_SPACING;
-				int adjXOffset = (items % ITEMS_PER_ROW) * ITEM_HORIZONTAL_SPACING + ITEM_ROW_START;
+				int adjYOffset = (items / itemsPerRow) * ITEM_VERTICAL_SPACING;
+				int adjXOffset = (items % itemsPerRow) * ITEM_HORIZONTAL_SPACING + ITEM_ROW_START;
 
 				if (child.getOriginalY() != adjYOffset || child.getOriginalX() != adjXOffset)
 				{
@@ -594,5 +596,12 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 	{
 		tabInterface.handleWheel(event);
 		return event;
+	}
+
+	private int calculateItemsPerRow()
+	{
+		Widget itemContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
+		int totalWidth = itemContainer.getWidth() - ITEM_ROW_START;
+		return (int) (totalWidth / BankPlugin.ITEM_SLOT_WIDTH);
 	}
 }

@@ -135,10 +135,21 @@ public interface BankConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "variableWidth",
+			name = "Variable Width",
+			description = "Allows for bank interface to have dynamic width",
+			position = 10
+	)
+	default boolean variableWidth()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "searchKeybind",
 		name = "Search Shortcut",
 		description = "Keyboard shortcut for initiating a bank search",
-		position = 10
+		position = 11
 	)
 	default Keybind searchKeybind()
 	{
