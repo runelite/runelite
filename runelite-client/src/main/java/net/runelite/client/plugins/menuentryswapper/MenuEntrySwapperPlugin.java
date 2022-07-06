@@ -278,7 +278,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("admire", "spellbook", config::swapAdmire);
 		swap("admire", "perks", config::swapAdmire);
 
-		swap("teleport menu", "duel arena", config::swapJewelleryBox);
+		swap("teleport menu", "pvp arena", config::swapJewelleryBox);
 		swap("teleport menu", "castle wars", config::swapJewelleryBox);
 		swap("teleport menu", "ferox enclave", config::swapJewelleryBox);
 		swap("teleport menu", "burthorpe", config::swapJewelleryBox);
