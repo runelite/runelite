@@ -58,8 +58,8 @@ public class ModelLoader
 		int vertexYDataByteCount = stream1.readUnsignedShort();
 		int vertexZDataByteCount = stream1.readUnsignedShort();
 		int faceIndexDataByteCount = stream1.readUnsignedShort();
-		int _vertCount = stream1.readUnsignedShort();
-		int newstuffBCount = stream1.readUnsignedShort();
+		int _textureCoordPosCount = stream1.readUnsignedShort();
+		int _vertTextureFlagsCount = stream1.readUnsignedShort(); // count can now be different from the vertexCount
 		int textureAmount = 0;
 		int newCountA = 0;
 		int newCountB = 0;
@@ -110,8 +110,8 @@ public class ModelLoader
 			dataOffset += faceCount;
 		}
 
-		int offsetOfFaceTextureFlags = dataOffset;
-		dataOffset += newstuffBCount;
+		int offsetOfVertexTextureFlags = dataOffset;
+		dataOffset += _vertTextureFlagsCount; // vertTextureFlags count seperate from vertCount
 
 		int alphaPos = dataOffset;
 		if (hasFaceTransparencies == 1)
@@ -128,7 +128,7 @@ public class ModelLoader
 		}
 
 		int textureCoordPos = dataOffset;
-		dataOffset += _vertCount;
+		dataOffset += _textureCoordPosCount;
 		int colorPos = dataOffset;
 		dataOffset += faceCount * 2;
 		int offsetOfVertexXData = dataOffset;
@@ -215,7 +215,7 @@ public class ModelLoader
 		stream2.setOffset(offsetOfVertexXData);
 		stream3.setOffset(offsetOfVertexYData);
 		stream4.setOffset(offsetOfVertexZData);
-		stream5.setOffset(offsetOfFaceTextureFlags);
+		stream5.setOffset(offsetOfVertexTextureFlags);
 		int previousVertexX = 0;
 		int previousVertexY = 0;
 		int previousVertexZ = 0;
@@ -741,12 +741,12 @@ public class ModelLoader
 		int hasFaceTransparencies = stream1.readUnsignedByte();
 		int hasPackedTransparencyVertexGroups = stream1.readUnsignedByte();
 		int _modelVertexSkins = stream1.readUnsignedByte();
-		int hasPackedVertexGroups = stream1.readUnsignedByte(); // 7th bytes
+		int hasPackedVertexGroups = stream1.readUnsignedByte(); // 7th byte
 		int vertexXDataByteCount = stream1.readUnsignedShort();
 		int vertezYDataByteCount = stream1.readUnsignedShort();
 		int vertexZDataByteCount = stream1.readUnsignedShort();
 		int faceIndexDataByteCount = stream1.readUnsignedShort();
-		int _vertCount = stream1.readUnsignedShort();
+		int _textureCoordPosCount = stream1.readUnsignedShort();
 		int textureAmount = 0;
 		int newCountA = 0;
 		int newCountB = 0;
@@ -797,8 +797,8 @@ public class ModelLoader
 			dataOffset += faceCount;
 		}
 
-		int offsetOfFaceTextureFlags = dataOffset;
-		if (hasPackedVertexGroups == 1)
+		int offsetOfVertexTextureFlags = dataOffset;
+		if (hasPackedVertexGroups == 1) // offset only up when present
 		{
 			dataOffset += vertexCount;
 		}
@@ -818,14 +818,14 @@ public class ModelLoader
 		}
 
 		int textureCoordPos = dataOffset;
-		dataOffset += _vertCount;
+		dataOffset += _textureCoordPosCount;
 		int colorPos = dataOffset;
 		dataOffset += faceCount * 2;
-		int o2b = dataOffset;
+		int offsetOfVertexXData = dataOffset;
 		dataOffset += vertexXDataByteCount;
-		int o3b = dataOffset;
+		int offsetOfVertexYData = dataOffset;
 		dataOffset += vertezYDataByteCount;
-		int o4b = dataOffset;
+		int offsetOfVertexZData = dataOffset;
 		dataOffset += vertexZDataByteCount;
 		int offsetRenderTypes = dataOffset;
 		dataOffset += textureAmount * 6;
@@ -896,10 +896,10 @@ public class ModelLoader
 		}
 
 		stream1.setOffset(textureCount);
-		stream2.setOffset(o2b);
-		stream3.setOffset(o3b);
-		stream4.setOffset(o4b);
-		stream5.setOffset(offsetOfFaceTextureFlags);
+		stream2.setOffset(offsetOfVertexXData);
+		stream3.setOffset(offsetOfVertexYData);
+		stream4.setOffset(offsetOfVertexZData);
+		stream5.setOffset(offsetOfVertexTextureFlags);
 		int previousVertexX = 0;
 		int previousVertexY = 0;
 		int previousVertexZ = 0;
