@@ -679,7 +679,15 @@ public class ClueScrollPlugin extends Plugin
 		if (clueScrollText != null)
 		{
 			ClueScroll clueScroll = findClueScroll(clueScrollText.getText());
-			updateClue(clueScroll);
+			if (clueScroll != null)
+			{
+				updateClue(clueScroll);
+			}
+			else
+			{
+				log.info("Unknown clue text: {}", clueScrollText.getText());
+				resetClue(true);
+			}
 		}
 	}
 
@@ -859,9 +867,6 @@ public class ClueScrollPlugin extends Plugin
 			return threeStepCrypticClue;
 		}
 
-		// We have unknown clue, reset
-		log.warn("Encountered unhandled clue text: {}", rawText);
-		resetClue(true);
 		return null;
 	}
 
