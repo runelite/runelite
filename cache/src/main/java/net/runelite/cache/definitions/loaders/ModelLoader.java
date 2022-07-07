@@ -12,19 +12,19 @@ public class ModelLoader
 
 		if (b[b.length - 1] == -3 && b[b.length - 2] == -1)
 		{
-			decodeNew_v2(def, b);
+			decodeType3(def, b);
 		}
 		else if (b[b.length - 1] == -2 && b[b.length - 2] == -1)
 		{
-			decodeOld_v2(def, b);
+			decodeType2(def, b);
 		}
 		else if (b[b.length - 1] == -1 && b[b.length - 2] == -1)
 		{
-			decodeNew_v1(def, b);
+			decodeType1(def, b);
 		}
 		else
 		{
-			decodeOld_v1(def, b);
+			decodeOldFormat(def, b);
 		}
 
 		def.computeNormals();
@@ -34,7 +34,7 @@ public class ModelLoader
 		return def;
 	}
 
-	void decodeNew_v2(ModelDefinition def, byte[] var1)
+	void decodeType3(ModelDefinition def, byte[] var1)
 	{
 		InputStream stream1 = new InputStream(var1);
 		InputStream stream2 = new InputStream(var1);
@@ -395,7 +395,7 @@ public class ModelLoader
 
 	}
 
-	void decodeOld_v2(ModelDefinition def, byte[] var1)
+	void decodeType2(ModelDefinition def, byte[] var1)
 	{
 		boolean usesFaceRenderTypes = false;
 		boolean usesFaceTextures = false;
@@ -731,7 +731,7 @@ public class ModelLoader
 
 	}
 
-	void decodeNew_v1(ModelDefinition def, byte[] var1)
+	void decodeType1(ModelDefinition def, byte[] var1)
 	{
 		InputStream stream1 = new InputStream(var1);
 		InputStream stream2 = new InputStream(var1);
@@ -1071,7 +1071,7 @@ public class ModelLoader
 
 	}
 
-	void decodeOld_v1(ModelDefinition def, byte[] inputData)
+	void decodeOldFormat(ModelDefinition def, byte[] inputData)
 	{
 		boolean usesFaceRenderTypes = false;
 		boolean usesFaceTextures = false;
