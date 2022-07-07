@@ -207,7 +207,7 @@ public class ItemChargePluginTest
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BREAK_RING_OF_FORGING, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_RING_OF_FORGING, 140);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_RING_OF_FORGING, 141);
 	}
 
 	// Chemistry
