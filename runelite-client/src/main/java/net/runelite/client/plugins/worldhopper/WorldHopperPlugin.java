@@ -33,6 +33,7 @@ import java.awt.image.BufferedImage;
 import java.time.Instant;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -108,6 +109,7 @@ public class WorldHopperPlugin extends Plugin
 	private static final String KICK_OPTION = "Kick";
 	private static final ImmutableList<String> BEFORE_OPTIONS = ImmutableList.of("Add friend", "Remove friend", KICK_OPTION);
 	private static final ImmutableList<String> AFTER_OPTIONS = ImmutableList.of("Message");
+	private final Set<Integer> worldBlacklist = new HashSet<>();
 
 	@Inject
 	private Client client;
@@ -223,6 +225,9 @@ public class WorldHopperPlugin extends Plugin
 
 		// populate initial world list
 		updateList();
+
+		// populate world blacklist set
+		updateWorldBlacklist();
 	}
 
 	@Override
@@ -243,6 +248,9 @@ public class WorldHopperPlugin extends Plugin
 
 		hopperExecutorService.shutdown();
 		hopperExecutorService = null;
+
+		// clear world blacklist
+		worldBlacklist.clear();
 	}
 
 	@Subscribe
@@ -279,6 +287,9 @@ public class WorldHopperPlugin extends Plugin
 				case "regionFilter":
 					panel.setRegionFilterMode(config.regionFilter());
 					updateList();
+					break;
+				case "worldBlacklist":
+					updateWorldBlacklist();
 					break;
 			}
 		}
@@ -567,6 +578,12 @@ public class WorldHopperPlugin extends Plugin
 			}
 
 			world = worlds.get(worldIdx);
+
+			// Check if world is on the black list
+			if (worldBlacklist.contains(world.getId()))
+			{
+				continue;
+			}
 
 			// Check world region if filter is enabled
 			if (!regionFilter.isEmpty() && !regionFilter.contains(RegionFilterMode.of(world.getRegion())))
@@ -894,5 +911,28 @@ public class WorldHopperPlugin extends Plugin
 		int ping = Ping.ping(world);
 		storedPings.put(world.getId(), ping);
 		return ping;
+	}
+
+	private void updateWorldBlacklist()
+	{
+		worldBlacklist.clear();
+
+
+		for (String worldIDToken : config.worldBlacklist().split(","))
+		{
+			try
+			{
+				if (!worldIDToken.isEmpty())
+				{
+					worldBlacklist.add(Integer.parseInt(worldIDToken.trim()));
+				}
+			}
+			catch (NumberFormatException nfe)
+			{
+				log.debug("World Blacklist contains unparseable token '{}'", worldIDToken);
+			}
+		}
+
+
 	}
 }
