@@ -130,7 +130,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		.put(new WorldPoint(2209, 3161, 0), new CoordinateClueInfo("North-east of Tyras Camp (BJS if 76 Agility).", SARADOMIN_WIZARD))
 		.put(new WorldPoint(2181, 3206, 0), new CoordinateClueInfo("South of Iorwerth Camp.", SARADOMIN_WIZARD))
 		.put(new WorldPoint(3081, 3209, 0), new CoordinateClueInfo("Small Island (CLP).", SARADOMIN_WIZARD))
-		.put(new WorldPoint(3399, 3246, 0), new CoordinateClueInfo("Behind the Duel Arena."))
+		.put(new WorldPoint(3399, 3246, 0), new CoordinateClueInfo("Behind the PvP Arena."))
 		.put(new WorldPoint(2699, 3251, 0), new CoordinateClueInfo("Little island (AIR).", SARADOMIN_WIZARD))
 		.put(new WorldPoint(3546, 3251, 0), new CoordinateClueInfo("North-east of Burgh de Rott.", SARADOMIN_WIZARD))
 		.put(new WorldPoint(3544, 3256, 0), new CoordinateClueInfo("North-east of Burgh de Rott.", SARADOMIN_WIZARD))

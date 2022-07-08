@@ -25,22 +25,15 @@
 package net.runelite.client.plugins.gpu;
 
 import com.google.common.base.Charsets;
-import com.jogamp.nativewindow.NativeSurface;
-import com.jogamp.opengl.GL4;
-import com.jogamp.opengl.GLContext;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Objects;
 import javax.inject.Singleton;
-import jogamp.opengl.GLContextImpl;
-import jogamp.opengl.GLDrawableImpl;
-import jogamp.opengl.macosx.cgl.CGL;
-import jogamp.opengl.windows.wgl.WindowsWGLContext;
-import jogamp.opengl.x11.glx.X11GLXContext;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.plugins.gpu.template.Template;
 import net.runelite.client.util.OSType;
+import net.runelite.rlawt.AWTContext;
 import static org.jocl.CL.*;
 import org.jocl.CLException;
 import org.jocl.Pointer;
@@ -93,7 +86,7 @@ class OpenCLManager
 	private cl_kernel kernelSmall;
 	private cl_kernel kernelLarge;
 
-	void init(GL4 gl)
+	void init(AWTContext awtContext)
 	{
 		setExceptionsEnabled(true);
 
@@ -103,10 +96,10 @@ class OpenCLManager
 			case Linux:
 				initPlatform();
 				initDevice();
-				initContext(gl);
+				initContext(awtContext);
 				break;
 			case MacOS:
-				initMacOS(gl);
+				initMacOS(awtContext);
 				break;
 			default:
 				throw new RuntimeException("Unsupported OS Type " + OSType.getOSType().name());
@@ -234,13 +227,17 @@ class OpenCLManager
 			logPlatformInfo(platform, CL_PLATFORM_NAME);
 			logPlatformInfo(platform, CL_PLATFORM_VENDOR);
 			String[] extensions = logPlatformInfo(platform, CL_PLATFORM_EXTENSIONS).split(" ");
-			if (Arrays.stream(extensions).noneMatch(s -> s.equals(GL_SHARING_PLATFORM_EXT)))
+			if (Arrays.stream(extensions).anyMatch(s -> s.equals(GL_SHARING_PLATFORM_EXT)))
 			{
-				throw new RuntimeException("Platform does not support OpenGL buffer sharing");
+				this.platform = platform;
 			}
 		}
 
-		platform = platforms[0];
+		if (this.platform == null)
+		{
+			throw new RuntimeException("Platform does not support OpenGL buffer sharing");
+		}
+
 		log.debug("Selected cl_platform_id {}", platform);
 	}
 
@@ -272,37 +269,20 @@ class OpenCLManager
 		log.debug("Selected cl_device_id {}", device);
 	}
 
-	private void initContext(GL4 gl)
+	private void initContext(AWTContext awtContext)
 	{
 		// set computation platform
 		cl_context_properties contextProps = new cl_context_properties();
 		contextProps.addProperty(CL_CONTEXT_PLATFORM, platform);
+		contextProps.addProperty(CL_GL_CONTEXT_KHR, awtContext.getGLContext());
 
-		// pull gl context
-		GLContext glContext = gl.getContext();
-		log.debug("Got GLContext of type {}", glContext.getClass().getSimpleName());
-		if (!glContext.isCurrent())
+		if (OSType.getOSType() == OSType.Linux)
 		{
-			throw new RuntimeException("Can't create OpenCL context from inactive GL Context");
+			contextProps.addProperty(CL_GLX_DISPLAY_KHR, awtContext.getGLXDisplay());
 		}
-
-		// get correct props based on os
-		long glContextHandle = glContext.getHandle();
-		GLContextImpl glContextImpl = (GLContextImpl) glContext;
-		GLDrawableImpl glDrawableImpl = glContextImpl.getDrawableImpl();
-		NativeSurface nativeSurface = glDrawableImpl.getNativeSurface();
-
-		if (glContext instanceof X11GLXContext)
+		else if (OSType.getOSType() == OSType.Windows)
 		{
-			long displayHandle = nativeSurface.getDisplayHandle();
-			contextProps.addProperty(CL_GL_CONTEXT_KHR, glContextHandle);
-			contextProps.addProperty(CL_GLX_DISPLAY_KHR, displayHandle);
-		}
-		else if (glContext instanceof WindowsWGLContext)
-		{
-			long surfaceHandle = nativeSurface.getSurfaceHandle();
-			contextProps.addProperty(CL_GL_CONTEXT_KHR, glContextHandle);
-			contextProps.addProperty(CL_WGL_HDC_KHR, surfaceHandle);
+			contextProps.addProperty(CL_WGL_HDC_KHR, awtContext.getWGLHDC());
 		}
 
 		log.debug("Creating context with props: {}", contextProps);
@@ -310,16 +290,11 @@ class OpenCLManager
 		log.debug("Created compute context {}", context);
 	}
 
-	private void initMacOS(GL4 gl)
+	private void initMacOS(AWTContext awtContext)
 	{
-		// get sharegroup from gl context
-		GLContext glContext = gl.getContext();
-		if (!glContext.isCurrent())
-		{
-			throw new RuntimeException("Can't create context from inactive GL");
-		}
-		long cglContext = CGL.CGLGetCurrentContext();
-		long cglShareGroup = CGL.CGLGetShareGroup(cglContext);
+		long cglContext = awtContext.getGLContext();
+		long cglShareGroup = awtContext.getCGLShareGroup();
+		log.info("{} {}", cglContext, cglShareGroup);
 
 		// build context props
 		cl_context_properties contextProps = new cl_context_properties();

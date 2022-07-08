@@ -90,13 +90,13 @@ LABEL60:
    iload                  0
    iconst                 84
    if_icmpeq              LABEL76
-   jump                   LABEL809
+   jump                   LABEL815
 LABEL76:
    invoke                 1984
    iload                  2
    iconst                 0
    if_icmpgt              LABEL81
-   jump                   LABEL808
+   jump                   LABEL814
 LABEL81:
    iload                  3
    iconst                 1
@@ -663,23 +663,37 @@ LABEL558:
    iload                  5
    iconst                 44
    if_icmpeq              LABEL562
-   jump                   LABEL590
+   jump                   LABEL596
 LABEL562:
    activeclansettings_find_listened
    iconst                 1
    if_icmpeq              LABEL566
-   jump                   LABEL587
+   jump                   LABEL593
 LABEL566:
    activeclanchannel_find_listened
    iconst                 1
    if_icmpeq              LABEL570
-   jump                   LABEL587
+   jump                   LABEL593
 LABEL570:
    activeclansettings_getallowunaffined
    iconst                 1
    if_icmpeq              LABEL574
-   jump                   LABEL584
+   jump                   LABEL590
 LABEL574:
+   get_varclansetting     33
+   switch                
+      1001: LABEL577
+      1002: LABEL577
+      1003: LABEL577
+      1004: LABEL577
+      1005: LABEL577
+      1006: LABEL577
+   jump                   LABEL580
+LABEL577:
+   sconst                 "You are not chatting as a guest in a channel at the moment."
+   mes                   
+   jump                   LABEL589
+LABEL580:
    get_varc_string        335
    iload                  6
    iload                  2
@@ -689,49 +703,50 @@ LABEL574:
    iconst                 0
    iload                  9
    invoke                 5517
-   jump                   LABEL586
-LABEL584:
+LABEL589:
+   jump                   LABEL592
+LABEL590:
    sconst                 "Guests are not invited to speak in this clan's channel."
    mes                   
-LABEL586:
-   jump                   LABEL589
-LABEL587:
+LABEL592:
+   jump                   LABEL595
+LABEL593:
    sconst                 "You are not chatting as a guest in a clan channel at the moment."
    mes                   
-LABEL589:
-   jump                   LABEL804
-LABEL590:
+LABEL595:
+   jump                   LABEL810
+LABEL596:
    iload                  5
    iconst                 41
-   if_icmpeq              LABEL594
-   jump                   LABEL658
-LABEL594:
+   if_icmpeq              LABEL600
+   jump                   LABEL664
+LABEL600:
    iload                  8
    iconst                 0
-   if_icmpeq              LABEL598
-   jump                   LABEL629
-LABEL598:
+   if_icmpeq              LABEL604
+   jump                   LABEL635
+LABEL604:
    iconst                 0
    activeclanchannel_find_affined
    iconst                 1
-   if_icmpeq              LABEL603
-   jump                   LABEL629
-LABEL603:
+   if_icmpeq              LABEL609
+   jump                   LABEL635
+LABEL609:
    chat_playername       
    removetags            
    activeclanchannel_getuserslot
    istore                 7
    iload                  7
    iconst                 -1
-   if_icmpne              LABEL611
-   jump                   LABEL626
-LABEL611:
+   if_icmpne              LABEL617
+   jump                   LABEL632
+LABEL617:
    iload                  7
    activeclanchannel_getuserrank
    activeclanchannel_getranktalk
-   if_icmpge              LABEL616
-   jump                   LABEL626
-LABEL616:
+   if_icmpge              LABEL622
+   jump                   LABEL632
+LABEL622:
    get_varc_string        335
    iload                  6
    iload                  2
@@ -741,24 +756,24 @@ LABEL616:
    iconst                 0
    iload                  9
    invoke                 5517
-   jump                   LABEL628
-LABEL626:
+   jump                   LABEL634
+LABEL632:
    sconst                 "You do not have the required rank to talk in the clan's channel."
    mes                   
-LABEL628:
-   jump                   LABEL657
-LABEL629:
+LABEL634:
+   jump                   LABEL663
+LABEL635:
    iload                  8
    iconst                 1
-   if_icmpeq              LABEL633
-   jump                   LABEL648
-LABEL633:
+   if_icmpeq              LABEL639
+   jump                   LABEL654
+LABEL639:
    iconst                 1
    activeclanchannel_find_affined
    iconst                 1
-   if_icmpeq              LABEL638
-   jump                   LABEL648
-LABEL638:
+   if_icmpeq              LABEL644
+   jump                   LABEL654
+LABEL644:
    get_varc_string        335
    iload                  6
    iload                  2
@@ -768,56 +783,56 @@ LABEL638:
    iconst                 0
    iload                  9
    invoke                 5517
-   jump                   LABEL657
-LABEL648:
+   jump                   LABEL663
+LABEL654:
    iload                  8
    iconst                 1
-   if_icmpeq              LABEL652
-   jump                   LABEL655
-LABEL652:
+   if_icmpeq              LABEL658
+   jump                   LABEL661
+LABEL658:
    sconst                 "You are not chatting in the channel of your Iron Group at the moment."
    mes                   
-   jump                   LABEL657
-LABEL655:
+   jump                   LABEL663
+LABEL661:
    sconst                 "You are not chatting in the channel of your Clan at the moment."
    mes                   
-LABEL657:
-   jump                   LABEL804
-LABEL658:
+LABEL663:
+   jump                   LABEL810
+LABEL664:
    iload                  5
    iconst                 9
-   if_icmpeq              LABEL662
-   jump                   LABEL706
-LABEL662:
+   if_icmpeq              LABEL668
+   jump                   LABEL712
+LABEL668:
    clan_getchatcount     
    iconst                 0
-   if_icmpgt              LABEL666
-   jump                   LABEL699
-LABEL666:
+   if_icmpgt              LABEL672
+   jump                   LABEL705
+LABEL672:
    get_varbit             4394
    iconst                 1
-   if_icmpeq              LABEL670
-   jump                   LABEL672
-LABEL670:
+   if_icmpeq              LABEL676
+   jump                   LABEL678
+LABEL676:
    clan_leavechat        
-   jump                   LABEL698
-LABEL672:
+   jump                   LABEL704
+LABEL678:
    iload                  6
    iconst                 1
-   if_icmplt              LABEL676
-   jump                   LABEL681
-LABEL676:
+   if_icmplt              LABEL682
+   jump                   LABEL687
+LABEL682:
    sconst                 "/"
    get_varc_string        335
    append                
    set_varc_string        335
-   jump                   LABEL692
-LABEL681:
+   jump                   LABEL698
+LABEL687:
    iload                  6
    iconst                 3
-   if_icmpge              LABEL685
-   jump                   LABEL692
-LABEL685:
+   if_icmpge              LABEL691
+   jump                   LABEL698
+LABEL691:
    sconst                 "/"
    get_varc_string        335
    iload                  6
@@ -825,30 +840,30 @@ LABEL685:
    substring             
    append                
    set_varc_string        335
-LABEL692:
+LABEL698:
    get_varc_string        335
    iconst                 2
    iconst                 -1
    iconst                 0
    iload                  9
    invoke                 5517
-LABEL698:
-   jump                   LABEL705
-LABEL699:
+LABEL704:
+   jump                   LABEL711
+LABEL705:
    get_varc_string        335
    iconst                 0
    iconst                 -1
    iconst                 0
    iconst                 -1
    invoke                 5517
-LABEL705:
-   jump                   LABEL804
-LABEL706:
+LABEL711:
+   jump                   LABEL810
+LABEL712:
    iload                  5
    iconst                 2
-   if_icmpeq              LABEL710
-   jump                   LABEL720
-LABEL710:
+   if_icmpeq              LABEL716
+   jump                   LABEL726
+LABEL716:
    get_varc_string        335
    iload                  6
    iload                  2
@@ -858,18 +873,18 @@ LABEL710:
    iconst                 0
    iload                  9
    invoke                 5517
-   jump                   LABEL804
-LABEL720:
+   jump                   LABEL810
+LABEL726:
    iload                  4
    iconst                 1
-   if_icmpeq              LABEL724
-   jump                   LABEL798
-LABEL724:
+   if_icmpeq              LABEL730
+   jump                   LABEL804
+LABEL730:
    iload                  2
    iconst                 2
-   if_icmpgt              LABEL728
-   jump                   LABEL791
-LABEL728:
+   if_icmpgt              LABEL734
+   jump                   LABEL797
+LABEL734:
    ; move chatout_add under if ($length2 > 2) to only add for :: commands
    get_varc_string        335
    invoke                 77 ; chatout_add
@@ -878,63 +893,63 @@ LABEL728:
    iconst                 0
    string_indexof_string 
    iconst                 0
-   if_icmpeq              LABEL735
-   jump                   LABEL750
-LABEL735:
+   if_icmpeq              LABEL741
+   jump                   LABEL756
+LABEL741:
    iconst                 1
    3215                  
    iconst                 1
-   if_icmpeq              LABEL740
-   jump                   LABEL745
-LABEL740:
+   if_icmpeq              LABEL746
+   jump                   LABEL751
+LABEL746:
    iconst                 0
    invoke                 4583
    sconst                 "Roofs will only be removed selectively. This setting will not be saved."
    mes                   
-   jump                   LABEL749
-LABEL745:
+   jump                   LABEL755
+LABEL751:
    iconst                 1
    invoke                 4583
    sconst                 "Roofs are now all hidden. This setting will not be saved."
    mes                   
-LABEL749:
-   jump                   LABEL790
-LABEL750:
+LABEL755:
+   jump                   LABEL796
+LABEL756:
    get_varc_string        335
    sconst                 "::wiki "
    iconst                 0
    string_indexof_string 
    iconst                 0
-   if_icmpeq              LABEL762
+   if_icmpeq              LABEL768
    get_varc_string        335
    sconst                 "::wiki"
    compare               
    iconst                 0
-   if_icmpeq              LABEL762
+   if_icmpeq              LABEL768
    sconst                 "runeliteCommand" ; load callback name
    runelite_callback     ; invoke callback
-   jump                   LABEL765
-LABEL762:
+   jump                   LABEL771
+LABEL768:
    get_varc_string        335
    invoke                 3299
-   jump                   LABEL790
-LABEL765:
+   jump                   LABEL796
+LABEL771:
    get_varc_string        335
    sconst                 "::bank"
    iconst                 0
    string_indexof_string 
    iconst                 0
-   if_icmpeq              LABEL772
-   jump                   LABEL779
-LABEL772:
+   if_icmpeq              LABEL778
+   jump                   LABEL785
+LABEL778:
    sconst                 "Hey, everyone, I just tried to do something very silly!"
    iconst                 0
    iconst                 -1
    iconst                 0
    iconst                 -1
    invoke                 5517
-   jump                   LABEL790
-LABEL779:
+   jump                   LABEL796
+LABEL785:
    get_varc_string        335
    invoke                 224
    set_varc_string        335
@@ -946,104 +961,104 @@ LABEL779:
    iload                  2
    substring             
    docheat               
-LABEL790:
-   jump                   LABEL797
-LABEL791:
+LABEL796:
+   jump                   LABEL803
+LABEL797:
    get_varc_string        335
    iconst                 0
    iconst                 -1
    iconst                 0
    iconst                 -1
    invoke                 5517
-LABEL797:
-   jump                   LABEL804
-LABEL798:
+LABEL803:
+   jump                   LABEL810
+LABEL804:
    get_varc_string        335
    iconst                 0
    iconst                 -1
    iconst                 1
    iload                  9
    invoke                 5517
-LABEL804:
+LABEL810:
    ; see comment above
-   jump AFTER_CHATOUT_ADD
+   jump                   AFTER_CHATOUT_ADD
    get_varc_string        335
    invoke                 77
 AFTER_CHATOUT_ADD:
    sconst                 ""
    set_varc_string        335
-LABEL808:
-   jump                   LABEL884
-LABEL809:
+LABEL814:
+   jump                   LABEL890
+LABEL815:
    iload                  0
    iconst                 104
-   if_icmpeq              LABEL813
-   jump                   LABEL819
-LABEL813:
+   if_icmpeq              LABEL819
+   jump                   LABEL825
+LABEL819:
    iload                  3
    sconst                 "devtoolsEnabled"
-   runelite_callback
+   runelite_callback     
    iconst                 1
-   if_icmpeq              LABEL817
-   jump                   LABEL818
-LABEL817:
+   if_icmpeq              LABEL823
+   jump                   LABEL824
+LABEL823:
    invoke                 75
-LABEL818:
-   jump                   LABEL884
-LABEL819:
+LABEL824:
+   jump                   LABEL890
+LABEL825:
    iload                  0
    iconst                 105
-   if_icmpeq              LABEL823
-   jump                   LABEL829
-LABEL823:
+   if_icmpeq              LABEL829
+   jump                   LABEL835
+LABEL829:
    iload                  3
    sconst                 "devtoolsEnabled"
-   runelite_callback
+   runelite_callback     
    iconst                 1
-   if_icmpeq              LABEL827
-   jump                   LABEL828
-LABEL827:
+   if_icmpeq              LABEL833
+   jump                   LABEL834
+LABEL833:
    invoke                 76
-LABEL828:
-   jump                   LABEL884
-LABEL829:
+LABEL834:
+   jump                   LABEL890
+LABEL835:
    iload                  0
    iconst                 80
-   if_icmpeq              LABEL833
-   jump                   LABEL878
-LABEL833:
+   if_icmpeq              LABEL839
+   jump                   LABEL884
+LABEL839:
    iconst                 40697936
    iconst                 1
    cc_find               
    iconst                 1
-   if_icmpeq              LABEL839
-   jump                   LABEL840
-LABEL839:
+   if_icmpeq              LABEL845
+   jump                   LABEL846
+LABEL845:
    return                
-LABEL840:
+LABEL846:
    get_varc_string        356
    string_length         
    iconst                 0
-   if_icmpgt              LABEL845
-   jump                   LABEL865
-LABEL845:
+   if_icmpgt              LABEL851
+   jump                   LABEL871
+LABEL851:
    get_varc_string        356
    friend_test           
    iconst                 1
-   if_icmpeq              LABEL850
-   jump                   LABEL853
-LABEL850:
+   if_icmpeq              LABEL856
+   jump                   LABEL859
+LABEL856:
    get_varc_string        356
    invoke                 107
    return                
-LABEL853:
+LABEL859:
    get_varc_int           60
    clientclock           
-   if_icmpgt              LABEL857
-   jump                   LABEL858
-LABEL857:
+   if_icmpgt              LABEL863
+   jump                   LABEL864
+LABEL863:
    return                
-LABEL858:
+LABEL864:
    clientclock           
    iconst                 50
    add                   
@@ -1051,14 +1066,14 @@ LABEL858:
    sconst                 "That player was not found on your Friends list."
    mes                   
    return                
-LABEL865:
+LABEL871:
    get_varc_int           60
    clientclock           
-   if_icmpgt              LABEL869
-   jump                   LABEL870
-LABEL869:
+   if_icmpgt              LABEL875
+   jump                   LABEL876
+LABEL875:
    return                
-LABEL870:
+LABEL876:
    clientclock           
    iconst                 50
    add                   
@@ -1066,8 +1081,8 @@ LABEL870:
    sconst                 "You haven't received any messages to which you can reply."
    mes                   
    return                
-   jump                   LABEL884
-LABEL878:
+   jump                   LABEL890
+LABEL884:
    get_varc_string        335
    iconst                 0
    iload                  0
@@ -1079,9 +1094,9 @@ LABEL878:
    runelite_callback     ;
    if_icmpeq              SKIPSETVARC       ; skip setting varc with input
    set_varc_string        335
-   jump                   LABEL884          ; jump over SKIPSETVARC
+   jump                   LABEL890          ; jump over SKIPSETVARC
 SKIPSETVARC:
    pop_string            ; pop message
-LABEL884:
+LABEL890:
    invoke                 223
    return                

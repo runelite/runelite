@@ -969,7 +969,7 @@ public class LootTrackerPlugin extends Plugin
 		}
 		else if (event.isItemOp())
 		{
-			if (event.getMenuOption().equals("Take") && event.getItemId() == ItemID.SEED_PACK)
+			if (event.getItemId() == ItemID.SEED_PACK && (event.getMenuOption().equals("Take") || event.getMenuOption().equals("Take-all")))
 			{
 				onInvChange(collectInvItems(LootRecordType.EVENT, SEEDPACK_EVENT));
 			}

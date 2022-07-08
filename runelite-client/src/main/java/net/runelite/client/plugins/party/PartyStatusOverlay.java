@@ -57,9 +57,8 @@ class PartyStatusOverlay extends Overlay
 	private static final Color COLOR_HEALTH_MIN = Color.red;
 	private static final Color COLOR_PRAYER = new Color(50, 200, 200);
 	private static final Color COLOR_STAMINA = new Color(160, 124, 72);
-	private static final Color COLOR_SPEC = new Color(3, 153, 0);
-	private static final Font OVERLAY_FONT = FontManager.getRunescapeBoldFont().deriveFont(20f);
-	private static final int OFFSET = 25;
+	private static final Color COLOR_SPEC = new Color(225, 225, 0);
+	private static final Font OVERLAY_FONT = FontManager.getRunescapeBoldFont().deriveFont(16f);
 
 	private final Client client;
 	private final SpriteManager spriteManager;
@@ -73,7 +72,6 @@ class PartyStatusOverlay extends Overlay
 	private boolean renderSpec = false;
 	private boolean renderVeng = false;
 	private boolean renderSelf = false;
-	private int activeDisplays = 0;
 
 	@Inject
 	private PartyStatusOverlay(
@@ -89,7 +87,7 @@ class PartyStatusOverlay extends Overlay
 
 		updateConfig();
 
-		setLayer(OverlayLayer.ABOVE_SCENE);
+		setLayer(OverlayLayer.UNDER_WIDGETS);
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.HIGH);
 	}
@@ -164,55 +162,19 @@ class PartyStatusOverlay extends Overlay
 		return partyService.getMemberByDisplayName(p.getName());
 	}
 
-	// relative to center of model
-	private Point getRenderOffsets(int renderIx)
-	{
-		if (this.activeDisplays < 3)
-		{
-			int ySgn = renderIx == 0 ? -1 : 1;
-			return new Point(0, ySgn * OFFSET);
-		}
-		else if (this.activeDisplays == 3)
-		{
-			if (renderIx == 0)
-			{
-				return new Point(0, -OFFSET);
-			}
-			else if (renderIx == 1)
-			{
-				return new Point(-OFFSET, OFFSET);
-			}
-			else
-			{
-				return new Point(OFFSET, OFFSET);
-			}
-		}
-		else
-		{
-			int sgn = renderIx < 2 ? -1 : 1;
-			if (renderIx == 0 || renderIx == 3)
-			{
-				return new Point(0, sgn * OFFSET);
-			}
-			else
-			{
-				return new Point(sgn * OFFSET, 0);
-			}
-		}
-	}
-
 	private void renderPlayerOverlay(Graphics2D graphics, Player player, String text, Color color, int renderIx)
 	{
-		Point point = Perspective.localToCanvas(client, player.getLocalLocation(), client.getPlane(), player.getLogicalHeight() / 2);
-		Point off = getRenderOffsets(renderIx);
+		Point point = Perspective.localToCanvas(client, player.getLocalLocation(), client.getPlane(), player.getLogicalHeight());
+
 		if (point != null)
 		{
 			FontMetrics fm = graphics.getFontMetrics();
-			int textWidthOffset = fm.stringWidth(text) / 2;
-			int textHeightOffset = fm.getHeight() / 2;
+			int size = fm.getHeight();
+			int zOffset = size * renderIx;
+
 			OverlayUtil.renderTextLocation(
 				graphics,
-				new Point(point.getX() + off.getX() - textWidthOffset, point.getY() + off.getY() + textHeightOffset),
+				new Point(point.getX() + size + 5, point.getY() + zOffset),
 				text,
 				color
 			);
@@ -236,11 +198,5 @@ class PartyStatusOverlay extends Overlay
 		this.renderSpec = config.statusOverlaySpec();
 		this.renderVeng = config.statusOverlayVeng();
 		this.renderSelf = config.statusOverlayRenderSelf();
-
-		this.activeDisplays =
-			(renderHealth ? 1 : 0) +
-				(renderPrayer ? 1 : 0) +
-				(renderStamina ? 1 : 0) +
-				(renderSpec ? 1 : 0);
 	}
 }
