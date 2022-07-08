@@ -363,7 +363,7 @@ public class ItemChargePlugin extends Plugin
 				{
 					notifier.notify("Your ring of forging has melted.");
 				}
-				//Once your ring melts while smelting ore, the RING_OF_FORGING_USED_TEXT is still printed to the chatbox, which subtracts 1 from the counter
+				// Equipment is not cleared before reading RING_OF_FORGING_USED_TEXT, so it still subtracts 1 charge from the already reset counter, thus a fake charge is added here to counteract that.
 				updateRingOfForgingCharges(MAX_RING_OF_FORGING_CHARGES + 1);
 			}
 			else if (chronicleAddMatcher.find())
