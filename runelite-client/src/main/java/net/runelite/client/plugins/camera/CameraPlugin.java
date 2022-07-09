@@ -35,12 +35,9 @@ import java.awt.Toolkit;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import net.runelite.api.Client;
-import net.runelite.api.MenuAction;
-import net.runelite.api.MenuEntry;
 import net.runelite.api.ScriptID;
 import net.runelite.api.SettingID;
 import net.runelite.api.VarClientInt;
-import net.runelite.api.VarPlayer;
 import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.FocusChanged;
@@ -83,10 +80,6 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	private boolean extraMiddleClickDispatched;
 	private boolean middleClickMutatedToRightClick;
 	private MouseEvent latestRightClick;
-	/**
-	 * Whether or not the current menu has any non-ignored menu entries
-	 */
-	private boolean menuHasEntries;
 	private int savedCameraYaw;
 
 	@Inject
@@ -120,7 +113,6 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	{
 		extraMiddleClickDispatched = false;
 		middleClickMutatedToRightClick = false;
-		menuHasEntries = false;
 		eventQueue = Toolkit.getDefaultToolkit().getSystemEventQueue();
 		copyConfigs();
 		keyManager.registerKeyListener(this);
@@ -293,42 +285,12 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	}
 
 	/**
-	 * Checks if the menu has any non-ignored entries
-	 */
-	private boolean hasMenuEntries(MenuEntry[] menuEntries)
-	{
-		for (MenuEntry menuEntry : menuEntries)
-		{
-			MenuAction action = menuEntry.getType();
-			switch (action)
-			{
-				case CANCEL:
-				case WALK:
-					break;
-				case EXAMINE_OBJECT:
-				case EXAMINE_NPC:
-				case EXAMINE_ITEM_GROUND:
-				case EXAMINE_ITEM:
-				case CC_OP_LOW_PRIORITY:
-					if (config.ignoreExamine())
-					{
-						break;
-					}
-				default:
-					return true;
-			}
-		}
-		return false;
-	}
-
-	/**
 	 * Checks if the menu has any options, because menu entries are built each
 	 * tick and the MouseListener runs on the awt thread
 	 */
 	@Subscribe
 	public void onClientTick(ClientTick event)
 	{
-		menuHasEntries = hasMenuEntries(client.getMenuEntries());
 		sliderTooltip = null;
 	}
 
