@@ -46,7 +46,6 @@ import net.runelite.api.Point;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.GameObjectChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
@@ -251,12 +250,6 @@ public class WoodcuttingPlugin extends Plugin
 				treeObjects.remove(event.getGameObject());
 			}
 		}
-	}
-
-	@Subscribe
-	public void onGameObjectChanged(final GameObjectChanged event)
-	{
-		treeObjects.remove(event.getGameObject());
 	}
 
 	@Subscribe

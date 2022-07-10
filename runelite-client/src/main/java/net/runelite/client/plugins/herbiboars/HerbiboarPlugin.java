@@ -48,7 +48,6 @@ import static net.runelite.api.ObjectID.ROCK_30522;
 import net.runelite.api.TileObject;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.GameObjectChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
@@ -309,12 +308,6 @@ public class HerbiboarPlugin extends Plugin
 	public void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		onTileObject(null, event.getGameObject());
-	}
-
-	@Subscribe
-	public void onGameObjectChanged(GameObjectChanged event)
-	{
-		onTileObject(event.getPrevious(), event.getGameObject());
 	}
 
 	@Subscribe

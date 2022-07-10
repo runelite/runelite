@@ -72,7 +72,6 @@ import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.DecorativeObjectChanged;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
-import net.runelite.api.events.GameObjectChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
@@ -490,12 +489,6 @@ public class ClueScrollPlugin extends Plugin
 	public void onDecorativeObjectSpawned(final DecorativeObjectSpawned event)
 	{
 		tileObjectSpawnedHandler(event.getDecorativeObject());
-	}
-
-	@Subscribe
-	public void onGameObjectChanged(final GameObjectChanged event)
-	{
-		tileObjectChangedHandler(event.getPrevious(), event.getGameObject());
 	}
 
 	@Subscribe
