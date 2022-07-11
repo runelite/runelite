@@ -49,7 +49,6 @@ import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.DecorativeObjectChanged;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.GameObjectDespawned;
@@ -390,12 +389,6 @@ public class AgilityPlugin extends Plugin
 	public void onDecorativeObjectSpawned(DecorativeObjectSpawned event)
 	{
 		onTileObject(event.getTile(), null, event.getDecorativeObject());
-	}
-
-	@Subscribe
-	public void onDecorativeObjectChanged(DecorativeObjectChanged event)
-	{
-		onTileObject(event.getTile(), event.getPrevious(), event.getDecorativeObject());
 	}
 
 	@Subscribe

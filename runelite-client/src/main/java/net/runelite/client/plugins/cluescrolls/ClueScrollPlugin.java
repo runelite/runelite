@@ -69,7 +69,6 @@ import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.CommandExecuted;
-import net.runelite.api.events.DecorativeObjectChanged;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
 import net.runelite.api.events.GameObjectDespawned;
@@ -469,12 +468,6 @@ public class ClueScrollPlugin extends Plugin
 				client.setHintArrow(npcsToMark.get(0));
 			}
 		}
-	}
-
-	@Subscribe
-	public void onDecorativeObjectChanged(final DecorativeObjectChanged event)
-	{
-		tileObjectChangedHandler(event.getPrevious(), event.getDecorativeObject());
 	}
 
 	@Subscribe
