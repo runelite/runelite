@@ -64,7 +64,6 @@ import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.StatChanged;
-import net.runelite.api.events.WallObjectChanged;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.client.Notifier;
@@ -386,12 +385,6 @@ public class AgilityPlugin extends Plugin
 	public void onWallObjectSpawned(WallObjectSpawned event)
 	{
 		onTileObject(event.getTile(), null, event.getWallObject());
-	}
-
-	@Subscribe
-	public void onWallObjectChanged(WallObjectChanged event)
-	{
-		onTileObject(event.getTile(), event.getPrevious(), event.getWallObject());
 	}
 
 	@Subscribe

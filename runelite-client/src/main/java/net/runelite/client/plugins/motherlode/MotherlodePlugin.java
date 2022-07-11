@@ -66,7 +66,6 @@ import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.api.events.WallObjectChanged;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.api.widgets.Widget;
@@ -304,24 +303,6 @@ public class MotherlodePlugin extends Plugin
 		}
 
 		WallObject wallObject = event.getWallObject();
-		if (MINE_SPOTS.contains(wallObject.getId()))
-		{
-			veins.add(wallObject);
-		}
-	}
-
-	@Subscribe
-	public void onWallObjectChanged(WallObjectChanged event)
-	{
-		if (!inMlm)
-		{
-			return;
-		}
-
-		WallObject previous = event.getPrevious();
-		WallObject wallObject = event.getWallObject();
-
-		veins.remove(previous);
 		if (MINE_SPOTS.contains(wallObject.getId()))
 		{
 			veins.add(wallObject);

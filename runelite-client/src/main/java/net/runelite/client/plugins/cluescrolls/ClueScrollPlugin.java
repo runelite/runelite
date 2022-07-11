@@ -83,7 +83,6 @@ import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
-import net.runelite.api.events.WallObjectChanged;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.api.events.WidgetLoaded;
@@ -519,12 +518,6 @@ public class ClueScrollPlugin extends Plugin
 	public void onGroundObjectSpawned(final GroundObjectSpawned event)
 	{
 		tileObjectSpawnedHandler(event.getGroundObject());
-	}
-
-	@Subscribe
-	public void onWallObjectChanged(final WallObjectChanged event)
-	{
-		tileObjectChangedHandler(event.getPrevious(), event.getWallObject());
 	}
 
 	@Subscribe
