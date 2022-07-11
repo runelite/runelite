@@ -533,6 +533,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 				final MenuAction currentShiftAction = shiftSwapConfig != null ? OBJECT_MENU_TYPES.get(shiftSwapConfig) :
 					defaultAction(composition);
 
+				int shiftOff = 0;
 				for (int actionIdx = 0; actionIdx < OBJECT_MENU_TYPES.size(); ++actionIdx)
 				{
 					if (Strings.isNullOrEmpty(actions[actionIdx]))
@@ -543,7 +544,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 					final MenuAction menuAction = OBJECT_MENU_TYPES.get(actionIdx);
 					if (menuAction != currentAction)
 					{
-						client.createMenuEntry(idx)
+						client.createMenuEntry(idx + shiftOff)
 							.setOption("Swap left click " + actions[actionIdx])
 							.setTarget(entry.getTarget())
 							.setType(MenuAction.RUNELITE)
@@ -557,6 +558,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 							.setTarget(entry.getTarget())
 							.setType(MenuAction.RUNELITE)
 							.onClick(objectConsumer(composition, actions, actionIdx, menuAction, true));
+						++shiftOff;
 					}
 				}
 
@@ -662,6 +664,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 					(hasAttack ? null : defaultAction(composition)) :
 					(swapConfig == -1 ? MenuAction.WALK : NPC_MENU_TYPES.get(swapConfig));
 
+				int shiftOff = 0;
 				for (int actionIdx = 0; actionIdx < NPC_MENU_TYPES.size(); ++actionIdx)
 				{
 					// Attack can be swapped with the in-game settings, and this becomes very confusing if we try
@@ -686,7 +689,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 						continue;
 					}
 
-					client.createMenuEntry(idx)
+					client.createMenuEntry(idx + shiftOff)
 						.setOption("Swap left click " + actions[actionIdx])
 						.setTarget(entry.getTarget())
 						.setType(MenuAction.RUNELITE)
@@ -697,10 +700,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 						.setTarget(entry.getTarget())
 						.setType(MenuAction.RUNELITE)
 						.onClick(npcConsumer(composition, actions, menuIdx, menuAction, true));
+					++shiftOff;
 				}
 
 				// Walk here swap
-				client.createMenuEntry(idx)
+				client.createMenuEntry(idx + shiftOff)
 					.setOption("Swap left click Walk here")
 					.setTarget(entry.getTarget())
 					.setType(MenuAction.RUNELITE)
@@ -711,6 +715,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 					.setTarget(entry.getTarget())
 					.setType(MenuAction.RUNELITE)
 					.onClick(walkHereConsumer(true, composition));
+				++shiftOff;
 
 				if (getNpcSwapConfig(true, composition.getId()) != null || getNpcSwapConfig(false, composition.getId()) != null) // NOPMD: BrokenNullCheck
 				{
@@ -773,6 +778,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			final MenuEntry entry = entries[idx];
 			Widget w = entry.getWidget();
+			int shiftOff = 0;
 
 			if (w != null && WidgetInfo.TO_GROUP(w.getId()) == WidgetID.EQUIPMENT_GROUP_ID
 				&& "Examine".equals(entry.getOption()) && entry.getIdentifier() == 10)
@@ -791,7 +797,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 						{
 							if (leftClickOp == null || leftClickOp != opId)
 							{
-								client.createMenuEntry(idx)
+								client.createMenuEntry(idx + shiftOff)
 									.setOption("Swap left click " + opName)
 									.setTarget(entry.getTarget())
 									.setType(MenuAction.RUNELITE)
@@ -804,6 +810,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 									.setTarget(entry.getTarget())
 									.setType(MenuAction.RUNELITE)
 									.onClick(wornItemConsumer(itemComposition, opName, opId, true));
+								++shiftOff;
 							}
 						}
 					}
@@ -900,6 +907,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 					final Integer shiftClickOp = getItemSwapConfig(true, itemComposition.getId());
 					final int defaultLeftClickOp = defaultOp(itemComposition, false);
 					final int defaultShiftClickOp = defaultOp(itemComposition, true);
+					int shiftOff = 0;
 
 					for (int actionIdx = 0; actionIdx < actions.length; ++actionIdx)
 					{
@@ -910,7 +918,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 							{
 								if (defaultLeftClickOp != actionIdx && (leftClickOp == null || leftClickOp != actionIdx))
 								{
-									client.createMenuEntry(idx)
+									client.createMenuEntry(idx + shiftOff)
 										.setOption("Swap left click " + opName)
 										.setTarget(entry.getTarget())
 										.setType(MenuAction.RUNELITE)
@@ -926,6 +934,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 										.setTarget(entry.getTarget())
 										.setType(MenuAction.RUNELITE)
 										.onClick(heldItemConsumer(itemComposition, opName, actionIdx, true));
+									++shiftOff;
 								}
 							}
 						}
@@ -935,7 +944,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 							// Use
 							if (defaultLeftClickOp != -1)
 							{
-								client.createMenuEntry(idx)
+								client.createMenuEntry(idx + shiftOff)
 									.setOption("Swap left click Use")
 									.setTarget(entry.getTarget())
 									.setType(MenuAction.RUNELITE)
@@ -948,6 +957,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 									.setTarget(entry.getTarget())
 									.setType(MenuAction.RUNELITE)
 									.onClick(heldItemConsumer(itemComposition, "Use", -1, true));
+								++shiftOff;
 							}
 						}
 					}
