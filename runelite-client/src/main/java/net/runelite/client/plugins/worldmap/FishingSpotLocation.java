@@ -192,7 +192,7 @@ enum FishingSpotLocation
 
 	FishingSpotLocation(FishingSpot[] fishingSpot, WorldPoint... locations)
 	{
-		this.tooltip = Arrays.stream(fishingSpot).map(FishingSpot::getWorldMapTooltip).collect(Collectors.joining(" / "));
+		this.tooltip = Arrays.stream(fishingSpot).map(FishingSpot::getWorldMapTooltip).collect(Collectors.joining("<br>"));
 		this.locations = locations;
 	}
 }
