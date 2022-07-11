@@ -916,7 +916,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 						{
 							if (config.leftClickCustomization())
 							{
-								if (defaultLeftClickOp != actionIdx && (leftClickOp == null || leftClickOp != actionIdx))
+								// Still create a swap option for the default left-click option, because it is possible
+								// for other MES swaps (such as the "Teleport" swap) to swap the left-click option, and
+								// it should be possible to override this for specific items.
+								// This isn't necessary for "Use" swaps because there are no non-custom swaps for that.
+								if (leftClickOp == null || leftClickOp != actionIdx)
 								{
 									client.createMenuEntry(idx + shiftOff)
 										.setOption("Swap left click " + opName)
