@@ -518,12 +518,6 @@ public class ClueScrollPlugin extends Plugin
 		tileObjectSpawnedHandler(event.getWallObject());
 	}
 
-	private void tileObjectChangedHandler(final TileObject prev, final TileObject changedTo)
-	{
-		tileObjectDespawnedHandler(prev);
-		tileObjectSpawnedHandler(changedTo);
-	}
-
 	private void tileObjectDespawnedHandler(final TileObject despawned)
 	{
 		namedObjectsToMark.remove(despawned);
