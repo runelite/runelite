@@ -33,7 +33,7 @@ import static net.runelite.api.NpcID.*;
 @Getter
 public enum FishingSpot
 {
-	SHRIMP("Shrimp, Anchovies", "[Small Net] - Shrimp/Anchovies<br>[Fishing Rod, Bait] - Sardine/Herring", ItemID.RAW_SHRIMPS,
+	SHRIMP("Shrimp, Anchovies, Sardine, Herring", "[Small Net] - Shrimp/Anchovies<br>[Fishing Rod, Bait] - Sardine/Herring", ItemID.RAW_SHRIMPS,
 		FISHING_SPOT_1514, FISHING_SPOT_1517, FISHING_SPOT_1518,
 		FISHING_SPOT_1521, FISHING_SPOT_1523, FISHING_SPOT_1524,
 		FISHING_SPOT_1525, FISHING_SPOT_1528, FISHING_SPOT_1530,
@@ -48,7 +48,7 @@ public enum FishingSpot
 		FISHING_SPOT_7946, FISHING_SPOT_9173, FISHING_SPOT_9174,
 		FISHING_SPOT_10515, FISHING_SPOT_10635
 	),
-	SHARK("Shark, Bass", "[Harpoon] - Shark<br>[Big Net] - Mackerel/Cod/Bass", ItemID.RAW_SHARK,
+	SHARK("Shark, Bass, Cod, Mackerel", "[Harpoon] - Shark<br>[Big Net] - Mackerel/Cod/Bass", ItemID.RAW_SHARK,
 		FISHING_SPOT_1511, FISHING_SPOT_1520, FISHING_SPOT_3419,
 		FISHING_SPOT_3915, FISHING_SPOT_4476, FISHING_SPOT_4477,
 		FISHING_SPOT_5233, FISHING_SPOT_5234, FISHING_SPOT_5821,
@@ -56,10 +56,10 @@ public enum FishingSpot
 		FISHING_SPOT_8525, FISHING_SPOT_8526, FISHING_SPOT_8527,
 		FISHING_SPOT_9171, FISHING_SPOT_9172, FISHING_SPOT_10514
 	),
-	MONKFISH("Monkfish", "[Small Net] - Monkfish<br>[Harpoon] - Tuna/Swordfish", ItemID.RAW_MONKFISH,
+	MONKFISH("Monkfish, Tuna, Swordfish", "[Small Net] - Monkfish<br>[Harpoon] - Tuna/Swordfish", ItemID.RAW_MONKFISH,
 		FISHING_SPOT_4316
 	),
-	SALMON("Salmon, Trout", "[Fly Fishing Rod, Feathers] - Salmon/Trout/Rainbow fish<br>[Fishing Rod, Bait] - Pike", ItemID.RAW_SALMON,
+	SALMON("Salmon, Trout, Rainbow fish, Pike", "[Fly Fishing Rod, Feathers] - Salmon/Trout/Rainbow fish<br>[Fishing Rod, Bait] - Pike", ItemID.RAW_SALMON,
 		ROD_FISHING_SPOT, ROD_FISHING_SPOT_1506, ROD_FISHING_SPOT_1507,
 		ROD_FISHING_SPOT_1508, ROD_FISHING_SPOT_1509, ROD_FISHING_SPOT_1513,
 		ROD_FISHING_SPOT_1515, ROD_FISHING_SPOT_1516, ROD_FISHING_SPOT_1526,
@@ -70,13 +70,13 @@ public enum FishingSpot
 	LAVA_EEL("Lava eel", "[Oily Rod, Bait] - Lava eel", ItemID.LAVA_EEL,
 		FISHING_SPOT_4928, FISHING_SPOT_6784
 	),
-	BARB_FISH("Sturgeon, Salmon, Trout", "[Barbarian Rod, Bait/Feathers] - Leaping sturgeon/salmon/trout", ItemID.LEAPING_STURGEON,
+	BARB_FISH("Leaping sturgeon/salmon/trout", "[Barbarian Rod, Bait/Feathers] - Leaping sturgeon/salmon/trout", ItemID.LEAPING_STURGEON,
 		FISHING_SPOT_1542, FISHING_SPOT_7323
 	),
 	ANGLERFISH("Anglerfish", "[Fishing Rod, Sandworms] - Anglerfish", ItemID.RAW_ANGLERFISH,
 		ROD_FISHING_SPOT_6825
 	),
-	MINNOW("Minnow", "[Small Net] - Minnows",ItemID.MINNOW,
+	MINNOW("Minnow", "[Small Net] - Minnows", ItemID.MINNOW,
 		FISHING_SPOT_7730, FISHING_SPOT_7731, FISHING_SPOT_7732, FISHING_SPOT_7733
 	),
 	HARPOONFISH("Harpoonfish", ItemID.RAW_HARPOONFISH,
@@ -94,7 +94,7 @@ public enum FishingSpot
 	SACRED_EEL("Sacred eel", "[Fishing Rod, Bait] - Sacred eel", ItemID.SACRED_EEL,
 		FISHING_SPOT_6488
 	),
-	CAVE_EEL("Frog spawn, Cave eel", "[Small Net] - Frog spawn<br>[Fishing Rod, Bait] - Cave eel/Slimy eel", ItemID.RAW_CAVE_EEL,
+	CAVE_EEL("Frog spawn, Cave eel, Slimy eel", "[Small Net] - Frog spawn<br>[Fishing Rod, Bait] - Cave eel/Slimy eel", ItemID.RAW_CAVE_EEL,
 		FISHING_SPOT_1497, FISHING_SPOT_1498, FISHING_SPOT_1499, FISHING_SPOT_1500
 	),
 	SLIMY_EEL("Slimy eel", "[Fishing Rod, Bait] - Slimy eel", ItemID.RAW_SLIMY_EEL,
