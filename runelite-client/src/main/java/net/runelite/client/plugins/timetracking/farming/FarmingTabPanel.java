@@ -49,6 +49,7 @@ public class FarmingTabPanel extends TabContentPanel
 {
 	private final FarmingTracker farmingTracker;
 	private final CompostTracker compostTracker;
+	private final PaymentTracker paymentTracker;
 	private final ItemManager itemManager;
 	private final ConfigManager configManager;
 	private final TimeTrackingConfig config;
@@ -58,6 +59,7 @@ public class FarmingTabPanel extends TabContentPanel
 	FarmingTabPanel(
 		FarmingTracker farmingTracker,
 		CompostTracker compostTracker,
+		PaymentTracker paymentTracker,
 		ItemManager itemManager,
 		ConfigManager configManager,
 		TimeTrackingConfig config,
@@ -67,6 +69,7 @@ public class FarmingTabPanel extends TabContentPanel
 	{
 		this.farmingTracker = farmingTracker;
 		this.compostTracker = compostTracker;
+		this.paymentTracker = paymentTracker;
 		this.itemManager = itemManager;
 		this.configManager = configManager;
 		this.config = config;
@@ -153,16 +156,16 @@ public class FarmingTabPanel extends TabContentPanel
 			FarmingPatch patch = panel.getTimeable();
 			PatchPrediction prediction = farmingTracker.predictPatch(patch);
 
-			CompostState compostState = compostTracker.getCompostState(patch);
-			String compostTooltip = "";
-			if (compostState != null)
-			{
-				AsyncBufferedImage compostImg = itemManager.getImage(compostState.getItemId());
-				Runnable compostOverlayRunnable = () -> panel.setOverlayIconImage(compostImg);
-				compostImg.onLoaded(compostOverlayRunnable);
-				compostOverlayRunnable.run();
+			final boolean protected_ = paymentTracker.getProtectedState(patch);
+			final CompostState compostState = compostTracker.getCompostState(patch);
+			final AsyncBufferedImage img = getPatchImage(compostState, protected_);
+			final String tooltip = getPatchTooltip(compostState, protected_);
 
-				compostTooltip = " with " + compostState.name().toLowerCase();
+			if (img != null)
+			{
+				Runnable r = () -> panel.setOverlayIconImage(img);
+				img.onLoaded(r);
+				r.run();
 			}
 			else
 			{
@@ -172,7 +175,7 @@ public class FarmingTabPanel extends TabContentPanel
 			if (prediction == null)
 			{
 				itemManager.getImage(Produce.WEEDS.getItemID()).addTo(panel.getIcon());
-				panel.getIcon().setToolTipText("Unknown state" + compostTooltip);
+				panel.getIcon().setToolTipText("Unknown state" + tooltip);
 				panel.getProgress().setMaximumValue(0);
 				panel.getProgress().setValue(0);
 				panel.getProgress().setVisible(false);
@@ -184,12 +187,12 @@ public class FarmingTabPanel extends TabContentPanel
 				if (prediction.getProduce().getItemID() < 0)
 				{
 					panel.getIcon().setIcon(null);
-					panel.getIcon().setToolTipText("Unknown state" + compostTooltip);
+					panel.getIcon().setToolTipText("Unknown state" + tooltip);
 				}
 				else
 				{
 					itemManager.getImage(prediction.getProduce().getItemID()).addTo(panel.getIcon());
-					panel.getIcon().setToolTipText(prediction.getProduce().getName() + compostTooltip);
+					panel.getIcon().setToolTipText(prediction.getProduce().getName() + tooltip);
 				}
 
 				switch (prediction.getCropState())
@@ -254,5 +257,29 @@ public class FarmingTabPanel extends TabContentPanel
 
 			toggleNotify.setSelected(notifyEnabled);
 		}
+	}
+
+	private AsyncBufferedImage getPatchImage(CompostState compostState, boolean protected_)
+	{
+		return protected_ ? itemManager.getImage(ItemID.APPLES5) :
+			(compostState != null ? itemManager.getImage(compostState.getItemId()) : null);
+	}
+
+	private String getPatchTooltip(CompostState compostState, boolean protected_)
+	{
+		StringBuilder stringBuilder = new StringBuilder();
+		if (protected_)
+		{
+			stringBuilder.append(" protected");
+			if (compostState != null)
+			{
+				stringBuilder.append(" and ").append(compostState.name().toLowerCase()).append("ed");
+			}
+		}
+		else if (compostState != null)
+		{
+			stringBuilder.append(" with ").append(compostState.name().toLowerCase());
+		}
+		return stringBuilder.toString();
 	}
 }

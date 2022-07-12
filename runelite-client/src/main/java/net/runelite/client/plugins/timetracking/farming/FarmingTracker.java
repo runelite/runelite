@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.timetracking.farming;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import java.time.Instant;
 import java.util.Collection;
@@ -36,6 +35,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import javax.annotation.Nullable;
+import javax.inject.Inject;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -55,6 +57,10 @@ import net.runelite.client.util.Text;
 
 @Slf4j
 @Singleton
+@RequiredArgsConstructor(
+	access = AccessLevel.PRIVATE,
+	onConstructor = @__({@Inject})
+)
 public class FarmingTracker
 {
 	private final Client client;
@@ -64,6 +70,7 @@ public class FarmingTracker
 	private final FarmingWorld farmingWorld;
 	private final Notifier notifier;
 	private final CompostTracker compostTracker;
+	private final PaymentTracker paymentTracker;
 
 	private final Map<Tab, SummaryState> summaries = new EnumMap<>(Tab.class);
 
@@ -78,21 +85,9 @@ public class FarmingTracker
 	private Collection<FarmingRegion> lastRegions;
 	private boolean firstNotifyCheck = true;
 
-	@Inject
-	private FarmingTracker(Client client, ItemManager itemManager, ConfigManager configManager, TimeTrackingConfig config, FarmingWorld farmingWorld, Notifier notifier, CompostTracker compostTracker)
-	{
-		this.client = client;
-		this.itemManager = itemManager;
-		this.configManager = configManager;
-		this.config = config;
-		this.farmingWorld = farmingWorld;
-		this.notifier = notifier;
-		this.compostTracker = compostTracker;
-	}
-
 	public FarmingTabPanel createTabPanel(Tab tab, FarmingContractManager farmingContractManager)
 	{
-		return new FarmingTabPanel(this, compostTracker, itemManager, configManager, config, farmingWorld.getTabs().get(tab), farmingContractManager);
+		return new FarmingTabPanel(this, compostTracker, paymentTracker, itemManager, configManager, config, farmingWorld.getTabs().get(tab), farmingContractManager);
 	}
 
 	/**
@@ -227,6 +222,7 @@ public class FarmingTracker
 				if (currentPatchState.getCropState() == CropState.DEAD || currentPatchState.getCropState() == CropState.HARVESTABLE)
 				{
 					compostTracker.setCompostState(patch, null);
+					paymentTracker.setProtectedState(patch, false);
 				}
 
 				String value = strVarbit + ":" + unixNow;
