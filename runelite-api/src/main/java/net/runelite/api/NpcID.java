@@ -9787,14 +9787,7 @@ public final class NpcID
 	public static final int POSSESSED_PRIEST_11608 = 11608;
 	public static final int PRIEST_11609 = 11609;
 	public static final int PRIEST_11610 = 11610;
-	public static final int GILBERT = 11650;
-	public static final int GILBERT_11651 = 11651;
-	public static final int AVEN = 11652;
-	public static final int WOLF_11653 = 11653;
-	public static final int SYLVIA = 11654;
-	public static final int MARSHA = 11655;
-	public static final int ALAN_11656 = 11656;
-	public static final int OSCAR = 11657;
+	public static final int GILBERT = 11658;
 	public static final int ARENA_GUARD_FRONK = 11664;
 	public static final int ARENA_GUARD_NIKKOLAS = 11665;
 	public static final int ARENA_GUARD_FAWRY = 11666;
