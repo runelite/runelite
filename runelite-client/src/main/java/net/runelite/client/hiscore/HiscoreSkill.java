@@ -69,6 +69,7 @@ public enum HiscoreSkill
 	CLUE_SCROLL_ELITE("Clue Scrolls (elite)", ACTIVITY),
 	CLUE_SCROLL_MASTER("Clue Scrolls (master)", ACTIVITY),
 	LAST_MAN_STANDING("Last Man Standing", ACTIVITY),
+	PVP_ARENA_RANK("PvP Arena - Rank", ACTIVITY),
 	SOUL_WARS_ZEAL("Soul Wars Zeal", ACTIVITY),
 	RIFTS_CLOSED("Rifts closed", ACTIVITY),
 	ABYSSAL_SIRE("Abyssal Sire", BOSS),
