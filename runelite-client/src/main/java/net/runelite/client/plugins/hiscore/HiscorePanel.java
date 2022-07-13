@@ -283,6 +283,7 @@ public class HiscorePanel extends PluginPanel
 		minigamePanel.add(makeHiscorePanel(RIFTS_CLOSED));
 		minigamePanel.add(makeHiscorePanel(BOUNTY_HUNTER_ROGUE));
 		minigamePanel.add(makeHiscorePanel(BOUNTY_HUNTER_HUNTER));
+		minigamePanel.add(makeHiscorePanel(PVP_ARENA_RANK));
 
 		add(minigamePanel, c);
 		c.gridy++;
@@ -560,62 +561,32 @@ public class HiscorePanel extends PluginPanel
 				}
 				case BOUNTY_HUNTER_ROGUE:
 				{
-					Skill bountyHunterRogue = result.getBountyHunterRogue();
-					String rank = (bountyHunterRogue.getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(bountyHunterRogue.getRank());
-					content += "<p><span style = 'color:white'>Bounty Hunter - Rogue</span></p>";
-					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
-					if (bountyHunterRogue.getLevel() > -1)
-					{
-						content += "<p><span style = 'color:white'>Score:</span> " + QuantityFormatter.formatNumber(bountyHunterRogue.getLevel()) + "</p>";
-					}
+					content += buildMinigameTooltip(result.getBountyHunterRogue(), skill);
 					break;
 				}
 				case BOUNTY_HUNTER_HUNTER:
 				{
-					Skill bountyHunterHunter = result.getBountyHunterHunter();
-					String rank = (bountyHunterHunter.getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(bountyHunterHunter.getRank());
-					content += "<p><span style = 'color:white'>Bounty Hunter - Hunter</span></p>";
-					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
-					if (bountyHunterHunter.getLevel() > -1)
-					{
-						content += "<p><span style = 'color:white'>Score:</span> " + QuantityFormatter.formatNumber(bountyHunterHunter.getLevel()) + "</p>";
-					}
+					content += buildMinigameTooltip(result.getBountyHunterHunter(), skill);
+					break;
+				}
+				case PVP_ARENA_RANK:
+				{
+					content += buildMinigameTooltip(result.getPvpArenaRank(), skill);
 					break;
 				}
 				case LAST_MAN_STANDING:
 				{
-					Skill lastManStanding = result.getLastManStanding();
-					String rank = (lastManStanding.getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(lastManStanding.getRank());
-					content += "<p><span style = 'color:white'>Last Man Standing</span></p>";
-					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
-					if (lastManStanding.getLevel() > -1)
-					{
-						content += "<p><span style = 'color:white'>Score:</span> " + QuantityFormatter.formatNumber(lastManStanding.getLevel()) + "</p>";
-					}
+					content += buildMinigameTooltip(result.getLastManStanding(), skill);
 					break;
 				}
 				case SOUL_WARS_ZEAL:
 				{
-					Skill soulWarsZeal = result.getSoulWarsZeal();
-					String rank = (soulWarsZeal.getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(soulWarsZeal.getRank());
-					content += "<p><span style = 'color:white'>Soul Wars Zeal</span></p>";
-					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
-					if (soulWarsZeal.getLevel() > -1)
-					{
-						content += "<p><span style = 'color:white'>Score:</span> " + QuantityFormatter.formatNumber(soulWarsZeal.getLevel()) + "</p>";
-					}
+					content += buildMinigameTooltip(result.getSoulWarsZeal(), skill);
 					break;
 				}
 				case RIFTS_CLOSED:
 				{
-					Skill riftsClosed = result.getRiftsClosed();
-					String rank = (riftsClosed.getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(riftsClosed.getRank());
-					content += "<p><span style = 'color:white'>Rifts closed</span></p>";
-					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
-					if (riftsClosed.getLevel() > -1)
-					{
-						content += "<p><span style = 'color:white'>Rifts:</span> " + QuantityFormatter.formatNumber(riftsClosed.getLevel()) + "</p>";
-					}
+					content += buildMinigameTooltip(result.getRiftsClosed(), skill);
 					break;
 				}
 				case LEAGUE_POINTS:
@@ -720,6 +691,19 @@ public class HiscorePanel extends PluginPanel
 		}
 
 		return openingTags + content + closingTags;
+	}
+
+	private static String buildMinigameTooltip(Skill s, HiscoreSkill hiscoreSkill)
+	{
+		String rank = (s.getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(s.getRank());
+		String content = "";
+		content += "<p><span style = 'color:white'>" + hiscoreSkill.getName() + "</span></p>";
+		content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
+		if (s.getLevel() > -1)
+		{
+			content += "<p><span style = 'color:white'>Score:</span> " + QuantityFormatter.formatNumber(s.getLevel()) + "</p>";
+		}
+		return content;
 	}
 
 	private static String sanitize(String lookup)
