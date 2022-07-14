@@ -87,7 +87,8 @@ public class SpecialCounterPlugin extends Plugin
 		NpcID.ZOMBIFIED_SPAWN, NpcID.ZOMBIFIED_SPAWN_8063, // vorkath
 		NpcID.COMBAT_DUMMY, NpcID.UNDEAD_COMBAT_DUMMY, // poh
 		NpcID.SKELETON_HELLHOUND_6613, NpcID.GREATER_SKELETON_HELLHOUND, // vetion
-		NpcID.SPAWN, NpcID.SCION // abyssal sire
+		NpcID.SPAWN, NpcID.SCION, // abyssal sire
+		NpcID.GREAT_OLM_RIGHT_CLAW, NpcID.GREAT_OLM_RIGHT_CLAW_7553 // olm mage hand
 	);
 
 	private int currentWorld;
