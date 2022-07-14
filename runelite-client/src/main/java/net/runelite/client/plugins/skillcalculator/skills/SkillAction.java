@@ -86,13 +86,12 @@ public interface SkillAction
 	}
 
 	/**
-	 * Returns {@code true} if this skill action is not boosted by any {@link SkillBonus skill bonuses}, {@code false}
-	 * otherwise.
+	 * Returns {@code true} if this skill action is affected by the specified {@link SkillBonus skill bonus}, {@code false} otherwise.
 	 *
-	 * @return {@code true} if this skill action is unaffected by skill bonuses, {@code false} otherwise.
+	 * @return {@code true} if this skill action is affected by the specified skill bonus, {@code false} otherwise.
 	 */
-	default boolean isIgnoreBonus()
+	default boolean isBonusApplicable(SkillBonus bonus)
 	{
-		return false;
+		return true;
 	}
 }

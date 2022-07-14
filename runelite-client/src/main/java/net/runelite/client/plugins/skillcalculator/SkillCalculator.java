@@ -78,7 +78,7 @@ class SkillCalculator extends JPanel
 	private int currentXP = Experience.getXpForLevel(currentLevel);
 	private int targetLevel = currentLevel + 1;
 	private int targetXP = Experience.getXpForLevel(targetLevel);
-	private float xpFactor = 1;
+	private SkillBonus currentBonus = null;
 
 	SkillCalculator(Client client, ClientThread clientThread, UICalculatorInputArea uiInput, SpriteManager spriteManager, ItemManager itemManager)
 	{
@@ -138,9 +138,7 @@ class SkillCalculator extends JPanel
 		if (currentCalculator != calculatorType)
 		{
 			currentCalculator = calculatorType;
-
-			// Reset the XP factor, removing bonuses.
-			xpFactor = 1;
+			currentBonus = null;
 
 			VarPlayer endGoalVarp = endGoalVarpForSkill(calculatorType.getSkill());
 			int endGoal = client.getVar(endGoalVarp);
@@ -279,7 +277,7 @@ class SkillCalculator extends JPanel
 			}
 		}
 
-		adjustXPBonus(target.isSelected() ? bonus.getValue() : 0f);
+		adjustXPBonus(target.isSelected() ? bonus : null);
 	}
 
 	private void renderActionSlots()
@@ -342,7 +340,11 @@ class SkillCalculator extends JPanel
 			int actionCount = 0;
 			int neededXP = targetXP - currentXP;
 			SkillAction action = slot.getAction();
-			final float bonus = action.isIgnoreBonus() ? 1f : xpFactor;
+			float bonus = 1f;
+			if (currentBonus != null && action.isBonusApplicable(currentBonus))
+			{
+				bonus += currentBonus.getValue();
+			}
 			final int xp = Math.round(action.getXp() * bonus * 10f);
 
 			if (neededXP > 0)
@@ -386,9 +388,9 @@ class SkillCalculator extends JPanel
 		calculate();
 	}
 
-	private void adjustXPBonus(float value)
+	private void adjustXPBonus(SkillBonus bonus)
 	{
-		xpFactor = 1 + value;
+		currentBonus = bonus;
 		calculate();
 	}
 

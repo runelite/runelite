@@ -74,4 +74,10 @@ public enum RunecraftAction implements ItemSkillAction
 	private final int level;
 	private final float xp;
 	private final boolean ignoreBonus;
+
+	@Override
+	public boolean isBonusApplicable(SkillBonus bonus)
+	{
+		return !ignoreBonus;
+	}
 }
