@@ -1,0 +1,3 @@
+[submodule "runelite-client/src/main/java/net/runelite/client/plugins/runelite-tilemapper-plugin"]
+	path = runelite-client/src/main/java/net/runelite/client/plugins/runelite-tilemapper-plugin
+	url = https://github.com/PatrykSitko/runelite-tilemapper-plugin
