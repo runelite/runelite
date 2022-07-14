@@ -1,3 +1,4 @@
-[submodule "runelite-client/src/main/java/net/runelite/client/plugins/runelite-tilemapper-plugin"]
+
+[submodule "tileMapper"]
 	path = runelite-client/src/main/java/net/runelite/client/plugins/runelite-tilemapper-plugin
 	url = https://github.com/PatrykSitko/runelite-tilemapper-plugin
