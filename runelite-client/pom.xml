@@ -29,7 +29,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.8.28-SNAPSHOT</version>
+		<version>1.8.27-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>client</artifactId>
@@ -343,7 +343,7 @@
 		<dependency>
 			<groupId>net.runelite.arn</groupId>
 			<artifactId>http-api</artifactId>
-			<version>1.0.10</version>
+			<version>1.0.6</version>
 		</dependency>
 		<dependency>
 			<groupId>net.runelite</groupId>
@@ -422,7 +422,26 @@
 				<filtering>false</filtering>
 			</resource>
 		</resources>
+
 		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>3.0.0</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>java</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<mainClass>net.runelite.client.RuneLite</mainClass>
+					<arguments>
+						<argument>--developer-mode</argument>
+						</arguments>
+				</configuration>
+		</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
