@@ -1507,14 +1507,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 					renderable.setModelHeight(model.getModelHeight());
 				}
 
-				if (!isVisible(model, pitchSin, pitchCos, yawSin, yawCos, x, y, z))
-				{
-					return;
-				}
-
-				model.calculateExtreme(orientation);
-				client.checkClickbox(model, orientation, pitchSin, pitchCos, yawSin, yawCos, x, y, z, hash);
-
 				modelX = x + client.getCameraX2();
 				modelY = y + client.getCameraY2();
 				modelZ = z + client.getCameraZ2();
