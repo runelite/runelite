@@ -73,7 +73,7 @@ class CompactBoostsOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		final Set<Skill> boostedSkills = plugin.getSkillsToDisplay();
-		if (boostedSkills.isEmpty() || !config.compactDisplay())
+		if (!config.compactDisplay())
 		{
 			return null;
 		}
