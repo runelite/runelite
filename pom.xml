@@ -79,11 +79,6 @@
 		<url>https://github.com/runelite/runelite/issues</url>
 	</issueManagement>
 
-	<ciManagement>
-		<system>Travis CI</system>
-		<url>https://travis-ci.org/runelite/runelite</url>
-	</ciManagement>
-
 	<repositories>
 		<repository>
 			<id>central</id>
