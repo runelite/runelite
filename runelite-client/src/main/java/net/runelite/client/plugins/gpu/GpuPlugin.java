@@ -810,11 +810,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	@Override
 	public void postDrawScene()
 	{
-		postDraw();
-	}
-
-	private void postDraw()
-	{
 		if (computeMode == ComputeMode.NONE)
 		{
 			// Upload buffers
@@ -1006,12 +1001,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		}
 	}
 
-	@Override
-	public void draw(int overlayColor)
-	{
-		drawFrame(overlayColor);
-	}
-
 	private void prepareInterfaceTexture(int canvasWidth, int canvasHeight)
 	{
 		if (canvasWidth != lastCanvasWidth || canvasHeight != lastCanvasHeight)
@@ -1044,7 +1033,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		GL43C.glBindTexture(GL43C.GL_TEXTURE_2D, 0);
 	}
 
-	private void drawFrame(int overlayColor)
+	@Override
+	public void draw(int overlayColor)
 	{
 		final int canvasHeight = client.getCanvasHeight();
 		final int canvasWidth = client.getCanvasWidth();
