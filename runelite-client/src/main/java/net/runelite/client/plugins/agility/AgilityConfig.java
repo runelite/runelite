@@ -267,7 +267,10 @@ public interface AgilityConfig extends Config
 			position = 19,
 			section = sepulchreSection
 	)
-	default boolean highlightSepulchreNpcsTrueTile() { return false; }
+	default boolean highlightSepulchreNpcsTrueTile()
+	{
+		return false;
+	}
 
 	@Alpha
 	@ConfigItem(

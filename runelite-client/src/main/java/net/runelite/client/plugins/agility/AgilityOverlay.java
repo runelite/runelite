@@ -25,8 +25,12 @@
  */
 package net.runelite.client.plugins.agility;
 
+import net.runelite.api.Client;
+import net.runelite.api.NPC;
 import net.runelite.api.Point;
-import net.runelite.api.*;
+import net.runelite.api.Tile;
+import net.runelite.api.NPCComposition;
+import net.runelite.api.Perspective;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.game.AgilityShortcut;
 import net.runelite.client.ui.overlay.Overlay;
@@ -149,7 +153,8 @@ class AgilityOverlay extends Overlay
 		{
 			for (NPC npc : npcs)
 			{
-				if (config.highlightSepulchreNpcsTrueTile()) {
+				if (config.highlightSepulchreNpcsTrueTile())
+				{
 					NPCComposition npcComposition = npc.getTransformedComposition();
 					Color color = config.sepulchreHighlightTrueTileColor();
 
