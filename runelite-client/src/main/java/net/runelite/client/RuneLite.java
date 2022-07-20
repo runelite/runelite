@@ -80,14 +80,73 @@ import org.slf4j.LoggerFactory;
 @Slf4j
 public class RuneLite
 {
-	public static final File RUNELITE_DIR = new File(System.getProperty("user.home"), ".runelite");
-	public static final File CACHE_DIR = new File(RUNELITE_DIR, "cache");
-	public static final File PLUGINS_DIR = new File(RUNELITE_DIR, "plugins");
-	public static final File PROFILES_DIR = new File(RUNELITE_DIR, "profiles");
-	public static final File SCREENSHOT_DIR = new File(RUNELITE_DIR, "screenshots");
-	public static final File LOGS_DIR = new File(RUNELITE_DIR, "logs");
-	public static final File DEFAULT_SESSION_FILE = new File(RUNELITE_DIR, "session");
-	public static final File DEFAULT_CONFIG_FILE = new File(RUNELITE_DIR, "settings.properties");
+	private static final File LEGACY_RUNELITE_DIR = new File(System.getProperty("user.home"), ".runelite");
+
+	public static final File RUNELITE_DIR;
+	public static final File CACHE_DIR;
+	public static final File LOGS_DIR;
+	public static final File CONFIG_DIR;
+	public static final File SCREENSHOT_DIR;
+	public static final File RUNTIME_DIR;
+
+	public static final File PLUGINS_DIR;
+	public static final File PROFILES_DIR;
+	public static final File DEFAULT_SESSION_FILE;
+	public static final File DEFAULT_CONFIG_FILE;
+
+	private static final String APP_NAME = "runelite";
+
+	static
+	{
+		if (LEGACY_RUNELITE_DIR.exists() && !System.getProperty("RUNELITE_USE_XDG"))
+		{
+			RUNELITE_DIR = new File(System.getProperty("user.home"), ".runelite");
+			CACHE_DIR = new File(RUNELITE_DIR, "cache");
+			PLUGINS_DIR = new File(RUNELITE_DIR, "plugins");
+			PROFILES_DIR = new File(RUNELITE_DIR, "profiles");
+			SCREENSHOT_DIR = new File(RUNELITE_DIR, "screenshots");
+			LOGS_DIR = new File(RUNELITE_DIR, "logs");
+			DEFAULT_SESSION_FILE = new File(RUNELITE_DIR, "session");
+			DEFAULT_CONFIG_FILE = new File(RUNELITE_DIR, "settings.properties");
+		}
+		else
+		{
+			switch (OS.getOS())
+			{
+				case Linux:
+				case MacOS:
+					RUNELITE_DIR = new File(OS.getXDG("data", APP_NAME));
+					CACHE_DIR = new File(OS.getXDG("cache", APP_NAME));
+					LOGS_DIR = new File(OS.getXDG("state", APP_NAME));
+					CONFIG_DIR = new File(OS.getXDG("config", APP_NAME));
+					SCREENSHOT_DIR = new File(OS.getXDG("pictures", APP_NAME));
+					RUNTIME_DIR = new File(OS.getXDG("runtime", APP_NAME));
+
+					PLUGINS_DIR = new File(RUNELITE_DIR, "plugins");
+					PROFILES_DIR = new File(RUNELITE_DIR, "profiles");
+
+					DEFAULT_SESSION_FILE = new File(RUNTIME_DIR, "session");
+					DEFAULT_CONFIG_FILE = new File(CONFIG_DIR, "settings.properties");
+					break;
+				case Windows:
+				case Other:
+				default:
+					RUNELITE_DIR = new File(System.getProperty("user.home"), ".runelite");
+					CACHE_DIR = new File(RUNELITE_DIR, "cache");
+					LOGS_DIR = new File(RUNELITE_DIR, "logs");
+					CONFIG_DIR = new File(RUNELITE_DIR);
+					RUNETIME_DIR = new File(RUNELITE_DIR);
+
+					PLUGINS_DIR = new File(RUNELITE_DIR, "plugins");
+					SCREENSHOT_DIR = new File(RUNELITE_DIR, "screenshots");
+					PROFILES_DIR = new File(RUNELITE_DIR, "profiles");
+
+					DEFAULT_SESSION_FILE = new File(RUNELITE_DIR, "session");
+					DEFAULT_CONFIG_FILE = new File(RUNELITE_DIR, "settings.properties");
+					break;
+			}
+		}
+	}
 
 	private static final int MAX_OKHTTP_CACHE_SIZE = 20 * 1024 * 1024; // 20mb
 
