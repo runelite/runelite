@@ -74,7 +74,8 @@ import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
-import org.slf4j.LoggerFactory;
+import net.runelite.client.util.LoggerFactory;
+import net.runelite.client.util.OS;
 
 @Singleton
 @Slf4j
@@ -98,7 +99,7 @@ public class RuneLite
 
 	static
 	{
-		if (LEGACY_RUNELITE_DIR.exists() && !System.getProperty("RUNELITE_USE_XDG"))
+		if (LEGACY_RUNELITE_DIR.exists() && System.getProperty("RUNELITE_USE_XDG", null) == null)
 		{
 			RUNELITE_DIR = new File(System.getProperty("user.home"), ".runelite");
 			CACHE_DIR = new File(RUNELITE_DIR, "cache");
@@ -108,6 +109,8 @@ public class RuneLite
 			LOGS_DIR = new File(RUNELITE_DIR, "logs");
 			DEFAULT_SESSION_FILE = new File(RUNELITE_DIR, "session");
 			DEFAULT_CONFIG_FILE = new File(RUNELITE_DIR, "settings.properties");
+			CONFIG_DIR = new File(RUNELITE_DIR.toString());
+			RUNTIME_DIR = new File(RUNELITE_DIR.toString());
 		}
 		else
 		{
@@ -134,8 +137,8 @@ public class RuneLite
 					RUNELITE_DIR = new File(System.getProperty("user.home"), ".runelite");
 					CACHE_DIR = new File(RUNELITE_DIR, "cache");
 					LOGS_DIR = new File(RUNELITE_DIR, "logs");
-					CONFIG_DIR = new File(RUNELITE_DIR);
-					RUNETIME_DIR = new File(RUNELITE_DIR);
+					CONFIG_DIR = new File(RUNELITE_DIR.toString());
+					RUNTIME_DIR = new File(RUNELITE_DIR.toString());
 
 					PLUGINS_DIR = new File(RUNELITE_DIR, "plugins");
 					SCREENSHOT_DIR = new File(RUNELITE_DIR, "screenshots");
