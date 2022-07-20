@@ -313,7 +313,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				}
 
 				computeMode = config.useComputeShaders()
-					? OS.equals("mac") ? ComputeMode.OPENCL : ComputeMode.OPENGL)
+					? (OS.equals("mac") ? ComputeMode.OPENCL : ComputeMode.OPENGL)
 					: ComputeMode.NONE;
 
 				canvas.setIgnoreRepaint(true);
