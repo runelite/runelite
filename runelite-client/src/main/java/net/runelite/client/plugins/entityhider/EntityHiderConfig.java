@@ -147,7 +147,7 @@ public interface EntityHiderConfig extends Config
 	@ConfigItem(
 		position = 11,
 		keyName = "hidePets",
-		name = "Hide Pets",
+		name = "Hide Other Players' Pets",
 		description = "Configures whether or not other player pets are hidden"
 	)
 	default boolean hidePets()
