@@ -111,7 +111,7 @@ public class SwingUtil
 		{
 			UIManager.setLookAndFeel(laf);
 
-			if (OSType.getOSType() == OSType.MacOS)
+			if (OS.equals("mac"))
 			{
 				// On MacOS Substance doesn't install its own popup factory, and the default one uses lightweight
 				// components unless the Aqua LAF is used. Lightweight components do not render correctly over AWT

@@ -38,7 +38,7 @@ import javax.swing.JFrame;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.config.ExpandResizeType;
-import net.runelite.client.util.OSType;
+import net.runelite.client.util.OS;
 
 @Slf4j
 public class ContainableFrame extends JFrame
@@ -252,7 +252,7 @@ public class ContainableFrame extends JFrame
 	@Override
 	public void setMaximizedBounds(Rectangle bounds)
 	{
-		if (OSType.getOSType() == OSType.MacOS)
+		if (OS.equals("mac"))
 		{
 			// OSX seems to correctly handle DPI scaling already
 			super.setMaximizedBounds(bounds);

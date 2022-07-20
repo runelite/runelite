@@ -69,7 +69,7 @@ import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.events.NotificationFired;
 import net.runelite.client.ui.ClientUI;
-import net.runelite.client.util.OSType;
+import net.runelite.client.util.OS;
 
 @Singleton
 @Slf4j
@@ -142,7 +142,7 @@ public class Notifier
 		this.notifyIconPath = RuneLite.RUNELITE_DIR.toPath().resolve("icon.png");
 
 		// First check if we are running in launcher
-		if (!Strings.isNullOrEmpty(RuneLiteProperties.getLauncherVersion()) && OSType.getOSType() == OSType.MacOS)
+		if (!Strings.isNullOrEmpty(RuneLiteProperties.getLauncherVersion()) && OS.equals("mac"))
 		{
 			executorService.execute(() -> terminalNotifierAvailable = isTerminalNotifierAvailable());
 		}
@@ -283,7 +283,7 @@ public class Notifier
 		final String escapedTitle = SHELL_ESCAPE.escape(title);
 		final String escapedMessage = SHELL_ESCAPE.escape(message);
 
-		switch (OSType.getOSType())
+		switch (OS.getOS())
 		{
 			case Linux:
 				sendLinuxNotification(escapedTitle, escapedMessage, type);
@@ -396,7 +396,7 @@ public class Notifier
 
 	private void storeIcon()
 	{
-		if (OSType.getOSType() == OSType.Linux && !Files.exists(notifyIconPath))
+		if (OS.equals("linux") && !Files.exists(notifyIconPath))
 		{
 			try (InputStream stream = Notifier.class.getResourceAsStream("/runelite.png"))
 			{

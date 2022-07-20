@@ -98,7 +98,7 @@ import net.runelite.client.plugins.gpu.config.AntiAliasingMode;
 import net.runelite.client.plugins.gpu.config.UIScalingMode;
 import net.runelite.client.plugins.gpu.template.Template;
 import net.runelite.client.ui.DrawManager;
-import net.runelite.client.util.OSType;
+import net.runelite.client.util.OS;
 import org.jocl.CL;
 import static org.jocl.CL.CL_MEM_READ_ONLY;
 import static org.jocl.CL.CL_MEM_WRITE_ONLY;
@@ -313,7 +313,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				}
 
 				computeMode = config.useComputeShaders()
-					? (OSType.getOSType() == OSType.MacOS ? ComputeMode.OPENCL : ComputeMode.OPENGL)
+					? OS.equals("mac") ? ComputeMode.OPENCL : ComputeMode.OPENGL)
 					: ComputeMode.NONE;
 
 				canvas.setIgnoreRepaint(true);
@@ -515,7 +515,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 					// this crashes on osx when the plugin is turned back on, don't know why
 					// we'll just leak the window...
-					if (OSType.getOSType() != OSType.MacOS)
+					if (!OS.equals("mac"))
 					{
 						NewtFactoryAWT.destroyNativeWindow(jawtWindow);
 					}
@@ -593,7 +593,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	private void initProgram() throws ShaderException
 	{
-		String versionHeader = OSType.getOSType() == OSType.Linux ? LINUX_VERSION_HEADER : WINDOWS_VERSION_HEADER;
+		String versionHeader = OS.equals("linux") ? LINUX_VERSION_HEADER : WINDOWS_VERSION_HEADER;
 		Template template = new Template();
 		template.add(key ->
 		{
@@ -1092,7 +1092,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			gl.glTexImage2D(gl.GL_TEXTURE_2D, 0, gl.GL_RGBA, canvasWidth, canvasHeight, 0, gl.GL_BGRA, gl.GL_UNSIGNED_BYTE, null);
 			gl.glBindTexture(gl.GL_TEXTURE_2D, 0);
 
-			if (OSType.getOSType() == OSType.MacOS && glDrawable instanceof GLFBODrawable)
+			if (OS.equals("mac") && glDrawable instanceof GLFBODrawable)
 			{
 				// GLDrawables created with createGLDrawable() do not have a resize listener
 				// I don't know why this works with Windows/Linux, but on OSX
@@ -1443,7 +1443,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			height = dim.height;
 		}
 
-		if (OSType.getOSType() != OSType.MacOS)
+		if (!OS.equals("mac"))
 		{
 			final Graphics2D graphics = (Graphics2D) canvas.getGraphics();
 			final AffineTransform t = graphics.getTransform();
@@ -1733,7 +1733,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	private void glDpiAwareViewport(final int x, final int y, final int width, final int height)
 	{
-		if (OSType.getOSType() == OSType.MacOS)
+		if (OS.equals("mac"))
 		{
 			// JOGL seems to handle DPI scaling for us already
 			gl.glViewport(x, y, width, height);
@@ -1759,7 +1759,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	private static void invokeOnMainThread(Runnable runnable)
 	{
-		if (OSType.getOSType() == OSType.MacOS)
+		if (OS.equals("mac"))
 		{
 			OSXUtil.RunOnMainThread(true, false, runnable);
 		}

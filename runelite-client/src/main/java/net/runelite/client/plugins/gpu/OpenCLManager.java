@@ -41,7 +41,7 @@ import jogamp.opengl.windows.wgl.WindowsWGLContext;
 import jogamp.opengl.x11.glx.X11GLXContext;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.plugins.gpu.template.Template;
-import net.runelite.client.util.OSType;
+import net.runelite.client.util.OS;
 import org.jocl.CL;
 import static org.jocl.CL.*;
 import org.jocl.CLException;
@@ -99,7 +99,7 @@ class OpenCLManager
 	{
 		CL.setExceptionsEnabled(true);
 
-		switch (OSType.getOSType())
+		switch (OS.getOS())
 		{
 			case Windows:
 			case Linux:
@@ -111,7 +111,7 @@ class OpenCLManager
 				initMacOS(gl);
 				break;
 			default:
-				throw new RuntimeException("Unsupported OS Type " + OSType.getOSType().name());
+				throw new RuntimeException("Unsupported OS Type " + OS.getOS().name());
 		}
 		ensureMinWorkGroupSize();
 		initQueue();

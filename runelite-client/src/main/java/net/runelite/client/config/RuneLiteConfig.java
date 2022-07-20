@@ -32,7 +32,7 @@ import net.runelite.api.Constants;
 import net.runelite.client.Notifier;
 import net.runelite.client.ui.ContainableFrame;
 import net.runelite.client.ui.overlay.components.ComponentConstants;
-import net.runelite.client.util.OSType;
+import net.runelite.client.util.OS;
 
 @ConfigGroup(RuneLiteConfig.GROUP_NAME)
 public interface RuneLiteConfig extends Config
@@ -130,7 +130,7 @@ public interface RuneLiteConfig extends Config
 	)
 	default boolean enableCustomChrome()
 	{
-		return OSType.getOSType() == OSType.Windows;
+		return OS.equals("windows");
 	}
 
 	@Range(

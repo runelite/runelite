@@ -42,7 +42,7 @@ public class OSXUtil
 	 */
 	public static void tryEnableFullscreen(JFrame gui)
 	{
-		if (OSType.getOSType() == OSType.MacOS)
+		if (OS.equals("mac"))
 		{
 			FullScreenUtilities.setWindowCanFullScreen(gui, true);
 			log.debug("Enabled fullscreen on macOS");

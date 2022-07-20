@@ -90,7 +90,7 @@ import net.runelite.client.input.MouseManager;
 import net.runelite.client.ui.skin.SubstanceRuneLiteLookAndFeel;
 import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.ImageUtil;
-import net.runelite.client.util.OSType;
+import net.runelite.client.util.OS;
 import net.runelite.client.util.OSXUtil;
 import net.runelite.client.util.SwingUtil;
 import net.runelite.client.util.WinUtil;
@@ -717,7 +717,7 @@ public class ClientUI
 	 */
 	public void requestFocus()
 	{
-		switch (OSType.getOSType())
+		switch (OS.getOS())
 		{
 			case MacOS:
 				// On OSX Component::requestFocus has no visible effect, so we use our OSX-specific
@@ -736,7 +736,7 @@ public class ClientUI
 	 */
 	public void forceFocus()
 	{
-		switch (OSType.getOSType())
+		switch (OS.getOS())
 		{
 			case MacOS:
 				OSXUtil.requestForeground();

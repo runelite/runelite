@@ -97,7 +97,7 @@ import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.LinkBrowser;
-import net.runelite.client.util.OSType;
+import net.runelite.client.util.OS;
 import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.Text;
 import net.runelite.http.api.ge.GrandExchangeClient;
@@ -908,7 +908,7 @@ public class GrandExchangePlugin extends Plugin
 			Hasher hasher = Hashing.sha256().newHasher();
 			Runtime runtime = Runtime.getRuntime();
 
-			hasher.putByte((byte) OSType.getOSType().ordinal());
+			hasher.putByte((byte) OS.getOS().ordinal());
 			hasher.putByte((byte) runtime.availableProcessors());
 			hasher.putUnencodedChars(System.getProperty("os.arch", ""));
 			hasher.putUnencodedChars(System.getProperty("os.version", ""));
