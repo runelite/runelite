@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.launcher;
+package net.runelite.client.util;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -45,6 +45,7 @@ public class OS
 	private static final Path DATA_HOME;
 	private static final Path CACHE_HOME;
 	private static final Path STATE_HOME;
+	private static final Path RUNTIME_DIR;
 	private static final Path PICTURES_DIR;
 
 	public enum OSType
@@ -65,6 +66,7 @@ public class OS
 		Path XDG_DATA_HOME;
 		Path XDG_CACHE_HOME;
 		Path XDG_STATE_HOME;
+		Path XDG_RUNTIME_DIR;
 		Path XDG_PICTURES_DIR;
 
 		if (os.contains("mac") || os.contains("darwin"))
@@ -100,7 +102,7 @@ public class OS
 			XDG_STATE_HOME = Paths.get(System.getProperty("user.home"), ".local", "state");
 			//  the default runtime directory on systemd is /run/user/1000, but this depends on the init. other
 			//  init systems should make sure they've exported the runtime directory to the environment
-			XDG_RUNTIME_DIR = Paths.get("run", "user", System.getProperty("UID"));
+			XDG_RUNTIME_DIR = Paths.get("run", "user", System.getProperty("UID", ""));  // defaulting to /run/user if UID='', since this should never happen anyway
 
 			XDG_PICTURES_DIR = Paths.get(System.getProperty("user.home"), "Pictures");
 
@@ -123,23 +125,23 @@ public class OS
 		switch (DETECTED_OS)
 		{
 			case Linux:
-			case Mac:
-				PICTURES_DIR = Paths.get(System.getProperty("XDG_PICTURES_DIR", XDG_PICTURES_DIR.toString()));
+			case MacOS:
 				CONFIG_HOME = Paths.get(System.getProperty("XDG_CONFIG_HOME", XDG_CONFIG_HOME.toString()));
 				DATA_HOME = Paths.get(System.getProperty("XDG_DATA_HOME", XDG_DATA_HOME.toString()));
 				CACHE_HOME = Paths.get(System.getProperty("XDG_CACHE_HOME", XDG_CACHE_HOME.toString()));
 				STATE_HOME = Paths.get(System.getProperty("XDG_STATE_HOME", XDG_STATE_HOME.toString()));
 				RUNTIME_DIR = Paths.get(System.getProperty("XDG_RUNTIME_DIR", XDG_RUNTIME_DIR.toString()));
+				PICTURES_DIR = Paths.get(System.getProperty("XDG_PICTURES_DIR", XDG_PICTURES_DIR.toString()));
 				break;
 			case Windows:
 			case Other:
 			default:
-				CONFIG_HOME = XDG_CONFIG_HOME.toString();
-				DATA_HOME = XDG_DATA_HOME.toString();
-				CACHE_HOME = XDG_CACHE_HOME.toString();
-				STATE_HOME = XDG_STATE_HOME.toString();
-				RUNTIME_DIR = XDG_RUNTIME_DIR.toString();
-				PICTURES_DIR = XDG_PICTURES_DIR.toString();
+				CONFIG_HOME = XDG_CONFIG_HOME;
+				DATA_HOME = XDG_DATA_HOME;
+				CACHE_HOME = XDG_CACHE_HOME;
+				STATE_HOME = XDG_STATE_HOME;
+				RUNTIME_DIR = XDG_RUNTIME_DIR;
+				PICTURES_DIR = XDG_PICTURES_DIR;
 				break;
 		}
 
