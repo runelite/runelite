@@ -98,56 +98,56 @@ public class TimersPluginTest
 	public void testHalfTeleblock()
 	{
 		when(timersConfig.showTeleblock()).thenReturn(true);
-		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "<col=4f006f>A Tele Block spell has been cast on you by Runelite. It will expire in 2 minutes, 30 seconds.</col>", "", 0);
-		timersPlugin.onChatMessage(chatMessage);
+		when(client.getVarbitValue(Varbits.TELEBLOCK)).thenReturn(350);
+		timersPlugin.onVarbitChanged(new VarbitChanged());
 
 		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
 		verify(infoBoxManager).addInfoBox(captor.capture());
 		TimerTimer infoBox = (TimerTimer) captor.getValue();
 		assertEquals(GameTimer.TELEBLOCK, infoBox.getTimer());
-		assertEquals(Duration.ofSeconds(2 * 60 + 30), infoBox.getDuration());
+		assertEquals(Duration.of(250, RSTimeUnit.GAME_TICKS), infoBox.getDuration());
 	}
 
 	@Test
 	public void testFullTeleblock()
 	{
 		when(timersConfig.showTeleblock()).thenReturn(true);
-		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "<col=4f006f>A Tele Block spell has been cast on you by Runelite. It will expire in 5 minutes.</col>", "", 0);
-		timersPlugin.onChatMessage(chatMessage);
+		when(client.getVarbitValue(Varbits.TELEBLOCK)).thenReturn(600);
+		timersPlugin.onVarbitChanged(new VarbitChanged());
 
 		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
 		verify(infoBoxManager).addInfoBox(captor.capture());
 		TimerTimer infoBox = (TimerTimer) captor.getValue();
 		assertEquals(GameTimer.TELEBLOCK, infoBox.getTimer());
-		assertEquals(Duration.ofMinutes(5), infoBox.getDuration());
+		assertEquals(Duration.of(500, RSTimeUnit.GAME_TICKS), infoBox.getDuration());
 	}
 
 	@Test
 	public void testDmmHalfTb()
 	{
 		when(timersConfig.showTeleblock()).thenReturn(true);
-		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "<col=4f006f>A Tele Block spell has been cast on you by Runelite. It will expire in 1 minute, 15 seconds.</col>", "", 0);
-		timersPlugin.onChatMessage(chatMessage);
+		when(client.getVarbitValue(Varbits.TELEBLOCK)).thenReturn(225);
+		timersPlugin.onVarbitChanged(new VarbitChanged());
 
 		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
 		verify(infoBoxManager).addInfoBox(captor.capture());
 		TimerTimer infoBox = (TimerTimer) captor.getValue();
 		assertEquals(GameTimer.TELEBLOCK, infoBox.getTimer());
-		assertEquals(Duration.ofSeconds(60 + 15), infoBox.getDuration());
+		assertEquals(Duration.of(125, RSTimeUnit.GAME_TICKS), infoBox.getDuration());
 	}
 
 	@Test
 	public void testDmmFullTb()
 	{
 		when(timersConfig.showTeleblock()).thenReturn(true);
-		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "<col=4f006f>A Tele Block spell has been cast on you by Runelite. It will expire in 2 minutes, 30 seconds.</col>", "", 0);
-		timersPlugin.onChatMessage(chatMessage);
+		when(client.getVarbitValue(Varbits.TELEBLOCK)).thenReturn(350);
+		timersPlugin.onVarbitChanged(new VarbitChanged());
 
 		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
 		verify(infoBoxManager).addInfoBox(captor.capture());
 		TimerTimer infoBox = (TimerTimer) captor.getValue();
 		assertEquals(GameTimer.TELEBLOCK, infoBox.getTimer());
-		assertEquals(Duration.ofSeconds(60 * 2 + 30), infoBox.getDuration());
+		assertEquals(Duration.of(250, RSTimeUnit.GAME_TICKS), infoBox.getDuration());
 	}
 
 	@Test
@@ -180,22 +180,22 @@ public class TimersPluginTest
 	public void testTransparentChatboxTb()
 	{
 		when(timersConfig.showTeleblock()).thenReturn(true);
-		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "<col=c356ef>A Tele Block spell has been cast on you by Alexsuperfly. It will expire in 5 minutes.</col>", "", 0);
-		timersPlugin.onChatMessage(chatMessage);
+		when(client.getVarbitValue(Varbits.TELEBLOCK)).thenReturn(600);
+		timersPlugin.onVarbitChanged(new VarbitChanged());
 
 		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
 		verify(infoBoxManager).addInfoBox(captor.capture());
 		TimerTimer infoBox = (TimerTimer) captor.getValue();
 		assertEquals(GameTimer.TELEBLOCK, infoBox.getTimer());
-		assertEquals(Duration.ofMinutes(5), infoBox.getDuration());
+		assertEquals(Duration.of(500, RSTimeUnit.GAME_TICKS), infoBox.getDuration());
 	}
 
 	@Test
 	public void testTransparentChatboxTbRemoved()
 	{
 		when(timersConfig.showTeleblock()).thenReturn(true);
-		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "<col=c356ef>Your Tele Block has been removed because you killed Alexsuperfly.</col>", "", 0);
-		timersPlugin.onChatMessage(chatMessage);
+		when(client.getVarbitValue(Varbits.TELEBLOCK)).thenReturn(0);
+		timersPlugin.onVarbitChanged(new VarbitChanged());
 
 		verify(infoBoxManager, atLeastOnce()).removeIf(any());
 	}
@@ -204,28 +204,28 @@ public class TimersPluginTest
 	public void testMageArena2TbFull()
 	{
 		when(timersConfig.showTeleblock()).thenReturn(true);
-		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "<col=c356ef>A Tele Block spell has been cast on you. It will expire in 2 minutes.</col>", "", 0);
-		timersPlugin.onChatMessage(chatMessage);
+		when(client.getVarbitValue(Varbits.TELEBLOCK)).thenReturn(300);
+		timersPlugin.onVarbitChanged(new VarbitChanged());
 
 		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
 		verify(infoBoxManager).addInfoBox(captor.capture());
 		TimerTimer infoBox = (TimerTimer) captor.getValue();
 		assertEquals(GameTimer.TELEBLOCK, infoBox.getTimer());
-		assertEquals(Duration.ofMinutes(2), infoBox.getDuration());
+		assertEquals(Duration.of(200, RSTimeUnit.GAME_TICKS), infoBox.getDuration());
 	}
 
 	@Test
 	public void testMageArena2TbHalf()
 	{
 		when(timersConfig.showTeleblock()).thenReturn(true);
-		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "<col=c356ef>A Tele Block spell has been cast on you. It will expire in 1 minute.</col>", "", 0);
-		timersPlugin.onChatMessage(chatMessage);
+		when(client.getVarbitValue(Varbits.TELEBLOCK)).thenReturn(200);
+		timersPlugin.onVarbitChanged(new VarbitChanged());
 
 		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
 		verify(infoBoxManager).addInfoBox(captor.capture());
 		TimerTimer infoBox = (TimerTimer) captor.getValue();
 		assertEquals(GameTimer.TELEBLOCK, infoBox.getTimer());
-		assertEquals(Duration.ofMinutes(1), infoBox.getDuration());
+		assertEquals(Duration.of(100,  RSTimeUnit.GAME_TICKS), infoBox.getDuration());
 	}
 
 	@Test
