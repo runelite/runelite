@@ -333,7 +333,7 @@ public class ClientUI
 			frame.setResizable(true);
 
 			frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-			if (OSType.getOSType() == OSType.MacOS)
+			if (OS.getOS() == OSType.MacOS)
 			{
 				// Change the default quit strategy to CLOSE_ALL_WINDOWS so that ctrl+q
 				// triggers the listener below instead of exiting.
@@ -557,7 +557,7 @@ public class ClientUI
 							// - 2015 x64 MBP JDK11 Mohave
 							// - 2020 m1 MBP JDK17 Big Sur
 							// Adjusting the scaling further results in the client position being incorrect
-							if (scale != 1 && OSType.getOSType() != OSType.MacOS)
+							if (scale != 1 && OS.getOS() != OSType.MacOS)
 							{
 								clientBounds.setRect(
 									clientBounds.getX() / scale,

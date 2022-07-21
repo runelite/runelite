@@ -277,11 +277,11 @@ class OpenCLManager
 		contextProps.addProperty(CL_CONTEXT_PLATFORM, platform);
 		contextProps.addProperty(CL_GL_CONTEXT_KHR, awtContext.getGLContext());
 
-		if (OSType.getOSType() == OSType.Linux)
+		if (OS.getOS() == OSType.Linux)
 		{
 			contextProps.addProperty(CL_GLX_DISPLAY_KHR, awtContext.getGLXDisplay());
 		}
-		else if (OSType.getOSType() == OSType.Windows)
+		else if (OS.getOS() == OSType.Windows)
 		{
 			contextProps.addProperty(CL_WGL_HDC_KHR, awtContext.getWGLHDC());
 		}
