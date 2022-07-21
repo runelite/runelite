@@ -33,6 +33,7 @@ import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.plugins.gpu.template.Template;
 import net.runelite.client.util.OS;
+import net.runelite.client.util.OS.OSType;
 import net.runelite.rlawt.AWTContext;
 import static org.jocl.CL.*;
 import org.jocl.CLException;
