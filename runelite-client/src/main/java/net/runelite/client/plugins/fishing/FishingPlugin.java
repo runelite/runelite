@@ -387,7 +387,7 @@ public class FishingPlugin extends Plugin
 			return;
 		}
 
-		int trawlerContribution = client.getVar(Varbits.FISHING_TRAWLER_ACTIVITY);
+		int trawlerContribution = client.getVarbitValue(Varbits.FISHING_TRAWLER_ACTIVITY);
 		trawlerContributionWidget.setText("Contribution: " + trawlerContribution);
 	}
 
@@ -445,7 +445,7 @@ public class FishingPlugin extends Plugin
 
 		if (seconds < 10)
 		{
-			trawlerText.append("0");
+			trawlerText.append('0');
 		}
 
 		trawlerText.append(seconds);

@@ -26,7 +26,6 @@ package net.runelite.client.plugins.hiscore;
 
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
-import java.util.EnumSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.annotation.Nullable;
@@ -39,7 +38,6 @@ import net.runelite.api.Client;
 import net.runelite.api.IconID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.Player;
-import net.runelite.api.WorldType;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
@@ -49,6 +47,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.hiscore.HiscoreEndpoint;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -56,7 +55,6 @@ import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
-import net.runelite.http.api.hiscore.HiscoreEndpoint;
 
 @PluginDescriptor(
 	name = "HiScore",
@@ -187,9 +185,7 @@ public class HiscorePlugin extends Plugin
 	{
 		if (event.getMenuAction() == MenuAction.RUNELITE_PLAYER && event.getMenuOption().equals(LOOKUP))
 		{
-			// The player id is included in the event, so we can use that to get the player name,
-			// which avoids having to parse out the combat level and any icons preceding the name.
-			Player player = client.getCachedPlayers()[event.getId()];
+			Player player = event.getMenuEntry().getPlayer();
 			if (player == null)
 			{
 				return;
@@ -240,16 +236,7 @@ public class HiscorePlugin extends Plugin
 	{
 		if (client != null)
 		{
-			EnumSet<WorldType> wTypes = client.getWorldType();
-
-			if (wTypes.contains(WorldType.SEASONAL))
-			{
-				return HiscoreEndpoint.TOURNAMENT;
-			}
-			else if (wTypes.contains(WorldType.DEADMAN))
-			{
-				return HiscoreEndpoint.DEADMAN;
-			}
+			return HiscoreEndpoint.fromWorldTypes(client.getWorldType());
 		}
 		return HiscoreEndpoint.NORMAL;
 	}

@@ -136,9 +136,16 @@ public class Ping
 		{
 			Timeval tv = new Timeval();
 			tv.tv_sec = TIMEOUT / 1000;
+			tv.write();
+
 			if (libc.setsockopt(sock, libc.SOL_SOCKET, libc.SO_RCVTIMEO, tv.getPointer(), tv.size()) < 0)
 			{
 				throw new IOException("failed to set SO_RCVTIMEO");
+			}
+
+			if (libc.setsockopt(sock, libc.SOL_SOCKET, libc.SO_SNDTIMEO, tv.getPointer(), tv.size()) < 0)
+			{
+				throw new IOException("failed to set SO_SNDTIMEO");
 			}
 
 			short seqno = seq++;

@@ -52,15 +52,16 @@ import net.runelite.api.events.StatChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
+import net.runelite.client.chat.ChatClient;
 import net.runelite.client.chat.ChatCommandManager;
-import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.npcoverlay.NpcOverlayService;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
-import net.runelite.http.api.chat.ChatClient;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -144,6 +145,10 @@ public class SlayerPluginTest
 
 	@Mock
 	@Bind
+	TargetWeaknessOverlay targetWeaknessOverlay;
+
+	@Mock
+	@Bind
 	InfoBoxManager infoBoxManager;
 
 	@Mock
@@ -153,10 +158,6 @@ public class SlayerPluginTest
 	@Mock
 	@Bind
 	Notifier notifier;
-
-	@Mock
-	@Bind
-	ChatMessageManager chatMessageManager;
 
 	@Mock
 	@Bind
@@ -784,14 +785,15 @@ public class SlayerPluginTest
 		when(slayerConfig.taskCommand()).thenReturn(true);
 		when(chatClient.getTask(anyString())).thenReturn(task);
 
+		MessageNode messageNode = mock(MessageNode.class);
 		ChatMessage setMessage = new ChatMessage();
 		setMessage.setType(ChatMessageType.PUBLICCHAT);
 		setMessage.setName("Adam");
-		setMessage.setMessageNode(mock(MessageNode.class));
+		setMessage.setMessageNode(messageNode);
 
 		slayerPlugin.taskLookup(setMessage, "!task");
 
-		verify(chatMessageManager).update(any(MessageNode.class));
+		verify(messageNode).setRuneLiteFormatMessage(anyString());
 	}
 
 	@Test
@@ -806,14 +808,15 @@ public class SlayerPluginTest
 		when(slayerConfig.taskCommand()).thenReturn(true);
 		when(chatClient.getTask(anyString())).thenReturn(task);
 
+		MessageNode messageNode = mock(MessageNode.class);
 		ChatMessage chatMessage = new ChatMessage();
 		chatMessage.setType(ChatMessageType.PUBLICCHAT);
 		chatMessage.setName("Adam");
-		chatMessage.setMessageNode(mock(MessageNode.class));
+		chatMessage.setMessageNode(messageNode);
 
 		slayerPlugin.taskLookup(chatMessage, "!task");
 
-		verify(chatMessageManager, never()).update(any(MessageNode.class));
+		verify(messageNode, never()).setRuneLiteFormatMessage(anyString());
 	}
 
 	@Test
@@ -924,5 +927,31 @@ public class SlayerPluginTest
 
 		assertEquals("Suqahs", slayerPlugin.getTaskName());
 		assertEquals(229, slayerPlugin.getAmount()); // 2 kills
+	}
+
+	@Test
+	public void npcMatching()
+	{
+		assertTrue(matches("Abyssal demon", Task.ABYSSAL_DEMONS));
+		assertTrue(matches("Baby blue dragon", Task.BLUE_DRAGONS));
+		assertTrue(matches("Duck", Task.BIRDS));
+		assertTrue(matches("Donny the Lad", Task.BANDITS));
+
+		assertFalse(matches("Rat", Task.PIRATES));
+		assertFalse(matches("Wolf", Task.WEREWOLVES));
+		assertFalse(matches("Scorpia's offspring", Task.SCORPIA));
+		assertFalse(matches("Jonny the beard", Task.BEARS));
+	}
+
+	private boolean matches(final String npcName, final Task task)
+	{
+		final NPC npc = mock(NPC.class);
+		final NPCComposition comp = mock(NPCComposition.class);
+		when(npc.getTransformedComposition()).thenReturn(comp);
+		when(comp.getName()).thenReturn(npcName);
+		when(comp.getActions()).thenReturn(new String[] { "Attack" });
+
+		slayerPlugin.setTask(task.getName(), 0, 0);
+		return slayerPlugin.isTarget(npc);
 	}
 }

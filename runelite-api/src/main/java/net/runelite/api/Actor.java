@@ -269,6 +269,18 @@ public interface Actor extends Renderable
 	void setGraphic(int graphic);
 
 	/**
+	 * Get the height of the graphic/spotanim on the actor
+	 * @return
+	 */
+	int getGraphicHeight();
+
+	/**
+	 * Set the height of the graphic/spotanim on the actor
+	 * @param height
+	 */
+	void setGraphicHeight(int height);
+
+	/**
 	 * Get the frame of the currently playing spotanim
 	 *
 	 * @return
@@ -389,4 +401,12 @@ public interface Actor extends Renderable
 	 * @return
 	 */
 	boolean isDead();
+
+	/**
+	 * Sets the dead status of this actor
+	 *
+	 * @param dead
+	 * @see #isDead()
+	 */
+	void setDead(boolean dead);
 }

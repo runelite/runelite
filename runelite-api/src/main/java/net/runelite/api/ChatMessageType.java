@@ -173,9 +173,9 @@ public enum ChatMessageType
 	 */
 	CLAN_CREATION_INVITATION(109),
 	/**
-	 * Clan wars challenge for clans rather than FCs
+	 * Challenge offer for the clan tab
 	 */
-	CLAN_CLAN_WARS_CHALLENGE(110),
+	CHALREQ_CLANCHAT(110),
 
 	CLAN_GIM_FORM_GROUP(111),
 	CLAN_GIM_GROUP_WITH(112),

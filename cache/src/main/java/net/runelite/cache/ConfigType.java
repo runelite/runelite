@@ -46,7 +46,9 @@ public enum ConfigType
 	HITSPLAT(32),
 	HEALTHBAR(33),
 	STRUCT(34),
-	AREA(35);
+	AREA(35),
+	DBROW(38),
+	DBTABLE(39);
 
 	private final int id;
 

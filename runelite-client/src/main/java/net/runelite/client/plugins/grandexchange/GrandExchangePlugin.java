@@ -100,12 +100,9 @@ import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.OS;
 import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.Text;
-import net.runelite.http.api.ge.GrandExchangeClient;
 import net.runelite.http.api.ge.GrandExchangeTrade;
 import net.runelite.http.api.item.ItemStats;
-import net.runelite.http.api.osbuddy.OSBGrandExchangeClient;
 import net.runelite.http.api.worlds.WorldType;
-import okhttp3.OkHttpClient;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.apache.commons.text.similarity.FuzzyScore;
 
@@ -188,7 +185,7 @@ public class GrandExchangePlugin extends Plugin
 	private boolean wasFuzzySearch;
 
 	private String machineUuid;
-	private String lastUsername;
+	private long lastAccount;
 	private int tradeSeq;
 
 	/**
@@ -260,18 +257,6 @@ public class GrandExchangePlugin extends Plugin
 		return configManager.getConfig(GrandExchangeConfig.class);
 	}
 
-	@Provides
-	OSBGrandExchangeClient provideOsbGrandExchangeClient(OkHttpClient okHttpClient)
-	{
-		return new OSBGrandExchangeClient(okHttpClient);
-	}
-
-	@Provides
-	GrandExchangeClient provideGrandExchangeClient(OkHttpClient okHttpClient)
-	{
-		return new GrandExchangeClient(okHttpClient);
-	}
-
 	@Override
 	protected void startUp()
 	{
@@ -313,7 +298,8 @@ public class GrandExchangePlugin extends Plugin
 		clientToolbar.removeNavigation(button);
 		mouseManager.unregisterMouseListener(inputListener);
 		keyManager.unregisterKeyListener(inputListener);
-		lastUsername = machineUuid = null;
+		machineUuid = null;
+		lastAccount = -1L;
 		tradeSeq = 0;
 	}
 
@@ -597,7 +583,7 @@ public class GrandExchangePlugin extends Plugin
 		{
 			return;
 		}
-		String input = client.getVar(VarClientStr.INPUT_TEXT);
+		String input = client.getVarcStrValue(VarClientStr.INPUT_TEXT);
 
 		String underlineTag = "<u=" + ColorUtil.colorToHexCode(FUZZY_HIGHLIGHT_COLOR) + ">";
 
@@ -638,14 +624,19 @@ public class GrandExchangePlugin extends Plugin
 		}
 	}
 
-	@Subscribe
+	@Subscribe(
+		// run after the bank tags plugin, and potentially anything
+		// else which wants to consume the event and override
+		// the search behavior
+		priority = -100
+	)
 	public void onGrandExchangeSearched(GrandExchangeSearched event)
 	{
 		wasFuzzySearch = false;
 
 		GrandExchangeSearchMode searchMode = config.geSearchMode();
-		final String input = client.getVar(VarClientStr.INPUT_TEXT);
-		if (searchMode == GrandExchangeSearchMode.DEFAULT || input.isEmpty())
+		final String input = client.getVarcStrValue(VarClientStr.INPUT_TEXT);
+		if (searchMode == GrandExchangeSearchMode.DEFAULT || input.isEmpty() || event.isConsumed())
 		{
 			return;
 		}
@@ -717,13 +708,15 @@ public class GrandExchangePlugin extends Plugin
 			case "setGETitle":
 				setGeTitle();
 				break;
-			case "geExamineText":
+			case "geBuyExamineText":
+			case "geSellExamineText":
 			{
+				boolean buy = "geBuyExamineText".equals(event.getEventName());
 				String[] stack = client.getStringStack();
 				int sz = client.getStringStackSize();
 				String fee = stack[sz - 2];
 				String examine = stack[sz - 3];
-				String text = setExamineText(examine, fee);
+				String text = setExamineText(examine, fee, buy);
 				if (text != null)
 				{
 					stack[sz - 1] = text;
@@ -814,12 +807,12 @@ public class GrandExchangePlugin extends Plugin
 		}
 	}
 
-	private String setExamineText(String examine, String fee)
+	private String setExamineText(String examine, String fee, boolean buy)
 	{
 		final int itemId = client.getVar(VarPlayer.CURRENT_GE_ITEM);
 		StringBuilder sb = new StringBuilder();
 
-		if (config.enableGELimits())
+		if (buy && config.enableGELimits())
 		{
 			final ItemStats itemStats = itemManager.getItemStats(itemId, false);
 
@@ -830,13 +823,13 @@ public class GrandExchangePlugin extends Plugin
 			}
 		}
 
-		if (config.enableGELimitReset())
+		if (buy && config.enableGELimitReset())
 		{
 			Instant resetTime = getLimitResetTime(itemId);
 			if (resetTime != null)
 			{
 				Duration remaining = Duration.between(Instant.now(), resetTime);
-				sb.append(" (").append(DurationFormatUtils.formatDuration(remaining.toMillis(), "H:mm")).append(")");
+				sb.append(" (").append(DurationFormatUtils.formatDuration(remaining.toMillis(), "H:mm")).append(')');
 			}
 		}
 
@@ -858,7 +851,13 @@ public class GrandExchangePlugin extends Plugin
 			return null;
 		}
 
-		return shortenExamine(examine) + "<br>" + sb + "<br>" + fee;
+		if (!fee.isEmpty())
+		{
+			sb.append("<br>").append(fee);
+		}
+
+		// Sell offers include an additional fee text which doesn't fit, so we truncate the examine text
+		return (!buy ? shortenExamine(examine) : examine) + "<br>" + sb;
 	}
 
 	private static String shortenExamine(String examine)
@@ -895,13 +894,13 @@ public class GrandExchangePlugin extends Plugin
 
 	private String getMachineUuid()
 	{
-		String username = client.getUsername();
-		if (lastUsername == username)
+		long accountHash = client.getAccountHash();
+		if (lastAccount == accountHash)
 		{
 			return machineUuid;
 		}
 
-		lastUsername = username;
+		lastAccount = accountHash;
 
 		try
 		{
@@ -924,7 +923,7 @@ public class GrandExchangePlugin extends Plugin
 					hasher.putBytes(hardwareAddress);
 				}
 			}
-			hasher.putUnencodedChars(username);
+			hasher.putLong(accountHash);
 			machineUuid = hasher.hash().toString();
 			tradeSeq = 0;
 			return machineUuid;

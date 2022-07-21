@@ -79,10 +79,11 @@ public class BankPlugin extends Plugin
 	private static final String DEPOSIT_WORN = "Deposit worn items";
 	private static final String DEPOSIT_INVENTORY = "Deposit inventory";
 	private static final String DEPOSIT_LOOT = "Deposit loot";
+	private static final String TOGGLE_PLACEHOLDERS = "Always set placeholders";
 	private static final String SEED_VAULT_TITLE = "Seed Vault";
 
 	private static final String NUMBER_REGEX = "[0-9]+(\\.[0-9]+)?[kmb]?";
-	private static final Pattern VALUE_SEARCH_PATTERN = Pattern.compile("^(?<mode>ge|ha|alch)?" +
+	private static final Pattern VALUE_SEARCH_PATTERN = Pattern.compile("^(?<mode>qty|ge|ha|alch)?" +
 		" *(((?<op>[<>=]|>=|<=) *(?<num>" + NUMBER_REGEX + "))|" +
 		"((?<num1>" + NUMBER_REGEX + ") *- *(?<num2>" + NUMBER_REGEX + ")))$", Pattern.CASE_INSENSITIVE);
 
@@ -174,9 +175,12 @@ public class BankPlugin extends Plugin
 		MenuEntry[] menuEntries = client.getMenuEntries();
 		for (MenuEntry entry : menuEntries)
 		{
+
 			if ((entry.getOption().equals(DEPOSIT_WORN) && config.rightClickBankEquip())
 				|| (entry.getOption().equals(DEPOSIT_INVENTORY) && config.rightClickBankInventory())
-				|| (entry.getOption().equals(DEPOSIT_LOOT) && config.rightClickBankLoot()))
+				|| (entry.getOption().equals(DEPOSIT_LOOT) && config.rightClickBankLoot())
+				|| (entry.getTarget().contains(TOGGLE_PLACEHOLDERS) && config.rightClickPlaceholders())
+			)
 			{
 				event.setForceRightClick(true);
 				return;
@@ -189,7 +193,8 @@ public class BankPlugin extends Plugin
 	{
 		if ((event.getOption().equals(DEPOSIT_WORN) && config.rightClickBankEquip())
 			|| (event.getOption().equals(DEPOSIT_INVENTORY) && config.rightClickBankInventory())
-			|| (event.getOption().equals(DEPOSIT_LOOT) && config.rightClickBankLoot()))
+			|| (event.getOption().equals(DEPOSIT_LOOT) && config.rightClickBankLoot())
+			|| (event.getTarget().contains(TOGGLE_PLACEHOLDERS) && config.rightClickPlaceholders()))
 		{
 			forceRightClickFlag = true;
 		}
@@ -241,7 +246,7 @@ public class BankPlugin extends Plugin
 
 					client.runScript(onOpListener);
 					// Block the key press this tick in keypress_permit so it doesn't enter the chatbox
-					client.setVar(VarClientInt.BLOCK_KEYPRESS, client.getGameCycle() + 1);
+					client.setVarcIntValue(VarClientInt.BLOCK_KEYPRESS, client.getGameCycle() + 1);
 				});
 				break;
 			}
@@ -264,43 +269,36 @@ public class BankPlugin extends Plugin
 	{
 		if (event.getScriptId() == ScriptID.BANKMAIN_BUILD)
 		{
-			// Compute bank prices using only the shown items so that we can show bank value during searches
-			final Widget bankItemContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
-			final ItemContainer bankContainer = client.getItemContainer(InventoryID.BANK);
-			final Widget[] children = bankItemContainer.getChildren();
-			long geTotal = 0, haTotal = 0;
-
-			if (bankContainer != null && children != null)
+			ContainerPrices price = getWidgetContainerPrices(WidgetInfo.BANK_ITEM_CONTAINER, InventoryID.BANK);
+			if (price == null)
 			{
-				log.debug("Computing bank price of {} items", bankContainer.size());
-
-				// The first components are the bank items, followed by tabs etc. There are always 816 components regardless
-				// of bank size, but we only need to check up to the bank size.
-				for (int i = 0; i < bankContainer.size(); ++i)
-				{
-					Widget child = children[i];
-					if (child != null && !child.isSelfHidden() && child.getItemId() > -1)
-					{
-						final int alchPrice = getHaPrice(child.getItemId());
-						geTotal += (long) itemManager.getItemPrice(child.getItemId()) * child.getItemQuantity();
-						haTotal += (long) alchPrice * child.getItemQuantity();
-					}
-				}
-
-				Widget bankTitle = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
-				bankTitle.setText(bankTitle.getText() + createValueText(geTotal, haTotal));
+				return;
 			}
+
+			Widget bankTitle = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
+			bankTitle.setText(bankTitle.getText() + createValueText(price.getGePrice(), price.getHighAlchPrice()));
 		}
 		else if (event.getScriptId() == ScriptID.BANKMAIN_SEARCH_REFRESH)
 		{
 			// vanilla only lays out the bank every 40 client ticks, so if the search input has changed,
 			// and the bank wasn't laid out this tick, lay it out early
-			final String inputText = client.getVar(VarClientStr.INPUT_TEXT);
+			final String inputText = client.getVarcStrValue(VarClientStr.INPUT_TEXT);
 			if (searchString != inputText && client.getGameCycle() % 40 != 0)
 			{
 				clientThread.invokeLater(bankSearch::layoutBank);
 				searchString = inputText;
 			}
+		}
+		else if (event.getScriptId() == ScriptID.GROUP_IRONMAN_STORAGE_BUILD)
+		{
+			ContainerPrices price = getWidgetContainerPrices(WidgetInfo.GROUP_STORAGE_ITEM_CONTAINER, InventoryID.GROUP_STORAGE);
+			if (price == null)
+			{
+				return;
+			}
+
+			Widget bankTitle = client.getWidget(WidgetInfo.GROUP_STORAGE_UI).getChild(1);
+			bankTitle.setText(bankTitle.getText() + createValueText(price.getGePrice(), price.getHighAlchPrice()));
 		}
 	}
 
@@ -420,13 +418,26 @@ public class BankPlugin extends Plugin
 		final int qty = itemQuantities.count(itemId);
 		final long gePrice = (long) itemManager.getItemPrice(itemId) * qty;
 		final long haPrice = (long) itemComposition.getHaPrice() * qty;
+		final boolean isPlaceholder = itemComposition.getPlaceholderTemplateId() != -1;
 
 		long value = Math.max(gePrice, haPrice);
 
 		final String mode = matcher.group("mode");
 		if (mode != null)
 		{
-			value = mode.toLowerCase().equals("ge") ? gePrice : haPrice;
+			switch (mode.toLowerCase())
+			{
+				case "qty":
+					value = isPlaceholder ? 0 : qty;
+					break;
+				case "ge":
+					value = gePrice;
+					break;
+				case "ha":
+				case "alch":
+					value = haPrice;
+					break;
+			}
 		}
 
 		final String op = matcher.group("op");
@@ -536,5 +547,36 @@ public class BankPlugin extends Plugin
 			default:
 				return itemManager.getItemComposition(itemId).getHaPrice();
 		}
+	}
+
+	private ContainerPrices getWidgetContainerPrices(WidgetInfo widgetInfo, InventoryID inventoryID)
+	{
+		final Widget widget = client.getWidget(widgetInfo);
+		final ItemContainer itemContainer = client.getItemContainer(inventoryID);
+		final Widget[] children = widget.getChildren();
+		ContainerPrices prices = null;
+
+		if (itemContainer != null && children != null)
+		{
+			long geTotal = 0, haTotal = 0;
+			log.debug("Computing bank price of {} items", itemContainer.size());
+
+			// In the bank, the first components are the bank items, followed by tabs etc. There are always 816 components regardless
+			// of bank size, but we only need to check up to the bank size.
+			for (int i = 0; i < itemContainer.size(); ++i)
+			{
+				Widget child = children[i];
+				if (child != null && !child.isSelfHidden() && child.getItemId() > -1)
+				{
+					final int alchPrice = getHaPrice(child.getItemId());
+					geTotal += (long) itemManager.getItemPrice(child.getItemId()) * child.getItemQuantity();
+					haTotal += (long) alchPrice * child.getItemQuantity();
+				}
+			}
+
+			prices = new ContainerPrices(geTotal, haTotal);
+		}
+
+		return prices;
 	}
 }

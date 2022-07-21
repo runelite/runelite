@@ -320,8 +320,10 @@ public class ChatFilterPlugin extends Plugin
 	String censorMessage(final String username, final String message)
 	{
 		String strippedMessage = jagexPrintableCharMatcher.retainFrom(message)
-			.replace('\u00A0', ' ');
-		String strippedAccents = StringUtils.stripAccents(strippedMessage);
+			.replace('\u00A0', ' ')
+			.replaceAll("<lt>", "<")
+			.replaceAll("<gt>", ">");
+		String strippedAccents = stripAccents(strippedMessage);
 		assert strippedMessage.length() == strippedAccents.length();
 
 		if (username != null && shouldFilterByName(username))
@@ -377,21 +379,26 @@ public class ChatFilterPlugin extends Plugin
 		filteredNamePatterns.clear();
 
 		Text.fromCSV(config.filteredWords()).stream()
-			.map(StringUtils::stripAccents)
+			.map(this::stripAccents)
 			.map(s -> Pattern.compile(Pattern.quote(s), Pattern.CASE_INSENSITIVE))
 			.forEach(filteredPatterns::add);
 
 		NEWLINE_SPLITTER.splitToList(config.filteredRegex()).stream()
-			.map(StringUtils::stripAccents)
+			.map(this::stripAccents)
 			.map(ChatFilterPlugin::compilePattern)
 			.filter(Objects::nonNull)
 			.forEach(filteredPatterns::add);
 
 		NEWLINE_SPLITTER.splitToList(config.filteredNames()).stream()
-			.map(StringUtils::stripAccents)
+			.map(this::stripAccents)
 			.map(ChatFilterPlugin::compilePattern)
 			.filter(Objects::nonNull)
 			.forEach(filteredNamePatterns::add);
+	}
+
+	private String stripAccents(String input)
+	{
+		return config.stripAccents() ? StringUtils.stripAccents(input) : input;
 	}
 
 	private static Pattern compilePattern(String pattern)

@@ -128,7 +128,7 @@ public class AttackStylesPluginTest
 		when(strWidget.isHidden()).thenAnswer(x -> isStrHidden());
 
 		// equip type_4 weapon type on player
-		when(client.getVar(Varbits.EQUIPPED_WEAPON_TYPE)).thenReturn(WeaponType.TYPE_4.ordinal());
+		when(client.getVarbitValue(Varbits.EQUIPPED_WEAPON_TYPE)).thenReturn(WeaponType.TYPE_4.ordinal());
 		attackPlugin.onVarbitChanged(new VarbitChanged());
 
 		// Verify there is a warned skill

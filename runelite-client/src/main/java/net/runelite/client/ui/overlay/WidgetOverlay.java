@@ -42,8 +42,16 @@ public class WidgetOverlay extends Overlay
 	public static Collection<WidgetOverlay> createOverlays(final OverlayManager overlayManager, final Client client)
 	{
 		return Arrays.asList(
-			new WidgetOverlay(client, WidgetInfo.RESIZABLE_MINIMAP_WIDGET, OverlayPosition.CANVAS_TOP_RIGHT),
+			// classic resizable - these are in render order for managed overlay picking
+			new WidgetOverlay(client, WidgetInfo.RESIZABLE_VIEWPORT_CHATBOX_PARENT, OverlayPosition.DYNAMIC),
+			new WidgetOverlay(client, WidgetInfo.RESIZABLE_VIEWPORT_INVENTORY_PARENT, OverlayPosition.DYNAMIC),
 			new WidgetOverlay(client, WidgetInfo.RESIZABLE_MINIMAP_STONES_WIDGET, OverlayPosition.CANVAS_TOP_RIGHT),
+			// modern resizable
+			new WidgetOverlay(client, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_CHATBOX_PARENT, OverlayPosition.DYNAMIC),
+			new WidgetOverlay(client, WidgetInfo.RESIZABLE_MINIMAP_WIDGET, OverlayPosition.CANVAS_TOP_RIGHT),
+			new WidgetOverlay(client, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_TABS1, OverlayPosition.DYNAMIC),
+			new WidgetOverlay(client, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_TABS2, OverlayPosition.DYNAMIC),
+			new WidgetOverlay(client, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY_PARENT, OverlayPosition.DYNAMIC),
 			// The client forces the oxygen bar below the xp tracker, so set its priority lower
 			new WidgetOverlay(client, WidgetInfo.FOSSIL_ISLAND_OXYGENBAR, OverlayPosition.TOP_CENTER, OverlayPriority.HIGH),
 			new XpTrackerWidgetOverlay(overlayManager, client, WidgetInfo.EXPERIENCE_TRACKER_WIDGET, OverlayPosition.TOP_RIGHT),
@@ -56,7 +64,7 @@ public class WidgetOverlay extends Overlay
 			new WidgetOverlay(client, WidgetInfo.PEST_CONTROL_KNIGHT_INFO_CONTAINER, OverlayPosition.TOP_LEFT),
 			new WidgetOverlay(client, WidgetInfo.PEST_CONTROL_ACTIVITY_SHIELD_INFO_CONTAINER, OverlayPosition.TOP_RIGHT),
 			new WidgetOverlay(client, WidgetInfo.ZEAH_MESS_HALL_COOKING_DISPLAY, OverlayPosition.TOP_LEFT),
-			new WidgetOverlay(client, WidgetInfo.PVP_KILLDEATH_COUNTER, OverlayPosition.TOP_LEFT),
+			new PvpKDRWidgetOverlay(client, WidgetInfo.PVP_KILLDEATH_COUNTER, OverlayPosition.TOP_LEFT),
 			new WidgetOverlay(client, WidgetInfo.SKOTIZO_CONTAINER, OverlayPosition.TOP_LEFT),
 			new WidgetOverlay(client, WidgetInfo.KOUREND_FAVOUR_OVERLAY, OverlayPosition.TOP_CENTER),
 			new WidgetOverlay(client, WidgetInfo.PYRAMID_PLUNDER_DATA, OverlayPosition.TOP_CENTER),
@@ -71,12 +79,12 @@ public class WidgetOverlay extends Overlay
 			new WidgetOverlay(client, WidgetInfo.VOLCANIC_MINE_VENTS_INFOBOX_GROUP, OverlayPosition.BOTTOM_RIGHT),
 			new WidgetOverlay(client, WidgetInfo.VOLCANIC_MINE_STABILITY_INFOBOX_GROUP, OverlayPosition.BOTTOM_LEFT),
 			new WidgetOverlay(client, WidgetInfo.MULTICOMBAT_FIXED, OverlayPosition.BOTTOM_RIGHT),
-			new WidgetOverlay(client, WidgetInfo.MULTICOMBAT_RESIZEABLE_MODERN, OverlayPosition.CANVAS_TOP_RIGHT),
-			new WidgetOverlay(client, WidgetInfo.MULTICOMBAT_RESIZEABLE_CLASSIC, OverlayPosition.CANVAS_TOP_RIGHT),
+			new WidgetOverlay(client, WidgetInfo.MULTICOMBAT_RESIZABLE_MODERN, OverlayPosition.CANVAS_TOP_RIGHT),
+			new WidgetOverlay(client, WidgetInfo.MULTICOMBAT_RESIZABLE_CLASSIC, OverlayPosition.CANVAS_TOP_RIGHT),
 			new WidgetOverlay(client, WidgetInfo.TEMPOROSS_STATUS_INDICATOR, OverlayPosition.TOP_LEFT),
 			new WidgetOverlay(client, WidgetInfo.BA_HEAL_TEAMMATES, OverlayPosition.BOTTOM_LEFT),
 			new WidgetOverlay(client, WidgetInfo.BA_TEAM, OverlayPosition.TOP_RIGHT),
-			new WidgetOverlay(client, WidgetInfo.PVP_WILDERNESS_SKULL_CONTAINER, OverlayPosition.DETACHED)
+			new WidgetOverlay(client, WidgetInfo.PVP_WILDERNESS_SKULL_CONTAINER, OverlayPosition.DYNAMIC)
 		);
 	}
 
@@ -97,6 +105,8 @@ public class WidgetOverlay extends Overlay
 		setPriority(overlayPriority);
 		setLayer(OverlayLayer.UNDER_WIDGETS);
 		setPosition(overlayPosition);
+		setMovable(true);
+		setSnappable(true);
 		// It's almost possible to drawAfterInterface(widgetInfo.getGroupId()) here, but that fires
 		// *after* the native components are drawn, which is too late.
 	}
@@ -126,8 +136,7 @@ public class WidgetOverlay extends Overlay
 		if (getPreferredLocation() != null || getPreferredPosition() != null)
 		{
 			// The widget relative pos is relative to the parent
-			widget.setRelativeX(bounds.x - parent.x);
-			widget.setRelativeY(bounds.y - parent.y);
+			widget.setForcedPosition(bounds.x - parent.x, bounds.y - parent.y);
 		}
 		else
 		{
@@ -135,6 +144,7 @@ public class WidgetOverlay extends Overlay
 			{
 				revalidate = false;
 				log.debug("Revalidating {}", widgetInfo);
+				widget.setForcedPosition(-1, -1);
 				// Revalidate the widget to reposition it back to its normal location after an overlay reset
 				widget.revalidate();
 			}
@@ -209,8 +219,8 @@ public class WidgetOverlay extends Overlay
 		{
 			// The xptracker component layer isn't hidden if the counter and process bar are both configured "Off",
 			// it just has its children hidden.
-			if (client.getVar(Varbits.EXPERIENCE_TRACKER_COUNTER) == 30 // Off
-				&& client.getVar(Varbits.EXPERIENCE_TRACKER_PROGRESS_BAR) == 0) // Off
+			if (client.getVarbitValue(Varbits.EXPERIENCE_TRACKER_COUNTER) == 30 // Off
+				&& client.getVarbitValue(Varbits.EXPERIENCE_TRACKER_PROGRESS_BAR) == 0) // Off
 			{
 				return null;
 			}
@@ -234,7 +244,7 @@ public class WidgetOverlay extends Overlay
 			}
 
 			OverlayPosition position;
-			switch (client.getVar(Varbits.EXPERIENCE_TRACKER_POSITION))
+			switch (client.getVarbitValue(Varbits.EXPERIENCE_TRACKER_POSITION))
 			{
 				case 0:
 				default:
@@ -255,6 +265,26 @@ public class WidgetOverlay extends Overlay
 				overlayManager.rebuildOverlayLayers();
 			}
 			return position;
+		}
+	}
+
+	private static class PvpKDRWidgetOverlay extends WidgetOverlay
+	{
+		private PvpKDRWidgetOverlay(Client client, WidgetInfo widgetInfo, OverlayPosition overlayPosition)
+		{
+			super(client, widgetInfo, overlayPosition);
+		}
+
+		@Override
+		public Dimension render(Graphics2D graphics)
+		{
+			// Don't draw widget overlay if the PVP KDR stats text will be empty
+			if (client.getVarbitValue(Varbits.SHOW_PVP_KDR_STATS) == 1)
+			{
+				return super.render(graphics);
+			}
+
+			return null;
 		}
 	}
 }

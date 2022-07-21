@@ -72,6 +72,7 @@ class LootTrackerBox extends JPanel
 	private final ItemManager itemManager;
 	@Getter(AccessLevel.PACKAGE)
 	private final String id;
+	@Getter(AccessLevel.PACKAGE)
 	private final LootRecordType lootRecordType;
 	private final LootTrackerPriceType priceType;
 	private final boolean showPriceType;
@@ -241,8 +242,7 @@ class LootTrackerBox extends JPanel
 			subTitleLabel.setToolTipText(QuantityFormatter.formatNumber(totalPrice / kills) + " gp (average)");
 		}
 
-		validate();
-		repaint();
+		revalidate();
 	}
 
 	void collapse()
@@ -316,6 +316,7 @@ class LootTrackerBox extends JPanel
 		itemContainer.removeAll();
 		itemContainer.setLayout(new GridLayout(rowSize, ITEMS_PER_ROW, 1, 1));
 
+		final EmptyBorder emptyBorder = new EmptyBorder(5, 5, 5, 5);
 		for (int i = 0; i < rowSize * ITEMS_PER_ROW; i++)
 		{
 			final JPanel slotContainer = new JPanel();
@@ -350,7 +351,7 @@ class LootTrackerBox extends JPanel
 
 				// Create popup menu
 				final JPopupMenu popupMenu = new JPopupMenu();
-				popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
+				popupMenu.setBorder(emptyBorder);
 				slotContainer.setComponentPopupMenu(popupMenu);
 
 				final JMenuItem toggle = new JMenuItem("Toggle item");
@@ -366,7 +367,7 @@ class LootTrackerBox extends JPanel
 			itemContainer.add(slotContainer);
 		}
 
-		itemContainer.repaint();
+		itemContainer.revalidate();
 	}
 
 	private static String buildToolTip(LootTrackerItem item)

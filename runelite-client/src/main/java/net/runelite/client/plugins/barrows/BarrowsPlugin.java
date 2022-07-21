@@ -178,6 +178,11 @@ public class BarrowsPlugin extends Plugin
 		if (event.getGroupId() == WidgetID.BARROWS_REWARD_GROUP_ID && config.showChestValue())
 		{
 			ItemContainer barrowsRewardContainer = client.getItemContainer(InventoryID.BARROWS_REWARD);
+			if (barrowsRewardContainer == null)
+			{
+				return;
+			}
+
 			Item[] items = barrowsRewardContainer.getItems();
 			long chestPrice = 0;
 

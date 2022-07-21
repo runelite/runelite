@@ -54,10 +54,7 @@ import lombok.Setter;
 import lombok.Value;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
-import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
@@ -72,6 +69,7 @@ import net.runelite.api.events.ItemQuantityChanged;
 import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -99,7 +97,7 @@ import net.runelite.client.util.Text;
 @PluginDescriptor(
 	name = "Ground Items",
 	description = "Highlight ground items and/or show price information",
-	tags = {"grand", "exchange", "high", "alchemy", "prices", "highlight", "overlay"}
+	tags = {"grand", "exchange", "high", "alchemy", "prices", "highlight", "overlay", "lootbeam"}
 )
 public class GroundItemsPlugin extends Plugin
 {
@@ -115,8 +113,6 @@ public class GroundItemsPlugin extends Plugin
 	static final int MAX_QUANTITY = 65535;
 	// ItemID for coins
 	private static final int COINS = ItemID.COINS_995;
-
-	private static final String TELEGRAB_TEXT = ColorUtil.wrapWithColorTag("Telekinetic Grab", Color.GREEN) + ColorUtil.prependColorTag(" -> ", Color.WHITE);
 
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
@@ -142,7 +138,10 @@ public class GroundItemsPlugin extends Plugin
 	private List<String> highlightedItemsList = new CopyOnWriteArrayList<>();
 
 	@Inject
-	private GroundItemInputListener inputListener;
+	private GroundItemHotkeyListener hotkeyListener;
+
+	@Inject
+	private GroundItemMouseAdapter mouseAdapter;
 
 	@Inject
 	private MouseManager mouseManager;
@@ -193,8 +192,8 @@ public class GroundItemsPlugin extends Plugin
 	protected void startUp()
 	{
 		overlayManager.add(overlay);
-		mouseManager.registerMouseListener(inputListener);
-		keyManager.registerKeyListener(inputListener);
+		mouseManager.registerMouseListener(mouseAdapter);
+		keyManager.registerKeyListener(hotkeyListener);
 		executor.execute(this::reset);
 		lastUsedItem = -1;
 	}
@@ -203,8 +202,8 @@ public class GroundItemsPlugin extends Plugin
 	protected void shutDown()
 	{
 		overlayManager.remove(overlay);
-		mouseManager.unregisterMouseListener(inputListener);
-		keyManager.unregisterKeyListener(inputListener);
+		mouseManager.unregisterMouseListener(mouseAdapter);
+		keyManager.unregisterKeyListener(hotkeyListener);
 		highlightedItems.invalidateAll();
 		highlightedItems = null;
 		hiddenItems.invalidateAll();
@@ -339,7 +338,7 @@ public class GroundItemsPlugin extends Plugin
 			MenuAction menuType = menuEntry.getType();
 			if (menuType == MenuAction.GROUND_ITEM_FIRST_OPTION || menuType == MenuAction.GROUND_ITEM_SECOND_OPTION
 				|| menuType == MenuAction.GROUND_ITEM_THIRD_OPTION || menuType == MenuAction.GROUND_ITEM_FOURTH_OPTION
-				|| menuType == MenuAction.GROUND_ITEM_FIFTH_OPTION || menuType == MenuAction.SPELL_CAST_ON_GROUND_ITEM)
+				|| menuType == MenuAction.GROUND_ITEM_FIFTH_OPTION || menuType == MenuAction.EXAMINE_ITEM_GROUND)
 			{
 				for (MenuEntryWithCount entryWCount : newEntries)
 				{
@@ -481,14 +480,11 @@ public class GroundItemsPlugin extends Plugin
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		if (config.itemHighlightMode() == ItemHighlightMode.MENU || config.itemHighlightMode() == ItemHighlightMode.BOTH)
+		MenuAction type = MenuAction.of(event.getType());
+		if (type == MenuAction.GROUND_ITEM_FIRST_OPTION || type == MenuAction.GROUND_ITEM_SECOND_OPTION ||
+			type == MenuAction.GROUND_ITEM_THIRD_OPTION || type == MenuAction.GROUND_ITEM_FOURTH_OPTION ||
+			type == MenuAction.GROUND_ITEM_FIFTH_OPTION || type == MenuAction.WIDGET_TARGET_ON_GROUND_ITEM)
 		{
-			final boolean telegrabEntry = event.getOption().equals("Cast") && event.getTarget().startsWith(TELEGRAB_TEXT) && event.getType() == MenuAction.SPELL_CAST_ON_GROUND_ITEM.getId();
-			if (!(event.getOption().equals("Take") && event.getType() == MenuAction.GROUND_ITEM_THIRD_OPTION.getId()) && !telegrabEntry)
-			{
-				return;
-			}
-
 			final int itemId = event.getIdentifier();
 			final int sceneX = event.getActionParam0();
 			final int sceneY = event.getActionParam1();
@@ -507,39 +503,35 @@ public class GroundItemsPlugin extends Plugin
 			final Color color = getItemColor(highlighted, hidden);
 			final boolean canBeRecolored = highlighted != null || (hidden != null && config.recolorMenuHiddenItems());
 
-			if (color != null && canBeRecolored && !color.equals(config.defaultColor()))
+			if ((config.itemHighlightMode() == ItemHighlightMode.MENU || config.itemHighlightMode() == ItemHighlightMode.BOTH) &&
+				(color != null && canBeRecolored && !color.equals(config.defaultColor())))
 			{
 				final MenuHighlightMode mode = config.menuHighlightMode();
 
 				if (mode == BOTH || mode == OPTION)
 				{
-					final String optionText = telegrabEntry ? "Cast" : "Take";
-					lastEntry.setOption(ColorUtil.prependColorTag(optionText, color));
+					lastEntry.setOption(ColorUtil.prependColorTag(lastEntry.getOption(), color));
 				}
 
 				if (mode == BOTH || mode == NAME)
 				{
+					// <col=ff9040>Logs
+					// <col=00ff00>Telekinetic Grab</col><col=ffffff> -> <col=ff9040>Logs
 					String target = lastEntry.getTarget();
 
-					if (telegrabEntry)
-					{
-						target = target.substring(TELEGRAB_TEXT.length());
-					}
-
-					target = ColorUtil.prependColorTag(target.substring(target.indexOf('>') + 1), color);
-
-					if (telegrabEntry)
-					{
-						target = TELEGRAB_TEXT + target;
-					}
-
-					lastEntry.setTarget(target);
+					int i = target.lastIndexOf('>');
+					lastEntry.setTarget(target.substring(0, i - 11) + ColorUtil.colorTag(color) + target.substring(i + 1));
 				}
 			}
 
 			if (config.showMenuItemQuantities() && groundItem.isStackable() && quantity > 1)
 			{
 				lastEntry.setTarget(lastEntry.getTarget() + " (" + quantity + ")");
+			}
+
+			if (hidden != null && highlighted == null && config.deprioritizeHiddenItems())
+			{
+				lastEntry.setDeprioritized(true);
 			}
 		}
 	}
@@ -671,7 +663,7 @@ public class GroundItemsPlugin extends Plugin
 			{
 				notificationStringBuilder.append(" (")
 					.append(QuantityFormatter.quantityToStackSize(item.getQuantity()))
-					.append(")");
+					.append(')');
 			}
 		}
 		
@@ -694,28 +686,16 @@ public class GroundItemsPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
 	{
-		if (menuOptionClicked.getMenuAction() == MenuAction.ITEM_FIFTH_OPTION)
+		if (menuOptionClicked.isItemOp() && menuOptionClicked.getMenuOption().equals("Drop"))
 		{
-			int itemId = menuOptionClicked.getId();
+			int itemId = menuOptionClicked.getItemId();
 			// Keep a queue of recently dropped items to better detect
 			// item spawns that are drops
 			droppedItemQueue.add(itemId);
 		}
-		else if (menuOptionClicked.getMenuAction() == MenuAction.ITEM_USE_ON_GAME_OBJECT)
+		else if (menuOptionClicked.getMenuAction() == MenuAction.WIDGET_TARGET_ON_GAME_OBJECT && client.getSelectedWidget().getId() == WidgetInfo.INVENTORY.getId())
 		{
-			final ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
-			if (inventory == null)
-			{
-				return;
-			}
-
-			final Item clickedItem = inventory.getItem(menuOptionClicked.getSelectedItemIndex());
-			if (clickedItem == null)
-			{
-				return;
-			}
-
-			lastUsedItem = clickedItem.getId();
+			lastUsedItem = client.getSelectedWidget().getItemId();
 		}
 	}
 
@@ -800,12 +780,13 @@ public class GroundItemsPlugin extends Plugin
 		Lootbeam lootbeam = lootbeams.get(worldPoint);
 		if (lootbeam == null)
 		{
-			lootbeam = new Lootbeam(client, worldPoint, color);
+			lootbeam = new Lootbeam(client, clientThread, worldPoint, color, config.lootbeamStyle());
 			lootbeams.put(worldPoint, lootbeam);
 		}
 		else
 		{
 			lootbeam.setColor(color);
+			lootbeam.setStyle(config.lootbeamStyle());
 		}
 	}
 

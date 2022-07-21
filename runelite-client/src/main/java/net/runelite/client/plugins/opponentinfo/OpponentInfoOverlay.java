@@ -42,7 +42,7 @@ import net.runelite.api.ParamID;
 import net.runelite.api.Player;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
-import net.runelite.client.game.HiscoreManager;
+import net.runelite.client.hiscore.HiscoreManager;
 import net.runelite.client.game.NPCManager;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
@@ -53,7 +53,7 @@ import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.ProgressBarComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 import net.runelite.client.util.Text;
-import net.runelite.http.api.hiscore.HiscoreResult;
+import net.runelite.client.hiscore.HiscoreResult;
 
 class OpponentInfoOverlay extends OverlayPanel
 {
@@ -226,7 +226,7 @@ class OpponentInfoOverlay extends OverlayPanel
 	 */
 	private boolean hasHpHud(Actor opponent)
 	{
-		boolean settingEnabled = client.getVar(Varbits.BOSS_HEALTH_OVERLAY) == 0;
+		boolean settingEnabled = client.getVarbitValue(Varbits.BOSS_HEALTH_OVERLAY) == 0;
 		if (settingEnabled && opponent instanceof NPC)
 		{
 			int opponentId = client.getVar(VarPlayer.HP_HUD_NPC_ID);

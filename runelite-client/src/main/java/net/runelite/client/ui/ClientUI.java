@@ -164,7 +164,7 @@ public class ClientUI
 		this.clientThreadProvider = clientThreadProvider;
 		this.eventBus = eventBus;
 		this.safeMode = safeMode;
-		this.title = title;
+		this.title = title + (safeMode ? " (safe mode)" : "");
 	}
 
 	@Subscribe
@@ -332,6 +332,12 @@ public class ClientUI
 			frame.setResizable(true);
 
 			frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+			if (OSType.getOSType() == OSType.MacOS)
+			{
+				// Change the default quit strategy to CLOSE_ALL_WINDOWS so that ctrl+q
+				// triggers the listener below instead of exiting.
+				MacOSQuitStrategy.setup();
+			}
 			frame.addWindowListener(new WindowAdapter()
 			{
 				@Override
@@ -482,7 +488,7 @@ public class ClientUI
 			}
 
 			// Update config
-			updateFrameConfig(true);
+			updateFrameConfig(false);
 
 			// Create hide sidebar button
 
@@ -521,7 +527,10 @@ public class ClientUI
 			frame.revalidateMinimumSize();
 
 			// Create tray icon (needs to be created after frame is packed)
-			trayIcon = SwingUtil.createTrayIcon(ICON, title, frame);
+			if (config.enableTrayIcon())
+			{
+				trayIcon = SwingUtil.createTrayIcon(ICON, title, frame);
+			}
 
 			// Move frame around (needs to be done after frame is packed)
 			if (config.rememberScreenBounds() && !safeMode)
@@ -543,7 +552,11 @@ public class ClientUI
 
 							// When Windows screen scaling is on, the position/bounds will be wrong when they are set.
 							// The bounds saved in shutdown are the full, non-scaled co-ordinates.
-							if (scale != 1)
+							// On MacOS the scaling is already applied and the position/bounds are correct on at least
+							// - 2015 x64 MBP JDK11 Mohave
+							// - 2020 m1 MBP JDK17 Big Sur
+							// Adjusting the scaling further results in the client position being incorrect
+							if (scale != 1 && OSType.getOSType() != OSType.MacOS)
 							{
 								clientBounds.setRect(
 									clientBounds.getX() / scale,
@@ -583,6 +596,8 @@ public class ClientUI
 
 			// Show frame
 			frame.setVisible(true);
+			// On macos setResizable needs to be called after setVisible
+			frame.setResizable(!config.lockWindowSize());
 			frame.toFront();
 			requestFocus();
 			log.info("Showing frame {}", frame);
@@ -970,6 +985,13 @@ public class ClientUI
 
 		int width = panel.getWrappedPanel().getPreferredSize().width;
 		int expandBy = pluginPanel != null ? pluginPanel.getWrappedPanel().getPreferredSize().width - width : width;
+
+		// Deactivate previously active panel
+		if (pluginPanel != null)
+		{
+			pluginPanel.onDeactivate();
+		}
+
 		pluginPanel = panel;
 
 		// Expand sidebar

@@ -29,4 +29,10 @@ package net.runelite.api;
  */
 public interface Animation
 {
+	/**
+	 * Get the id for this animation
+	 * @see AnimationID
+	 * @return
+	 */
+	int getId();
 }

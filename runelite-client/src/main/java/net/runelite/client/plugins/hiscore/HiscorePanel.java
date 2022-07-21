@@ -61,13 +61,13 @@ import net.runelite.client.ui.components.materialtabs.MaterialTab;
 import net.runelite.client.ui.components.materialtabs.MaterialTabGroup;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.QuantityFormatter;
-import net.runelite.http.api.hiscore.HiscoreClient;
-import net.runelite.http.api.hiscore.HiscoreEndpoint;
-import net.runelite.http.api.hiscore.HiscoreResult;
-import net.runelite.http.api.hiscore.HiscoreSkill;
-import static net.runelite.http.api.hiscore.HiscoreSkill.*;
-import net.runelite.http.api.hiscore.HiscoreSkillType;
-import net.runelite.http.api.hiscore.Skill;
+import net.runelite.client.hiscore.HiscoreClient;
+import net.runelite.client.hiscore.HiscoreEndpoint;
+import net.runelite.client.hiscore.HiscoreResult;
+import net.runelite.client.hiscore.HiscoreSkill;
+import static net.runelite.client.hiscore.HiscoreSkill.*;
+import net.runelite.client.hiscore.HiscoreSkillType;
+import net.runelite.client.hiscore.Skill;
 import okhttp3.OkHttpClient;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -105,13 +105,13 @@ public class HiscorePanel extends PluginPanel
 		GIANT_MOLE, GROTESQUE_GUARDIANS, HESPORI,
 		KALPHITE_QUEEN, KING_BLACK_DRAGON, KRAKEN,
 		KREEARRA, KRIL_TSUTSAROTH, MIMIC,
-		NIGHTMARE, PHOSANIS_NIGHTMARE, OBOR, SARACHNIS,
-		SCORPIA, SKOTIZO, TEMPOROSS,
-		THE_GAUNTLET, THE_CORRUPTED_GAUNTLET, THEATRE_OF_BLOOD,
-		THEATRE_OF_BLOOD_HARD_MODE, THERMONUCLEAR_SMOKE_DEVIL, TZKAL_ZUK,
-		TZTOK_JAD, VENENATIS, VETION,
-		VORKATH, WINTERTODT, ZALCANO,
-		ZULRAH
+		NEX, NIGHTMARE, PHOSANIS_NIGHTMARE,
+		OBOR, SARACHNIS, SCORPIA,
+		SKOTIZO, TEMPOROSS, THE_GAUNTLET,
+		THE_CORRUPTED_GAUNTLET, THEATRE_OF_BLOOD, THEATRE_OF_BLOOD_HARD_MODE,
+		THERMONUCLEAR_SMOKE_DEVIL, TZKAL_ZUK, TZTOK_JAD,
+		VENENATIS, VETION, VORKATH,
+		WINTERTODT, ZALCANO, ZULRAH
 	);
 
 	private static final HiscoreEndpoint[] ENDPOINTS = {
@@ -280,8 +280,10 @@ public class HiscorePanel extends PluginPanel
 		minigamePanel.add(makeHiscorePanel(LEAGUE_POINTS));
 		minigamePanel.add(makeHiscorePanel(LAST_MAN_STANDING));
 		minigamePanel.add(makeHiscorePanel(SOUL_WARS_ZEAL));
+		minigamePanel.add(makeHiscorePanel(RIFTS_CLOSED));
 		minigamePanel.add(makeHiscorePanel(BOUNTY_HUNTER_ROGUE));
 		minigamePanel.add(makeHiscorePanel(BOUNTY_HUNTER_HUNTER));
+		minigamePanel.add(makeHiscorePanel(PVP_ARENA_RANK));
 
 		add(minigamePanel, c);
 		c.gridy++;
@@ -559,50 +561,32 @@ public class HiscorePanel extends PluginPanel
 				}
 				case BOUNTY_HUNTER_ROGUE:
 				{
-					Skill bountyHunterRogue = result.getBountyHunterRogue();
-					String rank = (bountyHunterRogue.getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(bountyHunterRogue.getRank());
-					content += "<p><span style = 'color:white'>Bounty Hunter - Rogue</span></p>";
-					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
-					if (bountyHunterRogue.getLevel() > -1)
-					{
-						content += "<p><span style = 'color:white'>Score:</span> " + QuantityFormatter.formatNumber(bountyHunterRogue.getLevel()) + "</p>";
-					}
+					content += buildMinigameTooltip(result.getBountyHunterRogue(), skill);
 					break;
 				}
 				case BOUNTY_HUNTER_HUNTER:
 				{
-					Skill bountyHunterHunter = result.getBountyHunterHunter();
-					String rank = (bountyHunterHunter.getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(bountyHunterHunter.getRank());
-					content += "<p><span style = 'color:white'>Bounty Hunter - Hunter</span></p>";
-					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
-					if (bountyHunterHunter.getLevel() > -1)
-					{
-						content += "<p><span style = 'color:white'>Score:</span> " + QuantityFormatter.formatNumber(bountyHunterHunter.getLevel()) + "</p>";
-					}
+					content += buildMinigameTooltip(result.getBountyHunterHunter(), skill);
+					break;
+				}
+				case PVP_ARENA_RANK:
+				{
+					content += buildMinigameTooltip(result.getPvpArenaRank(), skill);
 					break;
 				}
 				case LAST_MAN_STANDING:
 				{
-					Skill lastManStanding = result.getLastManStanding();
-					String rank = (lastManStanding.getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(lastManStanding.getRank());
-					content += "<p><span style = 'color:white'>Last Man Standing</span></p>";
-					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
-					if (lastManStanding.getLevel() > -1)
-					{
-						content += "<p><span style = 'color:white'>Score:</span> " + QuantityFormatter.formatNumber(lastManStanding.getLevel()) + "</p>";
-					}
+					content += buildMinigameTooltip(result.getLastManStanding(), skill);
 					break;
 				}
 				case SOUL_WARS_ZEAL:
 				{
-					Skill soulWarsZeal = result.getSoulWarsZeal();
-					String rank = (soulWarsZeal.getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(soulWarsZeal.getRank());
-					content += "<p><span style = 'color:white'>Soul Wars Zeal</span></p>";
-					content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
-					if (soulWarsZeal.getLevel() > -1)
-					{
-						content += "<p><span style = 'color:white'>Score:</span> " + QuantityFormatter.formatNumber(soulWarsZeal.getLevel()) + "</p>";
-					}
+					content += buildMinigameTooltip(result.getSoulWarsZeal(), skill);
+					break;
+				}
+				case RIFTS_CLOSED:
+				{
+					content += buildMinigameTooltip(result.getRiftsClosed(), skill);
 					break;
 				}
 				case LEAGUE_POINTS:
@@ -707,6 +691,19 @@ public class HiscorePanel extends PluginPanel
 		}
 
 		return openingTags + content + closingTags;
+	}
+
+	private static String buildMinigameTooltip(Skill s, HiscoreSkill hiscoreSkill)
+	{
+		String rank = (s.getRank() == -1) ? "Unranked" : QuantityFormatter.formatNumber(s.getRank());
+		String content = "";
+		content += "<p><span style = 'color:white'>" + hiscoreSkill.getName() + "</span></p>";
+		content += "<p><span style = 'color:white'>Rank:</span> " + rank + "</p>";
+		if (s.getLevel() > -1)
+		{
+			content += "<p><span style = 'color:white'>Score:</span> " + QuantityFormatter.formatNumber(s.getLevel()) + "</p>";
+		}
+		return content;
 	}
 
 	private static String sanitize(String lookup)

@@ -85,7 +85,7 @@ class PyramidPlunderOverlay extends Overlay
 		LocalPoint playerLocation = client.getLocalPlayer().getLocalLocation();
 
 		// Highlight convex hulls of urns, chests, and sarcophagus
-		int currentFloor = client.getVar(Varbits.PYRAMID_PLUNDER_ROOM);
+		int currentFloor = client.getVarbitValue(Varbits.PYRAMID_PLUNDER_ROOM);
 		for (GameObject object : plugin.getObjectsToHighlight())
 		{
 			if (config.highlightUrnsFloor() > currentFloor && URN_IDS.contains(object.getId())
@@ -127,7 +127,7 @@ class PyramidPlunderOverlay extends Overlay
 			if (SPEARTRAP_ID == object.getId())
 			{
 				// this varbit is set to 1 when you enter a room and 0 once you get passed the spike traps
-				if (client.getVar(Varbits.PYRAMID_PLUNDER_ROOM_LOCATION) != 1)
+				if (client.getVarbitValue(Varbits.PYRAMID_PLUNDER_ROOM_LOCATION) != 1)
 				{
 					return;
 				}

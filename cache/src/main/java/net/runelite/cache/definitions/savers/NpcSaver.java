@@ -62,23 +62,23 @@ public class NpcSaver
 			out.writeByte(14);
 			out.writeShort(npc.walkingAnimation);
 		}
-		if (npc.rotateLeftAnimation != -1)
+		if (npc.idleRotateLeftAnimation != -1)
 		{
 			out.writeByte(15);
-			out.writeShort(npc.rotateLeftAnimation);
+			out.writeShort(npc.idleRotateLeftAnimation);
 		}
-		if (npc.rotateRightAnimation != -1)
+		if (npc.idleRotateRightAnimation != -1)
 		{
 			out.writeByte(16);
-			out.writeShort(npc.rotateRightAnimation);
+			out.writeShort(npc.idleRotateRightAnimation);
 		}
-		if (npc.rotate180Animation != -1 || npc.rotate90LeftAnimation != -1 || npc.rotate90RightAnimation != -1)
+		if (npc.rotate180Animation != -1 || npc.rotateLeftAnimation != -1 || npc.rotateRightAnimation != -1)
 		{
 			out.writeByte(17);
 			out.writeShort(npc.walkingAnimation);
 			out.writeShort(npc.rotate180Animation);
-			out.writeShort(npc.rotate90RightAnimation);
-			out.writeShort(npc.rotate90LeftAnimation);
+			out.writeShort(npc.rotateLeftAnimation);
+			out.writeShort(npc.rotateRightAnimation);
 		}
 		for (int i = 0; i < 5; ++i)
 		{

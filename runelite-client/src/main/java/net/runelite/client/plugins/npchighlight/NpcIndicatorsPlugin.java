@@ -26,7 +26,6 @@
 package net.runelite.client.plugins.npchighlight;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.time.Instant;
@@ -48,7 +47,6 @@ import net.runelite.api.GraphicID;
 import net.runelite.api.GraphicsObject;
 import net.runelite.api.KeyCode;
 import net.runelite.api.MenuAction;
-import static net.runelite.api.MenuAction.MENU_ACTION_DEPRIORITIZE_OFFSET;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
@@ -63,6 +61,7 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.game.NpcUtil;
 import net.runelite.client.game.npcoverlay.HighlightedNpc;
 import net.runelite.client.game.npcoverlay.NpcOverlayService;
 import net.runelite.client.plugins.Plugin;
@@ -89,10 +88,6 @@ public class NpcIndicatorsPlugin extends Plugin
 	private static final String TAG_ALL = "Tag-All";
 	private static final String UNTAG_ALL = "Un-tag-All";
 
-	private static final Set<MenuAction> NPC_MENU_ACTIONS = ImmutableSet.of(MenuAction.NPC_FIRST_OPTION, MenuAction.NPC_SECOND_OPTION,
-		MenuAction.NPC_THIRD_OPTION, MenuAction.NPC_FOURTH_OPTION, MenuAction.NPC_FIFTH_OPTION, MenuAction.SPELL_CAST_ON_NPC,
-		MenuAction.ITEM_USE_ON_NPC);
-
 	@Inject
 	private Client client;
 
@@ -110,6 +105,9 @@ public class NpcIndicatorsPlugin extends Plugin
 
 	@Inject
 	private NpcOverlayService npcOverlayService;
+
+	@Inject
+	private NpcUtil npcUtil;
 
 	/**
 	 * NPCs to highlight
@@ -239,46 +237,19 @@ public class NpcIndicatorsPlugin extends Plugin
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		int type = event.getType();
+		final MenuEntry menuEntry = event.getMenuEntry();
+		final MenuAction menuAction = menuEntry.getType();
+		final NPC npc = menuEntry.getNpc();
 
-		if (type >= MENU_ACTION_DEPRIORITIZE_OFFSET)
+		if (npc == null)
 		{
-			type -= MENU_ACTION_DEPRIORITIZE_OFFSET;
+			return;
 		}
 
-		final MenuAction menuAction = MenuAction.of(type);
-
-		if (NPC_MENU_ACTIONS.contains(menuAction))
-		{
-			NPC npc = client.getCachedNPCs()[event.getIdentifier()];
-
-			Color color = null;
-			if (npc.isDead())
-			{
-				color = config.deadNpcMenuColor();
-			}
-
-			if (color == null && highlightedNpcs.containsKey(npc) && config.highlightMenuNames() && (!npc.isDead() || !config.ignoreDeadNpcs()))
-			{
-				color = config.highlightColor();
-			}
-
-			if (color != null)
-			{
-				MenuEntry[] menuEntries = client.getMenuEntries();
-				final MenuEntry menuEntry = menuEntries[menuEntries.length - 1];
-				final String target = ColorUtil.prependColorTag(Text.removeTags(event.getTarget()), color);
-				menuEntry.setTarget(target);
-			}
-		}
-		else if (menuAction == MenuAction.EXAMINE_NPC && client.isKeyPressed(KeyCode.KC_SHIFT))
+		if (menuAction == MenuAction.EXAMINE_NPC && client.isKeyPressed(KeyCode.KC_SHIFT))
 		{
 			// Add tag and tag-all options
-			final int id = event.getIdentifier();
-			final NPC[] cachedNPCs = client.getCachedNPCs();
-			final NPC npc = cachedNPCs[id];
-
-			if (npc == null || npc.getName() == null)
+			if (npc.getName() == null)
 			{
 				return;
 			}
@@ -305,6 +276,25 @@ public class NpcIndicatorsPlugin extends Plugin
 				.setIdentifier(event.getIdentifier())
 				.setType(MenuAction.RUNELITE)
 				.onClick(this::tag);
+		}
+		else
+		{
+			Color color = null;
+			if (npcUtil.isDying(npc))
+			{
+				color = config.deadNpcMenuColor();
+			}
+
+			if (color == null && highlightedNpcs.containsKey(npc) && config.highlightMenuNames() && (!npcUtil.isDying(npc) || !config.ignoreDeadNpcs()))
+			{
+				color = config.highlightColor();
+			}
+
+			if (color != null)
+			{
+				final String target = ColorUtil.prependColorTag(Text.removeTags(event.getTarget()), color);
+				menuEntry.setTarget(target);
+			}
 		}
 	}
 
@@ -674,13 +664,15 @@ public class NpcIndicatorsPlugin extends Plugin
 			.fillColor(config.fillColor())
 			.hull(config.highlightHull())
 			.tile(config.highlightTile())
+			.trueTile(config.highlightTrueTile())
 			.swTile(config.highlightSouthWestTile())
+			.swTrueTile(config.highlightSouthWestTrueTile())
 			.outline(config.highlightOutline())
 			.name(config.drawNames())
 			.nameOnMinimap(config.drawMinimapNames())
 			.borderWidth((float) config.borderWidth())
 			.outlineFeather(config.outlineFeather())
-			.render(n -> !n.isDead() || !config.ignoreDeadNpcs())
+			.render(n -> !npcUtil.isDying(n) || !config.ignoreDeadNpcs())
 			.build();
 	}
 }

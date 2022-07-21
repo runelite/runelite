@@ -184,6 +184,18 @@ public class SwingUtil
 			@Override
 			public void mouseClicked(MouseEvent e)
 			{
+				if (OSType.getOSType() == OSType.MacOS && !frame.isFocused())
+				{
+					// On macOS, frame.setVisible(true) only restores focus when the visibility was previously false.
+					// The frame's visibility is not set to false when the window loses focus, so we set it manually.
+					// Additionally, in order to bring the window to the foreground,
+					// frame.setVisible(true) calls CPlatformWindow::nativePushNSWindowToFront.
+					// However, this native method is not called with activateIgnoringOtherApps:YES,
+					// so any other active window will prevent our window from being brought to the front.
+					// To work around this, we use our macOS-specific requestForeground().
+					frame.setVisible(false);
+					OSXUtil.requestForeground();
+				}
 				frame.setVisible(true);
 				frame.setState(Frame.NORMAL); // Restore
 			}

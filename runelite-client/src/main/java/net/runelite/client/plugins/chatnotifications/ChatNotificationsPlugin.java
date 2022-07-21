@@ -47,7 +47,6 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.chat.ChatColorType;
-import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
@@ -68,9 +67,6 @@ public class ChatNotificationsPlugin extends Plugin
 
 	@Inject
 	private ChatNotificationsConfig config;
-
-	@Inject
-	private ChatMessageManager chatMessageManager;
 
 	@Inject
 	private Notifier notifier;
@@ -243,12 +239,24 @@ public class ChatNotificationsPlugin extends Plugin
 			Matcher matcher = usernameMatcher.matcher(message);
 			if (matcher.find())
 			{
-				final int start = matcher.start();
 				final String username = client.getLocalPlayer().getName();
-				final String closeColor = MoreObjects.firstNonNull(getLastColor(message.substring(0, start)), "</col>");
-				final String replacement = "<col" + ChatColorType.HIGHLIGHT.name() + "><u>" + username + "</u>" + closeColor;
-				messageNode.setValue(matcher.replaceAll(replacement));
+				StringBuffer stringBuffer = new StringBuffer();
+				do
+				{
+					final int start = matcher.start(); // start not end, since username won't contain a col tag
+					final String closeColor = MoreObjects.firstNonNull(
+						getLastColor(message.substring(0, start)),
+						"<col" + ChatColorType.NORMAL + '>');
+					final String replacement = "<col" + ChatColorType.HIGHLIGHT.name() + "><u>" + username + "</u>" + closeColor;
+					matcher.appendReplacement(stringBuffer, replacement);
+				}
+				while (matcher.find());
+
+				matcher.appendTail(stringBuffer);
+
+				messageNode.setValue(stringBuffer.toString());
 				update = true;
+
 				if (config.notifyOnOwnName() && (chatMessage.getType() == ChatMessageType.PUBLICCHAT
 					|| chatMessage.getType() == ChatMessageType.PRIVATECHAT
 					|| chatMessage.getType() == ChatMessageType.FRIENDSCHAT
@@ -279,26 +287,16 @@ public class ChatNotificationsPlugin extends Plugin
 
 			do
 			{
-				String value = matcher.group();
-
-				// Determine the ending color by:
-				// 1) use the color from value if it has one
-				// 2) use the last color from stringBuffer + <content between last match and current match>
-				// To do #2 we just search for the last col tag after calling appendReplacement
-				String endColor = getLastColor(value);
-
+				final int end = matcher.end();
+				// Determine the ending color by finding the last color tag up to and
+				// including the match.
+				final String closeColor = MoreObjects.firstNonNull(
+					getLastColor(nodeValue.substring(0, end)),
+					"<col" + ChatColorType.NORMAL + '>');
 				// Strip color tags from the highlighted region so that it remains highlighted correctly
-				value = stripColor(value);
+				final String value = stripColor(matcher.group());
 
-				matcher.appendReplacement(stringBuffer, "<col" + ChatColorType.HIGHLIGHT + '>' + value);
-
-				if (endColor == null)
-				{
-					endColor = getLastColor(stringBuffer.toString());
-				}
-
-				// Append end color
-				stringBuffer.append(endColor == null ? "<col" + ChatColorType.NORMAL + ">" : endColor);
+				matcher.appendReplacement(stringBuffer, "<col" + ChatColorType.HIGHLIGHT + '>' + value + closeColor);
 
 				update = true;
 				matchesHighlight = true;
@@ -322,7 +320,6 @@ public class ChatNotificationsPlugin extends Plugin
 		if (update)
 		{
 			messageNode.setRuneLiteFormatMessage(messageNode.getValue());
-			chatMessageManager.update(messageNode);
 		}
 	}
 

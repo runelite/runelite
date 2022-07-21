@@ -28,19 +28,18 @@ package net.runelite.client.plugins.devtools;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
-import java.awt.Rectangle;
 import java.awt.Shape;
-import java.awt.geom.Rectangle2D;
 import java.util.List;
 import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import net.runelite.api.Animation;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.DecorativeObject;
+import net.runelite.api.DynamicObject;
 import net.runelite.api.GameObject;
 import net.runelite.api.GraphicsObject;
 import net.runelite.api.ItemLayer;
@@ -57,9 +56,6 @@ import net.runelite.api.TileItem;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -118,11 +114,6 @@ class DevToolsOverlay extends Overlay
 		if (plugin.getGroundItems().isActive() || plugin.getGroundObjects().isActive() || plugin.getGameObjects().isActive() || plugin.getWalls().isActive() || plugin.getDecorations().isActive() || plugin.getTileLocation().isActive() || plugin.getMovementFlags().isActive())
 		{
 			renderTileObjects(graphics);
-		}
-
-		if (plugin.getInventory().isActive())
-		{
-			renderInventory(graphics);
 		}
 
 		if (plugin.getProjectiles().isActive())
@@ -355,7 +346,21 @@ class DevToolsOverlay extends Overlay
 			{
 				if (gameObject != null && gameObject.getSceneMinLocation().equals(tile.getSceneLocation()))
 				{
-					renderTileObject(graphics, gameObject, player, GREEN);
+					if (player.getLocalLocation().distanceTo(gameObject.getLocalLocation()) <= MAX_DISTANCE)
+					{
+						StringBuilder stringBuilder = new StringBuilder();
+						stringBuilder.append("ID: ").append(gameObject.getId());
+						if (gameObject.getRenderable() instanceof DynamicObject)
+						{
+							Animation animation = ((DynamicObject) gameObject.getRenderable()).getAnimation();
+							if (animation != null)
+							{
+								stringBuilder.append(" A: ").append(animation.getId());
+							}
+						}
+
+						OverlayUtil.renderTileOverlay(graphics, gameObject, stringBuilder.toString(), GREEN);
+					}
 				}
 			}
 		}
@@ -396,40 +401,9 @@ class DevToolsOverlay extends Overlay
 		}
 	}
 
-	private void renderInventory(Graphics2D graphics)
-	{
-		Widget inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
-		if (inventoryWidget == null || inventoryWidget.isHidden())
-		{
-			return;
-		}
-
-		for (WidgetItem item : inventoryWidget.getWidgetItems())
-		{
-			Rectangle slotBounds = item.getCanvasBounds();
-
-			String idText = "" + item.getId();
-			FontMetrics fm = graphics.getFontMetrics();
-			Rectangle2D textBounds = fm.getStringBounds(idText, graphics);
-
-			int textX = (int) (slotBounds.getX() + (slotBounds.getWidth() / 2) - (textBounds.getWidth() / 2));
-			int textY = (int) (slotBounds.getY() + (slotBounds.getHeight() / 2) + (textBounds.getHeight() / 2));
-
-			graphics.setColor(new Color(255, 255, 255, 65));
-			graphics.fill(slotBounds);
-
-			graphics.setColor(Color.BLACK);
-			graphics.drawString(idText, textX + 1, textY + 1);
-			graphics.setColor(YELLOW);
-			graphics.drawString(idText, textX, textY);
-		}
-	}
-
 	private void renderProjectiles(Graphics2D graphics)
 	{
-		List<Projectile> projectiles = client.getProjectiles();
-
-		for (Projectile projectile : projectiles)
+		for (Projectile projectile : client.getProjectiles())
 		{
 			int projectileId = projectile.getId();
 			String text = "(ID: " + projectileId + ")";
@@ -446,9 +420,7 @@ class DevToolsOverlay extends Overlay
 
 	private void renderGraphicsObjects(Graphics2D graphics)
 	{
-		List<GraphicsObject> graphicsObjects = client.getGraphicsObjects();
-
-		for (GraphicsObject graphicsObject : graphicsObjects)
+		for (GraphicsObject graphicsObject : client.getGraphicsObjects())
 		{
 			LocalPoint lp = graphicsObject.getLocation();
 			Polygon poly = Perspective.getCanvasTilePoly(client, lp);

@@ -33,7 +33,10 @@ import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
+import net.runelite.api.Point;
 import net.runelite.api.TileObject;
+import net.runelite.api.widgets.WidgetID;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -78,22 +81,23 @@ class InteractHighlightOverlay extends Overlay
 			return;
 		}
 
-		MenuEntry top = menuEntries[menuEntries.length - 1];
-		MenuAction menuAction = top.getType();
+		MenuEntry entry = client.isMenuOpen() ? hoveredMenuEntry(menuEntries) : menuEntries[menuEntries.length - 1];
+		MenuAction menuAction = entry.getType();
 
 		switch (menuAction)
 		{
 			case ITEM_USE_ON_GAME_OBJECT:
-			case SPELL_CAST_ON_GAME_OBJECT:
+			case WIDGET_TARGET_ON_GAME_OBJECT:
 			case GAME_OBJECT_FIRST_OPTION:
 			case GAME_OBJECT_SECOND_OPTION:
 			case GAME_OBJECT_THIRD_OPTION:
 			case GAME_OBJECT_FOURTH_OPTION:
 			case GAME_OBJECT_FIFTH_OPTION:
+			case EXAMINE_OBJECT:
 			{
-				int x = top.getParam0();
-				int y = top.getParam1();
-				int id = top.getIdentifier();
+				int x = entry.getParam0();
+				int y = entry.getParam1();
+				int id = entry.getIdentifier();
 				TileObject tileObject = plugin.findTileObject(x, y, id);
 				if (tileObject != null && config.objectShowHover() && (tileObject != plugin.getInteractedObject() || !config.objectShowInteract()))
 				{
@@ -102,18 +106,19 @@ class InteractHighlightOverlay extends Overlay
 				break;
 			}
 			case ITEM_USE_ON_NPC:
-			case SPELL_CAST_ON_NPC:
+			case WIDGET_TARGET_ON_NPC:
 			case NPC_FIRST_OPTION:
 			case NPC_SECOND_OPTION:
 			case NPC_THIRD_OPTION:
 			case NPC_FOURTH_OPTION:
 			case NPC_FIFTH_OPTION:
+			case EXAMINE_NPC:
 			{
-				int id = top.getIdentifier();
-				NPC npc = plugin.findNpc(id);
+				NPC npc = entry.getNpc();
 				if (npc != null && config.npcShowHover() && (npc != plugin.getInteractedTarget() || !config.npcShowInteract()))
 				{
-					Color highlightColor = menuAction == MenuAction.NPC_SECOND_OPTION || menuAction == MenuAction.SPELL_CAST_ON_NPC
+					Color highlightColor = menuAction == MenuAction.NPC_SECOND_OPTION
+						|| menuAction == MenuAction.WIDGET_TARGET_ON_NPC && WidgetInfo.TO_GROUP(client.getSelectedWidget().getId()) == WidgetID.SPELLBOOK_GROUP_ID
 						? config.npcAttackHoverHighlightColor() : config.npcHoverHighlightColor();
 					modelOutlineRenderer.drawOutline(npc, config.borderWidth(), highlightColor, config.outlineFeather());
 				}
@@ -154,5 +159,30 @@ class InteractHighlightOverlay extends Overlay
 			return ColorUtil.colorLerp(INTERACT_CLICK_COLOR, end, (time - 5) / 5f);
 		}
 		return end;
+	}
+
+	private MenuEntry hoveredMenuEntry(final MenuEntry[] menuEntries)
+	{
+		final int menuX = client.getMenuX();
+		final int menuY = client.getMenuY();
+		final int menuWidth = client.getMenuWidth();
+		final Point mousePosition = client.getMouseCanvasPosition();
+
+		int dy = mousePosition.getY() - menuY;
+		dy -= 19; // Height of Choose Option
+		if (dy < 0)
+		{
+			return menuEntries[menuEntries.length - 1];
+		}
+
+		int idx = dy / 15; // Height of each menu option
+		idx = menuEntries.length - 1 - idx;
+
+		if (mousePosition.getX() > menuX && mousePosition.getX() < menuX + menuWidth
+			&& idx >= 0 && idx < menuEntries.length)
+		{
+			return menuEntries[idx];
+		}
+		return menuEntries[menuEntries.length - 1];
 	}
 }

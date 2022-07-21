@@ -37,6 +37,7 @@ public enum RuneScapeProfileType
 	STANDARD(client -> true),
 	BETA(client -> client.getWorldType().contains(WorldType.NOSAVE_MODE)),
 	DEADMAN(client -> client.getWorldType().contains(WorldType.DEADMAN)),
+	PVP_ARENA(client -> client.getWorldType().contains(WorldType.PVP_ARENA)),
 	TRAILBLAZER_LEAGUE,
 	DEADMAN_REBORN,
 	SHATTERED_RELICS_LEAGUE(client -> client.getWorldType().contains(WorldType.SEASONAL)),

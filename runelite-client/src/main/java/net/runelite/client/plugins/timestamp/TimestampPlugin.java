@@ -128,7 +128,7 @@ public class TimestampPlugin extends Plugin
 
 	private Color getTimestampColour()
 	{
-		boolean isChatboxTransparent = client.isResized() && client.getVar(Varbits.TRANSPARENT_CHATBOX) == 1;
+		boolean isChatboxTransparent = client.isResized() && client.getVarbitValue(Varbits.TRANSPARENT_CHATBOX) == 1;
 
 		return isChatboxTransparent ? config.transparentTimestamp() : config.opaqueTimestamp();
 	}

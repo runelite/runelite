@@ -21,23 +21,39 @@
    string_length         
    iconst                 0
    if_icmpgt              LABEL13
-   jump                   LABEL118
+   jump                   LABEL131
 LABEL13:
+   iload                  0
+   if_getwidth           
+   istore                 2
+   sload                  0
+   iload                  2
+   iconst                 494
+   paraheight            
+   iconst                 2
+   if_icmple              LABEL23
+   jump                   LABEL30
+LABEL23:
    sload                  0
    sconst                 "<br>"
    sconst                 "<br>"
    sload                  1
    join_string            4
-   iload                  0
-   if_getwidth           
-   istore                 2
    sstore                 2
+   jump                   LABEL35
+LABEL30:
+   sload                  0
+   sconst                 "<br>"
+   sload                  1
+   join_string            3
+   sstore                 2
+LABEL35:
 
    sload                  0 ; examine
    sload                  1 ; Convenience fee
-   sload                  2 ; "<$string0><br><br><$string1>"
-   sconst                 "geExamineText"
-   runelite_callback
+   sload                  2 ; "<$string0><br><br><$string1>" or "<$string0><br><$string1>"
+   sconst                 "geSellExamineText"
+   runelite_callback     
    sstore                 2 ; final text
    pop_string               ; Convenience fee
    pop_string               ; examine
@@ -137,10 +153,20 @@ LABEL13:
    sconst                 "Info"
    iload                  1
    if_setop              
-   jump                   LABEL139
-LABEL118:
+   jump                   LABEL152
+LABEL131:
    sload                  0
    sstore                 2
+
+   sload                  0 ; examine
+   sload                  1 ; ""
+   sload                  2 ; examine
+   sconst                 "geBuyExamineText"
+   runelite_callback
+   sstore                 2 ; final text
+   pop_string               ; ""
+   pop_string               ; examine
+
    iconst                 1
    iload                  1
    if_sethide            
@@ -160,7 +186,7 @@ LABEL118:
    if_setonop            
    iload                  1
    if_clearops           
-LABEL139:
+LABEL152:
    sload                  2
    iload                  0
    if_settext            

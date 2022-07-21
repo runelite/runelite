@@ -490,14 +490,14 @@ public class ScreenshotPlugin extends Plugin
 			}
 		}
 
-		if (config.screenshotCollectionLogEntries() && chatMessage.startsWith(COLLECTION_LOG_TEXT) && client.getVar(Varbits.COLLECTION_LOG_NOTIFICATION) == 1)
+		if (config.screenshotCollectionLogEntries() && chatMessage.startsWith(COLLECTION_LOG_TEXT) && client.getVarbitValue(Varbits.COLLECTION_LOG_NOTIFICATION) == 1)
 		{
 			String entry = Text.removeTags(chatMessage).substring(COLLECTION_LOG_TEXT.length());
 			String fileName = "Collection log (" + entry + ")";
 			takeScreenshot(fileName, SD_COLLECTION_LOG);
 		}
 
-		if (chatMessage.contains("combat task") && config.screenshotCombatAchievements() && client.getVar(Varbits.COMBAT_ACHIEVEMENTS_POPUP) == 1)
+		if (chatMessage.contains("combat task") && config.screenshotCombatAchievements() && client.getVarbitValue(Varbits.COMBAT_ACHIEVEMENTS_POPUP) == 1)
 		{
 			String fileName = parseCombatAchievementWidget(chatMessage);
 			if (!fileName.isEmpty())
@@ -655,15 +655,15 @@ public class ScreenshotPlugin extends Plugin
 				{
 					return;
 				}
-				String topText = client.getVar(VarClientStr.NOTIFICATION_TOP_TEXT);
-				String bottomText = client.getVar(VarClientStr.NOTIFICATION_BOTTOM_TEXT);
+				String topText = client.getVarcStrValue(VarClientStr.NOTIFICATION_TOP_TEXT);
+				String bottomText = client.getVarcStrValue(VarClientStr.NOTIFICATION_BOTTOM_TEXT);
 				if (topText.equalsIgnoreCase("Collection log") && config.screenshotCollectionLogEntries())
 				{
 					String entry = Text.removeTags(bottomText).substring("New item:".length());
 					String fileName = "Collection log (" + entry + ")";
 					takeScreenshot(fileName, SD_COLLECTION_LOG);
 				}
-				if (topText.equalsIgnoreCase("Combat Task Completed!") && config.screenshotCombatAchievements() && client.getVar(Varbits.COMBAT_ACHIEVEMENTS_POPUP) == 0)
+				if (topText.equalsIgnoreCase("Combat Task Completed!") && config.screenshotCombatAchievements() && client.getVarbitValue(Varbits.COMBAT_ACHIEVEMENTS_POPUP) == 0)
 				{
 					String entry = Text.removeTags(bottomText).substring("Task Completed: ".length());
 					String fileName = "Combat task (" + entry.replaceAll("[:?]", "") + ")";

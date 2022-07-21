@@ -215,7 +215,7 @@ class GrandExchangeSearchPanel extends JPanel
 			ItemComposition itemComp = itemManager.getItemComposition(itemId);
 			ItemStats itemStats = itemManager.getItemStats(itemId, false);
 
-			int itemPrice = useActivelyTradedPrice && item.getWikiPrice() > 0 ? item.getWikiPrice() : item.getPrice();
+			int itemPrice = useActivelyTradedPrice ? itemManager.getWikiPrice(item) : item.getPrice();
 			int itemLimit = itemStats != null ? itemStats.getGeLimit() : 0;
 			final int haPrice = itemComp.getHaPrice();
 			AsyncBufferedImage itemImage = itemManager.getImage(itemId);

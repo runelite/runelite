@@ -25,7 +25,7 @@
 package net.runelite.cache.script.assembler;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -267,7 +267,7 @@ public class ScriptWriter extends rs2asmBaseListener
 				continue;
 			}
 
-			Map<Integer, Integer> map = maps[index++] = new HashMap<>();
+			Map<Integer, Integer> map = maps[index++] = new LinkedHashMap<>();
 
 			for (LookupCase scase : lswitch.getCases())
 			{

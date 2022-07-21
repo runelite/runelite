@@ -35,11 +35,12 @@ public enum MenuAction
 	/**
 	 * Menu action for using an item in your inventory on a tile object (GameObject or GroundObject).
 	 */
+	@Deprecated
 	ITEM_USE_ON_GAME_OBJECT(1),
 	/**
-	 * Menu action for casting a spell on a tile object (GameObject or GroundObject).
+	 * Menu action for using a widget on a tile object (GameObject or GroundObject).
 	 */
-	SPELL_CAST_ON_GAME_OBJECT(2),
+	WIDGET_TARGET_ON_GAME_OBJECT(2),
 	/**
 	 * First menu action for a game object.
 	 */
@@ -64,11 +65,12 @@ public enum MenuAction
 	/**
 	 * Menu action for using an item in your inventory on an NPC.
 	 */
+	@Deprecated
 	ITEM_USE_ON_NPC(7),
 	/**
-	 * Menu action for casting a spell on an NPC.
+	 * Menu action for using a widget on an NPC.
 	 */
-	SPELL_CAST_ON_NPC(8),
+	WIDGET_TARGET_ON_NPC(8),
 	/**
 	 * First menu action for an NPC.
 	 */
@@ -93,20 +95,22 @@ public enum MenuAction
 	/**
 	 * Menu action for using an item on a player.
 	 */
+	@Deprecated
 	ITEM_USE_ON_PLAYER(14),
 	/**
-	 * Menu action for casting a spell on a player.
+	 * Menu action for using a widget on a player.
 	 */
-	SPELL_CAST_ON_PLAYER(15),
+	WIDGET_TARGET_ON_PLAYER(15),
 
 	/**
 	 * Menu action for using an item on an item on the ground.
 	 */
+	@Deprecated
 	ITEM_USE_ON_GROUND_ITEM(16),
 	/**
-	 * Menu action for casting a spell on an item on the ground.
+	 * Menu action for using a widget on an item on the ground.
 	 */
-	SPELL_CAST_ON_GROUND_ITEM(17),
+	WIDGET_TARGET_ON_GROUND_ITEM(17),
 	/**
 	 * First menu action for an item on the ground.
 	 */
@@ -138,13 +142,14 @@ public enum MenuAction
 	 */
 	WIDGET_TYPE_1(24),
 	/**
-	 * Interaction with widget (type 2).
+	 * Select the widget for targeting other widgets/entites etc.
+	 * @see Client#getSelectedWidget()
 	 */
-	WIDGET_TYPE_2(25),
+	WIDGET_TARGET(25),
 	/**
-	 * Interaction with widget (type 3).
+	 * Performs an ifclose.
 	 */
-	WIDGET_TYPE_3(26),
+	WIDGET_CLOSE(26),
 	/**
 	 * Interaction with widget (type 4).
 	 */
@@ -154,41 +159,48 @@ public enum MenuAction
 	 */
 	WIDGET_TYPE_5(29),
 	/**
-	 * Interaction with widget (type 6).
+	 * Performs a Continue
 	 */
-	WIDGET_TYPE_6(30),
+	WIDGET_CONTINUE(30),
 	/**
-	 * Menu action when using an item on another item inside a widget (inventory).
+	 * Menu action when using an item on another item
 	 */
-	ITEM_USE_ON_WIDGET_ITEM(31),
+	@Deprecated
+	ITEM_USE_ON_ITEM(31),
 	/**
-	 * Menu action when using an item on a widget.
+	 * Menu action when using a component on an item
 	 */
-	ITEM_USE_ON_WIDGET(32),
+	WIDGET_USE_ON_ITEM(32),
 
 	/**
 	 * First menu action for an item.
 	 */
+	@Deprecated
 	ITEM_FIRST_OPTION(33),
 	/**
 	 * Second menu action for an item.
 	 */
+	@Deprecated
 	ITEM_SECOND_OPTION(34),
 	/**
 	 * Third menu action for an item.
 	 */
+	@Deprecated
 	ITEM_THIRD_OPTION(35),
 	/**
 	 * Fourth menu action for an item.
 	 */
+	@Deprecated
 	ITEM_FOURTH_OPTION(36),
 	/**
 	 * Fifth menu action for an item.
 	 */
+	@Deprecated
 	ITEM_FIFTH_OPTION(37),
 	/**
 	 * Menu action to use an item.
 	 */
+	@Deprecated
 	ITEM_USE(38),
 
 	/**
@@ -227,9 +239,9 @@ public enum MenuAction
 	CC_OP(57),
 
 	/**
-	 * Casting a spell / op target on a widget
+	 * Using a widget on another widget
 	 */
-	SPELL_CAST_ON_WIDGET(58),
+	WIDGET_TARGET_ON_WIDGET(58),
 
 	/**
 	 * Menu action for high priority runelite options
@@ -251,6 +263,7 @@ public enum MenuAction
 	/**
 	 * Menu action triggered by examining item in inventory.
 	 */
+	@Deprecated
 	EXAMINE_ITEM(1005),
 	/**
 	 * Menu action triggered by canceling a menu.

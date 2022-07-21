@@ -52,7 +52,7 @@ public class HeightMapDumperTest
 			store.load();
 
 			HeightMapDumper dumper = new HeightMapDumper(store);
-			dumper.load();
+			dumper.load(null);
 
 			BufferedImage image = dumper.drawHeightMap(0);
 

@@ -33,6 +33,7 @@ import net.runelite.cache.definitions.providers.ModelProvider;
 import net.runelite.cache.definitions.providers.SpriteProvider;
 import net.runelite.cache.definitions.providers.TextureProvider;
 import net.runelite.cache.models.FaceNormal;
+import net.runelite.cache.models.JagexColor;
 import net.runelite.cache.models.VertexNormal;
 
 public class ItemSpriteFactory
@@ -72,11 +73,6 @@ public class ItemSpriteFactory
 			}
 		}
 
-		if (item.notedTemplate != -1)
-		{
-			item.updateNote(itemProvider.provide(item.notedTemplate), itemProvider.provide(item.notedID));
-		}
-
 		Model itemModel = getModel(modelProvider, item);
 		if (itemModel == null)
 		{
@@ -96,7 +92,7 @@ public class ItemSpriteFactory
 		else if (item.boughtTemplateId != -1)
 		{
 			auxSpritePixels = createSpritePixels(itemProvider, modelProvider, spriteProvider, textureProvider,
-				item.boughtId, quantity, border, shadowColor, false);
+				item.boughtId, quantity, border, 0, false);
 			if (auxSpritePixels == null)
 			{
 				return null;
@@ -116,7 +112,7 @@ public class ItemSpriteFactory
 
 		SpritePixels spritePixels = new SpritePixels(36, 32);
 		Graphics3D graphics = new Graphics3D(rsTextureProvider);
-		graphics.setBrightness(0.6d);
+		graphics.setBrightness(JagexColor.BRIGHTNESS_MAX);
 		graphics.setRasterBuffer(spritePixels.pixels, 36, 32);
 		graphics.reset();
 		graphics.setRasterClipping();

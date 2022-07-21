@@ -109,8 +109,8 @@ public class BankSearch
 			}
 			else
 			{
-				client.setVar(VarClientInt.INPUT_TYPE, InputType.NONE.getType());
-				client.setVar(VarClientStr.INPUT_TEXT, "");
+				client.setVarcIntValue(VarClientInt.INPUT_TYPE, InputType.NONE.getType());
+				client.setVarcStrValue(VarClientStr.INPUT_TEXT, "");
 			}
 
 			layoutBank();

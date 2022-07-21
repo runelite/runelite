@@ -36,6 +36,7 @@ public enum FairyRings
 	AJQ("Cave south of Dorgesh-Kaan"),
 	AJR("Slayer cave"),
 	AJS("Penguins near Miscellania"),
+	AKP("Necropolis"),
 	AKQ("Piscatoris Hunter area"),
 	AKS("Feldip Hunter area"),
 	ALP("(Island) Lighthouse"),
@@ -47,6 +48,7 @@ public enum FairyRings
 	BIP("(Island) South-west of Mort Myre"),
 	BIQ("Kalphite Hive"),
 	BIS("Ardougne Zoo - Unicorns"),
+	BJP("(Island) Isle of Souls"),
 	BJR("Realm of the Fisher King"),
 	BJS("(Island) Near Zul-Andra", "zulrah"),
 	BKP("South of Castle Wars"),
@@ -54,6 +56,7 @@ public enum FairyRings
 	BKR("Mort Myre Swamp, south of Canifis"),
 	BKS("Zanaris"),
 	BLP("TzHaar area"),
+	BLQ("Yu'biusk"),
 	BLR("Legends' Guild"),
 
 	// C

@@ -68,6 +68,18 @@ public interface NpcIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 2,
+		keyName = "highlightTrueTile",
+		name = "Highlight true tile",
+		description = "Configures whether or not NPC should be highlighted by true tile",
+		section = renderStyleSection
+	)
+	default boolean highlightTrueTile()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 3,
 		keyName = "highlightSouthWestTile",
 		name = "Highlight south west tile",
 		description = "Configures whether or not NPC should be highlighted by south western tile",
@@ -79,7 +91,19 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 3,
+		position = 4,
+		keyName = "highlightSouthWestTrueTile",
+		name = "Highlight south west true tile",
+		description = "Configures whether or not NPC should be highlighted by south western true tile",
+		section = renderStyleSection
+	)
+	default boolean highlightSouthWestTrueTile()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 5,
 		keyName = "highlightOutline",
 		name = "Highlight outline",
 		description = "Configures whether or not the model of the NPC should be highlighted by outline",
@@ -92,7 +116,7 @@ public interface NpcIndicatorsConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-		position = 4,
+		position = 10,
 		keyName = "npcColor",
 		name = "Highlight Color",
 		description = "Color of the NPC highlight border, menu, and text",
@@ -105,7 +129,7 @@ public interface NpcIndicatorsConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-		position = 5,
+		position = 11,
 		keyName = "fillColor",
 		name = "Fill Color",
 		description = "Color of the NPC highlight fill",
@@ -117,7 +141,7 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 6,
+		position = 12,
 		keyName = "borderWidth",
 		name = "Border Width",
 		description = "Width of the highlighted NPC border",
@@ -129,7 +153,7 @@ public interface NpcIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 7,
+		position = 13,
 		keyName = "outlineFeather",
 		name = "Outline feather",
 		description = "Specify between 0-4 how much of the model outline should be faded",

@@ -83,7 +83,7 @@ public class ItemChargePlugin extends Plugin
 	private static final Pattern BINDING_CHECK_PATTERN = Pattern.compile(
 		"You have ([0-9]+|one) charges? left before your Binding necklace disintegrates\\.");
 	private static final Pattern BINDING_USED_PATTERN = Pattern.compile(
-		"You bind the temple's power into (mud|lava|steam|dust|smoke|mist) runes\\.");
+		"You (partially succeed to )?bind the temple's power into (mud|lava|steam|dust|smoke|mist) runes\\.");
 	private static final String BINDING_BREAK_TEXT = "Your Binding necklace has disintegrated.";
 	private static final Pattern RING_OF_FORGING_CHECK_PATTERN = Pattern.compile(
 		"You can smelt ([0-9]+|one) more pieces? of iron ore before a ring melts\\.");
@@ -130,6 +130,19 @@ public class ItemChargePlugin extends Plugin
 		"Your expeditious bracelet has (\\d{1,2}) charges? left\\."
 	);
 	private static final String EXPEDITIOUS_BRACELET_BREAK_TEXT = "Your Expeditious Bracelet has crumbled to dust.";
+	private static final Pattern BLOOD_ESSENCE_CHECK_PATTERN = Pattern.compile(
+		"Your blood essence has (\\d{1,4}) charges? remaining"
+	);
+	private static final Pattern BLOOD_ESSENCE_EXTRACT_PATTERN = Pattern.compile(
+		"You manage to extract power from the Blood Essence and craft (\\d{1,3}) extra runes?\\."
+	);
+	private static final String BLOOD_ESSENCE_ACTIVATE_TEXT = "You activate the blood essence.";
+	private static final String BRACELET_OF_CLAY_USE_TEXT = "You manage to mine some clay.";
+	private static final String BRACELET_OF_CLAY_USE_TEXT_TRAHAEARN = "You manage to mine some soft clay.";
+	private static final String BRACELET_OF_CLAY_BREAK_TEXT = "Your bracelet of clay crumbles to dust.";
+	private static final Pattern BRACELET_OF_CLAY_CHECK_PATTERN = Pattern.compile(
+		"You can mine (\\d{1,2}) more pieces? of soft clay before your bracelet crumbles to dust\\."
+	);
 
 	private static final int MAX_DODGY_CHARGES = 10;
 	private static final int MAX_BINDING_CHARGES = 16;
@@ -138,6 +151,8 @@ public class ItemChargePlugin extends Plugin
 	private static final int MAX_AMULET_OF_CHEMISTRY_CHARGES = 5;
 	private static final int MAX_AMULET_OF_BOUNTY_CHARGES = 10;
 	private static final int MAX_SLAYER_BRACELET_CHARGES = 30;
+	private static final int MAX_BLOOD_ESSENCE_CHARGES = 1000;
+	private static final int MAX_BRACELET_OF_CLAY_CHARGES = 28;
 
 	private int lastExplorerRingCharge = -1;
 
@@ -227,6 +242,9 @@ public class ItemChargePlugin extends Plugin
 			Matcher slaughterCheckMatcher = BRACELET_OF_SLAUGHTER_CHECK_PATTERN.matcher(message);
 			Matcher expeditiousActivateMatcher = EXPEDITIOUS_BRACELET_ACTIVATE_PATTERN.matcher(message);
 			Matcher expeditiousCheckMatcher = EXPEDITIOUS_BRACELET_CHECK_PATTERN.matcher(message);
+			Matcher bloodEssenceCheckMatcher = BLOOD_ESSENCE_CHECK_PATTERN.matcher(message);
+			Matcher bloodEssenceExtractMatcher = BLOOD_ESSENCE_EXTRACT_PATTERN.matcher(message);
+			Matcher braceletOfClayCheckMatcher = BRACELET_OF_CLAY_CHECK_PATTERN.matcher(message);
 
 			if (config.recoilNotification() && message.contains(RING_OF_RECOIL_BREAK_MESSAGE))
 			{
@@ -293,7 +311,11 @@ public class ItemChargePlugin extends Plugin
 			}
 			else if (bindingNecklaceUsedMatcher.find())
 			{
-				updateBindingNecklaceCharges(getItemCharges(ItemChargeConfig.KEY_BINDING_NECKLACE) - 1);
+				final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
+				if (equipment.contains(ItemID.BINDING_NECKLACE))
+				{
+					updateBindingNecklaceCharges(getItemCharges(ItemChargeConfig.KEY_BINDING_NECKLACE) - 1);
+				}
 			}
 			else if (bindingNecklaceCheckMatcher.find())
 			{
@@ -413,6 +435,41 @@ public class ItemChargePlugin extends Plugin
 			{
 				updateExpeditiousBraceletCharges(Integer.parseInt(expeditiousCheckMatcher.group(1)));
 			}
+			else if (bloodEssenceCheckMatcher.find())
+			{
+				updateBloodEssenceCharges(Integer.parseInt(bloodEssenceCheckMatcher.group(1)));
+			}
+			else if (bloodEssenceExtractMatcher.find())
+			{
+				updateBloodEssenceCharges(getItemCharges(ItemChargeConfig.KEY_BLOOD_ESSENCE) - Integer.parseInt(bloodEssenceExtractMatcher.group(1)));
+			}
+			else if (message.contains(BLOOD_ESSENCE_ACTIVATE_TEXT))
+			{
+				updateBloodEssenceCharges(MAX_BLOOD_ESSENCE_CHARGES);
+			}
+			else if (braceletOfClayCheckMatcher.find())
+			{
+				updateBraceletOfClayCharges(Integer.parseInt(braceletOfClayCheckMatcher.group(1)));
+			}
+			else if (message.equals(BRACELET_OF_CLAY_USE_TEXT) || message.equals(BRACELET_OF_CLAY_USE_TEXT_TRAHAEARN))
+			{
+				final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
+
+				// Determine if the player mined with a Bracelet of Clay equipped.
+				if (equipment != null && equipment.contains(ItemID.BRACELET_OF_CLAY))
+				{
+					int charges = Ints.constrainToRange(getItemCharges(ItemChargeConfig.KEY_BRACELET_OF_CLAY) - 1, 0, MAX_BRACELET_OF_CLAY_CHARGES);
+					updateBraceletOfClayCharges(charges);
+				}
+			}
+			else if (message.equals(BRACELET_OF_CLAY_BREAK_TEXT))
+			{
+				if (config.braceletOfClayNotification())
+				{
+					notifier.notify("Your bracelet of clay has crumbled to dust");
+				}
+				updateBraceletOfClayCharges(MAX_BRACELET_OF_CLAY_CHARGES);
+			}
 		}
 	}
 
@@ -445,7 +502,7 @@ public class ItemChargePlugin extends Plugin
 	@Subscribe
 	private void onVarbitChanged(VarbitChanged event)
 	{
-		int explorerRingCharge = client.getVar(Varbits.EXPLORER_RING_ALCHS);
+		int explorerRingCharge = client.getVarbitValue(Varbits.EXPLORER_RING_ALCHS);
 		if (lastExplorerRingCharge != explorerRingCharge)
 		{
 			lastExplorerRingCharge = explorerRingCharge;
@@ -540,6 +597,18 @@ public class ItemChargePlugin extends Plugin
 		updateInfoboxes();
 	}
 
+	private void updateBloodEssenceCharges(final int value)
+	{
+		setItemCharges(ItemChargeConfig.KEY_BLOOD_ESSENCE, value);
+		updateInfoboxes();
+	}
+
+	private void updateBraceletOfClayCharges(final int value)
+	{
+		setItemCharges(ItemChargeConfig.KEY_BRACELET_OF_CLAY, value);
+		updateInfoboxes();
+	}
+
 	private void checkDestroyWidget()
 	{
 		final int currentTick = client.getTickCount();
@@ -627,7 +696,7 @@ public class ItemChargePlugin extends Plugin
 
 				final String name = itemManager.getItemComposition(id).getName();
 				final BufferedImage image = itemManager.getImage(id);
-				infobox = new ItemChargeInfobox(this, image, name, charges, id, slot);
+				infobox = new ItemChargeInfobox(this, image, name, charges, id);
 				infoBoxManager.addInfoBox(infobox);
 				infoboxes.put(slot, infobox);
 			}

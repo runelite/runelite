@@ -166,10 +166,10 @@ LABEL141:
    iload                  0
    switch                
       0: LABEL144
-      1: LABEL234
       2: LABEL144
-      4: LABEL189
       6: LABEL144
+      4: LABEL189
+      1: LABEL234
    jump                   LABEL278
 LABEL144:
    iconst                 20

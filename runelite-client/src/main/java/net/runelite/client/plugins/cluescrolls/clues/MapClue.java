@@ -24,10 +24,10 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues;
 
-import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ImmutableList;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.util.Set;
+import java.util.List;
 import lombok.Getter;
 import static net.runelite.api.ItemID.*;
 import net.runelite.api.ObjectComposition;
@@ -58,7 +58,7 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 	public static final String WIZARDS_TOWER_DIS = "On the south side of the Wizard's Tower (DIS)";
 	public static final String SOUTH_OF_DRAYNOR_BANK = "South of Draynor Village Bank";
 
-	private static final Set<MapClue> CLUES = ImmutableSet.of(
+	private static final List<MapClue> CLUES = ImmutableList.of(
 		new MapClue(CLUE_SCROLL_EASY_12179, new WorldPoint(3300, 3291, 0), "Al Kharid mine"),
 		new MapClue(CLUE_SCROLL_EASY_2713, new WorldPoint(3166, 3361, 0), CHAMPIONS_GUILD),
 		new MapClue(CLUE_SCROLL_EASY_2716, new WorldPoint(3290, 3374, 0), VARROCK_EAST_MINE),

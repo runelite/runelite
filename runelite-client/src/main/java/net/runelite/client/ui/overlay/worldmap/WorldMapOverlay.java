@@ -31,6 +31,7 @@ import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.Shape;
 import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
 import java.util.List;
@@ -119,10 +120,10 @@ public class WorldMapOverlay extends Overlay
 		bottomBar.setHasListener(true);
 
 		final Rectangle worldMapRectangle = widget.getBounds();
-		final Area mapViewArea = getWorldMapClipArea(worldMapRectangle);
+		final Shape mapViewArea = getWorldMapClipArea(worldMapRectangle);
 		final Rectangle canvasBounds = new Rectangle(0, 0, client.getCanvasWidth(), client.getCanvasHeight());
-		final Area canvasViewArea = getWorldMapClipArea(canvasBounds);
-		Area currentClip = null;
+		final Shape canvasViewArea = getWorldMapClipArea(canvasBounds);
+		Shape currentClip = null;
 
 		Point mousePos = client.getMouseCanvasPosition();
 		if (!mapViewArea.contains(mousePos.getX(), mousePos.getY()))
@@ -297,24 +298,29 @@ public class WorldMapOverlay extends Overlay
 	 * @return              An {@link Area} representing <code>baseRectangle</code>, with the area
 	 *                      of visible widgets overlaying the world map clipped from it.
 	 */
-	private Area getWorldMapClipArea(Rectangle baseRectangle)
+	private Shape getWorldMapClipArea(Rectangle baseRectangle)
 	{
 		final Widget overview = client.getWidget(WidgetInfo.WORLD_MAP_OVERVIEW_MAP);
 		final Widget surfaceSelector = client.getWidget(WidgetInfo.WORLD_MAP_SURFACE_SELECTOR);
 
 		Area clipArea = new Area(baseRectangle);
+		boolean subtracted = false;
 
 		if (overview != null && !overview.isHidden())
 		{
 			clipArea.subtract(new Area(overview.getBounds()));
+			subtracted = true;
 		}
 
 		if (surfaceSelector != null && !surfaceSelector.isHidden())
 		{
 			clipArea.subtract(new Area(surfaceSelector.getBounds()));
+			subtracted = true;
 		}
 
-		return clipArea;
+		// The sun g2d implementation is much more efficient at applying clips which are subclasses of rectangle2d,
+		// so use that as the clip shape if possible
+		return subtracted ? clipArea : baseRectangle;
 	}
 
 	private void drawTooltip(Graphics2D graphics, WorldMapPoint worldPoint)
@@ -336,7 +342,7 @@ public class WorldMapOverlay extends Overlay
 		drawPoint = new Point(drawPoint.getX() + TOOLTIP_OFFSET_WIDTH, drawPoint.getY() + TOOLTIP_OFFSET_HEIGHT);
 
 		final Rectangle bounds = new Rectangle(0, 0, client.getCanvasWidth(), client.getCanvasHeight());
-		final Area mapArea = getWorldMapClipArea(bounds);
+		final Shape mapArea = getWorldMapClipArea(bounds);
 		graphics.setClip(mapArea);
 		graphics.setColor(JagexColors.TOOLTIP_BACKGROUND);
 		graphics.setFont(FontManager.getRunescapeFont());

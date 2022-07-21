@@ -60,7 +60,8 @@ import net.runelite.client.plugins.PluginDescriptor;
 @PluginDescriptor(
 	name = "Idle Notifier",
 	description = "Send a notification when going idle, or when HP/Prayer reaches a threshold",
-	tags = {"health", "hitpoints", "notifications", "prayer"}
+	tags = {"health", "hitpoints", "notifications", "prayer"},
+	enabledByDefault = false
 )
 public class IdleNotifierPlugin extends Plugin
 {
@@ -223,6 +224,7 @@ public class IdleNotifierPlugin extends Plugin
 			case FISHING_PEARL_FLY_ROD_2:
 			case FISHING_PEARL_BARBARIAN_ROD_2:
 			case FISHING_PEARL_OILY_ROD:
+			case FISHING_BARBARIAN_ROD:
 			/* Mining(Normal) */
 			case MINING_BRONZE_PICKAXE:
 			case MINING_IRON_PICKAXE:
@@ -533,7 +535,7 @@ public class IdleNotifierPlugin extends Plugin
 		{
 			return false;
 		}
-		if (config.getOxygenThreshold() >= client.getVar(Varbits.OXYGEN_LEVEL) * 0.1)
+		if (config.getOxygenThreshold() >= client.getVarbitValue(Varbits.OXYGEN_LEVEL) * 0.1)
 		{
 			if (!notifyOxygen)
 			{
@@ -556,7 +558,7 @@ public class IdleNotifierPlugin extends Plugin
 		}
 		if (client.getRealSkillLevel(Skill.HITPOINTS) > config.getHitpointsThreshold())
 		{
-			if (client.getBoostedSkillLevel(Skill.HITPOINTS) + client.getVar(Varbits.NMZ_ABSORPTION) <= config.getHitpointsThreshold())
+			if (client.getBoostedSkillLevel(Skill.HITPOINTS) + client.getVarbitValue(Varbits.NMZ_ABSORPTION) <= config.getHitpointsThreshold())
 			{
 				if (!notifyHitpoints)
 				{

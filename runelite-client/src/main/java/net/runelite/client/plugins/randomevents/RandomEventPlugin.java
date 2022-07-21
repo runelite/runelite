@@ -160,7 +160,7 @@ public class RandomEventPlugin extends Plugin
 			&& event.getType() <= MenuAction.NPC_FIFTH_OPTION.getId()
 			&& EVENT_OPTIONS.contains(event.getOption()))
 		{
-			NPC npc = client.getCachedNPCs()[event.getIdentifier()];
+			NPC npc = event.getMenuEntry().getNpc();
 			if (npc != null && EVENT_NPCS.contains(npc.getId()) && npc != currentRandomEvent && config.removeMenuOptions())
 			{
 				client.setMenuEntries(Arrays.copyOf(client.getMenuEntries(), client.getMenuEntries().length - 1));
