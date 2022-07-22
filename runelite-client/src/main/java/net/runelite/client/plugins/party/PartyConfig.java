@@ -70,10 +70,18 @@ public interface PartyConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "autoJoin",
+			name = "Auto join previous party",
+			description = "Automatically joins the previous party when you launch the game",
+			position = 4
+	)
+	default boolean autoJoinPreviousParty() { return false; }
+
+	@ConfigItem(
 		keyName = "pingHotkey",
 		name = "Ping hotkey",
 		description = "Key to hold to send a tile ping",
-		position = 4
+		position = 5
 	)
 	default Keybind pingHotkey()
 	{
@@ -83,7 +91,7 @@ public interface PartyConfig extends Config
 	@ConfigSection(
 		name = "Player Status Overlay",
 		description = "Player status such as health, prayer, and special attack energy drawn on player models.",
-		position = 5
+		position = 6
 	)
 	String SECTION_STATUS_OVERLAY = "statusOverlay";
 
@@ -92,7 +100,7 @@ public interface PartyConfig extends Config
 		keyName = "statusOverlayHealth",
 		name = "Show Health",
 		description = "Show health of party members on the player model.",
-		position = 6
+		position = 7
 	)
 	default boolean statusOverlayHealth()
 	{
@@ -104,7 +112,7 @@ public interface PartyConfig extends Config
 		keyName = "statusOverlayPrayer",
 		name = "Show Prayer",
 		description = "Show prayer of party members on the player model.",
-		position = 7
+		position = 8
 	)
 	default boolean statusOverlayPrayer()
 	{
@@ -116,7 +124,7 @@ public interface PartyConfig extends Config
 		keyName = "statusOverlayStamina",
 		name = "Show Run Energy",
 		description = "Show run energy (stamina) of party members on the player model.",
-		position = 8
+		position = 9
 	)
 	default boolean statusOverlayStamina()
 	{
@@ -128,7 +136,7 @@ public interface PartyConfig extends Config
 		keyName = "statusOverlaySpec",
 		name = "Show Spec Energy",
 		description = "Show special attack energy of party members on the player model.",
-		position = 9
+		position = 10
 	)
 	default boolean statusOverlaySpec()
 	{
@@ -140,7 +148,7 @@ public interface PartyConfig extends Config
 		keyName = "statusOverlayVeng",
 		name = "Show Vengeance",
 		description = "Show vengeance status (active/inactive) of party members on the player model.",
-		position = 10
+		position = 11
 	)
 	default boolean statusOverlayVeng()
 	{
@@ -152,7 +160,7 @@ public interface PartyConfig extends Config
 		keyName = "statusOverlayRenderSelf",
 		name = "Show On Self",
 		description = "Show above activated status overlays on your local player.",
-		position = 11
+		position = 12
 	)
 	default boolean statusOverlayRenderSelf()
 	{

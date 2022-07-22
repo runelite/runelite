@@ -199,6 +199,10 @@ public class PartyPlugin extends Plugin
 		wsClient.registerMessage(StatusUpdate.class);
 		// Delay sync so the eventbus can register prior to the sync response
 		SwingUtilities.invokeLater(this::requestSync);
+
+		if(config.autoJoinPreviousParty()){
+			party.changeParty(config.previousPartyId());
+		}
 	}
 
 	@Override
