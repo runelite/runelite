@@ -31,6 +31,8 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Setter;
@@ -46,13 +48,24 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 import net.runelite.client.util.ColorUtil;
+import net.runelite.client.plugins.prayer.PrayerConfig.PrayerDoseColour;
 
 class PrayerDoseOverlay extends Overlay
 {
 	private static final float PULSE_TIME = 2f * Constants.GAME_TICK_LENGTH;
 
-	private static final Color START_COLOR = new Color(0, 255, 255);
-	private static final Color END_COLOR = new Color(0, 92, 92);
+	//Color[] = {START , END}
+	private static final Color[] cyan = {new Color(0, 255, 255),new Color(0, 92, 92)};
+	private static final Color[] green = {new Color(0, 255, 0),new Color(92, 92, 0)};
+	private static final Color[] red = {new Color(255, 15, 0),new Color(65, 0, 0)};
+	//3 Options | DEFAULT | GREEN | RED | The added options are to assist with colourblindness
+    private static final Map<PrayerConfig.PrayerDoseColour,Color[]> colourOptions;
+	static {
+		colourOptions = new HashMap<>();
+		colourOptions.put(PrayerDoseColour.DEFAULT, cyan);
+		colourOptions.put(PrayerDoseColour.GREEN, green);
+		colourOptions.put(PrayerDoseColour.RED, red);
+	}
 
 	private final Client client;
 	private final PrayerPlugin plugin;
@@ -147,8 +160,10 @@ class PrayerDoseOverlay extends Overlay
 
 		final float tickProgress = Math.min(timeSinceLastTick / PULSE_TIME, 1); // Cap between 0 and 1
 		final double t = tickProgress * Math.PI; // Convert to 0 - pi
-
-		graphics.setColor(ColorUtil.colorLerp(START_COLOR, END_COLOR, Math.sin(t)));
+		graphics.setColor(ColorUtil.colorLerp(
+				colourOptions.get(config.prayerDoseColour())[0], //FIRST COLOUR
+				colourOptions.get(config.prayerDoseColour())[1], //LAST COLOUR
+				Math.sin(t)));
 		graphics.setStroke(new BasicStroke(2));
 		graphics.drawOval(orbInnerX, orbInnerY, orbInnerSize, orbInnerSize);
 		return null;
