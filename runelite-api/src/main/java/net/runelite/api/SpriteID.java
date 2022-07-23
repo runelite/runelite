@@ -312,6 +312,7 @@ public final class SpriteID
 	public static final int COMBAT_STYLE_BUTTON_NARROW_SELECTED = 294;
 	public static final int COMBAT_STYLE_BUTTON_THIN = 295;
 	public static final int COMBAT_STYLE_BUTTON_THIN_SELECTED = 296;
+	public static final int BANK_BACKGROUND = 297;
 	public static final int DIALOG_BACKGROUND = 297;
 	/* Unmapped: 298 */
 	public static final int RS2_YELLOW_CLICK_ANIMATION_1 = 299;
