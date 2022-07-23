@@ -55,12 +55,13 @@ class PrayerDoseOverlay extends Overlay
 	private static final float PULSE_TIME = 2f * Constants.GAME_TICK_LENGTH;
 
 	//Color[] = {START , END}
-	private static final Color[] cyan = {new Color(0, 255, 255),new Color(0, 92, 92)};
-	private static final Color[] green = {new Color(0, 255, 0),new Color(92, 92, 0)};
-	private static final Color[] red = {new Color(255, 15, 0),new Color(65, 0, 0)};
+	private static final Color[] cyan = {new Color(0, 255, 255), new Color(0, 92, 92)};
+	private static final Color[] green = {new Color(0, 255, 0), new Color(92, 92, 0)};
+	private static final Color[] red = {new Color(255, 15, 0), new Color(65, 0, 0)};
 	//3 Options | DEFAULT | GREEN | RED | The added options are to assist with colourblindness
-    private static final Map<PrayerConfig.PrayerDoseColour,Color[]> colourOptions;
-	static {
+	private static final Map<PrayerConfig.PrayerDoseColour, Color[]> colourOptions;
+	static
+	{
 		colourOptions = new HashMap<>();
 		colourOptions.put(PrayerDoseColour.DEFAULT, cyan);
 		colourOptions.put(PrayerDoseColour.GREEN, green);
