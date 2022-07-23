@@ -455,6 +455,7 @@ public final class SpriteID
 	public static final int MINIMAP_GUIDE_ARROW_YELLOW = 441;
 	public static final int MULTI_COMBAT_ZONE_CROSSED_SWORDS = 442;
 	public static final int DUEL_ARENA_ZONE_SHINING_AXE = 443;
+  	public static final int BANK_BACKGROUND = 297;
 	public static final int BANK_PIN_MARBLE_BACKGROUND = 444;
 	public static final int BANK_PIN_MARBLE_BACKGROUND_RED = 445;
 	public static final int BANK_PIN_MARBLE_BUTTON_RED = 446;
