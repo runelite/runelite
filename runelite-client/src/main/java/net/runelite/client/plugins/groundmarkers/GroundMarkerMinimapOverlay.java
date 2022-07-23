@@ -34,6 +34,7 @@ import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.game.SpriteManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -42,20 +43,22 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 
 class GroundMarkerMinimapOverlay extends Overlay
 {
-	private static final int MAX_DRAW_DISTANCE = 16;
+	private static final int MAX_DRAW_DISTANCE = 20;
 	private static final int TILE_WIDTH = 4;
 	private static final int TILE_HEIGHT = 4;
 
 	private final Client client;
 	private final GroundMarkerConfig config;
 	private final GroundMarkerPlugin plugin;
+	private final SpriteManager spriteManager;
 
 	@Inject
-	private GroundMarkerMinimapOverlay(Client client, GroundMarkerConfig config, GroundMarkerPlugin plugin)
+	private GroundMarkerMinimapOverlay(Client client, GroundMarkerConfig config, GroundMarkerPlugin plugin, SpriteManager spriteManager)
 	{
 		this.client = client;
 		this.config = config;
 		this.plugin = plugin;
+		this.spriteManager = spriteManager;
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.LOW);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
@@ -112,6 +115,6 @@ class GroundMarkerMinimapOverlay extends Overlay
 			return;
 		}
 
-		OverlayUtil.renderMinimapRect(client, graphics, posOnMinimap, TILE_WIDTH, TILE_HEIGHT, color);
+		OverlayUtil.renderMinimapRect(client, graphics, posOnMinimap, TILE_WIDTH, TILE_HEIGHT, color, spriteManager);
 	}
 }

@@ -35,17 +35,30 @@ import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
+import net.runelite.api.SpriteID;
 import net.runelite.api.TileObject;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.game.SpriteManager;
 import net.runelite.client.util.ColorUtil;
 
 public class OverlayUtil
 {
 	private static final int MINIMAP_DOT_RADIUS = 4;
+
+	private static Shape minimapClipFixed;
+	private static Shape minimapClipResizeable;
+	private static Rectangle minimapRectangle;
+	private static BufferedImage minimapSpriteFixed;
+	private static BufferedImage minimapSpriteResizeable;
 
 	public static void renderPolygon(Graphics2D graphics, Shape poly, Color color)
 	{
@@ -78,12 +91,130 @@ public class OverlayUtil
 
 	public static void renderMinimapRect(Client client, Graphics2D graphics, Point center, int width, int height, Color color)
 	{
-		double angle = client.getMapAngle() * Perspective.UNIT;
+		renderMinimapRect(client, graphics, center, width, height, color, null);
+	}
 
+	public static void renderMinimapRect(Client client, Graphics2D graphics, Point center, int width, int height, Color color, SpriteManager spriteManager)
+	{
+		double angle = client.getMapAngle() * Perspective.UNIT;
+		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+		Shape minimapClip;
+		if (spriteManager != null && (minimapClip = getMinimapClipArea(client, spriteManager)) != null)
+		{
+			graphics.setClip(minimapClip);
+		}
 		graphics.setColor(color);
 		graphics.rotate(angle, center.getX(), center.getY());
 		graphics.drawRect(center.getX() - width / 2, center.getY() - height / 2, width - 1, height - 1);
 		graphics.rotate(-angle, center.getX(), center.getY());
+	}
+
+	private static Shape getMinimapClipArea(Client client, SpriteManager spriteManager)
+	{
+		Widget minimapWidget = getMinimapDrawWidget(client);
+
+		if (minimapWidget == null || minimapWidget.isHidden() || minimapRectangle != (minimapRectangle = minimapWidget.getBounds()))
+		{
+			minimapClipFixed = null;
+			minimapClipResizeable = null;
+			minimapSpriteFixed = null;
+			minimapSpriteResizeable = null;
+		}
+
+		if (client.isResized())
+		{
+			if (minimapClipResizeable != null)
+			{
+				return minimapClipResizeable;
+			}
+			if (minimapSpriteResizeable == null)
+			{
+				minimapSpriteResizeable = spriteManager.getSprite(SpriteID.RESIZEABLE_MODE_MINIMAP_ALPHA_MASK, 0);
+			}
+			if (minimapSpriteResizeable != null)
+			{
+				minimapClipResizeable = bufferedImageToPolygon(minimapSpriteResizeable, client);
+				return minimapClipResizeable;
+			}
+			return null;
+		}
+		if (minimapClipFixed != null)
+		{
+			return minimapClipFixed;
+		}
+		if (minimapSpriteFixed == null)
+		{
+			minimapSpriteFixed = spriteManager.getSprite(SpriteID.FIXED_MODE_MINIMAP_ALPHA_MASK, 0);
+		}
+		if (minimapSpriteFixed != null)
+		{
+			minimapClipFixed = bufferedImageToPolygon(minimapSpriteFixed, client);
+			return minimapClipFixed;
+		}
+		return null;
+	}
+
+	private static Widget getMinimapDrawWidget(Client client)
+	{
+		if (client.isResized())
+		{
+			if (client.getVarbitValue(Varbits.SIDE_PANELS) == 1)
+			{
+				return client.getWidget(WidgetInfo.RESIZABLE_MINIMAP_DRAW_AREA);
+			}
+			return client.getWidget(WidgetInfo.RESIZABLE_MINIMAP_STONES_DRAW_AREA);
+		}
+		return client.getWidget(WidgetInfo.FIXED_VIEWPORT_MINIMAP_DRAW_AREA);
+	}
+
+	private static Polygon bufferedImageToPolygon(BufferedImage image, Client client)
+	{
+		Color outsideColour = null;
+		Color previousColour;
+		final int width = image.getWidth();
+		final int height = image.getHeight();
+		List<java.awt.Point> points = new ArrayList<>();
+		for (int y = 0; y < height; y++)
+		{
+			previousColour = outsideColour;
+			for (int x = 0; x < width; x++)
+			{
+				int rgb = image.getRGB(x, y);
+				int a = (rgb & 0xff000000) >>> 24;
+				int r = (rgb & 0x00ff0000) >> 16;
+				int g = (rgb & 0x0000ff00) >> 8;
+				int b = (rgb & 0x000000ff) >> 0;
+				Color colour = new Color(r, g, b, a);
+				if (x == 0 && y == 0)
+				{
+					outsideColour = colour;
+					previousColour = colour;
+				}
+				if (!colour.equals(outsideColour) && previousColour.equals(outsideColour))
+				{
+					points.add(new java.awt.Point(x, y));
+				}
+				if ((colour.equals(outsideColour) || x == (width - 1)) && !previousColour.equals(outsideColour))
+				{
+					points.add(0, new java.awt.Point(x, y));
+				}
+				previousColour = colour;
+			}
+		}
+		int offsetX = 0;
+		int offsetY = 0;
+		Widget minimapDrawWidget = getMinimapDrawWidget(client);
+		if (minimapDrawWidget != null)
+		{
+			offsetX = minimapDrawWidget.getBounds().x;
+			offsetY = minimapDrawWidget.getBounds().y;
+		}
+		Polygon polygon = new Polygon();
+		for (java.awt.Point point : points)
+		{
+			polygon.addPoint(point.x + offsetX, point.y + offsetY);
+		}
+		return polygon;
 	}
 
 	public static void renderTextLocation(Graphics2D graphics, Point txtLoc, String text, Color color)
