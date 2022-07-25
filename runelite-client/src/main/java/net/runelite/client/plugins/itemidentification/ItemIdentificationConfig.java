@@ -325,4 +325,15 @@ public interface ItemIdentificationConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+			keyName = "showEquipment",
+			name = "Equipment",
+			description = "Show identification on equipement",
+			section = identificationSection
+	)
+	default boolean showEquipment()
+	{
+		return false;
+	}
 }
