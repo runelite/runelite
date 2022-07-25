@@ -657,6 +657,38 @@ public final class Varbits
 	 * 1 = off
 	 */
 	public static final int BOSS_HEALTH_OVERLAY = 12389;
+	
+	/**
+	* Hitsplats caused by damage you did not deal are tinted.
+	* 0 = Enabled
+	* 1 = Disabled
+	*/
+	public static final int HITSPLAT_TINTING = 10236;
+	
+	/**
+	* Displays the chosen colour of the fog inside of Last Man Standing.
+	* 0 = Default
+	* 1 = Green
+	* 2 = Yellow
+	* 3 = Red
+	* 4 = Blue
+	* 5 = White
+	*/
+	public static final int LMS_FOG_COLOUR = 11865;
+	
+	/**
+	* Which music area mode to use. 
+	* 0 = Modern: Uses large areas with multiple music tracks assigned to each area.
+	* 1 = Classic: Uses small areas with one music track per area.
+	*/
+	public static final int MUSIC_AREA_MODE = 12233;
+	
+	/**
+	* When enabled, a message will be shown in the chat box when you unlock a new music track.
+	* 0 = Enabled
+	* 1 = Disabled
+	*/
+	public static final int MUSIC_UNLOCK_MESSAGE = 10078;
 
 	/**
 	 * Whether the PVP kill-death stats widget should be drawn while in the wilderness or in PVP worlds.
@@ -665,4 +697,5 @@ public final class Varbits
 	 * 1 = Enabled
 	 */
 	public static final int SHOW_PVP_KDR_STATS = 4143;
+
 }
