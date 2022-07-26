@@ -344,7 +344,7 @@ public final class WidgetID
 	{
 		static final int EMOTE_WINDOW = 0;
 		static final int EMOTE_CONTAINER = 1;
-		static final int EMOTE_SCROLLBAR = 2;
+		static final int EMOTE_SCROLLBAR = 4;
 	}
 
 	static class Cluescroll
@@ -831,7 +831,7 @@ public final class WidgetID
 	{
 		static final int CONTAINER = 0;
 		static final int LIST = 3;
-		static final int SCROLLBAR = 4;
+		static final int SCROLLBAR = 6;
 	}
 
 	static class Barrows_Puzzle
