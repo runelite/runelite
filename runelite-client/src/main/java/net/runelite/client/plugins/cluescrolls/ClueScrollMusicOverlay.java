@@ -101,7 +101,7 @@ class ClueScrollMusicOverlay extends Overlay
 		if (!hasScrolled)
 		{
 			hasScrolled = true;
-			plugin.scrollToWidget(WidgetInfo.MUSIC_TRACK_LIST, WidgetInfo.MUSIC_TRACK_SCROLLBAR, found);
+			plugin.scrollToWidget(WidgetInfo.MUSIC_TRACK_SCROLL_CONTAINER, WidgetInfo.MUSIC_TRACK_SCROLLBAR, found);
 		}
 		plugin.highlightWidget(graphics, found, trackList, PADDING, null);
 
