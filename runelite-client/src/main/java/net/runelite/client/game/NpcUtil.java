@@ -100,6 +100,10 @@ public class NpcUtil
 			case NpcID.SMALL_LIZARD:
 			case NpcID.SMALL_LIZARD_463:
 			case NpcID.GROWTHLING:
+			case NpcID.AWAKENED_ALTAR:
+			case NpcID.AWAKENED_ALTAR_7290:
+			case NpcID.AWAKENED_ALTAR_7292:
+			case NpcID.AWAKENED_ALTAR_7294:
 			// These NPCs die, but transform into forms which are attackable or interactable, so it would be jarring for
 			// them to be considered dead when reaching 0hp.
 			case NpcID.KALPHITE_QUEEN_963:
