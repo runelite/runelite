@@ -56,7 +56,7 @@ public class OverlayUtil
 
 	private static Shape minimapClipFixed;
 	private static Shape minimapClipResizeable;
-	private static Rectangle minimapRectangle;
+	private static Rectangle minimapRectangle = new Rectangle();
 	private static BufferedImage minimapSpriteFixed;
 	private static BufferedImage minimapSpriteResizeable;
 
@@ -113,7 +113,7 @@ public class OverlayUtil
 	{
 		Widget minimapWidget = getMinimapDrawWidget(client);
 
-		if (minimapWidget == null || minimapWidget.isHidden() || minimapRectangle != (minimapRectangle = minimapWidget.getBounds()))
+		if (minimapWidget == null || minimapWidget.isHidden() || !minimapRectangle.equals(minimapRectangle = minimapWidget.getBounds()))
 		{
 			minimapClipFixed = null;
 			minimapClipResizeable = null;
