@@ -69,13 +69,9 @@ public class PlayerIndicatorsService
 		this.partyService = partyService;
 	}
 
-	private boolean shouldRender(boolean state)
+	private boolean shouldRender(boolean hidden)
 	{
-		if(!pluginManager.isPluginEnabled(entityHiderPlugin))
-		{
-			return true;
-		}
-		return !state;
+		return !pluginManager.isPluginEnabled(entityHiderPlugin) || !hidden;
 	}
 
 	public void forEachPlayer(final BiConsumer<Player, Color> consumer)
