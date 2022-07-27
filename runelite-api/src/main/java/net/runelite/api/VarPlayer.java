@@ -229,8 +229,8 @@ public enum VarPlayer
 
 	/**
 	 * Charge spell
-	 * 0 < Value * 2 = Remaining ticks on charge buff for God spells
-	 * 0 = No charge buff active
+	 * Value * 2 = Remaining ticks on buff
+	 * E.g. value of 50 means buff will expire in 100 ticks.
 	 */
 	CHARGE_GOD_SPELL(272),
 
