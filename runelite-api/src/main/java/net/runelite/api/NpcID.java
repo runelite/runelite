@@ -5331,7 +5331,6 @@ public final class NpcID
 	public static final int UNDEAD_LUMBERJACK_5718 = 5718;
 	public static final int UNDEAD_LUMBERJACK_5719 = 5719;
 	public static final int UNDEAD_LUMBERJACK_5720 = 5720;
-	public static final int LANTHUS = 5721;
 	public static final int BARRICADE = 5722;
 	public static final int BARRICADE_5723 = 5723;
 	public static final int BARRICADE_5724 = 5724;
@@ -9787,6 +9786,7 @@ public final class NpcID
 	public static final int POSSESSED_PRIEST_11608 = 11608;
 	public static final int PRIEST_11609 = 11609;
 	public static final int PRIEST_11610 = 11610;
+	public static final int LANTHUS = 11650;
 	public static final int GILBERT = 11658;
 	public static final int ARENA_GUARD_FRONK = 11664;
 	public static final int ARENA_GUARD_NIKKOLAS = 11665;
