@@ -69,7 +69,8 @@ public class PlayerIndicatorsService
 		this.partyService = partyService;
 	}
 
-	private boolean shouldRender(boolean state) {
+	private boolean shouldRender(boolean state)
+	{
 		if(!pluginManager.isPluginEnabled(entityHiderPlugin))
 		{
 			return true;
