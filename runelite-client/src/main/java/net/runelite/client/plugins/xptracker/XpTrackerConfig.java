@@ -45,7 +45,7 @@ public interface XpTrackerConfig extends Config
 		position = 0,
 		keyName = "hideMaxed",
 		name = "Hide maxed skills",
-		description = "Stop globes from showing up for level 99 skills "
+		description = "XP Tracker will no longer track level 99 skills"
 	)
 	default boolean hideMaxed()
 	{
