@@ -58,7 +58,9 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ChatIconManager;
 import net.runelite.client.party.PartyService;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.entityhider.EntityHiderPlugin;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
 
@@ -67,6 +69,7 @@ import net.runelite.client.util.ColorUtil;
 	description = "Highlight players on-screen and/or on the minimap",
 	tags = {"highlight", "minimap", "overlay", "players"}
 )
+@PluginDependency(EntityHiderPlugin.class)
 public class PlayerIndicatorsPlugin extends Plugin
 {
 	private static final String TRADING_WITH_TEXT = "Trading with: ";

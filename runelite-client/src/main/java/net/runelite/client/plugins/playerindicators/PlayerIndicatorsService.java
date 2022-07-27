@@ -39,6 +39,10 @@ import net.runelite.api.clan.ClanRank;
 import net.runelite.api.clan.ClanSettings;
 import net.runelite.api.clan.ClanTitle;
 import net.runelite.client.party.PartyService;
+import net.runelite.client.plugins.PluginDependency;
+import net.runelite.client.plugins.PluginManager;
+import net.runelite.client.plugins.entityhider.EntityHiderConfig;
+import net.runelite.client.plugins.entityhider.EntityHiderPlugin;
 import net.runelite.client.util.Text;
 
 @Singleton
@@ -46,6 +50,15 @@ public class PlayerIndicatorsService
 {
 	private final Client client;
 	private final PlayerIndicatorsConfig config;
+	@Inject
+	private EntityHiderPlugin entityHiderPlugin;
+
+	@Inject
+	private EntityHiderConfig entityHiderConfig;
+
+	@Inject
+	private PluginManager pluginManager;
+
 	private final PartyService partyService;
 
 	@Inject
@@ -54,6 +67,14 @@ public class PlayerIndicatorsService
 		this.config = config;
 		this.client = client;
 		this.partyService = partyService;
+	}
+
+	private boolean shouldRender(boolean state) {
+		if(!pluginManager.isPluginEnabled(entityHiderPlugin))
+		{
+			return true;
+		}
+		return !state;
 	}
 
 	public void forEachPlayer(final BiConsumer<Player, Color> consumer)
@@ -79,7 +100,7 @@ public class PlayerIndicatorsService
 
 			if (player == localPlayer)
 			{
-				if (config.highlightOwnPlayer())
+				if (config.highlightOwnPlayer() && shouldRender(entityHiderConfig.hideLocalPlayer()))
 				{
 					consumer.accept(player, config.getOwnPlayerColor());
 				}
@@ -88,11 +109,11 @@ public class PlayerIndicatorsService
 			{
 				consumer.accept(player, config.getPartyMemberColor());
 			}
-			else if (config.highlightFriends() && player.isFriend())
+			else if (config.highlightFriends() && player.isFriend() && shouldRender(entityHiderConfig.hideFriends()))
 			{
 				consumer.accept(player, config.getFriendColor());
 			}
-			else if (config.highlightFriendsChat() && isFriendsChatMember)
+			else if (config.highlightFriendsChat() && isFriendsChatMember && shouldRender(entityHiderConfig.hideFriendsChatMembers()))
 			{
 				consumer.accept(player, config.getFriendsChatMemberColor());
 			}
@@ -100,11 +121,11 @@ public class PlayerIndicatorsService
 			{
 				consumer.accept(player, config.getTeamMemberColor());
 			}
-			else if (config.highlightClanMembers() && isClanMember)
+			else if (config.highlightClanMembers() && isClanMember && shouldRender(entityHiderConfig.hideClanChatMembers()))
 			{
 				consumer.accept(player, config.getClanMemberColor());
 			}
-			else if (config.highlightOthers() && !isFriendsChatMember && !isClanMember)
+			else if (config.highlightOthers() && !isFriendsChatMember && !isClanMember && shouldRender(entityHiderConfig.hideOthers()))
 			{
 				consumer.accept(player, config.getOthersColor());
 			}
