@@ -108,7 +108,7 @@ public interface MenuEntry
 	int getItemOp();
 
 	/**
-	 * If this menu entry is an item op, get the item id
+	 * Get the item id
 	 * @return
 	 * @see ItemID
 	 * @see NullItemID

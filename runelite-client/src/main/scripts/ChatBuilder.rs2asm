@@ -385,12 +385,12 @@ LABEL365:
    iload                  10
    iconst                 -1
    if_icmpne              LABEL369
-   jump                   LABEL1820
+   jump                   LABEL1829
 LABEL369:
    iload                  9
    iconst                 -1
    if_icmpne              LABEL373
-   jump                   LABEL1820
+   jump                   LABEL1829
 LABEL373:
    iload                  10
    chat_gethistoryex_byuid
@@ -409,7 +409,7 @@ LABEL373:
    invoke                 193
    iconst                 1
    if_icmpeq              CHAT_FILTER
-   jump                   LABEL1816
+   jump                   LABEL1825
 CHAT_FILTER:
    sload                  18                ; Load the message
    iconst                 1                 ; Gets changed to 0 if message is blocked
@@ -422,7 +422,7 @@ CHAT_FILTER:
    iconst                 1                 ; 2nd half of conditional
    sstore                 18                ; Override the message with our filtered message
    if_icmpeq              LABEL391          ; Check if we are building this message
-   jump                   LABEL1816          ; continue to next message, skipping this
+   jump                   LABEL1825          ; continue to next message, skipping this
 LABEL391:
    iload                  11
    sload                  16
@@ -438,7 +438,7 @@ LABEL391:
    invoke                 90
    iconst                 1
    if_icmpeq              LABEL406
-   jump                   LABEL1816
+   jump                   LABEL1825
 LABEL406:
    iconst                 0 ; splitpmbox
    iload                  10 ; message uid
@@ -1560,14 +1560,14 @@ LABEL1406:
       41: LABEL1411
       44: LABEL1411
       101: LABEL1515
-      103: LABEL1558
-      104: LABEL1558
-      110: LABEL1558
-      14: LABEL1601
-      109: LABEL1661
-      111: LABEL1704
-      112: LABEL1747
-   jump                   LABEL1790
+      103: LABEL1567
+      104: LABEL1567
+      110: LABEL1567
+      14: LABEL1610
+      109: LABEL1670
+      111: LABEL1713
+      112: LABEL1756
+   jump                   LABEL1799
 LABEL1411:
    sconst                 "<col=ffffff>"
    sload                  16
@@ -1687,7 +1687,7 @@ LABEL1510:
    iload                  9
    if_setop              
 LABEL1514:
-   jump                   LABEL1802
+   jump                   LABEL1811
 LABEL1515:
    sconst                 "<col=ffffff>"
    sload                  16
@@ -1710,21 +1710,33 @@ LABEL1515:
    sconst                 ""
    iload                  9
    if_setonmouseleave    
+   invoke                 5548
+   iconst                 1
+   if_icmpeq              LABEL1540
+   jump                   LABEL1545
+LABEL1540:
+   iconst                 1
+   sconst                 "Accept invitation"
+   iload                  9
+   if_setop              
+   jump                   LABEL1549
+LABEL1545:
    iconst                 1
    sconst                 "Accept trade"
    iload                  9
    if_setop              
+LABEL1549:
    iload                  15
    iconst                 1
-   if_icmpeq              LABEL1544
-   jump                   LABEL1549
-LABEL1544:
+   if_icmpeq              LABEL1553
+   jump                   LABEL1558
+LABEL1553:
    iconst                 6
    sconst                 "Message"
    iload                  9
    if_setop              
-   jump                   LABEL1557
-LABEL1549:
+   jump                   LABEL1566
+LABEL1558:
    iconst                 6
    sconst                 "Add friend"
    iload                  9
@@ -1733,9 +1745,9 @@ LABEL1549:
    sconst                 "Add ignore"
    iload                  9
    if_setop              
-LABEL1557:
-   jump                   LABEL1802
-LABEL1558:
+LABEL1566:
+   jump                   LABEL1811
+LABEL1567:
    sconst                 "<col=ffffff>"
    sload                  16
    sconst                 "</col>"
@@ -1763,15 +1775,15 @@ LABEL1558:
    if_setop              
    iload                  15
    iconst                 1
-   if_icmpeq              LABEL1587
-   jump                   LABEL1592
-LABEL1587:
+   if_icmpeq              LABEL1596
+   jump                   LABEL1601
+LABEL1596:
    iconst                 6
    sconst                 "Message"
    iload                  9
    if_setop              
-   jump                   LABEL1600
-LABEL1592:
+   jump                   LABEL1609
+LABEL1601:
    iconst                 6
    sconst                 "Add friend"
    iload                  9
@@ -1780,20 +1792,20 @@ LABEL1592:
    sconst                 "Add ignore"
    iload                  9
    if_setop              
-LABEL1600:
-   jump                   LABEL1802
-LABEL1601:
+LABEL1609:
+   jump                   LABEL1811
+LABEL1610:
    sload                  19
    string_length         
    iconst                 0
-   if_icmpgt              LABEL1606
-   jump                   LABEL1635
-LABEL1606:
+   if_icmpgt              LABEL1615
+   jump                   LABEL1644
+LABEL1615:
    iload                  13
    iconst                 -1
-   if_icmpne              LABEL1610
-   jump                   LABEL1635
-LABEL1610:
+   if_icmpne              LABEL1619
+   jump                   LABEL1644
+LABEL1619:
    iconst                 6
    sconst                 "Open"
    iload                  9
@@ -1818,8 +1830,8 @@ LABEL1610:
    sconst                 "Iii"
    iload                  9
    if_setonmouseleave    
-   jump                   LABEL1643
-LABEL1635:
+   jump                   LABEL1652
+LABEL1644:
    iconst                 -1
    sconst                 ""
    iload                  9
@@ -1828,7 +1840,7 @@ LABEL1635:
    sconst                 ""
    iload                  9
    if_setonmouseleave    
-LABEL1643:
+LABEL1652:
    iconst                 9
    sconst                 "Clear history"
    iload                  9
@@ -1846,8 +1858,8 @@ LABEL1643:
    sconst                 "isi"
    iload                  9
    if_setonop            
-   jump                   LABEL1802
-LABEL1661:
+   jump                   LABEL1811
+LABEL1670:
    sconst                 "<col=0xffffff>"
    sload                  16
    sconst                 "</col>"
@@ -1875,15 +1887,15 @@ LABEL1661:
    if_setonmouseleave    
    iload                  15
    iconst                 1
-   if_icmpeq              LABEL1690
-   jump                   LABEL1695
-LABEL1690:
+   if_icmpeq              LABEL1699
+   jump                   LABEL1704
+LABEL1699:
    iconst                 6
    sconst                 "Message"
    iload                  9
    if_setop              
-   jump                   LABEL1703
-LABEL1695:
+   jump                   LABEL1712
+LABEL1704:
    iconst                 6
    sconst                 "Add friend"
    iload                  9
@@ -1892,9 +1904,9 @@ LABEL1695:
    sconst                 "Add ignore"
    iload                  9
    if_setop              
-LABEL1703:
-   jump                   LABEL1802
-LABEL1704:
+LABEL1712:
+   jump                   LABEL1811
+LABEL1713:
    sconst                 "<col=0xffffff>"
    sload                  16
    sconst                 "</col>"
@@ -1922,15 +1934,15 @@ LABEL1704:
    if_setonmouseleave    
    iload                  15
    iconst                 1
-   if_icmpeq              LABEL1733
-   jump                   LABEL1738
-LABEL1733:
+   if_icmpeq              LABEL1742
+   jump                   LABEL1747
+LABEL1742:
    iconst                 6
    sconst                 "Message"
    iload                  9
    if_setop              
-   jump                   LABEL1746
-LABEL1738:
+   jump                   LABEL1755
+LABEL1747:
    iconst                 6
    sconst                 "Add friend"
    iload                  9
@@ -1939,9 +1951,9 @@ LABEL1738:
    sconst                 "Add ignore"
    iload                  9
    if_setop              
-LABEL1746:
-   jump                   LABEL1802
-LABEL1747:
+LABEL1755:
+   jump                   LABEL1811
+LABEL1756:
    sconst                 "<col=0xffffff>"
    sload                  16
    sconst                 "</col>"
@@ -1969,15 +1981,15 @@ LABEL1747:
    if_setonmouseleave    
    iload                  15
    iconst                 1
-   if_icmpeq              LABEL1776
-   jump                   LABEL1781
-LABEL1776:
+   if_icmpeq              LABEL1785
+   jump                   LABEL1790
+LABEL1785:
    iconst                 6
    sconst                 "Message"
    iload                  9
    if_setop              
-   jump                   LABEL1789
-LABEL1781:
+   jump                   LABEL1798
+LABEL1790:
    iconst                 6
    sconst                 "Add friend"
    iload                  9
@@ -1986,9 +1998,9 @@ LABEL1781:
    sconst                 "Add ignore"
    iload                  9
    if_setop              
-LABEL1789:
-   jump                   LABEL1802
-LABEL1790:
+LABEL1798:
+   jump                   LABEL1811
+LABEL1799:
    iconst                 -1
    sconst                 ""
    iload                  9
@@ -2001,7 +2013,7 @@ LABEL1790:
    sconst                 ""
    iload                  9
    if_setonmouseleave    
-LABEL1802:
+LABEL1811:
    iload                  6
    iload                  7
    sub                   
@@ -2016,20 +2028,20 @@ LABEL1802:
    iload                  8
    enum                  
    istore                 9
-LABEL1816:
+LABEL1825:
    iload                  10
    chat_getprevuid       
    istore                 10
    jump                   LABEL365
-LABEL1820:
+LABEL1829:
    iload                  8
    istore                 22
-LABEL1822:
+LABEL1831:
    iload                  9
    iconst                 -1
-   if_icmpne              LABEL1826
-   jump                   LABEL1909
-LABEL1826:
+   if_icmpne              LABEL1835
+   jump                   LABEL1918
+LABEL1835:
    iload                  9
    if_clearops           
    iconst                 -1
@@ -2056,14 +2068,14 @@ LABEL1826:
    multiply              
    cc_find               
    iconst                 1
-   if_icmpeq              LABEL1854
-   jump                   LABEL1858
-LABEL1854:
+   if_icmpeq              LABEL1863
+   jump                   LABEL1867
+LABEL1863:
    sconst                 ""
    cc_settext            
    iconst                 1
    cc_sethide            
-LABEL1858:
+LABEL1867:
    iconst                 10616888
    iload                  8
    iconst                 4
@@ -2072,14 +2084,14 @@ LABEL1858:
    add                   
    cc_find               
    iconst                 1
-   if_icmpeq              LABEL1868
-   jump                   LABEL1872
-LABEL1868:
+   if_icmpeq              LABEL1877
+   jump                   LABEL1881
+LABEL1877:
    sconst                 ""
    cc_settext            
    iconst                 1
    cc_sethide            
-LABEL1872:
+LABEL1881:
    iconst                 10616888
    iload                  8
    iconst                 4
@@ -2088,14 +2100,14 @@ LABEL1872:
    add                   
    cc_find               
    iconst                 1
-   if_icmpeq              LABEL1882
-   jump                   LABEL1886
-LABEL1882:
+   if_icmpeq              LABEL1891
+   jump                   LABEL1895
+LABEL1891:
    sconst                 ""
    cc_settext            
    iconst                 1
    cc_sethide            
-LABEL1886:
+LABEL1895:
    iconst                 10616888
    iload                  8
    iconst                 4
@@ -2104,12 +2116,12 @@ LABEL1886:
    add                   
    cc_find               
    iconst                 1
-   if_icmpeq              LABEL1896
-   jump                   LABEL1898
-LABEL1896:
+   if_icmpeq              LABEL1905
+   jump                   LABEL1907
+LABEL1905:
    iconst                 1
    cc_sethide            
-LABEL1898:
+LABEL1907:
    iload                  8
    iconst                 1
    add                   
@@ -2120,8 +2132,8 @@ LABEL1898:
    iload                  8
    enum                  
    istore                 9
-   jump                   LABEL1822
-LABEL1909:
+   jump                   LABEL1831
+LABEL1918:
    iload                  6
    iconst                 2
    sub                   
@@ -2135,20 +2147,20 @@ LABEL1909:
    istore                 23
    iload                  6
    iload                  23
-   if_icmpgt              LABEL1924
-   jump                   LABEL1926
-LABEL1924:
+   if_icmpgt              LABEL1933
+   jump                   LABEL1935
+LABEL1933:
    iload                  6
    istore                 23
-LABEL1926:
+LABEL1935:
    iload                  22
    istore                 8
-LABEL1928:
+LABEL1937:
    iload                  8
    iconst                 0
-   if_icmpgt              LABEL1932
-   jump                   LABEL2015
-LABEL1932:
+   if_icmpgt              LABEL1941
+   jump                   LABEL2024
+LABEL1941:
    iload                  8
    iconst                 1
    sub                   
@@ -2179,15 +2191,15 @@ LABEL1932:
    multiply              
    cc_find               
    iconst                 1
-   if_icmpeq              LABEL1964
-   jump                   LABEL1969
-LABEL1964:
+   if_icmpeq              LABEL1973
+   jump                   LABEL1978
+LABEL1973:
    cc_getx               
    iload                  6
    iconst                 0
    iconst                 0
    cc_setposition        
-LABEL1969:
+LABEL1978:
    iconst                 10616888
    iload                  8
    iconst                 4
@@ -2196,15 +2208,15 @@ LABEL1969:
    add                   
    cc_find               
    iconst                 1
-   if_icmpeq              LABEL1979
-   jump                   LABEL1984
-LABEL1979:
+   if_icmpeq              LABEL1988
+   jump                   LABEL1993
+LABEL1988:
    cc_getx               
    iload                  6
    iconst                 0
    iconst                 0
    cc_setposition        
-LABEL1984:
+LABEL1993:
    iconst                 10616888
    iload                  8
    iconst                 4
@@ -2213,15 +2225,15 @@ LABEL1984:
    add                   
    cc_find               
    iconst                 1
-   if_icmpeq              LABEL1994
-   jump                   LABEL1999
-LABEL1994:
+   if_icmpeq              LABEL2003
+   jump                   LABEL2008
+LABEL2003:
    cc_getx               
    iload                  6
    iconst                 0
    iconst                 0
    cc_setposition        
-LABEL1999:
+LABEL2008:
    iconst                 10616888
    iload                  8
    iconst                 4
@@ -2230,17 +2242,17 @@ LABEL1999:
    add                   
    cc_find               
    iconst                 1
-   if_icmpeq              LABEL2009
-   jump                   LABEL2014
-LABEL2009:
+   if_icmpeq              LABEL2018
+   jump                   LABEL2023
+LABEL2018:
    cc_getx               
    iload                  6
    iconst                 0
    iconst                 0
    cc_setposition        
-LABEL2014:
-   jump                   LABEL1928
-LABEL2015:
+LABEL2023:
+   jump                   LABEL1937
+LABEL2024:
    iconst                 0
    iload                  23
    iconst                 10616888
