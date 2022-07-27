@@ -95,62 +95,6 @@ public class TimersPluginTest
 	}
 
 	@Test
-	public void testHalfTeleblock()
-	{
-		when(timersConfig.showTeleblock()).thenReturn(true);
-		when(client.getVarbitValue(Varbits.TELEBLOCK)).thenReturn(350);
-		timersPlugin.onVarbitChanged(new VarbitChanged());
-
-		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
-		verify(infoBoxManager).addInfoBox(captor.capture());
-		TimerTimer infoBox = (TimerTimer) captor.getValue();
-		assertEquals(GameTimer.TELEBLOCK, infoBox.getTimer());
-		assertEquals(Duration.of(250, RSTimeUnit.GAME_TICKS), infoBox.getDuration());
-	}
-
-	@Test
-	public void testFullTeleblock()
-	{
-		when(timersConfig.showTeleblock()).thenReturn(true);
-		when(client.getVarbitValue(Varbits.TELEBLOCK)).thenReturn(600);
-		timersPlugin.onVarbitChanged(new VarbitChanged());
-
-		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
-		verify(infoBoxManager).addInfoBox(captor.capture());
-		TimerTimer infoBox = (TimerTimer) captor.getValue();
-		assertEquals(GameTimer.TELEBLOCK, infoBox.getTimer());
-		assertEquals(Duration.of(500, RSTimeUnit.GAME_TICKS), infoBox.getDuration());
-	}
-
-	@Test
-	public void testDmmHalfTb()
-	{
-		when(timersConfig.showTeleblock()).thenReturn(true);
-		when(client.getVarbitValue(Varbits.TELEBLOCK)).thenReturn(225);
-		timersPlugin.onVarbitChanged(new VarbitChanged());
-
-		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
-		verify(infoBoxManager).addInfoBox(captor.capture());
-		TimerTimer infoBox = (TimerTimer) captor.getValue();
-		assertEquals(GameTimer.TELEBLOCK, infoBox.getTimer());
-		assertEquals(Duration.of(125, RSTimeUnit.GAME_TICKS), infoBox.getDuration());
-	}
-
-	@Test
-	public void testDmmFullTb()
-	{
-		when(timersConfig.showTeleblock()).thenReturn(true);
-		when(client.getVarbitValue(Varbits.TELEBLOCK)).thenReturn(350);
-		timersPlugin.onVarbitChanged(new VarbitChanged());
-
-		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
-		verify(infoBoxManager).addInfoBox(captor.capture());
-		TimerTimer infoBox = (TimerTimer) captor.getValue();
-		assertEquals(GameTimer.TELEBLOCK, infoBox.getTimer());
-		assertEquals(Duration.of(250, RSTimeUnit.GAME_TICKS), infoBox.getDuration());
-	}
-
-	@Test
 	public void testDivineBastion()
 	{
 		when(timersConfig.showDivine()).thenReturn(true);
@@ -174,58 +118,6 @@ public class TimersPluginTest
 		verify(infoBoxManager).addInfoBox(captor.capture());
 		TimerTimer infoBox = (TimerTimer) captor.getValue();
 		assertEquals(GameTimer.DIVINE_BATTLEMAGE, infoBox.getTimer());
-	}
-
-	@Test
-	public void testTransparentChatboxTb()
-	{
-		when(timersConfig.showTeleblock()).thenReturn(true);
-		when(client.getVarbitValue(Varbits.TELEBLOCK)).thenReturn(600);
-		timersPlugin.onVarbitChanged(new VarbitChanged());
-
-		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
-		verify(infoBoxManager).addInfoBox(captor.capture());
-		TimerTimer infoBox = (TimerTimer) captor.getValue();
-		assertEquals(GameTimer.TELEBLOCK, infoBox.getTimer());
-		assertEquals(Duration.of(500, RSTimeUnit.GAME_TICKS), infoBox.getDuration());
-	}
-
-	@Test
-	public void testTransparentChatboxTbRemoved()
-	{
-		when(timersConfig.showTeleblock()).thenReturn(true);
-		when(client.getVarbitValue(Varbits.TELEBLOCK)).thenReturn(0);
-		timersPlugin.onVarbitChanged(new VarbitChanged());
-
-		verify(infoBoxManager, atLeastOnce()).removeIf(any());
-	}
-
-	@Test
-	public void testMageArena2TbFull()
-	{
-		when(timersConfig.showTeleblock()).thenReturn(true);
-		when(client.getVarbitValue(Varbits.TELEBLOCK)).thenReturn(300);
-		timersPlugin.onVarbitChanged(new VarbitChanged());
-
-		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
-		verify(infoBoxManager).addInfoBox(captor.capture());
-		TimerTimer infoBox = (TimerTimer) captor.getValue();
-		assertEquals(GameTimer.TELEBLOCK, infoBox.getTimer());
-		assertEquals(Duration.of(200, RSTimeUnit.GAME_TICKS), infoBox.getDuration());
-	}
-
-	@Test
-	public void testMageArena2TbHalf()
-	{
-		when(timersConfig.showTeleblock()).thenReturn(true);
-		when(client.getVarbitValue(Varbits.TELEBLOCK)).thenReturn(200);
-		timersPlugin.onVarbitChanged(new VarbitChanged());
-
-		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
-		verify(infoBoxManager).addInfoBox(captor.capture());
-		TimerTimer infoBox = (TimerTimer) captor.getValue();
-		assertEquals(GameTimer.TELEBLOCK, infoBox.getTimer());
-		assertEquals(Duration.of(100,  RSTimeUnit.GAME_TICKS), infoBox.getDuration());
 	}
 
 	@Test
