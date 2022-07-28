@@ -243,11 +243,11 @@ public class GroundItemsPlugin extends Plugin
 
 		GroundItem groundItem = buildGroundItem(tile, item);
 		GroundItem existing = collectedGroundItems.get(tile.getWorldLocation(), item.getId());
-		if (existing == null) 
+		if (existing == null)
 		{
 			collectedGroundItems.put(tile.getWorldLocation(), item.getId(), groundItem);
 		}
-		else 
+		else
 		{
 			existing.setQuantity(existing.getQuantity() + groundItem.getQuantity());
 			// The spawn time remains set at the oldest spawn
