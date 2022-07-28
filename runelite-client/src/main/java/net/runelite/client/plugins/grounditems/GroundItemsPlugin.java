@@ -408,16 +408,6 @@ public class GroundItemsPlugin extends Plugin
 		return itemManager.getItemPrice(realItemId);
 	}
 	
-	private boolean isItemIdHidden(final int itemId, final int quantity)
-	{
-		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
-		final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemId;
-		final int alchPrice = itemManager.getItemComposition(realItemId).getHaPrice() * quantity;
-		final int gePrice = itemManager.getItemPrice(realItemId) * quantity;
-		
-		return getHidden(new NamedQuantity(itemComposition.getName(), quantity), gePrice, alchPrice, itemComposition.isTradeable()) != null;
-	}
-	
 	private int getCollapsedItemQuantity(final int itemId, final String item)
 	{
 		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
