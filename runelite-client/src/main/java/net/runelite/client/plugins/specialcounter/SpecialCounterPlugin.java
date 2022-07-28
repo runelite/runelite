@@ -235,7 +235,14 @@ public class SpecialCounterPlugin extends Plugin
 		// invokeLater because the varbit event happens prior to interact changed, so we can't always see what npc
 		// the player is attacking yet.
 		clientThread.invokeLater(() ->
-			hitsplatTick = client.getTickCount() + getHitDelay(specialWeapon, client.getLocalPlayer().getInteracting()));
+		{
+			Actor target = client.getLocalPlayer().getInteracting();
+			if (target instanceof NPC)
+			{
+				lastSpecTarget = (NPC) client.getLocalPlayer().getInteracting();
+			}
+			hitsplatTick = client.getTickCount() + getHitDelay(specialWeapon, client.getLocalPlayer().getInteracting());
+		});
 	}
 
 	@Subscribe
@@ -254,9 +261,23 @@ public class SpecialCounterPlugin extends Plugin
 			return;
 		}
 
+		// If we don't have a saved target from when the special attack occurred, we know this isn't a hitsplat from a
+		// special attack
+		if (lastSpecTarget == null)
+		{
+			return;
+		}
+
 		NPC npc = (NPC) target;
 		int interactingId = npc.getId();
 		int npcIndex = npc.getIndex();
+
+		if (npc != lastSpecTarget)
+		{
+			log.debug("ids/indexes didn't match saved target, skipping this hitsplat. saved id: {}, index: {}. hitsplat target id: {}, index: {}",
+					lastSpecTarget.getId(), lastSpecTarget.getIndex(), interactingId, npcIndex);
+			return;
+		}
 
 		if (IGNORED_NPCS.contains(interactingId))
 		{
@@ -275,7 +296,6 @@ public class SpecialCounterPlugin extends Plugin
 		if (hitsplatTick == client.getTickCount())
 		{
 			lastSpecHitsplat = hitsplat;
-			lastSpecTarget = npc;
 		}
 	}
 
