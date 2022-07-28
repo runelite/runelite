@@ -341,7 +341,6 @@ public interface GroundItemsConfig extends Config
 		name = "High value price",
 		description = "Configures the start price for high value items",
 		position = 23
-		position = 22
 	)
 	default int highValuePrice()
 	{
@@ -354,7 +353,6 @@ public interface GroundItemsConfig extends Config
 		name = "Insane value items",
 		description = "Configures the color for insane value items",
 		position = 24
-		position = 23
 	)
 	default Color insaneValueColor()
 	{
@@ -366,7 +364,6 @@ public interface GroundItemsConfig extends Config
 		name = "Insane value price",
 		description = "Configures the start price for insane value items",
 		position = 25
-		position = 24
 	)
 	default int insaneValuePrice()
 	{
@@ -378,7 +375,6 @@ public interface GroundItemsConfig extends Config
 		name = "Only show loot",
 		description = "Only shows drops from NPCs and players",
 		position = 26
-		position = 25
 	)
 	default boolean onlyShowLoot()
 	{
@@ -390,7 +386,6 @@ public interface GroundItemsConfig extends Config
 		name = "Double-tap delay",
 		description = "Delay for the double-tap ALT to hide ground items. 0 to disable.",
 		position = 27
-		position = 26
 	)
 	@Units(Units.MILLISECONDS)
 	default int doubleTapDelay()
@@ -403,7 +398,6 @@ public interface GroundItemsConfig extends Config
 		name = "Collapse ground item menu",
 		description = "Collapses ground item menu entries together and appends count",
 		position = 28
-		position = 27
 	)
 	default boolean collapseEntries()
 	{
@@ -415,7 +409,6 @@ public interface GroundItemsConfig extends Config
 		name = "Despawn timer",
 		description = "Shows despawn timers for items you've dropped and received as loot",
 		position = 29
-		position = 28
 	)
 	default DespawnTimerMode groundItemTimers()
 	{
@@ -427,7 +420,6 @@ public interface GroundItemsConfig extends Config
 		name = "Text Outline",
 		description = "Use an outline around text instead of a text shadow",
 		position = 30
-		position = 29
 	)
 	default boolean textOutline()
 	{
@@ -439,7 +431,6 @@ public interface GroundItemsConfig extends Config
 		name = "Highlighted item lootbeams",
 		description = "Configures lootbeams to show for all highlighted items.",
 		position = 31
-		position = 30
 	)
 	default boolean showLootbeamForHighlighted()
 	{
@@ -451,7 +442,6 @@ public interface GroundItemsConfig extends Config
 		name = "Lootbeam tier",
 		description = "Configures which price tiers will trigger a lootbeam",
 		position = 32
-		position = 31
 	)
 	default HighlightTier showLootbeamTier()
 	{
@@ -463,7 +453,6 @@ public interface GroundItemsConfig extends Config
 		name = "Lootbeam Style",
 		description = "Style of lootbeam to use",
 		position = 33
-		position = 32
 	)
 	default Lootbeam.Style lootbeamStyle()
 	{
@@ -475,7 +464,6 @@ public interface GroundItemsConfig extends Config
 		name = "Hotkey",
 		description = "Configures the hotkey used by the Ground Items plugin",
 		position = 34
-		position = 33
 	)
 	default Keybind hotkey()
 	{
