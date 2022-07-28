@@ -357,35 +357,35 @@ public class GroundItemsPlugin extends Plugin
 
 		Collections.reverse(newEntries);
 		
-		newEntries.sort((a, b) ->
+		if (config.sortByGEPrice())
 		{
-			final MenuAction aMenuType = a.getEntry().getType();
-			if (aMenuType == MenuAction.GROUND_ITEM_FIRST_OPTION || aMenuType == MenuAction.GROUND_ITEM_SECOND_OPTION || aMenuType == MenuAction.GROUND_ITEM_THIRD_OPTION
-				|| aMenuType == MenuAction.GROUND_ITEM_FOURTH_OPTION || aMenuType == MenuAction.GROUND_ITEM_FIFTH_OPTION || aMenuType == MenuAction.EXAMINE_ITEM_GROUND
-				|| aMenuType == MenuAction.WALK)
+			newEntries.sort((a, b) ->
 			{
-				final MenuAction bMenuType = b.getEntry().getType();
-				if (bMenuType == MenuAction.GROUND_ITEM_FIRST_OPTION || bMenuType == MenuAction.GROUND_ITEM_SECOND_OPTION || bMenuType == MenuAction.GROUND_ITEM_THIRD_OPTION
-					|| bMenuType == MenuAction.GROUND_ITEM_FOURTH_OPTION || bMenuType == MenuAction.GROUND_ITEM_FIFTH_OPTION || bMenuType == MenuAction.EXAMINE_ITEM_GROUND
-					|| bMenuType == MenuAction.WALK)
+				final MenuAction aMenuType = a.getEntry().getType();
+				if (aMenuType == MenuAction.GROUND_ITEM_FIRST_OPTION || aMenuType == MenuAction.GROUND_ITEM_SECOND_OPTION || aMenuType == MenuAction.GROUND_ITEM_THIRD_OPTION
+					|| aMenuType == MenuAction.GROUND_ITEM_FOURTH_OPTION || aMenuType == MenuAction.GROUND_ITEM_FIFTH_OPTION || aMenuType == MenuAction.EXAMINE_ITEM_GROUND
+					|| aMenuType == MenuAction.WALK)
 				{
-					final MenuEntry aEntry = a.getEntry();
-					final int aId = aEntry.getIdentifier();
-					final int aQuantity = getCollapsedItemQuantity(aId, aEntry.getTarget());
-					
-					final MenuEntry bEntry = b.getEntry();
-					final int bId = bEntry.getIdentifier();
-					final int bQuantity = getCollapsedItemQuantity(bId, bEntry.getTarget());
-					
-					if (config.sortByGEPrice())
+					final MenuAction bMenuType = b.getEntry().getType();
+					if (bMenuType == MenuAction.GROUND_ITEM_FIRST_OPTION || bMenuType == MenuAction.GROUND_ITEM_SECOND_OPTION || bMenuType == MenuAction.GROUND_ITEM_THIRD_OPTION
+						|| bMenuType == MenuAction.GROUND_ITEM_FOURTH_OPTION || bMenuType == MenuAction.GROUND_ITEM_FIFTH_OPTION || bMenuType == MenuAction.EXAMINE_ITEM_GROUND
+						|| bMenuType == MenuAction.WALK)
 					{
+						final MenuEntry aEntry = a.getEntry();
+						final int aId = aEntry.getIdentifier();
+						final int aQuantity = getCollapsedItemQuantity(aId, aEntry.getTarget());
+
+						final MenuEntry bEntry = b.getEntry();
+						final int bId = bEntry.getIdentifier();
+						final int bQuantity = getCollapsedItemQuantity(bId, bEntry.getTarget());
+
 						return (getGePriceFromItemId(aId) * aQuantity) - (getGePriceFromItemId(bId) * bQuantity);
 					}
 				}
-			}
-			
-			return 0;
-		});
+
+				return 0;
+			});
+		}
 		
 		client.setMenuEntries(newEntries.stream().map(e ->
 		{
