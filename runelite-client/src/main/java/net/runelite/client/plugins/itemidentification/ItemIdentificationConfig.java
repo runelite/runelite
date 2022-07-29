@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.itemidentification;
 
 import java.awt.Color;
-import java.util.Locale;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
