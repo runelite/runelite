@@ -53,7 +53,10 @@ enum RareTreeLocation
 		new WorldPoint(2333, 3049, 0),
 
 		// Prifddinas
-		new WorldPoint(3309, 6123, 0)),
+		new WorldPoint(3309, 6123, 0),
+
+		// Ruins of Ullek
+		new WorldPoint(3440, 2789, 0)),
 
 	SWAYING("Swaying tree", 40,
 		// The Fremennik Trials
