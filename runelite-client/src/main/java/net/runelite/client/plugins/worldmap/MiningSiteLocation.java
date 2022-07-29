@@ -189,7 +189,7 @@ enum MiningSiteLocation
 	RUINS_OF_UNKAH(new WorldPoint(3172, 2871, 0),
 		new Rock(1, Ore.COPPER), new Rock(1, Ore.TIN), new Rock(5, Ore.IRON), new Rock(2, Ore.SILVER), new Rock(1, Ore.COAL)),
 	RUINS_OF_ULLEK(new WorldPoint(3377, 2777, 0),
-			new Rock(5, Ore.IRON), new Rock(3, Ore.COAL), new Rock(3, Ore.GOLD), new Rock(1, Ore.ADAMANTITE)),
+		new Rock(5, Ore.IRON), new Rock(3, Ore.COAL), new Rock(3, Ore.GOLD), new Rock(1, Ore.ADAMANTITE)),
 	SALT_MINE(new WorldPoint(2835, 10334, 0),
 		new Rock(7, Ore.BASALT), new Rock(15, Ore.TE_SALT), new Rock(12, Ore.EFH_SALT), new Rock(12, Ore.URT_SALT)),
 	SHAYZIEN(new WorldPoint(1601, 3645, 0),
