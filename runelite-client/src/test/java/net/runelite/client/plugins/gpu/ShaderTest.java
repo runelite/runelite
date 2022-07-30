@@ -24,19 +24,19 @@
  */
 package net.runelite.client.plugins.gpu;
 
-import com.jogamp.opengl.GL4;
+import com.google.common.base.Strings;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
-import joptsimple.internal.Strings;
 import net.runelite.client.plugins.gpu.template.Template;
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.lwjgl.opengl.GL43C;
 
 public class ShaderTest
 {
@@ -97,22 +97,22 @@ public class ShaderTest
 			String ext;
 			switch (u.getType())
 			{
-				case GL4.GL_VERTEX_SHADER:
+				case GL43C.GL_VERTEX_SHADER:
 					ext = "vert";
 					break;
-				case GL4.GL_TESS_CONTROL_SHADER:
+				case GL43C.GL_TESS_CONTROL_SHADER:
 					ext = "tesc";
 					break;
-				case GL4.GL_TESS_EVALUATION_SHADER:
+				case GL43C.GL_TESS_EVALUATION_SHADER:
 					ext = "tese";
 					break;
-				case GL4.GL_GEOMETRY_SHADER:
+				case GL43C.GL_GEOMETRY_SHADER:
 					ext = "geom";
 					break;
-				case GL4.GL_FRAGMENT_SHADER:
+				case GL43C.GL_FRAGMENT_SHADER:
 					ext = "frag";
 					break;
-				case GL4.GL_COMPUTE_SHADER:
+				case GL43C.GL_COMPUTE_SHADER:
 					ext = "comp";
 					break;
 				default:
