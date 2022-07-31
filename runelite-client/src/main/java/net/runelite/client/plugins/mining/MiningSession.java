@@ -25,15 +25,49 @@
 package net.runelite.client.plugins.mining;
 
 import java.time.Instant;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 
 class MiningSession
 {
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
+	@Setter
 	private Instant lastMined;
 
-	void setLastMined()
+	@Getter(AccessLevel.PACKAGE)
+	@Setter
+	private int oresMined;
+
+	@Getter(AccessLevel.PACKAGE)
+	@Setter
+	private int oresMinedSinceHrReset;
+
+	@Getter(AccessLevel.PACKAGE)
+	@Setter
+	private int extraOresMined;
+
+	@Getter(AccessLevel.PACKAGE)
+	@Setter
+	private int extraOresMinedSinceHrReset;
+
+	void increaseOresMined(int amount)
 	{
-		lastMined = Instant.now();
+		oresMined += amount;
+	}
+
+	void increaseOresMinedSinceHrReset(int amount)
+	{
+		oresMinedSinceHrReset += amount;
+	}
+
+	void increaseExtraOresMined(int amount)
+	{
+		extraOresMined += amount;
+	}
+
+	void increaseExtraOresMinedSinceHrReset(int amount)
+	{
+		extraOresMinedSinceHrReset += amount;
 	}
 }

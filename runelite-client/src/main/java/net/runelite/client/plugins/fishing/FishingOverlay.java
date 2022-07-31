@@ -102,7 +102,8 @@ class FishingOverlay extends OverlayPanel
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.showFishingStats() || plugin.getSession().getLastFishCaught() == null)
+		FishingSession session = plugin.getSession();
+		if (!config.showFishingStats() || session.getLastFishCaught() == null)
 		{
 			return null;
 		}
@@ -128,16 +129,30 @@ class FishingOverlay extends OverlayPanel
 		int actions = xpTrackerService.getActions(Skill.FISHING);
 		if (actions > 0)
 		{
+			StringBuilder caughtFish = new StringBuilder(Integer.toString(session.getFishCaught()));
+			float fishHrMultiplier = 1;
+			if (config.includeExtraFish())
+			{
+				caughtFish.append(" (+ ")
+					.append(session.getExtraFishCaught())
+					.append(")");
+
+				if (session.getFishCaughtSinceHrReset() > 0)
+				{
+					fishHrMultiplier += ((float) session.getExtraFishCaughtSinceHrReset()) / session.getFishCaughtSinceHrReset();
+				}
+			}
+
 			panelComponent.getChildren().add(LineComponent.builder()
 				.left("Caught fish:")
-				.right(Integer.toString(actions))
+				.right(caughtFish.toString())
 				.build());
 
 			if (actions > 2)
 			{
 				panelComponent.getChildren().add(LineComponent.builder()
 					.left("Fish/hr:")
-					.right(Integer.toString(xpTrackerService.getActionsHr(Skill.FISHING)))
+					.right(Integer.toString((int) (fishHrMultiplier * ((float) xpTrackerService.getActionsHr(Skill.FISHING)))))
 					.build());
 			}
 		}

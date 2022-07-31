@@ -129,8 +129,8 @@ public interface FishingConfig extends Config
 	@ConfigItem(
 		position = 7,
 		keyName = "statTimeout",
-		name = "Reset stats",
-		description = "The time until fishing session data is reset in minutes."
+		name = "Session stats timeout",
+		description = "Timeout after which Fishing session stats are hidden."
 	)
 	@Units(Units.MINUTES)
 	default int statTimeout()
@@ -151,6 +151,17 @@ public interface FishingConfig extends Config
 
 	@ConfigItem(
 		position = 9,
+		keyName = "includeExtraFish",
+		name = "Include extra fish caught",
+		description = "Include extra fish caught via Rada's Blessing and Spirit Flakes in session stats."
+	)
+	default boolean includeExtraFish()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 10,
 		keyName = "showMinnowOverlay",
 		name = "Show Minnow Movement overlay",
 		description = "Display the minnow progress pie overlay."
@@ -161,7 +172,7 @@ public interface FishingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 10,
+		position = 11,
 		keyName = "flyingFishNotification",
 		name = "Flying fish notification",
 		description = "Send a notification when a flying fish spawns on your fishing spot."
@@ -172,7 +183,7 @@ public interface FishingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 11,
+		position = 12,
 		keyName = "trawlerTimer",
 		name = "Trawler timer in M:SS",
 		description = "Trawler timer will display a more accurate timer in M:SS format."
@@ -183,7 +194,7 @@ public interface FishingConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 12,
+		position = 13,
 		keyName = "trawlerContribution",
 		name = "Trawler contribution",
 		description = "Display the exact number of trawler contribution points gained."

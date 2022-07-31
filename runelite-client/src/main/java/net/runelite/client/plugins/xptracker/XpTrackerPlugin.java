@@ -57,7 +57,9 @@ import net.runelite.api.widgets.WidgetID;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.XpTrackerSkillReset;
 import net.runelite.client.game.NPCManager;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
@@ -120,6 +122,9 @@ public class XpTrackerPlugin extends Plugin
 
 	@Inject
 	private XpState xpState;
+
+	@Inject
+	private EventBus eventBus;
 
 	private NavigationButton navButton;
 	@Setter(AccessLevel.PACKAGE)
@@ -321,6 +326,11 @@ public class XpTrackerPlugin extends Plugin
 		xpPanel.resetAllInfoBoxes();
 		xpPanel.updateTotal(new XpSnapshotSingle.XpSnapshotSingleBuilder().build());
 		overlayManager.removeIf(e -> e instanceof XpInfoBoxOverlay);
+		for (Skill s : Skill.values())
+		{
+			eventBus.post(new XpTrackerSkillReset(XpTrackerSkillReset.ResetType.ACTIONS, s));
+			eventBus.post(new XpTrackerSkillReset(XpTrackerSkillReset.ResetType.ACTIONS_PER_HR, s));
+		}
 	}
 
 	/**
@@ -335,6 +345,7 @@ public class XpTrackerPlugin extends Plugin
 		xpState.resetSkill(skill, currentXp);
 		xpPanel.resetSkill(skill);
 		removeOverlay(skill);
+		eventBus.post(new XpTrackerSkillReset(XpTrackerSkillReset.ResetType.ACTIONS, skill));
 	}
 
 	/**
@@ -363,6 +374,7 @@ public class XpTrackerPlugin extends Plugin
 	void resetSkillPerHourState(Skill skill)
 	{
 		xpState.resetSkillPerHour(skill);
+		eventBus.post(new XpTrackerSkillReset(XpTrackerSkillReset.ResetType.ACTIONS_PER_HR, skill));
 	}
 
 	/**

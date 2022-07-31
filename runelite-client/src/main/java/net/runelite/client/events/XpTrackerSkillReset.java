@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Stephen <stepzhu@umich.edu>
+ * Copyright (c) 2021, Tal <https://github.com/talsk>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,36 +22,20 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.smelting;
+package net.runelite.client.events;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.Units;
+import lombok.Value;
+import net.runelite.api.Skill;
 
-@ConfigGroup("smelting")
-public interface SmeltingConfig extends Config
+@Value
+public class XpTrackerSkillReset
 {
-	@ConfigItem(
-		position = 1,
-		keyName = "statTimeout",
-		name = "Session stats stats",
-		description = "Timeout after which Smelting session stats are hidden"
-	)
-	@Units(Units.MINUTES)
-	default int statTimeout()
+	public enum ResetType
 	{
-		return 5;
+		ACTIONS,
+		ACTIONS_PER_HR,
 	}
 
-	@ConfigItem(
-		position = 2,
-		keyName = "includeExtraBars",
-		name = "Include extra bars smelted",
-		description = "Include extra bars smelted via Varrock Armour effect in session stats."
-	)
-	default boolean includeExtraBars()
-	{
-		return true;
-	}
+	ResetType resetType;
+	Skill skill;
 }

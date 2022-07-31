@@ -66,7 +66,7 @@ class MiningOverlay extends OverlayPanel
 	public Dimension render(Graphics2D graphics)
 	{
 		MiningSession session = plugin.getSession();
-		if (session == null || session.getLastMined() == null || !config.showMiningStats())
+		if (session.getLastMined() == null || !config.showMiningStats())
 		{
 			return null;
 		}
@@ -90,16 +90,28 @@ class MiningOverlay extends OverlayPanel
 		int actions = xpTrackerService.getActions(Skill.MINING);
 		if (actions > 0)
 		{
+			StringBuilder oresMined = new StringBuilder(Integer.toString(session.getOresMined()));
+			float actionsHrMultiplier = 1;
+			if (config.includeExtraOres())
+			{
+				oresMined.append(" (+")
+					.append(session.getExtraOresMined())
+					.append(")");
+				if (session.getOresMinedSinceHrReset() > 0)
+				{
+					actionsHrMultiplier += ((float) session.getExtraOresMinedSinceHrReset() / session.getOresMinedSinceHrReset());
+				}
+			}
 			panelComponent.getChildren().add(LineComponent.builder()
 				.left("Total mined:")
-				.right(Integer.toString(actions))
+				.right(oresMined.toString())
 				.build());
 
 			if (actions > 2)
 			{
 				panelComponent.getChildren().add(LineComponent.builder()
 					.left("Mined/hr:")
-					.right(Integer.toString(xpTrackerService.getActionsHr(Skill.MINING)))
+					.right(Integer.toString((int) (actionsHrMultiplier * ((float) xpTrackerService.getActionsHr(Skill.MINING)))))
 					.build());
 			}
 		}

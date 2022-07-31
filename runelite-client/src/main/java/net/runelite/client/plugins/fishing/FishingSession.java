@@ -25,12 +25,50 @@
 package net.runelite.client.plugins.fishing;
 
 import java.time.Instant;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
 class FishingSession
 {
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
+	@Setter
+	private int fishCaught;
+
+	@Getter(AccessLevel.PACKAGE)
+	@Setter
+	private int fishCaughtSinceHrReset;
+
+	@Getter(AccessLevel.PACKAGE)
+	@Setter
+	private int extraFishCaught;
+
+	@Getter(AccessLevel.PACKAGE)
+	@Setter
+	private int extraFishCaughtSinceHrReset;
+
+	@Getter(AccessLevel.PACKAGE)
 	@Setter
 	private Instant lastFishCaught;
+
+
+	public void increaseFishCaught(int amount)
+	{
+		fishCaught += amount;
+	}
+
+	public void increaseFishCaughtSinceHrReset(int amount)
+	{
+		fishCaughtSinceHrReset += amount;
+	}
+
+	public void increaseExtraFishCaught(int amount)
+	{
+		extraFishCaught += amount;
+	}
+
+	public void increaseExtraFishCaughtSinceHrReset(int amount)
+	{
+		extraFishCaughtSinceHrReset += amount;
+	}
 }

@@ -59,6 +59,7 @@ import static net.runelite.api.ObjectID.ROCKS_41548;
 import static net.runelite.api.ObjectID.ROCKS_41549;
 import static net.runelite.api.ObjectID.ROCKS_41550;
 import net.runelite.api.Player;
+import net.runelite.api.Skill;
 import net.runelite.api.WallObject;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
@@ -71,6 +72,7 @@ import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.OverlayMenuClicked;
+import net.runelite.client.events.XpTrackerSkillReset;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -95,6 +97,8 @@ public class MiningPlugin extends Plugin
 			"(?:copper|tin|clay|iron|silver|coal|gold|mithril|adamantite|runeite|amethyst|sandstone|granite|barronite shards|barronite deposit|Opal|piece of Jade|Red Topaz|Emerald|Sapphire|Ruby|Diamond)" +
 			"(?:\\.|!)");
 
+	private static final String EXTRA_ORE_MINED_MESSAGE = "The Varrock platebody enabled you to mine an additional ore.";
+
 	@Inject
 	private Client client;
 
@@ -110,9 +114,8 @@ public class MiningPlugin extends Plugin
 	@Inject
 	private MiningConfig config;
 
-	@Getter
-	@Nullable
-	private MiningSession session;
+	@Getter(AccessLevel.PACKAGE)
+	private MiningSession session = new MiningSession();
 
 	@Getter(AccessLevel.PACKAGE)
 	private final List<RockRespawn> respawns = new ArrayList<>();
@@ -138,8 +141,7 @@ public class MiningPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		session = null;
-		pickaxe = null;
+		resetSession();
 		overlayManager.remove(overlay);
 		overlayManager.remove(rocksOverlay);
 		respawns.forEach(respawn -> clearHintArrowAt(respawn.getWorldPoint()));
@@ -154,7 +156,7 @@ public class MiningPlugin extends Plugin
 			&& overlayMenuClicked.getEntry().getOption().equals(MiningOverlay.MINING_RESET)
 			&& overlayMenuClicked.getOverlay() == overlay)
 		{
-			session = null;
+			session.setLastMined(null);
 		}
 	}
 
@@ -190,12 +192,7 @@ public class MiningPlugin extends Plugin
 		{
 			// Can't use chat messages to start mining session on Dense Essence as they don't have a chat message when mined,
 			// so we track the session here instead.
-			if (session == null)
-			{
-				session = new MiningSession();
-			}
-
-			session.setLastMined();
+			session.setLastMined(Instant.now());
 		}
 		else
 		{
@@ -213,14 +210,14 @@ public class MiningPlugin extends Plugin
 		clearExpiredRespawns();
 		recentlyLoggedIn = false;
 
-		if (session == null || session.getLastMined() == null)
+		if (session.getLastMined() == null)
 		{
 			return;
 		}
 
 		if (pickaxe != null && pickaxe.matchesMiningAnimation(client.getLocalPlayer()))
 		{
-			session.setLastMined();
+			session.setLastMined(Instant.now());
 			return;
 		}
 
@@ -253,7 +250,7 @@ public class MiningPlugin extends Plugin
 
 	public void resetSession()
 	{
-		session = null;
+		session.setLastMined(null);
 		pickaxe = null;
 	}
 
@@ -391,12 +388,31 @@ public class MiningPlugin extends Plugin
 		{
 			if (MINING_PATTERN.matcher(event.getMessage()).matches())
 			{
-				if (session == null)
-				{
-					session = new MiningSession();
-				}
+				session.setLastMined(Instant.now());
+				session.increaseOresMined(1);
+				session.increaseOresMinedSinceHrReset(1);
+			}
 
-				session.setLastMined();
+			else if (EXTRA_ORE_MINED_MESSAGE.equals(event.getMessage()))
+			{
+				session.increaseExtraOresMined(1);
+				session.increaseExtraOresMinedSinceHrReset(1);
+			}
+		}
+	}
+
+	@Subscribe
+	public void onXpTrackerSkillReset(XpTrackerSkillReset event)
+	{
+		if (event.getSkill() == Skill.MINING)
+		{
+			// Both types reset actions per hour.
+			session.setOresMinedSinceHrReset(0);
+			session.setExtraOresMinedSinceHrReset(0);
+			if (event.getResetType() == XpTrackerSkillReset.ResetType.ACTIONS)
+			{
+				session.setOresMined(0);
+				session.setExtraOresMined(0);
 			}
 		}
 	}
