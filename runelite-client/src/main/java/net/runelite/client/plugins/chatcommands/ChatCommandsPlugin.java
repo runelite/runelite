@@ -35,17 +35,14 @@ import com.google.gson.reflect.TypeToken;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import javax.inject.Inject;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
@@ -343,7 +340,7 @@ public class ChatCommandsPlugin extends Plugin
 	 *
 	 * @param petList The total list of owned pets for the local player
 	 */
-	private void setPetList(List<Pet> petList)
+	private void setPetList(Map<Integer, Integer> petList)
 	{
 		if (petList == null)
 		{
@@ -357,24 +354,24 @@ public class ChatCommandsPlugin extends Plugin
 	/**
 	 * Looks up the list of owned pets for the local player
 	 */
-	private List<Pet> getPetList()
+	private Map<Integer, Integer> getPetList()
 	{
 		String petListJson = configManager.getRSProfileConfiguration("chatcommands", "pets",
 			String.class);
 
-		List<Pet> petList;
+		Map<Integer, Integer> petList;
 		try
 		{
 			// CHECKSTYLE:OFF
-			petList = gson.fromJson(petListJson, new TypeToken<List<Pet>>(){}.getType());
+			petList = gson.fromJson(petListJson, new TypeToken<HashMap<Integer, Integer>>(){}.getType());
 			// CHECKSTYLE:ON
 		}
 		catch (JsonSyntaxException ex)
 		{
-			return Collections.emptyList();
+			return new HashMap<Integer, Integer>();
 		}
 
-		return petList != null ? petList : Collections.emptyList();
+		return petList != null ? petList : new HashMap<Integer, Integer>();
 	}
 
 	@Subscribe
@@ -568,11 +565,11 @@ public class ChatCommandsPlugin extends Plugin
 
 			if (pet != null)
 			{
-				List<Pet> petList = new ArrayList<>(getPetList());
-				if (!petList.contains(pet))
+				Map<Integer, Integer> petList = getPetList();
+				if (!petList.containsKey(pet.getIconID()))
 				{
 					log.debug("New pet added: {}", pet);
-					petList.add(pet);
+					petList.put(pet.getIconID(), 1);
 					setPetList(petList);
 				}
 			}
@@ -766,15 +763,17 @@ public class ChatCommandsPlugin extends Plugin
 					Widget collectionLogEntryItems = client.getWidget(WidgetInfo.COLLECTION_LOG_ENTRY_ITEMS);
 					if (collectionLogEntryItems != null && collectionLogEntryItems.getChildren() != null)
 					{
-						List<Pet> petList = new ArrayList<>();
+						Map<Integer, Integer> petList = new HashMap<>();
 						for (Widget child : collectionLogEntryItems.getChildren())
 						{
 							if (child.getOpacity() == 0)
 							{
 								Pet pet = Pet.findPet(Text.removeTags(child.getName()));
+								// Check how many times a player has received a specific pet
+								Integer petQuantity = child.getItemQuantity();
 								if (pet != null)
 								{
-									petList.add(pet);
+									petList.put(pet.getIconID(), petQuantity);
 								}
 							}
 						}
@@ -1250,7 +1249,7 @@ public class ChatCommandsPlugin extends Plugin
 			player = Text.sanitize(chatMessage.getName());
 		}
 
-		Set<Integer> playerPetList;
+		Map<Integer, Integer> playerPetList;
 		try
 		{
 			playerPetList = chatClient.getPetList(player);
@@ -1279,9 +1278,14 @@ public class ChatCommandsPlugin extends Plugin
 		Pet[] pets = Pet.values();
 		for (Pet pet : pets)
 		{
-			if (playerPetList.contains(pet.getIconID()))
+			if (playerPetList.containsKey(pet.getIconID()))
 			{
 				responseBuilder.append(" ").img(modIconIdx + pet.ordinal());
+				int petQuantity = playerPetList.get(pet.getIconID());
+				if (petQuantity > 1)
+				{
+					responseBuilder.append("x" + petQuantity);
+				}
 			}
 		}
 
@@ -1307,7 +1311,7 @@ public class ChatCommandsPlugin extends Plugin
 		{
 			try
 			{
-				List<Integer> petList = getPetList().stream().map(Pet::getIconID).collect(Collectors.toList());
+				Map<Integer, Integer> petList = getPetList();
 				if (!petList.isEmpty())
 				{
 					chatClient.submitPetList(playerName, petList);

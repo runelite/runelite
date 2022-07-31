@@ -30,10 +30,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.Collection;
-import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.util.Map;
 import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.chat.Duels;
 import net.runelite.http.api.chat.LayoutRoom;
@@ -377,7 +376,7 @@ public class ChatClient
 		}
 	}
 
-	public boolean submitPetList(String username, Collection<Integer> petList) throws IOException
+	public boolean submitPetList(String username, Map<Integer, Integer> petList) throws IOException
 	{
 		HttpUrl url = apiBase.newBuilder()
 			.addPathSegment("chat")
@@ -396,7 +395,7 @@ public class ChatClient
 		}
 	}
 
-	public Set<Integer> getPetList(String username) throws IOException
+	public Map<Integer, Integer> getPetList(String username) throws IOException
 	{
 		HttpUrl url = apiBase.newBuilder()
 			.addPathSegment("chat")
@@ -418,7 +417,7 @@ public class ChatClient
 			InputStream in = response.body().byteStream();
 			// CHECKSTYLE:OFF
 			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8),
-				new TypeToken<Set<Integer>>(){}.getType());
+				new TypeToken<Map<Integer, Integer>>(){}.getType());
 			// CHECKSTYLE:ON
 		}
 		catch (JsonParseException ex)
