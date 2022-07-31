@@ -182,4 +182,20 @@ public class NpcIndicatorsPluginTest
 
 		assertTrue(npcIndicatorsPlugin.getHighlightedNpcs().containsKey(npc));
 	}
+
+	@Test
+	public void ignorePets()
+	{
+		when(npcIndicatorsConfig.getNpcToHighlight()).thenReturn("*cano");
+		when(npcIndicatorsConfig.ignorePets()).thenReturn(true);
+		npcIndicatorsPlugin.rebuild();
+
+		NPCComposition smolcanoComp = mock(NPCComposition.class);
+		when(smolcanoComp.isFollower()).thenReturn(true);
+		NPC smolcano = mock(NPC.class);
+		when(smolcano.getName()).thenReturn("Smolcano");
+		when(smolcano.getComposition()).thenReturn(smolcanoComp);
+		npcIndicatorsPlugin.onNpcSpawned(new NpcSpawned(smolcano));
+		assertFalse(npcIndicatorsPlugin.getHighlightedNpcs().containsKey(smolcano));
+	}
 }

@@ -315,7 +315,7 @@ public class NpcIndicatorsPlugin extends Plugin
 
 			if (removed)
 			{
-				if (!highlightMatchesNPCName(npc.getName()))
+				if (!shouldHighlightNpc(npc))
 				{
 					highlightedNpcs.remove(npc);
 					memorizedNpcs.remove(npc.getIndex());
@@ -360,7 +360,7 @@ public class NpcIndicatorsPlugin extends Plugin
 			return;
 		}
 
-		if (highlightMatchesNPCName(npcName))
+		if (shouldHighlightNpc(npc))
 		{
 			highlightedNpcs.put(npc, highlightedNpc(npc));
 			if (!client.isInInstancedRegion())
@@ -398,7 +398,7 @@ public class NpcIndicatorsPlugin extends Plugin
 		}
 
 		if (npcTags.contains(npc.getIndex())
-			|| highlightMatchesNPCName(npcName))
+			|| shouldHighlightNpc(npc))
 		{
 			highlightedNpcs.put(npc, highlightedNpc(npc));
 		}
@@ -536,7 +536,7 @@ public class NpcIndicatorsPlugin extends Plugin
 				continue;
 			}
 
-			if (highlightMatchesNPCName(npcName))
+			if (shouldHighlightNpc(npc))
 			{
 				if (!client.isInInstancedRegion())
 				{
@@ -551,6 +551,16 @@ public class NpcIndicatorsPlugin extends Plugin
 		}
 
 		npcOverlayService.rebuild();
+	}
+
+	private boolean shouldHighlightNpc(NPC npc)
+	{
+		return highlightMatchesNPCName(npc.getName()) && shouldHighlightIfPet(npc);
+	}
+
+	private boolean shouldHighlightIfPet(NPC npc)
+	{
+		return !config.ignorePets() || !npc.getComposition().isFollower();
 	}
 
 	private boolean highlightMatchesNPCName(String npcName)
