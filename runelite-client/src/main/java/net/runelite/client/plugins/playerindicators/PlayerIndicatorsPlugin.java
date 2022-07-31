@@ -84,6 +84,9 @@ public class PlayerIndicatorsPlugin extends Plugin
 	private PlayerIndicatorsTileOverlay playerIndicatorsTileOverlay;
 
 	@Inject
+	PlayerIndicatorsHighlightOverlay playerIndicatorsHighlightOverlay;
+
+	@Inject
 	private PlayerIndicatorsMinimapOverlay playerIndicatorsMinimapOverlay;
 
 	@Inject
@@ -112,6 +115,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 	{
 		overlayManager.add(playerIndicatorsOverlay);
 		overlayManager.add(playerIndicatorsTileOverlay);
+		overlayManager.add(playerIndicatorsHighlightOverlay);
 		overlayManager.add(playerIndicatorsMinimapOverlay);
 	}
 
@@ -120,6 +124,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 	{
 		overlayManager.remove(playerIndicatorsOverlay);
 		overlayManager.remove(playerIndicatorsTileOverlay);
+		overlayManager.remove(playerIndicatorsHighlightOverlay);
 		overlayManager.remove(playerIndicatorsMinimapOverlay);
 	}
 
