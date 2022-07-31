@@ -77,6 +77,7 @@ import org.lwjgl.opengl.GL43C;
 import org.lwjgl.opengl.GLCapabilities;
 import org.lwjgl.opengl.GLUtil;
 import org.lwjgl.system.Callback;
+import org.lwjgl.system.Configuration;
 
 @PluginDescriptor(
 	name = "GPU",
@@ -301,6 +302,10 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				computeMode = config.useComputeShaders()
 					? (OSType.getOSType() == OSType.MacOS ? ComputeMode.OPENCL : ComputeMode.OPENGL)
 					: ComputeMode.NONE;
+
+				// lwjgl defaults to lwjgl- + user.name, but this breaks if the username would cause an invalid path
+				// to be created, and also breaks if both 32 and 64 bit lwjgl versions try to run at once.
+				Configuration.SHARED_LIBRARY_EXTRACT_DIRECTORY.set("lwjgl-rl-" + System.getProperty("os.arch", "unknown"));
 
 				GL.createCapabilities();
 
