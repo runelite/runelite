@@ -68,6 +68,11 @@ public abstract class InfoBox
 		setPriority(InfoBoxPriority.NONE);
 	}
 
+	public BufferedImage getImage()
+	{
+		return image;
+	}
+
 	public abstract String getText();
 
 	public abstract Color getTextColor();

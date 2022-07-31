@@ -26,6 +26,7 @@
  */
 package net.runelite.client.plugins.timers;
 
+import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
@@ -35,6 +36,7 @@ import lombok.Getter;
 import net.runelite.api.GraphicID;
 import net.runelite.api.ItemID;
 import net.runelite.api.SpriteID;
+import net.runelite.client.util.ImageUtil;
 import static net.runelite.client.util.RSTimeUnit.GAME_TICKS;
 
 @Getter(AccessLevel.PACKAGE)
@@ -48,13 +50,13 @@ enum GameTimer
 	CANNON_REPAIR(ItemID.TOOLKIT, GameTimerImageType.ITEM, "Broken Cannon", 10, ChronoUnit.MINUTES),
 	MAGICIMBUE(SpriteID.SPELL_MAGIC_IMBUE, GameTimerImageType.SPRITE, "Magic imbue", 21, GAME_TICKS),
 	SUPERANTIFIRE(ItemID.SUPER_ANTIFIRE_POTION4, GameTimerImageType.ITEM, "Super antifire", 3, ChronoUnit.MINUTES),
-	BIND(SpriteID.SPELL_BIND, GameTimerImageType.SPRITE, "Bind", GraphicID.BIND, 8, GAME_TICKS, true),
-	SNARE(SpriteID.SPELL_SNARE, GameTimerImageType.SPRITE, "Snare", GraphicID.SNARE, 16, GAME_TICKS, true),
-	ENTANGLE(SpriteID.SPELL_ENTANGLE, GameTimerImageType.SPRITE, "Entangle", GraphicID.ENTANGLE, 24, GAME_TICKS, true),
-	ICERUSH(SpriteID.SPELL_ICE_RUSH, GameTimerImageType.SPRITE, "Ice rush", GraphicID.ICE_RUSH, 8, GAME_TICKS, true),
-	ICEBURST(SpriteID.SPELL_ICE_BURST, GameTimerImageType.SPRITE, "Ice burst", GraphicID.ICE_BURST, 16, GAME_TICKS, true),
-	ICEBLITZ(SpriteID.SPELL_ICE_BLITZ, GameTimerImageType.SPRITE, "Ice blitz", GraphicID.ICE_BLITZ, 24, GAME_TICKS, true),
-	ICEBARRAGE(SpriteID.SPELL_ICE_BARRAGE, GameTimerImageType.SPRITE, "Ice barrage", GraphicID.ICE_BARRAGE, 32, GAME_TICKS, true),
+	BIND(SpriteID.SPELL_BIND, GameTimerImageType.SPRITE, "Bind", GraphicID.BIND, 8, GAME_TICKS, true, null),
+	SNARE(SpriteID.SPELL_SNARE, GameTimerImageType.SPRITE, "Snare", GraphicID.SNARE, 16, GAME_TICKS, true, null),
+	ENTANGLE(SpriteID.SPELL_ENTANGLE, GameTimerImageType.SPRITE, "Entangle", GraphicID.ENTANGLE, 24, GAME_TICKS, true, null),
+	ICERUSH(SpriteID.SPELL_ICE_RUSH, GameTimerImageType.SPRITE, "Ice rush", GraphicID.ICE_RUSH, 8, GAME_TICKS, true, null),
+	ICEBURST(SpriteID.SPELL_ICE_BURST, GameTimerImageType.SPRITE, "Ice burst", GraphicID.ICE_BURST, 16, GAME_TICKS, true, null),
+	ICEBLITZ(SpriteID.SPELL_ICE_BLITZ, GameTimerImageType.SPRITE, "Ice blitz", GraphicID.ICE_BLITZ, 24, GAME_TICKS, true, null),
+	ICEBARRAGE(SpriteID.SPELL_ICE_BARRAGE, GameTimerImageType.SPRITE, "Ice barrage", GraphicID.ICE_BARRAGE, 32, GAME_TICKS, true, null),
 	IMBUEDHEART(ItemID.IMBUED_HEART, GameTimerImageType.ITEM, "Imbued heart", 420, ChronoUnit.SECONDS, true),
 	VENGEANCE(SpriteID.SPELL_VENGEANCE, GameTimerImageType.SPRITE, "Vengeance", 30, ChronoUnit.SECONDS),
 	EXSUPERANTIFIRE(ItemID.EXTENDED_SUPER_ANTIFIRE4, GameTimerImageType.ITEM, "Extended Super AntiFire", 6, ChronoUnit.MINUTES),
@@ -82,11 +84,11 @@ enum GameTimer
 	RESURRECT_THRALL(SpriteID.SPELL_RESURRECT_SUPERIOR_SKELETON, GameTimerImageType.SPRITE, "Resurrect thrall", false),
 	WARD_OF_ARCEUUS(SpriteID.SPELL_WARD_OF_ARCEUUS, GameTimerImageType.SPRITE, "Ward of Arceuus", true),
 	DEATH_CHARGE(SpriteID.SPELL_DEATH_CHARGE, GameTimerImageType.SPRITE, "Death charge", false),
-	SHADOW_VEIL_COOLDOWN(SpriteID.SPELL_SHADOW_VEIL_DISABLED, GameTimerImageType.SPRITE, "Shadow veil cooldown", 30, ChronoUnit.SECONDS),
+	SHADOW_VEIL_COOLDOWN(SpriteID.SPELL_SHADOW_VEIL_DISABLED, GameTimerImageType.RESOURCE, "Shadow veil cooldown", null, 30, ChronoUnit.SECONDS, false, ImageUtil.loadImageResource(GameTimer.class, "/spell_icons/shadow_veil_disabled.png")),
 	RESURRECT_THRALL_COOLDOWN(SpriteID.SPELL_RESURRECT_SUPERIOR_SKELETON_DISABLED, GameTimerImageType.SPRITE, "Resurrect thrall cooldown", 12, GAME_TICKS),
-	WARD_OF_ARCEUUS_COOLDOWN(SpriteID.SPELL_WARD_OF_ARCEUUS_DISABLED, GameTimerImageType.SPRITE, "Ward of Arceuus cooldown", 30, ChronoUnit.SECONDS),
-	DEATH_CHARGE_COOLDOWN(SpriteID.SPELL_DEATH_CHARGE_DISABLED, GameTimerImageType.SPRITE, "Death charge cooldown", 60, ChronoUnit.SECONDS),
-	CORRUPTION_COOLDOWN(SpriteID.SPELL_GREATER_CORRUPTION_DISABLED, GameTimerImageType.SPRITE, "Corruption cooldown", 30, ChronoUnit.SECONDS),
+	WARD_OF_ARCEUUS_COOLDOWN(SpriteID.SPELL_WARD_OF_ARCEUUS_DISABLED, GameTimerImageType.RESOURCE, "Ward of Arceuus cooldown", null, 30, ChronoUnit.SECONDS, false, ImageUtil.loadImageResource(GameTimer.class, "/spell_icons/ward_of_arceuus_disabled.png")),
+	DEATH_CHARGE_COOLDOWN(SpriteID.SPELL_DEATH_CHARGE_DISABLED, GameTimerImageType.RESOURCE, "Death charge cooldown", null, 60, ChronoUnit.SECONDS, false, ImageUtil.loadImageResource(GameTimer.class, "/spell_icons/death_charge_disabled.png")),
+	CORRUPTION_COOLDOWN(SpriteID.SPELL_GREATER_CORRUPTION_DISABLED, GameTimerImageType.RESOURCE, "Corruption cooldown", null, 30, ChronoUnit.SECONDS, false, ImageUtil.loadImageResource(GameTimer.class, "/spell_icons/corruption_disabled.png")),
 	PICKPOCKET_STUN(SpriteID.SKILL_THIEVING, GameTimerImageType.SPRITE, "Stunned", true)
 	;
 
@@ -98,11 +100,14 @@ enum GameTimer
 	private final boolean removedOnDeath;
 	private final int imageId;
 	private final GameTimerImageType imageType;
+	@Nullable
+	private final BufferedImage image;
 
-	GameTimer(int imageId, GameTimerImageType idType, String description, Integer graphicId, long time, TemporalUnit unit, boolean removedOnDeath)
+	GameTimer(int imageId, GameTimerImageType idType, String description, Integer graphicId, long time, TemporalUnit unit, boolean removedOnDeath, BufferedImage image)
 	{
 		this.description = description;
 		this.graphicId = graphicId;
+		this.image = image;
 		this.duration = Duration.of(time, unit);
 		this.imageId = imageId;
 		this.imageType = idType;
@@ -111,12 +116,12 @@ enum GameTimer
 
 	GameTimer(int imageId, GameTimerImageType idType, String description, long time, TemporalUnit unit, boolean removeOnDeath)
 	{
-		this(imageId, idType, description, null, time, unit, removeOnDeath);
+		this(imageId, idType, description, null, time, unit, removeOnDeath, null);
 	}
 
 	GameTimer(int imageId, GameTimerImageType idType, String description, long time, TemporalUnit unit)
 	{
-		this(imageId, idType, description, null, time, unit, false);
+		this(imageId, idType, description, null, time, unit, false, null);
 	}
 
 	GameTimer(int imageId, GameTimerImageType idType, String description, boolean removedOnDeath)
@@ -127,5 +132,6 @@ enum GameTimer
 		this.removedOnDeath = removedOnDeath;
 		this.imageId = imageId;
 		this.imageType = idType;
+		this.image = null;
 	}
 }

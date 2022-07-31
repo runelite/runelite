@@ -1130,6 +1130,9 @@ public class TimersPlugin extends Plugin
 			case ITEM:
 				t.setImage(itemManager.getImage(timer.getImageId()));
 				break;
+			case RESOURCE:
+				t.setImage(timer.getImage());
+				break;
 		}
 		t.setTooltip(timer.getDescription());
 		infoBoxManager.addInfoBox(t);

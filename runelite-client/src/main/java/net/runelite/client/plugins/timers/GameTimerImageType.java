@@ -27,5 +27,7 @@ package net.runelite.client.plugins.timers;
 enum GameTimerImageType
 {
 	ITEM,
-	SPRITE
+	SPRITE,
+
+	RESOURCE
 }
