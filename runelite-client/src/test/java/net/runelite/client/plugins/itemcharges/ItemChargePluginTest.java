@@ -99,6 +99,7 @@ public class ItemChargePluginTest
 	private static final String CHECK_BRACELET_OF_CLAY = "You can mine 13 more pieces of soft clay before your bracelet crumbles to dust.";
 	private static final String USED_BRACELET_OF_CLAY = "You manage to mine some clay.";
 	private static final String BREAK_BRACELET_OF_CLAY = "Your bracelet of clay crumbles to dust.";
+	private static final String EMPTY_EXPLORER_ENERGY = "You have exhausted the ring's run restore power for today.";
 
 	@Mock
 	@Bind
@@ -483,5 +484,13 @@ public class ItemChargePluginTest
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BREAK_BRACELET_OF_CLAY, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
 		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BRACELET_OF_CLAY, 28);
+	}
+
+	@Test
+	public void testExplorerRingEnergyEmpty()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", EMPTY_EXPLORER_ENERGY, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_EXPLORERS_RING_ENERGY, 0);
 	}
 }

@@ -31,8 +31,10 @@ import com.google.common.primitives.Ints;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.util.EnumMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
@@ -45,7 +47,9 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.Varbits;
+import net.runelite.api.VarClientInt;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.VarbitChanged;
@@ -143,18 +147,20 @@ public class ItemChargePlugin extends Plugin
 	private static final Pattern BRACELET_OF_CLAY_CHECK_PATTERN = Pattern.compile(
 		"You can mine (\\d{1,2}) more pieces? of soft clay before your bracelet crumbles to dust\\."
 	);
+	private static final String EXPLORERS_RING_ENERGY_EMPTY_TEXT = "You have exhausted the ring's run restore power for today.";
 
 	private static final int MAX_DODGY_CHARGES = 10;
 	private static final int MAX_BINDING_CHARGES = 16;
-	private static final int MAX_EXPLORER_RING_CHARGES = 30;
+	private static final int MAX_EXPLORERS_RING_ALCH_CHARGES = 30;
 	private static final int MAX_RING_OF_FORGING_CHARGES = 140;
 	private static final int MAX_AMULET_OF_CHEMISTRY_CHARGES = 5;
 	private static final int MAX_AMULET_OF_BOUNTY_CHARGES = 10;
 	private static final int MAX_SLAYER_BRACELET_CHARGES = 30;
 	private static final int MAX_BLOOD_ESSENCE_CHARGES = 1000;
 	private static final int MAX_BRACELET_OF_CLAY_CHARGES = 28;
-
-	private int lastExplorerRingCharge = -1;
+	private static final int ONE_DAY = 86400000;
+	private int lastExplorerRingAlchCharge = -1;
+	private int lastExplorerRingEnergyCharges = -1;
 
 	@Inject
 	private Client client;
@@ -185,7 +191,9 @@ public class ItemChargePlugin extends Plugin
 
 	// Limits destroy callback to once per tick
 	private int lastCheckTick;
-	private final Map<EquipmentInventorySlot, ItemChargeInfobox> infoboxes = new EnumMap<>(EquipmentInventorySlot.class);
+	static private ConcurrentMap<String, ItemChargeInfobox> infoboxes = new ConcurrentSkipListMap<>();
+	private long lastReset;
+	private boolean loggingIn;
 
 	@Provides
 	ItemChargeConfig getConfig(ConfigManager configManager)
@@ -470,6 +478,11 @@ public class ItemChargePlugin extends Plugin
 				}
 				updateBraceletOfClayCharges(MAX_BRACELET_OF_CLAY_CHARGES);
 			}
+			else if (message.contains(EXPLORERS_RING_ENERGY_EMPTY_TEXT))
+			{
+				setItemCharges(ItemChargeConfig.KEY_EXPLORERS_RING_ENERGY, 0);
+				updateInfoboxes();
+			}
 		}
 	}
 
@@ -502,11 +515,17 @@ public class ItemChargePlugin extends Plugin
 	@Subscribe
 	private void onVarbitChanged(VarbitChanged event)
 	{
-		int explorerRingCharge = client.getVarbitValue(Varbits.EXPLORER_RING_ALCHS);
-		if (lastExplorerRingCharge != explorerRingCharge)
+		int explorerRingAlchCharge = client.getVarbitValue(Varbits.EXPLORER_RING_ALCHS);
+		int explorerRingEnergyCharge = client.getVarbitValue(Varbits.EXPLORER_RING_RUNENERGY);
+		if (lastExplorerRingAlchCharge != explorerRingAlchCharge)
 		{
-			lastExplorerRingCharge = explorerRingCharge;
-			updateExplorerRingCharges(explorerRingCharge);
+			lastExplorerRingAlchCharge = explorerRingAlchCharge;
+			updateExplorerRingAlchCharges(explorerRingAlchCharge);
+		}
+		if (lastExplorerRingEnergyCharges != explorerRingEnergyCharge)
+		{
+			lastExplorerRingEnergyCharges = explorerRingEnergyCharge;
+			updateExplorerRingEnergyCharges(explorerRingEnergyCharge);
 		}
 	}
 
@@ -548,6 +567,23 @@ public class ItemChargePlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	private void onGameTick(GameTick event)
+	{
+		long currentTime = System.currentTimeMillis();
+		boolean dailyReset = !loggingIn && currentTime - lastReset > ONE_DAY;
+
+		if ((dailyReset || loggingIn)
+			&& client.getVar(VarClientInt.MEMBERSHIP_STATUS) == 1)
+		{
+			// Round down to the nearest day
+			lastReset = (long) Math.floor(currentTime / ONE_DAY) * ONE_DAY;
+			loggingIn = false;
+
+			checkExplorersRingEnergyCharges(dailyReset);
+		}
+	}
+
 	private void updateDodgyNecklaceCharges(final int value)
 	{
 		setItemCharges(ItemChargeConfig.KEY_DODGY_NECKLACE, value);
@@ -572,12 +608,32 @@ public class ItemChargePlugin extends Plugin
 		updateInfoboxes();
 	}
 
-	private void updateExplorerRingCharges(final int value)
+	private void checkExplorersRingEnergyCharges(boolean dailyReset)
+	{
+		if (dailyReset)
+		{
+			updateExplorerRingEnergyCharges(0);
+		}
+	}
+
+	private void updateExplorerRingAlchCharges(final int value)
 	{
 		// Note: Varbit counts upwards. We count down from the maximum charges.
-		setItemCharges(ItemChargeConfig.KEY_EXPLORERS_RING, MAX_EXPLORER_RING_CHARGES - value);
+		setItemCharges(ItemChargeConfig.KEY_EXPLORERS_RING_ALCH, MAX_EXPLORERS_RING_ALCH_CHARGES - value);
 		updateInfoboxes();
 	}
+
+	private void updateExplorerRingEnergyCharges(final int value)
+	{
+		final int maxCharges = client.getVarbitValue(Varbits.DIARY_LUMBRIDGE_EASY) == 1
+			? 2 : client.getVarbitValue(Varbits.DIARY_LUMBRIDGE_MEDIUM) == 1
+			? 3 : client.getVarbitValue(Varbits.DIARY_LUMBRIDGE_HARD) == 1
+			? 4 : 3;
+
+		setItemCharges(ItemChargeConfig.KEY_EXPLORERS_RING_ENERGY, maxCharges - value);
+		updateInfoboxes();
+	}
+
 
 	private void updateRingOfForgingCharges(final int value)
 	{
@@ -642,8 +698,10 @@ public class ItemChargePlugin extends Plugin
 
 		final Item[] items = itemContainer.getItems();
 		boolean showInfoboxes = config.showInfoboxes();
+		ArrayList<Integer> charges = new ArrayList<>(Arrays.asList(-1, -1, -1, -1));
 		for (EquipmentInventorySlot slot : EquipmentInventorySlot.values())
 		{
+			String concurrentMapKey = String.valueOf(slot.getSlotIdx()).concat(String.valueOf(0));
 			if (slot.getSlotIdx() >= items.length)
 			{
 				break;
@@ -652,13 +710,12 @@ public class ItemChargePlugin extends Plugin
 			Item i = items[slot.getSlotIdx()];
 			int id = i.getId();
 			ItemChargeType type = null;
-			int charges = -1;
 
 			final ItemWithCharge itemWithCharge = ItemWithCharge.findItem(id);
 			if (itemWithCharge != null)
 			{
 				type = itemWithCharge.getType();
-				charges = itemWithCharge.getCharges();
+				charges.set(0, itemWithCharge.getCharges());
 			}
 			else
 			{
@@ -666,47 +723,55 @@ public class ItemChargePlugin extends Plugin
 				if (itemWithConfig != null)
 				{
 					type = itemWithConfig.getType();
-					charges = getItemCharges(itemWithConfig.getConfigKey());
+					for (int j = 0; j < itemWithConfig.getConfigKey().length; j++)
+					{
+						charges.set(j, getItemCharges(itemWithConfig.getConfigKey()[j]));
+					}
 				}
 			}
 
 			boolean enabled = type != null && type.getEnabled().test(config);
 
-			if (showInfoboxes && enabled && charges > 0)
+			for (int j = 0; j < 4; j++)
 			{
-				ItemChargeInfobox infobox = infoboxes.get(slot);
-				if (infobox != null)
+				if (showInfoboxes && enabled && charges.get(j) > 0)
 				{
-					if (infobox.getItem() == id)
+					concurrentMapKey = String.valueOf(slot.getSlotIdx()).concat(String.valueOf(j));
+					ItemChargeInfobox infobox = infoboxes.get(concurrentMapKey);
+					if (infobox != null)
 					{
-						if (infobox.getCount() == charges)
+						if (infobox.getItem() == id)
 						{
+							if (infobox.getCount() == charges.get(j))
+							{
+								continue;
+							}
+
+							log.debug("Updating infobox count for {}", infobox);
+							infobox.setCount(charges.get(j));
 							continue;
 						}
 
-						log.debug("Updating infobox count for {}", infobox);
-						infobox.setCount(charges);
-						continue;
+						log.debug("Rebuilding infobox {}", infobox);
+						infoBoxManager.removeInfoBox(infobox);
+						infoboxes.remove(concurrentMapKey);
 					}
-
-					log.debug("Rebuilding infobox {}", infobox);
-					infoBoxManager.removeInfoBox(infobox);
-					infoboxes.remove(slot);
+					final String name = itemManager.getItemComposition(id).getName();
+					final BufferedImage image = itemManager.getImage(id);
+					infobox = new ItemChargeInfobox(this, image, name, charges.get(j), id);
+					infoBoxManager.addInfoBox(infobox);
+					infoboxes.put(concurrentMapKey, infobox);
 				}
-
-				final String name = itemManager.getItemComposition(id).getName();
-				final BufferedImage image = itemManager.getImage(id);
-				infobox = new ItemChargeInfobox(this, image, name, charges, id);
-				infoBoxManager.addInfoBox(infobox);
-				infoboxes.put(slot, infobox);
-			}
-			else
-			{
-				ItemChargeInfobox infobox = infoboxes.remove(slot);
-				if (infobox != null)
+				else
 				{
-					log.debug("Removing infobox {}", infobox);
-					infoBoxManager.removeInfoBox(infobox);
+					concurrentMapKey = String.valueOf(slot.getSlotIdx()).concat(String.valueOf(j));
+					ItemChargeInfobox infobox = infoboxes.get(concurrentMapKey);
+					if (infobox != null)
+					{
+						log.debug("Removing infobox {}", infobox);
+						infoBoxManager.removeInfoBox(infobox);
+						infoboxes.remove(concurrentMapKey);
+					}
 				}
 			}
 		}
