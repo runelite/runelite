@@ -453,4 +453,16 @@ public interface ItemChargeConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showCastleWarsBraceletCharges",
+		name = "Castle Wars Bracelet Charges",
+		description = "Show Castle Wars Bracelet Charges",
+		position = 33,
+		section = chargesSection
+	)
+	default boolean showCastleWarsBraceletCharges()
+	{
+		return true;
+	}
 }
