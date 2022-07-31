@@ -53,11 +53,13 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.StatChanged;
+import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.widgets.WidgetID;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.NPCManager;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
@@ -161,6 +163,7 @@ public class XpTrackerPlugin extends Plugin
 			.build();
 
 		clientToolbar.addNavigation(navButton);
+		clientThread.invokeLater(this::refreshMembersSkills);
 
 		// Initialize the tracker & last xp if already logged in
 		fetchXp = true;
@@ -182,6 +185,16 @@ public class XpTrackerPlugin extends Plugin
 		overlayManager.removeIf(e -> e instanceof XpInfoBoxOverlay);
 		xpState.reset();
 		clientToolbar.removeNavigation(navButton);
+		clientThread.invokeLater(this::refreshMembersSkills);
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getGroup().equals("xpTracker") && event.getKey().equals("enableSkillTabTooltipForF2P"))
+		{
+			clientThread.invokeLater(this::refreshMembersSkills);
+		}
 	}
 
 	@Subscribe
@@ -507,6 +520,32 @@ public class XpTrackerPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onScriptCallbackEvent(ScriptCallbackEvent scriptCallbackEvent)
+	{
+		final String eventName = scriptCallbackEvent.getEventName();
+
+		if (!xpTrackerConfig.enableSkillTabTooltipForF2P() || !eventName.equals("skillTabP2PTooltip"))
+		{
+			return;
+		}
+
+		// Stack is: skillId, showXp
+		final int[] intStack = client.getIntStack();
+		final int intStackSize = client.getIntStackSize();
+
+		final int skillId = intStack[intStackSize - 1];
+		final Skill skill = Skill.values()[skillId];
+		final int exp = client.getSkillExperience(skill);
+
+		if (exp > 0)
+		{
+			// alter members only mapping for skill
+			intStack[intStackSize - 2] = 1;
+		}
+
+	}
+
+	@Subscribe
 	public void onMenuEntryAdded(final MenuEntryAdded event)
 	{
 		int widgetID = event.getActionParam1();
@@ -740,6 +779,17 @@ public class XpTrackerPlugin extends Plugin
 		for (Skill skill : Skill.values())
 		{
 			pauseSkill(skill, pause);
+		}
+	}
+
+	private void refreshMembersSkills()
+	{
+		for (Skill skill : Skill.values())
+		{
+			if (skill.isMembersOnly())
+			{
+				client.queueChangedSkill(skill);
+			}
 		}
 	}
 }

@@ -222,4 +222,15 @@ public interface XpTrackerConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		position = 7,
+		keyName = "enableSkillTabTooltipForF2P",
+		name = "Enable skill tab tooltips for F2P",
+		description = "Configures showing xp progress in the tooltip for P2P skills that you have xp in on F2P worlds"
+	)
+	default boolean enableSkillTabTooltipForF2P()
+	{
+		return true;
+	}
 }
