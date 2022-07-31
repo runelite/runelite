@@ -78,6 +78,7 @@ class SkillCalculator extends JPanel
 	private int currentXP = Experience.getXpForLevel(currentLevel);
 	private int targetLevel = currentLevel + 1;
 	private int targetXP = Experience.getXpForLevel(targetLevel);
+	private int targetAmount = 1;
 	private float xpFactor = 1;
 
 	SkillCalculator(Client client, ClientThread clientThread, UICalculatorInputArea uiInput, SpriteManager spriteManager, ItemManager itemManager)
@@ -121,12 +122,14 @@ class SkillCalculator extends JPanel
 
 		uiInput.getUiFieldTargetLevel().addActionListener(e -> onFieldTargetLevelUpdated());
 		uiInput.getUiFieldTargetXP().addActionListener(e -> onFieldTargetXPUpdated());
+		uiInput.getUiFieldTargetAmount().addActionListener(e -> onFieldTargetAmountUpdated());
 
 		// Register focus listeners to calculate xp when exiting a text field
 		uiInput.getUiFieldCurrentLevel().addFocusListener(buildFocusAdapter(e -> onFieldCurrentLevelUpdated()));
 		uiInput.getUiFieldCurrentXP().addFocusListener(buildFocusAdapter(e -> onFieldCurrentXPUpdated()));
 		uiInput.getUiFieldTargetLevel().addFocusListener(buildFocusAdapter(e -> onFieldTargetLevelUpdated()));
 		uiInput.getUiFieldTargetXP().addFocusListener(buildFocusAdapter(e -> onFieldTargetXPUpdated()));
+		uiInput.getUiFieldTargetAmount().addFocusListener(buildFocusAdapter(e -> onFieldTargetAmountUpdated()));
 	}
 
 	void openCalculator(CalculatorType calculatorType)
@@ -141,6 +144,7 @@ class SkillCalculator extends JPanel
 
 			// Reset the XP factor, removing bonuses.
 			xpFactor = 1;
+			targetAmount = 1;
 
 			VarPlayer endGoalVarp = endGoalVarpForSkill(calculatorType.getSkill());
 			int endGoal = client.getVar(endGoalVarp);
@@ -181,6 +185,18 @@ class SkillCalculator extends JPanel
 		updateInputFields();
 	}
 
+	private int getCombinedActionXP()
+	{
+		int xp = 0;
+
+		for (UIActionSlot slot : combinedActionSlots)
+		{
+			xp += slot.getValue();
+		}
+
+		return xp;
+	}
+
 	private void updateCombinedAction()
 	{
 		int size = combinedActionSlots.size();
@@ -201,12 +217,8 @@ class SkillCalculator extends JPanel
 
 		int actionCount = 0;
 		int neededXP = targetXP - currentXP;
-		int xp = 0;
 
-		for (UIActionSlot slot : combinedActionSlots)
-		{
-			xp += slot.getValue();
-		}
+		int xp = getCombinedActionXP();
 
 		if (neededXP > 0)
 		{
@@ -382,6 +394,7 @@ class SkillCalculator extends JPanel
 		uiInput.setCurrentXPInput(cXP);
 		uiInput.setTargetLevelInput(targetLevel);
 		uiInput.setTargetXPInput(tXP);
+		uiInput.setTargetAmountInput(targetAmount);
 		uiInput.setNeededXP(nXP + " XP required to reach target XP");
 		calculate();
 	}
@@ -418,6 +431,28 @@ class SkillCalculator extends JPanel
 		targetXP = enforceXPBounds(uiInput.getTargetXPInput());
 		targetLevel = Experience.getLevelForXp(targetXP);
 		updateInputFields();
+	}
+
+	private void onFieldTargetAmountUpdated()
+	{
+		int xp = getCombinedActionXP();
+		int currentTargetAmount = uiInput.getTargetAmountInput();
+
+		// Keep previous input values if entered target amount is out of bounds.
+		if (currentTargetAmount == 0)
+		{
+			updateInputFields();
+		}
+		// Only update input fields if actions are selected.
+		else if (xp > 0)
+		{
+			targetAmount = currentTargetAmount;
+			long targetAmountXP = (long) targetAmount * xp / 10;
+			int neededXP = targetAmountXP > MAX_XP ? MAX_XP : (int) targetAmountXP;
+			targetXP = enforceXPBounds(neededXP + currentXP);
+			targetLevel = Experience.getLevelForXp(targetXP);
+			updateInputFields();
+		}
 	}
 
 	private static int enforceSkillBounds(int input)
