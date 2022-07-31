@@ -41,7 +41,6 @@ import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.callback.Hooks;
 import net.runelite.client.menus.TestMenuEntry;
-import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.plugins.entityhider.EntityHiderConfig;
 import net.runelite.client.plugins.entityhider.EntityHiderPlugin;
