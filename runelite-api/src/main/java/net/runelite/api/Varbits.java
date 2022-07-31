@@ -665,4 +665,23 @@ public final class Varbits
 	 * 1 = Enabled
 	 */
 	public static final int SHOW_PVP_KDR_STATS = 4143;
+
+	/**
+	 * Master scroll book amounts
+	 */
+	public static final int SCROLL_BOOK_NARDAH = 5672;
+	public static final int SCROLL_BOOK_DIGSITE = 5673;
+	public static final int SCROLL_BOOK_FELDIP_HILLS = 5674;
+	public static final int SCROLL_BOOK_LUNAR_ISLE = 5675;
+	public static final int SCROLL_BOOK_MORTON = 5676;
+	public static final int SCROLL_BOOK_PEST_CONTROL = 5677;
+	public static final int SCROLL_BOOK_PISCATORIS = 5678;
+	public static final int SCROLL_BOOK_TAI_BWO_WANNAI = 5679;
+	public static final int SCROLL_BOOK_IORWERTH_CAMP = 5680;
+	public static final int SCROLL_BOOK_MOS_LEHARMLESS = 5681;
+	public static final int SCROLL_BOOK_LUMBERYARD = 5682;
+	public static final int SCROLL_BOOK_ZULANDRA = 5683;
+	public static final int SCROLL_BOOK_KEY_MASTER = 5684;
+	public static final int SCROLL_BOOK_REVENANT_CAVES = 6056;
+	public static final int SCROLL_BOOK_WATSON = 8253;
 }

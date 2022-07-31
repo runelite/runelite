@@ -75,7 +75,8 @@ public class ExaminePluginTest
 		ItemComposition itemComposition = mock(ItemComposition.class);
 		when(itemComposition.getName()).thenReturn("Abyssal whip");
 		when(itemComposition.getHaPrice()).thenReturn(2);
-		when(itemManager.getItemPrice(ItemID.ABYSSAL_WHIP)).thenReturn(3);
+		int whipQty = 2_000_000_000;
+		when(itemManager.getItemPriceLong(ItemID.ABYSSAL_WHIP, whipQty)).thenReturn(3L * whipQty);
 		examinePlugin.getItemPrice(ItemID.ABYSSAL_WHIP, itemComposition, 2_000_000_000);
 
 		ArgumentCaptor<QueuedMessage> argumentCaptor = ArgumentCaptor.forClass(QueuedMessage.class);

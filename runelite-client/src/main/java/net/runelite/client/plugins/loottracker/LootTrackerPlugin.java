@@ -731,7 +731,7 @@ public class LootTrackerPlugin extends Plugin
 			long totalValue = items.stream()
 				.filter(item -> item.getId() > -1)
 				.mapToLong(item -> config.priceType() == LootTrackerPriceType.GRAND_EXCHANGE ?
-					(long) itemManager.getItemPrice(item.getId()) * item.getQuantity() :
+					itemManager.getItemPriceLong(item.getId(), item.getQuantity()) :
 					(long) itemManager.getItemComposition(item.getId()).getHaPrice() * item.getQuantity())
 				.sum();
 
@@ -1321,7 +1321,7 @@ public class LootTrackerPlugin extends Plugin
 	private void lootReceivedChatMessage(final Collection<ItemStack> items, final String name)
 	{
 		long totalPrice = items.stream()
-			.mapToLong(is -> (long) itemManager.getItemPrice(is.getId()) * is.getQuantity())
+			.mapToLong(is -> itemManager.getItemPriceLong(is.getId(), is.getQuantity()))
 			.sum();
 
 		final String message = new ChatMessageBuilder()

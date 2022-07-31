@@ -232,14 +232,16 @@ class ItemPricesOverlay extends Overlay
 			return null;
 		}
 
-		int gePrice = 0;
+		long gePrice = 0;
+		long gePricePer = 0;
 		int haPrice = 0;
 		int haProfit = 0;
 		final int itemHaPrice = itemDef.getHaPrice();
 
 		if (config.showGEPrice())
 		{
-			gePrice = itemManager.getItemPrice(id);
+			gePrice = itemManager.getItemPriceLong(id, qty);
+			gePricePer = gePrice / qty;
 		}
 		if (config.showHAValue())
 		{
@@ -247,7 +249,7 @@ class ItemPricesOverlay extends Overlay
 		}
 		if (gePrice > 0 && itemHaPrice > 0 && config.showAlchProfit())
 		{
-			haProfit = calculateHAProfit(itemHaPrice, gePrice);
+			haProfit = calculateHAProfit(itemHaPrice, (int) gePricePer);
 		}
 
 		if (gePrice > 0 || haPrice > 0)
@@ -258,17 +260,17 @@ class ItemPricesOverlay extends Overlay
 		return null;
 	}
 
-	private String stackValueText(int qty, int gePrice, int haValue, int haProfit)
+	private String stackValueText(int qty, long gePrice, int haValue, int haProfit)
 	{
 		if (gePrice > 0)
 		{
 			itemStringBuilder.append("GE: ")
-				.append(QuantityFormatter.quantityToStackSize((long) gePrice * qty))
+				.append(QuantityFormatter.quantityToStackSize(gePrice))
 				.append(" gp");
 			if (config.showEA() && qty > 1)
 			{
 				itemStringBuilder.append(" (")
-					.append(QuantityFormatter.quantityToStackSize(gePrice))
+					.append(QuantityFormatter.quantityToStackSize(gePrice / qty))
 					.append(" ea)");
 			}
 		}
