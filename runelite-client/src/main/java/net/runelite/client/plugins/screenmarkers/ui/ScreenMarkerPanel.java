@@ -29,6 +29,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Point;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -553,6 +554,8 @@ class ScreenMarkerPanel extends JPanel
 			fillColor.getAlpha() == 0 ? ColorUtil.colorWithAlpha(fillColor, DEFAULT_FILL_OPACITY) : fillColor,
 			marker.getMarker().getName() + " Fill",
 			false);
+		Point setLocation = getLocationOnScreen();
+		setLocation.x -= 168;
 		colorPicker.setLocation(getLocationOnScreen());
 		colorPicker.setOnColorChange(c ->
 		{
@@ -570,7 +573,9 @@ class ScreenMarkerPanel extends JPanel
 			marker.getMarker().getColor(),
 			marker.getMarker().getName() + " Border",
 			false);
-		colorPicker.setLocation(getLocationOnScreen());
+		Point setLocation = getLocationOnScreen();
+		setLocation.x -= 168;
+		colorPicker.setLocation(setLocation);
 		colorPicker.setOnColorChange(c ->
 		{
 			marker.getMarker().setColor(c);
