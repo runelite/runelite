@@ -30,6 +30,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -554,9 +555,13 @@ class ScreenMarkerPanel extends JPanel
 			fillColor.getAlpha() == 0 ? ColorUtil.colorWithAlpha(fillColor, DEFAULT_FILL_OPACITY) : fillColor,
 			marker.getMarker().getName() + " Fill",
 			false);
+		int screenWidth = Toolkit.getDefaultToolkit().getScreenSize().width;
 		Point setLocation = getLocationOnScreen();
-		setLocation.x -= 168;
-		colorPicker.setLocation(getLocationOnScreen());
+		if (setLocation.x + colorPicker.getWidth() > screenWidth)
+		{
+			setLocation.x = screenWidth - colorPicker.getWidth();
+		}
+		colorPicker.setLocation(setLocation);
 		colorPicker.setOnColorChange(c ->
 		{
 			marker.getMarker().setFill(c);
@@ -573,8 +578,12 @@ class ScreenMarkerPanel extends JPanel
 			marker.getMarker().getColor(),
 			marker.getMarker().getName() + " Border",
 			false);
+		int screenWidth = Toolkit.getDefaultToolkit().getScreenSize().width;
 		Point setLocation = getLocationOnScreen();
-		setLocation.x -= 168;
+		if (setLocation.x + colorPicker.getWidth() > screenWidth)
+		{
+			setLocation.x = screenWidth - colorPicker.getWidth();
+		}
 		colorPicker.setLocation(setLocation);
 		colorPicker.setOnColorChange(c ->
 		{
