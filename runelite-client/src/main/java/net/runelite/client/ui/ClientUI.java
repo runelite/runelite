@@ -1154,4 +1154,9 @@ public class ClientUI
 			configManager.setConfiguration(CONFIG_GROUP, CONFIG_CLIENT_BOUNDS, bounds);
 		}
 	}
+
+	public Rectangle getClientBounds()
+	{
+		return frame.getBounds();
+	}
 }

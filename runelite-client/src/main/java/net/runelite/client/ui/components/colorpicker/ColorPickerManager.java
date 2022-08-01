@@ -26,6 +26,8 @@
 package net.runelite.client.ui.components.colorpicker;
 
 import java.awt.Color;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.Window;
 import java.awt.event.WindowEvent;
 import javax.inject.Inject;
@@ -34,10 +36,12 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.ui.ClientUI;
 
 @Singleton
 public class ColorPickerManager
 {
+	private final ClientUI clientUI;
 	private final ConfigManager configManager;
 
 	@Setter(AccessLevel.PACKAGE)
@@ -45,8 +49,9 @@ public class ColorPickerManager
 	private RuneliteColorPicker currentPicker;
 
 	@Inject
-	private ColorPickerManager(final ConfigManager configManager)
+	private ColorPickerManager(final ClientUI clientUI, final ConfigManager configManager)
 	{
+		this.clientUI = clientUI;
 		this.configManager = configManager;
 	}
 
@@ -60,4 +65,16 @@ public class ColorPickerManager
 		currentPicker = new RuneliteColorPicker(owner, previousColor, title, alphaHidden, configManager, this);
 		return currentPicker;
 	}
+
+	public void setLocation(Point screenLocation)
+	{
+		Rectangle clientBounds = clientUI.getClientBounds();
+		int pickerRightBound = screenLocation.x - clientBounds.x + currentPicker.getWidth();
+		if (pickerRightBound > clientBounds.width)
+		{
+			screenLocation.x -= pickerRightBound - clientBounds.width;
+		}
+		currentPicker.setLocation(screenLocation);
+	}
+
 }

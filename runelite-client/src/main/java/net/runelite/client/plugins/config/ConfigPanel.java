@@ -33,8 +33,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.Toolkit;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.ItemEvent;
@@ -545,13 +543,7 @@ class ConfigPanel extends PluginPanel
 					colorPickerBtn.getColor(),
 					cid.getItem().name(),
 					alphaHidden);
-				int screenWidth = Toolkit.getDefaultToolkit().getScreenSize().width;
-				Point setLocation = getLocationOnScreen();
-				if (setLocation.x + colorPicker.getWidth() > screenWidth)
-				{
-					setLocation.x = screenWidth - colorPicker.getWidth();
-				}
-				colorPicker.setLocation(setLocation);
+				colorPickerManager.setLocation(getLocationOnScreen());
 				colorPicker.setOnColorChange(c ->
 				{
 					colorPickerBtn.setColor(c);
