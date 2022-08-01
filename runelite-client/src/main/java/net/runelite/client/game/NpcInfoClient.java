@@ -72,8 +72,7 @@ public class NpcInfoClient
 		{
 			if (!response.isSuccessful())
 			{
-				log.warn("Error looking up npcs: {}", response);
-				return null;
+				throw new IOException(response.toString());
 			}
 
 			InputStream in = response.body().byteStream();
