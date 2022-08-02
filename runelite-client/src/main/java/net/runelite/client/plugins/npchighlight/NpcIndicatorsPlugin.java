@@ -49,6 +49,7 @@ import net.runelite.api.KeyCode;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
+import net.runelite.api.NPCComposition;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -672,7 +673,23 @@ public class NpcIndicatorsPlugin extends Plugin
 			.nameOnMinimap(config.drawMinimapNames())
 			.borderWidth((float) config.borderWidth())
 			.outlineFeather(config.outlineFeather())
-			.render(n -> !npcUtil.isDying(n) || !config.ignoreDeadNpcs())
+			.render(this::render)
 			.build();
+	}
+
+	private boolean render(NPC n)
+	{
+		if (npcUtil.isDying(n) && config.ignoreDeadNpcs())
+		{
+			return false;
+		}
+
+		final NPCComposition c = n.getTransformedComposition();
+		if (c != null && c.isFollower() && config.ignorePets())
+		{
+			return false;
+		}
+
+		return true;
 	}
 }
