@@ -39,7 +39,11 @@ import net.runelite.api.NPCComposition;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcSpawned;
+import net.runelite.client.callback.Hooks;
 import net.runelite.client.menus.TestMenuEntry;
+import net.runelite.client.plugins.PluginManager;
+import net.runelite.client.plugins.entityhider.EntityHiderConfig;
+import net.runelite.client.plugins.entityhider.EntityHiderPlugin;
 import net.runelite.client.ui.overlay.OverlayManager;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -61,11 +65,27 @@ public class NpcIndicatorsPluginTest
 
 	@Mock
 	@Bind
+	private EntityHiderPlugin entityHiderPlugin;
+
+	@Mock
+	@Bind
+	private PluginManager pluginManager;
+
+	@Mock
+	@Bind
 	private ScheduledExecutorService executorService;
 
 	@Mock
 	@Bind
 	private NpcIndicatorsConfig npcIndicatorsConfig;
+
+	@Mock
+	@Bind
+	private EntityHiderConfig config;
+
+	@Mock
+	@Bind
+	private Hooks hooks;
 
 	@Inject
 	private NpcIndicatorsPlugin npcIndicatorsPlugin;

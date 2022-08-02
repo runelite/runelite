@@ -65,7 +65,11 @@ import net.runelite.client.game.NpcUtil;
 import net.runelite.client.game.npcoverlay.HighlightedNpc;
 import net.runelite.client.game.npcoverlay.NpcOverlayService;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginManager;
+import net.runelite.client.plugins.entityhider.EntityHiderConfig;
+import net.runelite.client.plugins.entityhider.EntityHiderPlugin;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
@@ -77,6 +81,7 @@ import net.runelite.client.util.WildcardMatcher;
 	tags = {"highlight", "minimap", "npcs", "overlay", "respawn", "tags"}
 )
 @Slf4j
+@PluginDependency(EntityHiderPlugin.class)
 public class NpcIndicatorsPlugin extends Plugin
 {
 	private static final int MAX_ACTOR_VIEW_RANGE = 15;
@@ -99,6 +104,15 @@ public class NpcIndicatorsPlugin extends Plugin
 
 	@Inject
 	private NpcRespawnOverlay npcRespawnOverlay;
+
+	@Inject
+	private EntityHiderPlugin entityHiderPlugin;
+
+	@Inject
+	private EntityHiderConfig entityHiderConfig;
+
+	@Inject
+	private PluginManager pluginManager;
 
 	@Inject
 	private ClientThread clientThread;
@@ -553,6 +567,11 @@ public class NpcIndicatorsPlugin extends Plugin
 		npcOverlayService.rebuild();
 	}
 
+	private boolean npcsHidden()
+	{
+		return pluginManager.isPluginEnabled(entityHiderPlugin) && entityHiderConfig.hideNPCs();
+	}
+
 	private boolean highlightMatchesNPCName(String npcName)
 	{
 		for (String highlight : highlights)
@@ -672,7 +691,7 @@ public class NpcIndicatorsPlugin extends Plugin
 			.nameOnMinimap(config.drawMinimapNames())
 			.borderWidth((float) config.borderWidth())
 			.outlineFeather(config.outlineFeather())
-			.render(n -> !npcUtil.isDying(n) || !config.ignoreDeadNpcs())
+			.render(n -> (!npcUtil.isDying(n) || !config.ignoreDeadNpcs()) && !npcsHidden())
 			.build();
 	}
 }
