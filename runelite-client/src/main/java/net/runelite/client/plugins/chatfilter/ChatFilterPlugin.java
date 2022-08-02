@@ -31,6 +31,7 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,13 +53,16 @@ import static net.runelite.api.ChatMessageType.PUBLICCHAT;
 import static net.runelite.api.ChatMessageType.SPAM;
 import net.runelite.api.Client;
 import net.runelite.api.FriendsChatManager;
+import net.runelite.api.MenuAction;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
 import net.runelite.api.clan.ClanChannel;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.OverheadTextChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
@@ -82,6 +86,7 @@ public class ChatFilterPlugin extends Plugin
 	@VisibleForTesting
 	static final String CENSOR_MESSAGE = "Hey, everyone, I just tried to say something very silly!";
 
+	private static final String ADD_TO_FILTER = "Add to filter";
 	private static final Set<ChatMessageType> COLLAPSIBLE_MESSAGETYPES = ImmutableSet.of(
 		ENGINE,
 		GAMEMESSAGE,
@@ -116,6 +121,9 @@ public class ChatFilterPlugin extends Plugin
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private ConfigManager configManager;
 
 	@Inject
 	private ChatFilterConfig config;
@@ -282,6 +290,45 @@ public class ChatFilterPlugin extends Plugin
 			duplicate.count++;
 			duplicate.messageId = messageNode.getId();
 			duplicateChatCache.put(key, duplicate);
+		}
+	}
+
+	@Subscribe
+	public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
+	{
+		if (!config.addToFilterChatboxOption()) {
+			return;
+		}
+
+		final String option = menuEntryAdded.getOption();
+		final int groupId = WidgetInfo.TO_GROUP(menuEntryAdded.getActionParam1());
+
+		if (groupId == WidgetInfo.CHATBOX.getGroupId() && (option.equals("Add ignore") || option.equals("Message")))
+		{
+			client.createMenuEntry(-2)
+				.setOption(ADD_TO_FILTER)
+				.setTarget(menuEntryAdded.getTarget())
+				.setType(MenuAction.RUNELITE)
+				.setIdentifier(menuEntryAdded.getIdentifier())
+				.onClick(e ->
+				{
+					String target = Text.removeTags(menuEntryAdded.getTarget());
+					String filteredNames = configManager.getConfiguration(ChatFilterConfig.CONFIG_GROUP, ChatFilterConfig.FILTERED_NAMES);
+					if (!filteredNames.isEmpty())
+					{
+						List<String> names = Arrays.asList(filteredNames.split("\n"));
+						if (names.contains(target))
+						{
+							return;
+						}
+						if (!filteredNames.endsWith("\n"))
+						{
+							filteredNames += "\n";
+						}
+					}
+					configManager.setConfiguration(ChatFilterConfig.CONFIG_GROUP, ChatFilterConfig.FILTERED_NAMES, filteredNames + target + "\n");
+					updateFilteredPatterns();
+				});
 		}
 	}
 

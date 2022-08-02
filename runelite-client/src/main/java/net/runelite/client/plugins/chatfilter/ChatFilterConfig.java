@@ -33,6 +33,9 @@ import net.runelite.client.config.ConfigSection;
 @ConfigGroup("chatfilter")
 public interface ChatFilterConfig extends Config
 {
+	String CONFIG_GROUP = "chatfilter";
+	String FILTERED_NAMES = "filteredNames";
+
 	@ConfigSection(
 		name = "Filter Lists",
 		description = "Custom Word, Regex, and Username filter lists",
@@ -175,4 +178,12 @@ public interface ChatFilterConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "addToFilterChatboxOption",
+		name = "Add to filter chatbox option",
+		description = "Adds an option to the chatbox player menu to add players to the Filter Names list",
+		position = 14
+	)
+	default boolean addToFilterChatboxOption() { return false; }
 }
