@@ -296,7 +296,8 @@ public class ChatFilterPlugin extends Plugin
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
 	{
-		if (!config.addToFilterChatboxOption()) {
+		if (!config.addToFilterChatboxOption())
+		{
 			return;
 		}
 

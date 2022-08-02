@@ -185,5 +185,8 @@ public interface ChatFilterConfig extends Config
 		description = "Adds an option to the chatbox player menu to add players to the Filter Names list",
 		position = 14
 	)
-	default boolean addToFilterChatboxOption() { return false; }
+	default boolean addToFilterChatboxOption()
+	{
+		return false;
+	}
 }
