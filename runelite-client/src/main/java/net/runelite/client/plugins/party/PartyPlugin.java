@@ -306,6 +306,11 @@ public class PartyPlugin extends Plugin
 	public void onGameStateChanged(GameStateChanged event)
 	{
 		checkStateChanged(false);
+
+		if (event.getGameState() == GameState.LOGGED_IN)
+		{
+			sendLocationUpdate();
+		}
 	}
 
 	@Subscribe
@@ -337,7 +342,7 @@ public class PartyPlugin extends Plugin
 	)
 	public void shareLocation()
 	{
-		if (client.getGameState() != GameState.LOGGED_IN)
+		if (client.getGameState() != GameState.LOGGED_IN || client.isInInstancedRegion())
 		{
 			return;
 		}
@@ -460,6 +465,28 @@ public class PartyPlugin extends Plugin
 	{
 		clientThread.invokeLater(() -> checkStateChanged(true));
 		lastLocation = null;
+	}
+
+	private void sendLocationUpdate()
+	{
+		final PartyMember localMember = party.getLocalMember();
+
+		if (localMember == null)
+		{
+			return;
+		}
+
+		if (client.isInInstancedRegion())
+		{
+			// send a blank worldpoint to remove the player from the world map
+			final WorldPoint blankWorldPoint = new WorldPoint(0, 0, 0);
+			party.send(new LocationUpdate(blankWorldPoint));
+		}
+		else
+		{
+			final WorldPoint worldPoint = client.getLocalPlayer().getWorldLocation();
+			party.send(new LocationUpdate(worldPoint));
+		}
 	}
 
 	private void checkStateChanged(boolean forceSend)
