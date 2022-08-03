@@ -36,6 +36,8 @@ import static net.runelite.api.GraphicID.GRAPHICS_OBJECT_ROCKFALL;
 import static net.runelite.api.GraphicID.ZALCANO_PROJECTILE_FIREBALL;
 import net.runelite.api.GraphicsObject;
 import net.runelite.api.Hitsplat;
+import static net.runelite.api.HitsplatID.DAMAGE_ME;
+import static net.runelite.api.HitsplatID.DAMAGE_ME_ORANGE;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import static net.runelite.api.NpcID.ZALCANO;

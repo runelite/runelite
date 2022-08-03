@@ -37,6 +37,7 @@ import static net.runelite.api.ChatMessageType.GAMEMESSAGE;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Hitsplat;
+import net.runelite.api.HitsplatID;
 import net.runelite.api.MessageNode;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
@@ -902,7 +903,7 @@ public class SlayerPluginTest
 		slayerPlugin.onGameTick(new GameTick());
 
 		// Damage both npcs
-		Hitsplat hitsplat = new Hitsplat(Hitsplat.HitsplatType.DAMAGE_ME, 1, 1);
+		Hitsplat hitsplat = new Hitsplat(HitsplatID.DAMAGE_ME, 1, 1);
 		HitsplatApplied hitsplatApplied = new HitsplatApplied();
 		hitsplatApplied.setHitsplat(hitsplat);
 		hitsplatApplied.setActor(npc1);

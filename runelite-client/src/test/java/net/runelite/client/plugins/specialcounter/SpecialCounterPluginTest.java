@@ -34,6 +34,7 @@ import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.Hitsplat;
+import net.runelite.api.HitsplatID;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
@@ -41,6 +42,7 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.VarPlayer;
+import net.runelite.api.annotations.HitsplatType;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.VarbitChanged;
@@ -137,9 +139,9 @@ public class SpecialCounterPluginTest
 		when(itemManager.getImage(anyInt())).thenReturn(new AsyncBufferedImage(24, 24, BufferedImage.TYPE_INT_ARGB));
 	}
 
-	private static HitsplatApplied hitsplat(Actor target, Hitsplat.HitsplatType type)
+	private static HitsplatApplied hitsplat(Actor target, @HitsplatType int type)
 	{
-		Hitsplat hitsplat = new Hitsplat(type, type == Hitsplat.HitsplatType.DAMAGE_ME ? 1 : 0, 42);
+		Hitsplat hitsplat = new Hitsplat(type, type == HitsplatID.DAMAGE_ME ? 1 : 0, 42);
 		HitsplatApplied hitsplatApplied = new HitsplatApplied();
 		hitsplatApplied.setActor(target);
 		hitsplatApplied.setHitsplat(hitsplat);
@@ -165,7 +167,7 @@ public class SpecialCounterPluginTest
 		captor.getValue().run();
 
 		// hit 1
-		specialCounterPlugin.onHitsplatApplied(hitsplat(target, Hitsplat.HitsplatType.DAMAGE_ME));
+		specialCounterPlugin.onHitsplatApplied(hitsplat(target, HitsplatID.DAMAGE_ME));
 
 		specialCounterPlugin.onGameTick(new GameTick());
 
@@ -195,7 +197,7 @@ public class SpecialCounterPluginTest
 		verify(clientThread).invokeLater(captor.capture());
 		captor.getValue().run();
 
-		specialCounterPlugin.onHitsplatApplied(hitsplat(target, Hitsplat.HitsplatType.DAMAGE_ME));
+		specialCounterPlugin.onHitsplatApplied(hitsplat(target, HitsplatID.DAMAGE_ME));
 
 		specialCounterPlugin.onGameTick(new GameTick());
 
@@ -214,7 +216,7 @@ public class SpecialCounterPluginTest
 		verify(clientThread).invokeLater(captor.capture());
 		captor.getValue().run();
 
-		specialCounterPlugin.onHitsplatApplied(hitsplat(target, Hitsplat.HitsplatType.DAMAGE_ME));
+		specialCounterPlugin.onHitsplatApplied(hitsplat(target, HitsplatID.DAMAGE_ME));
 
 		specialCounterPlugin.onGameTick(new GameTick());
 
@@ -242,7 +244,7 @@ public class SpecialCounterPluginTest
 		verify(clientThread).invokeLater(captor.capture());
 		captor.getValue().run();
 
-		specialCounterPlugin.onHitsplatApplied(hitsplat(target, Hitsplat.HitsplatType.DAMAGE_ME));
+		specialCounterPlugin.onHitsplatApplied(hitsplat(target, HitsplatID.DAMAGE_ME));
 
 		specialCounterPlugin.onGameTick(new GameTick());
 
@@ -256,7 +258,7 @@ public class SpecialCounterPluginTest
 		verify(clientThread).invokeLater(captor.capture());
 		captor.getValue().run();
 
-		specialCounterPlugin.onHitsplatApplied(hitsplat(target, Hitsplat.HitsplatType.DAMAGE_ME));
+		specialCounterPlugin.onHitsplatApplied(hitsplat(target, HitsplatID.DAMAGE_ME));
 
 		specialCounterPlugin.onGameTick(new GameTick());
 
