@@ -2437,7 +2437,7 @@ public class ChatCommandsPlugin extends Plugin
 		{
 			// longBossName the skill name to normalize from hiscore name
 			// to our internal name (removing the colon)
-			if (longBossName(skill.getName()).equals(s))
+			if (longBossName(skill.getName()).equalsIgnoreCase(s))
 			{
 				return skill;
 			}
