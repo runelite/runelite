@@ -99,7 +99,12 @@ public class Hitsplat
 		/**
 		 * Healing (purple).
 		 */
-		HEAL;
+		HEAL,
+		DAMAGE_MAX_ME,
+		DAMAGE_MAX_ME_CYAN,
+		DAMAGE_MAX_ME_ORANGE,
+		DAMAGE_MAX_ME_YELLOW,
+		DAMAGE_MAX_ME_WHITE;
 
 		/**
 		 * Utility method that maps the type value to its respective
@@ -128,6 +133,11 @@ public class Hitsplat
 				case 23: return DAMAGE_OTHER_YELLOW;
 				case 24: return DAMAGE_ME_WHITE;
 				case 25: return DAMAGE_OTHER_WHITE;
+				case 43: return DAMAGE_MAX_ME;
+				case 44: return DAMAGE_MAX_ME_CYAN;
+				case 45: return DAMAGE_MAX_ME_ORANGE;
+				case 46: return DAMAGE_MAX_ME_YELLOW;
+				case 47: return DAMAGE_MAX_ME_WHITE;
 			}
 			return null;
 		}
@@ -168,6 +178,11 @@ public class Hitsplat
 			case DAMAGE_ME_YELLOW:
 			case DAMAGE_ME_ORANGE:
 			case DAMAGE_ME_WHITE:
+			case DAMAGE_MAX_ME:
+			case DAMAGE_MAX_ME_CYAN:
+			case DAMAGE_MAX_ME_ORANGE:
+			case DAMAGE_MAX_ME_YELLOW:
+			case DAMAGE_MAX_ME_WHITE:
 				return true;
 			default:
 				return false;
