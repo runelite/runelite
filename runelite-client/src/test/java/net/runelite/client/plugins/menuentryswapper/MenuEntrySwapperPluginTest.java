@@ -70,7 +70,7 @@ import org.mockito.stubbing.Answer;
 public class MenuEntrySwapperPluginTest
 {
 	private final static String AIR_RUNE = "Air rune";
-	
+
 	@Mock
 	@Bind
 	Client client;
@@ -131,7 +131,8 @@ public class MenuEntrySwapperPluginTest
 			return null;
 		}).when(client).setMenuEntries(any(MenuEntry[].class));
 
-		when(menuEntrySwapperPlugin.shiftModifier()).thenAnswer((Answer<Boolean>) invocationOnMock -> {
+		when(menuEntrySwapperPlugin.shiftModifier()).thenAnswer((Answer<Boolean>) invocationOnMock ->
+		{
 			return shiftStatus;
 		});
 
@@ -143,11 +144,15 @@ public class MenuEntrySwapperPluginTest
 		return menu(option, target, menuAction, 0);
 	}
 
-	private TestMenuEntry menu(int param1, String option, String target, MenuAction menuAction) {
+	private TestMenuEntry menu(int param1, String option, String target, MenuAction menuAction)
+	{
 		TestMenuEntry menuEntry = menu(option, target, menuAction);
-		if (menuAction == MenuAction.RUNELITE) {
+		if (menuAction == MenuAction.RUNELITE)
+		{
 			menuEntry.setParam1(0);
-		} else {
+		}
+		else
+		{
 			menuEntry.setParam1(param1);
 			menuEntry.setItemId(ItemID.AIR_RUNE);
 		}
@@ -165,7 +170,6 @@ public class MenuEntrySwapperPluginTest
 		menuEntry.setActor(npc);
 		return menuEntry;
 	}
-	
 
 	@Test
 	public void testSlayerMaster()
@@ -463,24 +467,28 @@ public class MenuEntrySwapperPluginTest
 			menu("Last-destination (AIQ)", "Fairy ring", MenuAction.GAME_OBJECT_SECOND_OPTION),
 		}, argumentCaptor.getValue());
 	}
-	
+
 	@Test
-	public void testBankMenu() {
+	public void testBankMenu()
+	{
 		lenient().when(config.bankCustomization()).thenReturn(true);
 		when(client.getWidget(WidgetInfo.BANK_CONTAINER)).thenReturn(widget);
 
-		doAnswer((Answer<Void>) invocationOnMock -> {
+		doAnswer((Answer<Void>) invocationOnMock ->
+		{
 			Object[] arguments = invocationOnMock.getArguments();
-			when(configManager.getConfiguration((String)arguments[0], (String)arguments[1])).thenReturn(String.valueOf(arguments[2]));
+			when(configManager.getConfiguration((String) arguments[0], (String) arguments[1])).thenReturn(String.valueOf(arguments[2]));
 			return null;
 		}).when(configManager).setConfiguration(anyString(), anyString(), anyInt());
 
-		when(client.createMenuEntry(anyInt())).thenAnswer((Answer<MenuEntry>) invocationOnMock -> {
+		when(client.createMenuEntry(anyInt())).thenAnswer((Answer<MenuEntry>) invocationOnMock ->
+		{
 			TestMenuEntry testMenuEntry = new TestMenuEntry();
 			int index = invocationOnMock.getArgument(0);
-			
+
 			MenuEntry[] newEntries = new MenuEntry[entries.length + 1];
-			for (int i = 0; i < entries.length + 1; i++) {
+			for (int i = 0; i < entries.length + 1; i++)
+			{
 				if (i < index)
 					newEntries[i] = entries[i];
 				else if (i == index)
@@ -491,15 +499,16 @@ public class MenuEntrySwapperPluginTest
 			entries = newEntries;
 			return testMenuEntry;
 		});
-		
+
 		shiftStatus = true;
 		int param1 = 786445;
 		ClientTick clientTick = new ClientTick();
 		MenuOpened menuOpened = new MenuOpened();
 		MenuEntry[] baseEntries;
 		MenuEntry[] baseShiftEntries;
-		
-		baseEntries = new MenuEntry[] {
+
+		baseEntries = new MenuEntry[]
+		{
 				menu(param1, "Cancel", "", MenuAction.CANCEL),
 				menu(param1, "Examine", AIR_RUNE, MenuAction.CC_OP_LOW_PRIORITY),
 				menu(param1, "Withdraw-All-but-1", AIR_RUNE, MenuAction.CC_OP_LOW_PRIORITY),
@@ -511,49 +520,49 @@ public class MenuEntrySwapperPluginTest
 				menu(param1, "Withdraw-1", AIR_RUNE, MenuAction.CC_OP),
 		};
 		baseShiftEntries = baseEntries;
-		
-		
+
 		entries = baseShiftEntries;
 		menuOpened.setMenuEntries(baseEntries);
 		menuEntrySwapperPlugin.onMenuOpened(menuOpened);
-		
+
 		MenuEntry[] newEntries = client.getMenuEntries();
-		assertArrayEquals(new MenuEntry[] {
-		/*  0 */menu(param1, "Cancel", "", MenuAction.CANCEL),
-		/*  1 */menu(param1, "Swap shift click Withdraw-All-but-1", AIR_RUNE, MenuAction.RUNELITE),
-		/*  2 */menu(param1, "Swap shift click Withdraw-All", AIR_RUNE, MenuAction.RUNELITE),
-		/*  3 */menu(param1, "Swap shift click Withdraw-X", AIR_RUNE, MenuAction.RUNELITE),
-		/*  4 */menu(param1, "Swap shift click Withdraw-16", AIR_RUNE, MenuAction.RUNELITE),
-		/*  5 */menu(param1, "Swap shift click Withdraw-10", AIR_RUNE, MenuAction.RUNELITE),
-		/*  6 */menu(param1, "Swap shift click Withdraw-5", AIR_RUNE, MenuAction.RUNELITE),
-		/*  7 */menu(param1, "Swap shift click Withdraw-1", AIR_RUNE, MenuAction.RUNELITE),
-		/*  8 */menu(param1, "Swap left click Withdraw-All-but-1", AIR_RUNE, MenuAction.RUNELITE),
-		/*  9 */menu(param1, "Swap left click Withdraw-All", AIR_RUNE, MenuAction.RUNELITE),
-		/* 10 */menu(param1, "Swap left click Withdraw-X", AIR_RUNE, MenuAction.RUNELITE),
-		/* 11 */menu(param1, "Swap left click Withdraw-16", AIR_RUNE, MenuAction.RUNELITE),
-		/* 12 */menu(param1, "Swap left click Withdraw-10", AIR_RUNE, MenuAction.RUNELITE),
-		/* 13 */menu(param1, "Swap left click Withdraw-5", AIR_RUNE, MenuAction.RUNELITE),
-		/* 14 */menu(param1, "Swap left click Withdraw-1", AIR_RUNE, MenuAction.RUNELITE),
-		/* 15 */menu(param1, "Examine", AIR_RUNE, MenuAction.CC_OP_LOW_PRIORITY),
-		/* 16 */menu(param1, "Withdraw-All-but-1", AIR_RUNE, MenuAction.CC_OP_LOW_PRIORITY),
-		/* 17 */menu(param1, "Withdraw-All", AIR_RUNE, MenuAction.CC_OP_LOW_PRIORITY),
-		/* 18 */menu(param1, "Withdraw-X", AIR_RUNE, MenuAction.CC_OP_LOW_PRIORITY),
-		/* 19 */menu(param1, "Withdraw-16", AIR_RUNE, MenuAction.CC_OP),
-		/* 20 */menu(param1, "Withdraw-10", AIR_RUNE, MenuAction.CC_OP),
-		/* 21 */menu(param1, "Withdraw-5", AIR_RUNE, MenuAction.CC_OP),
-		/* 22 */menu(param1, "Withdraw-1", AIR_RUNE, MenuAction.CC_OP),
+		assertArrayEquals(new MenuEntry[]
+		{
+				/* 0 */menu(param1, "Cancel", "", MenuAction.CANCEL),
+				/* 1 */menu(param1, "Swap shift click Withdraw-All-but-1", AIR_RUNE, MenuAction.RUNELITE),
+				/* 2 */menu(param1, "Swap shift click Withdraw-All", AIR_RUNE, MenuAction.RUNELITE),
+				/* 3 */menu(param1, "Swap shift click Withdraw-X", AIR_RUNE, MenuAction.RUNELITE),
+				/* 4 */menu(param1, "Swap shift click Withdraw-16", AIR_RUNE, MenuAction.RUNELITE),
+				/* 5 */menu(param1, "Swap shift click Withdraw-10", AIR_RUNE, MenuAction.RUNELITE),
+				/* 6 */menu(param1, "Swap shift click Withdraw-5", AIR_RUNE, MenuAction.RUNELITE),
+				/* 7 */menu(param1, "Swap shift click Withdraw-1", AIR_RUNE, MenuAction.RUNELITE),
+				/* 8 */menu(param1, "Swap left click Withdraw-All-but-1", AIR_RUNE, MenuAction.RUNELITE),
+				/* 9 */menu(param1, "Swap left click Withdraw-All", AIR_RUNE, MenuAction.RUNELITE),
+				/* 10 */menu(param1, "Swap left click Withdraw-X", AIR_RUNE, MenuAction.RUNELITE),
+				/* 11 */menu(param1, "Swap left click Withdraw-16", AIR_RUNE, MenuAction.RUNELITE),
+				/* 12 */menu(param1, "Swap left click Withdraw-10", AIR_RUNE, MenuAction.RUNELITE),
+				/* 13 */menu(param1, "Swap left click Withdraw-5", AIR_RUNE, MenuAction.RUNELITE),
+				/* 14 */menu(param1, "Swap left click Withdraw-1", AIR_RUNE, MenuAction.RUNELITE),
+				/* 15 */menu(param1, "Examine", AIR_RUNE, MenuAction.CC_OP_LOW_PRIORITY),
+				/* 16 */menu(param1, "Withdraw-All-but-1", AIR_RUNE, MenuAction.CC_OP_LOW_PRIORITY),
+				/* 17 */menu(param1, "Withdraw-All", AIR_RUNE, MenuAction.CC_OP_LOW_PRIORITY),
+				/* 18 */menu(param1, "Withdraw-X", AIR_RUNE, MenuAction.CC_OP_LOW_PRIORITY),
+				/* 19 */menu(param1, "Withdraw-16", AIR_RUNE, MenuAction.CC_OP),
+				/* 20 */menu(param1, "Withdraw-10", AIR_RUNE, MenuAction.CC_OP),
+				/* 21 */menu(param1, "Withdraw-5", AIR_RUNE, MenuAction.CC_OP),
+				/* 22 */menu(param1, "Withdraw-1", AIR_RUNE, MenuAction.CC_OP),
 		}, newEntries);
-		
-		
-		((TestMenuEntry)newEntries[6]).getClickConsumer().accept(menuEntry);
+
+		((TestMenuEntry) newEntries[6]).getClickConsumer().accept(menuEntry);
 		entries = baseShiftEntries;
 		menuEntrySwapperPlugin.onClientTick(clientTick);
-		
+
 		ArgumentCaptor<MenuEntry[]> argumentCaptor = ArgumentCaptor.forClass(MenuEntry[].class);
 		verify(client, times(1)).setMenuEntries(argumentCaptor.capture());
-		
+
 		baseShiftEntries = argumentCaptor.getValue();
-		assertArrayEquals(new MenuEntry[] {
+		assertArrayEquals(new MenuEntry[]
+		{
 				menu(param1, "Cancel", "", MenuAction.CANCEL),
 				menu(param1, "Examine", AIR_RUNE, MenuAction.CC_OP_LOW_PRIORITY),
 				menu(param1, "Withdraw-All-but-1", AIR_RUNE, MenuAction.CC_OP_LOW_PRIORITY),
@@ -564,56 +573,55 @@ public class MenuEntrySwapperPluginTest
 				menu(param1, "Withdraw-1", AIR_RUNE, MenuAction.CC_OP),
 				menu(param1, "Withdraw-5", AIR_RUNE, MenuAction.CC_OP),
 		}, baseShiftEntries);
-		
-		
+
 		shiftStatus = false;
 		entries = baseEntries;
 		menuEntrySwapperPlugin.onClientTick(clientTick);
 		verify(client, times(1)).setMenuEntries(argumentCaptor.capture()); // verify it wasn't called.
-		
-		
+
 		shiftStatus = true;
 		entries = baseShiftEntries;
 		menuOpened.setMenuEntries(baseShiftEntries);
 		menuEntrySwapperPlugin.onMenuOpened(menuOpened);
 		shiftStatus = false;
-		
+
 		newEntries = client.getMenuEntries();
-		assertArrayEquals(new MenuEntry[] {
-		/*  0 */menu(param1, "Cancel", "", MenuAction.CANCEL),
-		/*  1 */menu(param1, "Reset swap", AIR_RUNE, MenuAction.RUNELITE),
-		/*  2 */menu(param1, "Swap shift click Withdraw-All-but-1", AIR_RUNE, MenuAction.RUNELITE),
-		/*  3 */menu(param1, "Swap shift click Withdraw-All", AIR_RUNE, MenuAction.RUNELITE),
-		/*  4 */menu(param1, "Swap shift click Withdraw-X", AIR_RUNE, MenuAction.RUNELITE),
-		/*  5 */menu(param1, "Swap shift click Withdraw-16", AIR_RUNE, MenuAction.RUNELITE),
-		/*  6 */menu(param1, "Swap shift click Withdraw-10", AIR_RUNE, MenuAction.RUNELITE),
-		/*  7 */menu(param1, "Swap shift click Withdraw-1", AIR_RUNE, MenuAction.RUNELITE),
-		/*  8 */menu(param1, "Swap left click Withdraw-All-but-1", AIR_RUNE, MenuAction.RUNELITE),
-		/*  9 */menu(param1, "Swap left click Withdraw-All", AIR_RUNE, MenuAction.RUNELITE),
-		/* 10 */menu(param1, "Swap left click Withdraw-X", AIR_RUNE, MenuAction.RUNELITE),
-		/* 11 */menu(param1, "Swap left click Withdraw-16", AIR_RUNE, MenuAction.RUNELITE),
-		/* 12 */menu(param1, "Swap left click Withdraw-10", AIR_RUNE, MenuAction.RUNELITE),
-		/* 13 */menu(param1, "Swap left click Withdraw-1", AIR_RUNE, MenuAction.RUNELITE),
-		/* 14 */menu(param1, "Swap left click Withdraw-5", AIR_RUNE, MenuAction.RUNELITE),
-		/* 15 */menu(param1, "Examine", AIR_RUNE, MenuAction.CC_OP_LOW_PRIORITY),
-		/* 16 */menu(param1, "Withdraw-All-but-1", AIR_RUNE, MenuAction.CC_OP_LOW_PRIORITY),
-		/* 17 */menu(param1, "Withdraw-All", AIR_RUNE, MenuAction.CC_OP_LOW_PRIORITY),
-		/* 18 */menu(param1, "Withdraw-X", AIR_RUNE, MenuAction.CC_OP_LOW_PRIORITY),
-		/* 19 */menu(param1, "Withdraw-16", AIR_RUNE, MenuAction.CC_OP),
-		/* 20 */menu(param1, "Withdraw-10", AIR_RUNE, MenuAction.CC_OP),
-		/* 21 */menu(param1, "Withdraw-1", AIR_RUNE, MenuAction.CC_OP),
-		/* 22 */menu(param1, "Withdraw-5", AIR_RUNE, MenuAction.CC_OP),
+		assertArrayEquals(new MenuEntry[]
+		{
+				/* 0 */menu(param1, "Cancel", "", MenuAction.CANCEL),
+				/* 1 */menu(param1, "Reset swap", AIR_RUNE, MenuAction.RUNELITE),
+				/* 2 */menu(param1, "Swap shift click Withdraw-All-but-1", AIR_RUNE, MenuAction.RUNELITE),
+				/* 3 */menu(param1, "Swap shift click Withdraw-All", AIR_RUNE, MenuAction.RUNELITE),
+				/* 4 */menu(param1, "Swap shift click Withdraw-X", AIR_RUNE, MenuAction.RUNELITE),
+				/* 5 */menu(param1, "Swap shift click Withdraw-16", AIR_RUNE, MenuAction.RUNELITE),
+				/* 6 */menu(param1, "Swap shift click Withdraw-10", AIR_RUNE, MenuAction.RUNELITE),
+				/* 7 */menu(param1, "Swap shift click Withdraw-1", AIR_RUNE, MenuAction.RUNELITE),
+				/* 8 */menu(param1, "Swap left click Withdraw-All-but-1", AIR_RUNE, MenuAction.RUNELITE),
+				/* 9 */menu(param1, "Swap left click Withdraw-All", AIR_RUNE, MenuAction.RUNELITE),
+				/* 10 */menu(param1, "Swap left click Withdraw-X", AIR_RUNE, MenuAction.RUNELITE),
+				/* 11 */menu(param1, "Swap left click Withdraw-16", AIR_RUNE, MenuAction.RUNELITE),
+				/* 12 */menu(param1, "Swap left click Withdraw-10", AIR_RUNE, MenuAction.RUNELITE),
+				/* 13 */menu(param1, "Swap left click Withdraw-1", AIR_RUNE, MenuAction.RUNELITE),
+				/* 14 */menu(param1, "Swap left click Withdraw-5", AIR_RUNE, MenuAction.RUNELITE),
+				/* 15 */menu(param1, "Examine", AIR_RUNE, MenuAction.CC_OP_LOW_PRIORITY),
+				/* 16 */menu(param1, "Withdraw-All-but-1", AIR_RUNE, MenuAction.CC_OP_LOW_PRIORITY),
+				/* 17 */menu(param1, "Withdraw-All", AIR_RUNE, MenuAction.CC_OP_LOW_PRIORITY),
+				/* 18 */menu(param1, "Withdraw-X", AIR_RUNE, MenuAction.CC_OP_LOW_PRIORITY),
+				/* 19 */menu(param1, "Withdraw-16", AIR_RUNE, MenuAction.CC_OP),
+				/* 20 */menu(param1, "Withdraw-10", AIR_RUNE, MenuAction.CC_OP),
+				/* 21 */menu(param1, "Withdraw-1", AIR_RUNE, MenuAction.CC_OP),
+				/* 22 */menu(param1, "Withdraw-5", AIR_RUNE, MenuAction.CC_OP),
 		}, newEntries);
-		
-		
-		((TestMenuEntry)newEntries[12]).getClickConsumer().accept(menuEntry);
+
+		((TestMenuEntry) newEntries[12]).getClickConsumer().accept(menuEntry);
 		entries = baseEntries;
 		menuEntrySwapperPlugin.onClientTick(clientTick);
-		
+
 		argumentCaptor = ArgumentCaptor.forClass(MenuEntry[].class);
 		verify(client, times(2)).setMenuEntries(argumentCaptor.capture());
-		
-		assertArrayEquals(new MenuEntry[] {
+
+		assertArrayEquals(new MenuEntry[]
+		{
 				menu(param1, "Cancel", "", MenuAction.CANCEL),
 				menu(param1, "Examine", AIR_RUNE, MenuAction.CC_OP_LOW_PRIORITY),
 				menu(param1, "Withdraw-All-but-1", AIR_RUNE, MenuAction.CC_OP_LOW_PRIORITY),
@@ -624,49 +632,49 @@ public class MenuEntrySwapperPluginTest
 				menu(param1, "Withdraw-5", AIR_RUNE, MenuAction.CC_OP),
 				menu(param1, "Withdraw-10", AIR_RUNE, MenuAction.CC_OP),
 		}, argumentCaptor.getValue());
-		
-		
+
 		shiftStatus = true;
 		entries = baseShiftEntries;
 		menuOpened.setMenuEntries(baseShiftEntries);
 		menuEntrySwapperPlugin.onMenuOpened(menuOpened);
-		
+
 		newEntries = client.getMenuEntries();
-		assertArrayEquals(new MenuEntry[] {
-		/*  0 */menu(param1, "Cancel", "", MenuAction.CANCEL),
-		/*  1 */menu(param1, "Reset swap", AIR_RUNE, MenuAction.RUNELITE),
-		/*  2 */menu(param1, "Swap shift click Withdraw-All-but-1", AIR_RUNE, MenuAction.RUNELITE),
-		/*  3 */menu(param1, "Swap shift click Withdraw-All", AIR_RUNE, MenuAction.RUNELITE),
-		/*  4 */menu(param1, "Swap shift click Withdraw-X", AIR_RUNE, MenuAction.RUNELITE),
-		/*  5 */menu(param1, "Swap shift click Withdraw-16", AIR_RUNE, MenuAction.RUNELITE),
-		/*  6 */menu(param1, "Swap shift click Withdraw-10", AIR_RUNE, MenuAction.RUNELITE),
-		/*  7 */menu(param1, "Swap shift click Withdraw-1", AIR_RUNE, MenuAction.RUNELITE),
-		/*  8 */menu(param1, "Swap left click Withdraw-All-but-1", AIR_RUNE, MenuAction.RUNELITE),
-		/*  9 */menu(param1, "Swap left click Withdraw-All", AIR_RUNE, MenuAction.RUNELITE),
-		/* 10 */menu(param1, "Swap left click Withdraw-X", AIR_RUNE, MenuAction.RUNELITE),
-		/* 11 */menu(param1, "Swap left click Withdraw-16", AIR_RUNE, MenuAction.RUNELITE),
-		/* 12 */menu(param1, "Swap left click Withdraw-1", AIR_RUNE, MenuAction.RUNELITE),
-		/* 13 */menu(param1, "Swap left click Withdraw-5", AIR_RUNE, MenuAction.RUNELITE),
-		/* 14 */menu(param1, "Examine", AIR_RUNE, MenuAction.CC_OP_LOW_PRIORITY),
-		/* 15 */menu(param1, "Withdraw-All-but-1", AIR_RUNE, MenuAction.CC_OP_LOW_PRIORITY),
-		/* 16 */menu(param1, "Withdraw-All", AIR_RUNE, MenuAction.CC_OP_LOW_PRIORITY),
-		/* 17 */menu(param1, "Withdraw-X", AIR_RUNE, MenuAction.CC_OP_LOW_PRIORITY),
-		/* 18 */menu(param1, "Withdraw-16", AIR_RUNE, MenuAction.CC_OP),
-		/* 19 */menu(param1, "Withdraw-10", AIR_RUNE, MenuAction.CC_OP),
-		/* 20 */menu(param1, "Withdraw-1", AIR_RUNE, MenuAction.CC_OP),
-		/* 21 */menu(param1, "Withdraw-5", AIR_RUNE, MenuAction.CC_OP),
+		assertArrayEquals(new MenuEntry[]
+		{
+				/* 0 */menu(param1, "Cancel", "", MenuAction.CANCEL),
+				/* 1 */menu(param1, "Reset swap", AIR_RUNE, MenuAction.RUNELITE),
+				/* 2 */menu(param1, "Swap shift click Withdraw-All-but-1", AIR_RUNE, MenuAction.RUNELITE),
+				/* 3 */menu(param1, "Swap shift click Withdraw-All", AIR_RUNE, MenuAction.RUNELITE),
+				/* 4 */menu(param1, "Swap shift click Withdraw-X", AIR_RUNE, MenuAction.RUNELITE),
+				/* 5 */menu(param1, "Swap shift click Withdraw-16", AIR_RUNE, MenuAction.RUNELITE),
+				/* 6 */menu(param1, "Swap shift click Withdraw-10", AIR_RUNE, MenuAction.RUNELITE),
+				/* 7 */menu(param1, "Swap shift click Withdraw-1", AIR_RUNE, MenuAction.RUNELITE),
+				/* 8 */menu(param1, "Swap left click Withdraw-All-but-1", AIR_RUNE, MenuAction.RUNELITE),
+				/* 9 */menu(param1, "Swap left click Withdraw-All", AIR_RUNE, MenuAction.RUNELITE),
+				/* 10 */menu(param1, "Swap left click Withdraw-X", AIR_RUNE, MenuAction.RUNELITE),
+				/* 11 */menu(param1, "Swap left click Withdraw-16", AIR_RUNE, MenuAction.RUNELITE),
+				/* 12 */menu(param1, "Swap left click Withdraw-1", AIR_RUNE, MenuAction.RUNELITE),
+				/* 13 */menu(param1, "Swap left click Withdraw-5", AIR_RUNE, MenuAction.RUNELITE),
+				/* 14 */menu(param1, "Examine", AIR_RUNE, MenuAction.CC_OP_LOW_PRIORITY),
+				/* 15 */menu(param1, "Withdraw-All-but-1", AIR_RUNE, MenuAction.CC_OP_LOW_PRIORITY),
+				/* 16 */menu(param1, "Withdraw-All", AIR_RUNE, MenuAction.CC_OP_LOW_PRIORITY),
+				/* 17 */menu(param1, "Withdraw-X", AIR_RUNE, MenuAction.CC_OP_LOW_PRIORITY),
+				/* 18 */menu(param1, "Withdraw-16", AIR_RUNE, MenuAction.CC_OP),
+				/* 19 */menu(param1, "Withdraw-10", AIR_RUNE, MenuAction.CC_OP),
+				/* 20 */menu(param1, "Withdraw-1", AIR_RUNE, MenuAction.CC_OP),
+				/* 21 */menu(param1, "Withdraw-5", AIR_RUNE, MenuAction.CC_OP),
 		}, newEntries);
-		
-		
-		((TestMenuEntry)newEntries[6]).getClickConsumer().accept(menuEntry);
+
+		((TestMenuEntry) newEntries[6]).getClickConsumer().accept(menuEntry);
 		entries = baseEntries;
 		menuEntrySwapperPlugin.onClientTick(clientTick);
-		
+
 		argumentCaptor = ArgumentCaptor.forClass(MenuEntry[].class);
 		verify(client, times(3)).setMenuEntries(argumentCaptor.capture());
-		
+
 		baseShiftEntries = argumentCaptor.getValue();
-		assertArrayEquals(new MenuEntry[] {
+		assertArrayEquals(new MenuEntry[]
+		{
 				menu(param1, "Cancel", "", MenuAction.CANCEL),
 				menu(param1, "Examine", AIR_RUNE, MenuAction.CC_OP_LOW_PRIORITY),
 				menu(param1, "Withdraw-All-but-1", AIR_RUNE, MenuAction.CC_OP_LOW_PRIORITY),
@@ -677,36 +685,36 @@ public class MenuEntrySwapperPluginTest
 				menu(param1, "Withdraw-5", AIR_RUNE, MenuAction.CC_OP),
 				menu(param1, "Withdraw-10", AIR_RUNE, MenuAction.CC_OP),
 		}, baseShiftEntries);
-		
-		
+
 		entries = baseShiftEntries;
 		menuOpened.setMenuEntries(baseShiftEntries);
 		menuEntrySwapperPlugin.onMenuOpened(menuOpened);
-		
+
 		newEntries = client.getMenuEntries();
-		assertArrayEquals(new MenuEntry[] {
-		/*  0 */menu(param1, "Cancel", "", MenuAction.CANCEL),
-		/*  1 */menu(param1, "Reset swap", AIR_RUNE, MenuAction.RUNELITE),
-		/*  2 */menu(param1, "Swap shift click Withdraw-All-but-1", AIR_RUNE, MenuAction.RUNELITE),
-		/*  3 */menu(param1, "Swap shift click Withdraw-All", AIR_RUNE, MenuAction.RUNELITE),
-		/*  4 */menu(param1, "Swap shift click Withdraw-X", AIR_RUNE, MenuAction.RUNELITE),
-		/*  5 */menu(param1, "Swap shift click Withdraw-16", AIR_RUNE, MenuAction.RUNELITE),
-		/*  6 */menu(param1, "Swap shift click Withdraw-1", AIR_RUNE, MenuAction.RUNELITE),
-		/*  7 */menu(param1, "Swap shift click Withdraw-5", AIR_RUNE, MenuAction.RUNELITE),
-		/*  8 */menu(param1, "Swap left click Withdraw-All-but-1", AIR_RUNE, MenuAction.RUNELITE),
-		/*  9 */menu(param1, "Swap left click Withdraw-All", AIR_RUNE, MenuAction.RUNELITE),
-		/* 10 */menu(param1, "Swap left click Withdraw-X", AIR_RUNE, MenuAction.RUNELITE),
-		/* 11 */menu(param1, "Swap left click Withdraw-16", AIR_RUNE, MenuAction.RUNELITE),
-		/* 12 */menu(param1, "Swap left click Withdraw-1", AIR_RUNE, MenuAction.RUNELITE),
-		/* 13 */menu(param1, "Swap left click Withdraw-5", AIR_RUNE, MenuAction.RUNELITE),
-		/* 14 */menu(param1, "Examine", AIR_RUNE, MenuAction.CC_OP_LOW_PRIORITY),
-		/* 15 */menu(param1, "Withdraw-All-but-1", AIR_RUNE, MenuAction.CC_OP_LOW_PRIORITY),
-		/* 16 */menu(param1, "Withdraw-All", AIR_RUNE, MenuAction.CC_OP_LOW_PRIORITY),
-		/* 17 */menu(param1, "Withdraw-X", AIR_RUNE, MenuAction.CC_OP_LOW_PRIORITY),
-		/* 18 */menu(param1, "Withdraw-16", AIR_RUNE, MenuAction.CC_OP),
-		/* 19 */menu(param1, "Withdraw-1", AIR_RUNE, MenuAction.CC_OP),
-		/* 20 */menu(param1, "Withdraw-5", AIR_RUNE, MenuAction.CC_OP),
-		/* 21 */menu(param1, "Withdraw-10", AIR_RUNE, MenuAction.CC_OP),
+		assertArrayEquals(new MenuEntry[]
+		{
+				/* 0 */menu(param1, "Cancel", "", MenuAction.CANCEL),
+				/* 1 */menu(param1, "Reset swap", AIR_RUNE, MenuAction.RUNELITE),
+				/* 2 */menu(param1, "Swap shift click Withdraw-All-but-1", AIR_RUNE, MenuAction.RUNELITE),
+				/* 3 */menu(param1, "Swap shift click Withdraw-All", AIR_RUNE, MenuAction.RUNELITE),
+				/* 4 */menu(param1, "Swap shift click Withdraw-X", AIR_RUNE, MenuAction.RUNELITE),
+				/* 5 */menu(param1, "Swap shift click Withdraw-16", AIR_RUNE, MenuAction.RUNELITE),
+				/* 6 */menu(param1, "Swap shift click Withdraw-1", AIR_RUNE, MenuAction.RUNELITE),
+				/* 7 */menu(param1, "Swap shift click Withdraw-5", AIR_RUNE, MenuAction.RUNELITE),
+				/* 8 */menu(param1, "Swap left click Withdraw-All-but-1", AIR_RUNE, MenuAction.RUNELITE),
+				/* 9 */menu(param1, "Swap left click Withdraw-All", AIR_RUNE, MenuAction.RUNELITE),
+				/* 10 */menu(param1, "Swap left click Withdraw-X", AIR_RUNE, MenuAction.RUNELITE),
+				/* 11 */menu(param1, "Swap left click Withdraw-16", AIR_RUNE, MenuAction.RUNELITE),
+				/* 12 */menu(param1, "Swap left click Withdraw-1", AIR_RUNE, MenuAction.RUNELITE),
+				/* 13 */menu(param1, "Swap left click Withdraw-5", AIR_RUNE, MenuAction.RUNELITE),
+				/* 14 */menu(param1, "Examine", AIR_RUNE, MenuAction.CC_OP_LOW_PRIORITY),
+				/* 15 */menu(param1, "Withdraw-All-but-1", AIR_RUNE, MenuAction.CC_OP_LOW_PRIORITY),
+				/* 16 */menu(param1, "Withdraw-All", AIR_RUNE, MenuAction.CC_OP_LOW_PRIORITY),
+				/* 17 */menu(param1, "Withdraw-X", AIR_RUNE, MenuAction.CC_OP_LOW_PRIORITY),
+				/* 18 */menu(param1, "Withdraw-16", AIR_RUNE, MenuAction.CC_OP),
+				/* 19 */menu(param1, "Withdraw-1", AIR_RUNE, MenuAction.CC_OP),
+				/* 20 */menu(param1, "Withdraw-5", AIR_RUNE, MenuAction.CC_OP),
+				/* 21 */menu(param1, "Withdraw-10", AIR_RUNE, MenuAction.CC_OP),
 		}, newEntries);
 	}
 }
