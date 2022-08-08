@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.gpu;
 
 import com.google.common.base.Stopwatch;
+import java.util.Arrays;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -467,64 +468,421 @@ class SceneUploader
 		return len;
 	}
 
-	int pushFace(Model model, int face, boolean padUvs, GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer,
-		int xOffset, int yOffset, int zOffset, int orientation)
-	{
-		final int[] vertexX = model.getVerticesX();
-		final int[] vertexY = model.getVerticesY();
-		final int[] vertexZ = model.getVerticesZ();
+	private static int[] distances;
+	private static char[] distanceFaceCount;
+	private static char[][] distanceToFaces;
 
+	private static float[] modelCanvasX;
+	private static float[] modelCanvasY;
+
+	private static int[] modelLocalX;
+	private static int[] modelLocalY;
+	private static int[] modelLocalZ;
+
+	private static int[] numOfPriority;
+	private static int[] eq10;
+	private static int[] eq11;
+	private static int[] lt10;
+	private static int[][] orderedFaces;
+
+	void initSortingBuffers()
+	{
+		int MAX_VERTEX_COUNT = 6500;
+		int MAX_DIAMETER = 6000;
+
+		distances = new int[MAX_VERTEX_COUNT];
+		distanceFaceCount = new char[MAX_DIAMETER];
+		distanceToFaces = new char[MAX_DIAMETER][512];
+
+		modelCanvasX = new float[MAX_VERTEX_COUNT];
+		modelCanvasY = new float[MAX_VERTEX_COUNT];
+
+		modelLocalX = new int[MAX_VERTEX_COUNT];
+		modelLocalY = new int[MAX_VERTEX_COUNT];
+		modelLocalZ = new int[MAX_VERTEX_COUNT];
+
+		numOfPriority = new int[12];
+		eq10 = new int[2000];
+		eq11 = new int[2000];
+		lt10 = new int[12];
+		orderedFaces = new int[12][2000];
+	}
+
+	void releaseSortingBuffers()
+	{
+		distances = null;
+		distanceFaceCount = null;
+		distanceToFaces = null;
+
+		modelCanvasX = null;
+		modelCanvasY = null;
+
+		modelLocalX = null;
+		modelLocalY = null;
+		modelLocalZ = null;
+
+		numOfPriority = null;
+		eq10 = null;
+		eq11 = null;
+		lt10 = null;
+		orderedFaces = null;
+	}
+
+	int pushSortedModel(Model model, int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z, GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer)
+	{
+		final int vertexCount = model.getVerticesCount();
+		final int[] verticesX = model.getVerticesX();
+		final int[] verticesY = model.getVerticesY();
+		final int[] verticesZ = model.getVerticesZ();
+
+		final int faceCount = model.getFaceCount();
 		final int[] indices1 = model.getFaceIndices1();
 		final int[] indices2 = model.getFaceIndices2();
 		final int[] indices3 = model.getFaceIndices3();
 
-		final int[] color1s = model.getFaceColors1();
-		final int[] color2s = model.getFaceColors2();
-		final int[] color3s = model.getFaceColors3();
+		final int[] faceColors3 = model.getFaceColors3();
+		final byte[] faceRenderPriorities = model.getFaceRenderPriorities();
 
-		final byte[] transparencies = model.getFaceTransparencies();
-		final short[] faceTextures = model.getFaceTextures();
-		final byte[] facePriorities = model.getFaceRenderPriorities();
+		final int centerX = client.getCenterX();
+		final int centerY = client.getCenterY();
+		final int zoom = client.get3dZoom();
 
-		final int triangleA = indices1[face];
-		final int triangleB = indices2[face];
-		final int triangleC = indices3[face];
+		final int cameraX = client.getCameraX2();
+		final int cameraY = client.getCameraY2();
+		final int cameraZ = client.getCameraZ2();
 
-		int color1 = color1s[face];
-		int color2 = color2s[face];
-		int color3 = color3s[face];
+		// remove camera offset from model
+		x += cameraX;
+		y += cameraY;
+		z += cameraZ;
+
+		int orientSine = 0;
+		int orientCosine = 0;
+		if (orientation != 0)
+		{
+			orientSine = Perspective.SINE[orientation];
+			orientCosine = Perspective.COSINE[orientation];
+		}
+
+		for (int v = 0; v < vertexCount; ++v)
+		{
+			int vertexX = verticesX[v];
+			int vertexY = verticesY[v];
+			int vertexZ = verticesZ[v];
+
+			if (orientation != 0)
+			{
+				int i = vertexZ * orientSine + vertexX * orientCosine >> 16;
+				vertexZ = vertexZ * orientCosine - vertexX * orientSine >> 16;
+				vertexX = i;
+			}
+
+			int d = yawCos * vertexZ - vertexX * yawSin >> 16;
+			d = pitchCos * d + vertexY * pitchSin >> 16;
+			distances[v] = d;
+
+			// move to local position
+			vertexX += x;
+			vertexY += y;
+			vertexZ += z;
+
+			modelLocalX[v] = vertexX;
+			modelLocalY[v] = vertexY;
+			modelLocalZ[v] = vertexZ;
+
+			// adjust for camera
+			vertexX -= cameraX;
+			vertexY -= cameraY;
+			vertexZ -= cameraZ;
+
+			final float fpitchSin = pitchSin / 65536f;
+			final float fpitchCos = pitchCos / 65536f;
+
+			final float fyawSin = yawSin / 65536f;
+			final float fyawCos = yawCos / 65536f;
+
+			final float rotatedX = (vertexZ * fyawSin) + (vertexX * fyawCos);
+			final float rotatedZ = (vertexZ * fyawCos) - (vertexX * fyawSin);
+
+			final float var13 = (vertexY * fpitchCos) - (rotatedZ * fpitchSin);
+			final float var12 = (vertexY * fpitchSin) + (rotatedZ * fpitchCos);
+
+			modelCanvasX[v] = rotatedX * zoom / var12 + centerX;
+			modelCanvasY[v] = var13 * zoom / var12 + centerY;
+		}
+
+		final int diameter = model.getDiameter();
+		final int radius = model.getRadius();
+		if (diameter >= 6000)
+		{
+			return 0;
+		}
+
+		Arrays.fill(distanceFaceCount, 0, diameter, (char) 0);
+
+		for (char i = 0; i < faceCount; ++i)
+		{
+			if (faceColors3[i] != -2)
+			{
+				final int v1 = indices1[i];
+				final int v2 = indices2[i];
+				final int v3 = indices3[i];
+
+				final float
+					aX = modelCanvasX[v1],
+					aY = modelCanvasY[v1],
+					bX = modelCanvasX[v2],
+					bY = modelCanvasY[v2],
+					cX = modelCanvasX[v3],
+					cY = modelCanvasY[v3];
+
+				if ((aX - bX) * (cY - bY) - (cX - bX) * (aY - bY) > 0)
+				{
+					int distance = radius + (distances[v1] + distances[v2] + distances[v3]) / 3;
+					assert distance >= 0 && distance < diameter;
+					distanceToFaces[distance][distanceFaceCount[distance]++] = i;
+				}
+			}
+		}
+
+		vertexBuffer.ensureCapacity(12 * faceCount);
+		uvBuffer.ensureCapacity(12 * faceCount);
+
+		int len = 0;
+		if (faceRenderPriorities == null)
+		{
+			for (int i = diameter - 1; i >= 0; --i)
+			{
+				final int cnt = distanceFaceCount[i];
+				if (cnt > 0)
+				{
+					final char[] faces = distanceToFaces[i];
+
+					for (int faceIdx = 0; faceIdx < cnt; ++faceIdx)
+					{
+						final int face = faces[faceIdx];
+						len += pushFace(model, face, vertexBuffer, uvBuffer);
+					}
+				}
+			}
+		}
+		else
+		{
+			Arrays.fill(numOfPriority, 0);
+			Arrays.fill(lt10, 0);
+
+			for (int i = diameter - 1; i >= 0; --i)
+			{
+				final int cnt = distanceFaceCount[i];
+				if (cnt > 0)
+				{
+					final char[] faces = distanceToFaces[i];
+
+					for (int faceIdx = 0; faceIdx < cnt; ++faceIdx)
+					{
+						final int face = faces[faceIdx];
+						final byte pri = faceRenderPriorities[face];
+						final int distIdx = numOfPriority[pri]++;
+
+						orderedFaces[pri][distIdx] = face;
+						if (pri < 10)
+						{
+							lt10[pri] += i;
+						}
+						else if (pri == 10)
+						{
+							eq10[distIdx] = i;
+						}
+						else
+						{
+							eq11[distIdx] = i;
+						}
+					}
+				}
+			}
+
+			int avg12 = 0;
+			if (numOfPriority[1] > 0 || numOfPriority[2] > 0)
+			{
+				avg12 = (lt10[1] + lt10[2]) / (numOfPriority[1] + numOfPriority[2]);
+			}
+
+			int avg34 = 0;
+			if (numOfPriority[3] > 0 || numOfPriority[4] > 0)
+			{
+				avg34 = (lt10[3] + lt10[4]) / (numOfPriority[3] + numOfPriority[4]);
+			}
+
+			int avg68 = 0;
+			if (numOfPriority[6] > 0 || numOfPriority[8] > 0)
+			{
+				avg68 = (lt10[8] + lt10[6]) / (numOfPriority[8] + numOfPriority[6]);
+			}
+
+			int drawnFaces = 0;
+			int numDynFaces = numOfPriority[10];
+			int[] dynFaces = orderedFaces[10];
+			int[] dynFaceDistances = eq10;
+			if (drawnFaces == numDynFaces)
+			{
+				drawnFaces = 0;
+				numDynFaces = numOfPriority[11];
+				dynFaces = orderedFaces[11];
+				dynFaceDistances = eq11;
+			}
+
+			int currFaceDistance;
+			if (drawnFaces < numDynFaces)
+			{
+				currFaceDistance = dynFaceDistances[drawnFaces];
+			}
+			else
+			{
+				currFaceDistance = -1000;
+			}
+
+			for (int pri = 0; pri < 10; ++pri)
+			{
+				while (pri == 0 && currFaceDistance > avg12)
+				{
+					final int face = dynFaces[drawnFaces++];
+					len += pushFace(model, face, vertexBuffer, uvBuffer);
+
+					if (drawnFaces == numDynFaces && dynFaces != orderedFaces[11])
+					{
+						drawnFaces = 0;
+						numDynFaces = numOfPriority[11];
+						dynFaces = orderedFaces[11];
+						dynFaceDistances = eq11;
+					}
+
+					if (drawnFaces < numDynFaces)
+					{
+						currFaceDistance = dynFaceDistances[drawnFaces];
+					}
+					else
+					{
+						currFaceDistance = -1000;
+					}
+				}
+
+				while (pri == 3 && currFaceDistance > avg34)
+				{
+					final int face = dynFaces[drawnFaces++];
+					len += pushFace(model, face, vertexBuffer, uvBuffer);
+
+					if (drawnFaces == numDynFaces && dynFaces != orderedFaces[11])
+					{
+						drawnFaces = 0;
+						numDynFaces = numOfPriority[11];
+						dynFaces = orderedFaces[11];
+						dynFaceDistances = eq11;
+					}
+
+					if (drawnFaces < numDynFaces)
+					{
+						currFaceDistance = dynFaceDistances[drawnFaces];
+					}
+					else
+					{
+						currFaceDistance = -1000;
+					}
+				}
+
+				while (pri == 5 && currFaceDistance > avg68)
+				{
+					final int face = dynFaces[drawnFaces++];
+					len += pushFace(model, face, vertexBuffer, uvBuffer);
+
+					if (drawnFaces == numDynFaces && dynFaces != orderedFaces[11])
+					{
+						drawnFaces = 0;
+						numDynFaces = numOfPriority[11];
+						dynFaces = orderedFaces[11];
+						dynFaceDistances = eq11;
+					}
+
+					if (drawnFaces < numDynFaces)
+					{
+						currFaceDistance = dynFaceDistances[drawnFaces];
+					}
+					else
+					{
+						currFaceDistance = -1000;
+					}
+				}
+
+				final int priNum = numOfPriority[pri];
+				final int[] priFaces = orderedFaces[pri];
+
+				for (int faceIdx = 0; faceIdx < priNum; ++faceIdx)
+				{
+					final int face = priFaces[faceIdx];
+					len += pushFace(model, face, vertexBuffer, uvBuffer);
+				}
+			}
+
+			while (currFaceDistance != -1000)
+			{
+				final int face = dynFaces[drawnFaces++];
+				len += pushFace(model, face, vertexBuffer, uvBuffer);
+
+				if (drawnFaces == numDynFaces && dynFaces != orderedFaces[11])
+				{
+					drawnFaces = 0;
+					dynFaces = orderedFaces[11];
+					numDynFaces = numOfPriority[11];
+					dynFaceDistances = eq11;
+				}
+
+				if (drawnFaces < numDynFaces)
+				{
+					currFaceDistance = dynFaceDistances[drawnFaces];
+				}
+				else
+				{
+					currFaceDistance = -1000;
+				}
+			}
+		}
+
+		return len;
+	}
+
+	private int pushFace(Model model, int face, GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer)
+	{
+		final int[] indices1 = model.getFaceIndices1();
+		final int[] indices2 = model.getFaceIndices2();
+		final int[] indices3 = model.getFaceIndices3();
+
+		final int[] faceColors1 = model.getFaceColors1();
+		final int[] faceColors2 = model.getFaceColors2();
+		final int[] faceColors3 = model.getFaceColors3();
 
 		final byte overrideAmount = model.getOverrideAmount();
 		final byte overrideHue = model.getOverrideHue();
 		final byte overrideSat = model.getOverrideSaturation();
 		final byte overrideLum = model.getOverrideLuminance();
 
-		int packedAlphaPriority = packAlphaPriority(faceTextures, transparencies, facePriorities, face);
+		final short[] faceTextures = model.getFaceTextures();
+		final float[] faceTextureUVCoordinates = model.getFaceTextureUVCoordinates();
 
-		int sin = 0, cos = 0;
-		if (orientation != 0)
-		{
-			sin = Perspective.SINE[orientation];
-			cos = Perspective.COSINE[orientation];
-		}
+		final byte[] faceRenderPriorities = model.getFaceRenderPriorities();
+		final byte[] transparencies = model.getFaceTransparencies();
+
+		final int packAlphaPriority = packAlphaPriority(faceTextures, transparencies, faceRenderPriorities, face);
+
+		final int triangleA = indices1[face];
+		final int triangleB = indices2[face];
+		final int triangleC = indices3[face];
+
+		int color1 = faceColors1[face];
+		int color2 = faceColors2[face];
+		int color3 = faceColors3[face];
 
 		if (color3 == -1)
 		{
 			color2 = color3 = color1;
-		}
-		else if (color3 == -2)
-		{
-			vertexBuffer.put(0, 0, 0, 0);
-			vertexBuffer.put(0, 0, 0, 0);
-			vertexBuffer.put(0, 0, 0, 0);
-
-			if (padUvs || faceTextures != null)
-			{
-				uvBuffer.put(0, 0, 0, 0f);
-				uvBuffer.put(0, 0, 0, 0f);
-				uvBuffer.put(0, 0, 0, 0f);
-			}
-			return 3;
 		}
 
 		// HSL override is not applied to textured faces
@@ -538,69 +896,11 @@ class SceneUploader
 			}
 		}
 
-		int a, b, c;
+		vertexBuffer.put(modelLocalX[triangleA], modelLocalY[triangleA], modelLocalZ[triangleA], packAlphaPriority | color1);
+		vertexBuffer.put(modelLocalX[triangleB], modelLocalY[triangleB], modelLocalZ[triangleB], packAlphaPriority | color2);
+		vertexBuffer.put(modelLocalX[triangleC], modelLocalY[triangleC], modelLocalZ[triangleC], packAlphaPriority | color3);
 
-		a = vertexX[triangleA];
-		b = vertexY[triangleA];
-		c = vertexZ[triangleA];
-
-		if (orientation != 0)
-		{
-			int x = c * sin + a * cos >> 16;
-			int z = c * cos - a * sin >> 16;
-
-			a = x;
-			c = z;
-		}
-
-		a += xOffset;
-		b += yOffset;
-		c += zOffset;
-
-		vertexBuffer.put(a, b, c, packedAlphaPriority | color1);
-
-		a = vertexX[triangleB];
-		b = vertexY[triangleB];
-		c = vertexZ[triangleB];
-
-		if (orientation != 0)
-		{
-			int x = c * sin + a * cos >> 16;
-			int z = c * cos - a * sin >> 16;
-
-			a = x;
-			c = z;
-		}
-
-		a += xOffset;
-		b += yOffset;
-		c += zOffset;
-
-		vertexBuffer.put(a, b, c, packedAlphaPriority | color2);
-
-		a = vertexX[triangleC];
-		b = vertexY[triangleC];
-		c = vertexZ[triangleC];
-
-		if (orientation != 0)
-		{
-			int x = c * sin + a * cos >> 16;
-			int z = c * cos - a * sin >> 16;
-
-			a = x;
-			c = z;
-		}
-
-		a += xOffset;
-		b += yOffset;
-		c += zOffset;
-
-		vertexBuffer.put(a, b, c, packedAlphaPriority | color3);
-
-		if (padUvs || faceTextures != null)
-		{
-			pushUvForFace(faceTextures, model.getFaceTextureUVCoordinates(), face, uvBuffer);
-		}
+		pushUvForFace(faceTextures, faceTextureUVCoordinates, face, uvBuffer);
 
 		return 3;
 	}

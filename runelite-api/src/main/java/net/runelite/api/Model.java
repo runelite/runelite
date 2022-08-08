@@ -51,6 +51,7 @@ public interface Model extends Mesh, Renderable
 	byte[] getFaceRenderPriorities();
 
 	int getRadius();
+	int getDiameter();
 
 	float[] getFaceTextureUVCoordinates();
 
