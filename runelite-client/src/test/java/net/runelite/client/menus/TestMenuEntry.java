@@ -230,11 +230,13 @@ public class TestMenuEntry implements MenuEntry
 		return actor;
 	}
 
-	public Consumer<MenuEntry> getClickConsumer() {
+	public Consumer<MenuEntry> getClickConsumer()
+	{
 		return clickConsumer;
 	}
 
-	public void setClickConsumer(Consumer<MenuEntry> clickConsumer) {
+	public void setClickConsumer(Consumer<MenuEntry> clickConsumer)
+	{
 		this.clickConsumer = clickConsumer;
 	}
 }

@@ -1704,8 +1704,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		return correctWidget;
 	}
 	
-	private Consumer<MenuEntry> setBankConfig(String key, MenuEntry entry, int menuIdx, boolean shift) {
-		return e -> {
+	private Consumer<MenuEntry> setBankConfig(String key, MenuEntry entry, int menuIdx, boolean shift)
+	{
+		return e ->
+		{
 			final String message = new ChatMessageBuilder()
 					.append("The default ").append(shift ? "shift" : "left").append(" click option for '").append(Text.removeTags(entry.getTarget())).append("' ")
 					.append("has been set to '").append(entry.getOption()).append("'.")
@@ -1720,8 +1722,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		};
 	}
 	
-	private Consumer<MenuEntry> unsetBankConfig(String leftKey, String shiftKey, MenuEntry entry) {
-		return e -> {
+	private Consumer<MenuEntry> unsetBankConfig(String leftKey, String shiftKey, MenuEntry entry)
+	{
+		return e ->
+		{
 			final String message = new ChatMessageBuilder()
 					.append("The default left and shift click options for '").append(Text.removeTags(entry.getTarget())).append("' ")
 					.append("have been reset.")
