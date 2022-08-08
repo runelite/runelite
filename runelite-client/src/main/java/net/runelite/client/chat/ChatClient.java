@@ -24,6 +24,7 @@
  */
 package net.runelite.client.chat;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
@@ -48,12 +49,14 @@ public class ChatClient
 {
 	private final OkHttpClient client;
 	private final HttpUrl apiBase;
+	private final Gson gson;
 
 	@Inject
-	private ChatClient(OkHttpClient client, @Named("runelite.api.base") HttpUrl apiBase)
+	private ChatClient(OkHttpClient client, @Named("runelite.api.base") HttpUrl apiBase, Gson gson)
 	{
 		this.client = client;
 		this.apiBase = apiBase;
+		this.gson = gson;
 	}
 
 	public boolean submitKc(String username, String boss, int kc) throws IOException
@@ -185,7 +188,7 @@ public class ChatClient
 			}
 
 			InputStream in = response.body().byteStream();
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), Task.class);
+			return gson.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), Task.class);
 		}
 		catch (JsonParseException ex)
 		{
@@ -322,7 +325,7 @@ public class ChatClient
 			}
 
 			InputStream in = response.body().byteStream();
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), Duels.class);
+			return gson.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), Duels.class);
 		}
 		catch (JsonParseException ex)
 		{
@@ -339,7 +342,7 @@ public class ChatClient
 			.build();
 
 		Request request = new Request.Builder()
-			.post(RequestBody.create(RuneLiteAPI.JSON, RuneLiteAPI.GSON.toJson(rooms)))
+			.post(RequestBody.create(RuneLiteAPI.JSON, gson.toJson(rooms)))
 			.url(url)
 			.build();
 
@@ -369,7 +372,7 @@ public class ChatClient
 			}
 
 			InputStream in = response.body().byteStream();
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), LayoutRoom[].class);
+			return gson.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), LayoutRoom[].class);
 		}
 		catch (JsonParseException ex)
 		{
@@ -386,7 +389,7 @@ public class ChatClient
 			.build();
 
 		Request request = new Request.Builder()
-			.post(RequestBody.create(RuneLiteAPI.JSON, RuneLiteAPI.GSON.toJson(petList)))
+			.post(RequestBody.create(RuneLiteAPI.JSON, gson.toJson(petList)))
 			.url(url)
 			.build();
 
@@ -417,7 +420,7 @@ public class ChatClient
 
 			InputStream in = response.body().byteStream();
 			// CHECKSTYLE:OFF
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8),
+			return gson.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8),
 				new TypeToken<Set<Integer>>(){}.getType());
 			// CHECKSTYLE:ON
 		}

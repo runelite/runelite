@@ -87,7 +87,7 @@ public class ConfigClient
 			// CHECKSTYLE:OFF
 			final Type type = new TypeToken<Map<String, String>>(){}.getType();
 			// CHECKSTYLE:ON
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), type);
+			return gson.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), type);
 		}
 		catch (JsonParseException ex)
 		{

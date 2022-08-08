@@ -24,6 +24,7 @@
  */
 package net.runelite.client;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,7 +33,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 import javax.inject.Inject;
 import javax.inject.Named;
-import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -44,12 +44,14 @@ class SessionClient
 {
 	private final OkHttpClient client;
 	private final HttpUrl sessionUrl;
+	private final Gson gson;
 
 	@Inject
-	private SessionClient(OkHttpClient client, @Named("runelite.session") HttpUrl sessionUrl)
+	private SessionClient(OkHttpClient client, @Named("runelite.session") HttpUrl sessionUrl, Gson gson)
 	{
 		this.client = client;
 		this.sessionUrl = sessionUrl;
+		this.gson = gson;
 	}
 
 	UUID open() throws IOException
@@ -67,7 +69,7 @@ class SessionClient
 			ResponseBody body = response.body();
 
 			InputStream in = body.byteStream();
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), UUID.class);
+			return gson.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), UUID.class);
 		}
 		catch (JsonParseException | IllegalArgumentException ex) // UUID.fromString can throw IllegalArgumentException
 		{

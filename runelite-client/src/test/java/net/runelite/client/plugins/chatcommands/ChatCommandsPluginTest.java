@@ -60,7 +60,6 @@ import net.runelite.client.hiscore.HiscoreClient;
 import net.runelite.client.hiscore.HiscoreEndpoint;
 import net.runelite.client.hiscore.HiscoreResult;
 import net.runelite.client.hiscore.Skill;
-import net.runelite.http.api.RuneLiteAPI;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
@@ -127,7 +126,8 @@ public class ChatCommandsPluginTest
 	@Inject
 	ChatCommandsPlugin chatCommandsPlugin;
 
-	final Gson gson = RuneLiteAPI.GSON;
+	@Inject
+	Gson gson;
 
 	@Before
 	public void before()

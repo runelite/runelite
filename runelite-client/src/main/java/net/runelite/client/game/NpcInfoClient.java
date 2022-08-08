@@ -24,6 +24,7 @@
  */
 package net.runelite.client.game;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
@@ -35,7 +36,6 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -46,12 +46,14 @@ public class NpcInfoClient
 {
 	private final OkHttpClient client;
 	private final HttpUrl staticBase;
+	private final Gson gson;
 
 	@Inject
-	private NpcInfoClient(OkHttpClient client, @Named("runelite.static.base") HttpUrl staticBase)
+	private NpcInfoClient(OkHttpClient client, @Named("runelite.static.base") HttpUrl staticBase, Gson gson)
 	{
 		this.client = client;
 		this.staticBase = staticBase;
+		this.gson = gson;
 	}
 
 	public Map<Integer, NpcInfo> getNpcs() throws IOException
@@ -79,7 +81,7 @@ public class NpcInfoClient
 			final Type typeToken = new TypeToken<Map<Integer, NpcInfo>>()
 			{
 			}.getType();
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), typeToken);
+			return gson.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), typeToken);
 		}
 		catch (JsonParseException ex)
 		{
