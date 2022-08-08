@@ -123,7 +123,6 @@ public class TimersPlugin extends Plugin
 	private static final String SHADOW_VEIL_PROTECTION_MESSAGE = "Your attempt to steal goes unnoticed.";
 
 	private static final Pattern TELEBLOCK_PATTERN = Pattern.compile("A Tele Block spell has been cast on you(?: by .+)?\\. It will expire in (?<mins>\\d+) minutes?(?:, (?<secs>\\d+) seconds?)?\\.");
-	private static final Pattern DIVINE_POTION_PATTERN = Pattern.compile("You drink some of your divine (.+) potion\\.");
 	private static final int VENOM_VALUE_CUTOFF = -40; // Antivenom < -40 <= Antipoison < 0
 	private static final int POISON_TICK_LENGTH = 30;
 
@@ -147,11 +146,27 @@ public class TimersPlugin extends Plugin
 	private int lastCorruptionVarb;
 	private int lastStaminaEffect;
 	private int lastImbuedHeartVarb;
+	private int lastDivineAttackVarb;
+	private int lastDivineStrengthVarb;
+	private int lastDivineDefenceVarb;
+	private int lastDivineRangeVarb;
+	private int lastDivineMagicVarb;
+	private int lastDivineCombatVarb;
+	private int lastDivineBastionVarb;
+	private int lastDivineBattlemageVarb;
 	private boolean imbuedHeartTimerActive;
 	private int nextPoisonTick;
 	private WorldPoint lastPoint;
 	private int lastAnimation;
 	private boolean widgetHiddenChangedOnPvpWorld;
+	private boolean divineAttackTimerActive;
+	private boolean divineStrengthTimerActive;
+	private boolean divineDefenceTimerActive;
+	private boolean divineMagicTimerActive;
+	private boolean divineRangeTimerActive;
+	private boolean divineCombatTimerActive;
+	private boolean divineBastionTimerActive;
+	private boolean divineBattlemageTimerActive;
 	private ElapsedTimer tzhaarTimer;
 
 	@Inject
@@ -200,6 +215,22 @@ public class TimersPlugin extends Plugin
 		imbuedHeartTimerActive = false;
 		lastImbuedHeartVarb = 0;
 		lastStaminaEffect = 0;
+		lastDivineAttackVarb = 0;
+		lastDivineStrengthVarb = 0;
+		lastDivineDefenceVarb = 0;
+		lastDivineRangeVarb = 0;
+		lastDivineMagicVarb = 0;
+		lastDivineCombatVarb = 0;
+		lastDivineBastionVarb = 0;
+		lastDivineBattlemageVarb = 0;
+		divineAttackTimerActive = false;
+		divineStrengthTimerActive = false;
+		divineDefenceTimerActive = false;
+		divineMagicTimerActive = false;
+		divineRangeTimerActive = false;
+		divineCombatTimerActive = false;
+		divineBastionTimerActive = false;
+		divineBattlemageTimerActive = false;
 	}
 
 	@Subscribe
@@ -215,6 +246,14 @@ public class TimersPlugin extends Plugin
 		int staminaEffectActive = client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE);
 		int staminaPotionEffectVarb = client.getVarbitValue(Varbits.STAMINA_EFFECT);
 		int enduranceRingEffectVarb = client.getVarbitValue(Varbits.RING_OF_ENDURANCE_EFFECT);
+		int divineAttackVarb = client.getVarbitValue(Varbits.DIVINE_ATTACK);
+		int divineStrengthVarb = client.getVarbitValue(Varbits.DIVINE_STRENGTH);
+		int divineDefenceVarb = client.getVarbitValue(Varbits.DIVINE_DEFENCE);
+		int divineRangeVarb = client.getVarbitValue(Varbits.DIVINE_RANGE);
+		int divineMagicVarb = client.getVarbitValue(Varbits.DIVINE_MAGIC);
+		int divineCombatVarb = client.getVarbitValue(Varbits.DIVINE_COMBAT);
+		int divineBastionVarb = client.getVarbitValue(Varbits.DIVINE_BASTION);
+		int divineBattlemageVarb = client.getVarbitValue(Varbits.DIVINE_BATTLEMAGE);
 
 		final int totalStaminaEffect = staminaPotionEffectVarb + enduranceRingEffectVarb;
 
@@ -360,6 +399,179 @@ public class TimersPlugin extends Plugin
 			}
 			lastStaminaEffect = totalStaminaEffect;
 		}
+
+		if (lastDivineAttackVarb != divineAttackVarb && config.showDivine())
+		{
+			//if divine super combat potion effect isn't active
+			if (divineCombatVarb == 0)
+			{
+				//it checks if "divineAttackVarb == 500" for the case if the player already has the divine super attack potion effect and drinks another dose
+				if ((!divineAttackTimerActive && divineAttackVarb > 0) || divineAttackVarb == 500)
+				{
+					final Duration potionDuration = Duration.of(divineAttackVarb, RSTimeUnit.GAME_TICKS);
+					createGameTimer(DIVINE_SUPER_ATTACK, potionDuration);
+					divineAttackTimerActive = true;
+				}
+				else if (divineAttackVarb == 0)
+				{
+					removeGameTimer(DIVINE_SUPER_ATTACK);
+					divineAttackTimerActive = false;
+				}
+			}
+			lastDivineAttackVarb = divineAttackVarb;
+		}
+
+		if (lastDivineStrengthVarb != divineStrengthVarb && config.showDivine())
+		{
+			//if divine super combat potion effect isn't active
+			if (divineCombatVarb == 0)
+			{
+				//it checks if "divineStrengthVarb == 500" for the case if the player already has the divine super strength potion effect and drinks another dose
+				if ((!divineStrengthTimerActive && divineStrengthVarb > 0) || divineStrengthVarb == 500)
+				{
+					final Duration potionDuration = Duration.of(divineStrengthVarb, RSTimeUnit.GAME_TICKS);
+					createGameTimer(DIVINE_SUPER_STRENGTH, potionDuration);
+					divineStrengthTimerActive = true;
+				}
+				else if (divineStrengthVarb == 0)
+				{
+					removeGameTimer(DIVINE_SUPER_STRENGTH);
+					divineStrengthTimerActive = false;
+				}
+			}
+			lastDivineStrengthVarb = divineStrengthVarb;
+		}
+
+		if (lastDivineDefenceVarb != divineDefenceVarb && config.showDivine())
+		{
+			//if divine super combat potion, divine bastion potion and divine battlemage potion effects aren't active
+			if (divineCombatVarb == 0 && divineBastionVarb == 0 && divineBattlemageVarb == 0)
+			{
+				//it checks if "divineDefenceVarb == 500" for the case if the player already has the divine super defence potion effect and drinks another dose
+				if ((!divineDefenceTimerActive && divineDefenceVarb > 0) || divineDefenceVarb == 500)
+				{
+					final Duration potionDuration = Duration.of(divineDefenceVarb, RSTimeUnit.GAME_TICKS);
+					createGameTimer(DIVINE_SUPER_DEFENCE, potionDuration);
+					divineDefenceTimerActive = true;
+				}
+				else if (divineDefenceVarb == 0)
+				{
+					removeGameTimer(DIVINE_SUPER_DEFENCE);
+					divineDefenceTimerActive = false;
+				}
+			}
+			lastDivineDefenceVarb = divineDefenceVarb;
+		}
+
+		if (lastDivineMagicVarb != divineMagicVarb && config.showDivine())
+		{
+			//if divine battlemage potion effect isn't active
+			if (divineBattlemageVarb == 0)
+			{
+				//it checks if "divineMagicVarb == 500" for the case if the player already has the divine magic potion effect and drinks another dose
+				if ((!divineMagicTimerActive && divineMagicVarb > 0) || divineMagicVarb == 500)
+				{
+					final Duration potionDuration = Duration.of(divineMagicVarb, RSTimeUnit.GAME_TICKS);
+					createGameTimer(DIVINE_MAGIC, potionDuration);
+					divineMagicTimerActive = true;
+				}
+				else if (divineMagicVarb == 0)
+				{
+					removeGameTimer(DIVINE_MAGIC);
+					divineMagicTimerActive = false;
+				}
+			}
+			lastDivineMagicVarb = divineMagicVarb;
+		}
+
+		if (lastDivineRangeVarb != divineRangeVarb && config.showDivine())
+		{
+			//if divine bastion potion effect isn't active
+			if (divineBastionVarb == 0)
+			{
+				//it checks if "divineRangeVarb == 500" for the case if the player already has the divine range potion effect and drinks another dose
+				if ((!divineRangeTimerActive && divineRangeVarb > 0) || divineRangeVarb == 500)
+				{
+					final Duration potionDuration = Duration.of(divineRangeVarb, RSTimeUnit.GAME_TICKS);
+					createGameTimer(DIVINE_RANGING, potionDuration);
+					divineRangeTimerActive = true;
+				}
+				else if (divineRangeVarb == 0)
+				{
+					removeGameTimer(DIVINE_RANGING);
+					divineRangeTimerActive = false;
+				}
+			}
+			lastDivineRangeVarb = divineRangeVarb;
+		}
+
+		if (lastDivineCombatVarb != divineCombatVarb && config.showDivine())
+		{
+			//it checks if "divineCombatVarb == 500" for the case if the player already has the divine super combat potion effect and drinks another dose
+			if ((!divineCombatTimerActive && divineCombatVarb > 0) || divineCombatVarb == 500)
+			{
+				removeGameTimer(DIVINE_SUPER_ATTACK);
+				removeGameTimer(DIVINE_SUPER_STRENGTH);
+				removeGameTimer(DIVINE_SUPER_DEFENCE);
+				divineAttackTimerActive = false;
+				divineStrengthTimerActive = false;
+				divineDefenceTimerActive = false;
+
+				final Duration potionDuration = Duration.of(divineCombatVarb, RSTimeUnit.GAME_TICKS);
+				createGameTimer(DIVINE_SUPER_COMBAT, potionDuration);
+				divineCombatTimerActive = true;
+			}
+			else if (divineCombatVarb == 0)
+			{
+				removeGameTimer(DIVINE_SUPER_COMBAT);
+				divineCombatTimerActive = false;
+			}
+			lastDivineCombatVarb = divineCombatVarb;
+		}
+
+		if (lastDivineBastionVarb != divineBastionVarb && config.showDivine())
+		{
+			//it checks if "divineBastionVarb == 500" for the case if the player already has the divine bastion potion effect and drinks another dose
+			if ((!divineBastionTimerActive && divineBastionVarb > 0) || divineBastionVarb == 500)
+			{
+				removeGameTimer(DIVINE_RANGING);
+				removeGameTimer(DIVINE_SUPER_DEFENCE);
+				divineRangeTimerActive = false;
+				divineDefenceTimerActive = false;
+
+				final Duration potionDuration = Duration.of(divineBastionVarb, RSTimeUnit.GAME_TICKS);
+				createGameTimer(DIVINE_BASTION, potionDuration);
+				divineBastionTimerActive = true;
+			}
+			else if (divineBastionVarb == 0)
+			{
+				removeGameTimer(DIVINE_BASTION);
+				divineBastionTimerActive = false;
+			}
+			lastDivineBastionVarb = divineBastionVarb;
+		}
+
+		if (lastDivineBattlemageVarb != divineBattlemageVarb && config.showDivine())
+		{
+			//it checks if "divineBattlemageVarb == 500" for the case if the player already has the divine bastion potion effect and drinks another dose
+			if ((!divineBattlemageTimerActive && divineBattlemageVarb > 0) || divineBattlemageVarb == 500)
+			{
+				removeGameTimer(DIVINE_MAGIC);
+				removeGameTimer(DIVINE_SUPER_DEFENCE);
+				divineMagicTimerActive = false;
+				divineDefenceTimerActive = false;
+
+				final Duration potionDuration = Duration.of(divineBattlemageVarb, RSTimeUnit.GAME_TICKS);
+				createGameTimer(DIVINE_BATTLEMAGE, potionDuration);
+				divineBattlemageTimerActive = true;
+			}
+			else if (divineBattlemageVarb == 0)
+			{
+				removeGameTimer(DIVINE_BATTLEMAGE);
+				divineBattlemageTimerActive = false;
+			}
+			lastDivineBattlemageVarb = divineBattlemageVarb;
+		}
 	}
 
 	@Subscribe
@@ -413,6 +625,16 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(DIVINE_SUPER_COMBAT);
 			removeGameTimer(DIVINE_RANGING);
 			removeGameTimer(DIVINE_MAGIC);
+			removeGameTimer(DIVINE_BASTION);
+			removeGameTimer(DIVINE_BATTLEMAGE);
+			divineAttackTimerActive = false;
+			divineStrengthTimerActive = false;
+			divineDefenceTimerActive = false;
+			divineMagicTimerActive = false;
+			divineRangeTimerActive = false;
+			divineCombatTimerActive = false;
+			divineBastionTimerActive = false;
+			divineBattlemageTimerActive = false;
 		}
 
 		if (!config.showCannon())
@@ -692,48 +914,6 @@ public class TimersPlugin extends Plugin
 		{
 			freezeTimer = createGameTimer(ICEBARRAGE);
 			freezeTime = client.getTickCount();
-		}
-
-		if (config.showDivine())
-		{
-			Matcher mDivine = DIVINE_POTION_PATTERN.matcher(message);
-			if (mDivine.find())
-			{
-				switch (mDivine.group(1))
-				{
-					case "super attack":
-						createGameTimer(DIVINE_SUPER_ATTACK);
-						break;
-
-					case "super strength":
-						createGameTimer(DIVINE_SUPER_STRENGTH);
-						break;
-
-					case "super defence":
-						createGameTimer(DIVINE_SUPER_DEFENCE);
-						break;
-
-					case "combat":
-						createGameTimer(DIVINE_SUPER_COMBAT);
-						break;
-
-					case "ranging":
-						createGameTimer(DIVINE_RANGING);
-						break;
-
-					case "magic":
-						createGameTimer(DIVINE_MAGIC);
-						break;
-
-					case "bastion":
-						createGameTimer(DIVINE_BASTION);
-						break;
-
-					case "battlemage":
-						createGameTimer(DIVINE_BATTLEMAGE);
-						break;
-				}
-			}
 		}
 
 		if (config.showArceuus())

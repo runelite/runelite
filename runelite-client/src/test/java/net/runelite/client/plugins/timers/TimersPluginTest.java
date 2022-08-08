@@ -154,8 +154,8 @@ public class TimersPluginTest
 	public void testDivineBastion()
 	{
 		when(timersConfig.showDivine()).thenReturn(true);
-		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You drink some of your divine bastion potion.", "", 0);
-		timersPlugin.onChatMessage(chatMessage);
+		when(client.getVarbitValue(Varbits.DIVINE_BASTION)).thenReturn(500);
+		timersPlugin.onVarbitChanged(new VarbitChanged());
 
 		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
 		verify(infoBoxManager).addInfoBox(captor.capture());
@@ -167,8 +167,8 @@ public class TimersPluginTest
 	public void testDivineBattlemage()
 	{
 		when(timersConfig.showDivine()).thenReturn(true);
-		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You drink some of your divine battlemage potion.", "", 0);
-		timersPlugin.onChatMessage(chatMessage);
+		when(client.getVarbitValue(Varbits.DIVINE_BATTLEMAGE)).thenReturn(500);
+		timersPlugin.onVarbitChanged(new VarbitChanged());
 
 		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
 		verify(infoBoxManager).addInfoBox(captor.capture());

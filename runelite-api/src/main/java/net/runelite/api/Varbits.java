@@ -68,6 +68,46 @@ public final class Varbits
 	public static final int CHAT_SCROLLBAR_ON_LEFT = 6374;
 
 	/**
+	 * Number of game ticks remaining the attack skill is boosted by the divine potion.
+	 */
+	public static final int DIVINE_ATTACK = 8429;
+
+	/**
+	 * Number of game ticks remaining the strength skill is boosted by the divine potion.
+	 */
+	public static final int DIVINE_STRENGTH = 8430;
+
+	/**
+	 * Number of game ticks remaining the defence skill is boosted by the divine potion.
+	 */
+	public static final int DIVINE_DEFENCE = 8431;
+
+	/**
+	 * Number of game ticks remaining the range skill is boosted by the divine potion.
+	 */
+	public static final int DIVINE_RANGE = 8432;
+
+	/**
+	 * Number of game ticks remaining the magic skill is boosted by the divine potion.
+	 */
+	public static final int DIVINE_MAGIC = 8433;
+
+	/**
+	 * Number of game ticks remaining the player's stats is boosted by the divine super combat potion.
+	 */
+	public static final int DIVINE_COMBAT = 13663;
+
+	/**
+	 * Number of game ticks remaining the player's stats is boosted by the divine bastion potion.
+	 */
+	public static final int DIVINE_BASTION = 13664;
+
+	/**
+	 * Number of game ticks remaining the player's stats is boosted by the divine super battlemage potion.
+	 */
+	public static final int DIVINE_BATTLEMAGE = 13665;
+
+	/**
 	 * Runepouch
 	 */
 	public static final int RUNE_POUCH_RUNE1 = 29;
