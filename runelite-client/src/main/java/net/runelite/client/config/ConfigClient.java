@@ -44,7 +44,6 @@ import net.runelite.http.api.config.ConfigPatch;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -53,20 +52,19 @@ import okhttp3.Response;
 @Slf4j
 public class ConfigClient
 {
-	private static final MediaType TEXT_PLAIN = MediaType.get("text/plain");
-	private static final Gson GSON = RuneLiteAPI.GSON;
-
 	private final OkHttpClient client;
 	private final HttpUrl apiBase;
+	private final Gson gson;
 
 	@Setter
 	private UUID uuid;
 
 	@Inject
-	private ConfigClient(OkHttpClient client, @Named("runelite.api.base") HttpUrl apiBase)
+	private ConfigClient(OkHttpClient client, @Named("runelite.api.base") HttpUrl apiBase, Gson gson)
 	{
 		this.client = client;
 		this.apiBase = apiBase;
+		this.gson = gson;
 	}
 
 	public Map<String, String> get() throws IOException
@@ -109,7 +107,7 @@ public class ConfigClient
 		log.debug("Built URI: {}", url);
 
 		Request request = new Request.Builder()
-			.patch(RequestBody.create(RuneLiteAPI.JSON, GSON.toJson(patch)))
+			.patch(RequestBody.create(RuneLiteAPI.JSON, gson.toJson(patch)))
 			.header(RuneLiteAPI.RUNELITE_AUTH, uuid.toString())
 			.url(url)
 			.build();
