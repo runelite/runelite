@@ -99,10 +99,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private static final String NPC_SHIFT_KEY_PREFIX = "npc_shift_";
 	private static final String WORN_ITEM_KEY_PREFIX = "wornitem_";
 	private static final String WORN_ITEM_SHIFT_KEY_PREFIX = "wornitem_shift_";
-	static final String BANK_KEY_PREFIX = "bank_";
-	static final String BANK_SHIFT_KEY_PREFIX = "bank_shift_";
-	static final String BANK_INVENTORY_KEY_PREFIX = "bank_inventory_";
-	static final String BANK_INVENTORY_SHIFT_KEY_PREFIX = "bank_inventory_shift_";
+	private static final String BANK_KEY_PREFIX = "bank_";
+	private static final String BANK_SHIFT_KEY_PREFIX = "bank_shift_";
+	private static final String BANK_INVENTORY_KEY_PREFIX = "bank_inventory_";
+	private static final String BANK_INVENTORY_SHIFT_KEY_PREFIX = "bank_inventory_shift_";
 
 	private static final List<MenuAction> NPC_MENU_TYPES = ImmutableList.of(
 		MenuAction.NPC_FIRST_OPTION,
