@@ -99,6 +99,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private static final String NPC_SHIFT_KEY_PREFIX = "npc_shift_";
 	private static final String WORN_ITEM_KEY_PREFIX = "wornitem_";
 	private static final String WORN_ITEM_SHIFT_KEY_PREFIX = "wornitem_shift_";
+	static final String BANK_KEY_PREFIX = "bank_";
+	static final String BANK_SHIFT_KEY_PREFIX = "bank_shift_";
+	static final String BANK_INVENTORY_KEY_PREFIX = "bank_inventory_";
+	static final String BANK_INVENTORY_SHIFT_KEY_PREFIX = "bank_inventory_shift_";
+	
 
 	private static final List<MenuAction> NPC_MENU_TYPES = ImmutableList.of(
 		MenuAction.NPC_FIRST_OPTION,
@@ -114,6 +119,19 @@ public class MenuEntrySwapperPlugin extends Plugin
 		MenuAction.GAME_OBJECT_THIRD_OPTION,
 		MenuAction.GAME_OBJECT_FOURTH_OPTION
 		// GAME_OBJECT_FIFTH_OPTION gets sorted underneath Walk here after we swap, so it doesn't work
+	);
+
+	private static final Set<Integer> bankWidgetIds = ImmutableSet.of(
+			WidgetID.BANK_GROUP_ID
+	);
+
+	private static final Set<Integer> bankInventoryWidgetIds = ImmutableSet.of(
+			WidgetID.BANK_INVENTORY_GROUP_ID
+	);
+
+	private static final Set<String> bankIgnoreStrings = ImmutableSet.of(
+			"Examine",
+			"Cancel"
 	);
 
 	private static final Set<String> ESSENCE_MINE_NPCS = ImmutableSet.of(
@@ -507,6 +525,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 		configureNpcClick(event);
 		configureWornItems(event);
 		configureItems(event);
+		configureBankClick(event, false);
+		configureBankClick(event, true);
 	}
 
 	private void configureObjectClick(MenuOpened event)
@@ -1031,6 +1051,77 @@ public class MenuEntrySwapperPlugin extends Plugin
 		};
 	}
 
+	private void configureBankClick(MenuOpened event, boolean inventory) {
+		if (!shiftModifier() || client.getWidget(WidgetInfo.BANK_CONTAINER) == null ||
+				(!inventory && !config.bankCustomization()) || (inventory && !config.bankInventoryCustomization())) {
+			return;
+		}
+
+		MenuEntry[] entries = event.getMenuEntries();
+
+		MenuEntry topEntry = entries[entries.length - 1];
+
+		if (!isBankWidget(topEntry, inventory)) {
+			return;
+		}
+
+		String leftString = getBankLeftString(inventory);
+		String shiftString = getBankShiftString(inventory);
+
+		int ignoreIndex = getBankIgnoreIndex(entries.length, getBankSwapConfig(shiftString, topEntry.getItemId()), topEntry.getOption());
+
+		Integer leftIndex = getBankSwapConfig(leftString, topEntry.getItemId());
+		Integer shiftIndex = getBankSwapConfig(shiftString, topEntry.getItemId());
+		if (shiftIndex != null && leftIndex != null && shiftIndex == leftIndex) {
+			leftIndex = entries.length - 1;
+		}
+		String shiftOption = (shiftIndex == null) ? null : entries[entries.length - 1].getOption();
+		String leftOption = (leftIndex == null) ? null : entries[leftIndex].getOption();
+
+		String lastTarget = null;
+		MenuEntry lastEntry = null;
+		int shiftOff = 1;
+		for (int idx = entries.length - 1; idx >= 0; --idx) {
+
+			MenuEntry entry = entries[idx];
+			if (ignoreIndex == idx && !entry.getOption().endsWith("-1")) {
+				continue;
+			}
+			boolean matchesLeft = entry.getOption().equals(leftOption);
+			boolean matchesShift = entry.getOption().equals(shiftOption);
+
+			if (isBankWidget(entry, inventory)) {
+				if (leftIndex == null || !matchesLeft) {
+					int passedIndex = (matchesShift) ? shiftIndex : idx;
+					buildMenuEntry(shiftOff, "Swap left click " + entry.getOption(), entry.getTarget(), setBankConfig(leftString, entry, passedIndex, false));
+				}
+
+				if (shiftIndex == null || !matchesShift) {
+					int passedIndex = (shiftIndex != null && shiftIndex == idx) ? entries.length - 1 : idx;
+					buildMenuEntry("Swap shift click " + entry.getOption(), entry.getTarget(), setBankConfig(shiftString, entry, passedIndex, true));
+					shiftOff++;
+				}
+				lastTarget = entry.getTarget();
+				lastEntry = entry;
+			}
+		}
+		if (leftIndex != null || shiftIndex != null) {
+			buildMenuEntry("Reset swap", lastTarget, unsetBankConfig(leftString, shiftString, lastEntry));
+		}
+	}
+
+	private MenuEntry buildMenuEntry(String option, String target, Consumer<MenuEntry> setter) {
+		return buildMenuEntry(1, option, target, setter);
+	}
+
+	private MenuEntry buildMenuEntry(int index, String option, String target, Consumer<MenuEntry> setter) {
+		return client.createMenuEntry(index)
+				.setOption(option)
+				.setTarget(target)
+				.setType(MenuAction.RUNELITE)
+				.onClick(setter);
+	}
+
 	private boolean swapBank(MenuEntry menuEntry, MenuAction type)
 	{
 		if (type != MenuAction.CC_OP && type != MenuAction.CC_OP_LOW_PRIORITY)
@@ -1275,6 +1366,25 @@ public class MenuEntrySwapperPlugin extends Plugin
 			return;
 		}
 
+		// Bank swaps
+		Boolean inventory = null;
+		if (config.bankCustomization() && isBankWidget(menuEntry, false)) {
+			inventory = false;
+		}
+		if (config.bankInventoryCustomization() && isBankWidget(menuEntry, true)) {
+			inventory = true;
+		}
+
+		if (inventory != null) {
+			String configString = (shiftModifier()) ? getBankShiftString(inventory) : getBankLeftString(inventory);
+			Integer customOption = getBankSwapConfig(configString, menuEntry.getItemId());
+
+			if (customOption != null && customOption.equals(index)) {
+				swap(optionIndexes, menuEntries, index, menuEntries.length - 1);
+			}
+		}
+		
+
 		// Built-in swaps
 		Collection<Swap> swaps = this.swaps.get(option);
 		for (Swap swap : swaps)
@@ -1461,7 +1571,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		list.add(idx < 0 ? -idx - 1 : idx, value);
 	}
 
-	private boolean shiftModifier()
+	boolean shiftModifier()
 	{
 		return client.isKeyPressed(KeyCode.KC_SHIFT);
 	}
@@ -1558,5 +1668,88 @@ public class MenuEntrySwapperPlugin extends Plugin
 		}
 
 		return -1; // use
+	}
+	
+	private boolean isBankWidget(MenuEntry entry, boolean inventory) {
+		if (entry.getType() == MenuAction.RUNELITE)
+		{
+			return false;
+		}
+		boolean correctWidget;
+
+		final int widgetGroupId = WidgetInfo.TO_GROUP(entry.getParam1());
+		if (inventory)
+		{
+			correctWidget = bankInventoryWidgetIds.contains(widgetGroupId) && !bankIgnoreStrings.contains(entry.getOption());
+		} else
+		{
+			correctWidget = bankWidgetIds.contains(widgetGroupId) && !bankIgnoreStrings.contains(entry.getOption());
+		}
+		return correctWidget;
+	}
+	
+	private Consumer<MenuEntry> setBankConfig(String key, MenuEntry entry, int menuIdx, boolean shift) {
+		return e -> {
+			final String message = new ChatMessageBuilder()
+					.append("The default ").append(shift ? "shift" : "left").append(" click option for '").append(Text.removeTags(entry.getTarget())).append("' ")
+					.append("has been set to '").append(entry.getOption()).append("'.")
+					.build();
+
+			chatMessageManager.queue(QueuedMessage.builder()
+					.type(ChatMessageType.CONSOLE)
+					.runeLiteFormattedMessage(message)
+					.build());
+			
+			setBankSwapConfig(key, entry.getItemId(), menuIdx);
+		};
+	}
+	
+	private Consumer<MenuEntry> unsetBankConfig(String leftKey, String shiftKey, MenuEntry entry) {
+		return e -> {
+			final String message = new ChatMessageBuilder()
+					.append("The default left and shift click options for '").append(Text.removeTags(entry.getTarget())).append("' ")
+					.append("have been reset.")
+					.build();
+
+			chatMessageManager.queue(QueuedMessage.builder()
+					.type(ChatMessageType.CONSOLE)
+					.runeLiteFormattedMessage(message)
+					.build());
+			
+			unsetBankSwapConfig(leftKey, entry.getItemId());
+			unsetBankSwapConfig(shiftKey, entry.getItemId());
+		};
+	}
+	
+	private Integer getBankSwapConfig(String key, int itemId) {
+		itemId = ItemVariationMapping.map(itemId);
+
+		String config = configManager.getConfiguration(MenuEntrySwapperConfig.GROUP, key + itemId);
+
+		return (config != null) ? Integer.parseInt(config) : null;
+	}
+	
+	private void setBankSwapConfig(String key, int itemId, int index) {
+		itemId = ItemVariationMapping.map(itemId);
+
+		configManager.setConfiguration(MenuEntrySwapperConfig.GROUP, key + itemId, index);
+	}
+	
+	private void unsetBankSwapConfig(String key, int itemId) {
+		itemId = ItemVariationMapping.map(itemId);
+
+		configManager.unsetConfiguration(MenuEntrySwapperConfig.GROUP, key + itemId);
+	}
+	
+	private int getBankIgnoreIndex(int size, Integer storedIndex, String option) {
+		return (storedIndex != null) ? storedIndex : size - 1;
+	}
+	
+	private String getBankLeftString(boolean inventory) {
+		return (inventory) ? BANK_INVENTORY_KEY_PREFIX : BANK_KEY_PREFIX;
+	}
+	
+	private String getBankShiftString(boolean inventory) {
+		return (inventory) ? BANK_INVENTORY_SHIFT_KEY_PREFIX : BANK_SHIFT_KEY_PREFIX;
 	}
 }
