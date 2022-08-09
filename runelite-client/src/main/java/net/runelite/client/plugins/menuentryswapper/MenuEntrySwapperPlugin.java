@@ -47,6 +47,9 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import javax.inject.Inject;
+
+import org.apache.commons.lang3.StringUtils;
+
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -127,10 +130,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	private static final Set<String> uiIgnoreStrings = ImmutableSet.of(
 		"Examine"
-	);
-
-	private static final Set<Integer> excludedUIMenus = ImmutableSet.of(
-		WidgetID.FRIENDS_LIST_GROUP_ID
 	);
 
 	private static final Set<String> ESSENCE_MINE_NPCS = ImmutableSet.of(
@@ -1670,19 +1669,28 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	private boolean isUIWidget(MenuEntry entry)
 	{
-		return uiMenuActions.contains(entry.getType()) && !uiIgnoreStrings.contains(entry.getOption())
-			&& !excludedUIMenus.contains(WidgetInfo.TO_GROUP(entry.getParam1())) && entry.getParam1() != 0;
+		Widget widget = entry.getWidget();
+		if (widget == null) {
+			return false;
+		}
+		boolean isCaseOne = widget.getId() == -1;
+		boolean isCaseTwo = widget.getId() != -1 && entry.getItemId() != -1;
 		
+		
+		return (isCaseOne || isCaseTwo) && uiMenuActions.contains(entry.getType()) && !uiIgnoreStrings.contains(entry.getOption());
 	}
 
 	private Consumer<MenuEntry> setUIConfig(String key, MenuEntry entry, int menuIdx, boolean shift)
 	{
 		return e ->
 		{
-			final String message = new ChatMessageBuilder()
-					.append("The default ").append(shift ? "shift" : "left").append(" click option for '").append(Text.removeTags(entry.getTarget())).append("' ")
-					.append("has been set to '").append(entry.getOption()).append("'.")
-					.build();
+			ChatMessageBuilder builder = new ChatMessageBuilder()
+					.append("The default ").append(shift ? "shift" : "left").append(" click option ");
+			if (!StringUtils.isBlank(entry.getTarget()))
+			{
+				builder.append("for '").append(Text.removeTags(entry.getTarget())).append("' ");
+			}
+			final String message = builder.append("has been set to '").append(Text.removeTags(entry.getOption())).append("'.").build();
 
 			chatMessageManager.queue(QueuedMessage.builder()
 					.type(ChatMessageType.CONSOLE)
@@ -1697,11 +1705,15 @@ public class MenuEntrySwapperPlugin extends Plugin
 	{
 		return e ->
 		{
-			final String message = new ChatMessageBuilder()
-					.append("The default left and shift click options for '").append(Text.removeTags(entry.getTarget())).append("' ")
-					.append("have been reset.")
-					.build();
-
+			
+			ChatMessageBuilder builder = new ChatMessageBuilder()
+				.append("The default left and shift click options ");
+			if (!StringUtils.isBlank(entry.getTarget()))
+			{
+				builder.append("for '").append(Text.removeTags(entry.getTarget())).append("' ");
+			}
+			final String message = builder.append("has been set to '").append(Text.removeTags(entry.getOption())).append("'.").build();
+			
 			chatMessageManager.queue(QueuedMessage.builder()
 					.type(ChatMessageType.CONSOLE)
 					.runeLiteFormattedMessage(message)
@@ -1731,7 +1743,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	private String getUIOptionKey(MenuEntry menuEntry)
 	{
-		return menuEntry.getParam1() + "." + menuEntry.getItemId();
+		int itemId = ItemVariationMapping.map(menuEntry.getItemId());
+		int param0 = (itemId == -1) ? menuEntry.getParam0() : -1;
+		
+		return StringUtils.join(".", param0, menuEntry.getParam1(), itemId);
 	}
 
 	private String getUIStringKey(boolean shift)

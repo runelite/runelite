@@ -52,6 +52,7 @@ public class TestMenuEntry implements MenuEntry
 	@Setter
 	private int itemId = -1;
 	@Setter
+	@EqualsAndHashCode.Exclude
 	private Widget widget;
 	@Setter
 	private Actor actor;

@@ -45,6 +45,8 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.menus.TestMenuEntry;
+import net.runelite.client.menus.TestWidget;
+
 import static org.junit.Assert.assertArrayEquals;
 import org.junit.Before;
 import org.junit.Test;
@@ -55,6 +57,8 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 
 import org.mockito.Mock;
+import org.mockito.Mockito;
+
 import static org.mockito.Mockito.clearInvocations;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.lenient;
@@ -88,10 +92,6 @@ public class MenuEntrySwapperPluginTest
 
 	@Mock
 	@Bind
-	Widget widget;
-
-	@Mock
-	@Bind
 	MenuEntrySwapperConfig config;
 
 	@Mock
@@ -104,6 +104,7 @@ public class MenuEntrySwapperPluginTest
 	private NPC npc;
 	private MenuEntry[] entries;
 	private boolean shiftStatus = false;
+	private TestWidget widget;
 
 	@Before
 	public void before()
@@ -172,6 +173,7 @@ public class MenuEntrySwapperPluginTest
 			menuEntry.setItemId(ItemID.AIR_RUNE);
 		}
 		menuEntry.setActor(null);
+		menuEntry.setWidget(widget);
 		return menuEntry;
 	}
 
@@ -504,6 +506,7 @@ public class MenuEntrySwapperPluginTest
 		});
 
 		shiftStatus = true;
+		widget = new TestWidget();
 		int param1 = 786445;
 		ClientTick clientTick = new ClientTick();
 		MenuOpened menuOpened = new MenuOpened();
