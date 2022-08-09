@@ -108,7 +108,7 @@ public class ExaminePlugin extends Plugin
 				{
 					int itemId = event.getId();
 					final ChatMessageBuilder message = new ChatMessageBuilder()
-						.append(QuantityFormatter.formatNumber(quantity)).append(" x ").append(itemManager.getItemComposition(itemId).getName());
+						.append(QuantityFormatter.formatNumber(quantity)).append(" x ").append(itemManager.getItemComposition(itemId).getMembersName());
 					chatMessageManager.queue(QueuedMessage.builder()
 						.type(ChatMessageType.ITEM_EXAMINE)
 						.runeLiteFormattedMessage(message.build())
@@ -243,7 +243,7 @@ public class ExaminePlugin extends Plugin
 			}
 
 			message
-				.append(itemComposition.getName())
+				.append(itemComposition.getMembersName())
 				.append(ChatColorType.NORMAL)
 				.append(":");
 

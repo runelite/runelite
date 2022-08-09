@@ -62,6 +62,6 @@ public interface ItemSkillAction extends SkillAction
 	@Override
 	default String getName(final ItemManager itemManager)
 	{
-		return itemManager.getItemComposition(getItemId()).getName();
+		return itemManager.getItemComposition(getItemId()).getMembersName();
 	}
 }

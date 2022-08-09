@@ -73,7 +73,7 @@ public class ExaminePluginTest
 	public void testGetItemPrice()
 	{
 		ItemComposition itemComposition = mock(ItemComposition.class);
-		when(itemComposition.getName()).thenReturn("Abyssal whip");
+		when(itemComposition.getMembersName()).thenReturn("Abyssal whip");
 		when(itemComposition.getHaPrice()).thenReturn(2);
 		when(itemManager.getItemPrice(ItemID.ABYSSAL_WHIP)).thenReturn(3);
 		examinePlugin.getItemPrice(ItemID.ABYSSAL_WHIP, itemComposition, 2_000_000_000);
