@@ -129,6 +129,9 @@ public class NpcUtil
 			case NpcID.KOSCHEI_THE_DEATHLESS:
 			case NpcID.KOSCHEI_THE_DEATHLESS_3898:
 			case NpcID.KOSCHEI_THE_DEATHLESS_3899:
+			case NpcID.DAMIS:
+			case NpcID.DAMIS_6346:
+			case NpcID.DAMIS_HARD:
 			case NpcID.CHOMPY_BIRD:
 			case NpcID.JUBBLY_BIRD:
 			case NpcID.ENT:
@@ -198,6 +201,9 @@ public class NpcUtil
 			case NpcID.KOLODION_1609:
 			case NpcID.TARN_6476:
 			case NpcID.KOSCHEI_THE_DEATHLESS_3900:
+			case NpcID.DAMIS_683:
+			case NpcID.DAMIS_6347:
+			case NpcID.DAMIS_HARD_1135:
 			case NpcID.HOPELESS_CREATURE_1074:
 			// The Nightmare should be considered alive again once reaching its sleeping form
 			case NpcID.THE_NIGHTMARE:
