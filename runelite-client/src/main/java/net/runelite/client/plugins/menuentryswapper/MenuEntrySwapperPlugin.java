@@ -1379,6 +1379,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 			if (customOption != null && customOption.equals(menuEntry.getIdentifier()))
 			{
 				swap(optionIndexes, menuEntries, index, menuEntries.length - 1);
+				return;
 			}
 		}
 
