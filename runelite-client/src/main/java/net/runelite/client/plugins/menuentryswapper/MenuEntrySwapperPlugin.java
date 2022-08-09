@@ -1677,7 +1677,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		boolean isCaseOne = widget.getId() == -1;
 		boolean isCaseTwo = widget.getId() != -1 && entry.getItemId() != -1;
 		
-		
 		return (isCaseOne || isCaseTwo) && uiMenuActions.contains(entry.getType()) && !uiIgnoreStrings.contains(entry.getOption());
 	}
 
@@ -1706,7 +1705,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 	{
 		return e ->
 		{
-			
 			ChatMessageBuilder builder = new ChatMessageBuilder()
 				.append("The default left and shift click options ");
 			if (!StringUtils.isBlank(entry.getTarget()))
