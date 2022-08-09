@@ -751,23 +751,12 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "bankClickCustomization",
-		name = "Bank menu swapping",
-		description = "Allows customization of left/shift-clicks on bank items",
+		keyName = "uiClickCustomization",
+		name = "UI Menu Swapping",
+		description = "Allows customization of left/shift-clicks on UI interfaces",
 		section = itemSection
 	)
-	default boolean bankCustomization()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "bankInventoryClickCustomization",
-		name = "Bank inventory menu swapping",
-		description = "Allows customization of left/shift-clicks on inventory items in bank interface",
-		section = itemSection
-	)
-	default boolean bankInventoryCustomization()
+	default boolean uiCustomization()
 	{
 		return true;
 	}

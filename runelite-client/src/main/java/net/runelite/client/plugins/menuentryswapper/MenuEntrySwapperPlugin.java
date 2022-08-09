@@ -39,7 +39,9 @@ import com.google.inject.Provides;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -99,10 +101,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private static final String NPC_SHIFT_KEY_PREFIX = "npc_shift_";
 	private static final String WORN_ITEM_KEY_PREFIX = "wornitem_";
 	private static final String WORN_ITEM_SHIFT_KEY_PREFIX = "wornitem_shift_";
-	private static final String BANK_KEY_PREFIX = "bank_";
-	private static final String BANK_SHIFT_KEY_PREFIX = "bank_shift_";
-	private static final String BANK_INVENTORY_KEY_PREFIX = "bank_inventory_";
-	private static final String BANK_INVENTORY_SHIFT_KEY_PREFIX = "bank_inventory_shift_";
+	private static final String UI_KEY_PREFIX = "ui_";
+	private static final String UI_SHIFT_KEY_PREFIX = "ui_shift_";
 
 	private static final List<MenuAction> NPC_MENU_TYPES = ImmutableList.of(
 		MenuAction.NPC_FIRST_OPTION,
@@ -120,17 +120,17 @@ public class MenuEntrySwapperPlugin extends Plugin
 		// GAME_OBJECT_FIFTH_OPTION gets sorted underneath Walk here after we swap, so it doesn't work
 	);
 
-	private static final Set<Integer> bankWidgetIds = ImmutableSet.of(
-		WidgetID.BANK_GROUP_ID
+	private static final Set<MenuAction> uiMenuActions = ImmutableSet.of(
+		MenuAction.CC_OP,
+		MenuAction.CC_OP_LOW_PRIORITY
 	);
 
-	private static final Set<Integer> bankInventoryWidgetIds = ImmutableSet.of(
-		WidgetID.BANK_INVENTORY_GROUP_ID
+	private static final Set<String> uiIgnoreStrings = ImmutableSet.of(
+		"Examine"
 	);
 
-	private static final Set<String> bankIgnoreStrings = ImmutableSet.of(
-		"Examine",
-		"Cancel"
+	private static final Set<Integer> excludedUIMenus = ImmutableSet.of(
+		WidgetID.FRIENDS_LIST_GROUP_ID
 	);
 
 	private static final Set<String> ESSENCE_MINE_NPCS = ImmutableSet.of(
@@ -524,8 +524,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		configureNpcClick(event);
 		configureWornItems(event);
 		configureItems(event);
-		configureBankClick(event, false);
-		configureBankClick(event, true);
+		configureUIClick(event);
 	}
 
 	private void configureObjectClick(MenuOpened event)
@@ -1050,36 +1049,32 @@ public class MenuEntrySwapperPlugin extends Plugin
 		};
 	}
 
-	private void configureBankClick(MenuOpened event, boolean inventory)
+	private void configureUIClick(MenuOpened event)
 	{
-		if (!shiftModifier() || client.getWidget(WidgetInfo.BANK_CONTAINER) == null ||
-			(!inventory && !config.bankCustomization()) || (inventory && !config.bankInventoryCustomization()))
+		if (!shiftModifier()  || (!config.uiCustomization()))
 		{
 			return;
 		}
 
 		MenuEntry[] entries = event.getMenuEntries();
 
-		MenuEntry topEntry = entries[entries.length - 1];
-
-		if (!isBankWidget(topEntry, inventory))
+		// Get the 'top' entry, usually just identifier = 1, but not always.
+		Optional<MenuEntry> entryOptional = Arrays.stream(entries).filter(entry -> entry.getIdentifier() > 0)
+			.min(Comparator.comparingInt(MenuEntry::getIdentifier));
+		
+		if (!entryOptional.isPresent()) {
+			return;
+		}
+		
+		MenuEntry topEntry = entryOptional.get();
+		if (!isUIWidget(topEntry))
 		{
 			return;
 		}
 
-		String leftString = getBankLeftString(inventory);
-		String shiftString = getBankShiftString(inventory);
-
-		int ignoreIndex = getBankIgnoreIndex(entries.length, getBankSwapConfig(shiftString, topEntry.getItemId()), topEntry.getOption());
-
-		Integer leftIndex = getBankSwapConfig(leftString, topEntry.getItemId());
-		Integer shiftIndex = getBankSwapConfig(shiftString, topEntry.getItemId());
-		if (shiftIndex != null && leftIndex != null && shiftIndex == leftIndex)
-		{
-			leftIndex = entries.length - 1;
-		}
-		String shiftOption = (shiftIndex == null) ? null : entries[entries.length - 1].getOption();
-		String leftOption = (leftIndex == null) ? null : entries[leftIndex].getOption();
+		String leftString = getUIStringKey(false);
+		String shiftString = getUIStringKey(true);
+		String optionKey = getUIOptionKey(topEntry);
 
 		String lastTarget = null;
 		MenuEntry lastEntry = null;
@@ -1088,34 +1083,32 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 
 			MenuEntry entry = entries[idx];
-			if (ignoreIndex == idx && !entry.getOption().endsWith("-1"))
+			if (entry.getIdentifier() == topEntry.getIdentifier())
 			{
 				continue;
 			}
-			boolean matchesLeft = entry.getOption().equals(leftOption);
-			boolean matchesShift = entry.getOption().equals(shiftOption);
+			boolean matchesLeft = Integer.valueOf(entry.getIdentifier()).equals(getUISwapConfig(leftString, optionKey));
+			boolean matchesShift = Integer.valueOf(entry.getIdentifier()).equals(getUISwapConfig(shiftString, optionKey));
 
-			if (isBankWidget(entry, inventory))
+			if (isUIWidget(entry))
 			{
-				if (leftIndex == null || !matchesLeft)
+				if (!matchesLeft)
 				{
-					int passedIndex = (matchesShift) ? shiftIndex : idx;
-					buildMenuEntry(shiftOff, "Swap left click " + entry.getOption(), entry.getTarget(), setBankConfig(leftString, entry, passedIndex, false));
+					buildMenuEntry(shiftOff, "Swap left click " + entry.getOption(), entry.getTarget(), setUIConfig(leftString, entry, entry.getIdentifier(), false));
 				}
 
-				if (shiftIndex == null || !matchesShift)
+				if (!matchesShift)
 				{
-					int passedIndex = (shiftIndex != null && shiftIndex == idx) ? entries.length - 1 : idx;
-					buildMenuEntry("Swap shift click " + entry.getOption(), entry.getTarget(), setBankConfig(shiftString, entry, passedIndex, true));
+					buildMenuEntry("Swap shift click " + entry.getOption(), entry.getTarget(), setUIConfig(shiftString, entry, entry.getIdentifier(), true));
 					shiftOff++;
 				}
 				lastTarget = entry.getTarget();
 				lastEntry = entry;
 			}
 		}
-		if (leftIndex != null || shiftIndex != null)
+		if (getUISwapConfig(leftString, optionKey) != null || getUISwapConfig(shiftString, optionKey) != null)
 		{
-			buildMenuEntry("Reset swap", lastTarget, unsetBankConfig(leftString, shiftString, lastEntry));
+			buildMenuEntry("Reset swap", lastTarget, unsetUIConfig(leftString, shiftString, lastEntry));
 		}
 	}
 
@@ -1377,23 +1370,13 @@ public class MenuEntrySwapperPlugin extends Plugin
 			return;
 		}
 
-		// Bank swaps
-		Boolean inventory = null;
-		if (config.bankCustomization() && isBankWidget(menuEntry, false))
+		// UI Swaps
+		if (config.uiCustomization() && isUIWidget(menuEntry))
 		{
-			inventory = false;
-		}
-		if (config.bankInventoryCustomization() && isBankWidget(menuEntry, true))
-		{
-			inventory = true;
-		}
+			String configString = getUIStringKey(shiftModifier());
+			Integer customOption = getUISwapConfig(configString, getUIOptionKey(menuEntry));
 
-		if (inventory != null)
-		{
-			String configString = (shiftModifier()) ? getBankShiftString(inventory) : getBankLeftString(inventory);
-			Integer customOption = getBankSwapConfig(configString, menuEntry.getItemId());
-
-			if (customOption != null && customOption.equals(index))
+			if (customOption != null && customOption.equals(menuEntry.getIdentifier()))
 			{
 				swap(optionIndexes, menuEntries, index, menuEntries.length - 1);
 			}
@@ -1684,27 +1667,14 @@ public class MenuEntrySwapperPlugin extends Plugin
 		return -1; // use
 	}
 
-	private boolean isBankWidget(MenuEntry entry, boolean inventory)
+	private boolean isUIWidget(MenuEntry entry)
 	{
-		if (entry.getType() == MenuAction.RUNELITE)
-		{
-			return false;
-		}
-		boolean correctWidget;
-
-		final int widgetGroupId = WidgetInfo.TO_GROUP(entry.getParam1());
-		if (inventory)
-		{
-			correctWidget = bankInventoryWidgetIds.contains(widgetGroupId) && !bankIgnoreStrings.contains(entry.getOption());
-		}
-		else
-		{
-			correctWidget = bankWidgetIds.contains(widgetGroupId) && !bankIgnoreStrings.contains(entry.getOption());
-		}
-		return correctWidget;
+		return uiMenuActions.contains(entry.getType()) && !uiIgnoreStrings.contains(entry.getOption())
+			&& !excludedUIMenus.contains(WidgetInfo.TO_GROUP(entry.getParam1())) && entry.getParam1() != 0;
+		
 	}
-	
-	private Consumer<MenuEntry> setBankConfig(String key, MenuEntry entry, int menuIdx, boolean shift)
+
+	private Consumer<MenuEntry> setUIConfig(String key, MenuEntry entry, int menuIdx, boolean shift)
 	{
 		return e ->
 		{
@@ -1718,11 +1688,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 					.runeLiteFormattedMessage(message)
 					.build());
 			
-			setBankSwapConfig(key, entry.getItemId(), menuIdx);
+			setUISwapConfig(key, getUIOptionKey(entry), menuIdx);
 		};
 	}
-	
-	private Consumer<MenuEntry> unsetBankConfig(String leftKey, String shiftKey, MenuEntry entry)
+
+	private Consumer<MenuEntry> unsetUIConfig(String leftKey, String shiftKey, MenuEntry entry)
 	{
 		return e ->
 		{
@@ -1736,46 +1706,35 @@ public class MenuEntrySwapperPlugin extends Plugin
 					.runeLiteFormattedMessage(message)
 					.build());
 			
-			unsetBankSwapConfig(leftKey, entry.getItemId());
-			unsetBankSwapConfig(shiftKey, entry.getItemId());
+			unsetUISwapConfig(leftKey, getUIOptionKey(entry));
+			unsetUISwapConfig(shiftKey, getUIOptionKey(entry));
 		};
 	}
 
-	private Integer getBankSwapConfig(String key, int itemId)
+	private Integer getUISwapConfig(String key, String optionKey)
 	{
-		itemId = ItemVariationMapping.map(itemId);
-
-		String config = configManager.getConfiguration(MenuEntrySwapperConfig.GROUP, key + itemId);
+		String config = configManager.getConfiguration(MenuEntrySwapperConfig.GROUP, key + optionKey);
 
 		return (config != null) ? Integer.parseInt(config) : null;
 	}
 
-	private void setBankSwapConfig(String key, int itemId, int index)
+	private void setUISwapConfig(String key, String optionKey, int index)
 	{
-		itemId = ItemVariationMapping.map(itemId);
-
-		configManager.setConfiguration(MenuEntrySwapperConfig.GROUP, key + itemId, index);
+		configManager.setConfiguration(MenuEntrySwapperConfig.GROUP, key + optionKey, index);
 	}
 
-	private void unsetBankSwapConfig(String key, int itemId)
+	private void unsetUISwapConfig(String key, String optionKey)
 	{
-		itemId = ItemVariationMapping.map(itemId);
-
-		configManager.unsetConfiguration(MenuEntrySwapperConfig.GROUP, key + itemId);
+		configManager.unsetConfiguration(MenuEntrySwapperConfig.GROUP, key + optionKey);
 	}
 
-	private int getBankIgnoreIndex(int size, Integer storedIndex, String option)
-	{
-		return (storedIndex != null) ? storedIndex : size - 1;
+	private String getUIOptionKey(MenuEntry menuEntry) {
+		return menuEntry.getParam1() + "." + menuEntry.getItemId();
 	}
 
-	private String getBankLeftString(boolean inventory)
+	private String getUIStringKey(boolean shift)
 	{
-		return (inventory) ? BANK_INVENTORY_KEY_PREFIX : BANK_KEY_PREFIX;
+		return (shift) ? UI_SHIFT_KEY_PREFIX : UI_KEY_PREFIX;
 	}
 
-	private String getBankShiftString(boolean inventory)
-	{
-		return (inventory) ? BANK_INVENTORY_SHIFT_KEY_PREFIX : BANK_SHIFT_KEY_PREFIX;
-	}
 }
