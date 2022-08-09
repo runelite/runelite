@@ -40,7 +40,6 @@ import net.runelite.api.NPCComposition;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.MenuOpened;
-import net.runelite.api.widgets.Widget;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
@@ -57,7 +56,6 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 
 import org.mockito.Mock;
-import org.mockito.Mockito;
 
 import static org.mockito.Mockito.clearInvocations;
 import static org.mockito.Mockito.doAnswer;

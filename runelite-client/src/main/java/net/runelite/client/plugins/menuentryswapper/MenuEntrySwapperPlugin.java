@@ -1670,7 +1670,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private boolean isUIWidget(MenuEntry entry)
 	{
 		Widget widget = entry.getWidget();
-		if (widget == null) {
+		if (widget == null)
+		{
 			return false;
 		}
 		boolean isCaseOne = widget.getId() == -1;
