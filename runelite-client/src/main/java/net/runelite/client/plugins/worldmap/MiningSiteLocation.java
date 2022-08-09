@@ -171,6 +171,7 @@ enum MiningSiteLocation
 	MOUNT_KARUULM(new WorldPoint(1278, 3814, 0), new Rock(6, Ore.IRON), new Rock(5, Ore.COAL)),
 	// MOURNER_TUNNELS -- NOT AVAILABLE ON WORLD MAP
 	MYTHS_GUILD(new WorldPoint(1936, 9020, 0), new Rock(4, Ore.ADAMANTITE), new Rock(2, Ore.RUNITE)),
+	NECROPOLIS(new WorldPoint(3319, 2708, 0), new Rock(5, Ore.SANDSTONE), new Rock(5, Ore.GRANITE)),
 	OGRESS_SETTLEMENT(new WorldPoint(1977, 9041, 0),
 		new Rock(5, Ore.COAL), new Rock(2, Ore.MITHRIL), new Rock(1, Ore.ADAMANTITE)),
 	PIRATES_HIDEOUT(new WorldPoint(3056, 3945, 0),
@@ -186,6 +187,8 @@ enum MiningSiteLocation
 	RIMMINGTON(new WorldPoint(2977, 3240, 0),
 		new Rock(2, Ore.CLAY), new Rock(5, Ore.COPPER), new Rock(2, Ore.TIN), new Rock(6, Ore.IRON),
 		new Rock(2, Ore.GOLD)),
+	RUINS_OF_ULLEK(new WorldPoint(3377, 2777, 0),
+		new Rock(3, Ore.CLAY), new Rock(5, Ore.IRON), new Rock(3, Ore.COAL), new Rock(1, Ore.ADAMANTITE)),
 	RUINS_OF_UNKAH(new WorldPoint(3172, 2871, 0),
 		new Rock(1, Ore.COPPER), new Rock(1, Ore.TIN), new Rock(5, Ore.IRON), new Rock(2, Ore.SILVER), new Rock(1, Ore.COAL)),
 	SALT_MINE(new WorldPoint(2835, 10334, 0),

@@ -41,6 +41,7 @@ enum RareTreeLocation
 
 		// Desert
 		new WorldPoint(3510, 3073, 0),
+		new WorldPoint(3440, 2789, 0),
 
 		// Mos Le'Harmless
 		new WorldPoint(3832, 3067, 0),
