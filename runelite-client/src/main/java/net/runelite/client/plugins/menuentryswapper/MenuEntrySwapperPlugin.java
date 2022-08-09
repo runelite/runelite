@@ -1062,7 +1062,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 		Optional<MenuEntry> entryOptional = Arrays.stream(entries).filter(entry -> entry.getIdentifier() > 0)
 			.min(Comparator.comparingInt(MenuEntry::getIdentifier));
 		
-		if (!entryOptional.isPresent()) {
+		if (!entryOptional.isPresent())
+		{
 			return;
 		}
 		
@@ -1728,7 +1729,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 		configManager.unsetConfiguration(MenuEntrySwapperConfig.GROUP, key + optionKey);
 	}
 
-	private String getUIOptionKey(MenuEntry menuEntry) {
+	private String getUIOptionKey(MenuEntry menuEntry)
+	{
 		return menuEntry.getParam1() + "." + menuEntry.getItemId();
 	}
 

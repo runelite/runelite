@@ -41,7 +41,6 @@ import net.runelite.api.ObjectComposition;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.MenuOpened;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
@@ -160,7 +159,8 @@ public class MenuEntrySwapperPluginTest
 		return menu(param1, option, target, menuAction, 0);
 	}
 	
-	private TestMenuEntry menu(int param1, String option, String target, MenuAction menuAction, int identifier) {
+	private TestMenuEntry menu(int param1, String option, String target, MenuAction menuAction, int identifier)
+	{
 		TestMenuEntry menuEntry = menu(option, target, menuAction, identifier);
 		if (menuAction == MenuAction.RUNELITE)
 		{
