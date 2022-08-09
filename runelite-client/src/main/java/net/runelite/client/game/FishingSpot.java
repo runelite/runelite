@@ -33,7 +33,7 @@ import static net.runelite.api.NpcID.*;
 @Getter
 public enum FishingSpot
 {
-	SHRIMP("Shrimp, Anchovies", "Anchovies", ItemID.RAW_SHRIMPS,
+	SHRIMP("Shrimp, Sardine, Herring, Anchovies", "Anchovies", ItemID.RAW_SHRIMPS,
 		FISHING_SPOT_1514, FISHING_SPOT_1517, FISHING_SPOT_1518,
 		FISHING_SPOT_1521, FISHING_SPOT_1523, FISHING_SPOT_1524,
 		FISHING_SPOT_1525, FISHING_SPOT_1528, FISHING_SPOT_1530,
