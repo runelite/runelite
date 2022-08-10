@@ -911,6 +911,7 @@ public final class ObjectID
 	public static final int DOOR_1741 = 1741;
 	public static final int DOOR_1742 = 1742;
 	public static final int DOOR_1743 = 1743;
+	public static final int SKULL_SLOPE = 1747;
 	public static final int DOOR_1749 = 1749;
 	public static final int GRAPEVINE = 1753;
 	public static final int GRAPEVINE_1754 = 1754;
@@ -6622,7 +6623,7 @@ public final class ObjectID
 	public static final int HURDLE = 11638;
 	public static final int HURDLE_11639 = 11639;
 	public static final int HURDLE_11640 = 11640;
-	public static final int SKULL_SLOPE = 11641;
+	public static final int SKULL_SLOPE_11641 = 11641;
 	public static final int STEPPING_STONE_11643 = 11643;
 	public static final int ZIP_LINE = 11644;
 	public static final int ZIP_LINE_11645 = 11645;
@@ -8859,7 +8860,6 @@ public final class ObjectID
 	public static final int PORTAL_15479 = 15479;
 	public static final int PORTAL_15480 = 15480;
 	public static final int PORTAL_15481 = 15481;
-	public static final int SKULL_SLOPE_15483 = 15483;
 	public static final int ROPE_15487 = 15487;
 	public static final int TROPICAL_TREE_15488 = 15488;
 	public static final int TROPICAL_TREE_15489 = 15489;
@@ -21314,7 +21314,6 @@ public final class ObjectID
 	public static final int CLAN_BANNER_41693 = 41693;
 	public static final int TABLE_41694 = 41694;
 	public static final int TABLE_41695 = 41695;
-	public static final int HANNIBAL = 41696;
 	public static final int COOKING_POTS_41697 = 41697;
 	public static final int CHURCH_PEW_41701 = 41701;
 	public static final int SUIT_OF_ARMOUR_41704 = 41704;
