@@ -99,6 +99,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private static final String NPC_SHIFT_KEY_PREFIX = "npc_shift_";
 	private static final String WORN_ITEM_KEY_PREFIX = "wornitem_";
 	private static final String WORN_ITEM_SHIFT_KEY_PREFIX = "wornitem_shift_";
+	private static final String UI_KEY_PREFIX = "ui_";
+	private static final String UI_SHIFT_KEY_PREFIX = "ui_shift_";
 
 	private static final List<MenuAction> NPC_MENU_TYPES = ImmutableList.of(
 		MenuAction.NPC_FIRST_OPTION,
@@ -479,6 +481,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		configureNpcClick(event);
 		configureWornItems(event);
 		configureItems(event);
+		configureUiSwap(event);
 	}
 
 	private void configureObjectClick(MenuOpened event)
@@ -1003,6 +1006,127 @@ public class MenuEntrySwapperPlugin extends Plugin
 		};
 	}
 
+	private void configureUiSwap(MenuOpened event)
+	{
+		if (!shiftModifier())
+		{
+			return;
+		}
+
+		final MenuEntry[] entries = event.getMenuEntries();
+		int shiftOff = 0;
+		for (int idx = entries.length - 1; idx >= 0; --idx)
+		{
+			final MenuEntry entry = entries[idx];
+			if (entry.getType() == MenuAction.CC_OP || entry.getType() == MenuAction.CC_OP_LOW_PRIORITY)
+			{
+				final Widget w = entry.getWidget();
+				if (w == null)
+				{
+					continue;
+				}
+
+				final int interId = WidgetInfo.TO_GROUP(w.getId());
+				if (interId == WidgetID.INVENTORY_GROUP_ID || interId == WidgetID.EQUIPMENT_GROUP_ID)
+				{
+					// inventory and worn items have their own swap systems
+					continue;
+				}
+
+				// ui swap either:
+				// 1) static components
+				// 2) dynamic components with items
+				if (w.getIndex() == -1 || w.getItemId() != -1)
+				{
+					final int componentId = w.getId(); // on dynamic components, this is the parent layer id
+					final int itemId = w.getIndex() == -1 ? -1 : ItemVariationMapping.map(w.getItemId());
+					final int identifier = entry.getIdentifier();
+					final Integer leftClick = getUiSwapConfig(false, componentId, itemId);
+					final Integer shiftClick = getUiSwapConfig(true, componentId, itemId);
+
+					// find lowest op from the widget actions, to prevent setting a swap to the default left click
+					// action regardless of what is swapped.
+					int lowestOp = 0;
+					while (lowestOp < w.getActions().length && Strings.isNullOrEmpty(w.getActions()[lowestOp]))
+					{
+						++lowestOp;
+					}
+					++lowestOp; // from 0-indexed to 1-indexed
+
+					// find highest op from the current menu, post any existing swaps, for inserting Reset
+					int highestOp = 10;
+					for (int i = idx; i >= 0 && entries[i].getWidget() == w; --i)
+					{
+						highestOp = entries[i].getIdentifier();
+					}
+
+					if (identifier != lowestOp && (leftClick == null || leftClick != identifier))
+					{
+						client.createMenuEntry(1 + shiftOff)
+							.setOption("Swap left click " + entry.getOption())
+							.setTarget(entry.getTarget())
+							.setType(MenuAction.RUNELITE)
+							.onClick(uiConsumer(entry.getOption(), entry.getTarget(), false, componentId, itemId, identifier));
+					}
+
+					if (identifier != lowestOp && (shiftClick == null || shiftClick != identifier))
+					{
+						client.createMenuEntry(1)
+							.setOption("Swap shift click " + entry.getOption())
+							.setTarget(entry.getTarget())
+							.setType(MenuAction.RUNELITE)
+							.onClick(uiConsumer(entry.getOption(), entry.getTarget(), true, componentId, itemId, identifier));
+						++shiftOff;
+					}
+
+					if (identifier == highestOp && (leftClick != null || shiftClick != null))
+					{
+						client.createMenuEntry(1)
+							.setOption("Reset swap")
+							.setTarget(entry.getTarget())
+							.setType(MenuAction.RUNELITE)
+							.onClick(menuEntry ->
+							{
+								final String message = new ChatMessageBuilder()
+									.append("The default left and shift click options for '").append(Text.removeTags(menuEntry.getTarget())).append("' ")
+									.append("have been reset.")
+									.build();
+
+								chatMessageManager.queue(QueuedMessage.builder()
+									.type(ChatMessageType.CONSOLE)
+									.runeLiteFormattedMessage(message)
+									.build());
+
+								log.debug("Unset ui swap for {}/{}", componentId, menuEntry.getTarget());
+
+								unsetUiSwapConfig(false, componentId, itemId);
+								unsetUiSwapConfig(true, componentId, itemId);
+							});
+					}
+				}
+			}
+		}
+	}
+
+	private Consumer<MenuEntry> uiConsumer(String option, String target, boolean shift, int componentId, int itemId, int opId)
+	{
+		return e ->
+		{
+			final String message = new ChatMessageBuilder()
+				.append("The default  ").append(shift ? "shift" : "left").append(" click option for '").append(Text.removeTags(target)).append("' ")
+				.append("has been set to '").append(option).append("'.")
+				.build();
+
+			chatMessageManager.queue(QueuedMessage.builder()
+				.type(ChatMessageType.CONSOLE)
+				.runeLiteFormattedMessage(message)
+				.build());
+
+			log.debug("Set ui {} swap for {}/{} to {}", shift ? "shift" : "left", componentId, itemId, opId);
+			setUiSwapConfig(shift, componentId, itemId, opId);
+		};
+	}
+
 	private boolean swapBank(MenuEntry menuEntry, MenuAction type)
 	{
 		if (type != MenuAction.CC_OP && type != MenuAction.CC_OP_LOW_PRIORITY)
@@ -1131,13 +1255,13 @@ public class MenuEntrySwapperPlugin extends Plugin
 		}
 
 		// Worn items swap
-		Widget w = menuEntry.getWidget();
+		final Widget w = menuEntry.getWidget();
 		if (w != null && WidgetInfo.TO_GROUP(w.getId()) == WidgetID.EQUIPMENT_GROUP_ID)
 		{
-			w = w.getChild(1);
-			if (w != null && w.getItemId() > -1)
+			Widget child = w.getChild(1);
+			if (child != null && child.getItemId() > -1)
 			{
-				final Integer wornItemSwapConfig = getWornItemSwapConfig(shiftModifier(), w.getItemId());
+				final Integer wornItemSwapConfig = getWornItemSwapConfig(shiftModifier(), child.getItemId());
 				if (wornItemSwapConfig != null)
 				{
 					if (wornItemSwapConfig == menuEntry.getIdentifier())
@@ -1229,6 +1353,34 @@ public class MenuEntrySwapperPlugin extends Plugin
 			if (shiftModifier() && config.groundItemShiftClickWalkHere())
 			{
 				menuEntry.setDeprioritized(true);
+			}
+		}
+
+		// UI swaps
+		if ((menuAction == MenuAction.CC_OP || menuAction == MenuAction.CC_OP_LOW_PRIORITY)
+			&& w != null && (w.getIndex() == -1 || w.getItemId() != -1))
+		{
+			final String[] actions = w.getActions();
+			int numActions = 0;
+			for (String action : actions)
+			{
+				if (!Strings.isNullOrEmpty(action))
+				{
+					++numActions;
+				}
+			}
+
+			// fast check to avoid hitting config on components with single ops
+			if (numActions > 1)
+			{
+				final int componentId = w.getId(); // on dynamic components, this is the parent layer id
+				final int itemId = w.getIndex() == -1 ? -1 : ItemVariationMapping.map(w.getItemId());
+				final Integer op = getUiSwapConfig(shiftModifier(), componentId, itemId);
+				if (op != null && op == menuEntry.getIdentifier())
+				{
+					swap(optionIndexes, menuEntries, index, menuEntries.length - 1);
+					return;
+				}
 			}
 		}
 
@@ -1530,5 +1682,30 @@ public class MenuEntrySwapperPlugin extends Plugin
 		}
 
 		return -1; // use
+	}
+
+	private Integer getUiSwapConfig(boolean shift, int componentId, int itemId)
+	{
+		String config = configManager.getConfiguration(MenuEntrySwapperConfig.GROUP,
+			(shift ? UI_SHIFT_KEY_PREFIX : UI_KEY_PREFIX) + componentId + (itemId != -1 ? "_" + itemId : ""));
+		if (config == null || config.isEmpty())
+		{
+			return null;
+		}
+
+		return Integer.parseInt(config);
+	}
+
+	private void setUiSwapConfig(boolean shift, int componentId, int itemId, int op)
+	{
+		configManager.setConfiguration(MenuEntrySwapperConfig.GROUP,
+			(shift ? UI_SHIFT_KEY_PREFIX : UI_KEY_PREFIX) + componentId + (itemId != -1 ? "_" + itemId : ""),
+			op);
+	}
+
+	private void unsetUiSwapConfig(boolean shift, int componentId, int itemId)
+	{
+		configManager.unsetConfiguration(MenuEntrySwapperConfig.GROUP,
+			(shift ? UI_SHIFT_KEY_PREFIX : UI_KEY_PREFIX) + componentId + (itemId != -1 ? "_" + itemId : ""));
 	}
 }
