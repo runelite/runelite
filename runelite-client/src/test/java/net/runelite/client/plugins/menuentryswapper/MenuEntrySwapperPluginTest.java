@@ -40,11 +40,11 @@ import net.runelite.api.NPCComposition;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.MenuOpened;
+import net.runelite.api.widgets.Widget;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.menus.TestMenuEntry;
-import net.runelite.client.menus.TestWidget;
 
 import static org.junit.Assert.assertArrayEquals;
 import org.junit.Before;
@@ -95,6 +95,10 @@ public class MenuEntrySwapperPluginTest
 	@Mock
 	@Bind
 	MenuEntry menuEntry;
+	
+	@Mock
+	@Bind
+	Widget widget;
 
 	@Inject
 	MenuEntrySwapperPlugin menuEntrySwapperPlugin;
@@ -102,8 +106,7 @@ public class MenuEntrySwapperPluginTest
 	private NPC npc;
 	private MenuEntry[] entries;
 	private boolean shiftStatus = false;
-	private TestWidget widget;
-
+	
 	@Before
 	public void before()
 	{
@@ -504,7 +507,6 @@ public class MenuEntrySwapperPluginTest
 		});
 
 		shiftStatus = true;
-		widget = new TestWidget();
 		int param1 = 786445;
 		ClientTick clientTick = new ClientTick();
 		MenuOpened menuOpened = new MenuOpened();
