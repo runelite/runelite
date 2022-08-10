@@ -55,20 +55,20 @@ import okhttp3.Response;
 @Slf4j
 public class LootTrackerClient
 {
-	private static final Gson GSON = RuneLiteAPI.GSON;
-
 	private final OkHttpClient client;
 	private final HttpUrl apiBase;
+	private final Gson gson;
 
 	@Getter
 	@Setter
 	private UUID uuid;
 
 	@Inject
-	private LootTrackerClient(OkHttpClient client, @Named("runelite.api.base") HttpUrl apiBase)
+	private LootTrackerClient(OkHttpClient client, @Named("runelite.api.base") HttpUrl apiBase, Gson gson)
 	{
 		this.client = client;
 		this.apiBase = apiBase;
+		this.gson = gson;
 	}
 
 	public CompletableFuture<Void> submit(Collection<LootRecord> lootRecords)
@@ -84,7 +84,7 @@ public class LootTrackerClient
 		{
 			requestBuilder.header(RuneLiteAPI.RUNELITE_AUTH, uuid.toString());
 		}
-		requestBuilder.post(RequestBody.create(JSON, GSON.toJson(lootRecords)))
+		requestBuilder.post(RequestBody.create(JSON, gson.toJson(lootRecords)))
 			.url(url)
 			.build();
 
@@ -136,9 +136,9 @@ public class LootTrackerClient
 			}
 
 			InputStream in = response.body().byteStream();
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), new TypeToken<List<LootAggregate>>()
-			{
-			}.getType());
+			// CHECKSTYLE:OFF
+			return gson.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), new TypeToken<List<LootAggregate>>(){}.getType());
+			// CHECKSTYLE:ON
 		}
 		catch (JsonParseException ex)
 		{

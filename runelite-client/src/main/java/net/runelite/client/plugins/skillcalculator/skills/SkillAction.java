@@ -34,7 +34,7 @@ public interface SkillAction
 {
 	/**
 	 * Gets the name of this skill action, usually the item or object created, or the spell cast. This name may be
-	 * fetched via {@link ItemComposition#getName()} from some defined item ID or explicitly defined.
+	 * fetched via {@link ItemComposition#getMembersName()} from some defined item ID or explicitly defined.
 	 *
 	 * @param itemManager An {@link ItemManager item manager} instance.
 	 * @return The name of this skill action.

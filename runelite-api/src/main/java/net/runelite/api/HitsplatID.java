@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Woox <https://github.com/wooxsolo>
+ * Copyright (c) 2022, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,58 +22,29 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.npchighlight;
+package net.runelite.api;
 
-import java.util.ArrayList;
-import java.util.List;
-import lombok.Getter;
-import lombok.Setter;
-import net.runelite.api.NPC;
-import net.runelite.api.NPCComposition;
-import net.runelite.api.coords.WorldPoint;
-
-class MemorizedNpc
+public final class HitsplatID
 {
-	@Getter
-	private int npcIndex;
-
-	@Getter
-	private String npcName;
-
-	@Getter
-	private int npcSize;
-
-	/**
-	 * The time the npc died at, in game ticks, relative to the tick counter
-	 */
-	@Getter
-	@Setter
-	private int diedOnTick;
-
-	/**
-	 * The time it takes for the npc to respawn, in game ticks
-	 */
-	@Getter
-	@Setter
-	private int respawnTime;
-
-	@Getter
-	@Setter
-	private List<WorldPoint> possibleRespawnLocations;
-
-	MemorizedNpc(NPC npc)
-	{
-		this.npcName = npc.getName();
-		this.npcIndex = npc.getIndex();
-		this.possibleRespawnLocations = new ArrayList<>(2);
-		this.respawnTime = -1;
-		this.diedOnTick = -1;
-
-		final NPCComposition composition = npc.getTransformedComposition();
-
-		if (composition != null)
-		{
-			this.npcSize = composition.getSize();
-		}
-	}
+	public static final int BLOCK_ME = 12;
+	public static final int BLOCK_OTHER = 13;
+	public static final int DAMAGE_ME = 16;
+	public static final int DAMAGE_OTHER = 17;
+	public static final int POISON = 2;
+	public static final int DISEASE = 4;
+	public static final int VENOM = 5;
+	public static final int HEAL = 6;
+	public static final int DAMAGE_ME_CYAN = 18;
+	public static final int DAMAGE_OTHER_CYAN = 19;
+	public static final int DAMAGE_ME_ORANGE = 20;
+	public static final int DAMAGE_OTHER_ORANGE = 21;
+	public static final int DAMAGE_ME_YELLOW = 22;
+	public static final int DAMAGE_OTHER_YELLOW = 23;
+	public static final int DAMAGE_ME_WHITE = 24;
+	public static final int DAMAGE_OTHER_WHITE = 25;
+	public static final int DAMAGE_MAX_ME = 43;
+	public static final int DAMAGE_MAX_ME_CYAN = 44;
+	public static final int DAMAGE_MAX_ME_ORANGE = 45;
+	public static final int DAMAGE_MAX_ME_YELLOW = 46;
+	public static final int DAMAGE_MAX_ME_WHITE = 47;
 }

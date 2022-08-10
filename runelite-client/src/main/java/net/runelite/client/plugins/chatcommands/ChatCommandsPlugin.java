@@ -1435,7 +1435,8 @@ public class ChatCommandsPlugin extends Plugin
 				.append(ChatColorType.NORMAL)
 				.append("Level ")
 				.append(ChatColorType.HIGHLIGHT)
-				.append(skill.getName()).append(": ").append(String.valueOf(hiscoreSkill.getLevel()))
+				.append(skill.getName()).append(": ")
+				.append(hiscoreSkill.getLevel() > -1 ? String.valueOf(hiscoreSkill.getLevel()) : "unranked")
 				.append(ChatColorType.NORMAL);
 			if (hiscoreSkill.getExperience() != -1)
 			{
@@ -2437,7 +2438,7 @@ public class ChatCommandsPlugin extends Plugin
 		{
 			// longBossName the skill name to normalize from hiscore name
 			// to our internal name (removing the colon)
-			if (longBossName(skill.getName()).equals(s))
+			if (longBossName(skill.getName()).equalsIgnoreCase(s))
 			{
 				return skill;
 			}

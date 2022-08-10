@@ -404,6 +404,7 @@ public class MusicPlugin extends Plugin
 	{
 		final Widget container = client.getWidget(WidgetInfo.MUSIC_WINDOW);
 		final Widget musicList = client.getWidget(WidgetInfo.MUSIC_TRACK_LIST);
+		final Widget scrollContainer = client.getWidget(WidgetInfo.MUSIC_TRACK_SCROLL_CONTAINER);
 
 		if (container == null || musicList == null)
 		{
@@ -411,10 +412,10 @@ public class MusicPlugin extends Plugin
 		}
 
 		String filter = input.toLowerCase();
-		updateList(musicList, filter);
+		updateList(scrollContainer, musicList, filter);
 	}
 
-	private void updateList(Widget musicList, String filter)
+	private void updateList(Widget scrollContainer, Widget musicList, String filter)
 	{
 		if (tracks == null)
 		{
@@ -446,18 +447,18 @@ public class MusicPlugin extends Plugin
 
 		int newHeight = 0;
 
-		if (musicList.getScrollHeight() > 0)
+		if (scrollContainer.getScrollHeight() > 0)
 		{
-			newHeight = (musicList.getScrollY() * y) / musicList.getScrollHeight();
+			newHeight = (scrollContainer.getScrollY() * y) / scrollContainer.getScrollHeight();
 		}
 
-		musicList.setScrollHeight(y);
-		musicList.revalidateScroll();
+		scrollContainer.setScrollHeight(y);
+		scrollContainer.revalidateScroll();
 
 		client.runScript(
 			ScriptID.UPDATE_SCROLLBAR,
 			WidgetInfo.MUSIC_TRACK_SCROLLBAR.getId(),
-			WidgetInfo.MUSIC_TRACK_LIST.getId(),
+			WidgetInfo.MUSIC_TRACK_SCROLL_CONTAINER.getId(),
 			newHeight
 		);
 	}

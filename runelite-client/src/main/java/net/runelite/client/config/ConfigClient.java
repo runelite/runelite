@@ -26,10 +26,13 @@ package net.runelite.client.config;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
+import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import javax.inject.Inject;
@@ -37,11 +40,10 @@ import javax.inject.Named;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
-import net.runelite.http.api.config.Configuration;
+import net.runelite.http.api.config.ConfigPatch;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -50,26 +52,26 @@ import okhttp3.Response;
 @Slf4j
 public class ConfigClient
 {
-	private static final MediaType TEXT_PLAIN = MediaType.get("text/plain");
-	private static final Gson GSON = RuneLiteAPI.GSON;
-
 	private final OkHttpClient client;
 	private final HttpUrl apiBase;
+	private final Gson gson;
 
 	@Setter
 	private UUID uuid;
 
 	@Inject
-	private ConfigClient(OkHttpClient client, @Named("runelite.api.base") HttpUrl apiBase)
+	private ConfigClient(OkHttpClient client, @Named("runelite.api.base") HttpUrl apiBase, Gson gson)
 	{
 		this.client = client;
 		this.apiBase = apiBase;
+		this.gson = gson;
 	}
 
-	public Configuration get() throws IOException
+	public Map<String, String> get() throws IOException
 	{
 		HttpUrl url = apiBase.newBuilder()
 			.addPathSegment("config")
+			.addPathSegment("v2")
 			.build();
 
 		log.debug("Built URI: {}", url);
@@ -82,7 +84,10 @@ public class ConfigClient
 		try (Response response = client.newCall(request).execute())
 		{
 			InputStream in = response.body().byteStream();
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), Configuration.class);
+			// CHECKSTYLE:OFF
+			final Type type = new TypeToken<Map<String, String>>(){}.getType();
+			// CHECKSTYLE:ON
+			return gson.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), type);
 		}
 		catch (JsonParseException ex)
 		{
@@ -90,56 +95,19 @@ public class ConfigClient
 		}
 	}
 
-	public CompletableFuture<Void> set(String key, String value)
+	public CompletableFuture<Void> patch(ConfigPatch patch)
 	{
 		CompletableFuture<Void> future = new CompletableFuture<>();
 
 		HttpUrl url = apiBase.newBuilder()
 			.addPathSegment("config")
-			.addPathSegment(key)
+			.addPathSegment("v2")
 			.build();
 
 		log.debug("Built URI: {}", url);
 
 		Request request = new Request.Builder()
-			.put(RequestBody.create(TEXT_PLAIN, value))
-			.header(RuneLiteAPI.RUNELITE_AUTH, uuid.toString())
-			.url(url)
-			.build();
-
-		client.newCall(request).enqueue(new Callback()
-		{
-			@Override
-			public void onFailure(Call call, IOException e)
-			{
-				log.warn("Unable to synchronize configuration item", e);
-				future.completeExceptionally(e);
-			}
-
-			@Override
-			public void onResponse(Call call, Response response)
-			{
-				response.close();
-				log.debug("Synchronized configuration value '{}' to '{}'", key, value);
-				future.complete(null);
-			}
-		});
-
-		return future;
-	}
-
-	public CompletableFuture<Void> patch(Configuration configuration)
-	{
-		CompletableFuture<Void> future = new CompletableFuture<>();
-
-		HttpUrl url = apiBase.newBuilder()
-			.addPathSegment("config")
-			.build();
-
-		log.debug("Built URI: {}", url);
-
-		Request request = new Request.Builder()
-			.patch(RequestBody.create(RuneLiteAPI.JSON, GSON.toJson(configuration)))
+			.patch(RequestBody.create(RuneLiteAPI.JSON, gson.toJson(patch)))
 			.header(RuneLiteAPI.RUNELITE_AUTH, uuid.toString())
 			.url(url)
 			.build();
@@ -167,51 +135,15 @@ public class ConfigClient
 					{
 					}
 
-					log.warn("failed to synchronize some of {} configuration values: {}", configuration.getConfig().size(), body);
+					log.warn("failed to synchronize some of {}/{} configuration values: {}",
+						patch.getEdit().size(), patch.getUnset().size(), body);
 				}
 				else
 				{
-					log.debug("Synchronized {} configuration values", configuration.getConfig().size());
+					log.debug("Synchronized {}/{} configuration values",
+						patch.getEdit().size(), patch.getUnset().size());
 				}
 				response.close();
-				future.complete(null);
-			}
-		});
-
-		return future;
-	}
-
-	public CompletableFuture<Void> unset(String key)
-	{
-		CompletableFuture<Void> future = new CompletableFuture<>();
-
-		HttpUrl url = apiBase.newBuilder()
-			.addPathSegment("config")
-			.addPathSegment(key)
-			.build();
-
-		log.debug("Built URI: {}", url);
-
-		Request request = new Request.Builder()
-			.delete()
-			.header(RuneLiteAPI.RUNELITE_AUTH, uuid.toString())
-			.url(url)
-			.build();
-
-		client.newCall(request).enqueue(new Callback()
-		{
-			@Override
-			public void onFailure(Call call, IOException e)
-			{
-				log.warn("Unable to unset configuration item", e);
-				future.completeExceptionally(e);
-			}
-
-			@Override
-			public void onResponse(Call call, Response response)
-			{
-				response.close();
-				log.debug("Unset configuration value '{}'", key);
 				future.complete(null);
 			}
 		});

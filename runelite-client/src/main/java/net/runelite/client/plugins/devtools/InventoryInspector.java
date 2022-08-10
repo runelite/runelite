@@ -261,7 +261,7 @@ class InventoryInspector extends DevToolsFrame
 		{
 			final Item item = items[i];
 			final ItemComposition c = itemManager.getItemComposition(item.getId());
-			out[i] = new InventoryItem(i, item, c.getName(), c.isStackable());
+			out[i] = new InventoryItem(i, item, c.getMembersName(), c.isStackable());
 		}
 
 		return out;
@@ -303,7 +303,7 @@ class InventoryInspector extends DevToolsFrame
 				final ItemComposition c = itemManager.getItemComposition(e.getKey());
 
 				InventoryItem[] items = {
-					new InventoryItem(-1, new Item(id, qty), c.getName(), c.isStackable())
+					new InventoryItem(-1, new Item(id, qty), c.getMembersName(), c.isStackable())
 				};
 				if (!c.isStackable() && (qty > 1 || qty < -1))
 				{
@@ -311,7 +311,7 @@ class InventoryInspector extends DevToolsFrame
 					for (int i = 0; i < Math.abs(qty); i++)
 					{
 						final Item item = new Item(id, Integer.signum(qty));
-						items[i] = new InventoryItem(-1, item, c.getName(), c.isStackable());
+						items[i] = new InventoryItem(-1, item, c.getMembersName(), c.isStackable());
 					}
 				}
 

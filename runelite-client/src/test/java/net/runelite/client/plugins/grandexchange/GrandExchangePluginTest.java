@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.grandexchange;
 
+import com.google.gson.Gson;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
@@ -50,7 +51,6 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import static net.runelite.client.plugins.grandexchange.GrandExchangePlugin.findFuzzyIndices;
-import static net.runelite.http.api.RuneLiteAPI.GSON;
 import net.runelite.http.api.ge.GrandExchangeTrade;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -118,6 +118,9 @@ public class GrandExchangePluginTest
 	@Bind
 	private RuneLiteConfig runeLiteConfig;
 
+	@Inject
+	private Gson gson;
+
 	@Before
 	public void setUp()
 	{
@@ -144,7 +147,7 @@ public class GrandExchangePluginTest
 		savedOffer.setPrice(1000);
 		savedOffer.setSpent(25);
 		savedOffer.setState(GrandExchangeOfferState.BUYING);
-		when(configManager.getRSProfileConfiguration("geoffer", "0")).thenReturn(GSON.toJson(savedOffer));
+		when(configManager.getRSProfileConfiguration("geoffer", "0")).thenReturn(gson.toJson(savedOffer));
 
 		// buy 2 @ 10/ea
 		GrandExchangeOffer grandExchangeOffer = mock(GrandExchangeOffer.class);
@@ -178,7 +181,7 @@ public class GrandExchangePluginTest
 		savedOffer.setPrice(1000);
 		savedOffer.setSpent(25);
 		savedOffer.setState(GrandExchangeOfferState.BUYING);
-		when(configManager.getRSProfileConfiguration("geoffer", "0")).thenReturn(GSON.toJson(savedOffer));
+		when(configManager.getRSProfileConfiguration("geoffer", "0")).thenReturn(gson.toJson(savedOffer));
 
 		GrandExchangeOffer grandExchangeOffer = mock(GrandExchangeOffer.class);
 		when(grandExchangeOffer.getQuantitySold()).thenReturn(1);
@@ -202,7 +205,7 @@ public class GrandExchangePluginTest
 		savedOffer.setPrice(1000);
 		savedOffer.setSpent(25);
 		savedOffer.setState(GrandExchangeOfferState.BUYING);
-		when(configManager.getRSProfileConfiguration("geoffer", "0")).thenReturn(GSON.toJson(savedOffer));
+		when(configManager.getRSProfileConfiguration("geoffer", "0")).thenReturn(gson.toJson(savedOffer));
 
 		GrandExchangeOffer grandExchangeOffer = mock(GrandExchangeOffer.class);
 		when(grandExchangeOffer.getQuantitySold()).thenReturn(1);
