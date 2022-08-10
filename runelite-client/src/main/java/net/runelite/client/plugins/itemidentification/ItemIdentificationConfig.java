@@ -329,7 +329,7 @@ public interface ItemIdentificationConfig extends Config
 	@ConfigItem(
 			keyName = "showEquipment",
 			name = "Equipment",
-			description = "Show identification on equipement",
+			description = "Show identification on equipment",
 			section = identificationSection
 	)
 	default boolean showEquipment()
