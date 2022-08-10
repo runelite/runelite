@@ -38,10 +38,6 @@ import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
-import net.runelite.api.EquipmentInventorySlot;
-import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
-import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import static net.runelite.api.ItemID.FIRE_CAPE;
 import static net.runelite.api.ItemID.INFERNAL_CAPE;
@@ -58,7 +54,6 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GraphicChanged;
-import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.VarbitChanged;
@@ -133,7 +128,6 @@ public class TimersPlugin extends Plugin
 
 	private TimerTimer staminaTimer;
 
-	private int staffProtectionExpireTick = -1;
 	private int lastRaidVarb;
 	private int lastVengCooldownVarb;
 	private int lastIsVengeancedVarb;
@@ -660,7 +654,6 @@ public class TimersPlugin extends Plugin
 
 		if (config.showStaffOfTheDead() && message.contains(STAFF_OF_THE_DEAD_SPEC_MESSAGE))
 		{
-			staffProtectionExpireTick = client.getTickCount() + 100;
 			createGameTimer(STAFF_OF_THE_DEAD, Duration.of(100, RSTimeUnit.GAME_TICKS));
 		}
 
@@ -1020,39 +1013,6 @@ public class TimersPlugin extends Plugin
 				}
 			}
 		}
-	}
-
-	/**
-	 * Remove/recreate protective effect appropriately when equipment is changed.
-	 */
-	@Subscribe
-	public void onItemContainerChanged(ItemContainerChanged itemContainerChanged)
-	{
-		if (itemContainerChanged.getContainerId() != InventoryID.EQUIPMENT.getId())
-		{
-			return;
-		}
-
-		ItemContainer container = itemContainerChanged.getItemContainer();
-
-		Item weapon = container.getItem(EquipmentInventorySlot.WEAPON.getSlotIdx());
-		if (weapon != null &&
-				(weapon.getId() == ItemID.STAFF_OF_THE_DEAD ||
-						weapon.getId() == ItemID.TOXIC_STAFF_OF_THE_DEAD ||
-						weapon.getId() == ItemID.STAFF_OF_LIGHT ||
-						weapon.getId() == ItemID.STAFF_OF_BALANCE ||
-						weapon.getId() == ItemID.TOXIC_STAFF_UNCHARGED) &&
-				staffProtectionExpireTick > client.getTickCount())
-		{
-			// Recreate timer with remaining duration if a protective staff is re-equipped within 1 minute since activation
-			createGameTimer(STAFF_OF_THE_DEAD, Duration.of((staffProtectionExpireTick - client.getTickCount()), RSTimeUnit.GAME_TICKS));
-		}
-		else
-		{
-			// Remove protection timer otherwise
-			removeGameTimer(STAFF_OF_THE_DEAD);
-		}
-
 	}
 
 	@Subscribe
