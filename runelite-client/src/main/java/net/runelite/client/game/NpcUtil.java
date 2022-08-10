@@ -208,6 +208,11 @@ public class NpcUtil
 			// The Nightmare should be considered alive again once reaching its sleeping form
 			case NpcID.THE_NIGHTMARE:
 			case NpcID.PHOSANIS_NIGHTMARE:
+			// Skotizo's altars should be considered alive again once they "respawn" from their inactive altar forms
+			case NpcID.AWAKENED_ALTAR:
+			case NpcID.AWAKENED_ALTAR_7290:
+			case NpcID.AWAKENED_ALTAR_7292:
+			case NpcID.AWAKENED_ALTAR_7294:
 				npc.setDead(false);
 				break;
 			default:
