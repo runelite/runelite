@@ -9787,6 +9787,7 @@ public final class NpcID
 	public static final int PRIEST_11609 = 11609;
 	public static final int PRIEST_11610 = 11610;
 	public static final int LANTHUS = 11650;
+	public static final int HANNIBAL = 11651;
 	public static final int GILBERT = 11658;
 	public static final int ARENA_GUARD_FRONK = 11664;
 	public static final int ARENA_GUARD_NIKKOLAS = 11665;
