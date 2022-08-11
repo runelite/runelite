@@ -28,7 +28,6 @@ package net.runelite.client.plugins.fishing;
 import lombok.Getter;
 import net.runelite.api.ItemID;
 
-@SuppressWarnings("SpellCheckingInspection")
 @Getter
 public enum FishingTools
 {
