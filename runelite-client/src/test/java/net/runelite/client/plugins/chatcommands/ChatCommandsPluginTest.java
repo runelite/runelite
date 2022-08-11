@@ -1168,4 +1168,53 @@ public class ChatCommandsPluginTest
 
 		verify(configManager, never()).setRSProfileConfiguration(anyString(), anyString(), anyInt());
 	}
+
+	@Test
+	public void testToaKc()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Tombs of Amascut: Expert Mode count is: <col=ff0000>1</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Tombs of Amascut count is: <col=ff0000>2</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Tombs of Amascut: Entry Mode count is: <col=ff0000>3</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("killcount", "tombs of amascut expert mode", 1);
+		verify(configManager).setRSProfileConfiguration("killcount", "tombs of amascut", 2);
+		verify(configManager).setRSProfileConfiguration("killcount", "tombs of amascut entry mode", 3);
+	}
+
+	@Test
+	public void testToaPbNew()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Challenge complete: The Troll. Duration: <col=ef1020>8:30</col><br>Tombs of Amascut challenge completion time: <col=ef1020>8:31</col> (new personal best)", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Tombs of Amascut total completion time: <col=ef1020>0:01</col> (new personal best)", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Tombs of Amascut count is: <col=ff0000>1</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("killcount", "tombs of amascut", 1);
+		verify(configManager).setRSProfileConfiguration("personalbest", "tombs of amascut", 8 * 60 + 31.);
+	}
+
+	@Test
+	public void testToaPb()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Challenge complete: The Troll. Duration: <col=ef1020>9:40</col><br>Tombs of Amascut: Expert Mode challenge completion time: <col=ef1020>9:40</col>. Personal best: 8:31", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Tombs of Amascut total completion time: <col=ef1020>0:01</col> (new personal best)", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Tombs of Amascut: Expert Mode count is: <col=ff0000>1</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("killcount", "tombs of amascut expert mode", 1);
+		verify(configManager).setRSProfileConfiguration("personalbest", "tombs of amascut expert mode", 8 * 60 + 31.);
+	}
 }
