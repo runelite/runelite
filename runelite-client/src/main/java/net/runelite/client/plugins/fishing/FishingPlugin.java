@@ -28,11 +28,7 @@ package net.runelite.client.plugins.fishing;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.AccessLevel;
@@ -134,6 +130,7 @@ public class FishingPlugin extends Plugin
 		overlayManager.add(overlay);
 		overlayManager.add(spotOverlay);
 		overlayManager.add(fishingSpotMinimapOverlay);
+		usableGear = new HashSet<>();
 	}
 
 	@Override
@@ -183,8 +180,8 @@ public class FishingPlugin extends Plugin
 		}
 
 		final boolean showOverlays = session.getLastFishCaught() != null
-			|| canPlayerFish(client.getItemContainer(InventoryID.INVENTORY))
-			|| canPlayerFish(client.getItemContainer(InventoryID.EQUIPMENT));
+			|| canPlayerFish(client.getItemContainer(InventoryID.INVENTORY),
+							 client.getItemContainer(InventoryID.EQUIPMENT));
 
 		if (!showOverlays)
 		{
@@ -242,50 +239,58 @@ public class FishingPlugin extends Plugin
 
 		currentSpot = spot;
 	}
+	@Getter
+	private Set<FishingTools> usableGear;
 
-	private boolean canPlayerFish(final ItemContainer itemContainer)
+	private boolean canPlayerFish(final ItemContainer... itemContainer)
 	{
-		if (itemContainer == null)
-		{
-			return false;
-		}
-
-		for (Item item : itemContainer.getItems())
-		{
-			switch (item.getId())
+		usableGear.clear();
+		for(ItemContainer container : itemContainer){
+			if (container == null)
 			{
-				case ItemID.DRAGON_HARPOON:
-				case ItemID.DRAGON_HARPOON_OR:
-				case ItemID.INFERNAL_HARPOON:
-				case ItemID.INFERNAL_HARPOON_UNCHARGED:
-				case ItemID.INFERNAL_HARPOON_UNCHARGED_25367:
-				case ItemID.HARPOON:
-				case ItemID.BARBTAIL_HARPOON:
-				case ItemID.BIG_FISHING_NET:
-				case ItemID.SMALL_FISHING_NET:
-				case ItemID.SMALL_FISHING_NET_6209:
-				case ItemID.FISHING_ROD:
-				case ItemID.FLY_FISHING_ROD:
-				case ItemID.PEARL_BARBARIAN_ROD:
-				case ItemID.PEARL_FISHING_ROD:
-				case ItemID.PEARL_FLY_FISHING_ROD:
-				case ItemID.BARBARIAN_ROD:
-				case ItemID.OILY_FISHING_ROD:
-				case ItemID.LOBSTER_POT:
-				case ItemID.KARAMBWAN_VESSEL:
-				case ItemID.KARAMBWAN_VESSEL_3159:
-				case ItemID.CORMORANTS_GLOVE:
-				case ItemID.CORMORANTS_GLOVE_22817:
-				case ItemID.INFERNAL_HARPOON_OR:
-				case ItemID.TRAILBLAZER_HARPOON:
-				case ItemID.CRYSTAL_HARPOON:
-				case ItemID.CRYSTAL_HARPOON_23864:
-				case ItemID.CRYSTAL_HARPOON_INACTIVE:
-					return true;
+				break;
+			}
+
+			for (Item item : container.getItems())
+			{
+				int itemID = item.getId();
+				switch (itemID)
+				{
+					case ItemID.DRAGON_HARPOON:
+					case ItemID.DRAGON_HARPOON_OR:
+					case ItemID.INFERNAL_HARPOON:
+					case ItemID.INFERNAL_HARPOON_UNCHARGED:
+					case ItemID.INFERNAL_HARPOON_UNCHARGED_25367:
+					case ItemID.HARPOON:
+					case ItemID.BARBTAIL_HARPOON:
+					case ItemID.BIG_FISHING_NET:
+					case ItemID.SMALL_FISHING_NET:
+					case ItemID.SMALL_FISHING_NET_6209:
+					case ItemID.FISHING_ROD:
+					case ItemID.FLY_FISHING_ROD:
+					case ItemID.PEARL_BARBARIAN_ROD:
+					case ItemID.PEARL_FISHING_ROD:
+					case ItemID.PEARL_FLY_FISHING_ROD:
+					case ItemID.BARBARIAN_ROD:
+					case ItemID.OILY_FISHING_ROD:
+					case ItemID.LOBSTER_POT:
+					case ItemID.KARAMBWAN_VESSEL:
+					case ItemID.KARAMBWAN_VESSEL_3159:
+					case ItemID.CORMORANTS_GLOVE:
+					case ItemID.CORMORANTS_GLOVE_22817:
+					case ItemID.INFERNAL_HARPOON_OR:
+					case ItemID.TRAILBLAZER_HARPOON:
+					case ItemID.CRYSTAL_HARPOON:
+					case ItemID.CRYSTAL_HARPOON_23864:
+					case ItemID.CRYSTAL_HARPOON_INACTIVE:
+					case ItemID.FISHBOWL_AND_NET:
+						usableGear.add(FishingTools.getToolType(itemID));
+				}
 			}
 		}
 
-		return false;
+		// If we've got gear, we can fish
+		return usableGear.size() > 0;
 	}
 
 	@Subscribe

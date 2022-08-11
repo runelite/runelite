@@ -106,6 +106,10 @@ class FishingSpotOverlay extends Overlay
 				continue;
 			}
 
+			if (config.onlyEquippedFor() && !spot.isEquippedToFish(plugin.getUsableGear())){
+				continue;
+			}
+
 			Color color;
 			if (npc.getGraphic() == GraphicID.FLYING_FISH)
 			{
@@ -162,7 +166,12 @@ class FishingSpotOverlay extends Overlay
 
 			if (config.showSpotIcons())
 			{
-				BufferedImage fishImage = itemManager.getImage(spot.getFishSpriteId());
+				BufferedImage fishImage;
+				if (config.onlyEquippedFor()) {
+					fishImage = itemManager.getImage(spot.getFishSpriteId(plugin.getUsableGear()));
+				} else {
+					fishImage = itemManager.getImage(spot.getFishSpriteId());
+				}
 
 				if (spot == FishingSpot.COMMON_TENCH
 					&& npc.getWorldLocation().distanceTo2D(client.getLocalPlayer().getWorldLocation()) <= ONE_TICK_AERIAL_FISHING)
@@ -182,7 +191,12 @@ class FishingSpotOverlay extends Overlay
 
 			if (config.showSpotNames())
 			{
-				String text = spot.getName();
+				String text;
+				if (config.onlyEquippedFor()){
+					text = spot.getFishNames(plugin.getUsableGear());
+				} else {
+					text = spot.getFishNames();
+				}
 				Point textLocation = npc.getCanvasTextLocation(graphics, text, npc.getLogicalHeight() + 40);
 
 				if (textLocation != null)

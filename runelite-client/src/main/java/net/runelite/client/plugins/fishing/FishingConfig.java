@@ -192,4 +192,12 @@ public interface FishingConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			position = 13,
+			keyName = "onlyEquippedFor",
+			name = "Display only spots you're equipped for",
+			description = "Configures whether only tiles relevant to your fishing gear are displayed."
+	)
+	default boolean onlyEquippedFor(){return false;}
 }
