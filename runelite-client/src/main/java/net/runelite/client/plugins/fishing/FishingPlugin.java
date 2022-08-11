@@ -28,7 +28,13 @@ package net.runelite.client.plugins.fishing;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.AccessLevel;
@@ -82,18 +88,13 @@ public class FishingPlugin extends Plugin
 	private static final int TRAWLER_SHIP_REGION_NORMAL = 7499;
 	private static final int TRAWLER_SHIP_REGION_SINKING = 8011;
 	private static final int TRAWLER_TIME_LIMIT_IN_SECONDS = 314;
-
-	private Instant trawlerStartTime;
-
 	@Getter(AccessLevel.PACKAGE)
 	private final FishingSession session = new FishingSession();
-
 	@Getter(AccessLevel.PACKAGE)
 	private final Map<Integer, MinnowSpot> minnowSpots = new HashMap<>();
-
 	@Getter(AccessLevel.PACKAGE)
 	private final List<NPC> fishingSpots = new ArrayList<>();
-
+	private Instant trawlerStartTime;
 	@Getter(AccessLevel.PACKAGE)
 	private FishingSpot currentSpot;
 
@@ -117,6 +118,8 @@ public class FishingPlugin extends Plugin
 
 	@Inject
 	private FishingSpotMinimapOverlay fishingSpotMinimapOverlay;
+	@Getter
+	private Set<FishingTools> usableGear;
 
 	@Provides
 	FishingConfig provideConfig(ConfigManager configManager)
@@ -181,7 +184,7 @@ public class FishingPlugin extends Plugin
 
 		final boolean showOverlays = session.getLastFishCaught() != null
 			|| canPlayerFish(client.getItemContainer(InventoryID.INVENTORY),
-							 client.getItemContainer(InventoryID.EQUIPMENT));
+			client.getItemContainer(InventoryID.EQUIPMENT));
 
 		if (!showOverlays)
 		{
@@ -239,13 +242,12 @@ public class FishingPlugin extends Plugin
 
 		currentSpot = spot;
 	}
-	@Getter
-	private Set<FishingTools> usableGear;
 
 	private boolean canPlayerFish(final ItemContainer... itemContainer)
 	{
 		usableGear.clear();
-		for(ItemContainer container : itemContainer){
+		for (ItemContainer container : itemContainer)
+		{
 			if (container == null)
 			{
 				break;
@@ -468,8 +470,8 @@ public class FishingPlugin extends Plugin
 		final LocalPoint cameraPoint = new LocalPoint(client.getCameraX(), client.getCameraY());
 		fishingSpots.sort(
 			Comparator.comparingInt(
-				// Negate to have the furthest first
-				(NPC npc) -> -npc.getLocalLocation().distanceTo(cameraPoint))
+					// Negate to have the furthest first
+					(NPC npc) -> -npc.getLocalLocation().distanceTo(cameraPoint))
 				// Order by position
 				.thenComparing(NPC::getLocalLocation, Comparator.comparingInt(LocalPoint::getX)
 					.thenComparingInt(LocalPoint::getY))

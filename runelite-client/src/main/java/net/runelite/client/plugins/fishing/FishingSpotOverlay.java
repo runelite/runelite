@@ -106,7 +106,8 @@ class FishingSpotOverlay extends Overlay
 				continue;
 			}
 
-			if (config.onlyEquippedFor() && !spot.isEquippedToFish(plugin.getUsableGear())){
+			if (config.onlyEquippedFor() && !spot.isEquippedToFish(plugin.getUsableGear()))
+			{
 				continue;
 			}
 
@@ -167,9 +168,12 @@ class FishingSpotOverlay extends Overlay
 			if (config.showSpotIcons())
 			{
 				BufferedImage fishImage;
-				if (config.onlyEquippedFor()) {
+				if (config.onlyEquippedFor())
+				{
 					fishImage = itemManager.getImage(spot.getFishSpriteId(plugin.getUsableGear()));
-				} else {
+				}
+				else
+				{
 					fishImage = itemManager.getImage(spot.getFishSpriteId());
 				}
 
@@ -192,9 +196,12 @@ class FishingSpotOverlay extends Overlay
 			if (config.showSpotNames())
 			{
 				String text;
-				if (config.onlyEquippedFor()){
+				if (config.onlyEquippedFor())
+				{
 					text = spot.getFishNames(plugin.getUsableGear());
-				} else {
+				}
+				else
+				{
 					text = spot.getFishNames();
 				}
 				Point textLocation = npc.getCanvasTextLocation(graphics, text, npc.getLogicalHeight() + 40);
