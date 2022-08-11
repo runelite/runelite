@@ -1018,7 +1018,7 @@ public class LootTrackerPlugin extends Plugin
 					int cnt = removedItems.count(itemId);
 					if (cnt > 0)
 					{
-						String name = itemManager.getItemComposition(itemId).getName();
+						String name = itemManager.getItemComposition(itemId).getMembersName();
 						addLoot(name, -1, LootRecordType.EVENT, null, invItems, cnt);
 					}
 				}));
@@ -1248,11 +1248,11 @@ public class LootTrackerPlugin extends Plugin
 		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 		final int gePrice = itemManager.getItemPrice(itemId);
 		final int haPrice = itemComposition.getHaPrice();
-		final boolean ignored = ignoredItems.contains(itemComposition.getName());
+		final boolean ignored = ignoredItems.contains(itemComposition.getMembersName());
 
 		return new LootTrackerItem(
 			itemId,
-			itemComposition.getName(),
+			itemComposition.getMembersName(),
 			quantity,
 			gePrice,
 			haPrice,
