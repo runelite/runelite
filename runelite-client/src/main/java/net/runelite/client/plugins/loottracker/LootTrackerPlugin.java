@@ -286,6 +286,11 @@ public class LootTrackerPlugin extends Plugin
 	);
 	private static final String IMPLING_CATCH_MESSAGE = "You manage to catch the impling and acquire some loot.";
 
+	// Raids
+	private static final String CHAMBERS_OF_XERIC = "Chambers of Xeric";
+	private static final String THEATRE_OF_BLOOD = "Theatre of Blood";
+	private static final String TOMBS_OF_AMASCUT = "Tombs of Amascut";
+
 	private static final Set<Character> VOWELS = ImmutableSet.of('a', 'e', 'i', 'o', 'u');
 
 	@Inject
@@ -670,7 +675,7 @@ public class LootTrackerPlugin extends Plugin
 				{
 					return;
 				}
-				event = "Chambers of Xeric";
+				event = CHAMBERS_OF_XERIC;
 				container = client.getItemContainer(InventoryID.CHAMBERS_OF_XERIC_CHEST);
 				chestLooted = true;
 				break;
@@ -684,8 +689,17 @@ public class LootTrackerPlugin extends Plugin
 				{
 					return;
 				}
-				event = "Theatre of Blood";
+				event = THEATRE_OF_BLOOD;
 				container = client.getItemContainer(InventoryID.THEATRE_OF_BLOOD_CHEST);
+				chestLooted = true;
+				break;
+			case WidgetID.TOA_REWARD_GROUP_ID:
+				if (chestLooted)
+				{
+					return;
+				}
+				event = TOMBS_OF_AMASCUT;
+				container = client.getItemContainer(InventoryID.TOA_REWARD_CHEST);
 				chestLooted = true;
 				break;
 			case (WidgetID.KINGDOM_GROUP_ID):
@@ -726,7 +740,7 @@ public class LootTrackerPlugin extends Plugin
 			.map(item -> new ItemStack(item.getId(), item.getQuantity(), client.getLocalPlayer().getLocalLocation()))
 			.collect(Collectors.toList());
 
-		if (config.showRaidsLootValue() && (event.equals("Theatre of Blood") || event.equals("Chambers of Xeric")))
+		if (config.showRaidsLootValue() && (event.equals(THEATRE_OF_BLOOD) || event.equals(CHAMBERS_OF_XERIC)) || event.equals(TOMBS_OF_AMASCUT))
 		{
 			long totalValue = items.stream()
 				.filter(item -> item.getId() > -1)
