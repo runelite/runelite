@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, Tyler <http://github.com/tylerthardy>
+ * Copyright (c) 2022, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,8 +38,8 @@ import net.runelite.api.annotations.Varbit;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.RunepouchRune;
-import static net.runelite.client.plugins.runepouch.config.RunePouchOverlayMode.BOTH;
-import static net.runelite.client.plugins.runepouch.config.RunePouchOverlayMode.MOUSE_HOVER;
+import static net.runelite.client.plugins.runepouch.RunepouchConfig.RunepouchOverlayMode.BOTH;
+import static net.runelite.client.plugins.runepouch.RunepouchConfig.RunepouchOverlayMode.MOUSE_HOVER;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.WidgetItemOverlay;
@@ -46,13 +47,14 @@ import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 import net.runelite.client.util.ColorUtil;
 
-public class RunepouchOverlay extends WidgetItemOverlay
+class RunepouchOverlay extends WidgetItemOverlay
 {
+	private static final int NUM_SLOTS = 3; // change this for toa
 	private static final int[] AMOUNT_VARBITS = {
-		Varbits.RUNE_POUCH_AMOUNT1, Varbits.RUNE_POUCH_AMOUNT2, Varbits.RUNE_POUCH_AMOUNT3
+		Varbits.RUNE_POUCH_AMOUNT1, Varbits.RUNE_POUCH_AMOUNT2, Varbits.RUNE_POUCH_AMOUNT3, Varbits.RUNE_POUCH_AMOUNT4
 	};
 	private static final int[] RUNE_VARBITS = {
-		Varbits.RUNE_POUCH_RUNE1, Varbits.RUNE_POUCH_RUNE2, Varbits.RUNE_POUCH_RUNE3
+		Varbits.RUNE_POUCH_RUNE1, Varbits.RUNE_POUCH_RUNE2, Varbits.RUNE_POUCH_RUNE3, Varbits.RUNE_POUCH_RUNE4
 	};
 	private static final Dimension IMAGE_SIZE = new Dimension(11, 11);
 
@@ -80,70 +82,152 @@ public class RunepouchOverlay extends WidgetItemOverlay
 			return;
 		}
 
-		assert AMOUNT_VARBITS.length == RUNE_VARBITS.length;
+		RunepouchRune[] runes = new RunepouchRune[NUM_SLOTS];
+		int[] amounts = new int[NUM_SLOTS];
+		int num = 0;
 
-		graphics.setFont(FontManager.getRunescapeSmallFont());
-
-		Point location = widgetItem.getCanvasLocation();
-		StringBuilder tooltipBuilder = new StringBuilder();
-
-		for (int i = 0; i < AMOUNT_VARBITS.length; i++)
+		for (int i = 0; i < NUM_SLOTS; i++)
 		{
 			@Varbit int amountVarbit = AMOUNT_VARBITS[i];
 			int amount = client.getVarbitValue(amountVarbit);
-			if (amount <= 0)
-			{
-				continue;
-			}
+			amounts[i] = amount;
 
 			@Varbit int runeVarbit = RUNE_VARBITS[i];
 			int runeId = client.getVarbitValue(runeVarbit);
 			RunepouchRune rune = RunepouchRune.getRune(runeId);
-			if (rune == null)
+			runes[i] = rune;
+
+			if (amount > 0)
+			{
+				++num;
+			}
+		}
+
+		if (num == 0)
+		{
+			return;
+		}
+
+		final RunepouchConfig.RunepouchOverlayMode overlayMode = config.runePouchOverlayMode();
+		if (overlayMode != MOUSE_HOVER)
+		{
+			if (num < 4)
+			{
+				renderList(graphics, widgetItem, runes, amounts);
+			}
+			else
+			{
+				renderGrid(graphics, widgetItem, runes, amounts);
+			}
+		}
+
+		final Point mousePos = client.getMouseCanvasPosition();
+		if (widgetItem.getCanvasBounds().contains(mousePos.getX(), mousePos.getY())
+			&& (overlayMode == MOUSE_HOVER || overlayMode == BOTH))
+		{
+			final StringBuilder tooltipBuilder = new StringBuilder();
+			for (int i = 0; i < NUM_SLOTS; ++i)
+			{
+				final RunepouchRune rune = runes[i];
+				final int amount = amounts[i];
+				if (rune != null && amount > 0)
+				{
+					tooltipBuilder
+						.append(amount)
+						.append(' ')
+						.append(ColorUtil.wrapWithColorTag(rune.getName(), Color.YELLOW))
+						.append("</br>");
+				}
+			}
+
+			final String tooltip = tooltipBuilder.toString();
+			tooltipManager.add(new Tooltip(tooltip));
+		}
+	}
+
+	private void renderList(Graphics2D graphics, WidgetItem widgetItem, RunepouchRune[] runes, int[] amounts)
+	{
+		graphics.setFont(FontManager.getRunescapeSmallFont());
+
+		final Point location = widgetItem.getCanvasLocation();
+		int runeNum = -1;
+		for (int i = 0; i < NUM_SLOTS; ++i)
+		{
+			final RunepouchRune rune = runes[i];
+			final int amount = amounts[i];
+
+			if (rune == null || amount <= 0)
 			{
 				continue;
 			}
 
-			tooltipBuilder
-				.append(amount)
-				.append(' ')
-				.append(ColorUtil.wrapWithColorTag(rune.getName(), Color.YELLOW))
-				.append("</br>");
+			++runeNum;
 
-			if (config.runePouchOverlayMode() == MOUSE_HOVER)
-			{
-				continue;
-			}
+			final String text = formatNumber(amount);
+			final int textX = location.getX() + 11;
+			final int textY = location.getY() + 12 + (graphics.getFontMetrics().getHeight() - 1) * runeNum;
 
-			graphics.setColor(Color.black);
-			graphics.drawString("" + formatNumber(amount), location.getX() + (config.showIcons() ? 12 : 5),
-				location.getY() + 13 + (graphics.getFontMetrics().getHeight() - 1) * i);
+			graphics.setColor(Color.BLACK);
+			graphics.drawString(text, textX + 1, textY + 1);
 
 			graphics.setColor(config.fontColor());
-			graphics.drawString("" + formatNumber(amount), location.getX() + (config.showIcons() ? 11 : 4),
-				location.getY() + 12 + (graphics.getFontMetrics().getHeight() - 1) * i);
-
-			if (!config.showIcons())
-			{
-				continue;
-			}
+			graphics.drawString(text, textX, textY);
 
 			BufferedImage image = getRuneImage(rune);
 			if (image != null)
 			{
 				OverlayUtil.renderImageLocation(graphics,
-					new Point(location.getX() - 1, location.getY() + graphics.getFontMetrics().getHeight() * i - 1),
+					new Point(
+						location.getX() - 1,
+						location.getY() + graphics.getFontMetrics().getHeight() * runeNum - 1
+					),
 					image);
 			}
 		}
+	}
 
-		String tooltip = tooltipBuilder.toString();
-
-		if (!tooltip.isEmpty()
-			&& widgetItem.getCanvasBounds().contains(client.getMouseCanvasPosition().getX(), client.getMouseCanvasPosition().getY())
-			&& (config.runePouchOverlayMode() == MOUSE_HOVER || config.runePouchOverlayMode() == BOTH))
+	private void renderGrid(Graphics2D graphics, WidgetItem widgetItem, RunepouchRune[] runes, int[] amounts)
+	{
+		final Point location = widgetItem.getCanvasLocation();
+		for (int i = 0; i < NUM_SLOTS; ++i)
 		{
-			tooltipManager.add(new Tooltip(tooltip));
+			final RunepouchRune rune = runes[i];
+			final int amount = amounts[i];
+
+			if (rune == null || amount <= 0)
+			{
+				continue;
+			}
+
+			final int iconX = location.getX() + 2 + (i == 1 || i == 3 ? IMAGE_SIZE.width + 2 /* pad */ + 2 /* bar offset */ : 0);
+			final int iconY = location.getY() + 5 + (i >= 2 ? IMAGE_SIZE.height + 2 /* pad */ : 0);
+
+			BufferedImage image = getRuneImage(rune);
+			if (image != null)
+			{
+				OverlayUtil.renderImageLocation(graphics,
+					new Point(iconX, iconY),
+					image);
+			}
+
+			final int height;
+			final Color color;
+
+			if (amount < 1000)
+			{
+				// with <1k runes, the bar is shown in red with 100 increments
+				height = amount / 100;
+				color = Color.RED;
+			}
+			else
+			{
+				// with >=1k runes, the bar is shown in 1000 increments capped at 10k
+				height = Math.min(10, amount / 1000);
+				color = Color.GREEN;
+			}
+
+			graphics.setColor(color);
+			graphics.fillRect(iconX + IMAGE_SIZE.width, iconY + 1 + (10 - height), 2, height);
 		}
 	}
 
