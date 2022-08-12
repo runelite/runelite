@@ -27,5 +27,6 @@ package net.runelite.client.plugins.loottracker;
 public enum LootTrackerPriceType
 {
 	GRAND_EXCHANGE,
-	HIGH_ALCHEMY
+	HIGH_ALCHEMY,
+	LOW_ALCHEMY
 }

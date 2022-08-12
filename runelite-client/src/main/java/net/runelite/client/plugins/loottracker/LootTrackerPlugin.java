@@ -1247,6 +1247,7 @@ public class LootTrackerPlugin extends Plugin
 	{
 		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 		final int gePrice = itemManager.getItemPrice(itemId);
+		final int laPrice = (int)(itemComposition.getPrice() * .4f);
 		final int haPrice = itemComposition.getHaPrice();
 		final boolean ignored = ignoredItems.contains(itemComposition.getMembersName());
 
@@ -1255,6 +1256,7 @@ public class LootTrackerPlugin extends Plugin
 			itemComposition.getMembersName(),
 			quantity,
 			gePrice,
+			laPrice,
 			haPrice,
 			ignored);
 	}
