@@ -330,11 +330,19 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("value", "buy 5", () -> shiftModifier() && config.shopBuy() == BuyMode.BUY_5);
 		swap("value", "buy 10", () -> shiftModifier() && config.shopBuy() == BuyMode.BUY_10);
 		swap("value", "buy 50", () -> shiftModifier() && config.shopBuy() == BuyMode.BUY_50);
+		swap("value", "buy-1", () -> shiftModifier() && config.shopBuy() == BuyMode.BUY_1);
+		swap("value", "buy-5", () -> shiftModifier() && config.shopBuy() == BuyMode.BUY_5);
+		swap("value", "buy-10", () -> shiftModifier() && config.shopBuy() == BuyMode.BUY_10);
+		swap("value", "buy-50", () -> shiftModifier() && config.shopBuy() == BuyMode.BUY_50);
 
 		swap("value", "sell 1", () -> shiftModifier() && config.shopSell() == SellMode.SELL_1);
 		swap("value", "sell 5", () -> shiftModifier() && config.shopSell() == SellMode.SELL_5);
 		swap("value", "sell 10", () -> shiftModifier() && config.shopSell() == SellMode.SELL_10);
 		swap("value", "sell 50", () -> shiftModifier() && config.shopSell() == SellMode.SELL_50);
+		swap("value", "sell-1", () -> shiftModifier() && config.shopSell() == SellMode.SELL_1);
+		swap("value", "sell-5", () -> shiftModifier() && config.shopSell() == SellMode.SELL_5);
+		swap("value", "sell-10", () -> shiftModifier() && config.shopSell() == SellMode.SELL_10);
+		swap("value", "sell-50", () -> shiftModifier() && config.shopSell() == SellMode.SELL_50);
 
 		swap("wear", "tele to poh", config::swapTeleToPoh);
 
