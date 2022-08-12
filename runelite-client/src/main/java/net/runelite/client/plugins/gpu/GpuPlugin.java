@@ -90,7 +90,7 @@ import org.lwjgl.system.Configuration;
 public class GpuPlugin extends Plugin implements DrawCallbacks
 {
 	// This is the maximum number of triangles the compute shaders support
-	static final int MAX_TRIANGLE = 4096;
+	static final int MAX_TRIANGLE = 6144;
 	static final int SMALL_TRIANGLE_COUNT = 512;
 	private static final int FLAG_SCENE_BUFFER = Integer.MIN_VALUE;
 	private static final int DEFAULT_DISTANCE = 25;
@@ -238,11 +238,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int viewportOffsetX;
 	private int viewportOffsetY;
 
-	// fields for non-compute draw
-	private boolean drawingModel;
-	private int modelX, modelY, modelZ;
-	private int modelOrientation;
-
 	// Uniforms
 	private int uniColorBlindMode;
 	private int uniUiColorBlindMode;
@@ -278,7 +273,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				fboSceneHandle = rboSceneHandle = -1; // AA FBO
 				targetBufferOffset = 0;
 				unorderedModels = smallModels = largeModels = 0;
-				drawingModel = false;
 
 				AWTContext.loadNatives();
 
@@ -323,6 +317,11 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				{
 					log.info("disabling compute shaders because OpenGL 4.3 is not available");
 					computeMode = ComputeMode.NONE;
+				}
+
+				if (computeMode == ComputeMode.NONE)
+				{
+					sceneUploader.initSortingBuffers();
 				}
 
 				lwjglInitted = true;
@@ -423,6 +422,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			client.setGpu(false);
 			client.setDrawCallbacks(null);
 			client.setUnlockedFps(false);
+
+			sceneUploader.releaseSortingBuffers();
 
 			if (lwjglInitted)
 			{
@@ -553,7 +554,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 		if (computeMode == ComputeMode.OPENGL)
 		{
-			glComputeProgram = COMPUTE_PROGRAM.compile(createTemplate(1024, 4));
+			glComputeProgram = COMPUTE_PROGRAM.compile(createTemplate(1024, 6));
 			glSmallComputeProgram = SMALL_COMPUTE_PROGRAM.compile(createTemplate(512, 1));
 			glUnorderedComputeProgram = UNORDERED_COMPUTE_PROGRAM.compile(template);
 		}
@@ -1503,14 +1504,30 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	{
 		if (computeMode == ComputeMode.NONE)
 		{
-			modelX = x + client.getCameraX2();
-			modelY = y + client.getCameraY2();
-			modelZ = z + client.getCameraZ2();
-			modelOrientation = orientation;
+			Model model = renderable instanceof Model ? (Model) renderable : renderable.getModel();
+			if (model != null)
+			{
+				// Apply height to renderable from the model
+				if (model != renderable)
+				{
+					renderable.setModelHeight(model.getModelHeight());
+				}
 
-			drawingModel = true;
-			renderable.draw(orientation, pitchSin, pitchCos, yawSin, yawCos, x, y, z, hash);
-			drawingModel = false;
+				if (!isVisible(model, pitchSin, pitchCos, yawSin, yawCos, x, y, z))
+				{
+					return;
+				}
+
+				model.calculateExtreme(orientation);
+				client.checkClickbox(model, orientation, pitchSin, pitchCos, yawSin, yawCos, x, y, z, hash);
+
+				targetBufferOffset += sceneUploader.pushSortedModel(
+					model, orientation,
+					pitchSin, pitchCos,
+					yawSin, yawCos,
+					x, y, z,
+					vertexBuffer, uvBuffer);
+			}
 		}
 		// Model may be in the scene buffer
 		else if (renderable instanceof Model && ((Model) renderable).getSceneId() == sceneUploader.sceneId)
@@ -1590,15 +1607,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	@Override
 	public boolean drawFace(Model model, int face)
 	{
-		if (!drawingModel)
-		{
-			return false;
-		}
-
-		vertexBuffer.ensureCapacity(12);
-		uvBuffer.ensureCapacity(12);
-		targetBufferOffset += sceneUploader.pushFace(model, face, true, vertexBuffer, uvBuffer, modelX, modelY, modelZ, modelOrientation);
-		return true;
+		return false;
 	}
 
 	/**

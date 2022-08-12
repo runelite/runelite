@@ -73,9 +73,11 @@ public final class Varbits
 	public static final int RUNE_POUCH_RUNE1 = 29;
 	public static final int RUNE_POUCH_RUNE2 = 1622;
 	public static final int RUNE_POUCH_RUNE3 = 1623;
+	public static final int RUNE_POUCH_RUNE4 = 14285;
 	public static final int RUNE_POUCH_AMOUNT1 = 1624;
 	public static final int RUNE_POUCH_AMOUNT2 = 1625;
 	public static final int RUNE_POUCH_AMOUNT3 = 1626;
+	public static final int RUNE_POUCH_AMOUNT4 = 14286;
 
 	/**
 	 * Prayers

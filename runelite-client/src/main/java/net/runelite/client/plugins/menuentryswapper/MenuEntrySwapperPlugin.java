@@ -841,7 +841,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 							.onClick(e ->
 							{
 								final String message = new ChatMessageBuilder()
-									.append("The default worn left click option for '").append(itemComposition.getName()).append("' ")
+									.append("The default worn left click option for '").append(itemComposition.getMembersName()).append("' ")
 									.append("has been reset.")
 									.build();
 
@@ -850,7 +850,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 									.runeLiteFormattedMessage(message)
 									.build());
 
-								log.debug("Unset worn item left swap for {}", itemComposition.getName());
+								log.debug("Unset worn item left swap for {}", itemComposition.getMembersName());
 								unsetWornItemSwapConfig(false, itemComposition.getId());
 							});
 					}
@@ -863,7 +863,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 							.onClick(e ->
 							{
 								final String message = new ChatMessageBuilder()
-									.append("The default worn shift click option for '").append(itemComposition.getName()).append("' ")
+									.append("The default worn shift click option for '").append(itemComposition.getMembersName()).append("' ")
 									.append("has been reset.")
 									.build();
 
@@ -872,7 +872,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 									.runeLiteFormattedMessage(message)
 									.build());
 
-								log.debug("Unset worn item shift swap for {}", itemComposition.getName());
+								log.debug("Unset worn item shift swap for {}", itemComposition.getMembersName());
 								unsetWornItemSwapConfig(true, itemComposition.getId());
 							});
 					}
@@ -887,7 +887,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		return e ->
 		{
 			final String message = new ChatMessageBuilder()
-				.append("The default worn ").append(shift ? "shift" : "left").append(" click option for '").append(Text.removeTags(itemComposition.getName())).append("' ")
+				.append("The default worn ").append(shift ? "shift" : "left").append(" click option for '").append(Text.removeTags(itemComposition.getMembersName())).append("' ")
 				.append("has been set to '").append(opName).append("'.")
 				.build();
 
@@ -896,7 +896,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 				.runeLiteFormattedMessage(message)
 				.build());
 
-			log.debug("Set worn item {} swap for {} to {}", shift ? "shift" : "left", itemComposition.getName(), opIdx);
+			log.debug("Set worn item {} swap for {} to {}", shift ? "shift" : "left", itemComposition.getMembersName(), opIdx);
 			setWornItemSwapConfig(shift, itemComposition.getId(), opIdx);
 		};
 	}
@@ -988,7 +988,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 							.onClick(e ->
 							{
 								final String message = new ChatMessageBuilder()
-									.append("The default held left click option for '").append(itemComposition.getName()).append("' ")
+									.append("The default held left click option for '").append(itemComposition.getMembersName()).append("' ")
 									.append("has been reset.")
 									.build();
 
@@ -997,7 +997,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 									.runeLiteFormattedMessage(message)
 									.build());
 
-								log.debug("Unset held item left swap for {}", itemComposition.getName());
+								log.debug("Unset held item left swap for {}", itemComposition.getMembersName());
 								unsetItemSwapConfig(false, itemComposition.getId());
 							});
 					}
@@ -1010,7 +1010,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 							.onClick(e ->
 							{
 								final String message = new ChatMessageBuilder()
-									.append("The default held shift click option for '").append(itemComposition.getName()).append("' ")
+									.append("The default held shift click option for '").append(itemComposition.getMembersName()).append("' ")
 									.append("has been reset.")
 									.build();
 
@@ -1019,7 +1019,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 									.runeLiteFormattedMessage(message)
 									.build());
 
-								log.debug("Unset held item shift swap for {}", itemComposition.getName());
+								log.debug("Unset held item shift swap for {}", itemComposition.getMembersName());
 								unsetItemSwapConfig(true, itemComposition.getId());
 							});
 					}
@@ -1034,7 +1034,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		return e ->
 		{
 			final String message = new ChatMessageBuilder()
-				.append("The default held ").append(shift ? "shift" : "left").append(" click option for '").append(Text.removeTags(itemComposition.getName())).append("' ")
+				.append("The default held ").append(shift ? "shift" : "left").append(" click option for '").append(Text.removeTags(itemComposition.getMembersName())).append("' ")
 				.append("has been set to '").append(opName).append("'.")
 				.build();
 
@@ -1043,7 +1043,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 				.runeLiteFormattedMessage(message)
 				.build());
 
-			log.debug("Set held item {} swap for {} to {}", shift ? "shift" : "left", itemComposition.getName(), opIdx);
+			log.debug("Set held item {} swap for {} to {}", shift ? "shift" : "left", itemComposition.getMembersName(), opIdx);
 			setItemSwapConfig(shift, itemComposition.getId(), opIdx);
 		};
 	}
