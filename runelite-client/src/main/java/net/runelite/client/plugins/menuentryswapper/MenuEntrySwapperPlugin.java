@@ -220,8 +220,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("pass", "energy barrier", "pay-toll(2-ecto)", config::swapTravel);
 		swap("open", "gate", "pay-toll(10gp)", config::swapTravel);
 
-		swap("open", "hardwood grove doors", "quick-pay(100)", config::swapHardWoodGrove);
-
 		swap("inspect", "trapdoor", "travel", config::swapTravel);
 		swap("board", "travel cart", "pay-fare", config::swapTravel);
 

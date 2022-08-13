@@ -349,17 +349,6 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "swapHardWoodGrove",
-		name = "Hardwood Grove Quick-Pay",
-		description = "Swap Quick-Pay(100) at the Hardwood Grove",
-		section = objectSection
-	)
-	default boolean swapHardWoodGrove()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "swapHardWoodGroveParcel",
 		name = "Hardwood Grove Send-Parcel",
 		description = "Swap Send-Parcel at the Hardwood Grove",
