@@ -272,17 +272,6 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "swapDarkMage",
-		name = "Repairs",
-		description = "Swap Talk-to with Repairs for Dark Mage",
-		section = npcSection
-	)
-	default boolean swapDarkMage()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "swapCaptainKhaled",
 		name = "Task",
 		description = "Swap Talk-to with Task for Captain Khaled in Port Piscarilius",
