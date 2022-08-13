@@ -360,10 +360,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		swap("tan 1", "tan all", config::swapTan);
 
-		swapTeleport("varrock teleport", "grand exchange");
-		swapTeleport("camelot teleport", "seers'");
-		swapTeleport("watchtower teleport", "yanille");
-
 		swapHouseTeleport("cast", () -> shiftModifier() && config.swapHouseTeleportSpell() == MenuEntrySwapperConfig.HouseTeleportMode.CAST);
 		swapHouseTeleport("outside", () -> shiftModifier() && config.swapHouseTeleportSpell() == MenuEntrySwapperConfig.HouseTeleportMode.OUTSIDE);
 		swapHouseTeleport("group: choose", () -> shiftModifier() && config.swapHouseTeleportSpell() == MenuEntrySwapperConfig.HouseTeleportMode.GROUP_CHOOSE);
@@ -391,12 +387,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private void swapContains(String option, Predicate<String> targetPredicate, String swappedOption, Supplier<Boolean> enabled)
 	{
 		swaps.put(option, new Swap(alwaysTrue(), targetPredicate, swappedOption, enabled, false));
-	}
-
-	private void swapTeleport(String option, String swappedOption)
-	{
-		swap("cast", option, swappedOption, () -> shiftModifier() && config.swapTeleportSpell());
-		swap(swappedOption, option, "cast", () -> shiftModifier() && config.swapTeleportSpell());
 	}
 
 	private void swapHouseTeleport(String swappedOption, Supplier<Boolean> enabled)

@@ -553,17 +553,6 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "swapTeleportSpell",
-		name = "Shift-click teleport spells",
-		description = "Swap teleport spells that have a second destination, except for teleport to house, on shift",
-		section = uiSection
-	)
-	default boolean swapTeleportSpell()
-	{
-		return false;
-	}
-
-	@ConfigItem(
 		keyName = "swapGEItemCollect",
 		name = "GE Item Collect",
 		description = "Swap Collect-notes, Collect-items, or Bank options from GE offer",

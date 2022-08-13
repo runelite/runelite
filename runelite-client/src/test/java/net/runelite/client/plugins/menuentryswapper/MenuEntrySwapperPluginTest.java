@@ -50,7 +50,6 @@ import org.mockito.ArgumentCaptor;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import org.mockito.Mock;
-import static org.mockito.Mockito.clearInvocations;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
@@ -234,59 +233,6 @@ public class MenuEntrySwapperPluginTest
 			menu("Pay (south)", "Kragen", MenuAction.NPC_FOURTH_OPTION),
 			menu("Talk-to", "Kragen", MenuAction.NPC_FIRST_OPTION),
 			menu("Pay (north)", "Kragen", MenuAction.NPC_THIRD_OPTION),
-		}, argumentCaptor.getValue());
-	}
-
-	@Test
-	public void testTeleport()
-	{
-		when(config.swapTeleportSpell()).thenReturn(true);
-		when(client.isKeyPressed(KeyCode.KC_SHIFT)).thenReturn(true);
-
-		// Cast -> Grand Exchange
-		entries = new MenuEntry[]{
-			menu("Cancel", "", MenuAction.CANCEL),
-
-			menu("Configure", "Varrock Teleport", MenuAction.WIDGET_THIRD_OPTION),
-			menu("Grand Exchange", "Varrock Teleport", MenuAction.WIDGET_SECOND_OPTION),
-			menu("Cast", "Varrock Teleport", MenuAction.WIDGET_FIRST_OPTION),
-		};
-
-		menuEntrySwapperPlugin.onClientTick(new ClientTick());
-
-		ArgumentCaptor<MenuEntry[]> argumentCaptor = ArgumentCaptor.forClass(MenuEntry[].class);
-		verify(client).setMenuEntries(argumentCaptor.capture());
-
-		assertArrayEquals(new MenuEntry[]{
-			menu("Cancel", "", MenuAction.CANCEL),
-
-			menu("Configure", "Varrock Teleport", MenuAction.WIDGET_THIRD_OPTION),
-			menu("Cast", "Varrock Teleport", MenuAction.WIDGET_FIRST_OPTION),
-			menu("Grand Exchange", "Varrock Teleport", MenuAction.WIDGET_SECOND_OPTION),
-		}, argumentCaptor.getValue());
-
-		clearInvocations(client);
-
-		// Grand Exchange -> Cast
-		entries = new MenuEntry[]{
-			menu("Cancel", "", MenuAction.CANCEL),
-
-			menu("Configure", "Varrock Teleport", MenuAction.WIDGET_THIRD_OPTION),
-			menu("Cast", "Varrock Teleport", MenuAction.WIDGET_SECOND_OPTION),
-			menu("Grand Exchange", "Varrock Teleport", MenuAction.WIDGET_FIRST_OPTION),
-		};
-
-		menuEntrySwapperPlugin.onClientTick(new ClientTick());
-
-		argumentCaptor = ArgumentCaptor.forClass(MenuEntry[].class);
-		verify(client).setMenuEntries(argumentCaptor.capture());
-
-		assertArrayEquals(new MenuEntry[]{
-			menu("Cancel", "", MenuAction.CANCEL),
-
-			menu("Configure", "Varrock Teleport", MenuAction.WIDGET_THIRD_OPTION),
-			menu("Grand Exchange", "Varrock Teleport", MenuAction.WIDGET_FIRST_OPTION),
-			menu("Cast", "Varrock Teleport", MenuAction.WIDGET_SECOND_OPTION),
 		}, argumentCaptor.getValue());
 	}
 
