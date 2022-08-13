@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.menuentryswapper;
 
-import lombok.RequiredArgsConstructor;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -522,34 +521,6 @@ public interface MenuEntrySwapperConfig extends Config
 	default boolean swapTravel()
 	{
 		return true;
-	}
-
-	@RequiredArgsConstructor
-	enum HouseTeleportMode
-	{
-		CAST("Cast"),
-		OUTSIDE("Outside"),
-		GROUP_CHOOSE("Group: Choose"),
-		GROUP_PREVIOUS("Group: Previous");
-
-		private final String name;
-
-		@Override
-		public String toString()
-		{
-			return name;
-		}
-	}
-
-	@ConfigItem(
-		keyName = "swapHouseTeleportSpell",
-		name = "House teleport",
-		description = "Swap house teleport spell to a different destination on shift",
-		section = uiSection
-	)
-	default HouseTeleportMode swapHouseTeleportSpell()
-	{
-		return HouseTeleportMode.OUTSIDE;
 	}
 
 	@ConfigItem(
