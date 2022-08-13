@@ -255,8 +255,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		swap("interact", target -> target.endsWith("birdhouse"), "empty", config::swapBirdhouseEmpty);
 
-		swap("enter", "the gauntlet", "enter-corrupted", config::swapGauntlet);
-
 		swap("enter", "quick-enter", config::swapQuick);
 		swap("enter-crypt", "quick-enter", config::swapQuick);
 		swap("ring", "quick-start", config::swapQuick);

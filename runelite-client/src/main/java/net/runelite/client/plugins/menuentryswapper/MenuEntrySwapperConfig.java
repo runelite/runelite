@@ -751,17 +751,6 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "swapGauntlet",
-		name = "Corrupted Gauntlet",
-		description = "Swap Enter with Enter-corrupted when entering The Gauntlet",
-		section = objectSection
-	)
-	default boolean swapGauntlet()
-	{
-		return false;
-	}
-
-	@ConfigItem(
 		keyName = "swapTan",
 		name = "Tan",
 		description = "Swap Tan 1 with Tan All",
