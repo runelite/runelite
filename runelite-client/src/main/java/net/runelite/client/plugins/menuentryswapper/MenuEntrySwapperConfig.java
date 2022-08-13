@@ -272,17 +272,6 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "swapCaptainKhaled",
-		name = "Task",
-		description = "Swap Talk-to with Task for Captain Khaled in Port Piscarilius",
-		section = npcSection
-	)
-	default boolean swapCaptainKhaled()
-	{
-		return false;
-	}
-
-	@ConfigItem(
 		keyName = "swapExchange",
 		name = "Exchange",
 		description = "Swap Talk-to with Exchange on NPC<br>Example: Grand Exchange Clerk, Tool Leprechaun, Void Knight",
