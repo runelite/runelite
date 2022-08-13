@@ -415,17 +415,6 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "swapHouseAdvertisement",
-		name = "House Advertisement",
-		description = "Swap View with Add-House or Visit-Last on House Advertisement board",
-		section = objectSection
-	)
-	default HouseAdvertisementMode swapHouseAdvertisement()
-	{
-		return HouseAdvertisementMode.VIEW;
-	}
-
-	@ConfigItem(
 		keyName = "swapPay",
 		name = "Pay",
 		description = "Swap Talk-to with Pay on NPC<br>Example: Elstan, Heskel, Fayeth",
