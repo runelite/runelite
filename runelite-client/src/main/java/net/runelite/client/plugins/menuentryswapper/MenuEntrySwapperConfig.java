@@ -685,17 +685,6 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "swapNets",
-		name = "Nets",
-		description = "Swap Talk-to with Nets on Annette",
-		section = npcSection
-	)
-	default boolean swapNets()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "swapTan",
 		name = "Tan",
 		description = "Swap Tan 1 with Tan All",

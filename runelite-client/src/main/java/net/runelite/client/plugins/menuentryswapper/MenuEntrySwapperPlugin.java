@@ -181,7 +181,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("talk-to", "bank", config::swapBank);
 		swap("talk-to", "exchange", config::swapExchange);
 		swap("talk-to", "help", config::swapHelp);
-		swap("talk-to", "nets", config::swapNets);
 		swap("talk-to", "repairs", config::swapDarkMage);
 		// make sure assignment swap is higher priority than trade swap for slayer masters
 		swap("talk-to", "assignment", config::swapAssignment);
