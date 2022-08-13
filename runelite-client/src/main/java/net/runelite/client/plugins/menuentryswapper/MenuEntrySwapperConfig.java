@@ -549,7 +549,7 @@ public interface MenuEntrySwapperConfig extends Config
 		keyName = "bankWithdrawShiftClick",
 		name = "Bank Withdraw Shift-Click",
 		description = "Swaps the behavior of shift-click when withdrawing from bank.",
-		section = itemSection
+		section = uiSection
 	)
 	default ShiftWithdrawMode bankWithdrawShiftClick()
 	{
@@ -560,7 +560,7 @@ public interface MenuEntrySwapperConfig extends Config
 		keyName = "bankDepositShiftClick",
 		name = "Bank Deposit Shift-Click",
 		description = "Swaps the behavior of shift-click when depositing to bank.",
-		section = itemSection
+		section = uiSection
 	)
 	default ShiftDepositMode bankDepositShiftClick()
 	{
