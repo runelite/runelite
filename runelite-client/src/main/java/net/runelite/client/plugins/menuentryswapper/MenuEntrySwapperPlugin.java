@@ -206,7 +206,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("talk-to", "transport", config::swapTravel);
 		swap("talk-to", "pay", config::swapPay);
 		swapContains("talk-to", alwaysTrue(), "pay (", config::swapPay);
-		swap("talk-to", "decant", config::swapDecant);
 		swap("talk-to", "quick-travel", config::swapQuick);
 		swap("talk-to", "enchant", config::swapEnchant);
 		swap("talk-to", "start-minigame", config::swapStartMinigame);

@@ -294,17 +294,6 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "swapDecant",
-		name = "Decant",
-		description = "Swap Talk-to with Decant for Bob Barter and Murky Matt at the Grand Exchange.",
-		section = npcSection
-	)
-	default boolean swapDecant()
-	{
-		return false;
-	}
-
-	@ConfigItem(
 		keyName = "swapExchange",
 		name = "Exchange",
 		description = "Swap Talk-to with Exchange on NPC<br>Example: Grand Exchange Clerk, Tool Leprechaun, Void Knight",
