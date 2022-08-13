@@ -828,17 +828,6 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "swapRockCake",
-		name = "Dwarven rock cake",
-		description = "Swap Eat with Guzzle on the Dwarven rock cake",
-		section = itemSection
-	)
-	default boolean swapRockCake()
-	{
-		return false;
-	}
-
-	@ConfigItem(
 		keyName = "swapRowboatDive",
 		name = "Fossil Island Rowboat Dive",
 		description = "Swap Travel with Dive on the rowboat found on the small island north-east of Fossil Island",
