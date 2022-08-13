@@ -586,17 +586,6 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "swapStartMinigame",
-		name = "Pyramid Plunder Start-minigame",
-		description = "Swap Talk-to with Start-minigame at the Guardian Mummy",
-		section = npcSection
-	)
-	default boolean swapStartMinigame()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "swapGEItemCollect",
 		name = "GE Item Collect",
 		description = "Swap Collect-notes, Collect-items, or Bank options from GE offer",
