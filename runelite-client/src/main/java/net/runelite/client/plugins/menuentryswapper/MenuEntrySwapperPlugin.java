@@ -180,7 +180,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("talk-to", "rionasta", "send-parcel", config::swapHardWoodGroveParcel);
 		swap("talk-to", "captain khaled", "task", config::swapCaptainKhaled);
 		swap("talk-to", "bank", config::swapBank);
-		swap("talk-to", "contract", config::swapContract);
 		swap("talk-to", "exchange", config::swapExchange);
 		swap("talk-to", "help", config::swapHelp);
 		swap("talk-to", "nets", config::swapNets);
