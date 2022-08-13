@@ -557,17 +557,6 @@ public interface MenuEntrySwapperConfig extends Config
 		return true;
 	}
 
-	@ConfigItem(
-		keyName = "swapEnchant",
-		name = "Enchant",
-		description = "Swap Talk-to with Enchant for Eluned",
-		section = npcSection
-	)
-	default boolean swapEnchant()
-	{
-		return true;
-	}
-
 	@RequiredArgsConstructor
 	enum HouseTeleportMode
 	{
