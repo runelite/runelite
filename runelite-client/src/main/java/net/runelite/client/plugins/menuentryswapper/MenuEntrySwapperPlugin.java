@@ -365,8 +365,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		swap("clean", "use", config::swapHerbs);
 
-		swap("read", "recite-prayer", config::swapPrayerBook);
-
 		swap("collect-note", "collect-item", () -> config.swapGEItemCollect() == GEItemCollectMode.ITEMS);
 		swap("collect-notes", "collect-items", () -> config.swapGEItemCollect() == GEItemCollectMode.ITEMS);
 
