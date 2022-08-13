@@ -1084,7 +1084,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 					final Integer leftClick = getUiSwapConfig(false, componentId, itemId);
 					final Integer shiftClick = getUiSwapConfig(true, componentId, itemId);
 
-					if (!"Examine".equalsIgnoreCase(entry.getOption())) {
+					if (!"Examine".equalsIgnoreCase(entry.getOption()))
+					{
 						if (identifier != lowestOp + 1 && (leftClick == null || leftClick != identifier))
 						{
 							client.createMenuEntry(1 + shiftOff)
