@@ -217,9 +217,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("talk-to", "deposit-items", config::swapDepositItems);
 		swap("talk-to", TEMPOROSS_NPCS::contains, "leave", config::swapTemporossLeave);
 
-		swap("leave tomb", "quick-leave", config::swapQuickLeave);
-		swap("tomb door", "quick-leave", config::swapQuickLeave);
-
 		swap("pass", "energy barrier", "pay-toll(2-ecto)", config::swapTravel);
 		swap("open", "gate", "pay-toll(10gp)", config::swapTravel);
 

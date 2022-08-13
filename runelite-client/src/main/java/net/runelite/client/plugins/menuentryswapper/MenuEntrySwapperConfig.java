@@ -674,17 +674,6 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "swapQuickleave",
-		name = "Quick-Leave",
-		description = "Swap Leave Tomb with Quick-Leave at Pyramid Plunder",
-		section = objectSection
-	)
-	default boolean swapQuickLeave()
-	{
-		return false;
-	}
-
-	@ConfigItem(
 		keyName = "swapGEItemCollect",
 		name = "GE Item Collect",
 		description = "Swap Collect-notes, Collect-items, or Bank options from GE offer",
