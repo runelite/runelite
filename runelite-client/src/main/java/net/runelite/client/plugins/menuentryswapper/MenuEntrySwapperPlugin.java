@@ -301,13 +301,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		swap("view offer", "abort offer", () -> shiftModifier() && config.swapGEAbort());
 
-		Arrays.asList(
-			"honest jimmy", "bert the sandman", "advisor ghrim", "dark mage", "lanthus", "spria", "turael",
-			"mazchna", "vannaka", "chaeldar", "nieve", "steve", "duradel", "krystilia", "konar",
-			"murphy", "cyrisus", "smoggy", "ginea", "watson", "barbarian guard", "amy",
-			"random"
-		).forEach(npc -> swap("cast", "npc contact", npc, () -> shiftModifier() && config.swapNpcContact()));
-
 		swap("value", "buy 1", () -> shiftModifier() && config.shopBuy() == BuyMode.BUY_1);
 		swap("value", "buy 5", () -> shiftModifier() && config.shopBuy() == BuyMode.BUY_5);
 		swap("value", "buy 10", () -> shiftModifier() && config.shopBuy() == BuyMode.BUY_10);

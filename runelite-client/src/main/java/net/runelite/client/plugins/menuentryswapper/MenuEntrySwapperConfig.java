@@ -546,17 +546,6 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "swapNpcContact",
-		name = "NPC Contact",
-		description = "Swap NPC Contact with last contacted NPC when shift-clicking",
-		section = uiSection
-	)
-	default boolean swapNpcContact()
-	{
-		return false;
-	}
-
-	@ConfigItem(
 		keyName = "bankWithdrawShiftClick",
 		name = "Bank Withdraw Shift-Click",
 		description = "Swaps the behavior of shift-click when withdrawing from bank.",
