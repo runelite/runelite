@@ -55,6 +55,7 @@ public class TestMenuEntry implements MenuEntry
 	@EqualsAndHashCode.Exclude
 	private Widget widget;
 	@Setter
+	@EqualsAndHashCode.Exclude
 	private Actor actor;
 
 	@EqualsAndHashCode.Exclude

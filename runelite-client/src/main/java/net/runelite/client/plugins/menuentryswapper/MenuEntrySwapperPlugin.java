@@ -1079,28 +1079,30 @@ public class MenuEntrySwapperPlugin extends Plugin
 				if (w.getIndex() == -1 || w.getItemId() != -1)
 				{
 					final int componentId = w.getId(); // on dynamic components, this is the parent layer id
-					final int itemId = w.getIndex() == -1 ? -1 : w.getItemId();
+					final int itemId = w.getIndex() == -1 ? -1 : ItemVariationMapping.map(w.getItemId());
 					final int identifier = entry.getIdentifier();
 					final Integer leftClick = getUiSwapConfig(false, componentId, itemId);
 					final Integer shiftClick = getUiSwapConfig(true, componentId, itemId);
 
-					if (identifier != lowestOp + 1 && (leftClick == null || leftClick != identifier))
-					{
-						client.createMenuEntry(1 + shiftOff)
-							.setOption("Swap left click " + entry.getOption())
-							.setTarget(entry.getTarget())
-							.setType(MenuAction.RUNELITE)
-							.onClick(uiConsumer(entry.getOption(), entry.getTarget(), false, componentId, itemId, identifier));
-					}
-
-					if (identifier != lowestOp + 1 && (shiftClick == null || shiftClick != identifier))
-					{
-						client.createMenuEntry(1)
-							.setOption("Swap shift click " + entry.getOption())
-							.setTarget(entry.getTarget())
-							.setType(MenuAction.RUNELITE)
-							.onClick(uiConsumer(entry.getOption(), entry.getTarget(), true, componentId, itemId, identifier));
-						++shiftOff;
+					if (!"Examine".equalsIgnoreCase(entry.getOption())) {
+						if (identifier != lowestOp + 1 && (leftClick == null || leftClick != identifier))
+						{
+							client.createMenuEntry(1 + shiftOff)
+								.setOption("Swap left click " + entry.getOption())
+								.setTarget(entry.getTarget())
+								.setType(MenuAction.RUNELITE)
+								.onClick(uiConsumer(entry.getOption(), entry.getTarget(), false, componentId, itemId, identifier));
+						}
+	
+						if (identifier != lowestOp + 1 && (shiftClick == null || shiftClick != identifier))
+						{
+							client.createMenuEntry(1)
+								.setOption("Swap shift click " + entry.getOption())
+								.setTarget(entry.getTarget())
+								.setType(MenuAction.RUNELITE)
+								.onClick(uiConsumer(entry.getOption(), entry.getTarget(), true, componentId, itemId, identifier));
+							++shiftOff;
+						}
 					}
 
 					if (identifier == highestOp + 1 && (leftClick != null || shiftClick != null))
@@ -1385,7 +1387,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 			&& w != null && (w.getIndex() == -1 || w.getItemId() != -1))
 		{
 			final int componentId = w.getId(); // on dynamic components, this is the parent layer id
-			final int itemId = w.getIndex() == -1 ? -1 : w.getItemId();
+			final int itemId = w.getIndex() == -1 ? -1 : ItemVariationMapping.map(w.getItemId());
 
 			final String[] actions = w.getActions();
 			int numActions = 0;
