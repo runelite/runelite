@@ -261,17 +261,6 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "swapBattlestaves",
-		name = "Battlestaff",
-		description = "Swap Wield with Use on Battlestaves without orbs",
-		section = itemSection
-	)
-	default boolean swapBattlestaves()
-	{
-		return false;
-	}
-
-	@ConfigItem(
 		keyName = "swapContract",
 		name = "Contract",
 		description = "Swap Talk-to with Contract on Guildmaster Jane",

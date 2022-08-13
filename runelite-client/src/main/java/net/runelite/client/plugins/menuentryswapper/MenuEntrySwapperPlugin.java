@@ -361,8 +361,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		swap("bury", "use", config::swapBones);
 
-		swap("wield", "battlestaff", "use", config::swapBattlestaves);
-
 		swap("clean", "use", config::swapHerbs);
 
 		swap("collect-note", "collect-item", () -> config.swapGEItemCollect() == GEItemCollectMode.ITEMS);
