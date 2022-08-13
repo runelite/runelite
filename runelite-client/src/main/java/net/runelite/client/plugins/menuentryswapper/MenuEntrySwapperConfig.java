@@ -316,17 +316,6 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "swapHardWoodGroveParcel",
-		name = "Hardwood Grove Send-Parcel",
-		description = "Swap Send-Parcel at the Hardwood Grove",
-		section = npcSection
-	)
-	default boolean swapHardWoodGroveParcel()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "swapHarpoon",
 		name = "Harpoon",
 		description = "Swap Cage, Big Net with Harpoon on Fishing spot",
