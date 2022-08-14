@@ -135,8 +135,24 @@ public interface Actor extends Renderable
 	 */
 	int getPoseAnimation();
 
-	@VisibleForDevtools
+	/**
+	 * Set the idle pose animation.
+	 * @param animation
+	 * @see AnimationID
+	 */
 	void setPoseAnimation(int animation);
+
+	/**
+	 * Get the frame of the idle animation the actor is performing
+	 * @return
+	 */
+	int getPoseAnimationFrame();
+
+	/**
+	 * Set the frame of the idle animation the actor is performing
+	 * @param frame
+	 */
+	void setPoseAnimationFrame(int frame);
 
 	/**
 	 * The idle pose animation. If the actor is not walking or otherwise animating, this will be used
