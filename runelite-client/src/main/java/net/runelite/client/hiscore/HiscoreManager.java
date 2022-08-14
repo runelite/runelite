@@ -26,6 +26,7 @@ package net.runelite.client.hiscore;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.LoadingCache;
+import com.google.common.collect.ImmutableMap;
 import java.io.IOException;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -33,7 +34,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import okhttp3.OkHttpClient;
 
 @Singleton
 public class HiscoreManager
@@ -46,16 +46,16 @@ public class HiscoreManager
 		HiscoreEndpoint type;
 	}
 
-	static final HiscoreResult EMPTY = new HiscoreResult();
-	static final HiscoreResult NONE = new HiscoreResult();
+	static final HiscoreResult EMPTY = new HiscoreResult(null, ImmutableMap.of());
+	static final HiscoreResult NONE = new HiscoreResult(null, ImmutableMap.of());
 
 	private final LoadingCache<HiscoreKey, HiscoreResult> hiscoreCache;
 	private final HiscoreClient hiscoreClient;
 
 	@Inject
-	private HiscoreManager(ScheduledExecutorService executor, OkHttpClient okHttpClient)
+	private HiscoreManager(ScheduledExecutorService executor, HiscoreClient hiscoreClient)
 	{
-		hiscoreClient = new HiscoreClient(okHttpClient);
+		this.hiscoreClient = hiscoreClient;
 		hiscoreCache = CacheBuilder.newBuilder()
 			.maximumSize(128L)
 			.expireAfterWrite(1, TimeUnit.HOURS)

@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.chatcommands;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 import com.google.gson.Gson;
 import com.google.inject.Guice;
@@ -68,6 +69,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.hiscore.HiscoreClient;
 import net.runelite.client.hiscore.HiscoreEndpoint;
 import net.runelite.client.hiscore.HiscoreResult;
+import net.runelite.client.hiscore.HiscoreSkill;
 import net.runelite.client.hiscore.Skill;
 import net.runelite.client.util.AsyncBufferedImage;
 import org.junit.After;
@@ -669,9 +671,8 @@ public class ChatCommandsPluginTest
 	{
 		when(chatCommandsConfig.lvl()).thenReturn(true);
 
-		HiscoreResult hiscoreResult = new HiscoreResult();
-		hiscoreResult.setPlayer(PLAYER_NAME);
-		hiscoreResult.setChambersOfXericChallengeMode(new Skill(10, 1000, -1));
+		HiscoreResult hiscoreResult = new HiscoreResult(PLAYER_NAME,
+			ImmutableMap.of(HiscoreSkill.CHAMBERS_OF_XERIC_CHALLENGE_MODE, new Skill(10, 1000, -1)));
 
 		when(hiscoreClient.lookup(eq(PLAYER_NAME), nullable(HiscoreEndpoint.class))).thenReturn(hiscoreResult);
 
