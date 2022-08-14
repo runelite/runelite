@@ -116,11 +116,11 @@ class FishingSpotOverlay extends Overlay
 			{
 				color = config.getMinnowsOverlayColor();
 			}
-			else if (spot == FishingSpot.COMMON_TENCH && npc.getWorldLocation().distanceTo2D(client.getLocalPlayer().getWorldLocation()) <= ONE_TICK_AERIAL_FISHING)
+			else if (spot == FishingSpot.CATCH_AERIALFISHING && npc.getWorldLocation().distanceTo2D(client.getLocalPlayer().getWorldLocation()) <= ONE_TICK_AERIAL_FISHING)
 			{
 				color = config.getAerialOverlayColor();
 			}
-			else if (spot == FishingSpot.HARPOONFISH && npc.getId() == NpcID.FISHING_SPOT_10569)
+			else if (spot == FishingSpot.HARPOON_TEMPOROSS && npc.getId() == NpcID.FISHING_SPOT_10569)
 			{
 				color = config.getHarpoonfishOverlayColor();
 			}
@@ -129,7 +129,7 @@ class FishingSpotOverlay extends Overlay
 				color = config.getOverlayColor();
 			}
 
-			if (spot == FishingSpot.MINNOW && config.showMinnowOverlay())
+			if (spot == FishingSpot.NET_MINNOW && config.showMinnowOverlay())
 			{
 				MinnowSpot minnowSpot = plugin.getMinnowSpots().get(npc.getIndex());
 				if (minnowSpot != null)
@@ -177,7 +177,7 @@ class FishingSpotOverlay extends Overlay
 					fishImage = itemManager.getImage(spot.getFishSpriteId());
 				}
 
-				if (spot == FishingSpot.COMMON_TENCH
+				if (spot == FishingSpot.CATCH_AERIALFISHING
 					&& npc.getWorldLocation().distanceTo2D(client.getLocalPlayer().getWorldLocation()) <= ONE_TICK_AERIAL_FISHING)
 				{
 					fishImage = ImageUtil.outlineImage(itemManager.getImage(spot.getFishSpriteId()), color);

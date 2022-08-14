@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -87,15 +88,23 @@ public class FishingPlugin extends Plugin
 	private static final int TRAWLER_SHIP_REGION_NORMAL = 7499;
 	private static final int TRAWLER_SHIP_REGION_SINKING = 8011;
 	private static final int TRAWLER_TIME_LIMIT_IN_SECONDS = 314;
+
+	private Instant trawlerStartTime;
+
 	@Getter(AccessLevel.PACKAGE)
 	private final FishingSession session = new FishingSession();
+
 	@Getter(AccessLevel.PACKAGE)
 	private final Map<Integer, MinnowSpot> minnowSpots = new HashMap<>();
+
 	@Getter(AccessLevel.PACKAGE)
 	private final List<NPC> fishingSpots = new ArrayList<>();
-	private Instant trawlerStartTime;
+
 	@Getter(AccessLevel.PACKAGE)
 	private FishingSpot currentSpot;
+
+	@Getter
+	private Set<FishingTool> usableGear;
 
 	@Inject
 	private Client client;
@@ -117,8 +126,6 @@ public class FishingPlugin extends Plugin
 
 	@Inject
 	private FishingSpotMinimapOverlay fishingSpotMinimapOverlay;
-	@Getter
-	private Set<FishingTools> usableGear;
 
 	@Provides
 	FishingConfig provideConfig(ConfigManager configManager)
@@ -181,9 +188,10 @@ public class FishingPlugin extends Plugin
 			return;
 		}
 
-		final boolean showOverlays = session.getLastFishCaught() != null
-			|| canPlayerFish(client.getItemContainer(InventoryID.INVENTORY),
+		boolean playerCanFish = canPlayerFish(client.getItemContainer(InventoryID.INVENTORY),
 			client.getItemContainer(InventoryID.EQUIPMENT));
+
+		final boolean showOverlays = session.getLastFishCaught() != null || playerCanFish;
 
 		if (!showOverlays)
 		{
@@ -192,6 +200,20 @@ public class FishingPlugin extends Plugin
 
 		spotOverlay.setHidden(!showOverlays);
 		fishingSpotMinimapOverlay.setHidden(!showOverlays);
+
+		usableGear.clear();
+		if (playerCanFish && config.onlyEquippedFor())
+		{
+			for (Item invItem : Objects.requireNonNull(client.getItemContainer(InventoryID.INVENTORY)).getItems())
+			{
+				usableGear.add(FishingTool.getToolType(invItem.getId()));
+			}
+			for (Item eqpItem : Objects.requireNonNull(client.getItemContainer(InventoryID.EQUIPMENT)).getItems())
+			{
+				usableGear.add(FishingTool.getToolType(eqpItem.getId()));
+			}
+			usableGear.remove(null);
+		}
 	}
 
 	@Subscribe
@@ -244,7 +266,6 @@ public class FishingPlugin extends Plugin
 
 	private boolean canPlayerFish(final ItemContainer... itemContainer)
 	{
-		usableGear.clear();
 		for (ItemContainer container : itemContainer)
 		{
 			if (container == null)
@@ -254,16 +275,15 @@ public class FishingPlugin extends Plugin
 
 			for (Item item : container.getItems())
 			{
-				FishingTools toolType = FishingTools.getToolType(item.getId());
+				FishingTool toolType = FishingTool.getToolType(item.getId());
 				if (toolType != null)
 				{
-					usableGear.add(toolType);
+					return true;
 				}
 			}
 		}
 
-		// If we've got gear, we can fish
-		return usableGear.size() > 0;
+		return false;
 	}
 
 	@Subscribe
@@ -286,7 +306,7 @@ public class FishingPlugin extends Plugin
 
 		for (NPC npc : fishingSpots)
 		{
-			if (FishingSpot.findSpot(npc.getId()) == FishingSpot.MINNOW && config.showMinnowOverlay())
+			if (FishingSpot.findSpot(npc.getId()) == FishingSpot.NET_MINNOW && config.showMinnowOverlay())
 			{
 				final int id = npc.getIndex();
 				final MinnowSpot minnowSpot = minnowSpots.get(id);
@@ -441,8 +461,8 @@ public class FishingPlugin extends Plugin
 		final LocalPoint cameraPoint = new LocalPoint(client.getCameraX(), client.getCameraY());
 		fishingSpots.sort(
 			Comparator.comparingInt(
-					// Negate to have the furthest first
-					(NPC npc) -> -npc.getLocalLocation().distanceTo(cameraPoint))
+				// Negate to have the furthest first
+				(NPC npc) -> -npc.getLocalLocation().distanceTo(cameraPoint))
 				// Order by position
 				.thenComparing(NPC::getLocalLocation, Comparator.comparingInt(LocalPoint::getX)
 					.thenComparingInt(LocalPoint::getY))

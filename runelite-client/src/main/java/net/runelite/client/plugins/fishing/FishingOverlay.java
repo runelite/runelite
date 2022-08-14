@@ -46,8 +46,9 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 
 class FishingOverlay extends OverlayPanel
 {
-	static final String FISHING_RESET = "Reset";
 	private static final String FISHING_SPOT = "Fishing spot";
+	static final String FISHING_RESET = "Reset";
+
 	private static final Set<Integer> FISHING_ANIMATIONS = ImmutableSet.of(
 		AnimationID.FISHING_BARBTAIL_HARPOON,
 		AnimationID.FISHING_BAREHAND,

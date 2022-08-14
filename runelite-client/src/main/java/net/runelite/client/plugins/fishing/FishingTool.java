@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2022, Grom-met
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,11 +25,13 @@
 package net.runelite.client.plugins.fishing;
 
 
+import com.google.common.collect.ImmutableMap;
+import java.util.Map;
 import lombok.Getter;
 import net.runelite.api.ItemID;
 
 @Getter
-public enum FishingTools
+public enum FishingTool
 {
 	SMALL_FISHING_NET(
 		ItemID.SMALL_FISHING_NET,
@@ -82,27 +84,33 @@ public enum FishingTools
 	FISHBOWL_NET(
 		ItemID.FISHBOWL_AND_NET
 	);
-	@Getter
-	private final int[] tools;
 
-	FishingTools(int... itemIDs)
-	{
-		this.tools = itemIDs;
-	}
+	private static final Map<Integer, FishingTool> TOOLS;
 
-	public static FishingTools getToolType(int itemID)
+	static
 	{
-		for (FishingTools toolType : FishingTools.values())
+		ImmutableMap.Builder<Integer, FishingTool> builder = new ImmutableMap.Builder<>();
+
+		for (FishingTool tool : values())
 		{
-			for (int toolID : toolType.getTools())
+			for (int toolID : tool.getIds())
 			{
-				if (toolID == itemID)
-				{
-					return toolType;
-				}
+				builder.put(toolID, tool);
 			}
 		}
-		// ItemID provided was not a fishing tool
-		return null;
+
+		TOOLS = builder.build();
+	}
+
+	private final int[] ids;
+
+	FishingTool(int... itemIDs)
+	{
+		this.ids = itemIDs;
+	}
+
+	public static FishingTool getToolType(int itemID)
+	{
+		return TOOLS.get(itemID);
 	}
 }
