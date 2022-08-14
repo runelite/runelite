@@ -367,6 +367,13 @@ public interface Client extends OAuthApi, GameEngine
 	int getPlane();
 
 	/**
+	 * Get the max plane being rendered on the scene. This is usually the max plane, 3, unless roofs are hidden,
+	 * where it will be the current plane.
+	 * @return
+	 */
+	int getSceneMaxPlane();
+
+	/**
 	 * Gets the current scene
 	 */
 	Scene getScene();
