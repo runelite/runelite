@@ -62,7 +62,6 @@ import net.runelite.client.util.QuantityFormatter;
 
 public class GroundItemsOverlay extends Overlay
 {
-	private static final int MAX_DISTANCE = 25 * Perspective.LOCAL_TILE_SIZE;
 	// We must offset the text on the z-axis such that
 	// it doesn't obscure the ground items below it.
 	private static final int OFFSET_Z = 20;
@@ -192,9 +191,9 @@ public class GroundItemsOverlay extends Overlay
 		for (GroundItem item : groundItemList)
 		{
 			final LocalPoint groundPoint = LocalPoint.fromWorld(client, item.getLocation());
-
-			if (groundPoint == null || Math.abs(localLocation.getX() - groundPoint.getX()) > MAX_DISTANCE
-					|| Math.abs(localLocation.getY() - groundPoint.getY()) > MAX_DISTANCE
+			final int drawDistance = client.getScene().getDrawDistance() * Perspective.LOCAL_TILE_SIZE;
+			if (groundPoint == null || Math.abs(localLocation.getX() - groundPoint.getX()) > drawDistance
+					|| Math.abs(localLocation.getY() - groundPoint.getY()) > drawDistance
 					|| (onlyShowLoot && !item.isMine()))
 			{
 				continue;
