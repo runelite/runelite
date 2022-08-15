@@ -119,7 +119,7 @@ public interface ItemStatConfig extends Config
 	)
 	default boolean showStatsOnlyInBank()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
