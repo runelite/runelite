@@ -60,7 +60,6 @@ import net.runelite.api.clan.ClanChannelMember;
 import net.runelite.api.clan.ClanRank;
 import net.runelite.api.clan.ClanSettings;
 import net.runelite.api.clan.ClanTitle;
-import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ClanMemberJoined;
 import net.runelite.api.events.ClanMemberLeft;
 import net.runelite.api.events.FriendsChatChanged;
@@ -501,49 +500,6 @@ public class ChatChannelPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onChatMessage(ChatMessage chatMessage)
-	{
-		if (client.getGameState() != GameState.LOADING && client.getGameState() != GameState.LOGGED_IN)
-		{
-			return;
-		}
-
-		FriendsChatManager friendsChatManager = client.getFriendsChatManager();
-		if (friendsChatManager == null || friendsChatManager.getCount() == 0)
-		{
-			return;
-		}
-
-		switch (chatMessage.getType())
-		{
-			case PRIVATECHAT:
-			case MODPRIVATECHAT:
-				if (!config.privateMessageIcons())
-				{
-					return;
-				}
-				break;
-			case PUBLICCHAT:
-			case MODCHAT:
-				if (!config.publicChatIcons())
-				{
-					return;
-				}
-				break;
-			case FRIENDSCHAT:
-				if (!config.chatIcons())
-				{
-					return;
-				}
-				break;
-			default:
-				return;
-		}
-
-		insertRankIcon(chatMessage);
-	}
-
-	@Subscribe
 	public void onGameStateChanged(GameStateChanged state)
 	{
 		GameState gameState = state.getGameState();
@@ -591,6 +547,53 @@ public class ChatChannelPlugin extends Plugin
 				clientThread.invokeLater(() -> confirmKickPlayer(kickPlayerName));
 				break;
 			}
+			case "chatMessageBuilding":
+			{
+				int uid = client.getIntStack()[client.getIntStackSize() - 1];
+				final MessageNode messageNode = client.getMessages().get(uid);
+				assert messageNode != null : "chat message build for unknown message";
+				final ChatMessageType messageType = messageNode.getType();
+
+				switch (messageType)
+				{
+					case PRIVATECHAT:
+					case MODPRIVATECHAT:
+						if (!config.privateMessageIcons())
+						{
+							return;
+						}
+						break;
+					case PUBLICCHAT:
+					case MODCHAT:
+						if (!config.publicChatIcons())
+						{
+							return;
+						}
+						break;
+					case FRIENDSCHAT:
+						if (!config.chatIcons())
+						{
+							return;
+						}
+						break;
+					default:
+						return;
+				}
+
+				final String[] stringStack = client.getStringStack();
+				final int stringSize = client.getStringStackSize();
+				final String name = stringStack[stringSize - 3];
+				final FriendsChatRank rank = getRank(Text.removeTags(name));
+				if (rank != null && rank != FriendsChatRank.UNRANKED)
+				{
+					int iconNumber = chatIconManager.getIconNumber(rank);
+					if (iconNumber > -1)
+					{
+						final String img = "<img=" + iconNumber + ">";
+						stringStack[stringSize - 3] = img + name;
+					}
+				}
+			}
 		}
 	}
 
@@ -621,31 +624,6 @@ public class ChatChannelPlugin extends Plugin
 			if (config.guestClanChatShowOnlineMemberCount())
 			{
 				updateClanTitle(WidgetInfo.CLAN_GUEST_HEADER, client.getGuestClanChannel());
-			}
-		}
-	}
-
-	private void insertRankIcon(final ChatMessage message)
-	{
-		final FriendsChatRank rank = getRank(Text.removeTags(message.getName()));
-
-		if (rank != null && rank != FriendsChatRank.UNRANKED)
-		{
-			int iconNumber = chatIconManager.getIconNumber(rank);
-			if (iconNumber > -1)
-			{
-				final String img = "<img=" + iconNumber + ">";
-				if (message.getType() == ChatMessageType.FRIENDSCHAT)
-				{
-					message.getMessageNode()
-						.setSender(message.getMessageNode().getSender() + " " + img);
-				}
-				else
-				{
-					message.getMessageNode()
-						.setName(img + message.getMessageNode().getName());
-				}
-				client.refreshChat();
 			}
 		}
 	}
