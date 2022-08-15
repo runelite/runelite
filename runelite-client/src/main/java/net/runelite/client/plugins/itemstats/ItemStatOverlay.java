@@ -117,8 +117,8 @@ public class ItemStatOverlay extends Overlay
 		{
 			itemId = widget.getItemId();
 		}
-		else if ((group == WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getGroupId()
-				|| group == WidgetInfo.BANK_ITEM_CONTAINER.getGroupId()) && config.showStatsOnlyInBank())
+		else if (group == WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getGroupId()
+				|| (group == WidgetInfo.BANK_ITEM_CONTAINER.getGroupId() && config.showStatsInBank()) && config.showStatsOnlyInBank())
 		{
 			itemId = widget.getItemId();
 		}
