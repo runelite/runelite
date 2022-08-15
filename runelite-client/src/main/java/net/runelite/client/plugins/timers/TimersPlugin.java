@@ -96,8 +96,6 @@ public class TimersPlugin extends Plugin
 	private static final String CANNON_REPAIR_MESSAGE = "You repair your cannon, restoring it to working order.";
 	private static final String CANNON_DESTROYED_MESSAGE = "Your cannon has been destroyed!";
 	private static final String CANNON_BROKEN_MESSAGE = "<col=ef1020>Your cannon has broken!";
-	private static final String CHARGE_EXPIRED_MESSAGE = "<col=ef1020>Your magical charge fades away.</col>";
-	private static final String CHARGE_MESSAGE = "<col=ef1020>You feel charged with magic power.</col>";
 	private static final String EXTENDED_ANTIFIRE_DRINK_MESSAGE = "You drink some of your extended antifire potion.";
 	private static final String EXTENDED_SUPER_ANTIFIRE_DRINK_MESSAGE = "You drink some of your extended super antifire potion.";
 	private static final String FROZEN_MESSAGE = "<col=ef1020>You have been frozen!</col>";
@@ -144,6 +142,7 @@ public class TimersPlugin extends Plugin
 	private int lastIsVengeancedVarb;
 	private int lastPoisonVarp;
 	private int lastPvpVarb;
+	private int lastChargeSpellVarp;
 	private int lastCorruptionVarb;
 	private int lastStaminaEffect;
 	private int lastImbuedHeartVarb;
@@ -194,6 +193,7 @@ public class TimersPlugin extends Plugin
 		lastAnimation = -1;
 		widgetHiddenChangedOnPvpWorld = false;
 		lastPoisonVarp = 0;
+		lastChargeSpellVarp = 0;
 		nextPoisonTick = 0;
 		removeTzhaarTimer();
 		staminaTimer = null;
@@ -215,6 +215,7 @@ public class TimersPlugin extends Plugin
 		int staminaEffectActive = client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE);
 		int staminaPotionEffectVarb = client.getVarbitValue(Varbits.STAMINA_EFFECT);
 		int enduranceRingEffectVarb = client.getVarbitValue(Varbits.RING_OF_ENDURANCE_EFFECT);
+		int chargeSpellVarp = client.getVar(VarPlayer.CHARGE_GOD_SPELL);
 
 		final int totalStaminaEffect = staminaPotionEffectVarb + enduranceRingEffectVarb;
 
@@ -306,6 +307,20 @@ public class TimersPlugin extends Plugin
 			}
 
 			lastPvpVarb = pvpVarb;
+		}
+
+		if (lastChargeSpellVarp != chargeSpellVarp && config.showCharge())
+		{
+			if (chargeSpellVarp > 0)
+			{
+				createGameTimer(CHARGE, Duration.of((chargeSpellVarp * 2L), RSTimeUnit.GAME_TICKS));
+			}
+			else
+			{
+				removeGameTimer(CHARGE);
+			}
+
+			lastChargeSpellVarp = chargeSpellVarp;
 		}
 
 		if (lastImbuedHeartVarb != imbuedHeartCooldownVarb && config.showImbuedHeart())
@@ -666,16 +681,6 @@ public class TimersPlugin extends Plugin
 		if (config.showPrayerEnhance() && message.equals(PRAYER_ENHANCE_EXPIRED))
 		{
 			removeGameTimer(PRAYER_ENHANCE);
-		}
-
-		if (config.showCharge() && message.equals(CHARGE_MESSAGE))
-		{
-			createGameTimer(CHARGE);
-		}
-
-		if (config.showCharge() && message.equals(CHARGE_EXPIRED_MESSAGE))
-		{
-			removeGameTimer(CHARGE);
 		}
 
 		if (config.showStaffOfTheDead() && message.contains(STAFF_OF_THE_DEAD_SPEC_MESSAGE))
