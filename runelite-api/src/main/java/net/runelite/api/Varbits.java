@@ -628,8 +628,8 @@ public final class Varbits
 	/**
 	 * Whether the Special Attack orb is disabled due to being in a PvP area
 	 * <p>
-	 * 0 = Enabled =player is not in PvP)
-	 * 1 = Disabled =player in in PvP)
+	 * 0 = Enabled (player is not in PvP)
+	 * 1 = Disabled (player is in PvP)
 	 *
 	 * @see <a href="https://oldschool.runescape.wiki/w/Minimap#Special_attack_orb">The OSRS Wiki's Minimap page</a>
 	 */
