@@ -667,4 +667,13 @@ public final class Varbits
 	 * 1 = Enabled
 	 */
 	public static final int SHOW_PVP_KDR_STATS = 4143;
+
+	/**
+	 * State of Teleblock spell effects on the player
+	 * <p>
+	 * 0 = Teleblock inactive, no immunity
+	 * 1 <= X <= 100 = Teleblock inactive, remaining ticks of immunity from reapplication of spell effect
+	 * 101 <= Teleblock active, remaining ticks of blocking effect
+	 */
+	public static final int TELEBLOCK = 4163;
 }
