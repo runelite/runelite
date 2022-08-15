@@ -97,9 +97,17 @@ public class BankPluginTest
 		assertTrue(bankPlugin.valueSearch(itemId, "< 5.5b"));
 		assertTrue(bankPlugin.valueSearch(itemId, "500k - 20.6m"));
 
+		assertTrue(bankPlugin.valueSearch(itemId, "per=400k"));
+		assertTrue(bankPlugin.valueSearch(itemId, "ge per 50k - 20.6m"));
+		assertTrue(bankPlugin.valueSearch(itemId, "ge per > 300k"));
+
 		assertTrue(bankPlugin.valueSearch(itemId, "ha=1.8m"));
 		assertTrue(bankPlugin.valueSearch(itemId, "ha 500k - 20.6m"));
 		assertTrue(bankPlugin.valueSearch(itemId, "ha > 940k"));
+
+		assertTrue(bankPlugin.valueSearch(itemId, "ha per=60k"));
+		assertTrue(bankPlugin.valueSearch(itemId, "ha per 50k - 20.6m"));
+		assertTrue(bankPlugin.valueSearch(itemId, "ha per > 9k"));
 
 		assertTrue(bankPlugin.valueSearch(itemId, "qty=0"));
 		assertTrue(bankPlugin.valueSearch(itemId, "qty<600"));
@@ -107,6 +115,8 @@ public class BankPluginTest
 		assertFalse(bankPlugin.valueSearch(itemId, "<500k"));
 		assertFalse(bankPlugin.valueSearch(itemId, "ha >2m"));
 		assertFalse(bankPlugin.valueSearch(itemId, "ge > 0.02b"));
+		assertFalse(bankPlugin.valueSearch(itemId, "ha per >100k"));
+		assertFalse(bankPlugin.valueSearch(itemId, "ge per > 1m"));
 
 		assertFalse(bankPlugin.valueSearch(itemId, "qty=1"));
 		assertFalse(bankPlugin.valueSearch(itemId, "qty>30"));
