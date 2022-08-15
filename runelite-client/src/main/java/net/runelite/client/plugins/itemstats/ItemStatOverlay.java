@@ -100,9 +100,9 @@ public class ItemStatOverlay extends Overlay
 		final int group = WidgetInfo.TO_GROUP(widget.getId());
 		int itemId = -1;
 
-		if (group == WidgetInfo.EQUIPMENT.getGroupId() ||
+		if ((group == WidgetInfo.EQUIPMENT.getGroupId() ||
 			// For bank worn equipment, check widget parent to differentiate from normal bank items
-			(group == WidgetID.BANK_GROUP_ID && widget.getParentId() == WidgetInfo.BANK_EQUIPMENT_CONTAINER.getId()))
+			(group == WidgetID.BANK_GROUP_ID && widget.getParentId() == WidgetInfo.BANK_EQUIPMENT_CONTAINER.getId())) && !config.showStatsOnlyInBank())
 		{
 			final Widget widgetItem = widget.getChild(1);
 			if (widgetItem != null)
@@ -110,10 +110,16 @@ public class ItemStatOverlay extends Overlay
 				itemId = widgetItem.getItemId();
 			}
 		}
-		else if (widget.getId() == WidgetInfo.INVENTORY.getId()
+		else if ((widget.getId() == WidgetInfo.INVENTORY.getId()
 			|| group == WidgetInfo.EQUIPMENT_INVENTORY_ITEMS_CONTAINER.getGroupId()
 			|| widget.getId() == WidgetInfo.BANK_ITEM_CONTAINER.getId() && config.showStatsInBank()
-			|| group == WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getGroupId() && config.showStatsInBank())
+			|| group == WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getGroupId() && config.showStatsInBank()) && !config.showStatsOnlyInBank())
+		{
+			itemId = widget.getItemId();
+		}
+		else if((group == WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getGroupId() ||
+				group == WidgetInfo.BANK_ITEM_CONTAINER.getGroupId())
+			 	&& config.showStatsOnlyInBank())
 		{
 			itemId = widget.getItemId();
 		}
