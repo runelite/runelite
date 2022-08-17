@@ -333,6 +333,7 @@ public final class WidgetID
 	static class GuidePrices
 	{
 		static final int ITEM_CONTAINER = 2;
+		static final int PRICE_CONTAINER = 12;
 		static final int INVENTORY_ITEM_CONTAINER = 0;
 	}
 
