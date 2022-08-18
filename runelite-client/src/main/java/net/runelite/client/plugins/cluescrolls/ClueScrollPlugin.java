@@ -620,19 +620,19 @@ public class ClueScrollPlugin extends Plugin
 			}
 		}
 
-		// Load the current plane's tiles if a tick has elapsed since the player has changed planes
-		// or upon reaching a logged in state after hopping worlds
-		if (namedObjectCheckThisTick)
-		{
-			namedObjectCheckThisTick = false;
-			checkClueNamedObjects(clue);
-		}
-
 		// Delay one tick when changing planes before scanning for new named objects on the new plane
 		if (currentPlane != client.getPlane())
 		{
+			namedObjectsToMark.clear();
 			currentPlane = client.getPlane();
 			namedObjectCheckThisTick = true;
+		}
+		// Load the current plane's tiles if a tick has elapsed since the player has changed planes
+		// or upon reaching a logged in state after hopping worlds
+		else if (namedObjectCheckThisTick)
+		{
+			namedObjectCheckThisTick = false;
+			checkClueNamedObjects(clue);
 		}
 
 		// Reset clue when receiving a new beginner or master clue
