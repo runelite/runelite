@@ -30,15 +30,14 @@ import com.google.common.primitives.Ints;
 import com.google.inject.Provides;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.EventQueue;
+import java.awt.Toolkit;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import net.runelite.api.Client;
-import net.runelite.api.MenuAction;
-import net.runelite.api.MenuEntry;
 import net.runelite.api.ScriptID;
 import net.runelite.api.SettingID;
 import net.runelite.api.VarClientInt;
-import net.runelite.api.VarPlayer;
 import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.FocusChanged;
@@ -75,14 +74,12 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	private static final int DEFAULT_OUTER_ZOOM_LIMIT = 128;
 	static final int DEFAULT_INNER_ZOOM_LIMIT = 896;
 
+	private EventQueue eventQueue;
 	private boolean controlDown;
 	// flags used to store the mousedown states
-	private boolean rightClick;
-	private boolean middleClick;
-	/**
-	 * Whether or not the current menu has any non-ignored menu entries
-	 */
-	private boolean menuHasEntries;
+	private boolean extraMiddleClickDispatched;
+	private boolean middleClickMutatedToRightClick;
+	private MouseEvent latestRightClick;
 	private int savedCameraYaw;
 
 	@Inject
@@ -114,9 +111,9 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	@Override
 	protected void startUp()
 	{
-		rightClick = false;
-		middleClick = false;
-		menuHasEntries = false;
+		extraMiddleClickDispatched = false;
+		middleClickMutatedToRightClick = false;
+		eventQueue = Toolkit.getDefaultToolkit().getSystemEventQueue();
 		copyConfigs();
 		keyManager.registerKeyListener(this);
 		mouseManager.registerMouseListener(this);
@@ -288,42 +285,12 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	}
 
 	/**
-	 * Checks if the menu has any non-ignored entries
-	 */
-	private boolean hasMenuEntries(MenuEntry[] menuEntries)
-	{
-		for (MenuEntry menuEntry : menuEntries)
-		{
-			MenuAction action = menuEntry.getType();
-			switch (action)
-			{
-				case CANCEL:
-				case WALK:
-					break;
-				case EXAMINE_OBJECT:
-				case EXAMINE_NPC:
-				case EXAMINE_ITEM_GROUND:
-				case EXAMINE_ITEM:
-				case CC_OP_LOW_PRIORITY:
-					if (config.ignoreExamine())
-					{
-						break;
-					}
-				default:
-					return true;
-			}
-		}
-		return false;
-	}
-
-	/**
 	 * Checks if the menu has any options, because menu entries are built each
 	 * tick and the MouseListener runs on the awt thread
 	 */
 	@Subscribe
 	public void onClientTick(ClientTick event)
 	{
-		menuHasEntries = hasMenuEntries(client.getMenuEntries());
 		sliderTooltip = null;
 	}
 
@@ -399,102 +366,91 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	}
 
 	/**
-	 * The event that is triggered when a mouse button is pressed
-	 * In this method the right click is changed to a middle-click to enable rotating the camera
-	 * <p>
-	 * This method also provides the config option to enable the middle-mouse button to always open the right click menu
+	 * The event that is triggered when a mouse button is pressed.
+	 * If the middleClickMenu config is set, mutates the mouse event to a right click so that the right-click menu
+	 * opens. If the mouse event is a right click, it is stored to a variable so that it is accessible on mouseDragged.
 	 */
 	@Override
 	public MouseEvent mousePressed(MouseEvent mouseEvent)
 	{
-		if (SwingUtilities.isRightMouseButton(mouseEvent) && config.rightClickMovesCamera())
+		// Mutate a right click event to a middle click event if middleClickMenu config is set.
+		// Should be ignored if an extra middle click event has already been dispatched.
+		if (SwingUtilities.isMiddleMouseButton((mouseEvent))
+				&& config.middleClickMenu()
+				&& !extraMiddleClickDispatched)
 		{
-			boolean oneButton = client.getVar(VarPlayer.MOUSE_BUTTONS) == 1;
-			// Only move the camera if there is nothing at the menu, or if
-			// in one-button mode. In one-button mode, left and right click always do the same thing,
-			// so always treat it as the menu is empty
-			if (!menuHasEntries || oneButton)
-			{
-				// Set the rightClick flag to true so we can release the button in mouseReleased() later
-				rightClick = true;
-				// Change the mousePressed() MouseEvent to the middle mouse button
-				mouseEvent = new MouseEvent((java.awt.Component) mouseEvent.getSource(),
-					mouseEvent.getID(),
-					mouseEvent.getWhen(),
-					mouseEvent.getModifiersEx(),
-					mouseEvent.getX(),
-					mouseEvent.getY(),
-					mouseEvent.getClickCount(),
-					mouseEvent.isPopupTrigger(),
-					MouseEvent.BUTTON2);
-			}
+			middleClickMutatedToRightClick = true;
+			mouseEvent = sameMouseEventForDifferentButton(mouseEvent, MouseEvent.BUTTON3);
 		}
-		else if (SwingUtilities.isMiddleMouseButton((mouseEvent)) && config.middleClickMenu())
+		// Record the right click event so that it can be used later if the mouse is dragged.
+		if (SwingUtilities.isRightMouseButton(mouseEvent))
 		{
-			// Set the middleClick flag to true so we can release it later in mouseReleased()
-			middleClick = true;
-			// Chance the middle mouse button MouseEvent to a right-click
-			mouseEvent = new MouseEvent((java.awt.Component) mouseEvent.getSource(),
-				mouseEvent.getID(),
-				mouseEvent.getWhen(),
-				mouseEvent.getModifiersEx(),
-				mouseEvent.getX(),
-				mouseEvent.getY(),
-				mouseEvent.getClickCount(),
-				mouseEvent.isPopupTrigger(),
-				MouseEvent.BUTTON3);
+			latestRightClick = mouseEvent;
 		}
 		return mouseEvent;
 	}
 
 	/**
-	 * Correct the MouseEvent to release the correct button
+	 * If either the rightClickMovesCamera or the middleClickMenu configs are set, dispatches an extra middle click
+	 * event when the mouse is dragged. This makes the camera rotate in both of these scenarios.
+	 */
+	@Override
+	public MouseEvent mouseDragged(MouseEvent mouseEvent)
+	{
+		boolean shouldDispatchMiddleClick = (
+				(SwingUtilities.isRightMouseButton(mouseEvent) && config.rightClickMovesCamera())
+				|| (SwingUtilities.isMiddleMouseButton((mouseEvent)) && config.middleClickMenu())
+		);
+		if (shouldDispatchMiddleClick && !extraMiddleClickDispatched)
+		{
+			extraMiddleClickDispatched = true;
+			eventQueue.postEvent(sameMouseEventForDifferentButton(latestRightClick, MouseEvent.BUTTON2));
+		}
+		return mouseEvent;
+	}
+
+	/**
+	 * Correct the MouseEvent to release the correct buttons.
 	 */
 	@Override
 	public MouseEvent mouseReleased(MouseEvent mouseEvent)
 	{
-		if (rightClick)
+		// If there was an extra middle click press, it should also be released.
+		if (extraMiddleClickDispatched)
 		{
-			rightClick = false;
-			// Change the MouseEvent to button 2 so the middle mouse button will be released
-			mouseEvent = new MouseEvent((java.awt.Component) mouseEvent.getSource(),
-				mouseEvent.getID(),
-				mouseEvent.getWhen(),
-				mouseEvent.getModifiersEx(),
-				mouseEvent.getX(),
-				mouseEvent.getY(),
-				mouseEvent.getClickCount(),
-				mouseEvent.isPopupTrigger(),
-				MouseEvent.BUTTON2);
-
+			extraMiddleClickDispatched = false;
+			eventQueue.postEvent(sameMouseEventForDifferentButton(mouseEvent, MouseEvent.BUTTON2));
 		}
-		if (middleClick)
+		// If the press event was mutated, the release event should also be mutated.
+		if (middleClickMutatedToRightClick)
 		{
-			middleClick = false;
-			// Change the MouseEvent ot button 3 so the right mouse button will be released
-			mouseEvent = new MouseEvent((java.awt.Component) mouseEvent.getSource(),
-				mouseEvent.getID(),
-				mouseEvent.getWhen(),
-				mouseEvent.getModifiersEx(),
-				mouseEvent.getX(),
-				mouseEvent.getY(),
-				mouseEvent.getClickCount(),
-				mouseEvent.isPopupTrigger(),
-				MouseEvent.BUTTON3);
+			middleClickMutatedToRightClick = false;
+			mouseEvent = sameMouseEventForDifferentButton(mouseEvent, MouseEvent.BUTTON3);
 		}
 		return mouseEvent;
+	}
+
+	/**
+	 * Creates a new MouseEvent from an existing one for the given button.
+	 */
+	private MouseEvent sameMouseEventForDifferentButton(MouseEvent mouseEvent, int button)
+	{
+		return new MouseEvent(
+				(java.awt.Component) mouseEvent.getSource(),
+				mouseEvent.getID(),
+				mouseEvent.getWhen(),
+				mouseEvent.getModifiersEx(),
+				mouseEvent.getX(),
+				mouseEvent.getY(),
+				mouseEvent.getClickCount(),
+				mouseEvent.isPopupTrigger(),
+				button);
 	}
 
 	/*
 	 * These methods are unused but required to be present in a MouseListener implementation
 	 */
 	// region Unused MouseListener methods
-	@Override
-	public MouseEvent mouseDragged(MouseEvent mouseEvent)
-	{
-		return mouseEvent;
-	}
-
 	@Override
 	public MouseEvent mouseMoved(MouseEvent mouseEvent)
 	{

@@ -116,21 +116,10 @@ public interface CameraConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "rightClickMovesCamera",
-		name = "Right click moves camera",
-		description = "Remaps right click to middle mouse click if there are no menu options",
-		position = 7
-	)
-	default boolean rightClickMovesCamera()
-	{
-		return false;
-	}
-
-	@ConfigItem(
 		keyName = "ignoreExamine",
 		name = "Ignore Examine",
 		description = "Ignore the Examine menu entry",
-		position = 8
+		position = 7
 	)
 	default boolean ignoreExamine()
 	{
@@ -138,9 +127,21 @@ public interface CameraConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "rightClickMovesCamera",
+		name = "Right mouse moves camera",
+		description = "Holding the right mouse button moves the camera. Pressing it still opens the right-click menu.",
+		position = 8
+	)
+	default boolean rightClickMovesCamera()
+	{
+		return false;
+	}
+
+
+	@ConfigItem(
 		keyName = "middleClickMenu",
-		name = "Middle-button opens menu",
-		description = "Middle-mouse button always opens the menu",
+		name = "Middle mouse opens menu",
+		description = "Pressing the middle mouse button opens the right-click menu. Holding it still moves the camera.",
 		position = 9
 	)
 	default boolean middleClickMenu()
