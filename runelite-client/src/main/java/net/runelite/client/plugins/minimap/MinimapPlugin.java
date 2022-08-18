@@ -41,6 +41,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "Minimap",
@@ -61,6 +62,12 @@ public class MinimapPlugin extends Plugin
 	private Client client;
 
 	@Inject
+	private LocalPlayerMinimapOverlay minimapOverlay;
+
+	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
 	private MinimapConfig config;
 
 	private SpritePixels[] originalDotSprites;
@@ -77,6 +84,7 @@ public class MinimapPlugin extends Plugin
 		updateMinimapWidgetVisibility(config.hideMinimap());
 		storeOriginalDots();
 		replaceMapDots();
+		overlayManager.add(minimapOverlay);
 	}
 
 	@Override
@@ -84,6 +92,7 @@ public class MinimapPlugin extends Plugin
 	{
 		updateMinimapWidgetVisibility(false);
 		restoreOriginalDots();
+		overlayManager.remove(minimapOverlay);
 	}
 
 	@Subscribe
