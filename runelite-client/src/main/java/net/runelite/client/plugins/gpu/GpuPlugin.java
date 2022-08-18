@@ -66,7 +66,7 @@ import net.runelite.client.plugins.gpu.config.AntiAliasingMode;
 import net.runelite.client.plugins.gpu.config.UIScalingMode;
 import net.runelite.client.plugins.gpu.template.Template;
 import net.runelite.client.ui.DrawManager;
-import net.runelite.client.util.OSType;
+import net.runelite.client.util.OS;
 import net.runelite.rlawt.AWTContext;
 import org.jocl.CL;
 import static org.jocl.CL.CL_MEM_READ_ONLY;
@@ -294,7 +294,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				canvas.setIgnoreRepaint(true);
 
 				computeMode = config.useComputeShaders()
-					? (OSType.getOSType() == OSType.MacOS ? ComputeMode.OPENCL : ComputeMode.OPENGL)
+					? (OS.equals("mac") ? ComputeMode.OPENCL : ComputeMode.OPENGL)
 					: ComputeMode.NONE;
 
 				// lwjgl defaults to lwjgl- + user.name, but this breaks if the username would cause an invalid path
@@ -527,7 +527,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	private Template createTemplate(int threadCount, int facesPerThread)
 	{
-		String versionHeader = OSType.getOSType() == OSType.Linux ? LINUX_VERSION_HEADER : WINDOWS_VERSION_HEADER;
+		String versionHeader = OS.equals("linux") ? LINUX_VERSION_HEADER : WINDOWS_VERSION_HEADER;
 		Template template = new Template();
 		template.add(key ->
 		{
@@ -1359,7 +1359,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			height = dim.height;
 		}
 
-		if (OSType.getOSType() != OSType.MacOS)
+		if (!OS.equals("mac"))
 		{
 			final Graphics2D graphics = (Graphics2D) canvas.getGraphics();
 			final AffineTransform t = graphics.getTransform();
@@ -1637,7 +1637,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	private void glDpiAwareViewport(final int x, final int y, final int width, final int height)
 	{
-		if (OSType.getOSType() == OSType.MacOS)
+		if (OS.equals("mac"))
 		{
 			// macos handles DPI scaling for us already
 			GL43C.glViewport(x, y, width, height);
@@ -1665,6 +1665,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	{
 		GL43C.glBindBuffer(target, glBuffer.glBufferId);
 		int size = data.remaining();
+
 		if (size > glBuffer.size)
 		{
 			log.trace("Buffer resize: {} {} -> {}", glBuffer, glBuffer.size, size);

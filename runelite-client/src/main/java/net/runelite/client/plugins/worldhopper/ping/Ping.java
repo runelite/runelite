@@ -35,7 +35,7 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.client.util.OSType;
+import net.runelite.client.util.OS;
 import net.runelite.http.api.worlds.World;
 
 @Slf4j
@@ -69,7 +69,7 @@ public class Ping
 
 		try
 		{
-			switch (OSType.getOSType())
+			switch (OS.getOS())
 			{
 				case Windows:
 					return windowsPing(inetAddress);
@@ -77,7 +77,7 @@ public class Ping
 				case Linux:
 					try
 					{
-						return icmpPing(inetAddress, OSType.getOSType() == OSType.MacOS);
+						return icmpPing(inetAddress, OS.equals("mac"));
 					}
 					catch (Exception ex)
 					{

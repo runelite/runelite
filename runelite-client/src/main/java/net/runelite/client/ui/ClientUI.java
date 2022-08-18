@@ -90,7 +90,8 @@ import net.runelite.client.input.MouseManager;
 import net.runelite.client.ui.skin.SubstanceRuneLiteLookAndFeel;
 import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.ImageUtil;
-import net.runelite.client.util.OSType;
+import net.runelite.client.util.OS;
+import net.runelite.client.util.OS.OSType;
 import net.runelite.client.util.OSXUtil;
 import net.runelite.client.util.SwingUtil;
 import net.runelite.client.util.WinUtil;
@@ -332,7 +333,7 @@ public class ClientUI
 			frame.setResizable(true);
 
 			frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-			if (OSType.getOSType() == OSType.MacOS)
+			if (OS.getOS() == OSType.MacOS)
 			{
 				// Change the default quit strategy to CLOSE_ALL_WINDOWS so that ctrl+q
 				// triggers the listener below instead of exiting.
@@ -556,7 +557,7 @@ public class ClientUI
 							// - 2015 x64 MBP JDK11 Mohave
 							// - 2020 m1 MBP JDK17 Big Sur
 							// Adjusting the scaling further results in the client position being incorrect
-							if (scale != 1 && OSType.getOSType() != OSType.MacOS)
+							if (scale != 1 && OS.getOS() != OSType.MacOS)
 							{
 								clientBounds.setRect(
 									clientBounds.getX() / scale,
@@ -732,7 +733,7 @@ public class ClientUI
 	 */
 	public void requestFocus()
 	{
-		switch (OSType.getOSType())
+		switch (OS.getOS())
 		{
 			case MacOS:
 				// On OSX Component::requestFocus has no visible effect, so we use our OSX-specific
@@ -751,7 +752,7 @@ public class ClientUI
 	 */
 	public void forceFocus()
 	{
-		switch (OSType.getOSType())
+		switch (OS.getOS())
 		{
 			case MacOS:
 				OSXUtil.requestForeground();

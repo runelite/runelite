@@ -44,7 +44,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class LinkBrowser
 {
-	private static boolean shouldAttemptXdg = OSType.getOSType() == OSType.Linux;
+	private static boolean shouldAttemptXdg = OS.equals("linux");
 
 	/**
 	 * Tries to navigate to specified URL in browser. In case operation fails, displays message box with message

@@ -54,7 +54,7 @@ import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.ImageUtil;
-import net.runelite.client.util.OSType;
+import net.runelite.client.util.OS;
 
 @PluginDescriptor(
 	name = "Login Screen",
@@ -207,7 +207,7 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 		}
 
 		// enable pasting on macOS with the Command (meta) key
-		boolean isModifierDown = OSType.getOSType() == OSType.MacOS ? e.isMetaDown() : e.isControlDown();
+		boolean isModifierDown = OS.equals("mac") ? e.isMetaDown() : e.isControlDown();
 
 		if (e.getKeyCode() == KeyEvent.VK_V && isModifierDown)
 		{

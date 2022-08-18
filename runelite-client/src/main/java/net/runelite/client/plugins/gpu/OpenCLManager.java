@@ -32,7 +32,8 @@ import java.util.Objects;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.plugins.gpu.template.Template;
-import net.runelite.client.util.OSType;
+import net.runelite.client.util.OS;
+import net.runelite.client.util.OS.OSType;
 import net.runelite.rlawt.AWTContext;
 import static org.jocl.CL.*;
 import org.jocl.CLException;
@@ -90,7 +91,7 @@ class OpenCLManager
 	{
 		setExceptionsEnabled(true);
 
-		switch (OSType.getOSType())
+		switch (OS.getOS())
 		{
 			case Windows:
 			case Linux:
@@ -102,7 +103,7 @@ class OpenCLManager
 				initMacOS(awtContext);
 				break;
 			default:
-				throw new RuntimeException("Unsupported OS Type " + OSType.getOSType().name());
+				throw new RuntimeException("Unsupported OS Type " + OS.getOS().name());
 		}
 		ensureMinWorkGroupSize();
 		initQueue();
@@ -276,11 +277,11 @@ class OpenCLManager
 		contextProps.addProperty(CL_CONTEXT_PLATFORM, platform);
 		contextProps.addProperty(CL_GL_CONTEXT_KHR, awtContext.getGLContext());
 
-		if (OSType.getOSType() == OSType.Linux)
+		if (OS.getOS() == OSType.Linux)
 		{
 			contextProps.addProperty(CL_GLX_DISPLAY_KHR, awtContext.getGLXDisplay());
 		}
-		else if (OSType.getOSType() == OSType.Windows)
+		else if (OS.getOS() == OSType.Windows)
 		{
 			contextProps.addProperty(CL_WGL_HDC_KHR, awtContext.getWGLHDC());
 		}

@@ -111,7 +111,7 @@ public class SwingUtil
 		{
 			UIManager.setLookAndFeel(laf);
 
-			if (OSType.getOSType() == OSType.MacOS)
+			if (OS.equals("mac"))
 			{
 				// On MacOS Substance doesn't install its own popup factory, and the default one uses lightweight
 				// components unless the Aqua LAF is used. Lightweight components do not render correctly over AWT
@@ -184,7 +184,7 @@ public class SwingUtil
 			@Override
 			public void mouseClicked(MouseEvent e)
 			{
-				if (OSType.getOSType() == OSType.MacOS && !frame.isFocused())
+				if (OS.getOS() == OS.OSType.MacOS && !frame.isFocused())
 				{
 					// On macOS, frame.setVisible(true) only restores focus when the visibility was previously false.
 					// The frame's visibility is not set to false when the window loses focus, so we set it manually.
