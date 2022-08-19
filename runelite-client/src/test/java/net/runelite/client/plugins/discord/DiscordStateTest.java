@@ -135,4 +135,34 @@ public class DiscordStateTest
 		verify(discordService, times(3)).updatePresence(captor.capture());
 		assertEquals(DiscordGameEventType.IN_GAME.getState(), captor.getValue().getState());
 	}
+
+	@Test
+	public void testUnknownAreaAndSkillingChange()
+	{
+		when(discordConfig.elapsedTimeType()).thenReturn(DiscordConfig.ElapsedTimeType.TOTAL);
+
+		// Start with state of CITY
+		ArgumentCaptor<DiscordPresence> captor = ArgumentCaptor.forClass(DiscordPresence.class);
+		discordState.triggerEvent(DiscordGameEventType.CITY_VARROCK);
+		verify(discordService, times(1)).updatePresence(captor.capture());
+		assertEquals(DiscordGameEventType.CITY_VARROCK.getState(), captor.getValue().getState());
+
+		// Gain woodcutting xp
+		discordState.triggerEvent(DiscordGameEventType.TRAINING_WOODCUTTING);
+		verify(discordService, times(2)).updatePresence(captor.capture());
+		assertEquals(DiscordGameEventType.CITY_VARROCK.getState(), captor.getValue().getState());
+		assertEquals(DiscordGameEventType.TRAINING_WOODCUTTING.getDetails(), captor.getValue().getDetails());
+
+		// CITY -> IN_GAME
+		discordState.triggerEvent(DiscordGameEventType.IN_GAME);
+		verify(discordService, times(3)).updatePresence(captor.capture());
+		assertEquals(DiscordGameEventType.IN_GAME.getState(), captor.getValue().getState());
+		assertEquals("", captor.getValue().getDetails());
+
+		// Gain firemaking xp
+		discordState.triggerEvent(DiscordGameEventType.TRAINING_FIREMAKING);
+		verify(discordService, times(4)).updatePresence(captor.capture());
+		assertEquals(DiscordGameEventType.IN_GAME.getState(), captor.getValue().getState());
+		assertEquals(DiscordGameEventType.TRAINING_FIREMAKING.getDetails(), captor.getValue().getDetails());
+	}
 }
