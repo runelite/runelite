@@ -25,6 +25,7 @@
 
 package net.runelite.client.plugins.randomevents;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.util.Arrays;
@@ -33,11 +34,14 @@ import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
+import net.runelite.api.Item;
 import net.runelite.api.MenuAction;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
+import net.runelite.api.ItemID;
 import net.runelite.api.Player;
 import net.runelite.api.events.InteractingChanged;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.client.Notifier;
@@ -45,6 +49,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.randomevents.RandomEventConfig.RewardWantedType;
 
 @PluginDescriptor(
 	name = "Random Events",
@@ -78,11 +83,28 @@ public class RandomEventPlugin extends Plugin
 		NpcID.SANDWICH_LADY,
 		NpcID.SERGEANT_DAMIEN_6743
 	);
+	private static final ImmutableMap<RewardWantedType, Integer> REWARD_TO_HERB = ImmutableMap.<RewardWantedType, Integer>builder()
+		.put(RewardWantedType.STRENGTH_POTION, ItemID.GUAM_LEAF)
+		.put(RewardWantedType.ANTIPOISON, ItemID.MARRENTILL)
+		.put(RewardWantedType.ATTACK_POTION, ItemID.TARROMIN)
+		.put(RewardWantedType.RESTORE_POTION, ItemID.HARRALANDER)
+		.put(RewardWantedType.ENERGY_POTION, ItemID.RANARR_WEED)
+		.put(RewardWantedType.DEFENCE_POTION, ItemID.TOADFLAX)
+		.put(RewardWantedType.AGILITY_POTION, ItemID.IRIT_LEAF)
+		.put(RewardWantedType.SUPER_ATTACK, ItemID.AVANTOE)
+		.put(RewardWantedType.SUPER_ENERGY, ItemID.KWUARM)
+		.put(RewardWantedType.SUPER_STRENGTH, ItemID.SNAPDRAGON)
+		.put(RewardWantedType.SUPER_RESTORE, ItemID.CADANTINE)
+		.put(RewardWantedType.SUPER_DEFENCE, ItemID.LANTADYME)
+		.put(RewardWantedType.MAGIC_POTION, ItemID.DWARF_WEED)
+		.put(RewardWantedType.STAMINA_POTION, ItemID.TORSTOL)
+		.build();
 	private static final Set<String> EVENT_OPTIONS = ImmutableSet.of(
 		"Talk-to",
 		"Dismiss"
 	);
 	private static final int RANDOM_EVENT_TIMEOUT = 150;
+	private static final int INVENTORY_ID = 93;
 
 	private NPC currentRandomEvent;
 	private int lastNotificationTick = -RANDOM_EVENT_TIMEOUT; // to avoid double notifications
@@ -139,6 +161,26 @@ public class RandomEventPlugin extends Plugin
 			{
 				notifier.notify("Random event spawned: " + currentRandomEvent.getName());
 			}
+		}
+	}
+
+	@Subscribe
+	public void onItemContainerChanged(ItemContainerChanged itemContainerChanged)
+	{
+		if (!config.notifyJekyll()
+			|| itemContainerChanged.getContainerId() != INVENTORY_ID
+			|| config.rewardWantedType() == RewardWantedType.DEFAULT)
+		{
+			return;
+		}
+
+		int herbWantedID = REWARD_TO_HERB.get(config.rewardWantedType());
+		Item[] inventory = itemContainerChanged.getItemContainer().getItems();
+		boolean inventoryContainsHerb = Arrays.stream(inventory).map(Item::getId).anyMatch(id -> id == herbWantedID);
+
+		if (!inventoryContainsHerb)
+		{
+			notifier.notify("You no longer have the correct herb for Jekyll & Hyde event in your inventory!");
 		}
 	}
 

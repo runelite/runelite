@@ -25,6 +25,7 @@
 
 package net.runelite.client.plugins.randomevents;
 
+import lombok.AllArgsConstructor;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -67,6 +68,7 @@ public interface RandomEventConfig extends Config
 		keyName = "notifyDunce",
 		name = "Notify on Surprise Exam",
 		description = "",
+		position = 1,
 		section = notificationSection
 	)
 	default boolean notifyDunce()
@@ -78,6 +80,7 @@ public interface RandomEventConfig extends Config
 		keyName = "notifyGenie",
 		name = "Notify on Genie",
 		description = "",
+		position = 2,
 		section = notificationSection
 	)
 	default boolean notifyGenie()
@@ -89,6 +92,7 @@ public interface RandomEventConfig extends Config
 		keyName = "notifyDemon",
 		name = "Notify on Drill Demon",
 		description = "",
+		position = 3,
 		section = notificationSection
 	)
 	default boolean notifyDemon()
@@ -100,6 +104,7 @@ public interface RandomEventConfig extends Config
 		keyName = "notifyForester",
 		name = "Notify on Freaky Forester",
 		description = "",
+		position = 4,
 		section = notificationSection
 	)
 	default boolean notifyForester()
@@ -111,6 +116,7 @@ public interface RandomEventConfig extends Config
 		keyName = "notifyFrog",
 		name = "Notify on Kiss the Frog",
 		description = "",
+		position = 5,
 		section = notificationSection
 	)
 	default boolean notifyFrog()
@@ -122,6 +128,7 @@ public interface RandomEventConfig extends Config
 		keyName = "notifyGravedigger",
 		name = "Notify on Gravedigger",
 		description = "",
+		position = 6,
 		section = notificationSection
 	)
 	default boolean notifyGravedigger()
@@ -133,6 +140,7 @@ public interface RandomEventConfig extends Config
 		keyName = "notifyMoM",
 		name = "Notify on Mysterious Old Man",
 		description = "",
+		position = 7,
 		section = notificationSection
 	)
 	default boolean notifyMoM()
@@ -144,6 +152,7 @@ public interface RandomEventConfig extends Config
 		keyName = "notifyBob",
 		name = "Notify on Evil Bob",
 		description = "",
+		position = 8,
 		section = notificationSection
 	)
 	default boolean notifyBob()
@@ -155,6 +164,7 @@ public interface RandomEventConfig extends Config
 		keyName = "notifyQuiz",
 		name = "Notify on Quiz Master",
 		description = "",
+		position = 9,
 		section = notificationSection
 	)
 	default boolean notifyQuiz()
@@ -166,6 +176,7 @@ public interface RandomEventConfig extends Config
 		keyName = "notifyJekyll",
 		name = "Notify on Jekyll & Hyde",
 		description = "",
+		position = 10,
 		section = notificationSection
 	)
 	default boolean notifyJekyll()
@@ -173,10 +184,50 @@ public interface RandomEventConfig extends Config
 		return false;
 	}
 
+	@AllArgsConstructor
+	enum RewardWantedType
+	{
+		DEFAULT("Default"),
+		STRENGTH_POTION("Strength Potion"),
+		ANTIPOISON("Antipoison"),
+		ATTACK_POTION("Attack Potion"),
+		RESTORE_POTION("Restore Potion"),
+		ENERGY_POTION("Energy Potion"),
+		DEFENCE_POTION("Defence Potion"),
+		AGILITY_POTION("Agility Potion"),
+		SUPER_ATTACK("Super Attack"),
+		SUPER_ENERGY("Super Energy"),
+		SUPER_STRENGTH("Super Strength"),
+		SUPER_RESTORE("Super Restore"),
+		SUPER_DEFENCE("Super Defence"),
+		MAGIC_POTION("Magic Potion"),
+		STAMINA_POTION("Stamina Potion");
+
+		private final String value;
+
+		@Override
+		public String toString()
+		{
+			return value;
+		}
+	}
+	@ConfigItem(
+		keyName = "rewardWanted",
+		name = "Jekyll & Hyde Reward",
+		description = "Configures reward you wish to get from Jekyll & Hyde.",
+		position = 11,
+		section = notificationSection
+	)
+	default RewardWantedType rewardWantedType()
+	{
+		return RewardWantedType.DEFAULT;
+	}
+
 	@ConfigItem(
 		keyName = "notifyBeekeeper",
 		name = "Notify on Beekeeper",
 		description = "",
+		position = 12,
 		section = notificationSection
 	)
 	default boolean notifyBeekeeper()
@@ -188,6 +239,7 @@ public interface RandomEventConfig extends Config
 		keyName = "notifySandwich",
 		name = "Notify on Sandwich Lady",
 		description = "",
+		position = 13,
 		section = notificationSection
 	)
 	default boolean notifySandwich()
