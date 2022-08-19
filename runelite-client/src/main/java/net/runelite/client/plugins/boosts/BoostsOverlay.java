@@ -30,10 +30,7 @@ import java.awt.Graphics2D;
 import java.util.Set;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Skill;
-import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
-import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
@@ -55,19 +52,18 @@ class BoostsOverlay extends OverlayPanel
 		this.config = config;
 		setPosition(OverlayPosition.TOP_LEFT);
 		setPriority(OverlayPriority.MED);
-		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Boosts overlay"));
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (config.displayInfoboxes())
+		final Set<Skill> boostedSkills = plugin.getSkillsToDisplay();
+		if (boostedSkills.isEmpty() || !config.displayPanel())
 		{
 			return null;
 		}
 
 		int nextChange = plugin.getChangeDownTicks();
-
 		if (nextChange != -1)
 		{
 			panelComponent.getChildren().add(LineComponent.builder()
@@ -77,20 +73,12 @@ class BoostsOverlay extends OverlayPanel
 		}
 
 		nextChange = plugin.getChangeUpTicks();
-
 		if (nextChange != -1)
 		{
 			panelComponent.getChildren().add(LineComponent.builder()
 				.left("Next - restore in")
 				.right(String.valueOf(plugin.getChangeTime(nextChange)))
 				.build());
-		}
-
-		final Set<Skill> boostedSkills = plugin.getSkillsToDisplay();
-
-		if (boostedSkills.isEmpty())
-		{
-			return super.render(graphics);
 		}
 
 		if (plugin.canShowBoosts())
@@ -136,6 +124,5 @@ class BoostsOverlay extends OverlayPanel
 		}
 
 		return boost <= config.boostThreshold() ? Color.YELLOW : Color.GREEN;
-
 	}
 }

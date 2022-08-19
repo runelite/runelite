@@ -69,17 +69,6 @@ public interface ChatChannelConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "targetMode",
-		name = "Target mode",
-		description = "Enables target changing mode via /f, /c, and /g which controls which channel messages are sent to.",
-		position = 1
-	)
-	default boolean targetMode()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "clanChatIcons",
 		name = "Chat Icons",
 		description = "Show rank icons next to friends chat members.",
@@ -218,6 +207,18 @@ public interface ChatChannelConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "clanChatShowOnlineMemberCount",
+		name = "Show Online Member Count",
+		description = "Shows the number of online clan members at the end of the clan's name.",
+		position = 1,
+		section = clanChatSection
+	)
+	default boolean clanChatShowOnlineMemberCount()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "guestClanChatShowJoinLeave",
 		name = "Show Join/Leave",
 		description = "Adds a temporary message notifying when a member joins or leaves.",
@@ -225,6 +226,18 @@ public interface ChatChannelConfig extends Config
 		section = guestClanChatSection
 	)
 	default boolean guestClanChatShowJoinLeave()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "guestClanChatShowOnlineMemberCount",
+		name = "Show Online Member Count",
+		description = "Shows the number of online guest clan members at the end of the clan's name.",
+		position = 1,
+		section = guestClanChatSection
+	)
+	default boolean guestClanChatShowOnlineMemberCount()
 	{
 		return false;
 	}

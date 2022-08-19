@@ -47,6 +47,10 @@ public enum WorldType
 	 */
 	BOUNTY(1 << 5),
 	/**
+	 * PVP arena world type.
+	 */
+	PVP_ARENA(1 << 6),
+	/**
 	 * Skill total world type.
 	 */
 	SKILL_TOTAL(1 << 7),

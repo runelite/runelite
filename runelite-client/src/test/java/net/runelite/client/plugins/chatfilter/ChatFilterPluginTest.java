@@ -187,6 +187,38 @@ public class ChatFilterPluginTest
 	}
 
 	@Test
+	public void testFilterUnicode()
+	{
+		when(chatFilterConfig.filterType()).thenReturn(ChatFilterType.CENSOR_WORDS);
+		when(chatFilterConfig.filteredWords()).thenReturn("filterme");
+		when(chatFilterConfig.stripAccents()).thenReturn(true);
+
+		chatFilterPlugin.updateFilteredPatterns();
+		assertEquals("plëäsë ******** plügïn", chatFilterPlugin.censorMessage("Blue", "plëäsë fïltërmë plügïn"));
+	}
+
+	@Test
+	public void testUnicodeFiltersUnicode()
+	{
+		when(chatFilterConfig.filterType()).thenReturn(ChatFilterType.CENSOR_WORDS);
+		when(chatFilterConfig.filteredWords()).thenReturn("plëäsë");
+
+		chatFilterPlugin.updateFilteredPatterns();
+		assertEquals("****** fïltërmë plügïn", chatFilterPlugin.censorMessage("Blue", "plëäsë fïltërmë plügïn"));
+	}
+
+	@Test
+	public void testMixedUnicodeFiltersUnicode()
+	{
+		when(chatFilterConfig.filterType()).thenReturn(ChatFilterType.CENSOR_WORDS);
+		when(chatFilterConfig.filteredWords()).thenReturn("plëäsë, filterme");
+		when(chatFilterConfig.stripAccents()).thenReturn(true);
+
+		chatFilterPlugin.updateFilteredPatterns();
+		assertEquals("****** ******** plügïn", chatFilterPlugin.censorMessage("Blue", "plëäsë fïltërmë plügïn"));
+	}
+
+	@Test
 	public void testMessageFromFriendIsFiltered()
 	{
 		when(chatFilterConfig.filterFriends()).thenReturn(true);
@@ -420,5 +452,16 @@ public class ChatFilterPluginTest
 		ScriptCallbackEvent event = createCallbackEvent("<img=22>Lazark", "test", ChatMessageType.PUBLICCHAT);
 		chatFilterPlugin.onScriptCallbackEvent(event);
 		assertEquals(1, client.getIntStack()[client.getIntStackSize() - 3]); // not filtered
+	}
+
+	@Test
+	public void testLtGt()
+	{
+		when(chatFilterConfig.filteredWords()).thenReturn("f<ilte>r");
+
+		chatFilterPlugin.updateFilteredPatterns();
+
+		String message = chatFilterPlugin.censorMessage("Adam", "start f<lt>ilte<gt>r end");
+		assertEquals("start ******** end", message);
 	}
 }

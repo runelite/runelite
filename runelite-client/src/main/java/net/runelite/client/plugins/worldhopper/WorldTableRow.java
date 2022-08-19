@@ -30,6 +30,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.EnumSet;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import javax.swing.ImageIcon;
@@ -63,6 +64,7 @@ class WorldTableRow extends JPanel
 	private static final Color MEMBERS_WORLD = new Color(210, 193, 53);
 	private static final Color FREE_WORLD = new Color(200, 200, 200);
 	private static final Color SEASONAL_WORLD = new Color(133, 177, 178);
+	private static final Color PVP_ARENA_WORLD = new Color(144, 179, 255);
 
 	static
 	{
@@ -247,26 +249,33 @@ class WorldTableRow extends JPanel
 			worldField.setForeground(CURRENT_WORLD);
 			return;
 		}
-		else if (world.getTypes().contains(WorldType.PVP)
-			|| world.getTypes().contains(WorldType.HIGH_RISK)
-			|| world.getTypes().contains(WorldType.DEADMAN))
+
+
+		EnumSet<WorldType> types = world.getTypes();
+		if (types.contains(WorldType.PVP)
+			|| types.contains(WorldType.HIGH_RISK)
+			|| types.contains(WorldType.DEADMAN))
 		{
 			activityField.setForeground(DANGEROUS_WORLD);
 		}
-		else if (world.getTypes().contains(WorldType.SEASONAL))
+		else if (types.contains(WorldType.SEASONAL))
 		{
 			activityField.setForeground(SEASONAL_WORLD);
 		}
-		else if (world.getTypes().contains(WorldType.NOSAVE_MODE))
+		else if (types.contains(WorldType.NOSAVE_MODE))
 		{
 			activityField.setForeground(TOURNAMENT_WORLD);
+		}
+		else if (types.contains(WorldType.PVP_ARENA))
+		{
+			activityField.setForeground(PVP_ARENA_WORLD);
 		}
 		else
 		{
 			activityField.setForeground(Color.WHITE);
 		}
 
-		worldField.setForeground(world.getTypes().contains(WorldType.MEMBERS) ? MEMBERS_WORLD : FREE_WORLD);
+		worldField.setForeground(types.contains(WorldType.MEMBERS) ? MEMBERS_WORLD : FREE_WORLD);
 	}
 
 	/**

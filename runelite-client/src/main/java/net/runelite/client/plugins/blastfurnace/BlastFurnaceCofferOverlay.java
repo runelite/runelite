@@ -71,7 +71,7 @@ class BlastFurnaceCofferOverlay extends OverlayPanel
 
 		if (sack != null)
 		{
-			final int coffer = client.getVar(BLAST_FURNACE_COFFER);
+			final int coffer = client.getVarbitValue(BLAST_FURNACE_COFFER);
 
 			sack.setHidden(true);
 

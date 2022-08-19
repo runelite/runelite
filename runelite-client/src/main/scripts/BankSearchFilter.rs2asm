@@ -1,4 +1,4 @@
-.id                 279
+.id                 279 ; [proc,bankmain_filteritem]
 .int_stack_count    1
 .string_stack_count 0
 .int_var_count      2 ; +1 for storage of search filter result

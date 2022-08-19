@@ -33,9 +33,12 @@ import lombok.Data;
 @Data
 public class RuneScapeProfile
 {
+	public static final int ACCOUNT_HASH_INVALID = -1;
+
 	private final String displayName;
 	private final RuneScapeProfileType type;
 	private final byte[] loginHash;
+	private final long accountHash;
 
 	/**
 	 * Profile key used to save configs for this profile to the config store. This will

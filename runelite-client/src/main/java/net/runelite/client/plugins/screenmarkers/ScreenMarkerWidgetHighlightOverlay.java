@@ -51,9 +51,10 @@ class ScreenMarkerWidgetHighlightOverlay extends Overlay
 	{
 		this.plugin = plugin;
 		this.client = client;
-		setPosition(OverlayPosition.DETACHED);
+		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		setPriority(OverlayPriority.HIGH);
+		setMovable(true);
 	}
 
 	@Override

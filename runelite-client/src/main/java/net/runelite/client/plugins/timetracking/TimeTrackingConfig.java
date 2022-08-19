@@ -43,6 +43,8 @@ public interface TimeTrackingConfig extends Config
 	String PREFER_SOONEST = "preferSoonest";
 	String NOTIFY = "notify";
 	String BIRDHOUSE_NOTIFY = "birdHouseNotification";
+	String COMPOST = "compost";
+	String PROTECTED = "protected";
 
 	@ConfigItem(
 		keyName = "timeFormatMode",

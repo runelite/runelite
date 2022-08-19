@@ -26,7 +26,6 @@ package net.runelite.client.plugins;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
 import com.google.common.graph.Graph;
 import com.google.common.graph.GraphBuilder;
 import com.google.common.graph.Graphs;
@@ -38,6 +37,7 @@ import com.google.inject.CreationException;
 import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.Module;
+import java.io.File;
 import java.io.IOException;
 import java.lang.invoke.CallSite;
 import java.lang.invoke.LambdaMetafactory;
@@ -88,6 +88,7 @@ public class PluginManager
 	 * Base package where the core plugins are
 	 */
 	private static final String PLUGIN_PACKAGE = "net.runelite.client.plugins";
+	private static final File SIDELOADED_PLUGINS = new File(RuneLite.RUNELITE_DIR, "sideloaded-plugins");
 
 	private final boolean developerMode;
 	private final boolean safeMode;
@@ -276,6 +277,45 @@ public class PluginManager
 			SplashScreen.stage(.60, .70, null, "Loading Plugins", loaded, total, false));
 	}
 
+	public void loadSideLoadPlugins()
+	{
+		if (!developerMode)
+		{
+			return;
+		}
+
+		File[] files = SIDELOADED_PLUGINS.listFiles();
+		if (files == null)
+		{
+			return;
+		}
+
+		for (File f : files)
+		{
+			if (f.getName().endsWith(".jar"))
+			{
+				log.info("Side-loading plugin {}", f);
+
+				try
+				{
+					ClassLoader classLoader = new PluginClassLoader(f, getClass().getClassLoader());
+
+					List<Class<?>> plugins = ClassPath.from(classLoader)
+						.getAllClasses()
+						.stream()
+						.map(ClassInfo::load)
+						.collect(Collectors.toList());
+
+					loadPlugins(plugins, null);
+				}
+				catch (PluginInstantiationException | IOException ex)
+				{
+					log.error("error sideloading plugin", ex);
+				}
+			}
+		}
+	}
+
 	public List<Plugin> loadPlugins(List<Class<?>> plugins, BiConsumer<Integer, Integer> onPluginLoaded) throws PluginInstantiationException
 	{
 		MutableGraph<Class<? extends Plugin>> graph = GraphBuilder
@@ -320,8 +360,7 @@ public class PluginManager
 				continue;
 			}
 
-			Class<Plugin> pluginClass = (Class<Plugin>) clazz;
-			graph.addNode(pluginClass);
+			graph.addNode((Class<Plugin>) clazz);
 		}
 
 		// Build plugin graph
@@ -333,7 +372,7 @@ public class PluginManager
 			{
 				if (graph.nodes().contains(pluginDependency.value()))
 				{
-					graph.putEdge(pluginClazz, pluginDependency.value());
+					graph.putEdge(pluginDependency.value(), pluginClazz);
 				}
 			}
 		}
@@ -344,7 +383,6 @@ public class PluginManager
 		}
 
 		List<Class<? extends Plugin>> sortedPlugins = topologicalSort(graph);
-		sortedPlugins = Lists.reverse(sortedPlugins);
 
 		int loaded = 0;
 		List<Plugin> newPlugins = new ArrayList<>();
@@ -631,11 +669,14 @@ public class PluginManager
 	/**
 	 * Topologically sort a graph. Uses Kahn's algorithm.
 	 *
-	 * @param graph
-	 * @param <T>
-	 * @return
+	 * @param graph - A directed graph
+	 * @param <T>   - The type of the item contained in the nodes of the graph
+	 * @return - A topologically sorted list corresponding to graph.
+	 * <p>
+	 * Multiple invocations with the same arguments may return lists that are not equal.
 	 */
-	private <T> List<T> topologicalSort(Graph<T> graph)
+	@VisibleForTesting
+	static <T> List<T> topologicalSort(Graph<T> graph)
 	{
 		MutableGraph<T> graphCopy = Graphs.copyOf(graph);
 		List<T> l = new ArrayList<>();
@@ -650,7 +691,7 @@ public class PluginManager
 
 			l.add(n);
 
-			for (T m : graphCopy.successors(n))
+			for (T m : new HashSet<>(graphCopy.successors(n)))
 			{
 				graphCopy.removeEdge(n, m);
 				if (graphCopy.inDegree(m) == 0)

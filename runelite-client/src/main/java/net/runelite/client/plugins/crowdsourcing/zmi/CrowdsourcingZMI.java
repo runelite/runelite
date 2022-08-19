@@ -77,7 +77,11 @@ public class CrowdsourcingZMI
 	public void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
 	{
 		MenuAction action = menuOptionClicked.getMenuAction();
-
+		if (menuOptionClicked.isItemOp())
+		{
+			illegalActionTick = client.getTickCount();
+			return;
+		}
 		switch (action)
 		{
 			case ITEM_FIRST_OPTION:
@@ -127,7 +131,7 @@ public class CrowdsourcingZMI
 		}
 
 		int tickDelta = itemContainerChangedTick - illegalActionTick;
-		boolean ardougneMedium = client.getVar(Varbits.DIARY_ARDOUGNE_MEDIUM) == 1;
+		boolean ardougneMedium = client.getVarbitValue(Varbits.DIARY_ARDOUGNE_MEDIUM) == 1;
 		int runecraftBoostedLevel = client.getBoostedSkillLevel(Skill.RUNECRAFT);
 		Multiset<Integer> currentInventorySnapshot = getInventorySnapshot();
 		final Multiset<Integer> itemsReceived = Multisets.difference(currentInventorySnapshot, previousInventorySnapshot);

@@ -100,7 +100,7 @@ public class TwitchIRCClient extends Thread implements AutoCloseable
 			return;
 		}
 
-		try
+		try // NOPMD: UseTryWithResources
 		{
 			register(username, password);
 			join(channel);

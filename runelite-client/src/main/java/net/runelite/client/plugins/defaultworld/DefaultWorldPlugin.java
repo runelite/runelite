@@ -29,7 +29,8 @@ import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.WorldChanged;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.SessionOpen;
@@ -52,26 +53,32 @@ public class DefaultWorldPlugin extends Plugin
 	private Client client;
 
 	@Inject
+	private ClientThread clientThread;
+
+	@Inject
 	private DefaultWorldConfig config;
 
 	@Inject
 	private WorldService worldService;
 
-	private int worldCache;
-	private boolean worldChangeRequired;
-
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
-		worldChangeRequired = true;
-		applyWorld();
+		clientThread.invokeLater(() ->
+		{
+			if (client.getGameState().getState() < GameState.LOGIN_SCREEN.getState())
+			{
+				return false;
+			}
+
+			applyWorld();
+			return true;
+		});
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
-		worldChangeRequired = true;
-		changeWorld(worldCache);
 	}
 
 	@Provides
@@ -83,29 +90,25 @@ public class DefaultWorldPlugin extends Plugin
 	@Subscribe
 	public void onSessionOpen(SessionOpen event)
 	{
-		worldChangeRequired = true;
-		applyWorld();
+		clientThread.invokeLater(this::applyWorld);
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	public void onWorldChanged(WorldChanged worldChanged)
 	{
-		if (event.getGameState() == GameState.LOGGED_IN)
-		{
-			config.lastWorld(client.getWorld());
-		}
-
-		applyWorld();
+		int world = client.getWorld();
+		config.lastWorld(world);
+		log.debug("Saving last world {}", world);
 	}
 
-	private void changeWorld(int newWorld)
+	private void applyWorld()
 	{
-		if (!worldChangeRequired || client.getGameState() != GameState.LOGIN_SCREEN)
+		if (client.getGameState() != GameState.LOGIN_SCREEN)
 		{
 			return;
 		}
 
-		worldChangeRequired = false;
+		final int newWorld = config.useLastWorld() ? config.lastWorld() : config.getWorld();
 		int correctedWorld = newWorld < 300 ? newWorld + 300 : newWorld;
 
 		// Old School RuneScape worlds start on 301 so don't even bother trying to find lower id ones
@@ -116,7 +119,6 @@ public class DefaultWorldPlugin extends Plugin
 		}
 
 		final WorldResult worldResult = worldService.getWorlds();
-
 		if (worldResult == null)
 		{
 			log.warn("Failed to lookup worlds.");
@@ -124,35 +126,21 @@ public class DefaultWorldPlugin extends Plugin
 		}
 
 		final World world = worldResult.findWorld(correctedWorld);
-
-		if (world != null)
-		{
-			final net.runelite.api.World rsWorld = client.createWorld();
-			rsWorld.setActivity(world.getActivity());
-			rsWorld.setAddress(world.getAddress());
-			rsWorld.setId(world.getId());
-			rsWorld.setPlayerCount(world.getPlayers());
-			rsWorld.setLocation(world.getLocation());
-			rsWorld.setTypes(WorldUtil.toWorldTypes(world.getTypes()));
-
-			client.changeWorld(rsWorld);
-			log.debug("Applied new world {}", correctedWorld);
-		}
-		else
+		if (world == null)
 		{
 			log.warn("World {} not found.", correctedWorld);
-		}
-	}
-
-	private void applyWorld()
-	{
-		if (worldCache == 0)
-		{
-			worldCache = client.getWorld();
-			log.debug("Stored old world {}", worldCache);
+			return;
 		}
 
-		final int newWorld = !config.useLastWorld() ? config.getWorld() : config.lastWorld();
-		changeWorld(newWorld);
+		final net.runelite.api.World rsWorld = client.createWorld();
+		rsWorld.setActivity(world.getActivity());
+		rsWorld.setAddress(world.getAddress());
+		rsWorld.setId(world.getId());
+		rsWorld.setPlayerCount(world.getPlayers());
+		rsWorld.setLocation(world.getLocation());
+		rsWorld.setTypes(WorldUtil.toWorldTypes(world.getTypes()));
+
+		client.changeWorld(rsWorld);
+		log.debug("Applied new world {}", correctedWorld);
 	}
 }

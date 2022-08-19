@@ -66,7 +66,7 @@ public class FramemapDumper
 			store.load();
 
 			Storage storage = store.getStorage();
-			Index index = store.getIndex(IndexType.FRAMEMAPS);
+			Index index = store.getIndex(IndexType.SKELETONS);
 
 			for (Archive archive : index.getArchives())
 			{

@@ -300,7 +300,7 @@ public class ObjectLoader
 				anIntArray2084[index] = is.readUnsignedShort();
 			}
 
-			def.setAnIntArray2084(anIntArray2084);
+			def.setAmbientSoundIds(anIntArray2084);
 		}
 		else if (opcode == 81)
 		{

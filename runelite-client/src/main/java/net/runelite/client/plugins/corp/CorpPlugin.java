@@ -37,12 +37,15 @@ import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.MenuAction;
+import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.InteractingChanged;
+import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.VarbitChanged;
@@ -66,6 +69,9 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @Slf4j
 public class CorpPlugin extends Plugin
 {
+	private static final String ATTACK = "Attack";
+	private static final String DARK_ENERGY_CORE = "Dark energy core";
+
 	@Getter(AccessLevel.PACKAGE)
 	private NPC corp;
 
@@ -235,12 +241,32 @@ public class CorpPlugin extends Plugin
 	{
 		if (corp != null)
 		{
-			int myDamage = client.getVar(Varbits.CORP_DAMAGE);
+			int myDamage = client.getVarbitValue(Varbits.CORP_DAMAGE);
 			// avoid resetting our counter when the client's is reset
 			if (myDamage > 0)
 			{
 				yourDamage = myDamage;
 			}
 		}
+	}
+
+	@Subscribe
+	public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
+	{
+		final MenuEntry menuEntry = menuEntryAdded.getMenuEntry();
+		final NPC npc = menuEntry.getNpc();
+		if (npc == null || !DARK_ENERGY_CORE.equals(npc.getName()))
+		{
+			return;
+		}
+
+		if (menuEntry.getType() != MenuAction.NPC_SECOND_OPTION
+			|| !menuEntry.getOption().equals(ATTACK)
+			|| !config.leftClickCore())
+		{
+			return;
+		}
+
+		menuEntry.setDeprioritized(true);
 	}
 }

@@ -37,14 +37,13 @@ import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.client.Notifier;
-import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.util.Text;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import static org.mockito.ArgumentMatchers.any;
+import org.mockito.Mock;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -62,10 +61,6 @@ public class ChatNotificationsPluginTest
 	@Mock
 	@Bind
 	private ChatNotificationsConfig config;
-
-	@Mock
-	@Bind
-	private ChatMessageManager chatMessageManager;
 
 	@Mock
 	@Bind
@@ -307,7 +302,7 @@ public class ChatNotificationsPluginTest
 		ChatMessage chatMessage = new ChatMessage(messageNode, ChatMessageType.GAMEMESSAGE, "", "", "", 0);
 		chatNotificationsPlugin.onChatMessage(chatMessage);
 
-		verify(messageNode).setValue("<colHIGHLIGHT><u>Logic Knot</u></col> received a drop: Adamant longsword");
+		verify(messageNode).setValue("<colHIGHLIGHT><u>Logic Knot</u><colNORMAL> received a drop: Adamant longsword");
 	}
 
 	@Test

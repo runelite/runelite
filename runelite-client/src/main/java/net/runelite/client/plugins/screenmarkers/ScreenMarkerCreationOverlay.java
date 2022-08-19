@@ -42,9 +42,10 @@ class ScreenMarkerCreationOverlay extends Overlay
 	private ScreenMarkerCreationOverlay(final ScreenMarkerPlugin plugin)
 	{
 		this.plugin = plugin;
-		setPosition(OverlayPosition.DETACHED);
+		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		setPriority(OverlayPriority.HIGH);
+		setMovable(true);
 	}
 
 	@Override

@@ -30,6 +30,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.IntPredicate;
 import javax.annotation.Nullable;
 import lombok.Getter;
 import net.runelite.api.ItemID;
@@ -42,9 +43,10 @@ enum Task
 	// Abyssal demon - 150 xp
 	// Greater abyssal demon - 4200 xp
 	// Abyssal sire - 450 xp
-	// Use 51 for minimum xp to avoid a kill triggering from killing the sire vents
-	ABYSSAL_DEMONS("Abyssal demons", ItemID.ABYSSAL_DEMON, 51),
-	ABYSSAL_SIRE("Abyssal Sire", ItemID.ABYSSAL_ORPHAN, 51),
+	// Reanimated abyssal - 31 xp
+	// Ignore 50xp drops to avoid recording a kill from sire vents
+	ABYSSAL_DEMONS("Abyssal demons", ItemID.ABYSSAL_DEMON, (xp) -> xp != 50),
+	ABYSSAL_SIRE("Abyssal Sire", ItemID.ABYSSAL_ORPHAN, (xp) -> xp != 50),
 	ADAMANT_DRAGONS("Adamant dragons", ItemID.ADAMANT_DRAGON_MASK),
 	ALCHEMICAL_HYDRA("Alchemical Hydra", ItemID.IKKLE_HYDRA),
 	ANKOU("Ankou", ItemID.ANKOU_MASK),
@@ -55,7 +57,7 @@ enum Task
 	BASILISKS("Basilisks", ItemID.BASILISK),
 	BATS("Bats", ItemID.GIRAL_BAT_2, "Death wing"),
 	BEARS("Bears", ItemID.ENSOULED_BEAR_HEAD),
-	BIRDS("Birds", ItemID.FEATHER, "Chicken", "Rooster", "Terrorbird", "Seagull", "Vulture", "Duck"),
+	BIRDS("Birds", ItemID.FEATHER, "Chicken", "Rooster", "Terrorbird", "Seagull", "Vulture", "Duck", "Penguin"),
 	BLACK_DEMONS("Black demons", ItemID.BLACK_DEMON_MASK),
 	BLACK_DRAGONS("Black dragons", ItemID.BLACK_DRAGON_MASK, "Baby black dragon"),
 	BLACK_KNIGHTS("Black Knights", ItemID.BLACK_FULL_HELM, "Black Knight"),
@@ -114,7 +116,7 @@ enum Task
 	ICE_WARRIORS("Ice warriors", ItemID.MITHRIL_FULL_HELM_T, "Icelord"),
 	INFERNAL_MAGES("Infernal mages", ItemID.INFERNAL_MAGE, "Malevolent mage"),
 	IRON_DRAGONS("Iron dragons", ItemID.IRON_DRAGON_MASK),
-	JAD("TzTok-Jad", ItemID.TZREKJAD, 25250),
+	JAD("TzTok-Jad", ItemID.TZREKJAD, (xp) -> xp == 25250),
 	JELLIES("Jellies", ItemID.JELLY, "Jelly"),
 	JUNGLE_HORROR("Jungle horrors", ItemID.ENSOULED_HORROR_HEAD),
 	KALPHITE("Kalphite", ItemID.KALPHITE_SOLDIER),
@@ -183,7 +185,7 @@ enum Task
 	WYRMS("Wyrms", ItemID.WYRM),
 	ZILYANA("Commander Zilyana", ItemID.PET_ZILYANA),
 	ZOMBIES("Zombies", ItemID.ZOMBIE_HEAD, "Undead"),
-	ZUK("TzKal-Zuk", ItemID.TZREKZUK, 101890),
+	ZUK("TzKal-Zuk", ItemID.TZREKZUK, (xp) -> xp == 101890),
 	ZULRAH("Zulrah", ItemID.PET_SNAKELING);
 	//</editor-fold>
 
@@ -242,7 +244,8 @@ enum Task
 	private final String[] targetNames;
 	private final int weaknessThreshold;
 	private final int weaknessItem;
-	private final int minimumKillXp;
+	@Nullable
+	private final IntPredicate xpMatcher;
 
 	static
 	{
@@ -264,7 +267,7 @@ enum Task
 		this.weaknessThreshold = -1;
 		this.weaknessItem = -1;
 		this.targetNames = targetNames;
-		this.minimumKillXp = 0;
+		this.xpMatcher = null;
 	}
 
 	Task(String name, int itemSpriteId, int weaknessThreshold, int weaknessItem, String... targetNames)
@@ -275,10 +278,10 @@ enum Task
 		this.weaknessThreshold = weaknessThreshold;
 		this.weaknessItem = weaknessItem;
 		this.targetNames = targetNames;
-		this.minimumKillXp = 0;
+		this.xpMatcher = null;
 	}
 
-	Task(String name, int itemSpriteId, int minimumKillXp)
+	Task(String name, int itemSpriteId, IntPredicate xpMatcher)
 	{
 		Preconditions.checkArgument(itemSpriteId >= 0);
 		this.name = name;
@@ -286,7 +289,7 @@ enum Task
 		this.weaknessThreshold = -1;
 		this.weaknessItem = -1;
 		this.targetNames = new String[0];
-		this.minimumKillXp = minimumKillXp;
+		this.xpMatcher = xpMatcher;
 	}
 
 	@Nullable

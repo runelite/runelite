@@ -27,29 +27,36 @@ package net.runelite.client.plugins.skillcalculator.skills;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.ItemID;
+import net.runelite.client.game.ItemManager;
 
 @AllArgsConstructor
 @Getter
-public enum WoodcuttingAction implements NamedSkillAction
+public enum WoodcuttingAction implements ItemSkillAction
 {
-	LOGS("Logs", 1, 25, ItemID.LOGS),
-	ACHEY_TREE_LOGS("Achey tree logs", 1, 25, ItemID.ACHEY_TREE_LOGS),
-	OAK_LOGS("Oak logs", 15, 37.5f, ItemID.OAK_LOGS),
-	WILLOW_LOGS("Willow logs", 30, 67.5f, ItemID.WILLOW_LOGS),
-	TEAK_LOGS("Teak logs", 35, 85, ItemID.TEAK_LOGS),
-	BARK("Bark", 45, 82.5f, ItemID.BARK),
-	MAPLE_LOGS("Maple logs", 45, 100, ItemID.MAPLE_LOGS),
-	MAHOGANY_LOGS("Mahogany logs", 50, 125, ItemID.MAHOGANY_LOGS),
-	ARCTIC_PINE_LOGS("Arctic pine logs", 54, 40, ItemID.ARCTIC_PINE_LOGS),
-	YEW_LOGS("Yew logs", 60, 175, ItemID.YEW_LOGS),
-	BLISTERWOOD_LOGS("Blisterwood logs", 62, 76, ItemID.BLISTERWOOD_LOGS),
-	SULLIUSCEPS("Sulliusceps", 65, 127, ItemID.SULLIUSCEP_CAP),
-	MAGIC_LOGS("Magic logs", 75, 250, ItemID.MAGIC_LOGS),
-	REDWOOD_LOGS("Redwood logs", 90, 380, ItemID.REDWOOD_LOGS),
+	LOGS(ItemID.LOGS, 1, 25),
+	ACHEY_TREE_LOGS(ItemID.ACHEY_TREE_LOGS, 1, 25),
+	OAK_LOGS(ItemID.OAK_LOGS, 15, 37.5f),
+	WILLOW_LOGS(ItemID.WILLOW_LOGS, 30, 67.5f),
+	TEAK_LOGS(ItemID.TEAK_LOGS, 35, 85),
+	BARK(ItemID.BARK, 45, 82.5f),
+	MAPLE_LOGS(ItemID.MAPLE_LOGS, 45, 100),
+	MAHOGANY_LOGS(ItemID.MAHOGANY_LOGS, 50, 125),
+	ARCTIC_PINE_LOGS(ItemID.ARCTIC_PINE_LOGS, 54, 40),
+	YEW_LOGS(ItemID.YEW_LOGS, 60, 175),
+	BLISTERWOOD_LOGS(ItemID.BLISTERWOOD_LOGS, 62, 76),
+	SULLIUSCEPS(ItemID.SULLIUSCEP_CAP, 65, 127)
+	{
+		@Override
+		public String getName(final ItemManager itemManager)
+		{
+			return "Sulliusceps";
+		}
+	},
+	MAGIC_LOGS(ItemID.MAGIC_LOGS, 75, 250),
+	REDWOOD_LOGS(ItemID.REDWOOD_LOGS, 90, 380),
 	;
 
-	private final String name;
+	private final int itemId;
 	private final int level;
 	private final float xp;
-	private final int icon;
 }

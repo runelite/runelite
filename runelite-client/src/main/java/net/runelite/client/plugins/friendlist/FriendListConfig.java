@@ -28,9 +28,11 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("friendlist")
+@ConfigGroup(FriendListConfig.GROUP)
 public interface FriendListConfig extends Config
 {
+	String GROUP = "friendlist";
+
 	@ConfigItem(
 		keyName = "showWorldOnLogin",
 		name = "Show world on login",

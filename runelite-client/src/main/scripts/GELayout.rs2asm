@@ -1,7 +1,7 @@
 .id                 806
 .int_stack_count    7
 .string_stack_count 0
-.int_var_count      9
+.int_var_count      11
 .string_var_count   0
    iload                  6
    invoke                 41
@@ -52,12 +52,25 @@ LABEL37:
    iconst                 0
    iload                  2
    if_settrans           
+   iconst                 -1
+   istore                 9
+   iconst                 0
+   istore                 10
+   iload                  7
+   invoke                 5733
+   istore                 10
+   istore                 9
    iload                  7
    stockmarket_isofferempty
    iconst                 1
-   if_icmpeq              LABEL48
-   jump                   LABEL66
-LABEL48:
+   if_icmpeq              LABEL56
+   jump                   LABEL78
+LABEL56:
+   iload                  9
+   iconst                 -1
+   if_icmpeq              LABEL60
+   jump                   LABEL78
+LABEL60:
    iconst                 1
    iload                  3
    if_sethide            
@@ -71,14 +84,14 @@ LABEL48:
    iload                  1
    cc_find               
    iconst                 1
-   if_icmpeq              LABEL63
-   jump                   LABEL65
-LABEL63:
+   if_icmpeq              LABEL75
+   jump                   LABEL77
+LABEL75:
    sconst                 "Grand Exchange: Set up offer"
    cc_settext            
-LABEL65:
+LABEL77:
    return                
-LABEL66:
+LABEL78:
    iconst                 1
    iload                  3
    if_sethide            
@@ -92,10 +105,10 @@ LABEL66:
    iload                  1
    cc_find               
    iconst                 1
-   if_icmpeq              LABEL81
-   jump                   LABEL83
-LABEL81:
+   if_icmpeq              LABEL93
+   jump                   LABEL95
+LABEL93:
    sconst                 "Grand Exchange: Offer status"
    cc_settext            
-LABEL83:
+LABEL95:
    return                

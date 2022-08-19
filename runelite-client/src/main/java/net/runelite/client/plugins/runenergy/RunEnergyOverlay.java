@@ -83,7 +83,7 @@ class RunEnergyOverlay extends Overlay
 
 			if (config.replaceOrbText())
 			{
-				sb.append("Run Energy: ").append(client.getEnergy()).append("%");
+				sb.append("Run Energy: ").append(client.getEnergy()).append('%');
 			}
 			else
 			{

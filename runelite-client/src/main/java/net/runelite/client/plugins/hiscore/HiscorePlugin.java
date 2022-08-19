@@ -24,11 +24,8 @@
  */
 package net.runelite.client.plugins.hiscore;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ObjectArrays;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
-import java.util.EnumSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.annotation.Nullable;
@@ -40,17 +37,17 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.IconID;
 import net.runelite.api.MenuAction;
-import net.runelite.api.MenuEntry;
 import net.runelite.api.Player;
-import net.runelite.api.WorldType;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.hiscore.HiscoreEndpoint;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -58,8 +55,6 @@ import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
-import net.runelite.http.api.hiscore.HiscoreEndpoint;
-import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
 	name = "HiScore",
@@ -70,8 +65,6 @@ import org.apache.commons.lang3.ArrayUtils;
 public class HiscorePlugin extends Plugin
 {
 	private static final String LOOKUP = "Lookup";
-	private static final String KICK_OPTION = "Kick";
-	private static final ImmutableList<String> AFTER_OPTIONS = ImmutableList.of("Message", "Add ignore", "Remove friend", "Delete", KICK_OPTION);
 	private static final Pattern BOUNTY_PATTERN = Pattern.compile("<col=ff0000>You've been assigned a target: (.*)</col>");
 
 	@Inject
@@ -153,65 +146,53 @@ public class HiscorePlugin extends Plugin
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		if (!config.menuOption())
+		if ((event.getType() != MenuAction.CC_OP.getId() && event.getType() != MenuAction.CC_OP_LOW_PRIORITY.getId()) || !config.menuOption())
 		{
 			return;
 		}
 
+		final String option = event.getOption();
 		final int componentId = event.getActionParam1();
-		int groupId = WidgetInfo.TO_GROUP(componentId);
-		String option = event.getOption();
+		final int groupId = WidgetInfo.TO_GROUP(componentId);
 
-		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() || groupId == WidgetInfo.FRIENDS_CHAT.getGroupId() ||
-				groupId == WidgetInfo.CHATBOX.getGroupId() && !KICK_OPTION.equals(option) || //prevent from adding for Kick option (interferes with the raiding party one)
-				groupId == WidgetInfo.RAIDING_PARTY.getGroupId() || groupId == WidgetInfo.PRIVATE_CHAT_MESSAGE.getGroupId() ||
-				groupId == WidgetInfo.IGNORE_LIST.getGroupId() || componentId == WidgetInfo.CLAN_MEMBER_LIST.getId() ||
-				componentId == WidgetInfo.CLAN_GUEST_MEMBER_LIST.getId())
+		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() && option.equals("Delete")
+			|| groupId == WidgetInfo.FRIENDS_CHAT.getGroupId() && (option.equals("Add ignore") || option.equals("Remove friend"))
+			|| groupId == WidgetInfo.CHATBOX.getGroupId() && (option.equals("Add ignore") || option.equals("Message"))
+			|| groupId == WidgetInfo.IGNORE_LIST.getGroupId() && option.equals("Delete")
+			|| (componentId == WidgetInfo.CLAN_MEMBER_LIST.getId() || componentId == WidgetInfo.CLAN_GUEST_MEMBER_LIST.getId()) && (option.equals("Add ignore") || option.equals("Remove friend"))
+			|| groupId == WidgetInfo.PRIVATE_CHAT_MESSAGE.getGroupId() && (option.equals("Add ignore") || option.equals("Message"))
+			|| groupId == WidgetID.GROUP_IRON_GROUP_ID && (option.equals("Add friend") || option.equals("Remove friend") || option.equals("Remove ignore"))
+		)
 		{
-			if (!AFTER_OPTIONS.contains(option) || (option.equals("Delete") && groupId != WidgetInfo.IGNORE_LIST.getGroupId()))
-			{
-				return;
-			}
-
-			final MenuEntry lookup = new MenuEntry();
-			lookup.setOption(LOOKUP);
-			lookup.setTarget(event.getTarget());
-			lookup.setType(MenuAction.RUNELITE.getId());
-			lookup.setParam0(event.getActionParam0());
-			lookup.setParam1(event.getActionParam1());
-			lookup.setIdentifier(event.getIdentifier());
-
-			insertMenuEntry(lookup, client.getMenuEntries());
+			client.createMenuEntry(-2)
+				.setOption(LOOKUP)
+				.setTarget(event.getTarget())
+				.setType(MenuAction.RUNELITE)
+				.setIdentifier(event.getIdentifier())
+				.onClick(e ->
+				{
+					// Determine proper endpoint from player name.
+					// TODO: look at target's world and determine if tournament/dmm endpoint should be used instead.
+					HiscoreEndpoint endpoint = findHiscoreEndpointFromPlayerName(e.getTarget());
+					String target = Text.removeTags(e.getTarget());
+					lookupPlayer(target, endpoint);
+				});
 		}
 	}
 
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if ((event.getMenuAction() == MenuAction.RUNELITE || event.getMenuAction() == MenuAction.RUNELITE_PLAYER)
-			&& event.getMenuOption().equals(LOOKUP))
+		if (event.getMenuAction() == MenuAction.RUNELITE_PLAYER && event.getMenuOption().equals(LOOKUP))
 		{
-			final String target;
-			HiscoreEndpoint endpoint = HiscoreEndpoint.NORMAL;
-			if (event.getMenuAction() == MenuAction.RUNELITE_PLAYER)
+			Player player = event.getMenuEntry().getPlayer();
+			if (player == null)
 			{
-				// The player id is included in the event, so we can use that to get the player name,
-				// which avoids having to parse out the combat level and any icons preceding the name.
-				Player player = client.getCachedPlayers()[event.getId()];
-				if (player == null)
-				{
-					return;
-				}
+				return;
+			}
 
-				target = player.getName();
-			}
-			else
-			{
-				// Determine proper endpoint from player name.
-				// TODO: look at target's world and determine if tournament/dmm endpoint should be used instead.
-				endpoint = findHiscoreEndpointFromPlayerName(event.getMenuTarget());
-				target = Text.removeTags(event.getMenuTarget());
-			}
+			String target = player.getName();
+			HiscoreEndpoint endpoint = getWorldEndpoint();
 
 			lookupPlayer(target, endpoint);
 		}
@@ -239,14 +220,6 @@ public class HiscorePlugin extends Plugin
 		localHiscoreEndpoint = findHiscoreEndpointFromLocalPlayer();
 	}
 
-	private void insertMenuEntry(MenuEntry newEntry, MenuEntry[] entries)
-	{
-		MenuEntry[] newMenu = ObjectArrays.concat(entries, newEntry);
-		int menuEntryCount = newMenu.length;
-		ArrayUtils.swap(newMenu, menuEntryCount - 1, menuEntryCount - 2);
-		client.setMenuEntries(newMenu);
-	}
-
 	private void lookupPlayer(String playerName, HiscoreEndpoint endpoint)
 	{
 		SwingUtilities.invokeLater(() ->
@@ -263,16 +236,7 @@ public class HiscorePlugin extends Plugin
 	{
 		if (client != null)
 		{
-			EnumSet<WorldType> wTypes = client.getWorldType();
-
-			if (wTypes.contains(WorldType.SEASONAL))
-			{
-				return HiscoreEndpoint.TOURNAMENT;
-			}
-			else if (wTypes.contains(WorldType.DEADMAN))
-			{
-				return HiscoreEndpoint.DEADMAN;
-			}
+			return HiscoreEndpoint.fromWorldTypes(client.getWorldType());
 		}
 		return HiscoreEndpoint.NORMAL;
 	}

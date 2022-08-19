@@ -60,15 +60,15 @@ public class LinkBrowser
 				return;
 			}
 
-			if (attemptDesktopBrowse(url))
-			{
-				log.debug("Opened url through Desktop#browse to {}", url);
-				return;
-			}
-
 			if (shouldAttemptXdg && attemptXdgOpen(url))
 			{
 				log.debug("Opened url through xdg-open to {}", url);
+				return;
+			}
+
+			if (attemptDesktopBrowse(url))
+			{
+				log.debug("Opened url through Desktop#browse to {}", url);
 				return;
 			}
 			
@@ -91,18 +91,18 @@ public class LinkBrowser
 				return;
 			}
 
+			if (shouldAttemptXdg && attemptXdgOpen(directory))
+			{
+				log.debug("Opened directory through xdg-open to {}", directory);
+				return;
+			}
+
 			if (attemptDesktopOpen(directory))
 			{
 				log.debug("Opened directory through Desktop#open to {}", directory);
 				return;
 			}
 
-			if (shouldAttemptXdg && attemptXdgOpen(directory))
-			{
-				log.debug("Opened directory through xdg-open to {}", directory);
-				return;
-			}
-			
 			log.warn("LinkBrowser.open() could not open {}", directory);
 			showMessageBox("Unable to open folder. Press 'OK' and the folder directory will be copied to your clipboard.", directory);
 		}).start();

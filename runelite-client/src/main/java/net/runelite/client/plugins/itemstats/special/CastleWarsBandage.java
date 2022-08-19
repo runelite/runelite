@@ -61,7 +61,7 @@ public class CastleWarsBandage implements Effect
 		changes.setStatChanges(new StatChange[]{hitPoints, runEnergy});
 		changes.setPositivity(Stream.of(changes.getStatChanges())
 			.map(StatChange::getPositivity)
-			.max(Comparator.comparing(Enum::ordinal)).get());
+			.max(Comparator.naturalOrder()).get());
 
 		return changes;
 	}

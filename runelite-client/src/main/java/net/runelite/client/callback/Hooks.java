@@ -36,6 +36,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.VolatileImage;
+import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -43,6 +44,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.MainBufferProvider;
 import net.runelite.api.RenderOverview;
+import net.runelite.api.Renderable;
 import net.runelite.api.Skill;
 import net.runelite.api.WorldMapManager;
 import net.runelite.api.events.BeforeRender;
@@ -107,6 +109,14 @@ public class Hooks implements Callbacks
 
 	private static MainBufferProvider lastMainBufferProvider;
 	private static Graphics2D lastGraphics;
+
+	@FunctionalInterface
+	public interface RenderableDrawListener
+	{
+		boolean draw(Renderable renderable, boolean ui);
+	}
+
+	private final List<RenderableDrawListener> renderableDrawListeners = new ArrayList<>();
 
 	/**
 	 * Get the Graphics2D for the MainBufferProvider image
@@ -176,7 +186,7 @@ public class Hooks implements Callbacks
 	}
 
 	@Override
-	public void clientMainLoop()
+	public void tick()
 	{
 		if (shouldProcessGameTick)
 		{
@@ -189,8 +199,6 @@ public class Hooks implements Callbacks
 			int tick = client.getTickCount();
 			client.setTickCount(tick + 1);
 		}
-
-		eventBus.post(BEFORE_RENDER);
 
 		clientThread.invoke();
 
@@ -217,8 +225,14 @@ public class Hooks implements Callbacks
 		}
 		catch (Exception ex)
 		{
-			log.warn("error during main loop tasks", ex);
+			log.error("error during main loop tasks", ex);
 		}
+	}
+
+	@Override
+	public void frame()
+	{
+		eventBus.post(BEFORE_RENDER);
 	}
 
 	/**
@@ -336,7 +350,7 @@ public class Hooks implements Callbacks
 		}
 		catch (Exception ex)
 		{
-			log.warn("Error during overlay rendering", ex);
+			log.error("Error during overlay rendering", ex);
 		}
 
 		notifier.processFlash(graphics2d);
@@ -431,7 +445,7 @@ public class Hooks implements Callbacks
 		}
 		catch (Exception ex)
 		{
-			log.warn("Error during overlay rendering", ex);
+			log.error("Error during overlay rendering", ex);
 		}
 	}
 
@@ -447,7 +461,7 @@ public class Hooks implements Callbacks
 		}
 		catch (Exception ex)
 		{
-			log.warn("Error during overlay rendering", ex);
+			log.error("Error during overlay rendering", ex);
 		}
 	}
 
@@ -499,7 +513,7 @@ public class Hooks implements Callbacks
 		}
 		catch (Exception ex)
 		{
-			log.warn("Error during overlay rendering", ex);
+			log.error("Error during overlay rendering", ex);
 		}
 	}
 
@@ -515,7 +529,7 @@ public class Hooks implements Callbacks
 		}
 		catch (Exception ex)
 		{
-			log.warn("Error during overlay rendering", ex);
+			log.error("Error during overlay rendering", ex);
 		}
 	}
 
@@ -539,5 +553,35 @@ public class Hooks implements Callbacks
 			xp
 		);
 		eventBus.post(fakeXpDrop);
+	}
+
+	public void registerRenderableDrawListener(RenderableDrawListener listener)
+	{
+		renderableDrawListeners.add(listener);
+	}
+
+	public void unregisterRenderableDrawListener(RenderableDrawListener listener)
+	{
+		renderableDrawListeners.remove(listener);
+	}
+
+	@Override
+	public boolean draw(Renderable renderable, boolean drawingUi)
+	{
+		try
+		{
+			for (RenderableDrawListener renderableDrawListener : renderableDrawListeners)
+			{
+				if (!renderableDrawListener.draw(renderable, drawingUi))
+				{
+					return false;
+				}
+			}
+		}
+		catch (Exception ex)
+		{
+			log.error("exception from renderable draw listener", ex);
+		}
+		return true;
 	}
 }

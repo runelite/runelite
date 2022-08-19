@@ -24,8 +24,14 @@
  */
 package net.runelite.api.events;
 
-import lombok.Data;
+import javax.annotation.Nullable;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import net.runelite.api.MenuAction;
+import net.runelite.api.MenuEntry;
+import net.runelite.api.widgets.Widget;
 
 /**
  * An event where a menu option has been clicked.
@@ -38,41 +44,122 @@ import net.runelite.api.MenuAction;
  * By default, when there is no action performed when left-clicking,
  * it seems that this event still triggers with the "Cancel" action.
  */
-@Data
+@RequiredArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString(onlyExplicitlyIncluded = true)
 public class MenuOptionClicked
 {
 	/**
-	 * Action parameter 0. Its value depends on the menuAction.
+	 * The clicked menu entry
 	 */
-	private int param0;
-	/**
-	 * Action parameter 1. Its value depends on the menuAction.
-	 */
-	private int param1;
-	/**
-	 * The option text added to the menu.
-	 */
-	private String menuOption;
-	/**
-	 * The target of the action.
-	 */
-	private String menuTarget;
-	/**
-	 * The action performed.
-	 */
-	private MenuAction menuAction;
-	/**
-	 * The ID of the object, actor, or item that the interaction targets.
-	 */
-	private int id;
-	/**
-	 * The selected item index at the time of the option click.
-	 */
-	private int selectedItemIndex;
+	@Getter
+	private final MenuEntry menuEntry;
+
 	/**
 	 * Whether or not the event has been consumed by a subscriber.
 	 */
+	@Getter
 	private boolean consumed;
+
+	/**
+	 * Action parameter 0. Its value depends on the menuAction.
+	 */
+	@EqualsAndHashCode.Include
+	@ToString.Include
+	public int getParam0()
+	{
+		return menuEntry.getParam0();
+	}
+
+	/**
+	 * Action parameter 1. Its value depends on the menuAction.
+	 */
+	@EqualsAndHashCode.Include
+	@ToString.Include
+	public int getParam1()
+	{
+		return menuEntry.getParam1();
+	}
+
+	/**
+	 * The option text added to the menu.
+	 */
+	@EqualsAndHashCode.Include
+	@ToString.Include
+	public String getMenuOption()
+	{
+		return menuEntry.getOption();
+	}
+
+	/**
+	 * The target of the action.
+	 */
+	@EqualsAndHashCode.Include
+	@ToString.Include
+	public String getMenuTarget()
+	{
+		return menuEntry.getTarget();
+	}
+
+	/**
+	 * The action performed.
+	 */
+	@EqualsAndHashCode.Include
+	@ToString.Include
+	public MenuAction getMenuAction()
+	{
+		return menuEntry.getType();
+	}
+
+	/**
+	 * The ID of the object, actor, or item that the interaction targets.
+	 */
+	@EqualsAndHashCode.Include
+	@ToString.Include
+	public int getId()
+	{
+		return menuEntry.getIdentifier();
+	}
+
+	/**
+	 * Test if this menu entry is an item op. "Use" and "Examine" are not considered item ops.
+	 * @return
+	 */
+	public boolean isItemOp()
+	{
+		return menuEntry.isItemOp();
+	}
+
+	/**
+	 * If this menu entry is an item op, get the item op id
+	 * @return 1-5
+	 */
+	public int getItemOp()
+	{
+		return menuEntry.getItemOp();
+	}
+
+	/**
+	 * If this menu entry is an item op, get the item id
+	 * @return
+	 * @see net.runelite.api.ItemID
+	 * @see net.runelite.api.NullItemID
+	 */
+	public int getItemId()
+	{
+		return menuEntry.getItemId();
+	}
+
+	/**
+	 * Get the widget this menu entry is on, if this is a menu entry
+	 * with an associated widget. Such as eg, CC_OP.
+	 * @return
+	 */
+	@Nullable
+	public Widget getWidget()
+	{
+		return menuEntry.getWidget();
+	}
 
 	/**
 	 * Marks the event as having been consumed.
@@ -89,12 +176,12 @@ public class MenuOptionClicked
 	@Deprecated
 	public int getActionParam()
 	{
-		return param0;
+		return menuEntry.getParam0();
 	}
 
 	@Deprecated
 	public int getWidgetId()
 	{
-		return param1;
+		return menuEntry.getParam1();
 	}
 }

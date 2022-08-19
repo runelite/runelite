@@ -61,8 +61,8 @@ class PyramidPlunderTimer extends Timer
 	@Override
 	public String getTooltip()
 	{
-		int floor = client.getVar(Varbits.PYRAMID_PLUNDER_ROOM);
-		int thievingLevel = client.getVar(Varbits.PYRAMID_PLUNDER_THIEVING_LEVEL);
+		int floor = client.getVarbitValue(Varbits.PYRAMID_PLUNDER_ROOM);
+		int thievingLevel = client.getVarbitValue(Varbits.PYRAMID_PLUNDER_THIEVING_LEVEL);
 		return String.format("Time remaining. Floor: %d. Thieving level: %d", floor, thievingLevel);
 	}
 

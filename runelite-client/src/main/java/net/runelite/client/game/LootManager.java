@@ -71,6 +71,7 @@ public class LootManager
 
 	private final EventBus eventBus;
 	private final Client client;
+	private final NpcUtil npcUtil;
 	private final ListMultimap<Integer, ItemStack> itemSpawns = ArrayListMultimap.create();
 	private final Set<LocalPoint> killPoints = new HashSet<>();
 	private WorldPoint playerLocationLastTick;
@@ -80,10 +81,11 @@ public class LootManager
 	private int delayedLootTickLimit;
 
 	@Inject
-	private LootManager(EventBus eventBus, Client client)
+	private LootManager(EventBus eventBus, Client client, NpcUtil npcUtil)
 	{
 		this.eventBus = eventBus;
 		this.client = client;
+		this.npcUtil = npcUtil;
 		eventBus.register(this);
 	}
 
@@ -98,7 +100,7 @@ public class LootManager
 			delayedLootTickLimit = 0;
 		}
 
-		if (!npc.isDead())
+		if (!npcUtil.isDying(npc))
 		{
 			int id = npc.getId();
 			switch (id)
@@ -353,6 +355,7 @@ public class LootManager
 			case NpcID.VORKATH_8059:
 			case NpcID.VORKATH_8060:
 			case NpcID.VORKATH_8061:
+			{
 				int x = worldLocation.getX() + 3;
 				int y = worldLocation.getY() + 3;
 				if (playerLocationLastTick.getX() < x)
@@ -373,6 +376,27 @@ public class LootManager
 				}
 				worldLocation = new WorldPoint(x, y, worldLocation.getPlane());
 				break;
+			}
+			case NpcID.NEX:
+			case NpcID.NEX_11279:
+			case NpcID.NEX_11280:
+			case NpcID.NEX_11281:
+			case NpcID.NEX_11282:
+			{
+				// Nex loot is under the player, or under nex
+				LocalPoint localPoint = LocalPoint.fromWorld(client, playerLocationLastTick);
+				if (localPoint != null)
+				{
+					int x = localPoint.getSceneX();
+					int y = localPoint.getSceneY();
+					final int packed = x << 8 | y;
+					if (itemSpawns.containsKey(packed))
+					{
+						return playerLocationLastTick;
+					}
+				}
+				break;
+			}
 		}
 
 		return worldLocation;

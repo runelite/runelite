@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -187,6 +188,7 @@ public class ChatFilterPlugin extends Plugin
 			case FRIENDSCHAT:
 			case CLAN_CHAT:
 			case CLAN_GUEST_CHAT:
+			case CLAN_GIM_CHAT:
 				if (shouldFilterPlayerMessage(Text.removeTags(name)))
 				{
 					message = censorMessage(name, message);
@@ -199,6 +201,9 @@ public class ChatFilterPlugin extends Plugin
 			case NPC_EXAMINE:
 			case OBJECT_EXAMINE:
 			case SPAM:
+			case CLAN_MESSAGE:
+			case CLAN_GUEST_MESSAGE:
+			case CLAN_GIM_MESSAGE:
 				if (config.filterGameChat())
 				{
 					message = censorMessage(null, message);
@@ -315,7 +320,12 @@ public class ChatFilterPlugin extends Plugin
 	String censorMessage(final String username, final String message)
 	{
 		String strippedMessage = jagexPrintableCharMatcher.retainFrom(message)
-			.replace('\u00A0', ' ');
+			.replace('\u00A0', ' ')
+			.replaceAll("<lt>", "<")
+			.replaceAll("<gt>", ">");
+		String strippedAccents = stripAccents(strippedMessage);
+		assert strippedMessage.length() == strippedAccents.length();
+
 		if (username != null && shouldFilterByName(username))
 		{
 			switch (config.filterType())
@@ -332,16 +342,20 @@ public class ChatFilterPlugin extends Plugin
 		boolean filtered = false;
 		for (Pattern pattern : filteredPatterns)
 		{
-			Matcher m = pattern.matcher(strippedMessage);
+			Matcher m = pattern.matcher(strippedAccents);
 
-			StringBuffer sb = new StringBuffer();
+			StringBuilder sb = new StringBuilder();
+			int idx = 0;
 
 			while (m.find())
 			{
 				switch (config.filterType())
 				{
 					case CENSOR_WORDS:
-						m.appendReplacement(sb, StringUtils.repeat('*', m.group(0).length()));
+						MatchResult matchResult = m.toMatchResult();
+						sb.append(strippedMessage, idx, matchResult.start())
+							.append(StringUtils.repeat('*', matchResult.group().length()));
+						idx = m.end();
 						filtered = true;
 						break;
 					case CENSOR_MESSAGE:
@@ -350,9 +364,10 @@ public class ChatFilterPlugin extends Plugin
 						return null;
 				}
 			}
-			m.appendTail(sb);
+			sb.append(strippedMessage.substring(idx));
 
 			strippedMessage = sb.toString();
+			assert strippedMessage.length() == strippedAccents.length();
 		}
 
 		return filtered ? strippedMessage : message;
@@ -364,18 +379,26 @@ public class ChatFilterPlugin extends Plugin
 		filteredNamePatterns.clear();
 
 		Text.fromCSV(config.filteredWords()).stream()
+			.map(this::stripAccents)
 			.map(s -> Pattern.compile(Pattern.quote(s), Pattern.CASE_INSENSITIVE))
 			.forEach(filteredPatterns::add);
 
 		NEWLINE_SPLITTER.splitToList(config.filteredRegex()).stream()
+			.map(this::stripAccents)
 			.map(ChatFilterPlugin::compilePattern)
 			.filter(Objects::nonNull)
 			.forEach(filteredPatterns::add);
 
 		NEWLINE_SPLITTER.splitToList(config.filteredNames()).stream()
+			.map(this::stripAccents)
 			.map(ChatFilterPlugin::compilePattern)
 			.filter(Objects::nonNull)
 			.forEach(filteredNamePatterns::add);
+	}
+
+	private String stripAccents(String input)
+	{
+		return config.stripAccents() ? StringUtils.stripAccents(input) : input;
 	}
 
 	private static Pattern compilePattern(String pattern)

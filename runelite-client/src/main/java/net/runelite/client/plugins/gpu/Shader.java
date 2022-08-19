@@ -26,12 +26,12 @@
 package net.runelite.client.plugins.gpu;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.jogamp.opengl.GL4;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.client.plugins.gpu.template.Template;
+import org.lwjgl.opengl.GL43C;
 
 public class Shader
 {
@@ -55,9 +55,9 @@ public class Shader
 		return this;
 	}
 
-	public int compile(GL4 gl, Template template) throws ShaderException
+	public int compile(Template template) throws ShaderException
 	{
-		int program = gl.glCreateProgram();
+		int program = GL43C.glCreateProgram();
 		int[] shaders = new int[units.size()];
 		int i = 0;
 		boolean ok = false;
@@ -66,39 +66,39 @@ public class Shader
 			while (i < shaders.length)
 			{
 				Unit unit = units.get(i);
-				int shader = gl.glCreateShader(unit.type);
+				int shader = GL43C.glCreateShader(unit.type);
 				if (shader == 0)
 				{
 					throw new ShaderException("Unable to create shader of type " + unit.type);
 				}
 
 				String source = template.load(unit.filename);
-				gl.glShaderSource(shader, 1, new String[]{source}, null);
-				gl.glCompileShader(shader);
+				GL43C.glShaderSource(shader, source);
+				GL43C.glCompileShader(shader);
 
-				if (GLUtil.glGetShader(gl, shader, gl.GL_COMPILE_STATUS) != gl.GL_TRUE)
+				if (GL43C.glGetShaderi(shader, GL43C.GL_COMPILE_STATUS) != GL43C.GL_TRUE)
 				{
-					String err = GLUtil.glGetShaderInfoLog(gl, shader);
-					gl.glDeleteShader(shader);
+					String err = GL43C.glGetShaderInfoLog(shader);
+					GL43C.glDeleteShader(shader);
 					throw new ShaderException(err);
 				}
-				gl.glAttachShader(program, shader);
+				GL43C.glAttachShader(program, shader);
 				shaders[i++] = shader;
 			}
 
-			gl.glLinkProgram(program);
+			GL43C.glLinkProgram(program);
 
-			if (GLUtil.glGetProgram(gl, program, gl.GL_LINK_STATUS) == gl.GL_FALSE)
+			if (GL43C.glGetProgrami(program, GL43C.GL_LINK_STATUS) == GL43C.GL_FALSE)
 			{
-				String err = GLUtil.glGetProgramInfoLog(gl, program);
+				String err = GL43C.glGetProgramInfoLog(program);
 				throw new ShaderException(err);
 			}
 
-			gl.glValidateProgram(program);
+			GL43C.glValidateProgram(program);
 
-			if (GLUtil.glGetProgram(gl, program, gl.GL_VALIDATE_STATUS) == gl.GL_FALSE)
+			if (GL43C.glGetProgrami(program, GL43C.GL_VALIDATE_STATUS) == GL43C.GL_FALSE)
 			{
-				String err = GLUtil.glGetProgramInfoLog(gl, program);
+				String err = GL43C.glGetProgramInfoLog(program);
 				throw new ShaderException(err);
 			}
 
@@ -109,13 +109,13 @@ public class Shader
 			while (i > 0)
 			{
 				int shader = shaders[--i];
-				gl.glDetachShader(program, shader);
-				gl.glDeleteShader(shader);
+				GL43C.glDetachShader(program, shader);
+				GL43C.glDeleteShader(shader);
 			}
 
 			if (!ok)
 			{
-				gl.glDeleteProgram(program);
+				GL43C.glDeleteProgram(program);
 			}
 		}
 

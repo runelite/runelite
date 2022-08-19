@@ -33,6 +33,7 @@ import net.runelite.cache.definitions.providers.ModelProvider;
 import net.runelite.cache.definitions.providers.SpriteProvider;
 import net.runelite.cache.definitions.providers.TextureProvider;
 import net.runelite.cache.models.FaceNormal;
+import net.runelite.cache.models.JagexColor;
 import net.runelite.cache.models.VertexNormal;
 
 public class ItemSpriteFactory
@@ -72,11 +73,6 @@ public class ItemSpriteFactory
 			}
 		}
 
-		if (item.notedTemplate != -1)
-		{
-			item.updateNote(itemProvider.provide(item.notedTemplate), itemProvider.provide(item.notedID));
-		}
-
 		Model itemModel = getModel(modelProvider, item);
 		if (itemModel == null)
 		{
@@ -96,7 +92,7 @@ public class ItemSpriteFactory
 		else if (item.boughtTemplateId != -1)
 		{
 			auxSpritePixels = createSpritePixels(itemProvider, modelProvider, spriteProvider, textureProvider,
-				item.boughtId, quantity, border, shadowColor, false);
+				item.boughtId, quantity, border, 0, false);
 			if (auxSpritePixels == null)
 			{
 				return null;
@@ -116,7 +112,7 @@ public class ItemSpriteFactory
 
 		SpritePixels spritePixels = new SpritePixels(36, 32);
 		Graphics3D graphics = new Graphics3D(rsTextureProvider);
-		graphics.setBrightness(0.6d);
+		graphics.setBrightness(JagexColor.BRIGHTNESS_MAX);
 		graphics.setRasterBuffer(spritePixels.pixels, 36, 32);
 		graphics.reset();
 		graphics.setRasterClipping();
@@ -227,22 +223,22 @@ public class ItemSpriteFactory
 		litModel.field1856 = new int[def.faceCount];
 		litModel.field1854 = new int[def.faceCount];
 		litModel.field1823 = new int[def.faceCount];
-		if (def.textureTriangleCount > 0 && def.textureCoordinates != null)
+		if (def.numTextureFaces > 0 && def.textureCoords != null)
 		{
-			int[] var9 = new int[def.textureTriangleCount];
+			int[] var9 = new int[def.numTextureFaces];
 
 			int var10;
 			for (var10 = 0; var10 < def.faceCount; ++var10)
 			{
-				if (def.textureCoordinates[var10] != -1)
+				if (def.textureCoords[var10] != -1)
 				{
-					++var9[def.textureCoordinates[var10] & 255];
+					++var9[def.textureCoords[var10] & 255];
 				}
 			}
 
 			litModel.field1852 = 0;
 
-			for (var10 = 0; var10 < def.textureTriangleCount; ++var10)
+			for (var10 = 0; var10 < def.numTextureFaces; ++var10)
 			{
 				if (var9[var10] > 0 && def.textureRenderTypes[var10] == 0)
 				{
@@ -256,13 +252,13 @@ public class ItemSpriteFactory
 			var10 = 0;
 
 
-			for (int i = 0; i < def.textureTriangleCount; ++i)
+			for (int i = 0; i < def.numTextureFaces; ++i)
 			{
 				if (var9[i] > 0 && def.textureRenderTypes[i] == 0)
 				{
-					litModel.field1844[var10] = def.textureTriangleVertexIndices1[i] & '\uffff';
-					litModel.field1865[var10] = def.textureTriangleVertexIndices2[i] & '\uffff';
-					litModel.field1846[var10] = def.textureTriangleVertexIndices3[i] & '\uffff';
+					litModel.field1844[var10] = def.texIndices1[i] & '\uffff';
+					litModel.field1865[var10] = def.texIndices2[i] & '\uffff';
+					litModel.field1846[var10] = def.texIndices3[i] & '\uffff';
 					var9[i] = var10++;
 				}
 				else
@@ -275,9 +271,9 @@ public class ItemSpriteFactory
 
 			for (int i = 0; i < def.faceCount; ++i)
 			{
-				if (def.textureCoordinates[i] != -1)
+				if (def.textureCoords[i] != -1)
 				{
-					litModel.field1840[i] = (byte) var9[def.textureCoordinates[i] & 255];
+					litModel.field1840[i] = (byte) var9[def.textureCoords[i] & 255];
 				}
 				else
 				{
@@ -299,13 +295,13 @@ public class ItemSpriteFactory
 			}
 
 			byte faceAlpha;
-			if (def.faceAlphas == null)
+			if (def.faceTransparencies == null)
 			{
 				faceAlpha = 0;
 			}
 			else
 			{
-				faceAlpha = def.faceAlphas[faceIdx];
+				faceAlpha = def.faceTransparencies[faceIdx];
 			}
 
 			short faceTexture;
@@ -355,15 +351,15 @@ public class ItemSpriteFactory
 				else
 				{
 					int var15 = def.faceColors[faceIdx] & '\uffff';
-					vertexNormal = def.vertexNormals[def.faceVertexIndices1[faceIdx]];
+					vertexNormal = def.vertexNormals[def.faceIndices1[faceIdx]];
 
 					tmp = (y * vertexNormal.y + z * vertexNormal.z + x * vertexNormal.x) / (var7 * vertexNormal.magnitude) + ambient;
 					litModel.field1856[faceIdx] = method2608(var15, tmp);
-					vertexNormal = def.vertexNormals[def.faceVertexIndices2[faceIdx]];
+					vertexNormal = def.vertexNormals[def.faceIndices2[faceIdx]];
 
 					tmp = (y * vertexNormal.y + z * vertexNormal.z + x * vertexNormal.x) / (var7 * vertexNormal.magnitude) + ambient;
 					litModel.field1854[faceIdx] = method2608(var15, tmp);
-					vertexNormal = def.vertexNormals[def.faceVertexIndices3[faceIdx]];
+					vertexNormal = def.vertexNormals[def.faceIndices3[faceIdx]];
 
 					tmp = (y * vertexNormal.y + z * vertexNormal.z + x * vertexNormal.x) / (var7 * vertexNormal.magnitude) + ambient;
 					litModel.field1823[faceIdx] = method2608(var15, tmp);
@@ -385,15 +381,15 @@ public class ItemSpriteFactory
 			}
 			else
 			{
-				vertexNormal = def.vertexNormals[def.faceVertexIndices1[faceIdx]];
+				vertexNormal = def.vertexNormals[def.faceIndices1[faceIdx]];
 
 				tmp = (y * vertexNormal.y + z * vertexNormal.z + x * vertexNormal.x) / (var7 * vertexNormal.magnitude) + ambient;
 				litModel.field1856[faceIdx] = bound2to126(tmp);
-				vertexNormal = def.vertexNormals[def.faceVertexIndices2[faceIdx]];
+				vertexNormal = def.vertexNormals[def.faceIndices2[faceIdx]];
 
 				tmp = (y * vertexNormal.y + z * vertexNormal.z + x * vertexNormal.x) / (var7 * vertexNormal.magnitude) + ambient;
 				litModel.field1854[faceIdx] = bound2to126(tmp);
-				vertexNormal = def.vertexNormals[def.faceVertexIndices3[faceIdx]];
+				vertexNormal = def.vertexNormals[def.faceIndices3[faceIdx]];
 
 				tmp = (y * vertexNormal.y + z * vertexNormal.z + x * vertexNormal.x) / (var7 * vertexNormal.magnitude) + ambient;
 				litModel.field1823[faceIdx] = bound2to126(tmp);
@@ -401,15 +397,15 @@ public class ItemSpriteFactory
 		}
 
 		litModel.verticesCount = def.vertexCount;
-		litModel.verticesX = def.vertexPositionsX;
-		litModel.verticesY = def.vertexPositionsY;
-		litModel.verticesZ = def.vertexPositionsZ;
+		litModel.verticesX = def.vertexX;
+		litModel.verticesY = def.vertexY;
+		litModel.verticesZ = def.vertexZ;
 		litModel.indicesCount = def.faceCount;
-		litModel.indices1 = def.faceVertexIndices1;
-		litModel.indices2 = def.faceVertexIndices2;
-		litModel.indices3 = def.faceVertexIndices3;
+		litModel.indices1 = def.faceIndices1;
+		litModel.indices2 = def.faceIndices2;
+		litModel.indices3 = def.faceIndices3;
 		litModel.field1838 = def.faceRenderPriorities;
-		litModel.field1882 = def.faceAlphas;
+		litModel.field1882 = def.faceTransparencies;
 		litModel.field1842 = def.priority;
 		litModel.field1841 = def.faceTextures;
 		return litModel;

@@ -64,37 +64,36 @@ import net.runelite.api.Scene;
 import net.runelite.api.ScriptID;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.CommandExecuted;
-import net.runelite.api.events.DecorativeObjectChanged;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
-import net.runelite.api.events.GameObjectChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.GroundObjectChanged;
 import net.runelite.api.events.GroundObjectDespawned;
 import net.runelite.api.events.GroundObjectSpawned;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
-import net.runelite.api.events.WallObjectChanged;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.RunepouchRune;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -143,6 +142,12 @@ public class ClueScrollPlugin extends Plugin
 	private static final Color HIGHLIGHT_HOVER_BORDER_COLOR = HIGHLIGHT_BORDER_COLOR.darker();
 	private static final Color HIGHLIGHT_FILL_COLOR = new Color(0, 255, 0, 20);
 	private static final String CLUE_TAG_NAME = "clue";
+	private static final int[] RUNEPOUCH_AMOUNT_VARBITS = {
+		Varbits.RUNE_POUCH_AMOUNT1, Varbits.RUNE_POUCH_AMOUNT2, Varbits.RUNE_POUCH_AMOUNT3
+	};
+	private static final int[] RUNEPOUCH_RUNE_VARBITS = {
+		Varbits.RUNE_POUCH_RUNE1, Varbits.RUNE_POUCH_RUNE2, Varbits.RUNE_POUCH_RUNE3
+	};
 
 	@Getter
 	private ClueScroll clue;
@@ -165,6 +170,9 @@ public class ClueScrollPlugin extends Plugin
 	@Inject
 	@Getter
 	private Client client;
+
+	@Inject
+	private ClientThread clientThread;
 
 	@Inject
 	private ItemManager itemManager;
@@ -317,16 +325,10 @@ public class ClueScrollPlugin extends Plugin
 			return;
 		}
 
-		final boolean itemClicked = event.getMenuAction() == MenuAction.ITEM_FIRST_OPTION
-			|| event.getMenuAction() == MenuAction.ITEM_SECOND_OPTION
-			|| event.getMenuAction() == MenuAction.ITEM_THIRD_OPTION
-			|| event.getMenuAction() == MenuAction.ITEM_FOURTH_OPTION
-			|| event.getMenuAction() == MenuAction.ITEM_FIFTH_OPTION;
-		final boolean isXMarksTheSpotOrb = event.getId() == ItemID.MYSTERIOUS_ORB_23069;
-
-		if (itemClicked && (isXMarksTheSpotOrb || event.getMenuOption().equals("Read")))
+		final boolean isXMarksTheSpotOrb = event.getItemId() == ItemID.MYSTERIOUS_ORB_23069;
+		if (isXMarksTheSpotOrb || event.getMenuOption().equals("Read"))
 		{
-			final ItemComposition itemComposition = itemManager.getItemComposition(event.getId());
+			final ItemComposition itemComposition = itemManager.getItemComposition(event.getItemId());
 
 			if (isXMarksTheSpotOrb
 				|| itemComposition.getName().startsWith("Clue scroll")
@@ -350,18 +352,43 @@ public class ClueScrollPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(final ItemContainerChanged event)
 	{
-		if (event.getItemContainer() == client.getItemContainer(InventoryID.EQUIPMENT))
+		if (event.getContainerId() == InventoryID.EQUIPMENT.getId())
 		{
 			equippedItems = event.getItemContainer().getItems();
 			return;
 		}
 
-		if (event.getItemContainer() != client.getItemContainer(InventoryID.INVENTORY))
+		if (event.getContainerId() != InventoryID.INVENTORY.getId())
 		{
 			return;
 		}
 
 		inventoryItems = event.getItemContainer().getItems();
+
+		// Add runes from rune pouch to inventoryItems
+		if (event.getItemContainer().contains(ItemID.RUNE_POUCH) || event.getItemContainer().contains(ItemID.RUNE_POUCH_L))
+		{
+			List<Item> runePouchContents = getRunepouchContents();
+
+			if (!runePouchContents.isEmpty())
+			{
+				for (int i = 0; i < inventoryItems.length; i++)
+				{
+					Item invItem = inventoryItems[i];
+					for (Item rune : runePouchContents)
+					{
+						if (invItem.getId() == rune.getId())
+						{
+							inventoryItems[i] = new Item(invItem.getId(), rune.getQuantity() + invItem.getQuantity());
+							runePouchContents.remove(rune);
+							break;
+						}
+					}
+				}
+
+				inventoryItems = ArrayUtils.addAll(inventoryItems, runePouchContents.toArray(new Item[0]));
+			}
+		}
 
 		// Check if item was removed from inventory
 		if (clue != null && clueItemId != null)
@@ -393,6 +420,30 @@ public class ClueScrollPlugin extends Plugin
 		}
 	}
 
+	private List<Item> getRunepouchContents()
+	{
+		List<Item> items = new ArrayList<>(RUNEPOUCH_AMOUNT_VARBITS.length);
+		for (int i = 0; i < RUNEPOUCH_AMOUNT_VARBITS.length; i++)
+		{
+			int amount = client.getVarbitValue(RUNEPOUCH_AMOUNT_VARBITS[i]);
+			if (amount <= 0)
+			{
+				continue;
+			}
+
+			int varbId = client.getVarbitValue(RUNEPOUCH_RUNE_VARBITS[i]);
+			RunepouchRune rune = RunepouchRune.getRune(varbId);
+			if (rune == null)
+			{
+				continue;
+			}
+
+			Item item = new Item(rune.getItemId(), amount);
+			items.add(item);
+		}
+		return items;
+	}
+
 	@Subscribe
 	public void onNpcSpawned(final NpcSpawned event)
 	{
@@ -420,12 +471,6 @@ public class ClueScrollPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onDecorativeObjectChanged(final DecorativeObjectChanged event)
-	{
-		tileObjectChangedHandler(event.getPrevious(), event.getDecorativeObject());
-	}
-
-	@Subscribe
 	public void onDecorativeObjectDespawned(final DecorativeObjectDespawned event)
 	{
 		tileObjectDespawnedHandler(event.getDecorativeObject());
@@ -435,12 +480,6 @@ public class ClueScrollPlugin extends Plugin
 	public void onDecorativeObjectSpawned(final DecorativeObjectSpawned event)
 	{
 		tileObjectSpawnedHandler(event.getDecorativeObject());
-	}
-
-	@Subscribe
-	public void onGameObjectChanged(final GameObjectChanged event)
-	{
-		tileObjectChangedHandler(event.getPrevious(), event.getGameObject());
 	}
 
 	@Subscribe
@@ -456,12 +495,6 @@ public class ClueScrollPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGroundObjectChanged(final GroundObjectChanged event)
-	{
-		tileObjectChangedHandler(event.getPrevious(), event.getGroundObject());
-	}
-
-	@Subscribe
 	public void onGroundObjectDespawned(final GroundObjectDespawned event)
 	{
 		tileObjectDespawnedHandler(event.getGroundObject());
@@ -474,12 +507,6 @@ public class ClueScrollPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onWallObjectChanged(final WallObjectChanged event)
-	{
-		tileObjectChangedHandler(event.getPrevious(), event.getWallObject());
-	}
-
-	@Subscribe
 	public void onWallObjectDespawned(final WallObjectDespawned event)
 	{
 		tileObjectDespawnedHandler(event.getWallObject());
@@ -489,12 +516,6 @@ public class ClueScrollPlugin extends Plugin
 	public void onWallObjectSpawned(final WallObjectSpawned event)
 	{
 		tileObjectSpawnedHandler(event.getWallObject());
-	}
-
-	private void tileObjectChangedHandler(final TileObject prev, final TileObject changedTo)
-	{
-		tileObjectDespawnedHandler(prev);
-		tileObjectSpawnedHandler(changedTo);
 	}
 
 	private void tileObjectDespawnedHandler(final TileObject despawned)
@@ -599,19 +620,19 @@ public class ClueScrollPlugin extends Plugin
 			}
 		}
 
-		// Load the current plane's tiles if a tick has elapsed since the player has changed planes
-		// or upon reaching a logged in state after hopping worlds
-		if (namedObjectCheckThisTick)
-		{
-			namedObjectCheckThisTick = false;
-			checkClueNamedObjects(clue);
-		}
-
 		// Delay one tick when changing planes before scanning for new named objects on the new plane
 		if (currentPlane != client.getPlane())
 		{
+			namedObjectsToMark.clear();
 			currentPlane = client.getPlane();
 			namedObjectCheckThisTick = true;
+		}
+		// Load the current plane's tiles if a tick has elapsed since the player has changed planes
+		// or upon reaching a logged in state after hopping worlds
+		else if (namedObjectCheckThisTick)
+		{
+			namedObjectCheckThisTick = false;
+			checkClueNamedObjects(clue);
 		}
 
 		// Reset clue when receiving a new beginner or master clue
@@ -622,26 +643,36 @@ public class ClueScrollPlugin extends Plugin
 		{
 			resetClue(false);
 		}
-
-		final Widget clueScrollText = client.getWidget(WidgetInfo.CLUE_SCROLL_TEXT);
-
-		if (clueScrollText != null)
-		{
-			ClueScroll clueScroll = findClueScroll(clueScrollText.getText());
-			updateClue(clueScroll);
-		}
 	}
 
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
-		if (event.getGroupId() < WidgetID.BEGINNER_CLUE_MAP_CHAMPIONS_GUILD
-			|| event.getGroupId() > WidgetID.BEGINNER_CLUE_MAP_WIZARDS_TOWER)
+		if (event.getGroupId() >= WidgetID.BEGINNER_CLUE_MAP_CHAMPIONS_GUILD
+			&& event.getGroupId() <= WidgetID.BEGINNER_CLUE_MAP_WIZARDS_TOWER)
 		{
-			return;
+			updateClue(BeginnerMapClue.forWidgetID(event.getGroupId()));
 		}
-
-		updateClue(BeginnerMapClue.forWidgetID(event.getGroupId()));
+		else if (event.getGroupId() == WidgetID.CLUE_SCROLL_GROUP_ID)
+		{
+			clientThread.invokeLater(() ->
+			{
+				final Widget clueScrollText = client.getWidget(WidgetInfo.CLUE_SCROLL_TEXT);
+				if (clueScrollText != null)
+				{
+					ClueScroll clueScroll = findClueScroll(clueScrollText.getText());
+					if (clueScroll != null)
+					{
+						updateClue(clueScroll);
+					}
+					else
+					{
+						log.info("Unknown clue text: {}", clueScrollText.getText());
+						resetClue(true);
+					}
+				}
+			});
+		}
 	}
 
 	@Subscribe
@@ -808,9 +839,6 @@ public class ClueScrollPlugin extends Plugin
 			return threeStepCrypticClue;
 		}
 
-		// We have unknown clue, reset
-		log.warn("Encountered unhandled clue text: {}", rawText);
-		resetClue(true);
 		return null;
 	}
 

@@ -98,7 +98,8 @@ public interface InventoryTagsConfig extends Config
 		position = 1,
 		keyName = "groupColor1",
 		name = "Group 1 Color",
-		description = "Color of the Tag"
+		description = "Color of the Tag",
+		hidden = true
 	)
 	default Color getGroup1Color()
 	{
@@ -109,7 +110,8 @@ public interface InventoryTagsConfig extends Config
 		position = 2,
 		keyName = "groupColor2",
 		name = "Group 2 Color",
-		description = "Color of the Tag"
+		description = "Color of the Tag",
+		hidden = true
 	)
 	default Color getGroup2Color()
 	{
@@ -120,7 +122,8 @@ public interface InventoryTagsConfig extends Config
 		position = 3,
 		keyName = "groupColor3",
 		name = "Group 3 Color",
-		description = "Color of the Tag"
+		description = "Color of the Tag",
+		hidden = true
 	)
 	default Color getGroup3Color()
 	{
@@ -131,7 +134,8 @@ public interface InventoryTagsConfig extends Config
 		position = 4,
 		keyName = "groupColor4",
 		name = "Group 4 Color",
-		description = "Color of the Tag"
+		description = "Color of the Tag",
+		hidden = true
 	)
 	default Color getGroup4Color()
 	{
@@ -142,7 +146,8 @@ public interface InventoryTagsConfig extends Config
 		position = 5,
 		keyName = "groupColor5",
 		name = "Group 5 Color",
-		description = "Color of the Tag"
+		description = "Color of the Tag",
+		hidden = true
 	)
 	default Color getGroup5Color()
 	{
@@ -153,7 +158,8 @@ public interface InventoryTagsConfig extends Config
 		position = 6,
 		keyName = "groupColor6",
 		name = "Group 6 Color",
-		description = "Color of the Tag"
+		description = "Color of the Tag",
+		hidden = true
 	)
 	default Color getGroup6Color()
 	{

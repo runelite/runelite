@@ -41,8 +41,11 @@ class BarRenderer
 	private static final Color OVERHEAL_COLOR = new Color(216, 255, 139, 150);
 	private static final int SKILL_ICON_HEIGHT = 35;
 	private static final int COUNTER_ICON_HEIGHT = 18;
-	private static final int WIDTH = 20;
 	private static final int BORDER_SIZE = 1;
+	private static final int MIN_ICON_AND_COUNTER_WIDTH = 16;
+	static final int DEFAULT_WIDTH = 20;
+	static final int MIN_WIDTH = 3;
+	static final int MAX_WIDTH = 40;
 	private final Supplier<Integer> maxValueSupplier;
 	private final Supplier<Integer> currentValueSupplier;
 	private final Supplier<Integer> healSupplier;
@@ -67,42 +70,47 @@ class BarRenderer
 	 * @param y The location on the client where it will draw the bar on the y axis starting on the bottom side.
 	 * @param height The height of the bar.
 	 */
-	void renderBar(StatusBarsConfig config, Graphics2D graphics, int x, int y, int height)
+	void renderBar(StatusBarsConfig config, Graphics2D graphics, int x, int y, int width, int height)
 	{
 		final int filledHeight = getBarHeight(maxValue, currentValue, height);
 		final Color fill = colorSupplier.get();
-
 		refreshSkills();
 
 		graphics.setColor(BACKGROUND);
-		graphics.drawRect(x, y, WIDTH - BORDER_SIZE, height - BORDER_SIZE);
-		graphics.fillRect(x, y, WIDTH, height);
+		graphics.drawRect(x, y, width - BORDER_SIZE, height - BORDER_SIZE);
+		graphics.fillRect(x, y, width, height);
 
 		graphics.setColor(fill);
 		graphics.fillRect(x + BORDER_SIZE,
 			y + BORDER_SIZE + (height - filledHeight),
-			WIDTH - BORDER_SIZE * 2,
+			width - BORDER_SIZE * 2,
 			filledHeight - BORDER_SIZE * 2);
 
 		if (config.enableRestorationBars())
 		{
-			renderRestore(graphics, x, y, height);
+			renderRestore(graphics, x, y, width, height);
 		}
 
 		if (config.enableSkillIcon() || config.enableCounter())
 		{
-			renderIconsAndCounters(config, graphics, x, y);
+			renderIconsAndCounters(config, graphics, x, y, width);
 		}
 	}
 
-	private void renderIconsAndCounters(StatusBarsConfig config, Graphics2D graphics, int x, int y)
+	private void renderIconsAndCounters(StatusBarsConfig config, Graphics2D graphics, int x, int y, int width)
 	{
+		// Icons and counters overlap the bar at small widths, so they are not drawn when the bars are too small
+		if (width < MIN_ICON_AND_COUNTER_WIDTH)
+		{
+			return;
+		}
+
 		final boolean skillIconEnabled = config.enableSkillIcon();
 
 		if (skillIconEnabled)
 		{
 			final Image icon = iconSupplier.get();
-			final int xDraw = x + (WIDTH / 2) - (icon.getWidth(null) / 2);
+			final int xDraw = x + (width / 2) - (icon.getWidth(null) / 2);
 			graphics.drawImage(icon, xDraw, y, null);
 		}
 
@@ -111,7 +119,7 @@ class BarRenderer
 			graphics.setFont(FontManager.getRunescapeSmallFont());
 			final String counterText = Integer.toString(currentValue);
 			final int widthOfCounter = graphics.getFontMetrics().stringWidth(counterText);
-			final int centerText = (WIDTH / 2) - (widthOfCounter / 2);
+			final int centerText = (width / 2) - (widthOfCounter / 2);
 			final int yOffset = skillIconEnabled ? SKILL_ICON_HEIGHT : COUNTER_ICON_HEIGHT;
 
 			final TextComponent textComponent = new TextComponent();
@@ -121,7 +129,7 @@ class BarRenderer
 		}
 	}
 
-	private void renderRestore(Graphics2D graphics, int x, int y, int height)
+	private void renderRestore(Graphics2D graphics, int x, int y, int width, int height)
 	{
 		final Color color = healColorSupplier.get();
 		final int heal = healSupplier.get();
@@ -150,7 +158,7 @@ class BarRenderer
 
 		graphics.fillRect(x + BORDER_SIZE,
 			fillY,
-			WIDTH - BORDER_SIZE * 2,
+			width - BORDER_SIZE * 2,
 			fillHeight);
 	}
 
