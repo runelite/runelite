@@ -55,6 +55,7 @@ import static net.runelite.client.plugins.timetracking.TimeTrackingConfig.PREFER
 import static net.runelite.client.plugins.timetracking.TimeTrackingConfig.STOPWATCHES;
 import static net.runelite.client.plugins.timetracking.TimeTrackingConfig.TIMERS;
 import net.runelite.client.plugins.timetracking.clocks.ClockManager;
+import net.runelite.client.plugins.timetracking.farming.CompostOverlay;
 import net.runelite.client.plugins.timetracking.farming.CompostTracker;
 import net.runelite.client.plugins.timetracking.farming.FarmingContractManager;
 import net.runelite.client.plugins.timetracking.farming.FarmingTracker;
@@ -62,6 +63,7 @@ import net.runelite.client.plugins.timetracking.farming.PaymentTracker;
 import net.runelite.client.plugins.timetracking.hunter.BirdHouseTracker;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.ImageUtil;
 
@@ -87,6 +89,9 @@ public class TimeTrackingPlugin extends Plugin
 	private CompostTracker compostTracker;
 
 	@Inject
+	private CompostOverlay compostOverlay;
+
+	@Inject
 	private PaymentTracker paymentTracker;
 
 	@Inject
@@ -109,6 +114,9 @@ public class TimeTrackingPlugin extends Plugin
 
 	@Inject
 	private ConfigManager configManager;
+
+	@Inject
+	private OverlayManager overlayManager;
 
 	private ScheduledFuture panelUpdateFuture;
 
@@ -155,6 +163,8 @@ public class TimeTrackingPlugin extends Plugin
 
 		panelUpdateFuture = executorService.scheduleAtFixedRate(this::updatePanel, 200, 200, TimeUnit.MILLISECONDS);
 		notifierFuture = executorService.scheduleAtFixedRate(this::checkCompletion, 10, 10, TimeUnit.SECONDS);
+
+		overlayManager.add(compostOverlay);
 	}
 
 	@Override
@@ -176,6 +186,8 @@ public class TimeTrackingPlugin extends Plugin
 		clientToolbar.removeNavigation(navButton);
 		infoBoxManager.removeInfoBox(farmingContractManager.getInfoBox());
 		farmingContractManager.setInfoBox(null);
+
+		overlayManager.remove(compostOverlay);
 	}
 
 	@Subscribe
