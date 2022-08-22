@@ -167,6 +167,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	public void startUp()
 	{
 		setupSwaps();
+		removeOldSwaps();
 	}
 
 	@Override
@@ -355,6 +356,37 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		swap("climb", "climb-up", () -> (shiftModifier() ? config.swapStairsShiftClick() : config.swapStairsLeftClick()) == MenuEntrySwapperConfig.StairsMode.CLIMB_UP);
 		swap("climb", "climb-down", () -> (shiftModifier() ? config.swapStairsShiftClick() : config.swapStairsLeftClick()) == MenuEntrySwapperConfig.StairsMode.CLIMB_DOWN);
+	}
+
+	private void removeOldSwaps()
+	{
+		String[] keys = {
+			"swapBattlestaves",
+			"swapPrayerBook",
+			"swapContract",
+			"claimSlime",
+			"swapDarkMage",
+			"swapCaptainKhaled",
+			"swapDecant",
+			"swapHardWoodGrove",
+			"swapHardWoodGroveParcel",
+			"swapHouseAdvertisement",
+			"swapEnchant",
+			"swapHouseTeleportSpell",
+			"swapTeleportSpell",
+			"swapStartMinigame",
+			"swapQuickleave",
+			"swapNpcContact",
+			"swapNets",
+			"swapGauntlet",
+			"swapCollectMiscellania",
+			"swapRockCake",
+			"swapRowboatDive"
+		};
+		for (String key : keys)
+		{
+			configManager.unsetConfiguration(MenuEntrySwapperConfig.GROUP, key);
+		}
 	}
 
 	private void swap(String option, String swappedOption, Supplier<Boolean> enabled)
