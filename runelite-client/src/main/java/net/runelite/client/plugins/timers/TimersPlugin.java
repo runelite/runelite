@@ -78,7 +78,7 @@ import org.apache.commons.lang3.ArrayUtils;
 @PluginDescriptor(
 	name = "Timers",
 	description = "Show various timers in an infobox",
-	tags = {"combat", "items", "magic", "potions", "prayer", "overlay", "abyssal", "sire", "inferno", "fight", "caves", "cape", "timer", "tzhaar", "thieving", "pickpocket"}
+	tags = {"combat", "items", "magic", "potions", "prayer", "overlay", "abyssal", "sire", "inferno", "fight", "caves", "cape", "timer", "tzhaar", "thieving", "pickpocket", "hunter", "imp"}
 )
 @Slf4j
 public class TimersPlugin extends Plugin
@@ -291,6 +291,19 @@ public class TimersPlugin extends Plugin
 			}
 		}
 
+		if (event.getVarbitId() == Varbits.FARMERS_AFFINITY && config.showFarmersAffinity())
+		{
+			final int farmersAffinityVarb = event.getValue();
+			if (farmersAffinityVarb > 0)
+			{
+				createGameTimer(FARMERS_AFFINITY, Duration.of((farmersAffinityVarb * 20L), RSTimeUnit.GAME_TICKS));
+			}
+			else
+			{
+				removeGameTimer(FARMERS_AFFINITY);
+			}
+		}
+
 		if (event.getVarbitId() == Varbits.IMBUED_HEART_COOLDOWN && config.showImbuedHeart())
 		{
 			final int imbuedHeartCooldownVarb = event.getValue();
@@ -497,6 +510,11 @@ public class TimersPlugin extends Plugin
 		else
 		{
 			createTzhaarTimer();
+		}
+
+		if (!config.showFarmersAffinity())
+		{
+			removeGameTimer(FARMERS_AFFINITY);
 		}
 
 		if (!config.showLiquidAdrenaline())
