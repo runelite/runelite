@@ -745,6 +745,13 @@ public final class Varbits
 	public static final int TELEBLOCK = 4163;
 
 	/**
+	 * Farmer's Affinity effect timer
+	 * Number of game ticks remaining on Farmer's Affinity effect in intervals of 20; for a value X there are 20 * X game ticks remaining.
+	 * The Farmer's Affinity expires once this reaches 0.
+	 */
+	public static final int FARMERS_AFFINITY = 11765;
+
+	/**
 	 * If the player has Menaphite remedy effect active.
 	 * This will go down by 1 every 25 ticks (15 seconds) and the player's combat stats will be restored by 6 + 16%.
 	 * Set to 20 upon consuming potion.

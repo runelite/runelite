@@ -78,7 +78,7 @@ import org.apache.commons.lang3.ArrayUtils;
 @PluginDescriptor(
 	name = "Timers",
 	description = "Show various timers in an infobox",
-	tags = {"combat", "items", "magic", "potions", "prayer", "overlay", "abyssal", "sire", "inferno", "fight", "caves", "cape", "timer", "tzhaar", "thieving", "pickpocket"}
+	tags = {"combat", "items", "magic", "potions", "prayer", "overlay", "abyssal", "sire", "inferno", "fight", "caves", "cape", "timer", "tzhaar", "thieving", "pickpocket", "hunter", "impling", "puro"}
 )
 @Slf4j
 public class TimersPlugin extends Plugin
@@ -552,6 +552,11 @@ public class TimersPlugin extends Plugin
 				removeGameTimer(LIQUID_ADRENALINE);
 			}
 		}
+
+		if (event.getVarbitId() == Varbits.FARMERS_AFFINITY && config.showFarmersAffinity())
+		{
+			updateVarTimer(FARMERS_AFFINITY, event.getValue(), i -> i * 20);
+		}
 	}
 
 	@Subscribe
@@ -693,6 +698,11 @@ public class TimersPlugin extends Plugin
 		else
 		{
 			createTzhaarTimer();
+		}
+
+		if (!config.showFarmersAffinity())
+		{
+			removeVarTimer(FARMERS_AFFINITY);
 		}
 
 		if (!config.showLiquidAdrenaline())
