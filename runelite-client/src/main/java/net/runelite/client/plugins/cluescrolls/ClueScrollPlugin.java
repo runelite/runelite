@@ -49,6 +49,8 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.EnumComposition;
+import net.runelite.api.EnumID;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
@@ -93,7 +95,6 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.game.ItemManager;
-import net.runelite.client.game.RunepouchRune;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -422,6 +423,7 @@ public class ClueScrollPlugin extends Plugin
 
 	private List<Item> getRunepouchContents()
 	{
+		EnumComposition runepouchEnum = client.getEnum(EnumID.RUNEPOUCH_RUNE);
 		List<Item> items = new ArrayList<>(RUNEPOUCH_AMOUNT_VARBITS.length);
 		for (int i = 0; i < RUNEPOUCH_AMOUNT_VARBITS.length; i++)
 		{
@@ -431,14 +433,14 @@ public class ClueScrollPlugin extends Plugin
 				continue;
 			}
 
-			int varbId = client.getVarbitValue(RUNEPOUCH_RUNE_VARBITS[i]);
-			RunepouchRune rune = RunepouchRune.getRune(varbId);
-			if (rune == null)
+			int runeId = client.getVarbitValue(RUNEPOUCH_RUNE_VARBITS[i]);
+			if (runeId == 0)
 			{
 				continue;
 			}
 
-			Item item = new Item(rune.getItemId(), amount);
+			final int itemId = runepouchEnum.getIntValue(runeId);
+			Item item = new Item(itemId, amount);
 			items.add(item);
 		}
 		return items;
