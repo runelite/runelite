@@ -124,15 +124,17 @@ public class HiscoreClientTest
 		+ "-1,-1\n"
 		+ "-1,-1\n" // TOB
 		+ "42,42\n" // TOB: Hard Mode
-		+ "29347,130\n"
-		+ "723,4\n"
-		+ "1264,38\n"
-		+ "44595,4\n"
-		+ "24820,4\n"
-		+ "12116,782\n"
-		+ "2299,724\n"
-		+ "19301,62\n"
-		+ "1498,5847\n";
+		+ "29347,130\n" // Thermy
+		+ "1,2000\n" // TOA
+		+ "-1,-1\n" // TOA: Expert Mode
+		+ "723,4\n" // Zuk
+		+ "1264,38\n" // Jad
+		+ "44595,4\n" // Venenatis
+		+ "24820,4\n" // Vetion
+		+ "12116,782\n" // Vorkath
+		+ "2299,724\n" // Wintertodt
+		+ "19301,62\n" // Zalcano
+		+ "1498,5847\n"; // Zulrah
 
 	@Rule
 	public final MockWebServer server = new MockWebServer();

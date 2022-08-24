@@ -49,7 +49,7 @@ import net.runelite.client.util.ColorUtil;
 
 class RunepouchOverlay extends WidgetItemOverlay
 {
-	private static final int NUM_SLOTS = 3; // change this for toa
+	private static final int NUM_SLOTS = 4;
 	private static final int[] AMOUNT_VARBITS = {
 		Varbits.RUNE_POUCH_AMOUNT1, Varbits.RUNE_POUCH_AMOUNT2, Varbits.RUNE_POUCH_AMOUNT3, Varbits.RUNE_POUCH_AMOUNT4
 	};
@@ -77,7 +77,7 @@ class RunepouchOverlay extends WidgetItemOverlay
 	@Override
 	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem widgetItem)
 	{
-		if (itemId != ItemID.RUNE_POUCH && itemId != ItemID.RUNE_POUCH_L)
+		if (itemId != ItemID.RUNE_POUCH && itemId != ItemID.RUNE_POUCH_L && itemId != ItemID.DIVINE_RUNE_POUCH)
 		{
 			return;
 		}
