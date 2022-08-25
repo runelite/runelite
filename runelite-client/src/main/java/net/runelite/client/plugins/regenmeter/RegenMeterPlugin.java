@@ -32,13 +32,19 @@ import javax.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
+import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.GameState;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
+import net.runelite.api.ItemID;
 import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
@@ -54,7 +60,6 @@ import net.runelite.client.ui.overlay.OverlayManager;
 )
 public class RegenMeterPlugin extends Plugin
 {
-	private static final int SPEC_REGEN_TICKS = 50;
 	private static final int NORMAL_HP_REGEN_TICKS = 100;
 
 	private static final int TRAILBLAZER_LEAGUE_FLUID_STRIKES_RELIC = 2;
@@ -80,6 +85,9 @@ public class RegenMeterPlugin extends Plugin
 	@Getter
 	private double specialPercentage;
 
+	Item ring = null;
+
+	private int specRegenTicks = 50;
 	private int ticksSinceSpecRegen;
 	private int ticksSinceHPRegen;
 	private boolean wasRapidHeal;
@@ -110,6 +118,15 @@ public class RegenMeterPlugin extends Plugin
 			ticksSinceHPRegen = -2; // For some reason this makes this accurate
 			ticksSinceSpecRegen = 0;
 		}
+		if (ev.getGameState() == GameState.LOGGED_IN)
+		{
+			ItemContainer container = client.getItemContainer(InventoryID.EQUIPMENT);
+
+			if (container != null)
+			{
+				ring = container.getItem(EquipmentInventorySlot.RING.getSlotIdx());
+			}
+		}
 	}
 
 	@Subscribe
@@ -124,6 +141,44 @@ public class RegenMeterPlugin extends Plugin
 	}
 
 	@Subscribe
+	private void onItemContainerChanged(ItemContainerChanged itemContainerChanged)
+	{
+		if (itemContainerChanged.getContainerId() != InventoryID.EQUIPMENT.getId())
+		{
+			return;
+		}
+
+		ItemContainer container = itemContainerChanged.getItemContainer();
+		Item newRing = container.getItem(EquipmentInventorySlot.RING.getSlotIdx());
+
+		if (ring != null && ring.getId() == ItemID.LIGHTBEARER)
+		{
+			if (newRing != null && newRing.getId() == ItemID.LIGHTBEARER)
+			{
+				specRegenTicks = 25;
+			}
+			else
+			{
+				specRegenTicks = 50;
+				ticksSinceSpecRegen = 0;
+			}
+		}
+		else
+		{
+			if (newRing != null && newRing.getId() == ItemID.LIGHTBEARER)
+			{
+				specRegenTicks = 25;
+				ticksSinceSpecRegen = 0;
+			}
+			else
+			{
+				specRegenTicks = 50;
+			}
+		}
+		ring = newRing;
+	}
+
+	@Subscribe
 	public void onGameTick(GameTick event)
 	{
 		if (client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT) == 1000)
@@ -133,9 +188,9 @@ public class RegenMeterPlugin extends Plugin
 		}
 		else
 		{
-			ticksSinceSpecRegen = (ticksSinceSpecRegen + 1) % SPEC_REGEN_TICKS;
+			ticksSinceSpecRegen = (ticksSinceSpecRegen + 1) % specRegenTicks;
 		}
-		specialPercentage = ticksSinceSpecRegen / (double) SPEC_REGEN_TICKS;
+		specialPercentage = ticksSinceSpecRegen / (double) specRegenTicks;
 
 
 		int ticksPerHPRegen = NORMAL_HP_REGEN_TICKS;
