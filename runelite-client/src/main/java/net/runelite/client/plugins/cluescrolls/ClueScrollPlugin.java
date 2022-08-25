@@ -49,6 +49,8 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.EnumComposition;
+import net.runelite.api.EnumID;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
@@ -93,7 +95,6 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.game.ItemManager;
-import net.runelite.client.game.RunepouchRune;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -143,10 +144,10 @@ public class ClueScrollPlugin extends Plugin
 	private static final Color HIGHLIGHT_FILL_COLOR = new Color(0, 255, 0, 20);
 	private static final String CLUE_TAG_NAME = "clue";
 	private static final int[] RUNEPOUCH_AMOUNT_VARBITS = {
-		Varbits.RUNE_POUCH_AMOUNT1, Varbits.RUNE_POUCH_AMOUNT2, Varbits.RUNE_POUCH_AMOUNT3
+		Varbits.RUNE_POUCH_AMOUNT1, Varbits.RUNE_POUCH_AMOUNT2, Varbits.RUNE_POUCH_AMOUNT3, Varbits.RUNE_POUCH_AMOUNT4
 	};
 	private static final int[] RUNEPOUCH_RUNE_VARBITS = {
-		Varbits.RUNE_POUCH_RUNE1, Varbits.RUNE_POUCH_RUNE2, Varbits.RUNE_POUCH_RUNE3
+		Varbits.RUNE_POUCH_RUNE1, Varbits.RUNE_POUCH_RUNE2, Varbits.RUNE_POUCH_RUNE3, Varbits.RUNE_POUCH_RUNE4
 	};
 
 	@Getter
@@ -352,9 +353,10 @@ public class ClueScrollPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(final ItemContainerChanged event)
 	{
+		final ItemContainer itemContainer = event.getItemContainer();
 		if (event.getContainerId() == InventoryID.EQUIPMENT.getId())
 		{
-			equippedItems = event.getItemContainer().getItems();
+			equippedItems = itemContainer.getItems();
 			return;
 		}
 
@@ -363,10 +365,11 @@ public class ClueScrollPlugin extends Plugin
 			return;
 		}
 
-		inventoryItems = event.getItemContainer().getItems();
+		inventoryItems = itemContainer.getItems();
 
 		// Add runes from rune pouch to inventoryItems
-		if (event.getItemContainer().contains(ItemID.RUNE_POUCH) || event.getItemContainer().contains(ItemID.RUNE_POUCH_L))
+		if (itemContainer.contains(ItemID.RUNE_POUCH) || itemContainer.contains(ItemID.RUNE_POUCH_L)
+			|| itemContainer.contains(ItemID.DIVINE_RUNE_POUCH))
 		{
 			List<Item> runePouchContents = getRunepouchContents();
 
@@ -393,8 +396,6 @@ public class ClueScrollPlugin extends Plugin
 		// Check if item was removed from inventory
 		if (clue != null && clueItemId != null)
 		{
-			ItemContainer itemContainer = event.getItemContainer();
-
 			// Check if clue was removed from inventory
 			if (!itemContainer.contains(clueItemId))
 			{
@@ -405,7 +406,7 @@ public class ClueScrollPlugin extends Plugin
 		// if three step clue check for clue scroll pieces
 		if (clue instanceof ThreeStepCrypticClue)
 		{
-			if (((ThreeStepCrypticClue) clue).update(event.getContainerId(), event.getItemContainer()))
+			if (((ThreeStepCrypticClue) clue).update(event.getContainerId(), itemContainer))
 			{
 				worldMapPointsSet = false;
 				npcsToMark.clear();
@@ -422,6 +423,7 @@ public class ClueScrollPlugin extends Plugin
 
 	private List<Item> getRunepouchContents()
 	{
+		EnumComposition runepouchEnum = client.getEnum(EnumID.RUNEPOUCH_RUNE);
 		List<Item> items = new ArrayList<>(RUNEPOUCH_AMOUNT_VARBITS.length);
 		for (int i = 0; i < RUNEPOUCH_AMOUNT_VARBITS.length; i++)
 		{
@@ -431,14 +433,14 @@ public class ClueScrollPlugin extends Plugin
 				continue;
 			}
 
-			int varbId = client.getVarbitValue(RUNEPOUCH_RUNE_VARBITS[i]);
-			RunepouchRune rune = RunepouchRune.getRune(varbId);
-			if (rune == null)
+			int runeId = client.getVarbitValue(RUNEPOUCH_RUNE_VARBITS[i]);
+			if (runeId == 0)
 			{
 				continue;
 			}
 
-			Item item = new Item(rune.getItemId(), amount);
+			final int itemId = runepouchEnum.getIntValue(runeId);
+			Item item = new Item(itemId, amount);
 			items.add(item);
 		}
 		return items;
@@ -620,19 +622,19 @@ public class ClueScrollPlugin extends Plugin
 			}
 		}
 
-		// Load the current plane's tiles if a tick has elapsed since the player has changed planes
-		// or upon reaching a logged in state after hopping worlds
-		if (namedObjectCheckThisTick)
-		{
-			namedObjectCheckThisTick = false;
-			checkClueNamedObjects(clue);
-		}
-
 		// Delay one tick when changing planes before scanning for new named objects on the new plane
 		if (currentPlane != client.getPlane())
 		{
+			namedObjectsToMark.clear();
 			currentPlane = client.getPlane();
 			namedObjectCheckThisTick = true;
+		}
+		// Load the current plane's tiles if a tick has elapsed since the player has changed planes
+		// or upon reaching a logged in state after hopping worlds
+		else if (namedObjectCheckThisTick)
+		{
+			namedObjectCheckThisTick = false;
+			checkClueNamedObjects(clue);
 		}
 
 		// Reset clue when receiving a new beginner or master clue

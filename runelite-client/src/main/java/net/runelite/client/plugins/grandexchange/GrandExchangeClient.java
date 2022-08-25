@@ -45,10 +45,9 @@ import okhttp3.Response;
 @Slf4j
 public class GrandExchangeClient
 {
-	private static final Gson GSON = RuneLiteAPI.GSON;
-
 	private final OkHttpClient client;
 	private final HttpUrl apiBase;
+	private final Gson gson;
 
 	@Setter
 	private UUID uuid;
@@ -56,10 +55,11 @@ public class GrandExchangeClient
 	private String machineId;
 
 	@Inject
-	private GrandExchangeClient(OkHttpClient client, @Named("runelite.api.base") HttpUrl apiBase)
+	private GrandExchangeClient(OkHttpClient client, @Named("runelite.api.base") HttpUrl apiBase, Gson gson)
 	{
 		this.client = client;
 		this.apiBase = apiBase;
+		this.gson = gson;
 	}
 
 	public void submit(GrandExchangeTrade grandExchangeTrade)
@@ -79,7 +79,7 @@ public class GrandExchangeClient
 		}
 
 		Request request = builder
-			.post(RequestBody.create(JSON, GSON.toJson(grandExchangeTrade)))
+			.post(RequestBody.create(JSON, gson.toJson(grandExchangeTrade)))
 			.url(url)
 			.build();
 

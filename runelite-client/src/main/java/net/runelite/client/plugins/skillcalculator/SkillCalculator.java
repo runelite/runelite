@@ -38,15 +38,21 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import javax.inject.Inject;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.border.EmptyBorder;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
+import net.runelite.api.WorldType;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
@@ -61,6 +67,13 @@ import net.runelite.client.ui.components.IconTextField;
 class SkillCalculator extends JPanel
 {
 	private static final int MAX_XP = 200_000_000;
+	private static final JLabel EMPTY_PANEL = new JLabel("No F2P actions to show.");
+
+	static
+	{
+		EMPTY_PANEL.setHorizontalAlignment(SwingConstants.CENTER);
+		EMPTY_PANEL.setBorder(new EmptyBorder(50, 0, 0, 0));
+	}
 
 	private final UICalculatorInputArea uiInput;
 	private final Client client;
@@ -78,8 +91,9 @@ class SkillCalculator extends JPanel
 	private int currentXP = Experience.getXpForLevel(currentLevel);
 	private int targetLevel = currentLevel + 1;
 	private int targetXP = Experience.getXpForLevel(targetLevel);
-	private float xpFactor = 1;
+	private SkillBonus currentBonus = null;
 
+	@Inject
 	SkillCalculator(Client client, ClientThread clientThread, UICalculatorInputArea uiInput, SpriteManager spriteManager, ItemManager itemManager)
 	{
 		this.client = client;
@@ -129,18 +143,16 @@ class SkillCalculator extends JPanel
 		uiInput.getUiFieldTargetXP().addFocusListener(buildFocusAdapter(e -> onFieldTargetXPUpdated()));
 	}
 
-	void openCalculator(CalculatorType calculatorType)
+	void openCalculator(CalculatorType calculatorType, boolean forceReload)
 	{
 		// Update internal skill/XP values.
 		currentXP = client.getSkillExperience(calculatorType.getSkill());
 		currentLevel = Experience.getLevelForXp(currentXP);
 
-		if (currentCalculator != calculatorType)
+		if (forceReload || currentCalculator != calculatorType)
 		{
 			currentCalculator = calculatorType;
-
-			// Reset the XP factor, removing bonuses.
-			xpFactor = 1;
+			currentBonus = null;
 
 			VarPlayer endGoalVarp = endGoalVarpForSkill(calculatorType.getSkill());
 			int endGoal = client.getVar(endGoalVarp);
@@ -164,8 +176,11 @@ class SkillCalculator extends JPanel
 			// Clear the combined action slots
 			clearCombinedSlots();
 
-			// Add in checkboxes for available skill bonuses.
-			renderBonusOptions();
+			// Add in checkboxes for available skill bonuses if we're not on a F2P world.
+			if (client.getWorldType().contains(WorldType.MEMBERS))
+			{
+				renderBonusOptions();
+			}
 
 			// Add the combined action slot.
 			add(combinedActionSlot);
@@ -279,7 +294,7 @@ class SkillCalculator extends JPanel
 			}
 		}
 
-		adjustXPBonus(target.isSelected() ? bonus.getValue() : 0f);
+		adjustXPBonus(target.isSelected() ? bonus : null);
 	}
 
 	private void renderActionSlots()
@@ -303,7 +318,6 @@ class SkillCalculator extends JPanel
 
 			UIActionSlot slot = new UIActionSlot(action, clientThread, itemManager, uiIcon);
 			uiActionSlots.add(slot); // Keep our own reference.
-			add(slot); // Add component to the panel.
 
 			slot.addMouseListener(new MouseAdapter()
 			{
@@ -330,9 +344,37 @@ class SkillCalculator extends JPanel
 			});
 		}
 
-		// Refresh the rendering of this panel.
-		revalidate();
-		repaint();
+		if (client.getWorldType().contains(WorldType.MEMBERS))
+		{
+			// All actions should be visible, so no need to filter; just refresh the rendering of this panel.
+			uiActionSlots.forEach(this::add);
+			revalidate();
+			repaint();
+		}
+		else
+		{
+			// Filter out members actions due to being on F2P, then refresh the rendering
+			clientThread.invokeLater(() ->
+			{
+				List<UIActionSlot> membersActions = uiActionSlots.stream()
+					.filter(slot -> !slot.getAction().isMembers(itemManager))
+					.collect(Collectors.toList());
+
+				SwingUtilities.invokeLater(() ->
+				{
+					if (membersActions.isEmpty())
+					{
+						add(EMPTY_PANEL);
+					}
+					else
+					{
+						membersActions.forEach(this::add);
+					}
+					revalidate();
+					repaint();
+				});
+			});
+		}
 	}
 
 	private void calculate()
@@ -342,7 +384,11 @@ class SkillCalculator extends JPanel
 			int actionCount = 0;
 			int neededXP = targetXP - currentXP;
 			SkillAction action = slot.getAction();
-			final float bonus = action.isIgnoreBonus() ? 1f : xpFactor;
+			float bonus = 1f;
+			if (currentBonus != null && action.isBonusApplicable(currentBonus))
+			{
+				bonus = currentBonus.getValue();
+			}
 			final int xp = Math.round(action.getXp() * bonus * 10f);
 
 			if (neededXP > 0)
@@ -386,9 +432,9 @@ class SkillCalculator extends JPanel
 		calculate();
 	}
 
-	private void adjustXPBonus(float value)
+	private void adjustXPBonus(SkillBonus bonus)
 	{
-		xpFactor = 1 + value;
+		currentBonus = bonus;
 		calculate();
 	}
 

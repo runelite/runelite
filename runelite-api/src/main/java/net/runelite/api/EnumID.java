@@ -33,8 +33,18 @@ public final class EnumID
 {
 	public static final int MUSIC_TRACK_NAMES = 812;
 	public static final int MUSIC_TRACK_IDS = 819;
+	/**
+	 * key: int 1-n+1
+	 * val: namedobj
+	 */
+	public static final int RUNEPOUCH_RUNE = 982;
 	public static final int XPDROP_COLORS = 1169;
 	public static final int FRIENDS_CHAT_RANK_ICONS = 1543;
+	/**
+	 * key: int 0-n
+	 * val: namedobj
+	 */
+	public static final int PETS = 2158;
 	public static final int CLAN_RANK_NAME = 3797;
 	public static final int CLAN_RANK_GRAPHIC = 3798;
 }

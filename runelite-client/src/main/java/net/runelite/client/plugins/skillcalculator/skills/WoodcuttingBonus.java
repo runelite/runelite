@@ -31,7 +31,7 @@ import lombok.Getter;
 @Getter(onMethod_ = @Override)
 public enum WoodcuttingBonus implements SkillBonus
 {
-	LUMBERJACK_OUTFIT("Lumberjack Outfit (+2.5%)", 0.025f),
+	LUMBERJACK_OUTFIT("Lumberjack Outfit (+2.5%)", 1.025f),
 	;
 
 	private final String name;

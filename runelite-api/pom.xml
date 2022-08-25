@@ -29,7 +29,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.8.30-SNAPSHOT</version>
+		<version>1.8.33-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>runelite-api</artifactId>
@@ -107,6 +107,7 @@
 								<exclude>net/runelite/api/EnumID.class</exclude>
 								<exclude>net/runelite/api/FontID.class</exclude>
 								<exclude>net/runelite/api/GraphicID.class</exclude>
+								<exclude>net/runelite/api/HitsplatID.class</exclude>
 								<exclude>net/runelite/api/ItemID.class</exclude>
 								<exclude>net/runelite/api/NpcID.class</exclude>
 								<exclude>net/runelite/api/NullItemID.class</exclude>

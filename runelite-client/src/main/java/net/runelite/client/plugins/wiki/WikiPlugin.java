@@ -272,7 +272,7 @@ public class WikiPlugin extends Plugin
 				{
 					type = "item";
 					id = itemManager.canonicalize(ev.getId());
-					name = itemManager.getItemComposition(id).getName();
+					name = itemManager.getItemComposition(id).getMembersName();
 					location = null;
 					break;
 				}
@@ -307,7 +307,7 @@ public class WikiPlugin extends Plugin
 					{
 						type = "item";
 						id = itemManager.canonicalize(w.getItemId());
-						name = itemManager.getItemComposition(id).getName();
+						name = itemManager.getItemComposition(id).getMembersName();
 						location = null;
 						break;
 					}
@@ -373,7 +373,7 @@ public class WikiPlugin extends Plugin
 					if (entry.getType() == MenuAction.WIDGET_TARGET_ON_WIDGET)
 					{
 						int id = itemManager.canonicalize(w.getItemId());
-						String name = itemManager.getItemComposition(id).getName();
+						String name = itemManager.getItemComposition(id).getMembersName();
 						entry.setTarget(JagexColors.MENU_TARGET_TAG + name);
 						break;
 					}

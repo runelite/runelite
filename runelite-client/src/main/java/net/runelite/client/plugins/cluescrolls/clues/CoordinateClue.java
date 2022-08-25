@@ -215,7 +215,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		.put(new WorldPoint(2484, 4016, 0), new CoordinateClueInfo("Northeast corner of the Island of Stone.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
 		.put(new WorldPoint(2222, 3331, 0), new CoordinateClueInfo("Prifddinas, west of the Tower of Voices", ARMADYLEAN_OR_BANDOSIAN_GUARD))
 		.put(new WorldPoint(3560, 3987, 0), new CoordinateClueInfo("Lithkren. Digsite pendant teleport if unlocked, otherwise take rowboat from west of Mushroom Meadow Mushtree.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
-		.put(new WorldPoint(2318, 2954, 0), new CoordinateClueInfo("North-east corner of the Isle of Souls.", BANDOSIAN_GUARD))
+		.put(new WorldPoint(2318, 2954, 0), new CoordinateClueInfo("North-east corner of the Isle of Souls (BJP).", BANDOSIAN_GUARD))
 		.put(new WorldPoint(2094, 2889, 0), new CoordinateClueInfo("West side of the Isle of Souls.", ARMADYLEAN_GUARD))
 		.put(new WorldPoint(1451, 3509, 0), new CoordinateClueInfo("Ruins of Morra.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
 		.put(new WorldPoint(3318, 2706, 0), new CoordinateClueInfo("Necropolis mine", ARMADYLEAN_OR_BANDOSIAN_GUARD))

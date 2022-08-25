@@ -242,9 +242,21 @@ public interface NpcIndicatorsConfig extends Config
 		position = 13,
 		keyName = "showRespawnTimer",
 		name = "Show respawn timer",
-		description = "Show respawn timer of tagged NPCs")
+		description = "Show respawn timer of tagged NPCs"
+	)
 	default boolean showRespawnTimer()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		position = 14,
+		keyName = "ignorePets",
+		name = "Ignore pets",
+		description = "Excludes pets from being highlighted"
+	)
+	default boolean ignorePets()
+	{
+		return true;
 	}
 }

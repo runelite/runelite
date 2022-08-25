@@ -27,6 +27,7 @@ package net.runelite.client.plugins.skillcalculator.skills;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.ItemID;
+import net.runelite.client.game.ItemManager;
 
 @AllArgsConstructor
 @Getter
@@ -66,7 +67,7 @@ public enum CookingAction implements ItemSkillAction
 	LEAN_SNAIL_MEAT(ItemID.LEAN_SNAIL_MEAT, 17, 80),
 	COD(ItemID.COD, 18, 75),
 	WIZARD_BLIZZARD(ItemID.WIZARD_BLIZZARD, 18, 110),
-	DWARVEN_STOUT(ItemID.DWARVEN_STOUT, 19, 215),
+	DWARVEN_STOUT(ItemID.DWARVEN_STOUT, 19, 215, true),
 	SHORT_GREEN_GUY(ItemID.SHORT_GREEN_GUY, 20, 120),
 	MEAT_PIE(ItemID.MEAT_PIE, 20, 110),
 	PIKE(ItemID.PIKE, 20, 80),
@@ -77,7 +78,7 @@ public enum CookingAction implements ItemSkillAction
 	POT_OF_CREAM(ItemID.POT_OF_CREAM, 21, 18),
 	FAT_SNAIL_MEAT(ItemID.FAT_SNAIL_MEAT, 22, 95),
 	EGG_AND_TOMATO(ItemID.EGG_AND_TOMATO, 23, 50),
-	ASGARNIAN_ALE(ItemID.ASGARNIAN_ALE, 24, 248),
+	ASGARNIAN_ALE(ItemID.ASGARNIAN_ALE, 24, 248, true),
 	SALMON(ItemID.SALMON, 25, 90),
 	STEW(ItemID.STEW, 25, 117),
 	FRUIT_BATTA(ItemID.FRUIT_BATTA, 25, 150),
@@ -99,7 +100,7 @@ public enum CookingAction implements ItemSkillAction
 	CHOC_SATURDAY(ItemID.CHOC_SATURDAY, 33, 170),
 	TETRA(ItemID.TETRA, 33, 31),
 	GARDEN_PIE(ItemID.GARDEN_PIE, 34, 138),
-	WIZARDS_MIND_BOMB(ItemID.WIZARDS_MIND_BOMB, 34, 314),
+	WIZARDS_MIND_BOMB(ItemID.WIZARDS_MIND_BOMB, 34, 314, true),
 	JUG_OF_WINE(ItemID.JUG_OF_WINE, 35, 200),
 	PLAIN_PIZZA(ItemID.PLAIN_PIZZA, 35, 143),
 	RAINBOW_FISH(ItemID.RAINBOW_FISH, 35, 110),
@@ -124,7 +125,7 @@ public enum CookingAction implements ItemSkillAction
 	CATFISH(ItemID.CATFISH, 46, 43),
 	FISH_PIE(ItemID.FISH_PIE, 47, 164),
 	POTATO_WITH_CHEESE(ItemID.POTATO_WITH_CHEESE, 47, 40),
-	CHEESE(ItemID.CHEESE, 48, 64),
+	CHEESE(ItemID.CHEESE, 48, 64, true),
 	AXEMANS_FOLLY(ItemID.AXEMANS_FOLLY, 49, 413),
 	COOKED_OOMLIE_WRAP(ItemID.COOKED_OOMLIE_WRAP, 50, 30),
 	CHOCOLATE_CAKE(ItemID.CHOCOLATE_CAKE, 50, 210),
@@ -142,7 +143,7 @@ public enum CookingAction implements ItemSkillAction
 	MONKFISH(ItemID.MONKFISH, 62, 150),
 	MUSHROOM_POTATO(ItemID.MUSHROOM_POTATO, 64, 270.5f),
 	PINEAPPLE_PIZZA(ItemID.PINEAPPLE_PIZZA, 65, 188),
-	WINE_OF_ZAMORAK(ItemID.WINE_OF_ZAMORAK, 65, 200),
+	WINE_OF_ZAMORAK(ItemID.WINE_OF_ZAMORAK, 65, 200, true),
 	TUNA_AND_CORN(ItemID.TUNA_AND_CORN, 67, 204),
 	TUNA_POTATO(ItemID.TUNA_POTATO, 68, 309.5f),
 	ADMIRAL_PIE(ItemID.ADMIRAL_PIE, 70, 210),
@@ -160,4 +161,16 @@ public enum CookingAction implements ItemSkillAction
 	private final int itemId;
 	private final int level;
 	private final float xp;
+	private final boolean isMembersOverride;
+
+	CookingAction(int itemId, int level, float xp)
+	{
+		this(itemId, level, xp, false);
+	}
+
+	@Override
+	public boolean isMembers(final ItemManager itemManager)
+	{
+		return isMembersOverride() || ItemSkillAction.super.isMembers(itemManager);
+	}
 }

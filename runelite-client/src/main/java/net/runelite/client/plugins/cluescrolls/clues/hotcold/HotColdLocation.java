@@ -179,7 +179,7 @@ public enum HotColdLocation
 	ZEAH_SHAYZIEN_BANK_2(MASTER, new WorldPoint(1490, 3602, 0), ZEAH, "North of the bank in Shayzien.", BRASSICAN_MAGE),
 	ZEAH_LIBRARY(MASTER, new WorldPoint(1603, 3843, 0), ZEAH, "North-west of the Arceuus Library.", BRASSICAN_MAGE),
 	ZEAH_HOUSECHURCH(MASTER, new WorldPoint(1682, 3792, 0), ZEAH, "By the entrance to the Arceuus church.", ANCIENT_WIZARDS),
-	ZEAH_DARK_ALTAR(MASTER, new WorldPoint(1698, 3881, 0), ZEAH, "West of the Dark Altar.", BRASSICAN_MAGE),
+	ZEAH_DARK_ALTAR(MASTER, new WorldPoint(1698, 3880, 0), ZEAH, "West of the Dark Altar.", BRASSICAN_MAGE),
 	ZEAH_ARCEUUS_HOUSE(MASTER, new WorldPoint(1710, 3700, 0), ZEAH, "By the south-eastern entrance to Arceuus.", BRASSICAN_MAGE),
 	ZEAH_ESSENCE_MINE(MASTER, new WorldPoint(1762, 3852, 0), ZEAH, "By the Arceuus essence mine.", BRASSICAN_MAGE),
 	ZEAH_ESSENCE_MINE_NE(MASTER, new WorldPoint(1773, 3867, 0), ZEAH, "North-east of the Arceuus essence mine.", BRASSICAN_MAGE),

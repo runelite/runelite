@@ -62,8 +62,6 @@ import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.api.widgets.Widget;
-import static net.runelite.api.widgets.WidgetInfo.PVP_WORLD_SAFE_ZONE;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
@@ -96,8 +94,6 @@ public class TimersPlugin extends Plugin
 	private static final String CANNON_REPAIR_MESSAGE = "You repair your cannon, restoring it to working order.";
 	private static final String CANNON_DESTROYED_MESSAGE = "Your cannon has been destroyed!";
 	private static final String CANNON_BROKEN_MESSAGE = "<col=ef1020>Your cannon has broken!";
-	private static final String CHARGE_EXPIRED_MESSAGE = "<col=ef1020>Your magical charge fades away.</col>";
-	private static final String CHARGE_MESSAGE = "<col=ef1020>You feel charged with magic power.</col>";
 	private static final String EXTENDED_ANTIFIRE_DRINK_MESSAGE = "You drink some of your extended antifire potion.";
 	private static final String EXTENDED_SUPER_ANTIFIRE_DRINK_MESSAGE = "You drink some of your extended super antifire potion.";
 	private static final String FROZEN_MESSAGE = "<col=ef1020>You have been frozen!</col>";
@@ -108,7 +104,6 @@ public class TimersPlugin extends Plugin
 	private static final String STAFF_OF_THE_DEAD_SPEC_MESSAGE = "Spirits of deceased evildoers offer you their protection";
 	private static final String SUPER_ANTIFIRE_DRINK_MESSAGE = "You drink some of your super antifire potion";
 	private static final String SUPER_ANTIFIRE_EXPIRED_MESSAGE = "<col=7f007f>Your super antifire potion has expired.</col>";
-	private static final String KILLED_TELEBLOCK_OPPONENT_TEXT = "Your Tele Block has been removed because you killed ";
 	private static final String PRAYER_ENHANCE_EXPIRED = "<col=ff0000>Your prayer enhance effect has worn off.</col>";
 	private static final String SHADOW_VEIL_MESSAGE = ">Your thieving abilities have been enhanced.</col>";
 	private static final String DEATH_CHARGE_MESSAGE = ">Upon the death of your next foe, some of your special attack energy will be restored.</col>";
@@ -122,7 +117,6 @@ public class TimersPlugin extends Plugin
 	private static final String DODGY_NECKLACE_PROTECTION_MESSAGE = "Your dodgy necklace protects you.";
 	private static final String SHADOW_VEIL_PROTECTION_MESSAGE = "Your attempt to steal goes unnoticed.";
 
-	private static final Pattern TELEBLOCK_PATTERN = Pattern.compile("A Tele Block spell has been cast on you(?: by .+)?\\. It will expire in (?<mins>\\d+) minutes?(?:, (?<secs>\\d+) seconds?)?\\.");
 	private static final Pattern DIVINE_POTION_PATTERN = Pattern.compile("You drink some of your divine (.+) potion\\.");
 	private static final int VENOM_VALUE_CUTOFF = -40; // Antivenom < -40 <= Antipoison < 0
 	private static final int POISON_TICK_LENGTH = 30;
@@ -143,7 +137,8 @@ public class TimersPlugin extends Plugin
 	private int lastVengCooldownVarb;
 	private int lastIsVengeancedVarb;
 	private int lastPoisonVarp;
-	private int lastPvpVarb;
+	private int lastTeleblockVarb;
+	private int lastChargeSpellVarp;
 	private int lastCorruptionVarb;
 	private int lastStaminaEffect;
 	private int lastImbuedHeartVarb;
@@ -151,7 +146,6 @@ public class TimersPlugin extends Plugin
 	private int nextPoisonTick;
 	private WorldPoint lastPoint;
 	private int lastAnimation;
-	private boolean widgetHiddenChangedOnPvpWorld;
 	private ElapsedTimer tzhaarTimer;
 
 	@Inject
@@ -192,8 +186,9 @@ public class TimersPlugin extends Plugin
 		lastRaidVarb = -1;
 		lastPoint = null;
 		lastAnimation = -1;
-		widgetHiddenChangedOnPvpWorld = false;
 		lastPoisonVarp = 0;
+		lastTeleblockVarb = 0;
+		lastChargeSpellVarp = 0;
 		nextPoisonTick = 0;
 		removeTzhaarTimer();
 		staminaTimer = null;
@@ -209,12 +204,13 @@ public class TimersPlugin extends Plugin
 		int vengCooldownVarb = client.getVarbitValue(Varbits.VENGEANCE_COOLDOWN);
 		int isVengeancedVarb = client.getVarbitValue(Varbits.VENGEANCE_ACTIVE);
 		int poisonVarp = client.getVar(VarPlayer.POISON);
-		int pvpVarb = client.getVarbitValue(Varbits.PVP_SPEC_ORB);
 		int corruptionCooldownVarb = client.getVarbitValue(Varbits.CORRUPTION_COOLDOWN);
 		int imbuedHeartCooldownVarb = client.getVarbitValue(Varbits.IMBUED_HEART_COOLDOWN);
 		int staminaEffectActive = client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE);
 		int staminaPotionEffectVarb = client.getVarbitValue(Varbits.STAMINA_EFFECT);
 		int enduranceRingEffectVarb = client.getVarbitValue(Varbits.RING_OF_ENDURANCE_EFFECT);
+		int teleblockVarb = client.getVarbitValue(Varbits.TELEBLOCK);
+		int chargeSpellVarp = client.getVar(VarPlayer.CHARGE_GOD_SPELL);
 
 		final int totalStaminaEffect = staminaPotionEffectVarb + enduranceRingEffectVarb;
 
@@ -297,15 +293,33 @@ public class TimersPlugin extends Plugin
 			lastPoisonVarp = poisonVarp;
 		}
 
-		if (lastPvpVarb != pvpVarb)
+		if (lastTeleblockVarb != teleblockVarb && config.showTeleblock())
 		{
-			if (pvpVarb == 0)
+			if (teleblockVarb > 100)
 			{
-				log.debug("Left a PVP zone, clearing teleblock timer");
+				// Reduce by 100 ticks because the blocking effect subsides and immunity period supervenes
+				createGameTimer(TELEBLOCK, Duration.of((teleblockVarb - 100), RSTimeUnit.GAME_TICKS));
+			}
+			else
+			{
 				removeGameTimer(TELEBLOCK);
 			}
 
-			lastPvpVarb = pvpVarb;
+			lastTeleblockVarb = teleblockVarb;
+		}
+
+		if (lastChargeSpellVarp != chargeSpellVarp && config.showCharge())
+		{
+			if (chargeSpellVarp > 0)
+			{
+				createGameTimer(CHARGE, Duration.of((chargeSpellVarp * 2L), RSTimeUnit.GAME_TICKS));
+			}
+			else
+			{
+				removeGameTimer(CHARGE);
+			}
+
+			lastChargeSpellVarp = chargeSpellVarp;
 		}
 
 		if (lastImbuedHeartVarb != imbuedHeartCooldownVarb && config.showImbuedHeart())
@@ -631,23 +645,6 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(MAGICIMBUE);
 		}
 
-		if (config.showTeleblock())
-		{
-			Matcher m = TELEBLOCK_PATTERN.matcher(message);
-			if (m.find())
-			{
-				String minss = m.group("mins");
-				String secss = m.group("secs");
-				int mins = Integer.parseInt(minss);
-				int secs = secss != null ? Integer.parseInt(secss) : 0;
-				createGameTimer(TELEBLOCK, Duration.ofSeconds(mins * 60 + secs));
-			}
-			else if (message.contains(KILLED_TELEBLOCK_OPPONENT_TEXT))
-			{
-				removeGameTimer(TELEBLOCK);
-			}
-		}
-
 		if (config.showAntiFire() && message.contains(SUPER_ANTIFIRE_DRINK_MESSAGE))
 		{
 			createGameTimer(SUPERANTIFIRE);
@@ -666,16 +663,6 @@ public class TimersPlugin extends Plugin
 		if (config.showPrayerEnhance() && message.equals(PRAYER_ENHANCE_EXPIRED))
 		{
 			removeGameTimer(PRAYER_ENHANCE);
-		}
-
-		if (config.showCharge() && message.equals(CHARGE_MESSAGE))
-		{
-			createGameTimer(CHARGE);
-		}
-
-		if (config.showCharge() && message.equals(CHARGE_EXPIRED_MESSAGE))
-		{
-			removeGameTimer(CHARGE);
 		}
 
 		if (config.showStaffOfTheDead() && message.contains(STAFF_OF_THE_DEAD_SPEC_MESSAGE))
@@ -935,20 +922,6 @@ public class TimersPlugin extends Plugin
 		}
 
 		lastPoint = currentWorldPoint;
-
-		if (!widgetHiddenChangedOnPvpWorld)
-		{
-			return;
-		}
-
-		widgetHiddenChangedOnPvpWorld = false;
-
-		Widget widget = client.getWidget(PVP_WORLD_SAFE_ZONE);
-		if (widget != null && !widget.isSelfHidden())
-		{
-			log.debug("Entered safe zone in PVP world, clearing Teleblock timer.");
-			removeGameTimer(TELEBLOCK);
-		}
 	}
 
 	@Subscribe

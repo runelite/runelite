@@ -95,8 +95,7 @@ import net.runelite.client.events.ClientShutdown;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.RuneScapeProfileChanged;
 import net.runelite.client.util.ColorUtil;
-import net.runelite.http.api.config.ConfigEntry;
-import net.runelite.http.api.config.Configuration;
+import net.runelite.http.api.config.ConfigPatch;
 
 @Singleton
 @Slf4j
@@ -209,7 +208,7 @@ public class ConfigManager
 			return;
 		}
 
-		Configuration configuration;
+		Map<String, String> configuration;
 
 		try
 		{
@@ -222,7 +221,7 @@ public class ConfigManager
 			return;
 		}
 
-		if (configuration.getConfig() == null || configuration.getConfig().isEmpty())
+		if (configuration == null || configuration.isEmpty())
 		{
 			log.debug("No configuration from client, using saved configuration on disk");
 			loadFromFile();
@@ -230,10 +229,7 @@ public class ConfigManager
 		}
 
 		Properties newProperties = new Properties();
-		for (ConfigEntry entry : configuration.getConfig())
-		{
-			newProperties.setProperty(entry.getKey(), entry.getValue());
-		}
+		newProperties.putAll(configuration);
 
 		log.debug("Loading in config from server");
 		swapProperties(newProperties, false);
@@ -942,9 +938,19 @@ public class ConfigManager
 
 			if (session != null)
 			{
-				Configuration patch = new Configuration(pendingChanges.entrySet().stream()
-					.map(e -> new ConfigEntry(e.getKey(), e.getValue()))
-					.collect(Collectors.toList()));
+				ConfigPatch patch = new ConfigPatch();
+				for (Map.Entry<String, String> entry : pendingChanges.entrySet())
+				{
+					final String key = entry.getKey(), value = entry.getValue();
+					if (value == null)
+					{
+						patch.getUnset().add(key);
+					}
+					else
+					{
+						patch.getEdit().put(key, value);
+					}
+				}
 
 				future = configClient.patch(patch);
 			}

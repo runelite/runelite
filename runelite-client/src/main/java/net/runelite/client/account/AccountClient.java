@@ -24,6 +24,7 @@
  */
 package net.runelite.client.account;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,15 +47,17 @@ public class AccountClient
 {
 	private final OkHttpClient client;
 	private final HttpUrl apiBase;
+	private final Gson gson;
 
 	@Setter
 	private UUID uuid;
 
 	@Inject
-	private AccountClient(OkHttpClient client, @Named("runelite.api.base") HttpUrl apiBase)
+	private AccountClient(OkHttpClient client, @Named("runelite.api.base") HttpUrl apiBase, Gson gson)
 	{
 		this.client = client;
 		this.apiBase = apiBase;
+		this.gson = gson;
 	}
 
 	public OAuthResponse login(int port) throws IOException
@@ -74,7 +77,7 @@ public class AccountClient
 		try (Response response = client.newCall(request).execute())
 		{
 			InputStream in = response.body().byteStream();
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), OAuthResponse.class);
+			return gson.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), OAuthResponse.class);
 		}
 		catch (JsonParseException ex)
 		{

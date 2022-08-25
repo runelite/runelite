@@ -49,6 +49,7 @@ import net.runelite.api.KeyCode;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
+import net.runelite.api.NPCComposition;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -336,8 +337,15 @@ public class NpcIndicatorsPlugin extends Plugin
 		else
 		{
 			final String name = npc.getName();
+			final List<String> highlightedNpcs = new ArrayList<>(highlights);
+
+			if (!highlightedNpcs.removeIf(name::equalsIgnoreCase))
+			{
+				highlightedNpcs.add(name);
+			}
+
 			// this trips a config change which triggers the overlay rebuild
-			updateNpcsToHighlight(name);
+			config.setNpcToHighlight(Text.toCSV(highlightedNpcs));
 		}
 	}
 
@@ -422,19 +430,6 @@ public class NpcIndicatorsPlugin extends Plugin
 		validateSpawnedNpcs();
 		lastTickUpdate = Instant.now();
 		lastPlayerLocation = client.getLocalPlayer().getWorldLocation();
-	}
-
-	private void updateNpcsToHighlight(String npc)
-	{
-		final List<String> highlightedNpcs = new ArrayList<>(highlights);
-
-		if (!highlightedNpcs.removeIf(npc::equalsIgnoreCase))
-		{
-			highlightedNpcs.add(npc);
-		}
-
-		// this triggers the config change event and rebuilds npcs
-		config.setNpcToHighlight(Text.toCSV(highlightedNpcs));
 	}
 
 	private static boolean isInViewRange(WorldPoint wp1, WorldPoint wp2)
@@ -640,7 +635,7 @@ public class NpcIndicatorsPlugin extends Plugin
 					final WorldPoint possibleOtherNpcLocation = getWorldLocationBehind(npc);
 
 					mn.getPossibleRespawnLocations().removeIf(x ->
-						x.distanceTo(npcLocation) != 0 && x.distanceTo(possibleOtherNpcLocation) != 0);
+						!x.equals(npcLocation) && !x.equals(possibleOtherNpcLocation));
 
 					if (mn.getPossibleRespawnLocations().isEmpty())
 					{
@@ -672,7 +667,23 @@ public class NpcIndicatorsPlugin extends Plugin
 			.nameOnMinimap(config.drawMinimapNames())
 			.borderWidth((float) config.borderWidth())
 			.outlineFeather(config.outlineFeather())
-			.render(n -> !npcUtil.isDying(n) || !config.ignoreDeadNpcs())
+			.render(this::render)
 			.build();
+	}
+
+	private boolean render(NPC n)
+	{
+		if (npcUtil.isDying(n) && config.ignoreDeadNpcs())
+		{
+			return false;
+		}
+
+		final NPCComposition c = n.getTransformedComposition();
+		if (c != null && c.isFollower() && config.ignorePets())
+		{
+			return false;
+		}
+
+		return true;
 	}
 }
