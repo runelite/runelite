@@ -2172,6 +2172,16 @@ public class ChatCommandsPlugin extends Plugin
 			case "hmt 5":
 				return "Theatre of Blood Hard Mode 5 players";
 
+			// Tombs of Amascut
+			case "toa":
+				return "Tombs of Amascut";
+			case "toa entry":
+			case "toa entry mode":
+				return "Tombs of Amascut Entry Mode";
+			case "toa expert":
+			case "toa expert mode":
+				return "Tombs of Amascut Expert Mode";
+
 			// The Gauntlet
 			case "gaunt":
 			case "gauntlet":
