@@ -146,7 +146,11 @@ public class RegenMeterPlugin extends Plugin
 
 			// It's possible to regenerate less than 10 percent special attack energy
 			// E.g. if the player has 92.5/95/97.5 percent and regenerates to 100 percent
-			ticksSinceSpecRegen = (currentSpecialAttackEnergy - specialAttackEnergy) <= 100 ? 0 : ticksSinceSpecRegen;
+			int difference = currentSpecialAttackEnergy - specialAttackEnergy;
+			if (0 < difference && difference <= 100)
+			{
+				ticksSinceSpecRegen = 0;
+			}
 			specialAttackEnergy = currentSpecialAttackEnergy;
 		}
 	}
