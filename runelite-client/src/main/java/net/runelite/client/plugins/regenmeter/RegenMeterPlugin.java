@@ -88,6 +88,7 @@ public class RegenMeterPlugin extends Plugin
 	Item ring = null;
 
 	private int specRegenTicks = 50;
+	private int specialAttackEnergy;
 	private int ticksSinceSpecRegen;
 	private int ticksSinceHPRegen;
 	private boolean wasRapidHeal;
@@ -138,6 +139,16 @@ public class RegenMeterPlugin extends Plugin
 			ticksSinceHPRegen = 0;
 		}
 		wasRapidHeal = isRapidHeal;
+
+		if (ev.getIndex() == VarPlayer.SPECIAL_ATTACK_PERCENT.getId())
+		{
+			int currentSpecialAttackEnergy = client.getVarpValue(VarPlayer.SPECIAL_ATTACK_PERCENT.getId());
+
+			// It's possible to regenerate less than 10 percent special attack energy
+			// E.g. if the player has 92.5/95/97.5 percent and regenerates to 100 percent
+			ticksSinceSpecRegen = (currentSpecialAttackEnergy - specialAttackEnergy) <= 100 ? 0 : ticksSinceSpecRegen;
+			specialAttackEnergy = currentSpecialAttackEnergy;
+		}
 	}
 
 	@Subscribe
