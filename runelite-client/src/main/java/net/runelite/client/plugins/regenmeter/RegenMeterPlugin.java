@@ -151,15 +151,14 @@ public class RegenMeterPlugin extends Plugin
 		ItemContainer container = itemContainerChanged.getItemContainer();
 		Item newRing = container.getItem(EquipmentInventorySlot.RING.getSlotIdx());
 
+		specRegenTicks = newRing == null ? 50
+				: newRing.getId() == ItemID.LIGHTBEARER ? 25
+				: 50;
+
 		if (ring != null && ring.getId() == ItemID.LIGHTBEARER)
 		{
-			if (newRing != null && newRing.getId() == ItemID.LIGHTBEARER)
+			if (newRing == null || newRing.getId() != ItemID.LIGHTBEARER)
 			{
-				specRegenTicks = 25;
-			}
-			else
-			{
-				specRegenTicks = 50;
 				ticksSinceSpecRegen = 0;
 			}
 		}
@@ -167,12 +166,7 @@ public class RegenMeterPlugin extends Plugin
 		{
 			if (newRing != null && newRing.getId() == ItemID.LIGHTBEARER)
 			{
-				specRegenTicks = 25;
 				ticksSinceSpecRegen = 0;
-			}
-			else
-			{
-				specRegenTicks = 50;
 			}
 		}
 		ring = newRing;
