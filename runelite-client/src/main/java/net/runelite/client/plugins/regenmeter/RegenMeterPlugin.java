@@ -82,7 +82,6 @@ public class RegenMeterPlugin extends Plugin
 
 	private int ticksSinceSpecRegen;
 	private int ticksSinceHPRegen;
-	private boolean wasRapidHeal;
 
 	@Provides
 	RegenMeterConfig provideConfig(ConfigManager configManager)
@@ -115,12 +114,10 @@ public class RegenMeterPlugin extends Plugin
 	@Subscribe
 	private void onVarbitChanged(VarbitChanged ev)
 	{
-		boolean isRapidHeal = client.isPrayerActive(Prayer.RAPID_HEAL);
-		if (wasRapidHeal != isRapidHeal)
+		if (ev.getVarbitId() == Varbits.PRAYER_RAPID_HEAL)
 		{
 			ticksSinceHPRegen = 0;
 		}
-		wasRapidHeal = isRapidHeal;
 	}
 
 	@Subscribe

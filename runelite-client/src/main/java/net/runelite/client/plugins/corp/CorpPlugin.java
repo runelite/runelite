@@ -35,7 +35,6 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
@@ -85,9 +84,6 @@ public class CorpPlugin extends Plugin
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<Actor> players = new HashSet<>();
-
-	@Inject
-	private Client client;
 
 	@Inject
 	private ChatMessageManager chatMessageManager;
@@ -239,9 +235,9 @@ public class CorpPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{
-		if (corp != null)
+		if (corp != null && varbitChanged.getVarbitId() == Varbits.CORP_DAMAGE)
 		{
-			int myDamage = client.getVarbitValue(Varbits.CORP_DAMAGE);
+			int myDamage = varbitChanged.getValue();
 			// avoid resetting our counter when the client's is reset
 			if (myDamage > 0)
 			{

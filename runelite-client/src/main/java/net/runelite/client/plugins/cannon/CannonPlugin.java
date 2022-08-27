@@ -297,9 +297,9 @@ public class CannonPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{
-		if (varbitChanged.getIndex() == VarPlayer.CANNON_AMMO.getId())
+		if (varbitChanged.getVarpId() == VarPlayer.CANNON_AMMO.getId())
 		{
-			cballsLeft = client.getVar(VarPlayer.CANNON_AMMO);
+			cballsLeft = varbitChanged.getValue();
 
 			if (config.showCannonNotifications() && !cannonBallNotificationSent && cballsLeft > 0 && config.lowWarningThreshold() >= cballsLeft)
 			{

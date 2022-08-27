@@ -149,12 +149,15 @@ public class ZalcanoPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		boolean wasInCavern = inCavern;
-		inCavern = isHealthbarActive();
-
-		if (!inCavern && wasInCavern)
+		if (event.getVarpId() == VarPlayer.HP_HUD_NPC_ID.getId())
 		{
-			resetDamageCounter();
+			boolean wasInCavern = inCavern;
+			inCavern = isHealthbarActive();
+
+			if (!inCavern && wasInCavern)
+			{
+				resetDamageCounter();
+			}
 		}
 	}
 

@@ -103,8 +103,6 @@ public class PoisonPlugin extends Plugin
 	private PoisonInfobox infobox;
 	private Instant poisonNaturalCure;
 	private Instant nextPoisonTick;
-	private int lastValue = -1;
-	private int lastDiseaseValue = -1;
 	private BufferedImage heart;
 
 	@Provides
@@ -139,8 +137,6 @@ public class PoisonPlugin extends Plugin
 		lastDamage = 0;
 		poisonNaturalCure = null;
 		nextPoisonTick = null;
-		lastValue = -1;
-		lastDiseaseValue = -1;
 
 		clientThread.invoke(this::resetHealthIcon);
 	}
@@ -148,10 +144,9 @@ public class PoisonPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		final int poisonValue = client.getVar(VarPlayer.POISON);
-		if (poisonValue != lastValue)
+		if (event.getVarpId() == VarPlayer.POISON.getId())
 		{
-			lastValue = poisonValue;
+			final int poisonValue = event.getValue();
 			nextPoisonTick = Instant.now().plus(Duration.of(POISON_TICK_MILLIS, ChronoUnit.MILLIS));
 
 			final int damage = nextDamage(poisonValue);
@@ -190,11 +185,8 @@ public class PoisonPlugin extends Plugin
 
 			checkHealthIcon();
 		}
-
-		final int diseaseValue = client.getVar(VarPlayer.DISEASE_VALUE);
-		if (diseaseValue != lastDiseaseValue)
+		else if (event.getVarpId() == VarPlayer.DISEASE_VALUE.getId())
 		{
-			lastDiseaseValue = diseaseValue;
 			checkHealthIcon();
 		}
 	}

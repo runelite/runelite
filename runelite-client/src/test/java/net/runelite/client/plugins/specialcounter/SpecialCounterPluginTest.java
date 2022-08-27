@@ -132,8 +132,10 @@ public class SpecialCounterPluginTest
 		when(client.getItemContainer(InventoryID.EQUIPMENT)).thenReturn(equipment);
 
 		// Set up special attack energy
-		when(client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT)).thenReturn(100);
-		specialCounterPlugin.onVarbitChanged(new VarbitChanged());
+		VarbitChanged varbitChanged = new VarbitChanged();
+		varbitChanged.setVarpId(VarPlayer.SPECIAL_ATTACK_PERCENT.getId());
+		varbitChanged.setValue(100);
+		specialCounterPlugin.onVarbitChanged(varbitChanged);
 
 		// Set up item image for spec info drop
 		when(itemManager.getImage(anyInt())).thenReturn(new AsyncBufferedImage(24, 24, BufferedImage.TYPE_INT_ARGB));
@@ -158,8 +160,10 @@ public class SpecialCounterPluginTest
 		when(player.getInteracting()).thenReturn(target);
 
 		// spec npc
-		when(client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT)).thenReturn(50);
-		specialCounterPlugin.onVarbitChanged(new VarbitChanged());
+		VarbitChanged varbitChanged = new VarbitChanged();
+		varbitChanged.setVarpId(VarPlayer.SPECIAL_ATTACK_PERCENT.getId());
+		varbitChanged.setValue(50);
+		specialCounterPlugin.onVarbitChanged(varbitChanged);
 
 		// clientthread callback
 		ArgumentCaptor<Runnable> captor = ArgumentCaptor.forClass(Runnable.class);
@@ -189,8 +193,10 @@ public class SpecialCounterPluginTest
 		when(specialCounterConfig.thresholdNotification()).thenReturn(true);
 
 		// First special attack
-		when(client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT)).thenReturn(50);
-		specialCounterPlugin.onVarbitChanged(new VarbitChanged());
+		VarbitChanged varbitChanged = new VarbitChanged();
+		varbitChanged.setVarpId(VarPlayer.SPECIAL_ATTACK_PERCENT.getId());
+		varbitChanged.setValue(50);
+		specialCounterPlugin.onVarbitChanged(varbitChanged);
 
 		// clientthread callback
 		ArgumentCaptor<Runnable> captor = ArgumentCaptor.forClass(Runnable.class);
@@ -208,8 +214,10 @@ public class SpecialCounterPluginTest
 
 		// Second special attack
 		reset(clientThread);
-		when(client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT)).thenReturn(0);
-		specialCounterPlugin.onVarbitChanged(new VarbitChanged());
+		varbitChanged = new VarbitChanged();
+		varbitChanged.setVarpId(VarPlayer.SPECIAL_ATTACK_PERCENT.getId());
+		varbitChanged.setValue(0);
+		specialCounterPlugin.onVarbitChanged(varbitChanged);
 
 		// clientthread callback
 		captor = ArgumentCaptor.forClass(Runnable.class);
@@ -236,8 +244,10 @@ public class SpecialCounterPluginTest
 		lenient().when(specialCounterConfig.thresholdNotification()).thenReturn(true);
 
 		// First special attack
-		when(client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT)).thenReturn(50);
-		specialCounterPlugin.onVarbitChanged(new VarbitChanged());
+		VarbitChanged varbitChanged = new VarbitChanged();
+		varbitChanged.setVarpId(VarPlayer.SPECIAL_ATTACK_PERCENT.getId());
+		varbitChanged.setValue(50);
+		specialCounterPlugin.onVarbitChanged(varbitChanged);
 
 		// clientthread callback
 		ArgumentCaptor<Runnable> captor = ArgumentCaptor.forClass(Runnable.class);
@@ -250,8 +260,10 @@ public class SpecialCounterPluginTest
 
 		reset(clientThread);
 		// Second special attack
-		when(client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT)).thenReturn(0);
-		specialCounterPlugin.onVarbitChanged(new VarbitChanged());
+		varbitChanged = new VarbitChanged();
+		varbitChanged.setVarpId(VarPlayer.SPECIAL_ATTACK_PERCENT.getId());
+		varbitChanged.setValue(0);
+		specialCounterPlugin.onVarbitChanged(varbitChanged);
 
 		// clientthread callback
 		captor = ArgumentCaptor.forClass(Runnable.class);

@@ -274,7 +274,7 @@ public class DevToolsPlugin extends Plugin
 				client.queueChangedVarp(varp);
 				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Set VarPlayer " + varp + " to " + value, null);
 				VarbitChanged varbitChanged = new VarbitChanged();
-				varbitChanged.setIndex(varp);
+				varbitChanged.setVarpId(varp);
 				eventBus.post(varbitChanged); // fake event
 				break;
 			}
