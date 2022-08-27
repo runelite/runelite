@@ -262,7 +262,6 @@ public class LootTrackerPlugin extends Plugin
 
 	// Guardians of the Rift
 	private static final String GUARDIANS_OF_THE_RIFT_EVENT = "Guardians of the Rift";
-	private static final String INTRICATE_POUCH_EVENT = "Intricate pouch";
 	private static final String GUARDIANS_OF_THE_RIFT_LOOT_STRING = "You found some loot: ";
 	private static final int GUARDIANS_OF_THE_RIFT_REGION = 14484;
 
@@ -1008,13 +1007,11 @@ public class LootTrackerPlugin extends Plugin
 					case ItemID.CASKET_25590:
 						onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, TEMPOROSS_CASKET_EVENT));
 						break;
-					case ItemID.INTRICATE_POUCH:
-						onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, INTRICATE_POUCH_EVENT));
-						break;
 					case ItemID.SIMPLE_LOCKBOX_25647:
 					case ItemID.ELABORATE_LOCKBOX_25649:
 					case ItemID.ORNATE_LOCKBOX_25651:
 					case ItemID.CACHE_OF_RUNES:
+					case ItemID.INTRICATE_POUCH:
 						onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, itemManager.getItemComposition(event.getItemId()).getName()));
 						break;
 					case ItemID.SUPPLY_CRATE_24884:
