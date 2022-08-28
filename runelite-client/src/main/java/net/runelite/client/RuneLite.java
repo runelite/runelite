@@ -80,6 +80,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.WidgetOverlay;
 import net.runelite.client.ui.overlay.tooltip.TooltipOverlay;
 import net.runelite.client.ui.overlay.worldmap.WorldMapOverlay;
+import net.runelite.client.util.ReflectUtil;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
@@ -380,6 +381,9 @@ public class RuneLite
 		SplashScreen.stop();
 
 		clientUI.show();
+
+		ReflectUtil.queueInjectorAnnotationCacheInvalidation(injector);
+		ReflectUtil.invalidateAnnotationCaches();
 	}
 
 	@VisibleForTesting
