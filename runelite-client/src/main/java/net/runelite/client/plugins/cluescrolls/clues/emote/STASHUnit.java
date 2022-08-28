@@ -144,11 +144,13 @@ public enum STASHUnit
 
 	private final int objectId;
 	private final WorldPoint[] worldPoints;
-	private STASHBuildHelper stashBuildHelper;
+	private final STASHBuildHelper stashBuildHelper;
 
 	STASHUnit(int objectId, STASHBuildHelper stashBuildHelper, WorldPoint... worldPoints)
 	{
 		this.objectId = objectId;
 		this.worldPoints = worldPoints;
+		this.stashBuildHelper = stashBuildHelper;
+		
 	}
 }
