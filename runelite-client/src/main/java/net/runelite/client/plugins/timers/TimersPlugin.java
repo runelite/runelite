@@ -326,24 +326,18 @@ public class TimersPlugin extends Plugin
 			{
 				final Duration staminaDuration = Duration.of(10L * totalStaminaEffect, RSTimeUnit.GAME_TICKS);
 
-				if (staminaTimer == null && totalStaminaEffect > 0)
-				{
-					staminaTimer = createGameTimer(STAMINA, staminaDuration);
-				}
-				else if (totalStaminaEffect == 0)
+				if (totalStaminaEffect == 0)
 				{
 					removeGameTimer(STAMINA);
 					staminaTimer = null;
 				}
+				else if (staminaTimer == null)
+				{
+					staminaTimer = createGameTimer(STAMINA, staminaDuration);
+				}
 				else
 				{
-					Instant endInstant = Instant.now().plus(staminaDuration);
-					int timeDifference = (int) Duration.between(staminaTimer.getEndTime(), endInstant).getSeconds();
-					if (timeDifference != 0)
-					{
-						Duration remainingDuration = Duration.between(staminaTimer.getStartTime(), endInstant);
-						staminaTimer.setDuration(remainingDuration);
-					}
+					staminaTimer.updateDuration(staminaDuration);
 				}
 			}
 		}
