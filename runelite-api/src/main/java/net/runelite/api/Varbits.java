@@ -676,4 +676,19 @@ public final class Varbits
 	 * 101 &lt;= Teleblock active, remaining ticks of blocking effect
 	 */
 	public static final int TELEBLOCK = 4163;
+
+	/**
+	 * How many salt stat boost refreshes the player has remaining.
+	 * This will go down by 1 every 25 ticks (15 seconds) and the player's stats will be restored.
+	 * Set to 32 upon crushing salts.
+	 */
+	public static final int SMELLING_SALTS_REFRESHES_REMAINING = 14344;
+
+	/**
+	 * If the player has liquid adrenaline buff active
+	 * <p>
+	 * 0 = inactive
+	 * 1 = active
+	 */
+	public static final int LIQUID_ADERNALINE_ACTIVE = 14361;
 }

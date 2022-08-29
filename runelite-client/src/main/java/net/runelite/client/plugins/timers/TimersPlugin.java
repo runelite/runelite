@@ -116,10 +116,15 @@ public class TimersPlugin extends Plugin
 	private static final String PICKPOCKET_FAILURE_MESSAGE = "You fail to pick the ";
 	private static final String DODGY_NECKLACE_PROTECTION_MESSAGE = "Your dodgy necklace protects you.";
 	private static final String SHADOW_VEIL_PROTECTION_MESSAGE = "Your attempt to steal goes unnoticed.";
+	private static final String SMELLING_SALTS_MESSAGE = "You crush the salts. Your heart rate increases.";
+	private static final String LIQUID_ADRENALINE_MESSAGE = "You drink some of the potion, reducing the energy cost of your special attacks.</col>";
+	private static final String SILK_DRESSING_MESSAGE = "You quickly apply the dressing to your wounds.";
+	private static final String BLESSED_CRYSTAL_SCARAB_MESSAGE = "You crack the crystal in your hand.";
 
 	private static final Pattern DIVINE_POTION_PATTERN = Pattern.compile("You drink some of your divine (.+) potion\\.");
 	private static final int VENOM_VALUE_CUTOFF = -40; // Antivenom < -40 <= Antipoison < 0
 	private static final int POISON_TICK_LENGTH = 30;
+	private static final int SMELLING_SALTS_TICK_LENGTH = 25;
 
 	static final int FIGHT_CAVES_REGION_ID = 9551;
 	static final int INFERNO_REGION_ID = 9043;
@@ -189,6 +194,31 @@ public class TimersPlugin extends Plugin
 		{
 			removeGameTimer(OVERLOAD_RAID);
 			removeGameTimer(PRAYER_ENHANCE);
+		}
+
+		if (event.getVarbitId() == Varbits.SMELLING_SALTS_REFRESHES_REMAINING && config.showOverload())
+		{
+			if (event.getValue() > 0)
+			{
+				Duration duration = Duration.ofMillis((long) Constants.GAME_TICK_LENGTH * (event.getValue() * SMELLING_SALTS_TICK_LENGTH));
+				createGameTimer(SMELLING_SALTS, duration);
+			}
+			else
+			{
+				removeGameTimer(SMELLING_SALTS);
+			}
+		}
+
+		if (event.getVarbitId() == Varbits.LIQUID_ADERNALINE_ACTIVE && config.showLiquidAdrenaline())
+		{
+			if (event.getValue() == 1)
+			{
+				createGameTimer(LIQUID_ADRENALINE);
+			}
+			else
+			{
+				removeGameTimer(LIQUID_ADRENALINE);
+			}
 		}
 
 		if (event.getVarbitId() == Varbits.VENGEANCE_COOLDOWN && config.showVengeance())
@@ -385,6 +415,7 @@ public class TimersPlugin extends Plugin
 		{
 			removeGameTimer(OVERLOAD);
 			removeGameTimer(OVERLOAD_RAID);
+			removeGameTimer(SMELLING_SALTS);
 		}
 
 		if (!config.showPrayerEnhance())
@@ -467,6 +498,21 @@ public class TimersPlugin extends Plugin
 		else
 		{
 			createTzhaarTimer();
+		}
+
+		if (!config.showLiquidAdrenaline())
+		{
+			removeGameTimer(LIQUID_ADRENALINE);
+		}
+
+		if (!config.showSilkDressing())
+		{
+			removeGameTimer(SILK_DRESSING);
+		}
+
+		if (!config.showBlessedCrystalScarab())
+		{
+			removeGameTimer(BLESSED_CRYSTAL_SCARAB);
 		}
 	}
 
@@ -572,17 +618,38 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(EXANTIFIRE);
 		}
 
-		if (config.showOverload() && message.startsWith("You drink some of your") && message.contains("overload"))
+		if (config.showOverload())
 		{
-			if (client.getVarbitValue(Varbits.IN_RAID) == 1)
+			if (message.startsWith("You drink some of your") && message.contains("overload"))
 			{
-				createGameTimer(OVERLOAD_RAID);
+				if (client.getVarbitValue(Varbits.IN_RAID) == 1)
+				{
+					createGameTimer(OVERLOAD_RAID);
+				}
+				else
+				{
+					createGameTimer(OVERLOAD);
+				}
 			}
-			else
+			else if (message.equals(SMELLING_SALTS_MESSAGE))
 			{
-				createGameTimer(OVERLOAD);
+				createGameTimer(SMELLING_SALTS);
 			}
+		}
 
+		if (config.showLiquidAdrenaline() && message.equals(LIQUID_ADRENALINE_MESSAGE))
+		{
+			createGameTimer(LIQUID_ADRENALINE);
+		}
+
+		if (config.showSilkDressing() && message.equals(SILK_DRESSING_MESSAGE))
+		{
+			createGameTimer(SILK_DRESSING);
+		}
+
+		if (config.showBlessedCrystalScarab() && message.equals(BLESSED_CRYSTAL_SCARAB_MESSAGE))
+		{
+			createGameTimer(BLESSED_CRYSTAL_SCARAB);
 		}
 
 		if (config.showCannon())
