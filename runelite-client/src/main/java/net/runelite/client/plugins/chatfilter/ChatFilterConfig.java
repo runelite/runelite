@@ -81,6 +81,13 @@ public interface ChatFilterConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "filteredNames",
+		name = "",
+		description = ""
+	)
+	void setFilteredNames(String names);
+
+	@ConfigItem(
 		keyName = "filterType",
 		name = "Filter type",
 		description = "Configures how the messages are filtered",

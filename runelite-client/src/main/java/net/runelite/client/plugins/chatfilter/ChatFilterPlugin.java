@@ -123,9 +123,6 @@ public class ChatFilterPlugin extends Plugin
 	private Client client;
 
 	@Inject
-	private ConfigManager configManager;
-
-	@Inject
 	private ChatFilterConfig config;
 
 	@Provides
@@ -314,7 +311,7 @@ public class ChatFilterPlugin extends Plugin
 				.onClick(e ->
 				{
 					String target = Text.removeTags(menuEntryAdded.getTarget());
-					String filteredNames = configManager.getConfiguration(ChatFilterConfig.CONFIG_GROUP, ChatFilterConfig.FILTERED_NAMES);
+					String filteredNames = config.filteredNames();
 					if (!filteredNames.isEmpty())
 					{
 						List<String> names = Arrays.asList(filteredNames.split("\n"));
@@ -327,7 +324,7 @@ public class ChatFilterPlugin extends Plugin
 							filteredNames += "\n";
 						}
 					}
-					configManager.setConfiguration(ChatFilterConfig.CONFIG_GROUP, ChatFilterConfig.FILTERED_NAMES, filteredNames + target + "\n");
+					config.setFilteredNames(filteredNames + target + "\n");
 					updateFilteredPatterns();
 				});
 		}
