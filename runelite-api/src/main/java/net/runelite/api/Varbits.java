@@ -683,4 +683,12 @@ public final class Varbits
 	 * Set to 32 upon crushing salts.
 	 */
 	public static final int BUFF_STAT_BOOST = 14344;
+
+	/**
+	 * If the player has liquid adrenaline buff active
+	 * <p>
+	 * 0 = inactive
+	 * 1 = active
+	 */
+	public static final int LIQUID_ADERNALINE_ACTIVE = 14361;
 }

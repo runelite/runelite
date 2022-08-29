@@ -149,6 +149,7 @@ public class TimersPlugin extends Plugin
 	private int lastAnimation;
 	private ElapsedTimer tzhaarTimer;
 	private int lastBuffStatBoost;
+	private int lastAdrenalineBoost;
 
 	@Inject
 	private ItemManager itemManager;
@@ -214,6 +215,7 @@ public class TimersPlugin extends Plugin
 		int teleblockVarb = client.getVarbitValue(Varbits.TELEBLOCK);
 		int chargeSpellVarp = client.getVar(VarPlayer.CHARGE_GOD_SPELL);
 		int buffStatBoost = client.getVarbitValue(Varbits.BUFF_STAT_BOOST);
+		int adrenalineBoost = client.getVarbitValue(Varbits.LIQUID_ADERNALINE_ACTIVE);
 
 		final int totalStaminaEffect = staminaPotionEffectVarb + enduranceRingEffectVarb;
 
@@ -393,6 +395,20 @@ public class TimersPlugin extends Plugin
 
 			lastBuffStatBoost = buffStatBoost;
 		}
+
+		if (adrenalineBoost != lastAdrenalineBoost && config.showLiquidAdrenaline())
+		{
+			if (adrenalineBoost == 1)
+			{
+				createGameTimer(LIQUID_ADRENALINE);
+			}
+			else
+			{
+				removeGameTimer(LIQUID_ADRENALINE);
+			}
+
+			lastAdrenalineBoost = adrenalineBoost;
+		}
 	}
 
 	@Subscribe
@@ -514,6 +530,11 @@ public class TimersPlugin extends Plugin
 		else
 		{
 			createTzhaarTimer();
+		}
+
+		if (!config.showLiquidAdrenaline())
+		{
+			removeGameTimer(LIQUID_ADRENALINE);
 		}
 	}
 
