@@ -85,6 +85,16 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showLiquidAdrenaline",
+		name = "Liquid adrenaline timer",
+		description = "Configures whether liquid adrenaline timer is displayed"
+	)
+	default boolean showLiquidAdrenaline()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "showPrayerEnhance",
 		name = "Prayer enhance timer",
 		description = "Configures whether prayer enhance timer is displayed"
