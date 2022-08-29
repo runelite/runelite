@@ -187,11 +187,11 @@ public class GroundItemsOverlay extends Overlay
 		final boolean onlyShowLoot = config.onlyShowLoot();
 		final DespawnTimerMode groundItemTimers = config.groundItemTimers();
 		final boolean outline = config.textOutline();
+		final int localDrawDistance = client.getScene().getDrawDistance() * Perspective.LOCAL_TILE_SIZE;
 
 		for (GroundItem item : groundItemList)
 		{
 			final LocalPoint groundPoint = LocalPoint.fromWorld(client, item.getLocation());
-			final int localDrawDistance = client.getScene().getDrawDistance() * Perspective.LOCAL_TILE_SIZE;
 			if (groundPoint == null || Math.abs(localLocation.getX() - groundPoint.getX()) > localDrawDistance
 					|| Math.abs(localLocation.getY() - groundPoint.getY()) > localDrawDistance
 					|| (onlyShowLoot && !item.isMine()))
