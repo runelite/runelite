@@ -90,6 +90,8 @@ enum GameTimer
 	PICKPOCKET_STUN(SpriteID.SKILL_THIEVING, GameTimerImageType.SPRITE, "Stunned", true),
 	SMELLING_SALTS(ItemID.SMELLING_SALTS_2, GameTimerImageType.ITEM, "Smelling salts", true),
 	LIQUID_ADRENALINE(ItemID.LIQUID_ADRENALINE_2, GameTimerImageType.ITEM, "Liquid adrenaline", 30, ChronoUnit.SECONDS, true),
+	SILK_DRESSING(ItemID.SILK_DRESSING_2, GameTimerImageType.ITEM, "Silk dressing", 100, GAME_TICKS, true),
+	BLESSED_CRYSTAL_SCARAB(ItemID.BLESSED_CRYSTAL_SCARAB_2, GameTimerImageType.ITEM, "Blessed crystal scarab", 40, GAME_TICKS, true),
 	;
 
 	@Nullable

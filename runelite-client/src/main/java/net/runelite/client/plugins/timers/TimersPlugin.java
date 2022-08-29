@@ -116,6 +116,8 @@ public class TimersPlugin extends Plugin
 	private static final String PICKPOCKET_FAILURE_MESSAGE = "You fail to pick the ";
 	private static final String DODGY_NECKLACE_PROTECTION_MESSAGE = "Your dodgy necklace protects you.";
 	private static final String SHADOW_VEIL_PROTECTION_MESSAGE = "Your attempt to steal goes unnoticed.";
+	private static final String SILK_DRESSING_MESSAGE = "You quickly apply the dressing to your wounds.";
+	private static final String BLESSED_CRYSTAL_SCARAB_MESSAGE = "You crack the crystal in your hand.";
 
 	private static final Pattern DIVINE_POTION_PATTERN = Pattern.compile("You drink some of your divine (.+) potion\\.");
 	private static final int VENOM_VALUE_CUTOFF = -40; // Antivenom < -40 <= Antipoison < 0
@@ -500,6 +502,16 @@ public class TimersPlugin extends Plugin
 		{
 			removeGameTimer(LIQUID_ADRENALINE);
 		}
+
+		if (!config.showSilkDressing())
+		{
+			removeGameTimer(SILK_DRESSING);
+		}
+
+		if (!config.showBlessedCrystalScarab())
+		{
+			removeGameTimer(BLESSED_CRYSTAL_SCARAB);
+		}
 	}
 
 	@Subscribe
@@ -837,6 +849,16 @@ public class TimersPlugin extends Plugin
 					createTzhaarTimer();
 				}
 			}
+		}
+
+		if (message.equals(SILK_DRESSING_MESSAGE) && config.showSilkDressing())
+		{
+			createGameTimer(SILK_DRESSING);
+		}
+
+		if (message.equals(BLESSED_CRYSTAL_SCARAB_MESSAGE) && config.showBlessedCrystalScarab())
+		{
+			createGameTimer(BLESSED_CRYSTAL_SCARAB);
 		}
 	}
 
