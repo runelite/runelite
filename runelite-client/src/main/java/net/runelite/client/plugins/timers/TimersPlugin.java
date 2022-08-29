@@ -132,6 +132,7 @@ public class TimersPlugin extends Plugin
 	private int freezeTime = -1; // time frozen, in game ticks
 
 	private TimerTimer staminaTimer;
+	private TimerTimer buffTimer;
 
 	private int lastRaidVarb;
 	private int lastVengCooldownVarb;
@@ -147,6 +148,7 @@ public class TimersPlugin extends Plugin
 	private WorldPoint lastPoint;
 	private int lastAnimation;
 	private ElapsedTimer tzhaarTimer;
+	private int lastBuffStatBoost;
 
 	@Inject
 	private ItemManager itemManager;
@@ -211,6 +213,7 @@ public class TimersPlugin extends Plugin
 		int enduranceRingEffectVarb = client.getVarbitValue(Varbits.RING_OF_ENDURANCE_EFFECT);
 		int teleblockVarb = client.getVarbitValue(Varbits.TELEBLOCK);
 		int chargeSpellVarp = client.getVar(VarPlayer.CHARGE_GOD_SPELL);
+		int buffStatBoost = client.getVarbitValue(Varbits.BUFF_STAT_BOOST);
 
 		final int totalStaminaEffect = staminaPotionEffectVarb + enduranceRingEffectVarb;
 
@@ -369,6 +372,27 @@ public class TimersPlugin extends Plugin
 
 			lastStaminaEffect = totalStaminaEffect;
 		}
+
+		if (buffStatBoost != lastBuffStatBoost && config.showOverload())
+		{
+			int serverTicks = buffStatBoost * 25; // from [proc,buff_bar_get_value]
+			Duration duration = Duration.of(serverTicks, RSTimeUnit.GAME_TICKS);
+			if (serverTicks == 0)
+			{
+				removeGameTimer(SMELLING_SALTS);
+				buffTimer = null;
+			}
+			else if (buffTimer == null)
+			{
+				buffTimer = createGameTimer(SMELLING_SALTS, duration);
+			}
+			else
+			{
+				buffTimer.updateDuration(duration);
+			}
+
+			lastBuffStatBoost = buffStatBoost;
+		}
 	}
 
 	@Subscribe
@@ -407,6 +431,7 @@ public class TimersPlugin extends Plugin
 		{
 			removeGameTimer(OVERLOAD);
 			removeGameTimer(OVERLOAD_RAID);
+			removeGameTimer(SMELLING_SALTS);
 		}
 
 		if (!config.showPrayerEnhance())
