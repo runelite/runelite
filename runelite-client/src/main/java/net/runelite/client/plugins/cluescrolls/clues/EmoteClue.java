@@ -50,6 +50,8 @@ import static net.runelite.client.plugins.cluescrolls.clues.Enemy.*;
 import net.runelite.client.plugins.cluescrolls.clues.emote.Emote;
 import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.*;
 import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.BULL_ROARER;
+
+import net.runelite.client.plugins.cluescrolls.clues.emote.STASHBuildHelper;
 import net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit;
 import static net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit.*;
 import static net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit.SHANTAY_PASS;
@@ -300,6 +302,23 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 					.right(stashUnitBuilt ? UNICODE_CHECK_MARK : UNICODE_BALLOT_X)
 					.rightFont(FontManager.getDefaultFont())
 					.rightColor(stashUnitBuilt ? Color.GREEN : Color.RED)
+					.build());
+			}
+
+			else
+			{
+				STASHBuildHelper stashBuildHelper = stashUnit.getStashBuildHelper();
+
+				panelComponent.getChildren().add(LineComponent.builder()
+					.left("Construction Level:")
+					.right(stashBuildHelper.getConstructionLevelRequired())
+					.rightFont(FontManager.getDefaultFont())
+					.build());
+
+				panelComponent.getChildren().add(LineComponent.builder()
+					.left("STASH Unit Build Materials:")
+					.right(stashBuildHelper.getMaterialsRequired())
+					.rightFont(FontManager.getDefaultFont())
 					.build());
 			}
 
