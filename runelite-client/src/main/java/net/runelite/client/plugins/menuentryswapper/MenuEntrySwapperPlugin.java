@@ -921,7 +921,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 						if (actionIdx == 2)
 						{
 							// Use
-							if (defaultLeftClickOp != -1)
+							if (defaultLeftClickOp != -1 && config.leftClickCustomization())
 							{
 								client.createMenuEntry(idx + shiftOff)
 									.setOption("Swap left click Use")
@@ -929,7 +929,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 									.setType(MenuAction.RUNELITE)
 									.onClick(heldItemConsumer(itemComposition, "Use", -1, false));
 							}
-							if (defaultShiftClickOp != -1)
+							if (defaultShiftClickOp != -1 && config.shiftClickCustomization())
 							{
 								client.createMenuEntry(idx)
 									.setOption("Swap shift click Use")
@@ -941,7 +941,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 						}
 					}
 
-					if (leftClickOp != null)
+					if (leftClickOp != null && config.leftClickCustomization())
 					{
 						client.createMenuEntry(idx)
 							.setOption("Reset swap left click")
@@ -963,7 +963,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 								unsetItemSwapConfig(false, itemComposition.getId());
 							});
 					}
-					if (shiftClickOp != null)
+					if (shiftClickOp != null && config.shiftClickCustomization())
 					{
 						client.createMenuEntry(idx)
 							.setOption("Reset swap shift click")
