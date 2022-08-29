@@ -34,6 +34,8 @@ import java.util.Arrays;
 import java.util.List;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.EnumComposition;
+import net.runelite.api.EnumID;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
@@ -257,6 +259,11 @@ public class ClueScrollPluginTest
 		when(client.getVarbitValue(Varbits.RUNE_POUCH_AMOUNT1)).thenReturn(20);
 		when(client.getVarbitValue(Varbits.RUNE_POUCH_RUNE3)).thenReturn(4); // Fire Rune
 		when(client.getVarbitValue(Varbits.RUNE_POUCH_AMOUNT3)).thenReturn(4000);
+
+		EnumComposition enumComposition = mock(EnumComposition.class);
+		when(enumComposition.getIntValue(9)).thenReturn(ItemID.COSMIC_RUNE);
+		when(enumComposition.getIntValue(4)).thenReturn(ItemID.FIRE_RUNE);
+		when(client.getEnum(EnumID.RUNEPOUCH_RUNE)).thenReturn(enumComposition);
 
 		plugin.onItemContainerChanged(event);
 

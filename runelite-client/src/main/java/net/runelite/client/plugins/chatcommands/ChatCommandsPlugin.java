@@ -100,7 +100,6 @@ import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.Text;
 import net.runelite.http.api.chat.Duels;
 import net.runelite.http.api.item.ItemPrice;
-import okhttp3.OkHttpClient;
 import org.apache.commons.text.WordUtils;
 
 @PluginDescriptor(
@@ -278,12 +277,6 @@ public class ChatCommandsPlugin extends Plugin
 	ChatCommandsConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(ChatCommandsConfig.class);
-	}
-
-	@Provides
-	HiscoreClient provideHiscoreClient(OkHttpClient okHttpClient)
-	{
-		return new HiscoreClient(okHttpClient);
 	}
 
 	private void setKc(String boss, int killcount)
@@ -1080,7 +1073,7 @@ public class ChatCommandsPlugin extends Plugin
 
 	private boolean questPointsSubmit(ChatInput chatInput, String value)
 	{
-		final int qp = client.getVar(VarPlayer.QUEST_POINTS);
+		final int qp = client.getVarpValue(VarPlayer.QUEST_POINTS);
 		final String playerName = client.getLocalPlayer().getName();
 
 		executor.execute(() ->
@@ -1522,13 +1515,13 @@ public class ChatCommandsPlugin extends Plugin
 				return;
 			}
 
-			int attack = playerStats.getAttack().getLevel();
-			int strength = playerStats.getStrength().getLevel();
-			int defence = playerStats.getDefence().getLevel();
-			int hitpoints = playerStats.getHitpoints().getLevel();
-			int ranged = playerStats.getRanged().getLevel();
-			int prayer = playerStats.getPrayer().getLevel();
-			int magic = playerStats.getMagic().getLevel();
+			int attack = playerStats.getSkill(HiscoreSkill.ATTACK).getLevel();
+			int strength = playerStats.getSkill(HiscoreSkill.STRENGTH).getLevel();
+			int defence = playerStats.getSkill(HiscoreSkill.DEFENCE).getLevel();
+			int hitpoints = playerStats.getSkill(HiscoreSkill.HITPOINTS).getLevel();
+			int ranged = playerStats.getSkill(HiscoreSkill.RANGED).getLevel();
+			int prayer = playerStats.getSkill(HiscoreSkill.PRAYER).getLevel();
+			int magic = playerStats.getSkill(HiscoreSkill.MAGIC).getLevel();
 			int combatLevel = Experience.getCombatLevel(attack, strength, defence, hitpoints, magic, ranged, prayer);
 
 			String response = new ChatMessageBuilder()
@@ -1650,19 +1643,11 @@ public class ChatCommandsPlugin extends Plugin
 			switch (minigame)
 			{
 				case BOUNTY_HUNTER_HUNTER:
-					hiscoreSkill = result.getBountyHunterHunter();
-					break;
 				case BOUNTY_HUNTER_ROGUE:
-					hiscoreSkill = result.getBountyHunterRogue();
-					break;
 				case LAST_MAN_STANDING:
-					hiscoreSkill = result.getLastManStanding();
-					break;
 				case LEAGUE_POINTS:
-					hiscoreSkill = result.getLeaguePoints();
-					break;
 				case SOUL_WARS_ZEAL:
-					hiscoreSkill = result.getSoulWarsZeal();
+					hiscoreSkill = result.getSkill(minigame);
 					break;
 				default:
 					log.warn("error looking up {} score: not implemented", minigame.getName().toLowerCase());
@@ -1739,25 +1724,25 @@ public class ChatCommandsPlugin extends Plugin
 			switch (level)
 			{
 				case "beginner":
-					hiscoreSkill = result.getClueScrollBeginner();
+					hiscoreSkill = result.getSkill(HiscoreSkill.CLUE_SCROLL_BEGINNER);
 					break;
 				case "easy":
-					hiscoreSkill = result.getClueScrollEasy();
+					hiscoreSkill = result.getSkill(HiscoreSkill.CLUE_SCROLL_EASY);
 					break;
 				case "medium":
-					hiscoreSkill = result.getClueScrollMedium();
+					hiscoreSkill = result.getSkill(HiscoreSkill.CLUE_SCROLL_MEDIUM);
 					break;
 				case "hard":
-					hiscoreSkill = result.getClueScrollHard();
+					hiscoreSkill = result.getSkill(HiscoreSkill.CLUE_SCROLL_HARD);
 					break;
 				case "elite":
-					hiscoreSkill = result.getClueScrollElite();
+					hiscoreSkill = result.getSkill(HiscoreSkill.CLUE_SCROLL_ELITE);
 					break;
 				case "master":
-					hiscoreSkill = result.getClueScrollMaster();
+					hiscoreSkill = result.getSkill(HiscoreSkill.CLUE_SCROLL_MASTER);
 					break;
 				case "total":
-					hiscoreSkill = result.getClueScrollAll();
+					hiscoreSkill = result.getSkill(HiscoreSkill.CLUE_SCROLL_ALL);
 					break;
 				default:
 					return;
@@ -2186,6 +2171,16 @@ public class ChatCommandsPlugin extends Plugin
 				return "Theatre of Blood Hard Mode 4 players";
 			case "hmt 5":
 				return "Theatre of Blood Hard Mode 5 players";
+
+			// Tombs of Amascut
+			case "toa":
+				return "Tombs of Amascut";
+			case "toa entry":
+			case "toa entry mode":
+				return "Tombs of Amascut Entry Mode";
+			case "toa expert":
+			case "toa expert mode":
+				return "Tombs of Amascut Expert Mode";
 
 			// The Gauntlet
 			case "gaunt":

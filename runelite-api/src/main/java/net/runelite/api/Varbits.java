@@ -628,8 +628,8 @@ public final class Varbits
 	/**
 	 * Whether the Special Attack orb is disabled due to being in a PvP area
 	 * <p>
-	 * 0 = Enabled =player is not in PvP)
-	 * 1 = Disabled =player in in PvP)
+	 * 0 = Enabled (player is not in PvP)
+	 * 1 = Disabled (player is in PvP)
 	 *
 	 * @see <a href="https://oldschool.runescape.wiki/w/Minimap#Special_attack_orb">The OSRS Wiki's Minimap page</a>
 	 */
@@ -667,4 +667,28 @@ public final class Varbits
 	 * 1 = Enabled
 	 */
 	public static final int SHOW_PVP_KDR_STATS = 4143;
+
+	/**
+	 * State of Teleblock spell effects on the player
+	 * <p>
+	 * 0 = Teleblock inactive, no immunity
+	 * 1 &lt;= X &lt;= 100 = Teleblock inactive, remaining ticks of immunity from reapplication of spell effect
+	 * 101 &lt;= Teleblock active, remaining ticks of blocking effect
+	 */
+	public static final int TELEBLOCK = 4163;
+
+	/**
+	 * How many salt stat boost refreshes the player has remaining.
+	 * This will go down by 1 every 25 ticks (15 seconds) and the player's stats will be restored.
+	 * Set to 32 upon crushing salts.
+	 */
+	public static final int BUFF_STAT_BOOST = 14344;
+
+	/**
+	 * If the player has liquid adrenaline buff active
+	 * <p>
+	 * 0 = inactive
+	 * 1 = active
+	 */
+	public static final int LIQUID_ADERNALINE_ACTIVE = 14361;
 }

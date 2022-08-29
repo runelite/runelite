@@ -809,7 +809,7 @@ public class GrandExchangePlugin extends Plugin
 
 	private String setExamineText(String examine, String fee, boolean buy)
 	{
-		final int itemId = client.getVar(VarPlayer.CURRENT_GE_ITEM);
+		final int itemId = client.getVarpValue(VarPlayer.CURRENT_GE_ITEM);
 		StringBuilder sb = new StringBuilder();
 
 		if (buy && config.enableGELimits())

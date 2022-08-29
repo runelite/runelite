@@ -154,8 +154,6 @@ public class ItemChargePlugin extends Plugin
 	private static final int MAX_BLOOD_ESSENCE_CHARGES = 1000;
 	private static final int MAX_BRACELET_OF_CLAY_CHARGES = 28;
 
-	private int lastExplorerRingCharge = -1;
-
 	@Inject
 	private Client client;
 
@@ -502,11 +500,9 @@ public class ItemChargePlugin extends Plugin
 	@Subscribe
 	private void onVarbitChanged(VarbitChanged event)
 	{
-		int explorerRingCharge = client.getVarbitValue(Varbits.EXPLORER_RING_ALCHS);
-		if (lastExplorerRingCharge != explorerRingCharge)
+		if (event.getVarbitId() == Varbits.EXPLORER_RING_ALCHS)
 		{
-			lastExplorerRingCharge = explorerRingCharge;
-			updateExplorerRingCharges(explorerRingCharge);
+			updateExplorerRingCharges(event.getValue());
 		}
 	}
 

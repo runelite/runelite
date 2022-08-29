@@ -24,9 +24,9 @@
  */
 package net.runelite.client.plugins.hiscore;
 
+import net.runelite.client.hiscore.HiscoreClient;
 import static net.runelite.client.plugins.hiscore.HiscorePanel.formatLevel;
 import net.runelite.client.hiscore.HiscoreEndpoint;
-import okhttp3.OkHttpClient;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import static org.mockito.Mockito.mock;
@@ -40,7 +40,7 @@ public class HiscorePanelTest
 		HiscorePlugin plugin = mock(HiscorePlugin.class);
 		when(plugin.getWorldEndpoint()).thenReturn(HiscoreEndpoint.NORMAL);
 		new HiscorePanel(null, plugin, mock(HiscoreConfig.class),
-			mock(NameAutocompleter.class), mock(OkHttpClient.class));
+			mock(NameAutocompleter.class), mock(HiscoreClient.class));
 	}
 
 	@Test

@@ -174,6 +174,7 @@ enum DungeonLocation
 	TEMPLE_OF_IKOV("Temple of Ikov", new WorldPoint(2676, 3404, 0)),
 	THEATRE_OF_BLOOD("Theatre of Blood", new WorldPoint(3676, 3219, 0)),
 	TOLNAS_RIFT("Tolna's rift", new WorldPoint(3308, 3450, 0)),
+	TOMBS_OF_AMASCUT("Tombs of Amascut", new WorldPoint(3358, 9240, 0)),
 	TOWER_OF_LIFE("Tower of Life dungeon", new WorldPoint(2649, 3213, 0)),
 	TRAHAEARN_MINE("Trahaearn Mine", new WorldPoint(3270, 6049, 0)),
 	TREE_GNOME_VILLAGE("Tree Gnome Village Dungeon", new WorldPoint(2532, 3155, 0)),
