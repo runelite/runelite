@@ -132,6 +132,7 @@ public class TimersPlugin extends Plugin
 	private int freezeTime = -1; // time frozen, in game ticks
 
 	private TimerTimer staminaTimer;
+	private TimerTimer buffTimer;
 
 	private boolean imbuedHeartTimerActive;
 	private int nextPoisonTick;
@@ -341,6 +342,25 @@ public class TimersPlugin extends Plugin
 				}
 			}
 		}
+
+		if (event.getVarbitId() == Varbits.BUFF_STAT_BOOST && config.showOverload())
+		{
+			int serverTicks = event.getValue() * 25; // from [proc,buff_bar_get_value]
+			Duration duration = Duration.of(serverTicks, RSTimeUnit.GAME_TICKS);
+			if (serverTicks == 0)
+			{
+				removeGameTimer(SMELLING_SALTS);
+				buffTimer = null;
+			}
+			else if (buffTimer == null)
+			{
+				buffTimer = createGameTimer(SMELLING_SALTS, duration);
+			}
+			else
+			{
+				buffTimer.updateDuration(duration);
+			}
+		}
 	}
 
 	@Subscribe
@@ -379,6 +399,7 @@ public class TimersPlugin extends Plugin
 		{
 			removeGameTimer(OVERLOAD);
 			removeGameTimer(OVERLOAD_RAID);
+			removeGameTimer(SMELLING_SALTS);
 		}
 
 		if (!config.showPrayerEnhance())
