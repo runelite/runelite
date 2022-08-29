@@ -242,7 +242,7 @@ public class KingdomPlugin extends Plugin
 
 	private boolean isThroneOfMiscellaniaCompleted()
 	{
-		return client.getVar(VarPlayer.THRONE_OF_MISCELLANIA) > 0;
+		return client.getVarpValue(VarPlayer.THRONE_OF_MISCELLANIA) > 0;
 	}
 
 	private boolean isRoyalTroubleCompleted()

@@ -155,7 +155,7 @@ class SkillCalculator extends JPanel
 			currentBonus = null;
 
 			VarPlayer endGoalVarp = endGoalVarpForSkill(calculatorType.getSkill());
-			int endGoal = client.getVar(endGoalVarp);
+			int endGoal = client.getVarpValue(endGoalVarp);
 			if (endGoal != -1)
 			{
 				targetLevel = Experience.getLevelForXp(endGoal);

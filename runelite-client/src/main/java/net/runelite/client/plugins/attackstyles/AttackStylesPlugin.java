@@ -102,7 +102,7 @@ public class AttackStylesPlugin extends Plugin
 	private void start()
 	{
 		resetWarnings();
-		int attackStyleVarbit = client.getVar(VarPlayer.ATTACK_STYLE);
+		int attackStyleVarbit = client.getVarpValue(VarPlayer.ATTACK_STYLE);
 		equippedWeaponTypeVarbit = client.getVarbitValue(Varbits.EQUIPPED_WEAPON_TYPE);
 		int castingModeVarbit = client.getVarbitValue(Varbits.DEFENSIVE_CASTING_MODE);
 		updateAttackStyle(
@@ -175,7 +175,7 @@ public class AttackStylesPlugin extends Plugin
 			|| event.getVarbitId() == Varbits.EQUIPPED_WEAPON_TYPE
 			|| event.getVarbitId() == Varbits.DEFENSIVE_CASTING_MODE)
 		{
-			final int currentAttackStyleVarbit = client.getVar(VarPlayer.ATTACK_STYLE);
+			final int currentAttackStyleVarbit = client.getVarpValue(VarPlayer.ATTACK_STYLE);
 			final int currentEquippedWeaponTypeVarbit = client.getVarbitValue(Varbits.EQUIPPED_WEAPON_TYPE);
 			final int currentCastingModeVarbit = client.getVarbitValue(Varbits.DEFENSIVE_CASTING_MODE);
 

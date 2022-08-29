@@ -297,7 +297,7 @@ public class PoisonPlugin extends Plugin
 		}
 
 		final BufferedImage newHeart;
-		final int poison = client.getVar(VarPlayer.IS_POISONED);
+		final int poison = client.getVarpValue(VarPlayer.IS_POISONED);
 
 		if (poison >= VENOM_THRESHOLD)
 		{
@@ -307,7 +307,7 @@ public class PoisonPlugin extends Plugin
 		{
 			newHeart = HEART_POISON;
 		}
-		else if (client.getVar(VarPlayer.DISEASE_VALUE) > 0)
+		else if (client.getVarpValue(VarPlayer.DISEASE_VALUE) > 0)
 		{
 			newHeart = HEART_DISEASE;
 		}

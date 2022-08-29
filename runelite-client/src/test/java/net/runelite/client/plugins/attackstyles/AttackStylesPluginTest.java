@@ -92,14 +92,14 @@ public class AttackStylesPluginTest
 		// Setup attack in style that gives attack xp
 		VarbitChanged varbitChanged = new VarbitChanged();
 		varbitChanged.setVarpId(VarPlayer.ATTACK_STYLE.getId());
-		when(client.getVar(VarPlayer.ATTACK_STYLE)).thenReturn(AttackStyle.ACCURATE.ordinal());
+		when(client.getVarpValue(VarPlayer.ATTACK_STYLE)).thenReturn(AttackStyle.ACCURATE.ordinal());
 
 		// verify that earning xp in a warned skill will display red text on the widget
 		attackPlugin.onVarbitChanged(varbitChanged);
 		assertTrue(attackPlugin.isWarnedSkillSelected());
 
 		// Switch to attack style that doesn't give attack xp
-		when(client.getVar(VarPlayer.ATTACK_STYLE)).thenReturn(AttackStyle.AGGRESSIVE.ordinal());
+		when(client.getVarpValue(VarPlayer.ATTACK_STYLE)).thenReturn(AttackStyle.AGGRESSIVE.ordinal());
 
 		// Verify the widget will now display white text
 		attackPlugin.onVarbitChanged(varbitChanged);
