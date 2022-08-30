@@ -684,4 +684,15 @@ public interface MenuEntrySwapperConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		position = 19,
+		keyName = "swapMetamorphosis",
+		name = "Metamorphosis",
+		description = "Swap Talk-to with Metamorphosis for Baby Chinchompa pet."
+	)
+	default boolean swapMetamorphosis()
+	{
+		return false;
+	}
 }

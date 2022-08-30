@@ -1306,6 +1306,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 			{
 				menuEntry.setDeprioritized(true);
 			}
+			if (config.swapMetamorphosis() && target.contains("baby chinchompa"))
+			{
+				swap("metamorphosis", option, target, true);
+			}
 		}
 
 		if (NPC_MENU_TYPES.contains(menuAction))
