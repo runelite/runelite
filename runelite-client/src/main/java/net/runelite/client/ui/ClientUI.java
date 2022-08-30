@@ -56,12 +56,14 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
 import javax.swing.SwingUtilities;
+import javax.swing.event.HyperlinkEvent;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -72,6 +74,7 @@ import net.runelite.api.Point;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.ExpandResizeType;
@@ -90,6 +93,7 @@ import net.runelite.client.input.MouseManager;
 import net.runelite.client.ui.skin.SubstanceRuneLiteLookAndFeel;
 import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.ImageUtil;
+import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.OSType;
 import net.runelite.client.util.OSXUtil;
 import net.runelite.client.util.SwingUtil;
@@ -616,11 +620,25 @@ public class ClientUI
 		final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024L / 1024L);
 		if (maxMemory < 400)
 		{
-			SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(frame,
-				"Your Java memory limit is " + maxMemory + "mb, which is lower than the recommended 512mb.\n" +
-					"This can cause instability, and it is recommended you remove or increase this limit.\n" +
-					"Join https://runelite.net/discord for assistance.",
-				"Max memory limit low", JOptionPane.WARNING_MESSAGE));
+			SwingUtilities.invokeLater(() ->
+			{
+				JEditorPane ep = new JEditorPane("text/html",
+					"Your Java memory limit is " + maxMemory + "mb, which is lower than the recommended 512mb.<br>" +
+						"This can cause instability, and it is recommended you remove or increase this limit.<br>" +
+						"Join <a href=\"" + RuneLiteProperties.getDiscordInvite() + "\">Discord</a> for assistance."
+				);
+				ep.addHyperlinkListener(e ->
+				{
+					if (e.getEventType().equals(HyperlinkEvent.EventType.ACTIVATED))
+					{
+						LinkBrowser.browse(e.getURL().toString());
+					}
+				});
+				ep.setEditable(false);
+				ep.setOpaque(false);
+				JOptionPane.showMessageDialog(frame,
+					ep, "Max memory limit low", JOptionPane.WARNING_MESSAGE);
+			});
 		}
 	}
 
