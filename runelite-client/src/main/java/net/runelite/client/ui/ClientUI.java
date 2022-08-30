@@ -612,6 +612,16 @@ public class ClientUI
 					+ "game update, it will work with reduced functionality until then.",
 				"RuneLite is outdated", INFORMATION_MESSAGE));
 		}
+
+		final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024L / 1024L);
+		if (maxMemory < 400)
+		{
+			SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(frame,
+				"Your Java memory limit is " + maxMemory + "mb, which is lower than the recommended 512mb.\n" +
+					"This can cause instability, and it is recommended you remove or increase this limit.\n" +
+					"Join https://runelite.net/discord for assistance.",
+				"Max memory limit low", JOptionPane.WARNING_MESSAGE));
+		}
 	}
 
 	private GraphicsConfiguration findDisplayFromBounds(final Rectangle bounds)
