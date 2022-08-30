@@ -241,11 +241,13 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 	{
 		final Widget bankItemContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
 		final Widget bankInventoryItemsContainer = client.getWidget(WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER);
+		final Widget bankEquipmentInventoryItemsContainer = client.getWidget(WidgetInfo.BANK_EQUIPMENT_INVENTORY_ITEMS_CONTAINER);
 		final Widget bankDepositContainer = client.getWidget(WidgetInfo.DEPOSIT_BOX_INVENTORY_ITEMS_CONTAINER);
 		final Widget coxPrivateChest = client.getWidget(WidgetInfo.RAIDS_PRIVATE_STORAGE_ITEM_CONTAINER);
 
 		applyDragDelay(bankItemContainer, delay);
 		applyDragDelay(bankInventoryItemsContainer, delay);
+		applyDragDelay(bankEquipmentInventoryItemsContainer, delay);
 		applyDragDelay(bankDepositContainer, delay);
 		applyDragDelay(coxPrivateChest, delay);
 	}

@@ -285,6 +285,7 @@ public final class WidgetID
 	{
 		static final int BANK_CONTAINER = 1;
 		static final int INVENTORY_ITEM_CONTAINER = 3;
+		static final int EQUIPMENT_INVENTORY_ITEM_CONTAINER = 4;
 		static final int BANK_TITLE_BAR = 3;
 		static final int TUTORIAL_BUTTON = 4;
 		static final int ITEM_COUNT_TOP = 5;
