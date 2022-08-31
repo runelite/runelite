@@ -63,4 +63,15 @@ public interface OpponentInfoConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "alwaysDisplayInfo",
+		name = "Always display info",
+		description = "Always display the opponent info overlay, regardless of in-game HP HUD configuration",
+		position = 4
+	)
+	default boolean alwaysDisplayInfo()
+	{
+		return false;
+	}
 }

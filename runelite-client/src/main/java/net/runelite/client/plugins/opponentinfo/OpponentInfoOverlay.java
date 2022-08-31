@@ -140,9 +140,7 @@ class OpponentInfoOverlay extends OverlayPanel
 			}
 		}
 
-		// The in-game hp hud is more accurate than our overlay and duplicates all of the information on it,
-		// so hide ours if it is visible.
-		if (opponentName == null || hasHpHud(opponent))
+		if (!shouldShowOverlay(opponent))
 		{
 			return null;
 		}
@@ -218,6 +216,20 @@ class OpponentInfoOverlay extends OverlayPanel
 		}
 
 		return super.render(graphics);
+	}
+
+	private boolean shouldShowOverlay(Actor opponent) {
+		if (opponentName == null) {
+			return false;
+		}
+
+		if (opponentInfoConfig.alwaysDisplayInfo()) {
+			return true;
+		}
+
+		// The in-game hp hud is more accurate than our overlay and duplicates all of the information on it,
+		// so hide ours if it is visible, unless the config explicitly overrides.
+		return !hasHpHud(opponent);
 	}
 
 	/**
