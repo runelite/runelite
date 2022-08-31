@@ -104,7 +104,7 @@ public class ZulrahPlugin extends Plugin implements KeyListener
 	private boolean holdingSnakelingHotkey = false;
 	private Counter zulrahTotalTicksInfoBox;
 	public static final BufferedImage[] ZULRAH_IMAGES = new BufferedImage[3];
-	private static final BufferedImage CLOCK_ICON = ImageUtil.getResourceStreamFromClass(ZulrahPlugin.class, "clock.png");
+	private static final BufferedImage CLOCK_ICON = ImageUtil.loadImageResource(ZulrahPlugin.class, "clock.png");
 	private final BiConsumer<RotationType, RotationType> phaseTicksHandler = (current, potential) -> {
 		if (zulrahReset) 
 	{
@@ -452,7 +452,7 @@ public class ZulrahPlugin extends Plugin implements KeyListener
 	{
 			if (zulrahTotalTicksInfoBox == null) 
 	{
-				zulrahTotalTicksInfoBox = new Counter(CLOCK_ICON, this, totalTicks);
+				//zulrahTotalTicksInfoBox = new Counter(CLOCK_ICON, this, totalTicks);
 				zulrahTotalTicksInfoBox.setTooltip("Total Ticks Alive");
 				infoBoxManager.addInfoBox(zulrahTotalTicksInfoBox);
 			}
@@ -532,8 +532,8 @@ public class ZulrahPlugin extends Plugin implements KeyListener
 
 	static
 	{
-		ZulrahPlugin.ZULRAH_IMAGES[0] = ImageUtil.getResourceStreamFromClass(ZulrahPlugin.class, "zulrah_range.png");
-		ZulrahPlugin.ZULRAH_IMAGES[1] = ImageUtil.getResourceStreamFromClass(ZulrahPlugin.class, "zulrah_melee.png");
-		ZulrahPlugin.ZULRAH_IMAGES[2] = ImageUtil.getResourceStreamFromClass(ZulrahPlugin.class, "zulrah_magic.png");
+		ZulrahPlugin.ZULRAH_IMAGES[0] = ImageUtil.loadImageResource(ZulrahPlugin.class, "zulrah_range.png");
+		ZulrahPlugin.ZULRAH_IMAGES[1] = ImageUtil.loadImageResource(ZulrahPlugin.class, "zulrah_melee.png");
+		ZulrahPlugin.ZULRAH_IMAGES[2] = ImageUtil.loadImageResource(ZulrahPlugin.class, "zulrah_magic.png");
 	}
 }
