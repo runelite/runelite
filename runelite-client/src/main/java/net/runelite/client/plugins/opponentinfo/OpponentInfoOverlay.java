@@ -218,12 +218,15 @@ class OpponentInfoOverlay extends OverlayPanel
 		return super.render(graphics);
 	}
 
-	private boolean shouldShowOverlay(Actor opponent) {
-		if (opponentName == null) {
+	private boolean shouldShowOverlay(Actor opponent)
+	{
+		if (opponentName == null)
+		{
 			return false;
 		}
 
-		if (opponentInfoConfig.alwaysDisplayInfo()) {
+		if (opponentInfoConfig.alwaysDisplayInfo())
+		{
 			return true;
 		}
 
