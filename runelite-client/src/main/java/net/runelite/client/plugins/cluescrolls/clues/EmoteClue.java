@@ -28,6 +28,8 @@ import com.google.common.collect.ImmutableList;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -50,6 +52,8 @@ import static net.runelite.client.plugins.cluescrolls.clues.Enemy.*;
 import net.runelite.client.plugins.cluescrolls.clues.emote.Emote;
 import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.*;
 import static net.runelite.client.plugins.cluescrolls.clues.emote.Emote.BULL_ROARER;
+
+import net.runelite.client.plugins.cluescrolls.clues.emote.STASHBuildRequirements;
 import net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit;
 import static net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit.*;
 import static net.runelite.client.plugins.cluescrolls.clues.emote.STASHUnit.SHANTAY_PASS;
@@ -291,6 +295,8 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 
 			if (stashUnit != null)
 			{
+				STASHBuildRequirements stashBuildRequirements = stashUnit.getStashBuildRequirements();
+
 				client.runScript(ScriptID.WATSON_STASH_UNIT_CHECK, stashUnit.getObjectId(), 0, 0, 0);
 				int[] intStack = client.getIntStack();
 				boolean stashUnitBuilt = intStack[0] == 1;
@@ -301,6 +307,24 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 					.rightFont(FontManager.getDefaultFont())
 					.rightColor(stashUnitBuilt ? Color.GREEN : Color.RED)
 					.build());
+
+				if (!stashUnitBuilt)
+				{
+					panelComponent.getChildren().add(LineComponent.builder()
+						.left("Level:").build());
+					panelComponent.getChildren().add(LineComponent.builder()
+						.left(stashBuildRequirements.getConstructionLevelRequired())
+						.leftColor(TITLED_CONTENT_COLOR)
+						.build());
+
+					panelComponent.getChildren().add(LineComponent.builder().left("STASH Items:").build());
+					ItemRequirement[] itemRequirements = stashBuildRequirements.getItemRequirements();
+
+					for (LineComponent line : getRequirements(plugin, false, itemRequirements))
+					{
+						panelComponent.getChildren().add(line);
+					}
+				}
 			}
 
 			panelComponent.getChildren().add(LineComponent.builder().left("Equip:").build());
@@ -386,5 +410,45 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 		}
 
 		return null;
+	}
+
+	private static List<LineComponent> getRequirements(ClueScrollPlugin plugin, boolean requireEquipped, ItemRequirement ... requirements)
+	{
+		List<LineComponent> components = new ArrayList<>();
+
+		Item[] equipment = plugin.getEquippedItems();
+		Item[] inventory = plugin.getInventoryItems();
+
+		// If equipment is null, the player is wearing nothing
+		if (equipment == null)
+		{
+			equipment = new Item[0];
+		}
+
+		// If inventory is null, the player has nothing in their inventory
+		if (inventory == null)
+		{
+			inventory = new Item[0];
+		}
+
+		Item[] combined = new Item[equipment.length + inventory.length];
+		System.arraycopy(equipment, 0, combined, 0, equipment.length);
+		System.arraycopy(inventory, 0, combined, equipment.length, inventory.length);
+
+		for (ItemRequirement requirement : requirements)
+		{
+			boolean equipmentFulfilled = requirement.fulfilledBy(equipment);
+			boolean combinedFulfilled = requirement.fulfilledBy(combined);
+
+			components.add(LineComponent.builder()
+					.left(requirement.getCollectiveName(plugin.getClient()))
+					.leftColor(TITLED_CONTENT_COLOR)
+					.right(combinedFulfilled ? "\u2713" : "\u2717")
+					.rightFont(FontManager.getDefaultFont())
+					.rightColor(equipmentFulfilled || (combinedFulfilled && !requireEquipped) ? Color.GREEN : (combinedFulfilled ? Color.ORANGE : Color.RED))
+					.build());
+		}
+
+		return components;
 	}
 }
