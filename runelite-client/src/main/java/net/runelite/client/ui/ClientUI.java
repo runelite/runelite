@@ -25,6 +25,7 @@
 package net.runelite.client.ui;
 
 import com.google.common.base.Strings;
+import com.google.inject.Inject;
 import java.applet.Applet;
 import java.awt.Canvas;
 import java.awt.CardLayout;
@@ -48,7 +49,6 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.time.Duration;
 import javax.annotation.Nullable;
-import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Provider;
 import javax.inject.Singleton;
@@ -146,6 +146,14 @@ public class ClientUI
 	private JButton sidebarNavigationJButton;
 	private Dimension lastClientSize;
 	private Cursor defaultCursor;
+
+	@Inject(optional = true)
+	@Named("minMemoryLimit")
+	private int minMemoryLimit = 400;
+
+	@Inject(optional = true)
+	@Named("recommendedMemoryLimit")
+	private int recommendedMemoryLimit = 512;
 
 	@Inject
 	private ClientUI(
@@ -618,12 +626,12 @@ public class ClientUI
 		}
 
 		final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024L / 1024L);
-		if (maxMemory < 400)
+		if (maxMemory < minMemoryLimit)
 		{
 			SwingUtilities.invokeLater(() ->
 			{
 				JEditorPane ep = new JEditorPane("text/html",
-					"Your Java memory limit is " + maxMemory + "mb, which is lower than the recommended 512mb.<br>" +
+					"Your Java memory limit is " + maxMemory + "mb, which is lower than the recommended " + recommendedMemoryLimit + "mb.<br>" +
 						"This can cause instability, and it is recommended you remove or increase this limit.<br>" +
 						"Join <a href=\"" + RuneLiteProperties.getDiscordInvite() + "\">Discord</a> for assistance."
 				);
