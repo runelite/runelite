@@ -1991,7 +1991,7 @@ public class ChatCommandsPlugin extends Plugin
 			case "zammy":
 			case "zamorak":
 			case "kril":
-			case "kril trutsaroth":
+			case "kril tsutsaroth":
 				return "K'ril Tsutsaroth";
 			case "arma":
 			case "kree":

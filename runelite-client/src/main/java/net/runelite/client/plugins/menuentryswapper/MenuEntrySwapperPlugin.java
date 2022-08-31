@@ -632,6 +632,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 				final String[] actions = composition.getActions();
 
 				final Integer swapConfig = getNpcSwapConfig(false, composition.getId());
+				final Integer shiftSwapConfig = getNpcSwapConfig(true, composition.getId());
 				final boolean hasAttack = Arrays.stream(composition.getActions()).anyMatch("Attack"::equalsIgnoreCase);
 				final MenuAction currentAction = swapConfig == null ?
 					// Attackable NPCs always have Attack as the first, last (deprioritized), or when hidden, no, option.
@@ -642,6 +643,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 					// config is set, which just avoids showing a Swap option on a 1-op NPC, which looks odd.
 					(hasAttack ? null : defaultAction(composition)) :
 					(swapConfig == -1 ? MenuAction.WALK : NPC_MENU_TYPES.get(swapConfig));
+				final MenuAction currentShiftAction = shiftSwapConfig == null ?
+					(hasAttack ? null : defaultAction(composition)) :
+					(shiftSwapConfig == -1 ? MenuAction.WALK : NPC_MENU_TYPES.get(shiftSwapConfig));
 
 				int shiftOff = 0;
 				for (int actionIdx = 0; actionIdx < NPC_MENU_TYPES.size(); ++actionIdx)
@@ -654,32 +658,32 @@ public class MenuEntrySwapperPlugin extends Plugin
 						continue;
 					}
 
-					final int menuIdx = actionIdx;
-					final MenuAction menuAction = NPC_MENU_TYPES.get(actionIdx);
-					if (currentAction == menuAction)
-					{
-						continue;
-					}
-
 					if ("Knock-Out".equals(actions[actionIdx])
 						|| "Lure".equals(actions[actionIdx]))
 					{
-						// https://secure.runescape.com/m=news/another-message-about-unofficial-clients?oldschool=1
+						// https://secure.runescape.com/m=news/third-party-client-guidelines?oldschool=1
 						continue;
 					}
 
-					client.createMenuEntry(idx + shiftOff)
-						.setOption("Swap left click " + actions[actionIdx])
-						.setTarget(entry.getTarget())
-						.setType(MenuAction.RUNELITE)
-						.onClick(npcConsumer(composition, actions, menuIdx, menuAction, false));
+					final MenuAction menuAction = NPC_MENU_TYPES.get(actionIdx);
+					if (menuAction != currentAction)
+					{
+						client.createMenuEntry(idx + shiftOff)
+							.setOption("Swap left click " + actions[actionIdx])
+							.setTarget(entry.getTarget())
+							.setType(MenuAction.RUNELITE)
+							.onClick(npcConsumer(composition, actions, actionIdx, menuAction, false));
+					}
 
-					client.createMenuEntry(idx)
-						.setOption("Swap shift click " + actions[actionIdx])
-						.setTarget(entry.getTarget())
-						.setType(MenuAction.RUNELITE)
-						.onClick(npcConsumer(composition, actions, menuIdx, menuAction, true));
-					++shiftOff;
+					if (menuAction != currentShiftAction)
+					{
+						client.createMenuEntry(idx)
+							.setOption("Swap shift click " + actions[actionIdx])
+							.setTarget(entry.getTarget())
+							.setType(MenuAction.RUNELITE)
+							.onClick(npcConsumer(composition, actions, actionIdx, menuAction, true));
+						++shiftOff;
+					}
 				}
 
 				// Walk here swap
