@@ -220,7 +220,7 @@ public class PuzzleSolverOverlay extends Overlay
 								graphics.setColor(Color.YELLOW);
 
 								// Display the next 4 steps
-								for (int i = 1; i < 5; i++)
+								for (int i = 1; i <= config.getStepsDisplayed(); i++)
 								{
 									int j = solver.getPosition() + i;
 
@@ -259,7 +259,7 @@ public class PuzzleSolverOverlay extends Overlay
 								int lastBlankY = currentMove.getEmptyPiece() / DIMENSION;
 
 								// Display the next 3 steps
-								for (int i = 1; i < 4; i++)
+								for (int i = 1; i <= config.getStepsDisplayed(); i++)
 								{
 									int j = solver.getPosition() + i;
 

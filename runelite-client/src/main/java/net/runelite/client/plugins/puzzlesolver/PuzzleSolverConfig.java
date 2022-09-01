@@ -28,6 +28,7 @@ package net.runelite.client.plugins.puzzlesolver;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Range;
 
 @ConfigGroup("puzzlesolver")
 public interface PuzzleSolverConfig extends Config
@@ -60,5 +61,19 @@ public interface PuzzleSolverConfig extends Config
 	default boolean drawDots()
 	{
 		return false;
+	}
+
+	@Range(
+		min = 1,
+		max = 7
+	)
+	@ConfigItem(
+		keyName = "stepsDisplayed",
+		name = "Steps Displayed",
+		description = "The amount of steps displayed when solving a sliding puzzle"
+	)
+	default int getStepsDisplayed()
+	{
+		return 3;
 	}
 }
