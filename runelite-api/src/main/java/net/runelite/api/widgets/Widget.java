@@ -1070,4 +1070,7 @@ public interface Widget
 	 * @param args A ScriptID, then the args for the script
 	 */
 	void setOnVarTransmitListener(Object ...args);
+	//Warp Edit
+	boolean isWidgetItemDragged(int index);
+	Point getWidgetItemDragOffsets();
 }

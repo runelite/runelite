@@ -30,8 +30,7 @@ import javax.annotation.Nullable;
 /**
  * Represents a player entity in the game.
  */
-public interface Player extends Actor
-{
+public interface Player extends Actor, Locatable {
 	/**
 	 * Get the ID of the player
 	 *
