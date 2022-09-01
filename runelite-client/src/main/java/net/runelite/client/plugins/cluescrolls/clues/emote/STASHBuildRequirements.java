@@ -2,8 +2,6 @@ package net.runelite.client.plugins.cluescrolls.clues.emote;
 
 import lombok.Getter;
 import net.runelite.client.plugins.cluescrolls.clues.item.*;
-
-
 import static net.runelite.api.ItemID.*;
 import static net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements.*;
 
