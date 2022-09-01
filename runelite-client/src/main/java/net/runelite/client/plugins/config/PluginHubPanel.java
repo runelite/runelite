@@ -556,6 +556,11 @@ class PluginHubPanel extends PluginPanel
 
 		SwingUtilities.invokeLater(() ->
 		{
+			if (!refreshing.isVisible())
+			{
+				return;
+			}
+
 			plugins = Sets.union(manifests.keySet(), loadedPlugins.keySet())
 				.stream()
 				.map(id -> new PluginItem(manifests.get(id), loadedPlugins.get(id),
@@ -605,6 +610,14 @@ class PluginHubPanel extends PluginPanel
 		searchBar.setText("");
 		reloadPluginList();
 		searchBar.requestFocusInWindow();
+	}
+
+	@Override
+	public void onDeactivate()
+	{
+		mainPanel.removeAll();
+		refreshing.setVisible(false);
+		plugins = null;
 	}
 
 	@Subscribe
