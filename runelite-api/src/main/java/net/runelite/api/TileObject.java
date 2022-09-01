@@ -130,4 +130,11 @@ public interface TileObject
 	 */
 	@Nullable
 	Shape getClickbox();
+
+	/*
+	WaRp Edits
+	 */
+	String getName();
+
+	String[] getActions();
 }

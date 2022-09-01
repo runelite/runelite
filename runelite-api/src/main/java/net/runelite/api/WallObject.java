@@ -29,8 +29,7 @@ import java.awt.Shape;
 /**
  * Represents one or two walls on a tile
  */
-public interface WallObject extends TileObject
-{
+public interface WallObject extends TileObject, Locatable {
 	/**
 	 * A bitfield with the orientation of the first wall
 	 * 1 = West

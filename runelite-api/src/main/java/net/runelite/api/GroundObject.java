@@ -29,8 +29,7 @@ import java.awt.Shape;
 /**
  * Represents an object on the ground of a tile.
  */
-public interface GroundObject extends TileObject
-{
+public interface GroundObject extends TileObject, Locatable {
 	Renderable getRenderable();
 
 	/**

@@ -29,8 +29,7 @@ import java.awt.Shape;
 /**
  * Represents a decorative object, such as an object on a wall.
  */
-public interface DecorativeObject extends TileObject
-{
+public interface DecorativeObject extends TileObject, Locatable {
 	/**
 	 * Gets the convex hull of the objects model.
 	 *

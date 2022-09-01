@@ -29,8 +29,7 @@ import javax.annotation.Nullable;
 /**
  * Represents a non-player character in the game.
  */
-public interface NPC extends Actor
-{
+public interface NPC extends Actor, Locatable {
 	/**
 	 * Gets the ID of the NPC.
 	 *
