@@ -22,6 +22,5 @@ public enum STASHBuildRequirements
 	{
 		this.constructionLevelRequired = constructionLevelRequired;
 		this.itemRequirements = itemRequirements;
-		System.out.println(itemRequirements.length);
 	}
 }
