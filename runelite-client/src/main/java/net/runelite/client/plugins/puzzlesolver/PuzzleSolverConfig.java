@@ -65,7 +65,7 @@ public interface PuzzleSolverConfig extends Config
 
 	@Range(
 		min = 1,
-		max = 7
+		max = 5
 	)
 	@ConfigItem(
 		keyName = "stepsDisplayed",
