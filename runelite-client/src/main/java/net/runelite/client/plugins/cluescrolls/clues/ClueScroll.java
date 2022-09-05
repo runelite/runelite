@@ -83,7 +83,8 @@ public abstract class ClueScroll
 			}
 			return hintText.replaceFirst(REGEX_FLOOR, floor);
 
-		} catch (ArrayIndexOutOfBoundsException e)
+		}
+		catch (ArrayIndexOutOfBoundsException e)
 		{
 			return ERROR_FLOOR_INDEX;
 		}
