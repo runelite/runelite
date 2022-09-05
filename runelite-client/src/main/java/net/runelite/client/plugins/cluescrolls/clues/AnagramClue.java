@@ -35,6 +35,7 @@ import net.runelite.api.NPC;
 import net.runelite.api.ObjectID;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.plugins.cluescrolls.ClueScrollConfig;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_BORDER_COLOR;
@@ -406,7 +407,7 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 			.text("LARK IN DOG")
 			.npc("King Roald")
 			.location(new WorldPoint(3220, 3476, 0))
-			.area("Ground floor of Varrock castle")
+			.area("<F0> floor of Varrock castle")
 			.question("How many bookcases are there in the palace library?")
 			.answer("24")
 			.build(),
@@ -500,7 +501,7 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 			.text("OK CO")
 			.npc("Cook")
 			.location(new WorldPoint(3207, 3214, 0))
-			.area("Ground floor of Lumbridge Castle")
+			.area("<F0> floor of Lumbridge Castle")
 			.question("How many cannons does Lumbridge Castle have?")
 			.answer("9")
 			.build(),
@@ -586,7 +587,7 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 			.text("RIP MAUL")
 			.npc("Primula")
 			.location(new WorldPoint(2454, 2853, 1))
-			.area("Myth's Guild, first floor")
+			.area("Myth's Guild, <f1> floor")
 			.build(),
 		AnagramClue.builder()
 			.text("SAND NUT")
@@ -683,7 +684,7 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 			.text("MAJORS LAVA BADS AIR")
 			.npc("Ambassador Alvijar")
 			.location(new WorldPoint(2736, 5351, 1))
-			.area("Dorgesh-Kaan, NE Middle Level")
+			.area("Dorgesh-Kaan, NE corner of the <f1> floor")
 			.question("Double the miles before the initial Dorgeshuun veteran.")
 			.answer("2505")
 			.build(),
@@ -792,9 +793,11 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 			.leftColor(TITLED_CONTENT_COLOR)
 			.build());
 
+		ClueScrollConfig config = plugin.getConfig();
+		String areaWithFloorNumbering = hintWithFloorNumbering(config, getArea());
 		panelComponent.getChildren().add(LineComponent.builder().left("Location:").build());
 		panelComponent.getChildren().add(LineComponent.builder()
-			.left(getArea())
+			.left(areaWithFloorNumbering)
 			.leftColor(TITLED_CONTENT_COLOR)
 			.build());
 

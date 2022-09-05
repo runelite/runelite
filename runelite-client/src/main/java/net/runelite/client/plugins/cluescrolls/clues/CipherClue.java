@@ -32,6 +32,7 @@ import javax.annotation.Nullable;
 import lombok.Getter;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.plugins.cluescrolls.ClueScrollConfig;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMAGE_Z_OFFSET;
@@ -50,13 +51,13 @@ public class CipherClue extends ClueScroll implements TextClueScroll, NpcClueScr
 		new CipherClue("ZHLUG ROG PDQ", "Weird Old Man", new WorldPoint(3224, 3112, 0), "Kalphite Lair entrance. Fairy ring BIQ", "SIX LEGS! All of them have 6! There are 25 of them! How many legs?", "150"),
 		new CipherClue("ECRVCKP MJCNGF", "Captain Khaled", new WorldPoint(1845, 3754, 0), "Large eastern building in Port Piscarilius", "How many fishing cranes can you find around here?", "5"),
 		new CipherClue("OVEXON", "Eluned", new WorldPoint(2289, 3144, 0), "Outside Lletya or in Prifddinas after Song of the Elves", "A question on elven crystal math. I have 5 and 3 crystals, large and small respectively. A large crystal is worth 10,000 coins and a small is worth but 1,000. How much are all my crystals worth?", "53,000"),
-		new CipherClue("VTYR APCNTGLW", "King Percival", new WorldPoint(2634, 4682, 1), "Fisher Realm, first floor. Fairy ring BJR", "How many cannons are on this here castle?", "5"),
+		new CipherClue("VTYR APCNTGLW", "King Percival", new WorldPoint(2634, 4682, 1), "Fisher Realm, <f1> floor. Fairy ring BJR", "How many cannons are on this here castle?", "5"),
 		new CipherClue("UZZU MUJHRKYYKJ", "Otto Godblessed", new WorldPoint(2501, 3487, 0), "Otto's Grotto", "How many pyre sites are found around this lake?", "3"),
-		new CipherClue("XJABSE USBJCPSO", "Wizard Traiborn", new WorldPoint(3112, 3162, 0), "First floor of Wizards Tower. Fairy ring DIS", "How many air runes would I need to cast 630 wind waves?", "3150"),
+		new CipherClue("XJABSE USBJCPSO", "Wizard Traiborn", new WorldPoint(3112, 3162, 0), "<F1> floor of Wizards Tower. Fairy ring DIS", "How many air runes would I need to cast 630 wind waves?", "3150"),
 		new CipherClue("HCKTA IQFHCVJGT", "Fairy Godfather", new WorldPoint(2446, 4428, 0), "Zanaris throne room", "There are 3 inputs and 4 letters on each ring How many total individual fairy ring codes are possible?", "64"),
 		new CipherClue("ZSBKDO ZODO", "Pirate Pete", new WorldPoint(3680, 3537, 0), "Dock northeast of the Ectofunctus"),
 		new CipherClue("GBJSZ RVFFO", "Fairy Queen", new WorldPoint(2347, 4435, 0), "Fairy Resistance Hideout"),
-		new CipherClue("QSPGFTTPS HSBDLMFCPOF", "Professor Gracklebone", new WorldPoint(1625, 3802, 0), "Ground floor of Arceuus Library", "How many round tables can be found on this floor of the library?", "9"),
+		new CipherClue("QSPGFTTPS HSBDLMFCPOF", "Professor Gracklebone", new WorldPoint(1625, 3802, 0), "<F0> floor of Arceuus Library", "How many round tables can be found on this floor of the library?", "9"),
 		new CipherClue("IWPPLQTP", "Gunnjorn", new WorldPoint(2541, 3548, 0), "Barbarian Outpost Agility course"),
 		new CipherClue("BSOPME MZETQPS", "Arnold Lydspor", new WorldPoint(2329, 3689, 0), "Piscatoris Fishing Colony general store/bank"),
 		new CipherClue("ESBZOPS QJH QFO", new WorldPoint(3077, 3260, 0), "Inside of Martin the Master Gardener's pig pen in Draynor Village.")
@@ -112,9 +113,11 @@ public class CipherClue extends ClueScroll implements TextClueScroll, NpcClueScr
 				.build());
 		}
 
+		ClueScrollConfig config = plugin.getConfig();
+		String areaWithFloorNumbering = hintWithFloorNumbering(config, getArea());
 		panelComponent.getChildren().add(LineComponent.builder().left("Location:").build());
 		panelComponent.getChildren().add(LineComponent.builder()
-			.left(getArea())
+			.left(areaWithFloorNumbering)
 			.leftColor(TITLED_CONTENT_COLOR)
 			.build());
 

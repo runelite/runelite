@@ -194,6 +194,7 @@ public class ClueScrollPlugin extends Plugin
 	private ClueScrollWorldOverlay clueScrollWorldOverlay;
 
 	@Inject
+	@Getter
 	private ClueScrollConfig config;
 
 	@Inject

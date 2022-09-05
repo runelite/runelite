@@ -40,6 +40,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.plugins.cluescrolls.ClueScrollConfig;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMAGE_Z_OFFSET;
@@ -145,11 +146,13 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 					.build());
 			}
 
+			ClueScrollConfig config = plugin.getConfig();
+			String solutionWithFloorNumbering = hintWithFloorNumbering(config, getSolution());
 			panelComponent.getChildren().add(LineComponent.builder()
 				.left("Solution:")
 				.build());
 			panelComponent.getChildren().add(LineComponent.builder()
-				.left(getSolution())
+				.left(solutionWithFloorNumbering)
 				.leftColor(TITLED_CONTENT_COLOR)
 				.build());
 		}

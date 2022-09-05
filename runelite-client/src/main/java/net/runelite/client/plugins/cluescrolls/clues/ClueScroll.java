@@ -25,10 +25,13 @@
 package net.runelite.client.plugins.cluescrolls.clues;
 
 import java.awt.Graphics2D;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.annotations.Varbit;
+import net.runelite.client.plugins.cluescrolls.ClueScrollConfig;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
@@ -53,4 +56,36 @@ public abstract class ClueScroll
 	public abstract void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin);
 
 	public abstract void makeWorldOverlayHint(Graphics2D graphics, ClueScrollPlugin plugin);
+
+	public String hintWithFloorNumbering(ClueScrollConfig config, String hintText)
+	{
+		final String ERROR_FLOOR_INDEX = "{BAD FLOOR INDEX}";
+		final String[] FLOORS = {"Ground", "First", "Second", "Third", "Fourth"};
+		final String REGEX_FLOOR = "<([Ff])(\\d)>";
+		final Pattern PATTERN_FLOOR = Pattern.compile(REGEX_FLOOR);
+
+		String floorPrefix = "";
+		int index = -1;
+		Matcher m = PATTERN_FLOOR.matcher(hintText);
+		if (m.find())
+		{
+			floorPrefix = m.group(1);
+			index = Integer.parseInt(m.group(2));
+		}
+
+		try
+		{
+			String floor = config.usFloorNumbering() ? FLOORS[index + 1] : FLOORS[index];
+
+			if (floorPrefix.equals("f"))
+			{
+				return hintText.replaceFirst(REGEX_FLOOR, floor.toLowerCase());
+			}
+			return hintText.replaceFirst(REGEX_FLOOR, floor);
+
+		} catch (ArrayIndexOutOfBoundsException e)
+		{
+			return ERROR_FLOOR_INDEX;
+		}
+	}
 }
