@@ -27,9 +27,12 @@ package net.runelite.client.plugins.runenergy;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.EquipmentInventorySlot;
@@ -41,9 +44,15 @@ import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.BeforeRender;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.chat.ChatColorType;
+import net.runelite.client.chat.ChatMessageBuilder;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
@@ -59,6 +68,13 @@ import org.apache.commons.lang3.StringUtils;
 )
 public class RunEnergyPlugin extends Plugin
 {
+	@Inject
+	private ChatMessageManager chatMessageManager;
+	private boolean messageSent;
+
+	private static final Pattern CHECK_PATTERN = Pattern.compile("Your Ring of endurance is charged with (?<charges>\\d+) stamina (dose|doses)\\.", Pattern.CASE_INSENSITIVE);
+	private static final Pattern CHARGE_PATTERN = Pattern.compile("You load your Ring of endurance with \\d+ stamina (dose|doses)\\.<br>It now has (?<charges>\\d+) charges\\.", Pattern.CASE_INSENSITIVE);
+
 	// TODO It would be nice if we have the IDs for just the equipped variants of the Graceful set items.
 	private static final ImmutableSet<Integer> ALL_GRACEFUL_HOODS = ImmutableSet.of(
 		GRACEFUL_HOOD_11851, GRACEFUL_HOOD_13579, GRACEFUL_HOOD_13580, GRACEFUL_HOOD_13591, GRACEFUL_HOOD_13592,
@@ -141,6 +157,10 @@ public class RunEnergyPlugin extends Plugin
 	private WorldPoint prevLocalPlayerLocation;
 	private String runTimeRemaining;
 
+	private int chargedRingsOnPlayer;
+
+	private int unchargedRingsOnPlayer;
+
 	@Provides
 	RunEnergyConfig getConfig(ConfigManager configManager)
 	{
@@ -193,6 +213,33 @@ public class RunEnergyPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onChatMessage(ChatMessage event)
+	{
+		if (event.getType() != ChatMessageType.GAMEMESSAGE && event.getType() != ChatMessageType.SPAM)
+		{
+			return;
+		}
+
+		String message = event.getMessage();
+		getMatch(CHECK_PATTERN.matcher(message));
+		getMatch(CHARGE_PATTERN.matcher(message));
+
+		if (message.equals("Your Ring of endurance doubles the duration of your stamina potion's effect.")) {
+			energyConfig.ringOfEnduranceCharges(energyConfig.ringOfEnduranceCharges() - 1);
+		}
+	}
+
+	@Subscribe
+	public void onItemContainerChanged(ItemContainerChanged event)
+	{
+		if (event.getItemContainer() != client.getItemContainer(InventoryID.INVENTORY)) {
+			return;
+		}
+
+		updateInventory();
+	}
+
 	private void setRunOrbText(String text)
 	{
 		Widget runOrbText = client.getWidget(WidgetInfo.MINIMAP_RUN_ORB_TEXT);
@@ -218,6 +265,10 @@ public class RunEnergyPlugin extends Plugin
 		if (client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE) != 0)
 		{
 			lossRate *= 0.3; // Stamina effect reduces energy depletion to 30%
+		}
+
+		if (ringOfEndurancePassiveEffect()) {
+			lossRate *= 0.85; // Ring of Endurance passive effect reduces energy depletion to 85%
 		}
 
 		// Calculate the number of seconds left
@@ -286,5 +337,59 @@ public class RunEnergyPlugin extends Plugin
 		// Calculate the number of seconds left
 		final double secondsLeft = (100 - client.getEnergy()) / recoverRate;
 		return (int) secondsLeft;
+	}
+
+	private void updateInventory()
+	{
+		final ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
+
+		assert inventory != null;
+		int newChargedRings = inventory.count(RING_OF_ENDURANCE);
+		int newUnchargedRings = inventory.count(RING_OF_ENDURANCE_UNCHARGED_24844);
+
+		// If a Ring of Endurance is uncharged, set ringOfEnduranceCharges to 0.
+		if (chargedRingsOnPlayer > newChargedRings && unchargedRingsOnPlayer < newUnchargedRings) {
+			energyConfig.ringOfEnduranceCharges(0);
+			if (energyConfig.enableRingMessages()) sendChatMessage("Updated Ring of Endurance Charges to 0.");
+		}
+
+		chargedRingsOnPlayer = newChargedRings;
+		unchargedRingsOnPlayer = newUnchargedRings;
+	}
+
+	private boolean ringOfEndurancePassiveEffect()
+	{
+		final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
+
+		assert equipment != null;
+		boolean ringEquipped = equipment.count(RING_OF_ENDURANCE) == 1;
+
+		if (energyConfig.enableRingMessages() && !messageSent && ringEquipped && energyConfig.ringOfEnduranceCharges() < 500) {
+			sendChatMessage("Check or charge your Ring of Endurance.");
+			messageSent = true;
+		}
+
+		return ringEquipped && energyConfig.ringOfEnduranceCharges() >= 500;
+	}
+
+	private void getMatch(Matcher matcher)
+	{
+		if (matcher.find()) {
+			int charges = Integer.parseInt(matcher.group("charges"));
+			if (energyConfig.enableRingMessages() && charges != energyConfig.ringOfEnduranceCharges()) sendChatMessage("Updated Ring of Endurance Charges.");
+			energyConfig.ringOfEnduranceCharges(charges);
+		}
+	}
+
+	private void sendChatMessage(final String message) {
+		String chatMessage = new ChatMessageBuilder()
+				.append(ChatColorType.HIGHLIGHT)
+				.append(message)
+				.build();
+
+		chatMessageManager.queue(QueuedMessage.builder()
+				.type(ChatMessageType.CONSOLE)
+				.runeLiteFormattedMessage(chatMessage)
+				.build());
 	}
 }

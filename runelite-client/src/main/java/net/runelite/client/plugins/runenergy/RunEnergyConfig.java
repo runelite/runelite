@@ -32,6 +32,34 @@ import net.runelite.client.config.ConfigItem;
 public interface RunEnergyConfig extends Config
 {
 	@ConfigItem(
+		keyName = "ringOfEnduranceCharges",
+		name = "Ring of endurance charges",
+		description = "Gives the number of stamina charges remaining on the Ring of endurance.",
+		hidden = true
+	)
+	default int ringOfEnduranceCharges()
+	{
+		return 0;
+	}
+
+	@ConfigItem(
+		keyName = "ringOfEnduranceCharges",
+		name = "",
+		description = ""
+	)
+	void ringOfEnduranceCharges(int charges);
+
+	@ConfigItem(
+		keyName = "enableRingMessages",
+		name = "Ring of endurance messages",
+		description = "Sends a message asking you to check/charge your equipped Ring of endurance when it has less than 500 charges."
+	)
+	default boolean enableRingMessages()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "replaceOrbText",
 		name = "Replace orb text with run time left",
 		description = "Show the remaining run time (in seconds) next in the energy orb."
