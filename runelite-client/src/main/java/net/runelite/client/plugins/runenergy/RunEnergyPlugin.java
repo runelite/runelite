@@ -225,7 +225,8 @@ public class RunEnergyPlugin extends Plugin
 		getMatch(CHECK_PATTERN.matcher(message));
 		getMatch(CHARGE_PATTERN.matcher(message));
 
-		if (message.equals("Your Ring of endurance doubles the duration of your stamina potion's effect.")) {
+		if (message.equals("Your Ring of endurance doubles the duration of your stamina potion's effect."))
+		{
 			energyConfig.ringOfEnduranceCharges(energyConfig.ringOfEnduranceCharges() - 1);
 		}
 	}
@@ -233,7 +234,8 @@ public class RunEnergyPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
-		if (event.getItemContainer() != client.getItemContainer(InventoryID.INVENTORY)) {
+		if (event.getItemContainer() != client.getItemContainer(InventoryID.INVENTORY))
+		{
 			return;
 		}
 
@@ -267,7 +269,8 @@ public class RunEnergyPlugin extends Plugin
 			lossRate *= 0.3; // Stamina effect reduces energy depletion to 30%
 		}
 
-		if (ringOfEndurancePassiveEffect()) {
+		if (ringOfEndurancePassiveEffect())
+		{
 			lossRate *= 0.85; // Ring of Endurance passive effect reduces energy depletion to 85%
 		}
 
@@ -348,7 +351,8 @@ public class RunEnergyPlugin extends Plugin
 		int newUnchargedRings = inventory.count(RING_OF_ENDURANCE_UNCHARGED_24844);
 
 		// If a Ring of Endurance is uncharged, set ringOfEnduranceCharges to 0.
-		if (chargedRingsOnPlayer > newChargedRings && unchargedRingsOnPlayer < newUnchargedRings) {
+		if (chargedRingsOnPlayer > newChargedRings && unchargedRingsOnPlayer < newUnchargedRings)
+		{
 			energyConfig.ringOfEnduranceCharges(0);
 			if (energyConfig.enableRingMessages()) sendChatMessage("Updated Ring of Endurance Charges to 0.");
 		}
@@ -364,7 +368,8 @@ public class RunEnergyPlugin extends Plugin
 		assert equipment != null;
 		boolean ringEquipped = equipment.count(RING_OF_ENDURANCE) == 1;
 
-		if (energyConfig.enableRingMessages() && !messageSent && ringEquipped && energyConfig.ringOfEnduranceCharges() < 500) {
+		if (energyConfig.enableRingMessages() && !messageSent && ringEquipped && energyConfig.ringOfEnduranceCharges() < 500)
+		{
 			sendChatMessage("Check or charge your Ring of Endurance.");
 			messageSent = true;
 		}
@@ -374,14 +379,16 @@ public class RunEnergyPlugin extends Plugin
 
 	private void getMatch(Matcher matcher)
 	{
-		if (matcher.find()) {
+		if (matcher.find())
+		{
 			int charges = Integer.parseInt(matcher.group("charges"));
 			if (energyConfig.enableRingMessages() && charges != energyConfig.ringOfEnduranceCharges()) sendChatMessage("Updated Ring of Endurance Charges.");
 			energyConfig.ringOfEnduranceCharges(charges);
 		}
 	}
 
-	private void sendChatMessage(final String message) {
+	private void sendChatMessage(final String message)
+	{
 		String chatMessage = new ChatMessageBuilder()
 				.append(ChatColorType.HIGHLIGHT)
 				.append(message)
