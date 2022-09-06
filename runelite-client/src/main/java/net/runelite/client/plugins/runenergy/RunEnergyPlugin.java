@@ -46,7 +46,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.chat.ChatColorType;
@@ -72,8 +72,7 @@ public class RunEnergyPlugin extends Plugin
 	private ChatMessageManager chatMessageManager;
 	private boolean messageSent;
 
-	private static final Pattern CHECK_PATTERN = Pattern.compile("Your Ring of endurance is charged with (?<charges>\\d+) stamina (dose|doses)\\.", Pattern.CASE_INSENSITIVE);
-	private static final Pattern CHARGE_PATTERN = Pattern.compile("You load your Ring of endurance with \\d+ stamina (dose|doses)\\.<br>It now has (?<charges>\\d+) charges\\.", Pattern.CASE_INSENSITIVE);
+	private static final Pattern CHECK_OR_CHARGE_PATTERN = Pattern.compile("(Ring of endurance)*(is\\scharged\\swith|now\\shas)\\s(?<charges>\\d+)", Pattern.CASE_INSENSITIVE);
 
 	// TODO It would be nice if we have the IDs for just the equipped variants of the Graceful set items.
 	private static final ImmutableSet<Integer> ALL_GRACEFUL_HOODS = ImmutableSet.of(
@@ -157,9 +156,7 @@ public class RunEnergyPlugin extends Plugin
 	private WorldPoint prevLocalPlayerLocation;
 	private String runTimeRemaining;
 
-	private int chargedRingsOnPlayer;
-
-	private int unchargedRingsOnPlayer;
+	private int lastCheckTick;
 
 	@Provides
 	RunEnergyConfig getConfig(ConfigManager configManager)
@@ -179,6 +176,7 @@ public class RunEnergyPlugin extends Plugin
 		overlayManager.remove(energyOverlay);
 		localPlayerRunningToDestination = false;
 		prevLocalPlayerLocation = null;
+		lastCheckTick = -1;
 		resetRunOrbText();
 	}
 
@@ -222,24 +220,36 @@ public class RunEnergyPlugin extends Plugin
 		}
 
 		String message = event.getMessage();
-		getMatch(CHECK_PATTERN.matcher(message));
-		getMatch(CHARGE_PATTERN.matcher(message));
 
 		if (message.equals("Your Ring of endurance doubles the duration of your stamina potion's effect."))
 		{
 			energyConfig.ringOfEnduranceCharges(energyConfig.ringOfEnduranceCharges() - 1);
+			return;
 		}
+
+		Matcher matcher = CHECK_OR_CHARGE_PATTERN.matcher(message);
+
+		if (!matcher.find()) return;
+
+		int charges = Integer.parseInt(matcher.group("charges"));
+		if (energyConfig.enableRingMessages() && charges != energyConfig.ringOfEnduranceCharges()) sendChatMessage("Updated Ring of endurance charges.");
+
+		energyConfig.ringOfEnduranceCharges(charges);
 	}
 
 	@Subscribe
-	public void onItemContainerChanged(ItemContainerChanged event)
+	private void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
-		if (event.getItemContainer() != client.getItemContainer(InventoryID.INVENTORY))
+		if (!"destroyOnOpKey".equals(event.getEventName()))
 		{
 			return;
 		}
 
-		updateInventory();
+		final int yesOption = client.getIntStack()[client.getIntStackSize() - 1];
+		if (yesOption == 1)
+		{
+			checkDestroyWidget();
+		}
 	}
 
 	private void setRunOrbText(String text)
@@ -342,23 +352,26 @@ public class RunEnergyPlugin extends Plugin
 		return (int) secondsLeft;
 	}
 
-	private void updateInventory()
+	private void checkDestroyWidget()
 	{
-		final ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
-
-		assert inventory != null;
-		int newChargedRings = inventory.count(RING_OF_ENDURANCE);
-		int newUnchargedRings = inventory.count(RING_OF_ENDURANCE_UNCHARGED_24844);
-
-		// If a Ring of Endurance is uncharged, set ringOfEnduranceCharges to 0.
-		if (chargedRingsOnPlayer > newChargedRings && unchargedRingsOnPlayer < newUnchargedRings)
+		final int currentTick = client.getTickCount();
+		if (lastCheckTick == currentTick)
 		{
-			energyConfig.ringOfEnduranceCharges(0);
-			if (energyConfig.enableRingMessages()) sendChatMessage("Updated Ring of Endurance Charges to 0.");
+			return;
+		}
+		lastCheckTick = currentTick;
+
+		final Widget widgetDestroyItemName = client.getWidget(WidgetInfo.DESTROY_ITEM_NAME);
+		if (widgetDestroyItemName == null)
+		{
+			return;
 		}
 
-		chargedRingsOnPlayer = newChargedRings;
-		unchargedRingsOnPlayer = newUnchargedRings;
+		if (widgetDestroyItemName.getText().equals("Ring of endurance"))
+		{
+			energyConfig.ringOfEnduranceCharges(0);
+			if (energyConfig.enableRingMessages()) sendChatMessage("Updated Ring of endurance charges to 0.");
+		}
 	}
 
 	private boolean ringOfEndurancePassiveEffect()
@@ -370,21 +383,11 @@ public class RunEnergyPlugin extends Plugin
 
 		if (energyConfig.enableRingMessages() && !messageSent && ringEquipped && energyConfig.ringOfEnduranceCharges() < 500)
 		{
-			sendChatMessage("Check or charge your Ring of Endurance.");
+			sendChatMessage("Check/charge Ring of endurance. 500+ charges needed for passive effect.");
 			messageSent = true;
 		}
 
 		return ringEquipped && energyConfig.ringOfEnduranceCharges() >= 500;
-	}
-
-	private void getMatch(Matcher matcher)
-	{
-		if (matcher.find())
-		{
-			int charges = Integer.parseInt(matcher.group("charges"));
-			if (energyConfig.enableRingMessages() && charges != energyConfig.ringOfEnduranceCharges()) sendChatMessage("Updated Ring of Endurance Charges.");
-			energyConfig.ringOfEnduranceCharges(charges);
-		}
 	}
 
 	private void sendChatMessage(final String message)
