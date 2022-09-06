@@ -691,4 +691,16 @@ public final class Varbits
 	 * 1 = active
 	 */
 	public static final int LIQUID_ADERNALINE_ACTIVE = 14361;
+
+	public static final int TOA_RAID_LEVEL = 14380;
+	public static final int TOA_RAID_DAMAGE = 14325;
+
+	public static final int TOA_MEMBER_0_HEALTH = 14346;
+	public static final int TOA_MEMBER_1_HEALTH = 14347;
+	public static final int TOA_MEMBER_2_HEALTH = 14348;
+	public static final int TOA_MEMBER_3_HEALTH = 14349;
+	public static final int TOA_MEMBER_4_HEALTH = 14350;
+	public static final int TOA_MEMBER_5_HEALTH = 14351;
+	public static final int TOA_MEMBER_6_HEALTH = 14352;
+	public static final int TOA_MEMBER_7_HEALTH = 14353;
 }
