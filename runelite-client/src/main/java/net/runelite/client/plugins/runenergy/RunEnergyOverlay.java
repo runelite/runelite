@@ -29,6 +29,8 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.InventoryID;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.Point;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -39,11 +41,17 @@ import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 import org.apache.commons.lang3.StringUtils;
 
+import static net.runelite.api.ItemID.RING_OF_ENDURANCE;
+
 class RunEnergyOverlay extends Overlay
 {
 	private final RunEnergyPlugin plugin;
 	private final Client client;
 	private final RunEnergyConfig config;
+
+	@Inject
+	private RunEnergyPlugin runEnergy;
+
 	private final TooltipManager tooltipManager;
 
 	@Inject
@@ -81,7 +89,16 @@ class RunEnergyOverlay extends Overlay
 			StringBuilder sb = new StringBuilder();
 			sb.append("Weight: ").append(client.getWeight()).append(" kg</br>");
 
-			if (config.replaceOrbText())
+			final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
+
+			assert equipment != null;
+			boolean ringEquipped = equipment.count(RING_OF_ENDURANCE) == 1;
+
+			if (runEnergy.getRingOfEnduranceCharges() == 0 && ringEquipped)
+			{
+				sb.append("Check Ring of endurance to get time remaining.");
+			}
+			else if (config.replaceOrbText())
 			{
 				sb.append("Run Energy: ").append(client.getEnergy()).append('%');
 			}

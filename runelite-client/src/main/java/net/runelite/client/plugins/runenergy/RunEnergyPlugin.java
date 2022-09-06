@@ -32,6 +32,7 @@ import java.util.regex.Pattern;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
@@ -66,13 +67,14 @@ import org.apache.commons.lang3.StringUtils;
 	description = "Show various information related to run energy",
 	tags = {"overlay", "stamina"}
 )
+@Slf4j
 public class RunEnergyPlugin extends Plugin
 {
 	@Inject
 	private ChatMessageManager chatMessageManager;
 	private boolean messageSent;
 
-	private static final Pattern CHECK_OR_CHARGE_PATTERN = Pattern.compile("(Ring of endurance)*(is\\scharged\\swith|now\\shas)\\s(?<charges>\\d+)", Pattern.CASE_INSENSITIVE);
+	private static final Pattern CHECK_OR_CHARGE_PATTERN = Pattern.compile("Ring of endurance.*(is\\scharged\\swith|now\\shas)\\s(?<charges>\\d+)", Pattern.CASE_INSENSITIVE);
 
 	// TODO It would be nice if we have the IDs for just the equipped variants of the Graceful set items.
 	private static final ImmutableSet<Integer> ALL_GRACEFUL_HOODS = ImmutableSet.of(
@@ -152,6 +154,9 @@ public class RunEnergyPlugin extends Plugin
 	@Inject
 	private RunEnergyConfig energyConfig;
 
+	@Inject
+	ConfigManager configManager;
+
 	private boolean localPlayerRunningToDestination;
 	private WorldPoint prevLocalPlayerLocation;
 	private String runTimeRemaining;
@@ -177,7 +182,14 @@ public class RunEnergyPlugin extends Plugin
 		localPlayerRunningToDestination = false;
 		prevLocalPlayerLocation = null;
 		lastCheckTick = -1;
+		messageSent = false;
 		resetRunOrbText();
+	}
+
+	public int getRingOfEnduranceCharges()
+	{
+		Integer enduranceChargesBoxed = configManager.getRSProfileConfiguration(RunEnergyConfig.GROUP_NAME, "ringOfEnduranceCharges", Integer.class);
+		return enduranceChargesBoxed == null ? 0 : enduranceChargesBoxed;
 	}
 
 	@Subscribe
@@ -190,7 +202,12 @@ public class RunEnergyPlugin extends Plugin
 
 		prevLocalPlayerLocation = client.getLocalPlayer().getWorldLocation();
 
-		runTimeRemaining = energyConfig.replaceOrbText() ? getEstimatedRunTimeRemaining(true) : null;
+		final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
+
+		assert equipment != null;
+		boolean ringEquipped = equipment.count(RING_OF_ENDURANCE) == 1;
+
+		runTimeRemaining = ringEquipped && getRingOfEnduranceCharges() == 0 ? "???" : energyConfig.replaceOrbText() ? getEstimatedRunTimeRemaining(true) : null;
 	}
 
 	@Subscribe
@@ -223,7 +240,7 @@ public class RunEnergyPlugin extends Plugin
 
 		if (message.equals("Your Ring of endurance doubles the duration of your stamina potion's effect."))
 		{
-			energyConfig.ringOfEnduranceCharges(energyConfig.ringOfEnduranceCharges() - 1);
+			configManager.setRSProfileConfiguration(RunEnergyConfig.GROUP_NAME, "ringOfEnduranceCharges", getRingOfEnduranceCharges() - 1);
 			return;
 		}
 
@@ -232,9 +249,10 @@ public class RunEnergyPlugin extends Plugin
 		if (!matcher.find()) return;
 
 		int charges = Integer.parseInt(matcher.group("charges"));
-		if (energyConfig.enableRingMessages() && charges != energyConfig.ringOfEnduranceCharges()) sendChatMessage("Updated Ring of endurance charges.");
 
-		energyConfig.ringOfEnduranceCharges(charges);
+		if (charges != getRingOfEnduranceCharges()) log.debug("Updated Ring of endurance charges: {}.", charges);
+
+		configManager.setRSProfileConfiguration(RunEnergyConfig.GROUP_NAME, "ringOfEnduranceCharges", charges);
 	}
 
 	@Subscribe
@@ -369,8 +387,8 @@ public class RunEnergyPlugin extends Plugin
 
 		if (widgetDestroyItemName.getText().equals("Ring of endurance"))
 		{
-			energyConfig.ringOfEnduranceCharges(0);
-			if (energyConfig.enableRingMessages()) sendChatMessage("Updated Ring of endurance charges to 0.");
+			configManager.setRSProfileConfiguration(RunEnergyConfig.GROUP_NAME, "ringOfEnduranceCharges", 0);
+			log.debug("Updated Ring of endurance charges to 0.");
 		}
 	}
 
@@ -381,25 +399,21 @@ public class RunEnergyPlugin extends Plugin
 		assert equipment != null;
 		boolean ringEquipped = equipment.count(RING_OF_ENDURANCE) == 1;
 
-		if (energyConfig.enableRingMessages() && !messageSent && ringEquipped && energyConfig.ringOfEnduranceCharges() < 500)
+		if (energyConfig.enableRingMessages() && !messageSent && ringEquipped && getRingOfEnduranceCharges() != 0 && getRingOfEnduranceCharges() < 500)
 		{
-			sendChatMessage("Check/charge Ring of endurance. 500+ charges needed for passive effect.");
+			String chatMessage = new ChatMessageBuilder()
+					.append(ChatColorType.HIGHLIGHT)
+					.append("Ring of endurance charges less than 500. Add more charges to regain passive stamina effect.")
+					.build();
+
+			chatMessageManager.queue(QueuedMessage.builder()
+					.type(ChatMessageType.CONSOLE)
+					.runeLiteFormattedMessage(chatMessage)
+					.build());
+
 			messageSent = true;
 		}
 
-		return ringEquipped && energyConfig.ringOfEnduranceCharges() >= 500;
-	}
-
-	private void sendChatMessage(final String message)
-	{
-		String chatMessage = new ChatMessageBuilder()
-				.append(ChatColorType.HIGHLIGHT)
-				.append(message)
-				.build();
-
-		chatMessageManager.queue(QueuedMessage.builder()
-				.type(ChatMessageType.CONSOLE)
-				.runeLiteFormattedMessage(chatMessage)
-				.build());
+		return ringEquipped && getRingOfEnduranceCharges() >= 500;
 	}
 }
