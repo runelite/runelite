@@ -70,9 +70,6 @@ import org.apache.commons.lang3.StringUtils;
 @Slf4j
 public class RunEnergyPlugin extends Plugin
 {
-	@Inject
-	private ChatMessageManager chatMessageManager;
-	private boolean messageSent;
 
 	private static final Pattern CHECK_OR_CHARGE_PATTERN = Pattern.compile("Ring of endurance.*(is\\scharged\\swith|now\\shas)\\s(?<charges>\\d+)", Pattern.CASE_INSENSITIVE);
 
@@ -143,6 +140,9 @@ public class RunEnergyPlugin extends Plugin
 	private static final int GRACEFUL_FULL_SET_BOOST_BONUS = 10;
 
 	@Inject
+	private ChatMessageManager chatMessageManager;
+
+	@Inject
 	private Client client;
 
 	@Inject
@@ -157,11 +157,11 @@ public class RunEnergyPlugin extends Plugin
 	@Inject
 	ConfigManager configManager;
 
+	private int lastCheckTick;
+	private boolean messageSent;
 	private boolean localPlayerRunningToDestination;
 	private WorldPoint prevLocalPlayerLocation;
 	private String runTimeRemaining;
-
-	private int lastCheckTick;
 
 	@Provides
 	RunEnergyConfig getConfig(ConfigManager configManager)
@@ -250,11 +250,11 @@ public class RunEnergyPlugin extends Plugin
 
 		if (!matcher.find()) return;
 
-		int charges = Integer.parseInt(matcher.group("charges"));
+		int newCharges = Integer.parseInt(matcher.group("charges"));
 
-		if (charges != getRingOfEnduranceCharges()) log.debug("Updated Ring of endurance charges: {}.", charges);
+		if (newCharges != getRingOfEnduranceCharges()) log.debug("Updated Ring of endurance charges: {}.", newCharges);
 
-		configManager.setRSProfileConfiguration(RunEnergyConfig.GROUP_NAME, "ringOfEnduranceCharges", charges);
+		configManager.setRSProfileConfiguration(RunEnergyConfig.GROUP_NAME, "ringOfEnduranceCharges", newCharges);
 	}
 
 	@Subscribe
@@ -302,7 +302,7 @@ public class RunEnergyPlugin extends Plugin
 		int charges = getRingOfEnduranceCharges();
 		boolean ringEquipped = getRingOfEnduranceEquipped();
 
-		if (ringEquipped && getRingOfEnduranceCharges() >= 500)
+		if (ringEquipped && charges >= 500)
 		{
 			lossRate *= 0.85; // Ring of Endurance passive effect reduces energy depletion to 85%
 		}
