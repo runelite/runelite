@@ -661,6 +661,12 @@ public final class Varbits
 	public static final int BOSS_HEALTH_OVERLAY = 12389;
 
 	/**
+	 * Boss health bar info
+	 */
+	public static final int BOSS_HEALTH_CURRENT = 6099;
+	public static final int BOSS_HEALTH_MAXIMUM = 6100;
+
+	/**
 	 * Whether the PVP kill-death stats widget should be drawn while in the wilderness or in PVP worlds.
 	 * <p>
 	 * 0 = Disabled
