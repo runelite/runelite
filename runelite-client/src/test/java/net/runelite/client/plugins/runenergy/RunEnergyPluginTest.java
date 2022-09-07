@@ -110,7 +110,8 @@ public class RunEnergyPluginTest
 	}
 
 	@Test
-	public void testEstimatedRuntimeRemaining() {
+	public void testEstimatedRuntimeRemaining()
+	{
 		ItemContainer equipment = mock(ItemContainer.class);
 		when(client.getItemContainer(InventoryID.EQUIPMENT)).thenReturn(equipment);
 		when(equipment.count(RING_OF_ENDURANCE)).thenReturn(1);
