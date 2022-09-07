@@ -2020,7 +2020,7 @@ public interface Client extends OAuthApi, GameEngine
 	Deque<AmbientSoundEffect> getAmbientSoundEffects();
 
 	/**
-	 * Set the amount of time until the client automatically logs out due idle input.
+	 * Set the amount of time until the client automatically logs out due to idle input.
 	 * @param ticks client ticks
 	 */
 	void setIdleTimeout(int ticks);
