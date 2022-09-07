@@ -94,7 +94,7 @@ class DevToolsPanel extends PluginPanel
 
 	private JPanel createOptionsPanel()
 	{
-		List<DevToolsButton> buttons = new ArrayList<DevToolsButton>();
+		List<DevToolsButton> buttons = new ArrayList<>();
 
 		final JPanel container = new JPanel();
 		container.setBackground(ColorScheme.DARK_GRAY_COLOR);
