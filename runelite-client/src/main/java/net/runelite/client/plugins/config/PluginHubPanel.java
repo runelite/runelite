@@ -640,7 +640,7 @@ class PluginHubPanel extends PluginPanel
 
 	void filter()
 	{
-		if (refreshing.isVisible())
+		if (refreshing.isVisible() || plugins == null)
 		{
 			return;
 		}
@@ -673,8 +673,8 @@ class PluginHubPanel extends PluginPanel
 	public void onActivate()
 	{
 		revalidate();
-		searchBar.setText("");
 		reloadPluginList();
+		searchBar.setText("");
 		searchBar.requestFocusInWindow();
 	}
 
