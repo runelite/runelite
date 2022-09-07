@@ -196,13 +196,15 @@ class DevToolsPanel extends PluginPanel
 			log.info("Shell couldn't be loaded", e);
 		}
 
-		buttons.sort( (a, b) -> {
+		buttons.sort( (a, b) ->
+		{
 			String text_a = a.getText();
 			String text_b = b.getText();
 			return text_a.compareTo(text_b);
 		});
 
-		for (DevToolsButton button : buttons) {
+		for (DevToolsButton button : buttons)
+		{
 			container.add(button);
 		}
 
