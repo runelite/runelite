@@ -192,6 +192,13 @@ public class RunEnergyPlugin extends Plugin
 		return enduranceChargesBoxed == null ? 0 : enduranceChargesBoxed;
 	}
 
+	public boolean getRingOfEnduranceEquipped()
+	{
+		final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
+		if (equipment == null) return false;
+		return equipment.count(RING_OF_ENDURANCE) == 1;
+	}
+
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
@@ -202,12 +209,7 @@ public class RunEnergyPlugin extends Plugin
 
 		prevLocalPlayerLocation = client.getLocalPlayer().getWorldLocation();
 
-		final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
-
-		assert equipment != null;
-		boolean ringEquipped = equipment.count(RING_OF_ENDURANCE) == 1;
-
-		runTimeRemaining = ringEquipped && getRingOfEnduranceCharges() == 0 ? "???" : energyConfig.replaceOrbText() ? getEstimatedRunTimeRemaining(true) : null;
+		runTimeRemaining = getRingOfEnduranceEquipped() && getRingOfEnduranceCharges() == 0 ? "???" : energyConfig.replaceOrbText() ? getEstimatedRunTimeRemaining(true) : null;
 	}
 
 	@Subscribe
@@ -256,7 +258,7 @@ public class RunEnergyPlugin extends Plugin
 	}
 
 	@Subscribe
-	private void onScriptCallbackEvent(ScriptCallbackEvent event)
+	public void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
 		if (!"destroyOnOpKey".equals(event.getEventName()))
 		{
@@ -297,9 +299,18 @@ public class RunEnergyPlugin extends Plugin
 			lossRate *= 0.3; // Stamina effect reduces energy depletion to 30%
 		}
 
-		if (ringOfEndurancePassiveEffect())
+		int charges = getRingOfEnduranceCharges();
+		boolean ringEquipped = getRingOfEnduranceEquipped();
+
+		if (ringEquipped && getRingOfEnduranceCharges() >= 500)
 		{
 			lossRate *= 0.85; // Ring of Endurance passive effect reduces energy depletion to 85%
+		}
+
+		if (energyConfig.enableRingMessages() && !messageSent && ringEquipped && charges != 0 && charges < 500)
+		{
+			sendChargeRingMessage();
+			messageSent = true;
 		}
 
 		// Calculate the number of seconds left
@@ -392,28 +403,16 @@ public class RunEnergyPlugin extends Plugin
 		}
 	}
 
-	private boolean ringOfEndurancePassiveEffect()
+	private void sendChargeRingMessage()
 	{
-		final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
+		String chatMessage = new ChatMessageBuilder()
+				.append(ChatColorType.HIGHLIGHT)
+				.append("Ring of endurance charges less than 500. Add more charges to regain passive stamina effect.")
+				.build();
 
-		assert equipment != null;
-		boolean ringEquipped = equipment.count(RING_OF_ENDURANCE) == 1;
-
-		if (energyConfig.enableRingMessages() && !messageSent && ringEquipped && getRingOfEnduranceCharges() != 0 && getRingOfEnduranceCharges() < 500)
-		{
-			String chatMessage = new ChatMessageBuilder()
-					.append(ChatColorType.HIGHLIGHT)
-					.append("Ring of endurance charges less than 500. Add more charges to regain passive stamina effect.")
-					.build();
-
-			chatMessageManager.queue(QueuedMessage.builder()
-					.type(ChatMessageType.CONSOLE)
-					.runeLiteFormattedMessage(chatMessage)
-					.build());
-
-			messageSent = true;
-		}
-
-		return ringEquipped && getRingOfEnduranceCharges() >= 500;
+		chatMessageManager.queue(QueuedMessage.builder()
+				.type(ChatMessageType.CONSOLE)
+				.runeLiteFormattedMessage(chatMessage)
+				.build());
 	}
 }
