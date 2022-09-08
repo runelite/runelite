@@ -78,6 +78,7 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.SpriteID;
+import net.runelite.api.Varbits;
 import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
@@ -697,8 +698,21 @@ public class LootTrackerPlugin extends Plugin
 				{
 					return;
 				}
+
+				int raidLevel = client.getVarbitValue(Varbits.TOA_RAID_LEVEL);
+				int teamSize =
+					Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_0_HEALTH), 1) +
+					Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_1_HEALTH), 1) +
+					Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_2_HEALTH), 1) +
+					Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_3_HEALTH), 1) +
+					Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_4_HEALTH), 1) +
+					Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_5_HEALTH), 1) +
+					Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_6_HEALTH), 1) +
+					Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_7_HEALTH), 1);
+				int raidDamage = client.getVarbitValue(Varbits.TOA_RAID_DAMAGE);
 				event = TOMBS_OF_AMASCUT;
 				container = client.getItemContainer(InventoryID.TOA_REWARD_CHEST);
+				metadata = new int[]{ raidLevel, teamSize, raidDamage };
 				chestLooted = true;
 				break;
 			case (WidgetID.KINGDOM_GROUP_ID):

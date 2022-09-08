@@ -392,4 +392,7 @@ public final class ScriptID
 
 	@ScriptArguments(integer = 3)
 	public static final int RAIDS_STORAGE_PRIVATE_ITEMS = 1607;
+
+	@ScriptArguments(integer = 12)
+	public static final int HP_HUD_UPDATE = 2103;
 }
