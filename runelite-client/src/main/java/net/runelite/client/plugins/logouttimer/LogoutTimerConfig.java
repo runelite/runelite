@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Hydrox6 <ikada@protonmail.ch>
+ * Copyright (c) 2022, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,43 +22,28 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.loginscreen;
+package net.runelite.client.plugins.logouttimer;
 
-import lombok.Getter;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Range;
+import net.runelite.client.config.Units;
 
-public enum LoginScreenOverride
+@ConfigGroup(LogoutTimerConfig.GROUP)
+public interface LogoutTimerConfig extends Config
 {
-	OFF,
-	NORMAL("normal.jpg"),
-	OLD("old.jpg"),
-	CHRISTMAS("christmas.jpg"),
-	CHAMBERS_OF_XERIC("cox.jpg"),
-	DARKMEYER("darkmeyer.jpg"),
-	DRAGON_SLAYER_2("ds2.jpg"),
-	FOSSIL_ISLAND("fossil_island.jpg"),
-	HALLOWEEN("halloween.jpg"),
-	HALLOWEEN_2019("halloween_2019.jpg"),
-	INFERNO("inferno.jpg"),
-	KEBOS("kebos.jpg"),
-	MONKEY_MADNESS_2("mm2.jpg"),
-	PRIFDDINAS("prifddinas.jpg"),
-	THEATRE_OF_BLOOD("tob.jpg"),
-	A_KINGDOM_DIVIDED("akd.jpg"),
-	NEX("nex.jpg"),
-	TOMBS_OF_AMASCUT("toa.jpg"),
-	CUSTOM,
-	RANDOM;
+	String GROUP = "logouttimer";
 
-	@Getter
-	private final String fileName;
-
-	LoginScreenOverride()
+	@ConfigItem(
+		keyName = "idleTimeout",
+		name = "Idle timeout",
+		description = "Amount of time before you are logged out for being idle"
+	)
+	@Units(Units.MINUTES)
+	@Range(min = 5, max = 25)
+	default int getIdleTimeout()
 	{
-		this.fileName = null;
-	}
-
-	LoginScreenOverride(String fileName)
-	{
-		this.fileName = fileName;
+		return 5;
 	}
 }

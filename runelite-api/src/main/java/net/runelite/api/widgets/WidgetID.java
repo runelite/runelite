@@ -665,6 +665,12 @@ public final class WidgetID
 		static final int POINTS_INFOBOX = 3;
 	}
 
+	static class Health
+	{
+		static final int HEALTHBAR_CONTAINER = 5;
+		static final int HEALTHBAR_TEXT = 20;
+	}
+
 	static class ChambersOfXericStorageUnitPrivate
 	{
 		static final int PRIVATE_CHEST_ITEM_CONTAINER = 6;
