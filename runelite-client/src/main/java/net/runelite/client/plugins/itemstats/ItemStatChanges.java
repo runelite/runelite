@@ -34,6 +34,7 @@ import static net.runelite.api.ItemID.*;
 import static net.runelite.client.plugins.itemstats.Builders.*;
 import net.runelite.client.plugins.itemstats.delta.DeltaPercentage;
 import net.runelite.client.plugins.itemstats.food.Anglerfish;
+import net.runelite.client.plugins.itemstats.potions.Ambrosia;
 import net.runelite.client.plugins.itemstats.potions.AncientBrew;
 import net.runelite.client.plugins.itemstats.potions.MixedPotion;
 import net.runelite.client.plugins.itemstats.potions.PrayerPotion;
@@ -244,7 +245,7 @@ public class ItemStatChanges
 		// Recovery potions
 		final Effect restorePot = combo(heal(ATTACK, perc(.30, 10)), heal(STRENGTH, perc(.30, 10)), heal(DEFENCE, perc(.30, 10)), heal(RANGED, perc(.30, 10)), heal(MAGIC, perc(.30, 10)));
 		final Effect energyPot = heal(RUN_ENERGY, 10);
-		final Effect prayerPot = new PrayerPotion(7);
+		final SingleEffect prayerPot = new PrayerPotion(7);
 		final Effect superEnergyPot = heal(RUN_ENERGY, 20);
 		final Effect superRestorePot = new SuperRestore(.25, 8);
 		final Effect staminaPot = new StaminaPotion();
@@ -291,6 +292,18 @@ public class ItemStatChanges
 		add(combo(boost(ATTACK, coxMinusPotionBoost), boost(STRENGTH, coxMinusPotionBoost), boost(DEFENCE, coxMinusPotionBoost)), ELDER_1, ELDER_2, ELDER_3, ELDER_4);
 		add(combo(boost(RANGED, coxMinusPotionBoost), boost(DEFENCE, coxMinusPotionBoost)), TWISTED_1, TWISTED_2, TWISTED_3, TWISTED_4);
 		add(combo(boost(MAGIC, coxMinusPotionBoost), boost(DEFENCE, coxMinusPotionBoost)), KODAI_1, KODAI_2, KODAI_3, KODAI_4);
+
+		// Tombs of Amascut consumables
+		final DeltaPercentage nectarDrain = perc(0.2, -5);
+		final DeltaPercentage saltBoost = perc(.16, 11);
+		final DeltaPercentage tearsRestore = perc(.25, 3);
+		add(combo(boost(HITPOINTS, 20), prayerPot), HONEY_LOCUST);
+		add(new Ambrosia(), AMBROSIA_1, AMBROSIA_2);
+		add(combo(heal(PRAYER, 8), heal(PRAYER, (8 * 9))), BLESSED_CRYSTAL_SCARAB_1, BLESSED_CRYSTAL_SCARAB_2);
+		add(combo(new SimpleStatBoost(HITPOINTS, true, perc(.15, 3)), new BoostedStatBoost(ATTACK, false, nectarDrain), new BoostedStatBoost(STRENGTH, false, nectarDrain), new BoostedStatBoost(DEFENCE, false, nectarDrain), new BoostedStatBoost(RANGED, false, nectarDrain), new BoostedStatBoost(MAGIC, false, nectarDrain)), NECTAR_1, NECTAR_2, NECTAR_3, NECTAR_4);
+		add(combo(heal(HITPOINTS, 5), heal(HITPOINTS, 5 * 20)), SILK_DRESSING_1, SILK_DRESSING_2);
+		add(combo(new SimpleStatBoost(ATTACK, true, saltBoost), new SimpleStatBoost(STRENGTH, true, saltBoost), new SimpleStatBoost(DEFENCE, true, saltBoost), new SimpleStatBoost(RANGED, true, saltBoost), new SimpleStatBoost(MAGIC, true, saltBoost)), SMELLING_SALTS_1, SMELLING_SALTS_2);
+		add(combo(heal(PRAYER, perc(.25, 10)), heal(ATTACK, tearsRestore), heal(STRENGTH, tearsRestore), heal(DEFENCE, tearsRestore), heal(RANGED, tearsRestore), heal(MAGIC, tearsRestore)), TEARS_OF_ELIDINIS_1, TEARS_OF_ELIDINIS_2, TEARS_OF_ELIDINIS_3, TEARS_OF_ELIDINIS_4);
 
 		// Skill potions
 		final Effect agilityPot = boost(AGILITY, 3);
