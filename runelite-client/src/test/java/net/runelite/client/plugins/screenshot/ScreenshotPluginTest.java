@@ -129,7 +129,7 @@ public class ScreenshotPluginTest
 	private ImageCapture imageCapture;
 
 	@Before
-	public void before()
+	public void before() throws Exception
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
 		screenshotPlugin = spy(screenshotPlugin);
@@ -139,6 +139,8 @@ public class ScreenshotPluginTest
 		when(screenshotConfig.screenshotUntradeableDrop()).thenReturn(true);
 		when(screenshotConfig.screenshotCollectionLogEntries()).thenReturn(true);
 		when(screenshotConfig.screenshotDuels()).thenReturn(true);
+		when(screenshotConfig.untradeableDropBlacklist()).thenReturn("serafina's diary, hallowed mark, the wardens");
+		screenshotPlugin.startUp();
 	}
 
 	@Test

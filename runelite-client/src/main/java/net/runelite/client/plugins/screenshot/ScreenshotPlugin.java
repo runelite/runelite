@@ -34,6 +34,8 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
@@ -76,6 +78,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.client.RuneLite.SCREENSHOT_DIR;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.PlayerLootReceived;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.input.KeyManager;
@@ -119,7 +122,6 @@ public class ScreenshotPlugin extends Plugin
 	private static final ImmutableList<String> PET_MESSAGES = ImmutableList.of("You have a funny feeling like you're being followed",
 		"You feel something weird sneaking into your backpack",
 		"You have a funny feeling like you would have been followed");
-	private static final ImmutableList<String> EXCLUDED_UNTRADEABLE_DROPS = ImmutableList.of("Hallowed mark", "Serafina's diary", "The butcher", "Arachnids of vampyrium", "The shadow realm", "The wild hunt", "Verzik vitur - patient record", "Apmeken's capture", "Crondis' capture", "Het's capture", "Scabaras' capture", "The wardens");
 	private static final Pattern BA_HIGH_GAMBLE_REWARD_PATTERN = Pattern.compile("(?<reward>.+)!<br>High level gamble count: <col=7f0000>(?<gambleCount>.+)</col>");
 	private static final Set<Integer> REPORT_BUTTON_TLIS = ImmutableSet.of(
 		WidgetID.FIXED_VIEWPORT_GROUP_ID,
@@ -141,6 +143,8 @@ public class ScreenshotPlugin extends Plugin
 
 	private String clueType;
 	private Integer clueNumber;
+
+	private List<String> untradeableDropBlacklist = Collections.emptyList();
 
 	enum KillType
 	{
@@ -242,6 +246,8 @@ public class ScreenshotPlugin extends Plugin
 		clientToolbar.addNavigation(titleBarButton);
 
 		spriteManager.getSpriteAsync(SpriteID.CHATBOX_REPORT_BUTTON, 0, s -> reportButton = s);
+
+		untradeableDropBlacklist = Text.fromCSV(config.untradeableDropBlacklist());
 	}
 
 	@Override
@@ -490,8 +496,11 @@ public class ScreenshotPlugin extends Plugin
 			Matcher m = UNTRADEABLE_DROP_PATTERN.matcher(chatMessage);
 			if (m.matches())
 			{
-				String nameWithoutQuantity = m.group(2);
-				if (!EXCLUDED_UNTRADEABLE_DROPS.contains(nameWithoutQuantity))
+				String itemName = m.group(2);
+				boolean blacklisted = untradeableDropBlacklist.stream()
+					.filter(blacklistedDrop -> itemName.equalsIgnoreCase(blacklistedDrop))
+					.findAny().isPresent();
+				if (!blacklisted)
 				{
 					String untradeableDropName = m.group(1);
 					String fileName = "Untradeable drop " + untradeableDropName;
@@ -721,6 +730,15 @@ public class ScreenshotPlugin extends Plugin
 				}
 				notificationStarted = false;
 				break;
+		}
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged e)
+	{
+		if (e.getGroup().equals(ScreenshotConfig.CONFIG_GROUP) && e.getKey().equals(ScreenshotConfig.UNTRADEABLE_BLACKLIST_KEY))
+		{
+			untradeableDropBlacklist = Text.fromCSV(config.untradeableDropBlacklist());
 		}
 	}
 
