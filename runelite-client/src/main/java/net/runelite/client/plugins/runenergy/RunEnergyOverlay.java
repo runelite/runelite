@@ -44,11 +44,10 @@ class RunEnergyOverlay extends Overlay
 	private final RunEnergyPlugin plugin;
 	private final Client client;
 	private final RunEnergyConfig config;
+	private final TooltipManager tooltipManager;
 
 	@Inject
 	private RunEnergyPlugin runEnergy;
-
-	private final TooltipManager tooltipManager;
 
 	@Inject
 	private RunEnergyOverlay(final RunEnergyPlugin plugin, final Client client, final RunEnergyConfig config, final TooltipManager tooltipManager)
