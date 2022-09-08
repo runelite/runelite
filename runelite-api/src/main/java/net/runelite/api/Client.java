@@ -24,14 +24,6 @@
  */
 package net.runelite.api;
 
-import com.jagex.oldscape.pub.OAuthApi;
-import java.awt.Canvas;
-import java.awt.Dimension;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Map;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import net.runelite.api.annotations.VarCInt;
 import net.runelite.api.annotations.VarCStr;
 import net.runelite.api.annotations.Varbit;
@@ -48,7 +40,15 @@ import net.runelite.api.widgets.ItemQuantityMode;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetConfig;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.pub.OAuthApi;
 import org.intellij.lang.annotations.MagicConstant;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.awt.*;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Represents the RuneScape client.
@@ -1845,7 +1845,7 @@ public interface Client extends OAuthApi, GameEngine
 	 * Is a widget is in target mode?
 	 */
 	boolean getSpellSelected();
-
+	String getSelectedSpellName();
 	/**
 	 * Sets if a widget is in target mode
 	 */

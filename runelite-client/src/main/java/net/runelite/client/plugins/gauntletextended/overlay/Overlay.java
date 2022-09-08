@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2020, dutta64 <https://github.com/dutta64>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -10,7 +10,6 @@
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,61 +21,35 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
 
-import net.runelite.api.model.Vertex;
+package net.runelite.client.plugins.gauntletextended.overlay;
 
-/**
- * Represents the model of an object.
- */
-public interface Model extends Mesh, Renderable
+import net.runelite.client.plugins.Plugin;
+
+import java.awt.*;
+
+public abstract class Overlay extends net.runelite.client.ui.overlay.Overlay
 {
-	int[] getFaceColors1();
+	Overlay(final Plugin plugin)
+	{
+		super(plugin);
+	}
 
-	int[] getFaceColors2();
+	public abstract void determineLayer();
 
-	int[] getFaceColors3();
+	static void drawOutlineAndFill(final Graphics2D graphics2D, final Color outlineColor, final Color fillColor, final float strokeWidth, final Shape shape)
+	{
+		final Color originalColor = graphics2D.getColor();
+		final Stroke originalStroke = graphics2D.getStroke();
 
-	int getSceneId();
-	void setSceneId(int sceneId);
+		graphics2D.setStroke(new BasicStroke(strokeWidth));
+		graphics2D.setColor(outlineColor);
+		graphics2D.draw(shape);
 
-	int getBufferOffset();
-	void setBufferOffset(int bufferOffset);
+		graphics2D.setColor(fillColor);
+		graphics2D.fill(shape);
 
-	int getUvBufferOffset();
-	void setUvBufferOffset(int bufferOffset);
-
-	int getBottomY();
-
-	void calculateBoundsCylinder();
-
-	byte[] getFaceRenderPriorities();
-
-	int getRadius();
-	int getDiameter();
-
-	float[] getFaceTextureUVCoordinates();
-
-	void calculateExtreme(int orientation);
-
-	int getCenterX();
-	int getCenterY();
-	int getCenterZ();
-	int getExtremeX();
-	int getExtremeY();
-	int getExtremeZ();
-
-	int getXYZMag();
-	boolean isClickable();
-
-	Vertex getVertices();
-
-	int[] getVertexNormalsX();
-	int[] getVertexNormalsY();
-	int[] getVertexNormalsZ();
-
-	byte getOverrideAmount();
-	byte getOverrideHue();
-	byte getOverrideSaturation();
-	byte getOverrideLuminance();
+		graphics2D.setColor(originalColor);
+		graphics2D.setStroke(originalStroke);
+	}
 }

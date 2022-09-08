@@ -5,11 +5,14 @@ package net.runelite.api;
  * <p>
  * Note: This class is not complete and may be missing mapped IDs.
  */
-@Deprecated
+
 public final class ProjectileID
 {
     public static final int CANNONBALL = 53;
     public static final int GRANITE_CANNONBALL = 1443;
+
+    public static final int ZULRAH_RANGE = 1044;
+    public static final int ZULRAH_MAGE = 1046;
 
     public static final int TELEKINETIC_SPELL = 143;
 
