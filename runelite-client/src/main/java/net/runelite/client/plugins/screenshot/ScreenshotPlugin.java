@@ -109,7 +109,7 @@ public class ScreenshotPlugin extends Plugin
 	private static final Pattern LEVEL_UP_PATTERN = Pattern.compile(".*Your ([a-zA-Z]+) (?:level is|are)? now (\\d+)\\.");
 	private static final Pattern BOSSKILL_MESSAGE_PATTERN = Pattern.compile("Your (.+) kill count is: <col=ff0000>(\\d+)</col>.");
 	private static final Pattern VALUABLE_DROP_PATTERN = Pattern.compile(".*Valuable drop: ([^<>]+?\\(((?:\\d+,?)+) coins\\))(?:</col>)?");
-	private static final Pattern UNTRADEABLE_DROP_PATTERN = Pattern.compile(".*Untradeable drop: ([^<>]+)(?:</col>)?");
+	private static final Pattern UNTRADEABLE_DROP_PATTERN = Pattern.compile(".*Untradeable drop: ((?:\\d+ x )?([^<>]+))(?:</col>)?");
 	private static final Pattern DUEL_END_PATTERN = Pattern.compile("You have now (won|lost) ([0-9,]+) duels?\\.");
 	private static final Pattern QUEST_PATTERN_1 = Pattern.compile(".+?ve\\.*? (?<verb>been|rebuilt|.+?ed)? ?(?:the )?'?(?<quest>.+?)'?(?: [Qq]uest)?[!.]?$");
 	private static final Pattern QUEST_PATTERN_2 = Pattern.compile("'?(?<quest>.+?)'?(?: [Qq]uest)? (?<verb>[a-z]\\w+?ed)?(?: f.*?)?[!.]?$");
@@ -119,6 +119,7 @@ public class ScreenshotPlugin extends Plugin
 	private static final ImmutableList<String> PET_MESSAGES = ImmutableList.of("You have a funny feeling like you're being followed",
 		"You feel something weird sneaking into your backpack",
 		"You have a funny feeling like you would have been followed");
+	private static final ImmutableList<String> EXCLUDED_UNTRADEABLE_DROPS = ImmutableList.of("Hallowed mark", "Serafina's diary", "The butcher", "Arachnids of vampyrium", "The shadow realm", "The wild hunt", "Verzik vitur - patient record", "Apmeken's capture", "Crondis' capture", "Het's capture", "Scabaras' capture", "The wardens");
 	private static final Pattern BA_HIGH_GAMBLE_REWARD_PATTERN = Pattern.compile("(?<reward>.+)!<br>High level gamble count: <col=7f0000>(?<gambleCount>.+)</col>");
 	private static final Set<Integer> REPORT_BUTTON_TLIS = ImmutableSet.of(
 		WidgetID.FIXED_VIEWPORT_GROUP_ID,
@@ -489,9 +490,13 @@ public class ScreenshotPlugin extends Plugin
 			Matcher m = UNTRADEABLE_DROP_PATTERN.matcher(chatMessage);
 			if (m.matches())
 			{
-				String untradeableDropName = m.group(1);
-				String fileName = "Untradeable drop " + untradeableDropName;
-				takeScreenshot(fileName, SD_UNTRADEABLE_DROPS);
+				String nameWithoutQuantity = m.group(2);
+				if (!EXCLUDED_UNTRADEABLE_DROPS.contains(nameWithoutQuantity))
+				{
+					String untradeableDropName = m.group(1);
+					String fileName = "Untradeable drop " + untradeableDropName;
+					takeScreenshot(fileName, SD_UNTRADEABLE_DROPS);
+				}
 			}
 		}
 
