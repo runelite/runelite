@@ -1,11 +1,23 @@
 package net.runelite.client.plugins.zulrah.constants;
 
+import net.runelite.api.Client;
+import net.runelite.api.Prayer;
+import net.runelite.api.VarClientInt;
+import net.runelite.api.vars.InterfaceTab;
+import net.runelite.api.widgets.Widget;
+import net.runelite.client.plugins.externals.utils.ExtUtils;
+import net.runelite.client.plugins.externals.utils.Tab;
 import org.slf4j.LoggerFactory;
 import net.runelite.client.plugins.zulrah.ZulrahPlugin;
+
+import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.Color;
+import java.util.concurrent.ExecutorService;
+
 import net.runelite.api.Skill;
 import org.slf4j.Logger;
+
+import javax.inject.Inject;
 
 public enum ZulrahType
 {
@@ -19,6 +31,74 @@ public enum ZulrahType
 	private final Skill skill;
 	private final Color color;
 
+	@Inject
+	private static ExtUtils utils;
+	@Inject
+	private static Client client;
+	private static ExecutorService executor;
+
+	private static Robot robot;
+	private static void clickPrayer(Prayer prayer)
+	{
+		if (client.isPrayerActive(prayer) || client.getBoostedSkillLevel(Skill.PRAYER) < 1)
+		{
+			return;
+		}
+
+		final Widget widget = client.getWidget(prayer.getWidgetInfo());
+
+		if (widget == null)
+		{
+			return;
+		}
+
+		final Rectangle bounds = widget.getBounds();
+
+		executor.submit(() ->
+		{
+			if (client.getVar(VarClientInt.INVENTORY_TAB) != InterfaceTab.PRAYER.getId())
+			{
+				robot.keyPress(utils.getTabHotkey(Tab.PRAYER));
+				try
+				{
+					Thread.sleep(20);
+				}
+				catch (InterruptedException e)
+				{
+					return;
+				}
+			}
+
+			utils.click(bounds);
+
+			try
+			{
+				Thread.sleep(getMillis());
+			}
+			catch (InterruptedException e)
+			{
+				return;
+			}
+
+			if (client.isPrayerActive(prayer))
+			{
+				robot.keyPress(utils.getTabHotkey(Tab.INVENTORY));
+			}
+
+			try
+			{
+				Thread.sleep(getMillis());
+			}
+			catch (InterruptedException ignored)
+			{
+			}
+		});
+	}
+
+	public static int getMillis()
+	{
+		return (int) (Math.random() * 120 + 333);
+	}
 	public static ZulrahType valueOf(final int npcId)
 	{
 		switch (npcId)
