@@ -29,10 +29,12 @@ import com.google.inject.ProvisionException;
 import java.awt.GridLayout;
 import java.awt.TrayIcon;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -94,7 +96,7 @@ class DevToolsPanel extends PluginPanel
 
 	private JPanel createOptionsPanel()
 	{
-		List<DevToolsButton> buttons = new ArrayList<>();
+		List<JButton> buttons = new ArrayList<>();
 
 		final JPanel container = new JPanel();
 		container.setBackground(ColorScheme.DARK_GRAY_COLOR);
@@ -141,7 +143,7 @@ class DevToolsPanel extends PluginPanel
 
 		buttons.add(plugin.getSoundEffects());
 
-		final DevToolsButton notificationBtn = new DevToolsButton("Notification");
+		final JButton notificationBtn = new JButton("Notification");
 		notificationBtn.addActionListener(e ->
 		{
 			scheduledExecutorService.schedule(() -> notifier.notify("Wow!", TrayIcon.MessageType.ERROR), 3, TimeUnit.SECONDS);
@@ -151,7 +153,7 @@ class DevToolsPanel extends PluginPanel
 		buttons.add(plugin.getScriptInspector());
 		plugin.getScriptInspector().addFrame(scriptInspector);
 
-		final DevToolsButton newInfoboxBtn = new DevToolsButton("Infobox");
+		final JButton newInfoboxBtn = new JButton("Infobox");
 		newInfoboxBtn.addActionListener(e ->
 		{
 			Counter counter = new Counter(ImageUtil.loadImageResource(getClass(), "devtools_icon.png"), plugin, 42)
@@ -168,14 +170,14 @@ class DevToolsPanel extends PluginPanel
 		});
 		buttons.add(newInfoboxBtn);
 
-		final DevToolsButton clearInfoboxBtn = new DevToolsButton("Clear Infobox");
+		final JButton clearInfoboxBtn = new JButton("Clear Infobox");
 		clearInfoboxBtn.addActionListener(e -> infoBoxManager.removeIf(i -> true));
 		buttons.add(clearInfoboxBtn);
 
 		buttons.add(plugin.getInventoryInspector());
 		plugin.getInventoryInspector().addFrame(inventoryInspector);
 
-		final DevToolsButton disconnectBtn = new DevToolsButton("Disconnect");
+		final JButton disconnectBtn = new JButton("Disconnect");
 		disconnectBtn.addActionListener(e -> clientThread.invoke(() -> client.setGameState(GameState.CONNECTION_LOST)));
 		buttons.add(disconnectBtn);
 
@@ -196,17 +198,9 @@ class DevToolsPanel extends PluginPanel
 			log.info("Shell couldn't be loaded", e);
 		}
 
-		buttons.sort( (a, b) ->
-		{
-			String text_a = a.getText();
-			String text_b = b.getText();
-			return text_a.compareTo(text_b);
-		});
-
-		for (DevToolsButton button : buttons)
-		{
-			container.add(button);
-		}
+		buttons.stream()
+			.sorted(Comparator.comparing(JButton::getText))
+			.forEach(container::add);
 
 		return container;
 	}
