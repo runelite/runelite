@@ -29,6 +29,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -38,6 +39,7 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.Point;
 import net.runelite.api.TileObject;
+import net.runelite.client.game.ItemVariationMapping;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_BORDER_COLOR;
@@ -46,6 +48,7 @@ import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLI
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMAGE_Z_OFFSET;
 import net.runelite.client.plugins.cluescrolls.clues.item.AnyRequirementCollection;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
+import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements;
 import static net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements.*;
 import net.runelite.client.plugins.cluescrolls.clues.item.SingleItemRequirement;
 import net.runelite.client.ui.FontManager;
@@ -155,40 +158,13 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 		new SkillChallengeClue("String a yew longbow.", item(ItemID.YEW_LONGBOW_U), item(ItemID.BOW_STRING)),
 		new SkillChallengeClue("Kill a Dust Devil.", "slay a dust devil.", true,
 			any("Facemask or Slayer Helmet",
-				item(ItemID.FACEMASK),
-				item(ItemID.SLAYER_HELMET),
-				item(ItemID.SLAYER_HELMET_I),
-				item(ItemID.BLACK_SLAYER_HELMET),
-				item(ItemID.BLACK_SLAYER_HELMET_I),
-				item(ItemID.PURPLE_SLAYER_HELMET),
-				item(ItemID.PURPLE_SLAYER_HELMET_I),
-				item(ItemID.RED_SLAYER_HELMET),
-				item(ItemID.RED_SLAYER_HELMET_I),
-				item(ItemID.GREEN_SLAYER_HELMET),
-				item(ItemID.GREEN_SLAYER_HELMET_I),
-				item(ItemID.TURQUOISE_SLAYER_HELMET),
-				item(ItemID.TURQUOISE_SLAYER_HELMET_I),
-				item(ItemID.HYDRA_SLAYER_HELMET),
-				item(ItemID.HYDRA_SLAYER_HELMET_I),
-				item(ItemID.TWISTED_SLAYER_HELMET),
-				item(ItemID.TWISTED_SLAYER_HELMET_I),
-				item(ItemID.TZTOK_SLAYER_HELMET),
-				item(ItemID.TZTOK_SLAYER_HELMET_I),
-				item(ItemID.VAMPYRIC_SLAYER_HELMET),
-				item(ItemID.VAMPYRIC_SLAYER_HELMET_I),
-				item(ItemID.TZKAL_SLAYER_HELMET),
-				item(ItemID.TZKAL_SLAYER_HELMET_I),
-				item(ItemID.SLAYER_HELMET_I_25177),
-				item(ItemID.BLACK_SLAYER_HELMET_I_25179),
-				item(ItemID.GREEN_SLAYER_HELMET_I_25181),
-				item(ItemID.RED_SLAYER_HELMET_I_25183),
-				item(ItemID.PURPLE_SLAYER_HELMET_I_25185),
-				item(ItemID.TURQUOISE_SLAYER_HELMET_I_25187),
-				item(ItemID.HYDRA_SLAYER_HELMET_I_25189),
-				item(ItemID.TWISTED_SLAYER_HELMET_I_25191),
-				item(ItemID.TZTOK_SLAYER_HELMET_I_25902),
-				item(ItemID.VAMPYRIC_SLAYER_HELMET_I_25908),
-				item(ItemID.TZKAL_SLAYER_HELMET_I_25914))),
+				Stream.of(
+					ItemVariationMapping.getVariations(ItemID.SLAYER_HELMET).stream(),
+					Stream.of(ItemID.FACEMASK))
+					.reduce(Stream::concat)
+					.orElseGet(Stream::empty)
+					.map(ItemRequirements::item)
+					.toArray(SingleItemRequirement[]::new))),
 		new SkillChallengeClue("Catch a black warlock.", item(ItemID.BUTTERFLY_JAR), any("Butterfly Net", item(ItemID.BUTTERFLY_NET), item(ItemID.MAGIC_BUTTERFLY_NET))),
 		new SkillChallengeClue("Catch a red chinchompa.", item(ItemID.BOX_TRAP)),
 		new SkillChallengeClue("Mine a mithril ore.", ANY_PICKAXE),
