@@ -2020,4 +2020,7 @@ public interface Client extends OAuthApi, GameEngine
 	Deque<AmbientSoundEffect> getAmbientSoundEffects();
 	void scaleSprite(int[] canvas, int[] pixels, int color, int pixelX, int pixelY, int canvasIdx, int canvasOffset, int newWidth, int newHeight, int pixelWidth, int pixelHeight, int oldWidth);
 
+    int getIdleTimeout();
+
+	void setIdleTimeout(int i);
 }

@@ -49,7 +49,7 @@ import java.util.stream.Collectors;
 		enabledByDefault = false
 )
 @PluginDependency(ExtUtils.class)
-public class ZulrahPlugin extends Plugin implements KeyListener
+public class ZulrahPlugin extends Plugin
 {
 	private static final Logger log = LoggerFactory.getLogger(ZulrahPlugin.class);
 	@Inject
@@ -128,7 +128,7 @@ public class ZulrahPlugin extends Plugin implements KeyListener
 		overlayManager.add(prayerHelperOverlay);
 		overlayManager.add(prayerMarkerOverlay);
 		overlayManager.add(sceneOverlay);
-		keyManager.registerKeyListener(this);
+		keyManager.registerKeyListener((KeyListener) this);
 	}
 
 	protected void shutDown() 
@@ -141,7 +141,7 @@ public class ZulrahPlugin extends Plugin implements KeyListener
 		overlayManager.remove(prayerHelperOverlay);
 		overlayManager.remove(prayerMarkerOverlay);
 		overlayManager.remove(sceneOverlay);
-		keyManager.unregisterKeyListener(this);
+		keyManager.unregisterKeyListener((KeyListener) this);
 	}
 
 	private void reset() 
@@ -165,9 +165,6 @@ public class ZulrahPlugin extends Plugin implements KeyListener
 		log.debug("Zulrah Reset!");
 	}
 
-	public void keyTyped(KeyEvent e) 
-	{
-	}
 
 	public void keyPressed(KeyEvent e) 
 	{
@@ -235,18 +232,8 @@ public class ZulrahPlugin extends Plugin implements KeyListener
 	private void onGameTick(GameTick event) 
 	{
 		if (client.getGameState() != GameState.LOGGED_IN || zulrahNpc == null) 
-	{
+		{
 			return;
-		}
-
-		if (zulrahNpc.getId() == 2042)
-		{
-		}
-		if (zulrahNpc.getId() == 2044)
-		{
-		}
-		if (zulrahNpc.getId() == 2043)
-		{
 		}
 		++totalTicks;
 		if (attackTicks >= 0) 
@@ -279,10 +266,9 @@ public class ZulrahPlugin extends Plugin implements KeyListener
 		}
 		NPC npc = (NPC)((Object)event.getActor());
 		if (npc.getName() != null && !npc.getName().equalsIgnoreCase("zulrah")) 
-	{
+		{
 			return;
 		}
-		//log.debug(String.valueOf(npc.getAnimation()));
 		switch (npc.getAnimation()) 
 	{
 			case 5071:
@@ -390,7 +376,7 @@ public class ZulrahPlugin extends Plugin implements KeyListener
 		if(client.getVarbitValue(VarClientInt.INVENTORY_TAB) != InterfaceTab.PRAYER.getId())
 		{
 		log.debug("[Thread] Starting prayer Toggle");
-		robot.keyPress(KeyEvent.VK_F5);
+		robot.keyPress(KeyEvent.VK_F2);
 		}
 		executor.submit(() ->
 		{
