@@ -273,4 +273,26 @@ public interface PlayerIndicatorsConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		position = 16,
+		keyName = "showCombatLevels",
+		name = "Show combat levels",
+		description = "Configures whether or not players' combat levels should be shown in non-PvP areas"
+	)
+	default boolean showCombatLevels()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 17,
+		keyName = "combatLevelType",
+		name = "Combat level type",
+		description = "Which format to use when displaying combat levels"
+	)
+	default PlayerLevelType combatLevelType()
+	{
+		return PlayerLevelType.LONG;
+	}
 }

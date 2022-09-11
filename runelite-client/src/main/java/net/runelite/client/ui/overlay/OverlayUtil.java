@@ -103,6 +103,30 @@ public class OverlayUtil
 		graphics.drawString(text, x, y);
 	}
 
+	public static void renderBiColorTextLocation(Graphics2D graphics, Point txtLoc, String text1, String text2, Color color1, Color color2)
+	{
+		if (Strings.isNullOrEmpty(text1) || Strings.isNullOrEmpty(text2))
+		{
+			return;
+		}
+
+		int x = txtLoc.getX();
+		int y = txtLoc.getY();
+
+		graphics.setColor(Color.BLACK);
+		graphics.drawString(text1, x + 1, y + 1);
+
+		graphics.setColor(ColorUtil.colorWithAlpha(color1, 0xFF));
+		graphics.drawString(text1, x, y);
+
+		int xOffset = graphics.getFontMetrics().stringWidth(text1);
+		graphics.setColor(Color.BLACK);
+		graphics.drawString(text2, x + xOffset + 1, y + 1);
+
+		graphics.setColor(ColorUtil.colorWithAlpha(color2, 0xFF));
+		graphics.drawString(text2, x + xOffset, y);
+	}
+
 	public static void renderImageLocation(Client client, Graphics2D graphics, LocalPoint localPoint, BufferedImage image, int zOffset)
 	{
 		Point imageLocation = Perspective.getCanvasImageLocation(client, localPoint, image, zOffset);
