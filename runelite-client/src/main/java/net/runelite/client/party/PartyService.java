@@ -72,8 +72,6 @@ public class PartyService
 	private final List<PartyMember> members = new ArrayList<>();
 
 	@Getter
-	private boolean inParty;
-	@Getter
 	private long partyId; // secret party id
 	private long memberId = randomMemberId();
 	@Getter
@@ -166,7 +164,6 @@ public class PartyService
 
 		if (passphrase == null)
 		{
-			inParty = false;
 			wsClient.changeSession(null);
 			eventBus.post(new PartyChanged(partyPassphrase, null));
 			return;
@@ -178,7 +175,6 @@ public class PartyService
 			wsClient.changeSession(UUID.randomUUID());
 		}
 
-		inParty = true;
 		eventBus.post(new PartyChanged(partyPassphrase, partyId));
 		wsClient.join(partyId, memberId);
 	}
