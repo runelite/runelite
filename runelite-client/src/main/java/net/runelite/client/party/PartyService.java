@@ -50,10 +50,10 @@ import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.PartyChanged;
 import net.runelite.client.events.PartyMemberAvatar;
-import net.runelite.client.party.messages.PartyChatMessage;
-import net.runelite.client.party.messages.PartyMessage;
 import net.runelite.client.party.events.UserJoin;
 import net.runelite.client.party.events.UserPart;
+import net.runelite.client.party.messages.PartyChatMessage;
+import net.runelite.client.party.messages.PartyMessage;
 import net.runelite.client.party.messages.UserSync;
 import net.runelite.client.util.Text;
 import static net.runelite.client.util.Text.JAGEX_PRINTABLE_CHAR_MATCHER;
@@ -71,6 +71,8 @@ public class PartyService
 	private final ChatMessageManager chat;
 	private final List<PartyMember> members = new ArrayList<>();
 
+	@Getter
+	private boolean inParty;
 	@Getter
 	private long partyId; // secret party id
 	private long memberId = randomMemberId();
@@ -164,6 +166,7 @@ public class PartyService
 
 		if (passphrase == null)
 		{
+			inParty = false;
 			wsClient.changeSession(null);
 			eventBus.post(new PartyChanged(partyPassphrase, null));
 			return;
@@ -175,6 +178,7 @@ public class PartyService
 			wsClient.changeSession(UUID.randomUUID());
 		}
 
+		inParty = true;
 		eventBus.post(new PartyChanged(partyPassphrase, partyId));
 		wsClient.join(partyId, memberId);
 	}
