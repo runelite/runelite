@@ -600,6 +600,12 @@ public class WorldHopperPlugin extends Plugin
 				continue;
 			}
 
+			if (world.getPlayers() < 0)
+			{
+				// offline world
+				continue;
+			}
+
 			// Break out if we've found a good world to hop to
 			if (currentWorldTypes.equals(types))
 			{
