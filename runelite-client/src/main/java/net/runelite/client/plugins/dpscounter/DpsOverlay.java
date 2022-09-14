@@ -100,7 +100,7 @@ class DpsOverlay extends OverlayPanel
 			return null;
 		}
 
-		boolean inParty = !partyService.getMembers().isEmpty();
+		boolean inParty = partyService.isInParty();
 		boolean showDamage = dpsConfig.showDamage();
 		DpsMember total = dpsCounterPlugin.getTotal();
 		boolean paused = total.isPaused();

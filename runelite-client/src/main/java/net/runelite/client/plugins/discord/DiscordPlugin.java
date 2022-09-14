@@ -51,7 +51,6 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.discord.DiscordService;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
-import net.runelite.client.party.PartyMember;
 import net.runelite.client.party.PartyService;
 import net.runelite.client.party.WSClient;
 import net.runelite.client.party.messages.UserSync;
@@ -267,21 +266,16 @@ public class DiscordPlugin extends Plugin
 	@Subscribe
 	public void onUserSync(final UserSync event)
 	{
-		final PartyMember localMember = partyService.getLocalMember();
-
-		if (localMember != null)
+		final DiscordUser discordUser = discordService.getCurrentUser();
+		if (discordUser != null)
 		{
-			final DiscordUser discordUser = discordService.getCurrentUser();
-			if (discordUser != null)
-			{
-				final DiscordUserInfo userInfo = new DiscordUserInfo(
-					discordUser.userId,
-					discordUser.username,
-					discordUser.discriminator,
-					discordUser.avatar
-				);
-				partyService.send(userInfo);
-			}
+			final DiscordUserInfo userInfo = new DiscordUserInfo(
+				discordUser.userId,
+				discordUser.username,
+				discordUser.discriminator,
+				discordUser.avatar
+			);
+			partyService.send(userInfo);
 		}
 	}
 

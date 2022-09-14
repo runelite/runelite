@@ -704,6 +704,10 @@ class PluginHubPanel extends PluginPanel
 				.collect(Collectors.toMap(pi -> pi.manifest.getInternalName(), PluginItem::getUserCount));
 		}
 
-		reloadPluginList(ev.getLoadedManifest(), pluginCounts);
+		if (!refreshing.isVisible())
+		{
+			refreshing.setVisible(true);
+			reloadPluginList(ev.getLoadedManifest(), pluginCounts);
+		}
 	}
 }
