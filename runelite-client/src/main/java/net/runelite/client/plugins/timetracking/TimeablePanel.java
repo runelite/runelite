@@ -29,8 +29,11 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.border.EmptyBorder;
@@ -48,9 +51,20 @@ public class TimeablePanel<T> extends JPanel
 {
 	private static final ImageIcon NOTIFY_ICON = new ImageIcon(ImageUtil.loadImageResource(TimeTrackingPlugin.class, "notify_icon.png"));
 	private static final ImageIcon NOTIFY_SELECTED_ICON = new ImageIcon(ImageUtil.loadImageResource(TimeTrackingPlugin.class, "notify_selected_icon.png"));
+	private static final Rectangle OVERLAY_ICON_BOUNDS;
+	
+	static
+	{
+		int width = Constants.ITEM_SPRITE_WIDTH * 2 / 3;
+		int height = Constants.ITEM_SPRITE_HEIGHT * 2 / 3;
+		int x = Constants.ITEM_SPRITE_WIDTH - width;
+		int y = Constants.ITEM_SPRITE_HEIGHT - height;
+		OVERLAY_ICON_BOUNDS = new Rectangle(x, y, width, height);
+	}
 
 	private final T timeable;
 	private final JLabel icon = new JLabel();
+	private final JLabel overlayIcon = new JLabel();
 	private final JLabel farmingContractIcon = new JLabel();
 	private final JToggleButton notifyButton = new JToggleButton();
 	private final JLabel estimate = new JLabel();
@@ -70,6 +84,7 @@ public class TimeablePanel<T> extends JPanel
 		topContainer.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 		icon.setMinimumSize(new Dimension(Constants.ITEM_SPRITE_WIDTH, Constants.ITEM_SPRITE_HEIGHT));
+		overlayIcon.setMinimumSize(OVERLAY_ICON_BOUNDS.getSize());
 		farmingContractIcon.setMinimumSize(new Dimension(Constants.ITEM_SPRITE_WIDTH, Constants.ITEM_SPRITE_HEIGHT));
 
 		JPanel infoPanel = new JPanel();
@@ -105,8 +120,15 @@ public class TimeablePanel<T> extends JPanel
 		iconPanel.add(notifyPanel, BorderLayout.EAST);
 		iconPanel.add(farmingContractIcon, BorderLayout.WEST);
 
+		JLayeredPane layeredIconPane = new JLayeredPane();
+		layeredIconPane.setPreferredSize(new Dimension(Constants.ITEM_SPRITE_WIDTH, Constants.ITEM_SPRITE_HEIGHT));
+		layeredIconPane.add(icon, Integer.valueOf(0));
+		layeredIconPane.add(overlayIcon, Integer.valueOf(1));
+		icon.setBounds(0, 0, Constants.ITEM_SPRITE_WIDTH, Constants.ITEM_SPRITE_HEIGHT);
+		overlayIcon.setBounds(OVERLAY_ICON_BOUNDS);
+
 		topContainer.add(iconPanel, BorderLayout.EAST);
-		topContainer.add(icon, BorderLayout.WEST);
+		topContainer.add(layeredIconPane, BorderLayout.WEST);
 		topContainer.add(infoPanel, BorderLayout.CENTER);
 
 		progress.setValue(0);
@@ -115,4 +137,21 @@ public class TimeablePanel<T> extends JPanel
 		add(topContainer, BorderLayout.NORTH);
 		add(progress, BorderLayout.SOUTH);
 	}
+	
+	public void setOverlayIconImage(BufferedImage overlayImg)
+	{
+		if (overlayImg == null)
+		{
+			overlayIcon.setIcon(null);
+			return;
+		}
+		
+		if (OVERLAY_ICON_BOUNDS.width != overlayImg.getWidth() || OVERLAY_ICON_BOUNDS.height != overlayImg.getHeight())
+		{
+			overlayImg = ImageUtil.resizeImage(overlayImg, OVERLAY_ICON_BOUNDS.width, OVERLAY_ICON_BOUNDS.height);
+		}
+
+		overlayIcon.setIcon(new ImageIcon(overlayImg));
+	}
+
 }

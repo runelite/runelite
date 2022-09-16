@@ -185,7 +185,7 @@ public class GrandExchangePlugin extends Plugin
 	private boolean wasFuzzySearch;
 
 	private String machineUuid;
-	private String lastUsername;
+	private long lastAccount;
 	private int tradeSeq;
 
 	/**
@@ -298,7 +298,8 @@ public class GrandExchangePlugin extends Plugin
 		clientToolbar.removeNavigation(button);
 		mouseManager.unregisterMouseListener(inputListener);
 		keyManager.unregisterKeyListener(inputListener);
-		lastUsername = machineUuid = null;
+		machineUuid = null;
+		lastAccount = -1L;
 		tradeSeq = 0;
 	}
 
@@ -582,7 +583,7 @@ public class GrandExchangePlugin extends Plugin
 		{
 			return;
 		}
-		String input = client.getVar(VarClientStr.INPUT_TEXT);
+		String input = client.getVarcStrValue(VarClientStr.INPUT_TEXT);
 
 		String underlineTag = "<u=" + ColorUtil.colorToHexCode(FUZZY_HIGHLIGHT_COLOR) + ">";
 
@@ -634,7 +635,7 @@ public class GrandExchangePlugin extends Plugin
 		wasFuzzySearch = false;
 
 		GrandExchangeSearchMode searchMode = config.geSearchMode();
-		final String input = client.getVar(VarClientStr.INPUT_TEXT);
+		final String input = client.getVarcStrValue(VarClientStr.INPUT_TEXT);
 		if (searchMode == GrandExchangeSearchMode.DEFAULT || input.isEmpty() || event.isConsumed())
 		{
 			return;
@@ -808,7 +809,7 @@ public class GrandExchangePlugin extends Plugin
 
 	private String setExamineText(String examine, String fee, boolean buy)
 	{
-		final int itemId = client.getVar(VarPlayer.CURRENT_GE_ITEM);
+		final int itemId = client.getVarpValue(VarPlayer.CURRENT_GE_ITEM);
 		StringBuilder sb = new StringBuilder();
 
 		if (buy && config.enableGELimits())
@@ -828,7 +829,7 @@ public class GrandExchangePlugin extends Plugin
 			if (resetTime != null)
 			{
 				Duration remaining = Duration.between(Instant.now(), resetTime);
-				sb.append(" (").append(DurationFormatUtils.formatDuration(remaining.toMillis(), "H:mm")).append(")");
+				sb.append(" (").append(DurationFormatUtils.formatDuration(remaining.toMillis(), "H:mm")).append(')');
 			}
 		}
 
@@ -893,13 +894,13 @@ public class GrandExchangePlugin extends Plugin
 
 	private String getMachineUuid()
 	{
-		String username = client.getUsername();
-		if (lastUsername == username)
+		long accountHash = client.getAccountHash();
+		if (lastAccount == accountHash)
 		{
 			return machineUuid;
 		}
 
-		lastUsername = username;
+		lastAccount = accountHash;
 
 		try
 		{
@@ -922,7 +923,7 @@ public class GrandExchangePlugin extends Plugin
 					hasher.putBytes(hardwareAddress);
 				}
 			}
-			hasher.putUnencodedChars(username);
+			hasher.putLong(accountHash);
 			machineUuid = hasher.hash().toString();
 			tradeSeq = 0;
 			return machineUuid;

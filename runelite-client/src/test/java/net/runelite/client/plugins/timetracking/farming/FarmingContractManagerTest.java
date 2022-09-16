@@ -28,7 +28,7 @@ import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.time.Instant;
-import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
@@ -53,7 +53,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class FarmingContractManagerTest
 {
-	private Map<Varbits, FarmingPatch> farmingGuildPatches = new EnumMap<>(Varbits.class);
+	private Map<Integer, FarmingPatch> farmingGuildPatches = new HashMap<>();
 
 	@Inject
 	private FarmingContractManager farmingContractManager;

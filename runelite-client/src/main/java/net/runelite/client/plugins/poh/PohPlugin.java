@@ -59,6 +59,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.hiscore.HiscoreManager;
+import net.runelite.client.hiscore.HiscoreSkill;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -234,7 +235,7 @@ public class PohPlugin extends Plugin
 					return;
 				}
 
-				final Skill fm = playerStats.getFiremaking();
+				final Skill fm = playerStats.getSkill(HiscoreSkill.FIREMAKING);
 				final int level = fm.getLevel();
 				updateBurner(incenseBurner, Math.max(level, 1));
 			}

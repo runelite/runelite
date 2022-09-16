@@ -33,12 +33,9 @@ import java.time.Instant;
 import java.util.function.Predicate;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.InventoryID;
-import net.runelite.api.ItemContainer;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
@@ -57,9 +54,7 @@ import org.mockito.ArgumentCaptor;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.nullable;
 import org.mockito.Mock;
-import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -99,62 +94,6 @@ public class TimersPluginTest
 	}
 
 	@Test
-	public void testHalfTeleblock()
-	{
-		when(timersConfig.showTeleblock()).thenReturn(true);
-		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "<col=4f006f>A Tele Block spell has been cast on you by Runelite. It will expire in 2 minutes, 30 seconds.</col>", "", 0);
-		timersPlugin.onChatMessage(chatMessage);
-
-		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
-		verify(infoBoxManager).addInfoBox(captor.capture());
-		TimerTimer infoBox = (TimerTimer) captor.getValue();
-		assertEquals(GameTimer.TELEBLOCK, infoBox.getTimer());
-		assertEquals(Duration.ofSeconds(2 * 60 + 30), infoBox.getDuration());
-	}
-
-	@Test
-	public void testFullTeleblock()
-	{
-		when(timersConfig.showTeleblock()).thenReturn(true);
-		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "<col=4f006f>A Tele Block spell has been cast on you by Runelite. It will expire in 5 minutes.</col>", "", 0);
-		timersPlugin.onChatMessage(chatMessage);
-
-		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
-		verify(infoBoxManager).addInfoBox(captor.capture());
-		TimerTimer infoBox = (TimerTimer) captor.getValue();
-		assertEquals(GameTimer.TELEBLOCK, infoBox.getTimer());
-		assertEquals(Duration.ofMinutes(5), infoBox.getDuration());
-	}
-
-	@Test
-	public void testDmmHalfTb()
-	{
-		when(timersConfig.showTeleblock()).thenReturn(true);
-		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "<col=4f006f>A Tele Block spell has been cast on you by Runelite. It will expire in 1 minute, 15 seconds.</col>", "", 0);
-		timersPlugin.onChatMessage(chatMessage);
-
-		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
-		verify(infoBoxManager).addInfoBox(captor.capture());
-		TimerTimer infoBox = (TimerTimer) captor.getValue();
-		assertEquals(GameTimer.TELEBLOCK, infoBox.getTimer());
-		assertEquals(Duration.ofSeconds(60 + 15), infoBox.getDuration());
-	}
-
-	@Test
-	public void testDmmFullTb()
-	{
-		when(timersConfig.showTeleblock()).thenReturn(true);
-		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "<col=4f006f>A Tele Block spell has been cast on you by Runelite. It will expire in 2 minutes, 30 seconds.</col>", "", 0);
-		timersPlugin.onChatMessage(chatMessage);
-
-		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
-		verify(infoBoxManager).addInfoBox(captor.capture());
-		TimerTimer infoBox = (TimerTimer) captor.getValue();
-		assertEquals(GameTimer.TELEBLOCK, infoBox.getTimer());
-		assertEquals(Duration.ofSeconds(60 * 2 + 30), infoBox.getDuration());
-	}
-
-	@Test
 	public void testDivineBastion()
 	{
 		when(timersConfig.showDivine()).thenReturn(true);
@@ -181,63 +120,16 @@ public class TimersPluginTest
 	}
 
 	@Test
-	public void testTransparentChatboxTb()
-	{
-		when(timersConfig.showTeleblock()).thenReturn(true);
-		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "<col=c356ef>A Tele Block spell has been cast on you by Alexsuperfly. It will expire in 5 minutes.</col>", "", 0);
-		timersPlugin.onChatMessage(chatMessage);
-
-		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
-		verify(infoBoxManager).addInfoBox(captor.capture());
-		TimerTimer infoBox = (TimerTimer) captor.getValue();
-		assertEquals(GameTimer.TELEBLOCK, infoBox.getTimer());
-		assertEquals(Duration.ofMinutes(5), infoBox.getDuration());
-	}
-
-	@Test
-	public void testTransparentChatboxTbRemoved()
-	{
-		when(timersConfig.showTeleblock()).thenReturn(true);
-		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "<col=c356ef>Your Tele Block has been removed because you killed Alexsuperfly.</col>", "", 0);
-		timersPlugin.onChatMessage(chatMessage);
-
-		verify(infoBoxManager, atLeastOnce()).removeIf(any());
-	}
-
-	@Test
-	public void testMageArena2TbFull()
-	{
-		when(timersConfig.showTeleblock()).thenReturn(true);
-		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "<col=c356ef>A Tele Block spell has been cast on you. It will expire in 2 minutes.</col>", "", 0);
-		timersPlugin.onChatMessage(chatMessage);
-
-		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
-		verify(infoBoxManager).addInfoBox(captor.capture());
-		TimerTimer infoBox = (TimerTimer) captor.getValue();
-		assertEquals(GameTimer.TELEBLOCK, infoBox.getTimer());
-		assertEquals(Duration.ofMinutes(2), infoBox.getDuration());
-	}
-
-	@Test
-	public void testMageArena2TbHalf()
-	{
-		when(timersConfig.showTeleblock()).thenReturn(true);
-		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "<col=c356ef>A Tele Block spell has been cast on you. It will expire in 1 minute.</col>", "", 0);
-		timersPlugin.onChatMessage(chatMessage);
-
-		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
-		verify(infoBoxManager).addInfoBox(captor.capture());
-		TimerTimer infoBox = (TimerTimer) captor.getValue();
-		assertEquals(GameTimer.TELEBLOCK, infoBox.getTimer());
-		assertEquals(Duration.ofMinutes(1), infoBox.getDuration());
-	}
-
-	@Test
 	public void testStamina()
 	{
 		when(timersConfig.showStamina()).thenReturn(true);
-		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You drink some of your stamina potion.", "", 0);
-		timersPlugin.onChatMessage(chatMessage);
+		when(client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE)).thenReturn(1);
+		when(client.getVarbitValue(Varbits.STAMINA_EFFECT)).thenReturn(20);
+		when(client.getVarbitValue(Varbits.RING_OF_ENDURANCE_EFFECT)).thenReturn(0);
+
+		VarbitChanged varbitChanged = new VarbitChanged();
+		varbitChanged.setVarbitId(Varbits.RUN_SLOWED_DEPLETION_ACTIVE); // just has to be one of the vars
+		timersPlugin.onVarbitChanged(varbitChanged);
 
 		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
 		verify(infoBoxManager).addInfoBox(captor.capture());
@@ -264,12 +156,13 @@ public class TimersPluginTest
 	public void testEndurance()
 	{
 		when(timersConfig.showStamina()).thenReturn(true);
+		when(client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE)).thenReturn(1);
+		when(client.getVarbitValue(Varbits.STAMINA_EFFECT)).thenReturn(20);
+		when(client.getVarbitValue(Varbits.RING_OF_ENDURANCE_EFFECT)).thenReturn(20);
 
-		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "Your Ring of endurance doubles the duration of your stamina potion's effect.", "", 0);
-		timersPlugin.onChatMessage(chatMessage);
-
-		chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You drink some of your stamina potion.", "", 0);
-		timersPlugin.onChatMessage(chatMessage);
+		VarbitChanged varbitChanged = new VarbitChanged();
+		varbitChanged.setVarbitId(Varbits.RUN_SLOWED_DEPLETION_ACTIVE); // just has to be one of the vars
+		timersPlugin.onVarbitChanged(varbitChanged);
 
 		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
 		verify(infoBoxManager).addInfoBox(captor.capture());
@@ -278,10 +171,10 @@ public class TimersPluginTest
 		assertEquals(Duration.ofMinutes(4), infoBox.getDuration());
 
 		// unwield ring
-		timersPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.EQUIPMENT.getId(), mock(ItemContainer.class)));
-		// some time has elapsed in the test; this should be just under 2 mins
+		when(client.getVarbitValue(Varbits.RING_OF_ENDURANCE_EFFECT)).thenReturn(0);
+		timersPlugin.onVarbitChanged(varbitChanged);
 		int mins = (int) infoBox.getDuration().toMinutes();
-		assertTrue(mins == 1 || mins == 2);
+		assertEquals(2, mins);
 	}
 
 	@Test
@@ -454,9 +347,11 @@ public class TimersPluginTest
 	public void testCorruptionCooldown()
 	{
 		when(timersConfig.showArceuusCooldown()).thenReturn(true);
-		when(client.getVar(any(Varbits.class))).thenReturn(0);
-		when(client.getVar(Varbits.CORRUPTION_COOLDOWN)).thenReturn(1);
-		timersPlugin.onVarbitChanged(new VarbitChanged());
+
+		VarbitChanged varbitChanged = new VarbitChanged();
+		varbitChanged.setVarbitId(Varbits.CORRUPTION_COOLDOWN);
+		varbitChanged.setValue(1);
+		timersPlugin.onVarbitChanged(varbitChanged);
 
 		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
 		verify(infoBoxManager).addInfoBox(captor.capture());
@@ -540,8 +435,11 @@ public class TimersPluginTest
 	public void testImbuedHeartStart()
 	{
 		when(timersConfig.showImbuedHeart()).thenReturn(true);
-		when(client.getVar(Varbits.IMBUED_HEART_COOLDOWN)).thenReturn(70);
-		timersPlugin.onVarbitChanged(new VarbitChanged());
+
+		VarbitChanged varbitChanged = new VarbitChanged();
+		varbitChanged.setVarbitId(Varbits.IMBUED_HEART_COOLDOWN);
+		varbitChanged.setValue(70);
+		timersPlugin.onVarbitChanged(varbitChanged);
 
 		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
 		verify(infoBoxManager).addInfoBox(captor.capture());
@@ -555,8 +453,10 @@ public class TimersPluginTest
 	{
 		when(timersConfig.showImbuedHeart()).thenReturn(true);
 
-		when(client.getVar(Varbits.IMBUED_HEART_COOLDOWN)).thenReturn(70);
-		timersPlugin.onVarbitChanged(new VarbitChanged()); // Calls removeIf once (on createGameTimer)
+		VarbitChanged varbitChanged = new VarbitChanged();
+		varbitChanged.setVarbitId(Varbits.IMBUED_HEART_COOLDOWN);
+		varbitChanged.setValue(70);
+		timersPlugin.onVarbitChanged(varbitChanged); // Calls removeIf once (on createGameTimer)
 
 		ArgumentCaptor<Predicate<InfoBox>> prcaptor = ArgumentCaptor.forClass(Predicate.class);
 		TimerTimer imbuedHeartInfoBox = new TimerTimer(GameTimer.IMBUEDHEART, Duration.ofSeconds(420), timersPlugin);
@@ -565,8 +465,10 @@ public class TimersPluginTest
 		Predicate<InfoBox> pred = prcaptor.getValue();
 		assertTrue(pred.test(imbuedHeartInfoBox));
 
-		when(client.getVar(Varbits.IMBUED_HEART_COOLDOWN)).thenReturn(0);
-		timersPlugin.onVarbitChanged(new VarbitChanged()); // Calls removeIf once
+		varbitChanged = new VarbitChanged();
+		varbitChanged.setVarbitId(Varbits.IMBUED_HEART_COOLDOWN);
+		varbitChanged.setValue(0);
+		timersPlugin.onVarbitChanged(varbitChanged); // Calls removeIf once
 
 		verify(infoBoxManager, times(1)).addInfoBox(any());
 		verify(infoBoxManager, times(2)).removeIf(prcaptor.capture());

@@ -71,7 +71,7 @@ class AbyssMinimapOverlay extends Overlay
 		for (DecorativeObject object : plugin.getAbyssObjects())
 		{
 			AbyssRifts rift = AbyssRifts.getRift(object.getId());
-			if (rift == null || !plugin.getRifts().contains(rift))
+			if (rift == null || !rift.getConfigEnabled().test(config))
 			{
 				continue;
 			}

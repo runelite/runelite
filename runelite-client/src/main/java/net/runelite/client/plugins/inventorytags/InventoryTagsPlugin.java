@@ -24,25 +24,32 @@
  */
 package net.runelite.client.plugins.inventorytags;
 
-import com.google.common.base.MoreObjects;
-import com.google.common.collect.ImmutableList;
+import com.google.gson.Gson;
 import com.google.inject.Provides;
 import java.awt.Color;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
+import javax.swing.SwingUtilities;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
+import net.runelite.api.KeyCode;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.events.MenuOpened;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
-import net.runelite.client.menus.MenuManager;
-import net.runelite.client.menus.WidgetMenuOption;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.components.colorpicker.ColorPickerManager;
+import net.runelite.client.ui.components.colorpicker.RuneliteColorPicker;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
 
@@ -52,9 +59,11 @@ import net.runelite.client.util.ColorUtil;
 	tags = {"highlight", "items", "overlay", "tagging"},
 	enabledByDefault = false
 )
+@Slf4j
 public class InventoryTagsPlugin extends Plugin
 {
 	private static final String ITEM_KEY_PREFIX = "item_";
+	private static final String TAG_KEY_PREFIX = "tag_";
 
 	private static final String SETNAME_GROUP_1 = "Group 1";
 	private static final String SETNAME_GROUP_2 = "Group 2";
@@ -62,27 +71,6 @@ public class InventoryTagsPlugin extends Plugin
 	private static final String SETNAME_GROUP_4 = "Group 4";
 	private static final String SETNAME_GROUP_5 = "Group 5";
 	private static final String SETNAME_GROUP_6 = "Group 6";
-
-	private static final String CONFIGURE = "Configure";
-	private static final String SAVE = "Save";
-	private static final String MENU_TARGET = "Inventory Tags";
-	private static final String MENU_SET = "Mark";
-	private static final String MENU_REMOVE = "Remove";
-
-	private static final WidgetMenuOption FIXED_INVENTORY_TAB_CONFIGURE = new WidgetMenuOption(CONFIGURE,
-		MENU_TARGET, WidgetInfo.FIXED_VIEWPORT_INVENTORY_TAB);
-	private static final WidgetMenuOption FIXED_INVENTORY_TAB_SAVE = new WidgetMenuOption(SAVE,
-		MENU_TARGET, WidgetInfo.FIXED_VIEWPORT_INVENTORY_TAB);
-	private static final WidgetMenuOption RESIZABLE_INVENTORY_TAB_CONFIGURE = new WidgetMenuOption(CONFIGURE,
-		MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_INVENTORY_TAB);
-	private static final WidgetMenuOption RESIZABLE_INVENTORY_TAB_SAVE = new WidgetMenuOption(SAVE,
-		MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_INVENTORY_TAB);
-	private static final WidgetMenuOption RESIZABLE_BOTTOM_LINE_INVENTORY_TAB_CONFIGURE = new WidgetMenuOption(CONFIGURE,
-		MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY_TAB);
-	private static final WidgetMenuOption RESIZABLE_BOTTOM_LINE_INVENTORY_TAB_SAVE = new WidgetMenuOption(SAVE,
-		MENU_TARGET, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY_TAB);
-
-	private static final List<String> GROUPS = ImmutableList.of(SETNAME_GROUP_6, SETNAME_GROUP_5, SETNAME_GROUP_4, SETNAME_GROUP_3, SETNAME_GROUP_2, SETNAME_GROUP_1);
 
 	@Inject
 	private Client client;
@@ -94,15 +82,16 @@ public class InventoryTagsPlugin extends Plugin
 	private InventoryTagsConfig config;
 
 	@Inject
-	private MenuManager menuManager;
-
-	@Inject
 	private InventoryTagsOverlay overlay;
 
 	@Inject
 	private OverlayManager overlayManager;
 
-	private boolean editorMode;
+	@Inject
+	private Gson gson;
+
+	@Inject
+	private ColorPickerManager colorPickerManager;
 
 	@Provides
 	InventoryTagsConfig provideConfig(ConfigManager configManager)
@@ -110,40 +99,75 @@ public class InventoryTagsPlugin extends Plugin
 		return configManager.getConfig(InventoryTagsConfig.class);
 	}
 
-	String getTag(int itemId)
+	@Override
+	protected void startUp()
 	{
-		String tag = configManager.getConfiguration(InventoryTagsConfig.GROUP, ITEM_KEY_PREFIX + itemId);
+		overlayManager.add(overlay);
+		convertConfig();
+	}
+
+	@Override
+	protected void shutDown()
+	{
+		overlayManager.remove(overlay);
+	}
+
+	Tag getTag(int itemId)
+	{
+		String tag = configManager.getConfiguration(InventoryTagsConfig.GROUP, TAG_KEY_PREFIX + itemId);
 		if (tag == null || tag.isEmpty())
 		{
 			return null;
 		}
 
-		return tag;
+		return gson.fromJson(tag, Tag.class);
 	}
 
-	private void setTag(int itemId, String tag)
+	void setTag(int itemId, Tag tag)
 	{
-		configManager.setConfiguration(InventoryTagsConfig.GROUP, ITEM_KEY_PREFIX + itemId, tag);
+		String json = gson.toJson(tag);
+		configManager.setConfiguration(InventoryTagsConfig.GROUP, TAG_KEY_PREFIX + itemId, json);
 	}
 
-	private void unsetTag(int itemId)
+	void unsetTag(int itemId)
 	{
-		configManager.unsetConfiguration(InventoryTagsConfig.GROUP, ITEM_KEY_PREFIX + itemId);
+		configManager.unsetConfiguration(InventoryTagsConfig.GROUP, TAG_KEY_PREFIX + itemId);
 	}
 
-	@Override
-	protected void startUp() throws Exception
+	private void convertConfig()
 	{
-		refreshInventoryMenuOptions();
-		overlayManager.add(overlay);
-	}
+		String migrated = configManager.getConfiguration(InventoryTagsConfig.GROUP, "migrated");
+		if (migrated != null)
+		{
+			return;
+		}
 
-	@Override
-	protected void shutDown() throws Exception
-	{
-		removeInventoryMenuOptions();
-		overlayManager.remove(overlay);
-		editorMode = false;
+		List<String> keys = configManager.getConfigurationKeys(InventoryTagsConfig.GROUP + "." + ITEM_KEY_PREFIX);
+		for (String key : keys)
+		{
+			String[] str = key.split("\\.", 2);
+			if (str.length == 2)
+			{
+				int itemId = Integer.parseInt(str[1].substring(ITEM_KEY_PREFIX.length()));
+				String tag = configManager.getConfiguration(str[0], str[1]);
+				if (tag != null)
+				{
+					Color color = getGroupNameColor(tag);
+					if (color != null)
+					{
+						Tag t = new Tag();
+						t.color = color;
+						setTag(itemId, t);
+						log.debug("Converted tag {} {} -> {}", itemId, tag, t);
+					}
+
+					// uncomment to delete these later
+					// configManager.unsetConfiguration(str[0], str[1]);
+				}
+			}
+		}
+
+		configManager.setConfiguration(InventoryTagsConfig.GROUP, "migrated", "1");
 	}
 
 	@Subscribe
@@ -158,47 +182,65 @@ public class InventoryTagsPlugin extends Plugin
 	@Subscribe
 	public void onMenuOpened(final MenuOpened event)
 	{
-		final MenuEntry firstEntry = event.getFirstEntry();
-		if (firstEntry == null || !editorMode)
+		if (!client.isKeyPressed(KeyCode.KC_SHIFT))
 		{
 			return;
 		}
 
-		final int widgetId = firstEntry.getParam1();
-
-		// Inventory item menu
-		if (widgetId == WidgetInfo.INVENTORY.getId())
+		final MenuEntry[] entries = event.getMenuEntries();
+		for (int idx = entries.length - 1; idx >= 0; --idx)
 		{
-			int itemId = firstEntry.getIdentifier();
+			final MenuEntry entry = entries[idx];
+			final Widget w = entry.getWidget();
 
-			if (itemId == -1)
+			if (w != null && WidgetInfo.TO_GROUP(w.getId()) == WidgetID.INVENTORY_GROUP_ID
+				&& "Examine".equals(entry.getOption()) && entry.getIdentifier() == 10)
 			{
-				return;
-			}
+				final int itemId = w.getItemId();
+				final Tag tag = getTag(itemId);
 
-			// Set menu to only be Cancel
-			client.setMenuEntries(Arrays.copyOf(client.getMenuEntries(), 1));
-
-			for (final String groupName : GROUPS)
-			{
-				final String group = getTag(itemId);
-				final Color color = getGroupNameColor(groupName);
-
-				client.createMenuEntry(-1)
-					.setOption(groupName.equals(group) ? MENU_REMOVE : MENU_SET)
-					.setTarget(ColorUtil.prependColorTag(groupName, MoreObjects.firstNonNull(color, Color.WHITE)))
+				client.createMenuEntry(idx)
+					.setOption("Pick inventory tag")
+					.setTarget(entry.getTarget())
 					.setType(MenuAction.RUNELITE)
 					.onClick(e ->
 					{
-						if (e.getOption().equals(MENU_SET))
+						Color color = tag == null ? Color.WHITE : tag.color;
+						SwingUtilities.invokeLater(() ->
 						{
-							setTag(itemId, groupName);
-						}
-						else
-						{
-							unsetTag(itemId);
-						}
+							RuneliteColorPicker colorPicker = colorPickerManager.create(null, color, "Inventory Tag", true);
+							colorPicker.setOnClose(c ->
+							{
+								Tag t = new Tag();
+								t.color = c;
+								setTag(itemId, t);
+							});
+							colorPicker.setVisible(true);
+						});
 					});
+
+				if (tag != null)
+				{
+					client.createMenuEntry(idx)
+						.setOption("Clear inventory tag")
+						.setTarget(entry.getTarget())
+						.setType(MenuAction.RUNELITE)
+						.onClick(e -> unsetTag(itemId));
+				}
+
+				for (Color color : invColors())
+				{
+					client.createMenuEntry(idx)
+						.setOption(ColorUtil.prependColorTag("Inventory tag", color))
+						.setTarget(entry.getTarget())
+						.setType(MenuAction.RUNELITE)
+						.onClick(e ->
+						{
+							Tag t = new Tag();
+							t.color = color;
+							setTag(itemId, t);
+						});
+				}
 			}
 		}
 	}
@@ -224,42 +266,21 @@ public class InventoryTagsPlugin extends Plugin
 		return null;
 	}
 
-	private void removeInventoryMenuOptions()
+	private List<Color> invColors()
 	{
-		menuManager.removeManagedCustomMenu(FIXED_INVENTORY_TAB_CONFIGURE);
-		menuManager.removeManagedCustomMenu(FIXED_INVENTORY_TAB_SAVE);
-		menuManager.removeManagedCustomMenu(RESIZABLE_INVENTORY_TAB_CONFIGURE);
-		menuManager.removeManagedCustomMenu(RESIZABLE_INVENTORY_TAB_SAVE);
-		menuManager.removeManagedCustomMenu(RESIZABLE_BOTTOM_LINE_INVENTORY_TAB_CONFIGURE);
-		menuManager.removeManagedCustomMenu(RESIZABLE_BOTTOM_LINE_INVENTORY_TAB_SAVE);
-	}
-
-	private void refreshInventoryMenuOptions()
-	{
-		removeInventoryMenuOptions();
-		if (editorMode)
+		List<Color> colors = new ArrayList<>();
+		ItemContainer container = client.getItemContainer(InventoryID.INVENTORY);
+		for (Item item : container.getItems())
 		{
-			menuManager.addManagedCustomMenu(FIXED_INVENTORY_TAB_SAVE, this::save);
-			menuManager.addManagedCustomMenu(RESIZABLE_INVENTORY_TAB_SAVE, this::save);
-			menuManager.addManagedCustomMenu(RESIZABLE_BOTTOM_LINE_INVENTORY_TAB_SAVE, this::save);
+			Tag tag = getTag(item.getId());
+			if (tag != null && tag.color != null)
+			{
+				if (!colors.contains(tag.color))
+				{
+					colors.add(tag.color);
+				}
+			}
 		}
-		else
-		{
-			menuManager.addManagedCustomMenu(FIXED_INVENTORY_TAB_CONFIGURE, this::configure);
-			menuManager.addManagedCustomMenu(RESIZABLE_INVENTORY_TAB_CONFIGURE, this::configure);
-			menuManager.addManagedCustomMenu(RESIZABLE_BOTTOM_LINE_INVENTORY_TAB_CONFIGURE, this::configure);
-		}
-	}
-
-	private void save(MenuEntry menuEntry)
-	{
-		editorMode = false;
-		refreshInventoryMenuOptions();
-	}
-
-	private void configure(MenuEntry menuEntry)
-	{
-		editorMode = true;
-		refreshInventoryMenuOptions();
+		return colors;
 	}
 }

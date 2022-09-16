@@ -111,7 +111,7 @@ public class ExternalPluginClient
 		}
 		catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException e)
 		{
-			throw new RuntimeException(e);
+			throw new VerificationException(e);
 		}
 	}
 

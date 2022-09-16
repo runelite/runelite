@@ -34,8 +34,11 @@ import net.runelite.api.GameState;
 import net.runelite.api.KeyCode;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.NPC;
+import net.runelite.api.NPCComposition;
+import net.runelite.api.ObjectComposition;
 import net.runelite.api.events.ClientTick;
-import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.menus.TestMenuEntry;
@@ -45,10 +48,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import org.mockito.Mock;
-import static org.mockito.Mockito.clearInvocations;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -72,11 +76,16 @@ public class MenuEntrySwapperPluginTest
 
 	@Mock
 	@Bind
+	ChatMessageManager chatMessageManager;
+
+	@Mock
+	@Bind
 	MenuEntrySwapperConfig config;
 
 	@Inject
 	MenuEntrySwapperPlugin menuEntrySwapperPlugin;
 
+	private NPC npc;
 	private MenuEntry[] entries;
 
 	@Before
@@ -85,6 +94,11 @@ public class MenuEntrySwapperPluginTest
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
 
 		when(client.getGameState()).thenReturn(GameState.LOGGED_IN);
+		when(client.getObjectDefinition(anyInt())).thenReturn(mock(ObjectComposition.class));
+
+		npc = mock(NPC.class);
+		NPCComposition composition = mock(NPCComposition.class);
+		when(npc.getTransformedComposition()).thenReturn(composition);
 
 		when(client.getMenuEntries()).thenAnswer((Answer<MenuEntry[]>) invocationOnMock ->
 		{
@@ -102,18 +116,19 @@ public class MenuEntrySwapperPluginTest
 		menuEntrySwapperPlugin.setupSwaps();
 	}
 
-	private static MenuEntry menu(String option, String target, MenuAction menuAction)
+	private MenuEntry menu(String option, String target, MenuAction menuAction)
 	{
 		return menu(option, target, menuAction, 0);
 	}
 
-	private static MenuEntry menu(String option, String target, MenuAction menuAction, int identifier)
+	private MenuEntry menu(String option, String target, MenuAction menuAction, int identifier)
 	{
-		MenuEntry menuEntry = new TestMenuEntry();
+		TestMenuEntry menuEntry = new TestMenuEntry();
 		menuEntry.setOption(option);
 		menuEntry.setTarget(target);
 		menuEntry.setType(menuAction);
 		menuEntry.setIdentifier(identifier);
+		menuEntry.setActor(npc);
 		return menuEntry;
 	}
 
@@ -222,59 +237,6 @@ public class MenuEntrySwapperPluginTest
 	}
 
 	@Test
-	public void testTeleport()
-	{
-		when(config.swapTeleportSpell()).thenReturn(true);
-		when(client.isKeyPressed(KeyCode.KC_SHIFT)).thenReturn(true);
-
-		// Cast -> Grand Exchange
-		entries = new MenuEntry[]{
-			menu("Cancel", "", MenuAction.CANCEL),
-
-			menu("Configure", "Varrock Teleport", MenuAction.WIDGET_THIRD_OPTION),
-			menu("Grand Exchange", "Varrock Teleport", MenuAction.WIDGET_SECOND_OPTION),
-			menu("Cast", "Varrock Teleport", MenuAction.WIDGET_FIRST_OPTION),
-		};
-
-		menuEntrySwapperPlugin.onClientTick(new ClientTick());
-
-		ArgumentCaptor<MenuEntry[]> argumentCaptor = ArgumentCaptor.forClass(MenuEntry[].class);
-		verify(client).setMenuEntries(argumentCaptor.capture());
-
-		assertArrayEquals(new MenuEntry[]{
-			menu("Cancel", "", MenuAction.CANCEL),
-
-			menu("Configure", "Varrock Teleport", MenuAction.WIDGET_THIRD_OPTION),
-			menu("Cast", "Varrock Teleport", MenuAction.WIDGET_FIRST_OPTION),
-			menu("Grand Exchange", "Varrock Teleport", MenuAction.WIDGET_SECOND_OPTION),
-		}, argumentCaptor.getValue());
-
-		clearInvocations(client);
-
-		// Grand Exchange -> Cast
-		entries = new MenuEntry[]{
-			menu("Cancel", "", MenuAction.CANCEL),
-
-			menu("Configure", "Varrock Teleport", MenuAction.WIDGET_THIRD_OPTION),
-			menu("Cast", "Varrock Teleport", MenuAction.WIDGET_SECOND_OPTION),
-			menu("Grand Exchange", "Varrock Teleport", MenuAction.WIDGET_FIRST_OPTION),
-		};
-
-		menuEntrySwapperPlugin.onClientTick(new ClientTick());
-
-		argumentCaptor = ArgumentCaptor.forClass(MenuEntry[].class);
-		verify(client).setMenuEntries(argumentCaptor.capture());
-
-		assertArrayEquals(new MenuEntry[]{
-			menu("Cancel", "", MenuAction.CANCEL),
-
-			menu("Configure", "Varrock Teleport", MenuAction.WIDGET_THIRD_OPTION),
-			menu("Grand Exchange", "Varrock Teleport", MenuAction.WIDGET_FIRST_OPTION),
-			menu("Cast", "Varrock Teleport", MenuAction.WIDGET_SECOND_OPTION),
-		}, argumentCaptor.getValue());
-	}
-
-	@Test
 	public void testTobDoor()
 	{
 		when(config.swapQuick()).thenReturn(true);
@@ -316,14 +278,7 @@ public class MenuEntrySwapperPluginTest
 			menu("Deposit-1", "Abyssal whip", MenuAction.CC_OP, 2),
 		};
 
-		menuEntrySwapperPlugin.onMenuEntryAdded(new MenuEntryAdded(
-			"Deposit-1",
-			"Abyssal whip",
-			MenuAction.CC_OP.getId(),
-			2,
-			-1,
-			-1
-		));
+		menuEntrySwapperPlugin.onClientTick(new ClientTick());
 
 		ArgumentCaptor<MenuEntry[]> argumentCaptor = ArgumentCaptor.forClass(MenuEntry[].class);
 		verify(client).setMenuEntries(argumentCaptor.capture());
@@ -348,14 +303,7 @@ public class MenuEntrySwapperPluginTest
 			menu("Deposit-1", "Rune arrow", MenuAction.CC_OP, 2),
 		};
 
-		menuEntrySwapperPlugin.onMenuEntryAdded(new MenuEntryAdded(
-			"Deposit-1",
-			"Rune arrow",
-			MenuAction.CC_OP.getId(),
-			2,
-			-1,
-			-1
-		));
+		menuEntrySwapperPlugin.onClientTick(new ClientTick());
 
 		ArgumentCaptor<MenuEntry[]> argumentCaptor = ArgumentCaptor.forClass(MenuEntry[].class);
 		verify(client).setMenuEntries(argumentCaptor.capture());

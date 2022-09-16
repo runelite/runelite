@@ -133,7 +133,7 @@ public class BirdHouseTracker
 
 			for (BirdHouseSpace space : BirdHouseSpace.values())
 			{
-				int varp = client.getVar(space.getVarp());
+				int varp = client.getVarpValue(space.getVarp());
 				BirdHouseData oldData = birdHouseData.get(space);
 				int oldVarp = oldData == null ? -1 : oldData.getVarp();
 

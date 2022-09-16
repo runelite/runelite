@@ -27,6 +27,7 @@ package net.runelite.client.plugins.barrows;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.Varbits;
+import net.runelite.api.annotations.Varbit;
 import net.runelite.api.coords.WorldPoint;
 
 @RequiredArgsConstructor
@@ -42,5 +43,6 @@ enum BarrowsBrothers
 
 	private final String name;
 	private final WorldPoint location;
-	private final Varbits killedVarbit;
+	@Getter(onMethod_ = {@Varbit})
+	private final int killedVarbit;
 }

@@ -68,8 +68,7 @@ public class MorytaniaDiaryRequirement extends GenericDiaryRequirement
 			new QuestRequirement(Quest.CABIN_FEVER));
 		add("Make a batch of cannonballs at the Port Phasmatys furnace.",
 			new SkillRequirement(Skill.SMITHING, 35),
-			new QuestRequirement(Quest.DWARF_CANNON),
-			new QuestRequirement(Quest.GHOSTS_AHOY, true));
+			new QuestRequirement(Quest.DWARF_CANNON));
 		add("Kill a Fever Spider on Braindeath Island.",
 			new SkillRequirement(Skill.SLAYER, 42),
 			new QuestRequirement(Quest.RUM_DEAL));

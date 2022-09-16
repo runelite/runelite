@@ -244,7 +244,7 @@ public class NightmareZonePlugin extends Plugin
 
 	private void checkAbsorption()
 	{
-		int absorptionPoints = client.getVar(Varbits.NMZ_ABSORPTION);
+		int absorptionPoints = client.getVarbitValue(Varbits.NMZ_ABSORPTION);
 
 		if (!absorptionNotificationSend)
 		{
@@ -266,7 +266,7 @@ public class NightmareZonePlugin extends Plugin
 	private int calculatePointsPerHour()
 	{
 		Instant now = Instant.now();
-		final int currentPoints = client.getVar(Varbits.NMZ_POINTS);
+		final int currentPoints = client.getVarbitValue(Varbits.NMZ_POINTS);
 
 		if (nmzSessionStartTime == null)
 		{

@@ -116,7 +116,7 @@ class PrayerBarOverlay extends Overlay
 				graphics.fillRect(barX + xOffset, barY + HD_PRAYER_BAR_PADDING, 1, barHeight - HD_PRAYER_BAR_PADDING * 2);
 			}
 
-			return new Dimension(barWidth, barHeight);
+			return null;
 		}
 
 		// Draw bar
@@ -145,7 +145,7 @@ class PrayerBarOverlay extends Overlay
 			graphics.fillRect(barX + xOffset, barY, 1, barHeight);
 		}
 
-		return new Dimension(barWidth, barHeight);
+		return null;
 	}
 
 	void onTick()

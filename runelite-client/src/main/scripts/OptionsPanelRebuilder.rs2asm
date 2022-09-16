@@ -1,7 +1,7 @@
 .id                 909
 .int_stack_count    2
 .string_stack_count 0
-.int_var_count      21
+.int_var_count      23
 .string_var_count   0
    iconst                 73
    iconst                 73
@@ -27,31 +27,31 @@
    iconst                 10551311
    enum                  
    istore                 5
+   iconst                 -1
+   istore                 6
    iconst                 103
    iconst                 105
    iconst                 1960
    iload                  1
    enum                  
-   istore                 6
+   istore                 7
    iconst                 103
    iconst                 105
    iconst                 1961
    iload                  1
    enum                  
-   istore                 7
+   istore                 8
    iconst                 103
    iconst                 105
    iconst                 1135
    iload                  1
    enum                  
-   istore                 8
+   istore                 9
    iconst                 103
    iconst                 105
    iconst                 1136
    iload                  1
    enum                  
-   istore                 9
-   iconst                 0
    istore                 10
    iconst                 0
    istore                 11
@@ -63,42 +63,71 @@
    istore                 14
    iconst                 0
    istore                 15
-   iload                  0
-   if_getwidth           
+   iconst                 0
    istore                 16
    iload                  0
-   if_getheight          
+   if_getwidth           
    istore                 17
+   iload                  0
+   if_getheight          
+   istore                 18
+   iconst                 0
+   istore                 19
    iload                  1
    iconst                 1745
-   if_icmpeq              LABEL70
-   jump                   LABEL84
-LABEL70:
-   iconst                 0
-   iload                  16
-   iconst                 39387155
-   if_getwidth           
-   sub                   
-   invoke                 1045
-   istore                 14
+   if_icmpeq              LABEL74
+   jump                   LABEL111
+LABEL74:
    iconst                 0
    iload                  17
    iconst                 39387155
-   if_getheight          
+   if_getwidth           
    sub                   
    invoke                 1045
    istore                 15
-LABEL84:
+   iconst                 0
+   iload                  18
+   iconst                 39387155
+   if_getheight          
+   sub                   
+   invoke                 1045
+   istore                 16
+   iconst                 73
+   iconst                 73
+   iload                  1
+   iconst                 10551329
+   enum                  
+   istore                 6
+   iload                  6
+   iconst                 -1
+   if_icmpne              LABEL98
+   jump                   LABEL111
+LABEL98:
+   iconst                 -1
+   invoke                 5357
+   iconst                 1
+   if_icmpeq              LABEL103
+   jump                   LABEL111
+LABEL103:
+   get_varc_int           381
+   iconst                 16384
+   iload                  6
+   if_getwidth           
+   scale                 
+   iconst                 42
+   add                   
+   istore                 19
+LABEL111:
    get_varbit             4606
    iconst                 0
-   if_icmpne              LABEL88
-   jump                   LABEL279
-LABEL88:
+   if_icmpne              LABEL115
+   jump                   LABEL308
+LABEL115:
    get_varbit             4606
    iconst                 2
-   if_icmpeq              LABEL92
-   jump                   LABEL101
-LABEL92:
+   if_icmpeq              LABEL119
+   jump                   LABEL128
+LABEL119:
    iconst                 512
    iconst                 220
    viewport_setfov       
@@ -107,36 +136,36 @@ LABEL92:
    iconst                 0
    iconst                 0
    viewport_clampfov     
-   jump                   LABEL132
-LABEL101:
+   jump                   LABEL159
+LABEL128:
    get_varbit             4606
    iconst                 3
-   if_icmpeq              LABEL105
-   jump                   LABEL124
-LABEL105:
+   if_icmpeq              LABEL132
+   jump                   LABEL151
+LABEL132:
    iconst                 256
    iconst                 256
    viewport_setfov       
    iload                  1
    iconst                 1129
-   if_icmpeq              LABEL112
-   jump                   LABEL118
-LABEL112:
+   if_icmpeq              LABEL139
+   jump                   LABEL145
+LABEL139:
    iconst                 512
    iconst                 512
    iconst                 512
    iconst                 512
    viewport_clampfov     
-   jump                   LABEL123
-LABEL118:
+   jump                   LABEL150
+LABEL145:
    iconst                 640
    iconst                 768
    iconst                 512
    iconst                 512
    viewport_clampfov     
-LABEL123:
-   jump                   LABEL132
-LABEL124:
+LABEL150:
+   jump                   LABEL159
+LABEL151:
    iconst                 256
    iconst                 256
    viewport_setfov       
@@ -145,51 +174,53 @@ LABEL124:
    iconst                 512
    iconst                 512
    viewport_clampfov     
-LABEL132:
+LABEL159:
    iconst                 50
    cam_setfollowheight   
    iload                  2
    iconst                 -1
-   if_icmpne              LABEL138
-   jump                   LABEL278
-LABEL138:
+   if_icmpne              LABEL165
+   jump                   LABEL307
+LABEL165:
    iload                  3
    iconst                 -1
-   if_icmpne              LABEL142
-   jump                   LABEL278
-LABEL142:
+   if_icmpne              LABEL169
+   jump                   LABEL307
+LABEL169:
    viewport_geteffectivesize
+   istore                 12
    istore                 11
-   istore                 10
-   iconst                 0
-   iload                  16
-   iload                  10
-   sub                   
-   invoke                 1045
    iconst                 0
    iload                  17
    iload                  11
    sub                   
    invoke                 1045
+   iconst                 0
+   iload                  18
+   iload                  12
+   sub                   
+   invoke                 1045
+   istore                 14
    istore                 13
-   istore                 12
-   iload                  10
    iload                  11
+   iload                  12
    iconst                 0
    iconst                 0
    iload                  2
    if_setsize            
-   iload                  10
-   iconst                 0
-   iload                  14
-   iload                  12
-   sub                   
-   invoke                 1045
-   sub                   
    iload                  11
    iconst                 0
    iload                  15
    iload                  13
+   sub                   
+   iload                  19
+   sub                   
+   invoke                 1045
+   sub                   
+   iload                  12
+   iconst                 0
+   iload                  16
+   iload                  14
    sub                   
    invoke                 1045
    sub                   
@@ -199,38 +230,26 @@ LABEL142:
    if_setsize            
    iload                  4
    iconst                 -1
-   if_icmpne              LABEL185
-   jump                   LABEL268
-LABEL185:
+   if_icmpne              LABEL214
+   jump                   LABEL297
+LABEL214:
    iload                  5
    iconst                 -1
-   if_icmpne              LABEL189
-   jump                   LABEL268
-LABEL189:
-   iload                  12
-   iload                  14
-   sub                   
-   iconst                 2
-   div                   
+   if_icmpne              LABEL218
+   jump                   LABEL297
+LABEL218:
    iload                  13
    iload                  15
    sub                   
    iconst                 2
    div                   
+   iload                  14
+   iload                  16
+   sub                   
+   iconst                 2
+   div                   
+   istore                 14
    istore                 13
-   istore                 12
-   iconst                 0
-   iload                  6
-   iload                  12
-   sub                   
-   invoke                 1045
-   iconst                 0
-   iload                  8
-   iload                  12
-   sub                   
-   invoke                 1045
-   istore                 8
-   istore                 6
    iconst                 0
    iload                  7
    iload                  13
@@ -243,33 +262,45 @@ LABEL189:
    invoke                 1045
    istore                 9
    istore                 7
-   iload                  6
+   iconst                 0
+   iload                  8
+   iload                  14
+   sub                   
+   invoke                 1045
+   iconst                 0
+   iload                  10
+   iload                  14
+   sub                   
+   invoke                 1045
+   istore                 10
+   istore                 8
    iload                  7
+   iload                  8
    iconst                 0
    iconst                 0
    iload                  4
    if_setposition        
-   iload                  6
    iload                  7
+   iload                  8
    iconst                 0
    iconst                 0
    iload                  5
    if_setposition        
-   iload                  6
-   iload                  8
-   add                   
    iload                  7
    iload                  9
+   add                   
+   iload                  8
+   iload                  10
    add                   
    iconst                 1
    iconst                 1
    iload                  4
    if_setsize            
-   iload                  6
-   iload                  8
-   add                   
    iload                  7
    iload                  9
+   add                   
+   iload                  8
+   iload                  10
    add                   
    iconst                 1
    iconst                 1
@@ -282,11 +313,11 @@ LABEL189:
    iconst                 10551310
    enum                  
    iload                  5
-   iload                  8
    iload                  9
+   iload                  10
    invoke                 910
-   jump                   LABEL278
-LABEL268:
+   jump                   LABEL307
+LABEL297:
    iload                  1
    iconst                 73
    iconst                 73
@@ -297,9 +328,9 @@ LABEL268:
    iconst                 0
    iconst                 0
    invoke                 910
-LABEL278:
-   jump                   LABEL395
-LABEL279:
+LABEL307:
+   jump                   LABEL426
+LABEL308:
    iconst                 0
    iconst                 0
    iconst                 0
@@ -309,105 +340,107 @@ LABEL279:
    iconst                 128
    sconst                 "outerZoomLimit"
    runelite_callback     
-   if_icmpge              LABEL288
-   jump                   LABEL304
-LABEL288:
+   if_icmpge              LABEL317
+   jump                   LABEL333
+LABEL317:
    get_varc_int           73
    iconst                 896
    sconst                 "innerZoomLimit"
    runelite_callback     
-   if_icmple              LABEL292
-   jump                   LABEL304
-LABEL292:
+   if_icmple              LABEL321
+   jump                   LABEL333
+LABEL321:
    get_varc_int           74
    iconst                 128
    sconst                 "outerZoomLimit"
    runelite_callback     
-   if_icmpge              LABEL296
-   jump                   LABEL304
-LABEL296:
+   if_icmpge              LABEL325
+   jump                   LABEL333
+LABEL325:
    get_varc_int           74
    iconst                 896
    sconst                 "innerZoomLimit"
    runelite_callback     
-   if_icmple              LABEL300
-   jump                   LABEL304
-LABEL300:
+   if_icmple              LABEL329
+   jump                   LABEL333
+LABEL329:
    get_varc_int           73
    get_varc_int           74
    invoke                 42
-   jump                   LABEL307
-LABEL304:
+   jump                   LABEL336
+LABEL333:
    iconst                 512
    iconst                 512
    invoke                 42
-LABEL307:
+LABEL336:
    viewport_geteffectivesize
+   istore                 12
    istore                 11
-   istore                 10
    iload                  2
    iconst                 -1
-   if_icmpne              LABEL314
-   jump                   LABEL395
-LABEL314:
+   if_icmpne              LABEL343
+   jump                   LABEL426
+LABEL343:
    iload                  3
    iconst                 -1
-   if_icmpne              LABEL318
-   jump                   LABEL395
-LABEL318:
-   iload                  10
+   if_icmpne              LABEL347
+   jump                   LABEL426
+LABEL347:
    iload                  11
+   iload                  12
    iconst                 0
    iconst                 0
    iload                  2
    if_setsize            
-   iload                  10
-   iload                  14
-   sub                   
    iload                  11
    iload                  15
    sub                   
+   iload                  19
+   sub                   
+   iload                  12
+   iload                  16
+   sub                   
    iconst                 0
    iconst                 0
    iload                  3
    if_setsize            
    iload                  4
    iconst                 -1
-   if_icmpne              LABEL338
-   jump                   LABEL385
-LABEL338:
+   if_icmpne              LABEL369
+   jump                   LABEL416
+LABEL369:
    iload                  5
    iconst                 -1
-   if_icmpne              LABEL342
-   jump                   LABEL385
-LABEL342:
-   iload                  6
+   if_icmpne              LABEL373
+   jump                   LABEL416
+LABEL373:
    iload                  7
+   iload                  8
    iconst                 0
    iconst                 0
    iload                  4
    if_setposition        
-   iload                  6
    iload                  7
+   iload                  8
    iconst                 0
    iconst                 0
    iload                  5
    if_setposition        
-   iload                  6
-   iload                  8
-   add                   
    iload                  7
    iload                  9
+   add                   
+   iload                  8
+   iload                  10
    add                   
    iconst                 1
    iconst                 1
    iload                  4
    if_setsize            
-   iload                  6
-   iload                  8
-   add                   
    iload                  7
    iload                  9
+   add                   
+   iload                  8
+   iload                  10
    add                   
    iconst                 1
    iconst                 1
@@ -420,11 +453,11 @@ LABEL342:
    iconst                 10551310
    enum                  
    iload                  5
-   iload                  8
    iload                  9
+   iload                  10
    invoke                 910
-   jump                   LABEL395
-LABEL385:
+   jump                   LABEL426
+LABEL416:
    iload                  1
    iconst                 73
    iconst                 73
@@ -435,86 +468,86 @@ LABEL385:
    iconst                 0
    iconst                 0
    invoke                 910
-LABEL395:
+LABEL426:
    iconst                 73
    iconst                 73
    iload                  1
    iconst                 10551312
    enum                  
-   istore                 18
-   iload                  18
+   istore                 20
+   iload                  20
    iconst                 -1
-   if_icmpne              LABEL405
-   jump                   LABEL449
-LABEL405:
+   if_icmpne              LABEL436
+   jump                   LABEL480
+LABEL436:
    invoke                 1972
    iconst                 0
-   if_icmpeq              LABEL409
-   jump                   LABEL443
-LABEL409:
-   iload                  18
+   if_icmpeq              LABEL440
+   jump                   LABEL474
+LABEL440:
+   iload                  20
    if_hassub             
    iconst                 1
-   if_icmpeq              LABEL414
-   jump                   LABEL443
-LABEL414:
+   if_icmpeq              LABEL445
+   jump                   LABEL474
+LABEL445:
    get_varc_int           173
    iconst                 -2
-   if_icmpeq              LABEL418
-   jump                   LABEL425
-LABEL418:
+   if_icmpeq              LABEL449
+   jump                   LABEL456
+LABEL449:
    iconst                 512
    iconst                 0
    iconst                 0
    iconst                 1
-   iload                  18
+   iload                  20
    if_setsize            
-   jump                   LABEL442
-LABEL425:
+   jump                   LABEL473
+LABEL456:
    get_varc_int           173
    iconst                 -3
-   if_icmpeq              LABEL429
-   jump                   LABEL436
-LABEL429:
+   if_icmpeq              LABEL460
+   jump                   LABEL467
+LABEL460:
    iconst                 0
    iconst                 0
    iconst                 1
    iconst                 1
-   iload                  18
+   iload                  20
    if_setsize            
-   jump                   LABEL442
-LABEL436:
+   jump                   LABEL473
+LABEL467:
    iconst                 512
    iconst                 334
    iconst                 0
    iconst                 0
-   iload                  18
+   iload                  20
    if_setsize            
-LABEL442:
-   jump                   LABEL449
-LABEL443:
+LABEL473:
+   jump                   LABEL480
+LABEL474:
    iconst                 512
    iconst                 334
    iconst                 0
    iconst                 0
-   iload                  18
+   iload                  20
    if_setsize            
-LABEL449:
+LABEL480:
    iconst                 73
    iconst                 73
    iload                  1
    iconst                 10551314
    enum                  
-   istore                 18
-   iconst                 0
-   istore                 19
-   iconst                 0
    istore                 20
-   iload                  18
+   iconst                 0
+   istore                 21
+   iconst                 0
+   istore                 22
+   iload                  20
    iconst                 -1
-   if_icmpne              LABEL463
-   jump                   LABEL511
-LABEL463:
+   if_icmpne              LABEL494
+   jump                   LABEL542
+LABEL494:
    iconst                 73
    iconst                 73
    iload                  1
@@ -522,101 +555,101 @@ LABEL463:
    enum                  
    if_hassub             
    iconst                 1
-   if_icmpeq              LABEL472
-   jump                   LABEL481
-LABEL472:
+   if_icmpeq              LABEL503
+   jump                   LABEL512
+LABEL503:
    get_varbit             4692
    iconst                 0
-   if_icmpne              LABEL476
-   jump                   LABEL479
-LABEL476:
+   if_icmpne              LABEL507
+   jump                   LABEL510
+LABEL507:
    iconst                 0
-   istore                 20
-   jump                   LABEL481
-LABEL479:
+   istore                 22
+   jump                   LABEL512
+LABEL510:
    iconst                 38
-   istore                 20
-LABEL481:
+   istore                 22
+LABEL512:
    invoke                 1972
    iconst                 1
-   if_icmpeq              LABEL485
-   jump                   LABEL503
-LABEL485:
+   if_icmpeq              LABEL516
+   jump                   LABEL534
+LABEL516:
    get_varbit             542
    iconst                 0
-   if_icmpeq              LABEL489
-   jump                   LABEL503
-LABEL489:
+   if_icmpeq              LABEL520
+   jump                   LABEL534
+LABEL520:
    get_varbit             6254
    iconst                 0
-   if_icmpeq              LABEL493
-   jump                   LABEL498
-LABEL493:
+   if_icmpeq              LABEL524
+   jump                   LABEL529
+LABEL524:
    iconst                 182
    iconst                 4
    add                   
-   istore                 19
-   jump                   LABEL502
-LABEL498:
+   istore                 21
+   jump                   LABEL533
+LABEL529:
    iconst                 120
    iconst                 4
    add                   
-   istore                 19
-LABEL502:
-   jump                   LABEL505
-LABEL503:
+   istore                 21
+LABEL533:
+   jump                   LABEL536
+LABEL534:
    iconst                 0
-   istore                 19
-LABEL505:
-   iload                  19
-   iload                  20
+   istore                 21
+LABEL536:
+   iload                  21
+   iload                  22
    iconst                 2
    iconst                 0
-   iload                  18
+   iload                  20
    if_setposition        
-LABEL511:
+LABEL542:
    iconst                 73
    iconst                 73
    iload                  1
    iconst                 10551305
    enum                  
-   istore                 18
+   istore                 20
    iconst                 0
-   istore                 19
-   iload                  18
+   istore                 21
+   iload                  20
    iconst                 -1
-   if_icmpne              LABEL523
-   jump                   LABEL545
-LABEL523:
+   if_icmpne              LABEL554
+   jump                   LABEL576
+LABEL554:
    invoke                 1972
    iconst                 1
-   if_icmpeq              LABEL527
-   jump                   LABEL537
-LABEL527:
+   if_icmpeq              LABEL558
+   jump                   LABEL568
+LABEL558:
    get_varbit             6254
    iconst                 0
-   if_icmpeq              LABEL531
-   jump                   LABEL534
-LABEL531:
+   if_icmpeq              LABEL562
+   jump                   LABEL565
+LABEL562:
    iconst                 182
-   istore                 19
-   jump                   LABEL536
-LABEL534:
+   istore                 21
+   jump                   LABEL567
+LABEL565:
    iconst                 120
-   istore                 19
-LABEL536:
-   jump                   LABEL539
-LABEL537:
+   istore                 21
+LABEL567:
+   jump                   LABEL570
+LABEL568:
    iconst                 0
-   istore                 19
-LABEL539:
-   iload                  19
+   istore                 21
+LABEL570:
+   iload                  21
    iconst                 0
    iconst                 1
    iconst                 1
-   iload                  18
+   iload                  20
    if_setsize            
-LABEL545:
+LABEL576:
    iconst                 73
    iconst                 73
    iload                  1

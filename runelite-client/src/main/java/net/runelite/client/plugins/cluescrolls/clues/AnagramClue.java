@@ -88,7 +88,7 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 			.text("AHA JAR")
 			.npc("Jaraah")
 			.location(new WorldPoint(3359, 3276, 0))
-			.area("Duel Arena hospital")
+			.area("PvP Arena hospital")
 			.build(),
 		AnagramClue.builder()
 			.text("ARC O LINE")
@@ -230,8 +230,8 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 			.build(),
 		AnagramClue.builder()
 			.text("DEKAGRAM")
-			.npc("Dark mage")
-			.location(new WorldPoint(3039, 4835, 0))
+			.npc("Dark Mage")
+			.location(new WorldPoint(3039, 4834, 0))
 			.area("Centre of the Abyss")
 			.question("How many rifts are found here in the abyss?")
 			.answer("13")
@@ -436,7 +436,7 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 			.text("MACHETE CLAM")
 			.npc("Cam the Camel")
 			.location(new WorldPoint(3300, 3231, 0))
-			.area("Outside Duel Arena")
+			.area("Outside PvP Arena")
 			.question("How many items can carry water in Gielinor?")
 			.answer("6")
 			.build(),
@@ -700,8 +700,8 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 			.area("Southwest Varrock")
 			.build(),
 		AnagramClue.builder()
-			.text("DISORDER")
-			.npc("Sedridor")
+			.text("CHAR GAME DISORDER")
+			.npc("Archmage Sedridor")
 			.location(new WorldPoint(3102, 9570, 0))
 			.area("Wizards' Tower basement")
 			.build(),

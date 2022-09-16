@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.feed;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,7 +33,6 @@ import java.nio.charset.StandardCharsets;
 import javax.inject.Inject;
 import javax.inject.Named;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.feed.FeedResult;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
@@ -44,12 +44,14 @@ public class FeedClient
 {
 	private final OkHttpClient client;
 	private final HttpUrl apiBase;
+	private final Gson gson;
 
 	@Inject
-	private FeedClient(OkHttpClient client, @Named("runelite.api.base") HttpUrl apiBase)
+	private FeedClient(OkHttpClient client, @Named("runelite.api.base") HttpUrl apiBase, Gson gson)
 	{
 		this.client = client;
 		this.apiBase = apiBase;
+		this.gson = gson;
 	}
 
 	public FeedResult lookupFeed() throws IOException
@@ -73,7 +75,7 @@ public class FeedClient
 			}
 
 			InputStream in = response.body().byteStream();
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), FeedResult.class);
+			return gson.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), FeedResult.class);
 		}
 		catch (JsonParseException ex)
 		{

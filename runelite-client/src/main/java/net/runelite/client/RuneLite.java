@@ -27,6 +27,7 @@ package net.runelite.client;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.MoreObjects;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
@@ -44,6 +45,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
@@ -78,6 +80,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.WidgetOverlay;
 import net.runelite.client.ui.overlay.tooltip.TooltipOverlay;
 import net.runelite.client.ui.overlay.worldmap.WorldMapOverlay;
+import net.runelite.client.util.ReflectUtil;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
@@ -145,11 +148,15 @@ public class RuneLite
 	@Nullable
 	private Client client;
 
+	@Inject
+	@Nullable
+	private RuntimeConfig runtimeConfig;
+
 	public static void main(String[] args) throws Exception
 	{
 		Locale.setDefault(Locale.ENGLISH);
 
-		final OptionParser parser = new OptionParser();
+		final OptionParser parser = new OptionParser(false);
 		parser.accepts("developer-mode", "Enable developer tools");
 		parser.accepts("debug", "Show extra debugging output");
 		parser.accepts("safe-mode", "Disables external plugins and the GPU plugin");
@@ -157,6 +164,7 @@ public class RuneLite
 		parser.accepts("jav_config", "jav_config url")
 			.withRequiredArg()
 			.defaultsTo(RuneLiteProperties.getJavConfig());
+		parser.accepts("disable-telemetry", "Disable telemetry");
 
 		final ArgumentAcceptingOptionSpec<File> sessionfile = parser.accepts("sessionfile", "Use a specified session file")
 			.withRequiredArg()
@@ -214,8 +222,8 @@ public class RuneLite
 
 		try
 		{
-			final ClientLoader clientLoader = new ClientLoader(okHttpClient, options.valueOf(updateMode), (String) options.valueOf("jav_config"));
 			final RuntimeConfigLoader runtimeConfigLoader = new RuntimeConfigLoader(okHttpClient);
+			final ClientLoader clientLoader = new ClientLoader(okHttpClient, options.valueOf(updateMode), runtimeConfigLoader, (String) options.valueOf("jav_config"));
 
 			new Thread(() ->
 			{
@@ -233,6 +241,7 @@ public class RuneLite
 				{
 					SwingUtilities.invokeLater(() ->
 						new FatalErrorDialog("Developers should enable assertions; Add `-ea` to your JVM arguments`")
+							.addHelpButtons()
 							.addBuildingGuide()
 							.open());
 					return;
@@ -242,11 +251,15 @@ public class RuneLite
 			PROFILES_DIR.mkdirs();
 
 			log.info("RuneLite {} (launcher version {}) starting up, args: {}",
-				RuneLiteProperties.getVersion(), RuneLiteProperties.getLauncherVersion() == null ? "unknown" : RuneLiteProperties.getLauncherVersion(),
+				RuneLiteProperties.getVersion(), MoreObjects.firstNonNull(RuneLiteProperties.getLauncherVersion(), "unknown"),
 				args.length == 0 ? "none" : String.join(" ", args));
 
-			final long start = System.currentTimeMillis();
+			final RuntimeMXBean runtime = ManagementFactory.getRuntimeMXBean();
+			// This includes arguments from _JAVA_OPTIONS, which are parsed after command line flags and applied to
+			// the global VM args
+			log.info("Java VM arguments: {}", String.join(" ", runtime.getInputArguments()));
 
+			final long start = System.currentTimeMillis();
 			injector = Guice.createInjector(new RuneLiteModule(
 				okHttpClient,
 				clientLoader,
@@ -256,11 +269,10 @@ public class RuneLite
 				options.valueOf(sessionfile),
 				options.valueOf(configfile)));
 
-			injector.getInstance(RuneLite.class).start();
+			injector.getInstance(RuneLite.class).start(options);
 
 			final long end = System.currentTimeMillis();
-			final RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();
-			final long uptime = rb.getUptime();
+			final long uptime = runtime.getUptime();
 			log.info("Client initialization took {}ms. Uptime: {}ms", end - start, uptime);
 		}
 		catch (Exception e)
@@ -268,6 +280,7 @@ public class RuneLite
 			log.error("Failure during startup", e);
 			SwingUtilities.invokeLater(() ->
 				new FatalErrorDialog("RuneLite has encountered an unexpected error during startup.")
+					.addHelpButtons()
 					.open());
 		}
 		finally
@@ -276,7 +289,7 @@ public class RuneLite
 		}
 	}
 
-	public void start() throws Exception
+	public void start(OptionSet options) throws Exception
 	{
 		// Load RuneLite or Vanilla client
 		final boolean isOutdated = client == null;
@@ -287,6 +300,8 @@ public class RuneLite
 			injector.injectMembers(client);
 		}
 
+		setupSystemProps();
+
 		// Start the applet
 		if (applet != null)
 		{
@@ -295,6 +310,7 @@ public class RuneLite
 			// Client size must be set prior to init
 			applet.setSize(Constants.GAME_FIXED_SIZE);
 
+			System.setProperty("jagex.disableBouncyCastle", "true");
 			// Change user.home so the client places jagexcache in the .runelite directory
 			String oldHome = System.setProperty("user.home", RUNELITE_DIR.getAbsolutePath());
 			try
@@ -323,6 +339,7 @@ public class RuneLite
 		// Load the plugins, but does not start them yet.
 		// This will initialize configuration
 		pluginManager.loadCorePlugins();
+		pluginManager.loadSideLoadPlugins();
 		externalPluginManager.loadExternalPlugins();
 
 		SplashScreen.stage(.70, null, "Finalizing configuration");
@@ -365,6 +382,14 @@ public class RuneLite
 		SplashScreen.stop();
 
 		clientUI.show();
+
+		if (!options.has("disable-telemetry"))
+		{
+			injector.getInstance(TelemetryClient.class).submitTelemetry();
+		}
+
+		ReflectUtil.queueInjectorAnnotationCacheInvalidation(injector);
+		ReflectUtil.invalidateAnnotationCaches();
 	}
 
 	@VisibleForTesting
@@ -417,9 +442,15 @@ public class RuneLite
 	{
 		OkHttpClient.Builder builder = new OkHttpClient.Builder()
 			.pingInterval(30, TimeUnit.SECONDS)
-			.addNetworkInterceptor(chain ->
+			.addInterceptor(chain ->
 			{
-				Request userAgentRequest = chain.request()
+				Request request = chain.request();
+				if (request.header("User-Agent") != null)
+				{
+					return chain.proceed(request);
+				}
+
+				Request userAgentRequest = request
 					.newBuilder()
 					.header("User-Agent", USER_AGENT)
 					.build();
@@ -511,6 +542,21 @@ public class RuneLite
 		catch (Exception e)
 		{
 			log.warn("unable to copy jagexcache", e);
+		}
+	}
+
+	private void setupSystemProps()
+	{
+		if (runtimeConfig == null || runtimeConfig.getSysProps() == null)
+		{
+			return;
+		}
+
+		for (Map.Entry<String, String> entry : runtimeConfig.getSysProps().entrySet())
+		{
+			String key = entry.getKey(), value = entry.getValue();
+			log.debug("Setting property {}={}", key, value);
+			System.setProperty(key, value);
 		}
 	}
 }

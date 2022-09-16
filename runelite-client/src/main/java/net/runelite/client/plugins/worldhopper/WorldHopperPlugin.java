@@ -58,6 +58,7 @@ import net.runelite.api.Varbits;
 import net.runelite.api.clan.ClanChannel;
 import net.runelite.api.clan.ClanChannelMember;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuEntryAdded;
@@ -283,6 +284,40 @@ public class WorldHopperPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onCommandExecuted(CommandExecuted commandExecuted)
+	{
+		if ("hop".equals(commandExecuted.getCommand()))
+		{
+			int worldNumber;
+			try
+			{
+				String[] arguments = commandExecuted.getArguments();
+				worldNumber = Integer.parseInt(arguments[0]);
+			}
+			catch (NumberFormatException | ArrayIndexOutOfBoundsException ex)
+			{
+				chatMessageManager.queue(QueuedMessage.builder()
+					.type(ChatMessageType.CONSOLE)
+					.value("Usage: ::hop world")
+					.build());
+				return;
+			}
+
+			World world = worldService.getWorlds().findWorld(worldNumber);
+			if (world == null)
+			{
+				chatMessageManager.queue(QueuedMessage.builder()
+					.type(ChatMessageType.CONSOLE)
+					.value("Unknown world " + worldNumber)
+					.build());
+				return;
+			}
+
+			hop(world);
+		}
+	}
+
 	private void setFavoriteConfig(int world)
 	{
 		configManager.setConfiguration(WorldHopperConfig.GROUP, "favorite_" + world, true);
@@ -310,11 +345,6 @@ public class WorldHopperPlugin extends Plugin
 		return client.getWorld();
 	}
 
-	void hopTo(World world)
-	{
-		clientThread.invoke(() -> hop(world.getId()));
-	}
-
 	void addToFavorites(World world)
 	{
 		log.debug("Adding world {} to favorites", world.getId());
@@ -332,14 +362,11 @@ public class WorldHopperPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{
-		int old1 = favoriteWorld1;
-		int old2 = favoriteWorld2;
-
-		favoriteWorld1 = client.getVar(Varbits.WORLDHOPPER_FAVROITE_1);
-		favoriteWorld2 = client.getVar(Varbits.WORLDHOPPER_FAVROITE_2);
-
-		if (old1 != favoriteWorld1 || old2 != favoriteWorld2)
+		if (varbitChanged.getVarbitId() == Varbits.WORLDHOPPER_FAVROITE_1
+			|| varbitChanged.getVarbitId() == Varbits.WORLDHOPPER_FAVROITE_2)
 		{
+			favoriteWorld1 = client.getVarbitValue(Varbits.WORLDHOPPER_FAVROITE_1);
+			favoriteWorld2 = client.getVarbitValue(Varbits.WORLDHOPPER_FAVROITE_2);
 			SwingUtilities.invokeLater(panel::updateList);
 		}
 	}
@@ -573,6 +600,12 @@ public class WorldHopperPlugin extends Plugin
 				continue;
 			}
 
+			if (world.getPlayers() < 0)
+			{
+				// offline world
+				continue;
+			}
+
 			// Break out if we've found a good world to hop to
 			if (currentWorldTypes.equals(types))
 			{
@@ -601,8 +634,6 @@ public class WorldHopperPlugin extends Plugin
 
 	private void hop(int worldId)
 	{
-		assert client.isClientThread();
-
 		WorldResult worldResult = worldService.getWorlds();
 		// Don't try to hop if the world doesn't exist
 		World world = worldResult.findWorld(worldId);
@@ -610,6 +641,19 @@ public class WorldHopperPlugin extends Plugin
 		{
 			return;
 		}
+
+		hop(world);
+	}
+
+	void hopTo(World world)
+	{
+		// this is called from the panel, on edt
+		clientThread.invoke(() -> hop(world));
+	}
+
+	private void hop(World world)
+	{
+		assert client.isClientThread();
 
 		final net.runelite.api.World rsWorld = client.createWorld();
 		rsWorld.setActivity(world.getActivity());

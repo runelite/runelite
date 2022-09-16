@@ -78,16 +78,13 @@ class InventoryGridOverlay extends Overlay
 		}
 
 		// grid is only supported on bank inventory and inventory
-		Widget inventoryWidget = draggingWidget.isIf3() ?
-			client.getWidget(WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER) :
-			client.getWidget(WidgetInfo.INVENTORY);
-
-		// with if3 the dragged widget is a child of the inventory, with if1 it is an item of the inventory (and the same widget)
-		if (inventoryWidget == null || (draggingWidget.isIf3() ? draggingWidget.getParent() != inventoryWidget : draggingWidget != inventoryWidget))
+		if (draggingWidget.getId() != WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getId()
+			&& draggingWidget.getId() != WidgetInfo.INVENTORY.getId())
 		{
 			return null;
 		}
 
+		final Widget inventoryWidget = draggingWidget.getParent();
 		final net.runelite.api.Point mouse = client.getMouseCanvasPosition();
 		final Point mousePoint = new Point(mouse.getX(), mouse.getY());
 		final int draggedItemIndex = draggingWidget.isIf3() ? draggingWidget.getIndex() : client.getIf1DraggedItemIndex();
@@ -100,7 +97,7 @@ class InventoryGridOverlay extends Overlay
 		}
 
 		if (draggedItem.getId() == -1
-			|| client.getItemPressedDuration() < config.dragDelay() / Constants.CLIENT_TICK_LENGTH
+			|| (draggingWidget.isIf3() ? client.getDragTime() : client.getItemPressedDuration()) < config.dragDelay() / Constants.CLIENT_TICK_LENGTH
 			|| !hoverActive && initialMousePoint.distance(mousePoint) < DISTANCE_TO_ACTIVATE_HOVER)
 		{
 			return null;

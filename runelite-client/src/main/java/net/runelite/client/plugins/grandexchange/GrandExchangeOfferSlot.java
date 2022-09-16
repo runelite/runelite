@@ -211,7 +211,7 @@ public class GrandExchangeOfferSlot extends JPanel
 		{
 			cardLayout.show(container, FACE_CARD);
 
-			itemName.setText(offerItem.getName());
+			itemName.setText(offerItem.getMembersName());
 			itemIcon.setIcon(new ImageIcon(itemImage));
 
 			boolean buying = newOffer.getState() == BOUGHT
@@ -239,7 +239,7 @@ public class GrandExchangeOfferSlot extends JPanel
 			popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 			final JMenuItem openGeLink = new JMenuItem("Open Grand Exchange website");
-			openGeLink.addActionListener(e -> grandExchangePlugin.openGeLink(offerItem.getName(), offerItem.getId()));
+			openGeLink.addActionListener(e -> grandExchangePlugin.openGeLink(offerItem.getMembersName(), offerItem.getId()));
 			popupMenu.add(openGeLink);
 
 			/* Couldn't set the tooltip for the container panel as the children override it, so I'm setting

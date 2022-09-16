@@ -413,8 +413,8 @@ public class ScreenshotPluginTest
 		ScriptPreFired notificationStart = new ScriptPreFired(ScriptID.NOTIFICATION_START);
 		screenshotPlugin.onScriptPreFired(notificationStart);
 
-		when(client.getVar(VarClientStr.NOTIFICATION_TOP_TEXT)).thenReturn("Collection log");
-		when(client.getVar(VarClientStr.NOTIFICATION_BOTTOM_TEXT)).thenReturn("New item:<br><br><col=ffffff>Chompy bird hat</col>");
+		when(client.getVarcStrValue(VarClientStr.NOTIFICATION_TOP_TEXT)).thenReturn("Collection log");
+		when(client.getVarcStrValue(VarClientStr.NOTIFICATION_BOTTOM_TEXT)).thenReturn("New item:<br><br><col=ffffff>Chompy bird hat</col>");
 
 		ScriptPreFired notificationDelay = new ScriptPreFired(ScriptID.NOTIFICATION_DELAY);
 		screenshotPlugin.onScriptPreFired(notificationDelay);
@@ -427,13 +427,13 @@ public class ScreenshotPluginTest
 	{
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", COLLECTION_LOG_CHAT, null, 0);
 
-		when(client.getVar(Varbits.COLLECTION_LOG_NOTIFICATION)).thenReturn(1);
+		when(client.getVarbitValue(Varbits.COLLECTION_LOG_NOTIFICATION)).thenReturn(1);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
 		verify(screenshotPlugin).takeScreenshot("Collection log (Chompy bird hat)", "Collection Log");
 		reset(screenshotPlugin);
 
-		when(client.getVar(Varbits.COLLECTION_LOG_NOTIFICATION)).thenReturn(3);
+		when(client.getVarbitValue(Varbits.COLLECTION_LOG_NOTIFICATION)).thenReturn(3);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
 		verify(screenshotPlugin, never()).takeScreenshot(anyString(), anyString());
@@ -476,8 +476,8 @@ public class ScreenshotPluginTest
 		ScriptPreFired notificationStart = new ScriptPreFired(ScriptID.NOTIFICATION_START);
 		screenshotPlugin.onScriptPreFired(notificationStart);
 
-		when(client.getVar(VarClientStr.NOTIFICATION_TOP_TEXT)).thenReturn("Combat Task Completed!");
-		when(client.getVar(VarClientStr.NOTIFICATION_BOTTOM_TEXT)).thenReturn("Task Completed: <col=ffffff>Handyman</col>");
+		when(client.getVarcStrValue(VarClientStr.NOTIFICATION_TOP_TEXT)).thenReturn("Combat Task Completed!");
+		when(client.getVarcStrValue(VarClientStr.NOTIFICATION_BOTTOM_TEXT)).thenReturn("Task Completed: <col=ffffff>Handyman</col>");
 
 		ScriptPreFired notificationDelay = new ScriptPreFired(ScriptID.NOTIFICATION_DELAY);
 		screenshotPlugin.onScriptPreFired(notificationDelay);
@@ -490,7 +490,7 @@ public class ScreenshotPluginTest
 	{
 		when(screenshotConfig.screenshotCombatAchievements()).thenReturn(true);
 
-		when(client.getVar(Varbits.COMBAT_ACHIEVEMENTS_POPUP)).thenReturn(1);
+		when(client.getVarbitValue(Varbits.COMBAT_ACHIEVEMENTS_POPUP)).thenReturn(1);
 
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "",
 			"Congratulations, you've completed an easy combat task: <col=06600c>Handyman</col>.", null, 0);

@@ -35,7 +35,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class XteaKeyManager
+public class XteaKeyManager implements KeyProvider
 {
 	private static final Logger logger = LoggerFactory.getLogger(XteaKeyManager.class);
 
@@ -56,7 +56,8 @@ public class XteaKeyManager
 		logger.info("Loaded {} keys", keys.size());
 	}
 
-	public int[] getKeys(int region)
+	@Override
+	public int[] getKey(int region)
 	{
 		return keys.get(region);
 	}

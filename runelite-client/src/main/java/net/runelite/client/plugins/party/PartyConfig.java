@@ -28,6 +28,8 @@ package net.runelite.client.plugins.party;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
+import net.runelite.client.config.Keybind;
 
 @ConfigGroup(PartyConfig.GROUP)
 public interface PartyConfig extends Config
@@ -37,7 +39,7 @@ public interface PartyConfig extends Config
 	@ConfigItem(
 		keyName = "pings",
 		name = "Pings",
-		description = "Enables party pings (shift + left-click)",
+		description = "Enables party pings",
 		position = 1
 	)
 	default boolean pings()
@@ -57,21 +59,10 @@ public interface PartyConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "messages",
-		name = "Join messages",
-		description = "Enables members join/leave game messages",
-		position = 3
-	)
-	default boolean messages()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "recolorNames",
 		name = "Recolor names",
 		description = "Recolor party members names based on unique color hash",
-		position = 4
+		position = 3
 	)
 	default boolean recolorNames()
 	{
@@ -79,25 +70,93 @@ public interface PartyConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "autoOverlay",
-		name = "Auto overlay",
-		description = "Automatically add an overlay with player data when a member joins",
+		keyName = "pingHotkey",
+		name = "Ping hotkey",
+		description = "Key to hold to send a tile ping",
+		position = 4
+	)
+	default Keybind pingHotkey()
+	{
+		return Keybind.NOT_SET;
+	}
+
+	@ConfigSection(
+		name = "Player Status Overlay",
+		description = "Player status such as health, prayer, and special attack energy drawn on player models.",
 		position = 5
 	)
-	default boolean autoOverlay()
+	String SECTION_STATUS_OVERLAY = "statusOverlay";
+
+	@ConfigItem(
+		section = SECTION_STATUS_OVERLAY,
+		keyName = "statusOverlayHealth",
+		name = "Show Health",
+		description = "Show health of party members on the player model.",
+		position = 6
+	)
+	default boolean statusOverlayHealth()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		section = SECTION_STATUS_OVERLAY,
+		keyName = "statusOverlayPrayer",
+		name = "Show Prayer",
+		description = "Show prayer of party members on the player model.",
+		position = 7
+	)
+	default boolean statusOverlayPrayer()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		section = SECTION_STATUS_OVERLAY,
+		keyName = "statusOverlayStamina",
+		name = "Show Run Energy",
+		description = "Show run energy (stamina) of party members on the player model.",
+		position = 8
+	)
+	default boolean statusOverlayStamina()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		section = SECTION_STATUS_OVERLAY,
+		keyName = "statusOverlaySpec",
+		name = "Show Spec Energy",
+		description = "Show special attack energy of party members on the player model.",
+		position = 9
+	)
+	default boolean statusOverlaySpec()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		section = SECTION_STATUS_OVERLAY,
+		keyName = "statusOverlayVeng",
+		name = "Show Vengeance",
+		description = "Show vengeance status (active/inactive) of party members on the player model.",
+		position = 10
+	)
+	default boolean statusOverlayVeng()
 	{
 		return true;
 	}
 
 	@ConfigItem(
-		keyName = "includeSelf",
-		name = "Include yourself",
-		description = "Shows yourself in the panel as part of the party",
-		position = 6
+		section = SECTION_STATUS_OVERLAY,
+		keyName = "statusOverlayRenderSelf",
+		name = "Show On Self",
+		description = "Show above activated status overlays on your local player.",
+		position = 11
 	)
-	default boolean includeSelf()
+	default boolean statusOverlayRenderSelf()
 	{
-		return false;
+		return true;
 	}
 
 	@ConfigItem(

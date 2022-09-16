@@ -75,7 +75,7 @@ public class MapDumperTest
 
 			for (int i = 0; i < MAX_REGIONS; i++)
 			{
-				int[] keys = keyManager.getKeys(i);
+				int[] keys = keyManager.getKey(i);
 
 				int x = i >> 8;
 				int y = i & 0xFF;
@@ -140,7 +140,7 @@ public class MapDumperTest
 			MapDefinition mapDef = new MapLoader().load(x, y, data);
 			LocationsDefinition locDef = null;
 
-			int[] keys = keyManager.getKeys(i);
+			int[] keys = keyManager.getKey(i);
 			if (keys != null)
 			{
 				try

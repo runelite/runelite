@@ -24,23 +24,33 @@
  */
 package net.runelite.client.plugins.chatcommands;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 import com.google.gson.Gson;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.function.BooleanSupplier;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import static net.runelite.api.ChatMessageType.FRIENDSCHATNOTIFICATION;
 import static net.runelite.api.ChatMessageType.GAMEMESSAGE;
 import static net.runelite.api.ChatMessageType.TRADE;
 import net.runelite.api.Client;
+import net.runelite.api.EnumComposition;
+import net.runelite.api.EnumID;
+import net.runelite.api.GameState;
+import net.runelite.api.IndexedSprite;
+import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemID;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
 import net.runelite.api.ScriptID;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptPostFired;
@@ -49,6 +59,7 @@ import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetID.ADVENTURE_LOG_ID;
 import static net.runelite.api.widgets.WidgetID.DIARY_QUEST_GROUP_ID;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatClient;
 import net.runelite.client.chat.ChatCommandManager;
 import net.runelite.client.config.ChatColorConfig;
@@ -58,22 +69,29 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.hiscore.HiscoreClient;
 import net.runelite.client.hiscore.HiscoreEndpoint;
 import net.runelite.client.hiscore.HiscoreResult;
+import net.runelite.client.hiscore.HiscoreSkill;
 import net.runelite.client.hiscore.Skill;
-import net.runelite.http.api.RuneLiteAPI;
+import net.runelite.client.util.AsyncBufferedImage;
+import org.junit.After;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.nullable;
 import org.mockito.Mock;
-import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.stubbing.Answer;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ChatCommandsPluginTest
@@ -83,6 +101,10 @@ public class ChatCommandsPluginTest
 	@Mock
 	@Bind
 	Client client;
+
+	@Mock
+	@Bind
+	ClientThread clientThread;
 
 	@Mock
 	@Bind
@@ -123,7 +145,10 @@ public class ChatCommandsPluginTest
 	@Inject
 	ChatCommandsPlugin chatCommandsPlugin;
 
-	final Gson gson = RuneLiteAPI.GSON;
+	@Inject
+	Gson gson;
+
+	private IndexedSprite[] modIcons;
 
 	@Before
 	public void before()
@@ -133,12 +158,44 @@ public class ChatCommandsPluginTest
 		Player player = mock(Player.class);
 		when(player.getName()).thenReturn(PLAYER_NAME);
 		when(client.getLocalPlayer()).thenReturn(player);
+
+		modIcons = new IndexedSprite[0];
+		when(client.getModIcons()).thenAnswer(a -> modIcons);
+		doAnswer((Answer<Void>) invocationOnMock ->
+		{
+			Object argument = invocationOnMock.getArguments()[0];
+			modIcons = (IndexedSprite[]) argument;
+			return null;
+		}).when(client).setModIcons(any(IndexedSprite[].class));
+
+		when(client.getGameState()).thenReturn(GameState.LOGGED_IN);
+		when(client.createIndexedSprite()).thenReturn(mock(IndexedSprite.class));
+
+		EnumComposition enum_ = mock(EnumComposition.class);
+		when(enum_.size()).thenReturn(1);
+		when(enum_.getIntValue(0)).thenReturn(ItemID.CHOMPY_CHICK);
+		when(client.getEnum(EnumID.PETS)).thenReturn(enum_);
+
+		when(itemManager.getImage(anyInt())).thenReturn(new AsyncBufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
+
+		chatCommandsPlugin.startUp();
+
+		// clientthread callback
+		ArgumentCaptor<BooleanSupplier> captor = ArgumentCaptor.forClass(BooleanSupplier.class);
+		verify(clientThread).invoke(captor.capture());
+		captor.getValue().getAsBoolean();
+	}
+
+	@After
+	public void after()
+	{
+		chatCommandsPlugin.shutDown();
 	}
 
 	@Test
 	public void testStartupShutdown()
 	{
-		chatCommandsPlugin.startUp();
+		// minor kludge since before/after will startup/shutdown
 		chatCommandsPlugin.shutDown();
 
 		ArgumentCaptor<String> registerCaptor = ArgumentCaptor.forClass(String.class);
@@ -150,6 +207,8 @@ public class ChatCommandsPluginTest
 		verify(chatCommandManager, atLeastOnce()).unregisterCommand(unregisterCaptor.capture());
 
 		assertEquals(Sets.newHashSet(registerCaptor.getAllValues()), Sets.newHashSet(unregisterCaptor.getAllValues()));
+
+		chatCommandsPlugin.startUp();
 	}
 
 	@Test
@@ -164,43 +223,68 @@ public class ChatCommandsPluginTest
 	@Test
 	public void testTheatreOfBlood()
 	{
+		when(client.getVarbitValue(Varbits.THEATRE_OF_BLOOD_ORB1)).thenReturn(1);
+		when(client.getVarbitValue(Varbits.THEATRE_OF_BLOOD_ORB2)).thenReturn(15);
+
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "",
-			"Wave 'The Final Challenge' (Normal Mode) complete!<br>Duration: <col=ff0000>2:42.0</col><br>Theatre of Blood wave completion time: <col=ff0000>17:00.20</col> (new personal best)", null, 0);
+			"Wave 'The Final Challenge' (Normal Mode) complete!<br>" +
+				"Duration: <col=ff0000>2:42.0</col><br>" +
+				"Theatre of Blood completion time: <col=ff0000>17:00.20</col> (new personal best)", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
-		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Theatre of Blood count is: <col=ff0000>73</col>.", null, 0);
-		chatCommandsPlugin.onChatMessage(chatMessageEvent);
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Theatre of Blood total completion time: <col=ff0000>24:40.20</col>. Personal best: 20:45.00", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Theatre of Blood count is: <col=ff0000>73</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
 
 		verify(configManager).setRSProfileConfiguration("killcount", "theatre of blood", 73);
 		verify(configManager).setRSProfileConfiguration("personalbest", "theatre of blood", 17 * 60 + .2);
+		verify(configManager).setRSProfileConfiguration("personalbest", "theatre of blood 2 players", 17 * 60 + .2);
 	}
 
 	@Test
 	public void testTheatreOfBloodNoPb()
 	{
+		when(client.getVarbitValue(Varbits.THEATRE_OF_BLOOD_ORB1)).thenReturn(1);
+
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "",
-			"Wave 'The Final Challenge' (Normal Mode) complete!<br>Duration: <col=ff0000>2:42</col><br>Theatre of Blood wave completion time: <col=ff0000>17:00</col>. Personal best: 13:52.80", null, 0);
+			"Wave 'The Final Challenge' (Normal Mode) complete!<br>" +
+				"Duration: <col=ff0000>2:42</col><br>" +
+				"Theatre of Blood completion time: <col=ff0000>17:00</col>. Personal best: 13:52.80", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
-		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Theatre of Blood count is: <col=ff0000>73</col>.", null, 0);
-		chatCommandsPlugin.onChatMessage(chatMessageEvent);
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Theatre of Blood total completion time: <col=ff0000>24:40.20</col>. Personal best: 20:45.00", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Theatre of Blood count is: <col=ff0000>73</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
 
 		verify(configManager).setRSProfileConfiguration("killcount", "theatre of blood", 73);
 		verify(configManager).setRSProfileConfiguration("personalbest", "theatre of blood", 13 * 60 + 52.8);
+		verify(configManager).setRSProfileConfiguration("personalbest", "theatre of blood solo", 13 * 60 + 52.8);
 	}
 
 	@Test
 	public void testTheatreOfBloodEntryMode()
 	{
+		when(client.getVarbitValue(Varbits.THEATRE_OF_BLOOD_ORB1)).thenReturn(1);
+
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "",
-			"Wave 'The Final Challenge' (Entry Mode) complete!<br>Duration: <col=ff0000>2:42</col><br>Theatre of Blood wave completion time: <col=ff0000>17:00</col> (new personal best)", null, 0);
+			"Wave 'The Final Challenge' (Entry Mode) complete!<br>" +
+				"Duration: <col=ff0000>2:42</col><br>" +
+				"Theatre of Blood completion time: <col=ff0000>17:00</col> (new personal best)", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
-		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Theatre of Blood: Entry Mode count is: <col=ff0000>73</col>.", null, 0);
-		chatCommandsPlugin.onChatMessage(chatMessageEvent);
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Theatre of Blood total completion time: <col=ff0000>24:40.20</col>. Personal best: 20:45.00", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Theatre of Blood: Entry Mode count is: <col=ff0000>73</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
 
 		verify(configManager).setRSProfileConfiguration("killcount", "theatre of blood entry mode", 73);
 		verify(configManager).setRSProfileConfiguration("personalbest", "theatre of blood entry mode", 17 * 60.);
+		verify(configManager).setRSProfileConfiguration("personalbest", "theatre of blood entry mode solo", 17 * 60.);
 	}
 
 	@Test
@@ -375,6 +459,46 @@ public class ChatCommandsPluginTest
 	}
 
 	@Test
+	public void testShayzienAdvancedAgilityLap()
+	{
+		// This sets lastBoss
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Shayzien Advanced Agility Course lap count is: <col=ff0000>2</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Lap duration: <col=ff0000>1:01</col> (new personal best).", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("personalbest", "shayzien advanced agility course", 61.0);
+		verify(configManager).setRSProfileConfiguration("killcount", "shayzien advanced agility course", 2);
+
+		// Precise times
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Lap duration: <col=ff0000>1:01.20</col> (new personal best).", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("personalbest", "shayzien advanced agility course", 61.2);
+	}
+
+	@Test
+	public void testShayzienBasicAgilityLap()
+	{
+		// This sets lastBoss
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Shayzien Basic Agility Course lap count is: <col=ff0000>2</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Lap duration: <col=ff0000>1:01</col> (new personal best).", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("personalbest", "shayzien basic agility course", 61.0);
+		verify(configManager).setRSProfileConfiguration("killcount", "shayzien basic agility course", 2);
+
+		// Precise times
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Lap duration: <col=ff0000>1:01.20</col> (new personal best).", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("personalbest", "shayzien basic agility course", 61.2);
+	}
+
+	@Test
 	public void testZukNewPb()
 	{
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your TzKal-Zuk kill count is: <col=ff0000>2</col>.", null, 0);
@@ -501,45 +625,45 @@ public class ChatCommandsPluginTest
 	@Test
 	public void testCoXKill()
 	{
-		ChatMessage chatMessage = new ChatMessage(null, FRIENDSCHATNOTIFICATION, "", "<col=ef20ff>Congratulations - your raid is complete!</col><br>Team size: <col=ff0000>24+ players</col> Duration:</col> <col=ff0000>37:04</col> (new personal best)</col>>", null, 0);
+		ChatMessage chatMessage = new ChatMessage(null, FRIENDSCHATNOTIFICATION, "", "<col=ef20ff>Congratulations - your raid is complete!</col><br>Team size: <col=ff0000>24+ players</col> Duration:</col> <col=ff0000>37:04.20</col> (new personal best)</col>>", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
 		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Chambers of Xeric count is: <col=ff0000>51</col>.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
 		verify(configManager).setRSProfileConfiguration("killcount", "chambers of xeric", 51);
-		verify(configManager).setRSProfileConfiguration("personalbest", "chambers of xeric", 37 * 60 + 4.0);
-
-		// Precise times
-		chatMessage = new ChatMessage(null, FRIENDSCHATNOTIFICATION, "", "<col=ef20ff>Congratulations - your raid is complete!</col><br>Team size: <col=ff0000>24+ players</col> Duration:</col> <col=ff0000>37:04.20</col> (new personal best)</col>>", null, 0);
-		chatCommandsPlugin.onChatMessage(chatMessage);
-
-		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Chambers of Xeric count is: <col=ff0000>51</col>.", null, 0);
-		chatCommandsPlugin.onChatMessage(chatMessage);
-
 		verify(configManager).setRSProfileConfiguration("personalbest", "chambers of xeric", 37 * 60 + 4.2);
+		verify(configManager).setRSProfileConfiguration("personalbest", "chambers of xeric 24+ players", 37 * 60 + 4.2);
 	}
 
 	@Test
 	public void testCoXKillNoPb()
 	{
-		ChatMessage chatMessage = new ChatMessage(null, FRIENDSCHATNOTIFICATION, "", "<col=ef20ff>Congratulations - your raid is complete!</col><br>Team size: <col=ff0000>11-15 players</col> Duration:</col> <col=ff0000>23:25</col> Personal best: </col><col=ff0000>20:19</col>", null, 0);
+		ChatMessage chatMessage = new ChatMessage(null, FRIENDSCHATNOTIFICATION, "", "<col=ef20ff>Congratulations - your raid is complete!</col><br>Team size: <col=ff0000>11-15 players</col> Duration:</col> <col=ff0000>23:25.40</col> Personal best: </col><col=ff0000>20:19.20</col>", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
 		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Chambers of Xeric count is: <col=ff0000>52</col>.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
 		verify(configManager).setRSProfileConfiguration("killcount", "chambers of xeric", 52);
-		verify(configManager).setRSProfileConfiguration("personalbest", "chambers of xeric", 20 * 60 + 19.0);
-
-		// Precise times
-		chatMessage = new ChatMessage(null, FRIENDSCHATNOTIFICATION, "", "<col=ef20ff>Congratulations - your raid is complete!</col><br>Team size: <col=ff0000>11-15 players</col> Duration:</col> <col=ff0000>23:25.40</col> Personal best: </col><col=ff0000>20:19.20</col>", null, 0);
-		chatCommandsPlugin.onChatMessage(chatMessage);
-
-		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Chambers of Xeric count is: <col=ff0000>52</col>.", null, 0);
-		chatCommandsPlugin.onChatMessage(chatMessage);
-
 		verify(configManager).setRSProfileConfiguration("personalbest", "chambers of xeric", 20 * 60 + 19.2);
+		verify(configManager).setRSProfileConfiguration("personalbest", "chambers of xeric 11-15 players", 20 * 60 + 19.2);
+	}
+
+	@Test
+	public void testCoxCmNoPb()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, FRIENDSCHATNOTIFICATION, "",
+			"<col=ef20ff>Congratulations - your raid is complete!</col><br>Team size: <col=ff0000>3 players</col> Duration:</col> <col=ff0000>41:10</col> Personal best: </col><col=ff0000>40:03</col>", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "",
+			"Your completed Chambers of Xeric Challenge Mode count is: <col=ff0000>13</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("killcount", "chambers of xeric challenge mode", 13);
+		verify(configManager).setRSProfileConfiguration("personalbest", "chambers of xeric challenge mode", 40 * 60 + 3.);
+		verify(configManager).setRSProfileConfiguration("personalbest", "chambers of xeric challenge mode 3 players", 40 * 60 + 3.);
 	}
 
 	@Test
@@ -547,9 +671,8 @@ public class ChatCommandsPluginTest
 	{
 		when(chatCommandsConfig.lvl()).thenReturn(true);
 
-		HiscoreResult hiscoreResult = new HiscoreResult();
-		hiscoreResult.setPlayer(PLAYER_NAME);
-		hiscoreResult.setZulrah(new Skill(10, 1000, -1));
+		HiscoreResult hiscoreResult = new HiscoreResult(PLAYER_NAME,
+			ImmutableMap.of(HiscoreSkill.CHAMBERS_OF_XERIC_CHALLENGE_MODE, new Skill(10, 1000, -1)));
 
 		when(hiscoreClient.lookup(eq(PLAYER_NAME), nullable(HiscoreEndpoint.class))).thenReturn(hiscoreResult);
 
@@ -559,9 +682,9 @@ public class ChatCommandsPluginTest
 		chatMessage.setType(ChatMessageType.PUBLICCHAT);
 		chatMessage.setName(PLAYER_NAME);
 		chatMessage.setMessageNode(messageNode);
-		chatCommandsPlugin.playerSkillLookup(chatMessage, "!lvl zulrah");
+		chatCommandsPlugin.playerSkillLookup(chatMessage, "!lvl cox cm");
 
-		verify(messageNode).setRuneLiteFormatMessage("<colNORMAL>Level <colHIGHLIGHT>Zulrah: 1000<colNORMAL> Rank: <colHIGHLIGHT>10");
+		verify(messageNode).setRuneLiteFormatMessage("<colNORMAL>Level <colHIGHLIGHT>Chambers of Xeric: Challenge Mode: 1000<colNORMAL> Rank: <colHIGHLIGHT>10");
 	}
 
 	@Test
@@ -834,8 +957,8 @@ public class ChatCommandsPluginTest
 			when(logPetEntriesWidget[i].getOpacity()).thenReturn(175);
 		}
 
-		when(logPetEntriesWidget[1].getName()).thenReturn("<col=ff9040>Ikkle hydra</col>");
 		when(logPetEntriesWidget[1].getOpacity()).thenReturn(0);
+		when(logPetEntriesWidget[1].getItemId()).thenReturn(ItemID.IKKLE_HYDRA);
 
 		when(logEntryItemsWidget.getChildren()).thenReturn(logPetEntriesWidget);
 
@@ -844,10 +967,7 @@ public class ChatCommandsPluginTest
 
 		chatCommandsPlugin.onGameTick(new GameTick());
 
-		Pet[] playerPetList = new Pet[1];
-		playerPetList[0] = Pet.IKKLE_HYDRA;
-
-		verify(configManager).setRSProfileConfiguration("chatcommands", "pets", gson.toJson(playerPetList));
+		verify(configManager).setRSProfileConfiguration("chatcommands", "pets2", gson.toJson(new int[]{ItemID.IKKLE_HYDRA}));
 	}
 
 	@Test
@@ -881,7 +1001,7 @@ public class ChatCommandsPluginTest
 
 		chatCommandsPlugin.onGameTick(new GameTick());
 
-		verify(configManager).setRSProfileConfiguration("chatcommands", "pets", gson.toJson(new Pet[0]));
+		verify(configManager).setRSProfileConfiguration("chatcommands", "pets2", gson.toJson(new int[0]));
 	}
 
 	@Test
@@ -908,8 +1028,8 @@ public class ChatCommandsPluginTest
 			when(logPetEntriesWidget[i].getOpacity()).thenReturn(175);
 		}
 
-		when(logPetEntriesWidget[1].getName()).thenReturn("<col=ff9040>Ikkle hydra</col>");
 		when(logPetEntriesWidget[1].getOpacity()).thenReturn(0);
+		when(logPetEntriesWidget[1].getItemId()).thenReturn(ItemID.IKKLE_HYDRA);
 
 		when(logEntryItemsWidget.getChildren()).thenReturn(logPetEntriesWidget);
 
@@ -918,22 +1038,22 @@ public class ChatCommandsPluginTest
 
 		chatCommandsPlugin.onGameTick(new GameTick());
 
-		Pet[] playerPetList = new Pet[1];
-		playerPetList[0] = Pet.IKKLE_HYDRA;
+		verify(configManager).setRSProfileConfiguration("chatcommands", "pets2", gson.toJson(new int[]{ItemID.IKKLE_HYDRA}));
 
-		verify(configManager).setRSProfileConfiguration("chatcommands", "pets", gson.toJson(playerPetList));
+		// chompy chick item
+		ItemComposition chompy = mock(ItemComposition.class);
+		when(chompy.getId()).thenReturn(ItemID.CHOMPY_CHICK);
+		when(chompy.getName()).thenReturn("Chompy chick");
+		when(itemManager.getItemComposition(ItemID.CHOMPY_CHICK)).thenReturn(chompy);
 
 		ChatMessage chatMessage = new ChatMessage();
 		chatMessage.setMessage("New item added to your collection log: Chompy chick");
 		chatMessage.setType(GAMEMESSAGE);
-		when(configManager.getRSProfileConfiguration("chatcommands", "pets",
-			String.class)).thenReturn(gson.toJson(playerPetList));
+		when(configManager.getRSProfileConfiguration("chatcommands", "pets2",
+			String.class)).thenReturn(gson.toJson(new int[]{ItemID.IKKLE_HYDRA}));
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
-		playerPetList = new Pet[2];
-		playerPetList[0] = Pet.IKKLE_HYDRA;
-		playerPetList[1] = Pet.CHOMPY_CHICK;
-		verify(configManager).setRSProfileConfiguration("chatcommands", "pets", gson.toJson(playerPetList));
+		verify(configManager).setRSProfileConfiguration("chatcommands", "pets2", gson.toJson(new int[]{ItemID.IKKLE_HYDRA, ItemID.CHOMPY_CHICK}));
 	}
 
 	@Test
@@ -1021,6 +1141,10 @@ public class ChatCommandsPluginTest
 			"Theatre of Blood",
 			"Fastest Room time (former): <col=ffffff>18:45</col>",
 			"Fastest Wave time (former): <col=ffffff>22:01</col>",
+			"Fastest Room time - (Team size: (1 player): <col=ffffff>1:01:57.00</col>",
+			"Fastest Overall time - (Team size: 1 player): <col=ffffff>1:06:40.20</col>",
+			"Fastest Room time - (Team size: (2 player): <col=ffffff>22:43.80</col>",
+			"Fastest Overall time - (Team size: 2 player): <col=ffffff>27:36.60</col>",
 			"Fastest Room time - (Team size: (3 player): <col=ffffff>19:50</col>",
 			"Fastest Overall time - (Team size: 3 player): <col=ffffff>22:47</col>",
 			"Fastest Room time - (Team size: (4 player): <col=ffffff>17:38</col>",
@@ -1072,6 +1196,76 @@ public class ChatCommandsPluginTest
 
 		verify(configManager).setRSProfileConfiguration("personalbest", "tztok-jad", 2033.0);
 		verify(configManager).setRSProfileConfiguration("personalbest", "tempoross", 234.0);
-		verify(configManager).setRSProfileConfiguration("personalbest", "chambers of xeric", 1360.0); // the lowest time
+		verify(configManager).setRSProfileConfiguration("personalbest", "chambers of xeric solo", 60 * 28 + 7.);
+		verify(configManager).setRSProfileConfiguration("personalbest", "chambers of xeric 2 players", 60 * 24 + 40.);
+		verify(configManager).setRSProfileConfiguration("personalbest", "theatre of blood solo", 3600 + 60 + 57.);
+		verify(configManager).setRSProfileConfiguration("personalbest", "theatre of blood 3 players", 19 * 60 + 50.);
+	}
+
+	@Test
+	public void testGuardiansOfTheRift()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Amount of rifts you have closed: <col=ff0000>167</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("killcount", "guardians of the rift", 167);
+	}
+
+	@Test
+	public void testReward()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your reward is: <col=ff0000>1</col> x <col=ff0000>Kebab</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager, never()).setRSProfileConfiguration(anyString(), anyString(), anyInt());
+	}
+
+	@Test
+	public void testToaKc()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Tombs of Amascut: Expert Mode count is: <col=ff0000>1</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Tombs of Amascut count is: <col=ff0000>2</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Tombs of Amascut: Entry Mode count is: <col=ff0000>3</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("killcount", "tombs of amascut expert mode", 1);
+		verify(configManager).setRSProfileConfiguration("killcount", "tombs of amascut", 2);
+		verify(configManager).setRSProfileConfiguration("killcount", "tombs of amascut entry mode", 3);
+	}
+
+	@Test
+	public void testToaPbNew()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Challenge complete: The Troll. Duration: <col=ef1020>8:30</col><br>Tombs of Amascut challenge completion time: <col=ef1020>8:31</col> (new personal best)", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Tombs of Amascut total completion time: <col=ef1020>0:01</col> (new personal best)", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Tombs of Amascut count is: <col=ff0000>1</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("killcount", "tombs of amascut", 1);
+		verify(configManager).setRSProfileConfiguration("personalbest", "tombs of amascut", 8 * 60 + 31.);
+	}
+
+	@Test
+	public void testToaPb()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Challenge complete: The Troll. Duration: <col=ef1020>9:40</col><br>Tombs of Amascut: Expert Mode challenge completion time: <col=ef1020>9:40</col>. Personal best: 8:31", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Tombs of Amascut total completion time: <col=ef1020>0:01</col> (new personal best)", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Tombs of Amascut: Expert Mode count is: <col=ff0000>1</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("killcount", "tombs of amascut expert mode", 1);
+		verify(configManager).setRSProfileConfiguration("personalbest", "tombs of amascut expert mode", 8 * 60 + 31.);
 	}
 }

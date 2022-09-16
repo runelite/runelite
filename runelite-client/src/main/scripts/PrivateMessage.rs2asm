@@ -30,24 +30,24 @@ LABEL21:
    get_varc_int           5
    switch                
       1: LABEL24
-      2: LABEL47
-      3: LABEL47
       4: LABEL26
       5: LABEL26
+      2: LABEL47
+      3: LABEL47
       6: LABEL47
       7: LABEL111
+      19: LABEL111
       8: LABEL117
       9: LABEL125
-      10: LABEL202
-      11: LABEL260
-      12: LABEL219
-      13: LABEL237
       15: LABEL125
-      16: LABEL266
-      18: LABEL260
-      19: LABEL111
       20: LABEL125
       21: LABEL125
+      10: LABEL202
+      12: LABEL219
+      13: LABEL237
+      11: LABEL260
+      18: LABEL260
+      16: LABEL266
    jump                   LABEL268
 LABEL24:
    return                
@@ -346,13 +346,13 @@ LABEL268:
 LABEL269:
    get_varc_int           5
    switch                
-      16: LABEL274
-      20: LABEL272
-      21: LABEL272
       7: LABEL272
       8: LABEL272
       9: LABEL272
       15: LABEL272
+      20: LABEL272
+      21: LABEL272
+      16: LABEL274
    jump                   LABEL275
 LABEL272:
    return                

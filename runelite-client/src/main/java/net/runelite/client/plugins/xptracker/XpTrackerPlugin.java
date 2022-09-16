@@ -34,7 +34,6 @@ import java.awt.image.BufferedImage;
 import java.time.temporal.ChronoUnit;
 import java.util.EnumSet;
 import java.util.List;
-import java.util.Objects;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Setter;
@@ -56,6 +55,7 @@ import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.StatChanged;
 import net.runelite.api.widgets.WidgetID;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.NPCManager;
@@ -101,6 +101,9 @@ public class XpTrackerPlugin extends Plugin
 	private Client client;
 
 	@Inject
+	private ClientThread clientThread;
+
+	@Inject
 	private SkillIconManager skillIconManager;
 
 	@Inject
@@ -123,7 +126,7 @@ public class XpTrackerPlugin extends Plugin
 	@VisibleForTesting
 	private XpPanel xpPanel;
 	private XpWorldType lastWorldType;
-	private String lastUsername;
+	private long lastAccount;
 	private long lastTickMillis = 0;
 	private boolean fetchXp; // fetch lastXp for the online xp tracker
 	private long lastXp = 0;
@@ -162,6 +165,15 @@ public class XpTrackerPlugin extends Plugin
 		// Initialize the tracker & last xp if already logged in
 		fetchXp = true;
 		initializeTracker = true;
+		lastAccount = -1L;
+		clientThread.invokeLater(() ->
+		{
+			if (client.getGameState() == GameState.LOGGED_IN)
+			{
+				lastAccount = client.getAccountHash();
+				lastWorldType = worldSetToType(client.getWorldType());
+			}
+		});
 	}
 
 	@Override
@@ -182,15 +194,15 @@ public class XpTrackerPlugin extends Plugin
 			// Check that the username changed or the world type changed.
 			XpWorldType type = worldSetToType(client.getWorldType());
 
-			if (!Objects.equals(client.getUsername(), lastUsername) || lastWorldType != type)
+			if (client.getAccountHash() != lastAccount || lastWorldType != type)
 			{
 				// Reset
 				log.debug("World change: {} -> {}, {} -> {}",
-					lastUsername, client.getUsername(),
+					lastAccount, client.getAccountHash(),
 					firstNonNull(lastWorldType, "<unknown>"),
 					firstNonNull(type, "<unknown>"));
 
-				lastUsername = client.getUsername();
+				lastAccount = client.getAccountHash();
 				// xp is not available until after login is finished, so fetch it on the next gametick
 				fetchXp = true;
 				lastWorldType = type;
@@ -373,8 +385,8 @@ public class XpTrackerPlugin extends Plugin
 		final int currentLevel = statChanged.getLevel();
 		final VarPlayer startGoal = startGoalVarpForSkill(skill);
 		final VarPlayer endGoal = endGoalVarpForSkill(skill);
-		final int startGoalXp = startGoal != null ? client.getVar(startGoal) : -1;
-		final int endGoalXp = endGoal != null ? client.getVar(endGoal) : -1;
+		final int startGoalXp = startGoal != null ? client.getVarpValue(startGoal) : -1;
+		final int endGoalXp = endGoal != null ? client.getVarpValue(endGoal) : -1;
 
 		if (initializeTracker)
 		{

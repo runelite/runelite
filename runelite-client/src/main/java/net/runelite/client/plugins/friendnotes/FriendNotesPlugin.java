@@ -44,7 +44,6 @@ import net.runelite.api.IndexedSprite;
 import net.runelite.api.MenuAction;
 import net.runelite.api.Nameable;
 import net.runelite.api.ScriptID;
-import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.NameableNameChanged;
 import net.runelite.api.events.RemovedFriend;
@@ -116,7 +115,15 @@ public class FriendNotesPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(overlay);
-		clientThread.invoke(this::loadIcon);
+		clientThread.invoke(() ->
+		{
+			if (client.getModIcons() == null)
+			{
+				return false;
+			}
+			loadIcon();
+			return true;
+		});
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
 			rebuildFriendsList();
@@ -132,15 +139,6 @@ public class FriendNotesPlugin extends Plugin
 		{
 			rebuildFriendsList();
 			rebuildIgnoreList();
-		}
-	}
-
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
-	{
-		if (event.getGameState() == GameState.LOGGED_IN)
-		{
-			loadIcon();
 		}
 	}
 
@@ -380,8 +378,7 @@ public class FriendNotesPlugin extends Plugin
 
 	private void loadIcon()
 	{
-		final IndexedSprite[] modIcons = client.getModIcons();
-		if (iconIdx != -1 || modIcons == null)
+		if (iconIdx != -1)
 		{
 			return;
 		}
@@ -394,6 +391,8 @@ public class FriendNotesPlugin extends Plugin
 
 		final BufferedImage resized = ImageUtil.resizeImage(iconImg, ICON_WIDTH, ICON_HEIGHT);
 
+		final IndexedSprite[] modIcons = client.getModIcons();
+		assert modIcons != null;
 		final IndexedSprite[] newIcons = Arrays.copyOf(modIcons, modIcons.length + 1);
 		newIcons[newIcons.length - 1] = ImageUtil.getImageIndexedSprite(resized, client);
 

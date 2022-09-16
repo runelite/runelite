@@ -447,7 +447,7 @@ class WidgetInspector extends DevToolsFrame
 
 		picker = parent.createChild(-1, WidgetType.GRAPHIC);
 
-		log.info("Picker is {}.{} [{}]", WidgetInfo.TO_GROUP(picker.getId()), WidgetInfo.TO_CHILD(picker.getId()), picker.getIndex());
+		log.info("Picker is {}.{} [{}]", TO_GROUP(picker.getId()), TO_CHILD(picker.getId()), picker.getIndex());
 
 		picker.setSpriteId(SpriteID.MOBILE_FINGER_ON_INTERFACE);
 		picker.setOriginalWidth(15);
@@ -516,12 +516,12 @@ class WidgetInspector extends DevToolsFrame
 		for (int i = 0; i < menuEntries.length; i++)
 		{
 			MenuEntry entry = menuEntries[i];
-			if (entry.getType() != MenuAction.ITEM_USE_ON_WIDGET
-				&& entry.getType() != MenuAction.SPELL_CAST_ON_WIDGET)
+			if (entry.getType() != MenuAction.WIDGET_USE_ON_ITEM
+				&& entry.getType() != MenuAction.WIDGET_TARGET_ON_WIDGET)
 			{
 				continue;
 			}
-			String name = WidgetInfo.TO_GROUP(entry.getParam1()) + "." + WidgetInfo.TO_CHILD(entry.getParam1());
+			String name = TO_GROUP(entry.getParam1()) + "." + TO_CHILD(entry.getParam1());
 
 			if (entry.getParam0() != -1)
 			{
@@ -543,7 +543,7 @@ class WidgetInspector extends DevToolsFrame
 
 	Object getWidgetOrWidgetItemForMenuOption(MenuAction type, int param0, int param1)
 	{
-		if (type == MenuAction.SPELL_CAST_ON_WIDGET)
+		if (type == MenuAction.WIDGET_TARGET_ON_WIDGET)
 		{
 			Widget w = client.getWidget(param1);
 			if (param0 != -1)
@@ -553,7 +553,7 @@ class WidgetInspector extends DevToolsFrame
 
 			return w;
 		}
-		else if (type == MenuAction.ITEM_USE_ON_WIDGET)
+		else if (type == MenuAction.WIDGET_USE_ON_ITEM)
 		{
 			Widget w = client.getWidget(param1);
 			return w.getWidgetItem(param0);

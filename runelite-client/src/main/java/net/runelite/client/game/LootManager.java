@@ -71,6 +71,7 @@ public class LootManager
 
 	private final EventBus eventBus;
 	private final Client client;
+	private final NpcUtil npcUtil;
 	private final ListMultimap<Integer, ItemStack> itemSpawns = ArrayListMultimap.create();
 	private final Set<LocalPoint> killPoints = new HashSet<>();
 	private WorldPoint playerLocationLastTick;
@@ -80,10 +81,11 @@ public class LootManager
 	private int delayedLootTickLimit;
 
 	@Inject
-	private LootManager(EventBus eventBus, Client client)
+	private LootManager(EventBus eventBus, Client client, NpcUtil npcUtil)
 	{
 		this.eventBus = eventBus;
 		this.client = client;
+		this.npcUtil = npcUtil;
 		eventBus.register(this);
 	}
 
@@ -98,7 +100,7 @@ public class LootManager
 			delayedLootTickLimit = 0;
 		}
 
-		if (!npc.isDead())
+		if (!npcUtil.isDying(npc))
 		{
 			int id = npc.getId();
 			switch (id)

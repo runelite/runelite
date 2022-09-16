@@ -155,6 +155,7 @@ class XpInfoBox extends JPanel
 			@Override
 			public void popupMenuWillBecomeVisible(PopupMenuEvent popupMenuEvent)
 			{
+				openXpTracker.setVisible(xpTrackerConfig.wiseOldManOpenOption());
 				canvasItem.setText(xpTrackerPlugin.hasOverlay(skill) ? REMOVE_STATE : ADD_STATE);
 			}
 

@@ -47,9 +47,9 @@ import net.runelite.client.events.PartyChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
-import net.runelite.client.ws.PartyMember;
-import net.runelite.client.ws.PartyService;
-import net.runelite.client.ws.WSClient;
+import net.runelite.client.party.PartyMember;
+import net.runelite.client.party.PartyService;
+import net.runelite.client.party.WSClient;
 
 @PluginDescriptor(
 	name = "DPS Counter",
@@ -186,36 +186,35 @@ public class DpsCounterPlugin extends Plugin
 
 		Hitsplat hitsplat = hitsplatApplied.getHitsplat();
 
+		final int npcId = ((NPC) actor).getId();
+		final boolean isBoss = BOSSES.contains(npcId);
+
 		if (hitsplat.isMine())
 		{
-			final int npcId = ((NPC) actor).getId();
-			boolean isBoss = BOSSES.contains(npcId);
+			int hit = hitsplat.getAmount();
+			PartyMember localMember = partyService.getLocalMember();
+
+			// broadcast damage
+			if (localMember != null)
+			{
+				final DpsUpdate dpsUpdate = new DpsUpdate(hit, isBoss);
+				partyService.send(dpsUpdate);
+			}
+
 			if (dpsConfig.bossDamage() && !isBoss)
 			{
 				return;
 			}
 
-			int hit = hitsplat.getAmount();
-			// Update local member
-			PartyMember localMember = partyService.getLocalMember();
 			// If not in a party, user local player name
-			final String name = localMember == null ? player.getName() : localMember.getName();
+			final String name = localMember == null ? player.getName() : localMember.getDisplayName();
 			DpsMember dpsMember = members.computeIfAbsent(name, DpsMember::new);
 			dpsMember.addDamage(hit);
 
-			// broadcast damage
-			if (localMember != null)
-			{
-				final DpsUpdate specialCounterUpdate = new DpsUpdate(hit);
-				specialCounterUpdate.setMemberId(localMember.getMemberId());
-				wsClient.send(specialCounterUpdate);
-			}
 			// apply to total
 		}
 		else if (hitsplat.isOthers())
 		{
-			final int npcId = ((NPC) actor).getId();
-			boolean isBoss = BOSSES.contains(npcId);
 			if ((dpsConfig.bossDamage() || actor != player.getInteracting()) && !isBoss)
 			{
 				// only track damage to npcs we are attacking, or is a nearby common boss
@@ -235,13 +234,19 @@ public class DpsCounterPlugin extends Plugin
 	@Subscribe
 	public void onDpsUpdate(DpsUpdate dpsUpdate)
 	{
-		if (partyService.getLocalMember().getMemberId().equals(dpsUpdate.getMemberId()))
+		if (partyService.getLocalMember().getMemberId() == dpsUpdate.getMemberId())
 		{
 			return;
 		}
 
-		String name = partyService.getMemberById(dpsUpdate.getMemberId()).getName();
+		String name = partyService.getMemberById(dpsUpdate.getMemberId()).getDisplayName();
 		if (name == null)
+		{
+			return;
+		}
+
+		// Received non-boss damage, but we only want boss damage
+		if (!dpsUpdate.isBoss() && dpsConfig.bossDamage())
 		{
 			return;
 		}

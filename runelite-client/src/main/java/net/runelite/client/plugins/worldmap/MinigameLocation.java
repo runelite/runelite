@@ -35,7 +35,7 @@ enum MinigameLocation
 	BURGH_DE_ROTT_RAMBLE("Burgh de Rott Ramble", new WorldPoint(3434, 3487, 0)),
 	CASTLE_WARS("Castle Wars", new WorldPoint(2439, 3092, 0)),
 	CASTLE_WARS_PORTAL("Castle Wars Portal", new WorldPoint(3140, 3626, 0)),
-	DUEL_ARENA("Duel Arena", new WorldPoint(3313, 3238, 0)),
+	PVP_ARENA("PvP Arena", new WorldPoint(3313, 3238, 0)),
 	MAGE_ARENA("Mage Arena", new WorldPoint(3095, 3957, 0)),
 	NIGHTMARE_ZONE("Nightmare Zone", new WorldPoint(2606, 3115, 0)),
 	PEST_CONTROL_NOVICE("Pest Control Novice", new WorldPoint(2660, 2637, 0)),

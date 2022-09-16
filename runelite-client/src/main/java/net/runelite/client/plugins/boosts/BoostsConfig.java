@@ -54,12 +54,12 @@ public interface BoostsConfig extends Config
 	)
 	default DisplayBoosts displayBoosts()
 	{
-		return DisplayBoosts.BOTH;
+		return DisplayBoosts.COMBAT;
 	}
 
 	@ConfigItem(
 		keyName = "relativeBoost",
-		name = "Use Relative Boosts",
+		name = "Show relative boosts",
 		description = "Configures whether or not relative boost is used",
 		position = 2
 	)
@@ -70,11 +70,33 @@ public interface BoostsConfig extends Config
 
 	@ConfigItem(
 		keyName = "displayIndicators",
-		name = "Display as infoboxes",
-		description = "Configures whether or not to display the boost as infoboxes",
+		name = "Display infoboxes",
+		description = "Configures whether to display boost infoboxes",
 		position = 3
 	)
 	default boolean displayInfoboxes()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "displayPanel",
+		name = "Display panel",
+		description = "Configures whether to display the boost panel",
+		position = 3
+	)
+	default boolean displayPanel()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "compactDisplay",
+		name = "Compact display",
+		description = "Displays skill boosts in a more compact panel",
+		position = 4
+	)
+	default boolean compactDisplay()
 	{
 		return false;
 	}
@@ -83,7 +105,7 @@ public interface BoostsConfig extends Config
 		keyName = "displayNextBuffChange",
 		name = "Next buff change",
 		description = "Configures whether or not to display when the next buffed stat change will be",
-		position = 4
+		position = 10
 	)
 	default DisplayChangeMode displayNextBuffChange()
 	{
@@ -94,7 +116,7 @@ public interface BoostsConfig extends Config
 		keyName = "displayNextDebuffChange",
 		name = "Next debuff change",
 		description = "Configures whether or not to display when the next debuffed stat change will be",
-		position = 5
+		position = 11
 	)
 	default DisplayChangeMode displayNextDebuffChange()
 	{
@@ -105,7 +127,7 @@ public interface BoostsConfig extends Config
 		keyName = "boostThreshold",
 		name = "Boost threshold",
 		description = "The threshold at which boosted levels will be displayed in a different color. A value of 0 will disable the feature.",
-		position = 6
+		position = 12
 	)
 	default int boostThreshold()
 	{
@@ -116,7 +138,7 @@ public interface BoostsConfig extends Config
 		keyName = "notifyOnBoost",
 		name = "Notify on boost threshold",
 		description = "Configures whether or not a notification will be sent for boosted stats.",
-		position = 7
+		position = 13
 	)
 	default boolean notifyOnBoost()
 	{

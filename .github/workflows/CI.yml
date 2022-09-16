@@ -16,7 +16,7 @@ jobs:
           path: |
             ~/.m2/repository
             ~/.cache/runelite
-          key: ${{ runner.os }}-cache-${{ hashFiles('**/pom.xml', '**/build.sh') }}
+          key: ${{ runner.os }}-cache-${{ hashFiles('**/pom.xml', '**/build.sh', '**/pmd-ruleset.xml') }}
           restore-keys: |
             ${{ runner.os }}-cache-
 
