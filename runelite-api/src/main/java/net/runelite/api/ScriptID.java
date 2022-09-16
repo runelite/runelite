@@ -395,4 +395,7 @@ public final class ScriptID
 
 	@ScriptArguments(integer = 12)
 	public static final int HP_HUD_UPDATE = 2103;
+
+	@ScriptArguments(integer = 7)
+	public static final int ORBS_UPDATE_RUNENERGY = 447;
 }
