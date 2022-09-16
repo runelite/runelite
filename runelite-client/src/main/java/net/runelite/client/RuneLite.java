@@ -164,6 +164,7 @@ public class RuneLite
 		parser.accepts("jav_config", "jav_config url")
 			.withRequiredArg()
 			.defaultsTo(RuneLiteProperties.getJavConfig());
+		parser.accepts("disable-telemetry", "Disable telemetry");
 
 		final ArgumentAcceptingOptionSpec<File> sessionfile = parser.accepts("sessionfile", "Use a specified session file")
 			.withRequiredArg()
@@ -268,7 +269,7 @@ public class RuneLite
 				options.valueOf(sessionfile),
 				options.valueOf(configfile)));
 
-			injector.getInstance(RuneLite.class).start();
+			injector.getInstance(RuneLite.class).start(options);
 
 			final long end = System.currentTimeMillis();
 			final long uptime = runtime.getUptime();
@@ -288,7 +289,7 @@ public class RuneLite
 		}
 	}
 
-	public void start() throws Exception
+	public void start(OptionSet options) throws Exception
 	{
 		// Load RuneLite or Vanilla client
 		final boolean isOutdated = client == null;
@@ -381,6 +382,11 @@ public class RuneLite
 		SplashScreen.stop();
 
 		clientUI.show();
+
+		if (!options.has("disable-telemetry"))
+		{
+			injector.getInstance(TelemetryClient.class).submitTelemetry();
+		}
 
 		ReflectUtil.queueInjectorAnnotationCacheInvalidation(injector);
 		ReflectUtil.invalidateAnnotationCaches();

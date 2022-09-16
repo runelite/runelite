@@ -55,6 +55,10 @@ public enum WorldType
 	 */
 	SKILL_TOTAL(1 << 7),
 	/**
+	 * Quest speedrunning
+	 */
+	QUEST_SPEEDRUNNING(1 << 8),
+	/**
 	 * High risk world type.
 	 */
 	HIGH_RISK(1 << 10),

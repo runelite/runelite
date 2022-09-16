@@ -40,5 +40,6 @@ public class ContainableFrameTest
 		assertFalse(ContainableFrame.jdk8231564("13.0.0"));
 		assertFalse(ContainableFrame.jdk8231564("14.0.0"));
 		assertTrue(ContainableFrame.jdk8231564("15"));
+		assertTrue(ContainableFrame.jdk8231564("11.0.16.1"));
 	}
 }

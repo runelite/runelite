@@ -640,7 +640,7 @@ class PluginHubPanel extends PluginPanel
 
 	void filter()
 	{
-		if (refreshing.isVisible())
+		if (refreshing.isVisible() || plugins == null)
 		{
 			return;
 		}
@@ -673,8 +673,8 @@ class PluginHubPanel extends PluginPanel
 	public void onActivate()
 	{
 		revalidate();
-		searchBar.setText("");
 		reloadPluginList();
+		searchBar.setText("");
 		searchBar.requestFocusInWindow();
 	}
 
@@ -704,6 +704,10 @@ class PluginHubPanel extends PluginPanel
 				.collect(Collectors.toMap(pi -> pi.manifest.getInternalName(), PluginItem::getUserCount));
 		}
 
-		reloadPluginList(ev.getLoadedManifest(), pluginCounts);
+		if (!refreshing.isVisible())
+		{
+			refreshing.setVisible(true);
+			reloadPluginList(ev.getLoadedManifest(), pluginCounts);
+		}
 	}
 }

@@ -8132,13 +8132,6 @@
   "toxic blowpipe": [
     12924,
     12926,
-    25484,
-    25485,
-    25486,
-    25487,
-    25488,
-    25489,
-    25490,
     25491
   ],
   "serpentine helm": [
@@ -8596,6 +8589,10 @@
     13567,
     13568,
     13569
+  ],
+  "dynamite": [
+    13573,
+    27426
   ],
   "dragon warhammer": [
     13576,
@@ -9348,6 +9345,10 @@
     22089,
     22090,
     22091
+  ],
+  "ancient key": [
+    22093,
+    27369
   ],
   "water container": [
     22094,
@@ -10210,6 +10211,18 @@
     25467,
     25473
   ],
+  "webweaver bow": [
+    25484,
+    25485
+  ],
+  "ursine chainmace": [
+    25486,
+    25487
+  ],
+  "accursed sceptre": [
+    25488,
+    25489
+  ],
   "celestial ring": [
     25539,
     25541
@@ -10942,5 +10955,35 @@
   "ambrosia": [
     27347,
     27349
+  ],
+  "masori assembler": [
+    27359,
+    27374,
+    27376
+  ],
+  "masori assembler max cape": [
+    27361,
+    27363,
+    27365
+  ],
+  "adventurers top": [
+    27388,
+    27396,
+    27404
+  ],
+  "adventurers trousers": [
+    27390,
+    27398,
+    27406
+  ],
+  "adventurers hood": [
+    27392,
+    27400,
+    27408
+  ],
+  "adventurers boots": [
+    27394,
+    27402,
+    27410
   ]
 }

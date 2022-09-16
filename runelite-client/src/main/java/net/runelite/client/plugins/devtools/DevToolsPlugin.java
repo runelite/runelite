@@ -464,8 +464,7 @@ public class DevToolsPlugin extends Plugin
 
 		if (EXAMINE_MENU_ACTIONS.contains(action))
 		{
-			MenuEntry[] entries = client.getMenuEntries();
-			MenuEntry entry = entries[entries.length - 1];
+			MenuEntry entry = event.getMenuEntry();
 
 			final int identifier = event.getIdentifier();
 			String info = "ID: ";

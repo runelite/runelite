@@ -155,7 +155,7 @@ public class BarbarianAssaultPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		if (event.getVarbitId() == Varbits.IN_GAME_BA && event.getValue() == 1)
+		if (event.getVarbitId() == Varbits.IN_GAME_BA && event.getValue() == 0)
 		{
 			currentRound = null;
 

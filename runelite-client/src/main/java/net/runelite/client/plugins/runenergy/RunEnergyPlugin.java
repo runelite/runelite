@@ -41,13 +41,14 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import static net.runelite.api.ItemID.*;
+import net.runelite.api.ScriptID;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.chat.ChatColorType;
@@ -160,7 +161,6 @@ public class RunEnergyPlugin extends Plugin
 	private boolean roeWarningSent;
 	private boolean localPlayerRunningToDestination;
 	private WorldPoint prevLocalPlayerLocation;
-	private String runTimeRemaining;
 
 	@Provides
 	RunEnergyConfig getConfig(ConfigManager configManager)
@@ -210,15 +210,14 @@ public class RunEnergyPlugin extends Plugin
 			prevLocalPlayerLocation.distanceTo(client.getLocalPlayer().getWorldLocation()) > 1;
 
 		prevLocalPlayerLocation = client.getLocalPlayer().getWorldLocation();
-
-		runTimeRemaining = energyConfig.replaceOrbText() ? getEstimatedRunTimeRemaining(true) : null;
 	}
 
 	@Subscribe
-	public void onBeforeRender(BeforeRender beforeRender)
+	public void onScriptPostFired(ScriptPostFired scriptPostFired)
 	{
-		if (runTimeRemaining != null)
+		if (scriptPostFired.getScriptId() == ScriptID.ORBS_UPDATE_RUNENERGY)
 		{
+			String runTimeRemaining = energyConfig.replaceOrbText() ? getEstimatedRunTimeRemaining(true) : null;
 			setRunOrbText(runTimeRemaining);
 		}
 	}

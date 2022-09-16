@@ -76,7 +76,7 @@ public class ContainableFrame extends JFrame
 		}
 		String[] s = javaVersion.split("\\.");
 		int major, minor, patch;
-		if (s.length == 3)
+		if (s.length >= 3)
 		{
 			major = Integer.parseInt(s[0]);
 			minor = Integer.parseInt(s[1]);
