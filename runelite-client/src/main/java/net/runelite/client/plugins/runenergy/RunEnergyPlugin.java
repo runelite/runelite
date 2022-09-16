@@ -70,9 +70,6 @@ import org.apache.commons.lang3.StringUtils;
 @Slf4j
 public class RunEnergyPlugin extends Plugin
 {
-
-	private static final Pattern CHECK_OR_CHARGE_PATTERN = Pattern.compile("Ring of endurance.*(is\\scharged\\swith|now\\shas)\\s(?<charges>\\d+)", Pattern.CASE_INSENSITIVE);
-
 	// TODO It would be nice if we have the IDs for just the equipped variants of the Graceful set items.
 	private static final ImmutableSet<Integer> ALL_GRACEFUL_HOODS = ImmutableSet.of(
 		GRACEFUL_HOOD_11851, GRACEFUL_HOOD_13579, GRACEFUL_HOOD_13580, GRACEFUL_HOOD_13591, GRACEFUL_HOOD_13592,
@@ -138,6 +135,8 @@ public class RunEnergyPlugin extends Plugin
 
 	// Full set grants an extra 10% boost to recovery rate
 	private static final int GRACEFUL_FULL_SET_BOOST_BONUS = 10;
+	// number of charges for roe passive effect
+	private static final int RING_OF_ENDURANCE_PASSIVE_EFFECT = 500;
 
 	@Inject
 	private ChatMessageManager chatMessageManager;
@@ -158,7 +157,7 @@ public class RunEnergyPlugin extends Plugin
 	ConfigManager configManager;
 
 	private int lastCheckTick;
-	private boolean messageSent;
+	private boolean roeWarningSent;
 	private boolean localPlayerRunningToDestination;
 	private WorldPoint prevLocalPlayerLocation;
 	private String runTimeRemaining;
@@ -182,21 +181,24 @@ public class RunEnergyPlugin extends Plugin
 		localPlayerRunningToDestination = false;
 		prevLocalPlayerLocation = null;
 		lastCheckTick = -1;
-		messageSent = false;
+		roeWarningSent = false;
 		resetRunOrbText();
 	}
 
-	public int getRingOfEnduranceCharges()
+	Integer getRingOfEnduranceCharges()
 	{
-		Integer enduranceChargesBoxed = configManager.getRSProfileConfiguration(RunEnergyConfig.GROUP_NAME, "ringOfEnduranceCharges", Integer.class);
-		return enduranceChargesBoxed == null ? 0 : enduranceChargesBoxed;
+		return configManager.getRSProfileConfiguration(RunEnergyConfig.GROUP_NAME, "ringOfEnduranceCharges", Integer.class);
 	}
 
-	public boolean getRingOfEnduranceEquipped()
+	void setRingOfEnduranceCharges(int charges)
+	{
+		configManager.setRSProfileConfiguration(RunEnergyConfig.GROUP_NAME, "ringOfEnduranceCharges", charges);
+	}
+
+	boolean isRingOfEnduranceEquipped()
 	{
 		final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
-		if (equipment == null) return false;
-		return equipment.count(RING_OF_ENDURANCE) == 1;
+		return equipment != null && equipment.count(RING_OF_ENDURANCE) == 1;
 	}
 
 	@Subscribe
@@ -209,7 +211,7 @@ public class RunEnergyPlugin extends Plugin
 
 		prevLocalPlayerLocation = client.getLocalPlayer().getWorldLocation();
 
-		runTimeRemaining = getRingOfEnduranceEquipped() && getRingOfEnduranceCharges() == 0 ? "???" : energyConfig.replaceOrbText() ? getEstimatedRunTimeRemaining(true) : null;
+		runTimeRemaining = energyConfig.replaceOrbText() ? getEstimatedRunTimeRemaining(true) : null;
 	}
 
 	@Subscribe
@@ -242,24 +244,53 @@ public class RunEnergyPlugin extends Plugin
 
 		if (message.equals("Your Ring of endurance doubles the duration of your stamina potion's effect."))
 		{
-			configManager.setRSProfileConfiguration(RunEnergyConfig.GROUP_NAME, "ringOfEnduranceCharges", getRingOfEnduranceCharges() - 1);
-			return;
+			Integer charges = getRingOfEnduranceCharges();
+			if (charges == null)
+			{
+				log.debug("Ring of endurance charge with no known charges");
+				return;
+			}
+
+			// subtract the used charge
+			charges--;
+			setRingOfEnduranceCharges(charges);
+
+			if (!roeWarningSent && charges < RING_OF_ENDURANCE_PASSIVE_EFFECT && energyConfig.ringOfEnduranceChargeMessage())
+			{
+				String chatMessage = new ChatMessageBuilder()
+					.append(ChatColorType.HIGHLIGHT)
+					.append("Your Ring of endurance now has less than " + RING_OF_ENDURANCE_PASSIVE_EFFECT + " charges. Add more charges to regain its passive stamina effect.")
+					.build();
+
+				chatMessageManager.queue(QueuedMessage.builder()
+					.type(ChatMessageType.CONSOLE)
+					.runeLiteFormattedMessage(chatMessage)
+					.build());
+
+				roeWarningSent = true;
+			}
 		}
+		else if (message.startsWith("Your Ring of endurance is charged with") || message.startsWith("You load your Ring of endurance with"))
+		{
+			Matcher matcher = Pattern.compile("([0-9]+)").matcher(message);
+			int charges = -1;
+			while (matcher.find())
+			{
+				charges = Integer.parseInt(matcher.group(1));
+			}
 
-		Matcher matcher = CHECK_OR_CHARGE_PATTERN.matcher(message);
-
-		if (!matcher.find()) return;
-
-		int newCharges = Integer.parseInt(matcher.group("charges"));
-
-		if (newCharges != getRingOfEnduranceCharges()) log.debug("Updated Ring of endurance charges: {}.", newCharges);
-
-		configManager.setRSProfileConfiguration(RunEnergyConfig.GROUP_NAME, "ringOfEnduranceCharges", newCharges);
+			setRingOfEnduranceCharges(charges);
+			if (charges >= RING_OF_ENDURANCE_PASSIVE_EFFECT)
+			{
+				roeWarningSent = false;
+			}
+		}
 	}
 
 	@Subscribe
 	public void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
+		// ROE uncharge uses the same script as destroy
 		if (!"destroyOnOpKey".equals(event.getEventName()))
 		{
 			return;
@@ -299,18 +330,18 @@ public class RunEnergyPlugin extends Plugin
 			lossRate *= 0.3; // Stamina effect reduces energy depletion to 30%
 		}
 
-		int charges = getRingOfEnduranceCharges();
-		boolean ringEquipped = getRingOfEnduranceEquipped();
-
-		if (ringEquipped && charges >= 500)
+		if (isRingOfEnduranceEquipped())
 		{
-			lossRate *= 0.85; // Ring of Endurance passive effect reduces energy depletion to 85%
-		}
+			Integer charges = getRingOfEnduranceCharges();
+			if (charges == null)
+			{
+				return "?";
+			}
 
-		if (energyConfig.enableRingMessages() && !messageSent && ringEquipped && charges != 0 && charges < 500)
-		{
-			sendChargeRingMessage();
-			messageSent = true;
+			if (charges >= RING_OF_ENDURANCE_PASSIVE_EFFECT)
+			{
+				lossRate *= 0.85; // Ring of Endurance passive effect reduces energy depletion to 85%
+			}
 		}
 
 		// Calculate the number of seconds left
@@ -398,21 +429,7 @@ public class RunEnergyPlugin extends Plugin
 
 		if (widgetDestroyItemName.getText().equals("Ring of endurance"))
 		{
-			configManager.setRSProfileConfiguration(RunEnergyConfig.GROUP_NAME, "ringOfEnduranceCharges", 0);
-			log.debug("Updated Ring of endurance charges to 0.");
+			setRingOfEnduranceCharges(0);
 		}
-	}
-
-	private void sendChargeRingMessage()
-	{
-		String chatMessage = new ChatMessageBuilder()
-				.append(ChatColorType.HIGHLIGHT)
-				.append("Ring of endurance charges less than 500. Add more charges to regain passive stamina effect.")
-				.build();
-
-		chatMessageManager.queue(QueuedMessage.builder()
-				.type(ChatMessageType.CONSOLE)
-				.runeLiteFormattedMessage(chatMessage)
-				.build());
 	}
 }

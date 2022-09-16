@@ -47,9 +47,6 @@ class RunEnergyOverlay extends Overlay
 	private final TooltipManager tooltipManager;
 
 	@Inject
-	private RunEnergyPlugin runEnergy;
-
-	@Inject
 	private RunEnergyOverlay(final RunEnergyPlugin plugin, final Client client, final RunEnergyConfig config, final TooltipManager tooltipManager)
 	{
 		this.plugin = plugin;
@@ -84,13 +81,13 @@ class RunEnergyOverlay extends Overlay
 			StringBuilder sb = new StringBuilder();
 			sb.append("Weight: ").append(client.getWeight()).append(" kg</br>");
 
-			if (runEnergy.getRingOfEnduranceCharges() == 0 && runEnergy.getRingOfEnduranceEquipped())
-			{
-				sb.append("Check Ring of endurance to get time remaining.");
-			}
-			else if (config.replaceOrbText())
+			if (config.replaceOrbText())
 			{
 				sb.append("Run Energy: ").append(client.getEnergy()).append('%');
+			}
+			else if (plugin.getRingOfEnduranceCharges() == null && plugin.isRingOfEnduranceEquipped())
+			{
+				sb.append("Check your Ring of endurance to get the time remaining.");
 			}
 			else
 			{

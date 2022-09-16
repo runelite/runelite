@@ -31,14 +31,14 @@ import net.runelite.client.config.ConfigItem;
 @ConfigGroup(RunEnergyConfig.GROUP_NAME)
 public interface RunEnergyConfig extends Config
 {
-	String GROUP_NAME = "RunEnergy";
+	String GROUP_NAME = "runenergy";
 
 	@ConfigItem(
-		keyName = "enableRingMessages",
+		keyName = "ringOfEnduranceChargeMessage",
 		name = "Ring of endurance charge message",
 		description = "Sends a message asking you to charge your equipped Ring of endurance when it has less than 500 charges."
 	)
-	default boolean enableRingMessages()
+	default boolean ringOfEnduranceChargeMessage()
 	{
 		return true;
 	}
