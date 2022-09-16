@@ -176,10 +176,9 @@ public class RunEnergyPlugin extends Plugin
 	@Subscribe
 	public void onScriptPostFired(ScriptPostFired scriptPostFired)
 	{
-		if (scriptPostFired.getScriptId() == ScriptID.ORBS_UPDATE_RUNENERGY)
+		if (scriptPostFired.getScriptId() == ScriptID.ORBS_UPDATE_RUNENERGY && energyConfig.replaceOrbText())
 		{
-			String runTimeRemaining = energyConfig.replaceOrbText() ? getEstimatedRunTimeRemaining(true) : null;
-			setRunOrbText(runTimeRemaining);
+			setRunOrbText(getEstimatedRunTimeRemaining(true));
 		}
 	}
 
