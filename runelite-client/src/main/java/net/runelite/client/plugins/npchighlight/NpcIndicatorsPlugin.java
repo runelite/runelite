@@ -88,6 +88,7 @@ public class NpcIndicatorsPlugin extends Plugin
 
 	private static final String TAG_ALL = "Tag-All";
 	private static final String UNTAG_ALL = "Un-tag-All";
+	private static final String TAG_REGEX = "<.*?>";
 
 	@Inject
 	private Client client;
@@ -552,13 +553,28 @@ public class NpcIndicatorsPlugin extends Plugin
 	{
 		for (String highlight : highlights)
 		{
-			if (WildcardMatcher.matches(highlight, npcName))
+			String cleanHighlight = highlight.replaceAll(TAG_REGEX, "");
+			if (WildcardMatcher.matches(cleanHighlight, npcName))
 			{
 				return true;
 			}
 		}
 
 		return false;
+	}
+
+	private Color getHighlightNpcColor(String npcName)
+	{
+		for (String highlight : highlights)
+		{
+			String cleanHighlight = highlight.replaceAll(TAG_REGEX, "");
+			if (WildcardMatcher.matches(cleanHighlight, npcName) && !WildcardMatcher.matches(highlight, npcName))
+			{
+				return ColorUtil.fromHex("#" + highlight.substring(5, 11));
+			}
+		}
+
+		return config.highlightColor();
 	}
 
 	private void validateSpawnedNpcs()
@@ -655,7 +671,7 @@ public class NpcIndicatorsPlugin extends Plugin
 	{
 		return HighlightedNpc.builder()
 			.npc(npc)
-			.highlightColor(config.highlightColor())
+			.highlightColor(getHighlightNpcColor(npc.getName()))
 			.fillColor(config.fillColor())
 			.hull(config.highlightHull())
 			.tile(config.highlightTile())
