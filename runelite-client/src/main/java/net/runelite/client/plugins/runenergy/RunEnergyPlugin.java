@@ -226,7 +226,7 @@ public class RunEnergyPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getGroup().equals("runenergy") && !energyConfig.replaceOrbText())
+		if (event.getGroup().equals(RunEnergyConfig.GROUP_NAME) && !energyConfig.replaceOrbText())
 		{
 			resetRunOrbText();
 		}
