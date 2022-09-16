@@ -98,6 +98,10 @@ public enum InventoryID
 	 */
 	WILDERNESS_LOOT_CHEST(797),
 	/**
+	 * TOA supplies
+	 */
+	TOA_SUPPLIES(810),
+	/**
 	 * TOA reward chest
 	 */
 	TOA_REWARD_CHEST(811);
