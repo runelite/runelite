@@ -209,17 +209,20 @@ public class RunEnergyPlugin extends Plugin
 	String getEstimatedRunTimeRemaining(boolean inSeconds)
 	{
 		// Calculate the amount of energy lost every tick.
-		// Negative weight has the same depletion effect as 0 kg.
-		final int effectiveWeight = Math.max(client.getWeight(), 0);
-		double lossRate = (Math.min(effectiveWeight, 64) / 100.0) + 0.64;
+		// Negative weight has the same depletion effect as 0 kg. >64kg counts as 64kg.
+		final int effectiveWeight = Math.min(Math.max(client.getWeight(), 0), 64);
+
+		// 100% energy is 10000 energy units
+		int energyUnitsLost = effectiveWeight * 67 / 64 + 67;
 
 		if (client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE) != 0)
 		{
-			lossRate *= 0.3; // Stamina effect reduces energy depletion to 30%
+			energyUnitsLost *= 0.3; // Stamina effect reduces energy depletion to 30%
 		}
 
-		// Calculate the number of seconds left
-		final double secondsLeft = (client.getEnergy() * Constants.GAME_TICK_LENGTH) / (lossRate * 1000.0);
+		// Math.ceil is correct here - only need 1 energy unit to run
+		final double ticksLeft = Math.ceil(client.getEnergy() / (energyUnitsLost / 100.0));
+		final double secondsLeft = ticksLeft * Constants.GAME_TICK_LENGTH / 1000.0;
 
 		// Return the text
 		if (inSeconds)
