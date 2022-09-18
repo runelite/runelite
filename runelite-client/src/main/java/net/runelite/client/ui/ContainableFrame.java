@@ -115,7 +115,7 @@ public class ContainableFrame extends JFrame
 		{
 			return false; // unpatched
 		}
-		return isVersionOrGreater(javaVersion, 11, 0, 9);  // JDK-8243374
+		return isVersionOrGreater(javaVersion, 11, 0, 9);  // JDK-8246659
 	}
 
 	private static boolean isVersionOrGreater(String javaVersion, int versionMajor, int versionMinor, int versionPatch)
