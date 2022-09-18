@@ -26,6 +26,7 @@
 package net.runelite.client.plugins.slayer;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -54,6 +55,7 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Hitsplat;
+import net.runelite.api.HitsplatID;
 import net.runelite.api.ItemID;
 import net.runelite.api.MessageNode;
 import net.runelite.api.NPC;
@@ -63,21 +65,21 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.CommandExecuted;
+import net.runelite.api.events.FakeXpDrop;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.StatChanged;
-import net.runelite.api.vars.SlayerUnlock;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.chat.ChatClient;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatCommandManager;
 import net.runelite.client.chat.ChatMessageBuilder;
-import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ChatInput;
@@ -91,7 +93,6 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
-import net.runelite.http.api.chat.ChatClient;
 import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
@@ -161,9 +162,6 @@ public class SlayerPlugin extends Plugin
 	private TargetWeaknessOverlay targetWeaknessOverlay;
 
 	@Inject
-	private ChatMessageManager chatMessageManager;
-
-	@Inject
 	private ChatCommandManager chatCommandManager;
 
 	@Inject
@@ -206,7 +204,7 @@ public class SlayerPlugin extends Plugin
 	private int cachedXp = -1;
 	private Instant infoTimer;
 	private boolean loginFlag;
-	private final List<String> targetNames = new ArrayList<>();
+	private final List<Pattern> targetNames = new ArrayList<>();
 
 	public final Function<NPC, HighlightedNpc> isTarget = (n) ->
 	{
@@ -225,6 +223,12 @@ public class SlayerPlugin extends Plugin
 		}
 		return null;
 	};
+
+	@Override
+	public void configure(Binder binder)
+	{
+		binder.bind(SlayerPluginService.class).to(SlayerPluginServiceImpl.class);
+	}
 
 	@Override
 	protected void startUp() throws Exception
@@ -550,13 +554,28 @@ public class SlayerPlugin extends Plugin
 		final int delta = slayerExp - cachedXp;
 		cachedXp = slayerExp;
 
+		xpChanged(delta);
+	}
+
+	@Subscribe
+	public void onFakeXpDrop(FakeXpDrop fakeXpDrop)
+	{
+		if (fakeXpDrop.getSkill() == SLAYER)
+		{
+			int delta = fakeXpDrop.getXp();
+			xpChanged(delta);
+		}
+	}
+
+	private void xpChanged(int delta)
+	{
 		log.debug("Slayer xp change delta: {}, killed npcs: {}", delta, taggedNpcsDiedPrevTick);
 
 		final Task task = Task.getTask(taskName);
-		if (task != null && task.getMinimumKillXp() > 0)
+		if (task != null && task.getXpMatcher() != null)
 		{
-			// Only decrement a kill if the xp drop is above the minimum threshold. This is for Tzhaar and Sire tasks.
-			if (delta >= task.getMinimumKillXp())
+			// Only decrement a kill if the xp drop delta passes the matcher. This is for Tzhaar and Sire tasks.
+			if (task.getXpMatcher().test(delta))
 			{
 				killed(max(taggedNpcsDiedPrevTick, 1));
 			}
@@ -574,7 +593,7 @@ public class SlayerPlugin extends Plugin
 	{
 		Actor actor = hitsplatApplied.getActor();
 		Hitsplat hitsplat = hitsplatApplied.getHitsplat();
-		if (hitsplat.getHitsplatType() == Hitsplat.HitsplatType.DAMAGE_ME && targets.contains(actor))
+		if (hitsplat.getHitsplatType() == HitsplatID.DAMAGE_ME && targets.contains(actor))
 		{
 			// If the actor is in highlightedTargets it must be an NPC and also a task assignment
 			taggedNpcs.add((NPC) actor);
@@ -652,7 +671,8 @@ public class SlayerPlugin extends Plugin
 			SlayerUnlock.GROTESQUE_GUARDIAN_DOUBLE_COUNT.isEnabled(client);
 	}
 
-	private boolean isTarget(NPC npc)
+	@VisibleForTesting
+	boolean isTarget(NPC npc)
 	{
 		if (targetNames.isEmpty())
 		{
@@ -669,16 +689,15 @@ public class SlayerPlugin extends Plugin
 			.replace('\u00A0', ' ')
 			.toLowerCase();
 
-		for (String target : targetNames)
+		for (Pattern target : targetNames)
 		{
-			if (name.contains(target))
-			{
-				if (ArrayUtils.contains(composition.getActions(), "Attack")
+			final Matcher targetMatcher = target.matcher(name);
+			if (targetMatcher.find()
+				&& (ArrayUtils.contains(composition.getActions(), "Attack")
 					// Pick action is for zygomite-fungi
-					|| ArrayUtils.contains(composition.getActions(), "Pick"))
-				{
-					return true;
-				}
+					|| ArrayUtils.contains(composition.getActions(), "Pick")))
+			{
+				return true;
 			}
 		}
 		return false;
@@ -691,11 +710,16 @@ public class SlayerPlugin extends Plugin
 		if (task != null)
 		{
 			Arrays.stream(task.getTargetNames())
-				.map(String::toLowerCase)
+				.map(SlayerPlugin::targetNamePattern)
 				.forEach(targetNames::add);
 
-			targetNames.add(taskName.toLowerCase().replaceAll("s$", ""));
+			targetNames.add(targetNamePattern(taskName.replaceAll("s$", "")));
 		}
+	}
+
+	private static Pattern targetNamePattern(final String targetName)
+	{
+		return Pattern.compile("(?:\\s|^)" + targetName + "(?:\\s|$)", Pattern.CASE_INSENSITIVE);
 	}
 
 	private void rebuildTargetList()
@@ -711,7 +735,8 @@ public class SlayerPlugin extends Plugin
 		}
 	}
 
-	private void setTask(String name, int amt, int initAmt)
+	@VisibleForTesting
+	void setTask(String name, int amt, int initAmt)
 	{
 		setTask(name, amt, initAmt, null);
 	}
@@ -838,7 +863,7 @@ public class SlayerPlugin extends Plugin
 		sb.append(task.getTask());
 		if (!Strings.isNullOrEmpty(task.getLocation()))
 		{
-			sb.append(" (").append(task.getLocation()).append(")");
+			sb.append(" (").append(task.getLocation()).append(')');
 		}
 		sb.append(": ");
 		if (killed < 0)
@@ -859,7 +884,6 @@ public class SlayerPlugin extends Plugin
 
 		final MessageNode messageNode = chatMessage.getMessageNode();
 		messageNode.setRuneLiteFormatMessage(response);
-		chatMessageManager.update(messageNode);
 		client.refreshChat();
 	}
 

@@ -68,8 +68,8 @@ import okhttp3.Response;
 public class ImageCapture
 {
 	private static final DateFormat TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
-	private static final HttpUrl IMGUR_IMAGE_UPLOAD_URL = HttpUrl.parse("https://api.imgur.com/3/image");
-	private static final MediaType JSON = MediaType.parse("application/json");
+	private static final HttpUrl IMGUR_IMAGE_UPLOAD_URL = HttpUrl.get("https://api.imgur.com/3/image");
+	private static final MediaType JSON = MediaType.get("application/json");
 
 	private final Client client;
 	private final Notifier notifier;

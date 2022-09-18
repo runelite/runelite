@@ -41,8 +41,6 @@ public class KourendDiaryRequirement extends GenericDiaryRequirement
 		add("Steal from a Hosidius Food Stall.",
 			new SkillRequirement(Skill.THIEVING, 25),
 			new FavourRequirement(FavourRequirement.Favour.HOSIDIUS, 15));
-		add("Browse the Warrens General Store.",
-			new QuestRequirement(Quest.THE_QUEEN_OF_THIEVES, true));
 		add("Enter your Player Owned House from Hosidius.",
 			new SkillRequirement(Skill.CONSTRUCTION, 25));
 		add("Create a Strength potion in the Lovakengj Pub.",
@@ -109,7 +107,7 @@ public class KourendDiaryRequirement extends GenericDiaryRequirement
 			new QuestRequirement(Quest.DREAM_MENTOR));
 
 		//ELITE
-		add("Craft one or more Blood runes from Essence.",
+		add("Craft one or more Blood runes from Dark essence fragments.",
 			new SkillRequirement(Skill.RUNECRAFT, 77),
 			new SkillRequirement(Skill.MINING, 38),
 			new SkillRequirement(Skill.CRAFTING, 38),

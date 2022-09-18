@@ -29,6 +29,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Polygon;
 import java.awt.Shape;
 import java.awt.Stroke;
 import javax.inject.Inject;
@@ -45,6 +46,7 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.outline.ModelOutlineRenderer;
+import net.runelite.client.util.ColorUtil;
 
 class ObjectIndicatorsOverlay extends Overlay
 {
@@ -109,6 +111,26 @@ class ObjectIndicatorsOverlay extends Overlay
 			if (config.highlightOutline())
 			{
 				modelOutlineRenderer.drawOutline(object, (int)config.borderWidth(), color, config.outlineFeather());
+			}
+
+			if (config.highlightClickbox())
+			{
+				Shape clickbox = object.getClickbox();
+				if (clickbox != null)
+				{
+					Color clickBoxColor = ColorUtil.colorWithAlpha(color, color.getAlpha() / 12);
+					OverlayUtil.renderPolygon(graphics, clickbox, color, clickBoxColor, stroke);
+				}
+			}
+
+			if (config.highlightTile())
+			{
+				Polygon tilePoly = object.getCanvasTilePoly();
+				if (tilePoly != null)
+				{
+					Color tileColor = ColorUtil.colorWithAlpha(color, color.getAlpha() / 12);
+					OverlayUtil.renderPolygon(graphics, tilePoly, color, tileColor, stroke);
+				}
 			}
 		}
 

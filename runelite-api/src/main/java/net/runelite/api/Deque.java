@@ -30,6 +30,12 @@ package net.runelite.api;
 public interface Deque<T> extends Iterable<T>
 {
 	/**
+	 * Add a new element to the end of the deque
+	 * @param t the element
+	 */
+	void addLast(T t);
+
+	/**
 	 * clear the deque
 	 */
 	void clear();

@@ -66,10 +66,6 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 		"Jorral",
 		"Speak to Jorral to receive a strange device.",
 		new WorldPoint(2436, 3347, 0));
-	private static final HotColdClue MASTER_CLUE_LEAGUE = new HotColdClue("Buried beneath the ground, who knows where it's found. Lucky for you, A man called Watson may have a clue.",
-		"Watson",
-		"Speak to Watson to receive a strange device.",
-		new WorldPoint(1645, 3572, 0));
 
 	private final String text;
 	private final String npc;
@@ -90,11 +86,6 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 		{
 			MASTER_CLUE.reset();
 			return MASTER_CLUE;
-		}
-		else if (MASTER_CLUE_LEAGUE.text.equalsIgnoreCase(text))
-		{
-			MASTER_CLUE_LEAGUE.reset();
-			return MASTER_CLUE_LEAGUE;
 		}
 
 		return null;
@@ -290,7 +281,7 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 		{
 			temperatureSet = HotColdTemperature.BEGINNER_HOT_COLD_TEMPERATURES;
 		}
-		else if (this == MASTER_CLUE || this == MASTER_CLUE_LEAGUE)
+		else if (this == MASTER_CLUE)
 		{
 			temperatureSet = HotColdTemperature.MASTER_HOT_COLD_TEMPERATURES;
 		}
@@ -314,9 +305,8 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 			return false;
 		}
 
-		boolean master = this == MASTER_CLUE || this == MASTER_CLUE_LEAGUE;
 		if ((this == BEGINNER_CLUE && temperature == HotColdTemperature.BEGINNER_VISIBLY_SHAKING)
-			|| (master && temperature == HotColdTemperature.MASTER_VISIBLY_SHAKING))
+			|| (this == MASTER_CLUE && temperature == HotColdTemperature.MASTER_VISIBLY_SHAKING))
 		{
 			markFinalSpot(localWorld);
 		}
@@ -346,7 +336,7 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 		{
 			isBeginner = true;
 		}
-		else if (this == MASTER_CLUE || this == MASTER_CLUE_LEAGUE)
+		else if (this == MASTER_CLUE)
 		{
 			isBeginner = false;
 		}

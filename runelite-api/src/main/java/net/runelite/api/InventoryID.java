@@ -92,7 +92,15 @@ public enum InventoryID
 	/**
 	 * Player inventory when accessing group ironman shared storage
 	 */
-	GROUP_STORAGE_INV(660);
+	GROUP_STORAGE_INV(660),
+	/**
+	 * Wilderness loot chest
+	 */
+	WILDERNESS_LOOT_CHEST(797),
+	/**
+	 * TOA reward chest
+	 */
+	TOA_REWARD_CHEST(811);
 
 	private final int id;
 

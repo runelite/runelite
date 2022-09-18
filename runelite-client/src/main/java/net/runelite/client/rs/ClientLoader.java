@@ -36,7 +36,6 @@ import java.applet.Applet;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -61,6 +60,8 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.RuneLite;
 import net.runelite.client.RuneLiteProperties;
+import net.runelite.client.RuntimeConfig;
+import net.runelite.client.RuntimeConfigLoader;
 import static net.runelite.client.rs.ClientUpdateCheckMode.AUTO;
 import static net.runelite.client.rs.ClientUpdateCheckMode.NONE;
 import static net.runelite.client.rs.ClientUpdateCheckMode.VANILLA;
@@ -75,7 +76,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 @Slf4j
-@SuppressWarnings("deprecation")
+@SuppressWarnings({"deprecation", "removal"})
 public class ClientLoader implements Supplier<Applet>
 {
 	private static final int NUM_ATTEMPTS = 6;
@@ -87,16 +88,18 @@ public class ClientLoader implements Supplier<Applet>
 	private final ClientConfigLoader clientConfigLoader;
 	private ClientUpdateCheckMode updateCheckMode;
 	private final WorldSupplier worldSupplier;
+	private final RuntimeConfigLoader runtimeConfigLoader;
 	private final String javConfigUrl;
 
 	private Object client;
 
-	public ClientLoader(OkHttpClient okHttpClient, ClientUpdateCheckMode updateCheckMode, String javConfigUrl)
+	public ClientLoader(OkHttpClient okHttpClient, ClientUpdateCheckMode updateCheckMode, RuntimeConfigLoader runtimeConfigLoader, String javConfigUrl)
 	{
 		this.okHttpClient = okHttpClient;
 		this.clientConfigLoader = new ClientConfigLoader(okHttpClient);
 		this.updateCheckMode = updateCheckMode;
 		this.worldSupplier = new WorldSupplier(okHttpClient);
+		this.runtimeConfigLoader = runtimeConfigLoader;
 		this.javConfigUrl = javConfigUrl;
 	}
 
@@ -176,19 +179,26 @@ public class ClientLoader implements Supplier<Applet>
 
 			return rs;
 		}
+		catch (OutageException e)
+		{
+			return e;
+		}
 		catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException
 			| VerificationException | SecurityException e)
 		{
 			log.error("Error loading RS!", e);
 
-			SwingUtilities.invokeLater(() -> FatalErrorDialog.showNetErrorWindow("loading the client", e));
+			if (!checkOutages())
+			{
+				SwingUtilities.invokeLater(() -> FatalErrorDialog.showNetErrorWindow("loading the client", e));
+			}
 			return e;
 		}
 	}
 
 	private RSConfig downloadConfig() throws IOException
 	{
-		HttpUrl url = HttpUrl.parse(javConfigUrl);
+		HttpUrl url = HttpUrl.get(javConfigUrl);
 		IOException err = null;
 		for (int attempt = 0; attempt < NUM_ATTEMPTS; attempt++)
 		{
@@ -206,6 +216,10 @@ public class ClientLoader implements Supplier<Applet>
 			catch (IOException e)
 			{
 				log.info("Failed to get jav_config from host \"{}\" ({})", url.host(), e.getMessage());
+				if (checkOutages())
+				{
+					throw new OutageException(e);
+				}
 
 				if (!javConfigUrl.equals(RuneLiteProperties.getJavConfig()))
 				{
@@ -234,7 +248,7 @@ public class ClientLoader implements Supplier<Applet>
 	@Nonnull
 	private RSConfig downloadFallbackConfig() throws IOException
 	{
-		RSConfig backupConfig = clientConfigLoader.fetch(HttpUrl.parse(RuneLiteProperties.getJavConfigBackup()));
+		RSConfig backupConfig = clientConfigLoader.fetch(HttpUrl.get(RuneLiteProperties.getJavConfigBackup()));
 
 		if (Strings.isNullOrEmpty(backupConfig.getCodeBase()) || Strings.isNullOrEmpty(backupConfig.getInitialJar()) || Strings.isNullOrEmpty(backupConfig.getInitialClass()))
 		{
@@ -294,18 +308,23 @@ public class ClientLoader implements Supplier<Applet>
 			}
 			vanilla.position(0);
 
+			if (!vanillaCacheIsInvalid && "false".equals(System.getProperty("runelite.updateVanilla")))
+			{
+				return;
+			}
+
 			// Start downloading the vanilla client
 			HttpUrl url;
 			if (config.isFallback())
 			{
 				// If we are using the backup config, use our own gamepack and ignore the codebase
-				url = HttpUrl.parse(config.getRuneLiteGamepack());
+				url = HttpUrl.get(config.getRuneLiteGamepack());
 			}
 			else
 			{
 				String codebase = config.getCodeBase();
 				String initialJar = config.getInitialJar();
-				url = HttpUrl.parse(codebase + initialJar);
+				url = HttpUrl.get(codebase + initialJar);
 			}
 
 			for (int attempt = 0; ; attempt++)
@@ -405,6 +424,10 @@ public class ClientLoader implements Supplier<Applet>
 				catch (IOException e)
 				{
 					log.warn("Failed to download gamepack from \"{}\"", url, e);
+					if (checkOutages())
+					{
+						throw new OutageException(e);
+					}
 
 					// With fallback config do 1 attempt (there are no additional urls to try)
 					if (!javConfigUrl.equals(RuneLiteProperties.getJavConfig()) || config.isFallback() || attempt >= NUM_ATTEMPTS)
@@ -430,6 +453,7 @@ public class ClientLoader implements Supplier<Applet>
 				SwingUtilities.invokeLater(() ->
 					new FatalErrorDialog("The client-patch is missing from the classpath. If you are building " +
 						"the client you need to re-run maven")
+						.addHelpButtons()
 						.addBuildingGuide()
 						.open());
 				throw new NullPointerException();
@@ -462,7 +486,7 @@ public class ClientLoader implements Supplier<Applet>
 			}
 		}
 
-		try (HashingOutputStream hos = new HashingOutputStream(Hashing.sha512(), new FileOutputStream(PATCHED_CACHE));
+		try (HashingOutputStream hos = new HashingOutputStream(Hashing.sha512(), java.nio.file.Files.newOutputStream(PATCHED_CACHE.toPath()));
 			InputStream patch = ClientLoader.class.getResourceAsStream("/client.patch"))
 		{
 			new FileByFileV1DeltaApplier().applyDelta(VANILLA_CACHE, patch, hos);
@@ -550,7 +574,7 @@ public class ClientLoader implements Supplier<Applet>
 		Class<?> clientClass = classLoader.loadClass(initialClass);
 
 		Applet rs = (Applet) clientClass.newInstance();
-		rs.setStub(new RSAppletStub(config));
+		rs.setStub(new RSAppletStub(config, runtimeConfigLoader));
 
 		if (rs instanceof Client)
 		{
@@ -602,5 +626,23 @@ public class ClientLoader implements Supplier<Applet>
 			jis.skip(Long.MAX_VALUE);
 			verifyJarEntry(je, chains);
 		}
+	}
+
+	private static class OutageException extends RuntimeException
+	{
+		private OutageException(Throwable cause)
+		{
+			super(cause);
+		}
+	}
+
+	private boolean checkOutages()
+	{
+		RuntimeConfig rtc = runtimeConfigLoader.tryGet();
+		if (rtc != null)
+		{
+			return rtc.showOutageMessage();
+		}
+		return false;
 	}
 }

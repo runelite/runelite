@@ -161,7 +161,7 @@ public class XpDropPlugin extends Plugin
 		else
 		{
 			EnumComposition colorEnum = client.getEnum(EnumID.XPDROP_COLORS);
-			int defaultColorId = client.getVar(Varbits.EXPERIENCE_DROP_COLOR);
+			int defaultColorId = client.getVarbitValue(Varbits.EXPERIENCE_DROP_COLOR);
 			int color = colorEnum.getIntValue(defaultColorId);
 			widget.setTextColor(color);
 		}
@@ -181,7 +181,7 @@ public class XpDropPlugin extends Plugin
 	{
 		for (XpPrayer prayer : XpPrayer.values())
 		{
-			if (client.isPrayerActive(prayer.getPrayer()))
+			if (client.getServerVarbitValue(prayer.getPrayer().getVarbit()) == 1)
 			{
 				return prayer.getType();
 			}

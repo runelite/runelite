@@ -38,8 +38,6 @@ import javax.inject.Named;
 import lombok.Data;
 import net.runelite.client.discord.DiscordPresence;
 import net.runelite.client.discord.DiscordService;
-import net.runelite.client.ws.PartyService;
-import static net.runelite.client.ws.PartyService.PARTY_MAX;
 
 /**
  * This class contains data about currently active discord state.
@@ -57,7 +55,6 @@ class DiscordState
 	private final List<EventWithTime> events = new ArrayList<>();
 	private final DiscordService discordService;
 	private final DiscordConfig config;
-	private final PartyService party;
 	private final String runeliteTitle;
 	private final String runeliteVersion;
 	private DiscordPresence lastPresence;
@@ -66,14 +63,12 @@ class DiscordState
 	private DiscordState(
 		final DiscordService discordService,
 		final DiscordConfig config,
-		final PartyService party,
 		@Named("runelite.title") final String runeliteTitle,
 		@Named("runelite.version") final String runeliteVersion
 	)
 	{
 		this.discordService = discordService;
 		this.config = config;
-		this.party = party;
 		this.runeliteTitle = runeliteTitle;
 		this.runeliteVersion = runeliteVersion;
 	}
@@ -86,30 +81,6 @@ class DiscordState
 		discordService.clearPresence();
 		events.clear();
 		lastPresence = null;
-	}
-
-	/**
-	 * Force refresh discord presence
-	 */
-	void refresh()
-	{
-		if (lastPresence == null)
-		{
-			return;
-		}
-
-		final DiscordPresence.DiscordPresenceBuilder presenceBuilder = DiscordPresence.builder()
-			.state(lastPresence.getState())
-			.details(lastPresence.getDetails())
-			.largeImageText(lastPresence.getLargeImageText())
-			.startTimestamp(lastPresence.getStartTimestamp())
-			.smallImageKey(lastPresence.getSmallImageKey())
-			.partyMax(lastPresence.getPartyMax());
-
-
-		setPresencePartyInfo(presenceBuilder);
-
-		discordService.updatePresence(presenceBuilder.build());
 	}
 
 	/**
@@ -197,8 +168,7 @@ class DiscordState
 			.state(MoreObjects.firstNonNull(state, ""))
 			.details(MoreObjects.firstNonNull(details, ""))
 			.largeImageText(runeliteTitle + " v" + versionShortHand)
-			.smallImageKey(imageKey)
-			.partyMax(PARTY_MAX);
+			.smallImageKey(imageKey);
 
 		final Instant startTime;
 		switch (config.elapsedTimeType())
@@ -224,8 +194,6 @@ class DiscordState
 		}
 
 		presenceBuilder.startTimestamp(startTime);
-
-		setPresencePartyInfo(presenceBuilder);
 
 		final DiscordPresence presence = presenceBuilder.build();
 
@@ -261,18 +229,6 @@ class DiscordState
 		if (removedAny)
 		{
 			updatePresenceWithLatestEvent();
-		}
-	}
-
-	private void setPresencePartyInfo(DiscordPresence.DiscordPresenceBuilder presenceBuilder)
-	{
-		if (party.isInParty())
-		{
-			presenceBuilder.partySize(party.getMembers().size());
-
-			// Set public party id and secret
-			presenceBuilder.partyId(party.getPublicPartyId().toString());
-			presenceBuilder.joinSecret(party.getPartyId().toString());
 		}
 	}
 }

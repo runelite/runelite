@@ -25,7 +25,6 @@
 #version 330
 
 uniform sampler2DArray textures;
-uniform vec2 textureOffsets[128];
 uniform float brightness;
 uniform float smoothBanding;
 uniform vec4 fogColor;
@@ -49,9 +48,7 @@ void main() {
   if (textureId > 0) {
     int textureIdx = textureId - 1;
 
-    vec2 animatedUv = fUv + textureOffsets[textureIdx];
-
-    vec4 textureColor = texture(textures, vec3(animatedUv, float(textureIdx)));
+    vec4 textureColor = texture(textures, vec3(fUv, float(textureIdx)));
     vec4 textureColorBrightness = pow(textureColor, vec4(brightness, brightness, brightness, 1.0f));
 
     // textured triangles hsl is a 7 bit lightness 2-126

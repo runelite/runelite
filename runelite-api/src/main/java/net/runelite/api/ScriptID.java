@@ -40,12 +40,15 @@ public final class ScriptID
 	/**
 	 * Sends a chat message
 	 * <ul>
-	 * <li> int (byte) Flags </li>
 	 * <li> String Message to send </li>
+	 * <li> int modes </li>
+	 * <li> int (clan type) </li>
+	 * <li> int (boolean) use target</li>
+	 * <li> int set target </li>
 	 * </ul>
 	 */
-	@ScriptArguments(integer = 1, string = 1)
-	public static final int CHATBOX_INPUT = 96;
+	@ScriptArguments(integer = 4, string = 1)
+	public static final int CHAT_SEND = 5517;
 
 	/**
 	 * Rebuilds the chatbox and the pmbox
@@ -197,6 +200,12 @@ public final class ScriptID
 	public static final int FRIENDS_CHAT_CHANNEL_REBUILD = 1658;
 
 	/**
+	 * Builds the widget that holds all of the players inside a clan chat
+	 */
+	@ScriptArguments(integer = 7)
+	public static final int CLAN_SIDEPANEL_DRAW = 4396;
+
+	/**
 	 * Builds the widget for making an offer in Grand Exchange
 	 */
 	@ScriptArguments(integer = 16)
@@ -209,10 +218,10 @@ public final class ScriptID
 	public static final int GE_ITEM_SEARCH = 752;
 
 	/**
-	 * Builds the quest list inside the quest tab that shows each quest's progress
+	 * On load listener for building the quest list interface
 	 */
-	@ScriptArguments(integer = 3)
-	public static final int QUESTLIST_PROGRESS_LIST_SHOW = 1354;
+	@ScriptArguments(integer = 8)
+	public static final int QUESTLIST_INIT = 1350;
 
 	/**
 	 * Called when the friends list is updated
@@ -335,25 +344,6 @@ public final class ScriptID
 	public static final int WIKI_ICON_UPDATE = 3306;
 
 	/**
-	 * Builds a line in the chatbox when there is no username: prefix, such as 
-	 * a game or system message
-	 */
-	@ScriptArguments(integer = 11, string = 1)
-	public static final int CHATBOX_BUILD_LINE_WITHOUT_USER = 199;
-	
-	/**
-	 * Builds a line in the chatbox when there is a username: prefix
-	 */
-	@ScriptArguments(integer = 11, string = 2)
-	public static final int CHATBOX_BUILD_LINE_WITH_USER = 203;
-
-	/**
-	 * Builds a line in the chatbox when it from a clan
-	 */
-	@ScriptArguments(integer = 14, string = 3)
-	public static final int CHATBOX_BUILD_LINE_WITH_CLAN = 4483;
-
-	/**
 	 * Drag callback for the camera zoom slider in the options side panel.
 	 */
 	@ScriptArguments(integer = 3)
@@ -381,4 +371,31 @@ public final class ScriptID
 	 */
 	@ScriptArguments(integer = 1)
 	public static final int NOTIFICATION_DELAY = 3347;
+
+	@ScriptArguments(integer = 7)
+	public static final int GROUP_IRONMAN_STORAGE_BUILD = 5269;
+
+	@ScriptArguments(integer = 6)
+	public static final int INVENTORY_DRAWITEM = 6011;
+
+	/**
+	 * Initializes the trade interface
+	 */
+	@ScriptArguments(integer = 6)
+	public static final int TRADE_MAIN_INIT = 755;
+
+	/**
+	 * Transitions the tob hud into the white flash that happens when sotetseg teleports the players to the maze.
+	 */
+	@ScriptArguments(string = 1)
+	public static final int TOB_HUD_SOTETSEG_FADE = 2308;
+
+	@ScriptArguments(integer = 3)
+	public static final int RAIDS_STORAGE_PRIVATE_ITEMS = 1607;
+
+	@ScriptArguments(integer = 12)
+	public static final int HP_HUD_UPDATE = 2103;
+
+	@ScriptArguments(integer = 7)
+	public static final int ORBS_UPDATE_RUNENERGY = 447;
 }

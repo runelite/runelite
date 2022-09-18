@@ -30,7 +30,7 @@ import org.junit.Test;
 public class JagexColorTest
 {
 	private static final double[] BRIGHTNESS_LEVELS = {
-		JagexColor.BRIGTHNESS_MIN,
+		JagexColor.BRIGHTNESS_MIN,
 		JagexColor.BRIGHTNESS_LOW,
 		JagexColor.BRIGHTNESS_HIGH,
 		JagexColor.BRIGHTNESS_MAX,

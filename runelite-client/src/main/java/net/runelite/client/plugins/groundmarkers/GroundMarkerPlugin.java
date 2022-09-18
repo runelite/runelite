@@ -30,7 +30,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Provides;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -44,13 +43,11 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.KeyCode;
 import net.runelite.api.MenuAction;
-import net.runelite.api.MenuEntry;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MenuEntryAdded;
-import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
@@ -240,51 +237,37 @@ public class GroundMarkerPlugin extends Plugin
 
 			final WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, selectedSceneTile.getLocalLocation());
 			final int regionId = worldPoint.getRegionID();
-			final GroundMarkerPoint point = new GroundMarkerPoint(regionId, worldPoint.getRegionX(), worldPoint.getRegionY(), client.getPlane(), null, null);
+			final GroundMarkerPoint point = new GroundMarkerPoint(regionId, worldPoint.getRegionX(), worldPoint.getRegionY(), worldPoint.getPlane(), null, null);
 			final boolean exists = getPoints(regionId).contains(point);
 
-			MenuEntry[] menuEntries = client.getMenuEntries();
-			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + (exists ? 2 : 1));
-
-			MenuEntry mark = menuEntries[menuEntries.length - 1] = new MenuEntry();
-			mark.setOption(exists ? UNMARK : MARK);
-			mark.setTarget(event.getTarget());
-			mark.setType(MenuAction.RUNELITE.getId());
+			client.createMenuEntry(-1)
+				.setOption(exists ? UNMARK : MARK)
+				.setTarget(event.getTarget())
+				.setType(MenuAction.RUNELITE)
+				.onClick(e ->
+				{
+					Tile target = client.getSelectedSceneTile();
+					if (target != null)
+					{
+						markTile(target.getLocalLocation());
+					}
+				});
 
 			if (exists)
 			{
-				MenuEntry label = menuEntries[menuEntries.length - 2] = new MenuEntry();
-				label.setOption(LABEL);
-				label.setTarget(event.getTarget());
-				label.setType(MenuAction.RUNELITE.getId());
+				client.createMenuEntry(-2)
+					.setOption(LABEL)
+					.setTarget(event.getTarget())
+					.setType(MenuAction.RUNELITE)
+					.onClick(e ->
+					{
+						Tile target = client.getSelectedSceneTile();
+						if (target != null)
+						{
+							labelTile(target);
+						}
+					});
 			}
-
-			client.setMenuEntries(menuEntries);
-		}
-	}
-
-	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked event)
-	{
-		if (event.getMenuAction().getId() != MenuAction.RUNELITE.getId())
-		{
-			return;
-		}
-
-		Tile target = client.getSelectedSceneTile();
-		if (target == null)
-		{
-			return;
-		}
-
-		final String option = event.getMenuOption();
-		if (option.equals(MARK) || option.equals(UNMARK))
-		{
-			markTile(target.getLocalLocation());
-		}
-		else if (option.equals(LABEL))
-		{
-			labelTile(target);
 		}
 	}
 
@@ -319,7 +302,7 @@ public class GroundMarkerPlugin extends Plugin
 		WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, localPoint);
 
 		int regionId = worldPoint.getRegionID();
-		GroundMarkerPoint point = new GroundMarkerPoint(regionId, worldPoint.getRegionX(), worldPoint.getRegionY(), client.getPlane(), config.markerColor(), null);
+		GroundMarkerPoint point = new GroundMarkerPoint(regionId, worldPoint.getRegionX(), worldPoint.getRegionY(), worldPoint.getPlane(), config.markerColor(), null);
 		log.debug("Updating point: {} - {}", point, worldPoint);
 
 		List<GroundMarkerPoint> groundMarkerPoints = new ArrayList<>(getPoints(regionId));
@@ -343,7 +326,7 @@ public class GroundMarkerPlugin extends Plugin
 		WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, localPoint);
 		final int regionId = worldPoint.getRegionID();
 
-		GroundMarkerPoint searchPoint = new GroundMarkerPoint(regionId, worldPoint.getRegionX(), worldPoint.getRegionY(), client.getPlane(), null, null);
+		GroundMarkerPoint searchPoint = new GroundMarkerPoint(regionId, worldPoint.getRegionX(), worldPoint.getRegionY(), worldPoint.getPlane(), null, null);
 		Collection<GroundMarkerPoint> points = getPoints(regionId);
 		GroundMarkerPoint existing = points.stream()
 			.filter(p -> p.equals(searchPoint))
@@ -359,7 +342,7 @@ public class GroundMarkerPlugin extends Plugin
 			{
 				input = Strings.emptyToNull(input);
 
-				GroundMarkerPoint newPoint = new GroundMarkerPoint(regionId, worldPoint.getRegionX(), worldPoint.getRegionY(), client.getPlane(), existing.getColor(), input);
+				GroundMarkerPoint newPoint = new GroundMarkerPoint(regionId, worldPoint.getRegionX(), worldPoint.getRegionY(), worldPoint.getPlane(), existing.getColor(), input);
 				points.remove(searchPoint);
 				points.add(newPoint);
 				savePoints(regionId, points);

@@ -60,7 +60,7 @@ class BlastFurnaceClickBoxOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		int dispenserState = client.getVar(Varbits.BAR_DISPENSER);
+		int dispenserState = client.getVarbitValue(Varbits.BAR_DISPENSER);
 
 		if (config.showConveyorBelt() && plugin.getConveyorBelt() != null)
 		{
@@ -87,7 +87,7 @@ class BlastFurnaceClickBoxOverlay extends Overlay
 			return false;
 		}
 
-		return equipmentContainer.contains(ItemID.ICE_GLOVES);
+		return (equipmentContainer.contains(ItemID.ICE_GLOVES) || equipmentContainer.contains(ItemID.SMITHS_GLOVES_I));
 	}
 
 	private void renderObject(GameObject object, Graphics2D graphics, Color color)

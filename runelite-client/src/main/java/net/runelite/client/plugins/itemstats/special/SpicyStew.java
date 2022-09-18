@@ -41,10 +41,10 @@ public class SpicyStew implements Effect
 		/*
 		 * Spice boosts listed in the colour order of [Spicy stew -> Smell]
 		 */
-		int redBoost = spiceBoostOf(client.getVar(Varbits.SPICY_STEW_RED_SPICES));
-		int yellowBoost = spiceBoostOf(client.getVar(Varbits.SPICY_STEW_YELLOW_SPICES));
-		int orangeBoost = spiceBoostOf(client.getVar(Varbits.SPICY_STEW_ORANGE_SPICES));
-		int brownBoost = spiceBoostOf(client.getVar(Varbits.SPICY_STEW_BROWN_SPICES));
+		int redBoost = spiceBoostOf(client.getVarbitValue(Varbits.SPICY_STEW_RED_SPICES));
+		int yellowBoost = spiceBoostOf(client.getVarbitValue(Varbits.SPICY_STEW_YELLOW_SPICES));
+		int orangeBoost = spiceBoostOf(client.getVarbitValue(Varbits.SPICY_STEW_ORANGE_SPICES));
+		int brownBoost = spiceBoostOf(client.getVarbitValue(Varbits.SPICY_STEW_BROWN_SPICES));
 
 		List<StatChange> changes = new ArrayList<>();
 

@@ -198,7 +198,7 @@ public class WorldPoint
 
 			// get the template chunk for the chunk
 			int[][][] instanceTemplateChunks = client.getInstanceTemplateChunks();
-			int templateChunk = instanceTemplateChunks[client.getPlane()][chunkX][chunkY];
+			int templateChunk = instanceTemplateChunks[plane][chunkX][chunkY];
 
 			int rotation = templateChunk >> 1 & 0x3;
 			int templateChunkY = (templateChunk >> 3 & 0x7FF) * CHUNK_SIZE;
@@ -234,24 +234,28 @@ public class WorldPoint
 
 		// find instance chunks using the template point. there might be more than one.
 		List<WorldPoint> worldPoints = new ArrayList<>();
-		final int z = worldPoint.getPlane();
 		int[][][] instanceTemplateChunks = client.getInstanceTemplateChunks();
-		for (int x = 0; x < instanceTemplateChunks[z].length; ++x)
+		for (int z = 0; z < instanceTemplateChunks.length; z++)
 		{
-			for (int y = 0; y < instanceTemplateChunks[z][x].length; ++y)
+			for (int x = 0; x < instanceTemplateChunks[z].length; ++x)
 			{
-				int chunkData = instanceTemplateChunks[z][x][y];
-				int rotation = chunkData >> 1 & 0x3;
-				int templateChunkY = (chunkData >> 3 & 0x7FF) * CHUNK_SIZE;
-				int templateChunkX = (chunkData >> 14 & 0x3FF) * CHUNK_SIZE;
-				if (worldPoint.getX() >= templateChunkX && worldPoint.getX() < templateChunkX + CHUNK_SIZE
-					&& worldPoint.getY() >= templateChunkY && worldPoint.getY() < templateChunkY + CHUNK_SIZE)
+				for (int y = 0; y < instanceTemplateChunks[z][x].length; ++y)
 				{
-					WorldPoint p = new WorldPoint(client.getBaseX() + x * CHUNK_SIZE + (worldPoint.getX() & (CHUNK_SIZE - 1)),
-						client.getBaseY() + y * CHUNK_SIZE + (worldPoint.getY() & (CHUNK_SIZE - 1)),
-						worldPoint.getPlane());
-					p = rotate(p, rotation);
-					worldPoints.add(p);
+					int chunkData = instanceTemplateChunks[z][x][y];
+					int rotation = chunkData >> 1 & 0x3;
+					int templateChunkY = (chunkData >> 3 & 0x7FF) * CHUNK_SIZE;
+					int templateChunkX = (chunkData >> 14 & 0x3FF) * CHUNK_SIZE;
+					int plane = chunkData >> 24 & 0x3;
+					if (worldPoint.getX() >= templateChunkX && worldPoint.getX() < templateChunkX + CHUNK_SIZE
+						&& worldPoint.getY() >= templateChunkY && worldPoint.getY() < templateChunkY + CHUNK_SIZE
+						&& plane == worldPoint.getPlane())
+					{
+						WorldPoint p = new WorldPoint(client.getBaseX() + x * CHUNK_SIZE + (worldPoint.getX() & (CHUNK_SIZE - 1)),
+							client.getBaseY() + y * CHUNK_SIZE + (worldPoint.getY() & (CHUNK_SIZE - 1)),
+							z);
+						p = rotate(p, rotation);
+						worldPoints.add(p);
+					}
 				}
 			}
 		}

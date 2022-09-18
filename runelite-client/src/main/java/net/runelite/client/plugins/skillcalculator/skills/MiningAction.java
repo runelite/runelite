@@ -28,41 +28,69 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.ItemID;
 import net.runelite.api.NullItemID;
+import net.runelite.client.game.ItemManager;
 
 @AllArgsConstructor
 @Getter
-public enum MiningAction implements NamedSkillAction
+public enum MiningAction implements ItemSkillAction
 {
-	CLAY("Clay", 1, 5, ItemID.CLAY),
-	RUNE_ESSENCE("Rune essence", 1, 5, ItemID.RUNE_ESSENCE),
-	COPPER_ORE("Copper ore", 1, 17.5f, ItemID.COPPER_ORE),
-	TIN_ORE("Tin ore", 1, 17.5f, ItemID.TIN_ORE),
-	LIMESTONE("Limestone", 10, 26.5f, ItemID.LIMESTONE),
-	BARRONITE_SHARDS("Barronite shards", 14, 16, NullItemID.NULL_25683),
-	BARRONITE_DEPOSIT("Barronite deposit", 14, 32, ItemID.BARRONITE_DEPOSIT),
-	IRON_ORE("Iron ore", 15, 35, ItemID.IRON_ORE),
-	SILVER_ORE("Silver ore", 20, 40, ItemID.SILVER_ORE),
-	PURE_ESSENCE("Pure essence", 30, 5, ItemID.PURE_ESSENCE),
-	COAL("Coal", 30, 50, ItemID.COAL),
-	SANDSTONE_1KG("Sandstone (1kg)", 35, 30, ItemID.SANDSTONE_1KG),
-	SANDSTONE_2KG("Sandstone (2kg)", 35, 40, ItemID.SANDSTONE_2KG),
-	SANDSTONE_5KG("Sandstone (5kg)", 35, 50, ItemID.SANDSTONE_5KG),
-	SANDSTONE_10KG("Sandstone (10kg)", 35, 60, ItemID.SANDSTONE_10KG),
-	DENSE_ESSENCE_BLOCK("Dense essence block", 38, 12, ItemID.DENSE_ESSENCE_BLOCK),
-	GOLD_ORE("Gold ore", 40, 65, ItemID.GOLD_ORE),
-	GEM_ROCKS("Gem rocks", 40, 65, ItemID.UNCUT_RED_TOPAZ),
-	GRANITE_500G("Granite (500g)", 45, 50, ItemID.GRANITE_500G),
-	GRANITE_2KG("Granite (2kg)", 45, 60, ItemID.GRANITE_2KG),
-	GRANITE_5KG("Granite (5kg)", 45, 75, ItemID.GRANITE_5KG),
-	MITHRIL_ORE("Mithril ore", 55, 80, ItemID.MITHRIL_ORE),
-	SOFT_CLAY("Soft clay", 70, 5, ItemID.SOFT_CLAY),
-	ADAMANTITE_ORE("Adamantite ore", 70, 95, ItemID.ADAMANTITE_ORE),
-	RUNITE_ORE("Runite ore", 85, 125, ItemID.RUNITE_ORE),
-	AMETHYST("Amethyst", 92, 240, ItemID.AMETHYST),
+	CLAY(ItemID.CLAY, 1, 5),
+	RUNE_ESSENCE(ItemID.RUNE_ESSENCE, 1, 5),
+	COPPER_ORE(ItemID.COPPER_ORE, 1, 17.5f),
+	TIN_ORE(ItemID.TIN_ORE, 1, 17.5f),
+	LIMESTONE(ItemID.LIMESTONE, 10, 26.5f),
+	BARRONITE_SHARDS(NullItemID.NULL_25683, 14, 16)
+	{
+		@Override
+		public String getName(final ItemManager itemManager)
+		{
+			return "Barronite shards";
+		}
+	},
+	BARRONITE_DEPOSIT(ItemID.BARRONITE_DEPOSIT, 14, 32),
+	IRON_ORE(ItemID.IRON_ORE, 15, 35),
+	SILVER_ORE(ItemID.SILVER_ORE, 20, 40),
+	PURE_ESSENCE(ItemID.PURE_ESSENCE, 30, 5)
+	{
+		@Override
+		public boolean isMembers(final ItemManager itemManager)
+		{
+			return true;
+		}
+	},
+	COAL(ItemID.COAL, 30, 50),
+	SANDSTONE_1KG(ItemID.SANDSTONE_1KG, 35, 30),
+	SANDSTONE_2KG(ItemID.SANDSTONE_2KG, 35, 40),
+	SANDSTONE_5KG(ItemID.SANDSTONE_5KG, 35, 50),
+	SANDSTONE_10KG(ItemID.SANDSTONE_10KG, 35, 60),
+	DENSE_ESSENCE_BLOCK(ItemID.DENSE_ESSENCE_BLOCK, 38, 12),
+	GOLD_ORE(ItemID.GOLD_ORE, 40, 65),
+	GEM_ROCKS(ItemID.UNCUT_RED_TOPAZ, 40, 65)
+	{
+		@Override
+		public String getName(final ItemManager itemManager)
+		{
+			return "Gem rocks";
+		}
+	},
+	GRANITE_500G(ItemID.GRANITE_500G, 45, 50),
+	GRANITE_2KG(ItemID.GRANITE_2KG, 45, 60),
+	GRANITE_5KG(ItemID.GRANITE_5KG, 45, 75),
+	MITHRIL_ORE(ItemID.MITHRIL_ORE, 55, 80),
+	SOFT_CLAY(ItemID.SOFT_CLAY, 70, 5)
+	{
+		@Override
+		public boolean isMembers(final ItemManager itemManager)
+		{
+			return true;
+		}
+	},
+	ADAMANTITE_ORE(ItemID.ADAMANTITE_ORE, 70, 95),
+	RUNITE_ORE(ItemID.RUNITE_ORE, 85, 125),
+	AMETHYST(ItemID.AMETHYST, 92, 240),
 	;
 
-	private final String name;
+	private final int itemId;
 	private final int level;
 	private final float xp;
-	private final int icon;
 }

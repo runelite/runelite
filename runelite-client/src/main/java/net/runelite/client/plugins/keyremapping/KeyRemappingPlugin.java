@@ -57,8 +57,6 @@ import net.runelite.client.util.ColorUtil;
 public class KeyRemappingPlugin extends Plugin
 {
 	private static final String PRESS_ENTER_TO_CHAT = "Press Enter to Chat...";
-	private static final String SCRIPT_EVENT_SET_CHATBOX_INPUT = "setChatboxInput";
-	private static final String SCRIPT_EVENT_BLOCK_CHAT_INPUT = "blockChatInput";
 
 	@Inject
 	private Client client;
@@ -88,7 +86,7 @@ public class KeyRemappingPlugin extends Plugin
 			{
 				lockChat();
 				// Clear any typed text
-				client.setVar(VarClientStr.CHATBOX_TYPED_TEXT, "");
+				client.setVarcStrValue(VarClientStr.CHATBOX_TYPED_TEXT, "");
 			}
 		});
 	}
@@ -124,7 +122,7 @@ public class KeyRemappingPlugin extends Plugin
 		// the search box on the world map can be focused, and chat input goes there, even
 		// though the chatbox still has its key listener.
 		Widget worldMapSearch = client.getWidget(WidgetInfo.WORLD_MAP_SEARCH);
-		return worldMapSearch == null || client.getVar(VarClientInt.WORLD_MAP_SEARCH_FOCUSED) != 1;
+		return worldMapSearch == null || client.getVarcIntValue(VarClientInt.WORLD_MAP_SEARCH_FOCUSED) != 1;
 	}
 
 	/**
@@ -160,14 +158,14 @@ public class KeyRemappingPlugin extends Plugin
 	{
 		switch (scriptCallbackEvent.getEventName())
 		{
-			case SCRIPT_EVENT_SET_CHATBOX_INPUT:
+			case "setChatboxInput":
 				Widget chatboxInput = client.getWidget(WidgetInfo.CHATBOX_INPUT);
 				if (chatboxInput != null && !typing)
 				{
 					setChatboxWidgetInput(chatboxInput, PRESS_ENTER_TO_CHAT);
 				}
 				break;
-			case SCRIPT_EVENT_BLOCK_CHAT_INPUT:
+			case "blockChatInput":
 				if (!typing)
 				{
 					int[] intStack = client.getIntStack();
@@ -194,9 +192,9 @@ public class KeyRemappingPlugin extends Plugin
 		{
 			if (client.getGameState() == GameState.LOGGED_IN)
 			{
-				final boolean isChatboxTransparent = client.isResized() && client.getVar(Varbits.TRANSPARENT_CHATBOX) == 1;
+				final boolean isChatboxTransparent = client.isResized() && client.getVarbitValue(Varbits.TRANSPARENT_CHATBOX) == 1;
 				final Color textColor = isChatboxTransparent ? JagexColors.CHAT_TYPED_TEXT_TRANSPARENT_BACKGROUND : JagexColors.CHAT_TYPED_TEXT_OPAQUE_BACKGROUND;
-				setChatboxWidgetInput(chatboxInput, ColorUtil.wrapWithColorTag(client.getVar(VarClientStr.CHATBOX_TYPED_TEXT) + "*", textColor));
+				setChatboxWidgetInput(chatboxInput, ColorUtil.wrapWithColorTag(client.getVarcStrValue(VarClientStr.CHATBOX_TYPED_TEXT) + "*", textColor));
 			}
 		}
 	}

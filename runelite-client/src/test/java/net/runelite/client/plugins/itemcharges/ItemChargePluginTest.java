@@ -93,6 +93,13 @@ public class ItemChargePluginTest
 	private static final String ACTIVATE_EXPEDITIOUS_BRACELET = "Your expeditious bracelet helps you progress your slayer task faster. It has 11 charges left.";
 	private static final String BREAK_EXPEDITIOUS_BRACELET = "Your expeditious bracelet helps you progress your slayer task faster. <col=ff0000>It then crumbles to dust.</col>";
 
+	private static final String ACTIVATE_BLOOD_ESSENCE = "You activate the blood essence.";
+	private static final String EXTRACT_BLOOD_ESSENCE = "You manage to extract power from the Blood Essence and craft 67 extra runes.";
+	private static final String CHECK_BLOOD_ESSENCE = "Your blood essence has 56 charges remaining";
+	private static final String CHECK_BRACELET_OF_CLAY = "You can mine 13 more pieces of soft clay before your bracelet crumbles to dust.";
+	private static final String USED_BRACELET_OF_CLAY = "You manage to mine some clay.";
+	private static final String BREAK_BRACELET_OF_CLAY = "Your bracelet of clay crumbles to dust.";
+
 	@Mock
 	@Bind
 	private Client client;
@@ -420,5 +427,61 @@ public class ItemChargePluginTest
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BREAK_EXPEDITIOUS_BRACELET, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
 		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_EXPEDITIOUS_BRACELET, 30);
+	}
+
+	@Test
+	public void testBloodEssenceActivate()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", ACTIVATE_BLOOD_ESSENCE, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BLOOD_ESSENCE, 1000);
+	}
+
+	@Test
+	public void testBloodEssenceExtract()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", EXTRACT_BLOOD_ESSENCE, "", 0);
+		when(configManager.getConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BLOOD_ESSENCE, Integer.class)).thenReturn(1000);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BLOOD_ESSENCE, 933);
+	}
+
+	@Test
+	public void testBloodEssenceCheck()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHECK_BLOOD_ESSENCE, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BLOOD_ESSENCE, 56);
+	}
+
+	@Test
+	public void testBraceletOfClayCheck()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHECK_BRACELET_OF_CLAY, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BRACELET_OF_CLAY, 13);
+	}
+
+	@Test
+	public void testBraceletOfClayUsed()
+	{
+		when(configManager.getRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BRACELET_OF_CLAY, Integer.class)).thenReturn(25);
+		// Create equipment inventory with bracelet of clay
+		ItemContainer equipmentItemContainer = mock(ItemContainer.class);
+		when(client.getItemContainer(InventoryID.EQUIPMENT)).thenReturn(equipmentItemContainer);
+		when(equipmentItemContainer.contains(ItemID.BRACELET_OF_CLAY)).thenReturn(true);
+		when(equipmentItemContainer.getItems()).thenReturn(new Item[0]);
+		// Run message
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", USED_BRACELET_OF_CLAY, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BRACELET_OF_CLAY, 24);
+	}
+
+	@Test
+	public void testBraceletOfClayBreak()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BREAK_BRACELET_OF_CLAY, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BRACELET_OF_CLAY, 28);
 	}
 }

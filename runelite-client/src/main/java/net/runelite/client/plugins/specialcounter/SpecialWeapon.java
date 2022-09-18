@@ -31,7 +31,7 @@ import net.runelite.api.ItemID;
 
 @AllArgsConstructor
 @Getter
-enum SpecialWeapon
+public enum SpecialWeapon
 {
 	DRAGON_WARHAMMER("Dragon Warhammer", new int[]{ItemID.DRAGON_WARHAMMER}, false, SpecialCounterConfig::dragonWarhammerThreshold),
 	ARCLIGHT("Arclight", new int[]{ItemID.ARCLIGHT}, false, SpecialCounterConfig::arclightThreshold),

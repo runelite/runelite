@@ -79,7 +79,7 @@ class Library
 	Library()
 	{
 		populateBooks();
-		step = byIndex.size() / Book.values().length;
+		step = byIndex.size() / values().length;
 		reset();
 	}
 

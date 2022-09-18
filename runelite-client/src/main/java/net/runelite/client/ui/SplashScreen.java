@@ -30,7 +30,6 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import javax.annotation.Nullable;
 import javax.swing.ImageIcon;
@@ -66,7 +65,7 @@ public class SplashScreen extends JFrame implements ActionListener
 	private volatile String subActionText = "";
 	private volatile String progressText = null;
 
-	private SplashScreen() throws IOException
+	private SplashScreen()
 	{
 		BufferedImage logo = ImageUtil.loadImageResource(SplashScreen.class, "runelite_transparent.png");
 
@@ -204,6 +203,12 @@ public class SplashScreen extends JFrame implements ActionListener
 			}
 
 			INSTANCE.timer.stop();
+			// The CLOSE_ALL_WINDOWS quit strategy on MacOS dispatches WINDOW_CLOSING events to each frame
+			// from Window.getWindows. However, getWindows uses weak refs and relies on gc to remove windows
+			// from its list, causing events to get dispatched to disposed frames. The frames handle the events
+			// regardless of being disposed and will run the configured close operation. Set the close operation
+			// to DO_NOTHING_ON_CLOSE prior to disposing to prevent this.
+			INSTANCE.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 			INSTANCE.dispose();
 			INSTANCE = null;
 		});

@@ -26,11 +26,11 @@ package net.runelite.client.plugins.skillcalculator;
 
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
+import com.google.inject.Provider;
 import net.runelite.api.Client;
-import net.runelite.client.callback.ClientThread;
-import net.runelite.client.game.ItemManager;
-import net.runelite.client.game.SkillIconManager;
-import net.runelite.client.game.SpriteManager;
+import net.runelite.api.WorldType;
+import net.runelite.api.events.WorldChanged;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
@@ -48,33 +48,24 @@ public class SkillCalculatorPlugin extends Plugin
 	private Client client;
 
 	@Inject
-	private ClientThread clientThread;
-
-	@Inject
-	private SkillIconManager skillIconManager;
-
-	@Inject
-	private ItemManager itemManager;
-
-	@Inject
-	private SpriteManager spriteManager;
-
-	@Inject
 	private ClientToolbar clientToolbar;
 
+	@Inject
+	private Provider<SkillCalculatorPanel> uiPanel;
+
 	private NavigationButton uiNavigationButton;
+	private boolean lastWorldWasMembers;
 
 	@Override
 	protected void startUp() throws Exception
 	{
 		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "calc.png");
-		final SkillCalculatorPanel uiPanel = new SkillCalculatorPanel(skillIconManager, client, clientThread, spriteManager, itemManager);
 
 		uiNavigationButton = NavigationButton.builder()
 			.tooltip("Skill Calculator")
 			.icon(icon)
 			.priority(6)
-			.panel(uiPanel)
+			.panel(uiPanel.get())
 			.build();
 
 		clientToolbar.addNavigation(uiNavigationButton);
@@ -84,5 +75,17 @@ public class SkillCalculatorPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		clientToolbar.removeNavigation(uiNavigationButton);
+	}
+
+	@Subscribe
+	public void onWorldChanged(WorldChanged event)
+	{
+		// We only need to reload the interface if the player switches from P2P to F2P or vice versa
+		boolean currentWorldIsMembers = client.getWorldType().contains(WorldType.MEMBERS);
+		if (currentWorldIsMembers != lastWorldWasMembers)
+		{
+			uiPanel.get().reloadCurrentCalculator();
+		}
+		lastWorldWasMembers = currentWorldIsMembers;
 	}
 }

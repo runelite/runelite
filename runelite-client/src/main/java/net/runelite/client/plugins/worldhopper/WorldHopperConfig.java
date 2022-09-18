@@ -27,6 +27,8 @@ package net.runelite.client.plugins.worldhopper;
 
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.util.Collections;
+import java.util.Set;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -76,9 +78,9 @@ public interface WorldHopperConfig extends Config
 		description = "Limit quick-hopping to worlds of a specific region",
 		position = 3
 	)
-	default RegionFilterMode quickHopRegionFilter()
+	default Set<RegionFilterMode> quickHopRegionFilter()
 	{
-		return RegionFilterMode.NONE;
+		return Collections.emptySet();
 	}
 
 	@ConfigItem(
@@ -142,9 +144,9 @@ public interface WorldHopperConfig extends Config
 		description = "Restrict sidebar worlds to one region",
 		position = 8
 	)
-	default RegionFilterMode regionFilter()
+	default Set<RegionFilterMode> regionFilter()
 	{
-		return RegionFilterMode.NONE;
+		return Collections.emptySet();
 	}
 
 	@ConfigItem(

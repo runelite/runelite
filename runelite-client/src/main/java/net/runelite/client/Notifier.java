@@ -92,8 +92,6 @@ public class Notifier
 		}
 	}
 
-	// Default timeout of notification in milliseconds
-	private static final int DEFAULT_TIMEOUT = 10000;
 	private static final String DOUBLE_QUOTE = "\"";
 	private static final Escaper SHELL_ESCAPE = Escapers.builder()
 		.addEscape('"', "'")
@@ -316,12 +314,17 @@ public class Notifier
 		commands.add("notify-send");
 		commands.add(title);
 		commands.add(message);
+		commands.add("-a");
+		commands.add(SHELL_ESCAPE.escape(appName));
 		commands.add("-i");
 		commands.add(SHELL_ESCAPE.escape(notifyIconPath.toAbsolutePath().toString()));
 		commands.add("-u");
 		commands.add(toUrgency(type));
-		commands.add("-t");
-		commands.add(String.valueOf(DEFAULT_TIMEOUT));
+		if (runeLiteConfig.notificationTimeout() > 0)
+		{
+			commands.add("-t");
+			commands.add(String.valueOf(runeLiteConfig.notificationTimeout()));
+		}
 
 		executorService.submit(() ->
 		{

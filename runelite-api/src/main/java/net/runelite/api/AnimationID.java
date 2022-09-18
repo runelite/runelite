@@ -133,6 +133,7 @@ public final class AnimationID
 	public static final int FISHING_PEARL_FLY_ROD_2 = 8192;
 	public static final int FISHING_PEARL_BARBARIAN_ROD_2 = 8193;
 	public static final int FISHING_PEARL_OILY_ROD = 6932;
+	public static final int FISHING_BARBARIAN_ROD = 9350;
 	public static final int MINING_BRONZE_PICKAXE = 625;
 	public static final int MINING_IRON_PICKAXE = 626;
 	public static final int MINING_STEEL_PICKAXE = 627;
@@ -204,7 +205,14 @@ public final class AnimationID
 	public static final int LEAGUE_HOME_TELEPORT_4 = 8803;
 	public static final int LEAGUE_HOME_TELEPORT_5 = 8805;
 	public static final int LEAGUE_HOME_TELEPORT_6 = 8807;
+	public static final int SHATTERED_LEAGUE_HOME_TELEPORT_1 = 9209;
+	public static final int SHATTERED_LEAGUE_HOME_TELEPORT_2 = 9210;
+	public static final int SHATTERED_LEAGUE_HOME_TELEPORT_3 = 9211;
+	public static final int SHATTERED_LEAGUE_HOME_TELEPORT_4 = 9212;
+	public static final int SHATTERED_LEAGUE_HOME_TELEPORT_5 = 9213;
+	public static final int SHATTERED_LEAGUE_HOME_TELEPORT_6 = 9214;
 	public static final int RAID_LIGHT_ANIMATION = 3101;
+	public static final int LOOTBEAM_ANIMATION = 9260;
 
 	public static final int CONSTRUCTION = 3676;
 	public static final int CONSTRUCTION_IMCANDO = 8912;
@@ -258,6 +266,13 @@ public final class AnimationID
 	public static final int ROCKSLUG_DEATH = 1568;
 	public static final int ZYGOMITE_DEATH = 3327;
 	public static final int IMP_DEATH = 172;
+	public static final int CORP_DEATH = 1676;
+	public static final int VERZIK_P2_BLUE_NYLO_EXPLOSION = 7992;
+	public static final int VERZIK_P2_GREEN_NYLO_EXPLOSION = 8000;
+	public static final int VERZIK_P2_WHITE_NYLO_EXPLOSION = 8006;
+	public static final int VERZIK_P2_PURPLE_NYLO_EXPLOSION = 8078;
+	public static final int VERZIK_P2_RED_NYLO_EXPLOSION = 8097;
+
 
 	// POH Animations
 	public static final int INCENSE_BURNER = 3687;

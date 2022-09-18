@@ -164,4 +164,15 @@ public interface ChatFilterConfig extends Config
 	{
 		return 0;
 	}
+
+	@ConfigItem(
+		keyName = "stripAccents",
+		name = "Strip accents",
+		description = "Remove accents before applying filters",
+		position = 13
+	)
+	default boolean stripAccents()
+	{
+		return false;
+	}
 }

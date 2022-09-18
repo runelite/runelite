@@ -618,38 +618,32 @@ public class TabInterface
 			return;
 		}
 
-		MenuEntry[] entries = client.getMenuEntries();
 
 		if (activeTab != null
 			&& event.getActionParam1() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
 			&& event.getOption().equals("Examine"))
 		{
-			entries = createMenuEntry(event, REMOVE_TAG + " (" + activeTab.getTag() + ")", event.getTarget(), entries);
-			client.setMenuEntries(entries);
+			createMenuEntry(event, REMOVE_TAG + " (" + activeTab.getTag() + ")", event.getTarget());
 		}
 		else if (event.getActionParam1() == WidgetInfo.BANK_DEPOSIT_INVENTORY.getId()
 			&& event.getOption().equals("Deposit inventory"))
 		{
-			entries = createMenuEntry(event, TAG_INVENTORY, event.getTarget(), entries);
+			createMenuEntry(event, TAG_INVENTORY, event.getTarget());
 
 			if (activeTab != null)
 			{
-				entries = createMenuEntry(event, TAG_INVENTORY, ColorUtil.wrapWithColorTag(activeTab.getTag(), HILIGHT_COLOR), entries);
+				createMenuEntry(event, TAG_INVENTORY, ColorUtil.wrapWithColorTag(activeTab.getTag(), HILIGHT_COLOR));
 			}
-
-			client.setMenuEntries(entries);
 		}
 		else if (event.getActionParam1() == WidgetInfo.BANK_DEPOSIT_EQUIPMENT.getId()
 			&& event.getOption().equals("Deposit worn items"))
 		{
-			entries = createMenuEntry(event, TAG_GEAR, event.getTarget(), entries);
+			createMenuEntry(event, TAG_GEAR, event.getTarget());
 
 			if (activeTab != null)
 			{
-				entries = createMenuEntry(event, TAG_GEAR, ColorUtil.wrapWithColorTag(activeTab.getTag(), HILIGHT_COLOR), entries);
+				createMenuEntry(event, TAG_GEAR, ColorUtil.wrapWithColorTag(activeTab.getTag(), HILIGHT_COLOR));
 			}
-
-			client.setMenuEntries(entries);
 		}
 	}
 
@@ -706,8 +700,8 @@ public class TabInterface
 			activateTab(null);
 			// This ensures that when clicking Search when tab is selected, the search input is opened rather
 			// than client trying to close it first
-			client.setVar(VarClientStr.INPUT_TEXT, "");
-			client.setVar(VarClientInt.INPUT_TYPE, 0);
+			client.setVarcStrValue(VarClientStr.INPUT_TEXT, "");
+			client.setVarcIntValue(VarClientInt.INPUT_TYPE, 0);
 		}
 	}
 
@@ -773,7 +767,6 @@ public class TabInterface
 				{
 					entry.setOption(TAG_SEARCH + Text.removeTags(entry.getTarget()) + (shiftDown ? VAR_TAG_SUFFIX : ""));
 					entry.setTarget(draggedWidget.getName());
-					client.setMenuEntries(entries);
 				}
 
 				if (entry.getOption().equals(SCROLL_UP))
@@ -795,7 +788,7 @@ public class TabInterface
 			return;
 		}
 
-		if (client.getVar(Varbits.BANK_REARRANGE_MODE) == 0)
+		if (client.getVarbitValue(Varbits.BANK_REARRANGE_MODE) == 0)
 		{
 			tabManager.swap(source.getName(), dest.getName());
 		}
@@ -1195,17 +1188,14 @@ public class TabInterface
 		searchButtonBackground.setSpriteId(SpriteID.EQUIPMENT_SLOT_TILE);
 	}
 
-	private static MenuEntry[] createMenuEntry(MenuEntryAdded event, String option, String target, MenuEntry[] entries)
+	private void createMenuEntry(MenuEntryAdded event, String option, String target)
 	{
-		final MenuEntry entry = new MenuEntry();
-		entry.setParam0(event.getActionParam0());
-		entry.setParam1(event.getActionParam1());
-		entry.setTarget(target);
-		entry.setOption(option);
-		entry.setType(MenuAction.RUNELITE.getId());
-		entry.setIdentifier(event.getIdentifier());
-		entries = Arrays.copyOf(entries, entries.length + 1);
-		entries[entries.length - 1] = entry;
-		return entries;
+		client.createMenuEntry(-1)
+			.setParam0(event.getActionParam0())
+			.setParam1(event.getActionParam1())
+			.setTarget(target)
+			.setOption(option)
+			.setType(MenuAction.RUNELITE)
+			.setIdentifier(event.getIdentifier());
 	}
 }

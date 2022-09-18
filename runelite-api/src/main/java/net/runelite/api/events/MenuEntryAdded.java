@@ -24,41 +24,83 @@
  */
 package net.runelite.api.events;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
+import net.runelite.api.MenuEntry;
 
 /**
  * An event when a new entry is added to a right-click menu.
  */
-@Data
-@AllArgsConstructor
+@RequiredArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString(onlyExplicitlyIncluded = true)
 public class MenuEntryAdded
 {
+	@Getter
+	private final MenuEntry menuEntry;
+
 	/**
 	 * The option text added to the menu. (ie. "Walk here", "Use")
 	 */
-	private final String option;
+	@EqualsAndHashCode.Include
+	@ToString.Include
+	public String getOption()
+	{
+		return menuEntry.getOption();
+	}
+
 	/**
 	 * The target of the action. (ie. Item or Actor name)
 	 * <p>
 	 * If the option does not apply to any target, this field
 	 * will be set to empty string.
 	 */
-	private final String target;
+	@EqualsAndHashCode.Include
+	@ToString.Include
+	public String getTarget()
+	{
+		return menuEntry.getTarget();
+	}
+
 	/**
 	 * The action type that will be triggered.
 	 */
-	private final int type;
+	@EqualsAndHashCode.Include
+	@ToString.Include
+	public int getType()
+	{
+		return menuEntry.getType().getId();
+	}
+
 	/**
 	 * An identifier value for the target of the action
 	 */
-	private final int identifier;
+	@EqualsAndHashCode.Include
+	@ToString.Include
+	public int getIdentifier()
+	{
+		return menuEntry.getIdentifier();
+	}
+
 	/**
 	 * An additional parameter for the action.
 	 */
-	private final int actionParam0;
+	@EqualsAndHashCode.Include
+	@ToString.Include
+	public int getActionParam0()
+	{
+		return menuEntry.getParam0();
+	}
+
 	/**
 	 * A second additional parameter for the action.
 	 */
-	private final int actionParam1;
+	@EqualsAndHashCode.Include
+	@ToString.Include
+	public int getActionParam1()
+	{
+		return menuEntry.getParam1();
+	}
 }

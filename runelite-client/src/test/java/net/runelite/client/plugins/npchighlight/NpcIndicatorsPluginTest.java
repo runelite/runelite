@@ -34,11 +34,12 @@ import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
-import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
+import net.runelite.api.NPCComposition;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcSpawned;
+import net.runelite.client.menus.TestMenuEntry;
 import net.runelite.client.ui.overlay.OverlayManager;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -48,7 +49,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -102,20 +102,23 @@ public class NpcIndicatorsPluginTest
 
 		npcIndicatorsPlugin.rebuild();
 
+		NPCComposition comp = mock(NPCComposition.class);
+		when(comp.getActions()).thenReturn(new String[] {"Attack"});
 		NPC npc = mock(NPC.class);
 		when(npc.getName()).thenReturn("Goblin");
 		when(npc.isDead()).thenReturn(true);
+		when(npc.getTransformedComposition()).thenReturn(comp);
 		npcIndicatorsPlugin.onNpcSpawned(new NpcSpawned(npc));
 
-		when(client.getCachedNPCs()).thenReturn(new NPC[]{npc}); // id 0
+		TestMenuEntry entry = new TestMenuEntry();
+		entry.setTarget("Goblin");
+		entry.setIdentifier(MenuAction.NPC_FIRST_OPTION.getId());
+		entry.setActor(npc);
 
-		when(client.getMenuEntries()).thenReturn(new MenuEntry[]{new MenuEntry()});
-		MenuEntryAdded menuEntryAdded = new MenuEntryAdded("", "Goblin", MenuAction.NPC_FIRST_OPTION.getId(), 0, -1, -1);
+		MenuEntryAdded menuEntryAdded = new MenuEntryAdded(entry);
 		npcIndicatorsPlugin.onMenuEntryAdded(menuEntryAdded);
 
-		MenuEntry target = new MenuEntry();
-		target.setTarget("<col=ff0000>Goblin"); // red
-		verify(client).setMenuEntries(new MenuEntry[]{target});
+		assertEquals("<col=ff0000>Goblin", entry.getTarget()); // red
 	}
 
 	@Test
@@ -131,15 +134,15 @@ public class NpcIndicatorsPluginTest
 		when(npc.getName()).thenReturn("Goblin");
 		npcIndicatorsPlugin.onNpcSpawned(new NpcSpawned(npc));
 
-		when(client.getCachedNPCs()).thenReturn(new NPC[]{npc}); // id 0
+		TestMenuEntry entry = new TestMenuEntry();
+		entry.setTarget("Goblin");
+		entry.setIdentifier(MenuAction.NPC_FIRST_OPTION.getId());
+		entry.setActor(npc);
 
-		when(client.getMenuEntries()).thenReturn(new MenuEntry[]{new MenuEntry()});
-		MenuEntryAdded menuEntryAdded = new MenuEntryAdded("", "Goblin", MenuAction.NPC_FIRST_OPTION.getId(), 0, -1, -1);
+		MenuEntryAdded menuEntryAdded = new MenuEntryAdded(entry);
 		npcIndicatorsPlugin.onMenuEntryAdded(menuEntryAdded);
 
-		MenuEntry target = new MenuEntry();
-		target.setTarget("<col=0000ff>Goblin"); // blue
-		verify(client).setMenuEntries(new MenuEntry[]{target});
+		assertEquals("<col=0000ff>Goblin", entry.getTarget()); // blue
 	}
 
 	@Test

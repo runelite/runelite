@@ -45,9 +45,7 @@ import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
-import net.runelite.http.api.feed.FeedClient;
 import net.runelite.http.api.feed.FeedResult;
-import okhttp3.OkHttpClient;
 
 @PluginDescriptor(
 	name = "News Feed",
@@ -144,11 +142,5 @@ public class FeedPlugin extends Plugin
 	FeedConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(FeedConfig.class);
-	}
-
-	@Provides
-	FeedClient provideFeedClient(OkHttpClient okHttpClient)
-	{
-		return new FeedClient(okHttpClient);
 	}
 }

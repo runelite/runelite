@@ -38,6 +38,7 @@ import net.runelite.api.clan.ClanChannelMember;
 import net.runelite.api.clan.ClanRank;
 import net.runelite.api.clan.ClanSettings;
 import net.runelite.api.clan.ClanTitle;
+import net.runelite.client.party.PartyService;
 import net.runelite.client.util.Text;
 
 @Singleton
@@ -45,19 +46,21 @@ public class PlayerIndicatorsService
 {
 	private final Client client;
 	private final PlayerIndicatorsConfig config;
+	private final PartyService partyService;
 
 	@Inject
-	private PlayerIndicatorsService(Client client, PlayerIndicatorsConfig config)
+	private PlayerIndicatorsService(Client client, PlayerIndicatorsConfig config, PartyService partyService)
 	{
 		this.config = config;
 		this.client = client;
+		this.partyService = partyService;
 	}
 
 	public void forEachPlayer(final BiConsumer<Player, Color> consumer)
 	{
 		if (!config.highlightOwnPlayer() && !config.highlightFriendsChat()
 			&& !config.highlightFriends() && !config.highlightOthers()
-			&& !config.highlightClanMembers())
+			&& !config.highlightClanMembers() && !config.highlightPartyMembers())
 		{
 			return;
 		}
@@ -80,6 +83,10 @@ public class PlayerIndicatorsService
 				{
 					consumer.accept(player, config.getOwnPlayerColor());
 				}
+			}
+			else if (partyService.isInParty() && config.highlightPartyMembers() && partyService.getMemberByDisplayName(player.getName()) != null)
+			{
+				consumer.accept(player, config.getPartyMemberColor());
 			}
 			else if (config.highlightFriends() && player.isFriend())
 			{

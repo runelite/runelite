@@ -40,12 +40,15 @@ import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.FriendsChatManager;
 import net.runelite.api.Client;
 import net.runelite.api.Friend;
+import net.runelite.api.FriendsChatManager;
 import net.runelite.api.Nameable;
 import net.runelite.api.NameableContainer;
 import net.runelite.api.Player;
+import net.runelite.api.clan.ClanID;
+import net.runelite.api.clan.ClanMember;
+import net.runelite.api.clan.ClanSettings;
 
 @Slf4j
 @Singleton
@@ -235,6 +238,22 @@ class NameAutocompleter implements KeyListener
 			}
 		}
 
+		// Search clans
+		if (!autocompleteName.isPresent())
+		{
+			final ClanSettings[] clanSettings = {
+				client.getClanSettings(ClanID.CLAN),
+				client.getClanSettings(ClanID.GROUP_IRONMAN),
+				client.getGuestClanSettings()
+			};
+			autocompleteName = Arrays.stream(clanSettings)
+				.filter(Objects::nonNull)
+				.flatMap(cs -> cs.getMembers().stream())
+				.map(ClanMember::getName)
+				.filter(n -> pattern.matcher(n).matches())
+				.findFirst();
+		}
+
 		// Search cached players if a friend wasn't found
 		if (!autocompleteName.isPresent())
 		{
@@ -242,6 +261,7 @@ class NameAutocompleter implements KeyListener
 			autocompleteName = Arrays.stream(cachedPlayers)
 				.filter(Objects::nonNull)
 				.map(Player::getName)
+				.filter(Objects::nonNull)
 				.filter(n -> pattern.matcher(n).matches())
 				.findFirst();
 		}

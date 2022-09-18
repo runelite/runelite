@@ -1,0 +1,159 @@
+.id                 3238
+.int_stack_count    5
+.string_stack_count 0
+.int_var_count      6 ; +1 for filter result
+.string_var_count   0
+   iload                  0
+   invoke                 6153 ; always hidden flag
+   iconst                 1
+   if_icmpeq              hide
+
+   iconst                 -1       ; set to 1 to hide, 0 to show
+   iload                  0        ; quest dbrow
+   sconst                 "questFilter"
+   runelite_callback     
+   pop_int                        ; quest dbrow
+   istore                 5       ; save result
+   ; compare with -1
+   iload                  5       ; load result
+   iconst                 -1
+   if_icmpeq              continue
+   ; return value
+   iload                  5
+   return                
+
+continue:
+   iload                  0
+   iconst                 64
+   iconst                 0
+   db_getfield           
+   iconst                 1
+   if_icmpeq              LABEL7
+   jump                   LABEL13
+LABEL7:
+   invoke                 4025
+   iconst                 1
+   if_icmpeq              LABEL11
+   jump                   LABEL13
+LABEL11:
+hide:
+   iconst                 1
+   return                
+LABEL13:
+   iload                  0
+   iconst                 64
+   iconst                 0
+   db_getfield           
+   iconst                 0
+   if_icmpeq              LABEL20
+   jump                   LABEL26
+LABEL20:
+   get_varbit             13774
+   iconst                 1
+   if_icmpeq              LABEL24
+   jump                   LABEL26
+LABEL24:
+   iconst                 1
+   return                
+LABEL26:
+   iload                  4
+   iconst                 1
+   if_icmpeq              LABEL30
+   jump                   LABEL36
+LABEL30:
+   get_varbit             13890
+   iconst                 1
+   if_icmpeq              LABEL34
+   jump                   LABEL36
+LABEL34:
+   iconst                 1
+   return                
+LABEL36:
+   iload                  0
+   invoke                 6153
+   iconst                 1
+   if_icmpeq              LABEL41
+   jump                   LABEL43
+LABEL41:
+   iconst                 1
+   return                
+LABEL43:
+   iload                  1
+   iconst                 0
+   if_icmpeq              LABEL47
+   jump                   LABEL53
+LABEL47:
+   get_varbit             13775
+   iconst                 1
+   if_icmpeq              LABEL51
+   jump                   LABEL53
+LABEL51:
+   iconst                 1
+   return                
+LABEL53:
+   iload                  1
+   iconst                 1
+   if_icmpeq              LABEL57
+   jump                   LABEL63
+LABEL57:
+   get_varbit             13776
+   iconst                 1
+   if_icmpeq              LABEL61
+   jump                   LABEL63
+LABEL61:
+   iconst                 1
+   return                
+LABEL63:
+   iload                  1
+   iconst                 2
+   if_icmpeq              LABEL67
+   jump                   LABEL73
+LABEL67:
+   get_varbit             13777
+   iconst                 1
+   if_icmpeq              LABEL71
+   jump                   LABEL73
+LABEL71:
+   iconst                 1
+   return                
+LABEL73:
+   iload                  1
+   iconst                 1
+   if_icmpeq              LABEL77
+   jump                   LABEL87
+LABEL77:
+   get_varbit             13778
+   iconst                 2
+   if_icmpeq              LABEL81
+   jump                   LABEL87
+LABEL81:
+   iload                  2
+   iconst                 0
+   if_icmpeq              LABEL85
+   jump                   LABEL87
+LABEL85:
+   iconst                 1
+   return                
+LABEL87:
+   iload                  1
+   iconst                 1
+   if_icmpeq              LABEL91
+   jump                   LABEL101
+LABEL91:
+   get_varbit             13779
+   iconst                 2
+   if_icmpeq              LABEL95
+   jump                   LABEL101
+LABEL95:
+   iload                  3
+   iconst                 0
+   if_icmpeq              LABEL99
+   jump                   LABEL101
+LABEL99:
+   iconst                 1
+   return                
+LABEL101:
+   iconst                 0
+   return                
+   iconst                 -1
+   return                

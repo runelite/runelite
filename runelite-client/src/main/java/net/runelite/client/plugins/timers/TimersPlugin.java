@@ -62,8 +62,6 @@ import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.api.widgets.Widget;
-import static net.runelite.api.widgets.WidgetInfo.PVP_WORLD_SAFE_ZONE;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
@@ -96,25 +94,17 @@ public class TimersPlugin extends Plugin
 	private static final String CANNON_REPAIR_MESSAGE = "You repair your cannon, restoring it to working order.";
 	private static final String CANNON_DESTROYED_MESSAGE = "Your cannon has been destroyed!";
 	private static final String CANNON_BROKEN_MESSAGE = "<col=ef1020>Your cannon has broken!";
-	private static final String CHARGE_EXPIRED_MESSAGE = "<col=ef1020>Your magical charge fades away.</col>";
-	private static final String CHARGE_MESSAGE = "<col=ef1020>You feel charged with magic power.</col>";
 	private static final String EXTENDED_ANTIFIRE_DRINK_MESSAGE = "You drink some of your extended antifire potion.";
 	private static final String EXTENDED_SUPER_ANTIFIRE_DRINK_MESSAGE = "You drink some of your extended super antifire potion.";
 	private static final String FROZEN_MESSAGE = "<col=ef1020>You have been frozen!</col>";
-	private static final String GAUNTLET_ENTER_MESSAGE = "You enter the Gauntlet.";
 	private static final String GOD_WARS_ALTAR_MESSAGE = "you recharge your prayer.";
 	private static final String MAGIC_IMBUE_EXPIRED_MESSAGE = "Your Magic Imbue charge has ended.";
 	private static final String MAGIC_IMBUE_MESSAGE = "You are charged to combine runes!";
 	private static final String STAFF_OF_THE_DEAD_SPEC_EXPIRED_MESSAGE = "Your protection fades away";
 	private static final String STAFF_OF_THE_DEAD_SPEC_MESSAGE = "Spirits of deceased evildoers offer you their protection";
-	private static final String STAMINA_DRINK_MESSAGE = "You drink some of your stamina potion.";
-	private static final String STAMINA_SHARED_DRINK_MESSAGE = "You have received a shared dose of stamina potion.";
-	private static final String STAMINA_EXPIRED_MESSAGE = "<col=8f4808>Your stamina potion has expired.</col>";
 	private static final String SUPER_ANTIFIRE_DRINK_MESSAGE = "You drink some of your super antifire potion";
 	private static final String SUPER_ANTIFIRE_EXPIRED_MESSAGE = "<col=7f007f>Your super antifire potion has expired.</col>";
-	private static final String KILLED_TELEBLOCK_OPPONENT_TEXT = "Your Tele Block has been removed because you killed ";
 	private static final String PRAYER_ENHANCE_EXPIRED = "<col=ff0000>Your prayer enhance effect has worn off.</col>";
-	private static final String ENDURANCE_EFFECT_MESSAGE = "Your Ring of endurance doubles the duration of your stamina potion's effect.";
 	private static final String SHADOW_VEIL_MESSAGE = ">Your thieving abilities have been enhanced.</col>";
 	private static final String DEATH_CHARGE_MESSAGE = ">Upon the death of your next foe, some of your special attack energy will be restored.</col>";
 	private static final String DEATH_CHARGE_ACTIVATE_MESSAGE = ">Some of your special attack energy has been restored.</col>";
@@ -124,8 +114,12 @@ public class TimersPlugin extends Plugin
 	private static final String RESURRECT_THRALL_DISAPPEAR_MESSAGE_END = " thrall returns to the grave.</col>";
 	private static final String WARD_OF_ARCEUUS_MESSAGE = ">Your defence against Arceuus magic has been strengthened.</col>";
 	private static final String PICKPOCKET_FAILURE_MESSAGE = "You fail to pick ";
+	private static final String PICKPOCKET_FAILURE_MESSAGE = "You fail to pick the ";
+	private static final String DODGY_NECKLACE_PROTECTION_MESSAGE = "Your dodgy necklace protects you.";
+	private static final String SHADOW_VEIL_PROTECTION_MESSAGE = "Your attempt to steal goes unnoticed.";
+	private static final String SILK_DRESSING_MESSAGE = "You quickly apply the dressing to your wounds.";
+	private static final String BLESSED_CRYSTAL_SCARAB_MESSAGE = "You crack the crystal in your hand.";
 
-	private static final Pattern TELEBLOCK_PATTERN = Pattern.compile("A Tele Block spell has been cast on you(?: by .+)?\\. It will expire in (?<mins>\\d+) minutes?(?:, (?<secs>\\d+) seconds?)?\\.");
 	private static final Pattern DIVINE_POTION_PATTERN = Pattern.compile("You drink some of your divine (.+) potion\\.");
 	private static final int VENOM_VALUE_CUTOFF = -40; // Antivenom < -40 <= Antipoison < 0
 	private static final int POISON_TICK_LENGTH = 30;
@@ -135,28 +129,18 @@ public class TimersPlugin extends Plugin
 	private static final int NMZ_MAP_REGION_ID = 9033;
 	private static final Pattern TZHAAR_WAVE_MESSAGE = Pattern.compile("Wave: (\\d+)");
 	private static final String TZHAAR_DEFEATED_MESSAGE = "You have been defeated!";
-	private static final Pattern TZHAAR_COMPLETE_MESSAGE = Pattern.compile("Your (?:TzTok-Jad|TzKal-Zuk) kill count is:");
 	private static final Pattern TZHAAR_PAUSED_MESSAGE = Pattern.compile("The (?:Inferno|Fight Cave) has been paused. You may now log out.");
 
 	private TimerTimer freezeTimer;
 	private int freezeTime = -1; // time frozen, in game ticks
 
 	private TimerTimer staminaTimer;
-	private boolean wasWearingEndurance;
+	private TimerTimer buffTimer;
 
-	private int lastRaidVarb;
-	private int lastVengCooldownVarb;
-	private int lastIsVengeancedVarb;
-	private int lastPoisonVarp;
-	private int lastPvpVarb;
-	private int lastCorruptionVarb;
-	private int lastImbuedHeartVarb;
 	private boolean imbuedHeartTimerActive;
 	private int nextPoisonTick;
 	private WorldPoint lastPoint;
-	private TeleportWidget lastTeleportClicked;
 	private int lastAnimation;
-	private boolean widgetHiddenChangedOnPvpWorld;
 	private ElapsedTimer tzhaarTimer;
 
 	@Inject
@@ -183,46 +167,37 @@ public class TimersPlugin extends Plugin
 	@Override
 	public void startUp()
 	{
+		if (config.showHomeMinigameTeleports())
+		{
+			checkTeleport(VarPlayer.LAST_HOME_TELEPORT);
+			checkTeleport(VarPlayer.LAST_MINIGAME_TELEPORT);
+		}
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
 		infoBoxManager.removeIf(t -> t instanceof TimerTimer);
-		lastRaidVarb = -1;
 		lastPoint = null;
-		lastTeleportClicked = null;
 		lastAnimation = -1;
-		widgetHiddenChangedOnPvpWorld = false;
-		lastPoisonVarp = 0;
 		nextPoisonTick = 0;
 		removeTzhaarTimer();
 		staminaTimer = null;
 		imbuedHeartTimerActive = false;
-		lastImbuedHeartVarb = 0;
 	}
 
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		int raidVarb = client.getVar(Varbits.IN_RAID);
-		int vengCooldownVarb = client.getVar(Varbits.VENGEANCE_COOLDOWN);
-		int isVengeancedVarb = client.getVar(Varbits.VENGEANCE_ACTIVE);
-		int poisonVarp = client.getVar(VarPlayer.POISON);
-		int pvpVarb = client.getVar(Varbits.PVP_SPEC_ORB);
-		int corruptionCooldownVarb = client.getVar(Varbits.CORRUPTION_COOLDOWN);
-		int imbuedHeartCooldownVarb = client.getVar(Varbits.IMBUED_HEART_COOLDOWN);
-
-		if (lastRaidVarb != raidVarb)
+		if (event.getVarbitId() == Varbits.IN_RAID)
 		{
 			removeGameTimer(OVERLOAD_RAID);
 			removeGameTimer(PRAYER_ENHANCE);
-			lastRaidVarb = raidVarb;
 		}
 
-		if (lastVengCooldownVarb != vengCooldownVarb && config.showVengeance())
+		if (event.getVarbitId() == Varbits.VENGEANCE_COOLDOWN && config.showVengeance())
 		{
-			if (vengCooldownVarb == 1)
+			if (event.getValue() == 1)
 			{
 				createGameTimer(VENGEANCE);
 			}
@@ -230,13 +205,11 @@ public class TimersPlugin extends Plugin
 			{
 				removeGameTimer(VENGEANCE);
 			}
-
-			lastVengCooldownVarb = vengCooldownVarb;
 		}
 
-		if (lastCorruptionVarb != corruptionCooldownVarb && config.showArceuusCooldown())
+		if (event.getVarbitId() == Varbits.CORRUPTION_COOLDOWN && config.showArceuusCooldown())
 		{
-			if (corruptionCooldownVarb == 1)
+			if (event.getValue() == 1)
 			{
 				createGameTimer(CORRUPTION_COOLDOWN);
 			}
@@ -244,13 +217,11 @@ public class TimersPlugin extends Plugin
 			{
 				removeGameTimer(CORRUPTION_COOLDOWN);
 			}
-
-			lastCorruptionVarb = corruptionCooldownVarb;
 		}
 
-		if (lastIsVengeancedVarb != isVengeancedVarb && config.showVengeanceActive())
+		if (event.getVarbitId() == Varbits.VENGEANCE_ACTIVE && config.showVengeanceActive())
 		{
-			if (isVengeancedVarb == 1)
+			if (event.getValue() == 1)
 			{
 				createGameIndicator(VENGEANCE_ACTIVE);
 			}
@@ -258,15 +229,18 @@ public class TimersPlugin extends Plugin
 			{
 				removeGameIndicator(VENGEANCE_ACTIVE);
 			}
-
-			lastIsVengeancedVarb = isVengeancedVarb;
 		}
 
-		if (lastPoisonVarp != poisonVarp && config.showAntiPoison())
+		if (event.getVarpId() == VarPlayer.POISON.getId() && config.showAntiPoison())
 		{
+			final int poisonVarp = event.getValue();
 			final int tickCount = client.getTickCount();
 
-			if (nextPoisonTick - tickCount <= 0 || lastPoisonVarp == 0)
+			if (poisonVarp == 0)
+			{
+				nextPoisonTick = -1;
+			}
+			else if (nextPoisonTick - tickCount <= 0)
 			{
 				nextPoisonTick = tickCount + POISON_TICK_LENGTH;
 			}
@@ -288,23 +262,38 @@ public class TimersPlugin extends Plugin
 				removeGameTimer(ANTIPOISON);
 				createGameTimer(ANTIVENOM, duration);
 			}
-
-			lastPoisonVarp = poisonVarp;
 		}
 
-		if (lastPvpVarb != pvpVarb)
+		if (event.getVarbitId() == Varbits.TELEBLOCK && config.showTeleblock())
 		{
-			if (pvpVarb == 0)
+			final int teleblockVarb = event.getValue();
+			if (teleblockVarb > 100)
 			{
-				log.debug("Left a PVP zone, clearing teleblock timer");
+				// Reduce by 100 ticks because the blocking effect subsides and immunity period supervenes
+				createGameTimer(TELEBLOCK, Duration.of((teleblockVarb - 100), RSTimeUnit.GAME_TICKS));
+			}
+			else
+			{
 				removeGameTimer(TELEBLOCK);
 			}
-
-			lastPvpVarb = pvpVarb;
 		}
 
-		if (lastImbuedHeartVarb != imbuedHeartCooldownVarb && config.showImbuedHeart())
+		if (event.getVarpId() == VarPlayer.CHARGE_GOD_SPELL.getId() && config.showCharge())
 		{
+			final int chargeSpellVarp = event.getValue();
+			if (chargeSpellVarp > 0)
+			{
+				createGameTimer(CHARGE, Duration.of((chargeSpellVarp * 2L), RSTimeUnit.GAME_TICKS));
+			}
+			else
+			{
+				removeGameTimer(CHARGE);
+			}
+		}
+
+		if (event.getVarbitId() == Varbits.IMBUED_HEART_COOLDOWN && config.showImbuedHeart())
+		{
+			final int imbuedHeartCooldownVarb = event.getValue();
 			if (imbuedHeartCooldownVarb == 0)
 			{
 				removeGameTimer(IMBUEDHEART);
@@ -315,8 +304,77 @@ public class TimersPlugin extends Plugin
 				createGameTimer(IMBUEDHEART, Duration.of(10L * imbuedHeartCooldownVarb, RSTimeUnit.GAME_TICKS));
 				imbuedHeartTimerActive = true;
 			}
+		}
 
-			lastImbuedHeartVarb = imbuedHeartCooldownVarb;
+		if (event.getVarpId() == VarPlayer.LAST_HOME_TELEPORT.getId() && config.showHomeMinigameTeleports())
+		{
+			checkTeleport(VarPlayer.LAST_HOME_TELEPORT);
+		}
+
+		if (event.getVarpId() == VarPlayer.LAST_MINIGAME_TELEPORT.getId() && config.showHomeMinigameTeleports())
+		{
+			checkTeleport(VarPlayer.LAST_MINIGAME_TELEPORT);
+		}
+
+		if (event.getVarbitId() == Varbits.RUN_SLOWED_DEPLETION_ACTIVE
+			|| event.getVarbitId() == Varbits.STAMINA_EFFECT
+			|| event.getVarbitId() == Varbits.RING_OF_ENDURANCE_EFFECT)
+		{
+			// staminaEffectActive is checked to match https://github.com/Joshua-F/cs2-scripts/blob/741271f0c3395048c1bad4af7881a13734516adf/scripts/%5Bproc%2Cbuff_bar_get_value%5D.cs2#L25
+			int staminaEffectActive = client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE);
+			int staminaPotionEffectVarb = client.getVarbitValue(Varbits.STAMINA_EFFECT);
+			int enduranceRingEffectVarb = client.getVarbitValue(Varbits.RING_OF_ENDURANCE_EFFECT);
+
+			final int totalStaminaEffect = staminaPotionEffectVarb + enduranceRingEffectVarb;
+			if (staminaEffectActive == 1 && config.showStamina())
+			{
+				final Duration staminaDuration = Duration.of(10L * totalStaminaEffect, RSTimeUnit.GAME_TICKS);
+
+				if (totalStaminaEffect == 0)
+				{
+					removeGameTimer(STAMINA);
+					staminaTimer = null;
+				}
+				else if (staminaTimer == null)
+				{
+					staminaTimer = createGameTimer(STAMINA, staminaDuration);
+				}
+				else
+				{
+					staminaTimer.updateDuration(staminaDuration);
+				}
+			}
+		}
+
+		if (event.getVarbitId() == Varbits.BUFF_STAT_BOOST && config.showOverload())
+		{
+			int serverTicks = event.getValue() * 25; // from [proc,buff_bar_get_value]
+			Duration duration = Duration.of(serverTicks, RSTimeUnit.GAME_TICKS);
+			if (serverTicks == 0)
+			{
+				removeGameTimer(SMELLING_SALTS);
+				buffTimer = null;
+			}
+			else if (buffTimer == null)
+			{
+				buffTimer = createGameTimer(SMELLING_SALTS, duration);
+			}
+			else
+			{
+				buffTimer.updateDuration(duration);
+			}
+		}
+
+		if (event.getVarbitId() == Varbits.LIQUID_ADERNALINE_ACTIVE && config.showLiquidAdrenaline())
+		{
+			if (event.getValue() == 1)
+			{
+				createGameTimer(LIQUID_ADRENALINE);
+			}
+			else
+			{
+				removeGameTimer(LIQUID_ADRENALINE);
+			}
 		}
 	}
 
@@ -333,6 +391,11 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(HOME_TELEPORT);
 			removeGameTimer(MINIGAME_TELEPORT);
 		}
+		else
+		{
+			checkTeleport(VarPlayer.LAST_HOME_TELEPORT);
+			checkTeleport(VarPlayer.LAST_MINIGAME_TELEPORT);
+		}
 
 		if (!config.showAntiFire())
 		{
@@ -344,12 +407,14 @@ public class TimersPlugin extends Plugin
 		if (!config.showStamina())
 		{
 			removeGameTimer(STAMINA);
+			staminaTimer = null;
 		}
 
 		if (!config.showOverload())
 		{
 			removeGameTimer(OVERLOAD);
 			removeGameTimer(OVERLOAD_RAID);
+			removeGameTimer(SMELLING_SALTS);
 		}
 
 		if (!config.showPrayerEnhance())
@@ -433,69 +498,64 @@ public class TimersPlugin extends Plugin
 		{
 			createTzhaarTimer();
 		}
+
+		if (!config.showLiquidAdrenaline())
+		{
+			removeGameTimer(LIQUID_ADRENALINE);
+		}
+
+		if (!config.showSilkDressing())
+		{
+			removeGameTimer(SILK_DRESSING);
+		}
+
+		if (!config.showBlessedCrystalScarab())
+		{
+			removeGameTimer(BLESSED_CRYSTAL_SCARAB);
+		}
 	}
 
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (config.showStamina()
-			&& event.getMenuOption().contains("Drink")
-			&& (event.getId() == ItemID.STAMINA_MIX1
-			|| event.getId() == ItemID.STAMINA_MIX2
-			|| event.getId() == ItemID.EGNIOL_POTION_1
-			|| event.getId() == ItemID.EGNIOL_POTION_2
-			|| event.getId() == ItemID.EGNIOL_POTION_3
-			|| event.getId() == ItemID.EGNIOL_POTION_4))
+		if (event.isItemOp() && event.getMenuOption().equals("Drink"))
 		{
-			// Needs menu option hook because mixes use a common drink message, distinct from their standard potion messages
-			createStaminaTimer();
-			return;
-		}
 
-		if (config.showAntiFire()
-			&& event.getMenuOption().contains("Drink")
-			&& (event.getId() == ItemID.ANTIFIRE_MIX1
-			|| event.getId() == ItemID.ANTIFIRE_MIX2))
-		{
-			// Needs menu option hook because mixes use a common drink message, distinct from their standard potion messages
-			createGameTimer(ANTIFIRE);
-			return;
-		}
+			if ((event.getItemId() == ItemID.ANTIFIRE_MIX1
+				|| event.getItemId() == ItemID.ANTIFIRE_MIX2)
+				&& config.showAntiFire())
+			{
+				// Needs menu option hook because mixes use a common drink message, distinct from their standard potion messages
+				createGameTimer(ANTIFIRE);
+				return;
+			}
 
-		if (config.showAntiFire()
-			&& event.getMenuOption().contains("Drink")
-			&& (event.getId() == ItemID.EXTENDED_ANTIFIRE_MIX1
-			|| event.getId() == ItemID.EXTENDED_ANTIFIRE_MIX2))
-		{
-			// Needs menu option hook because mixes use a common drink message, distinct from their standard potion messages
-			createGameTimer(EXANTIFIRE);
-			return;
-		}
+			if ((event.getItemId() == ItemID.EXTENDED_ANTIFIRE_MIX1
+				|| event.getItemId() == ItemID.EXTENDED_ANTIFIRE_MIX2)
+				&& config.showAntiFire())
+			{
+				// Needs menu option hook because mixes use a common drink message, distinct from their standard potion messages
+				createGameTimer(EXANTIFIRE);
+				return;
+			}
 
-		if (config.showAntiFire()
-			&& event.getMenuOption().contains("Drink")
-			&& (event.getId() == ItemID.SUPER_ANTIFIRE_MIX1
-			|| event.getId() == ItemID.SUPER_ANTIFIRE_MIX2))
-		{
-			// Needs menu option hook because mixes use a common drink message, distinct from their standard potion messages
-			createGameTimer(SUPERANTIFIRE);
-			return;
-		}
+			if ((event.getItemId() == ItemID.SUPER_ANTIFIRE_MIX1
+				|| event.getItemId() == ItemID.SUPER_ANTIFIRE_MIX2)
+				&& config.showAntiFire())
+			{
+				// Needs menu option hook because mixes use a common drink message, distinct from their standard potion messages
+				createGameTimer(SUPERANTIFIRE);
+				return;
+			}
 
-		if (config.showAntiFire()
-			&& event.getMenuOption().contains("Drink")
-			&& (event.getId() == ItemID.EXTENDED_SUPER_ANTIFIRE_MIX1
-			|| event.getId() == ItemID.EXTENDED_SUPER_ANTIFIRE_MIX2))
-		{
-			// Needs menu option hook because mixes use a common drink message, distinct from their standard potion messages
-			createGameTimer(EXSUPERANTIFIRE);
-			return;
-		}
-
-		TeleportWidget teleportWidget = TeleportWidget.of(event.getParam1());
-		if (teleportWidget != null)
-		{
-			lastTeleportClicked = teleportWidget;
+			if ((event.getItemId() == ItemID.EXTENDED_SUPER_ANTIFIRE_MIX1
+				|| event.getItemId() == ItemID.EXTENDED_SUPER_ANTIFIRE_MIX2)
+				&& config.showAntiFire())
+			{
+				// Needs menu option hook because mixes use a common drink message, distinct from their standard potion messages
+				createGameTimer(EXSUPERANTIFIRE);
+				return;
+			}
 		}
 	}
 
@@ -506,6 +566,11 @@ public class TimersPlugin extends Plugin
 		if (event.getType() != ChatMessageType.SPAM && event.getType() != ChatMessageType.GAMEMESSAGE)
 		{
 			return;
+		}
+
+		if (message.contains(DODGY_NECKLACE_PROTECTION_MESSAGE) || message.contains(SHADOW_VEIL_PROTECTION_MESSAGE))
+		{
+			removeGameTimer(PICKPOCKET_STUN);
 		}
 
 		if (message.contains(PICKPOCKET_FAILURE_MESSAGE) && config.showPickpocketStun() && message.contains("pocket"))
@@ -523,22 +588,6 @@ public class TimersPlugin extends Plugin
 		if (message.equals(ABYSSAL_SIRE_STUN_MESSAGE) && config.showAbyssalSireStun())
 		{
 			createGameTimer(ABYSSAL_SIRE_STUN);
-		}
-
-		if (message.equals(ENDURANCE_EFFECT_MESSAGE))
-		{
-			wasWearingEndurance = true;
-		}
-
-		if (config.showStamina() && (message.equals(STAMINA_DRINK_MESSAGE) || message.equals(STAMINA_SHARED_DRINK_MESSAGE)))
-		{
-			createStaminaTimer();
-		}
-
-		if (message.equals(STAMINA_EXPIRED_MESSAGE) || message.equals(GAUNTLET_ENTER_MESSAGE))
-		{
-			removeGameTimer(STAMINA);
-			staminaTimer = null;
 		}
 
 		if (config.showAntiFire() && message.equals(ANTIFIRE_DRINK_MESSAGE))
@@ -570,7 +619,7 @@ public class TimersPlugin extends Plugin
 
 		if (config.showOverload() && message.startsWith("You drink some of your") && message.contains("overload"))
 		{
-			if (client.getVar(Varbits.IN_RAID) == 1)
+			if (client.getVarbitValue(Varbits.IN_RAID) == 1)
 			{
 				createGameTimer(OVERLOAD_RAID);
 			}
@@ -614,23 +663,6 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(MAGICIMBUE);
 		}
 
-		if (config.showTeleblock())
-		{
-			Matcher m = TELEBLOCK_PATTERN.matcher(message);
-			if (m.find())
-			{
-				String minss = m.group("mins");
-				String secss = m.group("secs");
-				int mins = Integer.parseInt(minss);
-				int secs = secss != null ? Integer.parseInt(secss) : 0;
-				createGameTimer(TELEBLOCK, Duration.ofSeconds(mins * 60 + secs));
-			}
-			else if (message.contains(KILLED_TELEBLOCK_OPPONENT_TEXT))
-			{
-				removeGameTimer(TELEBLOCK);
-			}
-		}
-
 		if (config.showAntiFire() && message.contains(SUPER_ANTIFIRE_DRINK_MESSAGE))
 		{
 			createGameTimer(SUPERANTIFIRE);
@@ -649,16 +681,6 @@ public class TimersPlugin extends Plugin
 		if (config.showPrayerEnhance() && message.equals(PRAYER_ENHANCE_EXPIRED))
 		{
 			removeGameTimer(PRAYER_ENHANCE);
-		}
-
-		if (config.showCharge() && message.equals(CHARGE_MESSAGE))
-		{
-			createGameTimer(CHARGE);
-		}
-
-		if (config.showCharge() && message.equals(CHARGE_EXPIRED_MESSAGE))
-		{
-			removeGameTimer(CHARGE);
 		}
 
 		if (config.showStaffOfTheDead() && message.contains(STAFF_OF_THE_DEAD_SPEC_MESSAGE))
@@ -768,7 +790,7 @@ public class TimersPlugin extends Plugin
 			}
 		}
 
-		if (message.equals(TZHAAR_DEFEATED_MESSAGE) || TZHAAR_COMPLETE_MESSAGE.matcher(message).matches())
+		if (message.equals(TZHAAR_DEFEATED_MESSAGE))
 		{
 			log.debug("Stopping tzhaar timer");
 			removeTzhaarTimer();
@@ -829,6 +851,16 @@ public class TimersPlugin extends Plugin
 				}
 			}
 		}
+
+		if (message.equals(SILK_DRESSING_MESSAGE) && config.showSilkDressing())
+		{
+			createGameTimer(SILK_DRESSING);
+		}
+
+		if (message.equals(BLESSED_CRYSTAL_SCARAB_MESSAGE) && config.showBlessedCrystalScarab())
+		{
+			createGameTimer(BLESSED_CRYSTAL_SCARAB);
+		}
 	}
 
 	private boolean isInFightCaves()
@@ -869,6 +901,37 @@ public class TimersPlugin extends Plugin
 		}
 	}
 
+	private void checkTeleport(VarPlayer varPlayer)
+	{
+		final GameTimer teleport;
+		switch (varPlayer)
+		{
+			case LAST_HOME_TELEPORT:
+				teleport = HOME_TELEPORT;
+				break;
+			case LAST_MINIGAME_TELEPORT:
+				teleport = MINIGAME_TELEPORT;
+				break;
+			default:
+				// Other var changes are not handled as teleports
+				return;
+		}
+
+		int lastTeleport = client.getVarpValue(varPlayer);
+		long lastTeleportSeconds = (long) lastTeleport * 60;
+		Instant teleportExpireInstant = Instant.ofEpochSecond(lastTeleportSeconds).plus(teleport.getDuration());
+		Duration remainingTime = Duration.between(Instant.now(), teleportExpireInstant);
+
+		if (remainingTime.getSeconds() > 0)
+		{
+			createGameTimer(teleport, remainingTime);
+		}
+		else
+		{
+			removeGameTimer(teleport);
+		}
+	}
+
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
@@ -887,20 +950,6 @@ public class TimersPlugin extends Plugin
 		}
 
 		lastPoint = currentWorldPoint;
-
-		if (!widgetHiddenChangedOnPvpWorld)
-		{
-			return;
-		}
-
-		widgetHiddenChangedOnPvpWorld = false;
-
-		Widget widget = client.getWidget(PVP_WORLD_SAFE_ZONE);
-		if (widget != null && !widget.isSelfHidden())
-		{
-			log.debug("Entered safe zone in PVP world, clearing Teleblock timer.");
-			removeGameTimer(TELEBLOCK);
-		}
 	}
 
 	@Subscribe
@@ -946,22 +995,6 @@ public class TimersPlugin extends Plugin
 		if (actor != client.getLocalPlayer())
 		{
 			return;
-		}
-
-		if (config.showHomeMinigameTeleports()
-			&& client.getLocalPlayer().getAnimation() == AnimationID.IDLE
-			&& (lastAnimation == AnimationID.BOOK_HOME_TELEPORT_5
-			|| lastAnimation == AnimationID.COW_HOME_TELEPORT_6
-			|| lastAnimation == AnimationID.LEAGUE_HOME_TELEPORT_6))
-		{
-			if (lastTeleportClicked == TeleportWidget.HOME_TELEPORT)
-			{
-				createGameTimer(HOME_TELEPORT);
-			}
-			else if (lastTeleportClicked == TeleportWidget.MINIGAME_TELEPORT)
-			{
-				createGameTimer(MINIGAME_TELEPORT);
-			}
 		}
 
 		if (config.showDFSSpecial() && lastAnimation == AnimationID.DRAGONFIRE_SHIELD_SPECIAL)
@@ -1024,7 +1057,7 @@ public class TimersPlugin extends Plugin
 	}
 
 	/**
-	 * Remove SOTD timer and update stamina timer when equipment is changed.
+	 * Remove SOTD timer when equipment is changed.
 	 */
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged itemContainerChanged)
@@ -1047,29 +1080,6 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(STAFF_OF_THE_DEAD);
 		}
 
-		if (wasWearingEndurance)
-		{
-			Item ring = container.getItem(EquipmentInventorySlot.RING.getSlotIdx());
-
-			// when using the last ring charge the ring changes to the uncharged version, ignore that and don't
-			// halve the timer
-			if (ring == null || (ring.getId() != ItemID.RING_OF_ENDURANCE && ring.getId() != ItemID.RING_OF_ENDURANCE_UNCHARGED_24844))
-			{
-				wasWearingEndurance = false;
-				if (staminaTimer != null)
-				{
-					// Remaining duration gets divided by 2
-					Duration remainingDuration = Duration.between(Instant.now(), staminaTimer.getEndTime()).dividedBy(2);
-					// This relies on the chat message to be removed, which could be after the timer has been culled;
-					// so check there is still remaining time
-					if (!remainingDuration.isNegative() && !remainingDuration.isZero())
-					{
-						log.debug("Halving stamina timer");
-						staminaTimer.setDuration(remainingDuration);
-					}
-				}
-			}
-		}
 	}
 
 	@Subscribe
@@ -1097,12 +1107,6 @@ public class TimersPlugin extends Plugin
 		{
 			infoBoxManager.removeIf(t -> t instanceof TimerTimer && ((TimerTimer) t).getTimer().isRemovedOnDeath());
 		}
-	}
-
-	private void createStaminaTimer()
-	{
-		Duration duration = Duration.ofMinutes(wasWearingEndurance ? 4 : 2);
-		staminaTimer = createGameTimer(STAMINA, duration);
 	}
 
 	private TimerTimer createGameTimer(final GameTimer timer)

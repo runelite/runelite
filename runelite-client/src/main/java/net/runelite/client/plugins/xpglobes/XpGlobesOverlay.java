@@ -352,6 +352,16 @@ public class XpGlobesOverlay extends Overlay
 							.build());
 				}
 			}
+
+			if (config.showTimeTilGoal())
+			{
+				String timeLeft = xpTrackerService.getTimeTilGoal(mouseOverSkill.getSkill());
+				xpTooltip.getChildren().add(LineComponent.builder()
+					.left("Time left:")
+					.leftColor(Color.ORANGE)
+					.right(timeLeft)
+					.build());
+			}
 		}
 
 		tooltipManager.add(this.xpTooltip);
