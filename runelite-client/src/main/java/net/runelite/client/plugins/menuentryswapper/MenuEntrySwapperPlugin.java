@@ -883,112 +883,110 @@ public class MenuEntrySwapperPlugin extends Plugin
 			if (w != null && WidgetInfo.TO_GROUP(w.getId()) == WidgetID.INVENTORY_GROUP_ID
 				&& "Examine".equals(entry.getOption()) && entry.getIdentifier() == 10)
 			{
+				final ItemComposition itemComposition = itemManager.getItemComposition(entry.getItemId());
+				final String[] actions = itemComposition.getInventoryActions();
+				final Integer leftClickOp = getItemSwapConfig(false, itemComposition.getId());
+				final Integer shiftClickOp = getItemSwapConfig(true, itemComposition.getId());
+				final int defaultLeftClickOp = defaultOp(itemComposition, false);
+				final int defaultShiftClickOp = defaultOp(itemComposition, true);
+				int shiftOff = 0;
+
+				for (int actionIdx = 0; actionIdx < actions.length; ++actionIdx)
 				{
-					final ItemComposition itemComposition = itemManager.getItemComposition(entry.getItemId());
-					final String[] actions = itemComposition.getInventoryActions();
-					final Integer leftClickOp = getItemSwapConfig(false, itemComposition.getId());
-					final Integer shiftClickOp = getItemSwapConfig(true, itemComposition.getId());
-					final int defaultLeftClickOp = defaultOp(itemComposition, false);
-					final int defaultShiftClickOp = defaultOp(itemComposition, true);
-					int shiftOff = 0;
-
-					for (int actionIdx = 0; actionIdx < actions.length; ++actionIdx)
+					final String opName = actions[actionIdx];
+					if (!Strings.isNullOrEmpty(opName))
 					{
-						final String opName = actions[actionIdx];
-						if (!Strings.isNullOrEmpty(opName))
+						if (config.leftClickCustomization())
 						{
-							if (config.leftClickCustomization())
-							{
-								if (defaultLeftClickOp != actionIdx && (leftClickOp == null || leftClickOp != actionIdx))
-								{
-									client.createMenuEntry(idx + shiftOff)
-										.setOption("Swap left click " + opName)
-										.setTarget(entry.getTarget())
-										.setType(MenuAction.RUNELITE)
-										.onClick(heldItemConsumer(itemComposition, opName, actionIdx, false));
-								}
-							}
-							if (config.shiftClickCustomization())
-							{
-								if (defaultShiftClickOp != actionIdx && (shiftClickOp == null || shiftClickOp != actionIdx))
-								{
-									client.createMenuEntry(idx)
-										.setOption("Swap shift click " + opName)
-										.setTarget(entry.getTarget())
-										.setType(MenuAction.RUNELITE)
-										.onClick(heldItemConsumer(itemComposition, opName, actionIdx, true));
-									++shiftOff;
-								}
-							}
-						}
-
-						if (actionIdx == 2)
-						{
-							// Use
-							if (defaultLeftClickOp != -1 && config.leftClickCustomization())
+							if (defaultLeftClickOp != actionIdx && (leftClickOp == null || leftClickOp != actionIdx))
 							{
 								client.createMenuEntry(idx + shiftOff)
-									.setOption("Swap left click Use")
+									.setOption("Swap left click " + opName)
 									.setTarget(entry.getTarget())
 									.setType(MenuAction.RUNELITE)
-									.onClick(heldItemConsumer(itemComposition, "Use", -1, false));
+									.onClick(heldItemConsumer(itemComposition, opName, actionIdx, false));
 							}
-							if (defaultShiftClickOp != -1 && config.shiftClickCustomization())
+						}
+						if (config.shiftClickCustomization())
+						{
+							if (defaultShiftClickOp != actionIdx && (shiftClickOp == null || shiftClickOp != actionIdx))
 							{
 								client.createMenuEntry(idx)
-									.setOption("Swap shift click Use")
+									.setOption("Swap shift click " + opName)
 									.setTarget(entry.getTarget())
 									.setType(MenuAction.RUNELITE)
-									.onClick(heldItemConsumer(itemComposition, "Use", -1, true));
+									.onClick(heldItemConsumer(itemComposition, opName, actionIdx, true));
 								++shiftOff;
 							}
 						}
 					}
 
-					if (leftClickOp != null && config.leftClickCustomization())
+					if (actionIdx == 2)
 					{
-						client.createMenuEntry(idx)
-							.setOption("Reset swap left click")
-							.setTarget(entry.getTarget())
-							.setType(MenuAction.RUNELITE)
-							.onClick(e ->
-							{
-								final String message = new ChatMessageBuilder()
-									.append("The default held left click option for '").append(itemComposition.getMembersName()).append("' ")
-									.append("has been reset.")
-									.build();
-
-								chatMessageManager.queue(QueuedMessage.builder()
-									.type(ChatMessageType.CONSOLE)
-									.runeLiteFormattedMessage(message)
-									.build());
-
-								log.debug("Unset held item left swap for {}", itemComposition.getMembersName());
-								unsetItemSwapConfig(false, itemComposition.getId());
-							});
+						// Use
+						if (defaultLeftClickOp != -1 && config.leftClickCustomization())
+						{
+							client.createMenuEntry(idx + shiftOff)
+								.setOption("Swap left click Use")
+								.setTarget(entry.getTarget())
+								.setType(MenuAction.RUNELITE)
+								.onClick(heldItemConsumer(itemComposition, "Use", -1, false));
+						}
+						if (defaultShiftClickOp != -1 && config.shiftClickCustomization())
+						{
+							client.createMenuEntry(idx)
+								.setOption("Swap shift click Use")
+								.setTarget(entry.getTarget())
+								.setType(MenuAction.RUNELITE)
+								.onClick(heldItemConsumer(itemComposition, "Use", -1, true));
+							++shiftOff;
+						}
 					}
-					if (shiftClickOp != null && config.shiftClickCustomization())
-					{
-						client.createMenuEntry(idx)
-							.setOption("Reset swap shift click")
-							.setTarget(entry.getTarget())
-							.setType(MenuAction.RUNELITE)
-							.onClick(e ->
-							{
-								final String message = new ChatMessageBuilder()
-									.append("The default held shift click option for '").append(itemComposition.getMembersName()).append("' ")
-									.append("has been reset.")
-									.build();
+				}
 
-								chatMessageManager.queue(QueuedMessage.builder()
-									.type(ChatMessageType.CONSOLE)
-									.runeLiteFormattedMessage(message)
-									.build());
+				if (leftClickOp != null && config.leftClickCustomization())
+				{
+					client.createMenuEntry(idx)
+						.setOption("Reset swap left click")
+						.setTarget(entry.getTarget())
+						.setType(MenuAction.RUNELITE)
+						.onClick(e ->
+						{
+							final String message = new ChatMessageBuilder()
+								.append("The default held left click option for '").append(itemComposition.getMembersName()).append("' ")
+								.append("has been reset.")
+								.build();
 
-								log.debug("Unset held item shift swap for {}", itemComposition.getMembersName());
-								unsetItemSwapConfig(true, itemComposition.getId());
-							});
-					}
+							chatMessageManager.queue(QueuedMessage.builder()
+								.type(ChatMessageType.CONSOLE)
+								.runeLiteFormattedMessage(message)
+								.build());
+
+							log.debug("Unset held item left swap for {}", itemComposition.getMembersName());
+							unsetItemSwapConfig(false, itemComposition.getId());
+						});
+				}
+				if (shiftClickOp != null && config.shiftClickCustomization())
+				{
+					client.createMenuEntry(idx)
+						.setOption("Reset swap shift click")
+						.setTarget(entry.getTarget())
+						.setType(MenuAction.RUNELITE)
+						.onClick(e ->
+						{
+							final String message = new ChatMessageBuilder()
+								.append("The default held shift click option for '").append(itemComposition.getMembersName()).append("' ")
+								.append("has been reset.")
+								.build();
+
+							chatMessageManager.queue(QueuedMessage.builder()
+								.type(ChatMessageType.CONSOLE)
+								.runeLiteFormattedMessage(message)
+								.build());
+
+							log.debug("Unset held item shift swap for {}", itemComposition.getMembersName());
+							unsetItemSwapConfig(true, itemComposition.getId());
+						});
 				}
 				break;
 			}
