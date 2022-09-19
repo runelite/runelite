@@ -36,6 +36,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 import com.google.inject.Provides;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -761,7 +762,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			final MenuEntry entry = entries[idx];
 			Widget w = entry.getWidget();
-			int shiftOff = 0;
 
 			if (w != null && WidgetInfo.TO_GROUP(w.getId()) == WidgetID.EQUIPMENT_GROUP_ID
 				&& "Examine".equals(entry.getOption()) && entry.getIdentifier() == 10)
@@ -773,6 +773,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 					final Integer leftClickOp = getWornItemSwapConfig(false, itemComposition.getId());
 					final Integer shiftClickOp = getWornItemSwapConfig(true, itemComposition.getId());
 
+					List<MenuEntry> leftClickMenus = new ArrayList<>();
+					List<MenuEntry> shiftClickMenus = new ArrayList<>();
+
 					for (int paramId = ParamID.OC_ITEM_OP1, opId = 2; paramId <= ParamID.OC_ITEM_OP8; ++paramId, ++opId)
 					{
 						final String opName = itemComposition.getStringValue(paramId);
@@ -780,29 +783,25 @@ public class MenuEntrySwapperPlugin extends Plugin
 						{
 							if (leftClickOp == null || leftClickOp != opId)
 							{
-								client.createMenuEntry(idx + shiftOff)
-									.setOption("Swap left click " + opName)
-									.setTarget(entry.getTarget())
+								leftClickMenus.add(client.createMenuEntry(idx)
+									.setOption(opName)
 									.setType(MenuAction.RUNELITE)
-									.onClick(wornItemConsumer(itemComposition, opName, opId, false));
+									.onClick(wornItemConsumer(itemComposition, opName, opId, false)));
 							}
 							if (shiftClickOp == null || shiftClickOp != opId)
 							{
-								client.createMenuEntry(idx)
-									.setOption("Swap shift click " + opName)
-									.setTarget(entry.getTarget())
+								shiftClickMenus.add(client.createMenuEntry(idx)
+									.setOption(opName)
 									.setType(MenuAction.RUNELITE)
-									.onClick(wornItemConsumer(itemComposition, opName, opId, true));
-								++shiftOff;
+									.onClick(wornItemConsumer(itemComposition, opName, opId, true)));
 							}
 						}
 					}
 
 					if (leftClickOp != null)
 					{
-						client.createMenuEntry(idx)
-							.setOption("Reset swap left click")
-							.setTarget(entry.getTarget())
+						leftClickMenus.add(client.createMenuEntry(idx)
+							.setOption("Reset")
 							.setType(MenuAction.RUNELITE)
 							.onClick(e ->
 							{
@@ -818,13 +817,12 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 								log.debug("Unset worn item left swap for {}", itemComposition.getMembersName());
 								unsetWornItemSwapConfig(false, itemComposition.getId());
-							});
+							}));
 					}
 					if (shiftClickOp != null)
 					{
-						client.createMenuEntry(idx)
-							.setOption("Reset swap shift click")
-							.setTarget(entry.getTarget())
+						shiftClickMenus.add(client.createMenuEntry(idx)
+							.setOption("Reset")
 							.setType(MenuAction.RUNELITE)
 							.onClick(e ->
 							{
@@ -840,7 +838,25 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 								log.debug("Unset worn item shift swap for {}", itemComposition.getMembersName());
 								unsetWornItemSwapConfig(true, itemComposition.getId());
-							});
+							}));
+					}
+
+					if (!leftClickMenus.isEmpty())
+					{
+						MenuEntry sub = client.createMenuEntry(idx)
+							.setOption("Swap left click")
+							.setTarget(entry.getTarget())
+							.setType(MenuAction.RUNELITE_SUBMENU);
+						leftClickMenus.forEach(menu -> menu.setParent(sub));
+					}
+
+					if (!shiftClickMenus.isEmpty())
+					{
+						MenuEntry sub = client.createMenuEntry(idx)
+							.setOption("Swap shift click")
+							.setTarget(entry.getTarget())
+							.setType(MenuAction.RUNELITE_SUBMENU);
+						shiftClickMenus.forEach(menu -> menu.setParent(sub));
 					}
 				}
 				break;
@@ -889,7 +905,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 				final Integer shiftClickOp = getItemSwapConfig(true, itemComposition.getId());
 				final int defaultLeftClickOp = defaultOp(itemComposition, false);
 				final int defaultShiftClickOp = defaultOp(itemComposition, true);
-				int shiftOff = 0;
+
+				List<MenuEntry> leftClickMenus = new ArrayList<>(actions.length + 2);
+				List<MenuEntry> shiftClickMenus = new ArrayList<>(actions.length + 2);
 
 				for (int actionIdx = 0; actionIdx < actions.length; ++actionIdx)
 				{
@@ -900,23 +918,20 @@ public class MenuEntrySwapperPlugin extends Plugin
 						{
 							if (defaultLeftClickOp != actionIdx && (leftClickOp == null || leftClickOp != actionIdx))
 							{
-								client.createMenuEntry(idx + shiftOff)
-									.setOption("Swap left click " + opName)
-									.setTarget(entry.getTarget())
+								leftClickMenus.add(client.createMenuEntry(idx)
+									.setOption(opName)
 									.setType(MenuAction.RUNELITE)
-									.onClick(heldItemConsumer(itemComposition, opName, actionIdx, false));
+									.onClick(heldItemConsumer(itemComposition, opName, actionIdx, false)));
 							}
 						}
 						if (config.shiftClickCustomization())
 						{
 							if (defaultShiftClickOp != actionIdx && (shiftClickOp == null || shiftClickOp != actionIdx))
 							{
-								client.createMenuEntry(idx)
-									.setOption("Swap shift click " + opName)
-									.setTarget(entry.getTarget())
+								shiftClickMenus.add(client.createMenuEntry(idx)
+									.setOption(opName)
 									.setType(MenuAction.RUNELITE)
-									.onClick(heldItemConsumer(itemComposition, opName, actionIdx, true));
-								++shiftOff;
+									.onClick(heldItemConsumer(itemComposition, opName, actionIdx, true)));
 							}
 						}
 					}
@@ -926,29 +941,25 @@ public class MenuEntrySwapperPlugin extends Plugin
 						// Use
 						if (defaultLeftClickOp != -1 && config.leftClickCustomization())
 						{
-							client.createMenuEntry(idx + shiftOff)
-								.setOption("Swap left click Use")
-								.setTarget(entry.getTarget())
+							leftClickMenus.add(client.createMenuEntry(idx)
+								.setOption("Use")
 								.setType(MenuAction.RUNELITE)
-								.onClick(heldItemConsumer(itemComposition, "Use", -1, false));
+								.onClick(heldItemConsumer(itemComposition, "Use", -1, false)));
 						}
 						if (defaultShiftClickOp != -1 && config.shiftClickCustomization())
 						{
-							client.createMenuEntry(idx)
-								.setOption("Swap shift click Use")
-								.setTarget(entry.getTarget())
+							shiftClickMenus.add(client.createMenuEntry(idx)
+								.setOption("Use")
 								.setType(MenuAction.RUNELITE)
-								.onClick(heldItemConsumer(itemComposition, "Use", -1, true));
-							++shiftOff;
+								.onClick(heldItemConsumer(itemComposition, "Use", -1, true)));
 						}
 					}
 				}
 
 				if (leftClickOp != null && config.leftClickCustomization())
 				{
-					client.createMenuEntry(idx)
-						.setOption("Reset swap left click")
-						.setTarget(entry.getTarget())
+					leftClickMenus.add(client.createMenuEntry(idx)
+						.setOption("Reset")
 						.setType(MenuAction.RUNELITE)
 						.onClick(e ->
 						{
@@ -964,13 +975,12 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 							log.debug("Unset held item left swap for {}", itemComposition.getMembersName());
 							unsetItemSwapConfig(false, itemComposition.getId());
-						});
+						}));
 				}
 				if (shiftClickOp != null && config.shiftClickCustomization())
 				{
-					client.createMenuEntry(idx)
-						.setOption("Reset swap shift click")
-						.setTarget(entry.getTarget())
+					shiftClickMenus.add(client.createMenuEntry(idx)
+						.setOption("Reset")
 						.setType(MenuAction.RUNELITE)
 						.onClick(e ->
 						{
@@ -986,7 +996,25 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 							log.debug("Unset held item shift swap for {}", itemComposition.getMembersName());
 							unsetItemSwapConfig(true, itemComposition.getId());
-						});
+						}));
+				}
+
+				if (!leftClickMenus.isEmpty())
+				{
+					MenuEntry sub = client.createMenuEntry(idx)
+						.setOption("Swap left click")
+						.setTarget(entry.getTarget())
+						.setType(MenuAction.RUNELITE_SUBMENU);
+					leftClickMenus.forEach(menu -> menu.setParent(sub));
+				}
+
+				if (!shiftClickMenus.isEmpty())
+				{
+					MenuEntry sub = client.createMenuEntry(idx)
+						.setOption("Swap shift click")
+						.setTarget(entry.getTarget())
+						.setType(MenuAction.RUNELITE_SUBMENU);
+					shiftClickMenus.forEach(menu -> menu.setParent(sub));
 				}
 				break;
 			}
