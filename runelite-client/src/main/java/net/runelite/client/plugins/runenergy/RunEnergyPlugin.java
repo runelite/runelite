@@ -329,7 +329,7 @@ public class RunEnergyPlugin extends Plugin
 		{
 			energyUnitsLost *= 0.3; // Stamina effect reduces energy depletion to 30%
 		}
-    else if (isRingOfEnduranceEquipped())
+		else if (isRingOfEnduranceEquipped()) // Ring of Endurance passive effect does not stack with stamina potion
 		{
 			Integer charges = getRingOfEnduranceCharges();
 			if (charges == null)
