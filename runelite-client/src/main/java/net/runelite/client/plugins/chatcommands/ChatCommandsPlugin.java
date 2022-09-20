@@ -2178,6 +2178,7 @@ public class ChatCommandsPlugin extends Plugin
 			case "toa entry":
 			case "toa entry mode":
 				return "Tombs of Amascut Entry Mode";
+			case "tombs of amascut: expert mode":
 			case "toa expert":
 			case "toa expert mode":
 				return "Tombs of Amascut Expert Mode";
