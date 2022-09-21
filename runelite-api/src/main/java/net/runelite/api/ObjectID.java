@@ -22422,6 +22422,7 @@ public final class ObjectID
 	public static final int LION_GUARD = 44584;
 	public static final int WARP = 44585;
 	public static final int WARP_44586 = 44586;
+	public static final int RUBBLE_44595 = 44595;
 	public static final int LAVA_POOL = 44601;
 	public static final int WATERFALL_44602 = 44602;
 	public static final int PREFORM_STORAGE = 44604;
