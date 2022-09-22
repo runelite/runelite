@@ -194,4 +194,11 @@ public interface Callbacks
 	 * @return false to prevent drawing
 	 */
 	boolean draw(Renderable renderable, boolean drawingUi);
+
+	/**
+	 * Called when a client error occurs
+	 * @param message
+	 * @param reason
+	 */
+	void error(String message, Throwable reason);
 }
