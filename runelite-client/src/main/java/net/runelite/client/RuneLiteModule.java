@@ -40,7 +40,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
 import javax.inject.Named;
-import javax.inject.Provider;
 import javax.inject.Singleton;
 import lombok.AllArgsConstructor;
 import net.runelite.api.Client;
@@ -206,7 +205,7 @@ public class RuneLiteModule extends AbstractModule
 
 	@Provides
 	@Singleton
-	TelemetryClient provideTelemetry(Provider<TelemetryClient> telemetryClientProvider,
+	TelemetryClient provideTelemetry(
 		OkHttpClient okHttpClient,
 		Gson gson,
 		@Named("runelite.api.base") HttpUrl apiBase)
