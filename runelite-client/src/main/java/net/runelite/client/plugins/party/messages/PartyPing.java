@@ -26,19 +26,21 @@
 package net.runelite.client.plugins.party.messages;
 
 import com.google.gson.annotations.SerializedName;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Value;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.party.messages.PartyMemberMessage;
 import net.runelite.client.plugins.party.PartyPingTargetType;
 import net.runelite.client.plugins.party.PartyPingType;
 
-@Value
+@Data
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class PartyPing extends PartyMemberMessage
 {
 	@SerializedName("pt")
-	private final PartyPingType pingType;
+	private PartyPingType pingType;
 
 	@SerializedName("tt")
 	private final PartyPingTargetType targetType;

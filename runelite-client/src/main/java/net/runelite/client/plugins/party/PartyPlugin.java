@@ -42,7 +42,9 @@ import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.swing.SwingUtilities;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
@@ -51,6 +53,7 @@ import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import net.runelite.api.Player;
+import net.runelite.api.Point;
 import net.runelite.api.Skill;
 import net.runelite.api.SoundEffectID;
 import net.runelite.api.Tile;
@@ -74,6 +77,7 @@ import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.events.PartyChanged;
 import net.runelite.client.events.PartyMemberAvatar;
 import net.runelite.client.input.KeyManager;
+import net.runelite.client.input.MouseManager;
 import net.runelite.client.party.PartyMember;
 import net.runelite.client.party.PartyService;
 import net.runelite.client.party.WSClient;
@@ -107,10 +111,14 @@ import net.runelite.client.util.Text;
 @Slf4j
 public class PartyPlugin extends Plugin
 {
+	// deadzone (radius in px) within radial menu that will cancel out ping selection
+	static final int PING_MENU_DEADZONE = 25;
+
 	@Inject
 	private Client client;
 
 	@Inject
+	@Getter(AccessLevel.PACKAGE)
 	private PartyService party;
 
 	@Inject
@@ -121,6 +129,9 @@ public class PartyPlugin extends Plugin
 
 	@Inject
 	private PartyStatusOverlay partyStatusOverlay;
+
+	@Inject
+	private PartyPingSelectionOverlay partyPingSelectionOverlay;
 
 	@Inject
 	private WSClient wsClient;
@@ -144,6 +155,9 @@ public class PartyPlugin extends Plugin
 	private KeyManager keyManager;
 
 	@Inject
+	private MouseManager mouseManager;
+
+	@Inject
 	@Named("developerMode")
 	boolean developerMode;
 
@@ -161,6 +175,18 @@ public class PartyPlugin extends Plugin
 	private WorldPoint lastLocation;
 	private StatusUpdate lastStatus;
 
+	@Getter(AccessLevel.PACKAGE)
+	private Point mouseStartPosition;
+	private PartyPingMouseListener pingMouseListener;
+
+	@Getter(AccessLevel.PACKAGE)
+	private PartyPing pendingPartyPing;
+
+	@Setter
+	@Getter(AccessLevel.PACKAGE)
+	private boolean advancedPingMenuOpen = false;
+
+	@Getter(AccessLevel.PACKAGE)
 	private boolean pingHotkeyPressed = false;
 	private final HotkeyListener pingHotkeyListener = new HotkeyListener(() -> config.pingHotkey())
 	{
@@ -269,8 +295,11 @@ public class PartyPlugin extends Plugin
 
 		clientToolbar.addNavigation(navButton);
 
+		pingMouseListener = new PartyPingMouseListener(client, this, config);
+		mouseManager.registerMouseListener(pingMouseListener);
 		overlayManager.add(partyPingOverlay);
 		overlayManager.add(partyStatusOverlay);
+		overlayManager.add(partyPingSelectionOverlay);
 		keyManager.registerKeyListener(pingHotkeyListener);
 		keyManager.registerKeyListener(questionHotkeyListener);
 		keyManager.registerKeyListener(dangerHotkeyListener);
@@ -294,8 +323,11 @@ public class PartyPlugin extends Plugin
 		partyDataMap.clear();
 		pendingPartyPings.clear();
 		worldMapManager.removeIf(PartyWorldMapPoint.class::isInstance);
+		mouseManager.unregisterMouseListener(pingMouseListener);
+		pingMouseListener = null;
 		overlayManager.remove(partyPingOverlay);
 		overlayManager.remove(partyStatusOverlay);
+		overlayManager.remove(partyPingSelectionOverlay);
 		keyManager.unregisterKeyListener(pingHotkeyListener);
 		keyManager.unregisterKeyListener(questionHotkeyListener);
 		keyManager.unregisterKeyListener(dangerHotkeyListener);
@@ -413,7 +445,16 @@ public class PartyPlugin extends Plugin
 			PartyPingType.TARGET; //default to target ping
 		
 		final PartyPing ping = new PartyPing(pingType, targetType, location, target, client.getWorld(), client.getLocalPlayer().getId());
-		party.send(ping);
+		if (pingHotkeyPressed && config.advancedPingMenu())
+		{
+			mouseStartPosition = client.getMouseCanvasPosition();
+			pendingPartyPing = ping;
+		}
+		else
+		{
+			party.send(ping);
+		}
+
 		event.consume();
 	}
 
@@ -426,6 +467,13 @@ public class PartyPlugin extends Plugin
 		}
 
 		checkStateChanged(false);
+	}
+
+	void resetPingMenu()
+	{
+		advancedPingMenuOpen = false;
+		mouseStartPosition = null;
+		pendingPartyPing = null;
 	}
 
 	@Subscribe
@@ -480,7 +528,7 @@ public class PartyPlugin extends Plugin
 			case TARGET:
 				color = config.targetPingColor();
 				soundId = !config.targetPingSound() ? -1 :
-						targetType == PartyPingTargetType.TILE ? type.getSoundId() : SoundEffectID.STAR_SPRITE_APPEAR;
+						targetType == PartyPingTargetType.TILE ? type.getSoundId() : SoundEffectID.SOTE_BELL_HIGH_C;
 				break;
 
 			case QUESTION:

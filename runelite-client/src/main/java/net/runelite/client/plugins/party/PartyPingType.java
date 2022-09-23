@@ -42,11 +42,13 @@ public enum PartyPingType
 	* Request icon made by Smashicons from www.flaticon.com
 	* Target icon made by rukanicon from www.flaticon.com
 	*/
-	@SerializedName("0") TARGET(ImageUtil.loadImageResource(PartyPlugin.class, "ping_target.png"), SoundEffectID.SMITH_ANVIL_TINK),
 	@SerializedName("1") DANGER(ImageUtil.loadImageResource(PartyPlugin.class, "ping_danger.png"), SoundEffectID.PRAYER_ACTIVATE_BURST_OF_STRENGTH),
 	@SerializedName("2") DESTINATION(ImageUtil.loadImageResource(PartyPlugin.class, "ping_destination.png"), SoundEffectID.TOWN_CRIER_BELL_DING), 
 	@SerializedName("3") REQUEST(ImageUtil.loadImageResource(PartyPlugin.class, "ping_request.png"), SoundEffectID.PRAYER_ACTIVATE_CLARITY_OF_THOUGHT),
-	@SerializedName("4") QUESTION(ImageUtil.loadImageResource(PartyPlugin.class, "ping_question.png"), 4935);
+	@SerializedName("4") QUESTION(ImageUtil.loadImageResource(PartyPlugin.class, "ping_question.png"), 4935),
+	
+	// target ping as last entry, does not show up in menu and is used as default ping
+	@SerializedName("0") TARGET(ImageUtil.loadImageResource(PartyPlugin.class, "ping_target.png"), SoundEffectID.SMITH_ANVIL_TINK);
 
 	private final BufferedImage image;
 	private final int soundId;
