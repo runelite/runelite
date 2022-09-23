@@ -24,18 +24,30 @@
  */
 package net.runelite.client.plugins.party;
 
+import java.awt.image.BufferedImage;
 import com.google.gson.annotations.SerializedName;
-
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import net.runelite.api.SoundEffectID;
+import net.runelite.client.util.ImageUtil;
 
 @Getter
 @RequiredArgsConstructor
 public enum PartyPingType
 {
-	@SerializedName("0") TARGET,
-	@SerializedName("1") DANGER,
-	@SerializedName("2") DESTINATION,
-	@SerializedName("3") REQUEST,
-	@SerializedName("4") QUESTION
+	/*
+	* Danger icon made by iconproject45 from www.flaticon.com
+	* Destination icon made by DinosoftLabs from www.flaticon.com
+	* Question icon made by Mzipi from www.flaticon.com
+	* Request icon made by Smashicons from www.flaticon.com
+	* Target icon made by rukanicon from www.flaticon.com
+	*/
+	@SerializedName("0") TARGET(ImageUtil.loadImageResource(PartyPlugin.class, "ping_target.png"), SoundEffectID.SMITH_ANVIL_TINK),
+	@SerializedName("1") DANGER(ImageUtil.loadImageResource(PartyPlugin.class, "ping_danger.png"), SoundEffectID.PRAYER_ACTIVATE_BURST_OF_STRENGTH),
+	@SerializedName("2") DESTINATION(ImageUtil.loadImageResource(PartyPlugin.class, "ping_destination.png"), SoundEffectID.TOWN_CRIER_BELL_DING), 
+	@SerializedName("3") REQUEST(ImageUtil.loadImageResource(PartyPlugin.class, "ping_request.png"), SoundEffectID.PRAYER_ACTIVATE_CLARITY_OF_THOUGHT),
+	@SerializedName("4") QUESTION(ImageUtil.loadImageResource(PartyPlugin.class, "ping_question.png"), 4935);
+
+	private final BufferedImage image;
+	private final int soundId;
 }

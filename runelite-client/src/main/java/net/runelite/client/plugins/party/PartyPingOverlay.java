@@ -25,14 +25,25 @@
  */
 package net.runelite.client.plugins.party;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.Composite;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 import java.util.Iterator;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.DecorativeObject;
+import net.runelite.api.DynamicObject;
+import net.runelite.api.GameObject;
 import net.runelite.api.Perspective;
+import net.runelite.api.Player;
+import net.runelite.api.Point;
+import net.runelite.api.TileObject;
+import net.runelite.api.WallObject;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.plugins.party.data.PartyPingData;
 import net.runelite.client.ui.overlay.Overlay;
@@ -41,14 +52,22 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 
 class PartyPingOverlay extends Overlay
 {
+	private static final Polygon ARROW_HEAD = new Polygon(
+		new int[]{0, -5, 5},
+		new int[]{0, -7, -7},
+		3
+	);
+
 	private final Client client;
 	private final PartyPlugin plugin;
+	private final PartyConfig config;
 
 	@Inject
-	private PartyPingOverlay(final Client client, final PartyPlugin plugin)
+	private PartyPingOverlay(final Client client, final PartyPlugin plugin, final PartyConfig config)
 	{
 		this.client = client;
 		this.plugin = plugin;
+		this.config = config;
 		setPosition(OverlayPosition.DYNAMIC);
 	}
 
@@ -86,16 +105,33 @@ class PartyPingOverlay extends Overlay
 
 	private void renderPing(final Graphics2D graphics, final PartyPingData ping)
 	{
-		final LocalPoint localPoint = LocalPoint.fromWorld(client, ping.getPoint());
+		Polygon poly = null;
+		LocalPoint localPoint = null;
+		int targetHeight = 0;
+		int imageFloatDistance = 0;
 
-		if (localPoint == null)
+		switch (ping.getTargetType())
 		{
-			return;
+			case TILE:
+				localPoint = LocalPoint.fromWorld(client, ping.getPoint());
+				poly = Perspective.getCanvasTilePoly(client, localPoint);
+				imageFloatDistance = ping.getAlpha() <= 125 ? (int) (25 - (15 * (ping.getAlpha() / 125.0))) : 10;
+				break;
+
+			case NPC:
+				localPoint = ping.getTargetActor().getLocalLocation();
+				poly = ping.getTargetActor().getCanvasTilePoly();
+				targetHeight = ping.getTargetActor().getLogicalHeight();
+				break;
+
+			case OBJECT:
+				localPoint = ping.getTargetObject().getLocalLocation();
+				poly = ping.getTargetObject().getCanvasTilePoly();
+				targetHeight = determineObjectTargetHeight(ping.getTargetObject());
+				break;
 		}
 
-		final Polygon poly = Perspective.getCanvasTilePoly(client, localPoint);
-
-		if (poly == null)
+		if (poly == null || localPoint == null)
 		{
 			return;
 		}
@@ -107,5 +143,102 @@ class PartyPingOverlay extends Overlay
 			ping.getAlpha());
 
 		OverlayUtil.renderPolygon(graphics, poly, color);
+
+		if (ping.getPingType() == PartyPingType.DESTINATION && config.drawDestinationLine())
+		{
+			Player source = client.getCachedPlayers()[ping.getSourcePlayerIdx()];
+			if (source != null)
+			{
+				renderSourcePlayerLine(graphics, source, localPoint, color);
+			}
+		}
+
+		if (ping.getTargetType() == PartyPingTargetType.TILE && ping.getPingType() == PartyPingType.TARGET)
+		{
+			return;
+		}
+
+		final BufferedImage image = ping.getPingType().getImage();
+		final Point imageLocation = Perspective.localToCanvas(client, localPoint, client.getPlane(), targetHeight + image.getHeight());
+
+		final Composite originalComposite = graphics.getComposite();
+		if (ping.getAlpha() <= 125)
+		{
+			final AlphaComposite alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, ping.getAlpha() / 125f);
+			graphics.setComposite(alphaComposite);
+		}
+		
+		graphics.drawImage(image, null, imageLocation.getX() - image.getWidth() / 2, imageLocation.getY() - image.getHeight() / 2 - imageFloatDistance);
+
+		// if we don't set the composite back to original there will be issues when trying to draw 1+ pings at the same time
+		graphics.setComposite(originalComposite);
+	}
+
+	private int determineObjectTargetHeight(TileObject object)
+	{
+		if (object instanceof GameObject)
+		{
+			GameObject gameObject = (GameObject) object;
+			if (gameObject.getRenderable() instanceof DynamicObject)
+			{
+				// without recalculating the bounds cylinder, the height for the object seems to be inaccurate because we are possibly calling it after it is already drawn
+				// this will cause the image we are trying to draw above the object to be drawn at some undesired height instead
+				gameObject.getRenderable().getModel().calculateBoundsCylinder();
+				return gameObject.getRenderable().getModel().getModelHeight();
+			}
+
+			return gameObject.getRenderable().getModelHeight();
+		}
+
+		int height1 = 0;
+		int height2 = 0;
+
+		if (object instanceof WallObject)
+		{
+			WallObject wallObject = (WallObject) object;
+			height1 = wallObject.getRenderable1() != null ? wallObject.getRenderable1().getModelHeight() : 0;
+			height2 = wallObject.getRenderable2() != null ? wallObject.getRenderable2().getModelHeight() : 0;
+		}
+		else if (object instanceof DecorativeObject)
+		{
+			DecorativeObject decorativeObject = (DecorativeObject) object;
+			height1 = decorativeObject.getRenderable() != null ? decorativeObject.getRenderable().getModelHeight() : 0;
+			height2 = decorativeObject.getRenderable2() != null ? decorativeObject.getRenderable2().getModelHeight() : 0;
+		}
+
+		return Math.max(height1, height2);
+	}
+
+	private void renderSourcePlayerLine(final Graphics2D graphics, final Player player, final LocalPoint destination, final Color color)
+	{
+		final LocalPoint playerLocation = player.getLocalLocation();
+		final Point source = Perspective.localToCanvas(client, playerLocation, client.getPlane());
+		if (source == null)
+		{
+			return;
+		}
+
+		final Point target = Perspective.localToCanvas(client, destination, client.getPlane());
+		if (target == null)
+		{
+			return;
+		}
+		
+		int sourceX = source.getX();
+		int sourceY = source.getY();
+		int targetX = target.getX();
+		int targetY = target.getY();
+
+		graphics.setColor(color);
+		graphics.drawLine(sourceX, sourceY, targetX, targetY);
+
+		AffineTransform t = new AffineTransform();
+		t.translate(targetX, targetY);
+		t.rotate(targetX - sourceX, targetY - sourceY);
+		t.rotate(Math.PI / -2);
+		AffineTransform ot = graphics.getTransform();
+		graphics.setTransform(t);
+		graphics.fill(ARROW_HEAD);
+		graphics.setTransform(ot);
 	}
 }

@@ -45,16 +45,20 @@ import javax.inject.Named;
 import javax.swing.SwingUtilities;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
-import net.runelite.api.MenuEntry;
+import net.runelite.api.MenuAction;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.SoundEffectID;
 import net.runelite.api.Tile;
+import net.runelite.api.TileObject;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.FocusChanged;
@@ -157,22 +161,90 @@ public class PartyPlugin extends Plugin
 	private WorldPoint lastLocation;
 	private StatusUpdate lastStatus;
 
-	private final HotkeyListener hotkeyListener = new HotkeyListener(() -> config.pingHotkey())
+	private boolean pingHotkeyPressed = false;
+	private final HotkeyListener pingHotkeyListener = new HotkeyListener(() -> config.pingHotkey())
 	{
 		@Override
 		public void hotkeyPressed()
 		{
-			hotkeyPressed = true;
+			pingHotkeyPressed = true;
 		}
 
 		@Override
 		public void hotkeyReleased()
 		{
-			hotkeyPressed = false;
+			pingHotkeyPressed = false;
 		}
 	};
 
-	private boolean hotkeyPressed = false;
+	private boolean dangerHotkeyPressed = false;
+	private final HotkeyListener dangerHotkeyListener = new HotkeyListener(() -> config.dangerPingHotkey())
+	{
+		@Override
+		public void hotkeyPressed()
+		{
+			dangerHotkeyPressed = true;
+		}
+
+		@Override
+		public void hotkeyReleased()
+		{
+			dangerHotkeyPressed = false;
+		}
+	};
+
+	private boolean destinationHotkeyPressed = false;
+	private final HotkeyListener destinationHotkeyListener = new HotkeyListener(() -> config.destinationPingHotkey())
+	{
+		@Override
+		public void hotkeyPressed()
+		{
+			destinationHotkeyPressed = true;
+		}
+
+		@Override
+		public void hotkeyReleased()
+		{
+			destinationHotkeyPressed = false;
+		}
+	};
+
+	private boolean requestHotkeyPressed = false;
+	private final HotkeyListener requestHotkeyListener = new HotkeyListener(() -> config.requestPingHotkey())
+	{
+		@Override
+		public void hotkeyPressed()
+		{
+			requestHotkeyPressed = true;
+		}
+
+		@Override
+		public void hotkeyReleased()
+		{
+			requestHotkeyPressed = false;
+		}
+	};
+
+	private boolean questionHotkeyPressed = false;
+	private final HotkeyListener questionHotkeyListener = new HotkeyListener(() -> config.questionPingHotkey())
+	{
+		@Override
+		public void hotkeyPressed()
+		{
+			questionHotkeyPressed = true;
+		}
+
+		@Override
+		public void hotkeyReleased()
+		{
+			questionHotkeyPressed = false;
+		}
+	};
+
+	private boolean isHotkeyPressed()
+	{
+		return pingHotkeyPressed || dangerHotkeyPressed || destinationHotkeyPressed || requestHotkeyPressed || questionHotkeyPressed;
+	}
 
 	@Override
 	public void configure(Binder binder)
@@ -199,7 +271,11 @@ public class PartyPlugin extends Plugin
 
 		overlayManager.add(partyPingOverlay);
 		overlayManager.add(partyStatusOverlay);
-		keyManager.registerKeyListener(hotkeyListener);
+		keyManager.registerKeyListener(pingHotkeyListener);
+		keyManager.registerKeyListener(questionHotkeyListener);
+		keyManager.registerKeyListener(dangerHotkeyListener);
+		keyManager.registerKeyListener(destinationHotkeyListener);
+		keyManager.registerKeyListener(requestHotkeyListener);
 		wsClient.registerMessage(PartyPing.class);
 		wsClient.registerMessage(LocationUpdate.class);
 		wsClient.registerMessage(StatusUpdate.class);
@@ -220,7 +296,11 @@ public class PartyPlugin extends Plugin
 		worldMapManager.removeIf(PartyWorldMapPoint.class::isInstance);
 		overlayManager.remove(partyPingOverlay);
 		overlayManager.remove(partyStatusOverlay);
-		keyManager.unregisterKeyListener(hotkeyListener);
+		keyManager.unregisterKeyListener(pingHotkeyListener);
+		keyManager.unregisterKeyListener(questionHotkeyListener);
+		keyManager.unregisterKeyListener(dangerHotkeyListener);
+		keyManager.unregisterKeyListener(destinationHotkeyListener);
+		keyManager.unregisterKeyListener(requestHotkeyListener);
 		wsClient.unregisterMessage(PartyPing.class);
 		wsClient.unregisterMessage(LocationUpdate.class);
 		wsClient.unregisterMessage(StatusUpdate.class);
@@ -239,7 +319,11 @@ public class PartyPlugin extends Plugin
 	{
 		if (!focusChanged.isFocused())
 		{
-			hotkeyPressed = false;
+			pingHotkeyPressed = false;
+			questionHotkeyPressed = false;
+			dangerHotkeyPressed = false;
+			destinationHotkeyPressed = false;
+			requestHotkeyPressed = false;
 		}
 	}
 
@@ -262,40 +346,64 @@ public class PartyPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (!hotkeyPressed || client.isMenuOpen() || !party.isInParty() || !config.pings())
+		if (!isHotkeyPressed() || client.isMenuOpen() || !party.isInParty() || !config.pings())
 		{
 			return;
 		}
 
-		Tile selectedSceneTile = client.getSelectedSceneTile();
-		if (selectedSceneTile == null)
+		final Integer target;
+		final PartyPingTargetType targetType;
+		final WorldPoint location;
+
+		switch(event.getMenuAction())
 		{
-			return;
+			case NPC_FIRST_OPTION:
+			case NPC_SECOND_OPTION:
+			case NPC_THIRD_OPTION:
+			case NPC_FOURTH_OPTION:
+			case NPC_FIFTH_OPTION:
+				targetType = PartyPingTargetType.NPC;
+				target = event.getId();
+				location = null;
+				break;
+
+			case GAME_OBJECT_FIRST_OPTION:
+			case GAME_OBJECT_SECOND_OPTION:
+			case GAME_OBJECT_THIRD_OPTION:
+			case GAME_OBJECT_FOURTH_OPTION:
+			case GAME_OBJECT_FIFTH_OPTION:
+				targetType = PartyPingTargetType.OBJECT;
+				target = event.getId();
+				location = WorldPoint.fromScene(client, event.getParam0(), event.getParam1(), client.getPlane());
+				break;
+
+			case WALK:
+				Tile selectedSceneTile = client.getSelectedSceneTile();
+				if (selectedSceneTile == null)
+				{
+					return;
+				}
+
+				targetType = PartyPingTargetType.TILE;
+				target = null;
+				location = selectedSceneTile.getWorldLocation();
+				break;
+
+			default:
+				log.debug("Ping attempt failed due to unhandled menu action {}", event.getMenuAction());
+				return;
 		}
 
-		boolean isOnCanvas = false;
+		PartyPingType pingType =
+			questionHotkeyPressed ? PartyPingType.QUESTION :
+			dangerHotkeyPressed ? PartyPingType.DANGER :
+			destinationHotkeyPressed ? PartyPingType.DESTINATION :
+			requestHotkeyPressed ? PartyPingType.REQUEST :
+			PartyPingType.TARGET; //default to target ping
 
-		for (MenuEntry menuEntry : client.getMenuEntries())
-		{
-			if (menuEntry == null)
-			{
-				continue;
-			}
-
-			if ("walk here".equalsIgnoreCase(menuEntry.getOption()))
-			{
-				isOnCanvas = true;
-			}
-		}
-
-		if (!isOnCanvas)
-		{
-			return;
-		}
-
+		final PartyPing ping = new PartyPing(pingType, targetType, location, target, client.getWorld(), client.getLocalPlayer().getId());
+		party.send(ping);
 		event.consume();
-		final PartyPing tilePing = new PartyPing(PartyPingType.TARGET, PartyPingTargetType.TILE, selectedSceneTile.getWorldLocation());
-		party.send(tilePing);
 	}
 
 	@Subscribe
@@ -310,26 +418,129 @@ public class PartyPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onPartyPing(PartyPing event)
+	public void onPartyPing(PartyPing ping)
 	{
-		if (config.pings())
+		if (ping.getWorld() != client.getWorld() || !config.pings())
 		{
-			final PartyData partyData = getPartyData(event.getMemberId());
-			final Color color = partyData != null ? partyData.getColor() : Color.RED;
-			pendingPartyPings.add(new PartyPingData(event.getPoint(), color));
+			return;
 		}
 
-		if (config.sounds())
+		PartyPingTargetType targetType = ping.getTargetType();
+		if (targetType != PartyPingTargetType.NPC && (ping.getPoint().getPlane() != client.getPlane() || !WorldPoint.isInScene(client, ping.getPoint().getX(), ping.getPoint().getY())))
 		{
-			WorldPoint point = event.getPoint();
+			return;
+		}
 
-			if (point.getPlane() != client.getPlane() || !WorldPoint.isInScene(client, point.getX(), point.getY()))
-			{
+		Integer target = ping.getTarget();
+		Color color = null;
+		int soundId;
+		WorldPoint point = null;
+		Actor actor = null;
+		TileObject object = null;
+
+		switch (targetType)
+		{
+			case TILE:
+				point = ping.getPoint();
+				break;
+
+			case NPC:
+				actor = client.getCachedNPCs()[target];
+				if (actor == null)
+				{
+					return;
+				}
+				break;
+
+			case OBJECT:
+				object = findTileObject(ping.getPoint(), target);
+				if (object == null)
+				{
+					// couldn't find the object so target tile instead
+					targetType = PartyPingTargetType.TILE;
+					point = ping.getPoint();
+				}
+				break;
+		}
+
+		final PartyPingType type = ping.getPingType();
+		switch (type)
+		{
+			case TARGET:
+				color = config.targetPingColor();
+				soundId = !config.targetPingSound() ? -1 :
+						targetType == PartyPingTargetType.TILE ? type.getSoundId() : SoundEffectID.STAR_SPRITE_APPEAR;
+				break;
+
+			case QUESTION:
+				color = config.questionPingColor();
+				soundId = config.questionPingSound() ? type.getSoundId() : -1;
+				break;
+
+			case DANGER:
+				color = config.dangerPingColor();
+				soundId = config.dangerPingSound() ? type.getSoundId()  : -1;
+				break;
+
+			case DESTINATION:
+				color = config.destinationPingColor();
+				soundId = config.destinationPingSound() ? type.getSoundId()  : -1;
+				break;
+
+			case REQUEST:
+				color = config.requestPingColor();
+				soundId = config.requestPingSound() ? type.getSoundId()  : -1;
+				break;
+
+			default:
+				log.debug("Received PartyPing with unhandled type: {}", type);
 				return;
-			}
-
-			clientThread.invoke(() -> client.playSoundEffect(SoundEffectID.SMITH_ANVIL_TINK));
 		}
+
+		// if user has not set a color preference, use unique hash based color instead
+		if (color == null)
+		{
+			final PartyData partyData = getPartyData(ping.getMemberId());
+			color = partyData != null ? partyData.getColor() : Color.ORANGE;
+		}
+
+		final PartyPingData pingData = new PartyPingData(type, targetType, ping.getPlayerId(), actor, object, point, color);
+		pendingPartyPings.add(pingData);
+
+		if (soundId > -1)
+		{
+			clientThread.invoke(() -> client.playSoundEffect(soundId));
+		}
+	}
+
+	private TileObject findTileObject(WorldPoint point, int objectId)
+	{
+		LocalPoint local = LocalPoint.fromWorld(client, point);
+		Tile tile = client.getScene().getTiles()[client.getPlane()][local.getSceneX()][local.getSceneY()];
+		if (tile == null)
+		{
+			return null;
+		}
+
+		if (tile.getWallObject() != null && tile.getWallObject().getId() == objectId)
+		{
+			return tile.getWallObject();
+		}
+
+		if (tile.getDecorativeObject() != null && tile.getDecorativeObject().getId() == objectId)
+		{
+			return tile.getDecorativeObject();
+		}
+
+		for (GameObject gameObject : tile.getGameObjects())
+		{
+			if (gameObject != null && gameObject.getId() == objectId)
+			{
+				return gameObject;
+			}
+		}
+
+		return null;
 	}
 
 	@Schedule(

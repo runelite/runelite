@@ -29,13 +29,22 @@ import java.awt.Color;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import net.runelite.api.Actor;
+import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.plugins.party.PartyPingTargetType;
+import net.runelite.client.plugins.party.PartyPingType;
 
 @RequiredArgsConstructor
 @Getter
 @Setter
 public class PartyPingData
 {
+	private final PartyPingType pingType;
+	private final PartyPingTargetType targetType;
+	private final int sourcePlayerIdx;
+	private final Actor targetActor;
+	private final TileObject targetObject;
 	private final WorldPoint point;
 	private final Color color;
 	private int alpha = 255;
