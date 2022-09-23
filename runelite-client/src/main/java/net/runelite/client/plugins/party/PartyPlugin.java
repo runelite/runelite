@@ -476,6 +476,21 @@ public class PartyPlugin extends Plugin
 		pendingPartyPing = null;
 	}
 
+	private boolean pingIsSameSourceAndTarget(PartyPingData data, PartyPingData other)
+	{
+		if (data.getSourcePlayerIdx() != other.getSourcePlayerIdx() && data.getTargetType() != other.getTargetType())
+		{
+			return false;
+		}
+
+		if (data.getPoint() == null)
+		{
+			return other.getPoint() == null && data.getTargetActor() == other.getTargetActor() && data.getTargetObject() == other.getTargetObject();
+		}
+
+		return data.getPoint().equals(other.getPoint());
+	}
+
 	@Subscribe
 	public void onPartyPing(PartyPing ping)
 	{
@@ -564,6 +579,7 @@ public class PartyPlugin extends Plugin
 		}
 
 		final PartyPingData pingData = new PartyPingData(type, targetType, ping.getPlayerId(), actor, object, point, color);
+		pendingPartyPings.removeIf(p -> pingIsSameSourceAndTarget(p, pingData));
 		pendingPartyPings.add(pingData);
 
 		if (soundId > -1)
