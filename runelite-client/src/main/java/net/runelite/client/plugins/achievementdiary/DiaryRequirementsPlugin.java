@@ -199,7 +199,7 @@ public class DiaryRequirementsPlugin extends Plugin
 		}
 
 		int numLines = lastLine;
-		clientThread.invokeLater(() -> client.runScript(ScriptID.DIARY_QUEST_UPDATE_LINECOUNT, 1, numLines));
+		clientThread.invokeLater(() -> client.runScript(ScriptID.DIARY_UPDATE_LINECOUNT, 1, numLines));
 	}
 
 	private List<String> getOriginalAchievements(Widget[] children)
