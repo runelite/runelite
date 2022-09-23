@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2022, kamielvf <code@kamiel.dev>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,16 +22,20 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.party.messages;
+package net.runelite.client.plugins.party;
 
-import lombok.EqualsAndHashCode;
-import lombok.Value;
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.party.messages.PartyMemberMessage;
+import com.google.gson.annotations.SerializedName;
 
-@Value
-@EqualsAndHashCode(callSuper = true)
-public class TilePing extends PartyMemberMessage
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@RequiredArgsConstructor
+public enum PartyPingType
 {
-	private final WorldPoint point;
+	@SerializedName("0") TARGET,
+	@SerializedName("1") DANGER,
+	@SerializedName("2") DESTINATION,
+	@SerializedName("3") REQUEST,
+	@SerializedName("4") QUESTION
 }
