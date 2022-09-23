@@ -113,14 +113,14 @@ class PartyPingSelectionOverlay extends Overlay
 
 	private void renderRadialHighlight(final Graphics2D graphics, int baseX, int baseY)
 	{
-        // substract 1 because TARGET ping type is our default and not shown in advanced menu
+		// substract 1 because TARGET ping type is our default and not shown in advanced menu
 		double optionSelectionSize = 360.0 / (PartyPingType.values().length - 1);
 		double offset = optionSelectionSize / 2.0;
 
 		PartyPingType pingType = plugin.getPendingPartyPing().getPingType();
 
 		// Arc2D draws counter-clockwise and 0deg = 3 o'clock, but our radial menu starts at 9 o'clock + offset, going clockwise
-		double startAngle = 180 - offset - pingType.ordinal() * optionSelectionSize; 
+		double startAngle = 180 - offset - pingType.ordinal() * optionSelectionSize;
 		if (startAngle < 0)
 		{
 			startAngle += 360;
@@ -140,7 +140,7 @@ class PartyPingSelectionOverlay extends Overlay
 		double optionSelectionSize = 360.0 / (PartyPingType.values().length - 1);
 		for (PartyPingType type : PartyPingType.values())
 		{
-            // skip default target ping
+			// skip default target ping
 			if (type == PartyPingType.TARGET)
 			{
 				continue;
