@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
  * Copyright (c) 2021, Jonathan Rousseau <https://github.com/JoRouss>
+ * Copyright (c) 2022, kamielvf <code@kamiel.dev>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -44,7 +45,7 @@ public interface PartyConfig extends Config
 			+ "To ping, hold the ping hotkey down and click on the tile you want to ping.",
 		position = 1
 	)
-	default boolean pings()
+	default boolean recolorNames()
 	{
 		return true;
 	}
@@ -55,18 +56,17 @@ public interface PartyConfig extends Config
 		description = "Enables sound notification on party ping.",
 		position = 2
 	)
-	default boolean sounds()
+	default boolean pings()
 	{
 		return true;
 	}
-
-	@ConfigItem(
-		keyName = "recolorNames",
-		name = "Recolor names",
-		description = "Recolor party members names based on unique color hash.",
-		position = 3
-	)
-	default boolean recolorNames()
+    @ConfigItem(
+            keyName = "advancedPingMenu",
+            name = "Enable advanced ping menu",
+            description = "Enables opening advanced ping menu by dragging the mouse after selecting a target",
+            position = 3
+    )
+	default boolean advancedPingMenu()
 	{
 		return true;
 	}
@@ -74,11 +74,224 @@ public interface PartyConfig extends Config
 	@ConfigItem(
 		keyName = "pingHotkey",
 		name = "Ping hotkey",
-		description = "Key to hold to send a tile ping.<br>"
-			+ "To ping, hold the ping hotkey down and click on the tile you want to ping.",
+            and click on the tile you want to ping.",		description = "Key to hold to send a tile ping.<br>"
+			+ "To ping, hold the ping hotkey down
 		position = 4
 	)
 	default Keybind pingHotkey()
+	{
+		return Keybind.NOT_SET;
+	}
+
+	@ConfigSection(
+		name = "Target ping (default)",
+		description = "Configure default target ping.",
+		position = 5
+	)
+	String SECTION_TARGET_PING = "targetPing";
+
+	@ConfigItem(
+		section = SECTION_TARGET_PING,
+		keyName = "targetPingSound",
+		name = "Enable sound",
+		description = "Enables sound notification on target ping",
+		position = 6
+	)
+	default boolean targetPingSound()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		section = SECTION_TARGET_PING,
+		keyName = "targetPingColor",
+		name = "Target ping color",
+		description = "Color of incoming target pings",
+		position = 7
+	)
+	default Color targetPingColor()
+	{
+		return null;
+	}
+
+	@ConfigSection(
+		name = "Danger ping",
+		description = "Configure danger ping.",
+		position = 8
+	)
+	String SECTION_DANGER_PING = "dangerPing";
+
+	@ConfigItem(
+		section = SECTION_DANGER_PING,
+		keyName = "dangerPingSound",
+		name = "Enable sound",
+		description = "Enables sound notification on danger ping",
+		position = 9
+	)
+	default boolean dangerPingSound()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		section = SECTION_DANGER_PING,
+		keyName = "dangerPingColor",
+		name = "Danger ping color",
+		description = "Color of incoming danger pings",
+		position = 10
+	)
+	default Color dangerPingColor()
+	{
+		return Color.RED;
+	}
+
+	@ConfigItem(
+		section = SECTION_DANGER_PING,
+		keyName = "dangerPingHotkey",
+		name = "Danger ping hotkey",
+		description = "Key to hold to send a danger ping",
+		position = 11
+	)
+	default Keybind dangerPingHotkey()
+	{
+		return Keybind.NOT_SET;
+	}
+	@ConfigSection(
+		name = "Destination ping",
+		description = "Configure destination ping.",
+		position = 12
+	)
+	String SECTION_DESTINATION_PING = "destinationPing";
+
+	@ConfigItem(
+		section = SECTION_DESTINATION_PING,
+		keyName = "destinationLine",
+		name = "Draw line",
+		description = "Draw a line between source player and destination",
+		position = 13
+	)
+	default boolean drawDestinationLine()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		section = SECTION_DESTINATION_PING,
+		keyName = "destinationPingSound",
+		name = "Enable sound",
+		description = "Enables sound notification on destination ping",
+		position = 14
+	)
+	default boolean destinationPingSound()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		section = SECTION_DESTINATION_PING,
+		keyName = "destinationPingColor",
+		name = "Destination ping color",
+		description = "Color of incoming destination pings",
+		position = 15
+	)
+	default Color destinationPingColor()
+	{
+		return null;
+	}
+
+	@ConfigItem(
+		section = SECTION_DESTINATION_PING,
+		keyName = "destinationPingHotkey",
+		name = "Destination ping hotkey",
+		description = "Key to hold to send a destination ping",
+		position = 16
+	)
+	default Keybind destinationPingHotkey()
+	{
+		return Keybind.NOT_SET;
+	}
+	@ConfigSection(
+		name = "Request ping",
+		description = "Configure request ping.",
+		position = 17
+	)
+	String SECTION_REQUEST_PING = "requestPing";
+
+	@ConfigItem(
+		section = SECTION_REQUEST_PING,
+		keyName = "requestPingSound",
+		name = "Enable sound",
+		description = "Enables sound notification on request ping",
+		position = 18
+	)
+	default boolean requestPingSound()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		section = SECTION_REQUEST_PING,
+		keyName = "requestPingColor",
+		name = "Request ping color",
+		description = "Color of incoming request pings",
+		position = 19
+	)
+	default Color requestPingColor()
+	{
+		return null;
+	}
+
+	@ConfigItem(
+		section = SECTION_REQUEST_PING,
+		keyName = "requestPingHotkey",
+		name = "Request ping hotkey",
+		description = "Key to hold to send a request ping",
+		position = 20
+	)
+	default Keybind requestPingHotkey()
+	{
+		return Keybind.NOT_SET;
+	}
+
+	@ConfigSection(
+		name = "Question ping",
+		description = "Configure question ping.",
+		position = 21
+	)
+	String SECTION_QUESTION_PING = "questionPing";
+
+	@ConfigItem(
+		section = SECTION_QUESTION_PING,
+		keyName = "questionPingSound",
+		name = "Enable sound",
+		description = "Enables sound notification on question ping",
+		position = 22
+	)
+	default boolean questionPingSound()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		section = SECTION_QUESTION_PING,
+		keyName = "questionPingColor",
+		name = "Question ping color",
+		description = "Color of incoming question pings",
+		position = 23
+	)
+	default Color questionPingColor()
+	{
+		return null;
+	}
+
+	@ConfigItem(
+		section = SECTION_QUESTION_PING,
+		keyName = "questionPingHotkey",
+		name = "Question ping hotkey",
+		description = "Key to hold to send an question ping",
+		position = 24
+	)
+	default Keybind questionPingHotkey()
 	{
 		return Keybind.NOT_SET;
 	}
@@ -102,7 +315,7 @@ public interface PartyConfig extends Config
 	@ConfigSection(
 		name = "Player status overlay",
 		description = "Player status such as health, prayer, and special attack energy drawn on player models.",
-		position = 100
+		position = 25
 	)
 	String SECTION_STATUS_OVERLAY = "statusOverlay";
 
@@ -111,7 +324,7 @@ public interface PartyConfig extends Config
 		keyName = "statusOverlayHealth",
 		name = "Show health",
 		description = "Show health of party members on the player model.",
-		position = 101
+		position = 26
 	)
 	default boolean statusOverlayHealth()
 	{
@@ -123,7 +336,7 @@ public interface PartyConfig extends Config
 		keyName = "statusOverlayPrayer",
 		name = "Show prayer",
 		description = "Show prayer of party members on the player model.",
-		position = 102
+		position = 27
 	)
 	default boolean statusOverlayPrayer()
 	{
@@ -135,7 +348,7 @@ public interface PartyConfig extends Config
 		keyName = "statusOverlayStamina",
 		name = "Show run energy",
 		description = "Show run energy (stamina) of party members on the player model.",
-		position = 103
+		position = 28
 	)
 	default boolean statusOverlayStamina()
 	{
@@ -147,7 +360,7 @@ public interface PartyConfig extends Config
 		keyName = "statusOverlaySpec",
 		name = "Show spec energy",
 		description = "Show special attack energy of party members on the player model.",
-		position = 104
+		position = 29
 	)
 	default boolean statusOverlaySpec()
 	{
@@ -159,7 +372,7 @@ public interface PartyConfig extends Config
 		keyName = "statusOverlayVeng",
 		name = "Show vengeance",
 		description = "Show vengeance status (active/inactive) of party members on the player model.",
-		position = 105
+		position = 30
 	)
 	default boolean statusOverlayVeng()
 	{
@@ -171,7 +384,7 @@ public interface PartyConfig extends Config
 		keyName = "statusOverlayRenderSelf",
 		name = "Show on self",
 		description = "Show above activated status overlays on your local player.",
-		position = 106
+		position = 31
 	)
 	default boolean statusOverlayRenderSelf()
 	{
