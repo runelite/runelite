@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2019, Tomas Slusny <slusnucky@gmail.com>
  * Copyright (c) 2021, Jonathan Rousseau <https://github.com/JoRouss>
+ * Copyright (c) 2022, kamielvf <code@kamiel.dev>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -78,10 +79,10 @@ import net.runelite.client.party.messages.UserSync;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.party.data.PartyData;
-import net.runelite.client.plugins.party.data.PartyTilePingData;
+import net.runelite.client.plugins.party.data.PartyPingData;
 import net.runelite.client.plugins.party.messages.LocationUpdate;
 import net.runelite.client.plugins.party.messages.StatusUpdate;
-import net.runelite.client.plugins.party.messages.TilePing;
+import net.runelite.client.plugins.party.messages.PartyPing;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
@@ -146,7 +147,7 @@ public class PartyPlugin extends Plugin
 	private final Map<Long, PartyData> partyDataMap = Collections.synchronizedMap(new HashMap<>());
 
 	@Getter
-	private final List<PartyTilePingData> pendingTilePings = Collections.synchronizedList(new ArrayList<>());
+	private final List<PartyPingData> pendingPartyPings = Collections.synchronizedList(new ArrayList<>());
 
 	private Instant lastLogout;
 
@@ -199,7 +200,7 @@ public class PartyPlugin extends Plugin
 		overlayManager.add(partyPingOverlay);
 		overlayManager.add(partyStatusOverlay);
 		keyManager.registerKeyListener(hotkeyListener);
-		wsClient.registerMessage(TilePing.class);
+		wsClient.registerMessage(PartyPing.class);
 		wsClient.registerMessage(LocationUpdate.class);
 		wsClient.registerMessage(StatusUpdate.class);
 		// Delay sync so the eventbus can register prior to the sync response
@@ -215,12 +216,12 @@ public class PartyPlugin extends Plugin
 		panel = null;
 
 		partyDataMap.clear();
-		pendingTilePings.clear();
+		pendingPartyPings.clear();
 		worldMapManager.removeIf(PartyWorldMapPoint.class::isInstance);
 		overlayManager.remove(partyPingOverlay);
 		overlayManager.remove(partyStatusOverlay);
 		keyManager.unregisterKeyListener(hotkeyListener);
-		wsClient.unregisterMessage(TilePing.class);
+		wsClient.unregisterMessage(PartyPing.class);
 		wsClient.unregisterMessage(LocationUpdate.class);
 		wsClient.unregisterMessage(StatusUpdate.class);
 		lastLocation = null;
@@ -293,7 +294,7 @@ public class PartyPlugin extends Plugin
 		}
 
 		event.consume();
-		final TilePing tilePing = new TilePing(selectedSceneTile.getWorldLocation());
+		final PartyPing tilePing = new PartyPing(PartyPingType.TARGET, PartyPingTargetType.TILE, selectedSceneTile.getWorldLocation());
 		party.send(tilePing);
 	}
 
@@ -309,13 +310,13 @@ public class PartyPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onTilePing(TilePing event)
+	public void onPartyPing(PartyPing event)
 	{
 		if (config.pings())
 		{
 			final PartyData partyData = getPartyData(event.getMemberId());
 			final Color color = partyData != null ? partyData.getColor() : Color.RED;
-			pendingTilePings.add(new PartyTilePingData(event.getPoint(), color));
+			pendingPartyPings.add(new PartyPingData(event.getPoint(), color));
 		}
 
 		if (config.sounds())
@@ -594,7 +595,7 @@ public class PartyPlugin extends Plugin
 	{
 		// Reset party
 		partyDataMap.clear();
-		pendingTilePings.clear();
+		pendingPartyPings.clear();
 		worldMapManager.removeIf(PartyWorldMapPoint.class::isInstance);
 
 		if (event.getPartyId() != null)

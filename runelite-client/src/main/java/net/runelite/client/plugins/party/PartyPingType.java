@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2022, kamielvf <code@kamiel.dev>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,21 +22,20 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.party.data;
+package net.runelite.client.plugins.party;
 
-import java.awt.Color;
+import com.google.gson.annotations.SerializedName;
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import net.runelite.api.coords.WorldPoint;
 
-@RequiredArgsConstructor
 @Getter
-@Setter
-public class PartyTilePingData
+@RequiredArgsConstructor
+public enum PartyPingType
 {
-	private final WorldPoint point;
-	private final Color color;
-	private int alpha = 255;
-	private final long creationTime = System.nanoTime();
+	@SerializedName("0") TARGET,
+	@SerializedName("1") DANGER,
+	@SerializedName("2") DESTINATION,
+	@SerializedName("3") REQUEST,
+	@SerializedName("4") QUESTION
 }

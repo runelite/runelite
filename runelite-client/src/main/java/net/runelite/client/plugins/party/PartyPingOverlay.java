@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2019, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2022, kamielvf <code@kamiel.dev>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,7 +34,7 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.coords.LocalPoint;
-import net.runelite.client.plugins.party.data.PartyTilePingData;
+import net.runelite.client.plugins.party.data.PartyPingData;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
@@ -59,13 +60,13 @@ class PartyPingOverlay extends Overlay
 			return null;
 		}
 
-		synchronized (plugin.getPendingTilePings())
+		synchronized (plugin.getPendingPartyPings())
 		{
-			final Iterator<PartyTilePingData> iterator = plugin.getPendingTilePings().iterator();
+			final Iterator<PartyPingData> iterator = plugin.getPendingPartyPings().iterator();
 
 			while (iterator.hasNext())
 			{
-				PartyTilePingData next = iterator.next();
+				PartyPingData next = iterator.next();
 
 				if (next.getAlpha() <= 0)
 				{
@@ -83,7 +84,7 @@ class PartyPingOverlay extends Overlay
 		return null;
 	}
 
-	private void renderPing(final Graphics2D graphics, final PartyTilePingData ping)
+	private void renderPing(final Graphics2D graphics, final PartyPingData ping)
 	{
 		final LocalPoint localPoint = LocalPoint.fromWorld(client, ping.getPoint());
 
