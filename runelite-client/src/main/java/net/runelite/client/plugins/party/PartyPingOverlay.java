@@ -33,6 +33,8 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Iterator;
 import javax.inject.Inject;
 import net.runelite.api.Client;
@@ -52,6 +54,10 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 
 class PartyPingOverlay extends Overlay
 {
+	private static final int PING_START_ALPHA = 255;
+	private static final double IMAGE_FLOAT_START_THRESHOLD = 0.3;
+	private static final int IMAGE_BASE_FLOAT_HEIGHT = 10;
+	private static final int IMAGE_END_FLOAT_HEIGHT = 25;
 	private static final Polygon ARROW_HEAD = new Polygon(
 		new int[]{0, -5, 5},
 		new int[]{0, -7, -7},
@@ -86,15 +92,16 @@ class PartyPingOverlay extends Overlay
 			while (iterator.hasNext())
 			{
 				PartyPingData next = iterator.next();
+				long timeLeft = Duration.between(Instant.now(), next.getExpiresAt()).toMillis();
 
-				if (next.getAlpha() <= 0)
+				if (timeLeft <= 0)
 				{
 					iterator.remove();
 					continue;
 				}
 
-				renderPing(graphics, next);
-
+				double percentageLeft = (double) timeLeft / (double) next.getPingDuration();
+				renderPing(graphics, next, percentageLeft);
 				long elapsedTimeMillis = (System.nanoTime() - next.getCreationTime()) / 1000000;
 				next.setAlpha((int) Math.max(0, 255 - (elapsedTimeMillis / 4)));
 			}
@@ -103,7 +110,7 @@ class PartyPingOverlay extends Overlay
 		return null;
 	}
 
-	private void renderPing(final Graphics2D graphics, final PartyPingData ping)
+	private void renderPing(final Graphics2D graphics, final PartyPingData ping, double percentageLeft)
 	{
 		Polygon poly = null;
 		LocalPoint localPoint = null;
@@ -115,7 +122,9 @@ class PartyPingOverlay extends Overlay
 			case TILE:
 				localPoint = LocalPoint.fromWorld(client, ping.getPoint());
 				poly = Perspective.getCanvasTilePoly(client, localPoint);
-				imageFloatDistance = ping.getAlpha() <= 125 ? (int) (25 - (15 * (ping.getAlpha() / 125.0))) : 10;
+				imageFloatDistance =
+					percentageLeft <= IMAGE_FLOAT_START_THRESHOLD ? (int) (IMAGE_END_FLOAT_HEIGHT - ((IMAGE_END_FLOAT_HEIGHT - IMAGE_BASE_FLOAT_HEIGHT) * (percentageLeft / IMAGE_FLOAT_START_THRESHOLD))) :
+					IMAGE_BASE_FLOAT_HEIGHT;
 				break;
 
 			case NPC:
@@ -140,7 +149,7 @@ class PartyPingOverlay extends Overlay
 			ping.getColor().getRed(),
 			ping.getColor().getGreen(),
 			ping.getColor().getBlue(),
-			ping.getAlpha());
+			(int) (PING_START_ALPHA * percentageLeft));
 
 		OverlayUtil.renderPolygon(graphics, poly, color);
 
@@ -162,9 +171,9 @@ class PartyPingOverlay extends Overlay
 		final Point imageLocation = Perspective.localToCanvas(client, localPoint, client.getPlane(), targetHeight + image.getHeight());
 
 		final Composite originalComposite = graphics.getComposite();
-		if (ping.getAlpha() <= 125)
+		if (percentageLeft <= IMAGE_FLOAT_START_THRESHOLD)
 		{
-			final AlphaComposite alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, ping.getAlpha() / 125f);
+			final AlphaComposite alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) (percentageLeft / IMAGE_FLOAT_START_THRESHOLD));
 			graphics.setComposite(alphaComposite);
 		}
 		

@@ -26,6 +26,7 @@
 package net.runelite.client.plugins.party.data;
 
 import java.awt.Color;
+import java.time.Instant;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -40,6 +41,8 @@ import net.runelite.client.plugins.party.PartyPingType;
 @Setter
 public class PartyPingData
 {
+	private final long pingDuration;
+	private final Instant expiresAt;
 	private final PartyPingType pingType;
 	private final PartyPingTargetType targetType;
 	private final int sourcePlayerIdx;
