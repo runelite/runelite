@@ -35,7 +35,7 @@ import net.runelite.client.input.MouseListener;
 public class PartyPingMouseListener implements MouseListener
 {
 	// distance in px mouse needs to be dragged before radial ping menu is shown
-	private static final int PING_MENU_OPEN_DRAG_DISTANCE = 15; 
+	private static final int PING_MENU_OPEN_DRAG_DISTANCE = 15;
 
 	private final Client client;
 	private final PartyPlugin plugin;

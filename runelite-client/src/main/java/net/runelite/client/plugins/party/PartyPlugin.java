@@ -398,7 +398,7 @@ public class PartyPlugin extends Plugin
 		final PartyPingTargetType targetType;
 		final WorldPoint location;
 
-		switch(event.getMenuAction())
+		switch (event.getMenuAction())
 		{
 			case NPC_FIRST_OPTION:
 			case NPC_SECOND_OPTION:
