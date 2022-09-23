@@ -578,7 +578,9 @@ public class PartyPlugin extends Plugin
 			color = partyData != null ? partyData.getColor() : Color.ORANGE;
 		}
 
-		final PartyPingData pingData = new PartyPingData(type, targetType, ping.getPlayerId(), actor, object, point, color);
+		final long pingDuration = (long) (config.pingDuration() * 1000);
+		final Instant expiresAt = Instant.now().plusMillis(pingDuration);
+		final PartyPingData pingData = new PartyPingData(pingDuration, expiresAt, type, targetType, ping.getPlayerId(), actor, object, point, color);
 		pendingPartyPings.removeIf(p -> pingIsSameSourceAndTarget(p, pingData));
 		pendingPartyPings.add(pingData);
 
