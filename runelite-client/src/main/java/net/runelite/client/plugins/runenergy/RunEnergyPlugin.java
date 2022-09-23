@@ -155,7 +155,7 @@ public class RunEnergyPlugin extends Plugin
 	private RunEnergyConfig energyConfig;
 
 	@Inject
-	ConfigManager configManager;
+	private ConfigManager configManager;
 
 	private int lastCheckTick;
 	private boolean roeWarningSent;
