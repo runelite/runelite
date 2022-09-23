@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.party.messages;
 
+import com.google.gson.annotations.SerializedName;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 import net.runelite.api.coords.WorldPoint;
@@ -36,7 +37,20 @@ import net.runelite.client.plugins.party.PartyPingType;
 @EqualsAndHashCode(callSuper = true)
 public class PartyPing extends PartyMemberMessage
 {
-	private final PartyPingType type;
+	@SerializedName("pt")
+	private final PartyPingType pingType;
+
+	@SerializedName("tt")
 	private final PartyPingTargetType targetType;
+
+	// this will either be the targeted tile, the tile the game object is on or null for npc pings
 	private final WorldPoint point;
+
+	// this will either be the object ID, the npc's index or null for regular pings
+	private final Integer target;
+	
+	private final int world;
+	
+	@SerializedName("pid")
+	private final int playerId;
 }

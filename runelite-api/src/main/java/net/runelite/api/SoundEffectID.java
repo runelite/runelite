@@ -96,4 +96,5 @@ public final class SoundEffectID
 	public final static int TOWN_CRIER_BELL_DONG = 3817;
 	public final static int TOWN_CRIER_SHOUT_SQUEAK = 3816;
 
+	public final static int STAR_SPRITE_APPEAR = 4935;
 }
