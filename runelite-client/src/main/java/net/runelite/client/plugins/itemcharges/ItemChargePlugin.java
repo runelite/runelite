@@ -40,12 +40,14 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
+import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.VarbitChanged;
@@ -195,6 +197,8 @@ public class ItemChargePlugin extends Plugin
 	protected void startUp()
 	{
 		overlayManager.add(overlay);
+
+		clientThread.invoke(() -> updateExplorerRingCharges());
 	}
 
 	@Override
@@ -507,6 +511,17 @@ public class ItemChargePlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onGameStateChanged (GameStateChanged event)
+	{
+		// If the explorer's ring is full, and the last value of the varbit was 0 (full) or it is a fresh login, the
+		// VarbitChanged event does not fire on login. So, check the charge varbit.
+		if (event.getGameState() == GameState.LOGGED_IN)
+		{
+			updateExplorerRingCharges();
+		}
+	}
+
+	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded widgetLoaded)
 	{
 		if (widgetLoaded.getGroupId() == WidgetID.DIALOG_SPRITE_GROUP_ID)
@@ -566,6 +581,11 @@ public class ItemChargePlugin extends Plugin
 	{
 		setItemCharges(ItemChargeConfig.KEY_BINDING_NECKLACE, value);
 		updateInfoboxes();
+	}
+
+	private void updateExplorerRingCharges()
+	{
+		updateExplorerRingCharges(client.getVarbitValue(Varbits.EXPLORER_RING_ALCHS));
 	}
 
 	private void updateExplorerRingCharges(final int value)
