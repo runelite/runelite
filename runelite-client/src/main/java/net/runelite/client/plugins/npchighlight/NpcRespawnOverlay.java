@@ -111,14 +111,16 @@ class NpcRespawnOverlay extends Overlay
 		renderPoly(graphics, config.highlightColor(), config.fillColor(), poly);
 
 		String timeLeftStr = "";
-		if(config.npcRespawnTimer().equals(NpcIndicatorsConfig.RespawnTimerTypes.TIME))
+		if (config.npcRespawnTimer().equals(NpcIndicatorsConfig.RespawnTimerTypes.TIME))
 		{
 			final Instant now = Instant.now();
 			final double baseTick = ((npc.getDiedOnTick() + npc.getRespawnTime()) - client.getTickCount()) * (Constants.GAME_TICK_LENGTH / 1000.0);
 			final double sinceLast = (now.toEpochMilli() - plugin.getLastTickUpdate().toEpochMilli()) / 1000.0;
 			final double timeLeft = Math.max(0.0, baseTick - sinceLast);
 			timeLeftStr = TIME_LEFT_FORMATTER.format(timeLeft);
-		} else if (config.npcRespawnTimer().equals(NpcIndicatorsConfig.RespawnTimerTypes.TICKS)) {
+		}
+		else if (config.npcRespawnTimer().equals(NpcIndicatorsConfig.RespawnTimerTypes.TICKS))
+		{
 			final int tick = (npc.getDiedOnTick() + npc.getRespawnTime()) - client.getTickCount();
 			timeLeftStr = String.valueOf(tick);
 		}
