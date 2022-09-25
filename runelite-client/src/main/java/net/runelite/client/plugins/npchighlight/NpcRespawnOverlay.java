@@ -125,7 +125,6 @@ class NpcRespawnOverlay extends Overlay
 			timeLeftStr = String.valueOf(tick);
 		}
 
-
 		final int textWidth = graphics.getFontMetrics().stringWidth(timeLeftStr);
 		final int textHeight = graphics.getFontMetrics().getAscent();
 
