@@ -79,7 +79,7 @@ class NpcRespawnOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		Map<Integer, MemorizedNpc> deadNpcsToDisplay = plugin.getDeadNpcsToDisplay();
-		if (deadNpcsToDisplay.isEmpty() || !config.showRespawnTimer())
+		if (deadNpcsToDisplay.isEmpty() || config.npcRespawnTimer().equals(NpcIndicatorsConfig.RespawnTimerTypes.NONE))
 		{
 			return null;
 		}
@@ -110,11 +110,19 @@ class NpcRespawnOverlay extends Overlay
 		final Polygon poly = Perspective.getCanvasTileAreaPoly(client, centerLp, npc.getNpcSize());
 		renderPoly(graphics, config.highlightColor(), config.fillColor(), poly);
 
-		final Instant now = Instant.now();
-		final double baseTick = ((npc.getDiedOnTick() + npc.getRespawnTime()) - client.getTickCount()) * (Constants.GAME_TICK_LENGTH / 1000.0);
-		final double sinceLast = (now.toEpochMilli() - plugin.getLastTickUpdate().toEpochMilli()) / 1000.0;
-		final double timeLeft = Math.max(0.0, baseTick - sinceLast);
-		final String timeLeftStr = TIME_LEFT_FORMATTER.format(timeLeft);
+		String timeLeftStr = "";
+		if(config.npcRespawnTimer().equals(NpcIndicatorsConfig.RespawnTimerTypes.TIME))
+		{
+			final Instant now = Instant.now();
+			final double baseTick = ((npc.getDiedOnTick() + npc.getRespawnTime()) - client.getTickCount()) * (Constants.GAME_TICK_LENGTH / 1000.0);
+			final double sinceLast = (now.toEpochMilli() - plugin.getLastTickUpdate().toEpochMilli()) / 1000.0;
+			final double timeLeft = Math.max(0.0, baseTick - sinceLast);
+			timeLeftStr = TIME_LEFT_FORMATTER.format(timeLeft);
+		} else if (config.npcRespawnTimer().equals(NpcIndicatorsConfig.RespawnTimerTypes.TICKS)) {
+			final int tick = (npc.getDiedOnTick() + npc.getRespawnTime()) - client.getTickCount();
+			timeLeftStr = String.valueOf(tick);
+		}
+
 
 		final int textWidth = graphics.getFontMetrics().stringWidth(timeLeftStr);
 		final int textHeight = graphics.getFontMetrics().getAscent();
