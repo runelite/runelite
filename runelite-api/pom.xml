@@ -107,6 +107,7 @@
 								<exclude>net/runelite/api/EnumID.class</exclude>
 								<exclude>net/runelite/api/FontID.class</exclude>
 								<exclude>net/runelite/api/GraphicID.class</exclude>
+								<exclude>net/runelite/api/HintArrowType.class</exclude>
 								<exclude>net/runelite/api/HitsplatID.class</exclude>
 								<exclude>net/runelite/api/ItemID.class</exclude>
 								<exclude>net/runelite/api/NpcID.class</exclude>
