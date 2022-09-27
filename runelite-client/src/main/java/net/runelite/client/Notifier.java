@@ -42,6 +42,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -354,15 +355,14 @@ public class Notifier
 
 		if (terminalNotifierAvailable)
 		{
-			commands.add("terminal-notifier");
-			commands.add("-group");
-			commands.add("net.runelite.launcher");
-			commands.add("-sender");
-			commands.add("net.runelite.launcher");
-			commands.add("-message");
-			commands.add(DOUBLE_QUOTE + message + DOUBLE_QUOTE);
-			commands.add("-title");
-			commands.add(DOUBLE_QUOTE + title + DOUBLE_QUOTE);
+			Collections.addAll(commands,
+				"sh", "-lc", "\"$@\"", "--",
+				"terminal-notifier",
+				"-title", title,
+				"-message", message,
+				"-group", "net.runelite.launcher",
+				"-sender", "net.runelite.launcher"
+			);
 		}
 		else
 		{
@@ -416,7 +416,8 @@ public class Notifier
 	{
 		try
 		{
-			final Process exec = Runtime.getRuntime().exec(new String[]{"terminal-notifier", "-help"});
+			// The PATH seen by Cocoa apps does not resemble that seen by the shell, so we defer to the latter.
+			final Process exec = Runtime.getRuntime().exec(new String[]{"sh", "-lc", "terminal-notifier -help"});
 			if (!exec.waitFor(2, TimeUnit.SECONDS))
 			{
 				return false;
