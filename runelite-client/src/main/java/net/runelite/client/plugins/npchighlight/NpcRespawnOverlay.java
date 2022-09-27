@@ -79,7 +79,7 @@ class NpcRespawnOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		Map<Integer, MemorizedNpc> deadNpcsToDisplay = plugin.getDeadNpcsToDisplay();
-		if (deadNpcsToDisplay.isEmpty() || config.npcRespawnTimer().equals(NpcIndicatorsConfig.RespawnTimerTypes.NONE))
+		if (deadNpcsToDisplay.isEmpty() || config.npcRespawnTimer().equals(NpcIndicatorsConfig.RespawnTimerTypes.OFF))
 		{
 			return null;
 		}
@@ -111,7 +111,7 @@ class NpcRespawnOverlay extends Overlay
 		renderPoly(graphics, config.highlightColor(), config.fillColor(), poly);
 
 		String timeLeftStr = "";
-		if (config.npcRespawnTimer().equals(NpcIndicatorsConfig.RespawnTimerTypes.TIME))
+		if (config.npcRespawnTimer().equals(NpcIndicatorsConfig.RespawnTimerTypes.SECONDS))
 		{
 			final Instant now = Instant.now();
 			final double baseTick = ((npc.getDiedOnTick() + npc.getRespawnTime()) - client.getTickCount()) * (Constants.GAME_TICK_LENGTH / 1000.0);

@@ -37,8 +37,8 @@ public interface NpcIndicatorsConfig extends Config
 {
 	enum RespawnTimerTypes
 	{
-		NONE,
-		TIME,
+		OFF,
+		SECONDS,
 		TICKS
 	}
 
@@ -253,7 +253,7 @@ public interface NpcIndicatorsConfig extends Config
 	)
 	default RespawnTimerTypes npcRespawnTimer()
 	{
-		return RespawnTimerTypes.NONE;
+		return RespawnTimerTypes.OFF;
 	}
 
 	@ConfigItem(
