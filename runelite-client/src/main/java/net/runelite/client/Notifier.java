@@ -140,7 +140,8 @@ public class Notifier
 		this.appName = appName;
 		this.notifyIconPath = RuneLite.RUNELITE_DIR.toPath().resolve("icon.png");
 
-		// First check if we are running in launcher
+		// Check if we are running in the launcher because terminal-notifier notifications don't work
+		// if the group/sender are unknown to it.
 		if (!Strings.isNullOrEmpty(RuneLiteProperties.getLauncherVersion()) && OSType.getOSType() == OSType.MacOS)
 		{
 			executorService.execute(() -> terminalNotifierAvailable = isTerminalNotifierAvailable());
