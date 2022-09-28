@@ -193,7 +193,7 @@ public class TelekineticRoom extends MTARoom
 	{
 		NPC npc = event.getNpc();
 
-		if (npc.getId() == NpcID.MAZE_GUARDIAN)
+		if (npc.getId() == NpcID.MAZE_GUARDIAN || npc.getId() == MAZE_GUARDIAN_MOVING)
 		{
 			guardian = npc;
 		}
@@ -204,7 +204,7 @@ public class TelekineticRoom extends MTARoom
 	{
 		NPC npc = event.getNpc();
 
-		if (npc == guardian)
+		if (npc == guardian || npc.getId() == MAZE_GUARDIAN_MOVING)
 		{
 			guardian = null;
 		}
