@@ -57,7 +57,7 @@ import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetID.ADVENTURE_LOG_ID;
-import static net.runelite.api.widgets.WidgetID.DIARY_QUEST_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.ACHIEVEMENT_DIARY_SCROLL_GROUP_ID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatClient;
@@ -1169,7 +1169,7 @@ public class ChatCommandsPluginTest
 		when(client.getWidget(WidgetInfo.ADVENTURE_LOG)).thenReturn(advLogWidget);
 
 		// counters
-		when(client.getWidget(WidgetInfo.DIARY_QUEST_WIDGET_TEXT)).thenAnswer(a ->
+		when(client.getWidget(WidgetInfo.ACHIEVEMENT_DIARY_SCROLL_TEXT)).thenAnswer(a ->
 		{
 			Widget widget = mock(Widget.class);
 			Widget[] children = Arrays.stream(log)
@@ -1190,7 +1190,7 @@ public class ChatCommandsPluginTest
 		chatCommandsPlugin.onGameTick(new GameTick());
 
 		WidgetLoaded countersLogEvent = new WidgetLoaded();
-		countersLogEvent.setGroupId(DIARY_QUEST_GROUP_ID);
+		countersLogEvent.setGroupId(ACHIEVEMENT_DIARY_SCROLL_GROUP_ID);
 		chatCommandsPlugin.onWidgetLoaded(countersLogEvent);
 		chatCommandsPlugin.onGameTick(new GameTick());
 
