@@ -138,6 +138,7 @@ public class NpcUtil
 			case NpcID.ENT_7234:
 			case NpcID.HOPELESS_CREATURE:
 			case NpcID.HOPELESS_CREATURE_1073:
+			case NpcID.WALL_BEAST:
 				return false;
 			// These NPCs have no attack options, but are the dead and uninteractable form of otherwise attackable NPCs,
 			// thus should not be considered alive.

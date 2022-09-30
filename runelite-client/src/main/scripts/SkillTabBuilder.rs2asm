@@ -111,7 +111,7 @@ LABEL84:
    invoke                 1138
    iconst                 1
    if_icmpeq              LABEL96
-   jump                   LABEL278
+   jump                   LABEL306
 LABEL96:
    iload                  0
    invoke                 1936
@@ -119,7 +119,7 @@ LABEL96:
    iload                  7
    iconst                 -1
    if_icmpne              LABEL103
-   jump                   LABEL133
+   jump                   LABEL137
 LABEL103:
    iload                  7
    iconst                 10
@@ -128,11 +128,13 @@ LABEL103:
    iload                  7
    iload                  5
    if_icmpgt              LABEL111
-   jump                   LABEL133
+   jump                   LABEL137
 LABEL111:
    sload                  2
    sconst                 "|"
    sconst                 "<col=7c0808>"
+   sconst                 "<col=ef1020>"
+   invoke                 6850
    sconst                 "XP to regain:"
    sconst                 "</col>"
    join_string            4
@@ -141,6 +143,8 @@ LABEL111:
    sload                  3
    sconst                 "|"
    sconst                 "<col=7c0808>"
+   sconst                 "<col=ef1020>"
+   invoke                 6850
    iload                  7
    iload                  5
    sub                   
@@ -152,37 +156,39 @@ LABEL111:
    sstore                 3
    iconst                 1
    istore                 8
-LABEL133:
+LABEL137:
    iload                  8
    iconst                 0
-   if_icmpeq              LABEL137
-   jump                   LABEL278
-LABEL137:
+   if_icmpeq              LABEL141
+   jump                   LABEL306
+LABEL141:
    get_varp               1588
    iconst                 0
-   if_icmpgt              LABEL141
-   jump                   LABEL278
-LABEL141:
+   if_icmpgt              LABEL145
+   jump                   LABEL306
+LABEL145:
    iload                  0
    switch                
-      0: LABEL144
-      2: LABEL144
-      6: LABEL144
-      4: LABEL189
-      1: LABEL234
-   jump                   LABEL278
-LABEL144:
+      0: LABEL148
+      2: LABEL148
+      6: LABEL148
+      4: LABEL201
+      1: LABEL254
+   jump                   LABEL306
+LABEL148:
    iconst                 20
    invoke                 2031
    istore                 10
    iload                  10
    iconst                 0
-   if_icmpgt              LABEL151
-   jump                   LABEL170
-LABEL151:
+   if_icmpgt              LABEL155
+   jump                   LABEL178
+LABEL155:
    sload                  2
    sconst                 "|"
    sconst                 "<col=7c0808>"
+   sconst                 "<col=ef1020>"
+   invoke                 6850
    sconst                 "XP permitted:"
    sconst                 "</col>"
    join_string            4
@@ -191,6 +197,8 @@ LABEL151:
    sload                  3
    sconst                 "|"
    sconst                 "<col=7c0808>"
+   sconst                 "<col=ef1020>"
+   invoke                 6850
    iload                  10
    sload                  1
    invoke                 46
@@ -198,13 +206,15 @@ LABEL151:
    join_string            4
    append                
    sstore                 3
-   jump                   LABEL188
-LABEL170:
+   jump                   LABEL200
+LABEL178:
    iconst                 1
    istore                 9
    sload                  2
    sconst                 "|"
    sconst                 "<col=7c0808>"
+   sconst                 "<col=ef1020>"
+   invoke                 6850
    sconst                 "XP permitted:"
    sconst                 "</col>"
    join_string            4
@@ -213,25 +223,29 @@ LABEL170:
    sload                  3
    sconst                 "|"
    sconst                 "<col=7c0808>"
+   sconst                 "<col=ef1020>"
+   invoke                 6850
    sconst                 "NONE"
    sconst                 "</col>"
    join_string            4
    append                
    sstore                 3
-LABEL188:
-   jump                   LABEL278
-LABEL189:
+LABEL200:
+   jump                   LABEL306
+LABEL201:
    iconst                 30
    invoke                 2031
    istore                 10
    iload                  10
    iconst                 0
-   if_icmpgt              LABEL196
-   jump                   LABEL215
-LABEL196:
+   if_icmpgt              LABEL208
+   jump                   LABEL231
+LABEL208:
    sload                  2
    sconst                 "|"
    sconst                 "<col=7c0808>"
+   sconst                 "<col=ef1020>"
+   invoke                 6850
    sconst                 "XP permitted:"
    sconst                 "</col>"
    join_string            4
@@ -240,6 +254,8 @@ LABEL196:
    sload                  3
    sconst                 "|"
    sconst                 "<col=7c0808>"
+   sconst                 "<col=ef1020>"
+   invoke                 6850
    iload                  10
    sload                  1
    invoke                 46
@@ -247,13 +263,15 @@ LABEL196:
    join_string            4
    append                
    sstore                 3
-   jump                   LABEL233
-LABEL215:
+   jump                   LABEL253
+LABEL231:
    iconst                 1
    istore                 9
    sload                  2
    sconst                 "|"
    sconst                 "<col=7c0808>"
+   sconst                 "<col=ef1020>"
+   invoke                 6850
    sconst                 "XP permitted:"
    sconst                 "</col>"
    join_string            4
@@ -262,25 +280,29 @@ LABEL215:
    sload                  3
    sconst                 "|"
    sconst                 "<col=7c0808>"
+   sconst                 "<col=ef1020>"
+   invoke                 6850
    sconst                 "NONE"
    sconst                 "</col>"
    join_string            4
    append                
    sstore                 3
-LABEL233:
-   jump                   LABEL278
-LABEL234:
+LABEL253:
+   jump                   LABEL306
+LABEL254:
    iconst                 40
    invoke                 2031
    istore                 10
    iload                  10
    iconst                 0
-   if_icmpgt              LABEL241
-   jump                   LABEL260
-LABEL241:
+   if_icmpgt              LABEL261
+   jump                   LABEL284
+LABEL261:
    sload                  2
    sconst                 "|"
    sconst                 "<col=7c0808>"
+   sconst                 "<col=ef1020>"
+   invoke                 6850
    sconst                 "XP permitted:"
    sconst                 "</col>"
    join_string            4
@@ -289,6 +311,8 @@ LABEL241:
    sload                  3
    sconst                 "|"
    sconst                 "<col=7c0808>"
+   sconst                 "<col=ef1020>"
+   invoke                 6850
    iload                  10
    sload                  1
    invoke                 46
@@ -296,13 +320,15 @@ LABEL241:
    join_string            4
    append                
    sstore                 3
-   jump                   LABEL278
-LABEL260:
+   jump                   LABEL306
+LABEL284:
    iconst                 1
    istore                 9
    sload                  2
    sconst                 "|"
    sconst                 "<col=7c0808>"
+   sconst                 "<col=ef1020>"
+   invoke                 6850
    sconst                 "XP permitted:"
    sconst                 "</col>"
    join_string            4
@@ -311,33 +337,35 @@ LABEL260:
    sload                  3
    sconst                 "|"
    sconst                 "<col=7c0808>"
+   sconst                 "<col=ef1020>"
+   invoke                 6850
    sconst                 "NONE"
    sconst                 "</col>"
    join_string            4
    append                
    sstore                 3
-LABEL278:
+LABEL306:
    iload                  1
    iconst                 5
    cc_find                1
    iconst                 1
-   if_icmpeq              LABEL284
-   jump                   LABEL294
-LABEL284:
+   if_icmpeq              LABEL312
+   jump                   LABEL322
+LABEL312:
    iload                  9
    iconst                 1
-   if_icmpeq              LABEL288
-   jump                   LABEL291
-LABEL288:
+   if_icmpeq              LABEL316
+   jump                   LABEL319
+LABEL316:
    iconst                 0
    cc_sethide             1
-   jump                   LABEL293
-LABEL291:
+   jump                   LABEL321
+LABEL319:
    iconst                 1
    cc_sethide             1
-LABEL293:
-   jump                   LABEL321
-LABEL294:
+LABEL321:
+   jump                   LABEL349
+LABEL322:
    iload                  1
    iconst                 5
    iconst                 5
@@ -358,31 +386,31 @@ LABEL294:
    cc_setgraphicshadow    1
    iload                  9
    iconst                 1
-   if_icmpeq              LABEL316
-   jump                   LABEL319
-LABEL316:
+   if_icmpeq              LABEL344
+   jump                   LABEL347
+LABEL344:
    iconst                 0
    cc_sethide             1
-   jump                   LABEL321
-LABEL319:
+   jump                   LABEL349
+LABEL347:
    iconst                 1
    cc_sethide             1
-LABEL321:
+LABEL349:
    iload                  3
    iconst                 1
-   if_icmpeq              LABEL325
-   jump                   LABEL344
-LABEL325:
+   if_icmpeq              LABEL353
+   jump                   LABEL372
+LABEL353:
    map_members           
    iconst                 0
-   if_icmpeq              LABEL329
-   jump                   LABEL344
-LABEL329:
+   if_icmpeq              LABEL357
+   jump                   LABEL372
+LABEL357:
    get_varc_int           103
    iconst                 0
-   if_icmpeq              LABEL333
-   jump                   LABEL344
-LABEL333:
+   if_icmpeq              LABEL361
+   jump                   LABEL372
+LABEL361:
    sconst                 "<col=ff0000>"
    sload                  0
    sconst                 ":"
@@ -394,12 +422,12 @@ LABEL333:
    sconst                 "</col>"
    join_string            3
    sstore                 3
-LABEL344:
+LABEL372:
    invoke                 1972
    iconst                 1
-   if_icmpeq              LABEL348
-   jump                   LABEL375
-LABEL348:
+   if_icmpeq              LABEL376
+   jump                   LABEL403
+LABEL376:
    iconst                 2367
    iconst                 -2147483644
    iconst                 -2147483645
@@ -413,14 +441,14 @@ LABEL348:
    if_setonop            
    get_varc_int           218
    iload                  1
-   if_icmpeq              LABEL363
-   jump                   LABEL374
-LABEL363:
+   if_icmpeq              LABEL391
+   jump                   LABEL402
+LABEL391:
    get_varc_int           217
    iconst                 -1
-   if_icmpeq              LABEL367
-   jump                   LABEL374
-LABEL367:
+   if_icmpeq              LABEL395
+   jump                   LABEL402
+LABEL395:
    iload                  1
    iconst                 -1
    iload                  2
@@ -428,9 +456,9 @@ LABEL367:
    sload                  3
    iconst                 495
    invoke                 2344
-LABEL374:
-   jump                   LABEL390
-LABEL375:
+LABEL402:
+   jump                   LABEL418
+LABEL403:
    iconst                 992
    iconst                 -2147483645
    iconst                 -1
@@ -446,5 +474,5 @@ LABEL375:
    if_setonmouserepeat   
    iconst                 0
    set_varc_int           2
-LABEL390:
+LABEL418:
    return                

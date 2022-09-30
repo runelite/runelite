@@ -113,7 +113,7 @@ public class TimersPlugin extends Plugin
 	private static final String RESURRECT_THRALL_DISAPPEAR_MESSAGE_START = ">Your ";
 	private static final String RESURRECT_THRALL_DISAPPEAR_MESSAGE_END = " thrall returns to the grave.</col>";
 	private static final String WARD_OF_ARCEUUS_MESSAGE = ">Your defence against Arceuus magic has been strengthened.</col>";
-	private static final String PICKPOCKET_FAILURE_MESSAGE = "You fail to pick the ";
+	private static final String PICKPOCKET_FAILURE_MESSAGE = "You fail to pick ";
 	private static final String DODGY_NECKLACE_PROTECTION_MESSAGE = "Your dodgy necklace protects you.";
 	private static final String SHADOW_VEIL_PROTECTION_MESSAGE = "Your attempt to steal goes unnoticed.";
 	private static final String SILK_DRESSING_MESSAGE = "You quickly apply the dressing to your wounds.";

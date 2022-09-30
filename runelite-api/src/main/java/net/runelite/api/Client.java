@@ -1570,7 +1570,7 @@ public interface Client extends OAuthApi, GameEngine
 	 *
 	 * @return the hint arrow type
 	 */
-	HintArrowType getHintArrowType();
+	@MagicConstant(valuesFromClass = HintArrowType.class) int getHintArrowType();
 
 	/**
 	 * Clears the current hint arrow.
@@ -1583,6 +1583,13 @@ public interface Client extends OAuthApi, GameEngine
 	 * @param point the location
 	 */
 	void setHintArrow(WorldPoint point);
+
+	/**
+	 * Sets the hint arrow to the passsed point
+	 *
+	 * @param point
+	 */
+	void setHintArrow(LocalPoint point);
 
 	/**
 	 * Sets a hint arrow to point to the passed player.

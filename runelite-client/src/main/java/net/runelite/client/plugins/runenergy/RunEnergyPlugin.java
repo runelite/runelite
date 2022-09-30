@@ -27,9 +27,13 @@ package net.runelite.client.plugins.runenergy;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.EquipmentInventorySlot;
@@ -41,10 +45,16 @@ import net.runelite.api.ScriptID;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.chat.ChatColorType;
+import net.runelite.client.chat.ChatMessageBuilder;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
@@ -58,6 +68,7 @@ import org.apache.commons.lang3.StringUtils;
 	description = "Show various information related to run energy",
 	tags = {"overlay", "stamina"}
 )
+@Slf4j
 public class RunEnergyPlugin extends Plugin
 {
 	// TODO It would be nice if we have the IDs for just the equipped variants of the Graceful set items.
@@ -125,6 +136,11 @@ public class RunEnergyPlugin extends Plugin
 
 	// Full set grants an extra 10% boost to recovery rate
 	private static final int GRACEFUL_FULL_SET_BOOST_BONUS = 10;
+	// number of charges for roe passive effect
+	private static final int RING_OF_ENDURANCE_PASSIVE_EFFECT = 500;
+
+	@Inject
+	private ChatMessageManager chatMessageManager;
 
 	@Inject
 	private Client client;
@@ -138,6 +154,11 @@ public class RunEnergyPlugin extends Plugin
 	@Inject
 	private RunEnergyConfig energyConfig;
 
+	@Inject
+	private ConfigManager configManager;
+
+	private int lastCheckTick;
+	private boolean roeWarningSent;
 	private boolean localPlayerRunningToDestination;
 	private WorldPoint prevLocalPlayerLocation;
 
@@ -159,7 +180,25 @@ public class RunEnergyPlugin extends Plugin
 		overlayManager.remove(energyOverlay);
 		localPlayerRunningToDestination = false;
 		prevLocalPlayerLocation = null;
+		lastCheckTick = -1;
+		roeWarningSent = false;
 		resetRunOrbText();
+	}
+
+	Integer getRingOfEnduranceCharges()
+	{
+		return configManager.getRSProfileConfiguration(RunEnergyConfig.GROUP_NAME, "ringOfEnduranceCharges", Integer.class);
+	}
+
+	void setRingOfEnduranceCharges(int charges)
+	{
+		configManager.setRSProfileConfiguration(RunEnergyConfig.GROUP_NAME, "ringOfEnduranceCharges", charges);
+	}
+
+	boolean isRingOfEnduranceEquipped()
+	{
+		final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
+		return equipment != null && equipment.count(RING_OF_ENDURANCE) == 1;
 	}
 
 	@Subscribe
@@ -185,9 +224,80 @@ public class RunEnergyPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getGroup().equals("runenergy") && !energyConfig.replaceOrbText())
+		if (event.getGroup().equals(RunEnergyConfig.GROUP_NAME) && !energyConfig.replaceOrbText())
 		{
 			resetRunOrbText();
+		}
+	}
+
+	@Subscribe
+	public void onChatMessage(ChatMessage event)
+	{
+		if (event.getType() != ChatMessageType.GAMEMESSAGE && event.getType() != ChatMessageType.SPAM)
+		{
+			return;
+		}
+
+		String message = event.getMessage();
+
+		if (message.equals("Your Ring of endurance doubles the duration of your stamina potion's effect."))
+		{
+			Integer charges = getRingOfEnduranceCharges();
+			if (charges == null)
+			{
+				log.debug("Ring of endurance charge with no known charges");
+				return;
+			}
+
+			// subtract the used charge
+			charges--;
+			setRingOfEnduranceCharges(charges);
+
+			if (!roeWarningSent && charges < RING_OF_ENDURANCE_PASSIVE_EFFECT && energyConfig.ringOfEnduranceChargeMessage())
+			{
+				String chatMessage = new ChatMessageBuilder()
+					.append(ChatColorType.HIGHLIGHT)
+					.append("Your Ring of endurance now has less than " + RING_OF_ENDURANCE_PASSIVE_EFFECT + " charges. Add more charges to regain its passive stamina effect.")
+					.build();
+
+				chatMessageManager.queue(QueuedMessage.builder()
+					.type(ChatMessageType.CONSOLE)
+					.runeLiteFormattedMessage(chatMessage)
+					.build());
+
+				roeWarningSent = true;
+			}
+		}
+		else if (message.startsWith("Your Ring of endurance is charged with") || message.startsWith("You load your Ring of endurance with"))
+		{
+			Matcher matcher = Pattern.compile("([0-9]+)").matcher(message);
+			int charges = -1;
+			while (matcher.find())
+			{
+				charges = Integer.parseInt(matcher.group(1));
+			}
+
+			setRingOfEnduranceCharges(charges);
+			if (charges >= RING_OF_ENDURANCE_PASSIVE_EFFECT)
+			{
+				roeWarningSent = false;
+			}
+		}
+	}
+
+	@Subscribe
+	public void onScriptCallbackEvent(ScriptCallbackEvent event)
+	{
+		// ROE uncharge uses the same script as destroy
+		if (!"destroyOnOpKey".equals(event.getEventName()))
+		{
+			return;
+		}
+
+		final int yesOption = client.getIntStack()[client.getIntStackSize() - 1];
+		if (yesOption == 1)
+		{
+			checkDestroyWidget();
 		}
 	}
 
@@ -218,6 +328,19 @@ public class RunEnergyPlugin extends Plugin
 		if (client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE) != 0)
 		{
 			energyUnitsLost *= 0.3; // Stamina effect reduces energy depletion to 30%
+		}
+		else if (isRingOfEnduranceEquipped()) // Ring of Endurance passive effect does not stack with stamina potion
+		{
+			Integer charges = getRingOfEnduranceCharges();
+			if (charges == null)
+			{
+				return "?";
+			}
+
+			if (charges >= RING_OF_ENDURANCE_PASSIVE_EFFECT)
+			{
+				energyUnitsLost *= 0.85; // Ring of Endurance passive effect reduces energy depletion to 85%
+			}
 		}
 
 		// Math.ceil is correct here - only need 1 energy unit to run
@@ -287,5 +410,26 @@ public class RunEnergyPlugin extends Plugin
 		// Calculate the number of seconds left
 		final double secondsLeft = (100 - client.getEnergy()) / recoverRate;
 		return (int) secondsLeft;
+	}
+
+	private void checkDestroyWidget()
+	{
+		final int currentTick = client.getTickCount();
+		if (lastCheckTick == currentTick)
+		{
+			return;
+		}
+		lastCheckTick = currentTick;
+
+		final Widget widgetDestroyItemName = client.getWidget(WidgetInfo.DESTROY_ITEM_NAME);
+		if (widgetDestroyItemName == null)
+		{
+			return;
+		}
+
+		if (widgetDestroyItemName.getText().equals("Ring of endurance"))
+		{
+			setRingOfEnduranceCharges(0);
+		}
 	}
 }
