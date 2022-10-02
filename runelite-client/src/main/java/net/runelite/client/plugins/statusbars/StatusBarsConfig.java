@@ -24,12 +24,10 @@
  */
 package net.runelite.client.plugins.statusbars;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.Range;
-import net.runelite.client.config.Units;
+import net.runelite.client.config.*;
 import net.runelite.client.plugins.statusbars.config.BarMode;
+
+import java.util.Locale;
 
 @ConfigGroup(StatusBarsConfig.GROUP)
 public interface StatusBarsConfig extends Config
@@ -86,17 +84,6 @@ public interface StatusBarsConfig extends Config
 		return BarMode.PRAYER;
 	}
 
-	@ConfigItem(
-		keyName = "hideAfterCombatDelay",
-		name = "Hide after combat delay",
-		description = "Amount of ticks before hiding status bars after no longer in combat. 0 = always show status bars."
-	)
-	@Units(Units.TICKS)
-	default int hideAfterCombatDelay()
-	{
-		return 0;
-	}
-
 	@Range(
 		min = BarRenderer.MIN_WIDTH,
 		max = BarRenderer.MAX_WIDTH
@@ -110,4 +97,38 @@ public interface StatusBarsConfig extends Config
 	{
 		return BarRenderer.DEFAULT_WIDTH;
 	}
+
+	@ConfigSection(
+			name = "Visibility",
+			description = "Config related to hiding or showing the status bars",
+			position = 99
+	)
+	String visibilitySection = "visibilitySection";
+
+	@ConfigItem(
+			keyName = "alwaysVisible",
+			name = "Always Visible",
+			description = "Keeps the status bars always visible when toggled.",
+			section = "visibilitySection"
+	)
+	default boolean alwaysVisible(){ return true; }
+
+	@ConfigItem(
+			keyName = "combatDelay",
+			name = "Hide after combat delay",
+			description = "Amount of ticks before hiding status bars after no longer in combat.",
+			section = "visibilitySection"
+	)
+	@Units(Units.TICKS)
+	default int combatDelay(){ return 0; }
+
+	@ConfigItem(
+			keyName = "hitDelay",
+			name = "Hide after hit delay",
+			description = "Amount of ticks before hiding status bars after being hit.",
+			section = "visibilitySection"
+	)
+	@Units(Units.TICKS)
+	default int hitDelay(){ return 0; }
 }
+
