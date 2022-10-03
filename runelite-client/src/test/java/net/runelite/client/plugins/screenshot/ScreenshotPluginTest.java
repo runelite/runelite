@@ -542,7 +542,7 @@ public class ScreenshotPluginTest
 		when(client.getVarbitValue(Varbits.COMBAT_ACHIEVEMENTS_POPUP)).thenReturn(1);
 
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "",
-				"Congratulations, you've completed an easy combat task: <col=06600c>Handyman</col>.", null, 0);
+			"Congratulations, you've completed an easy combat task: <col=06600c>Handyman</col>.", null, 0);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
 		verify(screenshotPlugin).takeScreenshot("Combat task (Handyman)", "Combat Achievements");
