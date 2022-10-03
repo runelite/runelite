@@ -26,7 +26,9 @@ package net.runelite.client.plugins.barrows;
 
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Provides;
+import java.awt.Color;
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
 import javax.inject.Inject;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
@@ -37,6 +39,7 @@ import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.Player;
 import net.runelite.api.SpriteID;
+import net.runelite.api.ItemComposition;
 import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.WidgetClosed;
@@ -44,7 +47,6 @@ import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
@@ -185,22 +187,49 @@ public class BarrowsPlugin extends Plugin
 
 			Item[] items = barrowsRewardContainer.getItems();
 			long chestPrice = 0;
+			ChatMessageBuilder message = new ChatMessageBuilder()
+				.append("Your chest containing");
 
+			Arrays.sort(items, (firstItem, secondItem) -> Integer.compare(itemManager.getItemPrice(secondItem.getId()) * secondItem.getQuantity(), itemManager.getItemPrice(firstItem.getId()) * firstItem.getQuantity()));
 			for (Item item : items)
 			{
 				long itemStack = (long) itemManager.getItemPrice(item.getId()) * (long) item.getQuantity();
+				ItemComposition itemComposition = itemManager.getItemComposition(item.getId());
 				chestPrice += itemStack;
+				if (items.length > 1)
+				{
+					if (items[items.length - 1] == item)
+					{
+						if (items.length == 2)
+						{
+							message.append(" and");
+						}
+						else
+						{
+							message.append(", and");
+						}
+					}
+					else if (item != items[0])
+					{
+						message.append(",");
+					}
+				}
+
+				String itemQuantity = "";
+				if (item.getQuantity() > 1)
+				{
+					itemQuantity += QuantityFormatter.formatNumber(item.getQuantity()) + " x ";
+				}
+
+				message.append(Color.decode("#0000ff")," " + itemQuantity + itemComposition.getName());
 			}
 
-			final ChatMessageBuilder message = new ChatMessageBuilder()
-				.append(ChatColorType.HIGHLIGHT)
-				.append("Your chest is worth around ")
-				.append(QuantityFormatter.formatNumber(chestPrice))
-				.append(" coins.")
-				.append(ChatColorType.NORMAL);
+			message.append( " is worth around ")
+				.append(Color.decode("#0000ff"),QuantityFormatter.formatNumber(chestPrice))
+				.append(" coins.");
 
 			chatMessageManager.queue(QueuedMessage.builder()
-				.type(ChatMessageType.ITEM_EXAMINE)
+				.type(ChatMessageType.GAMEMESSAGE)
 				.runeLiteFormattedMessage(message.build())
 				.build());
 		}
