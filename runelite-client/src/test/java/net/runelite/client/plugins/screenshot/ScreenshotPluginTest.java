@@ -78,6 +78,10 @@ public class ScreenshotPluginTest
 	private static final String THREATRE_OF_BLOOD_HM_CHEST = "Your completed Theatre of Blood: Hard Mode count is: <col=ff0000>73</col>.";
 	private static final String NOT_SO_VALUABLE_DROP = "<col=ef1020>Valuable drop: 6 x Bronze arrow (42 coins)</col>";
 	private static final String VALUABLE_DROP = "<col=ef1020>Valuable drop: Rune scimitar (25,600 coins)</col>";
+	private static final String VALUABLE_DROP_BARROWS_ONE_ITEM = "Your chest containing<col=0000ff> 250 x Coins</col> is worth around <col=0000ff>250</col> coins.";
+	private static final String VALUABLE_DROP_BARROWS_TWO_ITEMS = "Your chest containing<col=0000ff> 207 x Chaos rune</col> and<col=0000ff> 1,930 x Coins</col> is worth around <col=0000ff>19,111</col> coins.";
+	private static final String VALUABLE_DROP_BARROWS_THREE_OR_MORE_ITEMS = "Your chest containing<col=0000ff> Verac's helm</col>,<col=0000ff> 218 x Death rune</col>," +
+			"<col=0000ff> 187 x Chaos rune</col>,<col=0000ff> 448 x Mind rune</col>, and<col=0000ff> 550 x Coins</col> is worth around <col=0000ff>192,129</col> coins.";
 	private static final String UNTRADEABLE_DROP = "<col=ef1020>Untradeable drop: Rusty sword";
 	private static final String BA_HIGH_GAMBLE_REWARD = "Raw shark (x 300)!<br>High level gamble count: <col=7f0000>100</col>";
 	private static final String HUNTER_LEVEL_2_TEXT = "<col=000080>Congratulations, you've just advanced a Hunter level.<col=000000><br><br>Your Hunter level is now 2.";
@@ -248,6 +252,51 @@ public class ScreenshotPluginTest
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
 		verify(screenshotPlugin).takeScreenshot("Valuable drop Rune scimitar (25,600 coins)", "Valuable Drops");
+	}
+
+	@Test
+	public void testValuableDropBarrowsOneItem()
+	{
+		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", VALUABLE_DROP_BARROWS_ONE_ITEM, null, 0);
+		when(screenshotConfig.valuableDropThreshold()).thenReturn(1_000_000);
+		screenshotPlugin.onChatMessage(chatMessageEvent);
+
+		verify(screenshotPlugin, never()).takeScreenshot(anyString(), anyString());
+
+		when(screenshotConfig.valuableDropThreshold()).thenReturn(100);
+		screenshotPlugin.onChatMessage(chatMessageEvent);
+
+		verify(screenshotPlugin).takeScreenshot("Valuable drop 250 x Coins (250 coins)", "Valuable Drops");
+	}
+
+	@Test
+	public void testValuableDropBarrowsTwoItems()
+	{
+		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", VALUABLE_DROP_BARROWS_TWO_ITEMS, null, 0);
+		when(screenshotConfig.valuableDropThreshold()).thenReturn(50_000);
+		screenshotPlugin.onChatMessage(chatMessageEvent);
+
+		verify(screenshotPlugin, never()).takeScreenshot(anyString(), anyString());
+
+		when(screenshotConfig.valuableDropThreshold()).thenReturn(10_000);
+		screenshotPlugin.onChatMessage(chatMessageEvent);
+
+		verify(screenshotPlugin).takeScreenshot("Valuable drop 207 x Chaos rune, 1,930 x Coins (19,111 coins)", "Valuable Drops");
+	}
+
+	@Test
+	public void testValuableDropBarrowsThreeOrMoreItems()
+	{
+		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", VALUABLE_DROP_BARROWS_THREE_OR_MORE_ITEMS, null, 0);
+		when(screenshotConfig.valuableDropThreshold()).thenReturn(200_000);
+		screenshotPlugin.onChatMessage(chatMessageEvent);
+
+		verify(screenshotPlugin, never()).takeScreenshot(anyString(), anyString());
+
+		when(screenshotConfig.valuableDropThreshold()).thenReturn(100_000);
+		screenshotPlugin.onChatMessage(chatMessageEvent);
+
+		verify(screenshotPlugin).takeScreenshot("Valuable drop Verac's helm, 218 x Death rune, 187 x Chaos rune, 448 x Mind rune, 550 x Coins (192,129 coins)", "Valuable Drops");
 	}
 
 	@Test
@@ -493,7 +542,7 @@ public class ScreenshotPluginTest
 		when(client.getVarbitValue(Varbits.COMBAT_ACHIEVEMENTS_POPUP)).thenReturn(1);
 
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "",
-			"Congratulations, you've completed an easy combat task: <col=06600c>Handyman</col>.", null, 0);
+				"Congratulations, you've completed an easy combat task: <col=06600c>Handyman</col>.", null, 0);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
 		verify(screenshotPlugin).takeScreenshot("Combat task (Handyman)", "Combat Achievements");
