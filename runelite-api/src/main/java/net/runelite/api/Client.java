@@ -2037,4 +2037,28 @@ public interface Client extends OAuthApi, GameEngine
 	 * @return client ticks
 	 */
 	int getIdleTimeout();
+
+	/**
+	 * Get whether minimap zoom is enabled
+	 * @return
+	 */
+	boolean isMinimapZoom();
+
+	/**
+	 * Set whether minimap zoom is enabled
+	 * @param minimapZoom
+	 */
+	void setMinimapZoom(boolean minimapZoom);
+
+	/**
+	 * Gets the number of pixels per tile on the minimap. The default is 4.
+	 * @return
+	 */
+	double getMinimapZoom();
+
+	/**
+	 * Set the number of pixels per tile on the minimap. The default is 4.
+	 * @param zoom
+	 */
+	void setMinimapZoom(double zoom);
 }
