@@ -63,4 +63,15 @@ public interface XpUpdaterConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		position = 4,
+		keyName = "worldhop",
+		name = "On world hop",
+		description = "Automatically updates your stats on selected websites when you world hop"
+	)
+	default boolean worldhop()
+	{
+		return false;
+	}
 }

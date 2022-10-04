@@ -119,6 +119,23 @@ public class XpUpdaterPlugin extends Plugin
 				lastXp = totalXp;
 			}
 		}
+		else if (config.worldhop() && state == GameState.HOPPING)
+		{
+			Player local = client.getLocalPlayer();
+			if (local == null)
+			{
+				return;
+			}
+
+			long totalXp = client.getOverallExperience();
+			// Don't submit update unless xp threshold is reached
+			if (Math.abs(totalXp - lastXp) > XP_THRESHOLD)
+			{
+				log.debug("Submitting update for {} accountHash {}", local.getName(), lastAccount);
+				update(lastAccount, local.getName());
+				lastXp = totalXp;
+			}
+		}
 	}
 
 	@Subscribe
