@@ -115,7 +115,7 @@ public class HiscorePanel extends PluginPanel
 	);
 
 	private static final HiscoreEndpoint[] ENDPOINTS = {
-		HiscoreEndpoint.NORMAL, HiscoreEndpoint.IRONMAN, HiscoreEndpoint.HARDCORE_IRONMAN, HiscoreEndpoint.ULTIMATE_IRONMAN, HiscoreEndpoint.DEADMAN, HiscoreEndpoint.LEAGUE
+		HiscoreEndpoint.NORMAL, HiscoreEndpoint.IRONMAN, HiscoreEndpoint.HARDCORE_IRONMAN, HiscoreEndpoint.ULTIMATE_IRONMAN, HiscoreEndpoint.DEADMAN, HiscoreEndpoint.FRESH_START_WORLD
 	};
 
 	private final HiscorePlugin plugin;

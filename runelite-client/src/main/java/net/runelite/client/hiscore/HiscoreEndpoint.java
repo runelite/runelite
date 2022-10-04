@@ -39,7 +39,8 @@ public enum HiscoreEndpoint
 	ULTIMATE_IRONMAN("Ultimate Ironman", "https://services.runescape.com/m=hiscore_oldschool_ultimate/index_lite.ws"),
 	DEADMAN("Deadman", "https://services.runescape.com/m=hiscore_oldschool_deadman/index_lite.ws"),
 	LEAGUE("Leagues", "https://services.runescape.com/m=hiscore_oldschool_seasonal/index_lite.ws"),
-	TOURNAMENT("Tournament", "https://services.runescape.com/m=hiscore_oldschool_tournament/index_lite.ws");
+	TOURNAMENT("Tournament", "https://services.runescape.com/m=hiscore_oldschool_tournament/index_lite.ws"),
+	FRESH_START_WORLD("Fresh Start", "https://secure.runescape.com/m=hiscore_oldschool_fresh_start/index_lite.ws");
 
 	private final String name;
 	private final HttpUrl hiscoreURL;
@@ -60,6 +61,10 @@ public enum HiscoreEndpoint
 		else if (worldTypes.contains(WorldType.DEADMAN))
 		{
 			return HiscoreEndpoint.DEADMAN;
+		}
+		else if (worldTypes.contains(WorldType.FRESH_START_WORLD))
+		{
+			return HiscoreEndpoint.FRESH_START_WORLD;
 		}
 		else
 		{
