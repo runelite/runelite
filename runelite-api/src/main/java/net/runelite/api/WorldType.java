@@ -75,6 +75,10 @@ public enum WorldType
 	 */
 	TOURNAMENT_WORLD(1 << 26),
 	/**
+	 * Fresh start world type
+	 */
+	FRESH_START_WORLD(1 << 27),
+	/**
 	 * Deadman world type.
 	 */
 	DEADMAN(1 << 29),
