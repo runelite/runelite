@@ -32,10 +32,12 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import net.runelite.client.config.ConfigManager;
 
 @Singleton
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class ColorPickerManager
 {
 	private final ConfigManager configManager;
@@ -43,12 +45,6 @@ public class ColorPickerManager
 	@Setter(AccessLevel.PACKAGE)
 	@Getter(AccessLevel.PACKAGE)
 	private RuneliteColorPicker currentPicker;
-
-	@Inject
-	private ColorPickerManager(final ConfigManager configManager)
-	{
-		this.configManager = configManager;
-	}
 
 	public RuneliteColorPicker create(Window owner, Color previousColor, String title, boolean alphaHidden)
 	{
@@ -58,6 +54,11 @@ public class ColorPickerManager
 		}
 
 		currentPicker = new RuneliteColorPicker(owner, previousColor, title, alphaHidden, configManager, this);
+		if (currentPicker.isAlwaysOnTopSupported() && owner != null)
+		{
+			currentPicker.setAlwaysOnTop(owner.isAlwaysOnTop());
+		}
+
 		return currentPicker;
 	}
 }

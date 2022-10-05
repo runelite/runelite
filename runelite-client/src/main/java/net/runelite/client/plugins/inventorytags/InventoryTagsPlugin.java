@@ -26,6 +26,7 @@ package net.runelite.client.plugins.inventorytags;
 
 import com.google.gson.Gson;
 import com.google.inject.Provides;
+import java.applet.Applet;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
@@ -208,7 +209,8 @@ public class InventoryTagsPlugin extends Plugin
 						Color color = tag == null ? Color.WHITE : tag.color;
 						SwingUtilities.invokeLater(() ->
 						{
-							RuneliteColorPicker colorPicker = colorPickerManager.create(null, color, "Inventory Tag", true);
+							RuneliteColorPicker colorPicker = colorPickerManager.create(SwingUtilities.windowForComponent((Applet) client),
+								color, "Inventory Tag", true);
 							colorPicker.setOnClose(c ->
 							{
 								Tag t = new Tag();
