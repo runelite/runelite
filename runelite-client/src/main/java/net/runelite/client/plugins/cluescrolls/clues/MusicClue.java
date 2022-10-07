@@ -45,7 +45,7 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 @Getter
 public class MusicClue extends ClueScroll implements NpcClueScroll, LocationClueScroll
 {
-	private final WorldPoint location = new WorldPoint(2990, 3384, 0);
+	private static final WorldPoint LOCATION = new WorldPoint(2990, 3384, 0);
 	private static final String CECILIA = "Cecilia";
 	private static final Pattern SONG_PATTERN = Pattern.compile("<col=ffffff>([A-Za-z !&',.]+)</col>");
 
@@ -77,7 +77,7 @@ public class MusicClue extends ClueScroll implements NpcClueScroll, LocationClue
 	@Override
 	public void makeWorldOverlayHint(Graphics2D graphics, ClueScrollPlugin plugin)
 	{
-		if (!location.isInScene(plugin.getClient()))
+		if (!LOCATION.isInScene(plugin.getClient()))
 		{
 			return;
 		}
@@ -104,4 +104,7 @@ public class MusicClue extends ClueScroll implements NpcClueScroll, LocationClue
 		}
 		return null;
 	}
+
+	@Override
+	public WorldPoint getLocation() { return LOCATION; }
 }
