@@ -110,6 +110,7 @@
 								<exclude>net/runelite/api/HintArrowType.class</exclude>
 								<exclude>net/runelite/api/HitsplatID.class</exclude>
 								<exclude>net/runelite/api/ItemID.class</exclude>
+								<exclude>net/runelite/api/KeyCode.class</exclude>
 								<exclude>net/runelite/api/NpcID.class</exclude>
 								<exclude>net/runelite/api/NullItemID.class</exclude>
 								<exclude>net/runelite/api/NullNpcID.class</exclude>
