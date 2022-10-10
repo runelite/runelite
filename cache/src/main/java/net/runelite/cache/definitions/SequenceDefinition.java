@@ -24,6 +24,7 @@
  */
 package net.runelite.cache.definitions;
 
+import java.util.Map;
 import lombok.Data;
 
 @Data
@@ -44,4 +45,9 @@ public class SequenceDefinition
 	public int precedenceAnimating = -1;
 	public int priority = -1;
 	public int replyMode = 2;
+	public int animMayaID = -1;
+	public Map<Integer, Integer> animMayaFrameSounds;
+	public int animMayaStart;
+	public int animMayaEnd;
+	public boolean[] animMayaMasks;
 }
