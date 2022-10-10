@@ -114,6 +114,10 @@ public class Hooks implements Callbacks
 	private static MainBufferProvider lastMainBufferProvider;
 	private static Graphics2D lastGraphics;
 
+	private long nextError;
+	private boolean rateLimitedError;
+	private int errorBackoff = 1;
+
 	@FunctionalInterface
 	public interface RenderableDrawListener
 	{
@@ -594,11 +598,33 @@ public class Hooks implements Callbacks
 	@Override
 	public void error(String message, Throwable reason)
 	{
-		if (telemetryClient != null)
+		if (telemetryClient == null)
+		{
+			return;
+		}
+
+		long now = System.currentTimeMillis();
+		if (now > nextError)
 		{
 			telemetryClient.submitError(
 				"client error",
 				message + " - " + reason);
+
+			if (rateLimitedError)
+			{
+				errorBackoff++;
+				rateLimitedError = false;
+			}
+			else
+			{
+				errorBackoff = 1;
+			}
+
+			nextError = now + (10_000L * errorBackoff);
+		}
+		else
+		{
+			rateLimitedError = true;
 		}
 	}
 }
