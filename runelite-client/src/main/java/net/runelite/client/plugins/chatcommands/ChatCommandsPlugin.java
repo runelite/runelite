@@ -2384,6 +2384,11 @@ public class ChatCommandsPlugin extends Plugin
 			case "rifts closed":
 				return "Guardians of the Rift";
 
+			// Tempoross
+			case "fishingtodt":
+			case "fishtodt":
+				return "Tempoross";
+
 			default:
 				return WordUtils.capitalize(boss);
 		}
