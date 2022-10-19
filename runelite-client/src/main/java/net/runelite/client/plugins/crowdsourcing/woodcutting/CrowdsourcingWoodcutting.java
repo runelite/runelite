@@ -276,7 +276,7 @@ public class CrowdsourcingWoodcutting
 			state = SkillingState.CLICKED;
 			lastExperimentEnd = client.getTickCount();
 			treeId = id;
-			treeLocation = WorldPoint.fromScene(client, menuOptionClicked.getActionParam(), menuOptionClicked.getWidgetId(), client.getPlane());
+			treeLocation = WorldPoint.fromScene(client, menuOptionClicked.getParam0(), menuOptionClicked.getParam1(), client.getPlane());
 		}
 		else
 		{

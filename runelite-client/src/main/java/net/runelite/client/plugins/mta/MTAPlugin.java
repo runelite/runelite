@@ -41,7 +41,8 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @PluginDescriptor(
 	name = "Mage Training Arena",
 	description = "Show helpful information for the Mage Training Arena minigame",
-	tags = {"mta", "magic", "minigame", "overlay"}
+	tags = {"mta", "magic", "minigame", "overlay"},
+	enabledByDefault = false
 )
 public class MTAPlugin extends Plugin
 {
@@ -62,7 +63,7 @@ public class MTAPlugin extends Plugin
 	@Inject
 	private MTASceneOverlay sceneOverlay;
 	@Inject
-	private MTAInventoryOverlay inventoryOverlay;
+	private MTAItemOverlay itemOverlay;
 
 	@Getter(AccessLevel.PROTECTED)
 	private MTARoom[] rooms;
@@ -77,7 +78,7 @@ public class MTAPlugin extends Plugin
 	public void startUp()
 	{
 		overlayManager.add(sceneOverlay);
-		overlayManager.add(inventoryOverlay);
+		overlayManager.add(itemOverlay);
 
 		this.rooms = new MTARoom[]{alchemyRoom, graveyardRoom, telekineticRoom, enchantmentRoom};
 
@@ -91,7 +92,7 @@ public class MTAPlugin extends Plugin
 	public void shutDown()
 	{
 		overlayManager.remove(sceneOverlay);
-		overlayManager.remove(inventoryOverlay);
+		overlayManager.remove(itemOverlay);
 
 		for (MTARoom room : rooms)
 		{

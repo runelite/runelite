@@ -9,12 +9,12 @@
    iconst                 0                      ; load active boolean
    sconst                 "getSearchingTagTab"   ; push event name
    runelite_callback     ; invoke callback
-   if_icmpne              LABEL2
+   if_icmpne              RELAYOUT
 
 ; Let layout continue if current bank tab is 0
    get_varbit             4150
    iconst                 0
-   if_icmpeq              LABEL2
+   if_icmpeq              RELAYOUT
 
 ; Reset the current bank tab to 0 otherwise
    iconst                 0
@@ -24,7 +24,7 @@
    sconst                 "debug"
    runelite_callback     
 
-LABEL2:
+RELAYOUT:
    iload                  0
    iload                  1
    iload                  2

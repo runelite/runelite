@@ -48,11 +48,9 @@ import static net.runelite.api.ObjectID.ROCK_30522;
 import net.runelite.api.TileObject;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.GameObjectChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.GroundObjectChanged;
 import net.runelite.api.events.GroundObjectDespawned;
 import net.runelite.api.events.GroundObjectSpawned;
 import net.runelite.api.events.MenuOptionClicked;
@@ -199,7 +197,7 @@ public class HerbiboarPlugin extends Plugin
 		{
 			for (TrailToSpot trail : spot.getTrails())
 			{
-				int value = client.getVar(trail.getVarbit());
+				int value = client.getVarbitValue(trail.getVarbitId());
 
 				if (value == trail.getValue())
 				{
@@ -222,11 +220,11 @@ public class HerbiboarPlugin extends Plugin
 			}
 		}
 
-		finishId = client.getVar(Varbits.HB_FINISH);
+		finishId = client.getVarbitValue(Varbits.HB_FINISH);
 
 		// The started varbit doesn't get set until the first spot of the rotation has been searched
 		// so we need to use the current group as an indicator of the rotation being started
-		started = client.getVar(Varbits.HB_STARTED) > 0 || currentGroup != null;
+		started = client.getVarbitValue(Varbits.HB_STARTED) > 0 || currentGroup != null;
 		boolean finished = !pathActive && started;
 
 		if (!wasStarted && started)
@@ -255,7 +253,7 @@ public class HerbiboarPlugin extends Plugin
 			case "Rock":
 			case "Mushroom":
 			case "Driftwood":
-				startPoint = WorldPoint.fromScene(client, menuOpt.getActionParam(), menuOpt.getWidgetId(), client.getPlane());
+				startPoint = WorldPoint.fromScene(client, menuOpt.getParam0(), menuOpt.getParam1(), client.getPlane());
 		}
 	}
 
@@ -312,12 +310,6 @@ public class HerbiboarPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameObjectChanged(GameObjectChanged event)
-	{
-		onTileObject(event.getPrevious(), event.getGameObject());
-	}
-
-	@Subscribe
 	public void onGameObjectDespawned(GameObjectDespawned event)
 	{
 		onTileObject(event.getGameObject(), null);
@@ -327,12 +319,6 @@ public class HerbiboarPlugin extends Plugin
 	public void onGroundObjectSpawned(GroundObjectSpawned event)
 	{
 		onTileObject(null, event.getGroundObject());
-	}
-
-	@Subscribe
-	public void onGroundObjectChanged(GroundObjectChanged event)
-	{
-		onTileObject(event.getPrevious(), event.getGroundObject());
 	}
 
 	@Subscribe

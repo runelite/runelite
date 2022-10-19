@@ -100,7 +100,7 @@ public enum AgilityShortcut
 	COAL_TRUCKS_LOG_BALANCE(20, "Log Balance", new WorldPoint(2598, 3475, 0), LOG_BALANCE_23274),
 	GRAND_EXCHANGE_UNDERWALL_TUNNEL(21, "Underwall Tunnel", new WorldPoint(3139, 3515, 0), UNDERWALL_TUNNEL_16529, UNDERWALL_TUNNEL_16530),
 	BRIMHAVEN_DUNGEON_PIPE(22, "Pipe Squeeze", new WorldPoint(2654, 9569, 0), PIPE_21728),
-	OBSERVATORY_SCALE_CLIFF(23, "Grapple Rocks", new WorldPoint(2447, 3155, 0), NULL_31849),
+	OBSERVATORY_SCALE_CLIFF(23, "Grapple Rocks", new WorldPoint(2447, 3155, 0), NULL_31849, NULL_31852),
 	EAGLES_PEAK_ROCK_CLIMB(25, "Rock Climb", new WorldPoint(2320, 3499, 0), ROCKS_19849),
 	FALADOR_UNDERWALL_TUNNEL(26, "Underwall Tunnel", new WorldPoint(2947, 3313, 0), UNDERWALL_TUNNEL, UNDERWALL_TUNNEL_16528),
 	KOUREND_CATACOMBS_PILLAR_JUMP_NORTH(28, "Pillar Jump", new WorldPoint(1613, 10071, 0)),
@@ -168,7 +168,10 @@ public enum AgilityShortcut
 	SLAYER_TOWER_MEDIUM_CHAIN_SECOND(61, "Spiked Chain (Floor 2)", new WorldPoint(3420, 3551, 0), SPIKEY_CHAIN_16538),
 	SLAYER_DUNGEON_CREVICE(62, "Narrow Crevice", new WorldPoint(2729, 10008, 0), CREVICE_16539),
 	MOUNT_KARUULM_UPPER(62, "Rocks", new WorldPoint(1322, 3791, 0), ROCKS_34396),
+	NECROPOLIS_STEPPING_STONE_NORTH(62, "Stepping Stone", new WorldPoint(3293, 2706, 0), STEPPING_STONE_43990),
+	NECROPOLIS_STEPPING_STONES_SOUTH(62, "Stepping Stones", new WorldPoint(3291, 2700, 0), STEPPING_STONE_43989),
 	TAVERLEY_DUNGEON_RAILING(63, "Loose Railing", new WorldPoint(2935, 9811, 0), LOOSE_RAILING_28849),
+	DARKMEYER_WALL(63, "Wall (Long rope)", new WorldPoint(3669, 3375, 0), NULL_39541, NULL_39542),
 	TROLLHEIM_WILDERNESS_ROCKS_EAST(64, "Rocks", new WorldPoint(2945, 3678, 0), ROCKS_16545),
 	TROLLHEIM_WILDERNESS_ROCKS_WEST(64, "Rocks", new WorldPoint(2917, 3672, 0), ROCKS_16545),
 	FOSSIL_ISLAND_VOLCANO(64, "Rope", new WorldPoint(3780, 3822, 0), ROPE_ANCHOR, ROPE_ANCHOR_30917),
@@ -188,13 +191,13 @@ public enum AgilityShortcut
 	TAVERLEY_DUNGEON_ROCKS_SOUTH(70, "Rocks", new WorldPoint(2887, 9631, 0), ROCKS, ROCKS_14106),
 	FOSSIL_ISLAND_HARDWOOD_NORTH(70, "Hole" , new WorldPoint(3712, 3828, 0), HOLE_31481, HOLE_31482),
 	FOSSIL_ISLAND_HARDWOOD_SOUTH(70, "Hole" , new WorldPoint(3714, 3816, 0), HOLE_31481, HOLE_31482),
-	AL_KHARID_WINDOW(70, "Window", new WorldPoint(3295, 3158, 0), BROKEN_WALL_33344, BIG_WINDOW)
+	AL_KHARID_WINDOW(70, "Window", new WorldPoint(3293, 3158, 0), BROKEN_WALL_33344, BIG_WINDOW)
 	{
 		@Override
 		public boolean matches(TileObject object)
 		{
 			// there are two BIG_WINDOW objects right next to each other here, but only this one is valid
-			return object.getId() != BIG_WINDOW || object.getWorldLocation().equals(getWorldLocation());
+			return object.getId() != BIG_WINDOW || object.getWorldLocation().equals(new WorldPoint(3295, 3158, 0));
 		}
 	},
 	GWD_SARADOMIN_ROPE_NORTH(70, "Rope Descent", new WorldPoint(2912, 5300, 0), NULL_26371, NULL_26561),
@@ -206,6 +209,8 @@ public enum AgilityShortcut
 	TROLL_STRONGHOLD_WALL_CLIMB(73, "Rocks", new WorldPoint(2841, 3694, 0), ROCKS_16464),
 	ARCEUUS_ESSENSE_MINE_WEST(73, "Rock Climb", new WorldPoint(1742, 3853, 0), ROCKS_27984, ROCKS_27985 ),
 	LAVA_DRAGON_ISLE_JUMP(74, "Stepping Stone", new WorldPoint(3200, 3807, 0), STEPPING_STONE_14918),
+	MEIYERDITCH_LAB_TUNNELS_NORTH(74, "Cave", new WorldPoint(3623, 9811, 0), CAVE_43755, CAVE_43756),
+	MEIYERDITCH_LAB_TUNNELS_SOUTH(74, "Cave", new WorldPoint(3618, 9786, 0), CAVE_43757, CAVE_43758),
 	FORTHOS_DUNGEON_SPIKED_BLADES(75, "Spiked Blades", new WorldPoint(1819, 9946, 0), STRANGE_FLOOR_34834),
 	REVENANT_CAVES_DEMONS_JUMP(75, "Jump", new WorldPoint(3199, 10135, 0), PILLAR_31561),
 	REVENANT_CAVES_ANKOU_EAST(75, "Jump", new WorldPoint(3201, 10195, 0), PILLAR_31561),
@@ -229,7 +234,10 @@ public enum AgilityShortcut
 	BRIMHAVEN_DUNGEON_VINE_WEST(87, "Vine", new WorldPoint(2606, 9584, 0), VINE_26880, VINE_26882),
 	MOUNT_KARUULM_PIPE_SOUTH(88, "Pipe", new WorldPoint(1316, 10214, 0), MYSTERIOUS_PIPE),
 	MOUNT_KARUULM_PIPE_NORTH(88, "Pipe", new WorldPoint(1345, 10230, 0), MYSTERIOUS_PIPE),
-	REVENANT_CAVES_CHAMBER_JUMP(89, "Jump", new WorldPoint(3240, 10144, 0), PILLAR_31561);
+	REVENANT_CAVES_CHAMBER_JUMP(89, "Jump", new WorldPoint(3240, 10144, 0), PILLAR_31561),
+	MEIYERDITCH_LAB_ADVANCED_TUNNELS_WEST(93, "Cave", new WorldPoint(3499, 9802, 0), CAVE_43759),
+	MEIYERDITCH_LAB_ADVANCED_TUNNELS_MIDDLE(93, "Cave", new WorldPoint(3597, 9768, 0), NULL_43840),
+	MEIYERDITCH_LAB_ADVANCED_TUNNELS_EAST(93, "Cave", new WorldPoint(3604, 9772, 0), CAVE_43762, CAVE_43763);
 
 	/**
 	 * The agility level required to pass the shortcut

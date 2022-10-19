@@ -85,6 +85,36 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showLiquidAdrenaline",
+		name = "Liquid adrenaline timer",
+		description = "Configures whether liquid adrenaline timer is displayed"
+	)
+	default boolean showLiquidAdrenaline()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showSilkDressing",
+		name = "Silk dressing timer",
+		description = "Configures whether silk dressing timer is displayed"
+	)
+	default boolean showSilkDressing()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showBlessedCrystalScarab",
+		name = "Blessed crystal scarab timer",
+		description = "Configures whether blessed crystal scarab timer is displayed"
+	)
+	default boolean showBlessedCrystalScarab()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "showPrayerEnhance",
 		name = "Prayer enhance timer",
 		description = "Configures whether prayer enhance timer is displayed"
@@ -260,6 +290,36 @@ public interface TimersConfig extends Config
 		description = "Configures whether the special attack cooldown timer for the Dragonfire Shield is displayed"
 	)
 	default boolean showDFSSpecial()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showArceuus",
+		name = "Arceuus spells duration",
+		description = "Whether to show Arceuus spellbook spell timers"
+	)
+	default boolean showArceuus()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showArceuusCooldown",
+		name = "Arceuus spells cooldown",
+		description = "Whether to show cooldown timers for Arceuus spellbook spells"
+	)
+	default boolean showArceuusCooldown()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showPickpocketStun",
+		name = "Pickpocket stun timer",
+		description = "Configures whether pickpocket stun timer is displayed"
+	)
+	default boolean showPickpocketStun()
 	{
 		return true;
 	}

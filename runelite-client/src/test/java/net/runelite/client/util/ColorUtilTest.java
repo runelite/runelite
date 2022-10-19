@@ -116,6 +116,7 @@ public class ColorUtilTest
 		assertEquals(new Color(128, 128, 128), ColorUtil.colorLerp(Color.BLACK, Color.WHITE, 0.5));
 		assertEquals(Color.BLACK, ColorUtil.colorLerp(Color.BLACK, Color.CYAN, 0));
 		assertEquals(Color.CYAN, ColorUtil.colorLerp(Color.BLACK, Color.CYAN, 1));
+		assertEquals(new Color(0x80800080, true), ColorUtil.colorLerp(new Color(0xff0000ff, true), new Color(0x00ff0000, true), 0.5));
 	}
 
 	@Test

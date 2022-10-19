@@ -81,6 +81,27 @@ public class Constants
 	public static final int MAX_Z = 4;
 
 	public static final int TILE_FLAG_BRIDGE = 2;
+	public static final int TILE_FLAG_UNDER_ROOF = 4;
+
+	/**
+	 * Flag for roof removal to remove the roofs above the player's current position.
+	 */
+	public static final int ROOF_FLAG_POSITION = 1;
+
+	/**
+	 * Flag for roof removal to remove the roofs above the currently hovered tile.
+	 */
+	public static final int ROOF_FLAG_HOVERED = 2;
+
+	/**
+	 * Flag for roof removal to remove the roofs above the player's destination tile.
+	 */
+	public static final int ROOF_FLAG_DESTINATION = 4;
+
+	/**
+	 * Flag for roof removal to remove the roofs that are above any tile between the camera and the player.
+	 */
+	public static final int ROOF_FLAG_BETWEEN = 8;
 
 	/**
 	 * The height of the overworld, in tiles. Coordinates above this are in caves and other such zones.

@@ -35,8 +35,6 @@ import java.util.Set;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
-import net.runelite.api.NPCComposition;
-import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
@@ -79,7 +77,7 @@ class AgilityOverlay extends Overlay
 		{
 			if (Obstacles.SHORTCUT_OBSTACLE_IDS.containsKey(object.getId()) && !config.highlightShortcuts() ||
 					Obstacles.TRAP_OBSTACLE_IDS.contains(object.getId()) && !config.showTrapOverlay() ||
-					Obstacles.COURSE_OBSTACLE_IDS.contains(object.getId()) && !config.showClickboxes() ||
+					Obstacles.OBSTACLE_IDS.contains(object.getId()) && !config.showClickboxes() ||
 					Obstacles.SEPULCHRE_OBSTACLE_IDS.contains(object.getId()) && !config.highlightSepulchreObstacles() ||
 					Obstacles.SEPULCHRE_SKILL_OBSTACLE_IDS.contains(object.getId()) && !config.highlightSepulchreSkilling())
 			{
@@ -157,11 +155,7 @@ class AgilityOverlay extends Overlay
 			Color color = config.sepulchreHighlightColor();
 			for (NPC npc : npcs)
 			{
-				NPCComposition npcComposition = npc.getComposition();
-				int size = npcComposition.getSize();
-				LocalPoint lp = npc.getLocalLocation();
-
-				Polygon tilePoly = Perspective.getCanvasTileAreaPoly(client, lp, size);
+				Polygon tilePoly = npc.getCanvasTilePoly();
 				if (tilePoly != null)
 				{
 					OverlayUtil.renderPolygon(graphics, tilePoly, color);

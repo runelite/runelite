@@ -42,6 +42,9 @@ public interface TimeTrackingConfig extends Config
 	String STOPWATCHES = "stopwatches";
 	String PREFER_SOONEST = "preferSoonest";
 	String NOTIFY = "notify";
+	String BIRDHOUSE_NOTIFY = "birdHouseNotification";
+	String COMPOST = "compost";
+	String PROTECTED = "protected";
 
 	@ConfigItem(
 		keyName = "timeFormatMode",
@@ -61,17 +64,6 @@ public interface TimeTrackingConfig extends Config
 		position = 2
 	)
 	default boolean timerNotification()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		keyName = "birdHouseNotification",
-		name = "Bird house notification",
-		description = "Notify you when all bird houses are full",
-		position = 3
-	)
-	default boolean birdHouseNotification()
 	{
 		return false;
 	}

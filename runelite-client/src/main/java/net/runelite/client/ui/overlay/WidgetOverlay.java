@@ -30,29 +30,41 @@ import java.awt.Rectangle;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Varbits;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 
+@Slf4j
 public class WidgetOverlay extends Overlay
 {
-	public static Collection<WidgetOverlay> createOverlays(final Client client)
+	public static Collection<WidgetOverlay> createOverlays(final OverlayManager overlayManager, final Client client)
 	{
 		return Arrays.asList(
-			new WidgetOverlay(client, WidgetInfo.RESIZABLE_MINIMAP_WIDGET, OverlayPosition.CANVAS_TOP_RIGHT),
+			// classic resizable - these are in render order for managed overlay picking
+			new WidgetOverlay(client, WidgetInfo.RESIZABLE_VIEWPORT_CHATBOX_PARENT, OverlayPosition.DYNAMIC),
+			new WidgetOverlay(client, WidgetInfo.RESIZABLE_VIEWPORT_INVENTORY_PARENT, OverlayPosition.DYNAMIC),
 			new WidgetOverlay(client, WidgetInfo.RESIZABLE_MINIMAP_STONES_WIDGET, OverlayPosition.CANVAS_TOP_RIGHT),
-			new WidgetOverlay(client, WidgetInfo.FOSSIL_ISLAND_OXYGENBAR, OverlayPosition.TOP_LEFT),
-			new XpTrackerWidgetOverlay(client, WidgetInfo.EXPERIENCE_TRACKER_WIDGET, OverlayPosition.TOP_RIGHT),
-			new WidgetOverlay(client, WidgetInfo.RAIDS_POINTS_INFOBOX, OverlayPosition.TOP_RIGHT),
+			// modern resizable
+			new WidgetOverlay(client, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_CHATBOX_PARENT, OverlayPosition.DYNAMIC),
+			new WidgetOverlay(client, WidgetInfo.RESIZABLE_MINIMAP_WIDGET, OverlayPosition.CANVAS_TOP_RIGHT),
+			new WidgetOverlay(client, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_TABS1, OverlayPosition.DYNAMIC),
+			new WidgetOverlay(client, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_TABS2, OverlayPosition.DYNAMIC),
+			new WidgetOverlay(client, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY_PARENT, OverlayPosition.DYNAMIC),
+			// The client forces the oxygen bar below the xp tracker, so set its priority lower
+			new WidgetOverlay(client, WidgetInfo.FOSSIL_ISLAND_OXYGENBAR, OverlayPosition.TOP_CENTER, OverlayPriority.HIGH),
+			new XpTrackerWidgetOverlay(overlayManager, client, WidgetInfo.EXPERIENCE_TRACKER_WIDGET, OverlayPosition.TOP_RIGHT),
+			new WidgetOverlay(client, WidgetInfo.RAIDS_POINTS_INFOBOX, OverlayPosition.TOP_LEFT),
 			new WidgetOverlay(client, WidgetInfo.TOB_PARTY_INTERFACE, OverlayPosition.TOP_LEFT),
 			new WidgetOverlay(client, WidgetInfo.TOB_PARTY_STATS, OverlayPosition.TOP_LEFT),
-			new WidgetOverlay(client, WidgetInfo.GWD_KC, OverlayPosition.TOP_RIGHT),
+			new WidgetOverlay(client, WidgetInfo.GWD_KC, OverlayPosition.TOP_LEFT),
 			new WidgetOverlay(client, WidgetInfo.TITHE_FARM, OverlayPosition.TOP_RIGHT),
 			new WidgetOverlay(client, WidgetInfo.PEST_CONTROL_BOAT_INFO, OverlayPosition.TOP_LEFT),
-			new WidgetOverlay(client, WidgetInfo.PEST_CONTROL_INFO, OverlayPosition.TOP_LEFT),
+			new WidgetOverlay(client, WidgetInfo.PEST_CONTROL_KNIGHT_INFO_CONTAINER, OverlayPosition.TOP_LEFT),
+			new WidgetOverlay(client, WidgetInfo.PEST_CONTROL_ACTIVITY_SHIELD_INFO_CONTAINER, OverlayPosition.TOP_RIGHT),
 			new WidgetOverlay(client, WidgetInfo.ZEAH_MESS_HALL_COOKING_DISPLAY, OverlayPosition.TOP_LEFT),
-			new WidgetOverlay(client, WidgetInfo.PVP_KILLDEATH_COUNTER, OverlayPosition.TOP_LEFT),
+			new PvpKDRWidgetOverlay(client, WidgetInfo.PVP_KILLDEATH_COUNTER, OverlayPosition.TOP_LEFT),
 			new WidgetOverlay(client, WidgetInfo.SKOTIZO_CONTAINER, OverlayPosition.TOP_LEFT),
 			new WidgetOverlay(client, WidgetInfo.KOUREND_FAVOUR_OVERLAY, OverlayPosition.TOP_CENTER),
 			new WidgetOverlay(client, WidgetInfo.PYRAMID_PLUNDER_DATA, OverlayPosition.TOP_CENTER),
@@ -60,27 +72,43 @@ public class WidgetOverlay extends Overlay
 			new WidgetOverlay(client, WidgetInfo.LMS_KDA, OverlayPosition.TOP_RIGHT),
 			new WidgetOverlay(client, WidgetInfo.GAUNTLET_TIMER_CONTAINER, OverlayPosition.TOP_LEFT),
 			new WidgetOverlay(client, WidgetInfo.HALLOWED_SEPULCHRE_TIMER_CONTAINER, OverlayPosition.TOP_LEFT),
-			new WidgetOverlay(client, WidgetInfo.HEALTH_OVERLAY_BAR, OverlayPosition.TOP_CENTER),
+			// The client forces the health overlay bar below the xp tracker, so set its priority lower
+			new WidgetOverlay(client, WidgetInfo.HEALTH_OVERLAY_BAR, OverlayPosition.TOP_CENTER, OverlayPriority.HIGH),
+			new WidgetOverlay(client, WidgetInfo.TOB_HEALTH_BAR, OverlayPosition.TOP_CENTER),
 			new WidgetOverlay(client, WidgetInfo.NIGHTMARE_PILLAR_HEALTH, OverlayPosition.TOP_LEFT),
 			new WidgetOverlay(client, WidgetInfo.VOLCANIC_MINE_VENTS_INFOBOX_GROUP, OverlayPosition.BOTTOM_RIGHT),
 			new WidgetOverlay(client, WidgetInfo.VOLCANIC_MINE_STABILITY_INFOBOX_GROUP, OverlayPosition.BOTTOM_LEFT),
 			new WidgetOverlay(client, WidgetInfo.MULTICOMBAT_FIXED, OverlayPosition.BOTTOM_RIGHT),
-			new WidgetOverlay(client, WidgetInfo.MULTICOMBAT_RESIZEABLE_MODERN, OverlayPosition.CANVAS_TOP_RIGHT),
-			new WidgetOverlay(client, WidgetInfo.MULTICOMBAT_RESIZEABLE_CLASSIC, OverlayPosition.CANVAS_TOP_RIGHT)
+			new WidgetOverlay(client, WidgetInfo.MULTICOMBAT_RESIZABLE_MODERN, OverlayPosition.CANVAS_TOP_RIGHT),
+			new WidgetOverlay(client, WidgetInfo.MULTICOMBAT_RESIZABLE_CLASSIC, OverlayPosition.CANVAS_TOP_RIGHT),
+			new WidgetOverlay(client, WidgetInfo.TEMPOROSS_STATUS_INDICATOR, OverlayPosition.TOP_LEFT),
+			new WidgetOverlay(client, WidgetInfo.BA_HEAL_TEAMMATES, OverlayPosition.BOTTOM_LEFT),
+			new WidgetOverlay(client, WidgetInfo.BA_TEAM, OverlayPosition.TOP_RIGHT),
+			new WidgetOverlay(client, WidgetInfo.PVP_WILDERNESS_SKULL_CONTAINER, OverlayPosition.DYNAMIC),
+			new WidgetOverlay(client, WidgetInfo.TOA_PARTY_LAYER, OverlayPosition.TOP_LEFT),
+			new WidgetOverlay(client, WidgetInfo.TOA_RAID_LAYER, OverlayPosition.TOP_LEFT)
 		);
 	}
 
 	protected final Client client;
 	private final WidgetInfo widgetInfo;
 	private final Rectangle parentBounds = new Rectangle();
+	private boolean revalidate;
 
 	private WidgetOverlay(final Client client, final WidgetInfo widgetInfo, final OverlayPosition overlayPosition)
 	{
+		this(client, widgetInfo, overlayPosition, OverlayPriority.HIGHEST);
+	}
+
+	private WidgetOverlay(final Client client, final WidgetInfo widgetInfo, final OverlayPosition overlayPosition, final OverlayPriority overlayPriority)
+	{
 		this.client = client;
 		this.widgetInfo = widgetInfo;
-		setPriority(OverlayPriority.HIGHEST);
+		setPriority(overlayPriority);
 		setLayer(OverlayLayer.UNDER_WIDGETS);
 		setPosition(overlayPosition);
+		setMovable(true);
+		setSnappable(true);
 		// It's almost possible to drawAfterInterface(widgetInfo.getGroupId()) here, but that fires
 		// *after* the native components are drawn, which is too late.
 	}
@@ -102,10 +130,34 @@ public class WidgetOverlay extends Overlay
 			return null;
 		}
 
+		assert widget != null;
+
 		final Rectangle bounds = getBounds();
-		// The widget relative pos is relative to the parent
-		widget.setRelativeX(bounds.x - parent.x);
-		widget.setRelativeY(bounds.y - parent.y);
+		// OverlayRenderer sets the overlay bounds to where it would like the overlay to render at prior to calling
+		// render(). If the overlay has a preferred location or position set we update the widget position to that.
+		if (getPreferredLocation() != null || getPreferredPosition() != null)
+		{
+			// The widget relative pos is relative to the parent
+			widget.setForcedPosition(bounds.x - parent.x, bounds.y - parent.y);
+		}
+		else
+		{
+			if (revalidate)
+			{
+				revalidate = false;
+				log.debug("Revalidating {}", widgetInfo);
+				widget.setForcedPosition(-1, -1);
+				// Revalidate the widget to reposition it back to its normal location after an overlay reset
+				widget.revalidate();
+			}
+
+			// Update the overlay bounds to the widget bounds so the drag overlay renders correctly.
+			// Note OverlayManager uses original bounds reference to render managing mode and for
+			// onMouseOver, so update the existing bounds vs. replacing the reference.
+			Rectangle widgetBounds = widget.getBounds();
+			bounds.setBounds(widgetBounds.x, widgetBounds.y, widgetBounds.width, widgetBounds.height);
+		}
+
 		return new Dimension(widget.getWidth(), widget.getHeight());
 	}
 
@@ -147,11 +199,35 @@ public class WidgetOverlay extends Overlay
 		return getParentBounds(widget);
 	}
 
+	@Override
+	public void revalidate()
+	{
+		// Revalidate must be called on the client thread, so defer til next frame
+		revalidate = true;
+	}
+
 	private static class XpTrackerWidgetOverlay extends WidgetOverlay
 	{
-		private XpTrackerWidgetOverlay(Client client, WidgetInfo widgetInfo, OverlayPosition overlayPosition)
+		private final OverlayManager overlayManager;
+
+		private XpTrackerWidgetOverlay(OverlayManager overlayManager, Client client, WidgetInfo widgetInfo, OverlayPosition overlayPosition)
 		{
 			super(client, widgetInfo, overlayPosition);
+			this.overlayManager = overlayManager;
+		}
+
+		@Override
+		public Dimension render(Graphics2D graphics)
+		{
+			// The xptracker component layer isn't hidden if the counter and process bar are both configured "Off",
+			// it just has its children hidden.
+			if (client.getVarbitValue(Varbits.EXPERIENCE_TRACKER_COUNTER) == 30 // Off
+				&& client.getVarbitValue(Varbits.EXPERIENCE_TRACKER_PROGRESS_BAR) == 0) // Off
+			{
+				return null;
+			}
+
+			return super.render(graphics);
 		}
 
 		/**
@@ -170,7 +246,7 @@ public class WidgetOverlay extends Overlay
 			}
 
 			OverlayPosition position;
-			switch (client.getVar(Varbits.EXPERIENCE_TRACKER_POSITION))
+			switch (client.getVarbitValue(Varbits.EXPERIENCE_TRACKER_POSITION))
 			{
 				case 0:
 				default:
@@ -183,8 +259,34 @@ public class WidgetOverlay extends Overlay
 					position = OverlayPosition.TOP_LEFT;
 					break;
 			}
-			setPosition(position);
+
+			if (position != super.getPosition())
+			{
+				log.debug("Xp tracker moved position");
+				setPosition(position);
+				overlayManager.rebuildOverlayLayers();
+			}
 			return position;
+		}
+	}
+
+	private static class PvpKDRWidgetOverlay extends WidgetOverlay
+	{
+		private PvpKDRWidgetOverlay(Client client, WidgetInfo widgetInfo, OverlayPosition overlayPosition)
+		{
+			super(client, widgetInfo, overlayPosition);
+		}
+
+		@Override
+		public Dimension render(Graphics2D graphics)
+		{
+			// Don't draw widget overlay if the PVP KDR stats text will be empty
+			if (client.getVarbitValue(Varbits.SHOW_PVP_KDR_STATS) == 1)
+			{
+				return super.render(graphics);
+			}
+
+			return null;
 		}
 	}
 }

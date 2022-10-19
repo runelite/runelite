@@ -57,13 +57,13 @@ public interface GrandExchangeConfig extends Config
 
 	@ConfigItem(
 		position = 3,
-		keyName = "enableOsbPrices",
-		name = "Enable OSB actively traded prices",
-		description = "Shows the OSBuddy actively traded price on the GE buy interface"
+		keyName = "showActivelyTradedPrice",
+		name = "Enable actively traded prices",
+		description = "Shows the actively traded price on the GE buy interface, sourced from the RuneScape wiki"
 	)
-	default boolean enableOsbPrices()
+	default boolean showActivelyTradedPrice()
 	{
-		return false;
+		return true;
 	}
 
 	@ConfigItem(

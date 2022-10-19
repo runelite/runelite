@@ -39,4 +39,18 @@ public interface FriendsChatManager extends NameableContainer<FriendsChatMember>
 	 * @return
 	 */
 	String getName();
+
+	/**
+	 * Get the local player's rank in the friend chat
+	 *
+	 * @return
+	 */
+	FriendsChatRank getMyRank();
+
+	/**
+	 * Get the rank required to kick members from the friends chat
+	 *
+	 * @return
+	 */
+	FriendsChatRank getKickRank();
 }

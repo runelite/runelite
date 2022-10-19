@@ -82,7 +82,7 @@ class RegenMeterOverlay extends Overlay
 
 		if (config.showSpecial())
 		{
-			if (client.getVar(VarPlayer.SPECIAL_ATTACK_ENABLED) == 1)
+			if (client.getVarpValue(VarPlayer.SPECIAL_ATTACK_ENABLED) == 1)
 			{
 				final Widget widget = client.getWidget(WidgetInfo.MINIMAP_SPEC_ORB);
 

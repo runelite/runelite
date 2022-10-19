@@ -27,20 +27,17 @@ package net.runelite.client.plugins.crowdsourcing;
 
 import java.time.temporal.ChronoUnit;
 import javax.inject.Inject;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.crowdsourcing.cooking.CrowdsourcingCooking;
 import net.runelite.client.plugins.crowdsourcing.dialogue.CrowdsourcingDialogue;
-import net.runelite.client.plugins.crowdsourcing.movement.CrowdsourcingMovement;
 import net.runelite.client.plugins.crowdsourcing.music.CrowdsourcingMusic;
 import net.runelite.client.plugins.crowdsourcing.thieving.CrowdsourcingThieving;
 import net.runelite.client.plugins.crowdsourcing.woodcutting.CrowdsourcingWoodcutting;
 import net.runelite.client.plugins.crowdsourcing.zmi.CrowdsourcingZMI;
 import net.runelite.client.task.Schedule;
 
-@Slf4j
 @PluginDescriptor(
 	name = "OSRS Wiki Crowdsourcing",
 	description = "Send data to the wiki to help figure out skilling success rates, burn rates, more. See osrs.wiki/RS:CROWD"
@@ -63,9 +60,6 @@ public class CrowdsourcingPlugin extends Plugin
 	private CrowdsourcingDialogue dialogue;
 
 	@Inject
-	private CrowdsourcingMovement movement;
-
-	@Inject
 	private CrowdsourcingMusic music;
 
 	@Inject
@@ -82,7 +76,6 @@ public class CrowdsourcingPlugin extends Plugin
 	{
 		eventBus.register(cooking);
 		eventBus.register(dialogue);
-		eventBus.register(movement);
 		eventBus.register(music);
 		eventBus.register(thieving);
 		eventBus.register(woodcutting);
@@ -94,7 +87,6 @@ public class CrowdsourcingPlugin extends Plugin
 	{
 		eventBus.unregister(cooking);
 		eventBus.unregister(dialogue);
-		eventBus.unregister(movement);
 		eventBus.unregister(music);
 		eventBus.unregister(thieving);
 		eventBus.unregister(woodcutting);

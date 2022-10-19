@@ -25,6 +25,7 @@
 package net.runelite.client.ui;
 
 import com.google.common.base.Strings;
+import com.google.inject.Inject;
 import java.applet.Applet;
 import java.awt.Canvas;
 import java.awt.CardLayout;
@@ -32,6 +33,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
@@ -47,7 +49,6 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.time.Duration;
 import javax.annotation.Nullable;
-import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Provider;
 import javax.inject.Singleton;
@@ -55,12 +56,14 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
 import javax.swing.SwingUtilities;
+import javax.swing.event.HyperlinkEvent;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -71,6 +74,7 @@ import net.runelite.api.Point;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.ExpandResizeType;
@@ -89,6 +93,7 @@ import net.runelite.client.input.MouseManager;
 import net.runelite.client.ui.skin.SubstanceRuneLiteLookAndFeel;
 import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.ImageUtil;
+import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.OSType;
 import net.runelite.client.util.OSXUtil;
 import net.runelite.client.util.SwingUtil;
@@ -142,6 +147,14 @@ public class ClientUI
 	private Dimension lastClientSize;
 	private Cursor defaultCursor;
 
+	@Inject(optional = true)
+	@Named("minMemoryLimit")
+	private int minMemoryLimit = 400;
+
+	@Inject(optional = true)
+	@Named("recommendedMemoryLimit")
+	private int recommendedMemoryLimit = 512;
+
 	@Inject
 	private ClientUI(
 		RuneLiteConfig config,
@@ -163,7 +176,7 @@ public class ClientUI
 		this.clientThreadProvider = clientThreadProvider;
 		this.eventBus = eventBus;
 		this.safeMode = safeMode;
-		this.title = title;
+		this.title = title + (safeMode ? " (safe mode)" : "");
 	}
 
 	@Subscribe
@@ -211,6 +224,7 @@ public class ClientUI
 					currentButton.setSelected(false);
 					currentNavButton.setSelected(false);
 					currentButton = null;
+					currentNavButton = null;
 				}
 				else
 				{
@@ -330,6 +344,12 @@ public class ClientUI
 			frame.setResizable(true);
 
 			frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+			if (OSType.getOSType() == OSType.MacOS)
+			{
+				// Change the default quit strategy to CLOSE_ALL_WINDOWS so that ctrl+q
+				// triggers the listener below instead of exiting.
+				MacOSQuitStrategy.setup();
+			}
 			frame.addWindowListener(new WindowAdapter()
 			{
 				@Override
@@ -357,6 +377,16 @@ public class ClientUI
 					{
 						shutdownClient();
 					}
+				}
+			});
+
+			frame.addWindowStateListener(l ->
+			{
+				if (l.getNewState() == Frame.NORMAL)
+				{
+					// Recompute minimum size after a restore.
+					// Invoking this immediately causes the minimum size to be 8px too small with custom chrome on.
+					SwingUtilities.invokeLater(frame::revalidateMinimumSize);
 				}
 			});
 
@@ -470,7 +500,7 @@ public class ClientUI
 			}
 
 			// Update config
-			updateFrameConfig(true);
+			updateFrameConfig(false);
 
 			// Create hide sidebar button
 
@@ -509,7 +539,10 @@ public class ClientUI
 			frame.revalidateMinimumSize();
 
 			// Create tray icon (needs to be created after frame is packed)
-			trayIcon = SwingUtil.createTrayIcon(ICON, title, frame);
+			if (config.enableTrayIcon())
+			{
+				trayIcon = SwingUtil.createTrayIcon(ICON, title, frame);
+			}
 
 			// Move frame around (needs to be done after frame is packed)
 			if (config.rememberScreenBounds() && !safeMode)
@@ -531,7 +564,11 @@ public class ClientUI
 
 							// When Windows screen scaling is on, the position/bounds will be wrong when they are set.
 							// The bounds saved in shutdown are the full, non-scaled co-ordinates.
-							if (scale != 1)
+							// On MacOS the scaling is already applied and the position/bounds are correct on at least
+							// - 2015 x64 MBP JDK11 Mohave
+							// - 2020 m1 MBP JDK17 Big Sur
+							// Adjusting the scaling further results in the client position being incorrect
+							if (scale != 1 && OSType.getOSType() != OSType.MacOS)
 							{
 								clientBounds.setRect(
 									clientBounds.getX() / scale,
@@ -571,6 +608,8 @@ public class ClientUI
 
 			// Show frame
 			frame.setVisible(true);
+			// On macos setResizable needs to be called after setVisible
+			frame.setResizable(!config.lockWindowSize());
 			frame.toFront();
 			requestFocus();
 			log.info("Showing frame {}", frame);
@@ -584,6 +623,30 @@ public class ClientUI
 				"RuneLite has not yet been updated to work with the latest\n"
 					+ "game update, it will work with reduced functionality until then.",
 				"RuneLite is outdated", INFORMATION_MESSAGE));
+		}
+
+		final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024L / 1024L);
+		if (maxMemory < minMemoryLimit)
+		{
+			SwingUtilities.invokeLater(() ->
+			{
+				JEditorPane ep = new JEditorPane("text/html",
+					"Your Java memory limit is " + maxMemory + "mb, which is lower than the recommended " + recommendedMemoryLimit + "mb.<br>" +
+						"This can cause instability, and it is recommended you remove or increase this limit.<br>" +
+						"Join <a href=\"" + RuneLiteProperties.getDiscordInvite() + "\">Discord</a> for assistance."
+				);
+				ep.addHyperlinkListener(e ->
+				{
+					if (e.getEventType().equals(HyperlinkEvent.EventType.ACTIVATED))
+					{
+						LinkBrowser.browse(e.getURL().toString());
+					}
+				});
+				ep.setEditable(false);
+				ep.setOpaque(false);
+				JOptionPane.showMessageDialog(frame,
+					ep, "Max memory limit low", JOptionPane.WARNING_MESSAGE);
+			});
 		}
 	}
 
@@ -958,6 +1021,13 @@ public class ClientUI
 
 		int width = panel.getWrappedPanel().getPreferredSize().width;
 		int expandBy = pluginPanel != null ? pluginPanel.getWrappedPanel().getPreferredSize().width - width : width;
+
+		// Deactivate previously active panel
+		if (pluginPanel != null)
+		{
+			pluginPanel.onDeactivate();
+		}
+
 		pluginPanel = panel;
 
 		// Expand sidebar

@@ -24,8 +24,6 @@
  */
 package net.runelite.client.ui.overlay.worldmap;
 
-import java.awt.Rectangle;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import javax.annotation.Nullable;
 import lombok.Data;
@@ -53,8 +51,6 @@ public class WorldMapPoint
 	 */
 	private Point imagePoint;
 
-	private Rectangle clickbox;
-
 	private boolean snapToEdge;
 
 	private boolean currentlyEdgeSnapped;
@@ -64,7 +60,10 @@ public class WorldMapPoint
 	 */
 	private boolean jumpOnClick;
 
-	private boolean tooltipVisible;
+	/**
+	 * Name in menu option when {@link #jumpOnClick} is set
+	 */
+	private String name;
 
 	private String tooltip;
 
@@ -72,11 +71,6 @@ public class WorldMapPoint
 	{
 		this.worldPoint = worldPoint;
 		this.image = image;
-	}
-
-	public MouseEvent onClick(MouseEvent e)
-	{
-		return e;
 	}
 
 	public void onEdgeSnap()

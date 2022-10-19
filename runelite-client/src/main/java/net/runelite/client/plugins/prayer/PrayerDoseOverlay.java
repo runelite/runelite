@@ -62,11 +62,7 @@ class PrayerDoseOverlay extends Overlay
 	private boolean trackTick = true;
 
 	@Setter(AccessLevel.PACKAGE)
-	private boolean hasPrayerRestore;
-	@Setter(AccessLevel.PACKAGE)
-	private int bonusPrayer;
-	@Setter(AccessLevel.PACKAGE)
-	private boolean hasHolyWrench;
+	private int restoreAmount;
 
 	@Inject
 	private PrayerDoseOverlay(final Client client, final TooltipManager tooltipManager, final PrayerPlugin plugin, final PrayerConfig config)
@@ -127,7 +123,7 @@ class PrayerDoseOverlay extends Overlay
 			tooltipManager.add(new Tooltip(sb.toString()));
 		}
 
-		if (!config.showPrayerDoseIndicator() || !hasPrayerRestore)
+		if (!config.showPrayerDoseIndicator() || restoreAmount == 0)
 		{
 			return null;
 		}
@@ -136,17 +132,7 @@ class PrayerDoseOverlay extends Overlay
 		final int maxPrayer = client.getRealSkillLevel(Skill.PRAYER);
 
 		final int prayerPointsMissing = maxPrayer - currentPrayer;
-		if (prayerPointsMissing <= 0)
-		{
-			return null;
-		}
-
-		final double dosePercentage = hasHolyWrench ? .27 : .25;
-		final int basePointsRestored = (int) Math.floor(maxPrayer * dosePercentage);
-
-		final int pointsRestored = basePointsRestored + 7 + bonusPrayer;
-
-		if (prayerPointsMissing < pointsRestored)
+		if (prayerPointsMissing <= 0 || prayerPointsMissing < restoreAmount)
 		{
 			return null;
 		}
@@ -165,8 +151,7 @@ class PrayerDoseOverlay extends Overlay
 		graphics.setColor(ColorUtil.colorLerp(START_COLOR, END_COLOR, Math.sin(t)));
 		graphics.setStroke(new BasicStroke(2));
 		graphics.drawOval(orbInnerX, orbInnerY, orbInnerSize, orbInnerSize);
-
-		return new Dimension((int) bounds.getWidth(), (int) bounds.getHeight());
+		return null;
 	}
 
 }

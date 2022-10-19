@@ -42,6 +42,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -92,8 +93,6 @@ public class Notifier
 		}
 	}
 
-	// Default timeout of notification in milliseconds
-	private static final int DEFAULT_TIMEOUT = 10000;
 	private static final String DOUBLE_QUOTE = "\"";
 	private static final Escaper SHELL_ESCAPE = Escapers.builder()
 		.addEscape('"', "'")
@@ -141,7 +140,8 @@ public class Notifier
 		this.appName = appName;
 		this.notifyIconPath = RuneLite.RUNELITE_DIR.toPath().resolve("icon.png");
 
-		// First check if we are running in launcher
+		// Check if we are running in the launcher because terminal-notifier notifications don't work
+		// if the group/sender are unknown to it.
 		if (!Strings.isNullOrEmpty(RuneLiteProperties.getLauncherVersion()) && OSType.getOSType() == OSType.MacOS)
 		{
 			executorService.execute(() -> terminalNotifierAvailable = isTerminalNotifierAvailable());
@@ -316,12 +316,17 @@ public class Notifier
 		commands.add("notify-send");
 		commands.add(title);
 		commands.add(message);
+		commands.add("-a");
+		commands.add(SHELL_ESCAPE.escape(appName));
 		commands.add("-i");
 		commands.add(SHELL_ESCAPE.escape(notifyIconPath.toAbsolutePath().toString()));
 		commands.add("-u");
 		commands.add(toUrgency(type));
-		commands.add("-t");
-		commands.add(String.valueOf(DEFAULT_TIMEOUT));
+		if (runeLiteConfig.notificationTimeout() > 0)
+		{
+			commands.add("-t");
+			commands.add(String.valueOf(runeLiteConfig.notificationTimeout()));
+		}
 
 		executorService.submit(() ->
 		{
@@ -351,15 +356,14 @@ public class Notifier
 
 		if (terminalNotifierAvailable)
 		{
-			commands.add("terminal-notifier");
-			commands.add("-group");
-			commands.add("net.runelite.launcher");
-			commands.add("-sender");
-			commands.add("net.runelite.launcher");
-			commands.add("-message");
-			commands.add(DOUBLE_QUOTE + message + DOUBLE_QUOTE);
-			commands.add("-title");
-			commands.add(DOUBLE_QUOTE + title + DOUBLE_QUOTE);
+			Collections.addAll(commands,
+				"sh", "-lc", "\"$@\"", "--",
+				"terminal-notifier",
+				"-title", title,
+				"-message", message,
+				"-group", "net.runelite.launcher",
+				"-sender", "net.runelite.launcher"
+			);
 		}
 		else
 		{
@@ -389,7 +393,7 @@ public class Notifier
 
 	private static Process sendCommand(final List<String> commands) throws IOException
 	{
-		return new ProcessBuilder(commands.toArray(new String[commands.size()]))
+		return new ProcessBuilder(commands)
 			.redirectErrorStream(true)
 			.start();
 	}
@@ -413,7 +417,8 @@ public class Notifier
 	{
 		try
 		{
-			final Process exec = Runtime.getRuntime().exec(new String[]{"terminal-notifier", "-help"});
+			// The PATH seen by Cocoa apps does not resemble that seen by the shell, so we defer to the latter.
+			final Process exec = Runtime.getRuntime().exec(new String[]{"sh", "-lc", "terminal-notifier -help"});
 			if (!exec.waitFor(2, TimeUnit.SECONDS))
 			{
 				return false;
@@ -479,14 +484,11 @@ public class Notifier
 	{
 		if (NOTIFICATION_FILE.exists())
 		{
-			try
+			try (InputStream fileStream = new BufferedInputStream(new FileInputStream(NOTIFICATION_FILE));
+				AudioInputStream sound = AudioSystem.getAudioInputStream(fileStream))
 			{
-				InputStream fileStream = new BufferedInputStream(new FileInputStream(NOTIFICATION_FILE));
-				try (AudioInputStream sound = AudioSystem.getAudioInputStream(fileStream))
-				{
-					clip.open(sound);
-					return true;
-				}
+				clip.open(sound);
+				return true;
 			}
 			catch (UnsupportedAudioFileException | IOException | LineUnavailableException e)
 			{
@@ -495,8 +497,8 @@ public class Notifier
 		}
 
 		// Otherwise load from the classpath
-		InputStream fileStream = new BufferedInputStream(Notifier.class.getResourceAsStream("notification.wav"));
-		try (AudioInputStream sound = AudioSystem.getAudioInputStream(fileStream))
+		try (InputStream fileStream = new BufferedInputStream(Notifier.class.getResourceAsStream("notification.wav"));
+			AudioInputStream sound = AudioSystem.getAudioInputStream(fileStream))
 		{
 			clip.open(sound);
 			return true;

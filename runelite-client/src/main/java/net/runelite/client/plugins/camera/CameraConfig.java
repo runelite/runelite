@@ -149,21 +149,21 @@ public interface CameraConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "compassLook",
-		name = "Compass options",
-		description = "Adds Look South, East, and West options to the compass",
-		position = 10
+		keyName = "compassLookPreservePitch",
+		name = "Preserve pitch on compass look",
+		description = "Preserves the current pitch value (vertical angle) when using the compass look options.",
+		position = 11
 	)
-	default boolean compassLook()
+	default boolean compassLookPreservePitch()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
 		keyName = "invertYaw",
 		name = "Invert Yaw",
 		description = "Makes moving the camera horizontally with the mouse backwards",
-		position = 11
+		position = 12
 	)
 	default boolean invertYaw()
 	{
@@ -174,9 +174,20 @@ public interface CameraConfig extends Config
 		keyName = "invertPitch",
 		name = "Invert Pitch",
 		description = "Makes moving the camera vertically with the mouse backwards",
-		position = 12
+		position = 13
 	)
 	default boolean invertPitch()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "preserveYaw",
+		name = "Preserve yaw on world hop",
+		description = "Preserves the camera yaw (left/right) when world hopping.",
+		position = 14
+	)
+	default boolean preserveYaw()
 	{
 		return false;
 	}

@@ -31,11 +31,13 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
+import javax.inject.Named;
 import net.runelite.api.ChatMessageType;
 import static net.runelite.api.ChatMessageType.GAMEMESSAGE;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Hitsplat;
+import net.runelite.api.HitsplatID;
 import net.runelite.api.MessageNode;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
@@ -51,19 +53,23 @@ import net.runelite.api.events.StatChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
+import net.runelite.client.chat.ChatClient;
 import net.runelite.client.chat.ChatCommandManager;
-import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.npcoverlay.NpcOverlayService;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
-import net.runelite.http.api.chat.ChatClient;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import org.mockito.Mock;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -118,24 +124,13 @@ public class SlayerPluginTest
 	private static final String BRACLET_SLAUGHTER = "Your bracelet of slaughter prevents your slayer count from decreasing. It has 9 charges left.";
 	private static final String BRACLET_EXPEDITIOUS = "Your expeditious bracelet helps you progress your slayer task faster. It has 9 charges left.";
 
-	private static final String BRACLET_SLAUGHTER_V2 = "Your bracelet of slaughter prevents your slayer count from decreasing. It has 1 charge left.";
-	private static final String BRACLET_EXPEDITIOUS_V2 = "Your expeditious bracelet helps you progress your slayer faster. It has 1 charge left.";
-
-	private static final String BRACLET_SLAUGHTER_V3 = "Your bracelet of slaughter prevents your slayer count from decreasing. It then crumbles to dust.";
-	private static final String BRACLET_EXPEDITIOUS_V3 = "Your expeditious bracelet helps you progress your slayer faster. It then crumbles to dust.";
-
-	private static final String CHAT_BRACELET_SLAUGHTER_CHARGE = "Your bracelet of slaughter has 12 charges left.";
-	private static final String CHAT_BRACELET_EXPEDITIOUS_CHARGE = "Your expeditious bracelet has 12 charges left.";
-
-	private static final String CHAT_BRACELET_SLAUGHTER_CHARGE_ONE = "Your bracelet of slaughter has 1 charge left.";
-	private static final String CHAT_BRACELET_EXPEDITIOUS_CHARGE_ONE = "Your expeditious bracelet has 1 charge left.";
-
-	private static final String BREAK_SLAUGHTER = "The bracelet shatters. Your next bracelet of slaughter<br>will start afresh from 30 charges.";
-	private static final String BREAK_EXPEDITIOUS = "The bracelet shatters. Your next expeditious bracelet<br>will start afresh from 30 charges.";
-
 	@Mock
 	@Bind
 	Client client;
+
+	@Mock
+	@Bind
+	ConfigManager configManager;
 
 	@Mock
 	@Bind
@@ -151,6 +146,10 @@ public class SlayerPluginTest
 
 	@Mock
 	@Bind
+	TargetWeaknessOverlay targetWeaknessOverlay;
+
+	@Mock
+	@Bind
 	InfoBoxManager infoBoxManager;
 
 	@Mock
@@ -163,10 +162,6 @@ public class SlayerPluginTest
 
 	@Mock
 	@Bind
-	ChatMessageManager chatMessageManager;
-
-	@Mock
-	@Bind
 	ChatCommandManager chatCommandManager;
 
 	@Mock
@@ -176,6 +171,14 @@ public class SlayerPluginTest
 	@Mock
 	@Bind
 	ChatClient chatClient;
+
+	@Bind
+	@Named("developerMode")
+	boolean developerMode;
+
+	@Mock
+	@Bind
+	NpcOverlayService npcOverlayService;
 
 	@Inject
 	SlayerPlugin slayerPlugin;
@@ -283,7 +286,7 @@ public class SlayerPluginTest
 
 		assertEquals("Vet'ion", slayerPlugin.getTaskName());
 		assertEquals(3, slayerPlugin.getAmount());
-		verify(slayerConfig).points(914);
+		verify(configManager).setRSProfileConfiguration(SlayerConfig.GROUP_NAME, SlayerConfig.POINTS_KEY, 914);
 	}
 
 	@Test
@@ -296,7 +299,7 @@ public class SlayerPluginTest
 
 		assertEquals("Chaos Elemental", slayerPlugin.getTaskName());
 		assertEquals(3, slayerPlugin.getAmount());
-		verify(slayerConfig).points(914);
+		verify(configManager).setRSProfileConfiguration(SlayerConfig.GROUP_NAME, SlayerConfig.POINTS_KEY, 914);
 	}
 
 	@Test
@@ -309,7 +312,7 @@ public class SlayerPluginTest
 
 		assertEquals("Alchemical Hydra", slayerPlugin.getTaskName());
 		assertEquals(35, slayerPlugin.getAmount());
-		verify(slayerConfig).points(724);
+		verify(configManager).setRSProfileConfiguration(SlayerConfig.GROUP_NAME, SlayerConfig.POINTS_KEY, 724);
 	}
 
 	@Test
@@ -440,7 +443,7 @@ public class SlayerPluginTest
 		when(client.getWidget(WidgetInfo.SLAYER_REWARDS_TOPBAR)).thenReturn(rewardBar);
 		slayerPlugin.onGameTick(new GameTick());
 
-		verify(slayerConfig).points(17566);
+		verify(configManager).setRSProfileConfiguration(SlayerConfig.GROUP_NAME, SlayerConfig.POINTS_KEY, 17566);
 	}
 
 	@Test
@@ -449,7 +452,7 @@ public class SlayerPluginTest
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "Perterter", TASK_ONE, null, 0);
 		slayerPlugin.onChatMessage(chatMessageEvent);
 
-		verify(slayerConfig).streak(1);
+		verify(configManager).setRSProfileConfiguration(SlayerConfig.GROUP_NAME, SlayerConfig.STREAK_KEY, 1);
 		assertEquals("", slayerPlugin.getTaskName());
 		assertEquals(0, slayerPlugin.getAmount());
 	}
@@ -460,7 +463,7 @@ public class SlayerPluginTest
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "Perterter", TASK_COMPLETE_NO_POINTS, null, 0);
 		slayerPlugin.onChatMessage(chatMessageEvent);
 
-		verify(slayerConfig).streak(3);
+		verify(configManager).setRSProfileConfiguration(SlayerConfig.GROUP_NAME, SlayerConfig.STREAK_KEY, 3);
 		assertEquals("", slayerPlugin.getTaskName());
 		assertEquals(0, slayerPlugin.getAmount());
 	}
@@ -471,10 +474,10 @@ public class SlayerPluginTest
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "Perterter", TASK_POINTS, null, 0);
 		slayerPlugin.onChatMessage(chatMessageEvent);
 
-		verify(slayerConfig).streak(9);
+		verify(configManager).setRSProfileConfiguration(SlayerConfig.GROUP_NAME, SlayerConfig.STREAK_KEY, 9);
 		assertEquals("", slayerPlugin.getTaskName());
 		assertEquals(0, slayerPlugin.getAmount());
-		verify(slayerConfig).points(18_000);
+		verify(configManager).setRSProfileConfiguration(SlayerConfig.GROUP_NAME, SlayerConfig.POINTS_KEY, 18_000);
 	}
 
 	@Test
@@ -483,10 +486,10 @@ public class SlayerPluginTest
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "Perterter", TASK_LARGE_STREAK, null, 0);
 		slayerPlugin.onChatMessage(chatMessageEvent);
 
-		verify(slayerConfig).streak(2465);
+		verify(configManager).setRSProfileConfiguration(SlayerConfig.GROUP_NAME, SlayerConfig.STREAK_KEY, 2465);
 		assertEquals("", slayerPlugin.getTaskName());
 		assertEquals(0, slayerPlugin.getAmount());
-		verify(slayerConfig).points(131_071);
+		verify(configManager).setRSProfileConfiguration(SlayerConfig.GROUP_NAME, SlayerConfig.POINTS_KEY, 131_071);
 	}
 
 	@Test
@@ -495,7 +498,7 @@ public class SlayerPluginTest
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "Perterter", TASK_COMPETE_TURAEL, null, 0);
 		slayerPlugin.onChatMessage(chatMessageEvent);
 
-		verify(slayerConfig).streak(104);
+		verify(configManager).setRSProfileConfiguration(SlayerConfig.GROUP_NAME, SlayerConfig.STREAK_KEY, 104);
 		assertEquals("", slayerPlugin.getTaskName());
 		assertEquals(0, slayerPlugin.getAmount());
 	}
@@ -506,8 +509,8 @@ public class SlayerPluginTest
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", TASK_MAX_STREAK, null, 0);
 		slayerPlugin.onChatMessage(chatMessageEvent);
 
-		verify(slayerConfig).streak(16_000);
-		verify(slayerConfig).points(131_071);
+		verify(configManager).setRSProfileConfiguration(SlayerConfig.GROUP_NAME, SlayerConfig.STREAK_KEY, 16000);
+		verify(configManager).setRSProfileConfiguration(SlayerConfig.GROUP_NAME, SlayerConfig.POINTS_KEY, 131_071);
 		assertEquals("", slayerPlugin.getTaskName());
 		assertEquals(0, slayerPlugin.getAmount());
 	}
@@ -518,8 +521,8 @@ public class SlayerPluginTest
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", TASK_MAX_POINTS, null, 0);
 		slayerPlugin.onChatMessage(chatMessageEvent);
 
-		verify(slayerConfig).streak(9);
-		verify(slayerConfig).points(131_071);
+		verify(configManager).setRSProfileConfiguration(SlayerConfig.GROUP_NAME, SlayerConfig.STREAK_KEY, 9);
+		verify(configManager).setRSProfileConfiguration(SlayerConfig.GROUP_NAME, SlayerConfig.POINTS_KEY, 131_071);
 		assertEquals("", slayerPlugin.getTaskName());
 		assertEquals(0, slayerPlugin.getAmount());
 	}
@@ -530,8 +533,8 @@ public class SlayerPluginTest
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", TASK_WILDERNESS, null, 0);
 		slayerPlugin.onChatMessage(chatMessageEvent);
 
-		verify(slayerConfig).streak(9);
-		verify(slayerConfig).points(18_000);
+		verify(configManager).setRSProfileConfiguration(SlayerConfig.GROUP_NAME, SlayerConfig.STREAK_KEY, 9);
+		verify(configManager).setRSProfileConfiguration(SlayerConfig.GROUP_NAME, SlayerConfig.POINTS_KEY, 18_000);
 		assertEquals("", slayerPlugin.getTaskName());
 		assertEquals(0, slayerPlugin.getAmount());
 	}
@@ -547,6 +550,8 @@ public class SlayerPluginTest
 
 		assertEquals("", slayerPlugin.getTaskName());
 		assertEquals(0, slayerPlugin.getAmount());
+
+		verify(configManager).unsetRSProfileConfiguration(SlayerConfig.GROUP_NAME, SlayerConfig.TASK_LOC_KEY);
 	}
 
 	@Test
@@ -722,47 +727,10 @@ public class SlayerPluginTest
 	public void testBraceletSlaughter()
 	{
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", BRACLET_SLAUGHTER, null, 0);
-
 		slayerPlugin.setAmount(42);
-		slayerPlugin.setSlaughterChargeCount(10);
 
 		slayerPlugin.onChatMessage(chatMessageEvent);
 
-		assertEquals(9, slayerPlugin.getSlaughterChargeCount());
-		assertEquals(43, slayerPlugin.getAmount());
-
-		chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", CHAT_BRACELET_SLAUGHTER_CHARGE, null, 0);
-		slayerPlugin.onChatMessage(chatMessageEvent);
-
-		assertEquals(12, slayerPlugin.getSlaughterChargeCount());
-
-		chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", CHAT_BRACELET_SLAUGHTER_CHARGE_ONE, null, 0);
-		slayerPlugin.onChatMessage(chatMessageEvent);
-
-		assertEquals(1, slayerPlugin.getSlaughterChargeCount());
-
-		slayerPlugin.setSlaughterChargeCount(1);
-		chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", BRACLET_SLAUGHTER_V3, null, 0);
-		slayerPlugin.onChatMessage(chatMessageEvent);
-
-		assertEquals(30, slayerPlugin.getSlaughterChargeCount());
-
-		Widget braceletBreakWidget = mock(Widget.class);
-		when(braceletBreakWidget.getText()).thenReturn(BREAK_SLAUGHTER);
-		when(client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT)).thenReturn(braceletBreakWidget);
-
-		slayerPlugin.setSlaughterChargeCount(-1);
-		slayerPlugin.onGameTick(new GameTick());
-		assertEquals(30, slayerPlugin.getSlaughterChargeCount());
-
-		chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", BRACLET_SLAUGHTER_V2, null, 0);
-
-		slayerPlugin.setAmount(42);
-		slayerPlugin.setSlaughterChargeCount(2);
-
-		slayerPlugin.onChatMessage(chatMessageEvent);
-
-		assertEquals(1, slayerPlugin.getSlaughterChargeCount());
 		assertEquals(43, slayerPlugin.getAmount());
 	}
 
@@ -770,48 +738,11 @@ public class SlayerPluginTest
 	public void testBraceletExpeditious()
 	{
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", BRACLET_EXPEDITIOUS, null, 0);
-
 		slayerPlugin.setAmount(42);
-		slayerPlugin.setExpeditiousChargeCount(10);
 
 		slayerPlugin.onChatMessage(chatMessageEvent);
 
 		assertEquals(41, slayerPlugin.getAmount());
-		assertEquals(9, slayerPlugin.getExpeditiousChargeCount());
-
-		chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", CHAT_BRACELET_EXPEDITIOUS_CHARGE, null, 0);
-		slayerPlugin.onChatMessage(chatMessageEvent);
-
-		assertEquals(12, slayerPlugin.getExpeditiousChargeCount());
-
-		chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", CHAT_BRACELET_EXPEDITIOUS_CHARGE_ONE, null, 0);
-		slayerPlugin.onChatMessage(chatMessageEvent);
-
-		assertEquals(1, slayerPlugin.getExpeditiousChargeCount());
-
-		slayerPlugin.setExpeditiousChargeCount(1);
-		chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", BRACLET_EXPEDITIOUS_V3, null, 0);
-		slayerPlugin.onChatMessage(chatMessageEvent);
-
-		assertEquals(30, slayerPlugin.getExpeditiousChargeCount());
-
-		Widget braceletBreakWidget = mock(Widget.class);
-		when(braceletBreakWidget.getText()).thenReturn(BREAK_EXPEDITIOUS);
-		when(client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT)).thenReturn(braceletBreakWidget);
-
-		slayerPlugin.setExpeditiousChargeCount(-1);
-		slayerPlugin.onGameTick(new GameTick());
-		assertEquals(30, slayerPlugin.getExpeditiousChargeCount());
-
-		chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", BRACLET_EXPEDITIOUS_V2, null, 0);
-
-		slayerPlugin.setAmount(42);
-		slayerPlugin.setExpeditiousChargeCount(2);
-
-		slayerPlugin.onChatMessage(chatMessageEvent);
-
-		assertEquals(41, slayerPlugin.getAmount());
-		assertEquals(1, slayerPlugin.getExpeditiousChargeCount());
 	}
 
 	@Test
@@ -855,14 +786,15 @@ public class SlayerPluginTest
 		when(slayerConfig.taskCommand()).thenReturn(true);
 		when(chatClient.getTask(anyString())).thenReturn(task);
 
+		MessageNode messageNode = mock(MessageNode.class);
 		ChatMessage setMessage = new ChatMessage();
 		setMessage.setType(ChatMessageType.PUBLICCHAT);
 		setMessage.setName("Adam");
-		setMessage.setMessageNode(mock(MessageNode.class));
+		setMessage.setMessageNode(messageNode);
 
 		slayerPlugin.taskLookup(setMessage, "!task");
 
-		verify(chatMessageManager).update(any(MessageNode.class));
+		verify(messageNode).setRuneLiteFormatMessage(anyString());
 	}
 
 	@Test
@@ -877,14 +809,15 @@ public class SlayerPluginTest
 		when(slayerConfig.taskCommand()).thenReturn(true);
 		when(chatClient.getTask(anyString())).thenReturn(task);
 
+		MessageNode messageNode = mock(MessageNode.class);
 		ChatMessage chatMessage = new ChatMessage();
 		chatMessage.setType(ChatMessageType.PUBLICCHAT);
 		chatMessage.setName("Adam");
-		chatMessage.setMessageNode(mock(MessageNode.class));
+		chatMessage.setMessageNode(messageNode);
 
 		slayerPlugin.taskLookup(chatMessage, "!task");
 
-		verify(chatMessageManager, never()).update(any(MessageNode.class));
+		verify(messageNode, never()).setRuneLiteFormatMessage(anyString());
 	}
 
 	@Test
@@ -919,7 +852,10 @@ public class SlayerPluginTest
 	@Test
 	public void infoboxNotAddedOnLogin()
 	{
-		when(slayerConfig.taskName()).thenReturn(Task.BLOODVELD.getName());
+		when(slayerPlugin.getStringProfileConfig(SlayerConfig.TASK_NAME_KEY)).thenReturn(Task.BLOODVELD.getName());
+		when(slayerPlugin.getIntProfileConfig(SlayerConfig.AMOUNT_KEY)).thenReturn(50);
+		// Lenient required as this is not called assuming correct plugin logic
+		lenient().when(slayerConfig.showInfobox()).thenReturn(true);
 
 		GameStateChanged loggingIn = new GameStateChanged();
 		loggingIn.setGameState(GameState.LOGGING_IN);
@@ -949,14 +885,13 @@ public class SlayerPluginTest
 		slayerPlugin.onStatChanged(statChanged);
 
 		NPCComposition npcComposition = mock(NPCComposition.class);
+		when(npcComposition.getName()).thenReturn("Suqah");
 		when(npcComposition.getActions()).thenReturn(new String[]{"Attack"});
 
 		NPC npc1 = mock(NPC.class);
-		when(npc1.getName()).thenReturn("Suqah");
 		when(npc1.getTransformedComposition()).thenReturn(npcComposition);
 
 		NPC npc2 = mock(NPC.class);
-		when(npc2.getName()).thenReturn("Suqah");
 		when(npc2.getTransformedComposition()).thenReturn(npcComposition);
 
 		when(client.getNpcs()).thenReturn(Arrays.asList(npc1, npc2));
@@ -968,7 +903,7 @@ public class SlayerPluginTest
 		slayerPlugin.onGameTick(new GameTick());
 
 		// Damage both npcs
-		Hitsplat hitsplat = new Hitsplat(Hitsplat.HitsplatType.DAMAGE_ME, 1, 1);
+		Hitsplat hitsplat = new Hitsplat(HitsplatID.DAMAGE_ME, 1, 1);
 		HitsplatApplied hitsplatApplied = new HitsplatApplied();
 		hitsplatApplied.setHitsplat(hitsplat);
 		hitsplatApplied.setActor(npc1);
@@ -993,5 +928,31 @@ public class SlayerPluginTest
 
 		assertEquals("Suqahs", slayerPlugin.getTaskName());
 		assertEquals(229, slayerPlugin.getAmount()); // 2 kills
+	}
+
+	@Test
+	public void npcMatching()
+	{
+		assertTrue(matches("Abyssal demon", Task.ABYSSAL_DEMONS));
+		assertTrue(matches("Baby blue dragon", Task.BLUE_DRAGONS));
+		assertTrue(matches("Duck", Task.BIRDS));
+		assertTrue(matches("Donny the Lad", Task.BANDITS));
+
+		assertFalse(matches("Rat", Task.PIRATES));
+		assertFalse(matches("Wolf", Task.WEREWOLVES));
+		assertFalse(matches("Scorpia's offspring", Task.SCORPIA));
+		assertFalse(matches("Jonny the beard", Task.BEARS));
+	}
+
+	private boolean matches(final String npcName, final Task task)
+	{
+		final NPC npc = mock(NPC.class);
+		final NPCComposition comp = mock(NPCComposition.class);
+		when(npc.getTransformedComposition()).thenReturn(comp);
+		when(comp.getName()).thenReturn(npcName);
+		when(comp.getActions()).thenReturn(new String[] { "Attack" });
+
+		slayerPlugin.setTask(task.getName(), 0, 0);
+		return slayerPlugin.isTarget(npc);
 	}
 }

@@ -28,7 +28,7 @@ package net.runelite.client.plugins.xpupdater;
 
 import com.google.inject.Provides;
 import java.io.IOException;
-import java.util.Objects;
+import java.util.EnumSet;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -73,7 +73,7 @@ public class XpUpdaterPlugin extends Plugin
 	@Inject
 	private OkHttpClient okHttpClient;
 
-	private String lastUsername;
+	private long lastAccount;
 	private boolean fetchXp;
 	private long lastXp;
 
@@ -87,6 +87,7 @@ public class XpUpdaterPlugin extends Plugin
 	protected void startUp()
 	{
 		fetchXp = true;
+		lastAccount = -1L;
 	}
 
 	@Subscribe
@@ -95,9 +96,9 @@ public class XpUpdaterPlugin extends Plugin
 		GameState state = gameStateChanged.getGameState();
 		if (state == GameState.LOGGED_IN)
 		{
-			if (!Objects.equals(client.getUsername(), lastUsername))
+			if (lastAccount != client.getAccountHash())
 			{
-				lastUsername = client.getUsername();
+				lastAccount = client.getAccountHash();
 				fetchXp = true;
 			}
 		}
@@ -113,8 +114,8 @@ public class XpUpdaterPlugin extends Plugin
 			// Don't submit update unless xp threshold is reached
 			if (Math.abs(totalXp - lastXp) > XP_THRESHOLD)
 			{
-				log.debug("Submitting update for {}", local.getName());
-				update(local.getName());
+				log.debug("Submitting update for {} accountHash {}", local.getName(), lastAccount);
+				update(lastAccount, local.getName());
 				lastXp = totalXp;
 			}
 		}
@@ -130,55 +131,82 @@ public class XpUpdaterPlugin extends Plugin
 		}
 	}
 
-	private void update(String username)
+	private void update(long accountHash, String username)
 	{
-		String reformedUsername = username.replace(" ", "_");
+		EnumSet<WorldType> worldTypes = client.getWorldType();
+		username = username.replace(" ", "_");
+		updateCml(username, worldTypes);
+		updateTempleosrs(accountHash, username, worldTypes);
+		updateWom(username, worldTypes);
+	}
 
-		if (config.cml())
+	private void updateCml(String username, EnumSet<WorldType> worldTypes)
+	{
+		if (config.cml()
+			&& !worldTypes.contains(WorldType.SEASONAL)
+			&& !worldTypes.contains(WorldType.DEADMAN)
+			&& !worldTypes.contains(WorldType.NOSAVE_MODE)
+			&& !worldTypes.contains(WorldType.FRESH_START_WORLD))
 		{
 			HttpUrl url = new HttpUrl.Builder()
-					.scheme("https")
-					.host("crystalmathlabs.com")
-					.addPathSegment("tracker")
-					.addPathSegment("api.php")
-					.addQueryParameter("type", "update")
-					.addQueryParameter("player", reformedUsername)
-					.build();
+				.scheme("https")
+				.host("crystalmathlabs.com")
+				.addPathSegment("tracker")
+				.addPathSegment("api.php")
+				.addQueryParameter("type", "update")
+				.addQueryParameter("player", username)
+				.build();
 
 			Request request = new Request.Builder()
-					.header("User-Agent", "RuneLite")
-					.url(url)
-					.build();
+				.header("User-Agent", "RuneLite")
+				.url(url)
+				.build();
 
 			sendRequest("CrystalMathLabs", request);
 		}
+	}
 
-		if (config.templeosrs())
+	private void updateTempleosrs(long accountHash, String username, EnumSet<WorldType> worldTypes)
+	{
+		if (config.templeosrs()
+			&& !worldTypes.contains(WorldType.SEASONAL)
+			&& !worldTypes.contains(WorldType.DEADMAN)
+			&& !worldTypes.contains(WorldType.NOSAVE_MODE))
 		{
-			HttpUrl url = new HttpUrl.Builder()
-					.scheme("https")
-					.host("templeosrs.com")
-					.addPathSegment("php")
-					.addPathSegment("add_datapoint.php")
-					.addQueryParameter("player", reformedUsername)
-					.build();
+			HttpUrl.Builder url = new HttpUrl.Builder()
+				.scheme("https")
+				.host("templeosrs.com")
+				.addPathSegment("php")
+				.addPathSegment("add_datapoint.php")
+				.addQueryParameter("player", username)
+				.addQueryParameter("accountHash", Long.toString(accountHash));
+
+			if (worldTypes.contains(WorldType.FRESH_START_WORLD))
+			{
+				url.addQueryParameter("worldType", "fsw");
+			}
 
 			Request request = new Request.Builder()
-					.header("User-Agent", "RuneLite")
-					.url(url)
-					.build();
+				.header("User-Agent", "RuneLite")
+				.url(url.build())
+				.build();
 
 			sendRequest("TempleOSRS", request);
 		}
+	}
 
-		if (config.wiseoldman())
+	private void updateWom(String username, EnumSet<WorldType> worldTypes)
+	{
+		if (config.wiseoldman()
+			&& !worldTypes.contains(WorldType.DEADMAN)
+			&& !worldTypes.contains(WorldType.NOSAVE_MODE))
 		{
-			final boolean leagueWorld = client.getWorldType().contains(WorldType.LEAGUE);
-			final String host = leagueWorld ? "trailblazer.wiseoldman.net" : "wiseoldman.net";
-
 			HttpUrl url = new HttpUrl.Builder()
 				.scheme("https")
-				.host(host)
+				.host(
+					worldTypes.contains(WorldType.SEASONAL) ? "seasonal.wiseoldman.net" :
+					worldTypes.contains(WorldType.FRESH_START_WORLD) ? "fsw.wiseoldman.net" :
+						"wiseoldman.net")
 				.addPathSegment("api")
 				.addPathSegment("players")
 				.addPathSegment("track")

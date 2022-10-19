@@ -203,7 +203,8 @@ public class ScreenMarkerPlugin extends Plugin
 			pluginPanel.getSelectedBorderThickness(),
 			pluginPanel.getSelectedColor(),
 			pluginPanel.getSelectedFillColor(),
-			true
+			true,
+			false
 		);
 
 		// Set overlay creator bounds to current position and default size

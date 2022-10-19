@@ -37,12 +37,20 @@ public class NpcDefinition
 	public int[] models;
 	public int[] chatheadModels;
 	public int standingAnimation = -1;
-	public int rotateLeftAnimation = -1;
-	public int rotateRightAnimation = -1;
+	public int idleRotateLeftAnimation = -1;
+	public int idleRotateRightAnimation = -1;
 	public int walkingAnimation = -1;
 	public int rotate180Animation = -1;
-	public int rotate90RightAnimation = -1;
-	public int rotate90LeftAnimation = -1;
+	public int rotateLeftAnimation = -1;
+	public int rotateRightAnimation = -1;
+	public int runAnimation = -1;
+	public int runRotate180Animation = -1;
+	public int runRotateLeftAnimation = -1;
+	public int runRotateRightAnimation = -1;
+	public int crawlAnimation = -1;
+	public int crawlRotate180Animation = -1;
+	public int crawlRotateLeftAnimation = -1;
+	public int crawlRotateRightAnimation = -1;
 	public short[] recolorToFind;
 	public short[] recolorToReplace;
 	public short[] retextureToFind;
@@ -64,4 +72,5 @@ public class NpcDefinition
 	public boolean rotationFlag = true;
 	public boolean isPet;
 	public Map<Integer, Object> params;
+	public int category;
 }

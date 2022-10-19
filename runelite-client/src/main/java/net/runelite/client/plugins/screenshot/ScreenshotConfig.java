@@ -75,6 +75,28 @@ public interface ScreenshotConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "uploadScreenshot",
+		name = "Upload",
+		description = "Configures whether or not screenshots are uploaded to Imgur, or placed on your clipboard",
+		position = 3
+	)
+	default ImageUploadStyle uploadScreenshot()
+	{
+		return ImageUploadStyle.NEITHER;
+	}
+
+	@ConfigItem(
+		keyName = "hotkey",
+		name = "Screenshot hotkey",
+		description = "When you press this key a screenshot will be taken",
+		position = 4
+	)
+	default Keybind hotkey()
+	{
+		return Keybind.NOT_SET;
+	}
+
+	@ConfigItem(
 		keyName = "rewards",
 		name = "Screenshot Rewards",
 		description = "Configures whether screenshots are taken of clues, barrows, and quest completion",
@@ -120,17 +142,6 @@ public interface ScreenshotConfig extends Config
 	default boolean screenshotPet()
 	{
 		return true;
-	}
-
-	@ConfigItem(
-		keyName = "uploadScreenshot",
-		name = "Upload",
-		description = "Configures whether or not screenshots are uploaded to Imgur, or placed on your clipboard",
-		position = 7
-	)
-	default ImageUploadStyle uploadScreenshot()
-	{
-		return ImageUploadStyle.NEITHER;
 	}
 
 	@ConfigItem(
@@ -182,10 +193,22 @@ public interface ScreenshotConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "clanDeath",
+		name = "Screenshot Clan Deaths",
+		description = "Configures whether or not screenshots are automatically taken when clan members die.",
+		position = 12,
+		section = whatSection
+	)
+	default boolean screenshotClanDeath()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "duels",
 		name = "Screenshot Duels",
 		description = "Configures whether or not screenshots are automatically taken of the duel end screen.",
-		position = 12,
+		position = 13,
 		section = whatSection
 	)
 	default boolean screenshotDuels()
@@ -197,7 +220,7 @@ public interface ScreenshotConfig extends Config
 		keyName = "valuableDrop",
 		name = "Screenshot Valuable drops",
 		description = "Configures whether or not screenshots are automatically taken when you receive a valuable drop.",
-		position = 13,
+		position = 14,
 		section = whatSection
 	)
 	default boolean screenshotValuableDrop()
@@ -209,7 +232,7 @@ public interface ScreenshotConfig extends Config
 		keyName = "valuableDropThreshold",
 		name = "Valuable Threshold",
 		description = "The minimum value to save screenshots of valuable drops.",
-		position = 14,
+		position = 15,
 		section = whatSection
 	)
 	default int valuableDropThreshold()
@@ -221,7 +244,7 @@ public interface ScreenshotConfig extends Config
 		keyName = "untradeableDrop",
 		name = "Screenshot Untradeable drops",
 		description = "Configures whether or not screenshots are automatically taken when you receive an untradeable drop.",
-		position = 15,
+		position = 16,
 		section = whatSection
 	)
 	default boolean screenshotUntradeableDrop()
@@ -233,7 +256,7 @@ public interface ScreenshotConfig extends Config
 		keyName = "ccKick",
 		name = "Screenshot Kicks from FC",
 		description = "Take a screenshot when you kick a user from a friends chat.",
-		position = 16,
+		position = 17,
 		section = whatSection
 	)
 	default boolean screenshotKick()
@@ -245,7 +268,7 @@ public interface ScreenshotConfig extends Config
 		keyName = "baHighGamble",
 		name = "Screenshot BA high gambles",
 		description = "Take a screenshot of your reward from a high gamble at Barbarian Assault.",
-		position = 17,
+		position = 18,
 		section = whatSection
 	)
 	default boolean screenshotHighGamble()
@@ -254,13 +277,26 @@ public interface ScreenshotConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "hotkey",
-		name = "Screenshot hotkey",
-		description = "When you press this key a screenshot will be taken",
-		position = 18
+		keyName = "collectionLogEntries",
+		name = "Screenshot collection log entries",
+		description = "Take a screenshot when completing an entry in the collection log",
+		position = 19,
+		section = whatSection
 	)
-	default Keybind hotkey()
+	default boolean screenshotCollectionLogEntries()
 	{
-		return Keybind.NOT_SET;
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "combatAchievements",
+		name = "Screenshot combat achievements",
+		description = "Take a screenshot when completing a combat achievement task",
+		position = 20,
+		section = whatSection
+	)
+	default boolean screenshotCombatAchievements()
+	{
+		return true;
 	}
 }

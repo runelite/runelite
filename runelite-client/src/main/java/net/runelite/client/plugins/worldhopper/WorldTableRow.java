@@ -30,6 +30,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.EnumSet;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import javax.swing.ImageIcon;
@@ -62,7 +63,10 @@ class WorldTableRow extends JPanel
 	private static final Color TOURNAMENT_WORLD = new Color(79, 145, 255);
 	private static final Color MEMBERS_WORLD = new Color(210, 193, 53);
 	private static final Color FREE_WORLD = new Color(200, 200, 200);
-	private static final Color LEAGUE_WORLD = new Color(133, 177, 178);
+	private static final Color SEASONAL_WORLD = new Color(133, 177, 178);
+	private static final Color PVP_ARENA_WORLD = new Color(144, 179, 255);
+	private static final Color QUEST_SPEEDRUNNING_WORLD = new Color(94, 213, 201);
+	private static final Color FRESH_START_WORLD = new Color(255, 211, 83);
 
 	static
 	{
@@ -247,26 +251,41 @@ class WorldTableRow extends JPanel
 			worldField.setForeground(CURRENT_WORLD);
 			return;
 		}
-		else if (world.getTypes().contains(WorldType.PVP)
-			|| world.getTypes().contains(WorldType.HIGH_RISK)
-			|| world.getTypes().contains(WorldType.DEADMAN))
+
+
+		EnumSet<WorldType> types = world.getTypes();
+		if (types.contains(WorldType.PVP)
+			|| types.contains(WorldType.HIGH_RISK)
+			|| types.contains(WorldType.DEADMAN))
 		{
 			activityField.setForeground(DANGEROUS_WORLD);
 		}
-		else if (world.getTypes().contains(WorldType.LEAGUE))
+		else if (types.contains(WorldType.SEASONAL))
 		{
-			activityField.setForeground(LEAGUE_WORLD);
+			activityField.setForeground(SEASONAL_WORLD);
 		}
-		else if (world.getTypes().contains(WorldType.TOURNAMENT))
+		else if (types.contains(WorldType.NOSAVE_MODE))
 		{
 			activityField.setForeground(TOURNAMENT_WORLD);
+		}
+		else if (types.contains(WorldType.PVP_ARENA))
+		{
+			activityField.setForeground(PVP_ARENA_WORLD);
+		}
+		else if (types.contains(WorldType.QUEST_SPEEDRUNNING))
+		{
+			activityField.setForeground(QUEST_SPEEDRUNNING_WORLD);
+		}
+		else if (types.contains(WorldType.FRESH_START_WORLD))
+		{
+			activityField.setForeground(FRESH_START_WORLD);
 		}
 		else
 		{
 			activityField.setForeground(Color.WHITE);
 		}
 
-		worldField.setForeground(world.getTypes().contains(WorldType.MEMBERS) ? MEMBERS_WORLD : FREE_WORLD);
+		worldField.setForeground(types.contains(WorldType.MEMBERS) ? MEMBERS_WORLD : FREE_WORLD);
 	}
 
 	/**
@@ -311,8 +330,46 @@ class WorldTableRow extends JPanel
 		JPanel column = new JPanel(new BorderLayout());
 		column.setBorder(new EmptyBorder(0, 5, 0, 5));
 
-		activityField = new JLabel(world.getActivity());
+		String activity = world.getActivity();
+		activityField = new JLabel(activity);
 		activityField.setFont(FontManager.getRunescapeSmallFont());
+		if (activity != null && activity.length() > 16)
+		{
+			activityField.setToolTipText(activity);
+			// Pass up events - https://stackoverflow.com/a/14932443
+			activityField.addMouseListener(new MouseAdapter()
+			{
+				@Override
+				public void mouseClicked(MouseEvent e)
+				{
+					dispatchEvent(e);
+				}
+
+				@Override
+				public void mousePressed(MouseEvent e)
+				{
+					dispatchEvent(e);
+				}
+
+				@Override
+				public void mouseReleased(MouseEvent e)
+				{
+					dispatchEvent(e);
+				}
+
+				@Override
+				public void mouseEntered(MouseEvent e)
+				{
+					dispatchEvent(e);
+				}
+
+				@Override
+				public void mouseExited(MouseEvent e)
+				{
+					dispatchEvent(e);
+				}
+			});
+		}
 
 		column.add(activityField, BorderLayout.WEST);
 

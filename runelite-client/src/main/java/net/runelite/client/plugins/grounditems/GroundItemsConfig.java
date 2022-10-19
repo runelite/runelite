@@ -30,8 +30,9 @@ import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.Units;
 import net.runelite.client.config.ConfigSection;
+import net.runelite.client.config.Keybind;
+import net.runelite.client.config.Units;
 import net.runelite.client.plugins.grounditems.config.DespawnTimerMode;
 import net.runelite.client.plugins.grounditems.config.HighlightTier;
 import net.runelite.client.plugins.grounditems.config.ItemHighlightMode;
@@ -45,8 +46,7 @@ public interface GroundItemsConfig extends Config
 	@ConfigSection(
 		name = "Item Lists",
 		description = "The highlighted and hidden item lists",
-		position = 0,
-		closedByDefault = true
+		position = 0
 	)
 	String itemLists = "itemLists";
 
@@ -128,6 +128,17 @@ public interface GroundItemsConfig extends Config
 		position = 5
 	)
 	default boolean recolorMenuHiddenItems()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "deprioritizeHiddenItems",
+		name = "Deprioritize Menu Hidden Items",
+		description = "Depriotizies the menu options for items which are hidden, requiring a right click to pick up.",
+		position = 5
+	)
+	default boolean deprioritizeHiddenItems()
 	{
 		return false;
 	}
@@ -402,5 +413,49 @@ public interface GroundItemsConfig extends Config
 	default boolean textOutline()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showLootbeamForHighlighted",
+		name = "Highlighted item lootbeams",
+		description = "Configures lootbeams to show for all highlighted items.",
+		position = 30
+	)
+	default boolean showLootbeamForHighlighted()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showLootbeamTier",
+		name = "Lootbeam tier",
+		description = "Configures which price tiers will trigger a lootbeam",
+		position = 31
+	)
+	default HighlightTier showLootbeamTier()
+	{
+		return HighlightTier.HIGH;
+	}
+
+	@ConfigItem(
+		keyName = "lootbeamStyle",
+		name = "Lootbeam Style",
+		description = "Style of lootbeam to use",
+		position = 32
+	)
+	default Lootbeam.Style lootbeamStyle()
+	{
+		return Lootbeam.Style.MODERN;
+	}
+
+	@ConfigItem(
+		keyName = "hotkey",
+		name = "Hotkey",
+		description = "Configures the hotkey used by the Ground Items plugin",
+		position = 33
+	)
+	default Keybind hotkey()
+	{
+		return Keybind.ALT;
 	}
 }

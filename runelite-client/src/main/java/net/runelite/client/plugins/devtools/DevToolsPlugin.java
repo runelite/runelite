@@ -38,6 +38,7 @@ import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
+import net.runelite.api.IndexedSprite;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
@@ -47,6 +48,7 @@ import net.runelite.api.VarbitComposition;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.StatChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.kit.KitType;
@@ -124,7 +126,6 @@ public class DevToolsPlugin extends Plugin
 	private DevToolsButton graphicsObjects;
 	private DevToolsButton walls;
 	private DevToolsButton decorations;
-	private DevToolsButton inventory;
 	private DevToolsButton projectiles;
 	private DevToolsButton location;
 	private DevToolsButton chunkBorders;
@@ -143,6 +144,8 @@ public class DevToolsPlugin extends Plugin
 	private DevToolsButton soundEffects;
 	private DevToolsButton scriptInspector;
 	private DevToolsButton inventoryInspector;
+	private DevToolsButton roofs;
+	private DevToolsButton shell;
 	private NavigationButton navButton;
 
 	@Provides
@@ -164,7 +167,6 @@ public class DevToolsPlugin extends Plugin
 		walls = new DevToolsButton("Walls");
 		decorations = new DevToolsButton("Decorations");
 
-		inventory = new DevToolsButton("Inventory");
 		projectiles = new DevToolsButton("Projectiles");
 
 		location = new DevToolsButton("Location");
@@ -187,6 +189,8 @@ public class DevToolsPlugin extends Plugin
 		soundEffects = new DevToolsButton("Sound Effects");
 		scriptInspector = new DevToolsButton("Script Inspector");
 		inventoryInspector = new DevToolsButton("Inventory Inspector");
+		roofs = new DevToolsButton("Roofs");
+		shell = new DevToolsButton("Shell");
 
 		overlayManager.add(overlay);
 		overlayManager.add(locationOverlay);
@@ -270,7 +274,7 @@ public class DevToolsPlugin extends Plugin
 				client.queueChangedVarp(varp);
 				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Set VarPlayer " + varp + " to " + value, null);
 				VarbitChanged varbitChanged = new VarbitChanged();
-				varbitChanged.setIndex(varp);
+				varbitChanged.setVarpId(varp);
 				eventBus.post(varbitChanged); // fake event
 				break;
 			}
@@ -343,7 +347,7 @@ public class DevToolsPlugin extends Plugin
 				int id = Integer.parseInt(args[0]);
 				Player localPlayer = client.getLocalPlayer();
 				localPlayer.setAnimation(id);
-				localPlayer.setActionFrame(0);
+				localPlayer.setAnimationFrame(0);
 				break;
 			}
 			case "gfx":
@@ -426,6 +430,25 @@ public class DevToolsPlugin extends Plugin
 					.build());
 				break;
 			}
+			case "modicons":
+			{
+				final ChatMessageBuilder builder = new ChatMessageBuilder();
+				final IndexedSprite[] modIcons = client.getModIcons();
+				for (int i = 0; i < modIcons.length; i++)
+				{
+					builder.append(i + "=").img(i);
+
+					if (i != modIcons.length - 1)
+					{
+						builder.append(", ");
+					}
+				}
+				chatMessageManager.queue(QueuedMessage.builder()
+					.type(ChatMessageType.GAMEMESSAGE)
+					.runeLiteFormattedMessage(builder.build())
+					.build());
+				break;
+			}
 		}
 	}
 
@@ -441,15 +464,15 @@ public class DevToolsPlugin extends Plugin
 
 		if (EXAMINE_MENU_ACTIONS.contains(action))
 		{
-			MenuEntry[] entries = client.getMenuEntries();
-			MenuEntry entry = entries[entries.length - 1];
+			MenuEntry entry = event.getMenuEntry();
 
 			final int identifier = event.getIdentifier();
 			String info = "ID: ";
 
 			if (action == MenuAction.EXAMINE_NPC)
 			{
-				NPC npc = client.getCachedNPCs()[identifier];
+				NPC npc = entry.getNpc();
+				assert npc != null;
 				info += npc.getId();
 			}
 			else
@@ -464,7 +487,15 @@ public class DevToolsPlugin extends Plugin
 			}
 
 			entry.setTarget(entry.getTarget() + " " + ColorUtil.prependColorTag("(" + info + ")", JagexColors.MENU_TARGET));
-			client.setMenuEntries(entries);
+		}
+	}
+
+	@Subscribe
+	public void onScriptCallbackEvent(ScriptCallbackEvent ev)
+	{
+		if ("devtoolsEnabled".equals(ev.getEventName()))
+		{
+			client.getIntStack()[client.getIntStackSize() - 1] = 1;
 		}
 	}
 }

@@ -30,6 +30,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.Stroke;
@@ -42,22 +43,27 @@ import net.runelite.api.TileObject;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.util.ColorUtil;
 
-
-/**
- * Created by Kyle Fricilone on Jun 09, 2017.
- */
 public class OverlayUtil
 {
 	private static final int MINIMAP_DOT_RADIUS = 4;
-	private static final double UNIT = Math.PI / 1024.0d;
 
 	public static void renderPolygon(Graphics2D graphics, Shape poly, Color color)
 	{
+		renderPolygon(graphics, poly, color, new BasicStroke(2));
+	}
+
+	public static void renderPolygon(Graphics2D graphics, Shape poly, Color color, Stroke borderStroke)
+	{
+		renderPolygon(graphics, poly, color, new Color(0, 0, 0, 50), borderStroke);
+	}
+
+	public static void renderPolygon(Graphics2D graphics, Shape poly, Color color, Color fillColor, Stroke borderStroke)
+	{
 		graphics.setColor(color);
 		final Stroke originalStroke = graphics.getStroke();
-		graphics.setStroke(new BasicStroke(2));
+		graphics.setStroke(borderStroke);
 		graphics.draw(poly);
-		graphics.setColor(new Color(0, 0, 0, 50));
+		graphics.setColor(fillColor);
 		graphics.fill(poly);
 		graphics.setStroke(originalStroke);
 	}
@@ -70,14 +76,15 @@ public class OverlayUtil
 		graphics.fillOval(mini.getX() - MINIMAP_DOT_RADIUS / 2, mini.getY() - MINIMAP_DOT_RADIUS / 2, MINIMAP_DOT_RADIUS, MINIMAP_DOT_RADIUS);
 	}
 
+	@Deprecated
 	public static void renderMinimapRect(Client client, Graphics2D graphics, Point center, int width, int height, Color color)
 	{
-		double angle = client.getMapAngle() * UNIT;
+		double angle = client.getMapAngle() * Perspective.UNIT;
 
 		graphics.setColor(color);
 		graphics.rotate(angle, center.getX(), center.getY());
-		graphics.drawRect(center.getX() - width / 2, center.getY() - height / 2, width, height);
-		graphics.rotate(-angle , center.getX(), center.getY());
+		graphics.drawRect(center.getX() - width / 2, center.getY() - height / 2, width - 1, height - 1);
+		graphics.rotate(-angle, center.getX(), center.getY());
 	}
 
 	public static void renderTextLocation(Graphics2D graphics, Point txtLoc, String text, Color color)
@@ -99,7 +106,7 @@ public class OverlayUtil
 
 	public static void renderImageLocation(Client client, Graphics2D graphics, LocalPoint localPoint, BufferedImage image, int zOffset)
 	{
-		net.runelite.api.Point imageLocation = Perspective.getCanvasImageLocation(client, localPoint, image, zOffset);
+		Point imageLocation = Perspective.getCanvasImageLocation(client, localPoint, image, zOffset);
 		if (imageLocation != null)
 		{
 			renderImageLocation(graphics, imageLocation, image);
@@ -176,7 +183,7 @@ public class OverlayUtil
 		renderImageLocation(client, graphics, localLocation, image, 0);
 	}
 
-	public static void renderHoverableArea(Graphics2D graphics, Shape area, net.runelite.api.Point mousePosition, Color fillColor, Color borderColor, Color borderHoverColor)
+	public static void renderHoverableArea(Graphics2D graphics, Shape area, Point mousePosition, Color fillColor, Color borderColor, Color borderHoverColor)
 	{
 		if (area != null)
 		{
@@ -200,33 +207,32 @@ public class OverlayUtil
 		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 	}
 
-	public static java.awt.Point padPosition(OverlayPosition position, Dimension dimension, final int padding)
+	static void shiftSnapCorner(OverlayPosition overlayPosition, Rectangle snapCorner, Rectangle bounds, int padding)
 	{
-		final java.awt.Point result = new java.awt.Point();
-
-		switch (position)
+		// translate corner for padding and also based on where the overlay bounds are now
+		int sX = snapCorner.x, sY = snapCorner.y;
+		switch (overlayPosition)
 		{
-			case DYNAMIC:
-			case TOOLTIP:
-				break;
 			case BOTTOM_LEFT:
-				result.x += dimension.width + (dimension.width == 0 ? 0 : padding);
+				sX = Math.max(sX, bounds.x + bounds.width + padding);
 				break;
 			case BOTTOM_RIGHT:
-				result.x -= dimension.width + (dimension.width == 0 ? 0 : padding);
+				sX = Math.min(sX, bounds.x - padding);
 				break;
 			case TOP_LEFT:
 			case TOP_CENTER:
 			case CANVAS_TOP_RIGHT:
 			case TOP_RIGHT:
-				result.y += dimension.height + (dimension.height == 0 ? 0 : padding);
+				sY = Math.max(sY, bounds.y + bounds.height + padding);
 				break;
 			case ABOVE_CHATBOX_RIGHT:
-				result.y -= dimension.height + (dimension.height == 0 ? 0 : padding);
+				sY = Math.min(sY, bounds.y - padding);
 				break;
+			default:
+				throw new IllegalArgumentException();
 		}
-
-		return result;
+		snapCorner.x = sX;
+		snapCorner.y = sY;
 	}
 
 	public static java.awt.Point transformPosition(OverlayPosition position, Dimension dimension)
@@ -235,8 +241,6 @@ public class OverlayUtil
 
 		switch (position)
 		{
-			case DYNAMIC:
-			case TOOLTIP:
 			case TOP_LEFT:
 				break;
 			case TOP_CENTER:
@@ -253,6 +257,8 @@ public class OverlayUtil
 			case TOP_RIGHT:
 				result.x = -dimension.width;
 				break;
+			default:
+				throw new IllegalArgumentException();
 		}
 
 		return result;

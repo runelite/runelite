@@ -27,7 +27,6 @@ package net.runelite.client.plugins.inventorygrid;
 
 import com.google.inject.Inject;
 import java.awt.AlphaComposite;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -47,9 +46,6 @@ class InventoryGridOverlay extends Overlay
 {
 	private static final int INVENTORY_SIZE = 28;
 	private static final int DISTANCE_TO_ACTIVATE_HOVER = 5;
-
-	private static final Color HIGHLIGHT = new Color(0, 255, 0, 45);
-	private static final Color GRID = new Color(255, 255, 255, 45);
 
 	private final InventoryGridConfig config;
 	private final Client client;
@@ -82,16 +78,13 @@ class InventoryGridOverlay extends Overlay
 		}
 
 		// grid is only supported on bank inventory and inventory
-		Widget inventoryWidget = draggingWidget.isIf3() ?
-			client.getWidget(WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER) :
-			client.getWidget(WidgetInfo.INVENTORY);
-
-		// with if3 the dragged widget is a child of the inventory, with if1 it is an item of the inventory (and the same widget)
-		if (inventoryWidget == null || (draggingWidget.isIf3() ? draggingWidget.getParent() != inventoryWidget : draggingWidget != inventoryWidget))
+		if (draggingWidget.getId() != WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getId()
+			&& draggingWidget.getId() != WidgetInfo.INVENTORY.getId())
 		{
 			return null;
 		}
 
+		final Widget inventoryWidget = draggingWidget.getParent();
 		final net.runelite.api.Point mouse = client.getMouseCanvasPosition();
 		final Point mousePoint = new Point(mouse.getX(), mouse.getY());
 		final int draggedItemIndex = draggingWidget.isIf3() ? draggingWidget.getIndex() : client.getIf1DraggedItemIndex();
@@ -104,7 +97,7 @@ class InventoryGridOverlay extends Overlay
 		}
 
 		if (draggedItem.getId() == -1
-			|| client.getItemPressedDuration() < config.dragDelay() / Constants.CLIENT_TICK_LENGTH
+			|| (draggingWidget.isIf3() ? client.getDragTime() : client.getItemPressedDuration()) < config.dragDelay() / Constants.CLIENT_TICK_LENGTH
 			|| !hoverActive && initialMousePoint.distance(mousePoint) < DISTANCE_TO_ACTIVATE_HOVER)
 		{
 			return null;
@@ -126,12 +119,12 @@ class InventoryGridOverlay extends Overlay
 
 			if (config.showHighlight() && inBounds)
 			{
-				graphics.setColor(HIGHLIGHT);
+				graphics.setColor(config.highlightColor());
 				graphics.fill(bounds);
 			}
 			else if (config.showGrid())
 			{
-				graphics.setColor(GRID);
+				graphics.setColor(config.gridColor());
 				graphics.fill(bounds);
 			}
 		}

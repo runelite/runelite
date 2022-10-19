@@ -61,13 +61,11 @@ import net.runelite.api.Varbits;
 import net.runelite.api.WallObject;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.GameObjectChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.api.events.WallObjectChanged;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.api.widgets.Widget;
@@ -312,24 +310,6 @@ public class MotherlodePlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onWallObjectChanged(WallObjectChanged event)
-	{
-		if (!inMlm)
-		{
-			return;
-		}
-
-		WallObject previous = event.getPrevious();
-		WallObject wallObject = event.getWallObject();
-
-		veins.remove(previous);
-		if (MINE_SPOTS.contains(wallObject.getId()))
-		{
-			veins.add(wallObject);
-		}
-	}
-
-	@Subscribe
 	public void onWallObjectDespawned(WallObjectDespawned event)
 	{
 		if (!inMlm)
@@ -349,18 +329,6 @@ public class MotherlodePlugin extends Plugin
 			return;
 		}
 
-		addGameObject(event.getGameObject());
-	}
-
-	@Subscribe
-	public void onGameObjectChanged(GameObjectChanged event)
-	{
-		if (!inMlm)
-		{
-			return;
-		}
-
-		removeGameObject(event.getPrevious());
 		addGameObject(event.getGameObject());
 	}
 
@@ -490,8 +458,8 @@ public class MotherlodePlugin extends Plugin
 
 	private void refreshSackValues()
 	{
-		curSackSize = client.getVar(Varbits.SACK_NUMBER);
-		boolean sackUpgraded = client.getVar(Varbits.SACK_UPGRADED) == 1;
+		curSackSize = client.getVarbitValue(Varbits.SACK_NUMBER);
+		boolean sackUpgraded = client.getVarbitValue(Varbits.SACK_UPGRADED) == 1;
 		maxSackSize = sackUpgraded ? SACK_LARGE_SIZE : SACK_SIZE;
 	}
 

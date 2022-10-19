@@ -35,7 +35,7 @@ enum MinigameLocation
 	BURGH_DE_ROTT_RAMBLE("Burgh de Rott Ramble", new WorldPoint(3434, 3487, 0)),
 	CASTLE_WARS("Castle Wars", new WorldPoint(2439, 3092, 0)),
 	CASTLE_WARS_PORTAL("Castle Wars Portal", new WorldPoint(3140, 3626, 0)),
-	DUEL_ARENA("Duel Arena", new WorldPoint(3313, 3238, 0)),
+	PVP_ARENA("PvP Arena", new WorldPoint(3313, 3238, 0)),
 	MAGE_ARENA("Mage Arena", new WorldPoint(3095, 3957, 0)),
 	NIGHTMARE_ZONE("Nightmare Zone", new WorldPoint(2606, 3115, 0)),
 	PEST_CONTROL_NOVICE("Pest Control Novice", new WorldPoint(2660, 2637, 0)),
@@ -78,7 +78,8 @@ enum MinigameLocation
 	MAHOGANY_HOMES_HOSIDIUS("Mahogany Homes", new WorldPoint(1780, 3623, 0)),
 	MAHOGANY_HOMES_VARROCK("Mahogany Homes", new WorldPoint(3240, 3471, 0)),
 	SOUL_WARS("Soul Wars", new WorldPoint(2209, 2855, 0)),
-	SOUL_WARS_EDGEVILLE_PORTAL("Soul Wars", new WorldPoint(3082, 3474, 0));
+	SOUL_WARS_EDGEVILLE_PORTAL("Soul Wars", new WorldPoint(3082, 3474, 0)),
+	TZHAAR_KET_RAKS_CHALLENGES("TzHaar-Ket-Rak's Challenges", new WorldPoint(2544, 5111, 0));
 
 	private final String tooltip;
 	private final WorldPoint location;

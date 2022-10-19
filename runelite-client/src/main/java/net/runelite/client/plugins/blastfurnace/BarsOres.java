@@ -24,13 +24,15 @@
  */
 package net.runelite.client.plugins.blastfurnace;
 
-import com.google.common.collect.ImmutableMap;
-import java.util.Map;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.ItemID;
 import net.runelite.api.Varbits;
+import net.runelite.api.annotations.Varbit;
 
-public enum BarsOres
+@AllArgsConstructor
+@Getter
+enum BarsOres
 {
 	COPPER_ORE(Varbits.BLAST_FURNACE_COPPER_ORE, ItemID.COPPER_ORE),
 	TIN_ORE(Varbits.BLAST_FURNACE_TIN_ORE, ItemID.TIN_ORE),
@@ -50,33 +52,7 @@ public enum BarsOres
 	SILVER_BAR(Varbits.BLAST_FURNACE_SILVER_BAR, ItemID.SILVER_BAR),
 	GOLD_BAR(Varbits.BLAST_FURNACE_GOLD_BAR, ItemID.GOLD_BAR);
 
-	private static final Map<Varbits, BarsOres> VARBIT;
-
-	static
-	{
-		ImmutableMap.Builder<Varbits, BarsOres> builder = new ImmutableMap.Builder<>();
-
-		for (BarsOres s : values())
-		{
-			builder.put(s.getVarbit(), s);
-		}
-
-		VARBIT = builder.build();
-	}
-
-	@Getter
-	private final Varbits varbit;
-	@Getter
+	@Getter(onMethod_ = {@Varbit})
+	private final int varbit;
 	private final int itemID;
-
-	BarsOres(Varbits varbit, int itemID)
-	{
-		this.varbit = varbit;
-		this.itemID = itemID;
-	}
-
-	public static BarsOres getVarbit(Varbits varbit)
-	{
-		return VARBIT.get(varbit);
-	}
 }

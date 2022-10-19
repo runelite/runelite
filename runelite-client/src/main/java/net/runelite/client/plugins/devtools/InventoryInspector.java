@@ -28,8 +28,6 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -39,7 +37,6 @@ import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
@@ -65,7 +62,7 @@ import net.runelite.client.ui.ColorScheme;
 
 @Slf4j
 @Singleton
-class InventoryInspector extends JFrame
+class InventoryInspector extends DevToolsFrame
 {
 	private static final int MAX_LOG_ENTRIES = 25;
 
@@ -80,7 +77,7 @@ class InventoryInspector extends JFrame
 	private final InventoryDeltaPanel deltaPanel;
 
 	@Inject
-	InventoryInspector(Client client, EventBus eventBus, DevToolsPlugin plugin, ItemManager itemManager, ClientThread clientThread)
+	InventoryInspector(Client client, EventBus eventBus, ItemManager itemManager, ClientThread clientThread)
 	{
 		this.client = client;
 		this.eventBus = eventBus;
@@ -91,18 +88,6 @@ class InventoryInspector extends JFrame
 		setLayout(new BorderLayout());
 		setTitle("RuneLite Inventory Inspector");
 		setIconImage(ClientUI.ICON);
-
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		// Reset highlight on close
-		addWindowListener(new WindowAdapter()
-		{
-			@Override
-			public void windowClosing(WindowEvent e)
-			{
-				close();
-				plugin.getInventoryInspector().setActive(false);
-			}
-		});
 
 		tree.setBorder(new EmptyBorder(2, 2, 2, 2));
 		tree.setRootVisible(false);
@@ -175,19 +160,19 @@ class InventoryInspector extends JFrame
 		pack();
 	}
 
+	@Override
 	public void open()
 	{
 		eventBus.register(this);
-		setVisible(true);
-		toFront();
-		repaint();
+		super.open();
 	}
 
+	@Override
 	public void close()
 	{
 		eventBus.unregister(this);
 		clearTracker();
-		setVisible(false);
+		super.close();
 	}
 
 	@Subscribe
@@ -276,7 +261,7 @@ class InventoryInspector extends JFrame
 		{
 			final Item item = items[i];
 			final ItemComposition c = itemManager.getItemComposition(item.getId());
-			out[i] = new InventoryItem(i, item, c.getName(), c.isStackable());
+			out[i] = new InventoryItem(i, item, c.getMembersName(), c.isStackable());
 		}
 
 		return out;
@@ -318,7 +303,7 @@ class InventoryInspector extends JFrame
 				final ItemComposition c = itemManager.getItemComposition(e.getKey());
 
 				InventoryItem[] items = {
-					new InventoryItem(-1, new Item(id, qty), c.getName(), c.isStackable())
+					new InventoryItem(-1, new Item(id, qty), c.getMembersName(), c.isStackable())
 				};
 				if (!c.isStackable() && (qty > 1 || qty < -1))
 				{
@@ -326,7 +311,7 @@ class InventoryInspector extends JFrame
 					for (int i = 0; i < Math.abs(qty); i++)
 					{
 						final Item item = new Item(id, Integer.signum(qty));
-						items[i] = new InventoryItem(-1, item, c.getName(), c.isStackable());
+						items[i] = new InventoryItem(-1, item, c.getMembersName(), c.isStackable());
 					}
 				}
 

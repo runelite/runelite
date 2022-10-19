@@ -42,7 +42,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Date;
-import java.util.EnumSet;
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
@@ -52,9 +51,9 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.WorldType;
 import net.runelite.client.Notifier;
 import static net.runelite.client.RuneLite.SCREENSHOT_DIR;
+import net.runelite.client.config.RuneScapeProfileType;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
@@ -69,8 +68,8 @@ import okhttp3.Response;
 public class ImageCapture
 {
 	private static final DateFormat TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
-	private static final HttpUrl IMGUR_IMAGE_UPLOAD_URL = HttpUrl.parse("https://api.imgur.com/3/image");
-	private static final MediaType JSON = MediaType.parse("application/json");
+	private static final HttpUrl IMGUR_IMAGE_UPLOAD_URL = HttpUrl.get("https://api.imgur.com/3/image");
+	private static final MediaType JSON = MediaType.get("application/json");
 
 	private final Client client;
 	private final Notifier notifier;
@@ -116,16 +115,11 @@ public class ImageCapture
 		File playerFolder;
 		if (client.getLocalPlayer() != null && client.getLocalPlayer().getName() != null)
 		{
-			final EnumSet<WorldType> worldTypes = client.getWorldType();
-
 			String playerDir = client.getLocalPlayer().getName();
-			if (worldTypes.contains(WorldType.DEADMAN))
+			RuneScapeProfileType profileType = RuneScapeProfileType.getCurrent(client);
+			if (profileType != RuneScapeProfileType.STANDARD)
 			{
-				playerDir += "-Deadman";
-			}
-			else if (worldTypes.contains(WorldType.LEAGUE))
-			{
-				playerDir += "-League";
+				playerDir += "-" + Text.titleCase(profileType);
 			}
 
 			if (!Strings.isNullOrEmpty(subDir))

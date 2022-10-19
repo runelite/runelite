@@ -42,4 +42,26 @@ public interface DecorativeObject extends TileObject
 
 	Renderable getRenderable();
 	Renderable getRenderable2();
+
+	/**
+	 * Decorative object x offset. This is added to the x position of the object, and is used to
+	 * account for walls of varying widths.
+	 */
+	int getXOffset();
+
+	/**
+	 * Decorative object y offset. This is added to the z position of the object, and is used to
+	 * account for walls of varying widths.
+	 */
+	int getYOffset();
+
+	/**
+	 * A bitfield containing various flags:
+	 * <pre>{@code
+	 * object type id = bits & 0x20
+	 * orientation (0-3) = bits >>> 6 & 3
+	 * supports items = bits >>> 8 & 1
+	 * }</pre>
+	 */
+	int getConfig();
 }

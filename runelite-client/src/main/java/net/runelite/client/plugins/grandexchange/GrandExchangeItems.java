@@ -34,6 +34,6 @@ class GrandExchangeItems
 	private final String name;
 	private final int itemId;
 	private final int gePrice;
-	private final double haPrice;
+	private final int haPrice;
 	private final int geItemLimit;
 }

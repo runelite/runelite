@@ -27,10 +27,10 @@ package net.runelite.client.menus;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -38,10 +38,7 @@ import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.events.MenuEntryAdded;
-import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.PlayerMenuOptionsChanged;
-import net.runelite.api.events.WidgetMenuOptionClicked;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 
@@ -56,7 +53,6 @@ public class MenuManager
 	private static final int IDX_UPPER = 8;
 
 	private final Client client;
-	private final EventBus eventBus;
 
 	//Maps the indexes that are being used to the menu option.
 	private final Map<Integer, String> playerMenuIndexMap = new HashMap<>();
@@ -67,7 +63,6 @@ public class MenuManager
 	private MenuManager(Client client, EventBus eventBus)
 	{
 		this.client = client;
-		this.eventBus = eventBus;
 		eventBus.register(this);
 	}
 
@@ -75,11 +70,12 @@ public class MenuManager
 	 * Adds a CustomMenuOption to the list of managed menu options.
 	 *
 	 * @param customMenuOption The custom menu to add
+	 * @param callback callback to be called when the menu is clicked
 	 */
-	public void addManagedCustomMenu(WidgetMenuOption customMenuOption)
+	public void addManagedCustomMenu(WidgetMenuOption customMenuOption, Consumer<MenuEntry> callback)
 	{
-		WidgetInfo widget = customMenuOption.getWidget();
-		managedMenuOptions.put(widget.getId(), customMenuOption);
+		managedMenuOptions.put(customMenuOption.getWidgetId(), customMenuOption);
+		customMenuOption.callback = callback;
 	}
 
 	/**
@@ -89,13 +85,12 @@ public class MenuManager
 	 */
 	public void removeManagedCustomMenu(WidgetMenuOption customMenuOption)
 	{
-		WidgetInfo widget = customMenuOption.getWidget();
-		managedMenuOptions.remove(widget.getId(), customMenuOption);
+		managedMenuOptions.remove(customMenuOption.getWidgetId(), customMenuOption);
 	}
 
-	private boolean menuContainsCustomMenu(WidgetMenuOption customMenuOption)
+	private static boolean menuContainsCustomMenu(MenuEntry[] menuEntries, WidgetMenuOption customMenuOption)
 	{
-		for (MenuEntry menuEntry : client.getMenuEntries())
+		for (MenuEntry menuEntry : menuEntries)
 		{
 			String option = menuEntry.getOption();
 			String target = menuEntry.getTarget();
@@ -118,22 +113,31 @@ public class MenuManager
 
 		int widgetId = event.getActionParam1();
 		Collection<WidgetMenuOption> options = managedMenuOptions.get(widgetId);
+		if (options.isEmpty())
+		{
+			return;
+		}
 
+		MenuEntry[] menuEntries = client.getMenuEntries();
+
+		// Menu entries are sorted with higher-index entries appearing toward the top of the minimenu, so insert older
+		// managed menu entries at higher indices and work backward for newer entries so newly-added entries appear at
+		// the bottom
+		int insertIdx = -1;
 		for (WidgetMenuOption currentMenu : options)
 		{
-			if (!menuContainsCustomMenu(currentMenu))//Don't add if we have already added it to this widget
+			// Exit if we've inserted the managed menu entries already
+			if (menuContainsCustomMenu(menuEntries, currentMenu))
 			{
-				MenuEntry[] menuEntries = client.getMenuEntries();
-				menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
-
-				MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
-				menuEntry.setOption(currentMenu.getMenuOption());
-				menuEntry.setParam1(widgetId);
-				menuEntry.setTarget(currentMenu.getMenuTarget());
-				menuEntry.setType(MenuAction.RUNELITE.getId());
-
-				client.setMenuEntries(menuEntries);
+				return;
 			}
+
+			client.createMenuEntry(insertIdx--)
+				.setOption(currentMenu.getMenuOption())
+				.setTarget(currentMenu.getMenuTarget())
+				.setType(MenuAction.RUNELITE)
+				.setParam1(widgetId)
+				.onClick(currentMenu.callback);
 		}
 	}
 
@@ -186,32 +190,6 @@ public class MenuManager
 
 		playerMenuIndexMap.remove(idx);
 		addPlayerMenuItem(newIdx, menuText);
-	}
-
-	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked event)
-	{
-		if (event.getMenuAction() != MenuAction.RUNELITE)
-		{
-			return;
-		}
-
-		int widgetId = event.getWidgetId();
-		Collection<WidgetMenuOption> options = managedMenuOptions.get(widgetId);
-
-		for (WidgetMenuOption curMenuOption : options)
-		{
-			if (curMenuOption.getMenuTarget().equals(event.getMenuTarget())
-				&& curMenuOption.getMenuOption().equals(event.getMenuOption()))
-			{
-				WidgetMenuOptionClicked customMenu = new WidgetMenuOptionClicked();
-				customMenu.setMenuOption(event.getMenuOption());
-				customMenu.setMenuTarget(event.getMenuTarget());
-				customMenu.setWidget(curMenuOption.getWidget());
-				eventBus.post(customMenu);
-				return;
-			}
-		}
 	}
 
 	private void addPlayerMenuItem(int playerOptionIndex, String menuText)

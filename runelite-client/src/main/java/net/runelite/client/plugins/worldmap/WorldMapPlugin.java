@@ -33,7 +33,6 @@ import java.util.function.Predicate;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Quest;
-import net.runelite.api.QuestState;
 import net.runelite.api.Skill;
 import net.runelite.api.events.StatChanged;
 import net.runelite.api.events.WidgetLoaded;
@@ -48,6 +47,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 import net.runelite.client.util.ImageUtil;
+import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "World Map",
@@ -327,6 +327,7 @@ public class WorldMapPlugin extends Plugin
 						.image(BLANK_ICON)
 						.target(l.getTarget())
 						.jumpOnClick(l.getTarget() != null)
+						.name(Text.titleCase(l))
 						.tooltip(l.getTooltip())
 						.build()
 				)
@@ -487,57 +488,34 @@ public class WorldMapPlugin extends Plugin
 		}
 
 		// Must setup the quest icons on the client thread, after the player has logged in.
-		clientThread.invokeLater(() ->
+		clientThread.invoke(() ->
 		{
-			if (client.getGameState() != GameState.LOGGED_IN)
+			if (client.getGameState() == GameState.LOGGED_IN)
 			{
-				return false;
+				Arrays.stream(QuestStartLocation.values())
+					.map(this::createQuestStartPoint)
+					.forEach(worldMapPointManager::add);
 			}
-
-			Arrays.stream(QuestStartLocation.values())
-				.map(this::createQuestStartPoint)
-				.forEach(worldMapPointManager::add);
-			return true;
 		});
 	}
 
 	private MapPoint createQuestStartPoint(QuestStartLocation data)
 	{
-		Quest[] quests = data.getQuests();
-
-		// Get first uncompleted quest. Else, return the last quest.
-		Quest quest = null;
-		for (Quest q : quests)
-		{
-			if (q.getState(client) != QuestState.FINISHED)
-			{
-				quest = q;
-				break;
-			}
-		}
-		if (quest == null)
-		{
-			quest = quests[quests.length - 1];
-		}
+		Quest quest = data.getQuest();
 
 		BufferedImage icon = BLANK_ICON;
-		String tooltip = "";
 		if (quest != null)
 		{
-			tooltip = quest.getName();
 			switch (quest.getState(client))
 			{
 				case FINISHED:
 					icon = FINISHED_ICON;
-					tooltip += " - Finished";
 					break;
 				case IN_PROGRESS:
 					icon = STARTED_ICON;
-					tooltip += " - Started";
 					break;
 				case NOT_STARTED:
 					icon = NOT_STARTED_ICON;
-					tooltip += " - Not Started";
 					break;
 			}
 		}
@@ -546,7 +524,6 @@ public class WorldMapPlugin extends Plugin
 			.type(MapPoint.Type.QUEST)
 			.worldPoint(data.getLocation())
 			.image(icon)
-			.tooltip(tooltip)
 			.build();
 	}
 

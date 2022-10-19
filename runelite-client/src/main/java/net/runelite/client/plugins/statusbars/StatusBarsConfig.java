@@ -27,11 +27,15 @@ package net.runelite.client.plugins.statusbars;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Range;
+import net.runelite.client.config.Units;
 import net.runelite.client.plugins.statusbars.config.BarMode;
 
-@ConfigGroup("statusbars")
+@ConfigGroup(StatusBarsConfig.GROUP)
 public interface StatusBarsConfig extends Config
 {
+	String GROUP = "statusbars";
+
 	@ConfigItem(
 		keyName = "enableCounter",
 		name = "Show counters",
@@ -80,5 +84,30 @@ public interface StatusBarsConfig extends Config
 	default BarMode rightBarMode()
 	{
 		return BarMode.PRAYER;
+	}
+
+	@ConfigItem(
+		keyName = "hideAfterCombatDelay",
+		name = "Hide after combat delay",
+		description = "Amount of ticks before hiding status bars after no longer in combat. 0 = always show status bars."
+	)
+	@Units(Units.TICKS)
+	default int hideAfterCombatDelay()
+	{
+		return 0;
+	}
+
+	@Range(
+		min = BarRenderer.MIN_WIDTH,
+		max = BarRenderer.MAX_WIDTH
+	)
+	@ConfigItem(
+		keyName = "barWidth",
+		name = "Bar Width",
+		description = "The width of the status bars in the modern resizeable layout."
+	)
+	default int barWidth()
+	{
+		return BarRenderer.DEFAULT_WIDTH;
 	}
 }

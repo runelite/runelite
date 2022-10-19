@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2021, Jonathan Rousseau <https://github.com/JoRouss>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,24 +28,19 @@ package net.runelite.client.plugins.party;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
+import net.runelite.client.config.Keybind;
 
-@ConfigGroup("party")
+@ConfigGroup(PartyConfig.GROUP)
 public interface PartyConfig extends Config
 {
-	@ConfigItem(
-		keyName = "stats",
-		name = "Stats",
-		description = "Enables party stats overlay showing HP, prayer and player name"
-	)
-	default boolean stats()
-	{
-		return true;
-	}
+	String GROUP = "party";
 
 	@ConfigItem(
 		keyName = "pings",
 		name = "Pings",
-		description = "Enables party pings (shift + left-click)"
+		description = "Enables party pings",
+		position = 1
 	)
 	default boolean pings()
 	{
@@ -54,7 +50,8 @@ public interface PartyConfig extends Config
 	@ConfigItem(
 		keyName = "sounds",
 		name = "Sound on ping",
-		description = "Enables sound notification on party ping"
+		description = "Enables sound notification on party ping",
+		position = 2
 	)
 	default boolean sounds()
 	{
@@ -62,22 +59,122 @@ public interface PartyConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "messages",
-		name = "Join messages",
-		description = "Enables join/leave game messages"
-	)
-	default boolean messages()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "recolorNames",
 		name = "Recolor names",
-		description = "Recolor stats overlay names based on unique color hash"
+		description = "Recolor party members names based on unique color hash",
+		position = 3
 	)
 	default boolean recolorNames()
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "pingHotkey",
+		name = "Ping hotkey",
+		description = "Key to hold to send a tile ping",
+		position = 4
+	)
+	default Keybind pingHotkey()
+	{
+		return Keybind.NOT_SET;
+	}
+
+	@ConfigSection(
+		name = "Player Status Overlay",
+		description = "Player status such as health, prayer, and special attack energy drawn on player models.",
+		position = 5
+	)
+	String SECTION_STATUS_OVERLAY = "statusOverlay";
+
+	@ConfigItem(
+		section = SECTION_STATUS_OVERLAY,
+		keyName = "statusOverlayHealth",
+		name = "Show Health",
+		description = "Show health of party members on the player model.",
+		position = 6
+	)
+	default boolean statusOverlayHealth()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		section = SECTION_STATUS_OVERLAY,
+		keyName = "statusOverlayPrayer",
+		name = "Show Prayer",
+		description = "Show prayer of party members on the player model.",
+		position = 7
+	)
+	default boolean statusOverlayPrayer()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		section = SECTION_STATUS_OVERLAY,
+		keyName = "statusOverlayStamina",
+		name = "Show Run Energy",
+		description = "Show run energy (stamina) of party members on the player model.",
+		position = 8
+	)
+	default boolean statusOverlayStamina()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		section = SECTION_STATUS_OVERLAY,
+		keyName = "statusOverlaySpec",
+		name = "Show Spec Energy",
+		description = "Show special attack energy of party members on the player model.",
+		position = 9
+	)
+	default boolean statusOverlaySpec()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		section = SECTION_STATUS_OVERLAY,
+		keyName = "statusOverlayVeng",
+		name = "Show Vengeance",
+		description = "Show vengeance status (active/inactive) of party members on the player model.",
+		position = 10
+	)
+	default boolean statusOverlayVeng()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		section = SECTION_STATUS_OVERLAY,
+		keyName = "statusOverlayRenderSelf",
+		name = "Show On Self",
+		description = "Show above activated status overlays on your local player.",
+		position = 11
+	)
+	default boolean statusOverlayRenderSelf()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "previousPartyId",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default String previousPartyId()
+	{
+		return "";
+	}
+
+	@ConfigItem(
+		keyName = "previousPartyId",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	void setPreviousPartyId(String id);
 }

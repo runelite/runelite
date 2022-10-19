@@ -31,7 +31,6 @@ import com.google.gson.reflect.TypeToken;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -65,8 +64,6 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GroundObjectDespawned;
 import net.runelite.api.events.GroundObjectSpawned;
 import net.runelite.api.events.MenuEntryAdded;
-import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.events.WallObjectChanged;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.client.config.ConfigManager;
@@ -137,16 +134,6 @@ public class ObjectIndicatorsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onWallObjectChanged(WallObjectChanged event)
-	{
-		WallObject previous = event.getPrevious();
-		WallObject wallObject = event.getWallObject();
-
-		objects.removeIf(o -> o.getTileObject() == previous);
-		checkObjectPoints(wallObject);
-	}
-
-	@Subscribe
 	public void onWallObjectDespawned(WallObjectDespawned event)
 	{
 		objects.removeIf(o -> o.getTileObject() == event.getWallObject());
@@ -208,7 +195,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 			}
 		}
 
-		if (gameStateChanged.getGameState() != GameState.LOGGED_IN)
+		if (gameStateChanged.getGameState() != GameState.LOGGED_IN && gameStateChanged.getGameState() != GameState.CONNECTION_LOST)
 		{
 			objects.clear();
 		}
@@ -230,35 +217,26 @@ public class ObjectIndicatorsPlugin extends Plugin
 			return;
 		}
 
-		MenuEntry[] menuEntries = client.getMenuEntries();
-		menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
-		MenuEntry menuEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
-		menuEntry.setOption(objects.stream().anyMatch(o -> o.getTileObject() == tileObject) ? UNMARK : MARK);
-		menuEntry.setTarget(event.getTarget());
-		menuEntry.setParam0(event.getActionParam0());
-		menuEntry.setParam1(event.getActionParam1());
-		menuEntry.setIdentifier(event.getIdentifier());
-		menuEntry.setType(MenuAction.RUNELITE.getId());
-		client.setMenuEntries(menuEntries);
+		client.createMenuEntry(-1)
+			.setOption(objects.stream().anyMatch(o -> o.getTileObject() == tileObject) ? UNMARK : MARK)
+			.setTarget(event.getTarget())
+			.setParam0(event.getActionParam0())
+			.setParam1(event.getActionParam1())
+			.setIdentifier(event.getIdentifier())
+			.setType(MenuAction.RUNELITE)
+			.onClick(this::markObject);
 	}
 
-	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked event)
+	private void markObject(MenuEntry entry)
 	{
-		if (event.getMenuAction() != MenuAction.RUNELITE
-			|| !(event.getMenuOption().equals(MARK) || event.getMenuOption().equals(UNMARK)))
-		{
-			return;
-		}
-
 		Scene scene = client.getScene();
 		Tile[][][] tiles = scene.getTiles();
-		final int x = event.getActionParam();
-		final int y = event.getWidgetId();
+		final int x = entry.getParam0();
+		final int y = entry.getParam1();
 		final int z = client.getPlane();
 		final Tile tile = tiles[z][x][y];
 
-		TileObject object = findTileObject(tile, event.getId());
+		TileObject object = findTileObject(tile, entry.getIdentifier());
 		if (object == null)
 		{
 			return;
@@ -280,12 +258,30 @@ public class ObjectIndicatorsPlugin extends Plugin
 
 	private void checkObjectPoints(TileObject object)
 	{
+		if (object.getPlane() < 0)
+		{
+			// object is under a bridge, which can't be marked anyway
+			return;
+		}
+
 		final WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, object.getLocalLocation(), object.getPlane());
 		final Set<ObjectPoint> objectPoints = points.get(worldPoint.getRegionID());
 
 		if (objectPoints == null)
 		{
 			return;
+		}
+
+		ObjectComposition objectComposition = client.getObjectDefinition(object.getId());
+		if (objectComposition.getImpostorIds() == null)
+		{
+			// Multiloc names are instead checked in the overlay
+			String name = objectComposition.getName();
+			if (Strings.isNullOrEmpty(name) || name.equals("null"))
+			{
+				// was marked, but name has changed
+				return;
+			}
 		}
 
 		for (ObjectPoint objectPoint : objectPoints)
@@ -297,7 +293,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 			{
 				log.debug("Marking object {} due to matching {}", object, objectPoint);
 				objects.add(new ColorTileObject(object,
-					client.getObjectDefinition(object.getId()),
+					objectComposition,
 					objectPoint.getName(),
 					objectPoint.getColor()));
 				break;

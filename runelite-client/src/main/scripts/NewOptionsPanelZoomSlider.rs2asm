@@ -5,7 +5,7 @@
 .string_var_count   0
    iconst                 896
    sconst                 "innerZoomLimit"
-   runelite_callback
+   runelite_callback     
    iconst                 128
    sconst                 "outerZoomLimit"
    runelite_callback     
@@ -13,7 +13,7 @@
    istore                 5
    iconst                 896
    sconst                 "innerZoomLimit"
-   runelite_callback
+   runelite_callback     
    iconst                 128
    sconst                 "outerZoomLimit"
    runelite_callback     
@@ -40,7 +40,7 @@ LABEL25:
    get_varc_int           74
    iconst                 128
    sconst                 "outerZoomLimit"
-   runelite_callback
+   runelite_callback     
    sub                   
    iload                  7
    multiply              
@@ -52,7 +52,7 @@ LABEL34:
    get_varc_int           73
    iconst                 128
    sconst                 "outerZoomLimit"
-   runelite_callback
+   runelite_callback     
    sub                   
    iload                  7
    multiply              

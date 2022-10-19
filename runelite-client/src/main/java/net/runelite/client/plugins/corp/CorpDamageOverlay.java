@@ -79,7 +79,7 @@ class CorpDamageOverlay extends OverlayPanel
 			return null;
 		}
 
-		int myDamage = client.getVar(Varbits.CORP_DAMAGE);
+		int myDamage = client.getVarbitValue(Varbits.CORP_DAMAGE);
 		int totalDamage = corpPlugin.getTotalDamage();
 		int players = corpPlugin.getPlayers().size();
 

@@ -59,6 +59,7 @@ enum HunterAreaLocation
 	KOUREND_WOODLAND_SOUTH(new WorldPoint(1556, 3436, 0), HunterCreature.COPPER_LONGTAIL),
 	LAKE_MOLCH(new WorldPoint(1363, 3632, 0), HunterCreature.BLUEGILL, HunterCreature.COMMON_TENCH,
 		HunterCreature.MOTTLED_EEL, HunterCreature.GREATER_SIREN),
+	NECROPOLIS(new WorldPoint(3285, 2739, 0), HunterCreature.ORANGE_SALAMANDER),
 	OURANIA_HUNTER_AREA_EAST(new WorldPoint(2447, 3219, 0), HunterCreature.RED_SALAMANDER),
 	OURANIA_HUNTER_AREA_SOUTH(new WorldPoint(2475, 3240, 0), HunterCreature.RED_SALAMANDER),
 	PISCATORIS_HUNTER_AREA(new WorldPoint(2335, 3584, 0), HunterCreature.COMMON_KEBBIT, HunterCreature.COPPER_LONGTAIL,

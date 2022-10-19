@@ -30,6 +30,7 @@ import com.google.gson.JsonSyntaxException;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
@@ -43,6 +44,7 @@ import java.util.List;
 import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import javax.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.util.VerificationException;
@@ -61,12 +63,17 @@ public class ExternalPluginClient
 {
 	private final OkHttpClient okHttpClient;
 	private final Gson gson;
+	private final HttpUrl apiBase;
 
 	@Inject
-	private ExternalPluginClient(OkHttpClient okHttpClient, Gson gson)
+	private ExternalPluginClient(OkHttpClient okHttpClient,
+		Gson gson,
+		@Named("runelite.api.base") HttpUrl apiBase
+	)
 	{
 		this.okHttpClient = okHttpClient;
 		this.gson = gson;
+		this.apiBase = apiBase;
 	}
 
 	public List<ExternalPluginManifest> downloadManifest() throws IOException, VerificationException
@@ -104,7 +111,7 @@ public class ExternalPluginClient
 		}
 		catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException e)
 		{
-			throw new RuntimeException(e);
+			throw new VerificationException(e);
 		}
 	}
 
@@ -134,13 +141,12 @@ public class ExternalPluginClient
 
 	private static Certificate loadCertificate()
 	{
-		try
+		try (InputStream in = ExternalPluginClient.class.getResourceAsStream("externalplugins.crt"))
 		{
 			CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
-			Certificate certificate = certFactory.generateCertificate(ExternalPluginClient.class.getResourceAsStream("externalplugins.crt"));
-			return certificate;
+			return certFactory.generateCertificate(in);
 		}
-		catch (CertificateException e)
+		catch (CertificateException | IOException e)
 		{
 			throw new RuntimeException(e);
 		}
@@ -153,7 +159,7 @@ public class ExternalPluginClient
 			return;
 		}
 
-		HttpUrl url = RuneLiteAPI.getApiBase().newBuilder()
+		HttpUrl url = apiBase.newBuilder()
 			.addPathSegment("pluginhub")
 			.build();
 
@@ -181,7 +187,7 @@ public class ExternalPluginClient
 
 	public Map<String, Integer> getPluginCounts() throws IOException
 	{
-		HttpUrl url = RuneLiteAPI.getApiBase()
+		HttpUrl url = apiBase
 			.newBuilder()
 			.addPathSegments("pluginhub")
 			.build();

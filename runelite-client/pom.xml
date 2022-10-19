@@ -29,17 +29,18 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.7.1-SNAPSHOT</version>
+		<version>1.9.3-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>client</artifactId>
 	<name>RuneLite Client</name>
 
 	<properties>
-		<guice.version>4.1.0</guice.version>
-
 		<jarsigner.skip>true</jarsigner.skip>
 		<pmd.skip>true</pmd.skip>
+		<git.commit.id.abbrev>nogit</git.commit.id.abbrev>
+		<git.dirty>false</git.dirty>
+		<shade.skip>false</shade.skip>
 	</properties>
 
 	<dependencies>
@@ -85,7 +86,6 @@
 		<dependency>
 			<groupId>com.google.inject</groupId>
 			<artifactId>guice</artifactId>
-			<version>${guice.version}</version>
 			<classifier>no_aop</classifier>
 		</dependency>
 		<dependency>
@@ -114,69 +114,42 @@
 			<version>1.2</version>
 		</dependency>
 		<dependency>
-			<groupId>net.runelite.jogl</groupId>
-			<artifactId>jogl-all</artifactId>
-			<version>2.4.0-rc-20200429</version>
+			<groupId>net.runelite.archive-patcher</groupId>
+			<artifactId>archive-patcher-applier</artifactId>
+			<version>1.2</version>
 		</dependency>
 		<dependency>
-			<groupId>net.runelite.jogl</groupId>
-			<artifactId>jogl-all</artifactId>
-			<version>2.4.0-rc-20200429</version>
-			<classifier>natives-windows-amd64</classifier>
-			<scope>runtime</scope>
+			<groupId>net.java.dev.jna</groupId>
+			<artifactId>jna</artifactId>
+			<version>5.9.0</version>
 		</dependency>
 		<dependency>
-			<groupId>net.runelite.jogl</groupId>
-			<artifactId>jogl-all</artifactId>
-			<version>2.4.0-rc-20200429</version>
-			<classifier>natives-windows-i586</classifier>
-			<scope>runtime</scope>
+			<groupId>net.java.dev.jna</groupId>
+			<artifactId>jna-platform</artifactId>
+			<version>5.9.0</version>
 		</dependency>
 		<dependency>
-			<groupId>net.runelite.jogl</groupId>
-			<artifactId>jogl-all</artifactId>
-			<version>2.4.0-rc-20200429</version>
-			<classifier>natives-linux-amd64</classifier>
-			<scope>runtime</scope>
+			<groupId>com.google.code.findbugs</groupId>
+			<artifactId>jsr305</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>net.runelite.jogl</groupId>
-			<artifactId>jogl-all-natives-macosx</artifactId>
-			<version>2.4.0-rc-20210117</version>
-			<scope>runtime</scope>
+			<groupId>org.jetbrains</groupId>
+			<artifactId>annotations</artifactId>
+			<version>23.0.0</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>net.runelite.gluegen</groupId>
-			<artifactId>gluegen-rt</artifactId>
-			<version>2.4.0-rc-20200429</version>
+			<groupId>com.google.protobuf</groupId>
+			<artifactId>protobuf-javalite</artifactId>
+			<version>3.21.1</version>
 		</dependency>
 		<dependency>
-			<groupId>net.runelite.gluegen</groupId>
-			<artifactId>gluegen-rt</artifactId>
-			<version>2.4.0-rc-20200429</version>
-			<classifier>natives-windows-amd64</classifier>
-			<scope>runtime</scope>
+			<groupId>net.runelite</groupId>
+			<artifactId>rlawt</artifactId>
+			<version>1.3</version>
 		</dependency>
-		<dependency>
-			<groupId>net.runelite.gluegen</groupId>
-			<artifactId>gluegen-rt</artifactId>
-			<version>2.4.0-rc-20200429</version>
-			<classifier>natives-windows-i586</classifier>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>net.runelite.gluegen</groupId>
-			<artifactId>gluegen-rt</artifactId>
-			<version>2.4.0-rc-20200429</version>
-			<classifier>natives-linux-amd64</classifier>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>net.runelite.gluegen</groupId>
-			<artifactId>gluegen-rt-natives-macosx</artifactId>
-			<version>2.4.0-rc-20210117</version>
-			<scope>runtime</scope>
-		</dependency>
+
+		<!-- JOCL -->
 		<dependency>
 			<groupId>net.runelite.jocl</groupId>
 			<artifactId>jocl</artifactId>
@@ -196,26 +169,77 @@
 			<classifier>macos-arm64</classifier>
 			<scope>runtime</scope>
 		</dependency>
+
+		<!-- lwjgl core -->
 		<dependency>
-			<groupId>net.runelite</groupId>
-			<artifactId>archive-patcher</artifactId>
-			<version>1.0</version>
-		</dependency>
-		<!-- net.runelite:discord also has this -->
-		<dependency>
-			<groupId>net.java.dev.jna</groupId>
-			<artifactId>jna</artifactId>
-			<version>4.5.1</version>
+			<groupId>org.lwjgl</groupId>
+			<artifactId>lwjgl</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>net.java.dev.jna</groupId>
-			<artifactId>jna-platform</artifactId>
-			<version>4.5.1</version>
+			<groupId>org.lwjgl</groupId>
+			<artifactId>lwjgl</artifactId>
+			<classifier>natives-linux</classifier>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.google.code.findbugs</groupId>
-			<artifactId>jsr305</artifactId>
-			<version>3.0.2</version>
+			<groupId>org.lwjgl</groupId>
+			<artifactId>lwjgl</artifactId>
+			<classifier>natives-macos</classifier>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.lwjgl</groupId>
+			<artifactId>lwjgl</artifactId>
+			<classifier>natives-macos-arm64</classifier>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.lwjgl</groupId>
+			<artifactId>lwjgl</artifactId>
+			<classifier>natives-windows-x86</classifier>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.lwjgl</groupId>
+			<artifactId>lwjgl</artifactId>
+			<classifier>natives-windows</classifier>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- lwjgl opengl -->
+		<dependency>
+			<groupId>org.lwjgl</groupId>
+			<artifactId>lwjgl-opengl</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.lwjgl</groupId>
+			<artifactId>lwjgl-opengl</artifactId>
+			<classifier>natives-linux</classifier>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.lwjgl</groupId>
+			<artifactId>lwjgl-opengl</artifactId>
+			<classifier>natives-macos</classifier>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.lwjgl</groupId>
+			<artifactId>lwjgl-opengl</artifactId>
+			<classifier>natives-macos-arm64</classifier>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.lwjgl</groupId>
+			<artifactId>lwjgl-opengl</artifactId>
+			<classifier>natives-windows-x86</classifier>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.lwjgl</groupId>
+			<artifactId>lwjgl-opengl</artifactId>
+			<classifier>natives-windows</classifier>
+			<scope>runtime</scope>
 		</dependency>
 
 		<dependency>
@@ -225,14 +249,20 @@
 		</dependency>
 		<dependency>
 			<groupId>net.runelite</groupId>
+			<artifactId>jshell</artifactId>
+			<version>${project.version}</version>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>net.runelite</groupId>
 			<artifactId>client-patch</artifactId>
 			<version>${project.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
-			<groupId>net.runelite</groupId>
+			<groupId>net.runelite.arn</groupId>
 			<artifactId>http-api</artifactId>
-			<version>${project.version}</version>
+			<version>1.1.7</version>
 		</dependency>
 		<dependency>
 			<groupId>net.runelite</groupId>
@@ -267,22 +297,32 @@
 		<dependency>
 			<groupId>com.google.inject.extensions</groupId>
 			<artifactId>guice-testlib</artifactId>
-			<version>${guice.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.google.inject.extensions</groupId>
 			<artifactId>guice-grapher</artifactId>
-			<version>${guice.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.squareup.okhttp3</groupId>
 			<artifactId>mockwebserver</artifactId>
-			<version>3.7.0</version>
+			<version>3.14.9</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.lwjgl</groupId>
+				<artifactId>lwjgl-bom</artifactId>
+				<version>3.3.1</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<build>
 		<resources>
@@ -304,6 +344,43 @@
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>compile-java11</id>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+						<configuration>
+							<release>11</release>
+							<compileSourceRoots>
+								<compileSourceRoot>${project.basedir}/src/main/java11</compileSourceRoot>
+							</compileSourceRoots>
+							<outputDirectory>${project.build.outputDirectory}/META-INF/versions/11</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifestEntries>
+							<Multi-Release>true</Multi-Release>
+						</manifestEntries>
+					</archive>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>test-jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
 				<version>3.0.2</version>
 				<configuration>
@@ -318,7 +395,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
-				<version>3.0.0</version>
+				<version>3.3.0</version>
 				<executions>
 					<execution>
 						<phase>package</phase>
@@ -326,51 +403,11 @@
 							<goal>shade</goal>
 						</goals>
 						<configuration>
-							<minimizeJar>true</minimizeJar>
-
+							<skip>${shade.skip}</skip>
 							<shadedArtifactAttached>true</shadedArtifactAttached>
 							<shadedClassifierName>shaded</shadedClassifierName>
+							<createDependencyReducedPom>false</createDependencyReducedPom>
 
-							<filters>
-								<!-- include runtime apis -->
-								<filter>
-									<!-- net.runelite:client-patch and net.runelite:api -->
-									<artifact>net.runelite:*</artifact>
-									<includes>
-										<include>**</include>
-									</includes>
-								</filter>
-								<filter>
-									<artifact>net.runelite.pushingpixels:*</artifact>
-									<includes>
-										<include>**</include>
-									</includes>
-								</filter>
-								<filter>
-									<artifact>com.google.guava:*</artifact>
-									<includes>
-										<include>**</include>
-									</includes>
-								</filter>
-								<filter>
-									<artifact>ch.qos.logback:*</artifact>
-									<includes>
-										<include>**</include>
-									</includes>
-								</filter>
-								<filter>
-									<artifact>net.runelite.jogl:*</artifact>
-									<includes>
-										<include>**</include>
-									</includes>
-								</filter>
-								<filter>
-									<artifact>net.runelite.gluegen:*</artifact>
-									<includes>
-										<include>**</include>
-									</includes>
-								</filter>
-							</filters>
 							<transformers>
 								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
 									<mainClass>net.runelite.client.RuneLite</mainClass>
@@ -379,11 +416,6 @@
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
-			<!-- Strip jar before signing -->
-			<plugin>
-				<groupId>io.github.zlika</groupId>
-				<artifactId>reproducible-build-maven-plugin</artifactId>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -434,18 +466,29 @@
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<configuration>
+					<sourceDirectories>
+						<!-- exclude generated sources from checkstyle https://stackoverflow.com/a/30406454/7189686 -->
+						<sourceDirectory>${project.build.sourceDirectory}</sourceDirectory>
+						<sourceDirectory>${project.basedir}/src/main/java11</sourceDirectory>
+					</sourceDirectories>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-pmd-plugin</artifactId>
-				<version>3.13.0</version>
+				<version>3.16.0</version>
 				<dependencies>
 					<dependency>
 						<groupId>net.sourceforge.pmd</groupId>
 						<artifactId>pmd-core</artifactId>
-						<version>6.29.0</version>
+						<version>6.44.0</version>
 					</dependency>
 					<dependency>
 						<groupId>net.sourceforge.pmd</groupId>
 						<artifactId>pmd-java</artifactId>
-						<version>6.29.0</version>
+						<version>6.44.0</version>
 					</dependency>
 				</dependencies>
 				<configuration>
@@ -456,12 +499,40 @@
 					</rulesets>
 					<linkXRef>false</linkXRef>
 					<analysisCache>true</analysisCache>
+					<excludes>
+						<exclude>**/RuntimeTypeAdapterFactory.java</exclude>
+						<exclude>net/runelite/client/party/Party.java</exclude>
+					</excludes>
 				</configuration>
 				<executions>
 					<execution>
 						<goals>
 							<goal>check</goal>
 						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>pl.project13.maven</groupId>
+				<artifactId>git-commit-id-plugin</artifactId>
+				<version>2.2.6</version>
+				<executions>
+					<execution>
+						<id>query-git-info</id>
+						<goals>
+							<goal>revision</goal>
+						</goals>
+						<configuration>
+							<failOnNoGitDirectory>false</failOnNoGitDirectory>
+							<failOnUnableToExtractRepoInfo>false</failOnUnableToExtractRepoInfo>
+							<gitDescribe>
+								<skip>true</skip>
+							</gitDescribe>
+							<includeOnlyProperties>
+								<includeOnlyProperty>git.commit.id.abbrev</includeOnlyProperty>
+								<includeOnlyProperty>git.dirty</includeOnlyProperty>
+							</includeOnlyProperties>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>

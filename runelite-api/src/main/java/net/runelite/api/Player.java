@@ -32,6 +32,13 @@ import javax.annotation.Nullable;
  */
 public interface Player extends Actor
 {
+	/**
+	 * Get the ID of the player
+	 *
+	 * @return
+	 */
+	int getId();
+
 	@Override
 	int getCombatLevel();
 
@@ -70,6 +77,13 @@ public interface Player extends Actor
 	 * @return true if the player is a friend, false otherwise
 	 */
 	boolean isFriend();
+
+	/**
+	 * Checks whether the player is a member of the same clan as the local player.
+	 *
+	 * @return
+	 */
+	boolean isClanMember();
 
 	/**
 	 * Gets the displayed overhead icon of the player.

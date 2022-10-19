@@ -109,6 +109,22 @@ public enum ChatMessageType
 	 */
 	IGNORENOTIFICATION(31),
 	/**
+	 * A chat message in a clan chat.
+	 */
+	CLAN_CHAT(41),
+	/**
+	 * A system message in a clan chat.
+	 */
+	CLAN_MESSAGE(43),
+	/**
+	 * A chat message in the guest clan chat.
+	 */
+	CLAN_GUEST_CHAT(44),
+	/**
+	 * A system message in the guest clan chat.
+	 */
+	CLAN_GUEST_MESSAGE(46),
+	/**
 	 * An autotyper message from a player.
 	 */
 	AUTOTYPER(90),
@@ -153,6 +169,19 @@ public enum ChatMessageType
 	 */
 	WELCOME(108),
 	/**
+	 * Clan creation invitation.
+	 */
+	CLAN_CREATION_INVITATION(109),
+	/**
+	 * Challenge offer for the clan tab
+	 */
+	CHALREQ_CLANCHAT(110),
+
+	CLAN_GIM_FORM_GROUP(111),
+	CLAN_GIM_GROUP_WITH(112),
+	CLAN_GIM_CHAT(-1),
+	CLAN_GIM_MESSAGE(-1),
+	/**
 	 * An unknown message type.
 	 */
 	UNKNOWN(-1);
@@ -165,7 +194,10 @@ public enum ChatMessageType
 	{
 		for (ChatMessageType chatMessageType : values())
 		{
-			CHAT_MESSAGE_TYPES.put(chatMessageType.type, chatMessageType);
+			if (chatMessageType.type != -1)
+			{
+				CHAT_MESSAGE_TYPES.put(chatMessageType.type, chatMessageType);
+			}
 		}
 	}
 

@@ -42,7 +42,7 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 import net.runelite.client.util.QuantityFormatter;
-import net.runelite.client.ws.PartyService;
+import net.runelite.client.party.PartyService;
 
 class DpsOverlay extends OverlayPanel
 {
@@ -100,7 +100,7 @@ class DpsOverlay extends OverlayPanel
 			return null;
 		}
 
-		boolean inParty = !partyService.getMembers().isEmpty();
+		boolean inParty = partyService.isInParty();
 		boolean showDamage = dpsConfig.showDamage();
 		DpsMember total = dpsCounterPlugin.getTotal();
 		boolean paused = total.isPaused();

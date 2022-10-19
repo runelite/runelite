@@ -30,6 +30,7 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
@@ -49,12 +50,19 @@ public class ItemVariationMapping
 	static
 	{
 		final Gson gson = new Gson();
-		final TypeToken<Map<String, Collection<Integer>>> typeToken = new TypeToken<Map<String, Collection<Integer>>>()
-		{
-		};
+		// CHECKSTYLE:OFF
+		final TypeToken<Map<String, Collection<Integer>>> typeToken = new TypeToken<Map<String, Collection<Integer>>>(){};
+		// CHECKSTYLE:ON
 
-		final InputStream geLimitData = ItemVariationMapping.class.getResourceAsStream("/item_variations.json");
-		final Map<String, Collection<Integer>> itemVariations = gson.fromJson(new InputStreamReader(geLimitData, StandardCharsets.UTF_8), typeToken.getType());
+		final Map<String, Collection<Integer>> itemVariations;
+		try (InputStream geLimitData = ItemVariationMapping.class.getResourceAsStream("/item_variations.json"))
+		{
+			itemVariations = gson.fromJson(new InputStreamReader(geLimitData, StandardCharsets.UTF_8), typeToken.getType());
+		}
+		catch (IOException e)
+		{
+			throw new RuntimeException(e);
+		}
 
 		ImmutableMap.Builder<Integer, Integer> builder = new ImmutableMap.Builder<>();
 		ImmutableMultimap.Builder<Integer, Integer> invertedBuilder = new ImmutableMultimap.Builder<>();

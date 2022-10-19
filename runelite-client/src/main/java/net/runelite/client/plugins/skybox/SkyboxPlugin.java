@@ -28,11 +28,13 @@ import com.google.inject.Inject;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.io.IOException;
+import java.io.InputStream;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.config.ConfigManager;
@@ -59,7 +61,10 @@ public class SkyboxPlugin extends Plugin
 	@Override
 	public void startUp() throws IOException
 	{
-		skybox = new Skybox(SkyboxPlugin.class.getResourceAsStream("skybox.txt"), "skybox.txt");
+		try (InputStream in = SkyboxPlugin.class.getResourceAsStream("skybox.txt"))
+		{
+			skybox = new Skybox(in, "skybox.txt");
+		}
 	}
 
 	@Override
@@ -104,7 +109,7 @@ public class SkyboxPlugin extends Plugin
 			return;
 		}
 
-		Color overrideColor = player.getWorldLocation().getY() < Constants.OVERWORLD_MAX_Y
+		Color overrideColor = WorldPoint.getMirrorPoint(player.getWorldLocation(), true).getY() < Constants.OVERWORLD_MAX_Y
 			? config.customOverworldColor() : config.customOtherColor();
 		if (overrideColor != null)
 		{

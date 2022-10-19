@@ -59,9 +59,9 @@ public final class ComboBoxListRenderer<T> extends JLabel implements ListCellRen
 		setBorder(new EmptyBorder(5, 5, 5, 0));
 
 		String text;
-		if (o instanceof Enum)
+		if (o instanceof Enum<?>)
 		{
-			text = Text.titleCase((Enum) o);
+			text = Text.titleCase((Enum<?>) o);
 		}
 		else
 		{

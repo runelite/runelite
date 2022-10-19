@@ -55,7 +55,7 @@ public class InfoPlugin extends Plugin
 		navButton = NavigationButton.builder()
 			.tooltip("Info")
 			.icon(icon)
-			.priority(9)
+			.priority(10)
 			.panel(panel)
 			.build();
 

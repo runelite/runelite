@@ -252,6 +252,13 @@ public class TabInterface
 		equipmentButton.setOriginalY(4);
 		equipmentButton.revalidate();
 
+		Widget bankItemCountTop = client.getWidget(WidgetInfo.BANK_ITEM_COUNT_TOP);
+		if (bankItemCountTop == null)
+		{
+			return;
+		}
+
+		int equipmentButtonTotalWidth = equipmentButton.getWidth() + equipmentButton.getOriginalX() - bankItemCountTop.getOriginalX();
 		// the bank item count is 3 widgets
 		for (int child = WidgetInfo.BANK_ITEM_COUNT_TOP.getChildId(); child <= WidgetInfo.BANK_ITEM_COUNT_BOTTOM.getChildId(); child++)
 		{
@@ -261,13 +268,22 @@ public class TabInterface
 				return;
 			}
 
-			widget.setOriginalX(widget.getOriginalX() + equipmentButton.getWidth());
+			widget.setOriginalX(widget.getOriginalX() + equipmentButtonTotalWidth);
 			widget.revalidate();
 		}
 
 		titleBar.setOriginalX(equipmentButton.getWidth() / 2);
 		titleBar.setOriginalWidth(titleBar.getWidth() - equipmentButton.getWidth());
 		titleBar.revalidate();
+
+		Widget groupStorageButton = client.getWidget(WidgetInfo.BANK_GROUP_STORAGE_BUTTON);
+		if (groupStorageButton == null)
+		{
+			return;
+		}
+
+		groupStorageButton.setOriginalX(groupStorageButton.getOriginalX() + equipmentButtonTotalWidth);
+		groupStorageButton.revalidate();
 	}
 
 	private void handleDeposit(MenuOptionClicked event, Boolean inventory)
@@ -300,7 +316,7 @@ public class TabInterface
 			return;
 		}
 
-		chatboxPanelManager.openTextInput((inventory ? "Inventory " : "Equipment ") + " tags:")
+		chatboxPanelManager.openTextInput((inventory ? "Inventory" : "Equipment") + " tags:")
 			.addCharValidator(FILTERED_CHARS)
 			.onDone((Consumer<String>) (newTags) ->
 				clientThread.invoke(() ->
@@ -447,7 +463,7 @@ public class TabInterface
 						})
 					)
 					.option("2. Only tab", () -> clientThread.invoke(() -> deleteTab(target)))
-					.option("3. Cancel", Runnables::doNothing)
+					.option("3. Cancel", Runnables.doNothing())
 					.build();
 				break;
 			case Tab.EXPORT_TAB:
@@ -557,7 +573,7 @@ public class TabInterface
 
 		switch (eventName)
 		{
-			case "setBankScroll":
+			case "skipBankLayout":
 				if (!isTabMenuActive())
 				{
 					setTabMenuVisible(false);
@@ -566,11 +582,8 @@ public class TabInterface
 
 				setTabMenuVisible(true);
 
-				// scroll height
-				intStack[intStackSize - 3] = (((tabManager.getTabs().size() - 1) / BANK_ITEMS_PER_ROW) + 1) * (BANK_ITEM_HEIGHT + BANK_ITEM_Y_PADDING);
-
 				// skip normal bank layout
-				intStack[intStackSize - 2] = 1;
+				intStack[intStackSize - 1] = 1;
 				break;
 			case "beforeBankLayout":
 				setTabMenuVisible(false);
@@ -605,38 +618,32 @@ public class TabInterface
 			return;
 		}
 
-		MenuEntry[] entries = client.getMenuEntries();
 
 		if (activeTab != null
 			&& event.getActionParam1() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
 			&& event.getOption().equals("Examine"))
 		{
-			entries = createMenuEntry(event, REMOVE_TAG + " (" + activeTab.getTag() + ")", event.getTarget(), entries);
-			client.setMenuEntries(entries);
+			createMenuEntry(event, REMOVE_TAG + " (" + activeTab.getTag() + ")", event.getTarget());
 		}
 		else if (event.getActionParam1() == WidgetInfo.BANK_DEPOSIT_INVENTORY.getId()
 			&& event.getOption().equals("Deposit inventory"))
 		{
-			entries = createMenuEntry(event, TAG_INVENTORY, event.getTarget(), entries);
+			createMenuEntry(event, TAG_INVENTORY, event.getTarget());
 
 			if (activeTab != null)
 			{
-				entries = createMenuEntry(event, TAG_INVENTORY, ColorUtil.wrapWithColorTag(activeTab.getTag(), HILIGHT_COLOR), entries);
+				createMenuEntry(event, TAG_INVENTORY, ColorUtil.wrapWithColorTag(activeTab.getTag(), HILIGHT_COLOR));
 			}
-
-			client.setMenuEntries(entries);
 		}
 		else if (event.getActionParam1() == WidgetInfo.BANK_DEPOSIT_EQUIPMENT.getId()
 			&& event.getOption().equals("Deposit worn items"))
 		{
-			entries = createMenuEntry(event, TAG_GEAR, event.getTarget(), entries);
+			createMenuEntry(event, TAG_GEAR, event.getTarget());
 
 			if (activeTab != null)
 			{
-				entries = createMenuEntry(event, TAG_GEAR, ColorUtil.wrapWithColorTag(activeTab.getTag(), HILIGHT_COLOR), entries);
+				createMenuEntry(event, TAG_GEAR, ColorUtil.wrapWithColorTag(activeTab.getTag(), HILIGHT_COLOR));
 			}
-
-			client.setMenuEntries(entries);
 		}
 	}
 
@@ -661,26 +668,26 @@ public class TabInterface
 			activateTab(null);
 		}
 		else if (activeTab != null
-			&& event.getWidgetId() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
+			&& event.getParam1() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
 			&& event.getMenuAction() == MenuAction.RUNELITE
 			&& event.getMenuOption().startsWith(REMOVE_TAG))
 		{
 			// Add "remove" menu entry to all items in bank while tab is selected
 			event.consume();
-			final ItemComposition item = getItem(event.getActionParam());
+			final ItemComposition item = getItem(event.getParam0());
 			final int itemId = item.getId();
 			tagManager.removeTag(itemId, activeTab.getTag());
 			bankSearch.layoutBank(); // re-layout to filter the removed item out
 		}
 		else if (event.getMenuAction() == MenuAction.RUNELITE
-			&& ((event.getWidgetId() == WidgetInfo.BANK_DEPOSIT_INVENTORY.getId() && event.getMenuOption().equals(TAG_INVENTORY))
-			|| (event.getWidgetId() == WidgetInfo.BANK_DEPOSIT_EQUIPMENT.getId() && event.getMenuOption().equals(TAG_GEAR))))
+			&& ((event.getParam1() == WidgetInfo.BANK_DEPOSIT_INVENTORY.getId() && event.getMenuOption().equals(TAG_INVENTORY))
+			|| (event.getParam1() == WidgetInfo.BANK_DEPOSIT_EQUIPMENT.getId() && event.getMenuOption().equals(TAG_GEAR))))
 		{
-			handleDeposit(event, event.getWidgetId() == WidgetInfo.BANK_DEPOSIT_INVENTORY.getId());
+			handleDeposit(event, event.getParam1() == WidgetInfo.BANK_DEPOSIT_INVENTORY.getId());
 		}
-		else if (activeTab != null && ((event.getWidgetId() == WidgetInfo.BANK_EQUIPMENT_BUTTON.getId() && event.getMenuOption().equals(SHOW_WORN))
-			|| (event.getWidgetId() == WidgetInfo.BANK_SETTINGS_BUTTON.getId() && event.getMenuOption().equals(SHOW_SETTINGS))
-			|| (event.getWidgetId() == WidgetInfo.BANK_TUTORIAL_BUTTON.getId() && event.getMenuOption().equals(SHOW_TUTORIAL))))
+		else if (activeTab != null && ((event.getParam1() == WidgetInfo.BANK_EQUIPMENT_BUTTON.getId() && event.getMenuOption().equals(SHOW_WORN))
+			|| (event.getParam1() == WidgetInfo.BANK_SETTINGS_BUTTON.getId() && event.getMenuOption().equals(SHOW_SETTINGS))
+			|| (event.getParam1() == WidgetInfo.BANK_TUTORIAL_BUTTON.getId() && event.getMenuOption().equals(SHOW_TUTORIAL))))
 		{
 			saveTab();
 		}
@@ -693,8 +700,8 @@ public class TabInterface
 			activateTab(null);
 			// This ensures that when clicking Search when tab is selected, the search input is opened rather
 			// than client trying to close it first
-			client.setVar(VarClientStr.INPUT_TEXT, "");
-			client.setVar(VarClientInt.INPUT_TYPE, 0);
+			client.setVarcStrValue(VarClientStr.INPUT_TEXT, "");
+			client.setVarcIntValue(VarClientInt.INPUT_TYPE, 0);
 		}
 	}
 
@@ -760,7 +767,6 @@ public class TabInterface
 				{
 					entry.setOption(TAG_SEARCH + Text.removeTags(entry.getTarget()) + (shiftDown ? VAR_TAG_SUFFIX : ""));
 					entry.setTarget(draggedWidget.getName());
-					client.setMenuEntries(entries);
 				}
 
 				if (entry.getOption().equals(SCROLL_UP))
@@ -782,7 +788,7 @@ public class TabInterface
 			return;
 		}
 
-		if (client.getVar(Varbits.BANK_REARRANGE_MODE) == 0)
+		if (client.getVarbitValue(Varbits.BANK_REARRANGE_MODE) == 0)
 		{
 			tabManager.swap(source.getName(), dest.getName());
 		}
@@ -1182,17 +1188,14 @@ public class TabInterface
 		searchButtonBackground.setSpriteId(SpriteID.EQUIPMENT_SLOT_TILE);
 	}
 
-	private static MenuEntry[] createMenuEntry(MenuEntryAdded event, String option, String target, MenuEntry[] entries)
+	private void createMenuEntry(MenuEntryAdded event, String option, String target)
 	{
-		final MenuEntry entry = new MenuEntry();
-		entry.setParam0(event.getActionParam0());
-		entry.setParam1(event.getActionParam1());
-		entry.setTarget(target);
-		entry.setOption(option);
-		entry.setType(MenuAction.RUNELITE.getId());
-		entry.setIdentifier(event.getIdentifier());
-		entries = Arrays.copyOf(entries, entries.length + 1);
-		entries[entries.length - 1] = entry;
-		return entries;
+		client.createMenuEntry(-1)
+			.setParam0(event.getActionParam0())
+			.setParam1(event.getActionParam1())
+			.setTarget(target)
+			.setOption(option)
+			.setType(MenuAction.RUNELITE)
+			.setIdentifier(event.getIdentifier());
 	}
 }

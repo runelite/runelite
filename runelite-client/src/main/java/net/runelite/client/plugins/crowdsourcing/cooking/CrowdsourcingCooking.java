@@ -37,6 +37,7 @@ import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.crowdsourcing.CrowdsourcingManager;
 
@@ -80,7 +81,7 @@ public class CrowdsourcingCooking
 			|| message.startsWith("You roast a")
 			|| message.startsWith("You spit-roast")
 			|| message.startsWith("You cook")
-			|| message.startsWith("You burn")
+			|| message.equals("You burn the mushroom in the fire.")
 			|| message.startsWith("Eventually the Jubbly")
 			|| message.startsWith("Unfortunately the Jubbly")
 			|| message.startsWith("You accidentally burn")
@@ -99,7 +100,7 @@ public class CrowdsourcingCooking
 
 			int cookingLevel = client.getBoostedSkillLevel(Skill.COOKING);
 			boolean hasCookingGauntlets = hasCookingGauntlets();
-			boolean kourendElite = client.getVar(Varbits.DIARY_KOUREND_ELITE) == 1;
+			boolean kourendElite = client.getVarbitValue(Varbits.DIARY_KOUREND_ELITE) == 1;
 			CookingData data = new CookingData(message, hasCookingGauntlets, inHosidiusKitchen, kourendElite, lastGameObjectClicked, cookingLevel);
 			manager.storeEvent(data);
 		}
@@ -114,7 +115,8 @@ public class CrowdsourcingCooking
 			|| action == MenuAction.GAME_OBJECT_SECOND_OPTION
 			|| action == MenuAction.GAME_OBJECT_THIRD_OPTION
 			|| action == MenuAction.GAME_OBJECT_FOURTH_OPTION
-			|| action == MenuAction.GAME_OBJECT_FIFTH_OPTION)
+			|| action == MenuAction.GAME_OBJECT_FIFTH_OPTION
+			|| action == MenuAction.WIDGET_TARGET_ON_GAME_OBJECT && client.getSelectedWidget().getId() == WidgetInfo.INVENTORY.getId())
 		{
 			lastGameObjectClicked = menuOptionClicked.getId();
 		}

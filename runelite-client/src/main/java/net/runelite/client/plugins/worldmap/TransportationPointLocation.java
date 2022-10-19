@@ -121,6 +121,10 @@ enum TransportationPointLocation
 	CHARTER_PRIFDDINAS("Charter Ship", new WorldPoint(2156, 3331, 0)),
 	CHARTER_PRIFDDINAS_INSTANCE("Charter Ship", new WorldPoint(3180, 6083, 0)),
 
+	//Ferries
+	FERRY_AL_KHARID("Ferry to Ruins of Unkah", new WorldPoint(3269, 3142, 0), new WorldPoint(3145, 2843, 0)),
+	FERRY_RUINS_OF_UNKAH("Ferry to Al Kharid", new WorldPoint(3145, 2843, 0), new WorldPoint(3269, 3142, 0)),
+
 	//Minecarts/Carts
 	MINE_CART_ARCEUUS("Lovakengj Minecart Network", new WorldPoint(1673, 3832, 0)),
 	MINE_CART_GRANDEXCHANGE("Minecart to Keldagrim", new WorldPoint(3139, 3504, 0)),

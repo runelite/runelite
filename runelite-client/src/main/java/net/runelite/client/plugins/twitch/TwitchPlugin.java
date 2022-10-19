@@ -211,9 +211,9 @@ public class TwitchPlugin extends Plugin implements TwitchListener, ChatboxInput
 	public boolean onChatboxInput(ChatboxInput chatboxInput)
 	{
 		String message = chatboxInput.getValue();
-		if (message.startsWith("//"))
+		if (message.startsWith("/t "))
 		{
-			message = message.substring(2);
+			message = message.substring(3);
 			if (message.isEmpty() || twitchIRCClient == null)
 			{
 				return true;

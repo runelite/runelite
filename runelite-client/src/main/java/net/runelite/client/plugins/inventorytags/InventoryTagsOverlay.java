@@ -32,18 +32,20 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
+import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.WidgetItemOverlay;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
 
-public class InventoryTagsOverlay extends WidgetItemOverlay
+class InventoryTagsOverlay extends WidgetItemOverlay
 {
 	private final ItemManager itemManager;
 	private final InventoryTagsPlugin plugin;
 	private final InventoryTagsConfig config;
 	private final Cache<Long, Image> fillCache;
+	private final Cache<Integer, Tag> tagCache;
 
 	@Inject
 	private InventoryTagsOverlay(ItemManager itemManager, InventoryTagsPlugin plugin, InventoryTagsConfig config)
@@ -53,7 +55,17 @@ public class InventoryTagsOverlay extends WidgetItemOverlay
 		this.config = config;
 		showOnEquipment();
 		showOnInventory();
+		showOnInterfaces(
+			WidgetID.CHAMBERS_OF_XERIC_STORAGE_UNIT_INVENTORY_GROUP_ID,
+			WidgetID.CHAMBERS_OF_XERIC_STORAGE_UNIT_PRIVATE_GROUP_ID,
+			WidgetID.CHAMBERS_OF_XERIC_STORAGE_UNIT_SHARED_GROUP_ID,
+			WidgetID.GRAVESTONE_GROUP_ID
+		);
 		fillCache = CacheBuilder.newBuilder()
+			.concurrencyLevel(1)
+			.maximumSize(32)
+			.build();
+		tagCache = CacheBuilder.newBuilder()
 			.concurrencyLevel(1)
 			.maximumSize(32)
 			.build();
@@ -62,33 +74,49 @@ public class InventoryTagsOverlay extends WidgetItemOverlay
 	@Override
 	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem widgetItem)
 	{
-		final String group = plugin.getTag(itemId);
-		if (group != null)
+		final Tag tag = getTag(itemId);
+		if (tag == null || tag.color == null)
 		{
-			final Color color = plugin.getGroupNameColor(group);
-			if (color != null)
-			{
-				Rectangle bounds = widgetItem.getCanvasBounds();
-				if (config.showTagOutline())
-				{
-					final BufferedImage outline = itemManager.getItemOutline(itemId, widgetItem.getQuantity(), color);
-					graphics.drawImage(outline, (int) bounds.getX(), (int) bounds.getY(), null);
-				}
-
-				if (config.showTagFill())
-				{
-					final Image image = getFillImage(color, widgetItem.getId(), widgetItem.getQuantity());
-					graphics.drawImage(image, (int) bounds.getX(), (int) bounds.getY(), null);
-				}
-
-				if (config.showTagUnderline())
-				{
-					int heightOffSet = (int) bounds.getY() + (int) bounds.getHeight() + 2;
-					graphics.setColor(color);
-					graphics.drawLine((int) bounds.getX(), heightOffSet, (int) bounds.getX() + (int) bounds.getWidth(), heightOffSet);
-				}
-			}
+			return;
 		}
+
+		final Color color = tag.color;
+
+		Rectangle bounds = widgetItem.getCanvasBounds();
+		if (config.showTagOutline())
+		{
+			final BufferedImage outline = itemManager.getItemOutline(itemId, widgetItem.getQuantity(), color);
+			graphics.drawImage(outline, (int) bounds.getX(), (int) bounds.getY(), null);
+		}
+
+		if (config.showTagFill())
+		{
+			final Image image = getFillImage(color, widgetItem.getId(), widgetItem.getQuantity());
+			graphics.drawImage(image, (int) bounds.getX(), (int) bounds.getY(), null);
+		}
+
+		if (config.showTagUnderline())
+		{
+			int heightOffSet = (int) bounds.getY() + (int) bounds.getHeight() + 2;
+			graphics.setColor(color);
+			graphics.drawLine((int) bounds.getX(), heightOffSet, (int) bounds.getX() + (int) bounds.getWidth(), heightOffSet);
+		}
+	}
+
+	private Tag getTag(int itemId)
+	{
+		Tag tag = tagCache.getIfPresent(itemId);
+		if (tag == null)
+		{
+			tag = plugin.getTag(itemId);
+			if (tag == null)
+			{
+				return null;
+			}
+
+			tagCache.put(itemId, tag);
+		}
+		return tag;
 	}
 
 	private Image getFillImage(Color color, int itemId, int qty)
@@ -107,5 +135,6 @@ public class InventoryTagsOverlay extends WidgetItemOverlay
 	void invalidateCache()
 	{
 		fillCache.invalidateAll();
+		tagCache.invalidateAll();
 	}
 }
