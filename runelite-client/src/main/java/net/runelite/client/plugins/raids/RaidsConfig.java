@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.raids;
 
-import net.runelite.api.ChatMessageType;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -34,7 +33,8 @@ import net.runelite.client.util.ImageUploadStyle;
 @ConfigGroup("raids")
 public interface RaidsConfig extends Config
 {
-	public enum LayoutMessageType {
+	enum LayoutMessageType
+	{
 		CHANNEL,
 		GAME
 	}

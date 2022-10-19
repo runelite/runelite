@@ -470,7 +470,9 @@ public class RaidsPlugin extends Plugin
 		if (config.layoutMessageChannel() == RaidsConfig.LayoutMessageType.CHANNEL)
 		{
 			messageType = ChatMessageType.FRIENDSCHATNOTIFICATION;
-		} else {
+		}
+		else
+		{
 			messageType = ChatMessageType.GAMEMESSAGE;
 		}
 
