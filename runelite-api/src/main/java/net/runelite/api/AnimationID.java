@@ -213,7 +213,7 @@ public final class AnimationID
 	public static final int SHATTERED_LEAGUE_HOME_TELEPORT_6 = 9214;
 	public static final int RAID_LIGHT_ANIMATION = 3101;
 	public static final int LOOTBEAM_ANIMATION = 9260;
-
+	public static final int BLISTERWOOD_JUMP_SCARE = 2390;
 	public static final int CONSTRUCTION = 3676;
 	public static final int CONSTRUCTION_IMCANDO = 8912;
 	public static final int SAND_COLLECTION = 895;
