@@ -31,24 +31,29 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import net.runelite.api.ItemID;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.timetracking.TabContentPanel;
 import net.runelite.client.plugins.timetracking.TimeTrackingConfig;
 import net.runelite.client.plugins.timetracking.TimeablePanel;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
+import javax.swing.JToggleButton;
 
 public class BirdHouseTabPanel extends TabContentPanel
 {
 	private static final Color COMPLETED_COLOR = ColorScheme.PROGRESS_COMPLETE_COLOR.darker();
 
+	private final ConfigManager configManager;
 	private final ItemManager itemManager;
 	private final BirdHouseTracker birdHouseTracker;
 	private final TimeTrackingConfig config;
 	private final List<TimeablePanel<BirdHouseSpace>> spacePanels;
 
-	BirdHouseTabPanel(ItemManager itemManager, BirdHouseTracker birdHouseTracker, TimeTrackingConfig config)
+	BirdHouseTabPanel(ConfigManager configManager, ItemManager itemManager, BirdHouseTracker birdHouseTracker,
+		TimeTrackingConfig config)
 	{
+		this.configManager = configManager;
 		this.itemManager = itemManager;
 		this.birdHouseTracker = birdHouseTracker;
 		this.config = config;
@@ -71,6 +76,17 @@ public class BirdHouseTabPanel extends TabContentPanel
 				first = false;
 				panel.setBorder(null);
 			}
+
+			JToggleButton toggleNotify = panel.getNotifyButton();
+
+			toggleNotify.addActionListener(e ->
+			{
+				if (configManager.getRSProfileKey() != null)
+				{
+					configManager.setRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, TimeTrackingConfig.BIRDHOUSE_NOTIFY, toggleNotify.isSelected());
+				}
+				spacePanels.forEach(p -> p.getNotifyButton().setSelected(toggleNotify.isSelected()));
+			});
 		}
 	}
 
@@ -84,6 +100,9 @@ public class BirdHouseTabPanel extends TabContentPanel
 	public void update()
 	{
 		long unixNow = Instant.now().getEpochSecond();
+
+		boolean notifications = Boolean.TRUE
+			.equals(configManager.getRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, TimeTrackingConfig.BIRDHOUSE_NOTIFY, boolean.class));
 
 		for (TimeablePanel<BirdHouseSpace> panel : spacePanels)
 		{
@@ -113,6 +132,8 @@ public class BirdHouseTabPanel extends TabContentPanel
 				panel.getProgress().setVisible(true);
 			}
 
+			panel.getNotifyButton().setSelected(notifications);
+
 			panel.getProgress().setForeground(state.getColor().darker());
 
 			switch (state)
@@ -136,7 +157,7 @@ public class BirdHouseTabPanel extends TabContentPanel
 					else
 					{
 						panel.getProgress().setValue((int) (BirdHouseTracker.BIRD_HOUSE_DURATION - remainingTime));
-						panel.getEstimate().setText("Done " + getFormattedEstimate(remainingTime, config.estimateRelative()));
+						panel.getEstimate().setText("Done " + getFormattedEstimate(remainingTime, config.timeFormatMode()));
 					}
 					break;
 				default:

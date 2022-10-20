@@ -31,15 +31,18 @@ import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.ChatMessageType;
+import net.runelite.api.MenuAction;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.ui.overlay.OverlayMenuEntry;
 
 @PluginDescriptor(
 	name = "Smelting",
@@ -61,6 +64,8 @@ public class SmeltingPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private SmeltingSession session;
 
+	private int cannonBallsMade;
+
 	@Provides
 	SmeltingConfig getConfig(ConfigManager configManager)
 	{
@@ -72,6 +77,7 @@ public class SmeltingPlugin extends Plugin
 	{
 		session = null;
 		overlayManager.add(overlay);
+		cannonBallsMade = 0;
 	}
 
 	@Override
@@ -79,6 +85,19 @@ public class SmeltingPlugin extends Plugin
 	{
 		overlayManager.remove(overlay);
 		session = null;
+		cannonBallsMade = 0;
+	}
+
+	@Subscribe
+	public void onOverlayMenuClicked(OverlayMenuClicked overlayMenuClicked)
+	{
+		OverlayMenuEntry overlayMenuEntry = overlayMenuClicked.getEntry();
+		if (overlayMenuEntry.getMenuAction() == MenuAction.RUNELITE_OVERLAY
+			&& overlayMenuClicked.getEntry().getOption().equals(SmeltingOverlay.SMELTING_RESET)
+			&& overlayMenuClicked.getOverlay() == overlay)
+		{
+			session = null;
+		}
 	}
 
 	@Subscribe
@@ -97,13 +116,21 @@ public class SmeltingPlugin extends Plugin
 			}
 			session.increaseBarsSmelted();
 		}
+		else if (event.getMessage().endsWith(" to form 8 cannonballs."))
+		{
+			cannonBallsMade = 8;
+		}
+		else if (event.getMessage().endsWith(" to form 4 cannonballs."))
+		{
+			cannonBallsMade = 4;
+		}
 		else if (event.getMessage().startsWith("You remove the cannonballs from the mould"))
 		{
 			if (session == null)
 			{
 				session = new SmeltingSession();
 			}
-			session.increaseCannonBallsSmelted();
+			session.increaseCannonBallsSmelted(cannonBallsMade);
 		}
 	}
 

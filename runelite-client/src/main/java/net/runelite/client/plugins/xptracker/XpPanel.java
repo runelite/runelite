@@ -29,27 +29,31 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
-import lombok.extern.slf4j.Slf4j;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
+import net.runelite.api.WorldType;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.ui.components.DragAndDropReorderPane;
 import net.runelite.client.ui.components.PluginErrorPanel;
 import net.runelite.client.util.LinkBrowser;
 import okhttp3.HttpUrl;
 
-@Slf4j
 class XpPanel extends PluginPanel
 {
 	private final Map<Skill, XpInfoBox> infoBoxes = new HashMap<>();
@@ -81,12 +85,17 @@ class XpPanel extends PluginPanel
 		overallPanel.setVisible(false); // this will only become visible when the player gets exp
 
 		// Create open xp tracker menu
-		final JMenuItem openXpTracker = new JMenuItem("Open online tracker");
-		openXpTracker.addActionListener(e -> LinkBrowser.browse(XpPanel.buildXpTrackerUrl(client.getLocalPlayer(), Skill.OVERALL)));
+		final JMenuItem openXpTracker = new JMenuItem("Open Wise Old Man");
+		openXpTracker.addActionListener(e -> LinkBrowser.browse(XpPanel.buildXpTrackerUrl(
+			client.getWorldType(), client.getLocalPlayer(), Skill.OVERALL)));
 
 		// Create reset all menu
 		final JMenuItem reset = new JMenuItem("Reset All");
 		reset.addActionListener(e -> xpTrackerPlugin.resetAndInitState());
+
+		// Create reset all per hour menu
+		final JMenuItem resetPerHour = new JMenuItem("Reset All/hr");
+		resetPerHour.addActionListener(e -> xpTrackerPlugin.resetAllSkillsPerHourState());
 
 		// Create pause all menu
 		final JMenuItem pauseAll = new JMenuItem("Pause All");
@@ -102,8 +111,27 @@ class XpPanel extends PluginPanel
 		popupMenu.setBorder(new EmptyBorder(5, 5, 5, 5));
 		popupMenu.add(openXpTracker);
 		popupMenu.add(reset);
+		popupMenu.add(resetPerHour);
 		popupMenu.add(pauseAll);
 		popupMenu.add(unpauseAll);
+		popupMenu.addPopupMenuListener(new PopupMenuListener()
+		{
+			@Override
+			public void popupMenuWillBecomeVisible(PopupMenuEvent popupMenuEvent)
+			{
+				openXpTracker.setVisible(xpTrackerConfig.wiseOldManOpenOption());
+			}
+
+			@Override
+			public void popupMenuWillBecomeInvisible(PopupMenuEvent popupMenuEvent)
+			{
+			}
+
+			@Override
+			public void popupMenuCanceled(PopupMenuEvent popupMenuEvent)
+			{
+			}
+		});
 		overallPanel.setComponentPopupMenu(popupMenu);
 
 		final JLabel overallIcon = new JLabel(new ImageIcon(iconManager.getSkillImage(Skill.OVERALL)));
@@ -122,9 +150,8 @@ class XpPanel extends PluginPanel
 		overallPanel.add(overallIcon, BorderLayout.WEST);
 		overallPanel.add(overallInfo, BorderLayout.CENTER);
 
+		final JComponent infoBoxPanel = new DragAndDropReorderPane();
 
-		final JPanel infoBoxPanel = new JPanel();
-		infoBoxPanel.setLayout(new BoxLayout(infoBoxPanel, BoxLayout.Y_AXIS));
 		layoutPanel.add(overallPanel);
 		layoutPanel.add(infoBoxPanel);
 
@@ -141,7 +168,7 @@ class XpPanel extends PluginPanel
 		add(errorPanel);
 	}
 
-	static String buildXpTrackerUrl(final Actor player, final Skill skill)
+	static String buildXpTrackerUrl(final Set<WorldType> worldTypes, final Actor player, final Skill skill)
 	{
 		if (player == null)
 		{
@@ -150,13 +177,13 @@ class XpPanel extends PluginPanel
 
 		return new HttpUrl.Builder()
 			.scheme("https")
-			.host("runelite.net")
-			.addPathSegment("xp")
-			.addPathSegment("show")
-			.addPathSegment(skill.getName().toLowerCase())
+			.host(worldTypes.contains(WorldType.SEASONAL) ? "seasonal.wiseoldman.net" : "wiseoldman.net")
+			.addPathSegment("players")
 			.addPathSegment(player.getName())
-			.addPathSegment("1week")
-			.addPathSegment("now")
+			.addPathSegment("gained")
+			.addPathSegment("skilling")
+			.addQueryParameter("metric", skill.getName().toLowerCase())
+			.addQueryParameter("period", "week")
 			.build()
 			.toString();
 	}

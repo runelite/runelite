@@ -24,19 +24,26 @@
  */
 package net.runelite.client.config;
 
-import java.lang.invoke.MethodHandles;
-import java.lang.reflect.Constructor;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.Objects;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.util.ReflectUtil;
 
 @Slf4j
 class ConfigInvocationHandler implements InvocationHandler
 {
-	private final ConfigManager manager;
+	// Special object to represent null values in the cache
+	private static final Object NULL = new Object();
 
-	public ConfigInvocationHandler(ConfigManager manager)
+	private final ConfigManager manager;
+	private final Cache<Method, Object> cache = CacheBuilder.newBuilder()
+		.maximumSize(256)
+		.build();
+
+	ConfigInvocationHandler(ConfigManager manager)
 	{
 		this.manager = manager;
 	}
@@ -44,7 +51,32 @@ class ConfigInvocationHandler implements InvocationHandler
 	@Override
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable
 	{
+		// Use cached configuration value if available
+		if (args == null)
+		{
+			Object cachedValue = cache.getIfPresent(method);
+			if (cachedValue != null)
+			{
+				return cachedValue == NULL ? null : cachedValue;
+			}
+		}
+
 		Class<?> iface = proxy.getClass().getInterfaces()[0];
+
+		if ("toString".equals(method.getName()) && args == null)
+		{
+			return iface.getSimpleName();
+		}
+
+		if ("hashCode".equals(method.getName()) && args == null)
+		{
+			return System.identityHashCode(proxy);
+		}
+
+		if ("equals".equals(method.getName()) && args != null && args.length == 1)
+		{
+			return proxy == args[0];
+		}
 
 		ConfigGroup group = iface.getAnnotation(ConfigGroup.class);
 		ConfigItem item = method.getAnnotation(ConfigItem.class);
@@ -63,6 +95,8 @@ class ConfigInvocationHandler implements InvocationHandler
 
 		if (args == null)
 		{
+			log.trace("cache miss (size: {}, group: {}, key: {})", cache.size(), group.value(), item.keyName());
+
 			// Getting configuration item
 			String value = manager.getConfiguration(group.value(), item.keyName());
 
@@ -70,18 +104,21 @@ class ConfigInvocationHandler implements InvocationHandler
 			{
 				if (method.isDefault())
 				{
-					return callDefaultMethod(proxy, method, null);
+					Object defaultValue = callDefaultMethod(proxy, method, null);
+					cache.put(method, defaultValue == null ? NULL : defaultValue);
+					return defaultValue;
 				}
 
+				cache.put(method, NULL);
 				return null;
 			}
 
 			// Convert value to return type
-			Class<?> returnType = method.getReturnType();
-			
 			try
 			{
-				return ConfigManager.stringToObject(value, returnType);
+				Object objectValue = manager.stringToObject(value, method.getGenericReturnType());
+				cache.put(method, objectValue == null ? NULL : objectValue);
+				return objectValue;
 			}
 			catch (Exception e)
 			{
@@ -99,7 +136,7 @@ class ConfigInvocationHandler implements InvocationHandler
 
 			if (args.length != 1)
 			{
-				throw new RuntimeException("Invalid number of arguents to configuration method");
+				throw new RuntimeException("Invalid number of arguments to configuration method");
 			}
 
 			Object newValue = args[0];
@@ -131,7 +168,7 @@ class ConfigInvocationHandler implements InvocationHandler
 			}
 			else
 			{
-				String newValueStr = ConfigManager.objectToString(newValue);
+				String newValueStr = manager.objectToString(newValue);
 				manager.setConfiguration(group.value(), item.keyName(), newValueStr);
 			}
 			return null;
@@ -140,14 +177,16 @@ class ConfigInvocationHandler implements InvocationHandler
 
 	static Object callDefaultMethod(Object proxy, Method method, Object[] args) throws Throwable
 	{
-		// Call the default method implementation - https://rmannibucau.wordpress.com/2014/03/27/java-8-default-interface-methods-and-jdk-dynamic-proxies/
-		Constructor<MethodHandles.Lookup> constructor = MethodHandles.Lookup.class.getDeclaredConstructor(Class.class, int.class);
-		constructor.setAccessible(true);
-
 		Class<?> declaringClass = method.getDeclaringClass();
-		return constructor.newInstance(declaringClass, MethodHandles.Lookup.PUBLIC | MethodHandles.Lookup.PRIVATE)
+		return ReflectUtil.privateLookupIn(declaringClass)
 			.unreflectSpecial(method, declaringClass)
 			.bindTo(proxy)
 			.invokeWithArguments(args);
+	}
+
+	void invalidate()
+	{
+		log.trace("cache invalidate");
+		cache.invalidateAll();
 	}
 }

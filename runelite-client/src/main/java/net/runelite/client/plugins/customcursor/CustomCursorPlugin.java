@@ -25,10 +25,23 @@
 package net.runelite.client.plugins.customcursor;
 
 import com.google.inject.Provides;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import javax.imageio.ImageIO;
 import javax.inject.Inject;
-import net.runelite.api.events.ConfigChanged;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Client;
+import net.runelite.api.EquipmentInventorySlot;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
+import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.client.RuneLite;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientUI;
@@ -38,13 +51,25 @@ import net.runelite.client.ui.ClientUI;
 	description = "Replaces your mouse cursor image",
 	enabledByDefault = false
 )
+@Slf4j
 public class CustomCursorPlugin extends Plugin
 {
+	private static final File CUSTOM_IMAGE_FILE = new File(RuneLite.RUNELITE_DIR, "cursor.png");
+
+	@Inject
+	private Client client;
+
+	@Inject
+	private ClientThread clientThread;
+
 	@Inject
 	private ClientUI clientUI;
 
 	@Inject
 	private CustomCursorConfig config;
+
+	@Inject
+	private ItemManager itemManager;
 
 	@Provides
 	CustomCursorConfig provideConfig(ConfigManager configManager)
@@ -73,9 +98,78 @@ public class CustomCursorPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onItemContainerChanged(ItemContainerChanged event)
+	{
+		if (config.selectedCursor() == CustomCursor.EQUIPPED_WEAPON && event.getContainerId() == InventoryID.EQUIPMENT.getId())
+		{
+			updateCursor();
+		}
+	}
+
 	private void updateCursor()
 	{
 		CustomCursor selectedCursor = config.selectedCursor();
-		clientUI.setCursor(selectedCursor.getCursorImage(), selectedCursor.toString());
+
+		if (selectedCursor == CustomCursor.CUSTOM_IMAGE)
+		{
+			if (CUSTOM_IMAGE_FILE.exists())
+			{
+				try
+				{
+					BufferedImage image;
+					synchronized (ImageIO.class)
+					{
+						image = ImageIO.read(CUSTOM_IMAGE_FILE);
+					}
+					clientUI.setCursor(image, selectedCursor.getName());
+				}
+				catch (Exception e)
+				{
+					log.error("error setting custom cursor", e);
+					clientUI.resetCursor();
+				}
+			}
+			else
+			{
+				clientUI.resetCursor();
+			}
+		}
+		else if (selectedCursor == CustomCursor.EQUIPPED_WEAPON)
+		{
+			clientThread.invokeLater(() ->
+			{
+				final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
+
+				if (equipment == null)
+				{
+					clientUI.resetCursor();
+					return;
+				}
+
+				Item weapon = equipment.getItem(EquipmentInventorySlot.WEAPON.getSlotIdx());
+				if (weapon == null)
+				{
+					clientUI.resetCursor();
+					return;
+				}
+
+				final BufferedImage image = itemManager.getImage(weapon.getId());
+
+				if (weapon.getQuantity() > 0)
+				{
+					clientUI.setCursor(image, selectedCursor.getName());
+				}
+				else
+				{
+					clientUI.resetCursor();
+				}
+			});
+		}
+		else
+		{
+			assert selectedCursor.getCursorImage() != null;
+			clientUI.setCursor(selectedCursor.getCursorImage(), selectedCursor.getName());
+		}
 	}
 }

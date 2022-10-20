@@ -27,44 +27,29 @@ package net.runelite.client.plugins.screenmarkers;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.Stroke;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import net.runelite.client.ui.overlay.components.LayoutableRenderableEntity;
+import net.runelite.client.ui.overlay.RenderableEntity;
 
-public class ScreenMarkerRenderable implements LayoutableRenderableEntity
+@Getter(AccessLevel.PACKAGE)
+@Setter(AccessLevel.PACKAGE)
+class ScreenMarkerRenderable implements RenderableEntity
 {
-	@Getter(AccessLevel.PACKAGE)
-	@Setter
-	private Point preferredLocation;
-	@Getter(AccessLevel.PACKAGE)
-	@Setter
-	private Dimension preferredSize;
-	@Getter(AccessLevel.PACKAGE)
-	@Setter(AccessLevel.PACKAGE)
+	private Dimension size;
 	private int borderThickness;
-	@Getter(AccessLevel.PACKAGE)
-	@Setter(AccessLevel.PACKAGE)
 	private Color color;
-	@Getter(AccessLevel.PACKAGE)
-	@Setter(AccessLevel.PACKAGE)
 	private Color fill;
-	@Getter(AccessLevel.PACKAGE)
-	@Setter(AccessLevel.PACKAGE)
 	private Stroke stroke;
-
-	@Getter
-	private final Rectangle bounds = new Rectangle();
+	private String label;
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
 		int thickness = borderThickness;
-		int width = preferredSize.width;
-		int height = preferredSize.height;
+		int width = size.width;
+		int height = size.height;
 
 		//draw the fill
 		graphics.setColor(fill);
@@ -76,7 +61,12 @@ public class ScreenMarkerRenderable implements LayoutableRenderableEntity
 		graphics.setColor(color);
 		graphics.setStroke(stroke);
 		graphics.drawRect(offset, offset, width - thickness, height - thickness);
-		bounds.setSize(preferredSize);
-		return preferredSize;
+
+		if (!label.isEmpty())
+		{
+			graphics.drawString(label, 0, 0);
+		}
+
+		return size;
 	}
 }

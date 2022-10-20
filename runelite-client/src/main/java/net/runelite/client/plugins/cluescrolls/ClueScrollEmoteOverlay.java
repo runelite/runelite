@@ -105,7 +105,7 @@ class ClueScrollEmoteOverlay extends Overlay
 		if (!hasScrolled)
 		{
 			hasScrolled = true;
-			plugin.scrollToWidget(WidgetInfo.EMOTE_CONTAINER, WidgetInfo.EMOTE_SCROLLBAR, firstEmoteWidget, secondEmoteWidget);
+			plugin.scrollToWidget(WidgetInfo.EMOTE_SCROLL_CONTAINER, WidgetInfo.EMOTE_SCROLLBAR, firstEmoteWidget, secondEmoteWidget);
 		}
 
 		return null;

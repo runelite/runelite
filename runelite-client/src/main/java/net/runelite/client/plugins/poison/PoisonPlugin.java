@@ -39,11 +39,12 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.SpriteID;
 import net.runelite.api.VarPlayer;
-import net.runelite.api.events.ConfigChanged;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.AlternateSprites;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -70,9 +71,9 @@ public class PoisonPlugin extends Plugin
 
 	static
 	{
-		HEART_DISEASE = ImageUtil.resizeCanvas(ImageUtil.getResourceStreamFromClass(PoisonPlugin.class, "1067-DISEASE.png"), 26, 26);
-		HEART_POISON = ImageUtil.resizeCanvas(ImageUtil.getResourceStreamFromClass(PoisonPlugin.class, "1067-POISON.png"), 26, 26);
-		HEART_VENOM = ImageUtil.resizeCanvas(ImageUtil.getResourceStreamFromClass(PoisonPlugin.class, "1067-VENOM.png"), 26, 26);
+		HEART_DISEASE = ImageUtil.resizeCanvas(ImageUtil.loadImageResource(AlternateSprites.class, AlternateSprites.DISEASE_HEART), 26, 26);
+		HEART_POISON = ImageUtil.resizeCanvas(ImageUtil.loadImageResource(AlternateSprites.class, AlternateSprites.POISON_HEART), 26, 26);
+		HEART_VENOM = ImageUtil.resizeCanvas(ImageUtil.loadImageResource(AlternateSprites.class, AlternateSprites.VENOM_HEART), 26, 26);
 	}
 
 	@Inject
@@ -102,8 +103,6 @@ public class PoisonPlugin extends Plugin
 	private PoisonInfobox infobox;
 	private Instant poisonNaturalCure;
 	private Instant nextPoisonTick;
-	private int lastValue = -1;
-	private int lastDiseaseValue = -1;
 	private BufferedImage heart;
 
 	@Provides
@@ -138,8 +137,6 @@ public class PoisonPlugin extends Plugin
 		lastDamage = 0;
 		poisonNaturalCure = null;
 		nextPoisonTick = null;
-		lastValue = -1;
-		lastDiseaseValue = -1;
 
 		clientThread.invoke(this::resetHealthIcon);
 	}
@@ -147,10 +144,9 @@ public class PoisonPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		final int poisonValue = client.getVar(VarPlayer.POISON);
-		if (poisonValue != lastValue)
+		if (event.getVarpId() == VarPlayer.POISON.getId())
 		{
-			lastValue = poisonValue;
+			final int poisonValue = event.getValue();
 			nextPoisonTick = Instant.now().plus(Duration.of(POISON_TICK_MILLIS, ChronoUnit.MILLIS));
 
 			final int damage = nextDamage(poisonValue);
@@ -189,11 +185,8 @@ public class PoisonPlugin extends Plugin
 
 			checkHealthIcon();
 		}
-
-		final int diseaseValue = client.getVar(VarPlayer.DISEASE_VALUE);
-		if (diseaseValue != lastDiseaseValue)
+		else if (event.getVarpId() == VarPlayer.DISEASE_VALUE.getId())
 		{
-			lastDiseaseValue = diseaseValue;
 			checkHealthIcon();
 		}
 	}
@@ -304,7 +297,7 @@ public class PoisonPlugin extends Plugin
 		}
 
 		final BufferedImage newHeart;
-		final int poison = client.getVar(VarPlayer.IS_POISONED);
+		final int poison = client.getVarpValue(VarPlayer.IS_POISONED);
 
 		if (poison >= VENOM_THRESHOLD)
 		{
@@ -314,7 +307,7 @@ public class PoisonPlugin extends Plugin
 		{
 			newHeart = HEART_POISON;
 		}
-		else if (client.getVar(VarPlayer.DISEASE_VALUE) > 0)
+		else if (client.getVarpValue(VarPlayer.DISEASE_VALUE) > 0)
 		{
 			newHeart = HEART_DISEASE;
 		}

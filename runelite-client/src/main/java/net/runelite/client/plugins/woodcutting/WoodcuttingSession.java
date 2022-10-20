@@ -26,17 +26,17 @@ package net.runelite.client.plugins.woodcutting;
 
 import java.time.Instant;
 
-public class WoodcuttingSession
+class WoodcuttingSession
 {
-	private Instant lastLogCut;
+	private Instant lastChopping;
 
-	public void setLastLogCut()
+	void setLastChopping()
 	{
-		lastLogCut = Instant.now();
+		lastChopping = Instant.now();
 	}
 
-	public Instant getLastLogCut()
+	Instant getLastChopping()
 	{
-		return lastLogCut;
+		return lastChopping;
 	}
 }

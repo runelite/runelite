@@ -43,7 +43,8 @@ public enum Tab
 	HOPS("Hops Patches", ItemID.BARLEY),
 	BUSH("Bush Patches", ItemID.POISON_IVY_BERRIES),
 	GRAPE("Grape Patches", ItemID.GRAPES),
-	SPECIAL("Special Patches", ItemID.MUSHROOM);
+	SPECIAL("Special Patches", ItemID.MUSHROOM),
+	TIME_OFFSET("Farming Tick Offset", ItemID.WATERING_CAN);
 
 	public static final Tab[] FARMING_TABS = {HERB, TREE, FRUIT_TREE, SPECIAL, FLOWER, ALLOTMENT, BUSH, GRAPE, HOPS};
 

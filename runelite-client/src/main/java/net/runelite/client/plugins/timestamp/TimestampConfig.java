@@ -29,9 +29,11 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("timestamp")
+@ConfigGroup(TimestampConfig.GROUP)
 public interface TimestampConfig extends Config
 {
+	String GROUP = "timestamp";
+
 	@ConfigItem(
 		keyName = "opaqueTimestamp",
 		name = "Timestamps (opaque)",
@@ -59,7 +61,8 @@ public interface TimestampConfig extends Config
 			"'HH' : hour in 24 hour format<br>" +
 			"'hh' : hour in 12 hour format<br>" +
 			"'mm' : minute<br>" +
-			"'ss' : second"
+			"'ss' : second<br>" +
+			"'a'  : AM/PM"
 	)
 	default String timestampFormat()
 	{

@@ -93,6 +93,36 @@ public interface ItemStatConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showWeight",
+		name = "Show Weight",
+		description = "Show weight in tooltip"
+	)
+	default boolean showWeight()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showStatsInBank",
+		name = "Show Stats In Bank",
+		description = "Show item stats on bank items tooltip"
+	)
+	default boolean showStatsInBank()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "alwaysShowBaseStats",
+		name = "Always Show Base Stats",
+		description = "Always include the base items stats in the tooltip"
+	)
+	default boolean alwaysShowBaseStats()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "colorBetterUncapped",
 		name = "Better (Uncapped)",
 		description = "Color to show when the stat change is fully consumed",
@@ -106,14 +136,13 @@ public interface ItemStatConfig extends Config
 	@ConfigItem(
 		keyName = "colorBetterSomecapped",
 		name = "Better (Some capped)",
-		description = "Color to show when some stat changes are capped, but some ar not",
+		description = "Color to show when some stat changes are capped, but some are not",
 		position = 11
 	)
 	default Color colorBetterSomeCapped()
 	{
 		return new Color(0x9CEE33);
 	}
-
 
 	@ConfigItem(
 		keyName = "colorBetterCapped",
@@ -125,6 +154,7 @@ public interface ItemStatConfig extends Config
 	{
 		return new Color(0xEEEE33);
 	}
+
 	@ConfigItem(
 		keyName = "colorNoChange",
 		name = "No change",

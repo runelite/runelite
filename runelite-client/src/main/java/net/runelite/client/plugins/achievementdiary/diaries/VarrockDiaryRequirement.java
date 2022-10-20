@@ -46,7 +46,7 @@ public class VarrockDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.AGILITY, 13));
 		add("Spin a bowl on the pottery wheel and fire it in the oven in Barb Village.",
 			new SkillRequirement(Skill.CRAFTING, 8));
-		add("Craft some Earth runes.",
+		add("Craft some Earth runes from Essence.",
 			new SkillRequirement(Skill.RUNECRAFT, 9));
 		add("Catch some trout in the River Lum at Barbarian Village.",
 			new SkillRequirement(Skill.FISHING, 20));
@@ -112,7 +112,7 @@ public class VarrockDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.SMITHING, 89),
 			new SkillRequirement(Skill.FLETCHING, 81),
 			new QuestRequirement(Quest.THE_TOURIST_TRAP));
-		add("Craft 100 or more earth runes simultaneously.",
+		add("Craft 100 or more earth runes simultaneously from Essence.",
 			new SkillRequirement(Skill.RUNECRAFT, 78),
 			new QuestRequirement(Quest.RUNE_MYSTERIES));
 	}

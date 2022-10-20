@@ -29,6 +29,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
 import net.runelite.client.plugins.cluescrolls.clues.ClueScroll;
+import net.runelite.client.plugins.cluescrolls.clues.EmoteClue;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -59,6 +60,12 @@ public class ClueScrollWorldOverlay extends Overlay
 		if (clue != null)
 		{
 			clue.makeWorldOverlayHint(graphics, plugin);
+		}
+
+		EmoteClue activeSTASHClue = plugin.getActiveSTASHClue();
+		if (activeSTASHClue != null && activeSTASHClue != clue)
+		{
+			activeSTASHClue.makeSTASHOverlay(graphics, plugin);
 		}
 
 		return null;

@@ -28,15 +28,24 @@ import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
 
 @ConfigGroup("playerindicators")
 public interface PlayerIndicatorsConfig extends Config
 {
+	@ConfigSection(
+		name = "Highlight Options",
+		description = "Toggle highlighted players by type (self, friends, etc.) and choose their highlight colors",
+		position = 99
+	)
+	String highlightSection = "section";
+
 	@ConfigItem(
 		position = 0,
 		keyName = "drawOwnName",
 		name = "Highlight own player",
-		description = "Configures whether or not your own player should be highlighted"
+		description = "Configures whether or not your own player should be highlighted",
+		section = highlightSection
 	)
 	default boolean highlightOwnPlayer()
 	{
@@ -46,8 +55,9 @@ public interface PlayerIndicatorsConfig extends Config
 	@ConfigItem(
 		position = 1,
 		keyName = "ownNameColor",
-		name = "Own player color",
-		description = "Color of your own player"
+		name = "Own player",
+		description = "Color of your own player",
+		section = highlightSection
 	)
 	default Color getOwnPlayerColor()
 	{
@@ -56,9 +66,34 @@ public interface PlayerIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 2,
+		keyName = "drawPartyMembers",
+		name = "Highlight party members",
+		description = "Configures whether or not party members should be highlighted",
+		section = highlightSection
+	)
+	default boolean highlightPartyMembers()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 3,
+		keyName = "partyMemberNameColor",
+		name = "Party member",
+		description = "Color of party member names",
+		section = highlightSection
+	)
+	default Color getPartyMemberColor()
+	{
+		return new Color(234, 123, 91);
+	}
+
+	@ConfigItem(
+		position = 4,
 		keyName = "drawFriendNames",
 		name = "Highlight friends",
-		description = "Configures whether or not friends should be highlighted"
+		description = "Configures whether or not friends should be highlighted",
+		section = highlightSection
 	)
 	default boolean highlightFriends()
 	{
@@ -66,10 +101,11 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 3,
+		position = 5,
 		keyName = "friendNameColor",
-		name = "Friend color",
-		description = "Color of friend names"
+		name = "Friend",
+		description = "Color of friend names",
+		section = highlightSection
 	)
 	default Color getFriendColor()
 	{
@@ -77,32 +113,35 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 4,
+		position = 6,
 		keyName = "drawClanMemberNames",
-		name = "Highlight clan members",
-		description = "Configures whether or clan members should be highlighted"
+		name = "Highlight friends chat members",
+		description = "Configures if friends chat members should be highlighted",
+		section = highlightSection
 	)
-	default boolean drawClanMemberNames()
+	default boolean highlightFriendsChat()
 	{
 		return true;
 	}
 
 	@ConfigItem(
-		position = 5,
+		position = 7,
 		keyName = "clanMemberColor",
-		name = "Clan member color",
-		description = "Color of clan members"
+		name = "Friends chat",
+		description = "Color of friends chat members",
+		section = highlightSection
 	)
-	default Color getClanMemberColor()
+	default Color getFriendsChatMemberColor()
 	{
 		return new Color(170, 0, 255);
 	}
 
 	@ConfigItem(
-		position = 6,
+		position = 8,
 		keyName = "drawTeamMemberNames",
 		name = "Highlight team members",
-		description = "Configures whether or not team members should be highlighted"
+		description = "Configures whether or not team members should be highlighted",
+		section = highlightSection
 	)
 	default boolean highlightTeamMembers()
 	{
@@ -110,10 +149,11 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 7,
+		position = 9,
 		keyName = "teamMemberColor",
-		name = "Team member color",
-		description = "Color of team members"
+		name = "Team member",
+		description = "Color of team members",
+		section = highlightSection
 	)
 	default Color getTeamMemberColor()
 	{
@@ -121,23 +161,49 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 8,
-		keyName = "drawNonClanMemberNames",
-		name = "Highlight non-clan members",
-		description = "Configures whether or not non-clan members should be highlighted"
+		position = 10,
+		keyName = "drawClanChatMemberNames",
+		name = "Highlight clan members",
+		description = "Configures whether or not clan members should be highlighted",
+		section = highlightSection
 	)
-	default boolean highlightNonClanMembers()
+	default boolean highlightClanMembers()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 11,
+		keyName = "clanChatMemberColor",
+		name = "Clan member",
+		description = "Color of clan members",
+		section = highlightSection
+	)
+	default Color getClanMemberColor()
+	{
+		return new Color(36, 15, 171);
+	}
+
+	@ConfigItem(
+		position = 12,
+		keyName = "drawNonClanMemberNames",
+		name = "Highlight others",
+		description = "Configures whether or not other players should be highlighted",
+		section = highlightSection
+	)
+	default boolean highlightOthers()
 	{
 		return false;
 	}
 
 	@ConfigItem(
-		position = 9,
+		position = 13,
 		keyName = "nonClanMemberColor",
-		name = "Non-clan member color",
-		description = "Color of non-clan member names"
+		name = "Others",
+		description = "Color of other players names",
+		section = highlightSection
 	)
-	default Color getNonClanMemberColor()
+	default Color getOthersColor()
 	{
 		return Color.RED;
 	}
@@ -189,10 +255,21 @@ public interface PlayerIndicatorsConfig extends Config
 	@ConfigItem(
 		position = 14,
 		keyName = "clanMenuIcons",
-		name = "Show clan ranks",
-		description = "Add clan rank to right click menu and next to player names"
+		name = "Show friends chat ranks",
+		description = "Add friends chat rank to right click menu and next to player names"
 	)
-	default boolean showClanRanks()
+	default boolean showFriendsChatRanks()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 15,
+		keyName = "clanchatMenuIcons",
+		name = "Show clan chat ranks",
+		description = "Add clan chat rank to right click menu and next to player names"
+	)
+	default boolean showClanChatRanks()
 	{
 		return true;
 	}

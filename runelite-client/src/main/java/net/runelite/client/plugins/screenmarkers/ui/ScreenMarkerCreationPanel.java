@@ -54,8 +54,8 @@ public class ScreenMarkerCreationPanel extends JPanel
 
 	static
 	{
-		CONFIRM_ICON = new ImageIcon(ImageUtil.getResourceStreamFromClass(ScreenMarkerPlugin.class, "confirm_icon.png"));
-		CANCEL_ICON = new ImageIcon(ImageUtil.getResourceStreamFromClass(ScreenMarkerPlugin.class, "cancel_icon.png"));
+		CONFIRM_ICON = new ImageIcon(ImageUtil.loadImageResource(ScreenMarkerPlugin.class, "confirm_icon.png"));
+		CANCEL_ICON = new ImageIcon(ImageUtil.loadImageResource(ScreenMarkerPlugin.class, "cancel_icon.png"));
 
 		final BufferedImage confirmIcon = ImageUtil.bufferedImageFromImage(CONFIRM_ICON.getImage());
 		CONFIRM_HOVER_ICON = new ImageIcon(ImageUtil.alphaOffset(confirmIcon, 0.54f));

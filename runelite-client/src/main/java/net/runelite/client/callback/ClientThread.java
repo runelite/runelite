@@ -36,7 +36,7 @@ import net.runelite.api.Client;
 @Slf4j
 public class ClientThread
 {
-	private ConcurrentLinkedQueue<BooleanSupplier> invokes = new ConcurrentLinkedQueue<>();
+	private final ConcurrentLinkedQueue<BooleanSupplier> invokes = new ConcurrentLinkedQueue<>();
 
 	@Inject
 	private Client client;
@@ -58,7 +58,7 @@ public class ClientThread
 	{
 		if (client.isClientThread())
 		{
-			if (r.getAsBoolean())
+			if (!r.getAsBoolean())
 			{
 				invokes.add(r);
 			}
@@ -90,7 +90,7 @@ public class ClientThread
 	{
 		assert client.isClientThread();
 		Iterator<BooleanSupplier> ir = invokes.iterator();
-		for (; ir.hasNext(); )
+		while (ir.hasNext())
 		{
 			BooleanSupplier r = ir.next();
 			boolean remove = true;
@@ -104,11 +104,15 @@ public class ClientThread
 			}
 			catch (Throwable e)
 			{
-				log.warn("Exception in invoke", e);
+				log.error("Exception in invoke", e);
 			}
 			if (remove)
 			{
 				ir.remove();
+			}
+			else
+			{
+				log.trace("Deferring task {}", r);
 			}
 		}
 	}

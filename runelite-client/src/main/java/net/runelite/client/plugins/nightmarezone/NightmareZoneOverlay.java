@@ -30,21 +30,21 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
+import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.game.ItemManager;
-import net.runelite.client.ui.overlay.Overlay;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
+import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.LineComponent;
-import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
-import net.runelite.client.util.StackFormatter;
+import net.runelite.client.util.QuantityFormatter;
 
-class NightmareZoneOverlay extends Overlay
+class NightmareZoneOverlay extends OverlayPanel
 {
 	private final Client client;
 	private final NightmareZoneConfig config;
@@ -53,7 +53,6 @@ class NightmareZoneOverlay extends Overlay
 	private final ItemManager itemManager;
 
 	private AbsorptionCounter absorptionCounter;
-	private final PanelComponent panelComponent = new PanelComponent();
 
 	@Inject
 	NightmareZoneOverlay(
@@ -92,27 +91,30 @@ class NightmareZoneOverlay extends Overlay
 			return null;
 		}
 
-		Widget nmzWidget = client.getWidget(WidgetInfo.NIGHTMARE_ZONE);
-
-		if (nmzWidget != null)
-		{
-			nmzWidget.setHidden(true);
-		}
-
 		renderAbsorptionCounter();
 
-		panelComponent.getChildren().clear();
+		final int currentPoints = client.getVarbitValue(Varbits.NMZ_POINTS);
+		final int totalPoints = currentPoints + client.getVarpValue(VarPlayer.NMZ_REWARD_POINTS);
+
 		panelComponent.getChildren().add(LineComponent.builder()
 			.left("Points: ")
-			.right(StackFormatter.formatNumber(client.getVar(Varbits.NMZ_POINTS)))
+			.right(QuantityFormatter.formatNumber(currentPoints))
+			.build());
+		panelComponent.getChildren().add(LineComponent.builder()
+			.left("Points/Hr: ")
+			.right(QuantityFormatter.formatNumber(plugin.getPointsPerHour()))
+			.build());
+		panelComponent.getChildren().add(LineComponent.builder()
+			.left("Total: ")
+			.right(QuantityFormatter.formatNumber(totalPoints))
 			.build());
 
-		return panelComponent.render(graphics);
+		return super.render(graphics);
 	}
 
 	private void renderAbsorptionCounter()
 	{
-		int absorptionPoints = client.getVar(Varbits.NMZ_ABSORPTION);
+		int absorptionPoints = client.getVarbitValue(Varbits.NMZ_ABSORPTION);
 		if (absorptionPoints == 0)
 		{
 			if (absorptionCounter != null)

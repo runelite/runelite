@@ -50,15 +50,22 @@ public class OSXUtil
 	}
 
 	/**
+	 * Request user attention on macOS
+	 */
+	public static void requestUserAttention()
+	{
+		Application app = Application.getApplication();
+		app.requestUserAttention(true);
+		log.debug("Requested user attention on macOS");
+	}
+
+	/**
 	 * Requests the foreground in a macOS friendly way.
 	 */
-	public static void requestFocus()
+	public static void requestForeground()
 	{
-		if (OSType.getOSType() == OSType.MacOS)
-		{
-			Application app = Application.getApplication();
-			app.requestForeground(true);
-			log.debug("Requested focus on macOS");
-		}
+		Application app = Application.getApplication();
+		app.requestForeground(true);
+		log.debug("Forced focus on macOS");
 	}
 }

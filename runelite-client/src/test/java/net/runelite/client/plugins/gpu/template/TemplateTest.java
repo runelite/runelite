@@ -58,7 +58,9 @@ public class TemplateTest
 					throw new RuntimeException("unknown resource");
 			}
 		};
-		String out = new Template(func).process(FILE1);
+		String out = new Template()
+			.add(func)
+			.process(FILE1);
 		assertEquals(RESULT, out);
 	}
 }

@@ -1,0 +1,75 @@
+.id                 3898
+.int_stack_count    6
+.string_stack_count 0
+.int_var_count      11
+.string_var_count   0
+   get_varbit             4606
+   iconst                 0
+   if_icmpne              LABEL4
+   jump                   LABEL5
+LABEL4:
+   return                
+LABEL5:
+   iconst                 512
+   istore                 6
+   iconst                 512
+   istore                 7
+   iload                  2
+   iconst                 16
+   sub                   
+   istore                 8
+   iconst                 0
+   iload                  3
+   invoke                 1045
+   istore                 3
+   iload                  2
+   iconst                 16
+   sub                   
+   iload                  3
+   invoke                 1046
+   istore                 3
+   iconst                 896
+   sconst                 "innerZoomLimit"
+   runelite_callback     
+   iconst                 128
+   sconst                 "outerZoomLimit"
+   runelite_callback     
+   sub                   
+   istore                 9
+   iconst                 896
+   sconst                 "innerZoomLimit"
+   runelite_callback     
+   iconst                 128
+   sconst                 "outerZoomLimit"
+   runelite_callback     
+   sub                   
+   istore                 10
+   iload                  3
+   iload                  9
+   multiply              
+   iload                  8
+   div                   
+   iconst                 128
+   sconst                 "outerZoomLimit"
+   runelite_callback     
+   add                   
+   istore                 6
+   iload                  3
+   iload                  10
+   multiply              
+   iload                  8
+   div                   
+   iconst                 128
+   sconst                 "outerZoomLimit"
+   runelite_callback     
+   add                   
+   istore                 7
+   iload                  0
+   iload                  1
+   iload                  7
+   iload                  6
+   iload                  2
+   iload                  4
+   iload                  5
+   invoke                 3899
+   return                

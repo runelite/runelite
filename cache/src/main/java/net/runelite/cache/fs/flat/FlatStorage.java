@@ -33,6 +33,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Comparator;
@@ -103,7 +104,7 @@ public class FlatStorage implements Storage
 		for (Index idx : store.getIndexes())
 		{
 			String file = idx.getId() + EXTENSION;
-			try (BufferedReader br = new BufferedReader(new InputStreamReader(openReader(file))))
+			try (BufferedReader br = new BufferedReader(new InputStreamReader(openReader(file), StandardCharsets.UTF_8)))
 			{
 				int lineNo = 0;
 				Archive archive = null;
@@ -116,7 +117,7 @@ public class FlatStorage implements Storage
 					{
 						int lidx = line.indexOf('=');
 						String key = line.substring(0, lidx);
-						String value = line.substring(lidx + 1, line.length());
+						String value = line.substring(lidx + 1);
 
 						if ("file".equals(key))
 						{
@@ -128,7 +129,7 @@ public class FlatStorage implements Storage
 							int vidx = value.indexOf('=');
 							FileData fd = new FileData();
 							fd.setId(Integer.parseInt(value.substring(0, vidx)));
-							fd.setNameHash(Integer.parseInt(value.substring(vidx + 1, value.length())));
+							fd.setNameHash(Integer.parseInt(value.substring(vidx + 1)));
 							fileData.add(fd);
 							continue;
 						}
@@ -209,19 +210,19 @@ public class FlatStorage implements Storage
 	@Override
 	public void save(Store store) throws IOException
 	{
-		store.getIndexes().sort(Comparator.comparing(Index::getId));
+		store.getIndexes().sort(Comparator.comparingInt(Index::getId));
 		for (Index idx : store.getIndexes())
 		{
 			String file = idx.getId() + EXTENSION;
-			try (PrintStream br = new PrintStream(openWriter(file)))
+			try (PrintStream br = new PrintStream(openWriter(file), false, StandardCharsets.UTF_8.name()))
 			{
 				br.printf("protocol=%d\n", idx.getProtocol());
 				br.printf("revision=%d\n", idx.getRevision());
 				br.printf("compression=%d\n", idx.getCompression());
 				br.printf("crc=%d\n", idx.getCrc());
-				br.printf("named=%b\n", idx.getCompression());
+				br.printf("named=%b\n", idx.isNamed());
 
-				idx.getArchives().sort(Comparator.comparing(Archive::getArchiveId));
+				idx.getArchives().sort(Comparator.comparingInt(Archive::getArchiveId));
 				for (Archive archive : idx.getArchives())
 				{
 					br.printf("id=%d\n", archive.getArchiveId());

@@ -1,0 +1,235 @@
+.id                 2091
+.int_stack_count    2
+.string_stack_count 0
+.int_var_count      2
+.string_var_count   0
+   iload                  0 ; stat
+   iload                  1 ; xp
+   sconst                 "fakeXpDrop"
+   runelite_callback     
+   pop_int               
+   pop_int               
+   iconst                 105
+   iconst                 83
+   iconst                 681
+   get_varc_int           953
+   enum                  
+   iload                  0
+   if_icmpeq              LABEL8
+   jump                   LABEL13
+LABEL8:
+   get_varc_int           960
+   iload                  1
+   add                   
+   set_varc_int           960
+   jump                   LABEL192
+LABEL13:
+   iconst                 105
+   iconst                 83
+   iconst                 681
+   get_varc_int           954
+   enum                  
+   iload                  0
+   if_icmpeq              LABEL21
+   jump                   LABEL26
+LABEL21:
+   get_varc_int           961
+   iload                  1
+   add                   
+   set_varc_int           961
+   jump                   LABEL192
+LABEL26:
+   iconst                 105
+   iconst                 83
+   iconst                 681
+   get_varc_int           955
+   enum                  
+   iload                  0
+   if_icmpeq              LABEL34
+   jump                   LABEL39
+LABEL34:
+   get_varc_int           962
+   iload                  1
+   add                   
+   set_varc_int           962
+   jump                   LABEL192
+LABEL39:
+   iconst                 105
+   iconst                 83
+   iconst                 681
+   get_varc_int           956
+   enum                  
+   iload                  0
+   if_icmpeq              LABEL47
+   jump                   LABEL52
+LABEL47:
+   get_varc_int           963
+   iload                  1
+   add                   
+   set_varc_int           963
+   jump                   LABEL192
+LABEL52:
+   iconst                 105
+   iconst                 83
+   iconst                 681
+   get_varc_int           957
+   enum                  
+   iload                  0
+   if_icmpeq              LABEL60
+   jump                   LABEL65
+LABEL60:
+   get_varc_int           964
+   iload                  1
+   add                   
+   set_varc_int           964
+   jump                   LABEL192
+LABEL65:
+   iconst                 105
+   iconst                 83
+   iconst                 681
+   get_varc_int           958
+   enum                  
+   iload                  0
+   if_icmpeq              LABEL73
+   jump                   LABEL78
+LABEL73:
+   get_varc_int           965
+   iload                  1
+   add                   
+   set_varc_int           965
+   jump                   LABEL192
+LABEL78:
+   iconst                 105
+   iconst                 83
+   iconst                 681
+   get_varc_int           959
+   enum                  
+   iload                  0
+   if_icmpeq              LABEL86
+   jump                   LABEL91
+LABEL86:
+   get_varc_int           966
+   iload                  1
+   add                   
+   set_varc_int           966
+   jump                   LABEL192
+LABEL91:
+   iload                  0
+   iconst                 3
+   if_icmpeq              LABEL95
+   jump                   LABEL102
+LABEL95:
+   iload                  1
+   iconst                 20000001
+   if_icmpeq              LABEL99
+   jump                   LABEL102
+LABEL99:
+   iconst                 -10
+   set_varc_int           960
+   jump                   LABEL192
+LABEL102:
+   get_varc_int           953
+   iconst                 -1
+   if_icmpeq              LABEL106
+   jump                   LABEL115
+LABEL106:
+   iconst                 83
+   iconst                 105
+   iconst                 81
+   iload                  0
+   enum                  
+   set_varc_int           953
+   iload                  1
+   set_varc_int           960
+   jump                   LABEL192
+LABEL115:
+   get_varc_int           954
+   iconst                 -1
+   if_icmpeq              LABEL119
+   jump                   LABEL128
+LABEL119:
+   iconst                 83
+   iconst                 105
+   iconst                 81
+   iload                  0
+   enum                  
+   set_varc_int           954
+   iload                  1
+   set_varc_int           961
+   jump                   LABEL192
+LABEL128:
+   get_varc_int           955
+   iconst                 -1
+   if_icmpeq              LABEL132
+   jump                   LABEL141
+LABEL132:
+   iconst                 83
+   iconst                 105
+   iconst                 81
+   iload                  0
+   enum                  
+   set_varc_int           955
+   iload                  1
+   set_varc_int           962
+   jump                   LABEL192
+LABEL141:
+   get_varc_int           956
+   iconst                 -1
+   if_icmpeq              LABEL145
+   jump                   LABEL154
+LABEL145:
+   iconst                 83
+   iconst                 105
+   iconst                 81
+   iload                  0
+   enum                  
+   set_varc_int           956
+   iload                  1
+   set_varc_int           963
+   jump                   LABEL192
+LABEL154:
+   get_varc_int           957
+   iconst                 -1
+   if_icmpeq              LABEL158
+   jump                   LABEL167
+LABEL158:
+   iconst                 83
+   iconst                 105
+   iconst                 81
+   iload                  0
+   enum                  
+   set_varc_int           957
+   iload                  1
+   set_varc_int           964
+   jump                   LABEL192
+LABEL167:
+   get_varc_int           958
+   iconst                 -1
+   if_icmpeq              LABEL171
+   jump                   LABEL180
+LABEL171:
+   iconst                 83
+   iconst                 105
+   iconst                 81
+   iload                  0
+   enum                  
+   set_varc_int           958
+   iload                  1
+   set_varc_int           965
+   jump                   LABEL192
+LABEL180:
+   get_varc_int           959
+   iconst                 -1
+   if_icmpeq              LABEL184
+   jump                   LABEL192
+LABEL184:
+   iconst                 83
+   iconst                 105
+   iconst                 81
+   iload                  0
+   enum                  
+   set_varc_int           959
+   iload                  1
+   set_varc_int           966
+LABEL192:
+   return                

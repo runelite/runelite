@@ -29,58 +29,76 @@ import java.util.UUID;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ClientShutdown;
+import net.runelite.client.util.RunnableExceptionLogger;
 
 @Singleton
 @Slf4j
 public class ClientSessionManager
 {
-	private final SessionClient sessionClient = new SessionClient();
 	private final ScheduledExecutorService executorService;
+	private final Client client;
+	private final SessionClient sessionClient;
 
 	private ScheduledFuture<?> scheduledFuture;
 	private UUID sessionId;
 
-
 	@Inject
-	ClientSessionManager(ScheduledExecutorService executorService)
+	ClientSessionManager(ScheduledExecutorService executorService,
+		@Nullable Client client,
+		SessionClient sessionClient)
 	{
 		this.executorService = executorService;
+		this.client = client;
+		this.sessionClient = sessionClient;
 	}
 
 	public void start()
 	{
-		try
-		{
-			sessionId = sessionClient.open();
-			log.debug("Opened session {}", sessionId);
-		}
-		catch (IOException ex)
-		{
-			log.warn("error opening session", ex);
-		}
-
-		scheduledFuture = executorService.scheduleWithFixedDelay(this::ping, 1, 10, TimeUnit.MINUTES);
-	}
-
-	public void shutdown()
-	{
-		if (sessionId != null)
+		executorService.execute(() ->
 		{
 			try
 			{
-				sessionClient.delete(sessionId);
+				sessionId = sessionClient.open();
+				log.debug("Opened session {}", sessionId);
+			}
+			catch (IOException ex)
+			{
+				log.warn("error opening session", ex);
+			}
+		});
+
+		scheduledFuture = executorService.scheduleWithFixedDelay(RunnableExceptionLogger.wrap(this::ping), 1, 10, TimeUnit.MINUTES);
+	}
+
+	@Subscribe
+	private void onClientShutdown(ClientShutdown e)
+	{
+		scheduledFuture.cancel(true);
+
+		e.waitFor(executorService.submit(() ->
+		{
+			try
+			{
+				UUID localUuid = sessionId;
+				if (localUuid != null)
+				{
+					sessionClient.delete(localUuid);
+				}
 			}
 			catch (IOException ex)
 			{
 				log.warn(null, ex);
 			}
 			sessionId = null;
-		}
-		
-		scheduledFuture.cancel(true);
+		}));
 	}
 
 	private void ping()
@@ -96,12 +114,20 @@ public class ClientSessionManager
 		}
 		catch (IOException ex)
 		{
-			log.warn(null, ex);
+			log.warn("unable to open session", ex);
+			return;
+		}
+
+		boolean loggedIn = false;
+		if (client != null)
+		{
+			GameState gameState = client.getGameState();
+			loggedIn = gameState.getState() >= GameState.LOADING.getState();
 		}
 
 		try
 		{
-			sessionClient.ping(sessionId);
+			sessionClient.ping(sessionId, loggedIn);
 		}
 		catch (IOException ex)
 		{

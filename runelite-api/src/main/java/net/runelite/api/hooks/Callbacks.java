@@ -28,7 +28,10 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.util.List;
 import net.runelite.api.MainBufferProvider;
+import net.runelite.api.Renderable;
+import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetItem;
 
 /**
@@ -51,9 +54,14 @@ public interface Callbacks
 	void postDeferred(Object event);
 
 	/**
-	 * Called each client cycle.
+	 * Called each tick
 	 */
-	void clientMainLoop();
+	void tick();
+
+	/**
+	 * Called each frame
+	 */
+	void frame();
 
 	/**
 	 * Called after receiving update NPCs packet from server.
@@ -81,9 +89,18 @@ public interface Callbacks
 	void draw(MainBufferProvider mainBufferProvider, Graphics graphics, int x, int y);
 
 	/**
-	 * Called before the client will render an item widget.
+	 * Called after an interface has been drawn
+	 * @param interfaceId the interface id
+	 * @param widgetItems Widget items within the interface
 	 */
-	void drawItem(int itemId, WidgetItem widgetItem);
+	void drawInterface(int interfaceId, List<WidgetItem> widgetItems);
+
+	/**
+	 * Called after a widget layer has been drawn
+	 * @param layer The layer
+	 * @param widgetItems Widget items within the layer
+	 */
+	void drawLayer(Widget layer, List<WidgetItem> widgetItems);
 
 	/**
 	 * Mouse pressed event. If this event will be consumed it will not be propagated further to client.
@@ -169,4 +186,19 @@ public interface Callbacks
 	 * @param keyEvent the key event
 	 */
 	void keyTyped(KeyEvent keyEvent);
+
+	/**
+	 * Called to test if a renderable should be drawn this frame
+	 * @param renderable the renderable
+	 * @param drawingUi if this is the 2d ui, such as hp bars or hitsplats
+	 * @return false to prevent drawing
+	 */
+	boolean draw(Renderable renderable, boolean drawingUi);
+
+	/**
+	 * Called when a client error occurs
+	 * @param message
+	 * @param reason
+	 */
+	void error(String message, Throwable reason);
 }

@@ -64,7 +64,7 @@ class PrayerFlickOverlay extends Overlay
 		}
 
 		Widget xpOrb = client.getWidget(WidgetInfo.MINIMAP_QUICK_PRAYER_ORB);
-		if (xpOrb == null)
+		if (xpOrb == null || xpOrb.isHidden())
 		{
 			return null;
 		}
@@ -91,7 +91,6 @@ class PrayerFlickOverlay extends Overlay
 
 		graphics.setColor(Color.cyan);
 		graphics.fillRect(orbInnerX + xOffset, orbInnerY + yOffset, 1, indicatorHeight);
-
-		return new Dimension((int) bounds.getWidth(), (int) bounds.getHeight());
+		return null;
 	}
 }

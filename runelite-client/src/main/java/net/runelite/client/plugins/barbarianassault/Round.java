@@ -28,8 +28,9 @@ import java.time.Duration;
 import java.time.Instant;
 import javax.inject.Inject;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
-import net.runelite.api.Constants;
+import static net.runelite.client.util.RSTimeUnit.GAME_TICKS;
 
 class Round
 {
@@ -50,19 +51,14 @@ class Round
 	private boolean fightersKilled;
 
 	@Inject
-	public Round(Role role)
+	public Round(@NonNull Role role)
 	{
 		this.roundRole = role;
-		this.roundStartTime = Instant.now().plusMillis(2 * Constants.GAME_TICK_LENGTH);
+		this.roundStartTime = Instant.now().plus(Duration.of(2, GAME_TICKS));
 	}
 
-	public long getRoundTime()
+	public int getTimeToChange()
 	{
-		return Duration.between(roundStartTime, Instant.now()).getSeconds();
-	}
-
-	public long getTimeToChange()
-	{
-		return 30 + (Duration.between(Instant.now(), roundStartTime).getSeconds() % 30);
+		return 30 + ((int) Duration.between(Instant.now(), roundStartTime).getSeconds() % 30);
 	}
 }

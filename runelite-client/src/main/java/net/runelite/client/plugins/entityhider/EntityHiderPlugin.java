@@ -25,16 +25,21 @@
  */
 package net.runelite.client.plugins.entityhider;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Provides;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
+import net.runelite.api.GraphicID;
+import net.runelite.api.GraphicsObject;
+import net.runelite.api.NPC;
 import net.runelite.api.Player;
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.Projectile;
+import net.runelite.api.Renderable;
+import net.runelite.client.callback.Hooks;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.game.NpcUtil;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
@@ -52,6 +57,29 @@ public class EntityHiderPlugin extends Plugin
 	@Inject
 	private EntityHiderConfig config;
 
+	@Inject
+	private Hooks hooks;
+
+	@Inject
+	private NpcUtil npcUtil;
+
+	private boolean hideOthers;
+	private boolean hideOthers2D;
+	private boolean hideFriends;
+	private boolean hideFriendsChatMembers;
+	private boolean hideClanMembers;
+	private boolean hideIgnoredPlayers;
+	private boolean hideLocalPlayer;
+	private boolean hideLocalPlayer2D;
+	private boolean hideNPCs;
+	private boolean hideNPCs2D;
+	private boolean hideDeadNpcs;
+	private boolean hidePets;
+	private boolean hideAttackers;
+	private boolean hideProjectiles;
+
+	private final Hooks.RenderableDrawListener drawListener = this::shouldDraw;
+
 	@Provides
 	EntityHiderConfig provideConfig(ConfigManager configManager)
 	{
@@ -62,78 +90,148 @@ public class EntityHiderPlugin extends Plugin
 	protected void startUp()
 	{
 		updateConfig();
+
+		hooks.registerRenderableDrawListener(drawListener);
+	}
+
+	@Override
+	protected void shutDown()
+	{
+		hooks.unregisterRenderableDrawListener(drawListener);
 	}
 
 	@Subscribe
 	public void onConfigChanged(ConfigChanged e)
 	{
-		updateConfig();
-	}
-
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
-	{
-		if (event.getGameState() == GameState.LOGGED_IN)
+		if (e.getGroup().equals(EntityHiderConfig.GROUP))
 		{
-			client.setIsHidingEntities(isPlayerRegionAllowed());
+			updateConfig();
 		}
 	}
 
 	private void updateConfig()
 	{
-		client.setIsHidingEntities(isPlayerRegionAllowed());
+		hideOthers = config.hideOthers();
+		hideOthers2D = config.hideOthers2D();
 
-		client.setPlayersHidden(config.hidePlayers());
-		client.setPlayersHidden2D(config.hidePlayers2D());
+		hideFriends = config.hideFriends();
+		hideFriendsChatMembers = config.hideFriendsChatMembers();
+		hideClanMembers = config.hideClanChatMembers();
+		hideIgnoredPlayers = config.hideIgnores();
 
-		client.setFriendsHidden(config.hideFriends());
-		client.setClanMatesHidden(config.hideClanMates());
+		hideLocalPlayer = config.hideLocalPlayer();
+		hideLocalPlayer2D = config.hideLocalPlayer2D();
 
-		client.setLocalPlayerHidden(config.hideLocalPlayer());
-		client.setLocalPlayerHidden2D(config.hideLocalPlayer2D());
+		hideNPCs = config.hideNPCs();
+		hideNPCs2D = config.hideNPCs2D();
+		hideDeadNpcs = config.hideDeadNpcs();
 
-		client.setNPCsHidden(config.hideNPCs());
-		client.setNPCsHidden2D(config.hideNPCs2D());
+		hidePets = config.hidePets();
 
-		client.setAttackersHidden(config.hideAttackers());
+		hideAttackers = config.hideAttackers();
 
-		client.setProjectilesHidden(config.hideProjectiles());
+		hideProjectiles = config.hideProjectiles();
 	}
 
-	@Override
-	protected void shutDown() throws Exception
+	@VisibleForTesting
+	boolean shouldDraw(Renderable renderable, boolean drawingUI)
 	{
-		client.setIsHidingEntities(false);
-
-		client.setPlayersHidden(false);
-		client.setPlayersHidden2D(false);
-
-		client.setFriendsHidden(false);
-		client.setClanMatesHidden(false);
-
-		client.setLocalPlayerHidden(false);
-		client.setLocalPlayerHidden2D(false);
-
-		client.setNPCsHidden(false);
-		client.setNPCsHidden2D(false);
-
-		client.setAttackersHidden(false);
-
-		client.setProjectilesHidden(false);
-	}
-
-	private boolean isPlayerRegionAllowed()
-	{
-		final Player localPlayer = client.getLocalPlayer();
-
-		if (localPlayer == null)
+		if (renderable instanceof Player)
 		{
-			return true;
+			Player player = (Player) renderable;
+			Player local = client.getLocalPlayer();
+
+			if (player.getName() == null)
+			{
+				// player.isFriend() and player.isFriendsChatMember() npe when the player has a null name
+				return true;
+			}
+
+			// Allow hiding local self in pvp, which is an established meta.
+			// It is more advantageous than renderself due to being able to still render local player 2d
+			if (player == local)
+			{
+				return !(drawingUI ? hideLocalPlayer2D : hideLocalPlayer);
+			}
+
+			if (hideAttackers && player.getInteracting() == local)
+			{
+				return false; // hide
+			}
+
+			if (player.isFriend())
+			{
+				return !hideFriends;
+			}
+			if (player.isFriendsChatMember())
+			{
+				return !hideFriendsChatMembers;
+			}
+			if (player.isClanMember())
+			{
+				return !hideClanMembers;
+			}
+			if (client.getIgnoreContainer().findByName(player.getName()) != null)
+			{
+				return !hideIgnoredPlayers;
+			}
+
+			return !(drawingUI ? hideOthers2D : hideOthers);
+		}
+		else if (renderable instanceof NPC)
+		{
+			NPC npc = (NPC) renderable;
+
+			if (npc.getComposition().isFollower() && npc != client.getFollower())
+			{
+				return !hidePets;
+			}
+
+			// dead npcs can also be interacting so prioritize it over the interacting check
+			if (npcUtil.isDying(npc) && hideDeadNpcs)
+			{
+				return false;
+			}
+
+			if (npc.getInteracting() == client.getLocalPlayer())
+			{
+				boolean b = hideAttackers;
+				// Kludge to make hide attackers only affect 2d or 3d if the 2d or 3d hide is on
+				// This allows hiding 2d for all npcs, including attackers.
+				if (hideNPCs2D || hideNPCs)
+				{
+					b &= drawingUI ? hideNPCs2D : hideNPCs;
+				}
+				return !b;
+			}
+
+			return !(drawingUI ? hideNPCs2D : hideNPCs);
+		}
+		else if (renderable instanceof Projectile)
+		{
+			return !hideProjectiles;
+		}
+		else if (renderable instanceof GraphicsObject)
+		{
+			if (!hideDeadNpcs)
+			{
+				return true;
+			}
+
+			switch (((GraphicsObject) renderable).getId())
+			{
+				case GraphicID.MELEE_NYLO_DEATH:
+				case GraphicID.RANGE_NYLO_DEATH:
+				case GraphicID.MAGE_NYLO_DEATH:
+				case GraphicID.MELEE_NYLO_EXPLOSION:
+				case GraphicID.RANGE_NYLO_EXPLOSION:
+				case GraphicID.MAGE_NYLO_EXPLOSION:
+					return false;
+				default:
+					return true;
+			}
 		}
 
-		final int playerRegionID = WorldPoint.fromLocalInstance(client, localPlayer.getLocalLocation()).getRegionID();
-
-		// 9520 = Castle Wars
-		return playerRegionID != 9520;
+		return true;
 	}
 }

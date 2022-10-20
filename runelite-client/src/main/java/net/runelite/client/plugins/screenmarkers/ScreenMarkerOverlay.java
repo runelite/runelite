@@ -29,6 +29,7 @@ import java.awt.BasicStroke;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import lombok.Getter;
+import lombok.NonNull;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -40,13 +41,17 @@ public class ScreenMarkerOverlay extends Overlay
 	private final ScreenMarker marker;
 	private final ScreenMarkerRenderable screenMarkerRenderable;
 
-	ScreenMarkerOverlay(ScreenMarker marker)
+	ScreenMarkerOverlay(@NonNull ScreenMarker marker)
 	{
 		this.marker = marker;
 		this.screenMarkerRenderable = new ScreenMarkerRenderable();
-		setPosition(OverlayPosition.DETACHED);
+		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ALWAYS_ON_TOP);
 		setPriority(OverlayPriority.HIGH);
+		setMovable(true);
+		setResizable(true);
+		setMinimumSize(16);
+		setResettable(false);
 	}
 
 	@Override
@@ -74,7 +79,8 @@ public class ScreenMarkerOverlay extends Overlay
 		screenMarkerRenderable.setColor(marker.getColor());
 		screenMarkerRenderable.setFill(marker.getFill());
 		screenMarkerRenderable.setStroke(new BasicStroke(marker.getBorderThickness()));
-		screenMarkerRenderable.setPreferredSize(preferredSize);
+		screenMarkerRenderable.setSize(preferredSize);
+		screenMarkerRenderable.setLabel(marker.isLabelled() ? marker.getName() : "");
 		return screenMarkerRenderable.render(graphics);
 	}
 }

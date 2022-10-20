@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.worldhopper;
 
+import com.google.common.collect.Ordering;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -33,18 +34,18 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import lombok.AccessLevel;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.http.api.worlds.World;
 import net.runelite.http.api.worlds.WorldType;
 
-@Slf4j
 class WorldSwitcherPanel extends PluginPanel
 {
 	private static final Color ODD_ROW = new Color(44, 44, 44);
@@ -63,10 +64,12 @@ class WorldSwitcherPanel extends PluginPanel
 	private WorldOrder orderIndex = WorldOrder.WORLD;
 	private boolean ascendingOrder = true;
 
-	private ArrayList<WorldTableRow> rows = new ArrayList<>();
-	private WorldHopperPlugin plugin;
+	private final ArrayList<WorldTableRow> rows = new ArrayList<>();
+	private final WorldHopperPlugin plugin;
 	@Setter(AccessLevel.PACKAGE)
-	private SubscriptionFilterMode filterMode;
+	private SubscriptionFilterMode subscriptionFilterMode;
+	@Setter(AccessLevel.PACKAGE)
+	private Set<RegionFilterMode> regionFilterMode;
 
 	WorldSwitcherPanel(WorldHopperPlugin plugin)
 	{
@@ -159,23 +162,27 @@ class WorldSwitcherPanel extends PluginPanel
 			switch (orderIndex)
 			{
 				case PING:
-					return Integer.compare(r1.getPing(), r2.getPing()) * (ascendingOrder ? 1 : -1);
+					// Leave worlds with unknown ping at the bottom
+					return getCompareValue(r1, r2, row ->
+					{
+						int ping = row.getPing();
+						return ping > 0 ? ping : null;
+					});
 				case WORLD:
-					return Integer.compare(r1.getWorld().getId(), r2.getWorld().getId()) * (ascendingOrder ? 1 : -1);
+					return getCompareValue(r1, r2, row -> row.getWorld().getId());
 				case PLAYERS:
-					return Integer.compare(r1.getUpdatedPlayerCount(), r2.getUpdatedPlayerCount()) * (ascendingOrder ? 1 : -1);
+					return getCompareValue(r1, r2, WorldTableRow::getUpdatedPlayerCount);
 				case ACTIVITY:
-					return r1.getWorld().getActivity().compareTo(r2.getWorld().getActivity()) * -1 * (ascendingOrder ? 1 : -1);
+					// Leave empty activity worlds on the bottom of the list
+					return getCompareValue(r1, r2, row ->
+					{
+						String activity = row.getWorld().getActivity();
+						return !activity.equals("-") ? activity : null;
+					});
 				default:
 					return 0;
 			}
 		});
-
-		// Leave empty activity worlds on the bottom of the list
-		if (orderIndex == WorldOrder.ACTIVITY)
-		{
-			rows.sort((r1, r2) -> r1.getWorld().getActivity().equals("-") ? 1 : -1);
-		}
 
 		rows.sort((r1, r2) ->
 		{
@@ -197,6 +204,17 @@ class WorldSwitcherPanel extends PluginPanel
 		listContainer.repaint();
 	}
 
+	private int getCompareValue(WorldTableRow row1, WorldTableRow row2, Function<WorldTableRow, Comparable> compareByFn)
+	{
+		Ordering<Comparable> ordering = Ordering.natural();
+		if (!ascendingOrder)
+		{
+			ordering = ordering.reverse();
+		}
+		ordering = ordering.nullsLast();
+		return ordering.compare(compareByFn.apply(row1), compareByFn.apply(row2));
+	}
+
 	void updateFavoriteMenu(int world, boolean favorite)
 	{
 		for (WorldTableRow row : rows)
@@ -208,15 +226,6 @@ class WorldSwitcherPanel extends PluginPanel
 		}
 	}
 
-	void resetAllFavoriteMenus()
-	{
-		for (WorldTableRow row : rows)
-		{
-			row.setFavoriteMenu(false);
-		}
-
-	}
-
 	void populate(List<World> worlds)
 	{
 		rows.clear();
@@ -225,7 +234,7 @@ class WorldSwitcherPanel extends PluginPanel
 		{
 			World world = worlds.get(i);
 
-			switch (filterMode)
+			switch (subscriptionFilterMode)
 			{
 				case FREE:
 					if (world.getTypes().contains(WorldType.MEMBERS))
@@ -239,6 +248,11 @@ class WorldSwitcherPanel extends PluginPanel
 						continue;
 					}
 					break;
+			}
+
+			if (!regionFilterMode.isEmpty() && !regionFilterMode.contains(RegionFilterMode.of(world.getRegion())))
+			{
+				continue;
 			}
 
 			rows.add(buildRow(world, i % 2 == 0, world.getId() == plugin.getCurrentWorld() && plugin.getLastWorld() != 0, plugin.isFavorite(world)));
@@ -363,11 +377,8 @@ class WorldSwitcherPanel extends PluginPanel
 	 */
 	private WorldTableRow buildRow(World world, boolean stripe, boolean current, boolean favorite)
 	{
-		WorldTableRow row = new WorldTableRow(world, current, favorite,
-			world1 ->
-			{
-				plugin.hopTo(world1);
-			},
+		WorldTableRow row = new WorldTableRow(world, current, favorite, plugin.getStoredPing(world),
+			plugin::hopTo,
 			(world12, add) ->
 			{
 				if (add)

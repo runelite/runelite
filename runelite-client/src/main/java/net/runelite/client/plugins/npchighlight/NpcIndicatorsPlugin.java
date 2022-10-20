@@ -26,44 +26,45 @@
 package net.runelite.client.plugins.npchighlight;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
+import java.awt.Color;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.GraphicID;
 import net.runelite.api.GraphicsObject;
+import net.runelite.api.KeyCode;
 import net.runelite.api.MenuAction;
-import static net.runelite.api.MenuAction.MENU_ACTION_DEPRIORITIZE_OFFSET;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
+import net.runelite.api.NPCComposition;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.ConfigChanged;
-import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GraphicsObjectCreated;
 import net.runelite.api.events.MenuEntryAdded;
-import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.input.KeyManager;
+import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.game.NpcUtil;
+import net.runelite.client.game.npcoverlay.HighlightedNpc;
+import net.runelite.client.game.npcoverlay.NpcOverlayService;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -83,9 +84,10 @@ public class NpcIndicatorsPlugin extends Plugin
 
 	// Option added to NPC menu
 	private static final String TAG = "Tag";
+	private static final String UNTAG = "Un-tag";
 
-	private static final Set<MenuAction> NPC_MENU_ACTIONS = ImmutableSet.of(MenuAction.NPC_FIRST_OPTION, MenuAction.NPC_SECOND_OPTION,
-		MenuAction.NPC_THIRD_OPTION, MenuAction.NPC_FOURTH_OPTION, MenuAction.NPC_FIFTH_OPTION);
+	private static final String TAG_ALL = "Tag-All";
+	private static final String UNTAG_ALL = "Un-tag-All";
 
 	@Inject
 	private Client client;
@@ -97,28 +99,22 @@ public class NpcIndicatorsPlugin extends Plugin
 	private OverlayManager overlayManager;
 
 	@Inject
-	private NpcSceneOverlay npcSceneOverlay;
-
-	@Inject
-	private NpcMinimapOverlay npcMinimapOverlay;
-
-	@Inject
-	private NpcIndicatorsInput inputListener;
-
-	@Inject
-	private KeyManager keyManager;
+	private NpcRespawnOverlay npcRespawnOverlay;
 
 	@Inject
 	private ClientThread clientThread;
 
-	@Setter(AccessLevel.PACKAGE)
-	private boolean hotKeyPressed = false;
+	@Inject
+	private NpcOverlayService npcOverlayService;
+
+	@Inject
+	private NpcUtil npcUtil;
 
 	/**
 	 * NPCs to highlight
 	 */
 	@Getter(AccessLevel.PACKAGE)
-	private final Set<NPC> highlightedNpcs = new HashSet<>();
+	private final Map<NPC, HighlightedNpc> highlightedNpcs = new HashMap<>();
 
 	/**
 	 * Dead NPCs that should be displayed with a respawn indicator if the config is on.
@@ -177,6 +173,8 @@ public class NpcIndicatorsPlugin extends Plugin
 	 */
 	private boolean skipNextSpawnCheck = false;
 
+	private final Function<NPC, HighlightedNpc> isHighlighted = highlightedNpcs::get;
+
 	@Provides
 	NpcIndicatorsConfig provideConfig(ConfigManager configManager)
 	{
@@ -186,30 +184,30 @@ public class NpcIndicatorsPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		overlayManager.add(npcSceneOverlay);
-		overlayManager.add(npcMinimapOverlay);
-		keyManager.registerKeyListener(inputListener);
-		highlights = getHighlights();
+		npcOverlayService.registerHighlighter(isHighlighted);
+		overlayManager.add(npcRespawnOverlay);
 		clientThread.invoke(() ->
 		{
 			skipNextSpawnCheck = true;
-			rebuildAllNpcs();
+			rebuild();
 		});
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
-		overlayManager.remove(npcSceneOverlay);
-		overlayManager.remove(npcMinimapOverlay);
-		deadNpcsToDisplay.clear();
-		memorizedNpcs.clear();
-		spawnedNpcsThisTick.clear();
-		despawnedNpcsThisTick.clear();
-		teleportGraphicsObjectSpawnedThisTick.clear();
-		npcTags.clear();
-		highlightedNpcs.clear();
-		keyManager.unregisterKeyListener(inputListener);
+		npcOverlayService.unregisterHighlighter(isHighlighted);
+		overlayManager.remove(npcRespawnOverlay);
+		clientThread.invoke(() ->
+		{
+			deadNpcsToDisplay.clear();
+			memorizedNpcs.clear();
+			spawnedNpcsThisTick.clear();
+			despawnedNpcsThisTick.clear();
+			teleportGraphicsObjectSpawnedThisTick.clear();
+			npcTags.clear();
+			highlightedNpcs.clear();
+		});
 	}
 
 	@Subscribe
@@ -234,65 +232,76 @@ public class NpcIndicatorsPlugin extends Plugin
 			return;
 		}
 
-		highlights = getHighlights();
-		rebuildAllNpcs();
-	}
-
-	@Subscribe
-	public void onFocusChanged(FocusChanged focusChanged)
-	{
-		if (!focusChanged.isFocused())
-		{
-			hotKeyPressed = false;
-		}
+		clientThread.invoke(this::rebuild);
 	}
 
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		int type = event.getType();
+		final MenuEntry menuEntry = event.getMenuEntry();
+		final MenuAction menuAction = menuEntry.getType();
+		final NPC npc = menuEntry.getNpc();
 
-		if (type >= MENU_ACTION_DEPRIORITIZE_OFFSET)
-		{
-			type -= MENU_ACTION_DEPRIORITIZE_OFFSET;
-		}
-
-		if (config.highlightMenuNames() &&
-			NPC_MENU_ACTIONS.contains(MenuAction.of(type)) &&
-			highlightedNpcs.stream().anyMatch(npc -> npc.getIndex() == event.getIdentifier()))
-		{
-			MenuEntry[] menuEntries = client.getMenuEntries();
-			final MenuEntry menuEntry = menuEntries[menuEntries.length - 1];
-			final String target = ColorUtil.prependColorTag(Text.removeTags(event.getTarget()), config.getHighlightColor());
-			menuEntry.setTarget(target);
-			client.setMenuEntries(menuEntries);
-		}
-		else if (hotKeyPressed && type == MenuAction.EXAMINE_NPC.getId())
-		{
-			// Add tag option
-			MenuEntry[] menuEntries = client.getMenuEntries();
-			menuEntries = Arrays.copyOf(menuEntries, menuEntries.length + 1);
-			final MenuEntry tagEntry = menuEntries[menuEntries.length - 1] = new MenuEntry();
-			tagEntry.setOption(TAG);
-			tagEntry.setTarget(event.getTarget());
-			tagEntry.setParam0(event.getActionParam0());
-			tagEntry.setParam1(event.getActionParam1());
-			tagEntry.setIdentifier(event.getIdentifier());
-			tagEntry.setType(MenuAction.RUNELITE.getId());
-			client.setMenuEntries(menuEntries);
-		}
-	}
-
-	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked click)
-	{
-		if (click.getMenuAction() != MenuAction.RUNELITE || !click.getMenuOption().equals(TAG))
+		if (npc == null)
 		{
 			return;
 		}
 
-		final int id = click.getId();
-		final boolean removed = npcTags.remove(id);
+		if (menuAction == MenuAction.EXAMINE_NPC && client.isKeyPressed(KeyCode.KC_SHIFT))
+		{
+			// Add tag and tag-all options
+			if (npc.getName() == null)
+			{
+				return;
+			}
+
+			final String npcName = npc.getName();
+			boolean matchesList = highlights.stream()
+				.filter(highlight -> !highlight.equalsIgnoreCase(npcName))
+				.anyMatch(highlight -> WildcardMatcher.matches(highlight, npcName));
+
+			// Only add Untag-All option to npcs not highlighted by a wildcard entry, because untag-all will not remove wildcards
+			if (!matchesList)
+			{
+				client.createMenuEntry(-1)
+					.setOption(highlights.stream().anyMatch(npcName::equalsIgnoreCase) ? UNTAG_ALL : TAG_ALL)
+					.setTarget(event.getTarget())
+					.setIdentifier(event.getIdentifier())
+					.setType(MenuAction.RUNELITE)
+					.onClick(this::tag);
+			}
+
+			client.createMenuEntry(-1)
+				.setOption(npcTags.contains(npc.getIndex()) ? UNTAG : TAG)
+				.setTarget(event.getTarget())
+				.setIdentifier(event.getIdentifier())
+				.setType(MenuAction.RUNELITE)
+				.onClick(this::tag);
+		}
+		else
+		{
+			Color color = null;
+			if (npcUtil.isDying(npc))
+			{
+				color = config.deadNpcMenuColor();
+			}
+
+			if (color == null && highlightedNpcs.containsKey(npc) && config.highlightMenuNames() && (!npcUtil.isDying(npc) || !config.ignoreDeadNpcs()))
+			{
+				color = config.highlightColor();
+			}
+
+			if (color != null)
+			{
+				final String target = ColorUtil.prependColorTag(Text.removeTags(event.getTarget()), color);
+				menuEntry.setTarget(target);
+			}
+		}
+	}
+
+	private void tag(MenuEntry entry)
+	{
+		final int id = entry.getIdentifier();
 		final NPC[] cachedNPCs = client.getCachedNPCs();
 		final NPC npc = cachedNPCs[id];
 
@@ -301,19 +310,43 @@ public class NpcIndicatorsPlugin extends Plugin
 			return;
 		}
 
-		if (removed)
+		if (entry.getOption().equals(TAG) || entry.getOption().equals(UNTAG))
 		{
-			highlightedNpcs.remove(npc);
-			memorizedNpcs.remove(npc.getIndex());
+			final boolean removed = npcTags.remove(id);
+
+			if (removed)
+			{
+				if (!highlightMatchesNPCName(npc.getName()))
+				{
+					highlightedNpcs.remove(npc);
+					memorizedNpcs.remove(npc.getIndex());
+				}
+			}
+			else
+			{
+				if (!client.isInInstancedRegion())
+				{
+					memorizeNpc(npc);
+					npcTags.add(id);
+				}
+				highlightedNpcs.put(npc, highlightedNpc(npc));
+			}
+
+			npcOverlayService.rebuild();
 		}
 		else
 		{
-			memorizeNpc(npc);
-			npcTags.add(id);
-			highlightedNpcs.add(npc);
-		}
+			final String name = npc.getName();
+			final List<String> highlightedNpcs = new ArrayList<>(highlights);
 
-		click.consume();
+			if (!highlightedNpcs.removeIf(name::equalsIgnoreCase))
+			{
+				highlightedNpcs.add(name);
+			}
+
+			// this trips a config change which triggers the overlay rebuild
+			config.setNpcToHighlight(Text.toCSV(highlightedNpcs));
+		}
 	}
 
 	@Subscribe
@@ -330,19 +363,18 @@ public class NpcIndicatorsPlugin extends Plugin
 		if (npcTags.contains(npc.getIndex()))
 		{
 			memorizeNpc(npc);
-			highlightedNpcs.add(npc);
+			highlightedNpcs.put(npc, highlightedNpc(npc));
 			spawnedNpcsThisTick.add(npc);
 			return;
 		}
 
-		for (String highlight : highlights)
+		if (highlightMatchesNPCName(npcName))
 		{
-			if (WildcardMatcher.matches(highlight, npcName))
+			highlightedNpcs.put(npc, highlightedNpc(npc));
+			if (!client.isInInstancedRegion())
 			{
 				memorizeNpc(npc);
-				highlightedNpcs.add(npc);
 				spawnedNpcsThisTick.add(npc);
-				break;
 			}
 		}
 	}
@@ -358,6 +390,26 @@ public class NpcIndicatorsPlugin extends Plugin
 		}
 
 		highlightedNpcs.remove(npc);
+	}
+
+	@Subscribe
+	public void onNpcChanged(NpcChanged event)
+	{
+		final NPC npc = event.getNpc();
+		final String npcName = npc.getName();
+
+		highlightedNpcs.remove(npc);
+
+		if (npcName == null)
+		{
+			return;
+		}
+
+		if (npcTags.contains(npc.getIndex())
+			|| highlightMatchesNPCName(npcName))
+		{
+			highlightedNpcs.put(npc, highlightedNpc(npc));
+		}
 	}
 
 	@Subscribe
@@ -441,7 +493,7 @@ public class NpcIndicatorsPlugin extends Plugin
 	@VisibleForTesting
 	List<String> getHighlights()
 	{
-		final String configNpcs = config.getNpcToHighlight().toLowerCase();
+		final String configNpcs = config.getNpcToHighlight();
 
 		if (configNpcs.isEmpty())
 		{
@@ -451,8 +503,9 @@ public class NpcIndicatorsPlugin extends Plugin
 		return Text.fromCSV(configNpcs);
 	}
 
-	private void rebuildAllNpcs()
+	void rebuild()
 	{
+		highlights = getHighlights();
 		highlightedNpcs.clear();
 
 		if (client.getGameState() != GameState.LOGGED_IN &&
@@ -463,7 +516,6 @@ public class NpcIndicatorsPlugin extends Plugin
 			return;
 		}
 
-		outer:
 		for (NPC npc : client.getNpcs())
 		{
 			final String npcName = npc.getName();
@@ -475,23 +527,38 @@ public class NpcIndicatorsPlugin extends Plugin
 
 			if (npcTags.contains(npc.getIndex()))
 			{
-				highlightedNpcs.add(npc);
+				highlightedNpcs.put(npc, highlightedNpc(npc));
 				continue;
 			}
 
-			for (String highlight : highlights)
+			if (highlightMatchesNPCName(npcName))
 			{
-				if (WildcardMatcher.matches(highlight, npcName))
+				if (!client.isInInstancedRegion())
 				{
 					memorizeNpc(npc);
-					highlightedNpcs.add(npc);
-					continue outer;
 				}
+				highlightedNpcs.put(npc, highlightedNpc(npc));
+				continue;
 			}
 
 			// NPC is not highlighted
 			memorizedNpcs.remove(npc.getIndex());
 		}
+
+		npcOverlayService.rebuild();
+	}
+
+	private boolean highlightMatchesNPCName(String npcName)
+	{
+		for (String highlight : highlights)
+		{
+			if (WildcardMatcher.matches(highlight, npcName))
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	private void validateSpawnedNpcs()
@@ -548,7 +615,16 @@ public class NpcIndicatorsPlugin extends Plugin
 
 					if (mn.getDiedOnTick() != -1)
 					{
-						mn.setRespawnTime(client.getTickCount() + 1 - mn.getDiedOnTick());
+						final int respawnTime = client.getTickCount() + 1 - mn.getDiedOnTick();
+
+						// By killing a monster and leaving the area before seeing it again, an erroneously lengthy
+						// respawn time can be recorded. Thus, if the respawn time is already set and is greater than
+						// the observed time, assume that the lower observed respawn time is correct.
+						if (mn.getRespawnTime() == -1 || respawnTime < mn.getRespawnTime())
+						{
+							mn.setRespawnTime(respawnTime);
+						}
+
 						mn.setDiedOnTick(-1);
 					}
 
@@ -559,7 +635,7 @@ public class NpcIndicatorsPlugin extends Plugin
 					final WorldPoint possibleOtherNpcLocation = getWorldLocationBehind(npc);
 
 					mn.getPossibleRespawnLocations().removeIf(x ->
-						x.distanceTo(npcLocation) != 0 && x.distanceTo(possibleOtherNpcLocation) != 0);
+						!x.equals(npcLocation) && !x.equals(possibleOtherNpcLocation));
 
 					if (mn.getPossibleRespawnLocations().isEmpty())
 					{
@@ -573,5 +649,41 @@ public class NpcIndicatorsPlugin extends Plugin
 		spawnedNpcsThisTick.clear();
 		despawnedNpcsThisTick.clear();
 		teleportGraphicsObjectSpawnedThisTick.clear();
+	}
+
+	private HighlightedNpc highlightedNpc(NPC npc)
+	{
+		return HighlightedNpc.builder()
+			.npc(npc)
+			.highlightColor(config.highlightColor())
+			.fillColor(config.fillColor())
+			.hull(config.highlightHull())
+			.tile(config.highlightTile())
+			.trueTile(config.highlightTrueTile())
+			.swTile(config.highlightSouthWestTile())
+			.swTrueTile(config.highlightSouthWestTrueTile())
+			.outline(config.highlightOutline())
+			.name(config.drawNames())
+			.nameOnMinimap(config.drawMinimapNames())
+			.borderWidth((float) config.borderWidth())
+			.outlineFeather(config.outlineFeather())
+			.render(this::render)
+			.build();
+	}
+
+	private boolean render(NPC n)
+	{
+		if (npcUtil.isDying(n) && config.ignoreDeadNpcs())
+		{
+			return false;
+		}
+
+		final NPCComposition c = n.getTransformedComposition();
+		if (c != null && c.isFollower() && config.ignorePets())
+		{
+			return false;
+		}
+
+		return true;
 	}
 }

@@ -91,10 +91,5 @@ vec3 hslToRgb(int hsl) {
     pow(var17, brightness)
   );
 
-  // I don't think we actually need this
-  if (rgb == vec3(0, 0, 0)) {
-    rgb = vec3(0, 0, 1/255.f);
-  }
-
   return rgb;
 }

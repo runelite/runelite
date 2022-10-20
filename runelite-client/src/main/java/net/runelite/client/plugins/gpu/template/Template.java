@@ -24,16 +24,20 @@
  */
 package net.runelite.client.plugins.gpu.template;
 
+import com.google.common.io.CharStreams;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Function;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class Template
 {
-	private final Function<String, String> resourceLoader;
-
-	public Template(Function<String, String> resourceLoader)
-	{
-		this.resourceLoader = resourceLoader;
-	}
+	private final List<Function<String, String>> resourceLoaders = new ArrayList<>();
 
 	public String process(String str)
 	{
@@ -43,8 +47,8 @@ public class Template
 			if (line.startsWith("#include "))
 			{
 				String resource = line.substring(9);
-				String resourceStr = resourceLoader.apply(resource);
-				sb.append(process(resourceStr));
+				String resourceStr = load(resource);
+				sb.append(resourceStr);
 			}
 			else
 			{
@@ -52,5 +56,56 @@ public class Template
 			}
 		}
 		return sb.toString();
+	}
+
+	public String load(String filename)
+	{
+		for (Function<String, String> loader : resourceLoaders)
+		{
+			String value = loader.apply(filename);
+			if (value != null)
+			{
+				return process(value);
+			}
+		}
+
+		return "";
+	}
+
+	public Template add(Function<String, String> fn)
+	{
+		resourceLoaders.add(fn);
+		return this;
+	}
+
+	public Template addInclude(Class<?> clazz)
+	{
+		return add(f ->
+		{
+			try (InputStream is = clazz.getResourceAsStream(f))
+			{
+				if (is != null)
+				{
+					return inputStreamToString(is);
+				}
+			}
+			catch (IOException ex)
+			{
+				log.warn(null, ex);
+			}
+			return null;
+		});
+	}
+
+	private static String inputStreamToString(InputStream in)
+	{
+		try
+		{
+			return CharStreams.toString(new InputStreamReader(in, StandardCharsets.UTF_8));
+		}
+		catch (IOException e)
+		{
+			throw new RuntimeException(e);
+		}
 	}
 }

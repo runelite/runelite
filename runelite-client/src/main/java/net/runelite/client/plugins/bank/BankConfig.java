@@ -25,9 +25,12 @@
  */
 package net.runelite.client.plugins.bank;
 
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Keybind;
 
 @ConfigGroup("bank")
 public interface BankConfig extends Config
@@ -96,5 +99,49 @@ public interface BankConfig extends Config
 	default boolean rightClickBankLoot()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "rightClickPlaceholders",
+		name = "Disable left click placeholders button",
+		description = "Configures whether the placeholders button will be toggled on left click",
+		position = 7
+	)
+	default boolean rightClickPlaceholders()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "seedVaultValue",
+		name = "Show seed vault value",
+		description = "Adds the total value of all seeds inside the seed vault to the title",
+		position = 8
+	)
+	default boolean seedVaultValue()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "bankPinKeyboard",
+		name = "Keyboard Bankpin",
+		description = "Allows using the keyboard keys for bank pin input",
+		position = 9
+	)
+	default boolean bankPinKeyboard()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "searchKeybind",
+		name = "Search Shortcut",
+		description = "Keyboard shortcut for initiating a bank search",
+		position = 10
+	)
+	default Keybind searchKeybind()
+	{
+		return new Keybind(KeyEvent.VK_F, InputEvent.CTRL_DOWN_MASK);
 	}
 }

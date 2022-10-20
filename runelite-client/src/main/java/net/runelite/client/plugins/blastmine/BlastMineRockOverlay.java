@@ -42,12 +42,12 @@ import net.runelite.api.Point;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.widgets.Widget;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.ProgressPieComponent;
+import net.runelite.client.util.ColorUtil;
 
 public class BlastMineRockOverlay extends Overlay
 {
@@ -91,12 +91,10 @@ public class BlastMineRockOverlay extends Overlay
 		}
 
 		final Tile[][][] tiles = client.getScene().getTiles();
-		final Widget viewport = client.getViewportWidget();
 
 		for (final BlastMineRock rock : rocks.values())
 		{
-			if (viewport == null ||
-				rock.getGameObject().getCanvasLocation() == null ||
+			if (rock.getGameObject().getCanvasLocation() == null ||
 				rock.getGameObject().getWorldLocation().distanceTo(client.getLocalPlayer().getWorldLocation()) > MAX_DISTANCE)
 			{
 				continue;
@@ -202,7 +200,7 @@ public class BlastMineRockOverlay extends Overlay
 
 					if (poly != null)
 					{
-						graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 100));
+						graphics.setColor(ColorUtil.colorWithAlpha(color, (int) (color.getAlpha() / 2.5)));
 						graphics.fillPolygon(poly);
 					}
 				}

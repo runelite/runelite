@@ -62,8 +62,8 @@ public class ChatMessage
 	/**
 	 * The sender of the message.
 	 * <p>
-	 * This field is only used for clan messages and refers to the
-	 * current name of the clan chat the client is in.
+	 * This field is only used for friends chat messages and refers to the
+	 * current name of the friends chat the client is in.
 	 */
 	private String sender;
 	/**

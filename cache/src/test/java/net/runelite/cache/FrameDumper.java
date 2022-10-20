@@ -72,8 +72,8 @@ public class FrameDumper
 			store.load();
 
 			Storage storage = store.getStorage();
-			Index frameIndex = store.getIndex(IndexType.FRAMES);
-			Index framemapIndex = store.getIndex(IndexType.FRAMEMAPS);
+			Index frameIndex = store.getIndex(IndexType.ANIMATIONS);
+			Index framemapIndex = store.getIndex(IndexType.SKELETONS);
 
 			for (Archive archive : frameIndex.getArchives())
 			{
@@ -88,7 +88,7 @@ public class FrameDumper
 
 					int framemapArchiveId = (contents[0] & 0xff) << 8 | contents[1] & 0xff;
 
-					Archive framemapArchive = framemapIndex.getArchives().get(framemapArchiveId);
+					Archive framemapArchive = framemapIndex.getArchive(framemapArchiveId);
 					archiveData = storage.loadArchive(framemapArchive);
 					byte[] framemapContents = framemapArchive.decompress(archiveData);
 
@@ -101,7 +101,7 @@ public class FrameDumper
 					frames.add(frame);
 				}
 
-				Files.write(gson.toJson(frames), new File(outDir, archive.getArchiveId() + ".json"), Charset.defaultCharset());
+				Files.asCharSink(new File(outDir, archive.getArchiveId() + ".json"), Charset.defaultCharset()).write(gson.toJson(frames));
 				++count;
 			}
 		}

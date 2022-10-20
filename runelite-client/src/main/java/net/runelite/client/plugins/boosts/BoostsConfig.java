@@ -38,20 +38,28 @@ public interface BoostsConfig extends Config
 		NEVER
 	}
 
+	enum DisplayBoosts
+	{
+		NONE,
+		COMBAT,
+		NON_COMBAT,
+		BOTH
+	}
+
 	@ConfigItem(
-		keyName = "enableSkill",
-		name = "Enable Skill Boosts",
-		description = "Configures whether or not to display skill boost information",
+		keyName = "displayBoosts",
+		name = "Display Boosts",
+		description = "Configures which skill boosts to display",
 		position = 1
 	)
-	default boolean enableSkill()
+	default DisplayBoosts displayBoosts()
 	{
-		return true;
+		return DisplayBoosts.COMBAT;
 	}
 
 	@ConfigItem(
 		keyName = "relativeBoost",
-		name = "Use Relative Boosts",
+		name = "Show relative boosts",
 		description = "Configures whether or not relative boost is used",
 		position = 2
 	)
@@ -62,20 +70,42 @@ public interface BoostsConfig extends Config
 
 	@ConfigItem(
 		keyName = "displayIndicators",
-		name = "Display as infoboxes",
-		description = "Configures whether or not to display the boost as infoboxes",
+		name = "Display infoboxes",
+		description = "Configures whether to display boost infoboxes",
 		position = 3
 	)
 	default boolean displayInfoboxes()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "displayPanel",
+		name = "Display panel",
+		description = "Configures whether to display the boost panel",
+		position = 3
+	)
+	default boolean displayPanel()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "compactDisplay",
+		name = "Compact display",
+		description = "Displays skill boosts in a more compact panel",
+		position = 4
+	)
+	default boolean compactDisplay()
 	{
 		return false;
 	}
 
 	@ConfigItem(
 		keyName = "displayNextBuffChange",
-		name = "Display next buff change",
+		name = "Next buff change",
 		description = "Configures whether or not to display when the next buffed stat change will be",
-		position = 4
+		position = 10
 	)
 	default DisplayChangeMode displayNextBuffChange()
 	{
@@ -84,9 +114,9 @@ public interface BoostsConfig extends Config
 
 	@ConfigItem(
 		keyName = "displayNextDebuffChange",
-		name = "Display next debuff change",
+		name = "Next debuff change",
 		description = "Configures whether or not to display when the next debuffed stat change will be",
-		position = 5
+		position = 11
 	)
 	default DisplayChangeMode displayNextDebuffChange()
 	{
@@ -95,12 +125,23 @@ public interface BoostsConfig extends Config
 
 	@ConfigItem(
 		keyName = "boostThreshold",
-		name = "Boost Amount Threshold",
-		description = "The amount of levels boosted to send a notification at. A value of 0 will disable notification.",
-		position = 6
+		name = "Boost threshold",
+		description = "The threshold at which boosted levels will be displayed in a different color. A value of 0 will disable the feature.",
+		position = 12
 	)
 	default int boostThreshold()
 	{
 		return 0;
+	}
+
+	@ConfigItem(
+		keyName = "notifyOnBoost",
+		name = "Notify on boost threshold",
+		description = "Configures whether or not a notification will be sent for boosted stats.",
+		position = 13
+	)
+	default boolean notifyOnBoost()
+	{
+		return true;
 	}
 }

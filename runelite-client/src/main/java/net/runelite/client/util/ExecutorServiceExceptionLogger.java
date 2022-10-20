@@ -34,12 +34,10 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * Wrapper for ${@link ScheduledExecutorService} that will log all uncaught exceptions as warning to console
  */
-@Slf4j
 @RequiredArgsConstructor
 public class ExecutorServiceExceptionLogger implements ScheduledExecutorService
 {

@@ -114,7 +114,7 @@ public interface PohConfig extends Config
 	@ConfigItem(
 		keyName = "showJewelleryBox",
 		name = "Show Jewellery Box",
-		description = "Configures whether or not the Jewllery box is displayed"
+		description = "Configures whether or not the jewellery box is displayed"
 	)
 	default boolean showJewelleryBox()
 	{
@@ -157,6 +157,16 @@ public interface PohConfig extends Config
 		description = "Configures whether or not the Xeric's Talisman is displayed"
 	)
 	default boolean showXericsTalisman()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showMythicalCape",
+		name = "Show Mythical Cape",
+		description = "Configures whether or not the Mythical Cape is displayed"
+	)
+	default boolean showMythicalCape()
 	{
 		return true;
 	}

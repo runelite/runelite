@@ -48,7 +48,7 @@ public class CastleWarsBandage implements Effect
 	);
 
 	private static final double BASE_HP_PERC = .10;
-	private static final double BRACELET_HP_PERC = .50;
+	private static final double BRACELET_HP_PERC = .15;
 
 	@Override
 	public StatsChanges calculate(Client client)
@@ -61,7 +61,7 @@ public class CastleWarsBandage implements Effect
 		changes.setStatChanges(new StatChange[]{hitPoints, runEnergy});
 		changes.setPositivity(Stream.of(changes.getStatChanges())
 			.map(StatChange::getPositivity)
-			.max(Comparator.comparing(Enum::ordinal)).get());
+			.max(Comparator.naturalOrder()).get());
 
 		return changes;
 	}
@@ -73,11 +73,11 @@ public class CastleWarsBandage implements Effect
 			return false;
 		}
 
-		final Item[] equipment = equipmentContainer.getItems();
+		final Item gloves = equipmentContainer.getItem(EquipmentInventorySlot.GLOVES.getSlotIdx());
 
-		if (equipment.length > EquipmentInventorySlot.GLOVES.getSlotIdx())
+		if (gloves != null)
 		{
-			return BRACELETS.contains(equipment[EquipmentInventorySlot.GLOVES.getSlotIdx()].getId());
+			return BRACELETS.contains(gloves.getId());
 		}
 
 		return false;

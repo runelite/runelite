@@ -34,7 +34,6 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.http.api.xtea.XteaClient;
 import net.runelite.http.api.xtea.XteaKey;
 import net.runelite.http.api.xtea.XteaRequest;
 
@@ -45,12 +44,13 @@ import net.runelite.http.api.xtea.XteaRequest;
 @Slf4j
 public class XteaPlugin extends Plugin
 {
-	private final XteaClient xteaClient = new XteaClient();
-
 	private final Set<Integer> sentRegions = new HashSet<>();
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private XteaClient xteaClient;
 
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged gameStateChanged)

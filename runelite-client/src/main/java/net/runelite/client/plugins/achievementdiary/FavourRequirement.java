@@ -26,12 +26,32 @@ package net.runelite.client.plugins.achievementdiary;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import net.runelite.api.Favour;
+import net.runelite.api.Client;
+import net.runelite.api.Varbits;
+import net.runelite.api.annotations.Varbit;
 
 @RequiredArgsConstructor
 @Getter
 public class FavourRequirement implements Requirement
 {
+	/**
+	 * An enumeration of Kourend house favour the player can earn.
+	 */
+	@RequiredArgsConstructor
+	public enum Favour
+	{
+		ARCEUUS("Arceuus", Varbits.KOUREND_FAVOR_ARCEUUS),
+		HOSIDIUS("Hosidius", Varbits.KOUREND_FAVOR_HOSIDIUS),
+		LOVAKENGJ("Lovakengj", Varbits.KOUREND_FAVOR_LOVAKENGJ),
+		PISCARILIUS("Piscarilius", Varbits.KOUREND_FAVOR_PISCARILIUS),
+		SHAYZIEN("Shayzien", Varbits.KOUREND_FAVOR_SHAYZIEN);
+
+		@Getter
+		private final String name;
+		@Getter(onMethod_ = {@Varbit})
+		private final int varbit;
+	}
+
 	private final Favour house;
 	private final int percent;
 
@@ -39,5 +59,12 @@ public class FavourRequirement implements Requirement
 	public String toString()
 	{
 		return percent + "% " + house.getName() + " favour";
+	}
+
+	@Override
+	public boolean satisfiesRequirement(Client client)
+	{
+		int realFavour = client.getVarbitValue(house.getVarbit());
+		return (realFavour / 10) >= percent;
 	}
 }

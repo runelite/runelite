@@ -46,7 +46,9 @@ public enum IconID
 	SKULL(9),
 	HARDCORE_IRONMAN(10),
 	NO_ENTRY(11),
-	CHAIN_LINK(12);
+	CHAIN_LINK(12),
+	BOUNTY_HUNTER_EMBLEM(20),
+	LEAGUE(22);
 
 	private final int index;
 

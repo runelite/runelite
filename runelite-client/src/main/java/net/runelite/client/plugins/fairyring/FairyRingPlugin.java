@@ -68,9 +68,9 @@ import net.runelite.client.util.Text;
 )
 public class FairyRingPlugin extends Plugin
 {
-	private static final String[] leftDial = new String[]{"A", "D", "C", "B"};
-	private static final String[] middleDial = new String[]{"I", "L", "K", "J"};
-	private static final String[] rightDial = new String[]{"P", "S", "R", "Q"};
+	private static final String[] leftDial = {"A", "D", "C", "B"};
+	private static final String[] middleDial = {"I", "L", "K", "J"};
+	private static final String[] rightDial = {"P", "S", "R", "Q"};
 
 	private static final int ENTRY_PADDING = 3;
 
@@ -171,8 +171,8 @@ public class FairyRingPlugin extends Plugin
 			String destination;
 			try
 			{
-				FairyRings fairyRingDestination = getFairyRingDestination(client.getVar(Varbits.FAIRY_RING_DIAL_ADCB),
-					client.getVar(Varbits.FAIRY_RIGH_DIAL_ILJK), client.getVar(Varbits.FAIRY_RING_DIAL_PSRQ));
+				FairyRings fairyRingDestination = getFairyRingDestination(client.getVarbitValue(Varbits.FAIRY_RING_DIAL_ADCB),
+					client.getVarbitValue(Varbits.FAIRY_RIGH_DIAL_ILJK), client.getVarbitValue(Varbits.FAIRY_RING_DIAL_PSRQ));
 				destination = fairyRingDestination.getDestination();
 			}
 			catch (IllegalArgumentException ex)
@@ -196,6 +196,7 @@ public class FairyRingPlugin extends Plugin
 		searchBtn.setOnOpListener((JavaScriptCallback) this::menuClose);
 		searchInput = chatboxPanelManager.openTextInput("Filter fairy rings")
 			.onChanged(s -> clientThread.invokeLater(() -> updateFilter(s)))
+			.onDone(s -> false)
 			.onClose(() ->
 			{
 				clientThread.invokeLater(() -> updateFilter(""));

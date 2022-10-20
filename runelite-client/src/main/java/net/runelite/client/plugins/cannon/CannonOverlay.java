@@ -34,16 +34,16 @@ import net.runelite.api.Perspective;
 import static net.runelite.api.Perspective.LOCAL_TILE_SIZE;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.TextComponent;
+import static net.runelite.client.plugins.cannon.CannonPlugin.MAX_OVERLAY_DISTANCE;
 
 class CannonOverlay extends Overlay
 {
-	private static final int MAX_DISTANCE = 2500;
-
 	private final Client client;
 	private final CannonConfig config;
 	private final CannonPlugin plugin;
@@ -62,12 +62,14 @@ class CannonOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!plugin.isCannonPlaced() || plugin.getCannonPosition() == null)
+		if (!plugin.isCannonPlaced() || plugin.getCannonPosition() == null || plugin.getCannonWorld() != client.getWorld())
 		{
 			return null;
 		}
 
-		LocalPoint cannonPoint = LocalPoint.fromWorld(client, plugin.getCannonPosition());
+		// WorldAreas return the SW point, whereas we want the centre point
+		WorldPoint cannonLocation = plugin.getCannonPosition().toWorldPoint().dx(1).dy(1);
+		LocalPoint cannonPoint = LocalPoint.fromWorld(client, cannonLocation);
 
 		if (cannonPoint == null)
 		{
@@ -76,7 +78,7 @@ class CannonOverlay extends Overlay
 
 		LocalPoint localLocation = client.getLocalPlayer().getLocalLocation();
 
-		if (localLocation.distanceTo(cannonPoint) <= MAX_DISTANCE)
+		if (localLocation.distanceTo(cannonPoint) <= MAX_OVERLAY_DISTANCE)
 		{
 			Point cannonLoc = Perspective.getCanvasTextLocation(client,
 				graphics,

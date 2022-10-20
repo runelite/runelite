@@ -33,16 +33,16 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.GameState;
+import net.runelite.api.ScriptID;
 import net.runelite.api.Skill;
 import net.runelite.api.WorldType;
-import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -58,18 +58,10 @@ public class CombatLevelPlugin extends Plugin
 	private static final String CONFIG_GROUP = "combatlevel";
 	private static final String ATTACK_RANGE_CONFIG_KEY = "wildernessAttackLevelRange";
 	private static final Pattern WILDERNESS_LEVEL_PATTERN = Pattern.compile("^Level: (\\d+)$");
-	private static final int SKULL_CONTAINER_ADJUSTED_ORIGINAL_Y = 6;
-	private static final int WILDERNESS_LEVEL_TEXT_ADJUSTED_ORIGINAL_Y = 3;
 	private static final int MIN_COMBAT_LEVEL = 3;
-
-	private int originalWildernessLevelTextPosition = -1;
-	private int originalSkullContainerPosition = -1;
 
 	@Inject
 	private Client client;
-
-	@Inject
-	private ClientThread clientThread;
 
 	@Inject
 	private CombatLevelConfig config;
@@ -125,7 +117,7 @@ public class CombatLevelPlugin extends Plugin
 		}
 
 		Widget combatLevelWidget = client.getWidget(WidgetInfo.COMBAT_LEVEL);
-		if (combatLevelWidget == null)
+		if (combatLevelWidget == null || !config.showPreciseCombatLevel())
 		{
 			return;
 		}
@@ -162,10 +154,9 @@ public class CombatLevelPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onScriptCallbackEvent(ScriptCallbackEvent event)
+	public void onScriptPostFired(ScriptPostFired scriptPostFired)
 	{
-		if (config.wildernessAttackLevelRange()
-			&& "wildernessWidgetTextSet".equals(event.getEventName()))
+		if (scriptPostFired.getScriptId() == ScriptID.PVP_WIDGET_BUILDER && config.wildernessAttackLevelRange())
 		{
 			appendAttackLevelRangeText();
 		}
@@ -187,25 +178,10 @@ public class CombatLevelPlugin extends Plugin
 			return;
 		}
 
-		final Widget skullContainer = client.getWidget(WidgetInfo.PVP_SKULL_CONTAINER);
-		if (originalWildernessLevelTextPosition == -1)
-		{
-			originalWildernessLevelTextPosition = wildernessLevelWidget.getOriginalY();
-		}
-		if (originalSkullContainerPosition == -1)
-		{
-			originalSkullContainerPosition = skullContainer.getRelativeY();
-		}
-
 		final int wildernessLevel = Integer.parseInt(m.group(1));
 		final int combatLevel = client.getLocalPlayer().getCombatLevel();
 
 		wildernessLevelWidget.setText(wildernessLevelText + "<br>" + combatAttackRange(combatLevel, wildernessLevel));
-		wildernessLevelWidget.setOriginalY(WILDERNESS_LEVEL_TEXT_ADJUSTED_ORIGINAL_Y);
-		skullContainer.setOriginalY(SKULL_CONTAINER_ADJUSTED_ORIGINAL_Y);
-
-		clientThread.invoke(wildernessLevelWidget::revalidate);
-		clientThread.invoke(skullContainer::revalidate);
 	}
 
 	private void shutDownAttackLevelRange()
@@ -223,18 +199,7 @@ public class CombatLevelPlugin extends Plugin
 			{
 				wildernessLevelWidget.setText(wildernessLevelText.substring(0, wildernessLevelText.indexOf("<br>")));
 			}
-			wildernessLevelWidget.setOriginalY(originalWildernessLevelTextPosition);
-			clientThread.invoke(wildernessLevelWidget::revalidate);
 		}
-		originalWildernessLevelTextPosition = -1;
-
-		final Widget skullContainer = client.getWidget(WidgetInfo.PVP_SKULL_CONTAINER);
-		if (skullContainer != null)
-		{
-			skullContainer.setOriginalY(originalSkullContainerPosition);
-			clientThread.invoke(skullContainer::revalidate);
-		}
-		originalSkullContainerPosition = -1;
 	}
 
 	private static String combatAttackRange(final int combatLevel, final int wildernessLevel)

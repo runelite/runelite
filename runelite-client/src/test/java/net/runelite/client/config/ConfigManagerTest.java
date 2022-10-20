@@ -27,19 +27,21 @@ package net.runelite.client.config;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import java.io.File;
 import java.io.IOException;
-import java.time.Instant;
-import java.util.UUID;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
-import net.runelite.client.account.AccountSession;
+import javax.inject.Named;
+import net.runelite.api.Client;
+import net.runelite.client.RuneLite;
 import net.runelite.client.eventbus.EventBus;
 import org.junit.Assert;
+import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ConfigManagerTest
@@ -56,6 +58,22 @@ public class ConfigManagerTest
 	@Bind
 	RuneLiteConfig runeliteConfig;
 
+	@Bind
+	@Named("sessionfile")
+	File sessionfile = RuneLite.DEFAULT_SESSION_FILE;
+
+	@Bind
+	@Named("config")
+	File config = RuneLite.DEFAULT_CONFIG_FILE;
+
+	@Mock
+	@Bind
+	Client client;
+
+	@Mock
+	@Bind
+	ConfigClient configClient;
+
 	@Inject
 	ConfigManager manager;
 
@@ -68,9 +86,6 @@ public class ConfigManagerTest
 	@Test
 	public void testGetConfig() throws IOException
 	{
-		AccountSession accountSession = new AccountSession(UUID.randomUUID(), Instant.now());
-		accountSession.setUsername("test");
-
 		manager.setConfiguration("test", "key", "moo");
 
 		TestConfig conf = manager.getConfig(TestConfig.class);
@@ -80,9 +95,6 @@ public class ConfigManagerTest
 	@Test
 	public void testGetConfigDefault() throws IOException
 	{
-		AccountSession accountSession = new AccountSession(UUID.randomUUID(), Instant.now());
-		accountSession.setUsername("test");
-
 		TestConfig conf = manager.getConfig(TestConfig.class);
 		Assert.assertEquals("default", conf.key());
 	}
@@ -90,9 +102,6 @@ public class ConfigManagerTest
 	@Test
 	public void testSetConfig() throws IOException
 	{
-		AccountSession accountSession = new AccountSession(UUID.randomUUID(), Instant.now());
-		accountSession.setUsername("test");
-
 		TestConfig conf = manager.getConfig(TestConfig.class);
 		conf.key("new value");
 
@@ -102,11 +111,42 @@ public class ConfigManagerTest
 	@Test
 	public void testGetConfigDescriptor() throws IOException
 	{
-		AccountSession accountSession = new AccountSession(UUID.randomUUID(), Instant.now());
-		accountSession.setUsername("test");
-
 		TestConfig conf = manager.getConfig(TestConfig.class);
 		ConfigDescriptor descriptor = manager.getConfigDescriptor(conf);
-		Assert.assertEquals(1, descriptor.getItems().size());
+		Assert.assertEquals(2, descriptor.getItems().size());
+	}
+
+	@Test
+	public void testResetNullDefaultConfig()
+	{
+		TestConfig conf = manager.getConfig(TestConfig.class);
+		ConfigDescriptor descriptor = manager.getConfigDescriptor(conf);
+		conf.nullDefaultKey("new value");
+
+		manager.unsetConfiguration(descriptor.getGroup().value(), "nullDefaultKey");
+		manager.setDefaultConfiguration(conf, false);
+		Assert.assertNull(conf.nullDefaultKey());
+	}
+
+	@Test
+	public void testKeySplitter()
+	{
+		for (String[] test : new String[][]
+			{
+				{"rsprofile", "rsprofile.123", "rsprofileThing"},
+				{"rsprofile", null, "rsprofileThing"},
+				{"foo", "rsprofile.123", "big.bad"},
+				{"foo", null, "big.bad"},
+				{"foo", "rsprofile.123", "456"},
+				{"foo", null, "file.256"},
+			})
+		{
+			String whole = ConfigManager.getWholeKey(test[0], test[1], test[2]);
+			String[] split = ConfigManager.splitKey(whole);
+			assertNotNull(split);
+			Assert.assertEquals(split[0], test[0]);
+			Assert.assertEquals(split[1], test[1]);
+			Assert.assertEquals(split[2], test[2]);
+		}
 	}
 }

@@ -43,7 +43,7 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
-public class MusicClue extends ClueScroll implements NpcClueScroll
+public class MusicClue extends ClueScroll implements NpcClueScroll, LocationClueScroll
 {
 	private static final WorldPoint LOCATION = new WorldPoint(2990, 3384, 0);
 	private static final String CECILIA = "Cecilia";
@@ -61,7 +61,7 @@ public class MusicClue extends ClueScroll implements NpcClueScroll
 			.leftColor(TITLED_CONTENT_COLOR)
 			.build());
 
-		panelComponent.getChildren().add(LineComponent.builder().left("Area:").build());
+		panelComponent.getChildren().add(LineComponent.builder().left("Location:").build());
 		panelComponent.getChildren().add(LineComponent.builder()
 			.left("Falador Park")
 			.leftColor(TITLED_CONTENT_COLOR)
@@ -103,5 +103,11 @@ public class MusicClue extends ClueScroll implements NpcClueScroll
 			return new MusicClue(song);
 		}
 		return null;
+	}
+
+	@Override
+	public WorldPoint getLocation()
+	{
+		return LOCATION;
 	}
 }

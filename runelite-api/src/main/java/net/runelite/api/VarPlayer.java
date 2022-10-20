@@ -28,12 +28,18 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * An enumeration of local player variables.
+ * Server controlled "content-developer" integers.
+ *
+ * VarPlayers are stored per RuneScape player save, and synchronized
+ * from the server to the client. The client can change them preemptively
+ * if it thinks they will change the next tick as a lag-hiding measure.
+ * The client CANNOT directly make the server change a varbit.
  */
 @AllArgsConstructor
 @Getter
 public enum VarPlayer
 {
+	CANNON_AMMO(3),
 	ATTACK_STYLE(43),
 	QUEST_POINTS(101),
 	IS_POISONED(102),
@@ -49,6 +55,15 @@ public enum VarPlayer
 	SPECIAL_ATTACK_PERCENT(300),
 	SPECIAL_ATTACK_ENABLED(301),
 
+	/**
+	 * The ID of the party. This Var is only set in the raid bank area and the raid lobby
+	 *
+	 * This gets set to -1 when the raid starts. This is first set when the first player of the friends chat forms a party
+	 * on the recruiting board and it changes again when the first person actually enters the raid.
+	 *
+	 * -1 : Not in a party or in the middle of an ongoing raid
+	 * Anything else : This means that your friends chat has a raid party being formed and has not started yet
+	 */
 	IN_RAID_PARTY(1427),
 
 	NMZ_REWARD_POINTS(1060),
@@ -162,7 +177,69 @@ public enum VarPlayer
 	MUSIC_TRACKS_UNLOCKED_16(1009),
 	MUSIC_TRACKS_UNLOCKED_17(1338),
 	MUSIC_TRACKS_UNLOCKED_18(1681),
-	MUSIC_TRACKS_UNLOCKED_19(2065);
+	MUSIC_TRACKS_UNLOCKED_19(2065),
+
+	MUSIC_VOLUME(168),
+	SOUND_EFFECT_VOLUME(169),
+	AREA_EFFECT_VOLUME(872),
+
+	/**
+	 * 0 = 2 buttons, 1 = 1 button
+	 */
+	MOUSE_BUTTONS(170),
+
+	/**
+	 * {@link NpcID} for the HP HUD
+	 */
+	HP_HUD_NPC_ID(1683),
+
+	/**
+	 * Colors for chat messages
+	 */
+	SETTINGS_OPAQUE_CHAT_PUBLIC(2992),
+	SETTINGS_OPAQUE_CHAT_PRIVATE(2993),
+	SETTINGS_OPAQUE_CHAT_AUTO(2994),
+	SETTINGS_OPAQUE_CHAT_BROADCAST(2995),
+	SETTINGS_OPAQUE_CHAT_FRIEND(2996),
+	SETTINGS_OPAQUE_CHAT_CLAN(2997),
+	SETTINGS_OPAQUE_CHAT_GUEST_CLAN(3060),
+	SETTINGS_OPAQUE_CHAT_CLAN_BROADCAST(3192),
+	SETTINGS_OPAQUE_CHAT_IRON_GROUP_CHAT(3191),
+	SETTINGS_OPAQUE_CHAT_IRON_GROUP_BROADCAST(3193),
+	SETTINGS_OPAQUE_CHAT_TRADE_REQUEST(2998),
+	SETTINGS_OPAQUE_CHAT_CHALLENGE_REQUEST(2999),
+
+	SETTINGS_TRANSPARENT_CHAT_PUBLIC(3000),
+	SETTINGS_TRANSPARENT_CHAT_PRIVATE(3001),
+	SETTINGS_TRANSPARENT_CHAT_AUTO(3002),
+	SETTINGS_TRANSPARENT_CHAT_BROADCAST(3003),
+	SETTINGS_TRANSPARENT_CHAT_FRIEND(3004),
+	SETTINGS_TRANSPARENT_CHAT_CLAN(3005),
+	SETTINGS_TRANSPARENT_CHAT_GUEST_CLAN(3061),
+	SETTINGS_TRANSPARENT_CHAT_CLAN_BROADCAST(3195),
+	SETTINGS_TRANSPARENT_CHAT_IRON_GROUP_CHAT(3194),
+	SETTINGS_TRANSPARENT_CHAT_IRON_GROUP_BROADCAST(3196),
+	SETTINGS_TRANSPARENT_CHAT_TRADE_REQUEST(3006),
+	SETTINGS_TRANSPARENT_CHAT_CHALLENGE_REQUEST(3007),
+
+	/**
+	 * The difference, measured in minutes, between the time home teleport spell was last used and midnight, January 1, 1970 UTC.
+	 */
+	LAST_HOME_TELEPORT(892),
+
+	/**
+	 * Charge spell duration
+	 * Value * 2 = Remaining game ticks on buff
+	 * E.g. value of 50 means buff will expire in 100 ticks.
+	 */
+	CHARGE_GOD_SPELL(272),
+
+	/**
+	 * The difference, measured in minutes, between the time minigame teleport was last used and midnight, January 1, 1970 UTC.
+	 */
+	LAST_MINIGAME_TELEPORT(888),
+
+	;
 
 	private final int id;
 }

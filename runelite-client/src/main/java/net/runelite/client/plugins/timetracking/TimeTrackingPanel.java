@@ -25,6 +25,8 @@
  */
 package net.runelite.client.plugins.timetracking;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -38,15 +40,18 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
-import net.runelite.client.game.AsyncBufferedImage;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.timetracking.clocks.ClockManager;
+import net.runelite.client.plugins.timetracking.farming.FarmingContractManager;
+import net.runelite.client.plugins.timetracking.farming.FarmingNextTickPanel;
 import net.runelite.client.plugins.timetracking.farming.FarmingTracker;
 import net.runelite.client.plugins.timetracking.hunter.BirdHouseTracker;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.materialtabs.MaterialTab;
 import net.runelite.client.ui.components.materialtabs.MaterialTabGroup;
+import net.runelite.client.util.AsyncBufferedImage;
 
 class TimeTrackingPanel extends PluginPanel
 {
@@ -63,8 +68,11 @@ class TimeTrackingPanel extends PluginPanel
 	@Nullable
 	private TabContentPanel activeTabPanel = null;
 
-	TimeTrackingPanel(ItemManager itemManager, TimeTrackingConfig config,
-		FarmingTracker farmingTracker, BirdHouseTracker birdHouseTracker, ClockManager clockManager)
+	@Inject
+	TimeTrackingPanel(ItemManager itemManager, TimeTrackingConfig config, FarmingTracker farmingTracker,
+		BirdHouseTracker birdHouseTracker, ClockManager clockManager,
+		FarmingContractManager farmingContractManager, ConfigManager configManager,
+		@Named("developerMode") boolean developerMode)
 	{
 		super(false);
 
@@ -82,13 +90,19 @@ class TimeTrackingPanel extends PluginPanel
 		add(tabGroup, BorderLayout.NORTH);
 		add(display, BorderLayout.CENTER);
 
-		addTab(Tab.OVERVIEW, new OverviewTabPanel(itemManager, config, this, farmingTracker, birdHouseTracker, clockManager));
+		addTab(Tab.OVERVIEW, new OverviewTabPanel(itemManager, config, this, farmingTracker, birdHouseTracker, clockManager,
+			farmingContractManager));
 		addTab(Tab.CLOCK, clockManager.getClockTabPanel());
 		addTab(Tab.BIRD_HOUSE, birdHouseTracker.createBirdHouseTabPanel());
 
 		for (Tab tab : Tab.FARMING_TABS)
 		{
-			addTab(tab, farmingTracker.createTabPanel(tab));
+			addTab(tab, farmingTracker.createTabPanel(tab, farmingContractManager));
+		}
+
+		if (developerMode)
+		{
+			addTab(Tab.TIME_OFFSET, new FarmingNextTickPanel(farmingTracker, config, configManager));
 		}
 	}
 
@@ -116,7 +130,7 @@ class TimeTrackingPanel extends PluginPanel
 			BufferedImage subIcon = icon.getSubimage(0, 0, 32, 32);
 			materialTab.setIcon(new ImageIcon(subIcon.getScaledInstance(24, 24, Image.SCALE_SMOOTH)));
 		};
-		icon.onChanged(resize);
+		icon.onLoaded(resize);
 		resize.run();
 
 		materialTab.setOnSelectEvent(() ->

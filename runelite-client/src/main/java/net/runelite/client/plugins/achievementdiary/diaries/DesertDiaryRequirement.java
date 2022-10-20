@@ -81,7 +81,7 @@ public class DesertDiaryRequirement extends GenericDiaryRequirement
 			new QuestRequirement(Quest.DREAM_MENTOR));
 		add("Complete a lap of the Pollnivneach agility course.",
 			new SkillRequirement(Skill.AGILITY, 70));
-		add("Slay a Dust Devil with a Slayer helmet equipped.",
+		add("Slay a Dust Devil in the desert cave with a Slayer helmet equipped.",
 			new SkillRequirement(Skill.SLAYER, 65),
 			new SkillRequirement(Skill.DEFENCE, 10),
 			new SkillRequirement(Skill.CRAFTING, 55),

@@ -33,6 +33,6 @@ public class CoordinateClueTest
 	public void testDuplicateCoordinates()
 	{
 		// If this doesn't throw then the clues map doesn't have duplicate keys
-		new CoordinateClue("test", new WorldPoint(0, 0, 0));
+		new CoordinateClue("test", new WorldPoint(0, 0, 0), null);
 	}
 }

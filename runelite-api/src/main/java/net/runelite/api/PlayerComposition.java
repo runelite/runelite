@@ -24,6 +24,7 @@
  */
 package net.runelite.api;
 
+import javax.annotation.Nullable;
 import net.runelite.api.annotations.VisibleForDevtools;
 import net.runelite.api.kit.KitType;
 
@@ -32,6 +33,29 @@ import net.runelite.api.kit.KitType;
  */
 public interface PlayerComposition
 {
+	/**
+	 * Checks if the player is female.
+	 *
+	 * @return true if the player is female
+	 * @deprecated use getGender
+	 */
+	@Deprecated
+	boolean isFemale();
+
+	/**
+	 * Get the player gender
+	 *
+	 * @return 0 for male, 1 for female
+	 */
+	int getGender();
+
+	/**
+	 * Get the body part colors for this player composition.
+	 *
+	 * @return an array of the colors, always size 5
+	 */
+	int[] getColors();
+
 	/**
 	 * Gets an array of IDs related to equipment slots.
 	 * <p>
@@ -68,4 +92,13 @@ public interface PlayerComposition
 
 	@VisibleForDevtools
 	void setTransformedNpcId(int id);
+
+	/**
+	 * Get the overrides for this player composition, indexed by kit id. The overrides
+	 * replace the target color/textures for the item instead of using the target colors/textures
+	 * from the item composition. Only works if the kittype is an item.
+	 * @return
+	 */
+	@Nullable
+	ColorTextureOverride[] getColorTextureOverrides();
 }

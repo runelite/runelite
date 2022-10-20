@@ -49,9 +49,17 @@ class GpuFloatBuffer
 
 	void ensureCapacity(int size)
 	{
-		while (buffer.remaining() < size)
+		int capacity = buffer.capacity();
+		final int position = buffer.position();
+		if ((capacity - position) < size)
 		{
-			FloatBuffer newB = allocateDirect(buffer.capacity() * 2);
+			do
+			{
+				capacity *= 2;
+			}
+			while ((capacity - position) < size);
+
+			FloatBuffer newB = allocateDirect(capacity);
 			buffer.flip();
 			newB.put(buffer);
 			buffer = newB;

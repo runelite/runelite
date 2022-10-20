@@ -30,14 +30,14 @@ import net.runelite.api.Point;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
 import net.runelite.client.util.ImageUtil;
-import net.runelite.client.ws.PartyMember;
+import net.runelite.client.party.PartyMember;
 
 class PartyWorldMapPoint extends WorldMapPoint
 {
-	private static final BufferedImage ARROW = ImageUtil.getResourceStreamFromClass(PartyWorldMapPoint.class, "/util/clue_arrow.png");
+	private static final BufferedImage ARROW = ImageUtil.loadImageResource(PartyWorldMapPoint.class, "/util/clue_arrow.png");
 
 	private BufferedImage partyImage;
-	private PartyMember member;
+	private final PartyMember member;
 
 	PartyWorldMapPoint(WorldPoint worldPoint, PartyMember member)
 	{
@@ -48,6 +48,18 @@ class PartyWorldMapPoint extends WorldMapPoint
 		this.setImagePoint(new Point(
 			ARROW.getWidth() / 2,
 			ARROW.getHeight()));
+	}
+
+	@Override
+	public String getName()
+	{
+		return member.getDisplayName();
+	}
+
+	@Override
+	public String getTooltip()
+	{
+		return member.getDisplayName();
 	}
 
 	@Override

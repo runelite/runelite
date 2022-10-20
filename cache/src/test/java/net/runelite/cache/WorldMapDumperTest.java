@@ -66,7 +66,7 @@ public class WorldMapDumperTest
 			store.load();
 
 			Storage storage = store.getStorage();
-			Index index = store.getIndex(IndexType.WORLDMAP);
+			Index index = store.getIndex(IndexType.WORLDMAP_OLD);
 			Archive archive = index.getArchive(0); // there is also archive 1/2, but their data format is not this
 
 			byte[] archiveData = storage.loadArchive(archive);
@@ -77,7 +77,7 @@ public class WorldMapDumperTest
 				WorldMapLoader loader = new WorldMapLoader();
 				WorldMapDefinition def = loader.load(file.getContents(), file.getFileId());
 
-				Files.write(gson.toJson(def), new File(outDir, file.getFileId() + ".json"), Charset.defaultCharset());
+				Files.asCharSink(new File(outDir, file.getFileId() + ".json"), Charset.defaultCharset()).write(gson.toJson(def));
 				++count;
 			}
 		}

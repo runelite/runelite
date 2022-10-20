@@ -52,6 +52,8 @@ public class ItemLoader
 			this.decodeValues(opcode, def, is);
 		}
 
+		post(def);
+
 		return def;
 	}
 
@@ -93,6 +95,10 @@ public class ItemLoader
 				def.yOffset2d -= 65536;
 			}
 		}
+		else if (opcode == 9)
+		{
+			def.unknown1 = stream.readString();
+		}
 		else if (opcode == 11)
 		{
 			def.stackable = 1;
@@ -100,6 +106,14 @@ public class ItemLoader
 		else if (opcode == 12)
 		{
 			def.cost = stream.readInt();
+		}
+		else if (opcode == 13)
+		{
+			def.wearPos1 = stream.readByte();
+		}
+		else if (opcode == 14)
+		{
+			def.wearPos2 = stream.readByte();
 		}
 		else if (opcode == 16)
 		{
@@ -122,6 +136,10 @@ public class ItemLoader
 		else if (opcode == 26)
 		{
 			def.femaleModel1 = stream.readUnsignedShort();
+		}
+		else if (opcode == 27)
+		{
+			def.wearPos3 = stream.readByte();
 		}
 		else if (opcode >= 30 && opcode < 35)
 		{
@@ -169,6 +187,10 @@ public class ItemLoader
 		{
 			def.isTradeable = true;
 		}
+		else if (opcode == 75)
+		{
+			def.weight = stream.readShort();
+		}
 		else if (opcode == 78)
 		{
 			def.maleModel2 = stream.readUnsignedShort();
@@ -192,6 +214,10 @@ public class ItemLoader
 		else if (opcode == 93)
 		{
 			def.femaleHeadModel2 = stream.readUnsignedShort();
+		}
+		else if (opcode == 94)
+		{
+			def.category = stream.readUnsignedShort();
 		}
 		else if (opcode == 95)
 		{
@@ -284,6 +310,14 @@ public class ItemLoader
 		else
 		{
 			logger.warn("Unrecognized opcode {}", opcode);
+		}
+	}
+
+	private void post(ItemDefinition def)
+	{
+		if (def.stackable == 1)
+		{
+			def.weight = 0;
 		}
 	}
 }

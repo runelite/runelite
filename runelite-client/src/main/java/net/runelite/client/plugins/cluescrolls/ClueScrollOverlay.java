@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2016-2017, Seth <Sethtroll3@gmail.com>
  * Copyright (c) 2018, Lotto <https://github.com/devLotto>
+ * Copyright (c) 2019, David <https://github.com/drahenshaw>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,35 +31,74 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
-import static net.runelite.api.ItemID.SPADE;
+import net.runelite.api.Client;
+import net.runelite.api.Item;
+import static net.runelite.api.ItemID.*;
+import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.client.plugins.cluescrolls.clues.ClueScroll;
-import net.runelite.client.plugins.cluescrolls.clues.emote.ItemRequirement;
-import net.runelite.client.plugins.cluescrolls.clues.emote.SingleItemRequirement;
-import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.plugins.cluescrolls.clues.item.AnyRequirementCollection;
+import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
+import static net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements.item;
+import net.runelite.client.plugins.cluescrolls.clues.item.SingleItemRequirement;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
+import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPriority;
-import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.LineComponent;
-import net.runelite.client.ui.overlay.components.PanelComponent;
 
-public class ClueScrollOverlay extends Overlay
+public class ClueScrollOverlay extends OverlayPanel
 {
 	private static final ItemRequirement HAS_SPADE = new SingleItemRequirement(SPADE);
+	private static final ItemRequirement HAS_LIGHT = new AnyRequirementCollection("Light Source",
+		item(LIT_TORCH),
+		item(LIT_CANDLE),
+		item(LIT_BLACK_CANDLE),
+		item(CANDLE_LANTERN_4531),
+		item(CANDLE_LANTERN_4534), // lit black candle lantern
+		item(OIL_LAMP_4524),
+		item(OIL_LANTERN_4539),
+		item(BULLSEYE_LANTERN_4550),
+		item(SAPPHIRE_LANTERN_4702),
+		item(EMERALD_LANTERN_9065),
+		item(MINING_HELMET),
+		item(FIREMAKING_CAPE),
+		item(FIREMAKING_CAPET),
+		item(KANDARIN_HEADGEAR_1),
+		item(KANDARIN_HEADGEAR_2),
+		item(KANDARIN_HEADGEAR_3),
+		item(KANDARIN_HEADGEAR_4),
+		item(BRUMA_TORCH),
+		item(MAX_CAPE),
+		item(MAX_CAPE_13342),
+		item(ABYSSAL_LANTERN_NORMAL_LOGS),
+		item(ABYSSAL_LANTERN_BLUE_LOGS),
+		item(ABYSSAL_LANTERN_RED_LOGS),
+		item(ABYSSAL_LANTERN_WHITE_LOGS),
+		item(ABYSSAL_LANTERN_PURPLE_LOGS),
+		item(ABYSSAL_LANTERN_GREEN_LOGS),
+		item(ABYSSAL_LANTERN_OAK_LOGS),
+		item(ABYSSAL_LANTERN_WILLOW_LOGS),
+		item(ABYSSAL_LANTERN_MAPLE_LOGS),
+		item(ABYSSAL_LANTERN_YEW_LOGS),
+		item(ABYSSAL_LANTERN_BLISTERWOOD_LOGS),
+		item(ABYSSAL_LANTERN_MAGIC_LOGS),
+		item(ABYSSAL_LANTERN_REDWOOD_LOGS));
 
 	public static final Color TITLED_CONTENT_COLOR = new Color(190, 190, 190);
 
 	private final ClueScrollPlugin plugin;
-	private final PanelComponent panelComponent = new PanelComponent();
+	private final Client client;
 
 	@Inject
-	private ClueScrollOverlay(ClueScrollPlugin plugin)
+	private ClueScrollOverlay(ClueScrollPlugin plugin, Client client)
 	{
 		super(plugin);
 		this.plugin = plugin;
+		this.client = client;
 		setPriority(OverlayPriority.LOW);
 		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Clue Scroll overlay"));
+		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY, "Reset", "Clue Scroll overlay"));
 	}
 
 	@Override
@@ -71,20 +111,38 @@ public class ClueScrollOverlay extends Overlay
 			return null;
 		}
 
-		panelComponent.getChildren().clear();
-		panelComponent.setPreferredSize(new Dimension(ComponentConstants.STANDARD_WIDTH, 0));
-
 		clue.makeOverlayHint(panelComponent, plugin);
 
-		if (clue.isRequiresSpade() && plugin.getInventoryItems() != null)
+		final Item[] inventoryItems = plugin.getInventoryItems();
+		final Item[] equippedItems = plugin.getEquippedItems();
+
+		if (clue.isRequiresSpade() && inventoryItems != null)
 		{
-			if (!HAS_SPADE.fulfilledBy(plugin.getInventoryItems()))
+			if (!HAS_SPADE.fulfilledBy(inventoryItems))
 			{
 				panelComponent.getChildren().add(LineComponent.builder().left("").build());
 				panelComponent.getChildren().add(LineComponent.builder().left("Requires Spade!").leftColor(Color.RED).build());
 			}
 		}
 
-		return panelComponent.render(graphics);
+		if (clue.isRequiresLight()
+			&& ((clue.getFirePitVarbitId() == -1 || client.getVarbitValue(clue.getFirePitVarbitId()) != 1)
+				&& (inventoryItems == null || !HAS_LIGHT.fulfilledBy(inventoryItems))
+					&& (equippedItems == null || !HAS_LIGHT.fulfilledBy(equippedItems))))
+		{
+			panelComponent.getChildren().add(LineComponent.builder().left("").build());
+			panelComponent.getChildren().add(LineComponent.builder().left("Requires Light Source!").leftColor(Color.RED).build());
+		}
+
+		if (clue.getEnemy() != null)
+		{
+			panelComponent.getChildren().add(LineComponent.builder().left("").build());
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left(clue.getEnemy().getText())
+				.leftColor(Color.YELLOW)
+				.build());
+		}
+
+		return super.render(graphics);
 	}
 }

@@ -24,14 +24,15 @@
  */
 package net.runelite.client.ui.overlay.worldmap;
 
-import java.awt.Rectangle;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import javax.annotation.Nullable;
 import lombok.Data;
+import lombok.experimental.SuperBuilder;
 import net.runelite.api.Point;
 import net.runelite.api.coords.WorldPoint;
 
 @Data
+@SuperBuilder
 public class WorldMapPoint
 {
 	private BufferedImage image;
@@ -39,23 +40,30 @@ public class WorldMapPoint
 	private WorldPoint worldPoint;
 
 	/**
+	 * The WorldPoint which the worldmap will jump to when clicked
+	 */
+	@Nullable
+	private WorldPoint target;
+
+	/**
 	 * The point on the image that will be drawn at WorldPoint
 	 * WorldMapPointManager will center the image if imagePoint is null
 	 */
 	private Point imagePoint;
-
-	private Rectangle clickbox;
 
 	private boolean snapToEdge;
 
 	private boolean currentlyEdgeSnapped;
 
 	/**
-	 * Whether or not the map jumps to worldPoint when the overlay is clicked
+	 * Whether or not the map jumps to target, or worldPoint when the overlay is clicked
 	 */
 	private boolean jumpOnClick;
 
-	private boolean tooltipVisible;
+	/**
+	 * Name in menu option when {@link #jumpOnClick} is set
+	 */
+	private String name;
 
 	private String tooltip;
 
@@ -63,11 +71,6 @@ public class WorldMapPoint
 	{
 		this.worldPoint = worldPoint;
 		this.image = image;
-	}
-
-	public MouseEvent onClick(MouseEvent e)
-	{
-		return e;
 	}
 
 	public void onEdgeSnap()

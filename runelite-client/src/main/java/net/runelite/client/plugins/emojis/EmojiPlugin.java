@@ -26,6 +26,7 @@ package net.runelite.client.plugins.emojis;
 
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
+import java.util.regex.Pattern;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import joptsimple.internal.Strings;
@@ -36,13 +37,13 @@ import net.runelite.api.IndexedSprite;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.OverheadTextChanged;
-import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.ImageUtil;
+import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Emojis",
@@ -52,38 +53,40 @@ import net.runelite.client.util.ImageUtil;
 @Slf4j
 public class EmojiPlugin extends Plugin
 {
+	private static final Pattern WHITESPACE_REGEXP = Pattern.compile("[\\s\\u00A0]");
+
 	@Inject
 	private Client client;
 
 	@Inject
-	private ChatMessageManager chatMessageManager;
+	private ClientThread clientThread;
 
 	private int modIconsStart = -1;
 
 	@Override
 	protected void startUp()
 	{
-		loadEmojiIcons();
-	}
-
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
-	{
-		if (gameStateChanged.getGameState() == GameState.LOGGED_IN)
+		clientThread.invoke(() ->
 		{
+			if (client.getModIcons() == null)
+			{
+				return false;
+			}
 			loadEmojiIcons();
-		}
+			return true;
+		});
 	}
 
 	private void loadEmojiIcons()
 	{
-		final IndexedSprite[] modIcons = client.getModIcons();
-		if (modIconsStart != -1 || modIcons == null)
+		if (modIconsStart != -1)
 		{
 			return;
 		}
 
 		final Emoji[] emojis = Emoji.values();
+		final IndexedSprite[] modIcons = client.getModIcons();
+		assert modIcons != null;
 		final IndexedSprite[] newModIcons = Arrays.copyOf(modIcons, modIcons.length + emojis.length);
 		modIconsStart = modIcons.length;
 
@@ -120,6 +123,9 @@ public class EmojiPlugin extends Plugin
 			case PUBLICCHAT:
 			case MODCHAT:
 			case FRIENDSCHAT:
+			case CLAN_CHAT:
+			case CLAN_GUEST_CHAT:
+			case CLAN_GIM_CHAT:
 			case PRIVATECHAT:
 			case PRIVATECHATOUT:
 			case MODPRIVATECHAT:
@@ -128,7 +134,8 @@ public class EmojiPlugin extends Plugin
 				return;
 		}
 
-		final String message = chatMessage.getMessage();
+		final MessageNode messageNode = chatMessage.getMessageNode();
+		final String message = messageNode.getValue();
 		final String updatedMessage = updateMessage(message);
 
 		if (updatedMessage == null)
@@ -136,10 +143,7 @@ public class EmojiPlugin extends Plugin
 			return;
 		}
 
-		final MessageNode messageNode = chatMessage.getMessageNode();
-		messageNode.setRuneLiteFormatMessage(updatedMessage);
-		chatMessageManager.update(messageNode);
-		client.refreshChat();
+		messageNode.setValue(updatedMessage);
 	}
 
 	@Subscribe
@@ -162,14 +166,16 @@ public class EmojiPlugin extends Plugin
 	}
 
 	@Nullable
-	private String updateMessage(final String message)
+	String updateMessage(final String message)
 	{
-		final String[] messageWords = message.split(" ");
+		final String[] messageWords = WHITESPACE_REGEXP.split(message);
 
 		boolean editedMessage = false;
 		for (int i = 0; i < messageWords.length; i++)
 		{
-			final Emoji emoji = Emoji.getEmoji(messageWords[i]);
+			// Remove tags except for <lt> and <gt>
+			final String trigger = Text.removeFormattingTags(messageWords[i]);
+			final Emoji emoji = Emoji.getEmoji(trigger);
 
 			if (emoji == null)
 			{
@@ -178,7 +184,7 @@ public class EmojiPlugin extends Plugin
 
 			final int emojiId = modIconsStart + emoji.ordinal();
 
-			messageWords[i] = "<img=" + emojiId + ">";
+			messageWords[i] = messageWords[i].replace(trigger, "<img=" + emojiId + ">");
 			editedMessage = true;
 		}
 

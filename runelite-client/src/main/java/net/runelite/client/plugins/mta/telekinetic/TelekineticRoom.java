@@ -44,10 +44,9 @@ import net.runelite.api.GameState;
 import net.runelite.api.GroundObject;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
+import net.runelite.api.NullNpcID;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.Perspective;
-import net.runelite.api.Projectile;
-import net.runelite.api.ProjectileID;
 import net.runelite.api.WallObject;
 import net.runelite.api.coords.Angle;
 import net.runelite.api.coords.Direction;
@@ -68,7 +67,7 @@ import net.runelite.client.plugins.mta.MTARoom;
 @Slf4j
 public class TelekineticRoom extends MTARoom
 {
-	private static final int MAZE_GUARDIAN_MOVING = 6778;
+	private static final int MAZE_GUARDIAN_MOVING = NullNpcID.NULL_6778;
 	private static final int TELEKINETIC_WALL = NullObjectID.NULL_10755;
 	private static final int TELEKINETIC_FINISH = NullObjectID.NULL_23672;
 
@@ -178,14 +177,6 @@ public class TelekineticRoom extends MTARoom
 			}
 			else
 			{
-				for (Projectile projectile : client.getProjectiles())
-				{
-					if (projectile.getId() == ProjectileID.TELEKINETIC_SPELL)
-					{
-						return;
-					}
-				}
-
 				log.debug("Rebuilding moves due to guardian move");
 				this.moves = build();
 			}
@@ -203,7 +194,7 @@ public class TelekineticRoom extends MTARoom
 	{
 		NPC npc = event.getNpc();
 
-		if (npc.getId() == NpcID.MAZE_GUARDIAN)
+		if (npc.getId() == NpcID.MAZE_GUARDIAN || npc.getId() == MAZE_GUARDIAN_MOVING)
 		{
 			guardian = npc;
 		}

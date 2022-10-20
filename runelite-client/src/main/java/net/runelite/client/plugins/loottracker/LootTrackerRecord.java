@@ -24,28 +24,33 @@
  */
 package net.runelite.client.plugins.loottracker;
 
+import lombok.NonNull;
 import lombok.Value;
+import net.runelite.http.api.loottracker.LootRecordType;
 
 @Value
 class LootTrackerRecord
 {
+	@NonNull
 	private final String title;
 	private final String subTitle;
+	private final LootRecordType type;
 	private final LootTrackerItem[] items;
-	private final long timestamp;
+	private final int kills;
 
 	/**
 	 * Checks if this record matches specified id
+	 *
 	 * @param id other record id
 	 * @return true if match is made
 	 */
-	boolean matches(final String id)
+	boolean matches(final String id, LootRecordType type)
 	{
 		if (id == null)
 		{
 			return true;
 		}
 
-		return title.equals(id);
+		return title.equals(id) && this.type == type;
 	}
 }

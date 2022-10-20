@@ -24,21 +24,26 @@
  */
 package net.runelite.client.plugins.specialcounter;
 
+import java.util.function.Function;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.ItemID;
 
 @AllArgsConstructor
 @Getter
-enum SpecialWeapon
+public enum SpecialWeapon
 {
-	DRAGON_WARHAMMER("Dragon Warhammer", ItemID.DRAGON_WARHAMMER, false),
-	ARCLIGHT("Arclight", ItemID.ARCLIGHT, false),
-	DARKLIGHT("Darklight", ItemID.DARKLIGHT, false),
-	BANDOS_GODSWORD("Bandos Godsword", ItemID.BANDOS_GODSWORD, true),
-	BANDOS_GODSWORD_OR("Bandos Godsword", ItemID.BANDOS_GODSWORD_OR, true);
+	DRAGON_WARHAMMER("Dragon Warhammer", new int[]{ItemID.DRAGON_WARHAMMER}, false, SpecialCounterConfig::dragonWarhammerThreshold),
+	ARCLIGHT("Arclight", new int[]{ItemID.ARCLIGHT}, false, SpecialCounterConfig::arclightThreshold),
+	DARKLIGHT("Darklight", new int[]{ItemID.DARKLIGHT}, false, SpecialCounterConfig::darklightThreshold),
+	BANDOS_GODSWORD("Bandos Godsword", new int[]{ItemID.BANDOS_GODSWORD, ItemID.BANDOS_GODSWORD_OR}, true, SpecialCounterConfig::bandosGodswordThreshold),
+	BARRELCHEST_ANCHOR("Barrelchest Anchor", new int[]{ItemID.BARRELCHEST_ANCHOR}, true, (c) -> 0),
+	BONE_DAGGER("Bone Dagger", new int[]{ItemID.BONE_DAGGER, ItemID.BONE_DAGGER_P, ItemID.BONE_DAGGER_P_8876, ItemID.BONE_DAGGER_P_8878}, true, (c) -> 0),
+	DORGESHUUN_CROSSBOW("Dorgeshuun Crossbow", new int[]{ItemID.DORGESHUUN_CROSSBOW}, true, (c) -> 0),
+	BULWARK("Dinh's Bulwark", new int[]{ItemID.DINHS_BULWARK}, false, SpecialCounterConfig::bulwarkThreshold);
 
 	private final String name;
-	private final int itemID;
+	private final int[] itemID;
 	private final boolean damage;
+	private final Function<SpecialCounterConfig, Integer> threshold;
 }

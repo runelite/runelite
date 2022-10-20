@@ -25,9 +25,9 @@
  */
 package net.runelite.client.chat;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -48,14 +48,14 @@ public class CommandManager
 {
 	private static final String RUNELITE_COMMAND = "runeliteCommand";
 	private static final String CHATBOX_INPUT = "chatboxInput";
-	private static final String PRIVMATE_MESSAGE = "privateMessage";
+	private static final String PRIVATE_MESSAGE = "privateMessage";
 
 	private final Client client;
 	private final EventBus eventBus;
 	private final ClientThread clientThread;
 	private boolean sending;
 
-	private final List<ChatboxInputListener> chatboxInputListenerList = new ArrayList<>();
+	private final List<ChatboxInputListener> chatboxInputListenerList = new CopyOnWriteArrayList<>();
 
 	@Inject
 	private CommandManager(Client client, EventBus eventBus, ClientThread clientThread)
@@ -63,6 +63,7 @@ public class CommandManager
 		this.client = client;
 		this.eventBus = eventBus;
 		this.clientThread = clientThread;
+		eventBus.register(this);
 	}
 
 	public void register(ChatboxInputListener chatboxInputListener)
@@ -91,7 +92,7 @@ public class CommandManager
 			case CHATBOX_INPUT:
 				handleInput(event);
 				break;
-			case PRIVMATE_MESSAGE:
+			case PRIVATE_MESSAGE:
 				handlePrivateMessage(event);
 				break;
 		}
@@ -99,7 +100,7 @@ public class CommandManager
 
 	private void runCommand()
 	{
-		String typedText = client.getVar(VarClientStr.CHATBOX_TYPED_TEXT).substring(2); // strip ::
+		String typedText = client.getVarcStrValue(VarClientStr.CHATBOX_TYPED_TEXT).substring(2); // strip ::
 
 		log.debug("Command: {}", typedText);
 
@@ -126,7 +127,8 @@ public class CommandManager
 		int intStackCount = client.getIntStackSize();
 
 		final String typedText = stringStack[stringStackCount - 1];
-		final int chatType = intStack[intStackCount - 1];
+		final int chatType = intStack[intStackCount - 2];
+		final int clanTarget = intStack[intStackCount - 1];
 
 		ChatboxInput chatboxInput = new ChatboxInput(typedText, chatType)
 		{
@@ -141,7 +143,7 @@ public class CommandManager
 				}
 				resumed = true;
 
-				clientThread.invoke(() -> sendChatboxInput(chatType, typedText));
+				clientThread.invoke(() -> sendChatboxInput(typedText, chatType, clanTarget));
 			}
 		};
 		boolean stop = false;
@@ -197,12 +199,12 @@ public class CommandManager
 		}
 	}
 
-	private void sendChatboxInput(int chatType, String input)
+	private void sendChatboxInput(String input, int chatType, int clanTarget)
 	{
 		sending = true;
 		try
 		{
-			client.runScript(ScriptID.CHATBOX_INPUT, chatType, input);
+			client.runScript(ScriptID.CHAT_SEND, input, chatType, clanTarget, 0, -1);
 		}
 		finally
 		{

@@ -48,6 +48,8 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
+import net.runelite.api.MenuAction;
+import static net.runelite.api.ObjectID.BROKEN_STRUT;
 import static net.runelite.api.ObjectID.ORE_VEIN_26661;
 import static net.runelite.api.ObjectID.ORE_VEIN_26662;
 import static net.runelite.api.ObjectID.ORE_VEIN_26663;
@@ -59,13 +61,11 @@ import net.runelite.api.Varbits;
 import net.runelite.api.WallObject;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.GameObjectChanged;
 import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.api.events.WallObjectChanged;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.api.widgets.Widget;
@@ -73,10 +73,12 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.ui.overlay.OverlayMenuEntry;
 
 @PluginDescriptor(
 	name = "Motherlode Mine",
@@ -97,7 +99,7 @@ public class MotherlodePlugin extends Plugin
 	private static final int SACK_LARGE_SIZE = 162;
 	private static final int SACK_SIZE = 81;
 
-	private static final int UPPER_FLOOR_HEIGHT = -500;
+	private static final int UPPER_FLOOR_HEIGHT = -490;
 
 	@Inject
 	private OverlayManager overlayManager;
@@ -106,7 +108,7 @@ public class MotherlodePlugin extends Plugin
 	private MotherlodeOverlay overlay;
 
 	@Inject
-	private MotherlodeRocksOverlay rocksOverlay;
+	private MotherlodeSceneOverlay sceneOverlay;
 
 	@Inject
 	private MotherlodeSackOverlay motherlodeSackOverlay;
@@ -145,6 +147,8 @@ public class MotherlodePlugin extends Plugin
 	private final Set<WallObject> veins = new HashSet<>();
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<GameObject> rocks = new HashSet<>();
+	@Getter(AccessLevel.PACKAGE)
+	private final Set<GameObject> brokenStruts = new HashSet<>();
 
 	@Provides
 	MotherlodeConfig getConfig(ConfigManager configManager)
@@ -156,7 +160,7 @@ public class MotherlodePlugin extends Plugin
 	protected void startUp()
 	{
 		overlayManager.add(overlay);
-		overlayManager.add(rocksOverlay);
+		overlayManager.add(sceneOverlay);
 		overlayManager.add(motherlodeGemOverlay);
 		overlayManager.add(motherlodeOreOverlay);
 		overlayManager.add(motherlodeSackOverlay);
@@ -173,12 +177,13 @@ public class MotherlodePlugin extends Plugin
 	protected void shutDown()
 	{
 		overlayManager.remove(overlay);
-		overlayManager.remove(rocksOverlay);
+		overlayManager.remove(sceneOverlay);
 		overlayManager.remove(motherlodeGemOverlay);
 		overlayManager.remove(motherlodeOreOverlay);
 		overlayManager.remove(motherlodeSackOverlay);
 		veins.clear();
 		rocks.clear();
+		brokenStruts.clear();
 
 		Widget sack = client.getWidget(WidgetInfo.MOTHERLODE_MINE);
 
@@ -189,6 +194,18 @@ public class MotherlodePlugin extends Plugin
 				sack.setHidden(false);
 			}
 		});
+	}
+
+	@Subscribe
+	public void onOverlayMenuClicked(OverlayMenuClicked overlayMenuClicked)
+	{
+		OverlayMenuEntry overlayMenuEntry = overlayMenuClicked.getEntry();
+		if (overlayMenuEntry.getMenuAction() == MenuAction.RUNELITE_OVERLAY
+			&& overlayMenuClicked.getEntry().getOption().equals(MotherlodeOverlay.MINING_RESET)
+			&& overlayMenuClicked.getOverlay() == overlay)
+		{
+			session.resetRecent();
+		}
 	}
 
 	@Subscribe
@@ -293,24 +310,6 @@ public class MotherlodePlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onWallObjectChanged(WallObjectChanged event)
-	{
-		if (!inMlm)
-		{
-			return;
-		}
-
-		WallObject previous = event.getPrevious();
-		WallObject wallObject = event.getWallObject();
-
-		veins.remove(previous);
-		if (MINE_SPOTS.contains(wallObject.getId()))
-		{
-			veins.add(wallObject);
-		}
-	}
-
-	@Subscribe
 	public void onWallObjectDespawned(WallObjectDespawned event)
 	{
 		if (!inMlm)
@@ -330,30 +329,7 @@ public class MotherlodePlugin extends Plugin
 			return;
 		}
 
-		GameObject gameObject = event.getGameObject();
-		if (ROCK_OBSTACLES.contains(gameObject.getId()))
-		{
-			rocks.add(gameObject);
-		}
-	}
-
-	@Subscribe
-	public void onGameObjectChanged(GameObjectChanged event)
-	{
-		if (!inMlm)
-		{
-			return;
-		}
-
-		GameObject previous = event.getPrevious();
-		GameObject gameObject = event.getGameObject();
-
-		rocks.remove(previous);
-		if (ROCK_OBSTACLES.contains(gameObject.getId()))
-		{
-			rocks.add(gameObject);
-		}
-
+		addGameObject(event.getGameObject());
 	}
 
 	@Subscribe
@@ -364,8 +340,7 @@ public class MotherlodePlugin extends Plugin
 			return;
 		}
 
-		GameObject gameObject = event.getGameObject();
-		rocks.remove(gameObject);
+		removeGameObject(event.getGameObject());
 	}
 
 	@Subscribe
@@ -376,9 +351,8 @@ public class MotherlodePlugin extends Plugin
 			// on region changes the tiles get set to null
 			veins.clear();
 			rocks.clear();
-		}
-		else if (event.getGameState() == GameState.LOGGED_IN)
-		{
+			brokenStruts.clear();
+
 			inMlm = checkInMlm();
 		}
 		else if (event.getGameState() == GameState.LOGIN_SCREEN)
@@ -461,7 +435,9 @@ public class MotherlodePlugin extends Plugin
 
 	private boolean checkInMlm()
 	{
-		if (client.getGameState() != GameState.LOGGED_IN)
+		GameState gameState = client.getGameState();
+		if (gameState != GameState.LOGGED_IN
+			&& gameState != GameState.LOADING)
 		{
 			return false;
 		}
@@ -482,8 +458,8 @@ public class MotherlodePlugin extends Plugin
 
 	private void refreshSackValues()
 	{
-		curSackSize = client.getVar(Varbits.SACK_NUMBER);
-		boolean sackUpgraded = client.getVar(Varbits.SACK_UPGRADED) == 1;
+		curSackSize = client.getVarbitValue(Varbits.SACK_NUMBER);
+		boolean sackUpgraded = client.getVarbitValue(Varbits.SACK_UPGRADED) == 1;
 		maxSackSize = sackUpgraded ? SACK_LARGE_SIZE : SACK_SIZE;
 	}
 
@@ -497,5 +473,24 @@ public class MotherlodePlugin extends Plugin
 	boolean isUpstairs(LocalPoint localPoint)
 	{
 		return Perspective.getTileHeight(client, localPoint, 0) < UPPER_FLOOR_HEIGHT;
+	}
+
+	private void addGameObject(GameObject gameObject)
+	{
+		if (ROCK_OBSTACLES.contains(gameObject.getId()))
+		{
+			rocks.add(gameObject);
+		}
+
+		if (BROKEN_STRUT == gameObject.getId())
+		{
+			brokenStruts.add(gameObject);
+		}
+	}
+
+	private void removeGameObject(GameObject gameObject)
+	{
+		rocks.remove(gameObject);
+		brokenStruts.remove(gameObject);
 	}
 }

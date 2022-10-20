@@ -40,6 +40,7 @@ enum ImplingType
 	NATURE("Nature"),
 	MAGPIE("Magpie"),
 	NINJA("Ninja"),
+	CRYSTAL("Crystal"),
 	DRAGON("Dragon"),
 	LUCKY("Lucky");
 

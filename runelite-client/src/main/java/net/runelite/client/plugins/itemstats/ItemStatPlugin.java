@@ -35,17 +35,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.FontID;
 import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
+import net.runelite.api.ScriptID;
 import net.runelite.api.SpriteID;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
-import net.runelite.api.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
@@ -55,13 +55,14 @@ import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.JagexColors;
 import net.runelite.client.ui.overlay.OverlayManager;
-import net.runelite.client.util.StackFormatter;
+import net.runelite.client.util.QuantityFormatter;
 import net.runelite.http.api.item.ItemEquipmentStats;
 import net.runelite.http.api.item.ItemStats;
 
@@ -144,19 +145,19 @@ public class ItemStatPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		if (client.getVar(VarPlayer.CURRENT_GE_ITEM) == -1 && config.geStats())
+		if (event.getVarpId() == VarPlayer.CURRENT_GE_ITEM.getId() && config.geStats())
 		{
 			resetGEInventory();
 		}
 	}
 
 	@Subscribe
-	public void onScriptCallbackEvent(ScriptCallbackEvent event)
+	public void onScriptPostFired(ScriptPostFired event)
 	{
-		if (event.getEventName().equals("geBuilt") && config.geStats())
+		if (event.getScriptId() == ScriptID.GE_OFFERS_SETUP_BUILD && config.geStats())
 		{
-			int currentGeItem = client.getVar(VarPlayer.CURRENT_GE_ITEM);
-			if (currentGeItem != -1 && client.getVar(Varbits.GE_OFFER_CREATION_TYPE) == 0)
+			int currentGeItem = client.getVarpValue(VarPlayer.CURRENT_GE_ITEM);
+			if (currentGeItem != -1 && client.getVarbitValue(Varbits.GE_OFFER_CREATION_TYPE) == 0)
 			{
 				createItemInformation(currentGeItem);
 			}
@@ -236,8 +237,8 @@ public class ItemStatPlugin extends Plugin
 		Widget icon = invContainer.createChild(-1, WidgetType.GRAPHIC);
 		icon.setOriginalX(8);
 		icon.setOriginalY(yPos);
-		icon.setOriginalWidth(36);
-		icon.setOriginalHeight(32);
+		icon.setOriginalWidth(Constants.ITEM_SPRITE_WIDTH);
+		icon.setOriginalHeight(Constants.ITEM_SPRITE_HEIGHT);
 		icon.setItemId(id);
 		icon.setItemQuantityMode(0);
 		icon.setBorderType(1);
@@ -339,7 +340,7 @@ public class ItemStatPlugin extends Plugin
 
 		createSeparator(invContainer, invContainer.getHeight() - 40);
 
-		final String coinText = "You have " + StackFormatter.quantityToRSStackSize(getCurrentGP())
+		final String coinText = "You have " + QuantityFormatter.quantityToStackSize(getCurrentGP())
 			+ (getCurrentGP() == 1 ? " coin." : " coins.");
 
 		final Widget coinWidget = createText(invContainer, coinText, FontID.PLAIN_12, ORANGE_TEXT,
@@ -405,22 +406,14 @@ public class ItemStatPlugin extends Plugin
 			return 0;
 		}
 
-		for (final Item item : inventory.getItems())
-		{
-			if (item.getId() == ItemID.COINS_995)
-			{
-				return item.getQuantity();
-			}
-		}
-
-		return 0;
+		return inventory.count(ItemID.COINS_995);
 	}
 
 	private Widget getInventoryContainer()
 	{
 		if (client.isResized())
 		{
-			if (client.getVar(Varbits.SIDE_PANELS) == 1)
+			if (client.getVarbitValue(Varbits.SIDE_PANELS) == 1)
 			{
 				return client.getWidget(WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY_CONTAINER);
 			}

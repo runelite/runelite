@@ -70,6 +70,30 @@ public class ItemManager implements ItemProvider
 		}
 	}
 
+	public void link()
+	{
+		for (ItemDefinition oc : items.values())
+		{
+			link(oc);
+		}
+	}
+
+	private void link(ItemDefinition item)
+	{
+		if (item.notedTemplate != -1)
+		{
+			item.linkNote(getItem(item.notedTemplate), getItem(item.notedID));
+		}
+		if (item.boughtTemplateId != -1)
+		{
+			item.linkBought(getItem(item.boughtTemplateId), getItem(item.boughtId));
+		}
+		if (item.placeholderTemplateId != -1)
+		{
+			item.linkPlaceholder(getItem(item.placeholderTemplateId), getItem(item.placeholderId));
+		}
+	}
+
 	public Collection<ItemDefinition> getItems()
 	{
 		return Collections.unmodifiableCollection(items.values());
@@ -96,20 +120,18 @@ public class ItemManager implements ItemProvider
 	public void java(File java) throws IOException
 	{
 		java.mkdirs();
-		try (IDClass ids = IDClass.create(java, "ItemID"))
+		try (IDClass ids = IDClass.create(java, "ItemID");
+			IDClass nulls = IDClass.create(java, "NullItemID"))
 		{
-			try (IDClass nulls = IDClass.create(java, "NullItemID"))
+			for (ItemDefinition def : items.values())
 			{
-				for (ItemDefinition def : items.values())
+				if (def.name.equalsIgnoreCase("NULL"))
 				{
-					if (def.name.equalsIgnoreCase("NULL"))
-					{
-						nulls.add(def.name, def.id);
-					}
-					else
-					{
-						ids.add(def.name, def.id);
-					}
+					nulls.add(def.name, def.id);
+				}
+				else
+				{
+					ids.add(def.name, def.id);
 				}
 			}
 		}

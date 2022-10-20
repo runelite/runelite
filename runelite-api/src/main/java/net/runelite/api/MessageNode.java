@@ -27,7 +27,7 @@ package net.runelite.api;
 /**
  * Represents a message in the chatbox.
  */
-public interface MessageNode
+public interface MessageNode extends Node
 {
 	/**
 	 * Get the id for this message node
@@ -58,7 +58,7 @@ public interface MessageNode
 	void setName(String name);
 
 	/**
-	 * Gets the sender of the message (ie. clan name).
+	 * Gets the sender of the message. (ie. friends chat name)
 	 *
 	 * @return the message sender
 	 */

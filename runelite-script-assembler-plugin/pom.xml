@@ -29,7 +29,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.5.24-SNAPSHOT</version>
+		<version>1.9.3-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>script-assembler-plugin</artifactId>
@@ -40,11 +40,6 @@
 		<dependency>
 			<groupId>net.runelite</groupId>
 			<artifactId>cache</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>net.runelite</groupId>
-			<artifactId>runelite-api</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 
@@ -65,7 +60,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-plugin-plugin</artifactId>
-				<version>3.4</version>
 				<executions>
 					<execution>
 						<id>default-descriptor</id>

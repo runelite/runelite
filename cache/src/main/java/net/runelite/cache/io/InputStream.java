@@ -125,6 +125,11 @@ public class InputStream extends java.io.InputStream
 		return buffer.getInt();
 	}
 
+	public long readLong()
+	{
+		return buffer.getLong();
+	}
+
 	public byte peek()
 	{
 		return buffer.get(buffer.position());
@@ -200,6 +205,18 @@ public class InputStream extends java.io.InputStream
 		return sb.toString();
 	}
 
+	public String readString2()
+	{
+		if (this.readByte() != 0)
+		{
+			throw new IllegalStateException("Invalid jstr2");
+		}
+		else
+		{
+			return readString();
+		}
+	}
+
 	public String readStringOrNull()
 	{
 		if (this.peek() != 0)
@@ -224,6 +241,20 @@ public class InputStream extends java.io.InputStream
 		}
 
 		return var2 | var1;
+	}
+
+	public int readVarInt2()
+	{
+		int value = 0;
+		int bits = 0;
+		int read;
+		do
+		{
+			read = readUnsignedByte();
+			value |= (read & 0x7F) << bits;
+			bits += 7;
+		} while (read > 127);
+		return value;
 	}
 
 	public byte[] getRemaining()
