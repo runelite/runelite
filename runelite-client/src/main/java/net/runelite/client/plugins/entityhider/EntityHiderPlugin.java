@@ -75,6 +75,7 @@ public class EntityHiderPlugin extends Plugin
 	private boolean hideNPCs2D;
 	private boolean hideDeadNpcs;
 	private boolean hidePets;
+	private boolean hideThralls;
 	private boolean hideAttackers;
 	private boolean hideProjectiles;
 
@@ -127,6 +128,8 @@ public class EntityHiderPlugin extends Plugin
 		hideDeadNpcs = config.hideDeadNpcs();
 
 		hidePets = config.hidePets();
+
+		hideThralls = config.hideThralls();
 
 		hideAttackers = config.hideAttackers();
 
@@ -203,6 +206,15 @@ public class EntityHiderPlugin extends Plugin
 					b &= drawingUI ? hideNPCs2D : hideNPCs;
 				}
 				return !b;
+			}
+
+			// Hide thralls (ghost, skeleton, zombie)
+			// Lesser:   10878, 10881, 10884
+			// Superior: 10879, 10882, 10885
+			// Greater:  10880, 10883, 10886
+			if (npc.getId() >= 10878 && npc.getId() <= 10886)
+			{
+				return !hideThralls;
 			}
 
 			return !(drawingUI ? hideNPCs2D : hideNPCs);
