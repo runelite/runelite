@@ -44,6 +44,7 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.NPC;
 import net.runelite.api.NullNpcID;
 import net.runelite.api.Player;
+import net.runelite.api.ScriptID;
 import static net.runelite.api.Skill.AGILITY;
 import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
@@ -61,9 +62,12 @@ import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
+import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.StatChanged;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -79,6 +83,7 @@ import net.runelite.client.plugins.xptracker.XpTrackerService;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import static org.apache.commons.lang3.math.NumberUtils.isParsable;
 
 @PluginDescriptor(
 	name = "Agility",
@@ -130,6 +135,9 @@ public class AgilityPlugin extends Plugin
 
 	@Inject
 	private XpTrackerService xpTrackerService;
+
+	@Inject
+	private ConfigManager configManager;
 
 	@Getter
 	private AgilitySession session;
@@ -326,6 +334,17 @@ public class AgilityPlugin extends Plugin
 		}
 	}
 
+	private void setLaps(String courseName, int killcount)
+	{
+		configManager.setRSProfileConfiguration("killcount", courseName.toLowerCase(), killcount);
+	}
+
+	private int getLaps(String courseName)
+	{
+		Integer killCount = configManager.getRSProfileConfiguration("killcount", courseName.toLowerCase(), int.class);
+		return killCount == null ? 0 : killCount;
+	}
+
 	private boolean isInAgilityArena()
 	{
 		Player local = client.getLocalPlayer();
@@ -468,5 +487,68 @@ public class AgilityPlugin extends Plugin
 	{
 		NPC npc = npcDespawned.getNpc();
 		npcs.remove(npc);
+	}
+
+	@Subscribe
+	public void onScriptPostFired(ScriptPostFired scriptPostFired)
+	{
+		if (scriptPostFired.getScriptId() == ScriptID.AGI_LAPS_CHECK)
+		{
+			Widget agiLapsHeader = client.getWidget(WidgetInfo.AGI_LAPS_HEADER);
+			if (agiLapsHeader != null)
+			{
+				if (agiLapsHeader.getText().equals("Agility Course Lap Counts"))
+				{
+					Widget agiCourseLapCount = client.getWidget(WidgetInfo.AGI_LAPS_COUNT);
+					String[] lapsList;
+					try
+					{
+						lapsList = agiCourseLapCount.getText().split("<br>");
+					}
+					catch (NullPointerException nullPointerException)
+					{
+						return;
+					}
+					List<String[]> parseList = new ArrayList<>(lapsList.length);
+					for (String line : lapsList)
+					{
+						String[] tempList = line.split(" ");
+						parseList.add(tempList);
+					}
+					List<Integer> countList = new ArrayList<>();
+					for (String[] lapsByLine : parseList)
+					{
+						if (lapsByLine.length > 1 && isParsable(lapsByLine[lapsByLine.length - 2]))
+						{
+							countList.add(Integer.valueOf(lapsByLine[lapsByLine.length - 2]));
+						}
+					}
+					List<String> nameList = new ArrayList<>();
+					for (String[] lapsByLine : parseList)
+					{
+						if (lapsByLine.length > 3)
+						{
+							String courseName = new String();
+							courseName = courseName.concat(lapsByLine[0]);
+							for (int i = 1; i < lapsByLine.length - 3; i++)
+							{
+								courseName = courseName.concat(" ").concat(lapsByLine[i]);
+							}
+							nameList.add(courseName);
+						}
+					}
+					for (int i = 0; i < nameList.size(); ++i)
+					{
+						if (countList.get(i) > 0)
+						{
+							if (getLaps(nameList.get(i)) != countList.get(i))
+							{
+								setLaps(nameList.get(i), countList.get(i));
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 }

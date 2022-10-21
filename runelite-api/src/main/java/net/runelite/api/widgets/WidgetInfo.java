@@ -506,6 +506,10 @@ public enum WidgetInfo
 
 	GENERIC_SCROLL_TEXT(WidgetID.GENERIC_SCROLL_GROUP_ID, WidgetID.GenericScroll.TEXT),
 
+	AGI_LAPS_CONTAINER(WidgetID.GENERIC_SCROLL_GROUP_ID, WidgetID.LapsContainer.CONTAINER),
+	AGI_LAPS_HEADER(WidgetID.GENERIC_SCROLL_GROUP_ID, WidgetID.LapsContainer.HEADER),
+	AGI_LAPS_COUNT(WidgetID.GENERIC_SCROLL_GROUP_ID, WidgetID.LapsContainer.LAPCOUNT),
+
 	WORLD_SWITCHER_LIST(WidgetID.WORLD_SWITCHER_GROUP_ID, WidgetID.WorldSwitcher.WORLD_LIST),
 
 	FOSSIL_ISLAND_OXYGENBAR(WidgetID.FOSSIL_ISLAND_OXYGENBAR_ID, 1),
@@ -583,7 +587,7 @@ public enum WidgetInfo
 	TOA_RAID_LAYER(WidgetID.TOA_RAID_GROUP_ID, 3),
 	;
 
-	private final int groupId;
+	private int groupId;
 	private final int childId;
 
 	WidgetInfo(int groupId, int childId)
