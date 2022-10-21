@@ -539,12 +539,9 @@ public class AgilityPlugin extends Plugin
 					}
 					for (int i = 0; i < nameList.size(); ++i)
 					{
-						if (countList.get(i) > 0)
+						if (getLaps(nameList.get(i)) != countList.get(i))
 						{
-							if (getLaps(nameList.get(i)) != countList.get(i))
-							{
-								setLaps(nameList.get(i), countList.get(i));
-							}
+							setLaps(nameList.get(i), countList.get(i));
 						}
 					}
 				}
