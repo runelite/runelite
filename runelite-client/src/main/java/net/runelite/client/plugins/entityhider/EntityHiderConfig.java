@@ -187,4 +187,15 @@ public interface EntityHiderConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		position = 15,
+		keyName = "hideThralls",
+		name = "Hide Thralls",
+		description = "Configures whether or not Thralls are hidden"
+	)
+	default boolean hideThralls()
+	{
+		return false;
+	}
 }
