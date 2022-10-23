@@ -145,6 +145,6 @@ public interface LootTrackerConfig extends Config
 	)
 	default boolean suppressRemoveWarningSingular()
 	{
-		return false;
+		return true;
 	}
 }

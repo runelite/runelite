@@ -586,12 +586,12 @@ class LootTrackerPanel extends PluginPanel
 		final JMenuItem reset = new JMenuItem("Reset");
 		reset.addActionListener(e ->
 		{
-
-			if ( config.suppressRemoveWarningSingular() ) {
-				final int result = JOptionPane.YES_OPTION;
+			int result = JOptionPane.YES_NO_OPTION;
+			if (config.suppressRemoveWarningSingular()) {
+				result = JOptionPane.YES_OPTION;
 
 			} else{
-				final int result = JOptionPane.showOptionDialog(box,
+				 result = JOptionPane.showOptionDialog(box,
 					groupLoot ? String.format(RESET_CURRENT_WARNING_TEXT, box.getId()) : RESET_ONE_WARNING_TEXT,
 					"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
 					null, new String[]{"Yes", "No"}, "No");
