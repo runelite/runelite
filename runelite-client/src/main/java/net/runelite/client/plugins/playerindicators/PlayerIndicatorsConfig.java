@@ -209,6 +209,30 @@ public interface PlayerIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 14,
+		keyName = "drawAttackable",
+		name = "Highlight attackable players",
+		description = "Configures whether or not attackable players should be highlighted",
+		section = highlightSection
+	)
+	default boolean highlightAttackable()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 15,
+		keyName = "attackableColor",
+		name = "Attackable",
+		description = "Color of attackable players names",
+		section = highlightSection
+	)
+	default Color getAttackableColor()
+	{
+		return new Color(139, 0, 0);
+	}
+
+	@ConfigItem(
 		position = 10,
 		keyName = "drawPlayerTiles",
 		name = "Draw tiles under players",

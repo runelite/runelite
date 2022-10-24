@@ -38,6 +38,8 @@ import net.runelite.api.clan.ClanChannelMember;
 import net.runelite.api.clan.ClanRank;
 import net.runelite.api.clan.ClanSettings;
 import net.runelite.api.clan.ClanTitle;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.party.PartyService;
 import net.runelite.client.util.Text;
 
@@ -83,6 +85,10 @@ public class PlayerIndicatorsService
 				{
 					consumer.accept(player, config.getOwnPlayerColor());
 				}
+			}
+			else if (config.highlightAttackable() && isAttackable(player))
+			{
+				consumer.accept(player, config.getAttackableColor());
 			}
 			else if (partyService.isInParty() && config.highlightPartyMembers() && partyService.getMemberByDisplayName(player.getName()) != null)
 			{
@@ -140,5 +146,27 @@ public class PlayerIndicatorsService
 
 		FriendsChatMember friendsChatMember = friendsChatManager.findByName(Text.removeTags(player.getName()));
 		return friendsChatMember != null ? friendsChatMember.getRank() : FriendsChatRank.UNRANKED;
+	}
+
+	boolean isAttackable(Player player)
+	{
+		final Widget pvpLevelWidget = client.getWidget(WidgetInfo.PVP_LEVEL_RANGE);
+		if (pvpLevelWidget == null)
+		{
+			// Failsafe: Player is not in the wilderness
+			return false;
+		}
+		final String widgetText = pvpLevelWidget.getText();
+
+		final String[] combatRange = widgetText.split("-");
+		if (combatRange.length != 2)
+		{
+			return false;
+		}
+
+		final int minLevel = Integer.parseInt(combatRange[0]);
+		final int maxLevel = Integer.parseInt(combatRange[1]);
+		final int combatLevel = player.getCombatLevel();
+		return combatLevel >= minLevel && combatLevel <= maxLevel;
 	}
 }

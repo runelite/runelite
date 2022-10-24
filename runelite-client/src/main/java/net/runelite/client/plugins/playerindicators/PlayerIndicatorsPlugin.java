@@ -32,18 +32,7 @@ import net.runelite.api.Client;
 import net.runelite.api.FriendsChatRank;
 import static net.runelite.api.FriendsChatRank.UNRANKED;
 import net.runelite.api.MenuAction;
-import static net.runelite.api.MenuAction.ITEM_USE_ON_PLAYER;
-import static net.runelite.api.MenuAction.PLAYER_EIGTH_OPTION;
-import static net.runelite.api.MenuAction.PLAYER_FIFTH_OPTION;
-import static net.runelite.api.MenuAction.PLAYER_FIRST_OPTION;
-import static net.runelite.api.MenuAction.PLAYER_FOURTH_OPTION;
-import static net.runelite.api.MenuAction.PLAYER_SECOND_OPTION;
-import static net.runelite.api.MenuAction.PLAYER_SEVENTH_OPTION;
-import static net.runelite.api.MenuAction.PLAYER_SIXTH_OPTION;
-import static net.runelite.api.MenuAction.PLAYER_THIRD_OPTION;
-import static net.runelite.api.MenuAction.RUNELITE_PLAYER;
-import static net.runelite.api.MenuAction.WALK;
-import static net.runelite.api.MenuAction.WIDGET_TARGET_ON_PLAYER;
+import static net.runelite.api.MenuAction.*;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Player;
 import net.runelite.api.ScriptID;
@@ -236,6 +225,10 @@ public class PlayerIndicatorsPlugin extends Plugin
 			{
 				image = chatIconManager.getIconNumber(clanTitle);
 			}
+		}
+		if (config.highlightAttackable() && playerIndicatorsService.isAttackable(player))
+		{
+			color = config.getAttackableColor();
 		}
 
 		if (image == -1 && color == null)
