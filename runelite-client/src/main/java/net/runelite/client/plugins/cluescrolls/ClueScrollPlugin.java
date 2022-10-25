@@ -976,10 +976,15 @@ public class ClueScrollPlugin extends Plugin
 		final String text = Text.sanitizeMultilineText(rawText).toLowerCase();
 
 		final SkillChallengeClue skillChallengeClue = SkillChallengeClue.forChatboxText(sender, text);
-
 		if (skillChallengeClue != null)
 		{
 			return skillChallengeClue;
+		}
+
+		final FaloTheBardClue faloTheBardClue = FaloTheBardClue.forChatboxText(sender, text);
+		if (faloTheBardClue != null)
+		{
+			return faloTheBardClue;
 		}
 
 		return null;
