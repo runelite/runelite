@@ -369,7 +369,7 @@ public class ClueScrollPlugin extends Plugin
 
 		// Add runes from rune pouch to inventoryItems
 		if (itemContainer.contains(ItemID.RUNE_POUCH) || itemContainer.contains(ItemID.RUNE_POUCH_L)
-			|| itemContainer.contains(ItemID.DIVINE_RUNE_POUCH))
+			|| itemContainer.contains(ItemID.DIVINE_RUNE_POUCH) || itemContainer.contains(ItemID.DIVINE_RUNE_POUCH_L))
 		{
 			List<Item> runePouchContents = getRunepouchContents();
 
