@@ -43,7 +43,6 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.FormBody;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -204,22 +203,17 @@ public class XpUpdaterPlugin extends Plugin
 			HttpUrl url = new HttpUrl.Builder()
 				.scheme("https")
 				.host(
-					worldTypes.contains(WorldType.SEASONAL) ? "seasonal.wiseoldman.net" :
-					worldTypes.contains(WorldType.FRESH_START_WORLD) ? "fsw.wiseoldman.net" :
-						"wiseoldman.net")
-				.addPathSegment("api")
+					worldTypes.contains(WorldType.SEASONAL) ? "seasonal.api.wiseoldman.net" :
+						"api.wiseoldman.net")
+				.addPathSegment("v2")
 				.addPathSegment("players")
-				.addPathSegment("track")
-				.build();
-
-			RequestBody formBody = new FormBody.Builder()
-				.add("username", username)
+				.addPathSegment(username)
 				.build();
 
 			Request request = new Request.Builder()
 				.header("User-Agent", "RuneLite")
 				.url(url)
-				.post(formBody)
+				.post(RequestBody.create(null, new byte[0]))
 				.build();
 
 			sendRequest("Wise Old Man", request);
