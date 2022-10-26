@@ -30,6 +30,7 @@ import java.awt.Rectangle;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Point;
+import net.runelite.api.Varbits;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
@@ -88,6 +89,13 @@ class RunEnergyOverlay extends Overlay
 			else
 			{
 				sb.append("Run Time Remaining: ").append(plugin.getEstimatedRunTimeRemaining(false));
+			}
+
+			if (client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE) == 0
+				&& plugin.isRingOfEnduranceEquipped()
+				&& plugin.getRingOfEnduranceCharges() == null)
+			{
+				sb.append("</br>Check your Ring of endurance to get the time remaining.");
 			}
 
 			int secondsUntil100 = plugin.getEstimatedRecoverTimeRemaining();

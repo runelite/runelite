@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Charlie Waters
+ * Copyright (c) 2022, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,11 +22,28 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.logouttimer;
 
-/**
- * Detects when the window is focused or unfocused.
- */
-public interface KeyFocusListener
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Range;
+import net.runelite.client.config.Units;
+
+@ConfigGroup(LogoutTimerConfig.GROUP)
+public interface LogoutTimerConfig extends Config
 {
+	String GROUP = "logouttimer";
+
+	@ConfigItem(
+		keyName = "idleTimeout",
+		name = "Idle timeout",
+		description = "Amount of time before you are logged out for being idle"
+	)
+	@Units(Units.MINUTES)
+	@Range(min = 5, max = 25)
+	default int getIdleTimeout()
+	{
+		return 5;
+	}
 }

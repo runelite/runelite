@@ -45,6 +45,7 @@ public enum LoginScreenOverride
 	THEATRE_OF_BLOOD("tob.jpg"),
 	A_KINGDOM_DIVIDED("akd.jpg"),
 	NEX("nex.jpg"),
+	TOMBS_OF_AMASCUT("toa.jpg"),
 	CUSTOM,
 	RANDOM;
 

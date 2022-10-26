@@ -43,6 +43,16 @@ public interface MinimapConfig extends Config
 	String minimapDotSection = "minimapDotSection";
 
 	@ConfigItem(
+		keyName = "zoom",
+		name = "Zoom",
+		description = "Enables zooming on the minimap"
+	)
+	default boolean zoom()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "hideMinimap",
 		name = "Hide minimap",
 		description = "Do not show the minimap on screen (Resizable only)"

@@ -72,8 +72,8 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.vars.AccountType;
 import net.runelite.api.widgets.Widget;
+import static net.runelite.api.widgets.WidgetID.ACHIEVEMENT_DIARY_SCROLL_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.ADVENTURE_LOG_ID;
-import static net.runelite.api.widgets.WidgetID.DIARY_QUEST_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.KILL_LOGS_GROUP_ID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
@@ -727,7 +727,7 @@ public class ChatCommandsPlugin extends Plugin
 
 			if (client.getLocalPlayer().getName().equals(pohOwner))
 			{
-				Widget parent = client.getWidget(WidgetInfo.DIARY_QUEST_WIDGET_TEXT);
+				Widget parent = client.getWidget(WidgetInfo.ACHIEVEMENT_DIARY_SCROLL_TEXT);
 				// Each line is a separate static child
 				Widget[] children = parent.getStaticChildren();
 				String[] text = Arrays.stream(children)
@@ -830,7 +830,7 @@ public class ChatCommandsPlugin extends Plugin
 			case KILL_LOGS_GROUP_ID:
 				bossLogLoaded = true;
 				break;
-			case DIARY_QUEST_GROUP_ID:
+			case ACHIEVEMENT_DIARY_SCROLL_GROUP_ID:
 				scrollInterfaceLoaded = true;
 				break;
 		}
@@ -2178,6 +2178,7 @@ public class ChatCommandsPlugin extends Plugin
 			case "toa entry":
 			case "toa entry mode":
 				return "Tombs of Amascut Entry Mode";
+			case "tombs of amascut: expert mode":
 			case "toa expert":
 			case "toa expert mode":
 				return "Tombs of Amascut Expert Mode";
@@ -2382,6 +2383,11 @@ public class ChatCommandsPlugin extends Plugin
 			case "runetodt":
 			case "rifts closed":
 				return "Guardians of the Rift";
+
+			// Tempoross
+			case "fishingtodt":
+			case "fishtodt":
+				return "Tempoross";
 
 			default:
 				return WordUtils.capitalize(boss);

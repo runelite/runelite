@@ -506,6 +506,18 @@ package net.runelite.client.party;
       com.google.protobuf.MessageLiteOrBuilder {
 
     /**
+     * <code>string type = 2;</code>
+     * @return The type.
+     */
+    java.lang.String getType();
+    /**
+     * <code>string type = 2;</code>
+     * @return The bytes for type.
+     */
+    com.google.protobuf.ByteString
+        getTypeBytes();
+
+    /**
      * <code>bytes data = 1;</code>
      * @return The data.
      */
@@ -520,8 +532,56 @@ package net.runelite.client.party;
       // @@protoc_insertion_point(message_implements:party.Data)
       DataOrBuilder {
     private Data() {
+      type_ = "";
       data_ = com.google.protobuf.ByteString.EMPTY;
     }
+    public static final int TYPE_FIELD_NUMBER = 2;
+    private java.lang.String type_;
+    /**
+     * <code>string type = 2;</code>
+     * @return The type.
+     */
+    @java.lang.Override
+    public java.lang.String getType() {
+      return type_;
+    }
+    /**
+     * <code>string type = 2;</code>
+     * @return The bytes for type.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getTypeBytes() {
+      return com.google.protobuf.ByteString.copyFromUtf8(type_);
+    }
+    /**
+     * <code>string type = 2;</code>
+     * @param value The type to set.
+     */
+    private void setType(
+        java.lang.String value) {
+      java.lang.Class<?> valueClass = value.getClass();
+  
+      type_ = value;
+    }
+    /**
+     * <code>string type = 2;</code>
+     */
+    private void clearType() {
+      
+      type_ = getDefaultInstance().getType();
+    }
+    /**
+     * <code>string type = 2;</code>
+     * @param value The bytes for type to set.
+     */
+    private void setTypeBytes(
+        com.google.protobuf.ByteString value) {
+      checkByteStringIsUtf8(value);
+      type_ = value.toStringUtf8();
+      
+    }
+
     public static final int DATA_FIELD_NUMBER = 1;
     private com.google.protobuf.ByteString data_;
     /**
@@ -645,6 +705,55 @@ package net.runelite.client.party;
 
 
       /**
+       * <code>string type = 2;</code>
+       * @return The type.
+       */
+      @java.lang.Override
+      public java.lang.String getType() {
+        return instance.getType();
+      }
+      /**
+       * <code>string type = 2;</code>
+       * @return The bytes for type.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString
+          getTypeBytes() {
+        return instance.getTypeBytes();
+      }
+      /**
+       * <code>string type = 2;</code>
+       * @param value The type to set.
+       * @return This builder for chaining.
+       */
+      public Builder setType(
+          java.lang.String value) {
+        copyOnWrite();
+        instance.setType(value);
+        return this;
+      }
+      /**
+       * <code>string type = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearType() {
+        copyOnWrite();
+        instance.clearType();
+        return this;
+      }
+      /**
+       * <code>string type = 2;</code>
+       * @param value The bytes for type to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTypeBytes(
+          com.google.protobuf.ByteString value) {
+        copyOnWrite();
+        instance.setTypeBytes(value);
+        return this;
+      }
+
+      /**
        * <code>bytes data = 1;</code>
        * @return The data.
        */
@@ -689,9 +798,11 @@ package net.runelite.client.party;
         case BUILD_MESSAGE_INFO: {
             java.lang.Object[] objects = new java.lang.Object[] {
               "data_",
+              "type_",
             };
             java.lang.String info =
-                "\u0000\u0001\u0000\u0000\u0001\u0001\u0001\u0000\u0000\u0000\u0001\n";
+                "\u0000\u0002\u0000\u0000\u0001\u0002\u0002\u0000\u0000\u0000\u0001\n\u0002\u0208" +
+                "";
             return newMessageInfo(DEFAULT_INSTANCE, info, objects);
         }
         // fall through
@@ -1955,6 +2066,18 @@ package net.runelite.client.party;
     long getMemberId();
 
     /**
+     * <code>string type = 4;</code>
+     * @return The type.
+     */
+    java.lang.String getType();
+    /**
+     * <code>string type = 4;</code>
+     * @return The bytes for type.
+     */
+    com.google.protobuf.ByteString
+        getTypeBytes();
+
+    /**
      * <code>bytes data = 3;</code>
      * @return The data.
      */
@@ -1969,6 +2092,7 @@ package net.runelite.client.party;
       // @@protoc_insertion_point(message_implements:party.PartyData)
       PartyDataOrBuilder {
     private PartyData() {
+      type_ = "";
       data_ = com.google.protobuf.ByteString.EMPTY;
     }
     public static final int PARTYID_FIELD_NUMBER = 1;
@@ -2021,6 +2145,53 @@ package net.runelite.client.party;
     private void clearMemberId() {
       
       memberId_ = 0L;
+    }
+
+    public static final int TYPE_FIELD_NUMBER = 4;
+    private java.lang.String type_;
+    /**
+     * <code>string type = 4;</code>
+     * @return The type.
+     */
+    @java.lang.Override
+    public java.lang.String getType() {
+      return type_;
+    }
+    /**
+     * <code>string type = 4;</code>
+     * @return The bytes for type.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getTypeBytes() {
+      return com.google.protobuf.ByteString.copyFromUtf8(type_);
+    }
+    /**
+     * <code>string type = 4;</code>
+     * @param value The type to set.
+     */
+    private void setType(
+        java.lang.String value) {
+      java.lang.Class<?> valueClass = value.getClass();
+  
+      type_ = value;
+    }
+    /**
+     * <code>string type = 4;</code>
+     */
+    private void clearType() {
+      
+      type_ = getDefaultInstance().getType();
+    }
+    /**
+     * <code>string type = 4;</code>
+     * @param value The bytes for type to set.
+     */
+    private void setTypeBytes(
+        com.google.protobuf.ByteString value) {
+      checkByteStringIsUtf8(value);
+      type_ = value.toStringUtf8();
+      
     }
 
     public static final int DATA_FIELD_NUMBER = 3;
@@ -2202,6 +2373,55 @@ package net.runelite.client.party;
       }
 
       /**
+       * <code>string type = 4;</code>
+       * @return The type.
+       */
+      @java.lang.Override
+      public java.lang.String getType() {
+        return instance.getType();
+      }
+      /**
+       * <code>string type = 4;</code>
+       * @return The bytes for type.
+       */
+      @java.lang.Override
+      public com.google.protobuf.ByteString
+          getTypeBytes() {
+        return instance.getTypeBytes();
+      }
+      /**
+       * <code>string type = 4;</code>
+       * @param value The type to set.
+       * @return This builder for chaining.
+       */
+      public Builder setType(
+          java.lang.String value) {
+        copyOnWrite();
+        instance.setType(value);
+        return this;
+      }
+      /**
+       * <code>string type = 4;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearType() {
+        copyOnWrite();
+        instance.clearType();
+        return this;
+      }
+      /**
+       * <code>string type = 4;</code>
+       * @param value The bytes for type to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTypeBytes(
+          com.google.protobuf.ByteString value) {
+        copyOnWrite();
+        instance.setTypeBytes(value);
+        return this;
+      }
+
+      /**
        * <code>bytes data = 3;</code>
        * @return The data.
        */
@@ -2248,10 +2468,11 @@ package net.runelite.client.party;
               "partyId_",
               "memberId_",
               "data_",
+              "type_",
             };
             java.lang.String info =
-                "\u0000\u0003\u0000\u0000\u0001\u0003\u0003\u0000\u0000\u0000\u0001\u0002\u0002\u0002" +
-                "\u0003\n";
+                "\u0000\u0004\u0000\u0000\u0001\u0004\u0004\u0000\u0000\u0000\u0001\u0002\u0002\u0002" +
+                "\u0003\n\u0004\u0208";
             return newMessageInfo(DEFAULT_INSTANCE, info, objects);
         }
         // fall through

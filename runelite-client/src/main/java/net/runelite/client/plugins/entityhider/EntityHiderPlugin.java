@@ -26,12 +26,15 @@
 package net.runelite.client.plugins.entityhider;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
+import java.util.Set;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GraphicID;
 import net.runelite.api.GraphicsObject;
 import net.runelite.api.NPC;
+import net.runelite.api.NullNpcID;
 import net.runelite.api.Player;
 import net.runelite.api.Projectile;
 import net.runelite.api.Renderable;
@@ -51,6 +54,12 @@ import net.runelite.client.plugins.PluginDescriptor;
 )
 public class EntityHiderPlugin extends Plugin
 {
+	private static final Set<Integer> THRALL_IDS = ImmutableSet.of(
+		NullNpcID.NULL_10878, NullNpcID.NULL_10881, NullNpcID.NULL_10884,  // Lesser Thrall (ghost, skeleton, zombie)
+		NullNpcID.NULL_10879, NullNpcID.NULL_10882, NullNpcID.NULL_10885,  // Superior Thrall (ghost, skeleton, zombie)
+		NullNpcID.NULL_10880, NullNpcID.NULL_10883, NullNpcID.NULL_10886   // Greater Thrall (ghost, skeleton, zombie)
+	);
+
 	@Inject
 	private Client client;
 
@@ -75,6 +84,7 @@ public class EntityHiderPlugin extends Plugin
 	private boolean hideNPCs2D;
 	private boolean hideDeadNpcs;
 	private boolean hidePets;
+	private boolean hideThralls;
 	private boolean hideAttackers;
 	private boolean hideProjectiles;
 
@@ -127,6 +137,8 @@ public class EntityHiderPlugin extends Plugin
 		hideDeadNpcs = config.hideDeadNpcs();
 
 		hidePets = config.hidePets();
+
+		hideThralls = config.hideThralls();
 
 		hideAttackers = config.hideAttackers();
 
@@ -203,6 +215,11 @@ public class EntityHiderPlugin extends Plugin
 					b &= drawingUI ? hideNPCs2D : hideNPCs;
 				}
 				return !b;
+			}
+
+			if (THRALL_IDS.contains(npc.getId()))
+			{
+				return !hideThralls;
 			}
 
 			return !(drawingUI ? hideNPCs2D : hideNPCs);

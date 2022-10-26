@@ -24,6 +24,7 @@
  */
 package net.runelite.cache.definitions.loaders;
 
+import java.util.HashMap;
 import net.runelite.cache.definitions.SequenceDefinition;
 import net.runelite.cache.io.InputStream;
 
@@ -147,6 +148,37 @@ public class SequenceLoader
 				def.frameSounds[var4] = stream.read24BitInt();
 			}
 		}
+		else if (opcode == 14)
+		{
+			def.animMayaID = stream.readInt();
+		}
+		else if (opcode == 15)
+		{
+			var3 = stream.readUnsignedShort();
+			def.animMayaFrameSounds = new HashMap<>();
 
+			for (var4 = 0; var4 < var3; ++var4)
+			{
+				int var5 = stream.readUnsignedShort();
+				int var6 = stream.read24BitInt();
+				def.animMayaFrameSounds.put(var5, var6);
+			}
+		}
+		else if (opcode == 16)
+		{
+			def.animMayaStart = stream.readUnsignedShort();
+			def.animMayaEnd = stream.readUnsignedShort();
+		}
+		else if (opcode == 17)
+		{
+			def.animMayaMasks = new boolean[256];
+
+			var3 = stream.readUnsignedByte();
+
+			for (var4 = 0; var4 < var3; ++var4)
+			{
+				def.animMayaMasks[stream.readUnsignedByte()] = true;
+			}
+		}
 	}
 }

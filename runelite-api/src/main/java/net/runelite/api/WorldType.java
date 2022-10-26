@@ -55,6 +55,10 @@ public enum WorldType
 	 */
 	SKILL_TOTAL(1 << 7),
 	/**
+	 * Quest speedrunning
+	 */
+	QUEST_SPEEDRUNNING(1 << 8),
+	/**
 	 * High risk world type.
 	 */
 	HIGH_RISK(1 << 10),
@@ -70,6 +74,10 @@ public enum WorldType
 	 * Tournament world type
 	 */
 	TOURNAMENT_WORLD(1 << 26),
+	/**
+	 * Fresh start world type
+	 */
+	FRESH_START_WORLD(1 << 27),
 	/**
 	 * Deadman world type.
 	 */

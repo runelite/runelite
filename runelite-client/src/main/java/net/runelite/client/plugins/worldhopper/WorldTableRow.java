@@ -65,6 +65,8 @@ class WorldTableRow extends JPanel
 	private static final Color FREE_WORLD = new Color(200, 200, 200);
 	private static final Color SEASONAL_WORLD = new Color(133, 177, 178);
 	private static final Color PVP_ARENA_WORLD = new Color(144, 179, 255);
+	private static final Color QUEST_SPEEDRUNNING_WORLD = new Color(94, 213, 201);
+	private static final Color FRESH_START_WORLD = new Color(255, 211, 83);
 
 	static
 	{
@@ -269,6 +271,14 @@ class WorldTableRow extends JPanel
 		else if (types.contains(WorldType.PVP_ARENA))
 		{
 			activityField.setForeground(PVP_ARENA_WORLD);
+		}
+		else if (types.contains(WorldType.QUEST_SPEEDRUNNING))
+		{
+			activityField.setForeground(QUEST_SPEEDRUNNING_WORLD);
+		}
+		else if (types.contains(WorldType.FRESH_START_WORLD))
+		{
+			activityField.setForeground(FRESH_START_WORLD);
 		}
 		else
 		{
