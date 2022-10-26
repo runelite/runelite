@@ -870,7 +870,7 @@ public class ChatMessageManager
 					{
 						// Apply configured color from game settings, if set
 						assert chatColor.isDefault();
-						int v = client.getVar(varp);
+						int v = client.getVarpValue(varp);
 						if (v != 0)
 						{
 							color = new Color(v - 1);

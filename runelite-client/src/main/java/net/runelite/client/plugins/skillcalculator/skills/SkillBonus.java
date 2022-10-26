@@ -37,9 +37,9 @@ public interface SkillBonus
 	String getName();
 
 	/**
-	 * Gets the multiplier for this skill bonus. When multiplied with the skill action XP value, it yields the amount of
-	 * additional xp granted for that action. (eg. {@code {@link SkillAction#getXp()} * (1 + {@link #getValue()}} yields
-	 * the full amount of xp gained)
+	 * Gets the multiplier for this skill bonus. When multiplied with the skill action XP value, it yields the total
+	 * amount of xp granted for that action. (eg. {@code {@link SkillAction#getXp()} * {@link #getValue()}} yields the
+	 * full amount of xp gained)
 	 *
 	 * @return The skill bonus multiplier.
 	 */

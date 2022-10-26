@@ -44,6 +44,7 @@ import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.client.hiscore.HiscoreManager;
 import net.runelite.client.game.NPCManager;
+import net.runelite.client.hiscore.HiscoreSkill;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPanel;
@@ -130,7 +131,7 @@ class OpponentInfoOverlay extends OverlayPanel
 				final HiscoreResult hiscoreResult = hiscoreManager.lookupAsync(opponentName, opponentInfoPlugin.getHiscoreEndpoint());
 				if (hiscoreResult != null)
 				{
-					final int hp = hiscoreResult.getHitpoints().getLevel();
+					final int hp = hiscoreResult.getSkill(HiscoreSkill.HITPOINTS).getLevel();
 					if (hp > 0)
 					{
 						lastMaxHealth = hp;
@@ -229,7 +230,7 @@ class OpponentInfoOverlay extends OverlayPanel
 		boolean settingEnabled = client.getVarbitValue(Varbits.BOSS_HEALTH_OVERLAY) == 0;
 		if (settingEnabled && opponent instanceof NPC)
 		{
-			int opponentId = client.getVar(VarPlayer.HP_HUD_NPC_ID);
+			int opponentId = client.getVarpValue(VarPlayer.HP_HUD_NPC_ID);
 			return opponentId != -1 && opponentId == ((NPC) opponent).getId();
 		}
 		return false;

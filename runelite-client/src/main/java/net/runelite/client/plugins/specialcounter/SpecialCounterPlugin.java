@@ -213,8 +213,12 @@ public class SpecialCounterPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		int specialPercentage = client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT);
+		if (event.getVarpId() != VarPlayer.SPECIAL_ATTACK_PERCENT.getId())
+		{
+			return;
+		}
 
+		int specialPercentage = event.getValue();
 		if (this.specialPercentage == -1 || specialPercentage >= this.specialPercentage)
 		{
 			this.specialPercentage = specialPercentage;

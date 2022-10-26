@@ -51,7 +51,10 @@ import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.EnumComposition;
+import net.runelite.api.EnumID;
 import net.runelite.api.Experience;
+import net.runelite.api.GameState;
 import net.runelite.api.IconID;
 import net.runelite.api.IndexedSprite;
 import net.runelite.api.ItemComposition;
@@ -97,7 +100,6 @@ import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.Text;
 import net.runelite.http.api.chat.Duels;
 import net.runelite.http.api.item.ItemPrice;
-import okhttp3.OkHttpClient;
 import org.apache.commons.text.WordUtils;
 
 @PluginDescriptor(
@@ -160,6 +162,7 @@ public class ChatCommandsPlugin extends Plugin
 	private double lastPb = -1;
 	private String lastTeamSize;
 	private int modIconIdx = -1;
+	private int[] pets;
 
 	@Inject
 	private Client client;
@@ -224,10 +227,20 @@ public class ChatCommandsPlugin extends Plugin
 
 		clientThread.invoke(() ->
 		{
-			if (client.getModIcons() == null)
+			// enum config must be loaded for building pet icons
+			if (client.getModIcons() == null || client.getGameState().getState() < GameState.LOGIN_SCREEN.getState())
 			{
 				return false;
 			}
+
+			// !pets requires off thread pets access, so we just store a copy at startup
+			EnumComposition petsEnum = client.getEnum(EnumID.PETS);
+			pets = new int[petsEnum.size()];
+			for (int i = 0; i < petsEnum.size(); ++i)
+			{
+				pets[i] = petsEnum.getIntValue(i);
+			}
+
 			loadPetIcons();
 			return true;
 		});
@@ -236,6 +249,7 @@ public class ChatCommandsPlugin extends Plugin
 	@Override
 	public void shutDown()
 	{
+		pets = null;
 		lastBossKill = null;
 		lastBossTime = -1;
 
@@ -263,12 +277,6 @@ public class ChatCommandsPlugin extends Plugin
 	ChatCommandsConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(ChatCommandsConfig.class);
-	}
-
-	@Provides
-	HiscoreClient provideHiscoreClient(OkHttpClient okHttpClient)
-	{
-		return new HiscoreClient(okHttpClient);
 	}
 
 	private void setKc(String boss, int killcount)
@@ -310,7 +318,6 @@ public class ChatCommandsPlugin extends Plugin
 			return;
 		}
 
-		final Pet[] pets = Pet.values();
 		final IndexedSprite[] modIcons = client.getModIcons();
 		assert modIcons != null;
 
@@ -321,9 +328,9 @@ public class ChatCommandsPlugin extends Plugin
 
 		for (int i = 0; i < pets.length; i++)
 		{
-			final Pet pet = pets[i];
+			final int petId = pets[i];
 
-			final AsyncBufferedImage abi = itemManager.getImage(pet.getIconID());
+			final AsyncBufferedImage abi = itemManager.getImage(petId);
 			final int idx = modIconIdx + i;
 			Runnable r = () ->
 			{
@@ -343,21 +350,22 @@ public class ChatCommandsPlugin extends Plugin
 	 *
 	 * @param petList The total list of owned pets for the local player
 	 */
-	private void setPetList(List<Pet> petList)
+	private void setPetList(List<Integer> petList)
 	{
 		if (petList == null)
 		{
 			return;
 		}
 
-		configManager.setRSProfileConfiguration("chatcommands", "pets",
+		configManager.setRSProfileConfiguration("chatcommands", "pets2",
 			gson.toJson(petList));
+		configManager.unsetRSProfileConfiguration("chatcommands", "pets"); // old list
 	}
 
 	/**
 	 * Looks up the list of owned pets for the local player
 	 */
-	private List<Pet> getPetList()
+	private List<Pet> getPetListOld()
 	{
 		String petListJson = configManager.getRSProfileConfiguration("chatcommands", "pets",
 			String.class);
@@ -367,6 +375,34 @@ public class ChatCommandsPlugin extends Plugin
 		{
 			// CHECKSTYLE:OFF
 			petList = gson.fromJson(petListJson, new TypeToken<List<Pet>>(){}.getType());
+			// CHECKSTYLE:ON
+		}
+		catch (JsonSyntaxException ex)
+		{
+			return Collections.emptyList();
+		}
+
+		return petList != null ? petList : Collections.emptyList();
+	}
+
+	private List<Integer> getPetList()
+	{
+		List<Pet> old = getPetListOld();
+		if (!old.isEmpty())
+		{
+			List<Integer> l = old.stream().map(Pet::getIconID).collect(Collectors.toList());
+			setPetList(l);
+			return l;
+		}
+
+		String petListJson = configManager.getRSProfileConfiguration("chatcommands", "pets2",
+			String.class);
+
+		List<Integer> petList;
+		try
+		{
+			// CHECKSTYLE:OFF
+			petList = gson.fromJson(petListJson, new TypeToken<List<Integer>>(){}.getType());
 			// CHECKSTYLE:ON
 		}
 		catch (JsonSyntaxException ex)
@@ -564,15 +600,15 @@ public class ChatCommandsPlugin extends Plugin
 		if (matcher.find())
 		{
 			String item = matcher.group(1);
-			Pet pet = Pet.findPet(item);
+			int petId = findPet(item);
 
-			if (pet != null)
+			if (petId != -1)
 			{
-				List<Pet> petList = new ArrayList<>(getPetList());
-				if (!petList.contains(pet))
+				final List<Integer> petList = new ArrayList<>(getPetList());
+				if (!petList.contains(petId))
 				{
-					log.debug("New pet added: {}", pet);
-					petList.add(pet);
+					log.debug("New pet added: {}/{}", item, petId);
+					petList.add(petId);
 					setPetList(petList);
 				}
 			}
@@ -766,16 +802,12 @@ public class ChatCommandsPlugin extends Plugin
 					Widget collectionLogEntryItems = client.getWidget(WidgetInfo.COLLECTION_LOG_ENTRY_ITEMS);
 					if (collectionLogEntryItems != null && collectionLogEntryItems.getChildren() != null)
 					{
-						List<Pet> petList = new ArrayList<>();
+						List<Integer> petList = new ArrayList<>();
 						for (Widget child : collectionLogEntryItems.getChildren())
 						{
 							if (child.getOpacity() == 0)
 							{
-								Pet pet = Pet.findPet(Text.removeTags(child.getName()));
-								if (pet != null)
-								{
-									petList.add(pet);
-								}
+								petList.add(child.getItemId());
 							}
 						}
 
@@ -1041,7 +1073,7 @@ public class ChatCommandsPlugin extends Plugin
 
 	private boolean questPointsSubmit(ChatInput chatInput, String value)
 	{
-		final int qp = client.getVar(VarPlayer.QUEST_POINTS);
+		final int qp = client.getVarpValue(VarPlayer.QUEST_POINTS);
 		final String playerName = client.getLocalPlayer().getName();
 
 		executor.execute(() ->
@@ -1276,12 +1308,12 @@ public class ChatCommandsPlugin extends Plugin
 			.append("(" + playerPetList.size() + ")");
 
 		// Append pets that the player owns
-		Pet[] pets = Pet.values();
-		for (Pet pet : pets)
+		for (int petIdx = 0; petIdx < pets.length; ++petIdx)
 		{
-			if (playerPetList.contains(pet.getIconID()))
+			final int petId = pets[petIdx];
+			if (playerPetList.contains(petId))
 			{
-				responseBuilder.append(" ").img(modIconIdx + pet.ordinal());
+				responseBuilder.append(" ").img(modIconIdx + petIdx);
 			}
 		}
 
@@ -1307,7 +1339,7 @@ public class ChatCommandsPlugin extends Plugin
 		{
 			try
 			{
-				List<Integer> petList = getPetList().stream().map(Pet::getIconID).collect(Collectors.toList());
+				List<Integer> petList = getPetList();
 				if (!petList.isEmpty())
 				{
 					chatClient.submitPetList(playerName, petList);
@@ -1483,13 +1515,13 @@ public class ChatCommandsPlugin extends Plugin
 				return;
 			}
 
-			int attack = playerStats.getAttack().getLevel();
-			int strength = playerStats.getStrength().getLevel();
-			int defence = playerStats.getDefence().getLevel();
-			int hitpoints = playerStats.getHitpoints().getLevel();
-			int ranged = playerStats.getRanged().getLevel();
-			int prayer = playerStats.getPrayer().getLevel();
-			int magic = playerStats.getMagic().getLevel();
+			int attack = playerStats.getSkill(HiscoreSkill.ATTACK).getLevel();
+			int strength = playerStats.getSkill(HiscoreSkill.STRENGTH).getLevel();
+			int defence = playerStats.getSkill(HiscoreSkill.DEFENCE).getLevel();
+			int hitpoints = playerStats.getSkill(HiscoreSkill.HITPOINTS).getLevel();
+			int ranged = playerStats.getSkill(HiscoreSkill.RANGED).getLevel();
+			int prayer = playerStats.getSkill(HiscoreSkill.PRAYER).getLevel();
+			int magic = playerStats.getSkill(HiscoreSkill.MAGIC).getLevel();
 			int combatLevel = Experience.getCombatLevel(attack, strength, defence, hitpoints, magic, ranged, prayer);
 
 			String response = new ChatMessageBuilder()
@@ -1611,19 +1643,11 @@ public class ChatCommandsPlugin extends Plugin
 			switch (minigame)
 			{
 				case BOUNTY_HUNTER_HUNTER:
-					hiscoreSkill = result.getBountyHunterHunter();
-					break;
 				case BOUNTY_HUNTER_ROGUE:
-					hiscoreSkill = result.getBountyHunterRogue();
-					break;
 				case LAST_MAN_STANDING:
-					hiscoreSkill = result.getLastManStanding();
-					break;
 				case LEAGUE_POINTS:
-					hiscoreSkill = result.getLeaguePoints();
-					break;
 				case SOUL_WARS_ZEAL:
-					hiscoreSkill = result.getSoulWarsZeal();
+					hiscoreSkill = result.getSkill(minigame);
 					break;
 				default:
 					log.warn("error looking up {} score: not implemented", minigame.getName().toLowerCase());
@@ -1700,25 +1724,25 @@ public class ChatCommandsPlugin extends Plugin
 			switch (level)
 			{
 				case "beginner":
-					hiscoreSkill = result.getClueScrollBeginner();
+					hiscoreSkill = result.getSkill(HiscoreSkill.CLUE_SCROLL_BEGINNER);
 					break;
 				case "easy":
-					hiscoreSkill = result.getClueScrollEasy();
+					hiscoreSkill = result.getSkill(HiscoreSkill.CLUE_SCROLL_EASY);
 					break;
 				case "medium":
-					hiscoreSkill = result.getClueScrollMedium();
+					hiscoreSkill = result.getSkill(HiscoreSkill.CLUE_SCROLL_MEDIUM);
 					break;
 				case "hard":
-					hiscoreSkill = result.getClueScrollHard();
+					hiscoreSkill = result.getSkill(HiscoreSkill.CLUE_SCROLL_HARD);
 					break;
 				case "elite":
-					hiscoreSkill = result.getClueScrollElite();
+					hiscoreSkill = result.getSkill(HiscoreSkill.CLUE_SCROLL_ELITE);
 					break;
 				case "master":
-					hiscoreSkill = result.getClueScrollMaster();
+					hiscoreSkill = result.getSkill(HiscoreSkill.CLUE_SCROLL_MASTER);
 					break;
 				case "total":
-					hiscoreSkill = result.getClueScrollAll();
+					hiscoreSkill = result.getSkill(HiscoreSkill.CLUE_SCROLL_ALL);
 					break;
 				default:
 					return;
@@ -1967,7 +1991,7 @@ public class ChatCommandsPlugin extends Plugin
 			case "zammy":
 			case "zamorak":
 			case "kril":
-			case "kril trutsaroth":
+			case "kril tsutsaroth":
 				return "K'ril Tsutsaroth";
 			case "arma":
 			case "kree":
@@ -2147,6 +2171,16 @@ public class ChatCommandsPlugin extends Plugin
 				return "Theatre of Blood Hard Mode 4 players";
 			case "hmt 5":
 				return "Theatre of Blood Hard Mode 5 players";
+
+			// Tombs of Amascut
+			case "toa":
+				return "Tombs of Amascut";
+			case "toa entry":
+			case "toa entry mode":
+				return "Tombs of Amascut Entry Mode";
+			case "toa expert":
+			case "toa expert mode":
+				return "Tombs of Amascut Expert Mode";
 
 			// The Gauntlet
 			case "gaunt":
@@ -2453,5 +2487,18 @@ public class ChatCommandsPlugin extends Plugin
 			Math.min(client.getVarbitValue(Varbits.THEATRE_OF_BLOOD_ORB3), 1) +
 			Math.min(client.getVarbitValue(Varbits.THEATRE_OF_BLOOD_ORB4), 1) +
 			Math.min(client.getVarbitValue(Varbits.THEATRE_OF_BLOOD_ORB5), 1);
+	}
+
+	private int findPet(String name)
+	{
+		for (int petId : pets)
+		{
+			final ItemComposition item = itemManager.getItemComposition(petId);
+			if (item.getName().equals(name))
+			{
+				return item.getId();
+			}
+		}
+		return -1;
 	}
 }

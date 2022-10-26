@@ -194,13 +194,12 @@ public class WintertodtPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{
-		int timerValue = client.getVarbitValue(Varbits.WINTERTODT_TIMER);
-		if (timerValue != previousTimerValue)
+		if (varbitChanged.getVarbitId() == Varbits.WINTERTODT_TIMER)
 		{
 			int timeToNotify = config.roundNotification();
 			if (timeToNotify > 0)
 			{
-				int timeInSeconds = timerValue * 30 / 50;
+				int timeInSeconds = varbitChanged.getValue() * 30 / 50;
 				int prevTimeInSeconds = previousTimerValue * 30 / 50;
 
 				log.debug("Seconds left until round start: {}", timeInSeconds);
@@ -211,7 +210,7 @@ public class WintertodtPlugin extends Plugin
 				}
 			}
 
-			previousTimerValue = timerValue;
+			previousTimerValue = varbitChanged.getValue();
 		}
 	}
 

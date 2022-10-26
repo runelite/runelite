@@ -137,7 +137,7 @@ public class CannonPlugin extends Plugin
 	{
 		overlayManager.add(cannonOverlay);
 		overlayManager.add(cannonSpotOverlay);
-		clientThread.invoke(() -> cballsLeft = client.getVar(VarPlayer.CANNON_AMMO));
+		clientThread.invoke(() -> cballsLeft = client.getVarpValue(VarPlayer.CANNON_AMMO));
 	}
 
 	@Override
@@ -297,9 +297,9 @@ public class CannonPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{
-		if (varbitChanged.getIndex() == VarPlayer.CANNON_AMMO.getId())
+		if (varbitChanged.getVarpId() == VarPlayer.CANNON_AMMO.getId())
 		{
-			cballsLeft = client.getVar(VarPlayer.CANNON_AMMO);
+			cballsLeft = varbitChanged.getValue();
 
 			if (config.showCannonNotifications() && !cannonBallNotificationSent && cballsLeft > 0 && config.lowWarningThreshold() >= cballsLeft)
 			{

@@ -385,8 +385,8 @@ public class XpTrackerPlugin extends Plugin
 		final int currentLevel = statChanged.getLevel();
 		final VarPlayer startGoal = startGoalVarpForSkill(skill);
 		final VarPlayer endGoal = endGoalVarpForSkill(skill);
-		final int startGoalXp = startGoal != null ? client.getVar(startGoal) : -1;
-		final int endGoalXp = endGoal != null ? client.getVar(endGoal) : -1;
+		final int startGoalXp = startGoal != null ? client.getVarpValue(startGoal) : -1;
+		final int endGoalXp = endGoal != null ? client.getVarpValue(endGoal) : -1;
 
 		if (initializeTracker)
 		{

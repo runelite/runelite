@@ -228,6 +228,13 @@ public enum VarPlayer
 	LAST_HOME_TELEPORT(892),
 
 	/**
+	 * Charge spell duration
+	 * Value * 2 = Remaining game ticks on buff
+	 * E.g. value of 50 means buff will expire in 100 ticks.
+	 */
+	CHARGE_GOD_SPELL(272),
+
+	/**
 	 * The difference, measured in minutes, between the time minigame teleport was last used and midnight, January 1, 1970 UTC.
 	 */
 	LAST_MINIGAME_TELEPORT(888),

@@ -253,12 +253,10 @@ public class RaidsPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		int tempPartyID = client.getVar(VarPlayer.IN_RAID_PARTY);
-		boolean tempInRaid = client.getVarbitValue(Varbits.IN_RAID) == 1;
-
 		// if the player's party state has changed
-		if (tempPartyID != raidPartyID)
+		if (event.getVarpId() == VarPlayer.IN_RAID_PARTY.getId())
 		{
+			boolean tempInRaid = client.getVarbitValue(Varbits.IN_RAID) == 1;
 			// if the player is outside of a raid when the party state changed
 			if (loggedIn
 				&& !tempInRaid)
@@ -266,12 +264,13 @@ public class RaidsPlugin extends Plugin
 				reset();
 			}
 
-			raidPartyID = tempPartyID;
+			raidPartyID = event.getValue();
 		}
 
 		// if the player's raid state has changed
-		if (tempInRaid != inRaidChambers)
+		if (event.getVarbitId() == Varbits.IN_RAID)
 		{
+			boolean tempInRaid = event.getValue() == 1;
 			// if the player is inside of a raid then check the raid
 			if (tempInRaid && loggedIn)
 			{

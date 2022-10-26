@@ -772,7 +772,7 @@ LABEL660:
    invoke                 199
    istore                 7
    jump                   LABEL1406
-LABEL685:
+LABEL685: ; case ^chattype_clanchat
    iconst                 1
    activeclansettings_find_affined
    iconst                 1
@@ -843,7 +843,11 @@ LABEL742:
 LABEL747:
    sload                  16
    removetags            
+   ; replace activeclanchannel_getuserslot with activeclansettings_getaffinedslot
+   jump L1
    activeclanchannel_getuserslot
+L1:
+   activeclansettings_getaffinedslot
    istore                 17
    iload                  17
    iconst                 -1
@@ -851,7 +855,11 @@ LABEL747:
    jump                   LABEL834
 LABEL755:
    iload                  17
+   ; replace activeclanchannel_getuserrank with activeclansettings_getaffinedrank
+   jump L2
    activeclanchannel_getuserrank
+L2:
+   activeclansettings_getaffinedrank
    invoke                 4302
    istore                 16
    sstore                 20
@@ -1006,7 +1014,7 @@ LABEL871:
    istore                 7
 LABEL903:
    jump                   LABEL1406
-LABEL904:
+LABEL904: ; case ^chattype_clanguestchat
    activeclansettings_find_listened
    iconst                 1
    if_icmpeq              LABEL908
@@ -1019,7 +1027,11 @@ LABEL908:
 LABEL912:
    sload                  16
    removetags            
+   ; replace activeclanchannel_getuserslot with activeclansettings_getaffinedslot
+   jump L3
    activeclanchannel_getuserslot
+L3:
+   activeclansettings_getaffinedslot
    istore                 17
    iload                  17
    iconst                 -1
@@ -1027,7 +1039,11 @@ LABEL912:
    jump                   LABEL999
 LABEL920:
    iload                  17
+   ; replace activeclanchannel_getuserrank with activeclansettings_getaffinedrank
+   jump L4
    activeclanchannel_getuserrank
+L4:
+   activeclansettings_getaffinedrank
    invoke                 4302
    istore                 16
    sstore                 20

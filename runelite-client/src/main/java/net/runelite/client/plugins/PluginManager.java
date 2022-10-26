@@ -262,6 +262,11 @@ public class PluginManager
 			loaded++;
 			SplashScreen.stage(.80, 1, null, "Starting plugins", loaded, scannedPlugins.size(), false);
 		}
+
+		for (Plugin plugin : plugins)
+		{
+			ReflectUtil.queueInjectorAnnotationCacheInvalidation(plugin.injector);
+		}
 	}
 
 	public void loadCorePlugins() throws IOException, PluginInstantiationException

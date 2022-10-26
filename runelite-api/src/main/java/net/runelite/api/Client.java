@@ -36,7 +36,6 @@ import net.runelite.api.annotations.VarCInt;
 import net.runelite.api.annotations.VarCStr;
 import net.runelite.api.annotations.Varbit;
 import net.runelite.api.annotations.VisibleForDevtools;
-import net.runelite.api.annotations.VisibleForExternalPlugins;
 import net.runelite.api.clan.ClanChannel;
 import net.runelite.api.clan.ClanID;
 import net.runelite.api.clan.ClanSettings;
@@ -365,6 +364,13 @@ public interface Client extends OAuthApi, GameEngine
 	 * @return the plane
 	 */
 	int getPlane();
+
+	/**
+	 * Get the max plane being rendered on the scene. This is usually the max plane, 3, unless roofs are hidden,
+	 * where it will be the current plane.
+	 * @return
+	 */
+	int getSceneMaxPlane();
 
 	/**
 	 * Gets the current scene
@@ -795,19 +801,18 @@ public interface Client extends OAuthApi, GameEngine
 	 *
 	 * @param varPlayer the player variable
 	 * @return the value
+	 * @see Client#getVarpValue(VarPlayer)
 	 */
+	@Deprecated
 	int getVar(VarPlayer varPlayer);
 
 	/**
 	 * Gets the value corresponding to the passed player variable.
-	 * This returns the server's idea of the value, not the client's. This is
-	 * specifically the last value set by the server regardless of changes to
-	 * the var by the client.
 	 *
 	 * @param varPlayer the player variable
 	 * @return the value
 	 */
-	int getServerVar(VarPlayer varPlayer);
+	int getVarpValue(VarPlayer varPlayer);
 
 	/**
 	 * Gets a value corresponding to the passed varbit.
@@ -843,7 +848,6 @@ public interface Client extends OAuthApi, GameEngine
 	 * @param varpId the VarPlayer id
 	 * @return the value
 	 */
-	@VisibleForExternalPlugins
 	int getVarpValue(int varpId);
 
 	/**
@@ -855,7 +859,6 @@ public interface Client extends OAuthApi, GameEngine
 	 * @param varpId the VarPlayer id
 	 * @return the value
 	 */
-	@VisibleForExternalPlugins
 	int getServerVarpValue(int varpId);
 
 	/**

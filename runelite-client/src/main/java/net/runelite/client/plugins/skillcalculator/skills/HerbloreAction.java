@@ -27,6 +27,7 @@ package net.runelite.client.plugins.skillcalculator.skills;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.ItemID;
+import net.runelite.client.game.ItemManager;
 
 @AllArgsConstructor
 @Getter
@@ -78,6 +79,7 @@ public enum HerbloreAction implements ItemSkillAction
 	DIVINE_SUPER_DEFENCE_POTION_4(ItemID.DIVINE_SUPER_DEFENCE_POTION4, 70, 2),
 	DIVINE_SUPER_STRENGTH_POTION_4(ItemID.DIVINE_SUPER_STRENGTH_POTION4, 70, 2),
 	DWARF_WEED(ItemID.DWARF_WEED, 70, 13.8f),
+	MENAPHITE_REMEDY_3(ItemID.MENAPHITE_REMEDY3, 71, 150),
 	RANGING_POTION_3(ItemID.RANGING_POTION3, 72, 162.5f),
 	WEAPON_POISON_PLUS(ItemID.WEAPON_POISON_5937, 73, 165),
 	DIVINE_RANGING_POTION_4(ItemID.DIVINE_RANGING_POTION4, 74, 2),
@@ -110,4 +112,10 @@ public enum HerbloreAction implements ItemSkillAction
 	private final int itemId;
 	private final int level;
 	private final float xp;
+
+	@Override
+	public boolean isMembers(final ItemManager itemManager)
+	{
+		return true;
+	}
 }

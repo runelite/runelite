@@ -109,7 +109,7 @@ enum SlayerUnlock
 	public boolean isOwned(Client client)
 	{
 		VarPlayer varp = ordinal() > 32 ? VarPlayer.SLAYER_UNLOCK_2 : VarPlayer.SLAYER_UNLOCK_1;
-		return (client.getVar(varp) & (1 << (ordinal() % 32))) != 0;
+		return (client.getVarpValue(varp) & (1 << (ordinal() % 32))) != 0;
 	}
 
 	/**
