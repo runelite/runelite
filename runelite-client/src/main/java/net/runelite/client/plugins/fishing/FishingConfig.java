@@ -196,8 +196,8 @@ public interface FishingConfig extends Config
 	@ConfigItem(
 		position = 13,
 		keyName = "onlyEquippedFor",
-		name = "Display only spots you're equipped for",
-		description = "Configures whether only tiles relevant to your fishing gear are displayed."
+		name = "Only highlight spots you're equipped for",
+		description = "Only fishing spots which your gear can catch are highlighted."
 	)
 	default boolean onlyEquippedFor()
 	{

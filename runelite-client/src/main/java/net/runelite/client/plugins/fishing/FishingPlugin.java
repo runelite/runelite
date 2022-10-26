@@ -104,7 +104,7 @@ public class FishingPlugin extends Plugin
 	private FishingSpot currentSpot;
 
 	@Getter
-	private Set<FishingTool> usableGear;
+	private final Set<FishingTool> usableGear = EnumSet.noneOf(FishingTool.class);
 
 	@Inject
 	private Client client;
@@ -188,7 +188,8 @@ public class FishingPlugin extends Plugin
 			return;
 		}
 
-		boolean playerCanFish = canPlayerFish(client.getItemContainer(InventoryID.INVENTORY),
+		boolean playerCanFish = canPlayerFish(
+			client.getItemContainer(InventoryID.INVENTORY),
 			client.getItemContainer(InventoryID.EQUIPMENT));
 
 		final boolean showOverlays = session.getLastFishCaught() != null || playerCanFish;
@@ -264,7 +265,7 @@ public class FishingPlugin extends Plugin
 		currentSpot = spot;
 	}
 
-	private boolean canPlayerFish(final ItemContainer... itemContainer)
+	private static boolean canPlayerFish(final ItemContainer... itemContainer)
 	{
 		for (ItemContainer container : itemContainer)
 		{

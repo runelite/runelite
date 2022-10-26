@@ -106,7 +106,7 @@ class FishingSpotOverlay extends Overlay
 				continue;
 			}
 
-			if (config.onlyEquippedFor() && !spot.isEquippedToFish(plugin.getUsableGear()))
+			if (!spot.isEquippedToFish(plugin.getUsableGear()) && config.onlyEquippedFor())
 			{
 				continue;
 			}
