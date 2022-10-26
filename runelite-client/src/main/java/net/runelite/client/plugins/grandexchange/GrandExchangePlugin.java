@@ -466,6 +466,10 @@ public class GrandExchangePlugin extends Plugin
 		{
 			return WorldType.DEADMAN;
 		}
+		else if (worldTypes.contains(net.runelite.api.WorldType.FRESH_START_WORLD))
+		{
+			return WorldType.FRESH_START_WORLD;
+		}
 		else
 		{
 			return null;
@@ -809,7 +813,7 @@ public class GrandExchangePlugin extends Plugin
 
 	private String setExamineText(String examine, String fee, boolean buy)
 	{
-		final int itemId = client.getVar(VarPlayer.CURRENT_GE_ITEM);
+		final int itemId = client.getVarpValue(VarPlayer.CURRENT_GE_ITEM);
 		StringBuilder sb = new StringBuilder();
 
 		if (buy && config.enableGELimits())

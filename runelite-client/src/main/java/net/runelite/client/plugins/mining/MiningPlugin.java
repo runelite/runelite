@@ -39,7 +39,7 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
-import static net.runelite.api.HintArrowType.WORLD_POSITION;
+import net.runelite.api.HintArrowType;
 import net.runelite.api.MenuAction;
 import static net.runelite.api.ObjectID.DEPLETED_VEIN;
 import static net.runelite.api.ObjectID.DEPLETED_VEIN_26665;
@@ -288,7 +288,7 @@ public class MiningPlugin extends Plugin
 
 	private void clearHintArrowAt(WorldPoint worldPoint)
 	{
-		if (client.getHintArrowType() == WORLD_POSITION && client.getHintArrowPoint().equals(worldPoint))
+		if (client.getHintArrowType() == HintArrowType.COORDINATE && client.getHintArrowPoint().equals(worldPoint))
 		{
 			client.clearHintArrow();
 		}

@@ -295,6 +295,10 @@ public enum MenuAction
 	 * Menu action for InfoBox menu entries
 	 */
 	RUNELITE_INFOBOX(1504),
+	/**
+	 * Parent menu of submenus
+	 */
+	RUNELITE_SUBMENU(1505),
 
 	/**
 	 * Menu action triggered when the id is not defined in this class.

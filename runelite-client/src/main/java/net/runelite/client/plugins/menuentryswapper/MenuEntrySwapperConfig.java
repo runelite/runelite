@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.menuentryswapper;
 
-import lombok.RequiredArgsConstructor;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -261,39 +260,6 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "swapBattlestaves",
-		name = "Battlestaff",
-		description = "Swap Wield with Use on Battlestaves without orbs",
-		section = itemSection
-	)
-	default boolean swapBattlestaves()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		keyName = "swapPrayerBook",
-		name = "Recite-Prayer",
-		description = "Swap Read with Recite-prayer on the Prayer Book from The Great Brain Robbery quest",
-		section = itemSection
-	)
-	default boolean swapPrayerBook()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		keyName = "swapContract",
-		name = "Contract",
-		description = "Swap Talk-to with Contract on Guildmaster Jane",
-		section = npcSection
-	)
-	default boolean swapContract()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "swapChase",
 		name = "Chase",
 		description = "Allows to left click your cat to chase",
@@ -302,50 +268,6 @@ public interface MenuEntrySwapperConfig extends Config
 	default boolean swapChase()
 	{
 		return true;
-	}
-
-	@ConfigItem(
-		keyName = "claimSlime",
-		name = "Claim Slime",
-		description = "Swap Talk-to with Claim Slime from Morytania diaries",
-		section = npcSection
-	)
-	default boolean claimSlime()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "swapDarkMage",
-		name = "Repairs",
-		description = "Swap Talk-to with Repairs for Dark Mage",
-		section = npcSection
-	)
-	default boolean swapDarkMage()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "swapCaptainKhaled",
-		name = "Task",
-		description = "Swap Talk-to with Task for Captain Khaled in Port Piscarilius",
-		section = npcSection
-	)
-	default boolean swapCaptainKhaled()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		keyName = "swapDecant",
-		name = "Decant",
-		description = "Swap Talk-to with Decant for Bob Barter and Murky Matt at the Grand Exchange.",
-		section = npcSection
-	)
-	default boolean swapDecant()
-	{
-		return false;
 	}
 
 	@ConfigItem(
@@ -368,28 +290,6 @@ public interface MenuEntrySwapperConfig extends Config
 	default FairyRingMode swapFairyRing()
 	{
 		return FairyRingMode.LAST_DESTINATION;
-	}
-
-	@ConfigItem(
-		keyName = "swapHardWoodGrove",
-		name = "Hardwood Grove Quick-Pay",
-		description = "Swap Quick-Pay(100) at the Hardwood Grove",
-		section = objectSection
-	)
-	default boolean swapHardWoodGrove()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "swapHardWoodGroveParcel",
-		name = "Hardwood Grove Send-Parcel",
-		description = "Swap Send-Parcel at the Hardwood Grove",
-		section = npcSection
-	)
-	default boolean swapHardWoodGroveParcel()
-	{
-		return true;
 	}
 
 	@ConfigItem(
@@ -434,17 +334,6 @@ public interface MenuEntrySwapperConfig extends Config
 	default HouseMode swapHomePortal()
 	{
 		return HouseMode.HOME;
-	}
-
-	@ConfigItem(
-		keyName = "swapHouseAdvertisement",
-		name = "House Advertisement",
-		description = "Swap View with Add-House or Visit-Last on House Advertisement board",
-		section = objectSection
-	)
-	default HouseAdvertisementMode swapHouseAdvertisement()
-	{
-		return HouseAdvertisementMode.VIEW;
 	}
 
 	@ConfigItem(
@@ -635,78 +524,6 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "swapEnchant",
-		name = "Enchant",
-		description = "Swap Talk-to with Enchant for Eluned",
-		section = npcSection
-	)
-	default boolean swapEnchant()
-	{
-		return true;
-	}
-
-	@RequiredArgsConstructor
-	enum HouseTeleportMode
-	{
-		CAST("Cast"),
-		OUTSIDE("Outside"),
-		GROUP_CHOOSE("Group: Choose"),
-		GROUP_PREVIOUS("Group: Previous");
-
-		private final String name;
-
-		@Override
-		public String toString()
-		{
-			return name;
-		}
-	}
-
-	@ConfigItem(
-		keyName = "swapHouseTeleportSpell",
-		name = "House teleport",
-		description = "Swap house teleport spell to a different destination on shift",
-		section = uiSection
-	)
-	default HouseTeleportMode swapHouseTeleportSpell()
-	{
-		return HouseTeleportMode.OUTSIDE;
-	}
-
-	@ConfigItem(
-		keyName = "swapTeleportSpell",
-		name = "Shift-click teleport spells",
-		description = "Swap teleport spells that have a second destination, except for teleport to house, on shift",
-		section = uiSection
-	)
-	default boolean swapTeleportSpell()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		keyName = "swapStartMinigame",
-		name = "Pyramid Plunder Start-minigame",
-		description = "Swap Talk-to with Start-minigame at the Guardian Mummy",
-		section = npcSection
-	)
-	default boolean swapStartMinigame()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "swapQuickleave",
-		name = "Quick-Leave",
-		description = "Swap Leave Tomb with Quick-Leave at Pyramid Plunder",
-		section = objectSection
-	)
-	default boolean swapQuickLeave()
-	{
-		return false;
-	}
-
-	@ConfigItem(
 		keyName = "swapGEItemCollect",
 		name = "GE Item Collect",
 		description = "Swap Collect-notes, Collect-items, or Bank options from GE offer",
@@ -729,21 +546,10 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "swapNpcContact",
-		name = "NPC Contact",
-		description = "Swap NPC Contact with last contacted NPC when shift-clicking",
-		section = uiSection
-	)
-	default boolean swapNpcContact()
-	{
-		return false;
-	}
-
-	@ConfigItem(
 		keyName = "bankWithdrawShiftClick",
 		name = "Bank Withdraw Shift-Click",
 		description = "Swaps the behavior of shift-click when withdrawing from bank.",
-		section = itemSection
+		section = uiSection
 	)
 	default ShiftWithdrawMode bankWithdrawShiftClick()
 	{
@@ -754,7 +560,7 @@ public interface MenuEntrySwapperConfig extends Config
 		keyName = "bankDepositShiftClick",
 		name = "Bank Deposit Shift-Click",
 		description = "Swaps the behavior of shift-click when depositing to bank.",
-		section = itemSection
+		section = uiSection
 	)
 	default ShiftDepositMode bankDepositShiftClick()
 	{
@@ -795,28 +601,6 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "swapNets",
-		name = "Nets",
-		description = "Swap Talk-to with Nets on Annette",
-		section = npcSection
-	)
-	default boolean swapNets()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "swapGauntlet",
-		name = "Corrupted Gauntlet",
-		description = "Swap Enter with Enter-corrupted when entering The Gauntlet",
-		section = objectSection
-	)
-	default boolean swapGauntlet()
-	{
-		return false;
-	}
-
-	@ConfigItem(
 		keyName = "swapTan",
 		name = "Tan",
 		description = "Swap Tan 1 with Tan All",
@@ -828,45 +612,12 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "swapCollectMiscellania",
-		name = "Miscellania",
-		description = "Swap Talk-to with Collect for Advisor Ghrim",
-		section = npcSection
-	)
-	default boolean swapCollectMiscellania()
-	{
-		return false;
-	}
-
-	@ConfigItem(
 		keyName = "swapDepositItems",
 		name = "Deposit Items",
 		description = "Swap Talk-to with Deposit-items",
 		section = npcSection
 	)
 	default boolean swapDepositItems()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		keyName = "swapRockCake",
-		name = "Dwarven rock cake",
-		description = "Swap Eat with Guzzle on the Dwarven rock cake",
-		section = itemSection
-	)
-	default boolean swapRockCake()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		keyName = "swapRowboatDive",
-		name = "Fossil Island Rowboat Dive",
-		description = "Swap Travel with Dive on the rowboat found on the small island north-east of Fossil Island",
-		section = objectSection
-	)
-	default boolean swapRowboatDive()
 	{
 		return false;
 	}

@@ -43,7 +43,6 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.FormBody;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -145,7 +144,8 @@ public class XpUpdaterPlugin extends Plugin
 		if (config.cml()
 			&& !worldTypes.contains(WorldType.SEASONAL)
 			&& !worldTypes.contains(WorldType.DEADMAN)
-			&& !worldTypes.contains(WorldType.NOSAVE_MODE))
+			&& !worldTypes.contains(WorldType.NOSAVE_MODE)
+			&& !worldTypes.contains(WorldType.FRESH_START_WORLD))
 		{
 			HttpUrl url = new HttpUrl.Builder()
 				.scheme("https")
@@ -172,18 +172,22 @@ public class XpUpdaterPlugin extends Plugin
 			&& !worldTypes.contains(WorldType.DEADMAN)
 			&& !worldTypes.contains(WorldType.NOSAVE_MODE))
 		{
-			HttpUrl url = new HttpUrl.Builder()
+			HttpUrl.Builder url = new HttpUrl.Builder()
 				.scheme("https")
 				.host("templeosrs.com")
 				.addPathSegment("php")
 				.addPathSegment("add_datapoint.php")
 				.addQueryParameter("player", username)
-				.addQueryParameter("accountHash", Long.toString(accountHash))
-				.build();
+				.addQueryParameter("accountHash", Long.toString(accountHash));
+
+			if (worldTypes.contains(WorldType.FRESH_START_WORLD))
+			{
+				url.addQueryParameter("worldType", "fsw");
+			}
 
 			Request request = new Request.Builder()
 				.header("User-Agent", "RuneLite")
-				.url(url)
+				.url(url.build())
 				.build();
 
 			sendRequest("TempleOSRS", request);
@@ -196,23 +200,20 @@ public class XpUpdaterPlugin extends Plugin
 			&& !worldTypes.contains(WorldType.DEADMAN)
 			&& !worldTypes.contains(WorldType.NOSAVE_MODE))
 		{
-			String host = worldTypes.contains(WorldType.SEASONAL) ? "seasonal.wiseoldman.net" : "wiseoldman.net";
 			HttpUrl url = new HttpUrl.Builder()
 				.scheme("https")
-				.host(host)
-				.addPathSegment("api")
+				.host(
+					worldTypes.contains(WorldType.SEASONAL) ? "seasonal.api.wiseoldman.net" :
+						"api.wiseoldman.net")
+				.addPathSegment("v2")
 				.addPathSegment("players")
-				.addPathSegment("track")
-				.build();
-
-			RequestBody formBody = new FormBody.Builder()
-				.add("username", username)
+				.addPathSegment(username)
 				.build();
 
 			Request request = new Request.Builder()
 				.header("User-Agent", "RuneLite")
 				.url(url)
-				.post(formBody)
+				.post(RequestBody.create(null, new byte[0]))
 				.build();
 
 			sendRequest("Wise Old Man", request);

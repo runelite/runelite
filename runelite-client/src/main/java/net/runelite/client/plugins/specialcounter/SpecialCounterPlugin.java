@@ -213,8 +213,12 @@ public class SpecialCounterPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		int specialPercentage = client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT);
+		if (event.getVarpId() != VarPlayer.SPECIAL_ATTACK_PERCENT.getId())
+		{
+			return;
+		}
 
+		int specialPercentage = event.getValue();
 		if (this.specialPercentage == -1 || specialPercentage >= this.specialPercentage)
 		{
 			this.specialPercentage = specialPercentage;
@@ -295,7 +299,7 @@ public class SpecialCounterPlugin extends Plugin
 			updateCounter(specialWeapon, null, hit);
 		}
 
-		if (!party.getMembers().isEmpty())
+		if (party.isInParty())
 		{
 			final int npcIndex = target.getIndex();
 			final SpecialCounterUpdate specialCounterUpdate = new SpecialCounterUpdate(npcIndex, specialWeapon, hit, client.getWorld(), localPlayerId);
@@ -411,7 +415,7 @@ public class SpecialCounterPlugin extends Plugin
 
 		// If in a party, add hit to partySpecs for the infobox tooltip
 		Map<String, Integer> partySpecs = counter.getPartySpecs();
-		if (!party.getMembers().isEmpty())
+		if (party.isInParty())
 		{
 			if (partySpecs.containsKey(name))
 			{

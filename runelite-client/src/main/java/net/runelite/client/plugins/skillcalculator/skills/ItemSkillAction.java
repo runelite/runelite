@@ -64,4 +64,10 @@ public interface ItemSkillAction extends SkillAction
 	{
 		return itemManager.getItemComposition(getItemId()).getMembersName();
 	}
+
+	@Override
+	default boolean isMembers(final ItemManager itemManager)
+	{
+		return itemManager.getItemComposition(getItemId()).isMembers();
+	}
 }

@@ -249,6 +249,7 @@ public class ItemStatChanges
 		final Effect superEnergyPot = heal(RUN_ENERGY, 20);
 		final Effect superRestorePot = new SuperRestore(.25, 8);
 		final Effect staminaPot = new StaminaPotion();
+		final DeltaPercentage remedyHeal = perc(0.16, 6);
 		add(restorePot, RESTORE_POTION1, RESTORE_POTION2, RESTORE_POTION3, RESTORE_POTION4);
 		add(energyPot, ENERGY_POTION1, ENERGY_POTION2, ENERGY_POTION3, ENERGY_POTION4);
 		add(prayerPot, PRAYER_POTION1, PRAYER_POTION2, PRAYER_POTION3, PRAYER_POTION4);
@@ -258,6 +259,7 @@ public class ItemStatChanges
 			SUPER_RESTORE4_23567, SUPER_RESTORE3_23569, SUPER_RESTORE2_23571, SUPER_RESTORE1_23573 /* LMS */);
 		add(new SuperRestore(.30, 4), SANFEW_SERUM1, SANFEW_SERUM2, SANFEW_SERUM3, SANFEW_SERUM4,
 			SANFEW_SERUM4_23559, SANFEW_SERUM3_23561, SANFEW_SERUM2_23563, SANFEW_SERUM1_23565 /* LMS */);
+		add(combo(heal(ATTACK, remedyHeal), heal(STRENGTH, remedyHeal), heal(DEFENCE, remedyHeal), heal(RANGED, remedyHeal), heal(MAGIC, remedyHeal)), MENAPHITE_REMEDY1, MENAPHITE_REMEDY2, MENAPHITE_REMEDY3, MENAPHITE_REMEDY4);
 		add(staminaPot, STAMINA_POTION1, STAMINA_POTION2, STAMINA_POTION3, STAMINA_POTION4);
 
 		// Mixed recovery potions

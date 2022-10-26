@@ -96,7 +96,11 @@ public enum InventoryID
 	/**
 	 * Wilderness loot chest
 	 */
-	WILDERNESS_LOOT_CHEST(797);
+	WILDERNESS_LOOT_CHEST(797),
+	/**
+	 * TOA reward chest
+	 */
+	TOA_REWARD_CHEST(811);
 
 	private final int id;
 

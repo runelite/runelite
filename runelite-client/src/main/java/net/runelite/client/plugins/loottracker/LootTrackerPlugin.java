@@ -78,6 +78,7 @@ import net.runelite.api.ObjectID;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.SpriteID;
+import net.runelite.api.Varbits;
 import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
@@ -262,7 +263,6 @@ public class LootTrackerPlugin extends Plugin
 
 	// Guardians of the Rift
 	private static final String GUARDIANS_OF_THE_RIFT_EVENT = "Guardians of the Rift";
-	private static final String INTRICATE_POUCH_EVENT = "Intricate pouch";
 	private static final String GUARDIANS_OF_THE_RIFT_LOOT_STRING = "You found some loot: ";
 	private static final int GUARDIANS_OF_THE_RIFT_REGION = 14484;
 
@@ -285,6 +285,11 @@ public class LootTrackerPlugin extends Plugin
 		ItemID.LUCKY_IMPLING_JAR
 	);
 	private static final String IMPLING_CATCH_MESSAGE = "You manage to catch the impling and acquire some loot.";
+
+	// Raids
+	private static final String CHAMBERS_OF_XERIC = "Chambers of Xeric";
+	private static final String THEATRE_OF_BLOOD = "Theatre of Blood";
+	private static final String TOMBS_OF_AMASCUT = "Tombs of Amascut";
 
 	private static final Set<Character> VOWELS = ImmutableSet.of('a', 'e', 'i', 'o', 'u');
 
@@ -670,7 +675,7 @@ public class LootTrackerPlugin extends Plugin
 				{
 					return;
 				}
-				event = "Chambers of Xeric";
+				event = CHAMBERS_OF_XERIC;
 				container = client.getItemContainer(InventoryID.CHAMBERS_OF_XERIC_CHEST);
 				chestLooted = true;
 				break;
@@ -684,8 +689,30 @@ public class LootTrackerPlugin extends Plugin
 				{
 					return;
 				}
-				event = "Theatre of Blood";
+				event = THEATRE_OF_BLOOD;
 				container = client.getItemContainer(InventoryID.THEATRE_OF_BLOOD_CHEST);
+				chestLooted = true;
+				break;
+			case WidgetID.TOA_REWARD_GROUP_ID:
+				if (chestLooted)
+				{
+					return;
+				}
+
+				int raidLevel = client.getVarbitValue(Varbits.TOA_RAID_LEVEL);
+				int teamSize =
+					Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_0_HEALTH), 1) +
+					Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_1_HEALTH), 1) +
+					Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_2_HEALTH), 1) +
+					Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_3_HEALTH), 1) +
+					Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_4_HEALTH), 1) +
+					Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_5_HEALTH), 1) +
+					Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_6_HEALTH), 1) +
+					Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_7_HEALTH), 1);
+				int raidDamage = client.getVarbitValue(Varbits.TOA_RAID_DAMAGE);
+				event = TOMBS_OF_AMASCUT;
+				container = client.getItemContainer(InventoryID.TOA_REWARD_CHEST);
+				metadata = new int[]{ raidLevel, teamSize, raidDamage };
 				chestLooted = true;
 				break;
 			case (WidgetID.KINGDOM_GROUP_ID):
@@ -726,7 +753,7 @@ public class LootTrackerPlugin extends Plugin
 			.map(item -> new ItemStack(item.getId(), item.getQuantity(), client.getLocalPlayer().getLocalLocation()))
 			.collect(Collectors.toList());
 
-		if (config.showRaidsLootValue() && (event.equals("Theatre of Blood") || event.equals("Chambers of Xeric")))
+		if (config.showRaidsLootValue() && (event.equals(THEATRE_OF_BLOOD) || event.equals(CHAMBERS_OF_XERIC)) || event.equals(TOMBS_OF_AMASCUT))
 		{
 			long totalValue = items.stream()
 				.filter(item -> item.getId() > -1)
@@ -994,12 +1021,11 @@ public class LootTrackerPlugin extends Plugin
 					case ItemID.CASKET_25590:
 						onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, TEMPOROSS_CASKET_EVENT));
 						break;
-					case ItemID.INTRICATE_POUCH:
-						onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, INTRICATE_POUCH_EVENT));
-						break;
 					case ItemID.SIMPLE_LOCKBOX_25647:
 					case ItemID.ELABORATE_LOCKBOX_25649:
 					case ItemID.ORNATE_LOCKBOX_25651:
+					case ItemID.CACHE_OF_RUNES:
+					case ItemID.INTRICATE_POUCH:
 						onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, itemManager.getItemComposition(event.getItemId()).getName()));
 						break;
 					case ItemID.SUPPLY_CRATE_24884:

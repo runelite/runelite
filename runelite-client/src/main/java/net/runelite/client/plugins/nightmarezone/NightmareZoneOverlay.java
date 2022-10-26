@@ -94,7 +94,7 @@ class NightmareZoneOverlay extends OverlayPanel
 		renderAbsorptionCounter();
 
 		final int currentPoints = client.getVarbitValue(Varbits.NMZ_POINTS);
-		final int totalPoints = currentPoints + client.getVar(VarPlayer.NMZ_REWARD_POINTS);
+		final int totalPoints = currentPoints + client.getVarpValue(VarPlayer.NMZ_REWARD_POINTS);
 
 		panelComponent.getChildren().add(LineComponent.builder()
 			.left("Points: ")

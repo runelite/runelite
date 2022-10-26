@@ -27,6 +27,7 @@ package net.runelite.client;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.MoreObjects;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
@@ -79,6 +80,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.WidgetOverlay;
 import net.runelite.client.ui.overlay.tooltip.TooltipOverlay;
 import net.runelite.client.ui.overlay.worldmap.WorldMapOverlay;
+import net.runelite.client.util.ReflectUtil;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
@@ -150,6 +152,10 @@ public class RuneLite
 	@Nullable
 	private RuntimeConfig runtimeConfig;
 
+	@Inject
+	@Nullable
+	private TelemetryClient telemetryClient;
+
 	public static void main(String[] args) throws Exception
 	{
 		Locale.setDefault(Locale.ENGLISH);
@@ -162,6 +168,7 @@ public class RuneLite
 		parser.accepts("jav_config", "jav_config url")
 			.withRequiredArg()
 			.defaultsTo(RuneLiteProperties.getJavConfig());
+		parser.accepts("disable-telemetry", "Disable telemetry");
 
 		final ArgumentAcceptingOptionSpec<File> sessionfile = parser.accepts("sessionfile", "Use a specified session file")
 			.withRequiredArg()
@@ -248,25 +255,29 @@ public class RuneLite
 			PROFILES_DIR.mkdirs();
 
 			log.info("RuneLite {} (launcher version {}) starting up, args: {}",
-				RuneLiteProperties.getVersion(), RuneLiteProperties.getLauncherVersion() == null ? "unknown" : RuneLiteProperties.getLauncherVersion(),
+				RuneLiteProperties.getVersion(), MoreObjects.firstNonNull(RuneLiteProperties.getLauncherVersion(), "unknown"),
 				args.length == 0 ? "none" : String.join(" ", args));
 
-			final long start = System.currentTimeMillis();
+			final RuntimeMXBean runtime = ManagementFactory.getRuntimeMXBean();
+			// This includes arguments from _JAVA_OPTIONS, which are parsed after command line flags and applied to
+			// the global VM args
+			log.info("Java VM arguments: {}", String.join(" ", runtime.getInputArguments()));
 
+			final long start = System.currentTimeMillis();
 			injector = Guice.createInjector(new RuneLiteModule(
 				okHttpClient,
 				clientLoader,
 				runtimeConfigLoader,
 				developerMode,
 				options.has("safe-mode"),
+				options.has("disable-telemetry"),
 				options.valueOf(sessionfile),
 				options.valueOf(configfile)));
 
 			injector.getInstance(RuneLite.class).start();
 
 			final long end = System.currentTimeMillis();
-			final RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();
-			final long uptime = rb.getUptime();
+			final long uptime = runtime.getUptime();
 			log.info("Client initialization took {}ms. Uptime: {}ms", end - start, uptime);
 		}
 		catch (Exception e)
@@ -376,6 +387,14 @@ public class RuneLite
 		SplashScreen.stop();
 
 		clientUI.show();
+
+		if (telemetryClient != null)
+		{
+			telemetryClient.submitTelemetry();
+		}
+
+		ReflectUtil.queueInjectorAnnotationCacheInvalidation(injector);
+		ReflectUtil.invalidateAnnotationCaches();
 	}
 
 	@VisibleForTesting

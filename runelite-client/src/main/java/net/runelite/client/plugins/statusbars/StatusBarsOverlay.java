@@ -123,7 +123,7 @@ class StatusBarsOverlay extends Overlay
 			() -> getRestoreValue(Skill.HITPOINTS.getName()),
 			() ->
 			{
-				final int poisonState = client.getVar(VarPlayer.IS_POISONED);
+				final int poisonState = client.getVarpValue(VarPlayer.IS_POISONED);
 
 				if (poisonState >= 1000000)
 				{
@@ -135,7 +135,7 @@ class StatusBarsOverlay extends Overlay
 					return POISONED_COLOR;
 				}
 
-				if (client.getVar(VarPlayer.DISEASE_VALUE) > 0)
+				if (client.getVarpValue(VarPlayer.DISEASE_VALUE) > 0)
 				{
 					return DISEASE_COLOR;
 				}
@@ -150,7 +150,7 @@ class StatusBarsOverlay extends Overlay
 			() -> HEAL_COLOR,
 			() ->
 			{
-				final int poisonState = client.getVar(VarPlayer.IS_POISONED);
+				final int poisonState = client.getVarpValue(VarPlayer.IS_POISONED);
 
 				if (poisonState > 0 && poisonState < 50)
 				{
@@ -162,7 +162,7 @@ class StatusBarsOverlay extends Overlay
 					return heartVenom;
 				}
 
-				if (client.getVar(VarPlayer.DISEASE_VALUE) > 0)
+				if (client.getVarpValue(VarPlayer.DISEASE_VALUE) > 0)
 				{
 					return heartDisease;
 				}
@@ -212,7 +212,7 @@ class StatusBarsOverlay extends Overlay
 		));
 		barRenderers.put(BarMode.SPECIAL_ATTACK, new BarRenderer(
 			() -> MAX_SPECIAL_ATTACK_VALUE,
-			() -> client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT) / 10,
+			() -> client.getVarpValue(VarPlayer.SPECIAL_ATTACK_PERCENT) / 10,
 			() -> 0,
 			() -> SPECIAL_ATTACK_COLOR,
 			() -> SPECIAL_ATTACK_COLOR,

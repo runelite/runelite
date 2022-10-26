@@ -24,15 +24,27 @@
  */
 package net.runelite.client.hiscore;
 
+import com.google.gson.Gson;
+import com.google.inject.Guice;
+import com.google.inject.testing.fieldbinder.Bind;
+import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import javax.inject.Inject;
 import okhttp3.OkHttpClient;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.junit.MockitoJUnitRunner;
 
+@RunWith(MockitoJUnitRunner.class)
 public class HiscoreClientTest
 {
 	private static final String RESPONSE = "654683,705,1304518\n"
@@ -70,6 +82,7 @@ public class HiscoreClientTest
 		+ "1,777\n"
 		+ "254,92\n"
 		+ "-1,-1\n" // lms
+		+ "-1,-1\n" // pvp arena rank
 		+ "1,241\n" // soul wars
 		+ "1,2739\n" // gotr
 		+ "24870,37\n"
@@ -111,52 +124,76 @@ public class HiscoreClientTest
 		+ "-1,-1\n"
 		+ "-1,-1\n" // TOB
 		+ "42,42\n" // TOB: Hard Mode
-		+ "29347,130\n"
-		+ "723,4\n"
-		+ "1264,38\n"
-		+ "44595,4\n"
-		+ "24820,4\n"
-		+ "12116,782\n"
-		+ "2299,724\n"
-		+ "19301,62\n"
-		+ "1498,5847\n";
+		+ "29347,130\n" // Thermy
+		+ "1,2000\n" // TOA
+		+ "-1,-1\n" // TOA: Expert Mode
+		+ "723,4\n" // Zuk
+		+ "1264,38\n" // Jad
+		+ "44595,4\n" // Venenatis
+		+ "24820,4\n" // Vetion
+		+ "12116,782\n" // Vorkath
+		+ "2299,724\n" // Wintertodt
+		+ "19301,62\n" // Zalcano
+		+ "1498,5847\n"; // Zulrah
 
 	@Rule
 	public final MockWebServer server = new MockWebServer();
 
+	@Bind
+	public Gson gson = new Gson();
+
+	@Bind
+	public OkHttpClient okHttpClient = new OkHttpClient();
+
 	@Before
 	public void before() throws IOException
 	{
-		server.enqueue(new MockResponse().setBody(RESPONSE));
+		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
+	}
+
+	@Inject
+	private HiscoreClient hiscoreClient;
+
+	@Test
+	public void testMapping()
+	{
+		Map<HiscoreEndpoint, List<HiscoreSkill>> mappings = HiscoreClient.convertMappings(
+			HiscoreClient.loadDiskMappings(new Gson()),
+			true);
+
+		mappings.forEach((k, v) ->
+		{
+			assertNotEquals(k.name(), v, null);
+			assertEquals(k.name() + " is unique", v.size(), new HashSet<>(v).size());
+		});
 	}
 
 	@Test
 	public void testNormalLookup() throws Exception
 	{
-		HiscoreClient hiscoreClient = new HiscoreClient(new OkHttpClient());
+		server.enqueue(new MockResponse().setBody(RESPONSE));
+		HiscoreResult result = hiscoreClient.lookup("zezima", HiscoreEndpoint.NORMAL, server.url("/"));
 
-		HiscoreResult result = hiscoreClient.lookup("zezima", server.url("/"));
-
-		assertEquals(50, result.getAttack().getLevel());
-		assertEquals(159727L, result.getFishing().getExperience());
-		assertEquals(492790, result.getConstruction().getRank());
-		assertEquals(1432, result.getClueScrollAll().getLevel());
-		assertEquals(324, result.getClueScrollBeginner().getRank());
-		assertEquals(8008, result.getClueScrollEasy().getRank());
-		assertEquals(911, result.getClueScrollMedium().getLevel());
-		assertEquals(42, result.getClueScrollHard().getRank());
-		assertEquals(777, result.getClueScrollElite().getLevel());
-		assertEquals(254, result.getClueScrollMaster().getRank());
-		assertEquals(-1, result.getLastManStanding().getLevel());
-		assertEquals(241, result.getSoulWarsZeal().getLevel());
-		assertEquals(2739, result.getRiftsClosed().getLevel());
-		assertEquals(2460, result.getLeaguePoints().getLevel());
-		assertEquals(37, result.getAbyssalSire().getLevel());
-		assertEquals(92357, result.getCallisto().getRank());
-		assertEquals(4920, result.getNex().getLevel());
-		assertEquals(2336, result.getPhosanisNightmare().getRank());
-		assertEquals(5678, result.getTempoross().getLevel());
-		assertEquals(42, result.getTheatreOfBloodHardMode().getLevel());
-		assertEquals(5847, result.getZulrah().getLevel());
+		assertEquals(50, result.getSkill(HiscoreSkill.ATTACK).getLevel());
+		assertEquals(159727L, result.getSkill(HiscoreSkill.FISHING).getExperience());
+		assertEquals(492790, result.getSkill(HiscoreSkill.CONSTRUCTION).getRank());
+		assertEquals(1432, result.getSkill(HiscoreSkill.CLUE_SCROLL_ALL).getLevel());
+		assertEquals(324, result.getSkill(HiscoreSkill.CLUE_SCROLL_BEGINNER).getRank());
+		assertEquals(8008, result.getSkill(HiscoreSkill.CLUE_SCROLL_EASY).getRank());
+		assertEquals(911, result.getSkill(HiscoreSkill.CLUE_SCROLL_MEDIUM).getLevel());
+		assertEquals(42, result.getSkill(HiscoreSkill.CLUE_SCROLL_HARD).getRank());
+		assertEquals(777, result.getSkill(HiscoreSkill.CLUE_SCROLL_ELITE).getLevel());
+		assertEquals(254, result.getSkill(HiscoreSkill.CLUE_SCROLL_MASTER).getRank());
+		assertEquals(-1, result.getSkill(HiscoreSkill.LAST_MAN_STANDING).getLevel());
+		assertEquals(241, result.getSkill(HiscoreSkill.SOUL_WARS_ZEAL).getLevel());
+		assertEquals(2739, result.getSkill(HiscoreSkill.RIFTS_CLOSED).getLevel());
+		assertEquals(2460, result.getSkill(HiscoreSkill.LEAGUE_POINTS).getLevel());
+		assertEquals(37, result.getSkill(HiscoreSkill.ABYSSAL_SIRE).getLevel());
+		assertEquals(92357, result.getSkill(HiscoreSkill.CALLISTO).getRank());
+		assertEquals(4920, result.getSkill(HiscoreSkill.NEX).getLevel());
+		assertEquals(2336, result.getSkill(HiscoreSkill.PHOSANIS_NIGHTMARE).getRank());
+		assertEquals(5678, result.getSkill(HiscoreSkill.TEMPOROSS).getLevel());
+		assertEquals(42, result.getSkill(HiscoreSkill.THEATRE_OF_BLOOD_HARD_MODE).getLevel());
+		assertEquals(5847, result.getSkill(HiscoreSkill.ZULRAH).getLevel());
 	}
 }

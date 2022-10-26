@@ -824,7 +824,7 @@ public class MusicPlugin extends Plugin
 
 				// the varps are known by the engine and it requires they are stored so
 				// 0 = max and 4 = muted
-				int raw = client.getVar(var);
+				int raw = client.getVarpValue(var);
 				if (raw == 0)
 				{
 					raw = -client.getVarbitValue(mutedVarbitId);
@@ -894,7 +894,7 @@ public class MusicPlugin extends Plugin
 				windowSlider.shutDown();
 			}
 
-			volumeChanger.accept(client.getVar(var) * this.max / 100);
+			volumeChanger.accept(client.getVarpValue(var) * this.max / 100);
 		}
 	}
 

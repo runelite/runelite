@@ -112,6 +112,8 @@ public enum HiscoreSkill
 	THEATRE_OF_BLOOD("Theatre of Blood", BOSS),
 	THEATRE_OF_BLOOD_HARD_MODE("Theatre of Blood: Hard Mode", BOSS),
 	THERMONUCLEAR_SMOKE_DEVIL("Thermonuclear Smoke Devil", BOSS),
+	TOMBS_OF_AMASCUT("Tombs of Amascut", BOSS),
+	TOMBS_OF_AMASCUT_EXPERT("Tombs of Amascut: Expert Mode", BOSS),
 	TZKAL_ZUK("TzKal-Zuk", BOSS),
 	TZTOK_JAD("TzTok-Jad", BOSS),
 	VENENATIS("Venenatis", BOSS),
