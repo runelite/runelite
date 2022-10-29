@@ -594,7 +594,7 @@ class LootTrackerPanel extends PluginPanel
 			}
 			else
 			{
-				 result = JOptionPane.showOptionDialog(box,
+				result = JOptionPane.showOptionDialog(box,
 					groupLoot ? String.format(RESET_CURRENT_WARNING_TEXT, box.getId()) : RESET_ONE_WARNING_TEXT,
 					"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
 					null, new String[]{"Yes", "No"}, "No");
