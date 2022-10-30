@@ -156,6 +156,8 @@ public class ItemChargePlugin extends Plugin
 	private static final int MAX_BLOOD_ESSENCE_CHARGES = 1000;
 	private static final int MAX_BRACELET_OF_CLAY_CHARGES = 28;
 
+	private static final int TRAHAEARN_MINE_REGION = 13249;
+
 	@Inject
 	private Client client;
 
@@ -185,6 +187,8 @@ public class ItemChargePlugin extends Plugin
 
 	// Limits destroy callback to once per tick
 	private int lastCheckTick;
+	private int inventoryCount;
+	private boolean clayMinedCheck;
 	private final Map<EquipmentInventorySlot, ItemChargeInfobox> infoboxes = new EnumMap<>(EquipmentInventorySlot.class);
 
 	@Provides
@@ -470,8 +474,9 @@ public class ItemChargePlugin extends Plugin
 				// Determine if the player mined with a Bracelet of Clay equipped.
 				if (equipment != null && equipment.contains(ItemID.BRACELET_OF_CLAY))
 				{
-					int charges = Ints.constrainToRange(getItemCharges(ItemChargeConfig.KEY_BRACELET_OF_CLAY) - 1, 0, MAX_BRACELET_OF_CLAY_CHARGES);
-					updateBraceletOfClayCharges(charges);
+						int charges = Ints.constrainToRange(getItemCharges(ItemChargeConfig.KEY_BRACELET_OF_CLAY) - 1, 0, MAX_BRACELET_OF_CLAY_CHARGES);
+						updateBraceletOfClayCharges(charges);
+						clayMinedCheck = true;
 				}
 			}
 			else if (message.equals(BRACELET_OF_CLAY_BREAK_TEXT))
@@ -488,6 +493,29 @@ public class ItemChargePlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
+		if (event.getContainerId() == InventoryID.INVENTORY.getId())
+		{
+			// the items are added to the inventory after the chat message, this will add a charge if someone mined 1 clay
+			if (clayMinedCheck && isPlayerWithinMapRegion(TRAHAEARN_MINE_REGION))
+			{
+				final ItemContainer inventoryContainer = event.getItemContainer();
+				final int oldInventoryCount = inventoryCount;
+				if (inventoryContainer.size() - oldInventoryCount == 1)
+				{
+					final int braceletOfClayCharges = getItemCharges(ItemWithConfig.BRACELET_OF_CLAY.getConfigKey());
+					if (braceletOfClayCharges == MAX_BRACELET_OF_CLAY_CHARGES)
+					{
+						updateBraceletOfClayCharges(1);
+					}
+					else
+					{
+						updateBraceletOfClayCharges(braceletOfClayCharges + 1);
+					}
+				}
+			}
+			inventoryCount = event.getItemContainer().size();
+		}
+
 		if (event.getContainerId() != InventoryID.EQUIPMENT.getId())
 		{
 			return;
@@ -556,6 +584,20 @@ public class ItemChargePlugin extends Plugin
 				}
 			});
 		}
+	}
+
+	private boolean isPlayerWithinMapRegion(int definedMapRegions)
+	{
+		final int[] mapRegions = client.getMapRegions();
+
+		for (int region : mapRegions)
+		{
+			if (region == definedMapRegions)
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private void updateDodgyNecklaceCharges(final int value)
