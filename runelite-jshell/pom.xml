@@ -65,6 +65,12 @@
             <artifactId>autocomplete</artifactId>
             <version>3.1.1</version>
         </dependency>
+
+        <dependency>
+            <groupId>net.runelite</groupId>
+            <artifactId>flatlaf-extras</artifactId>
+            <version>${flatlaf.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
