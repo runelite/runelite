@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
- * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
+ * Copyright (c) 2022 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,14 +22,20 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui.skin;
+package net.runelite.client.ui.laf;
 
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import com.formdev.flatlaf.ui.FlatScrollBarUI;
+import javax.swing.JComponent;
+import javax.swing.JScrollBar;
+import javax.swing.plaf.ComponentUI;
 
-public class SubstanceRuneLiteLookAndFeel extends SubstanceLookAndFeel
+public class RuneLiteScrollBarUI extends FlatScrollBarUI
 {
-	public SubstanceRuneLiteLookAndFeel()
+	public static ComponentUI createUI(JComponent c)
 	{
-		super(new ObsidianSkin());
+		JScrollBar bar = (JScrollBar) c;
+		// by default 1 click = 1 px, which is unusably slow
+		bar.setUnitIncrement(16);
+		return new RuneLiteScrollBarUI();
 	}
 }

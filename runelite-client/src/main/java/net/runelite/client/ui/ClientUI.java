@@ -24,13 +24,14 @@
  */
 package net.runelite.client.ui;
 
+import com.formdev.flatlaf.FlatClientProperties;
+import com.formdev.flatlaf.ui.FlatNativeWindowBorder;
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import java.applet.Applet;
+import java.awt.AWTException;
 import java.awt.Canvas;
 import java.awt.CardLayout;
-import java.awt.Component;
-import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Desktop;
 import java.awt.Dimension;
@@ -40,8 +41,9 @@ import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.awt.LayoutManager;
+import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.SystemTray;
 import java.awt.Taskbar;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
@@ -51,21 +53,27 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.time.Duration;
+import java.util.function.BiConsumer;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.inject.Named;
 import javax.inject.Provider;
 import javax.inject.Singleton;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JRootPane;
 import javax.swing.SwingUtilities;
+import javax.swing.ToolTipManager;
 import javax.swing.event.HyperlinkEvent;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -93,21 +101,14 @@ import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseAdapter;
 import net.runelite.client.input.MouseListener;
 import net.runelite.client.input.MouseManager;
-import net.runelite.client.ui.skin.SubstanceRuneLiteLookAndFeel;
+import net.runelite.client.ui.laf.RuneLiteLAF;
 import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.OSType;
 import net.runelite.client.util.OSXUtil;
-import net.runelite.client.util.SwingUtil;
 import net.runelite.client.util.WinUtil;
-import org.pushingpixels.substance.internal.SubstanceSynapse;
-import org.pushingpixels.substance.internal.utils.SubstanceCoreUtilities;
-import org.pushingpixels.substance.internal.utils.SubstanceTitlePaneUtilities;
 
-/**
- * Client UI.
- */
 @Slf4j
 @Singleton
 public class ClientUI
@@ -210,7 +211,7 @@ public class ClientUI
 				navContainer.add(pluginPanel.getWrappedPanel(), navigationButton.getTooltip());
 			}
 
-			final JButton button = SwingUtil.createSwingButton(navigationButton, iconSize, (navButton, jButton) ->
+			final JButton button = createSwingButton(navigationButton, iconSize, (navButton, jButton) ->
 			{
 				final PluginPanel panel = navButton.getPanel();
 
@@ -326,13 +327,9 @@ public class ClientUI
 		SwingUtilities.invokeAndWait(() ->
 		{
 			// Set some sensible swing defaults
-			SwingUtil.setupDefaults();
+			setupDefaults();
 
-			// Use substance look and feel
-			SwingUtil.setTheme(new SubstanceRuneLiteLookAndFeel());
-
-			// Use custom UI font
-			SwingUtil.setFont(FontManager.getRunescapeFont());
+			RuneLiteLAF.setup();
 
 			// Create main window
 			frame = new ContainableFrame();
@@ -342,7 +339,6 @@ public class ClientUI
 
 			frame.setTitle(title);
 			frame.setIconImage(ICON);
-			frame.getLayeredPane().setCursor(Cursor.getDefaultCursor()); // Prevent substance from using a resize cursor for pointing
 			frame.setLocationRelativeTo(frame.getOwner());
 			frame.setResizable(true);
 
@@ -404,8 +400,6 @@ public class ClientUI
 			navContainer.setMaximumSize(new Dimension(0, 0));
 			navContainer.setPreferredSize(new Dimension(0, 0));
 
-			// To reduce substance's colorization (tinting)
-			navContainer.putClientProperty(SubstanceSynapse.COLORIZATION_FACTOR, 1.0);
 			container.add(navContainer);
 
 			pluginToolbar = new ClientPluginToolbar();
@@ -454,53 +448,31 @@ public class ClientUI
 
 			// Decorate window with custom chrome and titlebar if needed
 			withTitleBar = config.enableCustomChrome();
-			frame.setUndecorated(withTitleBar);
 
 			if (withTitleBar)
 			{
-				frame.getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
+				JMenuBar menuBar = new JMenuBar();
+				menuBar.add(Box.createGlue());
+				titleToolbar.setAlignmentY(.5f);
+				menuBar.add(titleToolbar);
+				frame.setJMenuBar(menuBar);
 
-				final JComponent titleBar = SubstanceCoreUtilities.getTitlePaneComponent(frame);
-				titleToolbar.putClientProperty(SubstanceTitlePaneUtilities.EXTRA_COMPONENT_KIND, SubstanceTitlePaneUtilities.ExtraComponentKind.TRAILING);
-				titleBar.add(titleToolbar);
-
-				// Substance's default layout manager for the title bar only lays out substance's components
-				// This wraps the default manager and lays out the TitleToolbar as well.
-				LayoutManager delegate = titleBar.getLayout();
-				titleBar.setLayout(new LayoutManager()
+				JRootPane rp = frame.getRootPane();
+				if (FlatNativeWindowBorder.isSupported())
 				{
-					@Override
-					public void addLayoutComponent(String name, Component comp)
-					{
-						delegate.addLayoutComponent(name, comp);
-					}
-
-					@Override
-					public void removeLayoutComponent(Component comp)
-					{
-						delegate.removeLayoutComponent(comp);
-					}
-
-					@Override
-					public Dimension preferredLayoutSize(Container parent)
-					{
-						return delegate.preferredLayoutSize(parent);
-					}
-
-					@Override
-					public Dimension minimumLayoutSize(Container parent)
-					{
-						return delegate.minimumLayoutSize(parent);
-					}
-
-					@Override
-					public void layoutContainer(Container parent)
-					{
-						delegate.layoutContainer(parent);
-						final int width = titleToolbar.getPreferredSize().width;
-						titleToolbar.setBounds(titleBar.getWidth() - 75 - width, 0, width, titleBar.getHeight());
-					}
-				});
+					rp.putClientProperty(FlatClientProperties.USE_WINDOW_DECORATIONS, true);
+				}
+				/*else if (OSType.getOSType() == OSType.MacOS && SystemInfo.isMacFullWindowContentSupported)
+				{
+					rp.putClientProperty("apple.awt.fullWindowContent", true);
+					rp.putClientProperty("apple.awt.transparentTitleBar", true);
+					menuBar.setBorder(new EmptyBorder(3, 70, 3, 10));
+				}*/
+				else
+				{
+					frame.setUndecorated(true);
+					rp.setWindowDecorationStyle(JRootPane.FRAME);
+				}
 			}
 
 			// Update config
@@ -519,7 +491,7 @@ public class ClientUI
 				.onClick(this::toggleSidebar)
 				.build();
 
-			sidebarNavigationJButton = SwingUtil.createSwingButton(
+			sidebarNavigationJButton = createSwingButton(
 				sidebarNavigationButton,
 				0,
 				null);
@@ -547,7 +519,7 @@ public class ClientUI
 			// Create tray icon (needs to be created after frame is packed)
 			if (config.enableTrayIcon())
 			{
-				trayIcon = SwingUtil.createTrayIcon(ICON, title, frame);
+				trayIcon = createTrayIcon(ICON, title, frame);
 			}
 
 			// Move frame around (needs to be done after frame is packed)
@@ -1098,7 +1070,7 @@ public class ClientUI
 
 		if (config.usernameInTitle() && (client instanceof Client))
 		{
-			final Player player = ((Client)client).getLocalPlayer();
+			final Player player = ((Client) client).getLocalPlayer();
 
 			if (player != null && player.getName() != null)
 			{
@@ -1185,5 +1157,120 @@ public class ClientUI
 			configManager.unsetConfiguration(CONFIG_GROUP, CONFIG_CLIENT_MAXIMIZED);
 			configManager.setConfiguration(CONFIG_GROUP, CONFIG_CLIENT_BOUNDS, bounds);
 		}
+	}
+
+	public static void setupDefaults()
+	{
+		// Force heavy-weight popups/tooltips.
+		// Prevents them from being obscured by the game applet.
+		ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
+		ToolTipManager.sharedInstance().setInitialDelay(300);
+		JPopupMenu.setDefaultLightWeightPopupEnabled(false);
+
+		// Do not fill in background on repaint. Reduces flickering when
+		// the applet is resized.
+		System.setProperty("sun.awt.noerasebackground", "true");
+	}
+
+	@Nullable
+	public static TrayIcon createTrayIcon(@Nonnull final Image icon, @Nonnull final String title, @Nonnull final Frame frame)
+	{
+		if (!SystemTray.isSupported())
+		{
+			return null;
+		}
+
+		final SystemTray systemTray = SystemTray.getSystemTray();
+		final TrayIcon trayIcon = new TrayIcon(icon, title);
+		trayIcon.setImageAutoSize(true);
+
+		try
+		{
+			systemTray.add(trayIcon);
+		}
+		catch (AWTException ex)
+		{
+			log.debug("Unable to add system tray icon", ex);
+			return trayIcon;
+		}
+
+		// Bring to front when tray icon is clicked
+		trayIcon.addMouseListener(new java.awt.event.MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				if (OSType.getOSType() == OSType.MacOS && !frame.isFocused())
+				{
+					// On macOS, frame.setVisible(true) only restores focus when the visibility was previously false.
+					// The frame's visibility is not set to false when the window loses focus, so we set it manually.
+					// Additionally, in order to bring the window to the foreground,
+					// frame.setVisible(true) calls CPlatformWindow::nativePushNSWindowToFront.
+					// However, this native method is not called with activateIgnoringOtherApps:YES,
+					// so any other active window will prevent our window from being brought to the front.
+					// To work around this, we use our macOS-specific requestForeground().
+					frame.setVisible(false);
+					OSXUtil.requestForeground();
+				}
+				frame.setVisible(true);
+				frame.setState(Frame.NORMAL); // Restore
+			}
+		});
+
+		return trayIcon;
+	}
+
+	/**
+	 * Create swing button from navigation button.
+	 *
+	 * @param navigationButton the navigation button
+	 * @param iconSize         the icon size (in case it is 0 default icon size will be used)
+	 * @param specialCallback  the special callback
+	 * @return the swing button
+	 */
+	public static JButton createSwingButton(
+		@Nonnull final NavigationButton navigationButton,
+		int iconSize,
+		@Nullable final BiConsumer<NavigationButton, JButton> specialCallback)
+	{
+
+		final BufferedImage scaledImage = iconSize > 0
+			? ImageUtil.resizeImage(navigationButton.getIcon(), iconSize, iconSize)
+			: navigationButton.getIcon();
+
+		final JButton button = new JButton();
+		button.setSize(scaledImage.getWidth(), scaledImage.getHeight());
+		button.setToolTipText(navigationButton.getTooltip());
+		button.setIcon(new ImageIcon(scaledImage));
+		button.setFocusable(false);
+		button.addActionListener(e ->
+		{
+			if (specialCallback != null)
+			{
+				specialCallback.accept(navigationButton, button);
+			}
+
+			if (navigationButton.getOnClick() != null)
+			{
+				navigationButton.getOnClick().run();
+			}
+		});
+
+		if (navigationButton.getPopup() != null)
+		{
+			final JPopupMenu popupMenu = new JPopupMenu();
+
+			navigationButton.getPopup().forEach((name, callback) ->
+			{
+				final JMenuItem menuItem = new JMenuItem(name);
+				menuItem.addActionListener((e) -> callback.run());
+				popupMenu.add(menuItem);
+			});
+
+			button.setComponentPopupMenu(popupMenu);
+		}
+
+		navigationButton.setOnSelect(button::doClick);
+		return button;
 	}
 }

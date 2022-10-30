@@ -51,7 +51,6 @@ import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.VerificationException;
-import org.pushingpixels.substance.internal.SubstanceSynapse;
 
 @Slf4j
 public class FatalErrorDialog extends JDialog
@@ -99,7 +98,6 @@ public class FatalErrorDialog extends JDialog
 
 		JPanel pane = (JPanel) getContentPane();
 		pane.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		pane.putClientProperty(SubstanceSynapse.COLORIZATION_FACTOR, 1.0);
 
 		JPanel leftPane = new JPanel();
 		leftPane.setBackground(ColorScheme.DARKER_GRAY_COLOR);

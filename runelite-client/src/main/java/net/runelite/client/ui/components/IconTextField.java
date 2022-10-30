@@ -60,7 +60,6 @@ import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.util.SwingUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.pushingpixels.substance.internal.ui.SubstanceListUI;
 
 /**
  * This component is a FlatTextField with an icon on its left side, and a clear button (×) on its right side.
@@ -185,9 +184,6 @@ public class IconTextField extends JPanel
 			{
 				popup.setVisible(false);
 				suggestionList.clearSelection();
-
-				SubstanceListUI ui = (SubstanceListUI) suggestionList.getUI();
-				ui.resetRolloverIndex();
 			}
 		});
 
