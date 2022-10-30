@@ -474,9 +474,9 @@ public class ItemChargePlugin extends Plugin
 				// Determine if the player mined with a Bracelet of Clay equipped.
 				if (equipment != null && equipment.contains(ItemID.BRACELET_OF_CLAY))
 				{
-						int charges = Ints.constrainToRange(getItemCharges(ItemChargeConfig.KEY_BRACELET_OF_CLAY) - 1, 0, MAX_BRACELET_OF_CLAY_CHARGES);
-						updateBraceletOfClayCharges(charges);
-						clayMinedCheck = true;
+					int charges = Ints.constrainToRange(getItemCharges(ItemChargeConfig.KEY_BRACELET_OF_CLAY) - 1, 0, MAX_BRACELET_OF_CLAY_CHARGES);
+					updateBraceletOfClayCharges(charges);
+					clayMinedCheck = true;
 				}
 			}
 			else if (message.equals(BRACELET_OF_CLAY_BREAK_TEXT))
