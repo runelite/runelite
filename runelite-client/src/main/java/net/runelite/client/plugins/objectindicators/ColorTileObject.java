@@ -48,4 +48,5 @@ class ColorTileObject
 	 */
 	private final String name;
 	private final Color color;
+	private final Color fillColor;
 }
