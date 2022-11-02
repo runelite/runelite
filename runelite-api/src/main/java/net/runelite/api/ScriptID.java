@@ -433,4 +433,10 @@ public final class ScriptID
 	 */
 	@ScriptArguments(integer = 7)
 	public static final int ADD_OVERLAYTIMER_LOC = 5474;
+
+	@ScriptArguments(integer = 7, string = 1)
+	public static final int ACCOUNT_SUMMARY_TEXT_FORMAT = 3948;
+
+	@ScriptArguments(integer = 10, string = 3)
+	public static final int ACCOUNT_SUMMARY_SECTION_FORMAT = 3950;
 }
