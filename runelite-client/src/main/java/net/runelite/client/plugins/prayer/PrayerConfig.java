@@ -24,33 +24,19 @@
  */
 package net.runelite.client.plugins.prayer;
 
+import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
+import java.awt.*;
+
 @ConfigGroup("prayer")
 public interface PrayerConfig extends Config
 {
-	enum PrayerDoseColour
-	{
-		DEFAULT,
-		GREEN,
-		RED
-	}
 
 	@ConfigItem(
-			keyName = "prayerDoseColour",
-			name = "Prayer dose colour",
-			description = "Changes the colour of the prayer dose reminder.",
-			position = 0
-	)
-	default PrayerConfig.PrayerDoseColour prayerDoseColour()
-	{
-		return PrayerDoseColour.DEFAULT;
-	}
-
-	@ConfigItem(
-		position = 1,
+		position = 0,
 		keyName = "prayerFlickLocation",
 		name = "Pray flick location",
 		description = "Choose where to display the prayer flick helper."
@@ -58,6 +44,18 @@ public interface PrayerConfig extends Config
 	default PrayerFlickLocation prayerFlickLocation()
 	{
 		return PrayerFlickLocation.NONE;
+	}
+
+	@Alpha
+	@ConfigItem(
+		position = 1,
+		keyName = "orbFlickColour",
+		name = "Pray flick colour",
+		description = "Change the colour of the flick helper"
+	)
+	default Color getFlickColor()
+	{
+		return Color.CYAN;
 	}
 
 	@ConfigItem(
@@ -106,6 +104,42 @@ public interface PrayerConfig extends Config
 
 	@ConfigItem(
 		position = 6,
+		keyName = "prayerDoseColour",
+		name = "Prayer dose colour",
+		description = "Changes the colour of the prayer dose indicator."
+	)
+	default PrayerColourOptions prayerDoseColour()
+	{
+		return PrayerColourOptions.DEFAULT;
+	}
+
+	@Alpha
+	@ConfigItem(
+		position = 7,
+		keyName = "orbStartColour",
+		name = "Orb Starting Colour",
+		description = "Custom option on 'Prayer dose colour' needed to take effect"
+	)
+	default Color getStartColor()
+	{
+		return Color.WHITE;
+	}
+
+	@Alpha
+	@ConfigItem(
+		position = 8,
+		keyName = "orbEndColour",
+		name = "Orb Finishing Colour",
+		description = "Custom option on 'Prayer dose colour' needed to take effect"
+
+	)
+	default Color getEndColor()
+	{
+		return Color.BLACK;
+	}
+
+	@ConfigItem(
+		position = 9,
 		keyName = "showPrayerTooltip",
 		name = "Show prayer orb tooltip",
 		description = "Displays time remaining and prayer bonus as a tooltip on the quick-prayer icon."
@@ -116,7 +150,7 @@ public interface PrayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 7,
+		position = 10,
 		keyName = "showPrayerBar",
 		name = "Show prayer bar",
 		description = "Displays prayer bar under HP bar when praying."
@@ -127,7 +161,7 @@ public interface PrayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 8,
+		position = 11,
 		keyName = "prayerBarHideIfNotPraying",
 		name = "Hide bar while prayer is inactive",
 		description = "Prayer bar will be hidden while prayers are inactive."
@@ -138,7 +172,7 @@ public interface PrayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 9,
+		position = 12,
 		keyName = "prayerBarHideIfNonCombat",
 		name = "Hide bar while out-of-combat",
 		description = "Prayer bar will be hidden while out-of-combat."
@@ -149,7 +183,7 @@ public interface PrayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 10,
+		position = 13,
 		keyName = "replaceOrbText",
 		name = "Show time left",
 		description = "Show time remaining of current prayers in the prayer orb."
@@ -158,4 +192,6 @@ public interface PrayerConfig extends Config
 	{
 		return false;
 	}
+
+
 }
