@@ -48,7 +48,7 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 import net.runelite.client.util.ColorUtil;
-import net.runelite.client.plugins.prayer.PrayerConfig.PrayerDoseColour;
+
 
 class PrayerDoseOverlay extends Overlay
 {
@@ -58,14 +58,19 @@ class PrayerDoseOverlay extends Overlay
 	private static final Color[] cyan = {new Color(0, 255, 255), new Color(0, 92, 92)};
 	private static final Color[] green = {new Color(0, 255, 0), new Color(92, 92, 0)};
 	private static final Color[] red = {new Color(255, 15, 0), new Color(65, 0, 0)};
-	//3 Options | DEFAULT | GREEN | RED | The added options are to assist with colourblindness
-	private static final Map<PrayerConfig.PrayerDoseColour, Color[]> colourOptions;
+	private static final Color[] purple = {new Color(173, 0, 255), new Color(50, 0, 75)};
+
+	//4 Static Options
+	private static final Map<PrayerColourOptions, Color[]> colourOptions;
+
 	static
 	{
 		colourOptions = new HashMap<>();
-		colourOptions.put(PrayerDoseColour.DEFAULT, cyan);
-		colourOptions.put(PrayerDoseColour.GREEN, green);
-		colourOptions.put(PrayerDoseColour.RED, red);
+		colourOptions.put(PrayerColourOptions.DEFAULT, cyan);
+		colourOptions.put(PrayerColourOptions.GREEN, green);
+		colourOptions.put(PrayerColourOptions.RED, red);
+		colourOptions.put(PrayerColourOptions.PURPLE, purple);
+
 	}
 
 	private final Client client;
@@ -161,10 +166,20 @@ class PrayerDoseOverlay extends Overlay
 
 		final float tickProgress = Math.min(timeSinceLastTick / PULSE_TIME, 1); // Cap between 0 and 1
 		final double t = tickProgress * Math.PI; // Convert to 0 - pi
-		graphics.setColor(ColorUtil.colorLerp(
+		if (config.prayerDoseColour() == PrayerColourOptions.CUSTOM)
+		{
+			graphics.setColor(ColorUtil.colorLerp(
+				config.getStartColor(), //FIRST COLOUR
+				config.getEndColor(), //LAST COLOUR
+				Math.sin(t)));
+		}
+		else
+		{
+			graphics.setColor(ColorUtil.colorLerp(
 				colourOptions.get(config.prayerDoseColour())[0], //FIRST COLOUR
 				colourOptions.get(config.prayerDoseColour())[1], //LAST COLOUR
 				Math.sin(t)));
+		}
 		graphics.setStroke(new BasicStroke(2));
 		graphics.drawOval(orbInnerX, orbInnerY, orbInnerSize, orbInnerSize);
 		return null;
