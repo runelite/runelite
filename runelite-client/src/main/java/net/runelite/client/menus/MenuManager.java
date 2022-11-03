@@ -106,7 +106,7 @@ public class MenuManager
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		if (client.getSpellSelected() || event.getType() != MenuAction.CC_OP.getId())
+		if (client.isWidgetSelected() || event.getType() != MenuAction.CC_OP.getId())
 		{
 			return;
 		}
