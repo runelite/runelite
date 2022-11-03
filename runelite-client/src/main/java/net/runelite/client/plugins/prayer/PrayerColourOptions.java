@@ -30,6 +30,5 @@ public enum PrayerColourOptions
 	GREEN,
 	RED,
 	PURPLE,
-	CUSTOM,
-	test
+	CUSTOM
 }
