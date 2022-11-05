@@ -25,6 +25,7 @@
  */
 package net.runelite.client.game;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import java.util.Collection;
@@ -345,7 +346,8 @@ public enum ItemMapping
 	ITEM_SNAIL_SHELL(COINS_995, true, 600L, SNAIL_SHELL),
 	ITEM_TORTOISE_SHELL(COINS_995, true, 250L, TORTOISE_SHELL);
 
-	private static final Multimap<Integer, ItemMapping> MAPPINGS = HashMultimap.create();
+	@VisibleForTesting
+	static final Multimap<Integer, ItemMapping> MAPPINGS = HashMultimap.create();
 	private final int tradeableItem;
 	private final int[] untradableItems;
 	private final long quantity;
