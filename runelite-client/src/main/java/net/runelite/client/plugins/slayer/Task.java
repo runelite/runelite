@@ -142,7 +142,7 @@ enum Task
 	MOSS_GIANTS("Moss giants", ItemID.MOSSY_KEY),
 	MUTATED_ZYGOMITES("Mutated zygomites", ItemID.MUTATED_ZYGOMITE, 7, ItemID.FUNGICIDE_SPRAY_0, "Zygomite", "Fungi"),
 	NECHRYAEL("Nechryael", ItemID.NECHRYAEL, "Nechryarch"),
-	OGRES("Ogres", ItemID.ENSOULED_OGRE_HEAD),
+	OGRES("Ogres", ItemID.ENSOULED_OGRE_HEAD, "Mogre", "Ogress", "Skogre", "Zogre"),
 	OTHERWORLDLY_BEING("Otherworldly beings", ItemID.GHOSTLY_HOOD),
 	PIRATES("Pirates", ItemID.PIRATE_HAT, "Pirate"),
 	PYREFIENDS("Pyrefiends", ItemID.PYREFIEND, "Flaming pyrelord"),
