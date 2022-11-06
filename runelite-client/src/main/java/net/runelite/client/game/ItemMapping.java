@@ -361,7 +361,7 @@ public enum ItemMapping
 			{
 				if (item.includeVariations)
 				{
-					for (final Integer variation : ItemVariationMapping.getVariations(itemId))
+					for (final Integer variation : ItemVariationMapping.getVariations(ItemVariationMapping.map(itemId)))
 					{
 						if (variation != item.tradeableItem)
 						{
