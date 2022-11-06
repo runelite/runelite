@@ -40,4 +40,14 @@ public interface ClueScrollConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "usFloorNumbering",
+		name = "US floor numbering",
+		description = "Configures whether or not to use US floor numbering for clue solutions"
+	)
+	default boolean usFloorNumbering()
+	{
+		return false;
+	}
 }
