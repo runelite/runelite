@@ -351,7 +351,7 @@ public enum ItemMapping
 	private final int tradeableItem;
 	private final int[] untradableItems;
 	private final long quantity;
-	private final boolean untradeable;
+	private final boolean includeVariations;
 
 	static
 	{
@@ -359,7 +359,7 @@ public enum ItemMapping
 		{
 			for (int itemId : item.untradableItems)
 			{
-				if (item.untradeable)
+				if (item.includeVariations)
 				{
 					for (final Integer variation : ItemVariationMapping.getVariations(itemId))
 					{
@@ -377,12 +377,12 @@ public enum ItemMapping
 		}
 	}
 
-	ItemMapping(int tradeableItem, boolean untradeable, long quantity, int... untradableItems)
+	ItemMapping(int tradeableItem, boolean includeVariations, long quantity, int... untradableItems)
 	{
 		this.tradeableItem = tradeableItem;
 		this.untradableItems = untradableItems;
 		this.quantity = quantity;
-		this.untradeable = untradeable;
+		this.includeVariations = includeVariations;
 	}
 
 	ItemMapping(int tradeableItem, long quantity, int... untradableItems)
