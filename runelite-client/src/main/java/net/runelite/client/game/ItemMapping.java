@@ -369,8 +369,10 @@ public enum ItemMapping
 						}
 					}
 				}
-
-				MAPPINGS.put(itemId, item);
+				else
+				{
+					MAPPINGS.put(itemId, item);
+				}
 			}
 		}
 	}
