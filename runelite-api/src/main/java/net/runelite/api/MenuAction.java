@@ -231,7 +231,7 @@ public enum MenuAction
 	PLAYER_FIFTH_OPTION(48),
 	PLAYER_SIXTH_OPTION(49),
 	PLAYER_SEVENTH_OPTION(50),
-	PLAYER_EIGTH_OPTION(51),
+	PLAYER_EIGHTH_OPTION(51),
 
 	/**
 	 * Menu action for normal priority child component actions.
