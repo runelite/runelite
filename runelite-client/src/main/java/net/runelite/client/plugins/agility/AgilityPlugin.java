@@ -33,6 +33,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -83,7 +85,6 @@ import net.runelite.client.plugins.xptracker.XpTrackerService;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
-import static org.apache.commons.lang3.math.NumberUtils.isParsable;
 
 @PluginDescriptor(
 	name = "Agility",
@@ -156,6 +157,9 @@ public class AgilityPlugin extends Plugin
 	{
 		return configManager.getConfig(AgilityConfig.class);
 	}
+
+	private static final Pattern LAPS_LINE_CHECK_PATTERN = Pattern.compile("(?<course>[\\w\\s]+) - (?<lapCount>\\d+) Laps?");
+
 
 	@Override
 	protected void startUp() throws Exception
@@ -492,59 +496,26 @@ public class AgilityPlugin extends Plugin
 	@Subscribe
 	public void onScriptPostFired(ScriptPostFired scriptPostFired)
 	{
-		if (scriptPostFired.getScriptId() == ScriptID.AGI_LAPS_CHECK)
+		if (scriptPostFired.getScriptId() != ScriptID.LONGSCROLL_SETUP)
 		{
-			Widget agiLapsHeader = client.getWidget(WidgetInfo.AGI_LAPS_HEADER);
-			if (agiLapsHeader != null)
+			return;
+		}
+		Widget agiLapsHeader = client.getWidget(WidgetInfo.GENERIC_SCROLL_HEADER);
+		if (agiLapsHeader == null || !agiLapsHeader.getText().equals("Agility Course Lap Counts"))
+		{
+			return;
+		}
+		final String[] lapsList = client.getWidget(WidgetInfo.GENERIC_SCROLL_TEXT).getText().split("<br>");
+		for (String line : lapsList)
+		{
+			final Matcher lapsLineMatcher = LAPS_LINE_CHECK_PATTERN.matcher(line);
+			if (!lapsLineMatcher.find())
 			{
-				if (agiLapsHeader.getText().equals("Agility Course Lap Counts"))
-				{
-					Widget agiCourseLapCount = client.getWidget(WidgetInfo.AGI_LAPS_COUNT);
-					String[] lapsList;
-					try
-					{
-						lapsList = agiCourseLapCount.getText().split("<br>");
-					}
-					catch (NullPointerException nullPointerException)
-					{
-						return;
-					}
-					List<String[]> parseList = new ArrayList<>(lapsList.length);
-					for (String line : lapsList)
-					{
-						String[] tempList = line.split(" ");
-						parseList.add(tempList);
-					}
-					List<Integer> countList = new ArrayList<>();
-					for (String[] lapsByLine : parseList)
-					{
-						if (lapsByLine.length > 1 && isParsable(lapsByLine[lapsByLine.length - 2]))
-						{
-							countList.add(Integer.valueOf(lapsByLine[lapsByLine.length - 2]));
-						}
-					}
-					List<String> nameList = new ArrayList<>();
-					for (String[] lapsByLine : parseList)
-					{
-						if (lapsByLine.length > 3)
-						{
-							String courseName = new String();
-							courseName = courseName.concat(lapsByLine[0]);
-							for (int i = 1; i < lapsByLine.length - 3; i++)
-							{
-								courseName = courseName.concat(" ").concat(lapsByLine[i]);
-							}
-							nameList.add(courseName);
-						}
-					}
-					for (int i = 0; i < nameList.size(); ++i)
-					{
-						if (getLaps(nameList.get(i)) != countList.get(i))
-						{
-							setLaps(nameList.get(i), countList.get(i));
-						}
-					}
-				}
+				continue;
+			}
+			if (getLaps(lapsLineMatcher.group("course")) != Integer.parseInt((lapsLineMatcher.group("lapCount"))) && Integer.parseInt(lapsLineMatcher.group("lapCount")) != 0)
+			{
+				setLaps(lapsLineMatcher.group("course"), Integer.parseInt(lapsLineMatcher.group("lapCount")));
 			}
 		}
 	}
