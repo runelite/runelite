@@ -1152,6 +1152,54 @@ public class ChatCommandsPluginTest
 			"Fastest Room time - (Team size: (5 player): <col=ffffff>18:45</col>",
 			"Fastest Overall time - (Team size: 5 player): <col=ffffff>22:01</col>",
 			"",
+			"Tombs of Amascut - Entry",
+			"Fastest Room time - (Team size: Solo): <col=ffffff>32:53</col>",
+			"Fastest Overall time - (Team size: Solo): <col=ffffff>39:06</col>",
+			"Fastest Room time - (Team size: (2 player): <col=ffffff>25:44</col>",
+			"Fastest Overall time - (Team size: (2 player): <col=ffffff>34:36</col>",
+			"Fastest Room time - (Team size: (3 player): <col=ffffff>28:32</col>",
+			"Fastest Overall time - (Team size: (3 player): <col=ffffff>36:31</col>",
+			"Fastest Room time - (Team size: (4 player): <col=ffffff>27:52</col>",
+			"Fastest Overall time - (Team size: (4 player): <col=ffffff>49:06</col>",
+			"Fastest Room time - (Team size: (5 player): <col=ffffff>39:38</col>",
+			"Fastest Overall time - (Team size: (5 player): <col=ffffff>1:12:08</col>",
+			"",
+			"Tombs of Amascut",
+			"Fastest Room time - (Team size: Solo): <col=ffffff>25:35</col>",
+			"Fastest Overall time - (Team size: Solo): <col=ffffff>28:44</col>",
+			"Fastest Room time - (Team size: (2 player): <col=ffffff>22:02</col>",
+			"Fastest Overall time - (Team size: (2 player): <col=ffffff>24:23</col>",
+			"Fastest Room time - (Team size: (3 player): <col=ffffff>25:25</col>",
+			"Fastest Overall time - (Team size: (3 player): <col=ffffff>29:37</col>",
+			"Fastest Room time - (Team size: (4 player): <col=ffffff>23:11</col>",
+			"Fastest Overall time - (Team size: (4 player): <col=ffffff>27:26</col>",
+			"Fastest Room time - (Team size: (5 player): <col=ffffff>30:36</col>",
+			"Fastest Overall time - (Team size: (5 player): <col=ffffff>34:44</col>",
+			"Fastest Room time - (Team size: (6 player): <col=ffffff>29:19</col>",
+			"Fastest Overall time - (Team size: (6 player): <col=ffffff>33:54</col>",
+			"Fastest Room time - (Team size: (7 player): <col=ffffff>25:27</col>",
+			"Fastest Overall time - (Team size: (7 player): <col=ffffff>28:49</col>",
+			"Fastest Room time - (Team size: (8 player): <col=ffffff>24:55</col>",
+			"Fastest Overall time - (Team size: (8 player): <col=ffffff>28:04</col>",
+			"",
+			"Tombs of Amascut - Expert",
+			"Fastest Room time - (Team size: Solo): <col=ffffff>37:43</col>",
+			"Fastest Overall time - (Team size: Solo): <col=ffffff>46:19</col>",
+			"Fastest Room time - (Team size: (2 player): <col=ffffff>28:53</col>",
+			"Fastest Overall time - (Team size: (2 player): <col=ffffff>32:38</col>",
+			"Fastest Room time - (Team size: (3 player): <col=ffffff>28:20</col>",
+			"Fastest Overall time - (Team size: (3 player): <col=ffffff>31:40</col>",
+			"Fastest Room time - (Team size: (4 player): <col=ffffff>29:04</col>",
+			"Fastest Overall time - (Team size: (4 player): <col=ffffff>32:26</col>",
+			"Fastest Room time - (Team size: (5 player): <col=ffffff>26:49</col>",
+			"Fastest Overall time - (Team size: (5 player): <col=ffffff>30:07</col>",
+			"Fastest Room time - (Team size: (6 player): <col=ffffff>23:14</col>",
+			"Fastest Overall time - (Team size: (6 player): <col=ffffff>26:13</col>",
+			"Fastest Room time - (Team size: (7 player): <col=ffffff>23:42</col>",
+			"Fastest Overall time - (Team size: (7 player): <col=ffffff>26:58</col>",
+			"Fastest Room time - (Team size: (8 player): <col=ffffff>23:07</col>",
+			"Fastest Overall time - (Team size: (8 player): <col=ffffff>26:18</col>",
+			"",
 			"Tempoross",
 			"Fastest run: <col=ffffff>3:54</col>",
 			"",
@@ -1200,6 +1248,13 @@ public class ChatCommandsPluginTest
 		verify(configManager).setRSProfileConfiguration("personalbest", "chambers of xeric 2 players", 60 * 24 + 40.);
 		verify(configManager).setRSProfileConfiguration("personalbest", "theatre of blood solo", 3600 + 60 + 57.);
 		verify(configManager).setRSProfileConfiguration("personalbest", "theatre of blood 3 players", 19 * 60 + 50.);
+		verify(configManager).setRSProfileConfiguration("personalbest", "tombs of amascut entry mode solo", 32 * 60 + 53.);
+		verify(configManager).setRSProfileConfiguration("personalbest", "tombs of amascut entry mode 2 players", 25 * 60 + 44.);
+		verify(configManager).setRSProfileConfiguration("personalbest", "tombs of amascut solo", 25 * 60 + 35.);
+		verify(configManager).setRSProfileConfiguration("personalbest", "tombs of amascut 8 players", 24 * 60 + 55.);
+		verify(configManager).setRSProfileConfiguration("personalbest", "tombs of amascut expert mode solo", 37 * 60 + 43.);
+		verify(configManager).setRSProfileConfiguration("personalbest", "tombs of amascut expert mode 4 players", 29 * 60 + 4.);
+		verify(configManager).setRSProfileConfiguration("personalbest", "tombs of amascut expert mode 8 players", 23 * 60 + 7.);
 	}
 
 	@Test
@@ -1240,7 +1295,12 @@ public class ChatCommandsPluginTest
 	@Test
 	public void testToaPbNew()
 	{
-		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Challenge complete: The Troll. Duration: <col=ef1020>8:30</col><br>Tombs of Amascut challenge completion time: <col=ef1020>8:31</col> (new personal best)", null, 0);
+		when(client.getVarbitValue(Varbits.TOA_MEMBER_1_HEALTH)).thenReturn(27);
+		when(client.getVarbitValue(Varbits.TOA_MEMBER_2_HEALTH)).thenReturn(30);
+		when(client.getVarbitValue(Varbits.TOA_MEMBER_3_HEALTH)).thenReturn(20);
+		when(client.getVarbitValue(Varbits.TOA_MEMBER_4_HEALTH)).thenReturn(13);
+
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Challenge complete: The Wardens. Duration: <col=ef1020>8:30</col><br>Tombs of Amascut challenge completion time: <col=ef1020>8:31</col> (new personal best)", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
 		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Tombs of Amascut total completion time: <col=ef1020>0:01</col> (new personal best)", null, 0);
@@ -1251,12 +1311,16 @@ public class ChatCommandsPluginTest
 
 		verify(configManager).setRSProfileConfiguration("killcount", "tombs of amascut", 1);
 		verify(configManager).setRSProfileConfiguration("personalbest", "tombs of amascut", 8 * 60 + 31.);
+		verify(configManager).setRSProfileConfiguration("personalbest", "tombs of amascut 4 players", 8 * 60 + 31.);
 	}
 
 	@Test
 	public void testToaPb()
 	{
-		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Challenge complete: The Troll. Duration: <col=ef1020>9:40</col><br>Tombs of Amascut: Expert Mode challenge completion time: <col=ef1020>9:40</col>. Personal best: 8:31", null, 0);
+		when(client.getVarbitValue(Varbits.TOA_MEMBER_1_HEALTH)).thenReturn(24);
+		when(client.getVarbitValue(Varbits.TOA_MEMBER_2_HEALTH)).thenReturn(15);
+
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Challenge complete: The Wardens. Duration: <col=ef1020>9:40</col><br>Tombs of Amascut: Expert Mode challenge completion time: <col=ef1020>9:40</col>. Personal best: 8:31", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
 		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Tombs of Amascut total completion time: <col=ef1020>0:01</col> (new personal best)", null, 0);
@@ -1267,5 +1331,26 @@ public class ChatCommandsPluginTest
 
 		verify(configManager).setRSProfileConfiguration("killcount", "tombs of amascut expert mode", 1);
 		verify(configManager).setRSProfileConfiguration("personalbest", "tombs of amascut expert mode", 8 * 60 + 31.);
+		verify(configManager).setRSProfileConfiguration("personalbest", "tombs of amascut expert mode 2 players", 8 * 60 + 31.);
+	}
+
+	@Test
+	public void testToaPbEntry()
+	{
+		when(client.getVarbitValue(Varbits.TOA_MEMBER_1_HEALTH)).thenReturn(24);
+		when(client.getVarbitValue(Varbits.TOA_MEMBER_2_HEALTH)).thenReturn(15);
+
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Challenge complete: The Wardens. Duration: <col=ef1020>9:40</col><br>Tombs of Amascut: Entry Mode challenge completion time: <col=ef1020>9:40</col>. Personal best: 20:31", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Tombs of Amascut total completion time: <col=ef1020>0:01</col> (new personal best)", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Tombs of Amascut: Entry Mode count is: <col=ff0000>9</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("killcount", "tombs of amascut entry mode", 9);
+		verify(configManager).setRSProfileConfiguration("personalbest", "tombs of amascut entry mode", 20 * 60 + 31.);
+		verify(configManager).setRSProfileConfiguration("personalbest", "tombs of amascut entry mode 2 players", 20 * 60 + 31.);
 	}
 }
