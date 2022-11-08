@@ -980,10 +980,4 @@ public final class WidgetID
 		static final int HEADER = 31;
 	}
 
-	static class LapsContainer
-	{
-		static final int CONTAINER = 0;
-		static final int HEADER = 4;
-		static final int LAPCOUNT = 7;
-	}
 }
