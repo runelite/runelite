@@ -2127,6 +2127,7 @@ public final class NullItemID
 	public static final int NULL_5551 = 5551;
 	public static final int NULL_5552 = 5552;
 	public static final int NULL_5572 = 5572;
+	public static final int NULL_5606 = 5606;
 	public static final int NULL_5611 = 5611;
 	public static final int NULL_5612 = 5612;
 	public static final int NULL_5613 = 5613;
