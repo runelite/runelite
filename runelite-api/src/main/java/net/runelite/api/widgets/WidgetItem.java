@@ -54,7 +54,9 @@ public class WidgetItem
 	 * WidgetItem array.
 	 *
 	 * @see Widget#getWidgetItems()
+	 * @deprecated use getWidget().getIndex() instead for the if3 inventory
 	 */
+	@Deprecated
 	private final int index;
 	/**
 	 * The area where the widget is drawn on the canvas.

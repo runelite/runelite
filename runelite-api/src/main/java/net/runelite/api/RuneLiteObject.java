@@ -68,4 +68,50 @@ public interface RuneLiteObject extends GraphicsObject
 	 * @return true if the RuneLiteObject is added to the scene
 	 */
 	boolean isActive();
+
+	/**
+	 * Get the object orientation
+	 * @see net.runelite.api.coords.Angle
+	 * @return
+	 */
+	int getOrientation();
+
+	/**
+	 * Set the object orientation
+	 * @see net.runelite.api.coords.Angle
+	 * @param orientation
+	 */
+	void setOrientation(int orientation);
+
+	/**
+	 * Get the object radius. The radius is offset from the object position to form a 2d rectangle, and the tiles
+	 * the corners are in are used to determine the min and max scene x/y the object is on. These tiles are then drawn
+	 * first prior to the object being drawn, so that the object renders correctly over top of each tile.
+	 * The default radius is 60, marginally less than 128/2, which works well for models the size of a single tile.
+	 * @return
+	 */
+	int getRadius();
+
+	/**
+	 * Set the object radius
+	 * @see #getRadius()
+	 * @param radius
+	 */
+	void setRadius(int radius);
+
+	/**
+	 * If true, the rectangle computed from the radius has 1 or 2 of its sides expanded by a full tile based on the
+	 * orientation the object is facing. This causes the tiles the object is facing to be drawn first, even if the
+	 * radius of the object would not place the object on that tile.
+	 * The default is false.
+	 * @return
+	 */
+	boolean drawFrontTilesFirst();
+
+	/**
+	 * Sets whether the front tiles are drawn first.
+	 * @see #drawFrontTilesFirst()
+	 * @param drawFrontTilesFirst
+	 */
+	void setDrawFrontTilesFirst(boolean drawFrontTilesFirst);
 }

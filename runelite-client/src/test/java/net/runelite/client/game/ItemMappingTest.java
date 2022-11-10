@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2022, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,71 +22,31 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.game;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import com.google.common.collect.Multimap;
+import com.google.common.graph.GraphBuilder;
+import com.google.common.graph.Graphs;
+import com.google.common.graph.MutableGraph;
+import java.util.Map;
+import static org.junit.Assert.assertFalse;
+import org.junit.Test;
 
-/**
- * Represents an inventory that contains items.
- */
-public interface ItemContainer extends Node
+public class ItemMappingTest
 {
-	/**
-	 * Get the item container id
-	 *
-	 * @return
-	 * @see InventoryID
-	 */
-	int getId();
+	@Test
+	public void testCycles()
+	{
+		Multimap<Integer, ItemMapping> mappings = ItemMapping.MAPPINGS;
 
-	/**
-	 * Gets an array of all items in the container.
-	 *
-	 * @return the items held
-	 */
-	@Nonnull
-	Item[] getItems();
+		MutableGraph<Integer> graph = GraphBuilder
+			.directed()
+			.build();
+		for (Map.Entry<Integer, ItemMapping> entry : mappings.entries())
+		{
+			graph.putEdge(entry.getKey(), entry.getValue().getTradeableItem());
+		}
 
-	/**
-	 * Gets an item from the container at the given slot.
-	 *
-	 * @param slot
-	 * @return the item
-	 * @see Item
-	 */
-	@Nullable
-	Item getItem(int slot);
-
-	/**
-	 * Check if this item container contains the given item
-	 *
-	 * @param itemId
-	 * @return
-	 * @see ItemID
-	 */
-	boolean contains(int itemId);
-
-	/**
-	 * Counts how many of an item this item container contains
-	 *
-	 * @param itemId
-	 * @return
-	 * @see ItemID
-	 */
-	int count(int itemId);
-
-	/**
-	 * Get the number of slots in this item container. This includes empty slots.
-	 * For example for the player inventory it can be 28 even with no items in the inventory.
-	 * @see #count() to get the number of filled slots instead
-	 * @return
-	 */
-	int size();
-
-	/**
-	 * Get the total number of filled slots in the item container.
-	 * @return
-	 */
-	int count();
+		assertFalse("item mapping contains a cycle", Graphs.hasCycle(graph));
+	}
 }
