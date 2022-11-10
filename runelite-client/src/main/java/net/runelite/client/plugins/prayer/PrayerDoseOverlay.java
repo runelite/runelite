@@ -50,10 +50,7 @@ import net.runelite.client.util.ColorUtil;
 class PrayerDoseOverlay extends Overlay
 {
 	private static final float PULSE_TIME = 2f * Constants.GAME_TICK_LENGTH;
-
-	private static final Color START_COLOR = new Color(0, 255, 255);
-	private static final Color END_COLOR = new Color(0, 92, 92);
-
+	private static final double DARKEN_FACTOR = 0.36078;
 	private final Client client;
 	private final PrayerPlugin plugin;
 	private final PrayerConfig config;
@@ -148,10 +145,22 @@ class PrayerDoseOverlay extends Overlay
 		final float tickProgress = Math.min(timeSinceLastTick / PULSE_TIME, 1); // Cap between 0 and 1
 		final double t = tickProgress * Math.PI; // Convert to 0 - pi
 
-		graphics.setColor(ColorUtil.colorLerp(START_COLOR, END_COLOR, Math.sin(t)));
+		Color startColor = config.prayerDoseOrbStartColor();
+		graphics.setColor(ColorUtil.colorLerp(
+			startColor,
+			endColor(startColor),
+			Math.sin(t)));
+
 		graphics.setStroke(new BasicStroke(2));
 		graphics.drawOval(orbInnerX, orbInnerY, orbInnerSize, orbInnerSize);
 		return null;
 	}
 
+	private static Color endColor(Color start)
+	{
+		return new Color(Math.max((int) (start.getRed() * DARKEN_FACTOR), 0),
+			Math.max((int) (start.getGreen() * DARKEN_FACTOR), 0),
+			Math.max((int) (start.getBlue() * DARKEN_FACTOR), 0),
+			start.getAlpha());
+	}
 }

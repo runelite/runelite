@@ -47,6 +47,7 @@ import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
+import okhttp3.FormBody;
 import okhttp3.Response;
 
 @PluginDescriptor(
@@ -136,7 +137,7 @@ public class XpUpdaterPlugin extends Plugin
 		username = username.replace(" ", "_");
 		updateCml(username, worldTypes);
 		updateTempleosrs(accountHash, username, worldTypes);
-		updateWom(username, worldTypes);
+		updateWom(accountHash, username, worldTypes);
 	}
 
 	private void updateCml(String username, EnumSet<WorldType> worldTypes)
@@ -194,7 +195,7 @@ public class XpUpdaterPlugin extends Plugin
 		}
 	}
 
-	private void updateWom(String username, EnumSet<WorldType> worldTypes)
+	private void updateWom(long accountHash, String username, EnumSet<WorldType> worldTypes)
 	{
 		if (config.wiseoldman()
 			&& !worldTypes.contains(WorldType.DEADMAN)
@@ -210,10 +211,14 @@ public class XpUpdaterPlugin extends Plugin
 				.addPathSegment(username)
 				.build();
 
+			RequestBody formBody = new FormBody.Builder()
+				.add("accountHash", Long.toString(accountHash))
+				.build();
+
 			Request request = new Request.Builder()
 				.header("User-Agent", "RuneLite")
 				.url(url)
-				.post(RequestBody.create(null, new byte[0]))
+				.post(formBody)
 				.build();
 
 			sendRequest("Wise Old Man", request);

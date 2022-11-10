@@ -460,7 +460,7 @@ public final class ItemID
 	public static final int CLUE_SCROLL = 713;
 	public static final int RADIMUS_NOTES = 714;
 	public static final int RADIMUS_NOTES_715 = 715;
-	public static final int BULL_ROARER = 716;
+	public static final int BULLROARER = 716;
 	public static final int SCRAWLED_NOTE = 717;
 	public static final int A_SCRIBBLED_NOTE = 718;
 	public static final int SCRUMPLED_NOTE = 719;
@@ -3365,7 +3365,6 @@ public final class ItemID
 	public static final int SHEARS_5603 = 5603;
 	public static final int MAGNET_5604 = 5604;
 	public static final int KNIFE_5605 = 5605;
-	public static final int MAKEOVER_VOUCHER = 5606;
 	public static final int GRAIN_5607 = 5607;
 	public static final int FOX = 5608;
 	public static final int CHICKEN = 5609;
