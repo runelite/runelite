@@ -25,16 +25,17 @@
  */
 package net.runelite.client.plugins.fishing;
 
+import com.google.common.primitives.Ints;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
+import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -104,7 +105,7 @@ public class FishingPlugin extends Plugin
 	private FishingSpot currentSpot;
 
 	@Getter
-	private final Set<FishingTool> usableGear = EnumSet.noneOf(FishingTool.class);
+	private Set<FishingTool> usableGear = EnumSet.noneOf(FishingTool.class);
 
 	@Inject
 	private Client client;
@@ -139,7 +140,6 @@ public class FishingPlugin extends Plugin
 		overlayManager.add(overlay);
 		overlayManager.add(spotOverlay);
 		overlayManager.add(fishingSpotMinimapOverlay);
-		usableGear = new HashSet<>();
 	}
 
 	@Override
@@ -152,6 +152,7 @@ public class FishingPlugin extends Plugin
 		overlayManager.remove(fishingSpotMinimapOverlay);
 		fishingSpots.clear();
 		minnowSpots.clear();
+		usableGear.clear();
 		currentSpot = null;
 		trawlerStartTime = null;
 	}
@@ -164,6 +165,7 @@ public class FishingPlugin extends Plugin
 		{
 			fishingSpots.clear();
 			minnowSpots.clear();
+			usableGear.clear();
 		}
 	}
 
@@ -205,15 +207,17 @@ public class FishingPlugin extends Plugin
 		usableGear.clear();
 		if (playerCanFish && config.onlyEquippedFor())
 		{
-			for (Item invItem : Objects.requireNonNull(client.getItemContainer(InventoryID.INVENTORY)).getItems())
-			{
-				usableGear.add(FishingTool.getToolType(invItem.getId()));
-			}
-			for (Item eqpItem : Objects.requireNonNull(client.getItemContainer(InventoryID.EQUIPMENT)).getItems())
-			{
-				usableGear.add(FishingTool.getToolType(eqpItem.getId()));
-			}
-			usableGear.remove(null);
+			int[] toolIDs = Arrays.stream(FishingTool.values())
+				.flatMapToInt(toolCategory -> Arrays.stream(toolCategory.getIds()))
+				.toArray();
+
+			Arrays.stream(client.getItemContainer(InventoryID.INVENTORY).getItems())
+				.filter(item -> Ints.contains(toolIDs, item.getId()))
+				.forEach(item -> usableGear.add(FishingTool.getToolType(item.getId())));
+
+			Arrays.stream(client.getItemContainer(InventoryID.EQUIPMENT).getItems())
+				.filter(item -> Ints.contains(toolIDs, item.getId()))
+				.forEach(item -> usableGear.add(FishingTool.getToolType(item.getId())));
 		}
 	}
 

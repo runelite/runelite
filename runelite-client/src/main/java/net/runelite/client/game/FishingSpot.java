@@ -25,9 +25,11 @@
 package net.runelite.client.game;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.Value;
 import net.runelite.api.ItemID;
@@ -244,61 +246,31 @@ public enum FishingSpot
 
 	public int getFishSpriteId()
 	{
-		int id = 0;
-		for (Map.Entry<FishingTool, Catches> catchEntry : this.catchMap.entrySet())
-		{
-			if (id == 0)
-			{
-				id = catchEntry.getValue().fishSpriteId;
-			}
-		}
-		return id;
+		// Gets the spriteId of the first entry
+		return this.catchMap.values()
+			.iterator().next()
+			.fishSpriteId;
 	}
 
 	public int getFishSpriteId(Set<FishingTool> usableGear)
 	{
-		int id = 0;
-		for (Map.Entry<FishingTool, Catches> catchEntry : this.catchMap.entrySet())
-		{
-			if (usableGear.contains(catchEntry.getKey()) && id == 0)
-			{
-				id = catchEntry.getValue().fishSpriteId;
-			}
-		}
-		return id;
+		return this.catchMap.entrySet().stream()
+			.filter(entry -> usableGear.contains(entry.getKey()))
+			.iterator().next()
+			.getValue().fishSpriteId;
 	}
 
 	public String getFishNames()
 	{
-		String str = "";
-		for (Map.Entry<FishingTool, Catches> catchEntry : this.catchMap.entrySet())
-		{
-			str = str.concat(catchEntry.getValue().fishName);
-			str = str.concat(", ");
-		}
-
-		str = str.substring(0, str.length() - 2);
-
-		return str;
+		return getFishNames(ImmutableSet.copyOf(FishingTool.values()));
 	}
 
 	public String getFishNames(Set<FishingTool> usableGear)
 	{
-		String str = "";
-		for (Map.Entry<FishingTool, Catches> catchEntry : this.catchMap.entrySet())
-		{
-			if (usableGear.contains(catchEntry.getKey()))
-			{
-				str = str.concat(catchEntry.getValue().fishName);
-				str = str.concat(", ");
-			}
-		}
-		if (!str.equals(""))
-		{
-			str = str.substring(0, str.length() - 2);
-		}
-
-		return str;
+		return this.catchMap.entrySet().stream()
+			.filter(entry -> usableGear.contains(entry.getKey()))
+			.map(entry -> entry.getValue().fishName)
+			.collect(Collectors.joining(", "));
 	}
 
 	@Value
