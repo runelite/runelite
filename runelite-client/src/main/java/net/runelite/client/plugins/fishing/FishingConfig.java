@@ -199,5 +199,9 @@ public interface FishingConfig extends Config
 		name = "Display only what you can fish",
 		description = "Only fishing spots which your gear can catch are highlighted."
 	)
-	default boolean onlyEquippedFor() { return false; }
+	default boolean onlyEquippedFor()
+	{
+		return false;
+	}
+
 }
