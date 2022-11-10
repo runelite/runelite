@@ -155,7 +155,7 @@ public class FaloTheBardClue extends ClueScroll implements TextClueScroll, NpcCl
 	}
 
 	@Override
-	public String[] getNpcs()
+	public String[] getNpcs(ClueScrollPlugin plugin)
 	{
 		return new String[] {FALO_THE_BARD};
 	}

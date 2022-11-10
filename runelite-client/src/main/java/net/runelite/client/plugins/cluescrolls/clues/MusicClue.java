@@ -89,7 +89,7 @@ public class MusicClue extends ClueScroll implements NpcClueScroll, LocationClue
 	}
 
 	@Override
-	public String[] getNpcs()
+	public String[] getNpcs(ClueScrollPlugin plugin)
 	{
 		return new String[] {CECILIA};
 	}

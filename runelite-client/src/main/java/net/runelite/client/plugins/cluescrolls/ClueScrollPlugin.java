@@ -969,8 +969,9 @@ public class ClueScrollPlugin extends Plugin
 		}
 
 		final NpcClueScroll npcClueScroll = (NpcClueScroll) clue;
+		final String[] clueNpcs = npcClueScroll.getNpcs(this);
 
-		if (npcClueScroll.getNpcs() == null || npcClueScroll.getNpcs().length == 0)
+		if (clueNpcs == null || clueNpcs.length == 0)
 		{
 			return;
 		}
@@ -982,7 +983,7 @@ public class ClueScrollPlugin extends Plugin
 				continue;
 			}
 
-			for (String npcName : npcClueScroll.getNpcs())
+			for (String npcName : clueNpcs)
 			{
 				if (!Objects.equals(npc.getName(), npcName))
 				{

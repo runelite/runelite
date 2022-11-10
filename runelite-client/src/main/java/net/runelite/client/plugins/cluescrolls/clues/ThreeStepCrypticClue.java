@@ -173,7 +173,7 @@ public class ThreeStepCrypticClue extends ClueScroll implements TextClueScroll, 
 	}
 
 	@Override
-	public String[] getNpcs()
+	public String[] getNpcs(ClueScrollPlugin plugin)
 	{
 		return clueSteps.stream()
 			.filter(s -> !s.getValue())

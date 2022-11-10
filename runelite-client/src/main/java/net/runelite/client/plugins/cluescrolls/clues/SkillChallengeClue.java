@@ -438,7 +438,7 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 	}
 
 	@Override
-	public String[] getNpcs()
+	public String[] getNpcs(ClueScrollPlugin plugin)
 	{
 		return new String[] {type.getName()};
 	}

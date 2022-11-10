@@ -856,7 +856,7 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 	}
 
 	@Override
-	public String[] getNpcs()
+	public String[] getNpcs(ClueScrollPlugin plugin)
 	{
 		return new String[]{npc};
 	}

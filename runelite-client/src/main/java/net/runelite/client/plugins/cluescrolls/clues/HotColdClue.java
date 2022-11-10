@@ -360,7 +360,7 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 	}
 
 	@Override
-	public String[] getNpcs()
+	public String[] getNpcs(ClueScrollPlugin plugin)
 	{
 		return new String[] {npc};
 	}
