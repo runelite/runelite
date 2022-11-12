@@ -1089,9 +1089,15 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 					// find highest op from the current menu, post any existing swaps, for inserting Reset
 					int highestOp = 10;
-					for (int i = idx; i >= 0 && entries[i].getWidget() == w; --i)
+					for (int i = idx; i >= 0; --i)
 					{
-						highestOp = entries[i].getIdentifier();
+						final MenuEntry opEntry = entries[i];
+						if (opEntry.getWidget() != w)
+						{
+							continue;
+						}
+
+						highestOp = opEntry.getIdentifier();
 					}
 
 					if (identifier != lowestOp && (leftClick == null || leftClick != identifier))
