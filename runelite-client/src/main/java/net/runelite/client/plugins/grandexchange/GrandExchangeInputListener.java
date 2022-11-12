@@ -72,7 +72,8 @@ public class GrandExchangeInputListener extends MouseAdapter implements KeyListe
 
 					// Try to replace an untradeable item id with a tradeable component
 					final Collection<ItemMapping> mappedItems = ItemMapping.map(itemId);
-					if (mappedItems != null) {
+					if (mappedItems != null)
+					{
 						final ItemMapping firstMappedItem = mappedItems.iterator().next();
 						itemId = firstMappedItem.getTradeableItem();
 					}
