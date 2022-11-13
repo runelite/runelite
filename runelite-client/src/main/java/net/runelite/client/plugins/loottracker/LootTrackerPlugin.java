@@ -598,11 +598,15 @@ public class LootTrackerPlugin extends Plugin
 	void addLoot(@NonNull String name, int combatLevel, LootRecordType type, Object metadata, Collection<ItemStack> items, int amount)
 	{
 		final LootTrackerItem[] entries = buildEntries(stack(items));
-		if (name.toLowerCase() == "moss giant")
+		String tmpName  = name;
+		for (LootRecord lootRecord : queuedLoots)
 		{
-			name = "Moss giant";
+			if (name.equalsIgnoreCase(lootRecord.getType().name()))
+			{
+				tmpName = lootRecord.getType().name();
+			}
 		}
-		@NonNull String finalName = name;
+		String finalName = tmpName;
 		SwingUtilities.invokeLater(() -> panel.add(finalName, type, combatLevel, entries, amount));
 
 		LootRecord lootRecord = new LootRecord(finalName, type, metadata, toGameItems(items), Instant.now(), getLootWorldId());
