@@ -183,14 +183,6 @@ public interface Widget
 	void setRelativeY(int y);
 
 	/**
-	 * Set a forced position for the widget. This position overrides the relative x/y for the
-	 * widget, even if the widget is revalidated. To clear the forced position pass -1 for x/y.
-	 * @param x x pos relative to the parent
-	 * @param y y pos relative to the parent
-	 */
-	void setForcedPosition(int x, int y);
-
-	/**
 	 * Gets the text displayed on this widget.
 	 *
 	 * @return the displayed text
