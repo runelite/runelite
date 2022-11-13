@@ -74,6 +74,18 @@ public interface Callbacks
 	void updateNpcs();
 
 	/**
+	 * Called before a widget layer is ticked
+	 * @param layer
+	 */
+	void tickLayer(Widget layer);
+
+	/**
+	 * Called before an interface is ticked
+	 * @param interfaceId
+	 */
+	void tickInterface(int interfaceId);
+
+	/**
 	 * Called after the scene is drawn.
 	 */
 	void drawScene();

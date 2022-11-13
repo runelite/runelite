@@ -98,6 +98,16 @@ public abstract class Overlay implements LayoutableRenderableEntity
 	}
 
 	/**
+	 * Called before the layer or interfaces identified in drawHooks are ticked.
+	 * This requires either calling {@link #drawAfterInterface(int)} or {@link #drawAfterLayer(int, int)},
+	 * or having an effective layer of {@link OverlayLayer#ABOVE_WIDGETS}, which implicitly adds a draw hook
+	 * after each of the major TLIs.
+	 */
+	public void widgetTick()
+	{
+	}
+
+	/**
 	 * Configure to draw this overlay after the given interface is drawn. Except
 	 * in rare circumstances, you probably also want to {@link #setLayer(OverlayLayer)} to
 	 * {@link OverlayLayer#MANUAL} to avoid the overlay being drawn a 2nd time during the
