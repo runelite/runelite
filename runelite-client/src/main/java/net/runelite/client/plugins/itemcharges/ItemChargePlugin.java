@@ -573,7 +573,6 @@ public class ItemChargePlugin extends Plugin
 		}
 	}
 
-
 	private void updateDodgyNecklaceCharges(final int value)
 	{
 		setItemCharges(ItemChargeConfig.KEY_DODGY_NECKLACE, value);
