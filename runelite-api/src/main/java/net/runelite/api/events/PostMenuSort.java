@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2022, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,17 +25,10 @@
 package net.runelite.api.events;
 
 /**
- * Posted every client tick (20ms).
- *
- * Client ticks are roughly broken down into
- * 1. packet processing
- * 2. interface tick
- * 3. client tick (this event)
- * 4. clientscript execution
- * 5. menu sorting (see {@link PostMenuSort})
- * 6. menu click detection and drag handling
- * 7. {@link PostClientTick} event
+ * Posted after the menu is sorted, but before clicks are processed.
+ * This is only fired if the menu isn't open, and shouldn't be used as a general purpose
+ * client tick event.
  */
-public class ClientTick
+public class PostMenuSort
 {
 }

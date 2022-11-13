@@ -58,9 +58,9 @@ import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.ParamID;
-import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.PostItemComposition;
+import net.runelite.api.events.PostMenuSort;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
@@ -115,8 +115,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 		MenuAction.GAME_OBJECT_FIRST_OPTION,
 		MenuAction.GAME_OBJECT_SECOND_OPTION,
 		MenuAction.GAME_OBJECT_THIRD_OPTION,
-		MenuAction.GAME_OBJECT_FOURTH_OPTION
-		// GAME_OBJECT_FIFTH_OPTION gets sorted underneath Walk here after we swap, so it doesn't work
+		MenuAction.GAME_OBJECT_FOURTH_OPTION,
+		MenuAction.GAME_OBJECT_FIFTH_OPTION
 	);
 
 	private static final Set<String> ESSENCE_MINE_NPCS = ImmutableSet.of(
@@ -518,6 +518,13 @@ public class MenuEntrySwapperPlugin extends Plugin
 				{
 					if (Strings.isNullOrEmpty(actions[actionIdx]))
 					{
+						continue;
+					}
+
+					if ("Build".equals(actions[actionIdx])
+						|| "Remove".equals(actions[actionIdx]))
+					{
+						// https://secure.runescape.com/m=news/third-party-client-guidelines?oldschool=1
 						continue;
 					}
 
@@ -1497,7 +1504,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onClientTick(ClientTick clientTick)
+	public void onPostMenuSort(PostMenuSort postMenuSort)
 	{
 		// The menu is not rebuilt when it is open, so don't swap or else it will
 		// repeatedly swap entries
@@ -1634,8 +1641,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		entries[index2] = entry1;
 
 		// Item op4 and op5 are CC_OP_LOW_PRIORITY so they get added underneath Use,
-		// but this also causes them to get sorted after client tick. Change them to
-		// CC_OP to avoid this.
+		// but this also makes them right-click only. Change them to CC_OP to avoid this.
 		if (entry1.getType() == MenuAction.CC_OP_LOW_PRIORITY)
 		{
 			entry1.setType(MenuAction.CC_OP);
@@ -1697,7 +1703,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private static MenuAction defaultAction(ObjectComposition objectComposition)
 	{
 		String[] actions = objectComposition.getActions();
-		for (int i = 0; i < OBJECT_MENU_TYPES.size(); ++i)
+		// GAME_OBJECT_FIFTH_OPTION is never the default, even if it is the only option, because it
+		// gets depriotizied below Walk here
+		for (int i = 0; i < OBJECT_MENU_TYPES.size() - 1; ++i)
 		{
 			if (!Strings.isNullOrEmpty(actions[i]))
 			{
