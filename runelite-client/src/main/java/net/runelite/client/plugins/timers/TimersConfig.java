@@ -325,9 +325,9 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showFarmersAffinity",
-			name = "Farmer's Affinity",
-			description = "Configures whether Farmer's Affinity (Puro-Puro) timer is displayed"
+		keyName = "showFarmersAffinity",
+		name = "Farmer's Affinity",
+		description = "Configures whether Farmer's Affinity (Puro-Puro) timer is displayed"
 	)
 	default boolean showFarmersAffinity()
 	{
