@@ -248,17 +248,13 @@ public class AgilityPlugin extends Plugin
 			return;
 		}
 
-		if (session != null && session.getCourse() == course)
-		{
-			session.incrementLapCount(client, xpTrackerService);
-		}
-		else
+		if (session == null || session.getCourse() != course)
 		{
 			session = new AgilitySession(course);
 			// New course found, reset lap count and set new course
 			session.resetLapCount();
-			session.incrementLapCount(client, xpTrackerService);
 		}
+		session.incrementLapCount(client, xpTrackerService);
 	}
 
 	@Subscribe
