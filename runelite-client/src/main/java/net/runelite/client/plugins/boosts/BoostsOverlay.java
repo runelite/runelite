@@ -58,7 +58,7 @@ class BoostsOverlay extends OverlayPanel
 	public Dimension render(Graphics2D graphics)
 	{
 		final Set<Skill> boostedSkills = plugin.getSkillsToDisplay();
-		if (boostedSkills.isEmpty() || !config.displayPanel())
+		if (!config.displayPanel())
 		{
 			return null;
 		}
