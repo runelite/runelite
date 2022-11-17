@@ -87,7 +87,7 @@ class BoostIndicator extends InfoBox
 	@Override
 	public boolean render()
 	{
-		return plugin.canShowBoosts() && plugin.getSkillsToDisplay().contains(getSkill()) && config.displayInfoboxes();
+		return plugin.getSkillsToDisplay().contains(getSkill()) && config.displayInfoboxes();
 	}
 
 	@Override
