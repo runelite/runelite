@@ -366,7 +366,7 @@ public class GroundItemsOverlay extends Overlay
 					final String timerText;
 					if (groundItemTimers == DespawnTimerMode.SECONDS)
 					{
-						timerText = String.format(" - %.1f", despawnTimeMillis / 1000f);
+						timerText = String.format(" - %.0f", despawnTimeMillis / 1000f);
 					}
 					else // TICKS
 					{
