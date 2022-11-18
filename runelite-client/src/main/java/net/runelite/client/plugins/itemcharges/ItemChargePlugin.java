@@ -156,7 +156,7 @@ public class ItemChargePlugin extends Plugin
 	private static final int MAX_BLOOD_ESSENCE_CHARGES = 1000;
 	private static final int MAX_BRACELET_OF_CLAY_CHARGES = 28;
 
-	private static final int INVENTORY_TRAHAEARN_EXCEPTION_SIZE = 27;
+	private static final int INVENTORY_SIZE = 28;
 
 	@Inject
 	private Client client;
@@ -483,7 +483,7 @@ public class ItemChargePlugin extends Plugin
 
 				// Checks if player has twenty-seven items in inventory before taking away a charge
 				// The message runs before the item is received, so we can check if someone would receive one item
-				if (equipment != null && equipment.contains(ItemID.BRACELET_OF_CLAY) && inventory != null && inventory.size() != INVENTORY_TRAHAEARN_EXCEPTION_SIZE)
+				if (equipment != null && equipment.contains(ItemID.BRACELET_OF_CLAY) && inventory != null && inventory.size() != INVENTORY_SIZE - 1)
 				{
 					int charges = Ints.constrainToRange(getItemCharges(ItemChargeConfig.KEY_BRACELET_OF_CLAY) - 1, 0, MAX_BRACELET_OF_CLAY_CHARGES);
 					updateBraceletOfClayCharges(charges);
