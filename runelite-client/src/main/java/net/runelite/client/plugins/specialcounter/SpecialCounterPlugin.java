@@ -474,21 +474,21 @@ public class SpecialCounterPlugin extends Plugin
 
 	private int getHitDelay(SpecialWeapon specialWeapon, Actor target)
 	{
-		// DORGESHUUN_CROSSBOW is the only ranged wep we support, so everything else is just melee and delay 0
+		// DORGESHUUN_CROSSBOW is the only ranged wep we support, so everything else is just melee and delay 1
 		if (specialWeapon != SpecialWeapon.DORGESHUUN_CROSSBOW || target == null)
-			return 0;
+			return 1;
 
 		Player player = client.getLocalPlayer();
 		if (player == null)
-			return 0;
+			return 1;
 
 		WorldPoint playerWp = player.getWorldLocation();
 		if (playerWp == null)
-			return 0;
+			return 1;
 
 		WorldArea targetArea = target.getWorldArea();
 		if (targetArea == null)
-			return 0;
+			return 1;
 
 		final int distance = targetArea.distanceTo(playerWp);
 		// Dorgeshuun special attack projectile, anim delay, and hitsplat is 60 + distance * 3 with the projectile
