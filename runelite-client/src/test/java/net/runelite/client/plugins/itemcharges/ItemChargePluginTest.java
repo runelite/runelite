@@ -98,6 +98,7 @@ public class ItemChargePluginTest
 	private static final String CHECK_BLOOD_ESSENCE = "Your blood essence has 56 charges remaining";
 	private static final String CHECK_BRACELET_OF_CLAY = "You can mine 13 more pieces of soft clay before your bracelet crumbles to dust.";
 	private static final String USED_BRACELET_OF_CLAY = "You manage to mine some clay.";
+	private static final String USED_BRACELET_OF_CLAY_TRAHAEARN = "You manage to mine some soft clay.";
 	private static final String BREAK_BRACELET_OF_CLAY = "Your bracelet of clay crumbles to dust.";
 
 	@Mock
@@ -483,5 +484,22 @@ public class ItemChargePluginTest
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BREAK_BRACELET_OF_CLAY, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
 		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BRACELET_OF_CLAY, 28);
+	}
+
+	@Test
+	public void testBraceletOfClayUseTrahaearn()
+	{
+		when(configManager.getRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BRACELET_OF_CLAY, Integer.class)).thenReturn(13);
+		ItemContainer equipmentItemContainer = mock(ItemContainer.class);
+		ItemContainer inventoryItemContainer = mock(ItemContainer.class);
+		when(client.getItemContainer(InventoryID.EQUIPMENT)).thenReturn(equipmentItemContainer);
+		when(equipmentItemContainer.contains(ItemID.BRACELET_OF_CLAY)).thenReturn(true);
+		when(equipmentItemContainer.getItems()).thenReturn(new Item[0]);
+		when(client.getItemContainer(InventoryID.INVENTORY)).thenReturn(inventoryItemContainer);
+		when(inventoryItemContainer.size()).thenReturn(26);
+
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", USED_BRACELET_OF_CLAY_TRAHAEARN, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BRACELET_OF_CLAY, 12);
 	}
 }
