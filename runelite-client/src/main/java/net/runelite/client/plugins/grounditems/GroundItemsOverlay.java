@@ -199,7 +199,7 @@ public class GroundItemsOverlay extends Overlay
 			}
 
 			final Color highlighted = plugin.getHighlighted(new NamedQuantity(item), item.getGePrice(), item.getHaPrice());
-			final Color hidden = plugin.getHidden(new NamedQuantity(item), item.getGePrice(), item.getHaPrice(), item.isTradeable());
+			final Color hidden = plugin.getHidden(new NamedQuantity(item), item.getGePrice(), item.getHaPrice(), item.isTradeable(), item.isStackable(), item.isNoted());
 
 			if (highlighted == null && !plugin.isHotKeyPressed())
 			{
