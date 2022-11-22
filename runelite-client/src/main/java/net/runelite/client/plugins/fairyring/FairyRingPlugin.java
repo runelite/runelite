@@ -31,7 +31,6 @@ package net.runelite.client.plugins.fairyring;
 import com.google.common.base.Strings;
 import com.google.inject.Provides;
 
-import java.io.File;
 import java.util.*;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -40,7 +39,6 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
 import net.runelite.api.events.*;
 import net.runelite.api.widgets.*;
-import net.runelite.client.RuneLite;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
