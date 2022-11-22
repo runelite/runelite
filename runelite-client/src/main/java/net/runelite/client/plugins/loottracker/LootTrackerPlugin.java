@@ -1119,7 +1119,8 @@ public class LootTrackerPlugin extends Plugin
 			|| id == MenuAction.GAME_OBJECT_FIFTH_OPTION.getId();
 	}
 
-	private static boolean isWidgetContinueOp(MenuAction menuAction) {
+	private static boolean isWidgetContinueOp(MenuAction menuAction)
+	{
 		final int id = menuAction.getId();
 		return id == MenuAction.WIDGET_CONTINUE.getId();
 	}
