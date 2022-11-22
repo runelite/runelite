@@ -218,7 +218,6 @@ public class FairyRingPlugin extends Plugin
 					// find the widget we want by relative x value, this filters out the 'favorites' widget
 					if (w.getRelativeX() >= 20 && USER_CODES.containsKey(FairyRings.valueOf(code1)))
 					{
-						configManager.
 						w.setText(USER_CODES.get(FairyRings.valueOf(code1)));
 					}
 				}
