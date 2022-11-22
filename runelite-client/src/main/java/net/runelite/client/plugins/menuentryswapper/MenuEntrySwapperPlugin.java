@@ -1506,8 +1506,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		// Don't swap on hint arrow npcs, usually they need "Talk-to" for clues.
 		if (hintArrowNpc != null
 			&& hintArrowNpc.getIndex() == eventId
-			&& NPC_MENU_TYPES.contains(menuAction)
-			&& NPC_MENU_TYPES.get(0).equals(MenuAction.NPC_FIRST_OPTION))
+			&& NPC_MENU_TYPES.contains(menuAction))
 		{
 			return;
 		}
