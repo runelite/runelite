@@ -31,6 +31,7 @@ package net.runelite.client.plugins.fairyring;
 import com.google.common.base.Strings;
 import com.google.inject.Provides;
 
+import java.io.File;
 import java.util.*;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -38,11 +39,8 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
 import net.runelite.api.events.*;
-import net.runelite.api.widgets.WidgetType;
-import net.runelite.api.widgets.JavaScriptCallback;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.*;
+import net.runelite.client.RuneLite;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -82,10 +80,13 @@ public class FairyRingPlugin extends Plugin
 	@Inject
 	private ClientThread clientThread;
 
+	@Inject
+	private ConfigManager configManager;
+
 	private ChatboxTextInput searchInput = null;
 	private Widget searchBtn;
 	private Collection<CodeWidgets> codes = null;
-	private Map<FairyRings, String> userCodes = new HashMap<>();
+	private final Map<FairyRings, String> USER_CODES = new HashMap<>();
 
 	@Data
 	private static class CodeWidgets
@@ -145,43 +146,49 @@ public class FairyRingPlugin extends Plugin
 		}
 	}
 
-@Subscribe
-	public void onMenuOpened(MenuOpened menuOpened){
+	@Subscribe
+	public void onMenuOpened(MenuOpened menuOpened)
+	{
 		MenuEntry[] entries = client.getMenuEntries();
-		for (int idx = entries.length - 1; idx >= 0; --idx) {
+		for (int idx = entries.length - 1; idx >= 0; --idx)
+		{
 			MenuEntry entry = entries[idx];
-			if (entry.getOption().contains("Use code")) {
+			if (entry.getOption().contains("Use code"))
+			{
 				client.createMenuEntry(-1)
-						.setOption(SET_TAG)
-						.setTarget(entry.getTarget())
-						.setType(MenuAction.RUNELITE);
+					.setOption(SET_TAG)
+					.setTarget(entry.getTarget())
+					.setType(MenuAction.RUNELITE);
 			}
-
 		}
 	}
 
 	@Subscribe
-	private void onMenuOptionClicked(MenuOptionClicked option) {
-		if (option.getMenuOption().equals(SET_TAG)) {
+	private void onMenuOptionClicked(MenuOptionClicked option)
+	{
+		if (option.getMenuOption().equals(SET_TAG))
+		{
 			String ringCode = Text.removeTags(option.getMenuTarget().replaceAll(" ", ""));
 			log.debug("\n" + ringCode + "\n");
 			openCustomTagInput(ringCode);
 		}
 	}
 
-	private void openCustomTagInput(String code){
-
-		searchInput = chatboxPanelManager.openTextInput(SET_TAG)
-				.onDone(s -> {
-					if (s == null || s.isEmpty())
-					{
-						userCodes.remove(FairyRings.valueOf(code));
-						log.debug("Removed code: " + code + " from your userCodes");
-					}
-					userCodes.put(FairyRings.valueOf(code), s);
-					log.debug("\n\n" + userCodes.get(FairyRings.valueOf(code)));
-				})
-				.build();
+	private void openCustomTagInput(String code)
+	{
+		searchInput = chatboxPanelManager.openTextInput(SET_TAG + " For " + code)
+			.onDone(s -> {
+				if (s == null || s.isEmpty())
+				{
+					USER_CODES.remove(FairyRings.valueOf(code));
+				}
+				else
+				{
+					USER_CODES.put(FairyRings.valueOf(code), "<br>" + s);
+				}
+			})
+			.build();
+		setTravelLogToCustomDestination();
 	}
 
 	private void menuOpen(ScriptEvent e)
@@ -197,23 +204,49 @@ public class FairyRingPlugin extends Plugin
 		client.playSoundEffect(SoundEffectID.UI_BOOP);
 	}
 
-	private void setTravelLogToCustomDestination() {
-		Widget list = client.getWidget(WidgetInfo.FAIRY_RING_LIST);
-		Widget[] codes = list.getStaticChildren();
-		Widget[] descriptions = list.getDynamicChildren();
+	private void setTravelLogToCustomDestination()
+	{
+		final Widget list = client.getWidget(WidgetInfo.FAIRY_RING_LIST);
+		final Widget favoritesList = client.getWidget(WidgetInfo.FAIRY_RING_FAVORITES);
 
-		if (codes == null) {
-			return;
-		}
-		if (userCodes != null) {
-			for (Widget w : codes){
+			try
+			{
+				for (Widget w : list.getStaticChildren())
+				{
+					String code1 = Text.removeTags(w.getName().replaceAll("\\s", ""));
 
+					// find the widget we want by relative x value, this filters out the 'favorites' widget
+					if (w.getRelativeX() >= 20 && USER_CODES.containsKey(FairyRings.valueOf(code1)))
+					{
+						configManager.
+						w.setText(USER_CODES.get(FairyRings.valueOf(code1)));
+					}
+				}
+			}catch (IllegalArgumentException e)
+			{
+				log.debug(e.getMessage());
+			}
+
+			try{
+				for (Widget w : favoritesList.getStaticChildren())
+				{
+					if (w.getId() == 24969225)
+					{
+						continue;
+					}
+
+					String code1 = Text.removeTags(w.getName().replaceAll("\\s", ""));
+					if (w.getRelativeX() >= 20 && USER_CODES.containsKey(FairyRings.valueOf(code1)))
+					{
+						w.setText(USER_CODES.get(FairyRings.valueOf(code1)));
+					}
+				}
+			}
+			catch (IllegalArgumentException e)
+			{
+				log.debug(e.getMessage());
 			}
 		}
-
-	}
-
-
 
 	private void setWidgetTextToDestination()
 	{
@@ -225,16 +258,15 @@ public class FairyRingPlugin extends Plugin
 			{
 				FairyRings fairyRingDestination = getFairyRingDestination(client.getVarbitValue(Varbits.FAIRY_RING_DIAL_ADCB),
 					client.getVarbitValue(Varbits.FAIRY_RIGH_DIAL_ILJK), client.getVarbitValue(Varbits.FAIRY_RING_DIAL_PSRQ));
-				destination = (userCodes.containsKey(fairyRingDestination))
-						? userCodes.get(fairyRingDestination) : fairyRingDestination.getDestination();
-				//destination = fairyRingDestination.getDestination();
+				destination = (USER_CODES.containsKey(fairyRingDestination))
+					? USER_CODES.get(fairyRingDestination) : fairyRingDestination.getDestination();
 			}
 			catch (IllegalArgumentException ex)
 			{
 				destination = "Invalid location";
 			}
 
-			fairyRingTeleportButton.setText(destination);
+			fairyRingTeleportButton.setText(Text.removeTags(destination));
 		}
 	}
 
