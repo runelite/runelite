@@ -33,7 +33,7 @@ import net.runelite.api.FriendsChatRank;
 import static net.runelite.api.FriendsChatRank.UNRANKED;
 import net.runelite.api.MenuAction;
 import static net.runelite.api.MenuAction.ITEM_USE_ON_PLAYER;
-import static net.runelite.api.MenuAction.PLAYER_EIGTH_OPTION;
+import static net.runelite.api.MenuAction.PLAYER_EIGHTH_OPTION;
 import static net.runelite.api.MenuAction.PLAYER_FIFTH_OPTION;
 import static net.runelite.api.MenuAction.PLAYER_FIRST_OPTION;
 import static net.runelite.api.MenuAction.PLAYER_FOURTH_OPTION;
@@ -147,7 +147,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 				|| type == PLAYER_FIFTH_OPTION
 				|| type == PLAYER_SIXTH_OPTION
 				|| type == PLAYER_SEVENTH_OPTION
-				|| type == PLAYER_EIGTH_OPTION
+				|| type == PLAYER_EIGHTH_OPTION
 				|| type == RUNELITE_PLAYER)
 			{
 				Player[] players = client.getCachedPlayers();
