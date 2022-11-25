@@ -657,7 +657,8 @@ class LootTrackerPanel extends PluginPanel
 			}
 		});
 
-		if (groupLoot) {
+		if (groupLoot)
+		{
 			popupMenu.add(resetOthers);
 		}
 
