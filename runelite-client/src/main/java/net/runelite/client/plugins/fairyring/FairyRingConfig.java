@@ -36,8 +36,24 @@ public interface FairyRingConfig extends Config
 		name = "Open search automatically",
 		description = "Open the search widget every time you enter a fairy ring"
 	)
+
 	default boolean autoOpen()
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "customFRDescriptions",
+		name = "",
+		description = ""
+	)
+	void customFRDescriptions(String s);
+
+	@ConfigItem(
+		keyName = "customFRDescriptions",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default String customFRDescriptions() { return ""; }
 }

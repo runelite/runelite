@@ -29,8 +29,12 @@
 package net.runelite.client.plugins.fairyring;
 
 import com.google.common.base.Strings;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.google.inject.Provides;
 
+import java.lang.reflect.Type;
 import java.util.*;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -81,10 +85,13 @@ public class FairyRingPlugin extends Plugin
 	@Inject
 	private ConfigManager configManager;
 
+	@Inject
+	Gson gson;
+
 	private ChatboxTextInput searchInput = null;
 	private Widget searchBtn;
 	private Collection<CodeWidgets> codes = null;
-	private final Map<FairyRings, String> USER_CODES = new HashMap<>();
+	private Map<FairyRings, String> USER_CODES = new HashMap<>();
 
 	@Data
 	private static class CodeWidgets
@@ -167,7 +174,6 @@ public class FairyRingPlugin extends Plugin
 		if (option.getMenuOption().equals(SET_TAG))
 		{
 			String ringCode = Text.removeTags(option.getMenuTarget().replaceAll(" ", ""));
-			log.debug("\n" + ringCode + "\n");
 			openCustomTagInput(ringCode);
 		}
 	}
@@ -179,14 +185,17 @@ public class FairyRingPlugin extends Plugin
 				if (s == null || s.isEmpty())
 				{
 					USER_CODES.remove(FairyRings.valueOf(code));
+					saveUserCodes(USER_CODES);
+					setTravelLogToCustomDestination();
 				}
 				else
 				{
-					USER_CODES.put(FairyRings.valueOf(code), "<br>" + s);
+					USER_CODES.put(FairyRings.valueOf(code), s);
+					saveUserCodes(USER_CODES);
+					setTravelLogToCustomDestination();
 				}
 			})
 			.build();
-		setTravelLogToCustomDestination();
 	}
 
 	private void menuOpen(ScriptEvent e)
@@ -202,8 +211,22 @@ public class FairyRingPlugin extends Plugin
 		client.playSoundEffect(SoundEffectID.UI_BOOP);
 	}
 
+	private void saveUserCodes(Map<FairyRings, String> userCodes){
+		Gson gson = new GsonBuilder().enableComplexMapKeySerialization().create();
+		String codes = gson.toJson(userCodes);
+		config.customFRDescriptions(codes);
+	}
+
+	private void readUserCodes(){
+		Type type = new TypeToken<HashMap<FairyRings, String>>(){}.getType();
+		this.USER_CODES = gson.<HashMap<FairyRings, String>>fromJson(config.customFRDescriptions(), type);
+		log.debug(USER_CODES.toString());
+		log.debug(this.USER_CODES.toString());
+	}
+
 	private void setTravelLogToCustomDestination()
 	{
+		readUserCodes();
 		final Widget list = client.getWidget(WidgetInfo.FAIRY_RING_LIST);
 		final Widget favoritesList = client.getWidget(WidgetInfo.FAIRY_RING_FAVORITES);
 
@@ -216,7 +239,7 @@ public class FairyRingPlugin extends Plugin
 					// find the widget we want by relative x value, this filters out the 'favorites' widget
 					if (w.getRelativeX() >= 20 && USER_CODES.containsKey(FairyRings.valueOf(code1)))
 					{
-						w.setText(USER_CODES.get(FairyRings.valueOf(code1)));
+						w.setText("<br>" + USER_CODES.get(FairyRings.valueOf(code1)));
 					}
 				}
 			}catch (IllegalArgumentException e)
@@ -235,7 +258,7 @@ public class FairyRingPlugin extends Plugin
 					String code1 = Text.removeTags(w.getName().replaceAll("\\s", ""));
 					if (w.getRelativeX() >= 20 && USER_CODES.containsKey(FairyRings.valueOf(code1)))
 					{
-						w.setText(USER_CODES.get(FairyRings.valueOf(code1)));
+						w.setText("<br>" + USER_CODES.get(FairyRings.valueOf(code1)));
 					}
 				}
 			}
