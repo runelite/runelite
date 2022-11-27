@@ -33,7 +33,9 @@ import java.util.Comparator;
 import java.util.List;
 import javax.inject.Inject;
 import lombok.Getter;
+import net.runelite.api.Client;
 import net.runelite.api.Experience;
+import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import net.runelite.api.Skill;
 import net.runelite.api.events.GameStateChanged;
@@ -73,6 +75,9 @@ public class XpGlobesPlugin extends Plugin
 	@Inject
 	private XpGlobesOverlay overlay;
 
+	@Inject
+	private Client client;
+
 	@Provides
 	XpGlobesConfig getConfig(ConfigManager configManager)
 	{
@@ -83,6 +88,25 @@ public class XpGlobesPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(overlay);
+		if (!client.getGameState().equals(GameState.LOGGED_IN))
+		{
+			return;
+		}
+
+		for (Skill skill : Skill.values())
+		{
+			if (skill.equals(Skill.OVERALL))
+			{
+				continue;
+			}
+			int currentXp = client.getSkillExperience(skill);
+			int currentLevel = client.getRealSkillLevel(skill);
+
+			if (shouldSetupGlobalCache(skill, currentXp, currentLevel))
+			{
+				setupGlobalCache(skill, currentXp, currentLevel);
+			}
+		}
 	}
 
 	@Override
@@ -100,38 +124,48 @@ public class XpGlobesPlugin extends Plugin
 		int skillIdx = skill.ordinal();
 		XpGlobe cachedGlobe = globeCache[skillIdx];
 
-		// StatChanged event occurs when stats drain/boost; check we have an change to actual xp
-		if (cachedGlobe != null && (cachedGlobe.getCurrentXp() >= currentXp))
+		if (!shouldSetupGlobalCache(skill, currentXp, currentLevel))
 		{
 			return;
 		}
 
-		if (currentLevel >= Experience.MAX_REAL_LEVEL)
-		{
-			if (config.hideMaxed())
-			{
-				return;
-			}
-
-			if (config.showVirtualLevel())
-			{
-				currentLevel = Experience.getLevelForXp(currentXp);
-			}
-		}
+		setupGlobalCache(skill, currentXp, currentLevel);
 
 		if (cachedGlobe != null)
 		{
 			cachedGlobe.setSkill(skill);
 			cachedGlobe.setCurrentXp(currentXp);
-			cachedGlobe.setCurrentLevel(currentLevel);
+			cachedGlobe.setCurrentLevel(currentLevel >= Experience.MAX_REAL_LEVEL && config.showVirtualLevel() ? Experience.getLevelForXp(currentXp) : currentLevel);
 			cachedGlobe.setTime(Instant.now());
 			addXpGlobe(cachedGlobe);
 		}
-		else
+	}
+
+	private void setupGlobalCache(Skill skill, int currentXp, int currentLevel)
+	{
+		int skillIdx = skill.ordinal();
+		XpGlobe cachedGlobe = globeCache[skillIdx];
+
+		if (currentLevel >= Experience.MAX_REAL_LEVEL && config.showVirtualLevel())
 		{
-			// dont draw non cached globes, this is triggered on login to setup all of the initial values
+			currentLevel = Experience.getLevelForXp(currentXp);
+		}
+		if (cachedGlobe == null)
+		{
 			globeCache[skillIdx] = new XpGlobe(skill, currentXp, currentLevel, Instant.now());
 		}
+	}
+
+	private boolean shouldSetupGlobalCache(Skill skill, int currentXp, int currentLevel)
+	{
+		int skillIdx = skill.ordinal();
+		XpGlobe cachedGlobe = globeCache[skillIdx];
+
+		if (cachedGlobe != null && (cachedGlobe.getCurrentXp() >= currentXp))
+		{
+			return false;
+		}
+		return currentLevel < Experience.MAX_REAL_LEVEL || !config.hideMaxed();
 	}
 
 	private void addXpGlobe(XpGlobe xpGlobe)
