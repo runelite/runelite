@@ -35,6 +35,13 @@ import net.runelite.client.config.Range;
 @ConfigGroup("npcindicators")
 public interface NpcIndicatorsConfig extends Config
 {
+	enum RespawnTimerTypes
+	{
+		OFF,
+		SECONDS,
+		TICKS
+	}
+
 	@ConfigSection(
 		name = "Render style",
 		description = "The render style of NPC highlighting",
@@ -240,13 +247,13 @@ public interface NpcIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 13,
-		keyName = "showRespawnTimer",
-		name = "Show respawn timer",
+		keyName = "npcRespawnTimer",
+		name = "NPC respawn timer",
 		description = "Show respawn timer of tagged NPCs"
 	)
-	default boolean showRespawnTimer()
+	default RespawnTimerTypes npcRespawnTimer()
 	{
-		return false;
+		return RespawnTimerTypes.OFF;
 	}
 
 	@ConfigItem(
