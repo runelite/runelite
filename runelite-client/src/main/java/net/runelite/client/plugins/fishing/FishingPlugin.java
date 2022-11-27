@@ -25,14 +25,18 @@
  */
 package net.runelite.client.plugins.fishing;
 
+import com.google.common.primitives.Ints;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.AccessLevel;
@@ -45,7 +49,6 @@ import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.NPC;
 import net.runelite.api.Varbits;
@@ -101,6 +104,9 @@ public class FishingPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private FishingSpot currentSpot;
 
+	@Getter
+	private Set<FishingTool> usableGear = EnumSet.noneOf(FishingTool.class);
+
 	@Inject
 	private Client client;
 
@@ -146,6 +152,7 @@ public class FishingPlugin extends Plugin
 		overlayManager.remove(fishingSpotMinimapOverlay);
 		fishingSpots.clear();
 		minnowSpots.clear();
+		usableGear.clear();
 		currentSpot = null;
 		trawlerStartTime = null;
 	}
@@ -158,6 +165,7 @@ public class FishingPlugin extends Plugin
 		{
 			fishingSpots.clear();
 			minnowSpots.clear();
+			usableGear.clear();
 		}
 	}
 
@@ -182,9 +190,11 @@ public class FishingPlugin extends Plugin
 			return;
 		}
 
-		final boolean showOverlays = session.getLastFishCaught() != null
-			|| canPlayerFish(client.getItemContainer(InventoryID.INVENTORY))
-			|| canPlayerFish(client.getItemContainer(InventoryID.EQUIPMENT));
+		boolean playerCanFish = canPlayerFish(
+			client.getItemContainer(InventoryID.INVENTORY),
+			client.getItemContainer(InventoryID.EQUIPMENT));
+
+		final boolean showOverlays = session.getLastFishCaught() != null || playerCanFish;
 
 		if (!showOverlays)
 		{
@@ -193,6 +203,22 @@ public class FishingPlugin extends Plugin
 
 		spotOverlay.setHidden(!showOverlays);
 		fishingSpotMinimapOverlay.setHidden(!showOverlays);
+
+		usableGear.clear();
+		if (playerCanFish && config.onlyEquippedFor())
+		{
+			int[] toolIDs = Arrays.stream(FishingTool.values())
+				.flatMapToInt(toolCategory -> Arrays.stream(toolCategory.getIds()))
+				.toArray();
+
+			Arrays.stream(client.getItemContainer(InventoryID.INVENTORY).getItems())
+				.filter(item -> Ints.contains(toolIDs, item.getId()))
+				.forEach(item -> usableGear.add(FishingTool.getToolType(item.getId())));
+
+			Arrays.stream(client.getItemContainer(InventoryID.EQUIPMENT).getItems())
+				.filter(item -> Ints.contains(toolIDs, item.getId()))
+				.forEach(item -> usableGear.add(FishingTool.getToolType(item.getId())));
+		}
 	}
 
 	@Subscribe
@@ -243,45 +269,22 @@ public class FishingPlugin extends Plugin
 		currentSpot = spot;
 	}
 
-	private boolean canPlayerFish(final ItemContainer itemContainer)
+	private static boolean canPlayerFish(final ItemContainer... itemContainer)
 	{
-		if (itemContainer == null)
+		for (ItemContainer container : itemContainer)
 		{
-			return false;
-		}
-
-		for (Item item : itemContainer.getItems())
-		{
-			switch (item.getId())
+			if (container == null)
 			{
-				case ItemID.DRAGON_HARPOON:
-				case ItemID.DRAGON_HARPOON_OR:
-				case ItemID.INFERNAL_HARPOON:
-				case ItemID.INFERNAL_HARPOON_UNCHARGED:
-				case ItemID.INFERNAL_HARPOON_UNCHARGED_25367:
-				case ItemID.HARPOON:
-				case ItemID.BARBTAIL_HARPOON:
-				case ItemID.BIG_FISHING_NET:
-				case ItemID.SMALL_FISHING_NET:
-				case ItemID.SMALL_FISHING_NET_6209:
-				case ItemID.FISHING_ROD:
-				case ItemID.FLY_FISHING_ROD:
-				case ItemID.PEARL_BARBARIAN_ROD:
-				case ItemID.PEARL_FISHING_ROD:
-				case ItemID.PEARL_FLY_FISHING_ROD:
-				case ItemID.BARBARIAN_ROD:
-				case ItemID.OILY_FISHING_ROD:
-				case ItemID.LOBSTER_POT:
-				case ItemID.KARAMBWAN_VESSEL:
-				case ItemID.KARAMBWAN_VESSEL_3159:
-				case ItemID.CORMORANTS_GLOVE:
-				case ItemID.CORMORANTS_GLOVE_22817:
-				case ItemID.INFERNAL_HARPOON_OR:
-				case ItemID.TRAILBLAZER_HARPOON:
-				case ItemID.CRYSTAL_HARPOON:
-				case ItemID.CRYSTAL_HARPOON_23864:
-				case ItemID.CRYSTAL_HARPOON_INACTIVE:
+				continue;
+			}
+
+			for (Item item : container.getItems())
+			{
+				FishingTool toolType = FishingTool.getToolType(item.getId());
+				if (toolType != null)
+				{
 					return true;
+				}
 			}
 		}
 
@@ -308,7 +311,7 @@ public class FishingPlugin extends Plugin
 
 		for (NPC npc : fishingSpots)
 		{
-			if (FishingSpot.findSpot(npc.getId()) == FishingSpot.MINNOW && config.showMinnowOverlay())
+			if (FishingSpot.findSpot(npc.getId()) == FishingSpot.NET_MINNOW && config.showMinnowOverlay())
 			{
 				final int id = npc.getIndex();
 				final MinnowSpot minnowSpot = minnowSpots.get(id);

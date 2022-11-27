@@ -106,16 +106,21 @@ class FishingSpotOverlay extends Overlay
 				continue;
 			}
 
+			if (!spot.isEquippedToFish(plugin.getUsableGear()) && config.onlyEquippedFor())
+			{
+				continue;
+			}
+
 			Color color;
 			if (npc.getGraphic() == GraphicID.FLYING_FISH)
 			{
 				color = config.getMinnowsOverlayColor();
 			}
-			else if (spot == FishingSpot.COMMON_TENCH && npc.getWorldLocation().distanceTo2D(client.getLocalPlayer().getWorldLocation()) <= ONE_TICK_AERIAL_FISHING)
+			else if (spot == FishingSpot.CATCH_AERIALFISHING && npc.getWorldLocation().distanceTo2D(client.getLocalPlayer().getWorldLocation()) <= ONE_TICK_AERIAL_FISHING)
 			{
 				color = config.getAerialOverlayColor();
 			}
-			else if (spot == FishingSpot.HARPOONFISH && npc.getId() == NpcID.FISHING_SPOT_10569)
+			else if (spot == FishingSpot.HARPOON_TEMPOROSS && npc.getId() == NpcID.FISHING_SPOT_10569)
 			{
 				color = config.getHarpoonfishOverlayColor();
 			}
@@ -124,7 +129,7 @@ class FishingSpotOverlay extends Overlay
 				color = config.getOverlayColor();
 			}
 
-			if (spot == FishingSpot.MINNOW && config.showMinnowOverlay())
+			if (spot == FishingSpot.NET_MINNOW && config.showMinnowOverlay())
 			{
 				MinnowSpot minnowSpot = plugin.getMinnowSpots().get(npc.getIndex());
 				if (minnowSpot != null)
@@ -162,9 +167,17 @@ class FishingSpotOverlay extends Overlay
 
 			if (config.showSpotIcons())
 			{
-				BufferedImage fishImage = itemManager.getImage(spot.getFishSpriteId());
+				BufferedImage fishImage;
+				if (config.onlyEquippedFor())
+				{
+					fishImage = itemManager.getImage(spot.getFishSpriteId(plugin.getUsableGear()));
+				}
+				else
+				{
+					fishImage = itemManager.getImage(spot.getFishSpriteId());
+				}
 
-				if (spot == FishingSpot.COMMON_TENCH
+				if (spot == FishingSpot.CATCH_AERIALFISHING
 					&& npc.getWorldLocation().distanceTo2D(client.getLocalPlayer().getWorldLocation()) <= ONE_TICK_AERIAL_FISHING)
 				{
 					fishImage = ImageUtil.outlineImage(itemManager.getImage(spot.getFishSpriteId()), color);
@@ -182,7 +195,15 @@ class FishingSpotOverlay extends Overlay
 
 			if (config.showSpotNames())
 			{
-				String text = spot.getName();
+				String text;
+				if (config.onlyEquippedFor())
+				{
+					text = spot.getFishNames(plugin.getUsableGear());
+				}
+				else
+				{
+					text = spot.getFishNames();
+				}
 				Point textLocation = npc.getCanvasTextLocation(graphics, text, npc.getLogicalHeight() + 40);
 
 				if (textLocation != null)

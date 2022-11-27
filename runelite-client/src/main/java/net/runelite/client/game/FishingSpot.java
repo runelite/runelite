@@ -25,15 +25,25 @@
 package net.runelite.client.game;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
+import java.util.Collections;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.Getter;
+import lombok.Value;
 import net.runelite.api.ItemID;
 import static net.runelite.api.NpcID.*;
+import net.runelite.client.plugins.fishing.FishingTool;
 
 @Getter
 public enum FishingSpot
 {
-	SHRIMP("Shrimp, Anchovies, Sardine, Herring", "Anchovies", ItemID.RAW_SHRIMPS,
+	NET_BAIT("Anchovies",
+		new ImmutableMap.Builder<FishingTool, Catches>()
+			.put(FishingTool.SMALL_FISHING_NET, new Catches("Shrimp, Anchovies", ItemID.RAW_ANCHOVIES))
+			.put(FishingTool.FISHING_ROD, new Catches("Sardines, Herring", ItemID.RAW_HERRING))
+			.build(),
 		FISHING_SPOT_1514, FISHING_SPOT_1517, FISHING_SPOT_1518,
 		FISHING_SPOT_1521, FISHING_SPOT_1523, FISHING_SPOT_1524,
 		FISHING_SPOT_1525, FISHING_SPOT_1528, FISHING_SPOT_1530,
@@ -41,14 +51,22 @@ public enum FishingSpot
 		FISHING_SPOT_7459, FISHING_SPOT_7462, FISHING_SPOT_7467,
 		FISHING_SPOT_7469, FISHING_SPOT_7947, FISHING_SPOT_10513
 	),
-	LOBSTER("Lobster, Swordfish, Tuna", "Lobster", ItemID.RAW_LOBSTER,
+	CAGE_HARPOON("Lobster",
+		new ImmutableMap.Builder<FishingTool, Catches>()
+			.put(FishingTool.LOBSTER_POT, new Catches("Lobster", ItemID.RAW_LOBSTER))
+			.put(FishingTool.HARPOON, new Catches("Tuna, Swordfish", ItemID.RAW_SWORDFISH))
+			.build(),
 		FISHING_SPOT_1510, FISHING_SPOT_1519, FISHING_SPOT_1522,
 		FISHING_SPOT_3914, FISHING_SPOT_5820, FISHING_SPOT_7199,
 		FISHING_SPOT_7460, FISHING_SPOT_7465, FISHING_SPOT_7470,
 		FISHING_SPOT_7946, FISHING_SPOT_9173, FISHING_SPOT_9174,
 		FISHING_SPOT_10515, FISHING_SPOT_10635
 	),
-	SHARK("Shark, Bass", "Shark", ItemID.RAW_SHARK,
+	BIGNET_HARPOON("Shark",
+		new ImmutableMap.Builder<FishingTool, Catches>()
+			.put(FishingTool.HARPOON, new Catches("Shark", ItemID.RAW_SHARK))
+			.put(FishingTool.BIG_FISHING_NET, new Catches("Mackerel, Cod, Bass, Misc.", ItemID.RAW_COD))
+			.build(),
 		FISHING_SPOT_1511, FISHING_SPOT_1520, FISHING_SPOT_3419,
 		FISHING_SPOT_3915, FISHING_SPOT_4476, FISHING_SPOT_4477,
 		FISHING_SPOT_5233, FISHING_SPOT_5234, FISHING_SPOT_5821,
@@ -56,10 +74,18 @@ public enum FishingSpot
 		FISHING_SPOT_8525, FISHING_SPOT_8526, FISHING_SPOT_8527,
 		FISHING_SPOT_9171, FISHING_SPOT_9172, FISHING_SPOT_10514
 	),
-	MONKFISH("Monkfish", ItemID.RAW_MONKFISH,
+	NET_HARPOON("Monkfish",
+		new ImmutableMap.Builder<FishingTool, Catches>()
+			.put(FishingTool.SMALL_FISHING_NET, new Catches("Monkfish", ItemID.RAW_MONKFISH))
+			.put(FishingTool.HARPOON, new Catches("Tuna, Swordfish", ItemID.RAW_SWORDFISH))
+			.build(),
 		FISHING_SPOT_4316
 	),
-	SALMON("Salmon, Trout, Pike", "Salmon", ItemID.RAW_SALMON,
+	LURE_BAIT("Salmon",
+		new ImmutableMap.Builder<FishingTool, Catches>()
+			.put(FishingTool.FLY_FISHING_ROD, new Catches("Salmon, Trout, Rainbow Fish", ItemID.RAW_SALMON))
+			.put(FishingTool.FISHING_ROD, new Catches("Pike", ItemID.RAW_PIKE))
+			.build(),
 		ROD_FISHING_SPOT, ROD_FISHING_SPOT_1506, ROD_FISHING_SPOT_1507,
 		ROD_FISHING_SPOT_1508, ROD_FISHING_SPOT_1509, ROD_FISHING_SPOT_1513,
 		ROD_FISHING_SPOT_1515, ROD_FISHING_SPOT_1516, ROD_FISHING_SPOT_1526,
@@ -67,67 +93,123 @@ public enum FishingSpot
 		ROD_FISHING_SPOT_7463, ROD_FISHING_SPOT_7464, ROD_FISHING_SPOT_7468,
 		ROD_FISHING_SPOT_8524
 	),
-	LAVA_EEL("Lava eel", ItemID.LAVA_EEL,
+	BAIT_LAVA("Lava Eel",
+		new ImmutableMap.Builder<FishingTool, Catches>()
+			.put(FishingTool.OILY_FISHING_ROD, new Catches("Lava Eel", ItemID.RAW_LAVA_EEL))
+			.build(),
 		FISHING_SPOT_4928, FISHING_SPOT_6784
 	),
-	BARB_FISH("Sturgeon, Salmon, Trout", ItemID.LEAPING_STURGEON,
+	USEROD_BARBARIAN("Sturgeon, Salmon, Trout",
+		new ImmutableMap.Builder<FishingTool, Catches>()
+			.put(FishingTool.BARBARIAN_ROD, new Catches("Leaping Trout, Salmon, Sturgeon", ItemID.LEAPING_STURGEON))
+			.build(),
 		FISHING_SPOT_1542, FISHING_SPOT_7323
 	),
-	ANGLERFISH("Anglerfish", ItemID.RAW_ANGLERFISH,
+	BAIT_ANGLERFISH("Anglerfish",
+		new ImmutableMap.Builder<FishingTool, Catches>()
+			.put(FishingTool.FISHING_ROD, new Catches("Anglerfish", ItemID.RAW_ANGLERFISH))
+			.build(),
 		ROD_FISHING_SPOT_6825
 	),
-	MINNOW("Minnow", ItemID.MINNOW,
+	NET_MINNOW("Minnow",
+		new ImmutableMap.Builder<FishingTool, Catches>()
+			.put(FishingTool.SMALL_FISHING_NET, new Catches("Minnow", ItemID.MINNOW))
+			.build(),
 		FISHING_SPOT_7730, FISHING_SPOT_7731, FISHING_SPOT_7732, FISHING_SPOT_7733
 	),
-	HARPOONFISH("Harpoonfish", ItemID.RAW_HARPOONFISH,
+	HARPOON_TEMPOROSS("Harpoonfish",
+		new ImmutableMap.Builder<FishingTool, Catches>()
+			.put(FishingTool.HARPOON, new Catches("Harpoonfish", ItemID.HARPOONFISH))
+			.build(),
 		FISHING_SPOT_10565, FISHING_SPOT_10568, FISHING_SPOT_10569
 	),
-	INFERNAL_EEL("Infernal Eel", ItemID.INFERNAL_EEL,
+	BAIT_INFERNAL("Infernal Eel",
+		new ImmutableMap.Builder<FishingTool, Catches>()
+			.put(FishingTool.OILY_FISHING_ROD, new Catches("Infernal Eel", ItemID.INFERNAL_EEL))
+			.build(),
 		ROD_FISHING_SPOT_7676
 	),
-	KARAMBWAN("Karambwan", ItemID.RAW_KARAMBWAN,
+	FISH_KARAMBWAN("Karambwan",
+		new ImmutableMap.Builder<FishingTool, Catches>()
+			.put(FishingTool.KARAMBWAN_VESSEL, new Catches("Karambwan", ItemID.RAW_KARAMBWAN))
+			.build(),
 		FISHING_SPOT_4712, FISHING_SPOT_4713
 	),
-	KARAMBWANJI("Karambwanji, Shrimp", "Karambwanji", ItemID.KARAMBWANJI,
+	NET_KARAMBWANJI("Karambwanji",
+		new ImmutableMap.Builder<FishingTool, Catches>()
+			.put(FishingTool.SMALL_FISHING_NET, new Catches("Karambwanji, Shrimp", ItemID.KARAMBWANJI))
+			.build(),
 		FISHING_SPOT_4710
 	),
-	SACRED_EEL("Sacred eel", ItemID.SACRED_EEL,
+	BAIT_SACRED("Sacred eel",
+		new ImmutableMap.Builder<FishingTool, Catches>()
+			.put(FishingTool.FISHING_ROD, new Catches("Sacred Eel", ItemID.SACRED_EEL))
+			.build(),
 		FISHING_SPOT_6488
 	),
-	CAVE_EEL("Frog spawn, Cave eel", ItemID.RAW_CAVE_EEL,
+	NET_BAIT_FROGSPAWN("Frog Spawn, Cave Eel",
+		new ImmutableMap.Builder<FishingTool, Catches>()
+			.put(FishingTool.SMALL_FISHING_NET, new Catches("Frog Spawn", ItemID.FROG_SPAWN))
+			.put(FishingTool.FISHING_ROD, new Catches("Slimy Eel, Cave Eel", ItemID.RAW_CAVE_EEL))
+			.build(),
 		FISHING_SPOT_1497, FISHING_SPOT_1498, FISHING_SPOT_1499, FISHING_SPOT_1500
 	),
-	SLIMY_EEL("Slimy eel", ItemID.RAW_SLIMY_EEL,
+	BAIT_SWAMP("Slimy Eel",
+		new ImmutableMap.Builder<FishingTool, Catches>()
+			.put(FishingTool.FISHING_ROD, new Catches("Slimy Eel", ItemID.RAW_SLIMY_EEL))
+			.build(),
 		FISHING_SPOT_2653, FISHING_SPOT_2654, FISHING_SPOT_2655
 	),
-	DARK_CRAB("Dark Crab", ItemID.RAW_DARK_CRAB,
+	CAGE_HARPOON_WILDERNESS("Dark Crab",
+		new ImmutableMap.Builder<FishingTool, Catches>()
+			.put(FishingTool.LOBSTER_POT, new Catches("Dark Crab, Lobster", ItemID.RAW_DARK_CRAB))
+			.put(FishingTool.HARPOON, new Catches("Tuna, Swordfish", ItemID.RAW_SWORDFISH))
+			.build(),
 		FISHING_SPOT_1535, FISHING_SPOT_1536
 	),
-	COMMON_TENCH("Common tench, Bluegill, Greater siren, Mottled eel", "Greater siren", ItemID.COMMON_TENCH,
+	CATCH_AERIALFISHING("Aerial Fishing",
+		new ImmutableMap.Builder<FishingTool, Catches>()
+			.put(FishingTool.CORMORANTS_GLOVE, new Catches("Bluegill, Common Tench, Mottled Eel, Greater Siren", ItemID.COMMON_TENCH))
+			.build(),
 		FISHING_SPOT_8523
 	),
-	TUTORIAL_SHRIMP("Shrimp", ItemID.RAW_SHRIMPS,
+	FISH_TUTORIALISLAND("Shrimp",
+		new ImmutableMap.Builder<FishingTool, Catches>()
+			.put(FishingTool.SMALL_FISHING_NET, new Catches("Your first catch", ItemID.RAW_SHRIMPS))
+			.build(),
 		FISHING_SPOT_3317
 	),
-	ETCETERIA_LOBSTER("Lobster", "Lobster (Approval only)", ItemID.RAW_LOBSTER,
+	CAGE_HARPOON_APPROVALONLY("Lobster (Approval only)",
+		new ImmutableMap.Builder<FishingTool, Catches>()
+			.put(FishingTool.LOBSTER_POT, new Catches("Lobster (Approval only)", ItemID.RAW_LOBSTER))
+			.put(FishingTool.HARPOON, new Catches("Tuna, Swordfish (Approval only)", ItemID.RAW_SWORDFISH))
+			.build(),
 		FISHING_SPOT_3657
 	),
-	QUEST_RUM_DEAL("Sluglings", "Rum deal (Quest)", ItemID.SLUGLINGS,
+	QUEST_RUM_DEAL("Rum Deal (Quest)",
+		new ImmutableMap.Builder<FishingTool, Catches>()
+			.put(FishingTool.FISHBOWL_NET, new Catches("Sluglings, Karamthulhu", ItemID.SLUGLINGS))
+			.build(),
 		FISHING_SPOT
 	),
-	QUEST_TAI_BWO_WANNAI_TRIO("Karambwan", "Tai Bwo Wannai Trio (Quest)", ItemID.RAW_KARAMBWAN,
+	QUEST_TAI_BWO_WANNAI_TRIO("Tai Bwo Wannai Trio (Quest)",
+		new ImmutableMap.Builder<FishingTool, Catches>()
+			.put(FishingTool.KARAMBWAN_VESSEL, new Catches("Karambwan", ItemID.RAW_KARAMBWAN))
+			.build(),
 		FISHING_SPOT_4714
 	),
-	QUEST_FISHING_CONTEST("Giant carp", "Fishing Contest (Quest)", ItemID.GIANT_CARP,
+	QUEST_FISHING_CONTEST("Fishing Contest (Quest)",
+		new ImmutableMap.Builder<FishingTool, Catches>()
+			.put(FishingTool.FISHING_ROD, new Catches("Giant Carp", ItemID.RAW_GIANT_CARP))
+			.build(),
 		FISHING_SPOT_4079, FISHING_SPOT_4080, FISHING_SPOT_4081, FISHING_SPOT_4082
 	),
 	;
 
 	private static final Map<Integer, FishingSpot> SPOTS;
 
-	private final String name;
 	private final String worldMapTooltip;
-	private final int fishSpriteId;
+	private final ImmutableMap<FishingTool, Catches> catchMap;
 	private final int[] ids;
 
 	static
@@ -145,21 +227,56 @@ public enum FishingSpot
 		SPOTS = builder.build();
 	}
 
-	FishingSpot(String spot, int fishSpriteId, int... ids)
+	FishingSpot(String worldMapTooltip, ImmutableMap<FishingTool, Catches> catchMap, int... ids)
 	{
-		this(spot, spot, fishSpriteId, ids);
-	}
-
-	FishingSpot(String spot, String worldMapTooltip, int fishSpriteId, int... ids)
-	{
-		this.name = spot;
 		this.worldMapTooltip = worldMapTooltip;
-		this.fishSpriteId = fishSpriteId;
+		this.catchMap = catchMap;
 		this.ids = ids;
 	}
 
 	public static FishingSpot findSpot(int id)
 	{
 		return SPOTS.get(id);
+	}
+
+	public boolean isEquippedToFish(Set<FishingTool> usableGear)
+	{
+		return !Collections.disjoint(this.catchMap.keySet(), usableGear);
+	}
+
+	public int getFishSpriteId()
+	{
+		// Gets the spriteId of the first entry
+		return this.catchMap.values()
+			.iterator().next()
+			.fishSpriteId;
+	}
+
+	public int getFishSpriteId(Set<FishingTool> usableGear)
+	{
+		return this.catchMap.entrySet().stream()
+			.filter(entry -> usableGear.contains(entry.getKey()))
+			.iterator().next()
+			.getValue().fishSpriteId;
+	}
+
+	public String getFishNames()
+	{
+		return getFishNames(ImmutableSet.copyOf(FishingTool.values()));
+	}
+
+	public String getFishNames(Set<FishingTool> usableGear)
+	{
+		return this.catchMap.entrySet().stream()
+			.filter(entry -> usableGear.contains(entry.getKey()))
+			.map(entry -> entry.getValue().fishName)
+			.collect(Collectors.joining(", "));
+	}
+
+	@Value
+	private static class Catches
+	{
+		String fishName;
+		int fishSpriteId;
 	}
 }
