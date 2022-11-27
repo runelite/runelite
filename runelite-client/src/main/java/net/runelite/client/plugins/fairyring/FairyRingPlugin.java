@@ -199,7 +199,8 @@ public class FairyRingPlugin extends Plugin
 	private void openCustomTagInput(String code)
 	{
 		searchInput = chatboxPanelManager.openTextInput(SET_TAG + " For " + code)
-			.onDone(s -> {
+			.onDone(s ->
+			{
 				if (s == null || s.isEmpty())
 				{
 					USER_CODES.remove(FairyRings.valueOf(code));
