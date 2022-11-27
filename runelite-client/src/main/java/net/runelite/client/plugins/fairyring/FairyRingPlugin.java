@@ -224,8 +224,6 @@ public class FairyRingPlugin extends Plugin
 		{
 		}.getType();
 		this.USER_CODES = gson.<HashMap<FairyRings, String>>fromJson(config.customFRDescriptions(), type);
-		log.debug(USER_CODES.toString());
-		log.debug(this.USER_CODES.toString());
 	}
 
 	private void setTravelLogToCustomDestination()
@@ -238,12 +236,12 @@ public class FairyRingPlugin extends Plugin
 		{
 			for (Widget w : list.getStaticChildren())
 			{
-				String code1 = Text.removeTags(w.getName().replaceAll("\\s", ""));
+				String code = Text.removeTags(w.getName().replaceAll("\\s", ""));
 
-				// find the widget we want by relative x value, this filters out the 'favorites' widget
-				if (w.getRelativeX() >= 20 && USER_CODES.containsKey(FairyRings.valueOf(code1)))
+				// find the widget we want by relative x value, this filters out the 'favorites' heart widget
+				if (w.getRelativeX() >= 20 && USER_CODES.containsKey(FairyRings.valueOf(code)))
 				{
-					w.setText("<br>" + USER_CODES.get(FairyRings.valueOf(code1)));
+					w.setText("<br>" + USER_CODES.get(FairyRings.valueOf(code)));
 				}
 			}
 		}
@@ -261,10 +259,10 @@ public class FairyRingPlugin extends Plugin
 					continue;
 				}
 
-				String code1 = Text.removeTags(w.getName().replaceAll("\\s", ""));
-				if (w.getRelativeX() >= 20 && USER_CODES.containsKey(FairyRings.valueOf(code1)))
+				String code = Text.removeTags(w.getName().replaceAll("\\s", ""));
+				if (w.getRelativeX() >= 20 && USER_CODES.containsKey(FairyRings.valueOf(code)))
 				{
-					w.setText("<br>" + USER_CODES.get(FairyRings.valueOf(code1)));
+					w.setText("<br>" + USER_CODES.get(FairyRings.valueOf(code)));
 				}
 			}
 		}
