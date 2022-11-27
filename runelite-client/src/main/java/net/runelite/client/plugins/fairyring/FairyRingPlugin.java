@@ -211,14 +211,18 @@ public class FairyRingPlugin extends Plugin
 		client.playSoundEffect(SoundEffectID.UI_BOOP);
 	}
 
-	private void saveUserCodes(Map<FairyRings, String> userCodes){
+	private void saveUserCodes(Map<FairyRings, String> userCodes)
+	{
 		Gson gson = new GsonBuilder().enableComplexMapKeySerialization().create();
 		String codes = gson.toJson(userCodes);
 		config.customFRDescriptions(codes);
 	}
 
-	private void readUserCodes(){
-		Type type = new TypeToken<HashMap<FairyRings, String>>(){}.getType();
+	private void readUserCodes()
+	{
+		Type type = new TypeToken<HashMap<FairyRings, String>>()
+		{
+		}.getType();
 		this.USER_CODES = gson.<HashMap<FairyRings, String>>fromJson(config.customFRDescriptions(), type);
 		log.debug(USER_CODES.toString());
 		log.debug(this.USER_CODES.toString());
@@ -230,43 +234,45 @@ public class FairyRingPlugin extends Plugin
 		final Widget list = client.getWidget(WidgetInfo.FAIRY_RING_LIST);
 		final Widget favoritesList = client.getWidget(WidgetInfo.FAIRY_RING_FAVORITES);
 
-			try
+		try
+		{
+			for (Widget w : list.getStaticChildren())
 			{
-				for (Widget w : list.getStaticChildren())
+				String code1 = Text.removeTags(w.getName().replaceAll("\\s", ""));
+
+				// find the widget we want by relative x value, this filters out the 'favorites' widget
+				if (w.getRelativeX() >= 20 && USER_CODES.containsKey(FairyRings.valueOf(code1)))
 				{
-					String code1 = Text.removeTags(w.getName().replaceAll("\\s", ""));
-
-					// find the widget we want by relative x value, this filters out the 'favorites' widget
-					if (w.getRelativeX() >= 20 && USER_CODES.containsKey(FairyRings.valueOf(code1)))
-					{
-						w.setText("<br>" + USER_CODES.get(FairyRings.valueOf(code1)));
-					}
+					w.setText("<br>" + USER_CODES.get(FairyRings.valueOf(code1)));
 				}
-			}catch (IllegalArgumentException e)
-			{
-				log.debug(e.getMessage());
-			}
-
-			try{
-				for (Widget w : favoritesList.getStaticChildren())
-				{
-					if (w.getId() == 24969225)
-					{
-						continue;
-					}
-
-					String code1 = Text.removeTags(w.getName().replaceAll("\\s", ""));
-					if (w.getRelativeX() >= 20 && USER_CODES.containsKey(FairyRings.valueOf(code1)))
-					{
-						w.setText("<br>" + USER_CODES.get(FairyRings.valueOf(code1)));
-					}
-				}
-			}
-			catch (IllegalArgumentException e)
-			{
-				log.debug(e.getMessage());
 			}
 		}
+		catch (IllegalArgumentException e)
+		{
+			log.debug(e.getMessage());
+		}
+
+		try
+		{
+			for (Widget w : favoritesList.getStaticChildren())
+			{
+				if (w.getId() == 24969225)
+				{
+					continue;
+				}
+
+				String code1 = Text.removeTags(w.getName().replaceAll("\\s", ""));
+				if (w.getRelativeX() >= 20 && USER_CODES.containsKey(FairyRings.valueOf(code1)))
+				{
+					w.setText("<br>" + USER_CODES.get(FairyRings.valueOf(code1)));
+				}
+			}
+		}
+		catch (IllegalArgumentException e)
+		{
+			log.debug(e.getMessage());
+		}
+	}
 
 	private void setWidgetTextToDestination()
 	{
