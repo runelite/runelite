@@ -200,10 +200,32 @@ public class InventoryTagsPlugin extends Plugin
 				final int itemId = w.getItemId();
 				final Tag tag = getTag(itemId);
 
-				client.createMenuEntry(idx)
-					.setOption("Pick inventory tag")
+				final MenuEntry parent = client.createMenuEntry(idx)
+					.setOption("Inventory tag")
 					.setTarget(entry.getTarget())
+					.setType(MenuAction.RUNELITE_SUBMENU);
+
+				for (Color color : invColors())
+				{
+					if (tag == null || !tag.color.equals(color))
+					{
+						client.createMenuEntry(idx)
+							.setOption(ColorUtil.prependColorTag("Color", color))
+							.setType(MenuAction.RUNELITE)
+							.setParent(parent)
+							.onClick(e ->
+							{
+								Tag t = new Tag();
+								t.color = color;
+								setTag(itemId, t);
+							});
+					}
+				}
+
+				client.createMenuEntry(idx)
+					.setOption("Pick")
 					.setType(MenuAction.RUNELITE)
+					.setParent(parent)
 					.onClick(e ->
 					{
 						Color color = tag == null ? Color.WHITE : tag.color;
@@ -224,24 +246,10 @@ public class InventoryTagsPlugin extends Plugin
 				if (tag != null)
 				{
 					client.createMenuEntry(idx)
-						.setOption("Clear inventory tag")
-						.setTarget(entry.getTarget())
+						.setOption("Reset")
 						.setType(MenuAction.RUNELITE)
+						.setParent(parent)
 						.onClick(e -> unsetTag(itemId));
-				}
-
-				for (Color color : invColors())
-				{
-					client.createMenuEntry(idx)
-						.setOption(ColorUtil.prependColorTag("Inventory tag", color))
-						.setTarget(entry.getTarget())
-						.setType(MenuAction.RUNELITE)
-						.onClick(e ->
-						{
-							Tag t = new Tag();
-							t.color = color;
-							setTag(itemId, t);
-						});
 				}
 			}
 		}
