@@ -34,7 +34,7 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
 import net.runelite.api.Player;
-import net.runelite.client.ui.overlay.OverlayMenuEntry;
+import net.runelite.client.party.PartyService;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.LineComponent;
@@ -42,16 +42,11 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 import net.runelite.client.util.QuantityFormatter;
-import net.runelite.client.party.PartyService;
 
 class DpsOverlay extends OverlayPanel
 {
 	private static final DecimalFormat DPS_FORMAT = new DecimalFormat("#0.0");
 	private static final int PANEL_WIDTH_OFFSET = 10; // assumes 8 for panel component border + 2px between left and right
-
-	static final OverlayMenuEntry RESET_ENTRY = new OverlayMenuEntry(RUNELITE_OVERLAY, "Reset", "DPS counter");
-	static final OverlayMenuEntry PAUSE_ENTRY = new OverlayMenuEntry(RUNELITE_OVERLAY, "Pause", "DPS counter");
-	static final OverlayMenuEntry UNPAUSE_ENTRY = new OverlayMenuEntry(RUNELITE_OVERLAY, "Unpause", "DPS counter");
 
 	private final DpsCounterPlugin dpsCounterPlugin;
 	private final DpsConfig dpsConfig;
@@ -69,7 +64,7 @@ class DpsOverlay extends OverlayPanel
 		this.partyService = partyService;
 		this.client = client;
 		this.tooltipManager = tooltipManager;
-		getMenuEntries().add(RESET_ENTRY);
+		addMenuEntry(RUNELITE_OVERLAY, "Reset", "DPS counter", e -> dpsCounterPlugin.reset());
 		setPaused(false);
 	}
 
@@ -151,12 +146,16 @@ class DpsOverlay extends OverlayPanel
 
 	void setPaused(boolean paused)
 	{
-		OverlayMenuEntry remove = paused ? PAUSE_ENTRY : UNPAUSE_ENTRY;
-		OverlayMenuEntry add = paused ? UNPAUSE_ENTRY : PAUSE_ENTRY;
-		getMenuEntries().remove(remove);
-		if (!getMenuEntries().contains(add))
+		removeMenuEntry(RUNELITE_OVERLAY, "Pause", "DPS counter");
+		removeMenuEntry(RUNELITE_OVERLAY, "Unpause", "DPS counter");
+
+		if (paused)
 		{
-			getMenuEntries().add(add);
+			addMenuEntry(RUNELITE_OVERLAY, "Unpause", "DPS counter", e -> dpsCounterPlugin.unpause());
+		}
+		else
+		{
+			addMenuEntry(RUNELITE_OVERLAY, "Pause", "DPS counter", e -> dpsCounterPlugin.pause());
 		}
 	}
 }
