@@ -84,10 +84,21 @@ public interface WorldHopperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "worldBlacklist",
+		name = "Blacklisted Worlds",
+		description = "Worlds to avoid while quick-hopping, separated by commas",
+		position = 4
+	)
+	default String worldBlacklist()
+	{
+		return "";
+	}
+
+	@ConfigItem(
 		keyName = "showSidebar",
 		name = "Show world switcher sidebar",
 		description = "Show sidebar containing all worlds that mimics in-game interface",
-		position = 4
+		position = 5
 	)
 	default boolean showSidebar()
 	{
@@ -98,7 +109,7 @@ public interface WorldHopperConfig extends Config
 		keyName = "ping",
 		name = "Show world ping",
 		description = "Shows ping to each game world",
-		position = 5
+		position = 6
 	)
 	default boolean ping()
 	{
@@ -109,7 +120,7 @@ public interface WorldHopperConfig extends Config
 		keyName = "showMessage",
 		name = "Show world hop message in chat",
 		description = "Shows what world is being hopped to in the chat",
-		position = 6
+		position = 7
 	)
 	default boolean showWorldHopMessage()
 	{
@@ -120,7 +131,7 @@ public interface WorldHopperConfig extends Config
 		keyName = "menuOption",
 		name = "Show Hop-to menu option",
 		description = "Adds Hop-to menu option to the friends list and friends chat members list",
-		position = 7
+		position = 8
 	)
 	default boolean menuOption()
 	{
@@ -131,7 +142,7 @@ public interface WorldHopperConfig extends Config
 		keyName = "subscriptionFilter",
 		name = "Show subscription types",
 		description = "Only show free worlds, member worlds, or both types of worlds in sidebar",
-		position = 8
+		position = 9
 	)
 	default SubscriptionFilterMode subscriptionFilter()
 	{
@@ -142,7 +153,7 @@ public interface WorldHopperConfig extends Config
 		keyName = "regionFilter",
 		name = "Filter worlds by region",
 		description = "Restrict sidebar worlds to one region",
-		position = 8
+		position = 10
 	)
 	default Set<RegionFilterMode> regionFilter()
 	{
@@ -153,7 +164,7 @@ public interface WorldHopperConfig extends Config
 		keyName = "displayPing",
 		name = "Display current ping",
 		description = "Displays ping to current game world",
-		position = 9
+		position = 11
 	)
 	default boolean displayPing()
 	{
