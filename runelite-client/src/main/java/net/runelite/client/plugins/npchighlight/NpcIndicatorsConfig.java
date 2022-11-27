@@ -32,9 +32,11 @@ import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
 import net.runelite.client.config.Range;
 
-@ConfigGroup("npcindicators")
+@ConfigGroup(NpcIndicatorsConfig.GROUP)
 public interface NpcIndicatorsConfig extends Config
 {
+	String GROUP = "npcindicators";
+
 	@ConfigSection(
 		name = "Render style",
 		description = "The render style of NPC highlighting",
