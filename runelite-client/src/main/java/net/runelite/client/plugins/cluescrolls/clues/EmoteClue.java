@@ -94,7 +94,7 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 			.map(ItemRequirements::item)
 			.toArray(SingleItemRequirement[]::new));
 
-	private static final List<EmoteClue> CLUES = ImmutableList.of(
+	static final List<EmoteClue> CLUES = ImmutableList.of(
 		new EmoteClue("Beckon on the east coast of the Kharazi Jungle. Beware of double agents! Equip any vestment stole and a heraldic rune shield.", "Kharazi Jungle", NORTHEAST_CORNER_OF_THE_KHARAZI_JUNGLE, new WorldPoint(2954, 2933, 0), DOUBLE_AGENT_108, BECKON, any("Any stole", item(GUTHIX_STOLE), item(SARADOMIN_STOLE), item(ZAMORAK_STOLE), item(ARMADYL_STOLE), item(BANDOS_STOLE), item(ANCIENT_STOLE)), any("Any heraldic rune shield", item(RUNE_SHIELD_H1), item(RUNE_SHIELD_H2), item(RUNE_SHIELD_H3), item(RUNE_SHIELD_H4), item(RUNE_SHIELD_H5))),
 		new EmoteClue("Cheer in the Barbarian Agility Arena. Headbang before you talk to me. Equip a steel platebody, maple shortbow and a Wilderness cape.", "Barbarian Outpost", BARBARIAN_OUTPOST_OBSTACLE_COURSE, new WorldPoint(2552, 3556, 0), CHEER, HEADBANG, item(STEEL_PLATEBODY), item(MAPLE_SHORTBOW), range("Any team cape", TEAM1_CAPE, TEAM50_CAPE)),
 		new EmoteClue("Bow upstairs in the Edgeville Monastery. Equip a completed prayer book.", "Edgeville Monastery", SOUTHEAST_CORNER_OF_THE_MONASTERY, new WorldPoint(3056, 3484, 1), BOW, any("Any god book", item(HOLY_BOOK), item(BOOK_OF_BALANCE), item(UNHOLY_BOOK), item(BOOK_OF_LAW), item(BOOK_OF_WAR), item(BOOK_OF_DARKNESS), item(HOLY_BOOK_OR), item(BOOK_OF_BALANCE_OR), item(UNHOLY_BOOK_OR), item(BOOK_OF_LAW_OR), item(BOOK_OF_WAR_OR), item(BOOK_OF_DARKNESS_OR))),
@@ -331,6 +331,8 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 					.build());
 			}
 		}
+
+		renderOverlayNote(panelComponent, plugin);
 	}
 
 	@Override
@@ -344,6 +346,12 @@ public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClu
 		}
 
 		makeSTASHOverlay(graphics, plugin);
+	}
+
+	@Override
+	public int[] getConfigKeys()
+	{
+		return new int[]{text.hashCode()};
 	}
 
 	public void makeSTASHOverlay(Graphics2D graphics, ClueScrollPlugin plugin)

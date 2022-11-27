@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Seth <http://github.com/sethtroll>
+ * Copyright (c) 2022, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,24 +22,43 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.cluescrolls;
+package net.runelite.client.plugins.cluescrolls.clues;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import static org.junit.Assert.fail;
+import org.junit.Test;
 
-@ConfigGroup(ClueScrollConfig.GROUP)
-public interface ClueScrollConfig extends Config
+public class ConfigKeyTest
 {
-	String GROUP = "cluescroll";
-
-	@ConfigItem(
-		keyName = "displayHintArrows",
-		name = "Display hint arrows",
-		description = "Configures whether or not to display hint arrows for clues"
-	)
-	default boolean displayHintArrows()
+	@Test
+	public void testConfigKeyUnique()
 	{
-		return true;
+		List<ClueScroll> allClues = new ArrayList<>();
+		allClues.addAll(FairyRingClue.CLUES);
+		CoordinateClue.CLUES.keySet().stream()
+			.map(l -> new CoordinateClue("location", l, null))
+			.forEach(allClues::add);
+		allClues.addAll(CipherClue.CLUES);
+		allClues.addAll(CrypticClue.CLUES);
+		allClues.addAll(FaloTheBardClue.CLUES);
+		allClues.addAll(AnagramClue.CLUES);
+		allClues.addAll(MapClue.CLUES);
+		allClues.addAll(SkillChallengeClue.CLUES);
+		allClues.addAll(EmoteClue.CLUES);
+
+		Set<Integer> seen = new HashSet<>();
+		for (ClueScroll c : allClues)
+		{
+			for (int key : c.getConfigKeys())
+			{
+				if (!seen.add(key))
+				{
+					fail("duplicate clue config key");
+				}
+			}
+		}
 	}
 }

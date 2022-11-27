@@ -51,7 +51,7 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 @Getter
 public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueScroll, ObjectClueScroll
 {
-	public static final List<CrypticClue> CLUES = ImmutableList.of(
+	static final List<CrypticClue> CLUES = ImmutableList.of(
 		new CrypticClue("Show this to Sherlock.", "Sherlock", new WorldPoint(2733, 3415, 0), "Sherlock is located to the east of the Sorcerer's tower in Seers' Village."),
 		new CrypticClue("Talk to the bartender of the Rusty Anchor in Port Sarim.", "Bartender", new WorldPoint(3045, 3256, 0), "The Rusty Anchor is located in the north of Port Sarim."),
 		new CrypticClue("The keeper of Melzars... Spare? Skeleton? Anar?", "Oziach", new WorldPoint(3068, 3516, 0), "Speak to Oziach in Edgeville."),
@@ -425,6 +425,8 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 			.left(getSolution())
 			.leftColor(TITLED_CONTENT_COLOR)
 			.build());
+
+		renderOverlayNote(panelComponent, plugin);
 	}
 
 	@Override
@@ -491,5 +493,11 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 	public String[] getNpcs(ClueScrollPlugin plugin)
 	{
 		return new String[] {npc};
+	}
+
+	@Override
+	public int[] getConfigKeys()
+	{
+		return new int[]{text.hashCode()};
 	}
 }

@@ -24,12 +24,15 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues;
 
+import com.google.common.base.Strings;
 import java.awt.Graphics2D;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.annotations.Varbit;
+import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
+import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 
 public abstract class ClueScroll
@@ -53,4 +56,30 @@ public abstract class ClueScroll
 	public abstract void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin);
 
 	public abstract void makeWorldOverlayHint(Graphics2D graphics, ClueScrollPlugin plugin);
+
+	public int[] getConfigKeys()
+	{
+		return null;
+	}
+
+	public void renderOverlayNote(PanelComponent panelComponent, ClueScrollPlugin plugin)
+	{
+		int[] keys = getConfigKeys();
+		if (keys == null)
+		{
+			return;
+		}
+
+		String note = plugin.getClueNote(keys[0]);
+		if (!Strings.isNullOrEmpty(note))
+		{
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left("Note:")
+				.build());
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left(note)
+				.leftColor(TITLED_CONTENT_COLOR)
+				.build());
+		}
+	}
 }

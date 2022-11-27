@@ -53,7 +53,7 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 	private static final String ANAGRAM_TEXT = "This anagram reveals who to speak to next: ";
 	private static final String ANAGRAM_TEXT_BEGINNER = "The anagram reveals who to speak to next: ";
 
-	private static final List<AnagramClue> CLUES = ImmutableList.of(
+	static final List<AnagramClue> CLUES = ImmutableList.of(
 		AnagramClue.builder()
 			.text("A BAKER")
 			.npc("Baraek")
@@ -806,6 +806,8 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 				.leftColor(TITLED_CONTENT_COLOR)
 				.build());
 		}
+
+		renderOverlayNote(panelComponent, plugin);
 	}
 
 	@Override
@@ -865,5 +867,11 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 	public int[] getObjectIds()
 	{
 		return new int[]{objectId};
+	}
+
+	@Override
+	public int[] getConfigKeys()
+	{
+		return new int[]{text.hashCode()};
 	}
 }

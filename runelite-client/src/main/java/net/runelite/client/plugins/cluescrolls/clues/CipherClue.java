@@ -46,7 +46,7 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 @Getter
 public class CipherClue extends ClueScroll implements TextClueScroll, NpcClueScroll, LocationClueScroll
 {
-	private static final List<CipherClue> CLUES = ImmutableList.of(
+	static final List<CipherClue> CLUES = ImmutableList.of(
 		new CipherClue("BMJ UIF LFCBC TFMMFS", /* base npc for Ali or Isma'il the Kebab seller */ NullNpcID.NULL_11875, new WorldPoint(3354, 2974, 0), "Pollnivneach", "How many coins would you need to purchase 133 kebabs from me?", "399"),
 		new CipherClue("GUHCHO", NpcID.DREZEL, new WorldPoint(3440, 9895, 0), "Paterdomus", "Please solve this for x: 7x - 28=21", "7"),
 		new CipherClue("HQNM LZM STSNQ", NpcID.IRON_MAN_TUTOR, new WorldPoint(3227, 3227, 0), "Outside Lumbridge castle", "How many snakeskins are needed in order to craft 44 boots, 29 vambraces and 34 bandanas?", "666"),
@@ -128,6 +128,8 @@ public class CipherClue extends ClueScroll implements TextClueScroll, NpcClueScr
 				.leftColor(TITLED_CONTENT_COLOR)
 				.build());
 		}
+
+		renderOverlayNote(panelComponent, plugin);
 	}
 
 	@Override
@@ -165,6 +167,12 @@ public class CipherClue extends ClueScroll implements TextClueScroll, NpcClueScr
 	{
 		NPCComposition comp = getNpcComposition(plugin);
 		return new String[]{comp == null ? null : comp.getName()};
+	}
+
+	@Override
+	public int[] getConfigKeys()
+	{
+		return new int[]{text.hashCode()};
 	}
 
 	private NPCComposition getNpcComposition(ClueScrollPlugin plugin)
