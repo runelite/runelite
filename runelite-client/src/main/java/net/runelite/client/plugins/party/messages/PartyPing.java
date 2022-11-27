@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2019, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2022, kamielvf <code@kamiel.dev>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,14 +25,34 @@
  */
 package net.runelite.client.plugins.party.messages;
 
+import com.google.gson.annotations.SerializedName;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Value;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.party.messages.PartyMemberMessage;
+import net.runelite.client.plugins.party.PartyPingTargetType;
+import net.runelite.client.plugins.party.PartyPingType;
 
-@Value
+@Data
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class TilePing extends PartyMemberMessage
+public class PartyPing extends PartyMemberMessage
 {
+	@SerializedName("pt")
+	private PartyPingType pingType;
+
+	@SerializedName("tt")
+	private final PartyPingTargetType targetType;
+
+	// this will either be the targeted tile, the tile the game object is on or null for npc pings
 	private final WorldPoint point;
+
+	// this will either be the object ID, the npc's index or null for regular pings
+	private final Integer target;
+	
+	private final int world;
+	
+	@SerializedName("pid")
+	private final int playerId;
 }
