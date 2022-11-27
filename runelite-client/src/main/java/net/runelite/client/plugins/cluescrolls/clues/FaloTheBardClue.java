@@ -48,7 +48,7 @@ import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
 @Getter
-public class FaloTheBardClue extends ClueScroll implements TextClueScroll, NpcClueScroll
+public class FaloTheBardClue extends ClueScroll implements NpcClueScroll
 {
 	static final List<FaloTheBardClue> CLUES = ImmutableList.of(
 		new FaloTheBardClue("A blood red weapon, a strong curved sword, found on the island of primate lords.", any("Dragon scimitar", item(DRAGON_SCIMITAR), item(DRAGON_SCIMITAR_OR))),

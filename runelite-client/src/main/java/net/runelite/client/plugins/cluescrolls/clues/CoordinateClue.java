@@ -49,7 +49,7 @@ import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
 @Getter
-public class CoordinateClue extends ClueScroll implements TextClueScroll, LocationClueScroll
+public class CoordinateClue extends ClueScroll implements LocationClueScroll
 {
 	@Getter
 	private static class CoordinateClueInfo

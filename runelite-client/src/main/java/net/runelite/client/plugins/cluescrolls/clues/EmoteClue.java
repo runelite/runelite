@@ -79,7 +79,7 @@ import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
 @Getter
-public class EmoteClue extends ClueScroll implements TextClueScroll, LocationClueScroll
+public class EmoteClue extends ClueScroll implements LocationClueScroll
 {
 	private static final AnyRequirementCollection ANY_SLAYER_HELMET = any("Any slayer helmet",
 		ItemVariationMapping.getVariations(SLAYER_HELMET).stream()

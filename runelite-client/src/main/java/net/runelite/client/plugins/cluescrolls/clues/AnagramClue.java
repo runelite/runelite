@@ -48,7 +48,7 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 
 @Getter
 @Builder
-public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueScroll, ObjectClueScroll
+public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClueScroll
 {
 	private static final String ANAGRAM_TEXT = "This anagram reveals who to speak to next: ";
 	private static final String ANAGRAM_TEXT_BEGINNER = "The anagram reveals who to speak to next: ";

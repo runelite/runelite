@@ -120,7 +120,6 @@ import net.runelite.client.plugins.cluescrolls.clues.NamedObjectClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.NpcClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.ObjectClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.SkillChallengeClue;
-import net.runelite.client.plugins.cluescrolls.clues.TextClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.ThreeStepCrypticClue;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -757,15 +756,6 @@ public class ClueScrollPlugin extends Plugin
 	{
 		// Remove line breaks and also the rare occasion where there are double line breaks
 		final String text = Text.sanitizeMultilineText(rawText).toLowerCase();
-
-		// Early return if this is same clue as already existing one
-		if (clue instanceof TextClueScroll)
-		{
-			if (((TextClueScroll) clue).getText().equalsIgnoreCase(text))
-			{
-				return clue;
-			}
-		}
 
 		if (text.startsWith("i'd like to hear some music."))
 		{

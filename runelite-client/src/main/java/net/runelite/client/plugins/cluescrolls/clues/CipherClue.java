@@ -44,7 +44,7 @@ import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
 @Getter
-public class CipherClue extends ClueScroll implements TextClueScroll, NpcClueScroll, LocationClueScroll
+public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClueScroll
 {
 	static final List<CipherClue> CLUES = ImmutableList.of(
 		new CipherClue("BMJ UIF LFCBC TFMMFS", /* base npc for Ali or Isma'il the Kebab seller */ NullNpcID.NULL_11875, new WorldPoint(3354, 2974, 0), "Pollnivneach", "How many coins would you need to purchase 133 kebabs from me?", "399"),

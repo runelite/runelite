@@ -49,7 +49,7 @@ import net.runelite.client.util.Text;
 
 @Getter
 @RequiredArgsConstructor
-public class ThreeStepCrypticClue extends ClueScroll implements TextClueScroll, ObjectClueScroll, NpcClueScroll, LocationsClueScroll
+public class ThreeStepCrypticClue extends ClueScroll implements ObjectClueScroll, NpcClueScroll, LocationsClueScroll
 {
 	public static ThreeStepCrypticClue forText(String plainText, String text)
 	{

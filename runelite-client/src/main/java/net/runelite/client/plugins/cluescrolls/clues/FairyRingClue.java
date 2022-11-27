@@ -39,7 +39,7 @@ import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
 @Getter
-public class FairyRingClue extends ClueScroll implements TextClueScroll, LocationClueScroll
+public class FairyRingClue extends ClueScroll implements LocationClueScroll
 {
 	static final List<FairyRingClue> CLUES = ImmutableList.of(
 		new FairyRingClue("A I R 2 3 3 1", new WorldPoint(2702, 3246, 0)),
