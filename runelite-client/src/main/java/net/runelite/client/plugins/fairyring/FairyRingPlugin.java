@@ -101,9 +101,6 @@ public class FairyRingPlugin extends Plugin
 	private ClientThread clientThread;
 
 	@Inject
-	private ConfigManager configManager;
-
-	@Inject
 	Gson gson;
 
 	private ChatboxTextInput searchInput = null;
