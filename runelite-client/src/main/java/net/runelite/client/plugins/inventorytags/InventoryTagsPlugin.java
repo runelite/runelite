@@ -66,21 +66,11 @@ public class InventoryTagsPlugin extends Plugin
 	private static final String ITEM_KEY_PREFIX = "item_";
 	private static final String TAG_KEY_PREFIX = "tag_";
 
-	private static final String SETNAME_GROUP_1 = "Group 1";
-	private static final String SETNAME_GROUP_2 = "Group 2";
-	private static final String SETNAME_GROUP_3 = "Group 3";
-	private static final String SETNAME_GROUP_4 = "Group 4";
-	private static final String SETNAME_GROUP_5 = "Group 5";
-	private static final String SETNAME_GROUP_6 = "Group 6";
-
 	@Inject
 	private Client client;
 
 	@Inject
 	private ConfigManager configManager;
-
-	@Inject
-	private InventoryTagsConfig config;
 
 	@Inject
 	private InventoryTagsOverlay overlay;
@@ -138,37 +128,25 @@ public class InventoryTagsPlugin extends Plugin
 	private void convertConfig()
 	{
 		String migrated = configManager.getConfiguration(InventoryTagsConfig.GROUP, "migrated");
-		if (migrated != null)
+		if (!"1".equals(migrated))
 		{
 			return;
 		}
 
+		int removed = 0;
 		List<String> keys = configManager.getConfigurationKeys(InventoryTagsConfig.GROUP + "." + ITEM_KEY_PREFIX);
 		for (String key : keys)
 		{
 			String[] str = key.split("\\.", 2);
 			if (str.length == 2)
 			{
-				int itemId = Integer.parseInt(str[1].substring(ITEM_KEY_PREFIX.length()));
-				String tag = configManager.getConfiguration(str[0], str[1]);
-				if (tag != null)
-				{
-					Color color = getGroupNameColor(tag);
-					if (color != null)
-					{
-						Tag t = new Tag();
-						t.color = color;
-						setTag(itemId, t);
-						log.debug("Converted tag {} {} -> {}", itemId, tag, t);
-					}
-
-					// uncomment to delete these later
-					// configManager.unsetConfiguration(str[0], str[1]);
-				}
+				configManager.unsetConfiguration(str[0], str[1]);
+				++removed;
 			}
 		}
 
-		configManager.setConfiguration(InventoryTagsConfig.GROUP, "migrated", "1");
+		log.debug("Removed {} old tags", removed);
+		configManager.setConfiguration(InventoryTagsConfig.GROUP, "migrated", "2");
 	}
 
 	@Subscribe
@@ -253,27 +231,6 @@ public class InventoryTagsPlugin extends Plugin
 				}
 			}
 		}
-	}
-
-	Color getGroupNameColor(final String name)
-	{
-		switch (name)
-		{
-			case SETNAME_GROUP_1:
-				return config.getGroup1Color();
-			case SETNAME_GROUP_2:
-				return config.getGroup2Color();
-			case SETNAME_GROUP_3:
-				return config.getGroup3Color();
-			case SETNAME_GROUP_4:
-				return config.getGroup4Color();
-			case SETNAME_GROUP_5:
-				return config.getGroup5Color();
-			case SETNAME_GROUP_6:
-				return config.getGroup6Color();
-		}
-
-		return null;
 	}
 
 	private List<Color> invColors()
