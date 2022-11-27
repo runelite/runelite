@@ -55,5 +55,8 @@ public interface FairyRingConfig extends Config
 		description = "",
 		hidden = true
 	)
-	default String customFRDescriptions() { return ""; }
+	default String customFRDescriptions()
+	{
+		return "";
+	}
 }
