@@ -290,7 +290,7 @@ public class FairyRingPlugin extends Plugin
 				destination = "Invalid location";
 			}
 
-			fairyRingTeleportButton.setText(Text.removeTags(destination));
+			fairyRingTeleportButton.setText((destination));
 		}
 	}
 
