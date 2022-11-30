@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2022 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,30 +24,7 @@
  */
 package net.runelite.api;
 
-public interface TextureProvider
+public interface TileFunction
 {
-	double getBrightness();
-
-	/**
-	 * Set the brightness for textures, clearing the texture cache.
-	 *
-	 * .9 is the darkest value available in the standard options
-	 * .6 is the brightest value
-	 */
-	void setBrightness(double brightness);
-
-	/**
-	 * Get all textures
-	 */
-	Texture[] getTextures();
-
-	/**
-	 * Get the pixels for a texture
-	 */
-	int[] load(int textureId);
-
-	/**
-	 * Get the HSL color used when the texture isn't loaded yet
-	 */
-	int getDefaultColor(int textureID);
+	void drawTile(Tile tile, int tileX, int tileY, int px0, int py0, int px1, int py1);
 }

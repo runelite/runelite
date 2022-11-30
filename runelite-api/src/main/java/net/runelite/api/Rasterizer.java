@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2022 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,30 +24,50 @@
  */
 package net.runelite.api;
 
-public interface TextureProvider
+/**
+ * Jagex 2D and 3D drawing utilities.
+ * Similar to AWT's {@link java.awt.Graphics2D}
+ *
+ * @see JagexColor
+ */
+public interface Rasterizer
 {
-	double getBrightness();
-
 	/**
-	 * Set the brightness for textures, clearing the texture cache.
+	 * Gets the back buffer of the rasterizer
 	 *
-	 * .9 is the darkest value available in the standard options
-	 * .6 is the brightest value
+	 * ARGB or RGB depending on {@link Client#isGpu()}
 	 */
-	void setBrightness(double brightness);
+	int[] getPixels();
 
 	/**
-	 * Get all textures
+	 * Width of {@link #getPixels()}
 	 */
-	Texture[] getTextures();
+	int getWidth();
 
 	/**
-	 * Get the pixels for a texture
+	 * Height of {@link #getPixels()}
 	 */
-	int[] load(int textureId);
+	int getHeight();
+
 
 	/**
-	 * Get the HSL color used when the texture isn't loaded yet
+	 * Draws a filled rectangle onto the rasterizer buffer at full opacity
 	 */
-	int getDefaultColor(int textureID);
+	void fillRectangle(int x, int y, int w, int h, int rgb);
+
+	/**
+	 * Draws a filled triangle onto the rasterizer buffer at rasterizer opacity
+	 */
+	void rasterFlat(int y0, int y1, int y2, int x0, int x1, int x2, int rgb);
+
+
+	/**
+	 * Sets if {@link #rasterGouraud} uses a faster shading algorithm
+	 */
+	void setRasterGouraudLowRes(boolean lowRes);
+
+	/**
+	 * Draws a gouraud shaded filled triangle onto the rasterizer buffer at rasterizer opacity
+	 */
+	void rasterGouraud(int y0, int y1, int y2, int x0, int x1, int x2, int hsl0, int hsl1, int hsl2);
 }
