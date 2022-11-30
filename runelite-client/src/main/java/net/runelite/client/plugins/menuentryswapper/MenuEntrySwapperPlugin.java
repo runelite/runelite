@@ -49,7 +49,6 @@ import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.KeyCode;
 import net.runelite.api.MenuAction;
@@ -58,6 +57,7 @@ import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.ParamID;
+import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.PostItemComposition;
 import net.runelite.api.events.PostMenuSort;
@@ -1407,10 +1407,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 					return;
 				}
 			}
-			else if (shiftModifier() && config.objectShiftClickWalkHere())
-			{
-				swap(menuEntries, "walk here", "", index, true);
-			}
 		}
 
 		if (NPC_MENU_TYPES.contains(menuAction))
@@ -1421,49 +1417,21 @@ public class MenuEntrySwapperPlugin extends Plugin
 			assert composition != null;
 
 			Integer customOption = getNpcSwapConfig(shiftModifier(), composition.getId());
-			if (customOption == null)
+			if (customOption != null && customOption >= 0)
 			{
-				if (shiftModifier() && config.npcShiftClickWalkHere())
+				MenuAction swapAction = NPC_MENU_TYPES.get(customOption);
+				if (swapAction == menuAction)
 				{
-					swap(menuEntries, "walk here", "", index, true);
-				}
-			}
-			else
-			{
-				// Walk here swap
-				if (customOption == -1)
-				{
-					swap(menuEntries, "walk here", "", index, true);
-				}
-				else
-				{
-					MenuAction swapAction = NPC_MENU_TYPES.get(customOption);
-					if (swapAction == menuAction)
+					// Advance to the top-most op for this NPC.
+					int i = index;
+					while (i < menuEntries.length - 1 && NPC_MENU_TYPES.contains(menuEntries[i + 1].getType()))
 					{
-						// Advance to the top-most op for this NPC. Normally menuEntries.length - 1 is examine, and swapping
-						// with that works due to it being sorted later, but if other plugins like NPC indicators add additional
-						// menus before examine that are also >1000, like RUNELITE menus, that would result in the >1000 menus being
-						// reordered relative to each other.
-						int i = index;
-						while (i < menuEntries.length - 1 && NPC_MENU_TYPES.contains(menuEntries[i + 1].getType()))
-						{
-							++i;
-						}
-
-						swap(optionIndexes, menuEntries, index, i);
-						return;
+						++i;
 					}
-				}
-			}
-		}
 
-		if (menuAction == MenuAction.GROUND_ITEM_FIRST_OPTION || menuAction == MenuAction.GROUND_ITEM_SECOND_OPTION
-			|| menuAction == MenuAction.GROUND_ITEM_THIRD_OPTION || menuAction == MenuAction.GROUND_ITEM_FOURTH_OPTION
-			|| menuAction == MenuAction.GROUND_ITEM_FIFTH_OPTION)
-		{
-			if (shiftModifier() && config.groundItemShiftClickWalkHere())
-			{
-				swap(menuEntries, "walk here", "", index, true);
+					swap(optionIndexes, menuEntries, index, i);
+					return;
+				}
 			}
 		}
 
@@ -1526,11 +1494,64 @@ public class MenuEntrySwapperPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onClientTick(ClientTick clientTick)
+	{
+		if (client.isMenuOpen())
+		{
+			return;
+		}
+
+		// Walk here swaps. These work via deprioritizing swapped menus instead of prioritizing the Walk here
+		// option above swapped menus. This is because a Walk here swap doesn't mean Walk here should always
+		// be at the top, it should only be above the individual entries being swapped.
+		//
+		// For example:
+		// cancel -> walk here -> ground item op -> npc op
+		// with a npc <-> walk here swap should result in
+		// cancel -> npc op -> walk here -> ground item op
+		// which cannot be achieved with a simple swap.
+
+		for (MenuEntry menuEntry : client.getMenuEntries())
+		{
+			MenuAction type = menuEntry.getType();
+
+			if (shiftModifier() && OBJECT_MENU_TYPES.contains(type) && config.objectShiftClickWalkHere())
+			{
+				menuEntry.setDeprioritized(true);
+			}
+			else if (NPC_MENU_TYPES.contains(type))
+			{
+				final NPC npc = menuEntry.getNpc();
+				assert npc != null;
+				final NPCComposition composition = npc.getTransformedComposition();
+				assert composition != null;
+
+				boolean shift = shiftModifier();
+				Integer customOption = getNpcSwapConfig(shift, composition.getId());
+				if ((customOption == null && shift && config.npcShiftClickWalkHere())
+					|| (customOption != null && customOption == -1))
+				{
+					menuEntry.setDeprioritized(true);
+				}
+			}
+			else if (type == MenuAction.GROUND_ITEM_FIRST_OPTION || type == MenuAction.GROUND_ITEM_SECOND_OPTION
+				|| type == MenuAction.GROUND_ITEM_THIRD_OPTION || type == MenuAction.GROUND_ITEM_FOURTH_OPTION
+				|| type == MenuAction.GROUND_ITEM_FIFTH_OPTION)
+			{
+				if (shiftModifier() && config.groundItemShiftClickWalkHere())
+				{
+					menuEntry.setDeprioritized(true);
+				}
+			}
+		}
+	}
+
+	@Subscribe
 	public void onPostMenuSort(PostMenuSort postMenuSort)
 	{
 		// The menu is not rebuilt when it is open, so don't swap or else it will
 		// repeatedly swap entries
-		if (client.getGameState() != GameState.LOGGED_IN || client.isMenuOpen())
+		if (client.isMenuOpen())
 		{
 			return;
 		}
