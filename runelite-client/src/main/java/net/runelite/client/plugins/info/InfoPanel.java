@@ -73,6 +73,9 @@ public class InfoPanel extends PluginPanel
 
 	private final JLabel loggedLabel = new JLabel();
 	private final JRichTextPane emailLabel = new JRichTextPane();
+	private final JLabel version = new JLabel();
+	private final JLabel revision = new JLabel();
+	private final JLabel launcher = new JLabel();
 	private JPanel syncPanel;
 	private JPanel actionsContainer;
 
@@ -122,7 +125,7 @@ public class InfoPanel extends PluginPanel
 		IMPORT_ICON = new ImageIcon(ImageUtil.loadImageResource(InfoPanel.class, "import_icon.png"));
 	}
 
-	void init()
+	public InfoPanel()
 	{
 		setLayout(new BorderLayout());
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
@@ -135,22 +138,8 @@ public class InfoPanel extends PluginPanel
 
 		final Font smallFont = FontManager.getRunescapeSmallFont();
 
-		JLabel version = new JLabel(htmlLabel("RuneLite version: ", runeliteVersion));
 		version.setFont(smallFont);
-
-		JLabel revision = new JLabel();
 		revision.setFont(smallFont);
-
-		String engineVer = "Unknown";
-		if (client != null)
-		{
-			engineVer = String.format("Rev %d", client.getRevision());
-		}
-
-		revision.setText(htmlLabel("Oldschool revision: ", engineVer));
-
-		JLabel launcher = new JLabel(htmlLabel("Launcher version: ", MoreObjects
-			.firstNonNull(RuneLiteProperties.getLauncherVersion(), "Unknown")));
 		launcher.setFont(smallFont);
 
 		loggedLabel.setForeground(ColorScheme.LIGHT_GRAY_COLOR);
@@ -181,6 +170,27 @@ public class InfoPanel extends PluginPanel
 		actionsContainer.setBorder(new EmptyBorder(10, 0, 0, 0));
 		actionsContainer.setLayout(new GridLayout(0, 1, 0, 10));
 
+		add(versionPanel, BorderLayout.NORTH);
+		add(actionsContainer, BorderLayout.CENTER);
+	}
+
+	/**
+	 * Set up things that depend on injected fields or the current sign-in status. May be called more than once.
+ 	 */
+	void init()
+	{
+		version.setText(htmlLabel("RuneLite version: ", runeliteVersion));
+
+		String engineVer = "Unknown";
+		if (client != null)
+		{
+			engineVer = String.format("Rev %d", client.getRevision());
+		}
+		revision.setText(htmlLabel("Oldschool revision: ", engineVer));
+
+		launcher.setText(htmlLabel("Launcher version: ", MoreObjects
+			.firstNonNull(RuneLiteProperties.getLauncherVersion(), "Unknown")));
+
 		syncPanel = buildLinkPanel(IMPORT_ICON, "Import signed-out", "settings", () ->
 		{
 			final int result = JOptionPane.showOptionDialog(syncPanel,
@@ -194,15 +204,14 @@ public class InfoPanel extends PluginPanel
 			}
 		});
 
+		actionsContainer.removeAll();
 		actionsContainer.add(buildLinkPanel(GITHUB_ICON, "Report an issue or", "make a suggestion", githubLink));
 		actionsContainer.add(buildLinkPanel(DISCORD_ICON, "Talk to us on our", "Discord server", discordInvite));
 		actionsContainer.add(buildLinkPanel(PATREON_ICON, "Become a patron to", "help support RuneLite", patreonLink));
 		actionsContainer.add(buildLinkPanel(WIKI_ICON, "Information about", "RuneLite and plugins", wikiLink));
 
-		add(versionPanel, BorderLayout.NORTH);
-		add(actionsContainer, BorderLayout.CENTER);
-
 		updateLoggedIn();
+		eventBus.unregister(this);
 		eventBus.register(this);
 	}
 
