@@ -452,32 +452,6 @@ public class Hooks implements Callbacks
 	}
 
 	@Override
-	public void tickLayer(Widget layer)
-	{
-		try
-		{
-			renderer.tickOverlayLayer(layer);
-		}
-		catch (Exception ex)
-		{
-			log.warn("Error during overlay ticking", ex);
-		}
-	}
-
-	@Override
-	public void tickInterface(int interfaceId)
-	{
-		try
-		{
-			renderer.tickOverlayInterface(interfaceId);
-		}
-		catch (Exception ex)
-		{
-			log.warn("Error during overlay ticking", ex);
-		}
-	}
-
-	@Override
 	public void drawScene()
 	{
 		MainBufferProvider bufferProvider = (MainBufferProvider) client.getBufferProvider();
