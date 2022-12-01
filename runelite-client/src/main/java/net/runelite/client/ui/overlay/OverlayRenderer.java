@@ -223,18 +223,6 @@ public class OverlayRenderer extends MouseAdapter
 		}
 	}
 
-	public void tickOverlayLayer(Widget layer)
-	{
-		final Collection<Overlay> overlays = overlayManager.getForLayer(layer.getId());
-		overlays.forEach(Overlay::widgetTick);
-	}
-
-	public void tickOverlayInterface(int interfaceId)
-	{
-		Collection<Overlay> overlays = overlayManager.getForInterface(interfaceId);
-		overlays.forEach(Overlay::widgetTick);
-	}
-
 	public void renderOverlayLayer(Graphics2D graphics, final OverlayLayer layer)
 	{
 		final Collection<Overlay> overlays = overlayManager.getLayer(layer);
