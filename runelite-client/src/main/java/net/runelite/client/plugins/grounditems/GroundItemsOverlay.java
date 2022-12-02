@@ -268,12 +268,16 @@ public class GroundItemsOverlay extends Overlay
 						.append(" (GE/HA: ")
 						.append(QuantityFormatter.quantityToStackSize(ge))
 						.append(" gp)");
-				} else if (ge > ha) {
+				}
+				else if (ge > ha)
+				{
 					itemStringBuilder
 						.append(" (GE: ")
 						.append(QuantityFormatter.quantityToStackSize(ge))
 						.append(" gp)");
-				} else {
+				}
+				else
+				{
 					itemStringBuilder
 						.append(" (HA: ")
 						.append(QuantityFormatter.quantityToStackSize(ha))
