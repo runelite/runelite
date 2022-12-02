@@ -34,6 +34,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.AccessLevel;
@@ -420,5 +421,14 @@ public class OverlayManager
 	{
 		final String locationKey = overlay.getName() + OVERLAY_CONFIG_PREFERRED_POSITION;
 		return configManager.getConfiguration(RUNELITE_CONFIG_GROUP_NAME, locationKey, OverlayPosition.class);
+	}
+	
+	@Nullable
+	public Overlay getOverlay(String name)
+	{
+		return overlays.stream()
+			.filter(overlay -> overlay.getName().equals(name))
+			.findFirst()
+			.orElse(null);
 	}
 }
