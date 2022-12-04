@@ -28,9 +28,11 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import java.time.Duration;
 import net.runelite.api.Actor;
 import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.GameState;
 import net.runelite.api.Hitsplat;
 import net.runelite.api.HitsplatID;
@@ -132,6 +134,7 @@ public class IdleNotifierPluginTest
 		when(client.getGameState()).thenReturn(GameState.LOGGED_IN);
 		when(client.getKeyboardIdleTicks()).thenReturn(42);
 		when(client.getMouseLastPressedMillis()).thenReturn(System.currentTimeMillis() - 100_000L);
+		when(client.getIdleTimeout()).thenReturn((int) Duration.ofMinutes(5).toMillis() / Constants.CLIENT_TICK_LENGTH);
 	}
 
 	@Test
@@ -162,7 +165,7 @@ public class IdleNotifierPluginTest
 		when(player.getAnimation()).thenReturn(AnimationID.IDLE);
 		plugin.onAnimationChanged(animationChanged);
 		plugin.onGameTick(new GameTick());
-		verify(notifier, times(0)).notify(any());
+		verify(notifier, never()).notify(any());
 	}
 
 	@Test
@@ -189,7 +192,7 @@ public class IdleNotifierPluginTest
 		when(player.getAnimation()).thenReturn(AnimationID.IDLE);
 		plugin.onAnimationChanged(animationChanged);
 		plugin.onGameTick(new GameTick());
-		verify(notifier, times(0)).notify(any());
+		verify(notifier, never()).notify(any());
 	}
 
 	@Test
@@ -214,7 +217,7 @@ public class IdleNotifierPluginTest
 		plugin.onGameTick(new GameTick());
 		plugin.onInteractingChanged(new InteractingChanged(player, null));
 		plugin.onGameTick(new GameTick());
-		verify(notifier, times(0)).notify(any());
+		verify(notifier, never()).notify(any());
 	}
 
 	@Test
@@ -238,7 +241,7 @@ public class IdleNotifierPluginTest
 		// Tick
 		plugin.onInteractingChanged(new InteractingChanged(player, null));
 		plugin.onGameTick(new GameTick());
-		verify(notifier, times(0)).notify(any());
+		verify(notifier, never()).notify(any());
 	}
 
 	@Test
@@ -253,7 +256,7 @@ public class IdleNotifierPluginTest
 		hitsplatApplied.setHitsplat(new Hitsplat(HitsplatID.DAMAGE_ME, 0, 0));
 		plugin.onHitsplatApplied(hitsplatApplied);
 		plugin.onGameTick(new GameTick());
-		verify(notifier, times(0)).notify(any());
+		verify(notifier, never()).notify(any());
 	}
 
 	@Test
@@ -300,11 +303,11 @@ public class IdleNotifierPluginTest
 	{
 		when(config.getSpecEnergyThreshold()).thenReturn(50);
 
-		when(client.getVar(eq(VarPlayer.SPECIAL_ATTACK_PERCENT))).thenReturn(400); // 40%
+		when(client.getVarpValue(eq(VarPlayer.SPECIAL_ATTACK_PERCENT))).thenReturn(400); // 40%
 		plugin.onGameTick(new GameTick()); // once to set lastSpecEnergy to 400
 		verify(notifier, never()).notify(any());
 
-		when(client.getVar(eq(VarPlayer.SPECIAL_ATTACK_PERCENT))).thenReturn(500); // 50%
+		when(client.getVarpValue(eq(VarPlayer.SPECIAL_ATTACK_PERCENT))).thenReturn(500); // 50%
 		plugin.onGameTick(new GameTick());
 		verify(notifier).notify(eq("You have restored spec energy!"));
 	}

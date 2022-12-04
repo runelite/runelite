@@ -57,6 +57,7 @@ import javax.swing.text.DocumentFilter;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.util.ColorUtil;
 import org.pushingpixels.substance.internal.SubstanceSynapse;
@@ -108,6 +109,7 @@ public class RuneliteColorPicker extends JDialog
 		setSize(FRAME_WIDTH, FRAME_HEIGHT);
 		setBackground(ColorScheme.PROGRESS_COMPLETE_COLOR);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		setIconImage(ClientUI.ICON);
 
 		JPanel content = new JPanel(new BorderLayout());
 		content.putClientProperty(SubstanceSynapse.COLORIZATION_FACTOR, 1.0);

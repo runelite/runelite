@@ -137,14 +137,24 @@ public final class ScriptID
 	public static final int QUEST_STATUS_GET = 4029;
 
 	/**
-	 * Updates the Diary/Quest interface's scrollbar
+	 * Updates the Quest interface's scrollbar
 	 * <ul>
 	 * <li> int (boolean) Reset scroll position </li>
 	 * <li> int Number of lines </li>
 	 * </ul>
 	 */
 	@ScriptArguments(integer = 2)
-	public static final int DIARY_QUEST_UPDATE_LINECOUNT = 2523;
+	public static final int QUEST_UPDATE_LINECOUNT = 2523;
+
+	/**
+	 * Updates the Diary interface's scrollbar
+	 * <ul>
+	 * <li> int (boolean) Reset scroll position </li>
+	 * <li> int Number of lines </li>
+	 * </ul>
+	 */
+	@ScriptArguments(integer = 2)
+	public static final int DIARY_UPDATE_LINECOUNT = 6845;
 
 	/**
 	 * Handles zoom input
@@ -392,4 +402,10 @@ public final class ScriptID
 
 	@ScriptArguments(integer = 3)
 	public static final int RAIDS_STORAGE_PRIVATE_ITEMS = 1607;
+
+	@ScriptArguments(integer = 12)
+	public static final int HP_HUD_UPDATE = 2103;
+
+	@ScriptArguments(integer = 7)
+	public static final int ORBS_UPDATE_RUNENERGY = 447;
 }

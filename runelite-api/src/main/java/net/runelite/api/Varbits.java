@@ -654,11 +654,29 @@ public final class Varbits
 	public static final int COMBAT_ACHIEVEMENTS_POPUP = 12455;
 
 	/**
+	 * Combat Achievement tier completion variables
+	 *
+	 * 2 = completed
+	 */
+	public static final int COMBAT_ACHIEVEMENT_TIER_EASY = 12863;
+	public static final int COMBAT_ACHIEVEMENT_TIER_MEDIUM = 12864;
+	public static final int COMBAT_ACHIEVEMENT_TIER_HARD = 12865;
+	public static final int COMBAT_ACHIEVEMENT_TIER_ELITE = 12866;
+	public static final int COMBAT_ACHIEVEMENT_TIER_MASTER = 12867;
+	public static final int COMBAT_ACHIEVEMENT_TIER_GRANDMASTER = 12868;
+
+	/**
 	 * Show boss health overlay setting
 	 * 0 = on
 	 * 1 = off
 	 */
 	public static final int BOSS_HEALTH_OVERLAY = 12389;
+
+	/**
+	 * Boss health bar info
+	 */
+	public static final int BOSS_HEALTH_CURRENT = 6099;
+	public static final int BOSS_HEALTH_MAXIMUM = 6100;
 
 	/**
 	 * Whether the PVP kill-death stats widget should be drawn while in the wilderness or in PVP worlds.
@@ -676,4 +694,35 @@ public final class Varbits
 	 * 101 &lt;= Teleblock active, remaining ticks of blocking effect
 	 */
 	public static final int TELEBLOCK = 4163;
+
+	/**
+	 * How many salt stat boost refreshes the player has remaining.
+	 * This will go down by 1 every 25 ticks (15 seconds) and the player's stats will be restored.
+	 * Set to 32 upon crushing salts.
+	 */
+	public static final int BUFF_STAT_BOOST = 14344;
+
+	/**
+	 * If the player has liquid adrenaline buff active
+	 * <p>
+	 * 0 = inactive
+	 * 1 = active
+	 */
+	public static final int LIQUID_ADERNALINE_ACTIVE = 14361;
+
+	public static final int TOA_RAID_LEVEL = 14380;
+	public static final int TOA_RAID_DAMAGE = 14325;
+
+	/**
+	 * Tombs of Amascut orb healths
+	 * 0=hide 1-27=% of health - 27 is 100% health and 1 is 0% health, 30=dead
+	 */
+	public static final int TOA_MEMBER_0_HEALTH = 14346;
+	public static final int TOA_MEMBER_1_HEALTH = 14347;
+	public static final int TOA_MEMBER_2_HEALTH = 14348;
+	public static final int TOA_MEMBER_3_HEALTH = 14349;
+	public static final int TOA_MEMBER_4_HEALTH = 14350;
+	public static final int TOA_MEMBER_5_HEALTH = 14351;
+	public static final int TOA_MEMBER_6_HEALTH = 14352;
+	public static final int TOA_MEMBER_7_HEALTH = 14353;
 }

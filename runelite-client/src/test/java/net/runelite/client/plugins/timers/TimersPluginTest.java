@@ -126,7 +126,10 @@ public class TimersPluginTest
 		when(client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE)).thenReturn(1);
 		when(client.getVarbitValue(Varbits.STAMINA_EFFECT)).thenReturn(20);
 		when(client.getVarbitValue(Varbits.RING_OF_ENDURANCE_EFFECT)).thenReturn(0);
-		timersPlugin.onVarbitChanged(new VarbitChanged());
+
+		VarbitChanged varbitChanged = new VarbitChanged();
+		varbitChanged.setVarbitId(Varbits.RUN_SLOWED_DEPLETION_ACTIVE); // just has to be one of the vars
+		timersPlugin.onVarbitChanged(varbitChanged);
 
 		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
 		verify(infoBoxManager).addInfoBox(captor.capture());
@@ -156,7 +159,10 @@ public class TimersPluginTest
 		when(client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE)).thenReturn(1);
 		when(client.getVarbitValue(Varbits.STAMINA_EFFECT)).thenReturn(20);
 		when(client.getVarbitValue(Varbits.RING_OF_ENDURANCE_EFFECT)).thenReturn(20);
-		timersPlugin.onVarbitChanged(new VarbitChanged());
+
+		VarbitChanged varbitChanged = new VarbitChanged();
+		varbitChanged.setVarbitId(Varbits.RUN_SLOWED_DEPLETION_ACTIVE); // just has to be one of the vars
+		timersPlugin.onVarbitChanged(varbitChanged);
 
 		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
 		verify(infoBoxManager).addInfoBox(captor.capture());
@@ -166,7 +172,7 @@ public class TimersPluginTest
 
 		// unwield ring
 		when(client.getVarbitValue(Varbits.RING_OF_ENDURANCE_EFFECT)).thenReturn(0);
-		timersPlugin.onVarbitChanged(new VarbitChanged());
+		timersPlugin.onVarbitChanged(varbitChanged);
 		int mins = (int) infoBox.getDuration().toMinutes();
 		assertEquals(2, mins);
 	}
@@ -341,8 +347,11 @@ public class TimersPluginTest
 	public void testCorruptionCooldown()
 	{
 		when(timersConfig.showArceuusCooldown()).thenReturn(true);
-		when(client.getVarbitValue(Varbits.CORRUPTION_COOLDOWN)).thenReturn(1);
-		timersPlugin.onVarbitChanged(new VarbitChanged());
+
+		VarbitChanged varbitChanged = new VarbitChanged();
+		varbitChanged.setVarbitId(Varbits.CORRUPTION_COOLDOWN);
+		varbitChanged.setValue(1);
+		timersPlugin.onVarbitChanged(varbitChanged);
 
 		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
 		verify(infoBoxManager).addInfoBox(captor.capture());
@@ -426,8 +435,11 @@ public class TimersPluginTest
 	public void testImbuedHeartStart()
 	{
 		when(timersConfig.showImbuedHeart()).thenReturn(true);
-		when(client.getVarbitValue(Varbits.IMBUED_HEART_COOLDOWN)).thenReturn(70);
-		timersPlugin.onVarbitChanged(new VarbitChanged());
+
+		VarbitChanged varbitChanged = new VarbitChanged();
+		varbitChanged.setVarbitId(Varbits.IMBUED_HEART_COOLDOWN);
+		varbitChanged.setValue(70);
+		timersPlugin.onVarbitChanged(varbitChanged);
 
 		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
 		verify(infoBoxManager).addInfoBox(captor.capture());
@@ -441,8 +453,10 @@ public class TimersPluginTest
 	{
 		when(timersConfig.showImbuedHeart()).thenReturn(true);
 
-		when(client.getVarbitValue(Varbits.IMBUED_HEART_COOLDOWN)).thenReturn(70);
-		timersPlugin.onVarbitChanged(new VarbitChanged()); // Calls removeIf once (on createGameTimer)
+		VarbitChanged varbitChanged = new VarbitChanged();
+		varbitChanged.setVarbitId(Varbits.IMBUED_HEART_COOLDOWN);
+		varbitChanged.setValue(70);
+		timersPlugin.onVarbitChanged(varbitChanged); // Calls removeIf once (on createGameTimer)
 
 		ArgumentCaptor<Predicate<InfoBox>> prcaptor = ArgumentCaptor.forClass(Predicate.class);
 		TimerTimer imbuedHeartInfoBox = new TimerTimer(GameTimer.IMBUEDHEART, Duration.ofSeconds(420), timersPlugin);
@@ -451,12 +465,28 @@ public class TimersPluginTest
 		Predicate<InfoBox> pred = prcaptor.getValue();
 		assertTrue(pred.test(imbuedHeartInfoBox));
 
-		when(client.getVarbitValue(Varbits.IMBUED_HEART_COOLDOWN)).thenReturn(0);
-		timersPlugin.onVarbitChanged(new VarbitChanged()); // Calls removeIf once
+		varbitChanged = new VarbitChanged();
+		varbitChanged.setVarbitId(Varbits.IMBUED_HEART_COOLDOWN);
+		varbitChanged.setValue(0);
+		timersPlugin.onVarbitChanged(varbitChanged); // Calls removeIf once
 
 		verify(infoBoxManager, times(1)).addInfoBox(any());
 		verify(infoBoxManager, times(2)).removeIf(prcaptor.capture());
 		pred = prcaptor.getValue();
 		assertTrue(pred.test(imbuedHeartInfoBox));
+	}
+
+	@Test
+	public void testMartinPickpocket()
+	{
+		when(timersConfig.showPickpocketStun()).thenReturn(true);
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You fail to pick Martin's pocket.", "", 0);
+		timersPlugin.onChatMessage(chatMessage);
+
+		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
+		verify(infoBoxManager).addInfoBox(captor.capture());
+		TimerTimer infoBox = (TimerTimer) captor.getValue();
+		assertEquals(GameTimer.PICKPOCKET_STUN, infoBox.getTimer());
+		assertEquals(Duration.ofSeconds(5), infoBox.getDuration());
 	}
 }

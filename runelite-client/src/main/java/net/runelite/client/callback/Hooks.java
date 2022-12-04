@@ -38,6 +38,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.VolatileImage;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -51,12 +52,14 @@ import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.FakeXpDrop;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.PostClientTick;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.hooks.Callbacks;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetInfo.WORLD_MAP_VIEW;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.Notifier;
+import net.runelite.client.TelemetryClient;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
@@ -98,6 +101,8 @@ public class Hooks implements Callbacks
 	private final DrawManager drawManager;
 	private final Notifier notifier;
 	private final ClientUI clientUi;
+	@Nullable
+	private final TelemetryClient telemetryClient;
 
 	private Dimension lastStretchedDimensions;
 	private VolatileImage stretchedImage;
@@ -109,6 +114,10 @@ public class Hooks implements Callbacks
 
 	private static MainBufferProvider lastMainBufferProvider;
 	private static Graphics2D lastGraphics;
+
+	private long nextError;
+	private boolean rateLimitedError;
+	private int errorBackoff = 1;
 
 	@FunctionalInterface
 	public interface RenderableDrawListener
@@ -154,7 +163,8 @@ public class Hooks implements Callbacks
 		ClientThread clientThread,
 		DrawManager drawManager,
 		Notifier notifier,
-		ClientUI clientUi
+		ClientUI clientUi,
+		@Nullable TelemetryClient telemetryClient
 	)
 	{
 		this.client = client;
@@ -170,6 +180,7 @@ public class Hooks implements Callbacks
 		this.drawManager = drawManager;
 		this.notifier = notifier;
 		this.clientUi = clientUi;
+		this.telemetryClient = telemetryClient;
 		eventBus.register(this);
 	}
 
@@ -227,6 +238,13 @@ public class Hooks implements Callbacks
 		{
 			log.error("error during main loop tasks", ex);
 		}
+	}
+
+	@Override
+	public void tickEnd()
+	{
+		clientThread.invokeTickEnd();
+		eventBus.post(new PostClientTick());
 	}
 
 	@Override
@@ -583,5 +601,38 @@ public class Hooks implements Callbacks
 			log.error("exception from renderable draw listener", ex);
 		}
 		return true;
+	}
+
+	@Override
+	public void error(String message, Throwable reason)
+	{
+		if (telemetryClient == null)
+		{
+			return;
+		}
+
+		long now = System.currentTimeMillis();
+		if (now > nextError)
+		{
+			telemetryClient.submitError(
+				"client error",
+				message + " - " + reason);
+
+			if (rateLimitedError)
+			{
+				errorBackoff++;
+				rateLimitedError = false;
+			}
+			else
+			{
+				errorBackoff = 1;
+			}
+
+			nextError = now + (10_000L * errorBackoff);
+		}
+		else
+		{
+			rateLimitedError = true;
+		}
 	}
 }

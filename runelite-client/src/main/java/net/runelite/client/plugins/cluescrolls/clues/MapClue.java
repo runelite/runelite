@@ -58,7 +58,7 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 	public static final String WIZARDS_TOWER_DIS = "On the south side of the Wizard's Tower (DIS)";
 	public static final String SOUTH_OF_DRAYNOR_BANK = "South of Draynor Village Bank";
 
-	private static final List<MapClue> CLUES = ImmutableList.of(
+	static final List<MapClue> CLUES = ImmutableList.of(
 		new MapClue(CLUE_SCROLL_EASY_12179, new WorldPoint(3300, 3291, 0), "Al Kharid mine"),
 		new MapClue(CLUE_SCROLL_EASY_2713, new WorldPoint(3166, 3361, 0), CHAMPIONS_GUILD),
 		new MapClue(CLUE_SCROLL_EASY_2716, new WorldPoint(3290, 3374, 0), VARROCK_EAST_MINE),
@@ -98,11 +98,6 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 	private final WorldPoint location;
 	private final int objectId;
 	private final String description;
-
-	private MapClue(int itemId, WorldPoint location)
-	{
-		this(itemId, location, -1);
-	}
 
 	private MapClue(int itemId, WorldPoint location, int objectId)
 	{
@@ -161,6 +156,8 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 				.left(description)
 				.build());
 		}
+
+		renderOverlayNote(panelComponent, plugin);
 	}
 
 	@Override
@@ -213,5 +210,11 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 	public int[] getObjectIds()
 	{
 		return new int[] {objectId};
+	}
+
+	@Override
+	public int[] getConfigKeys()
+	{
+		return new int[]{location.hashCode()};
 	}
 }

@@ -81,7 +81,8 @@ class RunepouchOverlay extends WidgetItemOverlay
 	@Override
 	public void renderItemOverlay(Graphics2D graphics, int itemId, WidgetItem widgetItem)
 	{
-		if (itemId != ItemID.RUNE_POUCH && itemId != ItemID.RUNE_POUCH_L && itemId != ItemID.DIVINE_RUNE_POUCH)
+		if (itemId != ItemID.RUNE_POUCH && itemId != ItemID.RUNE_POUCH_L
+			&& itemId != ItemID.DIVINE_RUNE_POUCH && itemId != ItemID.DIVINE_RUNE_POUCH_L)
 		{
 			return;
 		}

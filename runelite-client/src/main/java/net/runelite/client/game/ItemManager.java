@@ -53,6 +53,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
 import static net.runelite.api.ItemID.*;
 import net.runelite.api.SpritePixels;
+import net.runelite.api.WorldType;
 import net.runelite.api.widgets.ItemQuantityMode;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.RuneLiteConfig;
@@ -318,6 +319,12 @@ public class ItemManager
 	 */
 	public int getWikiPrice(ItemPrice itemPrice)
 	{
+		if (client.getWorldType().contains(WorldType.FRESH_START_WORLD))
+		{
+			// thresholds don't apply to fsw pricing.
+			return itemPrice.getWikiPriceFsw() <= 0 ? itemPrice.getPrice() : itemPrice.getWikiPriceFsw();
+		}
+
 		final int wikiPrice = itemPrice.getWikiPrice();
 		final int jagPrice = itemPrice.getPrice();
 		if (wikiPrice <= 0)

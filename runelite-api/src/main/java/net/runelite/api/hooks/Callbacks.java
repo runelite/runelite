@@ -54,9 +54,14 @@ public interface Callbacks
 	void postDeferred(Object event);
 
 	/**
-	 * Called each tick
+	 * Called at the beginning of each tick
 	 */
 	void tick();
+
+	/**
+	 * Called at the end of each tick
+	 */
+	void tickEnd();
 
 	/**
 	 * Called each frame
@@ -194,4 +199,11 @@ public interface Callbacks
 	 * @return false to prevent drawing
 	 */
 	boolean draw(Renderable renderable, boolean drawingUi);
+
+	/**
+	 * Called when a client error occurs
+	 * @param message
+	 * @param reason
+	 */
+	void error(String message, Throwable reason);
 }

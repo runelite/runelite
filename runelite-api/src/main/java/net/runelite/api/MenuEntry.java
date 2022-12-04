@@ -96,6 +96,20 @@ public interface MenuEntry
 	MenuEntry onClick(Consumer<MenuEntry> callback);
 
 	/**
+	 * Set the parent for the menu entry. This makes this menu entry part of the sub-menu off of the parent.
+	 * @param parent
+	 * @return
+	 */
+	MenuEntry setParent(MenuEntry parent);
+
+	/**
+	 * Get the parent for the menu entry.
+	 * @return
+	 */
+	@Nullable
+	MenuEntry getParent();
+
+	/**
 	 * Test if this menu entry is an item op. "Use" and "Examine" are not considered item ops.
 	 * @return
 	 */

@@ -121,6 +121,7 @@ public class WintertodtPlugin extends Plugin
 
 	@Getter(AccessLevel.PACKAGE)
 	private boolean isInWintertodt;
+	private boolean needRoundNotif;
 
 	private Instant lastActionTime;
 
@@ -175,9 +176,9 @@ public class WintertodtPlugin extends Plugin
 			{
 				log.debug("Left Wintertodt!");
 				reset();
+				isInWintertodt = false;
+				needRoundNotif = true;
 			}
-
-			isInWintertodt = false;
 			return;
 		}
 
@@ -185,8 +186,8 @@ public class WintertodtPlugin extends Plugin
 		{
 			reset();
 			log.debug("Entered Wintertodt!");
+			isInWintertodt = true;
 		}
-		isInWintertodt = true;
 
 		checkActionTimeout();
 	}
@@ -194,13 +195,14 @@ public class WintertodtPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{
-		int timerValue = client.getVarbitValue(Varbits.WINTERTODT_TIMER);
-		if (timerValue != previousTimerValue)
+		if (varbitChanged.getVarbitId() == Varbits.WINTERTODT_TIMER)
 		{
 			int timeToNotify = config.roundNotification();
-			if (timeToNotify > 0)
+			// Sometimes wt var updates are sent to players even after leaving wt.
+			// So only notify if in wt or after just having left.
+			if (timeToNotify > 0 && (isInWintertodt || needRoundNotif))
 			{
-				int timeInSeconds = timerValue * 30 / 50;
+				int timeInSeconds = varbitChanged.getValue() * 30 / 50;
 				int prevTimeInSeconds = previousTimerValue * 30 / 50;
 
 				log.debug("Seconds left until round start: {}", timeInSeconds);
@@ -208,10 +210,11 @@ public class WintertodtPlugin extends Plugin
 				if (prevTimeInSeconds > timeToNotify && timeInSeconds <= timeToNotify)
 				{
 					notifier.notify("Wintertodt round is about to start");
+					needRoundNotif = false;
 				}
 			}
 
-			previousTimerValue = timerValue;
+			previousTimerValue = varbitChanged.getValue();
 		}
 	}
 

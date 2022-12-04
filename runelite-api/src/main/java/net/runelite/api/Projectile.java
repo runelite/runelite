@@ -24,6 +24,7 @@
  */
 package net.runelite.api;
 
+import javax.annotation.Nullable;
 import net.runelite.api.coords.LocalPoint;
 
 /**
@@ -185,4 +186,17 @@ public interface Projectile extends Renderable
 	 * @return the z-axis velocity
 	 */
 	double getVelocityZ();
+
+	/**
+	 * The animation of the projectile
+	 * @return
+	 */
+	@Nullable
+	Animation getAnimation();
+
+	/**
+	 * The frame of the current animation
+	 * @return
+	 */
+	int getAnimationFrame();
 }

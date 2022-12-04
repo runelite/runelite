@@ -409,7 +409,7 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	{
 		if (SwingUtilities.isRightMouseButton(mouseEvent) && config.rightClickMovesCamera())
 		{
-			boolean oneButton = client.getVar(VarPlayer.MOUSE_BUTTONS) == 1;
+			boolean oneButton = client.getVarpValue(VarPlayer.MOUSE_BUTTONS) == 1;
 			// Only move the camera if there is nothing at the menu, or if
 			// in one-button mode. In one-button mode, left and right click always do the same thing,
 			// so always treat it as the menu is empty

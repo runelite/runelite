@@ -201,7 +201,7 @@ public class OverlayRenderer extends MouseAdapter
 				.setOption(overlayMenuEntry.getOption())
 				.setTarget(ColorUtil.wrapWithColorTag(overlayMenuEntry.getTarget(), JagexColors.MENU_TARGET))
 				.setType(overlayMenuEntry.getMenuAction())
-				.onClick(e -> eventBus.post(new OverlayMenuClicked(overlayMenuEntry, overlay)));
+				.onClick(MoreObjects.firstNonNull(overlayMenuEntry.callback, e -> eventBus.post(new OverlayMenuClicked(overlayMenuEntry, overlay))));
 		}
 	}
 
@@ -369,7 +369,7 @@ public class OverlayRenderer extends MouseAdapter
 					graphics.setPaint(paint);
 				}
 
-				if (!client.isMenuOpen() && !client.getSpellSelected() && bounds.contains(mousePosition))
+				if (!client.isMenuOpen() && !client.isWidgetSelected() && bounds.contains(mousePosition))
 				{
 					curHoveredOverlay = overlay;
 					overlay.onMouseOver();

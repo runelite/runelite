@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Charlie Waters
+ * Copyright (c) 2022, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,11 +22,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.api.events;
 
 /**
- * Detects when the window is focused or unfocused.
+ * Posted after the menu is sorted, but before clicks are processed.
+ * This is only fired if the menu isn't open, and shouldn't be used as a general purpose
+ * client tick event.
  */
-public interface KeyFocusListener
+public class PostMenuSort
 {
 }

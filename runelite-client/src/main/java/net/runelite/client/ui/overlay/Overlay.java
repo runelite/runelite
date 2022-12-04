@@ -30,10 +30,13 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import net.runelite.api.MenuAction;
+import net.runelite.api.MenuEntry;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.components.LayoutableRenderableEntity;
@@ -194,5 +197,23 @@ public abstract class Overlay implements LayoutableRenderableEntity
 				movable = true;
 				snappable = true;
 		}
+	}
+
+	public OverlayMenuEntry addMenuEntry(MenuAction action, String option, String target)
+	{
+		return addMenuEntry(action, option, target, null);
+	}
+
+	public OverlayMenuEntry addMenuEntry(MenuAction action, String option, String target, Consumer<MenuEntry> callback)
+	{
+		OverlayMenuEntry menuEntry = new OverlayMenuEntry(action, option, target);
+		menuEntry.callback = callback;
+		menuEntries.add(menuEntry);
+		return menuEntry;
+	}
+
+	public void removeMenuEntry(MenuAction action, String option, String target)
+	{
+		menuEntries.remove(new OverlayMenuEntry(action, option, target));
 	}
 }

@@ -36,7 +36,6 @@ import net.runelite.api.annotations.VarCInt;
 import net.runelite.api.annotations.VarCStr;
 import net.runelite.api.annotations.Varbit;
 import net.runelite.api.annotations.VisibleForDevtools;
-import net.runelite.api.annotations.VisibleForExternalPlugins;
 import net.runelite.api.clan.ClanChannel;
 import net.runelite.api.clan.ClanID;
 import net.runelite.api.clan.ClanSettings;
@@ -802,19 +801,18 @@ public interface Client extends OAuthApi, GameEngine
 	 *
 	 * @param varPlayer the player variable
 	 * @return the value
+	 * @see Client#getVarpValue(VarPlayer)
 	 */
+	@Deprecated
 	int getVar(VarPlayer varPlayer);
 
 	/**
 	 * Gets the value corresponding to the passed player variable.
-	 * This returns the server's idea of the value, not the client's. This is
-	 * specifically the last value set by the server regardless of changes to
-	 * the var by the client.
 	 *
 	 * @param varPlayer the player variable
 	 * @return the value
 	 */
-	int getServerVar(VarPlayer varPlayer);
+	int getVarpValue(VarPlayer varPlayer);
 
 	/**
 	 * Gets a value corresponding to the passed varbit.
@@ -850,7 +848,6 @@ public interface Client extends OAuthApi, GameEngine
 	 * @param varpId the VarPlayer id
 	 * @return the value
 	 */
-	@VisibleForExternalPlugins
 	int getVarpValue(int varpId);
 
 	/**
@@ -862,7 +859,6 @@ public interface Client extends OAuthApi, GameEngine
 	 * @param varpId the VarPlayer id
 	 * @return the value
 	 */
-	@VisibleForExternalPlugins
 	int getServerVarpValue(int varpId);
 
 	/**
@@ -1574,7 +1570,7 @@ public interface Client extends OAuthApi, GameEngine
 	 *
 	 * @return the hint arrow type
 	 */
-	HintArrowType getHintArrowType();
+	@MagicConstant(valuesFromClass = HintArrowType.class) int getHintArrowType();
 
 	/**
 	 * Clears the current hint arrow.
@@ -1587,6 +1583,13 @@ public interface Client extends OAuthApi, GameEngine
 	 * @param point the location
 	 */
 	void setHintArrow(WorldPoint point);
+
+	/**
+	 * Sets the hint arrow to the passsed point
+	 *
+	 * @param point
+	 */
+	void setHintArrow(LocalPoint point);
 
 	/**
 	 * Sets a hint arrow to point to the passed player.
@@ -1848,23 +1851,25 @@ public interface Client extends OAuthApi, GameEngine
 	/**
 	 * Is a widget is in target mode?
 	 */
-	boolean getSpellSelected();
+	boolean isWidgetSelected();
 
 	/**
 	 * Sets if a widget is in target mode
 	 */
-	void setSpellSelected(boolean selected);
+	void setWidgetSelected(boolean selected);
 
 	/**
 	 * Get if an item is selected with "Use"
 	 * @return 1 if selected, else 0
 	 */
+	@Deprecated
 	int getSelectedItem();
 
 	/**
 	 * If an item is selected, this is the item index in the inventory.
 	 * @return
 	 */
+	@Deprecated
 	int getSelectedItemIndex();
 
 	/**
@@ -2022,4 +2027,40 @@ public interface Client extends OAuthApi, GameEngine
 	 * @return
 	 */
 	Deque<AmbientSoundEffect> getAmbientSoundEffects();
+
+	/**
+	 * Set the amount of time until the client automatically logs out due to idle input.
+	 * @param ticks client ticks
+	 */
+	void setIdleTimeout(int ticks);
+
+	/**
+	 * Get the amount of time until the client automatically logs out due to idle input.
+	 * @return client ticks
+	 */
+	int getIdleTimeout();
+
+	/**
+	 * Get whether minimap zoom is enabled
+	 * @return
+	 */
+	boolean isMinimapZoom();
+
+	/**
+	 * Set whether minimap zoom is enabled
+	 * @param minimapZoom
+	 */
+	void setMinimapZoom(boolean minimapZoom);
+
+	/**
+	 * Gets the number of pixels per tile on the minimap. The default is 4.
+	 * @return
+	 */
+	double getMinimapZoom();
+
+	/**
+	 * Set the number of pixels per tile on the minimap. The default is 4.
+	 * @param zoom
+	 */
+	void setMinimapZoom(double zoom);
 }

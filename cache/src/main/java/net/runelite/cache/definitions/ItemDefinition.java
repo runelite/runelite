@@ -47,6 +47,11 @@ public class ItemDefinition
 	public boolean isTradeable;
 	public int stackable = 0;
 	public int inventoryModel;
+
+	public int wearPos1;
+	public int wearPos2;
+	public int wearPos3;
+
 	public boolean members = false;
 
 	public short[] colorFind;
@@ -88,6 +93,7 @@ public class ItemDefinition
 	public int notedTemplate = -1;
 
 	public int team;
+	public int weight;
 
 	public int shiftClickDropIndex = -2;
 

@@ -46,7 +46,6 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
@@ -66,7 +65,6 @@ import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
-import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.events.PartyChanged;
 import net.runelite.client.events.PartyMemberAvatar;
 import net.runelite.client.input.KeyManager;
@@ -243,17 +241,6 @@ public class PartyPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onOverlayMenuClicked(OverlayMenuClicked event)
-	{
-		if (event.getEntry().getMenuAction() == MenuAction.RUNELITE_OVERLAY &&
-			event.getEntry().getTarget().equals("Party") &&
-			event.getEntry().getOption().equals("Leave"))
-		{
-			leaveParty();
-		}
-	}
-
 	void leaveParty()
 	{
 		party.changeParty(null);
@@ -273,7 +260,7 @@ public class PartyPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (!hotkeyPressed || client.isMenuOpen() || party.getMembers().isEmpty() || !config.pings())
+		if (!hotkeyPressed || client.isMenuOpen() || !party.isInParty() || !config.pings())
 		{
 			return;
 		}
@@ -361,9 +348,7 @@ public class PartyPlugin extends Plugin
 
 	private void shareLocation()
 	{
-		final PartyMember localMember = party.getLocalMember();
-
-		if (localMember == null)
+		if (!party.isInParty())
 		{
 			return;
 		}
@@ -398,7 +383,7 @@ public class PartyPlugin extends Plugin
 
 	void requestSync()
 	{
-		if (!party.getMembers().isEmpty())
+		if (party.isInParty())
 		{
 			// Request sync
 			final UserSync userSync = new UserSync();
@@ -498,8 +483,7 @@ public class PartyPlugin extends Plugin
 			forceSend = true;
 		}
 
-		final PartyMember localMember = party.getLocalMember();
-		if (localMember == null)
+		if (!party.isInParty())
 		{
 			return;
 		}
@@ -509,7 +493,7 @@ public class PartyPlugin extends Plugin
 		final int healthMax = client.getRealSkillLevel(Skill.HITPOINTS);
 		final int prayerMax = client.getRealSkillLevel(Skill.PRAYER);
 		final int runEnergy = (int) Math.ceil(client.getEnergy() / 10.0) * 10; // flatten to reduce network load
-		final int specEnergy = client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT) / 10;
+		final int specEnergy = client.getVarpValue(VarPlayer.SPECIAL_ATTACK_PERCENT) / 10;
 		final boolean vengActive = client.getVarbitValue(Varbits.VENGEANCE_ACTIVE) == 1;
 
 		final Player localPlayer = client.getLocalPlayer();

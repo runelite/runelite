@@ -38,7 +38,6 @@ import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Skill;
 import net.runelite.client.plugins.xptracker.XpTrackerService;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
-import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.LineComponent;
@@ -47,7 +46,7 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 class FishingOverlay extends OverlayPanel
 {
 	private static final String FISHING_SPOT = "Fishing spot";
-	static final String FISHING_RESET = "Reset";
+	private static final String FISHING_RESET = "Reset";
 
 	private static final Set<Integer> FISHING_ANIMATIONS = ImmutableSet.of(
 		AnimationID.FISHING_BARBTAIL_HARPOON,
@@ -95,8 +94,8 @@ class FishingOverlay extends OverlayPanel
 		this.plugin = plugin;
 		this.config = config;
 		this.xpTrackerService = xpTrackerService;
-		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Fishing overlay"));
-		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY, FISHING_RESET, "Fishing overlay"));
+		addMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Fishing overlay");
+		addMenuEntry(RUNELITE_OVERLAY, FISHING_RESET, "Fishing overlay", e -> plugin.reset());
 	}
 
 	@Override

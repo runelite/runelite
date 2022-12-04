@@ -42,14 +42,13 @@ import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.events.PartyChanged;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.party.PartyMember;
 import net.runelite.client.party.PartyService;
 import net.runelite.client.party.WSClient;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
 	name = "DPS Counter",
@@ -258,24 +257,6 @@ public class DpsCounterPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onOverlayMenuClicked(OverlayMenuClicked event)
-	{
-		if (event.getEntry() == DpsOverlay.RESET_ENTRY)
-		{
-			members.clear();
-			total.reset();
-		}
-		else if (event.getEntry() == DpsOverlay.UNPAUSE_ENTRY)
-		{
-			unpause();
-		}
-		else if (event.getEntry() == DpsOverlay.PAUSE_ENTRY)
-		{
-			pause();
-		}
-	}
-
-	@Subscribe
 	public void onNpcDespawned(NpcDespawned npcDespawned)
 	{
 		NPC npc = npcDespawned.getNpc();
@@ -296,7 +277,13 @@ public class DpsCounterPlugin extends Plugin
 		}
 	}
 
-	private void pause()
+	void reset()
+	{
+		members.clear();
+		total.reset();
+	}
+
+	void pause()
 	{
 		if (total.isPaused())
 		{
@@ -314,7 +301,7 @@ public class DpsCounterPlugin extends Plugin
 		dpsOverlay.setPaused(true);
 	}
 
-	private void unpause()
+	void unpause()
 	{
 		if (!total.isPaused())
 		{

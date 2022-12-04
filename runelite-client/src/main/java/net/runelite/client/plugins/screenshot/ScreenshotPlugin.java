@@ -71,6 +71,7 @@ import static net.runelite.api.widgets.WidgetID.KINGDOM_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.LEVEL_UP_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.QUEST_COMPLETED_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.THEATRE_OF_BLOOD_REWARD_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.TOA_REWARD_GROUP_ID;
 import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.client.RuneLite.SCREENSHOT_DIR;
 import net.runelite.client.config.ConfigManager;
@@ -147,7 +148,10 @@ public class ScreenshotPlugin extends Plugin
 		COX_CM,
 		TOB,
 		TOB_SM,
-		TOB_HM
+		TOB_HM,
+		TOA_ENTRY_MODE,
+		TOA,
+		TOA_EXPERT_MODE
 	}
 
 	private KillType killType;
@@ -413,6 +417,19 @@ public class ScreenshotPlugin extends Plugin
 			}
 		}
 
+		if (chatMessage.startsWith("Your completed Tombs of Amascut"))
+		{
+			Matcher m = NUMBER_PATTERN.matcher(Text.removeTags(chatMessage));
+			if (m.find())
+			{
+				killType = chatMessage.contains("Expert Mode") ? KillType.TOA_EXPERT_MODE :
+					chatMessage.contains("Entry Mode") ? KillType.TOA_ENTRY_MODE :
+						KillType.TOA;
+				killCountNumber = Integer.valueOf(m.group());
+				return;
+			}
+		}
+
 		if (config.screenshotKick() && chatMessage.equals("Your request to kick/ban this user was successful."))
 		{
 			if (kickPlayerName == null)
@@ -520,6 +537,7 @@ public class ScreenshotPlugin extends Plugin
 			case CLUE_SCROLL_REWARD_GROUP_ID:
 			case CHAMBERS_OF_XERIC_REWARD_GROUP_ID:
 			case THEATRE_OF_BLOOD_REWARD_GROUP_ID:
+			case TOA_REWARD_GROUP_ID:
 			case BARROWS_REWARD_GROUP_ID:
 				if (!config.screenshotRewards())
 				{
@@ -591,6 +609,33 @@ public class ScreenshotPlugin extends Plugin
 						break;
 					case TOB_HM:
 						fileName = "Theatre of Blood Hard Mode(" + killCountNumber + ")";
+						break;
+					default:
+						throw new IllegalStateException();
+				}
+
+				screenshotSubDir = SD_BOSS_KILLS;
+				killType = null;
+				killCountNumber = 0;
+				break;
+			}
+			case TOA_REWARD_GROUP_ID:
+			{
+				if (killType != KillType.TOA && killType != KillType.TOA_ENTRY_MODE && killType != KillType.TOA_EXPERT_MODE)
+				{
+					return;
+				}
+
+				switch (killType)
+				{
+					case TOA:
+						fileName = "Tombs of Amascut(" + killCountNumber + ")";
+						break;
+					case TOA_ENTRY_MODE:
+						fileName = "Tombs of Amascut Entry Mode(" + killCountNumber + ")";
+						break;
+					case TOA_EXPERT_MODE:
+						fileName = "Tombs of Amascut Expert Mode(" + killCountNumber + ")";
 						break;
 					default:
 						throw new IllegalStateException();

@@ -72,8 +72,8 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.vars.AccountType;
 import net.runelite.api.widgets.Widget;
+import static net.runelite.api.widgets.WidgetID.ACHIEVEMENT_DIARY_SCROLL_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.ADVENTURE_LOG_ID;
-import static net.runelite.api.widgets.WidgetID.DIARY_QUEST_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.KILL_LOGS_GROUP_ID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
@@ -467,6 +467,12 @@ public class ChatCommandsPlugin extends Plugin
 					int tobTeamSize = tobTeamSize();
 					lastTeamSize = tobTeamSize == 1 ? "Solo" : (tobTeamSize + " players");
 				}
+				else if (renamedBoss.contains("Tombs of Amascut"))
+				{
+					// TOA team size isn't sent in the kill message, but can be computed from varbits
+					int toaTeamSize = toaTeamSize();
+					lastTeamSize = toaTeamSize == 1 ? "Solo" : (toaTeamSize + " players");
+				}
 
 				final double pb = getPb(renamedBoss);
 				// If a raid with a team size, only update the pb if it is lower than the existing pb
@@ -727,7 +733,7 @@ public class ChatCommandsPlugin extends Plugin
 
 			if (client.getLocalPlayer().getName().equals(pohOwner))
 			{
-				Widget parent = client.getWidget(WidgetInfo.DIARY_QUEST_WIDGET_TEXT);
+				Widget parent = client.getWidget(WidgetInfo.ACHIEVEMENT_DIARY_SCROLL_TEXT);
 				// Each line is a separate static child
 				Widget[] children = parent.getStaticChildren();
 				String[] text = Arrays.stream(children)
@@ -830,7 +836,7 @@ public class ChatCommandsPlugin extends Plugin
 			case KILL_LOGS_GROUP_ID:
 				bossLogLoaded = true;
 				break;
-			case DIARY_QUEST_GROUP_ID:
+			case ACHIEVEMENT_DIARY_SCROLL_GROUP_ID:
 				scrollInterfaceLoaded = true;
 				break;
 		}
@@ -1073,7 +1079,7 @@ public class ChatCommandsPlugin extends Plugin
 
 	private boolean questPointsSubmit(ChatInput chatInput, String value)
 	{
-		final int qp = client.getVar(VarPlayer.QUEST_POINTS);
+		final int qp = client.getVarpValue(VarPlayer.QUEST_POINTS);
 		final String playerName = client.getLocalPlayer().getName();
 
 		executor.execute(() ->
@@ -1991,7 +1997,7 @@ public class ChatCommandsPlugin extends Plugin
 			case "zammy":
 			case "zamorak":
 			case "kril":
-			case "kril trutsaroth":
+			case "kril tsutsaroth":
 				return "K'ril Tsutsaroth";
 			case "arma":
 			case "kree":
@@ -2171,6 +2177,73 @@ public class ChatCommandsPlugin extends Plugin
 				return "Theatre of Blood Hard Mode 4 players";
 			case "hmt 5":
 				return "Theatre of Blood Hard Mode 5 players";
+
+			// Tombs of Amascut
+			case "toa":
+				return "Tombs of Amascut";
+			case "toa 1":
+			case "toa solo":
+				return "Tombs of Amascut Solo";
+			case "toa 2":
+			case "toa duo":
+				return "Tombs of Amascut 2 players";
+			case "toa 3":
+				return "Tombs of Amascut 3 players";
+			case "toa 4":
+				return "Tombs of Amascut 4 players";
+			case "toa 5":
+				return "Tombs of Amascut 5 players";
+			case "toa 6":
+				return "Tombs of Amascut 6 players";
+			case "toa 7":
+				return "Tombs of Amascut 7 players";
+			case "toa 8":
+				return "Tombs of Amascut 8 players";
+			case "toa entry":
+			case "tombs of amascut - entry":
+			case "toa entry mode":
+				return "Tombs of Amascut Entry Mode";
+			case "toa entry 1":
+			case "toa entry solo":
+				return "Tombs of Amascut Entry Mode Solo";
+			case "toa entry 2":
+			case "toa entry duo":
+				return "Tombs of Amascut Entry Mode 2 players";
+			case "toa entry 3":
+				return "Tombs of Amascut Entry Mode 3 players";
+			case "toa entry 4":
+				return "Tombs of Amascut Entry Mode 4 players";
+			case "toa entry 5":
+				return "Tombs of Amascut Entry Mode 5 players";
+			case "toa entry 6":
+				return "Tombs of Amascut Entry Mode 6 players";
+			case "toa entry 7":
+				return "Tombs of Amascut Entry Mode 7 players";
+			case "toa entry 8":
+				return "Tombs of Amascut Entry Mode 8 players";
+			case "tombs of amascut: expert mode":
+			case "toa expert":
+			case "tombs of amascut - expert":
+			case "toa expert mode":
+				return "Tombs of Amascut Expert Mode";
+			case "toa expert 1":
+			case "toa expert solo":
+				return "Tombs of Amascut Expert Mode Solo";
+			case "toa expert 2":
+			case "toa expert duo":
+				return "Tombs of Amascut Expert Mode 2 players";
+			case "toa expert 3":
+				return "Tombs of Amascut Expert Mode 3 players";
+			case "toa expert 4":
+				return "Tombs of Amascut Expert Mode 4 players";
+			case "toa expert 5":
+				return "Tombs of Amascut Expert Mode 5 players";
+			case "toa expert 6":
+				return "Tombs of Amascut Expert Mode 6 players";
+			case "toa expert 7":
+				return "Tombs of Amascut Expert Mode 7 players";
+			case "toa expert 8":
+				return "Tombs of Amascut Expert Mode 8 players";
 
 			// The Gauntlet
 			case "gaunt":
@@ -2373,6 +2446,11 @@ public class ChatCommandsPlugin extends Plugin
 			case "rifts closed":
 				return "Guardians of the Rift";
 
+			// Tempoross
+			case "fishingtodt":
+			case "fishtodt":
+				return "Tempoross";
+
 			default:
 				return WordUtils.capitalize(boss);
 		}
@@ -2477,6 +2555,17 @@ public class ChatCommandsPlugin extends Plugin
 			Math.min(client.getVarbitValue(Varbits.THEATRE_OF_BLOOD_ORB3), 1) +
 			Math.min(client.getVarbitValue(Varbits.THEATRE_OF_BLOOD_ORB4), 1) +
 			Math.min(client.getVarbitValue(Varbits.THEATRE_OF_BLOOD_ORB5), 1);
+	}
+
+	private int toaTeamSize()
+	{
+		return Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_0_HEALTH), 1) +
+			Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_1_HEALTH), 1) +
+			Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_2_HEALTH), 1) +
+			Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_3_HEALTH), 1) +
+			Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_4_HEALTH), 1) +
+			Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_6_HEALTH), 1) +
+			Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_7_HEALTH), 1);
 	}
 
 	private int findPet(String name)

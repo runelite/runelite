@@ -27,6 +27,7 @@ package net.runelite.client.plugins.worldhopper.ping;
 import com.google.common.base.Charsets;
 import com.google.common.primitives.Bytes;
 import com.sun.jna.Memory;
+import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 import java.io.IOException;
 import java.net.Inet4Address;
@@ -186,40 +187,52 @@ public class Ping
 				return -1;
 			}
 
-			int rlen = libc.recvfrom(sock, response, size, 0, null, null);
-			long end = System.nanoTime();
-			if (rlen <= 0)
+			while (true)
 			{
-				return -1;
+				if ((System.nanoTime() - start) / 1_000_000 > TIMEOUT)
+				{
+					log.debug("timeout elapsed checking for echo reply");
+					break;
+				}
+
+				int rlen = libc.recvfrom(sock, response, size, 0, null, null);
+				long end = System.nanoTime();
+				if (rlen <= 0)
+				{
+					log.debug("recvfrom() error: len {} errno {}", rlen, Native.getLastError());
+					break;
+				}
+
+				int icmpHeaderOffset = 0;
+				if (includeIpHeader)
+				{
+					int ihl = response.getByte(0) & 0xf;
+					icmpHeaderOffset = ihl << 2; // to bytes
+				}
+
+				if (icmpHeaderOffset + 7 >= rlen)
+				{
+					log.warn("packet too short (received {} bytes but icmp header offset is {})", rlen, icmpHeaderOffset);
+					continue;
+				}
+
+				if (response.getByte(icmpHeaderOffset) != 0) // ICMP type - echo reply
+				{
+					log.debug("non-echo reply");
+					continue;
+				}
+
+				short seq = (short) (((response.getByte(icmpHeaderOffset + 6) & 0xff) << 8) | response.getByte(icmpHeaderOffset + 7) & 0xff);
+				if (seqno != seq)
+				{
+					log.debug("sequence number mismatch ({} != {})", seqno, seq);
+					continue;
+				}
+
+				return (int) ((end - start) / 1_000_000);
 			}
 
-			int icmpHeaderOffset = 0;
-			if (includeIpHeader)
-			{
-				int ihl = response.getByte(0) & 0xf;
-				icmpHeaderOffset = ihl << 2; // to bytes
-			}
-
-			if (icmpHeaderOffset + 7 >= rlen)
-			{
-				log.warn("packet too short (received {} bytes but icmp header offset is {})", rlen, icmpHeaderOffset);
-				return -1;
-			}
-
-			if (response.getByte(icmpHeaderOffset) != 0) // ICMP type - echo reply
-			{
-				log.warn("non-echo reply");
-				return -1;
-			}
-
-			short seq = (short) (((response.getByte(icmpHeaderOffset + 6) & 0xff) << 8) | response.getByte(icmpHeaderOffset + 7) & 0xff);
-			if (seqno != seq)
-			{
-				log.warn("sequence number mismatch ({} != {})", seqno, seq);
-				return -1;
-			}
-
-			return (int) ((end - start) / 1_000_000);
+			return -1;
 		}
 		finally
 		{

@@ -103,7 +103,7 @@ public class FriendListPlugin extends Plugin
 		if (event.getScriptId() == ScriptID.FRIENDS_UPDATE)
 		{
 			final int world = client.getWorld();
-			final boolean isMember = client.getVar(VarPlayer.MEMBERSHIP_DAYS) > 0;
+			final boolean isMember = client.getVarpValue(VarPlayer.MEMBERSHIP_DAYS) > 0;
 			final NameableContainer<Friend> friendContainer = client.getFriendContainer();
 			final int friendCount = friendContainer.getCount();
 			if (friendCount >= 0)
@@ -124,7 +124,7 @@ public class FriendListPlugin extends Plugin
 		else if (event.getScriptId() == ScriptID.IGNORE_UPDATE)
 		{
 			final int world = client.getWorld();
-			final boolean isMember = client.getVar(VarPlayer.MEMBERSHIP_DAYS) > 0;
+			final boolean isMember = client.getVarpValue(VarPlayer.MEMBERSHIP_DAYS) > 0;
 			final NameableContainer<Ignore> ignoreContainer = client.getIgnoreContainer();
 			final int ignoreCount = ignoreContainer.getCount();
 			if (ignoreCount >= 0)
