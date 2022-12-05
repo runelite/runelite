@@ -604,7 +604,7 @@ public class IdleNotifierPlugin extends Plugin
 			return false;
 		}
 
-		if (client.getEnergy() <= config.getLowEnergyThreshold())
+		if (client.getEnergy() / 100 <= config.getLowEnergyThreshold())
 		{
 			if (shouldNotifyLowEnergy)
 			{
@@ -627,7 +627,7 @@ public class IdleNotifierPlugin extends Plugin
 			return false;
 		}
 
-		if (client.getEnergy() >= config.getHighEnergyThreshold())
+		if (client.getEnergy() / 100 >= config.getHighEnergyThreshold())
 		{
 			if (shouldNotifyHighEnergy)
 			{

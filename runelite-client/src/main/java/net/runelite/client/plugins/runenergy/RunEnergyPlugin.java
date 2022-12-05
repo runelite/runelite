@@ -282,7 +282,7 @@ public class RunEnergyPlugin extends Plugin
 
 	private void resetRunOrbText()
 	{
-		setRunOrbText(Integer.toString(client.getEnergy()));
+		setRunOrbText(Integer.toString(client.getEnergy() / 100));
 	}
 
 	String getEstimatedRunTimeRemaining(boolean inSeconds)
@@ -313,7 +313,7 @@ public class RunEnergyPlugin extends Plugin
 		}
 
 		// Math.ceil is correct here - only need 1 energy unit to run
-		final double ticksLeft = Math.ceil(client.getEnergy() / (energyUnitsLost / 100.0));
+		final double ticksLeft = Math.ceil(client.getEnergy() / (double) energyUnitsLost);
 		final double secondsLeft = ticksLeft * Constants.GAME_TICK_LENGTH / 1000.0;
 
 		// Return the text
@@ -373,11 +373,11 @@ public class RunEnergyPlugin extends Plugin
 		}
 
 		// Calculate the amount of energy recovered every second
-		double recoverRate = (48 + client.getBoostedSkillLevel(Skill.AGILITY)) / 360.0;
+		double recoverRate = (48 + client.getBoostedSkillLevel(Skill.AGILITY)) / 3.6;
 		recoverRate *= 1.0 + getGracefulRecoveryBoost() / 100.0;
 
 		// Calculate the number of seconds left
-		final double secondsLeft = (100 - client.getEnergy()) / recoverRate;
+		final double secondsLeft = (10000 - client.getEnergy()) / recoverRate;
 		return (int) secondsLeft;
 	}
 

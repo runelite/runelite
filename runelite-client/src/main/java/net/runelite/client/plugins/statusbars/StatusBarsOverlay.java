@@ -194,7 +194,7 @@ class StatusBarsOverlay extends Overlay
 		));
 		barRenderers.put(BarMode.RUN_ENERGY, new BarRenderer(
 			() -> MAX_RUN_ENERGY_VALUE,
-			client::getEnergy,
+			() -> client.getEnergy() / 100,
 			() -> getRestoreValue("Run Energy"),
 			() ->
 			{
