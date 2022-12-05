@@ -118,7 +118,7 @@ public interface WorldHopperConfig extends Config
 
 	@ConfigItem(
 		keyName = "subscriptionFilter",
-		name = "Show subscription types",
+		name = "Subscription filter",
 		description = "Only show free worlds, member worlds, or both types of worlds in sidebar",
 		position = 8
 	)
@@ -139,10 +139,21 @@ public interface WorldHopperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "worldTypeFilter",
+		name = "World type filter",
+		description = "Only show worlds of specific types",
+		position = 10
+	)
+	default Set<WorldTypeFilter> worldTypeFilter()
+	{
+		return Collections.emptySet();
+	}
+
+	@ConfigItem(
 		keyName = "displayPing",
 		name = "Display current ping",
 		description = "Displays ping to current game world",
-		position = 9
+		position = 11
 	)
 	default boolean displayPing()
 	{
