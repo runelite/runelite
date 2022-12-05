@@ -138,6 +138,7 @@ public class NpcUtil
 			case NpcID.ENT_7234:
 			case NpcID.HOPELESS_CREATURE:
 			case NpcID.HOPELESS_CREATURE_1073:
+			case NpcID.GADDERANKS_4484:
 			case NpcID.WALL_BEAST:
 				return false;
 			// These NPCs have no attack options, but are the dead and uninteractable form of otherwise attackable NPCs,
@@ -206,6 +207,7 @@ public class NpcUtil
 			case NpcID.DAMIS_6347:
 			case NpcID.DAMIS_HARD_1135:
 			case NpcID.HOPELESS_CREATURE_1074:
+			case NpcID.GADDERANKS_4485:
 			// The Nightmare should be considered alive again once reaching its sleeping form
 			case NpcID.THE_NIGHTMARE:
 			case NpcID.PHOSANIS_NIGHTMARE:
