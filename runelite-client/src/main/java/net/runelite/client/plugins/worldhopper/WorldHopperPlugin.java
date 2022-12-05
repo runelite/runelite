@@ -533,7 +533,7 @@ public class WorldHopperPlugin extends Plugin
 		int worldIdx = worlds.indexOf(currentWorld);
 		int totalLevel = client.getTotalLevel();
 
-		final Set<RegionFilterMode> regionFilter = config.quickHopRegionFilter();
+		final Set<RegionFilterMode> regionFilter = config.regionFilter();
 
 		World world;
 		do
