@@ -49,7 +49,7 @@ import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
 @Getter
-public class CoordinateClue extends ClueScroll implements TextClueScroll, LocationClueScroll
+public class CoordinateClue extends ClueScroll implements LocationClueScroll
 {
 	@Getter
 	private static class CoordinateClueInfo
@@ -82,7 +82,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		}
 	}
 
-	private static final ImmutableMap<WorldPoint, CoordinateClueInfo> CLUES = new ImmutableMap.Builder<WorldPoint, CoordinateClueInfo>()
+	static final ImmutableMap<WorldPoint, CoordinateClueInfo> CLUES = new ImmutableMap.Builder<WorldPoint, CoordinateClueInfo>()
 		// Medium
 		.put(new WorldPoint(2479, 3158, 0), new CoordinateClueInfo("South of fruit tree patch, west of Tree Gnome Village."))
 		.put(new WorldPoint(2887, 3154, 0), new CoordinateClueInfo("West of Banana plantation on Karamja."))
@@ -304,6 +304,8 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		panelComponent.getChildren().add(LineComponent.builder()
 			.left("Click the clue scroll on your world map to see dig location.")
 			.build());
+
+		renderOverlayNote(panelComponent, plugin);
 	}
 
 	@Override
@@ -318,5 +320,11 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 				OverlayUtil.renderTileOverlay(plugin.getClient(), graphics, localLocation, plugin.getSpadeImage(), Color.ORANGE);
 			}
 		}
+	}
+
+	@Override
+	public int[] getConfigKeys()
+	{
+		return new int[]{location.hashCode()};
 	}
 }

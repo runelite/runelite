@@ -131,7 +131,7 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 		item(ItemID.IMCANDO_HAMMER)
 	);
 
-	private static final List<SkillChallengeClue> CLUES = ImmutableList.of(
+	static final List<SkillChallengeClue> CLUES = ImmutableList.of(
 		// Charlie Tasks
 		new SkillChallengeClue("Cook a Pike", "i need to cook charlie a pike.", "i need to take the cooked pike to charlie.", item(ItemID.PIKE), item(ItemID.RAW_PIKE)),
 		new SkillChallengeClue("Cook a Trout", "i need to cook charlie a trout.", "i need to take the cooked trout to charlie.", item(ItemID.TROUT), item(ItemID.RAW_TROUT)),
@@ -345,6 +345,8 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 				}
 			}
 		}
+
+		renderOverlayNote(panelComponent, plugin);
 	}
 
 	@Override
@@ -441,5 +443,11 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 	public String[] getNpcs(ClueScrollPlugin plugin)
 	{
 		return new String[] {type.getName()};
+	}
+
+	@Override
+	public int[] getConfigKeys()
+	{
+		return new int[]{rawChallenge.hashCode()};
 	}
 }

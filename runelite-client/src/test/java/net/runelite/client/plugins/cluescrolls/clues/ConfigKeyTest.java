@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2022, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,29 +22,43 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui.overlay;
+package net.runelite.client.plugins.cluescrolls.clues;
 
-import java.util.function.Consumer;
-import javax.annotation.Nullable;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
-import net.runelite.api.MenuAction;
-import net.runelite.api.MenuEntry;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import static org.junit.Assert.fail;
+import org.junit.Test;
 
-@RequiredArgsConstructor
-@ToString(exclude = {"callback"})
-@EqualsAndHashCode(exclude = {"callback"})
-public class OverlayMenuEntry
+public class ConfigKeyTest
 {
-	@Getter
-	private final MenuAction menuAction;
-	@Getter
-	private final String option;
-	@Getter
-	private final String target;
+	@Test
+	public void testConfigKeyUnique()
+	{
+		List<ClueScroll> allClues = new ArrayList<>();
+		allClues.addAll(FairyRingClue.CLUES);
+		CoordinateClue.CLUES.keySet().stream()
+			.map(l -> new CoordinateClue("location", l, null))
+			.forEach(allClues::add);
+		allClues.addAll(CipherClue.CLUES);
+		allClues.addAll(CrypticClue.CLUES);
+		allClues.addAll(FaloTheBardClue.CLUES);
+		allClues.addAll(AnagramClue.CLUES);
+		allClues.addAll(MapClue.CLUES);
+		allClues.addAll(SkillChallengeClue.CLUES);
+		allClues.addAll(EmoteClue.CLUES);
 
-	@Nullable
-	Consumer<MenuEntry> callback;
+		Set<Integer> seen = new HashSet<>();
+		for (ClueScroll c : allClues)
+		{
+			for (int key : c.getConfigKeys())
+			{
+				if (!seen.add(key))
+				{
+					fail("duplicate clue config key");
+				}
+			}
+		}
+	}
 }

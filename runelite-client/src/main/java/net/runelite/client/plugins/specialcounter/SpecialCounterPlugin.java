@@ -234,15 +234,16 @@ public class SpecialCounterPlugin extends Plugin
 			return;
 		}
 
-		log.debug("Special attack used - percent: {} weapon: {}", specialPercentage, specialWeapon);
-
-		// invokeLater because the varbit event happens prior to interact changed, so we can't always see what npc
-		// the player is attacking yet.
+		// This event runs prior to player and npc updating, making getInteracting() too early to call..
+		// defer this with invokeLater(), but note that this will run after incrementing the server tick counter
+		// so we capture the current server tick counter here for use in computing the final hitsplat tick
+		final int serverTicks = client.getTickCount();
 		clientThread.invokeLater(() ->
 		{
 			Actor target = client.getLocalPlayer().getInteracting();
 			lastSpecTarget = target instanceof NPC ? (NPC) target : null;
-			hitsplatTick = client.getTickCount() + getHitDelay(specialWeapon, target);
+			hitsplatTick = serverTicks + getHitDelay(specialWeapon, target);
+			log.debug("Special attack used - percent: {} weapon: {} server cycle {} hitsplat cycle {}", specialPercentage, specialWeapon, serverTicks, hitsplatTick);
 		});
 	}
 
@@ -473,26 +474,30 @@ public class SpecialCounterPlugin extends Plugin
 
 	private int getHitDelay(SpecialWeapon specialWeapon, Actor target)
 	{
-		// DORGESHUUN_CROSSBOW is the only ranged wep we support, so everything else is just melee and delay 0
+		// DORGESHUUN_CROSSBOW is the only ranged wep we support, so everything else is just melee and delay 1
 		if (specialWeapon != SpecialWeapon.DORGESHUUN_CROSSBOW || target == null)
-			return 0;
+			return 1;
 
 		Player player = client.getLocalPlayer();
 		if (player == null)
-			return 0;
+			return 1;
 
 		WorldPoint playerWp = player.getWorldLocation();
 		if (playerWp == null)
-			return 0;
+			return 1;
 
 		WorldArea targetArea = target.getWorldArea();
 		if (targetArea == null)
-			return 0;
+			return 1;
 
 		final int distance = targetArea.distanceTo(playerWp);
-		// Dorgeshuun special attack projectile cycles is 19 + distance * 3
-		final int cycles = 19 + distance * 3;
-		// Round up to nearest server tick and convert to server ticks
-		return (cycles + 29) / 30;
+		// Dorgeshuun special attack projectile, anim delay, and hitsplat is 60 + distance * 3 with the projectile
+		// starting at 41 cycles. Since we are computing the delay when the spec var changes, and not when the
+		// projectile first moves, this should be 60 and not 19
+		final int cycles = 60 + distance * 3;
+		// The server performs no rounding and instead delays (cycles / 30) cycles from the next cycle
+		final int serverCycles = (cycles / 30) + 1;
+		log.debug("Projectile distance {} cycles {} server cycles {}", distance, cycles, serverCycles);
+		return serverCycles;
 	}
 }

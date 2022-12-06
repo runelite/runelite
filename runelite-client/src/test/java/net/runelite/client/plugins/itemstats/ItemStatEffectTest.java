@@ -225,6 +225,22 @@ public class ItemStatEffectTest
 		assertEquals(0, skillChange(Skill.HITPOINTS, 91, 50, zamorakMix));
 	}
 
+	@Test
+	public void testAmbrosia()
+	{
+		final Effect ambrosia = new ItemStatChanges().get(ItemID.AMBROSIA_2);
+
+		assertEquals(124, skillChange(Skill.HITPOINTS, 99, 1, ambrosia));
+		assertEquals(26, skillChange(Skill.HITPOINTS, 99, 99, ambrosia));
+		assertEquals(10, skillChange(Skill.HITPOINTS, 99, 115, ambrosia));
+		assertEquals(0, skillChange(Skill.HITPOINTS, 99, 125, ambrosia));
+
+		assertEquals(122, skillChange(Skill.PRAYER, 99, 1, ambrosia));
+		assertEquals(24, skillChange(Skill.PRAYER, 99, 99, ambrosia));
+		assertEquals(10, skillChange(Skill.PRAYER, 99, 113, ambrosia));
+		assertEquals(0, skillChange(Skill.PRAYER, 99, 123, ambrosia));
+	}
+
 	private int skillChange(Skill skill, int maxValue, int currentValue, Effect effect)
 	{
 		if (effect == null)

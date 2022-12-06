@@ -54,9 +54,14 @@ public interface Callbacks
 	void postDeferred(Object event);
 
 	/**
-	 * Called each tick
+	 * Called at the beginning of each tick
 	 */
 	void tick();
+
+	/**
+	 * Called at the end of each tick
+	 */
+	void tickEnd();
 
 	/**
 	 * Called each frame

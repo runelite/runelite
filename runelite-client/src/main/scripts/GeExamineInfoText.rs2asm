@@ -7,58 +7,56 @@
 .id                 5730
 .int_stack_count    2
 .string_stack_count 2
-.int_var_count      6
+.int_var_count      5
 .string_var_count   3
-   invoke                 6811
-   istore                 2
    sconst                 ""
    sstore                 2
+   iconst                 0
+   istore                 2
    iconst                 0
    istore                 3
    iconst                 0
    istore                 4
-   iconst                 0
-   istore                 5
    sload                  1
    string_length         
    iconst                 0
-   if_icmpgt              LABEL15
-   jump                   LABEL148
-LABEL15:
+   if_icmpgt              LABEL13
+   jump                   LABEL146
+LABEL13:
    iload                  0
    if_getwidth           
-   istore                 3
-   iload                  2
+   istore                 2
+   invoke                 6811
    iconst                 1
-   if_icmpeq              LABEL22
-   jump                   LABEL25
-LABEL22:
+   if_icmpeq              LABEL20
+   jump                   LABEL23
+LABEL20:
    sload                  0
    sstore                 2
-   jump                   LABEL44
-LABEL25:
+   jump                   LABEL42
+LABEL23:
    sload                  0
-   iload                  3
+   iload                  2
    iconst                 494
    paraheight            
    iconst                 2
-   if_icmple              LABEL32
-   jump                   LABEL39
-LABEL32:
+   if_icmple              LABEL30
+   jump                   LABEL37
+LABEL30:
    sload                  0
    sconst                 "<br>"
    sconst                 "<br>"
    sload                  1
    join_string            4
    sstore                 2
-   jump                   LABEL44
-LABEL39:
+   jump                   LABEL42
+LABEL37:
    sload                  0
    sconst                 "<br>"
    sload                  1
    join_string            3
    sstore                 2
-LABEL44:
+LABEL42:
 
    sload                  0 ; examine
    sload                  1 ; Convenience fee
@@ -72,7 +70,7 @@ LABEL44:
    iload                  0
    if_getx               
    sload                  1
-   iload                  3
+   iload                  2
    iconst                 494
    parawidth             
    add                   
@@ -81,7 +79,7 @@ LABEL44:
    iload                  0
    if_gety               
    sload                  2
-   iload                  3
+   iload                  2
    iconst                 494
    paraheight            
    iconst                 15
@@ -89,9 +87,9 @@ LABEL44:
    add                   
    iconst                 2
    add                   
-   istore                 5
    istore                 4
-   iload                  4
+   istore                 3
+   iload                  3
    iload                  1
    if_getwidth           
    iconst                 15
@@ -99,7 +97,7 @@ LABEL44:
    iconst                 2
    div                   
    sub                   
-   iload                  5
+   iload                  4
    iconst                 11
    iload                  1
    if_getheight          
@@ -107,24 +105,24 @@ LABEL44:
    div                   
    add                   
    sub                   
-   istore                 5
    istore                 4
+   istore                 3
+   iload                  3
    iload                  4
-   iload                  5
    iconst                 0
    iconst                 0
    iload                  1
    if_setposition        
-   iload                  2
+   invoke                 6811
    iconst                 1
-   if_icmpeq              LABEL94
-   jump                   LABEL98
-LABEL94:
+   if_icmpeq              LABEL92
+   jump                   LABEL96
+LABEL92:
    iconst                 1
    iload                  1
    if_sethide            
-   jump                   LABEL147
-LABEL98:
+   jump                   LABEL145
+LABEL96:
    iconst                 0
    iload                  1
    if_sethide            
@@ -174,9 +172,9 @@ LABEL98:
    sconst                 "Info"
    iload                  1
    if_setop              
-LABEL147:
-   jump                   LABEL169
-LABEL148:
+LABEL145:
+   jump                   LABEL167
+LABEL146:
    sload                  0
    sstore                 2
 
@@ -208,7 +206,7 @@ LABEL148:
    if_setonop            
    iload                  1
    if_clearops           
-LABEL169:
+LABEL167:
    sload                  2
    iload                  0
    if_settext            

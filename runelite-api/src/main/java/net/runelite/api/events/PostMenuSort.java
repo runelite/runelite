@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2022, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,29 +22,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui.overlay;
+package net.runelite.api.events;
 
-import java.util.function.Consumer;
-import javax.annotation.Nullable;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
-import net.runelite.api.MenuAction;
-import net.runelite.api.MenuEntry;
-
-@RequiredArgsConstructor
-@ToString(exclude = {"callback"})
-@EqualsAndHashCode(exclude = {"callback"})
-public class OverlayMenuEntry
+/**
+ * Posted after the menu is sorted, but before clicks are processed.
+ * This is only fired if the menu isn't open, and shouldn't be used as a general purpose
+ * client tick event.
+ */
+public class PostMenuSort
 {
-	@Getter
-	private final MenuAction menuAction;
-	@Getter
-	private final String option;
-	@Getter
-	private final String target;
-
-	@Nullable
-	Consumer<MenuEntry> callback;
 }
