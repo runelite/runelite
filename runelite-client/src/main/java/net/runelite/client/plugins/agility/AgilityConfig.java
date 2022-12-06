@@ -283,4 +283,14 @@ public interface AgilityConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			keyName = "examineTextEnabled",
+			name = "Examine",
+			description = "Show level requirement when examining obstacles",
+			position = 21
+	)
+	default boolean examineTextEnabled() {
+		return true;
+	}
 }
