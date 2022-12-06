@@ -446,13 +446,17 @@ public class AgilityPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked event){
-		if (!config.examineTextEnabled()){
+	public void onMenuOptionClicked(MenuOptionClicked event)
+	{
+		if (!config.examineTextEnabled())
+		{
 			return;
 		}
-		if (event.getMenuAction().equals(MenuAction.EXAMINE_OBJECT)){
+		if (event.getMenuAction().equals(MenuAction.EXAMINE_OBJECT))
+		{
 			Obstacles.SHORTCUT_OBSTACLE_IDS.get(event.getId()).stream().findFirst()
-				.ifPresent(element-> {
+				.ifPresent(element ->
+				{
 					final ChatMessageBuilder message = new ChatMessageBuilder()
 						.append(ChatColorType.HIGHLIGHT)
 						.append(element.getTooltip())

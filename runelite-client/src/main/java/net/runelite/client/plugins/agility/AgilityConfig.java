@@ -290,7 +290,8 @@ public interface AgilityConfig extends Config
 		description = "Show level requirement when examining obstacles",
 		position = 21
 	)
-	default boolean examineTextEnabled() {
+	default boolean examineTextEnabled()
+	{
 		return true;
 	}
 }
