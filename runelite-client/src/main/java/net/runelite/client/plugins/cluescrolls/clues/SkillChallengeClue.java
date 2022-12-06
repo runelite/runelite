@@ -46,6 +46,7 @@ import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLI
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_FILL_COLOR;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_HOVER_BORDER_COLOR;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMAGE_Z_OFFSET;
+import net.runelite.client.plugins.cluescrolls.clues.item.AllRequirementsCollection;
 import net.runelite.client.plugins.cluescrolls.clues.item.AnyRequirementCollection;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements;
@@ -131,6 +132,21 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 		item(ItemID.IMCANDO_HAMMER)
 	);
 
+	private static final AllRequirementsCollection A_FULL_GRACEFUL_SET = all("A full Graceful set",
+		any("" /* graceful hood   */, ItemVariationMapping.getVariations(ItemID.GRACEFUL_HOOD).stream().map(ItemRequirements::item).toArray(SingleItemRequirement[]::new)),
+		any("" /* graceful top    */, ItemVariationMapping.getVariations(ItemID.GRACEFUL_TOP).stream().map(ItemRequirements::item).toArray(SingleItemRequirement[]::new)),
+		any("" /* graceful legs   */, ItemVariationMapping.getVariations(ItemID.GRACEFUL_LEGS).stream().map(ItemRequirements::item).toArray(SingleItemRequirement[]::new)),
+		any("" /* graceful gloves */, ItemVariationMapping.getVariations(ItemID.GRACEFUL_GLOVES).stream().map(ItemRequirements::item).toArray(SingleItemRequirement[]::new)),
+		any("" /* graceful boots  */, ItemVariationMapping.getVariations(ItemID.GRACEFUL_BOOTS).stream().map(ItemRequirements::item).toArray(SingleItemRequirement[]::new)),
+		any("" /* graceful cape   */, Stream.of(
+			ItemVariationMapping.getVariations(ItemID.GRACEFUL_CAPE).stream(),
+			ItemVariationMapping.getVariations(ItemID.AGILITY_CAPE).stream(),
+			ItemVariationMapping.getVariations(ItemID.MAX_CAPE).stream())
+			.reduce(Stream::concat)
+			.orElseGet(Stream::empty)
+			.map(ItemRequirements::item).toArray(SingleItemRequirement[]::new))
+	);
+
 	static final List<SkillChallengeClue> CLUES = ImmutableList.of(
 		// Charlie Tasks
 		new SkillChallengeClue("Cook a Pike", "i need to cook charlie a pike.", "i need to take the cooked pike to charlie.", item(ItemID.PIKE), item(ItemID.RAW_PIKE)),
@@ -188,14 +204,7 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 		new SkillChallengeClue("Create an unstrung dragonstone amulet at a furnace.", item(ItemID.GOLD_BAR), item(ItemID.DRAGONSTONE), item(ItemID.AMULET_MOULD)),
 		new SkillChallengeClue("Burn a magic log.", item(ItemID.MAGIC_LOGS), item(ItemID.TINDERBOX)),
 		new SkillChallengeClue("Burn a redwood log.", item(ItemID.REDWOOD_LOGS), item(ItemID.TINDERBOX)),
-		new SkillChallengeClue("Complete a lap of Rellekka's Rooftop Agility Course", "complete a lap of the rellekka rooftop agility course whilst sporting the finest amount of grace.", true,
-			all("A full Graceful set",
-				any("", item(ItemID.GRACEFUL_HOOD), item(ItemID.GRACEFUL_HOOD_11851), item(ItemID.GRACEFUL_HOOD_13579), item(ItemID.GRACEFUL_HOOD_13580), item(ItemID.GRACEFUL_HOOD_13591), item(ItemID.GRACEFUL_HOOD_13592), item(ItemID.GRACEFUL_HOOD_13603), item(ItemID.GRACEFUL_HOOD_13604), item(ItemID.GRACEFUL_HOOD_13615), item(ItemID.GRACEFUL_HOOD_13616), item(ItemID.GRACEFUL_HOOD_13627), item(ItemID.GRACEFUL_HOOD_13628), item(ItemID.GRACEFUL_HOOD_13667), item(ItemID.GRACEFUL_HOOD_13668), item(ItemID.GRACEFUL_HOOD_21061), item(ItemID.GRACEFUL_HOOD_21063), item(ItemID.GRACEFUL_HOOD_24743), item(ItemID.GRACEFUL_HOOD_24745), item(ItemID.GRACEFUL_HOOD_25069), item(ItemID.GRACEFUL_HOOD_25071)),
-				any("", item(ItemID.GRACEFUL_CAPE), item(ItemID.GRACEFUL_CAPE_11853), item(ItemID.GRACEFUL_CAPE_13581), item(ItemID.GRACEFUL_CAPE_13582), item(ItemID.GRACEFUL_CAPE_13593), item(ItemID.GRACEFUL_CAPE_13594), item(ItemID.GRACEFUL_CAPE_13605), item(ItemID.GRACEFUL_CAPE_13606), item(ItemID.GRACEFUL_CAPE_13617), item(ItemID.GRACEFUL_CAPE_13618), item(ItemID.GRACEFUL_CAPE_13629), item(ItemID.GRACEFUL_CAPE_13630), item(ItemID.GRACEFUL_CAPE_13669), item(ItemID.GRACEFUL_CAPE_13670), item(ItemID.GRACEFUL_CAPE_21064), item(ItemID.GRACEFUL_CAPE_21066), item(ItemID.GRACEFUL_CAPE_24746), item(ItemID.GRACEFUL_CAPE_24748), item(ItemID.GRACEFUL_CAPE_25072), item(ItemID.GRACEFUL_CAPE_25074), item(ItemID.AGILITY_CAPE), item(ItemID.AGILITY_CAPE_13340), item(ItemID.AGILITY_CAPET), item(ItemID.AGILITY_CAPET_13341), item(ItemID.MAX_CAPE), item(ItemID.MAX_CAPE_13342)),
-				any("", item(ItemID.GRACEFUL_TOP), item(ItemID.GRACEFUL_TOP_11855), item(ItemID.GRACEFUL_TOP_13583), item(ItemID.GRACEFUL_TOP_13584), item(ItemID.GRACEFUL_TOP_13595), item(ItemID.GRACEFUL_TOP_13596), item(ItemID.GRACEFUL_TOP_13607), item(ItemID.GRACEFUL_TOP_13608), item(ItemID.GRACEFUL_TOP_13619), item(ItemID.GRACEFUL_TOP_13620), item(ItemID.GRACEFUL_TOP_13631), item(ItemID.GRACEFUL_TOP_13632), item(ItemID.GRACEFUL_TOP_13671), item(ItemID.GRACEFUL_TOP_13672), item(ItemID.GRACEFUL_TOP_21067), item(ItemID.GRACEFUL_TOP_21069), item(ItemID.GRACEFUL_TOP_24749), item(ItemID.GRACEFUL_TOP_24751), item(ItemID.GRACEFUL_TOP_25075), item(ItemID.GRACEFUL_TOP_25077)),
-				any("", item(ItemID.GRACEFUL_LEGS), item(ItemID.GRACEFUL_LEGS_11857), item(ItemID.GRACEFUL_LEGS_13585), item(ItemID.GRACEFUL_LEGS_13586), item(ItemID.GRACEFUL_LEGS_13597), item(ItemID.GRACEFUL_LEGS_13598), item(ItemID.GRACEFUL_LEGS_13609), item(ItemID.GRACEFUL_LEGS_13610), item(ItemID.GRACEFUL_LEGS_13621), item(ItemID.GRACEFUL_LEGS_13622), item(ItemID.GRACEFUL_LEGS_13633), item(ItemID.GRACEFUL_LEGS_13634), item(ItemID.GRACEFUL_LEGS_13673), item(ItemID.GRACEFUL_LEGS_13674), item(ItemID.GRACEFUL_LEGS_21070), item(ItemID.GRACEFUL_LEGS_21072), item(ItemID.GRACEFUL_LEGS_24752), item(ItemID.GRACEFUL_LEGS_24754), item(ItemID.GRACEFUL_LEGS_25078), item(ItemID.GRACEFUL_LEGS_25080)),
-				any("", item(ItemID.GRACEFUL_GLOVES), item(ItemID.GRACEFUL_GLOVES_11859), item(ItemID.GRACEFUL_GLOVES_13587), item(ItemID.GRACEFUL_GLOVES_13588), item(ItemID.GRACEFUL_GLOVES_13599), item(ItemID.GRACEFUL_GLOVES_13600), item(ItemID.GRACEFUL_GLOVES_13611), item(ItemID.GRACEFUL_GLOVES_13612), item(ItemID.GRACEFUL_GLOVES_13623), item(ItemID.GRACEFUL_GLOVES_13624), item(ItemID.GRACEFUL_GLOVES_13635), item(ItemID.GRACEFUL_GLOVES_13636), item(ItemID.GRACEFUL_GLOVES_13675), item(ItemID.GRACEFUL_GLOVES_13676), item(ItemID.GRACEFUL_GLOVES_21073), item(ItemID.GRACEFUL_GLOVES_21075), item(ItemID.GRACEFUL_GLOVES_24755), item(ItemID.GRACEFUL_GLOVES_24757), item(ItemID.GRACEFUL_GLOVES_25081), item(ItemID.GRACEFUL_GLOVES_25083)),
-				any("", item(ItemID.GRACEFUL_BOOTS), item(ItemID.GRACEFUL_BOOTS_11861), item(ItemID.GRACEFUL_BOOTS_13589), item(ItemID.GRACEFUL_BOOTS_13590), item(ItemID.GRACEFUL_BOOTS_13601), item(ItemID.GRACEFUL_BOOTS_13602), item(ItemID.GRACEFUL_BOOTS_13613), item(ItemID.GRACEFUL_BOOTS_13614), item(ItemID.GRACEFUL_BOOTS_13625), item(ItemID.GRACEFUL_BOOTS_13626), item(ItemID.GRACEFUL_BOOTS_13637), item(ItemID.GRACEFUL_BOOTS_13638), item(ItemID.GRACEFUL_BOOTS_13677), item(ItemID.GRACEFUL_BOOTS_13678), item(ItemID.GRACEFUL_BOOTS_21076), item(ItemID.GRACEFUL_BOOTS_21078), item(ItemID.GRACEFUL_BOOTS_24758), item(ItemID.GRACEFUL_BOOTS_24760), item(ItemID.GRACEFUL_BOOTS_25084), item(ItemID.GRACEFUL_BOOTS_25086)))),
+		new SkillChallengeClue("Complete a lap of Rellekka's Rooftop Agility Course", "complete a lap of the rellekka rooftop agility course whilst sporting the finest amount of grace.", true, A_FULL_GRACEFUL_SET),
 		new SkillChallengeClue("Mix an anti-venom potion.", item(ItemID.ANTIDOTE4_5952), xOfItem(ItemID.ZULRAHS_SCALES, 20)),
 		new SkillChallengeClue("Mine a piece of Runite ore", "mine a piece of runite ore whilst sporting the finest mining gear.", true, ANY_PICKAXE,
 			all("Prospector kit",
