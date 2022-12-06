@@ -448,7 +448,7 @@ public class AgilityPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
-		if (!config.examineTextEnabled())
+		if (!config.examineShortcutTextEnabled())
 		{
 			return;
 		}

@@ -285,12 +285,12 @@ public interface AgilityConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "examineTextEnabled",
-		name = "Examine",
-		description = "Show level requirement when examining obstacles",
+		keyName = "examineShortcutTextEnabled",
+		name = "Show Details on Shortcut Examine",
+		description = "Show level requirement when examining Agility Shortcuts",
 		position = 21
 	)
-	default boolean examineTextEnabled()
+	default boolean examineShortcutTextEnabled()
 	{
 		return true;
 	}
