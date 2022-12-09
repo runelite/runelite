@@ -138,7 +138,7 @@ public class RunEnergyPluginTest
 		when(client.getItemContainer(InventoryID.EQUIPMENT)).thenReturn(equipment);
 		when(equipment.count(RING_OF_ENDURANCE)).thenReturn(1);
 		when(client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE)).thenReturn(1);
-		when(client.getEnergy()).thenReturn(100);
+		when(client.getEnergy()).thenReturn(10000);
 		assertEquals("300s", runEnergyPlugin.getEstimatedRunTimeRemaining(true));
 
 		when(client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE)).thenReturn(0);

@@ -210,6 +210,7 @@ public enum Quest
 	RECIPE_FOR_DISASTER__SIR_AMIK_VARZE(177, "Recipe for Disaster - Sir Amik Varze"),
 	RECIPE_FOR_DISASTER__KING_AWOWOGEI(178, "Recipe for Disaster - King Awowogei"),
 	RECIPE_FOR_DISASTER__CULINAROMANCER(179, "Recipe for Disaster - Culinaromancer"),
+	THE_GARDEN_OF_DEATH(180, "The Garden of Death")
 	;
 
 	@Getter
