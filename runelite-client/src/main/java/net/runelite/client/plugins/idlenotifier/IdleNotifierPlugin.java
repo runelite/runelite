@@ -51,6 +51,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GraphicChanged;
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.InteractingChanged;
+import net.runelite.api.events.NpcChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -337,34 +338,27 @@ public class IdleNotifierPlugin extends Plugin
 			lastInteracting = Instant.now();
 		}
 
-		final boolean isNpc = target instanceof NPC;
-
 		// If this is not NPC, do not process as we are not interested in other entities
-		if (!isNpc)
+		if (!(target instanceof NPC))
 		{
 			return;
 		}
 
-		final NPC npc = (NPC) target;
-		final NPCComposition npcComposition = npc.getComposition();
-		final List<String> npcMenuActions = Arrays.asList(npcComposition.getActions());
+		checkNpcInteraction((NPC) target);
+	}
 
-		if (npcMenuActions.contains("Attack"))
+	// this event is needed to handle some rare npcs where "Attack" is not used to initiate combat
+	// for example, kraken starts the fight with "Disturb" then changes into another form with "Attack"
+	@Subscribe
+	public void onNpcChanged(NpcChanged event)
+	{
+		NPC npc = event.getNpc();
+		if (client.getLocalPlayer().getInteracting() != npc)
 		{
-			// Player is most likely in combat with attack-able NPC
-			resetTimers();
-			lastInteract = target;
-			lastInteracting = Instant.now();
-			lastInteractWasCombat = true;
+			return;
 		}
-		else if (target.getName() != null && target.getName().contains(FISHING_SPOT))
-		{
-			// Player is fishing
-			resetTimers();
-			lastInteract = target;
-			lastInteracting = Instant.now();
-			lastInteractWasCombat = false;
-		}
+
+		checkNpcInteraction(npc);
 	}
 
 	@Subscribe
@@ -504,6 +498,29 @@ public class IdleNotifierPlugin extends Plugin
 		if (checkFullSpecEnergy())
 		{
 			notifier.notify("You have restored spec energy!");
+		}
+	}
+
+	private void checkNpcInteraction(final NPC target)
+	{
+		final NPCComposition npcComposition = target.getComposition();
+		final List<String> npcMenuActions = Arrays.asList(npcComposition.getActions());
+
+		if (npcMenuActions.contains("Attack"))
+		{
+			// Player is most likely in combat with attack-able NPC
+			resetTimers();
+			lastInteract = target;
+			lastInteracting = Instant.now();
+			lastInteractWasCombat = true;
+		}
+		else if (target.getName() != null && target.getName().contains(FISHING_SPOT))
+		{
+			// Player is fishing
+			resetTimers();
+			lastInteract = target;
+			lastInteracting = Instant.now();
+			lastInteractWasCombat = false;
 		}
 	}
 
