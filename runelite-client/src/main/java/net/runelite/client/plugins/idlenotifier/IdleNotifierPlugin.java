@@ -51,6 +51,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GraphicChanged;
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.InteractingChanged;
+import net.runelite.api.events.NpcChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -364,6 +365,29 @@ public class IdleNotifierPlugin extends Plugin
 			lastInteract = target;
 			lastInteracting = Instant.now();
 			lastInteractWasCombat = false;
+		}
+	}
+
+	// this event is needed to handle some rare npcs where "Attack" is not used to initiate combat
+	// for example, kraken starts the fight with "Disturb" then changes into another form with "Attack"
+	@Subscribe
+	public void onNpcChanged(NpcChanged event)
+	{
+		NPC npc = event.getNpc();
+		if (client.getLocalPlayer().getInteracting() != npc)
+		{
+			return;
+		}
+
+		final NPCComposition npcComposition = npc.getComposition();
+		final List<String> npcMenuActions = Arrays.asList(npcComposition.getActions());
+		if (npcMenuActions.contains("Attack"))
+		{
+			// Player is most likely in combat with attack-able NPC
+			resetTimers();
+			lastInteract = npc;
+			lastInteracting = Instant.now();
+			lastInteractWasCombat = true;
 		}
 	}
 
