@@ -45,7 +45,7 @@ public interface GpuPluginConfig extends Config
 	@ConfigItem(
 		keyName = "drawDistance",
 		name = "Draw Distance",
-		description = "Draw distance",
+		description = "Draw distance. Requires compute shaders to be enabled.",
 		position = 1
 	)
 	default int drawDistance()
