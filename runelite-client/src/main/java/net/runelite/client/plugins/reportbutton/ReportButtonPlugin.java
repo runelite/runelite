@@ -112,7 +112,6 @@ public class ReportButtonPlugin extends Plugin
 		{
 			case LOGGING_IN:
 			case HOPPING:
-			case CONNECTION_LOST:
 				ready = true;
 				break;
 			case LOGGED_IN:
