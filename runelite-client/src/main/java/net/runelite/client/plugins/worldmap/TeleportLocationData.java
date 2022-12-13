@@ -146,8 +146,8 @@ enum TeleportLocationData
 	TELEPORT_CRYSTAL_PRIFDDINAS(TeleportType.OTHER, "Teleport crystal", "Prifddinas", new WorldPoint(3264, 6065, 0), "teleport_crystal_icon.png"),
 	DRAKANS_MEDALLION_VER_SINHAZA(TeleportType.OTHER, "Drakan's medallion", "Ver Sinhaza", new WorldPoint(3649, 3230, 0), "drakans_medallion_teleport_icon.png"),
 	DRAKANS_MEDALLION_DARKMEYER(TeleportType.OTHER, "Drakan's medallion", "Darkmeyer", new WorldPoint(3592, 3337, 0), "drakans_medallion_teleport_icon.png"),
-	GHOMMALS_HILT_GWD(TeleportType.OTHER,"Ghommal's hilt","God Wars Dungeon", new WorldPoint(2898,3709,0),"ghommals_hilt_1_teleport_icon.png"),
-	GHOMMALS_HILT_MORULREK(TeleportType.OTHER,"Ghommal's hilt","Mor Ul Rek", new WorldPoint(2554,5130,0),"ghommals_hilt_4_teleport_icon.png"),
+	GHOMMALS_HILT_GWD(TeleportType.OTHER, "Ghommal's hilt 1", "God Wars Dungeon", new WorldPoint(2898, 3709, 0), "ghommals_hilt_1_teleport_icon.png"),
+	GHOMMALS_HILT_MORULREK(TeleportType.OTHER, "Ghommal's hilt 4", "Mor Ul Rek", new WorldPoint(2554, 5130, 0), "ghommals_hilt_4_teleport_icon.png"),
 
 	// Wilderness
 	OBELISK_13(TeleportType.OTHER, "Obelisk", "13", new WorldPoint(3156, 3620, 0), "obelisk_icon.png"),
