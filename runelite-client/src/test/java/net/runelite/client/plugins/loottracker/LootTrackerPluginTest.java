@@ -430,14 +430,8 @@ public class LootTrackerPluginTest
 		// Make sure we don't execute addLoot, so we don't have to mock LootTrackerPanel and everything else also
 		doNothing().when(spyPlugin).addLoot(anyString(), anyInt(), any(LootRecordType.class), isNull(), anyCollection(), anyInt());
 
-		List<ItemStack> items = Collections.singletonList(
-			new ItemStack(ItemID.COAL + 1, 750, null)
-		);
-
 		ItemContainer itemContainer = mock(ItemContainer.class);
-		when(itemContainer.getItems()).thenReturn(items.stream()
-				.map(is -> new Item(is.getId(), is.getQuantity()))
-				.toArray(Item[]::new));
+		when(itemContainer.getItems()).thenReturn(new Item[] {});
 		when(client.getItemContainer(InventoryID.INVENTORY)).thenReturn(itemContainer);
 
 		Widget widget = mock(Widget.class);
@@ -448,15 +442,21 @@ public class LootTrackerPluginTest
 		widgetLoaded.setGroupId(WidgetID.DIALOG_SPRITE_GROUP_ID);
 		spyPlugin.onWidgetLoaded(widgetLoaded);
 
-		ItemContainer oldItemContainer = mock(ItemContainer.class);
-		when(oldItemContainer.getItems()).thenReturn(new Item[] {});
-		when(client.getItemContainer(InventoryID.INVENTORY)).thenReturn(oldItemContainer);
+		List<ItemStack> items = Collections.singletonList(
+				new ItemStack(ItemID.COAL + 1, 750, null)
+		);
+		
+		ItemContainer newItemContainer = mock(ItemContainer.class);
+		when(newItemContainer.getItems()).thenReturn(items.stream()
+				.map(is -> new Item(is.getId(), is.getQuantity()))
+				.toArray(Item[]::new));
+		when(client.getItemContainer(InventoryID.INVENTORY)).thenReturn(newItemContainer);
 
 		ItemComposition compCoal = mock(ItemComposition.class);
 		when(itemManager.getItemComposition(ItemID.COAL + 1)).thenReturn(compCoal);
 		when(compCoal.getHaPrice()).thenReturn(27);
 
-		ItemContainerChanged event = new ItemContainerChanged(InventoryID.INVENTORY.getId(), oldItemContainer);
+		ItemContainerChanged event = new ItemContainerChanged(InventoryID.INVENTORY.getId(), newItemContainer);
 		spyPlugin.onItemContainerChanged(event);
 
 		verify(spyPlugin).addLoot("Barbarian Assault High Gamble", -1, LootRecordType.EVENT, null, items, 1);

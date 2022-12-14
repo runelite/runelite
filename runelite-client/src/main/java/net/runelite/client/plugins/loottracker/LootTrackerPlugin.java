@@ -743,18 +743,18 @@ public class LootTrackerPlugin extends Plugin
 			case WidgetID.DIALOG_SPRITE_GROUP_ID:
 				ItemContainer inventoryContainer = client.getItemContainer(InventoryID.INVENTORY);
 
-				Multiset<Integer> newInventory = HashMultiset.create();
+				Multiset<Integer> oldInventory = HashMultiset.create();
 				Arrays.stream(inventoryContainer.getItems())
-						.forEach(item -> newInventory.add(item.getId(), item.getQuantity()));
+						.forEach(item -> oldInventory.add(item.getId(), item.getQuantity()));
 
 				onInvChange(((invItems, groundItems, removedItems) ->
 				{
 					Widget dialogSpriteTextWidget = client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT);
 
-					if (dialogSpriteTextWidget != null && dialogSpriteTextWidget.getText() != null && dialogSpriteTextWidget.getText().contains("High level gamble count"))
+					if (dialogSpriteTextWidget != null && dialogSpriteTextWidget.getText() != null && dialogSpriteTextWidget.getText().contains(" level gamble count"))
 					{
-						final Multiset<Integer> oldInventory = HashMultiset.create();
-						invItems.forEach(item -> oldInventory.add(item.getId(), item.getQuantity()));
+						final Multiset<Integer> newInventory = HashMultiset.create();
+						invItems.forEach(item -> newInventory.add(item.getId(), item.getQuantity()));
 
 						final Multiset<Integer> diff = Multisets.difference(newInventory, oldInventory);
 
@@ -768,7 +768,7 @@ public class LootTrackerPlugin extends Plugin
 						}
 					}
 				}));
-				return;
+                return;
 			default:
 				return;
 		}
