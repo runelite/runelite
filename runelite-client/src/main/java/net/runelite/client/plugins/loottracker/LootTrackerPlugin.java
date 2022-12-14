@@ -768,7 +768,7 @@ public class LootTrackerPlugin extends Plugin
 						}
 					}
 				}));
-                return;
+				return;
 			default:
 				return;
 		}
