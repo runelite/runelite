@@ -52,7 +52,9 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
@@ -420,5 +422,43 @@ public class LootTrackerPluginTest
 		verify(lootTrackerPlugin).addLoot("Reward pool (Tempoross)", -1, LootRecordType.EVENT, 69, Arrays.asList(
 			new ItemStack(ItemID.TOME_OF_WATER_EMPTY, 1, null)
 		));
+	}
+
+	@Test
+	public void testBarbarianAssaultHighGamble() {
+		LootTrackerPlugin spyPlugin = Mockito.spy(lootTrackerPlugin);
+		// Make sure we don't execute addLoot, so we don't have to mock LootTrackerPanel and everything else also
+		doNothing().when(spyPlugin).addLoot(anyString(), anyInt(), any(LootRecordType.class), isNull(), anyCollection(), anyInt());
+
+		List<ItemStack> items = Collections.singletonList(
+				new ItemStack(ItemID.COAL + 1, 750, null)
+		);
+
+		ItemContainer itemContainer = mock(ItemContainer.class);
+		when(itemContainer.getItems()).thenReturn(items.stream()
+				.map(is -> new Item(is.getId(), is.getQuantity()))
+				.toArray(Item[]::new));
+		when(client.getItemContainer(InventoryID.INVENTORY)).thenReturn(itemContainer);
+
+		Widget widget = mock(Widget.class);
+		when(client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT)).thenReturn(widget);
+		when(widget.getText()).thenReturn("High level gamble count:");
+
+		WidgetLoaded widgetLoaded = new WidgetLoaded();
+		widgetLoaded.setGroupId(WidgetID.DIALOG_SPRITE_GROUP_ID);
+		spyPlugin.onWidgetLoaded(widgetLoaded);
+
+		ItemContainer oldItemContainer = mock(ItemContainer.class);
+		when(oldItemContainer.getItems()).thenReturn(new Item[] {});
+		when(client.getItemContainer(InventoryID.INVENTORY)).thenReturn(oldItemContainer);
+
+		ItemComposition compCoal = mock(ItemComposition.class);
+		when(itemManager.getItemComposition(ItemID.COAL + 1)).thenReturn(compCoal);
+		when(compCoal.getHaPrice()).thenReturn(27);
+
+		ItemContainerChanged event = new ItemContainerChanged(InventoryID.INVENTORY.getId(), oldItemContainer);
+		spyPlugin.onItemContainerChanged(event);
+
+		verify(spyPlugin).addLoot("Barbarian Assault High Gamble", -1, LootRecordType.EVENT, null, items, 1);
 	}
 }
