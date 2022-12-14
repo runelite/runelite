@@ -751,7 +751,7 @@ public class LootTrackerPlugin extends Plugin
 				{
 					Widget dialogSpriteTextWidget = client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT);
 
-					if (dialogSpriteTextWidget != null && dialogSpriteTextWidget.getText() != null && dialogSpriteTextWidget.getText().contains(" level gamble count"))
+					if (dialogSpriteTextWidget != null && dialogSpriteTextWidget.getText() != null && dialogSpriteTextWidget.getText().contains("High level gamble count"))
 					{
 						final Multiset<Integer> oldInventory = HashMultiset.create();
 						invItems.forEach(item -> oldInventory.add(item.getId(), item.getQuantity()));
