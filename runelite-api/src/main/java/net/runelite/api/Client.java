@@ -600,7 +600,7 @@ public interface Client extends OAuthApi, GameEngine
 	/**
 	 * Gets the current run energy of the logged in player.
 	 *
-	 * @return the run energy
+	 * @return the run energy in units of 1/100th of an percentage
 	 */
 	int getEnergy();
 

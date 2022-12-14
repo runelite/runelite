@@ -34,7 +34,6 @@ import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Skill;
 import net.runelite.client.plugins.xptracker.XpTrackerService;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
-import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.LineComponent;
@@ -42,7 +41,7 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 
 class WoodcuttingOverlay extends OverlayPanel
 {
-	static final String WOODCUTTING_RESET = "Reset";
+	private static final String WOODCUTTING_RESET = "Reset";
 
 	private final Client client;
 	private final WoodcuttingPlugin plugin;
@@ -58,8 +57,8 @@ class WoodcuttingOverlay extends OverlayPanel
 		this.plugin = plugin;
 		this.config = config;
 		this.xpTrackerService = xpTrackerService;
-		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Woodcutting overlay"));
-		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY, WOODCUTTING_RESET, "Woodcutting overlay"));
+		addMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Woodcutting overlay");
+		addMenuEntry(RUNELITE_OVERLAY, WOODCUTTING_RESET, "Woodcutting overlay", e -> plugin.setSession(null));
 	}
 
 	@Override

@@ -42,11 +42,11 @@ import net.runelite.api.ParamID;
 import net.runelite.api.Player;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
-import net.runelite.client.hiscore.HiscoreManager;
 import net.runelite.client.game.NPCManager;
+import net.runelite.client.hiscore.HiscoreManager;
+import net.runelite.client.hiscore.HiscoreResult;
 import net.runelite.client.hiscore.HiscoreSkill;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
-import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
@@ -54,7 +54,6 @@ import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.ProgressBarComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 import net.runelite.client.util.Text;
-import net.runelite.client.hiscore.HiscoreResult;
 
 class OpponentInfoOverlay extends OverlayPanel
 {
@@ -92,7 +91,7 @@ class OpponentInfoOverlay extends OverlayPanel
 
 		panelComponent.setBorder(new Rectangle(2, 2, 2, 2));
 		panelComponent.setGap(new Point(0, 2));
-		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Opponent info overlay"));
+		addMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Opponent info overlay");
 	}
 
 	@Override

@@ -109,8 +109,8 @@ LABEL84:
    iconst                 0
    istore                 10
    invoke                 1138
-   iconst                 1
-   if_icmpeq              LABEL96
+   iconst                 0
+   if_icmpne              LABEL96
    jump                   LABEL306
 LABEL96:
    iload                  0

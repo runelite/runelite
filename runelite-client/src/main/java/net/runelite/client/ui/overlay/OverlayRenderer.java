@@ -201,7 +201,7 @@ public class OverlayRenderer extends MouseAdapter
 				.setOption(overlayMenuEntry.getOption())
 				.setTarget(ColorUtil.wrapWithColorTag(overlayMenuEntry.getTarget(), JagexColors.MENU_TARGET))
 				.setType(overlayMenuEntry.getMenuAction())
-				.onClick(e -> eventBus.post(new OverlayMenuClicked(overlayMenuEntry, overlay)));
+				.onClick(MoreObjects.firstNonNull(overlayMenuEntry.callback, e -> eventBus.post(new OverlayMenuClicked(overlayMenuEntry, overlay))));
 		}
 	}
 
@@ -221,18 +221,6 @@ public class OverlayRenderer extends MouseAdapter
 			// Create copy of snap corners because overlays will modify them
 			snapCorners = new OverlayBounds(emptySnapCorners);
 		}
-	}
-
-	public void tickOverlayLayer(Widget layer)
-	{
-		final Collection<Overlay> overlays = overlayManager.getForLayer(layer.getId());
-		overlays.forEach(Overlay::widgetTick);
-	}
-
-	public void tickOverlayInterface(int interfaceId)
-	{
-		Collection<Overlay> overlays = overlayManager.getForInterface(interfaceId);
-		overlays.forEach(Overlay::widgetTick);
 	}
 
 	public void renderOverlayLayer(Graphics2D graphics, final OverlayLayer layer)

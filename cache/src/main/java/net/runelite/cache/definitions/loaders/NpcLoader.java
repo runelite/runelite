@@ -25,14 +25,21 @@
 package net.runelite.cache.definitions.loaders;
 
 import java.util.HashMap;
+import lombok.Data;
+import lombok.experimental.Accessors;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.cache.definitions.NpcDefinition;
 import net.runelite.cache.io.InputStream;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@Accessors(chain = true)
+@Data
+@Slf4j
 public class NpcLoader
 {
-	private static final Logger logger = LoggerFactory.getLogger(NpcLoader.class);
+	public static final int REV_210_NPC_ARCHIVE_REV = 1493;
+
+	private int defaultHeadIconArchive = -1;
+	private boolean rev210HeadIcons = true;
 
 	public NpcDefinition load(int id, byte[] b)
 	{
@@ -177,7 +184,37 @@ public class NpcLoader
 		}
 		else if (opcode == 102)
 		{
-			def.headIcon = stream.readUnsignedShort();
+			if (!rev210HeadIcons)
+			{
+				def.headIconArchiveIds = new int[]{defaultHeadIconArchive};
+				def.headIconSpriteIndex = new short[]{(short) stream.readUnsignedShort()};
+			}
+			else
+			{
+				int bitfield = stream.readUnsignedByte();
+				int len = 0;
+				for (int var5 = bitfield; var5 != 0; var5 >>= 1)
+				{
+					++len;
+				}
+
+				def.headIconArchiveIds = new int[len];
+				def.headIconSpriteIndex = new short[len];
+
+				for (int i = 0; i < len; i++)
+				{
+					if ((bitfield & 1 << i) == 0)
+					{
+						def.headIconArchiveIds[i] = -1;
+						def.headIconSpriteIndex[i] = -1;
+					}
+					else
+					{
+						def.headIconArchiveIds[i] = stream.readBigSmart2();
+						def.headIconSpriteIndex[i] = (short) stream.readUnsignedShortSmartMinusOne();
+					}
+				}
+			}
 		}
 		else if (opcode == 103)
 		{
@@ -307,7 +344,7 @@ public class NpcLoader
 		}
 		else
 		{
-			logger.warn("Unrecognized opcode {}", opcode);
+			log.warn("Unrecognized opcode {}", opcode);
 		}
 	}
 }
