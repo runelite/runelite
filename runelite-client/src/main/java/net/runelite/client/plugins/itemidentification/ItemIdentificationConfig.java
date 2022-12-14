@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.itemidentification;
 
 import java.awt.Color;
+
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -322,6 +323,17 @@ public interface ItemIdentificationConfig extends Config
 		section = identificationSection
 	)
 	default boolean showEnchantedJewellery()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showBarrowsArmor",
+		name = "Barrows Armor",
+		description = "Shows the different Barrows armor durability",
+		section = identificationSection
+	)
+	default boolean showBarrowsArmor()
 	{
 		return false;
 	}
