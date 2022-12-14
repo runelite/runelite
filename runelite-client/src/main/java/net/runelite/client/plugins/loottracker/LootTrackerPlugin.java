@@ -86,7 +86,9 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.callback.ClientThread;
@@ -290,46 +292,6 @@ public class LootTrackerPlugin extends Plugin
 	private static final String CHAMBERS_OF_XERIC = "Chambers of Xeric";
 	private static final String THEATRE_OF_BLOOD = "Theatre of Blood";
 	private static final String TOMBS_OF_AMASCUT = "Tombs of Amascut";
-
-	// Barbarian assault
-	private static final Set<Integer> BARBARIAN_ASSAULT_REGIONS = ImmutableSet.of(10039);
-	private static final Set<Integer> BARBARIAN_ASSAULT_HIGH_GAMBLE_LOOT_TABLE = ImmutableSet.of(
-		ItemID.RANARR_WEED + 1,
-		ItemID.SNAPDRAGON + 1,
-		ItemID.TORSTOL + 1,
-		ItemID.RANARR_SEED,
-		ItemID.SNAPDRAGON_SEED,
-		ItemID.TORSTOL_SEED,
-		ItemID.WATERMELON_SEED,
-		ItemID.PALM_TREE_SEED,
-		ItemID.MAGIC_SEED,
-		ItemID.ARCHER_HELM,
-		ItemID.BERSERKER_HELM,
-		ItemID.WARRIOR_HELM,
-		ItemID.FARSEER_HELM,
-		ItemID.GRANITE_SHIELD,
-		ItemID.GRANITE_HELM,
-		ItemID.COAL + 1,
-		ItemID.RUNE_KITESHIELD,
-		ItemID.RUNITE_ORE + 1,
-		ItemID.RUNITE_BAR + 1,
-		ItemID.DRAGON_BONES + 1,
-		ItemID.BLACK_DRAGONHIDE + 1,
-		ItemID.UNCUT_DIAMOND + 1,
-		ItemID.MAGIC_LOGS + 1,
-		ItemID.MAHOGANY_PLANK + 1,
-		ItemID.RUNE_ARROW,
-		ItemID.RAW_SHARK + 1,
-		ItemID.SHARK + 1,
-		ItemID.LAW_RUNE,
-		ItemID.BLOOD_RUNE,
-		ItemID.LIMPWURT_ROOT + 1,
-		ItemID.UNICORN_HORN + 1,
-		ItemID.COINS_995,
-		ItemID.DRAGON_CHAINBODY,
-		ItemID.DRAGON_MED_HELM,
-		ItemID.CLUE_SCROLL_ELITE
-	);
 
 	private static final Set<Character> VOWELS = ImmutableSet.of('a', 'e', 'i', 'o', 'u');
 
@@ -778,6 +740,35 @@ public class LootTrackerPlugin extends Plugin
 				container = client.getItemContainer(InventoryID.WILDERNESS_LOOT_CHEST);
 				chestLooted = true;
 				break;
+            case WidgetID.DIALOG_SPRITE_GROUP_ID:
+                ItemContainer inventoryContainer = client.getItemContainer(InventoryID.INVENTORY);
+
+                Multiset<Integer> newInventory = HashMultiset.create();
+                Arrays.stream(inventoryContainer.getItems())
+                        .forEach(item -> newInventory.add(item.getId(), item.getQuantity()));
+
+                onInvChange(((invItems, groundItems, removedItems) ->
+                {
+                    Widget dialogSpriteTextWidget = client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT);
+
+                    if (dialogSpriteTextWidget != null && dialogSpriteTextWidget.getText() != null && dialogSpriteTextWidget.getText().contains(" level gamble count"))
+					{
+                        final Multiset<Integer> oldInventory = HashMultiset.create();
+                        invItems.forEach(item -> oldInventory.add(item.getId(), item.getQuantity()));
+
+                        final Multiset<Integer> diff = Multisets.difference(newInventory, oldInventory);
+
+                        final List<ItemStack> gambleLootItems = diff.entrySet().stream()
+                                .map(e -> new ItemStack(e.getElement(), e.getCount(), client.getLocalPlayer().getLocalLocation()))
+                                .collect(Collectors.toList());
+
+                        if (!gambleLootItems.isEmpty())
+						{
+                            addLoot("Barbarian Assault High Gamble", -1, LootRecordType.EVENT, null, gambleLootItems, 1);
+                       	}
+                    }
+                }));
+                return;
 			default:
 				return;
 		}
@@ -1034,20 +1025,6 @@ public class LootTrackerPlugin extends Plugin
 		{
 			onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, SHADE_CHEST_OBJECTS.get(event.getId())));
 		}
-		else if (isWidgetContinueOp(event.getMenuAction()))
-		{
-			if (isPlayerWithinMapRegion(BARBARIAN_ASSAULT_REGIONS) && event.getWidget().getText() != null && event.getWidget().getText().contains(" Honour Points"))
-			{
-				onInvChange(((invItems, groundItems, removedItems) ->
-				{
-					Collection<ItemStack> filteredItemStack = invItems.stream().filter(item -> BARBARIAN_ASSAULT_HIGH_GAMBLE_LOOT_TABLE.contains(item.getId())).collect(Collectors.toList());
-					if (!filteredItemStack.isEmpty())
-					{
-						addLoot("Barbarian Assault High Gamble", -1, LootRecordType.EVENT, null, filteredItemStack, 1);
-					}
-				}));
-			}
-		}
 		else if (event.isItemOp())
 		{
 			if (event.getItemId() == ItemID.SEED_PACK && (event.getMenuOption().equals("Take") || event.getMenuOption().equals("Take-all")))
@@ -1117,12 +1094,6 @@ public class LootTrackerPlugin extends Plugin
 		final int id = menuAction.getId();
 		return (id >= MenuAction.GAME_OBJECT_FIRST_OPTION.getId() && id <= MenuAction.GAME_OBJECT_FOURTH_OPTION.getId())
 			|| id == MenuAction.GAME_OBJECT_FIFTH_OPTION.getId();
-	}
-
-	private static boolean isWidgetContinueOp(MenuAction menuAction)
-	{
-		final int id = menuAction.getId();
-		return id == MenuAction.WIDGET_CONTINUE.getId();
 	}
 
 	@Schedule(
