@@ -740,34 +740,34 @@ public class LootTrackerPlugin extends Plugin
 				container = client.getItemContainer(InventoryID.WILDERNESS_LOOT_CHEST);
 				chestLooted = true;
 				break;
-            case WidgetID.DIALOG_SPRITE_GROUP_ID:
-                ItemContainer inventoryContainer = client.getItemContainer(InventoryID.INVENTORY);
+			case WidgetID.DIALOG_SPRITE_GROUP_ID:
+				ItemContainer inventoryContainer = client.getItemContainer(InventoryID.INVENTORY);
 
-                Multiset<Integer> newInventory = HashMultiset.create();
-                Arrays.stream(inventoryContainer.getItems())
-                        .forEach(item -> newInventory.add(item.getId(), item.getQuantity()));
+				Multiset<Integer> newInventory = HashMultiset.create();
+				Arrays.stream(inventoryContainer.getItems())
+						.forEach(item -> newInventory.add(item.getId(), item.getQuantity()));
 
-                onInvChange(((invItems, groundItems, removedItems) ->
-                {
-                    Widget dialogSpriteTextWidget = client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT);
+				onInvChange(((invItems, groundItems, removedItems) ->
+				{
+					Widget dialogSpriteTextWidget = client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT);
 
-                    if (dialogSpriteTextWidget != null && dialogSpriteTextWidget.getText() != null && dialogSpriteTextWidget.getText().contains(" level gamble count"))
+					if (dialogSpriteTextWidget != null && dialogSpriteTextWidget.getText() != null && dialogSpriteTextWidget.getText().contains(" level gamble count"))
 					{
-                        final Multiset<Integer> oldInventory = HashMultiset.create();
-                        invItems.forEach(item -> oldInventory.add(item.getId(), item.getQuantity()));
+						final Multiset<Integer> oldInventory = HashMultiset.create();
+						invItems.forEach(item -> oldInventory.add(item.getId(), item.getQuantity()));
 
-                        final Multiset<Integer> diff = Multisets.difference(newInventory, oldInventory);
+						final Multiset<Integer> diff = Multisets.difference(newInventory, oldInventory);
 
-                        final List<ItemStack> gambleLootItems = diff.entrySet().stream()
-                                .map(e -> new ItemStack(e.getElement(), e.getCount(), client.getLocalPlayer().getLocalLocation()))
-                                .collect(Collectors.toList());
+						final List<ItemStack> gambleLootItems = diff.entrySet().stream()
+								.map(e -> new ItemStack(e.getElement(), e.getCount(), client.getLocalPlayer().getLocalLocation()))
+								.collect(Collectors.toList());
 
-                        if (!gambleLootItems.isEmpty())
+						if (!gambleLootItems.isEmpty())
 						{
-                            addLoot("Barbarian Assault High Gamble", -1, LootRecordType.EVENT, null, gambleLootItems, 1);
-                       	}
-                    }
-                }));
+							addLoot("Barbarian Assault High Gamble", -1, LootRecordType.EVENT, null, gambleLootItems, 1);
+						}
+					}
+				}));
                 return;
 			default:
 				return;

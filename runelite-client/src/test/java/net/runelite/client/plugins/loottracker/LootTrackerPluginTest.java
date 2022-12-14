@@ -431,7 +431,7 @@ public class LootTrackerPluginTest
 		doNothing().when(spyPlugin).addLoot(anyString(), anyInt(), any(LootRecordType.class), isNull(), anyCollection(), anyInt());
 
 		List<ItemStack> items = Collections.singletonList(
-				new ItemStack(ItemID.COAL + 1, 750, null)
+			new ItemStack(ItemID.COAL + 1, 750, null)
 		);
 
 		ItemContainer itemContainer = mock(ItemContainer.class);
