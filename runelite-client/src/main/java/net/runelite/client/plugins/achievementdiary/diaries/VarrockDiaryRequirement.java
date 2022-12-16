@@ -113,7 +113,6 @@ public class VarrockDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.FLETCHING, 81),
 			new QuestRequirement(Quest.THE_TOURIST_TRAP));
 		add("Craft 100 or more earth runes simultaneously from Essence.",
-			new SkillRequirement(Skill.RUNECRAFT, 78),
-			new QuestRequirement(Quest.RUNE_MYSTERIES));
+			new SkillRequirement(Skill.RUNECRAFT, 78));
 	}
 }

@@ -44,8 +44,7 @@ public class LumbridgeDiaryRequirement extends GenericDiaryRequirement
 		add("Have Sedridor teleport you to the Essence Mine.",
 			new QuestRequirement(Quest.RUNE_MYSTERIES));
 		add("Craft some water runes from Essence.",
-			new SkillRequirement(Skill.RUNECRAFT, 5),
-			new QuestRequirement(Quest.RUNE_MYSTERIES));
+			new SkillRequirement(Skill.RUNECRAFT, 5));
 		add("Chop and burn some oak logs in Lumbridge.",
 			new SkillRequirement(Skill.WOODCUTTING, 15),
 			new SkillRequirement(Skill.FIREMAKING, 15));
@@ -85,8 +84,7 @@ public class LumbridgeDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.HUNTER, 42),
 			new QuestRequirement(Quest.LOST_CITY));
 		add("Craft some Lava runes at the fire altar in Al Kharid.",
-			new SkillRequirement(Skill.RUNECRAFT, 23),
-			new QuestRequirement(Quest.RUNE_MYSTERIES));
+			new SkillRequirement(Skill.RUNECRAFT, 23));
 
 		// HARD
 		add("Cast Bones to Peaches in Al Kharid palace.",
@@ -129,7 +127,6 @@ public class LumbridgeDiaryRequirement extends GenericDiaryRequirement
 		add("Smith an Adamant platebody down Draynor sewer.",
 			new SkillRequirement(Skill.SMITHING, 88));
 		add("Craft 140 or more Water runes at once from Essence.",
-			new SkillRequirement(Skill.RUNECRAFT, 76),
-			new QuestRequirement(Quest.RUNE_MYSTERIES));
+			new SkillRequirement(Skill.RUNECRAFT, 76));
 	}
 }
