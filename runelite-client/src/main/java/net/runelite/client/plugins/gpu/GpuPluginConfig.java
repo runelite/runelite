@@ -30,6 +30,9 @@ import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.Range;
 import static net.runelite.client.plugins.gpu.GpuPlugin.MAX_DISTANCE;
 import static net.runelite.client.plugins.gpu.GpuPlugin.MAX_FOG_DEPTH;
+
+import net.runelite.client.config.Warn;
+import net.runelite.client.config.WarningPrompt;
 import net.runelite.client.plugins.gpu.config.AntiAliasingMode;
 import net.runelite.client.plugins.gpu.config.ColorBlindMode;
 import net.runelite.client.plugins.gpu.config.UIScalingMode;
@@ -106,6 +109,9 @@ public interface GpuPluginConfig extends Config
 		description = "Offloads face sorting to GPU, enabling extended draw distance. Requires plugin restart.",
 		warning = "This feature requires OpenGL 4.3 to use. Please check that your GPU supports this.\nRestart the plugin for changes to take effect.",
 		position = 6
+	)
+	@Warn(
+			WARNING_PROMPT = WarningPrompt.ALWAYS
 	)
 	default boolean useComputeShaders()
 	{

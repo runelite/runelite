@@ -128,6 +128,9 @@ public interface RuneLiteConfig extends Config
 		position = 15,
 		section = windowSettings
 	)
+	@Warn(
+			WARNING_PROMPT = WarningPrompt.ALWAYS
+	)
 	default boolean enableCustomChrome()
 	{
 		return OSType.getOSType() == OSType.Windows;
@@ -192,6 +195,9 @@ public interface RuneLiteConfig extends Config
 		warning = "Disabling this may limit your ability to receive tray notifications.\nPlease restart your client after changing this setting.",
 		position = 20,
 		section = notificationSettings
+	)
+	@Warn(
+			WARNING_PROMPT = WarningPrompt.ALWAYS
 	)
 	default boolean enableTrayIcon()
 	{
