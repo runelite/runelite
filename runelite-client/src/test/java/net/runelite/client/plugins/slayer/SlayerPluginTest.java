@@ -121,6 +121,10 @@ public class SlayerPluginTest
 	private static final String TASK_COMPLETE = "You need something new to hunt.";
 	private static final String TASK_CANCELED = "Your task has been cancelled.";
 
+	private static final String TASK_CANCELED_LEFT_FIGHT_CAVES = "You no longer have a slayer task as you left the fight cave.";
+	private static final String TASK_CANCELED_LEFT_INFERNO = "You no longer have a slayer task as you left the Inferno.";
+	private static final String TASK_CANCELED_FAILED_INFERNO = "You no longer have a slayer task.";
+
 	private static final String SUPERIOR_MESSAGE = "A superior foe has appeared...";
 
 	private static final String BRACLET_SLAUGHTER = "Your bracelet of slaughter prevents your slayer count from decreasing. It has 9 charges left.";
@@ -581,6 +585,45 @@ public class SlayerPluginTest
 		slayerPlugin.setAmount(42);
 
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "Perterter", TASK_CANCELED, null, 0);
+		slayerPlugin.onChatMessage(chatMessageEvent);
+
+		assertEquals("", slayerPlugin.getTaskName());
+		assertEquals(0, slayerPlugin.getAmount());
+	}
+
+	@Test
+	public void testCancelledOnFightCaveLeave()
+	{
+		slayerPlugin.setTaskName("cows");
+		slayerPlugin.setAmount(42);
+
+		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "Perterter", TASK_CANCELED_LEFT_FIGHT_CAVES, null, 0);
+		slayerPlugin.onChatMessage(chatMessageEvent);
+
+		assertEquals("", slayerPlugin.getTaskName());
+		assertEquals(0, slayerPlugin.getAmount());
+	}
+
+	@Test
+	public void testCancelledOnInfernoLeave()
+	{
+		slayerPlugin.setTaskName("cows");
+		slayerPlugin.setAmount(42);
+
+		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "Perterter", TASK_CANCELED_LEFT_INFERNO, null, 0);
+		slayerPlugin.onChatMessage(chatMessageEvent);
+
+		assertEquals("", slayerPlugin.getTaskName());
+		assertEquals(0, slayerPlugin.getAmount());
+	}
+
+	@Test
+	public void testCancelledOnInfernoFail()
+	{
+		slayerPlugin.setTaskName("cows");
+		slayerPlugin.setAmount(42);
+
+		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "Perterter", TASK_CANCELED_FAILED_INFERNO, null, 0);
 		slayerPlugin.onChatMessage(chatMessageEvent);
 
 		assertEquals("", slayerPlugin.getTaskName());
