@@ -87,6 +87,7 @@ import net.runelite.client.config.Keybind;
 import net.runelite.client.config.ModifierlessKeybind;
 import net.runelite.client.config.Range;
 import net.runelite.client.config.Units;
+import net.runelite.client.config.WarningPrompt;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ExternalPluginsChanged;
 import net.runelite.client.events.PluginChanged;
@@ -679,22 +680,33 @@ class ConfigPanel extends PluginPanel
 	{
 		final ConfigItem configItem = cid.getItem();
 
-		if (!Strings.isNullOrEmpty(configItem.warning()))
-		{
-			final int result = JOptionPane.showOptionDialog(component, configItem.warning(),
-				"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
-				null, new String[]{"Yes", "No"}, "No");
-
-			if (result != JOptionPane.YES_OPTION)
-			{
-				rebuild();
-				return;
-			}
-		}
-
 		if (component instanceof JCheckBox)
 		{
 			JCheckBox checkbox = (JCheckBox) component;
+
+			if (!Strings.isNullOrEmpty(configItem.warning()))
+			{
+				boolean optionEnabled = configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName())
+						.equalsIgnoreCase("true");
+
+				// Null check for backwards compatibility
+				if (cid.getWarn() == null
+						|| cid.getWarn().WARNING_PROMPT() == WarningPrompt.ALWAYS
+						|| cid.getWarn().WARNING_PROMPT() == WarningPrompt.ON_ENABLE && !optionEnabled
+						|| cid.getWarn().WARNING_PROMPT() == WarningPrompt.ON_DISABLE && optionEnabled)
+				{
+					final int result = JOptionPane.showOptionDialog(component, configItem.warning(),
+							"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
+							null, new String[]{"Yes", "No"}, "No");
+
+					if (result != JOptionPane.YES_OPTION)
+					{
+						rebuild();
+						return;
+					}
+				}
+			}
+
 			configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), "" + checkbox.isSelected());
 		}
 		else if (component instanceof JSpinner)

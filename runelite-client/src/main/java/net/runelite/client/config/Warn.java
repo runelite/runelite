@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2022, Macweese <https://github.com/Macweese>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,34 +24,19 @@
  */
 package net.runelite.client.config;
 
-import java.lang.reflect.Type;
-import lombok.Value;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-@Value
-public class ConfigItemDescriptor implements ConfigObject
+/**
+ * Used with ConfigItem, defines warning prompt behavior.
+ */
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+@Documented
+public @interface Warn
 {
-	private final ConfigItem item;
-	private final Type type;
-	private final Range range;
-	private final Alpha alpha;
-	private final Units units;
-	private final Warn warn;
-
-	@Override
-	public String key()
-	{
-		return item.keyName();
-	}
-
-	@Override
-	public String name()
-	{
-		return item.name();
-	}
-
-	@Override
-	public int position()
-	{
-		return item.position();
-	}
+	WarningPrompt WARNING_PROMPT() default WarningPrompt.ALWAYS;
 }
