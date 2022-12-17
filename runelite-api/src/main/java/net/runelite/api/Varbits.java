@@ -696,6 +696,13 @@ public final class Varbits
 	public static final int TELEBLOCK = 4163;
 
 	/**
+	 * If the player has Menaphite remedy effect active.
+	 * This will go down by 1 every 25 ticks (15 seconds) and the player's combat stats will be restored by 6 + 16%.
+	 * Set to 20 upon consuming potion.
+	 */
+	public static final int MENAPHITE_REMEDY = 14448;
+
+	/**
 	 * How many salt stat boost refreshes the player has remaining.
 	 * This will go down by 1 every 25 ticks (15 seconds) and the player's stats will be restored.
 	 * Set to 32 upon crushing salts.

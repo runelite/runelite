@@ -136,6 +136,7 @@ public class TimersPlugin extends Plugin
 
 	private TimerTimer staminaTimer;
 	private TimerTimer buffTimer;
+	private TimerTimer remedyTimer;
 
 	private boolean imbuedHeartTimerActive;
 	private int nextPoisonTick;
@@ -365,6 +366,26 @@ public class TimersPlugin extends Plugin
 			}
 		}
 
+		if (event.getVarbitId() == Varbits.MENAPHITE_REMEDY && config.showMenaphiteRemedy())
+		{
+			int remedyDuration = event.getValue() * 25;
+			Duration duration = Duration.of(remedyDuration, RSTimeUnit.GAME_TICKS);
+
+			if (remedyDuration == 0)
+			{
+				removeGameTimer(MENAPHITE_REMEDY);
+				remedyTimer = null;
+			}
+			else if (remedyTimer == null)
+			{
+				remedyTimer = createGameTimer(MENAPHITE_REMEDY, duration);
+			}
+			else
+			{
+				remedyTimer.updateDuration(duration);
+			}
+		}
+
 		if (event.getVarbitId() == Varbits.LIQUID_ADERNALINE_ACTIVE && config.showLiquidAdrenaline())
 		{
 			if (event.getValue() == 1)
@@ -502,6 +523,12 @@ public class TimersPlugin extends Plugin
 		if (!config.showLiquidAdrenaline())
 		{
 			removeGameTimer(LIQUID_ADRENALINE);
+		}
+
+		if (!config.showMenaphiteRemedy())
+		{
+			removeGameTimer(MENAPHITE_REMEDY);
+			remedyTimer = null;
 		}
 
 		if (!config.showSilkDressing())

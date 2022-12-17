@@ -95,6 +95,16 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showMenaphiteRemedy",
+		name = "Menaphite remedy timer",
+		description = "Configures whether Menaphite remedy timer is displayed"
+	)
+	default boolean showMenaphiteRemedy()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "showSilkDressing",
 		name = "Silk dressing timer",
 		description = "Configures whether silk dressing timer is displayed"
