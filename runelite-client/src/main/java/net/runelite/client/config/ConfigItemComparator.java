@@ -33,6 +33,7 @@ import java.util.regex.Pattern;
 
 public class ConfigItemComparator<T extends Number & Comparable> implements Comparator<T>
 {
+	@Override
 	public int compare(T a, T b) throws ClassCastException
 	{
 		return a.compareTo(b);
