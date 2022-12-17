@@ -107,11 +107,11 @@ public interface GpuPluginConfig extends Config
 		keyName = "useComputeShaders",
 		name = "Compute Shaders",
 		description = "Offloads face sorting to GPU, enabling extended draw distance. Requires plugin restart.",
-		warning = "This feature requires OpenGL 4.3 to use. Please check that your GPU supports this.\nRestart the plugin for changes to take effect.",
 		position = 6
 	)
 	@Warn(
-			WARNING_PROMPT = WarningPrompt.ALWAYS
+			WARNING_PROMPT = WarningPrompt.ALWAYS,
+			message = "This feature requires OpenGL 4.3 to use. Please check that your GPU supports this.\nRestart the plugin for changes to take effect."
 	)
 	default boolean useComputeShaders()
 	{

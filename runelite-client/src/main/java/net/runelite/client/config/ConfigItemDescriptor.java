@@ -28,7 +28,7 @@ import java.lang.reflect.Type;
 import lombok.Value;
 
 @Value
-public class ConfigItemDescriptor implements ConfigObject
+public class ConfigItemDescriptor extends ConfigItemComparator implements ConfigObject
 {
 	private final ConfigItem item;
 	private final Type type;
