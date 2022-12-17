@@ -110,8 +110,8 @@ public interface GpuPluginConfig extends Config
 		position = 6
 	)
 	@Warn(
-			WARNING_PROMPT = WarningPrompt.ALWAYS,
-			message = "This feature requires OpenGL 4.3 to use. Please check that your GPU supports this.\nRestart the plugin for changes to take effect."
+		WARNING_PROMPT = WarningPrompt.ALWAYS,
+		message = "This feature requires OpenGL 4.3 to use. Please check that your GPU supports this.\nRestart the plugin for changes to take effect."
 	)
 	default boolean useComputeShaders()
 	{

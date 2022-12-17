@@ -128,8 +128,8 @@ public interface RuneLiteConfig extends Config
 		section = windowSettings
 	)
 	@Warn(
-			WARNING_PROMPT = WarningPrompt.ALWAYS,
-			message = "Please restart your client after changing this setting"
+		WARNING_PROMPT = WarningPrompt.ALWAYS,
+		message = "Please restart your client after changing this setting"
 	)
 	default boolean enableCustomChrome()
 	{
@@ -196,8 +196,8 @@ public interface RuneLiteConfig extends Config
 		section = notificationSettings
 	)
 	@Warn(
-			WARNING_PROMPT = WarningPrompt.ALWAYS,
-			message = "Disabling this may limit your ability to receive tray notifications.\nPlease restart your client after changing this setting."
+		WARNING_PROMPT = WarningPrompt.ALWAYS,
+		message = "Disabling this may limit your ability to receive tray notifications.\nPlease restart your client after changing this setting."
 	)
 	default boolean enableTrayIcon()
 	{
