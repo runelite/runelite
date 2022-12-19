@@ -47,5 +47,6 @@ class ColorTileObject
 	 * Name to highlight for multilocs
 	 */
 	private final String name;
-	private final Color color;
+	private final Color boarderColor;
+	private final Color fillColor;
 }

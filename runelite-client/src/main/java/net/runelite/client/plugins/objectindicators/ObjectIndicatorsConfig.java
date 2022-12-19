@@ -94,18 +94,31 @@ public interface ObjectIndicatorsConfig extends Config
 	@Alpha
 	@ConfigItem(
 		position = 4,
-		keyName = "markerColor",
-		name = "Marker color",
-		description = "Configures the color of object marker",
+		keyName = "boarderColor",
+		name = "Boarder color",
+		description = "Configures the boarder color of an object marker",
 		section = renderStyleSection
 	)
-	default Color markerColor()
+	default Color boarderColor()
 	{
 		return Color.YELLOW;
 	}
 
+	@Alpha
 	@ConfigItem(
 		position = 5,
+		keyName = "fillColor",
+		name = "Fill color",
+		description = "Configures the fill color of an object marker",
+		section = renderStyleSection
+	)
+	default Color fillColor()
+	{
+		return new Color(255, 255, 0, 0);
+	}
+
+	@ConfigItem(
+		position = 6,
 		keyName = "borderWidth",
 		name = "Border Width",
 		description = "Width of the marked object border",
@@ -117,7 +130,7 @@ public interface ObjectIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 6,
+		position = 7,
 		keyName = "outlineFeather",
 		name = "Outline feather",
 		description = "Specify between 0-4 how much of the model outline should be faded",
@@ -133,7 +146,7 @@ public interface ObjectIndicatorsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 5,
+		position = 8,
 		keyName = "rememberObjectColors",
 		name = "Remember color per object",
 		description = "Color objects using the color from time of marking"
