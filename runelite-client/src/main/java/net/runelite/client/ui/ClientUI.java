@@ -72,6 +72,7 @@ import net.runelite.api.Constants;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
+import net.runelite.api.events.DisplayChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -549,6 +550,7 @@ public class ClientUI
 					{
 						frame.repaint();
 						graphicsDevice = gd;
+						eventBus.post(new DisplayChanged(gd));
 
 						log.info("New associated graphics device: {}, {}x{}, {}Hz",
 								gd,
