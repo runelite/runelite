@@ -24,7 +24,6 @@
  */
 package net.runelite.client.callback;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -388,15 +387,18 @@ public class Hooks implements Callbacks
 		final Image finalImage;
 		if (client.isStretchedEnabled())
 		{
-			GraphicsConfiguration gc = clientUi.getGraphicsConfiguration();
+			GraphicsConfiguration gc = ClientUI.getGraphicsDevice().getDefaultConfiguration();
 			Dimension stretchedDimensions = client.getStretchedDimensions();
 
 			if (lastStretchedDimensions == null || !lastStretchedDimensions.equals(stretchedDimensions)
-				|| (stretchedImage != null && stretchedImage.validate(gc) == VolatileImage.IMAGE_INCOMPATIBLE))
+				|| (stretchedImage != null && stretchedImage.validate(gc) != VolatileImage.IMAGE_OK))
 			{
-				/*
-					Reuse the resulting image instance to avoid creating an extreme amount of objects
-				 */
+				// Only reuse image if it is unsullied else reconstruct new
+				if (stretchedImage != null)
+				{
+					stretchedImage.flush();
+				}
+
 				stretchedImage = gc.createCompatibleVolatileImage(stretchedDimensions.width, stretchedDimensions.height);
 
 				if (stretchedGraphics != null)
@@ -406,12 +408,6 @@ public class Hooks implements Callbacks
 				stretchedGraphics = (Graphics2D) stretchedImage.getGraphics();
 
 				lastStretchedDimensions = stretchedDimensions;
-
-				/*
-					Fill Canvas before drawing stretched image to prevent artifacts.
-				*/
-				graphics.setColor(Color.BLACK);
-				graphics.fillRect(0, 0, client.getCanvas().getWidth(), client.getCanvas().getHeight());
 			}
 
 			stretchedGraphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
