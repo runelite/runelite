@@ -32,8 +32,6 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
-import java.util.Arrays;
-import java.util.Comparator;
 import javax.swing.JFrame;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -329,22 +327,6 @@ public class ContainableFrame extends JFrame
 	}
 
 	/**
-	 * Finds the {@link GraphicsConfiguration} of the display the window is currently on. If it's on more than
-	 * one screen, returns the one it's most on (largest area of intersection)
-	 */
-	private GraphicsConfiguration getCurrentDisplayConfiguration()
-	{
-		return Arrays.stream(GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices())
-			.map(GraphicsDevice::getDefaultConfiguration)
-			.max(Comparator.comparingInt(config ->
-			{
-				Rectangle intersection = config.getBounds().intersection(getBounds());
-				return intersection.width * intersection.height;
-			}))
-			.orElseGet(this::getGraphicsConfiguration);
-	}
-
-	/**
 	 * Calculates the bounds of the window area of the screen.
 	 * <p>
 	 * The bounds returned by {@link GraphicsEnvironment#getMaximumWindowBounds} are incorrectly calculated on
@@ -358,7 +340,7 @@ public class ContainableFrame extends JFrame
 			log.trace("Device: {} bounds {}", device, device.getDefaultConfiguration().getBounds());
 		}
 
-		GraphicsConfiguration config = getCurrentDisplayConfiguration();
+		GraphicsConfiguration config = super.getGraphicsConfiguration();
 		// get screen bounds
 		Rectangle bounds = config.getBounds();
 		log.trace("Chosen device: {} bounds {}", config, bounds);

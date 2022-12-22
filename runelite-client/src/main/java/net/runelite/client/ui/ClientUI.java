@@ -38,11 +38,12 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
 import java.awt.LayoutManager;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -117,6 +118,8 @@ public class ClientUI
 
 	@Getter
 	private TrayIcon trayIcon;
+	@Getter
+	private static GraphicsDevice graphicsDevice;
 
 	private final RuneLiteConfig config;
 	private final KeyManager keyManager;
@@ -343,6 +346,13 @@ public class ClientUI
 			frame.setLocationRelativeTo(frame.getOwner());
 			frame.setResizable(true);
 
+			graphicsDevice = frame.getGraphicsConfiguration().getDevice();
+			log.info("Associated graphics device: {}, {}x{}, {}Hz",
+					graphicsDevice,
+					graphicsDevice.getDisplayMode().getWidth(),
+					graphicsDevice.getDisplayMode().getHeight(),
+					graphicsDevice.getDisplayMode().getRefreshRate());
+
 			frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 			if (OSType.getOSType() == OSType.MacOS)
 			{
@@ -527,6 +537,27 @@ public class ClientUI
 			{
 				toggleSidebar();
 			}
+
+			frame.addComponentListener(new ComponentAdapter()
+			{
+				@Override
+				public void componentMoved(ComponentEvent e)
+				{
+					GraphicsDevice gd = frame.getGraphicsConfiguration().getDevice();
+
+					if (gd != null && graphicsDevice != gd)
+					{
+						frame.repaint();
+						graphicsDevice = gd;
+
+						log.info("New associated graphics device: {}, {}x{}, {}Hz",
+								gd,
+								gd.getDisplayMode().getWidth(),
+								gd.getDisplayMode().getHeight(),
+								gd.getDisplayMode().getRefreshRate());
+					}
+				}
+			});
 		});
 	}
 
@@ -555,9 +586,7 @@ public class ClientUI
 					{
 						frame.setBounds(clientBounds);
 
-						// frame.getGraphicsConfiguration().getBounds() returns the bounds for the primary display.
-						// We have to find the correct graphics configuration by using the client boundaries.
-						GraphicsConfiguration gc = findDisplayFromBounds(clientBounds);
+						GraphicsConfiguration gc = graphicsDevice.getDefaultConfiguration();
 						if (gc != null)
 						{
 							double scale = gc.getDefaultTransform().getScaleX();
@@ -648,24 +677,6 @@ public class ClientUI
 					ep, "Max memory limit low", JOptionPane.WARNING_MESSAGE);
 			});
 		}
-	}
-
-	private GraphicsConfiguration findDisplayFromBounds(final Rectangle bounds)
-	{
-		GraphicsDevice[] gds = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices();
-
-		for (GraphicsDevice gd : gds)
-		{
-			GraphicsConfiguration gc = gd.getDefaultConfiguration();
-
-			final Rectangle displayBounds = gc.getBounds();
-			if (displayBounds.contains(bounds))
-			{
-				return gc;
-			}
-		}
-
-		return null;
 	}
 
 	private boolean showWarningOnExit()
@@ -918,11 +929,6 @@ public class ClientUI
 
 		// Update button dimensions
 		sidebarButtonPosition.setBounds(x, y, image.getWidth(), image.getHeight());
-	}
-
-	public GraphicsConfiguration getGraphicsConfiguration()
-	{
-		return frame.getGraphicsConfiguration();
 	}
 
 	private void toggleSidebar()
