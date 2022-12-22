@@ -52,6 +52,7 @@ import net.runelite.api.SceneTileModel;
 import net.runelite.api.SceneTilePaint;
 import net.runelite.api.Texture;
 import net.runelite.api.TextureProvider;
+import net.runelite.api.events.DisplayChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.hooks.DrawCallbacks;
 import net.runelite.client.callback.ClientThread;
@@ -65,6 +66,7 @@ import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.plugins.gpu.config.AntiAliasingMode;
 import net.runelite.client.plugins.gpu.config.UIScalingMode;
 import net.runelite.client.plugins.gpu.template.Template;
+import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.DrawManager;
 import net.runelite.client.util.OSType;
 import net.runelite.rlawt.AWTContext;
@@ -263,6 +265,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	private boolean lwjglInitted = false;
 
+	private int refreshRate;
+
 	@Override
 	protected void startUp()
 	{
@@ -357,6 +361,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				modelBufferSmall = new GpuIntBuffer();
 				modelBuffer = new GpuIntBuffer();
 
+				refreshRate = ClientUI.getGraphicsDevice().getDisplayMode().getRefreshRate();
 				setupSyncMode();
 
 				initVao();
@@ -491,6 +496,15 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		}
 	}
 
+	@Subscribe
+	public void onDisplayChanged(DisplayChanged displayChanged)
+	{
+		refreshRate = displayChanged.getGraphicsDevice().getDisplayMode().getRefreshRate();
+		log.debug("Display changed - new refresh rate: {}", refreshRate);
+		clientThread.invokeLater(this::setupSyncMode);
+	}
+
+
 	private void setupSyncMode()
 	{
 		final boolean unlockFps = config.unlockFps();
@@ -521,7 +535,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			log.info("unsupported swap interval {}, got {}", swapInterval, actualSwapInterval);
 		}
 
-		client.setUnlockedFpsTarget(actualSwapInterval == 0 ? config.fpsTarget() : 0);
+		client.setUnlockedFpsTarget(actualSwapInterval == 0 ? config.fpsTarget() : refreshRate);
 		checkGLErrors();
 	}
 
