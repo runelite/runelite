@@ -295,7 +295,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 				objects.add(new ColorTileObject(object,
 					objectComposition,
 					objectPoint.getName(),
-					objectPoint.getBoarderColor(),
+					objectPoint.getBorderColor(),
 					objectPoint.getFillColor()));
 				break;
 			}
@@ -380,7 +380,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 	{
 		final WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, object.getLocalLocation());
 		final int regionId = worldPoint.getRegionID();
-		final Color boarderColor = config.boarderColor();
+		final Color borderColor = config.borderColor();
 		final Color fillColor = config.fillColor();
 		final ObjectPoint point = new ObjectPoint(
 			object.getId(),
@@ -389,7 +389,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 			worldPoint.getRegionX(),
 			worldPoint.getRegionY(),
 			worldPoint.getPlane(),
-			boarderColor,
+			borderColor,
 			fillColor);
 
 		Set<ObjectPoint> objectPoints = points.computeIfAbsent(regionId, k -> new HashSet<>());
@@ -416,7 +416,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 			objects.add(new ColorTileObject(object,
 				client.getObjectDefinition(object.getId()),
 				name,
-				boarderColor,
+				borderColor,
 				fillColor));
 			log.debug("Marking object: {}", point);
 		}

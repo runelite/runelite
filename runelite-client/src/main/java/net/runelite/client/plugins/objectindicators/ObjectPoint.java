@@ -41,6 +41,6 @@ class ObjectPoint
 	private int regionX;
 	private int regionY;
 	private int z;
-	private Color boarderColor;
+	private Color borderColor;
 	private Color fillColor;
 }

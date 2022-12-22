@@ -94,12 +94,12 @@ public interface ObjectIndicatorsConfig extends Config
 	@Alpha
 	@ConfigItem(
 		position = 4,
-		keyName = "boarderColor",
-		name = "Boarder color",
-		description = "Configures the boarder color of an object marker",
+		keyName = "borderColor",
+		name = "Border color",
+		description = "Configures the border color of an object marker",
 		section = renderStyleSection
 	)
-	default Color boarderColor()
+	default Color borderColor()
 	{
 		return Color.YELLOW;
 	}
@@ -114,7 +114,7 @@ public interface ObjectIndicatorsConfig extends Config
 	)
 	default Color fillColor()
 	{
-		return new Color(255, 255, 0, 0);
+		return new Color(255, 255, 0, 255/12);
 	}
 
 	@ConfigItem(
