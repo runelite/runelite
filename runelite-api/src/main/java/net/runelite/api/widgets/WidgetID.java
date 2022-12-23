@@ -85,7 +85,6 @@ public final class WidgetID
 	public static final int BA_TEAM_GROUP_ID = 256;
 	public static final int LEVEL_UP_GROUP_ID = 233;
 	public static final int DIALOG_SPRITE_GROUP_ID = 193;
-
 	public static final int DIALOG_SPRITE_DOUBLE_GROUP_ID = 11;
 	public static final int QUEST_COMPLETED_GROUP_ID = 153;
 	public static final int CLUE_SCROLL_REWARD_GROUP_ID = 73;
