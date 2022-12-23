@@ -68,25 +68,10 @@ public class NpcUtil
 		{
 			// These NPCs hit 0hp but don't actually die
 			case NpcID.GARGOYLE:
-			case NpcID.GARGOYLE_413:
 			case NpcID.GARGOYLE_1543:
 			case NpcID.MARBLE_GARGOYLE:
-			case NpcID.MARBLE_GARGOYLE_7408:
-			case NpcID.DAWN:
-			case NpcID.DAWN_7852:
-			case NpcID.DAWN_7853:
 			case NpcID.DAWN_7884:
-			case NpcID.DAWN_7885:
-			case NpcID.DUSK:
-			case NpcID.DUSK_7851:
-			case NpcID.DUSK_7854:
-			case NpcID.DUSK_7855:
-			case NpcID.DUSK_7882:
-			case NpcID.DUSK_7883:
-			case NpcID.DUSK_7886:
-			case NpcID.DUSK_7887:
 			case NpcID.DUSK_7888:
-			case NpcID.DUSK_7889:
 			case NpcID.ZYGOMITE:
 			case NpcID.ZYGOMITE_1024:
 			case NpcID.ANCIENT_ZYGOMITE:
@@ -151,6 +136,12 @@ public class NpcUtil
 			case NpcID.XARPUS_10773:
 			case NpcID.THE_NIGHTMARE_9433:
 			case NpcID.PHOSANIS_NIGHTMARE_9424:
+			// Gargoyles, Dawn, and Dusk each have cracking forms which contain their death animations, so should always
+			// be considered dead.
+			case NpcID.GARGOYLE_413:
+			case NpcID.MARBLE_GARGOYLE_7408:
+			case NpcID.DAWN_7885:
+			case NpcID.DUSK_7889:
 				return true;
 			case NpcID.ZALCANO_9050:
 				return npc.isDead();
