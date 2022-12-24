@@ -682,7 +682,8 @@ public class OverlayRenderer extends MouseAdapter
 			dragWarn = true;
 			chatMessageManager.queue(QueuedMessage.builder()
 				.type(ChatMessageType.CONSOLE)
-				.runeLiteFormattedMessage("You've repositioned one of the in-game interfaces. Hold ALT and drag to reposition the interface again, or ALT and right click to reset.")
+				.runeLiteFormattedMessage("You've repositioned one of the in-game interfaces. Hold " + runeLiteConfig.dragHotkey() +
+					" and drag to reposition the interface again, or " + runeLiteConfig.dragHotkey() + " and right click to reset.")
 				.build());
 		}
 
