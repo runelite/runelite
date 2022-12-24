@@ -187,7 +187,7 @@ public class OverlayRenderer extends MouseAdapter
 		}
 
 		final boolean shift = client.isKeyPressed(KeyCode.KC_SHIFT);
-		if (!shift && runeLiteConfig.menuEntryShift())
+		if (!shift)
 		{
 			return;
 		}
