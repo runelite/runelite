@@ -33,6 +33,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -44,6 +46,7 @@ import static net.runelite.api.ItemID.AGILITY_ARENA_TICKET;
 import net.runelite.api.NPC;
 import net.runelite.api.NullNpcID;
 import net.runelite.api.Player;
+import net.runelite.api.ScriptID;
 import static net.runelite.api.Skill.AGILITY;
 import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
@@ -61,9 +64,12 @@ import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
+import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.StatChanged;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -129,6 +135,9 @@ public class AgilityPlugin extends Plugin
 	@Inject
 	private XpTrackerService xpTrackerService;
 
+	@Inject
+	private ConfigManager configManager;
+
 	@Getter
 	@Setter(AccessLevel.PACKAGE)
 	private AgilitySession session;
@@ -147,6 +156,9 @@ public class AgilityPlugin extends Plugin
 	{
 		return configManager.getConfig(AgilityConfig.class);
 	}
+
+	private static final Pattern LAPS_LINE_CHECK_PATTERN = Pattern.compile("(?<course>[\\w\\s]+) - (?<lapCount>\\d+) Laps?");
+
 
 	@Override
 	protected void startUp() throws Exception
@@ -313,6 +325,17 @@ public class AgilityPlugin extends Plugin
 		}
 	}
 
+	private void setLaps(String courseName, int killcount)
+	{
+		configManager.setRSProfileConfiguration("killcount", courseName.toLowerCase(), killcount);
+	}
+
+	private int getLaps(String courseName)
+	{
+		Integer killCount = configManager.getRSProfileConfiguration("killcount", courseName.toLowerCase(), int.class);
+		return killCount == null ? 0 : killCount;
+	}
+
 	private boolean isInAgilityArena()
 	{
 		Player local = client.getLocalPlayer();
@@ -455,5 +478,32 @@ public class AgilityPlugin extends Plugin
 	{
 		NPC npc = npcDespawned.getNpc();
 		npcs.remove(npc);
+	}
+
+	@Subscribe
+	public void onScriptPostFired(ScriptPostFired scriptPostFired)
+	{
+		if (scriptPostFired.getScriptId() != ScriptID.LONGSCROLL_SETUP)
+		{
+			return;
+		}
+		Widget agiLapsHeader = client.getWidget(WidgetInfo.GENERIC_SCROLL_HEADER);
+		if (agiLapsHeader == null || !agiLapsHeader.getText().equals("Agility Course Lap Counts"))
+		{
+			return;
+		}
+		final String[] lapsList = client.getWidget(WidgetInfo.GENERIC_SCROLL_TEXT).getText().split("<br>");
+		for (String line : lapsList)
+		{
+			final Matcher lapsLineMatcher = LAPS_LINE_CHECK_PATTERN.matcher(line);
+			if (!lapsLineMatcher.find())
+			{
+				continue;
+			}
+			if (getLaps(lapsLineMatcher.group("course")) != Integer.parseInt((lapsLineMatcher.group("lapCount"))) && Integer.parseInt(lapsLineMatcher.group("lapCount")) != 0)
+			{
+				setLaps(lapsLineMatcher.group("course"), Integer.parseInt(lapsLineMatcher.group("lapCount")));
+			}
+		}
 	}
 }

@@ -932,6 +932,7 @@ public final class WidgetID
 
 	static class GenericScroll
 	{
+		static final int HEADER = 4;
 		static final int TEXT = 7;
 	}
 
@@ -978,4 +979,5 @@ public final class WidgetID
 	{
 		static final int HEADER = 31;
 	}
+
 }

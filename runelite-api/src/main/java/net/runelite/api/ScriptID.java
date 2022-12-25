@@ -408,4 +408,7 @@ public final class ScriptID
 
 	@ScriptArguments(integer = 7)
 	public static final int ORBS_UPDATE_RUNENERGY = 447;
+
+	@ScriptArguments(string = 2)
+	public static final int LONGSCROLL_SETUP = 418;
 }
