@@ -458,4 +458,23 @@ public interface GroundItemsConfig extends Config
 	{
 		return Keybind.ALT;
 	}
+
+	@ConfigItem(
+			keyName = "showGoldenCoins",
+			name = "Golden Coins",
+			description = "Overrides the color of coins to yellow (golden)",
+			position = 34
+	)
+	default boolean showGoldenCoins() { return false; }
+
+	@ConfigItem(
+			keyName = "GoldenCoinsMin",
+			name = "Golden Coins min value",
+			description = "Configures the amount of gp needed for Golden Coins to activate",
+			position = 35
+	)
+	default int GoldenCoinsMin()
+	{
+		return 0;
+	}
 }
