@@ -29,8 +29,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import net.runelite.api.Client;
 import net.runelite.api.FriendsChatRank;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
@@ -51,14 +53,16 @@ public class PlayerIndicatorsOverlay extends Overlay
 	private final PlayerIndicatorsService playerIndicatorsService;
 	private final PlayerIndicatorsConfig config;
 	private final ChatIconManager chatIconManager;
+	private final Client client;
 
 	@Inject
 	private PlayerIndicatorsOverlay(PlayerIndicatorsConfig config, PlayerIndicatorsService playerIndicatorsService,
-		ChatIconManager chatIconManager)
+		ChatIconManager chatIconManager, Client client)
 	{
 		this.config = config;
 		this.playerIndicatorsService = playerIndicatorsService;
 		this.chatIconManager = chatIconManager;
+		this.client = client;
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.MED);
 	}
@@ -153,6 +157,60 @@ public class PlayerIndicatorsOverlay extends Overlay
 			textLocation = new Point(textLocation.getX() + imageTextMargin, textLocation.getY());
 		}
 
-		OverlayUtil.renderTextLocation(graphics, textLocation, name, color);
+		if (config.showCombatLevels() && !Arrays.asList(client.getPlayerOptions()).contains("Attack"))
+		{
+			final int otherLevel = actor.getCombatLevel();
+			final int levelDelta = otherLevel - client.getLocalPlayer().getCombatLevel();
+			final Color combatLevelColor = combatLevelDeltaColor(levelDelta);
+			final String levelString = config.combatLevelType().getLevelString();
+
+			final String combatLevel = levelString + otherLevel + ")";
+
+			OverlayUtil.renderBiColorTextLocation(graphics, textLocation, name, combatLevel, color, combatLevelColor);
+		}
+		else
+		{
+			OverlayUtil.renderTextLocation(graphics, textLocation, name, color);
+		}
+	}
+
+	private Color combatLevelDeltaColor(int lvlDelta)
+	{
+		if (lvlDelta > 9)
+		{
+			return Color.RED;
+		}
+		else if (lvlDelta > 6)
+		{
+			return new Color(255, 48, 0);
+		}
+		else if (lvlDelta > 3)
+		{
+			return new Color(255, 112, 0);
+		}
+		else if (lvlDelta > 0)
+		{
+			return new Color(255, 176, 0);
+		}
+		else if (lvlDelta > -1)
+		{
+			return Color.YELLOW;
+		}
+		else if (lvlDelta > -4)
+		{
+			return new Color(192, 255, 0);
+		}
+		else if (lvlDelta > -7)
+		{
+			return new Color(128, 255, 0);
+		}
+		else if (lvlDelta > -10)
+		{
+			return new Color(64, 255, 0);
+		}
+		else
+		{
+			return Color.GREEN;
+		}
 	}
 }
