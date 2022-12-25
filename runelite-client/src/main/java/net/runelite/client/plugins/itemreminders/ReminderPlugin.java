@@ -22,7 +22,7 @@ import java.util.*;
 public class ReminderPlugin extends Plugin
 {
 
-	private HashMap<Integer,List<String>> pairsMap = new HashMap<>();
+	private HashMap<Integer, List<String>> pairsMap = new HashMap<>();
 
 	@Inject
 	private Notifier notifier;
@@ -42,32 +42,37 @@ public class ReminderPlugin extends Plugin
 	public boolean isInListedZone()
 	{
 		return client.getLocalPlayer() != null
-				&& pairsMap.containsKey(client.getLocalPlayer().getWorldLocation().getRegionID());
+			&& pairsMap.containsKey(client.getLocalPlayer().getWorldLocation().getRegionID());
 	}
 
-	private void loadPairs() {
+	private void loadPairs()
+	{
 		pairsMap.clear();
 
 		if (!config.pairsString().trim().equals(""))
 		{
 			String[] pairsArray = (config.pairsString().split(";"));
 			List<String> pairs = new ArrayList<>();
-			for (int i = 0; i < pairsArray.length; i++) {
+			for (int i = 0; i < pairsArray.length; i++)
+			{
 				pairs.add(pairsArray[i]);
 			}
 
-			for (int i = 0; i < pairs.size(); i++) {
-				String unbracketedPair = pairs.get(i).substring(1, pairs.get(i).length()-1);
+			for (int i = 0; i < pairs.size(); i++)
+			{
+				String unbracketedPair = pairs.get(i).substring(1, pairs.get(i).length() - 1);
 				String[] pair = unbracketedPair.split(",");
 				int key = Integer.parseInt(pair[0]);
-				if (pairsMap.containsKey(key)) {
+				if (pairsMap.containsKey(key))
+				{
 					List<String> temp = new ArrayList<>();
 					temp.add(pair[1]);
 					temp.addAll(pairsMap.get(key));
 					pairsMap.remove(key);
 					pairsMap.put(key, temp);
 				}
-				else {
+				else
+				{
 					List<String> temp = new ArrayList<>();
 					temp.add(pair[1]);
 					pairsMap.put(key, temp);
@@ -82,20 +87,25 @@ public class ReminderPlugin extends Plugin
 	{
 		boolean anyItem = false;
 		loadPairs();
-		if (isInListedZone()) {
+		if (isInListedZone())
+		{
 			int currentRegion = client.getLocalPlayer().getWorldLocation().getRegionID();
-			if (null!=pairsMap.get(currentRegion)) {
+			if (null != pairsMap.get(currentRegion))
+			{
 
 				ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
 				ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
 
-				for (int i = 0; i < pairsMap.get(currentRegion).size(); i++) {
+				for (int i = 0; i < pairsMap.get(currentRegion).size(); i++)
+				{
 					if (!inventory.contains(Integer.parseInt(pairsMap.get(currentRegion).get(i))) &&
-							!equipment.contains(Integer.parseInt(pairsMap.get(currentRegion).get(i)))) {
+						!equipment.contains(Integer.parseInt(pairsMap.get(currentRegion).get(i))))
+					{
 						anyItem = true;
 					}
 				}
-				if (anyItem) {
+				if (anyItem)
+				{
 					notifier.notify("You are missing an item!");
 				}
 			}
