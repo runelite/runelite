@@ -24,7 +24,6 @@
  */
 package net.runelite.client.callback;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -421,12 +420,6 @@ public class Hooks implements Callbacks
 				}
 
 				stretchedGraphics = (Graphics2D) stretchedImage.getGraphics();
-
-				/*
-					Fill Canvas before drawing stretched image to prevent artifacts.
-				*/
-				graphics.setColor(Color.BLACK);
-				graphics.fillRect(0, 0, client.getCanvas().getWidth(), client.getCanvas().getHeight());
 			}
 
 			stretchedGraphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
