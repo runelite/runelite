@@ -391,21 +391,36 @@ public class Hooks implements Callbacks
 			GraphicsConfiguration gc = clientUi.getGraphicsConfiguration();
 			Dimension stretchedDimensions = client.getStretchedDimensions();
 
-			if (lastStretchedDimensions == null || !lastStretchedDimensions.equals(stretchedDimensions)
-				|| (stretchedImage != null && stretchedImage.validate(gc) == VolatileImage.IMAGE_INCOMPATIBLE))
+			int status = -1;
+			if (!stretchedDimensions.equals(lastStretchedDimensions)
+				|| stretchedImage == null
+				|| (status = stretchedImage.validate(gc)) != VolatileImage.IMAGE_OK)
 			{
-				/*
-					Reuse the resulting image instance to avoid creating an extreme amount of objects
-				 */
-				stretchedImage = gc.createCompatibleVolatileImage(stretchedDimensions.width, stretchedDimensions.height);
+				log.debug("Volatile image non-OK status: {}", status);
+
+				// if IMAGE_INCOMPATIBLE the image and g2d need to be rebuilt, otherwise
+				// if IMAGE_RESTORED only the g2d needs to be rebuilt
 
 				if (stretchedGraphics != null)
 				{
 					stretchedGraphics.dispose();
 				}
-				stretchedGraphics = (Graphics2D) stretchedImage.getGraphics();
 
-				lastStretchedDimensions = stretchedDimensions;
+				if (!stretchedDimensions.equals(lastStretchedDimensions)
+					|| stretchedImage == null
+					|| status == VolatileImage.IMAGE_INCOMPATIBLE)
+				{
+					if (stretchedImage != null)
+					{
+						// VolatileImage javadocs says this proactively releases the resources used by the VolatileImage
+						stretchedImage.flush();
+					}
+
+					stretchedImage = gc.createCompatibleVolatileImage(stretchedDimensions.width, stretchedDimensions.height);
+					lastStretchedDimensions = stretchedDimensions;
+				}
+
+				stretchedGraphics = (Graphics2D) stretchedImage.getGraphics();
 
 				/*
 					Fill Canvas before drawing stretched image to prevent artifacts.
