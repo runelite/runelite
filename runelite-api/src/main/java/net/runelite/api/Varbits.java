@@ -55,6 +55,20 @@ public final class Varbits
 	public static final int STAMINA_EFFECT = 24;
 
 	/**
+	 * Antifire timer
+	 * Number of game ticks remaining on antifire in intervals of 30; for a value X there are 30 * X game ticks remaining.
+	 * The antifire expires once this reaches 0.
+	 */
+	public static final int ANTIFIRE = 3981;
+
+	/**
+	 * Super Antifire timer
+	 * Number of game ticks remaining on super antifire in intervals of 20; for a value X there are 20 * X game ticks remaining.
+	 * The super antifire expires once this reaches 0.
+	 */
+	public static final int SUPER_ANTIFIRE = 6101;
+
+	/**
 	 * Ring of endurance effect timer, stamina duration extended from using the ring of endurance
 	 * Number of game ticks remaining on ring of endurance effect in intervals of 10; for a value X there are 10 * X game ticks remaining.
 	 * Unequipping the ring of endurance will cause this to change to 0.
