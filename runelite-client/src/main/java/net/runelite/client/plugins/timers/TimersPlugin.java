@@ -121,7 +121,7 @@ public class TimersPlugin extends Plugin
 	private static final String LIQUID_ADRENALINE_MESSAGE = "You drink some of the potion, reducing the energy cost of your special attacks.</col>";
 
 	private static final Pattern DIVINE_POTION_PATTERN = Pattern.compile("You drink some of your divine (.+) potion\\.");
-	private static final int VENOM_VALUE_CUTOFF = -40; // Antivenom < -40 <= Antipoison < 0
+	private static final int VENOM_VALUE_CUTOFF = -38; // Antivenom < -38 <= Antipoison < 0
 	private static final int POISON_TICK_LENGTH = 30;
 
 	static final int FIGHT_CAVES_REGION_ID = 9551;
