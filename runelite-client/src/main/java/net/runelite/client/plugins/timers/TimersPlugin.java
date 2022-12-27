@@ -37,7 +37,6 @@ import net.runelite.api.Actor;
 import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
-import net.runelite.api.Constants;
 import net.runelite.api.EquipmentInventorySlot;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
@@ -253,13 +252,13 @@ public class TimersPlugin extends Plugin
 			}
 			else if (poisonVarp >= VENOM_VALUE_CUTOFF)
 			{
-				Duration duration = Duration.ofMillis((long) Constants.GAME_TICK_LENGTH * (nextPoisonTick - tickCount + Math.abs((poisonVarp + 1) * POISON_TICK_LENGTH)));
+				Duration duration = Duration.of(nextPoisonTick - tickCount + Math.abs((poisonVarp + 1) * POISON_TICK_LENGTH), RSTimeUnit.GAME_TICKS);
 				removeGameTimer(ANTIVENOM);
 				createGameTimer(ANTIPOISON, duration);
 			}
 			else
 			{
-				Duration duration = Duration.ofMillis((long) Constants.GAME_TICK_LENGTH * (nextPoisonTick - tickCount + Math.abs((poisonVarp + 1 - VENOM_VALUE_CUTOFF) * POISON_TICK_LENGTH)));
+				Duration duration = Duration.of(nextPoisonTick - tickCount + Math.abs((poisonVarp + 1 - VENOM_VALUE_CUTOFF) * POISON_TICK_LENGTH), RSTimeUnit.GAME_TICKS);
 				removeGameTimer(ANTIPOISON);
 				createGameTimer(ANTIVENOM, duration);
 			}
