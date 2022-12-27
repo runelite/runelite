@@ -58,7 +58,6 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GraphicChanged;
 import net.runelite.api.events.ItemContainerChanged;
-import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.config.ConfigManager;
@@ -83,8 +82,6 @@ import org.apache.commons.lang3.ArrayUtils;
 public class TimersPlugin extends Plugin
 {
 	private static final String ABYSSAL_SIRE_STUN_MESSAGE = "The Sire has been disorientated temporarily.";
-	private static final String ANTIFIRE_DRINK_MESSAGE = "You drink some of your antifire potion.";
-	private static final String ANTIFIRE_EXPIRED_MESSAGE = "<col=7f007f>Your antifire potion has expired.</col>";
 	private static final String CANNON_BASE_MESSAGE = "You place the cannon base on the ground.";
 	private static final String CANNON_STAND_MESSAGE = "You add the stand.";
 	private static final String CANNON_BARRELS_MESSAGE = "You add the barrels.";
@@ -93,16 +90,12 @@ public class TimersPlugin extends Plugin
 	private static final String CANNON_REPAIR_MESSAGE = "You repair your cannon, restoring it to working order.";
 	private static final String CANNON_DESTROYED_MESSAGE = "Your cannon has been destroyed!";
 	private static final String CANNON_BROKEN_MESSAGE = "<col=ef1020>Your cannon has broken!";
-	private static final String EXTENDED_ANTIFIRE_DRINK_MESSAGE = "You drink some of your extended antifire potion.";
-	private static final String EXTENDED_SUPER_ANTIFIRE_DRINK_MESSAGE = "You drink some of your extended super antifire potion.";
 	private static final String FROZEN_MESSAGE = "<col=ef1020>You have been frozen!</col>";
 	private static final String GOD_WARS_ALTAR_MESSAGE = "you recharge your prayer.";
 	private static final String MAGIC_IMBUE_EXPIRED_MESSAGE = "Your Magic Imbue charge has ended.";
 	private static final String MAGIC_IMBUE_MESSAGE = "You are charged to combine runes!";
 	private static final String STAFF_OF_THE_DEAD_SPEC_EXPIRED_MESSAGE = "Your protection fades away";
 	private static final String STAFF_OF_THE_DEAD_SPEC_MESSAGE = "Spirits of deceased evildoers offer you their protection";
-	private static final String SUPER_ANTIFIRE_DRINK_MESSAGE = "You drink some of your super antifire potion";
-	private static final String SUPER_ANTIFIRE_EXPIRED_MESSAGE = "<col=7f007f>Your super antifire potion has expired.</col>";
 	private static final String PRAYER_ENHANCE_EXPIRED = "<col=ff0000>Your prayer enhance effect has worn off.</col>";
 	private static final String SHADOW_VEIL_MESSAGE = ">Your thieving abilities have been enhanced.</col>";
 	private static final String DEATH_CHARGE_MESSAGE = ">Upon the death of your next foe, some of your special attack energy will be restored.</col>";
@@ -123,6 +116,8 @@ public class TimersPlugin extends Plugin
 	private static final int VENOM_VALUE_CUTOFF = -38; // Antivenom < -38 <= Antipoison < 0
 	private static final int POISON_TICK_LENGTH = 30;
 	private static final int OVERLOAD_TICK_LENGTH = 25;
+	private static final int ANTIFIRE_TICK_LENGTH = 30;
+	private static final int SUPERANTIFIRE_TICK_LENGTH = 20;
 
 	static final int FIGHT_CAVES_REGION_ID = 9551;
 	static final int INFERNO_REGION_ID = 9043;
@@ -134,12 +129,16 @@ public class TimersPlugin extends Plugin
 	private int freezeTime = -1; // time frozen, in game ticks
 
 	private TimerTimer staminaTimer;
+	private TimerTimer antifireTimer;
+	private TimerTimer superAntifireTimer;
 	private TimerTimer buffTimer;
 	private TimerTimer remedyTimer;
 
 	private boolean imbuedHeartTimerActive;
 	private int nextPoisonTick;
 	private int nextOverloadRefreshTick;
+	private int nextAntifireTick;
+	private int nextSuperAntifireTick;
 	private WorldPoint lastPoint;
 	private int lastAnimation;
 	private ElapsedTimer tzhaarTimer;
@@ -183,8 +182,12 @@ public class TimersPlugin extends Plugin
 		lastAnimation = -1;
 		nextPoisonTick = 0;
 		nextOverloadRefreshTick = 0;
+		nextAntifireTick = 0;
+		nextSuperAntifireTick = 0;
 		removeTzhaarTimer();
 		staminaTimer = null;
+		antifireTimer = null;
+		superAntifireTimer = null;
 		imbuedHeartTimerActive = false;
 	}
 
@@ -371,6 +374,70 @@ public class TimersPlugin extends Plugin
 			}
 		}
 
+		if (event.getVarbitId() == Varbits.ANTIFIRE && config.showAntiFire())
+		{
+			final int antifireVarb = event.getValue();
+			final int tickCount = client.getTickCount();
+
+			if (antifireVarb == 0)
+			{
+				nextAntifireTick = -1;
+			}
+			else if (nextAntifireTick - tickCount <= 0)
+			{
+				nextAntifireTick = tickCount + ANTIFIRE_TICK_LENGTH;
+			}
+
+			int antifireDuration = nextAntifireTick - tickCount + (event.getValue() - 1) * ANTIFIRE_TICK_LENGTH;
+			Duration duration = Duration.of(antifireDuration, RSTimeUnit.GAME_TICKS);
+
+			if (antifireDuration == 0)
+			{
+				removeGameTimer(ANTIFIRE);
+				antifireTimer = null;
+			}
+			else if (antifireTimer == null)
+			{
+				antifireTimer = createGameTimer(ANTIFIRE, duration);
+			}
+			else
+			{
+				antifireTimer.updateDuration(duration);
+			}
+		}
+
+		if (event.getVarbitId() == Varbits.SUPER_ANTIFIRE && config.showAntiFire())
+		{
+			final int superAntifireVarb = event.getValue();
+			final int tickCount = client.getTickCount();
+
+			if (superAntifireVarb == 0)
+			{
+				nextSuperAntifireTick = -1;
+			}
+			else if (nextSuperAntifireTick - tickCount <= 0)
+			{
+				nextSuperAntifireTick = tickCount + SUPERANTIFIRE_TICK_LENGTH;
+			}
+
+			int superAntifireDuration = nextSuperAntifireTick - tickCount + (event.getValue() - 1) * SUPERANTIFIRE_TICK_LENGTH;
+			Duration duration = Duration.of(superAntifireDuration, RSTimeUnit.GAME_TICKS);
+
+			if (superAntifireDuration == 0)
+			{
+				removeGameTimer(SUPERANTIFIRE);
+				superAntifireTimer = null;
+			}
+			else if (superAntifireTimer == null)
+			{
+				superAntifireTimer = createGameTimer(SUPERANTIFIRE, duration);
+			}
+			else
+			{
+				superAntifireTimer.updateDuration(duration);
+			}
+		}
+
 		if (event.getVarbitId() == Varbits.BUFF_STAT_BOOST && config.showOverload())
 		{
 			int serverTicks = event.getValue() * 25; // from [proc,buff_bar_get_value]
@@ -445,8 +512,9 @@ public class TimersPlugin extends Plugin
 		if (!config.showAntiFire())
 		{
 			removeGameTimer(ANTIFIRE);
-			removeGameTimer(EXANTIFIRE);
 			removeGameTimer(SUPERANTIFIRE);
+			antifireTimer = null;
+			superAntifireTimer = null;
 		}
 
 		if (!config.showStamina())
@@ -567,50 +635,6 @@ public class TimersPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked event)
-	{
-		if (event.isItemOp() && event.getMenuOption().equals("Drink"))
-		{
-
-			if ((event.getItemId() == ItemID.ANTIFIRE_MIX1
-				|| event.getItemId() == ItemID.ANTIFIRE_MIX2)
-				&& config.showAntiFire())
-			{
-				// Needs menu option hook because mixes use a common drink message, distinct from their standard potion messages
-				createGameTimer(ANTIFIRE);
-				return;
-			}
-
-			if ((event.getItemId() == ItemID.EXTENDED_ANTIFIRE_MIX1
-				|| event.getItemId() == ItemID.EXTENDED_ANTIFIRE_MIX2)
-				&& config.showAntiFire())
-			{
-				// Needs menu option hook because mixes use a common drink message, distinct from their standard potion messages
-				createGameTimer(EXANTIFIRE);
-				return;
-			}
-
-			if ((event.getItemId() == ItemID.SUPER_ANTIFIRE_MIX1
-				|| event.getItemId() == ItemID.SUPER_ANTIFIRE_MIX2)
-				&& config.showAntiFire())
-			{
-				// Needs menu option hook because mixes use a common drink message, distinct from their standard potion messages
-				createGameTimer(SUPERANTIFIRE);
-				return;
-			}
-
-			if ((event.getItemId() == ItemID.EXTENDED_SUPER_ANTIFIRE_MIX1
-				|| event.getItemId() == ItemID.EXTENDED_SUPER_ANTIFIRE_MIX2)
-				&& config.showAntiFire())
-			{
-				// Needs menu option hook because mixes use a common drink message, distinct from their standard potion messages
-				createGameTimer(EXSUPERANTIFIRE);
-				return;
-			}
-		}
-	}
-
-	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
 		final String message = event.getMessage();
@@ -641,31 +665,9 @@ public class TimersPlugin extends Plugin
 			createGameTimer(ABYSSAL_SIRE_STUN);
 		}
 
-		if (config.showAntiFire() && message.equals(ANTIFIRE_DRINK_MESSAGE))
-		{
-			createGameTimer(ANTIFIRE);
-		}
-
-		if (config.showAntiFire() && message.equals(EXTENDED_ANTIFIRE_DRINK_MESSAGE))
-		{
-			createGameTimer(EXANTIFIRE);
-		}
-
 		if (config.showGodWarsAltar() && message.equalsIgnoreCase(GOD_WARS_ALTAR_MESSAGE))//Normal altars are "You recharge your Prayer points." while gwd is "You recharge your Prayer."
 		{
 			createGameTimer(GOD_WARS_ALTAR);
-		}
-
-		if (config.showAntiFire() && message.equals(EXTENDED_SUPER_ANTIFIRE_DRINK_MESSAGE))
-		{
-			createGameTimer(EXSUPERANTIFIRE);
-		}
-
-		if (config.showAntiFire() && message.equals(ANTIFIRE_EXPIRED_MESSAGE))
-		{
-			//they have the same expired message
-			removeGameTimer(ANTIFIRE);
-			removeGameTimer(EXANTIFIRE);
 		}
 
 		if (config.showCannon())
@@ -699,16 +701,6 @@ public class TimersPlugin extends Plugin
 		if (message.equals(MAGIC_IMBUE_EXPIRED_MESSAGE))
 		{
 			removeGameTimer(MAGICIMBUE);
-		}
-
-		if (config.showAntiFire() && message.contains(SUPER_ANTIFIRE_DRINK_MESSAGE))
-		{
-			createGameTimer(SUPERANTIFIRE);
-		}
-
-		if (config.showAntiFire() && message.equals(SUPER_ANTIFIRE_EXPIRED_MESSAGE))
-		{
-			removeGameTimer(SUPERANTIFIRE);
 		}
 
 		if (config.showPrayerEnhance() && message.startsWith("You drink some of your") && message.contains("prayer enhance"))
