@@ -96,12 +96,6 @@ public class TimersPlugin extends Plugin
 	private static final String STAFF_OF_THE_DEAD_SPEC_MESSAGE = "Spirits of deceased evildoers offer you their protection";
 	private static final String PRAYER_ENHANCE_EXPIRED = "<col=ff0000>Your prayer enhance effect has worn off.</col>";
 	private static final String SHADOW_VEIL_MESSAGE = ">Your thieving abilities have been enhanced.</col>";
-	private static final String DEATH_CHARGE_MESSAGE = ">Upon the death of your next foe, some of your special attack energy will be restored.</col>";
-	private static final String DEATH_CHARGE_ACTIVATE_MESSAGE = ">Some of your special attack energy has been restored.</col>";
-	private static final String RESURRECT_THRALL_MESSAGE_START = ">You resurrect a ";
-	private static final String RESURRECT_THRALL_MESSAGE_END = " thrall.</col>";
-	private static final String RESURRECT_THRALL_DISAPPEAR_MESSAGE_START = ">Your ";
-	private static final String RESURRECT_THRALL_DISAPPEAR_MESSAGE_END = " thrall returns to the grave.</col>";
 	private static final String WARD_OF_ARCEUUS_MESSAGE = ">Your defence against Arceuus magic has been strengthened.</col>";
 	private static final String PICKPOCKET_FAILURE_MESSAGE = "You fail to pick ";
 	private static final String DODGY_NECKLACE_PROTECTION_MESSAGE = "Your dodgy necklace protects you.";
@@ -228,6 +222,18 @@ public class TimersPlugin extends Plugin
 			}
 		}
 
+		if (event.getVarbitId() == Varbits.DEATH_CHARGE_COOLDOWN && config.showArceuusCooldown())
+		{
+			if (event.getValue() == 1)
+			{
+				createGameTimer(DEATH_CHARGE_COOLDOWN);
+			}
+			else
+			{
+				removeGameTimer(DEATH_CHARGE_COOLDOWN);
+			}
+		}
+
 		if (event.getVarbitId() == Varbits.CORRUPTION_COOLDOWN && config.showArceuusCooldown())
 		{
 			if (event.getValue() == 1)
@@ -240,6 +246,42 @@ public class TimersPlugin extends Plugin
 			}
 		}
 
+		if (event.getVarbitId() == Varbits.RESURRECT_THRALL_COOLDOWN && config.showArceuusCooldown())
+		{
+			if (event.getValue() == 1)
+			{
+				createGameTimer(RESURRECT_THRALL_COOLDOWN);
+			}
+			else
+			{
+				removeGameTimer(RESURRECT_THRALL_COOLDOWN);
+			}
+		}
+
+		if (event.getVarbitId() == Varbits.SHADOW_VEIL_COOLDOWN && config.showArceuusCooldown())
+		{
+			if (event.getValue() == 1)
+			{
+				createGameTimer(SHADOW_VEIL_COOLDOWN);
+			}
+			else
+			{
+				removeGameTimer(SHADOW_VEIL_COOLDOWN);
+			}
+		}
+
+		if (event.getVarbitId() == Varbits.WARD_OF_ARCEUUS_COOLDOWN && config.showArceuusCooldown())
+		{
+			if (event.getValue() == 1)
+			{
+				createGameTimer(WARD_OF_ARCEUUS_COOLDOWN);
+			}
+			else
+			{
+				removeGameTimer(WARD_OF_ARCEUUS_COOLDOWN);
+			}
+		}
+
 		if (event.getVarbitId() == Varbits.VENGEANCE_ACTIVE && config.showVengeanceActive())
 		{
 			if (event.getValue() == 1)
@@ -249,6 +291,53 @@ public class TimersPlugin extends Plugin
 			else
 			{
 				removeGameIndicator(VENGEANCE_ACTIVE);
+			}
+		}
+
+		if (event.getVarbitId() == Varbits.DEATH_CHARGE && config.showArceuus())
+		{
+			if (event.getValue() == 1)
+			{
+				createGameTimer(DEATH_CHARGE, Duration.of(client.getRealSkillLevel(Skill.MAGIC), RSTimeUnit.GAME_TICKS));
+			}
+			else
+			{
+				removeGameTimer(DEATH_CHARGE);
+			}
+		}
+
+		if (event.getVarbitId() == Varbits.RESURRECT_THRALL && config.showArceuus())
+		{
+			if (event.getValue() == 1)
+			{
+				// by default the thrall lasts 1 tick per magic level
+				int t = client.getBoostedSkillLevel(Skill.MAGIC);
+				// ca tiers being completed boosts this
+				if (client.getVarbitValue(Varbits.COMBAT_ACHIEVEMENT_TIER_GRANDMASTER) == 2)
+				{
+					t += t; // 100% boost
+				}
+				else if (client.getVarbitValue(Varbits.COMBAT_ACHIEVEMENT_TIER_MASTER) == 2)
+				{
+					t += t / 2; // 50% boost
+				}
+				createGameTimer(RESURRECT_THRALL, Duration.of(t, RSTimeUnit.GAME_TICKS));
+			}
+			else
+			{
+				removeGameTimer(RESURRECT_THRALL);
+			}
+		}
+
+		if (event.getVarbitId() == Varbits.SHADOW_VEIL && config.showArceuus())
+		{
+			if (event.getValue() == 1)
+			{
+				createGameTimer(SHADOW_VEIL, Duration.of(client.getRealSkillLevel(Skill.MAGIC), RSTimeUnit.GAME_TICKS));
+			}
+			else
+			{
+				removeGameTimer(SHADOW_VEIL);
 			}
 		}
 
@@ -870,6 +959,22 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(ICEBARRAGE);
 		}
 
+		if (!config.showArceuus())
+		{
+			removeGameTimer(DEATH_CHARGE);
+			removeGameTimer(RESURRECT_THRALL);
+			removeGameTimer(SHADOW_VEIL);
+			removeGameTimer(WARD_OF_ARCEUUS);
+		}
+
+		if (!config.showArceuusCooldown())
+		{
+			removeGameTimer(DEATH_CHARGE_COOLDOWN);
+			removeGameTimer(RESURRECT_THRALL_COOLDOWN);
+			removeGameTimer(SHADOW_VEIL_COOLDOWN);
+			removeGameTimer(WARD_OF_ARCEUUS_COOLDOWN);
+		}
+
 		if (!config.showAntiPoison())
 		{
 			removeGameTimer(ANTIPOISON);
@@ -994,61 +1099,14 @@ public class TimersPlugin extends Plugin
 
 		if (config.showArceuus())
 		{
-			Duration duration = Duration.of(client.getRealSkillLevel(Skill.MAGIC), RSTimeUnit.GAME_TICKS);
+			final int magicLevel = client.getRealSkillLevel(Skill.MAGIC);
 			if (message.endsWith(SHADOW_VEIL_MESSAGE))
 			{
-				createGameTimer(SHADOW_VEIL, duration);
+				updateVarTimer(SHADOW_VEIL, 1, i -> magicLevel);
 			}
 			else if (message.endsWith(WARD_OF_ARCEUUS_MESSAGE))
 			{
-				createGameTimer(WARD_OF_ARCEUUS, duration);
-			}
-			else if (message.endsWith(DEATH_CHARGE_MESSAGE))
-			{
-				createGameTimer(DEATH_CHARGE, duration);
-			}
-			else if (message.endsWith(DEATH_CHARGE_ACTIVATE_MESSAGE))
-			{
-				removeGameTimer(DEATH_CHARGE);
-			}
-			else if (message.contains(RESURRECT_THRALL_MESSAGE_START) && message.endsWith(RESURRECT_THRALL_MESSAGE_END))
-			{
-				// by default the thrall lasts 1 tick per magic level
-				int t = client.getBoostedSkillLevel(Skill.MAGIC);
-				// ca tiers being completed boosts this
-				if (client.getVarbitValue(Varbits.COMBAT_ACHIEVEMENT_TIER_GRANDMASTER) == 2)
-				{
-					t += t; // 100% boost
-				}
-				else if (client.getVarbitValue(Varbits.COMBAT_ACHIEVEMENT_TIER_MASTER) == 2)
-				{
-					t += t / 2; // 50% boost
-				}
-				createGameTimer(RESURRECT_THRALL, Duration.of(t, RSTimeUnit.GAME_TICKS));
-			}
-			else if (message.contains(RESURRECT_THRALL_DISAPPEAR_MESSAGE_START) && message.endsWith(RESURRECT_THRALL_DISAPPEAR_MESSAGE_END))
-			{
-				removeGameTimer(RESURRECT_THRALL);
-			}
-		}
-
-		if (config.showArceuusCooldown())
-		{
-			if (message.endsWith(SHADOW_VEIL_MESSAGE))
-			{
-				createGameTimer(SHADOW_VEIL_COOLDOWN);
-			}
-			else if (message.endsWith(DEATH_CHARGE_MESSAGE))
-			{
-				createGameTimer(DEATH_CHARGE_COOLDOWN);
-			}
-			else if (message.endsWith(WARD_OF_ARCEUUS_MESSAGE))
-			{
-				createGameTimer(WARD_OF_ARCEUUS_COOLDOWN);
-			}
-			else if (message.contains(RESURRECT_THRALL_MESSAGE_START) && message.endsWith(RESURRECT_THRALL_MESSAGE_END))
-			{
-				createGameTimer(RESURRECT_THRALL_COOLDOWN);
+				createGameTimer(WARD_OF_ARCEUUS, Duration.of(magicLevel, RSTimeUnit.GAME_TICKS));
 			}
 		}
 
