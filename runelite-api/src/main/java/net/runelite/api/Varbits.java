@@ -69,6 +69,13 @@ public final class Varbits
 	public static final int SUPER_ANTIFIRE = 6101;
 
 	/**
+	 * Magic imbue timer
+	 * Number of game ticks remaining on magic imbue effect in intervals of 10; for a value X there are 10 * X game ticks remaining.
+	 * The magic imbue effect expires once this reaches 0.
+	 */
+	public static final int MAGIC_IMBUE = 5438;
+
+	/**
 	 * Divine effect timers
 	 * Number of game ticks remaining on a divine effect.
 	 * A potion that combines multiple effects will set the varbits for the individual effects as well as its own effect.

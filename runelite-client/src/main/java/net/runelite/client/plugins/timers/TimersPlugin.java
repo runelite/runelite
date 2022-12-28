@@ -92,8 +92,6 @@ public class TimersPlugin extends Plugin
 	private static final String CANNON_BROKEN_MESSAGE = "<col=ef1020>Your cannon has broken!";
 	private static final String FROZEN_MESSAGE = "<col=ef1020>You have been frozen!</col>";
 	private static final String GOD_WARS_ALTAR_MESSAGE = "you recharge your prayer.";
-	private static final String MAGIC_IMBUE_EXPIRED_MESSAGE = "Your Magic Imbue charge has ended.";
-	private static final String MAGIC_IMBUE_MESSAGE = "You are charged to combine runes!";
 	private static final String STAFF_OF_THE_DEAD_SPEC_EXPIRED_MESSAGE = "Your protection fades away";
 	private static final String STAFF_OF_THE_DEAD_SPEC_MESSAGE = "Spirits of deceased evildoers offer you their protection";
 	private static final String PRAYER_ENHANCE_EXPIRED = "<col=ff0000>Your prayer enhance effect has worn off.</col>";
@@ -130,6 +128,7 @@ public class TimersPlugin extends Plugin
 	private TimerTimer staminaTimer;
 	private TimerTimer antifireTimer;
 	private TimerTimer superAntifireTimer;
+	private TimerTimer magicImbueTimer;
 	private TimerTimer divineSuperAttackTimer;
 	private TimerTimer divineSuperStrengthTimer;
 	private TimerTimer divineSuperDefenceTimer;
@@ -195,6 +194,7 @@ public class TimersPlugin extends Plugin
 		staminaTimer = null;
 		antifireTimer = null;
 		superAntifireTimer = null;
+		magicImbueTimer = null;
 		divineSuperAttackTimer = null;
 		divineSuperStrengthTimer = null;
 		divineSuperDefenceTimer = null;
@@ -450,6 +450,26 @@ public class TimersPlugin extends Plugin
 			else
 			{
 				superAntifireTimer.updateDuration(duration);
+			}
+		}
+
+		if (event.getVarbitId() == Varbits.MAGIC_IMBUE && config.showMagicImbue())
+		{
+			int magicImbueDuration = event.getValue() * 10;
+			Duration duration = Duration.of(magicImbueDuration, RSTimeUnit.GAME_TICKS);
+
+			if (magicImbueDuration == 0)
+			{
+				removeGameTimer(MAGICIMBUE);
+				magicImbueTimer = null;
+			}
+			else if (magicImbueTimer == null)
+			{
+				magicImbueTimer = createGameTimer(MAGICIMBUE, duration);
+			}
+			else
+			{
+				magicImbueTimer.updateDuration(duration);
 			}
 		}
 
@@ -803,6 +823,7 @@ public class TimersPlugin extends Plugin
 		if (!config.showMagicImbue())
 		{
 			removeGameTimer(MAGICIMBUE);
+			magicImbueTimer = null;
 		}
 
 		if (!config.showCharge())
@@ -941,16 +962,6 @@ public class TimersPlugin extends Plugin
 				removeGameTimer(CANNON);
 				removeGameTimer(CANNON_REPAIR);
 			}
-		}
-
-		if (config.showMagicImbue() && message.equals(MAGIC_IMBUE_MESSAGE))
-		{
-			createGameTimer(MAGICIMBUE);
-		}
-
-		if (message.equals(MAGIC_IMBUE_EXPIRED_MESSAGE))
-		{
-			removeGameTimer(MAGICIMBUE);
 		}
 
 		if (config.showPrayerEnhance() && message.startsWith("You drink some of your") && message.contains("prayer enhance"))

@@ -45,7 +45,7 @@ enum GameTimer
 	OVERLOAD(ItemID.OVERLOAD_4, GameTimerImageType.ITEM, "Overload", false),
 	CANNON(ItemID.CANNON_BARRELS, GameTimerImageType.ITEM, "Cannon", 25, ChronoUnit.MINUTES),
 	CANNON_REPAIR(ItemID.TOOLKIT, GameTimerImageType.ITEM, "Broken Cannon", 10, ChronoUnit.MINUTES),
-	MAGICIMBUE(SpriteID.SPELL_MAGIC_IMBUE, GameTimerImageType.SPRITE, "Magic imbue", 21, GAME_TICKS),
+	MAGICIMBUE(SpriteID.SPELL_MAGIC_IMBUE, GameTimerImageType.SPRITE, "Magic imbue", false),
 	SUPERANTIFIRE(ItemID.SUPER_ANTIFIRE_POTION4, GameTimerImageType.ITEM, "Super antifire", false),
 	BIND(SpriteID.SPELL_BIND, GameTimerImageType.SPRITE, "Bind", GraphicID.BIND, 8, GAME_TICKS, true),
 	SNARE(SpriteID.SPELL_SNARE, GameTimerImageType.SPRITE, "Snare", GraphicID.SNARE, 16, GAME_TICKS, true),
