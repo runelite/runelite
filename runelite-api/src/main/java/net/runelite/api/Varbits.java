@@ -575,15 +575,22 @@ public final class Varbits
 	public static final int WORLDHOPPER_FAVROITE_2 = 4598;
 
 	/**
-	 * Vengeance is active
+	 * Spell activeness
 	 */
 	public static final int VENGEANCE_ACTIVE = 2450;
+	public static final int DEATH_CHARGE = 12411;
+	public static final int RESURRECT_THRALL = 12413;
+	public static final int SHADOW_VEIL = 12414;
 
 	/**
 	 * Spell cooldowns
 	 */
 	public static final int VENGEANCE_COOLDOWN = 2451;
+	public static final int DEATH_CHARGE_COOLDOWN = 12138;
 	public static final int CORRUPTION_COOLDOWN = 12288;
+	public static final int RESURRECT_THRALL_COOLDOWN = 12290;
+	public static final int SHADOW_VEIL_COOLDOWN = 12291;
+	public static final int WARD_OF_ARCEUUS_COOLDOWN = 12293;
 
 	/**
 	 * Imbued Heart cooldown
