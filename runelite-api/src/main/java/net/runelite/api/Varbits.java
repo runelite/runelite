@@ -69,6 +69,20 @@ public final class Varbits
 	public static final int SUPER_ANTIFIRE = 6101;
 
 	/**
+	 * Divine effect timers
+	 * Number of game ticks remaining on a divine effect.
+	 * A potion that combines multiple effects will set the varbits for the individual effects as well as its own effect.
+	 */
+	public static final int DIVINE_SUPER_ATTACK = 8429;
+	public static final int DIVINE_SUPER_STRENGTH = 8430;
+	public static final int DIVINE_SUPER_DEFENCE = 8431;
+	public static final int DIVINE_RANGING = 8432;
+	public static final int DIVINE_MAGIC = 8433;
+	public static final int DIVINE_SUPER_COMBAT = 13663;
+	public static final int DIVINE_BASTION = 13664;
+	public static final int DIVINE_BATTLEMAGE = 13665;
+
+	/**
 	 * Ring of endurance effect timer, stamina duration extended from using the ring of endurance
 	 * Number of game ticks remaining on ring of endurance effect in intervals of 10; for a value X there are 10 * X game ticks remaining.
 	 * Unequipping the ring of endurance will cause this to change to 0.

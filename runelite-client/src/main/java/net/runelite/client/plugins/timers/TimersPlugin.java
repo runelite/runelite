@@ -112,7 +112,6 @@ public class TimersPlugin extends Plugin
 	private static final String BLESSED_CRYSTAL_SCARAB_MESSAGE = "You crack the crystal in your hand.";
 	private static final String LIQUID_ADRENALINE_MESSAGE = "You drink some of the potion, reducing the energy cost of your special attacks.</col>";
 
-	private static final Pattern DIVINE_POTION_PATTERN = Pattern.compile("You drink some of your divine (.+) potion\\.");
 	private static final int VENOM_VALUE_CUTOFF = -38; // Antivenom < -38 <= Antipoison < 0
 	private static final int POISON_TICK_LENGTH = 30;
 	private static final int OVERLOAD_TICK_LENGTH = 25;
@@ -131,6 +130,14 @@ public class TimersPlugin extends Plugin
 	private TimerTimer staminaTimer;
 	private TimerTimer antifireTimer;
 	private TimerTimer superAntifireTimer;
+	private TimerTimer divineSuperAttackTimer;
+	private TimerTimer divineSuperStrengthTimer;
+	private TimerTimer divineSuperDefenceTimer;
+	private TimerTimer divineRangingTimer;
+	private TimerTimer divineMagicTimer;
+	private TimerTimer divineSuperCombatTimer;
+	private TimerTimer divineBastionTimer;
+	private TimerTimer divineBattlemageTimer;
 	private TimerTimer buffTimer;
 	private TimerTimer remedyTimer;
 
@@ -188,6 +195,14 @@ public class TimersPlugin extends Plugin
 		staminaTimer = null;
 		antifireTimer = null;
 		superAntifireTimer = null;
+		divineSuperAttackTimer = null;
+		divineSuperStrengthTimer = null;
+		divineSuperDefenceTimer = null;
+		divineRangingTimer = null;
+		divineMagicTimer = null;
+		divineSuperCombatTimer = null;
+		divineBastionTimer = null;
+		divineBattlemageTimer = null;
 		imbuedHeartTimerActive = false;
 	}
 
@@ -438,6 +453,231 @@ public class TimersPlugin extends Plugin
 			}
 		}
 
+		if (event.getVarbitId() == Varbits.DIVINE_SUPER_ATTACK && config.showDivine())
+		{
+			if (client.getVarbitValue(Varbits.DIVINE_SUPER_COMBAT) > event.getValue())
+			{
+				return;
+			}
+
+			int divineSuperAttackDuration = event.getValue();
+			Duration duration = Duration.of(divineSuperAttackDuration, RSTimeUnit.GAME_TICKS);
+
+			if (divineSuperAttackDuration == 0)
+			{
+				removeGameTimer(DIVINE_SUPER_ATTACK);
+				divineSuperAttackTimer = null;
+			}
+			else if (divineSuperAttackTimer == null)
+			{
+				divineSuperAttackTimer = createGameTimer(DIVINE_SUPER_ATTACK, duration);
+			}
+			else
+			{
+				divineSuperAttackTimer.updateDuration(duration);
+			}
+		}
+
+		if (event.getVarbitId() == Varbits.DIVINE_SUPER_STRENGTH && config.showDivine())
+		{
+			if (client.getVarbitValue(Varbits.DIVINE_SUPER_COMBAT) > event.getValue())
+			{
+				return;
+			}
+
+			int divineSuperStrengthDuration = event.getValue();
+			Duration duration = Duration.of(divineSuperStrengthDuration, RSTimeUnit.GAME_TICKS);
+
+			if (divineSuperStrengthDuration == 0)
+			{
+				removeGameTimer(DIVINE_SUPER_STRENGTH);
+				divineSuperStrengthTimer = null;
+			}
+			else if (divineSuperStrengthTimer == null)
+			{
+				divineSuperStrengthTimer = createGameTimer(DIVINE_SUPER_STRENGTH, duration);
+			}
+			else
+			{
+				divineSuperStrengthTimer.updateDuration(duration);
+			}
+		}
+
+		if (event.getVarbitId() == Varbits.DIVINE_SUPER_DEFENCE && config.showDivine())
+		{
+			if (client.getVarbitValue(Varbits.DIVINE_SUPER_COMBAT) > event.getValue()
+				|| client.getVarbitValue(Varbits.DIVINE_BASTION) > event.getValue()
+				|| client.getVarbitValue(Varbits.DIVINE_BATTLEMAGE) > event.getValue())
+			{
+				return;
+			}
+
+			int divineSuperDefenceDuration = event.getValue();
+			Duration duration = Duration.of(divineSuperDefenceDuration, RSTimeUnit.GAME_TICKS);
+
+			if (divineSuperDefenceDuration == 0)
+			{
+				removeGameTimer(DIVINE_SUPER_DEFENCE);
+				divineSuperDefenceTimer = null;
+			}
+			else if (divineSuperDefenceTimer == null)
+			{
+				divineSuperDefenceTimer = createGameTimer(DIVINE_SUPER_DEFENCE, duration);
+			}
+			else
+			{
+				divineSuperDefenceTimer.updateDuration(duration);
+			}
+		}
+
+		if (event.getVarbitId() == Varbits.DIVINE_RANGING && config.showDivine())
+		{
+			if (client.getVarbitValue(Varbits.DIVINE_BASTION) > event.getValue())
+			{
+				return;
+			}
+
+			int divineRangingDuration = event.getValue();
+			Duration duration = Duration.of(divineRangingDuration, RSTimeUnit.GAME_TICKS);
+
+			if (divineRangingDuration == 0)
+			{
+				removeGameTimer(DIVINE_RANGING);
+				divineRangingTimer = null;
+			}
+			else if (divineRangingTimer == null)
+			{
+				divineRangingTimer = createGameTimer(DIVINE_RANGING, duration);
+			}
+			else
+			{
+				divineRangingTimer.updateDuration(duration);
+			}
+		}
+
+		if (event.getVarbitId() == Varbits.DIVINE_MAGIC && config.showDivine())
+		{
+			if (client.getVarbitValue(Varbits.DIVINE_BATTLEMAGE) > event.getValue())
+			{
+				return;
+			}
+
+			int divineMagicDuration = event.getValue();
+			Duration duration = Duration.of(divineMagicDuration, RSTimeUnit.GAME_TICKS);
+
+			if (divineMagicDuration == 0)
+			{
+				removeGameTimer(DIVINE_MAGIC);
+				divineMagicTimer = null;
+			}
+			else if (divineMagicTimer == null)
+			{
+				divineMagicTimer = createGameTimer(DIVINE_MAGIC, duration);
+			}
+			else
+			{
+				divineMagicTimer.updateDuration(duration);
+			}
+		}
+
+		if (event.getVarbitId() == Varbits.DIVINE_SUPER_COMBAT && config.showDivine())
+		{
+			if (client.getVarbitValue(Varbits.DIVINE_SUPER_ATTACK) == event.getValue())
+			{
+				removeGameTimer(DIVINE_SUPER_ATTACK);
+				divineSuperAttackTimer = null;
+			}
+			if (client.getVarbitValue(Varbits.DIVINE_SUPER_STRENGTH) == event.getValue())
+			{
+				removeGameTimer(DIVINE_SUPER_STRENGTH);
+				divineSuperStrengthTimer = null;
+			}
+			if (client.getVarbitValue(Varbits.DIVINE_SUPER_DEFENCE) == event.getValue())
+			{
+				removeGameTimer(DIVINE_SUPER_DEFENCE);
+				divineSuperDefenceTimer = null;
+			}
+
+			int divineSuperCombatDuration = event.getValue();
+			Duration duration = Duration.of(divineSuperCombatDuration, RSTimeUnit.GAME_TICKS);
+
+			if (divineSuperCombatDuration == 0)
+			{
+				removeGameTimer(DIVINE_SUPER_COMBAT);
+				divineSuperCombatTimer = null;
+			}
+			else if (divineSuperCombatTimer == null)
+			{
+				divineSuperCombatTimer = createGameTimer(DIVINE_SUPER_COMBAT, duration);
+			}
+			else
+			{
+				divineSuperCombatTimer.updateDuration(duration);
+			}
+		}
+
+		if (event.getVarbitId() == Varbits.DIVINE_BASTION && config.showDivine())
+		{
+			if (client.getVarbitValue(Varbits.DIVINE_RANGING) == event.getValue())
+			{
+				removeGameTimer(DIVINE_RANGING);
+				divineRangingTimer = null;
+			}
+			if (client.getVarbitValue(Varbits.DIVINE_SUPER_DEFENCE) == event.getValue())
+			{
+				removeGameTimer(DIVINE_SUPER_DEFENCE);
+				divineSuperDefenceTimer = null;
+			}
+
+			int divineBastionDuration = event.getValue();
+			Duration duration = Duration.of(divineBastionDuration, RSTimeUnit.GAME_TICKS);
+
+			if (divineBastionDuration == 0)
+			{
+				removeGameTimer(DIVINE_BASTION);
+				divineBastionTimer = null;
+			}
+			else if (divineBastionTimer == null)
+			{
+				divineBastionTimer = createGameTimer(DIVINE_BASTION, duration);
+			}
+			else
+			{
+				divineBastionTimer.updateDuration(duration);
+			}
+		}
+
+		if (event.getVarbitId() == Varbits.DIVINE_BATTLEMAGE && config.showDivine())
+		{
+			if (client.getVarbitValue(Varbits.DIVINE_MAGIC) == event.getValue())
+			{
+				removeGameTimer(DIVINE_MAGIC);
+				divineMagicTimer = null;
+			}
+			if (client.getVarbitValue(Varbits.DIVINE_SUPER_DEFENCE) == event.getValue())
+			{
+				removeGameTimer(DIVINE_SUPER_DEFENCE);
+				divineSuperDefenceTimer = null;
+			}
+
+			int divineBattlemageDuration = event.getValue();
+			Duration duration = Duration.of(divineBattlemageDuration, RSTimeUnit.GAME_TICKS);
+
+			if (divineBattlemageDuration == 0)
+			{
+				removeGameTimer(DIVINE_BATTLEMAGE);
+				divineBattlemageTimer = null;
+			}
+			else if (divineBattlemageTimer == null)
+			{
+				divineBattlemageTimer = createGameTimer(DIVINE_BATTLEMAGE, duration);
+			}
+			else
+			{
+				divineBattlemageTimer.updateDuration(duration);
+			}
+		}
+
 		if (event.getVarbitId() == Varbits.BUFF_STAT_BOOST && config.showOverload())
 		{
 			int serverTicks = event.getValue() * 25; // from [proc,buff_bar_get_value]
@@ -540,9 +780,19 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(DIVINE_SUPER_ATTACK);
 			removeGameTimer(DIVINE_SUPER_STRENGTH);
 			removeGameTimer(DIVINE_SUPER_DEFENCE);
-			removeGameTimer(DIVINE_SUPER_COMBAT);
 			removeGameTimer(DIVINE_RANGING);
 			removeGameTimer(DIVINE_MAGIC);
+			removeGameTimer(DIVINE_SUPER_COMBAT);
+			removeGameTimer(DIVINE_BASTION);
+			removeGameTimer(DIVINE_BATTLEMAGE);
+			divineSuperAttackTimer = null;
+			divineSuperStrengthTimer = null;
+			divineSuperDefenceTimer = null;
+			divineRangingTimer = null;
+			divineMagicTimer = null;
+			divineSuperCombatTimer = null;
+			divineBastionTimer = null;
+			divineBattlemageTimer = null;
 		}
 
 		if (!config.showCannon())
@@ -727,48 +977,6 @@ public class TimersPlugin extends Plugin
 		{
 			freezeTimer = createGameTimer(ICEBARRAGE);
 			freezeTime = client.getTickCount();
-		}
-
-		if (config.showDivine())
-		{
-			Matcher mDivine = DIVINE_POTION_PATTERN.matcher(message);
-			if (mDivine.find())
-			{
-				switch (mDivine.group(1))
-				{
-					case "super attack":
-						createGameTimer(DIVINE_SUPER_ATTACK);
-						break;
-
-					case "super strength":
-						createGameTimer(DIVINE_SUPER_STRENGTH);
-						break;
-
-					case "super defence":
-						createGameTimer(DIVINE_SUPER_DEFENCE);
-						break;
-
-					case "combat":
-						createGameTimer(DIVINE_SUPER_COMBAT);
-						break;
-
-					case "ranging":
-						createGameTimer(DIVINE_RANGING);
-						break;
-
-					case "magic":
-						createGameTimer(DIVINE_MAGIC);
-						break;
-
-					case "bastion":
-						createGameTimer(DIVINE_BASTION);
-						break;
-
-					case "battlemage":
-						createGameTimer(DIVINE_BATTLEMAGE);
-						break;
-				}
-			}
 		}
 
 		if (config.showArceuus())
