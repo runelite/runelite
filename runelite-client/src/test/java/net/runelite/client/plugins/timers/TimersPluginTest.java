@@ -30,6 +30,7 @@ import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.List;
 import java.util.function.Predicate;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -94,29 +95,79 @@ public class TimersPluginTest
 	}
 
 	@Test
-	public void testDivineBastion()
+	public void testDivineRanging()
 	{
 		when(timersConfig.showDivine()).thenReturn(true);
-		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You drink some of your divine bastion potion.", "", 0);
-		timersPlugin.onChatMessage(chatMessage);
+
+		VarbitChanged varbitChanged = new VarbitChanged();
+		varbitChanged.setVarbitId(Varbits.DIVINE_RANGING);
+		varbitChanged.setValue(500);
+		timersPlugin.onVarbitChanged(varbitChanged);
 
 		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
 		verify(infoBoxManager).addInfoBox(captor.capture());
 		TimerTimer infoBox = (TimerTimer) captor.getValue();
-		assertEquals(GameTimer.DIVINE_BASTION, infoBox.getTimer());
+		assertEquals(GameTimer.DIVINE_RANGING, infoBox.getTimer());
 	}
 
 	@Test
-	public void testDivineBattlemage()
+	public void testDivineBastion()
 	{
 		when(timersConfig.showDivine()).thenReturn(true);
-		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You drink some of your divine battlemage potion.", "", 0);
-		timersPlugin.onChatMessage(chatMessage);
+
+		VarbitChanged rangingVarbitChanged = new VarbitChanged();
+		rangingVarbitChanged.setVarbitId(Varbits.DIVINE_RANGING);
+		rangingVarbitChanged.setValue(500);
+		timersPlugin.onVarbitChanged(rangingVarbitChanged);
+		when(client.getVarbitValue(Varbits.DIVINE_RANGING)).thenReturn(500);
+
+		VarbitChanged superDefenceVarbitChanged = new VarbitChanged();
+		superDefenceVarbitChanged.setVarbitId(Varbits.DIVINE_SUPER_DEFENCE);
+		superDefenceVarbitChanged.setValue(500);
+		timersPlugin.onVarbitChanged(superDefenceVarbitChanged);
+		when(client.getVarbitValue(Varbits.DIVINE_SUPER_DEFENCE)).thenReturn(500);
+
+		VarbitChanged bastionVarbitChanged = new VarbitChanged();
+		bastionVarbitChanged.setVarbitId(Varbits.DIVINE_BASTION);
+		bastionVarbitChanged.setValue(500);
+		timersPlugin.onVarbitChanged(bastionVarbitChanged);
+
+		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
+		verify(infoBoxManager, times(3)).addInfoBox(captor.capture());
+		List<InfoBox> infoBoxes = captor.getAllValues();
+
+		ArgumentCaptor<Predicate<InfoBox>> prcaptor = ArgumentCaptor.forClass(Predicate.class);
+		verify(infoBoxManager, times(5)).removeIf(prcaptor.capture());
+		List<Predicate<InfoBox>> filters = prcaptor.getAllValues();
+
+		// test defence, ranging, and bastion infoboxes added
+		assertEquals(((TimerTimer) infoBoxes.get(0)).getTimer(), GameTimer.DIVINE_RANGING);
+		assertEquals(((TimerTimer) infoBoxes.get(1)).getTimer(), GameTimer.DIVINE_SUPER_DEFENCE);
+		assertEquals(((TimerTimer) infoBoxes.get(2)).getTimer(), GameTimer.DIVINE_BASTION);
+
+		// test ranging and defence infoboxes removed
+		assertTrue(filters.get(0).test(infoBoxes.get(0)));  // divine ranging infobox added
+		assertTrue(filters.get(1).test(infoBoxes.get(1)));  // divine super defence infobox added
+		assertTrue(filters.get(2).test(infoBoxes.get(0)));  // divine ranging infobox removed
+		assertTrue(filters.get(3).test(infoBoxes.get(1)));  // divine super defence infobox removed
+		assertTrue(filters.get(4).test(infoBoxes.get(2)));  // divine bastion infobox added
+	}
+
+	@Test
+	public void testDivineRangingAfterBastion()
+	{
+		when(timersConfig.showDivine()).thenReturn(true);
+		when(client.getVarbitValue(Varbits.DIVINE_BASTION)).thenReturn(400);
+
+		VarbitChanged varbitChanged = new VarbitChanged();
+		varbitChanged.setVarbitId(Varbits.DIVINE_RANGING);
+		varbitChanged.setValue(500);
+		timersPlugin.onVarbitChanged(varbitChanged);
 
 		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
 		verify(infoBoxManager).addInfoBox(captor.capture());
 		TimerTimer infoBox = (TimerTimer) captor.getValue();
-		assertEquals(GameTimer.DIVINE_BATTLEMAGE, infoBox.getTimer());
+		assertEquals(GameTimer.DIVINE_RANGING, infoBox.getTimer());
 	}
 
 	@Test
