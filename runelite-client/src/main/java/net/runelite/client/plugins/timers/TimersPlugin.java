@@ -203,6 +203,8 @@ public class TimersPlugin extends Plugin
 		divineSuperCombatTimer = null;
 		divineBastionTimer = null;
 		divineBattlemageTimer = null;
+		buffTimer = null;
+		remedyTimer = null;
 		imbuedHeartTimerActive = false;
 	}
 
