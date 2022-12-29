@@ -31,6 +31,7 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multimap;
 import java.awt.Color;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Queue;
 import java.util.Set;
@@ -128,6 +129,10 @@ public class ChatMessageManager
 				else if (client.isFriended(sanitizedUsername, true))
 				{
 					usernameColor = isChatboxTransparent ? chatColorConfig.transparentPublicFriendUsernames() : chatColorConfig.opaquePublicFriendUsernames();
+				}
+				else if (client.getFriendsChatManager() != null && Arrays.stream(client.getFriendsChatManager().getMembers()).anyMatch(member -> member.getName().equals(sanitizedUsername)))
+				{
+					usernameColor = isChatboxTransparent ? chatColorConfig.transparentPublicFriendsChatUsernames() : chatColorConfig.opaquePublicFriendsChatUsernames();
 				}
 				else
 				{
