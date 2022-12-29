@@ -30,6 +30,7 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
+import net.runelite.client.game.ItemVariationMapping;
 import net.runelite.client.plugins.itemstats.StatBoost;
 import static net.runelite.client.plugins.itemstats.stats.Stats.PRAYER;
 
@@ -65,14 +66,15 @@ public class PrayerPotion extends StatBoost
 			Item cape = equipContainer.getItem(CAPE_SLOT);
 			Item ring = equipContainer.getItem(RING_SLOT);
 
-			hasHolyWrench = ring != null && ring.getId() == ItemID.RING_OF_THE_GODS_I;
+			hasHolyWrench = ring != null && ItemVariationMapping.getVariations(ItemID.RING_OF_THE_GODS)
+				.stream()
+				.filter(itemId -> itemId != ItemID.RING_OF_THE_GODS) // remove non-imbued rotg; it does not have the wrench effect
+				.anyMatch(itemId -> itemId == ring.getId());
 			if (cape != null)
 			{
 				int capeId = cape.getId();
-				hasHolyWrench |= capeId == ItemID.PRAYER_CAPE;
-				hasHolyWrench |= capeId == ItemID.PRAYER_CAPET;
-				hasHolyWrench |= capeId == ItemID.MAX_CAPE;
-				hasHolyWrench |= capeId == ItemID.MAX_CAPE_13342;
+				hasHolyWrench |= ItemVariationMapping.getVariations(ItemID.PRAYER_CAPE).contains(capeId);
+				hasHolyWrench |= ItemVariationMapping.getVariations(ItemID.MAX_CAPE).contains(capeId);
 			}
 		}
 		if (!hasHolyWrench)
@@ -84,10 +86,8 @@ public class PrayerPotion extends StatBoost
 				{
 					int item = itemStack.getId();
 					hasHolyWrench = item == ItemID.HOLY_WRENCH;
-					hasHolyWrench |= item == ItemID.PRAYER_CAPE;
-					hasHolyWrench |= item == ItemID.PRAYER_CAPET;
-					hasHolyWrench |= item == ItemID.MAX_CAPE;
-					hasHolyWrench |= item == ItemID.MAX_CAPE_13342;
+					hasHolyWrench |= ItemVariationMapping.getVariations(ItemID.PRAYER_CAPE).contains(item);
+					hasHolyWrench |= ItemVariationMapping.getVariations(ItemID.MAX_CAPE).contains(item);
 
 					if (hasHolyWrench)
 					{
