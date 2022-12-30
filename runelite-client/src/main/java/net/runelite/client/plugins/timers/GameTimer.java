@@ -93,7 +93,7 @@ enum GameTimer
 	LIQUID_ADRENALINE(ItemID.LIQUID_ADRENALINE_2, GameTimerImageType.ITEM, "Liquid adrenaline", 150, ChronoUnit.SECONDS, true),
 	SILK_DRESSING(ItemID.SILK_DRESSING_2, GameTimerImageType.ITEM, "Silk dressing", 100, GAME_TICKS, true),
 	BLESSED_CRYSTAL_SCARAB(ItemID.BLESSED_CRYSTAL_SCARAB_2, GameTimerImageType.ITEM, "Blessed crystal scarab", 40, GAME_TICKS, true),
-	COMBAT_TIMER(SpriteID.MULTI_COMBAT_ZONE_CROSSED_SWORDS, GameTimerImageType.SPRITE, "Combat logout timer", true);
+	COMBAT_TIMER(SpriteID.MULTI_COMBAT_ZONE_CROSSED_SWORDS, GameTimerImageType.SPRITE, "Combat logout timer", 16, GAME_TICKS, true);
 
 	@Nullable
 	private final Duration duration;

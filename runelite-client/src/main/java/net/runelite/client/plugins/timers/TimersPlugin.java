@@ -1005,7 +1005,7 @@ public class TimersPlugin extends Plugin
 		}
 		if (config.showCombatTimer())
 		{
-			createGameTimer(COMBAT_TIMER, Duration.ofSeconds(9));
+			createGameTimer(COMBAT_TIMER);
 		}
 	}
 
