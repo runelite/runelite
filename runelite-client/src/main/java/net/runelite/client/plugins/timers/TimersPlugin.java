@@ -995,10 +995,12 @@ public class TimersPlugin extends Plugin
 
 		lastPoint = currentWorldPoint;
 	}
+
 	@Subscribe
 	public void onHitsplatApplied(HitsplatApplied event)
 	{
-		if (config.showCombatTimer()) {
+		if (config.showCombatTimer())
+		{
 			if (event.getActor() != client.getLocalPlayer())
 			{
 				return;
