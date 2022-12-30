@@ -999,12 +999,12 @@ public class TimersPlugin extends Plugin
 	@Subscribe
 	public void onHitsplatApplied(HitsplatApplied event)
 	{
+		if (event.getActor() != client.getLocalPlayer())
+		{
+			return;
+		}
 		if (config.showCombatTimer())
 		{
-			if (event.getActor() != client.getLocalPlayer())
-			{
-				return;
-			}
 			createGameTimer(COMBAT_TIMER, Duration.ofSeconds(9));
 		}
 	}
