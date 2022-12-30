@@ -155,6 +155,14 @@ public class ClientUI
 	@Named("recommendedMemoryLimit")
 	private int recommendedMemoryLimit = 512;
 
+	@Inject(optional = true)
+	@Named("outdatedLauncherWarning")
+	private boolean outdatedLauncherWarning = false;
+
+	@Inject(optional = true)
+	@Named("outdatedLauncherJava8")
+	private boolean outdatedLauncherJava8 = false;
+
 	@Inject
 	private ClientUI(
 		RuneLiteConfig config,
@@ -646,6 +654,32 @@ public class ClientUI
 				ep.setOpaque(false);
 				JOptionPane.showMessageDialog(frame,
 					ep, "Max memory limit low", JOptionPane.WARNING_MESSAGE);
+			});
+		}
+
+		String launcherVersion = RuneLiteProperties.getLauncherVersion();
+		String javaVersion = System.getProperty("java.version", "");
+		if (outdatedLauncherWarning && javaVersion.startsWith("1.8.") &&
+			(launcherVersion == null || launcherVersion.startsWith("1.5") || outdatedLauncherJava8))
+		{
+			SwingUtilities.invokeLater(() ->
+			{
+				JEditorPane ep = new JEditorPane("text/html",
+					"Your RuneLite launcher version is old, and will soon stop working.<br>Update to the latest version by visiting " +
+						"<a href=\"https://runelite.net\">https://runelite.net</a>,<br>or follow the link from the OSRS homepage.<br>" +
+						"Join <a href=\"" + RuneLiteProperties.getDiscordInvite() + "\">Discord</a> for assistance."
+				);
+				ep.addHyperlinkListener(e ->
+				{
+					if (e.getEventType().equals(HyperlinkEvent.EventType.ACTIVATED))
+					{
+						LinkBrowser.browse(e.getURL().toString());
+					}
+				});
+				ep.setEditable(false);
+				ep.setOpaque(false);
+				JOptionPane.showMessageDialog(frame,
+					ep, "Launcher outdated", INFORMATION_MESSAGE);
 			});
 		}
 	}
