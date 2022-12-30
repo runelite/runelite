@@ -333,4 +333,14 @@ public interface TimersConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showCombatTimer",
+		name = "Combat logout timer",
+		description = "Configures whether combat logout timer is displayed"
+	)
+	default boolean showCombatTimer()
+	{
+		return true;
+	}
 }
