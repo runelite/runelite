@@ -341,6 +341,6 @@ public interface TimersConfig extends Config
 	)
 	default boolean showCombatTimer()
 	{
-		return true;
+		return false;
 	}
 }
