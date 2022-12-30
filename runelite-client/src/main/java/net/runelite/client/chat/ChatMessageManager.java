@@ -130,7 +130,7 @@ public class ChatMessageManager
 				{
 					usernameColor = isChatboxTransparent ? chatColorConfig.transparentPublicFriendUsernames() : chatColorConfig.opaquePublicFriendUsernames();
 				}
-				else if (client.getFriendsChatManager() != null && Arrays.stream(client.getFriendsChatManager().getMembers()).anyMatch(member -> member.getName().equals(sanitizedUsername)))
+				else if (client.getFriendsChatManager() != null && client.getFriendsChatManager().findByName(sanitizedUsername) != null)
 				{
 					usernameColor = isChatboxTransparent ? chatColorConfig.transparentPublicFriendsChatUsernames() : chatColorConfig.opaquePublicFriendsChatUsernames();
 				}
