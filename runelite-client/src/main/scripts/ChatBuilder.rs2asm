@@ -2,7 +2,25 @@
 .int_stack_count    1
 .string_stack_count 0
 .int_var_count      24
-.string_var_count   23
+.string_var_count   24
+   get_varc_int           1112
+   clientclock           
+   if_icmpeq              LABEL4
+   jump                   LABEL14
+LABEL4:
+   clientclock           
+   iconst                 1
+   add                   
+   set_varc_int           65
+   iconst                 664
+   iconst                 0
+   sconst                 "1"
+   iconst                 10616832
+   if_setontimer         
+   return                
+LABEL14:
+   clientclock           
+   set_varc_int           1112
    iconst                 10616888
    if_getwidth           
    istore                 1
@@ -13,12 +31,12 @@
    istore                 2
    get_varc_int           41
    iconst                 3
-   if_icmpeq              LABEL12
-   jump                   LABEL14
-LABEL12:
+   if_icmpeq              LABEL28
+   jump                   LABEL30
+LABEL28:
    iconst                 1
    istore                 2
-LABEL14:
+LABEL30:
    iconst                 0
    istore                 3
    iconst                 0
@@ -53,11 +71,13 @@ LABEL14:
    sstore                 13
    sconst                 ""
    sstore                 14
+   sconst                 ""
+   sstore                 15
    invoke                 921
    iconst                 1
-   if_icmpeq              LABEL52
-   jump                   LABEL131
-LABEL52:
+   if_icmpeq              LABEL70
+   jump                   LABEL151
+LABEL70:
    iconst                 16777215
    iconst                 1
    iconst                 1
@@ -136,8 +156,10 @@ LABEL52:
    sconst                 "col"
    invoke                 3739
    sstore                 14
-   jump                   LABEL197
-LABEL131:
+   sconst                 "<col=ff8f3e>"
+   sstore                 15
+   jump                   LABEL219
+LABEL151:
    iconst                 2896
    iconst                 1230
    struct_param          
@@ -204,15 +226,17 @@ LABEL131:
    sconst                 "col"
    invoke                 3739
    sstore                 14
-LABEL197:
+   sconst                 "<col=93370c>"
+   sstore                 15
+LABEL219:
    iload                  3
    sconst                 "col"
    invoke                 3739
-   sstore                 15
+   sstore                 16
    sload                  4
    sload                  5
    sload                  6
-   sload                  15
+   sload                  16
    sload                  7
    sload                  8
    sload                  9
@@ -231,7 +255,7 @@ LABEL197:
    sstore                 9
    sstore                 8
    sstore                 7
-   sstore                 15
+   sstore                 16
    sstore                 6
    sstore                 5
    sstore                 4
@@ -249,18 +273,18 @@ LABEL197:
    istore                 9
    get_varc_int           41
    iconst                 0
-   if_icmpeq              LABEL246
+   if_icmpeq              LABEL268
    get_varc_int           41
    iconst                 2
-   if_icmpeq              LABEL246
-   jump                   LABEL302
-LABEL246:
+   if_icmpeq              LABEL268
+   jump                   LABEL324
+LABEL268:
    chat_getmessagefilter 
    string_length         
    iconst                 0
-   if_icmpgt              LABEL251
-   jump                   LABEL302
-LABEL251:
+   if_icmpgt              LABEL273
+   jump                   LABEL324
+LABEL273:
    sload                  4
    sconst                 "Public chat filtering:"
    sconst                 "</col>"
@@ -312,7 +336,7 @@ LABEL251:
    iload                  8
    enum                  
    istore                 9
-LABEL302:
+LABEL324:
    iload                  0
    istore                 10
    iconst                 0
@@ -320,13 +344,13 @@ LABEL302:
    iconst                 -1
    istore                 12
    sconst                 ""
-   sstore                 16
-   sconst                 ""
    sstore                 17
    sconst                 ""
    sstore                 18
    sconst                 ""
    sstore                 19
+   sconst                 ""
+   sstore                 20
    iconst                 -1
    istore                 13
    iconst                 0
@@ -334,7 +358,7 @@ LABEL302:
    iconst                 0
    istore                 15
    sconst                 ""
-   sstore                 20
+   sstore                 21
    iconst                 -1
    istore                 16
    iconst                 -1
@@ -348,70 +372,70 @@ LABEL302:
    iconst                 0
    activeclansettings_find_affined
    iconst                 1
-   if_icmpeq              LABEL339
-   jump                   LABEL359
-LABEL339:
+   if_icmpeq              LABEL361
+   jump                   LABEL381
+LABEL361:
    iconst                 0
    activeclanchannel_find_affined
    iconst                 1
-   if_icmpeq              LABEL344
-   jump                   LABEL359
-LABEL344:
+   if_icmpeq              LABEL366
+   jump                   LABEL381
+LABEL366:
    sload                  0
    activeclanchannel_getuserslot
    istore                 17
    iload                  17
    iconst                 -1
-   if_icmpne              LABEL351
-   jump                   LABEL354
-LABEL351:
+   if_icmpne              LABEL373
+   jump                   LABEL376
+LABEL373:
    iload                  17
    activeclanchannel_getuserrank
    istore                 18
-LABEL354:
+LABEL376:
    activeclanchannel_getrankkick
    iconst                 2956
    invoke                 4456
    istore                 20
    istore                 19
-LABEL359:
+LABEL381:
    sconst                 ""
-   sstore                 21
+   sstore                 22
    iconst                 0
    istore                 21
    sconst                 ""
-   sstore                 22
-LABEL365:
+   sstore                 23
+LABEL387:
    iload                  10
    iconst                 -1
-   if_icmpne              LABEL369
-   jump                   LABEL1829
-LABEL369:
+   if_icmpne              LABEL391
+   jump                   LABEL1872
+LABEL391:
    iload                  9
    iconst                 -1
-   if_icmpne              LABEL373
-   jump                   LABEL1829
-LABEL373:
+   if_icmpne              LABEL395
+   jump                   LABEL1872
+LABEL395:
    iload                  10
    chat_gethistoryex_byuid
    istore                 21
-   sstore                 21                ; timestamp
+   sstore                 22                ; timestamp
    istore                 15
+   sstore                 19
    sstore                 18
    sstore                 17
-   sstore                 16
    istore                 12
    istore                 11
    iload                  11
-   sload                  16
+   sload                  17
    iload                  15
-   sload                  18
+   sload                  19
    invoke                 193
    iconst                 1
    if_icmpeq              CHAT_FILTER
-   jump                   LABEL1825
+   jump                   LABEL1868
 CHAT_FILTER:
-   sload                  18                ; Load the message
+   sload                  19                ; Load the message
    iconst                 1                 ; Gets changed to 0 if message is blocked
    iload                  11                ; Load the messageType
    iload                  10                 ; Load the id of the messageNode
@@ -420,74 +444,75 @@ CHAT_FILTER:
    pop_int               ; Pop the id of the messageNode
    pop_int               ; Pop the messageType
    iconst                 1                 ; 2nd half of conditional
-   sstore                 18                ; Override the message with our filtered message
-   if_icmpeq              LABEL391          ; Check if we are building this message
-   jump                   LABEL1825          ; continue to next message, skipping this
-LABEL391:
+   sstore                 19                ; Override the message with our filtered message
+   if_icmpeq              LABEL413          ; Check if we are building this message
+   jump                   LABEL1868          ; continue to next message, skipping this
+LABEL413:
    iload                  11
-   sload                  16
-   sload                  21
-   sload                  18
+   sload                  17
+   sload                  22
+   sload                  19
    sconst                 "null"
    invoke                 4742
-   sload                  18
+   sload                  19
    iload                  12
    iload                  2
    sload                  0
    iload                  15
    invoke                 90
    iconst                 1
-   if_icmpeq              LABEL406
-   jump                   LABEL1825
-LABEL406:
+   if_icmpeq              LABEL428
+   jump                   LABEL1868
+LABEL428:
    iconst                 0 ; splitpmbox
    iload                  10 ; message uid
-   sload                  17 ; message channel
-   sload                  16 ; message name
-   sload                  18 ; message
-   sload                  21 ; message timestamp
+   sload                  18 ; message channel
+   sload                  17 ; message name
+   sload                  19 ; message
+   sload                  22 ; message timestamp
    sconst                 "chatMessageBuilding"
    runelite_callback     
    pop_int                   ; pop uid
    pop_int                   ; splitpmbox
-   sstore                 21 ; message timestamp
-   sstore                 18 ; message
-   sstore                 16 ; message name
-   sstore                 17 ; message channel
+   sstore                 22 ; message timestamp
+   sstore                 19 ; message
+   sstore                 17 ; message name
+   sstore                 18 ; message channel
    iload                  11
    switch                
-      2: LABEL409
-      1: LABEL409
-      90: LABEL433
-      91: LABEL433
-      3: LABEL457
-      7: LABEL457
-      101: LABEL482
-      5: LABEL503
-      6: LABEL539
-      103: LABEL564
-      104: LABEL564
-      110: LABEL564
-      109: LABEL585
-      9: LABEL606
-      111: LABEL635
-      112: LABEL660
-      41: LABEL685
-      44: LABEL904
-      43: LABEL1069
-      46: LABEL1265
-      14: LABEL1320
-      107: LABEL1350
-   jump                   LABEL1389
-LABEL409:
-   sload                  21
-   sload                  16
+      2: LABEL431
+      1: LABEL431
+      90: LABEL455
+      91: LABEL455
+      3: LABEL479
+      7: LABEL479
+      101: LABEL504
+      5: LABEL525
+      6: LABEL561
+      103: LABEL586
+      104: LABEL586
+      110: LABEL586
+      109: LABEL607
+      9: LABEL628
+      111: LABEL657
+      112: LABEL682
+      41: LABEL707
+      44: LABEL926
+      43: LABEL1091
+      46: LABEL1287
+      14: LABEL1342
+      107: LABEL1372
+      113: LABEL1411
+   jump                   LABEL1432
+LABEL431:
+   sload                  22
+   sload                  17
    sconst                 ":"
    join_string            2
    sconst                 "null"
    invoke                 4742
    sload                  4
-   sload                  18
+   sload                  19
    sconst                 "</col>"
    join_string            3
    iload                  8
@@ -503,16 +528,16 @@ LABEL409:
    iload                  4
    invoke                 203
    istore                 7
-   jump                   LABEL1406
-LABEL433:
-   sload                  21
-   sload                  16
+   jump                   LABEL1449
+LABEL455:
+   sload                  22
+   sload                  17
    sconst                 ":"
    join_string            2
    sconst                 "null"
    invoke                 4742
    sload                  6
-   sload                  18
+   sload                  19
    sconst                 "</col>"
    join_string            3
    iload                  8
@@ -528,11 +553,11 @@ LABEL433:
    iload                  4
    invoke                 203
    istore                 7
-   jump                   LABEL1406
-LABEL457:
-   sload                  21
+   jump                   LABEL1449
+LABEL479:
+   sload                  22
    sconst                 "From "
-   sload                  16
+   sload                  17
    sconst                 ":"
    join_string            3
    sconst                 "privChatUsername"
@@ -540,7 +565,7 @@ LABEL457:
    sconst                 "null"
    invoke                 4742
    sload                  5
-   sload                  18
+   sload                  19
    sconst                 "</col>"
    join_string            3
    iload                  8
@@ -556,11 +581,11 @@ LABEL457:
    iload                  4
    invoke                 203
    istore                 7
-   jump                   LABEL1406
-LABEL482:
-   sload                  21
+   jump                   LABEL1449
+LABEL504:
+   sload                  22
    sload                  9
-   sload                  18
+   sload                  19
    sconst                 "</col>"
    join_string            3
    sconst                 "null"
@@ -578,11 +603,11 @@ LABEL482:
    iload                  4
    invoke                 199
    istore                 7
-   jump                   LABEL1406
-LABEL503:
-   sload                  21
+   jump                   LABEL1449
+LABEL525:
+   sload                  22
    sload                  5
-   sload                  18
+   sload                  19
    sconst                 "</col>"
    join_string            3
    sconst                 "null"
@@ -602,9 +627,9 @@ LABEL503:
    istore                 7
    get_varbit             1627
    iconst                 0
-   if_icmpeq              LABEL527
-   jump                   LABEL538
-LABEL527:
+   if_icmpeq              LABEL549
+   jump                   LABEL560
+LABEL549:
    iload                  12
    iconst                 500
    add                   
@@ -616,12 +641,12 @@ LABEL527:
    sconst                 "1"
    iconst                 10616832
    if_setontimer         
-LABEL538:
-   jump                   LABEL1406
-LABEL539:
-   sload                  21
+LABEL560:
+   jump                   LABEL1449
+LABEL561:
+   sload                  22
    sconst                 "To "
-   sload                  16
+   sload                  17
    sconst                 ":"
    join_string            3
    sconst                 "privChatUsername"
@@ -629,7 +654,7 @@ LABEL539:
    sconst                 "null"
    invoke                 4742
    sload                  5
-   sload                  18
+   sload                  19
    sconst                 "</col>"
    join_string            3
    iload                  8
@@ -645,11 +670,11 @@ LABEL539:
    iload                  4
    invoke                 203
    istore                 7
-   jump                   LABEL1406
-LABEL564:
-   sload                  21
+   jump                   LABEL1449
+LABEL586:
+   sload                  22
    sload                  10
-   sload                  18
+   sload                  19
    sconst                 "</col>"
    join_string            3
    sconst                 "null"
@@ -667,11 +692,11 @@ LABEL564:
    iload                  4
    invoke                 199
    istore                 7
-   jump                   LABEL1406
-LABEL585:
-   sload                  21
+   jump                   LABEL1449
+LABEL607:
+   sload                  22
    sconst                 "<col=1a31f2>"
-   sload                  18
+   sload                  19
    sconst                 "</col>"
    join_string            3
    sconst                 "null"
@@ -689,21 +714,21 @@ LABEL585:
    iload                  4
    invoke                 199
    istore                 7
-   jump                   LABEL1406
-LABEL606:
-   sload                  21
+   jump                   LABEL1449
+LABEL628:
+   sload                  22
    sconst                 "["
    sload                  3
-   sload                  17
+   sload                  18
    sconst                 "</col>"
    sconst                 "] "
-   sload                  16
+   sload                  17
    sconst                 ":"
    join_string            7
    sconst                 "null"
    invoke                 4742
    sload                  7
-   sload                  18
+   sload                  19
    sconst                 "</col>"
    join_string            3
    iload                  8
@@ -719,15 +744,15 @@ LABEL606:
    iload                  4
    invoke                 203
    istore                 7
-   jump                   LABEL1406
-LABEL635:
-   sload                  18
+   jump                   LABEL1449
+LABEL657:
+   sload                  19
    invoke                 632
-   sstore                 18
-   sstore                 22
-   sload                  21
+   sstore                 19
+   sstore                 23
+   sload                  22
    sconst                 "<col=1a31f2>"
-   sload                  18
+   sload                  19
    sconst                 "</col>"
    join_string            3
    sconst                 "null"
@@ -745,15 +770,15 @@ LABEL635:
    iload                  4
    invoke                 199
    istore                 7
-   jump                   LABEL1406
-LABEL660:
-   sload                  18
+   jump                   LABEL1449
+LABEL682:
+   sload                  19
    invoke                 632
-   sstore                 18
-   sstore                 22
-   sload                  21
+   sstore                 19
+   sstore                 23
+   sload                  22
    sconst                 "<col=1a31f2>"
-   sload                  18
+   sload                  19
    sconst                 "</col>"
    join_string            3
    sconst                 "null"
@@ -771,34 +796,34 @@ LABEL660:
    iload                  4
    invoke                 199
    istore                 7
-   jump                   LABEL1406
-LABEL685: ; case ^chattype_clanchat
+   jump                   LABEL1449
+LABEL707:; case ^chattype_clanchat
    iconst                 1
    activeclansettings_find_affined
    iconst                 1
-   if_icmpeq              LABEL690
-   jump                   LABEL737
-LABEL690:
+   if_icmpeq              LABEL712
+   jump                   LABEL759
+LABEL712:
    iconst                 1
    activeclanchannel_find_affined
    iconst                 1
-   if_icmpeq              LABEL695
-   jump                   LABEL737
-LABEL695:
-   sload                  18
+   if_icmpeq              LABEL717
+   jump                   LABEL759
+LABEL717:
+   sload                  19
    invoke                 5501
    iconst                 1
-   if_icmpeq              LABEL700
-   jump                   LABEL737
-LABEL700:
-   sload                  18
+   if_icmpeq              LABEL722
+   jump                   LABEL759
+LABEL722:
+   sload                  19
    invoke                 632
-   sstore                 18
-   sstore                 22
-   sload                  21
+   sstore                 19
+   sstore                 23
+   sload                  22
    sconst                 "["
    sload                  2
-   sload                  17
+   sload                  18
    sconst                 "</col>"
    sconst                 "]"
    join_string            5
@@ -807,11 +832,11 @@ LABEL700:
    iconst                 -1
    iconst                 0
    iconst                 0
-   sload                  16
+   sload                  17
    sconst                 ":"
    join_string            2
    sload                  12
-   sload                  18
+   sload                  19
    sconst                 "</col>"
    join_string            3
    iload                  8
@@ -827,51 +852,51 @@ LABEL700:
    iload                  4
    invoke                 4483
    istore                 7
-   jump                   LABEL903
-LABEL737:
+   jump                   LABEL925
+LABEL759:
    iconst                 0
    activeclansettings_find_affined
    iconst                 1
-   if_icmpeq              LABEL742
-   jump                   LABEL871
-LABEL742:
+   if_icmpeq              LABEL764
+   jump                   LABEL893
+LABEL764:
    iconst                 0
    activeclanchannel_find_affined
    iconst                 1
-   if_icmpeq              LABEL747
-   jump                   LABEL871
-LABEL747:
-   sload                  16
+   if_icmpeq              LABEL769
+   jump                   LABEL893
+LABEL769:
+   sload                  17
    removetags            
    ; replace activeclanchannel_getuserslot with activeclansettings_getaffinedslot
-   jump L1
+   jump                   L1
    activeclanchannel_getuserslot
 L1:
    activeclansettings_getaffinedslot
    istore                 17
    iload                  17
    iconst                 -1
-   if_icmpne              LABEL755
-   jump                   LABEL834
-LABEL755:
+   if_icmpne              LABEL777
+   jump                   LABEL856
+LABEL777:
    iload                  17
    ; replace activeclanchannel_getuserrank with activeclansettings_getaffinedrank
-   jump L2
+   jump                   L2
    activeclanchannel_getuserrank
 L2:
    activeclansettings_getaffinedrank
    invoke                 4302
    istore                 16
-   sstore                 20
+   sstore                 21
    iload                  16
    iconst                 -1
-   if_icmpne              LABEL764
-   jump                   LABEL797
-LABEL764:
-   sload                  21
+   if_icmpne              LABEL786
+   jump                   LABEL819
+LABEL786:
+   sload                  22
    sconst                 "["
    sload                  2
-   sload                  17
+   sload                  18
    sconst                 "</col>"
    sconst                 "]"
    join_string            5
@@ -880,11 +905,11 @@ LABEL764:
    iload                  16
    iconst                 13
    iconst                 13
-   sload                  16
+   sload                  17
    sconst                 ":"
    join_string            2
    sload                  8
-   sload                  18
+   sload                  19
    sconst                 "</col>"
    join_string            3
    iload                  8
@@ -900,12 +925,12 @@ LABEL764:
    iload                  4
    invoke                 4483
    istore                 7
-   jump                   LABEL833
-LABEL797:
-   sload                  21
+   jump                   LABEL855
+LABEL819:
+   sload                  22
    sconst                 "["
    sload                  2
-   sload                  17
+   sload                  18
    sconst                 "</col>"
    sconst                 "]"
    join_string            5
@@ -915,14 +940,14 @@ LABEL797:
    iconst                 0
    iconst                 0
    sload                  2
-   sload                  20
+   sload                  21
    sconst                 "</col>"
    sconst                 " "
-   sload                  16
+   sload                  17
    sconst                 ":"
    join_string            6
    sload                  8
-   sload                  18
+   sload                  19
    sconst                 "</col>"
    join_string            3
    iload                  8
@@ -938,17 +963,17 @@ LABEL797:
    iload                  4
    invoke                 4483
    istore                 7
-LABEL833:
-   jump                   LABEL870
-LABEL834:
+LABEL855:
+   jump                   LABEL892
+LABEL856:
    iconst                 -1
    invoke                 4302
    istore                 16
-   sstore                 20
-   sload                  21
+   sstore                 21
+   sload                  22
    sconst                 "["
    sload                  2
-   sload                  17
+   sload                  18
    sconst                 "</col>"
    sconst                 "]"
    join_string            5
@@ -957,11 +982,11 @@ LABEL834:
    iload                  16
    iconst                 13
    iconst                 13
-   sload                  16
+   sload                  17
    sconst                 ":"
    join_string            2
    sload                  8
-   sload                  18
+   sload                  19
    sconst                 "</col>"
    join_string            3
    iload                  8
@@ -977,13 +1002,13 @@ LABEL834:
    iload                  4
    invoke                 4483
    istore                 7
-LABEL870:
-   jump                   LABEL903
-LABEL871:
-   sload                  21
+LABEL892:
+   jump                   LABEL925
+LABEL893:
+   sload                  22
    sconst                 "["
    sload                  2
-   sload                  17
+   sload                  18
    sconst                 "</col>"
    sconst                 "]"
    join_string            5
@@ -992,11 +1017,11 @@ LABEL871:
    iconst                 -1
    iconst                 0
    iconst                 0
-   sload                  16
+   sload                  17
    sconst                 ":"
    join_string            2
    sload                  8
-   sload                  18
+   sload                  19
    sconst                 "</col>"
    join_string            3
    iload                  8
@@ -1012,50 +1037,50 @@ LABEL871:
    iload                  4
    invoke                 4483
    istore                 7
-LABEL903:
-   jump                   LABEL1406
-LABEL904: ; case ^chattype_clanguestchat
+LABEL925:
+   jump                   LABEL1449
+LABEL926:; case ^chattype_clanguestchat
    activeclansettings_find_listened
    iconst                 1
-   if_icmpeq              LABEL908
-   jump                   LABEL1036
-LABEL908:
+   if_icmpeq              LABEL930
+   jump                   LABEL1058
+LABEL930:
    activeclanchannel_find_listened
    iconst                 1
-   if_icmpeq              LABEL912
-   jump                   LABEL1036
-LABEL912:
-   sload                  16
+   if_icmpeq              LABEL934
+   jump                   LABEL1058
+LABEL934:
+   sload                  17
    removetags            
    ; replace activeclanchannel_getuserslot with activeclansettings_getaffinedslot
-   jump L3
+   jump                   L3
    activeclanchannel_getuserslot
 L3:
    activeclansettings_getaffinedslot
    istore                 17
    iload                  17
    iconst                 -1
-   if_icmpne              LABEL920
-   jump                   LABEL999
-LABEL920:
+   if_icmpne              LABEL942
+   jump                   LABEL1021
+LABEL942:
    iload                  17
    ; replace activeclanchannel_getuserrank with activeclansettings_getaffinedrank
-   jump L4
+   jump                   L4
    activeclanchannel_getuserrank
 L4:
    activeclansettings_getaffinedrank
    invoke                 4302
    istore                 16
-   sstore                 20
+   sstore                 21
    iload                  16
    iconst                 -1
-   if_icmpne              LABEL929
-   jump                   LABEL962
-LABEL929:
-   sload                  21
+   if_icmpne              LABEL951
+   jump                   LABEL984
+LABEL951:
+   sload                  22
    sconst                 "["
    sload                  2
-   sload                  17
+   sload                  18
    sconst                 "</col>"
    sconst                 "]"
    join_string            5
@@ -1064,11 +1089,11 @@ LABEL929:
    iload                  16
    iconst                 13
    iconst                 13
-   sload                  16
+   sload                  17
    sconst                 ":"
    join_string            2
    sload                  11
-   sload                  18
+   sload                  19
    sconst                 "</col>"
    join_string            3
    iload                  8
@@ -1084,12 +1109,12 @@ LABEL929:
    iload                  4
    invoke                 4483
    istore                 7
-   jump                   LABEL998
-LABEL962:
-   sload                  21
+   jump                   LABEL1020
+LABEL984:
+   sload                  22
    sconst                 "["
    sload                  2
-   sload                  17
+   sload                  18
    sconst                 "</col>"
    sconst                 "]"
    join_string            5
@@ -1099,14 +1124,14 @@ LABEL962:
    iconst                 0
    iconst                 0
    sload                  2
-   sload                  20
+   sload                  21
    sconst                 "</col>"
    sconst                 " "
-   sload                  16
+   sload                  17
    sconst                 ":"
    join_string            6
    sload                  11
-   sload                  18
+   sload                  19
    sconst                 "</col>"
    join_string            3
    iload                  8
@@ -1122,17 +1147,17 @@ LABEL962:
    iload                  4
    invoke                 4483
    istore                 7
-LABEL998:
-   jump                   LABEL1035
-LABEL999:
+LABEL1020:
+   jump                   LABEL1057
+LABEL1021:
    iconst                 -1
    invoke                 4302
    istore                 16
-   sstore                 20
-   sload                  21
+   sstore                 21
+   sload                  22
    sconst                 "["
    sload                  2
-   sload                  17
+   sload                  18
    sconst                 "</col>"
    sconst                 "]"
    join_string            5
@@ -1141,11 +1166,11 @@ LABEL999:
    iload                  16
    iconst                 13
    iconst                 13
-   sload                  16
+   sload                  17
    sconst                 ":"
    join_string            2
    sload                  11
-   sload                  18
+   sload                  19
    sconst                 "</col>"
    join_string            3
    iload                  8
@@ -1161,13 +1186,13 @@ LABEL999:
    iload                  4
    invoke                 4483
    istore                 7
-LABEL1035:
-   jump                   LABEL1068
-LABEL1036:
-   sload                  21
+LABEL1057:
+   jump                   LABEL1090
+LABEL1058:
+   sload                  22
    sconst                 "["
    sload                  2
-   sload                  17
+   sload                  18
    sconst                 "</col>"
    sconst                 "]"
    join_string            5
@@ -1176,11 +1201,11 @@ LABEL1036:
    iconst                 -1
    iconst                 0
    iconst                 0
-   sload                  16
+   sload                  17
    sconst                 ":"
    join_string            2
    sload                  11
-   sload                  18
+   sload                  19
    sconst                 "</col>"
    join_string            3
    iload                  8
@@ -1196,33 +1221,33 @@ LABEL1036:
    iload                  4
    invoke                 4483
    istore                 7
-LABEL1068:
-   jump                   LABEL1406
-LABEL1069:
-   sload                  18
+LABEL1090:
+   jump                   LABEL1449
+LABEL1091:
+   sload                  19
    invoke                 5309
    iconst                 1
-   if_icmpeq              LABEL1074
-   jump                   LABEL1139
-LABEL1074:
-   sload                  18
+   if_icmpeq              LABEL1096
+   jump                   LABEL1161
+LABEL1096:
+   sload                  19
    invoke                 632
-   sstore                 18
-   sstore                 16
-   sload                  18
+   sstore                 19
+   sstore                 17
+   sload                  19
    sconst                 "</col>"
    sconst                 "</col>"
    sload                  14
    append                
    invoke                 3302
-   sstore                 18
+   sstore                 19
    iconst                 1
    activeclansettings_find_affined
    iconst                 1
-   if_icmpeq              LABEL1090
-   jump                   LABEL1117
-LABEL1090:
-   sload                  21
+   if_icmpeq              LABEL1112
+   jump                   LABEL1139
+LABEL1112:
+   sload                  22
    sconst                 "["
    sload                  2
    activeclansettings_getclanname
@@ -1232,7 +1257,7 @@ LABEL1090:
    sconst                 "null"
    invoke                 4742
    sload                  14
-   sload                  18
+   sload                  19
    sconst                 "</col>"
    join_string            3
    iload                  8
@@ -1248,14 +1273,14 @@ LABEL1090:
    iload                  4
    invoke                 203
    istore                 7
-   jump                   LABEL1138
-LABEL1117:
-   sload                  21
+   jump                   LABEL1160
+LABEL1139:
+   sload                  22
    sconst                 ""
    sconst                 "null"
    invoke                 4742
    sload                  14
-   sload                  18
+   sload                  19
    sconst                 "</col>"
    join_string            3
    iload                  8
@@ -1271,26 +1296,26 @@ LABEL1117:
    iload                  4
    invoke                 203
    istore                 7
-LABEL1138:
-   jump                   LABEL1264
-LABEL1139:
-   sload                  18
+LABEL1160:
+   jump                   LABEL1286
+LABEL1161:
+   sload                  19
    invoke                 6264
    iconst                 1
-   if_icmpeq              LABEL1144
-   jump                   LABEL1196
-LABEL1144:
-   sload                  18
+   if_icmpeq              LABEL1166
+   jump                   LABEL1218
+LABEL1166:
+   sload                  19
    invoke                 632
-   sstore                 18
-   sstore                 16
+   sstore                 19
+   sstore                 17
    iconst                 2
    activeclanchannel_find_affined
    iconst                 1
-   if_icmpeq              LABEL1153
-   jump                   LABEL1177
-LABEL1153:
-   sload                  21
+   if_icmpeq              LABEL1175
+   jump                   LABEL1199
+LABEL1175:
+   sload                  22
    sconst                 "["
    sload                  2
    sconst                 "PvP Arena"
@@ -1299,7 +1324,7 @@ LABEL1153:
    join_string            5
    sconst                 "null"
    invoke                 4742
-   sload                  18
+   sload                  19
    iload                  8
    iload                  9
    iconst                 10616888
@@ -1313,13 +1338,13 @@ LABEL1153:
    iload                  4
    invoke                 203
    istore                 7
-   jump                   LABEL1195
-LABEL1177:
-   sload                  21
+   jump                   LABEL1217
+LABEL1199:
+   sload                  22
    sconst                 ""
    sconst                 "null"
    invoke                 4742
-   sload                  18
+   sload                  19
    iload                  8
    iload                  9
    iconst                 10616888
@@ -1333,23 +1358,23 @@ LABEL1177:
    iload                  4
    invoke                 203
    istore                 7
-LABEL1195:
-   jump                   LABEL1264
-LABEL1196:
-   sload                  18
+LABEL1217:
+   jump                   LABEL1286
+LABEL1218:
+   sload                  19
    sconst                 "</col>"
    sconst                 "</col>"
    sload                  13
    append                
    invoke                 3302
-   sstore                 18
+   sstore                 19
    iconst                 0
    activeclanchannel_find_affined
    iconst                 1
-   if_icmpeq              LABEL1208
-   jump                   LABEL1239
-LABEL1208:
-   sload                  21
+   if_icmpeq              LABEL1230
+   jump                   LABEL1261
+LABEL1230:
+   sload                  22
    sconst                 "["
    sload                  2
    activeclanchannel_getclanname
@@ -1363,7 +1388,7 @@ LABEL1208:
    iconst                 0
    sconst                 ""
    sload                  13
-   sload                  18
+   sload                  19
    sconst                 "</col>"
    join_string            3
    iload                  8
@@ -1379,9 +1404,9 @@ LABEL1208:
    iload                  4
    invoke                 4483
    istore                 7
-   jump                   LABEL1264
-LABEL1239:
-   sload                  21
+   jump                   LABEL1286
+LABEL1261:
+   sload                  22
    sconst                 ""
    sconst                 "null"
    invoke                 4742
@@ -1390,7 +1415,7 @@ LABEL1239:
    iconst                 0
    sconst                 ""
    sload                  13
-   sload                  18
+   sload                  19
    sconst                 "</col>"
    join_string            3
    iload                  8
@@ -1406,15 +1431,15 @@ LABEL1239:
    iload                  4
    invoke                 4483
    istore                 7
-LABEL1264:
-   jump                   LABEL1406
-LABEL1265:
+LABEL1286:
+   jump                   LABEL1449
+LABEL1287:
    activeclanchannel_find_listened
    iconst                 1
-   if_icmpeq              LABEL1269
-   jump                   LABEL1297
-LABEL1269:
-   sload                  21
+   if_icmpeq              LABEL1291
+   jump                   LABEL1319
+LABEL1291:
+   sload                  22
    sconst                 "["
    sload                  2
    activeclanchannel_getclanname
@@ -1427,7 +1452,7 @@ LABEL1269:
    iconst                 0
    iconst                 0
    sconst                 ""
-   sload                  18
+   sload                  19
    iload                  8
    iload                  9
    iconst                 10616888
@@ -1441,9 +1466,9 @@ LABEL1269:
    iload                  4
    invoke                 4483
    istore                 7
-   jump                   LABEL1319
-LABEL1297:
-   sload                  21
+   jump                   LABEL1341
+LABEL1319:
+   sload                  22
    sconst                 ""
    sconst                 "null"
    invoke                 4742
@@ -1451,7 +1476,7 @@ LABEL1297:
    iconst                 0
    iconst                 0
    sconst                 ""
-   sload                  18
+   sload                  19
    iload                  8
    iload                  9
    iconst                 10616888
@@ -1465,23 +1490,23 @@ LABEL1297:
    iload                  4
    invoke                 4483
    istore                 7
-LABEL1319:
-   jump                   LABEL1406
-LABEL1320:
-   sload                  18
+LABEL1341:
+   jump                   LABEL1449
+LABEL1342:
+   sload                  19
    invoke                 2066
    istore                 13
+   sstore                 20
    sstore                 19
-   sstore                 18
-   sload                  21
+   sload                  22
    sload                  1
    sconst                 "Broadcast:"
    sconst                 "</col>"
    join_string            3
    sconst                 "null"
    invoke                 4742
-   sload                  15
-   sload                  18
+   sload                  16
+   sload                  19
    sconst                 "</col>"
    join_string            3
    iload                  8
@@ -1497,15 +1522,15 @@ LABEL1320:
    iload                  4
    invoke                 203
    istore                 7
-   jump                   LABEL1406
-LABEL1350:
+   jump                   LABEL1449
+LABEL1372:
    clientclock           
    iload                  12
    sub                   
    iconst                 500
-   if_icmpgt              LABEL1356
-   jump                   LABEL1371
-LABEL1356:
+   if_icmpgt              LABEL1378
+   jump                   LABEL1393
+LABEL1378:
    sconst                 "jk :P"
    iload                  8
    iload                  9
@@ -1520,10 +1545,10 @@ LABEL1356:
    iload                  4
    invoke                 199
    istore                 7
-   jump                   LABEL1388
-LABEL1371:
-   sload                  21
-   sload                  18
+   jump                   LABEL1410
+LABEL1393:
+   sload                  22
+   sload                  19
    sconst                 "null"
    invoke                 4742
    iload                  8
@@ -1539,11 +1564,14 @@ LABEL1371:
    iload                  4
    invoke                 199
    istore                 7
-LABEL1388:
-   jump                   LABEL1406
-LABEL1389:
-   sload                  21
-   sload                  18
+LABEL1410:
+   jump                   LABEL1449
+LABEL1411:
+   sload                  22
+   sload                  15
+   sload                  19
+   sconst                 "</col>"
+   join_string            3
    sconst                 "null"
    invoke                 4742
    iload                  8
@@ -1559,34 +1587,53 @@ LABEL1389:
    iload                  4
    invoke                 199
    istore                 7
-LABEL1406:
+   jump                   LABEL1449
+LABEL1432:
+   sload                  22
+   sload                  19
+   sconst                 "null"
+   invoke                 4742
+   iload                  8
+   iload                  9
+   iconst                 10616888
+   iload                  1
+   iconst                 3
+   iconst                 14
+   iload                  6
+   iconst                 0
+   iconst                 103
+   iload                  3
+   iload                  4
+   invoke                 199
+   istore                 7
+LABEL1449:
    iload                  9
    if_clearops           
    iload                  11
    switch                
-      1: LABEL1411
-      2: LABEL1411
-      3: LABEL1411
-      6: LABEL1411
-      7: LABEL1411
-      9: LABEL1411
-      90: LABEL1411
-      91: LABEL1411
-      106: LABEL1411
-      41: LABEL1411
-      44: LABEL1411
-      101: LABEL1515
-      103: LABEL1567
-      104: LABEL1567
-      110: LABEL1567
-      14: LABEL1610
-      109: LABEL1670
-      111: LABEL1713
-      112: LABEL1756
-   jump                   LABEL1799
-LABEL1411:
+      1: LABEL1454
+      2: LABEL1454
+      3: LABEL1454
+      6: LABEL1454
+      7: LABEL1454
+      9: LABEL1454
+      90: LABEL1454
+      91: LABEL1454
+      106: LABEL1454
+      41: LABEL1454
+      44: LABEL1454
+      101: LABEL1558
+      103: LABEL1610
+      104: LABEL1610
+      110: LABEL1610
+      14: LABEL1653
+      109: LABEL1713
+      111: LABEL1756
+      112: LABEL1799
+   jump                   LABEL1842
+LABEL1454:
    sconst                 "<col=ffffff>"
-   sload                  16
+   sload                  17
    sconst                 "</col>"
    join_string            3
    iload                  9
@@ -1607,24 +1654,24 @@ LABEL1411:
    iload                  9
    if_setonmouseleave    
    sload                  0
-   sload                  16
+   sload                  17
    removetags            
    compare               
    iconst                 0
-   if_icmpne              LABEL1439
-   jump                   LABEL1514
-LABEL1439:
+   if_icmpne              LABEL1482
+   jump                   LABEL1557
+LABEL1482:
    iload                  15
    iconst                 1
-   if_icmpeq              LABEL1443
-   jump                   LABEL1448
-LABEL1443:
+   if_icmpeq              LABEL1486
+   jump                   LABEL1491
+LABEL1486:
    iconst                 6
    sconst                 "Message"
    iload                  9
    if_setop              
-   jump                   LABEL1456
-LABEL1448:
+   jump                   LABEL1499
+LABEL1491:
    iconst                 6
    sconst                 "Add friend"
    iload                  9
@@ -1633,80 +1680,80 @@ LABEL1448:
    sconst                 "Add ignore"
    iload                  9
    if_setop              
-LABEL1456:
+LABEL1499:
    iconst                 8
    sconst                 "Report"
    iload                  9
    if_setop              
    iload                  11
    iconst                 9
-   if_icmpeq              LABEL1464
-   jump                   LABEL1477
-LABEL1464:
+   if_icmpeq              LABEL1507
+   jump                   LABEL1520
+LABEL1507:
    clan_getchatcount     
    iconst                 0
-   if_icmpgt              LABEL1468
-   jump                   LABEL1476
-LABEL1468:
+   if_icmpgt              LABEL1511
+   jump                   LABEL1519
+LABEL1511:
    clan_getchatrank      
    clan_getchatminkick   
-   if_icmpge              LABEL1472
-   jump                   LABEL1476
-LABEL1472:
+   if_icmpge              LABEL1515
+   jump                   LABEL1519
+LABEL1515:
    iconst                 9
    sconst                 "Kick"
    iload                  9
    if_setop              
-LABEL1476:
-   jump                   LABEL1514
-LABEL1477:
+LABEL1519:
+   jump                   LABEL1557
+LABEL1520:
    iload                  11
    iconst                 41
-   if_icmpeq              LABEL1481
-   jump                   LABEL1514
-LABEL1481:
+   if_icmpeq              LABEL1524
+   jump                   LABEL1557
+LABEL1524:
    iload                  18
    iload                  19
-   if_icmpge              LABEL1485
-   jump                   LABEL1514
-LABEL1485:
+   if_icmpge              LABEL1528
+   jump                   LABEL1557
+LABEL1528:
    iconst                 0
    activeclanchannel_find_affined
    iconst                 1
-   if_icmpeq              LABEL1490
-   jump                   LABEL1514
-LABEL1490:
-   sload                  16
+   if_icmpeq              LABEL1533
+   jump                   LABEL1557
+LABEL1533:
+   sload                  17
    removetags            
    activeclanchannel_getuserslot
    istore                 17
    iload                  17
    iconst                 -1
-   if_icmpeq              LABEL1502
+   if_icmpeq              LABEL1545
    iload                  17
    activeclanchannel_getuserrank
    iconst                 -1
-   if_icmple              LABEL1502
-   jump                   LABEL1514
-LABEL1502:
+   if_icmple              LABEL1545
+   jump                   LABEL1557
+LABEL1545:
    iconst                 9
    sconst                 "Kick"
    iload                  9
    if_setop              
    iload                  18
    iload                  20
-   if_icmpge              LABEL1510
-   jump                   LABEL1514
-LABEL1510:
+   if_icmpge              LABEL1553
+   jump                   LABEL1557
+LABEL1553:
    iconst                 10
    sconst                 "Ban"
    iload                  9
    if_setop              
-LABEL1514:
-   jump                   LABEL1811
-LABEL1515:
+LABEL1557:
+   jump                   LABEL1854
+LABEL1558:
    sconst                 "<col=ffffff>"
-   sload                  16
+   sload                  17
    sconst                 "</col>"
    join_string            3
    iload                  9
@@ -1728,31 +1775,31 @@ LABEL1515:
    if_setonmouseleave    
    invoke                 5548
    iconst                 1
-   if_icmpeq              LABEL1540
-   jump                   LABEL1545
-LABEL1540:
+   if_icmpeq              LABEL1583
+   jump                   LABEL1588
+LABEL1583:
    iconst                 1
    sconst                 "Accept invitation"
    iload                  9
    if_setop              
-   jump                   LABEL1549
-LABEL1545:
+   jump                   LABEL1592
+LABEL1588:
    iconst                 1
    sconst                 "Accept trade"
    iload                  9
    if_setop              
-LABEL1549:
+LABEL1592:
    iload                  15
    iconst                 1
-   if_icmpeq              LABEL1553
-   jump                   LABEL1558
-LABEL1553:
+   if_icmpeq              LABEL1596
+   jump                   LABEL1601
+LABEL1596:
    iconst                 6
    sconst                 "Message"
    iload                  9
    if_setop              
-   jump                   LABEL1566
-LABEL1558:
+   jump                   LABEL1609
+LABEL1601:
    iconst                 6
    sconst                 "Add friend"
    iload                  9
@@ -1761,11 +1808,11 @@ LABEL1558:
    sconst                 "Add ignore"
    iload                  9
    if_setop              
-LABEL1566:
-   jump                   LABEL1811
-LABEL1567:
+LABEL1609:
+   jump                   LABEL1854
+LABEL1610:
    sconst                 "<col=ffffff>"
-   sload                  16
+   sload                  17
    sconst                 "</col>"
    join_string            3
    iload                  9
@@ -1791,15 +1838,15 @@ LABEL1567:
    if_setop              
    iload                  15
    iconst                 1
-   if_icmpeq              LABEL1596
-   jump                   LABEL1601
-LABEL1596:
+   if_icmpeq              LABEL1639
+   jump                   LABEL1644
+LABEL1639:
    iconst                 6
    sconst                 "Message"
    iload                  9
    if_setop              
-   jump                   LABEL1609
-LABEL1601:
+   jump                   LABEL1652
+LABEL1644:
    iconst                 6
    sconst                 "Add friend"
    iload                  9
@@ -1808,20 +1855,20 @@ LABEL1601:
    sconst                 "Add ignore"
    iload                  9
    if_setop              
-LABEL1609:
-   jump                   LABEL1811
-LABEL1610:
-   sload                  19
+LABEL1652:
+   jump                   LABEL1854
+LABEL1653:
+   sload                  20
    string_length         
    iconst                 0
-   if_icmpgt              LABEL1615
-   jump                   LABEL1644
-LABEL1615:
+   if_icmpgt              LABEL1658
+   jump                   LABEL1687
+LABEL1658:
    iload                  13
    iconst                 -1
-   if_icmpne              LABEL1619
-   jump                   LABEL1644
-LABEL1619:
+   if_icmpne              LABEL1662
+   jump                   LABEL1687
+LABEL1662:
    iconst                 6
    sconst                 "Open"
    iload                  9
@@ -1846,8 +1893,8 @@ LABEL1619:
    sconst                 "Iii"
    iload                  9
    if_setonmouseleave    
-   jump                   LABEL1652
-LABEL1644:
+   jump                   LABEL1695
+LABEL1687:
    iconst                 -1
    sconst                 ""
    iload                  9
@@ -1856,7 +1903,7 @@ LABEL1644:
    sconst                 ""
    iload                  9
    if_setonmouseleave    
-LABEL1652:
+LABEL1695:
    iconst                 9
    sconst                 "Clear history"
    iload                  9
@@ -1869,68 +1916,21 @@ LABEL1652:
    if_setopbase          
    iconst                 2064
    iconst                 -2147483644
-   sload                  19
+   sload                  20
    iload                  13
    sconst                 "isi"
    iload                  9
    if_setonop            
-   jump                   LABEL1811
-LABEL1670:
+   jump                   LABEL1854
+LABEL1713:
    sconst                 "<col=0xffffff>"
-   sload                  16
+   sload                  17
    sconst                 "</col>"
    join_string            3
    iload                  9
    if_setopbase          
    iconst                 2
    sconst                 "Form clan"
-   iload                  9
-   if_setop              
-   iconst                 86
-   iconst                 -2147483644
-   sconst                 "event_opbase"
-   iload                  11
-   sconst                 "isi"
-   iload                  9
-   if_setonop            
-   iconst                 -1
-   sconst                 ""
-   iload                  9
-   if_setonmouseover     
-   iconst                 -1
-   sconst                 ""
-   iload                  9
-   if_setonmouseleave    
-   iload                  15
-   iconst                 1
-   if_icmpeq              LABEL1699
-   jump                   LABEL1704
-LABEL1699:
-   iconst                 6
-   sconst                 "Message"
-   iload                  9
-   if_setop              
-   jump                   LABEL1712
-LABEL1704:
-   iconst                 6
-   sconst                 "Add friend"
-   iload                  9
-   if_setop              
-   iconst                 7
-   sconst                 "Add ignore"
-   iload                  9
-   if_setop              
-LABEL1712:
-   jump                   LABEL1811
-LABEL1713:
-   sconst                 "<col=0xffffff>"
-   sload                  16
-   sconst                 "</col>"
-   join_string            3
-   iload                  9
-   if_setopbase          
-   iconst                 2
-   sconst                 "Form group"
    iload                  9
    if_setop              
    iconst                 86
@@ -1968,16 +1968,16 @@ LABEL1747:
    iload                  9
    if_setop              
 LABEL1755:
-   jump                   LABEL1811
+   jump                   LABEL1854
 LABEL1756:
    sconst                 "<col=0xffffff>"
-   sload                  16
+   sload                  17
    sconst                 "</col>"
    join_string            3
    iload                  9
    if_setopbase          
    iconst                 2
-   sconst                 "Group with"
+   sconst                 "Form group"
    iload                  9
    if_setop              
    iconst                 86
@@ -2015,8 +2015,55 @@ LABEL1790:
    iload                  9
    if_setop              
 LABEL1798:
-   jump                   LABEL1811
+   jump                   LABEL1854
 LABEL1799:
+   sconst                 "<col=0xffffff>"
+   sload                  17
+   sconst                 "</col>"
+   join_string            3
+   iload                  9
+   if_setopbase          
+   iconst                 2
+   sconst                 "Group with"
+   iload                  9
+   if_setop              
+   iconst                 86
+   iconst                 -2147483644
+   sconst                 "event_opbase"
+   iload                  11
+   sconst                 "isi"
+   iload                  9
+   if_setonop            
+   iconst                 -1
+   sconst                 ""
+   iload                  9
+   if_setonmouseover     
+   iconst                 -1
+   sconst                 ""
+   iload                  9
+   if_setonmouseleave    
+   iload                  15
+   iconst                 1
+   if_icmpeq              LABEL1828
+   jump                   LABEL1833
+LABEL1828:
+   iconst                 6
+   sconst                 "Message"
+   iload                  9
+   if_setop              
+   jump                   LABEL1841
+LABEL1833:
+   iconst                 6
+   sconst                 "Add friend"
+   iload                  9
+   if_setop              
+   iconst                 7
+   sconst                 "Add ignore"
+   iload                  9
+   if_setop              
+LABEL1841:
+   jump                   LABEL1854
+LABEL1842:
    iconst                 -1
    sconst                 ""
    iload                  9
@@ -2029,7 +2076,7 @@ LABEL1799:
    sconst                 ""
    iload                  9
    if_setonmouseleave    
-LABEL1811:
+LABEL1854:
    iload                  6
    iload                  7
    sub                   
@@ -2044,20 +2091,20 @@ LABEL1811:
    iload                  8
    enum                  
    istore                 9
-LABEL1825:
+LABEL1868:
    iload                  10
    chat_getprevuid       
    istore                 10
-   jump                   LABEL365
-LABEL1829:
+   jump                   LABEL387
+LABEL1872:
    iload                  8
    istore                 22
-LABEL1831:
+LABEL1874:
    iload                  9
    iconst                 -1
-   if_icmpne              LABEL1835
-   jump                   LABEL1918
-LABEL1835:
+   if_icmpne              LABEL1878
+   jump                   LABEL1961
+LABEL1878:
    iload                  9
    if_clearops           
    iconst                 -1
@@ -2084,14 +2131,14 @@ LABEL1835:
    multiply              
    cc_find               
    iconst                 1
-   if_icmpeq              LABEL1863
-   jump                   LABEL1867
-LABEL1863:
+   if_icmpeq              LABEL1906
+   jump                   LABEL1910
+LABEL1906:
    sconst                 ""
    cc_settext            
    iconst                 1
    cc_sethide            
-LABEL1867:
+LABEL1910:
    iconst                 10616888
    iload                  8
    iconst                 4
@@ -2100,14 +2147,14 @@ LABEL1867:
    add                   
    cc_find               
    iconst                 1
-   if_icmpeq              LABEL1877
-   jump                   LABEL1881
-LABEL1877:
+   if_icmpeq              LABEL1920
+   jump                   LABEL1924
+LABEL1920:
    sconst                 ""
    cc_settext            
    iconst                 1
    cc_sethide            
-LABEL1881:
+LABEL1924:
    iconst                 10616888
    iload                  8
    iconst                 4
@@ -2116,14 +2163,14 @@ LABEL1881:
    add                   
    cc_find               
    iconst                 1
-   if_icmpeq              LABEL1891
-   jump                   LABEL1895
-LABEL1891:
+   if_icmpeq              LABEL1934
+   jump                   LABEL1938
+LABEL1934:
    sconst                 ""
    cc_settext            
    iconst                 1
    cc_sethide            
-LABEL1895:
+LABEL1938:
    iconst                 10616888
    iload                  8
    iconst                 4
@@ -2132,12 +2179,12 @@ LABEL1895:
    add                   
    cc_find               
    iconst                 1
-   if_icmpeq              LABEL1905
-   jump                   LABEL1907
-LABEL1905:
+   if_icmpeq              LABEL1948
+   jump                   LABEL1950
+LABEL1948:
    iconst                 1
    cc_sethide            
-LABEL1907:
+LABEL1950:
    iload                  8
    iconst                 1
    add                   
@@ -2148,8 +2195,8 @@ LABEL1907:
    iload                  8
    enum                  
    istore                 9
-   jump                   LABEL1831
-LABEL1918:
+   jump                   LABEL1874
+LABEL1961:
    iload                  6
    iconst                 2
    sub                   
@@ -2163,20 +2210,20 @@ LABEL1918:
    istore                 23
    iload                  6
    iload                  23
-   if_icmpgt              LABEL1933
-   jump                   LABEL1935
-LABEL1933:
+   if_icmpgt              LABEL1976
+   jump                   LABEL1978
+LABEL1976:
    iload                  6
    istore                 23
-LABEL1935:
+LABEL1978:
    iload                  22
    istore                 8
-LABEL1937:
+LABEL1980:
    iload                  8
    iconst                 0
-   if_icmpgt              LABEL1941
-   jump                   LABEL2024
-LABEL1941:
+   if_icmpgt              LABEL1984
+   jump                   LABEL2067
+LABEL1984:
    iload                  8
    iconst                 1
    sub                   
@@ -2207,15 +2254,15 @@ LABEL1941:
    multiply              
    cc_find               
    iconst                 1
-   if_icmpeq              LABEL1973
-   jump                   LABEL1978
-LABEL1973:
+   if_icmpeq              LABEL2016
+   jump                   LABEL2021
+LABEL2016:
    cc_getx               
    iload                  6
    iconst                 0
    iconst                 0
    cc_setposition        
-LABEL1978:
+LABEL2021:
    iconst                 10616888
    iload                  8
    iconst                 4
@@ -2224,15 +2271,15 @@ LABEL1978:
    add                   
    cc_find               
    iconst                 1
-   if_icmpeq              LABEL1988
-   jump                   LABEL1993
-LABEL1988:
+   if_icmpeq              LABEL2031
+   jump                   LABEL2036
+LABEL2031:
    cc_getx               
    iload                  6
    iconst                 0
    iconst                 0
    cc_setposition        
-LABEL1993:
+LABEL2036:
    iconst                 10616888
    iload                  8
    iconst                 4
@@ -2241,15 +2288,15 @@ LABEL1993:
    add                   
    cc_find               
    iconst                 1
-   if_icmpeq              LABEL2003
-   jump                   LABEL2008
-LABEL2003:
+   if_icmpeq              LABEL2046
+   jump                   LABEL2051
+LABEL2046:
    cc_getx               
    iload                  6
    iconst                 0
    iconst                 0
    cc_setposition        
-LABEL2008:
+LABEL2051:
    iconst                 10616888
    iload                  8
    iconst                 4
@@ -2258,17 +2305,17 @@ LABEL2008:
    add                   
    cc_find               
    iconst                 1
-   if_icmpeq              LABEL2018
-   jump                   LABEL2023
-LABEL2018:
+   if_icmpeq              LABEL2061
+   jump                   LABEL2066
+LABEL2061:
    cc_getx               
    iload                  6
    iconst                 0
    iconst                 0
    cc_setposition        
-LABEL2023:
-   jump                   LABEL1937
-LABEL2024:
+LABEL2066:
+   jump                   LABEL1980
+LABEL2067:
    iconst                 0
    iload                  23
    iconst                 10616888

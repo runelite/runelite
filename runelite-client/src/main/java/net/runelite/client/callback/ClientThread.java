@@ -37,6 +37,7 @@ import net.runelite.api.Client;
 public class ClientThread
 {
 	private final ConcurrentLinkedQueue<BooleanSupplier> invokes = new ConcurrentLinkedQueue<>();
+	private final ConcurrentLinkedQueue<BooleanSupplier> invokesAtTickEnd = new ConcurrentLinkedQueue<>();
 
 	@Inject
 	private Client client;
@@ -86,7 +87,26 @@ public class ClientThread
 		invokes.add(r);
 	}
 
+	public void invokeAtTickEnd(Runnable r)
+	{
+		invokesAtTickEnd.add(() ->
+		{
+			r.run();
+			return true;
+		});
+	}
+
 	void invoke()
+	{
+		invokeList(invokes);
+	}
+
+	void invokeTickEnd()
+	{
+		invokeList(invokesAtTickEnd);
+	}
+
+	private void invokeList(ConcurrentLinkedQueue<BooleanSupplier> invokes)
 	{
 		assert client.isClientThread();
 		Iterator<BooleanSupplier> ir = invokes.iterator();

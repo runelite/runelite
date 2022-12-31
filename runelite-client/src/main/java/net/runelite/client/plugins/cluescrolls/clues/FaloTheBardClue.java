@@ -48,9 +48,9 @@ import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
 @Getter
-public class FaloTheBardClue extends ClueScroll implements TextClueScroll, NpcClueScroll
+public class FaloTheBardClue extends ClueScroll implements NpcClueScroll
 {
-	private static final List<FaloTheBardClue> CLUES = ImmutableList.of(
+	static final List<FaloTheBardClue> CLUES = ImmutableList.of(
 		new FaloTheBardClue("A blood red weapon, a strong curved sword, found on the island of primate lords.", any("Dragon scimitar", item(DRAGON_SCIMITAR), item(DRAGON_SCIMITAR_OR))),
 		new FaloTheBardClue("A book that preaches of some great figure, lending strength, might and vigour.", any("Any god book (must be complete)", item(HOLY_BOOK), item(BOOK_OF_BALANCE), item(UNHOLY_BOOK), item(BOOK_OF_LAW), item(BOOK_OF_WAR), item(BOOK_OF_DARKNESS), item(HOLY_BOOK_OR), item(BOOK_OF_BALANCE_OR), item(UNHOLY_BOOK_OR), item(BOOK_OF_LAW_OR), item(BOOK_OF_WAR_OR), item(BOOK_OF_DARKNESS_OR))),
 		new FaloTheBardClue("A bow of elven craft was made, it shimmers bright, but will soon fade.", any("Crystal Bow", item(CRYSTAL_BOW), item(CRYSTAL_BOW_24123))),
@@ -138,6 +138,8 @@ public class FaloTheBardClue extends ClueScroll implements TextClueScroll, NpcCl
 				.rightColor(inventoryFulfilled ? Color.GREEN : Color.RED)
 				.build());
 		}
+
+		renderOverlayNote(panelComponent, plugin);
 	}
 
 	@Override
@@ -155,9 +157,15 @@ public class FaloTheBardClue extends ClueScroll implements TextClueScroll, NpcCl
 	}
 
 	@Override
-	public String[] getNpcs()
+	public String[] getNpcs(ClueScrollPlugin plugin)
 	{
 		return new String[] {FALO_THE_BARD};
+	}
+
+	@Override
+	public int[] getConfigKeys()
+	{
+		return new int[]{text.hashCode()};
 	}
 
 	public static FaloTheBardClue forText(String text)

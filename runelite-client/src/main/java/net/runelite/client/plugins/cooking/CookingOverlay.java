@@ -40,7 +40,6 @@ import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Skill;
 import net.runelite.client.plugins.xptracker.XpTrackerService;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
-import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.LineComponent;
@@ -50,7 +49,7 @@ class CookingOverlay extends OverlayPanel
 {
 	private static final int COOK_TIMEOUT = 3;
 	private static final DecimalFormat FORMAT = new DecimalFormat("#.#");
-	static final String COOKING_RESET = "Reset";
+	private static final String COOKING_RESET = "Reset";
 
 	private final Client client;
 	private final CookingPlugin plugin;
@@ -64,8 +63,8 @@ class CookingOverlay extends OverlayPanel
 		this.client = client;
 		this.plugin = plugin;
 		this.xpTrackerService = xpTrackerService;
-		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Cooking overlay"));
-		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY, COOKING_RESET, "Cooking overlay"));
+		addMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Cooking overlay");
+		addMenuEntry(RUNELITE_OVERLAY, COOKING_RESET, "Cooking overlay", e -> plugin.setSession(null));
 	}
 
 	@Override

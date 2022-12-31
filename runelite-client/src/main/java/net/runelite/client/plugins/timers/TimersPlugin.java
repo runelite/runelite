@@ -113,11 +113,12 @@ public class TimersPlugin extends Plugin
 	private static final String RESURRECT_THRALL_DISAPPEAR_MESSAGE_START = ">Your ";
 	private static final String RESURRECT_THRALL_DISAPPEAR_MESSAGE_END = " thrall returns to the grave.</col>";
 	private static final String WARD_OF_ARCEUUS_MESSAGE = ">Your defence against Arceuus magic has been strengthened.</col>";
-	private static final String PICKPOCKET_FAILURE_MESSAGE = "You fail to pick the ";
+	private static final String PICKPOCKET_FAILURE_MESSAGE = "You fail to pick ";
 	private static final String DODGY_NECKLACE_PROTECTION_MESSAGE = "Your dodgy necklace protects you.";
 	private static final String SHADOW_VEIL_PROTECTION_MESSAGE = "Your attempt to steal goes unnoticed.";
 	private static final String SILK_DRESSING_MESSAGE = "You quickly apply the dressing to your wounds.";
 	private static final String BLESSED_CRYSTAL_SCARAB_MESSAGE = "You crack the crystal in your hand.";
+	private static final String LIQUID_ADRENALINE_MESSAGE = "You drink some of the potion, reducing the energy cost of your special attacks.</col>";
 
 	private static final Pattern DIVINE_POTION_PATTERN = Pattern.compile("You drink some of your divine (.+) potion\\.");
 	private static final int VENOM_VALUE_CUTOFF = -40; // Antivenom < -40 <= Antipoison < 0
@@ -135,6 +136,7 @@ public class TimersPlugin extends Plugin
 
 	private TimerTimer staminaTimer;
 	private TimerTimer buffTimer;
+	private TimerTimer remedyTimer;
 
 	private boolean imbuedHeartTimerActive;
 	private int nextPoisonTick;
@@ -364,6 +366,26 @@ public class TimersPlugin extends Plugin
 			}
 		}
 
+		if (event.getVarbitId() == Varbits.MENAPHITE_REMEDY && config.showMenaphiteRemedy())
+		{
+			int remedyDuration = event.getValue() * 25;
+			Duration duration = Duration.of(remedyDuration, RSTimeUnit.GAME_TICKS);
+
+			if (remedyDuration == 0)
+			{
+				removeGameTimer(MENAPHITE_REMEDY);
+				remedyTimer = null;
+			}
+			else if (remedyTimer == null)
+			{
+				remedyTimer = createGameTimer(MENAPHITE_REMEDY, duration);
+			}
+			else
+			{
+				remedyTimer.updateDuration(duration);
+			}
+		}
+
 		if (event.getVarbitId() == Varbits.LIQUID_ADERNALINE_ACTIVE && config.showLiquidAdrenaline())
 		{
 			if (event.getValue() == 1)
@@ -501,6 +523,12 @@ public class TimersPlugin extends Plugin
 		if (!config.showLiquidAdrenaline())
 		{
 			removeGameTimer(LIQUID_ADRENALINE);
+		}
+
+		if (!config.showMenaphiteRemedy())
+		{
+			removeGameTimer(MENAPHITE_REMEDY);
+			remedyTimer = null;
 		}
 
 		if (!config.showSilkDressing())
@@ -761,7 +789,18 @@ public class TimersPlugin extends Plugin
 			}
 			else if (message.contains(RESURRECT_THRALL_MESSAGE_START) && message.endsWith(RESURRECT_THRALL_MESSAGE_END))
 			{
-				createGameTimer(RESURRECT_THRALL, Duration.of(client.getBoostedSkillLevel(Skill.MAGIC), RSTimeUnit.GAME_TICKS));
+				// by default the thrall lasts 1 tick per magic level
+				int t = client.getBoostedSkillLevel(Skill.MAGIC);
+				// ca tiers being completed boosts this
+				if (client.getVarbitValue(Varbits.COMBAT_ACHIEVEMENT_TIER_GRANDMASTER) == 2)
+				{
+					t += t; // 100% boost
+				}
+				else if (client.getVarbitValue(Varbits.COMBAT_ACHIEVEMENT_TIER_MASTER) == 2)
+				{
+					t += t / 2; // 50% boost
+				}
+				createGameTimer(RESURRECT_THRALL, Duration.of(t, RSTimeUnit.GAME_TICKS));
 			}
 			else if (message.contains(RESURRECT_THRALL_DISAPPEAR_MESSAGE_START) && message.endsWith(RESURRECT_THRALL_DISAPPEAR_MESSAGE_END))
 			{
@@ -859,6 +898,11 @@ public class TimersPlugin extends Plugin
 		if (message.equals(BLESSED_CRYSTAL_SCARAB_MESSAGE) && config.showBlessedCrystalScarab())
 		{
 			createGameTimer(BLESSED_CRYSTAL_SCARAB);
+		}
+
+		if (message.equals(LIQUID_ADRENALINE_MESSAGE) && config.showLiquidAdrenaline())
+		{
+			createGameTimer(LIQUID_ADRENALINE);
 		}
 	}
 

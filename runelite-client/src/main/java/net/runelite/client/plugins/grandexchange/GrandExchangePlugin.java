@@ -466,6 +466,10 @@ public class GrandExchangePlugin extends Plugin
 		{
 			return WorldType.DEADMAN;
 		}
+		else if (worldTypes.contains(net.runelite.api.WorldType.FRESH_START_WORLD))
+		{
+			return WorldType.FRESH_START_WORLD;
+		}
 		else
 		{
 			return null;

@@ -138,7 +138,7 @@ public class WikiPlugin extends Plugin
 		}
 
 		onDeselect();
-		client.setSpellSelected(false);
+		client.setWidgetSelected(false);
 	}
 
 	@Subscribe
@@ -252,7 +252,7 @@ public class WikiPlugin extends Plugin
 		if (wikiSelected)
 		{
 			onDeselect();
-			client.setSpellSelected(false);
+			client.setWidgetSelected(false);
 			ev.consume();
 
 			String type;

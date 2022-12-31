@@ -24,6 +24,8 @@
  */
 package net.runelite.api;
 
+import javax.annotation.Nonnull;
+
 /**
  * Represents the model of an object.
  */
@@ -55,14 +57,14 @@ public interface Model extends Mesh, Renderable
 
 	float[] getFaceTextureUVCoordinates();
 
+	/**
+	 * @see #getAABB(int)
+	 */
+	@Deprecated
 	void calculateExtreme(int orientation);
 
-	int getCenterX();
-	int getCenterY();
-	int getCenterZ();
-	int getExtremeX();
-	int getExtremeY();
-	int getExtremeZ();
+	@Nonnull
+	AABB getAABB(int orientation);
 
 	int getXYZMag();
 	boolean isClickable();

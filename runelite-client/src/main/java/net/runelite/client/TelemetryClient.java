@@ -28,8 +28,7 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.lang.management.OperatingSystemMXBean;
-import javax.inject.Inject;
-import javax.inject.Named;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
 import net.runelite.http.api.telemetry.Telemetry;
@@ -42,22 +41,12 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 @Slf4j
-class TelemetryClient
+@RequiredArgsConstructor
+public class TelemetryClient
 {
 	private final OkHttpClient okHttpClient;
 	private final Gson gson;
 	private final HttpUrl apiBase;
-
-	@Inject
-	private TelemetryClient(OkHttpClient okHttpClient,
-		Gson gson,
-		@Named("runelite.api.base") HttpUrl apiBase
-	)
-	{
-		this.okHttpClient = okHttpClient;
-		this.gson = gson;
-		this.apiBase = apiBase;
-	}
 
 	void submitTelemetry()
 	{
@@ -82,6 +71,37 @@ class TelemetryClient
 			public void onResponse(Call call, Response response)
 			{
 				log.debug("Submitted telemetry");
+				response.close();
+			}
+		});
+	}
+
+	public void submitError(String type, String error)
+	{
+		HttpUrl url = apiBase.newBuilder()
+			.addPathSegment("telemetry")
+			.addPathSegment("error")
+			.addQueryParameter("type", type)
+			.addQueryParameter("error", error)
+			.build();
+
+		Request request = new Request.Builder()
+			.url(url)
+			.post(RequestBody.create(null, new byte[0]))
+			.build();
+
+		okHttpClient.newCall(request).enqueue(new Callback()
+		{
+			@Override
+			public void onFailure(Call call, IOException e)
+			{
+				log.debug("Error submitting error", e);
+			}
+
+			@Override
+			public void onResponse(Call call, Response response)
+			{
+				log.debug("Submitted error");
 				response.close();
 			}
 		});

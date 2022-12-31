@@ -46,7 +46,6 @@ import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
-import static net.runelite.client.plugins.grounditems.GroundItemsPlugin.MAX_QUANTITY;
 import net.runelite.client.plugins.grounditems.config.DespawnTimerMode;
 import static net.runelite.client.plugins.grounditems.config.ItemHighlightMode.MENU;
 import static net.runelite.client.plugins.grounditems.config.ItemHighlightMode.NONE;
@@ -238,16 +237,9 @@ public class GroundItemsOverlay extends Overlay
 
 			if (item.getQuantity() > 1)
 			{
-				if (item.getQuantity() >= MAX_QUANTITY)
-				{
-					itemStringBuilder.append(" (Lots!)");
-				}
-				else
-				{
-					itemStringBuilder.append(" (")
-						.append(QuantityFormatter.quantityToStackSize(item.getQuantity()))
-						.append(')');
-				}
+				itemStringBuilder.append(" (")
+					.append(QuantityFormatter.quantityToStackSize(item.getQuantity()))
+					.append(')');
 			}
 
 			if (config.priceDisplayMode() == PriceDisplayMode.BOTH)

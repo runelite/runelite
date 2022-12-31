@@ -184,6 +184,7 @@ public final class WidgetID
 	 * toa raid interface in the raid
 	 */
 	public static final int TOA_RAID_GROUP_ID = 481;
+	public static final int ACHIEVEMENT_DIARY_SCROLL_GROUP_ID = 741;
 
 	static class WorldMap
 	{
@@ -750,6 +751,12 @@ public final class WidgetID
 	{
 		static final int DIARY_TITLE = 2;
 		static final int DIARY_TEXT = 3;
+	}
+
+	static class AchievementDiaryScroll
+	{
+		static final int TITLE = 2;
+		static final int TEXT = 3;
 	}
 
 	static class DestroyItem

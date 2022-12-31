@@ -70,6 +70,8 @@ class WorldSwitcherPanel extends PluginPanel
 	private SubscriptionFilterMode subscriptionFilterMode;
 	@Setter(AccessLevel.PACKAGE)
 	private Set<RegionFilterMode> regionFilterMode;
+	@Setter(AccessLevel.PACKAGE)
+	private Set<WorldTypeFilter> worldTypeFilters;
 
 	WorldSwitcherPanel(WorldHopperPlugin plugin)
 	{
@@ -253,6 +255,19 @@ class WorldSwitcherPanel extends PluginPanel
 			if (!regionFilterMode.isEmpty() && !regionFilterMode.contains(RegionFilterMode.of(world.getRegion())))
 			{
 				continue;
+			}
+
+			if (!worldTypeFilters.isEmpty())
+			{
+				boolean matches = false;
+				for (WorldTypeFilter worldTypeFilter : worldTypeFilters)
+				{
+					matches |= worldTypeFilter.matches(world.getTypes());
+				}
+				if (!matches)
+				{
+					continue;
+				}
 			}
 
 			rows.add(buildRow(world, i % 2 == 0, world.getId() == plugin.getCurrentWorld() && plugin.getLastWorld() != 0, plugin.isFavorite(world)));

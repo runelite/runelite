@@ -49,9 +49,9 @@ import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
 @Getter
-public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueScroll, ObjectClueScroll
+public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClueScroll
 {
-	public static final List<CrypticClue> CLUES = ImmutableList.of(
+	static final List<CrypticClue> CLUES = ImmutableList.of(
 		new CrypticClue("Show this to Sherlock.", "Sherlock", new WorldPoint(2733, 3415, 0), "Sherlock is located to the east of the Sorcerer's tower in Seers' Village."),
 		new CrypticClue("Talk to the bartender of the Rusty Anchor in Port Sarim.", "Bartender", new WorldPoint(3045, 3256, 0), "The Rusty Anchor is located in the north of Port Sarim."),
 		new CrypticClue("The keeper of Melzars... Spare? Skeleton? Anar?", "Oziach", new WorldPoint(3068, 3516, 0), "Speak to Oziach in Edgeville."),
@@ -84,7 +84,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Search the crate in the Toad and Chicken pub.", CRATE_354, new WorldPoint(2913, 3536, 0), "The Toad and Chicken pub is located in Burthorpe."),
 		new CrypticClue("Search chests found in the upstairs of shops in Port Sarim.", CLOSED_CHEST_375, new WorldPoint(3016, 3205, 1), "Search the chest on the east wall found upstairs of Wydin's Food Store in Port Sarim."),
 		new CrypticClue("Right on the blessed border, cursed by the evil ones. On the spot inaccessible by both; I will be waiting. The bugs' imminent possession holds the answer.", new WorldPoint(3410, 3324, 0), "B I P. Dig right under the fairy ring."),
-		new CrypticClue("The dead, red dragon watches over this chest. He must really dig the view.", "Barbarian", 375, new WorldPoint(3353, 3332, 0), "Search the chest underneath the Red Dragon's head in the Exam Centre. Kill a MALE Barbarian in Barbarian Village or Barbarian Outpost to receive the key."),
+		new CrypticClue("The dead, red dragon watches over this chest. He must really dig the view.", "Barbarian", 375, new WorldPoint(3353, 3332, 0), "Search the chest underneath the Red Dragon's head in the Exam Centre. Kill a Barbarian in Barbarian Village or Barbarian Outpost to receive the key."),
 		new CrypticClue("My home is grey, and made of stone; A castle with a search for a meal. Hidden in some drawers I am, across from a wooden wheel.", DRAWERS_5618, new WorldPoint(3213, 3216, 1), "Open the drawers inside the room with the spinning wheel on the first floor of Lumbridge Castle."),
 		new CrypticClue("Come to the evil ledge, Yew know yew want to. Try not to get stung.", new WorldPoint(3089, 3468, 0), "Dig in Edgeville, just east of the Southern Yew tree."),
 		new CrypticClue("Look in the ground floor crates of houses in Falador.", CRATES_24088, new WorldPoint(3029, 3355, 0), "The house east of the eastern bank in Falador."),
@@ -209,7 +209,7 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		new CrypticClue("Under a giant robotic bird that cannot fly.", new WorldPoint(1756, 4940, 0), "Dig next to the terrorbird display in the south exhibit of Varrock Museum's basement."),
 		new CrypticClue("Great demons, dragons and spiders protect this blue rock, beneath which, you may find what you seek.", new WorldPoint(3045, 10265, 0), "Dig by the runite rock in the Lava Maze Dungeon."),
 		new CrypticClue("My giant guardians below the market streets would be fans of rock and roll, if only they could grab hold of it. Dig near my green bubbles!", new WorldPoint(3161, 9904, 0), "Dig near the cauldron by Moss Giants under Varrock Sewers"),
-		new CrypticClue("Varrock is where I reside, not the land of the dead, but I am so old, I should be there instead. Let's hope your reward is as good as it says, just 1 gold one and you can have it read.", "Gypsy Aris", new WorldPoint(3203, 3424, 0), "Talk to Gypsy Aris, West of Varrock main square."),
+		new CrypticClue("Varrock is where I reside, not the land of the dead, but I am so old, I should be there instead. Let's hope your reward is as good as it says, just 1 gold one and you can have it read.", "Aris", new WorldPoint(3203, 3424, 0), "Talk to Aris, West of Varrock main square."),
 		new CrypticClue("Speak to a referee.", "Gnome ball referee", new WorldPoint(2386, 3487, 0), "Talk to a Gnome ball referee found on the Gnome ball field in the Gnome Stronghold. Answer: 5096", "What is 57 x 89 + 23?"),
 		new CrypticClue("This crate holds a better reward than a broken arrow.", CRATE_356, new WorldPoint(2671, 3437, 0), "Inside the Ranging Guild. Search the crate behind the northern most building."),
 		new CrypticClue("Search the drawers in the house next to the Port Sarim mage shop.", DRAWERS, new WorldPoint(3024, 3259, 0), "House east of Betty's Mage shop in Port Sarim. Contains a cooking sink."),
@@ -425,6 +425,8 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 			.left(getSolution())
 			.leftColor(TITLED_CONTENT_COLOR)
 			.build());
+
+		renderOverlayNote(panelComponent, plugin);
 	}
 
 	@Override
@@ -488,8 +490,14 @@ public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueSc
 	}
 
 	@Override
-	public String[] getNpcs()
+	public String[] getNpcs(ClueScrollPlugin plugin)
 	{
 		return new String[] {npc};
+	}
+
+	@Override
+	public int[] getConfigKeys()
+	{
+		return new int[]{text.hashCode()};
 	}
 }

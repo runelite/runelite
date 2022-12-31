@@ -29,72 +29,27 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.inject.Inject;
 import net.runelite.api.ItemID;
 import net.runelite.api.widgets.WidgetItem;
+import net.runelite.client.game.ItemVariationMapping;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.WidgetItemOverlay;
 import net.runelite.client.ui.overlay.components.TextComponent;
 
 class SlayerOverlay extends WidgetItemOverlay
 {
-	private final static Set<Integer> SLAYER_JEWELRY = ImmutableSet.of(
-		ItemID.SLAYER_RING_1,
-		ItemID.SLAYER_RING_2,
-		ItemID.SLAYER_RING_3,
-		ItemID.SLAYER_RING_4,
-		ItemID.SLAYER_RING_5,
-		ItemID.SLAYER_RING_6,
-		ItemID.SLAYER_RING_7,
-		ItemID.SLAYER_RING_8
-	);
+	private final static Set<Integer> SLAYER_JEWELRY = ImmutableSet.copyOf(ItemVariationMapping.getVariations(ItemID.SLAYER_RING_8));
 
-	private final static Set<Integer> ALL_SLAYER_ITEMS = ImmutableSet.of(
-		ItemID.SLAYER_HELMET,
-		ItemID.SLAYER_HELMET_I,
-		ItemID.SLAYER_HELMET_I_25177,
-		ItemID.BLACK_SLAYER_HELMET,
-		ItemID.BLACK_SLAYER_HELMET_I,
-		ItemID.BLACK_SLAYER_HELMET_I_25179,
-		ItemID.GREEN_SLAYER_HELMET,
-		ItemID.GREEN_SLAYER_HELMET_I,
-		ItemID.GREEN_SLAYER_HELMET_I_25181,
-		ItemID.PURPLE_SLAYER_HELMET,
-		ItemID.PURPLE_SLAYER_HELMET_I,
-		ItemID.PURPLE_SLAYER_HELMET_I_25185,
-		ItemID.RED_SLAYER_HELMET,
-		ItemID.RED_SLAYER_HELMET_I,
-		ItemID.RED_SLAYER_HELMET_I_25183,
-		ItemID.TURQUOISE_SLAYER_HELMET,
-		ItemID.TURQUOISE_SLAYER_HELMET_I,
-		ItemID.TURQUOISE_SLAYER_HELMET_I_25187,
-		ItemID.TWISTED_SLAYER_HELMET,
-		ItemID.TWISTED_SLAYER_HELMET_I,
-		ItemID.TWISTED_SLAYER_HELMET_I_25191,
-		ItemID.HYDRA_SLAYER_HELMET,
-		ItemID.HYDRA_SLAYER_HELMET_I,
-		ItemID.HYDRA_SLAYER_HELMET_I_25189,
-		ItemID.TZTOK_SLAYER_HELMET,
-		ItemID.TZTOK_SLAYER_HELMET_I,
-		ItemID.TZTOK_SLAYER_HELMET_I_25902,
-		ItemID.VAMPYRIC_SLAYER_HELMET,
-		ItemID.VAMPYRIC_SLAYER_HELMET_I,
-		ItemID.VAMPYRIC_SLAYER_HELMET_I_25908,
-		ItemID.TZKAL_SLAYER_HELMET,
-		ItemID.TZKAL_SLAYER_HELMET_I,
-		ItemID.TZKAL_SLAYER_HELMET_I_25914,
-		ItemID.SLAYER_RING_ETERNAL,
-		ItemID.ENCHANTED_GEM,
-		ItemID.ETERNAL_GEM,
-		ItemID.SLAYER_RING_1,
-		ItemID.SLAYER_RING_2,
-		ItemID.SLAYER_RING_3,
-		ItemID.SLAYER_RING_4,
-		ItemID.SLAYER_RING_5,
-		ItemID.SLAYER_RING_6,
-		ItemID.SLAYER_RING_7,
-		ItemID.SLAYER_RING_8
-	);
+	private final static Set<Integer> ALL_SLAYER_ITEMS = Stream.of(
+		ItemVariationMapping.getVariations(ItemID.SLAYER_HELMET).stream(),
+		ItemVariationMapping.getVariations(ItemID.SLAYER_RING_8).stream(),
+		Stream.of(ItemID.ENCHANTED_GEM, ItemID.ETERNAL_GEM))
+		.reduce(Stream::concat)
+		.orElseGet(Stream::empty)
+		.collect(Collectors.toSet());
 
 	private final SlayerConfig config;
 	private final SlayerPlugin plugin;

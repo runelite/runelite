@@ -78,11 +78,11 @@ public class DiaryRequirementsPlugin extends Plugin
 	@Subscribe
 	public void onWidgetLoaded(final WidgetLoaded event)
 	{
-		if (event.getGroupId() == WidgetID.DIARY_QUEST_GROUP_ID)
+		if (event.getGroupId() == WidgetID.ACHIEVEMENT_DIARY_SCROLL_GROUP_ID)
 		{
 			String widgetTitle = Text.removeTags(
 				client.getWidget(
-					WidgetInfo.DIARY_QUEST_WIDGET_TITLE)
+					WidgetInfo.ACHIEVEMENT_DIARY_SCROLL_TITLE)
 					.getText())
 				.replace(' ', '_')
 				.toUpperCase();
@@ -95,7 +95,7 @@ public class DiaryRequirementsPlugin extends Plugin
 
 	private void showDiaryRequirements()
 	{
-		Widget widget = client.getWidget(WidgetInfo.DIARY_QUEST_WIDGET_TEXT);
+		Widget widget = client.getWidget(WidgetInfo.ACHIEVEMENT_DIARY_SCROLL_TEXT);
 		Widget[] children = widget.getStaticChildren();
 
 		Widget titleWidget = children[0];
@@ -199,7 +199,7 @@ public class DiaryRequirementsPlugin extends Plugin
 		}
 
 		int numLines = lastLine;
-		clientThread.invokeLater(() -> client.runScript(ScriptID.DIARY_QUEST_UPDATE_LINECOUNT, 1, numLines));
+		clientThread.invokeLater(() -> client.runScript(ScriptID.DIARY_UPDATE_LINECOUNT, 1, numLines));
 	}
 
 	private List<String> getOriginalAchievements(Widget[] children)

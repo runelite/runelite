@@ -310,7 +310,12 @@ public class Perspective
 	@Nullable
 	public static Point localToMinimap(@Nonnull Client client, @Nonnull LocalPoint point)
 	{
-		return localToMinimap(client, point, 6400);
+		// client uses square(distance/32) < 6400 for distance.
+		// convert to local coords via sqrt(6400) * 32 = 20 tiles
+		final int r = 20 << LOCAL_COORD_BITS;
+		// then scale based on pixels per tile
+		final double s = 4d / client.getMinimapZoom();
+		return localToMinimap(client, point, (int) (r * s));
 	}
 
 	/**
@@ -327,11 +332,10 @@ public class Perspective
 	public static Point localToMinimap(@Nonnull Client client, @Nonnull LocalPoint point, int distance)
 	{
 		LocalPoint localLocation = client.getLocalPlayer().getLocalLocation();
-		int x = point.getX() / 32 - localLocation.getX() / 32;
-		int y = point.getY() / 32 - localLocation.getY() / 32;
+		final int dx = point.getX() - localLocation.getX();
+		final int dy = point.getY() - localLocation.getY();
 
-		int dist = x * x + y * y;
-		if (dist < distance)
+		if (dx * dx + dy * dy < distance * distance)
 		{
 			Widget minimapDrawWidget;
 			if (client.isResized())
@@ -355,17 +359,21 @@ public class Perspective
 				return null;
 			}
 
+			final double zoom = client.getMinimapZoom() / LOCAL_TILE_SIZE;
+			final int x = (int) (dx * zoom);
+			final int y = (int) (dy * zoom);
+
 			final int angle = client.getMapAngle() & 0x7FF;
 
 			final int sin = SINE[angle];
 			final int cos = COSINE[angle];
 
-			final int xx = y * sin + cos * x >> 16;
-			final int yy = sin * x - y * cos >> 16;
+			final int rx = cos * x + sin * y >> 16;
+			final int ry = sin * x - cos * y >> 16;
 
 			Point loc = minimapDrawWidget.getCanvasLocation();
-			int miniMapX = loc.getX() + xx + minimapDrawWidget.getWidth() / 2;
-			int miniMapY = minimapDrawWidget.getHeight() / 2 + loc.getY() + yy;
+			int miniMapX = loc.getX() + minimapDrawWidget.getWidth() / 2 + rx;
+			int miniMapY = loc.getY() + minimapDrawWidget.getHeight() / 2 + ry;
 			return new Point(miniMapX, miniMapY);
 		}
 
@@ -719,15 +727,15 @@ public class Perspective
 
 	private static SimplePolygon calculateAABB(Client client, Model m, int jauOrient, int x, int y, int z)
 	{
-		m.calculateExtreme(jauOrient);
+		AABB aabb = m.getAABB(jauOrient);
 
-		int x1 = m.getCenterX();
-		int y1 = m.getCenterZ();
-		int z1 = m.getCenterY();
+		int x1 = aabb.getCenterX();
+		int y1 = aabb.getCenterZ();
+		int z1 = aabb.getCenterY();
 
-		int ex = m.getExtremeX();
-		int ey = m.getExtremeZ();
-		int ez = m.getExtremeY();
+		int ex = aabb.getExtremeX();
+		int ey = aabb.getExtremeZ();
+		int ez = aabb.getExtremeY();
 
 		int x2 = x1 + ex;
 		int y2 = y1 + ey;

@@ -77,8 +77,16 @@ public interface ItemContainer extends Node
 	int count(int itemId);
 
 	/**
-	 * Get the number of items in this item container. May include empty slots.
+	 * Get the number of slots in this item container. This includes empty slots.
+	 * For example for the player inventory it can be 28 even with no items in the inventory.
+	 * @see #count() to get the number of filled slots instead
 	 * @return
 	 */
 	int size();
+
+	/**
+	 * Get the total number of filled slots in the item container.
+	 * @return
+	 */
+	int count();
 }

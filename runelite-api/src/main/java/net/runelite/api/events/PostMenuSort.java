@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Lotto <https://github.com/devLotto>
+ * Copyright (c) 2022, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,9 +22,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.cluescrolls.clues;
+package net.runelite.api.events;
 
-public interface TextClueScroll
+/**
+ * Posted after the menu is sorted, but before clicks are processed.
+ * This is only fired if the menu isn't open, and shouldn't be used as a general purpose
+ * client tick event.
+ */
+public class PostMenuSort
 {
-	String getText();
 }

@@ -276,7 +276,7 @@ class FarmingWorld
 		));
 
 		add(new FarmingRegion("Varrock", 12854, false,
-			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.TREE, NpcID.TREZNOR)
+			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.TREE, NpcID.TREZNOR_11957)
 		), 12853);
 
 		add(new FarmingRegion("Yanille", 10288, false,
