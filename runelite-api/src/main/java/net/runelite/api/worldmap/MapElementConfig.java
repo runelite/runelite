@@ -38,4 +38,11 @@ public interface MapElementConfig
 	 * @return the sprite icon to display on the world map
 	 */
 	SpritePixels getMapIcon(boolean unused);
+
+	/**
+	 * Get the category of this icon type.
+	 *
+	 * @return
+	 */
+	int getCategory();
 }

@@ -36,4 +36,10 @@ public interface WorldMapRenderer
 	 * @return true if the map is loaded, false otherwise
 	 */
 	boolean isLoaded();
+
+	/**
+	 * Get the map regions in this map. Each map region is 64x64 tiles.
+	 * @return
+	 */
+	WorldMapRegion[][] getMapRegions();
 }
