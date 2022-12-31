@@ -48,7 +48,6 @@ import net.runelite.api.worldmap.WorldMap;
 import net.runelite.api.worldmap.WorldMapIcon;
 import net.runelite.api.worldmap.WorldMapRegion;
 import net.runelite.api.worldmap.WorldMapRenderer;
-import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
@@ -147,9 +146,6 @@ public class WorldMapPlugin extends Plugin
 
 	@Inject
 	private Client client;
-
-	@Inject
-	private ClientThread clientThread;
 
 	@Inject
 	private WorldMapConfig config;
@@ -260,7 +256,7 @@ public class WorldMapPlugin extends Plugin
 		WorldMapRegion[][] regions = wmm.getMapRegions();
 		EnumComposition mapElementToQuest = client.getEnum(EnumID.MAPELEMENT_TO_QUEST);
 		Quest[] quests = Quest.values();
-		for (int i = 0; i < regions.length; ++i)
+		for (int i = 0; i < regions.length; ++i) // NOPMD: ForLoopCanBeForeach
 		{
 			for (int j = 0; j < regions[i].length; ++j)
 			{
