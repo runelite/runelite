@@ -48,6 +48,8 @@ import net.runelite.api.widgets.ItemQuantityMode;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetConfig;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.worldmap.MapElementConfig;
+import net.runelite.api.worldmap.WorldMap;
 import org.intellij.lang.annotations.MagicConstant;
 
 /**
@@ -1040,11 +1042,11 @@ public interface Client extends OAuthApi, GameEngine
 	Object getDBTableField(int rowID, int column, int tupleIndex, int fieldIndex);
 
 	/**
-	 * Gets an array of all world areas
+	 * Get a map element config by id
 	 *
-	 * @return the world areas
+	 * @param id the id
 	 */
-	MapElementConfig[] getMapElementConfigs();
+	MapElementConfig getMapElementConfig(int id);
 
 	/**
 	 * Gets a sprite of the map scene
@@ -1436,8 +1438,15 @@ public interface Client extends OAuthApi, GameEngine
 	 * Gets the world map overview.
 	 *
 	 * @return the world map overview
+	 * @see #getWorldMap()
 	 */
+	@Deprecated
 	RenderOverview getRenderOverview();
+
+	/**
+	 * Get the world map
+	 */
+	WorldMap getWorldMap();
 
 	/**
 	 * Checks whether the client is in stretched mode.

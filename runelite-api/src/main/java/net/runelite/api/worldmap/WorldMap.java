@@ -22,15 +22,55 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.api.worldmap;
 
-import net.runelite.api.worldmap.WorldMap;
+import net.runelite.api.Point;
+import net.runelite.api.coords.WorldPoint;
 
 /**
- * @see WorldMap
+ * Represents the World Map
  */
-@Deprecated
-public interface RenderOverview extends WorldMap
+public interface WorldMap
 {
+	/**
+	 * Gets the current position of the local player on the world map.
+	 *
+	 * @return the world map position
+	 */
+	Point getWorldMapPosition();
+
+	/**
+	 * Gets the current zoom level of the world map.
+	 *
+	 * @return the world map zoon
+	 */
+	float getWorldMapZoom();
+
+	/**
+	 * Sets the target position of the world map.
+	 *
+	 * @param worldPoint the new target position
+	 */
+	void setWorldMapPositionTarget(WorldPoint worldPoint);
+
+	/**
+	 * Gets the world map renderer.
+	 *
+	 * @return the world map renderer
+	 */
+	WorldMapRenderer getWorldMapRenderer();
+
+	/**
+	 * Initializes the world map with the provided data.
+	 *
+	 * @param worldMapData the new map data
+	 */
+	void initializeWorldMap(WorldMapData worldMapData);
+
+	/**
+	 * The data represented by the render.
+	 *
+	 * @return the map data
+	 */
 	WorldMapData getWorldMapData();
 }

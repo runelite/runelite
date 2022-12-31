@@ -22,10 +22,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.api.worldmap;
+
+import net.runelite.api.SpritePixels;
 
 /**
- * Represents an area in the world.
+ * Represents configuration for a map element
  */
 public interface MapElementConfig
 {

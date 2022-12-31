@@ -22,12 +22,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.api.worldmap;
 
 /**
- * Manages the world map.
+ * Renderer for the current worldmap map. Whenever the map is changed (eg between overworld and ancient cavern)
+ * the renderer is recreated and reloaded with data from the new map.
  */
-public interface WorldMapManager
+public interface WorldMapRenderer
 {
 	/**
 	 * Checks whether the world map is currently loaded.
