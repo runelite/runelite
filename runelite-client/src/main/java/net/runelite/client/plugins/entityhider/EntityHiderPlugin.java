@@ -28,6 +28,9 @@ package net.runelite.client.plugins.entityhider;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import javax.inject.Inject;
 import net.runelite.api.Client;
@@ -87,6 +90,10 @@ public class EntityHiderPlugin extends Plugin
 	private boolean hideThralls;
 	private boolean hideAttackers;
 	private boolean hideProjectiles;
+	private int showOthersAmount;
+
+	private long prevTime = System.currentTimeMillis();
+	private List<Player> othersToShow = new ArrayList<>();
 
 	private final Hooks.RenderableDrawListener drawListener = this::shouldDraw;
 
@@ -143,6 +150,8 @@ public class EntityHiderPlugin extends Plugin
 		hideAttackers = config.hideAttackers();
 
 		hideProjectiles = config.hideProjectiles();
+
+		showOthersAmount = config.showOthersAmount();
 	}
 
 	@VisibleForTesting
@@ -186,6 +195,37 @@ public class EntityHiderPlugin extends Plugin
 			if (client.getIgnoreContainer().findByName(player.getName()) != null)
 			{
 				return !hideIgnoredPlayers;
+			}
+
+			if (!hideOthers)
+			{
+				if (prevTime != System.currentTimeMillis())
+				{
+					prevTime = System.currentTimeMillis();
+					othersToShow.clear();
+
+					for (Player otherPlayer : client.getPlayers())
+					{
+						if (otherPlayer == local)
+						{
+							continue;
+						}
+
+						othersToShow.add(otherPlayer);
+
+						if (othersToShow.size() >= showOthersAmount)
+						{
+							break;
+						}
+					}
+				}
+
+				if (drawingUI)
+				{
+					return othersToShow.contains(player) && !hideOthers2D;
+				}
+
+				return othersToShow.contains(player);
 			}
 
 			return !(drawingUI ? hideOthers2D : hideOthers);

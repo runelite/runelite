@@ -28,6 +28,7 @@ package net.runelite.client.plugins.entityhider;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Range;
 
 @ConfigGroup(EntityHiderConfig.GROUP)
 public interface EntityHiderConfig extends Config
@@ -197,5 +198,20 @@ public interface EntityHiderConfig extends Config
 	default boolean hideThralls()
 	{
 		return false;
+	}
+
+	@Range(
+			min = 1,
+			max = 2000
+	)
+	@ConfigItem(
+			position = 16,
+			keyName = "showPlayersAmount",
+			name = "Show Others Amount",
+			description = "Maximum amount of other players to show when hide others is disabled"
+	)
+	default int showOthersAmount()
+	{
+		return 100;
 	}
 }
