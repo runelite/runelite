@@ -708,15 +708,10 @@ public interface Client extends OAuthApi, GameEngine
 	 * Gets the angle of the map, or target camera yaw.
 	 *
 	 * @return the map angle
+	 * @see #getCameraYawTarget()
 	 */
+	@Deprecated
 	int getMapAngle();
-
-	/**
-	 * Set the target camera yaw
-	 *
-	 * @param cameraYawTarget
-	 */
-	void setCameraYawTarget(int cameraYawTarget);
 
 	/**
 	 * Checks whether the client window is currently resized.
@@ -1415,6 +1410,40 @@ public interface Client extends OAuthApi, GameEngine
 	 * @return the client preferences
 	 */
 	Preferences getPreferences();
+
+	/**
+	 * Get the target camera yaw.
+	 * The target yaw is the yaw the camera should use based on player input.
+	 * The actual camera yaw, from {@link #getCameraYaw()}, is what the camera
+	 * is actually using, which can be overridden by eg. cutscenes.
+	 *
+	 * @return the target camera yaw
+	 */
+	int getCameraYawTarget();
+
+	/**
+	 * Get the target camera pitch
+	 * The target pitch is the pitch the camera should use based on player input.
+	 * The actual camera pitch, from {@link #getCameraPitch()} ()}, is what the camera
+	 * is actually using, which can be overridden by eg. cutscenes.
+	 *
+	 * @return the target camera pitch
+	 */
+	int getCameraPitchTarget();
+
+	/**
+	 * Set the target camera yaw
+	 *
+	 * @param cameraYawTarget target camera yaw
+	 */
+	void setCameraYawTarget(int cameraYawTarget);
+
+	/**
+	 * Set the target camera pitch
+	 *
+	 * @param cameraPitchTarget target camera pitch
+	 */
+	void setCameraPitchTarget(int cameraPitchTarget);
 
 	/**
 	 * Sets whether the camera pitch can exceed the normal limits set

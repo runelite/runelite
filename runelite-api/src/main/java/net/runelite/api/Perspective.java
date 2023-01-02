@@ -363,7 +363,7 @@ public class Perspective
 			final int x = (int) (dx * zoom);
 			final int y = (int) (dy * zoom);
 
-			final int angle = client.getMapAngle() & 0x7FF;
+			final int angle = client.getCameraYawTarget() & 0x7FF;
 
 			final int sin = SINE[angle];
 			final int cos = COSINE[angle];
