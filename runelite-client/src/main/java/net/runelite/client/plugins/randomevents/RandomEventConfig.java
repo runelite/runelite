@@ -64,6 +64,17 @@ public interface RandomEventConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "notifyArnav",
+		name = "Notify on Capt' Arnav's Chest",
+		description = "",
+		section = notificationSection
+	)
+	default boolean notifyArnav()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "notifyBeekeeper",
 		name = "Notify on Beekeeper",
 		description = "",
@@ -81,6 +92,17 @@ public interface RandomEventConfig extends Config
 		section = notificationSection
 	)
 	default boolean notifyBob()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "notifyCerters",
+		name = "Notify on Certers",
+		description = "",
+		section = notificationSection
+	)
+	default boolean notifyCerters()
 	{
 		return false;
 	}
@@ -108,12 +130,34 @@ public interface RandomEventConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "notifyDwarf",
+		name = "Notify on Drunken Dwarf",
+		description = "",
+		section = notificationSection
+	)
+	default boolean notifyDwarf()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "notifyForester",
 		name = "Notify on Freaky Forester",
 		description = "",
 		section = notificationSection
 	)
 	default boolean notifyForester()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "notifyFlippa",
+		name = "Notify on Pinball",
+		description = "",
+		section = notificationSection
+	)
+	default boolean notifyFlippa()
 	{
 		return false;
 	}
@@ -174,6 +218,17 @@ public interface RandomEventConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "notifyPillory",
+		name = "Notify on Pillory",
+		description = "",
+		section = notificationSection
+	)
+	default boolean notifyPillory()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "notifyQuiz",
 		name = "Notify on Quiz Master",
 		description = "",
@@ -191,6 +246,28 @@ public interface RandomEventConfig extends Config
 		section = notificationSection
 	)
 	default boolean notifySandwich()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "notifyTurpentine",
+		name = "Notify on Rick Turpentine",
+		description = "",
+		section = notificationSection
+	)
+	default boolean notifyTurpentine()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "notifyTwin",
+		name = "Notify on Evil twin",
+		description = "",
+		section = notificationSection
+	)
+	default boolean notifyTwin()
 	{
 		return false;
 	}
