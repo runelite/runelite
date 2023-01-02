@@ -174,7 +174,7 @@ public interface NpcIndicatorsConfig extends Config
 		position = 7,
 		keyName = "npcToHighlight",
 		name = "NPCs to Highlight",
-		description = "List of NPC names to highlight<br>Separate entries with commas (,)<br>Click anywhere in plugin to reflect changes"
+		description = "List of NPC names to highlight. Format: (NPC), (NPC)"
 	)
 	default String getNpcToHighlight()
 	{
