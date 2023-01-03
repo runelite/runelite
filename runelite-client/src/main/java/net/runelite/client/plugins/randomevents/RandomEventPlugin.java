@@ -203,15 +203,18 @@ public class RandomEventPlugin extends Plugin
 			case NpcID.DR_JEKYLL_314:
 				return config.notifyJekyll();
 			case NpcID.EVIL_BOB:
-			case NpcID.EVIL_BOB_6754:
 				return config.notifyBob();
+			case NpcID.EVIL_BOB_6754:
+				return config.notifyPrison();
 			case NpcID.LEO_6746:
 				return config.notifyGravedigger();
 			case NpcID.MYSTERIOUS_OLD_MAN_6750:
 			case NpcID.MYSTERIOUS_OLD_MAN_6751:
-			case NpcID.MYSTERIOUS_OLD_MAN_6752:
-			case NpcID.MYSTERIOUS_OLD_MAN_6753:
 				return config.notifyMoM();
+			case NpcID.MYSTERIOUS_OLD_MAN_6752:
+				return config.notifyMaze();
+			case NpcID.MYSTERIOUS_OLD_MAN_6753:
+				return config.notifyMime();
 			case NpcID.PILLORY_GUARD:
 				return config.notifyPillory();
 			case NpcID.POSTIE_PETE_6738:
