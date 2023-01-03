@@ -207,6 +207,28 @@ public interface RandomEventConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "notifyMaze",
+		name = "Notify on Maze",
+		description = "",
+		section = notificationSection
+	)
+	default boolean notifyMaze()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "notifyMime",
+		name = "Notify on Mime",
+		description = "",
+		section = notificationSection
+	)
+	default boolean notifyMime()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "notifyMoM",
 		name = "Notify on Mysterious Old Man",
 		description = "",
@@ -224,6 +246,17 @@ public interface RandomEventConfig extends Config
 		section = notificationSection
 	)
 	default boolean notifyPillory()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "notifyPrison",
+		name = "Notify on Prison Pete",
+		description = "",
+		section = notificationSection
+	)
+	default boolean notifyPrison()
 	{
 		return false;
 	}
