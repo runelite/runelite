@@ -112,6 +112,10 @@ public class TwitchPlugin extends Plugin implements TwitchListener, ChatboxInput
 			&& !Strings.isNullOrEmpty(twitchConfig.channel()))
 		{
 			String channel = twitchConfig.channel().toLowerCase();
+			if (channel.startsWith("https://www.twitch.tv/"))
+			{
+				channel = channel.substring("https://www.twitch.tv/".length());
+			}
 			if (!channel.startsWith("#"))
 			{
 				channel = "#" + channel;
