@@ -754,6 +754,15 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	private void initAAFbo(int width, int height, int aaSamples)
 	{
+		if (OSType.getOSType() != OSType.MacOS)
+		{
+			final GraphicsConfiguration graphicsConfiguration = clientUI.getGraphicsConfiguration();
+			final AffineTransform transform = graphicsConfiguration.getDefaultTransform();
+
+			width = getScaledValue(transform.getScaleX(), width);
+			height = getScaledValue(transform.getScaleY(), height);
+		}
+
 		// Create and bind the FBO
 		fboSceneHandle = GL43C.glGenFramebuffers();
 		GL43C.glBindFramebuffer(GL43C.GL_FRAMEBUFFER, fboSceneHandle);
@@ -1257,10 +1266,21 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 		if (aaEnabled)
 		{
+			int width = lastStretchedCanvasWidth;
+			int height = lastStretchedCanvasHeight;
+
+			if (OSType.getOSType() != OSType.MacOS)
+			{
+				final GraphicsConfiguration graphicsConfiguration = clientUI.getGraphicsConfiguration();
+				final AffineTransform transform = graphicsConfiguration.getDefaultTransform();
+
+				width = getScaledValue(transform.getScaleX(), width);
+				height = getScaledValue(transform.getScaleY(), height);
+			}
+
 			GL43C.glBindFramebuffer(GL43C.GL_READ_FRAMEBUFFER, fboSceneHandle);
 			GL43C.glBindFramebuffer(GL43C.GL_DRAW_FRAMEBUFFER, awtContext.getFramebuffer(false));
-			GL43C.glBlitFramebuffer(0, 0, lastStretchedCanvasWidth, lastStretchedCanvasHeight,
-				0, 0, lastStretchedCanvasWidth, lastStretchedCanvasHeight,
+			GL43C.glBlitFramebuffer(0, 0, width, height, 0, 0, width, height,
 				GL43C.GL_COLOR_BUFFER_BIT, GL43C.GL_NEAREST);
 
 			// Reset
