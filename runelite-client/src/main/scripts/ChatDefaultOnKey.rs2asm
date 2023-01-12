@@ -660,6 +660,15 @@ LABEL556:
    iconst                 1
    istore                 9
 LABEL558:
+   iconst                 0                   ; 1 to block
+   iload                  5                   ; chat type
+   iload                  6                   ; message prefix length
+   sconst                 "chatDefaultReturn" ; event name
+   runelite_callback                          ; callback
+   istore                 6                   ; message prefix length
+   istore                 5                   ; chat type
+   iconst                 1                   ; load 1
+   if_icmpeq              AFTER_CHATOUT_ADD   ; skip chatout_add (due to comment below) and jump to varcstring355 = ""
    iload                  5
    iconst                 44
    if_icmpeq              LABEL562
