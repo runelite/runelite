@@ -26,8 +26,6 @@
 package net.runelite.client.chat;
 
 import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +42,7 @@ import net.runelite.client.events.PrivateMessageInput;
 
 @Slf4j
 @Singleton
-public class CommandManager
+class ChatInputManager
 {
 	private static final String RUNELITE_COMMAND = "runeliteCommand";
 	private static final String CHATBOX_INPUT = "chatboxInput";
@@ -55,25 +53,13 @@ public class CommandManager
 	private final ClientThread clientThread;
 	private boolean sending;
 
-	private final List<ChatboxInputListener> chatboxInputListenerList = new CopyOnWriteArrayList<>();
-
 	@Inject
-	private CommandManager(Client client, EventBus eventBus, ClientThread clientThread)
+	private ChatInputManager(Client client, EventBus eventBus, ClientThread clientThread)
 	{
 		this.client = client;
 		this.eventBus = eventBus;
 		this.clientThread = clientThread;
 		eventBus.register(this);
-	}
-
-	public void register(ChatboxInputListener chatboxInputListener)
-	{
-		chatboxInputListenerList.add(chatboxInputListener);
-	}
-
-	public void unregister(ChatboxInputListener chatboxInputListener)
-	{
-		chatboxInputListenerList.remove(chatboxInputListener);
 	}
 
 	@Subscribe
@@ -130,29 +116,10 @@ public class CommandManager
 		final int chatType = intStack[intStackCount - 2];
 		final int clanTarget = intStack[intStackCount - 1];
 
-		ChatboxInput chatboxInput = new ChatboxInput(typedText, chatType)
-		{
-			private boolean resumed;
+		ChatboxInput chatboxInput = new ChatboxInput(typedText, chatType, () -> clientThread.invokeLater(() -> sendChatboxInput(typedText, chatType, clanTarget)));
+		eventBus.post(chatboxInput);
 
-			@Override
-			public void resume()
-			{
-				if (resumed)
-				{
-					return;
-				}
-				resumed = true;
-
-				clientThread.invoke(() -> sendChatboxInput(typedText, chatType, clanTarget));
-			}
-		};
-		boolean stop = false;
-		for (ChatboxInputListener chatboxInputListener : chatboxInputListenerList)
-		{
-			stop |= chatboxInputListener.onChatboxInput(chatboxInput);
-		}
-
-		if (stop)
+		if (chatboxInput.isConsumed())
 		{
 			// input was blocked.
 			stringStack[stringStackCount - 1] = ""; // prevent script from sending
@@ -169,30 +136,10 @@ public class CommandManager
 		final String target = stringStack[stringStackCount - 2];
 		final String message = stringStack[stringStackCount - 1];
 
-		PrivateMessageInput privateMessageInput = new PrivateMessageInput(target, message)
-		{
-			private boolean resumed;
+		PrivateMessageInput privateMessageInput = new PrivateMessageInput(target, message, () -> clientThread.invokeLater(() -> sendPrivmsg(target, message)));
+		eventBus.post(privateMessageInput);
 
-			@Override
-			public void resume()
-			{
-				if (resumed)
-				{
-					return;
-				}
-				resumed = true;
-
-				clientThread.invoke(() -> sendPrivmsg(target, message));
-			}
-		};
-
-		boolean stop = false;
-		for (ChatboxInputListener chatboxInputListener : chatboxInputListenerList)
-		{
-			stop |= chatboxInputListener.onPrivateMessageInput(privateMessageInput);
-		}
-
-		if (stop)
+		if (privateMessageInput.isConsumed())
 		{
 			intStack[intStackCount - 1] = 1;
 			client.setStringStackSize(stringStackCount - 2); // remove both target and message
