@@ -189,6 +189,7 @@ public class TwitchIRCClient extends Thread implements AutoCloseable
 	{
 		send("CAP", "REQ", "twitch.tv/commands twitch.tv/tags");
 		send("PASS", oauth);
+		send("USER", "runelite", ".", HOST, "runelite");
 		send("NICK", username);
 	}
 
