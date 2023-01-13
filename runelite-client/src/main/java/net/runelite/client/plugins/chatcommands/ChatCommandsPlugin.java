@@ -2451,6 +2451,12 @@ public class ChatCommandsPlugin extends Plugin
 			case "fishtodt":
 				return "Tempoross";
 
+			// Phantom Muspah
+			case "phantom":
+			case "muspah":
+			case "pm":
+				return "Phantom Muspah";
+
 			default:
 				return WordUtils.capitalize(boss);
 		}
