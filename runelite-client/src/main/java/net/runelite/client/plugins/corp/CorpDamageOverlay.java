@@ -29,6 +29,7 @@ import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
+import org.apache.commons.math3.distribution.NormalDistribution;
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.NPC;
@@ -82,8 +83,11 @@ class CorpDamageOverlay extends OverlayPanel
 		int totalDamage = corpPlugin.getTotalDamage();
 		int players = corpPlugin.getPlayers().size();
 
-		// estimate how much damage is required for kill based on number of players
-		int damageForKill = players != 0 ? totalDamage / players : 0;
+		// estimate the probability of your damage exceeding everyone else's
+		double mean = totalDamage / players;
+		double sd = Math.sqrt(totalDamage / (0.1 * players));
+		double probabilityHigherThanOne = new NormalDistribution(mean, sd).cumulativeProbability(myDamage);
+		double probabilityHigherThanAll = Math.pow(probabilityHigherThanOne, players - 1);
 
 		NPC core = corpPlugin.getCore();
 		if (core != null)
@@ -120,12 +124,17 @@ class CorpDamageOverlay extends OverlayPanel
 			panelComponent.getChildren().add(LineComponent.builder()
 				.left("Your damage")
 				.right(Integer.toString(myDamage))
-				.rightColor(damageForKill > 0 && myDamage >= damageForKill ? Color.GREEN : Color.RED)
+				.rightColor(totalDamage > 0 && probabilityHigherThanAll >= 0.005 ? Color.GREEN : Color.RED)
 				.build());
 
 			panelComponent.getChildren().add(LineComponent.builder()
 				.left("Total damage")
 				.right(Integer.toString(totalDamage))
+				.build());
+
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left("Currently your loot")
+				.right(String.format("%.1f%%", 100 * probabilityHigherThanAll))
 				.build());
 		}
 
