@@ -81,10 +81,10 @@ class CorpDamageOverlay extends OverlayPanel
 
 		int myDamage = client.getVarbitValue(Varbits.CORP_DAMAGE);
 		int totalDamage = corpPlugin.getTotalDamage();
-		int players = corpPlugin.getPlayers().size();
+		int players = Math.max(corpPlugin.getPlayers().size(), 1);
 
 		// estimate the probability of your damage exceeding everyone else's
-		double mean = players != 0 ? totalDamage / players : 0;
+		double mean = totalDamage / players;
 		double sd = Math.sqrt(totalDamage / (0.1 * players));
 		double probabilityHigherThanOne = new NormalDistribution(mean, sd).cumulativeProbability(myDamage);
 		double probabilityHigherThanAll = Math.pow(probabilityHigherThanOne, players - 1);
