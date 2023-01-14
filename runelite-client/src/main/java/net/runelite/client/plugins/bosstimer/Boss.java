@@ -28,6 +28,7 @@ package net.runelite.client.plugins.bosstimer;
 import com.google.common.collect.ImmutableMap;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
@@ -79,7 +80,7 @@ enum Boss
 		bosses = builder.build();
 	}
 
-	Boss(int id, long period, ChronoUnit unit, int itemSpriteId)
+	Boss(int id, long period, TemporalUnit unit, int itemSpriteId)
 	{
 		this.id = id;
 		this.spawnTime = Duration.of(period, unit);
