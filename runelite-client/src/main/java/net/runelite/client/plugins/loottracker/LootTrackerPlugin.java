@@ -1026,6 +1026,7 @@ public class LootTrackerPlugin extends Plugin
 					case ItemID.ORNATE_LOCKBOX_25651:
 					case ItemID.CACHE_OF_RUNES:
 					case ItemID.INTRICATE_POUCH:
+					case ItemID.FROZEN_CACHE:
 						onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, itemManager.getItemComposition(event.getItemId()).getName()));
 						break;
 					case ItemID.SUPPLY_CRATE_24884:
