@@ -29,7 +29,6 @@ import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
-import org.apache.commons.math3.distribution.NormalDistribution;
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.NPC;
@@ -38,6 +37,8 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.client.ui.overlay.OverlayLayer;
+
+import static net.runelite.client.plugins.corp.MathUtil.cdf;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -86,7 +87,7 @@ class CorpDamageOverlay extends OverlayPanel
 		// estimate the probability of your damage exceeding everyone else's
 		double mean = totalDamage / players;
 		double sd = Math.sqrt(totalDamage / (0.1 * players));
-		double probabilityHigherThanOne = new NormalDistribution(mean, sd).cumulativeProbability(myDamage);
+		double probabilityHigherThanOne = cdf(mean, sd, myDamage);
 		double probabilityHigherThanAll = Math.pow(probabilityHigherThanOne, players - 1);
 
 		NPC core = corpPlugin.getCore();
