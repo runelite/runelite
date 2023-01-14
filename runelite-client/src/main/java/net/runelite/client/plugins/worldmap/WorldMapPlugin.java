@@ -31,7 +31,9 @@ import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.EnumComposition;
@@ -255,7 +257,8 @@ public class WorldMapPlugin extends Plugin
 		// what icons are loaded each tick.
 		WorldMapRegion[][] regions = wmm.getMapRegions();
 		EnumComposition mapElementToQuest = client.getEnum(EnumID.MAPELEMENT_TO_QUEST);
-		Quest[] quests = Quest.values();
+		Map<Integer, Quest> questMap = Arrays.stream(Quest.values())
+			.collect(Collectors.toMap(Quest::getId, Function.identity()));
 		for (int i = 0; i < regions.length; ++i) // NOPMD: ForLoopCanBeForeach
 		{
 			for (int j = 0; j < regions[i].length; ++j)
@@ -267,14 +270,13 @@ public class WorldMapPlugin extends Plugin
 					if (config.getCategory() == CATEGORY_QUEST)
 					{
 						int questDbRowId = mapElementToQuest.getIntValue(icon.getType());
-						if (questDbRowId < 0 || questDbRowId >= quests.length)
+
+						// our quest ids are actually dbrow ids
+						Quest quest = questMap.get(questDbRowId);
+						if (quest == null)
 						{
 							continue;
 						}
-
-						Quest quest = quests[questDbRowId];
-						// our quest ids are actually dbrow ids
-						assert quest.getId() == questDbRowId;
 
 						if (!questStartLocations.containsKey(quest))
 						{
