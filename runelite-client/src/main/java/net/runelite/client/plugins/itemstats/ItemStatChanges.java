@@ -340,6 +340,7 @@ public class ItemStatChanges
 		add(combo(range(food(1), food(3)), heal(RUN_ENERGY, 10)), PURPLE_SWEETS_10476);
 		add(new SpicyStew(), SPICY_STEW);
 		add(imbuedHeart, IMBUED_HEART);
+		add(boost(MAGIC, perc(.10, 4)), SATURATED_HEART);
 		add(combo(boost(ATTACK, 2), boost(STRENGTH, 1), heal(PRAYER, 1), heal(DEFENCE, -1)), JANGERBERRIES);
 		add(new CaveNightshade(), CAVE_NIGHTSHADE);
 
