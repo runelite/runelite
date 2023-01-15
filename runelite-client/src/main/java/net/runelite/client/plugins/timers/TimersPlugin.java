@@ -302,7 +302,7 @@ public class TimersPlugin extends Plugin
 					createGameTimer(SATURATEDHEART, Duration.of(10L * imbuedHeartCooldownVarb, RSTimeUnit.GAME_TICKS));
 					imbuedHeartTimerActive = true;
 				}
-            } else if (playerInventory != null && (playerInventory.contains(ItemID.IMBUED_HEART))) {
+            } else {
 				if (imbuedHeartCooldownVarb == 0) {
 					removeGameTimer(IMBUEDHEART);
 					imbuedHeartTimerActive = false;
