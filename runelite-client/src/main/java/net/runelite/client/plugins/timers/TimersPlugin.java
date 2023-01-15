@@ -291,20 +291,27 @@ public class TimersPlugin extends Plugin
 			}
 		}
 
-		if (event.getVarbitId() == Varbits.IMBUED_HEART_COOLDOWN && config.showImbuedHeart())
-		{
-			final int imbuedHeartCooldownVarb = event.getValue();
-			if (imbuedHeartCooldownVarb == 0)
-			{
-				removeGameTimer(IMBUEDHEART);
-				imbuedHeartTimerActive = false;
-			}
-			else if (!imbuedHeartTimerActive)
-			{
-				createGameTimer(IMBUEDHEART, Duration.of(10L * imbuedHeartCooldownVarb, RSTimeUnit.GAME_TICKS));
-				imbuedHeartTimerActive = true;
-			}
-		}
+        if (event.getVarbitId() == Varbits.IMBUED_HEART_COOLDOWN && config.showImbuedHeart()) {
+            final int imbuedHeartCooldownVarb = event.getValue();
+            ItemContainer playerInventory = client.getItemContainer(InventoryID.INVENTORY);
+            if (playerInventory != null && (playerInventory.contains(ItemID.SATURATED_HEART))) {
+				if (imbuedHeartCooldownVarb == 0) {
+					removeGameTimer(SATURATEDHEART);
+					imbuedHeartTimerActive = false;
+				} else if (!imbuedHeartTimerActive) {
+					createGameTimer(SATURATEDHEART, Duration.of(10L * imbuedHeartCooldownVarb, RSTimeUnit.GAME_TICKS));
+					imbuedHeartTimerActive = true;
+				}
+            } else if (playerInventory != null && (playerInventory.contains(ItemID.IMBUED_HEART))) {
+				if (imbuedHeartCooldownVarb == 0) {
+					removeGameTimer(IMBUEDHEART);
+					imbuedHeartTimerActive = false;
+				} else if (!imbuedHeartTimerActive) {
+					createGameTimer(IMBUEDHEART, Duration.of(10L * imbuedHeartCooldownVarb, RSTimeUnit.GAME_TICKS));
+					imbuedHeartTimerActive = true;
+				}
+            }
+        }
 
 		if (event.getVarpId() == VarPlayer.LAST_HOME_TELEPORT.getId() && config.showHomeMinigameTeleports())
 		{
