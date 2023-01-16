@@ -26,7 +26,26 @@
 package net.runelite.client.game;
 
 import lombok.Getter;
-import static net.runelite.api.NullObjectID.*;
+import net.runelite.api.Client;
+import net.runelite.api.NullObjectID;
+import static net.runelite.api.NullObjectID.NULL_25337;
+import static net.runelite.api.NullObjectID.NULL_26371;
+import static net.runelite.api.NullObjectID.NULL_26375;
+import static net.runelite.api.NullObjectID.NULL_26561;
+import static net.runelite.api.NullObjectID.NULL_26562;
+import static net.runelite.api.NullObjectID.NULL_26884;
+import static net.runelite.api.NullObjectID.NULL_26886;
+import static net.runelite.api.NullObjectID.NULL_29868;
+import static net.runelite.api.NullObjectID.NULL_29869;
+import static net.runelite.api.NullObjectID.NULL_29870;
+import static net.runelite.api.NullObjectID.NULL_31823;
+import static net.runelite.api.NullObjectID.NULL_31849;
+import static net.runelite.api.NullObjectID.NULL_31852;
+import static net.runelite.api.NullObjectID.NULL_33327;
+import static net.runelite.api.NullObjectID.NULL_33328;
+import static net.runelite.api.NullObjectID.NULL_39541;
+import static net.runelite.api.NullObjectID.NULL_39542;
+import static net.runelite.api.NullObjectID.NULL_43840;
 import static net.runelite.api.ObjectID.*;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
@@ -71,6 +90,18 @@ public enum AgilityShortcut
 			ROCKY_HANDHOLDS, ROCKY_HANDHOLDS_19847,
 			// Witchaven Dungeon
 			SHORTCUT),
+	WEISS_BROKEN_FENCE(1, "Shortcut", null, /* base id */ NullObjectID.NULL_46815)
+	{
+		@Override
+		public boolean matches(Client client, TileObject object)
+		{
+			assert object.getId() == NullObjectID.NULL_46815;
+			int multilocId = client.getObjectDefinition(object.getId())
+				.getImpostor()
+				.getId();
+			return multilocId == BROKEN_FENCE_46817;
+		}
+	},
 	BRIMHAVEN_DUNGEON_MEDIUM_PIPE_RETURN(1, "Pipe Squeeze", null, new WorldPoint(2698, 9491, 0), PIPE_21727),
 	BRIMHAVEN_DUNGEON_PIPE_RETURN(1, "Pipe Squeeze", null, new WorldPoint(2655, 9573, 0), PIPE_21728),
 	BRIMHAVEN_DUNGEON_STEPPING_STONES_RETURN(1, "Pipe Squeeze", null, STEPPING_STONE_21739),
@@ -195,7 +226,7 @@ public enum AgilityShortcut
 	AL_KHARID_WINDOW(70, "Window", new WorldPoint(3293, 3158, 0), BROKEN_WALL_33344, BIG_WINDOW)
 	{
 		@Override
-		public boolean matches(TileObject object)
+		public boolean matches(Client client, TileObject object)
 		{
 			// there are two BIG_WINDOW objects right next to each other here, but only this one is valid
 			return object.getId() != BIG_WINDOW || object.getWorldLocation().equals(new WorldPoint(3295, 3158, 0));
@@ -287,7 +318,7 @@ public enum AgilityShortcut
 		return description + " - Level " + level;
 	}
 
-	public boolean matches(TileObject object)
+	public boolean matches(Client client, TileObject object)
 	{
 		return true;
 	}
