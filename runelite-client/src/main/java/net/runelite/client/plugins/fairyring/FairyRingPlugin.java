@@ -406,6 +406,7 @@ public class FairyRingPlugin extends Plugin
 			newHeight
 		);
 	}
+
 	@Subscribe
 	public void onConfigChanged(ConfigChanged configChanged)
 	{
@@ -470,11 +471,13 @@ public class FairyRingPlugin extends Plugin
 	{
 		String initialValue = Text.toCSV(getTags(code));
 		client.playSoundEffect(SoundEffectID.UI_BOOP);
-		searchInput = chatboxPanelManager.openTextInput("Code " + code + ": Enter tags (empty to reset)")
+		searchInput = chatboxPanelManager.openTextInput("Code " + code + ": Enter tags (empty to remove)")
 			.value(initialValue)
-			.onDone(s -> {
+			.onDone(s ->
+			{
 				setTagString(code, s);
-				if (config.autoOpen()) {
+				if (config.autoOpen())
+				{
 					clientThread.invokeLater(this::openSearch);
 				}
 			})
