@@ -38,7 +38,6 @@ import java.util.regex.Pattern;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
-import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
@@ -56,7 +55,6 @@ import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ActorDeath;
-import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
@@ -130,7 +128,6 @@ public class TimersPlugin extends Plugin
 	private int nextAntifireTick;
 	private int nextSuperAntifireTick;
 	private WorldPoint lastPoint;
-	private int lastAnimation;
 	private ElapsedTimer tzhaarTimer;
 
 	@Inject
@@ -169,7 +166,6 @@ public class TimersPlugin extends Plugin
 	{
 		infoBoxManager.removeIf(t -> t instanceof TimerTimer);
 		lastPoint = null;
-		lastAnimation = -1;
 		nextPoisonTick = 0;
 		nextOverloadRefreshTick = 0;
 		nextAntifireTick = 0;
@@ -365,6 +361,11 @@ public class TimersPlugin extends Plugin
 		if (event.getVarbitId() == Varbits.IMBUED_HEART_COOLDOWN && config.showImbuedHeart())
 		{
 			updateVarTimer(IMBUEDHEART, event.getValue(), i -> i * 10);
+		}
+
+		if (event.getVarbitId() == Varbits.DRAGONFIRE_SHIELD_COOLDOWN && config.showDFSSpecial())
+		{
+			updateVarTimer(DRAGON_FIRE_SHIELD, event.getValue(), i -> i * 8);
 		}
 
 		if (event.getVarpId() == VarPlayer.LAST_HOME_TELEPORT.getId() && config.showHomeMinigameTeleports())
@@ -625,6 +626,11 @@ public class TimersPlugin extends Plugin
 		if (!config.showImbuedHeart())
 		{
 			removeVarTimer(IMBUEDHEART);
+		}
+
+		if (!config.showDFSSpecial())
+		{
+			removeVarTimer(DRAGON_FIRE_SHIELD);
 		}
 
 		if (!config.showStaffOfTheDead())
@@ -999,24 +1005,6 @@ public class TimersPlugin extends Plugin
 		}
 	}
 
-
-	@Subscribe
-	public void onAnimationChanged(AnimationChanged event)
-	{
-		Actor actor = event.getActor();
-
-		if (actor != client.getLocalPlayer())
-		{
-			return;
-		}
-
-		if (config.showDFSSpecial() && lastAnimation == AnimationID.DRAGONFIRE_SHIELD_SPECIAL)
-		{
-			createGameTimer(DRAGON_FIRE_SHIELD);
-		}
-
-		lastAnimation = client.getLocalPlayer().getAnimation();
-	}
 
 	@Subscribe
 	public void onGraphicChanged(GraphicChanged event)
