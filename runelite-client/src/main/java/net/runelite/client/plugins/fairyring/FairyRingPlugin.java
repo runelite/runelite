@@ -310,15 +310,14 @@ public class FairyRingPlugin extends Plugin
 			codes = codeMap.values();
 		}
 
+		// reset the separator widget
 		Widget separator = client.getWidget(WidgetInfo.FAIRY_RING_LIST_SEPARATOR);
-		if (separator != null)
-		{
-			separator.setHidden(separator.getRelativeY() < 0 || !filter.isEmpty());
-		}
+		separator.setHidden(true);
+		separator.setOriginalY(3);
 
 		// Relayout the panel
 		int y = 0;
-
+		CodeWidgets lastFavorite = null;
 		for (CodeWidgets c : codes)
 		{
 			String code = Text.removeTags(c.getDescription().getName()).replaceAll(" ", "");
@@ -342,6 +341,13 @@ public class FairyRingPlugin extends Plugin
 				|| code.toLowerCase().contains(filter)
 				|| tags != null && tags.contains(filter));
 
+			// add padding to the first widget after the separator
+			if (!hidden && lastFavorite != null && (c.getFavorite() == null || c.getFavorite().getSpriteId() == SpriteID.FAIRY_RING_ADD_FAVOURITE))
+			{
+				y += ENTRY_PADDING;
+				lastFavorite = null;
+			}
+
 			if (c.getCode() != null)
 			{
 				c.getCode().setHidden(hidden);
@@ -360,6 +366,17 @@ public class FairyRingPlugin extends Plugin
 			if (!hidden)
 			{
 				y += c.getDescription().getHeight() + ENTRY_PADDING;
+
+				if (c.getFavorite() != null && c.getFavorite().getSpriteId() == SpriteID.FAIRY_RING_REMOVE_FAVOURITE)
+				{
+					separator.setHidden(false);
+					lastFavorite = c;
+				}
+			}
+			else if (c.getFavorite() != null && c.getFavorite().getSpriteId() == SpriteID.FAIRY_RING_REMOVE_FAVOURITE)
+			{
+				// separator widget layouts from the bottom of the favorites container
+				separator.setOriginalY(separator.getOriginalY() + c.getDescription().getHeight() + ENTRY_PADDING);
 			}
 		}
 
