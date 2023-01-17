@@ -877,7 +877,7 @@ LABEL775:
    removetags            
    ; replace activeclanchannel_getuserslot with activeclansettings_getaffinedslot
    jump                   L1
-   activeclanchannel_getuserslot
+   activeclansettings_getaffinedslot
 L1:
    activeclansettings_getaffinedslot
    istore                 17
@@ -889,7 +889,7 @@ LABEL783:
    iload                  17
    ; replace activeclanchannel_getuserrank with activeclansettings_getaffinedrank
    jump                   L2
-   activeclanchannel_getuserrank
+   activeclansettings_getaffinedrank
 L2:
    activeclansettings_getaffinedrank
    invoke                 4302
@@ -1061,7 +1061,7 @@ LABEL940:
    removetags            
    ; replace activeclanchannel_getuserslot with activeclansettings_getaffinedslot
    jump                   L3
-   activeclanchannel_getuserslot
+   activeclansettings_getaffinedslot
 L3:
    activeclansettings_getaffinedslot
    istore                 17
@@ -1073,7 +1073,7 @@ LABEL948:
    iload                  17
    ; replace activeclanchannel_getuserrank with activeclansettings_getaffinedrank
    jump                   L4
-   activeclanchannel_getuserrank
+   activeclansettings_getaffinedrank
 L4:
    activeclansettings_getaffinedrank
    invoke                 4302
