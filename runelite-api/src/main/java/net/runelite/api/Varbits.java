@@ -600,6 +600,13 @@ public final class Varbits
 	public static final int IMBUED_HEART_COOLDOWN = 5361;
 
 	/**
+	 * Dragonfire shield cooldown
+	 * <p>
+	 * Number of game ticks remaining on cooldown in intervals of 8; for a value X there are 8 * X game ticks remaining.
+	 */
+	public static final int DRAGONFIRE_SHIELD_COOLDOWN = 6539;
+
+	/**
 	 * Amount of items in each bank tab
 	 */
 	public static final int BANK_TAB_ONE_COUNT = 4171;
