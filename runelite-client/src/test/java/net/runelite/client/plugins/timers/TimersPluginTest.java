@@ -547,10 +547,10 @@ public class TimersPluginTest
 
 		// Remove on running out
 		varbitChanged.setValue(0);
-		timersPlugin.onVarbitChanged(varbitChanged); // Calls removeIf twice, once for NMZ and once for CoX
+		timersPlugin.onVarbitChanged(varbitChanged);
 
 		verify(infoBoxManager).addInfoBox(any());
-		verify(infoBoxManager, times(3)).removeIf(any());
+		verify(infoBoxManager, times(2)).removeIf(any());
 	}
 
 	@Test
@@ -572,9 +572,9 @@ public class TimersPluginTest
 
 		// Remove on running out
 		varbitChanged.setValue(0);
-		timersPlugin.onVarbitChanged(varbitChanged); // Calls removeIf twice, once for NMZ and once for CoX
+		timersPlugin.onVarbitChanged(varbitChanged);
 
 		verify(infoBoxManager).addInfoBox(any());
-		verify(infoBoxManager, times(3)).removeIf(any());
+		verify(infoBoxManager, times(2)).removeIf(any());
 	}
 }
