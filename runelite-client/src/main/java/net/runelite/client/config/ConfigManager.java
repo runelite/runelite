@@ -93,6 +93,7 @@ import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ClientShutdown;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.events.ConfigSync;
 import net.runelite.client.events.RuneScapeProfileChanged;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.http.api.config.ConfigPatch;
@@ -930,6 +931,8 @@ public class ConfigManager
 	@Nullable
 	private CompletableFuture<Void> sendConfig()
 	{
+		eventBus.post(new ConfigSync());
+
 		CompletableFuture<Void> future = null;
 		synchronized (pendingChanges)
 		{
