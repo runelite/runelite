@@ -44,6 +44,7 @@ import net.runelite.api.SoundEffectID;
 import net.runelite.api.SpriteID;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.JavaScriptCallback;
@@ -401,5 +402,14 @@ public class FairyRingPlugin extends Plugin
 			WidgetInfo.FAIRY_RING_LIST.getId(),
 			newHeight
 		);
+	}
+
+	@Subscribe
+	public void onScriptPostFired(ScriptPostFired event)
+	{
+		if (event.getScriptId() == ScriptID.FAIRYRINGS_SORT_UPDATE && searchInput != null)
+		{
+			clientThread.invokeLater(() -> updateFilter(searchInput.getValue()));
+		}
 	}
 }
