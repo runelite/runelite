@@ -275,6 +275,7 @@ public class DevToolsPlugin extends Plugin
 				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Set VarPlayer " + varp + " to " + value, null);
 				VarbitChanged varbitChanged = new VarbitChanged();
 				varbitChanged.setVarpId(varp);
+				varbitChanged.setValue(value);
 				eventBus.post(varbitChanged); // fake event
 				break;
 			}
@@ -293,7 +294,10 @@ public class DevToolsPlugin extends Plugin
 				VarbitComposition varbitComposition = client.getVarbit(varbit);
 				client.queueChangedVarp(varbitComposition.getIndex());
 				client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Set varbit " + varbit + " to " + value, null);
-				eventBus.post(new VarbitChanged()); // fake event
+				VarbitChanged varbitChanged = new VarbitChanged();
+				varbitChanged.setVarbitId(varbit);
+				varbitChanged.setValue(value);
+				eventBus.post(varbitChanged); // fake event
 				break;
 			}
 			case "addxp":
