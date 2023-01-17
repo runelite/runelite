@@ -43,7 +43,6 @@ import net.runelite.api.ScriptID;
 import net.runelite.api.SoundEffectID;
 import net.runelite.api.SpriteID;
 import net.runelite.api.Varbits;
-import net.runelite.api.widgets.WidgetType;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
@@ -51,6 +50,7 @@ import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -282,21 +282,42 @@ public class FairyRingPlugin extends Plugin
 				c.setCode(w);
 			}
 
+			if (favorites != null)
+			{
+				for (Widget w : favorites.getStaticChildren())
+				{
+					if (w.getId() == WidgetInfo.FAIRY_RING_LIST_SEPARATOR.getId())
+					{
+						continue;
+					}
+
+					// Favorites widgets are pre-allocated and hidden if the max of 4 favorites isn't reached
+					if (w.getSpriteId() != -1 && !w.isSelfHidden())
+					{
+						codeMap.computeIfAbsent(w.getRelativeY(), k -> new CodeWidgets()).setFavorite(w);
+					}
+					else if (!Strings.isNullOrEmpty(w.getName()) && !w.isSelfHidden())
+					{
+						codeMap.computeIfAbsent(w.getRelativeY(), k -> new CodeWidgets()).setDescription(w);
+					}
+					else if (!Strings.isNullOrEmpty(w.getText()) && !w.isSelfHidden())
+					{
+						codeMap.computeIfAbsent(w.getRelativeY(), k -> new CodeWidgets()).setCode(w);
+					}
+				}
+			}
+
 			codes = codeMap.values();
+		}
+
+		Widget separator = client.getWidget(WidgetInfo.FAIRY_RING_LIST_SEPARATOR);
+		if (separator != null)
+		{
+			separator.setHidden(separator.getRelativeY() < 0 || !filter.isEmpty());
 		}
 
 		// Relayout the panel
 		int y = 0;
-
-		if (favorites != null)
-		{
-			boolean hide = !filter.isEmpty();
-			favorites.setHidden(hide);
-			if (!hide)
-			{
-				y += favorites.getOriginalHeight() + ENTRY_PADDING;
-			}
-		}
 
 		for (CodeWidgets c : codes)
 		{
