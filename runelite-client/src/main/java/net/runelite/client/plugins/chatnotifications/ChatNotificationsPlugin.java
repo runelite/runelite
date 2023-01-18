@@ -201,6 +201,8 @@ public class ChatNotificationsPlugin extends Plugin
 				}
 				break;
 			case PRIVATECHATOUT:
+			case DIALOG:
+			case MESBOX:
 				return;
 			case MODCHAT:
 			case PUBLICCHAT:
