@@ -445,7 +445,7 @@ public class TimersPluginTest
 		verify(infoBoxManager).addInfoBox(captor.capture());
 		TimerTimer infoBox = (TimerTimer) captor.getValue();
 		assertEquals(GameTimer.IMBUEDHEART, infoBox.getTimer());
-		assertEquals(GameTimer.IMBUEDHEART.getDuration(), infoBox.getDuration());
+		assertEquals(Duration.ofMinutes(7), infoBox.getDuration());
 	}
 
 	@Test
