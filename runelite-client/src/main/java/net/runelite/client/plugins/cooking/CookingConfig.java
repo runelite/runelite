@@ -47,11 +47,11 @@ public interface CookingConfig extends Config
 
 	@ConfigItem(
 		position = 2,
-		keyName = "showStats",
+		keyName = "showCookingStats",
 		name = "Show session stats",
 		description = "Configures whether to display cooking session stats"
 	)
-	default boolean showStats() { return true; }
+	default boolean showCookingStats() { return true; }
 
 	@ConfigItem(
 		position = 3,

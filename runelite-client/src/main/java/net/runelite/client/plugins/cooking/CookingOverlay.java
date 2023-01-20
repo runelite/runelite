@@ -73,7 +73,7 @@ class CookingOverlay extends OverlayPanel
 	public Dimension render(Graphics2D graphics)
 	{
 		CookingSession session = plugin.getSession();
-		if (!config.showStats() || session == null)
+		if (!config.showCookingStats() || session == null)
 		{
 			return null;
 		}
