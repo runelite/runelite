@@ -138,4 +138,14 @@ public interface LootTrackerConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			keyName = "showDeleteWarning",
+			name = "Show warning message when deleting items",
+			description = "Enables/disables the warning message for clearing loot sections."
+	)
+	default boolean showDeleteWarning()
+	{
+		return true;
+	}
 }

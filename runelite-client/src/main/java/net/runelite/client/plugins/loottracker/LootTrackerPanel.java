@@ -307,14 +307,15 @@ class LootTrackerPanel extends PluginPanel
 		final JMenuItem reset = new JMenuItem("Reset All");
 		reset.addActionListener(e ->
 		{
-			final int result = JOptionPane.showOptionDialog(overallPanel,
-				currentView == null ? RESET_ALL_WARNING_TEXT : String.format(RESET_CURRENT_WARNING_TEXT, currentView),
-				"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
-				null, new String[]{"Yes", "No"}, "No");
+			if(config.showDeleteWarning()) {
+				final int result = JOptionPane.showOptionDialog(overallPanel,
+						currentView == null ? RESET_ALL_WARNING_TEXT : String.format(RESET_CURRENT_WARNING_TEXT, currentView),
+						"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
+						null, new String[]{"Yes", "No"}, "No");
 
-			if (result != JOptionPane.YES_OPTION)
-			{
-				return;
+				if (result != JOptionPane.YES_OPTION) {
+					return;
+				}
 			}
 
 			// If not in detailed view, remove all, otherwise only remove for the currently detailed title
@@ -586,14 +587,15 @@ class LootTrackerPanel extends PluginPanel
 		final JMenuItem reset = new JMenuItem("Reset");
 		reset.addActionListener(e ->
 		{
-			final int result = JOptionPane.showOptionDialog(box,
-				groupLoot ? String.format(RESET_CURRENT_WARNING_TEXT, box.getId()) : RESET_ONE_WARNING_TEXT,
-				"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
-				null, new String[]{"Yes", "No"}, "No");
+			if(config.showDeleteWarning()) {
+				final int result = JOptionPane.showOptionDialog(box,
+						groupLoot ? String.format(RESET_CURRENT_WARNING_TEXT, box.getId()) : RESET_ONE_WARNING_TEXT,
+						"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
+						null, new String[]{"Yes", "No"}, "No");
 
-			if (result != JOptionPane.YES_OPTION)
-			{
-				return;
+				if (result != JOptionPane.YES_OPTION) {
+					return;
+				}
 			}
 
 			Predicate<LootTrackerRecord> match = groupLoot
