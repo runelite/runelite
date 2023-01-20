@@ -28,9 +28,11 @@ package net.runelite.client.plugins.bosstimer;
 import com.google.common.collect.ImmutableMap;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.Map;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
+import net.runelite.client.util.RSTimeUnit;
 
 enum Boss
 {
@@ -43,7 +45,7 @@ enum Boss
 	CHAOS_FANATIC(NpcID.CHAOS_FANATIC, 30, ChronoUnit.SECONDS, ItemID.ANCIENT_STAFF),
 	CRAZY_ARCHAEOLOGIST(NpcID.CRAZY_ARCHAEOLOGIST, 30, ChronoUnit.SECONDS, ItemID.FEDORA),
 	KING_BLACK_DRAGON(NpcID.KING_BLACK_DRAGON, 9, ChronoUnit.SECONDS, ItemID.PRINCE_BLACK_DRAGON),
-	SCORPIA(NpcID.SCORPIA, 10, ChronoUnit.SECONDS, ItemID.SCORPIAS_OFFSPRING),
+	SCORPIA(NpcID.SCORPIA, 16, RSTimeUnit.GAME_TICKS, ItemID.SCORPIAS_OFFSPRING),
 	VENENATIS(NpcID.VENENATIS_6610, 30, ChronoUnit.SECONDS, ItemID.VENENATIS_SPIDERLING),
 	VETION(NpcID.VETION_REBORN, 30, ChronoUnit.SECONDS, ItemID.VETION_JR),
 	DAGANNOTH_PRIME(NpcID.DAGANNOTH_PRIME, 90, ChronoUnit.SECONDS, ItemID.PET_DAGANNOTH_PRIME),
@@ -58,8 +60,10 @@ enum Boss
 	KALPHITE_QUEEN(NpcID.KALPHITE_QUEEN_965, 30, ChronoUnit.SECONDS, ItemID.KALPHITE_PRINCESS),
 	DUSK(NpcID.DUSK_7889, 5, ChronoUnit.MINUTES, ItemID.NOON),
 	ALCHEMICAL_HYDRA(NpcID.ALCHEMICAL_HYDRA_8622, 25200, ChronoUnit.MILLIS, ItemID.IKKLE_HYDRA),
-	SARACHNIS(NpcID.SARACHNIS, 10, ChronoUnit.SECONDS, ItemID.SRARACHA),
-	ZALCANO(NpcID.ZALCANO_9050, 21600, ChronoUnit.MILLIS, ItemID.SMOLCANO);
+	SARACHNIS(NpcID.SARACHNIS, 16, RSTimeUnit.GAME_TICKS, ItemID.SRARACHA),
+	ZALCANO(NpcID.ZALCANO_9050, 21600, ChronoUnit.MILLIS, ItemID.SMOLCANO),
+	PHANTOM_MUSPAH(NpcID.PHANTOM_MUSPAH_12080, 50, RSTimeUnit.GAME_TICKS, ItemID.MUPHIN),
+	;
 
 	private static final Map<Integer, Boss> bosses;
 
@@ -79,7 +83,7 @@ enum Boss
 		bosses = builder.build();
 	}
 
-	Boss(int id, long period, ChronoUnit unit, int itemSpriteId)
+	Boss(int id, long period, TemporalUnit unit, int itemSpriteId)
 	{
 		this.id = id;
 		this.spawnTime = Duration.of(period, unit);

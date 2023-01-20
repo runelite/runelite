@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.loginscreen;
 
+import com.google.common.base.CharMatcher;
 import com.google.common.base.Strings;
 import com.google.inject.Provides;
 import java.awt.Toolkit;
@@ -213,7 +214,7 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 		{
 			try
 			{
-				final String data = Toolkit
+				String data = Toolkit
 					.getDefaultToolkit()
 					.getSystemClipboard()
 					.getData(DataFlavor.stringFlavor)
@@ -234,6 +235,7 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 					// Authenticator form
 					case 4:
 						// Truncate data to maximum OTP code length if necessary
+						data = CharMatcher.inRange('0', '9').retainFrom(data);
 						client.setOtp(data.substring(0, Math.min(data.length(), MAX_PIN_LENGTH)));
 						break;
 				}

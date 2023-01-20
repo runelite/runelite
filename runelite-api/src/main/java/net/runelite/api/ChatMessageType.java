@@ -182,6 +182,14 @@ public enum ChatMessageType
 	CLAN_GIM_CHAT(-1),
 	CLAN_GIM_MESSAGE(-1),
 	/**
+	 * Chat type for npc and player dialog
+	 */
+	DIALOG(114),
+	/**
+	 * Chat type for dialog with a graphic/object
+	 */
+	MESBOX(115),
+	/**
 	 * An unknown message type.
 	 */
 	UNKNOWN(-1);

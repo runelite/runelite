@@ -122,10 +122,10 @@ public class TimersPlugin extends Plugin
 	private static final Pattern DIVINE_POTION_PATTERN = Pattern.compile("You drink some of your divine (.+) potion\\.");
 	private static final int VENOM_VALUE_CUTOFF = -38; // Antivenom < -38 <= Antipoison < 0
 	private static final int POISON_TICK_LENGTH = 30;
+	private static final int OVERLOAD_TICK_LENGTH = 25;
 
 	static final int FIGHT_CAVES_REGION_ID = 9551;
 	static final int INFERNO_REGION_ID = 9043;
-	private static final int NMZ_MAP_REGION_ID = 9033;
 	private static final Pattern TZHAAR_WAVE_MESSAGE = Pattern.compile("Wave: (\\d+)");
 	private static final String TZHAAR_DEFEATED_MESSAGE = "You have been defeated!";
 	private static final Pattern TZHAAR_PAUSED_MESSAGE = Pattern.compile("The (?:Inferno|Fight Cave) has been paused. You may now log out.");
@@ -139,6 +139,7 @@ public class TimersPlugin extends Plugin
 
 	private boolean imbuedHeartTimerActive;
 	private int nextPoisonTick;
+	private int nextOverloadRefreshTick;
 	private WorldPoint lastPoint;
 	private int lastAnimation;
 	private ElapsedTimer tzhaarTimer;
@@ -181,6 +182,7 @@ public class TimersPlugin extends Plugin
 		lastPoint = null;
 		lastAnimation = -1;
 		nextPoisonTick = 0;
+		nextOverloadRefreshTick = 0;
 		removeTzhaarTimer();
 		staminaTimer = null;
 		imbuedHeartTimerActive = false;
@@ -191,7 +193,6 @@ public class TimersPlugin extends Plugin
 	{
 		if (event.getVarbitId() == Varbits.IN_RAID)
 		{
-			removeGameTimer(OVERLOAD_RAID);
 			removeGameTimer(PRAYER_ENHANCE);
 		}
 
@@ -261,6 +262,30 @@ public class TimersPlugin extends Plugin
 				Duration duration = Duration.of(nextPoisonTick - tickCount + Math.abs((poisonVarp + 1 - VENOM_VALUE_CUTOFF) * POISON_TICK_LENGTH), RSTimeUnit.GAME_TICKS);
 				removeGameTimer(ANTIPOISON);
 				createGameTimer(ANTIVENOM, duration);
+			}
+		}
+
+		if ((event.getVarbitId() == Varbits.NMZ_OVERLOAD_REFRESHES_REMAINING
+			|| event.getVarbitId() == Varbits.COX_OVERLOAD_REFRESHES_REMAINING) && config.showOverload())
+		{
+			final int overloadVarb = event.getValue();
+			final int tickCount = client.getTickCount();
+
+			if (nextOverloadRefreshTick - tickCount <= 0)
+			{
+				nextOverloadRefreshTick = tickCount + OVERLOAD_TICK_LENGTH;
+			}
+
+			if (overloadVarb <= 0)
+			{
+				nextOverloadRefreshTick = -1;
+				removeGameTimer(OVERLOAD);
+				removeGameTimer(OVERLOAD_RAID);
+			}
+			else
+			{
+				GameTimer overloadTimer = client.getVarbitValue(Varbits.IN_RAID) == 1 ? OVERLOAD_RAID : OVERLOAD;
+				createGameTimer(overloadTimer, Duration.of(nextOverloadRefreshTick - tickCount + (overloadVarb - 1L) * OVERLOAD_TICK_LENGTH, RSTimeUnit.GAME_TICKS));
 			}
 		}
 
@@ -643,19 +668,6 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(EXANTIFIRE);
 		}
 
-		if (config.showOverload() && message.startsWith("You drink some of your") && message.contains("overload"))
-		{
-			if (client.getVarbitValue(Varbits.IN_RAID) == 1)
-			{
-				createGameTimer(OVERLOAD_RAID);
-			}
-			else
-			{
-				createGameTimer(OVERLOAD);
-			}
-
-		}
-
 		if (config.showCannon())
 		{
 			if (message.equals(CANNON_BASE_MESSAGE) || message.equals(CANNON_STAND_MESSAGE)
@@ -915,11 +927,6 @@ public class TimersPlugin extends Plugin
 		return client.getMapRegions() != null && ArrayUtils.contains(client.getMapRegions(), INFERNO_REGION_ID);
 	}
 
-	private boolean isInNightmareZone()
-	{
-		return client.getLocalPlayer() != null && client.getLocalPlayer().getWorldLocation().getPlane() > 0 && ArrayUtils.contains(client.getMapRegions(), NMZ_MAP_REGION_ID);
-	}
-
 	private void createTzhaarTimer()
 	{
 		removeTzhaarTimer();
@@ -1000,11 +1007,6 @@ public class TimersPlugin extends Plugin
 		switch (gameStateChanged.getGameState())
 		{
 			case LOADING:
-				if (!isInNightmareZone())
-				{
-					removeGameTimer(OVERLOAD);
-				}
-
 				if (tzhaarTimer != null && !isInFightCaves() && !isInInferno())
 				{
 					removeTzhaarTimer();

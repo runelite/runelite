@@ -445,7 +445,7 @@ public class TimersPluginTest
 		verify(infoBoxManager).addInfoBox(captor.capture());
 		TimerTimer infoBox = (TimerTimer) captor.getValue();
 		assertEquals(GameTimer.IMBUEDHEART, infoBox.getTimer());
-		assertEquals(GameTimer.IMBUEDHEART.getDuration(), infoBox.getDuration());
+		assertEquals(Duration.ofMinutes(7), infoBox.getDuration());
 	}
 
 	@Test
@@ -488,5 +488,56 @@ public class TimersPluginTest
 		TimerTimer infoBox = (TimerTimer) captor.getValue();
 		assertEquals(GameTimer.PICKPOCKET_STUN, infoBox.getTimer());
 		assertEquals(Duration.ofSeconds(5), infoBox.getDuration());
+	}
+
+	@Test
+	public void testCoXOverload()
+	{
+		when(timersConfig.showOverload()).thenReturn(true);
+		ArgumentCaptor<Predicate<InfoBox>> prcaptor = ArgumentCaptor.forClass(Predicate.class);
+
+		when(client.getVarbitValue(Varbits.IN_RAID)).thenReturn(1);
+		VarbitChanged varbitChanged = new VarbitChanged();
+		varbitChanged.setVarbitId(Varbits.COX_OVERLOAD_REFRESHES_REMAINING);
+		varbitChanged.setValue(15);
+		timersPlugin.onVarbitChanged(varbitChanged);
+
+		TimerTimer overloadInfobox = new TimerTimer(GameTimer.OVERLOAD_RAID, Duration.ofSeconds(225), timersPlugin);
+		verify(infoBoxManager).addInfoBox(any());
+		verify(infoBoxManager).removeIf(prcaptor.capture());
+		Predicate<InfoBox> pred = prcaptor.getValue();
+		assertTrue(pred.test(overloadInfobox));
+
+		// Remove on running out
+		varbitChanged.setValue(0);
+		timersPlugin.onVarbitChanged(varbitChanged); // Calls removeIf twice, once for NMZ and once for CoX
+
+		verify(infoBoxManager).addInfoBox(any());
+		verify(infoBoxManager, times(3)).removeIf(any());
+	}
+
+	@Test
+	public void testNMZOverload()
+	{
+		when(timersConfig.showOverload()).thenReturn(true);
+		ArgumentCaptor<Predicate<InfoBox>> prcaptor = ArgumentCaptor.forClass(Predicate.class);
+
+		VarbitChanged varbitChanged = new VarbitChanged();
+		varbitChanged.setVarbitId(Varbits.NMZ_OVERLOAD_REFRESHES_REMAINING);
+		varbitChanged.setValue(9);
+		timersPlugin.onVarbitChanged(varbitChanged);
+
+		TimerTimer overloadInfobox = new TimerTimer(GameTimer.OVERLOAD, Duration.ofSeconds(135), timersPlugin);
+		verify(infoBoxManager).addInfoBox(any());
+		verify(infoBoxManager).removeIf(prcaptor.capture());
+		Predicate<InfoBox> pred = prcaptor.getValue();
+		assertTrue(pred.test(overloadInfobox));
+
+		// Remove on running out
+		varbitChanged.setValue(0);
+		timersPlugin.onVarbitChanged(varbitChanged); // Calls removeIf twice, once for NMZ and once for CoX
+
+		verify(infoBoxManager).addInfoBox(any());
+		verify(infoBoxManager, times(3)).removeIf(any());
 	}
 }
