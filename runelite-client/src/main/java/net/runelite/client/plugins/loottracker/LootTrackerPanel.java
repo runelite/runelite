@@ -307,7 +307,8 @@ class LootTrackerPanel extends PluginPanel
 		final JMenuItem reset = new JMenuItem("Reset All");
 		reset.addActionListener(e ->
 		{
-			if(config.showDeleteWarning()) {
+			if (config.showDeleteWarning())
+			{
 				final int result = JOptionPane.showOptionDialog(overallPanel,
 						currentView == null ? RESET_ALL_WARNING_TEXT : String.format(RESET_CURRENT_WARNING_TEXT, currentView),
 						"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
@@ -587,7 +588,8 @@ class LootTrackerPanel extends PluginPanel
 		final JMenuItem reset = new JMenuItem("Reset");
 		reset.addActionListener(e ->
 		{
-			if(config.showDeleteWarning()) {
+			if (config.showDeleteWarning())
+			{
 				final int result = JOptionPane.showOptionDialog(box,
 						groupLoot ? String.format(RESET_CURRENT_WARNING_TEXT, box.getId()) : RESET_ONE_WARNING_TEXT,
 						"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
