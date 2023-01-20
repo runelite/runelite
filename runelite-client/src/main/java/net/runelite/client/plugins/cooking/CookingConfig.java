@@ -47,6 +47,14 @@ public interface CookingConfig extends Config
 
 	@ConfigItem(
 		position = 2,
+		keyName = "showStats",
+		name = "Show session stats",
+		description = "Configures whether to display cooking session stats"
+	)
+	default boolean showStats() { return true; }
+
+	@ConfigItem(
+		position = 3,
 		keyName = "fermentTimer",
 		name = "Show wine ferment timer",
 		description = "Configures if the timer before wines are fermented is shown"
