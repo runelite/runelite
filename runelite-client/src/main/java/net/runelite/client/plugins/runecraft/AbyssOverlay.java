@@ -74,11 +74,13 @@ class AbyssOverlay extends Overlay
 
 		for (DecorativeObject object : abyssObjects)
 		{
-			if(config.showRifts() && config.showClickBox()){
+			if (config.showRifts() && config.showClickBox())
+			{
 				renderRift(graphics, object);
 			}
 
-			if(config.showIcons()){
+			if (config.showIcons())
+			{
 				renderIcon(graphics, object);
 			}
 		}
@@ -112,7 +114,8 @@ class AbyssOverlay extends Overlay
 		}
 	}
 
-	private void renderIcon(Graphics2D graphics, DecorativeObject object) {
+	private void renderIcon(Graphics2D graphics, DecorativeObject object)
+	{
 		AbyssRifts rift = AbyssRifts.getRift(object.getId());
 		BufferedImage image = getImage(rift);
 		if (rift == null)
