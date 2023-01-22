@@ -336,8 +336,8 @@ public interface TimersConfig extends Config
 
 	@ConfigItem(
 		keyName = "showCombatTimer",
-		name = "Combat logout timer",
-		description = "Configures whether combat logout timer is displayed"
+		name = "Combat cooldown timer",
+		description = "Configures whether combat cooldown timer is displayed"
 	)
 	default boolean showCombatTimer()
 	{
