@@ -174,7 +174,7 @@ public interface NpcIndicatorsConfig extends Config
 		position = 7,
 		keyName = "npcToHighlight",
 		name = "NPCs to Highlight",
-		description = "List of NPC names to highlight"
+		description = "List of NPC names to highlight. Format: (NPC), (NPC)"
 	)
 	default String getNpcToHighlight()
 	{

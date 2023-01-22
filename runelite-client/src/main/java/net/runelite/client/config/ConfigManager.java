@@ -93,6 +93,7 @@ import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ClientShutdown;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.events.ConfigSync;
 import net.runelite.client.events.RuneScapeProfileChanged;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.http.api.config.ConfigPatch;
@@ -314,7 +315,7 @@ public class ConfigManager
 			return;
 		}
 
-		log.debug("Loading in config from disk for upload");
+		log.debug("Syncing properties from {}", propertiesFile);
 		swapProperties(properties, true);
 	}
 
@@ -337,6 +338,8 @@ public class ConfigManager
 			log.warn("Backup failed, skipping import", e);
 			return null;
 		}
+
+		log.info("Importing local settings");
 
 		syncPropertiesFromFile(getLocalPropertiesFile());
 
@@ -407,7 +410,7 @@ public class ConfigManager
 		return t;
 	}
 
-	public List<String> getConfigurationKeys(String prefix)
+	public synchronized List<String> getConfigurationKeys(String prefix)
 	{
 		return properties.keySet().stream()
 			.map(String.class::cast)
@@ -415,7 +418,7 @@ public class ConfigManager
 			.collect(Collectors.toList());
 	}
 
-	public List<String> getRSProfileConfigurationKeys(String group, String profile, String keyPrefix)
+	public synchronized List<String> getRSProfileConfigurationKeys(String group, String profile, String keyPrefix)
 	{
 		if (profile == null)
 		{
@@ -928,6 +931,8 @@ public class ConfigManager
 	@Nullable
 	private CompletableFuture<Void> sendConfig()
 	{
+		eventBus.post(new ConfigSync());
+
 		CompletableFuture<Void> future = null;
 		synchronized (pendingChanges)
 		{
@@ -974,21 +979,24 @@ public class ConfigManager
 	{
 		String prefix = RSPROFILE_GROUP + "." + RSPROFILE_GROUP + ".";
 		Set<String> profileKeys = new HashSet<>();
-		for (Object oKey : properties.keySet())
+		synchronized (this)
 		{
-			String key = (String) oKey;
-			if (!key.startsWith(prefix))
+			for (Object oKey : properties.keySet())
 			{
-				continue;
-			}
+				String key = (String) oKey;
+				if (!key.startsWith(prefix))
+				{
+					continue;
+				}
 
-			String[] split = splitKey(key);
-			if (split == null)
-			{
-				continue;
-			}
+				String[] split = splitKey(key);
+				if (split == null)
+				{
+					continue;
+				}
 
-			profileKeys.add(split[KEY_SPLITTER_PROFILE]);
+				profileKeys.add(split[KEY_SPLITTER_PROFILE]);
+			}
 		}
 
 		return profileKeys.stream()

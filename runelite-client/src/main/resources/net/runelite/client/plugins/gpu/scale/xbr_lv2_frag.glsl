@@ -90,11 +90,8 @@ vec4 wd(vec4 a, vec4 b, vec4 c, vec4 d, vec4 e, vec4 f, vec4 g, vec4 h)
 {
     return (df(a,b) + df(a,c) + df(d,e) + df(d,f) + 4.0*df(g,h));
 }
-
-vec4 weighted_distance(vec4 a, vec4 b, vec4 c, vec4 d, vec4 e, vec4 f, vec4 g, vec4 h, vec4 i, vec4 j, vec4 k, vec4 l)
-{
-    return (df(a,b) + df(a,c) + df(d,e) + df(d,f) + df(i,j) + df(k,l) + 2.0*df(g,h));
-}
+// This is a macro because a function behaves differently between Apple Silicon Macs vs other platforms.
+#define weighted_distance(a,b,c,d,e,f,g,h,i,j,k,l) (df(a,b) + df(a,c) + df(d,e) + df(d,f) + df(i,j) + df(k,l) + 2.0*df(g,h))
 
 float c_df(vec3 c1, vec3 c2)
 {

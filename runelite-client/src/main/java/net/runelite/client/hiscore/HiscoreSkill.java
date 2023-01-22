@@ -103,6 +103,7 @@ public enum HiscoreSkill
 	NIGHTMARE("Nightmare", BOSS),
 	PHOSANIS_NIGHTMARE("Phosani's Nightmare", BOSS),
 	OBOR("Obor", BOSS),
+	PHANTOM_MUSPAH("Phantom Muspah", BOSS),
 	SARACHNIS("Sarachnis", BOSS),
 	SCORPIA("Scorpia", BOSS),
 	SKOTIZO("Skotizo", BOSS),

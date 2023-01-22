@@ -44,6 +44,7 @@ import net.runelite.client.plugins.cluescrolls.clues.item.SingleItemRequirement;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.LineComponent;
 
 public class ClueScrollOverlay extends OverlayPanel
@@ -110,6 +111,7 @@ public class ClueScrollOverlay extends OverlayPanel
 			return null;
 		}
 
+		panelComponent.setPreferredSize(new Dimension(ComponentConstants.STANDARD_WIDTH, 0));
 		clue.makeOverlayHint(panelComponent, plugin);
 
 		final Item[] inventoryItems = plugin.getInventoryItems();

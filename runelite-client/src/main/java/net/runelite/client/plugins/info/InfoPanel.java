@@ -37,7 +37,6 @@ import java.awt.event.MouseEvent;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.annotation.Nullable;
 import javax.inject.Named;
-import javax.inject.Singleton;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -46,20 +45,19 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.HyperlinkEvent;
 import net.runelite.api.Client;
-import net.runelite.client.events.SessionClose;
-import net.runelite.client.events.SessionOpen;
 import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.SessionClose;
+import net.runelite.client.events.SessionOpen;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.LinkBrowser;
 
-@Singleton
 public class InfoPanel extends PluginPanel
 {
 	private static final String RUNELITE_LOGIN = "https://runelite_login/";
@@ -204,6 +202,11 @@ public class InfoPanel extends PluginPanel
 
 		updateLoggedIn();
 		eventBus.register(this);
+	}
+
+	void deinit()
+	{
+		eventBus.unregister(this);
 	}
 
 	/**

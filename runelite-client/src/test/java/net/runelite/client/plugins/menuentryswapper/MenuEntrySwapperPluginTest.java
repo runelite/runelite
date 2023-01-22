@@ -30,7 +30,6 @@ import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.util.Arrays;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import net.runelite.api.KeyCode;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
@@ -93,7 +92,6 @@ public class MenuEntrySwapperPluginTest
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
 
-		when(client.getGameState()).thenReturn(GameState.LOGGED_IN);
 		when(client.getObjectDefinition(anyInt())).thenReturn(mock(ObjectComposition.class));
 
 		npc = mock(NPC.class);

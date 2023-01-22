@@ -386,7 +386,7 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 		switch (gameStateChanged.getGameState())
 		{
 			case HOPPING:
-				savedCameraYaw = client.getMapAngle();
+				savedCameraYaw = client.getCameraYawTarget();
 				break;
 			case LOGGED_IN:
 				if (savedCameraYaw != 0 && config.preserveYaw())

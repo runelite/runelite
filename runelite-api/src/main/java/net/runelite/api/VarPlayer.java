@@ -69,10 +69,25 @@ public enum VarPlayer
 	NMZ_REWARD_POINTS(1060),
 
 	/**
-	 * -1 : Poison immune
-	 *  Normal poison damage is ceil( this / 5.0f )
-	 *  If this is greater than or equal to 1000000, the player is envenomed.
-	 *  Venom damage is (this - 999997) * 2
+	 * The poisoned status of the player, with negative values indicating the duration of poison or venom protection and
+	 * positive values representing the amount of poison or venom damage the player will be taking.
+	 *
+	 * <ul>
+	 *     <li>
+	 *         (-inf, -38): Venom immune for a duration of {@code (abs(val) - 38) * 30} game ticks (18 seconds per
+	 *         poison tick), after which point the value will have increased to {@code -38} and be representing poison
+	 *         immunity rather than venom immunity
+	 *     </li>
+	 *     <li>
+	 *         [-38, 0): Poison immune for a duration of {@code abs(val) * 30} game ticks (18 seconds per poison tick)
+	 *     </li>
+	 *     <li>0: Not poisoned or immune to poison</li>
+	 *     <li>[1, 100]: Poisoned for an amount of {@code ceil(val / 5.0f)}</li>
+	 *     <li>
+	 *         [1000000, inf): Venomed for an amount of {@code min(20, (val - 999997) * 2)}, that is, an amount starting
+	 *         at 6 damage, increasing by 2 each time the value increases by one, and capped at 20
+	 *     </li>
+	 * </ul>
 	 */
 	POISON(102),
 

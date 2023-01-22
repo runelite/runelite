@@ -40,12 +40,12 @@ import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.Point;
-import net.runelite.api.RenderOverview;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.worldmap.WorldMap;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.JagexColors;
 import net.runelite.client.ui.overlay.Overlay;
@@ -114,7 +114,7 @@ public class WorldMapOverlay extends Overlay
 				.setTarget(ColorUtil.wrapWithColorTag(worldPoint.getName(), JagexColors.MENU_TARGET))
 				.setOption(FOCUS_ON)
 				.setType(MenuAction.RUNELITE)
-				.onClick(m -> client.getRenderOverview().setWorldMapPositionTarget(
+				.onClick(m -> client.getWorldMap().setWorldMapPositionTarget(
 					MoreObjects.firstNonNull(worldPoint.getTarget(), worldPoint.getWorldPoint())));
 		});
 		bottomBar.setHasListener(true);
@@ -251,14 +251,14 @@ public class WorldMapOverlay extends Overlay
 	 */
 	public Point mapWorldPointToGraphicsPoint(WorldPoint worldPoint)
 	{
-		RenderOverview ro = client.getRenderOverview();
+		WorldMap worldMap = client.getWorldMap();
 
-		if (!ro.getWorldMapData().surfaceContainsPosition(worldPoint.getX(), worldPoint.getY()))
+		if (!worldMap.getWorldMapData().surfaceContainsPosition(worldPoint.getX(), worldPoint.getY()))
 		{
 			return null;
 		}
 
-		float pixelsPerTile = ro.getWorldMapZoom();
+		float pixelsPerTile = worldMap.getWorldMapZoom();
 
 		Widget map = client.getWidget(WidgetInfo.WORLD_MAP_VIEW);
 		if (map != null)
@@ -268,7 +268,7 @@ public class WorldMapOverlay extends Overlay
 			int widthInTiles = (int) Math.ceil(worldMapRect.getWidth() / pixelsPerTile);
 			int heightInTiles = (int) Math.ceil(worldMapRect.getHeight() / pixelsPerTile);
 
-			Point worldMapPosition = ro.getWorldMapPosition();
+			Point worldMapPosition = worldMap.getWorldMapPosition();
 
 			//Offset in tiles from anchor sides
 			int yTileMax = worldMapPosition.getY() - heightInTiles / 2;

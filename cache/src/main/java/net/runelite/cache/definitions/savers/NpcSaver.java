@@ -138,11 +138,6 @@ public class NpcSaver
 		out.writeByte(npc.ambient);
 		out.writeByte(101);
 		out.writeByte(npc.contrast);
-		if (npc.headIcon != -1)
-		{
-			out.writeByte(102);
-			out.writeShort(npc.headIcon);
-		}
 		out.writeByte(103);
 		out.writeShort(npc.rotationSpeed);
 		if (!npc.isInteractable)
