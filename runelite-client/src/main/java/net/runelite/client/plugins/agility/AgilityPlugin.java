@@ -411,7 +411,7 @@ public class AgilityPlugin extends Plugin
 			// Find the closest shortcut to this object
 			for (AgilityShortcut shortcut : Obstacles.SHORTCUT_OBSTACLE_IDS.get(newObject.getId()))
 			{
-				if (!shortcut.matches(newObject))
+				if (!shortcut.matches(client, newObject))
 				{
 					continue;
 				}

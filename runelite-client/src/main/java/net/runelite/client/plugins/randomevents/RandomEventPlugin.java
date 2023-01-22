@@ -179,6 +179,10 @@ public class RandomEventPlugin extends Plugin
 		{
 			case NpcID.BEE_KEEPER_6747:
 				return config.notifyBeekeeper();
+			case NpcID.CAPT_ARNAV:
+				return config.notifyArnav();
+			case NpcID.DRUNKEN_DWARF:
+				return config.notifyDwarf();
 			case NpcID.SERGEANT_DAMIEN_6743:
 				return config.notifyDemon();
 			case NpcID.FREAKY_FORESTER_6748:
@@ -188,25 +192,44 @@ public class RandomEventPlugin extends Plugin
 			case NpcID.GENIE:
 			case NpcID.GENIE_327:
 				return config.notifyGenie();
+			case NpcID.GILES:
+			case NpcID.GILES_5441:
+			case NpcID.NILES:
+			case NpcID.NILES_5439:
+			case NpcID.MILES:
+			case NpcID.MILES_5440:
+				return config.notifyCerters();
 			case NpcID.DR_JEKYLL:
 			case NpcID.DR_JEKYLL_314:
 				return config.notifyJekyll();
 			case NpcID.EVIL_BOB:
-			case NpcID.EVIL_BOB_6754:
 				return config.notifyBob();
+			case NpcID.EVIL_BOB_6754:
+				return config.notifyPrison();
 			case NpcID.LEO_6746:
 				return config.notifyGravedigger();
 			case NpcID.MYSTERIOUS_OLD_MAN_6750:
 			case NpcID.MYSTERIOUS_OLD_MAN_6751:
-			case NpcID.MYSTERIOUS_OLD_MAN_6752:
-			case NpcID.MYSTERIOUS_OLD_MAN_6753:
 				return config.notifyMoM();
+			case NpcID.MYSTERIOUS_OLD_MAN_6752:
+				return config.notifyMaze();
+			case NpcID.MYSTERIOUS_OLD_MAN_6753:
+				return config.notifyMime();
+			case NpcID.PILLORY_GUARD:
+				return config.notifyPillory();
+			case NpcID.POSTIE_PETE_6738:
+				return config.notifyTwin();
 			case NpcID.QUIZ_MASTER_6755:
 				return config.notifyQuiz();
+			case NpcID.RICK_TURPENTINE:
+			case NpcID.RICK_TURPENTINE_376:
+				return config.notifyTurpentine();
 			case NpcID.DUNCE_6749:
 				return config.notifyDunce();
 			case NpcID.SANDWICH_LADY:
 				return config.notifySandwich();
+			case NpcID.FLIPPA_6744:
+				return config.notifyFlippa();
 			default:
 				return false;
 		}

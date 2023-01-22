@@ -157,7 +157,7 @@ enum TeleportLocationData
 	WILDERNESS_CRABS_TELEPORT(TeleportType.OTHER, "Wilderness crabs teleport", new WorldPoint(3348, 3783, 0), "wilderness_crabs_teleport_icon.png"),
 	CANOE_WILDERNESS(TeleportType.OTHER, "Canoe (No departure)", "35", new WorldPoint(3141, 3796, 0), "transportation_icon.png"),
 	
-	// Achievement Diary
+	// Achievement Diary and Combat Achievements
 	ARDOUGNE_CLOAK_MONASTERY(TeleportType.OTHER, "Ardougne Cloak", "Monastery", new WorldPoint(2606, 3222, 0), "ardougne_cloak_icon.png"),
 	ARDOUGNE_CLOAK_FARM(TeleportType.OTHER, "Ardougne Cloak", "Farm", new WorldPoint(2673, 3375, 0), "ardougne_cloak_icon.png"),
 	EXPLORERS_RING(TeleportType.OTHER, "Explorer's Ring", new WorldPoint(3052, 3292, 0), "explorers_ring_icon.png"),
@@ -173,6 +173,8 @@ enum TeleportLocationData
 	WESTERN_BANNER(TeleportType.OTHER, "Western Banner", new WorldPoint(2329, 3685, 0), "western_banner_icon.png"),
 	RADAS_BLESSING_MOUNT_KARUULM(TeleportType.OTHER, "Rada's Blessing", new WorldPoint(1311, 3795, 0), "radas_blessing_icon.png"),
 	RADAS_BLESSING_WOODLANG(TeleportType.OTHER, "Rada's Blessing", new WorldPoint(1553, 3454, 0), "radas_blessing_icon.png"),
+	GHOMMALS_HILT_GWD(TeleportType.OTHER, "Ghommal's Hilt", "God Wars Dungeon", new WorldPoint(2898, 3709, 0), "ghommals_hilt_teleport_icon.png"),
+	GHOMMALS_HILT_MORULREK(TeleportType.OTHER, "Ghommal's Hilt", "Mor Ul Rek", new WorldPoint(2554, 5130, 0), "ghommals_hilt_teleport_icon.png"),
 
 	// Scrolls
 	DIGSITE_SCROLL(TeleportType.SCROLL, "Digsite Teleport", new WorldPoint(3324, 3412, 0), "scroll_teleport_icon.png"),

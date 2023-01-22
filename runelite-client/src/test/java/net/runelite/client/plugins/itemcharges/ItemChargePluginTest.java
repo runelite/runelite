@@ -87,6 +87,7 @@ public class ItemChargePluginTest
 	private static final String CHECK_BRACELET_OF_SLAUGHTER_1 = "Your bracelet of slaughter has 1 charge left.";
 	private static final String ACTIVATE_BRACELET_OF_SLAUGHTER = "Your bracelet of slaughter prevents your slayer count from decreasing. It has 16 charges left.";
 	private static final String BREAK_BRACELET_OF_SLAUGHTER = "Your bracelet of slaughter prevents your slayer count from decreasing. <col=ff0000>It then crumbles to dust.</col>";
+	private static final String REGENERATE_BRACELET_OF_SLAUGHTER = "Your bracelet of slaughter prevents your slayer count from decreasing. <col=047f06>It then regenerates itself to full charge!</col>";
 
 	private static final String CHECK_EXPEDITIOUS_BRACELET = "Your expeditious bracelet has 6 charges left.";
 	private static final String CHECK_EXPEDITIOUS_BRACELET_1 = "Your expeditious bracelet has 1 charge left.";
@@ -392,6 +393,14 @@ public class ItemChargePluginTest
 	public void testSlaughterBreak()
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BREAK_BRACELET_OF_SLAUGHTER, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BRACELET_OF_SLAUGHTER, 30);
+	}
+
+	@Test
+	public void testSlaughterRegenerate()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", REGENERATE_BRACELET_OF_SLAUGHTER, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
 		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BRACELET_OF_SLAUGHTER, 30);
 	}

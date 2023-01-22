@@ -85,7 +85,7 @@ public class VarrockDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.WOODCUTTING, 57));
 		add("Teleport to Paddewwa.",
 			new SkillRequirement(Skill.MAGIC, 54),
-			new QuestRequirement(Quest.DESERT_TREASURE));
+			new QuestRequirement(Quest.DESERT_TREASURE_I));
 		add("Chop some yew logs in Varrock and burn them at the top of the Varrock church.",
 			new SkillRequirement(Skill.WOODCUTTING, 60),
 			new SkillRequirement(Skill.FIREMAKING, 60));

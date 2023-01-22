@@ -24,7 +24,7 @@
  */
 package net.runelite.client.plugins.itemstats.potions;
 
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import net.runelite.api.Client;
 import net.runelite.client.plugins.itemstats.BoostedStatBoost;
 import static net.runelite.client.plugins.itemstats.Builders.perc;
@@ -42,23 +42,27 @@ import static net.runelite.client.plugins.itemstats.stats.Stats.STRENGTH;
 import java.util.Comparator;
 import java.util.stream.Stream;
 
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class AncientBrew implements Effect
 {
 	private static final Stat[] LOWERED_STATS = {
 		ATTACK, STRENGTH, DEFENCE
 	};
 	private static final CappedStatBoost PRAYER_BOOST = new CappedStatBoost(PRAYER, perc(.1, 2), perc(.05, 0));
-	private static final SimpleStatBoost MAGIC_BOOST = new SimpleStatBoost(MAGIC, true, perc(.05, 2));
 	private static final BoostedStatBoost MELEE_DRAIN = new BoostedStatBoost(null, false, perc(.1, -2));
+
+	private final double magicBoostPercent;
+	private final int magicBoostAmount;
 
 	@Override
 	public StatsChanges calculate(Client client)
 	{
+		final SimpleStatBoost magic = new SimpleStatBoost(MAGIC, true, perc(magicBoostPercent, magicBoostAmount));
+
 		StatsChanges changes = new StatsChanges(0);
 		changes.setStatChanges(Stream.of(
 			Stream.of(PRAYER_BOOST.effect(client)),
-			Stream.of(MAGIC_BOOST.effect(client)),
+			Stream.of(magic.effect(client)),
 			Stream.of(LOWERED_STATS)
 				.filter(stat -> 1 < stat.getValue(client))
 				.map(stat ->

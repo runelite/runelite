@@ -151,6 +151,7 @@ public class ItemStatChanges
 		add(combo(food(2), boost(STRENGTH, 3), new BoostedStatBoost(ATTACK, false, perc(.05, -2))), DRAGON_BITTERM, DRAGON_BITTERM1, DRAGON_BITTERM2, DRAGON_BITTERM3, DRAGON_BITTERM4);
 		add(combo(food(1), boost(MINING, 1), boost(SMITHING, 1), new BoostedStatBoost(ATTACK, false, perc(.04, -2)), new BoostedStatBoost(DEFENCE, false, perc(.04, -2)), new BoostedStatBoost(STRENGTH, false, perc(.04, -2))), DWARVEN_STOUT, DWARVEN_STOUT1, DWARVEN_STOUT2, DWARVEN_STOUT3, DWARVEN_STOUT4);
 		add(combo(food(2), boost(MINING, 2), boost(SMITHING, 2), new BoostedStatBoost(ATTACK, false, perc(.04, -3)), new BoostedStatBoost(DEFENCE, false, perc(.04, -3)), new BoostedStatBoost(STRENGTH, false, perc(.04, -3))), DWARVEN_STOUTM, DWARVEN_STOUTM1, DWARVEN_STOUTM2, DWARVEN_STOUTM3, DWARVEN_STOUTM4);
+		add(combo(food(1), boost(SMITHING, 4), dec(ATTACK, 2), dec(RANGED, 2), dec(MAGIC, 2)), KOVACS_GROG);
 		add(combo(food(1), boost(HERBLORE, 1), new BoostedStatBoost(ATTACK, false, perc(.04, -2)), new BoostedStatBoost(DEFENCE, false, perc(.04, -2)), new BoostedStatBoost(STRENGTH, false, perc(.04, -2))), GREENMANS_ALE, GREENMANS_ALE1, GREENMANS_ALE2, GREENMANS_ALE3, GREENMANS_ALE4, GREENMANS_ALE_7746);
 		add(combo(food(2), boost(HERBLORE, 2), new BoostedStatBoost(ATTACK, false, perc(.04, -3)), new BoostedStatBoost(DEFENCE, false, perc(.04, -3)), new BoostedStatBoost(STRENGTH, false, perc(.04, -3))), GREENMANS_ALEM, GREENMANS_ALEM1, GREENMANS_ALEM2, GREENMANS_ALEM3, GREENMANS_ALEM4);
 		add(combo(food(1), boost(SLAYER, 2), new BoostedStatBoost(ATTACK, false, perc(.02, -2)), new BoostedStatBoost(DEFENCE, false, perc(.02, -2)), new BoostedStatBoost(STRENGTH, false, perc(.02, -2))), SLAYERS_RESPITE, SLAYERS_RESPITE1, SLAYERS_RESPITE2, SLAYERS_RESPITE3, SLAYERS_RESPITE4);
@@ -184,7 +185,7 @@ public class ItemStatChanges
 		final SingleEffect superRangingPot = boost(RANGED, perc(.15, 5));
 		final SingleEffect divinePot = heal(HITPOINTS, -10);
 		final Effect zamorakBrew = combo(boost(ATTACK, perc(.20, 2)), boost(STRENGTH, perc(.12, 2)), heal(PRAYER, perc(.10, 0)), new BoostedStatBoost(DEFENCE, false, perc(.10, -2)), new BoostedStatBoost(HITPOINTS, false, perc(-.12, 0)));
-		final Effect ancientBrew = new AncientBrew();
+		final Effect ancientBrew = new AncientBrew(.05, 2);
 		add(attackPot, ATTACK_POTION1, ATTACK_POTION2, ATTACK_POTION3, ATTACK_POTION4);
 		add(strengthPot, STRENGTH_POTION1, STRENGTH_POTION2, STRENGTH_POTION3, STRENGTH_POTION4);
 		add(defencePot, DEFENCE_POTION1, DEFENCE_POTION2, DEFENCE_POTION3, DEFENCE_POTION4);
@@ -218,6 +219,7 @@ public class ItemStatChanges
 		add(combo(superAttackPot, superStrengthPot),
 			SUPER_COMBAT_POTION4_23543, SUPER_COMBAT_POTION3_23545, SUPER_COMBAT_POTION2_23547, SUPER_COMBAT_POTION1_23549 /* LMS */);
 		add(ancientBrew, ANCIENT_BREW1, ANCIENT_BREW2, ANCIENT_BREW3, ANCIENT_BREW4);
+		add(new AncientBrew(.08, 3), FORGOTTEN_BREW1, FORGOTTEN_BREW2, FORGOTTEN_BREW3, FORGOTTEN_BREW4);
 
 		// Mixed combat potions
 		add(new MixedPotion(3, attackPot), ATTACK_MIX1, ATTACK_MIX2);
@@ -339,6 +341,7 @@ public class ItemStatChanges
 		add(combo(range(food(1), food(3)), heal(RUN_ENERGY, 10)), PURPLE_SWEETS_10476);
 		add(new SpicyStew(), SPICY_STEW);
 		add(imbuedHeart, IMBUED_HEART);
+		add(boost(MAGIC, perc(.10, 4)), SATURATED_HEART);
 		add(combo(boost(ATTACK, 2), boost(STRENGTH, 1), heal(PRAYER, 1), heal(DEFENCE, -1)), JANGERBERRIES);
 		add(new CaveNightshade(), CAVE_NIGHTSHADE);
 

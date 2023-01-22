@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2022, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,18 +22,15 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.api.worldmap;
 
-/**
- * Represents an area in the world.
- */
-public interface MapElementConfig
+import java.util.Collection;
+
+public interface WorldMapRegion
 {
 	/**
-	 * Gets the sprite icon to display on the world map.
-	 *
-	 * @param unused unused value
-	 * @return the sprite icon to display on the world map
+	 * Gets visible map icons. The underlying list is modified as the map is panned around.
+	 * @return
 	 */
-	SpritePixels getMapIcon(boolean unused);
+	Collection<WorldMapIcon> getMapIcons();
 }

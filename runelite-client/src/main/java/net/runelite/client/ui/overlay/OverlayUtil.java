@@ -79,7 +79,7 @@ public class OverlayUtil
 	@Deprecated
 	public static void renderMinimapRect(Client client, Graphics2D graphics, Point center, int width, int height, Color color)
 	{
-		double angle = client.getMapAngle() * Perspective.UNIT;
+		double angle = client.getCameraYawTarget() * Perspective.UNIT;
 
 		graphics.setColor(color);
 		graphics.rotate(angle, center.getX(), center.getY());

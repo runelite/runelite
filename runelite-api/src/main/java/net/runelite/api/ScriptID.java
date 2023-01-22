@@ -408,4 +408,7 @@ public final class ScriptID
 
 	@ScriptArguments(integer = 7)
 	public static final int ORBS_UPDATE_RUNENERGY = 447;
+
+	@ScriptArguments(integer = 9)
+	public static final int WORLDMAP_LOADMAP = 1712;
 }

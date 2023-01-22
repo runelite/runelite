@@ -67,7 +67,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import org.mockito.Mock;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
@@ -118,6 +120,10 @@ public class SlayerPluginTest
 
 	private static final String TASK_COMPLETE = "You need something new to hunt.";
 	private static final String TASK_CANCELED = "Your task has been cancelled.";
+
+	private static final String TASK_CANCELED_LEFT_FIGHT_CAVES = "You no longer have a slayer task as you left the fight cave.";
+	private static final String TASK_CANCELED_LEFT_INFERNO = "You no longer have a slayer task as you left the Inferno.";
+	private static final String TASK_CANCELED_FAILED_INFERNO = "You no longer have a slayer task.";
 
 	private static final String SUPERIOR_MESSAGE = "A superior foe has appeared...";
 
@@ -250,6 +256,24 @@ public class SlayerPluginTest
 
 		assertEquals("goblins", slayerPlugin.getTaskName());
 		assertEquals(17, slayerPlugin.getAmount());
+		verify(configManager).setRSProfileConfiguration(SlayerConfig.GROUP_NAME, SlayerConfig.STREAK_KEY, 0);
+		verify(configManager).setRSProfileConfiguration(SlayerConfig.GROUP_NAME, SlayerConfig.POINTS_KEY, 0);
+	}
+
+	@Test
+	public void testFirstTaskWithPoints()
+	{
+		when(configManager.getRSProfileConfiguration(SlayerConfig.GROUP_NAME, SlayerConfig.POINTS_KEY, int.class)).thenReturn(30);
+
+		Widget npcDialog = mock(Widget.class);
+		when(npcDialog.getText()).thenReturn(TASK_NEW_FIRST);
+		when(client.getWidget(WidgetInfo.DIALOG_NPC_TEXT)).thenReturn(npcDialog);
+		slayerPlugin.onGameTick(new GameTick());
+
+		assertEquals("goblins", slayerPlugin.getTaskName());
+		assertEquals(17, slayerPlugin.getAmount());
+		verify(configManager).setRSProfileConfiguration(SlayerConfig.GROUP_NAME, SlayerConfig.STREAK_KEY, 0);
+		verify(configManager, never()).setRSProfileConfiguration(eq(SlayerConfig.GROUP_NAME), eq(SlayerConfig.POINTS_KEY), anyInt());
 	}
 
 	@Test
@@ -561,6 +585,45 @@ public class SlayerPluginTest
 		slayerPlugin.setAmount(42);
 
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "Perterter", TASK_CANCELED, null, 0);
+		slayerPlugin.onChatMessage(chatMessageEvent);
+
+		assertEquals("", slayerPlugin.getTaskName());
+		assertEquals(0, slayerPlugin.getAmount());
+	}
+
+	@Test
+	public void testCancelledOnFightCaveLeave()
+	{
+		slayerPlugin.setTaskName("cows");
+		slayerPlugin.setAmount(42);
+
+		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "Perterter", TASK_CANCELED_LEFT_FIGHT_CAVES, null, 0);
+		slayerPlugin.onChatMessage(chatMessageEvent);
+
+		assertEquals("", slayerPlugin.getTaskName());
+		assertEquals(0, slayerPlugin.getAmount());
+	}
+
+	@Test
+	public void testCancelledOnInfernoLeave()
+	{
+		slayerPlugin.setTaskName("cows");
+		slayerPlugin.setAmount(42);
+
+		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "Perterter", TASK_CANCELED_LEFT_INFERNO, null, 0);
+		slayerPlugin.onChatMessage(chatMessageEvent);
+
+		assertEquals("", slayerPlugin.getTaskName());
+		assertEquals(0, slayerPlugin.getAmount());
+	}
+
+	@Test
+	public void testCancelledOnInfernoFail()
+	{
+		slayerPlugin.setTaskName("cows");
+		slayerPlugin.setAmount(42);
+
+		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "Perterter", TASK_CANCELED_FAILED_INFERNO, null, 0);
 		slayerPlugin.onChatMessage(chatMessageEvent);
 
 		assertEquals("", slayerPlugin.getTaskName());

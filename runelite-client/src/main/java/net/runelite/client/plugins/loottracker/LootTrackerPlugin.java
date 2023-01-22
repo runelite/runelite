@@ -40,7 +40,6 @@ import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -99,6 +98,7 @@ import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ClientShutdown;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.events.ConfigSync;
 import net.runelite.client.events.NpcLootReceived;
 import net.runelite.client.events.PlayerLootReceived;
 import net.runelite.client.events.RuneScapeProfileChanged;
@@ -110,7 +110,6 @@ import net.runelite.client.game.LootManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
@@ -404,8 +403,16 @@ public class LootTrackerPlugin extends Plugin
 	@Subscribe
 	public void onSessionClose(SessionClose sessionClose)
 	{
-		submitLoot();
+		// session close is fired after the config has been synced and the
+		// session has been invalidated, so it is too late to submit loot
+		// if there is any.
 		lootTrackerClient.setUuid(null);
+	}
+
+	@Subscribe
+	public void onConfigSync(ConfigSync configSync)
+	{
+		submitLoot();
 	}
 
 	@Subscribe
@@ -1026,6 +1033,7 @@ public class LootTrackerPlugin extends Plugin
 					case ItemID.ORNATE_LOCKBOX_25651:
 					case ItemID.CACHE_OF_RUNES:
 					case ItemID.INTRICATE_POUCH:
+					case ItemID.FROZEN_CACHE:
 						onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, itemManager.getItemComposition(event.getItemId()).getName()));
 						break;
 					case ItemID.SUPPLY_CRATE_24884:
@@ -1063,16 +1071,6 @@ public class LootTrackerPlugin extends Plugin
 		final int id = menuAction.getId();
 		return (id >= MenuAction.GAME_OBJECT_FIRST_OPTION.getId() && id <= MenuAction.GAME_OBJECT_FOURTH_OPTION.getId())
 			|| id == MenuAction.GAME_OBJECT_FIFTH_OPTION.getId();
-	}
-
-	@Schedule(
-		period = 5,
-		unit = ChronoUnit.MINUTES,
-		asynchronous = true
-	)
-	public void submitLootTask()
-	{
-		submitLoot();
 	}
 
 	@Nullable
