@@ -732,4 +732,20 @@ public final class Varbits
 	public static final int TOA_MEMBER_5_HEALTH = 14351;
 	public static final int TOA_MEMBER_6_HEALTH = 14352;
 	public static final int TOA_MEMBER_7_HEALTH = 14353;
+
+	/**
+	 * How many NMZ overload refreshes the player has remaining.
+	 * <p>
+	 * This will go down by 1 every 25 ticks (15 seconds) and the player's stats will be restored.
+	 * Set to 20 upon drinking an overload.
+	 */
+	public static final int NMZ_OVERLOAD_REFRESHES_REMAINING = 3955;
+
+	/**
+	 * How many Chambers of Xeric overload refreshes the player has remaining.
+	 * <p>
+	 * This will go down by 1 every 25 ticks (15 seconds) and the player's stats will be restored.
+	 * Set to 20 upon drinking an overload.
+	 */
+	public static final int COX_OVERLOAD_REFRESHES_REMAINING = 5418;
 }

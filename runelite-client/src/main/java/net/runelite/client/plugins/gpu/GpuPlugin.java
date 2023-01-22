@@ -28,7 +28,7 @@ import com.google.common.primitives.Ints;
 import com.google.inject.Provides;
 import java.awt.Canvas;
 import java.awt.Dimension;
-import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
 import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
@@ -65,6 +65,7 @@ import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.plugins.gpu.config.AntiAliasingMode;
 import net.runelite.client.plugins.gpu.config.UIScalingMode;
 import net.runelite.client.plugins.gpu.template.Template;
+import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.DrawManager;
 import net.runelite.client.util.OSType;
 import net.runelite.rlawt.AWTContext;
@@ -99,6 +100,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private ClientUI clientUI;
 
 	@Inject
 	private OpenCLManager openCLManager;
@@ -750,6 +754,15 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	private void initAAFbo(int width, int height, int aaSamples)
 	{
+		if (OSType.getOSType() != OSType.MacOS)
+		{
+			final GraphicsConfiguration graphicsConfiguration = clientUI.getGraphicsConfiguration();
+			final AffineTransform transform = graphicsConfiguration.getDefaultTransform();
+
+			width = getScaledValue(transform.getScaleX(), width);
+			height = getScaledValue(transform.getScaleY(), height);
+		}
+
 		// Create and bind the FBO
 		fboSceneHandle = GL43C.glGenFramebuffers();
 		GL43C.glBindFramebuffer(GL43C.GL_FRAMEBUFFER, fboSceneHandle);
@@ -1253,10 +1266,21 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 		if (aaEnabled)
 		{
+			int width = lastStretchedCanvasWidth;
+			int height = lastStretchedCanvasHeight;
+
+			if (OSType.getOSType() != OSType.MacOS)
+			{
+				final GraphicsConfiguration graphicsConfiguration = clientUI.getGraphicsConfiguration();
+				final AffineTransform transform = graphicsConfiguration.getDefaultTransform();
+
+				width = getScaledValue(transform.getScaleX(), width);
+				height = getScaledValue(transform.getScaleY(), height);
+			}
+
 			GL43C.glBindFramebuffer(GL43C.GL_READ_FRAMEBUFFER, fboSceneHandle);
 			GL43C.glBindFramebuffer(GL43C.GL_DRAW_FRAMEBUFFER, awtContext.getFramebuffer(false));
-			GL43C.glBlitFramebuffer(0, 0, lastStretchedCanvasWidth, lastStretchedCanvasHeight,
-				0, 0, lastStretchedCanvasWidth, lastStretchedCanvasHeight,
+			GL43C.glBlitFramebuffer(0, 0, width, height, 0, 0, width, height,
 				GL43C.GL_COLOR_BUFFER_BIT, GL43C.GL_NEAREST);
 
 			// Reset
@@ -1361,11 +1385,10 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 		if (OSType.getOSType() != OSType.MacOS)
 		{
-			final Graphics2D graphics = (Graphics2D) canvas.getGraphics();
-			final AffineTransform t = graphics.getTransform();
+			final GraphicsConfiguration graphicsConfiguration = clientUI.getGraphicsConfiguration();
+			final AffineTransform t = graphicsConfiguration.getDefaultTransform();
 			width = getScaledValue(t.getScaleX(), width);
 			height = getScaledValue(t.getScaleY(), height);
-			graphics.dispose();
 		}
 
 		ByteBuffer buffer = ByteBuffer.allocateDirect(width * height * 4)
@@ -1641,14 +1664,13 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		}
 		else
 		{
-			final Graphics2D graphics = (Graphics2D) canvas.getGraphics();
-			final AffineTransform t = graphics.getTransform();
+			final GraphicsConfiguration graphicsConfiguration = clientUI.getGraphicsConfiguration();
+			final AffineTransform t = graphicsConfiguration.getDefaultTransform();
 			GL43C.glViewport(
 				getScaledValue(t.getScaleX(), x),
 				getScaledValue(t.getScaleY(), y),
 				getScaledValue(t.getScaleX(), width),
 				getScaledValue(t.getScaleY(), height));
-			graphics.dispose();
 		}
 	}
 

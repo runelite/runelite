@@ -115,10 +115,11 @@ public class HiscoreClientTest
 		+ "1,4920\n" // Nex
 		+ "2335,9\n" // Nightmare
 		+ "2336,10\n" // Phosanis Nightmare
-		+ "-1,-1\n"
-		+ "-1,-1\n"
-		+ "19779,22\n"
-		+ "58283,10\n"
+		+ "1,450\n" // Phantom Muspah
+		+ "-1,-1\n" // Obor
+		+ "-1,-1\n" // Sarachnis
+		+ "19779,22\n" // Scorpia
+		+ "58283,10\n" // Skotizo
 		+ "1234,5678\n" // Tempoross
 		+ "-1,-1\n"
 		+ "-1,-1\n"

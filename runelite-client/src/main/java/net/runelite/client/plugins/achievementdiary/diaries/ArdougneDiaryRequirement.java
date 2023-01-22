@@ -130,6 +130,6 @@ public class ArdougneDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.AGILITY, 90));
 		add("Cast Ice Barrage on another player within Castle Wars.",
 			new SkillRequirement(Skill.MAGIC, 94),
-			new QuestRequirement(Quest.DESERT_TREASURE));
+			new QuestRequirement(Quest.DESERT_TREASURE_I));
 	}
 }

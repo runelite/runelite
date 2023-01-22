@@ -107,6 +107,11 @@ public class RuneLiteModule extends AbstractModule
 						binder.to((double) entry.getValue());
 					}
 				}
+				else if (entry.getValue() instanceof Boolean)
+				{
+					ConstantBindingBuilder binder = bindConstant().annotatedWith(Names.named(entry.getKey()));
+					binder.to((boolean) entry.getValue());
+				}
 			}
 		}
 

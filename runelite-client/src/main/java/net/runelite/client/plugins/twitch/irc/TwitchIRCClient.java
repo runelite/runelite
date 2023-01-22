@@ -41,7 +41,7 @@ public class TwitchIRCClient extends Thread implements AutoCloseable
 	private static final String HOST = "irc.chat.twitch.tv";
 	private static final int PORT = 6697;
 	private static final int READ_TIMEOUT = 60000; // ms
-	private static final int PING_TIMEOUT = 30000; // ms
+	private static final int PING_TIMEOUT = 20000; // ms
 
 	private final TwitchListener twitchListener;
 
@@ -189,6 +189,7 @@ public class TwitchIRCClient extends Thread implements AutoCloseable
 	{
 		send("CAP", "REQ", "twitch.tv/commands twitch.tv/tags");
 		send("PASS", oauth);
+		send("USER", "runelite", ".", HOST, "runelite");
 		send("NICK", username);
 	}
 
