@@ -32,6 +32,8 @@ import com.google.common.collect.Multiset;
 import com.google.inject.Provides;
 import java.awt.event.KeyEvent;
 import java.text.ParseException;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.annotation.Nullable;
@@ -45,6 +47,7 @@ import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.ScriptID;
+import net.runelite.api.SpriteID;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.VarClientStr;
 import net.runelite.api.events.ItemContainerChanged;
@@ -82,11 +85,18 @@ public class BankPlugin extends Plugin
 	private static final String TOGGLE_PLACEHOLDERS = "Always set placeholders";
 	private static final String SEED_VAULT_TITLE = "Seed Vault";
 
+	private static final int ITEMS_PER_ROW = 8;
+	private static final int ITEM_VERTICAL_SPACING = 36;
+	private static final int ITEM_HORIZONTAL_SPACING = 48;
+	private static final int ITEM_ROW_START = 51;
+
 	private static final String NUMBER_REGEX = "[0-9]+(\\.[0-9]+)?[kmb]?";
+	private static final String ORDER_REGEX = "(a|d|asc|desc?)?";
+
 	private static final Pattern VALUE_SEARCH_PATTERN = Pattern.compile("^(?<mode>qty|ge|ha|alch)?" +
 		" *(?<individual>i|iv|individual|per)?" +
-		" *(((?<op>[<>=]|>=|<=) *(?<num>" + NUMBER_REGEX + "))|" +
-		"((?<num1>" + NUMBER_REGEX + ") *- *(?<num2>" + NUMBER_REGEX + ")))$", Pattern.CASE_INSENSITIVE);
+		" *(((?<op>[<>=]|>=|<=) *(?<num>" + NUMBER_REGEX + ")) *(?<order>" + ORDER_REGEX + "))" +
+		"|((?<num1>" + NUMBER_REGEX + ") *- *(?<num2>" + NUMBER_REGEX + "))$", Pattern.CASE_INSENSITIVE);
 
 	@Inject
 	private Client client;
@@ -109,6 +119,7 @@ public class BankPlugin extends Plugin
 	private boolean forceRightClickFlag;
 	private Multiset<Integer> itemQuantities; // bank item quantities for bank value search
 	private String searchString;
+	private int orderType;
 
 	private final KeyListener searchHotkeyListener = new KeyListener()
 	{
@@ -278,6 +289,7 @@ public class BankPlugin extends Plugin
 
 			Widget bankTitle = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
 			bankTitle.setText(bankTitle.getText() + createValueText(price.getGePrice(), price.getHighAlchPrice()));
+			orderBank();
 		}
 		else if (event.getScriptId() == ScriptID.BANKMAIN_SEARCH_REFRESH)
 		{
@@ -315,6 +327,78 @@ public class BankPlugin extends Plugin
 		else if (containerId == InventoryID.SEED_VAULT.getId() && config.seedVaultValue())
 		{
 			updateSeedVaultTotal();
+		}
+	}
+
+	private void orderBank()
+	{
+		Widget itemContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
+		if (itemContainer == null)
+		{
+			return;
+		}
+
+		int items = 0;
+
+		Widget[] containerChildren = itemContainer.getDynamicChildren();
+
+		if (orderType == -1)
+		{
+			Arrays.sort(containerChildren, Comparator.comparingLong((widget) ->
+			{
+				Widget w = (Widget) widget;
+				long price = Math.max((long) itemManager.getItemComposition(w.getItemId()).getHaPrice(), (long) itemManager.getItemPrice(w.getItemId())) * w.getItemQuantity();
+				if (w.isHidden() || itemManager.getItemComposition(w.getItemId()).getPlaceholderTemplateId() == 14401)
+				{
+					price = 0;
+				}
+				return price;
+			}).reversed());
+		}
+		else if (orderType == 1)
+		{
+			Arrays.sort(containerChildren, Comparator.comparingLong((widget) ->
+			{
+				Widget w = (Widget) widget;
+				long price = Math.max((long) itemManager.getItemComposition(w.getItemId()).getHaPrice(), (long) itemManager.getItemPrice(w.getItemId())) * w.getItemQuantity();
+				if (w.isHidden() || itemManager.getItemComposition(w.getItemId()).getPlaceholderTemplateId() == 14401)
+				{
+					price = 0;
+				}
+				return price;
+			}));
+		}
+		else
+		{
+			Arrays.sort(containerChildren, Comparator.comparingInt(Widget::getOriginalY)
+				.thenComparingInt(Widget::getOriginalX));
+		}
+
+		// sort the child array as the items are not in the displayed order
+		for (Widget child : containerChildren)
+		{
+			if (child.getItemId() != -1 && !child.isHidden())
+			{
+				// calculate correct item position as if this was a normal tab
+				int adjYOffset = (items / ITEMS_PER_ROW) * ITEM_VERTICAL_SPACING;
+				int adjXOffset = (items % ITEMS_PER_ROW) * ITEM_HORIZONTAL_SPACING + ITEM_ROW_START;
+
+				if (child.getOriginalY() != adjYOffset || child.getOriginalX() != adjXOffset)
+				{
+					child.setOriginalY(adjYOffset);
+					child.setOriginalX(adjXOffset);
+					child.revalidate();
+				}
+
+				items++;
+			}
+
+			// separator line or tab text
+			if (child.getSpriteId() == SpriteID.RESIZEABLE_MODE_SIDE_PANEL_BACKGROUND
+				|| child.getText().contains("Tab"))
+			{
+				child.setHidden(true);
+			}
 		}
 	}
 
@@ -399,7 +483,6 @@ public class BankPlugin extends Plugin
 		return itemContainer.getItems();
 	}
 
-
 	@VisibleForTesting
 	boolean valueSearch(final int itemId, final String str)
 	{
@@ -438,6 +521,25 @@ public class BankPlugin extends Plugin
 				case "alch":
 					value = haPrice;
 					break;
+			}
+		}
+
+		String order = matcher.group("order");
+		if (order != null)
+		{
+			switch (order)
+			{
+				case "a":
+				case "asc":
+					orderType = 1;
+					break;
+				case "d":
+				case "des":
+				case "desc":
+					orderType = -1;
+					break;
+				default:
+					orderType = 0;
 			}
 		}
 
