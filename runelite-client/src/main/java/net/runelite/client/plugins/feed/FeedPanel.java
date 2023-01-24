@@ -57,6 +57,7 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.LinkBrowser;
+import net.runelite.client.util.SwingUtil;
 import net.runelite.http.api.feed.FeedItem;
 import net.runelite.http.api.feed.FeedItemType;
 import net.runelite.http.api.feed.FeedResult;
@@ -133,7 +134,7 @@ class FeedPanel extends PluginPanel
 
 		SwingUtilities.invokeLater(() ->
 		{
-			removeAll();
+			SwingUtil.fastRemoveAll(this);
 
 			feed.getItems()
 				.stream()
@@ -243,7 +244,7 @@ class FeedPanel extends PluginPanel
 		JPanel content = new JPanel(new BorderLayout());
 		content.setBackground(null);
 
-		JLabel contentLabel = new JLabel(lineBreakText(item.getContent(), FontManager.getRunescapeSmallFont()));
+		JLabel contentLabel = new JLabel();
 		contentLabel.setBorder(new EmptyBorder(2, 0, 0, 0));
 		contentLabel.setFont(FontManager.getRunescapeSmallFont());
 		contentLabel.setForeground(darkerForeground);
@@ -294,6 +295,10 @@ class FeedPanel extends PluginPanel
 		});
 
 		add(avatarAndRight);
+
+		// set the text last, as some text is very expensive to layout, and it will
+		// re-layout for every relevant property change
+		contentLabel.setText(lineBreakText(item.getContent(), contentLabel.getFont()));
 	}
 
 	private String durationToString(Duration duration)
