@@ -165,7 +165,7 @@ public class QuestListPlugin extends Plugin
 
 	private boolean isOnQuestTab()
 	{
-		return client.getVarbitValue(Varbits.QUEST_TAB) == 0 && client.getVarcIntValue(VarClientInt.INVENTORY_TAB) == 2;
+		return client.getVarbitValue(Varbits.QUEST_TAB) == 1 && client.getVarcIntValue(VarClientInt.INVENTORY_TAB) == 2;
 	}
 
 	private boolean isChatboxOpen()
