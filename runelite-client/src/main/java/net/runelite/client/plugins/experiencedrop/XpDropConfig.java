@@ -103,6 +103,9 @@ public interface XpDropConfig extends Config
 		description = "Drops fake XP when hitting a zero in combat, disables other fake XP drops",
 		position = 6
 	)
-	default boolean dropOnZero() { return false; }
+	default boolean dropOnZero()
+	{
+		return false;
+	}
 
 }
