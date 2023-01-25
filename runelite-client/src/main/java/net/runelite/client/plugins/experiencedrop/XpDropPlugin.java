@@ -32,15 +32,18 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.IntStream;
 import javax.inject.Inject;
+import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.EnumComposition;
 import net.runelite.api.EnumID;
+import net.runelite.api.Hitsplat;
 import static net.runelite.api.ScriptID.XPDROPS_SETDROPSIZE;
 import static net.runelite.api.ScriptID.XPDROP_DISABLED;
 import net.runelite.api.Skill;
 import net.runelite.api.SpriteID;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.StatChanged;
 import net.runelite.api.widgets.Widget;
@@ -67,6 +70,7 @@ public class XpDropPlugin extends Plugin
 	private boolean hasDropped = false;
 	private boolean correctPrayer;
 	private Skill lastSkill = null;
+	private Hitsplat curSplat;
 	private final Map<Skill, Integer> previousSkillExpTable = new EnumMap<>(Skill.class);
 
 	@Provides
@@ -192,29 +196,45 @@ public class XpDropPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
-		correctPrayer = false;
-
-		final int fakeTickDelay = config.fakeXpDropDelay();
-
-		if (fakeTickDelay == 0 || lastSkill == null)
+		if (!config.dropOnZero())
 		{
-			return;
+			correctPrayer = false;
+
+			final int fakeTickDelay = config.fakeXpDropDelay();
+
+			if (fakeTickDelay == 0 || lastSkill == null) //fakeTickDelay == 0 || lastSkill == null
+			{
+				return;
+			}
+
+			// If an xp drop was created this tick, reset the counter
+			if (hasDropped)
+			{
+				hasDropped = false;
+				tickCounter = 0;
+				return;
+			}
+
+			if (++tickCounter % fakeTickDelay != 0)
+			{
+				return;
+			}
+			client.runScript(XPDROP_DISABLED, lastSkill.ordinal(), previousExpGained);
 		}
 
-		// If an xp drop was created this tick, reset the counter
-		if (hasDropped)
+		if (config.dropOnZero())
 		{
-			hasDropped = false;
-			tickCounter = 0;
-			return;
-		}
+			if (curSplat == null || curSplat.getAmount() != 0)
+			{
+				return;
+			}
 
-		if (++tickCounter % fakeTickDelay != 0)
-		{
-			return;
+			if (curSplat.getAmount() == 0)
+			{
+				client.runScript(XPDROP_DISABLED, lastSkill.ordinal(), 2);
+				curSplat = null;
+			}
 		}
-
-		client.runScript(XPDROP_DISABLED, lastSkill.ordinal(), previousExpGained);
 	}
 
 	@Subscribe
@@ -233,4 +253,17 @@ public class XpDropPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onHitsplatApplied(HitsplatApplied hitSplat)
+	{
+		if (!config.dropOnZero()) return;
+
+		Actor enemy = hitSplat.getActor();
+		Hitsplat tempSplat = hitSplat.getHitsplat();
+
+		if (tempSplat.isMine() && !enemy.equals(client.getLocalPlayer()))
+		{
+			curSplat = hitSplat.getHitsplat();
+		}
+	}
 }

@@ -96,4 +96,13 @@ public interface XpDropConfig extends Config
 	{
 		return 0;
 	}
+
+	@ConfigItem(
+		keyName = "dropOnZero",
+		name = "Fake Xp Drop On Zero",
+		description = "Drops fake XP when hitting a zero in combat, disables other fake XP drops",
+		position = 6
+	)
+	default boolean dropOnZero() { return false; }
+
 }
