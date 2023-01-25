@@ -488,6 +488,11 @@ public class PartyPlugin extends Plugin
 			return;
 		}
 
+		if (client.getTickCount() % messageFreq(party.getMembers().size()) != 0)
+		{
+			return;
+		}
+
 		final int healthCurrent = client.getBoostedSkillLevel(Skill.HITPOINTS);
 		final int prayerCurrent = client.getBoostedSkillLevel(Skill.PRAYER);
 		final int healthMax = client.getRealSkillLevel(Skill.HITPOINTS);
@@ -642,5 +647,11 @@ public class PartyPlugin extends Plugin
 			SwingUtilities.invokeLater(() -> panel.addMember(partyData));
 			return partyData;
 		});
+	}
+
+	private static int messageFreq(int partySize)
+	{
+		// introduce a tick delay for each member >6
+		return Math.max(1, partySize - 6);
 	}
 }
