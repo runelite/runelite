@@ -120,6 +120,7 @@ public class BankPlugin extends Plugin
 	private Multiset<Integer> itemQuantities; // bank item quantities for bank value search
 	private String searchString;
 	private int orderType;
+	private String priceType;
 
 	private final KeyListener searchHotkeyListener = new KeyListener()
 	{
@@ -338,6 +339,11 @@ public class BankPlugin extends Plugin
 			return;
 		}
 
+		if (orderType == 0)
+		{
+			return;
+		}
+
 		int items = 0;
 
 		Widget[] containerChildren = itemContainer.getDynamicChildren();
@@ -347,7 +353,20 @@ public class BankPlugin extends Plugin
 			Arrays.sort(containerChildren, Comparator.comparingLong((widget) ->
 			{
 				Widget w = (Widget) widget;
-				long price = Math.max((long) itemManager.getItemComposition(w.getItemId()).getHaPrice(), (long) itemManager.getItemPrice(w.getItemId())) * w.getItemQuantity();
+				long price = Math.max((long) itemManager.getItemComposition(w.getItemId()).getHaPrice(),(long) itemManager.getItemPrice(w.getItemId()));
+				if (priceType.equals("ha"))
+				{
+					price = itemManager.getItemComposition(w.getItemId()).getHaPrice();
+				}
+				else if (priceType.equals("ge"))
+				{
+					price = itemManager.getItemPrice(w.getItemId());
+				}
+				else if (priceType.equals("qty"))
+				{
+					price = 1;
+				}
+				price = price * w.getItemQuantity();
 				if (w.isHidden() || itemManager.getItemComposition(w.getItemId()).getPlaceholderTemplateId() == 14401)
 				{
 					price = 0;
@@ -360,18 +379,27 @@ public class BankPlugin extends Plugin
 			Arrays.sort(containerChildren, Comparator.comparingLong((widget) ->
 			{
 				Widget w = (Widget) widget;
-				long price = Math.max((long) itemManager.getItemComposition(w.getItemId()).getHaPrice(), (long) itemManager.getItemPrice(w.getItemId())) * w.getItemQuantity();
+				long price = Math.max((long) itemManager.getItemComposition(w.getItemId()).getHaPrice(),(long) itemManager.getItemPrice(w.getItemId()));
+
+				if (priceType.equals("ha"))
+				{
+					price = itemManager.getItemComposition(w.getItemId()).getHaPrice();
+				}
+				else if (priceType.equals("ge"))
+				{
+					price = itemManager.getItemPrice(w.getItemId());
+				}
+				else if (priceType.equals("qty"))
+				{
+					price = 1;
+				}
+				price = price * w.getItemQuantity();
 				if (w.isHidden() || itemManager.getItemComposition(w.getItemId()).getPlaceholderTemplateId() == 14401)
 				{
 					price = 0;
 				}
 				return price;
 			}));
-		}
-		else
-		{
-			Arrays.sort(containerChildren, Comparator.comparingInt(Widget::getOriginalY)
-				.thenComparingInt(Widget::getOriginalX));
 		}
 
 		// sort the child array as the items are not in the displayed order
@@ -513,15 +541,20 @@ public class BankPlugin extends Plugin
 			{
 				case "qty":
 					value = isPlaceholder ? 0 : qty;
+					priceType = "qty";
 					break;
 				case "ge":
+					priceType = "ge";
 					value = gePrice;
 					break;
 				case "ha":
 				case "alch":
+					priceType = "ha";
 					value = haPrice;
 					break;
 			}
+		} else {
+			priceType = "";
 		}
 
 		String order = matcher.group("order");
@@ -541,6 +574,8 @@ public class BankPlugin extends Plugin
 				default:
 					orderType = 0;
 			}
+		} else {
+			orderType = 0;
 		}
 
 		final String op = matcher.group("op");
