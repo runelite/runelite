@@ -353,7 +353,7 @@ public class BankPlugin extends Plugin
 			Arrays.sort(containerChildren, Comparator.comparingLong((widget) ->
 			{
 				Widget w = (Widget) widget;
-				long price = Math.max((long) itemManager.getItemComposition(w.getItemId()).getHaPrice(),(long) itemManager.getItemPrice(w.getItemId()));
+				long price = Math.max((long) itemManager.getItemComposition(w.getItemId()).getHaPrice(), (long) itemManager.getItemPrice(w.getItemId()));
 				if (priceType.equals("ha"))
 				{
 					price = itemManager.getItemComposition(w.getItemId()).getHaPrice();
@@ -379,7 +379,7 @@ public class BankPlugin extends Plugin
 			Arrays.sort(containerChildren, Comparator.comparingLong((widget) ->
 			{
 				Widget w = (Widget) widget;
-				long price = Math.max((long) itemManager.getItemComposition(w.getItemId()).getHaPrice(),(long) itemManager.getItemPrice(w.getItemId()));
+				long price = Math.max((long) itemManager.getItemComposition(w.getItemId()).getHaPrice(), (long) itemManager.getItemPrice(w.getItemId()));
 
 				if (priceType.equals("ha"))
 				{
@@ -553,7 +553,9 @@ public class BankPlugin extends Plugin
 					value = haPrice;
 					break;
 			}
-		} else {
+		}
+		else
+		{
 			priceType = "";
 		}
 
@@ -574,7 +576,9 @@ public class BankPlugin extends Plugin
 				default:
 					orderType = 0;
 			}
-		} else {
+		}
+		else
+		{
 			orderType = 0;
 		}
 
