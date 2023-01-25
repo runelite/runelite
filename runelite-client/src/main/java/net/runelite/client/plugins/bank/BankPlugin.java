@@ -95,8 +95,9 @@ public class BankPlugin extends Plugin
 
 	private static final Pattern VALUE_SEARCH_PATTERN = Pattern.compile("^(?<mode>qty|ge|ha|alch)?" +
 		" *(?<individual>i|iv|individual|per)?" +
-		" *(((?<op>[<>=]|>=|<=) *(?<num>" + NUMBER_REGEX + ")) *(?<order>" + ORDER_REGEX + "))" +
-		"|(((?<num1>" + NUMBER_REGEX + ") *- *(?<num2>" + NUMBER_REGEX + ")) *(?<order2>" + ORDER_REGEX + "))$", Pattern.CASE_INSENSITIVE);
+		" *(((?<op>[<>=]|>=|<=) *(?<num>" + NUMBER_REGEX + "))|" +
+		"((?<num1>" + NUMBER_REGEX + ") *- *(?<num2>" + NUMBER_REGEX + ")))" +
+		" *(?<order>" + ORDER_REGEX + ")$", Pattern.CASE_INSENSITIVE);
 
 	@Inject
 	private Client client;
@@ -607,26 +608,6 @@ public class BankPlugin extends Plugin
 					return value >= compare;
 				case "<=":
 					return value <= compare;
-			}
-		}
-
-
-		order = matcher.group("order2");
-		if (order != null)
-		{
-			switch (order)
-			{
-				case "a":
-				case "asc":
-					orderType = 1;
-					break;
-				case "d":
-				case "des":
-				case "desc":
-					orderType = -1;
-					break;
-				default:
-					orderType = 0;
 			}
 		}
 
