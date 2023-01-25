@@ -202,7 +202,7 @@ public class XpDropPlugin extends Plugin
 
 			final int fakeTickDelay = config.fakeXpDropDelay();
 
-			if (fakeTickDelay == 0 || lastSkill == null) //fakeTickDelay == 0 || lastSkill == null
+			if (fakeTickDelay == 0 || lastSkill == null)
 			{
 				return;
 			}
