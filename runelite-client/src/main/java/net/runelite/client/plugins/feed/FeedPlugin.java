@@ -24,16 +24,8 @@
  */
 package net.runelite.client.plugins.feed;
 
-import com.google.common.base.Suppliers;
-import com.google.inject.Binder;
 import com.google.inject.Provides;
-import com.google.inject.TypeLiteral;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.time.temporal.ChronoUnit;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Supplier;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.config.ConfigManager;
@@ -41,11 +33,9 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
-import net.runelite.http.api.feed.FeedResult;
 
 @PluginDescriptor(
 	name = "News Feed",
@@ -59,36 +49,8 @@ public class FeedPlugin extends Plugin
 	@Inject
 	private ClientToolbar clientToolbar;
 
-	@Inject
-	private ScheduledExecutorService executorService;
-
-	@Inject
-	private FeedClient feedClient;
-
 	private FeedPanel feedPanel;
 	private NavigationButton navButton;
-
-	private final Supplier<FeedResult> feedSupplier = Suppliers.memoizeWithExpiration(() ->
-	{
-		try
-		{
-			return feedClient.lookupFeed();
-		}
-		catch (IOException e)
-		{
-			log.warn(null, e);
-		}
-		return null;
-	}, 10, TimeUnit.MINUTES);
-
-	@Override
-	public void configure(Binder binder)
-	{
-		// CHECKSTYLE:OFF
-		binder.bind(new TypeLiteral<Supplier<FeedResult>>(){})
-			.toInstance(feedSupplier);
-		// CHECKSTYLE:ON
-	}
 
 	@Override
 	protected void startUp() throws Exception
@@ -105,18 +67,13 @@ public class FeedPlugin extends Plugin
 			.build();
 
 		clientToolbar.addNavigation(navButton);
-		executorService.submit(this::updateFeed);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
 		clientToolbar.removeNavigation(navButton);
-	}
-
-	private void updateFeed()
-	{
-		feedPanel.rebuildFeed();
+		feedPanel.stop();
 	}
 
 	@Subscribe
@@ -124,18 +81,8 @@ public class FeedPlugin extends Plugin
 	{
 		if (event.getGroup().equals("feed"))
 		{
-			executorService.submit(this::updateFeed);
+			feedPanel.rebuild();
 		}
-	}
-
-	@Schedule(
-		period = 10,
-		unit = ChronoUnit.MINUTES,
-		asynchronous = true
-	)
-	public void updateFeedTask()
-	{
-		updateFeed();
 	}
 
 	@Provides

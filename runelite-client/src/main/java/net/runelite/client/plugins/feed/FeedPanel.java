@@ -38,8 +38,11 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Comparator;
-import java.util.function.Supplier;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -83,6 +86,8 @@ class FeedPanel extends PluginPanel
 	private static final int CONTENT_WIDTH = 148;
 	private static final int TIME_WIDTH = 20;
 
+	private static final Duration UPDATE_INTERVAL = Duration.ofMinutes(10);
+
 	private static final Comparator<FeedItem> FEED_ITEM_COMPARATOR = (o1, o2) ->
 	{
 		if (o1.getType() != o2.getType())
@@ -107,34 +112,107 @@ class FeedPanel extends PluginPanel
 	}
 
 	private final FeedConfig config;
-	private final Supplier<FeedResult> feedSupplier;
+	private final FeedClient feedClient;
 	private final OkHttpClient okHttpClient;
+	private final ScheduledExecutorService executor;
+
+	private boolean isActive;
+	private ScheduledFuture<?> feedResultFuture;
+	private FeedResult feedResult;
+	private Instant nextUpdate = Instant.EPOCH;
 
 	@Inject
-	FeedPanel(FeedConfig config, Supplier<FeedResult> feedSupplier, OkHttpClient okHttpClient)
+	FeedPanel(FeedConfig config, FeedClient feedClient, OkHttpClient okHttpClient, ScheduledExecutorService executor)
 	{
 		super(true);
 		this.config = config;
-		this.feedSupplier = feedSupplier;
+		this.feedClient = feedClient;
 		this.okHttpClient = okHttpClient;
+		this.executor = executor;
 
 		setBorder(new EmptyBorder(10, 10, 10, 10));
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 		setLayout(new GridLayout(0, 1, 0, 4));
 	}
 
-	void rebuildFeed()
+	@Override
+	public void onActivate()
 	{
-		FeedResult feed = feedSupplier.get();
+		isActive = true;
+		refresh();
+		rebuild();
+	}
 
-		if (feed == null)
+	@Override
+	public void onDeactivate()
+	{
+		isActive = false;
+		stop();
+
+		SwingUtil.fastRemoveAll(this);
+	}
+
+	synchronized void stop()
+	{
+		feedResultFuture.cancel(false);
+		feedResultFuture = null;
+	}
+
+	private synchronized void refresh()
+	{
+		if (feedResultFuture != null)
+		{
+			return;
+		}
+
+		long msUntilUpdate = 0;
+		if (feedResult != null)
+		{
+			msUntilUpdate = Math.max(0, Instant.now().until(nextUpdate, ChronoUnit.MILLIS));
+		}
+
+		feedResultFuture = executor.scheduleAtFixedRate(() ->
+		{
+			nextUpdate = Instant.now().plus(UPDATE_INTERVAL);
+
+			try
+			{
+				feedResult = feedClient.lookupFeed();
+			}
+			catch (IOException e)
+			{
+				log.warn("fetching feed", e);
+				return;
+			}
+
+			rebuild();
+		}, msUntilUpdate, UPDATE_INTERVAL.toMillis(), TimeUnit.MILLISECONDS);
+	}
+
+	void rebuild()
+	{
+		if (!isActive)
 		{
 			return;
 		}
 
 		SwingUtilities.invokeLater(() ->
 		{
+			if (!isActive)
+			{
+				return;
+			}
+
 			SwingUtil.fastRemoveAll(this);
+
+			FeedResult feed = feedResult;
+			if (feed == null)
+			{
+				JLabel loading = new JLabel("Loading ...");
+				loading.setHorizontalAlignment(JLabel.CENTER);
+				add(loading);
+				return;
+			}
 
 			feed.getItems()
 				.stream()
