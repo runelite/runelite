@@ -185,7 +185,7 @@ public class NpcUtil
 			// Prior form(s) should be added to the `isDying()` exceptions list above to ensure they are not hidden or
 			// made uninteractable during their death animations.
 			case NpcID.KALPHITE_QUEEN_965:
-			case NpcID.VETION_REBORN:
+			case NpcID.VETION_6612:
 			case NpcID.WITCHS_EXPERIMENT_FOURTH_FORM:
 			case NpcID.WITCHS_EXPERIMENT_FOURTH_FORM_6397:
 			case NpcID.WITCHS_EXPERIMENT_FOURTH_FORM_HARD:
