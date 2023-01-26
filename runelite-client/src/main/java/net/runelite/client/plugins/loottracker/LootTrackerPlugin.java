@@ -248,6 +248,8 @@ public class LootTrackerPlugin extends Plugin
 
 	private static final String CASKET_EVENT = "Casket";
 
+	private static final String ORE_PACK_VM_EVENT = "Ore Pack (Volcanic Mine)";
+
 	private static final String WINTERTODT_SUPPLY_CRATE_EVENT = "Supply crate (Wintertodt)";
 
 	// Soul Wars
@@ -1041,6 +1043,9 @@ public class LootTrackerPlugin extends Plugin
 						break;
 					case ItemID.HALLOWED_SACK:
 						onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, HALLOWED_SACK_EVENT));
+						break;
+					case ItemID.ORE_PACK_27693:
+						onInvChange(collectInvItems(LootRecordType.EVENT, ORE_PACK_VM_EVENT));
 						break;
 				}
 			}
