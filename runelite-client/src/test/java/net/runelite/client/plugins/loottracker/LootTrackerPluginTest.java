@@ -38,6 +38,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
@@ -51,6 +52,7 @@ import net.runelite.api.Skill;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
@@ -76,6 +78,7 @@ import static org.mockito.ArgumentMatchers.isNull;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
@@ -424,6 +427,104 @@ public class LootTrackerPluginTest
 
 		verify(lootTrackerPlugin).addLoot("Reward pool (Tempoross)", -1, LootRecordType.EVENT, 69, Arrays.asList(
 			new ItemStack(ItemID.TOME_OF_WATER_EMPTY, 1, null)
+		));
+	}
+
+	@Test
+	public void testReopenChestInInstance()
+	{
+		LootTrackerPlugin spyPlugin = Mockito.spy(lootTrackerPlugin);
+		// Make sure we don't execute addLoot, so we don't have to mock LootTrackerPanel and everything else also
+		doNothing().when(spyPlugin).addLoot(anyString(), anyInt(), any(LootRecordType.class), isNull(), anyCollection());
+		doReturn(true).when(spyPlugin).inTobChestRegion();
+
+		final GameStateChanged loading = new GameStateChanged();
+		loading.setGameState(GameState.LOADING);
+
+		ItemContainer itemContainer = mock(ItemContainer.class);
+		when(itemContainer.getItems()).thenReturn(new Item[]{
+			new Item(ItemID.SCYTHE_OF_VITUR_UNCHARGED, 1)
+		});
+		when(client.getItemContainer(InventoryID.THEATRE_OF_BLOOD_CHEST)).thenReturn(itemContainer);
+
+		when(client.isInInstancedRegion()).thenReturn(true);
+		spyPlugin.onGameStateChanged(loading);
+
+		WidgetLoaded widgetLoaded = new WidgetLoaded();
+		widgetLoaded.setGroupId(WidgetID.THEATRE_OF_BLOOD_GROUP_ID);
+		spyPlugin.onWidgetLoaded(widgetLoaded);
+
+		verify(spyPlugin).addLoot("Theatre of Blood", -1, LootRecordType.EVENT, null, Collections.singletonList(
+			new ItemStack(ItemID.SCYTHE_OF_VITUR_UNCHARGED, 1, null)
+		));
+	}
+
+	@Test
+	public void testReopenChestOutsideOfInstance()
+	{
+		LootTrackerPlugin spyPlugin = Mockito.spy(lootTrackerPlugin);
+		// Make sure we don't execute addLoot, so we don't have to mock LootTrackerPanel and everything else also
+		doNothing().when(spyPlugin).addLoot(anyString(), anyInt(), any(LootRecordType.class), isNull(), anyCollection());
+		doReturn(true).when(spyPlugin).inTobChestRegion();
+
+		final GameStateChanged loading = new GameStateChanged();
+		loading.setGameState(GameState.LOADING);
+
+		ItemContainer itemContainer = mock(ItemContainer.class);
+		when(itemContainer.getItems()).thenReturn(new Item[]{
+			new Item(ItemID.SCYTHE_OF_VITUR_UNCHARGED, 1)
+		});
+		when(client.getItemContainer(InventoryID.THEATRE_OF_BLOOD_CHEST)).thenReturn(itemContainer);
+
+		when(client.isInInstancedRegion()).thenReturn(false);
+		spyPlugin.onGameStateChanged(loading);
+
+		WidgetLoaded widgetLoaded = new WidgetLoaded();
+		widgetLoaded.setGroupId(WidgetID.THEATRE_OF_BLOOD_GROUP_ID);
+		spyPlugin.onWidgetLoaded(widgetLoaded);
+
+		verify(spyPlugin).addLoot("Theatre of Blood", -1, LootRecordType.EVENT, null, Collections.singletonList(
+			new ItemStack(ItemID.SCYTHE_OF_VITUR_UNCHARGED, 1, null)
+		));
+	}
+
+	@Test
+	public void testOpenInstancedAreaChestAfterNonInstancedAreaChest()
+	{
+		LootTrackerPlugin spyPlugin = Mockito.spy(lootTrackerPlugin);
+		// Make sure we don't execute addLoot, so we don't have to mock LootTrackerPanel and everything else also
+		doNothing().when(spyPlugin).addLoot(anyString(), anyInt(), any(LootRecordType.class), isNull(), anyCollection());
+		doReturn(true).when(spyPlugin).inTobChestRegion();
+
+		final GameStateChanged loading = new GameStateChanged();
+		loading.setGameState(GameState.LOADING);
+
+		ItemContainer itemContainer = mock(ItemContainer.class);
+		when(itemContainer.getItems()).thenReturn(new Item[]{
+			new Item(ItemID.SCYTHE_OF_VITUR_UNCHARGED, 1)
+		});
+		when(client.getItemContainer(InventoryID.THEATRE_OF_BLOOD_CHEST)).thenReturn(itemContainer);
+
+		when(client.isInInstancedRegion()).thenReturn(false);
+		spyPlugin.onGameStateChanged(loading);
+
+		WidgetLoaded widgetLoaded = new WidgetLoaded();
+		widgetLoaded.setGroupId(WidgetID.THEATRE_OF_BLOOD_GROUP_ID);
+		spyPlugin.onWidgetLoaded(widgetLoaded);
+
+		verify(spyPlugin).addLoot("Theatre of Blood", -1, LootRecordType.EVENT, null, Collections.singletonList(
+			new ItemStack(ItemID.SCYTHE_OF_VITUR_UNCHARGED, 1, null)
+		));
+
+		when(itemContainer.getItems()).thenReturn(new Item[]{
+			new Item(ItemID.SANGUINESTI_STAFF_UNCHARGED, 1)
+		});
+		when(client.isInInstancedRegion()).thenReturn(true);
+		spyPlugin.onGameStateChanged(loading);
+		spyPlugin.onWidgetLoaded(widgetLoaded);
+
+		verify(spyPlugin).addLoot("Theatre of Blood", -1, LootRecordType.EVENT, null, Collections.singletonList(
+			new ItemStack(ItemID.SANGUINESTI_STAFF_UNCHARGED, 1, null)
 		));
 	}
 }

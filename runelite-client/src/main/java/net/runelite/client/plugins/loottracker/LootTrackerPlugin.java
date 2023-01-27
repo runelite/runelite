@@ -354,6 +354,7 @@ public class LootTrackerPlugin extends Plugin
 	private NavigationButton navButton;
 
 	private boolean chestLooted;
+	private boolean lastLoadingIntoInstance;
 	private String lastPickpocketTarget;
 
 	private List<String> ignoredItems = new ArrayList<>();
@@ -612,8 +613,10 @@ public class LootTrackerPlugin extends Plugin
 	@Subscribe
 	public void onGameStateChanged(final GameStateChanged event)
 	{
-		if (event.getGameState() == GameState.LOADING && !client.isInInstancedRegion())
+		final boolean inInstancedRegion = client.isInInstancedRegion();
+		if (event.getGameState() == GameState.LOADING && inInstancedRegion != lastLoadingIntoInstance)
 		{
+			lastLoadingIntoInstance = inInstancedRegion;
 			chestLooted = false;
 		}
 	}
@@ -811,12 +814,7 @@ public class LootTrackerPlugin extends Plugin
 				chestLooted = true;
 				break;
 			case (WidgetID.THEATRE_OF_BLOOD_GROUP_ID):
-				if (chestLooted)
-				{
-					return;
-				}
-				int region = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID();
-				if (region != THEATRE_OF_BLOOD_REGION && region != THEATRE_OF_BLOOD_LOBBY)
+				if (chestLooted || !inTobChestRegion())
 				{
 					return;
 				}
@@ -1369,6 +1367,13 @@ public class LootTrackerPlugin extends Plugin
 		int herbloreLevel = client.getBoostedSkillLevel(Skill.HERBLORE);
 		addLoot(HERBIBOAR_EVENT, -1, LootRecordType.EVENT, herbloreLevel, herbs);
 		return true;
+	}
+
+	@VisibleForTesting
+	boolean inTobChestRegion()
+	{
+		int region = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID();
+		return region == THEATRE_OF_BLOOD_REGION || region == THEATRE_OF_BLOOD_LOBBY;
 	}
 
 	void toggleItem(String name, boolean ignore)
