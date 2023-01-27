@@ -146,7 +146,7 @@ enum DungeonLocation
 	RED_CHIN_HUNTING("Red chinchompa hunting ground", new WorldPoint(2525, 2894, 0)),
 	REVENANT_CAVES_N("Revenant Caves", new WorldPoint(3124, 3832, 0)),
 	REVENANT_CAVES_S("Revenant Caves", new WorldPoint(3074, 3655, 0)),
-	REVENANT_CAVES_W("Revenant Caves", new WorldPoint(3065, 3740, 0)),
+	REVENANT_CAVES_W("Revenant Caves", new WorldPoint(3067, 3741, 0)),
 	RIVER_ELID("River Elid Dungeon", new WorldPoint(3370, 3132, 0)),
 	RIVER_KELDA("River Kelda", new WorldPoint(2835, 10112, 0)),
 	SALT_MINE("Salt Mine", new WorldPoint(2866, 3941, 0)),
