@@ -25,6 +25,7 @@
 package net.runelite.client.game;
 
 import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ListMultimap;
 import java.util.ArrayList;
@@ -47,6 +48,7 @@ import net.runelite.api.Player;
 import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GameTick;
@@ -73,7 +75,7 @@ public class LootManager
 	private final Client client;
 	private final NpcUtil npcUtil;
 	private final ListMultimap<Integer, ItemStack> itemSpawns = ArrayListMultimap.create();
-	private final Set<LocalPoint> killPoints = new HashSet<>();
+	private final Set<WorldPoint> killPoints = new HashSet<>();
 	private WorldPoint playerLocationLastTick;
 	private WorldPoint krakenPlayerLocation;
 
@@ -149,8 +151,9 @@ public class LootManager
 			return;
 		}
 
-		final LocalPoint location = LocalPoint.fromWorld(client, player.getWorldLocation());
-		if (location == null || killPoints.contains(location))
+		final WorldPoint worldPoint = player.getWorldLocation();
+		final LocalPoint location = LocalPoint.fromWorld(client, worldPoint);
+		if (location == null || killPoints.contains(worldPoint))
 		{
 			return;
 		}
@@ -165,7 +168,7 @@ public class LootManager
 			return;
 		}
 
-		killPoints.add(location);
+		killPoints.add(worldPoint);
 		eventBus.post(new PlayerLootReceived(player, items));
 	}
 
@@ -292,49 +295,52 @@ public class LootManager
 
 	private void processNpcLoot(NPC npc)
 	{
-		final LocalPoint location = LocalPoint.fromWorld(client, getDropLocation(npc, npc.getWorldLocation()));
-		if (location == null || killPoints.contains(location))
-		{
-			return;
-		}
-
-		final int x = location.getSceneX();
-		final int y = location.getSceneY();
-		final int size = npc.getComposition().getSize();
-
-		// Some NPCs drop items onto multiple tiles
 		final List<ItemStack> allItems = new ArrayList<>();
-		for (int i = 0; i < size; ++i)
+		for (final WorldArea dropLocation : getDropLocations(npc))
 		{
-			for (int j = 0; j < size; ++j)
+			final WorldPoint worldPoint = dropLocation.toWorldPoint();
+			final LocalPoint location = LocalPoint.fromWorld(client, worldPoint);
+			if (location == null)
 			{
-				final int packed = (x + i) << 8 | (y + j);
-				final Collection<ItemStack> items = itemSpawns.get(packed);
-				allItems.addAll(items);
+				continue;
+			}
+
+			final int x = location.getSceneX();
+			final int y = location.getSceneY();
+
+			for (int i = 0; i < dropLocation.getWidth(); ++i)
+			{
+				for (int j = 0; j < dropLocation.getHeight(); ++j)
+				{
+					WorldPoint dropPoint = new WorldPoint(worldPoint.getX() + i, worldPoint.getY() + j, worldPoint.getPlane());
+					if (!killPoints.add(dropPoint))
+					{
+						continue;
+					}
+
+					final int packed = (x + i) << 8 | (y + j);
+					final Collection<ItemStack> items = itemSpawns.get(packed);
+					allItems.addAll(items);
+				}
 			}
 		}
 
-		if (allItems.isEmpty())
+		if (!allItems.isEmpty())
 		{
-			return;
+			eventBus.post(new NpcLootReceived(npc, allItems));
 		}
-
-		killPoints.add(location);
-		eventBus.post(new NpcLootReceived(npc, allItems));
 	}
 
-	private WorldPoint getDropLocation(NPC npc, WorldPoint worldLocation)
+	private List<WorldArea> getDropLocations(NPC npc)
 	{
 		switch (npc.getId())
 		{
 			case NpcID.KRAKEN:
 			case NpcID.KRAKEN_6640:
 			case NpcID.KRAKEN_6656:
-				worldLocation = playerLocationLastTick;
-				break;
+				return Collections.singletonList(playerLocationLastTick.toWorldArea());
 			case NpcID.CAVE_KRAKEN:
-				worldLocation = krakenPlayerLocation;
-				break;
+				return Collections.singletonList(krakenPlayerLocation.toWorldArea());
 			case NpcID.ZULRAH:      // Green
 			case NpcID.ZULRAH_2043: // Red
 			case NpcID.ZULRAH_2044: // Blue
@@ -345,8 +351,8 @@ public class LootManager
 						int packed = entry.getKey();
 						int unpackedX = packed >> 8;
 						int unpackedY = packed & 0xFF;
-						worldLocation = WorldPoint.fromScene(client, unpackedX, unpackedY, worldLocation.getPlane());
-						break;
+						final WorldPoint lootPoint = WorldPoint.fromScene(client, unpackedX, unpackedY, npc.getWorldLocation().getPlane());
+						return Collections.singletonList(lootPoint.toWorldArea());
 					}
 				}
 				break;
@@ -356,8 +362,9 @@ public class LootManager
 			case NpcID.VORKATH_8060:
 			case NpcID.VORKATH_8061:
 			{
-				int x = worldLocation.getX() + 3;
-				int y = worldLocation.getY() + 3;
+				final WorldPoint bossLocation = npc.getWorldLocation();
+				int x = bossLocation.getX() + 3;
+				int y = bossLocation.getY() + 3;
 				if (playerLocationLastTick.getX() < x)
 				{
 					x -= 4;
@@ -374,8 +381,7 @@ public class LootManager
 				{
 					y += 4;
 				}
-				worldLocation = new WorldPoint(x, y, worldLocation.getPlane());
-				break;
+				return Collections.singletonList(new WorldArea(x, y, 1, 1, bossLocation.getPlane()));
 			}
 			case NpcID.NEX:
 			case NpcID.NEX_11279:
@@ -392,14 +398,24 @@ public class LootManager
 					final int packed = x << 8 | y;
 					if (itemSpawns.containsKey(packed))
 					{
-						return playerLocationLastTick;
+						return Collections.singletonList(playerLocationLastTick.toWorldArea());
 					}
 				}
 				break;
 			}
+			case NpcID.VETION_6612:
+			case NpcID.CALLISTO:
+			case NpcID.CALLISTO_6609:
+			case NpcID.VENENATIS:
+			case NpcID.VENENATIS_6610:
+			case NpcID.CALVARION_11994:
+			case NpcID.ARTIO:
+			case NpcID.SPINDEL:
+				// Bones are dropped under the center of the boss and loot is dropped under the player
+				return ImmutableList.of(npc.getWorldArea(), playerLocationLastTick.toWorldArea());
 		}
 
-		return worldLocation;
+		return Collections.singletonList(npc.getWorldArea());
 	}
 
 	private WorldPoint getAdjacentSquareLootTile(NPC npc)
