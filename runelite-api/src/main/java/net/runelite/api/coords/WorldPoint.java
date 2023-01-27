@@ -295,7 +295,7 @@ public class WorldPoint
 	 */
 	public int distanceTo(WorldArea other)
 	{
-		return new WorldArea(this, 1, 1).distanceTo(other);
+		return this.toWorldArea().distanceTo(other);
 	}
 
 	/**
@@ -445,5 +445,15 @@ public class WorldPoint
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Retrieves an area consisting of only this point.
+	 *
+	 * @return A {@link WorldArea} of width and height 1, encompassing only this point.
+	 */
+	public WorldArea toWorldArea()
+	{
+		return new WorldArea(this, 1, 1);
 	}
 }
