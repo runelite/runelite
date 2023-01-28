@@ -71,7 +71,7 @@ class CannonSpotOverlay extends Overlay
 	{
 		List<WorldPoint> spotPoints = plugin.getSpotPoints();
 
-		if (hidden || spotPoints.isEmpty() || !config.showCannonSpots() || plugin.isCannonPlaced())
+		if (hidden || spotPoints.isEmpty() || !config.showCannonSpots() || plugin.getCannonWorldPoint() != null)
 		{
 			return null;
 		}

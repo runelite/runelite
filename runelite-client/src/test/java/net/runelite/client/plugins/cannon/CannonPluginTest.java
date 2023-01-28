@@ -29,21 +29,17 @@ import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import javax.inject.Inject;
-import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.VarPlayer;
-import net.runelite.api.events.ChatMessage;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.mockito.ArgumentMatchers.any;
 import org.mockito.Mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -91,48 +87,14 @@ public class CannonPluginTest
 	private OverlayManager overlayManager;
 
 	private final VarbitChanged cannonAmmoChanged = new VarbitChanged();
+	private final VarbitChanged cannonPartsAssembled = new VarbitChanged();
 
 	@Before
 	public void before()
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
 		cannonAmmoChanged.setVarpId(VarPlayer.CANNON_AMMO.getId());
-	}
-
-	@Test
-	public void testAmmoCountOnPlace()
-	{
-		ChatMessage chatMessage = new ChatMessage();
-		chatMessage.setType(ChatMessageType.SPAM);
-		chatMessage.setMessage("You add the furnace.");
-
-		plugin.onChatMessage(chatMessage);
-		assertTrue(plugin.isCannonPlaced());
-
-		plugin.onVarbitChanged(cannonAmmoChanged);
-		assertEquals(0, plugin.getCballsLeft());
-
-		// Some time passes...
-
-		cannonAmmoChanged.setValue(30);
-		plugin.onVarbitChanged(cannonAmmoChanged);
-		assertEquals(30, plugin.getCballsLeft());
-	}
-
-	@Test
-	public void testCannonInfoBox()
-	{
-		when(config.showInfobox()).thenReturn(true);
-
-		ChatMessage chatMessage = new ChatMessage();
-		chatMessage.setType(ChatMessageType.SPAM);
-		chatMessage.setMessage("You add the furnace.");
-
-		plugin.onChatMessage(chatMessage);
-		assertTrue(plugin.isCannonPlaced());
-
-		assertEquals(0, plugin.getCballsLeft());
-		verify(infoBoxManager).addInfoBox(any(CannonCounter.class));
+		plugin.setCannonWorldPoint(new WorldPoint(1, 1, 1));
 	}
 
 	@Test
@@ -141,7 +103,7 @@ public class CannonPluginTest
 		when(config.showCannonNotifications()).thenReturn(true);
 		when(config.lowWarningThreshold()).thenReturn(10);
 
-		cannonAmmoChanged.setValue(30);
+		cannonAmmoChanged.setValue(11);
 		plugin.onVarbitChanged(cannonAmmoChanged);
 		cannonAmmoChanged.setValue(10);
 		plugin.onVarbitChanged(cannonAmmoChanged);
@@ -168,23 +130,23 @@ public class CannonPluginTest
 	public void testThresholdNotificationsShouldNotNotify()
 	{
 		when(config.showCannonNotifications()).thenReturn(true);
-		when(config.lowWarningThreshold()).thenReturn(0);
 
-		cannonAmmoChanged.setValue(30);
+		cannonAmmoChanged.setValue(22);
 		plugin.onVarbitChanged(cannonAmmoChanged);
-		cannonAmmoChanged.setValue(10);
+		cannonAmmoChanged.setValue(0);
 		plugin.onVarbitChanged(cannonAmmoChanged);
 
-		verify(notifier, never()).notify("Your cannon has 10 cannon balls remaining!");
+		verify(notifier, never()).notify("Your cannon is out of ammo!");
 	}
 
 	@Test
 	public void testCannonOutOfAmmo()
 	{
 		when(config.showCannonNotifications()).thenReturn(true);
-		ChatMessage cannonOutOfAmmo = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "Your cannon is out of ammo!", "", 0);
-
-		plugin.onChatMessage(cannonOutOfAmmo);
+		cannonAmmoChanged.setValue(1);
+		plugin.onVarbitChanged(cannonAmmoChanged);
+		cannonAmmoChanged.setValue(0);
+		plugin.onVarbitChanged(cannonAmmoChanged);
 
 		verify(notifier, times(1)).notify("Your cannon is out of ammo!");
 	}

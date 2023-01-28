@@ -34,6 +34,7 @@ import net.runelite.api.Perspective;
 import static net.runelite.api.Perspective.LOCAL_TILE_SIZE;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -62,13 +63,13 @@ class CannonOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!plugin.isCannonPlaced() || plugin.getCannonPosition() == null || plugin.getCannonWorld() != client.getWorld())
+		if (plugin.getCannonWorldPoint() == null || plugin.getCannonWorld() != client.getWorld())
 		{
 			return null;
 		}
 
-		// WorldAreas return the SW point, whereas we want the centre point
-		WorldPoint cannonLocation = plugin.getCannonPosition().toWorldPoint().dx(1).dy(1);
+		// This returns the SW-most ("true") tile, apply offset to get the centre point
+		WorldPoint cannonLocation = plugin.getCannonWorldPoint().dx(1).dy(1);
 		LocalPoint cannonPoint = LocalPoint.fromWorld(client, cannonLocation);
 
 		if (cannonPoint == null)
@@ -85,7 +86,7 @@ class CannonOverlay extends Overlay
 				cannonPoint,
 				String.valueOf(plugin.getCballsLeft()), 150);
 
-			if (cannonLoc != null)
+			if (plugin.getState() == CannonPlugin.Cannon.COMPLETE)
 			{
 				textComponent.setText(String.valueOf(plugin.getCballsLeft()));
 				textComponent.setPosition(new java.awt.Point(cannonLoc.getX(), cannonLoc.getY()));
@@ -129,9 +130,13 @@ class CannonOverlay extends Overlay
 				int yPos = startTile.getY() - (y * LOCAL_TILE_SIZE);
 
 				LocalPoint marker = new LocalPoint(xPos, yPos);
+
+				WorldArea worldArea = new WorldArea(plugin.getCannonWorldPoint(), 1, 1);
+				boolean hasLineOfSight = worldArea.hasLineOfSightTo(client, WorldPoint.fromLocal(client, marker));
+
 				Polygon poly = Perspective.getCanvasTilePoly(client, marker);
 
-				if (poly == null)
+				if (poly == null || !hasLineOfSight)
 				{
 					continue;
 				}
