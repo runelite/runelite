@@ -231,6 +231,36 @@ public enum VarPlayer
 	 */
 	LAST_MINIGAME_TELEPORT(888),
 
+	/**
+	 * The location of the player's dwarf cannon
+	 * <p>
+	 * X-Coordinate = (Value % 128^4) / 128^2<br>
+	 * Y-Coordinate = Value % 128^2<br>
+	 * Z-Coordinate = Value / 128^4
+	 * <p>
+	 * Value -1 means the player does not have a cannon on the server
+	 */
+	DWARF_CANNON_LOCATION(3551),
+
+	/**
+	 * The most recent known location of the player's dwarf cannon.
+	 * This Var updates to include the location when collecting the cannon from the ground and reclaiming it from NPC.
+	 * <p>
+	 * X-Coordinate = (Value % 128^4) / 128^2<br>
+	 * Y-Coordinate = Value % 128^2<br>
+	 * Z-Coordinate = Value / 128^4
+	 */
+	DWARF_CANNON_RECENT_LOCATION(4),
+
+	/**
+	 * Represents the number of parts of the player's dwarf cannon which have been assembled
+	 * <p>
+	 * 0 = No cannon deployed<br>
+	 * 0 &lt; Value &lt; 4 = inoperable, incomplete assembly<br>
+	 * 4 = Operational, complete assembly
+	 */
+	DWARF_CANNON_PARTS_ASSEMBLED(2),
+
 	;
 
 	private final int id;
