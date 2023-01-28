@@ -748,4 +748,26 @@ public final class Varbits
 	 * Set to 20 upon drinking an overload.
 	 */
 	public static final int COX_OVERLOAD_REFRESHES_REMAINING = 5418;
+
+	/**
+	 * The state of the players dwarf cannon
+	 * <p>
+	 * 0 = Normal
+	 * 1 = Broken
+	 */
+	public static final int DWARF_CANNON_STATE = 13672;
+
+	/**
+	 * Server time of last deployment in ticks for the server in which it was deployed.
+	 * Returns 0 if no cannon is deployed
+	 */
+	public static final int DWARF_CANNON_DEPLOYED_TICK = 2180;
+
+	/**
+	 * Server index of the player's dwarf cannon.
+	 * <p>
+	 * Value = world % 128<br>
+	 * Note multiple worlds may have the same value
+	 */
+	public static final int DWARF_CANNON_SERVER_INDEX = 1968;
 }
