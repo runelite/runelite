@@ -238,8 +238,8 @@ public enum VarPlayer
 	 * (that is, z represented by the first 3 positive bits followed by x and y each represented by 14 bits)
 	 * <p>
 	 * Getting the value of each of these coordinates can be accomplished by<br>
-	 * X = (value & ((1 &lt;&lt; 28) - 1)) &gt;&gt; 14<br>
-	 * Y = value & ((1 &lt;&lt; 14) -1)<br>
+	 * X = (value &amp; ((1 &lt;&lt; 28) - 1)) &gt;&gt; 14<br>
+	 * Y = value &amp; ((1 &lt;&lt; 14) -1)<br>
 	 * Z = value &gt;&gt; 28
 	 * <p>
 	 * Value -1 means the player does not have a cannon on the server
@@ -254,8 +254,8 @@ public enum VarPlayer
 	 * (that is, z represented by the first 3 positive bits followed by x and y each represented by 14 bits)
 	 * <p>
 	 * Getting the value of each of these coordinates can be accomplished by<br>
-	 * X = (value & ((1 &lt;&lt; 28) - 1)) &gt;&gt; 14<br>
-	 * Y = value & ((1 &lt;&lt; 14) -1)<br>
+	 * X = (value &amp; ((1 &lt;&lt; 28) - 1)) &gt;&gt; 14<br>
+	 * Y = value &amp; ((1 &lt;&lt; 14) -1)<br>
 	 * Z = value &gt;&gt; 28
 	 * </p>
 	 * Note: this value is updated to include the location when collecting the cannon from the ground or reclaiming it from NPC.
