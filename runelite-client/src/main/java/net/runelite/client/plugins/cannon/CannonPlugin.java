@@ -130,9 +130,8 @@ public class CannonPlugin extends Plugin
 		{
 			clientThread.invoke(() ->
 			{
-				cballsLeft = client.getVarpValue(VarPlayer.CANNON_AMMO);
-				updateVars();
-				addCounter();
+				clientThread.invoke(this::setFields);
+				clientThread.invokeLater(this::addCounter);
 			});
 		}
 	}
@@ -314,19 +313,19 @@ public class CannonPlugin extends Plugin
 		return new WorldPoint(x, y, z);
 	}
 
-	private void updateVars()
+	private void setFields()
 	{
-		VarbitChanged vc = new VarbitChanged();
-		ArrayList<Integer> varps = new ArrayList<>();
+		cballsLeft = client.getVarpValue(VarPlayer.CANNON_AMMO);
+		cannonWorldPoint = getCannonWorldPoint(client.getVarpValue(VarPlayer.DWARF_CANNON_LOCATION));
+		cannonWorld = cannonWorldPoint == null ? -1 : client.getWorld();
 
-		varps.add(VarPlayer.DWARF_CANNON_LOCATION.getId());
-		varps.add(VarPlayer.DWARF_CANNON_PARTS_ASSEMBLED.getId());
+		int parts = client.getVarpValue(VarPlayer.DWARF_CANNON_PARTS_ASSEMBLED);
 
-		for (int varp : varps)
-		{
-			vc.setVarpId(varp);
-			vc.setValue(client.getVarpValue(varp));
-			onVarbitChanged(vc);
-		}
+		state = parts == 4
+				? Cannon.COMPLETE
+				: parts == 0
+				? Cannon.NULL
+				: Cannon.INCOMPLETE;
 	}
+
 }
