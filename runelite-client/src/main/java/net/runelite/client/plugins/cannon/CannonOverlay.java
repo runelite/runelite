@@ -34,7 +34,6 @@ import net.runelite.api.Perspective;
 import static net.runelite.api.Perspective.LOCAL_TILE_SIZE;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -131,12 +130,9 @@ class CannonOverlay extends Overlay
 
 				LocalPoint marker = new LocalPoint(xPos, yPos);
 
-				WorldArea worldArea = new WorldArea(plugin.getCannonWorldPoint(), 1, 1);
-				boolean hasLineOfSight = worldArea.hasLineOfSightTo(client, WorldPoint.fromLocal(client, marker));
-
 				Polygon poly = Perspective.getCanvasTilePoly(client, marker);
 
-				if (poly == null || !hasLineOfSight)
+				if (poly == null)
 				{
 					continue;
 				}
