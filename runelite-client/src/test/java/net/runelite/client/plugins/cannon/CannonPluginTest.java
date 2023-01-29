@@ -87,7 +87,6 @@ public class CannonPluginTest
 	private OverlayManager overlayManager;
 
 	private final VarbitChanged cannonAmmoChanged = new VarbitChanged();
-	private final VarbitChanged cannonPartsAssembled = new VarbitChanged();
 
 	@Before
 	public void before()
