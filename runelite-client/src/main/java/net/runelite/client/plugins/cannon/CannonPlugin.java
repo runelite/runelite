@@ -307,9 +307,9 @@ public class CannonPlugin extends Plugin
 		}
 
 		// See VarPlayer#DWARF_CANNON_LOCATION
-		int x = (var % 268_435_456) / 16_384;
-		int y = var % 16_384;
-		int z = var / 268_435_456;
+		int x = (var & ((1 << 28) - 1)) >> 14;
+		int y = var & ((1 << 14) - 1);
+		int z = var >> 28;
 
 		return new WorldPoint(x, y, z);
 	}

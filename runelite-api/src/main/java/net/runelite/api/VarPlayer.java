@@ -232,23 +232,33 @@ public enum VarPlayer
 	LAST_MINIGAME_TELEPORT(888),
 
 	/**
-	 * The location of the player's dwarf cannon
+	 * The location of the player's dwarf cannon, represented by a bit-packed int of the following format:
 	 * <p>
-	 * X-Coordinate = (Value % 128^4) / 128^2<br>
-	 * Y-Coordinate = Value % 128^2<br>
-	 * Z-Coordinate = Value / 128^4
+	 * 0zzzxxxxxxxxxxxxxxyyyyyyyyyyyyyy<br>
+	 * (that is, z represented by the first 3 positive bits followed by x and y each represented by 14 bits)
+	 * <p>
+	 * Getting the value of each of these coordinates can be accomplished by<br>
+	 * X = (value & ((1 &lt;&lt; 28) - 1)) &gt;&gt; 14<br>
+	 * Y = value & ((1 &lt;&lt; 14) -1)<br>
+	 * Z = value &gt;&gt; 28
 	 * <p>
 	 * Value -1 means the player does not have a cannon on the server
+	 *
 	 */
 	DWARF_CANNON_LOCATION(3551),
 
 	/**
-	 * The most recent known location of the player's dwarf cannon.
-	 * This Var updates to include the location when collecting the cannon from the ground and reclaiming it from NPC.
+	 * The most recent known location of the player's dwarf cannon, represented by a bit-packed int of the following format:
 	 * <p>
-	 * X-Coordinate = (Value % 128^4) / 128^2<br>
-	 * Y-Coordinate = Value % 128^2<br>
-	 * Z-Coordinate = Value / 128^4
+	 * 0zzzxxxxxxxxxxxxxxyyyyyyyyyyyyyy<br>
+	 * (that is, z represented by the first 3 positive bits followed by x and y each represented by 14 bits)
+	 * <p>
+	 * Getting the value of each of these coordinates can be accomplished by<br>
+	 * X = (value & ((1 &lt;&lt; 28) - 1)) &gt;&gt; 14<br>
+	 * Y = value & ((1 &lt;&lt; 14) -1)<br>
+	 * Z = value &gt;&gt; 28
+	 * </p>
+	 * Note: this value is updated to include the location when collecting the cannon from the ground or reclaiming it from NPC.
 	 */
 	DWARF_CANNON_RECENT_LOCATION(4),
 
