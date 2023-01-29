@@ -577,10 +577,13 @@ public class WorldArea
 
 	/**
 	 * Determine if this WorldArea has line of sight to another WorldArea.
+	 * <p>
+	 * Note that the reverse isn't necessarily true, meaning this can return true
+	 * while the other WorldArea does not have line of sight to this WorldArea.
 	 *
 	 * @param client The client to compare in
 	 * @param other The other WorldArea to compare with
-	 * @return Returns true if two WorldAreas have line of sight to each other
+	 * @return Returns true if this WorldArea has line of sight to the other
 	 */
 	public boolean hasLineOfSightTo(Client client, WorldArea other)
 	{
@@ -662,15 +665,18 @@ public class WorldArea
 		{
 			return false;
 		}
-		return sourceTile.hasLineOfSightTo(targetTile) || targetTile.hasLineOfSightTo(sourceTile);
+		return sourceTile.hasLineOfSightTo(targetTile);
 	}
 
 	/**
 	 * Determine if this WorldArea has line of sight to another WorldArea.
+	 * <p>
+	 * Note that the reverse isn't necessarily true, meaning this can return true
+	 * while the other WorldArea does not have line of sight to this WorldArea.
 	 *
 	 * @param client The client to compare in
 	 * @param other The other WorldPoint to compare with
-	 * @return Returns true if two WorldPoints have line of sight to each other
+	 * @return Returns true if this WorldPoint has line of sight to the WorldPoint
 	 */
 	public boolean hasLineOfSightTo(Client client, WorldPoint other)
 	{
