@@ -128,11 +128,8 @@ public class CannonPlugin extends Plugin
 
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
-			clientThread.invoke(() ->
-			{
-				clientThread.invoke(this::setFields);
-				clientThread.invokeLater(this::addCounter);
-			});
+			clientThread.invoke(this::setFields);
+			clientThread.invokeLater(this::addCounter);
 		}
 	}
 
@@ -327,5 +324,4 @@ public class CannonPlugin extends Plugin
 				? Cannon.NULL
 				: Cannon.INCOMPLETE;
 	}
-
 }
