@@ -3774,5 +3774,15 @@
         "z1": 0,
         "z2": 0
       }
+  ],
+  "8276": [ // Monkey Madness II airship platform
+    {
+      "rx1": 18,
+      "ry1": 9,
+      "rx2": 56,
+      "ry2": 59,
+      "z1": 1,
+      "z2": 1
+    }
   ]
 }
