@@ -333,4 +333,14 @@ public interface TimersConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showCombatTimer",
+		name = "Combat cooldown timer",
+		description = "Configures the display for the 10 second timer that prevents logout upon being hit in combat"
+	)
+	default boolean showCombatTimer()
+	{
+		return false;
+	}
 }

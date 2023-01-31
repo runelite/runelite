@@ -57,6 +57,7 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GraphicChanged;
+import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcDespawned;
@@ -999,6 +1000,19 @@ public class TimersPlugin extends Plugin
 		}
 
 		lastPoint = currentWorldPoint;
+	}
+
+	@Subscribe
+	public void onHitsplatApplied(HitsplatApplied event)
+	{
+		if (event.getActor() != client.getLocalPlayer())
+		{
+			return;
+		}
+		if (config.showCombatTimer())
+		{
+			createGameTimer(COMBAT_TIMER);
+		}
 	}
 
 	@Subscribe
