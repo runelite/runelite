@@ -37,6 +37,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemID;
 import net.runelite.api.VarPlayer;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
@@ -70,6 +71,7 @@ public class CannonPlugin extends Plugin
 	static final int MAX_OVERLAY_DISTANCE = 4100;
 
 	private CannonCounter counter;
+	private boolean broken;
 
 	@Getter
 	private int cballsLeft;
@@ -237,6 +239,16 @@ public class CannonPlugin extends Plugin
 				log.debug("Updated cannon location: {}", cannonWorldPoint);
 			}
 		}
+
+		if (varbitChanged.getVarbitId() == Varbits.DWARF_CANNON_STATE)
+		{
+			broken = varbitChanged.getValue() == 1;
+
+			if (broken)
+			{
+				removeCounter();
+			}
+		}
 	}
 
 	@Subscribe
@@ -272,7 +284,7 @@ public class CannonPlugin extends Plugin
 
 	private void addCounter()
 	{
-		if (!config.showInfobox() || counter != null || state != Cannon.COMPLETE)
+		if (!config.showInfobox() || counter != null || state != Cannon.COMPLETE || broken)
 		{
 			return;
 		}
