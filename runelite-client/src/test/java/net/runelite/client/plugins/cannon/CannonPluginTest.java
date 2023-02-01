@@ -112,7 +112,7 @@ public class CannonPluginTest
 	}
 
 	@Test
-	public void testThresholdNotificationsShouldNotNotify()
+	public void testCannonPickedUpOrEmptiedShouldNotNotify()
 	{
 		when(config.showCannonNotifications()).thenReturn(true);
 
