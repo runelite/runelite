@@ -322,7 +322,7 @@ public class CannonPlugin extends Plugin
 		state = parts == 4
 				? Cannon.COMPLETE
 				: parts == 0
-				? Cannon.NULL
-				: Cannon.INCOMPLETE;
+						? Cannon.NULL
+						: Cannon.INCOMPLETE;
 	}
 }
