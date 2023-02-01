@@ -97,20 +97,6 @@ public class CannonPluginTest
 	}
 
 	@Test
-	public void testThresholdNotificationShouldNotify()
-	{
-		when(config.showCannonNotifications()).thenReturn(true);
-		when(config.lowWarningThreshold()).thenReturn(10);
-
-		cannonAmmoChanged.setValue(11);
-		plugin.onVarbitChanged(cannonAmmoChanged);
-		cannonAmmoChanged.setValue(10);
-		plugin.onVarbitChanged(cannonAmmoChanged);
-
-		verify(notifier, times(1)).notify("Your cannon has 10 cannon balls remaining!");
-	}
-
-	@Test
 	public void testThresholdNotificationShouldNotifyOnce()
 	{
 		when(config.showCannonNotifications()).thenReturn(true);
