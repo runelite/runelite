@@ -396,6 +396,8 @@ public class XpTrackerPlugin extends Plugin
 
 		if (xpTrackerConfig.hideMaxed() && currentLevel >= Experience.MAX_REAL_LEVEL)
 		{
+			xpPanel.resetSkill(skill);
+			removeOverlay(skill);
 			return;
 		}
 
