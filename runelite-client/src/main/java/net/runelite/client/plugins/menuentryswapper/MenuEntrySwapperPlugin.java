@@ -1227,7 +1227,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			final String message = new ChatMessageBuilder()
 				.append("The default ").append(shift ? "shift" : "left").append(" click option for '").append(Text.removeTags(target)).append("' ")
-				.append("has been set to '").append(option).append("'.")
+				.append("has been set to '").append(Text.removeTags(option)).append("'.")
 				.build();
 
 			chatMessageManager.queue(QueuedMessage.builder()
