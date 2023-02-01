@@ -229,8 +229,7 @@ public class CannonPlugin extends Plugin
 
 		if (varbitChanged.getVarpId() == VarPlayer.DWARF_CANNON_LOCATION.getId())
 		{
-			int cannonLocationVar = varbitChanged.getValue();
-			cannonWorldPoint = worldPointFromVar(cannonLocationVar);
+			cannonWorldPoint = worldPointFromVar();
 
 			if (cannonWorldPoint != null)
 			{
@@ -295,8 +294,10 @@ public class CannonPlugin extends Plugin
 		counter = null;
 	}
 
-	private WorldPoint worldPointFromVar(int var)
+	private WorldPoint worldPointFromVar()
 	{
+		int var = client.getVarpValue(VarPlayer.DWARF_CANNON_LOCATION.getId());
+
 		if (var == -1)
 		{
 			return null;
@@ -313,7 +314,7 @@ public class CannonPlugin extends Plugin
 	private void setFields()
 	{
 		cballsLeft = client.getVarpValue(VarPlayer.CANNON_AMMO);
-		cannonWorldPoint = worldPointFromVar(client.getVarpValue(VarPlayer.DWARF_CANNON_LOCATION.getId()));
+		cannonWorldPoint = worldPointFromVar();
 		cannonWorld = cannonWorldPoint == null ? -1 : client.getWorld();
 
 		int parts = client.getVarpValue(VarPlayer.DWARF_CANNON_PARTS_ASSEMBLED);
