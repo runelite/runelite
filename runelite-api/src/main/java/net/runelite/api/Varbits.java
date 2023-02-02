@@ -55,6 +55,41 @@ public final class Varbits
 	public static final int STAMINA_EFFECT = 24;
 
 	/**
+	 * Antifire timer
+	 * Number of game ticks remaining on antifire in intervals of 30; for a value X there are 30 * X game ticks remaining.
+	 * The antifire expires once this reaches 0.
+	 */
+	public static final int ANTIFIRE = 3981;
+
+	/**
+	 * Super Antifire timer
+	 * Number of game ticks remaining on super antifire in intervals of 20; for a value X there are 20 * X game ticks remaining.
+	 * The super antifire expires once this reaches 0.
+	 */
+	public static final int SUPER_ANTIFIRE = 6101;
+
+	/**
+	 * Magic imbue timer
+	 * Number of game ticks remaining on magic imbue effect in intervals of 10; for a value X there are 10 * X game ticks remaining.
+	 * The magic imbue effect expires once this reaches 0.
+	 */
+	public static final int MAGIC_IMBUE = 5438;
+
+	/**
+	 * Divine effect timers
+	 * Number of game ticks remaining on a divine effect.
+	 * A potion that combines multiple effects will set the varbits for the individual effects as well as its own effect.
+	 */
+	public static final int DIVINE_SUPER_ATTACK = 8429;
+	public static final int DIVINE_SUPER_STRENGTH = 8430;
+	public static final int DIVINE_SUPER_DEFENCE = 8431;
+	public static final int DIVINE_RANGING = 8432;
+	public static final int DIVINE_MAGIC = 8433;
+	public static final int DIVINE_SUPER_COMBAT = 13663;
+	public static final int DIVINE_BASTION = 13664;
+	public static final int DIVINE_BATTLEMAGE = 13665;
+
+	/**
 	 * Ring of endurance effect timer, stamina duration extended from using the ring of endurance
 	 * Number of game ticks remaining on ring of endurance effect in intervals of 10; for a value X there are 10 * X game ticks remaining.
 	 * Unequipping the ring of endurance will cause this to change to 0.
@@ -540,15 +575,22 @@ public final class Varbits
 	public static final int WORLDHOPPER_FAVROITE_2 = 4598;
 
 	/**
-	 * Vengeance is active
+	 * Spell activeness
 	 */
 	public static final int VENGEANCE_ACTIVE = 2450;
+	public static final int DEATH_CHARGE = 12411;
+	public static final int RESURRECT_THRALL = 12413;
+	public static final int SHADOW_VEIL = 12414;
 
 	/**
 	 * Spell cooldowns
 	 */
 	public static final int VENGEANCE_COOLDOWN = 2451;
+	public static final int DEATH_CHARGE_COOLDOWN = 12138;
 	public static final int CORRUPTION_COOLDOWN = 12288;
+	public static final int RESURRECT_THRALL_COOLDOWN = 12290;
+	public static final int SHADOW_VEIL_COOLDOWN = 12291;
+	public static final int WARD_OF_ARCEUUS_COOLDOWN = 12293;
 
 	/**
 	 * Imbued Heart cooldown
@@ -556,6 +598,13 @@ public final class Varbits
 	 * The heart regains its power once this reaches 0.
 	 */
 	public static final int IMBUED_HEART_COOLDOWN = 5361;
+
+	/**
+	 * Dragonfire shield cooldown
+	 * <p>
+	 * Number of game ticks remaining on cooldown in intervals of 8; for a value X there are 8 * X game ticks remaining.
+	 */
+	public static final int DRAGONFIRE_SHIELD_COOLDOWN = 6539;
 
 	/**
 	 * Amount of items in each bank tab
@@ -694,6 +743,13 @@ public final class Varbits
 	 * 101 &lt;= Teleblock active, remaining ticks of blocking effect
 	 */
 	public static final int TELEBLOCK = 4163;
+
+	/**
+	 * Farmer's Affinity effect timer
+	 * Number of game ticks remaining on Farmer's Affinity effect in intervals of 20; for a value X there are 20 * X game ticks remaining.
+	 * The Farmer's Affinity expires once this reaches 0.
+	 */
+	public static final int FARMERS_AFFINITY = 11765;
 
 	/**
 	 * If the player has Menaphite remedy effect active.

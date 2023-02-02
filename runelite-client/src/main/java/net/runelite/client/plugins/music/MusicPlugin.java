@@ -742,7 +742,7 @@ public class MusicPlugin extends Plugin
 				return;
 			}
 
-			int arg = client.getIntStackSize() - 8;
+			int arg = client.getIntStackSize() - 11;
 			int[] is = client.getIntStack();
 			Channel channel;
 			switch (is[arg])
@@ -763,7 +763,7 @@ public class MusicPlugin extends Plugin
 			Widget track = client.getScriptActiveWidget();
 			Widget handle = client.getWidget(is[arg + 1])
 				.getChild(is[arg + 2]);
-			Widget realTrack = client.getWidget(is[arg + 6]);
+			Widget realTrack = client.getWidget(is[arg + 7]);
 			SettingsSlider s = new SettingsSlider(channel, handle, track, is[arg + 3], is[arg + 4], is[arg + 5], realTrack);
 			s.update();
 			s.getChannel().setWindowSlider(s);
