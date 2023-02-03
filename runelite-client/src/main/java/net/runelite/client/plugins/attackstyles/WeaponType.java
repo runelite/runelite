@@ -25,8 +25,6 @@
 package net.runelite.client.plugins.attackstyles;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableMap;
-import java.util.Map;
 import lombok.Getter;
 import static net.runelite.client.plugins.attackstyles.AttackStyle.ACCURATE;
 import static net.runelite.client.plugins.attackstyles.AttackStyle.AGGRESSIVE;
@@ -74,20 +72,6 @@ enum WeaponType
 	@Getter
 	private final AttackStyle[] attackStyles;
 
-	private static final Map<Integer, WeaponType> weaponTypes;
-
-	static
-	{
-		ImmutableMap.Builder<Integer, WeaponType> builder = new ImmutableMap.Builder<>();
-
-		for (WeaponType weaponType : values())
-		{
-			builder.put(weaponType.ordinal(), weaponType);
-		}
-
-		weaponTypes = builder.build();
-	}
-
 	WeaponType(AttackStyle... attackStyles)
 	{
 		Preconditions.checkArgument(attackStyles.length == 4 || attackStyles.length == 6,
@@ -97,6 +81,11 @@ enum WeaponType
 
 	public static WeaponType getWeaponType(int id)
 	{
-		return weaponTypes.get(id);
+		if (id < 0 || id > values().length)
+		{
+			return null;
+		}
+
+		return values()[id];
 	}
 }
