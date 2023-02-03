@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.attackstyles;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import java.util.Map;
 import lombok.Getter;
@@ -89,6 +90,8 @@ enum WeaponType
 
 	WeaponType(AttackStyle... attackStyles)
 	{
+		Preconditions.checkArgument(attackStyles.length == 4 || attackStyles.length == 6,
+			"WeaponType " + this + " does not have exactly 4 or 6 attack style arguments");
 		this.attackStyles = attackStyles;
 	}
 
