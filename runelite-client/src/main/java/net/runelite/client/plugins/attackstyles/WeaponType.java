@@ -84,7 +84,7 @@ enum WeaponType
 	/**
 	 * This weapon type is unused outside of the Tumeken's heka, which was only available in beta testing.
 	 */
-	POWERED_WAND(28, ACCURATE, ACCURATE, null, LONGRANGE),
+	POWERED_WAND(28, CASTING, CASTING, null, DEFENSIVE_CASTING),
 	PARTISAN(29, ACCURATE, AGGRESSIVE, AGGRESSIVE, DEFENSIVE);
 
 	@Getter
