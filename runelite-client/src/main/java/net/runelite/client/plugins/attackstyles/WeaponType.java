@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, honeyhoney <https://github.com/honeyhoney>
+ * Copyright (c) 2023, Erishion Games LLC <https://github.com/Erishion-Games-LLC>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
