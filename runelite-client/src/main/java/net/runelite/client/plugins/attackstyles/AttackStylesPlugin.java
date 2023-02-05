@@ -67,7 +67,6 @@ public class AttackStylesPlugin extends Plugin
 	private final Set<Skill> warnedSkills = new HashSet<>();
 	private boolean warnedSkillSelected = false;
 	private final Table<WeaponType, WidgetInfo, Boolean> widgetsToHide = HashBasedTable.create();
-	private WeaponDamageType weaponDamageType;
 	private DamageType damageType;
 
 	@Inject
@@ -252,7 +251,6 @@ public class AttackStylesPlugin extends Plugin
 
 	private void updateDamageType(int equippedWeaponType, int damageTypeIndex)
 	{
-		weaponDamageType = WeaponDamageType.getWeaponDamageType(equippedWeaponType);
 		DamageType[] damageTypes = WeaponDamageType.getWeaponDamageType(equippedWeaponType).getDamageTypes();
 		damageType = damageTypes[damageTypeIndex];
 	}
