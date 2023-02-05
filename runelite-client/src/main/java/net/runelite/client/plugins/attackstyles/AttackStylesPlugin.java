@@ -250,7 +250,8 @@ public class AttackStylesPlugin extends Plugin
 		updateWarnedSkills(config.warnForMagic(), Skill.MAGIC);
 	}
 
-	private void updateDamageType(int equippedWeaponType, int damageTypeIndex){
+	private void updateDamageType(int equippedWeaponType, int damageTypeIndex)
+	{
 		weaponDamageType = WeaponDamageType.getWeaponDamageType(equippedWeaponType);
 		DamageType[] damageTypes = WeaponDamageType.getWeaponDamageType(equippedWeaponType).getDamageTypes();
 		damageType = damageTypes[damageTypeIndex];

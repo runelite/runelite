@@ -30,60 +30,63 @@ import lombok.Getter;
 import java.util.Map;
 import static net.runelite.client.plugins.attackstyles.DamageType.*;
 
-public enum WeaponDamageType {
-    UNARMED(CRUSH, CRUSH, null, CRUSH),
-    AXE(SLASH, SLASH, CRUSH, SLASH),
-    BLUNT(CRUSH, CRUSH, null, CRUSH),
-    BOW(RANGED, RANGED, null, RANGED),
-    CLAWS(SLASH, SLASH, STAB, SLASH),
-    CROSSBOW(RANGED, RANGED, null, RANGED),
-    SALAMANDER(SLASH, RANGED, MAGIC, null),
-    CHINCHOMPA(RANGED, RANGED, null, RANGED),
-    GUN(NONE, CRUSH, null, null),
-    SWORD_SLASH(SLASH, SLASH, STAB, SLASH),
-    SWORD_2H(SLASH, SLASH, CRUSH, SLASH),
-    PICKAXE(STAB, STAB, CRUSH, STAB),
-    TWELVE(null, null, null, null),
-    POLESTAFF(CRUSH, CRUSH, null, CRUSH),
-    SCYTHE(SLASH, SLASH, CRUSH, SLASH),
-    SPEAR(STAB, SLASH, CRUSH, STAB),
-    SPIKED(CRUSH, CRUSH, STAB, CRUSH),
-    SWORD_STAB(STAB, STAB, SLASH, STAB),
-    STAFF(CRUSH, CRUSH, null, CRUSH, MAGIC, MAGIC),
-    THROWN(RANGED, RANGED, null, RANGED),
-    WHIP(SLASH, SLASH, null, SLASH),
-    STAFF_BLADED(STAB, SLASH, null, CRUSH, MAGIC, MAGIC),
-    TWENTY_TWO(null, null, null, null),
-    STAFF_POWERED(MAGIC, MAGIC, null, MAGIC),
-    BANNER(STAB, SLASH, CRUSH, STAB),
-    POLEARM(STAB, SLASH, null, STAB),
-    BLUDGEON(CRUSH, CRUSH, null, CRUSH),
-    BULWARK(CRUSH, null, null, NONE),
-    TWENTYEIGHT(null, null, null, null),
-    PARTISAN(STAB, STAB, CRUSH, STAB),
-    ;
+public enum WeaponDamageType
+{
+	UNARMED(CRUSH, CRUSH, null, CRUSH),
+	AXE(SLASH, SLASH, CRUSH, SLASH),
+	BLUNT(CRUSH, CRUSH, null, CRUSH),
+	BOW(RANGED, RANGED, null, RANGED),
+	CLAWS(SLASH, SLASH, STAB, SLASH),
+	CROSSBOW(RANGED, RANGED, null, RANGED),
+	SALAMANDER(SLASH, RANGED, MAGIC, null),
+	CHINCHOMPA(RANGED, RANGED, null, RANGED),
+	GUN(NONE, CRUSH, null, null),
+	SWORD_SLASH(SLASH, SLASH, STAB, SLASH),
+	SWORD_2H(SLASH, SLASH, CRUSH, SLASH),
+	PICKAXE(STAB, STAB, CRUSH, STAB),
+	TWELVE(null, null, null, null),
+	POLESTAFF(CRUSH, CRUSH, null, CRUSH),
+	SCYTHE(SLASH, SLASH, CRUSH, SLASH),
+	SPEAR(STAB, SLASH, CRUSH, STAB),
+	SPIKED(CRUSH, CRUSH, STAB, CRUSH),
+	SWORD_STAB(STAB, STAB, SLASH, STAB),
+	STAFF(CRUSH, CRUSH, null, CRUSH, MAGIC, MAGIC),
+	THROWN(RANGED, RANGED, null, RANGED),
+	WHIP(SLASH, SLASH, null, SLASH),
+	STAFF_BLADED(STAB, SLASH, null, CRUSH, MAGIC, MAGIC),
+	TWENTY_TWO(null, null, null, null),
+	STAFF_POWERED(MAGIC, MAGIC, null, MAGIC),
+	BANNER(STAB, SLASH, CRUSH, STAB),
+	POLEARM(STAB, SLASH, null, STAB),
+	BLUDGEON(CRUSH, CRUSH, null, CRUSH),
+	BULWARK(CRUSH, null, null, NONE),
+	TWENTYEIGHT(null, null, null, null),
+	PARTISAN(STAB, STAB, CRUSH, STAB),
+	;
 
-    @Getter
-    private final DamageType[] damageTypes;
-    private static final Map<Integer, WeaponDamageType> weaponDamageTypes;
+	@Getter
+	private final DamageType[] damageTypes;
+	private static final Map<Integer, WeaponDamageType> weaponDamageTypes;
 
-    static
-    {
-        ImmutableMap.Builder<Integer, WeaponDamageType> builder = new ImmutableMap.Builder<>();
+	static
+	{
+		ImmutableMap.Builder<Integer, WeaponDamageType> builder = new ImmutableMap.Builder<>();
 
-        for (WeaponDamageType weaponDamageType : values())
-        {
-            builder.put(weaponDamageType.ordinal(), weaponDamageType);
-        }
+		for (WeaponDamageType weaponDamageType : values())
+		{
+			builder.put(weaponDamageType.ordinal(), weaponDamageType);
+		}
 
-        weaponDamageTypes = builder.build();
-    }
-    
-    WeaponDamageType(DamageType... damageTypes) {
-        this.damageTypes = damageTypes;
-    }
+		weaponDamageTypes = builder.build();
+	}
 
-    public static WeaponDamageType getWeaponDamageType(int id){
-        return weaponDamageTypes.get(id);
-    }
+	WeaponDamageType(DamageType... damageTypes)
+	{
+		this.damageTypes = damageTypes;
+	}
+
+	public static WeaponDamageType getWeaponDamageType(int id)
+	{
+		return weaponDamageTypes.get(id);
+	}
 }

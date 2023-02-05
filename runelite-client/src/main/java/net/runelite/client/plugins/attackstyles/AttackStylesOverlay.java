@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, honeyhoney <https://github.com/honeyhoney>
+
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -73,6 +74,7 @@ class AttackStylesOverlay extends OverlayPanel
 			panelComponent.setPreferredSize(new Dimension(
 				graphics.getFontMetrics().stringWidth(attackStyleString) + 10,
 				0));
+
 
 			return super.render(graphics);
 		}

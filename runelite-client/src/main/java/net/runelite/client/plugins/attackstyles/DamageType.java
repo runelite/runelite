@@ -26,22 +26,25 @@ package net.runelite.client.plugins.attackstyles;
 
 import lombok.Getter;
 
-public enum DamageType {
-    STAB("Stab"),
-    SLASH("Slash"),
-    CRUSH("Crush"),
-    RANGED("Ranged"),
-    MAGIC("Magic"),
-    NONE("None"),
-    ;
-    @Getter
-    private final String name;
+public enum DamageType
+{
+	STAB("Stab"),
+	SLASH("Slash"),
+	CRUSH("Crush"),
+	RANGED("Ranged"),
+	MAGIC("Magic"),
+	NONE("None"),
+	;
+	@Getter
+	private final String name;
 
-    DamageType(String name) {
-        this.name = name;
-    }
+	DamageType(String name)
+	{
+		this.name = name;
+	}
 
-    public String getName(){
-        return this.name;
-    }
+	public String getName()
+	{
+		return this.name;
+	}
 }

@@ -43,10 +43,10 @@ public interface AttackStylesConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "showDamageType",
-			name = "Show Damage Type",
-			description = "Display the type of damage you will deal. Slash, stab, crush, range, magic.",
-			position = 1
+		keyName = "showDamageType",
+		name = "Show Damage Type",
+		description = "Display the type of damage you will deal. Slash, stab, crush, range, magic.",
+		position = 1
 	)
 	default boolean showDamageType()
 	{

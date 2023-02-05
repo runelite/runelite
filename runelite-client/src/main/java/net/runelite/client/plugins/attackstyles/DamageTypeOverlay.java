@@ -53,7 +53,7 @@ class DamageTypeOverlay extends OverlayPanel
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if(config.showDamageType())
+		if (config.showDamageType())
 		{
 			final DamageType damageType = plugin.getDamageType();
 
@@ -64,14 +64,9 @@ class DamageTypeOverlay extends OverlayPanel
 
 			final String damageTypeString = damageType.getName();
 
-			panelComponent.getChildren().add(TitleComponent.builder()
-					.text(damageTypeString)
-					.color(Color.WHITE)
-					.build());
+			panelComponent.getChildren().add(TitleComponent.builder().text(damageTypeString).color(Color.WHITE).build());
 
-			panelComponent.setPreferredSize(new Dimension(
-					graphics.getFontMetrics().stringWidth(damageTypeString) + 10,
-					0));
+			panelComponent.setPreferredSize(new Dimension(graphics.getFontMetrics().stringWidth(damageTypeString) + 10, 0));
 
 			return super.render(graphics);
 		}
