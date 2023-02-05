@@ -61,8 +61,7 @@ public enum WeaponDamageType
 	BLUDGEON(CRUSH, CRUSH, null, CRUSH),
 	BULWARK(CRUSH, null, null, NONE),
 	TWENTYEIGHT(null, null, null, null),
-	PARTISAN(STAB, STAB, CRUSH, STAB),
-	;
+	PARTISAN(STAB, STAB, CRUSH, STAB);
 
 	@Getter
 	private final DamageType[] damageTypes;
