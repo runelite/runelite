@@ -35,9 +35,20 @@ public interface AttackStylesConfig extends Config
 		keyName = "alwaysShowStyle",
 		name = "Always show style",
 		description = "Show attack style indicator at all times",
-		position = 1
+		position = 0
 	)
 	default boolean alwaysShowStyle()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "showDamageType",
+			name = "Show Damage Type",
+			description = "Display the type of damage you will deal. Slash, stab, crush, range, magic.",
+			position = 1
+	)
+	default boolean showDamageType()
 	{
 		return true;
 	}
