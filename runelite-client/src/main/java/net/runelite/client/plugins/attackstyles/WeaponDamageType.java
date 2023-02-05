@@ -1,4 +1,5 @@
 /* BSD 2-Clause License
+ * Copyright (c) 2017, honeyhoney <https://github.com/honeyhoney>
  * Copyright (c) 2023, Erishion Games LLC <https://github.com/Erishion-Games-LLC>
  * All rights reserved.
  *
@@ -24,7 +25,9 @@
  */
 package net.runelite.client.plugins.attackstyles;
 
-
+import com.google.common.collect.ImmutableMap;
+import lombok.Getter;
+import java.util.Map;
 import static net.runelite.client.plugins.attackstyles.DamageType.*;
 
 public enum WeaponDamageType {
@@ -60,6 +63,27 @@ public enum WeaponDamageType {
     PARTISAN(STAB, STAB, CRUSH, STAB),
     ;
 
+    @Getter
+    private final DamageType[] damageTypes;
+    private static final Map<Integer, WeaponDamageType> weaponDamageTypes;
+
+    static
+    {
+        ImmutableMap.Builder<Integer, WeaponDamageType> builder = new ImmutableMap.Builder<>();
+
+        for (WeaponDamageType weaponDamageType : values())
+        {
+            builder.put(weaponDamageType.ordinal(), weaponDamageType);
+        }
+
+        weaponDamageTypes = builder.build();
+    }
+    
     WeaponDamageType(DamageType... damageTypes) {
+        this.damageTypes = damageTypes;
+    }
+
+    public static WeaponDamageType getWeaponDamageType(int id){
+        return weaponDamageTypes.get(id);
     }
 }

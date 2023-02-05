@@ -1,4 +1,5 @@
-/* BSD 2-Clause License
+/*
+ * Copyright (c) 2017, honeyhoney <https://github.com/honeyhoney>
  * Copyright (c) 2023, Erishion Games LLC <https://github.com/Erishion-Games-LLC>
  * All rights reserved.
  *
@@ -24,24 +25,57 @@
  */
 package net.runelite.client.plugins.attackstyles;
 
-import lombok.Getter;
+import net.runelite.client.ui.overlay.OverlayPanel;
+import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.components.TitleComponent;
 
-public enum DamageType {
-    STAB("Stab"),
-    SLASH("Slash"),
-    CRUSH("Crush"),
-    RANGED("Ranged"),
-    MAGIC("Magic"),
-    NONE("None"),
-    ;
-    @Getter
-    private final String name;
+import javax.inject.Inject;
+import java.awt.*;
 
-    DamageType(String name) {
-        this.name = name;
-    }
+import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
+import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 
-    public String getName(){
-        return this.name;
-    }
+class DamageTypeOverlay extends OverlayPanel
+{
+	private final AttackStylesPlugin plugin;
+	private final AttackStylesConfig config;
+
+	@Inject
+	private DamageTypeOverlay(AttackStylesPlugin plugin, AttackStylesConfig config)
+	{
+		super(plugin);
+		setPosition(OverlayPosition.ABOVE_CHATBOX_RIGHT);
+		this.plugin = plugin;
+		this.config = config;
+		addMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Damage type overlay");
+	}
+
+	@Override
+	public Dimension render(Graphics2D graphics)
+	{
+		if(config.showDamageType())
+		{
+			final DamageType damageType = plugin.getDamageType();
+
+			if (damageType == null)
+			{
+				return null;
+			}
+
+			final String damageTypeString = damageType.getName();
+
+			panelComponent.getChildren().add(TitleComponent.builder()
+					.text(damageTypeString)
+					.color(Color.WHITE)
+					.build());
+
+			panelComponent.setPreferredSize(new Dimension(
+					graphics.getFontMetrics().stringWidth(damageTypeString) + 10,
+					0));
+
+			return super.render(graphics);
+		}
+
+		return null;
+	}
 }

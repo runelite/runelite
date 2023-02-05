@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, honeyhoney <https://github.com/honeyhoney>
+ * Copyright (c) 2023, Erishion Games LLC <https://github.com/Erishion-Games-LLC>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -66,6 +67,8 @@ public class AttackStylesPlugin extends Plugin
 	private final Set<Skill> warnedSkills = new HashSet<>();
 	private boolean warnedSkillSelected = false;
 	private final Table<WeaponType, WidgetInfo, Boolean> widgetsToHide = HashBasedTable.create();
+	private WeaponDamageType weaponDamageType;
+	private DamageType damageType;
 
 	@Inject
 	private Client client;
@@ -80,7 +83,10 @@ public class AttackStylesPlugin extends Plugin
 	private OverlayManager overlayManager;
 
 	@Inject
-	private AttackStylesOverlay overlay;
+	private AttackStylesOverlay attackStylesOverlay;
+
+	@Inject
+	private DamageTypeOverlay damageTypeOverlay;
 
 	@Provides
 	AttackStylesConfig provideConfig(ConfigManager configManager)
@@ -91,7 +97,8 @@ public class AttackStylesPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		overlayManager.add(overlay);
+		overlayManager.add(attackStylesOverlay);
+		overlayManager.add(damageTypeOverlay);
 
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
@@ -116,7 +123,8 @@ public class AttackStylesPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
-		overlayManager.remove(overlay);
+		overlayManager.remove(attackStylesOverlay);
+		overlayManager.remove(damageTypeOverlay);
 		hideWarnedStyles(false);
 		processWidgets();
 		hideWidget(client.getWidget(WidgetInfo.COMBAT_AUTO_RETALIATE), false);
@@ -126,6 +134,12 @@ public class AttackStylesPlugin extends Plugin
 	public AttackStyle getAttackStyle()
 	{
 		return attackStyle;
+	}
+
+	@Nullable
+	public DamageType getDamageType()
+	{
+		return damageType;
 	}
 
 	public boolean isWarnedSkillSelected()
@@ -236,11 +250,20 @@ public class AttackStylesPlugin extends Plugin
 		updateWarnedSkills(config.warnForMagic(), Skill.MAGIC);
 	}
 
+	private void updateDamageType(int equippedWeaponType, int damageTypeIndex){
+		weaponDamageType = WeaponDamageType.getWeaponDamageType(equippedWeaponType);
+		DamageType[] damageTypes = WeaponDamageType.getWeaponDamageType(equippedWeaponType).getDamageTypes();
+		damageType = damageTypes[damageTypeIndex];
+	}
+
 	private void updateAttackStyle(int equippedWeaponType, int attackStyleIndex, int castingMode)
 	{
 		AttackStyle[] attackStyles = WeaponType.getWeaponType(equippedWeaponType).getAttackStyles();
 		if (attackStyleIndex < attackStyles.length)
 		{
+
+			updateDamageType(equippedWeaponType, attackStyleIndex);
+
 			attackStyle = attackStyles[attackStyleIndex];
 			if (attackStyle == null)
 			{
