@@ -286,9 +286,9 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(RESURRECT_THRALL);
 		}
 
-		if (event.getVarbitId() == Varbits.SHADOW_VEIL && config.showArceuus())
+		if (event.getVarbitId() == Varbits.SHADOW_VEIL && event.getValue() == 0 && config.showArceuus())
 		{
-			updateVarTimer(SHADOW_VEIL, event.getValue(), i -> client.getRealSkillLevel(Skill.MAGIC));
+			removeGameTimer(SHADOW_VEIL);
 		}
 
 		if (event.getVarpId() == VarPlayer.POISON.getId() && config.showAntiPoison())
@@ -525,16 +525,9 @@ public class TimersPlugin extends Plugin
 			updateVarTimer(MENAPHITE_REMEDY, event.getValue(), i -> i * 25);
 		}
 
-		if (event.getVarbitId() == Varbits.LIQUID_ADERNALINE_ACTIVE && config.showLiquidAdrenaline())
+		if (event.getVarbitId() == Varbits.LIQUID_ADERNALINE_ACTIVE && event.getValue() == 0 && config.showLiquidAdrenaline())
 		{
-			if (event.getValue() == 1)
-			{
-				createGameTimer(LIQUID_ADRENALINE);
-			}
-			else
-			{
-				removeGameTimer(LIQUID_ADRENALINE);
-			}
+			removeGameTimer(LIQUID_ADRENALINE);
 		}
 
 		if (event.getVarbitId() == Varbits.FARMERS_AFFINITY && config.showFarmersAffinity())
@@ -800,7 +793,7 @@ public class TimersPlugin extends Plugin
 			final int magicLevel = client.getRealSkillLevel(Skill.MAGIC);
 			if (message.endsWith(SHADOW_VEIL_MESSAGE))
 			{
-				updateVarTimer(SHADOW_VEIL, 1, i -> magicLevel);
+				createGameTimer(SHADOW_VEIL, Duration.of(magicLevel, RSTimeUnit.GAME_TICKS));
 			}
 			else if (message.endsWith(WARD_OF_ARCEUUS_MESSAGE))
 			{

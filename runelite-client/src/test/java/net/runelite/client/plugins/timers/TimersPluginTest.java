@@ -406,10 +406,8 @@ public class TimersPluginTest
 		when(timersConfig.showArceuus()).thenReturn(true);
 		when(client.getRealSkillLevel(Skill.MAGIC)).thenReturn(57);
 
-		VarbitChanged varbitChanged = new VarbitChanged();
-		varbitChanged.setVarbitId(Varbits.SHADOW_VEIL);
-		varbitChanged.setValue(1);
-		timersPlugin.onVarbitChanged(varbitChanged);
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=6800bf>Your thieving abilities have been enhanced.</col>", "", 0);
+		timersPlugin.onChatMessage(chatMessage);
 
 		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
 		verify(infoBoxManager).addInfoBox(captor.capture());
