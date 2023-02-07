@@ -488,7 +488,7 @@ public class PartyPlugin extends Plugin
 			return;
 		}
 
-		if (client.getTickCount() % messageFreq(party.getMembers().size()) != 0)
+		if (!forceSend && client.getTickCount() % messageFreq(party.getMembers().size()) != 0)
 		{
 			return;
 		}
