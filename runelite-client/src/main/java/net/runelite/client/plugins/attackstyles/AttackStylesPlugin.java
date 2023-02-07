@@ -39,6 +39,10 @@ import net.runelite.api.ScriptID;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
+import net.runelite.api.combat.AttackStyle;
+import net.runelite.api.combat.DamageType;
+import net.runelite.api.combat.WeaponDamageType;
+import net.runelite.api.combat.WeaponType;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.VarbitChanged;
@@ -50,9 +54,9 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import static net.runelite.client.plugins.attackstyles.AttackStyle.CASTING;
-import static net.runelite.client.plugins.attackstyles.AttackStyle.DEFENSIVE_CASTING;
-import static net.runelite.client.plugins.attackstyles.AttackStyle.OTHER;
+import static net.runelite.api.combat.AttackStyle.CASTING;
+import static net.runelite.api.combat.AttackStyle.DEFENSIVE_CASTING;
+import static net.runelite.api.combat.AttackStyle.OTHER;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(

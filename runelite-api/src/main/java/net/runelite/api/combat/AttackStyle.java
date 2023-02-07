@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2017, honeyhoney <https://github.com/honeyhoney>
+ * Copyright (c) 2023, Erishion Games LLC <https://github.com/Erishion-Games-LLC>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,12 +23,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.attackstyles;
+package net.runelite.api.combat;
 
 import lombok.Getter;
 import net.runelite.api.Skill;
 
-enum AttackStyle
+public enum AttackStyle
 {
 	ACCURATE("Accurate", Skill.ATTACK),
 	AGGRESSIVE("Aggressive", Skill.STRENGTH),

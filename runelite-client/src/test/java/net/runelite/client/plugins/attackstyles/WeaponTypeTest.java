@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.attackstyles;
 
+import net.runelite.api.combat.WeaponType;
 import org.junit.Test;
 
 public class WeaponTypeTest

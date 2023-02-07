@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.attackstyles;
 
+import net.runelite.api.combat.DamageType;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.TitleComponent;
