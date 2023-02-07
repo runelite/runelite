@@ -24,30 +24,18 @@
  */
 package net.runelite.client.hiscore;
 
-import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.CharMatcher;
-import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.google.gson.JsonSyntaxException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.client.RuntimeConfig;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
@@ -59,89 +47,14 @@ import okhttp3.Response;
 @Singleton
 public class HiscoreClient
 {
-	private static final Splitter NEWLINE_SPLITTER = Splitter.on(CharMatcher.anyOf("\r\n")).omitEmptyStrings();
-	private static final Splitter COMMA_SPLITTER = Splitter.on(',').trimResults();
-
 	private final OkHttpClient client;
-	private final Map<HiscoreEndpoint, List<HiscoreSkill>> mappings;
+	private final Gson gson;
 
 	@Inject
-	private HiscoreClient(OkHttpClient client, Gson gson, @Nullable RuntimeConfig runtimeConfig)
+	private HiscoreClient(OkHttpClient client, Gson gson)
 	{
 		this.client = client;
-
-		Map<String, List<String>> strMapping = loadDiskMappings(gson);
-
-		if (runtimeConfig != null && runtimeConfig.getHiscoreMapping() != null)
-		{
-			strMapping.putAll(runtimeConfig.getHiscoreMapping());
-		}
-
-		mappings = convertMappings(strMapping, false);
-	}
-
-	@VisibleForTesting
-	static Map<String, List<String>> loadDiskMappings(Gson gson)
-	{
-		try (InputStream is = HiscoreClient.class.getResourceAsStream("mappings.json"))
-		{
-			return gson.fromJson(new InputStreamReader(is, StandardCharsets.UTF_8),
-				new TypeToken<Map<String, List<String>>>()
-				{
-				}.getType());
-		}
-		catch (IOException e)
-		{
-			throw new RuntimeException(e);
-		}
-	}
-
-	@VisibleForTesting
-	static Map<HiscoreEndpoint, List<HiscoreSkill>> convertMappings(Map<String, List<String>> strMapping, boolean strict)
-	{
-		Map<String, List<HiscoreSkill>> entries = new HashMap<>();
-		for (Map.Entry<String, List<String>> e : strMapping.entrySet())
-		{
-			entries.put(e.getKey(), Collections.unmodifiableList(e.getValue().stream()
-				.map(name ->
-				{
-					try
-					{
-						return HiscoreSkill.valueOf(name);
-					}
-					catch (IllegalArgumentException ex)
-					{
-						log.warn("invalid skill {}", name, ex);
-						if (strict)
-						{
-							throw ex;
-						}
-						return null;
-					}
-				}).collect(Collectors.toList())));
-		}
-
-		Map<HiscoreEndpoint, List<HiscoreSkill>> out = Arrays.stream(HiscoreEndpoint.values())
-			.collect(ImmutableMap.toImmutableMap(
-				Function.identity(),
-				endpoint ->
-				{
-					List<HiscoreSkill> map = entries.remove(endpoint.name());
-					if (map == null)
-					{
-						map = entries.get("default");
-					}
-					return map;
-				}));
-
-		entries.remove("default");
-		if (strict && !entries.isEmpty())
-		{
-			log.warn("invalid endpoint {}", entries.keySet());
-			throw new IllegalArgumentException("invalid entrypoints");
-		}
-
-		return out;
+		this.gson = gson;
 	}
 
 	public HiscoreResult lookup(String username) throws IOException
@@ -151,15 +64,14 @@ public class HiscoreClient
 
 	public HiscoreResult lookup(String username, HiscoreEndpoint endpoint) throws IOException
 	{
-		return lookup(username, endpoint, endpoint.getHiscoreURL());
+		return lookup(username, endpoint.getHiscoreURL());
 	}
 
-	@VisibleForTesting
-	HiscoreResult lookup(String username, HiscoreEndpoint endpoint, HttpUrl url) throws IOException
+	private HiscoreResult lookup(String username, HttpUrl url) throws IOException
 	{
 		try (Response response = client.newCall(buildRequest(username, url)).execute())
 		{
-			return processResponse(username, endpoint, response);
+			return processResponse(username, response);
 		}
 	}
 
@@ -180,7 +92,7 @@ public class HiscoreClient
 			{
 				try // NOPMD: UseTryWithResources
 				{
-					future.complete(processResponse(username, endpoint, response));
+					future.complete(processResponse(username, response));
 				}
 				finally
 				{
@@ -205,7 +117,7 @@ public class HiscoreClient
 			.build();
 	}
 
-	private HiscoreResult processResponse(String username, HiscoreEndpoint endpoint, Response response) throws IOException
+	private HiscoreResult processResponse(String username, Response response) throws IOException
 	{
 		if (!response.isSuccessful())
 		{
@@ -214,49 +126,49 @@ public class HiscoreClient
 				return null;
 			}
 
-			throw new IOException("Error retrieving data from Jagex Hiscores: " + response);
+			throw new IOException("Error retrieving data from hiscores: " + response);
 		}
 
-		String responseStr = response.body().string();
+		HiscoreResponse hiscoreResponse;
+		try
+		{
+			hiscoreResponse = gson.fromJson(response.body().charStream(), HiscoreResponse.class);
+		}
+		catch (JsonSyntaxException ex)
+		{
+			throw new IOException("Error deserializing hiscore response", ex);
+		}
+
+		if (hiscoreResponse == null)
+		{
+			throw new IOException("Error retrieving data from hiscores: " + response);
+		}
+
+		Map<String, HiscoreSkill> skillMap = Arrays.stream(HiscoreSkill.values())
+			.collect(Collectors.toMap(HiscoreSkill::getName, Function.identity()));
 
 		ImmutableMap.Builder<HiscoreSkill, Skill> skills = ImmutableMap.builder();
-		Iterator<HiscoreSkill> map = mappings.get(endpoint).iterator();
-		for (String line : NEWLINE_SPLITTER.split(responseStr))
+		for (HiscoreResponse.Skill skill : hiscoreResponse.skills)
 		{
-			if (!map.hasNext())
+			HiscoreSkill s = skillMap.get(skill.name);
+			if (s == null)
 			{
-				log.warn("{} returned extra data", endpoint);
-				break;
-			}
-
-			HiscoreSkill skill = map.next();
-			if (skill == null)
-			{
+				log.debug("unknown skill in hiscore: {}", skill.name);
 				continue;
 			}
 
-			List<String> record = COMMA_SPLITTER.splitToList(line);
-			try
-			{
-				int rank = Integer.parseInt(record.get(0));
-				int level = Integer.parseInt(record.get(1));
-				long experience = -1;
-				if (record.size() == 3)
-				{
-					experience = Long.parseLong(record.get(2));
-				}
-
-				skills.put(skill, new Skill(rank, level, experience));
-			}
-			catch (Exception e)
-			{
-				log.warn("invalid hiscore line \"{}\"", line, e);
-			}
+			skills.put(s, new Skill(skill.rank, skill.level, skill.xp));
 		}
-
-		if (map.hasNext())
+		for (HiscoreResponse.Activity activity : hiscoreResponse.activities)
 		{
-			log.warn("{} returned less data than expected ({} expected next)", endpoint, map.next());
+			HiscoreSkill s = skillMap.get(activity.name);
+			if (s == null)
+			{
+				log.debug("unknown activity in hiscore: {}", activity.name);
+				continue;
+			}
+
+			skills.put(s, new Skill(activity.rank, (int) activity.score, -1L));
 		}
 
 		return new HiscoreResult(username, skills.build());

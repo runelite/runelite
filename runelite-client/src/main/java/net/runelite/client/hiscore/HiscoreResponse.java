@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022, Adam <Adam@sigterm.info>
+ * Copyright (c) 2023, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,55 +22,25 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client;
+package net.runelite.client.hiscore;
 
-import com.google.common.base.Strings;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Set;
-import javax.swing.SwingUtilities;
-import lombok.Data;
-import net.runelite.client.ui.FatalErrorDialog;
-import net.runelite.client.util.LinkBrowser;
-
-@Data
-public class RuntimeConfig
+class HiscoreResponse
 {
-	private Map<String, ?> props = Collections.emptyMap();
-	private Map<String, String> sysProps = Collections.emptyMap();
-
-	private String outageMessage;
-	private Map<String, String> outageLinks;
-
-	private Set<Integer> ignoreDeadNpcs;
-	private Set<Integer> forceDeadNpcs;
-	private Set<Integer> resetDeadOnChangeNpcs;
-	private Set<Integer> forceDeadAnimations;
-	private Set<Integer> nonAttackNpcs;
-
-	public boolean showOutageMessage()
+	static class Skill
 	{
-		if (Strings.isNullOrEmpty(getOutageMessage()))
-		{
-			return false;
-		}
-
-		SwingUtilities.invokeLater(() ->
-		{
-			FatalErrorDialog fed = new FatalErrorDialog(getOutageMessage());
-			if (getOutageLinks() != null)
-			{
-				for (Map.Entry<String, String> e : getOutageLinks().entrySet())
-				{
-					fed.addButton(e.getKey(), () -> LinkBrowser.browse(e.getValue()));
-				}
-			}
-			else
-			{
-				fed.addButton("OSRS Twitter", () -> LinkBrowser.browse(RuneLiteProperties.getOSRSTwitterLink()));
-			}
-			fed.open();
-		});
-		return true;
+		String name;
+		int rank;
+		int level;
+		long xp;
 	}
+
+	static class Activity
+	{
+		String name;
+		int rank;
+		long score;
+	}
+
+	Skill[] skills;
+	Activity[] activities;
 }
