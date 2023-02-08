@@ -279,7 +279,7 @@ public class PluginManager
 			.collect(Collectors.toList());
 
 		loadPlugins(plugins, (loaded, total) ->
-			SplashScreen.stage(.60, .70, null, "Loading Plugins", loaded, total, false));
+			SplashScreen.stage(.60, .70, null, "Loading plugins", loaded, total, false));
 	}
 
 	public void loadSideLoadPlugins()
