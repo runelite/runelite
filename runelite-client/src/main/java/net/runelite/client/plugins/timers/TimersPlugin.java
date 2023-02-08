@@ -1185,19 +1185,24 @@ public class TimersPlugin extends Plugin
 
 	private void updateVarTimer(final GameTimer gameTimer, final int varValue, final IntPredicate removeTimerCheck, final IntUnaryOperator tickDuration)
 	{
-		final TimerTimer timer = varTimers.get(gameTimer);
-		final Duration duration = Duration.of(tickDuration.applyAsInt(varValue), RSTimeUnit.GAME_TICKS);
+		TimerTimer timer = varTimers.get(gameTimer);
+		int ticks = tickDuration.applyAsInt(varValue);
+		final Duration duration = Duration.of(ticks, RSTimeUnit.GAME_TICKS);
 
 		if (removeTimerCheck.test(varValue))
 		{
 			removeVarTimer(gameTimer);
 		}
-		else if (timer == null)
+		// Reset the timer when its duration increases in order to allow it to turn red at the correct time even when refreshed early
+		else if (timer == null || ticks > timer.ticks)
 		{
-			varTimers.put(gameTimer, createGameTimer(gameTimer, duration));
+			timer = createGameTimer(gameTimer, duration);
+			timer.ticks = ticks;
+			varTimers.put(gameTimer, timer);
 		}
 		else
 		{
+			timer.ticks = ticks;
 			timer.updateDuration(duration);
 		}
 	}
