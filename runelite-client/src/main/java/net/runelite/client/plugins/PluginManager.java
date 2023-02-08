@@ -271,7 +271,7 @@ public class PluginManager
 
 	public void loadCorePlugins() throws IOException, PluginInstantiationException
 	{
-		SplashScreen.stage(.59, null, "Loading Plugins");
+		SplashScreen.stage(.59, null, "Loading plugins");
 		ClassPath classPath = ClassPath.from(getClass().getClassLoader());
 
 		List<Class<?>> plugins = classPath.getTopLevelClassesRecursive(PLUGIN_PACKAGE).stream()
