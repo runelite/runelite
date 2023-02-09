@@ -61,6 +61,7 @@ import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -71,6 +72,8 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import lombok.Getter;
@@ -428,6 +431,7 @@ class PluginHubPanel extends PluginPanel
 	private final Deque<PluginIcon> iconLoadQueue = new ArrayDeque<>();
 
 	private final IconTextField searchBar;
+	private final JCheckBox hideInstalledCheckBox;
 	private final JLabel refreshing;
 	private final JPanel mainPanel;
 	private List<PluginItem> plugins = null;
@@ -464,6 +468,18 @@ class PluginHubPanel extends PluginPanel
 		setLayout(layout);
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 
+		hideInstalledCheckBox = new JCheckBox("Hide installed plugins");
+		hideInstalledCheckBox.setSelected(false);
+		hideInstalledCheckBox.addChangeListener(new ChangeListener()
+		{
+			@Override
+			public void stateChanged(ChangeEvent arg0)
+			{
+				filter();
+			}
+			
+		});
+		
 		searchBar = new IconTextField();
 		searchBar.setIcon(IconTextField.Icon.SEARCH);
 		searchBar.setBackground(ColorScheme.DARKER_GRAY_COLOR);
@@ -539,6 +555,8 @@ class PluginHubPanel extends PluginPanel
 				.addComponent(backButton)
 				.addComponent(searchBar))
 			.addGap(10)
+			.addComponent(hideInstalledCheckBox)
+			.addGap(10)
 			.addComponent(scrollPane));
 
 		layout.setHorizontalGroup(layout.createParallelGroup()
@@ -547,7 +565,9 @@ class PluginHubPanel extends PluginPanel
 			.addGroup(layout.createSequentialGroup()
 				.addComponent(backButton)
 				.addComponent(searchBar)
-				.addGap(10))
+			.addGap(10))
+			.addComponent(hideInstalledCheckBox)
+			.addGap(10)
 			.addComponent(scrollPane));
 
 		revalidate();
@@ -650,14 +670,19 @@ class PluginHubPanel extends PluginPanel
 		Stream<PluginItem> stream = plugins.stream();
 
 		String query = searchBar.getText();
+		boolean hideInstalled = hideInstalledCheckBox.isSelected();
 		boolean isSearching = query != null && !query.trim().isEmpty();
 		if (isSearching)
 		{
-			PluginSearch.search(plugins, query).forEach(mainPanel::add);
+			PluginSearch.search(plugins, query)
+			.stream()
+				.filter(p -> !hideInstalled || !p.installed)
+				.forEach(mainPanel::add);
 		}
 		else
 		{
 			stream
+				.filter(p -> !hideInstalled || !p.installed)
 				.sorted(Comparator.comparing(PluginItem::isInstalled)
 					.thenComparingInt(PluginItem::getUserCount)
 					.reversed()
