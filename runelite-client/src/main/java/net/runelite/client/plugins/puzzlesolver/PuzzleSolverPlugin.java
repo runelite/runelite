@@ -276,16 +276,22 @@ public class PuzzleSolverPlugin extends Plugin
 			}
 			else
 			{
-				String remainingButtons = "";
-				for (int i = 0; i < Combination.values().length; i++) {
-					if (changes[i] == null) {
-						remainingButtons += Combination.values()[i];
+				StringBuilder remainingButtons = new StringBuilder();
+				for (int i = 0; i < Combination.values().length; i++)
+				{
+					if (changes[i] == null)
+					{
+						remainingButtons.append(Combination.values()[i]);
 					}
 				}
-				if (remainingButtons == "") {
-					remainingButtons = "Any";
+				if (remainingButtons.length() == 0)
+				{
+					title.setText("Light box - Press: Any");
 				}
-				title.setText("Light box - Press: " + remainingButtons);
+				else
+				{
+					title.setText("Light box - Press: " + remainingButtons.toString());
+				}
 			}
 		}
 	}
