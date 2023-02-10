@@ -276,7 +276,16 @@ public class PuzzleSolverPlugin extends Plugin
 			}
 			else
 			{
-				title.setText("Light box - Solution: unknown");
+				String remainingButtons = "";
+				for (int i = 0; i < Combination.values().length; i++) {
+					if (changes[i] == null) {
+						remainingButtons += Combination.values()[i];
+					}
+				}
+				if (remainingButtons == "") {
+					remainingButtons = "Any";
+				}
+				title.setText("Light box - Press: " + remainingButtons);
 			}
 		}
 	}
