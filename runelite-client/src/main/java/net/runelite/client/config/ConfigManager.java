@@ -695,9 +695,9 @@ public class ConfigManager
 	/**
 	 * Initialize the configuration from the default settings
 	 *
-	 * @param proxy
+	 * @param proxy proxy instance implementing {@link Config}
 	 */
-	public void setDefaultConfiguration(Object proxy, boolean override)
+	public <T extends Config> void setDefaultConfiguration(T proxy, boolean override)
 	{
 		Class<?> clazz = proxy.getClass().getInterfaces()[0];
 		ConfigGroup group = clazz.getAnnotation(ConfigGroup.class);
