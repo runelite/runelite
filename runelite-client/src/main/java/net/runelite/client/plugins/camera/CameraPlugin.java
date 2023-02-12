@@ -334,7 +334,7 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 		{
 			case ScriptID.SETTINGS_SLIDER_CHOOSE_ONOP:
 			{
-				int arg = client.getIntStackSize() - 7;
+				int arg = client.getIntStackSize() - 11;
 				int[] is = client.getIntStack();
 
 				if (is[arg] == SettingID.CAMERA_ZOOM)
@@ -386,7 +386,7 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 		switch (gameStateChanged.getGameState())
 		{
 			case HOPPING:
-				savedCameraYaw = client.getMapAngle();
+				savedCameraYaw = client.getCameraYawTarget();
 				break;
 			case LOGGED_IN:
 				if (savedCameraYaw != 0 && config.preserveYaw())

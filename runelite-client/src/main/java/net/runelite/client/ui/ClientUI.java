@@ -25,6 +25,7 @@
 package net.runelite.client.ui;
 
 import com.google.common.base.Strings;
+import com.google.inject.Inject;
 import java.applet.Applet;
 import java.awt.Canvas;
 import java.awt.CardLayout;
@@ -45,10 +46,10 @@ import java.awt.TrayIcon;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.time.Duration;
 import javax.annotation.Nullable;
-import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Provider;
 import javax.inject.Singleton;
@@ -146,6 +147,22 @@ public class ClientUI
 	private JButton sidebarNavigationJButton;
 	private Dimension lastClientSize;
 	private Cursor defaultCursor;
+
+	@Inject(optional = true)
+	@Named("minMemoryLimit")
+	private int minMemoryLimit = 400;
+
+	@Inject(optional = true)
+	@Named("recommendedMemoryLimit")
+	private int recommendedMemoryLimit = 512;
+
+	@Inject(optional = true)
+	@Named("outdatedLauncherWarning")
+	private boolean outdatedLauncherWarning = false;
+
+	@Inject(optional = true)
+	@Named("outdatedLauncherJava8")
+	private boolean outdatedLauncherJava8 = false;
 
 	@Inject
 	private ClientUI(
@@ -552,21 +569,23 @@ public class ClientUI
 						GraphicsConfiguration gc = findDisplayFromBounds(clientBounds);
 						if (gc != null)
 						{
-							double scale = gc.getDefaultTransform().getScaleX();
+							AffineTransform transform = gc.getDefaultTransform();
+							double scaleX = transform.getScaleX();
+							double scaleY = transform.getScaleY();
 
 							// When Windows screen scaling is on, the position/bounds will be wrong when they are set.
 							// The bounds saved in shutdown are the full, non-scaled co-ordinates.
 							// On MacOS the scaling is already applied and the position/bounds are correct on at least
-							// - 2015 x64 MBP JDK11 Mohave
+							// - 2015 x64 MBP JDK11 Mojave
 							// - 2020 m1 MBP JDK17 Big Sur
 							// Adjusting the scaling further results in the client position being incorrect
-							if (scale != 1 && OSType.getOSType() != OSType.MacOS)
+							if ((scaleX != 1 || scaleY != 1) && OSType.getOSType() != OSType.MacOS)
 							{
 								clientBounds.setRect(
-									clientBounds.getX() / scale,
-									clientBounds.getY() / scale,
-									clientBounds.getWidth() / scale,
-									clientBounds.getHeight() / scale);
+									clientBounds.getX() / scaleX,
+									clientBounds.getY() / scaleY,
+									clientBounds.getWidth() / scaleX,
+									clientBounds.getHeight() / scaleY);
 
 								frame.setMinimumSize(clientBounds.getSize());
 								frame.setBounds(clientBounds);
@@ -618,12 +637,12 @@ public class ClientUI
 		}
 
 		final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024L / 1024L);
-		if (maxMemory < 400)
+		if (maxMemory < minMemoryLimit)
 		{
 			SwingUtilities.invokeLater(() ->
 			{
 				JEditorPane ep = new JEditorPane("text/html",
-					"Your Java memory limit is " + maxMemory + "mb, which is lower than the recommended 512mb.<br>" +
+					"Your Java memory limit is " + maxMemory + "mb, which is lower than the recommended " + recommendedMemoryLimit + "mb.<br>" +
 						"This can cause instability, and it is recommended you remove or increase this limit.<br>" +
 						"Join <a href=\"" + RuneLiteProperties.getDiscordInvite() + "\">Discord</a> for assistance."
 				);
@@ -638,6 +657,32 @@ public class ClientUI
 				ep.setOpaque(false);
 				JOptionPane.showMessageDialog(frame,
 					ep, "Max memory limit low", JOptionPane.WARNING_MESSAGE);
+			});
+		}
+
+		String launcherVersion = RuneLiteProperties.getLauncherVersion();
+		String javaVersion = System.getProperty("java.version", "");
+		if (outdatedLauncherWarning && javaVersion.startsWith("1.8.") &&
+			(launcherVersion == null || launcherVersion.startsWith("1.5") || outdatedLauncherJava8))
+		{
+			SwingUtilities.invokeLater(() ->
+			{
+				JEditorPane ep = new JEditorPane("text/html",
+					"Your RuneLite launcher version is old, and will soon stop working.<br>Update to the latest version by visiting " +
+						"<a href=\"https://runelite.net\">https://runelite.net</a>,<br>or follow the link from the OSRS homepage.<br>" +
+						"Join <a href=\"" + RuneLiteProperties.getDiscordInvite() + "\">Discord</a> for assistance."
+				);
+				ep.addHyperlinkListener(e ->
+				{
+					if (e.getEventType().equals(HyperlinkEvent.EventType.ACTIVATED))
+					{
+						LinkBrowser.browse(e.getURL().toString());
+					}
+				});
+				ep.setEditable(false);
+				ep.setOpaque(false);
+				JOptionPane.showMessageDialog(frame,
+					ep, "Launcher outdated", INFORMATION_MESSAGE);
 			});
 		}
 	}

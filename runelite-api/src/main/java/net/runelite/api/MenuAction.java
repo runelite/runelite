@@ -231,7 +231,7 @@ public enum MenuAction
 	PLAYER_FIFTH_OPTION(48),
 	PLAYER_SIXTH_OPTION(49),
 	PLAYER_SEVENTH_OPTION(50),
-	PLAYER_EIGTH_OPTION(51),
+	PLAYER_EIGHTH_OPTION(51),
 
 	/**
 	 * Menu action for normal priority child component actions.
@@ -295,6 +295,10 @@ public enum MenuAction
 	 * Menu action for InfoBox menu entries
 	 */
 	RUNELITE_INFOBOX(1504),
+	/**
+	 * Parent menu of submenus
+	 */
+	RUNELITE_SUBMENU(1505),
 
 	/**
 	 * Menu action triggered when the id is not defined in this class.
@@ -302,6 +306,9 @@ public enum MenuAction
 	UNKNOWN(-1);
 
 	public static final int MENU_ACTION_DEPRIORITIZE_OFFSET = 2000;
+
+	@Deprecated
+	public static final MenuAction PLAYER_EIGTH_OPTION = MenuAction.PLAYER_EIGHTH_OPTION;
 
 	private static final Map<Integer, MenuAction> map = new HashMap<>();
 

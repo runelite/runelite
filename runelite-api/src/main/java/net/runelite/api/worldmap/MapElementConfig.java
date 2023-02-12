@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Charlie Waters
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,11 +22,27 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.api.worldmap;
+
+import net.runelite.api.SpritePixels;
 
 /**
- * Detects when the window is focused or unfocused.
+ * Represents configuration for a map element
  */
-public interface KeyFocusListener
+public interface MapElementConfig
 {
+	/**
+	 * Gets the sprite icon to display on the world map.
+	 *
+	 * @param unused unused value
+	 * @return the sprite icon to display on the world map
+	 */
+	SpritePixels getMapIcon(boolean unused);
+
+	/**
+	 * Get the category of this icon type.
+	 *
+	 * @return
+	 */
+	int getCategory();
 }

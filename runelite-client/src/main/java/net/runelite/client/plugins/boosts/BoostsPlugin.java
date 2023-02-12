@@ -336,11 +336,6 @@ public class BoostsPlugin extends Plugin
 		}
 	}
 
-	boolean canShowBoosts()
-	{
-		return isChangedDown || isChangedUp;
-	}
-
 	/**
 	 * Calculates the amount of time until boosted stats decay,
 	 * accounting for the effect of preserve prayer.

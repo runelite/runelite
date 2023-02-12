@@ -33,7 +33,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import net.runelite.api.Client;
-import net.runelite.api.Constants;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
@@ -97,7 +96,7 @@ class InventoryGridOverlay extends Overlay
 		}
 
 		if (draggedItem.getId() == -1
-			|| (draggingWidget.isIf3() ? client.getDragTime() : client.getItemPressedDuration()) < config.dragDelay() / Constants.CLIENT_TICK_LENGTH
+			|| !(draggingWidget.isIf3() ? client.getDragTime() > draggingWidget.getDragDeadTime() : client.getItemPressedDuration() >= 5)
 			|| !hoverActive && initialMousePoint.distance(mousePoint) < DISTANCE_TO_ACTIVATE_HOVER)
 		{
 			return null;

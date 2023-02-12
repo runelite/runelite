@@ -63,7 +63,8 @@ public class NpcDefinition
 	public boolean hasRenderPriority;
 	public int ambient;
 	public int contrast;
-	public int headIcon = -1;
+	public int[] headIconArchiveIds;
+	public short[] headIconSpriteIndex;
 	public int rotationSpeed = 32;
 	public int[] configs;
 	public int varbitId = -1;

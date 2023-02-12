@@ -187,4 +187,26 @@ public interface EntityHiderConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		position = 15,
+		keyName = "hideThralls",
+		name = "Hide Thralls",
+		description = "Configures whether or not Thralls are hidden"
+	)
+	default boolean hideThralls()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 16,
+		keyName = "hideRandomEvents",
+		name = "Hide Random Events",
+		description = "Configures whether or not Random events are hidden"
+	)
+	default boolean hideRandomEvents()
+	{
+		return false;
+	}
 }

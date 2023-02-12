@@ -30,7 +30,10 @@ import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.Player;
 import net.runelite.api.Varbits;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -38,6 +41,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -73,6 +77,12 @@ public class WintertodtPluginTest
 	public void before()
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
+
+		Player local = mock(Player.class);
+		when(local.getWorldLocation()).thenReturn(new WorldPoint(1600, 3968, 0));
+		when(client.getLocalPlayer()).thenReturn(local);
+
+		wintertodtPlugin.onGameTick(new GameTick());
 	}
 
 	@Test

@@ -26,7 +26,26 @@
 package net.runelite.client.game;
 
 import lombok.Getter;
-import static net.runelite.api.NullObjectID.*;
+import net.runelite.api.Client;
+import net.runelite.api.NullObjectID;
+import static net.runelite.api.NullObjectID.NULL_25337;
+import static net.runelite.api.NullObjectID.NULL_26371;
+import static net.runelite.api.NullObjectID.NULL_26375;
+import static net.runelite.api.NullObjectID.NULL_26561;
+import static net.runelite.api.NullObjectID.NULL_26562;
+import static net.runelite.api.NullObjectID.NULL_26884;
+import static net.runelite.api.NullObjectID.NULL_26886;
+import static net.runelite.api.NullObjectID.NULL_29868;
+import static net.runelite.api.NullObjectID.NULL_29869;
+import static net.runelite.api.NullObjectID.NULL_29870;
+import static net.runelite.api.NullObjectID.NULL_31823;
+import static net.runelite.api.NullObjectID.NULL_31849;
+import static net.runelite.api.NullObjectID.NULL_31852;
+import static net.runelite.api.NullObjectID.NULL_33327;
+import static net.runelite.api.NullObjectID.NULL_33328;
+import static net.runelite.api.NullObjectID.NULL_39541;
+import static net.runelite.api.NullObjectID.NULL_39542;
+import static net.runelite.api.NullObjectID.NULL_43840;
 import static net.runelite.api.ObjectID.*;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
@@ -71,6 +90,18 @@ public enum AgilityShortcut
 			ROCKY_HANDHOLDS, ROCKY_HANDHOLDS_19847,
 			// Witchaven Dungeon
 			SHORTCUT),
+	WEISS_BROKEN_FENCE(1, "Shortcut", null, /* base id */ NullObjectID.NULL_46815)
+	{
+		@Override
+		public boolean matches(Client client, TileObject object)
+		{
+			assert object.getId() == NullObjectID.NULL_46815;
+			int multilocId = client.getObjectDefinition(object.getId())
+				.getImpostor()
+				.getId();
+			return multilocId == BROKEN_FENCE_46817;
+		}
+	},
 	BRIMHAVEN_DUNGEON_MEDIUM_PIPE_RETURN(1, "Pipe Squeeze", null, new WorldPoint(2698, 9491, 0), PIPE_21727),
 	BRIMHAVEN_DUNGEON_PIPE_RETURN(1, "Pipe Squeeze", null, new WorldPoint(2655, 9573, 0), PIPE_21728),
 	BRIMHAVEN_DUNGEON_STEPPING_STONES_RETURN(1, "Pipe Squeeze", null, STEPPING_STONE_21739),
@@ -184,7 +215,8 @@ public enum AgilityShortcut
 	YANILLE_DUNGEON_RUBBLE_CLIMB(67, "Pile of Rubble", null, PILE_OF_RUBBLE_23563, PILE_OF_RUBBLE_23564),
 	ELVEN_OVERPASS_MEDIUM_CLIFF(68, "Rocks", new WorldPoint(2337, 3288, 0), ROCKS_16514, ROCKS_16515),
 	ELVEN_OVERPASS_MEDIUM_CLIFF_PRIFDDINAS(68, "Rocks", new WorldPoint(3361, 6040, 0), ROCKS_16514, ROCKS_16515),
-	WEISS_OBSTACLES(68, "Shortcut", null, LITTLE_BOULDER, ROCKSLIDE_33184, ROCKSLIDE_33185, NULL_33327, NULL_33328, LEDGE_33190, ROCKSLIDE_33191, FALLEN_TREE_33192),
+	WEISS_OBSTACLES(68, "Shortcut", null, ROCKSLIDE_33184, ROCKSLIDE_33185, NULL_33327, NULL_33328, LEDGE_33190, ROCKSLIDE_33191, FALLEN_TREE_33192),
+	WEISS_FARMING_PATCH_BOULDER(0, "Shortcut", null, LITTLE_BOULDER),
 	ARCEUUS_ESSENSE_NORTH(69, "Rock Climb", new WorldPoint(1759, 3873, 0), ROCKS_34741),
 	TAVERLEY_DUNGEON_PIPE_BLUE_DRAGON(70, "Pipe Squeeze", new WorldPoint(2886, 9798, 0), OBSTACLE_PIPE_16509),
 	TAVERLEY_DUNGEON_ROCKS_NORTH(70, "Rocks", new WorldPoint(2887, 9823, 0), ROCKS, ROCKS_14106),
@@ -194,7 +226,7 @@ public enum AgilityShortcut
 	AL_KHARID_WINDOW(70, "Window", new WorldPoint(3293, 3158, 0), BROKEN_WALL_33344, BIG_WINDOW)
 	{
 		@Override
-		public boolean matches(TileObject object)
+		public boolean matches(Client client, TileObject object)
 		{
 			// there are two BIG_WINDOW objects right next to each other here, but only this one is valid
 			return object.getId() != BIG_WINDOW || object.getWorldLocation().equals(new WorldPoint(3295, 3158, 0));
@@ -286,7 +318,7 @@ public enum AgilityShortcut
 		return description + " - Level " + level;
 	}
 
-	public boolean matches(TileObject object)
+	public boolean matches(Client client, TileObject object)
 	{
 		return true;
 	}

@@ -28,10 +28,12 @@ import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import java.util.EnumSet;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Named;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
+import net.runelite.api.WorldType;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.http.api.item.ItemPrice;
@@ -40,6 +42,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -80,6 +83,7 @@ public class ItemManagerTest
 	public void before()
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
+		when(client.getWorldType()).thenReturn(EnumSet.noneOf(WorldType.class));
 	}
 
 	@Test

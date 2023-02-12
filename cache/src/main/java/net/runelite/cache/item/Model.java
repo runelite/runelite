@@ -26,16 +26,16 @@ package net.runelite.cache.item;
 
 class Model extends Renderable
 {
-	boolean[] field1887 = new boolean[4700];
-	boolean[] field1885 = new boolean[4700];
-	int[] modelViewportYs = new int[4700];
-	int[] modelViewportXs = new int[4700];
-	int[] modelViewportZs = new int[4700];
-	int[] yViewportBuffer = new int[4700];
-	int[] field1839 = new int[4700];
-	int[] field1869 = new int[4700];
-	int[] field1871 = new int[1600];
-	int[][] field1868 = new int[1600][512];
+	boolean[] field1887 = new boolean[6500];
+	boolean[] field1885 = new boolean[6500];
+	int[] modelViewportYs = new int[6500];
+	int[] modelViewportXs = new int[6500];
+	int[] modelViewportZs = new int[6500];
+	int[] yViewportBuffer = new int[6500];
+	int[] field1839 = new int[6500];
+	int[] field1869 = new int[6500];
+	int[] field1871 = new int[6000];
+	int[][] field1868 = new int[6000][512];
 	int[] field1872 = new int[12];
 	int[][] field1874 = new int[12][2000];
 	int[] field1857 = new int[2000];
@@ -221,7 +221,7 @@ class Model extends Renderable
 
 	private void method0(Graphics3D graphics, boolean var1, boolean var3, int var4)
 	{
-		if (this.diameter < 1600)
+		if (this.diameter < 6000)
 		{
 			for (int var5 = 0; var5 < this.diameter; ++var5)
 			{

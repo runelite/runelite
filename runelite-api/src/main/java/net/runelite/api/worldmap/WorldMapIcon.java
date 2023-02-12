@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Lotto <https://github.com/devLotto>
+ * Copyright (c) 2022, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,9 +22,21 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.cluescrolls.clues;
+package net.runelite.api.worldmap;
 
-public interface TextClueScroll
+import net.runelite.api.coords.WorldPoint;
+
+public interface WorldMapIcon
 {
-	String getText();
+	/**
+	 * Get the mapelement config id of this icon
+	 * @return
+	 */
+	int getType();
+
+	/**
+	 * Get the coordinate of the map icon
+	 * @return
+	 */
+	WorldPoint getCoordinate();
 }

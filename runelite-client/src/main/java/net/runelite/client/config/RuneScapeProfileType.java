@@ -36,6 +36,7 @@ public enum RuneScapeProfileType
 {
 	STANDARD(client -> true),
 	BETA(client -> client.getWorldType().contains(WorldType.NOSAVE_MODE)),
+	QUEST_SPEEDRUNNING(client -> client.getWorldType().contains(WorldType.QUEST_SPEEDRUNNING)),
 	DEADMAN(client -> client.getWorldType().contains(WorldType.DEADMAN)),
 	PVP_ARENA(client -> client.getWorldType().contains(WorldType.PVP_ARENA)),
 	TRAILBLAZER_LEAGUE,

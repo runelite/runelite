@@ -58,7 +58,7 @@ class BoostsOverlay extends OverlayPanel
 	public Dimension render(Graphics2D graphics)
 	{
 		final Set<Skill> boostedSkills = plugin.getSkillsToDisplay();
-		if (boostedSkills.isEmpty() || !config.displayPanel())
+		if (!config.displayPanel())
 		{
 			return null;
 		}
@@ -81,36 +81,33 @@ class BoostsOverlay extends OverlayPanel
 				.build());
 		}
 
-		if (plugin.canShowBoosts())
+		for (Skill skill : boostedSkills)
 		{
-			for (Skill skill : boostedSkills)
+			final int boosted = client.getBoostedSkillLevel(skill);
+			final int base = client.getRealSkillLevel(skill);
+			final int boost = boosted - base;
+			final Color strColor = getTextColor(boost);
+			String str;
+
+			if (config.useRelativeBoost())
 			{
-				final int boosted = client.getBoostedSkillLevel(skill);
-				final int base = client.getRealSkillLevel(skill);
-				final int boost = boosted - base;
-				final Color strColor = getTextColor(boost);
-				String str;
-
-				if (config.useRelativeBoost())
+				str = String.valueOf(boost);
+				if (boost > 0)
 				{
-					str = String.valueOf(boost);
-					if (boost > 0)
-					{
-						str = "+" + str;
-					}
+					str = "+" + str;
 				}
-				else
-				{
-					str = ColorUtil.prependColorTag(Integer.toString(boosted), strColor)
-						+ ColorUtil.prependColorTag("/" + base, Color.WHITE);
-				}
-
-				panelComponent.getChildren().add(LineComponent.builder()
-					.left(skill.getName())
-					.right(str)
-					.rightColor(strColor)
-					.build());
 			}
+			else
+			{
+				str = ColorUtil.prependColorTag(Integer.toString(boosted), strColor)
+					+ ColorUtil.prependColorTag("/" + base, Color.WHITE);
+			}
+
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left(skill.getName())
+				.right(str)
+				.rightColor(strColor)
+				.build());
 		}
 
 		return super.render(graphics);

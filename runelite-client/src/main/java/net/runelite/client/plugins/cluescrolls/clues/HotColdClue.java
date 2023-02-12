@@ -56,7 +56,7 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 @EqualsAndHashCode(callSuper = false, exclude = { "hotColdSolver", "location" })
 @Getter
 @Slf4j
-public class HotColdClue extends ClueScroll implements LocationClueScroll, LocationsClueScroll, TextClueScroll, NpcClueScroll
+public class HotColdClue extends ClueScroll implements LocationClueScroll, LocationsClueScroll, NpcClueScroll
 {
 	private static final HotColdClue BEGINNER_CLUE = new HotColdClue("Buried beneath the ground, who knows where it's found. Lucky for you, A man called Reldo may have a clue.",
 		"Reldo",
@@ -360,7 +360,7 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 	}
 
 	@Override
-	public String[] getNpcs()
+	public String[] getNpcs(ClueScrollPlugin plugin)
 	{
 		return new String[] {npc};
 	}

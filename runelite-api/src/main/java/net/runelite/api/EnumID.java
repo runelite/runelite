@@ -47,4 +47,10 @@ public final class EnumID
 	public static final int PETS = 2158;
 	public static final int CLAN_RANK_NAME = 3797;
 	public static final int CLAN_RANK_GRAPHIC = 3798;
+
+	/**
+	 * key: mapelement
+	 * val: dbrow
+	 */
+	public static final int MAPELEMENT_TO_QUEST = 4385;
 }

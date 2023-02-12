@@ -32,9 +32,11 @@ import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
 import net.runelite.client.config.Range;
 
-@ConfigGroup("npcindicators")
+@ConfigGroup(NpcIndicatorsConfig.GROUP)
 public interface NpcIndicatorsConfig extends Config
 {
+	String GROUP = "npcindicators";
+
 	@ConfigSection(
 		name = "Render style",
 		description = "The render style of NPC highlighting",
@@ -172,7 +174,7 @@ public interface NpcIndicatorsConfig extends Config
 		position = 7,
 		keyName = "npcToHighlight",
 		name = "NPCs to Highlight",
-		description = "List of NPC names to highlight"
+		description = "List of NPC names to highlight. Format: (NPC), (NPC)"
 	)
 	default String getNpcToHighlight()
 	{

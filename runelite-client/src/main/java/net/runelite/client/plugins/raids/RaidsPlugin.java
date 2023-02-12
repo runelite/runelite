@@ -52,7 +52,6 @@ import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.GameState;
 import net.runelite.api.InstanceTemplates;
-import net.runelite.api.MenuAction;
 import net.runelite.api.MessageNode;
 import net.runelite.api.NullObjectID;
 import static net.runelite.api.Perspective.SCENE_SIZE;
@@ -79,7 +78,6 @@ import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ChatInput;
 import net.runelite.client.events.ConfigChanged;
-import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
@@ -338,21 +336,6 @@ public class RaidsPlugin extends Plugin
 						.build());
 				}
 			}
-		}
-	}
-
-	@Subscribe
-	public void onOverlayMenuClicked(final OverlayMenuClicked event)
-	{
-		if (!(event.getEntry().getMenuAction() == MenuAction.RUNELITE_OVERLAY
-			&& event.getOverlay() == overlay))
-		{
-			return;
-		}
-
-		if (event.getEntry().getOption().equals(RaidsOverlay.SCREENSHOT_ACTION))
-		{
-			screenshotScoutOverlay();
 		}
 	}
 
@@ -850,7 +833,7 @@ public class RaidsPlugin extends Plugin
 		}
 	};
 
-	private void screenshotScoutOverlay()
+	void screenshotScoutOverlay()
 	{
 		if (!overlay.isScoutOverlayShown())
 		{

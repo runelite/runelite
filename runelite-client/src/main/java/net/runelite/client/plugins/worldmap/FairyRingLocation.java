@@ -67,7 +67,7 @@ enum FairyRingLocation
 	DKS("DKS", new WorldPoint(2743, 3721, 0)),
 	DLQ("DLQ", new WorldPoint(3422, 3018, 0)),
 	DLR("DLR", new WorldPoint(2212, 3101, 0)),
-	CIS("CIS", new WorldPoint(1638, 3868, 0)),
+	CIS("CIS", new WorldPoint(1636, 3869, 0)),
 	CLR("CLR", new WorldPoint(2737, 2739, 0)),
 	ZANARIS("Zanaris", new WorldPoint(2411, 4436, 0));
 

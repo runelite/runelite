@@ -37,6 +37,7 @@ import net.runelite.api.GameObject;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Player;
 import net.runelite.api.Tile;
+import net.runelite.api.coords.Angle;
 import net.runelite.api.coords.Direction;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
@@ -147,7 +148,7 @@ public class HunterPlugin extends Plugin
 				{
 					// Net traps facing to the north and east must have their tile translated.
 					// As otherwise, the wrong tile is stored.
-					Direction trapOrientation = gameObject.getOrientation().getNearestDirection();
+					Direction trapOrientation = new Angle(gameObject.getOrientation()).getNearestDirection();
 					WorldPoint translatedTrapLocation = trapLocation;
 
 					switch (trapOrientation)

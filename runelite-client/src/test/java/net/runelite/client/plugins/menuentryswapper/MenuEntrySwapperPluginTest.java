@@ -30,14 +30,13 @@ import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.util.Arrays;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import net.runelite.api.KeyCode;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.ObjectComposition;
-import net.runelite.api.events.ClientTick;
+import net.runelite.api.events.PostMenuSort;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
@@ -93,7 +92,6 @@ public class MenuEntrySwapperPluginTest
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
 
-		when(client.getGameState()).thenReturn(GameState.LOGGED_IN);
 		when(client.getObjectDefinition(anyInt())).thenReturn(mock(ObjectComposition.class));
 
 		npc = mock(NPC.class);
@@ -145,7 +143,7 @@ public class MenuEntrySwapperPluginTest
 			menu("Assignment", "Duradel", MenuAction.NPC_THIRD_OPTION),
 			menu("Talk-to", "Duradel", MenuAction.NPC_FIRST_OPTION),
 		};
-		menuEntrySwapperPlugin.onClientTick(new ClientTick());
+		menuEntrySwapperPlugin.onPostMenuSort(new PostMenuSort());
 
 		ArgumentCaptor<MenuEntry[]> argumentCaptor = ArgumentCaptor.forClass(MenuEntry[].class);
 		verify(client).setMenuEntries(argumentCaptor.capture());
@@ -182,7 +180,7 @@ public class MenuEntrySwapperPluginTest
 			menu("Talk-to", "Gnome banker", MenuAction.NPC_FIRST_OPTION),
 		};
 
-		menuEntrySwapperPlugin.onClientTick(new ClientTick());
+		menuEntrySwapperPlugin.onPostMenuSort(new PostMenuSort());
 
 		ArgumentCaptor<MenuEntry[]> argumentCaptor = ArgumentCaptor.forClass(MenuEntry[].class);
 		verify(client, times(2)).setMenuEntries(argumentCaptor.capture());
@@ -220,7 +218,7 @@ public class MenuEntrySwapperPluginTest
 			menu("Talk-to", "Kragen", MenuAction.NPC_FIRST_OPTION),
 		};
 
-		menuEntrySwapperPlugin.onClientTick(new ClientTick());
+		menuEntrySwapperPlugin.onPostMenuSort(new PostMenuSort());
 
 		ArgumentCaptor<MenuEntry[]> argumentCaptor = ArgumentCaptor.forClass(MenuEntry[].class);
 		verify(client).setMenuEntries(argumentCaptor.capture());
@@ -251,7 +249,7 @@ public class MenuEntrySwapperPluginTest
 			menu("Enter", "Formidable Passage", MenuAction.GAME_OBJECT_FIRST_OPTION),
 		};
 
-		menuEntrySwapperPlugin.onClientTick(new ClientTick());
+		menuEntrySwapperPlugin.onPostMenuSort(new PostMenuSort());
 
 		ArgumentCaptor<MenuEntry[]> argumentCaptor = ArgumentCaptor.forClass(MenuEntry[].class);
 		verify(client).setMenuEntries(argumentCaptor.capture());
@@ -278,7 +276,7 @@ public class MenuEntrySwapperPluginTest
 			menu("Deposit-1", "Abyssal whip", MenuAction.CC_OP, 2),
 		};
 
-		menuEntrySwapperPlugin.onClientTick(new ClientTick());
+		menuEntrySwapperPlugin.onPostMenuSort(new PostMenuSort());
 
 		ArgumentCaptor<MenuEntry[]> argumentCaptor = ArgumentCaptor.forClass(MenuEntry[].class);
 		verify(client).setMenuEntries(argumentCaptor.capture());
@@ -303,7 +301,7 @@ public class MenuEntrySwapperPluginTest
 			menu("Deposit-1", "Rune arrow", MenuAction.CC_OP, 2),
 		};
 
-		menuEntrySwapperPlugin.onClientTick(new ClientTick());
+		menuEntrySwapperPlugin.onPostMenuSort(new PostMenuSort());
 
 		ArgumentCaptor<MenuEntry[]> argumentCaptor = ArgumentCaptor.forClass(MenuEntry[].class);
 		verify(client).setMenuEntries(argumentCaptor.capture());
@@ -331,7 +329,7 @@ public class MenuEntrySwapperPluginTest
 			menu("Interact", "Redwood birdhouse", MenuAction.GAME_OBJECT_FIRST_OPTION),
 		};
 
-		menuEntrySwapperPlugin.onClientTick(new ClientTick());
+		menuEntrySwapperPlugin.onPostMenuSort(new PostMenuSort());
 
 		ArgumentCaptor<MenuEntry[]> argumentCaptor = ArgumentCaptor.forClass(MenuEntry[].class);
 		verify(client).setMenuEntries(argumentCaptor.capture());
@@ -361,7 +359,7 @@ public class MenuEntrySwapperPluginTest
 			menu("Configure", "Fairy ring", MenuAction.GAME_OBJECT_FIRST_OPTION),
 		};
 
-		menuEntrySwapperPlugin.onClientTick(new ClientTick());
+		menuEntrySwapperPlugin.onPostMenuSort(new PostMenuSort());
 
 		ArgumentCaptor<MenuEntry[]> argumentCaptor = ArgumentCaptor.forClass(MenuEntry[].class);
 		verify(client).setMenuEntries(argumentCaptor.capture());

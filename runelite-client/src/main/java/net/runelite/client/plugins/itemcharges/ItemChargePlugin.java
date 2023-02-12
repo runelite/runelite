@@ -40,12 +40,14 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
+import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.VarbitChanged;
@@ -117,14 +119,14 @@ public class ItemChargePlugin extends Plugin
 	private static final String CHRONICLE_EMPTY_TEXT = "Your book has run out of charges.";
 	private static final String CHRONICLE_NO_CHARGES_TEXT = "Your book does not have any charges. Purchase some Teleport Cards from Diango.";
 	private static final Pattern BRACELET_OF_SLAUGHTER_ACTIVATE_PATTERN = Pattern.compile(
-		"Your bracelet of slaughter prevents your slayer count from decreasing. (?:(?:It has (\\d{1,2}) charges? left)|(It then crumbles to dust))\\."
+		"Your bracelet of slaughter prevents your slayer count from decreasing. (?:It has (\\d{1,2}) charges? left\\.|It then crumbles to dust\\.|It then regenerates itself to full charge!)"
 	);
 	private static final Pattern BRACELET_OF_SLAUGHTER_CHECK_PATTERN = Pattern.compile(
 		"Your bracelet of slaughter has (\\d{1,2}) charges? left\\."
 	);
 	private static final String BRACELET_OF_SLAUGHTER_BREAK_TEXT = "Your Bracelet of Slaughter has crumbled to dust.";
 	private static final Pattern EXPEDITIOUS_BRACELET_ACTIVATE_PATTERN = Pattern.compile(
-		"Your expeditious bracelet helps you progress your slayer (?:task )?faster. (?:(?:It has (\\d{1,2}) charges? left)|(It then crumbles to dust))\\."
+		"Your expeditious bracelet helps you progress your slayer (?:task )?faster. (?:It has (\\d{1,2}) charges? left\\.|It then crumbles to dust\\.|It then regenerates itself to full charge!)"
 	);
 	private static final Pattern EXPEDITIOUS_BRACELET_CHECK_PATTERN = Pattern.compile(
 		"Your expeditious bracelet has (\\d{1,2}) charges? left\\."
@@ -204,6 +206,18 @@ public class ItemChargePlugin extends Plugin
 		infoBoxManager.removeIf(ItemChargeInfobox.class::isInstance);
 		infoboxes.clear();
 		lastCheckTick = -1;
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged e)
+	{
+		// No VarbitChanged event fires on login if the explorer's ring is full (varbit value 0).
+		// So, set the value to 0 when LOGGING_IN. This is before the VarbitChanged event would fire, so if it shouldn't
+		// be 0 it will be updated later.
+		if (e.getGameState() == GameState.LOGGING_IN)
+		{
+			updateExplorerRingCharges(0);
+		}
 	}
 
 	@Subscribe

@@ -37,6 +37,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.time.Instant;
 import java.util.UUID;
+import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -63,6 +64,7 @@ public class SessionManager
 	private final AccountClient accountClient;
 	private final Gson gson;
 	private final String oauthRedirect;
+	private final ScheduledExecutorService scheduledExecutorService;
 
 	private HttpServer server;
 
@@ -73,7 +75,8 @@ public class SessionManager
 		EventBus eventBus,
 		AccountClient accountClient,
 		Gson gson,
-		@Named("runelite.oauth.redirect") String oauthRedirect
+		@Named("runelite.oauth.redirect") String oauthRedirect,
+		ScheduledExecutorService scheduledExecutorService
 	)
 	{
 		this.configManager = configManager;
@@ -82,6 +85,7 @@ public class SessionManager
 		this.accountClient = accountClient;
 		this.gson = gson;
 		this.oauthRedirect = oauthRedirect;
+		this.scheduledExecutorService = scheduledExecutorService;
 
 		eventBus.register(this);
 	}
@@ -171,6 +175,10 @@ public class SessionManager
 
 		log.debug("Logging out of account {}", accountSession.getUsername());
 
+		// Restore config prior to deleting session so that pending config changes get saved correctly
+		configManager.switchSession(null);
+
+		// Delete session
 		accountClient.setUuid(accountSession.getUuid());
 		try
 		{
@@ -182,9 +190,6 @@ public class SessionManager
 		}
 
 		accountSession = null; // No more account
-
-		// Restore config
-		configManager.switchSession(null);
 
 		eventBus.post(new SessionClose());
 	}
@@ -263,7 +268,7 @@ public class SessionManager
 			finally
 			{
 				req.close();
-				stopServer();
+				scheduledExecutorService.execute(this::stopServer);
 			}
 		});
 

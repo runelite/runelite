@@ -152,6 +152,10 @@ public class RuneLite
 	@Nullable
 	private RuntimeConfig runtimeConfig;
 
+	@Inject
+	@Nullable
+	private TelemetryClient telemetryClient;
+
 	public static void main(String[] args) throws Exception
 	{
 		Locale.setDefault(Locale.ENGLISH);
@@ -164,6 +168,7 @@ public class RuneLite
 		parser.accepts("jav_config", "jav_config url")
 			.withRequiredArg()
 			.defaultsTo(RuneLiteProperties.getJavConfig());
+		parser.accepts("disable-telemetry", "Disable telemetry");
 
 		final ArgumentAcceptingOptionSpec<File> sessionfile = parser.accepts("sessionfile", "Use a specified session file")
 			.withRequiredArg()
@@ -265,6 +270,7 @@ public class RuneLite
 				runtimeConfigLoader,
 				developerMode,
 				options.has("safe-mode"),
+				options.has("disable-telemetry"),
 				options.valueOf(sessionfile),
 				options.valueOf(configfile)));
 
@@ -381,6 +387,11 @@ public class RuneLite
 		SplashScreen.stop();
 
 		clientUI.show();
+
+		if (telemetryClient != null)
+		{
+			telemetryClient.submitTelemetry();
+		}
 
 		ReflectUtil.queueInjectorAnnotationCacheInvalidation(injector);
 		ReflectUtil.invalidateAnnotationCaches();

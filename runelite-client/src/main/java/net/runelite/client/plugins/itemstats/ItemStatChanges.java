@@ -34,8 +34,8 @@ import static net.runelite.api.ItemID.*;
 import static net.runelite.client.plugins.itemstats.Builders.*;
 import net.runelite.client.plugins.itemstats.delta.DeltaPercentage;
 import net.runelite.client.plugins.itemstats.food.Anglerfish;
+import net.runelite.client.plugins.itemstats.potions.Ambrosia;
 import net.runelite.client.plugins.itemstats.potions.AncientBrew;
-import net.runelite.client.plugins.itemstats.potions.GauntletPotion;
 import net.runelite.client.plugins.itemstats.potions.MixedPotion;
 import net.runelite.client.plugins.itemstats.potions.PrayerPotion;
 import net.runelite.client.plugins.itemstats.potions.SaradominBrew;
@@ -93,11 +93,11 @@ public class ItemStatChanges
 		add(food(14), POTATO_WITH_BUTTER, CHILLI_POTATO, SWORDFISH, PHLUXIA_BAT_3, PUMPKIN, EASTER_EGG, BRAWK_FISH_3,
 			COOKED_OOMLIE_WRAP);
 		add(food(15), PREMADE_TTL, TANGLED_TOADS_LEGS, PREMADE_CHOC_BOMB, CHOCOLATE_BOMB, COOKED_JUBBLY);
-		add(food(16), MONKFISH, POTATO_WITH_CHEESE, EGG_POTATO);
+		add(food(16), MONKFISH, POTATO_WITH_CHEESE, EGG_POTATO, CRYSTAL_PADDLEFISH, CORRUPTED_PADDLEFISH);
 		add(food(17), MYCIL_FISH_4, KRYKET_BAT_4);
 		add(food(18), COOKED_KARAMBWAN, BLIGHTED_KARAMBWAN, COOKED_KARAMBWAN_23533 /* LMS */);
 		add(food(19), CURRY, UGTHANKI_KEBAB, UGTHANKI_KEBAB_1885);
-		add(food(20), MUSHROOM_POTATO, SHARK, ROQED_FISH_5, MURNG_BAT_5, STUFFED_SNAKE, SHARK_20390 /* LMS */);
+		add(food(20), MUSHROOM_POTATO, SHARK, ROQED_FISH_5, MURNG_BAT_5, STUFFED_SNAKE, SHARK_20390 /* LMS */, PADDLEFISH);
 		add(food(21), SEA_TURTLE);
 		add(food(22), MANTA_RAY, BLIGHTED_MANTA_RAY, DARK_CRAB, TUNA_POTATO);
 		add(food(23), KYREN_FISH_6, PSYKK_BAT_6);
@@ -151,6 +151,7 @@ public class ItemStatChanges
 		add(combo(food(2), boost(STRENGTH, 3), new BoostedStatBoost(ATTACK, false, perc(.05, -2))), DRAGON_BITTERM, DRAGON_BITTERM1, DRAGON_BITTERM2, DRAGON_BITTERM3, DRAGON_BITTERM4);
 		add(combo(food(1), boost(MINING, 1), boost(SMITHING, 1), new BoostedStatBoost(ATTACK, false, perc(.04, -2)), new BoostedStatBoost(DEFENCE, false, perc(.04, -2)), new BoostedStatBoost(STRENGTH, false, perc(.04, -2))), DWARVEN_STOUT, DWARVEN_STOUT1, DWARVEN_STOUT2, DWARVEN_STOUT3, DWARVEN_STOUT4);
 		add(combo(food(2), boost(MINING, 2), boost(SMITHING, 2), new BoostedStatBoost(ATTACK, false, perc(.04, -3)), new BoostedStatBoost(DEFENCE, false, perc(.04, -3)), new BoostedStatBoost(STRENGTH, false, perc(.04, -3))), DWARVEN_STOUTM, DWARVEN_STOUTM1, DWARVEN_STOUTM2, DWARVEN_STOUTM3, DWARVEN_STOUTM4);
+		add(combo(food(1), boost(SMITHING, 4), dec(ATTACK, 2), dec(RANGED, 2), dec(MAGIC, 2)), KOVACS_GROG);
 		add(combo(food(1), boost(HERBLORE, 1), new BoostedStatBoost(ATTACK, false, perc(.04, -2)), new BoostedStatBoost(DEFENCE, false, perc(.04, -2)), new BoostedStatBoost(STRENGTH, false, perc(.04, -2))), GREENMANS_ALE, GREENMANS_ALE1, GREENMANS_ALE2, GREENMANS_ALE3, GREENMANS_ALE4, GREENMANS_ALE_7746);
 		add(combo(food(2), boost(HERBLORE, 2), new BoostedStatBoost(ATTACK, false, perc(.04, -3)), new BoostedStatBoost(DEFENCE, false, perc(.04, -3)), new BoostedStatBoost(STRENGTH, false, perc(.04, -3))), GREENMANS_ALEM, GREENMANS_ALEM1, GREENMANS_ALEM2, GREENMANS_ALEM3, GREENMANS_ALEM4);
 		add(combo(food(1), boost(SLAYER, 2), new BoostedStatBoost(ATTACK, false, perc(.02, -2)), new BoostedStatBoost(DEFENCE, false, perc(.02, -2)), new BoostedStatBoost(STRENGTH, false, perc(.02, -2))), SLAYERS_RESPITE, SLAYERS_RESPITE1, SLAYERS_RESPITE2, SLAYERS_RESPITE3, SLAYERS_RESPITE4);
@@ -184,7 +185,7 @@ public class ItemStatChanges
 		final SingleEffect superRangingPot = boost(RANGED, perc(.15, 5));
 		final SingleEffect divinePot = heal(HITPOINTS, -10);
 		final Effect zamorakBrew = combo(boost(ATTACK, perc(.20, 2)), boost(STRENGTH, perc(.12, 2)), heal(PRAYER, perc(.10, 0)), new BoostedStatBoost(DEFENCE, false, perc(.10, -2)), new BoostedStatBoost(HITPOINTS, false, perc(-.12, 0)));
-		final Effect ancientBrew = new AncientBrew();
+		final Effect ancientBrew = new AncientBrew(.05, 2);
 		add(attackPot, ATTACK_POTION1, ATTACK_POTION2, ATTACK_POTION3, ATTACK_POTION4);
 		add(strengthPot, STRENGTH_POTION1, STRENGTH_POTION2, STRENGTH_POTION3, STRENGTH_POTION4);
 		add(defencePot, DEFENCE_POTION1, DEFENCE_POTION2, DEFENCE_POTION3, DEFENCE_POTION4);
@@ -218,6 +219,7 @@ public class ItemStatChanges
 		add(combo(superAttackPot, superStrengthPot),
 			SUPER_COMBAT_POTION4_23543, SUPER_COMBAT_POTION3_23545, SUPER_COMBAT_POTION2_23547, SUPER_COMBAT_POTION1_23549 /* LMS */);
 		add(ancientBrew, ANCIENT_BREW1, ANCIENT_BREW2, ANCIENT_BREW3, ANCIENT_BREW4);
+		add(new AncientBrew(.08, 3), FORGOTTEN_BREW1, FORGOTTEN_BREW2, FORGOTTEN_BREW3, FORGOTTEN_BREW4);
 
 		// Mixed combat potions
 		add(new MixedPotion(3, attackPot), ATTACK_MIX1, ATTACK_MIX2);
@@ -245,7 +247,7 @@ public class ItemStatChanges
 		// Recovery potions
 		final Effect restorePot = combo(heal(ATTACK, perc(.30, 10)), heal(STRENGTH, perc(.30, 10)), heal(DEFENCE, perc(.30, 10)), heal(RANGED, perc(.30, 10)), heal(MAGIC, perc(.30, 10)));
 		final Effect energyPot = heal(RUN_ENERGY, 10);
-		final Effect prayerPot = new PrayerPotion(7);
+		final SingleEffect prayerPot = new PrayerPotion(7);
 		final Effect superEnergyPot = heal(RUN_ENERGY, 20);
 		final Effect superRestorePot = new SuperRestore(.25, 8);
 		final Effect staminaPot = new StaminaPotion();
@@ -270,7 +272,7 @@ public class ItemStatChanges
 		add(new MixedPotion(6, superRestorePot), SUPER_RESTORE_MIX1, SUPER_RESTORE_MIX2);
 		add(new MixedPotion(6, staminaPot), STAMINA_MIX1, STAMINA_MIX2);
 
-		// Raids potions (+)
+		// Chambers of Xeric potions (+)
 		final DeltaPercentage coxPlusPotionBoost = perc(.16, 6);
 		add(combo(boost(ATTACK, coxPlusPotionBoost), boost(STRENGTH, coxPlusPotionBoost), boost(DEFENCE, coxPlusPotionBoost), boost(RANGED, coxPlusPotionBoost), boost(MAGIC, coxPlusPotionBoost), heal(HITPOINTS, -50)), OVERLOAD_1_20993, OVERLOAD_2_20994, OVERLOAD_3_20995, OVERLOAD_4_20996);
 		add(combo(boost(ATTACK, coxPlusPotionBoost), boost(STRENGTH, coxPlusPotionBoost), boost(DEFENCE, coxPlusPotionBoost)), ELDER_1_20921, ELDER_2_20922, ELDER_3_20923, ELDER_4_20924);
@@ -279,19 +281,31 @@ public class ItemStatChanges
 		add(new SuperRestore(.30, 11), REVITALISATION_1_20957, REVITALISATION_2_20958, REVITALISATION_3_20959, REVITALISATION_4_20960);
 		add(new SaradominBrew(0.15, 0.2, 0.1, 5, 4), XERICS_AID_1_20981, XERICS_AID_2_20982, XERICS_AID_3_20983, XERICS_AID_4_20984);
 
-		// Raids potions
+		// Chambers of Xeric potions
 		final DeltaPercentage coxPotionBoost = perc(.13, 5);
 		add(combo(boost(ATTACK, coxPotionBoost), boost(STRENGTH, coxPotionBoost), boost(DEFENCE, coxPotionBoost), boost(RANGED, coxPotionBoost), boost(MAGIC, coxPotionBoost), heal(HITPOINTS, -50)), OVERLOAD_1_20989, OVERLOAD_2_20990, OVERLOAD_3_20991, OVERLOAD_4_20992);
 		add(combo(boost(ATTACK, coxPotionBoost), boost(STRENGTH, coxPotionBoost), boost(DEFENCE, coxPotionBoost)), ELDER_POTION_1, ELDER_POTION_2, ELDER_POTION_3, ELDER_POTION_4);
 		add(combo(boost(RANGED, coxPotionBoost), boost(DEFENCE, coxPotionBoost)), TWISTED_POTION_1, TWISTED_POTION_2, TWISTED_POTION_3, TWISTED_POTION_4);
 		add(combo(boost(MAGIC, coxPotionBoost), boost(DEFENCE, coxPotionBoost)), KODAI_POTION_1, KODAI_POTION_2, KODAI_POTION_3, KODAI_POTION_4);
 
-		// Raids potions (-)
+		// Chambers of Xeric potions (-)
 		final DeltaPercentage coxMinusPotionBoost = perc(.10, 4);
 		add(combo(boost(ATTACK, coxMinusPotionBoost), boost(STRENGTH, coxMinusPotionBoost), boost(DEFENCE, coxMinusPotionBoost), boost(RANGED, coxMinusPotionBoost), boost(MAGIC, coxMinusPotionBoost), heal(HITPOINTS, -50)), OVERLOAD_1_20985, OVERLOAD_2_20986, OVERLOAD_3_20987, OVERLOAD_4_20988);
 		add(combo(boost(ATTACK, coxMinusPotionBoost), boost(STRENGTH, coxMinusPotionBoost), boost(DEFENCE, coxMinusPotionBoost)), ELDER_1, ELDER_2, ELDER_3, ELDER_4);
 		add(combo(boost(RANGED, coxMinusPotionBoost), boost(DEFENCE, coxMinusPotionBoost)), TWISTED_1, TWISTED_2, TWISTED_3, TWISTED_4);
 		add(combo(boost(MAGIC, coxMinusPotionBoost), boost(DEFENCE, coxMinusPotionBoost)), KODAI_1, KODAI_2, KODAI_3, KODAI_4);
+
+		// Tombs of Amascut consumables
+		final DeltaPercentage nectarDrain = perc(0.2, -5);
+		final DeltaPercentage saltBoost = perc(.16, 11);
+		final DeltaPercentage tearsRestore = perc(.25, 3);
+		add(combo(boost(HITPOINTS, 20), prayerPot), HONEY_LOCUST);
+		add(new Ambrosia(), AMBROSIA_1, AMBROSIA_2);
+		add(combo(heal(PRAYER, 8), heal(PRAYER, (8 * 9))), BLESSED_CRYSTAL_SCARAB_1, BLESSED_CRYSTAL_SCARAB_2);
+		add(combo(new SimpleStatBoost(HITPOINTS, true, perc(.15, 3)), new BoostedStatBoost(ATTACK, false, nectarDrain), new BoostedStatBoost(STRENGTH, false, nectarDrain), new BoostedStatBoost(DEFENCE, false, nectarDrain), new BoostedStatBoost(RANGED, false, nectarDrain), new BoostedStatBoost(MAGIC, false, nectarDrain)), NECTAR_1, NECTAR_2, NECTAR_3, NECTAR_4);
+		add(combo(heal(HITPOINTS, 5), heal(HITPOINTS, 5 * 20)), SILK_DRESSING_1, SILK_DRESSING_2);
+		add(combo(new SimpleStatBoost(ATTACK, true, saltBoost), new SimpleStatBoost(STRENGTH, true, saltBoost), new SimpleStatBoost(DEFENCE, true, saltBoost), new SimpleStatBoost(RANGED, true, saltBoost), new SimpleStatBoost(MAGIC, true, saltBoost)), SMELLING_SALTS_1, SMELLING_SALTS_2);
+		add(combo(heal(PRAYER, perc(.25, 10)), heal(ATTACK, tearsRestore), heal(STRENGTH, tearsRestore), heal(DEFENCE, tearsRestore), heal(RANGED, tearsRestore), heal(MAGIC, tearsRestore)), TEARS_OF_ELIDINIS_1, TEARS_OF_ELIDINIS_2, TEARS_OF_ELIDINIS_3, TEARS_OF_ELIDINIS_4);
 
 		// Skill potions
 		final Effect agilityPot = boost(AGILITY, 3);
@@ -327,13 +341,12 @@ public class ItemStatChanges
 		add(combo(range(food(1), food(3)), heal(RUN_ENERGY, 10)), PURPLE_SWEETS_10476);
 		add(new SpicyStew(), SPICY_STEW);
 		add(imbuedHeart, IMBUED_HEART);
+		add(boost(MAGIC, perc(.10, 4)), SATURATED_HEART);
 		add(combo(boost(ATTACK, 2), boost(STRENGTH, 1), heal(PRAYER, 1), heal(DEFENCE, -1)), JANGERBERRIES);
 		add(new CaveNightshade(), CAVE_NIGHTSHADE);
 
-		// Gauntlet items
-		add(heal(HITPOINTS, 16), CRYSTAL_PADDLEFISH, CORRUPTED_PADDLEFISH);
-		add(heal(HITPOINTS, 20), PADDLEFISH);
-		add(new GauntletPotion(), EGNIOL_POTION_1, EGNIOL_POTION_2, EGNIOL_POTION_3, EGNIOL_POTION_4);
+		// Gauntlet
+		add(combo(heal(PRAYER, perc(.25, 7)), heal(RUN_ENERGY, 40)), EGNIOL_POTION_1, EGNIOL_POTION_2, EGNIOL_POTION_3, EGNIOL_POTION_4);
 
 		// Soul Wars
 		add(combo(heal(HITPOINTS, perc(.15, 1)), heal(RUN_ENERGY, 100)), BANDAGES_25202);

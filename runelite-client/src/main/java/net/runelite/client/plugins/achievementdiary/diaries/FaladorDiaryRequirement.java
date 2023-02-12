@@ -40,8 +40,6 @@ public class FaladorDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.CONSTRUCTION, 16));
 		add("Climb over the western Falador wall.",
 			new SkillRequirement(Skill.AGILITY, 5));
-		add("Make a mind tiara.",
-			new QuestRequirement(Quest.RUNE_MYSTERIES));
 		add("Smith some Blurite Limbs on Doric's Anvil.",
 			new SkillRequirement(Skill.MINING, 10),
 			new SkillRequirement(Skill.SMITHING, 13),

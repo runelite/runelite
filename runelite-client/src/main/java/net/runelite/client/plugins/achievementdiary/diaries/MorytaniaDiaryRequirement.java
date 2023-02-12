@@ -82,7 +82,7 @@ public class MorytaniaDiaryRequirement extends GenericDiaryRequirement
 		add("Enter the Kharyrll portal in your POH.",
 			new SkillRequirement(Skill.MAGIC, 66),
 			new SkillRequirement(Skill.CONSTRUCTION, 50),
-			new QuestRequirement(Quest.DESERT_TREASURE));
+			new QuestRequirement(Quest.DESERT_TREASURE_I));
 		add("Climb the advanced spike chain within Slayer Tower.",
 			new SkillRequirement(Skill.AGILITY, 71));
 		add("Harvest some Watermelon from the Allotment patch on Harmony Island.",

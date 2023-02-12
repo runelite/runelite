@@ -466,6 +466,10 @@ public class GrandExchangePlugin extends Plugin
 		{
 			return WorldType.DEADMAN;
 		}
+		else if (worldTypes.contains(net.runelite.api.WorldType.FRESH_START_WORLD))
+		{
+			return WorldType.FRESH_START_WORLD;
+		}
 		else
 		{
 			return null;
@@ -884,7 +888,7 @@ public class GrandExchangePlugin extends Plugin
 	void openGeLink(String name, int itemId)
 	{
 		final String url = runeLiteConfig.useWikiItemPrices() ?
-			"https://prices.runescape.wiki/osrs/item/" + itemId :
+			"https://prices.runescape.wiki/" + (client.getWorldType().contains(net.runelite.api.WorldType.FRESH_START_WORLD) ? "fsw" : "osrs") + "/item/" + itemId :
 			"https://services.runescape.com/m=itemdb_oldschool/"
 				+ name.replaceAll(" ", "+")
 				+ "/viewitem?obj="

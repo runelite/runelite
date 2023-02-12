@@ -637,6 +637,7 @@ public interface Widget
 	/**
 	 * Gets the menu options available on the widget as a sparse array.
 	 */
+	@Nullable
 	String[] getActions();
 
 	/**

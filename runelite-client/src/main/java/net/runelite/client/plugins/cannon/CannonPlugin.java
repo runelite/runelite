@@ -74,7 +74,6 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 public class CannonPlugin extends Plugin
 {
 	static final int MAX_OVERLAY_DISTANCE = 4100;
-	static final int MAX_CBALLS = 30;
 
 	private CannonCounter counter;
 	private boolean cannonBallNotificationSent;

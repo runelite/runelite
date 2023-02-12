@@ -342,7 +342,11 @@ class ConfigPanel extends PluginPanel
 			String name = cid.getItem().name();
 			JLabel configEntryName = new JLabel(name);
 			configEntryName.setForeground(Color.WHITE);
-			configEntryName.setToolTipText("<html>" + name + ":<br>" + cid.getItem().description() + "</html>");
+			String description = cid.getItem().description();
+			if (!"".equals(description))
+			{
+				configEntryName.setToolTipText("<html>" + name + ":<br>" + description + "</html>");
+			}
 			PluginListItem.addLabelPopupMenu(configEntryName, createResetMenuItem(pluginConfig, cid));
 			item.add(configEntryName, BorderLayout.CENTER);
 
@@ -441,7 +445,7 @@ class ConfigPanel extends PluginPanel
 
 	private JSpinner createIntSpinner(ConfigDescriptor cd, ConfigItemDescriptor cid)
 	{
-		int value = Integer.parseInt(configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName()));
+		int value = MoreObjects.firstNonNull(configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName(), int.class), 0);
 
 		Range range = cid.getRange();
 		int min = 0, max = Integer.MAX_VALUE;
@@ -472,7 +476,7 @@ class ConfigPanel extends PluginPanel
 
 	private JSpinner createDoubleSpinner(ConfigDescriptor cd, ConfigItemDescriptor cid)
 	{
-		double value = configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName(), double.class);
+		double value = MoreObjects.firstNonNull(configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName(), double.class), 0d);
 
 		SpinnerModel model = new SpinnerNumberModel(value, 0, Double.MAX_VALUE, 0.1);
 		JSpinner spinner = new JSpinner(model);
@@ -562,10 +566,9 @@ class ConfigPanel extends PluginPanel
 		JPanel dimensionPanel = new JPanel();
 		dimensionPanel.setLayout(new BorderLayout());
 
-		String str = configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName());
-		String[] splitStr = str.split("x");
-		int width = Integer.parseInt(splitStr[0]);
-		int height = Integer.parseInt(splitStr[1]);
+		Dimension dimension = MoreObjects.firstNonNull(configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName(), Dimension.class), new Dimension());
+		int width = dimension.width;
+		int height = dimension.height;
 
 		SpinnerModel widthModel = new SpinnerNumberModel(width, 0, Integer.MAX_VALUE, 1);
 		JSpinner widthSpinner = new JSpinner(widthModel);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, TheStonedTurtle <https://github.com/TheStonedTurtle>
+ * Copyright (c) 2022, Jordan Atwood <nightfirecat@nightfirec.at>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,35 +24,36 @@
  */
 package net.runelite.client.plugins.itemstats.potions;
 
-import lombok.RequiredArgsConstructor;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
+import static net.runelite.client.plugins.itemstats.Builders.boost;
 import static net.runelite.client.plugins.itemstats.Builders.heal;
+import static net.runelite.client.plugins.itemstats.Builders.perc;
 import net.runelite.client.plugins.itemstats.Effect;
 import net.runelite.client.plugins.itemstats.StatChange;
 import net.runelite.client.plugins.itemstats.StatsChanges;
-import net.runelite.client.plugins.itemstats.stats.Stats;
+import static net.runelite.client.plugins.itemstats.stats.Stats.HITPOINTS;
+import static net.runelite.client.plugins.itemstats.stats.Stats.PRAYER;
+import static net.runelite.client.plugins.itemstats.stats.Stats.RUN_ENERGY;
 
-/**
- * Acts like a prayer potion and stamina dose combined but restores 40 energy instead of 20
- */
-@RequiredArgsConstructor
-public class GauntletPotion implements Effect
+public class Ambrosia implements Effect
 {
-	private static final int PRAYER_RESTORE_DELTA = 7;
-	private static final double PRAYER_RESTORE_PERCENT = .25;
-
 	@Override
 	public StatsChanges calculate(Client client)
 	{
-		// Restores prayer similar to PrayerPotion but there aren't any possible boost so simplify the calculation
-		final int restorePerc = (int) (client.getRealSkillLevel(Skill.PRAYER) * PRAYER_RESTORE_PERCENT);
-		final StatChange prayer =  heal(Stats.PRAYER, restorePerc + PRAYER_RESTORE_DELTA).effect(client);
+		final int currentHp = client.getBoostedSkillLevel(Skill.HITPOINTS);
+		final int maxHp = client.getRealSkillLevel(Skill.HITPOINTS);
+		final int hpToMax = Math.max(0, maxHp - currentHp);
+		final int currentPrayer = client.getBoostedSkillLevel(Skill.PRAYER);
+		final int maxPrayer = client.getRealSkillLevel(Skill.PRAYER);
+		final int prayerToMax = Math.max(0, maxPrayer - currentPrayer);
 
-		final StatChange runEnergy = heal(Stats.RUN_ENERGY, 40).effect(client);
+		final StatChange hpChange = boost(HITPOINTS, perc(.25, 2 + hpToMax)).effect(client);
+		final StatChange prayerChange = boost(PRAYER, perc(.2, 5 + prayerToMax)).effect(client);
+		final StatChange runChange = heal(RUN_ENERGY, 100).effect(client);
 
-		final StatsChanges changes = new StatsChanges(2);
-		changes.setStatChanges(new StatChange[]{runEnergy, prayer});
+		final StatsChanges changes = new StatsChanges(3);
+		changes.setStatChanges(new StatChange[]{ hpChange, prayerChange, runChange });
 		return changes;
 	}
 }
