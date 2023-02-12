@@ -72,6 +72,7 @@ import static net.runelite.api.widgets.WidgetID.LEVEL_UP_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.QUEST_COMPLETED_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.THEATRE_OF_BLOOD_REWARD_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.TOA_REWARD_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.WILDERNESS_LOOT_CHEST;
 import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.client.RuneLite.SCREENSHOT_DIR;
 import net.runelite.client.config.ConfigManager;
@@ -137,6 +138,7 @@ public class ScreenshotPlugin extends Plugin
 	private static final String SD_PVP_KILLS = "PvP Kills";
 	private static final String SD_DEATHS = "Deaths";
 	private static final String SD_COMBAT_ACHIEVEMENTS = "Combat Achievements";
+	private static final String SD_WILDERNESS_LOOT_CHEST = "Wilderness Loot Chest";
 
 	private String clueType;
 	private Integer clueNumber;
@@ -562,6 +564,12 @@ public class ScreenshotPlugin extends Plugin
 					return;
 				}
 				break;
+			case WILDERNESS_LOOT_CHEST:
+				if (!config.screenshotWildernessLootChest())
+				{
+					return;
+				}
+				break;
 		}
 
 		switch (groupId)
@@ -678,6 +686,12 @@ public class ScreenshotPlugin extends Plugin
 				screenshotSubDir = SD_CLUE_SCROLL_REWARDS;
 				clueType = null;
 				clueNumber = null;
+				break;
+			}
+			case WILDERNESS_LOOT_CHEST:
+			{
+				fileName = "Loot key";
+				screenshotSubDir = SD_WILDERNESS_LOOT_CHEST;
 				break;
 			}
 			default:
