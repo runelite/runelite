@@ -186,7 +186,7 @@ public class GroundItemsOverlay extends Overlay
 		final boolean onlyShowLoot = config.onlyShowLoot();
 		final DespawnTimerMode groundItemTimers = config.groundItemTimers();
 		final boolean outline = config.textOutline();
-		final int localDrawDistance = client.getScene().getDrawDistance() * Perspective.LOCAL_TILE_SIZE;
+		final int localDrawDistance = Math.min(client.getScene().getDrawDistance(), 50) * Perspective.LOCAL_TILE_SIZE;
 
 		for (GroundItem item : groundItemList)
 		{
