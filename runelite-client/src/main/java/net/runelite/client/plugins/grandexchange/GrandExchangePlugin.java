@@ -269,6 +269,7 @@ public class GrandExchangePlugin extends Plugin
 			.icon(icon)
 			.priority(3)
 			.panel(panel)
+			.plugin(this)
 			.build();
 
 		clientToolbar.addNavigation(button);

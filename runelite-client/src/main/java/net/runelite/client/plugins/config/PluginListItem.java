@@ -213,7 +213,7 @@ class PluginListItem extends JPanel implements SearchablePlugin
 
 	private void openGroupConfigPanel()
 	{
-		pluginListPanel.openConfigurationPanel(pluginConfig);
+		pluginListPanel.openConfigurationPanel(this);
 	}
 
 	/**

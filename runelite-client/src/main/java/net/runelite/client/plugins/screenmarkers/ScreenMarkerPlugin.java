@@ -135,6 +135,7 @@ public class ScreenMarkerPlugin extends Plugin
 			.icon(icon)
 			.priority(5)
 			.panel(pluginPanel)
+			.plugin(this)
 			.build();
 
 		clientToolbar.addNavigation(navigationButton);

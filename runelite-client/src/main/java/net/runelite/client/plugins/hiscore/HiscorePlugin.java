@@ -104,6 +104,7 @@ public class HiscorePlugin extends Plugin
 			.icon(icon)
 			.priority(5)
 			.panel(hiscorePanel)
+			.plugin(this)
 			.build();
 
 		clientToolbar.addNavigation(navButton);

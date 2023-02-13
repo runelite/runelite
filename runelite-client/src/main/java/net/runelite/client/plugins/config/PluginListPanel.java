@@ -276,7 +276,19 @@ class PluginListPanel extends PluginPanel
 		{
 			if (pluginListItem.getPluginConfig().getName().equals(configGroup))
 			{
-				openConfigurationPanel(pluginListItem.getPluginConfig());
+				openConfigurationPanel(pluginListItem);
+				break;
+			}
+		}
+	}
+
+	void openConfigurationPanel(Class<?> pluginClass)
+	{
+		for (PluginListItem pluginListItem : pluginList)
+		{
+			if (pluginListItem.getPluginConfig().getPlugin() != null && pluginListItem.getPluginConfig().getPlugin().getClass().equals(pluginClass))
+			{
+				openConfigurationPanel(pluginListItem);
 				break;
 			}
 		}
@@ -288,17 +300,28 @@ class PluginListPanel extends PluginPanel
 		{
 			if (pluginListItem.getPluginConfig().getPlugin() == plugin)
 			{
-				openConfigurationPanel(pluginListItem.getPluginConfig());
+				openConfigurationPanel(pluginListItem);
 				break;
 			}
 		}
 	}
 
-	void openConfigurationPanel(PluginConfigurationDescriptor plugin)
+	void openConfigurationPanel(PluginListItem pluginListItem)
 	{
-		ConfigPanel panel = configPanelProvider.get();
-		panel.init(plugin);
-		muxer.pushState(panel);
+		while (muxer.getComponentCount() > 1)
+		{
+			muxer.popState();
+		}
+		if (pluginListItem.getPluginConfig().hasConfigurables())
+		{
+			ConfigPanel panel = configPanelProvider.get();
+			panel.init(pluginListItem.getPluginConfig());
+			muxer.pushState(panel);
+		}
+		else
+		{
+			searchBar.setText(pluginListItem.getSearchableName());
+		}
 	}
 
 	void startPlugin(Plugin plugin)

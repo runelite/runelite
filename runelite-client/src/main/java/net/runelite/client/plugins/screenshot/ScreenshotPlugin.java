@@ -238,6 +238,7 @@ public class ScreenshotPlugin extends Plugin
 					LinkBrowser.open(SCREENSHOT_DIR.toString());
 				})
 				.build())
+			.plugin(this)
 			.build();
 
 		clientToolbar.addNavigation(titleBarButton);

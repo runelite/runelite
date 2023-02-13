@@ -24,20 +24,33 @@
  */
 package net.runelite.client.ui;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.events.NavigationButtonAdded;
 import net.runelite.client.events.NavigationButtonRemoved;
+import net.runelite.client.events.PluginConfigClicked;
+import net.runelite.client.externalplugins.ExternalPluginManager;
+import net.runelite.client.externalplugins.ExternalPluginManifest;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.util.LinkBrowser;
 
 /**
  * Plugin toolbar buttons holder.
  */
 @Singleton
+@Slf4j
 public class ClientToolbar
 {
+	public static final String CONFIGURATION = "Configuration";
+	public static final String SUPPORT = "Support";
+	public static final String WIKI = "Wiki";
+
 	private final EventBus eventBus;
 	private final Set<NavigationButton> buttons = new HashSet<>();
 
@@ -61,6 +74,7 @@ public class ClientToolbar
 
 		if (buttons.add(button))
 		{
+			addDefaultOptions(button);
 			eventBus.post(new NavigationButtonAdded(button));
 		}
 	}
@@ -77,4 +91,67 @@ public class ClientToolbar
 			eventBus.post(new NavigationButtonRemoved(button));
 		}
 	}
+
+	/**
+	 * Add default options to navigation button popup menu
+	 * Current options are Configuration and Support/Wiki
+	 *
+	 * @param button the button
+	 */
+	public void addDefaultOptions(NavigationButton button)
+	{
+		Map<String, Runnable> navigationButtonPopup = button.getPopup() != null ? new HashMap<>(button.getPopup()) : new HashMap<>();
+		addConfigurationOption(navigationButtonPopup, button.getPlugin(), button.getPanel());
+		addSupportOption(navigationButtonPopup, button.getPlugin(), button.getPanel());
+		button.setPopup(navigationButtonPopup);
+	}
+
+	/**
+	 * Add configuration shortcut to popup
+	 * Uses the Plugin in button if possible
+	 * If it is an external plugin, get the plugin via the plugin manifest
+	 *
+	 * @param popup map of options
+	 */
+	public void addConfigurationOption(Map<String, Runnable> popup, Plugin plugin, PluginPanel panel)
+	{
+		if (plugin != null)
+		{
+			popup.put(CONFIGURATION, () -> eventBus.post(new PluginConfigClicked(plugin.getClass())));
+		}
+		else if (panel != null)
+		{
+			Class<? extends Plugin> externalPluginClass = ExternalPluginManager.getExternalPluginClass(panel.getClass());
+			if (externalPluginClass != null)
+			{
+				popup.put(CONFIGURATION, () -> eventBus.post(new PluginConfigClicked(externalPluginClass)));
+			}
+		}
+	}
+
+	/**
+	 * Add support link to options
+	 * If it is an external plugin, get the support link via the plugin manifest
+	 * Else use the plugin name to link to the runelite wiki
+	 *
+	 * @param popup map of options
+	 */
+	public void addSupportOption(Map<String, Runnable> popup, Plugin plugin, PluginPanel panel)
+	{
+		ExternalPluginManifest mf = panel != null ? ExternalPluginManager.getExternalPluginManifest(panel.getClass()) : null;
+		if (mf != null)
+		{
+			if (mf.getSupport() != null)
+			{
+				popup.put(SUPPORT, () -> LinkBrowser.browse(mf.getSupport().toString()));
+			}
+			return;
+		}
+		if (plugin != null)
+		{
+			popup.put(WIKI, () -> LinkBrowser.browse("https://github.com/runelite/runelite/wiki/" + plugin.getName().replace(' ', '-')));
+		}
+	}
+
+
 }

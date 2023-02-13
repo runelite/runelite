@@ -66,6 +66,7 @@ public class SkillCalculatorPlugin extends Plugin
 			.icon(icon)
 			.priority(6)
 			.panel(uiPanel.get())
+			.plugin(this)
 			.build();
 
 		clientToolbar.addNavigation(uiNavigationButton);

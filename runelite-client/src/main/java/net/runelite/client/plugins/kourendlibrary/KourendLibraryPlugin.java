@@ -141,6 +141,7 @@ public class KourendLibraryPlugin extends Plugin
 			.priority(6)
 			.icon(icon)
 			.panel(panel)
+			.plugin(this)
 			.build();
 
 		overlayManager.add(overlay);

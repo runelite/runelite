@@ -77,6 +77,7 @@ public class AccountPlugin extends Plugin
 			.icon(LOGIN_IMAGE)
 			.tooltip("Sign in to RuneLite")
 			.onClick(this::loginClick)
+			.plugin(this)
 			.build();
 
 		logoutButton = NavigationButton.builder()
@@ -84,6 +85,7 @@ public class AccountPlugin extends Plugin
 			.icon(LOGOUT_IMAGE)
 			.tooltip("Sign out of RuneLite")
 			.onClick(this::logoutClick)
+			.plugin(this)
 			.build();
 
 		addAndRemoveButtons();

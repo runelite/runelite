@@ -73,6 +73,7 @@ import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import org.apache.commons.lang3.ArrayUtils;
 
 @Singleton
 @Slf4j
@@ -433,13 +434,41 @@ public class ExternalPluginManager
 		executor.submit(this::refreshPlugins);
 	}
 
-	public static ExternalPluginManifest getExternalPluginManifest(Class<? extends Plugin> plugin)
+	public static ExternalPluginManifest getExternalPluginManifest(Class<?> externalPluginClass)
 	{
-		ClassLoader cl = plugin.getClassLoader();
+		ClassLoader cl = externalPluginClass.getClassLoader();
 		if (cl instanceof ExternalPluginClassLoader)
 		{
 			ExternalPluginClassLoader ecl = (ExternalPluginClassLoader) cl;
 			return ecl.getManifest();
+		}
+		return null;
+	}
+
+	public static Class<? extends Plugin> getExternalPluginClass(Class<?> externalClass)
+	{
+		ClassLoader cl = externalClass.getClassLoader();
+		if (cl instanceof ExternalPluginClassLoader)
+		{
+			ExternalPluginClassLoader ecl = (ExternalPluginClassLoader) cl;
+			if (ecl.getManifest() != null && ArrayUtils.isNotEmpty(ecl.getManifest().getPlugins()))
+			{
+				String pluginClassName = ecl.getManifest().getPlugins()[0];
+				try
+				{
+					Class<?> pluginClass = Class.forName(pluginClassName, false, ecl);
+					if (Plugin.class.isAssignableFrom(pluginClass))
+					{
+						@SuppressWarnings("unchecked")
+						Class<? extends Plugin> returnClass = (Class<? extends Plugin>) pluginClass;
+						return returnClass;
+					}
+				}
+				catch (ClassCastException | ClassNotFoundException e)
+				{
+					log.info("Couldn't find plugin for class: {}", externalClass);
+				}
+			}
 		}
 		return null;
 	}
