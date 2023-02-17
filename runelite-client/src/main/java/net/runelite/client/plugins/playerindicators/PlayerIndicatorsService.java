@@ -60,7 +60,7 @@ public class PlayerIndicatorsService
 	public void forEachPlayer(final BiConsumer<Player, Color> consumer)
 	{
 		if (!config.highlightOwnPlayer() && !config.highlightFriendsChat()
-			&& !config.highlightFriends() && !config.highlightOthers()
+			&& !config.highlightFriends() && config.highlightOthers().equals(HighlightOtherPlayers.DISABLED)
 			&& !config.highlightClanMembers() && !config.highlightPartyMembers())
 		{
 			return;
@@ -112,7 +112,11 @@ public class PlayerIndicatorsService
 			{
 				consumer.accept(player, config.getClanMemberColor());
 			}
-			else if (config.highlightOthers() && !isFriendsChatMember && !isClanMember)
+			else if (config.highlightOthers().equals(HighlightOtherPlayers.EVERYWHERE) && !isFriendsChatMember && !isClanMember)
+			{
+				consumer.accept(player, config.getOthersColor());
+			}
+			else if (config.highlightOthers().equals(HighlightOtherPlayers.ONLYPVP) && (inPvp || inWilderness) && !isFriendsChatMember && !isClanMember)
 			{
 				consumer.accept(player, config.getOthersColor());
 			}

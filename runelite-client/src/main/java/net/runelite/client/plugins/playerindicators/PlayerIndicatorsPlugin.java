@@ -216,7 +216,7 @@ public class PlayerIndicatorsPlugin extends Plugin
 		{
 			color = config.getClanMemberColor();
 		}
-		else if (!player.isFriendsChatMember() && !player.isClanMember() && config.highlightOthers())
+		else if (!player.isFriendsChatMember() && !player.isClanMember() && !config.highlightOthers().equals(HighlightOtherPlayers.DISABLED))
 		{
 			color = config.getOthersColor();
 		}
