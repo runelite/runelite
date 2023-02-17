@@ -71,8 +71,7 @@ import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.PluginChanged;
-import net.runelite.client.events.SessionClose;
-import net.runelite.client.events.SessionOpen;
+import net.runelite.client.events.ProfileChanged;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.task.ScheduledMethod;
 import net.runelite.client.task.Scheduler;
@@ -121,13 +120,7 @@ public class PluginManager
 	}
 
 	@Subscribe
-	public void onSessionOpen(SessionOpen event)
-	{
-		refreshPlugins();
-	}
-
-	@Subscribe
-	public void onSessionClose(SessionClose event)
+	public void onProfileChanged(ProfileChanged profileChanged)
 	{
 		refreshPlugins();
 	}

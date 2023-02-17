@@ -55,6 +55,7 @@ import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ExternalPluginsChanged;
 import net.runelite.client.events.PluginChanged;
+import net.runelite.client.events.ProfileChanged;
 import net.runelite.client.externalplugins.ExternalPluginManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -369,6 +370,12 @@ class PluginListPanel extends PluginPanel
 
 	@Subscribe
 	private void onExternalPluginsChanged(ExternalPluginsChanged ev)
+	{
+		SwingUtilities.invokeLater(this::rebuildPluginList);
+	}
+
+	@Subscribe
+	private void onProfileChanged(ProfileChanged ev)
 	{
 		SwingUtilities.invokeLater(this::rebuildPluginList);
 	}

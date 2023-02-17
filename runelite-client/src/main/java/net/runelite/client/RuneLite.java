@@ -95,7 +95,6 @@ public class RuneLite
 	public static final File RUNELITE_DIR = new File(System.getProperty("user.home"), ".runelite");
 	public static final File CACHE_DIR = new File(RUNELITE_DIR, "cache");
 	public static final File PLUGINS_DIR = new File(RUNELITE_DIR, "plugins");
-	public static final File PROFILES_DIR = new File(RUNELITE_DIR, "profiles");
 	public static final File SCREENSHOT_DIR = new File(RUNELITE_DIR, "screenshots");
 	public static final File LOGS_DIR = new File(RUNELITE_DIR, "logs");
 	public static final File DEFAULT_SESSION_FILE = new File(RUNELITE_DIR, "session");
@@ -169,13 +168,14 @@ public class RuneLite
 			.withRequiredArg()
 			.defaultsTo(RuneLiteProperties.getJavConfig());
 		parser.accepts("disable-telemetry", "Disable telemetry");
+		parser.accepts("profile", "Configuration profile to use").withRequiredArg();
 
 		final ArgumentAcceptingOptionSpec<File> sessionfile = parser.accepts("sessionfile", "Use a specified session file")
 			.withRequiredArg()
 			.withValuesConvertedBy(new ConfigFileConverter())
 			.defaultsTo(DEFAULT_SESSION_FILE);
 
-		final ArgumentAcceptingOptionSpec<File> configfile = parser.accepts("config", "Use a specified config file")
+		final ArgumentAcceptingOptionSpec<File> configfile = parser.accepts("config", "Use a specified config file (deprecated)")
 			.withRequiredArg()
 			.withValuesConvertedBy(new ConfigFileConverter())
 			.defaultsTo(DEFAULT_CONFIG_FILE);
@@ -252,8 +252,6 @@ public class RuneLite
 				}
 			}
 
-			PROFILES_DIR.mkdirs();
-
 			log.info("RuneLite {} (launcher version {}) starting up, args: {}",
 				RuneLiteProperties.getVersion(), MoreObjects.firstNonNull(RuneLiteProperties.getLauncherVersion(), "unknown"),
 				args.length == 0 ? "none" : String.join(" ", args));
@@ -272,7 +270,9 @@ public class RuneLite
 				options.has("safe-mode"),
 				options.has("disable-telemetry"),
 				options.valueOf(sessionfile),
-				options.valueOf(configfile)));
+				options.valueOf(configfile),
+				(String) options.valueOf("profile")
+			));
 
 			injector.getInstance(RuneLite.class).start();
 
@@ -332,11 +332,11 @@ public class RuneLite
 
 		SplashScreen.stage(.57, null, "Loading configuration");
 
+		// Load the session so that the session profiles can be loaded next
+		sessionManager.loadSession();
+
 		// Load user configuration
 		configManager.load();
-
-		// Load the session, including saved configuration
-		sessionManager.loadSession();
 
 		// Tell the plugin manager if client is outdated or not
 		pluginManager.setOutdated(isOutdated);

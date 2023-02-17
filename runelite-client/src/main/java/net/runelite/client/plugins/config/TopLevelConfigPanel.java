@@ -56,6 +56,7 @@ class TopLevelConfigPanel extends PluginPanel
 	@Inject
 	TopLevelConfigPanel(
 		PluginListPanel pluginListPanel,
+		ProfilePanel profilePanel,
 		Provider<PluginHubPanel> pluginHubPanelProvider
 	)
 	{
@@ -75,6 +76,8 @@ class TopLevelConfigPanel extends PluginPanel
 
 		this.pluginListPanel = pluginListPanel;
 		pluginListPanelTab = addTab(pluginListPanel.getMuxer(), "config_icon_lg.png", "Configuration");
+
+		addTab(profilePanel, "profile_icon.png", "Profiles");
 
 		addTab(pluginHubPanelProvider, "plugin_hub_icon.png", "Plugin Hub");
 
