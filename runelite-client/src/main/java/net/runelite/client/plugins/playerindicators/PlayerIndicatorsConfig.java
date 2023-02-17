@@ -191,7 +191,8 @@ public interface PlayerIndicatorsConfig extends Config
 		description = "Configures whether or not other players should be highlighted",
 		section = highlightSection
 	)
-	default HighlightOtherPlayers highlightOthers() {
+	default HighlightOtherPlayers highlightOthers()
+	{
 		return HighlightOtherPlayers.DISABLED;
 	}
 
