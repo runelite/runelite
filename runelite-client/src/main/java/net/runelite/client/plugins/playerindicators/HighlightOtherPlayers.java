@@ -8,7 +8,6 @@ public enum HighlightOtherPlayers
     DISABLED("Disabled"),
     EVERYWHERE("Everywhere"),
     ONLYPVP("Only in PvP");
-
     private final String option;
 
     @Override
