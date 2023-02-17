@@ -30,6 +30,8 @@ import javax.inject.Inject;
 import lombok.Value;
 import net.runelite.api.Client;
 import net.runelite.api.FriendsChatRank;
+import net.runelite.api.*;
+
 import static net.runelite.api.FriendsChatRank.UNRANKED;
 import net.runelite.api.MenuAction;
 import static net.runelite.api.MenuAction.ITEM_USE_ON_PLAYER;
@@ -192,6 +194,9 @@ public class PlayerIndicatorsPlugin extends Plugin
 		int image = -1;
 		Color color = null;
 
+		boolean inWilderness = client.getVarbitValue(Varbits.IN_WILDERNESS) == 1;
+		boolean inPvp = client.getVarbitValue(Varbits.PVP_SPEC_ORB) == 1;
+
 		boolean isPartyMember = partyService.isInParty() &&
 			player.getName() != null &&
 			config.highlightPartyMembers() &&
@@ -216,7 +221,11 @@ public class PlayerIndicatorsPlugin extends Plugin
 		{
 			color = config.getClanMemberColor();
 		}
-		else if (!player.isFriendsChatMember() && !player.isClanMember() && !config.highlightOthers().equals(HighlightOtherPlayers.DISABLED))
+		else if (config.highlightOthers().equals(HighlightOtherPlayers.EVERYWHERE) && !player.isFriendsChatMember() && !player.isClanMember())
+		{
+			color = config.getOthersColor();
+		}
+		else if (config.highlightOthers().equals(HighlightOtherPlayers.ONLYPVP) && (inPvp || inWilderness) && !player.isFriendsChatMember() && !player.isClanMember())
 		{
 			color = config.getOthersColor();
 		}
