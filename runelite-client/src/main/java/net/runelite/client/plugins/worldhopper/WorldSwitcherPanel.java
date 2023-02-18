@@ -38,13 +38,14 @@ import java.util.Set;
 import java.util.function.Function;
 import javax.annotation.Nullable;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.EnumComposition;
 import net.runelite.client.ui.ColorScheme;
-import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.http.api.worlds.World;
 import net.runelite.http.api.worlds.WorldType;
@@ -81,17 +82,24 @@ class WorldSwitcherPanel extends PluginPanel
 
 	WorldSwitcherPanel(WorldHopperPlugin plugin)
 	{
+		super(false);
+
 		this.plugin = plugin;
 
 		setBorder(null);
-		setLayout(new DynamicGridLayout(0, 1));
+		setLayout(new BorderLayout());
 
 		JPanel headerContainer = buildHeader();
 
 		listContainer.setLayout(new GridLayout(0, 1));
 
-		add(headerContainer);
-		add(listContainer);
+		JScrollPane scrollPane = new JScrollPane(listContainer);
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+		add(headerContainer, BorderLayout.NORTH);
+		add(scrollPane, BorderLayout.CENTER);
+
+		revalidate();
 	}
 
 	@Override
