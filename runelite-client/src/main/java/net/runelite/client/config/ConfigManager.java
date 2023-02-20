@@ -178,7 +178,10 @@ public class ConfigManager
 				}
 
 				List<Profile> profiles = configClient.profiles();
-				syncRemote(lock, profile, profiles);
+				if (profiles != null)
+				{
+					syncRemote(lock, profile, profiles);
+				}
 			}
 			catch (IOException ex)
 			{
@@ -247,7 +250,10 @@ public class ConfigManager
 		try
 		{
 			List<Profile> profiles = configClient.profiles();
-			mergeRemoteProfiles(profiles);
+			if (profiles != null)
+			{
+				mergeRemoteProfiles(profiles);
+			}
 		}
 		catch (IOException e)
 		{
@@ -421,7 +427,11 @@ public class ConfigManager
 			configClient.setUuid(session.getUuid());
 			try
 			{
-				remoteProfiles = configClient.profiles();
+				List<Profile> profiles = configClient.profiles();
+				if (profiles != null)
+				{
+					remoteProfiles = profiles;
+				}
 			}
 			catch (IOException ex)
 			{

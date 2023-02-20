@@ -87,6 +87,12 @@ public class ConfigClient
 
 		try (Response response = client.newCall(request).execute())
 		{
+			if (!response.isSuccessful())
+			{
+				log.error("non-successful response loading profiles: {}", response.code());
+				return null;
+			}
+
 			InputStream in = response.body().byteStream();
 			// CHECKSTYLE:OFF
 			final Type type = new TypeToken<List<Profile>>() {}.getType();
