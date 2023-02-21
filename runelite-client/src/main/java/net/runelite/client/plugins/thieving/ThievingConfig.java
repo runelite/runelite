@@ -18,7 +18,7 @@ public interface ThievingConfig extends Config
 	)
 	default ChestOverlay.ChestReadyIndicator getChestReadyIndicator()
 	{
-		return ChestOverlay.ChestReadyIndicator.ICON;
+		return ChestOverlay.ChestReadyIndicator.NONE;
 	}
 
 	@Alpha
