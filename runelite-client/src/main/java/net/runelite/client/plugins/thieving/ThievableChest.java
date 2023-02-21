@@ -59,9 +59,9 @@ public class ThievableChest
 		new ThievableChest(new WorldPoint(2139, 9299, 0), ItemID.DARK_KEY, Duration.ofSeconds(0)), //Relekka north of longhouse
 
 		// Chest (50 Coins)
-		new ThievableChest(new WorldPoint(2671, 3299, 1), ItemID.COINS, Duration.ofSeconds(50)), // Ardougne east of food stall
-		new ThievableChest(new WorldPoint(2035, 4649, 0), ItemID.COINS, Duration.ofSeconds(50)), // Mourner Tunnels
-		new ThievableChest(new WorldPoint(3040, 3949, 0), ItemID.COINS, Duration.ofSeconds(50)), // Pirate's Hideout
+		new ThievableChest(new WorldPoint(2671, 3299, 1), ItemID.COINS, Duration.ofSeconds(45)), // Ardougne east of food stall
+		new ThievableChest(new WorldPoint(2035, 4649, 0), ItemID.COINS, Duration.ofSeconds(45)), // Mourner Tunnels
+		new ThievableChest(new WorldPoint(3040, 3949, 0), ItemID.COINS, Duration.ofSeconds(45)), // Pirate's Hideout
 
 		// Steel Arrowtips
 		new ThievableChest(new WorldPoint(2038, 4649, 0), ItemID.STEEL_ARROWTIPS, Duration.ofSeconds(75)), // Mourner Tunnels
