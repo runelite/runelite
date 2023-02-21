@@ -44,7 +44,7 @@ public class ChestOverlay extends Overlay
 	/**
 	 * Overlay settings
 	 */
-	private final int MAX_DRAW_DISTANCE = 2350;
+	private final static int MAX_DRAW_DISTANCE = 2350;
 	private ChestReadyIndicator chestReadyIndicator;
 
 	@Getter
