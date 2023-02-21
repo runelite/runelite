@@ -10,9 +10,11 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
+import net.runelite.api.GameState;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameObjectSpawned;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -72,16 +74,21 @@ public class ThievingPlugin extends Plugin
 			{
 				case 11740:
 				case 11741:
-					log.debug("Adding chest to active chest collection, {} total", activeChests.size());
-					activeChests.put(gameObject.getWorldLocation(), new ThievableChest.ActiveChest(Instant.now(), chest.getResetTime(), gameObject, gameObject.getWorldLocation().getRegionID(), chest.getChestIcon(), ThievableChest.ActiveChest.State.PLUNDERED));
+					ThievableChest.ActiveChest oldChestInfo = activeChests.put(gameObject.getWorldLocation(), new ThievableChest.ActiveChest(Instant.now(), chest.getResetTime(), gameObject, gameObject.getWorldLocation().getRegionID(), chest.getChestIcon(), ThievableChest.ActiveChest.State.PLUNDERED));
+					log.debug("Added chest to active chest collection, {} total", activeChests.size());
+					// If we are adding a new plundered chest, but there already exists a timer, it is most likely we have added the same chest
+					if (oldChestInfo != null && oldChestInfo.getState() == ThievableChest.ActiveChest.State.PLUNDERED) {
+						activeChests.put(gameObject.getWorldLocation(), oldChestInfo);
+						log.info("Re-added old chest to active chest collection, {} total", activeChests.size());
+					}
 					break;
 				case 11743:
-					log.debug("Adding chest to active chest collection, {} total", activeChests.size());
 					activeChests.put(gameObject.getWorldLocation(), new ThievableChest.ActiveChest(Instant.now(), chest.getResetTime(), gameObject, gameObject.getWorldLocation().getRegionID(), chest.getChestIcon(), ThievableChest.ActiveChest.State.TRANS));
+					log.debug("Added chest to active chest collection, {} total", activeChests.size());
 					break;
 				default:
-					log.debug("Adding chest to active chest collection, {} total", activeChests.size());
 					activeChests.put(gameObject.getWorldLocation(), new ThievableChest.ActiveChest(Instant.now(), chest.getResetTime(), gameObject, gameObject.getWorldLocation().getRegionID(), chest.getChestIcon(), ThievableChest.ActiveChest.State.READY));
+					log.debug("Added chest to active chest collection, {} total", activeChests.size());
 					break;
 
 			}
