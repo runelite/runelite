@@ -33,9 +33,6 @@ public class ThievingPlugin extends Plugin
 	private Client client;
 
 	@Inject
-	private ThievingConfig config;
-
-	@Inject
 	private OverlayManager overlayManager;
 
 	@Inject
@@ -44,7 +41,7 @@ public class ThievingPlugin extends Plugin
 	private static final HashMap<WorldPoint, ThievableChest> timedChests = new HashMap<>();
 
 	@Getter
-	private final HashMap<WorldPoint, ThievableChest.ActiveChest> activeChests = new HashMap<>();
+	private static final HashMap<WorldPoint, ThievableChest.ActiveChest> activeChests = new HashMap<>();
 
 	@Override
 	protected void startUp() throws Exception
