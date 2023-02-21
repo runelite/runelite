@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.config;
 
+import com.google.common.base.CharMatcher;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -57,6 +58,10 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLite;
 import net.runelite.client.account.SessionManager;
@@ -332,6 +337,27 @@ class ProfilePanel extends PluginPanel
 					}
 				}
 			});
+			((AbstractDocument) name.getDocument()).setDocumentFilter(new DocumentFilter()
+			{
+				@Override
+				public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException
+				{
+					super.insertString(fb, offset, filter(string), attr);
+				}
+
+				@Override
+				public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException
+				{
+					super.replace(fb, offset, length, filter(text), attrs);
+				}
+
+				private String filter(String in)
+				{
+					// characters commonly forbidden in file names
+					return CharMatcher.noneOf("/\\<>:\"|?*\0")
+						.retainFrom(in);
+				}
+			});
 
 			activate = new JButton(ARROW_RIGHT_ICON);
 			activate.setDisabledIcon(ARROW_RIGHT_ICON);
@@ -547,6 +573,10 @@ class ProfilePanel extends PluginPanel
 			{
 				renameProfile(profile.getId(), name.getText().trim());
 			}
+			else
+			{
+				name.setText(profile.getName());
+			}
 		}
 	}
 
@@ -599,8 +629,9 @@ class ProfilePanel extends PluginPanel
 			log.info("Renaming profile {} to {}", profile, name);
 
 			lock.renameProfile(profile, name);
-			// the panel updates the name label so it isn't necessary to rebuild
 			configManager.renameProfile(profile, name);
+
+			reload(lock.getProfiles());
 		}
 	}
 
