@@ -13,8 +13,8 @@ public interface ThievingConfig extends Config
 	@ConfigItem(
 		position = 1,
 		keyName = "chestReadyIcon",
-		name = "Ready chest",
-		description = "How to indicate a ready chest"
+		name = "Ready Indicator",
+		description = "What indication should display for a chest that is ready to loot"
 	)
 	default ChestOverlay.ChestReadyIndicator getChestReadyIndicator()
 	{
