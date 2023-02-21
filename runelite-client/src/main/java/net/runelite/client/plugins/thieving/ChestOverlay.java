@@ -10,13 +10,16 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
+import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.ProgressPieComponent;
+import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.client.util.ColorUtil;
 
 /**
@@ -209,7 +212,8 @@ public class ChestOverlay extends Overlay
 		net.runelite.api.Point loc = Perspective.localToCanvas(client, localLoc, client.getPlane());
 		if (loc != null)
 		{
-			graphics.drawImage(itemManager.getImage(chest.getIconID()), loc.getX(), loc.getY(), null);
+			AsyncBufferedImage img = itemManager.getImage(chest.getIconID());
+			OverlayUtil.renderImageLocation(client, graphics, chest.getObject().getLocalLocation(), img, 0);
 		}
 	}
 }
