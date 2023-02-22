@@ -31,6 +31,8 @@ import java.awt.Point;
 import java.awt.dnd.DragSource;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.JLayeredPane;
 import javax.swing.SwingUtilities;
@@ -44,6 +46,7 @@ public class DragAndDropReorderPane extends JLayeredPane
 	private Component draggingComponent;
 	private int dragYOffset = 0;
 	private int dragIndex = -1;
+	private final List<DragListener> dragListeners = new ArrayList<>(0);
 
 	public DragAndDropReorderPane()
 	{
@@ -62,6 +65,16 @@ public class DragAndDropReorderPane extends JLayeredPane
 			throw new IllegalArgumentException("DragAndDropReorderPane only supports DragAndDropReorderLayoutManager");
 		}
 		super.setLayout(layoutManager);
+	}
+
+	public void addDragListener(DragListener dragListener)
+	{
+		dragListeners.add(dragListener);
+	}
+
+	public void removeDragListener(DragListener dragListener)
+	{
+		dragListeners.remove(dragListener);
 	}
 
 	private void startDragging(Point point)
@@ -101,11 +114,15 @@ public class DragAndDropReorderPane extends JLayeredPane
 	{
 		if (draggingComponent != null)
 		{
+			Component draggedComponent = draggingComponent;
+
 			setLayer(draggingComponent, DEFAULT_LAYER, dragIndex);
 			draggingComponent = null;
 			dragYOffset = 0;
 			dragIndex = -1;
 			revalidate();
+
+			dragListeners.forEach(dl -> dl.onDrag(draggedComponent));
 		}
 		dragStartPoint = null;
 	}
@@ -131,6 +148,16 @@ public class DragAndDropReorderPane extends JLayeredPane
 			}
 		}
 		return null;
+	}
+
+	@FunctionalInterface
+	public interface DragListener
+	{
+		/**
+		 * Called after a compoenent has been dragged
+		 * @param component the component
+		 */
+		void onDrag(Component component);
 	}
 
 	private class DragAndDropReorderLayoutManager extends BoxLayout
