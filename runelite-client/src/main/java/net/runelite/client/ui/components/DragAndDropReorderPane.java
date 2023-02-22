@@ -28,6 +28,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.LayoutManager;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.dnd.DragSource;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -95,17 +96,33 @@ public class DragAndDropReorderPane extends JLayeredPane
 	{
 		moveDraggingComponent(point);
 
-		// reorder components overlapping with the dragging components mid-point
-		Point draggingComponentMidPoint = SwingUtilities.convertPoint(
-			draggingComponent,
-			new Point(draggingComponent.getWidth() / 2, draggingComponent.getHeight() / 2),
-			this
-		);
-		Component component = getDefaultLayerComponentAt(draggingComponentMidPoint);
+		// reorder components
+		Component component = getIntersectingComponent(draggingComponent.getBounds());
 		if (component != null)
 		{
-			int index = getPosition(component);
-			dragIndex = index < dragIndex ? index : index + 1;
+			assert component != draggingComponent;
+
+			final int targetMidY = component.getY() + component.getHeight() / 2;
+			final int index = getPosition(component);
+			final boolean dragUp = index < dragIndex; // if the target component has a lower y value
+
+			// require the edge of the dragged component to be past the midpoint of the target
+			int newIndex;
+			if (dragUp && draggingComponent.getY() < targetMidY)
+			{
+				newIndex = index;
+			}
+			else if (!dragUp && draggingComponent.getY() + draggingComponent.getHeight() > targetMidY)
+			{
+				newIndex = index + 1;
+			}
+			else
+			{
+				return;
+			}
+
+			assert newIndex != dragIndex;
+			dragIndex = newIndex;
 			revalidate();
 		}
 	}
@@ -150,6 +167,18 @@ public class DragAndDropReorderPane extends JLayeredPane
 		return null;
 	}
 
+	private Component getIntersectingComponent(Rectangle bounds)
+	{
+		for (Component component : getComponentsInLayer(DEFAULT_LAYER))
+		{
+			if (bounds.intersects(component.getBounds()))
+			{
+				return component;
+			}
+		}
+		return null;
+	}
+
 	@FunctionalInterface
 	public interface DragListener
 	{
@@ -175,7 +204,12 @@ public class DragAndDropReorderPane extends JLayeredPane
 				// temporarily move the dragging component to the default layer for correct layout calculation
 				Point location = draggingComponent.getLocation();
 				setLayer(draggingComponent, DEFAULT_LAYER, dragIndex);
+
+				// Without revalidating before this temporary layout, Swing will cause draggingComponent to take on the
+				// size of whatever component is present at dragIndex.
+				revalidate();
 				super.layoutContainer(target);
+
 				setLayer(draggingComponent, DRAG_LAYER);
 				draggingComponent.setLocation(location);
 			}
