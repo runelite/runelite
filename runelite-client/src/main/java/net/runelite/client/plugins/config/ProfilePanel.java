@@ -58,6 +58,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.RuneLite;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.ConfigProfile;
@@ -99,7 +100,7 @@ class ProfilePanel extends PluginPanel
 
 	private final Map<Long, ProfileCard> cards = new HashMap<>();
 
-	private File lastFileChooserDirectory;
+	private File lastFileChooserDirectory = RuneLite.RUNELITE_DIR;
 
 	private boolean active;
 
