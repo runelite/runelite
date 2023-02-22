@@ -38,6 +38,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -76,6 +77,8 @@ import net.runelite.client.plugins.screenmarkers.ScreenMarkerPlugin;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.ui.components.DragAndDropReorderPane;
+import net.runelite.client.ui.components.MouseDragEventForwarder;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.SwingUtil;
 
@@ -99,7 +102,7 @@ class ProfilePanel extends PluginPanel
 	private final SessionManager sessionManager;
 	private final ScheduledExecutorService executor;
 
-	private final JPanel profilesList;
+	private final DragAndDropReorderPane profilesList;
 	private final JButton addButton;
 	private final JButton importButton;
 
@@ -138,8 +141,8 @@ class ProfilePanel extends PluginPanel
 		GroupLayout layout = new GroupLayout(this);
 		setLayout(layout);
 
-		profilesList = new JPanel();
-		profilesList.setLayout(new DynamicGridLayout(0, 1, 0, 6));
+		profilesList = new DragAndDropReorderPane();
+		profilesList.addDragListener(this::handleDrag);
 
 		addButton = new JButton("New Profile", ADD_ICON);
 		addButton.addActionListener(ev -> createProfile());
@@ -469,7 +472,7 @@ class ProfilePanel extends PluginPanel
 					.addComponent(activate));
 			}
 
-			MouseAdapter expandListener = new MouseAdapter()
+			MouseAdapter expandListener = new MouseDragEventForwarder(profilesList)
 			{
 				@Override
 				public void mouseClicked(MouseEvent ev)
@@ -523,8 +526,11 @@ class ProfilePanel extends PluginPanel
 				}
 			};
 			addMouseListener(expandListener);
+			addMouseMotionListener(expandListener);
 			name.addMouseListener(expandListener);
+			name.addMouseMotionListener(expandListener);
 			activate.addMouseListener(expandListener);
+			activate.addMouseMotionListener(expandListener);
 
 			setActive(isActive);
 			setExpanded(prev != null && prev.expanded);
@@ -766,5 +772,36 @@ class ProfilePanel extends PluginPanel
 		log.info("{} sync for: {}", sync ? "Enabling" : "Disabling", profile.getName());
 		configManager.toggleSync(profile, sync);
 		((JToggleButton) event.getSource()).setToolTipText(sync ? "Disable cloud sync" : "Enable cloud sync");
+	}
+
+	private void handleDrag(Component component)
+	{
+		ProfileCard c = (ProfileCard) component;
+		int newPosition = profilesList.getPosition(component);
+		log.debug("Drag profile {} to position {}", c.profile.getName(), newPosition);
+
+		try (ProfileManager.Lock lock = profileManager.lock())
+		{
+			// Because the profilesList indexes don't include internal profiles, they can't be used to manipulate the
+			// profile list directly. Just re-sort the profiles instead.
+			List<ConfigProfile> profiles = lock.getProfiles();
+			profiles.sort(Comparator.comparing(p ->
+			{
+				Component[] components = profilesList.getComponents();
+				for (int idx = 0; idx < components.length; ++idx)
+				{
+					ProfileCard card = (ProfileCard) components[idx];
+					if (card.profile.getId() == p.getId())
+					{
+						return idx;
+					}
+				}
+				return -1;
+			}));
+
+			lock.dirty();
+
+			reload(profiles);
+		}
 	}
 }
