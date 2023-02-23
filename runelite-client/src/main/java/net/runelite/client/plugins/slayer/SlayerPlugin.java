@@ -233,7 +233,7 @@ public class SlayerPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		chatCommandManager.registerCommandAsync(TASK_COMMAND_STRING, this::taskLookup, this::taskSubmit);
-		npcOverlayService.registerHighlighter(isTarget);
+		npcOverlayService.registerHighlighter(isTarget, 0);
 
 		overlayManager.add(overlay);
 		overlayManager.add(targetWeaknessOverlay);

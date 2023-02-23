@@ -204,6 +204,7 @@ public class NpcIndicatorsPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		npcOverlayService.registerHighlighter(isHighlighted, 999);
 		overlayManager.add(npcRespawnOverlay);
 		clientThread.invoke(() ->
 		{
