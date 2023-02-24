@@ -81,6 +81,7 @@ import net.runelite.client.events.RuneScapeProfileChanged;
 import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
 import net.runelite.client.util.ColorUtil;
+import net.runelite.client.util.RunnableExceptionLogger;
 import net.runelite.http.api.config.ConfigPatch;
 import net.runelite.http.api.config.ConfigPatchResult;
 import net.runelite.http.api.config.Configuration;
@@ -149,7 +150,7 @@ public class ConfigManager
 		this.profileManager = profileManager;
 		this.sessionManager = sessionManager;
 
-		scheduledExecutorService.scheduleWithFixedDelay(this::sendConfig, 30 + (int) (5 * 60 * Math.random()), 5 * 60, TimeUnit.SECONDS);
+		scheduledExecutorService.scheduleWithFixedDelay(RunnableExceptionLogger.wrap(this::sendConfig), 30 + (int) (5 * 60 * Math.random()), 5 * 60, TimeUnit.SECONDS);
 	}
 
 	public void switchProfile(ConfigProfile newProfile)
