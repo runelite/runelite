@@ -43,30 +43,31 @@ class SlayerPluginServiceImpl implements SlayerPluginService
 	@Override
 	public List<NPC> getTargets()
 	{
-		return plugin.getTargets();
+		return SlayerPlugin.getTargets();
 	}
 
 	@Override
 	public String getTask()
 	{
-		return plugin.getTaskName();
+		return SlayerPlugin.getTask().getName();
 	}
 
 	@Override
 	public String getTaskLocation()
 	{
-		return plugin.getTaskLocation();
+		final Location location = SlayerPlugin.getTask().getLocation();
+		return location == null ? "" : location.getName();
 	}
 
 	@Override
 	public int getInitialAmount()
 	{
-		return plugin.getInitialAmount();
+		return SlayerPlugin.getInitialAmount();
 	}
 
 	@Override
 	public int getRemainingAmount()
 	{
-		return plugin.getAmount();
+		return SlayerPlugin.getTask().getAmount();
 	}
 }

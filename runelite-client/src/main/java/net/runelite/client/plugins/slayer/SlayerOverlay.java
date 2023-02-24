@@ -29,8 +29,6 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import javax.inject.Inject;
 import net.runelite.api.ItemID;
 import net.runelite.api.widgets.WidgetItem;
@@ -43,21 +41,13 @@ class SlayerOverlay extends WidgetItemOverlay
 {
 	private final static Set<Integer> SLAYER_JEWELRY = ImmutableSet.copyOf(ItemVariationMapping.getVariations(ItemID.SLAYER_RING_8));
 
-	private final static Set<Integer> ALL_SLAYER_ITEMS = Stream.of(
-		ItemVariationMapping.getVariations(ItemID.SLAYER_HELMET).stream(),
-		ItemVariationMapping.getVariations(ItemID.SLAYER_RING_8).stream(),
-		Stream.of(ItemID.ENCHANTED_GEM, ItemID.ETERNAL_GEM))
-		.reduce(Stream::concat)
-		.orElseGet(Stream::empty)
-		.collect(Collectors.toSet());
+	private final static Set<Integer> ALL_SLAYER_ITEMS = SlayerPlugin.getALL_SLAYER_ITEMS();
 
 	private final SlayerConfig config;
-	private final SlayerPlugin plugin;
 
 	@Inject
-	private SlayerOverlay(SlayerPlugin plugin, SlayerConfig config)
+	private SlayerOverlay(SlayerConfig config)
 	{
-		this.plugin = plugin;
 		this.config = config;
 		showOnInventory();
 		showOnEquipment();
@@ -71,12 +61,12 @@ class SlayerOverlay extends WidgetItemOverlay
 			return;
 		}
 
-		if (!config.showItemOverlay())
+		if (!config.showItemOverlay() || SlayerPlugin.getTask() == null)
 		{
 			return;
 		}
 
-		int amount = plugin.getAmount();
+		int amount = SlayerPlugin.getTask().getAmount();
 		if (amount <= 0)
 		{
 			return;

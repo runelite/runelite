@@ -808,6 +808,16 @@ public final class Varbits
 	public static final int COX_OVERLOAD_REFRESHES_REMAINING = 5418;
 
 	/**
+	 * Quest state for A Porcine of Interest
+	 * <p>
+	 * 0 = not started<br>
+	 * 0 &lt; Value &lt; 195 = in progress<br>
+	 * 195 = Completed
+	 * </p>
+	 */
+	public static final int QUEST_PORCINE_OF_INTEREST = 10582;
+
+	/**
 	 * The slayer master who assigned the players' recent task.
 	 * <ul>
 	 * 		1 = Turael/Spria<br>
@@ -829,4 +839,11 @@ public final class Varbits
 	 * The bosses mapped to the values can be found in enum 1174 in the cache
 	 */
 	public static final int SLAYER_TASK_BOSS = 4723;
+
+	/**
+	 * Monkey Madness 2 progression, dictating which slayer master the player has access to.
+	 * 0 = Nieve
+	 * 1 = Steve
+	 */
+	public static final int GNOME_STRONGHOLD_SLAYER_MASTER = 5037;
 }
