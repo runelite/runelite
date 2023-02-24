@@ -197,11 +197,12 @@ public class SlayerPlugin extends Plugin
 	{
 		if (config.highlightTaskNPCs() && isTaskTarget(npc))
 		{
+			final boolean isSuperior = Arrays.stream(SlayerNpcVariation.SUPERIOR_CREATURE.getIds()).anyMatch(id -> id == npc.getId());
 
 			return HighlightedNpc.builder()
 					.npc(npc)
-					.highlightColor(config.getTargetColor())
-					.fillColor(config.getFillColor())
+					.highlightColor(isSuperior ? config.getSuperiorTargetColor() : config.getTargetColor())
+					.fillColor(isSuperior ? config.getSuperiorFillColor() : config.getFillColor())
 					.hull(npcIndicatorService.config().highlightHull())
 					.tile(npcIndicatorService.config().highlightTile())
 					.trueTile(npcIndicatorService.config().highlightTrueTile())

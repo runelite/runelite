@@ -179,13 +179,29 @@ public interface SlayerConfig extends Config
 		return new Color(255, 0, 0, 50);
 	}
 
+	@Alpha
 	@ConfigItem(
-		position = 10,
-		keyName = "taskCommand",
-		name = "Task Command",
-		description = "Configures whether the slayer task command is enabled<br> !task"
+			position = 4,
+			keyName = "superiorNpcColor",
+			name = "Highlight color",
+			description = "Color of the NPC highlight border, menu, and text",
+			section = renderStyleSection
 	)
+	default Color getSuperiorTargetColor()
 	{
-		return true;
+		return new Color(255, 50, 255);
+	}
+
+	@Alpha
+	@ConfigItem(
+			position = 5,
+			keyName = "superiorFillColor",
+			name = "Superiors fill color",
+			description = "Color of the NPC highlight fill",
+			section = renderStyleSection
+	)
+	default Color getSuperiorFillColor()
+	{
+		return new Color(255, 50, 255, 50);
 	}
 }
