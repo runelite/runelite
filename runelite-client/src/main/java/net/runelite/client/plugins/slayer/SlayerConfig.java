@@ -30,6 +30,7 @@ import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
 import net.runelite.client.config.Units;
 
 @ConfigGroup(SlayerConfig.GROUP_NAME)
@@ -38,18 +39,29 @@ public interface SlayerConfig extends Config
 	String GROUP_NAME = "slayer";
 
 	// Key names for stored task values
-	String TASK_NAME_KEY = "taskName";
-	String AMOUNT_KEY = "amount";
 	String INIT_AMOUNT_KEY = "initialAmount";
-	String TASK_LOC_KEY = "taskLocation";
-	String STREAK_KEY = "streak";
-	String POINTS_KEY = "points";
+	String WILDERNESS_STREAK_KEY = "wildernessStreak";
+
+	@ConfigSection(
+		name = "General",
+		description = "",
+		position = 0
+	)
+	String generalSection = "generalSection";
+
+	@ConfigSection(
+		name = "Highlight options",
+		description = "The highlight options for slayer task NPCs",
+		position = 1
+	)
+	String renderStyleSection = "renderStyleSection";
 
 	@ConfigItem(
 		position = 1,
 		keyName = "infobox",
 		name = "Task InfoBox",
-		description = "Display task information in an InfoBox"
+		description = "Display task information in an InfoBox",
+		section = generalSection
 	)
 	default boolean showInfobox()
 	{
@@ -60,7 +72,8 @@ public interface SlayerConfig extends Config
 		position = 2,
 		keyName = "itemoverlay",
 		name = "Count on Items",
-		description = "Display task count remaining on slayer items"
+		description = "Display task count remaining on slayer items",
+		section = generalSection
 	)
 	default boolean showItemOverlay()
 	{
@@ -71,7 +84,8 @@ public interface SlayerConfig extends Config
 		position = 3,
 		keyName = "superiornotification",
 		name = "Superior foe notification",
-		description = "Toggles notifications on superior foe encounters"
+		description = "Toggles notifications on superior foe encounters",
+		section = generalSection
 	)
 	default boolean showSuperiorNotification()
 	{
@@ -82,7 +96,8 @@ public interface SlayerConfig extends Config
 		position = 4,
 		keyName = "statTimeout",
 		name = "InfoBox Expiry",
-		description = "Set the time until the InfoBox expires"
+		description = "Set the time until the InfoBox expires",
+		section = generalSection
 	)
 	@Units(Units.MINUTES)
 	default int statTimeout()
@@ -91,55 +106,11 @@ public interface SlayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 5,
-		keyName = "highlightHull",
-		name = "Highlight hull",
-		description = "Configures whether the NPC hull should be highlighted"
-	)
-	default boolean highlightHull()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		position = 6,
-		keyName = "highlightTile",
-		name = "Highlight tile",
-		description = "Configures whether the NPC tile should be highlighted"
-	)
-	default boolean highlightTile()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		position = 7,
-		keyName = "highlightOutline",
-		name = "Highlight outline",
-		description = "Configures whether or not the NPC outline should be highlighted"
-	)
-	default boolean highlightOutline()
-	{
-		return false;
-	}
-
-	@Alpha
-	@ConfigItem(
-		position = 8,
-		keyName = "targetColor",
-		name = "Target color",
-		description = "Color of the highlighted targets"
-	)
-	default Color getTargetColor()
-	{
-		return Color.RED;
-	}
-
-	@ConfigItem(
 		position = 9,
 		keyName = "weaknessPrompt",
 		name = "Show Monster Weakness",
-		description = "Show an overlay on a monster when it is weak enough to finish off (Only Lizards, Gargoyles & Rockslugs)"
+		description = "Show an overlay on a monster when it is weak enough to finish off (Only Lizards, Gargoyles & Rockslugs)",
+		section = generalSection
 	)
 	default boolean weaknessPrompt()
 	{
@@ -150,9 +121,70 @@ public interface SlayerConfig extends Config
 		position = 10,
 		keyName = "taskCommand",
 		name = "Task Command",
-		description = "Configures whether the slayer task command is enabled<br> !task"
+		description = "Configures whether the slayer task command is enabled<br> !task",
+		section = generalSection
 	)
 	default boolean taskCommand()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 0,
+		keyName = "highlightTaskNpcs",
+		name = "Highlight Task NPCs",
+		description = "Configures whether or not task NPCs should be highlighted",
+		section = renderStyleSection
+	)
+	default boolean highlightTaskNPCs()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 1,
+		keyName = "highlightDead",
+		name = "Ignore dead NPCs",
+		description = "Configures whether or not dead NPCs should continue to be highlighted",
+		section = renderStyleSection
+	)
+	default boolean ignoreDead()
+	{
+		return true;
+	}
+
+	@Alpha
+	@ConfigItem(
+		position = 2,
+		keyName = "npcColor",
+		name = "Highlight color",
+		description = "Color of the NPC highlight border, menu, and text",
+		section = renderStyleSection
+	)
+	default Color getTargetColor()
+	{
+		return Color.RED;
+	}
+
+	@Alpha
+	@ConfigItem(
+		position = 3,
+		keyName = "fillColor",
+		name = "Fill color",
+		description = "Color of the NPC highlight fill",
+		section = renderStyleSection
+	)
+	default Color getFillColor()
+	{
+		return new Color(255, 0, 0, 50);
+	}
+
+	@ConfigItem(
+		position = 10,
+		keyName = "taskCommand",
+		name = "Task Command",
+		description = "Configures whether the slayer task command is enabled<br> !task"
+	)
 	{
 		return true;
 	}
