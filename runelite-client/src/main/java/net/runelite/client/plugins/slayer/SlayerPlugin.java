@@ -242,8 +242,6 @@ public class SlayerPlugin extends Plugin
 		{
 			cachedXp = client.getSkillExperience(SLAYER);
 
-			migrateConfig();
-
 			if (getIntProfileConfig(SlayerConfig.AMOUNT_KEY) != -1
 				&& !getStringProfileConfig(SlayerConfig.TASK_NAME_KEY).isEmpty())
 			{
@@ -290,7 +288,6 @@ public class SlayerPlugin extends Plugin
 				taggedNpcs.clear();
 				break;
 			case LOGGED_IN:
-				migrateConfig();
 				if (getIntProfileConfig(SlayerConfig.AMOUNT_KEY) != -1
 					&& !getStringProfileConfig(SlayerConfig.TASK_NAME_KEY).isEmpty()
 					&& loginFlag)
@@ -925,29 +922,5 @@ public class SlayerPlugin extends Plugin
 	private String capsString(String str)
 	{
 		return str.substring(0, 1).toUpperCase() + str.substring(1);
-	}
-
-	private void migrateConfig()
-	{
-		migrateConfigKey(SlayerConfig.TASK_NAME_KEY);
-		migrateConfigKey(SlayerConfig.AMOUNT_KEY);
-		migrateConfigKey(SlayerConfig.INIT_AMOUNT_KEY);
-		migrateConfigKey(SlayerConfig.TASK_LOC_KEY);
-		migrateConfigKey(SlayerConfig.STREAK_KEY);
-		migrateConfigKey(SlayerConfig.POINTS_KEY);
-		configManager.unsetConfiguration(SlayerConfig.GROUP_NAME, "expeditious");
-		configManager.unsetConfiguration(SlayerConfig.GROUP_NAME, "slaughter");
-		configManager.unsetRSProfileConfiguration(SlayerConfig.GROUP_NAME, "expeditious");
-		configManager.unsetRSProfileConfiguration(SlayerConfig.GROUP_NAME, "slaughter");
-	}
-
-	private void migrateConfigKey(String key)
-	{
-		Object value = configManager.getConfiguration(SlayerConfig.GROUP_NAME, key);
-		if (value != null)
-		{
-			configManager.unsetConfiguration(SlayerConfig.GROUP_NAME, key);
-			configManager.setRSProfileConfiguration(SlayerConfig.GROUP_NAME, key, value);
-		}
 	}
 }
