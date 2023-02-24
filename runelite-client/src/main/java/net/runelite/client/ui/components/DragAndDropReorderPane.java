@@ -183,7 +183,7 @@ public class DragAndDropReorderPane extends JLayeredPane
 	public interface DragListener
 	{
 		/**
-		 * Called after a compoenent has been dragged
+		 * Called after a component has been dragged
 		 * @param component the component
 		 */
 		void onDrag(Component component);
