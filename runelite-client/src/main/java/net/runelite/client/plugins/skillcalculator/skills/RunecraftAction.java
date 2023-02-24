@@ -79,7 +79,7 @@ public enum RunecraftAction implements ItemSkillAction
 		@Override
 		public String getName(final ItemManager itemManager)
 		{
-			return "Blood Rune (True Altar)";
+			return "Blood rune (True Altar)";
 		}
 	},
 	SOUL_RUNE(ItemID.SOUL_RUNE, 90, 30.325f, true),
