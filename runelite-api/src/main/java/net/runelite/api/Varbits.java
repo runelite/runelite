@@ -567,6 +567,8 @@ public final class Varbits
 	 */
 	public static final int SUPERIOR_ENABLED = 5362;
 	public static final int FOSSIL_ISLAND_WYVERN_DISABLE = 6251;
+	public static final int SLAYER_TASK_STORAGE = 12442;
+	public static final int I_WILDY_MORE_SLAYER = 13636;
 
 	public static final int BANK_REARRANGE_MODE = 3959;
 	public static final int CURRENT_BANK_TAB = 4150;
@@ -804,4 +806,44 @@ public final class Varbits
 	 * Set to 20 upon drinking an overload.
 	 */
 	public static final int COX_OVERLOAD_REFRESHES_REMAINING = 5418;
+
+	/**
+	 * Quest state for A Porcine of Interest
+	 * <p>
+	 * 0 = not started<br>
+	 * 0 &lt; Value &lt; 195 = in progress<br>
+	 * 195 = Completed
+	 * </p>
+	 */
+	public static final int QUEST_PORCINE_OF_INTEREST = 10582;
+
+	/**
+	 * The slayer master who assigned the players' recent task.
+	 * <ul>
+	 * 		1 = Turael/Spria<br>
+	 * 		2 =	Mazchna<br>
+	 * 		3 =	Vannaka<br>
+	 * 		4 =	Chaeldar<br>
+	 * 		5 =	Duradel<br>
+	 * 		6 =	Nieve/Steve<br>
+	 * 		7 =	Krystilia<br>
+	 * 		8 =	Konar<br>
+	 * </ul>
+	 */
+	public static final int SLAYER_MASTER = 4067;
+
+	public static final int SLAYER_POINTS = 4068;
+	public static final int SLAYER_TASK_STREAK = 4069;
+
+	/**
+	 * The bosses mapped to the values can be found in enum 1174 in the cache
+	 */
+	public static final int SLAYER_TASK_BOSS = 4723;
+
+	/**
+	 * Monkey Madness 2 progression, dictating which slayer master the player has access to.
+	 * 0 = Nieve
+	 * 1 = Steve
+	 */
+	public static final int GNOME_STRONGHOLD_SLAYER_MASTER = 5037;
 }

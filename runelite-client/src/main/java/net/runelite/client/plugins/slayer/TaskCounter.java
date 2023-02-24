@@ -24,9 +24,11 @@
  */
 package net.runelite.client.plugins.slayer;
 
+import joptsimple.internal.Strings;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.infobox.Counter;
-
+import net.runelite.client.util.ColorUtil;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 
 class TaskCounter extends Counter
@@ -34,5 +36,45 @@ class TaskCounter extends Counter
 	TaskCounter(BufferedImage img, Plugin plugin, int amount)
 	{
 		super(img, plugin, amount);
+	}
+
+	public void setTooltip(Task task, int initialAmount, int points, int normalStreak, int wildernessStreak)
+	{
+		if (task == null || !task.isValid())
+		{
+			return;
+		}
+
+		final String location = task.getLocation().getName();
+
+		String taskTooltip = ColorUtil.wrapWithColorTag("%s", new Color(255, 119, 0)) + "</br>";
+
+		if (!Strings.isNullOrEmpty(location))
+		{
+			taskTooltip += location + "</br>";
+		}
+
+		taskTooltip += ColorUtil.wrapWithColorTag("Pts:", Color.YELLOW)
+				+ " %s</br>"
+				+ ColorUtil.wrapWithColorTag("Streak:", Color.YELLOW)
+				+ " %s";
+
+		if (initialAmount > 0)
+		{
+			taskTooltip += "</br>"
+					+ ColorUtil.wrapWithColorTag("Start:", Color.YELLOW)
+					+ " " + initialAmount;
+		}
+
+		final int streak = task.getMaster() == SlayerMaster.KRYSTILIA
+				? wildernessStreak
+				: normalStreak;
+
+		super.setTooltip(String.format(taskTooltip, capsString(task.getName()), points, streak == -1 ? "unknown" : streak));
+	}
+
+	private String capsString(String str)
+	{
+		return Strings.isNullOrEmpty(str) ? "" : str.substring(0, 1).toUpperCase() + str.substring(1);
 	}
 }

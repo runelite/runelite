@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022, Adam <Adam@sigterm.info>
+ * Copyright (c) 2023, Macweese <https://github.com/Macweese>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,26 +24,40 @@
  */
 package net.runelite.client.plugins.slayer;
 
-import java.util.List;
-import javax.annotation.Nullable;
-import net.runelite.api.NPC;
+import lombok.Getter;
+import net.runelite.api.Client;
+import net.runelite.api.Varbits;
+import java.util.Arrays;
 
-public interface SlayerPluginService
+enum SlayerMaster
 {
-	/**
-	 * Get targets for current slayer task
-	 *
-	 * @return List of NPCs
-	 */
-	List<NPC> getTargets();
+	NULL(0, ""),
+	TURAEL_SPRIA(1, "Turael", "Spria"),
+	MAZCHNA(2, "Mazchna"),
+	VANNAKA(3, "Vannaka"),
+	CHAELDAR(4, "Chaeldar"),
+	DURADEL(5, "Duradel"),
+	NIEVE_STEVE(6, "Nieve", "Steve"),
+	KRYSTILIA(7, "Krystilia"),
+	KONAR(8, "Konar"),
+	;
 
-	@Nullable
-	String getTask();
+	@Getter
+	private final int index;
+	@Getter
+	private final String[] names;
 
-	@Nullable
-	String getTaskLocation();
+	SlayerMaster(int index, String... names)
+	{
+		this.index = index;
+		this.names = names;
+	}
 
-	int getInitialAmount();
-
-	int getRemainingAmount();
+	static SlayerMaster getSlayerMaster(Client client)
+	{
+		return Arrays.stream(SlayerMaster.values())
+				.filter(master -> master.getIndex() == client.getVarbitValue(Varbits.SLAYER_MASTER))
+				.findFirst()
+				.get();
+	}
 }

@@ -40,21 +40,20 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import static net.runelite.api.NpcID.SULPHUR_LIZARD;
 
 class TargetWeaknessOverlay extends Overlay
 {
 	private final Client client;
 	private final SlayerConfig config;
-	private final SlayerPlugin plugin;
 	private final ItemManager itemManager;
 	private final NPCManager npcManager;
 
 	@Inject
-	private TargetWeaknessOverlay(Client client, SlayerConfig config, SlayerPlugin plugin, ItemManager itemManager, NPCManager npcManager)
+	private TargetWeaknessOverlay(Client client, SlayerConfig config, ItemManager itemManager, NPCManager npcManager)
 	{
 		this.client = client;
 		this.config = config;
-		this.plugin = plugin;
 		this.itemManager = itemManager;
 		this.npcManager = npcManager;
 		setPosition(OverlayPosition.DYNAMIC);
@@ -64,21 +63,22 @@ class TargetWeaknessOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		final List<NPC> targets = plugin.getTargets();
+		final List<NPC> targets = SlayerPlugin.getTargets();
 
 		if (targets.isEmpty() || !config.weaknessPrompt())
 		{
 			return null;
 		}
 
-		final Task curTask = Task.getTask(plugin.getTaskName());
-		if (curTask == null || curTask.getWeaknessThreshold() < 0 || curTask.getWeaknessItem() < 0)
+		final Task currentTask = SlayerPlugin.getTask();
+		if (currentTask == null || !currentTask.isValid()
+				|| currentTask.getTaskNPC().getWeaknessThreshold() < 0 || currentTask.getTaskNPC().getWeaknessItem() < 0)
 		{
 			return null;
 		}
 
-		final int threshold = curTask.getWeaknessThreshold();
-		final BufferedImage image = itemManager.getImage(curTask.getWeaknessItem());
+		final int threshold = currentTask.getTaskNPC().getWeaknessThreshold();
+		final BufferedImage image = itemManager.getImage(currentTask.getTaskNPC().getWeaknessItem());
 
 		if (image == null)
 		{
@@ -87,6 +87,12 @@ class TargetWeaknessOverlay extends Overlay
 
 		for (NPC target : targets)
 		{
+			// These do not require slayer item to be killed, unlike other lizards
+			if (target.getId() == SULPHUR_LIZARD)
+			{
+				continue;
+			}
+
 			final int currentHealth = calculateHealth(target);
 
 			if (currentHealth >= 0 && currentHealth <= threshold)
