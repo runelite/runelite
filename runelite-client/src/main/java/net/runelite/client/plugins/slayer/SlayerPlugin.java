@@ -381,6 +381,17 @@ public class SlayerPlugin extends Plugin
 				String name = mAssign.group("name");
 				int amount = Integer.parseInt(mAssign.group("amount"));
 				String location = mAssign.group("location");
+
+				if (location == null)
+				{
+					Widget npcName = client.getWidget(WidgetInfo.DIALOG_NPC_NAME);
+
+					if (npcName != null && npcName.getText().equals("Krystilia"))
+					{
+						location = "Wilderness";
+					}
+				}
+
 				setTask(name, amount, amount, location);
 			}
 			else if (mAssignFirst.find())
