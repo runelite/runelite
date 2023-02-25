@@ -50,6 +50,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.EnumComposition;
 import net.runelite.api.EnumID;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemID;
@@ -634,7 +635,7 @@ public class SlayerPlugin extends Plugin
 
 		if (TASK_STRING_VALIDATION.matcher(task.getTask()).find() || task.getTask().length() > TASK_STRING_MAX_LENGTH ||
 			TASK_STRING_VALIDATION.matcher(task.getLocation()).find() || task.getLocation().length() > TASK_STRING_MAX_LENGTH ||
-			Task.getTask(task.getTask()) == null || !Task.LOCATIONS.contains(task.getLocation()))
+			Task.getTask(task.getTask()) == null || !isValidLocation(task.getLocation()))
 		{
 			log.debug("Validation failed for task name or location: {}", task);
 			return;
@@ -696,6 +697,25 @@ public class SlayerPlugin extends Plugin
 		});
 
 		return true;
+	}
+
+	private boolean isValidLocation(String location)
+	{
+		if (location == null || location.isEmpty())
+		{
+			return true; // no location is a valid location
+		}
+
+		EnumComposition e = client.getEnum(EnumID.SLAYER_TASK_LOCATION);
+		for (String l : e.getStringVals())
+		{
+			if (l.equalsIgnoreCase(location))
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	//Utils

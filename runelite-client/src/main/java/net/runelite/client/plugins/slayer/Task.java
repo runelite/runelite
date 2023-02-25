@@ -26,9 +26,7 @@
 package net.runelite.client.plugins.slayer;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import java.util.List;
 import java.util.Map;
 import javax.annotation.Nullable;
 import lombok.Getter;
@@ -184,54 +182,6 @@ enum Task
 	//</editor-fold>
 
 	private static final Map<String, Task> tasks;
-	static final List<String> LOCATIONS = ImmutableList.of(
-		"", // no location is a valid location
-		"Abyss",
-		"Ancient Cavern",
-		"Asgarnian Ice Dungeon",
-		"Battlefront",
-		"Brimhaven Dungeon",
-		"Brine Rat Cavern",
-		"Catacombs of Kourend",
-		"Chasm of Fire",
-		"Clan Wars",
-		"Death Plateau",
-		"Evil Chicken's Lair",
-		"Fossil Island",
-		"Forthos Dungeon",
-		"Fremennik Slayer Dungeon",
-		"God Wars Dungeon",
-		"Iorwerth Dungeon",
-		"Isle of Souls",
-		"Jormungand's Prison",
-		"Kalphite Lair",
-		"Karuulm Slayer Dungeon",
-		"Keldagrim",
-		"Kraken Cove",
-		"Lighthouse",
-		"Lithkren Vault",
-		"Lizardman Canyon",
-		"Lizardman Settlement",
-		"Meiyerditch Laboratories",
-		"Molch",
-		"Mount Quidamortem",
-		"Mourner Tunnels",
-		"Myths' Guild Dungeon",
-		"Ogre Enclave",
-		"Slayer Tower",
-		"Smoke Devil Dungeon",
-		"Smoke Dungeon",
-		"Stronghold of Security",
-		"Stronghold Slayer Dungeon",
-		"task-only Kalphite Cave",
-		"Taverley Dungeon",
-		"Troll Stronghold",
-		"Waterbirth Island",
-		"Waterfall Dungeon",
-		"Wilderness",
-		"Witchaven Dungeon",
-		"Zanaris"
-	);
 
 	private final String name;
 	private final int itemSpriteId;

@@ -170,9 +170,13 @@ public class SlayerPluginTest
 	@Test
 	public void testTaskLookup() throws IOException
 	{
+		EnumComposition e = mock(EnumComposition.class);
+		when(e.getStringVals()).thenReturn(new String[]{"The Abyss"});
+		when(client.getEnum(EnumID.SLAYER_TASK_LOCATION)).thenReturn(e);
+
 		net.runelite.http.api.chat.Task task = new net.runelite.http.api.chat.Task();
 		task.setTask("Abyssal demons");
-		task.setLocation("Abyss");
+		task.setLocation("The Abyss");
 		task.setAmount(42);
 		task.setInitialAmount(42);
 
