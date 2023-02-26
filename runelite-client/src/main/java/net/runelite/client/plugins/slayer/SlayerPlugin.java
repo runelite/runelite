@@ -173,6 +173,8 @@ public class SlayerPlugin extends Plugin
 	private boolean loginFlag;
 	private final List<Pattern> targetNames = new ArrayList<>();
 
+	private String[] taskLocations;
+
 	public final Function<NPC, HighlightedNpc> isTarget = (n) ->
 	{
 		if ((config.highlightHull() || config.highlightTile() || config.highlightOutline()) && targets.contains(n))
@@ -211,6 +213,19 @@ public class SlayerPlugin extends Plugin
 			loginFlag = true;
 			clientThread.invoke(this::updateTask);
 		}
+
+		clientThread.invoke(() ->
+		{
+			if (client.getGameState().getState() < GameState.LOGIN_SCREEN.getState())
+			{
+				return false;
+			}
+
+			// !task requires off-thread access to slayer task locations
+			EnumComposition e = client.getEnum(EnumID.SLAYER_TASK_LOCATION);
+			taskLocations = e.getStringVals().clone();
+			return true;
+		});
 	}
 
 	@Override
@@ -223,6 +238,8 @@ public class SlayerPlugin extends Plugin
 		overlayManager.remove(targetWeaknessOverlay);
 		removeCounter();
 		targets.clear();
+
+		taskLocations = null;
 	}
 
 	@Provides
@@ -706,12 +723,14 @@ public class SlayerPlugin extends Plugin
 			return true; // no location is a valid location
 		}
 
-		EnumComposition e = client.getEnum(EnumID.SLAYER_TASK_LOCATION);
-		for (String l : e.getStringVals())
+		if (taskLocations != null)
 		{
-			if (l.equalsIgnoreCase(location))
+			for (String l : taskLocations)
 			{
-				return true;
+				if (l.equalsIgnoreCase(location))
+				{
+					return true;
+				}
 			}
 		}
 
