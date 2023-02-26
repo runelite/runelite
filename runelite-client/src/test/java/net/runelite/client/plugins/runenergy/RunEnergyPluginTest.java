@@ -104,6 +104,16 @@ public class RunEnergyPluginTest
 	}
 
 	@Test
+	public void testCheck1000()
+	{
+		String checkMessage = "Your Ring of endurance is charged with 1,000 stamina doses.";
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", checkMessage, "", 0);
+
+		runEnergyPlugin.onChatMessage(chatMessage);
+		verify(configManager).setRSProfileConfiguration(RunEnergyConfig.GROUP_NAME, "ringOfEnduranceCharges", 1000);
+	}
+
+	@Test
 	public void testPotionMessage()
 	{
 		String potionMessage = "Your Ring of endurance doubles the duration of your stamina potion's effect.";
