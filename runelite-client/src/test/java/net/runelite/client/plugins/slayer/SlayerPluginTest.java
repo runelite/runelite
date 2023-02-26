@@ -29,6 +29,7 @@ import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.io.IOException;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.function.BooleanSupplier;
 import javax.inject.Inject;
 import javax.inject.Named;
 import net.runelite.api.ChatMessageType;
@@ -54,6 +55,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.npcoverlay.NpcOverlayService;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
+import org.junit.After;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
@@ -145,12 +147,32 @@ public class SlayerPluginTest
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
 
+		when(client.getGameState()).thenReturn(GameState.LOGIN_SCREEN);
+
 		doAnswer(a ->
 		{
 			final Runnable r = a.getArgument(0);
 			r.run();
 			return null;
 		}).when(clientThread).invokeLater(any(Runnable.class));
+
+		doAnswer(a ->
+		{
+			final BooleanSupplier b = a.getArgument(0);
+			return b.getAsBoolean();
+		}).when(clientThread).invoke(any(BooleanSupplier.class));
+
+		EnumComposition e = mock(EnumComposition.class);
+		when(e.getStringVals()).thenReturn(new String[]{"The Abyss"});
+		when(client.getEnum(EnumID.SLAYER_TASK_LOCATION)).thenReturn(e);
+
+		slayerPlugin.startUp();
+	}
+
+	@After
+	public void after()
+	{
+		slayerPlugin.shutDown();
 	}
 
 	@Test
@@ -170,10 +192,6 @@ public class SlayerPluginTest
 	@Test
 	public void testTaskLookup() throws IOException
 	{
-		EnumComposition e = mock(EnumComposition.class);
-		when(e.getStringVals()).thenReturn(new String[]{"The Abyss"});
-		when(client.getEnum(EnumID.SLAYER_TASK_LOCATION)).thenReturn(e);
-
 		net.runelite.http.api.chat.Task task = new net.runelite.http.api.chat.Task();
 		task.setTask("Abyssal demons");
 		task.setLocation("The Abyss");

@@ -200,7 +200,7 @@ public class SlayerPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		chatCommandManager.registerCommandAsync(TASK_COMMAND_STRING, this::taskLookup, this::taskSubmit);
 		npcOverlayService.registerHighlighter(isTarget);
@@ -229,7 +229,7 @@ public class SlayerPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown()
 	{
 		chatCommandManager.unregisterCommand(TASK_COMMAND_STRING);
 		npcOverlayService.unregisterHighlighter(isTarget);
