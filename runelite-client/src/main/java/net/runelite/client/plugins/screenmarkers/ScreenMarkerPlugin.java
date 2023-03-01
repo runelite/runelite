@@ -46,6 +46,7 @@ import lombok.Setter;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.events.ProfileChanged;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -170,6 +171,12 @@ public class ScreenMarkerPlugin extends Plugin
 			overlayManager.removeIf(ScreenMarkerOverlay.class::isInstance);
 			screenMarkers.forEach(overlayManager::add);
 		}
+	}
+
+	@Subscribe
+	public void onProfileChanged(ProfileChanged event)
+	{
+		screenMarkers.clear();
 	}
 
 	public void setMouseListenerEnabled(boolean enabled)
