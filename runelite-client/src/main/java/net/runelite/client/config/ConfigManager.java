@@ -432,6 +432,7 @@ public class ConfigManager
 				if (profiles != null)
 				{
 					remoteProfiles = profiles;
+					mergeRemoteProfiles(remoteProfiles);
 				}
 			}
 			catch (IOException ex)
@@ -439,8 +440,6 @@ public class ConfigManager
 				log.error("error loading remote profiles", ex);
 			}
 		}
-
-		mergeRemoteProfiles(remoteProfiles);
 
 		migrate();
 
@@ -556,6 +555,31 @@ public class ConfigManager
 					log.info("Using remote profile {} as the active profile", profile.getName());
 					profile.setActive(true);
 				}
+			}
+
+			outer2:
+			for (ConfigProfile localProfile : lock.getProfiles())
+			{
+				for (Profile remoteProfile : remoteProfiles)
+				{
+					if (localProfile.getId() == remoteProfile.getId())
+					{
+						continue outer2;
+					}
+				}
+
+				log.debug("Found local profile {}", localProfile);
+
+				if (!localProfile.isSync() || localProfile.isInternal())
+				{
+					continue;
+				}
+
+				log.warn("Lost remote profile for '{}'", localProfile.getName());
+				// convert the profile to a non-synced profile
+				localProfile.setSync(false);
+				localProfile.setRev(-1);
+				lock.dirty();
 			}
 		}
 	}
