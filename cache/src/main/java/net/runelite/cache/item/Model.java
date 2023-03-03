@@ -197,7 +197,7 @@ class Model extends Renderable
 			modelViewportZs[i] = z - zRelatedVariable;
 			modelViewportYs[i] = x * graphics.Rasterizer3D_zoom / z + graphics.centerX;
 			modelViewportXs[i] = tmp * graphics.Rasterizer3D_zoom / z + graphics.centerY;
-			if (this.numTextureFaces > 0)
+			if (faceTextures != null)
 			{
 				modelLocalX[i] = x;
 				modelLocalY[i] = tmp;
