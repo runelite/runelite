@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2023, LlemonDuck <napkinorton@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,63 +22,28 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package net.runelite.api;
 
-import javax.annotation.Nonnull;
-
 /**
- * Represents the model of an object.
+ * Used to distinguish the types of animations the client can render.
+ * Each type determines its current frame differently.
  */
-public interface Model extends Mesh<Model>, Renderable
+public enum AnimationType
 {
-	int[] getFaceColors1();
-
-	int[] getFaceColors2();
-
-	int[] getFaceColors3();
-
-	int getSceneId();
-	void setSceneId(int sceneId);
-
-	int getBufferOffset();
-	void setBufferOffset(int bufferOffset);
-
-	int getUvBufferOffset();
-	void setUvBufferOffset(int bufferOffset);
-
-	int getBottomY();
-
-	void calculateBoundsCylinder();
-
-	byte[] getFaceRenderPriorities();
-
-	int getRadius();
-	int getDiameter();
 
 	/**
-	 * @see #getAABB(int)
+	 * <p>
+	 * Animations of this type advance their frame ID when it surpasses the current frame length.
+	 * The frame ID is determined by the aggregate sum of frames rendered.
+	 * </p>
+	 * e.g. [1, 2, 3] specifies that client ticks map to the following animation frames: [0, 1, 1, 2, 2, 2].
 	 */
-	@Deprecated
-	void calculateExtreme(int orientation);
+	VARIABLE_FRAME_LENGTH,
 
-	@Nonnull
-	AABB getAABB(int orientation);
+	/**
+	 * Display frame animations simply map client ticks to frame IDs, and may return the same results for different frame IDs.
+	 */
+	DISPLAY_FRAME_INDEXED
 
-	int getXYZMag();
-	boolean isClickable();
-
-	int[] getVertexNormalsX();
-	int[] getVertexNormalsY();
-	int[] getVertexNormalsZ();
-
-	byte getOverrideAmount();
-	byte getOverrideHue();
-	byte getOverrideSaturation();
-	byte getOverrideLuminance();
-
-	byte[] getTextureFaces();
-
-	int[] getTexIndices1();
-	int[] getTexIndices2();
-	int[] getTexIndices3();
 }

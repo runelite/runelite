@@ -75,24 +75,4 @@ public interface ModelData extends Mesh<ModelData>, Renderable
 	 */
 	ModelData shallowCopy();
 
-	/**
-	 * Clones {@link #getVerticesX()}, {@link #getVerticesY()}, and {@link #getVerticesZ()} so
-	 * they can be safely mutated
-	 */
-	ModelData cloneVertices();
-
-	/**
-	 * Clones {@link #getFaceColors()} so they can be safely mutated
-	 */
-	ModelData cloneColors();
-
-	/**
-	 * Clones {@link #getFaceTextures()} so they can be safely mutated
-	 */
-	ModelData cloneTextures();
-
-	/**
-	 * Clones {@link #getFaceTransparencies()} so they can be safely mutated
-	 */
-	ModelData cloneTransparencies();
 }
