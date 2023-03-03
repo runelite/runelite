@@ -29,7 +29,7 @@ import javax.annotation.Nonnull;
 /**
  * Represents the model of an object.
  */
-public interface Model extends Mesh, Renderable
+public interface Model extends Mesh<Model>, Renderable
 {
 	int[] getFaceColors1();
 
