@@ -28,7 +28,7 @@ package net.runelite.client.plugins.questlist;
 import com.google.common.base.Strings;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.DBTableID;
+import net.runelite.api.dbtable.DBTableID;
 import net.runelite.api.ScriptID;
 import net.runelite.api.SoundEffectID;
 import net.runelite.api.SpriteID;

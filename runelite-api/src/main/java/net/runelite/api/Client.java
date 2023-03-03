@@ -41,6 +41,7 @@ import net.runelite.api.clan.ClanID;
 import net.runelite.api.clan.ClanSettings;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.dbtable.DBRowConfig;
 import net.runelite.api.hooks.Callbacks;
 import net.runelite.api.hooks.DrawCallbacks;
 import net.runelite.api.vars.AccountType;
@@ -1035,6 +1036,8 @@ public interface Client extends OAuthApi, GameEngine
 	 * Gets a entry out of a DBTable Row
 	 */
 	Object getDBTableField(int rowID, int column, int tupleIndex, int fieldIndex);
+
+	DBRowConfig getDBRowConfig(int rowID);
 
 	/**
 	 * Get a map element config by id
