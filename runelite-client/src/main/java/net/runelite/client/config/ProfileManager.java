@@ -85,7 +85,7 @@ public class ProfileManager
 		{
 			try (FileInputStream in = new FileInputStream(PROFILES))
 			{
-				return gson.fromJson(new InputStreamReader(in), Profiles.class)
+				return gson.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), Profiles.class)
 					.getProfiles();
 			}
 			catch (FileNotFoundException ex)

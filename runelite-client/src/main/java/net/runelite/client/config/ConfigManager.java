@@ -81,6 +81,7 @@ import net.runelite.client.events.RuneScapeProfileChanged;
 import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
 import net.runelite.client.util.ColorUtil;
+import net.runelite.client.util.RunnableExceptionLogger;
 import net.runelite.http.api.config.ConfigPatch;
 import net.runelite.http.api.config.ConfigPatchResult;
 import net.runelite.http.api.config.Configuration;
@@ -149,7 +150,7 @@ public class ConfigManager
 		this.profileManager = profileManager;
 		this.sessionManager = sessionManager;
 
-		scheduledExecutorService.scheduleWithFixedDelay(this::sendConfig, 30, 5 * 60, TimeUnit.SECONDS);
+		scheduledExecutorService.scheduleWithFixedDelay(RunnableExceptionLogger.wrap(this::sendConfig), 30 + (int) (5 * 60 * Math.random()), 5 * 60, TimeUnit.SECONDS);
 	}
 
 	public void switchProfile(ConfigProfile newProfile)
@@ -431,6 +432,7 @@ public class ConfigManager
 				if (profiles != null)
 				{
 					remoteProfiles = profiles;
+					mergeRemoteProfiles(remoteProfiles);
 				}
 			}
 			catch (IOException ex)
@@ -438,8 +440,6 @@ public class ConfigManager
 				log.error("error loading remote profiles", ex);
 			}
 		}
-
-		mergeRemoteProfiles(remoteProfiles);
 
 		migrate();
 
@@ -555,6 +555,31 @@ public class ConfigManager
 					log.info("Using remote profile {} as the active profile", profile.getName());
 					profile.setActive(true);
 				}
+			}
+
+			outer2:
+			for (ConfigProfile localProfile : lock.getProfiles())
+			{
+				for (Profile remoteProfile : remoteProfiles)
+				{
+					if (localProfile.getId() == remoteProfile.getId())
+					{
+						continue outer2;
+					}
+				}
+
+				log.debug("Found local profile {}", localProfile);
+
+				if (!localProfile.isSync() || localProfile.isInternal())
+				{
+					continue;
+				}
+
+				log.warn("Lost remote profile for '{}'", localProfile.getName());
+				// convert the profile to a non-synced profile
+				localProfile.setSync(false);
+				localProfile.setRev(-1);
+				lock.dirty();
 			}
 		}
 	}

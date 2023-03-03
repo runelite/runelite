@@ -28,9 +28,12 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.LayoutManager;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.dnd.DragSource;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.JLayeredPane;
 import javax.swing.SwingUtilities;
@@ -44,6 +47,7 @@ public class DragAndDropReorderPane extends JLayeredPane
 	private Component draggingComponent;
 	private int dragYOffset = 0;
 	private int dragIndex = -1;
+	private final List<DragListener> dragListeners = new ArrayList<>(0);
 
 	public DragAndDropReorderPane()
 	{
@@ -64,6 +68,16 @@ public class DragAndDropReorderPane extends JLayeredPane
 		super.setLayout(layoutManager);
 	}
 
+	public void addDragListener(DragListener dragListener)
+	{
+		dragListeners.add(dragListener);
+	}
+
+	public void removeDragListener(DragListener dragListener)
+	{
+		dragListeners.remove(dragListener);
+	}
+
 	private void startDragging(Point point)
 	{
 		draggingComponent = getDefaultLayerComponentAt(dragStartPoint);
@@ -82,17 +96,33 @@ public class DragAndDropReorderPane extends JLayeredPane
 	{
 		moveDraggingComponent(point);
 
-		// reorder components overlapping with the dragging components mid-point
-		Point draggingComponentMidPoint = SwingUtilities.convertPoint(
-			draggingComponent,
-			new Point(draggingComponent.getWidth() / 2, draggingComponent.getHeight() / 2),
-			this
-		);
-		Component component = getDefaultLayerComponentAt(draggingComponentMidPoint);
+		// reorder components
+		Component component = getIntersectingComponent(draggingComponent.getBounds());
 		if (component != null)
 		{
-			int index = getPosition(component);
-			dragIndex = index < dragIndex ? index : index + 1;
+			assert component != draggingComponent;
+
+			final int targetMidY = component.getY() + component.getHeight() / 2;
+			final int index = getPosition(component);
+			final boolean dragUp = index < dragIndex; // if the target component has a lower y value
+
+			// require the edge of the dragged component to be past the midpoint of the target
+			int newIndex;
+			if (dragUp && draggingComponent.getY() < targetMidY)
+			{
+				newIndex = index;
+			}
+			else if (!dragUp && draggingComponent.getY() + draggingComponent.getHeight() > targetMidY)
+			{
+				newIndex = index + 1;
+			}
+			else
+			{
+				return;
+			}
+
+			assert newIndex != dragIndex;
+			dragIndex = newIndex;
 			revalidate();
 		}
 	}
@@ -101,11 +131,15 @@ public class DragAndDropReorderPane extends JLayeredPane
 	{
 		if (draggingComponent != null)
 		{
+			Component draggedComponent = draggingComponent;
+
 			setLayer(draggingComponent, DEFAULT_LAYER, dragIndex);
 			draggingComponent = null;
 			dragYOffset = 0;
 			dragIndex = -1;
 			revalidate();
+
+			dragListeners.forEach(dl -> dl.onDrag(draggedComponent));
 		}
 		dragStartPoint = null;
 	}
@@ -133,6 +167,28 @@ public class DragAndDropReorderPane extends JLayeredPane
 		return null;
 	}
 
+	private Component getIntersectingComponent(Rectangle bounds)
+	{
+		for (Component component : getComponentsInLayer(DEFAULT_LAYER))
+		{
+			if (bounds.intersects(component.getBounds()))
+			{
+				return component;
+			}
+		}
+		return null;
+	}
+
+	@FunctionalInterface
+	public interface DragListener
+	{
+		/**
+		 * Called after a component has been dragged
+		 * @param component the component
+		 */
+		void onDrag(Component component);
+	}
+
 	private class DragAndDropReorderLayoutManager extends BoxLayout
 	{
 		private DragAndDropReorderLayoutManager()
@@ -148,7 +204,12 @@ public class DragAndDropReorderPane extends JLayeredPane
 				// temporarily move the dragging component to the default layer for correct layout calculation
 				Point location = draggingComponent.getLocation();
 				setLayer(draggingComponent, DEFAULT_LAYER, dragIndex);
+
+				// Without revalidating before this temporary layout, Swing will cause draggingComponent to take on the
+				// size of whatever component is present at dragIndex.
+				revalidate();
 				super.layoutContainer(target);
+
 				setLayer(draggingComponent, DRAG_LAYER);
 				draggingComponent.setLocation(location);
 			}

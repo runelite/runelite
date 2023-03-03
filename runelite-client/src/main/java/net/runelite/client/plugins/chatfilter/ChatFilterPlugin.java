@@ -31,6 +31,7 @@ import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -94,8 +95,8 @@ public class ChatFilterPlugin extends Plugin
 	);
 
 	private final CharMatcher jagexPrintableCharMatcher = Text.JAGEX_PRINTABLE_CHAR_MATCHER;
-	private final List<Pattern> filteredPatterns = new ArrayList<>();
-	private final List<Pattern> filteredNamePatterns = new ArrayList<>();
+	private List<Pattern> filteredPatterns = Collections.emptyList();
+	private List<Pattern> filteredNamePatterns = Collections.emptyList();
 
 	private static class Duplicate
 	{
@@ -136,8 +137,8 @@ public class ChatFilterPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		filteredPatterns.clear();
-		duplicateChatCache.clear();
+		filteredPatterns = Collections.emptyList();
+		filteredNamePatterns = Collections.emptyList();
 		client.refreshChat();
 	}
 
@@ -375,25 +376,28 @@ public class ChatFilterPlugin extends Plugin
 
 	void updateFilteredPatterns()
 	{
-		filteredPatterns.clear();
-		filteredNamePatterns.clear();
+		List<Pattern> patterns = new ArrayList<>();
+		List<Pattern> namePatterns = new ArrayList<>();
 
 		Text.fromCSV(config.filteredWords()).stream()
 			.map(this::stripAccents)
 			.map(s -> Pattern.compile(Pattern.quote(s), Pattern.CASE_INSENSITIVE))
-			.forEach(filteredPatterns::add);
+			.forEach(patterns::add);
 
 		NEWLINE_SPLITTER.splitToList(config.filteredRegex()).stream()
 			.map(this::stripAccents)
 			.map(ChatFilterPlugin::compilePattern)
 			.filter(Objects::nonNull)
-			.forEach(filteredPatterns::add);
+			.forEach(patterns::add);
 
 		NEWLINE_SPLITTER.splitToList(config.filteredNames()).stream()
 			.map(this::stripAccents)
 			.map(ChatFilterPlugin::compilePattern)
 			.filter(Objects::nonNull)
-			.forEach(filteredNamePatterns::add);
+			.forEach(namePatterns::add);
+
+		filteredPatterns = patterns;
+		filteredNamePatterns = namePatterns;
 	}
 
 	private String stripAccents(String input)
