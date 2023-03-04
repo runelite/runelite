@@ -197,6 +197,7 @@ public class ItemStatEffectTest
 		assertEquals(7, skillChange(Skill.PRAYER, 50, 40, ancientBrew));
 		assertEquals(0, skillChange(Skill.PRAYER, 1, 1, ancientBrew));
 		assertEquals(1, skillChange(Skill.PRAYER, 1, 0, ancientBrew));
+		assertEquals(0, skillChange(Skill.PRAYER, 99, 125, ancientBrew));
 	}
 
 	@Test

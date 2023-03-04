@@ -56,6 +56,11 @@ public class CappedStatBoost extends StatBoost
 			return delta;
 		}
 
+		if (current > max + cap)
+		{
+			return 0;
+		}
+
 		return max + cap - current;
 	}
 
