@@ -209,8 +209,9 @@ void insert_dfs(__local struct shared_data *shared, uint localId, struct modelin
 
 void sort_and_insert(
   __local struct shared_data *shared,
-  __global const float4 *uv,
-  __global const float4 *tempuv,
+  __constant struct uniform *uni,
+  __global const float4 *texb,
+  __global const float4 *temptexb,
   __global int4 *vout,
   __global float4 *uvout,
   uint localId, struct modelinfo minfo, int thisPriority, int thisDistance, int4 thisrvA, int4 thisrvB, int4 thisrvC) {
@@ -219,7 +220,7 @@ void sort_and_insert(
 
   if (localId < size) {
     int outOffset = minfo.idx;
-    int uvOffset = minfo.uvOffset;
+    int toffset = minfo.toffset;
     int flags = minfo.flags;
     int4 pos = (int4)(minfo.x, minfo.y, minfo.z, 0);
 
@@ -250,18 +251,41 @@ void sort_and_insert(
     vout[outOffset + myOffset * 3 + 1] = pos + thisrvB;
     vout[outOffset + myOffset * 3 + 2] = pos + thisrvC;
 
-    if (uvOffset < 0) {
-      uvout[outOffset + myOffset * 3]     = (float4)(0, 0, 0, 0);
+    if (toffset < 0) {
+      uvout[outOffset + myOffset * 3    ] = (float4)(0, 0, 0, 0);
       uvout[outOffset + myOffset * 3 + 1] = (float4)(0, 0, 0, 0);
       uvout[outOffset + myOffset * 3 + 2] = (float4)(0, 0, 0, 0);
-    } else if (flags >= 0) {
-      uvout[outOffset + myOffset * 3]     = tempuv[uvOffset + localId * 3];
-      uvout[outOffset + myOffset * 3 + 1] = tempuv[uvOffset + localId * 3 + 1];
-      uvout[outOffset + myOffset * 3 + 2] = tempuv[uvOffset + localId * 3 + 2];
     } else {
-      uvout[outOffset + myOffset * 3]     = uv[uvOffset + localId * 3];
-      uvout[outOffset + myOffset * 3 + 1] = uv[uvOffset + localId * 3 + 1];
-      uvout[outOffset + myOffset * 3 + 2] = uv[uvOffset + localId * 3 + 2];
+      float4 texA, texB, texC;
+      float2 uv1, uv2, uv3;
+
+      if (flags >= 0) {
+        texA = temptexb[toffset + localId * 3    ];
+        texB = temptexb[toffset + localId * 3 + 1];
+        texC = temptexb[toffset + localId * 3 + 2];
+      } else {
+        texA = texb[toffset + localId * 3    ];
+        texB = texb[toffset + localId * 3 + 1];
+        texC = texb[toffset + localId * 3 + 2];
+      }
+
+      int orientation = flags & 0x7ff;
+
+      // rotate back to original orientation because the tex triangles
+      // are not rotated
+      int4 f1 = rotate_vertex(uni, thisrvA, 2047 - orientation);
+      int4 f2 = rotate_vertex(uni, thisrvB, 2047 - orientation);
+      int4 f3 = rotate_vertex(uni, thisrvC, 2047 - orientation);
+
+      compute_uv(
+        convert_float3(f1.xyz), convert_float3(f2.xyz), convert_float3(f3.xyz),
+        texA.yzw, texB.yzw, texC.yzw,
+        &uv1, &uv2, &uv3
+      );
+
+      uvout[outOffset + myOffset * 3    ] = (float4)(texA.x, uv1.xy, 0);
+      uvout[outOffset + myOffset * 3 + 1] = (float4)(texB.x, uv2.xy, 0);
+      uvout[outOffset + myOffset * 3 + 2] = (float4)(texC.x, uv3.xy, 0);
     }
   }
 }

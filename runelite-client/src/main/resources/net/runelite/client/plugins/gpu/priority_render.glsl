@@ -205,7 +205,7 @@ void sort_and_insert(uint localId, modelinfo minfo, int thisPriority, int thisDi
 
   if (localId < size) {
     int outOffset = minfo.idx;
-    int uvOffset = minfo.uvOffset;
+    int toffset = minfo.toffset;
     int flags = minfo.flags;
     ivec4 pos = ivec4(minfo.x, minfo.y, minfo.z, 0);
 
@@ -236,18 +236,41 @@ void sort_and_insert(uint localId, modelinfo minfo, int thisPriority, int thisDi
     vout[outOffset + myOffset * 3 + 1] = pos + thisrvB;
     vout[outOffset + myOffset * 3 + 2] = pos + thisrvC;
 
-    if (uvOffset < 0) {
-      uvout[outOffset + myOffset * 3]     = vec4(0, 0, 0, 0);
+    if (toffset < 0) {
+      uvout[outOffset + myOffset * 3    ] = vec4(0, 0, 0, 0);
       uvout[outOffset + myOffset * 3 + 1] = vec4(0, 0, 0, 0);
       uvout[outOffset + myOffset * 3 + 2] = vec4(0, 0, 0, 0);
-    } else if (flags >= 0) {
-      uvout[outOffset + myOffset * 3]     = tempuv[uvOffset + localId * 3];
-      uvout[outOffset + myOffset * 3 + 1] = tempuv[uvOffset + localId * 3 + 1];
-      uvout[outOffset + myOffset * 3 + 2] = tempuv[uvOffset + localId * 3 + 2];
     } else {
-      uvout[outOffset + myOffset * 3]     = uv[uvOffset + localId * 3];
-      uvout[outOffset + myOffset * 3 + 1] = uv[uvOffset + localId * 3 + 1];
-      uvout[outOffset + myOffset * 3 + 2] = uv[uvOffset + localId * 3 + 2];
+      vec4 texA, texB, texC;
+      vec2 uv1, uv2, uv3;
+
+      if (flags >= 0) {
+          texA = temptexb[toffset + localId * 3    ];
+          texB = temptexb[toffset + localId * 3 + 1];
+          texC = temptexb[toffset + localId * 3 + 2];
+      } else {
+          texA = texb[toffset + localId * 3    ];
+          texB = texb[toffset + localId * 3 + 1];
+          texC = texb[toffset + localId * 3 + 2];
+      }
+
+      int orientation = flags & 0x7ff;
+
+      // rotate back to original orientation because the tex triangles
+      // are not rotated
+      ivec4 f1 = rotate(thisrvA, 2047 - orientation);
+      ivec4 f2 = rotate(thisrvB, 2047 - orientation);
+      ivec4 f3 = rotate(thisrvC, 2047 - orientation);
+
+      compute_uv(
+        f1.xyz, f2.xyz, f3.xyz,
+        texA.yzw, texB.yzw, texC.yzw,
+        uv1, uv2, uv3
+      );
+
+      uvout[outOffset + myOffset * 3    ] = vec4(texA.x, uv1.xy, 0);
+      uvout[outOffset + myOffset * 3 + 1] = vec4(texB.x, uv2.xy, 0);
+      uvout[outOffset + myOffset * 3 + 2] = vec4(texC.x, uv3.xy, 0);
     }
   }
 }

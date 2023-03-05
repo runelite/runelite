@@ -40,6 +40,7 @@ shared int dfs[THREAD_COUNT * FACES_PER_THREAD]; // packed face id and distance
 layout(local_size_x = THREAD_COUNT) in;
 
 #include common.glsl
+#include uv.glsl
 #include priority_render.glsl
 
 void main() {

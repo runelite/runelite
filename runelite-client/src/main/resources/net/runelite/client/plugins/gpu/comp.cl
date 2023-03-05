@@ -27,6 +27,7 @@
 
 #include cl_types.cl
 #include common.cl
+#include uv.cl
 #include priority_render.cl
 
 __kernel
@@ -36,8 +37,8 @@ void computeLarge(
   __global const struct modelinfo *ol,
   __global const int4 *vb,
   __global const int4 *tempvb,
-  __global const float4 *uv,
-  __global const float4 *tempuv,
+  __global const float4 *texb,
+  __global const float4 *temptexb,
   __global int4 *vout,
   __global float4 *uvout,
   __constant struct uniform *uni) {
@@ -91,6 +92,6 @@ void computeLarge(
   barrier(CLK_LOCAL_MEM_FENCE);
 
   for (int i = 0; i < FACE_COUNT; i++) {
-    sort_and_insert(shared, uv, tempuv, vout, uvout, localId + i, minfo, prioAdj[i], dis[i], v1[i], v2[i], v3[i]);
+    sort_and_insert(shared, uni, texb, temptexb, vout, uvout, localId + i, minfo, prioAdj[i], dis[i], v1[i], v2[i], v3[i]);
   }
 }

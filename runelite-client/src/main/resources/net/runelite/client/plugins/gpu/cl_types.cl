@@ -44,11 +44,11 @@ struct shared_data {
 };
 
 struct modelinfo {
-  int offset;   // offset into buffer
-  int uvOffset; // offset into uv buffer
+  int offset;   // offset into vertex buffer
+  int toffset;  // offset into texture buffer
   int size;     // length in faces
   int idx;      // write idx in target buffer
-  int flags;    // radius, orientation
+  int flags;    // buffer, radius, orientation
   int x;        // scene position x
   int y;        // scene position y
   int z;        // scene position z

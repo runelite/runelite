@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2023, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,59 +22,37 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.gpu;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.FloatBuffer;
+void compute_uv(
+      vec3   f1,    vec3   f2,     vec3   f3,
+      vec3   t1,    vec3   t2,     vec3   t3,
+  out vec2  uv1, out vec2 uv2, out vec2  uv3
+) {
+    vec3 v1 = t1;
+    vec3 v2 = t2 - v1;
+    vec3 v3 = t3 - v1;
 
-class GpuFloatBuffer
-{
-	private FloatBuffer buffer = allocateDirect(65536);
+    vec3 v4 = f1 - v1;
+    vec3 v5 = f2 - v1;
+    vec3 v6 = f3 - v1;
 
-	void put(float s, float t, float p, float q)
-	{
-		buffer.put(s).put(t).put(p).put(q);
-	}
+    vec3 v7 = cross(v2, v3);
 
-	void flip()
-	{
-		buffer.flip();
-	}
+    vec3 v8 = cross(v3, v7);
+    float d = 1.0f / dot(v8, v2);
 
-	void clear()
-	{
-		buffer.clear();
-	}
+    float u0 = dot(v8, v4) * d;
+    float u1 = dot(v8, v5) * d;
+    float u2 = dot(v8, v6) * d;
 
-	void ensureCapacity(int size)
-	{
-		int capacity = buffer.capacity();
-		final int position = buffer.position();
-		if ((capacity - position) < size)
-		{
-			do
-			{
-				capacity *= 2;
-			}
-			while ((capacity - position) < size);
+    v8 = cross(v2, v7);
+    d = 1.0f / dot(v8, v3);
 
-			FloatBuffer newB = allocateDirect(capacity);
-			buffer.flip();
-			newB.put(buffer);
-			buffer = newB;
-		}
-	}
+    float v0_ = dot(v8, v4) * d;
+    float v1_ = dot(v8, v5) * d;
+    float v2_ = dot(v8, v6) * d;
 
-	FloatBuffer getBuffer()
-	{
-		return buffer;
-	}
-
-	static FloatBuffer allocateDirect(int size)
-	{
-		return ByteBuffer.allocateDirect(size * Float.BYTES)
-			.order(ByteOrder.nativeOrder())
-			.asFloatBuffer();
-	}
+    uv1 = vec2(u0, v0_);
+    uv2 = vec2(u1, v1_);
+    uv3 = vec2(u2, v2_);
 }
