@@ -186,7 +186,7 @@ public class WikiPlugin extends Plugin
 		icon.setOriginalHeight(14);
 		icon.setTargetVerb("Lookup");
 		icon.setName("Wiki");
-		icon.setClickMask(WidgetConfig.USE_GROUND_ITEM | WidgetConfig.USE_ITEM | WidgetConfig.USE_NPC
+		icon.setClickMask(WidgetConfig.USE_GROUND_ITEM | WidgetConfig.USE_NPC
 			| WidgetConfig.USE_OBJECT | WidgetConfig.USE_WIDGET);
 		icon.setNoClickThrough(true);
 		icon.setOnTargetEnterListener((JavaScriptCallback) ev ->
@@ -267,7 +267,6 @@ public class WikiPlugin extends Plugin
 					break optarget;
 				case CANCEL:
 					return;
-				case WIDGET_USE_ON_ITEM:
 				case WIDGET_TARGET_ON_GROUND_ITEM:
 				{
 					type = "item";
