@@ -127,6 +127,7 @@
 								<exclude>net/runelite/api/Varbits.class</exclude>
 								<exclude>net/runelite/api/VarClientInt.class</exclude>
 								<exclude>net/runelite/api/VarClientStr.class</exclude>
+								<exclude>net/runelite/api/VarPlayer.class</exclude>
 							</excludes>
 						</configuration>
 					</execution>

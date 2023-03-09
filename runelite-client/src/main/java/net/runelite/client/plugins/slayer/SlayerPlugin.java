@@ -322,9 +322,9 @@ public class SlayerPlugin extends Plugin
 	{
 		int varpId = varbitChanged.getVarpId();
 		int varbitId = varbitChanged.getVarbitId();
-		if (varpId == VarPlayer.SLAYER_TASK_SIZE.getId()
-			|| varpId == VarPlayer.SLAYER_TASK_LOCATION.getId()
-			|| varpId == VarPlayer.SLAYER_TASK_CREATURE.getId())
+		if (varpId == VarPlayer.SLAYER_TASK_SIZE
+			|| varpId == VarPlayer.SLAYER_TASK_LOCATION
+			|| varpId == VarPlayer.SLAYER_TASK_CREATURE)
 		{
 			clientThread.invokeLater(this::updateTask);
 		}

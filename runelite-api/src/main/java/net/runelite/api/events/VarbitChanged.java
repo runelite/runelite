@@ -28,6 +28,7 @@ package net.runelite.api.events;
 
 import lombok.Data;
 import net.runelite.api.annotations.Varbit;
+import net.runelite.api.annotations.Varp;
 
 /**
  * An event when a varbit or varplayer has changed.
@@ -44,6 +45,7 @@ public class VarbitChanged
 	 * The id of the varp that was changed.
 	 * For a varplayer, this is the varplayer id.
 	 */
+	@Varp
 	private int varpId = -1;
 
 	/**
