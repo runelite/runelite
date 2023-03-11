@@ -24,28 +24,48 @@
  */
 
 void compute_uv(
-          float3   f1,    float3   f2,     float3   f3,
-          float3   t1,    float3   t2,     float3   t3,
+          float3    cameraPos,
+          float3    f1,    float3   f2,     float3   f3,
+          float3    t1,    float3   t2,     float3   t3,
 /* out */ float2  *uv1,   float2  *uv2,    float2  *uv3
 ) {
     float3 v1 = t1;
     float3 v2 = t2 - v1;
     float3 v3 = t3 - v1;
 
+    float3 texNormal = cross(v2, v3);
+    float3 vertexToCamera;
+
+    // Set the tri vertex position to the intersection point on the tex tri plane of the tri vertex
+    // along the vector from the tri vertex to the camera.
+    // Point of intersection p, from https://en.wikipedia.org/wiki/Line%E2%80%93plane_intersection#Algebraic_form:
+    // d = ((p_0 - l_0) ⋅ n) / (l ⋅ n)
+    // p = l_0 + l * d
+    // where p_0 = point on tex tri plane
+    //       l_0 = point being projected
+    //         n = normal of tex tri plane
+    //         l = vector from vertex to camera
+    vertexToCamera = cameraPos - f1;
+    f1 += vertexToCamera * dot(t1 - f1, texNormal) / dot(vertexToCamera, texNormal);
+
+    vertexToCamera = cameraPos - f2;
+    f2 += vertexToCamera * dot(t2 - f2, texNormal) / dot(vertexToCamera, texNormal);
+
+    vertexToCamera = cameraPos - f3;
+    f3 += vertexToCamera * dot(t3 - f3, texNormal) / dot(vertexToCamera, texNormal);
+
     float3 v4 = f1 - v1;
     float3 v5 = f2 - v1;
     float3 v6 = f3 - v1;
 
-    float3 v7 = cross(v2, v3);
-
-    float3 v8 = cross(v3, v7);
+    float3 v8 = cross(v3, texNormal);
     float d = 1.0f / dot(v8, v2);
 
     float u0 = dot(v8, v4) * d;
     float u1 = dot(v8, v5) * d;
     float u2 = dot(v8, v6) * d;
 
-    v8 = cross(v2, v7);
+    v8 = cross(v2, texNormal);
     d = 1.0f / dot(v8, v3);
 
     float v0_ = dot(v8, v4) * d;
