@@ -77,6 +77,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ChatInput;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.NpcUtil;
 import net.runelite.client.game.npcoverlay.HighlightedNpc;
 import net.runelite.client.game.npcoverlay.NpcOverlayService;
 import net.runelite.client.plugins.Plugin;
@@ -145,6 +146,9 @@ public class SlayerPlugin extends Plugin
 	@Inject
 	private NpcOverlayService npcOverlayService;
 
+	@Inject
+	private NpcUtil npcUtil;
+
 	@Getter(AccessLevel.PACKAGE)
 	private final List<NPC> targets = new ArrayList<>();
 
@@ -180,13 +184,20 @@ public class SlayerPlugin extends Plugin
 		if ((config.highlightHull() || config.highlightTile() || config.highlightOutline()) && targets.contains(n))
 		{
 			Color color = config.getTargetColor();
+			Color fillColor = config.targetFillColor();
 			return HighlightedNpc.builder()
 				.npc(n)
 				.highlightColor(color)
-				.fillColor(ColorUtil.colorWithAlpha(color, color.getAlpha() / 12))
+				.fillColor(fillColor)
 				.hull(config.highlightHull())
 				.tile(config.highlightTile())
+				.trueTile(config.highlightTrueTile())
+				.swTile(config.highlightSouthWestTile())
+				.swTrueTile(config.highlightSouthWestTrueTile())
 				.outline(config.highlightOutline())
+				.borderWidth((float) config.borderWidth())
+				.outlineFeather(config.outlineFeather())
+				.render(npc -> !npcUtil.isDying(npc) || !config.ignoreDeadTargets())
 				.build();
 
 		}
@@ -500,8 +511,8 @@ public class SlayerPlugin extends Plugin
 			final Matcher targetMatcher = target.matcher(name);
 			if (targetMatcher.find()
 				&& (ArrayUtils.contains(composition.getActions(), "Attack")
-					// Pick action is for zygomite-fungi
-					|| ArrayUtils.contains(composition.getActions(), "Pick")))
+				// Pick action is for zygomite-fungi
+				|| ArrayUtils.contains(composition.getActions(), "Pick")))
 			{
 				return true;
 			}

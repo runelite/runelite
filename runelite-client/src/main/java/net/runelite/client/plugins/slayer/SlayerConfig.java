@@ -30,6 +30,8 @@ import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
+import net.runelite.client.config.Range;
 import net.runelite.client.config.Units;
 
 @ConfigGroup(SlayerConfig.GROUP_NAME)
@@ -44,6 +46,151 @@ public interface SlayerConfig extends Config
 	String TASK_LOC_KEY = "taskLocation";
 	String STREAK_KEY = "streak";
 	String POINTS_KEY = "points";
+
+	@ConfigSection(
+		name = "Render style",
+		description = "The render style of NPC highlighting",
+		position = 0
+	)
+	String renderStyleSection = "renderStyleSection";
+
+	@ConfigItem(
+		position = 0,
+		keyName = "highlightHull",
+		name = "Highlight hull",
+		description = "Configures whether or not NPC should be highlighted by hull",
+		section = renderStyleSection
+	)
+	default boolean highlightHull()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 1,
+		keyName = "highlightTile",
+		name = "Highlight tile",
+		description = "Configures whether or not NPC should be highlighted by tile",
+		section = renderStyleSection
+	)
+	default boolean highlightTile()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 2,
+		keyName = "highlightTrueTile",
+		name = "Highlight true tile",
+		description = "Configures whether or not NPC should be highlighted by true tile",
+		section = renderStyleSection
+	)
+	default boolean highlightTrueTile()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 3,
+		keyName = "highlightSouthWestTile",
+		name = "Highlight south west tile",
+		description = "Configures whether or not NPC should be highlighted by south western tile",
+		section = renderStyleSection
+	)
+	default boolean highlightSouthWestTile()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 4,
+		keyName = "highlightSouthWestTrueTile",
+		name = "Highlight south west true tile",
+		description = "Configures whether or not NPC should be highlighted by south western true tile",
+		section = renderStyleSection
+	)
+	default boolean highlightSouthWestTrueTile()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 5,
+		keyName = "highlightOutline",
+		name = "Highlight outline",
+		description = "Configures whether or not the model of the NPC should be highlighted by outline",
+		section = renderStyleSection
+	)
+	default boolean highlightOutline()
+	{
+		return false;
+	}
+
+	@Alpha
+	@ConfigItem(
+		position = 10,
+		keyName = "targetColor",
+		name = "Target color",
+		description = "Color of the highlighted targets",
+		section = renderStyleSection
+	)
+	default Color getTargetColor()
+	{
+		return Color.RED;
+	}
+
+	@Alpha
+	@ConfigItem(
+		position = 11,
+		keyName = "targetFillColor",
+		name = "Target Fill Color",
+		description = "Color of the highlighted targets fill",
+		section = renderStyleSection
+	)
+	default Color targetFillColor()
+	{
+		return new Color(0, 255, 255, 20);
+	}
+
+	@ConfigItem(
+		position = 12,
+		keyName = "borderWidth",
+		name = "Border Width",
+		description = "Width of the highlighted NPC border",
+		section = renderStyleSection
+	)
+	default double borderWidth()
+	{
+		return 2;
+	}
+
+	@ConfigItem(
+		position = 13,
+		keyName = "outlineFeather",
+		name = "Outline feather",
+		description = "Specify between 0-4 how much of the model outline should be faded",
+		section = renderStyleSection
+	)
+	@Range(
+		min = 0,
+		max = 4
+	)
+	default int outlineFeather()
+	{
+		return 0;
+	}
+
+	@ConfigItem(
+		position = 14,
+		keyName = "ignoreDeadTargets",
+		name = "Ignore dead targets",
+		description = "Prevents highlighting targets after they are dead",
+		section = renderStyleSection
+	)
+	default boolean ignoreDeadTargets()
+	{
+		return true;
+	}
 
 	@ConfigItem(
 		position = 1,
@@ -92,51 +239,6 @@ public interface SlayerConfig extends Config
 
 	@ConfigItem(
 		position = 5,
-		keyName = "highlightHull",
-		name = "Highlight hull",
-		description = "Configures whether the NPC hull should be highlighted"
-	)
-	default boolean highlightHull()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		position = 6,
-		keyName = "highlightTile",
-		name = "Highlight tile",
-		description = "Configures whether the NPC tile should be highlighted"
-	)
-	default boolean highlightTile()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		position = 7,
-		keyName = "highlightOutline",
-		name = "Highlight outline",
-		description = "Configures whether or not the NPC outline should be highlighted"
-	)
-	default boolean highlightOutline()
-	{
-		return false;
-	}
-
-	@Alpha
-	@ConfigItem(
-		position = 8,
-		keyName = "targetColor",
-		name = "Target color",
-		description = "Color of the highlighted targets"
-	)
-	default Color getTargetColor()
-	{
-		return Color.RED;
-	}
-
-	@ConfigItem(
-		position = 9,
 		keyName = "weaknessPrompt",
 		name = "Show Monster Weakness",
 		description = "Show an overlay on a monster when it is weak enough to finish off (Only Lizards, Gargoyles & Rockslugs)"
@@ -147,7 +249,7 @@ public interface SlayerConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 10,
+		position = 6,
 		keyName = "taskCommand",
 		name = "Task Command",
 		description = "Configures whether the slayer task command is enabled<br> !task"
