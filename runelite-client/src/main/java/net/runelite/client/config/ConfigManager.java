@@ -275,10 +275,18 @@ public class ConfigManager
 	{
 		configClient.setUuid(null);
 
-		// remove the remote profiles
+		// remove the remote profiles if they are not active.
+		// if the active profile is removed there will be no active profile.
 		try (ProfileManager.Lock lock = profileManager.lock())
 		{
-			lock.getProfiles().removeIf(p -> !p.isInternal() && p.isSync());
+			lock.getProfiles().removeIf(p -> !p.isInternal() && p.isSync() && p.getId() != profile.getId());
+
+			if (profile.isSync())
+			{
+				log.info("Disabling sync for: {} due to sign-out.", profile.getName());
+				profile.setSync(false);
+			}
+
 			lock.dirty();
 		}
 	}
