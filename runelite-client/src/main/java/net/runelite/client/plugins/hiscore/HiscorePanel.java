@@ -415,6 +415,7 @@ public class HiscorePanel extends PluginPanel
 			HiscoreSkillType skillType = skill == null ? HiscoreSkillType.SKILL : skill.getType();
 
 			label.setText(pad("--", skillType));
+			label.setForeground(Color.WHITE);
 			label.setToolTipText(skill == null ? "Combat" : skill.getName());
 		}
 
@@ -490,11 +491,11 @@ public class HiscorePanel extends PluginPanel
 				final long exp = s.getExperience();
 				final boolean isSkill = skill.getType() == HiscoreSkillType.SKILL;
 				long level = -1;
-				if (config.post99SkillDisplayStyle() == Post99Display.VIRTUAL_LEVELS && isSkill && exp > -1L)
+				if (config.maxedSkillsStyle() == MaxedSkillsStyle.VIRTUAL_LEVELS && isSkill && exp > -1L)
 				{
 					level = Experience.getLevelForXp((int) exp);
 				}
-				else if (config.post99SkillDisplayStyle() == Post99Display.EXPERIENCE && (isSkill || skill.getType() == HiscoreSkillType.OVERALL) && exp > -1L)
+				else if (config.maxedSkillsStyle() == MaxedSkillsStyle.SHOW_EXPERIENCE && (isSkill || skill.getType() == HiscoreSkillType.OVERALL) && exp > -1L)
 				{
 					if ((isSkill && s.getLevel() == 99) || s.getLevel() == 2277)
 					{
