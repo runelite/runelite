@@ -61,8 +61,6 @@ import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ExternalPluginsChanged;
 import net.runelite.client.events.ProfileChanged;
-import net.runelite.client.events.SessionClose;
-import net.runelite.client.events.SessionOpen;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginInstantiationException;
 import net.runelite.client.plugins.PluginManager;
@@ -123,18 +121,6 @@ public class ExternalPluginManager
 			// builtin external's don't actually have a manifest or a separate classloader...
 			pluginManager.loadPlugins(Lists.newArrayList(builtinExternals), null);
 		}
-	}
-
-	@Subscribe
-	public void onSessionOpen(SessionOpen event)
-	{
-		executor.submit(this::refreshPlugins);
-	}
-
-	@Subscribe
-	public void onSessionClose(SessionClose event)
-	{
-		executor.submit(this::refreshPlugins);
 	}
 
 	@Subscribe(
