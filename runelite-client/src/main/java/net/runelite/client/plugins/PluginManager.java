@@ -69,9 +69,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.EventBus;
-import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.PluginChanged;
-import net.runelite.client.events.ProfileChanged;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.task.ScheduledMethod;
 import net.runelite.client.task.Scheduler;
@@ -119,13 +117,7 @@ public class PluginManager
 		this.sceneTileManager = sceneTileManager;
 	}
 
-	@Subscribe
-	public void onProfileChanged(ProfileChanged profileChanged)
-	{
-		refreshPlugins();
-	}
-
-	private void refreshPlugins()
+	public void refreshPlugins()
 	{
 		loadDefaultPluginConfiguration(null);
 		SwingUtilities.invokeLater(() ->

@@ -140,7 +140,13 @@ public class ExternalPluginManager
 	@Subscribe
 	public void onProfileChanged(ProfileChanged profileChanged)
 	{
-		executor.submit(this::refreshPlugins);
+		executor.submit(() ->
+		{
+			// External plugins must be handled first during a profile change, because otherwise PluginManager may try
+			// to enable plugins that are not installed in the new profile.
+			refreshPlugins();
+			pluginManager.refreshPlugins();
+		});
 	}
 
 	private void refreshPlugins()
