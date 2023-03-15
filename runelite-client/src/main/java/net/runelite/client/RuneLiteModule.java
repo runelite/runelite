@@ -72,7 +72,6 @@ public class RuneLiteModule extends AbstractModule
 	private final boolean safeMode;
 	private final boolean disableTelemetry;
 	private final File sessionfile;
-	private final File config;
 	private final String profile;
 
 	@Override
@@ -121,7 +120,6 @@ public class RuneLiteModule extends AbstractModule
 		bindConstant().annotatedWith(Names.named("safeMode")).to(safeMode);
 		bindConstant().annotatedWith(Names.named("disableTelemetry")).to(disableTelemetry);
 		bind(File.class).annotatedWith(Names.named("sessionfile")).toInstance(sessionfile);
-		bind(File.class).annotatedWith(Names.named("config")).toInstance(config);
 		bind(String.class).annotatedWith(Names.named("profile")).toProvider(Providers.of(profile));
 		bind(ScheduledExecutorService.class).toInstance(new ExecutorServiceExceptionLogger(Executors.newSingleThreadScheduledExecutor()));
 		bind(OkHttpClient.class).toInstance(okHttpClient);
