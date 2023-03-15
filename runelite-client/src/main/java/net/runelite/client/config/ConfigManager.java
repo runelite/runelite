@@ -1219,6 +1219,7 @@ public class ConfigManager
 
 			// We just recreate it, with the same id, so that the ConfigData stays valid
 			p = lock.createProfile(profile.getName(), profile.getId());
+			p.setActive(profile.isActive());
 		}
 		else if (profile.getRev() != p.getRev())
 		{
