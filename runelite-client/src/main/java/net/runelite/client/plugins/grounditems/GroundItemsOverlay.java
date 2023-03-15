@@ -430,10 +430,7 @@ public class GroundItemsOverlay extends Overlay
 				// NMZ and the KBD lair uses the same region ID but NMZ uses planes 1-3 and KBD uses plane 0
 				if (client.getLocalPlayer().getWorldLocation().getPlane() == 0)
 				{
-					// Items in the KBD instance use the standard despawn timer
-					despawnTime = spawnTime.plus(groundItem.getLootType() == LootType.DROPPED
-						? DESPAWN_TIME_DROP
-						: DESPAWN_TIME_LOOT);
+					despawnTime = spawnTime.plus(DESPAWN_TIME_INSTANCE);
 				}
 				else
 				{
