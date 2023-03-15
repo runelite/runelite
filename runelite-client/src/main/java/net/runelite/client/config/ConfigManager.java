@@ -278,7 +278,18 @@ public class ConfigManager
 		// remove the remote profiles
 		try (ProfileManager.Lock lock = profileManager.lock())
 		{
-			lock.getProfiles().removeIf(p -> !p.isInternal() && p.isSync());
+			profile = updateProfile(lock, profile);
+			rsProfile = updateProfile(lock, rsProfile);
+
+			lock.getProfiles().removeIf(p -> p != profile && !p.isInternal() && p.isSync());
+
+			if (profile.isSync())
+			{
+				log.info("Active remote profile '{}' lost due to session close, converting to a local profile.", profile.getName());
+				profile.setSync(false);
+				profile.setRev(-1L);
+			}
+
 			lock.dirty();
 		}
 	}
