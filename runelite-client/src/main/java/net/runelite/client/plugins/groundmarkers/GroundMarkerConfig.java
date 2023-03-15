@@ -30,6 +30,7 @@ import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Range;
 
 @ConfigGroup(GroundMarkerConfig.GROUND_MARKER_CONFIG_GROUP)
 public interface GroundMarkerConfig extends Config
@@ -92,6 +93,9 @@ public interface GroundMarkerConfig extends Config
 		keyName = "fillOpacity",
 		name = "Fill Opacity",
 		description = "Opacity of the tile fill color"
+	)
+	@Range(
+		max = 255
 	)
 	default int fillOpacity()
 	{
