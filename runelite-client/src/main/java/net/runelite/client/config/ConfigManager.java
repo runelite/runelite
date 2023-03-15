@@ -483,6 +483,10 @@ public class ConfigManager
 				{
 					profile = p;
 				}
+				else if (profile == null)
+				{
+					profile = p;
+				}
 			}
 
 			if (profile != null)
