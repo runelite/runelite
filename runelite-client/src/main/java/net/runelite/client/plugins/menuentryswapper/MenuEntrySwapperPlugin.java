@@ -308,6 +308,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("value", "buy 10", () -> shiftModifier() && config.shopBuy() == BuyMode.BUY_10);
 		swap("value", "buy 50", () -> shiftModifier() && config.shopBuy() == BuyMode.BUY_50);
 
+		//Special case for NMZ reward shop
+		swap("buy-1", "buy-5", () -> shiftModifier() && config.shopBuy() == BuyMode.BUY_5);
+		swap("buy-1", "buy-10", () -> shiftModifier() && config.shopBuy() == BuyMode.BUY_10);
+		swap("buy-1", "buy-50", () -> shiftModifier() && config.shopBuy() == BuyMode.BUY_50);
+
 		swap("value", "sell 1", () -> shiftModifier() && config.shopSell() == SellMode.SELL_1);
 		swap("value", "sell 5", () -> shiftModifier() && config.shopSell() == SellMode.SELL_5);
 		swap("value", "sell 10", () -> shiftModifier() && config.shopSell() == SellMode.SELL_10);
