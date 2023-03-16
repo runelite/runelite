@@ -46,10 +46,10 @@ public interface CookingConfig extends Config
 	}
 
 	@ConfigItem(
-			position = 2,
-			keyName = "showCookingStats",
-			name = "Show Cooking session stats",
-			description = "Display the cooking session stats."
+		position = 2,
+		keyName = "showCookingStats",
+		name = "Show Cooking session stats",
+		description = "Display the cooking session stats."
 	)
 	default boolean showCookingStats()
 	{
