@@ -31,18 +31,20 @@ import lombok.Getter;
 @Getter
 enum ImplingType
 {
-	BABY("Baby"),
-	YOUNG("Young"),
-	GOURMET("Gourmet"),
-	EARTH("Earth"),
-	ESSENCE("Essence"),
-	ECLECTIC("Eclectic"),
-	NATURE("Nature"),
-	MAGPIE("Magpie"),
-	NINJA("Ninja"),
-	CRYSTAL("Crystal"),
-	DRAGON("Dragon"),
-	LUCKY("Lucky");
+	BABY("Baby", 17, 27),
+	YOUNG("Young", 22, 32),
+	GOURMET("Gourmet", 28, 38),
+	EARTH("Earth", 36, 46),
+	ESSENCE("Essence", 42, 52),
+	ECLECTIC("Eclectic", 50, 60),
+	NATURE("Nature", 58, 68),
+	MAGPIE("Magpie", 65, 75),
+	NINJA("Ninja", 74, 84),
+	CRYSTAL("Crystal", 80, 90),
+	DRAGON("Dragon", 83, 93),
+	LUCKY("Lucky", 89, 99);
 
 	private final String name;
+	private final int levelRequirement;
+	private final int bareHandedLevelRequirement;
 }

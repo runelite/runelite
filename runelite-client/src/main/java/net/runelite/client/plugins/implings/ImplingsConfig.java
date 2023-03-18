@@ -43,6 +43,13 @@ public interface ImplingsConfig extends Config
 		NOTIFY
 	}
 
+	enum ImplingNotificationLevelOverride
+	{
+		NONE,
+		BUTTERFLY_NET,
+		BAREHANDED
+	}
+
 	@ConfigSection(
 		name = "Impling Type Settings",
 		description = "Configuration for each type of impling",
@@ -382,5 +389,16 @@ public interface ImplingsConfig extends Config
 	default boolean showName()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		position = 28,
+		keyName = "notificationLevelOverride",
+		name = "Level notification override",
+		description = "Disables notifications for implings that you can't catch with the selected method."
+	)
+	default ImplingNotificationLevelOverride notificationLevelOverride()
+	{
+		return ImplingNotificationLevelOverride.NONE;
 	}
 }
