@@ -1385,12 +1385,13 @@ public class ChatCommandsPlugin extends Plugin
 
 		MessageNode messageNode = chatMessage.getMessageNode();
 		String search = message.substring(PRICE_COMMAND_STRING.length() + 1);
+		String longItemName = longItemName(search);
 
-		List<ItemPrice> results = itemManager.search(search);
+		List<ItemPrice> results = itemManager.search(longItemName);
 
 		if (!results.isEmpty())
 		{
-			ItemPrice item = retrieveFromList(results, search);
+			ItemPrice item = retrieveFromList(results, longItemName);
 
 			int itemId = item.getId();
 			int itemPrice = runeLiteConfig.useWikiItemPrices() ? itemManager.getWikiPrice(item) : item.getPrice();
@@ -1924,6 +1925,94 @@ public class ChatCommandsPlugin extends Plugin
 	{
 		private final String name;
 		private final HiscoreEndpoint endpoint;
+	}
+
+	private static String longItemName(String item)
+	{
+		switch (item.toUpperCase())
+		{
+			case "ACB":
+				return "Armadyl crossbow";
+			case "ACP":
+				return "Armadyl chestplate";
+			case "ACS":
+				return "Armadyl chainskirt";
+			case "AGS":
+				return "Armadyl godsword";
+			case "ANGUISH":
+				return "Necklace of anguish";
+			case "ARCANE":
+				return "Arcane spirit shield";
+			case "BCP":
+				return "Bandos chestplate";
+			case "BGS":
+				return "Bandos godsword";
+			case "BLADE":
+				return "Blade of saeldor (inactive)";
+			case "BOWFA":
+				return "Bow of faerdhinen (inactive)";
+			case "BP":
+			case "BLOWPIPE":
+				return "Toxic blowpipe (empty)";
+			case "BRING":
+				return "Berserker ring";
+			case "DCLAWS":
+				return "Dragon claws";
+			case "DFS":
+				return "Dragonfire shield";
+			case "DHCB":
+				return "Dragon hunter crossbow";
+			case "DHL":
+				return "Dragon hunter lance";
+			case "DWH":
+				return "Dragon warhammer";
+			case "ELY":
+				return "Elysian spirit shield";
+			case "FURY":
+				return "Amulet of fury";
+			case "KODAI":
+				return "Kodai wand";
+			case "OCCULT":
+				return "Occult necklace";
+			case "PEGS":
+				return "Pegasian boots";
+			case "PRIMS":
+				return "Primordial boots";
+			case "RANGERS":
+				return "Ranger boots";
+			case "RAPIER":
+				return "Ghrazi rapier";
+			case "ROBIN":
+				return "Robin Hood hat";
+			case "ROS":
+			case "SUFFERING":
+				return "Ring of suffering";
+			case "SCYTHE":
+				return "Scythe of vitur (uncharged)";
+			case "SERP":
+				return "Serpentine helm (uncharged)";
+			case "SOTD":
+				return "Staff of the dead";
+			case "SPECTRAL":
+				return "Spectral spirit shield";
+			case "TBOW":
+				return "Twisted bow";
+			case "TOME":
+				return "Tome of fire (empty)";
+			case "TORM":
+				return "Tormented bracelet";
+			case "TORT":
+			case "TORTURE":
+				return "Amulet of torture";
+			case "WHIP":
+				return "Abyssal whip";
+			case "ZGS":
+				return "Zamorak godsword";
+			case "ZSPEAR":
+				return "Zamorakian spear";
+
+			default: return item;
+		}
 	}
 
 	private static String longBossName(String boss)
