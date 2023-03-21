@@ -13075,7 +13075,7 @@ public final class ItemID
 	public static final int CRYSTAL_HELM_27777 = 27777;
 	public static final int CRYSTAL_HELM_INACTIVE_27779 = 27779;
 	public static final int CABBAGE_27781 = 27781;
-	public static final int PLATINUM_SPEEDRUN_TROPHY_27783 = 27783;
+	public static final int DIAMOND_SPEEDRUN_TROPHY = 27783;
 	public static final int THAMMARONS_SCEPTRE_AU = 27785;
 	public static final int THAMMARONS_SCEPTRE_A = 27788;
 	public static final int NIGHTSHADE = 27790;
