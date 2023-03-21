@@ -50,7 +50,7 @@ void main() {
   ivec4 pos = ivec4(minfo.x, minfo.y, minfo.z, 0);
 
   if (localId == 0) {
-    min10 = 1600;
+    min10 = 6000;
     for (int i = 0; i < 12; ++i) {
       totalNum[i] = 0;
       totalDistance[i] = 0;
