@@ -26,11 +26,8 @@
 package net.runelite.client.plugins.slayer;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import java.util.List;
 import java.util.Map;
-import java.util.function.IntPredicate;
 import javax.annotation.Nullable;
 import lombok.Getter;
 import net.runelite.api.ItemID;
@@ -40,13 +37,8 @@ enum Task
 {
 	//<editor-fold desc="Enums">
 	ABERRANT_SPECTRES("Aberrant spectres", ItemID.ABERRANT_SPECTRE, "Spectre"),
-	// Abyssal demon - 150 xp
-	// Greater abyssal demon - 4200 xp
-	// Abyssal sire - 450 xp
-	// Reanimated abyssal - 31 xp
-	// Ignore 50xp drops to avoid recording a kill from sire vents
-	ABYSSAL_DEMONS("Abyssal demons", ItemID.ABYSSAL_DEMON, (xp) -> xp != 50),
-	ABYSSAL_SIRE("Abyssal Sire", ItemID.ABYSSAL_ORPHAN, (xp) -> xp != 50),
+	ABYSSAL_DEMONS("Abyssal demons", ItemID.ABYSSAL_DEMON),
+	ABYSSAL_SIRE("Abyssal Sire", ItemID.ABYSSAL_ORPHAN),
 	ADAMANT_DRAGONS("Adamant dragons", ItemID.ADAMANT_DRAGON_MASK),
 	ALCHEMICAL_HYDRA("Alchemical Hydra", ItemID.IKKLE_HYDRA),
 	ANKOU("Ankou", ItemID.ANKOU_MASK),
@@ -116,7 +108,7 @@ enum Task
 	ICE_WARRIORS("Ice warriors", ItemID.MITHRIL_FULL_HELM_T, "Icelord"),
 	INFERNAL_MAGES("Infernal mages", ItemID.INFERNAL_MAGE, "Malevolent mage"),
 	IRON_DRAGONS("Iron dragons", ItemID.IRON_DRAGON_MASK),
-	JAD("TzTok-Jad", ItemID.TZREKJAD, (xp) -> xp == 25250),
+	JAD("TzTok-Jad", ItemID.TZREKJAD),
 	JELLIES("Jellies", ItemID.JELLY, "Jelly"),
 	JUNGLE_HORROR("Jungle horrors", ItemID.ENSOULED_HORROR_HEAD),
 	KALPHITE("Kalphite", ItemID.KALPHITE_SOLDIER),
@@ -185,67 +177,17 @@ enum Task
 	WYRMS("Wyrms", ItemID.WYRM),
 	ZILYANA("Commander Zilyana", ItemID.PET_ZILYANA),
 	ZOMBIES("Zombies", ItemID.ZOMBIE_HEAD, "Undead"),
-	ZUK("TzKal-Zuk", ItemID.TZREKZUK, (xp) -> xp == 101890),
+	ZUK("TzKal-Zuk", ItemID.TZREKZUK),
 	ZULRAH("Zulrah", ItemID.PET_SNAKELING);
 	//</editor-fold>
 
 	private static final Map<String, Task> tasks;
-	static final List<String> LOCATIONS = ImmutableList.of(
-		"", // no location is a valid location
-		"Abyss",
-		"Ancient Cavern",
-		"Asgarnian Ice Dungeon",
-		"Battlefront",
-		"Brimhaven Dungeon",
-		"Brine Rat Cavern",
-		"Catacombs of Kourend",
-		"Chasm of Fire",
-		"Clan Wars",
-		"Death Plateau",
-		"Evil Chicken's Lair",
-		"Fossil Island",
-		"Forthos Dungeon",
-		"Fremennik Slayer Dungeon",
-		"God Wars Dungeon",
-		"Iorwerth Dungeon",
-		"Isle of Souls",
-		"Jormungand's Prison",
-		"Kalphite Lair",
-		"Karuulm Slayer Dungeon",
-		"Keldagrim",
-		"Kraken Cove",
-		"Lighthouse",
-		"Lithkren Vault",
-		"Lizardman Canyon",
-		"Lizardman Settlement",
-		"Meiyerditch Laboratories",
-		"Molch",
-		"Mount Quidamortem",
-		"Mourner Tunnels",
-		"Myths' Guild Dungeon",
-		"Ogre Enclave",
-		"Slayer Tower",
-		"Smoke Devil Dungeon",
-		"Smoke Dungeon",
-		"Stronghold of Security",
-		"Stronghold Slayer Dungeon",
-		"task-only Kalphite Cave",
-		"Taverley Dungeon",
-		"Troll Stronghold",
-		"Waterbirth Island",
-		"Waterfall Dungeon",
-		"Wilderness",
-		"Witchaven Dungeon",
-		"Zanaris"
-	);
 
 	private final String name;
 	private final int itemSpriteId;
 	private final String[] targetNames;
 	private final int weaknessThreshold;
 	private final int weaknessItem;
-	@Nullable
-	private final IntPredicate xpMatcher;
 
 	static
 	{
@@ -267,7 +209,6 @@ enum Task
 		this.weaknessThreshold = -1;
 		this.weaknessItem = -1;
 		this.targetNames = targetNames;
-		this.xpMatcher = null;
 	}
 
 	Task(String name, int itemSpriteId, int weaknessThreshold, int weaknessItem, String... targetNames)
@@ -278,18 +219,6 @@ enum Task
 		this.weaknessThreshold = weaknessThreshold;
 		this.weaknessItem = weaknessItem;
 		this.targetNames = targetNames;
-		this.xpMatcher = null;
-	}
-
-	Task(String name, int itemSpriteId, IntPredicate xpMatcher)
-	{
-		Preconditions.checkArgument(itemSpriteId >= 0);
-		this.name = name;
-		this.itemSpriteId = itemSpriteId;
-		this.weaknessThreshold = -1;
-		this.weaknessItem = -1;
-		this.targetNames = new String[0];
-		this.xpMatcher = xpMatcher;
 	}
 
 	@Nullable

@@ -46,10 +46,10 @@ import net.runelite.api.SpritePixels;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.RuneLite;
 import net.runelite.client.callback.ClientThread;
-import net.runelite.client.events.ConfigChanged;
-import net.runelite.client.events.SessionOpen;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.events.ProfileChanged;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
@@ -153,7 +153,7 @@ public class LoginScreenPlugin extends Plugin implements KeyListener
 	}
 
 	@Subscribe
-	public void onSessionOpen(SessionOpen event)
+	public void onProfileChanged(ProfileChanged profileChanged)
 	{
 		// configuation for the account is available now, so update the username
 		applyUsername();

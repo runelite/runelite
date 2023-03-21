@@ -37,7 +37,6 @@ public class RuneScapeProfile
 
 	private final String displayName;
 	private final RuneScapeProfileType type;
-	private final byte[] loginHash;
 	private final long accountHash;
 
 	/**

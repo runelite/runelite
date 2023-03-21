@@ -27,6 +27,7 @@ package net.runelite.client.plugins.skillcalculator.skills;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.ItemID;
+import net.runelite.client.game.ItemManager;
 
 @AllArgsConstructor
 @Getter
@@ -65,7 +66,22 @@ public enum RunecraftAction implements ItemSkillAction
 	NATURE_RUNE(ItemID.NATURE_RUNE, 44, 9, false, true),
 	LAW_RUNE(ItemID.LAW_RUNE, 54, 9.5f, false, true),
 	DEATH_RUNE(ItemID.DEATH_RUNE, 65, 10, false, true),
-	BLOOD_RUNE(ItemID.BLOOD_RUNE, 77, 24.425f, true),
+	ZEAH_BLOOD_RUNE(ItemID.BLOOD_RUNE, 77, 24.425f, true)
+	{
+		@Override
+		public String getName(final ItemManager itemManager)
+		{
+			return "Blood rune (Zeah)";
+		}
+	},
+	TRUE_BLOOD_RUNE(ItemID.BLOOD_RUNE, 77, 10.5f, false)
+	{
+		@Override
+		public String getName(final ItemManager itemManager)
+		{
+			return "Blood rune (True Altar)";
+		}
+	},
 	SOUL_RUNE(ItemID.SOUL_RUNE, 90, 30.325f, true),
 	WRATH_RUNE(ItemID.WRATH_RUNE, 95, 8, false),
 	;

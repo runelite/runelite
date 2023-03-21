@@ -48,6 +48,7 @@ import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.WorldType;
+import net.runelite.api.annotations.Varp;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuEntryAdded;
@@ -383,10 +384,10 @@ public class XpTrackerPlugin extends Plugin
 		final Skill skill = statChanged.getSkill();
 		final int currentXp = statChanged.getXp();
 		final int currentLevel = statChanged.getLevel();
-		final VarPlayer startGoal = startGoalVarpForSkill(skill);
-		final VarPlayer endGoal = endGoalVarpForSkill(skill);
-		final int startGoalXp = startGoal != null ? client.getVarpValue(startGoal) : -1;
-		final int endGoalXp = endGoal != null ? client.getVarpValue(endGoal) : -1;
+		@Varp final int startGoal = startGoalVarpForSkill(skill);
+		@Varp final int endGoal = endGoalVarpForSkill(skill);
+		final int startGoalXp = client.getVarpValue(startGoal);
+		final int endGoalXp = client.getVarpValue(endGoal);
 
 		if (initializeTracker)
 		{
@@ -551,7 +552,7 @@ public class XpTrackerPlugin extends Plugin
 		return xpState.getSkillSnapshot(skill);
 	}
 
-	private static VarPlayer startGoalVarpForSkill(final Skill skill)
+	private static @Varp int startGoalVarpForSkill(final Skill skill)
 	{
 		switch (skill)
 		{
@@ -602,11 +603,11 @@ public class XpTrackerPlugin extends Plugin
 			case FLETCHING:
 				return VarPlayer.FLETCHING_GOAL_START;
 			default:
-				return null;
+				throw new IllegalArgumentException();
 		}
 	}
 
-	private static VarPlayer endGoalVarpForSkill(final Skill skill)
+	private static @Varp int endGoalVarpForSkill(final Skill skill)
 	{
 		switch (skill)
 		{
@@ -657,7 +658,7 @@ public class XpTrackerPlugin extends Plugin
 			case FLETCHING:
 				return VarPlayer.FLETCHING_GOAL_END;
 			default:
-				return null;
+				throw new IllegalArgumentException();
 		}
 	}
 

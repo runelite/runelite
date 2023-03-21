@@ -40,6 +40,7 @@ shared int dfs[THREAD_COUNT * FACES_PER_THREAD]; // packed face id and distance
 layout(local_size_x = THREAD_COUNT) in;
 
 #include common.glsl
+#include uv.glsl
 #include priority_render.glsl
 
 void main() {
@@ -49,7 +50,7 @@ void main() {
   ivec4 pos = ivec4(minfo.x, minfo.y, minfo.z, 0);
 
   if (localId == 0) {
-    min10 = 1600;
+    min10 = 6000;
     for (int i = 0; i < 12; ++i) {
       totalNum[i] = 0;
       totalDistance[i] = 0;

@@ -37,7 +37,7 @@ void main() {
   int offset = minfo.offset;
   int size = minfo.size;
   int outOffset = minfo.idx;
-  int uvOffset = minfo.uvOffset;
+  int toffset = minfo.toffset;
   int flags = minfo.flags;
   ivec4 pos = ivec4(minfo.x, minfo.y, minfo.z, 0);
 
@@ -66,17 +66,17 @@ void main() {
   vout[outOffset + myOffset * 3 + 1] = pos + thisB;
   vout[outOffset + myOffset * 3 + 2] = pos + thisC;
 
-  if (uvOffset < 0) {
+  if (toffset < 0) {
     uvout[outOffset + myOffset * 3]     = vec4(0, 0, 0, 0);
     uvout[outOffset + myOffset * 3 + 1] = vec4(0, 0, 0, 0);
     uvout[outOffset + myOffset * 3 + 2] = vec4(0, 0, 0, 0);
   } else if (flags >= 0) {
-    uvout[outOffset + myOffset * 3]     = tempuv[uvOffset + localId * 3];
-    uvout[outOffset + myOffset * 3 + 1] = tempuv[uvOffset + localId * 3 + 1];
-    uvout[outOffset + myOffset * 3 + 2] = tempuv[uvOffset + localId * 3 + 2];
+    uvout[outOffset + myOffset * 3]     = temptexb[toffset + localId * 3];
+    uvout[outOffset + myOffset * 3 + 1] = temptexb[toffset + localId * 3 + 1];
+    uvout[outOffset + myOffset * 3 + 2] = temptexb[toffset + localId * 3 + 2];
   } else {
-    uvout[outOffset + myOffset * 3]     = uv[uvOffset + localId * 3];
-    uvout[outOffset + myOffset * 3 + 1] = uv[uvOffset + localId * 3 + 1];
-    uvout[outOffset + myOffset * 3 + 2] = uv[uvOffset + localId * 3 + 2];
+    uvout[outOffset + myOffset * 3]     = texb[toffset + localId * 3];
+    uvout[outOffset + myOffset * 3 + 1] = texb[toffset + localId * 3 + 1];
+    uvout[outOffset + myOffset * 3 + 2] = texb[toffset + localId * 3 + 2];
   }
 }

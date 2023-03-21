@@ -39,6 +39,7 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.IndexedSprite;
+import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
@@ -371,11 +372,20 @@ public class DevToolsPlugin extends Plugin
 				player.setPoseAnimation(-1);
 				break;
 			}
-			case "cape":
+			case "wear":
 			{
-				int id = Integer.parseInt(args[0]);
+				int slot = Integer.parseInt(args[0]);
+				int id = Integer.parseInt(args[1]);
 				Player player = client.getLocalPlayer();
-				player.getPlayerComposition().getEquipmentIds()[KitType.CAPE.getIndex()] = id + 512;
+				player.getPlayerComposition().getEquipmentIds()[slot] = id + 512;
+				player.getPlayerComposition().setHash();
+				break;
+			}
+			case "tex":
+			{
+				Player player = client.getLocalPlayer();
+				player.getPlayerComposition().getEquipmentIds()[KitType.CAPE.getIndex()] = ItemID.FIRE_CAPE + 512;
+				player.getPlayerComposition().getEquipmentIds()[KitType.SHIELD.getIndex()] = ItemID.MIRROR_SHIELD + 512;
 				player.getPlayerComposition().setHash();
 				break;
 			}

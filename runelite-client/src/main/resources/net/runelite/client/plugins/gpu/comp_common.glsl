@@ -39,11 +39,11 @@
  };
 
  struct modelinfo {
-   int offset;   // offset into buffer
-   int uvOffset; // offset into uv buffer
+   int offset;   // offset into vertex buffer
+   int toffset;  // offset into texture buffer
    int size;     // length in faces
    int idx;      // write idx in target buffer
-   int flags;    // radius, orientation
+   int flags;    // buffer, radius, orientation
    int x;        // scene position x
    int y;        // scene position y
    int z;        // scene position z
@@ -69,10 +69,10 @@
    vec4 uvout[];
  };
 
- layout(std430, binding = 5) readonly buffer uvbuffer_in {
-   vec4 uv[];
+ layout(std430, binding = 5) readonly buffer texturebuffer_in {
+   vec4 texb[];
  };
 
- layout(std430, binding = 6) readonly buffer tempuvbuffer_in {
-   vec4 tempuv[];
+ layout(std430, binding = 6) readonly buffer temptexturebuffer_in {
+   vec4 temptexb[];
  };

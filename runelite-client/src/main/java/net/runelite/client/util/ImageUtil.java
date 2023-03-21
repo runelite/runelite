@@ -25,6 +25,7 @@
 package net.runelite.client.util;
 
 import com.google.common.primitives.Ints;
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -86,6 +87,21 @@ public class ImageUtil
 		BufferedImage out = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g2d = out.createGraphics();
 		g2d.drawImage(image, 0, 0, null);
+		g2d.dispose();
+		return out;
+	}
+
+	/**
+	 * Creates a new image with the same alpha channel, but a constant RGB channel
+	 */
+	public static BufferedImage recolorImage(Image image, Color rgb)
+	{
+		BufferedImage out = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g2d = out.createGraphics();
+		g2d.drawImage(image, 0, 0, null);
+		g2d.setComposite(AlphaComposite.SrcAtop);
+		g2d.setColor(rgb);
+		g2d.fillRect(0, 0, out.getWidth(), out.getHeight());
 		g2d.dispose();
 		return out;
 	}

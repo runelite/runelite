@@ -154,8 +154,11 @@ class FeedPanel extends PluginPanel
 
 	synchronized void stop()
 	{
-		feedResultFuture.cancel(false);
-		feedResultFuture = null;
+		if (feedResultFuture != null)
+		{
+			feedResultFuture.cancel(false);
+			feedResultFuture = null;
+		}
 	}
 
 	private synchronized void refresh()

@@ -164,6 +164,10 @@ public class ClientUI
 	@Named("outdatedLauncherJava8")
 	private boolean outdatedLauncherJava8 = false;
 
+	@Inject(optional = true)
+	@Named("java8Brownout")
+	private boolean java8Brownout = false;
+
 	@Inject
 	private ClientUI(
 		RuneLiteConfig config,
@@ -541,6 +545,31 @@ public class ClientUI
 
 	public void show()
 	{
+		if (java8Brownout && System.getProperty("java.version", "").startsWith("1.8."))
+		{
+			SwingUtilities.invokeLater(() ->
+			{
+				JEditorPane ep = new JEditorPane("text/html",
+					"Your RuneLite launcher version is old, and requires an update.<br>Update to the latest version by visiting " +
+						"<a href=\"https://runelite.net\">https://runelite.net</a>,<br>or follow the link from the OSRS homepage.<br>" +
+						"Join <a href=\"" + RuneLiteProperties.getDiscordInvite() + "\">Discord</a> for assistance."
+				);
+				ep.addHyperlinkListener(e ->
+				{
+					if (e.getEventType().equals(HyperlinkEvent.EventType.ACTIVATED))
+					{
+						LinkBrowser.browse(e.getURL().toString());
+					}
+				});
+				ep.setEditable(false);
+				ep.setOpaque(false);
+				JOptionPane.showMessageDialog(frame,
+					ep, "Launcher outdated", JOptionPane.ERROR_MESSAGE);
+				System.exit(0);
+			});
+			return;
+		}
+
 		SwingUtilities.invokeLater(() ->
 		{
 			// Layout frame

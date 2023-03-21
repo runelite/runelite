@@ -24,36 +24,30 @@
  */
 package net.runelite.api;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
 /**
  * Server controlled "content-developer" integers.
  *
  * VarPlayers are stored per RuneScape player save, and synchronized
  * from the server to the client. The client can change them preemptively
  * if it thinks they will change the next tick as a lag-hiding measure.
- * The client CANNOT directly make the server change a varbit.
+ * The client CANNOT directly make the server change a varp.
  */
-@AllArgsConstructor
-@Getter
-public enum VarPlayer
+public final class VarPlayer
 {
-	CANNON_AMMO(3),
-	ATTACK_STYLE(43),
-	QUEST_POINTS(101),
-	IS_POISONED(102),
+	public static final int CANNON_AMMO = 3;
+	public static final int ATTACK_STYLE = 43;
+	public static final int QUEST_POINTS = 101;
 	/**
 	 * Seems to start at 50(10 splash) and goes down by 1 every 30 seconds
 	 */
-	DISEASE_VALUE(456),
+	public static final int DISEASE_VALUE = 456;
 
-	BANK_TAB(115),
+	public static final int BANK_TAB = 115;
 
-	MEMBERSHIP_DAYS(1780),
+	public static final int MEMBERSHIP_DAYS = 1780;
 
-	SPECIAL_ATTACK_PERCENT(300),
-	SPECIAL_ATTACK_ENABLED(301),
+	public static final int SPECIAL_ATTACK_PERCENT = 300;
+	public static final int SPECIAL_ATTACK_ENABLED = 301;
 
 	/**
 	 * The ID of the party. This Var is only set in the raid bank area and the raid lobby
@@ -64,9 +58,9 @@ public enum VarPlayer
 	 * -1 : Not in a party or in the middle of an ongoing raid
 	 * Anything else : This means that your friends chat has a raid party being formed and has not started yet
 	 */
-	IN_RAID_PARTY(1427),
+	public static final int IN_RAID_PARTY = 1427;
 
-	NMZ_REWARD_POINTS(1060),
+	public static final int NMZ_REWARD_POINTS = 1060;
 
 	/**
 	 * The poisoned status of the player, with negative values indicating the duration of poison or venom protection and
@@ -89,149 +83,162 @@ public enum VarPlayer
 	 *     </li>
 	 * </ul>
 	 */
-	POISON(102),
+	public static final int POISON = 102;
 
 	/**
 	 * 0 : not started
 	 * greater than 0 : in progress
 	 * greater than 99 : completed
 	 */
-	THRONE_OF_MISCELLANIA(359),
+	public static final int THRONE_OF_MISCELLANIA = 359;
 
 	/**
 	 * Item currently active in the creation of a buy or sell offer
 	 */
-	CURRENT_GE_ITEM(1151),
+	public static final int CURRENT_GE_ITEM = 1151;
 
 	/**
 	 * Experience tracker goal start.
 	 */
-	ATTACK_GOAL_START(1229),
-	STRENGTH_GOAL_START(1230),
-	RANGED_GOAL_START(1231),
-	MAGIC_GOAL_START(1232),
-	DEFENCE_GOAL_START(1233),
-	HITPOINTS_GOAL_START(1234),
-	PRAYER_GOAL_START(1235),
-	AGILITY_GOAL_START(1236),
-	HERBLORE_GOAL_START(1237),
-	THIEVING_GOAL_START(1238),
-	CRAFTING_GOAL_START(1239),
-	RUNECRAFT_GOAL_START(1240),
-	MINING_GOAL_START(1241),
-	SMITHING_GOAL_START(1242),
-	FISHING_GOAL_START(1243),
-	COOKING_GOAL_START(1244),
-	FIREMAKING_GOAL_START(1245),
-	WOODCUTTING_GOAL_START(1246),
-	FLETCHING_GOAL_START(1247),
-	SLAYER_GOAL_START(1248),
-	FARMING_GOAL_START(1249),
-	CONSTRUCTION_GOAL_START(1250),
-	HUNTER_GOAL_START(1251),
+	public static final int ATTACK_GOAL_START = 1229;
+	public static final int STRENGTH_GOAL_START = 1230;
+	public static final int RANGED_GOAL_START = 1231;
+	public static final int MAGIC_GOAL_START = 1232;
+	public static final int DEFENCE_GOAL_START = 1233;
+	public static final int HITPOINTS_GOAL_START = 1234;
+	public static final int PRAYER_GOAL_START = 1235;
+	public static final int AGILITY_GOAL_START = 1236;
+	public static final int HERBLORE_GOAL_START = 1237;
+	public static final int THIEVING_GOAL_START = 1238;
+	public static final int CRAFTING_GOAL_START = 1239;
+	public static final int RUNECRAFT_GOAL_START = 1240;
+	public static final int MINING_GOAL_START = 1241;
+	public static final int SMITHING_GOAL_START = 1242;
+	public static final int FISHING_GOAL_START = 1243;
+	public static final int COOKING_GOAL_START = 1244;
+	public static final int FIREMAKING_GOAL_START = 1245;
+	public static final int WOODCUTTING_GOAL_START = 1246;
+	public static final int FLETCHING_GOAL_START = 1247;
+	public static final int SLAYER_GOAL_START = 1248;
+	public static final int FARMING_GOAL_START = 1249;
+	public static final int CONSTRUCTION_GOAL_START = 1250;
+	public static final int HUNTER_GOAL_START = 1251;
 
 	/**
 	 * Experience tracker goal end.
 	 */
-	ATTACK_GOAL_END(1253),
-	STRENGTH_GOAL_END(1254),
-	RANGED_GOAL_END(1255),
-	MAGIC_GOAL_END(1256),
-	DEFENCE_GOAL_END(1257),
-	HITPOINTS_GOAL_END(1258),
-	PRAYER_GOAL_END(1259),
-	AGILITY_GOAL_END(1260),
-	HERBLORE_GOAL_END(1261),
-	THIEVING_GOAL_END(1262),
-	CRAFTING_GOAL_END(1263),
-	RUNECRAFT_GOAL_END(1264),
-	MINING_GOAL_END(1265),
-	SMITHING_GOAL_END(1266),
-	FISHING_GOAL_END(1267),
-	COOKING_GOAL_END(1268),
-	FIREMAKING_GOAL_END(1269),
-	WOODCUTTING_GOAL_END(1270),
-	FLETCHING_GOAL_END(1271),
-	SLAYER_GOAL_END(1272),
-	FARMING_GOAL_END(1273),
-	CONSTRUCTION_GOAL_END(1274),
-	HUNTER_GOAL_END(1275),
+	public static final int ATTACK_GOAL_END = 1253;
+	public static final int STRENGTH_GOAL_END = 1254;
+	public static final int RANGED_GOAL_END = 1255;
+	public static final int MAGIC_GOAL_END = 1256;
+	public static final int DEFENCE_GOAL_END = 1257;
+	public static final int HITPOINTS_GOAL_END = 1258;
+	public static final int PRAYER_GOAL_END = 1259;
+	public static final int AGILITY_GOAL_END = 1260;
+	public static final int HERBLORE_GOAL_END = 1261;
+	public static final int THIEVING_GOAL_END = 1262;
+	public static final int CRAFTING_GOAL_END = 1263;
+	public static final int RUNECRAFT_GOAL_END = 1264;
+	public static final int MINING_GOAL_END = 1265;
+	public static final int SMITHING_GOAL_END = 1266;
+	public static final int FISHING_GOAL_END = 1267;
+	public static final int COOKING_GOAL_END = 1268;
+	public static final int FIREMAKING_GOAL_END = 1269;
+	public static final int WOODCUTTING_GOAL_END = 1270;
+	public static final int FLETCHING_GOAL_END = 1271;
+	public static final int SLAYER_GOAL_END = 1272;
+	public static final int FARMING_GOAL_END = 1273;
+	public static final int CONSTRUCTION_GOAL_END = 1274;
+	public static final int HUNTER_GOAL_END = 1275;
 
 	/**
 	 * Bird house states
 	 */
-	BIRD_HOUSE_MEADOW_NORTH(1626),
-	BIRD_HOUSE_MEADOW_SOUTH(1627),
-	BIRD_HOUSE_VALLEY_NORTH(1628),
-	BIRD_HOUSE_VALLEY_SOUTH(1629),
+	public static final int BIRD_HOUSE_MEADOW_NORTH = 1626;
+	public static final int BIRD_HOUSE_MEADOW_SOUTH = 1627;
+	public static final int BIRD_HOUSE_VALLEY_NORTH = 1628;
+	public static final int BIRD_HOUSE_VALLEY_SOUTH = 1629;
 
 	/**
 	 * Slayer unlock bitfields
 	 */
-	SLAYER_UNLOCK_1(1076),
-	SLAYER_UNLOCK_2(1344),
+	public static final int SLAYER_UNLOCK_1 = 1076;
+	public static final int SLAYER_UNLOCK_2 = 1344;
 
-	MUSIC_VOLUME(168),
-	SOUND_EFFECT_VOLUME(169),
-	AREA_EFFECT_VOLUME(872),
+	public static final int MUSIC_VOLUME = 168;
+	public static final int SOUND_EFFECT_VOLUME = 169;
+	public static final int AREA_EFFECT_VOLUME = 872;
 
 	/**
 	 * 0 = 2 buttons, 1 = 1 button
 	 */
-	MOUSE_BUTTONS(170),
+	public static final int MOUSE_BUTTONS = 170;
 
 	/**
 	 * {@link NpcID} for the HP HUD
 	 */
-	HP_HUD_NPC_ID(1683),
+	public static final int HP_HUD_NPC_ID = 1683;
 
 	/**
 	 * Colors for chat messages
 	 */
-	SETTINGS_OPAQUE_CHAT_PUBLIC(2992),
-	SETTINGS_OPAQUE_CHAT_PRIVATE(2993),
-	SETTINGS_OPAQUE_CHAT_AUTO(2994),
-	SETTINGS_OPAQUE_CHAT_BROADCAST(2995),
-	SETTINGS_OPAQUE_CHAT_FRIEND(2996),
-	SETTINGS_OPAQUE_CHAT_CLAN(2997),
-	SETTINGS_OPAQUE_CHAT_GUEST_CLAN(3060),
-	SETTINGS_OPAQUE_CHAT_CLAN_BROADCAST(3192),
-	SETTINGS_OPAQUE_CHAT_IRON_GROUP_CHAT(3191),
-	SETTINGS_OPAQUE_CHAT_IRON_GROUP_BROADCAST(3193),
-	SETTINGS_OPAQUE_CHAT_TRADE_REQUEST(2998),
-	SETTINGS_OPAQUE_CHAT_CHALLENGE_REQUEST(2999),
+	public static final int SETTINGS_OPAQUE_CHAT_PUBLIC = 2992;
+	public static final int SETTINGS_OPAQUE_CHAT_PRIVATE = 2993;
+	public static final int SETTINGS_OPAQUE_CHAT_AUTO = 2994;
+	public static final int SETTINGS_OPAQUE_CHAT_BROADCAST = 2995;
+	public static final int SETTINGS_OPAQUE_CHAT_FRIEND = 2996;
+	public static final int SETTINGS_OPAQUE_CHAT_CLAN = 2997;
+	public static final int SETTINGS_OPAQUE_CHAT_GUEST_CLAN = 3060;
+	public static final int SETTINGS_OPAQUE_CHAT_CLAN_BROADCAST = 3192;
+	public static final int SETTINGS_OPAQUE_CHAT_IRON_GROUP_CHAT = 3191;
+	public static final int SETTINGS_OPAQUE_CHAT_IRON_GROUP_BROADCAST = 3193;
+	public static final int SETTINGS_OPAQUE_CHAT_TRADE_REQUEST = 2998;
+	public static final int SETTINGS_OPAQUE_CHAT_CHALLENGE_REQUEST = 2999;
 
-	SETTINGS_TRANSPARENT_CHAT_PUBLIC(3000),
-	SETTINGS_TRANSPARENT_CHAT_PRIVATE(3001),
-	SETTINGS_TRANSPARENT_CHAT_AUTO(3002),
-	SETTINGS_TRANSPARENT_CHAT_BROADCAST(3003),
-	SETTINGS_TRANSPARENT_CHAT_FRIEND(3004),
-	SETTINGS_TRANSPARENT_CHAT_CLAN(3005),
-	SETTINGS_TRANSPARENT_CHAT_GUEST_CLAN(3061),
-	SETTINGS_TRANSPARENT_CHAT_CLAN_BROADCAST(3195),
-	SETTINGS_TRANSPARENT_CHAT_IRON_GROUP_CHAT(3194),
-	SETTINGS_TRANSPARENT_CHAT_IRON_GROUP_BROADCAST(3196),
-	SETTINGS_TRANSPARENT_CHAT_TRADE_REQUEST(3006),
-	SETTINGS_TRANSPARENT_CHAT_CHALLENGE_REQUEST(3007),
+	public static final int SETTINGS_TRANSPARENT_CHAT_PUBLIC = 3000;
+	public static final int SETTINGS_TRANSPARENT_CHAT_PRIVATE = 3001;
+	public static final int SETTINGS_TRANSPARENT_CHAT_AUTO = 3002;
+	public static final int SETTINGS_TRANSPARENT_CHAT_BROADCAST = 3003;
+	public static final int SETTINGS_TRANSPARENT_CHAT_FRIEND = 3004;
+	public static final int SETTINGS_TRANSPARENT_CHAT_CLAN = 3005;
+	public static final int SETTINGS_TRANSPARENT_CHAT_GUEST_CLAN = 3061;
+	public static final int SETTINGS_TRANSPARENT_CHAT_CLAN_BROADCAST = 3195;
+	public static final int SETTINGS_TRANSPARENT_CHAT_IRON_GROUP_CHAT = 3194;
+	public static final int SETTINGS_TRANSPARENT_CHAT_IRON_GROUP_BROADCAST = 3196;
+	public static final int SETTINGS_TRANSPARENT_CHAT_TRADE_REQUEST = 3006;
+	public static final int SETTINGS_TRANSPARENT_CHAT_CHALLENGE_REQUEST = 3007;
 
 	/**
 	 * The difference, measured in minutes, between the time home teleport spell was last used and midnight, January 1, 1970 UTC.
 	 */
-	LAST_HOME_TELEPORT(892),
+	public static final int LAST_HOME_TELEPORT = 892;
 
 	/**
 	 * Charge spell duration
 	 * Value * 2 = Remaining game ticks on buff
 	 * E.g. value of 50 means buff will expire in 100 ticks.
 	 */
-	CHARGE_GOD_SPELL(272),
+	public static final int CHARGE_GOD_SPELL = 272;
 
 	/**
 	 * The difference, measured in minutes, between the time minigame teleport was last used and midnight, January 1, 1970 UTC.
 	 */
-	LAST_MINIGAME_TELEPORT(888),
+	public static final int LAST_MINIGAME_TELEPORT = 888;
 
-	;
+	/**
+	 * Number of slayer creatures remaining on the assigned task
+	 */
+	public static final int SLAYER_TASK_SIZE = 394;
 
-	private final int id;
+	/**
+	 * Currently assigned slayer task if SLAYER_TASK_SIZE is greater than 0.
+	 * Mapping of value to name can be found in {@link EnumID#SLAYER_TASK_CREATURE}. If value is 98 "Bosses",
+	 * use enum {@link EnumID#SLAYER_TASK_BOSS} for boss name.
+	 */
+	public static final int SLAYER_TASK_CREATURE = 395;
+
+	/**
+	 * Assigned slayer task location. The mapping of value to name can be found in {@link EnumID#SLAYER_TASK_LOCATION}
+	 */
+	public static final int SLAYER_TASK_LOCATION = 2096;
 }

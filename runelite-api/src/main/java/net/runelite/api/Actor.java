@@ -55,6 +55,14 @@ public interface Actor extends Renderable
 	String getName();
 
 	/**
+	 * Gets if the actor is interacting with another actor.
+	 * {@link #getInteracting()} will return the interacting actor,
+	 * unless they are outside of the visibility range.
+	 * @return
+	 */
+	boolean isInteracting();
+
+	/**
 	 * Gets the actor being interacted with.
 	 * <p>
 	 * Examples of interaction include:

@@ -498,4 +498,16 @@ public class ScreenshotPluginTest
 
 		verify(screenshotPlugin).takeScreenshot("Combat task (Handyman)", "Combat Achievements");
 	}
+
+	@Test
+	public void testWildernessLootChest()
+	{
+		when(screenshotConfig.screenshotWildernessLootChest()).thenReturn(true);
+
+		WidgetLoaded widgetLoaded = new WidgetLoaded();
+		widgetLoaded.setGroupId(WidgetID.WILDERNESS_LOOT_CHEST);
+		screenshotPlugin.onWidgetLoaded(widgetLoaded);
+
+		verify(screenshotPlugin).takeScreenshot("Loot key", "Wilderness Loot Chest");
+	}
 }

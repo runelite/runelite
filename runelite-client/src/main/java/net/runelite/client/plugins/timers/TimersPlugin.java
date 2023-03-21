@@ -52,7 +52,10 @@ import net.runelite.api.NpcID;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
+import static net.runelite.api.VarPlayer.LAST_HOME_TELEPORT;
+import static net.runelite.api.VarPlayer.LAST_MINIGAME_TELEPORT;
 import net.runelite.api.Varbits;
+import net.runelite.api.annotations.Varp;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.ChatMessage;
@@ -156,8 +159,8 @@ public class TimersPlugin extends Plugin
 	{
 		if (config.showHomeMinigameTeleports())
 		{
-			checkTeleport(VarPlayer.LAST_HOME_TELEPORT);
-			checkTeleport(VarPlayer.LAST_MINIGAME_TELEPORT);
+			checkTeleport(LAST_HOME_TELEPORT);
+			checkTeleport(LAST_MINIGAME_TELEPORT);
 		}
 	}
 
@@ -307,7 +310,7 @@ public class TimersPlugin extends Plugin
 			updateVarTimer(SHADOW_VEIL, event.getValue(), i -> client.getRealSkillLevel(Skill.MAGIC));
 		}
 
-		if (event.getVarpId() == VarPlayer.POISON.getId() && config.showAntiPoison())
+		if (event.getVarpId() == VarPlayer.POISON && config.showAntiPoison())
 		{
 			final int poisonVarp = event.getValue();
 			final int tickCount = client.getTickCount();
@@ -353,7 +356,7 @@ public class TimersPlugin extends Plugin
 			updateVarTimer(TELEBLOCK, event.getValue() - 100, i -> i <= 0, IntUnaryOperator.identity());
 		}
 
-		if (event.getVarpId() == VarPlayer.CHARGE_GOD_SPELL.getId() && config.showCharge())
+		if (event.getVarpId() == VarPlayer.CHARGE_GOD_SPELL && config.showCharge())
 		{
 			updateVarTimer(CHARGE, event.getValue(), i -> i * 2);
 		}
@@ -368,14 +371,14 @@ public class TimersPlugin extends Plugin
 			updateVarTimer(DRAGON_FIRE_SHIELD, event.getValue(), i -> i * 8);
 		}
 
-		if (event.getVarpId() == VarPlayer.LAST_HOME_TELEPORT.getId() && config.showHomeMinigameTeleports())
+		if (event.getVarpId() == LAST_HOME_TELEPORT && config.showHomeMinigameTeleports())
 		{
-			checkTeleport(VarPlayer.LAST_HOME_TELEPORT);
+			checkTeleport(LAST_HOME_TELEPORT);
 		}
 
-		if (event.getVarpId() == VarPlayer.LAST_MINIGAME_TELEPORT.getId() && config.showHomeMinigameTeleports())
+		if (event.getVarpId() == LAST_MINIGAME_TELEPORT && config.showHomeMinigameTeleports())
 		{
-			checkTeleport(VarPlayer.LAST_MINIGAME_TELEPORT);
+			checkTeleport(LAST_MINIGAME_TELEPORT);
 		}
 
 		if (event.getVarbitId() == Varbits.RUN_SLOWED_DEPLETION_ACTIVE
@@ -574,8 +577,8 @@ public class TimersPlugin extends Plugin
 		}
 		else
 		{
-			checkTeleport(VarPlayer.LAST_HOME_TELEPORT);
-			checkTeleport(VarPlayer.LAST_MINIGAME_TELEPORT);
+			checkTeleport(LAST_HOME_TELEPORT);
+			checkTeleport(LAST_MINIGAME_TELEPORT);
 		}
 
 		if (!config.showAntiFire())
@@ -935,7 +938,7 @@ public class TimersPlugin extends Plugin
 		}
 	}
 
-	private void checkTeleport(VarPlayer varPlayer)
+	private void checkTeleport(@Varp int varPlayer)
 	{
 		final GameTimer teleport;
 		switch (varPlayer)
