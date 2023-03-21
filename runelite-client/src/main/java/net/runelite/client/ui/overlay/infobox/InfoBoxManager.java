@@ -105,6 +105,10 @@ public class InfoBoxManager
 		{
 			layers.values().forEach(l -> l.getInfoBoxes().forEach(this::updateInfoBoxImage));
 		}
+		else if (event.getGroup().equals(INFOBOXLAYER_KEY))
+		{
+			moveInfoboxLayer(event.getKey(), event.getOldValue(), event.getNewValue());
+		}
 	}
 
 	@Subscribe
@@ -284,13 +288,31 @@ public class InfoBoxManager
 		layers.remove(overlay.getName());
 	}
 
-	private synchronized void splitInfobox(String newLayer, InfoBox infoBox)
+	/**
+	 * This method should only be called after the config for the infobox's
+	 * layer has already been changed, such as in onConfigChanged.
+	 */
+	private synchronized void moveInfoboxLayer(String infoBoxName, String currentLayer, String newLayer)
 	{
-		String layer = getLayer(infoBox);
-		InfoBoxOverlay oldOverlay = layers.get(layer);
+		if (currentLayer == null) currentLayer = DEFAULT_LAYER;
+		if (newLayer == null) newLayer = DEFAULT_LAYER;
+		InfoBoxOverlay oldOverlay = layers.get(currentLayer);
+		if (oldOverlay == null)
+		{
+			// This can happen during a profile switch, for config changes for
+			// infoboxes that are not currently added to the InfoBoxManager.
+			return;
+		}
 		// Find all infoboxes with the same name, as they are all within the same group and so move at once.
 		Collection<InfoBox> filtered = oldOverlay.getInfoBoxes().stream()
-			.filter(i -> i.getName().equals(infoBox.getName())).collect(Collectors.toList());
+			.filter(i -> i.getName().equals(infoBoxName)).collect(Collectors.toList());
+
+		if (filtered.size() == 0)
+		{
+			// This can happen during a profile switch, for config changes for
+			// infoboxes that are not currently added to the InfoBoxManager.
+			return;
+		}
 
 		oldOverlay.getInfoBoxes().removeAll(filtered);
 		if (oldOverlay.getInfoBoxes().isEmpty())
@@ -302,43 +324,38 @@ public class InfoBoxManager
 		InfoBoxOverlay newOverlay = layers.computeIfAbsent(newLayer, this::makeOverlay);
 		newOverlay.getInfoBoxes().addAll(filtered);
 
-		// Adjust config for new infoboxes
+		boolean isDefault = newOverlay.getName().equals(DEFAULT_LAYER);
 		for (InfoBox i : filtered)
 		{
-			setLayer(i, newLayer);
-
-			if (!i.getMenuEntries().contains(DELETE_ME))
+			if (isDefault)
+			{
+				i.getMenuEntries().remove(DELETE_ME);
+			}
+			else if (!i.getMenuEntries().contains(DELETE_ME))
 			{
 				i.getMenuEntries().add(DELETE_ME);
 			}
 		}
 
-		log.debug("Moving infobox named {} (layer {}) to layer {}: {} boxes", infoBox.getName(), layer, newLayer, filtered.size());
+		log.debug("Moving infobox named {} (layer {}) to layer {}: {} boxes", infoBoxName, currentLayer, newLayer, filtered.size());
+	}
+
+	private synchronized void splitInfobox(String newLayer, InfoBox infoBox)
+	{
+		// All infoboxes with the same name will be moved together.
+		setLayer(infoBox, newLayer);
 	}
 
 	public synchronized void mergeInfoBoxes(InfoBoxOverlay source, InfoBoxOverlay dest)
 	{
 		Collection<InfoBox> infoBoxesToMove = source.getInfoBoxes();
-		boolean isDefault = dest.getName().equals(DEFAULT_LAYER);
 
 		log.debug("Merging InfoBoxes from {} into {} ({} boxes)", source.getName(), dest.getName(), infoBoxesToMove.size());
 
 		for (InfoBox infoBox : infoBoxesToMove)
 		{
 			setLayer(infoBox, dest.getName());
-
-			if (isDefault)
-			{
-				infoBox.getMenuEntries().remove(DELETE_ME);
-			}
 		}
-
-		dest.getInfoBoxes().addAll(infoBoxesToMove);
-		source.getInfoBoxes().clear();
-
-		// remove source
-		removeOverlay(source);
-		log.debug("Deleted layer: {}", source.getName());
 	}
 
 	private String getLayer(InfoBox infoBox)
@@ -354,6 +371,8 @@ public class InfoBoxManager
 
 	private void setLayer(InfoBox infoBox, String layer)
 	{
+		// setting these config keys will trigger this class's onConfigChanged subscriber, which will actually move the
+		// infoboxes to the new layer.
 		if (layer.equals(DEFAULT_LAYER))
 		{
 			configManager.unsetConfiguration(INFOBOXLAYER_KEY, infoBox.getName());
