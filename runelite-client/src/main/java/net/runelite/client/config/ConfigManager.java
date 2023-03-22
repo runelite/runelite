@@ -45,6 +45,7 @@ import java.time.Instant;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -1310,6 +1311,7 @@ public class ConfigManager
 
 				return prof;
 			})
+			.sorted(Comparator.comparing(RuneScapeProfile::getKey))
 			.collect(Collectors.toList());
 	}
 
@@ -1322,18 +1324,18 @@ public class ConfigManager
 			return null;
 		}
 
-		Set<RuneScapeProfile> matches = profiles.stream()
+		List<RuneScapeProfile> matches = profiles.stream()
 			.filter(p -> p.getType() == type && accountHash == p.getAccountHash())
-			.collect(Collectors.toSet());
+			.collect(Collectors.toList());
 
 		if (matches.size() > 1)
 		{
-			log.warn("multiple matching profiles");
+			log.warn("multiple matching profiles, choosing {}, ignoring {}", matches.get(0), matches.subList(1, matches.size()));
 		}
 
 		if (matches.size() >= 1)
 		{
-			return matches.iterator().next();
+			return matches.get(0);
 		}
 
 		if (!create)
