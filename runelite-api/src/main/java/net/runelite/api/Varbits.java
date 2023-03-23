@@ -675,12 +675,14 @@ public final class Varbits
 	public static final int WIKI_ENTITY_LOOKUP = 10113;
 
 	/**
-	 * Whether the Special Attack orb is disabled due to being in a PvP area
+	 * Whether the player is in a PvP area
 	 * <p>
-	 * 0 = Enabled (player is not in PvP)
-	 * 1 = Disabled (player is in PvP)
+	 * 0 = Player is not in PvP area
+	 * 1 = Player is in PvP area
 	 *
-	 * @see <a href="https://oldschool.runescape.wiki/w/Minimap#Special_attack_orb">The OSRS Wiki's Minimap page</a>
+	 * @apiNote The name of this varbit comes from historical behavior where
+	 * the special attack orb would be disabled in PvP, but this was changed
+	 * on 2023-03-09 due to Poll 78. Yet, the varbit still updates as before.
 	 */
 	public static final int PVP_SPEC_ORB = 8121;
 
