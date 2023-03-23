@@ -679,8 +679,8 @@ public final class Varbits
 	 * <p>
 	 * 0 = Player is not in PvP area
 	 * 1 = Player is in PvP area
-	 *
-	 * @apiNote The name of this varbit comes from historical behavior where
+	 * <p>
+	 * Note: The name of this varbit comes from historical behavior where
 	 * the special attack orb would be disabled in PvP, but this was changed
 	 * on 2023-03-09 due to Poll 78. Yet, the varbit still updates as before.
 	 */
