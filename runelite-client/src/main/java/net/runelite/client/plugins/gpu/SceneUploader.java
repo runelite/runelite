@@ -132,8 +132,7 @@ class SceneUploader
 			Point tilePoint = tile.getSceneLocation();
 			int len = upload(sceneTileModel,
 				tilePoint.getX(), tilePoint.getY(),
-				vertexBuffer, uvBuffer,
-				0, 0, false);
+				vertexBuffer, uvBuffer, false);
 			sceneTileModel.setBufferLen(len);
 			offset += len;
 			if (sceneTileModel.getTriangleTextureId() != null)
@@ -274,7 +273,7 @@ class SceneUploader
 	}
 
 	int upload(SceneTileModel sceneTileModel, int tileX, int tileY, GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer,
-		int offsetX, int offsetY, boolean padUvs)
+		boolean padUvs)
 	{
 		final int[] faceX = sceneTileModel.getFaceX();
 		final int[] faceY = sceneTileModel.getFaceY();
@@ -295,8 +294,8 @@ class SceneUploader
 		vertexBuffer.ensureCapacity(faceCount * 12);
 		uvBuffer.ensureCapacity(faceCount * 12);
 
-		int baseX = Perspective.LOCAL_TILE_SIZE * tileX;
-		int baseY = Perspective.LOCAL_TILE_SIZE * tileY;
+		int baseX = tileX << Perspective.LOCAL_COORD_BITS;
+		int baseY = tileY << Perspective.LOCAL_COORD_BITS;
 
 		int cnt = 0;
 		for (int i = 0; i < faceCount; ++i)
@@ -326,9 +325,9 @@ class SceneUploader
 			int vertexXC = vertexX[triangleC] - baseX;
 			int vertexZC = vertexZ[triangleC] - baseY;
 
-			vertexBuffer.put(vertexXA + offsetX, vertexY[triangleA], vertexZA + offsetY, colorA);
-			vertexBuffer.put(vertexXB + offsetX, vertexY[triangleB], vertexZB + offsetY, colorB);
-			vertexBuffer.put(vertexXC + offsetX, vertexY[triangleC], vertexZC + offsetY, colorC);
+			vertexBuffer.put(vertexXA, vertexY[triangleA], vertexZA, colorA);
+			vertexBuffer.put(vertexXB, vertexY[triangleB], vertexZB, colorB);
+			vertexBuffer.put(vertexXC, vertexY[triangleC], vertexZC, colorC);
 
 			if (padUvs || triangleTextures != null)
 			{
