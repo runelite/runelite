@@ -23,7 +23,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.client.plugins.grandexchange;
 
 import java.awt.BorderLayout;
@@ -37,6 +36,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import javax.annotation.Nullable;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
@@ -86,7 +87,7 @@ public class GrandExchangeOfferSlot extends JPanel
 	{
 		final BufferedImage rightArrow = ImageUtil.alphaOffset(ImageUtil.loadImageResource(GrandExchangeOfferSlot.class, "/util/arrow_right.png"), 0.25f);
 		RIGHT_ARROW_ICON = new ImageIcon(rightArrow);
-		LEFT_ARROW_ICON	= new ImageIcon(ImageUtil.flipImage(rightArrow, true, false));
+		LEFT_ARROW_ICON = new ImageIcon(ImageUtil.flipImage(rightArrow, true, false));
 	}
 
 	/**
@@ -184,10 +185,19 @@ public class GrandExchangeOfferSlot extends JPanel
 
 		JPanel offerDetails = new JPanel();
 		offerDetails.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		offerDetails.setLayout(new GridLayout(2, 1));
+		offerDetails.setLayout(new BoxLayout(offerDetails, BoxLayout.PAGE_AXIS));
+		offerDetails.setPreferredSize(new Dimension(0, 45));
 
-		offerDetails.add(itemPrice);
-		offerDetails.add(offerSpent);
+		JPanel offerDetailsWrapper = new JPanel();
+		offerDetailsWrapper.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		offerDetailsWrapper.setLayout(new BoxLayout(offerDetailsWrapper, BoxLayout.PAGE_AXIS));
+
+		offerDetailsWrapper.add(itemPrice);
+		offerDetailsWrapper.add(offerSpent);
+
+		offerDetails.add(Box.createVerticalGlue());
+		offerDetails.add(offerDetailsWrapper);
+		offerDetails.add(Box.createVerticalGlue());
 
 		detailsCard.add(offerDetails, BorderLayout.CENTER);
 		detailsCard.add(switchDetailsViewIcon, BorderLayout.EAST);
