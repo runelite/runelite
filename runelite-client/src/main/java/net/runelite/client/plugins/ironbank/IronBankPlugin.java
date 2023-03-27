@@ -119,7 +119,7 @@ public class IronBankPlugin extends Plugin {
     @Override
     protected void startUp() throws Exception {
 
-        ironBankSharingPanel = new IronBankSharingPanel(itemManager);
+        ironBankSharingPanel = new IronBankSharingPanel(itemManager, client);
         NavigationButton navButton = createNavigationButton();
         clientToolbar.addNavigation(navButton);
     }
@@ -142,7 +142,7 @@ public class IronBankPlugin extends Plugin {
 
     private void displaySharedBankWindow() {
         if (ironBankSharingPanel == null) {
-            ironBankSharingPanel = new IronBankSharingPanel(itemManager);
+            ironBankSharingPanel = new IronBankSharingPanel(itemManager, client);
             final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "calc.png");
             navButton = NavigationButton.builder()
                     .tooltip("Group Ironman Bank")
