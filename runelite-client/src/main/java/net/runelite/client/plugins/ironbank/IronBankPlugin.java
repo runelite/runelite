@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import com.google.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
+import net.runelite.api.ItemComposition;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
@@ -22,6 +23,8 @@ import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 @PluginDescriptor(
@@ -48,11 +51,20 @@ public class IronBankPlugin extends Plugin {
 
     private IronBankSharingPanel ironBankSharingPanel;
 
+    private static final Logger log = LoggerFactory.getLogger(IronBankPlugin.class);
+
     @Subscribe
     public void onWidgetLoaded(WidgetLoaded event) {
         if (event.getGroupId() == WidgetID.BANK_GROUP_ID) {
             List<Item> bankItems = getBankItems();
-            shareBankItemsWithGroup(bankItems);
+            for (Item item : bankItems) {
+                ItemComposition itemComposition = client.getItemDefinition(item.getId());
+                String itemName = itemComposition.getName();
+                int itemId = item.getId();
+                int itemQuantity = item.getQuantity();
+
+                System.out.println("Item ID: " + itemId + ", Item Name: " + itemName + ", Quantity: " + itemQuantity);
+            }
         }
     }
 
@@ -75,6 +87,7 @@ public class IronBankPlugin extends Plugin {
         }
         return Arrays.stream(bankItemContainer.getDynamicChildren())
                 .map(widget -> new Item(widget.getItemId(), widget.getItemQuantity()))
+                .filter(item -> item.getId() >= 0)
                 .collect(Collectors.toList());
     }
 
@@ -90,11 +103,11 @@ public class IronBankPlugin extends Plugin {
                     .build();
 
             clientToolbar.addNavigation(navButton);        }
-        ironBankSharingPanel.updateItems(client, items);
+//        ironBankSharingPanel.updateItems(client, items);
     }
 
     private void shareBankItemsWithGroup(List<Item> items) {
-        displaySharedBankWindow(items);
+//        displaySharedBankWindow(items);
     }
 
     private NavigationButton createNavigationButton() {
