@@ -23,6 +23,9 @@ public class IronBankSharingPanel extends PluginPanel {
     }
 
     public void updateItems(Client client, List<Item> items) {
+        if (items == null) {
+            return;
+        }
         itemContainer.removeAll();
         for (Item item : items) {
             BufferedImage image = getImage(client, item.getId());

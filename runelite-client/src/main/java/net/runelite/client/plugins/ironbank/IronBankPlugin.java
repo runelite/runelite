@@ -1,11 +1,17 @@
 package net.runelite.client.plugins.ironbank;
 
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.google.gson.Gson;
 import com.google.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
@@ -25,11 +31,14 @@ import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.util.ImageUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
 
 
 @PluginDescriptor(
         name = "Iron Bank",
         description = "Share personal bank information with GIM"
+
 )
 public class IronBankPlugin extends Plugin {
     @Inject
@@ -53,6 +62,39 @@ public class IronBankPlugin extends Plugin {
 
     private static final Logger log = LoggerFactory.getLogger(IronBankPlugin.class);
 
+
+    private Path getDataFilePath() {
+        return Paths.get(System.getProperty("user.home"), ".runelite", "ironBankSharingData.json");
+    }
+
+    private void saveBankItems(List<Item> bankItems) {
+        Gson gson = new Gson();
+        String serializedBankItems = gson.toJson(bankItems);
+        try {
+            Files.write(getDataFilePath(), serializedBankItems.getBytes(StandardCharsets.UTF_8));
+        } catch (IOException e) {
+            log.warn("Failed to save bank items", e);
+        }
+    }
+
+    private List<Item> loadBankItems() {
+        Gson gson = new Gson();
+        Type listType = new TypeToken<List<Item>>() {}.getType();
+        Path dataFilePath = getDataFilePath();
+        if (!Files.exists(dataFilePath)) {
+            return Collections.emptyList();
+        }
+        try {
+            String serializedBankItems = new String(Files.readAllBytes(dataFilePath), StandardCharsets.UTF_8);
+            return gson.fromJson(serializedBankItems, listType);
+        } catch (IOException e) {
+            log.warn("Failed to load bank items", e);
+            return Collections.emptyList();
+        }
+    }
+
+
+
     @Subscribe
     public void onWidgetLoaded(WidgetLoaded event) {
         if (event.getGroupId() == WidgetID.BANK_GROUP_ID) {
@@ -65,6 +107,7 @@ public class IronBankPlugin extends Plugin {
 
                 System.out.println("Item ID: " + itemId + ", Item Name: " + itemName + ", Quantity: " + itemQuantity);
             }
+            saveBankItems(bankItems);
         }
     }
 
@@ -91,7 +134,7 @@ public class IronBankPlugin extends Plugin {
                 .collect(Collectors.toList());
     }
 
-    private void displaySharedBankWindow(List<Item> items) {
+    private void displaySharedBankWindow() {
         if (ironBankSharingPanel == null) {
             ironBankSharingPanel = new IronBankSharingPanel();
             final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "calc.png");
@@ -102,17 +145,16 @@ public class IronBankPlugin extends Plugin {
                     .panel(ironBankSharingPanel)
                     .build();
 
-            clientToolbar.addNavigation(navButton);        }
-//        ironBankSharingPanel.updateItems(client, items);
+            clientToolbar.addNavigation(navButton);
+        }
     }
 
-    private void shareBankItemsWithGroup(List<Item> items) {
-//        displaySharedBankWindow(items);
-    }
 
     private NavigationButton createNavigationButton() {
         final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "calc.png");
 
+        List<Item> items = loadBankItems();
+        ironBankSharingPanel.updateItems(client, items);
         // Create the navigation button
         NavigationButton navButton = NavigationButton.builder()
                 .tooltip("Your Plugin Name")
