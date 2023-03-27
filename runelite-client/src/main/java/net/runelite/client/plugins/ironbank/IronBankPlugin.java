@@ -22,6 +22,7 @@ import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginManager;
@@ -56,6 +57,9 @@ public class IronBankPlugin extends Plugin {
     @Inject
     private PluginManager pluginManager;
 
+    @Inject
+    private ItemManager itemManager;
+
     private NavigationButton navButton;
 
     private IronBankSharingPanel ironBankSharingPanel;
@@ -66,6 +70,7 @@ public class IronBankPlugin extends Plugin {
     private Path getDataFilePath() {
         return Paths.get(System.getProperty("user.home"), ".runelite", "ironBankSharingData.json");
     }
+
 
     private void saveBankItems(List<Item> bankItems) {
         Gson gson = new Gson();
@@ -113,7 +118,8 @@ public class IronBankPlugin extends Plugin {
 
     @Override
     protected void startUp() throws Exception {
-        ironBankSharingPanel = new IronBankSharingPanel();
+
+        ironBankSharingPanel = new IronBankSharingPanel(itemManager);
         NavigationButton navButton = createNavigationButton();
         clientToolbar.addNavigation(navButton);
     }
@@ -136,7 +142,7 @@ public class IronBankPlugin extends Plugin {
 
     private void displaySharedBankWindow() {
         if (ironBankSharingPanel == null) {
-            ironBankSharingPanel = new IronBankSharingPanel();
+            ironBankSharingPanel = new IronBankSharingPanel(itemManager);
             final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "calc.png");
             navButton = NavigationButton.builder()
                     .tooltip("Group Ironman Bank")

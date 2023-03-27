@@ -1,10 +1,10 @@
 package net.runelite.client.plugins.ironbank;
 
 import java.util.List;
-import net.runelite.api.Client;
-import net.runelite.api.Item;
-import net.runelite.api.ItemComposition;
-import net.runelite.api.SpritePixels;
+
+import com.google.inject.Inject;
+import net.runelite.api.*;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.util.ImageUtil;
 
@@ -15,9 +15,12 @@ import java.awt.image.BufferedImage;
 public class IronBankSharingPanel extends PluginPanel {
     private final JPanel itemContainer = new JPanel();
 
-    public IronBankSharingPanel() {
+    private final ItemManager itemManager;
+
+    public IronBankSharingPanel(ItemManager itemManager) {
+        this.itemManager = itemManager;
         setLayout(new BorderLayout());
-        itemContainer.setLayout(new GridLayout(0, 8, 5, 5));
+        itemContainer.setLayout(new GridLayout(0, 1, 5, 5));
         JScrollPane scrollPane = new JScrollPane(itemContainer);
         add(scrollPane, BorderLayout.CENTER);
     }
@@ -28,18 +31,22 @@ public class IronBankSharingPanel extends PluginPanel {
         }
         itemContainer.removeAll();
         for (Item item : items) {
-            BufferedImage image = getImage(client, item.getId());
-            JLabel itemLabel = new JLabel(new ImageIcon(image));
-            itemContainer.add(itemLabel);
+            BufferedImage image = getImage(itemManager, item.getId());
+            ItemComposition itemComposition = client.getItemDefinition(item.getId());
+            String description = itemComposition.getName() + " x" + item.getQuantity();
+            ItemPanel itemPanel = new ItemPanel(image, description);
+            itemContainer.add(itemPanel);
         }
         itemContainer.revalidate();
         itemContainer.repaint();
     }
 
-    private BufferedImage getImage(Client client, int itemId) {
-        ItemComposition itemComposition = client.getItemDefinition(itemId);
-        SpritePixels spritePixels = client.createItemSprite(itemId, itemComposition.getInventoryModel(), itemComposition.getNote(), 1, 0, false, 0);
-        return spritePixels.toBufferedImage();
-    }
 
+    private BufferedImage getImage(ItemManager itemManager, int itemId) {
+        Image image = itemManager.getImage(itemId);
+        if (image != null) {
+            return ImageUtil.bufferedImageFromImage(image);
+        }
+        return null;
+    }
 }
