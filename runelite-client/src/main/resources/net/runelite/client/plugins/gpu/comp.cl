@@ -49,7 +49,7 @@ void computeLarge(
   int4 pos = (int4)(minfo.x, minfo.y, minfo.z, 0);
 
   if (localId == 0) {
-    shared->min10 = 1600;
+    shared->min10 = 6000;
     for (int i = 0; i < 12; ++i) {
       shared->totalNum[i] = 0;
       shared->totalDistance[i] = 0;

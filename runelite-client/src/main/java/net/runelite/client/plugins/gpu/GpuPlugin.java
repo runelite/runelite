@@ -880,12 +880,12 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		// Output buffers
 		updateBuffer(tmpOutBuffer,
 			GL43C.GL_ARRAY_BUFFER,
-			targetBufferOffset * 16, // each vertex is an ivec4, which is 16 bytes
+			targetBufferOffset * 16, // each element is an ivec4, which is 16 bytes
 			GL43C.GL_STREAM_DRAW,
 			CL_MEM_WRITE_ONLY);
 		updateBuffer(tmpOutUvBuffer,
 			GL43C.GL_ARRAY_BUFFER,
-			targetBufferOffset * 16, // each vertex is an ivec4, which is 16 bytes
+			targetBufferOffset * 16, // each element is a vec4, which is 16 bytes
 			GL43C.GL_STREAM_DRAW,
 			CL_MEM_WRITE_ONLY);
 
@@ -910,7 +910,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 		/*
 		 * Compute is split into three separate programs: 'unordered', 'small', and 'large'
-		 * to save on GPU resources. Small will sort <= 512 faces, large will do <= 4096.
+		 * to save on GPU resources. Small will sort <= 512 faces, large will do <= 6144.
 		 */
 
 		// Bind UBO to compute programs
@@ -969,16 +969,16 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			targetBufferOffset += sceneUploader.upload(paint,
 				tileZ, tileX, tileY,
 				vertexBuffer, uvBuffer,
-				Perspective.LOCAL_TILE_SIZE * tileX,
-				Perspective.LOCAL_TILE_SIZE * tileY,
+				tileX << Perspective.LOCAL_COORD_BITS,
+				tileY << Perspective.LOCAL_COORD_BITS,
 				true
 			);
 		}
 		else if (paint.getBufferLen() > 0)
 		{
-			final int localX = tileX * Perspective.LOCAL_TILE_SIZE;
+			final int localX = tileX << Perspective.LOCAL_COORD_BITS;
 			final int localY = 0;
-			final int localZ = tileY * Perspective.LOCAL_TILE_SIZE;
+			final int localZ = tileY << Perspective.LOCAL_COORD_BITS;
 
 			GpuIntBuffer b = modelBufferUnordered;
 			++unorderedModels;
@@ -1004,15 +1004,16 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		if (computeMode == ComputeMode.NONE)
 		{
 			targetBufferOffset += sceneUploader.upload(model,
-				tileX, tileY,
+				// tile model is already positioned in the scene, so it not necessary to offset it
+				0, 0,
 				vertexBuffer, uvBuffer,
-				tileX << Perspective.LOCAL_COORD_BITS, tileY << Perspective.LOCAL_COORD_BITS, true);
+				true);
 		}
 		else if (model.getBufferLen() > 0)
 		{
-			final int localX = tileX * Perspective.LOCAL_TILE_SIZE;
+			final int localX = tileX << Perspective.LOCAL_COORD_BITS;
 			final int localY = 0;
-			final int localZ = tileY * Perspective.LOCAL_TILE_SIZE;
+			final int localZ = tileY << Perspective.LOCAL_COORD_BITS;
 
 			GpuIntBuffer b = modelBufferUnordered;
 			++unorderedModels;
@@ -1362,8 +1363,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		GL43C.glUseProgram(0);
 		GL43C.glBlendFunc(GL43C.GL_SRC_ALPHA, GL43C.GL_ONE_MINUS_SRC_ALPHA);
 		GL43C.glDisable(GL43C.GL_BLEND);
-
-		vertexBuffer.clear();
 	}
 
 	/**

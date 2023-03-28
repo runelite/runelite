@@ -714,11 +714,10 @@ class ProfilePanel extends PluginPanel
 
 				log.debug("selected new profile name: {}", name);
 				ConfigProfile profile = lock.createProfile(name);
-				ConfigProfile rsProfile = lock.findProfile("$rsprofile");
 
 				reload(lock.getProfiles());
 
-				ConfigManager.importAndMigrate(file, profile, rsProfile);
+				configManager.importAndMigrate(lock, file, profile);
 			}
 		});
 	}

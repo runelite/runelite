@@ -5943,7 +5943,7 @@ public final class NpcID
 	public static final int ZOMBIE_6598 = 6598;
 	public static final int MANDRITH = 6599;
 	public static final int RUNITE_GOLEM = 6600;
-	public static final int ROCKS_6601 = 6601;
+	public static final int RUNITE_ROCKS = 6601;
 	public static final int NUMPTY = 6602;
 	public static final int ROGUE_6603 = 6603;
 	public static final int MAMMOTH = 6604;
@@ -10150,17 +10150,6 @@ public final class NpcID
 	public static final int ELIAS_WHITE = 12105;
 	public static final int SKELETON_HELLHOUND_12107 = 12107;
 	public static final int GREATER_SKELETON_HELLHOUND_12108 = 12108;
-	public static final int WARMHANDZ = 12109;
-	public static final int PATTY_SEER = 12110;
-	public static final int ARCHMAGE_SEDRIDOR_12111 = 12111;
-	public static final int KING_ROALD_12112 = 12112;
-	public static final int GNOME_CHILD_12113 = 12113;
-	public static final int THURGO_12114 = 12114;
-	public static final int GENERAL_BENTNOZE_12115 = 12115;
-	public static final int GENERAL_WARTFACE_12116 = 12116;
-	public static final int ELVARG_12118 = 12118;
-	public static final int ALVARG = 12119;
-	public static final int PARTY_PETE_12120 = 12120;
 	public static final int SIR_PEAR_VISOR = 12121;
 	public static final int SIR_PEAR_VISOR_12122 = 12122;
 	public static final int CRYSTALLINE_HUNLLEF_12123 = 12123;
