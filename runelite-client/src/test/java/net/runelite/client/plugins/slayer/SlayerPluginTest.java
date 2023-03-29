@@ -279,6 +279,7 @@ public class SlayerPluginTest
 		assertTrue(matches("Baby blue dragon", Task.BLUE_DRAGONS));
 		assertTrue(matches("Duck", Task.BIRDS));
 		assertTrue(matches("Donny the Lad", Task.BANDITS));
+		assertTrue(matches("Revenant Imp", Task.GHOSTS));
 
 		assertFalse(matches("Rat", Task.PIRATES));
 		assertFalse(matches("Wolf", Task.WEREWOLVES));

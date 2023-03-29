@@ -91,7 +91,7 @@ enum Task
 	FOSSIL_ISLAND_WYVERNS("Fossil island wyverns", ItemID.FOSSIL_ISLAND_WYVERN, "Ancient wyvern", "Long-tailed wyvern", "Spitting wyvern", "Taloned wyvern"),
 	GARGOYLES("Gargoyles", ItemID.GARGOYLE, 9, ItemID.ROCK_HAMMER),
 	GENERAL_GRAARDOR("General Graardor", ItemID.PET_GENERAL_GRAARDOR),
-	GHOSTS("Ghosts", ItemID.GHOSTSPEAK_AMULET, "Death wing", "Tortured soul", "Forgotten Soul"),
+	GHOSTS("Ghosts", ItemID.GHOSTSPEAK_AMULET, "Death wing", "Tortured soul", "Forgotten Soul", "Revenant"),
 	GHOULS("Ghouls", ItemID.ZOMBIE_HEAD),
 	GIANT_MOLE("Giant Mole", ItemID.BABY_MOLE),
 	GOBLINS("Goblins", ItemID.ENSOULED_GOBLIN_HEAD),
