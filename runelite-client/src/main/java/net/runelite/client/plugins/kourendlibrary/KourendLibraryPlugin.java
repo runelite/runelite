@@ -234,7 +234,12 @@ public class KourendLibraryPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (lastBookcaseAnimatedOn != null && event.getType() == ChatMessageType.GAMEMESSAGE)
+		if (event.getType() != ChatMessageType.GAMEMESSAGE)
+		{
+			return;
+		}
+
+		if (lastBookcaseAnimatedOn != null)
 		{
 			if (event.getMessage().equals("You don't find anything useful here."))
 			{
@@ -242,6 +247,12 @@ public class KourendLibraryPlugin extends Plugin
 				updateBooksPanel();
 				lastBookcaseAnimatedOn = null;
 			}
+		}
+
+		// has a color tag at start
+		if (event.getMessage().endsWith("You hear the shifting of books due to a mysterious force...or are you just hearing things?"))
+		{
+			library.reset();
 		}
 	}
 
