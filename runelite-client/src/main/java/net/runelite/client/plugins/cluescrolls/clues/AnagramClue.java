@@ -337,7 +337,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		AnagramClue.builder()
 			.text("HEORIC")
 			.npc("Eohric")
-			.location(new WorldPoint(2900, 3565, 0))
+			.location(new WorldPoint(2897, 3565, 0))
 			.area("Top floor of Burthorpe Castle")
 			.question("King Arthur and Merlin sit down at the Round Table with 8 knights. How many degrees does each get?")
 			.answer("36")
