@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.barrows;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -33,6 +34,7 @@ import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -62,6 +64,11 @@ class BarrowsOverlay extends Overlay
 			renderBarrowsBrothers(graphics);
 		}
 
+		if (plugin.isBarrowsLoaded() && config.showDigLoc())
+		{
+			renderDigLocations(graphics);
+		}
+
 		Widget puzzleAnswer = plugin.getPuzzleAnswer();
 		if (puzzleAnswer != null && config.showPuzzleAnswer() && !puzzleAnswer.isHidden())
 		{
@@ -77,7 +84,7 @@ class BarrowsOverlay extends Overlay
 	{
 		for (BarrowsBrothers brother : BarrowsBrothers.values())
 		{
-			LocalPoint localLocation = LocalPoint.fromWorld(client, brother.getLocation());
+			LocalPoint localLocation = LocalPoint.fromWorld(client, brother.getLocation().toWorldPoint());
 			if (localLocation == null)
 			{
 				continue;
@@ -103,6 +110,22 @@ class BarrowsOverlay extends Overlay
 
 				graphics.drawString(brotherLetter, miniMapLocation.getX(), miniMapLocation.getY());
 			}
+		}
+	}
+
+	private void renderDigLocations(Graphics2D graphics)
+	{
+		for (BarrowsBrothers brother : BarrowsBrothers.values())
+		{
+			LocalPoint localLocation = LocalPoint.fromWorld(client, brother.getLocation().toWorldPoint());
+			if (localLocation == null)
+			{
+				continue;
+			}
+
+			graphics.setColor((client.getVarbitValue(brother.getKilledVarbit()) == 1) ? config.emptyDigLocColor() : config.digLocColor());
+			graphics.setStroke(new BasicStroke(1));
+			graphics.drawRect(brother.getLocation().getX(), brother.getLocation().getY(), brother.getLocation().getWidth(), brother.getLocation().getHeight());
 		}
 	}
 }
