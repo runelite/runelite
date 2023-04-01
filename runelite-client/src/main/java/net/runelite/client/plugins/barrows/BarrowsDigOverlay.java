@@ -24,32 +24,34 @@
  */
 package net.runelite.client.plugins.barrows;
 
-import java.awt.Color;
+import java.awt.BasicStroke;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.geom.Area;
+import java.awt.geom.GeneralPath;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.widgets.Widget;
+import net.runelite.api.geometry.Geometry;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 
-class BarrowsOverlay extends Overlay
+class BarrowsDigOverlay extends Overlay
 {
 	private final Client client;
 	private final BarrowsPlugin plugin;
 	private final BarrowsConfig config;
 
 	@Inject
-	private BarrowsOverlay(Client client, BarrowsPlugin plugin, BarrowsConfig config)
+	private BarrowsDigOverlay(Client client, BarrowsPlugin plugin, BarrowsConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.ABOVE_WIDGETS);
+		setLayer(OverlayLayer.ABOVE_SCENE);
 		this.client = client;
 		this.plugin = plugin;
 		this.config = config;
@@ -58,52 +60,43 @@ class BarrowsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (plugin.isBarrowsLoaded() && config.showBrotherLoc())
+		if (plugin.isBarrowsLoaded() && config.showDigLoc())
 		{
-			renderBarrowsBrothers(graphics);
-		}
-
-		Widget puzzleAnswer = plugin.getPuzzleAnswer();
-		if (puzzleAnswer != null && config.showPuzzleAnswer() && !puzzleAnswer.isHidden())
-		{
-			Rectangle answerRect = puzzleAnswer.getBounds();
-			graphics.setColor(Color.GREEN);
-			graphics.draw(answerRect);
+			renderDigLocations(graphics);
 		}
 
 		return null;
 	}
 
-	private void renderBarrowsBrothers(Graphics2D graphics)
+	private void transformWorldToLocal(float[] coords)
 	{
+		final LocalPoint lp = LocalPoint.fromWorld(client, (int)coords[0], (int)coords[1]);
+		coords[0] = lp.getX() - Perspective.LOCAL_TILE_SIZE / 2f;
+		coords[1] = lp.getY() - Perspective.LOCAL_TILE_SIZE / 2f;
+	}
+
+	private void renderDigLocations(Graphics2D graphics)
+	{
+		final Rectangle sceneRect = new Rectangle(client.getBaseX() + 1,client.getBaseY() + 1,Constants.SCENE_SIZE - 2,Constants.SCENE_SIZE - 2);
+		graphics.setStroke(new BasicStroke(1));
 		for (BarrowsBrothers brother : BarrowsBrothers.values())
 		{
-			LocalPoint localLocation = LocalPoint.fromWorld(client, new WorldPoint(brother.getLocation().getX() + brother.getLocation().getWidth() / 2, brother.getLocation().getY() + brother.getLocation().getHeight() / 2, brother.getLocation().getPlane()));
-			if (localLocation == null)
+			Area area = new Area(new Rectangle(brother.getLocation().getX(), brother.getLocation().getY(), brother.getLocation().getWidth(), brother.getLocation().getHeight()));
+			GeneralPath lines = new GeneralPath(area);
+			lines = Geometry.clipPath(lines, sceneRect);
+			lines = Geometry.splitIntoSegments(lines, 1);
+			lines = Geometry.transformPath(lines, this::transformWorldToLocal);
+			lines = Geometry.filterPath(lines, (p1, p2) ->
+				Perspective.localToCanvas(client, new LocalPoint((int)p1[0], (int)p1[1]), client.getPlane()) != null &&
+					Perspective.localToCanvas(client, new LocalPoint((int)p2[0], (int)p2[1]), client.getPlane()) != null);
+			lines = Geometry.transformPath(lines, coords ->
 			{
-				continue;
-			}
-
-			String brotherLetter = Character.toString(brother.getName().charAt(0));
-			Point miniMapLocation = Perspective.getCanvasTextMiniMapLocation(client, graphics,
-				localLocation, brotherLetter);
-
-			if (miniMapLocation != null)
-			{
-				graphics.setColor(Color.black);
-				graphics.drawString(brotherLetter, miniMapLocation.getX() + 1, miniMapLocation.getY() + 1);
-
-				if (client.getVarbitValue(brother.getKilledVarbit()) > 0)
-				{
-					graphics.setColor(config.deadBrotherLocColor());
-				}
-				else
-				{
-					graphics.setColor(config.brotherLocColor());
-				}
-
-				graphics.drawString(brotherLetter, miniMapLocation.getX(), miniMapLocation.getY());
-			}
+				Point point = Perspective.localToCanvas(client, new LocalPoint((int)coords[0], (int)coords[1]), client.getPlane());
+				coords[0] = point.getX();
+				coords[1] = point.getY();
+			});
+			graphics.setColor((client.getVarbitValue(brother.getKilledVarbit()) == 1) ? config.emptyDigLocColor() : config.digLocColor());
+			graphics.draw(lines);
 		}
 	}
 }
