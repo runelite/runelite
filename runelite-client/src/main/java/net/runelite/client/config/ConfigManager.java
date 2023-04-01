@@ -383,8 +383,8 @@ public class ConfigManager
 
 		log.debug("Importing profile from {}", from);
 
-		Map<Long, String> accountHashToOldRSProfile = new HashMap<>();
-		List<Map.Entry<String, String>> rsprofileKeys = new ArrayList<>();
+		Set<String> rsProfileKeys = new HashSet<>();
+		List<Map.Entry<String, String>> rsProfileEntries = new ArrayList<>();
 
 		int keys = 0;
 		for (Map.Entry<String, String> entry : migratingData.get().entrySet())
@@ -399,18 +399,8 @@ public class ConfigManager
 
 			if (profile != null)
 			{
-				if (RSPROFILE_GROUP.equals(split[KEY_SPLITTER_GROUP]) && RSPROFILE_ACCOUNT_HASH.equals(split[KEY_SPLITTER_KEY]))
-				{
-					try
-					{
-						accountHashToOldRSProfile.put(Long.parseLong(entry.getValue()), profile);
-					}
-					catch (NumberFormatException ignored)
-					{
-					}
-				}
-
-				rsprofileKeys.add(entry);
+				rsProfileKeys.add(profile);
+				rsProfileEntries.add(entry);
 			}
 			else
 			{
@@ -419,31 +409,45 @@ public class ConfigManager
 			}
 		}
 
-		if (accountHashToOldRSProfile.size() > 0)
+		if (rsProfileKeys.size() > 0)
 		{
 			Map<String, String> oldToNewRSProfile = new HashMap<>();
-			for (RuneScapeProfile existingRSP : getRSProfiles())
+			List<RuneScapeProfile> existingProfiles = getRSProfiles();
+			for (String oldKey : rsProfileKeys)
 			{
-				if (existingRSP.getAccountHash() != RuneScapeProfile.ACCOUNT_HASH_INVALID)
+				try
 				{
-					String oldRSP = accountHashToOldRSProfile.get(existingRSP.getAccountHash());
-					if (oldRSP != null && !oldRSP.equals(existingRSP.getKey()))
+					String strHash = migratingData.getProperty(getWholeKey(RSPROFILE_GROUP, oldKey, RSPROFILE_ACCOUNT_HASH));
+					String strType = migratingData.getProperty(getWholeKey(RSPROFILE_GROUP, oldKey, RSPROFILE_TYPE));
+					if (!Strings.isNullOrEmpty(strHash) && !Strings.isNullOrEmpty(strType))
 					{
-						if (oldToNewRSProfile.putIfAbsent(oldRSP, existingRSP.getKey()) == null)
+						long accHash = Long.parseLong(strHash);
+						RuneScapeProfileType type = RuneScapeProfileType.valueOf(strType);
+
+						RuneScapeProfile newProfile = findRSProfile(existingProfiles, accHash, type, null, true);
+						if (newProfile != null)
 						{
-							log.info("Converting imported rsprofile \"{}\" to \"{}\"", oldRSP, existingRSP.getKey());
+							existingProfiles.add(newProfile);
+							oldToNewRSProfile.put(oldKey, newProfile.getKey());
+							log.info("importing rsprofile \"{}\" as \"{}\"", oldKey, newProfile.getKey());
+							continue;
 						}
 					}
+					log.info("not importing rsprofile key \"{}\" (hash={} type={})", oldKey, strHash, strType);
+				}
+				catch (IllegalArgumentException e)
+				{
+					log.info("failed to unmarshal imported rsprofile data for key \"{}\"", oldKey, e);
 				}
 			}
 
-			for (Map.Entry<String, String> entry : rsprofileKeys)
+			for (Map.Entry<String, String> entry : rsProfileEntries)
 			{
 				String[] split = splitKey(entry.getKey());
 				assert split != null;
 				String profile = split[KEY_SPLITTER_PROFILE];
-				profile = oldToNewRSProfile.getOrDefault(profile, profile);
-				if (getConfiguration(split[KEY_SPLITTER_GROUP], profile, split[KEY_SPLITTER_KEY]) == null)
+				profile = oldToNewRSProfile.get(profile);
+				if (profile != null && getConfiguration(split[KEY_SPLITTER_GROUP], profile, split[KEY_SPLITTER_KEY]) == null)
 				{
 					setConfiguration(split[KEY_SPLITTER_GROUP], profile, split[KEY_SPLITTER_KEY], entry.getValue());
 				}
@@ -869,7 +873,7 @@ public class ConfigManager
 				displayName = p.getName();
 			}
 
-			RuneScapeProfile prof = findRSProfile(getRSProfiles(), RuneScapeProfileType.getCurrent(client), displayName, true);
+			RuneScapeProfile prof = findRSProfile(getRSProfiles(), client.getAccountHash(), RuneScapeProfileType.getCurrent(client), displayName, true);
 			if (prof == null)
 			{
 				log.warn("trying to create a profile while not logged in");
@@ -1367,13 +1371,11 @@ public class ConfigManager
 				return prof;
 			})
 			.sorted(Comparator.comparing(RuneScapeProfile::getKey))
-			.collect(Collectors.toList());
+			.collect(Collectors.toCollection(ArrayList::new));
 	}
 
-	private synchronized RuneScapeProfile findRSProfile(List<RuneScapeProfile> profiles, RuneScapeProfileType type, String displayName, boolean create)
+	private synchronized RuneScapeProfile findRSProfile(List<RuneScapeProfile> profiles, long accountHash, RuneScapeProfileType type, String displayName, boolean create)
 	{
-		long accountHash = client.getAccountHash();
-
 		if (accountHash == RuneScapeProfile.ACCOUNT_HASH_INVALID)
 		{
 			return null;
@@ -1436,7 +1438,7 @@ public class ConfigManager
 		}
 
 		List<RuneScapeProfile> profiles = getRSProfiles();
-		RuneScapeProfile prof = findRSProfile(profiles, RuneScapeProfileType.getCurrent(client), null, false);
+		RuneScapeProfile prof = findRSProfile(profiles, client.getAccountHash(), RuneScapeProfileType.getCurrent(client), null, false);
 
 		String key = prof == null ? null : prof.getKey();
 		if (Objects.equals(key, rsProfileKey))
