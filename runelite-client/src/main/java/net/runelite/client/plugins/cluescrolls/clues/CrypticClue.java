@@ -297,7 +297,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		new CrypticClue("Search the open crate found in the Hosidius kitchens.", CRATES_27533, new WorldPoint(1683, 3616, 0), "The kitchens are north-west of the town in Hosidius."),
 		new CrypticClue("Dig under Ithoi's cabin.", new WorldPoint(2529, 2838, 0), "Dig under Ithoi's cabin in the Corsair Cove."),
 		new CrypticClue("Search the drawers, upstairs in the bank to the East of Varrock.", DRAWERS_7194, new WorldPoint(3250, 3420, 1), "Search the drawers upstairs in Varrock east bank."),
-		new CrypticClue("Speak to Hazelmere.", "Hazelmere", new WorldPoint(2677, 3088, 1), "Located upstairs in the house east of Yanille, north of fairy ring CLS. Answer: 6859", "What is 19 to the power of 3?"),
+		new CrypticClue("Speak to Hazelmere.", "Hazelmere", new WorldPoint(2677, 3088, 0), "Located upstairs in the house east of Yanille, north of fairy ring CLS. Answer: 6859", "What is 19 to the power of 3?"),
 		new CrypticClue("The effects of this fire are magnified.", new WorldPoint(1179, 3626, 0), "Dig by the fire beside Ket'sal K'uk in the westernmost part of the Kebos Swamp."),
 		new CrypticClue("Always walking around the castle grounds and somehow knows everyone's age.", "Hans", new WorldPoint(3221, 3218, 0), "Talk to Hans walking around Lumbridge Castle."),
 		new CrypticClue("In the place Duke Horacio calls home, talk to a man with a hat dropped by goblins.", "Cook", new WorldPoint(3208, 3213, 0), "Talk to the Cook in Lumbridge Castle."),
