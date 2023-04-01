@@ -128,6 +128,10 @@ public interface BarrowsConfig extends Config
 	)
 	default Color emptyDigLocColor()
 	{
+<<<<<<< Updated upstream
 		return Color.GRAY; // or just disable?
+=======
+		return Color.GRAY;
+>>>>>>> Stashed changes
 	}
 }

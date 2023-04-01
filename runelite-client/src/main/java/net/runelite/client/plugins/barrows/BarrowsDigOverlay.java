@@ -77,8 +77,13 @@ class BarrowsDigOverlay extends Overlay
 
 	private void renderDigLocations(Graphics2D graphics)
 	{
+<<<<<<< Updated upstream
 		final Rectangle sceneRect = new Rectangle(client.getBaseX() + 1,client.getBaseY() + 1,Constants.SCENE_SIZE - 2,Constants.SCENE_SIZE - 2);
 		graphics.setStroke(new BasicStroke(1));
+=======
+		Area greenArea = new Area();
+		Area redArea = new Area();
+>>>>>>> Stashed changes
 		for (BarrowsBrothers brother : BarrowsBrothers.values())
 		{
 			Area area = new Area(new Rectangle(brother.getLocation().getX(), brother.getLocation().getY(), brother.getLocation().getWidth(), brother.getLocation().getHeight()));
@@ -91,6 +96,7 @@ class BarrowsDigOverlay extends Overlay
 					Perspective.localToCanvas(client, new LocalPoint((int)p2[0], (int)p2[1]), client.getPlane()) != null);
 			lines = Geometry.transformPath(lines, coords ->
 			{
+<<<<<<< Updated upstream
 				Point point = Perspective.localToCanvas(client, new LocalPoint((int)coords[0], (int)coords[1]), client.getPlane());
 				coords[0] = point.getX();
 				coords[1] = point.getY();
@@ -98,5 +104,51 @@ class BarrowsDigOverlay extends Overlay
 			graphics.setColor((client.getVarbitValue(brother.getKilledVarbit()) == 1) ? config.emptyDigLocColor() : config.digLocColor());
 			graphics.draw(lines);
 		}
+=======
+				greenArea.add(new Area(new Rectangle(brother.getLocation().getX(), brother.getLocation().getY(), brother.getLocation().getWidth(), brother.getLocation().getHeight())));
+			}
+			if(client.getVarbitValue(brother.getKilledVarbit()) == 1)
+			{
+				redArea.add(new Area(new Rectangle(brother.getLocation().getX(), brother.getLocation().getY(), brother.getLocation().getWidth(), brother.getLocation().getHeight())));
+			}
+		}
+
+		final Rectangle sceneRect = new Rectangle(client.getBaseX() + 1,client.getBaseY() + 1,Constants.SCENE_SIZE - 2,Constants.SCENE_SIZE - 2);
+		GeneralPath greenPath = new GeneralPath(greenArea);
+		greenPath = Geometry.clipPath(greenPath, sceneRect);
+		greenPath = Geometry.splitIntoSegments(greenPath, 1);
+		greenPath = Geometry.transformPath(greenPath, this::transformWorldToLocal);
+		greenPath = Geometry.filterPath(greenPath, (p1, p2) ->
+			Perspective.localToCanvas(client, new LocalPoint((int)p1[0], (int)p1[1]), client.getPlane()) != null &&
+				Perspective.localToCanvas(client, new LocalPoint((int)p2[0], (int)p2[1]), client.getPlane()) != null);
+		greenPath = Geometry.transformPath(greenPath, coords ->
+		{
+			Point point = Perspective.localToCanvas(client, new LocalPoint((int)coords[0], (int)coords[1]), client.getPlane());
+			coords[0] = point.getX();
+			coords[1] = point.getY();
+		});
+
+		graphics.setStroke(new BasicStroke(1));
+		graphics.setColor(config.digLocColor());
+		graphics.draw(greenPath);
+
+		GeneralPath redPath = new GeneralPath(redArea);
+		redPath = Geometry.clipPath(redPath, sceneRect);
+		redPath = Geometry.splitIntoSegments(redPath, 1);
+		redPath = Geometry.transformPath(redPath, this::transformWorldToLocal);
+		redPath = Geometry.filterPath(redPath, (p1, p2) ->
+			Perspective.localToCanvas(client, new LocalPoint((int)p1[0], (int)p1[1]), client.getPlane()) != null &&
+				Perspective.localToCanvas(client, new LocalPoint((int)p2[0], (int)p2[1]), client.getPlane()) != null);
+
+		redPath = Geometry.transformPath(redPath, coords ->
+		{
+			Point point = Perspective.localToCanvas(client, new LocalPoint((int)coords[0], (int)coords[1]), client.getPlane());
+			coords[0] = point.getX();
+			coords[1] = point.getY();
+		});
+
+		graphics.setColor(config.emptyDigLocColor());
+		graphics.draw(redPath);
+>>>>>>> Stashed changes
 	}
 }
