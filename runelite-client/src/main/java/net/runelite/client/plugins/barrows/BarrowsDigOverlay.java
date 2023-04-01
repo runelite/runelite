@@ -77,34 +77,12 @@ class BarrowsDigOverlay extends Overlay
 
 	private void renderDigLocations(Graphics2D graphics)
 	{
-<<<<<<< Updated upstream
-		final Rectangle sceneRect = new Rectangle(client.getBaseX() + 1,client.getBaseY() + 1,Constants.SCENE_SIZE - 2,Constants.SCENE_SIZE - 2);
-		graphics.setStroke(new BasicStroke(1));
-=======
 		Area greenArea = new Area();
 		Area redArea = new Area();
->>>>>>> Stashed changes
 		for (BarrowsBrothers brother : BarrowsBrothers.values())
 		{
-			Area area = new Area(new Rectangle(brother.getLocation().getX(), brother.getLocation().getY(), brother.getLocation().getWidth(), brother.getLocation().getHeight()));
-			GeneralPath lines = new GeneralPath(area);
-			lines = Geometry.clipPath(lines, sceneRect);
-			lines = Geometry.splitIntoSegments(lines, 1);
-			lines = Geometry.transformPath(lines, this::transformWorldToLocal);
-			lines = Geometry.filterPath(lines, (p1, p2) ->
-				Perspective.localToCanvas(client, new LocalPoint((int)p1[0], (int)p1[1]), client.getPlane()) != null &&
-					Perspective.localToCanvas(client, new LocalPoint((int)p2[0], (int)p2[1]), client.getPlane()) != null);
-			lines = Geometry.transformPath(lines, coords ->
+			if(client.getVarbitValue(brother.getKilledVarbit()) == 0)
 			{
-<<<<<<< Updated upstream
-				Point point = Perspective.localToCanvas(client, new LocalPoint((int)coords[0], (int)coords[1]), client.getPlane());
-				coords[0] = point.getX();
-				coords[1] = point.getY();
-			});
-			graphics.setColor((client.getVarbitValue(brother.getKilledVarbit()) == 1) ? config.emptyDigLocColor() : config.digLocColor());
-			graphics.draw(lines);
-		}
-=======
 				greenArea.add(new Area(new Rectangle(brother.getLocation().getX(), brother.getLocation().getY(), brother.getLocation().getWidth(), brother.getLocation().getHeight())));
 			}
 			if(client.getVarbitValue(brother.getKilledVarbit()) == 1)
@@ -149,6 +127,5 @@ class BarrowsDigOverlay extends Overlay
 
 		graphics.setColor(config.emptyDigLocColor());
 		graphics.draw(redPath);
->>>>>>> Stashed changes
 	}
 }
