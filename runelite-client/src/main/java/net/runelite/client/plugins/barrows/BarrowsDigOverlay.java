@@ -81,17 +81,17 @@ class BarrowsDigOverlay extends Overlay
 		Area redArea = new Area();
 		for (BarrowsBrothers brother : BarrowsBrothers.values())
 		{
-			if(client.getVarbitValue(brother.getKilledVarbit()) == 0)
+			if (client.getVarbitValue(brother.getKilledVarbit()) == 0)
 			{
 				greenArea.add(new Area(new Rectangle(brother.getLocation().getX(), brother.getLocation().getY(), brother.getLocation().getWidth(), brother.getLocation().getHeight())));
 			}
-			if(client.getVarbitValue(brother.getKilledVarbit()) == 1)
+			if (client.getVarbitValue(brother.getKilledVarbit()) == 1)
 			{
 				redArea.add(new Area(new Rectangle(brother.getLocation().getX(), brother.getLocation().getY(), brother.getLocation().getWidth(), brother.getLocation().getHeight())));
 			}
 		}
 
-		final Rectangle sceneRect = new Rectangle(client.getBaseX() + 1,client.getBaseY() + 1,Constants.SCENE_SIZE - 2,Constants.SCENE_SIZE - 2);
+		final Rectangle sceneRect = new Rectangle(client.getBaseX() + 1, client.getBaseY() + 1, Constants.SCENE_SIZE - 2, Constants.SCENE_SIZE - 2);
 		GeneralPath greenPath = new GeneralPath(greenArea);
 		greenPath = Geometry.clipPath(greenPath, sceneRect);
 		greenPath = Geometry.splitIntoSegments(greenPath, 1);
