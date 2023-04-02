@@ -271,12 +271,12 @@ void sort_and_insert(__local struct shared_data *shared, __constant struct unifo
 
       // rotate back to original orientation because the tex triangles
       // are not rotated
-      int4 f1 = rotate_vertex(uni, thisrvA, 2047 - orientation);
-      int4 f2 = rotate_vertex(uni, thisrvB, 2047 - orientation);
-      int4 f3 = rotate_vertex(uni, thisrvC, 2047 - orientation);
+      int4 f1 = rotate_vertex(uni, thisrvA, (2048 - orientation) & 2047);
+      int4 f2 = rotate_vertex(uni, thisrvB, (2048 - orientation) & 2047);
+      int4 f3 = rotate_vertex(uni, thisrvC, (2048 - orientation) & 2047);
 
       // Transform camera position to model space
-      int4 cameraPos = rotate_vertex(uni, (int4)(uni->cameraX, uni->cameraY, uni->cameraZ, 0) - pos, 2047 - orientation);
+      int4 cameraPos = rotate_vertex(uni, (int4)(uni->cameraX, uni->cameraY, uni->cameraZ, 0) - pos, (2048 - orientation) & 2047);
 
       compute_uv(convert_float3(cameraPos.xyz), convert_float3(f1.xyz), convert_float3(f2.xyz), convert_float3(f3.xyz), texA.yzw, texB.yzw, texC.yzw, &uv1,
                  &uv2, &uv3);

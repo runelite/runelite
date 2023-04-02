@@ -266,12 +266,12 @@ void sort_and_insert(uint localId, modelinfo minfo, int thisPriority, int thisDi
 
       // rotate back to original orientation because the tex triangles
       // are not rotated
-      ivec4 f1 = rotate(thisrvA, 2047 - orientation);
-      ivec4 f2 = rotate(thisrvB, 2047 - orientation);
-      ivec4 f3 = rotate(thisrvC, 2047 - orientation);
+      ivec4 f1 = rotate(thisrvA, (2048 - orientation) & 2047);
+      ivec4 f2 = rotate(thisrvB, (2048 - orientation) & 2047);
+      ivec4 f3 = rotate(thisrvC, (2048 - orientation) & 2047);
 
       // Transform camera position to model space
-      ivec4 cameraPos = rotate(ivec4(cameraX, cameraY, cameraZ, 0) - pos, 2047 - orientation);
+      ivec4 cameraPos = rotate(ivec4(cameraX, cameraY, cameraZ, 0) - pos, (2048 - orientation) & 2047);
 
       compute_uv(cameraPos.xyz, f1.xyz, f2.xyz, f3.xyz, texA.yzw, texB.yzw, texC.yzw, uv1, uv2, uv3);
 
