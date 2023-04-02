@@ -65,7 +65,7 @@ flat out int textureId;
 out vec2 fUv;
 out float fogAmount;
 
-#include hsl_to_rgb.glsl
+#include "hsl_to_rgb.glsl"
 
 float fogFactorLinear(const float dist, const float start, const float end) {
   return 1.0 - clamp((dist - start) / (end - start), 0.0, 1.0);

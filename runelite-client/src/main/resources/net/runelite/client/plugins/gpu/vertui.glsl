@@ -33,7 +33,7 @@ uniform int samplingMode;
 uniform ivec2 sourceDimensions;
 uniform ivec2 targetDimensions;
 
-#include scale/xbr_lv2_vert.glsl
+#include "scale/xbr_lv2_vert.glsl"
 
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec2 aTexCoord;

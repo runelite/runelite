@@ -36,9 +36,9 @@ uniform ivec2 targetDimensions;
 uniform int colorBlindMode;
 uniform vec4 alphaOverlay;
 
-#include scale/bicubic.glsl
-#include scale/xbr_lv2_frag.glsl
-#include colorblind.glsl
+#include "scale/bicubic.glsl"
+#include "scale/xbr_lv2_frag.glsl"
+#include "colorblind.glsl"
 
 in vec2 TexCoord;
 in XBRTable xbrTable;

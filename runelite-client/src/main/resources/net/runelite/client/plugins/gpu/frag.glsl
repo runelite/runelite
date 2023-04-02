@@ -39,8 +39,8 @@ in float fogAmount;
 
 out vec4 FragColor;
 
-#include hsl_to_rgb.glsl
-#include colorblind.glsl
+#include "hsl_to_rgb.glsl"
+#include "colorblind.glsl"
 
 void main() {
   vec4 c;

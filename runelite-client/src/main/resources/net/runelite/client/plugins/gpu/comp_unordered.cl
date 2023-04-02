@@ -24,7 +24,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include cl_types.cl
+#include "cl_types.cl"
 
 __kernel
 __attribute__((reqd_work_group_size(6, 1, 1)))

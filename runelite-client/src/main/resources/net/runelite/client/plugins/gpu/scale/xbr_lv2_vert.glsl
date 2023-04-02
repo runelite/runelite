@@ -24,7 +24,7 @@
    Incorporates some of the ideas from SABR shader. Thanks to Joshua Street.
 */
 
-#include scale/xbr_lv2_common.glsl
+#include "scale/xbr_lv2_common.glsl"
 
 XBRTable xbr_vert(vec2 texCoord, ivec2 sourceDimensions)
 {
