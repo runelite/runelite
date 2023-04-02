@@ -34,10 +34,10 @@
 #define FOG_SCENE_EDGE_MIN TILE_SIZE
 #define FOG_SCENE_EDGE_MAX (103 * TILE_SIZE)
 #define FOG_CORNER_ROUNDING 1.5
-#define FOG_CORNER_ROUNDING_SQUARED FOG_CORNER_ROUNDING * FOG_CORNER_ROUNDING
+#define FOG_CORNER_ROUNDING_SQUARED (FOG_CORNER_ROUNDING * FOG_CORNER_ROUNDING)
 
-layout (location = 0) in ivec4 VertexPosition;
-layout (location = 1) in vec4 uv;
+layout(location = 0) in ivec4 VertexPosition;
+layout(location = 1) in vec4 uv;
 
 layout(std140) uniform uniforms {
   int cameraYaw;
@@ -71,8 +71,7 @@ float fogFactorLinear(const float dist, const float start, const float end) {
   return 1.0 - clamp((dist - start) / (end - start), 0.0, 1.0);
 }
 
-void main()
-{
+void main() {
   ivec3 vertex = VertexPosition.xyz;
   int ahsl = VertexPosition.w;
   int hsl = ahsl & 0xffff;
@@ -84,7 +83,7 @@ void main()
   Color = vec4(rgb, 1.f - a);
   fHsl = float(hsl);
 
-  int textureIdx = int(uv.x); // the texture id + 1
+  int textureIdx = int(uv.x);  // the texture id + 1
   vec2 textureUv = uv.yz;
 
   vec2 textureAnim = vec2(0);
@@ -105,9 +104,9 @@ void main()
   int zDist = min(vertex.z - fogSouth, fogNorth - vertex.z);
   float nearestEdgeDistance = min(xDist, zDist);
   float secondNearestEdgeDistance = max(xDist, zDist);
-  float fogDistance = nearestEdgeDistance - FOG_CORNER_ROUNDING * TILE_SIZE *
-      max(0.f, (nearestEdgeDistance + FOG_CORNER_ROUNDING_SQUARED) /
-             (secondNearestEdgeDistance + FOG_CORNER_ROUNDING_SQUARED));
+  float fogDistance =
+      nearestEdgeDistance - FOG_CORNER_ROUNDING * TILE_SIZE *
+                                max(0.f, (nearestEdgeDistance + FOG_CORNER_ROUNDING_SQUARED) / (secondNearestEdgeDistance + FOG_CORNER_ROUNDING_SQUARED));
 
   fogAmount = fogFactorLinear(fogDistance, 0, fogDepth * TILE_SIZE) * useFog;
 }

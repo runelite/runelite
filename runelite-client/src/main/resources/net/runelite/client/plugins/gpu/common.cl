@@ -41,9 +41,9 @@ float3 toScreen(int4 vertex, int cameraYaw, int cameraPitch, int centerX, int ce
 
   float x = rotatedX * zoom / var12 + centerX;
   float y = var13 * zoom / var12 + centerY;
-  float z = -var12; // in OpenGL depth is negative
+  float z = -var12;  // in OpenGL depth is negative
 
-  return (float3) (x, y, z);
+  return (float3)(x, y, z);
 }
 
 /*
@@ -101,4 +101,3 @@ bool face_visible(__constant struct uniform *uni, int4 vA, int4 vB, int4 vC, int
 
   return (sA.x - sB.x) * (sC.y - sB.y) - (sC.x - sB.x) * (sA.y - sB.y) > 0;
 }
-

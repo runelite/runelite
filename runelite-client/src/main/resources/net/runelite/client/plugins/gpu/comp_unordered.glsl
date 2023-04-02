@@ -50,11 +50,11 @@ void main() {
 
   // Grab triangle vertices from the correct buffer
   if (flags < 0) {
-    thisA = vb[offset + ssboOffset * 3    ];
+    thisA = vb[offset + ssboOffset * 3];
     thisB = vb[offset + ssboOffset * 3 + 1];
     thisC = vb[offset + ssboOffset * 3 + 2];
   } else {
-    thisA = tempvb[offset + ssboOffset * 3    ];
+    thisA = tempvb[offset + ssboOffset * 3];
     thisB = tempvb[offset + ssboOffset * 3 + 1];
     thisC = tempvb[offset + ssboOffset * 3 + 2];
   }
@@ -62,20 +62,20 @@ void main() {
   uint myOffset = localId;
 
   // position vertices in scene and write to out buffer
-  vout[outOffset + myOffset * 3]     = pos + thisA;
+  vout[outOffset + myOffset * 3] = pos + thisA;
   vout[outOffset + myOffset * 3 + 1] = pos + thisB;
   vout[outOffset + myOffset * 3 + 2] = pos + thisC;
 
   if (toffset < 0) {
-    uvout[outOffset + myOffset * 3]     = vec4(0, 0, 0, 0);
+    uvout[outOffset + myOffset * 3] = vec4(0, 0, 0, 0);
     uvout[outOffset + myOffset * 3 + 1] = vec4(0, 0, 0, 0);
     uvout[outOffset + myOffset * 3 + 2] = vec4(0, 0, 0, 0);
   } else if (flags >= 0) {
-    uvout[outOffset + myOffset * 3]     = temptexb[toffset + localId * 3];
+    uvout[outOffset + myOffset * 3] = temptexb[toffset + localId * 3];
     uvout[outOffset + myOffset * 3 + 1] = temptexb[toffset + localId * 3 + 1];
     uvout[outOffset + myOffset * 3 + 2] = temptexb[toffset + localId * 3 + 2];
   } else {
-    uvout[outOffset + myOffset * 3]     = texb[toffset + localId * 3];
+    uvout[outOffset + myOffset * 3] = texb[toffset + localId * 3];
     uvout[outOffset + myOffset * 3 + 1] = texb[toffset + localId * 3 + 1];
     uvout[outOffset + myOffset * 3 + 2] = texb[toffset + localId * 3 + 2];
   }

@@ -26,15 +26,9 @@
 
 #include "cl_types.cl"
 
-__kernel
-__attribute__((reqd_work_group_size(6, 1, 1)))
-void computeUnordered(__global const struct modelinfo *ol,
-                      __global const int4 *vb,
-                      __global const int4 *tempvb,
-                      __global const float4 *texb,
-                      __global const float4 *temptexb,
-                      __global int4 *vout,
-                      __global float4 *uvout) {
+__kernel __attribute__((reqd_work_group_size(6, 1, 1))) void computeUnordered(__global const struct modelinfo *ol, __global const int4 *vb,
+                                                                              __global const int4 *tempvb, __global const float4 *texb,
+                                                                              __global const float4 *temptexb, __global int4 *vout, __global float4 *uvout) {
   size_t groupId = get_group_id(0);
   size_t localId = get_local_id(0);
   struct modelinfo minfo = ol[groupId];
@@ -67,20 +61,20 @@ void computeUnordered(__global const struct modelinfo *ol,
   uint myOffset = localId;
 
   // position vertices in scene and write to out buffer
-  vout[outOffset + myOffset * 3]     = pos + thisA;
+  vout[outOffset + myOffset * 3] = pos + thisA;
   vout[outOffset + myOffset * 3 + 1] = pos + thisB;
   vout[outOffset + myOffset * 3 + 2] = pos + thisC;
 
   if (toffset < 0) {
-    uvout[outOffset + myOffset * 3]     = (float4)(0.0f, 0.0f, 0.0f, 0.0f);
+    uvout[outOffset + myOffset * 3] = (float4)(0.0f, 0.0f, 0.0f, 0.0f);
     uvout[outOffset + myOffset * 3 + 1] = (float4)(0.0f, 0.0f, 0.0f, 0.0f);
     uvout[outOffset + myOffset * 3 + 2] = (float4)(0.0f, 0.0f, 0.0f, 0.0f);
   } else if (flags >= 0) {
-    uvout[outOffset + myOffset * 3]     = temptexb[toffset + localId * 3];
+    uvout[outOffset + myOffset * 3] = temptexb[toffset + localId * 3];
     uvout[outOffset + myOffset * 3 + 1] = temptexb[toffset + localId * 3 + 1];
     uvout[outOffset + myOffset * 3 + 2] = temptexb[toffset + localId * 3 + 2];
   } else {
-    uvout[outOffset + myOffset * 3]     = texb[toffset + localId * 3];
+    uvout[outOffset + myOffset * 3] = texb[toffset + localId * 3];
     uvout[outOffset + myOffset * 3 + 1] = texb[toffset + localId * 3 + 1];
     uvout[outOffset + myOffset * 3 + 2] = texb[toffset + localId * 3 + 2];
   }
