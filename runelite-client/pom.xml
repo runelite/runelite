@@ -370,6 +370,9 @@
 							<Multi-Release>true</Multi-Release>
 						</manifestEntries>
 					</archive>
+					<excludes>
+						<exclude>**/.clang-format</exclude>
+					</excludes>
 				</configuration>
 				<executions>
 					<execution>
