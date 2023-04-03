@@ -113,7 +113,9 @@ public class ItemStatOverlay extends Overlay
 		else if (widget.getId() == WidgetInfo.INVENTORY.getId()
 			|| group == WidgetInfo.EQUIPMENT_INVENTORY_ITEMS_CONTAINER.getGroupId()
 			|| widget.getId() == WidgetInfo.BANK_ITEM_CONTAINER.getId() && config.showStatsInBank()
-			|| group == WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getGroupId() && config.showStatsInBank())
+			|| group == WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getGroupId() && config.showStatsInBank()
+			|| widget.getId() == WidgetInfo.GROUP_STORAGE_ITEM_CONTAINER.getId() && config.showStatsInBank()
+			|| group == WidgetID.GROUP_STORAGE_INVENTORY_GROUP_ID && config.showStatsInBank())
 		{
 			itemId = widget.getItemId();
 		}
