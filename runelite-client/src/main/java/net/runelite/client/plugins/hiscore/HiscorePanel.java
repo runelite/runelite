@@ -384,6 +384,8 @@ public class HiscorePanel extends PluginPanel
 			return;
 		}
 
+		repaint();
+
 		searchBar.setEditable(false);
 		searchBar.setIcon(IconTextField.Icon.LOADING_DARKER);
 		loading = true;
@@ -438,6 +440,7 @@ public class HiscorePanel extends PluginPanel
 	private void applyHiscoreResult(HiscoreResult result)
 	{
 		assert SwingUtilities.isEventDispatchThread();
+		repaint();
 
 		nameAutocompleter.addToSearchHistory(result.getPlayer().toLowerCase());
 
