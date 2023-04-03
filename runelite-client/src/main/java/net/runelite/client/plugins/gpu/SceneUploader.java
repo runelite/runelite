@@ -601,7 +601,7 @@ class SceneUploader
 
 		// de-rotate model space camera because texture calculations work on the unrotated model
 		{
-			int iorientation = 2047 - orientation;
+			int iorientation = (2048 - orientation) & 2047;
 			int iorientSine = Perspective.SINE[iorientation];
 			int iorientCosine = Perspective.COSINE[iorientation];
 			int i = mCameraZ * iorientSine + mCameraX * iorientCosine >> 16;
