@@ -29,8 +29,10 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
-import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
 import java.awt.Image;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
@@ -880,19 +882,36 @@ public class ScreenshotPlugin extends Plugin
 		}
 	}
 
+	private static int getScaledValue(final double scale, final int value)
+	{
+		return (int) (value * scale + .5);
+	}
+
 	private void takeScreenshot(String fileName, String subDir, Image image)
 	{
-		BufferedImage screenshot = config.includeFrame()
-			? new BufferedImage(clientUi.getWidth(), clientUi.getHeight(), BufferedImage.TYPE_INT_ARGB)
-			: new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-
-		Graphics graphics = screenshot.getGraphics();
-
-		int gameOffsetX = 0;
-		int gameOffsetY = 0;
-
-		if (config.includeFrame())
+		final BufferedImage screenshot;
+		if (!config.includeFrame())
 		{
+			// just simply copy the image
+			screenshot = ImageUtil.bufferedImageFromImage(image);
+		}
+		else
+		{
+			// create a new image, paint the client ui to it, and then draw the screenshot to that
+			final GraphicsConfiguration graphicsConfiguration = clientUi.getGraphicsConfiguration();
+			final AffineTransform transform = graphicsConfiguration.getDefaultTransform();
+
+			// scaled client dimensions
+			int clientWidth = getScaledValue(transform.getScaleX(), clientUi.getWidth());
+			int clientHeight = getScaledValue(transform.getScaleY(), clientUi.getHeight());
+
+			screenshot = new BufferedImage(clientWidth, clientHeight, BufferedImage.TYPE_INT_ARGB);
+
+			Graphics2D graphics = (Graphics2D) screenshot.getGraphics();
+			AffineTransform originalTransform = graphics.getTransform();
+			// scale g2d for the paint() call
+			graphics.setTransform(transform);
+
 			// Draw the client frame onto the screenshot
 			try
 			{
@@ -903,14 +922,17 @@ public class ScreenshotPlugin extends Plugin
 				log.warn("unable to paint client UI on screenshot", e);
 			}
 
-			// Evaluate the position of the game inside the frame
+			// Find the position of the canvas inside the frame
 			final Point canvasOffset = clientUi.getCanvasOffset();
-			gameOffsetX = canvasOffset.getX();
-			gameOffsetY = canvasOffset.getY();
+			final int gameOffsetX = getScaledValue(transform.getScaleX(), canvasOffset.getX());
+			final int gameOffsetY = getScaledValue(transform.getScaleY(), canvasOffset.getY());
+
+			// Draw the original screenshot onto the new screenshot
+			graphics.setTransform(originalTransform); // the original screenshot is already scaled
+			graphics.drawImage(image, gameOffsetX, gameOffsetY, null);
+			graphics.dispose();
 		}
 
-		// Draw the game onto the screenshot
-		graphics.drawImage(image, gameOffsetX, gameOffsetY, null);
 		imageCapture.takeScreenshot(screenshot, fileName, subDir, config.notifyWhenTaken(), config.uploadScreenshot());
 	}
 
