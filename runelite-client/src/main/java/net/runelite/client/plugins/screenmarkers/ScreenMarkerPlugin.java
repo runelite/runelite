@@ -40,12 +40,15 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.inject.Inject;
+import javax.swing.*;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.events.ProfileChanged;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -160,6 +163,24 @@ public class ScreenMarkerPlugin extends Plugin
 		navigationButton = null;
 		selectedWidgetBounds = null;
 	}
+
+	@Subscribe
+	public void onProfileChanged(ProfileChanged event) throws Exception
+	{
+		screenMarkers.clear();
+		loadConfig(configManager.getConfiguration(CONFIG_GROUP, CONFIG_KEY)).forEach(screenMarkers::add);
+		overlayManager.removeIf(ScreenMarkerOverlay.class::isInstance);
+		screenMarkers.forEach(overlayManager::add);
+
+		// Swing components can only be created by the EDT
+		SwingUtilities.invokeLater(rebuildPluginPanel);
+	}
+
+	Runnable rebuildPluginPanel = new Runnable() {
+		public void run() {
+			pluginPanel.rebuild();
+		}
+	};
 
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
