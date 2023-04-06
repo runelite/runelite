@@ -49,7 +49,9 @@ import net.runelite.client.ui.overlay.components.LineComponent;
 
 public class ClueScrollOverlay extends OverlayPanel
 {
-	private static final ItemRequirement HAS_SPADE = new SingleItemRequirement(SPADE);
+	private static final ItemRequirement HAS_SPADE = new AnyRequirementCollection("Spade", 
+		item(SPADE),
+		item(EASTFLOOR_SPADE));
 	private static final ItemRequirement HAS_LIGHT = new AnyRequirementCollection("Light Source",
 		item(LIT_TORCH),
 		item(LIT_CANDLE),
