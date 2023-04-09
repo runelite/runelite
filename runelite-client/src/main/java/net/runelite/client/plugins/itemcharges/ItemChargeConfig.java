@@ -453,4 +453,16 @@ public interface ItemChargeConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "barrowsEquipmentDegradationLevel",
+		name = "Barrows equipment degradation",
+		description = "Show Barrows equipment's degradation level",
+		position = 33,
+		section = chargesSection
+	)
+	default boolean barrowsEquipmentDegradationLevel()
+	{
+		return true;
+	}
 }
