@@ -76,7 +76,7 @@ __kernel __attribute__((work_group_size_hint(256, 1, 1))) void computeLarge(__lo
   barrier(CLK_LOCAL_MEM_FENCE);
 
   for (int i = 0; i < FACE_COUNT; i++) {
-    insert_dfs(shared, localId + i, minfo, prioAdj[i], dis[i], idx[i]);
+    insert_face(shared, localId + i, minfo, prioAdj[i], dis[i], idx[i]);
   }
 
   barrier(CLK_LOCAL_MEM_FENCE);

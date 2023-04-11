@@ -40,7 +40,7 @@ struct shared_data {
   int totalDistance[12];   // sum of distances to faces of a given priority
   int totalMappedNum[18];  // number of faces with a given adjusted priority
   int min10;               // minimum distance to a face of priority 10
-  int dfs[0];              // packed face id and distance, size 512 for small, 4096 for large
+  uint renderPris[0];      // packed distance and face id
 };
 
 struct modelinfo {
