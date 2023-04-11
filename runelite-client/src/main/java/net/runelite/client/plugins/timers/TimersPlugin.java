@@ -562,17 +562,17 @@ public class TimersPlugin extends Plugin
 
 		if (event.getVarbitId() == Varbits.PRAYER_ENHANCE && config.showPrayerEnhance())
 		{
-			if(event.getValue() == 80)
+			if (event.getValue() == 80)
 			{
 				createGameTimer(PRAYER_ENHANCE);
 			}
-			if(event.getValue() == 0)
+			if (event.getValue() == 0)
 			{
 				removeGameTimer(PRAYER_ENHANCE);
 			}
 			else
 			{
-				updateVarTimer(PRAYER_ENHANCE, event.getValue(), i -> i*6);
+				updateVarTimer(PRAYER_ENHANCE, event.getValue(), i -> i * 6);
 			}
 		}
 	}
