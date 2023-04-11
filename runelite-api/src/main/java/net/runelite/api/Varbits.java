@@ -758,6 +758,13 @@ public final class Varbits
 	 */
 	public static final int MENAPHITE_REMEDY = 14448;
 
+
+	/**
+	 * How many prayer restore cycles from a prayer enhance(cox) remain.
+	 * Gets set to 80 upon drinking a dose,
+	 */
+	public static final int PRAYER_ENHANCE = 5417;
+
 	/**
 	 * How many salt stat boost refreshes the player has remaining.
 	 * This will go down by 1 every 25 ticks (15 seconds) and the player's stats will be restored.
@@ -812,4 +819,6 @@ public final class Varbits
 	 * The assigned boss for boss slayer.
 	 */
 	public static final int SLAYER_TASK_BOSS = 4723;
+
+	public static final int DESERT_HEAT	 = 13137;
 }

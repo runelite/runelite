@@ -99,7 +99,6 @@ public class TimersPlugin extends Plugin
 	private static final String GOD_WARS_ALTAR_MESSAGE = "you recharge your prayer.";
 	private static final String STAFF_OF_THE_DEAD_SPEC_EXPIRED_MESSAGE = "Your protection fades away";
 	private static final String STAFF_OF_THE_DEAD_SPEC_MESSAGE = "Spirits of deceased evildoers offer you their protection";
-	private static final String PRAYER_ENHANCE_EXPIRED = "<col=ff0000>Your prayer enhance effect has worn off.</col>";
 	private static final String SHADOW_VEIL_MESSAGE = ">Your thieving abilities have been enhanced.</col>";
 	private static final String WARD_OF_ARCEUUS_MESSAGE = ">Your defence against Arceuus magic has been strengthened.</col>";
 	private static final String PICKPOCKET_FAILURE_MESSAGE = "You fail to pick ";
@@ -560,6 +559,22 @@ public class TimersPlugin extends Plugin
 		{
 			updateVarTimer(FARMERS_AFFINITY, event.getValue(), i -> i * 20);
 		}
+
+		if (event.getVarbitId() == Varbits.PRAYER_ENHANCE && config.showPrayerEnhance())
+		{
+			if(event.getValue() == 80)
+			{
+				createGameTimer(PRAYER_ENHANCE);
+			}
+			if(event.getValue() == 0)
+			{
+				removeGameTimer(PRAYER_ENHANCE);
+			}
+			else
+			{
+				updateVarTimer(PRAYER_ENHANCE, event.getValue(), i -> i*6);
+			}
+		}
 	}
 
 	@Subscribe
@@ -786,16 +801,6 @@ public class TimersPlugin extends Plugin
 				removeGameTimer(CANNON);
 				removeGameTimer(CANNON_REPAIR);
 			}
-		}
-
-		if (config.showPrayerEnhance() && message.startsWith("You drink some of your") && message.contains("prayer enhance"))
-		{
-			createGameTimer(PRAYER_ENHANCE);
-		}
-
-		if (config.showPrayerEnhance() && message.equals(PRAYER_ENHANCE_EXPIRED))
-		{
-			removeGameTimer(PRAYER_ENHANCE);
 		}
 
 		if (config.showStaffOfTheDead() && message.contains(STAFF_OF_THE_DEAD_SPEC_MESSAGE))
