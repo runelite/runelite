@@ -27,7 +27,6 @@ package net.runelite.client.plugins.feed;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
@@ -43,7 +42,6 @@ import net.runelite.client.util.ImageUtil;
 	tags = {"external", "integration", "panel", "twitter"},
 	loadWhenOutdated = true
 )
-@Slf4j
 public class FeedPlugin extends Plugin
 {
 	@Inject
