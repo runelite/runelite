@@ -38,7 +38,6 @@ __kernel __attribute__((reqd_work_group_size(6, 1, 1))) void computeUnordered(__
   int outOffset = minfo.idx;
   int toffset = minfo.toffset;
   int flags = minfo.flags;
-  int4 pos = (int4)(minfo.x, minfo.y, minfo.z, 0);
 
   if (localId >= size) {
     return;
@@ -59,6 +58,8 @@ __kernel __attribute__((reqd_work_group_size(6, 1, 1))) void computeUnordered(__
   }
 
   uint myOffset = localId;
+  int4 pos = (int4)(minfo.x, minfo.y, minfo.z, 0);
+  float4 texPos = convert_float4(pos.wxyz);
 
   // position vertices in scene and write to out buffer
   vout[outOffset + myOffset * 3] = pos + thisA;
@@ -70,12 +71,12 @@ __kernel __attribute__((reqd_work_group_size(6, 1, 1))) void computeUnordered(__
     uvout[outOffset + myOffset * 3 + 1] = (float4)(0.0f, 0.0f, 0.0f, 0.0f);
     uvout[outOffset + myOffset * 3 + 2] = (float4)(0.0f, 0.0f, 0.0f, 0.0f);
   } else if (flags >= 0) {
-    uvout[outOffset + myOffset * 3] = temptexb[toffset + localId * 3];
-    uvout[outOffset + myOffset * 3 + 1] = temptexb[toffset + localId * 3 + 1];
-    uvout[outOffset + myOffset * 3 + 2] = temptexb[toffset + localId * 3 + 2];
+    uvout[outOffset + myOffset * 3] = texPos + temptexb[toffset + localId * 3];
+    uvout[outOffset + myOffset * 3 + 1] = texPos + temptexb[toffset + localId * 3 + 1];
+    uvout[outOffset + myOffset * 3 + 2] = texPos + temptexb[toffset + localId * 3 + 2];
   } else {
-    uvout[outOffset + myOffset * 3] = texb[toffset + localId * 3];
-    uvout[outOffset + myOffset * 3 + 1] = texb[toffset + localId * 3 + 1];
-    uvout[outOffset + myOffset * 3 + 2] = texb[toffset + localId * 3 + 2];
+    uvout[outOffset + myOffset * 3] = texPos + texb[toffset + localId * 3];
+    uvout[outOffset + myOffset * 3 + 1] = texPos + texb[toffset + localId * 3 + 1];
+    uvout[outOffset + myOffset * 3 + 2] = texPos + texb[toffset + localId * 3 + 2];
   }
 }

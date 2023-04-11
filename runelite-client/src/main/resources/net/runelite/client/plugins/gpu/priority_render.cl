@@ -221,7 +221,6 @@ void sort_and_insert(__local struct shared_data *shared, __constant struct unifo
     int outOffset = minfo.idx;
     int toffset = minfo.toffset;
     int flags = minfo.flags;
-    int4 pos = (int4)(minfo.x, minfo.y, minfo.z, 0);
 
     const int priorityOffset = count_prio_offset(shared, thisPriority);
     const int numOfPriority = shared->totalMappedNum[thisPriority];
@@ -244,6 +243,9 @@ void sort_and_insert(__local struct shared_data *shared, __constant struct unifo
       }
     }
 
+    int4 pos = (int4)(minfo.x, minfo.y, minfo.z, 0);
+    int orientation = flags & 0x7ff;
+
     // position vertices in scene and write to out buffer
     vout[outOffset + myOffset * 3] = pos + thisrvA;
     vout[outOffset + myOffset * 3 + 1] = pos + thisrvB;
@@ -255,7 +257,6 @@ void sort_and_insert(__local struct shared_data *shared, __constant struct unifo
       uvout[outOffset + myOffset * 3 + 2] = (float4)(0, 0, 0, 0);
     } else {
       float4 texA, texB, texC;
-      float2 uv1, uv2, uv3;
 
       if (flags >= 0) {
         texA = temptexb[toffset + localId * 3];
@@ -267,23 +268,9 @@ void sort_and_insert(__local struct shared_data *shared, __constant struct unifo
         texC = texb[toffset + localId * 3 + 2];
       }
 
-      int orientation = flags & 0x7ff;
-
-      // rotate back to original orientation because the tex triangles
-      // are not rotated
-      int4 f1 = rotate_vertex(uni, thisrvA, (2048 - orientation) & 2047);
-      int4 f2 = rotate_vertex(uni, thisrvB, (2048 - orientation) & 2047);
-      int4 f3 = rotate_vertex(uni, thisrvC, (2048 - orientation) & 2047);
-
-      // Transform camera position to model space
-      int4 cameraPos = rotate_vertex(uni, (int4)(uni->cameraX, uni->cameraY, uni->cameraZ, 0) - pos, (2048 - orientation) & 2047);
-
-      compute_uv(convert_float3(cameraPos.xyz), convert_float3(f1.xyz), convert_float3(f2.xyz), convert_float3(f3.xyz), texA.yzw, texB.yzw, texC.yzw, &uv1,
-                 &uv2, &uv3);
-
-      uvout[outOffset + myOffset * 3] = (float4)(texA.x, uv1.xy, 0);
-      uvout[outOffset + myOffset * 3 + 1] = (float4)(texB.x, uv2.xy, 0);
-      uvout[outOffset + myOffset * 3 + 2] = (float4)(texC.x, uv3.xy, 0);
+      uvout[outOffset + myOffset * 3] = (float4)(texA.x, rotatef_vertex(texA.yzw, orientation) + convert_float3(pos.xyz));
+      uvout[outOffset + myOffset * 3 + 1] = (float4)(texB.x, rotatef_vertex(texB.yzw, orientation) + convert_float3(pos.xyz));
+      uvout[outOffset + myOffset * 3 + 2] = (float4)(texC.x, rotatef_vertex(texC.yzw, orientation) + convert_float3(pos.xyz));
     }
   }
 }

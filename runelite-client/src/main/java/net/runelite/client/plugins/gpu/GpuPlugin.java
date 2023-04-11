@@ -147,6 +147,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	static final Shader PROGRAM = new Shader()
 		.add(GL43C.GL_VERTEX_SHADER, "vert.glsl")
+		.add(GL43C.GL_GEOMETRY_SHADER, "geom.glsl")
 		.add(GL43C.GL_FRAGMENT_SHADER, "frag.glsl");
 
 	static final Shader COMPUTE_PROGRAM = new Shader()
@@ -1029,8 +1030,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		if (computeMode == ComputeMode.NONE)
 		{
 			targetBufferOffset += sceneUploader.upload(model,
-				// tile model is already positioned in the scene, so it not necessary to offset it
-				0, 0,
+				tileX, tileY,
+				tileX << Perspective.LOCAL_COORD_BITS, tileY << Perspective.LOCAL_COORD_BITS,
 				vertexBuffer, uvBuffer,
 				true);
 		}

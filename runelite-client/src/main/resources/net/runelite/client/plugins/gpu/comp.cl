@@ -27,7 +27,6 @@
 
 #include "cl_types.cl"
 #include "common.cl"
-#include "uv.cl"
 #include "priority_render.cl"
 
 __kernel __attribute__((work_group_size_hint(256, 1, 1))) void computeLarge(__local struct shared_data *shared, __global const struct modelinfo *ol,

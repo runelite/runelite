@@ -39,7 +39,6 @@ void main() {
   int outOffset = minfo.idx;
   int toffset = minfo.toffset;
   int flags = minfo.flags;
-  ivec4 pos = ivec4(minfo.x, minfo.y, minfo.z, 0);
 
   if (localId >= size) {
     return;
@@ -60,6 +59,8 @@ void main() {
   }
 
   uint myOffset = localId;
+  ivec4 pos = ivec4(minfo.x, minfo.y, minfo.z, 0);
+  ivec4 texPos = pos.wxyz;
 
   // position vertices in scene and write to out buffer
   vout[outOffset + myOffset * 3] = pos + thisA;
@@ -67,16 +68,16 @@ void main() {
   vout[outOffset + myOffset * 3 + 2] = pos + thisC;
 
   if (toffset < 0) {
-    uvout[outOffset + myOffset * 3] = vec4(0, 0, 0, 0);
-    uvout[outOffset + myOffset * 3 + 1] = vec4(0, 0, 0, 0);
-    uvout[outOffset + myOffset * 3 + 2] = vec4(0, 0, 0, 0);
+    uvout[outOffset + myOffset * 3] = vec4(0);
+    uvout[outOffset + myOffset * 3 + 1] = vec4(0);
+    uvout[outOffset + myOffset * 3 + 2] = vec4(0);
   } else if (flags >= 0) {
-    uvout[outOffset + myOffset * 3] = temptexb[toffset + localId * 3];
-    uvout[outOffset + myOffset * 3 + 1] = temptexb[toffset + localId * 3 + 1];
-    uvout[outOffset + myOffset * 3 + 2] = temptexb[toffset + localId * 3 + 2];
+    uvout[outOffset + myOffset * 3] = texPos + temptexb[toffset + localId * 3];
+    uvout[outOffset + myOffset * 3 + 1] = texPos + temptexb[toffset + localId * 3 + 1];
+    uvout[outOffset + myOffset * 3 + 2] = texPos + temptexb[toffset + localId * 3 + 2];
   } else {
-    uvout[outOffset + myOffset * 3] = texb[toffset + localId * 3];
-    uvout[outOffset + myOffset * 3 + 1] = texb[toffset + localId * 3 + 1];
-    uvout[outOffset + myOffset * 3 + 2] = texb[toffset + localId * 3 + 2];
+    uvout[outOffset + myOffset * 3] = texPos + texb[toffset + localId * 3];
+    uvout[outOffset + myOffset * 3 + 1] = texPos + texb[toffset + localId * 3 + 1];
+    uvout[outOffset + myOffset * 3 + 2] = texPos + texb[toffset + localId * 3 + 2];
   }
 }

@@ -216,7 +216,6 @@ void sort_and_insert(uint localId, modelinfo minfo, int thisPriority, int thisDi
     int outOffset = minfo.idx;
     int toffset = minfo.toffset;
     int flags = minfo.flags;
-    ivec4 pos = ivec4(minfo.x, minfo.y, minfo.z, 0);
 
     const int priorityOffset = count_prio_offset(thisPriority);
     const int numOfPriority = totalMappedNum[thisPriority];
@@ -239,18 +238,20 @@ void sort_and_insert(uint localId, modelinfo minfo, int thisPriority, int thisDi
       }
     }
 
+    ivec4 pos = ivec4(minfo.x, minfo.y, minfo.z, 0);
+    int orientation = flags & 0x7ff;
+
     // position vertices in scene and write to out buffer
     vout[outOffset + myOffset * 3] = pos + thisrvA;
     vout[outOffset + myOffset * 3 + 1] = pos + thisrvB;
     vout[outOffset + myOffset * 3 + 2] = pos + thisrvC;
 
     if (toffset < 0) {
-      uvout[outOffset + myOffset * 3] = vec4(0, 0, 0, 0);
-      uvout[outOffset + myOffset * 3 + 1] = vec4(0, 0, 0, 0);
-      uvout[outOffset + myOffset * 3 + 2] = vec4(0, 0, 0, 0);
+      uvout[outOffset + myOffset * 3] = vec4(0);
+      uvout[outOffset + myOffset * 3 + 1] = vec4(0);
+      uvout[outOffset + myOffset * 3 + 2] = vec4(0);
     } else {
       vec4 texA, texB, texC;
-      vec2 uv1, uv2, uv3;
 
       if (flags >= 0) {
         texA = temptexb[toffset + localId * 3];
@@ -262,22 +263,9 @@ void sort_and_insert(uint localId, modelinfo minfo, int thisPriority, int thisDi
         texC = texb[toffset + localId * 3 + 2];
       }
 
-      int orientation = flags & 0x7ff;
-
-      // rotate back to original orientation because the tex triangles
-      // are not rotated
-      ivec4 f1 = rotate(thisrvA, (2048 - orientation) & 2047);
-      ivec4 f2 = rotate(thisrvB, (2048 - orientation) & 2047);
-      ivec4 f3 = rotate(thisrvC, (2048 - orientation) & 2047);
-
-      // Transform camera position to model space
-      ivec4 cameraPos = rotate(ivec4(cameraX, cameraY, cameraZ, 0) - pos, (2048 - orientation) & 2047);
-
-      compute_uv(cameraPos.xyz, f1.xyz, f2.xyz, f3.xyz, texA.yzw, texB.yzw, texC.yzw, uv1, uv2, uv3);
-
-      uvout[outOffset + myOffset * 3] = vec4(texA.x, uv1.xy, 0);
-      uvout[outOffset + myOffset * 3 + 1] = vec4(texB.x, uv2.xy, 0);
-      uvout[outOffset + myOffset * 3 + 2] = vec4(texC.x, uv3.xy, 0);
+      uvout[outOffset + myOffset * 3] = vec4(texA.x, rotatef(texA.yzw, orientation) + pos.xyz);
+      uvout[outOffset + myOffset * 3 + 1] = vec4(texB.x, rotatef(texB.yzw, orientation) + pos.xyz);
+      uvout[outOffset + myOffset * 3 + 2] = vec4(texC.x, rotatef(texC.yzw, orientation) + pos.xyz);
     }
   }
 }
