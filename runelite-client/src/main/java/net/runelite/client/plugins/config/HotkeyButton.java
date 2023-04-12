@@ -48,8 +48,12 @@ class HotkeyButton extends JButton
 			@Override
 			public void mouseReleased(MouseEvent e)
 			{
-				// We have to use a mouse adapter instead of an action listener so the press action key (space) can be bound
-				setValue(Keybind.NOT_SET);
+				// Mouse buttons other than button1 don't give focus
+				if (e.getButton() == MouseEvent.BUTTON1)
+				{
+					// We have to use a mouse adapter instead of an action listener so the press action key (space) can be bound
+					setValue(Keybind.NOT_SET);
+				}
 			}
 		});
 

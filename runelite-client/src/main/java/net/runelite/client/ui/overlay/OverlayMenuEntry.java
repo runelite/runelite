@@ -24,13 +24,27 @@
  */
 package net.runelite.client.ui.overlay;
 
-import lombok.Value;
+import java.util.function.Consumer;
+import javax.annotation.Nullable;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import net.runelite.api.MenuAction;
+import net.runelite.api.MenuEntry;
 
-@Value
+@RequiredArgsConstructor
+@ToString(exclude = {"callback"})
+@EqualsAndHashCode(exclude = {"callback"})
 public class OverlayMenuEntry
 {
-	private MenuAction menuAction;
-	private String option;
-	private String target;
+	@Getter
+	private final MenuAction menuAction;
+	@Getter
+	private final String option;
+	@Getter
+	private final String target;
+
+	@Nullable
+	Consumer<MenuEntry> callback;
 }

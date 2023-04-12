@@ -29,7 +29,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.8.24-SNAPSHOT</version>
+		<version>1.9.15-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>client</artifactId>
@@ -114,11 +114,6 @@
 			<version>1.2</version>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-csv</artifactId>
-			<version>1.4</version>
-		</dependency>
-		<dependency>
 			<groupId>net.runelite.archive-patcher</groupId>
 			<artifactId>archive-patcher-applier</artifactId>
 			<version>1.2</version>
@@ -143,81 +138,15 @@
 			<version>23.0.0</version>
 			<scope>provided</scope>
 		</dependency>
-
-		<!-- JOGL -->
 		<dependency>
-			<groupId>net.runelite.jogl</groupId>
-			<artifactId>jogl-rl</artifactId>
-			<version>2.4.0-rc-20220318</version>
+			<groupId>com.google.protobuf</groupId>
+			<artifactId>protobuf-javalite</artifactId>
+			<version>3.21.12</version>
 		</dependency>
 		<dependency>
-			<groupId>net.runelite.jogl</groupId>
-			<artifactId>jogl-gldesktop-dbg</artifactId>
-			<version>2.4.0-rc-20220318</version>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>net.runelite.jogl</groupId>
-			<artifactId>jogl-rl</artifactId>
-			<version>2.4.0-rc-20220318</version>
-			<classifier>natives-windows-amd64</classifier>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>net.runelite.jogl</groupId>
-			<artifactId>jogl-rl</artifactId>
-			<version>2.4.0-rc-20220318</version>
-			<classifier>natives-windows-i586</classifier>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>net.runelite.jogl</groupId>
-			<artifactId>jogl-rl</artifactId>
-			<version>2.4.0-rc-20220318</version>
-			<classifier>natives-linux-amd64</classifier>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>net.runelite.jogl</groupId>
-			<artifactId>jogl-rl</artifactId>
-			<version>2.4.0-rc-20220318</version>
-			<classifier>natives-macosx-universal</classifier>
-			<scope>runtime</scope>
-		</dependency>
-
-		<!-- gluegen -->
-		<dependency>
-			<groupId>net.runelite.gluegen</groupId>
-			<artifactId>gluegen-rt</artifactId>
-			<version>2.4.0-rc-20220318</version>
-		</dependency>
-		<dependency>
-			<groupId>net.runelite.gluegen</groupId>
-			<artifactId>gluegen-rt</artifactId>
-			<version>2.4.0-rc-20220318</version>
-			<classifier>natives-windows-amd64</classifier>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>net.runelite.gluegen</groupId>
-			<artifactId>gluegen-rt</artifactId>
-			<version>2.4.0-rc-20220318</version>
-			<classifier>natives-windows-i586</classifier>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>net.runelite.gluegen</groupId>
-			<artifactId>gluegen-rt</artifactId>
-			<version>2.4.0-rc-20220318</version>
-			<classifier>natives-linux-amd64</classifier>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>net.runelite.gluegen</groupId>
-			<artifactId>gluegen-rt</artifactId>
-			<version>2.4.0-rc-20220318</version>
-			<classifier>natives-macosx-universal</classifier>
-			<scope>runtime</scope>
+			<groupId>net.runelite</groupId>
+			<artifactId>rlawt</artifactId>
+			<version>1.3</version>
 		</dependency>
 
 		<!-- JOCL -->
@@ -241,6 +170,78 @@
 			<scope>runtime</scope>
 		</dependency>
 
+		<!-- lwjgl core -->
+		<dependency>
+			<groupId>org.lwjgl</groupId>
+			<artifactId>lwjgl</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.lwjgl</groupId>
+			<artifactId>lwjgl</artifactId>
+			<classifier>natives-linux</classifier>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.lwjgl</groupId>
+			<artifactId>lwjgl</artifactId>
+			<classifier>natives-macos</classifier>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.lwjgl</groupId>
+			<artifactId>lwjgl</artifactId>
+			<classifier>natives-macos-arm64</classifier>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.lwjgl</groupId>
+			<artifactId>lwjgl</artifactId>
+			<classifier>natives-windows-x86</classifier>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.lwjgl</groupId>
+			<artifactId>lwjgl</artifactId>
+			<classifier>natives-windows</classifier>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- lwjgl opengl -->
+		<dependency>
+			<groupId>org.lwjgl</groupId>
+			<artifactId>lwjgl-opengl</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.lwjgl</groupId>
+			<artifactId>lwjgl-opengl</artifactId>
+			<classifier>natives-linux</classifier>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.lwjgl</groupId>
+			<artifactId>lwjgl-opengl</artifactId>
+			<classifier>natives-macos</classifier>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.lwjgl</groupId>
+			<artifactId>lwjgl-opengl</artifactId>
+			<classifier>natives-macos-arm64</classifier>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.lwjgl</groupId>
+			<artifactId>lwjgl-opengl</artifactId>
+			<classifier>natives-windows-x86</classifier>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.lwjgl</groupId>
+			<artifactId>lwjgl-opengl</artifactId>
+			<classifier>natives-windows</classifier>
+			<scope>runtime</scope>
+		</dependency>
+
 		<dependency>
 			<groupId>net.runelite</groupId>
 			<artifactId>runelite-api</artifactId>
@@ -261,7 +262,7 @@
 		<dependency>
 			<groupId>net.runelite.arn</groupId>
 			<artifactId>http-api</artifactId>
-			<version>1.0.6</version>
+			<version>1.2.3</version>
 		</dependency>
 		<dependency>
 			<groupId>net.runelite</groupId>
@@ -311,6 +312,18 @@
 		</dependency>
 	</dependencies>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.lwjgl</groupId>
+				<artifactId>lwjgl-bom</artifactId>
+				<version>3.3.1</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<build>
 		<resources>
 			<resource>
@@ -357,6 +370,9 @@
 							<Multi-Release>true</Multi-Release>
 						</manifestEntries>
 					</archive>
+					<excludes>
+						<exclude>**/.clang-format</exclude>
+					</excludes>
 				</configuration>
 				<executions>
 					<execution>
@@ -488,6 +504,7 @@
 					<analysisCache>true</analysisCache>
 					<excludes>
 						<exclude>**/RuntimeTypeAdapterFactory.java</exclude>
+						<exclude>net/runelite/client/party/Party.java</exclude>
 					</excludes>
 				</configuration>
 				<executions>

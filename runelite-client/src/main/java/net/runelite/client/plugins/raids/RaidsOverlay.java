@@ -30,15 +30,14 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
 import lombok.Getter;
-import net.runelite.api.FriendsChatManager;
 import net.runelite.api.Client;
+import net.runelite.api.FriendsChatManager;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Varbits;
 import net.runelite.client.game.WorldService;
 import net.runelite.client.plugins.raids.solver.Room;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
-import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
@@ -52,7 +51,7 @@ import net.runelite.http.api.worlds.WorldResult;
 class RaidsOverlay extends OverlayPanel
 {
 	private static final int OLM_PLANE = 0;
-	static final String SCREENSHOT_ACTION = "Screenshot";
+	private static final String SCREENSHOT_ACTION = "Screenshot";
 
 	private final Client client;
 	private final RaidsPlugin plugin;
@@ -72,8 +71,8 @@ class RaidsOverlay extends OverlayPanel
 		this.plugin = plugin;
 		this.config = config;
 		this.worldService = worldService;
-		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Raids overlay"));
-		getMenuEntries().add(new OverlayMenuEntry(RUNELITE_OVERLAY, SCREENSHOT_ACTION, "Raids overlay"));
+		addMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Raids overlay");
+		addMenuEntry(RUNELITE_OVERLAY, SCREENSHOT_ACTION, "Raids overlay", e -> plugin.screenshotScoutOverlay());
 	}
 
 	@Override

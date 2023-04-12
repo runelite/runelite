@@ -288,7 +288,7 @@ enum DiscordGameEventType
 	MG_BURTHORPE_GAMES_ROOM("Burthorpe Games Room", DiscordAreaType.MINIGAMES, 8781),
 	MG_CASTLE_WARS("Castle Wars", DiscordAreaType.MINIGAMES, 9520, 9620),
 	MG_CLAN_WARS("Clan Wars", DiscordAreaType.MINIGAMES, 12621, 12622, 12623, 13130, 13131, 13133, 13134, 13135, 13386, 13387, 13390, 13641, 13642, 13643, 13644, 13645, 13646, 13647, 13899, 13900, 14155, 14156),
-	MG_DUEL_ARENA("Duel Arena", DiscordAreaType.MINIGAMES, 13362, 13363),
+	MG_PVP_ARENA("PvP Arena", DiscordAreaType.MINIGAMES, 13362, 13363),
 	MG_FISHING_TRAWLER("Fishing Trawler", DiscordAreaType.MINIGAMES, 7499),
 	MG_GAUNTLET("The Gauntlet", DiscordAreaType.MINIGAMES, 12127, 7512),
 	MG_CORRUPTED_GAUNTLET("Corrupted Gauntlet", DiscordAreaType.MINIGAMES, 7768),
@@ -317,6 +317,9 @@ enum DiscordGameEventType
 	// Raids
 	RAIDS_CHAMBERS_OF_XERIC("Chambers of Xeric", DiscordAreaType.RAIDS, 12889, 13136, 13137, 13138, 13139, 13140, 13141, 13145, 13393, 13394, 13395, 13396, 13397, 13401),
 	RAIDS_THEATRE_OF_BLOOD("Theatre of Blood", DiscordAreaType.RAIDS, 12611, 12612, 12613, 12867, 12869, 13122, 13123, 13125, 13379),
+	RAIDS_TOMBS_OF_AMASCUT("Tombs of Amascut", DiscordAreaType.RAIDS, 14160, 14162, 14164, 14674, 14676, 15184, 15186, 15188, 15696, 15698, 15700),
+	RAIDS_JALTEVAS_PYRAMID("Jaltevas Pyramid", DiscordAreaType.RAIDS, 13454),
+	RAIDS_OSMUMTENS_BURIAL_CHAMBER("Osmumten's Burial Chamber", DiscordAreaType.RAIDS, 14672),
 
 	// Other
 	REGION_ABYSSAL_AREA("Abyssal Area", DiscordAreaType.REGIONS, 12108),
@@ -408,6 +411,7 @@ enum DiscordGameEventType
 	REGION_MYSTERIOUS_OLD_MAN_MAZE("Mysterious Old Man's Maze", DiscordAreaType.REGIONS, 11590, 11591, 11846, 11847),
 	REGION_MYTHS_GUILD("Myths' Guild", DiscordAreaType.REGIONS, 9772),
 	REGION_NATURE_ALTAR("Nature Altar", DiscordAreaType.REGIONS, 9547),
+	REGION_NECROPOLIS("Necropolis", DiscordAreaType.REGIONS, 13098, 13353, 13354, 13609, 13610),
 	REGION_NORTHERN_TUNDRAS("Northern Tundras", DiscordAreaType.REGIONS, 6204, 6205, 6717),
 	REGION_OBSERVATORY("Observatory", DiscordAreaType.REGIONS, 9777),
 	REGION_ODD_ONE_OUT("Odd One Out", DiscordAreaType.REGIONS, 7754),
@@ -423,6 +427,7 @@ enum DiscordGameEventType
 	REGION_RANGING_GUILD("Ranging Guild", DiscordAreaType.REGIONS, 10549),
 	REGION_RATCATCHERS_MANSION("Ratcatchers Mansion", DiscordAreaType.REGIONS, 11343),
 	REGION_RUINS_OF_UNKAH("Ruins of Unkah", DiscordAreaType.REGIONS, 12588),
+	REGION_RUINS_OF_ULLEK("Ruins of Ullek", DiscordAreaType.REGIONS, 13355, 13611, 13612),
 	REGION_RUNE_ESSENCE_MINE("Rune Essence Mine", DiscordAreaType.REGIONS, 11595),
 	// The Beekeper, Pinball, and Gravedigger randoms share a region (7758), and although they are not technically ScapeRune, that name is most commonly
 	// associated with random events, so those three have been denoted ScapeRune to avoid leaving multiple random event regions without an assigned name.

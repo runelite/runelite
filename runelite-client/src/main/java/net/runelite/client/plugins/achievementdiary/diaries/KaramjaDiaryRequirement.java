@@ -97,8 +97,7 @@ public class KaramjaDiaryRequirement extends GenericDiaryRequirement
 
 		// HARD
 		add("Craft some nature runes from Essence.",
-			new SkillRequirement(Skill.RUNECRAFT, 44),
-			new QuestRequirement(Quest.RUNE_MYSTERIES));
+			new SkillRequirement(Skill.RUNECRAFT, 44));
 		add("Cook a karambwan thoroughly.",
 			new SkillRequirement(Skill.COOKING, 30),
 			new QuestRequirement(Quest.TAI_BWO_WANNAI_TRIO));

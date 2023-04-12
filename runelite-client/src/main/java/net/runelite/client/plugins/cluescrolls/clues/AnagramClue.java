@@ -48,12 +48,12 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 
 @Getter
 @Builder
-public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueScroll, ObjectClueScroll
+public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClueScroll
 {
 	private static final String ANAGRAM_TEXT = "This anagram reveals who to speak to next: ";
 	private static final String ANAGRAM_TEXT_BEGINNER = "The anagram reveals who to speak to next: ";
 
-	private static final List<AnagramClue> CLUES = ImmutableList.of(
+	static final List<AnagramClue> CLUES = ImmutableList.of(
 		AnagramClue.builder()
 			.text("A BAKER")
 			.npc("Baraek")
@@ -88,7 +88,7 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 			.text("AHA JAR")
 			.npc("Jaraah")
 			.location(new WorldPoint(3359, 3276, 0))
-			.area("Duel Arena hospital")
+			.area("PvP Arena hospital")
 			.build(),
 		AnagramClue.builder()
 			.text("ARC O LINE")
@@ -436,7 +436,7 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 			.text("MACHETE CLAM")
 			.npc("Cam the Camel")
 			.location(new WorldPoint(3300, 3231, 0))
-			.area("Outside Duel Arena")
+			.area("Outside PvP Arena")
 			.question("How many items can carry water in Gielinor?")
 			.answer("6")
 			.build(),
@@ -700,7 +700,7 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 			.area("Southwest Varrock")
 			.build(),
 		AnagramClue.builder()
-			.text("DISORDER")
+			.text("CHAR GAME DISORDER")
 			.npc("Archmage Sedridor")
 			.location(new WorldPoint(3102, 9570, 0))
 			.area("Wizards' Tower basement")
@@ -806,6 +806,8 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 				.leftColor(TITLED_CONTENT_COLOR)
 				.build());
 		}
+
+		renderOverlayNote(panelComponent, plugin);
 	}
 
 	@Override
@@ -856,7 +858,7 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 	}
 
 	@Override
-	public String[] getNpcs()
+	public String[] getNpcs(ClueScrollPlugin plugin)
 	{
 		return new String[]{npc};
 	}
@@ -865,5 +867,11 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 	public int[] getObjectIds()
 	{
 		return new int[]{objectId};
+	}
+
+	@Override
+	public int[] getConfigKeys()
+	{
+		return new int[]{text.hashCode()};
 	}
 }

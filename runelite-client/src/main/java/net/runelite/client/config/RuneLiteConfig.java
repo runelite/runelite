@@ -345,18 +345,6 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "menuEntryShift",
-		name = "Require Shift for overlay menu",
-		description = "Overlay right-click menu will require shift to be added",
-		position = 34,
-		section = overlaySettings
-	)
-	default boolean menuEntryShift()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "tooltipPosition",
 		name = "Tooltip Position",
 		description = "Configures whether to show the tooltip above or under the cursor",

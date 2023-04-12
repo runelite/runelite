@@ -52,7 +52,6 @@ import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.GameState;
 import net.runelite.api.InstanceTemplates;
-import net.runelite.api.MenuAction;
 import net.runelite.api.MessageNode;
 import net.runelite.api.NullObjectID;
 import static net.runelite.api.Perspective.SCENE_SIZE;
@@ -79,7 +78,6 @@ import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ChatInput;
 import net.runelite.client.events.ConfigChanged;
-import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
@@ -253,12 +251,10 @@ public class RaidsPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		int tempPartyID = client.getVar(VarPlayer.IN_RAID_PARTY);
-		boolean tempInRaid = client.getVarbitValue(Varbits.IN_RAID) == 1;
-
 		// if the player's party state has changed
-		if (tempPartyID != raidPartyID)
+		if (event.getVarpId() == VarPlayer.IN_RAID_PARTY)
 		{
+			boolean tempInRaid = client.getVarbitValue(Varbits.IN_RAID) == 1;
 			// if the player is outside of a raid when the party state changed
 			if (loggedIn
 				&& !tempInRaid)
@@ -266,12 +262,13 @@ public class RaidsPlugin extends Plugin
 				reset();
 			}
 
-			raidPartyID = tempPartyID;
+			raidPartyID = event.getValue();
 		}
 
 		// if the player's raid state has changed
-		if (tempInRaid != inRaidChambers)
+		if (event.getVarbitId() == Varbits.IN_RAID)
 		{
+			boolean tempInRaid = event.getValue() == 1;
 			// if the player is inside of a raid then check the raid
 			if (tempInRaid && loggedIn)
 			{
@@ -339,21 +336,6 @@ public class RaidsPlugin extends Plugin
 						.build());
 				}
 			}
-		}
-	}
-
-	@Subscribe
-	public void onOverlayMenuClicked(final OverlayMenuClicked event)
-	{
-		if (!(event.getEntry().getMenuAction() == MenuAction.RUNELITE_OVERLAY
-			&& event.getOverlay() == overlay))
-		{
-			return;
-		}
-
-		if (event.getEntry().getOption().equals(RaidsOverlay.SCREENSHOT_ACTION))
-		{
-			screenshotScoutOverlay();
 		}
 	}
 
@@ -851,7 +833,7 @@ public class RaidsPlugin extends Plugin
 		}
 	};
 
-	private void screenshotScoutOverlay()
+	void screenshotScoutOverlay()
 	{
 		if (!overlay.isScoutOverlayShown())
 		{

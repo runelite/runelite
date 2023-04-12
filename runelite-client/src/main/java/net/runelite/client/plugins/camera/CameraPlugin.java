@@ -42,7 +42,6 @@ import net.runelite.api.VarPlayer;
 import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.FocusChanged;
-import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.WidgetLoaded;
@@ -83,7 +82,6 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	 * Whether or not the current menu has any non-ignored menu entries
 	 */
 	private boolean menuHasEntries;
-	private int savedCameraYaw;
 
 	@Inject
 	private Client client;
@@ -334,7 +332,7 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 		{
 			case ScriptID.SETTINGS_SLIDER_CHOOSE_ONOP:
 			{
-				int arg = client.getIntStackSize() - 7;
+				int arg = client.getIntStackSize() - 11;
 				int[] is = client.getIntStack();
 
 				if (is[arg] == SettingID.CAMERA_ZOOM)
@@ -366,7 +364,7 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 
 	private Tooltip makeSliderTooltip()
 	{
-		int value = client.getVar(VarClientInt.CAMERA_ZOOM_RESIZABLE_VIEWPORT);
+		int value = client.getVarcIntValue(VarClientInt.CAMERA_ZOOM_RESIZABLE_VIEWPORT);
 		int max = config.innerLimit() ? config.INNER_ZOOM_LIMIT : CameraPlugin.DEFAULT_INNER_ZOOM_LIMIT;
 		return new Tooltip("Camera Zoom: " + value + " / " + max);
 	}
@@ -377,24 +375,6 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 		if (sliderTooltip != null)
 		{
 			tooltipManager.add(sliderTooltip);
-		}
-	}
-
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
-	{
-		switch (gameStateChanged.getGameState())
-		{
-			case HOPPING:
-				savedCameraYaw = client.getMapAngle();
-				break;
-			case LOGGED_IN:
-				if (savedCameraYaw != 0 && config.preserveYaw())
-				{
-					client.setCameraYawTarget(savedCameraYaw);
-				}
-				savedCameraYaw = 0;
-				break;
 		}
 	}
 
@@ -409,7 +389,7 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	{
 		if (SwingUtilities.isRightMouseButton(mouseEvent) && config.rightClickMovesCamera())
 		{
-			boolean oneButton = client.getVar(VarPlayer.MOUSE_BUTTONS) == 1;
+			boolean oneButton = client.getVarpValue(VarPlayer.MOUSE_BUTTONS) == 1;
 			// Only move the camera if there is nothing at the menu, or if
 			// in one-button mode. In one-button mode, left and right click always do the same thing,
 			// so always treat it as the menu is empty

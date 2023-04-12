@@ -27,6 +27,7 @@ package net.runelite.client.plugins.opponentinfo;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Provides;
+import java.text.DecimalFormat;
 import java.time.Duration;
 import java.time.Instant;
 import javax.inject.Inject;
@@ -38,10 +39,15 @@ import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
+import net.runelite.api.ScriptID;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.ScriptPostFired;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.hiscore.HiscoreEndpoint;
@@ -57,6 +63,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 public class OpponentInfoPlugin extends Plugin
 {
 	private static final Duration WAIT = Duration.ofSeconds(5);
+	private static final DecimalFormat PERCENT_FORMAT = new DecimalFormat("0.0");
 
 	@Inject
 	private Client client;
@@ -170,5 +177,50 @@ public class OpponentInfoPlugin extends Plugin
 			MenuEntry[] menuEntries = client.getMenuEntries();
 			menuEntries[menuEntries.length - 1].setTarget("*" + menuEntries[menuEntries.length - 1].getTarget());
 		}
+	}
+
+	@Subscribe
+	public void onScriptPostFired(ScriptPostFired event)
+	{
+		if (event.getScriptId() == ScriptID.HP_HUD_UPDATE)
+		{
+			updateBossHealthBarText();
+		}
+	}
+
+	/**
+	 * Update the in-game boss health bar overlay text to what the user's config specifies.
+	 * This health bar is used in CoX, ToA, Gauntlet, quest bosses, etc. It is not used in ToB, which has its own.
+	 */
+	private void updateBossHealthBarText()
+	{
+		Widget widget = client.getWidget(WidgetInfo.HEALTH_OVERLAY_BAR_TEXT);
+		if (widget == null)
+		{
+			return;
+		}
+
+		final int currHp = client.getVarbitValue(Varbits.BOSS_HEALTH_CURRENT);
+		final int maxHp = client.getVarbitValue(Varbits.BOSS_HEALTH_MAXIMUM);
+		if (maxHp <= 0)
+		{
+			return;
+		}
+
+		switch (config.hitpointsDisplayStyle())
+		{
+			case PERCENTAGE:
+				widget.setText(getPercentText(currHp, maxHp));
+				break;
+			case BOTH:
+				widget.setText(widget.getText() + " (" + getPercentText(currHp, maxHp) + ")");
+				break;
+		}
+	}
+
+	private static String getPercentText(int current, int maximum)
+	{
+		double percent = 100.0 * current / maximum;
+		return PERCENT_FORMAT.format(percent) + "%";
 	}
 }

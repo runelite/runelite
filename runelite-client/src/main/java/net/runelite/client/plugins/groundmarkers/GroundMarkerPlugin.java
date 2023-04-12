@@ -52,6 +52,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.events.ProfileChanged;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -202,9 +203,6 @@ public class GroundMarkerPlugin extends Plugin
 		if (config.showImportExport())
 		{
 			sharingManager.addImportExportMenuOptions();
-		}
-		if (config.showClear())
-		{
 			sharingManager.addClearMenuOption();
 		}
 		loadPoints();
@@ -220,6 +218,12 @@ public class GroundMarkerPlugin extends Plugin
 		overlayManager.remove(worldmapOverlay);
 		sharingManager.removeMenuOptions();
 		points.clear();
+	}
+
+	@Subscribe
+	public void onProfileChanged(ProfileChanged profileChanged)
+	{
+		loadPoints();
 	}
 
 	@Subscribe
@@ -287,18 +291,13 @@ public class GroundMarkerPlugin extends Plugin
 	public void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals(GroundMarkerConfig.GROUND_MARKER_CONFIG_GROUP)
-			&& (event.getKey().equals(GroundMarkerConfig.SHOW_IMPORT_EXPORT_KEY_NAME)
-				|| event.getKey().equals(GroundMarkerConfig.SHOW_CLEAR_KEY_NAME)))
+			&& event.getKey().equals(GroundMarkerConfig.SHOW_IMPORT_EXPORT_KEY_NAME))
 		{
-			// Maintain consistent menu option order by removing everything then adding according to config
 			sharingManager.removeMenuOptions();
 
 			if (config.showImportExport())
 			{
 				sharingManager.addImportExportMenuOptions();
-			}
-			if (config.showClear())
-			{
 				sharingManager.addClearMenuOption();
 			}
 		}

@@ -24,20 +24,29 @@
  */
 package net.runelite.client.plugins.chatcommands;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 import com.google.gson.Gson;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.function.BooleanSupplier;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import static net.runelite.api.ChatMessageType.FRIENDSCHATNOTIFICATION;
 import static net.runelite.api.ChatMessageType.GAMEMESSAGE;
 import static net.runelite.api.ChatMessageType.TRADE;
 import net.runelite.api.Client;
+import net.runelite.api.EnumComposition;
+import net.runelite.api.EnumID;
+import net.runelite.api.GameState;
+import net.runelite.api.IndexedSprite;
+import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemID;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
 import net.runelite.api.ScriptID;
@@ -48,8 +57,9 @@ import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetID.ADVENTURE_LOG_ID;
-import static net.runelite.api.widgets.WidgetID.DIARY_QUEST_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.ACHIEVEMENT_DIARY_SCROLL_GROUP_ID;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatClient;
 import net.runelite.client.chat.ChatCommandManager;
 import net.runelite.client.config.ChatColorConfig;
@@ -59,25 +69,29 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.hiscore.HiscoreClient;
 import net.runelite.client.hiscore.HiscoreEndpoint;
 import net.runelite.client.hiscore.HiscoreResult;
+import net.runelite.client.hiscore.HiscoreSkill;
 import net.runelite.client.hiscore.Skill;
-import net.runelite.http.api.RuneLiteAPI;
+import net.runelite.client.util.AsyncBufferedImage;
+import org.junit.After;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.nullable;
 import org.mockito.Mock;
-import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.stubbing.Answer;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ChatCommandsPluginTest
@@ -87,6 +101,10 @@ public class ChatCommandsPluginTest
 	@Mock
 	@Bind
 	Client client;
+
+	@Mock
+	@Bind
+	ClientThread clientThread;
 
 	@Mock
 	@Bind
@@ -127,7 +145,10 @@ public class ChatCommandsPluginTest
 	@Inject
 	ChatCommandsPlugin chatCommandsPlugin;
 
-	final Gson gson = RuneLiteAPI.GSON;
+	@Inject
+	Gson gson;
+
+	private IndexedSprite[] modIcons;
 
 	@Before
 	public void before()
@@ -137,12 +158,44 @@ public class ChatCommandsPluginTest
 		Player player = mock(Player.class);
 		when(player.getName()).thenReturn(PLAYER_NAME);
 		when(client.getLocalPlayer()).thenReturn(player);
+
+		modIcons = new IndexedSprite[0];
+		when(client.getModIcons()).thenAnswer(a -> modIcons);
+		doAnswer((Answer<Void>) invocationOnMock ->
+		{
+			Object argument = invocationOnMock.getArguments()[0];
+			modIcons = (IndexedSprite[]) argument;
+			return null;
+		}).when(client).setModIcons(any(IndexedSprite[].class));
+
+		when(client.getGameState()).thenReturn(GameState.LOGGED_IN);
+		when(client.createIndexedSprite()).thenReturn(mock(IndexedSprite.class));
+
+		EnumComposition enum_ = mock(EnumComposition.class);
+		when(enum_.size()).thenReturn(1);
+		when(enum_.getIntValue(0)).thenReturn(ItemID.CHOMPY_CHICK);
+		when(client.getEnum(EnumID.PETS)).thenReturn(enum_);
+
+		when(itemManager.getImage(anyInt())).thenReturn(new AsyncBufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
+
+		chatCommandsPlugin.startUp();
+
+		// clientthread callback
+		ArgumentCaptor<BooleanSupplier> captor = ArgumentCaptor.forClass(BooleanSupplier.class);
+		verify(clientThread).invoke(captor.capture());
+		captor.getValue().getAsBoolean();
+	}
+
+	@After
+	public void after()
+	{
+		chatCommandsPlugin.shutDown();
 	}
 
 	@Test
 	public void testStartupShutdown()
 	{
-		chatCommandsPlugin.startUp();
+		// minor kludge since before/after will startup/shutdown
 		chatCommandsPlugin.shutDown();
 
 		ArgumentCaptor<String> registerCaptor = ArgumentCaptor.forClass(String.class);
@@ -154,6 +207,8 @@ public class ChatCommandsPluginTest
 		verify(chatCommandManager, atLeastOnce()).unregisterCommand(unregisterCaptor.capture());
 
 		assertEquals(Sets.newHashSet(registerCaptor.getAllValues()), Sets.newHashSet(unregisterCaptor.getAllValues()));
+
+		chatCommandsPlugin.startUp();
 	}
 
 	@Test
@@ -616,9 +671,8 @@ public class ChatCommandsPluginTest
 	{
 		when(chatCommandsConfig.lvl()).thenReturn(true);
 
-		HiscoreResult hiscoreResult = new HiscoreResult();
-		hiscoreResult.setPlayer(PLAYER_NAME);
-		hiscoreResult.setChambersOfXericChallengeMode(new Skill(10, 1000, -1));
+		HiscoreResult hiscoreResult = new HiscoreResult(PLAYER_NAME,
+			ImmutableMap.of(HiscoreSkill.CHAMBERS_OF_XERIC_CHALLENGE_MODE, new Skill(10, 1000, -1)));
 
 		when(hiscoreClient.lookup(eq(PLAYER_NAME), nullable(HiscoreEndpoint.class))).thenReturn(hiscoreResult);
 
@@ -903,8 +957,8 @@ public class ChatCommandsPluginTest
 			when(logPetEntriesWidget[i].getOpacity()).thenReturn(175);
 		}
 
-		when(logPetEntriesWidget[1].getName()).thenReturn("<col=ff9040>Ikkle hydra</col>");
 		when(logPetEntriesWidget[1].getOpacity()).thenReturn(0);
+		when(logPetEntriesWidget[1].getItemId()).thenReturn(ItemID.IKKLE_HYDRA);
 
 		when(logEntryItemsWidget.getChildren()).thenReturn(logPetEntriesWidget);
 
@@ -913,10 +967,7 @@ public class ChatCommandsPluginTest
 
 		chatCommandsPlugin.onGameTick(new GameTick());
 
-		Pet[] playerPetList = new Pet[1];
-		playerPetList[0] = Pet.IKKLE_HYDRA;
-
-		verify(configManager).setRSProfileConfiguration("chatcommands", "pets", gson.toJson(playerPetList));
+		verify(configManager).setRSProfileConfiguration("chatcommands", "pets2", gson.toJson(new int[]{ItemID.IKKLE_HYDRA}));
 	}
 
 	@Test
@@ -950,7 +1001,7 @@ public class ChatCommandsPluginTest
 
 		chatCommandsPlugin.onGameTick(new GameTick());
 
-		verify(configManager).setRSProfileConfiguration("chatcommands", "pets", gson.toJson(new Pet[0]));
+		verify(configManager).setRSProfileConfiguration("chatcommands", "pets2", gson.toJson(new int[0]));
 	}
 
 	@Test
@@ -977,8 +1028,8 @@ public class ChatCommandsPluginTest
 			when(logPetEntriesWidget[i].getOpacity()).thenReturn(175);
 		}
 
-		when(logPetEntriesWidget[1].getName()).thenReturn("<col=ff9040>Ikkle hydra</col>");
 		when(logPetEntriesWidget[1].getOpacity()).thenReturn(0);
+		when(logPetEntriesWidget[1].getItemId()).thenReturn(ItemID.IKKLE_HYDRA);
 
 		when(logEntryItemsWidget.getChildren()).thenReturn(logPetEntriesWidget);
 
@@ -987,22 +1038,22 @@ public class ChatCommandsPluginTest
 
 		chatCommandsPlugin.onGameTick(new GameTick());
 
-		Pet[] playerPetList = new Pet[1];
-		playerPetList[0] = Pet.IKKLE_HYDRA;
+		verify(configManager).setRSProfileConfiguration("chatcommands", "pets2", gson.toJson(new int[]{ItemID.IKKLE_HYDRA}));
 
-		verify(configManager).setRSProfileConfiguration("chatcommands", "pets", gson.toJson(playerPetList));
+		// chompy chick item
+		ItemComposition chompy = mock(ItemComposition.class);
+		when(chompy.getId()).thenReturn(ItemID.CHOMPY_CHICK);
+		when(chompy.getName()).thenReturn("Chompy chick");
+		when(itemManager.getItemComposition(ItemID.CHOMPY_CHICK)).thenReturn(chompy);
 
 		ChatMessage chatMessage = new ChatMessage();
 		chatMessage.setMessage("New item added to your collection log: Chompy chick");
 		chatMessage.setType(GAMEMESSAGE);
-		when(configManager.getRSProfileConfiguration("chatcommands", "pets",
-			String.class)).thenReturn(gson.toJson(playerPetList));
+		when(configManager.getRSProfileConfiguration("chatcommands", "pets2",
+			String.class)).thenReturn(gson.toJson(new int[]{ItemID.IKKLE_HYDRA}));
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
-		playerPetList = new Pet[2];
-		playerPetList[0] = Pet.IKKLE_HYDRA;
-		playerPetList[1] = Pet.CHOMPY_CHICK;
-		verify(configManager).setRSProfileConfiguration("chatcommands", "pets", gson.toJson(playerPetList));
+		verify(configManager).setRSProfileConfiguration("chatcommands", "pets2", gson.toJson(new int[]{ItemID.IKKLE_HYDRA, ItemID.CHOMPY_CHICK}));
 	}
 
 	@Test
@@ -1101,6 +1152,54 @@ public class ChatCommandsPluginTest
 			"Fastest Room time - (Team size: (5 player): <col=ffffff>18:45</col>",
 			"Fastest Overall time - (Team size: 5 player): <col=ffffff>22:01</col>",
 			"",
+			"Tombs of Amascut - Entry",
+			"Fastest Room time - (Team size: Solo): <col=ffffff>32:53</col>",
+			"Fastest Overall time - (Team size: Solo): <col=ffffff>39:06</col>",
+			"Fastest Room time - (Team size: (2 player): <col=ffffff>25:44</col>",
+			"Fastest Overall time - (Team size: (2 player): <col=ffffff>34:36</col>",
+			"Fastest Room time - (Team size: (3 player): <col=ffffff>28:32</col>",
+			"Fastest Overall time - (Team size: (3 player): <col=ffffff>36:31</col>",
+			"Fastest Room time - (Team size: (4 player): <col=ffffff>27:52</col>",
+			"Fastest Overall time - (Team size: (4 player): <col=ffffff>49:06</col>",
+			"Fastest Room time - (Team size: (5 player): <col=ffffff>39:38</col>",
+			"Fastest Overall time - (Team size: (5 player): <col=ffffff>1:12:08</col>",
+			"",
+			"Tombs of Amascut",
+			"Fastest Room time - (Team size: Solo): <col=ffffff>25:35</col>",
+			"Fastest Overall time - (Team size: Solo): <col=ffffff>28:44</col>",
+			"Fastest Room time - (Team size: (2 player): <col=ffffff>22:02</col>",
+			"Fastest Overall time - (Team size: (2 player): <col=ffffff>24:23</col>",
+			"Fastest Room time - (Team size: (3 player): <col=ffffff>25:25</col>",
+			"Fastest Overall time - (Team size: (3 player): <col=ffffff>29:37</col>",
+			"Fastest Room time - (Team size: (4 player): <col=ffffff>23:11</col>",
+			"Fastest Overall time - (Team size: (4 player): <col=ffffff>27:26</col>",
+			"Fastest Room time - (Team size: (5 player): <col=ffffff>30:36</col>",
+			"Fastest Overall time - (Team size: (5 player): <col=ffffff>34:44</col>",
+			"Fastest Room time - (Team size: (6 player): <col=ffffff>29:19</col>",
+			"Fastest Overall time - (Team size: (6 player): <col=ffffff>33:54</col>",
+			"Fastest Room time - (Team size: (7 player): <col=ffffff>25:27</col>",
+			"Fastest Overall time - (Team size: (7 player): <col=ffffff>28:49</col>",
+			"Fastest Room time - (Team size: (8 player): <col=ffffff>24:55</col>",
+			"Fastest Overall time - (Team size: (8 player): <col=ffffff>28:04</col>",
+			"",
+			"Tombs of Amascut - Expert",
+			"Fastest Room time - (Team size: Solo): <col=ffffff>37:43</col>",
+			"Fastest Overall time - (Team size: Solo): <col=ffffff>46:19</col>",
+			"Fastest Room time - (Team size: (2 player): <col=ffffff>28:53</col>",
+			"Fastest Overall time - (Team size: (2 player): <col=ffffff>32:38</col>",
+			"Fastest Room time - (Team size: (3 player): <col=ffffff>28:20</col>",
+			"Fastest Overall time - (Team size: (3 player): <col=ffffff>31:40</col>",
+			"Fastest Room time - (Team size: (4 player): <col=ffffff>29:04</col>",
+			"Fastest Overall time - (Team size: (4 player): <col=ffffff>32:26</col>",
+			"Fastest Room time - (Team size: (5 player): <col=ffffff>26:49</col>",
+			"Fastest Overall time - (Team size: (5 player): <col=ffffff>30:07</col>",
+			"Fastest Room time - (Team size: (6 player): <col=ffffff>23:14</col>",
+			"Fastest Overall time - (Team size: (6 player): <col=ffffff>26:13</col>",
+			"Fastest Room time - (Team size: (7 player): <col=ffffff>23:42</col>",
+			"Fastest Overall time - (Team size: (7 player): <col=ffffff>26:58</col>",
+			"Fastest Room time - (Team size: (8 player): <col=ffffff>23:07</col>",
+			"Fastest Overall time - (Team size: (8 player): <col=ffffff>26:18</col>",
+			"",
 			"Tempoross",
 			"Fastest run: <col=ffffff>3:54</col>",
 			"",
@@ -1118,7 +1217,7 @@ public class ChatCommandsPluginTest
 		when(client.getWidget(WidgetInfo.ADVENTURE_LOG)).thenReturn(advLogWidget);
 
 		// counters
-		when(client.getWidget(WidgetInfo.DIARY_QUEST_WIDGET_TEXT)).thenAnswer(a ->
+		when(client.getWidget(WidgetInfo.ACHIEVEMENT_DIARY_SCROLL_TEXT)).thenAnswer(a ->
 		{
 			Widget widget = mock(Widget.class);
 			Widget[] children = Arrays.stream(log)
@@ -1139,7 +1238,7 @@ public class ChatCommandsPluginTest
 		chatCommandsPlugin.onGameTick(new GameTick());
 
 		WidgetLoaded countersLogEvent = new WidgetLoaded();
-		countersLogEvent.setGroupId(DIARY_QUEST_GROUP_ID);
+		countersLogEvent.setGroupId(ACHIEVEMENT_DIARY_SCROLL_GROUP_ID);
 		chatCommandsPlugin.onWidgetLoaded(countersLogEvent);
 		chatCommandsPlugin.onGameTick(new GameTick());
 
@@ -1149,6 +1248,13 @@ public class ChatCommandsPluginTest
 		verify(configManager).setRSProfileConfiguration("personalbest", "chambers of xeric 2 players", 60 * 24 + 40.);
 		verify(configManager).setRSProfileConfiguration("personalbest", "theatre of blood solo", 3600 + 60 + 57.);
 		verify(configManager).setRSProfileConfiguration("personalbest", "theatre of blood 3 players", 19 * 60 + 50.);
+		verify(configManager).setRSProfileConfiguration("personalbest", "tombs of amascut entry mode solo", 32 * 60 + 53.);
+		verify(configManager).setRSProfileConfiguration("personalbest", "tombs of amascut entry mode 2 players", 25 * 60 + 44.);
+		verify(configManager).setRSProfileConfiguration("personalbest", "tombs of amascut solo", 25 * 60 + 35.);
+		verify(configManager).setRSProfileConfiguration("personalbest", "tombs of amascut 8 players", 24 * 60 + 55.);
+		verify(configManager).setRSProfileConfiguration("personalbest", "tombs of amascut expert mode solo", 37 * 60 + 43.);
+		verify(configManager).setRSProfileConfiguration("personalbest", "tombs of amascut expert mode 4 players", 29 * 60 + 4.);
+		verify(configManager).setRSProfileConfiguration("personalbest", "tombs of amascut expert mode 8 players", 23 * 60 + 7.);
 	}
 
 	@Test
@@ -1167,5 +1273,84 @@ public class ChatCommandsPluginTest
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
 		verify(configManager, never()).setRSProfileConfiguration(anyString(), anyString(), anyInt());
+	}
+
+	@Test
+	public void testToaKc()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Tombs of Amascut: Expert Mode count is: <col=ff0000>1</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Tombs of Amascut count is: <col=ff0000>2</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Tombs of Amascut: Entry Mode count is: <col=ff0000>3</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("killcount", "tombs of amascut expert mode", 1);
+		verify(configManager).setRSProfileConfiguration("killcount", "tombs of amascut", 2);
+		verify(configManager).setRSProfileConfiguration("killcount", "tombs of amascut entry mode", 3);
+	}
+
+	@Test
+	public void testToaPbNew()
+	{
+		when(client.getVarbitValue(Varbits.TOA_MEMBER_1_HEALTH)).thenReturn(27);
+		when(client.getVarbitValue(Varbits.TOA_MEMBER_2_HEALTH)).thenReturn(30);
+		when(client.getVarbitValue(Varbits.TOA_MEMBER_3_HEALTH)).thenReturn(20);
+		when(client.getVarbitValue(Varbits.TOA_MEMBER_4_HEALTH)).thenReturn(13);
+
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Challenge complete: The Wardens. Duration: <col=ef1020>8:30</col><br>Tombs of Amascut challenge completion time: <col=ef1020>8:31</col> (new personal best)", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Tombs of Amascut total completion time: <col=ef1020>0:01</col> (new personal best)", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Tombs of Amascut count is: <col=ff0000>1</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("killcount", "tombs of amascut", 1);
+		verify(configManager).setRSProfileConfiguration("personalbest", "tombs of amascut", 8 * 60 + 31.);
+		verify(configManager).setRSProfileConfiguration("personalbest", "tombs of amascut 4 players", 8 * 60 + 31.);
+	}
+
+	@Test
+	public void testToaPb()
+	{
+		when(client.getVarbitValue(Varbits.TOA_MEMBER_1_HEALTH)).thenReturn(24);
+		when(client.getVarbitValue(Varbits.TOA_MEMBER_2_HEALTH)).thenReturn(15);
+
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Challenge complete: The Wardens. Duration: <col=ef1020>9:40</col><br>Tombs of Amascut: Expert Mode challenge completion time: <col=ef1020>9:40</col>. Personal best: 8:31", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Tombs of Amascut total completion time: <col=ef1020>0:01</col> (new personal best)", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Tombs of Amascut: Expert Mode count is: <col=ff0000>1</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("killcount", "tombs of amascut expert mode", 1);
+		verify(configManager).setRSProfileConfiguration("personalbest", "tombs of amascut expert mode", 8 * 60 + 31.);
+		verify(configManager).setRSProfileConfiguration("personalbest", "tombs of amascut expert mode 2 players", 8 * 60 + 31.);
+	}
+
+	@Test
+	public void testToaPbEntry()
+	{
+		when(client.getVarbitValue(Varbits.TOA_MEMBER_1_HEALTH)).thenReturn(24);
+		when(client.getVarbitValue(Varbits.TOA_MEMBER_2_HEALTH)).thenReturn(15);
+
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Challenge complete: The Wardens. Duration: <col=ef1020>9:40</col><br>Tombs of Amascut: Entry Mode challenge completion time: <col=ef1020>9:40</col>. Personal best: 20:31", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Tombs of Amascut total completion time: <col=ef1020>0:01</col> (new personal best)", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your completed Tombs of Amascut: Entry Mode count is: <col=ff0000>9</col>.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("killcount", "tombs of amascut entry mode", 9);
+		verify(configManager).setRSProfileConfiguration("personalbest", "tombs of amascut entry mode", 20 * 60 + 31.);
+		verify(configManager).setRSProfileConfiguration("personalbest", "tombs of amascut entry mode 2 players", 20 * 60 + 31.);
 	}
 }

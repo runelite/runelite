@@ -39,7 +39,7 @@ enum CannonSpots
 	BLACK_DEMONS(new WorldPoint(2859, 9778, 0), new WorldPoint(2841, 9791, 0), new WorldPoint(1421, 10089, 1), new WorldPoint(3174, 10154, 0), new WorldPoint(3089, 9960, 0)),
 	BLACK_DRAGON(new WorldPoint(3239, 10206, 0)),
 	BLACK_KNIGHTS(new WorldPoint(2906, 9685, 0), new WorldPoint(3053, 3852, 0)),
-	BLOODVELDS(new WorldPoint(2439, 9821, 0), new WorldPoint(2448, 9821, 0), new WorldPoint(2472, 9832, 0), new WorldPoint(2453, 9817, 0), new WorldPoint(3597, 9743, 0)),
+	BLOODVELDS(new WorldPoint(2439, 9821, 0), new WorldPoint(2448, 9821, 0), new WorldPoint(2472, 9832, 0), new WorldPoint(2453, 9817, 0), new WorldPoint(3596, 9743, 0)),
 	BLUE_DRAGON(new WorldPoint(1933, 8973, 1)),
 	BRINE_RAT(new WorldPoint(2707, 10132, 0)),
 	CAVE_HORROR(new WorldPoint(3785, 9460, 0)),

@@ -50,12 +50,10 @@ import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.PartyChanged;
 import net.runelite.client.events.PartyMemberAvatar;
-import net.runelite.client.party.messages.Join;
-import net.runelite.client.party.messages.Part;
+import net.runelite.client.party.events.UserJoin;
+import net.runelite.client.party.events.UserPart;
 import net.runelite.client.party.messages.PartyChatMessage;
 import net.runelite.client.party.messages.PartyMessage;
-import net.runelite.client.party.messages.UserJoin;
-import net.runelite.client.party.messages.UserPart;
 import net.runelite.client.party.messages.UserSync;
 import net.runelite.client.util.Text;
 import static net.runelite.client.util.Text.JAGEX_PRINTABLE_CHAR_MATCHER;
@@ -65,8 +63,6 @@ import static net.runelite.client.util.Text.JAGEX_PRINTABLE_CHAR_MATCHER;
 public class PartyService
 {
 	private static final int MAX_MESSAGE_LEN = 150;
-	private static final int MAX_USERNAME_LEN = 32; // same as Discord
-	private static final String USERNAME = "rluser-" + new Random().nextInt(Integer.MAX_VALUE);
 	private static final String ALPHABET = "bcdfghjklmnpqrstvwxyz";
 
 	private final Client client;
@@ -76,7 +72,8 @@ public class PartyService
 	private final List<PartyMember> members = new ArrayList<>();
 
 	@Getter
-	private UUID partyId; // secret party id
+	private long partyId; // secret party id
+	private long memberId = randomMemberId();
 	@Getter
 	private String partyPassphrase;
 
@@ -90,7 +87,7 @@ public class PartyService
 		eventBus.register(this);
 	}
 
-	public String generatePasspharse()
+	public String generatePassphrase()
 	{
 		assert client.isClientThread();
 
@@ -105,8 +102,8 @@ public class PartyService
 			{
 				final int itemId = r.nextInt(client.getItemCount());
 				final ItemComposition def = client.getItemDefinition(itemId);
-				final String name = def.getName();
-				if (name == null || name.isEmpty() || name.equals("null"))
+				final String name = def.getMembersName();
+				if (name == null || name.isEmpty() || name.equalsIgnoreCase("null"))
 				{
 					continue;
 				}
@@ -146,7 +143,7 @@ public class PartyService
 		}
 
 		String partyPassphrase = sb.toString();
-		log.debug("Generated party passpharse {}", partyPassphrase);
+		log.debug("Generated party passphrase {}", partyPassphrase);
 		return partyPassphrase;
 	}
 
@@ -154,20 +151,21 @@ public class PartyService
 	{
 		if (wsClient.sessionExists())
 		{
-			wsClient.send(new Part());
+			wsClient.part();
+			memberId = randomMemberId(); // use a different member id between parties
 		}
 
-		UUID id = passphrase != null ? passphraseToId(passphrase) : null;
+		long id = passphrase != null ? passphraseToId(passphrase) : 0;
 
 		log.debug("Party change to {} (id {})", passphrase, id);
 		members.clear();
 		partyId = id;
 		partyPassphrase = passphrase;
 
-		if (partyId == null)
+		if (passphrase == null)
 		{
 			wsClient.changeSession(null);
-			eventBus.post(new PartyChanged(partyPassphrase, partyId));
+			eventBus.post(new PartyChanged(partyPassphrase, null));
 			return;
 		}
 
@@ -178,7 +176,7 @@ public class PartyService
 		}
 
 		eventBus.post(new PartyChanged(partyPassphrase, partyId));
-		wsClient.send(new Join(partyId, USERNAME));
+		wsClient.join(partyId, memberId);
 	}
 
 	public <T extends PartyMessage> void send(T message)
@@ -187,11 +185,10 @@ public class PartyService
 		{
 			log.debug("Reconnecting to server");
 
-			PartyMember local = getLocalMember();
-			members.removeIf(m -> m != local);
+			members.clear();
 
 			wsClient.connect();
-			wsClient.send(new Join(partyId, USERNAME));
+			wsClient.join(partyId, memberId);
 		}
 
 		wsClient.send(message);
@@ -200,7 +197,7 @@ public class PartyService
 	@Subscribe(priority = 1) // run prior to plugins so that the member is joined by the time the plugins see it.
 	public void onUserJoin(final UserJoin message)
 	{
-		if (!partyId.equals(message.getPartyId()))
+		if (partyId != message.getPartyId())
 		{
 			// This can happen when a session is resumed server side after the client party
 			// changes when disconnected.
@@ -210,7 +207,7 @@ public class PartyService
 		PartyMember partyMember = getMemberById(message.getMemberId());
 		if (partyMember == null)
 		{
-			partyMember = new PartyMember(message.getMemberId(), cleanUsername(message.getName()));
+			partyMember = new PartyMember(message.getMemberId());
 			members.add(partyMember);
 			log.debug("User {} joins party, {} members", partyMember, members.size());
 		}
@@ -219,8 +216,8 @@ public class PartyService
 		// Send info to other clients that this user successfully finished joining party
 		if (localMember != null && localMember == partyMember)
 		{
+			log.debug("Requesting sync");
 			final UserSync userSync = new UserSync();
-			userSync.setMemberId(message.getMemberId());
 			wsClient.send(userSync);
 		}
 	}
@@ -228,7 +225,7 @@ public class PartyService
 	@Subscribe(priority = 1) // run prior to plugins so that the member is removed by the time the plugins see it.
 	public void onUserPart(final UserPart message)
 	{
-		if (members.removeIf(member -> member.getMemberId().equals(message.getMemberId())))
+		if (members.removeIf(member -> member.getMemberId() == message.getMemberId()))
 		{
 			log.debug("User {} leaves party, {} members", message.getMemberId(), members.size());
 		}
@@ -264,14 +261,14 @@ public class PartyService
 
 	public PartyMember getLocalMember()
 	{
-		return getMemberByName(USERNAME);
+		return getMemberById(memberId);
 	}
 
-	public PartyMember getMemberById(final UUID id)
+	public PartyMember getMemberById(final long id)
 	{
 		for (PartyMember member : members)
 		{
-			if (id.equals(member.getMemberId()))
+			if (id == member.getMemberId())
 			{
 				return member;
 			}
@@ -280,11 +277,12 @@ public class PartyService
 		return null;
 	}
 
-	public PartyMember getMemberByName(final String name)
+	public PartyMember getMemberByDisplayName(final String name)
 	{
+		String sanitized = Text.removeTags(Text.toJagexName(name));
 		for (PartyMember member : members)
 		{
-			if (name.equals(member.getName()))
+			if (member.isLoggedIn() && sanitized.equals(member.getDisplayName()))
 			{
 				return member;
 			}
@@ -300,10 +298,10 @@ public class PartyService
 
 	public boolean isInParty()
 	{
-		return partyId != null;
+		return partyId != 0;
 	}
 
-	public void setPartyMemberAvatar(UUID memberID, BufferedImage image)
+	public void setPartyMemberAvatar(long memberID, BufferedImage image)
 	{
 		final PartyMember memberById = getMemberById(memberID);
 
@@ -314,22 +312,15 @@ public class PartyService
 		}
 	}
 
-	private static String cleanUsername(String username)
+	private static long passphraseToId(String passphrase)
 	{
-		String s = Text.removeTags(JAGEX_PRINTABLE_CHAR_MATCHER.retainFrom(username));
-		if (s.length() >= MAX_USERNAME_LEN)
-		{
-			s = s.substring(0, MAX_USERNAME_LEN);
-		}
-		return s;
+		return Hashing.sha256().hashBytes(
+			passphrase.getBytes(StandardCharsets.UTF_8)
+		).asLong() & Long.MAX_VALUE;
 	}
 
-	private static UUID passphraseToId(String passphrase)
+	private static long randomMemberId()
 	{
-		return UUID.nameUUIDFromBytes(
-			Hashing.sha256().hashBytes(
-				passphrase.getBytes(StandardCharsets.UTF_8)
-			).asBytes()
-		);
+		return new Random().nextLong() & Long.MAX_VALUE;
 	}
 }

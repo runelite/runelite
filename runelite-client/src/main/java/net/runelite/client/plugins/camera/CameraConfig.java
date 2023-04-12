@@ -69,8 +69,8 @@ public interface CameraConfig extends Config
 
 	@ConfigItem(
 		keyName = "relaxCameraPitch",
-		name = "Vertical camera",
-		description = "Relax the camera's upper pitch limit",
+		name = "Expand pitch limit",
+		description = "Relax the camera's upper and lower pitch limits. Allows vertical and horizontal camera movement.",
 		position = 3
 	)
 	default boolean relaxCameraPitch()
@@ -177,17 +177,6 @@ public interface CameraConfig extends Config
 		position = 13
 	)
 	default boolean invertPitch()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		keyName = "preserveYaw",
-		name = "Preserve yaw on world hop",
-		description = "Preserves the camera yaw (left/right) when world hopping.",
-		position = 14
-	)
-	default boolean preserveYaw()
 	{
 		return false;
 	}

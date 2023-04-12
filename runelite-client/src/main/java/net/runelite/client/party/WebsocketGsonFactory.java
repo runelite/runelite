@@ -29,29 +29,19 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import net.runelite.client.party.messages.Handshake;
-import net.runelite.client.party.messages.Join;
-import net.runelite.client.party.messages.Part;
 import net.runelite.client.party.messages.PartyChatMessage;
-import net.runelite.client.party.messages.UserJoin;
-import net.runelite.client.party.messages.UserPart;
 import net.runelite.client.party.messages.UserSync;
 import net.runelite.client.party.messages.WebsocketMessage;
 import net.runelite.client.util.RuntimeTypeAdapterFactory;
 import net.runelite.http.api.RuneLiteAPI;
 
-public class WebsocketGsonFactory
+class WebsocketGsonFactory
 {
 	private static final Collection<Class<? extends WebsocketMessage>> MESSAGES;
 
 	static
 	{
 		final List<Class<? extends WebsocketMessage>> messages = new ArrayList<>();
-		messages.add(Handshake.class);
-		messages.add(Join.class);
-		messages.add(Part.class);
-		messages.add(UserJoin.class);
-		messages.add(UserPart.class);
 		messages.add(UserSync.class);
 		messages.add(PartyChatMessage.class);
 		MESSAGES = messages;

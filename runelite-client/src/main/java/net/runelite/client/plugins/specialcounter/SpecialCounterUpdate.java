@@ -32,7 +32,7 @@ import net.runelite.client.party.messages.PartyMemberMessage;
 @EqualsAndHashCode(callSuper = true)
 public class SpecialCounterUpdate extends PartyMemberMessage
 {
-	private final int npcId;
+	private final int npcIndex;
 	private final SpecialWeapon weapon;
 	private final int hit;
 	private final int world;

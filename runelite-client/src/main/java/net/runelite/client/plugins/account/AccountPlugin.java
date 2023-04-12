@@ -31,6 +31,7 @@ import javax.swing.JOptionPane;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.account.SessionManager;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
@@ -51,6 +52,9 @@ public class AccountPlugin extends Plugin
 {
 	@Inject
 	private SessionManager sessionManager;
+
+	@Inject
+	private ConfigManager configManager;
 
 	@Inject
 	private ClientToolbar clientToolbar;
@@ -116,7 +120,12 @@ public class AccountPlugin extends Plugin
 			"Are you sure you want to sign out of RuneLite?", "Sign Out Confirmation",
 			JOptionPane.YES_NO_OPTION))
 		{
-			executor.execute(sessionManager::logout);
+			executor.execute(() ->
+			{
+				// Flush pending config changes immediately before logout
+				configManager.sendConfig();
+				sessionManager.logout();
+			});
 		}
 	}
 

@@ -51,6 +51,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.GraphicChanged;
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.InteractingChanged;
+import net.runelite.api.events.NpcChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -65,10 +66,8 @@ import net.runelite.client.plugins.PluginDescriptor;
 )
 public class IdleNotifierPlugin extends Plugin
 {
-	// This must be more than 500 client ticks (10 seconds) before you get AFK kicked
-	private static final int LOGOUT_WARNING_MILLIS = (4 * 60 + 40) * 1000; // 4 minutes and 40 seconds
+	private static final int IDLE_LOGOUT_WARNING_BUFFER = 20_000 / Constants.CLIENT_TICK_LENGTH;
 	private static final int COMBAT_WARNING_MILLIS = 19 * 60 * 1000; // 19 minutes
-	private static final int LOGOUT_WARNING_CLIENT_TICKS = LOGOUT_WARNING_MILLIS / Constants.CLIENT_TICK_LENGTH;
 	private static final int COMBAT_WARNING_CLIENT_TICKS = COMBAT_WARNING_MILLIS / Constants.CLIENT_TICK_LENGTH;
 
 	private static final int HIGHEST_MONSTER_ATTACK_SPEED = 8; // Except Scarab Mage, but they are with other monsters
@@ -112,7 +111,7 @@ public class IdleNotifierPlugin extends Plugin
 	}
 
 	@Override
-	protected void startUp() throws Exception
+	protected void startUp()
 	{
 		// can't tell when 6hr will be if enabled while already logged in
 		sixHourWarningTime = null;
@@ -151,6 +150,7 @@ public class IdleNotifierPlugin extends Plugin
 			case WOODCUTTING_3A_AXE:
 			case WOODCUTTING_CRYSTAL:
 			case WOODCUTTING_TRAILBLAZER:
+			case BLISTERWOOD_JUMP_SCARE:
 			/* Cooking(Fire, Range) */
 			case COOKING_FIRE:
 			case COOKING_RANGE:
@@ -202,6 +202,7 @@ public class IdleNotifierPlugin extends Plugin
 			case SMITHING_CANNONBALL:
 			/* Fishing */
 			case FISHING_CRUSHING_INFERNAL_EELS:
+			case FISHING_CRUSHING_INFERNAL_EELS_IMCANDO_HAMMER:
 			case FISHING_CUTTING_SACRED_EELS:
 			case FISHING_BIG_NET:
 			case FISHING_NET:
@@ -338,34 +339,27 @@ public class IdleNotifierPlugin extends Plugin
 			lastInteracting = Instant.now();
 		}
 
-		final boolean isNpc = target instanceof NPC;
-
 		// If this is not NPC, do not process as we are not interested in other entities
-		if (!isNpc)
+		if (!(target instanceof NPC))
 		{
 			return;
 		}
 
-		final NPC npc = (NPC) target;
-		final NPCComposition npcComposition = npc.getComposition();
-		final List<String> npcMenuActions = Arrays.asList(npcComposition.getActions());
+		checkNpcInteraction((NPC) target);
+	}
 
-		if (npcMenuActions.contains("Attack"))
+	// this event is needed to handle some rare npcs where "Attack" is not used to initiate combat
+	// for example, kraken starts the fight with "Disturb" then changes into another form with "Attack"
+	@Subscribe
+	public void onNpcChanged(NpcChanged event)
+	{
+		NPC npc = event.getNpc();
+		if (client.getLocalPlayer().getInteracting() != npc)
 		{
-			// Player is most likely in combat with attack-able NPC
-			resetTimers();
-			lastInteract = target;
-			lastInteracting = Instant.now();
-			lastInteractWasCombat = true;
+			return;
 		}
-		else if (target.getName() != null && target.getName().contains(FISHING_SPOT))
-		{
-			// Player is fishing
-			resetTimers();
-			lastInteract = target;
-			lastInteracting = Instant.now();
-			lastInteractWasCombat = false;
-		}
+
+		checkNpcInteraction(npc);
 	}
 
 	@Subscribe
@@ -406,9 +400,7 @@ public class IdleNotifierPlugin extends Plugin
 		}
 
 		final Hitsplat hitsplat = event.getHitsplat();
-
-		if (hitsplat.getHitsplatType() == Hitsplat.HitsplatType.DAMAGE_ME
-			|| hitsplat.getHitsplatType() == Hitsplat.HitsplatType.BLOCK_ME)
+		if (hitsplat.isMine())
 		{
 			lastCombatCountdown = HIGHEST_MONSTER_ATTACK_SPEED;
 		}
@@ -510,9 +502,32 @@ public class IdleNotifierPlugin extends Plugin
 		}
 	}
 
+	private void checkNpcInteraction(final NPC target)
+	{
+		final NPCComposition npcComposition = target.getComposition();
+		final List<String> npcMenuActions = Arrays.asList(npcComposition.getActions());
+
+		if (npcMenuActions.contains("Attack"))
+		{
+			// Player is most likely in combat with attack-able NPC
+			resetTimers();
+			lastInteract = target;
+			lastInteracting = Instant.now();
+			lastInteractWasCombat = true;
+		}
+		else if (target.getName() != null && target.getName().contains(FISHING_SPOT))
+		{
+			// Player is fishing
+			resetTimers();
+			lastInteract = target;
+			lastInteracting = Instant.now();
+			lastInteractWasCombat = false;
+		}
+	}
+
 	private boolean checkFullSpecEnergy()
 	{
-		int currentSpecEnergy = client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT);
+		int currentSpecEnergy = client.getVarpValue(VarPlayer.SPECIAL_ATTACK_PERCENT);
 
 		int threshold = config.getSpecEnergyThreshold() * 10;
 		if (threshold == 0)
@@ -607,7 +622,7 @@ public class IdleNotifierPlugin extends Plugin
 			return false;
 		}
 
-		if (client.getEnergy() <= config.getLowEnergyThreshold())
+		if (client.getEnergy() / 100 <= config.getLowEnergyThreshold())
 		{
 			if (shouldNotifyLowEnergy)
 			{
@@ -630,7 +645,7 @@ public class IdleNotifierPlugin extends Plugin
 			return false;
 		}
 
-		if (client.getEnergy() >= config.getHighEnergyThreshold())
+		if (client.getEnergy() / 100 >= config.getHighEnergyThreshold())
 		{
 			if (shouldNotifyHighEnergy)
 			{
@@ -682,13 +697,9 @@ public class IdleNotifierPlugin extends Plugin
 	private boolean checkIdleLogout()
 	{
 		// Check clientside AFK first, because this is required for the server to disconnect you for being first
-		int idleClientTicks = client.getKeyboardIdleTicks();
-		if (client.getMouseIdleTicks() < idleClientTicks)
-		{
-			idleClientTicks = client.getMouseIdleTicks();
-		}
+		final int idleClientTicks = Math.min(client.getKeyboardIdleTicks(), client.getMouseIdleTicks());
 
-		if (idleClientTicks < LOGOUT_WARNING_CLIENT_TICKS)
+		if (idleClientTicks < client.getIdleTimeout() - IDLE_LOGOUT_WARNING_BUFFER)
 		{
 			notifyIdleLogout = true;
 			return false;

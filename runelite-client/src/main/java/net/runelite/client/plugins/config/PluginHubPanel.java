@@ -29,18 +29,20 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 import com.google.common.html.HtmlEscapers;
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Deque;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -50,6 +52,7 @@ import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.swing.AbstractAction;
@@ -112,6 +115,83 @@ class PluginHubPanel extends PluginPanel
 		BufferedImage configureIcon = ImageUtil.loadImageResource(PluginHubPanel.class, "pluginhub_configure.png");
 		CONFIGURE_ICON = new ImageIcon(configureIcon);
 		CONFIGURE_ICON_HOVER = new ImageIcon(ImageUtil.alphaOffset(configureIcon, -100));
+	}
+
+	private class PluginIcon extends JLabel
+	{
+		@Nullable
+		private final ExternalPluginManifest manifest;
+		private boolean loadingStarted;
+		private boolean loaded;
+
+		PluginIcon(ExternalPluginManifest manifest)
+		{
+			setIcon(MISSING_ICON);
+
+			this.manifest = manifest.hasIcon() ? manifest : null;
+			this.loaded = !manifest.hasIcon();
+		}
+
+		@Override
+		public void paint(Graphics g)
+		{
+			super.paint(g);
+
+			if (!loaded && !loadingStarted)
+			{
+				loadingStarted = true;
+				synchronized (iconLoadQueue)
+				{
+					iconLoadQueue.add(this);
+					if (iconLoadQueue.size() == 1)
+					{
+						executor.submit(PluginHubPanel.this::pumpIconQueue);
+					}
+				}
+			}
+		}
+
+		private void load()
+		{
+			try
+			{
+				BufferedImage img = externalPluginClient.downloadIcon(manifest);
+
+				loaded = true;
+				SwingUtilities.invokeLater(() -> setIcon(new ImageIcon(img)));
+			}
+			catch (IOException e)
+			{
+				log.info("Cannot download icon for plugin \"{}\"", manifest.getInternalName(), e);
+			}
+		}
+	}
+
+	private void pumpIconQueue()
+	{
+		PluginIcon pi;
+		synchronized (iconLoadQueue)
+		{
+			pi = iconLoadQueue.poll();
+		}
+
+		if (pi == null)
+		{
+			return;
+		}
+
+		pi.load();
+
+		synchronized (iconLoadQueue)
+		{
+			if (iconLoadQueue.isEmpty())
+			{
+				return;
+			}
+		}
+
+		// re add ourselves to the executor queue so we don't block the executor for a long time
+		executor.submit(this::pumpIconQueue);
 	}
 
 	private class PluginItem extends JPanel implements SearchablePlugin
@@ -187,25 +267,8 @@ class PluginHubPanel extends PluginPanel
 			description.setVerticalAlignment(JLabel.TOP);
 			description.setToolTipText(descriptionText);
 
-			JLabel icon = new JLabel();
+			JLabel icon = new PluginIcon(manifest);
 			icon.setHorizontalAlignment(JLabel.CENTER);
-			icon.setIcon(MISSING_ICON);
-			if (manifest.hasIcon())
-			{
-				executor.submit(() ->
-				{
-					try
-					{
-						BufferedImage img = externalPluginClient.downloadIcon(manifest);
-
-						SwingUtilities.invokeLater(() -> icon.setIcon(new ImageIcon(img)));
-					}
-					catch (IOException e)
-					{
-						log.info("Cannot download icon for plugin \"{}\"", manifest.getInternalName(), e);
-					}
-				});
-			}
 
 			JButton help = new JButton(HELP_ICON);
 			help.setRolloverIcon(HELP_ICON_HOVER);
@@ -243,14 +306,14 @@ class PluginHubPanel extends PluginPanel
 					}
 					else
 					{
-						configure.addActionListener(l -> pluginListPanel.openConfigurationPanel(plugin));
+						configure.addActionListener(l -> topLevelConfigPanel.openConfigurationPanel(plugin));
 					}
 				}
 
 				if (search != null)
 				{
 					final String javaIsABadLanguage = search;
-					configure.addActionListener(l -> pluginListPanel.openWithFilter(javaIsABadLanguage));
+					configure.addActionListener(l -> topLevelConfigPanel.openWithFilter(javaIsABadLanguage));
 				}
 			}
 			else
@@ -355,11 +418,13 @@ class PluginHubPanel extends PluginPanel
 		}
 	}
 
-	private final PluginListPanel pluginListPanel;
+	private final TopLevelConfigPanel topLevelConfigPanel;
 	private final ExternalPluginManager externalPluginManager;
 	private final PluginManager pluginManager;
 	private final ExternalPluginClient externalPluginClient;
 	private final ScheduledExecutorService executor;
+
+	private final Deque<PluginIcon> iconLoadQueue = new ArrayDeque<>();
 
 	private final IconTextField searchBar;
 	private final JLabel refreshing;
@@ -368,14 +433,14 @@ class PluginHubPanel extends PluginPanel
 
 	@Inject
 	PluginHubPanel(
-		PluginListPanel pluginListPanel,
+		TopLevelConfigPanel topLevelConfigPanel,
 		ExternalPluginManager externalPluginManager,
 		PluginManager pluginManager,
 		ExternalPluginClient externalPluginClient,
 		ScheduledExecutorService executor)
 	{
 		super(false);
-		this.pluginListPanel = pluginListPanel;
+		this.topLevelConfigPanel = topLevelConfigPanel;
 		this.externalPluginManager = externalPluginManager;
 		this.pluginManager = pluginManager;
 		this.externalPluginClient = externalPluginClient;
@@ -394,8 +459,6 @@ class PluginHubPanel extends PluginPanel
 			});
 		}
 
-		GroupLayout layout = new GroupLayout(this);
-		setLayout(layout);
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 
 		searchBar = new IconTextField();
@@ -423,28 +486,22 @@ class PluginHubPanel extends PluginPanel
 			}
 		});
 
-		JLabel externalPluginWarning = new JLabel("<html>External plugins are verified to not be " +
+		JLabel externalPluginWarning1 = new JLabel("<html>External plugins are verified to not be " +
 			"malicious or rule-breaking, but are not " +
 			"maintained by the RuneLite developers. " +
 			"They may cause bugs or instability.</html>");
-		externalPluginWarning.setBackground(new Color(0xFFBB33));
-		externalPluginWarning.setForeground(Color.BLACK);
-		externalPluginWarning.setBorder(new EmptyBorder(5, 5, 5, 2));
-		externalPluginWarning.setOpaque(true);
+		externalPluginWarning1.setBackground(new Color(0xFFBB33));
+		externalPluginWarning1.setForeground(Color.BLACK);
+		externalPluginWarning1.setBorder(new EmptyBorder(5, 5, 5, 2));
+		externalPluginWarning1.setOpaque(true);
 
 		JLabel externalPluginWarning2 = new JLabel("Use at your own risk!");
 		externalPluginWarning2.setHorizontalAlignment(JLabel.CENTER);
 		externalPluginWarning2.setFont(FontManager.getRunescapeBoldFont());
-		externalPluginWarning2.setBackground(externalPluginWarning.getBackground());
-		externalPluginWarning2.setForeground(externalPluginWarning.getForeground());
+		externalPluginWarning2.setBackground(externalPluginWarning1.getBackground());
+		externalPluginWarning2.setForeground(externalPluginWarning1.getForeground());
 		externalPluginWarning2.setBorder(new EmptyBorder(0, 5, 5, 5));
 		externalPluginWarning2.setOpaque(true);
-
-		JButton backButton = new JButton(ConfigPanel.BACK_ICON);
-		backButton.setRolloverIcon(ConfigPanel.BACK_ICON_HOVER);
-		SwingUtil.removeButtonDecorations(backButton);
-		backButton.setToolTipText("Back");
-		backButton.addActionListener(l -> pluginListPanel.getMuxer().popState());
 
 		mainPanel = new JPanel();
 		mainPanel.setBorder(BorderFactory.createEmptyBorder(0, 7, 7, 7));
@@ -455,9 +512,25 @@ class PluginHubPanel extends PluginPanel
 		refreshing.setHorizontalAlignment(JLabel.CENTER);
 
 		JPanel mainPanelWrapper = new FixedWidthPanel();
-		mainPanelWrapper.setLayout(new BorderLayout());
-		mainPanelWrapper.add(mainPanel, BorderLayout.NORTH);
-		mainPanelWrapper.add(refreshing, BorderLayout.CENTER);
+
+		{
+			GroupLayout layout = new GroupLayout(mainPanelWrapper);
+			mainPanelWrapper.setLayout(layout);
+
+			layout.setVerticalGroup(layout.createSequentialGroup()
+				.addComponent(externalPluginWarning1)
+				.addComponent(externalPluginWarning2)
+				.addGap(7)
+				.addComponent(mainPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+				.addComponent(refreshing)
+				.addGap(0, 0, 0x7000));
+
+			layout.setHorizontalGroup(layout.createParallelGroup()
+				.addComponent(externalPluginWarning1, 0, Short.MAX_VALUE, Short.MAX_VALUE)
+				.addComponent(externalPluginWarning2, 0, Short.MAX_VALUE, Short.MAX_VALUE)
+				.addComponent(mainPanel)
+				.addComponent(refreshing, 0, Short.MAX_VALUE, Short.MAX_VALUE));
+		}
 
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -465,24 +538,23 @@ class PluginHubPanel extends PluginPanel
 		scrollPane.setPreferredSize(new Dimension(0x7000, 0x7000));
 		scrollPane.setViewportView(mainPanelWrapper);
 
-		layout.setVerticalGroup(layout.createSequentialGroup()
-			.addComponent(externalPluginWarning)
-			.addComponent(externalPluginWarning2)
-			.addGap(10)
-			.addGroup(layout.createParallelGroup()
-				.addComponent(backButton)
-				.addComponent(searchBar))
-			.addGap(10)
-			.addComponent(scrollPane));
+		{
+			GroupLayout layout = new GroupLayout(this);
+			setLayout(layout);
 
-		layout.setHorizontalGroup(layout.createParallelGroup()
-			.addComponent(externalPluginWarning, 0, Short.MAX_VALUE, Short.MAX_VALUE)
-			.addComponent(externalPluginWarning2, 0, Short.MAX_VALUE, Short.MAX_VALUE)
-			.addGroup(layout.createSequentialGroup()
-				.addComponent(backButton)
-				.addComponent(searchBar)
-				.addGap(10))
-			.addComponent(scrollPane));
+			layout.setVerticalGroup(layout.createSequentialGroup()
+				.addGap(10)
+				.addComponent(searchBar, 30, 30, 30)
+				.addGap(10)
+				.addComponent(scrollPane));
+
+			layout.setHorizontalGroup(layout.createParallelGroup()
+				.addGroup(layout.createSequentialGroup()
+					.addGap(10)
+					.addComponent(searchBar)
+					.addGap(10))
+				.addComponent(scrollPane));
+		}
 
 		revalidate();
 
@@ -556,6 +628,11 @@ class PluginHubPanel extends PluginPanel
 
 		SwingUtilities.invokeLater(() ->
 		{
+			if (!refreshing.isVisible())
+			{
+				return;
+			}
+
 			plugins = Sets.union(manifests.keySet(), loadedPlugins.keySet())
 				.stream()
 				.map(id -> new PluginItem(manifests.get(id), loadedPlugins.get(id),
@@ -569,7 +646,7 @@ class PluginHubPanel extends PluginPanel
 
 	void filter()
 	{
-		if (refreshing.isVisible())
+		if (refreshing.isVisible() || plugins == null)
 		{
 			return;
 		}
@@ -602,9 +679,25 @@ class PluginHubPanel extends PluginPanel
 	public void onActivate()
 	{
 		revalidate();
-		searchBar.setText("");
 		reloadPluginList();
+		searchBar.setText("");
 		searchBar.requestFocusInWindow();
+	}
+
+	@Override
+	public void onDeactivate()
+	{
+		mainPanel.removeAll();
+		refreshing.setVisible(false);
+		plugins = null;
+
+		synchronized (iconLoadQueue)
+		{
+			for (PluginIcon pi; (pi = iconLoadQueue.poll()) != null; )
+			{
+				pi.loadingStarted = false;
+			}
+		}
 	}
 
 	@Subscribe
@@ -617,6 +710,10 @@ class PluginHubPanel extends PluginPanel
 				.collect(Collectors.toMap(pi -> pi.manifest.getInternalName(), PluginItem::getUserCount));
 		}
 
-		reloadPluginList(ev.getLoadedManifest(), pluginCounts);
+		if (!refreshing.isVisible())
+		{
+			refreshing.setVisible(true);
+			reloadPluginList(ev.getLoadedManifest(), pluginCounts);
+		}
 	}
 }

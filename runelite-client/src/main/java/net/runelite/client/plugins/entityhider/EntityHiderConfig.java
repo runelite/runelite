@@ -176,4 +176,37 @@ public interface EntityHiderConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		position = 14,
+		keyName = "hideDeadNpcs",
+		name = "Hide Dead NPCs",
+		description = "Hides NPCs when their health reaches 0"
+	)
+	default boolean hideDeadNpcs()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 15,
+		keyName = "hideThralls",
+		name = "Hide Thralls",
+		description = "Configures whether or not Thralls are hidden"
+	)
+	default boolean hideThralls()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 16,
+		keyName = "hideRandomEvents",
+		name = "Hide Random Events",
+		description = "Configures whether or not Random events are hidden"
+	)
+	default boolean hideRandomEvents()
+	{
+		return false;
+	}
 }

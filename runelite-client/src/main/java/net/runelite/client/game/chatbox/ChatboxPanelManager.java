@@ -126,7 +126,7 @@ public class ChatboxPanelManager
 		}
 
 		currentInput = input;
-		client.setVar(VarClientInt.INPUT_TYPE, InputType.RUNELITE_CHATBOX_PANEL.getType());
+		client.setVarcIntValue(VarClientInt.INPUT_TYPE, InputType.RUNELITE_CHATBOX_PANEL.getType());
 		client.getWidget(WidgetInfo.CHATBOX_TITLE).setHidden(true);
 		client.getWidget(WidgetInfo.CHATBOX_FULL_INPUT).setHidden(true);
 
@@ -208,6 +208,6 @@ public class ChatboxPanelManager
 		// the search box on the world map can be focused, and chat input goes there, even
 		// though the chatbox still has its key listener.
 		Widget worldMapSearch = client.getWidget(WidgetInfo.WORLD_MAP_SEARCH);
-		return worldMapSearch == null || client.getVar(VarClientInt.WORLD_MAP_SEARCH_FOCUSED) != 1;
+		return worldMapSearch == null || client.getVarcIntValue(VarClientInt.WORLD_MAP_SEARCH_FOCUSED) != 1;
 	}
 }

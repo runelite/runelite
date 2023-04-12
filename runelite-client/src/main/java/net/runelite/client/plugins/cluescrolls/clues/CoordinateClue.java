@@ -49,7 +49,7 @@ import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
 @Getter
-public class CoordinateClue extends ClueScroll implements TextClueScroll, LocationClueScroll
+public class CoordinateClue extends ClueScroll implements LocationClueScroll
 {
 	@Getter
 	private static class CoordinateClueInfo
@@ -82,7 +82,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		}
 	}
 
-	private static final ImmutableMap<WorldPoint, CoordinateClueInfo> CLUES = new ImmutableMap.Builder<WorldPoint, CoordinateClueInfo>()
+	static final ImmutableMap<WorldPoint, CoordinateClueInfo> CLUES = new ImmutableMap.Builder<WorldPoint, CoordinateClueInfo>()
 		// Medium
 		.put(new WorldPoint(2479, 3158, 0), new CoordinateClueInfo("South of fruit tree patch, west of Tree Gnome Village."))
 		.put(new WorldPoint(2887, 3154, 0), new CoordinateClueInfo("West of Banana plantation on Karamja."))
@@ -130,7 +130,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		.put(new WorldPoint(2209, 3161, 0), new CoordinateClueInfo("North-east of Tyras Camp (BJS if 76 Agility).", SARADOMIN_WIZARD))
 		.put(new WorldPoint(2181, 3206, 0), new CoordinateClueInfo("South of Iorwerth Camp.", SARADOMIN_WIZARD))
 		.put(new WorldPoint(3081, 3209, 0), new CoordinateClueInfo("Small Island (CLP).", SARADOMIN_WIZARD))
-		.put(new WorldPoint(3399, 3246, 0), new CoordinateClueInfo("Behind the Duel Arena."))
+		.put(new WorldPoint(3399, 3246, 0), new CoordinateClueInfo("Behind the PvP Arena."))
 		.put(new WorldPoint(2699, 3251, 0), new CoordinateClueInfo("Little island (AIR).", SARADOMIN_WIZARD))
 		.put(new WorldPoint(3546, 3251, 0), new CoordinateClueInfo("North-east of Burgh de Rott.", SARADOMIN_WIZARD))
 		.put(new WorldPoint(3544, 3256, 0), new CoordinateClueInfo("North-east of Burgh de Rott.", SARADOMIN_WIZARD))
@@ -159,10 +159,10 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		.put(new WorldPoint(2712, 3732, 0), new CoordinateClueInfo("North-east of Rellekka (DKS).", SARADOMIN_WIZARD))
 		.put(new WorldPoint(2970, 3749, 0), new CoordinateClueInfo("Wilderness. Forgotten Cemetery.", ZAMORAK_WIZARD))
 		.put(new WorldPoint(3094, 3764, 0), new CoordinateClueInfo("Wilderness. Mining site north of Bandit Camp.", ZAMORAK_WIZARD))
-		.put(new WorldPoint(3311, 3769, 0), new CoordinateClueInfo("Wilderness. North of Venenatis.", ZAMORAK_WIZARD))
+		.put(new WorldPoint(3311, 3769, 0), new CoordinateClueInfo("Wilderness. South of the Silk Chasm (Venenatis).", ZAMORAK_WIZARD))
 		.put(new WorldPoint(1460, 3782, 0), new CoordinateClueInfo("Lovakengj, near burning man.", SARADOMIN_WIZARD))
 		.put(new WorldPoint(3244, 3792, 0), new CoordinateClueInfo("Wilderness. South-east of Lava Dragon Isle by some Chaos Dwarves.", ZAMORAK_WIZARD))
-		.put(new WorldPoint(3140, 3804, 0), new CoordinateClueInfo("Wilderness. North of Ruins.", ZAMORAK_WIZARD))
+		.put(new WorldPoint(3140, 3804, 0), new CoordinateClueInfo("Wilderness. North of black chinchompa hunter area.", ZAMORAK_WIZARD))
 		.put(new WorldPoint(2946, 3819, 0), new CoordinateClueInfo("Wilderness. Chaos Temple (level 38).", ZAMORAK_WIZARD))
 		.put(new WorldPoint(3771, 3825, 0), new CoordinateClueInfo("Fossil Island. East of Museum Camp.", SARADOMIN_WIZARD))
 		.put(new WorldPoint(3013, 3846, 0), new CoordinateClueInfo("Wilderness. West of Lava Maze, before KBD's lair.", ZAMORAK_WIZARD))
@@ -215,7 +215,7 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		.put(new WorldPoint(2484, 4016, 0), new CoordinateClueInfo("Northeast corner of the Island of Stone.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
 		.put(new WorldPoint(2222, 3331, 0), new CoordinateClueInfo("Prifddinas, west of the Tower of Voices", ARMADYLEAN_OR_BANDOSIAN_GUARD))
 		.put(new WorldPoint(3560, 3987, 0), new CoordinateClueInfo("Lithkren. Digsite pendant teleport if unlocked, otherwise take rowboat from west of Mushroom Meadow Mushtree.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
-		.put(new WorldPoint(2318, 2954, 0), new CoordinateClueInfo("North-east corner of the Isle of Souls.", BANDOSIAN_GUARD))
+		.put(new WorldPoint(2318, 2954, 0), new CoordinateClueInfo("North-east corner of the Isle of Souls (BJP).", BANDOSIAN_GUARD))
 		.put(new WorldPoint(2094, 2889, 0), new CoordinateClueInfo("West side of the Isle of Souls.", ARMADYLEAN_GUARD))
 		.put(new WorldPoint(1451, 3509, 0), new CoordinateClueInfo("Ruins of Morra.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
 		.put(new WorldPoint(3318, 2706, 0), new CoordinateClueInfo("Necropolis mine", ARMADYLEAN_OR_BANDOSIAN_GUARD))
@@ -304,6 +304,8 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 		panelComponent.getChildren().add(LineComponent.builder()
 			.left("Click the clue scroll on your world map to see dig location.")
 			.build());
+
+		renderOverlayNote(panelComponent, plugin);
 	}
 
 	@Override
@@ -318,5 +320,11 @@ public class CoordinateClue extends ClueScroll implements TextClueScroll, Locati
 				OverlayUtil.renderTileOverlay(plugin.getClient(), graphics, localLocation, plugin.getSpadeImage(), Color.ORANGE);
 			}
 		}
+	}
+
+	@Override
+	public int[] getConfigKeys()
+	{
+		return new int[]{location.hashCode()};
 	}
 }

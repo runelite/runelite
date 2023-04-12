@@ -36,19 +36,19 @@ struct uniform {
 };
 
 struct shared_data {
-  int totalNum[12]; // number of faces with a given priority
-  int totalDistance[12]; // sum of distances to faces of a given priority
-  int totalMappedNum[18]; // number of faces with a given adjusted priority
-  int min10; // minimum distance to a face of priority 10
-  int dfs[0]; // packed face id and distance, size 512 for small, 4096 for large
+  int totalNum[12];        // number of faces with a given priority
+  int totalDistance[12];   // sum of distances to faces of a given priority
+  int totalMappedNum[18];  // number of faces with a given adjusted priority
+  int min10;               // minimum distance to a face of priority 10
+  uint renderPris[0];      // packed distance and face id
 };
 
 struct modelinfo {
-  int offset;   // offset into buffer
-  int uvOffset; // offset into uv buffer
+  int offset;   // offset into vertex buffer
+  int toffset;  // offset into texture buffer
   int size;     // length in faces
   int idx;      // write idx in target buffer
-  int flags;    // radius, orientation
+  int flags;    // buffer, radius, orientation
   int x;        // scene position x
   int y;        // scene position y
   int z;        // scene position z

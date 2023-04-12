@@ -28,9 +28,11 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("cluescroll")
+@ConfigGroup(ClueScrollConfig.GROUP)
 public interface ClueScrollConfig extends Config
 {
+	String GROUP = "cluescroll";
+
 	@ConfigItem(
 		keyName = "displayHintArrows",
 		name = "Display hint arrows",

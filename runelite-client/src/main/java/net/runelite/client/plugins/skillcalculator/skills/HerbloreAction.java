@@ -27,6 +27,7 @@ package net.runelite.client.plugins.skillcalculator.skills;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.ItemID;
+import net.runelite.client.game.ItemManager;
 
 @AllArgsConstructor
 @Getter
@@ -99,6 +100,7 @@ public enum HerbloreAction implements ItemSkillAction
 	DIVINE_BATTLEMAGE_POTION_4(ItemID.DIVINE_BATTLEMAGE_POTION4, 86, 2),
 	ANTIVENOM_3(ItemID.ANTIVENOM3, 87, 90),
 	ANTIVENOM_4(ItemID.ANTIVENOM4, 87, 120),
+	MENAPHITE_REMEDY_3(ItemID.MENAPHITE_REMEDY3, 88, 200),
 	SUPER_COMBAT_POTION_4(ItemID.SUPER_COMBAT_POTION4, 90, 150),
 	SUPER_ANTIFIRE_4(ItemID.SUPER_ANTIFIRE_POTION4, 92, 130),
 	ANTIVENOM_PLUS_4(ItemID.ANTIVENOM4_12913, 94, 125),
@@ -110,4 +112,10 @@ public enum HerbloreAction implements ItemSkillAction
 	private final int itemId;
 	private final int level;
 	private final float xp;
+
+	@Override
+	public boolean isMembers(final ItemManager itemManager)
+	{
+		return true;
+	}
 }

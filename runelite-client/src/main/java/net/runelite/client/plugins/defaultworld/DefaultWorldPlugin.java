@@ -33,7 +33,7 @@ import net.runelite.api.events.WorldChanged;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.events.SessionOpen;
+import net.runelite.client.events.ProfileChanged;
 import net.runelite.client.game.WorldService;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -88,7 +88,7 @@ public class DefaultWorldPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onSessionOpen(SessionOpen event)
+	public void onProfileChanged(ProfileChanged profileChanged)
 	{
 		clientThread.invokeLater(this::applyWorld);
 	}

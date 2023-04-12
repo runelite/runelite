@@ -27,7 +27,6 @@ package net.runelite.client.ui.overlay.tooltip;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -51,6 +50,8 @@ public class TooltipOverlay extends Overlay
 	private final TooltipManager tooltipManager;
 	private final Client client;
 	private final RuneLiteConfig runeLiteConfig;
+
+	private int prevWidth, prevHeight;
 
 	@Inject
 	private TooltipOverlay(Client client, TooltipManager tooltipManager, final RuneLiteConfig runeLiteConfig)
@@ -91,15 +92,13 @@ public class TooltipOverlay extends Overlay
 		final int canvasWidth = client.getCanvasWidth();
 		final int canvasHeight = client.getCanvasHeight();
 		final net.runelite.api.Point mouseCanvasPosition = client.getMouseCanvasPosition();
-		final Rectangle prevBounds = getBounds();
 
-		final int tooltipX = Math.min(canvasWidth - prevBounds.width, mouseCanvasPosition.getX());
+		final int tooltipX = Math.min(canvasWidth - prevWidth, mouseCanvasPosition.getX());
 		final int tooltipY = runeLiteConfig.tooltipPosition() == TooltipPositionType.ABOVE_CURSOR
-			? Math.max(0, mouseCanvasPosition.getY() - prevBounds.height)
-			: Math.min(canvasHeight - prevBounds.height, mouseCanvasPosition.getY() + UNDER_OFFSET);
+			? Math.max(0, mouseCanvasPosition.getY() - prevHeight)
+			: Math.min(canvasHeight - prevHeight, mouseCanvasPosition.getY() + UNDER_OFFSET);
 
-		final Rectangle newBounds = new Rectangle(tooltipX, tooltipY, 0, 0);
-
+		int width = 0, height = 0;
 		for (Tooltip tooltip : tooltips)
 		{
 			final LayoutableRenderableEntity entity;
@@ -121,14 +120,16 @@ public class TooltipOverlay extends Overlay
 				entity = tooltipComponent;
 			}
 
-			entity.setPreferredLocation(new Point(tooltipX, tooltipY + newBounds.height));
+			entity.setPreferredLocation(new Point(tooltipX, tooltipY + height));
 			final Dimension dimension = entity.render(graphics);
 
 			// Create incremental tooltip newBounds
-			newBounds.height += dimension.height + PADDING;
-			newBounds.width = Math.max(newBounds.width, dimension.width);
+			height += dimension.height + PADDING;
+			width = Math.max(width, dimension.width);
 		}
 
-		return newBounds.getSize();
+		prevWidth = width;
+		prevHeight = height;
+		return null;
 	}
 }

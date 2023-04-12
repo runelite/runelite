@@ -33,12 +33,16 @@ import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.GameState;
+import net.runelite.api.InventoryID;
+import net.runelite.api.ItemContainer;
+import net.runelite.api.ItemID;
 import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
@@ -82,7 +86,8 @@ public class RegenMeterPlugin extends Plugin
 
 	private int ticksSinceSpecRegen;
 	private int ticksSinceHPRegen;
-	private boolean wasRapidHeal;
+
+	private boolean wearingLightbearer;
 
 	@Provides
 	RegenMeterConfig provideConfig(ConfigManager configManager)
@@ -113,29 +118,48 @@ public class RegenMeterPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onItemContainerChanged(ItemContainerChanged event)
+	{
+		if (event.getContainerId() != InventoryID.EQUIPMENT.getId())
+		{
+			return;
+		}
+
+		ItemContainer equipment = event.getItemContainer();
+		final boolean hasLightbearer = equipment.contains(ItemID.LIGHTBEARER);
+		if (hasLightbearer == wearingLightbearer)
+		{
+			return;
+		}
+
+		ticksSinceSpecRegen = 0;
+		wearingLightbearer = hasLightbearer;
+	}
+
+	@Subscribe
 	private void onVarbitChanged(VarbitChanged ev)
 	{
-		boolean isRapidHeal = client.isPrayerActive(Prayer.RAPID_HEAL);
-		if (wasRapidHeal != isRapidHeal)
+		if (ev.getVarbitId() == Varbits.PRAYER_RAPID_HEAL)
 		{
 			ticksSinceHPRegen = 0;
 		}
-		wasRapidHeal = isRapidHeal;
 	}
 
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (client.getVar(VarPlayer.SPECIAL_ATTACK_PERCENT) == 1000)
+		final int ticksPerSpecRegen = wearingLightbearer ? SPEC_REGEN_TICKS / 2 : SPEC_REGEN_TICKS;
+
+		if (client.getVarpValue(VarPlayer.SPECIAL_ATTACK_PERCENT) == 1000)
 		{
 			// The recharge doesn't tick when at 100%
 			ticksSinceSpecRegen = 0;
 		}
 		else
 		{
-			ticksSinceSpecRegen = (ticksSinceSpecRegen + 1) % SPEC_REGEN_TICKS;
+			ticksSinceSpecRegen = (ticksSinceSpecRegen + 1) % ticksPerSpecRegen;
 		}
-		specialPercentage = ticksSinceSpecRegen / (double) SPEC_REGEN_TICKS;
+		specialPercentage = ticksSinceSpecRegen / (double) ticksPerSpecRegen;
 
 
 		int ticksPerHPRegen = NORMAL_HP_REGEN_TICKS;

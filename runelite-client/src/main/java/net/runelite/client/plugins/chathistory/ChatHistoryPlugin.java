@@ -353,7 +353,7 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 			return;
 		}
 
-		if (client.getVar(VarClientInt.INPUT_TYPE) != InputType.PRIVATE_MESSAGE.getType())
+		if (client.getVarcIntValue(VarClientInt.INPUT_TYPE) != InputType.PRIVATE_MESSAGE.getType())
 		{
 			return;
 		}
@@ -366,11 +366,11 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 				return;
 			}
 
-			final String currentMessage = client.getVar(VarClientStr.INPUT_TEXT);
+			final String currentMessage = client.getVarcStrValue(VarClientStr.INPUT_TEXT);
 
 			client.runScript(ScriptID.OPEN_PRIVATE_MESSAGE_INTERFACE, target);
 
-			client.setVar(VarClientStr.INPUT_TEXT, currentMessage);
+			client.setVarcStrValue(VarClientStr.INPUT_TEXT, currentMessage);
 			client.runScript(ScriptID.CHAT_TEXT_INPUT_REBUILD, "");
 		});
 	}
@@ -387,7 +387,7 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 
 	private String findPreviousFriend()
 	{
-		final String currentTarget = client.getVar(VarClientStr.PRIVATE_MESSAGE_TARGET);
+		final String currentTarget = client.getVarcStrValue(VarClientStr.PRIVATE_MESSAGE_TARGET);
 		if (currentTarget == null || friends.isEmpty())
 		{
 			return null;

@@ -28,7 +28,7 @@
 
 	<groupId>net.runelite</groupId>
 	<artifactId>runelite-parent</artifactId>
-	<version>1.8.24-SNAPSHOT</version>
+	<version>1.9.15-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>RuneLite</name>
@@ -47,7 +47,7 @@
 		<checkstyle.skip>true</checkstyle.skip>
 		<glslang.path></glslang.path>
 
-		<rs.version>206</rs.version>
+		<rs.version>212</rs.version>
 	</properties>
 
 	<licenses>
@@ -78,11 +78,6 @@
 		<system>GitHub Issues</system>
 		<url>https://github.com/runelite/runelite/issues</url>
 	</issueManagement>
-
-	<ciManagement>
-		<system>Travis CI</system>
-		<url>https://travis-ci.org/runelite/runelite</url>
-	</ciManagement>
 
 	<repositories>
 		<repository>

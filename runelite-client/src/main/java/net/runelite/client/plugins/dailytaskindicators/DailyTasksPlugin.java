@@ -114,7 +114,7 @@ public class DailyTasksPlugin extends Plugin
 		boolean dailyReset = !loggingIn && currentTime - lastReset > ONE_DAY;
 
 		if ((dailyReset || loggingIn)
-			&& client.getVar(VarClientInt.MEMBERSHIP_STATUS) == 1)
+			&& client.getVarcIntValue(VarClientInt.MEMBERSHIP_STATUS) == 1)
 		{
 			// Round down to the nearest day
 			lastReset = (long) Math.floor(currentTime / ONE_DAY) * ONE_DAY;
@@ -170,7 +170,7 @@ public class DailyTasksPlugin extends Plugin
 	private void checkHerbBoxes(boolean dailyReset)
 	{
 		if (client.getAccountType() == AccountType.NORMAL
-			&& client.getVar(VarPlayer.NMZ_REWARD_POINTS) >= HERB_BOX_COST
+			&& client.getVarpValue(VarPlayer.NMZ_REWARD_POINTS) >= HERB_BOX_COST
 			&& (client.getVarbitValue(Varbits.DAILY_HERB_BOXES_COLLECTED) < HERB_BOX_MAX
 			|| dailyReset))
 		{

@@ -31,6 +31,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.binder.ConstantBindingBuilder;
 import com.google.inject.name.Names;
+import com.google.inject.util.Providers;
 import java.applet.Applet;
 import java.io.File;
 import java.util.Map;
@@ -69,8 +70,9 @@ public class RuneLiteModule extends AbstractModule
 	private final Supplier<RuntimeConfig> configSupplier;
 	private final boolean developerMode;
 	private final boolean safeMode;
+	private final boolean disableTelemetry;
 	private final File sessionfile;
-	private final File config;
+	private final String profile;
 
 	@Override
 	protected void configure()
@@ -106,13 +108,19 @@ public class RuneLiteModule extends AbstractModule
 						binder.to((double) entry.getValue());
 					}
 				}
+				else if (entry.getValue() instanceof Boolean)
+				{
+					ConstantBindingBuilder binder = bindConstant().annotatedWith(Names.named(entry.getKey()));
+					binder.to((boolean) entry.getValue());
+				}
 			}
 		}
 
 		bindConstant().annotatedWith(Names.named("developerMode")).to(developerMode);
 		bindConstant().annotatedWith(Names.named("safeMode")).to(safeMode);
+		bindConstant().annotatedWith(Names.named("disableTelemetry")).to(disableTelemetry);
 		bind(File.class).annotatedWith(Names.named("sessionfile")).toInstance(sessionfile);
-		bind(File.class).annotatedWith(Names.named("config")).toInstance(config);
+		bind(String.class).annotatedWith(Names.named("profile")).toProvider(Providers.of(profile));
 		bind(ScheduledExecutorService.class).toInstance(new ExecutorServiceExceptionLogger(Executors.newSingleThreadScheduledExecutor()));
 		bind(OkHttpClient.class).toInstance(okHttpClient);
 		bind(MenuManager.class);
@@ -199,5 +207,15 @@ public class RuneLiteModule extends AbstractModule
 	{
 		final String prop = System.getProperty("runelite.ws.url");
 		return HttpUrl.get(Strings.isNullOrEmpty(prop) ? s : prop);
+	}
+
+	@Provides
+	@Singleton
+	TelemetryClient provideTelemetry(
+		OkHttpClient okHttpClient,
+		Gson gson,
+		@Named("runelite.api.base") HttpUrl apiBase)
+	{
+		return disableTelemetry ? null : new TelemetryClient(okHttpClient, gson, apiBase);
 	}
 }

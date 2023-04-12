@@ -137,14 +137,24 @@ public final class ScriptID
 	public static final int QUEST_STATUS_GET = 4029;
 
 	/**
-	 * Updates the Diary/Quest interface's scrollbar
+	 * Updates the Quest interface's scrollbar
 	 * <ul>
 	 * <li> int (boolean) Reset scroll position </li>
 	 * <li> int Number of lines </li>
 	 * </ul>
 	 */
 	@ScriptArguments(integer = 2)
-	public static final int DIARY_QUEST_UPDATE_LINECOUNT = 2523;
+	public static final int QUEST_UPDATE_LINECOUNT = 2523;
+
+	/**
+	 * Updates the Diary interface's scrollbar
+	 * <ul>
+	 * <li> int (boolean) Reset scroll position </li>
+	 * <li> int Number of lines </li>
+	 * </ul>
+	 */
+	@ScriptArguments(integer = 2)
+	public static final int DIARY_UPDATE_LINECOUNT = 6845;
 
 	/**
 	 * Handles zoom input
@@ -208,7 +218,7 @@ public final class ScriptID
 	/**
 	 * Builds the widget for making an offer in Grand Exchange
 	 */
-	@ScriptArguments(integer = 16)
+	@ScriptArguments(integer = 17)
 	public static final int GE_OFFERS_SETUP_BUILD = 779;
 
 	/**
@@ -334,7 +344,7 @@ public final class ScriptID
 	 * <li>int (WidgetID) drag parent</li>
 	 * </ul>
 	 */
-	@ScriptArguments(integer = 8, string = 1)
+	@ScriptArguments(integer = 11, string = 1)
 	public static final int SETTINGS_SLIDER_CHOOSE_ONOP = 3885;
 
 	/**
@@ -383,4 +393,22 @@ public final class ScriptID
 	 */
 	@ScriptArguments(integer = 6)
 	public static final int TRADE_MAIN_INIT = 755;
+
+	/**
+	 * Transitions the tob hud into the white flash that happens when sotetseg teleports the players to the maze.
+	 */
+	@ScriptArguments(string = 1)
+	public static final int TOB_HUD_SOTETSEG_FADE = 2308;
+
+	@ScriptArguments(integer = 3)
+	public static final int RAIDS_STORAGE_PRIVATE_ITEMS = 1607;
+
+	@ScriptArguments(integer = 12)
+	public static final int HP_HUD_UPDATE = 2103;
+
+	@ScriptArguments(integer = 7)
+	public static final int ORBS_UPDATE_RUNENERGY = 447;
+
+	@ScriptArguments(integer = 9)
+	public static final int WORLDMAP_LOADMAP = 1712;
 }

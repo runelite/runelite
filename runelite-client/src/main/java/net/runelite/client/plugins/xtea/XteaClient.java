@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.xtea;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
@@ -34,7 +35,6 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.http.api.RuneLiteAPI;
 import static net.runelite.http.api.RuneLiteAPI.JSON;
 import net.runelite.http.api.xtea.XteaKey;
 import net.runelite.http.api.xtea.XteaRequest;
@@ -51,12 +51,14 @@ public class XteaClient
 {
 	private final OkHttpClient client;
 	private final HttpUrl apiBase;
+	private final Gson gson;
 
 	@Inject
-	private XteaClient(OkHttpClient client, @Named("runelite.api.base") HttpUrl apiBase)
+	private XteaClient(OkHttpClient client, @Named("runelite.api.base") HttpUrl apiBase, Gson gson)
 	{
 		this.client = client;
 		this.apiBase = apiBase;
+		this.gson = gson;
 	}
 
 	public void submit(XteaRequest xteaRequest)
@@ -68,7 +70,7 @@ public class XteaClient
 		log.debug("Built URI: {}", url);
 
 		Request request = new Request.Builder()
-			.post(RequestBody.create(JSON, RuneLiteAPI.GSON.toJson(xteaRequest)))
+			.post(RequestBody.create(JSON, gson.toJson(xteaRequest)))
 			.url(url)
 			.build();
 
@@ -112,7 +114,7 @@ public class XteaClient
 		{
 			InputStream in = response.body().byteStream();
 			// CHECKSTYLE:OFF
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), new TypeToken<List<XteaKey>>() { }.getType());
+			return gson.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), new TypeToken<List<XteaKey>>() { }.getType());
 			// CHECKSTYLE:ON
 		}
 		catch (JsonParseException ex)
@@ -135,7 +137,7 @@ public class XteaClient
 		try (Response response = client.newCall(request).execute())
 		{
 			InputStream in = response.body().byteStream();
-			return RuneLiteAPI.GSON.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), XteaKey.class);
+			return gson.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), XteaKey.class);
 		}
 		catch (JsonParseException ex)
 		{

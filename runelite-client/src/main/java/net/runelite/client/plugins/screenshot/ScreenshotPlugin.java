@@ -29,8 +29,10 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
-import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
 import java.awt.Image;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
@@ -71,6 +73,8 @@ import static net.runelite.api.widgets.WidgetID.KINGDOM_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.LEVEL_UP_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.QUEST_COMPLETED_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.THEATRE_OF_BLOOD_REWARD_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.TOA_REWARD_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.WILDERNESS_LOOT_CHEST;
 import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.client.RuneLite.SCREENSHOT_DIR;
 import net.runelite.client.config.ConfigManager;
@@ -136,6 +140,7 @@ public class ScreenshotPlugin extends Plugin
 	private static final String SD_PVP_KILLS = "PvP Kills";
 	private static final String SD_DEATHS = "Deaths";
 	private static final String SD_COMBAT_ACHIEVEMENTS = "Combat Achievements";
+	private static final String SD_WILDERNESS_LOOT_CHEST = "Wilderness Loot Chest";
 
 	private String clueType;
 	private Integer clueNumber;
@@ -147,7 +152,10 @@ public class ScreenshotPlugin extends Plugin
 		COX_CM,
 		TOB,
 		TOB_SM,
-		TOB_HM
+		TOB_HM,
+		TOA_ENTRY_MODE,
+		TOA,
+		TOA_EXPERT_MODE
 	}
 
 	private KillType killType;
@@ -413,6 +421,19 @@ public class ScreenshotPlugin extends Plugin
 			}
 		}
 
+		if (chatMessage.startsWith("Your completed Tombs of Amascut"))
+		{
+			Matcher m = NUMBER_PATTERN.matcher(Text.removeTags(chatMessage));
+			if (m.find())
+			{
+				killType = chatMessage.contains("Expert Mode") ? KillType.TOA_EXPERT_MODE :
+					chatMessage.contains("Entry Mode") ? KillType.TOA_ENTRY_MODE :
+						KillType.TOA;
+				killCountNumber = Integer.valueOf(m.group());
+				return;
+			}
+		}
+
 		if (config.screenshotKick() && chatMessage.equals("Your request to kick/ban this user was successful."))
 		{
 			if (kickPlayerName == null)
@@ -520,6 +541,7 @@ public class ScreenshotPlugin extends Plugin
 			case CLUE_SCROLL_REWARD_GROUP_ID:
 			case CHAMBERS_OF_XERIC_REWARD_GROUP_ID:
 			case THEATRE_OF_BLOOD_REWARD_GROUP_ID:
+			case TOA_REWARD_GROUP_ID:
 			case BARROWS_REWARD_GROUP_ID:
 				if (!config.screenshotRewards())
 				{
@@ -540,6 +562,12 @@ public class ScreenshotPlugin extends Plugin
 				break;
 			case KINGDOM_GROUP_ID:
 				if (!config.screenshotKingdom())
+				{
+					return;
+				}
+				break;
+			case WILDERNESS_LOOT_CHEST:
+				if (!config.screenshotWildernessLootChest())
 				{
 					return;
 				}
@@ -601,6 +629,33 @@ public class ScreenshotPlugin extends Plugin
 				killCountNumber = 0;
 				break;
 			}
+			case TOA_REWARD_GROUP_ID:
+			{
+				if (killType != KillType.TOA && killType != KillType.TOA_ENTRY_MODE && killType != KillType.TOA_EXPERT_MODE)
+				{
+					return;
+				}
+
+				switch (killType)
+				{
+					case TOA:
+						fileName = "Tombs of Amascut(" + killCountNumber + ")";
+						break;
+					case TOA_ENTRY_MODE:
+						fileName = "Tombs of Amascut Entry Mode(" + killCountNumber + ")";
+						break;
+					case TOA_EXPERT_MODE:
+						fileName = "Tombs of Amascut Expert Mode(" + killCountNumber + ")";
+						break;
+					default:
+						throw new IllegalStateException();
+				}
+
+				screenshotSubDir = SD_BOSS_KILLS;
+				killType = null;
+				killCountNumber = 0;
+				break;
+			}
 			case BARROWS_REWARD_GROUP_ID:
 			{
 				if (killType != KillType.BARROWS)
@@ -635,6 +690,12 @@ public class ScreenshotPlugin extends Plugin
 				clueNumber = null;
 				break;
 			}
+			case WILDERNESS_LOOT_CHEST:
+			{
+				fileName = "Loot key";
+				screenshotSubDir = SD_WILDERNESS_LOOT_CHEST;
+				break;
+			}
 			default:
 				return;
 		}
@@ -655,8 +716,8 @@ public class ScreenshotPlugin extends Plugin
 				{
 					return;
 				}
-				String topText = client.getVar(VarClientStr.NOTIFICATION_TOP_TEXT);
-				String bottomText = client.getVar(VarClientStr.NOTIFICATION_BOTTOM_TEXT);
+				String topText = client.getVarcStrValue(VarClientStr.NOTIFICATION_TOP_TEXT);
+				String bottomText = client.getVarcStrValue(VarClientStr.NOTIFICATION_BOTTOM_TEXT);
 				if (topText.equalsIgnoreCase("Collection log") && config.screenshotCollectionLogEntries())
 				{
 					String entry = Text.removeTags(bottomText).substring("New item:".length());
@@ -821,19 +882,36 @@ public class ScreenshotPlugin extends Plugin
 		}
 	}
 
+	private static int getScaledValue(final double scale, final int value)
+	{
+		return (int) (value * scale + .5);
+	}
+
 	private void takeScreenshot(String fileName, String subDir, Image image)
 	{
-		BufferedImage screenshot = config.includeFrame()
-			? new BufferedImage(clientUi.getWidth(), clientUi.getHeight(), BufferedImage.TYPE_INT_ARGB)
-			: new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-
-		Graphics graphics = screenshot.getGraphics();
-
-		int gameOffsetX = 0;
-		int gameOffsetY = 0;
-
-		if (config.includeFrame())
+		final BufferedImage screenshot;
+		if (!config.includeFrame())
 		{
+			// just simply copy the image
+			screenshot = ImageUtil.bufferedImageFromImage(image);
+		}
+		else
+		{
+			// create a new image, paint the client ui to it, and then draw the screenshot to that
+			final GraphicsConfiguration graphicsConfiguration = clientUi.getGraphicsConfiguration();
+			final AffineTransform transform = graphicsConfiguration.getDefaultTransform();
+
+			// scaled client dimensions
+			int clientWidth = getScaledValue(transform.getScaleX(), clientUi.getWidth());
+			int clientHeight = getScaledValue(transform.getScaleY(), clientUi.getHeight());
+
+			screenshot = new BufferedImage(clientWidth, clientHeight, BufferedImage.TYPE_INT_ARGB);
+
+			Graphics2D graphics = (Graphics2D) screenshot.getGraphics();
+			AffineTransform originalTransform = graphics.getTransform();
+			// scale g2d for the paint() call
+			graphics.setTransform(transform);
+
 			// Draw the client frame onto the screenshot
 			try
 			{
@@ -844,14 +922,17 @@ public class ScreenshotPlugin extends Plugin
 				log.warn("unable to paint client UI on screenshot", e);
 			}
 
-			// Evaluate the position of the game inside the frame
+			// Find the position of the canvas inside the frame
 			final Point canvasOffset = clientUi.getCanvasOffset();
-			gameOffsetX = canvasOffset.getX();
-			gameOffsetY = canvasOffset.getY();
+			final int gameOffsetX = getScaledValue(transform.getScaleX(), canvasOffset.getX());
+			final int gameOffsetY = getScaledValue(transform.getScaleY(), canvasOffset.getY());
+
+			// Draw the original screenshot onto the new screenshot
+			graphics.setTransform(originalTransform); // the original screenshot is already scaled
+			graphics.drawImage(image, gameOffsetX, gameOffsetY, null);
+			graphics.dispose();
 		}
 
-		// Draw the game onto the screenshot
-		graphics.drawImage(image, gameOffsetX, gameOffsetY, null);
 		imageCapture.takeScreenshot(screenshot, fileName, subDir, config.notifyWhenTaken(), config.uploadScreenshot());
 	}
 

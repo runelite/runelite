@@ -24,6 +24,8 @@
  */
 package net.runelite.api;
 
+import javax.annotation.Nonnull;
+
 /**
  * Represents the model of an object.
  */
@@ -51,17 +53,16 @@ public interface Model extends Mesh, Renderable
 	byte[] getFaceRenderPriorities();
 
 	int getRadius();
+	int getDiameter();
 
-	float[] getFaceTextureUVCoordinates();
-
+	/**
+	 * @see #getAABB(int)
+	 */
+	@Deprecated
 	void calculateExtreme(int orientation);
 
-	int getCenterX();
-	int getCenterY();
-	int getCenterZ();
-	int getExtremeX();
-	int getExtremeY();
-	int getExtremeZ();
+	@Nonnull
+	AABB getAABB(int orientation);
 
 	int getXYZMag();
 	boolean isClickable();
@@ -74,4 +75,10 @@ public interface Model extends Mesh, Renderable
 	byte getOverrideHue();
 	byte getOverrideSaturation();
 	byte getOverrideLuminance();
+
+	byte[] getTextureFaces();
+
+	int[] getTexIndices1();
+	int[] getTexIndices2();
+	int[] getTexIndices3();
 }

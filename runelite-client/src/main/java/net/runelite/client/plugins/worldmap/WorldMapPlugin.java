@@ -29,15 +29,27 @@ import com.google.inject.Inject;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
+import java.util.EnumMap;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
+import net.runelite.api.EnumComposition;
+import net.runelite.api.EnumID;
 import net.runelite.api.Quest;
+import net.runelite.api.ScriptID;
 import net.runelite.api.Skill;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.ClientTick;
+import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.StatChanged;
-import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.client.callback.ClientThread;
+import net.runelite.api.worldmap.MapElementConfig;
+import net.runelite.api.worldmap.WorldMap;
+import net.runelite.api.worldmap.WorldMapIcon;
+import net.runelite.api.worldmap.WorldMapRegion;
+import net.runelite.api.worldmap.WorldMapRenderer;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
@@ -54,8 +66,11 @@ import net.runelite.client.util.Text;
 	description = "Enhance the world map to display additional information",
 	tags = {"agility", "dungeon", "fairy", "farming", "rings", "teleports"}
 )
+@Slf4j
 public class WorldMapPlugin extends Plugin
 {
+	private static final int CATEGORY_QUEST = 1056; // from [proc,worldmap_tooltip_override].cs2
+
 	static final BufferedImage BLANK_ICON;
 	private static final BufferedImage FAIRY_TRAVEL_ICON;
 	private static final BufferedImage NOPE_ICON;
@@ -135,9 +150,6 @@ public class WorldMapPlugin extends Plugin
 	private Client client;
 
 	@Inject
-	private ClientThread clientThread;
-
-	@Inject
 	private WorldMapConfig config;
 
 	@Inject
@@ -145,6 +157,8 @@ public class WorldMapPlugin extends Plugin
 
 	private int agilityLevel = 0;
 	private int woodcuttingLevel = 0;
+
+	private final Map<Quest, WorldPoint> questStartLocations = new EnumMap<>(Quest.class);
 
 	@Provides
 	WorldMapConfig provideConfig(ConfigManager configManager)
@@ -164,6 +178,7 @@ public class WorldMapPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		worldMapPointManager.removeIf(MapPoint.class::isInstance);
+		questStartLocations.clear();
 		agilityLevel = 0;
 		woodcuttingLevel = 0;
 	}
@@ -208,13 +223,70 @@ public class WorldMapPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded widgetLoaded)
+	public void onScriptPostFired(ScriptPostFired scriptPostFired)
 	{
-		if (widgetLoaded.getGroupId() == WidgetID.WORLD_MAP_GROUP_ID)
+		if (scriptPostFired.getScriptId() == ScriptID.WORLDMAP_LOADMAP)
 		{
-			// Quest icons are per-account due to showing quest status,
-			// so we recreate them each time the map is loaded
+			// this is called whenever the map is opened or the map is changed
 			updateQuestStartPointIcons();
+		}
+	}
+
+	@Subscribe
+	public void onClientTick(ClientTick clientTick)
+	{
+		WorldMap worldMap = client.getWorldMap();
+		WorldMapRenderer wmm = worldMap.getWorldMapRenderer();
+		// the world map renderer, which contains the regions with the icons, doesn't load
+		// its data until it is rendered
+		if (!wmm.isLoaded())
+		{
+			// this relies on the code in Hooks to reinitialize the map after is closed to avoid
+			// running after the map is closed
+			return;
+		}
+
+		log.trace("Checking map icons");
+
+		if (!config.questStartTooltips())
+		{
+			return;
+		}
+
+		// WorldMapRenderer only loads icons that are visible, so lazy load the quest start locations by checking
+		// what icons are loaded each tick.
+		WorldMapRegion[][] regions = wmm.getMapRegions();
+		EnumComposition mapElementToQuest = client.getEnum(EnumID.MAPELEMENT_TO_QUEST);
+		Map<Integer, Quest> questMap = Arrays.stream(Quest.values())
+			.collect(Collectors.toMap(Quest::getId, Function.identity()));
+		for (int i = 0; i < regions.length; ++i) // NOPMD: ForLoopCanBeForeach
+		{
+			for (int j = 0; j < regions[i].length; ++j)
+			{
+				WorldMapRegion region = regions[i][j];
+				for (WorldMapIcon icon : region.getMapIcons())
+				{
+					MapElementConfig config = client.getMapElementConfig(icon.getType());
+					if (config.getCategory() == CATEGORY_QUEST)
+					{
+						int questDbRowId = mapElementToQuest.getIntValue(icon.getType());
+
+						// our quest ids are actually dbrow ids
+						Quest quest = questMap.get(questDbRowId);
+						if (quest == null)
+						{
+							continue;
+						}
+
+						if (!questStartLocations.containsKey(quest))
+						{
+							log.debug("Found quest start location {} for {}", icon.getCoordinate(), quest);
+							questStartLocations.put(quest, icon.getCoordinate());
+							worldMapPointManager.add(createQuestStartPoint(quest, icon));
+						}
+					}
+				}
+			}
 		}
 	}
 
@@ -481,27 +553,16 @@ public class WorldMapPlugin extends Plugin
 	private void updateQuestStartPointIcons()
 	{
 		worldMapPointManager.removeIf(isType(MapPoint.Type.QUEST));
+		questStartLocations.clear();
 
-		if (!config.questStartTooltips())
-		{
-			return;
-		}
-
-		// Must setup the quest icons on the client thread, after the player has logged in.
-		clientThread.invoke(() ->
-		{
-			if (client.getGameState() == GameState.LOGGED_IN)
-			{
-				Arrays.stream(QuestStartLocation.values())
-					.map(this::createQuestStartPoint)
-					.forEach(worldMapPointManager::add);
-			}
-		});
+		// quest points are lazy loaded in the client tick event
+		log.debug("Reset quest start positions");
 	}
 
-	private MapPoint createQuestStartPoint(QuestStartLocation data)
+	private MapPoint createQuestStartPoint(Quest quest, WorldMapIcon worldMapIcon)
 	{
-		Quest quest = data.getQuest();
+		final WorldPoint location = worldMapIcon.getCoordinate()
+			.dx(-1); // why -1? I don't know
 
 		BufferedImage icon = BLANK_ICON;
 		if (quest != null)
@@ -522,7 +583,7 @@ public class WorldMapPlugin extends Plugin
 
 		return MapPoint.builder()
 			.type(MapPoint.Type.QUEST)
-			.worldPoint(data.getLocation())
+			.worldPoint(location)
 			.image(icon)
 			.build();
 	}

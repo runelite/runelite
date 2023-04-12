@@ -85,9 +85,9 @@ public class DesertDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.SLAYER, 65),
 			new SkillRequirement(Skill.DEFENCE, 10),
 			new SkillRequirement(Skill.CRAFTING, 55),
-			new QuestRequirement(Quest.DESERT_TREASURE, true));
+			new QuestRequirement(Quest.DESERT_TREASURE_I, true));
 		add("Activate Ancient Magicks at the altar in the Jaldraocht Pyramid.",
-			new QuestRequirement(Quest.DESERT_TREASURE));
+			new QuestRequirement(Quest.DESERT_TREASURE_I));
 		add("Defeat a Locust Rider with Keris.",
 			new SkillRequirement(Skill.ATTACK, 50),
 			new QuestRequirement(Quest.CONTACT));
@@ -101,7 +101,7 @@ public class DesertDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.COOKING, 85));
 		add("Cast Ice Barrage against a foe in the Desert.",
 			new SkillRequirement(Skill.MAGIC, 94),
-			new QuestRequirement(Quest.DESERT_TREASURE));
+			new QuestRequirement(Quest.DESERT_TREASURE_I));
 		add("Fletch some Dragon darts at the Bedabin Camp.",
 			new SkillRequirement(Skill.FLETCHING, 95),
 			new QuestRequirement(Quest.THE_TOURIST_TRAP));

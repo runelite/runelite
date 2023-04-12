@@ -53,6 +53,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
 import static net.runelite.api.ItemID.*;
 import net.runelite.api.SpritePixels;
+import net.runelite.api.WorldType;
 import net.runelite.api.widgets.ItemQuantityMode;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.RuneLiteConfig;
@@ -163,6 +164,12 @@ public class ItemManager
 		put(GRACEFUL_LEGS_25080, GRACEFUL_LEGS_25078).
 		put(GRACEFUL_GLOVES_25083, GRACEFUL_GLOVES_25081).
 		put(GRACEFUL_BOOTS_25086, GRACEFUL_BOOTS_25084).
+		put(GRACEFUL_HOOD_27446, GRACEFUL_HOOD_27444).
+		put(GRACEFUL_CAPE_27449, GRACEFUL_CAPE_27447).
+		put(GRACEFUL_TOP_27452, GRACEFUL_TOP_27450).
+		put(GRACEFUL_LEGS_27455, GRACEFUL_LEGS_27453).
+		put(GRACEFUL_GLOVES_27458, GRACEFUL_GLOVES_27456).
+		put(GRACEFUL_BOOTS_27461, GRACEFUL_BOOTS_27459).
 
 		put(MAX_CAPE_13342, MAX_CAPE).
 
@@ -318,6 +325,12 @@ public class ItemManager
 	 */
 	public int getWikiPrice(ItemPrice itemPrice)
 	{
+		if (client.getWorldType().contains(WorldType.FRESH_START_WORLD))
+		{
+			// thresholds don't apply to fsw pricing.
+			return itemPrice.getWikiPriceFsw() <= 0 ? itemPrice.getPrice() : itemPrice.getWikiPriceFsw();
+		}
+
 		final int wikiPrice = itemPrice.getWikiPrice();
 		final int jagPrice = itemPrice.getPrice();
 		if (wikiPrice <= 0)

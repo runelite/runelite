@@ -34,9 +34,9 @@ import static net.runelite.client.util.RSTimeUnit.*;
 
 enum Rock
 {
-	TIN(Duration.of(4, GAME_TICKS), 0, ROCKS_11360, ROCKS_11361),
-	COPPER(Duration.of(4, GAME_TICKS), 0, ROCKS_10943, ROCKS_11161),
-	IRON(Duration.of(9, GAME_TICKS), 0, ROCKS_11364, ROCKS_11365, ROCKS_36203)
+	TIN(Duration.of(4, GAME_TICKS), 0, TIN_ROCKS_11360, TIN_ROCKS_11361),
+	COPPER(Duration.of(4, GAME_TICKS), 0, COPPER_ROCKS_10943, COPPER_ROCKS_11161),
+	IRON(Duration.of(9, GAME_TICKS), 0, IRON_ROCKS, IRON_ROCKS_11365, IRON_ROCKS_36203)
 		{
 			@Override
 			Duration getRespawnTime(int region)
@@ -44,7 +44,7 @@ enum Rock
 				return region == MINING_GUILD ? Duration.of(4, GAME_TICKS) : super.respawnTime;
 			}
 		},
-	COAL(Duration.of(49, GAME_TICKS), 0, ROCKS_11366, ROCKS_11367, ROCKS_36204)
+	COAL(Duration.of(49, GAME_TICKS), 0, COAL_ROCKS_11366, COAL_ROCKS_11367, COAL_ROCKS_36204)
 		{
 			@Override
 			Duration getRespawnTime(int region)
@@ -60,11 +60,11 @@ enum Rock
 				}
 			}
 		},
-	SILVER(Duration.of(100, GAME_TICKS), 0, ROCKS_11368, ROCKS_11369, ROCKS_36205),
-	SANDSTONE(Duration.of(9, GAME_TICKS), 0, ROCKS_11386),
-	GOLD(Duration.of(100, GAME_TICKS), 0, ROCKS_11370, ROCKS_11371, ROCKS_36206),
-	GRANITE(Duration.of(9, GAME_TICKS), 0, ROCKS_11387),
-	MITHRIL(Duration.of(200, GAME_TICKS), 0, ROCKS_11372, ROCKS_11373, ROCKS_36207)
+	SILVER(Duration.of(100, GAME_TICKS), 0, SILVER_ROCKS, SILVER_ROCKS_11369, SILVER_ROCKS_36205),
+	SANDSTONE(Duration.of(9, GAME_TICKS), 0, SANDSTONE_ROCKS),
+	GOLD(Duration.of(100, GAME_TICKS), 0, GOLD_ROCKS, GOLD_ROCKS_11371, GOLD_ROCKS_36206),
+	GRANITE(Duration.of(9, GAME_TICKS), 0, GRANITE_ROCKS),
+	MITHRIL(Duration.of(200, GAME_TICKS), 0, MITHRIL_ROCKS, MITHRIL_ROCKS_11373, MITHRIL_ROCKS_36207)
 		{
 			@Override
 			Duration getRespawnTime(int region)
@@ -72,8 +72,8 @@ enum Rock
 				return region == MINING_GUILD ? Duration.of(100, GAME_TICKS) : super.respawnTime;
 			}
 		},
-	LOVAKITE(Duration.of(MiningRocksOverlay.LOVAKITE_ORE_MAX_RESPAWN_TIME, GAME_TICKS), 0, ROCKS_28596, ROCKS_28597),
-	ADAMANTITE(Duration.of(400, GAME_TICKS), 0, ROCKS_11374, ROCKS_11375, ROCKS_36208)
+	LOVAKITE(Duration.of(MiningRocksOverlay.LOVAKITE_ORE_MAX_RESPAWN_TIME, GAME_TICKS), 0, LOVAKITE_ROCKS, LOVAKITE_ROCKS_28597),
+	ADAMANTITE(Duration.of(400, GAME_TICKS), 0, ADAMANTITE_ROCKS, ADAMANTITE_ROCKS_11375, ADAMANTITE_ROCKS_36208)
 		{
 			@Override
 			Duration getRespawnTime(int region)
@@ -81,7 +81,7 @@ enum Rock
 				return region == MINING_GUILD || region == WILDERNESS_RESOURCE_AREA ? Duration.of(200, GAME_TICKS) : super.respawnTime;
 			}
 		},
-	RUNITE(Duration.of(1200, GAME_TICKS), 0, ROCKS_11376, ROCKS_11377, ROCKS_36209)
+	RUNITE(Duration.of(1200, GAME_TICKS), 0, RUNITE_ROCKS, RUNITE_ROCKS_11377, RUNITE_ROCKS_36209)
 		{
 			@Override
 			Duration getRespawnTime(int region)
@@ -92,11 +92,11 @@ enum Rock
 	ORE_VEIN(Duration.of(MiningRocksOverlay.ORE_VEIN_MAX_RESPAWN_TIME, GAME_TICKS), 150),
 	AMETHYST(Duration.of(125, GAME_TICKS), 120),
 	ASH_VEIN(Duration.of(50, GAME_TICKS), 0, ASH_PILE),
-	GEM_ROCK(Duration.of(99, GAME_TICKS), 0, ROCKS_11380, ROCKS_11381),
-	URT_SALT(Duration.of(9, GAME_TICKS), 0, ROCKS_33254),
-	EFH_SALT(Duration.of(9, GAME_TICKS), 0, ROCKS_33255),
-	TE_SALT(Duration.of(9, GAME_TICKS), 0, ROCKS_33256),
-	BASALT(Duration.of(9, GAME_TICKS), 0, ROCKS_33257),
+	GEM_ROCK(Duration.of(99, GAME_TICKS), 0, GEM_ROCKS, GEM_ROCKS_11381),
+	URT_SALT(Duration.of(9, GAME_TICKS), 0, URT_SALT_ROCKS),
+	EFH_SALT(Duration.of(9, GAME_TICKS), 0, EFH_SALT_ROCKS),
+	TE_SALT(Duration.of(9, GAME_TICKS), 0, TE_SALT_ROCKS),
+	BASALT(Duration.of(9, GAME_TICKS), 0, BASALT_ROCKS),
 	DAEYALT_ESSENCE(Duration.of(MiningRocksOverlay.DAEYALT_MAX_RESPAWN_TIME, GAME_TICKS), 0, DAEYALT_ESSENCE_39095),
 	BARRONITE(Duration.of(89, GAME_TICKS), 140),
 	MINERAL_VEIN(Duration.of(100, GAME_TICKS), 150);

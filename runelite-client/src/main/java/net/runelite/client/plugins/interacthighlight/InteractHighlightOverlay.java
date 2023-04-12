@@ -86,7 +86,6 @@ class InteractHighlightOverlay extends Overlay
 
 		switch (menuAction)
 		{
-			case ITEM_USE_ON_GAME_OBJECT:
 			case WIDGET_TARGET_ON_GAME_OBJECT:
 			case GAME_OBJECT_FIRST_OPTION:
 			case GAME_OBJECT_SECOND_OPTION:
@@ -105,7 +104,6 @@ class InteractHighlightOverlay extends Overlay
 				}
 				break;
 			}
-			case ITEM_USE_ON_NPC:
 			case WIDGET_TARGET_ON_NPC:
 			case NPC_FIRST_OPTION:
 			case NPC_SECOND_OPTION:

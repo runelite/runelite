@@ -55,6 +55,14 @@ public interface Actor extends Renderable
 	String getName();
 
 	/**
+	 * Gets if the actor is interacting with another actor.
+	 * {@link #getInteracting()} will return the interacting actor,
+	 * unless they are outside of the visibility range.
+	 * @return
+	 */
+	boolean isInteracting();
+
+	/**
 	 * Gets the actor being interacted with.
 	 * <p>
 	 * Examples of interaction include:
@@ -135,8 +143,24 @@ public interface Actor extends Renderable
 	 */
 	int getPoseAnimation();
 
-	@VisibleForDevtools
+	/**
+	 * Set the idle pose animation.
+	 * @param animation
+	 * @see AnimationID
+	 */
 	void setPoseAnimation(int animation);
+
+	/**
+	 * Get the frame of the idle animation the actor is performing
+	 * @return
+	 */
+	int getPoseAnimationFrame();
+
+	/**
+	 * Set the frame of the idle animation the actor is performing
+	 * @param frame
+	 */
+	void setPoseAnimationFrame(int frame);
 
 	/**
 	 * The idle pose animation. If the actor is not walking or otherwise animating, this will be used
@@ -401,4 +425,12 @@ public interface Actor extends Renderable
 	 * @return
 	 */
 	boolean isDead();
+
+	/**
+	 * Sets the dead status of this actor
+	 *
+	 * @param dead
+	 * @see #isDead()
+	 */
+	void setDead(boolean dead);
 }
