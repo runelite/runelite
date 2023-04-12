@@ -799,6 +799,12 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		GL43C.glRenderbufferStorageMultisample(GL43C.GL_RENDERBUFFER, aaSamples, GL43C.GL_RGBA, width, height);
 		GL43C.glFramebufferRenderbuffer(GL43C.GL_FRAMEBUFFER, GL43C.GL_COLOR_ATTACHMENT0, GL43C.GL_RENDERBUFFER, rboSceneHandle);
 
+		int status = GL43C.glCheckFramebufferStatus(GL43C.GL_FRAMEBUFFER);
+		if (status != GL43C.GL_FRAMEBUFFER_COMPLETE)
+		{
+			throw new RuntimeException("FBO is incomplete. status: " + status);
+		}
+
 		// Reset
 		GL43C.glBindFramebuffer(GL43C.GL_FRAMEBUFFER, awtContext.getFramebuffer(false));
 		GL43C.glBindRenderbuffer(GL43C.GL_RENDERBUFFER, 0);
