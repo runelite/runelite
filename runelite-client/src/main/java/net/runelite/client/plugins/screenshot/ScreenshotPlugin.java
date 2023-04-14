@@ -30,7 +30,6 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.awt.Graphics2D;
-import java.awt.GraphicsConfiguration;
 import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
@@ -93,6 +92,7 @@ import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.ImageCapture;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.LinkBrowser;
+import net.runelite.client.util.OSType;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
@@ -898,8 +898,8 @@ public class ScreenshotPlugin extends Plugin
 		else
 		{
 			// create a new image, paint the client ui to it, and then draw the screenshot to that
-			final GraphicsConfiguration graphicsConfiguration = clientUi.getGraphicsConfiguration();
-			final AffineTransform transform = graphicsConfiguration.getDefaultTransform();
+			final AffineTransform transform = OSType.getOSType() == OSType.MacOS ? new AffineTransform() :
+				clientUi.getGraphicsConfiguration().getDefaultTransform();
 
 			// scaled client dimensions
 			int clientWidth = getScaledValue(transform.getScaleX(), clientUi.getWidth());
