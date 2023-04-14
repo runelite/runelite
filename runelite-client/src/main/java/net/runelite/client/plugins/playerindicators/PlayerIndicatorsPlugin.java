@@ -59,6 +59,8 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @PluginDescriptor(
 	name = "Player Indicators",
@@ -233,27 +235,47 @@ public class PlayerIndicatorsPlugin extends Plugin
 				}
 
 				String oldTarget = entry.getTarget();
-				String newTarget = decorateTarget(oldTarget, decorations);
+				String newTarget = decorateTarget(oldTarget, player);
 
 				entry.setTarget(newTarget);
 			}
 		}
 	}
 
-	private String decorateTarget(String oldTarget, PlayerIndicatorsService.Decorations decorations)
+	private String decorateTarget(String oldTarget, Player player)
 	{
-		String newTarget = oldTarget;
+		PlayerIndicatorsService.Decorations decorations = playerIndicatorsService.getDecorations(player);
+
+		// Create a regex to find index of the col tag that precedes the player (if it exists).
+		// All spaces in the player name need to be replaced with \\p{Zs}.
+		String regex = "<.{0,10}>" + player.getName().replaceAll("\\p{Zs}", "\\\\p{Zs}");
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(oldTarget);
+
+		String stringPrecedingDecoration = null;
+		String stringToDecorate = null;
+
+		if (matcher.find() && matcher.start() > 0)
+		{
+			stringPrecedingDecoration = oldTarget.substring(0, matcher.start());
+			stringToDecorate = oldTarget.substring(matcher.start());
+		}
+		else
+		{
+			stringPrecedingDecoration = "";
+			stringToDecorate = oldTarget;
+		}
 
 		if (decorations.getColor() != null && config.colorPlayerMenu())
 		{
 			// strip out existing <col...
-			int idx = oldTarget.indexOf('>');
+			int idx = stringToDecorate.indexOf('>');
 			if (idx != -1)
 			{
-				newTarget = oldTarget.substring(idx + 1);
+				stringToDecorate = stringToDecorate.substring(idx + 1);
 			}
 
-			newTarget = ColorUtil.prependColorTag(newTarget, decorations.getColor());
+			stringToDecorate = ColorUtil.prependColorTag(stringToDecorate, decorations.getColor());
 		}
 
 		FriendsChatRank rank = decorations.getFriendsChatRank();
@@ -269,10 +291,10 @@ public class PlayerIndicatorsPlugin extends Plugin
 
 		if (image != -1)
 		{
-			newTarget = "<img=" + image + ">" + newTarget;
+			stringToDecorate = "<img=" + image + ">" + stringToDecorate;
 		}
 
-		return newTarget;
+		return stringPrecedingDecoration + stringToDecorate;
 	}
 
 	@Subscribe
