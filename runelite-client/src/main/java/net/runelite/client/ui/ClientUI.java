@@ -569,6 +569,8 @@ public class ClientUI
 			return;
 		}
 
+		logGraphicsEnvironment();
+
 		SwingUtilities.invokeLater(() ->
 		{
 			// Layout frame
@@ -588,14 +590,15 @@ public class ClientUI
 					CONFIG_GROUP, CONFIG_CLIENT_BOUNDS, Rectangle.class);
 				if (clientBounds != null)
 				{
+					frame.setBounds(clientBounds);
+
 					// Check that the bounds are contained inside a valid display
 					GraphicsConfiguration gc = findDisplayFromBounds(clientBounds);
-					if (gc != null)
+					if (gc == null)
 					{
-						frame.setBounds(clientBounds);
-					}
-					else
-					{
+						log.info("Reset client position. Client bounds: {}x{}x{}x{}",
+							clientBounds.x, clientBounds.y, clientBounds.width, clientBounds.height);
+						// Reset the position, but not the size
 						frame.setLocationRelativeTo(frame.getOwner());
 					}
 				}
@@ -620,7 +623,7 @@ public class ClientUI
 			frame.setResizable(!config.lockWindowSize());
 			frame.toFront();
 			requestFocus();
-			log.info("Showing frame {}", frame);
+			log.debug("Showing frame {}", frame);
 			frame.revalidateMinimumSize();
 		});
 
@@ -681,6 +684,16 @@ public class ClientUI
 				JOptionPane.showMessageDialog(frame,
 					ep, "Launcher outdated", INFORMATION_MESSAGE);
 			});
+		}
+	}
+
+	private void logGraphicsEnvironment()
+	{
+		GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		for (GraphicsDevice graphicsDevice : graphicsEnvironment.getScreenDevices())
+		{
+			GraphicsConfiguration configuration = graphicsDevice.getDefaultConfiguration();
+			log.debug("Graphics device {}: bounds {} transform: {}", graphicsDevice, configuration.getBounds(), configuration.getDefaultTransform());
 		}
 	}
 
