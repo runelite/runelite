@@ -32,6 +32,7 @@ import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Cursor;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Graphics;
@@ -43,6 +44,7 @@ import java.awt.LayoutManager;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
+import java.awt.desktop.QuitStrategy;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -360,7 +362,8 @@ public class ClientUI
 			{
 				// Change the default quit strategy to CLOSE_ALL_WINDOWS so that ctrl+q
 				// triggers the listener below instead of exiting.
-				MacOSQuitStrategy.setup();
+				Desktop.getDesktop()
+					.setQuitStrategy(QuitStrategy.CLOSE_ALL_WINDOWS);
 			}
 			frame.addWindowListener(new WindowAdapter()
 			{
