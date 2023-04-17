@@ -10156,6 +10156,8 @@ public final class NpcID
 	public static final int RABBIT_12112 = 12112;
 	public static final int WILOUGH_12113 = 12113;
 	public static final int HORVIK_12114 = 12114;
+	public static final int EMMA = 12116;
+	public static final int SUZIE = 12117;
 	public static final int SIR_PEAR_VISOR = 12121;
 	public static final int SIR_PEAR_VISOR_12122 = 12122;
 	public static final int CRYSTALLINE_HUNLLEF_12123 = 12123;
