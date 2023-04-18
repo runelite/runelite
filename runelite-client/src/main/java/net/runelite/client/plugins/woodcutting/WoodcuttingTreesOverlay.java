@@ -87,6 +87,15 @@ class WoodcuttingTreesOverlay extends Overlay
 		{
 			if (treeObject.getWorldLocation().distanceTo(client.getLocalPlayer().getWorldLocation()) <= 12)
 			{
+				// Check if this is a redwood tree at the farming patch
+				if (client.getObjectDefinition(treeObject.getId()).getImpostorIds() != null)
+				{
+					final Tree tree = Tree.findTree(client.getObjectDefinition(treeObject.getId()).getImpostor().getId());
+					if (tree != Tree.REDWOOD)
+					{
+						continue;
+					}
+				}
 				OverlayUtil.renderImageLocation(client, graphics, treeObject.getLocalLocation(), itemManager.getImage(axe.getItemId()), 120);
 			}
 		}
