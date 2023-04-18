@@ -383,8 +383,9 @@ public class ItemChargePlugin extends Plugin
 				{
 					notifier.notify("Your ring of forging has melted.");
 				}
-
-				updateRingOfForgingCharges(MAX_RING_OF_FORGING_CHARGES);
+				
+				// Add one to compensate for the one about to be subtracted by the next action
+				updateRingOfForgingCharges(MAX_RING_OF_FORGING_CHARGES+1);
 			}
 			else if (chronicleAddMatcher.find())
 			{
