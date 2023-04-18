@@ -385,7 +385,7 @@ public class ItemChargePlugin extends Plugin
 				}
 				
 				// Add one to compensate for the one about to be subtracted by the next action
-				updateRingOfForgingCharges(MAX_RING_OF_FORGING_CHARGES+1);
+				updateRingOfForgingCharges(MAX_RING_OF_FORGING_CHARGES + 1);
 			}
 			else if (chronicleAddMatcher.find())
 			{
