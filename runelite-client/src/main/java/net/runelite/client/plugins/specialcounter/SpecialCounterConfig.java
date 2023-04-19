@@ -131,4 +131,15 @@ public interface SpecialCounterConfig extends Config
 	{
 		return 0;
 	}
+
+	@ConfigItem(
+			position = 60,
+			keyName = "kerisThreshold",
+			name = "Keris Partisan of Corruption",
+			description = "Threshold for Keris Partisan of Corruption (0 to disable)"
+	)
+	default int kerisPartisanOfCorruptionThreshold()
+	{
+		return 0;
+	}
 }
