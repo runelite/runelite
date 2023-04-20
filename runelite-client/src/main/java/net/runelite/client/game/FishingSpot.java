@@ -106,6 +106,12 @@ public enum FishingSpot
 	COMMON_TENCH("Common tench, Bluegill, Greater siren, Mottled eel", "Greater siren", ItemID.COMMON_TENCH,
 		FISHING_SPOT_8523
 	),
+	CAMDOZAAL_TETRA("Guppy, Cavefish, Tetra, Catfish, Barronite shards, Barronite handle", "Tetra", ItemID.TETRA,
+		FISHING_SPOT_10686
+	),
+	CAMDOZAAL_CAVE_EEL("Slimy eel, Cave eel", "Cave eel", ItemID.CAVE_EEL,
+		FISHING_SPOT_10653
+	),
 	TUTORIAL_SHRIMP("Shrimp", ItemID.RAW_SHRIMPS,
 		FISHING_SPOT_3317
 	),
