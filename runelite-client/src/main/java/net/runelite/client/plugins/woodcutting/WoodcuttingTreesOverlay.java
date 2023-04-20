@@ -88,7 +88,8 @@ class WoodcuttingTreesOverlay extends Overlay
 		{
 			if (treeObject.getWorldLocation().distanceTo(client.getLocalPlayer().getWorldLocation()) <= 12)
 			{
-				// Check if this is a redwood tree at the farming patch
+				// Redwood trees at the farming guild are multilocs rather than global objects synced for all players
+				// so we must handle them here rather than relying on GameObjectSpawned events
 				final ObjectComposition treeComp = client.getObjectDefinition(treeObject.getId());
 				if (treeComp.getImpostorIds() != null && Tree.findTree(treeComp.getImpostor().getId()) == null)
 				{
