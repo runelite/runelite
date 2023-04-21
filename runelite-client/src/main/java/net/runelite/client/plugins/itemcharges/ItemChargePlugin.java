@@ -144,6 +144,17 @@ public class ItemChargePlugin extends Plugin
 	private static final Pattern BRACELET_OF_CLAY_CHECK_PATTERN = Pattern.compile(
 		"You can mine (\\d{1,2}) more pieces? of soft clay before your bracelet crumbles to dust\\."
 	);
+	private static final Pattern CIRCLET_OF_WATER_CHECK_PATTERN = Pattern.compile(
+		"Your circlet has ([\\d,]+) charges? left\\."
+	);
+	private static final Pattern CIRCLET_OF_WATER_ADD_PATTERN = Pattern.compile(
+		"You add ([\\d,]+) charges? to your circlet\\."
+	);
+	private static final Pattern CIRCLET_OF_WATER_REMOVE_TEXT = Pattern.compile(
+		"You fully uncharge your circlet\\. You regain [\\d,]+ water runes in the process\\."
+	);
+	private static final String CIRCLET_OF_WATER_USE_TEXT = "Your circlet protects you from the desert heat.";
+	private static final String CIRCLET_OF_WATER_BREAK_TEXT = "Your circlet has run out of charges.";
 
 	private static final int MAX_DODGY_CHARGES = 10;
 	private static final int MAX_BINDING_CHARGES = 16;
@@ -242,7 +253,7 @@ public class ItemChargePlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getType() == ChatMessageType.GAMEMESSAGE || event.getType() == ChatMessageType.SPAM)
+		if (event.getType() == ChatMessageType.GAMEMESSAGE || event.getType() == ChatMessageType.SPAM || event.getType() == ChatMessageType.MESBOX)
 		{
 			String message = Text.removeTags(event.getMessage());
 			Matcher dodgyCheckMatcher = DODGY_CHECK_PATTERN.matcher(message);
@@ -265,6 +276,9 @@ public class ItemChargePlugin extends Plugin
 			Matcher bloodEssenceCheckMatcher = BLOOD_ESSENCE_CHECK_PATTERN.matcher(message);
 			Matcher bloodEssenceExtractMatcher = BLOOD_ESSENCE_EXTRACT_PATTERN.matcher(message);
 			Matcher braceletOfClayCheckMatcher = BRACELET_OF_CLAY_CHECK_PATTERN.matcher(message);
+			Matcher circletOfWaterCheckMatcher = CIRCLET_OF_WATER_CHECK_PATTERN.matcher(message);
+			Matcher circletOfWaterAddMatcher = CIRCLET_OF_WATER_ADD_PATTERN.matcher(message);
+			Matcher circletOfWaterRemoveMatcher = CIRCLET_OF_WATER_REMOVE_TEXT.matcher(message);
 
 			if (config.recoilNotification() && message.contains(RING_OF_RECOIL_BREAK_MESSAGE))
 			{
@@ -491,6 +505,30 @@ public class ItemChargePlugin extends Plugin
 				}
 				updateBraceletOfClayCharges(MAX_BRACELET_OF_CLAY_CHARGES);
 			}
+			else if (circletOfWaterCheckMatcher.find())
+			{
+				updateCircletOfWaterCharges(Integer.parseInt(circletOfWaterCheckMatcher.group(1).replace(",", "")));
+			}
+			else if (circletOfWaterAddMatcher.find())
+			{
+				updateCircletOfWaterCharges(Integer.parseInt(circletOfWaterAddMatcher.group(1).replace(",", "")));
+			}
+			else if (circletOfWaterRemoveMatcher.find())
+			{
+				updateCircletOfWaterCharges(0);
+			}
+			else if (message.equals(CIRCLET_OF_WATER_USE_TEXT))
+			{
+				updateCircletOfWaterCharges(getItemCharges(ItemChargeConfig.KEY_CIRCLET_OF_WATER) - 1);
+			}
+			else if (message.equals(CIRCLET_OF_WATER_BREAK_TEXT))
+			{
+				if (config.circletOfWaterNotification())
+				{
+					notifier.notify("Your circlet has run out of charges.");
+				}
+				updateCircletOfWaterCharges(0);
+			}
 		}
 	}
 
@@ -625,6 +663,12 @@ public class ItemChargePlugin extends Plugin
 	private void updateBraceletOfClayCharges(final int value)
 	{
 		setItemCharges(ItemChargeConfig.KEY_BRACELET_OF_CLAY, value);
+		updateInfoboxes();
+	}
+
+	private void updateCircletOfWaterCharges(final int value)
+	{
+		setItemCharges(ItemChargeConfig.KEY_CIRCLET_OF_WATER, value);
 		updateInfoboxes();
 	}
 

@@ -48,6 +48,7 @@ public interface ItemChargeConfig extends Config
 	String KEY_RING_OF_FORGING = "ringOfForging";
 	String KEY_BLOOD_ESSENCE = "bloodEssence";
 	String KEY_BRACELET_OF_CLAY = "braceletOfClay";
+	String KEY_CIRCLET_OF_WATER = "circletOfWater";
 
 	@ConfigSection(
 		name = "Charge Settings",
@@ -450,6 +451,30 @@ public interface ItemChargeConfig extends Config
 		section = notificationSection
 	)
 	default boolean braceletOfClayNotification()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showCircletOfWaterCharges",
+		name = "Circlet of Water Charges",
+		description = "Show Circlet of Water item charges",
+		position = 33,
+		section = chargesSection
+	)
+	default boolean showCircletOfWaterCharges()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "circletOfWaterNotification",
+		name = "Circlet of Water Notification",
+		description = "Send a notification when a Circlet of Water is out of charges",
+		position = 34,
+		section = notificationSection
+	)
+	default boolean circletOfWaterNotification()
 	{
 		return true;
 	}

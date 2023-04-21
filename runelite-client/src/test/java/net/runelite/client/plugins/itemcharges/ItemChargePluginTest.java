@@ -44,6 +44,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -100,6 +101,16 @@ public class ItemChargePluginTest
 	private static final String CHECK_BRACELET_OF_CLAY = "You can mine 13 more pieces of soft clay before your bracelet crumbles to dust.";
 	private static final String USED_BRACELET_OF_CLAY = "You manage to mine some clay.";
 	private static final String BREAK_BRACELET_OF_CLAY = "Your bracelet of clay crumbles to dust.";
+
+	private static final String CIRCLET_OF_WATER_CHECK_TEXT = "Your circlet has 5,020 charges left.";
+	private static final String CIRCLET_OF_WATER_CHECK_ONE_TEXT = "Your circlet has 1 charge left.";
+	private static final String CIRCLET_OF_WATER_CHECK_TWO_TEXT = "Your circlet has 999 charges left.";
+	private static final String CIRCLET_OF_WATER_UNCHARGE_TEXT = "You fully uncharge your circlet. You regain 25,100 water runes in the process.";
+	private static final String CIRCLET_OF_WATER_UNCHARGE_MAX_TEXT = "You fully uncharge your circlet. You regain 2,500,000 water runes in the process.";
+	private static final String CIRCLET_OF_WATER_CHARGE_TEXT = "You add 5,020 charges to your circlet.";
+	private static final String CIRCLET_OF_WATER_CHARGE_ONE_TEXT = "You add 1 charge to your circlet.";
+	private static final String CIRCLET_OF_WATER_USE_TEXT = "Your circlet protects you from the desert heat.";
+	private static final String CIRCLET_OF_WATER_BREAK_TEXT = "<col=ef1020>Your circlet has run out of charges.</col>";
 
 	@Mock
 	@Bind
@@ -502,5 +513,58 @@ public class ItemChargePluginTest
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BREAK_BRACELET_OF_CLAY, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
 		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BRACELET_OF_CLAY, 28);
+	}
+
+	@Test
+	public void testCircletOfWaterCheck()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CIRCLET_OF_WATER_CHECK_TEXT, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_CIRCLET_OF_WATER, 5020);
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CIRCLET_OF_WATER_CHECK_ONE_TEXT, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_CIRCLET_OF_WATER, 1);
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CIRCLET_OF_WATER_CHECK_TWO_TEXT, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_CIRCLET_OF_WATER, 999);
+	}
+
+	@Test
+	public void testCircletOfWaterUncharge()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.MESBOX, "", CIRCLET_OF_WATER_UNCHARGE_TEXT, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		//verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_CIRCLET_OF_WATER, 0);
+		chatMessage = new ChatMessage(null, ChatMessageType.MESBOX, "", CIRCLET_OF_WATER_UNCHARGE_MAX_TEXT, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(configManager, Mockito.times(2)).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_CIRCLET_OF_WATER, 0);
+	}
+
+	@Test
+	public void testCircletOfWaterCharge()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.MESBOX, "", CIRCLET_OF_WATER_CHARGE_TEXT, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_CIRCLET_OF_WATER, 5020);
+		chatMessage = new ChatMessage(null, ChatMessageType.MESBOX, "", CIRCLET_OF_WATER_CHARGE_ONE_TEXT, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_CIRCLET_OF_WATER, 1);
+	}
+
+	@Test
+	public void testCircletOfWaterUsed()
+	{
+		when(configManager.getRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_CIRCLET_OF_WATER, Integer.class)).thenReturn(90);
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CIRCLET_OF_WATER_USE_TEXT, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_CIRCLET_OF_WATER, 89);
+	}
+
+	@Test
+	public void testCircletOfWaterBreak()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CIRCLET_OF_WATER_BREAK_TEXT, "", 0);
+		itemChargePlugin.onChatMessage(chatMessage);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_CIRCLET_OF_WATER, 0);
 	}
 }
