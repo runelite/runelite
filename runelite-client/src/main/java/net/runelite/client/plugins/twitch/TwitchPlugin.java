@@ -172,7 +172,7 @@ public class TwitchPlugin extends Plugin implements TwitchListener
 	}
 
 	@Override
-	public void privmsg(Map<String, String> tags, String message)
+	public void privmsg(String source, Map<String, String> tags, String message)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)
 		{
@@ -180,7 +180,8 @@ public class TwitchPlugin extends Plugin implements TwitchListener
 		}
 
 		String displayName = tags.get("display-name");
-		addChatMessage(displayName, message);
+		String name = source.equalsIgnoreCase(displayName) ? displayName : source;
+		addChatMessage(name, message);
 	}
 
 	@Override

@@ -28,7 +28,7 @@ package net.runelite.client.plugins.questlist;
 import com.google.common.base.Strings;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.api.DBTableID;
+import net.runelite.api.dbtable.DBTableID;
 import net.runelite.api.ScriptID;
 import net.runelite.api.SoundEffectID;
 import net.runelite.api.SpriteID;
@@ -165,7 +165,7 @@ public class QuestListPlugin extends Plugin
 
 	private boolean isOnQuestTab()
 	{
-		return client.getVarbitValue(Varbits.QUEST_TAB) == 0 && client.getVarcIntValue(VarClientInt.INVENTORY_TAB) == 2;
+		return client.getVarbitValue(Varbits.QUEST_TAB) == 1 && client.getVarcIntValue(VarClientInt.INVENTORY_TAB) == 2;
 	}
 
 	private boolean isChatboxOpen()

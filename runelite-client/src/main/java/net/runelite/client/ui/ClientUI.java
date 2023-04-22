@@ -46,7 +46,6 @@ import java.awt.TrayIcon;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.time.Duration;
 import javax.annotation.Nullable;
@@ -163,6 +162,10 @@ public class ClientUI
 	@Inject(optional = true)
 	@Named("outdatedLauncherJava8")
 	private boolean outdatedLauncherJava8 = false;
+
+	@Inject(optional = true)
+	@Named("java8Brownout")
+	private boolean java8Brownout = false;
 
 	@Inject
 	private ClientUI(
@@ -541,6 +544,33 @@ public class ClientUI
 
 	public void show()
 	{
+		if (java8Brownout && System.getProperty("java.version", "").startsWith("1.8."))
+		{
+			SwingUtilities.invokeLater(() ->
+			{
+				JEditorPane ep = new JEditorPane("text/html",
+					"Your RuneLite launcher version is old, and requires an update.<br>Update to the latest version by visiting " +
+						"<a href=\"https://runelite.net\">https://runelite.net</a>,<br>or follow the link from the OSRS homepage.<br>" +
+						"Join <a href=\"" + RuneLiteProperties.getDiscordInvite() + "\">Discord</a> for assistance."
+				);
+				ep.addHyperlinkListener(e ->
+				{
+					if (e.getEventType().equals(HyperlinkEvent.EventType.ACTIVATED))
+					{
+						LinkBrowser.browse(e.getURL().toString());
+					}
+				});
+				ep.setEditable(false);
+				ep.setOpaque(false);
+				JOptionPane.showMessageDialog(frame,
+					ep, "Launcher outdated", JOptionPane.ERROR_MESSAGE);
+				System.exit(0);
+			});
+			return;
+		}
+
+		logGraphicsEnvironment();
+
 		SwingUtilities.invokeLater(() ->
 		{
 			// Layout frame
@@ -556,60 +586,30 @@ public class ClientUI
 			// Move frame around (needs to be done after frame is packed)
 			if (config.rememberScreenBounds() && !safeMode)
 			{
-				try
+				Rectangle clientBounds = configManager.getConfiguration(
+					CONFIG_GROUP, CONFIG_CLIENT_BOUNDS, Rectangle.class);
+				if (clientBounds != null)
 				{
-					Rectangle clientBounds = configManager.getConfiguration(
-						CONFIG_GROUP, CONFIG_CLIENT_BOUNDS, Rectangle.class);
-					if (clientBounds != null)
+					frame.setBounds(clientBounds);
+
+					// Check that the bounds are contained inside a valid display
+					GraphicsConfiguration gc = findDisplayFromBounds(clientBounds);
+					if (gc == null)
 					{
-						frame.setBounds(clientBounds);
-
-						// frame.getGraphicsConfiguration().getBounds() returns the bounds for the primary display.
-						// We have to find the correct graphics configuration by using the client boundaries.
-						GraphicsConfiguration gc = findDisplayFromBounds(clientBounds);
-						if (gc != null)
-						{
-							AffineTransform transform = gc.getDefaultTransform();
-							double scaleX = transform.getScaleX();
-							double scaleY = transform.getScaleY();
-
-							// When Windows screen scaling is on, the position/bounds will be wrong when they are set.
-							// The bounds saved in shutdown are the full, non-scaled co-ordinates.
-							// On MacOS the scaling is already applied and the position/bounds are correct on at least
-							// - 2015 x64 MBP JDK11 Mojave
-							// - 2020 m1 MBP JDK17 Big Sur
-							// Adjusting the scaling further results in the client position being incorrect
-							if ((scaleX != 1 || scaleY != 1) && OSType.getOSType() != OSType.MacOS)
-							{
-								clientBounds.setRect(
-									clientBounds.getX() / scaleX,
-									clientBounds.getY() / scaleY,
-									clientBounds.getWidth() / scaleX,
-									clientBounds.getHeight() / scaleY);
-
-								frame.setMinimumSize(clientBounds.getSize());
-								frame.setBounds(clientBounds);
-							}
-						}
-						else
-						{
-							frame.setLocationRelativeTo(frame.getOwner());
-						}
-					}
-					else
-					{
+						log.info("Reset client position. Client bounds: {}x{}x{}x{}",
+							clientBounds.x, clientBounds.y, clientBounds.width, clientBounds.height);
+						// Reset the position, but not the size
 						frame.setLocationRelativeTo(frame.getOwner());
 					}
-
-					if (configManager.getConfiguration(CONFIG_GROUP, CONFIG_CLIENT_MAXIMIZED) != null)
-					{
-						frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-					}
 				}
-				catch (Exception ex)
+				else
 				{
-					log.warn("Failed to set window bounds", ex);
 					frame.setLocationRelativeTo(frame.getOwner());
+				}
+
+				if (configManager.getConfiguration(CONFIG_GROUP, CONFIG_CLIENT_MAXIMIZED) != null)
+				{
+					frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 				}
 			}
 			else
@@ -623,7 +623,7 @@ public class ClientUI
 			frame.setResizable(!config.lockWindowSize());
 			frame.toFront();
 			requestFocus();
-			log.info("Showing frame {}", frame);
+			log.debug("Showing frame {}", frame);
 			frame.revalidateMinimumSize();
 		});
 
@@ -684,6 +684,16 @@ public class ClientUI
 				JOptionPane.showMessageDialog(frame,
 					ep, "Launcher outdated", INFORMATION_MESSAGE);
 			});
+		}
+	}
+
+	private void logGraphicsEnvironment()
+	{
+		GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		for (GraphicsDevice graphicsDevice : graphicsEnvironment.getScreenDevices())
+		{
+			GraphicsConfiguration configuration = graphicsDevice.getDefaultConfiguration();
+			log.debug("Graphics device {}: bounds {} transform: {}", graphicsDevice, configuration.getBounds(), configuration.getDefaultTransform());
 		}
 	}
 

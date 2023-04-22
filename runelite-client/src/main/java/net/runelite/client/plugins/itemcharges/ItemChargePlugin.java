@@ -40,7 +40,6 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.EquipmentInventorySlot;
-import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
@@ -186,6 +185,7 @@ public class ItemChargePlugin extends Plugin
 	// Limits destroy callback to once per tick
 	private int lastCheckTick;
 	private final Map<EquipmentInventorySlot, ItemChargeInfobox> infoboxes = new EnumMap<>(EquipmentInventorySlot.class);
+	private boolean loginFlag;
 
 	@Provides
 	ItemChargeConfig getConfig(ConfigManager configManager)
@@ -212,11 +212,19 @@ public class ItemChargePlugin extends Plugin
 	public void onGameStateChanged(GameStateChanged e)
 	{
 		// No VarbitChanged event fires on login if the explorer's ring is full (varbit value 0).
-		// So, set the value to 0 when LOGGING_IN. This is before the VarbitChanged event would fire, so if it shouldn't
-		// be 0 it will be updated later.
-		if (e.getGameState() == GameState.LOGGING_IN)
+		// So, set the value to 0 when LOGGED_IN. This is before the VarbitChanged event would fire,
+		// so if it shouldn't be 0 it will be updated later.
+		switch (e.getGameState())
 		{
-			updateExplorerRingCharges(0);
+			case LOGGING_IN:
+				loginFlag = true;
+				break;
+			case LOGGED_IN:
+				if (loginFlag)
+				{
+					loginFlag = false;
+					updateExplorerRingCharges(0);
+				}
 		}
 	}
 
@@ -375,8 +383,9 @@ public class ItemChargePlugin extends Plugin
 				{
 					notifier.notify("Your ring of forging has melted.");
 				}
-
-				updateRingOfForgingCharges(MAX_RING_OF_FORGING_CHARGES);
+				
+				// This chat message triggers before the used message so add 1 to the max charges to ensure proper sync
+				updateRingOfForgingCharges(MAX_RING_OF_FORGING_CHARGES + 1);
 			}
 			else if (chronicleAddMatcher.find())
 			{

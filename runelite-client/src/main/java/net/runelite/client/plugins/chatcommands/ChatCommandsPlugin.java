@@ -2332,7 +2332,7 @@ public class ChatCommandsPlugin extends Plugin
 			case "al-kharid agility":
 			case "alkharid":
 			case "alkharid agility":
-				return "Al-Kharid Rooftop";
+				return "Al Kharid Rooftop";
 
 			// Varrock Rooftop Course
 			case "varrock":

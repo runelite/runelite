@@ -205,6 +205,16 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showHealGroup",
+		name = "Heal Group timer",
+		description = "Configures whether heal group timer is displayed"
+	)
+	default boolean showHealGroup()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "showTeleblock",
 		name = "Teleblock timer",
 		description = "Configures whether teleblock timer is displayed"
@@ -330,6 +340,16 @@ public interface TimersConfig extends Config
 		description = "Configures whether pickpocket stun timer is displayed"
 	)
 	default boolean showPickpocketStun()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showFarmersAffinity",
+		name = "Farmer's Affinity",
+		description = "Configures whether Farmer's Affinity (Puro-Puro) timer is displayed"
+	)
+	default boolean showFarmersAffinity()
 	{
 		return true;
 	}

@@ -31,16 +31,26 @@ int priority_map(int p, int distance, int _min10, int avg1, int avg2, int avg3) 
   // (10, 11)  0  1  2  (10, 11)  3  4  (10, 11)  5  6  7  8  9  (10, 11)
   //   0   1   2  3  4    5   6   7  8    9  10  11 12 13 14 15   16  17
   switch (p) {
-    case 0: return 2;
-    case 1: return 3;
-    case 2: return 4;
-    case 3: return 7;
-    case 4: return 8;
-    case 5: return 11;
-    case 6: return 12;
-    case 7: return 13;
-    case 8: return 14;
-    case 9: return 15;
+    case 0:
+      return 2;
+    case 1:
+      return 3;
+    case 2:
+      return 4;
+    case 3:
+      return 7;
+    case 4:
+      return 8;
+    case 5:
+      return 11;
+    case 6:
+      return 12;
+    case 7:
+      return 13;
+    case 8:
+      return 14;
+    case 9:
+      return 15;
     case 10:
       if (distance > avg1) {
         return 0;
@@ -74,13 +84,12 @@ int count_prio_offset(int priority) {
   priority = clamp(priority, 0, 17);
   int total = 0;
   for (int i = 0; i < priority; i++) {
-      total += totalMappedNum[i];
+    total += totalMappedNum[i];
   }
   return total;
 }
 
-void get_face(uint localId, modelinfo minfo, int cameraYaw, int cameraPitch,
-    out int prio, out int dis, out ivec4 o1, out ivec4 o2, out ivec4 o3) {
+void get_face(uint localId, modelinfo minfo, int cameraYaw, int cameraPitch, out int prio, out int dis, out ivec4 o1, out ivec4 o2, out ivec4 o3) {
   int size = minfo.size;
   int offset = minfo.offset;
   int flags = minfo.flags;
@@ -117,7 +126,7 @@ void get_face(uint localId, modelinfo minfo, int cameraYaw, int cameraPitch,
     ivec4 thisrvC = rotate(thisC, orientation);
 
     // calculate distance to face
-    int thisPriority = (thisA.w >> 16) & 0xff;// all vertices on the face have the same priority
+    int thisPriority = (thisA.w >> 16) & 0xff;  // all vertices on the face have the same priority
     int thisDistance;
     if (radius == 0) {
       thisDistance = 0;
@@ -188,66 +197,70 @@ int map_face_priority(uint localId, modelinfo minfo, int thisPriority, int thisD
   return 0;
 }
 
-void insert_dfs(uint localId, modelinfo minfo, int adjPrio, int distance, int prioIdx) {
+void insert_face(uint localId, modelinfo minfo, int adjPrio, int distance, int prioIdx) {
   int size = minfo.size;
 
   if (localId < size) {
-    // calculate base offset into dfs based on number of faces with a lower priority
+    // calculate base offset into renderPris based on number of faces with a lower priority
     int baseOff = count_prio_offset(adjPrio);
-    // store into face array offset array by unique index
-    dfs[baseOff + prioIdx] = (int(localId) << 16) | distance;
+    // the furthest faces draw first, and have the highest value
+    // if two faces have the same distance, the one with the
+    // lower id draws first
+    renderPris[baseOff + prioIdx] = uint(distance << 16) | (~localId & 0xffffu);
   }
 }
 
 void sort_and_insert(uint localId, modelinfo minfo, int thisPriority, int thisDistance, ivec4 thisrvA, ivec4 thisrvB, ivec4 thisrvC) {
-  /* compute face distance */
   int size = minfo.size;
 
   if (localId < size) {
     int outOffset = minfo.idx;
-    int uvOffset = minfo.uvOffset;
+    int toffset = minfo.toffset;
     int flags = minfo.flags;
-    ivec4 pos = ivec4(minfo.x, minfo.y, minfo.z, 0);
-
-    const int priorityOffset = count_prio_offset(thisPriority);
-    const int numOfPriority = totalMappedNum[thisPriority];
-    int start = priorityOffset; // index of first face with this priority
-    int end = priorityOffset + numOfPriority; // index of last face with this priority
-    int myOffset = priorityOffset;
 
     // we only have to order faces against others of the same priority
+    const int priorityOffset = count_prio_offset(thisPriority);
+    const int numOfPriority = totalMappedNum[thisPriority];
+    const int start = priorityOffset;                // index of first face with this priority
+    const int end = priorityOffset + numOfPriority;  // index of last face with this priority
+    const uint renderPriority = uint(thisDistance << 16) | (~localId & 0xffffu);
+    int myOffset = priorityOffset;
+
     // calculate position this face will be in
     for (int i = start; i < end; ++i) {
-      int d1 = dfs[i];
-      int theirId = d1 >> 16;
-      int theirDistance = d1 & 0xffff;
-
-      // the closest faces draw last, so have the highest index
-      // if two faces have the same distance, the one with the
-      // higher id draws last
-      if ((theirDistance > thisDistance)
-        || (theirDistance == thisDistance && theirId < localId)) {
+      if (renderPriority < renderPris[i]) {
         ++myOffset;
       }
     }
 
+    ivec4 pos = ivec4(minfo.x, minfo.y, minfo.z, 0);
+    int orientation = flags & 0x7ff;
+
     // position vertices in scene and write to out buffer
-    vout[outOffset + myOffset * 3]     = pos + thisrvA;
+    vout[outOffset + myOffset * 3] = pos + thisrvA;
     vout[outOffset + myOffset * 3 + 1] = pos + thisrvB;
     vout[outOffset + myOffset * 3 + 2] = pos + thisrvC;
 
-    if (uvOffset < 0) {
-      uvout[outOffset + myOffset * 3]     = vec4(0, 0, 0, 0);
-      uvout[outOffset + myOffset * 3 + 1] = vec4(0, 0, 0, 0);
-      uvout[outOffset + myOffset * 3 + 2] = vec4(0, 0, 0, 0);
-    } else if (flags >= 0) {
-      uvout[outOffset + myOffset * 3]     = tempuv[uvOffset + localId * 3];
-      uvout[outOffset + myOffset * 3 + 1] = tempuv[uvOffset + localId * 3 + 1];
-      uvout[outOffset + myOffset * 3 + 2] = tempuv[uvOffset + localId * 3 + 2];
+    if (toffset < 0) {
+      uvout[outOffset + myOffset * 3] = vec4(0);
+      uvout[outOffset + myOffset * 3 + 1] = vec4(0);
+      uvout[outOffset + myOffset * 3 + 2] = vec4(0);
     } else {
-      uvout[outOffset + myOffset * 3]     = uv[uvOffset + localId * 3];
-      uvout[outOffset + myOffset * 3 + 1] = uv[uvOffset + localId * 3 + 1];
-      uvout[outOffset + myOffset * 3 + 2] = uv[uvOffset + localId * 3 + 2];
+      vec4 texA, texB, texC;
+
+      if (flags >= 0) {
+        texA = temptexb[toffset + localId * 3];
+        texB = temptexb[toffset + localId * 3 + 1];
+        texC = temptexb[toffset + localId * 3 + 2];
+      } else {
+        texA = texb[toffset + localId * 3];
+        texB = texb[toffset + localId * 3 + 1];
+        texC = texb[toffset + localId * 3 + 2];
+      }
+
+      uvout[outOffset + myOffset * 3] = vec4(texA.x, rotatef(texA.yzw, orientation) + pos.xyz);
+      uvout[outOffset + myOffset * 3 + 1] = vec4(texB.x, rotatef(texB.yzw, orientation) + pos.xyz);
+      uvout[outOffset + myOffset * 3 + 2] = vec4(texC.x, rotatef(texC.yzw, orientation) + pos.xyz);
     }
   }
 }

@@ -213,7 +213,7 @@ public class SpecialCounterPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		if (event.getVarpId() != VarPlayer.SPECIAL_ATTACK_PERCENT.getId())
+		if (event.getVarpId() != VarPlayer.SPECIAL_ATTACK_PERCENT)
 		{
 			return;
 		}

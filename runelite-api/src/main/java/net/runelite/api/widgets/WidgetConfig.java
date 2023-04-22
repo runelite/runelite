@@ -24,8 +24,6 @@
  */
 package net.runelite.api.widgets;
 
-import net.runelite.api.MenuAction;
-
 /**
  * Utility class used for defining options to be used on the click mask
  * of a {@link Widget}.
@@ -62,6 +60,7 @@ public final class WidgetConfig
 	/**
 	 * Can this widget be used on a item in your inventory
 	 */
+	@Deprecated
 	public static final int USE_ITEM = 16 << 11;
 
 	/**
@@ -83,16 +82,4 @@ public final class WidgetConfig
 	 * Can widgets with USE_WIDGET be used on this widget
 	 */
 	public static final int WIDGET_USE_TARGET = 1 << 21;
-
-	/**
-	 * Is the widget an (inventory?) item
-	 */
-	public static final int ITEM = 1 << 30;
-
-	/**
-	 * Add a USE option
-	 *
-	 * @see MenuAction#ITEM_USE
-	 */
-	public static final int ITEM_USE_OP = 1 << 31;
 }

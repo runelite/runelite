@@ -352,10 +352,14 @@ public class ContainableFrame extends JFrame
 	 */
 	private Rectangle getWindowAreaBounds()
 	{
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+
 		log.trace("Current bounds: {}", getBounds());
 		for (GraphicsDevice device : GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices())
 		{
-			log.trace("Device: {} bounds {}", device, device.getDefaultConfiguration().getBounds());
+			GraphicsConfiguration graphicsConfiguration = device.getDefaultConfiguration();
+			log.trace("Device: {} bounds {} insets {}", device, graphicsConfiguration.getBounds(),
+				toolkit.getScreenInsets(graphicsConfiguration));
 		}
 
 		GraphicsConfiguration config = getCurrentDisplayConfiguration();
@@ -372,7 +376,7 @@ public class ContainableFrame extends JFrame
 		}
 
 		// subtract insets (taskbar, etc.)
-		Insets insets = Toolkit.getDefaultToolkit().getScreenInsets(config);
+		Insets insets = toolkit.getScreenInsets(config);
 		if (!jdk8231564)
 		{
 			// Prior to JDK-8231564, WFramePeer expects the bounds to be relative to the current monitor instead of the

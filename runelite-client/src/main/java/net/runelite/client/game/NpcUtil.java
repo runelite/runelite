@@ -89,6 +89,7 @@ public class NpcUtil
 			// them to be considered dead when reaching 0hp.
 			case NpcID.KALPHITE_QUEEN_963:
 			case NpcID.VETION:
+			case NpcID.CALVARION:
 			case NpcID.WITCHS_EXPERIMENT:
 			case NpcID.WITCHS_EXPERIMENT_6394:
 			case NpcID.WITCHS_EXPERIMENT_HARD:
@@ -185,7 +186,8 @@ public class NpcUtil
 			// Prior form(s) should be added to the `isDying()` exceptions list above to ensure they are not hidden or
 			// made uninteractable during their death animations.
 			case NpcID.KALPHITE_QUEEN_965:
-			case NpcID.VETION_REBORN:
+			case NpcID.VETION_12002:    // Vet'ion and Calvar'ion have a non-attackable form for the animation between
+			case NpcID.CALVARION_11995: // their first and second phase; resetting isDead() for that form works best
 			case NpcID.WITCHS_EXPERIMENT_FOURTH_FORM:
 			case NpcID.WITCHS_EXPERIMENT_FOURTH_FORM_6397:
 			case NpcID.WITCHS_EXPERIMENT_FOURTH_FORM_HARD:

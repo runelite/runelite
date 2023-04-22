@@ -142,7 +142,6 @@ public class InteractHighlightPlugin extends Plugin
 	{
 		switch (menuOptionClicked.getMenuAction())
 		{
-			case ITEM_USE_ON_GAME_OBJECT:
 			case WIDGET_TARGET_ON_GAME_OBJECT:
 			case GAME_OBJECT_FIRST_OPTION:
 			case GAME_OBJECT_SECOND_OPTION:
@@ -159,7 +158,6 @@ public class InteractHighlightPlugin extends Plugin
 				gameCycle = client.getGameCycle();
 				break;
 			}
-			case ITEM_USE_ON_NPC:
 			case WIDGET_TARGET_ON_NPC:
 			case NPC_FIRST_OPTION:
 			case NPC_SECOND_OPTION:
@@ -177,17 +175,9 @@ public class InteractHighlightPlugin extends Plugin
 			}
 			// Any menu click which clears an interaction
 			case WALK:
-			case ITEM_USE:
 			case WIDGET_TARGET_ON_WIDGET:
-			case ITEM_USE_ON_GROUND_ITEM:
 			case WIDGET_TARGET_ON_GROUND_ITEM:
-			case ITEM_USE_ON_PLAYER:
 			case WIDGET_TARGET_ON_PLAYER:
-			case ITEM_FIRST_OPTION:
-			case ITEM_SECOND_OPTION:
-			case ITEM_THIRD_OPTION:
-			case ITEM_FOURTH_OPTION:
-			case ITEM_FIFTH_OPTION:
 			case GROUND_ITEM_FIRST_OPTION:
 			case GROUND_ITEM_SECOND_OPTION:
 			case GROUND_ITEM_THIRD_OPTION:

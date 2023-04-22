@@ -28,17 +28,13 @@ package net.runelite.client.plugins.devtools;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.geom.Rectangle2D;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import net.runelite.api.Client;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -68,16 +64,12 @@ public class WidgetInspectorOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D g)
 	{
-		Widget w = inspector.getSelectedWidget();
-		if (w != null)
 		{
-			Object wiw = w;
-			if (inspector.getSelectedItem() != -1)
+			Widget w = inspector.getSelectedWidget();
+			if (w != null)
 			{
-				wiw = w.getWidgetItem(inspector.getSelectedItem());
+				renderWidget(g, w, WidgetInspector.SELECTED_WIDGET_COLOR);
 			}
-
-			renderWiw(g, wiw, WidgetInspector.SELECTED_WIDGET_COLOR);
 		}
 
 		if (inspector.isPickerSelected())
@@ -89,46 +81,23 @@ public class WidgetInspectorOverlay extends Overlay
 			{
 				MenuEntry e = entries[i];
 
-				Object wiw = inspector.getWidgetOrWidgetItemForMenuOption(e.getType(), e.getParam0(), e.getParam1());
-				if (wiw == null)
+				Widget w = inspector.getWidgetForMenuOption(e.getType(), e.getParam0(), e.getParam1());
+				if (w == null)
 				{
 					continue;
 				}
 
 				Color color = inspector.colorForWidget(i, entries.length);
-				renderWiw(g, wiw, color);
+				renderWidget(g, w, color);
 			}
 		}
 
 		return null;
 	}
 
-	private void renderWiw(Graphics2D g, Object wiw, Color color)
+	private void renderWidget(Graphics2D g, Widget w, Color color)
 	{
 		g.setColor(color);
-
-		if (wiw instanceof WidgetItem)
-		{
-			WidgetItem wi = (WidgetItem) wiw;
-			Rectangle bounds = wi.getCanvasBounds();
-			g.draw(bounds);
-
-			String text = wi.getId() + "";
-			FontMetrics fm = g.getFontMetrics();
-			Rectangle2D textBounds = fm.getStringBounds(text, g);
-
-			int textX = (int) (bounds.getX() + (bounds.getWidth() / 2) - (textBounds.getWidth() / 2));
-			int textY = (int) (bounds.getY() + (bounds.getHeight() / 2) + (textBounds.getHeight() / 2));
-
-			g.setColor(Color.BLACK);
-			g.drawString(text, textX + 1, textY + 1);
-			g.setColor(Color.ORANGE);
-			g.drawString(text, textX, textY);
-		}
-		else
-		{
-			Widget w = (Widget) wiw;
-			g.draw(w.getBounds());
-		}
+		g.draw(w.getBounds());
 	}
 }

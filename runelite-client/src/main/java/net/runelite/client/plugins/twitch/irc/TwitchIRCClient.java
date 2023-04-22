@@ -122,7 +122,8 @@ public class TwitchIRCClient extends Thread implements AutoCloseable
 						send("PONG", message.getArguments()[0]);
 						break;
 					case "PRIVMSG":
-						twitchListener.privmsg(message.getTags(),
+						twitchListener.privmsg(message.getSource().substring(0, message.getSource().indexOf('!')),
+							message.getTags(),
 							message.getArguments()[1]);
 						break;
 					case "ROOMSTATE":

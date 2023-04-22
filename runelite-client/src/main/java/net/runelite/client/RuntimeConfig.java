@@ -26,7 +26,6 @@ package net.runelite.client;
 
 import com.google.common.base.Strings;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.swing.SwingUtilities;
@@ -48,8 +47,6 @@ public class RuntimeConfig
 	private Set<Integer> resetDeadOnChangeNpcs;
 	private Set<Integer> forceDeadAnimations;
 	private Set<Integer> nonAttackNpcs;
-
-	private Map<String, List<String>> hiscoreMapping;
 
 	public boolean showOutageMessage()
 	{

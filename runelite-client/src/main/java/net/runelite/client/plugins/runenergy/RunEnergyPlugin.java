@@ -239,11 +239,11 @@ public class RunEnergyPlugin extends Plugin
 		}
 		else if (message.startsWith("Your Ring of endurance is charged with") || message.startsWith("You load your Ring of endurance with"))
 		{
-			Matcher matcher = Pattern.compile("([0-9]+)").matcher(message);
+			Matcher matcher = Pattern.compile("([0-9,]+)").matcher(message);
 			int charges = -1;
 			while (matcher.find())
 			{
-				charges = Integer.parseInt(matcher.group(1));
+				charges = Integer.parseInt(matcher.group(1).replaceAll(",", ""));
 			}
 
 			setRingOfEnduranceCharges(charges);

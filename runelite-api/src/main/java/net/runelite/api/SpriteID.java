@@ -184,7 +184,6 @@ public final class SpriteID
 	public static final int PRAYER_SMITE_DISABLED = 152;
 	public static final int PRAYER_SHARP_EYE_DISABLED = 153;
 	public static final int PRAYER_MYSTIC_WILL_DISABLED = 154;
-	public static final int ACTIVATED_PRAYER_BACKGROUND = 155;
 	public static final int EQUIPMENT_SLOT_HEAD = 156;
 	public static final int EQUIPMENT_SLOT_CAPE = 157;
 	public static final int EQUIPMENT_SLOT_NECK = 158;
@@ -775,6 +774,7 @@ public final class SpriteID
 	public static final int RS2_TAB_INVENTORY = 777;
 	public static final int RS2_TAB_EQUIPMENT = 778;
 	public static final int RS2_TAB_PRAYER = 779;
+	public static final int TAB_PRAYER = 779;
 	public static final int TAB_MAGIC = 780;
 	public static final int RS2_TAB_FRIENDS_CHAT = 781;
 	public static final int TAB_FRIENDS = 782;
@@ -886,7 +886,6 @@ public final class SpriteID
 	public static final int UNUSED_TAB_QUESTS_899 = 899;
 	public static final int TAB_INVENTORY = 900;
 	public static final int TAB_EQUIPMENT = 901;
-	public static final int TAB_PRAYER = 902;
 	public static final int UNUSED_TAB_MAGIC_903 = 903;
 	public static final int TAB_FRIENDS_CHAT = 904;
 	public static final int TAB_LOGOUT = 907;
@@ -1683,4 +1682,5 @@ public final class SpriteID
 	public static final int HEALTHBAR_PURPLE_BACK_140PX = 4725;
 	public static final int HEALTHBAR_PURPLE_FRONT_160PX = 4726;
 	public static final int HEALTHBAR_PURPLE_BACK_160PX = 4727;
+	public static final int ACTIVATED_PRAYER_BACKGROUND = 4892;
 }

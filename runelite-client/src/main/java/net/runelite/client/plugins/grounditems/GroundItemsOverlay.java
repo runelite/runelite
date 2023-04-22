@@ -86,6 +86,7 @@ public class GroundItemsOverlay extends Overlay
 	private static final int NEX_REGION = 11601;
 	private static final int NIGHTMARE_REGION = 15515;
 	private static final int TEMPOROSS_REGION = 12078;
+	private static final int KALPHITE_QUEEN_REGION = 13972;
 
 	private final Client client;
 	private final GroundItemsPlugin plugin;
@@ -430,10 +431,7 @@ public class GroundItemsOverlay extends Overlay
 				// NMZ and the KBD lair uses the same region ID but NMZ uses planes 1-3 and KBD uses plane 0
 				if (client.getLocalPlayer().getWorldLocation().getPlane() == 0)
 				{
-					// Items in the KBD instance use the standard despawn timer
-					despawnTime = spawnTime.plus(groundItem.getLootType() == LootType.DROPPED
-						? DESPAWN_TIME_DROP
-						: DESPAWN_TIME_LOOT);
+					despawnTime = spawnTime.plus(DESPAWN_TIME_INSTANCE);
 				}
 				else
 				{
@@ -450,11 +448,11 @@ public class GroundItemsOverlay extends Overlay
 			}
 			else if (playerRegionID == ZILYANA_REGION || playerRegionID == GRAARDOR_REGION ||
 				playerRegionID == KRIL_TSUTSAROTH_REGION || playerRegionID == KREEARRA_REGION ||
-				playerRegionID == NEX_REGION ||
-				playerRegionID == NIGHTMARE_REGION ||  playerRegionID == TEMPOROSS_REGION ||
+				playerRegionID == NEX_REGION || playerRegionID == KALPHITE_QUEEN_REGION ||
+				playerRegionID == NIGHTMARE_REGION || playerRegionID == TEMPOROSS_REGION ||
 				playerRegionID == CLAN_HALL_REGION)
 			{
-				// GWD, Nightmare, and Tempoross instances use the normal despawn timers
+				// GWD, Kalphite Queen, Nightmare, and Tempoross instances use the normal despawn timers
 				despawnTime = spawnTime.plus(groundItem.getLootType() == LootType.DROPPED
 					? DESPAWN_TIME_DROP
 					: DESPAWN_TIME_LOOT);

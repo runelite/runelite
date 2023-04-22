@@ -60,6 +60,7 @@ import net.runelite.api.VarClientInt;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.annotations.Varbit;
+import net.runelite.api.annotations.Varp;
 import net.runelite.api.events.AreaSoundEffectPlayed;
 import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.ClientTick;
@@ -742,7 +743,7 @@ public class MusicPlugin extends Plugin
 				return;
 			}
 
-			int arg = client.getIntStackSize() - 8;
+			int arg = client.getIntStackSize() - 11;
 			int[] is = client.getIntStack();
 			Channel channel;
 			switch (is[arg])
@@ -763,7 +764,7 @@ public class MusicPlugin extends Plugin
 			Widget track = client.getScriptActiveWidget();
 			Widget handle = client.getWidget(is[arg + 1])
 				.getChild(is[arg + 2]);
-			Widget realTrack = client.getWidget(is[arg + 6]);
+			Widget realTrack = client.getWidget(is[arg + 7]);
 			SettingsSlider s = new SettingsSlider(channel, handle, track, is[arg + 3], is[arg + 4], is[arg + 5], realTrack);
 			s.update();
 			s.getChannel().setWindowSlider(s);
@@ -784,7 +785,8 @@ public class MusicPlugin extends Plugin
 	{
 		@Getter
 		private final String name;
-		private final VarPlayer var;
+		@Varp
+		private final int var;
 		@Varbit
 		private final int mutedVarbitId;
 		private final IntSupplier getter;
@@ -800,10 +802,10 @@ public class MusicPlugin extends Plugin
 		private Slider windowSlider;
 
 		Channel(String name,
-			VarPlayer var, @Varbit int mutedVarbitId,
-			IntSupplier getter, Consumer<Integer> setter,
-			IntConsumer volumeChanger, int max,
-			WidgetInfo sideRoot)
+				@Varp int var, @Varbit int mutedVarbitId,
+				IntSupplier getter, Consumer<Integer> setter,
+				IntConsumer volumeChanger, int max,
+				WidgetInfo sideRoot)
 		{
 			this.name = name;
 			this.var = var;
@@ -883,7 +885,7 @@ public class MusicPlugin extends Plugin
 		{
 			int val = getValue();
 			int varVal = Math.round((float) val / (max / 100.f));
-			client.getVarps()[this.var.getId()] = varVal;
+			client.getVarps()[this.var] = varVal;
 		}
 
 		public void shutDown()

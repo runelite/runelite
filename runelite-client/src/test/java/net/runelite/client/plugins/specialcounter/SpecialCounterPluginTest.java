@@ -133,7 +133,7 @@ public class SpecialCounterPluginTest
 
 		// Set up special attack energy
 		VarbitChanged varbitChanged = new VarbitChanged();
-		varbitChanged.setVarpId(VarPlayer.SPECIAL_ATTACK_PERCENT.getId());
+		varbitChanged.setVarpId(VarPlayer.SPECIAL_ATTACK_PERCENT);
 		varbitChanged.setValue(100);
 		specialCounterPlugin.onVarbitChanged(varbitChanged);
 
@@ -163,7 +163,7 @@ public class SpecialCounterPluginTest
 
 		// spec npc
 		VarbitChanged varbitChanged = new VarbitChanged();
-		varbitChanged.setVarpId(VarPlayer.SPECIAL_ATTACK_PERCENT.getId());
+		varbitChanged.setVarpId(VarPlayer.SPECIAL_ATTACK_PERCENT);
 		varbitChanged.setValue(50);
 		specialCounterPlugin.onVarbitChanged(varbitChanged);
 
@@ -200,7 +200,7 @@ public class SpecialCounterPluginTest
 
 		// First special attack
 		VarbitChanged varbitChanged = new VarbitChanged();
-		varbitChanged.setVarpId(VarPlayer.SPECIAL_ATTACK_PERCENT.getId());
+		varbitChanged.setVarpId(VarPlayer.SPECIAL_ATTACK_PERCENT);
 		varbitChanged.setValue(50);
 		specialCounterPlugin.onVarbitChanged(varbitChanged);
 
@@ -225,7 +225,7 @@ public class SpecialCounterPluginTest
 		// Second special attack
 		reset(clientThread);
 		varbitChanged = new VarbitChanged();
-		varbitChanged.setVarpId(VarPlayer.SPECIAL_ATTACK_PERCENT.getId());
+		varbitChanged.setVarpId(VarPlayer.SPECIAL_ATTACK_PERCENT);
 		varbitChanged.setValue(0);
 		specialCounterPlugin.onVarbitChanged(varbitChanged);
 
@@ -259,7 +259,7 @@ public class SpecialCounterPluginTest
 
 		// First special attack
 		VarbitChanged varbitChanged = new VarbitChanged();
-		varbitChanged.setVarpId(VarPlayer.SPECIAL_ATTACK_PERCENT.getId());
+		varbitChanged.setVarpId(VarPlayer.SPECIAL_ATTACK_PERCENT);
 		varbitChanged.setValue(50);
 		specialCounterPlugin.onVarbitChanged(varbitChanged);
 
@@ -279,7 +279,7 @@ public class SpecialCounterPluginTest
 		reset(clientThread);
 		// Second special attack
 		varbitChanged = new VarbitChanged();
-		varbitChanged.setVarpId(VarPlayer.SPECIAL_ATTACK_PERCENT.getId());
+		varbitChanged.setVarpId(VarPlayer.SPECIAL_ATTACK_PERCENT);
 		varbitChanged.setValue(0);
 		specialCounterPlugin.onVarbitChanged(varbitChanged);
 

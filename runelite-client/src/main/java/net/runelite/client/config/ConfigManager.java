@@ -25,51 +25,35 @@
 package net.runelite.client.config;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
 import com.google.common.collect.ComparisonChain;
-import com.google.common.hash.Hasher;
-import com.google.common.hash.Hashing;
 import com.google.gson.Gson;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
-import java.nio.channels.FileChannel;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.AtomicMoveNotSupportedException;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
-import java.security.SecureRandom;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
-import java.util.Date;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Properties;
 import java.util.Set;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Future;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -78,6 +62,7 @@ import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
+import lombok.Getter;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -85,18 +70,25 @@ import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AccountHashChanged;
 import net.runelite.api.events.PlayerChanged;
-import net.runelite.api.events.UsernameChanged;
 import net.runelite.api.events.WorldChanged;
 import net.runelite.client.RuneLite;
 import net.runelite.client.account.AccountSession;
+import net.runelite.client.account.SessionManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ClientShutdown;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.ConfigSync;
+import net.runelite.client.events.ProfileChanged;
 import net.runelite.client.events.RuneScapeProfileChanged;
+import net.runelite.client.events.SessionClose;
+import net.runelite.client.events.SessionOpen;
 import net.runelite.client.util.ColorUtil;
+import net.runelite.client.util.RunnableExceptionLogger;
 import net.runelite.http.api.config.ConfigPatch;
+import net.runelite.http.api.config.ConfigPatchResult;
+import net.runelite.http.api.config.Configuration;
+import net.runelite.http.api.config.Profile;
 
 @Singleton
 @Slf4j
@@ -106,166 +98,115 @@ public class ConfigManager
 
 	private static final String RSPROFILE_DISPLAY_NAME = "displayName";
 	private static final String RSPROFILE_TYPE = "type";
-	private static final String RSPROFILE_LOGIN_HASH = "loginHash";
-	private static final String RSPROFILE_LOGIN_SALT = "loginSalt";
 	private static final String RSPROFILE_ACCOUNT_HASH = "accountHash";
 
-	private static final DateFormat TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+	private static final long RSPROFILE_ID = -1L;
+	private static final String RSPROFILE_NAME = "$rsprofile";
 
 	private static final int KEY_SPLITTER_GROUP = 0;
 	private static final int KEY_SPLITTER_PROFILE = 1;
 	private static final int KEY_SPLITTER_KEY = 2;
 
-	private final File settingsFileInput;
+	@Nullable
+	private final String configProfileName;
 	private final EventBus eventBus;
+	@Nullable
+	private final Client client;
 	private final Gson gson;
 	@Nonnull
 	private final ConfigClient configClient;
-
-	private AccountSession session;
-	private File propertiesFile;
-
-	@Nullable
-	private final Client client;
+	private final ProfileManager profileManager;
+	private final SessionManager sessionManager;
 
 	private final ConfigInvocationHandler handler = new ConfigInvocationHandler(this);
-	private final Map<String, String> pendingChanges = new HashMap<>();
 
-	private Properties properties = new Properties();
+	@Getter
+	private ConfigProfile profile;
+	private ConfigProfile rsProfile;
+	private ConfigData configProfile;
+	private ConfigData rsProfileConfigProfile;
 
 	// null => we need to make a new profile
 	@Nullable
 	private String rsProfileKey;
 
 	@Inject
-	public ConfigManager(
-		@Named("config") File config,
+	private ConfigManager(
+		@Nullable @Named("profile") String profile,
 		ScheduledExecutorService scheduledExecutorService,
 		EventBus eventBus,
 		@Nullable Client client,
 		Gson gson,
-		ConfigClient configClient)
+		@Nonnull ConfigClient configClient,
+		ProfileManager profileManager,
+		SessionManager sessionManager
+	)
 	{
-		this.settingsFileInput = config;
+		this.configProfileName = profile;
 		this.eventBus = eventBus;
 		this.client = client;
-		this.propertiesFile = getPropertiesFile();
 		this.gson = gson;
 		this.configClient = configClient;
+		this.profileManager = profileManager;
+		this.sessionManager = sessionManager;
 
-		scheduledExecutorService.scheduleWithFixedDelay(this::sendConfig, 30, 5 * 60, TimeUnit.SECONDS);
+		scheduledExecutorService.scheduleWithFixedDelay(RunnableExceptionLogger.wrap(this::sendConfig), 30 + (int) (5 * 60 * Math.random()), 5 * 60, TimeUnit.SECONDS);
 	}
 
-	public String getRSProfileKey()
+	public void switchProfile(ConfigProfile newProfile)
 	{
-		return rsProfileKey;
-	}
+		if (newProfile.getId() == profile.getId())
+		{
+			log.warn("switching to existing profile!");
+			return;
+		}
 
-	public final void switchSession(AccountSession session)
-	{
 		// Ensure existing config is saved
 		sendConfig();
 
-		if (session == null)
-		{
-			this.session = null;
-			configClient.setUuid(null);
-		}
-		else
-		{
-			this.session = session;
-			configClient.setUuid(session.getUuid());
-		}
+		log.info("Switching profile to: {}", newProfile.getName());
 
-		this.propertiesFile = getPropertiesFile();
-
-		load(); // load profile specific config
-	}
-
-	private File getLocalPropertiesFile()
-	{
-		return settingsFileInput;
-	}
-
-	private File getPropertiesFile()
-	{
-		// Sessions that aren't logged in have no username
-		if (session == null || session.getUsername() == null)
+		// sync the latest config revision from the server
+		if (sessionManager.getAccountSession() != null && newProfile.isSync())
 		{
-			return getLocalPropertiesFile();
-		}
-		else
-		{
-			File profileDir = new File(RuneLite.PROFILES_DIR, session.getUsername().toLowerCase());
-			return new File(profileDir, RuneLite.DEFAULT_CONFIG_FILE.getName());
-		}
-	}
+			try (ProfileManager.Lock lock = profileManager.lock())
+			{
+				ConfigProfile profile = lock.findProfile(newProfile.getId());
+				if (profile == null)
+				{
+					log.warn("lost profile while switching!");
+					return;
+				}
 
-	public void load()
-	{
-		if (session == null)
-		{
-			loadFromFile();
-			return;
+				List<Profile> profiles = configClient.profiles();
+				if (profiles != null)
+				{
+					syncRemote(lock, profile, profiles);
+				}
+			}
+			catch (IOException ex)
+			{
+				log.error("error fetching remote profile", ex);
+			}
 		}
 
-		Map<String, String> configuration;
+		ConfigData newData = new ConfigData(ProfileManager.profileConfigFile(newProfile));
+		Set<String> allKeys = new HashSet<>(newData.keySet());
 
-		try
-		{
-			configuration = configClient.get();
-		}
-		catch (IOException ex)
-		{
-			log.debug("Unable to load configuration from client, using saved configuration from disk", ex);
-			loadFromFile();
-			return;
-		}
-
-		if (configuration == null || configuration.isEmpty())
-		{
-			log.debug("No configuration from client, using saved configuration on disk");
-			loadFromFile();
-			return;
-		}
-
-		Properties newProperties = new Properties();
-		newProperties.putAll(configuration);
-
-		log.debug("Loading in config from server");
-		swapProperties(newProperties, false);
-
-		try
-		{
-			saveToFile(propertiesFile);
-
-			log.debug("Updated configuration on disk with the latest version");
-		}
-		catch (IOException ex)
-		{
-			log.warn("Unable to update configuration on disk", ex);
-		}
-	}
-
-	private void swapProperties(Properties newProperties, boolean saveToServer)
-	{
-		Set<Object> allKeys = new HashSet<>(newProperties.keySet());
-
-		Properties oldProperties;
+		ConfigData oldData;
 		synchronized (this)
 		{
 			handler.invalidate();
-			oldProperties = properties;
-			this.properties = newProperties;
+			oldData = configProfile;
+			profile = newProfile;
+			configProfile = newData;
 		}
 
-		updateRSProfile();
+		allKeys.addAll(oldData.keySet());
 
-		allKeys.addAll(oldProperties.keySet());
-
-		for (Object wholeKey : allKeys)
+		for (String wholeKey : allKeys)
 		{
-			String[] split = splitKey((String) wholeKey);
+			String[] split = splitKey(wholeKey);
 			if (split == null)
 			{
 				continue;
@@ -274,8 +215,8 @@ public class ConfigManager
 			String groupName = split[KEY_SPLITTER_GROUP];
 			String profile = split[KEY_SPLITTER_PROFILE];
 			String key = split[KEY_SPLITTER_KEY];
-			String oldValue = (String) oldProperties.get(wholeKey);
-			String newValue = (String) newProperties.get(wholeKey);
+			String oldValue = oldData.getProperty(wholeKey);
+			String newValue = newData.getProperty(wholeKey);
 
 			if (Objects.equals(oldValue, newValue))
 			{
@@ -291,107 +232,447 @@ public class ConfigManager
 			configChanged.setOldValue(oldValue);
 			configChanged.setNewValue(newValue);
 			eventBus.post(configChanged);
+		}
 
-			if (saveToServer)
+		eventBus.post(new ProfileChanged());
+	}
+
+	public String getRSProfileKey()
+	{
+		return rsProfileKey;
+	}
+
+	@Subscribe
+	public void onSessionOpen(SessionOpen sessionOpen)
+	{
+		AccountSession session = sessionManager.getAccountSession();
+		configClient.setUuid(session.getUuid());
+
+		try
+		{
+			List<Profile> profiles = configClient.profiles();
+			if (profiles != null)
 			{
-				synchronized (pendingChanges)
-				{
-					pendingChanges.put((String) wholeKey, newValue);
-				}
+				mergeRemoteProfiles(profiles);
+			}
+		}
+		catch (IOException e)
+		{
+			log.error("error syncing remote profiles", e);
+		}
+
+		// special case for $rsprofile since it acts as an automatically-synced profile that is always merged
+		// instead of overwritten. After a login send a PATCH for the offline $rsprofile to merge it with the
+		// remote $rsprofile so that when $rsprofile is synced later it doesn't overwrite and lose the local
+		// $rsprofile settings.
+		ConfigPatch patch = buildConfigPatch(rsProfileConfigProfile.get());
+		configClient.patch(patch, rsProfile.getId());
+		log.debug("patched remote {}", RSPROFILE_NAME);
+	}
+
+	@Subscribe
+	public void onSessionClose(SessionClose sessionClose)
+	{
+		configClient.setUuid(null);
+
+		// remove the remote profiles
+		try (ProfileManager.Lock lock = profileManager.lock())
+		{
+			profile = updateProfile(lock, profile);
+			rsProfile = updateProfile(lock, rsProfile);
+
+			lock.getProfiles().removeIf(p -> p != profile && !p.isInternal() && p.isSync());
+
+			if (profile.isSync())
+			{
+				log.info("Active remote profile '{}' lost due to session close, converting to a local profile.", profile.getName());
+				profile.setSync(false);
+				profile.setRev(-1L);
+			}
+
+			lock.dirty();
+		}
+	}
+
+	public void toggleSync(ConfigProfile profile, boolean sync)
+	{
+		log.debug("Setting sync for {}: {}", profile.getName(), sync);
+
+		// flush pending config changes first in the event the profile being
+		// synced is the active profile.
+		sendConfig();
+
+		try (ProfileManager.Lock lock = profileManager.lock())
+		{
+			profile = lock.findProfile(profile.getId());
+			if (profile == null || profile.isSync() == sync)
+			{
+				return;
+			}
+
+			profile.setSync(sync);
+			lock.dirty();
+
+			if (sync)
+			{
+				// sync the entire profile from disk
+				File from = ProfileManager.profileConfigFile(profile);
+				ConfigData data = new ConfigData(from);
+				ConfigPatch patch = buildConfigPatch(data.get());
+
+				long id = profile.getId();
+				String name = profile.getName();
+
+				configClient.patch(patch, profile.getId()).thenRun(() -> configClient.rename(id, name));
+			}
+			else
+			{
+				configClient.delete(profile.getId());
 			}
 		}
 	}
 
-	private void syncPropertiesFromFile(File propertiesFile)
+	public void renameProfile(ConfigProfile profile, String name)
 	{
-		final Properties properties = new Properties();
-		try (FileInputStream in = new FileInputStream(propertiesFile))
+		if (profile.isSync() && sessionManager.getAccountSession() != null)
 		{
-			properties.load(new InputStreamReader(in, StandardCharsets.UTF_8));
+			configClient.rename(profile.getId(), name);
 		}
-		catch (Exception e)
+	}
+
+	private void migrate()
+	{
+		try (ProfileManager.Lock lock = profileManager.lock())
 		{
-			log.warn("Malformed properties, skipping update");
+			List<ConfigProfile> profiles = lock.getProfiles();
+			File configFile = new File(RuneLite.RUNELITE_DIR, "settings.properties");
+			if (profiles.isEmpty() && configFile.exists())
+			{
+				String targetProfileName = "default";
+
+				log.info("Performing migration of config from {} to profile '{}'", configFile.getName(), targetProfileName);
+
+				ConfigProfile targetProfile = lock.createProfile(targetProfileName);
+				profiles.forEach(p -> p.setActive(false));
+				targetProfile.setActive(true);
+
+				if (rsProfile == null)
+				{
+					rsProfile = lock.findProfile(RSPROFILE_NAME);
+					if (rsProfile == null)
+					{
+						rsProfile = lock.createProfile(RSPROFILE_NAME, RSPROFILE_ID);
+					}
+					rsProfile.setSync(true);
+				}
+
+				if (rsProfileConfigProfile == null)
+				{
+					rsProfileConfigProfile = new ConfigData(ProfileManager.profileConfigFile(rsProfile));
+				}
+
+				importAndMigrate(lock, configFile, targetProfile);
+			}
+		}
+	}
+
+	public void importAndMigrate(ProfileManager.Lock lock, File from, ConfigProfile targetProfile)
+	{
+		ConfigData migratingData = new ConfigData(from);
+		ConfigData configData = new ConfigData(ProfileManager.profileConfigFile(targetProfile));
+
+		log.debug("Importing profile from {}", from);
+
+		Set<String> rsProfileKeys = new HashSet<>();
+		List<Map.Entry<String, String>> rsProfileEntries = new ArrayList<>();
+
+		int keys = 0;
+		for (Map.Entry<String, String> entry : migratingData.get().entrySet())
+		{
+			String[] split = splitKey(entry.getKey());
+			if (split == null)
+			{
+				continue;
+			}
+
+			String profile = split[KEY_SPLITTER_PROFILE];
+
+			if (profile != null)
+			{
+				rsProfileKeys.add(profile);
+				rsProfileEntries.add(entry);
+			}
+			else
+			{
+				configData.setProperty(entry.getKey(), entry.getValue());
+				++keys;
+			}
+		}
+
+		if (rsProfileKeys.size() > 0)
+		{
+			Map<String, String> oldToNewRSProfile = new HashMap<>();
+			List<RuneScapeProfile> existingProfiles = getRSProfiles();
+			for (String oldKey : rsProfileKeys)
+			{
+				try
+				{
+					String strHash = migratingData.getProperty(getWholeKey(RSPROFILE_GROUP, oldKey, RSPROFILE_ACCOUNT_HASH));
+					String strType = migratingData.getProperty(getWholeKey(RSPROFILE_GROUP, oldKey, RSPROFILE_TYPE));
+					if (!Strings.isNullOrEmpty(strHash) && !Strings.isNullOrEmpty(strType))
+					{
+						long accHash = Long.parseLong(strHash);
+						RuneScapeProfileType type = RuneScapeProfileType.valueOf(strType);
+
+						RuneScapeProfile newProfile = findRSProfile(existingProfiles, accHash, type, null, true);
+						if (newProfile != null)
+						{
+							existingProfiles.add(newProfile);
+							oldToNewRSProfile.put(oldKey, newProfile.getKey());
+							log.info("importing rsprofile \"{}\" as \"{}\"", oldKey, newProfile.getKey());
+							continue;
+						}
+					}
+					log.info("not importing rsprofile key \"{}\" (hash={} type={})", oldKey, strHash, strType);
+				}
+				catch (IllegalArgumentException e)
+				{
+					log.info("failed to unmarshal imported rsprofile data for key \"{}\"", oldKey, e);
+				}
+			}
+
+			for (Map.Entry<String, String> entry : rsProfileEntries)
+			{
+				String[] split = splitKey(entry.getKey());
+				assert split != null;
+				String profile = split[KEY_SPLITTER_PROFILE];
+				profile = oldToNewRSProfile.get(profile);
+				if (profile != null && getConfiguration(split[KEY_SPLITTER_GROUP], profile, split[KEY_SPLITTER_KEY]) == null)
+				{
+					setConfiguration(split[KEY_SPLITTER_GROUP], profile, split[KEY_SPLITTER_KEY], entry.getValue());
+				}
+			}
+		}
+
+		configData.patch(configData.swapChanges());
+
+		rsProfile = updateProfile(lock, rsProfile);
+		saveConfiguration(lock, rsProfile, rsProfileConfigProfile);
+
+		log.info("Finished importing {} keys", keys);
+	}
+
+	public void load()
+	{
+		AccountSession session = sessionManager.getAccountSession();
+		List<Profile> remoteProfiles = Collections.emptyList();
+		if (session != null)
+		{
+			configClient.setUuid(session.getUuid());
+			try
+			{
+				List<Profile> profiles = configClient.profiles();
+				if (profiles != null)
+				{
+					remoteProfiles = profiles;
+					mergeRemoteProfiles(remoteProfiles);
+				}
+			}
+			catch (IOException ex)
+			{
+				log.error("error loading remote profiles", ex);
+			}
+		}
+
+		migrate();
+
+		try (ProfileManager.Lock lock = profileManager.lock())
+		{
+			ConfigProfile profile = null, rsProfile = null;
+
+			for (ConfigProfile p : lock.getProfiles())
+			{
+				if (p.isInternal())
+				{
+					if (p.getName().equals(RSPROFILE_NAME))
+					{
+						rsProfile = p;
+					}
+
+					continue;
+				}
+
+				log.info("Profile '{}' (sync: {}, active: {})", p.getName(), p.isSync(), p.isActive());
+
+				// --profile
+				if (configProfileName != null)
+				{
+					if (p.getName().equals(configProfileName))
+					{
+						profile = p;
+					}
+				}
+				else if (p.isActive())
+				{
+					profile = p;
+				}
+				else if (profile == null)
+				{
+					profile = p;
+				}
+			}
+
+			if (profile != null)
+			{
+				log.info("Using profile: {}", profile.getName());
+			}
+			else
+			{
+				profile = lock.createProfile(configProfileName != null ? configProfileName : "default");
+				if (configProfileName == null)
+				{
+					// if creating the initial default profile
+					lock.getProfiles().forEach(p -> p.setActive(false));
+					profile.setActive(true);
+				}
+
+				log.info("Creating profile: {}", profile.getName());
+			}
+
+			if (rsProfile == null)
+			{
+				rsProfile = lock.createProfile(RSPROFILE_NAME, RSPROFILE_ID);
+			}
+			rsProfile.setSync(true);
+
+			// synced profiles need to be fetched if outdated
+			syncRemote(lock, profile, remoteProfiles);
+			syncRemote(lock, rsProfile, remoteProfiles);
+
+			this.profile = profile;
+			this.rsProfile = rsProfile;
+			configProfile = new ConfigData(ProfileManager.profileConfigFile(profile));
+			rsProfileConfigProfile = new ConfigData(ProfileManager.profileConfigFile(rsProfile));
+		}
+
+		eventBus.post(new ProfileChanged());
+	}
+
+	private void mergeRemoteProfiles(List<Profile> remoteProfiles)
+	{
+		try (ProfileManager.Lock lock = profileManager.lock())
+		{
+			boolean migrating = lock.getProfiles().isEmpty();
+
+			outer:
+			for (Profile remoteProfile : remoteProfiles)
+			{
+				for (ConfigProfile profile : lock.getProfiles())
+				{
+					if (profile.getId() == remoteProfile.getId())
+					{
+						log.debug("Found local profile {} for remote {}", profile, remoteProfile);
+						profile.setName(MoreObjects.firstNonNull(remoteProfile.getName(), ""));
+						profile.setSync(true);
+						lock.dirty();
+						continue outer;
+					}
+				}
+
+				log.debug("Creating local profile for remote {}", remoteProfile);
+				ConfigProfile profile = lock.createProfile(MoreObjects.firstNonNull(remoteProfile.getName(), ""), remoteProfile.getId());
+				profile.setSync(true);
+
+				if (migrating && remoteProfile.getId() == 0L)
+				{
+					log.info("Using remote profile {} as the active profile", profile.getName());
+					profile.setActive(true);
+				}
+			}
+
+			outer2:
+			for (ConfigProfile localProfile : lock.getProfiles())
+			{
+				for (Profile remoteProfile : remoteProfiles)
+				{
+					if (localProfile.getId() == remoteProfile.getId())
+					{
+						continue outer2;
+					}
+				}
+
+				log.debug("Found local profile {}", localProfile);
+
+				if (!localProfile.isSync() || localProfile.isInternal())
+				{
+					continue;
+				}
+
+				log.warn("Lost remote profile for '{}'", localProfile.getName());
+				// convert the profile to a non-synced profile
+				localProfile.setSync(false);
+				localProfile.setRev(-1);
+				lock.dirty();
+			}
+		}
+	}
+
+	private void syncRemote(ProfileManager.Lock lock, ConfigProfile profile, List<Profile> remoteProfiles)
+	{
+		if (!profile.isSync())
+		{
 			return;
 		}
 
-		log.debug("Syncing properties from {}", propertiesFile);
-		swapProperties(properties, true);
-	}
+		long id = profile.getId();
+		Profile remoteProfile = remoteProfiles.stream()
+			.filter(p -> p.getId() == id)
+			.findFirst()
+			.orElse(null);
 
-	public Future<Void> importLocal()
-	{
-		if (session == null)
+		if (remoteProfile == null)
 		{
-			// No session, no import
-			return null;
+			// $rsprofile is normally synced, even when logged out
+			if (!profile.isInternal())
+			{
+				log.warn("synced profile {} has no remote!", profile);
+			}
+			return;
 		}
 
-		final File file = new File(propertiesFile.getParent(), propertiesFile.getName() + "." + TIME_FORMAT.format(new Date()));
-
-		try
+		if (profile.getRev() == remoteProfile.getRev())
 		{
-			saveToFile(file);
+			log.info("Profile '{}' is up to date", profile.getName());
 		}
-		catch (IOException e)
+		else
 		{
-			log.warn("Backup failed, skipping import", e);
-			return null;
-		}
+			log.info("Loading remote configuration for profile '{}'", profile.getName());
 
-		log.info("Importing local settings");
+			try
+			{
+				Configuration remoteConfiguration = configClient.get(profile.getId());
+				if (remoteConfiguration == null || remoteConfiguration.getConfig() == null || remoteConfiguration.getConfig().isEmpty())
+				{
+					log.debug("no remote configuration for {}", profile);
+					return;
+				}
 
-		syncPropertiesFromFile(getLocalPropertiesFile());
+				File configFile = ProfileManager.profileConfigFile(profile);
+				// remote configuration replaces local
+				configFile.delete();
 
-		return sendConfig();
-	}
+				ConfigData configData = new ConfigData(configFile);
+				configData.putAll(remoteConfiguration.getConfig());
+				configData.patch(configData.swapChanges());
 
-	private synchronized void loadFromFile()
-	{
-		Properties newProperties = new Properties();
-		try (FileInputStream in = new FileInputStream(propertiesFile))
-		{
-			newProperties.load(new InputStreamReader(in, StandardCharsets.UTF_8));
-		}
-		catch (FileNotFoundException ex)
-		{
-			log.debug("Unable to load settings - no such file");
-		}
-		catch (IllegalArgumentException | IOException ex)
-		{
-			log.warn("Unable to load settings", ex);
-		}
-
-		log.debug("Loading in config from disk");
-		swapProperties(newProperties, false);
-	}
-
-	private void saveToFile(final File propertiesFile) throws IOException
-	{
-		File parent = propertiesFile.getParentFile();
-
-		parent.mkdirs();
-
-		File tempFile = File.createTempFile("runelite", null, parent);
-
-		try (FileOutputStream out = new FileOutputStream(tempFile);
-			FileChannel channel = out.getChannel();
-			OutputStreamWriter writer = new OutputStreamWriter(out, StandardCharsets.UTF_8))
-		{
-			channel.lock();
-			properties.store(writer, "RuneLite configuration");
-			channel.force(true);
-			// FileChannel.close() frees the lock
-		}
-
-		try
-		{
-			Files.move(tempFile.toPath(), propertiesFile.toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
-		}
-		catch (AtomicMoveNotSupportedException ex)
-		{
-			log.debug("atomic move not supported", ex);
-			Files.move(tempFile.toPath(), propertiesFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+				log.debug("synced remote profile {} rev {} to disk", profile, remoteConfiguration.getRev());
+				profile.setRev(remoteConfiguration.getRev());
+				lock.dirty();
+			}
+			catch (IOException ex)
+			{
+				log.error("unable to load remote configuration for {}", profile, ex);
+			}
 		}
 	}
 
@@ -410,15 +691,14 @@ public class ConfigManager
 		return t;
 	}
 
-	public synchronized List<String> getConfigurationKeys(String prefix)
+	public List<String> getConfigurationKeys(String prefix)
 	{
-		return properties.keySet().stream()
-			.map(String.class::cast)
+		return configProfile.keySet().stream()
 			.filter(k -> k.startsWith(prefix))
 			.collect(Collectors.toList());
 	}
 
-	public synchronized List<String> getRSProfileConfigurationKeys(String group, String profile, String keyPrefix)
+	public List<String> getRSProfileConfigurationKeys(String group, String profile, String keyPrefix)
 	{
 		if (profile == null)
 		{
@@ -428,8 +708,7 @@ public class ConfigManager
 		assert profile.startsWith(RSPROFILE_GROUP);
 
 		String prefix = group + "." + profile + "." + keyPrefix;
-		return properties.keySet().stream()
-			.map(String.class::cast)
+		return rsProfileConfigProfile.keySet().stream()
 			.filter(k -> k.startsWith(prefix))
 			.map(k -> splitKey(k)[KEY_SPLITTER_KEY])
 			.collect(Collectors.toList());
@@ -447,9 +726,15 @@ public class ConfigManager
 		}
 	}
 
+	// region get configuration
+	private String getConfiguration(ConfigData configData, String groupName, String rsProfile, String key)
+	{
+		return configData.getProperty(getWholeKey(groupName, rsProfile, key));
+	}
+
 	public String getConfiguration(String groupName, String key)
 	{
-		return getConfiguration(groupName, null, key);
+		return getConfiguration(configProfile, groupName, null, key);
 	}
 
 	public String getRSProfileConfiguration(String groupName, String key)
@@ -460,12 +745,19 @@ public class ConfigManager
 			return null;
 		}
 
-		return getConfiguration(groupName, rsProfileKey, key);
+		return getConfiguration(rsProfileConfigProfile, groupName, rsProfileKey, key);
 	}
 
 	public String getConfiguration(String groupName, String profile, String key)
 	{
-		return properties.getProperty(getWholeKey(groupName, profile, key));
+		if (profile != null)
+		{
+			return getConfiguration(rsProfileConfigProfile, groupName, profile, key);
+		}
+		else
+		{
+			return getConfiguration(configProfile, groupName, null, key);
+		}
 	}
 
 	public <T> T getConfiguration(String groupName, String key, Type clazz)
@@ -500,13 +792,10 @@ public class ConfigManager
 		}
 		return null;
 	}
+	// endregion
 
-	public void setConfiguration(String groupName, String key, String value)
-	{
-		setConfiguration(groupName, null, key, value);
-	}
-
-	public void setConfiguration(String groupName, String profile, String key, @NonNull String value)
+	// region set configuration
+	private void setConfiguration(ConfigData configData, String groupName, String profile, String key, @NonNull String value)
 	{
 		if (Strings.isNullOrEmpty(groupName) || Strings.isNullOrEmpty(key) || key.indexOf(':') != -1)
 		{
@@ -515,11 +804,7 @@ public class ConfigManager
 
 		assert !key.startsWith(RSPROFILE_GROUP + ".");
 		String wholeKey = getWholeKey(groupName, profile, key);
-		String oldValue;
-		synchronized (this)
-		{
-			oldValue = (String) properties.setProperty(wholeKey, value);
-		}
+		String oldValue = configData.setProperty(wholeKey, value);
 
 		if (Objects.equals(oldValue, value))
 		{
@@ -529,11 +814,6 @@ public class ConfigManager
 		log.debug("Setting configuration value for {} to {}", wholeKey, value);
 		handler.invalidate();
 
-		synchronized (pendingChanges)
-		{
-			pendingChanges.put(wholeKey, value);
-		}
-
 		ConfigChanged configChanged = new ConfigChanged();
 		configChanged.setGroup(groupName);
 		configChanged.setProfile(profile);
@@ -542,6 +822,23 @@ public class ConfigManager
 		configChanged.setNewValue(value);
 
 		eventBus.post(configChanged);
+	}
+
+	public void setConfiguration(String groupName, String profile, String key, @NonNull String value)
+	{
+		if (profile != null)
+		{
+			setConfiguration(rsProfileConfigProfile, groupName, profile, key, value);
+		}
+		else
+		{
+			setConfiguration(configProfile, groupName, null, key, value);
+		}
+	}
+
+	public void setConfiguration(String groupName, String key, String value)
+	{
+		setConfiguration(configProfile, groupName, null, key, value);
 	}
 
 	public <T> void setConfiguration(String groupName, String profile, String key, T value)
@@ -576,7 +873,7 @@ public class ConfigManager
 				displayName = p.getName();
 			}
 
-			RuneScapeProfile prof = findRSProfile(getRSProfiles(), RuneScapeProfileType.getCurrent(client), displayName, true);
+			RuneScapeProfile prof = findRSProfile(getRSProfiles(), client.getAccountHash(), RuneScapeProfileType.getCurrent(client), displayName, true);
 			if (prof == null)
 			{
 				log.warn("trying to create a profile while not logged in");
@@ -591,21 +888,14 @@ public class ConfigManager
 		}
 		setConfiguration(groupName, rsProfileKey, key, value);
 	}
+	// endregion
 
-	public void unsetConfiguration(String groupName, String key)
-	{
-		unsetConfiguration(groupName, null, key);
-	}
-
-	public void unsetConfiguration(String groupName, String profile, String key)
+	// region unset configuration
+	private void unsetConfiguration(ConfigData configData, String groupName, String profile, String key)
 	{
 		assert !key.startsWith(RSPROFILE_GROUP + ".");
 		String wholeKey = getWholeKey(groupName, profile, key);
-		String oldValue;
-		synchronized (this)
-		{
-			oldValue = (String) properties.remove(wholeKey);
-		}
+		String oldValue = configData.unset(wholeKey);
 
 		if (oldValue == null)
 		{
@@ -614,11 +904,6 @@ public class ConfigManager
 
 		log.debug("Unsetting configuration value for {}", wholeKey);
 		handler.invalidate();
-
-		synchronized (pendingChanges)
-		{
-			pendingChanges.put(wholeKey, null);
-		}
 
 		ConfigChanged configChanged = new ConfigChanged();
 		configChanged.setGroup(groupName);
@@ -629,6 +914,23 @@ public class ConfigManager
 		eventBus.post(configChanged);
 	}
 
+	public void unsetConfiguration(String groupName, String profile, String key)
+	{
+		if (profile != null)
+		{
+			unsetConfiguration(rsProfileConfigProfile, groupName, profile, key);
+		}
+		else
+		{
+			unsetConfiguration(configProfile, groupName, null, key);
+		}
+	}
+
+	public void unsetConfiguration(String groupName, String key)
+	{
+		unsetConfiguration(configProfile, groupName, null, key);
+	}
+
 	public void unsetRSProfileConfiguration(String groupName, String key)
 	{
 		String rsProfileKey = this.rsProfileKey;
@@ -637,8 +939,9 @@ public class ConfigManager
 			return;
 		}
 
-		unsetConfiguration(groupName, rsProfileKey, key);
+		unsetConfiguration(rsProfileConfigProfile, groupName, rsProfileKey, key);
 	}
+	// endregion
 
 	public ConfigDescriptor getConfigDescriptor(Config configurationProxy)
 	{
@@ -695,9 +998,9 @@ public class ConfigManager
 	/**
 	 * Initialize the configuration from the default settings
 	 *
-	 * @param proxy
+	 * @param proxy proxy instance implementing {@link Config}
 	 */
-	public void setDefaultConfiguration(Object proxy, boolean override)
+	public <T extends Config> void setDefaultConfiguration(T proxy, boolean override)
 	{
 		Class<?> clazz = proxy.getClass().getInterfaces()[0];
 		ConfigGroup group = clazz.getAnnotation(ConfigGroup.class);
@@ -921,82 +1224,137 @@ public class ConfigManager
 	)
 	private void onClientShutdown(ClientShutdown e)
 	{
-		Future<Void> f = sendConfig();
-		if (f != null)
-		{
-			e.waitFor(f);
-		}
+		sendConfig();
 	}
 
-	@Nullable
-	private CompletableFuture<Void> sendConfig()
+	public void sendConfig()
 	{
 		eventBus.post(new ConfigSync());
 
-		CompletableFuture<Void> future = null;
-		synchronized (pendingChanges)
+		try (ProfileManager.Lock lock = profileManager.lock())
 		{
-			if (pendingChanges.isEmpty())
-			{
-				return null;
-			}
+			// since we hold references to profiles outside of the lock, they are stale.
+			// fetch the latest version.
+			profile = updateProfile(lock, profile);
+			rsProfile = updateProfile(lock, rsProfile);
 
-			if (session != null)
+			saveConfiguration(lock, profile, configProfile);
+			saveConfiguration(lock, rsProfile, rsProfileConfigProfile);
+		}
+	}
+
+	private static ConfigProfile updateProfile(ProfileManager.Lock lock, ConfigProfile profile)
+	{
+		ConfigProfile p = lock.findProfile(profile.getId());
+		if (p == null)
+		{
+			log.warn("Lost active profile {}!", profile.getName());
+
+			// We just recreate it, with the same id, so that the ConfigData stays valid
+			p = lock.createProfile(profile.getName(), profile.getId());
+			p.setActive(profile.isActive());
+		}
+		else if (profile.getRev() != p.getRev())
+		{
+			// I think this is okay because while the in memory config on this client will be outdated,
+			// the version on disk and also the remote version will still be consistent
+			log.debug("Profile {} changed on disk", p.getName());
+		}
+		return p;
+	}
+
+	private void saveConfiguration(ProfileManager.Lock lock, ConfigProfile profile, ConfigData data)
+	{
+		Map<String, String> patch = data.swapChanges();
+
+		if (patch.isEmpty())
+		{
+			return;
+		}
+
+		log.debug("Saving profile {} (patch size: {})", profile.getName(), patch.size());
+
+		if (profile.isSync() && sessionManager.getAccountSession() != null)
+		{
+			try
 			{
-				ConfigPatch patch = new ConfigPatch();
-				for (Map.Entry<String, String> entry : pendingChanges.entrySet())
+				ConfigPatchResult patchResult = configClient.patch(buildConfigPatch(patch), profile.getId()).get();
+				if (patchResult == null)
 				{
-					final String key = entry.getKey(), value = entry.getValue();
-					if (value == null)
+					profile.setRev(-1L);
+				}
+				else
+				{
+					long oldRev = patchResult.getRev() - 1;
+					long newRev = patchResult.getRev();
+
+					if (oldRev == profile.getRev())
 					{
-						patch.getUnset().add(key);
+						profile.setRev(newRev);
+						log.debug("incremental patch applied {} -> {}", oldRev, newRev);
 					}
 					else
 					{
-						patch.getEdit().put(key, value);
+						// version on disk now mismatches the remote config. Set rev as -1 to force a reload
+						// on next start.
+						log.debug("rev mismatch {} != {}, invalidating", oldRev, newRev);
+						profile.setRev(-1L);
 					}
 				}
-
-				future = configClient.patch(patch);
+				lock.dirty();
 			}
-
-			pendingChanges.clear();
+			catch (ExecutionException | InterruptedException e)
+			{
+				profile.setRev(-1L);
+				lock.dirty();
+				log.error("error applying incremental patch", e);
+			}
 		}
 
-		try
+		data.patch(patch);
+	}
+
+	private static ConfigPatch buildConfigPatch(Map<String, String> patchChanges)
+	{
+		if (patchChanges.isEmpty())
 		{
-			saveToFile(propertiesFile);
-		}
-		catch (IOException ex)
-		{
-			log.warn("unable to save configuration file", ex);
+			return null;
 		}
 
-		return future;
+		ConfigPatch patch = new ConfigPatch();
+		for (Map.Entry<String, String> entry : patchChanges.entrySet())
+		{
+			final String key = entry.getKey(), value = entry.getValue();
+			if (value == null)
+			{
+				patch.getUnset().add(key);
+			}
+			else
+			{
+				patch.getEdit().put(key, value);
+			}
+		}
+		return patch;
 	}
 
 	public List<RuneScapeProfile> getRSProfiles()
 	{
 		String prefix = RSPROFILE_GROUP + "." + RSPROFILE_GROUP + ".";
 		Set<String> profileKeys = new HashSet<>();
-		synchronized (this)
+		for (String key : rsProfileConfigProfile.keySet())
 		{
-			for (Object oKey : properties.keySet())
+			if (!key.startsWith(prefix))
 			{
-				String key = (String) oKey;
-				if (!key.startsWith(prefix))
-				{
-					continue;
-				}
-
-				String[] split = splitKey(key);
-				if (split == null)
-				{
-					continue;
-				}
-
-				profileKeys.add(split[KEY_SPLITTER_PROFILE]);
+				continue;
 			}
+
+			String[] split = splitKey(key);
+			if (split == null)
+			{
+				continue;
+			}
+
+			profileKeys.add(split[KEY_SPLITTER_PROFILE]);
 		}
 
 		return profileKeys.stream()
@@ -1006,87 +1364,35 @@ public class ConfigManager
 				RuneScapeProfile prof = new RuneScapeProfile(
 					getConfiguration(RSPROFILE_GROUP, key, RSPROFILE_DISPLAY_NAME),
 					getConfiguration(RSPROFILE_GROUP, key, RSPROFILE_TYPE, RuneScapeProfileType.class),
-					getConfiguration(RSPROFILE_GROUP, key, RSPROFILE_LOGIN_HASH, byte[].class),
 					accid == null ? RuneScapeProfile.ACCOUNT_HASH_INVALID : accid,
 					key
 				);
 
 				return prof;
 			})
-			.collect(Collectors.toList());
+			.sorted(Comparator.comparing(RuneScapeProfile::getKey))
+			.collect(Collectors.toCollection(ArrayList::new));
 	}
 
-	private synchronized RuneScapeProfile findRSProfile(List<RuneScapeProfile> profiles, RuneScapeProfileType type, String displayName, boolean create)
+	private synchronized RuneScapeProfile findRSProfile(List<RuneScapeProfile> profiles, long accountHash, RuneScapeProfileType type, String displayName, boolean create)
 	{
-		String username = client.getUsername();
-		long accountHash = client.getAccountHash();
-
-		if (accountHash == RuneScapeProfile.ACCOUNT_HASH_INVALID && username == null)
+		if (accountHash == RuneScapeProfile.ACCOUNT_HASH_INVALID)
 		{
 			return null;
 		}
 
-		final byte[] loginHash;
-		byte[] salt = null;
-		if (username != null)
-		{
-			salt = getConfiguration(RSPROFILE_GROUP, RSPROFILE_LOGIN_SALT, byte[].class);
-			if (salt == null)
-			{
-				salt = new byte[15];
-				new SecureRandom()
-					.nextBytes(salt);
-				log.info("creating new salt as there is no existing one {}", Base64.getUrlEncoder().encodeToString(salt));
-				setConfiguration(RSPROFILE_GROUP, RSPROFILE_LOGIN_SALT, salt);
-			}
-
-			Hasher h = Hashing.sha512().newHasher();
-			h.putBytes(salt);
-			h.putString(username.toLowerCase(Locale.US), StandardCharsets.UTF_8);
-			loginHash = h.hash().asBytes();
-		}
-		else
-		{
-			loginHash = null;
-		}
-
-		Set<RuneScapeProfile> matches = Collections.emptySet();
-		if (accountHash != RuneScapeProfile.ACCOUNT_HASH_INVALID)
-		{
-			matches = profiles.stream()
-				.filter(p -> p.getType() == type && accountHash == p.getAccountHash())
-				.collect(Collectors.toSet());
-		}
-
-		if (matches.isEmpty() && loginHash != null)
-		{
-			matches = profiles.stream()
-				.filter(p -> p.getType() == type && Arrays.equals(loginHash, p.getLoginHash()))
-				.collect(Collectors.toSet());
-		}
+		List<RuneScapeProfile> matches = profiles.stream()
+			.filter(p -> p.getType() == type && accountHash == p.getAccountHash())
+			.collect(Collectors.toList());
 
 		if (matches.size() > 1)
 		{
-			log.warn("multiple matching profiles");
+			log.warn("multiple matching profiles, choosing {}, ignoring {}", matches.get(0), matches.subList(1, matches.size()));
 		}
 
 		if (matches.size() >= 1)
 		{
-			RuneScapeProfile profile = matches.iterator().next();
-			if (profile.getAccountHash() == RuneScapeProfile.ACCOUNT_HASH_INVALID && accountHash != RuneScapeProfile.ACCOUNT_HASH_INVALID)
-			{
-				int upgrades = 0;
-				for (RuneScapeProfile p : profiles)
-				{
-					if (p.getAccountHash() == RuneScapeProfile.ACCOUNT_HASH_INVALID && Arrays.equals(p.getLoginHash(), loginHash))
-					{
-						setConfiguration(RSPROFILE_GROUP, p.getKey(), RSPROFILE_ACCOUNT_HASH, accountHash);
-						upgrades++;
-					}
-				}
-				log.info("Attaching account id to {} profiles", upgrades);
-			}
-			return profile;
+			return matches.get(0);
 		}
 
 		if (!create)
@@ -1096,41 +1402,29 @@ public class ConfigManager
 
 		// generate the new key deterministically so if you "create" the same profile on 2 different clients it doesn't duplicate
 		Set<String> keys = profiles.stream().map(RuneScapeProfile::getKey).collect(Collectors.toSet());
-		byte[] key = accountHash == RuneScapeProfile.ACCOUNT_HASH_INVALID
-			? Arrays.copyOf(loginHash, 6)
-			: new byte[]
-			{
-				(byte) accountHash,
-				(byte) (accountHash >> 8),
-				(byte) (accountHash >> 16),
-				(byte) (accountHash >> 24),
-				(byte) (accountHash >> 32),
-				(byte) (accountHash >> 40),
-			};
+		byte[] key = {
+			(byte) accountHash,
+			(byte) (accountHash >> 8),
+			(byte) (accountHash >> 16),
+			(byte) (accountHash >> 24),
+			(byte) (accountHash >> 32),
+			(byte) (accountHash >> 40),
+		};
 		key[0] += type.ordinal();
 		for (int i = 0; i < 0xFF; i++, key[1]++)
 		{
 			String keyStr = RSPROFILE_GROUP + "." + Base64.getUrlEncoder().encodeToString(key);
 			if (!keys.contains(keyStr))
 			{
-				log.info("creating new profile {} for username {} account hash {} ({}) salt {}",
-					keyStr, username, accountHash, type,
-					salt == null ? "null" : Base64.getUrlEncoder().encodeToString(salt));
+				log.info("creating new profile {} for account hash {} ({})", keyStr, accountHash, type);
 
-				if (loginHash != null)
-				{
-					setConfiguration(RSPROFILE_GROUP, keyStr, RSPROFILE_LOGIN_HASH, loginHash);
-				}
-				if (accountHash != RuneScapeProfile.ACCOUNT_HASH_INVALID)
-				{
-					setConfiguration(RSPROFILE_GROUP, keyStr, RSPROFILE_ACCOUNT_HASH, accountHash);
-				}
+				setConfiguration(RSPROFILE_GROUP, keyStr, RSPROFILE_ACCOUNT_HASH, accountHash);
 				setConfiguration(RSPROFILE_GROUP, keyStr, RSPROFILE_TYPE, type);
 				if (displayName != null)
 				{
 					setConfiguration(RSPROFILE_GROUP, keyStr, RSPROFILE_DISPLAY_NAME, displayName);
 				}
-				return new RuneScapeProfile(displayName, type, loginHash, accountHash, keyStr);
+				return new RuneScapeProfile(displayName, type, accountHash, keyStr);
 			}
 		}
 		throw new RuntimeException("too many rs profiles");
@@ -1144,7 +1438,7 @@ public class ConfigManager
 		}
 
 		List<RuneScapeProfile> profiles = getRSProfiles();
-		RuneScapeProfile prof = findRSProfile(profiles, RuneScapeProfileType.getCurrent(client), null, false);
+		RuneScapeProfile prof = findRSProfile(profiles, client.getAccountHash(), RuneScapeProfileType.getCurrent(client), null, false);
 
 		String key = prof == null ? null : prof.getKey();
 		if (Objects.equals(key, rsProfileKey))
@@ -1155,12 +1449,6 @@ public class ConfigManager
 
 		log.debug("RS profile changed to {}", key);
 		eventBus.post(new RuneScapeProfileChanged());
-	}
-
-	@Subscribe
-	private void onUsernameChanged(UsernameChanged ev)
-	{
-		updateRSProfile();
 	}
 
 	@Subscribe

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2023, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,30 +22,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.devtools;
+package net.runelite.client.config;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-import net.runelite.api.widgets.WidgetItem;
+import java.util.List;
+import lombok.Data;
 
-class WidgetItemNode extends DefaultMutableTreeNode
+@Data
+class Profiles
 {
-	private final WidgetItem widgetItem;
-
-	public WidgetItemNode(WidgetItem widgetItem)
-	{
-		super(widgetItem);
-		this.widgetItem = widgetItem;
-	}
-
-	public WidgetItem getWidgetItem()
-	{
-		return widgetItem;
-	}
-
-	@Override
-	public String toString()
-	{
-		return "I " + widgetItem.getIndex();
-	}
-
+	private List<ConfigProfile> profiles;
 }

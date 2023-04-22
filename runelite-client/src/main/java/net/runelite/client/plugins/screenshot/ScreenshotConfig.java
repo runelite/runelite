@@ -299,4 +299,16 @@ public interface ScreenshotConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "wildernessLootChest",
+		name = "Screenshot wilderness loot chest",
+		description = "Take a screenshot when opening wilderness loot chest",
+		position = 21,
+		section = whatSection
+	)
+	default boolean screenshotWildernessLootChest()
+	{
+		return true;
+	}
 }

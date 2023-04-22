@@ -41,9 +41,9 @@ float3 toScreen(int4 vertex, int cameraYaw, int cameraPitch, int centerX, int ce
 
   float x = rotatedX * zoom / var12 + centerX;
   float y = var13 * zoom / var12 + centerY;
-  float z = -var12; // in OpenGL depth is negative
+  float z = -var12;  // in OpenGL depth is negative
 
-  return (float3) (x, y, z);
+  return (float3)(x, y, z);
 }
 
 /*
@@ -56,6 +56,15 @@ int4 rotate_vertex(__constant struct uniform *uni, int4 vertex, int orientation)
   int x = vertex.z * s + vertex.x * c >> 16;
   int z = vertex.z * c - vertex.x * s >> 16;
   return (int4)(x, vertex.y, z, vertex.w);
+}
+
+float3 rotatef_vertex(float3 vertex, int orientation) {
+  float rad = orientation * UNIT;
+  float s = sin(rad);
+  float c = cos(rad);
+  float x = vertex.z * s + vertex.x * c;
+  float z = vertex.z * c - vertex.x * s;
+  return (float3)(x, vertex.y, z);
 }
 
 /*
@@ -101,4 +110,3 @@ bool face_visible(__constant struct uniform *uni, int4 vA, int4 vB, int4 vC, int
 
   return (sA.x - sB.x) * (sC.y - sB.y) - (sC.x - sB.x) * (sA.y - sB.y) > 0;
 }
-

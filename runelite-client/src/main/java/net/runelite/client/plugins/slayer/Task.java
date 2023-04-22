@@ -26,11 +26,8 @@
 package net.runelite.client.plugins.slayer;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import java.util.List;
 import java.util.Map;
-import java.util.function.IntPredicate;
 import javax.annotation.Nullable;
 import lombok.Getter;
 import net.runelite.api.ItemID;
@@ -40,15 +37,10 @@ enum Task
 {
 	//<editor-fold desc="Enums">
 	ABERRANT_SPECTRES("Aberrant spectres", ItemID.ABERRANT_SPECTRE, "Spectre"),
-	// Abyssal demon - 150 xp
-	// Greater abyssal demon - 4200 xp
-	// Abyssal sire - 450 xp
-	// Reanimated abyssal - 31 xp
-	// Ignore 50xp drops to avoid recording a kill from sire vents
-	ABYSSAL_DEMONS("Abyssal demons", ItemID.ABYSSAL_DEMON, (xp) -> xp != 50),
-	ABYSSAL_SIRE("Abyssal Sire", ItemID.ABYSSAL_ORPHAN, (xp) -> xp != 50),
+	ABYSSAL_DEMONS("Abyssal demons", ItemID.ABYSSAL_DEMON),
+	ABYSSAL_SIRE("The Abyssal Sire", ItemID.ABYSSAL_ORPHAN),
 	ADAMANT_DRAGONS("Adamant dragons", ItemID.ADAMANT_DRAGON_MASK),
-	ALCHEMICAL_HYDRA("Alchemical Hydra", ItemID.IKKLE_HYDRA),
+	ALCHEMICAL_HYDRA("The Alchemical Hydra", ItemID.IKKLE_HYDRA),
 	ANKOU("Ankou", ItemID.ANKOU_MASK),
 	AVIANSIES("Aviansies", ItemID.ENSOULED_AVIANSIE_HEAD),
 	BANDITS("Bandits", ItemID.BANDIT, "Bandit", "Black Heather", "Donny the Lad", "Speedy Keith"),
@@ -74,8 +66,8 @@ enum Task
 	CAVE_SLIMES("Cave slimes", ItemID.SWAMP_CAVE_SLIME),
 	CERBERUS("Cerberus", ItemID.HELLPUPPY),
 	CHAOS_DRUIDS("Chaos druids", ItemID.ELDER_CHAOS_HOOD, "Elder Chaos druid", "Chaos druid"),
-	CHAOS_ELEMENTAL("Chaos Elemental", ItemID.PET_CHAOS_ELEMENTAL),
-	CHAOS_FANATIC("Chaos Fanatic", ItemID.ANCIENT_STAFF),
+	CHAOS_ELEMENTAL("The Chaos Elemental", ItemID.PET_CHAOS_ELEMENTAL),
+	CHAOS_FANATIC("The Chaos Fanatic", ItemID.ANCIENT_STAFF),
 	COCKATRICE("Cockatrice", ItemID.COCKATRICE, "Cockathrice"),
 	COWS("Cows", ItemID.COW_MASK),
 	CRAWLING_HANDS("Crawling hands", ItemID.CRAWLING_HAND, "Crushing hand"),
@@ -99,13 +91,13 @@ enum Task
 	FOSSIL_ISLAND_WYVERNS("Fossil island wyverns", ItemID.FOSSIL_ISLAND_WYVERN, "Ancient wyvern", "Long-tailed wyvern", "Spitting wyvern", "Taloned wyvern"),
 	GARGOYLES("Gargoyles", ItemID.GARGOYLE, 9, ItemID.ROCK_HAMMER),
 	GENERAL_GRAARDOR("General Graardor", ItemID.PET_GENERAL_GRAARDOR),
-	GHOSTS("Ghosts", ItemID.GHOSTSPEAK_AMULET, "Death wing", "Tortured soul"),
+	GHOSTS("Ghosts", ItemID.GHOSTSPEAK_AMULET, "Death wing", "Tortured soul", "Forgotten Soul", "Revenant"),
 	GHOULS("Ghouls", ItemID.ZOMBIE_HEAD),
-	GIANT_MOLE("Giant Mole", ItemID.BABY_MOLE),
+	GIANT_MOLE("The Giant Mole", ItemID.BABY_MOLE),
 	GOBLINS("Goblins", ItemID.ENSOULED_GOBLIN_HEAD),
 	GREATER_DEMONS("Greater demons", ItemID.GREATER_DEMON_MASK),
 	GREEN_DRAGONS("Green dragons", ItemID.GREEN_DRAGON_MASK, "Baby green dragon", "Elvarg"),
-	GROTESQUE_GUARDIANS("Grotesque Guardians", ItemID.MIDNIGHT, 0, ItemID.ROCK_HAMMER, "Dusk", "Dawn"),
+	GROTESQUE_GUARDIANS("The Grotesque Guardians", ItemID.MIDNIGHT, 0, ItemID.ROCK_HAMMER, "Dusk", "Dawn"),
 	HARPIE_BUG_SWARMS("Harpie bug swarms", ItemID.SWARM),
 	HELLHOUNDS("Hellhounds", ItemID.HELLHOUND),
 	HILL_GIANTS("Hill giants", ItemID.ENSOULED_GIANT_HEAD, "Cyclops"),
@@ -116,14 +108,14 @@ enum Task
 	ICE_WARRIORS("Ice warriors", ItemID.MITHRIL_FULL_HELM_T, "Icelord"),
 	INFERNAL_MAGES("Infernal mages", ItemID.INFERNAL_MAGE, "Malevolent mage"),
 	IRON_DRAGONS("Iron dragons", ItemID.IRON_DRAGON_MASK),
-	JAD("TzTok-Jad", ItemID.TZREKJAD, (xp) -> xp == 25250),
+	JAD("TzTok-Jad", ItemID.TZREKJAD),
 	JELLIES("Jellies", ItemID.JELLY, "Jelly"),
 	JUNGLE_HORROR("Jungle horrors", ItemID.ENSOULED_HORROR_HEAD),
 	KALPHITE("Kalphite", ItemID.KALPHITE_SOLDIER),
-	KALPHITE_QUEEN("Kalphite Queen", ItemID.KALPHITE_PRINCESS),
+	KALPHITE_QUEEN("The Kalphite Queen", ItemID.KALPHITE_PRINCESS),
 	KILLERWATTS("Killerwatts", ItemID.KILLERWATT),
-	KING_BLACK_DRAGON("King Black Dragon", ItemID.PRINCE_BLACK_DRAGON),
-	KRAKEN("Cave Kraken Boss", ItemID.PET_KRAKEN, "Kraken"),
+	KING_BLACK_DRAGON("The King Black Dragon", ItemID.PRINCE_BLACK_DRAGON),
+	KRAKEN("The Cave Kraken Boss", ItemID.PET_KRAKEN, "Kraken"),
 	KREEARRA("Kree'arra", ItemID.PET_KREEARRA),
 	KRIL_TSUTSAROTH("K'ril Tsutsaroth", ItemID.PET_KRIL_TSUTSAROTH),
 	KURASK("Kurask", ItemID.KURASK),
@@ -144,6 +136,7 @@ enum Task
 	NECHRYAEL("Nechryael", ItemID.NECHRYAEL, "Nechryarch"),
 	OGRES("Ogres", ItemID.ENSOULED_OGRE_HEAD, "Mogre", "Ogress", "Skogre", "Zogre"),
 	OTHERWORLDLY_BEING("Otherworldly beings", ItemID.GHOSTLY_HOOD),
+	PHANTOM_MUSPAH("Phantom Muspah", ItemID.MUPHIN),
 	PIRATES("Pirates", ItemID.PIRATE_HAT, "Pirate"),
 	PYREFIENDS("Pyrefiends", ItemID.PYREFIEND, "Flaming pyrelord"),
 	RATS("Rats", ItemID.RATS_TAIL),
@@ -165,15 +158,12 @@ enum Task
 	SPIDERS("Spiders", ItemID.HUGE_SPIDER),
 	SPIRITUAL_CREATURES("Spiritual creatures", ItemID.DRAGON_BOOTS, "Spiritual ranger", "Spiritual mage", "Spiritual warrior"),
 	STEEL_DRAGONS("Steel dragons", ItemID.STEEL_DRAGON),
-	SULPHUR_LIZARDS("Sulphur Lizards", ItemID.SULPHUR_LIZARD),
 	SUQAHS("Suqahs", ItemID.SUQAH_TOOTH),
-	TEMPLE_SPIDERS("Temple Spiders", ItemID.RED_SPIDERS_EGGS),
 	TERROR_DOGS("Terror dogs", ItemID.TERROR_DOG),
-	THERMONUCLEAR_SMOKE_DEVIL("Thermonuclear Smoke Devil", ItemID.PET_SMOKE_DEVIL),
+	THERMONUCLEAR_SMOKE_DEVIL("The Thermonuclear Smoke Devil", ItemID.PET_SMOKE_DEVIL),
 	TROLLS("Trolls", ItemID.TROLL_GUARD, "Dad", "Arrg"),
 	TUROTH("Turoth", ItemID.TUROTH),
 	TZHAAR("Tzhaar", ItemID.ENSOULED_TZHAAR_HEAD),
-	UNDEAD_DRUIDS("Undead Druids", ItemID.MASK_OF_RANUL),
 	VAMPYRES("Vampyres", ItemID.STAKE, "Vyrewatch", "Vampire"),
 	VENENATIS("Venenatis", ItemID.VENENATIS_SPIDERLING),
 	VETION("Vet'ion", ItemID.VETION_JR),
@@ -185,67 +175,17 @@ enum Task
 	WYRMS("Wyrms", ItemID.WYRM),
 	ZILYANA("Commander Zilyana", ItemID.PET_ZILYANA),
 	ZOMBIES("Zombies", ItemID.ZOMBIE_HEAD, "Undead"),
-	ZUK("TzKal-Zuk", ItemID.TZREKZUK, (xp) -> xp == 101890),
+	ZUK("TzKal-Zuk", ItemID.TZREKZUK),
 	ZULRAH("Zulrah", ItemID.PET_SNAKELING);
 	//</editor-fold>
 
 	private static final Map<String, Task> tasks;
-	static final List<String> LOCATIONS = ImmutableList.of(
-		"", // no location is a valid location
-		"Abyss",
-		"Ancient Cavern",
-		"Asgarnian Ice Dungeon",
-		"Battlefront",
-		"Brimhaven Dungeon",
-		"Brine Rat Cavern",
-		"Catacombs of Kourend",
-		"Chasm of Fire",
-		"Clan Wars",
-		"Death Plateau",
-		"Evil Chicken's Lair",
-		"Fossil Island",
-		"Forthos Dungeon",
-		"Fremennik Slayer Dungeon",
-		"God Wars Dungeon",
-		"Iorwerth Dungeon",
-		"Isle of Souls",
-		"Jormungand's Prison",
-		"Kalphite Lair",
-		"Karuulm Slayer Dungeon",
-		"Keldagrim",
-		"Kraken Cove",
-		"Lighthouse",
-		"Lithkren Vault",
-		"Lizardman Canyon",
-		"Lizardman Settlement",
-		"Meiyerditch Laboratories",
-		"Molch",
-		"Mount Quidamortem",
-		"Mourner Tunnels",
-		"Myths' Guild Dungeon",
-		"Ogre Enclave",
-		"Slayer Tower",
-		"Smoke Devil Dungeon",
-		"Smoke Dungeon",
-		"Stronghold of Security",
-		"Stronghold Slayer Dungeon",
-		"task-only Kalphite Cave",
-		"Taverley Dungeon",
-		"Troll Stronghold",
-		"Waterbirth Island",
-		"Waterfall Dungeon",
-		"Wilderness",
-		"Witchaven Dungeon",
-		"Zanaris"
-	);
 
 	private final String name;
 	private final int itemSpriteId;
 	private final String[] targetNames;
 	private final int weaknessThreshold;
 	private final int weaknessItem;
-	@Nullable
-	private final IntPredicate xpMatcher;
 
 	static
 	{
@@ -267,7 +207,6 @@ enum Task
 		this.weaknessThreshold = -1;
 		this.weaknessItem = -1;
 		this.targetNames = targetNames;
-		this.xpMatcher = null;
 	}
 
 	Task(String name, int itemSpriteId, int weaknessThreshold, int weaknessItem, String... targetNames)
@@ -278,18 +217,6 @@ enum Task
 		this.weaknessThreshold = weaknessThreshold;
 		this.weaknessItem = weaknessItem;
 		this.targetNames = targetNames;
-		this.xpMatcher = null;
-	}
-
-	Task(String name, int itemSpriteId, IntPredicate xpMatcher)
-	{
-		Preconditions.checkArgument(itemSpriteId >= 0);
-		this.name = name;
-		this.itemSpriteId = itemSpriteId;
-		this.weaknessThreshold = -1;
-		this.weaknessItem = -1;
-		this.targetNames = new String[0];
-		this.xpMatcher = xpMatcher;
 	}
 
 	@Nullable

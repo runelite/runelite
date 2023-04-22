@@ -252,7 +252,7 @@ public class RaidsPlugin extends Plugin
 	public void onVarbitChanged(VarbitChanged event)
 	{
 		// if the player's party state has changed
-		if (event.getVarpId() == VarPlayer.IN_RAID_PARTY.getId())
+		if (event.getVarpId() == VarPlayer.IN_RAID_PARTY)
 		{
 			boolean tempInRaid = client.getVarbitValue(Varbits.IN_RAID) == 1;
 			// if the player is outside of a raid when the party state changed

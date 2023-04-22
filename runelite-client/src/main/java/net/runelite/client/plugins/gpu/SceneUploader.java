@@ -132,8 +132,8 @@ class SceneUploader
 			Point tilePoint = tile.getSceneLocation();
 			int len = upload(sceneTileModel,
 				tilePoint.getX(), tilePoint.getY(),
-				vertexBuffer, uvBuffer,
-				0, 0, false);
+				0, 0,
+				vertexBuffer, uvBuffer, false);
 			sceneTileModel.setBufferLen(len);
 			offset += len;
 			if (sceneTileModel.getTriangleTextureId() != null)
@@ -260,21 +260,21 @@ class SceneUploader
 
 		if (padUvs || tile.getTexture() != -1)
 		{
-			float tex = tile.getTexture() + 1f;
-			uvBuffer.put(tex, 1.0f, 1.0f, 0f);
-			uvBuffer.put(tex, 0.0f, 1.0f, 0f);
-			uvBuffer.put(tex, 1.0f, 0.0f, 0f);
+			int tex = tile.getTexture() + 1;
+			uvBuffer.put(tex, vertexDx, vertexDz, vertexDy);
+			uvBuffer.put(tex, vertexCx, vertexCz, vertexCy);
+			uvBuffer.put(tex, vertexBx, vertexBz, vertexBy);
 
-			uvBuffer.put(tex, 0.0f, 0.0f, 0f);
-			uvBuffer.put(tex, 1.0f, 0.0f, 0f);
-			uvBuffer.put(tex, 0.0f, 1.0f, 0f);
+			uvBuffer.put(tex, vertexDx, vertexDz, vertexDy);
+			uvBuffer.put(tex, vertexCx, vertexCz, vertexCy);
+			uvBuffer.put(tex, vertexBx, vertexBz, vertexBy);
 		}
 
 		return 6;
 	}
 
-	int upload(SceneTileModel sceneTileModel, int tileX, int tileY, GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer,
-		int offsetX, int offsetY, boolean padUvs)
+	int upload(SceneTileModel sceneTileModel, int tileX, int tileY, int offsetX, int offsetZ,
+			GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer, boolean padUvs)
 	{
 		final int[] faceX = sceneTileModel.getFaceX();
 		final int[] faceY = sceneTileModel.getFaceY();
@@ -295,8 +295,8 @@ class SceneUploader
 		vertexBuffer.ensureCapacity(faceCount * 12);
 		uvBuffer.ensureCapacity(faceCount * 12);
 
-		int baseX = Perspective.LOCAL_TILE_SIZE * tileX;
-		int baseY = Perspective.LOCAL_TILE_SIZE * tileY;
+		int baseX = tileX << Perspective.LOCAL_COORD_BITS;
+		int baseY = tileY << Perspective.LOCAL_COORD_BITS;
 
 		int cnt = 0;
 		for (int i = 0; i < faceCount; ++i)
@@ -318,26 +318,29 @@ class SceneUploader
 
 			// vertexes are stored in scene local, convert to tile local
 			int vertexXA = vertexX[triangleA] - baseX;
+			int vertexYA = vertexY[triangleA];
 			int vertexZA = vertexZ[triangleA] - baseY;
 
 			int vertexXB = vertexX[triangleB] - baseX;
+			int vertexYB = vertexY[triangleB];
 			int vertexZB = vertexZ[triangleB] - baseY;
 
 			int vertexXC = vertexX[triangleC] - baseX;
+			int vertexYC = vertexY[triangleC];
 			int vertexZC = vertexZ[triangleC] - baseY;
 
-			vertexBuffer.put(vertexXA + offsetX, vertexY[triangleA], vertexZA + offsetY, colorA);
-			vertexBuffer.put(vertexXB + offsetX, vertexY[triangleB], vertexZB + offsetY, colorB);
-			vertexBuffer.put(vertexXC + offsetX, vertexY[triangleC], vertexZC + offsetY, colorC);
+			vertexBuffer.put(vertexXA + offsetX, vertexYA, vertexZA + offsetZ, colorA);
+			vertexBuffer.put(vertexXB + offsetX, vertexYB, vertexZB + offsetZ, colorB);
+			vertexBuffer.put(vertexXC + offsetX, vertexYC, vertexZC + offsetZ, colorC);
 
 			if (padUvs || triangleTextures != null)
 			{
 				if (triangleTextures != null && triangleTextures[i] != -1)
 				{
-					float tex = triangleTextures[i] + 1f;
-					uvBuffer.put(tex, vertexXA / 128f, vertexZA / 128f, 0f);
-					uvBuffer.put(tex, vertexXB / 128f, vertexZB / 128f, 0f);
-					uvBuffer.put(tex, vertexXC / 128f, vertexZC / 128f, 0f);
+					int tex = triangleTextures[i] + 1;
+					uvBuffer.put(tex, offsetX, vertexYA, offsetZ);
+					uvBuffer.put(tex, offsetX + 128, vertexYB, offsetZ);
+					uvBuffer.put(tex, offsetX, vertexYC, offsetZ + 128);
 				}
 				else
 				{
@@ -397,11 +400,14 @@ class SceneUploader
 		final int[] color2s = model.getFaceColors2();
 		final int[] color3s = model.getFaceColors3();
 
-		final byte[] transparencies = model.getFaceTransparencies();
 		final short[] faceTextures = model.getFaceTextures();
-		final byte[] facePriorities = model.getFaceRenderPriorities();
+		final byte[] textureFaces = model.getTextureFaces();
+		final int[] texIndices1 = model.getTexIndices1();
+		final int[] texIndices2 = model.getTexIndices2();
+		final int[] texIndices3 = model.getTexIndices3();
 
-		float[] uv = model.getFaceTextureUVCoordinates();
+		final byte[] transparencies = model.getFaceTransparencies();
+		final byte[] facePriorities = model.getFaceRenderPriorities();
 
 		final byte overrideAmount = model.getOverrideAmount();
 		final byte overrideHue = model.getOverrideHue();
@@ -459,7 +465,35 @@ class SceneUploader
 
 			if (faceTextures != null)
 			{
-				pushUvForFace(faceTextures, uv, face, uvBuffer);
+				if (faceTextures[face] != -1)
+				{
+					int texA, texB, texC;
+
+					if (textureFaces != null && textureFaces[face] != -1)
+					{
+						int tface = textureFaces[face] & 0xff;
+						texA = texIndices1[tface];
+						texB = texIndices2[tface];
+						texC = texIndices3[tface];
+					}
+					else
+					{
+						texA = triangleA;
+						texB = triangleB;
+						texC = triangleC;
+					}
+
+					int texture = faceTextures[face] + 1;
+					uvBuffer.put(texture, vertexX[texA], vertexY[texA], vertexZ[texA]);
+					uvBuffer.put(texture, vertexX[texB], vertexY[texB], vertexZ[texB]);
+					uvBuffer.put(texture, vertexX[texC], vertexY[texC], vertexZ[texC]);
+				}
+				else
+				{
+					uvBuffer.put(0, 0, 0, 0);
+					uvBuffer.put(0, 0, 0, 0);
+					uvBuffer.put(0, 0, 0, 0);
+				}
 			}
 
 			len += 3;
@@ -865,7 +899,10 @@ class SceneUploader
 		final byte overrideLum = model.getOverrideLuminance();
 
 		final short[] faceTextures = model.getFaceTextures();
-		final float[] faceTextureUVCoordinates = model.getFaceTextureUVCoordinates();
+		final byte[] textureFaces = model.getTextureFaces();
+		final int[] texIndices1 = model.getTexIndices1();
+		final int[] texIndices2 = model.getTexIndices2();
+		final int[] texIndices3 = model.getTexIndices3();
 
 		final byte[] faceRenderPriorities = model.getFaceRenderPriorities();
 		final byte[] transparencies = model.getFaceTransparencies();
@@ -900,7 +937,35 @@ class SceneUploader
 		vertexBuffer.put(modelLocalX[triangleB], modelLocalY[triangleB], modelLocalZ[triangleB], packAlphaPriority | color2);
 		vertexBuffer.put(modelLocalX[triangleC], modelLocalY[triangleC], modelLocalZ[triangleC], packAlphaPriority | color3);
 
-		pushUvForFace(faceTextures, faceTextureUVCoordinates, face, uvBuffer);
+		if (faceTextures != null && faceTextures[face] != -1)
+		{
+			int texA, texB, texC;
+
+			if (textureFaces != null && textureFaces[face] != -1)
+			{
+				int tfaceIdx = textureFaces[face] & 0xff;
+				texA = texIndices1[tfaceIdx];
+				texB = texIndices2[tfaceIdx];
+				texC = texIndices3[tfaceIdx];
+			}
+			else
+			{
+				texA = triangleA;
+				texB = triangleB;
+				texC = triangleC;
+			}
+
+			int texture = faceTextures[face] + 1;
+			uvBuffer.put(texture, modelLocalX[texA], modelLocalY[texA], modelLocalZ[texA]);
+			uvBuffer.put(texture, modelLocalX[texB], modelLocalY[texB], modelLocalZ[texB]);
+			uvBuffer.put(texture, modelLocalX[texC], modelLocalY[texC], modelLocalZ[texC]);
+		}
+		else
+		{
+			uvBuffer.put(0, 0, 0, 0);
+			uvBuffer.put(0, 0, 0, 0);
+			uvBuffer.put(0, 0, 0, 0);
+		}
 
 		return 3;
 	}
@@ -918,24 +983,6 @@ class SceneUploader
 			priority = (facePriorities[face] & 0xff) << 16;
 		}
 		return alpha | priority;
-	}
-
-	private static void pushUvForFace(short[] faceTextures, float[] uv, int face, GpuFloatBuffer uvBuffer)
-	{
-		if (faceTextures != null && faceTextures[face] != -1 && uv != null)
-		{
-			int idx = face * 6;
-			float texture = faceTextures[face] + 1f;
-			uvBuffer.put(texture, uv[idx], uv[idx + 1], 0f);
-			uvBuffer.put(texture, uv[idx + 2], uv[idx + 3], 0f);
-			uvBuffer.put(texture, uv[idx + 4], uv[idx + 5], 0f);
-		}
-		else
-		{
-			uvBuffer.put(0, 0, 0, 0);
-			uvBuffer.put(0, 0, 0, 0);
-			uvBuffer.put(0, 0, 0, 0);
-		}
 	}
 
 	private static int interpolateHSL(int hsl, byte hue2, byte sat2, byte lum2, byte lerp)

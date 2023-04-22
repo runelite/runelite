@@ -31,16 +31,26 @@ int priority_map(int p, int distance, int _min10, int avg1, int avg2, int avg3) 
   // (10, 11)  0  1  2  (10, 11)  3  4  (10, 11)  5  6  7  8  9  (10, 11)
   //   0   1   2  3  4    5   6   7  8    9  10  11 12 13 14 15   16  17
   switch (p) {
-    case 0: return 2;
-    case 1: return 3;
-    case 2: return 4;
-    case 3: return 7;
-    case 4: return 8;
-    case 5: return 11;
-    case 6: return 12;
-    case 7: return 13;
-    case 8: return 14;
-    case 9: return 15;
+    case 0:
+      return 2;
+    case 1:
+      return 3;
+    case 2:
+      return 4;
+    case 3:
+      return 7;
+    case 4:
+      return 8;
+    case 5:
+      return 11;
+    case 6:
+      return 12;
+    case 7:
+      return 13;
+    case 8:
+      return 14;
+    case 9:
+      return 15;
     case 10:
       if (distance > avg1) {
         return 0;
@@ -79,13 +89,9 @@ int count_prio_offset(__local struct shared_data *shared, int priority) {
   return total;
 }
 
-void get_face(
-  __local struct shared_data *shared,
-  __constant struct uniform *uni,
-  __global const int4 *vb,
-  __global const int4 *tempvb,
-  uint localId, struct modelinfo minfo, int cameraYaw, int cameraPitch,
-  /* out */ int *prio, int *dis, int4 *o1, int4 *o2, int4 *o3) {
+void get_face(__local struct shared_data *shared, __constant struct uniform *uni, __global const int4 *vb, __global const int4 *tempvb, uint localId,
+              struct modelinfo minfo, int cameraYaw, int cameraPitch,
+              /* out */ int *prio, int *dis, int4 *o1, int4 *o2, int4 *o3) {
   int size = minfo.size;
   int offset = minfo.offset;
   int flags = minfo.flags;
@@ -122,7 +128,7 @@ void get_face(
     int4 thisrvC = rotate_vertex(uni, thisC, orientation);
 
     // calculate distance to face
-    int thisPriority = (thisA.w >> 16) & 0xff;// all vertices on the face have the same priority
+    int thisPriority = (thisA.w >> 16) & 0xff;  // all vertices on the face have the same priority
     int thisDistance;
     if (radius == 0) {
       thisDistance = 0;
@@ -145,10 +151,8 @@ void get_face(
   }
 }
 
-void add_face_prio_distance(
-  __local struct shared_data *shared,
-  __constant struct uniform *uni,
-  uint localId, struct modelinfo minfo, int4 thisrvA, int4 thisrvB, int4 thisrvC, int thisPriority, int thisDistance, int4 pos) {
+void add_face_prio_distance(__local struct shared_data *shared, __constant struct uniform *uni, uint localId, struct modelinfo minfo, int4 thisrvA,
+                            int4 thisrvB, int4 thisrvC, int thisPriority, int thisDistance, int4 pos) {
   if (localId < minfo.size) {
     // if the face is not culled, it is calculated into priority distance averages
     if (face_visible(uni, thisrvA, thisrvB, thisrvC, pos)) {
@@ -196,72 +200,72 @@ int map_face_priority(__local struct shared_data *shared, uint localId, struct m
   return 0;
 }
 
-void insert_dfs(__local struct shared_data *shared, uint localId, struct modelinfo minfo, int adjPrio, int distance, int prioIdx) {
+void insert_face(__local struct shared_data *shared, uint localId, struct modelinfo minfo, int adjPrio, int distance, int prioIdx) {
   int size = minfo.size;
 
   if (localId < size) {
-    // calculate base offset into dfs based on number of faces with a lower priority
+    // calculate base offset into renderPris based on number of faces with a lower priority
     int baseOff = count_prio_offset(shared, adjPrio);
-    // store into face array offset array by unique index
-    shared->dfs[baseOff + prioIdx] = ((int) localId << 16) | distance;
+    // the furthest faces draw first, and have the highest value
+    // if two faces have the same distance, the one with the
+    // lower id draws first
+    shared->renderPris[baseOff + prioIdx] = ((uint)(distance << 16)) | (~localId & 0xffffu);
   }
 }
 
-void sort_and_insert(
-  __local struct shared_data *shared,
-  __global const float4 *uv,
-  __global const float4 *tempuv,
-  __global int4 *vout,
-  __global float4 *uvout,
-  uint localId, struct modelinfo minfo, int thisPriority, int thisDistance, int4 thisrvA, int4 thisrvB, int4 thisrvC) {
-  /* compute face distance */
+void sort_and_insert(__local struct shared_data *shared, __constant struct uniform *uni, __global const float4 *texb, __global const float4 *temptexb,
+                     __global int4 *vout, __global float4 *uvout, uint localId, struct modelinfo minfo, int thisPriority, int thisDistance, int4 thisrvA,
+                     int4 thisrvB, int4 thisrvC) {
   int size = minfo.size;
 
   if (localId < size) {
     int outOffset = minfo.idx;
-    int uvOffset = minfo.uvOffset;
+    int toffset = minfo.toffset;
     int flags = minfo.flags;
-    int4 pos = (int4)(minfo.x, minfo.y, minfo.z, 0);
-
-    const int priorityOffset = count_prio_offset(shared, thisPriority);
-    const int numOfPriority = shared->totalMappedNum[thisPriority];
-    int start = priorityOffset; // index of first face with this priority
-    int end = priorityOffset + numOfPriority; // index of last face with this priority
-    int myOffset = priorityOffset;
 
     // we only have to order faces against others of the same priority
+    const int priorityOffset = count_prio_offset(shared, thisPriority);
+    const int numOfPriority = shared->totalMappedNum[thisPriority];
+    const int start = priorityOffset;                // index of first face with this priority
+    const int end = priorityOffset + numOfPriority;  // index of last face with this priority
+    const uint renderPriority = ((uint)(thisDistance << 16)) | (~localId & 0xffffu);
+    int myOffset = priorityOffset;
+
     // calculate position this face will be in
     for (int i = start; i < end; ++i) {
-      int d1 = shared->dfs[i];
-      int theirId = d1 >> 16;
-      int theirDistance = d1 & 0xffff;
-
-      // the closest faces draw last, so have the highest index
-      // if two faces have the same distance, the one with the
-      // higher id draws last
-      if ((theirDistance > thisDistance)
-        || (theirDistance == thisDistance && theirId < localId)) {
+      if (renderPriority < shared->renderPris[i]) {
         ++myOffset;
       }
     }
 
+    int4 pos = (int4)(minfo.x, minfo.y, minfo.z, 0);
+    int orientation = flags & 0x7ff;
+
     // position vertices in scene and write to out buffer
-    vout[outOffset + myOffset * 3]     = pos + thisrvA;
+    vout[outOffset + myOffset * 3] = pos + thisrvA;
     vout[outOffset + myOffset * 3 + 1] = pos + thisrvB;
     vout[outOffset + myOffset * 3 + 2] = pos + thisrvC;
 
-    if (uvOffset < 0) {
-      uvout[outOffset + myOffset * 3]     = (float4)(0, 0, 0, 0);
+    if (toffset < 0) {
+      uvout[outOffset + myOffset * 3] = (float4)(0, 0, 0, 0);
       uvout[outOffset + myOffset * 3 + 1] = (float4)(0, 0, 0, 0);
       uvout[outOffset + myOffset * 3 + 2] = (float4)(0, 0, 0, 0);
-    } else if (flags >= 0) {
-      uvout[outOffset + myOffset * 3]     = tempuv[uvOffset + localId * 3];
-      uvout[outOffset + myOffset * 3 + 1] = tempuv[uvOffset + localId * 3 + 1];
-      uvout[outOffset + myOffset * 3 + 2] = tempuv[uvOffset + localId * 3 + 2];
     } else {
-      uvout[outOffset + myOffset * 3]     = uv[uvOffset + localId * 3];
-      uvout[outOffset + myOffset * 3 + 1] = uv[uvOffset + localId * 3 + 1];
-      uvout[outOffset + myOffset * 3 + 2] = uv[uvOffset + localId * 3 + 2];
+      float4 texA, texB, texC;
+
+      if (flags >= 0) {
+        texA = temptexb[toffset + localId * 3];
+        texB = temptexb[toffset + localId * 3 + 1];
+        texC = temptexb[toffset + localId * 3 + 2];
+      } else {
+        texA = texb[toffset + localId * 3];
+        texB = texb[toffset + localId * 3 + 1];
+        texC = texb[toffset + localId * 3 + 2];
+      }
+
+      uvout[outOffset + myOffset * 3] = (float4)(texA.x, rotatef_vertex(texA.yzw, orientation) + convert_float3(pos.xyz));
+      uvout[outOffset + myOffset * 3 + 1] = (float4)(texB.x, rotatef_vertex(texB.yzw, orientation) + convert_float3(pos.xyz));
+      uvout[outOffset + myOffset * 3 + 2] = (float4)(texC.x, rotatef_vertex(texC.yzw, orientation) + convert_float3(pos.xyz));
     }
   }
 }

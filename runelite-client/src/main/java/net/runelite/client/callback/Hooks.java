@@ -33,6 +33,7 @@ import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.image.VolatileImage;
 import java.util.ArrayList;
@@ -71,6 +72,7 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayRenderer;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.DeferredEventBus;
+import net.runelite.client.util.OSType;
 import net.runelite.client.util.RSTimeUnit;
 
 /**
@@ -450,21 +452,22 @@ public class Hooks implements Callbacks
 
 		// finalImage is backed by the client buffer which will change soon. make a copy
 		// so that callbacks can safely use it later from threads.
-		drawManager.processDrawComplete(() -> copy(finalImage));
+		drawManager.processDrawComplete(() -> screenshot(finalImage));
 	}
 
-	/**
-	 * Copy an image
-	 * @param src
-	 * @return
-	 */
-	private static Image copy(Image src)
+	private Image screenshot(Image src)
 	{
-		final int width = src.getWidth(null);
-		final int height = src.getHeight(null);
-		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-		Graphics graphics = image.getGraphics();
-		graphics.drawImage(src, 0, 0, width, height, null);
+		// scale source image to the size of the client ui
+		final AffineTransform transform = OSType.getOSType() == OSType.MacOS ? new AffineTransform() :
+			clientUi.getGraphicsConfiguration().getDefaultTransform();
+		int swidth = src.getWidth(null);
+		int sheight = src.getHeight(null);
+		int twidth = (int) (swidth * transform.getScaleX() + .5);
+		int theight = (int) (sheight * transform.getScaleY() + .5);
+		BufferedImage image = new BufferedImage(twidth, theight, BufferedImage.TYPE_INT_RGB);
+		Graphics2D graphics = (Graphics2D) image.getGraphics();
+		graphics.setTransform(transform);
+		graphics.drawImage(src, 0, 0, swidth, sheight, null);
 		graphics.dispose();
 		return image;
 	}
