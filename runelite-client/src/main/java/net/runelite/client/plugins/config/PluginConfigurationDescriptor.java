@@ -79,13 +79,8 @@ class PluginConfigurationDescriptor
 		ExternalPluginManifest mf = getExternalPluginManifest();
 		if (mf != null)
 		{
-			if (mf.getSupport() == null)
-			{
-				return null;
-			}
-
 			JMenuItem menuItem = new JMenuItem("Support");
-			menuItem.addActionListener(e -> LinkBrowser.browse(mf.getSupport().toString()));
+			menuItem.addActionListener(e -> LinkBrowser.browse("https://runelite.net/plugin-hub/show/" + mf.getInternalName()));
 			return menuItem;
 		}
 

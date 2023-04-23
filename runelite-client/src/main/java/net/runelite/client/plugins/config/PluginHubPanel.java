@@ -223,21 +223,18 @@ class PluginHubPanel extends PluginPanel
 			this.userCount = userCount;
 			this.installed = installed;
 
-			if (manifest != null)
+			Collections.addAll(keywords, SPACES.split(manifest.getDisplayName().toLowerCase()));
+
+			if (manifest.getDescription() != null)
 			{
-				Collections.addAll(keywords, SPACES.split(manifest.getDisplayName().toLowerCase()));
+				Collections.addAll(keywords, SPACES.split(manifest.getDescription().toLowerCase()));
+			}
 
-				if (manifest.getDescription() != null)
-				{
-					Collections.addAll(keywords, SPACES.split(manifest.getDescription().toLowerCase()));
-				}
+			Collections.addAll(keywords, manifest.getAuthor().toLowerCase());
 
-				Collections.addAll(keywords, manifest.getAuthor().toLowerCase());
-
-				if (manifest.getTags() != null)
-				{
-					Collections.addAll(keywords, manifest.getTags());
-				}
+			if (manifest.getTags() != null)
+			{
+				Collections.addAll(keywords, manifest.getTags());
 			}
 
 			setBackground(ColorScheme.DARKER_GRAY_COLOR);
@@ -274,21 +271,14 @@ class PluginHubPanel extends PluginPanel
 			help.setRolloverIcon(HELP_ICON_HOVER);
 			SwingUtil.removeButtonDecorations(help);
 			help.setBorder(null);
-			if (manifest.getSupport() == null)
-			{
-				help.setVisible(false);
-			}
-			else
-			{
-				help.setToolTipText("Open help: " + manifest.getSupport().toString());
-				help.addActionListener(ev -> LinkBrowser.browse(manifest.getSupport().toString()));
-			}
+			help.setToolTipText("Open help");
+			help.addActionListener(ev -> LinkBrowser.browse("https://runelite.net/plugin-hub/show/" + manifest.getInternalName()));
 
 			JButton configure = new JButton(CONFIGURE_ICON);
 			configure.setRolloverIcon(CONFIGURE_ICON_HOVER);
 			SwingUtil.removeButtonDecorations(configure);
 			configure.setToolTipText("Configure");
-			help.setBorder(null);
+			configure.setBorder(null);
 			if (loaded != null)
 			{
 				String search = null;
