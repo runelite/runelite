@@ -183,9 +183,10 @@ class FarmingContractInfoBox extends InfoBox
 				break;
 			case UNKNOWN:
 			default:
-				tooltipDescription = shortDescription = null;
+				tooltipDescription = null;
+				shortDescription = "Unk.";
 				tooltipColor = Color.GRAY;
-				shortColor = Color.WHITE;
+				shortColor = Color.LIGHT_GRAY;
 				break;
 		}
 
