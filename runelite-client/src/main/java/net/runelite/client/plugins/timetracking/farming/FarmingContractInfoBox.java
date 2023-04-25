@@ -151,7 +151,7 @@ class FarmingContractInfoBox extends InfoBox
 						switch (config.farmingContractInfoBoxStateText())
 						{
 							case GROWTH_STAGES:
-								shortDescription = manager.getCurrentStage() + "/" + contract.getStages();
+								shortDescription = manager.getContractCropStage() + "/" + contract.getStages();
 								break;
 							case TIME_REMAINING:
 								int remainingMinutes = (int) ((remainingSeconds + 59) / 60);
