@@ -28,9 +28,7 @@ package net.runelite.client.plugins.timetracking.farming;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.time.Instant;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.Value;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.timetracking.ContractStateText;
 import net.runelite.client.plugins.timetracking.SummaryState;
@@ -63,7 +61,49 @@ class FarmingContractInfoBox extends InfoBox
 			return null;
 		}
 
-		return getInfoboxInfo().getShortDescription();
+		switch (manager.getSummary())
+		{
+			case COMPLETED:
+				return "Ready";
+			case OCCUPIED:
+				return "Occ.";
+			case IN_PROGRESS:
+				CropState cropState = manager.getContractCropState();
+				switch (cropState)
+				{
+					case DISEASED:
+						return "Dis.";
+					case DEAD:
+						return "Dead";
+					default:
+						switch (config.farmingContractInfoBoxStateText())
+						{
+							case GROWTH_STAGES:
+								// Stages are 0-indexed
+								return (manager.getContractCropStage() + 1) + "/" + contract.getStages();
+							case TIME_REMAINING:
+								int remainingSeconds = (int) (manager.getCompletionTime() - Instant.now().getEpochSecond());
+								int remainingMinutes = (remainingSeconds + 59) / 60;
+								if (remainingMinutes < 60)
+								{
+									return Math.max(remainingMinutes, 0) + "m";
+								}
+								else
+								{
+									return String.format("%d:%02d",
+										remainingMinutes / 60,
+										remainingMinutes % 60);
+								}
+							default:
+								return null;
+						}
+				}
+			case EMPTY:
+				return "Empty";
+			case UNKNOWN:
+			default:
+				return "Unk.";
+		}
 	}
 
 	@Override
@@ -74,23 +114,83 @@ class FarmingContractInfoBox extends InfoBox
 			return null;
 		}
 
-		return getInfoboxInfo().getShortColor();
+		switch (manager.getSummary())
+		{
+			case COMPLETED:
+				return ColorScheme.PROGRESS_COMPLETE_COLOR;
+			case OCCUPIED:
+				return ColorScheme.PROGRESS_ERROR_COLOR;
+			case IN_PROGRESS:
+				CropState cropState = manager.getContractCropState();
+				switch (cropState)
+				{
+					case DISEASED:
+					case DEAD:
+						return cropState.getColor();
+					default:
+						return Color.WHITE;
+				}
+			case EMPTY:
+				return ColorScheme.PROGRESS_INPROGRESS_COLOR;
+			case UNKNOWN:
+			default:
+				return Color.LIGHT_GRAY;
+		}
 	}
 
 	@Override
 	public String getTooltip()
 	{
-		SummaryInfo info = getInfoboxInfo();
+		SummaryState summary = manager.getSummary();
+
+		Color contractColor;
+		String contractDescription;
+		switch (summary)
+		{
+			case COMPLETED:
+				contractDescription = "Ready";
+				contractColor = ColorScheme.PROGRESS_COMPLETE_COLOR;
+				break;
+			case OCCUPIED:
+				contractDescription = "Occupied";
+				contractColor = ColorScheme.PROGRESS_ERROR_COLOR;
+				break;
+			case IN_PROGRESS:
+				CropState cropState = manager.getContractCropState();
+				switch (cropState)
+				{
+					case DISEASED:
+						contractDescription = "Diseased";
+						contractColor = cropState.getColor();
+						break;
+					case DEAD:
+						contractDescription = "Dead";
+						contractColor = cropState.getColor();
+						break;
+					default:
+						contractDescription = "Ready " + TabContentPanel.getFormattedEstimate(manager.getCompletionTime() - Instant.now().getEpochSecond(),
+							config.timeFormatMode());
+						contractColor = Color.GRAY;
+						break;
+				}
+				break;
+			case EMPTY:
+			case UNKNOWN:
+			default:
+				contractDescription = null;
+				contractColor = Color.GRAY;
+				break;
+		}
 
 		StringBuilder sb = new StringBuilder();
 		sb.append(ColorUtil.wrapWithColorTag("Farming Contract", Color.WHITE));
 		sb.append("</br>");
-		sb.append(ColorUtil.wrapWithColorTag(contract.getName(), info.getTooltipColor()));
+		sb.append(ColorUtil.wrapWithColorTag(contract.getName(), contractColor));
 
-		if (info.getTooltipDescription() != null)
+		if (contractDescription != null)
 		{
 			sb.append("</br>");
-			sb.append(ColorUtil.wrapWithColorTag(info.getTooltipDescription(), info.getTooltipColor()));
+			sb.append(ColorUtil.wrapWithColorTag(contractDescription, contractColor));
 		}
 
 		return sb.toString();
@@ -100,102 +200,5 @@ class FarmingContractInfoBox extends InfoBox
 	public boolean render()
 	{
 		return config.farmingContractInfoBox();
-	}
-
-	@Value
-	@Builder
-	private static class SummaryInfo
-	{
-		String tooltipDescription;
-		String shortDescription;
-		Color tooltipColor;
-		Color shortColor;
-	}
-
-	private SummaryInfo getInfoboxInfo()
-	{
-		SummaryState summary = manager.getSummary();
-
-		Color tooltipColor;
-		Color shortColor;
-		String tooltipDescription;
-		String shortDescription;
-		switch (summary)
-		{
-			case COMPLETED:
-				tooltipDescription = shortDescription = "Ready";
-				tooltipColor = shortColor = ColorScheme.PROGRESS_COMPLETE_COLOR;
-				break;
-			case OCCUPIED:
-				tooltipDescription = "Occupied";
-				shortDescription = "Occ.";
-				tooltipColor = shortColor = ColorScheme.PROGRESS_ERROR_COLOR;
-				break;
-			case IN_PROGRESS:
-				CropState cropState = manager.getContractCropState();
-				switch (cropState)
-				{
-					case DISEASED:
-						tooltipDescription = "Diseased";
-						shortDescription = "Dis.";
-						tooltipColor = shortColor = cropState.getColor();
-						break;
-					case DEAD:
-						tooltipDescription = shortDescription = "Dead";
-						tooltipColor = shortColor = cropState.getColor();
-						break;
-					default:
-						long remainingSeconds = manager.getCompletionTime() - Instant.now().getEpochSecond();
-						tooltipDescription = "Ready " + TabContentPanel.getFormattedEstimate(remainingSeconds, config.timeFormatMode());
-
-						switch (config.farmingContractInfoBoxStateText())
-						{
-							case GROWTH_STAGES:
-								// Stages are 0-indexed
-								shortDescription = (manager.getContractCropStage() + 1) + "/" + contract.getStages();
-								break;
-							case TIME_REMAINING:
-								int remainingMinutes = (int) ((remainingSeconds + 59) / 60);
-								if (remainingMinutes < 60)
-								{
-									shortDescription = Math.max(remainingMinutes, 0) + "m";
-								}
-								else
-								{
-									shortDescription = String.format("%d:%02d",
-										remainingMinutes / 60,
-										remainingMinutes % 60);
-								}
-								break;
-							default:
-								shortDescription = null;
-								break;
-						}
-						tooltipColor = Color.GRAY;
-						shortColor = Color.WHITE;
-						break;
-				}
-				break;
-			case EMPTY:
-				tooltipDescription = null;
-				shortDescription = "Empty";
-				tooltipColor = Color.GRAY;
-				shortColor = ColorScheme.PROGRESS_INPROGRESS_COLOR;
-				break;
-			case UNKNOWN:
-			default:
-				tooltipDescription = null;
-				shortDescription = "Unk.";
-				tooltipColor = Color.GRAY;
-				shortColor = Color.LIGHT_GRAY;
-				break;
-		}
-
-		return SummaryInfo.builder()
-			.tooltipDescription(tooltipDescription)
-			.tooltipColor(tooltipColor)
-			.shortDescription(shortDescription)
-			.shortColor(shortColor)
-			.build();
 	}
 }
