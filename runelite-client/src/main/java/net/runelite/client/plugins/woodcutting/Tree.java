@@ -29,6 +29,7 @@ import java.time.Duration;
 import java.util.Map;
 import javax.annotation.Nullable;
 import lombok.Getter;
+import net.runelite.api.NullObjectID;
 import net.runelite.api.ObjectID;
 import static net.runelite.api.ObjectID.MAGIC_TREE_10834;
 import static net.runelite.api.NullObjectID.NULL_10835;
@@ -79,7 +80,7 @@ enum Tree
 	MAHOGANY_TREE(Duration.of(14, GAME_TICKS), MAHOGANY, MAHOGANY_36688, MAHOGANY_40760),
 	YEW_TREE(Duration.of(99, GAME_TICKS), YEW, NULL_10823, YEW_36683, YEW_40756),
 	MAGIC_TREE(Duration.of(199, GAME_TICKS), MAGIC_TREE_10834, NULL_10835),
-	REDWOOD(Duration.of(199, GAME_TICKS), ObjectID.REDWOOD, REDWOOD_29670);
+	REDWOOD(Duration.of(199, GAME_TICKS), ObjectID.REDWOOD, REDWOOD_29670, NullObjectID.NULL_34633, NullObjectID.NULL_34635, NullObjectID.NULL_34637, NullObjectID.NULL_34639, ObjectID.REDWOOD_TREE_34284, ObjectID.REDWOOD_TREE_34286, ObjectID.REDWOOD_TREE_34288, ObjectID.REDWOOD_TREE_34290);
 
 	@Nullable
 	private final Duration respawnTime;
