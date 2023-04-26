@@ -58,6 +58,7 @@ import static net.runelite.api.ObjectID.ORE_VEIN_26663;
 import static net.runelite.api.ObjectID.ORE_VEIN_26664;
 import static net.runelite.api.ObjectID.ROCKS_41549;
 import static net.runelite.api.ObjectID.ROCKS_41550;
+import static net.runelite.client.util.RSTimeUnit.GAME_TICKS;
 import net.runelite.api.Player;
 import net.runelite.api.WallObject;
 import net.runelite.api.coords.WorldPoint;
@@ -115,6 +116,9 @@ public class MiningPlugin extends Plugin
 
 	@Getter(AccessLevel.PACKAGE)
 	private final List<RockRespawn> respawns = new ArrayList<>();
+
+	private final List<SpawnedOreVein> spawnedOreVeins = new ArrayList<SpawnedOreVein>();
+
 	private boolean recentlyLoggedIn;
 
 	@Getter
@@ -143,6 +147,7 @@ public class MiningPlugin extends Plugin
 		overlayManager.remove(rocksOverlay);
 		respawns.forEach(respawn -> clearHintArrowAt(respawn.getWorldPoint()));
 		respawns.clear();
+		spawnedOreVeins.clear();
 	}
 
 	@Subscribe
@@ -152,6 +157,7 @@ public class MiningPlugin extends Plugin
 		{
 			case HOPPING:
 				respawns.clear();
+				spawnedOreVeins.clear();
 				break;
 			case LOGGED_IN:
 				// After login rocks that are depleted will be changed,
@@ -288,7 +294,6 @@ public class MiningPlugin extends Plugin
 		{
 			return;
 		}
-
 		GameObject object = event.getGameObject();
 		Rock rock = Rock.getRock(object.getId());
 
@@ -334,7 +339,14 @@ public class MiningPlugin extends Plugin
 			case DEPLETED_VEIN_26668: // Depleted motherlode vein
 			{
 				Rock rock = Rock.ORE_VEIN;
-				RockRespawn rockRespawn = new RockRespawn(rock, object.getWorldLocation(), Instant.now(), (int) rock.getRespawnTime(region).toMillis(), rock.getZOffset());
+				long respawnTimeReduction = 0;
+				SpawnedOreVein spawnedOreVein = getSpawnedOreVein(object.getWorldLocation().getX(), object.getWorldLocation().getY());
+				if (spawnedOreVein != null)
+				{
+					respawnTimeReduction = System.currentTimeMillis() - spawnedOreVein.getSpawnTime() - Duration.of(5, GAME_TICKS).toMillis();
+				}
+
+				RockRespawn rockRespawn = new RockRespawn(rock, object.getWorldLocation(), Instant.now(), (int) (rock.getRespawnTime(region).toMillis() - respawnTimeReduction), rock.getZOffset());
 				respawns.add(rockRespawn);
 				break;
 			}
@@ -366,6 +378,22 @@ public class MiningPlugin extends Plugin
 				// If the vein respawns before the timer is up, remove it
 				final WorldPoint point = object.getWorldLocation();
 				respawns.removeIf(rockRespawn -> rockRespawn.getWorldPoint().equals(point));
+
+				// If an ore vein spawned, add its spawn time to oreVeinSpawns
+				if (object.getId() == ORE_VEIN || object.getId() == ORE_VEIN_26662 || object.getId() == ORE_VEIN_26663 || object.getId() == ORE_VEIN_26664)
+				{
+					// Check if spawned ore vein already exists in List spawnedOreVeins
+					SpawnedOreVein spawnedOreVein = getSpawnedOreVein(object.getWorldLocation().getX(), object.getWorldLocation().getY());
+					if (spawnedOreVein != null)
+					{
+						spawnedOreVein.setSpawnTime(System.currentTimeMillis());
+					}
+					else
+					{
+						this.spawnedOreVeins.add(new SpawnedOreVein(object.getWorldLocation().getX(), object.getWorldLocation().getY(), System.currentTimeMillis()));
+					}
+				}
+
 				break;
 			}
 		}
@@ -386,5 +414,24 @@ public class MiningPlugin extends Plugin
 				session.setLastMined();
 			}
 		}
+	}
+	
+	/**
+	 * Returns the SpawnedOreVein on coordinates (x,y) from the List spawnedOreVeins.
+	 *
+	 * @param x the x coordinate of the ore vein.
+	 * @param y the y coordinate of the ore vein.
+	 * @return the sought SpawnedOreVein. null when not contained in List spawnedOreVeins.
+	 */
+	private SpawnedOreVein getSpawnedOreVein(int x, int y)
+	{
+		for (SpawnedOreVein spawnedOreVein : this.spawnedOreVeins)
+		{
+			if (spawnedOreVein.getX() == x && spawnedOreVein.getY() == y)
+			{
+				return spawnedOreVein;
+			}
+		}
+		return null;
 	}
 }

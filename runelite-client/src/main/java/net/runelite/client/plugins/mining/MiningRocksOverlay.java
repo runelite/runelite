@@ -27,6 +27,7 @@ package net.runelite.client.plugins.mining;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import javax.inject.Inject;
@@ -38,13 +39,12 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.ProgressPieComponent;
+import static net.runelite.client.util.RSTimeUnit.GAME_TICKS;
 
 class MiningRocksOverlay extends Overlay
 {
 	// Range of Motherlode vein respawn time - not 100% confirmed but based on observation
 	static final int ORE_VEIN_MAX_RESPAWN_TIME = 100; // Game ticks
-	private static final int ORE_VEIN_MIN_RESPAWN_TIME = 53; // Game ticks
-	private static final float ORE_VEIN_RANDOM_PERCENT_THRESHOLD = (float) ORE_VEIN_MIN_RESPAWN_TIME / ORE_VEIN_MAX_RESPAWN_TIME;
 
 	static final int DAEYALT_MAX_RESPAWN_TIME = 110; // Game ticks
 	private static final int DAEYALT_MIN_RESPAWN_TIME = 91; // Game ticks
@@ -107,7 +107,7 @@ class MiningRocksOverlay extends Overlay
 			Color pieBorderColor = Color.ORANGE;
 
 			// Recolour pie on motherlode veins or Lovakite ore during the portion of the timer where they may respawn
-			if ((rock == Rock.ORE_VEIN && percent > ORE_VEIN_RANDOM_PERCENT_THRESHOLD)
+			if ((rock == Rock.ORE_VEIN && percent > ((float) (rockRespawn.getRespawnTime() - (int) Duration.of(5, GAME_TICKS).toMillis()) / (float) rockRespawn.getRespawnTime()))
 				|| (rock == Rock.DAEYALT_ESSENCE && percent > DAEYALT_RANDOM_PERCENT_THRESHOLD)
 				|| (rock == Rock.LOVAKITE && percent > LOVAKITE_ORE_RANDOM_PERCENT_THRESHOLD))
 			{
