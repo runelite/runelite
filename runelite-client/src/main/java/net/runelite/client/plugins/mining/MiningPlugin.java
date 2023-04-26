@@ -117,7 +117,7 @@ public class MiningPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private final List<RockRespawn> respawns = new ArrayList<>();
 
-	private final List<SpawnedOreVein> spawnedOreVeins = new ArrayList<SpawnedOreVein>();
+	private final List<SpawnedOreVein> spawnedOreVeins = new ArrayList<>();
 
 	private boolean recentlyLoggedIn;
 
