@@ -506,15 +506,15 @@ public class MenuEntrySwapperPlugin extends Plugin
 				final String[] actions = composition.getActions();
 
 				final Integer swapConfig = getObjectSwapConfig(false, composition.getId());
-				final MenuAction currentAction = swapConfig != null ? OBJECT_MENU_TYPES.get(swapConfig) :
-					defaultAction(composition);
+				final MenuAction currentAction = swapConfig == null ? defaultAction(composition) :
+					(swapConfig == -1 ? MenuAction.WALK : OBJECT_MENU_TYPES.get(swapConfig));
 
 				final Integer shiftSwapConfig = getObjectSwapConfig(true, composition.getId());
-				final MenuAction currentShiftAction = shiftSwapConfig != null ? OBJECT_MENU_TYPES.get(shiftSwapConfig) :
-					defaultAction(composition);
+				final MenuAction currentShiftAction = shiftSwapConfig == null ? defaultAction(composition) :
+					(shiftSwapConfig == -1 ? MenuAction.WALK : OBJECT_MENU_TYPES.get(shiftSwapConfig));
 
-				List<MenuEntry> leftClickMenus = new ArrayList<>(actions.length + 1);
-				List<MenuEntry> shiftClickMenus = new ArrayList<>(actions.length + 1);
+				List<MenuEntry> leftClickMenus = new ArrayList<>(actions.length + 2);
+				List<MenuEntry> shiftClickMenus = new ArrayList<>(actions.length + 2);
 
 				for (int actionIdx = 0; actionIdx < OBJECT_MENU_TYPES.size(); ++actionIdx)
 				{
@@ -546,6 +546,23 @@ public class MenuEntrySwapperPlugin extends Plugin
 							.setType(MenuAction.RUNELITE)
 							.onClick(objectConsumer(composition, actions, actionIdx, menuAction, true)));
 					}
+				}
+
+				// Walk here
+				if (currentAction != MenuAction.WALK)
+				{
+					leftClickMenus.add(client.createMenuEntry(idx)
+						.setOption("Walk here")
+						.setType(MenuAction.RUNELITE)
+						.onClick(walkHereConsumer(false, composition)));
+				}
+
+				if (currentShiftAction != MenuAction.WALK)
+				{
+					shiftClickMenus.add(client.createMenuEntry(idx)
+						.setOption("Walk here")
+						.setType(MenuAction.RUNELITE)
+						.onClick(walkHereConsumer(true, composition)));
 				}
 
 				// Reset
@@ -623,6 +640,25 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 			log.debug("Unset object {} swap for {}", shift ? "shift" : "left", composition.getId());
 			unsetObjectSwapConfig(shift, composition.getId());
+		};
+	}
+
+	private Consumer<MenuEntry> walkHereConsumer(boolean shift, ObjectComposition composition)
+	{
+		return e ->
+		{
+			final String message = new ChatMessageBuilder()
+				.append("The default ").append(shift ? "shift" : "left").append(" click option for '").append(Text.removeTags(composition.getName())).append("' ")
+				.append("has been set to Walk here.")
+				.build();
+
+			chatMessageManager.queue(QueuedMessage.builder()
+				.type(ChatMessageType.CONSOLE)
+				.runeLiteFormattedMessage(message)
+				.build());
+
+			log.debug("Set object {} click swap for {} to Walk here", shift ? "shift" : "left", composition.getId());
+			setObjectSwapConfig(shift, composition.getId(), -1);
 		};
 	}
 
@@ -1426,7 +1462,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 			}
 
 			Integer customOption = getObjectSwapConfig(shiftModifier(), objectId);
-			if (customOption != null)
+			if (customOption != null && customOption >= 0)
 			{
 				MenuAction swapAction = OBJECT_MENU_TYPES.get(customOption);
 				if (swapAction == menuAction)
@@ -1543,9 +1579,16 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			MenuAction type = menuEntry.getType();
 
-			if (shiftModifier() && OBJECT_MENU_TYPES.contains(type) && config.objectShiftClickWalkHere())
+			if (OBJECT_MENU_TYPES.contains(type))
 			{
-				menuEntry.setDeprioritized(true);
+				final int objectId = menuEntry.getIdentifier();
+				final boolean shift = shiftModifier();
+				Integer customOption = getObjectSwapConfig(shift, objectId);
+				if ((customOption == null && shift && config.objectShiftClickWalkHere())
+					|| (customOption != null && customOption == -1))
+				{
+					menuEntry.setDeprioritized(true);
+				}
 			}
 			else if (NPC_MENU_TYPES.contains(type))
 			{
