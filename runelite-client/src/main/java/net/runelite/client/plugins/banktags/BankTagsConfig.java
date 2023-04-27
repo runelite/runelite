@@ -113,9 +113,9 @@ public interface BankTagsConfig extends Config
 	void tab(String tab);
 
 	@ConfigItem(
-			keyName = "viewAllKeybind",
-			name = "Show all shortcut",
-			description = "Keyboard shortcut for showing all tag tabs"
+		keyName = "viewAllKeybind",
+		name = "Show all shortcut",
+		description = "Keyboard shortcut for showing all tag tabs"
 	)
 	default Keybind viewAllKeybind()
 	{

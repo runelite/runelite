@@ -514,7 +514,8 @@ public class TabInterface
 
 	public void update()
 	{
-		if (viewAllTags){
+		if (viewAllTags)
+		{
 			client.setVarbit(Varbits.CURRENT_BANK_TAB, 0);
 			openTag(TAB_MENU_KEY);
 			viewAllTags = false;
