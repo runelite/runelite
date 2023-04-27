@@ -159,10 +159,6 @@ public class TabInterface
 	@Setter
 	private boolean viewAllTags;
 
-	@Getter
-	@Setter
-	private boolean resetAllTags;
-
 	private Instant startScroll = Instant.now();
 
 	@Getter
