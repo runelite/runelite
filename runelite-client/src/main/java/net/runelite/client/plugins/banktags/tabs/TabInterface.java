@@ -155,7 +155,7 @@ public class TabInterface
 	private boolean tagTabActive;
 	private int maxTabs;
 	private int currentTabIndex;
-	@Getter
+
 	@Setter
 	private boolean viewAllTags;
 
