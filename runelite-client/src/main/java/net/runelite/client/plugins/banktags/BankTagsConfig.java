@@ -27,6 +27,10 @@ package net.runelite.client.plugins.banktags;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Keybind;
+
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 
 @ConfigGroup("banktags")
 public interface BankTagsConfig extends Config
@@ -110,4 +114,15 @@ public interface BankTagsConfig extends Config
 		description = ""
 	)
 	void tab(String tab);
+
+	@ConfigItem(
+			keyName = "viewAllKeybind",
+			name = "Show all shortcut",
+			description = "Keyboard shortcut for showing all tag tabs"
+	)
+	default Keybind viewAllKeybind()
+	{
+		return Keybind.NOT_SET;
+	}
+
 }

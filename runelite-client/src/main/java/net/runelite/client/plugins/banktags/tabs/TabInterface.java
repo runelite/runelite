@@ -51,22 +51,9 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.Getter;
-import net.runelite.api.Client;
-import net.runelite.api.Constants;
-import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
-import net.runelite.api.ItemComposition;
-import net.runelite.api.ItemContainer;
-import net.runelite.api.MenuAction;
-import net.runelite.api.MenuEntry;
-import net.runelite.api.Point;
-import net.runelite.api.ScriptEvent;
-import net.runelite.api.ScriptID;
-import net.runelite.api.SoundEffectID;
-import net.runelite.api.SpriteID;
-import net.runelite.api.VarClientInt;
-import net.runelite.api.VarClientStr;
-import net.runelite.api.Varbits;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.*;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ScriptCallbackEvent;
@@ -96,6 +83,7 @@ import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
 
 @Singleton
+@Slf4j
 public class TabInterface
 {
 	public static final IntPredicate FILTERED_CHARS = c -> "</>:".indexOf(c) == -1;
@@ -152,6 +140,14 @@ public class TabInterface
 	private boolean tagTabActive;
 	private int maxTabs;
 	private int currentTabIndex;
+	@Getter
+	@Setter
+	private boolean viewAllTags;
+
+	@Getter
+	@Setter
+	private boolean resetAllTags;
+
 	private Instant startScroll = Instant.now();
 
 	@Getter
@@ -507,6 +503,12 @@ public class TabInterface
 
 	public void update()
 	{
+		if (viewAllTags){
+			client.setVarbit(Varbits.CURRENT_BANK_TAB, 0);
+			openTag(TAB_MENU_KEY);
+			viewAllTags = false;
+		}
+
 		if (isHidden())
 		{
 			parent = null;
