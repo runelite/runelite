@@ -29,9 +29,6 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.Keybind;
 
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
-
 @ConfigGroup("banktags")
 public interface BankTagsConfig extends Config
 {
@@ -124,5 +121,4 @@ public interface BankTagsConfig extends Config
 	{
 		return Keybind.NOT_SET;
 	}
-
 }
