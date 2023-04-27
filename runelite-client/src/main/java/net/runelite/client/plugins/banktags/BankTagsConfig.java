@@ -77,6 +77,17 @@ public interface BankTagsConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "viewAllKeybind",
+		name = "View tag tabs shortcut",
+		description = "Keyboard shortcut for showing all tag tabs",
+		position = 5
+	)
+	default Keybind viewAllKeybind()
+	{
+		return Keybind.NOT_SET;
+	}
+
+	@ConfigItem(
 		keyName = "position",
 		name = "",
 		description = "",
@@ -111,14 +122,4 @@ public interface BankTagsConfig extends Config
 		description = ""
 	)
 	void tab(String tab);
-
-	@ConfigItem(
-		keyName = "viewAllKeybind",
-		name = "Show all shortcut",
-		description = "Keyboard shortcut for showing all tag tabs"
-	)
-	default Keybind viewAllKeybind()
-	{
-		return Keybind.NOT_SET;
-	}
 }
