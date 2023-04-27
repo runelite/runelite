@@ -514,7 +514,7 @@ public class TabInterface
 
 	public void update()
 	{
-		if (viewAllTags)
+		if (viewAllTags && !isHidden())
 		{
 			client.setVarbit(Varbits.CURRENT_BANK_TAB, 0);
 			openTag(TAB_MENU_KEY);
@@ -524,7 +524,8 @@ public class TabInterface
 		if (isHidden())
 		{
 			parent = null;
-
+			viewAllTags = false;
+			
 			saveTab();
 			return;
 		}
