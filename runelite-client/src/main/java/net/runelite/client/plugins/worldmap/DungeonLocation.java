@@ -181,7 +181,7 @@ enum DungeonLocation
 	SILK_CHASM("Silk Chasm", new WorldPoint(3320, 3798, 0)),
 	SISTERHOOD_SANCTUARY("Sisterhood Sanctuary", new WorldPoint(3727, 3300, 0)),
 	SISTERHOOD_SANCTUARY_LAB("Sisterhood Sanctuary", new WorldPoint(3724, 3356, 0)),
-	SKELETAL_TOMB("Skeltal Tomb", new WorldPoint(3179, 3684, 0)),
+	SKELETAL_TOMB("Skeletal Tomb", new WorldPoint(3179, 3684, 0)),
 	SLAYER_TOWER("Slayer Tower basement", new WorldPoint(3416, 3535, 0)),
 	SLEPE_BASEMENT("Slepe basement", new WorldPoint(3718, 3307, 0)),
 	SMOKE_DEVIL("Smoke Devil Dungeon", new WorldPoint(2411, 3061, 0)),
