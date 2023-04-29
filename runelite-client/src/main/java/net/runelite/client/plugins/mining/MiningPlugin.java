@@ -204,6 +204,7 @@ public class MiningPlugin extends Plugin
 	public void onGameTick(GameTick gameTick)
 	{
 		clearExpiredRespawns();
+		clearExpiredSpawnedOreVeins();
 		recentlyLoggedIn = false;
 
 		if (session == null || session.getLastMined() == null)
@@ -433,5 +434,21 @@ public class MiningPlugin extends Plugin
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * If a SpawnedOreVein's spawnTime was long ago, it indicates that the player is no longer near the wall object,
+	 * and it should no longer be tracked. The SpawnedOreVeins are cleared if more than 63 seconds has passed
+	 * since its spawnTime. 63 seconds is the max amount of time needed for the ore-vein to spawn after its last tracked
+	 * spawn time in a SpawnedOreVein object. If more than 63 seconds has passed, it indicates that the player
+	 * is no longer near the wall object, and it should no longer be tracked.
+	 */
+	private void clearExpiredSpawnedOreVeins()
+	{
+		final long limit = 63*1000;
+		spawnedOreVeins.removeIf(spawnedOreVein ->
+		{
+			return System.currentTimeMillis() - spawnedOreVein.getSpawnTime() > limit;
+		});
 	}
 }
