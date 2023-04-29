@@ -416,7 +416,7 @@ public class MiningPlugin extends Plugin
 			}
 		}
 	}
-	
+
 	/**
 	 * Returns the SpawnedOreVein on coordinates (x,y) from the List spawnedOreVeins.
 	 *
@@ -445,7 +445,7 @@ public class MiningPlugin extends Plugin
 	 */
 	private void clearExpiredSpawnedOreVeins()
 	{
-		final long limit = 63*1000;
+		final long limit = 63 * 1000;
 		spawnedOreVeins.removeIf(spawnedOreVein ->
 		{
 			return System.currentTimeMillis() - spawnedOreVein.getSpawnTime() > limit;
