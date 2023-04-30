@@ -72,6 +72,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemVariationMapping;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
+import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.input.MouseWheelListener;
 import net.runelite.client.plugins.Plugin;
@@ -80,6 +81,7 @@ import net.runelite.client.plugins.banktags.tabs.TabInterface;
 import static net.runelite.client.plugins.banktags.tabs.TabInterface.FILTERED_CHARS;
 import net.runelite.client.plugins.banktags.tabs.TabSprites;
 import net.runelite.client.plugins.banktags.tabs.TagTab;
+import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
@@ -140,6 +142,9 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 	@Inject
 	private ConfigManager configManager;
 
+	@Inject
+	private KeyManager keyManager;
+
 	@Provides
 	BankTagsConfig getConfig(ConfigManager configManager)
 	{
@@ -183,7 +188,17 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 		mouseManager.registerMouseWheelListener(this);
 		clientThread.invokeLater(tabInterface::init);
 		spriteManager.addSpriteOverrides(TabSprites.values());
+		keyManager.registerKeyListener(hotkeyListener);
 	}
+
+	private final HotkeyListener hotkeyListener = new HotkeyListener(() -> config.toggleKeybind())
+	{
+		@Override
+		public void hotkeyPressed()
+		{
+			tabInterface.openAllTagsTab();
+		}
+	};
 
 	@Deprecated
 	private void cleanConfig()
@@ -244,6 +259,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 		mouseManager.unregisterMouseWheelListener(this);
 		clientThread.invokeLater(tabInterface::destroy);
 		spriteManager.removeSpriteOverrides(TabSprites.values());
+		keyManager.unregisterKeyListener(hotkeyListener);
 	}
 
 	@Subscribe
@@ -457,7 +473,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 			// bankkmain_build will reset the bank title to "The Bank of Gielinor". So apply our
 			// own title.
 			TagTab activeTab = tabInterface.getActiveTab();
-			if (tabInterface.isTagTabActive())
+			if (tabInterface.isAllTagsTabActive())
 			{
 				// Tag tab tab has its own title since it isn't a real tag
 				Widget bankTitle = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
@@ -471,7 +487,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 
 			// Recompute scroll size. Only required for tag tab tab and with remove separators, to remove the
 			// space that the separators took.
-			if (tabInterface.isTagTabActive() || (tabInterface.isActive() && config.removeSeparators()))
+			if (tabInterface.isAllTagsTabActive() || (tabInterface.isActive() && config.removeSeparators()))
 			{
 				Widget itemContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
 				Widget[] children = itemContainer.getChildren();
@@ -509,7 +525,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 			// The return value of bankmain_searching is on the stack. If we have a tag tab active
 			// and are in the bank, make it return true to put the bank in a searching state.
 			boolean bankOpen = client.getItemContainer(InventoryID.BANK) != null;
-			if (bankOpen && (tabInterface.getActiveTab() != null || tabInterface.isTagTabActive()))
+			if (bankOpen && (tabInterface.getActiveTab() != null || tabInterface.isAllTagsTabActive()))
 			{
 				client.getIntStack()[client.getIntStackSize() - 1] = 1; // true
 			}

@@ -27,6 +27,7 @@ package net.runelite.client.plugins.banktags;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Keybind;
 
 @ConfigGroup("banktags")
 public interface BankTagsConfig extends Config
@@ -73,6 +74,17 @@ public interface BankTagsConfig extends Config
 	default boolean preventTagTabDrags()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "toggleKeybind",
+		name = "View All Tabs keybind",
+		description = "Binds a key (combination) to view all tag tabs.",
+		position = 5
+	)
+	default Keybind toggleKeybind()
+	{
+		return Keybind.NOT_SET;
 	}
 
 	@ConfigItem(
