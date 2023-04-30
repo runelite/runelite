@@ -91,7 +91,11 @@ public class WidgetOverlay extends Overlay
 			new WidgetOverlay(client, WidgetInfo.GOTR_MAIN_DISPLAY, OverlayPosition.TOP_LEFT),
 			new WidgetOverlay(client, WidgetInfo.TROUBLE_BREWING_SCORE, OverlayPosition.BOTTOM_RIGHT),
 			new WidgetOverlay(client, WidgetInfo.TROUBLE_BREWING_LOBBY, OverlayPosition.BOTTOM_RIGHT),
-			new WidgetOverlay(client, WidgetInfo.MORTTON_TEMPLE_STATUS, OverlayPosition.TOP_RIGHT)
+			new WidgetOverlay(client, WidgetInfo.MORTTON_TEMPLE_STATUS, OverlayPosition.TOP_RIGHT),
+			new WidgetOverlay(client, WidgetInfo.BGR_RANK_DISPLAY_DRAUGHTS, OverlayPosition.TOP_RIGHT),
+			new WidgetOverlay(client, WidgetInfo.BGR_RANK_DISPLAY_RUNELINK, OverlayPosition.TOP_RIGHT),
+			new WidgetOverlay(client, WidgetInfo.BGR_RANK_DISPLAY_RUNESQUARES, OverlayPosition.TOP_RIGHT),
+			new WidgetOverlay(client, WidgetInfo.BGR_RANK_DISPLAY_RUNEVERSI, OverlayPosition.TOP_RIGHT)
 		);
 	}
 
