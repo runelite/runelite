@@ -184,6 +184,8 @@ public final class WidgetID
 	public static final int PRAYER_GROUP_ID = 541;
 	public static final int QUICK_PRAYERS_GROUP_ID = 77;
 	public static final int GOTR_GROUP_ID = 746;
+	public static final int TROUBLE_BREWING_GROUP_ID = 415;
+	public static final int TROUBLE_BREWING_LOBBY_GROUP_ID = 418;
 
 	static class WorldMap
 	{
@@ -897,5 +899,10 @@ public final class WidgetID
 	static class Trade
 	{
 		static final int HEADER = 31;
+	}
+
+	static class TroubleBrewing
+	{
+		static final int SCORE = 68;
 	}
 }
