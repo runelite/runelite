@@ -97,7 +97,14 @@ public class WidgetOverlay extends Overlay
 			new WidgetOverlay(client, WidgetInfo.BGR_RANK_DISPLAY_RUNESQUARES, OverlayPosition.TOP_RIGHT),
 			new WidgetOverlay(client, WidgetInfo.BGR_RANK_DISPLAY_RUNEVERSI, OverlayPosition.TOP_RIGHT),
 			new WidgetOverlay(client, WidgetInfo.AGILITY_ARENA_LIGHT_INDICATOR, OverlayPosition.TOP_RIGHT),
-			new WidgetOverlay(client, WidgetInfo.GNOMEBALL_SCORE, OverlayPosition.TOP_RIGHT)
+			new WidgetOverlay(client, WidgetInfo.GNOMEBALL_SCORE, OverlayPosition.TOP_RIGHT),
+			new WidgetOverlay(client, WidgetInfo.MTA_ALCHEMY_POINTS, OverlayPosition.TOP_RIGHT),
+			new WidgetOverlay(client, WidgetInfo.MTA_ENCHANT_POINTS, OverlayPosition.TOP_RIGHT),
+			new WidgetOverlay(client, WidgetInfo.MTA_ENCHANT_BONUS, OverlayPosition.BOTTOM_RIGHT),
+			new WidgetOverlay(client, WidgetInfo.MTA_TELEKINETIC_POINTS, OverlayPosition.TOP_RIGHT),
+			new WidgetOverlay(client, WidgetInfo.MTA_TELEKINETIC_SOLVED, OverlayPosition.BOTTOM_RIGHT),
+			new WidgetOverlay(client, WidgetInfo.MTA_GRAVEYARD_POINTS, OverlayPosition.TOP_RIGHT),
+			new WidgetOverlay(client, WidgetInfo.MTA_GRAVEYARD_VALUES, OverlayPosition.BOTTOM_RIGHT)
 		);
 	}
 
