@@ -187,6 +187,10 @@ public final class WidgetID
 	public static final int TROUBLE_BREWING_GROUP_ID = 415;
 	public static final int TROUBLE_BREWING_LOBBY_GROUP_ID = 418;
 	public static final int MORTTON_TEMPLE_GROUP_ID = 171;
+	public static final int BGR_RANK_DRAUGHTS_GROUP_ID = 34;
+	public static final int BGR_RANK_RUNELINK_GROUP_ID = 38;
+	public static final int BGR_RANK_RUNESQUARES_GROUP_ID = 42;
+	public static final int BGR_RANK_RUNEVERSI_GROUP_ID = 46;
 
 	static class WorldMap
 	{
