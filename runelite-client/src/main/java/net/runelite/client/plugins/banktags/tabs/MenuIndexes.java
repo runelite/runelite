@@ -31,7 +31,7 @@ class MenuIndexes
 	{
 		static final int NEW_TAB = 2;
 		static final int IMPORT_TAB = 3;
-		static final int OPEN_TAB_MENU = 4;
+		static final int OPEN_ALL_TAGS_TAB = 4;
 	}
 
 	static class Tab

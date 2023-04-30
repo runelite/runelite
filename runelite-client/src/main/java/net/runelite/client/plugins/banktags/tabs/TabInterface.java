@@ -149,7 +149,7 @@ public class TabInterface
 	@Getter
 	private TagTab activeTab;
 	@Getter
-	private boolean tagTabActive;
+	private boolean allTagsTabActive;
 	private int maxTabs;
 	private int currentTabIndex;
 	private Instant startScroll = Instant.now();
@@ -405,11 +405,21 @@ public class TabInterface
 					notifier.notify("Failed to import tag tab from clipboard, invalid format.");
 				}
 				break;
-			case NewTab.OPEN_TAB_MENU:
-				client.setVarbit(Varbits.CURRENT_BANK_TAB, 0);
-				openTag(TAB_MENU_KEY);
-				break;
+			case NewTab.OPEN_ALL_TAGS_TAB:
+				openAllTagsTab();
 		}
+	}
+
+	public void openAllTagsTab(){
+		clientThread.invoke(()->{
+			if (allTagsTabActive && client.getVarbitValue(Varbits.CURRENT_BANK_TAB) == 0){
+				activateTab(null);
+				bankSearch.reset(true);
+				return;
+			}
+			client.setVarbit(Varbits.CURRENT_BANK_TAB, 0);
+			openTag(TAB_MENU_KEY);
+		});
 	}
 
 	private void handleTagTab(ScriptEvent event)
@@ -559,11 +569,6 @@ public class TabInterface
 		}
 	}
 
-	private boolean isTabMenuActive()
-	{
-		return tagTabActive;
-	}
-
 	public void handleScriptEvent(final ScriptCallbackEvent event)
 	{
 		String eventName = event.getEventName();
@@ -574,7 +579,7 @@ public class TabInterface
 		switch (eventName)
 		{
 			case "skipBankLayout":
-				if (!isTabMenuActive())
+				if (!allTagsTabActive)
 				{
 					setTabMenuVisible(false);
 					return;
@@ -739,7 +744,7 @@ public class TabInterface
 		// is dragging widget and mouse button released
 		if (client.getMouseCurrentButton() == 0)
 		{
-			if (!isTabMenuActive() && draggedWidget.getItemId() > 0 && draggedWidget.getId() != parent.getId())
+			if (!allTagsTabActive && draggedWidget.getItemId() > 0 && draggedWidget.getId() != parent.getId())
 			{
 				// Tag an item dragged on a tag tab
 				if (draggedOn.getId() == parent.getId())
@@ -748,7 +753,7 @@ public class TabInterface
 					updateTabIfActive(Lists.newArrayList(Text.standardize(draggedOn.getName())));
 				}
 			}
-			else if ((isTabMenuActive() && draggedWidget.getId() == draggedOn.getId() && draggedOn.getId() != parent.getId())
+			else if ((allTagsTabActive && draggedWidget.getId() == draggedOn.getId() && draggedOn.getId() != parent.getId())
 				|| (parent.getId() == draggedOn.getId() && parent.getId() == draggedWidget.getId()))
 			{
 				// Reorder tag tabs
@@ -1014,7 +1019,7 @@ public class TabInterface
 			activeTab = tagTab;
 		}
 
-		tagTabActive = false;
+		allTagsTabActive = false;
 	}
 
 	private void updateBounds()
@@ -1176,7 +1181,7 @@ public class TabInterface
 	private void openTag(final String tag)
 	{
 		activateTab(tabManager.find(tag));
-		tagTabActive = BankTagsPlugin.TAG_TABS_CONFIG.equals(tag);
+		allTagsTabActive = BankTagsPlugin.TAG_TABS_CONFIG.equals(tag);
 		bankSearch.reset(true); // clear search dialog & relayout bank for new tab.
 
 		// When searching the button has a script on timer to detect search end, that will set the background back
