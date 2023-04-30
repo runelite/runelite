@@ -96,7 +96,8 @@ public class WidgetOverlay extends Overlay
 			new WidgetOverlay(client, WidgetInfo.BGR_RANK_DISPLAY_RUNELINK, OverlayPosition.TOP_RIGHT),
 			new WidgetOverlay(client, WidgetInfo.BGR_RANK_DISPLAY_RUNESQUARES, OverlayPosition.TOP_RIGHT),
 			new WidgetOverlay(client, WidgetInfo.BGR_RANK_DISPLAY_RUNEVERSI, OverlayPosition.TOP_RIGHT),
-			new WidgetOverlay(client, WidgetInfo.AGILITY_ARENA_LIGHT_INDICATOR, OverlayPosition.TOP_RIGHT)
+			new WidgetOverlay(client, WidgetInfo.AGILITY_ARENA_LIGHT_INDICATOR, OverlayPosition.TOP_RIGHT),
+			new WidgetOverlay(client, WidgetInfo.GNOMEBALL_SCORE, OverlayPosition.TOP_RIGHT)
 		);
 	}
 
