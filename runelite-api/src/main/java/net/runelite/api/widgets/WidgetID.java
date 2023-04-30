@@ -186,6 +186,7 @@ public final class WidgetID
 	public static final int GOTR_GROUP_ID = 746;
 	public static final int TROUBLE_BREWING_GROUP_ID = 415;
 	public static final int TROUBLE_BREWING_LOBBY_GROUP_ID = 418;
+	public static final int MORTTON_TEMPLE_GROUP_ID = 171;
 
 	static class WorldMap
 	{

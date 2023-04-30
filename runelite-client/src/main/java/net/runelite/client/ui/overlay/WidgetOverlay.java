@@ -90,7 +90,8 @@ public class WidgetOverlay extends Overlay
 			new WidgetOverlay(client, WidgetInfo.TOA_RAID_LAYER, OverlayPosition.TOP_LEFT),
 			new WidgetOverlay(client, WidgetInfo.GOTR_MAIN_DISPLAY, OverlayPosition.TOP_LEFT),
 			new WidgetOverlay(client, WidgetInfo.TROUBLE_BREWING_SCORE, OverlayPosition.BOTTOM_RIGHT),
-			new WidgetOverlay(client, WidgetInfo.TROUBLE_BREWING_LOBBY, OverlayPosition.BOTTOM_RIGHT)
+			new WidgetOverlay(client, WidgetInfo.TROUBLE_BREWING_LOBBY, OverlayPosition.BOTTOM_RIGHT),
+			new WidgetOverlay(client, WidgetInfo.MORTTON_TEMPLE_STATUS, OverlayPosition.TOP_RIGHT)
 		);
 	}
 
