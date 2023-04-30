@@ -88,7 +88,9 @@ public class WidgetOverlay extends Overlay
 			new WidgetOverlay(client, WidgetInfo.PVP_WILDERNESS_SKULL_CONTAINER, OverlayPosition.DYNAMIC),
 			new WidgetOverlay(client, WidgetInfo.TOA_PARTY_LAYER, OverlayPosition.TOP_LEFT),
 			new WidgetOverlay(client, WidgetInfo.TOA_RAID_LAYER, OverlayPosition.TOP_LEFT),
-			new WidgetOverlay(client, WidgetInfo.GOTR_MAIN_DISPLAY, OverlayPosition.TOP_LEFT)
+			new WidgetOverlay(client, WidgetInfo.GOTR_MAIN_DISPLAY, OverlayPosition.TOP_LEFT),
+			new WidgetOverlay(client, WidgetInfo.TROUBLE_BREWING_SCORE, OverlayPosition.BOTTOM_RIGHT),
+			new WidgetOverlay(client, WidgetInfo.TROUBLE_BREWING_LOBBY, OverlayPosition.BOTTOM_RIGHT)
 		);
 	}
 
