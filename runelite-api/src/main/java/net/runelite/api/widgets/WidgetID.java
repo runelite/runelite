@@ -191,6 +191,7 @@ public final class WidgetID
 	public static final int BGR_RANK_RUNELINK_GROUP_ID = 38;
 	public static final int BGR_RANK_RUNESQUARES_GROUP_ID = 42;
 	public static final int BGR_RANK_RUNEVERSI_GROUP_ID = 46;
+	public static final int AGILITY_ARENA_HUD_GROUP_ID = 5;
 
 	static class WorldMap
 	{
