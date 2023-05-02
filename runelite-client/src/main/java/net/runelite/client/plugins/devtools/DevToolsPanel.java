@@ -28,6 +28,9 @@ package net.runelite.client.plugins.devtools;
 import com.google.inject.ProvisionException;
 import java.awt.GridLayout;
 import java.awt.TrayIcon;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
@@ -93,59 +96,61 @@ class DevToolsPanel extends PluginPanel
 
 	private JPanel createOptionsPanel()
 	{
+		List<JButton> buttons = new ArrayList<>();
+
 		final JPanel container = new JPanel();
 		container.setBackground(ColorScheme.DARK_GRAY_COLOR);
 		container.setLayout(new GridLayout(0, 2, 3, 3));
 
-		container.add(plugin.getPlayers());
-		container.add(plugin.getNpcs());
+		buttons.add(plugin.getPlayers());
+		buttons.add(plugin.getNpcs());
 
-		container.add(plugin.getGroundItems());
-		container.add(plugin.getGroundObjects());
-		container.add(plugin.getGameObjects());
-		container.add(plugin.getGraphicsObjects());
-		container.add(plugin.getWalls());
-		container.add(plugin.getDecorations());
+		buttons.add(plugin.getGroundItems());
+		buttons.add(plugin.getGroundObjects());
+		buttons.add(plugin.getGameObjects());
+		buttons.add(plugin.getGraphicsObjects());
+		buttons.add(plugin.getWalls());
+		buttons.add(plugin.getDecorations());
 
-		container.add(plugin.getProjectiles());
+		buttons.add(plugin.getProjectiles());
 
-		container.add(plugin.getLocation());
-		container.add(plugin.getWorldMapLocation());
-		container.add(plugin.getTileLocation());
-		container.add(plugin.getCameraPosition());
+		buttons.add(plugin.getLocation());
+		buttons.add(plugin.getWorldMapLocation());
+		buttons.add(plugin.getTileLocation());
+		buttons.add(plugin.getCameraPosition());
 
-		container.add(plugin.getChunkBorders());
-		container.add(plugin.getMapSquares());
+		buttons.add(plugin.getChunkBorders());
+		buttons.add(plugin.getMapSquares());
 
-		container.add(plugin.getLineOfSight());
-		container.add(plugin.getValidMovement());
-		container.add(plugin.getMovementFlags());
-		container.add(plugin.getInteracting());
-		container.add(plugin.getExamine());
+		buttons.add(plugin.getLineOfSight());
+		buttons.add(plugin.getValidMovement());
+		buttons.add(plugin.getMovementFlags());
+		buttons.add(plugin.getInteracting());
+		buttons.add(plugin.getExamine());
 
-		container.add(plugin.getDetachedCamera());
+		buttons.add(plugin.getDetachedCamera());
 		plugin.getDetachedCamera().addActionListener((ev) ->
 		{
 			client.setOculusOrbState(!plugin.getDetachedCamera().isActive() ? 1 : 0);
 			client.setOculusOrbNormalSpeed(!plugin.getDetachedCamera().isActive() ? 36 : 12);
 		});
 
-		container.add(plugin.getWidgetInspector());
+		buttons.add(plugin.getWidgetInspector());
 		plugin.getWidgetInspector().addFrame(widgetInspector);
 
-		container.add(plugin.getVarInspector());
+		buttons.add(plugin.getVarInspector());
 		plugin.getVarInspector().addFrame(varInspector);
 
-		container.add(plugin.getSoundEffects());
+		buttons.add(plugin.getSoundEffects());
 
 		final JButton notificationBtn = new JButton("Notification");
 		notificationBtn.addActionListener(e ->
 		{
 			scheduledExecutorService.schedule(() -> notifier.notify("Wow!", TrayIcon.MessageType.ERROR), 3, TimeUnit.SECONDS);
 		});
-		container.add(notificationBtn);
+		buttons.add(notificationBtn);
 
-		container.add(plugin.getScriptInspector());
+		buttons.add(plugin.getScriptInspector());
 		plugin.getScriptInspector().addFrame(scriptInspector);
 
 		final JButton newInfoboxBtn = new JButton("Infobox");
@@ -163,25 +168,25 @@ class DevToolsPanel extends PluginPanel
 			counter.getMenuEntries().add(new OverlayMenuEntry(MenuAction.RUNELITE_INFOBOX, "Test", "DevTools"));
 			infoBoxManager.addInfoBox(counter);
 		});
-		container.add(newInfoboxBtn);
+		buttons.add(newInfoboxBtn);
 
 		final JButton clearInfoboxBtn = new JButton("Clear Infobox");
 		clearInfoboxBtn.addActionListener(e -> infoBoxManager.removeIf(i -> true));
-		container.add(clearInfoboxBtn);
+		buttons.add(clearInfoboxBtn);
 
-		container.add(plugin.getInventoryInspector());
+		buttons.add(plugin.getInventoryInspector());
 		plugin.getInventoryInspector().addFrame(inventoryInspector);
 
 		final JButton disconnectBtn = new JButton("Disconnect");
 		disconnectBtn.addActionListener(e -> clientThread.invoke(() -> client.setGameState(GameState.CONNECTION_LOST)));
-		container.add(disconnectBtn);
+		buttons.add(disconnectBtn);
 
-		container.add(plugin.getRoofs());
+		buttons.add(plugin.getRoofs());
 
 		try
 		{
 			ShellFrame sf = plugin.getInjector().getInstance(ShellFrame.class);
-			container.add(plugin.getShell());
+			buttons.add(plugin.getShell());
 			plugin.getShell().addFrame(sf);
 		}
 		catch (LinkageError | ProvisionException e)
@@ -192,6 +197,10 @@ class DevToolsPanel extends PluginPanel
 		{
 			log.info("Shell couldn't be loaded", e);
 		}
+
+		buttons.stream()
+			.sorted(Comparator.comparing(JButton::getText))
+			.forEach(container::add);
 
 		return container;
 	}
