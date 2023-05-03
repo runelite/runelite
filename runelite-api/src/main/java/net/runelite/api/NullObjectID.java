@@ -23998,15 +23998,6 @@ public final class NullObjectID
 	public static final int NULL_47323 = 47323;
 	public static final int NULL_47325 = 47325;
 	public static final int NULL_47335 = 47335;
-	public static final int NULL_47337 = 47337;
-	public static final int NULL_47338 = 47338;
-	public static final int NULL_47339 = 47339;
-	public static final int NULL_47340 = 47340;
-	public static final int NULL_47343 = 47343;
-	public static final int NULL_47344 = 47344;
-	public static final int NULL_47345 = 47345;
-	public static final int NULL_47346 = 47346;
-	public static final int NULL_47347 = 47347;
 	public static final int NULL_47348 = 47348;
 	public static final int NULL_47350 = 47350;
 	public static final int NULL_47353 = 47353;
