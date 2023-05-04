@@ -477,7 +477,7 @@ public class ScreenshotPluginTest
 		screenshotPlugin.onScriptPreFired(notificationStart);
 
 		when(client.getVarcStrValue(VarClientStr.NOTIFICATION_TOP_TEXT)).thenReturn("Combat Task Completed!");
-		when(client.getVarcStrValue(VarClientStr.NOTIFICATION_BOTTOM_TEXT)).thenReturn("Task Completed: <col=ffffff>Handyman</col>");
+		when(client.getVarcStrValue(VarClientStr.NOTIFICATION_BOTTOM_TEXT)).thenReturn("Task Completed: <col=ffffff>Handyman</col> (6 points)");
 
 		ScriptPreFired notificationDelay = new ScriptPreFired(ScriptID.NOTIFICATION_DELAY);
 		screenshotPlugin.onScriptPreFired(notificationDelay);

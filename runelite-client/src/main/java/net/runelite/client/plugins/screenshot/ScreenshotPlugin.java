@@ -726,8 +726,9 @@ public class ScreenshotPlugin extends Plugin
 				}
 				if (topText.equalsIgnoreCase("Combat Task Completed!") && config.screenshotCombatAchievements() && client.getVarbitValue(Varbits.COMBAT_ACHIEVEMENTS_POPUP) == 0)
 				{
-					String entry = Text.removeTags(bottomText).substring("Task Completed: ".length());
-					String fileName = "Combat task (" + entry.replaceAll("[:?]", "") + ")";
+					String[] s = bottomText.split("<.*?>");
+					String task = s[1];
+					String fileName = "Combat task (" + task.replaceAll("[:?]", "") + ")";
 					takeScreenshot(fileName, SD_COMBAT_ACHIEVEMENTS);
 				}
 				notificationStarted = false;
