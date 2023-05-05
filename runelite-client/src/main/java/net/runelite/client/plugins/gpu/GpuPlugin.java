@@ -181,22 +181,19 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int fboSceneHandle;
 	private int rboSceneHandle;
 
-	// scene vertex buffer
-	private final GLBuffer sceneVertexBuffer = new GLBuffer();
-	// scene uv buffer
-	private final GLBuffer sceneUvBuffer = new GLBuffer();
-
-	private final GLBuffer tmpVertexBuffer = new GLBuffer(); // temporary scene vertex buffer
-	private final GLBuffer tmpUvBuffer = new GLBuffer(); // temporary scene uv buffer
-	private final GLBuffer tmpModelBufferLarge = new GLBuffer(); // scene model buffer, large
-	private final GLBuffer tmpModelBufferSmall = new GLBuffer(); // scene model buffer, small
-	private final GLBuffer tmpModelBufferUnordered = new GLBuffer(); // scene model buffer, unordered
-	private final GLBuffer tmpOutBuffer = new GLBuffer(); // target vertex buffer for compute shaders
-	private final GLBuffer tmpOutUvBuffer = new GLBuffer(); // target uv buffer for compute shaders
+	private final GLBuffer sceneVertexBuffer = new GLBuffer("scene vertex buffer");
+	private final GLBuffer sceneUvBuffer = new GLBuffer("scene tex buffer");
+	private final GLBuffer tmpVertexBuffer = new GLBuffer("tmp vertex buffer");
+	private final GLBuffer tmpUvBuffer = new GLBuffer("tmp tex buffer");
+	private final GLBuffer tmpModelBufferLarge = new GLBuffer("model buffer large");
+	private final GLBuffer tmpModelBufferSmall = new GLBuffer("model buffer small");
+	private final GLBuffer tmpModelBufferUnordered = new GLBuffer("model buffer unordered");
+	private final GLBuffer tmpOutBuffer = new GLBuffer("out vertex buffer");
+	private final GLBuffer tmpOutUvBuffer = new GLBuffer("out tex buffer");
 
 	private int textureArrayId;
 
-	private final GLBuffer uniformBuffer = new GLBuffer();
+	private final GLBuffer uniformBuffer = new GLBuffer("uniform buffer");
 
 	private GpuIntBuffer vertexBuffer;
 	private GpuFloatBuffer uvBuffer;
@@ -1718,7 +1715,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		if (size > glBuffer.size)
 		{
 			int newSize = Math.max(1024, nextPowerOfTwo(size));
-			log.trace("Buffer resize: {} {} -> {}", glBuffer, glBuffer.size, newSize);
+			log.trace("Buffer resize: {} {} -> {}", glBuffer.name, glBuffer.size, newSize);
 
 			glBuffer.size = newSize;
 			GL43C.glBufferData(target, newSize, usage);
