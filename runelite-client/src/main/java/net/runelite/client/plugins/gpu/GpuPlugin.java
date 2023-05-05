@@ -138,6 +138,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private AWTContext awtContext;
 	private Callback debugCallback;
 
+	private GLCapabilities glCapabilities;
+
 	static final String LINUX_VERSION_HEADER =
 		"#version 420\n" +
 			"#extension GL_ARB_compute_shader : require\n" +
@@ -304,19 +306,17 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				// to be created, and also breaks if both 32 and 64 bit lwjgl versions try to run at once.
 				Configuration.SHARED_LIBRARY_EXTRACT_DIRECTORY.set("lwjgl-rl-" + System.getProperty("os.arch", "unknown"));
 
-				GL.createCapabilities();
+				glCapabilities = GL.createCapabilities();
 
 				log.info("Using device: {}", GL43C.glGetString(GL43C.GL_RENDERER));
 				log.info("Using driver: {}", GL43C.glGetString(GL43C.GL_VERSION));
 
-				GLCapabilities caps = GL.getCapabilities();
-
-				if (!caps.OpenGL31)
+				if (!glCapabilities.OpenGL31)
 				{
 					throw new RuntimeException("OpenGL 3.1 is required but not available");
 				}
 
-				if (!caps.OpenGL43 && computeMode == ComputeMode.OPENGL)
+				if (!glCapabilities.OpenGL43 && computeMode == ComputeMode.OPENGL)
 				{
 					log.info("disabling compute shaders because OpenGL 4.3 is not available");
 					computeMode = ComputeMode.NONE;
@@ -330,7 +330,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				lwjglInitted = true;
 
 				checkGLErrors();
-				if (log.isDebugEnabled() && caps.glDebugMessageControl != 0)
+				if (log.isDebugEnabled() && glCapabilities.glDebugMessageControl != 0)
 				{
 					debugCallback = GLUtil.setupDebugMessageCallback();
 					if (debugCallback != null)
@@ -458,6 +458,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				debugCallback.free();
 				debugCallback = null;
 			}
+
+			glCapabilities = null;
 
 			vertexBuffer = null;
 			uvBuffer = null;
@@ -1712,6 +1714,12 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private void updateBuffer(@Nonnull GLBuffer glBuffer, int target, int size, int usage, long clFlags)
 	{
 		GL43C.glBindBuffer(target, glBuffer.glBufferId);
+		if (glCapabilities.glInvalidateBufferData != 0L)
+		{
+			// https://www.khronos.org/opengl/wiki/Buffer_Object_Streaming suggests buffer re-specification is useful
+			// to avoid implicit synching. We always need to trash the whole buffer anyway so this can't hurt.
+			GL43C.glInvalidateBufferData(glBuffer.glBufferId);
+		}
 		if (size > glBuffer.size)
 		{
 			int newSize = Math.max(1024, nextPowerOfTwo(size));
