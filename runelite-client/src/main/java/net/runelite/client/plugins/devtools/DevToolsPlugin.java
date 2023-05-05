@@ -131,6 +131,7 @@ public class DevToolsPlugin extends Plugin
 	private DevToolsButton location;
 	private DevToolsButton chunkBorders;
 	private DevToolsButton mapSquares;
+	private DevToolsButton loadingLines;
 	private DevToolsButton validMovement;
 	private DevToolsButton movementFlags;
 	private DevToolsButton lineOfSight;
@@ -177,6 +178,7 @@ public class DevToolsPlugin extends Plugin
 
 		chunkBorders = new DevToolsButton("Chunk Borders");
 		mapSquares = new DevToolsButton("Map Squares");
+		loadingLines = new DevToolsButton("Loading Lines");
 
 		lineOfSight = new DevToolsButton("Line Of Sight");
 		validMovement = new DevToolsButton("Valid Movement");
