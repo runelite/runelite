@@ -10150,6 +10150,10 @@ public final class NpcID
 	public static final int ELIAS_WHITE = 12105;
 	public static final int SKELETON_HELLHOUND_12107 = 12107;
 	public static final int GREATER_SKELETON_HELLHOUND_12108 = 12108;
+	public static final int TOOL_LEPRECHAUN_12109 = 12109;
+	public static final int HALLOWED_SEPULCHRE_COFFIN = 12110;
+	public static final int HALLOWED_SEPULCHRE_GRAND_COFFIN = 12111;
+	public static final int ENT_TRUNK_12112 = 12112;
 	public static final int EMMA = 12116;
 	public static final int SUZIE = 12117;
 	public static final int SIR_PEAR_VISOR = 12121;
