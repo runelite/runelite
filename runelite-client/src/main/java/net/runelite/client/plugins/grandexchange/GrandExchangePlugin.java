@@ -561,16 +561,20 @@ public class GrandExchangePlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (!this.config.enableNotifications() || event.getType() != ChatMessageType.GAMEMESSAGE)
+		if (event.getType() != ChatMessageType.GAMEMESSAGE)
 		{
 			return;
 		}
 
 		String message = Text.removeTags(event.getMessage());
 
-		if (message.startsWith("Grand Exchange:"))
+		if (message.startsWith("Grand Exchange:") && config.enableNotifications())
 		{
-			this.notifier.notify(message);
+			notifier.notify(message);
+		}
+		else if (message.startsWith("Grand Exchange: Finished") && config.notifyOnOfferComplete())
+		{
+			notifier.notify(message);
 		}
 	}
 
