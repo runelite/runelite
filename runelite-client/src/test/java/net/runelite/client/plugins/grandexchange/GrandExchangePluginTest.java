@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
 import javax.inject.Inject;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.GrandExchangeOffer;
@@ -42,6 +43,7 @@ import net.runelite.api.GrandExchangeOfferState;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemID;
 import net.runelite.api.WorldType;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GrandExchangeOfferChanged;
 import net.runelite.client.Notifier;
@@ -325,5 +327,33 @@ public class GrandExchangePluginTest
 		assertEquals(1000, trade.getOffer());
 		assertEquals(2, trade.getSlot());
 		assertTrue(trade.isLogin());
+	}
+
+	@Test
+	public void testNotifyPartial()
+	{
+		when(grandExchangeConfig.enableNotifications()).thenReturn(true);
+
+		ChatMessage chatMessage = new ChatMessage();
+		chatMessage.setType(ChatMessageType.GAMEMESSAGE);
+		chatMessage.setMessage("<col=006060>Grand Exchange: Bought 200 / 80,000 x Acorn.</col>");
+
+		grandExchangePlugin.onChatMessage(chatMessage);
+
+		verify(notifier).notify(anyString());
+	}
+
+	@Test
+	public void testNotifyComplete()
+	{
+		when(grandExchangeConfig.notifyOnOfferComplete()).thenReturn(true);
+
+		ChatMessage chatMessage = new ChatMessage();
+		chatMessage.setType(ChatMessageType.GAMEMESSAGE);
+		chatMessage.setMessage("<col=006000>Grand Exchange: Finished buying 1 x Acorn.</col>");
+
+		grandExchangePlugin.onChatMessage(chatMessage);
+
+		verify(notifier).notify(anyString());
 	}
 }
