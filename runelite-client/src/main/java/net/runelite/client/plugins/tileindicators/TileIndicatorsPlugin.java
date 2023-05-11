@@ -26,7 +26,14 @@ package net.runelite.client.plugins.tileindicators;
 
 import com.google.inject.Provides;
 import javax.inject.Inject;
+import lombok.Getter;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
+import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -45,6 +52,15 @@ public class TileIndicatorsPlugin extends Plugin
 	@Inject
 	private TileIndicatorsOverlay overlay;
 
+	@Inject
+	private Client client;
+
+	@Getter
+	private WorldPoint lastPlayerPosition = null;
+
+	@Getter
+	private int lastTimePlayerMoved = 0;
+
 	@Provides
 	TileIndicatorsConfig provideConfig(ConfigManager configManager)
 	{
@@ -61,5 +77,32 @@ public class TileIndicatorsPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(overlay);
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick e)
+	{
+		final WorldPoint playerPos = client.getLocalPlayer().getWorldLocation();
+		if (playerPos == null)
+		{
+			lastPlayerPosition = null;
+			return;
+		}
+
+		if (lastPlayerPosition != null && !playerPos.equals(lastPlayerPosition))
+		{
+			lastTimePlayerMoved = client.getGameCycle();
+		}
+
+		lastPlayerPosition = playerPos;
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged e)
+	{
+		if (e.getGameState() == GameState.LOGIN_SCREEN)
+		{
+			lastPlayerPosition = null;
+		}
 	}
 }

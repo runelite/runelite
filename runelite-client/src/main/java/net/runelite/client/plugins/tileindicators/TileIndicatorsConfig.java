@@ -30,6 +30,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
+import net.runelite.client.config.Range;
 
 @ConfigGroup("tileindicators")
 public interface TileIndicatorsConfig extends Config
@@ -203,5 +204,30 @@ public interface TileIndicatorsConfig extends Config
 	default double currentTileBorderWidth()
 	{
 		return 2;
+	}
+
+	@ConfigItem(
+		keyName = "trueTileFadeout",
+		name = "Fadeout",
+		description = "Fade out the true tile once the player stops moving.",
+		position = 5,
+		section = currentTile
+	)
+	default boolean trueTileFadeout()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "trueTileFadeoutTime",
+		name = "Fadeout time",
+		description = "Number of client ticks (1/50 of a second) that the true tile is drawn for after moving. Minimum is 30 (1 game tick).",
+		position = 6,
+		section = currentTile
+	)
+	@Range(min = 30)
+	default int trueTileFadeoutTime()
+	{
+		return 40;
 	}
 }

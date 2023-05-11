@@ -39,17 +39,20 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
+import net.runelite.client.util.ColorUtil;
 
 public class TileIndicatorsOverlay extends Overlay
 {
 	private final Client client;
 	private final TileIndicatorsConfig config;
+	private final TileIndicatorsPlugin plugin;
 
 	@Inject
-	private TileIndicatorsOverlay(Client client, TileIndicatorsConfig config)
+	private TileIndicatorsOverlay(Client client, TileIndicatorsConfig config, TileIndicatorsPlugin plugin)
 	{
 		this.client = client;
 		this.config = config;
+		this.plugin = plugin;
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		setPriority(OverlayPriority.MED);
@@ -74,7 +77,7 @@ public class TileIndicatorsOverlay extends Overlay
 
 		if (config.highlightCurrentTile())
 		{
-			final WorldPoint playerPos = client.getLocalPlayer().getWorldLocation();
+			final WorldPoint playerPos = plugin.getLastPlayerPosition();
 			if (playerPos == null)
 			{
 				return null;
@@ -86,7 +89,20 @@ public class TileIndicatorsOverlay extends Overlay
 				return null;
 			}
 
-			renderTile(graphics, playerPosLocal, config.highlightCurrentColor(), config.currentTileBorderWidth(), config.currentTileFillColor());
+			int timeSinceLastMove = client.getGameCycle() - plugin.getLastTimePlayerMoved();
+			int fadeoutTime = config.trueTileFadeoutTime();
+			Color color = config.highlightCurrentColor();
+			Color fillColor = config.currentTileFillColor();
+			if (!config.trueTileFadeout())
+			{
+				renderTile(graphics, playerPosLocal, color, config.currentTileBorderWidth(), fillColor);
+			}
+			else if (timeSinceLastMove < fadeoutTime)
+			{
+				// Keep it solid color for 1 game tick, to prevent it from fading out when moving on consecutive game ticks.
+				double opacity = timeSinceLastMove <= 30 ? 1.0d : (1.0d - Math.pow((timeSinceLastMove - 30) / (double) (fadeoutTime - 30), 2));
+				renderTile(graphics, playerPosLocal, ColorUtil.colorWithAlpha(color, (int) (opacity * color.getAlpha())), config.currentTileBorderWidth(), ColorUtil.colorWithAlpha(fillColor, (int) (opacity * fillColor.getAlpha())));
+			}
 		}
 
 		return null;
