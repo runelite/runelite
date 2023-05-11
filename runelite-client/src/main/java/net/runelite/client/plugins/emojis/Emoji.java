@@ -96,6 +96,8 @@ enum Emoji
 	ROCKETSHIP("<gt>==<gt>"), // >==>
 	CLOWN(":O)"),
 	COW("3:O"),
+	BLOWING_KISS(":*"),
+	SKULL("*.*"),
 	;
 
 	private static final Map<String, Emoji> emojiMap;
