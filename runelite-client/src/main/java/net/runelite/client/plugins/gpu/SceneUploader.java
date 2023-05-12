@@ -74,7 +74,7 @@ class SceneUploader
 					Tile tile = scene.getTiles()[z][x][y];
 					if (tile != null)
 					{
-						upload(tile, vertexbuffer, uvBuffer);
+						upload(scene, tile, vertexbuffer, uvBuffer);
 					}
 				}
 			}
@@ -84,12 +84,12 @@ class SceneUploader
 		log.debug("Scene upload time: {}", stopwatch);
 	}
 
-	private void upload(Tile tile, GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer)
+	private void upload(Scene scene, Tile tile, GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer)
 	{
 		Tile bridge = tile.getBridge();
 		if (bridge != null)
 		{
-			upload(bridge, vertexBuffer, uvBuffer);
+			upload(scene, bridge, vertexBuffer, uvBuffer);
 		}
 
 		SceneTilePaint sceneTilePaint = tile.getSceneTilePaint();
@@ -105,7 +105,7 @@ class SceneUploader
 				sceneTilePaint.setUvBufferOffset(-1);
 			}
 			Point tilePoint = tile.getSceneLocation();
-			int len = upload(sceneTilePaint,
+			int len = upload(scene, sceneTilePaint,
 				tile.getRenderLevel(), tilePoint.getX(), tilePoint.getY(),
 				vertexBuffer, uvBuffer,
 				0, 0, false);
@@ -200,10 +200,10 @@ class SceneUploader
 		}
 	}
 
-	int upload(SceneTilePaint tile, int tileZ, int tileX, int tileY, GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer,
+	int upload(Scene scene, SceneTilePaint tile, int tileZ, int tileX, int tileY, GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer,
 		int offsetX, int offsetY, boolean padUvs)
 	{
-		final int[][][] tileHeights = client.getTileHeights();
+		final int[][][] tileHeights = scene.getTileHeights();
 
 		final int localX = offsetX;
 		final int localY = offsetY;

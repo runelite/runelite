@@ -268,6 +268,11 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	private boolean lwjglInitted = false;
 
+	private int sceneId;
+	private int nextSceneId;
+	private GpuIntBuffer nextSceneVertexBuffer;
+	private GpuFloatBuffer nextSceneTexBuffer;
+
 	@Override
 	protected void startUp()
 	{
@@ -389,7 +394,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 				if (client.getGameState() == GameState.LOGGED_IN)
 				{
-					uploadScene();
+					Scene scene = client.getScene();
+					loadScene(scene);
+					swapScene(scene);
 				}
 
 				checkGLErrors();
@@ -997,7 +1004,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	{
 		if (computeMode == ComputeMode.NONE)
 		{
-			targetBufferOffset += sceneUploader.upload(paint,
+			targetBufferOffset += sceneUploader.upload(client.getScene(), paint,
 				tileZ, tileX, tileY,
 				vertexBuffer, uvBuffer,
 				tileX << Perspective.LOCAL_COORD_BITS,
@@ -1442,41 +1449,49 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
-		switch (gameStateChanged.getGameState())
+		if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN)
 		{
-			case LOGGED_IN:
-				if (computeMode != ComputeMode.NONE)
-				{
-					this.uploadScene();
-					checkGLErrors();
-				}
-				break;
-			case LOGIN_SCREEN:
-				// Avoid drawing the last frame's buffer during LOADING after LOGIN_SCREEN
-				targetBufferOffset = 0;
+			// Avoid drawing the last frame's buffer during LOADING after LOGIN_SCREEN
+			targetBufferOffset = 0;
 		}
 	}
 
-	private void uploadScene()
+	@Override
+	public void loadScene(Scene scene)
 	{
-		vertexBuffer.clear();
-		uvBuffer.clear();
+		if (computeMode == ComputeMode.NONE)
+		{
+			return;
+		}
 
-		sceneUploader.upload(client.getScene(), vertexBuffer, uvBuffer);
+		GpuIntBuffer vertexBuffer = new GpuIntBuffer();
+		GpuFloatBuffer uvBuffer = new GpuFloatBuffer();
+
+		sceneUploader.upload(scene, vertexBuffer, uvBuffer);
 
 		vertexBuffer.flip();
 		uvBuffer.flip();
 
-		IntBuffer vertexBuffer = this.vertexBuffer.getBuffer();
-		FloatBuffer uvBuffer = this.uvBuffer.getBuffer();
+		nextSceneVertexBuffer = vertexBuffer;
+		nextSceneTexBuffer = uvBuffer;
+		nextSceneId = sceneUploader.sceneId;
+	}
 
-		updateBuffer(sceneVertexBuffer, GL43C.GL_ARRAY_BUFFER, vertexBuffer, GL43C.GL_STATIC_COPY, CL_MEM_READ_ONLY);
-		updateBuffer(sceneUvBuffer, GL43C.GL_ARRAY_BUFFER, uvBuffer, GL43C.GL_STATIC_COPY, CL_MEM_READ_ONLY);
+	@Override
+	public void swapScene(Scene scene)
+	{
+		if (computeMode == ComputeMode.NONE)
+		{
+			return;
+		}
 
-		GL43C.glBindBuffer(GL43C.GL_ARRAY_BUFFER, 0);
+		sceneId = nextSceneId;
+		updateBuffer(sceneVertexBuffer, GL43C.GL_ARRAY_BUFFER, nextSceneVertexBuffer.getBuffer(), GL43C.GL_STATIC_COPY, CL_MEM_READ_ONLY);
+		updateBuffer(sceneUvBuffer, GL43C.GL_ARRAY_BUFFER, nextSceneTexBuffer.getBuffer(), GL43C.GL_STATIC_COPY, CL_MEM_READ_ONLY);
 
-		vertexBuffer.clear();
-		uvBuffer.clear();
+		nextSceneVertexBuffer = null;
+		nextSceneTexBuffer = null;
+		nextSceneId = -1;
 	}
 
 	/**
@@ -1569,7 +1584,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			}
 		}
 		// Model may be in the scene buffer
-		else if (renderable instanceof Model && ((Model) renderable).getSceneId() == sceneUploader.sceneId)
+		else if (renderable instanceof Model && ((Model) renderable).getSceneId() == sceneId)
 		{
 			Model model = (Model) renderable;
 
