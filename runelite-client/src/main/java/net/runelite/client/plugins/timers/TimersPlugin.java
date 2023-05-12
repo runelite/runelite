@@ -101,6 +101,8 @@ public class TimersPlugin extends Plugin
 	private static final String STAFF_OF_THE_DEAD_SPEC_MESSAGE = "Spirits of deceased evildoers offer you their protection";
 	private static final String PRAYER_ENHANCE_EXPIRED = "<col=ff0000>Your prayer enhance effect has worn off.</col>";
 	private static final String SHADOW_VEIL_MESSAGE = ">Your thieving abilities have been enhanced.</col>";
+	private static final String RESURRECT_THRALL_MESSAGE_START = ">You resurrect a ";
+	private static final String RESURRECT_THRALL_MESSAGE_END = " thrall.</col>";
 	private static final String WARD_OF_ARCEUUS_MESSAGE = ">Your defence against Arceuus magic has been strengthened.</col>";
 	private static final String PICKPOCKET_FAILURE_MESSAGE = "You fail to pick ";
 	private static final String DODGY_NECKLACE_PROTECTION_MESSAGE = "Your dodgy necklace protects you.";
@@ -294,32 +296,14 @@ public class TimersPlugin extends Plugin
 			}
 		}
 
-		if (event.getVarbitId() == Varbits.RESURRECT_THRALL && config.showArceuus())
+		if (event.getVarbitId() == Varbits.RESURRECT_THRALL && event.getValue() == 0 && config.showArceuus())
 		{
-			if (event.getValue() == 1)
-			{
-				// by default the thrall lasts 1 tick per magic level
-				int t = client.getBoostedSkillLevel(Skill.MAGIC);
-				// ca tiers being completed boosts this
-				if (client.getVarbitValue(Varbits.COMBAT_ACHIEVEMENT_TIER_GRANDMASTER) == 2)
-				{
-					t += t; // 100% boost
-				}
-				else if (client.getVarbitValue(Varbits.COMBAT_ACHIEVEMENT_TIER_MASTER) == 2)
-				{
-					t += t / 2; // 50% boost
-				}
-				createGameTimer(RESURRECT_THRALL, Duration.of(t, RSTimeUnit.GAME_TICKS));
-			}
-			else
-			{
-				removeGameTimer(RESURRECT_THRALL);
-			}
+			removeGameTimer(RESURRECT_THRALL);
 		}
 
-		if (event.getVarbitId() == Varbits.SHADOW_VEIL && config.showArceuus())
+		if (event.getVarbitId() == Varbits.SHADOW_VEIL && event.getValue() == 0 && config.showArceuus())
 		{
-			updateVarTimer(SHADOW_VEIL, event.getValue(), i -> client.getRealSkillLevel(Skill.MAGIC));
+			removeGameTimer(SHADOW_VEIL);
 		}
 
 		if (event.getVarpId() == VarPlayer.POISON && config.showAntiPoison())
@@ -556,16 +540,9 @@ public class TimersPlugin extends Plugin
 			updateVarTimer(MENAPHITE_REMEDY, event.getValue(), i -> i * 25);
 		}
 
-		if (event.getVarbitId() == Varbits.LIQUID_ADERNALINE_ACTIVE && config.showLiquidAdrenaline())
+		if (event.getVarbitId() == Varbits.LIQUID_ADERNALINE_ACTIVE && event.getValue() == 0 && config.showLiquidAdrenaline())
 		{
-			if (event.getValue() == 1)
-			{
-				createGameTimer(LIQUID_ADRENALINE);
-			}
-			else
-			{
-				removeGameTimer(LIQUID_ADRENALINE);
-			}
+			removeGameTimer(LIQUID_ADRENALINE);
 		}
 
 		if (event.getVarbitId() == Varbits.FARMERS_AFFINITY && config.showFarmersAffinity())
@@ -836,11 +813,26 @@ public class TimersPlugin extends Plugin
 			final int magicLevel = client.getRealSkillLevel(Skill.MAGIC);
 			if (message.endsWith(SHADOW_VEIL_MESSAGE))
 			{
-				updateVarTimer(SHADOW_VEIL, 1, i -> magicLevel);
+				createGameTimer(SHADOW_VEIL, Duration.of(magicLevel, RSTimeUnit.GAME_TICKS));
 			}
 			else if (message.endsWith(WARD_OF_ARCEUUS_MESSAGE))
 			{
 				createGameTimer(WARD_OF_ARCEUUS, Duration.of(magicLevel, RSTimeUnit.GAME_TICKS));
+			}
+			else if (message.contains(RESURRECT_THRALL_MESSAGE_START) && message.endsWith(RESURRECT_THRALL_MESSAGE_END))
+			{
+				// by default the thrall lasts 1 tick per magic level
+				int t = client.getBoostedSkillLevel(Skill.MAGIC);
+				// ca tiers being completed boosts this
+				if (client.getVarbitValue(Varbits.COMBAT_ACHIEVEMENT_TIER_GRANDMASTER) == 2)
+				{
+					t += t; // 100% boost
+				}
+				else if (client.getVarbitValue(Varbits.COMBAT_ACHIEVEMENT_TIER_MASTER) == 2)
+				{
+					t += t / 2; // 50% boost
+				}
+				createGameTimer(RESURRECT_THRALL, Duration.of(t, RSTimeUnit.GAME_TICKS));
 			}
 		}
 
