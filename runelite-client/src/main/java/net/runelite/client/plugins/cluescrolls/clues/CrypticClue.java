@@ -269,7 +269,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		new CrypticClue("Thanks, Grandma!", "Tynan", new WorldPoint(1836, 3786, 0), "Tynan can be found in the north-east corner of Port Piscarilius."),
 		new CrypticClue("In a town where everyone has perfect vision, seek some locked drawers in a house that sits opposite a workshop.", "Chicken", DRAWERS_25766, new WorldPoint(2709, 3478, 0), "The Seers' Village house south of the Elemental Workshop entrance. Kill any Chicken to obtain a key."),
 		new CrypticClue("Search the crates in East Ardougne's general store.", CRATE_357, new WorldPoint(2615, 3291, 0), "Located south of the Ardougne church."),
-		new CrypticClue("Come brave adventurer, your sense is on fire. If you talk to me, it's an old god you desire.", "Viggora", null, "Speak to Viggora while wearing a ring of visibility and a Ghostspeak amulet."),
+		new CrypticClue("Come brave adventurer, your sense is on fire. If you talk to me, it's an old god you desire.", "Viggora", -1, CrypticClue::getViggoraLocation, "Speak to Viggora while wearing a ring of visibility and a Ghostspeak amulet.", null),
 		new CrypticClue("2 musical birds. Dig in front of the spinning light.", new WorldPoint(2671, 10396, 0), "Dig in front of the spinning light in Ping and Pong's room inside the Iceberg"),
 		new CrypticClue("Search the wheelbarrow in Rimmington mine.", WHEELBARROW_9625, new WorldPoint(2978, 3239, 0), "The Rimmington mining site is located north of Rimmington."),
 		new CrypticClue("Belladonna, my dear. If only I had gloves, then I could hold you at last.", "Tool Leprechaun", new WorldPoint(3088, 3357, 0), "Talk to Tool Leprechaun at Draynor Manor."),
@@ -335,6 +335,10 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		new CrypticClue("Try not to let yourself be dazzled when you search these drawers.", DRAWERS_350, new WorldPoint(2561, 3323, 0), "Search the western drawers in Jimmy Dazzler's home near the East Ardougne Rat Pits."),
 		new CrypticClue("The Big High War God left his mark on this place.", new WorldPoint(3572, 4372, 0), "Dig anywhere in Yu'biusk. Fairy ring BLQ.")
 	);
+
+	private static final WorldPoint VIGGORA_ROGUES_CASTLE = new WorldPoint(3295, 3934, 1);
+	private static final WorldPoint VIGGORA_SLAYER_TOWER = new WorldPoint(3447, 3547, 1);
+	private static final WorldPoint VIGGORA_EDGEVILLE_DUNGEON = new WorldPoint(3121, 9995, 0);
 
 	private final String text;
 	private final String npc;
@@ -407,6 +411,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 	}
 
 	@Nullable
+	@Override
 	public WorldPoint getLocation(ClueScrollPlugin plugin)
 	{
 		return locationProvider == null ? null : locationProvider.apply(plugin);
@@ -525,5 +530,25 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 	public int[] getConfigKeys()
 	{
 		return new int[]{text.hashCode()};
+	}
+
+	private static WorldPoint getViggoraLocation(ClueScrollPlugin plugin)
+	{
+		int varb = plugin.getClient().getVarbitValue(Varbits.VIGGORA_LOCATION);
+		switch (varb)
+		{
+			case 1:
+				return VIGGORA_ROGUES_CASTLE;
+
+			case 2:
+				return VIGGORA_SLAYER_TOWER;
+
+			case 3:
+				return VIGGORA_EDGEVILLE_DUNGEON;
+
+			default:
+				log.warn("Unknown viggora location for unexpected varb value {}", varb);
+				return null;
+		}
 	}
 }

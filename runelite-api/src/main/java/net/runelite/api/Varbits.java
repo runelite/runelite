@@ -830,4 +830,11 @@ public final class Varbits
 	public static final int DISABLE_LEVEL_UP_INTERFACE = 9452;
 
 	public static final int PRAYERBOOK = 14826;
+
+	/**
+	 * During and after Curse of the Empty Lord, Viggora can be located in one of three locations,
+	 * which is uniquely and permanently set for each player.
+	 * This varbit determines which location he will appear in, which is useful for a master clue step.
+	 */
+	public static final int VIGGORA_LOCATION = 815;
 }
