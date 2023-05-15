@@ -1581,7 +1581,15 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 			if (OBJECT_MENU_TYPES.contains(type))
 			{
-				final int objectId = menuEntry.getIdentifier();
+				// Get multiloc id
+				int objectId = menuEntry.getIdentifier();
+				ObjectComposition objectComposition = client.getObjectDefinition(objectId);
+				if (objectComposition.getImpostorIds() != null)
+				{
+					objectComposition = objectComposition.getImpostor();
+					objectId = objectComposition.getId();
+				}
+
 				final boolean shift = shiftModifier();
 				Integer customOption = getObjectSwapConfig(shift, objectId);
 				if ((customOption == null && shift && config.objectShiftClickWalkHere())
