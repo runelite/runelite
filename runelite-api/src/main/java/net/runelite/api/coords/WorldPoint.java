@@ -234,23 +234,25 @@ public class WorldPoint
 		}
 	}
 
+	public static Collection<WorldPoint> toLocalInstance(Client client, WorldPoint worldPoint)
+	{
+		return toLocalInstance(client.getScene(), worldPoint);
+	}
+
 	/**
 	 * Get occurrences of a tile on the scene, accounting for instances. There may be
 	 * more than one if the same template chunk occurs more than once on the scene.
-	 * @param client
-	 * @param worldPoint
-	 * @return
 	 */
-	public static Collection<WorldPoint> toLocalInstance(Client client, WorldPoint worldPoint)
+	public static Collection<WorldPoint> toLocalInstance(Scene scene, WorldPoint worldPoint)
 	{
-		if (!client.isInInstancedRegion())
+		if (!scene.isInstance())
 		{
 			return Collections.singleton(worldPoint);
 		}
 
 		// find instance chunks using the template point. there might be more than one.
 		List<WorldPoint> worldPoints = new ArrayList<>();
-		int[][][] instanceTemplateChunks = client.getInstanceTemplateChunks();
+		int[][][] instanceTemplateChunks = scene.getInstanceTemplateChunks();
 		for (int z = 0; z < instanceTemplateChunks.length; z++)
 		{
 			for (int x = 0; x < instanceTemplateChunks[z].length; ++x)
@@ -266,8 +268,8 @@ public class WorldPoint
 						&& worldPoint.getY() >= templateChunkY && worldPoint.getY() < templateChunkY + CHUNK_SIZE
 						&& plane == worldPoint.getPlane())
 					{
-						WorldPoint p = new WorldPoint(client.getBaseX() + x * CHUNK_SIZE + (worldPoint.getX() & (CHUNK_SIZE - 1)),
-							client.getBaseY() + y * CHUNK_SIZE + (worldPoint.getY() & (CHUNK_SIZE - 1)),
+						WorldPoint p = new WorldPoint(scene.getBaseX() + x * CHUNK_SIZE + (worldPoint.getX() & (CHUNK_SIZE - 1)),
+							scene.getBaseY() + y * CHUNK_SIZE + (worldPoint.getY() & (CHUNK_SIZE - 1)),
 							z);
 						p = rotate(p, rotation);
 						worldPoints.add(p);
