@@ -208,8 +208,8 @@ public class AgilityPlugin extends Plugin
 		{
 			agilityOverlay.updateLayer();
 
-			// Forces rebuildOverlayLayers
-			overlayManager.saveOverlay(agilityOverlay);
+			overlayManager.remove(agilityOverlay);
+			overlayManager.add(agilityOverlay);
 		}
 	}
 
