@@ -38,6 +38,7 @@ import net.runelite.api.Client;
 import net.runelite.api.IconID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.Player;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
@@ -251,13 +252,13 @@ public class HiscorePlugin extends Plugin
 
 		if (client != null)
 		{
-			switch (client.getAccountType())
+			switch (client.getVarbitValue(Varbits.ACCOUNT_TYPE))
 			{
-				case IRONMAN:
+				case 1:
 					return HiscoreEndpoint.IRONMAN;
-				case ULTIMATE_IRONMAN:
+				case 2:
 					return HiscoreEndpoint.ULTIMATE_IRONMAN;
-				case HARDCORE_IRONMAN:
+				case 3:
 					return HiscoreEndpoint.HARDCORE_IRONMAN;
 			}
 		}
