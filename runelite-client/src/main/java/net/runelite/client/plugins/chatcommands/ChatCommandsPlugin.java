@@ -70,7 +70,6 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.vars.AccountType;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetID.ACHIEVEMENT_DIARY_SCROLL_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.ADVENTURE_LOG_ID;
@@ -1865,7 +1864,7 @@ public class ChatCommandsPlugin extends Plugin
 			return endpoint;
 		}
 
-		return toEndPoint(client.getAccountType());
+		return toEndPoint(client.getVarbitValue(Varbits.ACCOUNT_TYPE));
 	}
 
 	/**
@@ -1904,15 +1903,15 @@ public class ChatCommandsPlugin extends Plugin
 	 * @param accountType account type
 	 * @return hiscore endpoint
 	 */
-	private static HiscoreEndpoint toEndPoint(final AccountType accountType)
+	private static HiscoreEndpoint toEndPoint(final int accountType)
 	{
 		switch (accountType)
 		{
-			case IRONMAN:
+			case 1:
 				return HiscoreEndpoint.IRONMAN;
-			case ULTIMATE_IRONMAN:
+			case 2:
 				return HiscoreEndpoint.ULTIMATE_IRONMAN;
-			case HARDCORE_IRONMAN:
+			case 3:
 				return HiscoreEndpoint.HARDCORE_IRONMAN;
 			default:
 				return HiscoreEndpoint.NORMAL;
