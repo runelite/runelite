@@ -160,7 +160,7 @@ class TabManager
 		return tabs.indexOf(tagTab);
 	}
 
-	private int indexOf(String tag)
+	int indexOf(String tag)
 	{
 		return indexOf(find(tag));
 	}

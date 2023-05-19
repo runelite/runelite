@@ -440,6 +440,7 @@ public class TabInterface
 				else
 				{
 					openTag(Text.removeTags(clicked.getName()));
+					scrollTab(tabManager.indexOf(clicked.getName()) - currentTabIndex);
 					// openTag will reset and relayout
 				}
 
