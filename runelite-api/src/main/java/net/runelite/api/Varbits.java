@@ -520,7 +520,15 @@ public final class Varbits
 	public static final int AUTOWEED = 5557;
 
 	/**
-	 * The varbit that stores the players {@code AccountType}.
+	 * The player's account type.
+	 * <p>
+	 * 0 = normal
+	 * 1 = ironman
+	 * 2 = ultimate ironman
+	 * 3 = hardcore ironman
+	 * 4 = group ironman
+	 * 5 = hardcore group ironman
+	 * 6 = unranked group ironman
 	 */
 	public static final int ACCOUNT_TYPE = 1777;
 
