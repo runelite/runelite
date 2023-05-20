@@ -443,6 +443,15 @@ public interface ChatColorConfig extends Config
 	Color opaquePlayerUsername();
 
 	@ConfigItem(
+			position = 41,
+			keyName = "opaqueInputText",
+			name = "Chat input text",
+			description = "Color of the chat input text",
+			section = opaqueSection
+	)
+	Color opaqueInputText();
+
+	@ConfigItem(
 		position = 51,
 		keyName = "transparentPublicChat",
 		name = "Public chat (transparent)",
@@ -838,4 +847,13 @@ public interface ChatColorConfig extends Config
 		section = transparentSection
 	)
 	Color transparentPlayerUsername();
+
+	@ConfigItem(
+			position = 91,
+			keyName = "transparentInputText",
+			name = "Chat input text (transparent)",
+			description = "Color of the chat input text (transparent)",
+			section = transparentSection
+	)
+	Color transparentInputText();
 }

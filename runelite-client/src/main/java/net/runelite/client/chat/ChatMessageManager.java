@@ -117,6 +117,7 @@ public class ChatMessageManager
 		final boolean isChatboxTransparent = client.isResized() && client.getVarbitValue(Varbits.TRANSPARENT_CHATBOX) == 1;
 		Color usernameColor = null;
 		Color channelColor = null;
+		Color inputColor = null;
 
 		switch (chatMessageType)
 		{
@@ -160,6 +161,8 @@ public class ChatMessageManager
 				usernameColor = isChatboxTransparent ? chatColorConfig.transparentClanChatGuestUsernames() : chatColorConfig.opaqueClanChatGuestUsernames();
 				channelColor = isChatboxTransparent ? chatColorConfig.transparentClanChannelGuestName() : chatColorConfig.opaqueClanGuestChatChannelName();
 				break;
+			case CHAT_INPUTTEXT:
+				inputColor = isChatboxTransparent ? chatColorConfig.transparentInputText() : chatColorConfig.opaqueInputText();
 		}
 
 		if (usernameColor != null)
@@ -170,6 +173,11 @@ public class ChatMessageManager
 		if (channelColor != null && !Strings.isNullOrEmpty(channel))
 		{
 			stringStack[size - 4] = ColorUtil.wrapWithColorTag(channel, channelColor);
+		}
+
+		if (inputColor != null && !Strings.isNullOrEmpty(channel))
+		{
+			stringStack[size - 4] = ColorUtil.wrapWithColorTag(channel, inputColor);
 		}
 
 		String prefix = "";
