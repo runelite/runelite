@@ -43,6 +43,8 @@ import java.awt.LayoutManager;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -146,6 +148,7 @@ public class ClientUI
 	private JButton sidebarNavigationJButton;
 	private Dimension lastClientSize;
 	private Cursor defaultCursor;
+	private boolean listenerAdded;
 
 	@Inject(optional = true)
 	@Named("minMemoryLimit")
@@ -1163,7 +1166,25 @@ public class ClientUI
 
 		if (frame.isAlwaysOnTopSupported())
 		{
-			frame.setAlwaysOnTop(config.gameAlwaysOnTop());
+			updateAlwaysOnTop();
+
+			if (!listenerAdded)
+			{
+				frame.addComponentListener(new ComponentListener()
+										   {
+											   @Override
+											   public void componentResized(ComponentEvent e)
+											   {
+												   updateAlwaysOnTop();
+												   log.debug("Updated AlwaysOnTop: " + frame.isAlwaysOnTop());
+											   }
+											   @Override public void componentMoved(ComponentEvent e) { }
+											   @Override public void componentShown(ComponentEvent e) { }
+											   @Override public void componentHidden(ComponentEvent e) { }
+										   }
+				);
+				listenerAdded = true;
+			}
 		}
 
 		if (updateResizable)
@@ -1235,6 +1256,25 @@ public class ClientUI
 
 			configManager.unsetConfiguration(CONFIG_GROUP, CONFIG_CLIENT_MAXIMIZED);
 			configManager.setConfiguration(CONFIG_GROUP, CONFIG_CLIENT_BOUNDS, bounds);
+		}
+	}
+
+	private void updateAlwaysOnTop()
+	{
+		switch (config.gamePinToTop())
+		{
+			case OFF:
+				frame.setAlwaysOnTop(false);
+				break;
+			case WINDOWED_ONLY:
+				frame.setAlwaysOnTop((frame.getExtendedState() & Frame.MAXIMIZED_BOTH) != Frame.MAXIMIZED_BOTH);
+				break;
+			case FULL_SCREEN_ONLY:
+				frame.setAlwaysOnTop((frame.getExtendedState() & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH);
+				break;
+			case ALWAYS:
+				frame.setAlwaysOnTop(true);
+				break;
 		}
 	}
 }

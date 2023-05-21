@@ -151,14 +151,14 @@ public interface RuneLiteConfig extends Config
 
 	@ConfigItem(
 		keyName = "gameAlwaysOnTop",
-		name = "Always on top",
+		name = "Pin to top",
 		description = "The game will always be on the top of the screen",
 		position = 17,
 		section = windowSettings
 	)
-	default boolean gameAlwaysOnTop()
+	default PinToTop gamePinToTop()
 	{
-		return false;
+		return PinToTop.OFF;
 	}
 
 	@ConfigItem(
