@@ -137,6 +137,7 @@ public class CompostTracker
 			.stream()
 			.flatMap(fr -> Arrays.stream(fr.getPatches()))
 			.filter(fp -> fp.getVarbit() == patchDef.getVarbitId())
+			.filter(fp -> fp.getImplementation() != PatchImplementation.COMPOST && fp.getImplementation() != PatchImplementation.GIANT_COMPOST)
 			.findFirst()
 			.orElse(null);
 		if (targetPatch == null)
