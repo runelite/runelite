@@ -66,7 +66,7 @@ import net.runelite.client.util.Text;
 public class HiscorePlugin extends Plugin
 {
 	private static final String LOOKUP = "Lookup";
-	private static final Pattern BOUNTY_PATTERN = Pattern.compile("<col=ff0000>You've been assigned a target: (.*)</col>");
+	private static final Pattern BOUNTY_PATTERN = Pattern.compile("You have been assigned a new target: <col=ff3045>(.*)</col>");
 
 	@Inject
 	@Nullable
@@ -221,7 +221,7 @@ public class HiscorePlugin extends Plugin
 		localHiscoreEndpoint = findHiscoreEndpointFromLocalPlayer();
 	}
 
-	private void lookupPlayer(String playerName, HiscoreEndpoint endpoint)
+	void lookupPlayer(String playerName, HiscoreEndpoint endpoint)
 	{
 		SwingUtilities.invokeLater(() ->
 		{
