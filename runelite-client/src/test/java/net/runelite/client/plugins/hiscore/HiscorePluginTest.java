@@ -74,7 +74,7 @@ public class HiscorePluginTest
 
 		ChatMessage chatMessage = new ChatMessage();
 		chatMessage.setType(ChatMessageType.GAMEMESSAGE);
-		chatMessage.setMessage("You have been assigned a new target: <col=ff3045>PLAYER NAME</col>");
+		chatMessage.setMessage("You have been assigned a new target: <col=ff3045>PLAYER NAME</col>"); // or e00a19
 
 		hiscorePlugin.onChatMessage(chatMessage);
 
