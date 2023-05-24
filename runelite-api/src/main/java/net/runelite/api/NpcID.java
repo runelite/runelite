@@ -10154,8 +10154,12 @@ public final class NpcID
 	public static final int HALLOWED_SEPULCHRE_COFFIN = 12110;
 	public static final int HALLOWED_SEPULCHRE_GRAND_COFFIN = 12111;
 	public static final int ENT_TRUNK_12112 = 12112;
+	public static final int EMBLEM_TRADER_12113 = 12113;
+	public static final int CORRUPTED_WARRIOR = 12114;
+	public static final int CORRUPTED_WARRIOR_12115 = 12115;
 	public static final int EMMA = 12116;
 	public static final int SUZIE = 12117;
+	public static final int CORRUPTED_WARRIOR_12118 = 12118;
 	public static final int SIR_PEAR_VISOR = 12121;
 	public static final int SIR_PEAR_VISOR_12122 = 12122;
 	public static final int CRYSTALLINE_HUNLLEF_12123 = 12123;
