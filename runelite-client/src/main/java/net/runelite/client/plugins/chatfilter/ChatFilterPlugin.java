@@ -218,7 +218,7 @@ public class ChatFilterPlugin extends Plugin
 			: COLLAPSIBLE_MESSAGETYPES.contains(chatMessageType) && config.collapseGameChat();
 		if (!blockMessage && shouldCollapse)
 		{
-			Duplicate duplicateCacheEntry = duplicateChatCache.get(name + ":" + message);
+			Duplicate duplicateCacheEntry = duplicateChatCache.get(name + ":" + stripAccents(message));
 			// If messageId is -1 then this is a replayed message, which we can't easily collapse since we don't know
 			// the most recent message. This is only for public chat since it is the only thing both replayed and also
 			// collapsed. Just allow uncollapsed playback.
@@ -241,7 +241,7 @@ public class ChatFilterPlugin extends Plugin
 			// Replace the message
 			if (duplicateCount > 1)
 			{
-				message += " (" + duplicateCount + ")";
+				message = stripAccents(message) + " (" + duplicateCount + ")";
 			}
 
 			stringStack[stringStackSize - 1] = message;
@@ -273,7 +273,7 @@ public class ChatFilterPlugin extends Plugin
 		{
 			final MessageNode messageNode = chatMessage.getMessageNode();
 			// remove and re-insert into map to move to end of list
-			final String key = messageNode.getName() + ":" + messageNode.getValue();
+			final String key = messageNode.getName() + ":" + stripAccents(messageNode.getValue());
 			Duplicate duplicate = duplicateChatCache.remove(key);
 			if (duplicate == null)
 			{
