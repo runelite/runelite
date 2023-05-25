@@ -821,4 +821,9 @@ public final class Varbits
 	 * The assigned boss for boss slayer.
 	 */
 	public static final int SLAYER_TASK_BOSS = 4723;
+
+	/**
+	 * Whether the level up interface is disabled
+	 */
+	public static final int DISABLE_LEVEL_UP_INTERFACE = 9452;
 }
