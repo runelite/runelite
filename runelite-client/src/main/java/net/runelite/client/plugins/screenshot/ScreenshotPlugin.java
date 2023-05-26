@@ -94,6 +94,7 @@ import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.OSType;
 import net.runelite.client.util.Text;
+import org.apache.commons.lang3.StringUtils;
 
 @PluginDescriptor(
 	name = "Screenshot",
@@ -533,7 +534,7 @@ public class ScreenshotPlugin extends Plugin
 			Matcher m = LEVEL_UP_MESSAGE_PATTERN.matcher(chatMessage);
 			if (m.find())
 			{
-				String skillName = m.group(1);
+				String skillName = StringUtils.capitalize(m.group(1));
 				String skillLevel = m.group(2);
 				String fileName = skillName + "(" + skillLevel + ")";
 				String screenshotSubDir = "Levels";
