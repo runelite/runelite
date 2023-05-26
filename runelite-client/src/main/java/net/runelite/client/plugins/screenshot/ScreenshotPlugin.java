@@ -69,7 +69,6 @@ import static net.runelite.api.widgets.WidgetID.CHAMBERS_OF_XERIC_REWARD_GROUP_I
 import static net.runelite.api.widgets.WidgetID.CLUE_SCROLL_REWARD_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.DIALOG_SPRITE_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.KINGDOM_GROUP_ID;
-import static net.runelite.api.widgets.WidgetID.LEVEL_UP_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.QUEST_COMPLETED_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.THEATRE_OF_BLOOD_REWARD_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.TOA_REWARD_GROUP_ID;
@@ -109,7 +108,6 @@ public class ScreenshotPlugin extends Plugin
 	private static final int GAUNTLET_REGION = 7512;
 	private static final int CORRUPTED_GAUNTLET_REGION = 7768;
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
-	private static final Pattern LEVEL_UP_PATTERN = Pattern.compile(".*Your ([a-zA-Z]+) (?:level is|are)? now (\\d+)\\.");
 	private static final Pattern LEVEL_UP_MESSAGE_PATTERN = Pattern.compile("Congratulations, you've just advanced your ([a-zA-Z]+) level. You are now level (\\d+)\\.");
 	private static final Pattern BOSSKILL_MESSAGE_PATTERN = Pattern.compile("Your (.+) kill count is: <col=ff0000>(\\d+)</col>.");
 	private static final Pattern VALUABLE_DROP_PATTERN = Pattern.compile(".*Valuable drop: ([^<>]+?\\(((?:\\d+,?)+) coins\\))(?:</col>)?");
@@ -270,12 +268,7 @@ public class ScreenshotPlugin extends Plugin
 		String screenshotSubDir = null;
 
 		String fileName = null;
-		if (client.getWidget(WidgetInfo.LEVEL_UP_LEVEL) != null)
-		{
-			fileName = parseLevelUpWidget(WidgetInfo.LEVEL_UP_LEVEL);
-			screenshotSubDir = "Levels";
-		}
-		else if (client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT) != null)
+		if (client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT) != null)
 		{
 			String text = client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT).getText();
 			if (Text.removeTags(text).contains("High level gamble"))
@@ -284,14 +277,6 @@ public class ScreenshotPlugin extends Plugin
 				{
 					fileName = parseBAHighGambleWidget(text);
 					screenshotSubDir = "BA High Gambles";
-				}
-			}
-			else
-			{
-				if (config.screenshotLevels())
-				{
-					fileName = parseLevelUpWidget(WidgetInfo.DIALOG_SPRITE_TEXT);
-					screenshotSubDir = "Levels";
 				}
 			}
 		}
@@ -528,7 +513,7 @@ public class ScreenshotPlugin extends Plugin
 			}
 		}
 
-		if (client.getVarbitValue(Varbits.DISABLE_LEVEL_UP_INTERFACE) == 1 && config.screenshotLevels())
+		if (config.screenshotLevels())
 		{
 			Matcher m = LEVEL_UP_MESSAGE_PATTERN.matcher(chatMessage);
 			if (m.find())
@@ -562,14 +547,8 @@ public class ScreenshotPlugin extends Plugin
 					return;
 				}
 				break;
-			case LEVEL_UP_GROUP_ID:
-				if (!config.screenshotLevels())
-				{
-					return;
-				}
-				break;
 			case DIALOG_SPRITE_GROUP_ID:
-				if (!(config.screenshotLevels() || config.screenshotHighGamble()))
+				if (!config.screenshotHighGamble())
 				{
 					return;
 				}
@@ -683,11 +662,10 @@ public class ScreenshotPlugin extends Plugin
 				killCountNumber = 0;
 				break;
 			}
-			case LEVEL_UP_GROUP_ID:
 			case DIALOG_SPRITE_GROUP_ID:
 			case QUEST_COMPLETED_GROUP_ID:
 			{
-				// level up widget gets loaded prior to the text being set, so wait until the next tick
+				// some dialog widgets get loaded prior to the text being set, so wait until the next tick
 				shouldTakeScreenshot = true;
 				return;
 			}
@@ -753,33 +731,6 @@ public class ScreenshotPlugin extends Plugin
 	private void manualScreenshot()
 	{
 		takeScreenshot("", null);
-	}
-
-	/**
-	 * Receives a WidgetInfo pointing to the middle widget of the level-up dialog,
-	 * and parses it into a shortened string for filename usage.
-	 *
-	 * @param levelUpLevel WidgetInfo pointing to the required text widget,
-	 *                     with the format "Your Skill (level is/are) now 99."
-	 * @return Shortened string in the format "Skill(99)"
-	 */
-	String parseLevelUpWidget(WidgetInfo levelUpLevel)
-	{
-		Widget levelChild = client.getWidget(levelUpLevel);
-		if (levelChild == null)
-		{
-			return null;
-		}
-
-		Matcher m = LEVEL_UP_PATTERN.matcher(levelChild.getText());
-		if (!m.matches())
-		{
-			return null;
-		}
-
-		String skillName = m.group(1);
-		String skillLevel = m.group(2);
-		return skillName + "(" + skillLevel + ")";
 	}
 
 	/**

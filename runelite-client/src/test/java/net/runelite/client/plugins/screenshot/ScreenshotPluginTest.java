@@ -42,9 +42,7 @@ import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import static net.runelite.api.widgets.WidgetID.DIALOG_SPRITE_GROUP_ID;
-import static net.runelite.api.widgets.WidgetID.LEVEL_UP_GROUP_ID;
 import static net.runelite.api.widgets.WidgetInfo.DIALOG_SPRITE_TEXT;
-import static net.runelite.api.widgets.WidgetInfo.LEVEL_UP_LEVEL;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.ui.ClientUI;
@@ -57,8 +55,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
 import org.mockito.Mock;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.reset;
@@ -261,100 +259,12 @@ public class ScreenshotPluginTest
 	}
 
 	@Test
-	public void testHitpointsLevel99()
-	{
-		Widget levelChild = mock(Widget.class);
-		when(client.getWidget(eq(LEVEL_UP_LEVEL))).thenReturn(levelChild);
-
-		when(levelChild.getText()).thenReturn("Your Hitpoints are now 99.");
-
-		assertEquals("Hitpoints(99)", screenshotPlugin.parseLevelUpWidget(LEVEL_UP_LEVEL));
-
-		WidgetLoaded event = new WidgetLoaded();
-		event.setGroupId(LEVEL_UP_GROUP_ID);
-		screenshotPlugin.onWidgetLoaded(event);
-
-		GameTick tick = new GameTick();
-		screenshotPlugin.onGameTick(tick);
-
-		verify(screenshotPlugin).takeScreenshot("Hitpoints(99)", "Levels");
-	}
-
-	@Test
-	public void testFiremakingLevel9()
-	{
-		Widget levelChild = mock(Widget.class);
-		when(client.getWidget(eq(LEVEL_UP_LEVEL))).thenReturn(levelChild);
-
-		when(levelChild.getText()).thenReturn("Your Firemaking level is now 9.");
-
-		assertEquals("Firemaking(9)", screenshotPlugin.parseLevelUpWidget(LEVEL_UP_LEVEL));
-
-		WidgetLoaded event = new WidgetLoaded();
-		event.setGroupId(LEVEL_UP_GROUP_ID);
-		screenshotPlugin.onWidgetLoaded(event);
-
-		GameTick tick = new GameTick();
-		screenshotPlugin.onGameTick(tick);
-
-		verify(screenshotPlugin).takeScreenshot("Firemaking(9)", "Levels");
-	}
-
-	@Test
-	public void testAttackLevel70()
-	{
-		Widget levelChild = mock(Widget.class);
-		when(client.getWidget(eq(LEVEL_UP_LEVEL))).thenReturn(levelChild);
-
-		when(levelChild.getText()).thenReturn("Your Attack level is now 70.");
-
-		assertEquals("Attack(70)", screenshotPlugin.parseLevelUpWidget(LEVEL_UP_LEVEL));
-
-		WidgetLoaded event = new WidgetLoaded();
-		event.setGroupId(LEVEL_UP_GROUP_ID);
-		screenshotPlugin.onWidgetLoaded(event);
-
-		GameTick tick = new GameTick();
-		screenshotPlugin.onGameTick(tick);
-
-		verify(screenshotPlugin).takeScreenshot("Attack(70)", "Levels");
-	}
-
-	@Test
-	public void testHunterLevel2()
-	{
-		Widget levelChild = mock(Widget.class);
-		when(client.getWidget(eq(DIALOG_SPRITE_TEXT))).thenReturn(levelChild);
-
-		when(levelChild.getText()).thenReturn(HUNTER_LEVEL_2_TEXT);
-
-		assertEquals("Hunter(2)", screenshotPlugin.parseLevelUpWidget(DIALOG_SPRITE_TEXT));
-
-		WidgetLoaded event = new WidgetLoaded();
-		event.setGroupId(DIALOG_SPRITE_GROUP_ID);
-		screenshotPlugin.onWidgetLoaded(event);
-
-		GameTick tick = new GameTick();
-		screenshotPlugin.onGameTick(tick);
-
-		verify(screenshotPlugin).takeScreenshot("Hunter(2)", "Levels");
-	}
-
-	@Test
 	public void testCraftingLevel96NoInterface()
 	{
-		when(client.getVarbitValue(Varbits.DISABLE_LEVEL_UP_INTERFACE)).thenReturn(1);
-
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", CRAFTING_LEVEL_96_MESSAGE, null, 0);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
 		verify(screenshotPlugin).takeScreenshot("Crafting(96)", "Levels");
-		reset(screenshotPlugin);
-
-		when(client.getVarbitValue(Varbits.DISABLE_LEVEL_UP_INTERFACE)).thenReturn(0);
-
-		screenshotPlugin.onChatMessage(chatMessageEvent);
-		verify(screenshotPlugin, never()).takeScreenshot(anyString(), anyString());
 	}
 
 	@Test
@@ -390,8 +300,6 @@ public class ScreenshotPluginTest
 	@Test
 	public void testLevelUpScreenshotsDisabled()
 	{
-		// Level up dialogs use the same widget interface as BA high gamble results
-		when(screenshotConfig.screenshotLevels()).thenReturn(false);
 		when(screenshotConfig.screenshotHighGamble()).thenReturn(true);
 		Widget dialogChild = mock(Widget.class);
 		when(dialogChild.getText()).thenReturn(HUNTER_LEVEL_2_TEXT);
@@ -409,12 +317,10 @@ public class ScreenshotPluginTest
 	@Test
 	public void testBAHighGambleScreenshotsDisabled()
 	{
-		// BA high gamble results use the same widget interface as level up dialogs
-		when(screenshotConfig.screenshotLevels()).thenReturn(true);
 		when(screenshotConfig.screenshotHighGamble()).thenReturn(false);
 		Widget dialogChild = mock(Widget.class);
-		when(dialogChild.getText()).thenReturn(BA_HIGH_GAMBLE_REWARD);
-		when(client.getWidget(DIALOG_SPRITE_TEXT)).thenReturn(dialogChild);
+		lenient().when(dialogChild.getText()).thenReturn(BA_HIGH_GAMBLE_REWARD);
+		lenient().when(client.getWidget(DIALOG_SPRITE_TEXT)).thenReturn(dialogChild);
 
 		WidgetLoaded event = new WidgetLoaded();
 		event.setGroupId(DIALOG_SPRITE_GROUP_ID);
