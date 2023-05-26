@@ -821,4 +821,9 @@ public final class Varbits
 	 * The assigned boss for boss slayer.
 	 */
 	public static final int SLAYER_TASK_BOSS = 4723;
+
+	/**
+	 * Varbit for the circlet of water charges when equipped
+	 */
+	public static final int CIRCLET_OF_WATER_CHARGES = 14191;
 }
