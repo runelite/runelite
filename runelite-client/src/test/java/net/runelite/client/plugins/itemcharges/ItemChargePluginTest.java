@@ -48,7 +48,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 
 import static net.runelite.api.widgets.WidgetID.DIALOG_SPRITE_GROUP_ID;
-import static net.runelite.api.widgets.WidgetInfo.DIALOG_SPRITE_SPRITE;
 import static net.runelite.api.widgets.WidgetInfo.DIALOG_SPRITE_TEXT;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
