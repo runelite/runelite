@@ -108,6 +108,8 @@ public class ItemChargePluginTest
 	private static final String CHECK_CIRCLET_OF_WATER = "Your circlet has 4 charges left.";
 	private static final String CHECK_CIRCLET_OF_WATER_ONE = "Your circlet has 1 charge left.";
 	private static final String CHECK_CIRCLET_OF_WATER_DEPLETED = "<col=ef1020>Your circlet has run out of charges.</col>";
+	private static final String CHARGE_CIRCLET_OF_WATER = "You add 3 charges to your circlet.<br>It now has 7 charges.";
+	private static final String CHARGE_CIRCLET_OF_WATER_UNCHARGED = "You add 3 charges to your circlet.";
 
 	@Mock
 	@Bind
@@ -551,30 +553,53 @@ public class ItemChargePluginTest
 	public void testCircletOfWaterCharge()
 	{
 		Widget chargeChild = mock(Widget.class);
-		chargeChild.setItemId(ItemID.CIRCLET_OF_WATER);
-		when(client.getWidget(eq(DIALOG_SPRITE_SPRITE))).thenReturn(chargeChild);
+		when(chargeChild.getItemId()).thenReturn(ItemID.CIRCLET_OF_WATER);
 
 		Widget chargeChild2 = mock(Widget.class);
-		chargeChild2.setText("You add 3 charges to your circlet.<br>It now has 7 charges.");
 		when(client.getWidget(eq(DIALOG_SPRITE_TEXT))).thenReturn(chargeChild2);
 
-		when(chargeChild2.getText()).thenReturn("You add 3 charges to your circlet.<br>It now has 7 charges.");
-
-		//when(client.getWidget(WidgetInfo.DIALOG_SPRITE_SPRITE)).thenReturn(ItemID.CIRCLET_OF_WATER);
+		when(chargeChild2.getText()).thenReturn(CHARGE_CIRCLET_OF_WATER);
 
 		WidgetLoaded event = new WidgetLoaded();
 		event.setGroupId(DIALOG_SPRITE_GROUP_ID);
 		itemChargePlugin.onWidgetLoaded(event);
 
+		ArgumentCaptor<Runnable> captor = ArgumentCaptor.forClass(Runnable.class);
+		verify(clientThread).invokeLater(captor.capture());
+		when(client.getWidget(eq(WidgetInfo.DIALOG_SPRITE_SPRITE))).thenReturn(chargeChild);
+		captor.getValue().run();
+
 		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_CIRCLET_OF_WATER, 7);
+	}
+
+	@Test
+	public void testCircletOfWaterUnchargedCharge()
+	{
+		Widget chargeChild = mock(Widget.class);
+		when(chargeChild.getItemId()).thenReturn(ItemID.CIRCLET_OF_WATER);
+
+		Widget chargeChild2 = mock(Widget.class);
+		when(client.getWidget(eq(DIALOG_SPRITE_TEXT))).thenReturn(chargeChild2);
+
+		when(chargeChild2.getText()).thenReturn(CHARGE_CIRCLET_OF_WATER_UNCHARGED);
+
+		WidgetLoaded event = new WidgetLoaded();
+		event.setGroupId(DIALOG_SPRITE_GROUP_ID);
+		itemChargePlugin.onWidgetLoaded(event);
+
+		ArgumentCaptor<Runnable> captor = ArgumentCaptor.forClass(Runnable.class);
+		verify(clientThread).invokeLater(captor.capture());
+		when(client.getWidget(eq(WidgetInfo.DIALOG_SPRITE_SPRITE))).thenReturn(chargeChild);
+		captor.getValue().run();
+
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_CIRCLET_OF_WATER, 3);
 	}
 
 	@Test
 	public void testCircletOfWaterUncharge()
 	{
 		Widget chargeChild = mock(Widget.class);
-		chargeChild.setItemId(ItemID.CIRCLET_OF_WATER_UNCHARGED);
-		when(client.getWidget(eq(WidgetInfo.DIALOG_SPRITE_SPRITE))).thenReturn(chargeChild);
+		when(chargeChild.getItemId()).thenReturn(ItemID.CIRCLET_OF_WATER_UNCHARGED);
 
 		WidgetLoaded event = new WidgetLoaded();
 		event.setGroupId(WidgetID.DIALOG_SPRITE_GROUP_ID);
