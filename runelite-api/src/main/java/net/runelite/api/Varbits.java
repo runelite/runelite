@@ -823,6 +823,11 @@ public final class Varbits
 	public static final int SLAYER_TASK_BOSS = 4723;
 
 	/**
+	 * Whether the level up interface is disabled
+	 */
+	public static final int DISABLE_LEVEL_UP_INTERFACE = 9452;
+
+	/**
 	 * Varbit for the circlet of water charges when equipped
 	 */
 	public static final int CIRCLET_OF_WATER_CHARGES = 14191;

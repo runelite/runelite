@@ -81,6 +81,7 @@ public class ScreenshotPluginTest
 	private static final String UNTRADEABLE_DROP = "<col=ef1020>Untradeable drop: Rusty sword";
 	private static final String BA_HIGH_GAMBLE_REWARD = "Raw shark (x 300)!<br>High level gamble count: <col=7f0000>100</col>";
 	private static final String HUNTER_LEVEL_2_TEXT = "<col=000080>Congratulations, you've just advanced a Hunter level.<col=000000><br><br>Your Hunter level is now 2.";
+	private static final String CRAFTING_LEVEL_96_MESSAGE = "Congratulations, you've just advanced your Crafting level. You are now level 96.";
 	private static final String COLLECTION_LOG_CHAT = "New item added to your collection log: <col=ef1020>Chompy bird hat</col>";
 
 	@Mock
@@ -337,6 +338,23 @@ public class ScreenshotPluginTest
 		screenshotPlugin.onGameTick(tick);
 
 		verify(screenshotPlugin).takeScreenshot("Hunter(2)", "Levels");
+	}
+
+	@Test
+	public void testCraftingLevel96NoInterface()
+	{
+		when(client.getVarbitValue(Varbits.DISABLE_LEVEL_UP_INTERFACE)).thenReturn(1);
+
+		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", CRAFTING_LEVEL_96_MESSAGE, null, 0);
+		screenshotPlugin.onChatMessage(chatMessageEvent);
+
+		verify(screenshotPlugin).takeScreenshot("Crafting(96)", "Levels");
+		reset(screenshotPlugin);
+
+		when(client.getVarbitValue(Varbits.DISABLE_LEVEL_UP_INTERFACE)).thenReturn(0);
+
+		screenshotPlugin.onChatMessage(chatMessageEvent);
+		verify(screenshotPlugin, never()).takeScreenshot(anyString(), anyString());
 	}
 
 	@Test

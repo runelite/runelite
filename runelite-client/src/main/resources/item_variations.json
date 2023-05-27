@@ -1893,7 +1893,8 @@
   ],
   "dragon med helm": [
     1149,
-    6967
+    6967,
+    28057
   ],
   "iron helm": [
     1153,
@@ -1953,7 +1954,8 @@
   ],
   "dragon sq shield": [
     1187,
-    12418
+    12418,
+    28059
   ],
   "bronze kiteshield": [
     1189,
@@ -2080,7 +2082,11 @@
     1231,
     5680,
     5698,
-    20407
+    20407,
+    28019,
+    28021,
+    28023,
+    28025
   ],
   "black dagger": [
     1217,
@@ -2135,7 +2141,11 @@
     1263,
     3176,
     5716,
-    5730
+    5730,
+    28041,
+    28043,
+    28045,
+    28047
   ],
   "iron pickaxe": [
     1267,
@@ -2155,7 +2165,8 @@
   ],
   "dragon longsword": [
     1305,
-    27859
+    27859,
+    28033
   ],
   "runeh sword": [
     1319,
@@ -2173,6 +2184,10 @@
     1373,
     20552
   ],
+  "dragon battleaxe": [
+    1377,
+    28037
+  ],
   "ibans staff": [
     1409,
     1410,
@@ -2180,7 +2195,8 @@
   ],
   "dragon mace": [
     1434,
-    27857
+    27857,
+    28027
   ],
   "amulet of accuracy": [
     1478,
@@ -2890,7 +2906,8 @@
     2513,
     3140,
     12414,
-    20428
+    20428,
+    28065
   ],
   "lamp": [
     2528,
@@ -3218,6 +3235,10 @@
   "karambwan vessel": [
     3157,
     3159
+  ],
+  "dragon halberd": [
+    3204,
+    28049
   ],
   "barrel bomb": [
     3218,
@@ -3617,7 +3638,8 @@
     4087,
     4180,
     12415,
-    20429
+    20429,
+    28061
   ],
   "mystic hat": [
     4089,
@@ -3994,12 +4016,14 @@
   ],
   "dragon plateskirt": [
     4585,
-    12416
+    12416,
+    28063
   ],
   "dragon scimitar": [
     4587,
     20000,
-    20406
+    20406,
+    28031
   ],
   "note": [
     4597,
@@ -5256,7 +5280,8 @@
   ],
   "dragonh sword": [
     7158,
-    20559
+    20559,
+    28051
   ],
   "mud pie": [
     7164,
@@ -6991,7 +7016,9 @@
   "fighter torso": [
     10551,
     20513,
-    24175
+    24175,
+    28067,
+    28069
   ],
   "penance gloves": [
     10553,
@@ -7099,7 +7126,8 @@
   ],
   "helm of neitiznot": [
     10828,
-    23591
+    23591,
+    28070
   ],
   "severed leg": [
     10857,
@@ -7632,7 +7660,8 @@
   ],
   "dragon boots": [
     11840,
-    22234
+    22234,
+    28055
   ],
   "knights notes": [
     11842,
@@ -8649,7 +8678,8 @@
   "dragon warhammer": [
     13576,
     20785,
-    26710
+    26710,
+    28035
   ],
   "seed box": [
     13639,
@@ -8679,7 +8709,8 @@
   "dragon claws": [
     13652,
     20784,
-    26708
+    26708,
+    28039
   ],
   "bag of gems": [
     19473,
@@ -9021,7 +9052,8 @@
   ],
   "dragon sword": [
     21009,
-    21206
+    21206,
+    28029
   ],
   "dragon hunter crossbow": [
     21012,
@@ -9264,7 +9296,8 @@
   ],
   "dragon crossbow": [
     21902,
-    21921
+    21921,
+    28053
   ],
   "dragon bolts": [
     21905,
@@ -9518,77 +9551,95 @@
     27785,
     27788
   ],
+  "vestas spear": [
+    22610,
+    27900,
+    27902
+  ],
   "vestas longsword": [
     22613,
     23615,
-    24619
+    24619,
+    27904,
+    27906
   ],
   "vestas chainbody": [
     22616,
     27831,
-    27842
+    27925
   ],
   "vestas plateskirt": [
     22619,
     27832,
-    27843
+    27928
   ],
   "statiuss warhammer": [
     22622,
-    23620
+    23620,
+    27908,
+    27910
   ],
   "statiuss helm": [
     22625,
     27833,
-    27844
+    27931
   ],
   "statiuss platebody": [
     22628,
     27834,
-    27845
+    27934
   ],
   "statiuss platelegs": [
     22631,
     27835,
-    27846
+    27937
+  ],
+  "morrigans throwing axe": [
+    22634,
+    27912,
+    27914
   ],
   "morrigans javelin": [
     22636,
-    23619
+    23619,
+    27916,
+    27918
   ],
   "morrigans coif": [
     22638,
     27836,
-    27847
+    27940
   ],
   "morrigans leather body": [
     22641,
     27837,
-    27848
+    27943
   ],
   "morrigans leather chaps": [
     22644,
     27838,
-    27849
+    27946
   ],
   "zuriels staff": [
     22647,
-    23617
+    23617,
+    27920,
+    27922
   ],
   "zuriels hood": [
     22650,
     27839,
-    27850
+    27949
   ],
   "zuriels robe top": [
     22653,
     27840,
-    27851
+    27952
   ],
   "zuriels robe bottom": [
     22656,
     27841,
-    27852
+    27955
   ],
   "dragon hasta": [
     22731,
@@ -11234,8 +11285,64 @@
     27826,
     27827
   ],
+  "corrupted vestas chainbody": [
+    27842,
+    27965
+  ],
+  "corrupted vestas plateskirt": [
+    27843,
+    27968
+  ],
+  "corrupted statiuss helm": [
+    27844,
+    27971
+  ],
+  "corrupted statiuss platebody": [
+    27845,
+    27974
+  ],
+  "corrupted statiuss platelegs": [
+    27846,
+    27977
+  ],
+  "corrupted morrigans coif": [
+    27847,
+    27980
+  ],
+  "corrupted morrigans leather body": [
+    27848,
+    27983
+  ],
+  "corrupted morrigans leather chaps": [
+    27849,
+    27986
+  ],
+  "corrupted zuriels hood": [
+    27850,
+    27989
+  ],
+  "corrupted zuriels robe top": [
+    27851,
+    27992
+  ],
+  "corrupted zuriels robe bottom": [
+    27852,
+    27995
+  ],
   "nest hat": [
     27875,
     27877
+  ],
+  "esoteric emblem": [
+    27997,
+    27999,
+    28001,
+    28003,
+    28005,
+    28007,
+    28009,
+    28011,
+    28013,
+    28015
   ]
 }

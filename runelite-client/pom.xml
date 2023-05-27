@@ -272,7 +272,7 @@
 		<dependency>
 			<groupId>net.runelite</groupId>
 			<artifactId>orange-extensions</artifactId>
-			<version>1.0</version>
+			<version>1.1</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -344,32 +344,8 @@
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>compile-java11</id>
-						<goals>
-							<goal>compile</goal>
-						</goals>
-						<configuration>
-							<release>11</release>
-							<compileSourceRoots>
-								<compileSourceRoot>${project.basedir}/src/main/java11</compileSourceRoot>
-							</compileSourceRoots>
-							<outputDirectory>${project.build.outputDirectory}/META-INF/versions/11</outputDirectory>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<configuration>
-					<archive>
-						<manifestEntries>
-							<Multi-Release>true</Multi-Release>
-						</manifestEntries>
-					</archive>
 					<excludes>
 						<exclude>**/.clang-format</exclude>
 					</excludes>
