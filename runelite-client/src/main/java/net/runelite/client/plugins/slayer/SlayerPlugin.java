@@ -257,11 +257,15 @@ public class SlayerPlugin extends Plugin
 	{
 		switch (event.getGameState())
 		{
+			// client (or with CONNECTION_LOST, the server...) will soon zero the slayer varps.
+			// zero task/amount so that this doesn't cause the plugin to reset the task, which
+			// would forget the initial amount. The vars are then resynced shortly after
 			case HOPPING:
 			case LOGGING_IN:
+			case CONNECTION_LOST:
 				taskName = "";
 				amount = 0;
-				loginFlag = true;
+				loginFlag = true; // to reinitialize initialAmount and avoid re-adding the infobox
 				targets.clear();
 				break;
 		}

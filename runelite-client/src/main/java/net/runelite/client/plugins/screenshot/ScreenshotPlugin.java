@@ -110,6 +110,7 @@ public class ScreenshotPlugin extends Plugin
 	private static final int CORRUPTED_GAUNTLET_REGION = 7768;
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
 	private static final Pattern LEVEL_UP_PATTERN = Pattern.compile(".*Your ([a-zA-Z]+) (?:level is|are)? now (\\d+)\\.");
+	private static final Pattern LEVEL_UP_MESSAGE_PATTERN = Pattern.compile("Congratulations, you've just advanced your ([a-zA-Z]+) level. You are now level (\\d+)\\.");
 	private static final Pattern BOSSKILL_MESSAGE_PATTERN = Pattern.compile("Your (.+) kill count is: <col=ff0000>(\\d+)</col>.");
 	private static final Pattern VALUABLE_DROP_PATTERN = Pattern.compile(".*Valuable drop: ([^<>]+?\\(((?:\\d+,?)+) coins\\))(?:</col>)?");
 	private static final Pattern UNTRADEABLE_DROP_PATTERN = Pattern.compile(".*Untradeable drop: ([^<>]+)(?:</col>)?");
@@ -524,6 +525,19 @@ public class ScreenshotPlugin extends Plugin
 			if (!fileName.isEmpty())
 			{
 				takeScreenshot(fileName, SD_COMBAT_ACHIEVEMENTS);
+			}
+		}
+
+		if (client.getVarbitValue(Varbits.DISABLE_LEVEL_UP_INTERFACE) == 1 && config.screenshotLevels())
+		{
+			Matcher m = LEVEL_UP_MESSAGE_PATTERN.matcher(chatMessage);
+			if (m.find())
+			{
+				String skillName = m.group(1);
+				String skillLevel = m.group(2);
+				String fileName = skillName + "(" + skillLevel + ")";
+				String screenshotSubDir = "Levels";
+				takeScreenshot(fileName, screenshotSubDir);
 			}
 		}
 	}

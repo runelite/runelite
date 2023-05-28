@@ -86,6 +86,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.account.SessionManager;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.Subscribe;
@@ -184,6 +185,9 @@ public class GrandExchangePlugin extends Plugin
 
 	@Inject
 	private RuneLiteConfig runeLiteConfig;
+
+	@Inject
+	private ClientThread clientThread;
 
 	@Inject
 	private ScheduledExecutorService scheduledExecutorService;
@@ -333,6 +337,18 @@ public class GrandExchangePlugin extends Plugin
 		}
 
 		lastLoginTick = -1;
+
+		if (client.getGameState() == GameState.LOGGED_IN)
+		{
+			final GrandExchangeOffer[] offers = client.getGrandExchangeOffers();
+			for (int i = 0; i < offers.length; i++)
+			{
+				final int slot = i;
+				clientThread.invokeLater(() -> updatePanel(slot, offers[slot]));
+
+				updateConfig(i, offers[i]);
+			}
+		}
 	}
 
 	@Override
@@ -396,10 +412,7 @@ public class GrandExchangePlugin extends Plugin
 		log.debug("GE offer updated: state: {}, slot: {}, item: {}, qty: {}, lastLoginTick: {}",
 			offer.getState(), slot, offer.getItemId(), offer.getQuantitySold(), lastLoginTick);
 
-		ItemComposition offerItem = itemManager.getItemComposition(offer.getItemId());
-		boolean shouldStack = offerItem.isStackable() || offer.getTotalQuantity() > 1;
-		BufferedImage itemImage = itemManager.getImage(offer.getItemId(), offer.getTotalQuantity(), shouldStack);
-		SwingUtilities.invokeLater(() -> panel.getOffersPanel().updateOffer(offerItem, itemImage, offer, slot));
+		updatePanel(slot, offer);
 
 		updateLimitTimer(offer);
 
@@ -537,6 +550,14 @@ public class GrandExchangePlugin extends Plugin
 		{
 			return null;
 		}
+	}
+
+	private void updatePanel(int slot, GrandExchangeOffer offer)
+	{
+		ItemComposition offerItem = itemManager.getItemComposition(offer.getItemId());
+		boolean shouldStack = offerItem.isStackable() || offer.getTotalQuantity() > 1;
+		BufferedImage itemImage = itemManager.getImage(offer.getItemId(), offer.getTotalQuantity(), shouldStack);
+		SwingUtilities.invokeLater(() -> panel.getOffersPanel().updateOffer(offerItem, itemImage, offer, slot));
 	}
 
 	private void updateConfig(int slot, GrandExchangeOffer offer)

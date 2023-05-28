@@ -28,7 +28,7 @@
 
 	<groupId>net.runelite</groupId>
 	<artifactId>runelite-parent</artifactId>
-	<version>1.10.1-SNAPSHOT</version>
+	<version>1.10.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>RuneLite</name>
@@ -38,7 +38,6 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.build.outputTimestamp>1</project.build.outputTimestamp>
-		<java.release>8</java.release>
 		<lombok.version>1.18.20</lombok.version>
 		<logback.version>1.2.9</logback.version>
 		<slf4j.version>1.7.25</slf4j.version>
@@ -190,7 +189,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<release>${java.release}</release>
+					<release>11</release>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -237,12 +236,8 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>3.0.0-M1</version>
+				<version>3.5.0</version>
 				<configuration>
-					<!-- Fix Javadoc on Java 11+ - JDK-8212233 -->
-					<source>8</source>
-					<!-- Fix Javadoc search feature to work without modules - https://stackoverflow.com/a/52603413 -->
-					<additionalJOption>--no-module-directories</additionalJOption>
 					<!-- Javadoc the delombok sources -->
 					<sourcepath>${project.build.directory}/delombok</sourcepath>
 				</configuration>

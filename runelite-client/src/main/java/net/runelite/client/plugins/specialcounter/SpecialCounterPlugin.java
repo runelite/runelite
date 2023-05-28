@@ -226,13 +226,6 @@ public class SpecialCounterPlugin extends Plugin
 		}
 
 		this.specialPercentage = specialPercentage;
-		this.specialWeapon = usedSpecialWeapon();
-
-		if (this.specialWeapon == null)
-		{
-			// unrecognized special attack weapon
-			return;
-		}
 
 		// This event runs prior to player and npc updating, making getInteracting() too early to call..
 		// defer this with invokeLater(), but note that this will run after incrementing the server tick counter
@@ -240,6 +233,14 @@ public class SpecialCounterPlugin extends Plugin
 		final int serverTicks = client.getTickCount();
 		clientThread.invokeLater(() ->
 		{
+			this.specialWeapon = usedSpecialWeapon();
+
+			if (this.specialWeapon == null)
+			{
+				// unrecognized special attack weapon
+				return;
+			}
+
 			Actor target = client.getLocalPlayer().getInteracting();
 			lastSpecTarget = target instanceof NPC ? (NPC) target : null;
 			hitsplatTick = serverTicks + getHitDelay(specialWeapon, target);

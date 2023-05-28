@@ -1070,6 +1070,15 @@ public class ChatCommandsPluginTest
 	}
 
 	@Test
+	public void testSecondsToTimeString()
+	{
+		assertEquals("0:03.60", ChatCommandsPlugin.secondsToTimeString(3.6));
+		assertEquals("0:03", ChatCommandsPlugin.secondsToTimeString(3));
+		assertEquals("1:23:45.60", ChatCommandsPlugin.secondsToTimeString(5025.6));
+		assertEquals("8:00:00", ChatCommandsPlugin.secondsToTimeString(60 * 60 * 8));
+	}
+
+	@Test
 	public void testCounters()
 	{
 		final String[] log = {

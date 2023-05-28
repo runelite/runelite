@@ -32,6 +32,7 @@ import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Cursor;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Graphics;
@@ -43,6 +44,7 @@ import java.awt.LayoutManager;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
+import java.awt.desktop.QuitStrategy;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -154,18 +156,6 @@ public class ClientUI
 	@Inject(optional = true)
 	@Named("recommendedMemoryLimit")
 	private int recommendedMemoryLimit = 512;
-
-	@Inject(optional = true)
-	@Named("outdatedLauncherWarning")
-	private boolean outdatedLauncherWarning = false;
-
-	@Inject(optional = true)
-	@Named("outdatedLauncherJava8")
-	private boolean outdatedLauncherJava8 = false;
-
-	@Inject(optional = true)
-	@Named("java8Brownout")
-	private boolean java8Brownout = false;
 
 	@Inject
 	private ClientUI(
@@ -360,7 +350,8 @@ public class ClientUI
 			{
 				// Change the default quit strategy to CLOSE_ALL_WINDOWS so that ctrl+q
 				// triggers the listener below instead of exiting.
-				MacOSQuitStrategy.setup();
+				Desktop.getDesktop()
+					.setQuitStrategy(QuitStrategy.CLOSE_ALL_WINDOWS);
 			}
 			frame.addWindowListener(new WindowAdapter()
 			{
@@ -544,31 +535,6 @@ public class ClientUI
 
 	public void show()
 	{
-		if (java8Brownout && System.getProperty("java.version", "").startsWith("1.8."))
-		{
-			SwingUtilities.invokeLater(() ->
-			{
-				JEditorPane ep = new JEditorPane("text/html",
-					"Your RuneLite launcher version is old, and requires an update.<br>Update to the latest version by visiting " +
-						"<a href=\"https://runelite.net\">https://runelite.net</a>,<br>or follow the link from the OSRS homepage.<br>" +
-						"Join <a href=\"" + RuneLiteProperties.getDiscordInvite() + "\">Discord</a> for assistance."
-				);
-				ep.addHyperlinkListener(e ->
-				{
-					if (e.getEventType().equals(HyperlinkEvent.EventType.ACTIVATED))
-					{
-						LinkBrowser.browse(e.getURL().toString());
-					}
-				});
-				ep.setEditable(false);
-				ep.setOpaque(false);
-				JOptionPane.showMessageDialog(frame,
-					ep, "Launcher outdated", JOptionPane.ERROR_MESSAGE);
-				System.exit(0);
-			});
-			return;
-		}
-
 		logGraphicsEnvironment();
 
 		SwingUtilities.invokeLater(() ->
@@ -657,32 +623,6 @@ public class ClientUI
 				ep.setOpaque(false);
 				JOptionPane.showMessageDialog(frame,
 					ep, "Max memory limit low", JOptionPane.WARNING_MESSAGE);
-			});
-		}
-
-		String launcherVersion = RuneLiteProperties.getLauncherVersion();
-		String javaVersion = System.getProperty("java.version", "");
-		if (outdatedLauncherWarning && javaVersion.startsWith("1.8.") &&
-			(launcherVersion == null || launcherVersion.startsWith("1.5") || outdatedLauncherJava8))
-		{
-			SwingUtilities.invokeLater(() ->
-			{
-				JEditorPane ep = new JEditorPane("text/html",
-					"Your RuneLite launcher version is old, and will soon stop working.<br>Update to the latest version by visiting " +
-						"<a href=\"https://runelite.net\">https://runelite.net</a>,<br>or follow the link from the OSRS homepage.<br>" +
-						"Join <a href=\"" + RuneLiteProperties.getDiscordInvite() + "\">Discord</a> for assistance."
-				);
-				ep.addHyperlinkListener(e ->
-				{
-					if (e.getEventType().equals(HyperlinkEvent.EventType.ACTIVATED))
-					{
-						LinkBrowser.browse(e.getURL().toString());
-					}
-				});
-				ep.setEditable(false);
-				ep.setOpaque(false);
-				JOptionPane.showMessageDialog(frame,
-					ep, "Launcher outdated", INFORMATION_MESSAGE);
 			});
 		}
 	}
