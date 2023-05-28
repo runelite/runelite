@@ -74,6 +74,6 @@ public class CombatLevelOverlayTest
 		when(client.getRealSkillLevel(Skill.RANGED)).thenReturn(99);
 		when(client.getRealSkillLevel(Skill.PRAYER)).thenReturn(94);
 
-		assertEquals("<col=ff981f>Next combat level:</br></col>4 Defence/Hitpoints</br>8 Prayer", combatLevelOverlay.getLevelsUntilTooltip());
+		assertEquals("<col=ff981f>Next combat level:</br></col>4 Defence/Hitpoints", combatLevelOverlay.getLevelsUntilTooltip());
 	}
 }
