@@ -161,7 +161,7 @@ public class ChatMessageManager
 				usernameColor = isChatboxTransparent ? chatColorConfig.transparentClanChatGuestUsernames() : chatColorConfig.opaqueClanChatGuestUsernames();
 				channelColor = isChatboxTransparent ? chatColorConfig.transparentClanChannelGuestName() : chatColorConfig.opaqueClanGuestChatChannelName();
 				break;
-			case CHAT_INPUTTEXT:
+			case CHAT_INPUT_TEXT:
 				inputColor = isChatboxTransparent ? chatColorConfig.transparentInputText() : chatColorConfig.opaqueInputText();
 		}
 
@@ -281,6 +281,7 @@ public class ChatMessageManager
 				case CLAN_MESSAGE:
 				case CLAN_GUEST_MESSAGE:
 				case CLAN_GIM_MESSAGE:
+				case CHAT_INPUT_TEXT:
 					return JagexColors.CHAT_GAME_EXAMINE_TEXT_OPAQUE_BACKGROUND;
 			}
 		}
@@ -308,6 +309,7 @@ public class ChatMessageManager
 				case CLAN_MESSAGE:
 				case CLAN_GUEST_MESSAGE:
 				case CLAN_GIM_MESSAGE:
+				case CHAT_INPUT_TEXT:
 					return JagexColors.CHAT_GAME_EXAMINE_TEXT_TRANSPARENT_BACKGROUND;
 			}
 		}
@@ -353,6 +355,8 @@ public class ChatMessageManager
 					return VarPlayer.SETTINGS_TRANSPARENT_CHAT_CLAN_BROADCAST;
 				case CLAN_GIM_MESSAGE:
 					return VarPlayer.SETTINGS_TRANSPARENT_CHAT_IRON_GROUP_BROADCAST;
+				case CHAT_INPUT_TEXT:
+					return VarPlayer.SETTINGS_TRANSPARENT_CHAT_INPUT_TEXT;
 			}
 		}
 		else
@@ -390,6 +394,8 @@ public class ChatMessageManager
 					return VarPlayer.SETTINGS_OPAQUE_CHAT_CLAN_BROADCAST;
 				case CLAN_GIM_MESSAGE:
 					return VarPlayer.SETTINGS_OPAQUE_CHAT_IRON_GROUP_BROADCAST;
+				case CHAT_INPUT_TEXT:
+					return VarPlayer.SETTINGS_OPAQUE_CHAT_INPUT_TEXT;
 			}
 		}
 		return -1;
@@ -604,6 +610,11 @@ public class ChatMessageManager
 			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.opaquePrivateUsernames(), false),
 				ChatMessageType.LOGINLOGOUTNOTIFICATION);
 		}
+		if (chatColorConfig.opaqueInputText() != null)
+		{
+			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.opaqueInputText(), false),
+					ChatMessageType.CHAT_INPUT_TEXT);
+		}
 
 		//Transparent Chat Colours
 		if (chatColorConfig.transparentPublicChat() != null)
@@ -793,6 +804,11 @@ public class ChatMessageManager
 		{
 			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.transparentPrivateUsernames(), true),
 				ChatMessageType.LOGINLOGOUTNOTIFICATION);
+		}
+		if (chatColorConfig.transparentInputText() != null)
+		{
+			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.transparentInputText(), true),
+					ChatMessageType.CHAT_INPUT_TEXT);
 		}
 	}
 

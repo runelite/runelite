@@ -190,6 +190,7 @@ public final class VarPlayer
 	public static final int SETTINGS_OPAQUE_CHAT_CLAN = 2997;
 	public static final int SETTINGS_OPAQUE_CHAT_GUEST_CLAN = 3060;
 	public static final int SETTINGS_OPAQUE_CHAT_CLAN_BROADCAST = 3192;
+	public static final int SETTINGS_OPAQUE_CHAT_INPUT_TEXT = 3016;
 	public static final int SETTINGS_OPAQUE_CHAT_IRON_GROUP_CHAT = 3191;
 	public static final int SETTINGS_OPAQUE_CHAT_IRON_GROUP_BROADCAST = 3193;
 	public static final int SETTINGS_OPAQUE_CHAT_TRADE_REQUEST = 2998;
@@ -203,6 +204,7 @@ public final class VarPlayer
 	public static final int SETTINGS_TRANSPARENT_CHAT_CLAN = 3005;
 	public static final int SETTINGS_TRANSPARENT_CHAT_GUEST_CLAN = 3061;
 	public static final int SETTINGS_TRANSPARENT_CHAT_CLAN_BROADCAST = 3195;
+	public static final int SETTINGS_TRANSPARENT_CHAT_INPUT_TEXT = 3017;
 	public static final int SETTINGS_TRANSPARENT_CHAT_IRON_GROUP_CHAT = 3194;
 	public static final int SETTINGS_TRANSPARENT_CHAT_IRON_GROUP_BROADCAST = 3196;
 	public static final int SETTINGS_TRANSPARENT_CHAT_TRADE_REQUEST = 3006;

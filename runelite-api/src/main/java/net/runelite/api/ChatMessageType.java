@@ -125,10 +125,6 @@ public enum ChatMessageType
 	 */
 	CLAN_GUEST_MESSAGE(46),
 	/**
-	 * Chat type for input box
-	 */
-	CHAT_INPUTTEXT(47),
-	/**
 	 * An autotyper message from a player.
 	 */
 	AUTOTYPER(90),
@@ -136,6 +132,10 @@ public enum ChatMessageType
 	 * An autotyper message from a mod.
 	 */
 	MODAUTOTYPER(91),
+	/**
+	 * Chat type for input box
+	 */
+	CHAT_INPUT_TEXT(92),
 	/**
 	 * A game message. (ie. when a setting is changed)
 	 */
