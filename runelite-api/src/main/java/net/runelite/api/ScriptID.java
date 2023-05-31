@@ -411,4 +411,13 @@ public final class ScriptID
 
 	@ScriptArguments(integer = 9)
 	public static final int WORLDMAP_LOADMAP = 1712;
+
+	@ScriptArguments(integer = 5)
+	public static final int PRAYER_UPDATEBUTTON = 463;
+
+	@ScriptArguments(integer = 9, string = 2)
+	public static final int PRAYER_REDRAW = 547;
+
+	@ScriptArguments(integer = 3)
+	public static final int QUICKPRAYER_INIT = 466;
 }

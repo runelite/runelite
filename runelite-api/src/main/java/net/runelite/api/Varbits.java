@@ -826,4 +826,6 @@ public final class Varbits
 	 * Whether the level up interface is disabled
 	 */
 	public static final int DISABLE_LEVEL_UP_INTERFACE = 9452;
+
+	public static final int PRAYERBOOK = 14826;
 }

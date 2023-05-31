@@ -58,4 +58,7 @@ public final class ParamID
 	public static final int OC_ITEM_OP6 = 456;
 	public static final int OC_ITEM_OP7 = 457;
 	public static final int OC_ITEM_OP8 = 458;
+
+	public static final int OC_PRAYER_COMPONENT = 1751;
+	public static final int OC_PRAYER_LEVEL = 1753;
 }
