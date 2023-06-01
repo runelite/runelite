@@ -213,6 +213,17 @@ public class CacheClient implements AutoCloseable
 
 			Index index = store.findIndex(i);
 
+			// client no longer requests 255/16 and the server seems to now silently drop it!
+			if (i == 16)
+			{
+				if (index != null)
+				{
+					logger.info("Removing index {}", i);
+					store.removeIndex(index);
+				}
+				continue;
+			}
+
 			if (index == null)
 			{
 				logger.info("Index {} does not exist, creating", i);
