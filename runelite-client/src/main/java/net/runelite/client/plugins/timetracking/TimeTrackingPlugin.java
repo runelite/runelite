@@ -58,6 +58,7 @@ import net.runelite.client.plugins.timetracking.clocks.ClockManager;
 import net.runelite.client.plugins.timetracking.farming.CompostTracker;
 import net.runelite.client.plugins.timetracking.farming.FarmingContractManager;
 import net.runelite.client.plugins.timetracking.farming.FarmingTracker;
+import net.runelite.client.plugins.timetracking.farming.PaymentTracker;
 import net.runelite.client.plugins.timetracking.hunter.BirdHouseTracker;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
@@ -84,6 +85,9 @@ public class TimeTrackingPlugin extends Plugin
 
 	@Inject
 	private CompostTracker compostTracker;
+
+	@Inject
+	private PaymentTracker paymentTracker;
 
 	@Inject
 	private FarmingTracker farmingTracker;
@@ -134,6 +138,7 @@ public class TimeTrackingPlugin extends Plugin
 		farmingTracker.loadCompletionTimes();
 
 		eventBus.register(compostTracker);
+		eventBus.register(paymentTracker);
 
 		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "watch.png");
 
@@ -158,6 +163,7 @@ public class TimeTrackingPlugin extends Plugin
 		lastTickLocation = null;
 		lastTickPostLogin = false;
 
+		eventBus.unregister(paymentTracker);
 		eventBus.unregister(compostTracker);
 
 		if (panelUpdateFuture != null)

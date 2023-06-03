@@ -28,6 +28,10 @@ package net.runelite.client.plugins.itemstats;
 import com.google.common.collect.ImmutableMap;
 import java.util.Map;
 import net.runelite.api.Client;
+import net.runelite.api.EquipmentInventorySlot;
+import net.runelite.api.InventoryID;
+import net.runelite.api.Item;
+import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.Skill;
 import static org.junit.Assert.assertEquals;
@@ -36,6 +40,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.mockito.ArgumentMatchers.any;
 import org.mockito.Mock;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -192,6 +197,7 @@ public class ItemStatEffectTest
 		assertEquals(7, skillChange(Skill.PRAYER, 50, 40, ancientBrew));
 		assertEquals(0, skillChange(Skill.PRAYER, 1, 1, ancientBrew));
 		assertEquals(1, skillChange(Skill.PRAYER, 1, 0, ancientBrew));
+		assertEquals(0, skillChange(Skill.PRAYER, 99, 125, ancientBrew));
 	}
 
 	@Test
@@ -223,6 +229,41 @@ public class ItemStatEffectTest
 		assertEquals(2, skillChange(Skill.HITPOINTS, 91, 36, zamorakMix));
 		assertEquals(2, skillChange(Skill.HITPOINTS, 91, 38, zamorakMix));
 		assertEquals(0, skillChange(Skill.HITPOINTS, 91, 50, zamorakMix));
+	}
+
+	@Test
+	public void testAmbrosia()
+	{
+		final Effect ambrosia = new ItemStatChanges().get(ItemID.AMBROSIA_2);
+
+		assertEquals(124, skillChange(Skill.HITPOINTS, 99, 1, ambrosia));
+		assertEquals(26, skillChange(Skill.HITPOINTS, 99, 99, ambrosia));
+		assertEquals(10, skillChange(Skill.HITPOINTS, 99, 115, ambrosia));
+		assertEquals(0, skillChange(Skill.HITPOINTS, 99, 125, ambrosia));
+
+		assertEquals(122, skillChange(Skill.PRAYER, 99, 1, ambrosia));
+		assertEquals(24, skillChange(Skill.PRAYER, 99, 99, ambrosia));
+		assertEquals(10, skillChange(Skill.PRAYER, 99, 113, ambrosia));
+		assertEquals(0, skillChange(Skill.PRAYER, 99, 123, ambrosia));
+	}
+
+	@Test
+	public void prayerRestoreVariants()
+	{
+		final ItemContainer equipment = mock(ItemContainer.class);
+		when(client.getItemContainer(InventoryID.EQUIPMENT)).thenReturn(equipment);
+
+		final Effect ppot = new ItemStatChanges().get(ItemID.PRAYER_POTION2);
+
+		// no holy wrench boost for non-imbued ring equipped
+		when(equipment.getItem(EquipmentInventorySlot.RING.getSlotIdx())).thenReturn(new Item(ItemID.RING_OF_THE_GODS, 1));
+		assertEquals(31, skillChange(Skill.PRAYER, 99, 0, ppot));
+
+		for (final int ring : new int[] { ItemID.RING_OF_THE_GODS_I, ItemID.RING_OF_THE_GODS_I_25252, ItemID.RING_OF_THE_GODS_I_26764 })
+		{
+			when(equipment.getItem(EquipmentInventorySlot.RING.getSlotIdx())).thenReturn(new Item(ring, 1));
+			assertEquals(33, skillChange(Skill.PRAYER, 99, 0, ppot));
+		}
 	}
 
 	private int skillChange(Skill skill, int maxValue, int currentValue, Effect effect)

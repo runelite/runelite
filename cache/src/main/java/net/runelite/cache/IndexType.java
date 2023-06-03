@@ -46,7 +46,8 @@ public enum IndexType
 	WORLDMAP_OLD(16), // looks unused
 	WORLDMAP_GEOGRAPHY(18),
 	WORLDMAP(19),
-	WORLDMAP_GROUND(20);
+	WORLDMAP_GROUND(20),
+	DBTABLEINDEX(21);
 
 	private int id;
 	

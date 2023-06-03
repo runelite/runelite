@@ -24,9 +24,17 @@
  */
 package net.runelite.client.hiscore;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import lombok.RequiredArgsConstructor;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -34,29 +42,19 @@ import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVRecord;
 
 @Slf4j
-@RequiredArgsConstructor
+@Singleton
 public class HiscoreClient
 {
 	private final OkHttpClient client;
+	private final Gson gson;
 
-	public HiscoreResult lookup(String username, HiscoreEndpoint endpoint) throws IOException
+	@Inject
+	private HiscoreClient(OkHttpClient client, Gson gson)
 	{
-		return lookup(username, endpoint.getHiscoreURL());
-	}
-
-	public CompletableFuture<HiscoreResult> lookupAsync(String username, HiscoreEndpoint endpoint)
-	{
-		return lookupAsync(username, endpoint.getHiscoreURL());
-	}
-
-	public HiscoreResult lookup(String username, HttpUrl endpoint) throws IOException
-	{
-		return lookupSync(username, endpoint);
+		this.client = client;
+		this.gson = gson;
 	}
 
 	public HiscoreResult lookup(String username) throws IOException
@@ -64,19 +62,24 @@ public class HiscoreClient
 		return lookup(username, HiscoreEndpoint.NORMAL);
 	}
 
-	private HiscoreResult lookupSync(String username, HttpUrl hiscoreUrl) throws IOException
+	public HiscoreResult lookup(String username, HiscoreEndpoint endpoint) throws IOException
 	{
-		try (Response response = client.newCall(buildRequest(username, hiscoreUrl)).execute())
+		return lookup(username, endpoint.getHiscoreURL());
+	}
+
+	private HiscoreResult lookup(String username, HttpUrl url) throws IOException
+	{
+		try (Response response = client.newCall(buildRequest(username, url)).execute())
 		{
 			return processResponse(username, response);
 		}
 	}
 
-	private CompletableFuture<HiscoreResult> lookupAsync(String username, HttpUrl hiscoreUrl)
+	public CompletableFuture<HiscoreResult> lookupAsync(String username, HiscoreEndpoint endpoint)
 	{
 		CompletableFuture<HiscoreResult> future = new CompletableFuture<>();
 
-		client.newCall(buildRequest(username, hiscoreUrl)).enqueue(new Callback()
+		client.newCall(buildRequest(username, endpoint.getHiscoreURL())).enqueue(new Callback()
 		{
 			@Override
 			public void onFailure(Call call, IOException e)
@@ -114,7 +117,7 @@ public class HiscoreClient
 			.build();
 	}
 
-	private static HiscoreResult processResponse(String username, Response response) throws IOException
+	private HiscoreResult processResponse(String username, Response response) throws IOException
 	{
 		if (!response.isSuccessful())
 		{
@@ -123,43 +126,51 @@ public class HiscoreClient
 				return null;
 			}
 
-			throw new IOException("Error retrieving data from Jagex Hiscores: " + response);
+			throw new IOException("Error retrieving data from hiscores: " + response);
 		}
 
-		String responseStr = response.body().string();
-		return parseResponse(username, responseStr);
-	}
-
-	private static HiscoreResult parseResponse(String username, String responseStr) throws IOException
-	{
-		CSVParser parser = CSVParser.parse(responseStr, CSVFormat.DEFAULT);
-
-		HiscoreResultBuilder hiscoreBuilder = new HiscoreResultBuilder(username);
-		int count = 0;
-
-		for (CSVRecord record : parser.getRecords())
+		HiscoreResponse hiscoreResponse;
+		try
 		{
-			if (count++ >= HiscoreSkill.values().length)
-			{
-				log.warn("Jagex Hiscore API returned unexpected data");
-				break; // rest is other things?
-			}
-
-			// rank, level, experience
-			int rank = Integer.parseInt(record.get(0));
-			int level = Integer.parseInt(record.get(1));
-
-			// items that are not skills do not have an experience parameter
-			long experience = -1;
-			if (record.size() == 3)
-			{
-				experience = Long.parseLong(record.get(2));
-			}
-
-			Skill skill = new Skill(rank, level, experience);
-			hiscoreBuilder.setNextSkill(skill);
+			hiscoreResponse = gson.fromJson(response.body().charStream(), HiscoreResponse.class);
+		}
+		catch (JsonSyntaxException ex)
+		{
+			throw new IOException("Error deserializing hiscore response", ex);
 		}
 
-		return hiscoreBuilder.build();
+		if (hiscoreResponse == null)
+		{
+			throw new IOException("Error retrieving data from hiscores: " + response);
+		}
+
+		Map<String, HiscoreSkill> skillMap = Arrays.stream(HiscoreSkill.values())
+			.collect(Collectors.toMap(HiscoreSkill::getName, Function.identity()));
+
+		ImmutableMap.Builder<HiscoreSkill, Skill> skills = ImmutableMap.builder();
+		for (HiscoreResponse.Skill skill : hiscoreResponse.skills)
+		{
+			HiscoreSkill s = skillMap.get(skill.name);
+			if (s == null)
+			{
+				log.debug("unknown skill in hiscore: {}", skill.name);
+				continue;
+			}
+
+			skills.put(s, new Skill(skill.rank, skill.level, skill.xp));
+		}
+		for (HiscoreResponse.Activity activity : hiscoreResponse.activities)
+		{
+			HiscoreSkill s = skillMap.get(activity.name);
+			if (s == null)
+			{
+				log.debug("unknown activity in hiscore: {}", activity.name);
+				continue;
+			}
+
+			skills.put(s, new Skill(activity.rank, (int) activity.score, -1L));
+		}
+
+		return new HiscoreResult(username, skills.build());
 	}
 }

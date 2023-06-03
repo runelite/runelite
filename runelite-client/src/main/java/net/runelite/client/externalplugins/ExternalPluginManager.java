@@ -38,6 +38,7 @@ import java.net.URL;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -59,8 +60,7 @@ import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ExternalPluginsChanged;
-import net.runelite.client.events.SessionClose;
-import net.runelite.client.events.SessionOpen;
+import net.runelite.client.events.ProfileChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginInstantiationException;
 import net.runelite.client.plugins.PluginManager;
@@ -123,16 +123,13 @@ public class ExternalPluginManager
 		}
 	}
 
-	@Subscribe
-	public void onSessionOpen(SessionOpen event)
+	@Subscribe(
+		// run before PluginManager to avoid it starting plugins which we are about to uninstall
+		priority = 1
+	)
+	public void onProfileChanged(ProfileChanged profileChanged)
 	{
-		executor.submit(this::refreshPlugins);
-	}
-
-	@Subscribe
-	public void onSessionClose(SessionClose event)
-	{
-		executor.submit(this::refreshPlugins);
+		refreshPlugins();
 	}
 
 	private void refreshPlugins()
@@ -141,6 +138,15 @@ public class ExternalPluginManager
 		{
 			log.debug("External plugins are disabled in safe mode!");
 			return;
+		}
+
+		Set<String> builtinExternalClasses = new HashSet<>();
+		if (builtinExternals != null)
+		{
+			for (Class<? extends Plugin> pluginClass : builtinExternals)
+			{
+				builtinExternalClasses.add(pluginClass.getName());
+			}
 		}
 
 		Multimap<ExternalPluginManifest, Plugin> loadedExternalPlugins = HashMultimap.create();
@@ -192,6 +198,12 @@ public class ExternalPluginManager
 					ExternalPluginManifest manifest = manifests.get(name);
 					if (manifest != null)
 					{
+						if (Arrays.stream(manifest.getPlugins()).anyMatch(builtinExternalClasses::contains))
+						{
+							log.debug("Skipping loading [{}] from hub as a conflicting builtin external is present", manifest.getInternalName());
+							continue;
+						}
+
 						externalPlugins.add(manifest);
 
 						manifest.getJarFile().setLastModified(now.toEpochMilli());

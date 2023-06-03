@@ -28,6 +28,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.ItemID;
 import net.runelite.api.NullItemID;
+import net.runelite.client.game.ItemManager;
 
 @AllArgsConstructor
 @Getter
@@ -102,4 +103,10 @@ public enum FarmingAction implements NamedSkillAction
 	private final int level;
 	private final float xp;
 	private final int icon;
+
+	@Override
+	public boolean isMembers(final ItemManager itemManager)
+	{
+		return true;
+	}
 }

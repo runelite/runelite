@@ -116,6 +116,7 @@ class DevToolsPanel extends PluginPanel
 
 		container.add(plugin.getChunkBorders());
 		container.add(plugin.getMapSquares());
+		container.add(plugin.getLoadingLines());
 
 		container.add(plugin.getLineOfSight());
 		container.add(plugin.getValidMovement());

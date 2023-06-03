@@ -51,7 +51,10 @@ import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.EnumComposition;
+import net.runelite.api.EnumID;
 import net.runelite.api.Experience;
+import net.runelite.api.GameState;
 import net.runelite.api.IconID;
 import net.runelite.api.IndexedSprite;
 import net.runelite.api.ItemComposition;
@@ -67,10 +70,9 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.vars.AccountType;
 import net.runelite.api.widgets.Widget;
+import static net.runelite.api.widgets.WidgetID.ACHIEVEMENT_DIARY_SCROLL_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.ADVENTURE_LOG_ID;
-import static net.runelite.api.widgets.WidgetID.DIARY_QUEST_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.KILL_LOGS_GROUP_ID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
@@ -97,7 +99,6 @@ import net.runelite.client.util.QuantityFormatter;
 import net.runelite.client.util.Text;
 import net.runelite.http.api.chat.Duels;
 import net.runelite.http.api.item.ItemPrice;
-import okhttp3.OkHttpClient;
 import org.apache.commons.text.WordUtils;
 
 @PluginDescriptor(
@@ -160,6 +161,7 @@ public class ChatCommandsPlugin extends Plugin
 	private double lastPb = -1;
 	private String lastTeamSize;
 	private int modIconIdx = -1;
+	private int[] pets;
 
 	@Inject
 	private Client client;
@@ -224,10 +226,20 @@ public class ChatCommandsPlugin extends Plugin
 
 		clientThread.invoke(() ->
 		{
-			if (client.getModIcons() == null)
+			// enum config must be loaded for building pet icons
+			if (client.getModIcons() == null || client.getGameState().getState() < GameState.LOGIN_SCREEN.getState())
 			{
 				return false;
 			}
+
+			// !pets requires off thread pets access, so we just store a copy at startup
+			EnumComposition petsEnum = client.getEnum(EnumID.PETS);
+			pets = new int[petsEnum.size()];
+			for (int i = 0; i < petsEnum.size(); ++i)
+			{
+				pets[i] = petsEnum.getIntValue(i);
+			}
+
 			loadPetIcons();
 			return true;
 		});
@@ -236,6 +248,7 @@ public class ChatCommandsPlugin extends Plugin
 	@Override
 	public void shutDown()
 	{
+		pets = null;
 		lastBossKill = null;
 		lastBossTime = -1;
 
@@ -263,12 +276,6 @@ public class ChatCommandsPlugin extends Plugin
 	ChatCommandsConfig provideConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(ChatCommandsConfig.class);
-	}
-
-	@Provides
-	HiscoreClient provideHiscoreClient(OkHttpClient okHttpClient)
-	{
-		return new HiscoreClient(okHttpClient);
 	}
 
 	private void setKc(String boss, int killcount)
@@ -310,7 +317,6 @@ public class ChatCommandsPlugin extends Plugin
 			return;
 		}
 
-		final Pet[] pets = Pet.values();
 		final IndexedSprite[] modIcons = client.getModIcons();
 		assert modIcons != null;
 
@@ -321,9 +327,9 @@ public class ChatCommandsPlugin extends Plugin
 
 		for (int i = 0; i < pets.length; i++)
 		{
-			final Pet pet = pets[i];
+			final int petId = pets[i];
 
-			final AsyncBufferedImage abi = itemManager.getImage(pet.getIconID());
+			final AsyncBufferedImage abi = itemManager.getImage(petId);
 			final int idx = modIconIdx + i;
 			Runnable r = () ->
 			{
@@ -343,21 +349,22 @@ public class ChatCommandsPlugin extends Plugin
 	 *
 	 * @param petList The total list of owned pets for the local player
 	 */
-	private void setPetList(List<Pet> petList)
+	private void setPetList(List<Integer> petList)
 	{
 		if (petList == null)
 		{
 			return;
 		}
 
-		configManager.setRSProfileConfiguration("chatcommands", "pets",
+		configManager.setRSProfileConfiguration("chatcommands", "pets2",
 			gson.toJson(petList));
+		configManager.unsetRSProfileConfiguration("chatcommands", "pets"); // old list
 	}
 
 	/**
 	 * Looks up the list of owned pets for the local player
 	 */
-	private List<Pet> getPetList()
+	private List<Pet> getPetListOld()
 	{
 		String petListJson = configManager.getRSProfileConfiguration("chatcommands", "pets",
 			String.class);
@@ -367,6 +374,34 @@ public class ChatCommandsPlugin extends Plugin
 		{
 			// CHECKSTYLE:OFF
 			petList = gson.fromJson(petListJson, new TypeToken<List<Pet>>(){}.getType());
+			// CHECKSTYLE:ON
+		}
+		catch (JsonSyntaxException ex)
+		{
+			return Collections.emptyList();
+		}
+
+		return petList != null ? petList : Collections.emptyList();
+	}
+
+	private List<Integer> getPetList()
+	{
+		List<Pet> old = getPetListOld();
+		if (!old.isEmpty())
+		{
+			List<Integer> l = old.stream().map(Pet::getIconID).collect(Collectors.toList());
+			setPetList(l);
+			return l;
+		}
+
+		String petListJson = configManager.getRSProfileConfiguration("chatcommands", "pets2",
+			String.class);
+
+		List<Integer> petList;
+		try
+		{
+			// CHECKSTYLE:OFF
+			petList = gson.fromJson(petListJson, new TypeToken<List<Integer>>(){}.getType());
 			// CHECKSTYLE:ON
 		}
 		catch (JsonSyntaxException ex)
@@ -430,6 +465,12 @@ public class ChatCommandsPlugin extends Plugin
 					// TOB team size isn't sent in the kill message, but can be computed from varbits
 					int tobTeamSize = tobTeamSize();
 					lastTeamSize = tobTeamSize == 1 ? "Solo" : (tobTeamSize + " players");
+				}
+				else if (renamedBoss.contains("Tombs of Amascut"))
+				{
+					// TOA team size isn't sent in the kill message, but can be computed from varbits
+					int toaTeamSize = toaTeamSize();
+					lastTeamSize = toaTeamSize == 1 ? "Solo" : (toaTeamSize + " players");
 				}
 
 				final double pb = getPb(renamedBoss);
@@ -564,15 +605,15 @@ public class ChatCommandsPlugin extends Plugin
 		if (matcher.find())
 		{
 			String item = matcher.group(1);
-			Pet pet = Pet.findPet(item);
+			int petId = findPet(item);
 
-			if (pet != null)
+			if (petId != -1)
 			{
-				List<Pet> petList = new ArrayList<>(getPetList());
-				if (!petList.contains(pet))
+				final List<Integer> petList = new ArrayList<>(getPetList());
+				if (!petList.contains(petId))
 				{
-					log.debug("New pet added: {}", pet);
-					petList.add(pet);
+					log.debug("New pet added: {}/{}", item, petId);
+					petList.add(petId);
 					setPetList(petList);
 				}
 			}
@@ -599,6 +640,20 @@ public class ChatCommandsPlugin extends Plugin
 			return Integer.parseInt(s[0]) * 60 * 60 + Integer.parseInt(s[1]) * 60 + Double.parseDouble(s[2]);
 		}
 		return Double.parseDouble(timeString);
+	}
+
+	@VisibleForTesting
+	static String secondsToTimeString(double seconds)
+	{
+		int hours = (int) (Math.floor(seconds) / 3600);
+		int minutes = (int) (Math.floor(seconds / 60) % 60);
+		seconds = seconds % 60;
+
+		String timeString = hours > 0 ? String.format("%d:%02d:", hours, minutes) : String.format("%d:", minutes);
+
+		// If the seconds is an integer, it is ambiguous if the pb is a precise
+		// pb or not. So we always show it without the trailing .00.
+		return timeString + (Math.floor(seconds) == seconds ? String.format("%02d", (int) seconds) : String.format("%05.2f", seconds));
 	}
 
 	private void matchPb(Matcher matcher)
@@ -691,7 +746,7 @@ public class ChatCommandsPlugin extends Plugin
 
 			if (client.getLocalPlayer().getName().equals(pohOwner))
 			{
-				Widget parent = client.getWidget(WidgetInfo.DIARY_QUEST_WIDGET_TEXT);
+				Widget parent = client.getWidget(WidgetInfo.ACHIEVEMENT_DIARY_SCROLL_TEXT);
 				// Each line is a separate static child
 				Widget[] children = parent.getStaticChildren();
 				String[] text = Arrays.stream(children)
@@ -766,16 +821,12 @@ public class ChatCommandsPlugin extends Plugin
 					Widget collectionLogEntryItems = client.getWidget(WidgetInfo.COLLECTION_LOG_ENTRY_ITEMS);
 					if (collectionLogEntryItems != null && collectionLogEntryItems.getChildren() != null)
 					{
-						List<Pet> petList = new ArrayList<>();
+						List<Integer> petList = new ArrayList<>();
 						for (Widget child : collectionLogEntryItems.getChildren())
 						{
 							if (child.getOpacity() == 0)
 							{
-								Pet pet = Pet.findPet(Text.removeTags(child.getName()));
-								if (pet != null)
-								{
-									petList.add(pet);
-								}
+								petList.add(child.getItemId());
 							}
 						}
 
@@ -798,7 +849,7 @@ public class ChatCommandsPlugin extends Plugin
 			case KILL_LOGS_GROUP_ID:
 				bossLogLoaded = true;
 				break;
-			case DIARY_QUEST_GROUP_ID:
+			case ACHIEVEMENT_DIARY_SCROLL_GROUP_ID:
 				scrollInterfaceLoaded = true;
 				break;
 		}
@@ -1041,7 +1092,7 @@ public class ChatCommandsPlugin extends Plugin
 
 	private boolean questPointsSubmit(ChatInput chatInput, String value)
 	{
-		final int qp = client.getVar(VarPlayer.QUEST_POINTS);
+		final int qp = client.getVarpValue(VarPlayer.QUEST_POINTS);
 		final String playerName = client.getLocalPlayer().getName();
 
 		executor.execute(() ->
@@ -1101,22 +1152,13 @@ public class ChatCommandsPlugin extends Plugin
 			return;
 		}
 
-		int minutes = (int) (Math.floor(pb) / 60);
-		double seconds = pb % 60;
-
-		// If the seconds is an integer, it is ambiguous if the pb is a precise
-		// pb or not. So we always show it without the trailing .00.
-		final String time = Math.floor(seconds) == seconds ?
-			String.format("%d:%02d", minutes, (int) seconds) :
-			String.format("%d:%05.2f", minutes, seconds);
-
 		String response = new ChatMessageBuilder()
 			.append(ChatColorType.HIGHLIGHT)
 			.append(search)
 			.append(ChatColorType.NORMAL)
 			.append(" personal best: ")
 			.append(ChatColorType.HIGHLIGHT)
-			.append(time)
+			.append(secondsToTimeString(pb))
 			.build();
 
 		log.debug("Setting response {}", response);
@@ -1276,12 +1318,12 @@ public class ChatCommandsPlugin extends Plugin
 			.append("(" + playerPetList.size() + ")");
 
 		// Append pets that the player owns
-		Pet[] pets = Pet.values();
-		for (Pet pet : pets)
+		for (int petIdx = 0; petIdx < pets.length; ++petIdx)
 		{
-			if (playerPetList.contains(pet.getIconID()))
+			final int petId = pets[petIdx];
+			if (playerPetList.contains(petId))
 			{
-				responseBuilder.append(" ").img(modIconIdx + pet.ordinal());
+				responseBuilder.append(" ").img(modIconIdx + petIdx);
 			}
 		}
 
@@ -1307,7 +1349,7 @@ public class ChatCommandsPlugin extends Plugin
 		{
 			try
 			{
-				List<Integer> petList = getPetList().stream().map(Pet::getIconID).collect(Collectors.toList());
+				List<Integer> petList = getPetList();
 				if (!petList.isEmpty())
 				{
 					chatClient.submitPetList(playerName, petList);
@@ -1435,7 +1477,8 @@ public class ChatCommandsPlugin extends Plugin
 				.append(ChatColorType.NORMAL)
 				.append("Level ")
 				.append(ChatColorType.HIGHLIGHT)
-				.append(skill.getName()).append(": ").append(String.valueOf(hiscoreSkill.getLevel()))
+				.append(skill.getName()).append(": ")
+				.append(hiscoreSkill.getLevel() > -1 ? String.valueOf(hiscoreSkill.getLevel()) : "unranked")
 				.append(ChatColorType.NORMAL);
 			if (hiscoreSkill.getExperience() != -1)
 			{
@@ -1482,13 +1525,13 @@ public class ChatCommandsPlugin extends Plugin
 				return;
 			}
 
-			int attack = playerStats.getAttack().getLevel();
-			int strength = playerStats.getStrength().getLevel();
-			int defence = playerStats.getDefence().getLevel();
-			int hitpoints = playerStats.getHitpoints().getLevel();
-			int ranged = playerStats.getRanged().getLevel();
-			int prayer = playerStats.getPrayer().getLevel();
-			int magic = playerStats.getMagic().getLevel();
+			int attack = playerStats.getSkill(HiscoreSkill.ATTACK).getLevel();
+			int strength = playerStats.getSkill(HiscoreSkill.STRENGTH).getLevel();
+			int defence = playerStats.getSkill(HiscoreSkill.DEFENCE).getLevel();
+			int hitpoints = playerStats.getSkill(HiscoreSkill.HITPOINTS).getLevel();
+			int ranged = playerStats.getSkill(HiscoreSkill.RANGED).getLevel();
+			int prayer = playerStats.getSkill(HiscoreSkill.PRAYER).getLevel();
+			int magic = playerStats.getSkill(HiscoreSkill.MAGIC).getLevel();
 			int combatLevel = Experience.getCombatLevel(attack, strength, defence, hitpoints, magic, ranged, prayer);
 
 			String response = new ChatMessageBuilder()
@@ -1610,19 +1653,11 @@ public class ChatCommandsPlugin extends Plugin
 			switch (minigame)
 			{
 				case BOUNTY_HUNTER_HUNTER:
-					hiscoreSkill = result.getBountyHunterHunter();
-					break;
 				case BOUNTY_HUNTER_ROGUE:
-					hiscoreSkill = result.getBountyHunterRogue();
-					break;
 				case LAST_MAN_STANDING:
-					hiscoreSkill = result.getLastManStanding();
-					break;
 				case LEAGUE_POINTS:
-					hiscoreSkill = result.getLeaguePoints();
-					break;
 				case SOUL_WARS_ZEAL:
-					hiscoreSkill = result.getSoulWarsZeal();
+					hiscoreSkill = result.getSkill(minigame);
 					break;
 				default:
 					log.warn("error looking up {} score: not implemented", minigame.getName().toLowerCase());
@@ -1699,25 +1734,25 @@ public class ChatCommandsPlugin extends Plugin
 			switch (level)
 			{
 				case "beginner":
-					hiscoreSkill = result.getClueScrollBeginner();
+					hiscoreSkill = result.getSkill(HiscoreSkill.CLUE_SCROLL_BEGINNER);
 					break;
 				case "easy":
-					hiscoreSkill = result.getClueScrollEasy();
+					hiscoreSkill = result.getSkill(HiscoreSkill.CLUE_SCROLL_EASY);
 					break;
 				case "medium":
-					hiscoreSkill = result.getClueScrollMedium();
+					hiscoreSkill = result.getSkill(HiscoreSkill.CLUE_SCROLL_MEDIUM);
 					break;
 				case "hard":
-					hiscoreSkill = result.getClueScrollHard();
+					hiscoreSkill = result.getSkill(HiscoreSkill.CLUE_SCROLL_HARD);
 					break;
 				case "elite":
-					hiscoreSkill = result.getClueScrollElite();
+					hiscoreSkill = result.getSkill(HiscoreSkill.CLUE_SCROLL_ELITE);
 					break;
 				case "master":
-					hiscoreSkill = result.getClueScrollMaster();
+					hiscoreSkill = result.getSkill(HiscoreSkill.CLUE_SCROLL_MASTER);
 					break;
 				case "total":
-					hiscoreSkill = result.getClueScrollAll();
+					hiscoreSkill = result.getSkill(HiscoreSkill.CLUE_SCROLL_ALL);
 					break;
 				default:
 					return;
@@ -1834,7 +1869,7 @@ public class ChatCommandsPlugin extends Plugin
 			return endpoint;
 		}
 
-		return toEndPoint(client.getAccountType());
+		return toEndPoint(client.getVarbitValue(Varbits.ACCOUNT_TYPE));
 	}
 
 	/**
@@ -1873,15 +1908,15 @@ public class ChatCommandsPlugin extends Plugin
 	 * @param accountType account type
 	 * @return hiscore endpoint
 	 */
-	private static HiscoreEndpoint toEndPoint(final AccountType accountType)
+	private static HiscoreEndpoint toEndPoint(final int accountType)
 	{
 		switch (accountType)
 		{
-			case IRONMAN:
+			case 1:
 				return HiscoreEndpoint.IRONMAN;
-			case ULTIMATE_IRONMAN:
+			case 2:
 				return HiscoreEndpoint.ULTIMATE_IRONMAN;
-			case HARDCORE_IRONMAN:
+			case 3:
 				return HiscoreEndpoint.HARDCORE_IRONMAN;
 			default:
 				return HiscoreEndpoint.NORMAL;
@@ -1966,7 +2001,7 @@ public class ChatCommandsPlugin extends Plugin
 			case "zammy":
 			case "zamorak":
 			case "kril":
-			case "kril trutsaroth":
+			case "kril tsutsaroth":
 				return "K'ril Tsutsaroth";
 			case "arma":
 			case "kree":
@@ -2147,6 +2182,73 @@ public class ChatCommandsPlugin extends Plugin
 			case "hmt 5":
 				return "Theatre of Blood Hard Mode 5 players";
 
+			// Tombs of Amascut
+			case "toa":
+				return "Tombs of Amascut";
+			case "toa 1":
+			case "toa solo":
+				return "Tombs of Amascut Solo";
+			case "toa 2":
+			case "toa duo":
+				return "Tombs of Amascut 2 players";
+			case "toa 3":
+				return "Tombs of Amascut 3 players";
+			case "toa 4":
+				return "Tombs of Amascut 4 players";
+			case "toa 5":
+				return "Tombs of Amascut 5 players";
+			case "toa 6":
+				return "Tombs of Amascut 6 players";
+			case "toa 7":
+				return "Tombs of Amascut 7 players";
+			case "toa 8":
+				return "Tombs of Amascut 8 players";
+			case "toa entry":
+			case "tombs of amascut - entry":
+			case "toa entry mode":
+				return "Tombs of Amascut Entry Mode";
+			case "toa entry 1":
+			case "toa entry solo":
+				return "Tombs of Amascut Entry Mode Solo";
+			case "toa entry 2":
+			case "toa entry duo":
+				return "Tombs of Amascut Entry Mode 2 players";
+			case "toa entry 3":
+				return "Tombs of Amascut Entry Mode 3 players";
+			case "toa entry 4":
+				return "Tombs of Amascut Entry Mode 4 players";
+			case "toa entry 5":
+				return "Tombs of Amascut Entry Mode 5 players";
+			case "toa entry 6":
+				return "Tombs of Amascut Entry Mode 6 players";
+			case "toa entry 7":
+				return "Tombs of Amascut Entry Mode 7 players";
+			case "toa entry 8":
+				return "Tombs of Amascut Entry Mode 8 players";
+			case "tombs of amascut: expert mode":
+			case "toa expert":
+			case "tombs of amascut - expert":
+			case "toa expert mode":
+				return "Tombs of Amascut Expert Mode";
+			case "toa expert 1":
+			case "toa expert solo":
+				return "Tombs of Amascut Expert Mode Solo";
+			case "toa expert 2":
+			case "toa expert duo":
+				return "Tombs of Amascut Expert Mode 2 players";
+			case "toa expert 3":
+				return "Tombs of Amascut Expert Mode 3 players";
+			case "toa expert 4":
+				return "Tombs of Amascut Expert Mode 4 players";
+			case "toa expert 5":
+				return "Tombs of Amascut Expert Mode 5 players";
+			case "toa expert 6":
+				return "Tombs of Amascut Expert Mode 6 players";
+			case "toa expert 7":
+				return "Tombs of Amascut Expert Mode 7 players";
+			case "toa expert 8":
+				return "Tombs of Amascut Expert Mode 8 players";
+
 			// The Gauntlet
 			case "gaunt":
 			case "gauntlet":
@@ -2234,7 +2336,7 @@ public class ChatCommandsPlugin extends Plugin
 			case "al-kharid agility":
 			case "alkharid":
 			case "alkharid agility":
-				return "Al-Kharid Rooftop";
+				return "Al Kharid Rooftop";
 
 			// Varrock Rooftop Course
 			case "varrock":
@@ -2348,6 +2450,17 @@ public class ChatCommandsPlugin extends Plugin
 			case "rifts closed":
 				return "Guardians of the Rift";
 
+			// Tempoross
+			case "fishingtodt":
+			case "fishtodt":
+				return "Tempoross";
+
+			// Phantom Muspah
+			case "phantom":
+			case "muspah":
+			case "pm":
+				return "Phantom Muspah";
+
 			default:
 				return WordUtils.capitalize(boss);
 		}
@@ -2437,7 +2550,7 @@ public class ChatCommandsPlugin extends Plugin
 		{
 			// longBossName the skill name to normalize from hiscore name
 			// to our internal name (removing the colon)
-			if (longBossName(skill.getName()).equals(s))
+			if (longBossName(skill.getName()).equalsIgnoreCase(s))
 			{
 				return skill;
 			}
@@ -2452,5 +2565,29 @@ public class ChatCommandsPlugin extends Plugin
 			Math.min(client.getVarbitValue(Varbits.THEATRE_OF_BLOOD_ORB3), 1) +
 			Math.min(client.getVarbitValue(Varbits.THEATRE_OF_BLOOD_ORB4), 1) +
 			Math.min(client.getVarbitValue(Varbits.THEATRE_OF_BLOOD_ORB5), 1);
+	}
+
+	private int toaTeamSize()
+	{
+		return Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_0_HEALTH), 1) +
+			Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_1_HEALTH), 1) +
+			Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_2_HEALTH), 1) +
+			Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_3_HEALTH), 1) +
+			Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_4_HEALTH), 1) +
+			Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_6_HEALTH), 1) +
+			Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_7_HEALTH), 1);
+	}
+
+	private int findPet(String name)
+	{
+		for (int petId : pets)
+		{
+			final ItemComposition item = itemManager.getItemComposition(petId);
+			if (item.getName().equals(name))
+			{
+				return item.getId();
+			}
+		}
+		return -1;
 	}
 }

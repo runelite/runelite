@@ -46,7 +46,6 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
-import net.runelite.api.MenuAction;
 import net.runelite.api.NPC;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.LocalPoint;
@@ -64,14 +63,12 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.events.OverlayMenuClicked;
 import net.runelite.client.game.FishingSpot;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
 import net.runelite.client.ui.overlay.OverlayManager;
-import net.runelite.client.ui.overlay.OverlayMenuEntry;
 
 @PluginDescriptor(
 	name = "Fishing",
@@ -161,16 +158,9 @@ public class FishingPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onOverlayMenuClicked(OverlayMenuClicked overlayMenuClicked)
+	void reset()
 	{
-		OverlayMenuEntry overlayMenuEntry = overlayMenuClicked.getEntry();
-		if (overlayMenuEntry.getMenuAction() == MenuAction.RUNELITE_OVERLAY
-			&& overlayMenuClicked.getEntry().getOption().equals(FishingOverlay.FISHING_RESET)
-			&& overlayMenuClicked.getOverlay() == overlay)
-		{
-			session.setLastFishCaught(null);
-		}
+		session.setLastFishCaught(null);
 	}
 
 	@Subscribe

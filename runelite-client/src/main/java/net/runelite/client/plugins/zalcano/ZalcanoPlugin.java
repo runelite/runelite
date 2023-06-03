@@ -36,6 +36,10 @@ import static net.runelite.api.GraphicID.GRAPHICS_OBJECT_ROCKFALL;
 import static net.runelite.api.GraphicID.ZALCANO_PROJECTILE_FIREBALL;
 import net.runelite.api.GraphicsObject;
 import net.runelite.api.Hitsplat;
+import static net.runelite.api.HitsplatID.DAMAGE_MAX_ME;
+import static net.runelite.api.HitsplatID.DAMAGE_MAX_ME_ORANGE;
+import static net.runelite.api.HitsplatID.DAMAGE_ME;
+import static net.runelite.api.HitsplatID.DAMAGE_ME_ORANGE;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import static net.runelite.api.NpcID.ZALCANO;
@@ -147,12 +151,15 @@ public class ZalcanoPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		boolean wasInCavern = inCavern;
-		inCavern = isHealthbarActive();
-
-		if (!inCavern && wasInCavern)
+		if (event.getVarpId() == VarPlayer.HP_HUD_NPC_ID)
 		{
-			resetDamageCounter();
+			boolean wasInCavern = inCavern;
+			inCavern = isHealthbarActive();
+
+			if (!inCavern && wasInCavern)
+			{
+				resetDamageCounter();
+			}
 		}
 	}
 
@@ -255,9 +262,11 @@ public class ZalcanoPlugin extends Plugin
 		switch (hitsplat.getHitsplatType())
 		{
 			case DAMAGE_ME:
+			case DAMAGE_MAX_ME:
 				healthDamage += damage;
 				break;
 			case DAMAGE_ME_ORANGE:
+			case DAMAGE_MAX_ME_ORANGE:
 				shieldDamage += damage;
 				break;
 		}
@@ -265,7 +274,7 @@ public class ZalcanoPlugin extends Plugin
 
 	private boolean isHealthbarActive()
 	{
-		int npcId = client.getVar(VarPlayer.HP_HUD_NPC_ID);
+		int npcId = client.getVarpValue(VarPlayer.HP_HUD_NPC_ID);
 		return npcId == ZALCANO_WEAKENED || npcId == ZALCANO;
 	}
 }

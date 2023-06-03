@@ -34,6 +34,7 @@ import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
+import net.runelite.api.ObjectComposition;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
@@ -87,6 +88,13 @@ class WoodcuttingTreesOverlay extends Overlay
 		{
 			if (treeObject.getWorldLocation().distanceTo(client.getLocalPlayer().getWorldLocation()) <= 12)
 			{
+				// Redwood trees at the farming guild are multilocs rather than global objects synced for all players
+				// so we must handle them here rather than relying on GameObjectSpawned events
+				final ObjectComposition treeComp = client.getObjectDefinition(treeObject.getId());
+				if (treeComp.getImpostorIds() != null && Tree.findTree(treeComp.getImpostor().getId()) == null)
+				{
+					continue;
+				}
 				OverlayUtil.renderImageLocation(client, graphics, treeObject.getLocalLocation(), itemManager.getImage(axe.getItemId()), 120);
 			}
 		}

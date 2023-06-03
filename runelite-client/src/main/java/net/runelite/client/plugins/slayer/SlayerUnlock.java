@@ -28,6 +28,7 @@ import net.runelite.api.Client;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.annotations.Varbit;
+import net.runelite.api.annotations.Varp;
 
 /**
  * Unlockables in the slayer interface
@@ -108,8 +109,8 @@ enum SlayerUnlock
 	 */
 	public boolean isOwned(Client client)
 	{
-		VarPlayer varp = ordinal() > 32 ? VarPlayer.SLAYER_UNLOCK_2 : VarPlayer.SLAYER_UNLOCK_1;
-		return (client.getVar(varp) & (1 << (ordinal() % 32))) != 0;
+		@Varp int varp = ordinal() > 32 ? VarPlayer.SLAYER_UNLOCK_2 : VarPlayer.SLAYER_UNLOCK_1;
+		return (client.getVarpValue(varp) & (1 << (ordinal() % 32))) != 0;
 	}
 
 	/**

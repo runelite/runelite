@@ -27,6 +27,7 @@ package net.runelite.client.plugins.skillcalculator.skills;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.ItemID;
+import net.runelite.client.game.ItemManager;
 
 @AllArgsConstructor
 @Getter
@@ -40,9 +41,8 @@ public enum ThievingAction implements NamedSkillAction
 	CRAFTING_STALL("Crafting Stall", 5, 16, ItemID.CHISEL_5601),
 	MONKEY_FOOD_STALL("Monkey Food Stall", 5, 16, ItemID.BANANA),
 	FARMER("Farmer", 10, 14.5f, ItemID.FARMER),
-	FEMALE_HAM_MEMBER("Female H.A.M. Member", 15, 18.5f, ItemID.FEMALE_HAM),
+	HAM_MEMBER("H.A.M. Member", 15, 22.2f, ItemID.MALE_HAM),
 	SILK_STALL("Silk Stall", 20, 24, ItemID.SILK),
-	MALE_HAM_MEMBER("Male H.A.M. Member", 20, 22.5f, ItemID.MALE_HAM),
 	WINE_STALL("Wine Stall", 22, 27, ItemID.BOTTLE_OF_WINE),
 	WARRIOR_WOMEN_OR_AL_KHARID_WARRIOR("Warrior Women / Al-Kharid Warrior", 25, 26, ItemID.WARRIOR_WOMAN),
 	FRUIT_STALL("Fruit Stall", 25, 28, ItemID.STRANGE_FRUIT),
@@ -86,4 +86,10 @@ public enum ThievingAction implements NamedSkillAction
 	private final int level;
 	private final float xp;
 	private final int icon;
+
+	@Override
+	public boolean isMembers(final ItemManager itemManager)
+	{
+		return true;
+	}
 }

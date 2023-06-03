@@ -213,6 +213,17 @@ public class CacheClient implements AutoCloseable
 
 			Index index = store.findIndex(i);
 
+			// client no longer requests 255/16 and the server seems to now silently drop it!
+			if (i == 16)
+			{
+				if (index != null)
+				{
+					logger.info("Removing index {}", i);
+					store.removeIndex(index);
+				}
+				continue;
+			}
+
 			if (index == null)
 			{
 				logger.info("Index {} does not exist, creating", i);
@@ -269,9 +280,12 @@ public class CacheClient implements AutoCloseable
 
 			logger.info("Index {} has {} archives", i, indexData.getArchives().length);
 
+			List<Archive> prevArchives = new ArrayList<>(index.getArchives());
 			for (ArchiveData ad : indexData.getArchives())
 			{
 				Archive existing = index.getArchive(ad.getId());
+
+				prevArchives.remove(existing);
 
 				if (existing != null && existing.getRevision() == ad.getRevision()
 					&& existing.getCrc() == ad.getCrc()
@@ -284,7 +298,7 @@ public class CacheClient implements AutoCloseable
 
 				if (existing == null)
 				{
-					logger.info("Archive {}/{} in index {} is out of date, downloading",
+					logger.info("Archive {}/{} in index {} is new, downloading",
 						ad.getId(), indexData.getArchives().length, index.getId());
 				}
 				else if (ad.getRevision() < existing.getRevision())
@@ -349,6 +363,15 @@ public class CacheClient implements AutoCloseable
 					}
 					return null;
 				});
+			}
+
+			for (Archive deletedArchive : prevArchives)
+			{
+				logger.info("Archive {}/{} in index {} was removed",
+					deletedArchive.getArchiveId(), indexData.getArchives().length, index.getId());
+
+				boolean removed = index.removeArchive(deletedArchive);
+				assert removed;
 			}
 		}
 

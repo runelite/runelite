@@ -35,10 +35,13 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.NPC;
+import net.runelite.api.NPCComposition;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcSpawned;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.menus.TestMenuEntry;
+import net.runelite.client.ui.components.colorpicker.ColorPickerManager;
 import net.runelite.client.ui.overlay.OverlayManager;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -73,6 +76,14 @@ public class NpcIndicatorsPluginTest
 	@Bind
 	private OverlayManager overlayManager;
 
+	@Mock
+	@Bind
+	private ConfigManager configManager;
+
+	@Mock
+	@Bind
+	private ColorPickerManager colorPickerManager;
+
 	@Before
 	public void setUp()
 	{
@@ -101,9 +112,12 @@ public class NpcIndicatorsPluginTest
 
 		npcIndicatorsPlugin.rebuild();
 
+		NPCComposition comp = mock(NPCComposition.class);
+		when(comp.getActions()).thenReturn(new String[] {"Attack"});
 		NPC npc = mock(NPC.class);
 		when(npc.getName()).thenReturn("Goblin");
 		when(npc.isDead()).thenReturn(true);
+		when(npc.getTransformedComposition()).thenReturn(comp);
 		npcIndicatorsPlugin.onNpcSpawned(new NpcSpawned(npc));
 
 		TestMenuEntry entry = new TestMenuEntry();

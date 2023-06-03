@@ -84,6 +84,7 @@ public class BankPlugin extends Plugin
 
 	private static final String NUMBER_REGEX = "[0-9]+(\\.[0-9]+)?[kmb]?";
 	private static final Pattern VALUE_SEARCH_PATTERN = Pattern.compile("^(?<mode>qty|ge|ha|alch)?" +
+		" *(?<individual>i|iv|individual|per)?" +
 		" *(((?<op>[<>=]|>=|<=) *(?<num>" + NUMBER_REGEX + "))|" +
 		"((?<num1>" + NUMBER_REGEX + ") *- *(?<num2>" + NUMBER_REGEX + ")))$", Pattern.CASE_INSENSITIVE);
 
@@ -246,7 +247,7 @@ public class BankPlugin extends Plugin
 
 					client.runScript(onOpListener);
 					// Block the key press this tick in keypress_permit so it doesn't enter the chatbox
-					client.setVar(VarClientInt.BLOCK_KEYPRESS, client.getGameCycle() + 1);
+					client.setVarcIntValue(VarClientInt.BLOCK_KEYPRESS, client.getGameCycle() + 1);
 				});
 				break;
 			}
@@ -282,7 +283,7 @@ public class BankPlugin extends Plugin
 		{
 			// vanilla only lays out the bank every 40 client ticks, so if the search input has changed,
 			// and the bank wasn't laid out this tick, lay it out early
-			final String inputText = client.getVar(VarClientStr.INPUT_TEXT);
+			final String inputText = client.getVarcStrValue(VarClientStr.INPUT_TEXT);
 			if (searchString != inputText && client.getGameCycle() % 40 != 0)
 			{
 				clientThread.invokeLater(bankSearch::layoutBank);
@@ -415,7 +416,7 @@ public class BankPlugin extends Plugin
 		}
 
 		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
-		final int qty = itemQuantities.count(itemId);
+		final int qty = matcher.group("individual") != null ? 1 : itemQuantities.count(itemId);
 		final long gePrice = (long) itemManager.getItemPrice(itemId) * qty;
 		final long haPrice = (long) itemComposition.getHaPrice() * qty;
 		final boolean isPlaceholder = itemComposition.getPlaceholderTemplateId() != -1;

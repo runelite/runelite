@@ -7,9 +7,11 @@ body:
       value: |
         # RuneLite bug report
 
-        Before filing a bug report, please check whether your issue has been reported before:
-        - Read the pinned issues (if any) at the top of https://github.com/runelite/runelite/issues.
+        Before filing a bug report, please:
+        - Confirm your issue happens in safe mode (with the exception of GPU-plugin related issues).
         - Search for your issue in both [the issue listing](https://github.com/runelite/runelite/issues) and the [Q&A discussion listing](https://github.com/runelite/runelite/discussions/categories/q-a). If you find that it already exists, respond with a reaction or add any further information that may be helpful.
+
+        We do not accept bug reports for 3rd party/pluginhub plugins. Confirm your issue is not caused by a 3rd party plugin by running RuneLite in safe mode via `"%localappdata%\RuneLite\RuneLite.exe" --safe-mode`.
   - type: dropdown
     attributes:
       label: Type
@@ -55,6 +57,8 @@ body:
       placeholder: |
         RuneLite version: 1.8.18.1
         Launcher version: 2.4.2
+    validations:
+      required: true
   - type: markdown
     attributes:
       value: |

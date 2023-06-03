@@ -25,12 +25,14 @@
 package net.runelite.client.ui;
 
 import com.google.common.base.Strings;
+import com.google.inject.Inject;
 import java.applet.Applet;
 import java.awt.Canvas;
 import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Cursor;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Graphics;
@@ -42,13 +44,13 @@ import java.awt.LayoutManager;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
+import java.awt.desktop.QuitStrategy;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.time.Duration;
 import javax.annotation.Nullable;
-import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Provider;
 import javax.inject.Singleton;
@@ -56,12 +58,14 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
 import javax.swing.SwingUtilities;
+import javax.swing.event.HyperlinkEvent;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -72,6 +76,7 @@ import net.runelite.api.Point;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.ExpandResizeType;
@@ -90,6 +95,7 @@ import net.runelite.client.input.MouseManager;
 import net.runelite.client.ui.skin.SubstanceRuneLiteLookAndFeel;
 import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.ImageUtil;
+import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.OSType;
 import net.runelite.client.util.OSXUtil;
 import net.runelite.client.util.SwingUtil;
@@ -142,6 +148,14 @@ public class ClientUI
 	private JButton sidebarNavigationJButton;
 	private Dimension lastClientSize;
 	private Cursor defaultCursor;
+
+	@Inject(optional = true)
+	@Named("minMemoryLimit")
+	private int minMemoryLimit = 400;
+
+	@Inject(optional = true)
+	@Named("recommendedMemoryLimit")
+	private int recommendedMemoryLimit = 512;
 
 	@Inject
 	private ClientUI(
@@ -336,7 +350,8 @@ public class ClientUI
 			{
 				// Change the default quit strategy to CLOSE_ALL_WINDOWS so that ctrl+q
 				// triggers the listener below instead of exiting.
-				MacOSQuitStrategy.setup();
+				Desktop.getDesktop()
+					.setQuitStrategy(QuitStrategy.CLOSE_ALL_WINDOWS);
 			}
 			frame.addWindowListener(new WindowAdapter()
 			{
@@ -520,6 +535,8 @@ public class ClientUI
 
 	public void show()
 	{
+		logGraphicsEnvironment();
+
 		SwingUtilities.invokeLater(() ->
 		{
 			// Layout frame
@@ -535,58 +552,30 @@ public class ClientUI
 			// Move frame around (needs to be done after frame is packed)
 			if (config.rememberScreenBounds() && !safeMode)
 			{
-				try
+				Rectangle clientBounds = configManager.getConfiguration(
+					CONFIG_GROUP, CONFIG_CLIENT_BOUNDS, Rectangle.class);
+				if (clientBounds != null)
 				{
-					Rectangle clientBounds = configManager.getConfiguration(
-						CONFIG_GROUP, CONFIG_CLIENT_BOUNDS, Rectangle.class);
-					if (clientBounds != null)
+					frame.setBounds(clientBounds);
+
+					// Check that the bounds are contained inside a valid display
+					GraphicsConfiguration gc = findDisplayFromBounds(clientBounds);
+					if (gc == null)
 					{
-						frame.setBounds(clientBounds);
-
-						// frame.getGraphicsConfiguration().getBounds() returns the bounds for the primary display.
-						// We have to find the correct graphics configuration by using the client boundaries.
-						GraphicsConfiguration gc = findDisplayFromBounds(clientBounds);
-						if (gc != null)
-						{
-							double scale = gc.getDefaultTransform().getScaleX();
-
-							// When Windows screen scaling is on, the position/bounds will be wrong when they are set.
-							// The bounds saved in shutdown are the full, non-scaled co-ordinates.
-							// On MacOS the scaling is already applied and the position/bounds are correct on at least
-							// - 2015 x64 MBP JDK11 Mohave
-							// - 2020 m1 MBP JDK17 Big Sur
-							// Adjusting the scaling further results in the client position being incorrect
-							if (scale != 1 && OSType.getOSType() != OSType.MacOS)
-							{
-								clientBounds.setRect(
-									clientBounds.getX() / scale,
-									clientBounds.getY() / scale,
-									clientBounds.getWidth() / scale,
-									clientBounds.getHeight() / scale);
-
-								frame.setMinimumSize(clientBounds.getSize());
-								frame.setBounds(clientBounds);
-							}
-						}
-						else
-						{
-							frame.setLocationRelativeTo(frame.getOwner());
-						}
-					}
-					else
-					{
+						log.info("Reset client position. Client bounds: {}x{}x{}x{}",
+							clientBounds.x, clientBounds.y, clientBounds.width, clientBounds.height);
+						// Reset the position, but not the size
 						frame.setLocationRelativeTo(frame.getOwner());
 					}
-
-					if (configManager.getConfiguration(CONFIG_GROUP, CONFIG_CLIENT_MAXIMIZED) != null)
-					{
-						frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-					}
 				}
-				catch (Exception ex)
+				else
 				{
-					log.warn("Failed to set window bounds", ex);
 					frame.setLocationRelativeTo(frame.getOwner());
+				}
+
+				if (configManager.getConfiguration(CONFIG_GROUP, CONFIG_CLIENT_MAXIMIZED) != null)
+				{
+					frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 				}
 			}
 			else
@@ -600,7 +589,7 @@ public class ClientUI
 			frame.setResizable(!config.lockWindowSize());
 			frame.toFront();
 			requestFocus();
-			log.info("Showing frame {}", frame);
+			log.debug("Showing frame {}", frame);
 			frame.revalidateMinimumSize();
 		});
 
@@ -611,6 +600,40 @@ public class ClientUI
 				"RuneLite has not yet been updated to work with the latest\n"
 					+ "game update, it will work with reduced functionality until then.",
 				"RuneLite is outdated", INFORMATION_MESSAGE));
+		}
+
+		final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024L / 1024L);
+		if (maxMemory < minMemoryLimit)
+		{
+			SwingUtilities.invokeLater(() ->
+			{
+				JEditorPane ep = new JEditorPane("text/html",
+					"Your Java memory limit is " + maxMemory + "mb, which is lower than the recommended " + recommendedMemoryLimit + "mb.<br>" +
+						"This can cause instability, and it is recommended you remove or increase this limit.<br>" +
+						"Join <a href=\"" + RuneLiteProperties.getDiscordInvite() + "\">Discord</a> for assistance."
+				);
+				ep.addHyperlinkListener(e ->
+				{
+					if (e.getEventType().equals(HyperlinkEvent.EventType.ACTIVATED))
+					{
+						LinkBrowser.browse(e.getURL().toString());
+					}
+				});
+				ep.setEditable(false);
+				ep.setOpaque(false);
+				JOptionPane.showMessageDialog(frame,
+					ep, "Max memory limit low", JOptionPane.WARNING_MESSAGE);
+			});
+		}
+	}
+
+	private void logGraphicsEnvironment()
+	{
+		GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		for (GraphicsDevice graphicsDevice : graphicsEnvironment.getScreenDevices())
+		{
+			GraphicsConfiguration configuration = graphicsDevice.getDefaultConfiguration();
+			log.debug("Graphics device {}: bounds {} transform: {}", graphicsDevice, configuration.getBounds(), configuration.getDefaultTransform());
 		}
 	}
 

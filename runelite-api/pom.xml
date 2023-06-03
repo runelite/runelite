@@ -29,7 +29,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.8.23-SNAPSHOT</version>
+		<version>1.10.4-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>runelite-api</artifactId>
@@ -93,6 +93,7 @@
 							<excludes>
 								<exclude>net/runelite/api/annotations/*.class</exclude>
 								<exclude>net/runelite/api/clan/ClanID.class</exclude>
+								<exclude>net/runelite/api/dbtable/DBTableID*.class</exclude>
 								<exclude>net/runelite/api/widgets/ItemQuantityMode.class</exclude>
 								<exclude>net/runelite/api/widgets/WidgetConfig.class</exclude>
 								<exclude>net/runelite/api/widgets/WidgetID*.class</exclude>
@@ -106,7 +107,10 @@
 								<exclude>net/runelite/api/EnumID.class</exclude>
 								<exclude>net/runelite/api/FontID.class</exclude>
 								<exclude>net/runelite/api/GraphicID.class</exclude>
+								<exclude>net/runelite/api/HintArrowType.class</exclude>
+								<exclude>net/runelite/api/HitsplatID.class</exclude>
 								<exclude>net/runelite/api/ItemID.class</exclude>
+								<exclude>net/runelite/api/KeyCode.class</exclude>
 								<exclude>net/runelite/api/NpcID.class</exclude>
 								<exclude>net/runelite/api/NullItemID.class</exclude>
 								<exclude>net/runelite/api/NullNpcID.class</exclude>
@@ -121,6 +125,9 @@
 								<exclude>net/runelite/api/SpriteID.class</exclude>
 								<exclude>net/runelite/api/StructID.class</exclude>
 								<exclude>net/runelite/api/Varbits.class</exclude>
+								<exclude>net/runelite/api/VarClientInt.class</exclude>
+								<exclude>net/runelite/api/VarClientStr.class</exclude>
+								<exclude>net/runelite/api/VarPlayer.class</exclude>
 							</excludes>
 						</configuration>
 					</execution>

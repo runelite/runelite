@@ -26,27 +26,34 @@
 package net.runelite.client.util;
 
 import com.google.common.io.ByteStreams;
+import com.google.inject.Injector;
+import com.google.inject.Key;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.annotation.Annotation;
 import java.lang.invoke.MethodHandles;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Executable;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Set;
+import java.util.WeakHashMap;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ReflectUtil
 {
-	private ReflectUtil()
-	{
-	}
+	private static Set<Class<?>> annotationClasses = Collections.newSetFromMap(new WeakHashMap<>());
 
 	public static MethodHandles.Lookup privateLookupIn(Class<?> clazz)
 	{
 		try
 		{
-			// Java 9+ has privateLookupIn method on MethodHandles, but since we are shipping and using Java 8
-			// we need to access it via reflection. This is preferred way because it's Java 9+ public api and is
-			// likely to not change
-			final Method privateLookupIn = MethodHandles.class.getMethod("privateLookupIn", Class.class, MethodHandles.Lookup.class);
 			MethodHandles.Lookup caller;
 			if (clazz.getClassLoader() instanceof PrivateLookupableClassLoader)
 			{
@@ -56,29 +63,11 @@ public class ReflectUtil
 			{
 				caller = MethodHandles.lookup();
 			}
-			return (MethodHandles.Lookup) privateLookupIn.invoke(null, clazz, caller);
+			return MethodHandles.privateLookupIn(clazz, caller);
 		}
-		catch (InvocationTargetException | IllegalAccessException e)
+		catch (IllegalAccessException e)
 		{
 			throw new RuntimeException(e);
-		}
-		catch (NoSuchMethodException e)
-		{
-			try
-			{
-				// In Java 8 we first do standard lookupIn class
-				final MethodHandles.Lookup lookupIn = MethodHandles.lookup().in(clazz);
-
-				// and then we mark it as trusted for private lookup via reflection on private field
-				final Field modes = MethodHandles.Lookup.class.getDeclaredField("allowedModes");
-				modes.setAccessible(true);
-				modes.setInt(lookupIn, -1); // -1 == TRUSTED
-				return lookupIn;
-			}
-			catch (ReflectiveOperationException ex)
-			{
-				throw new RuntimeException(ex); // NOPMD: PreserveStackTrace: ignore e
-			}
 		}
 	}
 
@@ -88,6 +77,7 @@ public class ReflectUtil
 		Class<?> defineClass0(String name, byte[] b, int off, int len) throws ClassFormatError;
 
 		MethodHandles.Lookup getLookup();
+
 		void setLookup(MethodHandles.Lookup lookup);
 	}
 
@@ -119,7 +109,7 @@ public class ReflectUtil
 			throw new RuntimeException("unable to install lookup helper", e);
 		}
 	}
-	
+
 	public static class PrivateLookupHelper
 	{
 		static
@@ -127,5 +117,91 @@ public class ReflectUtil
 			PrivateLookupableClassLoader pcl = (PrivateLookupableClassLoader) PrivateLookupHelper.class.getClassLoader();
 			pcl.setLookup(MethodHandles.lookup());
 		}
+	}
+
+	public synchronized static void queueInjectorAnnotationCacheInvalidation(Injector injector)
+	{
+		if (annotationClasses == null)
+		{
+			return;
+		}
+
+		for (Key<?> key : injector.getAllBindings().keySet())
+		{
+			for (Class<?> clazz = key.getTypeLiteral().getRawType(); clazz != null; clazz = clazz.getSuperclass())
+			{
+				annotationClasses.add(clazz);
+			}
+		}
+	}
+
+	public synchronized static void invalidateAnnotationCaches()
+	{
+		try
+		{
+			for (Class<?> clazz : annotationClasses)
+			{
+				for (Method method : clazz.getDeclaredMethods())
+				{
+					uncacheAnnotations(method, Executable.class);
+				}
+				for (Field field : clazz.getDeclaredFields())
+				{
+					uncacheAnnotations(field, Field.class);
+				}
+				for (Constructor<?> constructor : clazz.getDeclaredConstructors())
+				{
+					uncacheAnnotations(constructor, Executable.class);
+				}
+			}
+		}
+		catch (Exception ex)
+		{
+			// this fails on newer Java versions which don't allow reflect into java.base
+			log.debug(null, ex);
+		}
+		finally
+		{
+			annotationClasses.clear();
+			annotationClasses = null;
+		}
+	}
+
+	/**
+	 * Java caches parsed annotations on AccessibleObjects in a LinkedHashMap for performance reasons.
+	 * Since we don't use annotations much after startup, we can invalidate these caches.
+	 *
+	 * @param object
+	 * @param declaredAnnotationsClazz
+	 * @throws Exception
+	 */
+	private static void uncacheAnnotations(final Object object, Class<?> declaredAnnotationsClazz) throws Exception
+	{
+		if (object == null)
+		{
+			return;
+		}
+
+		Field declaredAnnotations = declaredAnnotationsClazz.getDeclaredField("declaredAnnotations");
+		declaredAnnotations.setAccessible(true);
+
+		synchronized (object)
+		{
+			Map<Class<? extends Annotation>, Annotation> m = (Map) declaredAnnotations.get(object);
+			// AnnotationParser returns the shared empty map for methods with no runtime annotations,
+			// so we can avoid nulling it in that case.
+			if (m != null && m != Collections.<Class<? extends Annotation>, Annotation>emptyMap())
+			{
+				declaredAnnotations.set(object, null);
+			}
+		}
+
+		// JDK11 shares the annotation map between the object and its root, so clear both;
+		// JDK8 just has the annotations on object.
+		Field rootField = object.getClass().getDeclaredField("root");
+		rootField.setAccessible(true);
+
+		final Object root = rootField.get(object);
+		uncacheAnnotations(root, declaredAnnotationsClazz);
 	}
 }

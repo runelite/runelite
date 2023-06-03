@@ -91,10 +91,9 @@ public class RuntimeConfigLoader implements Supplier<RuntimeConfig>
 		{
 			try
 			{
-				log.info("Using local runtime config");
-
 				String strConf = new String(Files.readAllBytes(Paths.get(prop)), StandardCharsets.UTF_8);
 				RuntimeConfig conf = RuneLiteAPI.GSON.fromJson(strConf, RuntimeConfig.class);
+				log.info("Using local runtime config: {}", conf);
 				future.complete(conf);
 				return future;
 			}

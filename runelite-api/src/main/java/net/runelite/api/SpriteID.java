@@ -184,7 +184,6 @@ public final class SpriteID
 	public static final int PRAYER_SMITE_DISABLED = 152;
 	public static final int PRAYER_SHARP_EYE_DISABLED = 153;
 	public static final int PRAYER_MYSTIC_WILL_DISABLED = 154;
-	public static final int ACTIVATED_PRAYER_BACKGROUND = 155;
 	public static final int EQUIPMENT_SLOT_HEAD = 156;
 	public static final int EQUIPMENT_SLOT_CAPE = 157;
 	public static final int EQUIPMENT_SLOT_NECK = 158;
@@ -775,6 +774,7 @@ public final class SpriteID
 	public static final int RS2_TAB_INVENTORY = 777;
 	public static final int RS2_TAB_EQUIPMENT = 778;
 	public static final int RS2_TAB_PRAYER = 779;
+	public static final int TAB_PRAYER = 779;
 	public static final int TAB_MAGIC = 780;
 	public static final int RS2_TAB_FRIENDS_CHAT = 781;
 	public static final int TAB_FRIENDS = 782;
@@ -886,7 +886,6 @@ public final class SpriteID
 	public static final int UNUSED_TAB_QUESTS_899 = 899;
 	public static final int TAB_INVENTORY = 900;
 	public static final int TAB_EQUIPMENT = 901;
-	public static final int TAB_PRAYER = 902;
 	public static final int UNUSED_TAB_MAGIC_903 = 903;
 	public static final int TAB_FRIENDS_CHAT = 904;
 	public static final int TAB_LOGOUT = 907;
@@ -1662,4 +1661,26 @@ public final class SpriteID
 	public static final int SPELL_RESURRECT_GREATER_ZOMBIE = 2984;
 	/* Unmapped: 2985~2986 */
 	public static final int SPELL_RESURRECT_SUPERIOR_SKELETON_DISABLED = 2987;
+	/* Unmapped: 2988~4707 */
+	public static final int HEALTHBAR_PURPLE_FRONT_30PX = 4708;
+	public static final int HEALTHBAR_PURPLE_BACK_30PX = 4709;
+	public static final int HEALTHBAR_PURPLE_FRONT_40PX = 4710;
+	public static final int HEALTHBAR_PURPLE_BACK_40PX = 4711;
+	public static final int HEALTHBAR_PURPLE_FRONT_50PX = 4712;
+	public static final int HEALTHBAR_PURPLE_BACK_50PX = 4713;
+	public static final int HEALTHBAR_PURPLE_FRONT_60PX = 4714;
+	public static final int HEALTHBAR_PURPLE_BACK_60PX = 4715;
+	public static final int HEALTHBAR_PURPLE_FRONT_70PX = 4716;
+	public static final int HEALTHBAR_PURPLE_BACK_70PX = 4717;
+	public static final int HEALTHBAR_PURPLE_FRONT_80PX = 4718;
+	public static final int HEALTHBAR_PURPLE_BACK_80PX = 4719;
+	public static final int HEALTHBAR_PURPLE_FRONT_100PX = 4720;
+	public static final int HEALTHBAR_PURPLE_BACK_100PX = 4721;
+	public static final int HEALTHBAR_PURPLE_FRONT_120PX = 4722;
+	public static final int HEALTHBAR_PURPLE_BACK_120PX = 4723;
+	public static final int HEALTHBAR_PURPLE_FRONT_140PX = 4724;
+	public static final int HEALTHBAR_PURPLE_BACK_140PX = 4725;
+	public static final int HEALTHBAR_PURPLE_FRONT_160PX = 4726;
+	public static final int HEALTHBAR_PURPLE_BACK_160PX = 4727;
+	public static final int ACTIVATED_PRAYER_BACKGROUND = 4892;
 }

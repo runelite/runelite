@@ -26,7 +26,26 @@
 package net.runelite.client.game;
 
 import lombok.Getter;
-import static net.runelite.api.NullObjectID.*;
+import net.runelite.api.Client;
+import net.runelite.api.NullObjectID;
+import static net.runelite.api.NullObjectID.NULL_25337;
+import static net.runelite.api.NullObjectID.NULL_26371;
+import static net.runelite.api.NullObjectID.NULL_26375;
+import static net.runelite.api.NullObjectID.NULL_26561;
+import static net.runelite.api.NullObjectID.NULL_26562;
+import static net.runelite.api.NullObjectID.NULL_26884;
+import static net.runelite.api.NullObjectID.NULL_26886;
+import static net.runelite.api.NullObjectID.NULL_29868;
+import static net.runelite.api.NullObjectID.NULL_29869;
+import static net.runelite.api.NullObjectID.NULL_29870;
+import static net.runelite.api.NullObjectID.NULL_31823;
+import static net.runelite.api.NullObjectID.NULL_31849;
+import static net.runelite.api.NullObjectID.NULL_31852;
+import static net.runelite.api.NullObjectID.NULL_33327;
+import static net.runelite.api.NullObjectID.NULL_33328;
+import static net.runelite.api.NullObjectID.NULL_39541;
+import static net.runelite.api.NullObjectID.NULL_39542;
+import static net.runelite.api.NullObjectID.NULL_43840;
 import static net.runelite.api.ObjectID.*;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
@@ -71,6 +90,18 @@ public enum AgilityShortcut
 			ROCKY_HANDHOLDS, ROCKY_HANDHOLDS_19847,
 			// Witchaven Dungeon
 			SHORTCUT),
+	WEISS_BROKEN_FENCE(1, "Shortcut", null, /* base id */ NullObjectID.NULL_46815)
+	{
+		@Override
+		public boolean matches(Client client, TileObject object)
+		{
+			assert object.getId() == NullObjectID.NULL_46815;
+			int multilocId = client.getObjectDefinition(object.getId())
+				.getImpostor()
+				.getId();
+			return multilocId == BROKEN_FENCE_46817;
+		}
+	},
 	BRIMHAVEN_DUNGEON_MEDIUM_PIPE_RETURN(1, "Pipe Squeeze", null, new WorldPoint(2698, 9491, 0), PIPE_21727),
 	BRIMHAVEN_DUNGEON_PIPE_RETURN(1, "Pipe Squeeze", null, new WorldPoint(2655, 9573, 0), PIPE_21728),
 	BRIMHAVEN_DUNGEON_STEPPING_STONES_RETURN(1, "Pipe Squeeze", null, STEPPING_STONE_21739),
@@ -168,6 +199,8 @@ public enum AgilityShortcut
 	SLAYER_TOWER_MEDIUM_CHAIN_SECOND(61, "Spiked Chain (Floor 2)", new WorldPoint(3420, 3551, 0), SPIKEY_CHAIN_16538),
 	SLAYER_DUNGEON_CREVICE(62, "Narrow Crevice", new WorldPoint(2729, 10008, 0), CREVICE_16539),
 	MOUNT_KARUULM_UPPER(62, "Rocks", new WorldPoint(1322, 3791, 0), ROCKS_34396),
+	NECROPOLIS_STEPPING_STONE_NORTH(62, "Stepping Stone", new WorldPoint(3293, 2706, 0), STEPPING_STONE_43990),
+	NECROPOLIS_STEPPING_STONES_SOUTH(62, "Stepping Stones", new WorldPoint(3291, 2700, 0), STEPPING_STONE_43989),
 	TAVERLEY_DUNGEON_RAILING(63, "Loose Railing", new WorldPoint(2935, 9811, 0), LOOSE_RAILING_28849),
 	DARKMEYER_WALL(63, "Wall (Long rope)", new WorldPoint(3669, 3375, 0), NULL_39541, NULL_39542),
 	TROLLHEIM_WILDERNESS_ROCKS_EAST(64, "Rocks", new WorldPoint(2945, 3678, 0), ROCKS_16545),
@@ -182,7 +215,8 @@ public enum AgilityShortcut
 	YANILLE_DUNGEON_RUBBLE_CLIMB(67, "Pile of Rubble", null, PILE_OF_RUBBLE_23563, PILE_OF_RUBBLE_23564),
 	ELVEN_OVERPASS_MEDIUM_CLIFF(68, "Rocks", new WorldPoint(2337, 3288, 0), ROCKS_16514, ROCKS_16515),
 	ELVEN_OVERPASS_MEDIUM_CLIFF_PRIFDDINAS(68, "Rocks", new WorldPoint(3361, 6040, 0), ROCKS_16514, ROCKS_16515),
-	WEISS_OBSTACLES(68, "Shortcut", null, LITTLE_BOULDER, ROCKSLIDE_33184, ROCKSLIDE_33185, NULL_33327, NULL_33328, LEDGE_33190, ROCKSLIDE_33191, FALLEN_TREE_33192),
+	WEISS_OBSTACLES(68, "Shortcut", null, ROCKSLIDE_33184, ROCKSLIDE_33185, NULL_33327, NULL_33328, LEDGE_33190, ROCKSLIDE_33191, FALLEN_TREE_33192),
+	WEISS_FARMING_PATCH_BOULDER(0, "Shortcut", null, LITTLE_BOULDER),
 	ARCEUUS_ESSENSE_NORTH(69, "Rock Climb", new WorldPoint(1759, 3873, 0), ROCKS_34741),
 	TAVERLEY_DUNGEON_PIPE_BLUE_DRAGON(70, "Pipe Squeeze", new WorldPoint(2886, 9798, 0), OBSTACLE_PIPE_16509),
 	TAVERLEY_DUNGEON_ROCKS_NORTH(70, "Rocks", new WorldPoint(2887, 9823, 0), ROCKS, ROCKS_14106),
@@ -192,7 +226,7 @@ public enum AgilityShortcut
 	AL_KHARID_WINDOW(70, "Window", new WorldPoint(3293, 3158, 0), BROKEN_WALL_33344, BIG_WINDOW)
 	{
 		@Override
-		public boolean matches(TileObject object)
+		public boolean matches(Client client, TileObject object)
 		{
 			// there are two BIG_WINDOW objects right next to each other here, but only this one is valid
 			return object.getId() != BIG_WINDOW || object.getWorldLocation().equals(new WorldPoint(3295, 3158, 0));
@@ -207,6 +241,8 @@ public enum AgilityShortcut
 	TROLL_STRONGHOLD_WALL_CLIMB(73, "Rocks", new WorldPoint(2841, 3694, 0), ROCKS_16464),
 	ARCEUUS_ESSENSE_MINE_WEST(73, "Rock Climb", new WorldPoint(1742, 3853, 0), ROCKS_27984, ROCKS_27985 ),
 	LAVA_DRAGON_ISLE_JUMP(74, "Stepping Stone", new WorldPoint(3200, 3807, 0), STEPPING_STONE_14918),
+	MEIYERDITCH_LAB_TUNNELS_NORTH(74, "Cave", new WorldPoint(3623, 9811, 0), CAVE_43755, CAVE_43756),
+	MEIYERDITCH_LAB_TUNNELS_SOUTH(74, "Cave", new WorldPoint(3618, 9786, 0), CAVE_43757, CAVE_43758),
 	FORTHOS_DUNGEON_SPIKED_BLADES(75, "Spiked Blades", new WorldPoint(1819, 9946, 0), STRANGE_FLOOR_34834),
 	REVENANT_CAVES_DEMONS_JUMP(75, "Jump", new WorldPoint(3199, 10135, 0), PILLAR_31561),
 	REVENANT_CAVES_ANKOU_EAST(75, "Jump", new WorldPoint(3201, 10195, 0), PILLAR_31561),
@@ -230,7 +266,10 @@ public enum AgilityShortcut
 	BRIMHAVEN_DUNGEON_VINE_WEST(87, "Vine", new WorldPoint(2606, 9584, 0), VINE_26880, VINE_26882),
 	MOUNT_KARUULM_PIPE_SOUTH(88, "Pipe", new WorldPoint(1316, 10214, 0), MYSTERIOUS_PIPE),
 	MOUNT_KARUULM_PIPE_NORTH(88, "Pipe", new WorldPoint(1345, 10230, 0), MYSTERIOUS_PIPE),
-	REVENANT_CAVES_CHAMBER_JUMP(89, "Jump", new WorldPoint(3240, 10144, 0), PILLAR_31561);
+	REVENANT_CAVES_CHAMBER_JUMP(89, "Jump", new WorldPoint(3240, 10144, 0), PILLAR_31561),
+	MEIYERDITCH_LAB_ADVANCED_TUNNELS_WEST(93, "Cave", new WorldPoint(3499, 9802, 0), CAVE_43759),
+	MEIYERDITCH_LAB_ADVANCED_TUNNELS_MIDDLE(93, "Cave", new WorldPoint(3597, 9768, 0), NULL_43840),
+	MEIYERDITCH_LAB_ADVANCED_TUNNELS_EAST(93, "Cave", new WorldPoint(3604, 9772, 0), CAVE_43762, CAVE_43763);
 
 	/**
 	 * The agility level required to pass the shortcut
@@ -279,7 +318,7 @@ public enum AgilityShortcut
 		return description + " - Level " + level;
 	}
 
-	public boolean matches(TileObject object)
+	public boolean matches(Client client, TileObject object)
 	{
 		return true;
 	}

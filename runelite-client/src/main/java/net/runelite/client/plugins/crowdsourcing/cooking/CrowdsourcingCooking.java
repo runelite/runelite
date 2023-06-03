@@ -110,8 +110,7 @@ public class CrowdsourcingCooking
 	public void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
 	{
 		MenuAction action = menuOptionClicked.getMenuAction();
-		if (action == MenuAction.ITEM_USE_ON_GAME_OBJECT
-			|| action == MenuAction.GAME_OBJECT_FIRST_OPTION
+		if (action == MenuAction.GAME_OBJECT_FIRST_OPTION
 			|| action == MenuAction.GAME_OBJECT_SECOND_OPTION
 			|| action == MenuAction.GAME_OBJECT_THIRD_OPTION
 			|| action == MenuAction.GAME_OBJECT_FOURTH_OPTION

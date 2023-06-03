@@ -29,9 +29,15 @@ import org.jocl.cl_mem;
 
 class GLBuffer
 {
+	String name;
 	int glBufferId = -1;
 	int size = -1;
 	cl_mem cl_mem;
+
+	GLBuffer(String name)
+	{
+		this.name = name;
+	}
 
 	Pointer ptr()
 	{

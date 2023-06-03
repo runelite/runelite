@@ -30,6 +30,7 @@ import net.runelite.api.ItemID;
 
 @AllArgsConstructor
 @Getter
+@Deprecated
 enum Pet
 {
 	ABYSSAL_ORPHAN("Abyssal orphan", ItemID.ABYSSAL_ORPHAN),

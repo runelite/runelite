@@ -85,6 +85,46 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showLiquidAdrenaline",
+		name = "Liquid adrenaline timer",
+		description = "Configures whether liquid adrenaline timer is displayed"
+	)
+	default boolean showLiquidAdrenaline()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showMenaphiteRemedy",
+		name = "Menaphite remedy timer",
+		description = "Configures whether Menaphite remedy timer is displayed"
+	)
+	default boolean showMenaphiteRemedy()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showSilkDressing",
+		name = "Silk dressing timer",
+		description = "Configures whether silk dressing timer is displayed"
+	)
+	default boolean showSilkDressing()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showBlessedCrystalScarab",
+		name = "Blessed crystal scarab timer",
+		description = "Configures whether blessed crystal scarab timer is displayed"
+	)
+	default boolean showBlessedCrystalScarab()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "showPrayerEnhance",
 		name = "Prayer enhance timer",
 		description = "Configures whether prayer enhance timer is displayed"
@@ -160,6 +200,16 @@ public interface TimersConfig extends Config
 		description = "Configures whether an indicator for vengeance being active is displayed"
 	)
 	default boolean showVengeanceActive()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showHealGroup",
+		name = "Heal Group timer",
+		description = "Configures whether heal group timer is displayed"
+	)
+	default boolean showHealGroup()
 	{
 		return true;
 	}
@@ -290,6 +340,16 @@ public interface TimersConfig extends Config
 		description = "Configures whether pickpocket stun timer is displayed"
 	)
 	default boolean showPickpocketStun()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showFarmersAffinity",
+		name = "Farmer's Affinity",
+		description = "Configures whether Farmer's Affinity (Puro-Puro) timer is displayed"
+	)
+	default boolean showFarmersAffinity()
 	{
 		return true;
 	}

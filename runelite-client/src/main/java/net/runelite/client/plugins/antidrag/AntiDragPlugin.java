@@ -220,6 +220,10 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 				}
 			}
 		}
+		else if (ev.getScriptId() == ScriptID.RAIDS_STORAGE_PRIVATE_ITEMS)
+		{
+			setCoxDragDelay(config.dragDelay());
+		}
 	}
 
 	private static void applyDragDelay(Widget widget, int delay)
@@ -238,16 +242,24 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 		final Widget bankItemContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
 		final Widget bankInventoryItemsContainer = client.getWidget(WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER);
 		final Widget bankDepositContainer = client.getWidget(WidgetInfo.DEPOSIT_BOX_INVENTORY_ITEMS_CONTAINER);
+		final Widget coxPrivateChest = client.getWidget(WidgetInfo.RAIDS_PRIVATE_STORAGE_ITEM_CONTAINER);
 
 		applyDragDelay(bankItemContainer, delay);
 		applyDragDelay(bankInventoryItemsContainer, delay);
 		applyDragDelay(bankDepositContainer, delay);
+		applyDragDelay(coxPrivateChest, delay);
 	}
 
 	private void setInvDragDelay(int delay)
 	{
 		final Widget inventory = client.getWidget(WidgetInfo.INVENTORY);
 		applyDragDelay(inventory, delay);
+	}
+
+	private void setCoxDragDelay(int delay)
+	{
+		final Widget coxChest = client.getWidget(WidgetInfo.RAIDS_PRIVATE_STORAGE_ITEM_CONTAINER);
+		applyDragDelay(coxChest, delay);
 	}
 
 	private void setDragDelay()
@@ -257,6 +269,7 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 		client.setInventoryDragDelay(delay);
 		setInvDragDelay(delay);
 		setBankDragDelay(delay);
+		setCoxDragDelay(delay);
 	}
 
 	private void resetDragDelay()
@@ -265,6 +278,7 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 		client.setInventoryDragDelay(DEFAULT_DELAY);
 		setInvDragDelay(DEFAULT_DELAY);
 		setBankDragDelay(DEFAULT_DELAY);
+		setCoxDragDelay(DEFAULT_DELAY);
 	}
 
 }

@@ -60,6 +60,7 @@ import net.runelite.api.VarClientInt;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.annotations.Varbit;
+import net.runelite.api.annotations.Varp;
 import net.runelite.api.events.AreaSoundEffectPlayed;
 import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.ClientTick;
@@ -352,7 +353,7 @@ public class MusicPlugin extends Plugin
 
 	private boolean isOnMusicTab()
 	{
-		return client.getVar(VarClientInt.INVENTORY_TAB) == 13;
+		return client.getVarcIntValue(VarClientInt.INVENTORY_TAB) == 13;
 	}
 
 	private boolean isChatboxOpen()
@@ -404,6 +405,7 @@ public class MusicPlugin extends Plugin
 	{
 		final Widget container = client.getWidget(WidgetInfo.MUSIC_WINDOW);
 		final Widget musicList = client.getWidget(WidgetInfo.MUSIC_TRACK_LIST);
+		final Widget scrollContainer = client.getWidget(WidgetInfo.MUSIC_TRACK_SCROLL_CONTAINER);
 
 		if (container == null || musicList == null)
 		{
@@ -411,10 +413,10 @@ public class MusicPlugin extends Plugin
 		}
 
 		String filter = input.toLowerCase();
-		updateList(musicList, filter);
+		updateList(scrollContainer, musicList, filter);
 	}
 
-	private void updateList(Widget musicList, String filter)
+	private void updateList(Widget scrollContainer, Widget musicList, String filter)
 	{
 		if (tracks == null)
 		{
@@ -446,18 +448,18 @@ public class MusicPlugin extends Plugin
 
 		int newHeight = 0;
 
-		if (musicList.getScrollHeight() > 0)
+		if (scrollContainer.getScrollHeight() > 0)
 		{
-			newHeight = (musicList.getScrollY() * y) / musicList.getScrollHeight();
+			newHeight = (scrollContainer.getScrollY() * y) / scrollContainer.getScrollHeight();
 		}
 
-		musicList.setScrollHeight(y);
-		musicList.revalidateScroll();
+		scrollContainer.setScrollHeight(y);
+		scrollContainer.revalidateScroll();
 
 		client.runScript(
 			ScriptID.UPDATE_SCROLLBAR,
 			WidgetInfo.MUSIC_TRACK_SCROLLBAR.getId(),
-			WidgetInfo.MUSIC_TRACK_LIST.getId(),
+			WidgetInfo.MUSIC_TRACK_SCROLL_CONTAINER.getId(),
 			newHeight
 		);
 	}
@@ -564,7 +566,7 @@ public class MusicPlugin extends Plugin
 			}
 
 			Object[] onLoad = root.getOnLoadListener();
-			if (onLoad == null || onLoad.length != 5)
+			if (onLoad == null || onLoad.length != 6)
 			{
 				return;
 			}
@@ -741,7 +743,7 @@ public class MusicPlugin extends Plugin
 				return;
 			}
 
-			int arg = client.getIntStackSize() - 8;
+			int arg = client.getIntStackSize() - 11;
 			int[] is = client.getIntStack();
 			Channel channel;
 			switch (is[arg])
@@ -762,7 +764,7 @@ public class MusicPlugin extends Plugin
 			Widget track = client.getScriptActiveWidget();
 			Widget handle = client.getWidget(is[arg + 1])
 				.getChild(is[arg + 2]);
-			Widget realTrack = client.getWidget(is[arg + 6]);
+			Widget realTrack = client.getWidget(is[arg + 7]);
 			SettingsSlider s = new SettingsSlider(channel, handle, track, is[arg + 3], is[arg + 4], is[arg + 5], realTrack);
 			s.update();
 			s.getChannel().setWindowSlider(s);
@@ -783,7 +785,8 @@ public class MusicPlugin extends Plugin
 	{
 		@Getter
 		private final String name;
-		private final VarPlayer var;
+		@Varp
+		private final int var;
 		@Varbit
 		private final int mutedVarbitId;
 		private final IntSupplier getter;
@@ -799,10 +802,10 @@ public class MusicPlugin extends Plugin
 		private Slider windowSlider;
 
 		Channel(String name,
-			VarPlayer var, @Varbit int mutedVarbitId,
-			IntSupplier getter, Consumer<Integer> setter,
-			IntConsumer volumeChanger, int max,
-			WidgetInfo sideRoot)
+				@Varp int var, @Varbit int mutedVarbitId,
+				IntSupplier getter, Consumer<Integer> setter,
+				IntConsumer volumeChanger, int max,
+				WidgetInfo sideRoot)
 		{
 			this.name = name;
 			this.var = var;
@@ -823,7 +826,7 @@ public class MusicPlugin extends Plugin
 
 				// the varps are known by the engine and it requires they are stored so
 				// 0 = max and 4 = muted
-				int raw = client.getVar(var);
+				int raw = client.getVarpValue(var);
 				if (raw == 0)
 				{
 					raw = -client.getVarbitValue(mutedVarbitId);
@@ -882,7 +885,7 @@ public class MusicPlugin extends Plugin
 		{
 			int val = getValue();
 			int varVal = Math.round((float) val / (max / 100.f));
-			client.getVarps()[this.var.getId()] = varVal;
+			client.getVarps()[this.var] = varVal;
 		}
 
 		public void shutDown()
@@ -893,7 +896,7 @@ public class MusicPlugin extends Plugin
 				windowSlider.shutDown();
 			}
 
-			volumeChanger.accept(client.getVar(var) * this.max / 100);
+			volumeChanger.accept(client.getVarpValue(var) * this.max / 100);
 		}
 	}
 
