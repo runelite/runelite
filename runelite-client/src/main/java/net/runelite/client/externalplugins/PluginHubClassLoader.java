@@ -24,26 +24,38 @@
  */
 package net.runelite.client.externalplugins;
 
+import com.google.gson.Gson;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.invoke.MethodHandles;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.charset.StandardCharsets;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.client.util.ReflectUtil;
 
-class ExternalPluginClassLoader extends URLClassLoader implements ReflectUtil.PrivateLookupableClassLoader
+class PluginHubClassLoader extends URLClassLoader implements ReflectUtil.PrivateLookupableClassLoader
 {
 	@Getter
-	private final ExternalPluginManifest manifest;
+	private final PluginHubManifest.JarData jarData;
+
+	@Getter
+	private final PluginHubManifest.Stub stub;
 
 	@Getter
 	@Setter
 	private MethodHandles.Lookup lookup;
 
-	ExternalPluginClassLoader(ExternalPluginManifest manifest, URL[] urls)
+	PluginHubClassLoader(PluginHubManifest.JarData jarData, URL[] urls, Gson gson) throws IOException
 	{
-		super(urls, ExternalPluginClassLoader.class.getClassLoader());
-		this.manifest = manifest;
+		super(urls, PluginHubClassLoader.class.getClassLoader());
+		this.jarData = jarData;
+		try (InputStream is = getResourceAsStream("runelite_plugin.json"))
+		{
+			this.stub = gson.fromJson(new InputStreamReader(is, StandardCharsets.UTF_8), PluginHubManifest.Stub.class);
+		}
 		ReflectUtil.installLookupHelper(this);
 	}
 

@@ -37,13 +37,13 @@ public enum RuneScapeProfileType
 	// This enum should be ordinal-stable; new entries should only be added to the
 	// end and entries should never be removed
 	STANDARD(client -> true),
-	BETA(client -> client.getWorldType().contains(WorldType.NOSAVE_MODE)),
+	BETA(client -> client.getWorldType().contains(WorldType.NOSAVE_MODE) || client.getWorldType().contains(WorldType.BETA_WORLD)),
 	QUEST_SPEEDRUNNING(client -> client.getWorldType().contains(WorldType.QUEST_SPEEDRUNNING)),
 	DEADMAN(client -> client.getWorldType().contains(WorldType.DEADMAN)),
 	PVP_ARENA(client -> client.getWorldType().contains(WorldType.PVP_ARENA)),
 	TRAILBLAZER_LEAGUE,
 	DEADMAN_REBORN,
-	SHATTERED_RELICS_LEAGUE(client -> client.getWorldType().contains(WorldType.SEASONAL)),
+	SHATTERED_RELICS_LEAGUE,
 	;
 
 	private final Predicate<Client> test;
