@@ -43,14 +43,15 @@ import net.runelite.api.ScriptID;
 import net.runelite.api.SoundEffectID;
 import net.runelite.api.SpriteID;
 import net.runelite.api.Varbits;
-import net.runelite.api.widgets.WidgetType;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -282,22 +283,42 @@ public class FairyRingPlugin extends Plugin
 				c.setCode(w);
 			}
 
+			if (favorites != null)
+			{
+				for (Widget w : favorites.getStaticChildren())
+				{
+					if (w.getId() == WidgetInfo.FAIRY_RING_LIST_SEPARATOR.getId())
+					{
+						continue;
+					}
+
+					// Favorites widgets are pre-allocated and hidden if the max of 4 favorites isn't reached
+					if (w.getSpriteId() != -1 && !w.isSelfHidden())
+					{
+						codeMap.computeIfAbsent(w.getRelativeY(), k -> new CodeWidgets()).setFavorite(w);
+					}
+					else if (!Strings.isNullOrEmpty(w.getName()) && !w.isSelfHidden())
+					{
+						codeMap.computeIfAbsent(w.getRelativeY(), k -> new CodeWidgets()).setDescription(w);
+					}
+					else if (!Strings.isNullOrEmpty(w.getText()) && !w.isSelfHidden())
+					{
+						codeMap.computeIfAbsent(w.getRelativeY(), k -> new CodeWidgets()).setCode(w);
+					}
+				}
+			}
+
 			codes = codeMap.values();
 		}
 
+		// reset the separator widget
+		Widget separator = client.getWidget(WidgetInfo.FAIRY_RING_LIST_SEPARATOR);
+		separator.setHidden(true);
+		separator.setOriginalY(3);
+
 		// Relayout the panel
 		int y = 0;
-
-		if (favorites != null)
-		{
-			boolean hide = !filter.isEmpty();
-			favorites.setHidden(hide);
-			if (!hide)
-			{
-				y += favorites.getOriginalHeight() + ENTRY_PADDING;
-			}
-		}
-
+		CodeWidgets lastFavorite = null;
 		for (CodeWidgets c : codes)
 		{
 			String code = Text.removeTags(c.getDescription().getName()).replaceAll(" ", "");
@@ -321,6 +342,13 @@ public class FairyRingPlugin extends Plugin
 				|| code.toLowerCase().contains(filter)
 				|| tags != null && tags.contains(filter));
 
+			// add padding to the first widget after the separator
+			if (!hidden && lastFavorite != null && (c.getFavorite() == null || c.getFavorite().getSpriteId() == SpriteID.FAIRY_RING_ADD_FAVOURITE))
+			{
+				y += ENTRY_PADDING;
+				lastFavorite = null;
+			}
+
 			if (c.getCode() != null)
 			{
 				c.getCode().setHidden(hidden);
@@ -339,6 +367,17 @@ public class FairyRingPlugin extends Plugin
 			if (!hidden)
 			{
 				y += c.getDescription().getHeight() + ENTRY_PADDING;
+
+				if (c.getFavorite() != null && c.getFavorite().getSpriteId() == SpriteID.FAIRY_RING_REMOVE_FAVOURITE)
+				{
+					separator.setHidden(false);
+					lastFavorite = c;
+				}
+			}
+			else if (c.getFavorite() != null && c.getFavorite().getSpriteId() == SpriteID.FAIRY_RING_REMOVE_FAVOURITE)
+			{
+				// separator widget layouts from the bottom of the favorites container
+				separator.setOriginalY(separator.getOriginalY() + c.getDescription().getHeight() + ENTRY_PADDING);
 			}
 		}
 
@@ -363,5 +402,14 @@ public class FairyRingPlugin extends Plugin
 			WidgetInfo.FAIRY_RING_LIST.getId(),
 			newHeight
 		);
+	}
+
+	@Subscribe
+	public void onScriptPostFired(ScriptPostFired event)
+	{
+		if (event.getScriptId() == ScriptID.FAIRYRINGS_SORT_UPDATE && searchInput != null)
+		{
+			clientThread.invokeLater(() -> updateFilter(searchInput.getValue()));
+		}
 	}
 }
