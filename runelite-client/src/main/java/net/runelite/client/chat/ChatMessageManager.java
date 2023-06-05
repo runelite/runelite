@@ -41,10 +41,13 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
+import net.runelite.api.VarClientStr;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.annotations.Varp;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.eventbus.EventBus;
@@ -401,11 +404,22 @@ public class ChatMessageManager
 		return -1;
 	}
 
+	private void setChatboxWidgetInput(Widget widget, String input)
+	{
+		String text = widget.getText();
+		int idx = text.indexOf(':');
+		if (idx != -1)
+		{
+			String newText = text.substring(0, idx) + ": " + input;
+			widget.setText(newText);
+		}
+	}
 	/**
 	 * Load all configured colors
 	 */
 	private void loadColors()
 	{
+		Widget chatboxInput = client.getWidget(WidgetInfo.CHATBOX_INPUT);
 		colorCache.clear();
 
 		// Apply defaults
@@ -614,6 +628,8 @@ public class ChatMessageManager
 		{
 			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.opaqueInputText(), false),
 					ChatMessageType.CHAT_INPUT_TEXT);
+			if(chatboxInput!=null)
+				setChatboxWidgetInput(chatboxInput, ColorUtil.wrapWithColorTag(client.getVarcStrValue(VarClientStr.CHATBOX_TYPED_TEXT) + "*", new ChatColor(ChatColorType.NORMAL,chatColorConfig.opaqueInputText(), false).getColor()));
 		}
 
 		//Transparent Chat Colours
@@ -809,6 +825,8 @@ public class ChatMessageManager
 		{
 			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.transparentInputText(), true),
 					ChatMessageType.CHAT_INPUT_TEXT);
+			if (chatboxInput!=null)
+				setChatboxWidgetInput(chatboxInput, ColorUtil.wrapWithColorTag(client.getVarcStrValue(VarClientStr.CHATBOX_TYPED_TEXT) + "*", new ChatColor(ChatColorType.NORMAL,chatColorConfig.transparentInputText(), true).getColor()));
 		}
 	}
 
