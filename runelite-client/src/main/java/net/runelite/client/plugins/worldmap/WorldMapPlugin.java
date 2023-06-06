@@ -35,12 +35,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Client;
-import net.runelite.api.EnumComposition;
-import net.runelite.api.EnumID;
-import net.runelite.api.Quest;
-import net.runelite.api.ScriptID;
-import net.runelite.api.Skill;
+import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.ScriptPostFired;
@@ -106,6 +101,7 @@ public class WorldMapPlugin extends Plugin
 	static final String CONFIG_KEY_HUNTER_AREA_TOOLTIPS = "hunterAreaTooltips";
 	static final String CONFIG_KEY_FISHING_SPOT_TOOLTIPS = "fishingSpotTooltips";
 	static final String CONFIG_KEY_KOUREND_TASK_TOOLTIPS = "kourendTaskTooltips";
+	static final String CONFIG_KEY_HIDE_COMPLETED_QUEST_ICONS = "hideCompletedQuestIcons";
 
 	static
 	{
@@ -283,6 +279,11 @@ public class WorldMapPlugin extends Plugin
 							log.debug("Found quest start location {} for {}", icon.getCoordinate(), quest);
 							questStartLocations.put(quest, icon.getCoordinate());
 							worldMapPointManager.add(createQuestStartPoint(quest, icon));
+
+							if (this.config.hideCompletedQuestIcons())
+							{
+								removeCompletedQuest(quest, icon);
+							}
 						}
 					}
 				}
@@ -550,6 +551,18 @@ public class WorldMapPlugin extends Plugin
 		}
 	}
 
+	private void removeCompletedQuest(Quest quest, WorldMapIcon worldMapIcon)
+	{
+		QuestState questState = quest.getState(client);
+		if (questState != QuestState.FINISHED)
+		{
+			return;
+		}
+
+		int worldMapIconId = worldMapIcon.getType();
+		client.runScript(ScriptID.REMOVE_WORLDMAP_ICON, worldMapIconId, 0);
+	}
+
 	private void updateQuestStartPointIcons()
 	{
 		worldMapPointManager.removeIf(isType(MapPoint.Type.QUEST));
@@ -570,6 +583,11 @@ public class WorldMapPlugin extends Plugin
 			switch (quest.getState(client))
 			{
 				case FINISHED:
+					if (config.hideCompletedQuestIcons())
+					{
+						break;
+					}
+
 					icon = FINISHED_ICON;
 					break;
 				case IN_PROGRESS:

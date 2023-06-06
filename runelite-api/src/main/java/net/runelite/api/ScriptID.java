@@ -411,4 +411,7 @@ public final class ScriptID
 
 	@ScriptArguments(integer = 9)
 	public static final int WORLDMAP_LOADMAP = 1712;
+
+	@ScriptArguments(integer = 2)
+	public static final int REMOVE_WORLDMAP_ICON = 50001;
 }

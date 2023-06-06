@@ -306,4 +306,15 @@ public interface WorldMapConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			keyName = WorldMapPlugin.CONFIG_KEY_HIDE_COMPLETED_QUEST_ICONS,
+			name = "Hide completed quest icons",
+			description = "Hides all of the icons of the quests you've completed on the minimap",
+			position = 26
+	)
+	default boolean hideCompletedQuestIcons()
+	{
+		return true;
+	}
 }
