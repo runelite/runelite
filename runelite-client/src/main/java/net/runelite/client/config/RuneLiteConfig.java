@@ -30,6 +30,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import net.runelite.api.Constants;
 import net.runelite.client.Notifier;
+import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.ContainableFrame;
 import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.util.OSType;
@@ -128,9 +129,9 @@ public interface RuneLiteConfig extends Config
 		position = 15,
 		section = windowSettings
 	)
-	default boolean enableCustomChrome()
+	default ClientUI.ChromeMode enableCustomChrome()
 	{
-		return OSType.getOSType() == OSType.Windows;
+		return OSType.getOSType() == OSType.Windows ? ClientUI.ChromeMode.CUSTOM : ClientUI.ChromeMode.SYSTEM;
 	}
 
 	@Range(
