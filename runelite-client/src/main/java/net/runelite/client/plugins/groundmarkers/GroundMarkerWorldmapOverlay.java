@@ -21,16 +21,15 @@ public class GroundMarkerWorldmapOverlay extends Overlay
 	private final Client client;
 	private final GroundMarkerConfig config;
 	private final GroundMarkerPlugin plugin;
+	private final WorldMapOverlay worldMapOverlay;
 
 	@Inject
-	private WorldMapOverlay worldMapOverlay;
-
-	@Inject
-	GroundMarkerWorldmapOverlay(Client client, GroundMarkerConfig config, GroundMarkerPlugin plugin)
+	GroundMarkerWorldmapOverlay(Client client, GroundMarkerConfig config, GroundMarkerPlugin plugin, WorldMapOverlay worldMapOverlay)
 	{
 		this.client = client;
 		this.config = config;
 		this.plugin = plugin;
+		this.worldMapOverlay = worldMapOverlay;
 
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.LOW);
