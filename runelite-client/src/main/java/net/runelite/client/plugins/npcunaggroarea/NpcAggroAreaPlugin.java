@@ -271,7 +271,7 @@ public class NpcAggroAreaPlugin extends Plugin
 		// its combat level.
 		int playerLvl = client.getLocalPlayer().getCombatLevel();
 		int npcLvl = composition.getCombatLevel();
-		String npcName = composition.getName().toLowerCase();
+		String npcName = composition.getName();
 		if (npcLvl > 0 && playerLvl > npcLvl * 2 && !isInWilderness(npc.getWorldLocation()))
 		{
 			return false;
@@ -288,7 +288,7 @@ public class NpcAggroAreaPlugin extends Plugin
 
 		for (String pattern : npcNamePatterns)
 		{
-			if (WildcardMatcher.matches(pattern, npcName))
+			if (WildcardMatcher.matches(pattern.toLowerCase(), npcName.toLowerCase()))
 			{
 				return true;
 			}
