@@ -284,8 +284,9 @@ public class ChatMessageManager
 				case CLAN_MESSAGE:
 				case CLAN_GUEST_MESSAGE:
 				case CLAN_GIM_MESSAGE:
-				case CHAT_INPUT_TEXT:
 					return JagexColors.CHAT_GAME_EXAMINE_TEXT_OPAQUE_BACKGROUND;
+				case CHAT_INPUT_TEXT:
+					return JagexColors.CHAT_TYPED_TEXT_OPAQUE_BACKGROUND;
 			}
 		}
 		else
@@ -312,8 +313,10 @@ public class ChatMessageManager
 				case CLAN_MESSAGE:
 				case CLAN_GUEST_MESSAGE:
 				case CLAN_GIM_MESSAGE:
-				case CHAT_INPUT_TEXT:
 					return JagexColors.CHAT_GAME_EXAMINE_TEXT_TRANSPARENT_BACKGROUND;
+				case CHAT_INPUT_TEXT:
+					return JagexColors.CHAT_TYPED_TEXT_TRANSPARENT_BACKGROUND;
+
 			}
 		}
 
@@ -629,7 +632,8 @@ public class ChatMessageManager
 			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.opaqueInputText(), false),
 					ChatMessageType.CHAT_INPUT_TEXT);
 			if(chatboxInput!=null)
-				setChatboxWidgetInput(chatboxInput, ColorUtil.wrapWithColorTag(client.getVarcStrValue(VarClientStr.CHATBOX_TYPED_TEXT) + "*", new ChatColor(ChatColorType.NORMAL,chatColorConfig.opaqueInputText(), false).getColor()));
+				setChatboxWidgetInput(chatboxInput, ColorUtil.wrapWithColorTag(client.getVarcStrValue(VarClientStr.CHATBOX_TYPED_TEXT) + "*",
+						new ChatColor(ChatColorType.NORMAL,chatColorConfig.opaqueInputText(), false).getColor()));
 		}
 
 		//Transparent Chat Colours
@@ -826,7 +830,8 @@ public class ChatMessageManager
 			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.transparentInputText(), true),
 					ChatMessageType.CHAT_INPUT_TEXT);
 			if (chatboxInput!=null)
-				setChatboxWidgetInput(chatboxInput, ColorUtil.wrapWithColorTag(client.getVarcStrValue(VarClientStr.CHATBOX_TYPED_TEXT) + "*", new ChatColor(ChatColorType.NORMAL,chatColorConfig.transparentInputText(), true).getColor()));
+				setChatboxWidgetInput(chatboxInput, ColorUtil.wrapWithColorTag(client.getVarcStrValue(VarClientStr.CHATBOX_TYPED_TEXT) + "*",
+						new ChatColor(ChatColorType.NORMAL, chatColorConfig.transparentInputText(), true).getColor()));
 		}
 	}
 

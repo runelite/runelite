@@ -209,4 +209,36 @@ public class ChatMessageManagerTest
 		// | <chat color> <highlight color>
 		assertEquals("|<col=ff0000><col=0000ff><u>rsn</u><col=ff0000> received a drop: 8 x Bronze bolts (16 coins).</col>", sstack[2]);
 	}
+
+	@Test
+	public void testOpaqueInputTextRecoloring()
+	{
+		when(chatColorConfig.opaqueInputText()).thenReturn(Color.decode("#b20000"));
+
+		// rebuild color cache
+		ConfigChanged configChanged = new ConfigChanged();
+		configChanged.setGroup("textrecolor");
+		chatMessageManager.onConfigChanged(configChanged);
+
+		setupVm(ChatMessageType.CHAT_INPUT_TEXT, "", "This is an opaque chat input text color test.");
+		chatMessageManager.colorChatMessage();
+
+		assertEquals("<col=b20000>This is an opaque chat input text color test.</col>", sstack[1]);
+	}
+
+	@Test
+	public void testTransparentInputTextRecoloring()
+	{
+		when(chatColorConfig.transparentInputText()).thenReturn(Color.decode("#b20000"));
+
+		// rebuild color cache
+		ConfigChanged configChanged = new ConfigChanged();
+		configChanged.setGroup("textrecolor");
+		chatMessageManager.onConfigChanged(configChanged);
+
+		setupVm(ChatMessageType.CHAT_INPUT_TEXT, "", "This is a transparent chat input text color test.");
+		chatMessageManager.colorChatMessage();
+
+		assertEquals("<col=b20000>This is a transparent chat input text color test.</col>", sstack[1]);
+	}
 }
