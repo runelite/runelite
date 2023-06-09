@@ -247,6 +247,11 @@ public class LootManager
 			delayedLootNpc = npc;
 			delayedLootTickLimit = 15;
 		}
+		else if (npc.getId() == NpcID.HOLE_IN_THE_WALL)
+		{
+			delayedLootNpc = npc;
+			delayedLootTickLimit = 2;
+		}
 	}
 
 	@Subscribe
