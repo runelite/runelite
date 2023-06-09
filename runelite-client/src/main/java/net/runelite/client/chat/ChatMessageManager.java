@@ -245,7 +245,7 @@ public class ChatMessageManager
 
 		final String[] stringStack = client.getStringStack();
 		final int stringStackSize = client.getStringStackSize();
-		
+
 		String fromToUsername = stringStack[stringStackSize - 1];
 		if (wrap)
 		{
@@ -407,7 +407,7 @@ public class ChatMessageManager
 		return -1;
 	}
 
-	private void setChatboxWidgetInput(Widget widget, String input)
+	void setChatboxWidgetInput(Widget widget, String input)
 	{
 		String text = widget.getText();
 		int idx = text.indexOf(':');
@@ -423,6 +423,7 @@ public class ChatMessageManager
 	private void loadColors()
 	{
 		Widget chatboxInput = client.getWidget(WidgetInfo.CHATBOX_INPUT);
+		boolean isChatboxTransparent = client.isResized() && client.getVarbitValue(Varbits.TRANSPARENT_CHATBOX) == 1;
 		colorCache.clear();
 
 		// Apply defaults
@@ -630,11 +631,17 @@ public class ChatMessageManager
 		if (chatColorConfig.opaqueInputText() != null)
 		{
 			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.opaqueInputText(), false),
-					ChatMessageType.CHAT_INPUT_TEXT);
+				ChatMessageType.CHAT_INPUT_TEXT);
 			if(chatboxInput!=null)
-				setChatboxWidgetInput(chatboxInput, ColorUtil.wrapWithColorTag(client.getVarcStrValue(VarClientStr.CHATBOX_TYPED_TEXT) + "*",
-						new ChatColor(ChatColorType.NORMAL,chatColorConfig.opaqueInputText(), false).getColor()));
-		}
+			{
+				if(client.getVarcStrValue(VarClientStr.CHATBOX_TYPED_TEXT).length()>1)
+					setChatboxWidgetInput(chatboxInput, ColorUtil.wrapWithColorTag(client.getVarcStrValue(VarClientStr.CHATBOX_TYPED_TEXT) + "*", new ChatColor(ChatColorType.NORMAL, chatColorConfig.opaqueInputText(), false).getColor()));
+				else{
+					setChatboxWidgetInput(chatboxInput, ColorUtil.wrapWithColorTag("Press Enter to Chat...", new ChatColor(ChatColorType.NORMAL, chatColorConfig.opaqueInputText(), false).getColor()));
+
+				}
+			}
+			}
 
 		//Transparent Chat Colours
 		if (chatColorConfig.transparentPublicChat() != null)
@@ -828,10 +835,15 @@ public class ChatMessageManager
 		if (chatColorConfig.transparentInputText() != null)
 		{
 			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.transparentInputText(), true),
-					ChatMessageType.CHAT_INPUT_TEXT);
-			if (chatboxInput!=null)
-				setChatboxWidgetInput(chatboxInput, ColorUtil.wrapWithColorTag(client.getVarcStrValue(VarClientStr.CHATBOX_TYPED_TEXT) + "*",
-						new ChatColor(ChatColorType.NORMAL, chatColorConfig.transparentInputText(), true).getColor()));
+				ChatMessageType.CHAT_INPUT_TEXT);
+			if (chatboxInput != null && isChatboxTransparent)
+			{
+				if (client.getVarcStrValue(VarClientStr.CHATBOX_TYPED_TEXT).length() > 1)
+					setChatboxWidgetInput(chatboxInput, ColorUtil.wrapWithColorTag(client.getVarcStrValue(VarClientStr.CHATBOX_TYPED_TEXT) + "*", new ChatColor(ChatColorType.NORMAL, chatColorConfig.transparentInputText(), true).getColor()));
+				else
+				{
+					setChatboxWidgetInput(chatboxInput, ColorUtil.wrapWithColorTag("Press Enter to Chat...", new ChatColor(ChatColorType.NORMAL, chatColorConfig.transparentInputText(), true).getColor()));		}
+			}
 		}
 	}
 
@@ -876,7 +888,7 @@ public class ChatMessageManager
 
 		// Update the message with RuneLite additions
 		line.setRuneLiteFormatMessage(message.getRuneLiteFormattedMessage());
-		
+
 		if (message.getTimestamp() != 0)
 		{
 			line.setTimestamp(message.getTimestamp());
