@@ -166,10 +166,11 @@ public class KeyRemappingPlugin extends Plugin
 				Widget chatboxInput = client.getWidget(WidgetInfo.CHATBOX_INPUT);
 				final boolean isChatboxTransparent = client.isResized() && client.getVarbitValue(Varbits.TRANSPARENT_CHATBOX) == 1;
 				final Color textColor = isChatboxTransparent ? chatColorConfig.transparentInputText() : chatColorConfig.opaqueInputText();
-				if (chatboxInput != null && !typing){
+				if (chatboxInput != null && !typing)
+				{
 					setChatboxWidgetInput(chatboxInput, ColorUtil.wrapWithColorTag(PRESS_ENTER_TO_CHAT , textColor));
 				}
-				if(chatboxInput != null && typing)
+				if (chatboxInput != null && typing)
 				{
 					setChatboxWidgetInput(chatboxInput, ColorUtil.wrapWithColorTag(client.getVarcStrValue(VarClientStr.CHATBOX_TYPED_TEXT) + "*", textColor));
 				}

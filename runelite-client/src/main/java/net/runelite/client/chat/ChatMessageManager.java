@@ -632,13 +632,13 @@ public class ChatMessageManager
 		{
 			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.opaqueInputText(), false),
 				ChatMessageType.CHAT_INPUT_TEXT);
-			if(chatboxInput!=null)
+			if (chatboxInput != null)
 			{
-				if(client.getVarcStrValue(VarClientStr.CHATBOX_TYPED_TEXT).length()>1)
+				if (client.getVarcStrValue(VarClientStr.CHATBOX_TYPED_TEXT).length() > 1)
 					setChatboxWidgetInput(chatboxInput, ColorUtil.wrapWithColorTag(client.getVarcStrValue(VarClientStr.CHATBOX_TYPED_TEXT) + "*", new ChatColor(ChatColorType.NORMAL, chatColorConfig.opaqueInputText(), false).getColor()));
-				else{
+				else
+				{
 					setChatboxWidgetInput(chatboxInput, ColorUtil.wrapWithColorTag("Press Enter to Chat...", new ChatColor(ChatColorType.NORMAL, chatColorConfig.opaqueInputText(), false).getColor()));
-
 				}
 			}
 			}
@@ -842,7 +842,8 @@ public class ChatMessageManager
 					setChatboxWidgetInput(chatboxInput, ColorUtil.wrapWithColorTag(client.getVarcStrValue(VarClientStr.CHATBOX_TYPED_TEXT) + "*", new ChatColor(ChatColorType.NORMAL, chatColorConfig.transparentInputText(), true).getColor()));
 				else
 				{
-					setChatboxWidgetInput(chatboxInput, ColorUtil.wrapWithColorTag("Press Enter to Chat...", new ChatColor(ChatColorType.NORMAL, chatColorConfig.transparentInputText(), true).getColor()));		}
+					setChatboxWidgetInput(chatboxInput, ColorUtil.wrapWithColorTag("Press Enter to Chat...", new ChatColor(ChatColorType.NORMAL, chatColorConfig.transparentInputText(), true).getColor()));
+				}
 			}
 		}
 	}
