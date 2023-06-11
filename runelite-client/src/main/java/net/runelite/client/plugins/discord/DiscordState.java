@@ -58,7 +58,7 @@ class DiscordState
 	private final String runeliteTitle;
 	private final String runeliteVersion;
 	private DiscordPresence lastPresence;
-	private boolean safeMode;
+	private final boolean safeMode;
 
 	@Inject
 	private DiscordState(
