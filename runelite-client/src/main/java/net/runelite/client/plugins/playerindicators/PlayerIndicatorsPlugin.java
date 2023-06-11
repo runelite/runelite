@@ -228,12 +228,6 @@ public class PlayerIndicatorsPlugin extends Plugin
 					continue;
 				}
 
-				PlayerIndicatorsService.Decorations decorations = playerIndicatorsService.getDecorations(player);
-				if (decorations == null)
-				{
-					continue;
-				}
-
 				String oldTarget = entry.getTarget();
 				String newTarget = decorateTarget(oldTarget, player);
 
@@ -245,6 +239,10 @@ public class PlayerIndicatorsPlugin extends Plugin
 	private String decorateTarget(String oldTarget, Player player)
 	{
 		PlayerIndicatorsService.Decorations decorations = playerIndicatorsService.getDecorations(player);
+		if (decorations == null)
+		{
+			return oldTarget;
+		}
 
 		// Create a regex to find index of the col tag that precedes the player (if it exists).
 		// All spaces in the player name need to be replaced with \\p{Zs}.
