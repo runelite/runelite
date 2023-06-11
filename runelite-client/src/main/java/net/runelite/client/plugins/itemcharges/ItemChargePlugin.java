@@ -145,6 +145,16 @@ public class ItemChargePlugin extends Plugin
 	private static final Pattern BRACELET_OF_CLAY_CHECK_PATTERN = Pattern.compile(
 		"You can mine (\\d{1,2}) more pieces? of soft clay before your bracelet crumbles to dust\\."
 	);
+	private static final Pattern CIRCLET_OF_WATER_CHARGE_PATTERN = Pattern.compile(
+			"You add (\\d+) charges? to your circlet.<br>It now has (\\d+) charges."
+	);
+	private static final Pattern CIRCLET_OF_WATER_UNCHARGED_CHARGE_PATTERN = Pattern.compile(
+			"You add (\\d+) charges? to your circlet."
+	);
+	private static final Pattern CIRCLET_OF_WATER_CHECK_PATTERN = Pattern.compile(
+			"Your circlet has (\\d+) charges? left."
+	);
+	private static final String CIRCLET_OF_WATER_EMPTY_TEXT = "<col=ef1020>Your circlet has run out of charges.</col>";
 
 	private static final int MAX_DODGY_CHARGES = 10;
 	private static final int MAX_BINDING_CHARGES = 16;
@@ -270,6 +280,7 @@ public class ItemChargePlugin extends Plugin
 			Matcher bloodEssenceCheckMatcher = BLOOD_ESSENCE_CHECK_PATTERN.matcher(message);
 			Matcher bloodEssenceExtractMatcher = BLOOD_ESSENCE_EXTRACT_PATTERN.matcher(message);
 			Matcher braceletOfClayCheckMatcher = BRACELET_OF_CLAY_CHECK_PATTERN.matcher(message);
+			Matcher circletOfWaterCheckMatcher = CIRCLET_OF_WATER_CHECK_PATTERN.matcher(message);
 
 			if (config.recoilNotification() && message.contains(RING_OF_RECOIL_BREAK_MESSAGE))
 			{
@@ -496,6 +507,14 @@ public class ItemChargePlugin extends Plugin
 				}
 				updateBraceletOfClayCharges(MAX_BRACELET_OF_CLAY_CHARGES);
 			}
+			else if (circletOfWaterCheckMatcher.find())
+			{
+				updateCircletOfWaterCharges(Integer.parseInt(circletOfWaterCheckMatcher.group(1)));
+			}
+			else if (message.equals(Text.removeTags(CIRCLET_OF_WATER_EMPTY_TEXT)))
+			{
+				updateCircletOfWaterCharges(0);
+			}
 		}
 	}
 
@@ -526,11 +545,15 @@ public class ItemChargePlugin extends Plugin
 	}
 
 	@Subscribe
-	private void onVarbitChanged(VarbitChanged event)
+	public void onVarbitChanged(VarbitChanged event)
 	{
 		if (event.getVarbitId() == Varbits.EXPLORER_RING_ALCHS)
 		{
 			updateExplorerRingCharges(event.getValue());
+		}
+		if (event.getVarbitId() == Varbits.CIRCLET_OF_WATER_CHARGES && event.getValue() != 0)
+		{
+			updateCircletOfWaterCharges(event.getValue());
 		}
 	}
 
@@ -565,6 +588,23 @@ public class ItemChargePlugin extends Plugin
 						case ItemID.EXPEDITIOUS_BRACELET:
 							log.debug("Reset expeditious bracelet");
 							updateExpeditiousBraceletCharges(MAX_SLAYER_BRACELET_CHARGES);
+							break;
+						case ItemID.CIRCLET_OF_WATER:
+							Widget text = client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT);
+							Matcher circletOfWaterChargeMatcher = CIRCLET_OF_WATER_CHARGE_PATTERN.matcher(text.getText());
+							Matcher circletOfWaterUnchargedChargeMatcher = CIRCLET_OF_WATER_UNCHARGED_CHARGE_PATTERN.matcher(text.getText());
+							if (circletOfWaterChargeMatcher.find())
+							{
+								updateCircletOfWaterCharges(Integer.parseInt(circletOfWaterChargeMatcher.group(2)));
+							}
+							else if (circletOfWaterUnchargedChargeMatcher.find())
+							{
+								updateCircletOfWaterCharges(Integer.parseInt(circletOfWaterUnchargedChargeMatcher.group(1)));
+							}
+							break;
+						case ItemID.CIRCLET_OF_WATER_UNCHARGED:
+							log.debug("Reset circlet of water");
+							updateCircletOfWaterCharges(0);
 							break;
 					}
 				}
@@ -630,6 +670,11 @@ public class ItemChargePlugin extends Plugin
 	private void updateBraceletOfClayCharges(final int value)
 	{
 		setItemCharges(ItemChargeConfig.KEY_BRACELET_OF_CLAY, value);
+		updateInfoboxes();
+	}
+	private void updateCircletOfWaterCharges(final int value)
+	{
+		setItemCharges(ItemChargeConfig.KEY_CIRCLET_OF_WATER, value);
 		updateInfoboxes();
 	}
 
