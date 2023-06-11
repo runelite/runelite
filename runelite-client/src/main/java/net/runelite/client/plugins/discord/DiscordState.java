@@ -38,7 +38,6 @@ import javax.inject.Named;
 import lombok.Data;
 import net.runelite.client.discord.DiscordPresence;
 import net.runelite.client.discord.DiscordService;
-import net.runelite.client.plugins.PluginManager;
 
 /**
  * This class contains data about currently active discord state.
