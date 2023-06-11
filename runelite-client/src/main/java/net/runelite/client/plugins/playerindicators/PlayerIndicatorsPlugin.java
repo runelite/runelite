@@ -247,9 +247,8 @@ public class PlayerIndicatorsPlugin extends Plugin
 		// Create a regex to find index of the col tag that precedes the player (if it exists).
 		// All spaces in the player name need to be replaced with \p{Zs} in the regex. \p{Zs} matches all whitespaces.
 		// This is needed since the player name contains regular spaces and the meny entry string contains nbsp in the player's name.
-		String regex = "<.{0,10}>" + player.getName().replaceAll("\\p{Zs}", "\\\\p{Zs}");
-		Pattern pattern = Pattern.compile(regex);
-		Matcher matcher = pattern.matcher(oldTarget);
+		String regex = "<col=[0-9a-f]{6}>" + player.getName().replaceAll("\\p{Zs}", "\\\\p{Zs}");
+		Matcher matcher = Pattern.compile(regex).matcher(oldTarget);
 
 		String stringPrecedingDecoration = null;
 		String stringToDecorate = null;
