@@ -108,7 +108,7 @@ class PrayerReorder
 
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
-			clientThread.invokeLater(() -> rebuildPrayers(false, false));
+			clientThread.invokeLater(this::redrawPrayers);
 		}
 	}
 
@@ -116,7 +116,7 @@ class PrayerReorder
 	{
 		reordering = false;
 		clearPrayerTabMenus();
-		clientThread.invokeLater(() -> rebuildPrayers(false, true));
+		clientThread.invokeLater(this::redrawPrayers);
 	}
 
 	void reset()
@@ -138,7 +138,7 @@ class PrayerReorder
 			}
 		}
 
-		clientThread.invokeLater(() -> rebuildPrayers(reordering, true));
+		clientThread.invokeLater(this::redrawPrayers);
 	}
 
 	private int[] getPrayerOrder(int prayerbook)
@@ -223,7 +223,7 @@ class PrayerReorder
 				prayerOrder[fromIdx] = tmp;
 
 				setPrayerOrder(prayerbook, prayerOrder);
-				rebuildPrayers(true, false);
+				rebuildPrayers(true);
 			}
 		}
 	}
@@ -231,20 +231,17 @@ class PrayerReorder
 	@Subscribe
 	public void onScriptPostFired(ScriptPostFired scriptPostFired)
 	{
-		if (reordering && scriptPostFired.getScriptId() == ScriptID.PRAYER_UPDATEBUTTON)
-		{
+		int scriptId = scriptPostFired.getScriptId();
+		if (
 			// this script calls if_clearops on the prayer, removing our hide/unhide, so we just re-build the entire ui
-			rebuildPrayers(reordering, false);
-		}
-		else if (scriptPostFired.getScriptId() == ScriptID.PRAYER_REDRAW)
-		{
+			reordering && scriptId == ScriptID.PRAYER_UPDATEBUTTON ||
 			// rebuild after eg. a prayer book swap
-			rebuildPrayers(reordering, false);
-		}
-		else if (scriptPostFired.getScriptId() == ScriptID.QUICKPRAYER_INIT)
-		{
+			scriptId == ScriptID.PRAYER_REDRAW ||
 			// rebuild after opening quick prayers
-			rebuildPrayers(reordering, false);
+			scriptId == ScriptID.QUICKPRAYER_INIT
+		)
+		{
+			rebuildPrayers(reordering);
 		}
 	}
 
@@ -309,7 +306,7 @@ class PrayerReorder
 
 		refreshPrayerTabOption();
 
-		rebuildPrayers(state, false);
+		redrawPrayers();
 	}
 
 	private void refreshPrayerTabOption()
@@ -329,11 +326,20 @@ class PrayerReorder
 		}
 	}
 
-	private void rebuildPrayers(boolean unlocked, boolean reset)
+	private void redrawPrayers()
+	{
+		Widget w = client.getWidget(WidgetID.PRAYER_GROUP_ID, 0);
+		if (w != null)
+		{
+			client.runScript(w.getOnVarTransmitListener());
+		}
+	}
+
+	private void rebuildPrayers(boolean unlocked)
 	{
 		var prayerbook = client.getVarbitValue(Varbits.PRAYERBOOK);
 		var prayerBookEnum = getPrayerBookEnum(prayerbook);
-		var prayerIds = reset ? defaultPrayerOrder(prayerBookEnum) : MoreObjects.firstNonNull(getPrayerOrder(prayerbook), defaultPrayerOrder(prayerBookEnum));
+		var prayerIds = MoreObjects.firstNonNull(getPrayerOrder(prayerbook), defaultPrayerOrder(prayerBookEnum));
 
 		if (isInterfaceOpen(WidgetID.PRAYER_GROUP_ID))
 		{
@@ -348,7 +354,7 @@ class PrayerReorder
 
 				boolean hidden = isHidden(prayerbook, prayerId);
 				// in unlocked mode we show the prayers, but they have opacity set
-				if (!reset && hidden && !unlocked)
+				if (hidden && !unlocked)
 				{
 					prayerWidget.setHidden(true);
 					++index;
@@ -372,9 +378,10 @@ class PrayerReorder
 				}
 				prayerWidget.setClickMask(widgetConfig);
 
-				prayerWidget.setHidden(false);
 				if (unlocked)
 				{
+					prayerWidget.setHidden(false);
+
 					if (hidden)
 					{
 						prayerWidget.setAction(3, "Unhide");
