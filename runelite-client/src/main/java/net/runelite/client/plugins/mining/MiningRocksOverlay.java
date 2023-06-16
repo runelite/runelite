@@ -42,7 +42,7 @@ import net.runelite.client.ui.overlay.components.ProgressPieComponent;
 class MiningRocksOverlay extends Overlay
 {
 	// Range of Motherlode vein respawn time - not 100% confirmed but based on observation
-	static final int ORE_VEIN_MAX_RESPAWN_TIME = 100; // Game ticks
+	static final int ORE_VEIN_MAX_RESPAWN_TIME = 179; // Game ticks
 	private static final int ORE_VEIN_MIN_RESPAWN_TIME = 53; // Game ticks
 	private static final float ORE_VEIN_RANDOM_PERCENT_THRESHOLD = (float) ORE_VEIN_MIN_RESPAWN_TIME / ORE_VEIN_MAX_RESPAWN_TIME;
 
