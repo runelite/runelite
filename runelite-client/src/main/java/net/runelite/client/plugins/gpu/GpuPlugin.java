@@ -308,8 +308,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 					: ComputeMode.NONE;
 
 				// lwjgl defaults to lwjgl- + user.name, but this breaks if the username would cause an invalid path
-				// to be created, and also breaks if both 32 and 64 bit lwjgl versions try to run at once.
-				Configuration.SHARED_LIBRARY_EXTRACT_DIRECTORY.set("lwjgl-rl-" + System.getProperty("os.arch", "unknown"));
+				// to be created.
+				Configuration.SHARED_LIBRARY_EXTRACT_DIRECTORY.set("lwjgl-rl");
 
 				glCapabilities = GL.createCapabilities();
 
