@@ -2533,7 +2533,7 @@ public class ChatCommandsPlugin extends Plugin
 				return net.runelite.api.Skill.CONSTRUCTION.getName();
 			case "ALL":
 			case "TOTAL":
-				return net.runelite.api.Skill.OVERALL.getName();
+				return "Overall";
 			default:
 				return skill;
 		}

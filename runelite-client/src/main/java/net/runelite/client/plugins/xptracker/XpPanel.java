@@ -51,6 +51,7 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.DragAndDropReorderPane;
 import net.runelite.client.ui.components.PluginErrorPanel;
+import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.LinkBrowser;
 import okhttp3.HttpUrl;
 
@@ -87,7 +88,7 @@ class XpPanel extends PluginPanel
 		// Create open xp tracker menu
 		final JMenuItem openXpTracker = new JMenuItem("Open Wise Old Man");
 		openXpTracker.addActionListener(e -> LinkBrowser.browse(XpPanel.buildXpTrackerUrl(
-			client.getWorldType(), client.getLocalPlayer(), Skill.OVERALL)));
+			client.getWorldType(), client.getLocalPlayer(), null)));
 
 		// Create reset all menu
 		final JMenuItem reset = new JMenuItem("Reset All");
@@ -134,7 +135,7 @@ class XpPanel extends PluginPanel
 		});
 		overallPanel.setComponentPopupMenu(popupMenu);
 
-		final JLabel overallIcon = new JLabel(new ImageIcon(iconManager.getSkillImage(Skill.OVERALL)));
+		final JLabel overallIcon = new JLabel(new ImageIcon(ImageUtil.loadImageResource(getClass(), "/skill_icons/overall.png")));
 
 		final JPanel overallInfo = new JPanel();
 		overallInfo.setBackground(ColorScheme.DARKER_GRAY_COLOR);
@@ -157,10 +158,6 @@ class XpPanel extends PluginPanel
 
 		for (Skill skill : Skill.values())
 		{
-			if (skill == Skill.OVERALL)
-			{
-				break;
-			}
 			infoBoxes.put(skill, new XpInfoBox(xpTrackerPlugin, xpTrackerConfig, client, infoBoxPanel, skill, iconManager));
 		}
 
@@ -182,7 +179,7 @@ class XpPanel extends PluginPanel
 			.addPathSegment(player.getName())
 			.addPathSegment("gained")
 			.addPathSegment("skilling")
-			.addQueryParameter("metric", skill.getName().toLowerCase())
+			.addQueryParameter("metric", skill == null ? "overall" : skill.getName().toLowerCase())
 			.addQueryParameter("period", "week")
 			.build()
 			.toString();
