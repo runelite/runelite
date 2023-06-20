@@ -25,15 +25,12 @@
 package net.runelite.client.plugins.xptracker;
 
 import java.util.function.Function;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.client.util.QuantityFormatter;
 
-@Getter
-@AllArgsConstructor
 public enum XpPanelLabel
 {
-	TIME_TO_LEVEL("TTL", XpSnapshotSingle::getTimeTillGoalShort),
+	TIME_TO_LEVEL(snap -> snap.isHasGoal() ? "TTG" : "TTL", XpSnapshotSingle::getTimeTillGoalShort),
 
 	XP_GAINED("XP Gained", snap -> format(snap.getXpGainedInSession())),
 	XP_HOUR("XP/hr", snap -> format(snap.getXpPerHour())),
@@ -45,7 +42,24 @@ public enum XpPanelLabel
 	;
 
 	private final String key;
+	private final Function<XpSnapshotSingle, String> keyFunc;
+	
+	@Getter
 	private final Function<XpSnapshotSingle, String> valueFunc;
+
+	XpPanelLabel(String key, Function<XpSnapshotSingle, String> valueFunc)
+	{
+		this.key = key;
+		this.keyFunc = null;
+		this.valueFunc = valueFunc;
+	}
+
+	XpPanelLabel(Function<XpSnapshotSingle, String> keyFunc, Function<XpSnapshotSingle, String> valueFunc)
+	{
+		this.key = "";
+		this.keyFunc = keyFunc;
+		this.valueFunc = valueFunc;
+	}
 
 	/**
 	 * Get the action key label based on if the Action type is an xp drop or kill
@@ -55,7 +69,7 @@ public enum XpPanelLabel
 	 */
 	public String getActionKey(XpSnapshotSingle snapshot)
 	{
-		String actionKey = key;
+		String actionKey = keyFunc != null ? keyFunc.apply(snapshot) : key;
 		if (snapshot.getActionType() == XpActionType.ACTOR_HEALTH)
 		{
 			return actionKey.replace("Action", "Kill");

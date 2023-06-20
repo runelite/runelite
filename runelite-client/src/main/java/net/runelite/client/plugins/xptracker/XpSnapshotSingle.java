@@ -46,4 +46,5 @@ class XpSnapshotSingle
 	private String timeTillGoal;
 	private String timeTillGoalHours;
 	private String timeTillGoalShort;
+	private boolean hasGoal;
 }
