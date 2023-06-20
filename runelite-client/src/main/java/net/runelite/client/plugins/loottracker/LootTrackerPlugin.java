@@ -177,11 +177,11 @@ public class LootTrackerPlugin extends Plugin
 		build();
 
 	// Chests opened with keys from slayer tasks
-	private static final Set<String> SLAYER_CHEST_EVENT_TYPES = new ImmutableSet.Builder<String>().
-		add("Brimstone Chest").
-		add("Larran's big chest").
-		add("Larran's small chest").
-		build();
+	private static final Set<String> SLAYER_CHEST_EVENT_TYPES = ImmutableSet.of(
+		"Brimstone Chest",
+		"Larran's big chest",
+		"Larran's small chest"
+	);
 
 	// Shade chest loot handling
 	private static final Pattern SHADE_CHEST_NO_KEY_PATTERN = Pattern.compile("You need a [a-z]+ key with a [a-z]+ trim to open this chest .*");
@@ -717,17 +717,17 @@ public class LootTrackerPlugin extends Plugin
 				int raidLevel = client.getVarbitValue(Varbits.TOA_RAID_LEVEL);
 				int teamSize =
 					Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_0_HEALTH), 1) +
-						Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_1_HEALTH), 1) +
-						Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_2_HEALTH), 1) +
-						Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_3_HEALTH), 1) +
-						Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_4_HEALTH), 1) +
-						Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_5_HEALTH), 1) +
-						Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_6_HEALTH), 1) +
-						Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_7_HEALTH), 1);
+					Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_1_HEALTH), 1) +
+					Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_2_HEALTH), 1) +
+					Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_3_HEALTH), 1) +
+					Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_4_HEALTH), 1) +
+					Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_5_HEALTH), 1) +
+					Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_6_HEALTH), 1) +
+					Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_7_HEALTH), 1);
 				int raidDamage = client.getVarbitValue(Varbits.TOA_RAID_DAMAGE);
 				event = TOMBS_OF_AMASCUT;
 				container = client.getItemContainer(InventoryID.TOA_REWARD_CHEST);
-				metadata = new int[]{raidLevel, teamSize, raidDamage};
+				metadata = new int[]{ raidLevel, teamSize, raidDamage };
 				chestLooted = true;
 				break;
 			case (WidgetID.KINGDOM_GROUP_ID):
