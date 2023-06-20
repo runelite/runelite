@@ -505,8 +505,6 @@ public class XpTrackerPlugin extends Plugin
 			lastXp = client.getOverallExperience();
 			fetchXp = false;
 		}
-
-		rebuildSkills();
 	}
 
 	@Subscribe
