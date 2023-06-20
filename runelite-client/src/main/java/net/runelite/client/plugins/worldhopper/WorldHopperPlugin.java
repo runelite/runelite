@@ -31,6 +31,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -54,6 +55,7 @@ import net.runelite.api.FriendsChatMember;
 import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import net.runelite.api.NameableContainer;
+import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import net.runelite.api.clan.ClanChannel;
 import net.runelite.api.clan.ClanChannelMember;
@@ -537,6 +539,10 @@ public class WorldHopperPlugin extends Plugin
 
 		int worldIdx = worlds.indexOf(currentWorld);
 		int totalLevel = client.getTotalLevel();
+		final int f2pTotalLevel = Arrays.stream(Skill.values())
+			.filter(skill -> !skill.isMembers() && skill != Skill.OVERALL)
+			.mapToInt(client::getRealSkillLevel)
+			.sum();
 
 		final Set<RegionFilterMode> regionFilter = config.regionFilter();
 
@@ -588,7 +594,12 @@ public class WorldHopperPlugin extends Plugin
 				{
 					int totalRequirement = Integer.parseInt(world.getActivity().substring(0, world.getActivity().indexOf(" ")));
 
-					if (totalLevel >= totalRequirement)
+					// F2P total level worlds only count the total level of your non-members skills, so it is possible
+					// to have a total level in excess of the world's level requirement (even without having trained
+					// members skills) and not fulfill that requirement
+					final int effectiveTotalLevel = types.contains(WorldType.MEMBERS) ? totalLevel : f2pTotalLevel;
+
+					if (effectiveTotalLevel >= totalRequirement)
 					{
 						types.remove(WorldType.SKILL_TOTAL);
 					}
