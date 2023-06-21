@@ -420,4 +420,17 @@ public final class ScriptID
 
 	@ScriptArguments(integer = 3)
 	public static final int QUICKPRAYER_INIT = 466;
+
+	/**
+	 * Called to add a loc overlay timer
+	 * <ul>
+	 * <li> loc coord </li>
+	 * <li> loc id </li>
+	 * <li> loc type </li>
+	 * <li> overlay type </li>
+	 * <li> overlay ticks </li>
+	 * </ul>
+	 */
+	@ScriptArguments(integer = 7)
+	public static final int ADD_OVERLAYTIMER_LOC = 5474;
 }
