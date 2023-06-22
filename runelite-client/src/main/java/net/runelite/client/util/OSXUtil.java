@@ -25,10 +25,8 @@
 package net.runelite.client.util;
 
 import com.apple.eawt.Application;
-import com.apple.eawt.FullScreenAdapter;
 import com.apple.eawt.FullScreenUtilities;
 import javax.swing.JFrame;
-import com.apple.eawt.event.FullScreenEvent;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -46,22 +44,7 @@ public class OSXUtil
 	{
 		if (OSType.getOSType() == OSType.MacOS)
 		{
-			FullScreenUtilities.addFullScreenListenerTo(gui, new FullScreenAdapter()
-			{
-				@Override
-				public void windowEnteredFullScreen(FullScreenEvent e)
-				{
-					log.debug("Window entered fullscreen mode--setting extended state to {}", JFrame.MAXIMIZED_BOTH);
-					gui.setExtendedState(JFrame.MAXIMIZED_BOTH);
-				}
-
-				@Override
-				public void windowExitedFullScreen(FullScreenEvent e)
-				{
-					log.debug("Window exited fullscreen mode--setting extended state to {}", JFrame.NORMAL);
-					gui.setExtendedState(JFrame.NORMAL);
-				}
-			});
+			FullScreenUtilities.addFullScreenListenerTo(gui, new OSXFullScreenAdapter(gui));
 			FullScreenUtilities.setWindowCanFullScreen(gui, true);
 			log.debug("Enabled fullscreen on macOS");
 		}
