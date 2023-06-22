@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2023 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,49 +24,35 @@
  */
 package net.runelite.client.util;
 
-import com.apple.eawt.Application;
+import com.apple.eawt.FullScreenAdapter;
 import com.apple.eawt.FullScreenUtilities;
-import javax.swing.JFrame;
+import com.apple.eawt.event.FullScreenEvent;
+import java.awt.Frame;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-/**
- * A class with OSX-specific functions to improve integration.
- */
 @Slf4j
-public class OSXUtil
+@RequiredArgsConstructor
+class OSXFullScreenAdapter extends FullScreenAdapter
 {
-	/**
-	 * Enables the osx native fullscreen if running on a Mac.
-	 *
-	 * @param gui The gui to enable the fullscreen on.
-	 */
-	public static void tryEnableFullscreen(JFrame gui)
+	private final Frame frame;
+
+	@Override
+	public void windowEnteredFullScreen(FullScreenEvent e)
 	{
-		if (OSType.getOSType() == OSType.MacOS)
-		{
-			OSXFullScreenAdapter.install(gui);
-			FullScreenUtilities.setWindowCanFullScreen(gui, true);
-			log.debug("Enabled fullscreen on macOS");
-		}
+		log.debug("Window entered fullscreen mode--setting extended state to {}", Frame.MAXIMIZED_BOTH);
+		frame.setExtendedState(Frame.MAXIMIZED_BOTH);
 	}
 
-	/**
-	 * Request user attention on macOS
-	 */
-	public static void requestUserAttention()
+	@Override
+	public void windowExitedFullScreen(FullScreenEvent e)
 	{
-		Application app = Application.getApplication();
-		app.requestUserAttention(true);
-		log.debug("Requested user attention on macOS");
+		log.debug("Window exited fullscreen mode--setting extended state to {}", Frame.NORMAL);
+		frame.setExtendedState(Frame.NORMAL);
 	}
 
-	/**
-	 * Requests the foreground in a macOS friendly way.
-	 */
-	public static void requestForeground()
+	public static void install(Frame frame)
 	{
-		Application app = Application.getApplication();
-		app.requestForeground(true);
-		log.debug("Forced focus on macOS");
+		FullScreenUtilities.addFullScreenListenerTo(frame, new OSXFullScreenAdapter(frame));
 	}
 }
