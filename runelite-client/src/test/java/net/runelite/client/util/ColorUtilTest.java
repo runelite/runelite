@@ -28,6 +28,7 @@ import com.google.common.collect.ImmutableMap;
 import java.awt.Color;
 import java.util.Map;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 public class ColorUtilTest
@@ -131,5 +132,19 @@ public class ColorUtilTest
 	{
 		COLOR_ALPHA_HEXSTRING_MAP.forEach((color, hex) ->
 			assertEquals(hex, ColorUtil.colorToAlphaHexCode(color)));
+	}
+
+	@Test
+	public void isHex()
+	{
+		COLOR_HEXSTRING_MAP.forEach((_color, hex) ->
+			assertTrue(ColorUtil.isHex(hex)));
+	}
+
+	@Test
+	public void isAlphaHex()
+	{
+		COLOR_ALPHA_HEXSTRING_MAP.forEach((_color, hex) ->
+			assertTrue(ColorUtil.isAlphaHex(hex)));
 	}
 }
