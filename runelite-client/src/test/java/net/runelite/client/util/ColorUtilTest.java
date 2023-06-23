@@ -123,8 +123,13 @@ public class ColorUtilTest
 	public void colorToHexCode()
 	{
 		COLOR_HEXSTRING_MAP.forEach((color, hex) ->
-		{
-			assertEquals(hex, ColorUtil.colorToHexCode(color));
-		});
+			assertEquals(hex, ColorUtil.colorToHexCode(color)));
+	}
+
+	@Test
+	public void colorToAlphaHexCode()
+	{
+		COLOR_ALPHA_HEXSTRING_MAP.forEach((color, hex) ->
+			assertEquals(hex, ColorUtil.colorToAlphaHexCode(color)));
 	}
 }
