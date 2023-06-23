@@ -91,6 +91,11 @@ public class GameEventManager
 					}
 
 					consumer.accept(tile);
+
+					if (tile.getBridge() != null)
+					{
+						consumer.accept(tile.getBridge());
+					}
 				}
 			}
 		}
