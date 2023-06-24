@@ -181,4 +181,10 @@ public class ColorUtilTest
 		assertNull(ColorUtil.fromHex("0x"));
 		assertNull(ColorUtil.fromHex("0xABCDEFGH"));
 	}
+
+	@Test
+	public void fromObject()
+	{
+		assertEquals(Color.RED, ColorUtil.fromObject(""));
+	}
 }
