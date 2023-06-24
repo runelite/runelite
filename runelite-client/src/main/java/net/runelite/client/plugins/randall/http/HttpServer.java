@@ -5,6 +5,9 @@ import com.google.gson.JsonObject;
 import com.sun.net.httpserver.HttpExchange;
 import net.runelite.api.*;
 import net.runelite.client.plugins.randall.RandallPlugin;
+import net.runelite.client.plugins.randall.models.ItemModel;
+import net.runelite.client.plugins.randall.models.NPCModel;
+import net.runelite.client.plugins.randall.models.PlayerModel;
 import net.runelite.http.api.RuneLiteAPI;
 
 import java.io.IOException;
@@ -46,9 +49,16 @@ public class HttpServer {
 
     public void startUp() throws Exception {
         server = com.sun.net.httpserver.HttpServer.create(new InetSocketAddress(8888), 0);
-        server.createContext("/player/", this::handlePlayer);
-        server.createContext("/inventory/", this::handleInventory);
+        server.createContext("/game/", this::getGame);
+        server.createContext("/player/", this::getPlayer);
+        server.createContext("/players/", this::getPlayers);
+        server.createContext("/npcs/", this::getNpcs);
+        server.createContext("/inventory/", this::getInventory);
         server.createContext("/mouse/move/", this::setCursorPosition);
+        server.createContext("/mouse/click/", this::cursorClick);
+        server.createContext("/keyboard/sendkeys/", this::keyboardSendKeys);
+        server.createContext("/keyboard/hold/", this::keyboardHoldKey);
+        server.createContext("/keyboard/release/", this::keyboardReleaseKey);
         server.setExecutor(Executors.newSingleThreadExecutor());
         server.start();
     }
@@ -57,17 +67,23 @@ public class HttpServer {
         server.stop(1);
     }
 
-    public void handlePlayer(HttpExchange exchange) throws IOException {
+    public void getGame(HttpExchange exchange) throws IOException {
+        JsonObject data = new JsonObject();
+        data.addProperty("state", client.getGameState().toString());
+        data.addProperty("login_index", client.getLoginIndex());
+        data.addProperty("idle_timeout", client.getIdleTimeout());
+
+        exchange.sendResponseHeaders(200, 0);
+        try (OutputStreamWriter out = new OutputStreamWriter(exchange.getResponseBody())) {
+            RuneLiteAPI.GSON.toJson(data, out);
+        }
+    }
+
+    public void getPlayer(HttpExchange exchange) throws IOException {
         Player player = client.getLocalPlayer();
 
         JsonObject data = new JsonObject();
         data.addProperty("email", client.getUsername());
-
-        JsonObject playerData = new JsonObject();
-        playerData.addProperty("name", player.getName());
-        playerData.addProperty("plane", player.getWorldLocation().getPlane());
-        playerData.addProperty("x", player.getWorldLocation().getX());
-        playerData.addProperty("y", player.getWorldLocation().getY());
 
         JsonObject cameraData = new JsonObject();
         cameraData.addProperty("x", client.getCameraX());
@@ -76,7 +92,7 @@ public class HttpServer {
         cameraData.addProperty("pitch", client.getCameraPitch());
         cameraData.addProperty("yaw", client.getCameraYaw());
 
-        data.add("player", playerData);
+        data.add("player", new PlayerModel(client, player).toJson());
         data.add("camera", cameraData);
 
         exchange.sendResponseHeaders(200, 0);
@@ -85,35 +101,11 @@ public class HttpServer {
         }
     }
 
-    public void handleInventory(HttpExchange exchange) throws IOException {
+    public void getPlayers(HttpExchange exchange) throws IOException {
         JsonArray data = new JsonArray();
 
-
-        ItemContainer container = client.getItemContainer(InventoryID.INVENTORY);
-
-        for (Item item : container.getItems()) {
-            JsonObject itemData = new JsonObject();
-            itemData.addProperty("id", item.getId());
-            itemData.addProperty("quantity", item.getQuantity());
-
-            ItemComposition itemComposition = client.getItemDefinition(item.getId());
-
-            itemData.addProperty("name", itemComposition.getName());
-            itemData.addProperty("members_name", itemComposition.getMembersName());
-            itemData.addProperty("price", itemComposition.getPrice());
-            itemData.addProperty("is_tradable", itemComposition.isTradeable());
-            itemData.addProperty("is_stackable", itemComposition.isStackable());
-            itemData.addProperty("is_members", itemComposition.isMembers());
-
-            JsonArray inventoryActions = new JsonArray();
-            for (String action : itemComposition.getInventoryActions()) {
-                if (action != null) {
-                    inventoryActions.add(action);
-                }
-            }
-
-            itemData.add("inventory_actions", inventoryActions);
-            data.add(itemData);
+        for (Player player : client.getPlayers()) {
+            data.add(new PlayerModel(client, player).toJson());
         }
 
         exchange.sendResponseHeaders(200, 0);
@@ -122,8 +114,33 @@ public class HttpServer {
         }
     }
 
-    private String handleGetRequest(HttpExchange httpExchange) {
-        return httpExchange.getRequestURI().toString().split("\\?")[1].split("=")[1];
+    public void getNpcs(HttpExchange exchange) throws IOException {
+        JsonArray data = new JsonArray();
+
+        for (NPC npc : client.getNpcs()) {
+            data.add(new NPCModel(npc).toJson());
+        }
+
+        exchange.sendResponseHeaders(200, 0);
+        try (OutputStreamWriter out = new OutputStreamWriter(exchange.getResponseBody())) {
+            RuneLiteAPI.GSON.toJson(data, out);
+        }
+    }
+
+    public void getInventory(HttpExchange exchange) throws IOException {
+        JsonArray data = new JsonArray();
+
+
+        ItemContainer container = client.getItemContainer(InventoryID.INVENTORY);
+
+        for (Item item : container.getItems()) {
+            data.add(new ItemModel(client, item).toJson());
+        }
+
+        exchange.sendResponseHeaders(200, 0);
+        try (OutputStreamWriter out = new OutputStreamWriter(exchange.getResponseBody())) {
+            RuneLiteAPI.GSON.toJson(data, out);
+        }
     }
 
     public void setCursorPosition(HttpExchange exchange) throws IOException {
@@ -143,4 +160,75 @@ public class HttpServer {
         }
     }
 
+    public void cursorClick(HttpExchange exchange) throws IOException {
+        Map<String, String> params = queryToMap(exchange.getRequestURI().getQuery());
+        int left = Integer.parseInt(params.get("left"));
+
+        JsonObject data = new JsonObject();
+        data.addProperty("left", left);
+
+        int x = plugin.mouse.getMousePos().x;
+        int y = plugin.mouse.getMousePos().y;
+
+        if (left == 1) {
+            plugin.mouse.clickMouse(x, y, 1);
+        } else {
+            plugin.mouse.clickMouse(x, y, 1);
+        }
+
+        exchange.sendResponseHeaders(200, 0);
+        try (OutputStreamWriter out = new OutputStreamWriter(exchange.getResponseBody())) {
+            RuneLiteAPI.GSON.toJson(data, out);
+        }
+    }
+
+    public void keyboardSendKeys(HttpExchange exchange) throws IOException {
+        Map<String, String> params = queryToMap(exchange.getRequestURI().getQuery());
+
+
+//        JsonObject postData = new JsonObject(exchange.getRequestBody());
+
+        System.out.println(exchange.getResponseBody());
+        String text = params.get("text");
+
+        JsonObject data = new JsonObject();
+        data.addProperty("text", text);
+
+        plugin.keyboard.sendKeys(text, 160, 160);
+
+        exchange.sendResponseHeaders(200, 0);
+        try (OutputStreamWriter out = new OutputStreamWriter(exchange.getResponseBody())) {
+            RuneLiteAPI.GSON.toJson(data, out);
+        }
+    }
+
+    public void keyboardHoldKey(HttpExchange exchange) throws IOException {
+        Map<String, String> params = queryToMap(exchange.getRequestURI().getQuery());
+        int keyCode = Integer.parseInt(params.get("code"));
+
+        JsonObject data = new JsonObject();
+        data.addProperty("code", keyCode);
+
+        plugin.keyboard.holdKey(keyCode);
+
+        exchange.sendResponseHeaders(200, 0);
+        try (OutputStreamWriter out = new OutputStreamWriter(exchange.getResponseBody())) {
+            RuneLiteAPI.GSON.toJson(data, out);
+        }
+    }
+
+    public void keyboardReleaseKey(HttpExchange exchange) throws IOException {
+        Map<String, String> params = queryToMap(exchange.getRequestURI().getQuery());
+        int keyCode = Integer.parseInt(params.get("code"));
+
+        JsonObject data = new JsonObject();
+        data.addProperty("code", keyCode);
+
+        plugin.keyboard.releaseKey(keyCode);
+
+        exchange.sendResponseHeaders(200, 0);
+        try (OutputStreamWriter out = new OutputStreamWriter(exchange.getResponseBody())) {
+            RuneLiteAPI.GSON.toJson(data, out);
+        }
+    }
 }
