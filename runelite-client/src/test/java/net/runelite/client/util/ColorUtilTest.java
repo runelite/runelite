@@ -126,28 +126,36 @@ public class ColorUtilTest
 	public void colorToHexCode()
 	{
 		COLOR_HEXSTRING_MAP.forEach((color, hex) ->
-			assertEquals(hex, ColorUtil.colorToHexCode(color)));
+		{
+			assertEquals(hex, ColorUtil.colorToHexCode(color));
+		});
 	}
 
 	@Test
 	public void colorToAlphaHexCode()
 	{
 		COLOR_ALPHA_HEXSTRING_MAP.forEach((color, hex) ->
-			assertEquals(hex, ColorUtil.colorToAlphaHexCode(color)));
+		{
+			assertEquals(hex, ColorUtil.colorToAlphaHexCode(color));
+		});
 	}
 
 	@Test
 	public void isHex()
 	{
 		COLOR_HEXSTRING_MAP.forEach((_color, hex) ->
-			assertTrue(ColorUtil.isHex(hex)));
+		{
+			assertTrue(ColorUtil.isHex(hex));
+		});
 	}
 
 	@Test
 	public void isAlphaHex()
 	{
 		COLOR_ALPHA_HEXSTRING_MAP.forEach((_color, hex) ->
-			assertTrue(ColorUtil.isAlphaHex(hex)));
+		{
+			assertTrue(ColorUtil.isAlphaHex(hex));
+		});
 	}
 
 	@Test
