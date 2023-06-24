@@ -28,6 +28,8 @@ import com.google.common.collect.ImmutableMap;
 import java.awt.Color;
 import java.util.Map;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
@@ -146,5 +148,21 @@ public class ColorUtilTest
 	{
 		COLOR_ALPHA_HEXSTRING_MAP.forEach((_color, hex) ->
 			assertTrue(ColorUtil.isAlphaHex(hex)));
+	}
+
+	@Test
+	public void fromString()
+	{
+		String WHITE_MAX_ALPHA = "-1";
+		String WHITE_ZERO_ALPHA = "0xffffff";
+		String TOO_LARGE = "0xffffffff";
+		String INVALID_FORMAT = "ffffff";
+
+		assertEquals(Color.WHITE, ColorUtil.fromString(WHITE_MAX_ALPHA));
+		assertEquals(new Color(0xffffff, true), ColorUtil.fromString(WHITE_ZERO_ALPHA));
+		assertNotEquals(Color.WHITE, ColorUtil.fromString(WHITE_ZERO_ALPHA));
+
+		assertNull(ColorUtil.fromString(TOO_LARGE));
+		assertNull(ColorUtil.fromString(INVALID_FORMAT));
 	}
 }
