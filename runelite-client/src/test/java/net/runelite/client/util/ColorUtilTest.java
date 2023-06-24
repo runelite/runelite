@@ -199,7 +199,7 @@ public class ColorUtilTest
 		String INVALID_FORMAT = "ffffff";
 
 		assertEquals(Color.WHITE, ColorUtil.fromString(WHITE_MAX_ALPHA));
-		assertEquals(new Color(0xffffff, true), ColorUtil.fromString(WHITE_ZERO_ALPHA));
+		assertEquals(ColorUtil.colorWithAlpha(Color.WHITE, 0), ColorUtil.fromString(WHITE_ZERO_ALPHA));
 		assertNotEquals(Color.WHITE, ColorUtil.fromString(WHITE_ZERO_ALPHA));
 
 		assertNull(ColorUtil.fromString(TOO_LARGE));
@@ -216,6 +216,7 @@ public class ColorUtilTest
 		assertEquals(Color.BLACK, ColorUtil.fromHex("0x0"));
 		assertEquals(Color.BLACK, ColorUtil.fromHex("#0"));
 
+		assertEquals(ColorUtil.colorWithAlpha(Color.BLACK, 0), ColorUtil.fromHex("0x00000000"));
 		assertEquals(Color.WHITE, ColorUtil.fromHex("0xFFFFFFFF"));
 
 		INVALID_COLOR_HEXSTRING_LIST.forEach((string) -> {
