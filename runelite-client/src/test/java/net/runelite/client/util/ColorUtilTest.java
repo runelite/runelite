@@ -179,6 +179,7 @@ public class ColorUtilTest
 		assertEquals(Color.WHITE, ColorUtil.fromHex("0xFFFFFFFF"));
 
 		assertNull(ColorUtil.fromHex("0x"));
+		assertNull(ColorUtil.fromHex("########"));
 		assertNull(ColorUtil.fromHex("0xABCDEFGH"));
 	}
 
