@@ -168,7 +168,8 @@ public class ColorUtilTest
 			assertTrue(ColorUtil.isHex(hex));
 		});
 
-		INVALID_COLOR_HEXSTRING_LIST.forEach((string) -> {
+		INVALID_COLOR_HEXSTRING_LIST.forEach((string) ->
+		{
 			assertFalse(ColorUtil.isHex(string));
 		});
 	}
@@ -186,7 +187,8 @@ public class ColorUtilTest
 			assertFalse(ColorUtil.isAlphaHex(hex));
 		});
 
-		INVALID_COLOR_HEXSTRING_LIST.forEach((string) -> {
+		INVALID_COLOR_HEXSTRING_LIST.forEach((string) ->
+		{
 			assertFalse(ColorUtil.isAlphaHex(string));
 		});
 	}
@@ -220,7 +222,8 @@ public class ColorUtilTest
 		assertEquals(ColorUtil.colorWithAlpha(Color.BLACK, 0), ColorUtil.fromHex("0x00000000"));
 		assertEquals(Color.WHITE, ColorUtil.fromHex("0xFFFFFFFF"));
 
-		INVALID_COLOR_HEXSTRING_LIST.forEach((string) -> {
+		INVALID_COLOR_HEXSTRING_LIST.forEach((string) ->
+		{
 			assertNull(ColorUtil.fromHex(string));
 		});
 	}
@@ -229,7 +232,8 @@ public class ColorUtilTest
 	public void fromObject()
 	{
 		List<Object> ASSORTED_OBJECTS = List.of("Wise Old Man", 7, true, 1.337, COLOR_ALPHA_HEXSTRING_MAP);
-		ASSORTED_OBJECTS.forEach((object) -> {
+		ASSORTED_OBJECTS.forEach((object) ->
+		{
 			assertNotNull(ColorUtil.fromObject(object));
 		});
 	}
