@@ -165,4 +165,20 @@ public class ColorUtilTest
 		assertNull(ColorUtil.fromString(TOO_LARGE));
 		assertNull(ColorUtil.fromString(INVALID_FORMAT));
 	}
+
+	@Test
+	public void fromHex()
+	{
+		assertEquals(Color.BLACK, ColorUtil.fromHex("0x000000"));
+		assertEquals(Color.BLACK, ColorUtil.fromHex("#000000"));
+		assertEquals(Color.BLACK, ColorUtil.fromHex("000000"));
+
+		assertEquals(Color.BLACK, ColorUtil.fromHex("0x0"));
+		assertEquals(Color.BLACK, ColorUtil.fromHex("#0"));
+
+		assertEquals(Color.WHITE, ColorUtil.fromHex("0xFFFFFFFF"));
+
+		assertNull(ColorUtil.fromHex("0x"));
+		assertNull(ColorUtil.fromHex("0xABCDEFGH"));
+	}
 }
