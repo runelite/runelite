@@ -31,6 +31,7 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
@@ -227,6 +228,9 @@ public class ColorUtilTest
 	@Test
 	public void fromObject()
 	{
-		assertEquals(Color.RED, ColorUtil.fromObject(""));
+		List<Object> ASSORTED_OBJECTS = List.of("Wise Old Man", 7, true, 1.337, COLOR_ALPHA_HEXSTRING_MAP);
+		ASSORTED_OBJECTS.forEach((object) -> {
+			assertNotNull(ColorUtil.fromObject(object));
+		});
 	}
 }
