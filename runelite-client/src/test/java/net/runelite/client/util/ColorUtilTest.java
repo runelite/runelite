@@ -26,8 +26,10 @@ package net.runelite.client.util;
 
 import com.google.common.collect.ImmutableMap;
 import java.awt.Color;
+import java.util.List;
 import java.util.Map;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -48,6 +50,18 @@ public class ColorUtilTest
 	private static final Map<Color, String> COLOR_ALPHA_HEXSTRING_MAP = ImmutableMap.of(
 		new Color(0x00000000, true), "00000000",
 		new Color(0xA1B2C3D4, true), "a1b2c3d4"
+	);
+
+	private static final List<String> INVALID_COLOR_HEXSTRING_LIST = List.of(
+		"#ffffffffffffffff",
+		"##abcdef",
+		"fffffg",
+		"0xabcdefg",
+		"0x",
+		"#",
+		"#######",
+		"#########",
+		""
 	);
 
 	@Test
@@ -143,18 +157,36 @@ public class ColorUtilTest
 	@Test
 	public void isHex()
 	{
-		COLOR_HEXSTRING_MAP.forEach((_color, hex) ->
+		COLOR_HEXSTRING_MAP.values().forEach((hex) ->
 		{
 			assertTrue(ColorUtil.isHex(hex));
+		});
+
+		COLOR_ALPHA_HEXSTRING_MAP.values().forEach((hex) ->
+		{
+			assertTrue(ColorUtil.isHex(hex));
+		});
+
+		INVALID_COLOR_HEXSTRING_LIST.forEach((string) -> {
+			assertFalse(ColorUtil.isHex(string));
 		});
 	}
 
 	@Test
 	public void isAlphaHex()
 	{
-		COLOR_ALPHA_HEXSTRING_MAP.forEach((_color, hex) ->
+		COLOR_ALPHA_HEXSTRING_MAP.values().forEach((hex) ->
 		{
 			assertTrue(ColorUtil.isAlphaHex(hex));
+		});
+
+		COLOR_HEXSTRING_MAP.values().forEach((hex) ->
+		{
+			assertFalse(ColorUtil.isAlphaHex(hex));
+		});
+
+		INVALID_COLOR_HEXSTRING_LIST.forEach((string) -> {
+			assertFalse(ColorUtil.isAlphaHex(string));
 		});
 	}
 
@@ -186,9 +218,9 @@ public class ColorUtilTest
 
 		assertEquals(Color.WHITE, ColorUtil.fromHex("0xFFFFFFFF"));
 
-		assertNull(ColorUtil.fromHex("0x"));
-		assertNull(ColorUtil.fromHex("########"));
-		assertNull(ColorUtil.fromHex("0xABCDEFGH"));
+		INVALID_COLOR_HEXSTRING_LIST.forEach((string) -> {
+			assertNull(ColorUtil.fromHex(string));
+		});
 	}
 
 	@Test
