@@ -8,14 +8,12 @@ import net.runelite.client.plugins.randall.RandallPlugin;
 import net.runelite.client.plugins.randall.models.ItemModel;
 import net.runelite.client.plugins.randall.models.NPCModel;
 import net.runelite.client.plugins.randall.models.PlayerModel;
-import net.runelite.http.api.RuneLiteAPI;
 
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.net.InetSocketAddress;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executors;
+
 
 public class HttpServer {
 
@@ -29,22 +27,6 @@ public class HttpServer {
     public HttpServer(Client client, RandallPlugin plugin) {
         this.client = client;
         this.plugin = plugin;
-    }
-
-    public Map<String, String> queryToMap(String query) {
-        if (query == null) {
-            return null;
-        }
-        Map<String, String> result = new HashMap<>();
-        for (String param : query.split("&")) {
-            String[] entry = param.split("=");
-            if (entry.length > 1) {
-                result.put(entry[0], entry[1]);
-            } else {
-                result.put(entry[0], "");
-            }
-        }
-        return result;
     }
 
     public void startUp() throws Exception {
@@ -73,10 +55,7 @@ public class HttpServer {
         data.addProperty("login_index", client.getLoginIndex());
         data.addProperty("idle_timeout", client.getIdleTimeout());
 
-        exchange.sendResponseHeaders(200, 0);
-        try (OutputStreamWriter out = new OutputStreamWriter(exchange.getResponseBody())) {
-            RuneLiteAPI.GSON.toJson(data, out);
-        }
+        HttpToolkit.writeResponse(exchange, 200, data);
     }
 
     public void getPlayer(HttpExchange exchange) throws IOException {
@@ -95,10 +74,7 @@ public class HttpServer {
         data.add("player", new PlayerModel(client, player).toJson());
         data.add("camera", cameraData);
 
-        exchange.sendResponseHeaders(200, 0);
-        try (OutputStreamWriter out = new OutputStreamWriter(exchange.getResponseBody())) {
-            RuneLiteAPI.GSON.toJson(data, out);
-        }
+        HttpToolkit.writeResponse(exchange, 200, data);
     }
 
     public void getPlayers(HttpExchange exchange) throws IOException {
@@ -108,10 +84,7 @@ public class HttpServer {
             data.add(new PlayerModel(client, player).toJson());
         }
 
-        exchange.sendResponseHeaders(200, 0);
-        try (OutputStreamWriter out = new OutputStreamWriter(exchange.getResponseBody())) {
-            RuneLiteAPI.GSON.toJson(data, out);
-        }
+        HttpToolkit.writeResponse(exchange, 200, data);
     }
 
     public void getNpcs(HttpExchange exchange) throws IOException {
@@ -121,10 +94,7 @@ public class HttpServer {
             data.add(new NPCModel(npc).toJson());
         }
 
-        exchange.sendResponseHeaders(200, 0);
-        try (OutputStreamWriter out = new OutputStreamWriter(exchange.getResponseBody())) {
-            RuneLiteAPI.GSON.toJson(data, out);
-        }
+        HttpToolkit.writeResponse(exchange, 200, data);
     }
 
     public void getInventory(HttpExchange exchange) throws IOException {
@@ -137,14 +107,12 @@ public class HttpServer {
             data.add(new ItemModel(client, item).toJson());
         }
 
-        exchange.sendResponseHeaders(200, 0);
-        try (OutputStreamWriter out = new OutputStreamWriter(exchange.getResponseBody())) {
-            RuneLiteAPI.GSON.toJson(data, out);
-        }
+        HttpToolkit.writeResponse(exchange, 200, data);
     }
 
     public void setCursorPosition(HttpExchange exchange) throws IOException {
-        Map<String, String> params = queryToMap(exchange.getRequestURI().getQuery());
+        Map<String, String> params = HttpToolkit.getQueryParams(exchange);
+
         int x = Integer.parseInt(params.get("x"));
         int y = Integer.parseInt(params.get("y"));
 
@@ -154,14 +122,12 @@ public class HttpServer {
 
         plugin.mouse.windMouse(x, y);
 
-        exchange.sendResponseHeaders(200, 0);
-        try (OutputStreamWriter out = new OutputStreamWriter(exchange.getResponseBody())) {
-            RuneLiteAPI.GSON.toJson(data, out);
-        }
+        HttpToolkit.writeResponse(exchange, 200, data);
     }
 
     public void cursorClick(HttpExchange exchange) throws IOException {
-        Map<String, String> params = queryToMap(exchange.getRequestURI().getQuery());
+        Map<String, String> params = HttpToolkit.getQueryParams(exchange);
+
         int left = Integer.parseInt(params.get("left"));
 
         JsonObject data = new JsonObject();
@@ -176,34 +142,24 @@ public class HttpServer {
             plugin.mouse.clickMouse(x, y, 1);
         }
 
-        exchange.sendResponseHeaders(200, 0);
-        try (OutputStreamWriter out = new OutputStreamWriter(exchange.getResponseBody())) {
-            RuneLiteAPI.GSON.toJson(data, out);
-        }
+        HttpToolkit.writeResponse(exchange, 200, data);
     }
 
+
     public void keyboardSendKeys(HttpExchange exchange) throws IOException {
-        Map<String, String> params = queryToMap(exchange.getRequestURI().getQuery());
-
-
-//        JsonObject postData = new JsonObject(exchange.getRequestBody());
-
-        System.out.println(exchange.getResponseBody());
-        String text = params.get("text");
+        JsonObject postData = HttpToolkit.getPostData(exchange);
+        String text = postData.get("text").getAsString();
 
         JsonObject data = new JsonObject();
         data.addProperty("text", text);
 
         plugin.keyboard.sendKeys(text, 160, 160);
 
-        exchange.sendResponseHeaders(200, 0);
-        try (OutputStreamWriter out = new OutputStreamWriter(exchange.getResponseBody())) {
-            RuneLiteAPI.GSON.toJson(data, out);
-        }
+        HttpToolkit.writeResponse(exchange, 200, data);
     }
 
     public void keyboardHoldKey(HttpExchange exchange) throws IOException {
-        Map<String, String> params = queryToMap(exchange.getRequestURI().getQuery());
+        Map<String, String> params = HttpToolkit.getQueryParams(exchange);
         int keyCode = Integer.parseInt(params.get("code"));
 
         JsonObject data = new JsonObject();
@@ -211,14 +167,12 @@ public class HttpServer {
 
         plugin.keyboard.holdKey(keyCode);
 
-        exchange.sendResponseHeaders(200, 0);
-        try (OutputStreamWriter out = new OutputStreamWriter(exchange.getResponseBody())) {
-            RuneLiteAPI.GSON.toJson(data, out);
-        }
+        HttpToolkit.writeResponse(exchange, 200, data);
+
     }
 
     public void keyboardReleaseKey(HttpExchange exchange) throws IOException {
-        Map<String, String> params = queryToMap(exchange.getRequestURI().getQuery());
+        Map<String, String> params = HttpToolkit.getQueryParams(exchange);
         int keyCode = Integer.parseInt(params.get("code"));
 
         JsonObject data = new JsonObject();
@@ -226,9 +180,6 @@ public class HttpServer {
 
         plugin.keyboard.releaseKey(keyCode);
 
-        exchange.sendResponseHeaders(200, 0);
-        try (OutputStreamWriter out = new OutputStreamWriter(exchange.getResponseBody())) {
-            RuneLiteAPI.GSON.toJson(data, out);
-        }
+        HttpToolkit.writeResponse(exchange, 200, data);
     }
 }
