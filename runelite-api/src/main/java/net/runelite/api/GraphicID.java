@@ -34,6 +34,7 @@ public final class GraphicID
 	public static final int TELEKINETIC_SPELL = 143;
 	public static final int ENTANGLE = 179;
 	public static final int SNARE = 180;
+	public static final int SHADE_DROP_ANIM = 188;
 	public static final int BIND = 181;
 	public static final int ICE_RUSH = 361;
 	public static final int ICE_BURST = 363;
