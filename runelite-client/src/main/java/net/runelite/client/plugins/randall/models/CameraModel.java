@@ -5,19 +5,20 @@ import net.runelite.api.Client;
 
 public class CameraModel implements DataModel {
 
-    private final JsonObject data;
+    private final Client client;
 
     public CameraModel(Client client) {
-        data = new JsonObject();
+        this.client = client;
+    }
+
+    @Override
+    public JsonObject toJson() {
+        JsonObject data = new JsonObject();
         data.addProperty("x", client.getCameraX());
         data.addProperty("y", client.getCameraX());
         data.addProperty("z", client.getCameraX());
         data.addProperty("pitch", client.getCameraPitch());
         data.addProperty("yaw", client.getCameraYaw());
-    }
-
-    @Override
-    public JsonObject toJson() {
         return data;
     }
 }

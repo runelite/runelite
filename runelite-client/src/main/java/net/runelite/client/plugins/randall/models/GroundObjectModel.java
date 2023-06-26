@@ -11,10 +11,20 @@ import java.awt.*;
 
 public class GroundObjectModel implements DataModel {
 
-    private final JsonObject data;
+    private final Client client;
+    private final Tile tile;
+    private final GroundObject groundObject;
 
     public GroundObjectModel(Client client, Tile tile, GroundObject groundObject) {
-        data = new JsonObject();
+        this.client = client;
+        this.tile = tile;
+        this.groundObject = groundObject;
+    }
+
+
+    @Override
+    public JsonObject toJson() {
+        JsonObject data = new JsonObject();
         data.addProperty("id", groundObject.getId());
         data.addProperty("x", groundObject.getWorldLocation().getX());
         data.addProperty("y", groundObject.getWorldLocation().getY());
@@ -30,11 +40,6 @@ public class GroundObjectModel implements DataModel {
             data.addProperty("screenX", centerX);
             data.addProperty("screenY", centerY);
         }
-    }
-
-
-    @Override
-    public JsonObject toJson() {
         return data;
     }
 }

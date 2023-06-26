@@ -11,10 +11,20 @@ import java.awt.*;
 
 public class DecorativeObjectModel implements DataModel {
 
-    private final JsonObject data;
+    private final Client client;
+    private final Tile tile;
+    private final DecorativeObject decorativeObject;
 
     public DecorativeObjectModel(Client client, Tile tile, DecorativeObject decorativeObject) {
-        data = new JsonObject();
+        this.client = client;
+        this.tile = tile;
+        this.decorativeObject = decorativeObject;
+    }
+
+
+    @Override
+    public JsonObject toJson() {
+        JsonObject data = new JsonObject();
         data.addProperty("id", decorativeObject.getId());
         data.addProperty("plane", decorativeObject.getPlane());
         data.addProperty("x", decorativeObject.getWorldLocation().getX());
@@ -31,11 +41,6 @@ public class DecorativeObjectModel implements DataModel {
             data.addProperty("screenX", centerX);
             data.addProperty("screenY", centerY);
         }
-    }
-
-
-    @Override
-    public JsonObject toJson() {
         return data;
     }
 }

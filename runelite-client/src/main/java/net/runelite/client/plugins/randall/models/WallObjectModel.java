@@ -11,10 +11,20 @@ import java.awt.*;
 
 public class WallObjectModel implements DataModel {
 
-    private final JsonObject data;
+    private final Client client;
+    private final Tile tile;
+    private final WallObject wallObject;
 
     public WallObjectModel(Client client, Tile tile, WallObject wallObject) {
-        data = new JsonObject();
+        this.client = client;
+        this.tile = tile;
+        this.wallObject = wallObject;
+    }
+
+
+    @Override
+    public JsonObject toJson() {
+        JsonObject data = new JsonObject();
         data.addProperty("id", wallObject.getId());
         data.addProperty("x", wallObject.getWorldLocation().getX());
         data.addProperty("y", wallObject.getWorldLocation().getY());
@@ -30,11 +40,6 @@ public class WallObjectModel implements DataModel {
             data.addProperty("screenX", centerX);
             data.addProperty("screenY", centerY);
         }
-    }
-
-
-    @Override
-    public JsonObject toJson() {
         return data;
     }
 }

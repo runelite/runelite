@@ -6,12 +6,17 @@ import net.runelite.api.NPCComposition;
 
 public class NPCModel implements DataModel {
 
-    private final JsonObject data;
+    private final NPC npc;
 
     public NPCModel(NPC npc) {
+        this.npc = npc;
+    }
+
+    @Override
+    public JsonObject toJson() {
         NPCComposition npcComposition = npc.getComposition();
 
-        data = new JsonObject();
+        JsonObject data = new JsonObject();
         data.addProperty("id", npc.getId());
         data.addProperty("name", npc.getName());
         data.addProperty("plane", npc.getWorldLocation().getPlane());
@@ -24,10 +29,6 @@ public class NPCModel implements DataModel {
         data.addProperty("is_interactible", npcComposition.isInteractible());
         data.addProperty("is_minimap_visible", npcComposition.isMinimapVisible());
         data.addProperty("is_visible", npcComposition.isVisible());
-    }
-
-    @Override
-    public JsonObject toJson() {
         return data;
     }
 }

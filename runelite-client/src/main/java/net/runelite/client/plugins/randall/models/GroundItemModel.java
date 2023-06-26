@@ -8,12 +8,22 @@ import java.awt.*;
 
 public class GroundItemModel implements DataModel {
 
-    private final JsonObject data;
+    private final Client client;
+    private final Tile tile;
+    private final TileItem tileItem;
 
     public GroundItemModel(Client client, Tile tile, TileItem tileItem) {
-        data = new JsonObject();
+        this.client = client;
+        this.tile = tile;
+        this.tileItem = tileItem;
+    }
+
+
+    @Override
+    public JsonObject toJson() {
         ItemComposition itemComposition = client.getItemDefinition(tileItem.getId());
 
+        JsonObject data = new JsonObject();
         data.addProperty("id", tileItem.getId());
         data.addProperty("name", itemComposition.getName());
         data.addProperty("members_name", itemComposition.getMembersName());
@@ -31,11 +41,6 @@ public class GroundItemModel implements DataModel {
             data.addProperty("screenX", centerX);
             data.addProperty("screenY", centerY);
         }
-    }
-
-
-    @Override
-    public JsonObject toJson() {
         return data;
     }
 }

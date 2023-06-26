@@ -8,12 +8,19 @@ import net.runelite.api.ItemComposition;
 
 public class ItemModel implements DataModel {
 
-    private final JsonObject data;
+    private final Client client;
+    private final Item item;
 
     public ItemModel(Client client, Item item) {
+        this.client = client;
+        this.item = item;
+    }
+
+    @Override
+    public JsonObject toJson() {
         ItemComposition itemComposition = client.getItemDefinition(item.getId());
 
-        data = new JsonObject();
+        JsonObject data = new JsonObject();
         data.addProperty("id", item.getId());
         data.addProperty("quantity", item.getQuantity());
         data.addProperty("name", itemComposition.getName());
@@ -31,10 +38,6 @@ public class ItemModel implements DataModel {
         }
 
         data.add("inventory_actions", inventoryActions);
-    }
-
-    @Override
-    public JsonObject toJson() {
         return data;
     }
 }
