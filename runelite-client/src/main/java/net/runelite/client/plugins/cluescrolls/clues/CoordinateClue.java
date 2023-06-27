@@ -188,7 +188,7 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 		.put(new WorldPoint(2180, 3282, 0), new CoordinateClueInfo("North of Iorwerth Camp.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
 		.put(new WorldPoint(2870, 2997, 0), new CoordinateClueInfo("North-east corner in Shilo Village.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
 		.put(new WorldPoint(3302, 2988, 0), new CoordinateClueInfo("On top of a cliff to the west of Pollnivneach.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
-		.put(new WorldPoint(2511, 2980, 0), new CoordinateClueInfo("Just south of Gu'Tanoth, west of gnome glider.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
+		.put(new WorldPoint(2511, 2980, 0), new CoordinateClueInfo("Just south of Gu'Tanoth, west of gnome glider (AKS).", ARMADYLEAN_OR_BANDOSIAN_GUARD))
 		.put(new WorldPoint(2732, 3372, 0), new CoordinateClueInfo("Legends' Guild.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
 		.put(new WorldPoint(3573, 3425, 0), new CoordinateClueInfo("North of Dessous's tomb from Desert Treasure.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
 		.put(new WorldPoint(3828, 2848, 0), new CoordinateClueInfo("East of Harmony Island.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
