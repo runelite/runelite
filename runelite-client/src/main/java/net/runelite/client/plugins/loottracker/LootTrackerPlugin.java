@@ -176,6 +176,13 @@ public class LootTrackerPlugin extends Plugin
 		put(13117, "Rogues' Chest").
 		build();
 
+	// Chests opened with keys from slayer tasks
+	private static final Set<String> SLAYER_CHEST_EVENT_TYPES = ImmutableSet.of(
+		"Brimstone Chest",
+		"Larran's big chest",
+		"Larran's small chest"
+	);
+
 	// Shade chest loot handling
 	private static final Pattern SHADE_CHEST_NO_KEY_PATTERN = Pattern.compile("You need a [a-z]+ key with a [a-z]+ trim to open this chest .*");
 	private static final Map<Integer, String> SHADE_CHEST_OBJECTS = new ImmutableMap.Builder<Integer, String>().
@@ -811,6 +818,13 @@ public class LootTrackerPlugin extends Plugin
 			final int regionID = client.getLocalPlayer().getWorldLocation().getRegionID();
 			if (!CHEST_EVENT_TYPES.containsKey(regionID))
 			{
+				return;
+			}
+
+			if (SLAYER_CHEST_EVENT_TYPES.contains(CHEST_EVENT_TYPES.get(regionID)))
+			{
+				onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, CHEST_EVENT_TYPES.get(regionID),
+					client.getBoostedSkillLevel(Skill.FISHING)));
 				return;
 			}
 
