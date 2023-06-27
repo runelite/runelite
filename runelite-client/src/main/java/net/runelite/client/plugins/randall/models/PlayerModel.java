@@ -2,7 +2,6 @@ package net.runelite.client.plugins.randall.models;
 
 import com.google.gson.JsonObject;
 import net.runelite.api.Client;
-import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.ui.overlay.OverlayUtil;
@@ -23,55 +22,25 @@ public class PlayerModel implements DataModel {
 
     public void render(Graphics2D graphics) {
         Color insideColor = new Color(30, 210, 30, 100);
-        Color borderColor = new Color(30, 210, 30, 255);
-//        String text = player.getName() + " (A: " + player.getAnimation() + ") (P: " + player.getPoseAnimation() + ") (G: " + player.getGraphic() + ")";
-//        OverlayUtil.renderActorOverlay(graphics, player, text, Color.BLUE);
+        Color redColor = new Color(210, 30, 30, 255);
+        Color redSmallColor = new Color(210, 30, 30, 100);
+
         LocalPoint playerLocation = client.getLocalPlayer().getLocalLocation();
-//        Point mousePosition = client.getMouseCanvasPosition();
-
-
-//        Tile tile = player.getTile();
-//        if (tile.getPlane() == client.getPlane() && player.getLocalLocation().distanceTo(playerLocation) < MAX_DISTANCE) {
         if (player.getLocalLocation().distanceTo(playerLocation) < MAX_DISTANCE) {
-            Polygon polygon = player.getCanvasTilePoly();
-            if (polygon != null) {
-                OverlayUtil.renderPolygon(graphics, polygon, insideColor, insideColor, graphics.getStroke());
+//            Polygon polygon = player.getCanvasTilePoly();
+//            if (polygon != null) {
+//                OverlayUtil.renderPolygon(graphics, polygon, insideColor, insideColor, graphics.getStroke());
+//            }
+
+            Shape shape = player.getConvexHull();
+            if (shape != null) {
+                Color originalColor = graphics.getColor();
+                graphics.setColor(redColor);
+                graphics.draw(shape);
+                graphics.setColor(redSmallColor);
+                graphics.fill(shape);
+                graphics.setColor(originalColor);
             }
-            return;
-            // This assumes that the obstacle is not clickable.
-//            if (Obstacles.TRAP_OBSTACLE_IDS.contains(object.getId())) {
-//                Polygon polygon = object.getCanvasTilePoly();
-//                if (polygon != null) {
-//                    OverlayUtil.renderPolygon(graphics, polygon, config.getTrapColor());
-//                }
-//                return;
-//            }
-//            Shape objectClickbox = object.getClickbox();
-//            if (objectClickbox != null) {
-//                AgilityShortcut agilityShortcut = obstacle.getShortcut();
-//                Color configColor = agilityShortcut == null || agilityShortcut.getLevel() <= plugin.getAgilityLevel() ? config.getOverlayColor() : SHORTCUT_HIGH_LEVEL_COLOR;
-//                if (config.highlightMarks() && !marksOfGrace.isEmpty()) {
-//                    configColor = config.getMarkColor();
-//                }
-//
-//                if (Obstacles.PORTAL_OBSTACLE_IDS.contains(object.getId())) {
-//                    if (config.highlightPortals()) {
-//                        configColor = config.getPortalsColor();
-//                    } else {
-//                        return;
-//                    }
-//                }
-//
-//                if (objectClickbox.contains(mousePosition.getX(), mousePosition.getY())) {
-//                    graphics.setColor(configColor.darker());
-//                } else {
-//                    graphics.setColor(configColor);
-//                }
-//
-//                graphics.draw(objectClickbox);
-//                graphics.setColor(ColorUtil.colorWithAlpha(configColor, configColor.getAlpha() / 5));
-//                graphics.fill(objectClickbox);
-//            }
         }
     }
 

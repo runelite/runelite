@@ -1,10 +1,8 @@
 package net.runelite.client.plugins.randall.models;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import net.runelite.api.Client;
-import net.runelite.api.DecorativeObject;
-import net.runelite.api.Perspective;
-import net.runelite.api.Tile;
+import net.runelite.api.*;
 import net.runelite.api.coords.LocalPoint;
 
 import java.awt.*;
@@ -24,8 +22,11 @@ public class DecorativeObjectModel implements DataModel {
 
     @Override
     public JsonObject toJson() {
+        ObjectComposition objectComposition = client.getObjectDefinition(decorativeObject.getId());
+
         JsonObject data = new JsonObject();
         data.addProperty("id", decorativeObject.getId());
+        data.addProperty("name", objectComposition.getName());
         data.addProperty("plane", decorativeObject.getPlane());
         data.addProperty("x", decorativeObject.getWorldLocation().getX());
         data.addProperty("y", decorativeObject.getWorldLocation().getY());
@@ -41,6 +42,15 @@ public class DecorativeObjectModel implements DataModel {
             data.addProperty("screenX", centerX);
             data.addProperty("screenY", centerY);
         }
+
+        JsonArray actions = new JsonArray();
+        for (String action : objectComposition.getActions()) {
+            if (action != null) {
+                actions.add(action);
+            }
+        }
+
+        data.add("actions", actions);
         return data;
     }
 }
