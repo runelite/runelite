@@ -326,7 +326,6 @@ public class WoodcuttingPlugin extends Plugin
 				notifier.notify("A Flowering Tree Forestry event spawned!");
 			}
 			flowers.add(npc);
-			System.out.println("Spawn Flowers size: " + flowers.size());
 		}
 		else if (npc.getId() == 12163 && config.showLeprechaunNotification()) // Woodcutting Leprechaun npc id
 		{
@@ -348,7 +347,6 @@ public class WoodcuttingPlugin extends Plugin
 		if (npc.getId() == 12166) // regular non fruit flower npc id
 		{
 			flowers.remove(npc);
-			System.out.println("Despawn Flowers size: " + flowers.size());
 		}
 	}
 
@@ -358,7 +356,6 @@ public class WoodcuttingPlugin extends Plugin
 		if (event.getOld().getId() == 12166) // regular non fruit flower npc id
 		{
 			flowers.remove(event.getNpc());
-			System.out.println("Despawn Flowers size: " + flowers.size());
 		}
 	}
 }
