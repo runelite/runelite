@@ -29,6 +29,7 @@ package net.runelite.client.plugins.woodcutting;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Shape;
 import java.time.Instant;
 import java.util.List;
 import javax.inject.Inject;
@@ -44,6 +45,7 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.ProgressPieComponent;
+import net.runelite.client.util.ColorUtil;
 
 class WoodcuttingTreesOverlay extends Overlay
 {
@@ -68,7 +70,31 @@ class WoodcuttingTreesOverlay extends Overlay
 	{
 		renderAxes(graphics);
 		renderTimers(graphics);
+		renderForestryEvents(graphics);
 		return null;
+	}
+
+	private void renderForestryEvents(Graphics2D graphics)
+	{
+		if (plugin.getSession() == null)
+		{
+			return;
+		}
+
+		if (config.highlightGreenRoots())
+		{
+			for (GameObject treeRoot : plugin.getGreenRoots())
+			{
+				if (treeRoot.getWorldLocation().distanceTo(client.getLocalPlayer().getWorldLocation()) <= 25)
+				{
+					Shape objectClickbox = treeRoot.getClickbox();
+					graphics.setColor(Color.GREEN);
+					graphics.draw(objectClickbox);
+					graphics.setColor(ColorUtil.colorWithAlpha(Color.GREEN, Color.GREEN.getAlpha() / 5));
+					graphics.fill(objectClickbox);
+				}
+			}
+		}
 	}
 
 	private void renderAxes(Graphics2D graphics)

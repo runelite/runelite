@@ -99,4 +99,15 @@ public interface WoodcuttingConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		position = 7,
+		keyName = "highlightGreenRoots",
+		name = "Highlight Green Roots",
+		description = "Highlights green roots during Rising Roots events"
+	)
+	default boolean highlightGreenRoots()
+	{
+		return true;
+	}
 }

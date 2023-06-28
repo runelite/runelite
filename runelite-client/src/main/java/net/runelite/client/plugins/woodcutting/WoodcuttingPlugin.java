@@ -103,6 +103,9 @@ public class WoodcuttingPlugin extends Plugin
 	@Getter
 	private final Set<GameObject> treeObjects = new HashSet<>();
 
+	@Getter
+	private final Set<GameObject> greenRoots = new HashSet<>();
+
 	@Getter(AccessLevel.PACKAGE)
 	private final List<TreeRespawn> respawns = new ArrayList<>();
 	private boolean recentlyLoggedIn;
@@ -129,6 +132,7 @@ public class WoodcuttingPlugin extends Plugin
 		overlayManager.remove(treesOverlay);
 		respawns.clear();
 		treeObjects.clear();
+		greenRoots.clear();
 		session = null;
 		axe = null;
 		clueTierSpawned = null;
@@ -211,6 +215,10 @@ public class WoodcuttingPlugin extends Plugin
 		{
 			treeObjects.add(gameObject);
 		}
+		else if (gameObject.getId() == 47483) // ObjectID.TREE_ROOTS_47483
+		{
+			greenRoots.add(gameObject);
+		}
 	}
 
 	@Subscribe
@@ -236,6 +244,10 @@ public class WoodcuttingPlugin extends Plugin
 			{
 				treeObjects.remove(event.getGameObject());
 			}
+		}
+		else if (object.getId() == 47483) // ObjectID.TREE_ROOTS_47483
+		{
+			greenRoots.remove(object);
 		}
 	}
 
