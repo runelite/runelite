@@ -2,8 +2,9 @@ package net.runelite.client.plugins.randall.models;
 
 import com.google.gson.JsonObject;
 import net.runelite.api.Client;
+import net.runelite.client.plugins.randall.interfaces.DataModelInterface;
 
-public class CameraModel implements DataModel {
+public class CameraModel implements DataModelInterface {
 
     private final Client client;
 

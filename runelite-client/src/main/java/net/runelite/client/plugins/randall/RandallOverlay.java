@@ -1,6 +1,7 @@
 package net.runelite.client.plugins.randall;
 
 import net.runelite.api.Client;
+import net.runelite.api.Player;
 import net.runelite.client.plugins.randall.event.EventHandler;
 import net.runelite.client.plugins.randall.models.PlayerModel;
 import net.runelite.client.ui.overlay.Overlay;
@@ -10,6 +11,8 @@ import net.runelite.client.ui.overlay.OverlayPriority;
 
 import javax.inject.Inject;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RandallOverlay extends Overlay {
 
@@ -28,8 +31,7 @@ public class RandallOverlay extends Overlay {
 
     @Override
     public Dimension render(Graphics2D graphics) {
-
-        client.getPlayers().forEach(player -> new PlayerModel(client, player).render(graphics));
+        getRenderablePlayers().forEach(playerModel -> playerModel.render(graphics));
 
         if (EventHandler.isBlocking()) {
             Point cursorPosition = plugin.mouse.getMousePos();
@@ -38,5 +40,15 @@ public class RandallOverlay extends Overlay {
         }
 
         return null;
+    }
+
+    private List<PlayerModel> getRenderablePlayers() {
+        List<PlayerModel> playerModels = new ArrayList<>();
+        for (Player player : client.getPlayers()) {
+            if (plugin.highlightedPlayers.contains(player.getId())) {
+                playerModels.add(new PlayerModel(client, player));
+            }
+        }
+        return playerModels;
     }
 }

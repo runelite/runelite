@@ -5,8 +5,9 @@ import com.google.gson.JsonObject;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
+import net.runelite.client.plugins.randall.interfaces.DataModelInterface;
 
-public class ItemModel implements DataModel {
+public class ItemModel implements DataModelInterface {
 
     private final Client client;
     private final Item item;

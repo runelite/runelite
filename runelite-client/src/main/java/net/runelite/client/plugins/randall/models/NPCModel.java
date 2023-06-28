@@ -3,8 +3,11 @@ package net.runelite.client.plugins.randall.models;
 import com.google.gson.JsonObject;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
+import net.runelite.client.plugins.randall.interfaces.DataModelInterface;
 
-public class NPCModel implements DataModel {
+import java.awt.*;
+
+public class NPCModel implements DataModelInterface {
 
     private final NPC npc;
 
@@ -29,6 +32,17 @@ public class NPCModel implements DataModel {
         data.addProperty("is_interactible", npcComposition.isInteractible());
         data.addProperty("is_minimap_visible", npcComposition.isMinimapVisible());
         data.addProperty("is_visible", npcComposition.isVisible());
+
+        Polygon poly = npc.getCanvasTilePoly();
+//        LocalPoint tileLocalLocation = tile.getLocalLocation();
+//        Polygon poly = Perspective.getCanvasTilePoly(client, tileLocalLocation);
+        if (poly != null) {
+            int centerX = (int) poly.getBounds().getCenterX();
+            int centerY = (int) poly.getBounds().getCenterY();
+
+            data.addProperty("screen_x", centerX);
+            data.addProperty("screen_y", centerY);
+        }
         return data;
     }
 }

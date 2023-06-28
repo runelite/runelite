@@ -3,10 +3,11 @@ package net.runelite.client.plugins.randall.models;
 import com.google.gson.JsonObject;
 import net.runelite.api.*;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.client.plugins.randall.interfaces.DataModelInterface;
 
 import java.awt.*;
 
-public class GroundItemModel implements DataModel {
+public class GroundItemModel implements DataModelInterface {
 
     private final Client client;
     private final Tile tile;
@@ -38,8 +39,8 @@ public class GroundItemModel implements DataModel {
             int centerX = (int) poly.getBounds().getCenterX();
             int centerY = (int) poly.getBounds().getCenterY();
 
-            data.addProperty("screenX", centerX);
-            data.addProperty("screenY", centerY);
+            data.addProperty("screen_x", centerX);
+            data.addProperty("screen_y", centerY);
         }
         return data;
     }

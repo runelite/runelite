@@ -25,19 +25,9 @@ public class InputSelector {
     }
 
     protected void startUp() throws Exception {
-        enableButton = NavigationButton.builder()
-                .tab(false)
-                .icon(ENABLED_IMAGE)
-                .tooltip("Enable Input")
-                .onClick(this::enableClick)
-                .build();
+        enableButton = NavigationButton.builder().tab(false).icon(ENABLED_IMAGE).tooltip("Enable Input").onClick(this::enableClick).build();
 
-        disableButton = NavigationButton.builder()
-                .tab(false)
-                .icon(DISABLED_IMAGE)
-                .tooltip("Disable Input")
-                .onClick(this::disableClick)
-                .build();
+        disableButton = NavigationButton.builder().tab(false).icon(DISABLED_IMAGE).tooltip("Disable Input").onClick(this::disableClick).build();
 
         addAndRemoveButtons();
     }
@@ -54,15 +44,13 @@ public class InputSelector {
         this.clientToolbar.addNavigation(EventHandler.isBlocking() ? enableButton : disableButton);
     }
 
-
-    private void disableClick() {
-        EventHandler.setBlocking(true);
-        addAndRemoveButtons();
-    }
-
-    private void enableClick() {
+    public void enableClick() {
         EventHandler.setBlocking(false);
         addAndRemoveButtons();
     }
 
+    public void disableClick() {
+        EventHandler.setBlocking(true);
+        addAndRemoveButtons();
+    }
 }

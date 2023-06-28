@@ -1,30 +1,31 @@
-package net.runelite.client.plugins.randall.http;
+package net.runelite.client.plugins.randall.interfaces;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
 import net.runelite.http.api.RuneLiteAPI;
 
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class HttpToolkit {
+public interface ConectServerHandlerInterface extends HttpHandler {
 
-    public static void writeResponse(HttpExchange exchange, int statusCode, JsonObject data) throws IOException {
+    default void writeResponse(HttpExchange exchange, int statusCode, JsonObject data) throws IOException {
         writeResponseInteral(exchange, statusCode, data);
     }
 
-    public static void writeResponse(HttpExchange exchange, int statusCode, JsonArray data) throws IOException {
+    default void writeResponse(HttpExchange exchange, int statusCode, JsonArray data) throws IOException {
         writeResponseInteral(exchange, statusCode, data);
     }
 
-    public static Map<String, String> getQueryParams(HttpExchange exchange) {
+    default Map<String, String> getQueryParams(HttpExchange exchange) {
         return queryParamsToMap(exchange.getRequestURI().getQuery());
     }
 
-    public static JsonObject getPostData(HttpExchange exchange) throws IOException {
+    default JsonObject getPostData(HttpExchange exchange) throws IOException {
         InputStream requestBody = exchange.getRequestBody();
         String requestBodyString = convertStreamToString(requestBody);
 
@@ -32,14 +33,14 @@ public class HttpToolkit {
         return gson.fromJson(requestBodyString, JsonObject.class);
     }
 
-    private static void writeResponseInteral(HttpExchange exchange, int statusCode, Object data) throws IOException {
+    private void writeResponseInteral(HttpExchange exchange, int statusCode, Object data) throws IOException {
         exchange.sendResponseHeaders(statusCode, 0);
         try (OutputStreamWriter out = new OutputStreamWriter(exchange.getResponseBody())) {
             RuneLiteAPI.GSON.toJson(data, out);
         }
     }
 
-    private static Map<String, String> queryParamsToMap(String query) {
+    private Map<String, String> queryParamsToMap(String query) {
         if (query == null) {
             return null;
         }
@@ -55,7 +56,7 @@ public class HttpToolkit {
         return result;
     }
 
-    private static String convertStreamToString(InputStream inputStream) throws IOException {
+    private String convertStreamToString(InputStream inputStream) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         StringBuilder stringBuilder = new StringBuilder();
         String line;

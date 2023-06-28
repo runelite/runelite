@@ -3,18 +3,21 @@ package net.runelite.client.plugins.randall;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.game.WorldService;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.randall.device.Keyboard;
 import net.runelite.client.plugins.randall.device.Mouse;
 import net.runelite.client.plugins.randall.event.EventHandler;
-import net.runelite.client.plugins.randall.http.HttpServer;
+import net.runelite.client.plugins.randall.http.ContextServer;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 import javax.inject.Inject;
 import java.applet.Applet;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @PluginDescriptor(
         name = "Randall",
@@ -25,6 +28,8 @@ import java.awt.*;
 @Slf4j
 public class RandallPlugin extends Plugin {
 
+    @Inject
+    public WorldService worldService;
 
     @Inject
     public Client client;
@@ -41,12 +46,16 @@ public class RandallPlugin extends Plugin {
     @Inject
     private RandallOverlay overlay;
     private Canvas gameCanvas;
-    private InputSelector inputSelector;
-    private HttpServer httpServer;
+    public InputSelector inputSelector;
+    private ContextServer httpServer;
 
+//    public Map<String, Integer> highlightedPlayers;
+    public List<Integer> highlightedPlayers;
 
     @Override
     protected void startUp() throws Exception {
+        highlightedPlayers = new ArrayList<>();
+
         EventHandler.setBlocking(false);
 
         overlayManager.add(overlay);
@@ -54,7 +63,7 @@ public class RandallPlugin extends Plugin {
         inputSelector = new InputSelector(clientToolbar);
         inputSelector.startUp();
 
-        httpServer = new HttpServer(client, this);
+        httpServer = new ContextServer(client, this);
         httpServer.startUp();
 
         while (this.getCanvas() == null) {
