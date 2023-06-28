@@ -64,7 +64,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @PluginDescriptor(
 	name = "Woodcutting",
 	description = "Show woodcutting statistics and/or bird nest notifications",
-	tags = {"birds", "nest", "notifications", "overlay", "skilling", "wc"},
+	tags = {"birds", "nest", "notifications", "overlay", "skilling", "wc", "forestry"},
 	enabledByDefault = false
 )
 @PluginDependency(XpTrackerPlugin.class)
