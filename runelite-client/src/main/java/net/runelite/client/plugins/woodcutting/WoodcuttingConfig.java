@@ -110,4 +110,59 @@ public interface WoodcuttingConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		position = 9,
+		keyName = "highlightFlowers",
+		name = "Highlight Flowers",
+		description = "Highlights Flowers from the Flowering Tree event"
+	)
+	default boolean highlightFlowers()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 10,
+		keyName = "showLeprechaunNotification",
+		name = "Leprechaun Notification",
+		description = "Configures whether to notify you of a Leprechaun event"
+	)
+	default boolean showLeprechaunNotification()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 11,
+		keyName = "showRisingRootsNotification",
+		name = "Rising Roots Notification",
+		description = "Configures whether to notify you of a Rising Roots event"
+	)
+	default boolean showRisingRootsNotification()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 12,
+		keyName = "showStrugglingSapplingNotification",
+		name = "Struggling Sappling Notification",
+		description = "Configures whether to notify you of a Struggling Sappling event"
+	)
+	default boolean showStrugglingSapplingNotification()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 13,
+		keyName = "showFloweringTreeNotification",
+		name = "Flowering Tree Notification",
+		description = "Configures whether to notify you of a Flowering Tree event"
+	)
+	default boolean showFloweringTreeNotification()
+	{
+		return true;
+	}
 }

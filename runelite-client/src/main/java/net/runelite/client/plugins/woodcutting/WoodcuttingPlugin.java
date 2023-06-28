@@ -41,6 +41,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
+import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.coords.WorldPoint;
@@ -51,6 +52,9 @@ import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemSpawned;
+import net.runelite.api.events.NpcChanged;
+import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -105,6 +109,11 @@ public class WoodcuttingPlugin extends Plugin
 
 	@Getter
 	private final Set<GameObject> greenRoots = new HashSet<>();
+	@Getter
+	private final Set<GameObject> regularRoots = new HashSet<>();
+
+	@Getter
+	private final List<NPC> flowers = new ArrayList<>();
 
 	@Getter(AccessLevel.PACKAGE)
 	private final List<TreeRespawn> respawns = new ArrayList<>();
@@ -133,6 +142,8 @@ public class WoodcuttingPlugin extends Plugin
 		respawns.clear();
 		treeObjects.clear();
 		greenRoots.clear();
+		regularRoots.clear();
+		flowers.clear();
 		session = null;
 		axe = null;
 		clueTierSpawned = null;
@@ -219,6 +230,14 @@ public class WoodcuttingPlugin extends Plugin
 		{
 			greenRoots.add(gameObject);
 		}
+		else if (gameObject.getId() == 47482) // ObjectID.TREE_ROOTS_47482
+		{
+			if (regularRoots.isEmpty() && config.showRisingRootsNotification())
+			{
+				notifier.notify("A Rising Roots Forestry event spawned!");
+			}
+			regularRoots.add(gameObject);
+		}
 	}
 
 	@Subscribe
@@ -249,6 +268,11 @@ public class WoodcuttingPlugin extends Plugin
 		{
 			greenRoots.remove(object);
 		}
+
+		else if (object.getId() == 47482) // ObjectID.TREE_ROOTS_47482
+		{
+			regularRoots.remove(object);
+		}
 	}
 
 	@Subscribe
@@ -260,6 +284,9 @@ public class WoodcuttingPlugin extends Plugin
 				respawns.clear();
 			case LOADING:
 				treeObjects.clear();
+				flowers.clear();
+				regularRoots.clear();
+				greenRoots.clear();
 				break;
 			case LOGGED_IN:
 				// After login trees that are depleted will be changed,
@@ -285,6 +312,53 @@ public class WoodcuttingPlugin extends Plugin
 		if (axe != null)
 		{
 			this.axe = axe;
+		}
+	}
+
+	@Subscribe
+	public void onNpcSpawned(NpcSpawned event)
+	{
+		NPC npc = event.getNpc();
+		if (npc.getId() == 12166) // regular non fruit flower npc id
+		{
+			if (flowers.isEmpty() && config.showFloweringTreeNotification())
+			{
+				notifier.notify("A Flowering Tree Forestry event spawned!");
+			}
+			flowers.add(npc);
+			System.out.println("Spawn Flowers size: " + flowers.size());
+		}
+		else if (npc.getId() == 12163 && config.showLeprechaunNotification()) // Woodcutting Leprechaun npc id
+		{
+			notifier.notify("A Leprechaun event spawned!");
+		}
+		else if (npc.getId() == 12164) // Struggling Sapling npc id
+		{
+			if (config.showStrugglingSapplingNotification())
+			{
+				notifier.notify("A Struggling Sapling Forestry event spawned!");
+			}
+		}
+	}
+
+	@Subscribe
+	public void onNpcDespawned(NpcDespawned event)
+	{
+		NPC npc = event.getNpc();
+		if (npc.getId() == 12166) // regular non fruit flower npc id
+		{
+			flowers.remove(npc);
+			System.out.println("Despawn Flowers size: " + flowers.size());
+		}
+	}
+
+	@Subscribe
+	public void onNpcChanged(NpcChanged event)
+	{
+		if (event.getOld().getId() == 12166) // regular non fruit flower npc id
+		{
+			flowers.remove(event.getNpc());
+			System.out.println("Despawn Flowers size: " + flowers.size());
 		}
 	}
 }
