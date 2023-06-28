@@ -42,6 +42,11 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.NPC;
+import static net.runelite.api.NpcID.FLOWERING_BUSH;
+import static net.runelite.api.NpcID.WOODCUTTING_LEPRECHAUN;
+import net.runelite.api.NullNpcID;
+import static net.runelite.api.ObjectID.TREE_ROOTS;
+import static net.runelite.api.ObjectID.TREE_ROOTS_47483;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.coords.WorldPoint;
@@ -226,11 +231,11 @@ public class WoodcuttingPlugin extends Plugin
 		{
 			treeObjects.add(gameObject);
 		}
-		else if (gameObject.getId() == 47483) // ObjectID.TREE_ROOTS_47483
+		else if (gameObject.getId() == TREE_ROOTS_47483)
 		{
 			greenRoots.add(gameObject);
 		}
-		else if (gameObject.getId() == 47482) // ObjectID.TREE_ROOTS_47482
+		else if (gameObject.getId() == TREE_ROOTS)
 		{
 			if (regularRoots.isEmpty() && config.showRisingRootsNotification())
 			{
@@ -264,12 +269,12 @@ public class WoodcuttingPlugin extends Plugin
 				treeObjects.remove(event.getGameObject());
 			}
 		}
-		else if (object.getId() == 47483) // ObjectID.TREE_ROOTS_47483
+		else if (object.getId() == TREE_ROOTS_47483)
 		{
 			greenRoots.remove(object);
 		}
 
-		else if (object.getId() == 47482) // ObjectID.TREE_ROOTS_47482
+		else if (object.getId() == TREE_ROOTS)
 		{
 			regularRoots.remove(object);
 		}
@@ -319,7 +324,7 @@ public class WoodcuttingPlugin extends Plugin
 	public void onNpcSpawned(NpcSpawned event)
 	{
 		NPC npc = event.getNpc();
-		if (npc.getId() == 12166) // regular non fruit flower npc id
+		if (npc.getId() == FLOWERING_BUSH) // regular non fruit flower npc id
 		{
 			if (flowers.isEmpty() && config.showFloweringTreeNotification())
 			{
@@ -327,11 +332,11 @@ public class WoodcuttingPlugin extends Plugin
 			}
 			flowers.add(npc);
 		}
-		else if (npc.getId() == 12163 && config.showLeprechaunNotification()) // Woodcutting Leprechaun npc id
+		else if (npc.getId() == WOODCUTTING_LEPRECHAUN && config.showLeprechaunNotification()) // Woodcutting Leprechaun npc id
 		{
 			notifier.notify("A Leprechaun event spawned!");
 		}
-		else if (npc.getId() == 12164) // Struggling Sapling npc id
+		else if (npc.getId() == NullNpcID.NULL_12164) // Struggling Sapling npc id
 		{
 			if (config.showStrugglingSapplingNotification())
 			{
@@ -344,7 +349,7 @@ public class WoodcuttingPlugin extends Plugin
 	public void onNpcDespawned(NpcDespawned event)
 	{
 		NPC npc = event.getNpc();
-		if (npc.getId() == 12166) // regular non fruit flower npc id
+		if (npc.getId() == FLOWERING_BUSH)
 		{
 			flowers.remove(npc);
 		}
@@ -353,7 +358,7 @@ public class WoodcuttingPlugin extends Plugin
 	@Subscribe
 	public void onNpcChanged(NpcChanged event)
 	{
-		if (event.getOld().getId() == 12166) // regular non fruit flower npc id
+		if (event.getOld().getId() == FLOWERING_BUSH)
 		{
 			flowers.remove(event.getNpc());
 		}
