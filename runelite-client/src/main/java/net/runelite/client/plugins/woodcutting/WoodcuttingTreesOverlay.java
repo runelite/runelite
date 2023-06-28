@@ -35,6 +35,7 @@ import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
+import net.runelite.api.NPC;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
@@ -88,11 +89,33 @@ class WoodcuttingTreesOverlay extends Overlay
 				if (treeRoot.getWorldLocation().distanceTo(client.getLocalPlayer().getWorldLocation()) <= 25)
 				{
 					Shape objectClickbox = treeRoot.getClickbox();
-					graphics.setColor(Color.GREEN);
+					if (objectClickbox == null)
+					{
+						continue;
+					}
+					Color color = Color.GREEN;
+					graphics.setColor(color);
 					graphics.draw(objectClickbox);
-					graphics.setColor(ColorUtil.colorWithAlpha(Color.GREEN, Color.GREEN.getAlpha() / 5));
+					graphics.setColor(ColorUtil.colorWithAlpha(color, color.getAlpha() / 5));
 					graphics.fill(objectClickbox);
 				}
+			}
+		}
+
+		if (config.highlightFlowers() && !plugin.getFlowers().isEmpty())
+		{
+			for (NPC npc : plugin.getFlowers())
+			{
+				Shape shape = npc.getConvexHull();
+				if (shape == null)
+				{
+					continue;
+				}
+				Color color = Color.YELLOW;
+				graphics.setColor(color);
+				graphics.draw(shape);
+				graphics.setColor(ColorUtil.colorWithAlpha(color, color.getAlpha() / 5));
+				graphics.fill(shape);
 			}
 		}
 	}
