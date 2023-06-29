@@ -155,4 +155,16 @@ public interface WoodcuttingConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		position = 20,
+		keyName = "highlightGlowingRoots",
+		name = "Highlight Glowing Roots",
+		description = "Highlights glowing roots during Rising Roots events",
+		section = forestrySection
+	)
+	default boolean highlightGlowingRoots()
+	{
+		return true;
+	}
 }
