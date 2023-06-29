@@ -109,6 +109,17 @@ public interface WoodcuttingConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 7,
+		keyName = "showChoppingCount",
+		name = "Show chopping count",
+		description = "Configures whether to display the number of people actively chopping a tree"
+	)
+	default boolean showChoppingCount()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		position = 10,
 		keyName = "forestryLeprechaunNotification",
 		name = "Leprechaun notification",

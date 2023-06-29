@@ -32,12 +32,16 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import javax.inject.Inject;
+import net.runelite.api.Actor;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Perspective;
+import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.game.ItemManager;
@@ -88,6 +92,9 @@ class WoodcuttingTreesOverlay extends Overlay
 		{
 			return;
 		}
+
+		renderGrouping(graphics);
+		renderBushes(graphics);
 
 		if (config.highlightGlowingRoots())
 		{
@@ -243,8 +250,8 @@ class WoodcuttingTreesOverlay extends Overlay
 			}
 
 			LocalPoint centeredLocation = new LocalPoint(
-					minLocation.getX() + treeRespawn.getLenX() * Perspective.LOCAL_HALF_TILE_SIZE,
-					minLocation.getY() + treeRespawn.getLenY() * Perspective.LOCAL_HALF_TILE_SIZE);
+				minLocation.getX() + treeRespawn.getLenX() * Perspective.LOCAL_HALF_TILE_SIZE,
+				minLocation.getY() + treeRespawn.getLenY() * Perspective.LOCAL_HALF_TILE_SIZE);
 			float percent = (now.toEpochMilli() - treeRespawn.getStartTime().toEpochMilli()) / (float) treeRespawn.getRespawnTime();
 			Point point = Perspective.localToCanvas(client, centeredLocation, client.getPlane());
 			if (point == null || percent > 1.0f)
@@ -258,6 +265,55 @@ class WoodcuttingTreesOverlay extends Overlay
 			ppc.setPosition(point);
 			ppc.setProgress(percent);
 			ppc.render(graphics);
+		}
+	}
+
+	private void renderGrouping(Graphics2D graphics)
+	{
+		if (plugin.getTreeMap() == null || plugin.getTreeMap().isEmpty())
+		{
+			return;
+		}
+
+		for (Map.Entry<GameObject, Set<Player>> treeEntry : plugin.getTreeMap().entrySet())
+		{
+			if (!treeEntry.getValue().isEmpty())
+			{
+				Point point = Perspective.getCanvasTextLocation(client, graphics, treeEntry.getKey().getLocalLocation(), String.valueOf(treeEntry.getValue().size()), 0);
+				int choppers = treeEntry.getValue().size();
+				Color color;
+				if (choppers >= 10)
+				{
+					color = Color.GREEN;
+				}
+				else if (choppers >= 7)
+				{
+					color = Color.YELLOW;
+				}
+				else if (choppers >= 4)
+				{
+					color = Color.ORANGE;
+				}
+				else
+				{
+					color = Color.RED;
+				}
+				OverlayUtil.renderTextLocation(graphics, point, String.valueOf(treeEntry.getValue().size()), color);
+//				OverlayUtil.renderTileOverlay(graphics, treeEntry.getKey(), String.valueOf(treeEntry.getValue().size()), color);
+			}
+		}
+	}
+
+	private void renderBushes(Graphics2D graphics)
+	{
+		if (plugin.getBushes() == null || plugin.getBushes().isEmpty())
+		{
+			return;
+		}
+
+		for (Actor bush : plugin.getBushes())
+		{
+			OverlayUtil.renderActorOverlay(graphics, bush, "", Color.GREEN);
 		}
 	}
 }
