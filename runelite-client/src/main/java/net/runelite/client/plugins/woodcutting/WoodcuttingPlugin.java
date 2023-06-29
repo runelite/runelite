@@ -615,30 +615,34 @@ public class WoodcuttingPlugin extends Plugin
 		// Orientation: N=1024, E=1536, S=0, W=512, where we would filter tile loc N = y+1, E= x+1, S=y-1, W=x-1
 		int orientation = actor.getCurrentOrientation();
 		WorldPoint actorLocation = actor.getWorldLocation();
-		Optional<Map.Entry<GameObject, Set<Player>>> closestTreeEntry = treeMap.entrySet().stream().filter((entry) -> {
-			GameObject tree = entry.getKey();
-			WorldPoint treeLocation = tree.getWorldLocation();
-			switch (findClosestDirection(orientation))
+		Optional<Map.Entry<GameObject, Set<Player>>> closestTreeEntry = treeMap.entrySet().stream().filter((entry) ->
 			{
-				case 'N': // North, filter out trees that are not north of us
-					return treeLocation.getY() > actorLocation.getY();
-				case 'E': // East, filter out trees that are not east of us
-					return treeLocation.getX() > actorLocation.getX();
-				case 'S': // South, filter out trees that are not south of us
-					return treeLocation.getY() < actorLocation.getY();
-				case 'W': // West, filter out trees that are not west of us
-					return treeLocation.getX() < actorLocation.getX();
+				GameObject tree = entry.getKey();
+				WorldPoint treeLocation = tree.getWorldLocation();
+				switch (findClosestDirection(orientation))
+				{
+					case 'N': // North, filter out trees that are not north of us
+						return treeLocation.getY() > actorLocation.getY();
+					case 'E': // East, filter out trees that are not east of us
+						return treeLocation.getX() > actorLocation.getX();
+					case 'S': // South, filter out trees that are not south of us
+						return treeLocation.getY() < actorLocation.getY();
+					case 'W': // West, filter out trees that are not west of us
+						return treeLocation.getX() < actorLocation.getX();
+				}
+				log.debug("Orientation {} not found", orientation);
+				return false;
 			}
-			log.debug("Orientation {} not found", orientation);
-			return false;
-		}).sorted((entry1, entry2) -> {
-			// Get closest tree with relation to our player's location
-			GameObject tree1 = entry1.getKey();
-			GameObject tree2 = entry2.getKey();
-			WorldPoint treeLocation1 = tree1.getWorldLocation();
-			WorldPoint treeLocation2 = tree2.getWorldLocation();
-			return actorLocation.distanceTo(treeLocation1) - actorLocation.distanceTo(treeLocation2);
-		}).findFirst();
+		).sorted((entry1, entry2) ->
+			{
+				// Get closest tree with relation to our player's location
+				GameObject tree1 = entry1.getKey();
+				GameObject tree2 = entry2.getKey();
+				WorldPoint treeLocation1 = tree1.getWorldLocation();
+				WorldPoint treeLocation2 = tree2.getWorldLocation();
+				return actorLocation.distanceTo(treeLocation1) - actorLocation.distanceTo(treeLocation2);
+			}
+		).findFirst();
 
 		if (closestTreeEntry.isPresent())
 		{
