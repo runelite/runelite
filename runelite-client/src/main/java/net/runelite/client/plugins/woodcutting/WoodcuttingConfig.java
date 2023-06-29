@@ -159,11 +159,23 @@ public interface WoodcuttingConfig extends Config
 	@ConfigItem(
 		position = 20,
 		keyName = "highlightGlowingRoots",
-		name = "Highlight Glowing Roots",
+		name = "Highlight glowing roots",
 		description = "Highlights glowing roots during Rising Roots events",
 		section = forestrySection
 	)
 	default boolean highlightGlowingRoots()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 21,
+		keyName = "highlightMulch",
+		name = "Highlight mulch ingredients",
+		description = "Highlights mulch ingredients during Struggling Sapling events",
+		section = forestrySection
+	)
+	default boolean highlightMulch()
 	{
 		return true;
 	}

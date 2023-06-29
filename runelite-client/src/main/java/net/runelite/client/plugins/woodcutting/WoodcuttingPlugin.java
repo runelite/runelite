@@ -28,6 +28,7 @@ import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -111,6 +112,10 @@ public class WoodcuttingPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private final List<GameObject> roots = new ArrayList<>();
 	private final List<NPC> flowers = new ArrayList<>();
+	@Getter(AccessLevel.PACKAGE)
+	private final List<GameObject> saplingIngredients = new ArrayList<>(5);
+	@Getter(AccessLevel.PACKAGE)
+	private final GameObject[] saplingOrder = new GameObject[3];
 
 	@Getter(AccessLevel.PACKAGE)
 	private final List<TreeRespawn> respawns = new ArrayList<>();
@@ -140,6 +145,8 @@ public class WoodcuttingPlugin extends Plugin
 		treeObjects.clear();
 		roots.clear();
 		flowers.clear();
+		saplingIngredients.clear();
+		Arrays.fill(saplingOrder, null);
 		session = null;
 		axe = null;
 		clueTierSpawned = null;
@@ -178,27 +185,52 @@ public class WoodcuttingPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getType() == ChatMessageType.SPAM || event.getType() == ChatMessageType.GAMEMESSAGE)
+		if (event.getType() != ChatMessageType.SPAM && event.getType() != ChatMessageType.GAMEMESSAGE)
 		{
-			if (WOOD_CUT_PATTERN.matcher(event.getMessage()).matches())
-			{
-				if (session == null)
-				{
-					session = new WoodcuttingSession();
-				}
+			return;
+		}
 
-				session.setLastChopping();
+		if (WOOD_CUT_PATTERN.matcher(event.getMessage()).matches())
+		{
+			if (session == null)
+			{
+				session = new WoodcuttingSession();
 			}
 
-			if (event.getMessage().contains("A bird's nest falls out of the tree") && config.showNestNotification())
+			session.setLastChopping();
+		}
+
+		var msg = event.getMessage();
+		if (msg.contains("A bird's nest falls out of the tree") && config.showNestNotification())
+		{
+			if (clueTierSpawned == null || clueTierSpawned.ordinal() >= config.clueNestNotifyTier().ordinal())
 			{
-				if (clueTierSpawned == null || clueTierSpawned.ordinal() >= config.clueNestNotifyTier().ordinal())
-				{
-					notifier.notify("A bird nest has spawned!");
-				}
-				// Clear the clue tier that has previously spawned
-				clueTierSpawned = null;
+				notifier.notify("A bird nest has spawned!");
 			}
+			// Clear the clue tier that has previously spawned
+			clueTierSpawned = null;
+		}
+
+		if (msg.startsWith("The sapling seems to love"))
+		{
+			int ingredientNum = msg.contains("first") ? 1 : (msg.contains("second") ? 2 : (msg.contains("third") ? 3 : -1));
+			if (ingredientNum == -1)
+			{
+				log.debug("unable to find ingredient index from message: {}", msg);
+				return;
+			}
+
+			GameObject ingredientObj = saplingIngredients.stream()
+				.filter(obj -> msg.contains(client.getObjectDefinition(obj.getId()).getName().toLowerCase()))
+				.findAny()
+				.orElse(null);
+			if (ingredientObj == null)
+			{
+				log.debug("unable to find ingredient from message: {}", msg);
+				return;
+			}
+
+			saplingOrder[ingredientNum - 1] = ingredientObj;
 		}
 	}
 
@@ -245,6 +277,15 @@ public class WoodcuttingPlugin extends Plugin
 					notifier.notify("A Struggling Sapling Forestry event spawned!");
 				}
 				break;
+			case ObjectID.ROTTING_LEAVES:
+			case ObjectID.GREEN_LEAVES:
+			case ObjectID.DROPPINGS:
+			case ObjectID.WILD_MUSHROOMS:
+			case ObjectID.WILD_MUSHROOMS_47497:
+			case ObjectID.WILD_MUSHROOMS_47498:
+			case ObjectID.SPLINTERED_BARK:
+				saplingIngredients.add(gameObject);
+				break;
 		}
 	}
 
@@ -272,9 +313,27 @@ public class WoodcuttingPlugin extends Plugin
 				treeObjects.remove(event.getGameObject());
 			}
 		}
-		else if (object.getId() == ObjectID.TREE_ROOTS || object.getId() == ObjectID.TREE_ROOTS_47483 /* glowing roots */)
+
+		switch (object.getId())
 		{
-			roots.remove(object);
+			case ObjectID.TREE_ROOTS:
+			case ObjectID.TREE_ROOTS_47483: // glowing roots
+				roots.remove(object);
+				break;
+			case ObjectID.ROTTING_LEAVES:
+			case ObjectID.GREEN_LEAVES:
+			case ObjectID.DROPPINGS:
+			case ObjectID.WILD_MUSHROOMS:
+			case ObjectID.WILD_MUSHROOMS_47497:
+			case ObjectID.WILD_MUSHROOMS_47498:
+			case ObjectID.SPLINTERED_BARK:
+				saplingIngredients.remove(object);
+				if (saplingIngredients.isEmpty())
+				{
+					Arrays.fill(saplingOrder, null);
+					log.debug("Struggling Sapling event is over");
+				}
+				break;
 		}
 	}
 
@@ -288,6 +347,8 @@ public class WoodcuttingPlugin extends Plugin
 			case LOADING:
 				treeObjects.clear();
 				roots.clear();
+				saplingIngredients.clear();
+				Arrays.fill(saplingOrder, null);
 				break;
 			case LOGGED_IN:
 				// After login trees that are depleted will be changed,
