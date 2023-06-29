@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.keyremapping;
 
+import java.awt.Color;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import net.runelite.client.config.Config;
@@ -31,6 +32,7 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
 import net.runelite.client.config.ModifierlessKeybind;
+import net.runelite.client.plugins.keyremapping.config.PromptText;
 
 @ConfigGroup("keyremapping")
 public interface KeyRemappingConfig extends Config
@@ -48,6 +50,13 @@ public interface KeyRemappingConfig extends Config
 		position = 1
 	)
 	String fKeySection = "fKeys";
+
+	@ConfigSection(
+		name = "Chat Prompt",
+		description = "Settings for customizing the chat prompt",
+		position = 2
+	)
+	String chatPromptSection = "chatPrompt";
 
 	@ConfigItem(
 		position = 1,
@@ -297,5 +306,29 @@ public interface KeyRemappingConfig extends Config
 	default ModifierlessKeybind control()
 	{
 		return new ModifierlessKeybind(KeyEvent.VK_UNDEFINED, InputEvent.CTRL_DOWN_MASK);
+	}
+
+	@ConfigItem(
+		keyName = "promptText",
+		name = "Prompt Text",
+		description = "Changes the text shown which prompts the user to start chatting.",
+		position = 22,
+		section = chatPromptSection
+	)
+	default PromptText promptText()
+	{
+		return PromptText.PRESS_ENTER_TO_CHAT;
+	}
+
+	@ConfigItem(
+		keyName = "promptColor",
+		name = "Prompt Color",
+		description = "Changes the color of the chat prompt text.",
+		position = 23,
+		section = chatPromptSection
+	)
+	default Color promptColor()
+	{
+		return Color.BLACK;
 	}
 }
