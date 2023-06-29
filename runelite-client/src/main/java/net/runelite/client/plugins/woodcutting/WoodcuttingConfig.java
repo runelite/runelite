@@ -27,12 +27,20 @@ package net.runelite.client.plugins.woodcutting;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
 import net.runelite.client.config.Units;
 import net.runelite.client.plugins.woodcutting.config.ClueNestTier;
 
 @ConfigGroup("woodcutting")
 public interface WoodcuttingConfig extends Config
 {
+	@ConfigSection(
+		name = "Forestry",
+		description = "Configuration for forestry",
+		position = 10
+	)
+	String forestrySection = "forestry";
+
 	@ConfigItem(
 		position = 1,
 		keyName = "statTimeout",
@@ -96,6 +104,54 @@ public interface WoodcuttingConfig extends Config
 		description = "Configures whether to display the respawn timer overlay"
 	)
 	default boolean showRespawnTimers()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 10,
+		keyName = "forestryLeprechaunNotification",
+		name = "Leprechaun notification",
+		description = "Configures whether to notify you of a Leprechaun event",
+		section = forestrySection
+	)
+	default boolean forestryLeprechaunNotification()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 11,
+		keyName = "forestryRisingRootsNotification",
+		name = "Rising Roots notification",
+		description = "Configures whether to notify you of a Rising Roots event",
+		section = forestrySection
+	)
+	default boolean forestryRisingRootsNotification()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 12,
+		keyName = "forestryStrugglingSaplingNotification",
+		name = "Struggling Sapling notification",
+		description = "Configures whether to notify you of a Struggling Sapling event",
+		section = forestrySection
+	)
+	default boolean forestryStrugglingSaplingNotification()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 13,
+		keyName = "forestryFloweringTreeNotification",
+		name = "Flowering Tree notification",
+		description = "Configures whether to notify you of a Flowering Tree event",
+		section = forestrySection
+	)
+	default boolean forestryFloweringTreeNotification()
 	{
 		return true;
 	}

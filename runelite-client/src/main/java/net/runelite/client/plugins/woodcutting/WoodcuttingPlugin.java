@@ -41,6 +41,9 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
+import net.runelite.api.NPC;
+import net.runelite.api.NpcID;
+import net.runelite.api.ObjectID;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.coords.WorldPoint;
@@ -51,6 +54,8 @@ import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemSpawned;
+import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -64,7 +69,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @PluginDescriptor(
 	name = "Woodcutting",
 	description = "Show woodcutting statistics and/or bird nest notifications",
-	tags = {"birds", "nest", "notifications", "overlay", "skilling", "wc"},
+	tags = {"birds", "nest", "notifications", "overlay", "skilling", "wc", "forestry"},
 	enabledByDefault = false
 )
 @PluginDependency(XpTrackerPlugin.class)
@@ -103,6 +108,9 @@ public class WoodcuttingPlugin extends Plugin
 	@Getter
 	private final Set<GameObject> treeObjects = new HashSet<>();
 
+	private final List<GameObject> roots = new ArrayList<>();
+	private final List<NPC> flowers = new ArrayList<>();
+
 	@Getter(AccessLevel.PACKAGE)
 	private final List<TreeRespawn> respawns = new ArrayList<>();
 	private boolean recentlyLoggedIn;
@@ -129,6 +137,8 @@ public class WoodcuttingPlugin extends Plugin
 		overlayManager.remove(treesOverlay);
 		respawns.clear();
 		treeObjects.clear();
+		roots.clear();
+		flowers.clear();
 		session = null;
 		axe = null;
 		clueTierSpawned = null;
@@ -211,6 +221,30 @@ public class WoodcuttingPlugin extends Plugin
 		{
 			treeObjects.add(gameObject);
 		}
+
+		switch (gameObject.getId())
+		{
+			case ObjectID.TREE_ROOTS:
+			case ObjectID.TREE_ROOTS_47483: // glowing roots
+				if (roots.isEmpty() && config.forestryRisingRootsNotification())
+				{
+					notifier.notify("A Rising Roots Forestry event spawned!");
+				}
+
+				roots.add(gameObject);
+				break;
+			case ObjectID.STRUGGLING_SAPLING:
+			case ObjectID.STRUGGLING_SAPLING_47485:
+			case ObjectID.STRUGGLING_SAPLING_47487:
+			case ObjectID.STRUGGLING_SAPLING_47488:
+			case ObjectID.STRUGGLING_SAPLING_47490:
+			case ObjectID.STRUGGLING_SAPLING_47491:
+				if (config.forestryStrugglingSaplingNotification())
+				{
+					notifier.notify("A Struggling Sapling Forestry event spawned!");
+				}
+				break;
+		}
 	}
 
 	@Subscribe
@@ -237,6 +271,10 @@ public class WoodcuttingPlugin extends Plugin
 				treeObjects.remove(event.getGameObject());
 			}
 		}
+		else if (object.getId() == ObjectID.TREE_ROOTS || object.getId() == ObjectID.TREE_ROOTS_47483 /* glowing roots */)
+		{
+			roots.remove(object);
+		}
 	}
 
 	@Subscribe
@@ -248,6 +286,7 @@ public class WoodcuttingPlugin extends Plugin
 				respawns.clear();
 			case LOADING:
 				treeObjects.clear();
+				roots.clear();
 				break;
 			case LOGGED_IN:
 				// After login trees that are depleted will be changed,
@@ -274,5 +313,31 @@ public class WoodcuttingPlugin extends Plugin
 		{
 			this.axe = axe;
 		}
+	}
+
+	@Subscribe
+	public void onNpcSpawned(NpcSpawned event)
+	{
+		NPC npc = event.getNpc();
+		if (npc.getId() == NpcID.FLOWERING_BUSH)
+		{
+			if (flowers.isEmpty() && config.forestryFloweringTreeNotification())
+			{
+				notifier.notify("A Flowering Tree Forestry event spawned!");
+			}
+
+			flowers.add(npc);
+		}
+		else if (npc.getId() == NpcID.WOODCUTTING_LEPRECHAUN && config.forestryLeprechaunNotification())
+		{
+			notifier.notify("A Leprechaun event spawned!");
+		}
+	}
+
+	@Subscribe
+	public void onNpcDespawned(NpcDespawned event)
+	{
+		NPC npc = event.getNpc();
+		flowers.remove(npc);
 	}
 }
