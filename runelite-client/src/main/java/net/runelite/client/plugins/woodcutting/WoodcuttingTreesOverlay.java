@@ -37,6 +37,7 @@ import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.NPC;
 import net.runelite.api.ObjectComposition;
+import net.runelite.api.ObjectID;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
@@ -84,38 +85,23 @@ class WoodcuttingTreesOverlay extends Overlay
 
 		if (config.highlightGreenRoots())
 		{
-			for (GameObject treeRoot : plugin.getGreenRoots())
+			for (GameObject treeRoot : plugin.getRoots())
 			{
-				if (treeRoot.getWorldLocation().distanceTo(client.getLocalPlayer().getWorldLocation()) <= 25)
-				{
-					Shape objectClickbox = treeRoot.getClickbox();
-					if (objectClickbox == null)
-					{
-						continue;
-					}
-					Color color = Color.GREEN;
-					graphics.setColor(color);
-					graphics.draw(objectClickbox);
-					graphics.setColor(ColorUtil.colorWithAlpha(color, color.getAlpha() / 5));
-					graphics.fill(objectClickbox);
-				}
-			}
-		}
-
-		if (config.highlightFlowers() && !plugin.getFlowers().isEmpty())
-		{
-			for (NPC npc : plugin.getFlowers())
-			{
-				Shape shape = npc.getConvexHull();
-				if (shape == null)
+				if (treeRoot.getId() != ObjectID.TREE_ROOTS_47483
+					|| treeRoot.getWorldLocation().distanceTo(client.getLocalPlayer().getWorldLocation()) > 25)
 				{
 					continue;
 				}
-				Color color = Color.YELLOW;
+				Shape objectClickbox = treeRoot.getClickbox();
+				if (objectClickbox == null)
+				{
+					continue;
+				}
+				Color color = Color.GREEN;
 				graphics.setColor(color);
-				graphics.draw(shape);
+				graphics.draw(objectClickbox);
 				graphics.setColor(ColorUtil.colorWithAlpha(color, color.getAlpha() / 5));
-				graphics.fill(shape);
+				graphics.fill(objectClickbox);
 			}
 		}
 	}

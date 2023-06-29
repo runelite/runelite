@@ -108,7 +108,9 @@ public class WoodcuttingPlugin extends Plugin
 	@Getter
 	private final Set<GameObject> treeObjects = new HashSet<>();
 
+	@Getter
 	private final List<GameObject> roots = new ArrayList<>();
+
 	private final List<NPC> flowers = new ArrayList<>();
 
 	@Getter(AccessLevel.PACKAGE)
