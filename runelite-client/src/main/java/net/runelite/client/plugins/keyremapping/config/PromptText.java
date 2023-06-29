@@ -31,14 +31,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum PromptText
 {
-    PRESS_ENTER_TO_CHAT("Press Enter to Chat..."),
-    ASTERISK("*");
+	PRESS_ENTER_TO_CHAT("Press Enter to Chat..."),
+	ASTERISK("*");
 
-    private final String name;
+	private final String name;
 
-    @Override
-    public String toString()
-    {
-        return name;
-    }
+	@Override
+	public String toString()
+	{
+		return name;
+	}
 }
