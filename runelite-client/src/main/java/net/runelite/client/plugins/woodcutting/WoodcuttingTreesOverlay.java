@@ -35,7 +35,6 @@ import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
-import net.runelite.api.NPC;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Perspective;
