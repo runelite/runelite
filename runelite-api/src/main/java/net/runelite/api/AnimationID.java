@@ -179,9 +179,9 @@ public final class AnimationID
 	public static final int MAGIC_ENCHANTING_AMULET_2 = 720; // emerald, jade, dragonstone
 	public static final int MAGIC_ENCHANTING_AMULET_3 = 721; // ruby, topaz, onyx, zenyte
 	public static final int MAGIC_ENCHANTING_BOLTS = 4462;
-	public static final int BURYING_BONES = 827;
+	public static final int BURYING_BONES = 827; // Also used for Struggling Sapling Forestry event
 	public static final int USING_GILDED_ALTAR = 3705;
-	public static final int LOOKING_INTO = 832; // Generic animation used for filling water vessels, Shades of Mort'ton, etc.
+	public static final int LOOKING_INTO = 832; // Generic animation used for filling water vessels, Shades of Mort'ton, pollinating flower bushes
 	public static final int DIG = 830;
 	public static final int DEMONIC_GORILLA_MAGIC_ATTACK = 7225;
 	public static final int DEMONIC_GORILLA_MELEE_ATTACK = 7226;
