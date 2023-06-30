@@ -29,8 +29,10 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Pattern;
 import javax.annotation.Nullable;
@@ -42,6 +44,8 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
+import net.runelite.api.InventoryID;
+import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
@@ -54,9 +58,13 @@ import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.InteractingChanged;
+import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.ItemSpawned;
+import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
+import net.runelite.api.widgets.Widget;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -66,6 +74,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.woodcutting.config.ClueNestTier;
 import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Woodcutting",
@@ -111,7 +120,14 @@ public class WoodcuttingPlugin extends Plugin
 
 	@Getter(AccessLevel.PACKAGE)
 	private final List<GameObject> roots = new ArrayList<>();
-	private final List<NPC> flowers = new ArrayList<>();
+
+	@Getter(AccessLevel.PACKAGE)
+	private final HashMap<NPC, Integer> flowers = new HashMap<>();
+	@Getter(AccessLevel.PACKAGE)
+	private boolean hasMatchingFlowerPair = false;
+	private NPC lastInteractedFlowerBush = null;
+	@Getter(AccessLevel.PACKAGE)
+	private NPC lastSourceFlowerBush = null;
 	@Getter(AccessLevel.PACKAGE)
 	private final List<GameObject> saplingIngredients = new ArrayList<>(5);
 	@Getter(AccessLevel.PACKAGE)
@@ -122,6 +138,7 @@ public class WoodcuttingPlugin extends Plugin
 	private boolean recentlyLoggedIn;
 	private int currentPlane;
 	private ClueNestTier clueTierSpawned;
+	private boolean hasObtainedPollen = false;
 
 	@Provides
 	WoodcuttingConfig getConfig(ConfigManager configManager)
@@ -155,11 +172,14 @@ public class WoodcuttingPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick gameTick)
 	{
+		log.debug(String.valueOf(flowers.isEmpty()));
 		recentlyLoggedIn = false;
 		clueTierSpawned = null;
 		currentPlane = client.getPlane();
 
 		respawns.removeIf(TreeRespawn::isExpired);
+
+		determineFlowerBushState();
 
 		if (session == null || session.getLastChopping() == null)
 		{
@@ -180,6 +200,25 @@ public class WoodcuttingPlugin extends Plugin
 			session = null;
 			axe = null;
 		}
+	}
+
+	private void determineFlowerBushState() {
+		if (lastInteractedFlowerBush == null)  {
+			return;
+		}
+
+		String chatboxMessage = Optional.ofNullable(client.getWidget(229, 1)).map(Widget::getText).map(Text::removeTags).orElse("");
+		if (! chatboxMessage.equals("There are no open, unpollinated flowers on this bush yet.") && ! chatboxMessage.equals("The flowers on this bush have not yet opened enough to harvestpollen.")) {
+			return;
+		}
+
+		this.flowers.put(lastInteractedFlowerBush, -1);
+		revalidateMatchingFlowerPairs();
+	}
+
+	private void revalidateMatchingFlowerPairs()
+	{
+		this.hasMatchingFlowerPair = flowers.values().stream().filter(value -> value == 1).count() == 2;
 	}
 
 	@Subscribe
@@ -378,6 +417,47 @@ public class WoodcuttingPlugin extends Plugin
 	}
 
 	@Subscribe
+	private void onInteractingChanged(InteractingChanged event) {
+		if (event.getSource() != client.getLocalPlayer()) {
+			return;
+		}
+
+		if (event.getTarget() == null) {
+			return;
+		}
+
+		WorldPoint interactionLocation = event.getTarget().getWorldLocation();
+
+		flowers.keySet()
+				.stream()
+				.filter(npc -> npc.getWorldLocation().equals(interactionLocation))
+				.findFirst()
+				.ifPresent(npc -> lastInteractedFlowerBush = npc);
+	}
+
+	@Subscribe
+	private void onItemContainerChanged(final ItemContainerChanged event) {
+		if (event.getContainerId() != InventoryID.INVENTORY.getId()) {
+			return;
+		}
+
+		if (!event.getItemContainer().contains(ItemID.STRANGE_POLLEN)) {
+			// We've deposited the pollen, or didn't have them in the first place.
+			hasObtainedPollen = false;
+			return;
+		}
+
+		// If we either already have pollen, or didn't have them before, we'll reach this point.
+		// Meaning, if we didn't have pollen in the past, and now we do, we've obtained pollen.
+		if (! hasObtainedPollen) {
+			this.flowers.put(lastInteractedFlowerBush, 1);
+			this.lastSourceFlowerBush = lastInteractedFlowerBush;
+			revalidateMatchingFlowerPairs();
+			hasObtainedPollen = true;
+		}
+	}
+
+	@Subscribe
 	public void onNpcSpawned(NpcSpawned event)
 	{
 		NPC npc = event.getNpc();
@@ -385,10 +465,11 @@ public class WoodcuttingPlugin extends Plugin
 		{
 			if (flowers.isEmpty() && config.forestryFloweringTreeNotification())
 			{
+				lastSourceFlowerBush = null;
 				notifier.notify("A Flowering Tree Forestry event spawned!");
 			}
 
-			flowers.add(npc);
+			flowers.put(npc, 0);
 		}
 		else if (npc.getId() == NpcID.WOODCUTTING_LEPRECHAUN && config.forestryLeprechaunNotification())
 		{
@@ -397,9 +478,58 @@ public class WoodcuttingPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onNpcChanged(NpcChanged event) {
+		NPC npc = event.getNpc();
+
+		if (npc.getId() != NpcID.FLOWERING_BUSH && npc.getId() != NpcID.STRANGE_BUSH) {
+			return;
+		}
+
+		boolean hasRemoved = this.flowers.entrySet().removeIf(entry -> {
+			NPC flower = entry.getKey();
+
+			if (flower.getId() != NpcID.STRANGE_BUSH) {
+				return false;
+			}
+
+			checkLastFlowerBushState(flower);
+
+			return true;
+		});
+
+		if (hasRemoved) {
+			resetPreviouslyInvalidFlowers();
+			revalidateMatchingFlowerPairs();
+		}
+	}
+
+	private void resetPreviouslyInvalidFlowers()
+	{
+		this.flowers.entrySet()
+				.stream()
+				.filter(entry -> entry.getValue() == -1)
+				.forEach(entry -> entry.setValue(0));
+	}
+
+	private void checkLastFlowerBushState(NPC npc)
+	{
+		if (npc.equals(lastInteractedFlowerBush)) {
+			lastInteractedFlowerBush = null;
+		}
+
+		if (npc.equals(lastSourceFlowerBush)) {
+			lastSourceFlowerBush = null;
+		}
+	}
+
+	@Subscribe
 	public void onNpcDespawned(NpcDespawned event)
 	{
 		NPC npc = event.getNpc();
+
 		flowers.remove(npc);
+
+		checkLastFlowerBushState(npc);
+		revalidateMatchingFlowerPairs();
 	}
 }

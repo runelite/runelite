@@ -35,6 +35,7 @@ import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
+import net.runelite.api.NPC;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Perspective;
@@ -56,6 +57,11 @@ class WoodcuttingTreesOverlay extends Overlay
 	private static final Color DROPPINGS = new Color(120, 88, 76);
 	private static final Color WILD_MUSHROOMS = new Color(220, 220, 220);
 	private static final Color SPLINTERED_BARK = new Color(0, 0, 179);
+
+	private static final Color FLOWERING_TREE_UNKNOWN = new Color(255, 170, 0);
+	private static final Color FLOWERING_TREE_INACTIVE = new Color(60, 48, 48);
+	private static final Color FLOWERING_TREE_SOURCE = new Color(0, 255, 255);
+	private static final Color FLOWERING_TREE_TARGET = new Color(0, 255, 0);
 
 	private final Client client;
 	private final WoodcuttingConfig config;
@@ -194,6 +200,35 @@ class WoodcuttingTreesOverlay extends Overlay
 				}
 			}
 		}
+
+		if (! plugin.getFlowers().isEmpty() && config.highlightFlowers()) {
+			plugin.getFlowers().forEach((npc, state) -> {
+				Shape convexHull = npc.getConvexHull();
+				Color color = determineFlowerState(npc, state);
+
+				OverlayUtil.renderPolygon(graphics, convexHull, color);
+			});
+		}
+	}
+
+	private Color determineFlowerState(NPC npc, Integer state) {
+		if (state == -1) {
+			return FLOWERING_TREE_INACTIVE;
+		}
+
+		if (state == 0 && plugin.isHasMatchingFlowerPair()) {
+			return FLOWERING_TREE_INACTIVE;
+		}
+
+		if (state == 1 && npc.equals(plugin.getLastSourceFlowerBush())) {
+			return FLOWERING_TREE_SOURCE;
+		}
+
+		if (state == 1) {
+			return FLOWERING_TREE_TARGET;
+		}
+
+		return FLOWERING_TREE_UNKNOWN;
 	}
 
 	private void renderAxes(Graphics2D graphics)
