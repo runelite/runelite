@@ -29,12 +29,14 @@ package net.runelite.client.plugins.woodcutting;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Polygon;
 import java.awt.Shape;
 import java.time.Instant;
 import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
+import net.runelite.api.NPC;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Perspective;
@@ -78,18 +80,15 @@ class WoodcuttingTreesOverlay extends Overlay
 	{
 		renderAxes(graphics);
 		renderTimers(graphics);
-		renderForestryEvents(graphics);
+		renderForestryRoots(graphics);
+		renderForestrySapling(graphics);
+		renderForestryFlowers(graphics);
 		return null;
 	}
 
-	private void renderForestryEvents(Graphics2D graphics)
+	private void renderForestryRoots(Graphics2D graphics)
 	{
-		if (plugin.getSession() == null)
-		{
-			return;
-		}
-
-		if (config.highlightGlowingRoots())
+		if (!plugin.getRoots().isEmpty() && config.highlightGlowingRoots())
 		{
 			for (GameObject treeRoot : plugin.getRoots())
 			{
@@ -111,7 +110,10 @@ class WoodcuttingTreesOverlay extends Overlay
 				graphics.fill(clickbox);
 			}
 		}
+	}
 
+	private void renderForestrySapling(Graphics2D graphics)
+	{
 		if (!plugin.getSaplingIngredients().isEmpty() && config.highlightMulch())
 		{
 			var order = plugin.getSaplingOrder();
@@ -191,6 +193,27 @@ class WoodcuttingTreesOverlay extends Overlay
 				if (textLocation != null)
 				{
 					OverlayUtil.renderTextLocation(graphics, textLocation, text, Color.WHITE);
+				}
+			}
+		}
+	}
+
+	private void renderForestryFlowers(Graphics2D graphics)
+	{
+		if (!plugin.getFlowers().isEmpty() && config.highlightFlowers())
+		{
+			var activeFlowers = plugin.getActiveFlowers();
+			for (NPC flower : plugin.getFlowers())
+			{
+				if (activeFlowers.size() == 2 && !activeFlowers.contains(flower))
+				{
+					continue;
+				}
+
+				Polygon poly = flower.getCanvasTilePoly();
+				if (poly != null)
+				{
+					OverlayUtil.renderPolygon(graphics, poly, Color.YELLOW);
 				}
 			}
 		}

@@ -39,13 +39,13 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
-import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
@@ -54,6 +54,7 @@ import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
@@ -109,9 +110,14 @@ public class WoodcuttingPlugin extends Plugin
 	@Getter
 	private final Set<GameObject> treeObjects = new HashSet<>();
 
+	// Forestry
 	@Getter(AccessLevel.PACKAGE)
 	private final List<GameObject> roots = new ArrayList<>();
+	@Getter(AccessLevel.PACKAGE)
 	private final List<NPC> flowers = new ArrayList<>();
+	private NPC lastInteractFlower;
+	@Getter(AccessLevel.PACKAGE)
+	private final List<NPC> activeFlowers = new ArrayList<>(2);
 	@Getter(AccessLevel.PACKAGE)
 	private final List<GameObject> saplingIngredients = new ArrayList<>(5);
 	@Getter(AccessLevel.PACKAGE)
@@ -185,7 +191,9 @@ public class WoodcuttingPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getType() != ChatMessageType.SPAM && event.getType() != ChatMessageType.GAMEMESSAGE)
+		if (event.getType() != ChatMessageType.SPAM
+			&& event.getType() != ChatMessageType.GAMEMESSAGE
+			&& event.getType() != ChatMessageType.MESBOX)
 		{
 			return;
 		}
@@ -231,6 +239,17 @@ public class WoodcuttingPlugin extends Plugin
 			}
 
 			saplingOrder[ingredientNum - 1] = ingredientObj;
+		}
+
+		if (msg.equals("There are no open, unpollinated flowers on this bush yet.")
+			|| msg.equals("The flowers on this bush have not yet opened enough to harvest pollen.")
+			|| msg.equals("<col=06600c>The bush is already fruiting and won't benefit from <col=06600c>any more pollen.</col>"))
+		{
+			if (activeFlowers.contains(lastInteractFlower))
+			{
+				log.debug("Flowers reset");
+				activeFlowers.clear();
+			}
 		}
 	}
 
@@ -362,18 +381,31 @@ public class WoodcuttingPlugin extends Plugin
 	@Subscribe
 	public void onAnimationChanged(final AnimationChanged event)
 	{
-		Player local = client.getLocalPlayer();
-
-		if (event.getActor() != local)
+		var actor = event.getActor();
+		if (client.getLocalPlayer() == actor)
 		{
-			return;
+			int animId = actor.getAnimation();
+			Axe axe = Axe.findAxeByAnimId(animId);
+			if (axe != null)
+			{
+				this.axe = axe;
+			}
 		}
 
-		int animId = local.getAnimation();
-		Axe axe = Axe.findAxeByAnimId(animId);
-		if (axe != null)
+		if (actor.getAnimation() == AnimationID.LOOKING_INTO && flowers.contains(actor.getInteracting()))
 		{
-			this.axe = axe;
+			var flower = (NPC) actor.getInteracting();
+			if (!activeFlowers.contains(flower))
+			{
+				if (activeFlowers.size() == 2)
+				{
+					log.debug("Flowers reset");
+					activeFlowers.clear();
+				}
+
+				log.debug("Tracked flower {}", flower);
+				activeFlowers.add(flower);
+			}
 		}
 	}
 
@@ -400,6 +432,29 @@ public class WoodcuttingPlugin extends Plugin
 	public void onNpcDespawned(NpcDespawned event)
 	{
 		NPC npc = event.getNpc();
-		flowers.remove(npc);
+		if (flowers.remove(npc))
+		{
+			if (activeFlowers.remove(npc))
+			{
+				activeFlowers.clear();
+			}
+			if (npc == lastInteractFlower)
+			{
+				lastInteractFlower = null;
+			}
+		}
+	}
+
+	@Subscribe
+	public void onInteractingChanged(InteractingChanged event)
+	{
+		if (event.getSource() != client.getLocalPlayer()
+			|| !(event.getTarget() instanceof NPC)
+			|| ((NPC) event.getTarget()).getId() != NpcID.FLOWERING_BUSH)
+		{
+			return;
+		}
+
+		lastInteractFlower = (NPC) event.getTarget();
 	}
 }

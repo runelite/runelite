@@ -179,4 +179,16 @@ public interface WoodcuttingConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		position = 22,
+		keyName = "highlightFlowers",
+		name = "Highlight flowers",
+		description = "Highlights flowers during Flowering Tree events",
+		section = forestrySection
+	)
+	default boolean highlightFlowers()
+	{
+		return true;
+	}
 }
