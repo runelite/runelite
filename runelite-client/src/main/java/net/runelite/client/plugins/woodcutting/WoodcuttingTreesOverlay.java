@@ -206,6 +206,10 @@ class WoodcuttingTreesOverlay extends Overlay
 				Shape convexHull = npc.getConvexHull();
 				Color color = determineFlowerState(npc, state);
 
+				if (color == FLOWERING_TREE_INACTIVE) {
+					return;
+				}
+
 				OverlayUtil.renderPolygon(graphics, convexHull, color);
 			});
 		}

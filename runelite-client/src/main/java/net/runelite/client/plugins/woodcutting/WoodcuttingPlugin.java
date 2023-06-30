@@ -437,6 +437,10 @@ public class WoodcuttingPlugin extends Plugin
 
 	@Subscribe
 	private void onItemContainerChanged(final ItemContainerChanged event) {
+		if (lastInteractedFlowerBush == null) {
+			return;
+		}
+
 		if (event.getContainerId() != InventoryID.INVENTORY.getId()) {
 			return;
 		}
@@ -506,9 +510,9 @@ public class WoodcuttingPlugin extends Plugin
 	private void resetPreviouslyInvalidFlowers()
 	{
 		this.flowers.entrySet()
-				.stream()
-				.filter(entry -> entry.getValue() == -1)
-				.forEach(entry -> entry.setValue(0));
+			.stream()
+			.filter(entry -> entry.getValue() == -1)
+			.forEach(entry -> entry.setValue(0));
 	}
 
 	private void checkLastFlowerBushState(NPC npc)
