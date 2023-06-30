@@ -130,7 +130,6 @@ public class WoodcuttingPlugin extends Plugin
 
 	@Getter(AccessLevel.PACKAGE)
 	private final Set<NPC> bushes = new HashSet<>();
-	private NPC lastBushPollinated;
 	private boolean sentBushNotification; // Workaround
 
 	@Getter(AccessLevel.PACKAGE)
@@ -166,7 +165,6 @@ public class WoodcuttingPlugin extends Plugin
 		bushes.clear();
 		treeMap.clear();
 		playerMap.clear();
-		saplingIngredients.clear();
 		session = null;
 		axe = null;
 		clueTierSpawned = null;
@@ -297,10 +295,6 @@ public class WoodcuttingPlugin extends Plugin
 				{
 					notifier.notify("A Rising Roots Forestry event spawned!");
 				}
-				if (gameObject.getId() == ObjectID.TREE_ROOTS_47483)
-				{
-					client.setHintArrow(gameObject.getLocalLocation());
-				}
 
 				roots.add(gameObject);
 				break;
@@ -324,10 +318,6 @@ public class WoodcuttingPlugin extends Plugin
 			case ObjectID.SPLINTERED_BARK:
 				saplingIngredients.add(gameObject);
 				break;
-			case ObjectID.THRIVING_SAPLING:
-			case ObjectID.THRIVING_SAPLING_47489:
-			case ObjectID.THRIVING_SAPLING_47492:
-				client.clearHintArrow();
 		}
 	}
 
@@ -364,10 +354,8 @@ public class WoodcuttingPlugin extends Plugin
 
 		switch (object.getId())
 		{
-			case ObjectID.TREE_ROOTS_47483:
-				// Glowing tree root despawned
-				client.clearHintArrow();
 			case ObjectID.TREE_ROOTS:
+			case ObjectID.TREE_ROOTS_47483:
 				roots.remove(object);
 				break;
 			case ObjectID.ROTTING_LEAVES:
@@ -381,7 +369,6 @@ public class WoodcuttingPlugin extends Plugin
 				if (saplingIngredients.isEmpty())
 				{
 					Arrays.fill(saplingOrder, null);
-					client.clearHintArrow();
 					log.debug("Struggling Sapling event is over");
 				}
 				break;
@@ -404,7 +391,6 @@ public class WoodcuttingPlugin extends Plugin
 				playerMap.clear();
 				bushes.clear();
 				saplingIngredients.clear();
-				client.clearHintArrow();
 				sentBushNotification = false;
 				break;
 			case LOGGED_IN:
@@ -443,27 +429,10 @@ public class WoodcuttingPlugin extends Plugin
 				if (bushes.size() == 2 && !bushes.contains(event.getActor().getInteracting()))
 				{
 					bushes.clear();
-					client.clearHintArrow();
 				}
 				else if (bushes.size() < 2 && !bushes.contains(event.getActor().getInteracting()))
 				{
 					bushes.add((NPC) event.getActor().getInteracting());
-					if (bushes.size() == 1)
-					{
-						client.setHintArrow((NPC) event.getActor().getInteracting());
-					}
-				}
-				if (player == client.getLocalPlayer())
-				{
-					lastBushPollinated = (NPC) event.getActor().getInteracting();
-					if (bushes.size() > 0)
-					{
-						NPC nextBush = bushes.stream().filter(npc -> npc != lastBushPollinated).findFirst().orElse(null);
-						if (nextBush != null)
-						{
-							client.setHintArrow(nextBush.getLocalLocation());
-						}
-					}
 				}
 			}
 			else if (player.getAnimation() == -1)
@@ -484,9 +453,6 @@ public class WoodcuttingPlugin extends Plugin
 			{
 				if (foundIngredientOrder())
 				{
-					// First three steps are okay and we want to render the hint arrow above the sapling ingredients
-					// The fourth step is adding it to the sapling's mulch, so for now we don't need a hint arrow for it
-					client.setHintArrow(saplingOrder[saplingIngredientsStage++].getLocalLocation());
 					if (saplingIngredientsStage == 3)
 					{
 						saplingIngredientsStage = 0;
@@ -525,7 +491,6 @@ public class WoodcuttingPlugin extends Plugin
 		else if (npc.getId() == NpcID.WOODCUTTING_LEPRECHAUN && config.forestryLeprechaunNotification())
 		{
 			notifier.notify("A Leprechaun event spawned!");
-			client.setHintArrow(npc);
 		}
 	}
 
@@ -537,12 +502,9 @@ public class WoodcuttingPlugin extends Plugin
 		switch (npc.getId())
 		{
 			case NpcID.WOODCUTTING_LEPRECHAUN:
-				client.clearHintArrow();
 				break;
 			case NpcID.FRIENDLY_BEES:
 				bushes.clear();
-				client.clearHintArrow();
-				lastBushPollinated = null;
 				sentBushNotification = false;
 				break;
 		}
@@ -559,7 +521,6 @@ public class WoodcuttingPlugin extends Plugin
 		if (event.getOld().getId() == NpcID.FLOWERING_BUSH)
 		{
 			bushes.clear();
-			client.clearHintArrow();
 		}
 	}
 
