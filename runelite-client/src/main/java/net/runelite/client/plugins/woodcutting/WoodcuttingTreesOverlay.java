@@ -26,6 +26,7 @@
  */
 package net.runelite.client.plugins.woodcutting;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -53,11 +54,12 @@ import net.runelite.client.util.ColorUtil;
 
 class WoodcuttingTreesOverlay extends Overlay
 {
-	private static final Color ROTTING_LEAVES = new Color(179, 0, 0);
-	private static final Color GREEN_LEAVES = new Color(0, 179, 0);
-	private static final Color DROPPINGS = new Color(120, 88, 76);
-	private static final Color WILD_MUSHROOMS = new Color(220, 220, 220);
-	private static final Color SPLINTERED_BARK = new Color(0, 0, 179);
+	private static final Color ROTTING_LEAVES_COLOR = new Color(179, 0, 0);
+	private static final Color GREEN_LEAVES_COLOR = new Color(0, 179, 0);
+	private static final Color DROPPINGS_COLOR = new Color(120, 88, 76);
+	private static final Color WILD_MUSHROOMS_COLOR = new Color(220, 220, 220);
+	private static final Color SPLINTERED_BARK_COLOR = new Color(0, 0, 179);
+	private static final Color LEPRECHAUN_COLOR = new Color(169, 219, 134);
 
 	private final Client client;
 	private final WoodcuttingConfig config;
@@ -80,7 +82,10 @@ class WoodcuttingTreesOverlay extends Overlay
 	{
 		renderAxes(graphics);
 		renderTimers(graphics);
-		renderGrouping(graphics);
+		if (config.showChoppingCount())
+		{
+			renderGrouping(graphics);
+		}
 		renderForestryEvents(graphics);
 		return null;
 	}
@@ -127,25 +132,25 @@ class WoodcuttingTreesOverlay extends Overlay
 				{
 					case ObjectID.ROTTING_LEAVES:
 						letter = 'R';
-						color = ROTTING_LEAVES;
+						color = ROTTING_LEAVES_COLOR;
 						break;
 					case ObjectID.GREEN_LEAVES:
 						letter = 'G';
-						color = GREEN_LEAVES;
+						color = GREEN_LEAVES_COLOR;
 						break;
 					case ObjectID.DROPPINGS:
 						letter = 'D';
-						color = DROPPINGS;
+						color = DROPPINGS_COLOR;
 						break;
 					case ObjectID.WILD_MUSHROOMS:
 					case ObjectID.WILD_MUSHROOMS_47497:
 					case ObjectID.WILD_MUSHROOMS_47498:
 						letter = 'M';
-						color = WILD_MUSHROOMS;
+						color = WILD_MUSHROOMS_COLOR;
 						break;
 					case ObjectID.SPLINTERED_BARK:
 						letter = 'B';
-						color = SPLINTERED_BARK;
+						color = SPLINTERED_BARK_COLOR;
 						break;
 					default:
 						continue;
@@ -193,6 +198,21 @@ class WoodcuttingTreesOverlay extends Overlay
 					OverlayUtil.renderTextLocation(graphics, textLocation, text, Color.WHITE);
 				}
 			}
+		}
+
+		if (config.highlightLeprechaun() && plugin.getLeprechaun() != null)
+		{
+			Shape convexHull = plugin.getLeprechaun().getConvexHull();
+			if (convexHull == null)
+			{
+				return;
+			}
+
+			graphics.setColor(LEPRECHAUN_COLOR);
+			graphics.setStroke(new BasicStroke(2));
+			graphics.draw(convexHull);
+			graphics.setColor(ColorUtil.colorWithAlpha(LEPRECHAUN_COLOR, LEPRECHAUN_COLOR.getAlpha() / 5));
+			graphics.fill(convexHull);
 		}
 	}
 

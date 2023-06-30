@@ -52,6 +52,7 @@ import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
+import net.runelite.api.coords.Angle;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
@@ -133,6 +134,9 @@ public class WoodcuttingPlugin extends Plugin
 	private boolean sentBushNotification; // Workaround
 
 	@Getter(AccessLevel.PACKAGE)
+	private NPC leprechaun;
+
+	@Getter(AccessLevel.PACKAGE)
 	private final List<TreeRespawn> respawns = new ArrayList<>();
 	private boolean recentlyLoggedIn;
 	private int previousPlane;
@@ -165,6 +169,7 @@ public class WoodcuttingPlugin extends Plugin
 		bushes.clear();
 		treeMap.clear();
 		playerMap.clear();
+		leprechaun = null;
 		session = null;
 		axe = null;
 		clueTierSpawned = null;
@@ -182,6 +187,7 @@ public class WoodcuttingPlugin extends Plugin
 			treeMap.replaceAll((k, v) -> 0);
 			playerMap.clear();
 			bushes.clear();
+			leprechaun = null;
 			previousPlane = currentPlane;
 		}
 
@@ -392,6 +398,7 @@ public class WoodcuttingPlugin extends Plugin
 				bushes.clear();
 				saplingIngredients.clear();
 				sentBushNotification = false;
+				leprechaun = null;
 				break;
 			case LOGGED_IN:
 				// After login trees that are depleted will be changed,
@@ -488,9 +495,13 @@ public class WoodcuttingPlugin extends Plugin
 				sentBushNotification = true;
 			}
 		}
-		else if (npc.getId() == NpcID.WOODCUTTING_LEPRECHAUN && config.forestryLeprechaunNotification())
+		else if (npc.getId() == NpcID.WOODCUTTING_LEPRECHAUN)
 		{
-			notifier.notify("A Leprechaun event spawned!");
+			leprechaun = npc;
+			if (config.forestryLeprechaunNotification())
+			{
+				notifier.notify("A Leprechaun event spawned!");
+			}
 		}
 	}
 
@@ -502,6 +513,7 @@ public class WoodcuttingPlugin extends Plugin
 		switch (npc.getId())
 		{
 			case NpcID.WOODCUTTING_LEPRECHAUN:
+				leprechaun = null;
 				break;
 			case NpcID.FRIENDLY_BEES:
 				bushes.clear();
@@ -520,7 +532,7 @@ public class WoodcuttingPlugin extends Plugin
 	{
 		if (event.getOld().getId() == NpcID.FLOWERING_BUSH)
 		{
-			bushes.clear();
+//			bushes.clear();
 		}
 	}
 
@@ -575,15 +587,15 @@ public class WoodcuttingPlugin extends Plugin
 			{
 				GameObject tree = entry.getKey();
 				WorldPoint treeLocation = tree.getWorldLocation();
-				switch (findClosestDirection(orientation))
+				switch (new Angle(orientation).getNearestDirection())
 				{
-					case 'N': // North, filter out trees that are not north of us
+					case NORTH: // North, filter out trees that are not north of us
 						return treeLocation.getY() > actorLocation.getY();
-					case 'E': // East, filter out trees that are not east of us
+					case EAST: // East, filter out trees that are not east of us
 						return treeLocation.getX() > actorLocation.getX();
-					case 'S': // South, filter out trees that are not south of us
+					case SOUTH: // South, filter out trees that are not south of us
 						return treeLocation.getY() < actorLocation.getY();
-					case 'W': // West, filter out trees that are not west of us
+					case WEST: // West, filter out trees that are not west of us
 						return treeLocation.getX() < actorLocation.getX();
 				}
 				log.debug("Orientation {} not found", orientation);
@@ -609,31 +621,6 @@ public class WoodcuttingPlugin extends Plugin
 		{
 			log.debug("No closest tree found");
 			return null;
-		}
-	}
-
-	private char findClosestDirection(int orientation)
-	{
-		// Orientation: N=1024, E=1536, S=0, W=512, where we would filter tile loc N = y+1, E= x+1, S=y-1, W=x-1
-		if (orientation >= 768 && orientation < 1280)
-		{
-			return 'N';
-		}
-		else if (orientation >= 1280 && orientation < 1792)
-		{
-			return 'E';
-		}
-		else if (orientation >= 1792 || orientation < 256)
-		{
-			return 'S';
-		}
-		else if (orientation >= 256 && orientation < 768)
-		{
-			return 'W';
-		}
-		else
-		{
-			return 'X';
 		}
 	}
 
