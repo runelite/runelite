@@ -61,7 +61,6 @@ import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemSpawned;
-import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.PlayerDespawned;
@@ -524,15 +523,6 @@ public class WoodcuttingPlugin extends Plugin
 		if (bushes.contains(event.getNpc()))
 		{
 			bushes.remove(event.getNpc());
-		}
-	}
-
-	@Subscribe
-	public void onNpcChanged(final NpcChanged event)
-	{
-		if (event.getOld().getId() == NpcID.FLOWERING_BUSH)
-		{
-//			bushes.clear();
 		}
 	}
 
