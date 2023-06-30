@@ -86,11 +86,6 @@ class WoodcuttingTreesOverlay extends Overlay
 
 	private void renderForestryEvents(Graphics2D graphics)
 	{
-		if (plugin.getSession() == null)
-		{
-			return;
-		}
-
 		renderGrouping(graphics);
 		renderBushes(graphics);
 
