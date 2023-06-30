@@ -24,7 +24,6 @@
  */
 package net.runelite.client.plugins.woodcutting;
 
-import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
@@ -117,8 +116,8 @@ public class WoodcuttingPlugin extends Plugin
 
 	@Getter
 	private final Set<GameObject> treeObjects = new HashSet<>();
-	@Getter
-	private final Map<GameObject, Set<Player>> treeMap = new HashMap<>();
+	@Getter(AccessLevel.PACKAGE)
+	private final Map<GameObject, Integer> treeMap = new HashMap<>();
 	private final Map<Player, GameObject> playerMap = new HashMap<>();
 
 	@Getter(AccessLevel.PACKAGE)
@@ -129,7 +128,7 @@ public class WoodcuttingPlugin extends Plugin
 	private final GameObject[] saplingOrder = new GameObject[3];
 	private int saplingIngredientsStage;
 
-	@Getter
+	@Getter(AccessLevel.PACKAGE)
 	private final Set<NPC> bushes = new HashSet<>();
 	private NPC lastBushPollinated;
 	private boolean sentBushNotification; // Workaround
@@ -182,7 +181,7 @@ public class WoodcuttingPlugin extends Plugin
 		if (previousPlane != currentPlane)
 		{
 			// Only clear values because sometimes the trees are still there when changing planes (Top of Seer's Bank)
-			treeMap.values().stream().forEach(Set::clear);
+			treeMap.replaceAll((k, v) -> 0);
 			playerMap.clear();
 			bushes.clear();
 			previousPlane = currentPlane;
@@ -282,7 +281,7 @@ public class WoodcuttingPlugin extends Plugin
 		if (tree != null)
 		{
 			log.debug("Tree {} spawned at {}", tree, gameObject.getLocalLocation());
-			treeMap.put(gameObject, new HashSet<>());
+			treeMap.put(gameObject, 0);
 		}
 
 		if (tree == Tree.REDWOOD)
@@ -435,8 +434,7 @@ public class WoodcuttingPlugin extends Plugin
 					return;
 				}
 				playerMap.put(player, closestTree);
-				Set<Player> choppers = treeMap.getOrDefault(closestTree, ImmutableSet.of());
-				choppers.add(player);
+				int choppers = treeMap.getOrDefault(closestTree, 0) + 1;
 				treeMap.put(closestTree, choppers);
 //				log.debug("There is now {} people chopping {}", choppers.size(), closestTree);
 			}
@@ -476,8 +474,7 @@ public class WoodcuttingPlugin extends Plugin
 					playerMap.remove(player);
 					if (treeMap.containsKey(tree))
 					{
-						Set<Player> choppers = treeMap.getOrDefault(tree, ImmutableSet.of());
-						choppers.remove(player);
+						int choppers = treeMap.getOrDefault(tree, 1) - 1;
 						treeMap.put(tree, choppers);
 //						log.debug("There is now {} people chopping {}", choppers.size(), tree);
 					}
@@ -575,8 +572,7 @@ public class WoodcuttingPlugin extends Plugin
 			playerMap.remove(event.getPlayer());
 			if (treeMap.containsKey(tree))
 			{
-				Set<Player> choppers = treeMap.getOrDefault(tree, ImmutableSet.of());
-				choppers.remove(event.getPlayer());
+				int choppers = treeMap.getOrDefault(tree, 1) - 1;
 				treeMap.put(tree, choppers);
 			}
 		}
@@ -597,8 +593,7 @@ public class WoodcuttingPlugin extends Plugin
 				return;
 			}
 			playerMap.put(player, closestTree);
-			Set<Player> choppers = treeMap.getOrDefault(closestTree, ImmutableSet.of());
-			choppers.add(player);
+			int choppers = treeMap.getOrDefault(closestTree, 0) + 1;
 			treeMap.put(closestTree, choppers);
 //				log.debug("There is now {} people chopping {}", choppers.size(), closestTree);
 		}
@@ -615,7 +610,7 @@ public class WoodcuttingPlugin extends Plugin
 		// Orientation: N=1024, E=1536, S=0, W=512, where we would filter tile loc N = y+1, E= x+1, S=y-1, W=x-1
 		int orientation = actor.getCurrentOrientation();
 		WorldPoint actorLocation = actor.getWorldLocation();
-		Optional<Map.Entry<GameObject, Set<Player>>> closestTreeEntry = treeMap.entrySet().stream().filter((entry) ->
+		Optional<Map.Entry<GameObject, Integer>> closestTreeEntry = treeMap.entrySet().stream().filter((entry) ->
 			{
 				GameObject tree = entry.getKey();
 				WorldPoint treeLocation = tree.getWorldLocation();

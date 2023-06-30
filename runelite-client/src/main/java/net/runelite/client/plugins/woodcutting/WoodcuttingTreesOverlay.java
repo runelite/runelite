@@ -33,7 +33,6 @@ import java.awt.Shape;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import javax.inject.Inject;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
@@ -41,7 +40,6 @@ import net.runelite.api.GameObject;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Perspective;
-import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.game.ItemManager;
@@ -275,12 +273,12 @@ class WoodcuttingTreesOverlay extends Overlay
 			return;
 		}
 
-		for (Map.Entry<GameObject, Set<Player>> treeEntry : plugin.getTreeMap().entrySet())
+		for (Map.Entry<GameObject, Integer> treeEntry : plugin.getTreeMap().entrySet())
 		{
-			if (!treeEntry.getValue().isEmpty())
+			int choppers = treeEntry.getValue();
+			if (choppers > 0)
 			{
-				Point point = Perspective.getCanvasTextLocation(client, graphics, treeEntry.getKey().getLocalLocation(), String.valueOf(treeEntry.getValue().size()), 0);
-				int choppers = treeEntry.getValue().size();
+				Point point = Perspective.getCanvasTextLocation(client, graphics, treeEntry.getKey().getLocalLocation(), String.valueOf(choppers), 0);
 				Color color;
 				if (choppers >= 10)
 				{
@@ -298,8 +296,8 @@ class WoodcuttingTreesOverlay extends Overlay
 				{
 					color = Color.RED;
 				}
-				OverlayUtil.renderTextLocation(graphics, point, String.valueOf(treeEntry.getValue().size()), color);
-//				OverlayUtil.renderTileOverlay(graphics, treeEntry.getKey(), String.valueOf(treeEntry.getValue().size()), color);
+				OverlayUtil.renderTextLocation(graphics, point, String.valueOf(choppers), color);
+//				OverlayUtil.renderTileOverlay(graphics, treeEntry.getKey(), String.valueOf(choppers), color);
 			}
 		}
 	}
