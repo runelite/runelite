@@ -428,7 +428,6 @@ public class WoodcuttingPlugin extends Plugin
 				playerMap.put(player, closestTree);
 				int choppers = treeMap.getOrDefault(closestTree, 0) + 1;
 				treeMap.put(closestTree, choppers);
-//				log.debug("There is now {} people chopping {}", choppers.size(), closestTree);
 			}
 			else if (player.getAnimation() == AnimationID.LOOKING_INTO && event.getActor().getInteracting() != null)
 			{
@@ -451,7 +450,6 @@ public class WoodcuttingPlugin extends Plugin
 					{
 						int choppers = treeMap.getOrDefault(tree, 1) - 1;
 						treeMap.put(tree, choppers);
-//						log.debug("There is now {} people chopping {}", choppers.size(), tree);
 					}
 				}
 			}
@@ -544,7 +542,6 @@ public class WoodcuttingPlugin extends Plugin
 	@Subscribe
 	public void onPlayerSpawned(final PlayerSpawned event)
 	{
-//		log.debug("Tree map size: {}", treeMap.size());
 		Player player = event.getPlayer();
 		if (isWoodcutting(player) && !treeMap.isEmpty())
 		{
@@ -558,7 +555,6 @@ public class WoodcuttingPlugin extends Plugin
 			playerMap.put(player, closestTree);
 			int choppers = treeMap.getOrDefault(closestTree, 0) + 1;
 			treeMap.put(closestTree, choppers);
-//				log.debug("There is now {} people chopping {}", choppers.size(), closestTree);
 		}
 	}
 
@@ -604,7 +600,6 @@ public class WoodcuttingPlugin extends Plugin
 
 		if (closestTreeEntry.isPresent())
 		{
-//			log.debug("Closest tree is {}", closestTreeEntry.get().getKey().getWorldLocation());
 			return closestTreeEntry.get().getKey();
 		}
 		else

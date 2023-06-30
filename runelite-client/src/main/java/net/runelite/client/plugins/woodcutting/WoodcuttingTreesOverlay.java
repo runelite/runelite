@@ -311,7 +311,6 @@ class WoodcuttingTreesOverlay extends Overlay
 					color = Color.RED;
 				}
 				OverlayUtil.renderTextLocation(graphics, point, String.valueOf(choppers), color);
-//				OverlayUtil.renderTileOverlay(graphics, treeEntry.getKey(), String.valueOf(choppers), color);
 			}
 		}
 	}
