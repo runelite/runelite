@@ -80,13 +80,13 @@ class WoodcuttingTreesOverlay extends Overlay
 	{
 		renderAxes(graphics);
 		renderTimers(graphics);
+		renderGrouping(graphics);
 		renderForestryEvents(graphics);
 		return null;
 	}
 
 	private void renderForestryEvents(Graphics2D graphics)
 	{
-		renderGrouping(graphics);
 		renderBushes(graphics);
 
 		if (config.highlightGlowingRoots())
@@ -263,17 +263,16 @@ class WoodcuttingTreesOverlay extends Overlay
 
 	private void renderGrouping(Graphics2D graphics)
 	{
-		if (plugin.getTreeMap() == null || plugin.getTreeMap().isEmpty())
-		{
-			return;
-		}
-
 		for (Map.Entry<GameObject, Integer> treeEntry : plugin.getTreeMap().entrySet())
 		{
 			int choppers = treeEntry.getValue();
 			if (choppers > 0)
 			{
 				Point point = Perspective.getCanvasTextLocation(client, graphics, treeEntry.getKey().getLocalLocation(), String.valueOf(choppers), 0);
+				if (point == null)
+				{
+					return;
+				}
 				Color color;
 				if (choppers >= 10)
 				{
