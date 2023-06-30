@@ -59,7 +59,6 @@ class WoodcuttingTreesOverlay extends Overlay
 	private static final Color SPLINTERED_BARK = new Color(0, 0, 179);
 
 	private static final Color FLOWERING_TREE_UNKNOWN = new Color(255, 170, 0);
-	private static final Color FLOWERING_TREE_INACTIVE = new Color(60, 48, 48);
 	private static final Color FLOWERING_TREE_SOURCE = new Color(0, 255, 255);
 	private static final Color FLOWERING_TREE_TARGET = new Color(0, 255, 0);
 
@@ -203,32 +202,31 @@ class WoodcuttingTreesOverlay extends Overlay
 
 		if (! plugin.getFlowers().isEmpty() && config.highlightFlowers()) {
 			plugin.getFlowers().forEach((npc, state) -> {
-				Shape convexHull = npc.getConvexHull();
 				Color color = determineFlowerState(npc, state);
-
-				if (color == FLOWERING_TREE_INACTIVE) {
+				if (color == null) {
 					return;
 				}
 
+				Shape convexHull = npc.getConvexHull();
 				OverlayUtil.renderPolygon(graphics, convexHull, color);
 			});
 		}
 	}
 
-	private Color determineFlowerState(NPC npc, Integer state) {
-		if (state == -1) {
-			return FLOWERING_TREE_INACTIVE;
+	private Color determineFlowerState(NPC npc, FloweringBushState state) {
+		if (state == FloweringBushState.INVALID) {
+			return null;
 		}
 
-		if (state == 0 && plugin.isHasMatchingFlowerPair()) {
-			return FLOWERING_TREE_INACTIVE;
+		if (state == FloweringBushState.UNKNOWN && plugin.isHasMatchingFlowerPair()) {
+			return null;
 		}
 
-		if (state == 1 && npc.equals(plugin.getLastSourceFlowerBush())) {
+		if (state == FloweringBushState.ACTIVE && npc.equals(plugin.getLastSourceFlowerBush())) {
 			return FLOWERING_TREE_SOURCE;
 		}
 
-		if (state == 1) {
+		if (state == FloweringBushState.ACTIVE) {
 			return FLOWERING_TREE_TARGET;
 		}
 

@@ -122,7 +122,7 @@ public class WoodcuttingPlugin extends Plugin
 	private final List<GameObject> roots = new ArrayList<>();
 
 	@Getter(AccessLevel.PACKAGE)
-	private final HashMap<NPC, Integer> flowers = new HashMap<>();
+	private final HashMap<NPC, FloweringBushState> flowers = new HashMap<>();
 	@Getter(AccessLevel.PACKAGE)
 	private boolean hasMatchingFlowerPair = false;
 	private NPC lastInteractedFlowerBush = null;
@@ -212,13 +212,13 @@ public class WoodcuttingPlugin extends Plugin
 			return;
 		}
 
-		this.flowers.put(lastInteractedFlowerBush, -1);
+		this.flowers.put(lastInteractedFlowerBush, FloweringBushState.INVALID);
 		revalidateMatchingFlowerPairs();
 	}
 
 	private void revalidateMatchingFlowerPairs()
 	{
-		this.hasMatchingFlowerPair = flowers.values().stream().filter(value -> value == 1).count() == 2;
+		this.hasMatchingFlowerPair = flowers.values().stream().filter(FloweringBushState.ACTIVE::equals).count() == 2;
 	}
 
 	@Subscribe
@@ -454,7 +454,7 @@ public class WoodcuttingPlugin extends Plugin
 		// If we either already have pollen, or didn't have them before, we'll reach this point.
 		// Meaning, if we didn't have pollen in the past, and now we do, we've obtained pollen.
 		if (! hasObtainedPollen) {
-			this.flowers.put(lastInteractedFlowerBush, 1);
+			this.flowers.put(lastInteractedFlowerBush, FloweringBushState.ACTIVE);
 			this.lastSourceFlowerBush = lastInteractedFlowerBush;
 			revalidateMatchingFlowerPairs();
 			hasObtainedPollen = true;
@@ -473,7 +473,7 @@ public class WoodcuttingPlugin extends Plugin
 				notifier.notify("A Flowering Tree Forestry event spawned!");
 			}
 
-			flowers.put(npc, 0);
+			flowers.put(npc, FloweringBushState.UNKNOWN);
 		}
 		else if (npc.getId() == NpcID.WOODCUTTING_LEPRECHAUN && config.forestryLeprechaunNotification())
 		{
@@ -511,8 +511,8 @@ public class WoodcuttingPlugin extends Plugin
 	{
 		this.flowers.entrySet()
 			.stream()
-			.filter(entry -> entry.getValue() == -1)
-			.forEach(entry -> entry.setValue(0));
+			.filter(entry -> entry.getValue() == FloweringBushState.INVALID)
+			.forEach(entry -> entry.setValue(FloweringBushState.UNKNOWN));
 	}
 
 	private void checkLastFlowerBushState(NPC npc)
