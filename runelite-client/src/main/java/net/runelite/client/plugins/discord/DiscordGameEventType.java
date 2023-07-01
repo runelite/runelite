@@ -292,6 +292,7 @@ enum DiscordGameEventType
 	MG_FISHING_TRAWLER("Fishing Trawler", DiscordAreaType.MINIGAMES, 7499),
 	MG_GAUNTLET("The Gauntlet", DiscordAreaType.MINIGAMES, 12127, 7512),
 	MG_CORRUPTED_GAUNTLET("Corrupted Gauntlet", DiscordAreaType.MINIGAMES, 7768),
+	MG_GIANTS_FOUNDRY("Giants' Foundry", DiscordAreaType.MINIGAMES, 13491),
 	MG_GUARDIANS_OF_THE_RIFT("Guardians of the Rift", DiscordAreaType.MINIGAMES, 14484),
 	MG_HALLOWED_SEPULCHRE("Hallowed Sepulchre", DiscordAreaType.MINIGAMES, 8797, 9051, 9052, 9053, 9054, 9309, 9563, 9565, 9821, 10074, 10075, 10077),
 	MG_INFERNO("The Inferno", DiscordAreaType.MINIGAMES, 9043),
