@@ -24,30 +24,42 @@
  */
 package net.runelite.client.plugins.woodcutting;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.regex.Pattern;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.AnimationID;
+import net.runelite.api.Actor;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
+import net.runelite.api.Player;
 import net.runelite.api.Point;
+import net.runelite.api.Tile;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.coords.*;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameObjectDespawned;
@@ -58,6 +70,7 @@ import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
+import net.runelite.api.events.PlayerDespawned;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -122,9 +135,11 @@ public class WoodcuttingPlugin extends Plugin
 	private final List<GameObject> saplingIngredients = new ArrayList<>(5);
 	@Getter(AccessLevel.PACKAGE)
 	private final GameObject[] saplingOrder = new GameObject[3];
-
 	@Getter(AccessLevel.PACKAGE)
 	private final List<TreeRespawn> respawns = new ArrayList<>();
+	@Getter(AccessLevel.PACKAGE)
+	private final Multimap<GameObject, Player> activeTrees = HashMultimap.create();
+
 	private boolean recentlyLoggedIn;
 	private int currentPlane;
 	private ClueNestTier clueTierSpawned;
@@ -149,6 +164,7 @@ public class WoodcuttingPlugin extends Plugin
 		overlayManager.remove(treesOverlay);
 		respawns.clear();
 		treeObjects.clear();
+		activeTrees.clear();
 		roots.clear();
 		flowers.clear();
 		saplingIngredients.clear();
@@ -166,6 +182,49 @@ public class WoodcuttingPlugin extends Plugin
 		currentPlane = client.getPlane();
 
 		respawns.removeIf(TreeRespawn::isExpired);
+
+		if (config.highlightForestryBoosts())
+		{
+			List<Map.Entry<GameObject, Player>> playersToChange = new ArrayList<>();
+			Set<GameObject> trees = new HashSet<>(activeTrees.keySet());
+			for (GameObject tree : trees)
+			{
+				Collection<Player> players = activeTrees.get(tree);
+				List<Player> playersToRemove = new ArrayList<>();
+				for (Player player : players)
+				{
+					Axe axe = Axe.findAxeByAnimId(player.getAnimation());
+					if (axe == null)
+					{
+						playersToRemove.add(player);
+						continue;
+					}
+
+					GameObject facingTree = getFacingTree(player);
+					if (facingTree == null)
+					{
+						playersToRemove.add(player);
+						continue;
+					}
+
+					if (!tree.equals(facingTree))
+					{
+						playersToChange.add(new AbstractMap.SimpleEntry<>(facingTree, player));
+						playersToRemove.add(player);
+					}
+				}
+
+				for (Player player : playersToRemove)
+				{
+					activeTrees.remove(tree, player);
+				}
+			}
+
+			for (Map.Entry<GameObject, Player> entry : playersToChange)
+			{
+				activeTrees.put(entry.getKey(), entry.getValue());
+			}
+		}
 
 		if (session == null || session.getLastChopping() == null)
 		{
@@ -329,8 +388,10 @@ public class WoodcuttingPlugin extends Plugin
 
 			if (tree == Tree.REDWOOD)
 			{
-				treeObjects.remove(event.getGameObject());
+				treeObjects.remove(object);
 			}
+
+			activeTrees.removeAll(object);
 		}
 
 		switch (object.getId())
@@ -365,6 +426,7 @@ public class WoodcuttingPlugin extends Plugin
 				respawns.clear();
 			case LOADING:
 				treeObjects.clear();
+				activeTrees.clear();
 				roots.clear();
 				saplingIngredients.clear();
 				Arrays.fill(saplingOrder, null);
@@ -381,20 +443,23 @@ public class WoodcuttingPlugin extends Plugin
 	@Subscribe
 	public void onAnimationChanged(final AnimationChanged event)
 	{
-		var actor = event.getActor();
-		if (client.getLocalPlayer() == actor)
+		Actor player = event.getActor();
+		if (!(player instanceof Player))
 		{
-			int animId = actor.getAnimation();
-			Axe axe = Axe.findAxeByAnimId(animId);
-			if (axe != null)
-			{
-				this.axe = axe;
-			}
+			return;
 		}
 
-		if (actor.getAnimation() == AnimationID.LOOKING_INTO && flowers.contains(actor.getInteracting()))
+		int animationId = player.getAnimation();
+		Axe axe = Axe.findAxeByAnimId(animationId);
+		if (client.getLocalPlayer() == player && axe != null)
 		{
-			var flower = (NPC) actor.getInteracting();
+			this.axe = axe;
+		}
+
+		Actor target = player.getInteracting();
+		if (animationId == AnimationID.LOOKING_INTO && target instanceof NPC && flowers.contains(target))
+		{
+			NPC flower = (NPC) target;
 			if (!activeFlowers.contains(flower))
 			{
 				if (activeFlowers.size() == 2)
@@ -405,6 +470,15 @@ public class WoodcuttingPlugin extends Plugin
 
 				log.debug("Tracked flower {}", flower);
 				activeFlowers.add(flower);
+			}
+		}
+
+		if (config.highlightForestryBoosts())
+		{
+			GameObject facingTree = getFacingTree((Player) player);
+			if (axe != null && facingTree != null)
+			{
+				activeTrees.put(facingTree, (Player) player);
 			}
 		}
 	}
@@ -456,5 +530,88 @@ public class WoodcuttingPlugin extends Plugin
 		}
 
 		lastInteractFlower = (NPC) event.getTarget();
+	}
+
+	@Subscribe
+	public void onPlayerDespawned(PlayerDespawned event)
+	{
+		if (config.highlightForestryBoosts())
+		{
+			Player despawnedPlayer = event.getPlayer();
+			activeTrees.entries().removeIf(entry -> entry.getValue().equals(despawnedPlayer));
+		}
+	}
+
+	private GameObject getFacingTree(Player player)
+	{
+		if (player == null || player.getName() == null)
+		{
+			return null;
+		}
+
+		Tile facingTile = getFacingTile(player);
+		if (facingTile == null)
+		{
+			return null;
+		}
+
+		return Arrays.stream(facingTile.getGameObjects())
+				.filter(Objects::nonNull)
+				.filter(gameObject -> Tree.findTree(gameObject.getId()) != null)
+				.findFirst()
+				.orElse(null);
+	}
+
+	private Tile getFacingTile(@NonNull Actor actor)
+	{
+		WorldPoint worldPoint = actor.getWorldLocation();
+		if (worldPoint == null)
+		{
+			return null;
+		}
+
+		final LocalPoint localPoint = LocalPoint.fromWorld(client, worldPoint);
+		if (localPoint == null)
+		{
+			return null;
+		}
+
+		Angle angle = new Angle(actor.getOrientation());
+		Direction facing = angle.getNearestDirection();
+
+		int dx, dy;
+		switch (facing)
+		{
+			case NORTH:
+				dx = 0;
+				dy = 1;
+				break;
+			case SOUTH:
+				dx = 0;
+				dy = -1;
+				break;
+			case EAST:
+				dx = 1;
+				dy = 0;
+				break;
+			case WEST:
+				dx = -1;
+				dy = 0;
+				break;
+			default:
+				throw new IllegalStateException();
+		}
+
+		return Optional.ofNullable(client.getScene().getTiles())
+				.flatMap(tiles -> safeArrayGet(tiles, client.getPlane()))
+				.flatMap(planeTiles -> safeArrayGet(planeTiles, localPoint.getSceneX() + dx))
+				.flatMap(rowTiles -> safeArrayGet(rowTiles, localPoint.getSceneY() + dy))
+				.stream().findFirst()
+				.orElse(null);
+	}
+
+	private <T> Optional<T> safeArrayGet(T[] array, int index)
+	{
+		return index >= 0 && index < array.length ? Optional.ofNullable(array[index]) : Optional.empty();
 	}
 }

@@ -32,7 +32,10 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Shape;
 import java.time.Instant;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
@@ -58,6 +61,7 @@ class WoodcuttingTreesOverlay extends Overlay
 	private static final Color DROPPINGS = new Color(120, 88, 76);
 	private static final Color WILD_MUSHROOMS = new Color(220, 220, 220);
 	private static final Color SPLINTERED_BARK = new Color(0, 0, 179);
+	private static final Set<Integer> WOODCUTTING_GUILD_REGION_IDS = new HashSet<>(Arrays.asList(6198, 6454));
 
 	private final Client client;
 	private final WoodcuttingConfig config;
@@ -83,7 +87,48 @@ class WoodcuttingTreesOverlay extends Overlay
 		renderForestryRoots(graphics);
 		renderForestrySapling(graphics);
 		renderForestryFlowers(graphics);
+		renderTreePlayerCount(graphics);
 		return null;
+	}
+
+	private void renderTreePlayerCount(Graphics2D graphics)
+	{
+		if (!config.highlightForestryBoosts() || plugin.getActiveTrees().isEmpty())
+		{
+			return;
+		}
+
+		graphics.setFont(FontManager.getRunescapeBoldFont().deriveFont(16f));
+
+		for (GameObject tree : plugin.getActiveTrees().keySet())
+		{
+			if (WOODCUTTING_GUILD_REGION_IDS.contains(tree.getWorldLocation().getRegionID()))
+			{
+				continue;
+			}
+
+			if (Tree.findTree(tree.getId()) == Tree.REGULAR_TREE)
+			{
+				continue;
+			}
+
+			// Chopping the same tree with other players will give you an invisible +1 Woodcutting bonus
+			// for each person at the tree, up to a maximum of +10 for 10 players.
+			int numPlayers = plugin.getActiveTrees().get(tree).size();
+
+			Polygon poly = tree.getCanvasTilePoly();
+			if (poly != null && numPlayers > 1)
+			{
+				OverlayUtil.renderPolygon(graphics, poly, numPlayers >= 10 ? Color.GREEN : Color.ORANGE);
+			}
+
+			String label = String.valueOf(numPlayers);
+			var textLocation = tree.getCanvasTextLocation(graphics, label, 0);
+			if (textLocation != null)
+			{
+				OverlayUtil.renderTextLocation(graphics, textLocation, label, Color.WHITE);
+			}
+		}
 	}
 
 	private void renderForestryRoots(Graphics2D graphics)

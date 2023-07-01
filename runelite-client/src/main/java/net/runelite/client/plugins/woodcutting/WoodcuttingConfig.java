@@ -191,4 +191,16 @@ public interface WoodcuttingConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			position = 23,
+			keyName = "highlightForestryBoosts",
+			name = "Highlight invisible boosts",
+			description = "Highlights invisible boosts during Forestry (does not apply in Woodcutting Guild).",
+			section = forestrySection
+	)
+	default boolean highlightForestryBoosts()
+	{
+		return true;
+	}
 }
