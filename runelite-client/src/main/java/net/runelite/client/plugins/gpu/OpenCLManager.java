@@ -34,7 +34,10 @@ import net.runelite.client.util.OSType;
 import net.runelite.rlawt.AWTContext;
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.opencl.APPLEGLSharing;
+import static org.lwjgl.opencl.APPLEGLSharing.CL_CGL_DEVICE_FOR_CURRENT_VIRTUAL_SCREEN_APPLE;
+import static org.lwjgl.opencl.APPLEGLSharing.clGetGLContextInfoAPPLE;
 import org.lwjgl.opencl.CL;
+import static org.lwjgl.opencl.CL10.CL_CONTEXT_PLATFORM;
 import static org.lwjgl.opencl.CL10.CL_DEVICE_EXTENSIONS;
 import static org.lwjgl.opencl.CL10.CL_DEVICE_NAME;
 import static org.lwjgl.opencl.CL10.CL_DEVICE_PROFILE;
@@ -48,7 +51,6 @@ import static org.lwjgl.opencl.CL10.CL_SUCCESS;
 import static org.lwjgl.opencl.CL10.clGetPlatformInfo;
 import static org.lwjgl.opencl.CL10.clGetProgramBuildInfo;
 import org.lwjgl.opencl.CL10GL;
-import static org.lwjgl.opencl.CL11.CL_CONTEXT_PLATFORM;
 import static org.lwjgl.opencl.CL11.CL_DEVICE_ADDRESS_BITS;
 import static org.lwjgl.opencl.CL11.CL_DEVICE_AVAILABLE;
 import static org.lwjgl.opencl.CL11.CL_DEVICE_COMPILER_AVAILABLE;
@@ -127,7 +129,15 @@ class OpenCLManager
 
 		try (var stack = MemoryStack.stackPush())
 		{
-			initContext(awtContext, stack);
+			if (OSType.getOSType() == OSType.MacOS)
+			{
+				initContextMacOS(awtContext, stack);
+			}
+			else
+			{
+				initContext(awtContext, stack);
+			}
+
 			ensureMinWorkGroupSize();
 			initQueue();
 			compilePrograms(stack);
@@ -177,17 +187,7 @@ class OpenCLManager
 		checkCLError(clGetPlatformIDs(platforms, (IntBuffer) null));
 
 		PointerBuffer ctxProps = stack.mallocPointer(7);
-		if (OSType.getOSType() == OSType.MacOS)
-		{
-			ctxProps
-				.put(CL_CONTEXT_PLATFORM)
-				.put(0)
-				.put(APPLEGLSharing.CL_CONTEXT_PROPERTY_USE_CGL_SHAREGROUP_APPLE)
-				.put(awtContext.getCGLShareGroup())
-				.put(0)
-				.flip();
-		}
-		else if (OSType.getOSType() == OSType.Windows)
+		if (OSType.getOSType() == OSType.Windows)
 		{
 			ctxProps
 				.put(CL_CONTEXT_PLATFORM)
@@ -216,7 +216,6 @@ class OpenCLManager
 			throw new RuntimeException("unsupported platform");
 		}
 
-		IntBuffer errcode_ret = stack.callocInt(1);
 		for (int p = 0; p < platforms.capacity(); p++)
 		{
 			long platform = platforms.get(p);
@@ -267,6 +266,7 @@ class OpenCLManager
 							continue;
 						}
 
+						IntBuffer errcode_ret = stack.callocInt(1);
 						long context = clCreateContext(ctxProps, device, CLContextCallback.create((errinfo, private_info, cb, user_data) ->
 							log.error("[LWJGL] cl_context_callback: {}", memUTF8(errinfo))), NULL, errcode_ret);
 						checkCLError(errcode_ret);
@@ -288,6 +288,30 @@ class OpenCLManager
 		}
 
 		throw new RuntimeException("Unable to find compute platform");
+	}
+
+	private void initContextMacOS(AWTContext awtContext, MemoryStack stack)
+	{
+		PointerBuffer ctxProps = stack.mallocPointer(3);
+		ctxProps
+			.put(APPLEGLSharing.CL_CONTEXT_PROPERTY_USE_CGL_SHAREGROUP_APPLE)
+			.put(awtContext.getCGLShareGroup())
+			.put(0)
+			.flip();
+
+		IntBuffer errcode_ret = stack.callocInt(1);
+		var devices = stack.mallocPointer(0);
+		long context = clCreateContext(ctxProps, devices, CLContextCallback.create((errinfo, private_info, cb, user_data) ->
+			log.error("[LWJGL] cl_context_callback: {}", memUTF8(errinfo))), NULL, errcode_ret);
+		checkCLError(errcode_ret);
+
+		var deviceBuf = stack.mallocPointer(1);
+		checkCLError(clGetGLContextInfoAPPLE(context, awtContext.getGLContext(), CL_CGL_DEVICE_FOR_CURRENT_VIRTUAL_SCREEN_APPLE, deviceBuf, null));
+		long device = deviceBuf.get(0);
+
+		log.debug("Got macOS CLGL compute device {}", device);
+		this.context = context;
+		this.device = device;
 	}
 
 	private void ensureMinWorkGroupSize()
