@@ -181,7 +181,7 @@ public class WoodcuttingPlugin extends Plugin
 
 		if (sinceCut.compareTo(statTimeout) >= 0)
 		{
-			session = null;
+			session.setActive(false);
 			axe = null;
 		}
 	}
