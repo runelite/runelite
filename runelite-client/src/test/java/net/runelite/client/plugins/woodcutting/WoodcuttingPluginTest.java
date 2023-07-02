@@ -356,4 +356,13 @@ public class WoodcuttingPluginTest
 		when(obj.getName()).thenReturn(name);
 		return obj;
 	}
+
+	@Test
+	public void testAnimaInfusedBark()
+	{
+		var chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "You've been awarded <col=0000b2>88 Anima-infused bark</col>.", "", 0);
+		woodcuttingPlugin.onChatMessage(chatMessage);
+		assertNotNull(woodcuttingPlugin.getSession());
+		assertEquals(88, woodcuttingPlugin.getSession().getBark());
+	}
 }

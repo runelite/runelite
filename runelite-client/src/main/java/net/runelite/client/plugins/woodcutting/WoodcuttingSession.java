@@ -38,6 +38,10 @@ class WoodcuttingSession
 	private int logsCut;
 	@Getter(AccessLevel.PACKAGE)
 	private int logsPerHr;
+	@Getter(AccessLevel.PACKAGE)
+	private int bark;
+	@Getter(AccessLevel.PACKAGE)
+	private int barkPerHr;
 
 	void setLastChopping()
 	{
@@ -52,6 +56,17 @@ class WoodcuttingSession
 		if (!elapsed.isZero())
 		{
 			logsPerHr = (int) ((double) logsCut * Duration.ofHours(1).toMillis() / elapsed.toMillis());
+		}
+	}
+
+	void incrementBark(int num)
+	{
+		bark += num;
+
+		Duration elapsed = Duration.between(start, Instant.now());
+		if (!elapsed.isZero())
+		{
+			barkPerHr = (int) ((double) bark * Duration.ofHours(1).toMillis() / elapsed.toMillis());
 		}
 	}
 }

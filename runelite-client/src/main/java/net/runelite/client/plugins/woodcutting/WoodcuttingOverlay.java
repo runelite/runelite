@@ -100,6 +100,24 @@ class WoodcuttingOverlay extends OverlayPanel
 			}
 		}
 
+		int bark = session.getBark();
+		if (bark > 0)
+		{
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left("Bark:")
+				.right(Integer.toString(bark))
+				.build());
+
+			int barkPerHr = session.getBarkPerHr();
+			if (barkPerHr > 0)
+			{
+				panelComponent.getChildren().add(LineComponent.builder()
+					.left("Bark/hr:")
+					.right(Integer.toString(barkPerHr))
+					.build());
+			}
+		}
+
 		return super.render(graphics);
 	}
 
