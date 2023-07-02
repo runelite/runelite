@@ -62,10 +62,8 @@ import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
-import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.woodcutting.config.ClueNestTier;
-import net.runelite.client.plugins.xptracker.XpTrackerPlugin;
 import net.runelite.client.ui.overlay.OverlayManager;
 
 @PluginDescriptor(
@@ -74,7 +72,6 @@ import net.runelite.client.ui.overlay.OverlayManager;
 	tags = {"birds", "nest", "notifications", "overlay", "skilling", "wc", "forestry"},
 	enabledByDefault = false
 )
-@PluginDependency(XpTrackerPlugin.class)
 @Slf4j
 public class WoodcuttingPlugin extends Plugin
 {
@@ -198,7 +195,9 @@ public class WoodcuttingPlugin extends Plugin
 			return;
 		}
 
-		if (WOOD_CUT_PATTERN.matcher(event.getMessage()).matches())
+		final var msg = event.getMessage();
+
+		if (WOOD_CUT_PATTERN.matcher(msg).matches())
 		{
 			if (session == null)
 			{
@@ -206,9 +205,9 @@ public class WoodcuttingPlugin extends Plugin
 			}
 
 			session.setLastChopping();
+			session.incrementLogsCut();
 		}
 
-		var msg = event.getMessage();
 		if (msg.contains("A bird's nest falls out of the tree") && config.showNestNotification())
 		{
 			if (clueTierSpawned == null || clueTierSpawned.ordinal() >= config.clueNestNotifyTier().ordinal())
