@@ -545,10 +545,10 @@ public class SlayerPlugin extends Plugin
 			.replace('\u00A0', ' ')
 			.toLowerCase();
 
-		for (Pattern exclude : excludeNames) 
+		for (Pattern exclude : excludeNames)
 		{
 			final Matcher targetMatcher = exclude.matcher(name);
-			if(targetMatcher.find()) 
+			if (targetMatcher.find())
 			{
 				return false;
 			}
@@ -582,7 +582,7 @@ public class SlayerPlugin extends Plugin
 
 			targetNames.add(targetNamePattern(taskName.replaceAll("s$", "")));
 			
-			for(String exclude: task.getExcludeNames()) 
+			for (String exclude: task.getExcludeNames())
 			{
 				excludeNames.add(targetNamePattern(exclude));
 			}
