@@ -61,7 +61,7 @@ class WoodcuttingOverlay extends OverlayPanel
 	public Dimension render(Graphics2D graphics)
 	{
 		WoodcuttingSession session = plugin.getSession();
-		if (session == null || !config.showWoodcuttingStats())
+		if (session == null || !session.isActive() || !config.showWoodcuttingStats())
 		{
 			return null;
 		}

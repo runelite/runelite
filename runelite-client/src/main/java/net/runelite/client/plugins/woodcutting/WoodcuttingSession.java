@@ -28,6 +28,7 @@ import java.time.Duration;
 import java.time.Instant;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 
 class WoodcuttingSession
 {
@@ -42,10 +43,14 @@ class WoodcuttingSession
 	private int bark;
 	@Getter(AccessLevel.PACKAGE)
 	private int barkPerHr;
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
+	private boolean active = true;
 
 	void setLastChopping()
 	{
 		lastChopping = Instant.now();
+		setActive(true);
 	}
 
 	void incrementLogsCut()
