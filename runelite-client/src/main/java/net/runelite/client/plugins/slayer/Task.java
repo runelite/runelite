@@ -28,6 +28,10 @@ package net.runelite.client.plugins.slayer;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import javax.annotation.Nullable;
 import lombok.Getter;
 import net.runelite.api.ItemID;
@@ -139,7 +143,7 @@ enum Task
 	PHANTOM_MUSPAH("Phantom Muspah", ItemID.MUPHIN),
 	PIRATES("Pirates", ItemID.PIRATE_HAT, "Pirate"),
 	PYREFIENDS("Pyrefiends", ItemID.PYREFIEND, "Flaming pyrelord"),
-	RATS("Rats", ItemID.RATS_TAIL),
+	RATS("Rats", ItemID.RATS_TAIL, Arrays.asList("Corrupted Rat")),
 	RED_DRAGONS("Red dragons", ItemID.BABY_RED_DRAGON, "Baby red dragon"),
 	REVENANTS("Revenants", ItemID.BRACELET_OF_ETHEREUM, "Revenant imp", "Revenant goblin", "Revenant pyrefiend", "Revenant hobgoblin", "Revenant cyclops", "Revenant hellhound", "Revenant demon", "Revenant ork", "Revenant dark beast", "Revenant knight", "Revenant dragon"),
 	ROCKSLUGS("Rockslugs", ItemID.ROCKSLUG, 4, ItemID.BAG_OF_SALT),
@@ -187,6 +191,8 @@ enum Task
 	private final int weaknessThreshold;
 	private final int weaknessItem;
 
+	private final List<String> excludeNames = new ArrayList<>();
+	
 	static
 	{
 		ImmutableMap.Builder<String, Task> builder = new ImmutableMap.Builder<>();
@@ -207,6 +213,17 @@ enum Task
 		this.weaknessThreshold = -1;
 		this.weaknessItem = -1;
 		this.targetNames = targetNames;
+	}
+
+	Task(String name, int itemSpriteId, List<String> excludeNames, String... targetNames)
+	{
+		Preconditions.checkArgument(itemSpriteId >= 0);
+		this.name = name;
+		this.itemSpriteId = itemSpriteId;
+		this.weaknessThreshold = -1;
+		this.weaknessItem = -1;
+		this.targetNames = targetNames;
+		this.excludeNames.addAll(excludeNames);
 	}
 
 	Task(String name, int itemSpriteId, int weaknessThreshold, int weaknessItem, String... targetNames)
