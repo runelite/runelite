@@ -159,7 +159,7 @@ enum Task
 	SKELETONS("Skeletons", ItemID.SKELETON_GUARD),
 	SMOKE_DEVILS("Smoke devils", ItemID.SMOKE_DEVIL),
 	SOURHOGS("Sourhogs", ItemID.SOURHOG_FOOT),
-	SPIDERS("Spiders", ItemID.HUGE_SPIDER),
+	SPIDERS("Spiders", ItemID.HUGE_SPIDER, Arrays.asList("Corrupted Spider")),
 	SPIRITUAL_CREATURES("Spiritual creatures", ItemID.DRAGON_BOOTS, "Spiritual ranger", "Spiritual mage", "Spiritual warrior"),
 	STEEL_DRAGONS("Steel dragons", ItemID.STEEL_DRAGON),
 	SUQAHS("Suqahs", ItemID.SUQAH_TOOTH),
