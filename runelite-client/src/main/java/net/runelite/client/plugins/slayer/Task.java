@@ -190,7 +190,6 @@ enum Task
 	private final String[] targetNames;
 	private final int weaknessThreshold;
 	private final int weaknessItem;
-
 	private final List<String> excludeNames = new ArrayList<>();
 	
 	static
