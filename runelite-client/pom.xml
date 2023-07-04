@@ -29,7 +29,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.10.5-SNAPSHOT</version>
+		<version>1.10.7-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>client</artifactId>
@@ -146,28 +146,7 @@
 		<dependency>
 			<groupId>net.runelite</groupId>
 			<artifactId>rlawt</artifactId>
-			<version>1.3</version>
-		</dependency>
-
-		<!-- JOCL -->
-		<dependency>
-			<groupId>net.runelite.jocl</groupId>
-			<artifactId>jocl</artifactId>
-			<version>1.0</version>
-		</dependency>
-		<dependency>
-			<groupId>net.runelite.jocl</groupId>
-			<artifactId>jocl</artifactId>
-			<version>1.0</version>
-			<classifier>macos-x64</classifier>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>net.runelite.jocl</groupId>
-			<artifactId>jocl</artifactId>
-			<version>1.0</version>
-			<classifier>macos-arm64</classifier>
-			<scope>runtime</scope>
+			<version>1.4</version>
 		</dependency>
 
 		<!-- lwjgl core -->
@@ -205,6 +184,12 @@
 			<classifier>natives-windows</classifier>
 			<scope>runtime</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.lwjgl</groupId>
+			<artifactId>lwjgl</artifactId>
+			<classifier>natives-windows-arm64</classifier>
+			<scope>runtime</scope>
+		</dependency>
 
 		<!-- lwjgl opengl -->
 		<dependency>
@@ -240,6 +225,18 @@
 			<artifactId>lwjgl-opengl</artifactId>
 			<classifier>natives-windows</classifier>
 			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.lwjgl</groupId>
+			<artifactId>lwjgl-opengl</artifactId>
+			<classifier>natives-windows-arm64</classifier>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- lwjgl opencl -->
+		<dependency>
+			<groupId>org.lwjgl</groupId>
+			<artifactId>lwjgl-opencl</artifactId>
 		</dependency>
 
 		<dependency>
@@ -317,7 +314,7 @@
 			<dependency>
 				<groupId>org.lwjgl</groupId>
 				<artifactId>lwjgl-bom</artifactId>
-				<version>3.3.1</version>
+				<version>3.3.2</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>

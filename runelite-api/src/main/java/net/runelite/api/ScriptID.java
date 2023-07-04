@@ -411,4 +411,26 @@ public final class ScriptID
 
 	@ScriptArguments(integer = 9)
 	public static final int WORLDMAP_LOADMAP = 1712;
+
+	@ScriptArguments(integer = 5)
+	public static final int PRAYER_UPDATEBUTTON = 463;
+
+	@ScriptArguments(integer = 9, string = 2)
+	public static final int PRAYER_REDRAW = 547;
+
+	@ScriptArguments(integer = 3)
+	public static final int QUICKPRAYER_INIT = 466;
+
+	/**
+	 * Called to add a loc overlay timer
+	 * <ul>
+	 * <li> loc coord </li>
+	 * <li> loc id </li>
+	 * <li> loc type </li>
+	 * <li> overlay type </li>
+	 * <li> overlay ticks </li>
+	 * </ul>
+	 */
+	@ScriptArguments(integer = 7)
+	public static final int ADD_OVERLAYTIMER_LOC = 5474;
 }

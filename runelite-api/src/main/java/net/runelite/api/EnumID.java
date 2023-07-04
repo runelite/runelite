@@ -70,4 +70,7 @@ public final class EnumID
 	 * val: dbrow
 	 */
 	public static final int MAPELEMENT_TO_QUEST = 4385;
+
+	public static final int PRAYERS_NORMAL = 4956;
+	public static final int PRAYERS_RUINOUS = 4959;
 }

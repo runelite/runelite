@@ -104,7 +104,7 @@ public class BoostsPlugin extends Plugin
 
 	private boolean isChangedDown = false;
 	private boolean isChangedUp = false;
-	private final int[] lastSkillLevels = new int[Skill.values().length - 1];
+	private final int[] lastSkillLevels = new int[Skill.values().length];
 	private int lastChangeDown = -1;
 	private int lastChangeUp = -1;
 	private boolean preserveBeenActive = false;
@@ -136,10 +136,7 @@ public class BoostsPlugin extends Plugin
 
 		for (final Skill skill : Skill.values())
 		{
-			if (skill != Skill.OVERALL)
-			{
-				infoBoxManager.addInfoBox(new BoostIndicator(skill, skillIconManager.getSkillImage(skill), this, client, config));
-			}
+			infoBoxManager.addInfoBox(new BoostIndicator(skill, skillIconManager.getSkillImage(skill), this, client, config));
 		}
 	}
 

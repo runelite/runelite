@@ -46,6 +46,7 @@ import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
@@ -100,6 +101,12 @@ public class PrayerPlugin extends Plugin
 	@Inject
 	private ItemManager itemManager;
 
+	@Inject
+	private PrayerReorder prayerReorder;
+
+	@Inject
+	private EventBus eventBus;
+
 	@Provides
 	PrayerConfig provideConfig(ConfigManager configManager)
 	{
@@ -112,6 +119,9 @@ public class PrayerPlugin extends Plugin
 		overlayManager.add(flickOverlay);
 		overlayManager.add(doseOverlay);
 		overlayManager.add(barOverlay);
+
+		prayerReorder.startUp();
+		eventBus.register(prayerReorder);
 	}
 
 	@Override
@@ -121,12 +131,21 @@ public class PrayerPlugin extends Plugin
 		overlayManager.remove(doseOverlay);
 		overlayManager.remove(barOverlay);
 		removeIndicators();
+
+		prayerReorder.shutDown();
+		eventBus.unregister(prayerReorder);
+	}
+
+	@Override
+	public void resetConfiguration()
+	{
+		prayerReorder.reset();
 	}
 
 	@Subscribe
 	private void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getGroup().equals("prayer"))
+		if (event.getGroup().equals(PrayerConfig.GROUP))
 		{
 			if (!config.prayerIndicator())
 			{

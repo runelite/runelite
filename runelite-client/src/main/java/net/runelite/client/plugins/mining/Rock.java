@@ -89,7 +89,7 @@ enum Rock
 				return region == MINING_GUILD ? Duration.of(600, GAME_TICKS) : super.respawnTime;
 			}
 		},
-	ORE_VEIN(Duration.of(MiningRocksOverlay.ORE_VEIN_MAX_RESPAWN_TIME, GAME_TICKS), 150),
+	ORE_VEIN(Duration.ZERO /* unknown */, 150),
 	AMETHYST(Duration.of(125, GAME_TICKS), 120),
 	ASH_VEIN(Duration.of(50, GAME_TICKS), 0, ASH_PILE),
 	GEM_ROCK(Duration.of(99, GAME_TICKS), 0, GEM_ROCKS, GEM_ROCKS_11381),

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2023 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,55 +22,37 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.client.util;
 
-package net.runelite.api;
+import com.apple.eawt.FullScreenAdapter;
+import com.apple.eawt.FullScreenUtilities;
+import com.apple.eawt.event.FullScreenEvent;
+import java.awt.Frame;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
-/**
- * An enumeration of skills that a player can level.
- */
-public enum Skill
+@Slf4j
+@RequiredArgsConstructor
+class OSXFullScreenAdapter extends FullScreenAdapter
 {
-	ATTACK("Attack"),
-	DEFENCE("Defence"),
-	STRENGTH("Strength"),
-	HITPOINTS("Hitpoints"),
-	RANGED("Ranged"),
-	PRAYER("Prayer"),
-	MAGIC("Magic"),
-	COOKING("Cooking"),
-	WOODCUTTING("Woodcutting"),
-	FLETCHING("Fletching"),
-	FISHING("Fishing"),
-	FIREMAKING("Firemaking"),
-	CRAFTING("Crafting"),
-	SMITHING("Smithing"),
-	MINING("Mining"),
-	HERBLORE("Herblore"),
-	AGILITY("Agility"),
-	THIEVING("Thieving"),
-	SLAYER("Slayer"),
-	FARMING("Farming"),
-	RUNECRAFT("Runecraft"),
-	HUNTER("Hunter"),
-	CONSTRUCTION("Construction");
+	private final Frame frame;
 
-	@Deprecated
-	public static final Skill OVERALL = null;
-
-	private final String name;
-
-	Skill(String name)
+	@Override
+	public void windowEnteredFullScreen(FullScreenEvent e)
 	{
-		this.name = name;
+		log.debug("Window entered fullscreen mode--setting extended state to {}", Frame.MAXIMIZED_BOTH);
+		frame.setExtendedState(Frame.MAXIMIZED_BOTH);
 	}
 
-	/**
-	 * Gets the name of the skill.
-	 *
-	 * @return the skill name
-	 */
-	public String getName()
+	@Override
+	public void windowExitedFullScreen(FullScreenEvent e)
 	{
-		return name;
+		log.debug("Window exited fullscreen mode--setting extended state to {}", Frame.NORMAL);
+		frame.setExtendedState(Frame.NORMAL);
+	}
+
+	public static void install(Frame frame)
+	{
+		FullScreenUtilities.addFullScreenListenerTo(frame, new OSXFullScreenAdapter(frame));
 	}
 }

@@ -31,8 +31,6 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
-import net.runelite.api.Skill;
-import net.runelite.client.plugins.xptracker.XpTrackerService;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -46,17 +44,15 @@ class WoodcuttingOverlay extends OverlayPanel
 	private final Client client;
 	private final WoodcuttingPlugin plugin;
 	private final WoodcuttingConfig config;
-	private final XpTrackerService xpTrackerService;
 
 	@Inject
-	private WoodcuttingOverlay(Client client, WoodcuttingPlugin plugin, WoodcuttingConfig config, XpTrackerService xpTrackerService)
+	private WoodcuttingOverlay(Client client, WoodcuttingPlugin plugin, WoodcuttingConfig config)
 	{
 		super(plugin);
 		setPosition(OverlayPosition.TOP_LEFT);
 		this.client = client;
 		this.plugin = plugin;
 		this.config = config;
-		this.xpTrackerService = xpTrackerService;
 		addMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Woodcutting overlay");
 		addMenuEntry(RUNELITE_OVERLAY, WOODCUTTING_RESET, "Woodcutting overlay", e -> plugin.setSession(null));
 	}
@@ -64,13 +60,8 @@ class WoodcuttingOverlay extends OverlayPanel
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!config.showWoodcuttingStats())
-		{
-			return null;
-		}
-
 		WoodcuttingSession session = plugin.getSession();
-		if (session == null)
+		if (session == null || !session.isActive() || !config.showWoodcuttingStats())
 		{
 			return null;
 		}
@@ -91,19 +82,38 @@ class WoodcuttingOverlay extends OverlayPanel
 				.build());
 		}
 
-		int actions = xpTrackerService.getActions(Skill.WOODCUTTING);
-		if (actions > 0)
+		int logsCut = session.getLogsCut();
+		if (logsCut > 0)
 		{
 			panelComponent.getChildren().add(LineComponent.builder()
 				.left("Logs cut:")
-				.right(Integer.toString(actions))
+				.right(Integer.toString(logsCut))
 				.build());
 
-			if (actions > 2)
+			int logsPerHr = session.getLogsPerHr();
+			if (logsPerHr > 0)
 			{
 				panelComponent.getChildren().add(LineComponent.builder()
 					.left("Logs/hr:")
-					.right(Integer.toString(xpTrackerService.getActionsHr(Skill.WOODCUTTING)))
+					.right(Integer.toString(logsPerHr))
+					.build());
+			}
+		}
+
+		int bark = session.getBark();
+		if (bark > 0)
+		{
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left("Bark:")
+				.right(Integer.toString(bark))
+				.build());
+
+			int barkPerHr = session.getBarkPerHr();
+			if (barkPerHr > 0)
+			{
+				panelComponent.getChildren().add(LineComponent.builder()
+					.left("Bark/hr:")
+					.right(Integer.toString(barkPerHr))
 					.build());
 			}
 		}

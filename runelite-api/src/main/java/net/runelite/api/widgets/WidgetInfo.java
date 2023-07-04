@@ -542,6 +542,8 @@ public enum WidgetInfo
 
 	TOA_PARTY_LAYER(WidgetID.TOA_PARTY_GROUP_ID, 2),
 	TOA_RAID_LAYER(WidgetID.TOA_RAID_GROUP_ID, 3),
+
+	QUICK_PRAYER_PRAYERS(WidgetID.QUICK_PRAYERS_GROUP_ID, 4)
 	;
 
 	private final int groupId;

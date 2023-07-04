@@ -124,11 +124,6 @@ public class VirtualLevelsPlugin extends Plugin
 
 				for (Skill s : Skill.values())
 				{
-					if (s == Skill.OVERALL)
-					{
-						continue;
-					}
-
 					level += Experience.getLevelForXp(client.getSkillExperience(s));
 				}
 
@@ -142,10 +137,7 @@ public class VirtualLevelsPlugin extends Plugin
 		// this fires widgets listening for all skill changes
 		for (Skill skill : Skill.values())
 		{
-			if (skill != Skill.OVERALL)
-			{
-				client.queueChangedSkill(skill);
-			}
+			client.queueChangedSkill(skill);
 		}
 	}
 }

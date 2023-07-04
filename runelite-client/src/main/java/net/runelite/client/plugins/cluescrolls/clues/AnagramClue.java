@@ -414,7 +414,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("LOW LAG")
 			.npc("Gallow")
 			.location(new WorldPoint(1805, 3566, 0))
-			.area("Vinery in the Great Kourend")
+			.area("Vinery southeast of Hosidius")
 			.question("How many vine patches can you find in this vinery?")
 			.answer("12")
 			.build(),
