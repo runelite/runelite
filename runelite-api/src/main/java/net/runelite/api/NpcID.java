@@ -5416,10 +5416,10 @@ public final class NpcID
 	public static final int FISHING_SPOT_5820 = 5820;
 	public static final int FISHING_SPOT_5821 = 5821;
 	public static final int ICE_TROLL_KING = 5822;
-	public static final int ICE_TROLL_RUNT_5823 = 5823;
-	public static final int ICE_TROLL_MALE_5824 = 5824;
-	public static final int ICE_TROLL_FEMALE_5825 = 5825;
-	public static final int ICE_TROLL_GRUNT_5826 = 5826;
+	public static final int FRENZIED_ICE_TROLL_RUNT = 5823;
+	public static final int FRENZIED_ICE_TROLL_MALE = 5824;
+	public static final int FRENZIED_ICE_TROLL_FEMALE = 5825;
+	public static final int FRENZIED_ICE_TROLL_GRUNT = 5826;
 	public static final int BORK_SIGMUNDSON = 5827;
 	public static final int ICE_TROLL_RUNT_5828 = 5828;
 	public static final int ICE_TROLL_MALE_5829 = 5829;
