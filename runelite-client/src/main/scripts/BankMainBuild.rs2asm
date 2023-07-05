@@ -265,9 +265,9 @@ LABEL225:
    iload                  3
    iload                  2
    invoke                 231
-   iconst                 1200
+   iconst                 1220
    istore                 20
-   iconst                 1200
+   iconst                 1220
    iconst                 9
    iconst                 3
    multiply              
@@ -341,7 +341,7 @@ LABEL253:
    jump                   LABEL750
 LABEL297:
    iload                  20
-   iconst                 1200
+   iconst                 1220
    if_icmplt              LABEL301
    jump                   LABEL326
 LABEL301:
@@ -398,7 +398,7 @@ LABEL326:
    if_icmple              LABEL348
    jump                   LABEL352
 LABEL348:
-   iconst                 1200
+   iconst                 1220
    iconst                 1
    sub                   
    istore                 30
@@ -868,7 +868,7 @@ LABEL758:
    istore                 35
 LABEL770:
    iload                  20
-   iconst                 1200
+   iconst                 1220
    if_icmplt              LABEL774
    jump                   LABEL854
 LABEL774:
