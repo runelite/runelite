@@ -157,7 +157,7 @@ public class ConfigManager
 	{
 		if (newProfile.getId() == profile.getId())
 		{
-			log.warn("switching to existing profile!");
+			log.warn("switching to already-active profile!");
 			return;
 		}
 
