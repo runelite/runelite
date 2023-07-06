@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.woodcutting;
+package com.WoodcuttingPluginTest;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
@@ -191,4 +191,13 @@ public interface WoodcuttingConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		position = 30,
+		keyName = "changeForestryBasketBankOption",
+		name = "Forestry Basket Bank \"Use\" to \"Empty\"",
+		description = "Changes the bank text from \"Use\" to \"Empty\" for the Forestry Basket",
+		section = forestrySection
+	)
+	default boolean changeForestryBasketBankOption() { return true;	}
 }
