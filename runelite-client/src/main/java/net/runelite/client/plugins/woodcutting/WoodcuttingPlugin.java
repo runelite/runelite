@@ -43,6 +43,7 @@ import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
+import net.runelite.api.ItemID;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
@@ -57,7 +58,6 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.MenuOpened;
-import net.runelite.api.ItemComposition;
 import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
@@ -80,17 +80,12 @@ public class WoodcuttingPlugin extends Plugin
 {
 	private static final Pattern WOOD_CUT_PATTERN = Pattern.compile("You get (?:some|an)[\\w ]+(?:logs?|mushrooms)\\.");
 	private static final Pattern ANIMA_BARK_PATTERN = Pattern.compile("You've been awarded <col=[0-9a-f]+>(\\d+) Anima-infused bark</col>\\.");
-	private static final Integer FORESTRY_BASKET = 28143;
-	private static final Integer OPEN_FORESTRY_BASKET = 28145;
 
 	@Inject
 	private Notifier notifier;
 
 	@Inject
 	private Client client;
-
-	@Inject
-	private ItemComposition itemComposition;
 
 	@Inject
 	private OverlayManager overlayManager;
@@ -486,7 +481,7 @@ public class WoodcuttingPlugin extends Plugin
 		if(config.changeForestryBasketBankOption())
 		{
 			final MenuEntry[] entries = event.getMenuEntries();
-			if (entries[1].getItemId() == FORESTRY_BASKET || entries[1].getItemId() == OPEN_FORESTRY_BASKET)
+			if (entries[1].getItemId() == ItemID.FORESTRY_BASKET || entries[1].getItemId() == ItemID.OPEN_FORESTRY_BASKET)
 			{
 				boolean inBank = false;
 				int useIndex=-1;
