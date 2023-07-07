@@ -26,9 +26,13 @@ package net.runelite.client.callback;
 
 import com.google.inject.Inject;
 import java.util.Iterator;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.FutureTask;
 import java.util.function.BooleanSupplier;
 import javax.inject.Singleton;
+
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 
@@ -49,6 +53,13 @@ public class ClientThread
 			r.run();
 			return true;
 		});
+	}
+
+	@SneakyThrows
+	public <T> T invokeOnClientThread(Callable<T> method) {
+		final FutureTask<?> task = new FutureTask<Object>(() -> (method.call()));
+		invoke(task);
+		return (T) task.get();
 	}
 
 	/**

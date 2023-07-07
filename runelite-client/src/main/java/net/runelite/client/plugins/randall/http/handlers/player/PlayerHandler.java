@@ -8,14 +8,19 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.Player;
 import net.runelite.client.plugins.randall.RandallPlugin;
-import net.runelite.client.plugins.randall.interfaces.ConectServerHandlerInterface;
+import net.runelite.client.plugins.randall.interfaces.ConnectServerHandlerInterface;
 import net.runelite.client.plugins.randall.models.ItemModel;
 import net.runelite.client.plugins.randall.models.PlayerModel;
+import net.runelite.client.rs.ClientLoader;
+import org.objectweb.asm.tree.ClassNode;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.Map;
+import java.util.Set;
 
-public class PlayerHandler implements ConectServerHandlerInterface {
+public class PlayerHandler implements ConnectServerHandlerInterface {
     private final Client client;
     private final RandallPlugin plugin;
 
@@ -57,6 +62,21 @@ public class PlayerHandler implements ConectServerHandlerInterface {
     }
 
     private void getPlayer(HttpExchange exchange) throws IOException {
+//        ClientLoader cl = (ClientLoader)plugin.clientLoader;
+//
+//        Set<Map.Entry<String, ClassNode>> entrySet = cl.classNodes.entrySet();
+//
+//        // Iterating through the Hashtable object
+//        // using for-each loop
+//        for (Map.Entry<String, ClassNode> entry : entrySet) {
+//            System.out.println("Rank : " + entry.getKey() + "\t\t Name : " + entry.getValue());
+//        }
+//
+//        cl.
+//        Field field = cl.loadClass(name).getDeclaredField(name);
+//        field.setAccessible(true);
+//        return (int) (field.get(reference)) * multiplier;
+//        getValue();
         Player player = client.getLocalPlayer();
 
         JsonObject data = new JsonObject();
@@ -64,6 +84,38 @@ public class PlayerHandler implements ConectServerHandlerInterface {
         data.add("player", new PlayerModel(client, player).toJson());
         writeResponse(exchange, 200, data);
     }
+
+//    public Object getValue() {
+//        try {
+//            ClientLoader clientLoader = (ClientLoader) plugin.clientLoader;
+//            JarLoader jarLoader = clientLoader.getJarLoader();
+//            Field field = jarLoader.getClassLoader().loadClass("in").getDeclaredField("kg");
+//            field.setAccessible(true);
+//            int cx = (int)field.get("kg");
+//
+//            System.out.println("Camera x: " + cx * -829344911);
+//            System.out.println("Real Camera x: " + client.getCameraX());
+//
+////            ['in', 'kg', 'I', -829344911];
+////            if (this.reference == null)
+////                this.reference = Game.applet;
+////            if (f.multiplier != null) {
+////                Field field = Game.jarLoader.loadClass(this.obfuscatedName).getDeclaredField(f.obfuscatedName);
+////                field.setAccessible(true);
+////                if (field.get(this.reference) == null) {
+////                    return null;
+////                }
+////                return (int) (field.get(this.reference)) * f.multiplier.intValue();
+////            }
+////
+////            Field field = Game.jarLoader.loadClass(this.obfuscatedName).getDeclaredField(f.obfuscatedName);
+////            field.setAccessible(true);
+////            return field.get(this.reference);
+//        } catch (NullPointerException | IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException | ClassNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
 
     private void getPlayers(HttpExchange exchange) throws IOException {
         JsonArray data = new JsonArray();

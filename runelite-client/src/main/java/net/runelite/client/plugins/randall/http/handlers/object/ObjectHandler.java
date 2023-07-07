@@ -4,7 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.sun.net.httpserver.HttpExchange;
 import net.runelite.api.*;
-import net.runelite.client.plugins.randall.interfaces.ConectServerHandlerInterface;
+import net.runelite.client.plugins.randall.interfaces.ConnectServerHandlerInterface;
 import net.runelite.client.plugins.randall.models.DecorativeObjectModel;
 import net.runelite.client.plugins.randall.models.*;
 
@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ObjectHandler implements ConectServerHandlerInterface {
+public class ObjectHandler implements ConnectServerHandlerInterface {
 
     private final int MAX_DISTANCE = 1200;
     private final Client client;

@@ -5,7 +5,7 @@ import com.google.gson.JsonObject;
 import com.sun.net.httpserver.HttpExchange;
 import net.runelite.api.Client;
 import net.runelite.client.game.WorldService;
-import net.runelite.client.plugins.randall.interfaces.ConectServerHandlerInterface;
+import net.runelite.client.plugins.randall.interfaces.ConnectServerHandlerInterface;
 import net.runelite.client.plugins.randall.models.CameraModel;
 import net.runelite.client.plugins.randall.models.GameModel;
 import net.runelite.client.plugins.randall.models.WorldModel;
@@ -13,7 +13,7 @@ import net.runelite.http.api.worlds.WorldResult;
 
 import java.io.IOException;
 
-public class GameHandler implements ConectServerHandlerInterface {
+public class GameHandler implements ConnectServerHandlerInterface {
 
     private final Client client;
     private final WorldService worldService;

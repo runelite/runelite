@@ -135,7 +135,10 @@ public class ClientUI
 	private boolean withTitleBar;
 	private BufferedImage sidebarOpenIcon;
 	private BufferedImage sidebarClosedIcon;
-	private ContainableFrame frame;
+
+	@Getter
+	private static ContainableFrame frame;
+
 	private JPanel navContainer;
 	private PluginPanel pluginPanel;
 	private ClientPluginToolbar pluginToolbar;
@@ -395,7 +398,10 @@ public class ClientUI
 
 			container = new JPanel();
 			container.setLayout(new BoxLayout(container, BoxLayout.X_AXIS));
-			container.add(new ClientPanel(client));
+
+			ClientPanel clientPanel = new ClientPanel(client);
+//			container.add(new ClientPanel(client));
+			container.add(clientPanel);
 
 			navContainer = new JPanel();
 			navContainer.setLayout(cardLayout);

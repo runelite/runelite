@@ -33,6 +33,11 @@ public class RandallOverlay extends Overlay {
     public Dimension render(Graphics2D graphics) {
         getRenderablePlayers().forEach(playerModel -> playerModel.render(graphics));
 
+        for (Point point : plugin.customPoints) {
+            graphics.setColor(Color.ORANGE);
+            graphics.fillOval(point.x - 3, point.y - 3, 6, 6);
+        }
+
         if (EventHandler.isBlocking()) {
             Point cursorPosition = plugin.mouse.getMousePos();
             graphics.setColor(Color.RED);
@@ -51,4 +56,5 @@ public class RandallOverlay extends Overlay {
         }
         return playerModels;
     }
+
 }

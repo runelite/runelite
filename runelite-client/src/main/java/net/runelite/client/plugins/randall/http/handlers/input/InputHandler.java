@@ -3,11 +3,11 @@ package net.runelite.client.plugins.randall.http.handlers.input;
 import com.google.gson.JsonObject;
 import com.sun.net.httpserver.HttpExchange;
 import net.runelite.client.plugins.randall.RandallPlugin;
-import net.runelite.client.plugins.randall.interfaces.ConectServerHandlerInterface;
+import net.runelite.client.plugins.randall.interfaces.ConnectServerHandlerInterface;
 
 import java.io.IOException;
 
-public class InputHandler implements ConectServerHandlerInterface {
+public class InputHandler implements ConnectServerHandlerInterface {
 
     private final RandallPlugin plugin;
 

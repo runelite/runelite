@@ -16,8 +16,10 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import javax.inject.Inject;
 import java.applet.Applet;
 import java.awt.*;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 @PluginDescriptor(
         name = "Randall",
@@ -28,9 +30,10 @@ import java.util.List;
 @Slf4j
 public class RandallPlugin extends Plugin {
 
+//    @Inject
+//    public Supplier<Applet> clientLoader;
     @Inject
     public WorldService worldService;
-
     @Inject
     public Client client;
     @Inject
@@ -49,37 +52,40 @@ public class RandallPlugin extends Plugin {
     public InputSelector inputSelector;
     private ContextServer httpServer;
 
-//    public Map<String, Integer> highlightedPlayers;
+    //    public Map<String, Integer> highlightedPlayers;
     public List<Integer> highlightedPlayers;
+    public List<Point> customPoints;
 
     @Override
     protected void startUp() throws Exception {
-        highlightedPlayers = new ArrayList<>();
-
-        EventHandler.setBlocking(false);
-
-        overlayManager.add(overlay);
-
-        inputSelector = new InputSelector(clientToolbar);
-        inputSelector.startUp();
-
-        httpServer = new ContextServer(client, this);
-        httpServer.startUp();
-
-        while (this.getCanvas() == null) {
-            Utils.sleep(100);
-        }
-
-        EventHandler.setGameCanvas(this.getCanvas());
-        mouse = new Mouse(this.getCanvas());
-        keyboard = new Keyboard(this.getCanvas());
+//        highlightedPlayers = new ArrayList<>();
+//        customPoints = new ArrayList<>();
+//
+//        EventHandler.setBlocking(false);
+//        client.getCanvas();
+//
+//        overlayManager.add(overlay);
+//
+//        inputSelector = new InputSelector(clientToolbar);
+//        inputSelector.startUp();
+//
+//        httpServer = new ContextServer(client, this);
+//        httpServer.startUp();
+//
+//        while (this.getCanvas() == null) {
+//            Utils.sleep(100);
+//        }
+//
+//        EventHandler.setGameCanvas(this.getCanvas());
+//        mouse = new Mouse(this.getCanvas());
+//        keyboard = new Keyboard(this.getCanvas());
     }
 
     @Override
     protected void shutDown() throws Exception {
-        overlayManager.remove(overlay);
-        inputSelector.shutDown();
-        httpServer.shutDown();
+//        overlayManager.remove(overlay);
+//        inputSelector.shutDown();
+//        httpServer.shutDown();
     }
 
     public Canvas getCanvas() {
@@ -94,5 +100,4 @@ public class RandallPlugin extends Plugin {
         gameCanvas = (Canvas) applet.getComponent(0);
         return gameCanvas;
     }
-
 }

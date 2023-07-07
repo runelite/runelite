@@ -11,7 +11,7 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public interface ConectServerHandlerInterface extends HttpHandler {
+public interface ConnectServerHandlerInterface extends HttpHandler {
 
     default void writeResponse(HttpExchange exchange, int statusCode, JsonObject data) throws IOException {
         writeResponseInteral(exchange, statusCode, data);

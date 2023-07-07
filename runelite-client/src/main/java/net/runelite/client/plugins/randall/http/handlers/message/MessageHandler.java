@@ -1,18 +1,18 @@
-package net.runelite.client.plugins.randall.http.handlers.npc;
+package net.runelite.client.plugins.randall.http.handlers.message;
 
 import com.google.gson.JsonArray;
 import com.sun.net.httpserver.HttpExchange;
 import net.runelite.api.Client;
 import net.runelite.client.plugins.randall.interfaces.ConnectServerHandlerInterface;
-import net.runelite.client.plugins.randall.models.NPCModel;
+import net.runelite.client.plugins.randall.models.MessageModel;
 
 import java.io.IOException;
 
-public class NPCHandler implements ConnectServerHandlerInterface {
+public class MessageHandler implements ConnectServerHandlerInterface {
 
     private final Client client;
 
-    public NPCHandler(Client client) {
+    public MessageHandler(Client client) {
         super();
         this.client = client;
     }
@@ -22,17 +22,17 @@ public class NPCHandler implements ConnectServerHandlerInterface {
         String requestMethod = exchange.getRequestMethod();
         String requestURI = String.valueOf(exchange.getRequestURI());
 
-        if (requestMethod.equals("GET") && requestURI.equals("/npc/list/")) {
-            getNpcs(exchange);
+        if (requestMethod.equals("GET") && requestURI.equals("/message/list/")) {
+            getMessages(exchange);
         } else {
             exchange.sendResponseHeaders(405, 0);
         }
         exchange.close();
     }
 
-    public void getNpcs(HttpExchange exchange) throws IOException {
+    private void getMessages(HttpExchange exchange) throws IOException {
         JsonArray data = new JsonArray();
-        client.getNpcs().forEach(npc -> data.add(new NPCModel(npc).toJson()));
+        client.getMessages().forEach(messageNode -> data.add(new MessageModel(messageNode).toJson()));
         writeResponse(exchange, 200, data);
     }
 }

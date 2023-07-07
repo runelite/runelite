@@ -4,8 +4,10 @@ import net.runelite.api.Client;
 import net.runelite.client.plugins.randall.RandallPlugin;
 import net.runelite.client.plugins.randall.http.handlers.game.GameHandler;
 import net.runelite.client.plugins.randall.http.handlers.input.InputHandler;
+import net.runelite.client.plugins.randall.http.handlers.message.MessageHandler;
 import net.runelite.client.plugins.randall.http.handlers.npc.NPCHandler;
 import net.runelite.client.plugins.randall.http.handlers.object.ObjectHandler;
+import net.runelite.client.plugins.randall.http.handlers.paint.PaintHandler;
 import net.runelite.client.plugins.randall.http.handlers.player.PlayerHandler;
 
 import java.net.InetSocketAddress;
@@ -30,6 +32,8 @@ public class ContextServer {
         server.createContext("/player/", new PlayerHandler(plugin, client));
         server.createContext("/npc/", new NPCHandler(client));
         server.createContext("/object/", new ObjectHandler(client));
+        server.createContext("/message/", new MessageHandler(client));
+        server.createContext("/paint/", new PaintHandler(plugin));
         server.createContext("/input/", new InputHandler(plugin));
         server.setExecutor(Executors.newSingleThreadExecutor());
         server.start();

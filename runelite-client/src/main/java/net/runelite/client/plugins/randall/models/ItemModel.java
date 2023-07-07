@@ -30,7 +30,7 @@ public class ItemModel implements DataModelInterface {
         data.addProperty("is_tradable", itemComposition.isTradeable());
         data.addProperty("is_stackable", itemComposition.isStackable());
         data.addProperty("is_members", itemComposition.isMembers());
-
+        
         JsonArray inventoryActions = new JsonArray();
         for (String action : itemComposition.getInventoryActions()) {
             if (action != null) {
