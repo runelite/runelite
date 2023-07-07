@@ -26,8 +26,8 @@
 package net.runelite.client.plugins.config;
 
 import com.google.common.base.CharMatcher;
-import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -75,7 +75,6 @@ import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
 import net.runelite.client.plugins.screenmarkers.ScreenMarkerPlugin;
 import net.runelite.client.ui.ColorScheme;
-import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.DragAndDropReorderPane;
 import net.runelite.client.ui.components.MouseDragEventForwarder;
@@ -310,7 +309,7 @@ class ProfilePanel extends PluginPanel
 		private final JButton delete;
 		private final JTextField name;
 		private final JButton activate;
-		private final JPanel expand;
+		private final JPanel buttons;
 		private final JToggleButton rename;
 
 		private boolean expanded;
@@ -368,14 +367,9 @@ class ProfilePanel extends PluginPanel
 			SwingUtil.removeButtonDecorations(activate);
 
 			{
-				expand = new JPanel();
-				expand.setOpaque(false);
-				expand.setLayout(new BorderLayout());
-
-				JPanel btns = new JPanel();
-				btns.setOpaque(false);
-				btns.setLayout(new DynamicGridLayout(1, 0, 0, 0));
-				expand.add(btns, BorderLayout.WEST);
+				buttons = new JPanel();
+				buttons.setOpaque(false);
+				buttons.setLayout(new GridLayout(1, 0, 0, 0));
 
 				rename = new JToggleButton(RENAME_ICON);
 				rename.setSelectedIcon(RENAME_ACTIVE_ICON);
@@ -392,14 +386,14 @@ class ProfilePanel extends PluginPanel
 						stopRenaming(true);
 					}
 				});
-				btns.add(rename);
+				buttons.add(rename);
 
 				JButton clone = new JButton(CLONE_ICON);
 				clone.setToolTipText("Duplicate profile");
 				SwingUtil.removeButtonDecorations(clone);
 				clone.addActionListener(ev -> cloneProfile(profile));
 				clone.setEnabled(!limited);
-				btns.add(clone);
+				buttons.add(clone);
 
 				JButton export = new JButton(EXPORT_ICON);
 				export.setToolTipText("Export profile");
@@ -425,7 +419,7 @@ class ProfilePanel extends PluginPanel
 						exportProfile(profile, file);
 					}
 				});
-				btns.add(export);
+				buttons.add(export);
 
 				if (sessionManager.getAccountSession() != null)
 				{
@@ -435,7 +429,7 @@ class ProfilePanel extends PluginPanel
 					sync.setToolTipText(profile.isSync() ? "Disable cloud sync" : "Enable cloud sync");
 					sync.setSelected(profile.isSync());
 					sync.addActionListener(ev -> toggleSync(ev, profile, sync.isSelected()));
-					btns.add(sync);
+					buttons.add(sync);
 				}
 
 				delete = new JButton(DELETE_ICON);
@@ -451,7 +445,7 @@ class ProfilePanel extends PluginPanel
 						deleteProfile(profile);
 					}
 				});
-				btns.add(delete);
+				buttons.add(delete);
 			}
 
 			{
@@ -461,14 +455,14 @@ class ProfilePanel extends PluginPanel
 				layout.setVerticalGroup(layout.createParallelGroup()
 					.addGroup(layout.createSequentialGroup()
 						.addComponent(name, 24, 24, 24)
-						.addComponent(expand))
+						.addComponent(buttons))
 					.addComponent(activate, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE));
 
 				layout.setHorizontalGroup(layout.createSequentialGroup()
 					.addGap(4)
 					.addGroup(layout.createParallelGroup()
-						.addComponent(name, GroupLayout.DEFAULT_SIZE, 0x7000, 0x7000)
-						.addComponent(expand))
+						.addComponent(name)
+						.addComponent(buttons))
 					.addComponent(activate));
 			}
 
@@ -549,7 +543,7 @@ class ProfilePanel extends PluginPanel
 		void setExpanded(boolean expanded)
 		{
 			this.expanded = expanded;
-			expand.setVisible(expanded);
+			buttons.setVisible(expanded);
 			activate.setEnabled(expanded && !active);
 			if (rename.isSelected())
 			{
