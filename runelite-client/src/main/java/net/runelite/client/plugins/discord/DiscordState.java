@@ -170,7 +170,7 @@ class DiscordState
 		StringBuilder largeImageTooltipText = new StringBuilder(runeliteTitle + " v" + versionShortHand);
 		if (safeMode)
 		{
-			largeImageTooltipText.append(" (Safe Mode)");
+			largeImageTooltipText.append(" (safe mode)");
 		}
 
 		final DiscordPresence.DiscordPresenceBuilder presenceBuilder = DiscordPresence.builder()
