@@ -49,7 +49,7 @@ public class AlfredPlugin extends Plugin {
     @Override
     protected void startUp() throws Exception {
         log.info("Alfred putting his suit on.");
-        alfred = new Alfred(client);
+        alfred = new Alfred(client, clientThread);
 
         overlayManager.add(overlay);
 

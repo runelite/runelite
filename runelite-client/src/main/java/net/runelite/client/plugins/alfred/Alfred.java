@@ -3,6 +3,7 @@ package net.runelite.client.plugins.alfred;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.plugins.alfred.api.rs.BaseAPI;
 import net.runelite.client.plugins.alfred.device.Keyboard;
 import net.runelite.client.plugins.alfred.device.Mouse;
 import net.runelite.client.plugins.alfred.event.EventHandler;
@@ -24,12 +25,17 @@ public class Alfred {
     @Getter
     private static EventHandler eventHandler;
 
-    public Alfred(Client client) {
+    public static BaseAPI api;
+
+    public Alfred(Client client, ClientThread clientThread) {
+        Alfred.api = new BaseAPI();
         Alfred.client = client;
+        Alfred.clientThread = clientThread;
         Alfred.mouse = new Mouse();
         Alfred.keyboard = new Keyboard();
         Alfred.eventHandler = new EventHandler();
     }
+
 
     public static int getVarbitValue(int varbit) {
         return clientThread.invokeOnClientThread(() -> getClient().getVarbitValue(varbit));

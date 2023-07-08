@@ -1,14 +1,14 @@
-package net.runelite.client.plugins.alfred.api.rs;
+package net.runelite.client.plugins.alfred.api.rs.tab;
 
-import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.plugins.alfred.Alfred;
+import net.runelite.client.plugins.alfred.api.rs.Utility;
 
 import java.awt.*;
 
-public class TabAPI {
+public class RSTabHelper {
 
-    private static boolean clickTab(WidgetInfo widgetInfo) {
+    public static boolean clickTab(WidgetInfo widgetInfo) {
         Rectangle bounds = Utility.getTabBounds(widgetInfo);
         if (bounds == null) {
             return false;
@@ -88,62 +88,5 @@ public class TabAPI {
 
     public static boolean clickRunning() {
         return clickTab(WidgetInfo.MINIMAP_TOGGLE_RUN_ORB);
-    }
-
-    public static void test() {
-        int delay = 500;
-
-        TabAPI.clickCombatTab();
-        Alfred.sleep(delay);
-
-        TabAPI.clickSkillsTab();
-        Alfred.sleep(delay);
-
-        TabAPI.clickQuestsTab();
-        Alfred.sleep(delay);
-
-        TabAPI.clickInventoryTab();
-        Alfred.sleep(delay);
-
-        TabAPI.clickEquipmentTab();
-        Alfred.sleep(delay);
-
-        TabAPI.clickPrayerTab();
-        Alfred.sleep(delay);
-
-        TabAPI.clickMagicTab();
-        Alfred.sleep(delay);
-
-        TabAPI.clickClanChatTab();
-        Alfred.sleep(delay);
-
-        TabAPI.clickFriendsTab();
-        Alfred.sleep(delay);
-
-        TabAPI.clickIgnoreTab();
-        Alfred.sleep(delay);
-
-        TabAPI.clickLogoutTab();
-        Alfred.sleep(delay);
-
-        TabAPI.clickOptionsTab();
-        Alfred.sleep(delay);
-
-        TabAPI.clickEmotesTab();
-        Alfred.sleep(delay);
-
-        TabAPI.clickMusicTab();
-        Alfred.sleep(delay);
-
-        TabAPI.clickCompass();
-        Alfred.sleep(delay);
-
-        TabAPI.clickXP();
-        Alfred.sleep(delay);
-
-        TabAPI.clickQuickPrayer();
-        Alfred.sleep(delay);
-
-        TabAPI.clickRunning();
     }
 }
