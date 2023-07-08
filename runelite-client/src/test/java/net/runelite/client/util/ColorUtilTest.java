@@ -125,6 +125,11 @@ public class ColorUtilTest
 			alpha[0] += 73;
 			alpha[0] %= 255;
 		});
+
+		COLOR_HEXSTRING_MAP.keySet().forEach((color) ->
+		{
+			assertEquals(color, ColorUtil.colorWithAlpha(color, 255));
+		});
 	}
 
 	@Test
