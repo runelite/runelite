@@ -129,6 +129,12 @@ public class BankPlugin extends Plugin
 					return;
 				}
 
+				Widget chatboxFullInput = client.getWidget(WidgetInfo.CHATBOX_FULL_INPUT);
+				if (chatboxFullInput != null && !chatboxFullInput.isHidden())
+				{
+					return;
+				}
+
 				log.debug("Search hotkey pressed");
 
 				bankSearch.initSearch();
