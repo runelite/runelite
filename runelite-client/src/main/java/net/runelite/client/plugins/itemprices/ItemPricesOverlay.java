@@ -243,7 +243,7 @@ class ItemPricesOverlay extends Overlay
 		}
 		if (config.includeTax())
 		{
-			geprice -= (int)(gePrice * 0.01);
+			gePrice -= (int)(gePrice * 0.01);
 		}
 		if (config.showHAValue())
 		{
