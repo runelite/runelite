@@ -241,6 +241,10 @@ class ItemPricesOverlay extends Overlay
 		{
 			gePrice = itemManager.getItemPrice(id);
 		}
+		if (config.includeTax())
+		{
+			geprice -= (int)(gePrice * 0.01);
+		}
 		if (config.showHAValue())
 		{
 			haPrice = itemHaPrice;

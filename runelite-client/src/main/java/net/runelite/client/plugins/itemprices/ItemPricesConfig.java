@@ -96,4 +96,15 @@ public interface ItemPricesConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "includeTax",
+		name = "Include GE tax",
+		description = "Includes the GE tax when displaying the value of an item and when calculating High Alch profit.",
+		position = 7
+	)
+	default boolean includeTax()
+	{
+		return false;
+	}
 }
