@@ -298,7 +298,9 @@ class ProfilePanel extends PluginPanel
 			}
 
 			addButton.setEnabled(!limited);
+			addButton.setToolTipText(limited ? "disabled - at " + MAX_PROFILES + " profile limit" : null);
 			importButton.setEnabled(!limited);
+			importButton.setToolTipText(limited ? "disabled - at " + MAX_PROFILES + " profile limit" : null);
 
 			profilesList.revalidate();
 		});
@@ -395,7 +397,7 @@ class ProfilePanel extends PluginPanel
 				btns.add(rename);
 
 				JButton clone = new JButton(CLONE_ICON);
-				clone.setToolTipText("Duplicate profile");
+				clone.setToolTipText("Duplicate profile" + (limited ? " (disabled - at " + MAX_PROFILES + " profile limit)" : ""));
 				SwingUtil.removeButtonDecorations(clone);
 				clone.addActionListener(ev -> cloneProfile(profile));
 				clone.setEnabled(!limited);
