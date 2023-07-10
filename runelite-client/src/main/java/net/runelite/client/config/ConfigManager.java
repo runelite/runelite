@@ -797,7 +797,7 @@ public class ConfigManager
 	// region set configuration
 	private void setConfiguration(ConfigData configData, String groupName, String profile, String key, @NonNull String value)
 	{
-		if (Strings.isNullOrEmpty(groupName) || Strings.isNullOrEmpty(key) || key.indexOf(':') != -1)
+		if (Strings.isNullOrEmpty(groupName) || Strings.isNullOrEmpty(key) || key.indexOf(':') != -1 || key.startsWith("$"))
 		{
 			throw new IllegalArgumentException();
 		}
