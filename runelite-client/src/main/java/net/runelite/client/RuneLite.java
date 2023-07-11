@@ -323,17 +323,9 @@ public class RuneLite
 			applet.setSize(Constants.GAME_FIXED_SIZE);
 
 			System.setProperty("jagex.disableBouncyCastle", "true");
-			// Change user.home so the client places jagexcache in the .runelite directory
-			String oldHome = System.setProperty("user.home", RUNELITE_DIR.getAbsolutePath());
-			try
-			{
-				applet.init();
-			}
-			finally
-			{
-				System.setProperty("user.home", oldHome);
-			}
+			System.setProperty("jagex.userhome", RUNELITE_DIR.getAbsolutePath());
 
+			applet.init();
 			applet.start();
 		}
 
