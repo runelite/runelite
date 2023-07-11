@@ -1115,7 +1115,7 @@ public interface Client extends OAuthApi, GameEngine
 	 * @param endHeight end height of projectile - excludes tile height
 	 * @param target optional actor target
 	 * @param targetX target x - if an actor target is supplied should be the target x
-	 * @param targetY taret y - if an actor target is supplied should be the target y
+	 * @param targetY target y - if an actor target is supplied should be the target y
 	 * @return the new projectile
 	 */
 	Projectile createProjectile(int id, int plane, int startX, int startY, int startZ, int startCycle, int endCycle,
