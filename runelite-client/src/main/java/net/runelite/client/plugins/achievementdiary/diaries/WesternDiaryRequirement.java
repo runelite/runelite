@@ -122,8 +122,7 @@ public class WesternDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.MAGIC, 64),
 			new QuestRequirement(Quest.RECIPE_FOR_DISASTER, true));
 		add("Pickpocket a Gnome.",
-			new SkillRequirement(Skill.THIEVING, 75),
-			new QuestRequirement(Quest.TREE_GNOME_VILLAGE));
+			new SkillRequirement(Skill.THIEVING, 75));
 
 		// ELITE
 		add("Fletch a Magic Longbow in Tirannwn.",
