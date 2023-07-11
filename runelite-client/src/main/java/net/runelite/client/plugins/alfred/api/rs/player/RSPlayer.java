@@ -66,21 +66,21 @@ public class RSPlayer {
     public void toggleRunning(boolean value) {
         boolean isRunning = isRunningActive();
         if (value != isRunning) {
-            TabAPI.clickTab(WidgetInfo.MINIMAP_TOGGLE_RUN_ORB);
+            Alfred.api.tabs().clickTab(WidgetInfo.MINIMAP_TOGGLE_RUN_ORB);
         }
     }
 
     public void toggleQuickPrayer(boolean value) {
         boolean isOn = isQuickPrayerActive();
         if (value != isOn) {
-            TabAPI.clickTab(WidgetInfo.MINIMAP_QUICK_PRAYER_ORB);
+            Alfred.api.tabs().clickTab(WidgetInfo.MINIMAP_QUICK_PRAYER_ORB);
         }
     }
 
     public void toggleXpDisplay(boolean value) {
         boolean isOn = isXpDisplayActive();
         if (value != isOn) {
-            TabAPI.clickTab(WidgetInfo.MINIMAP_XP_ORB);
+            Alfred.api.tabs().clickTab(WidgetInfo.MINIMAP_XP_ORB);
         }
     }
 

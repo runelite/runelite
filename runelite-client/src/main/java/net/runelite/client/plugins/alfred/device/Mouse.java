@@ -201,9 +201,9 @@ public class Mouse {
     }
 
     private synchronized void internalWindMouse(int x, int y) {
+//        double speed = (Math.random() * 15D + 15D) / 10D;
 //        double speed = (Math.random() * 20D + 20D) / 10D;
         double speed = (Math.random() * 2D + 0.1D) + 3D;
-        System.out.println("Speed: " + speed);
 
         Point lastMousePosition = getLastMousePosition();
         double xs = lastMousePosition.getX();

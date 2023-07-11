@@ -22,6 +22,9 @@ public class DebugThread extends Thread {
 
     @Override
     public void run() {
+        Alfred.api.inventory().rightClickSlot(1);
+        Alfred.sleep(1000);
+        Alfred.api.inventory().clickAction("examine");
 //        Optional<RSBank> rsBank = Alfred.api.banks().getNearest().stream().findFirst();
 //        rsBank.get().open();
 //        while (true) {
