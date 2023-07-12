@@ -37,6 +37,7 @@ import static net.runelite.api.ObjectID.*;
 import static net.runelite.client.util.RSTimeUnit.GAME_TICKS;
 
 @Getter
+@SuppressWarnings("PMD.UnnecessaryFullyQualifiedName")
 enum Tree
 {
 	REGULAR_TREE(null, TREE, TREE_1277, TREE_1278, TREE_1279, TREE_1280, TREE_40750, TREE_40752),
