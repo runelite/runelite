@@ -8,6 +8,8 @@ import net.runelite.client.plugins.alfred.device.Keyboard;
 import net.runelite.client.plugins.alfred.device.Mouse;
 import net.runelite.client.plugins.alfred.event.EventHandler;
 
+import java.util.function.BooleanSupplier;
+
 public class Alfred {
 
     @Getter
@@ -64,5 +66,17 @@ public class Alfred {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static boolean sleepUntil(BooleanSupplier awaitedCondition, int time, int maxChecks) {
+        if (!client.isClientThread()) {
+            for (int i = 0; i < maxChecks; i++) {
+                if (awaitedCondition.getAsBoolean()) {
+                    return awaitedCondition.getAsBoolean();
+                }
+                sleep(time);
+            }
+        }
+        return false;
     }
 }

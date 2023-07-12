@@ -1,9 +1,9 @@
 package net.runelite.client.plugins.alfred.api.rs.inventory;
 
-import net.runelite.api.MenuEntry;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.plugins.alfred.Alfred;
 import net.runelite.client.plugins.alfred.api.rs.item.RSItem;
+import net.runelite.client.plugins.alfred.api.rs.menu.RSMenu;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,14 +16,53 @@ public class RSInventoryHelper {
         return Alfred.getClientThread().invokeOnClientThread(() -> Alfred.getClient().getWidget(INVENTORY_CONTAINER_ID));
     }
 
+    public boolean isOpen() {
+        Widget widget = getInventoryWidget();
+        return !widget.isHidden() || !widget.isSelfHidden();
+    }
+
+    public void open() {
+        if (!isOpen()) {
+            Alfred.api.tabs().clickInventoryTab();
+            Alfred.sleep(300, 600);
+        }
+    }
+
+    public int count() {
+        open();
+        Widget inventoryWidget = getInventoryWidget();
+
+        int itemCount = 0;
+        for (Widget item : inventoryWidget.getDynamicChildren()) {
+            if (item == null) {
+                continue;
+            }
+
+            if (item.isHidden() || item.isSelfHidden()) {
+                continue;
+            }
+
+            if (item.getName().length() > 0) {
+                itemCount++;
+            }
+        }
+        return itemCount;
+    }
+
+    public boolean isFull() {
+        return count() == 28;
+    }
+
+    public boolean isEmpty() {
+        return count() == 0;
+    }
+
     private boolean clickSlot(int slot, boolean leftClick) {
         int correctSlot = slot - 1;
 
-        Widget foundWidget = Alfred.getClientThread().invokeOnClientThread(() -> {
-            open();
-            Widget inventoryWidget = getInventoryWidget();
-            return inventoryWidget.getChild(correctSlot);
-        });
+        open();
+        Widget inventoryWidget = getInventoryWidget();
+        Widget foundWidget = inventoryWidget.getChild(correctSlot);
 
         if (foundWidget == null) {
             return false;
@@ -38,45 +77,6 @@ public class RSInventoryHelper {
         return true;
     }
 
-    public int count() {
-        open();
-        Widget inventoryWidget = getInventoryWidget();
-
-        return Alfred.getClientThread().invokeOnClientThread(() -> {
-            int itemCount = 0;
-            for (Widget item : inventoryWidget.getDynamicChildren()) {
-                if (item == null) {
-                    continue;
-                }
-
-                if (item.isHidden() || item.isSelfHidden()) {
-                    continue;
-                }
-
-                if (item.getName().length() > 0) {
-                    itemCount++;
-                }
-            }
-            return itemCount;
-        });
-    }
-
-    public boolean isFull() {
-        return count() == 28;
-    }
-
-
-    public boolean isOpen() {
-        Widget widget = getInventoryWidget();
-        return !widget.isHidden() || !widget.isSelfHidden();
-    }
-
-    public void open() {
-        if (!isOpen()) {
-            Alfred.api.tabs().clickInventoryTab();
-            Alfred.sleep(300, 600);
-        }
-    }
 
     public boolean leftClickSlot(int slot) {
         return clickSlot(slot, true);
@@ -86,117 +86,169 @@ public class RSInventoryHelper {
         return clickSlot(slot, false);
     }
 
-    public boolean drop(String name) {
-        if (!isFull()) {
-            return true;
-        }
-
-        Widget inventoryWidget = getInventoryWidget();
-        Widget foundWidget = Alfred.getClientThread().invokeOnClientThread(() -> {
-            for (Widget item : inventoryWidget.getDynamicChildren()) {
-                RSItem rsItem = new RSItem(item);
-//              String cleanedName = item.getName().split(">")[1].split("</")[0].toLowerCase();
-
-                if (rsItem.getName().equalsIgnoreCase(name)) {
-                    return item;
-                }
-            }
-
-            return null;
-        });
-
-        if (foundWidget == null) {
-            return false;
-        }
-
-        Alfred.getMouse().move(foundWidget.getBounds());
-        Alfred.sleep(100, 200);
-        return true;
-    }
-
-//    public static boolean drop(String itemName) {
-//        if (!Rs2Settings.enableDropShiftSetting()) return false;
-//        if (Inventory.isEmpty()) return true;
-//        if (!VirtualKeyboard.isKeyPressed(KeyEvent.VK_SHIFT) || !Rs2Menu.hasAction("drop"))
-//            VirtualKeyboard.holdShift();
-//
-//        boolean result = useItemAction(itemName, "drop");
-//
-//        VirtualKeyboard.releaseShift();
-//
-//        return result;
-//    }
-
     public RSItem getItemFromSlot(int slot) {
-        return Alfred.getClientThread().invokeOnClientThread(() -> {
-            int correctSlot = slot - 1;
-            Widget inventoryWidget = getInventoryWidget();
-            Widget item = inventoryWidget.getChild(correctSlot);
+        int correctSlot = slot - 1;
+        Widget inventoryWidget = getInventoryWidget();
+        Widget item = inventoryWidget.getChild(correctSlot);
 
-            if (item == null) {
-                return null;
-            }
+        if (item == null) {
+            return null;
+        }
 
-            return new RSItem(item);
-        });
+        return new RSItem(item);
     }
 
     public List<RSItem> getItems(int itemId) {
-        return Alfred.getClientThread().invokeOnClientThread(() -> {
-            Widget inventoryWidget = getInventoryWidget();
-            List<RSItem> rsItemList = new ArrayList<>();
+        Widget inventoryWidget = getInventoryWidget();
+        List<RSItem> rsItemList = new ArrayList<>();
 
-            for (Widget item : inventoryWidget.getDynamicChildren()) {
-                RSItem rsItem = new RSItem(item);
+        for (Widget item : inventoryWidget.getDynamicChildren()) {
+            RSItem rsItem = new RSItem(item);
 
-                if (rsItem.getId() == itemId) {
-                    rsItemList.add(rsItem);
-                }
+            if (rsItem.getId() == itemId) {
+                rsItemList.add(rsItem);
             }
+        }
 
-            return rsItemList;
-        });
+        return rsItemList;
     }
 
     public List<RSItem> getItems(String name) {
-        return Alfred.getClientThread().invokeOnClientThread(() -> {
-            Widget inventoryWidget = getInventoryWidget();
-            List<RSItem> rsItemList = new ArrayList<>();
+        Widget inventoryWidget = getInventoryWidget();
+        List<RSItem> rsItemList = new ArrayList<>();
 
-            for (Widget item : inventoryWidget.getDynamicChildren()) {
-                RSItem rsItem = new RSItem(item);
+        for (Widget item : inventoryWidget.getDynamicChildren()) {
+            RSItem rsItem = new RSItem(item);
 
-                if (rsItem.getName().equalsIgnoreCase(name)) {
-                    rsItemList.add(rsItem);
-                }
+            if (rsItem.getName().equalsIgnoreCase(name)) {
+                rsItemList.add(rsItem);
             }
+        }
 
-            return rsItemList;
-        });
+        return rsItemList;
     }
 
     public boolean clickAction(String action) {
-        MenuEntry menuEntryAction = Alfred.getClientThread().invokeOnClientThread(() -> {
-            for (MenuEntry menuEntry : Alfred.getClient().getMenuEntries()) {
-                if (menuEntry.getOption().equalsIgnoreCase(action)) {
-                    return menuEntry;
-                }
-            }
-            return null;
-        });
+        RSMenu rsMenu = Alfred.getClientThread().invokeOnClientThread(() -> Alfred.api.menu().getMenu());
+        if (!rsMenu.hasAction(action)) {
+            return false;
+        }
+        return rsMenu.clickAction(action);
+    }
 
-        if (menuEntryAction == null) {
-            System.out.println("No entry");
+    private boolean internalDrop(RSItem rsItem) {
+        if (rsItem == null) {
             return false;
         }
 
-        if (menuEntryAction.getWidget() == null) {
-            System.out.println("No widget");
+        Alfred.getMouse().rightClick(rsItem.getBounds());
+        Alfred.sleep(200, 600);
+        return clickAction("drop");
+    }
+
+    private boolean internalDropAll(List<RSItem> rsItems) {
+        for (RSItem rsItem : rsItems) {
+            internalDrop(rsItem);
+            Alfred.sleep(75, 200);
+        }
+        return true;
+    }
+
+    private boolean internalDropSlot(int slot) {
+        if (slot < 1 || slot > 28) {
             return false;
         }
 
-        Alfred.getMouse().leftClick(menuEntryAction.getWidget().getBounds());
+        RSItem rsItem = getItemFromSlot(slot);
+        internalDrop(rsItem);
+        Alfred.sleep(75, 200);
+        return true;
+    }
 
+    public boolean drop(RSItem rsItem) {
+        return internalDrop(rsItem);
+    }
+
+    public boolean dropFirst(String name) {
+        if (isEmpty()) {
+            return true;
+        }
+
+        RSItem rsItem = getItems(name).stream().findFirst().orElse(null);
+        return internalDrop(rsItem);
+    }
+
+    public boolean dropFirst(int itemId) {
+        if (isEmpty()) {
+            return true;
+        }
+
+        RSItem rsItem = getItems(itemId).stream().findFirst().orElse(null);
+        return internalDrop(rsItem);
+    }
+
+    public boolean dropFirst(RSItem rsItem) {
+        if (isEmpty()) {
+            return true;
+        }
+
+        return internalDrop(rsItem);
+    }
+
+    public boolean dropAll(String name) {
+        if (isEmpty()) {
+            return true;
+        }
+
+        List<RSItem> rsItems = getItems(name);
+        return internalDropAll(rsItems);
+    }
+
+    public boolean dropAll(int itemId) {
+        if (isEmpty()) {
+            return true;
+        }
+
+        List<RSItem> rsItems = getItems(itemId);
+        return internalDropAll(rsItems);
+    }
+
+    public boolean dropAll(RSItem rsItem) {
+        if (isEmpty()) {
+            return true;
+        }
+
+        List<RSItem> rsItems = getItems(rsItem.getId());
+        return internalDropAll(rsItems);
+    }
+
+    public boolean dropSlot(int slot) {
+        if (isEmpty()) {
+            return true;
+        }
+
+        return internalDropSlot(slot);
+    }
+
+    public boolean dropSlots(int... slots) {
+        if (isEmpty()) {
+            return true;
+        }
+
+        for (int slot : slots) {
+            internalDropSlot(slot);
+        }
+        return true;
+    }
+
+    public boolean dropAllBetween(int start, int end) {
+        if (isEmpty()) {
+            return true;
+        }
+
+        for (int i = start; i <= end; i++) {
+            internalDropSlot(i);
+        }
         return true;
     }
 }

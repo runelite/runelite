@@ -5,6 +5,7 @@ import net.runelite.api.TileItem;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.plugins.alfred.Alfred;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -99,4 +100,54 @@ public class RSItem {
             return actions;
         });
     }
+
+    public Rectangle getBounds() {
+        if (item instanceof TileItem) {
+            throw new UnsupportedOperationException("TileItem does not have bounds");
+        } else if (item instanceof Widget) {
+            return ((Widget) item).getBounds();
+        }
+        return null;
+    }
+
+    public boolean drop() {
+        if (item instanceof TileItem) {
+            throw new UnsupportedOperationException("TileItem does not have bounds");
+        } else if (item instanceof Widget) {
+            Alfred.api.inventory().drop(this);
+        }
+        return false;
+    }
+
+    public boolean leftClick() {
+        if (item instanceof TileItem) {
+            throw new UnsupportedOperationException("TileItem does not have bounds");
+        } else if (item instanceof Widget) {
+            Alfred.getMouse().leftClick(this.getBounds());
+        }
+        return false;
+    }
+
+    public boolean rightClick() {
+        if (item instanceof TileItem) {
+            throw new UnsupportedOperationException("TileItem does not have bounds");
+        } else if (item instanceof Widget) {
+            Alfred.getMouse().rightClick(this.getBounds());
+        }
+        return false;
+    }
+
+    public boolean clickAction(String action) {
+        if (item instanceof TileItem) {
+            throw new UnsupportedOperationException("TileItem does not have bounds");
+        } else if (item instanceof Widget) {
+            if (!rightClick()) {
+                return false;
+            }
+            Alfred.sleep(200, 600);
+            Alfred.api.inventory().clickAction(action);
+        }
+        return false;
+    }
+
 }

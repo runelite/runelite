@@ -84,7 +84,7 @@ public class WidgetAPI {
                 List<Widget> rootWidgets = Arrays.stream(Alfred.getClient().getWidgetRoots()).filter(x -> !x.isHidden()).collect(Collectors.toList());
                 for (Widget rootWidget : rootWidgets) {
                     if (exact) {
-                        if (rootWidget.getText().toLowerCase().equals(text.toLowerCase()) || rootWidget.getName().toLowerCase().equals(">" + text.toLowerCase() + "<")) {
+                        if (rootWidget.getText().equalsIgnoreCase(text) || rootWidget.getName().toLowerCase().equals(">" + text.toLowerCase() + "<")) {
                             return rootWidget;
                         }
                     } else {
@@ -136,7 +136,7 @@ public class WidgetAPI {
     public static Widget searchChildren(String text, Widget child, boolean exact) {
         Widget found = null;
         if (exact) {
-            if (child.getText().toLowerCase().equals(text.toLowerCase()) || child.getName().toLowerCase().equals(">" + text.toLowerCase() + "<")) {
+            if (child.getText().equalsIgnoreCase(text) || child.getName().toLowerCase().equals(">" + text.toLowerCase() + "<")) {
                 return child;
             }
         } else {

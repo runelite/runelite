@@ -2,9 +2,11 @@ package net.runelite.client.plugins.alfred.api.rs;
 
 import net.runelite.client.plugins.alfred.api.rs.bank.RSBankHelper;
 import net.runelite.client.plugins.alfred.api.rs.inventory.RSInventoryHelper;
+import net.runelite.client.plugins.alfred.api.rs.menu.RSMenuHelper;
 import net.runelite.client.plugins.alfred.api.rs.objects.RSObjectHelper;
 import net.runelite.client.plugins.alfred.api.rs.player.RSPlayerHelper;
 import net.runelite.client.plugins.alfred.api.rs.tab.RSTabHelper;
+import net.runelite.client.plugins.alfred.api.rs.widget.RSWidgetHelper;
 import net.runelite.client.plugins.alfred.api.rs.world.RSWorldHelper;
 
 public class BaseAPI {
@@ -15,6 +17,8 @@ public class BaseAPI {
     private final RSTabHelper rsTabHelper;
     private final RSWorldHelper rsWorldHelper;
     private final RSInventoryHelper rsInventoryHelper;
+    private final RSMenuHelper rsMenuHelper;
+    private final RSWidgetHelper rsWidgetHelper;
 
     public BaseAPI() {
         rsBankHelper = new RSBankHelper();
@@ -23,6 +27,8 @@ public class BaseAPI {
         rsTabHelper = new RSTabHelper();
         rsWorldHelper = new RSWorldHelper();
         rsInventoryHelper = new RSInventoryHelper();
+        rsMenuHelper = new RSMenuHelper();
+        rsWidgetHelper = new RSWidgetHelper();
     }
 
     public RSBankHelper banks() {
@@ -47,5 +53,13 @@ public class BaseAPI {
 
     public RSInventoryHelper inventory() {
         return rsInventoryHelper;
+    }
+
+    public RSMenuHelper menu() {
+        return rsMenuHelper;
+    }
+
+    public RSWidgetHelper widgets() {
+        return rsWidgetHelper;
     }
 }

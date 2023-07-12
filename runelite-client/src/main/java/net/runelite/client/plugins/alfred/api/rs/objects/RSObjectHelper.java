@@ -103,7 +103,6 @@ public class RSObjectHelper {
                         if (gameObject != null && gameObject.getSceneMinLocation().equals(tile.getSceneLocation())) {
                             if (player.getLocalLocation().distanceTo(gameObject.getLocalLocation()) <= MAX_DISTANCE) {
                                 gameObjects.add(gameObject);
-                                ObjectComposition objectComposition = Alfred.getClient().getObjectDefinition(gameObject.getId());
                             }
                         }
                     }

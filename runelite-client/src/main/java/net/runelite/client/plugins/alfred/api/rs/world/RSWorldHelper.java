@@ -5,7 +5,6 @@ import com.google.gson.JsonObject;
 import net.runelite.api.*;
 import net.runelite.client.plugins.alfred.Alfred;
 
-import java.awt.*;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashSet;
@@ -171,7 +170,7 @@ public class RSWorldHelper {
             System.out.println("An error occurred.");
             e.printStackTrace();
         }
-        System.out.println(worldData.toString());
+        System.out.println(worldData);
     }
 
     private Set<WorldMovementFlag> getMovementFlagsForTile(Tile tile) {

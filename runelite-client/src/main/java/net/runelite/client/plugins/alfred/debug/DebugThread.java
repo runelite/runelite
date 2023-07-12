@@ -7,7 +7,6 @@ import net.runelite.client.plugins.alfred.device.Keyboard;
 import net.runelite.client.plugins.alfred.device.Mouse;
 
 import java.awt.*;
-import java.util.Optional;
 
 public class DebugThread extends Thread {
 
@@ -22,9 +21,20 @@ public class DebugThread extends Thread {
 
     @Override
     public void run() {
-        Alfred.api.inventory().rightClickSlot(1);
+        RSBank rsBank = Alfred.api.banks().getNearestBanks().stream().findFirst().orElse(null);
+        if (rsBank == null) {
+            return;
+        }
+
+        rsBank.open();
+        Alfred.sleepUntil(rsBank::isOpen, 1000, 10);
         Alfred.sleep(1000);
-        Alfred.api.inventory().clickAction("examine");
+        rsBank.close();
+//        RSMenu rsMenu = Alfred.api.menu().getMenu();
+//        for (int i = 0; i < rsMenu.getMenuEntries().size(); i++) {
+//            Alfred.sleep(1000);
+//            Alfred.getMouse().move(rsMenu.getCenterX(), rsMenu.getCenterY(i));
+//        }
 //        Optional<RSBank> rsBank = Alfred.api.banks().getNearest().stream().findFirst();
 //        rsBank.get().open();
 //        while (true) {
