@@ -92,7 +92,7 @@ class WoodcuttingTreesOverlay extends Overlay
 		{
 			for (GameObject treeRoot : plugin.getRoots())
 			{
-				if (treeRoot.getId() != ObjectID.TREE_ROOTS_47483)
+				if (treeRoot.getId() != ObjectID.ANIMAINFUSED_TREE_ROOTS)
 				{
 					continue;
 				}

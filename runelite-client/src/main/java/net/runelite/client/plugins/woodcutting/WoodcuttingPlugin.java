@@ -291,7 +291,7 @@ public class WoodcuttingPlugin extends Plugin
 		switch (gameObject.getId())
 		{
 			case ObjectID.TREE_ROOTS:
-			case ObjectID.TREE_ROOTS_47483: // glowing roots
+			case ObjectID.ANIMAINFUSED_TREE_ROOTS:
 				if (roots.isEmpty() && config.forestryRisingRootsNotification())
 				{
 					notifier.notify("A Rising Roots Forestry event spawned!");
@@ -350,7 +350,7 @@ public class WoodcuttingPlugin extends Plugin
 		switch (object.getId())
 		{
 			case ObjectID.TREE_ROOTS:
-			case ObjectID.TREE_ROOTS_47483: // glowing roots
+			case ObjectID.ANIMAINFUSED_TREE_ROOTS:
 				roots.remove(object);
 				break;
 			case ObjectID.ROTTING_LEAVES:
@@ -427,7 +427,7 @@ public class WoodcuttingPlugin extends Plugin
 	public void onNpcSpawned(NpcSpawned event)
 	{
 		NPC npc = event.getNpc();
-		if (npc.getId() == NpcID.FLOWERING_BUSH)
+		if (isFloweringBush(npc.getId()))
 		{
 			if (flowers.isEmpty() && config.forestryFloweringTreeNotification())
 			{
@@ -464,11 +464,23 @@ public class WoodcuttingPlugin extends Plugin
 	{
 		if (event.getSource() != client.getLocalPlayer()
 			|| !(event.getTarget() instanceof NPC)
-			|| ((NPC) event.getTarget()).getId() != NpcID.FLOWERING_BUSH)
+			|| !isFloweringBush(((NPC) event.getTarget()).getId()))
 		{
 			return;
 		}
 
 		lastInteractFlower = (NPC) event.getTarget();
+	}
+
+	private static boolean isFloweringBush(int npcId)
+	{
+		return npcId == NpcID.FLOWERING_BUSH_LILAC ||
+			npcId == NpcID.FLOWERING_BUSH_PINK ||
+			npcId == NpcID.FLOWERING_BUSH_RED ||
+			npcId == NpcID.FLOWERING_BUSH_ORANGE ||
+			npcId == NpcID.FLOWERING_BUSH_YELLOW ||
+			npcId == NpcID.FLOWERING_BUSH_WHITE ||
+			npcId == NpcID.FLOWERING_BUSH_GREEN ||
+			npcId == NpcID.FLOWERING_BUSH_BLUE;
 	}
 }
