@@ -54,7 +54,7 @@ public class RSWorldHelper {
 //
 ////                    List<RSObject> rsObjectsList = Alfred.api.objects().getObjectsFromTile(tile, false);
 ////                    for (RSObject rsObject : rsObjectsList) {
-////                        int data = flags[x][y];
+////   k                     int data = flags[x][y];
 ////
 ////                        Set<WorldMovementFlag> movementFlags = WorldMovementFlag.getSetFlags(data);
 ////

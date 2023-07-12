@@ -5,7 +5,6 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.plugins.alfred.Alfred;
-import net.runelite.client.plugins.alfred.api.rs.menu.RSMenu;
 
 import java.awt.*;
 
@@ -41,14 +40,10 @@ public class RSBank {
         }
 
         Alfred.getMouse().rightClick(bankBounds);
-        Alfred.sleep(100, 200);
+        Alfred.sleepUntil(() -> Alfred.api.menu().getMenu().hasAction("bank"), 200, 10);
 
-        RSMenu rsMenu = Alfred.api.menu().getMenu();
-        if (!rsMenu.hasAction("bank")) {
-            return false;
-        }
-
-        return rsMenu.clickAction("bank");
+        Alfred.api.menu().getMenu().clickAction("bank");
+        return Alfred.sleepUntil(this::isOpen, 1000, 10);
     }
 
     public boolean clickViewAllItems() {
@@ -78,6 +73,7 @@ public class RSBank {
     public boolean close() {
         Widget widget = Alfred.getClientThread().invokeOnClientThread(() -> Alfred.getClient().getWidget(786434));
         Widget childWidget = Alfred.api.widgets().getChildWidget(widget, 11);
-        return Alfred.api.widgets().leftClickWidget(childWidget);
+        Alfred.api.widgets().leftClickWidget(childWidget);
+        return Alfred.sleepUntil(() -> !isOpen(), 200, 10);
     }
 }

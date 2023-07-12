@@ -24,7 +24,7 @@ public class RSInventoryHelper {
     public void open() {
         if (!isOpen()) {
             Alfred.api.tabs().clickInventoryTab();
-            Alfred.sleep(300, 600);
+            Alfred.sleepUntil(this::isOpen, 100, 200);
         }
     }
 

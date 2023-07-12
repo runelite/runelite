@@ -27,7 +27,6 @@ public class DebugThread extends Thread {
         }
 
         rsBank.open();
-        Alfred.sleepUntil(rsBank::isOpen, 1000, 10);
         Alfred.sleep(1000);
         rsBank.close();
 //        RSMenu rsMenu = Alfred.api.menu().getMenu();
