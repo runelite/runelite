@@ -29,6 +29,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
 import net.runelite.api.Varbits;
@@ -250,6 +251,7 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 		.build();
 
 	private final String text;
+	@Getter(AccessLevel.PRIVATE)
 	private final WorldPoint location;
 	/**
 	 * For regions which are mirrored, the location of the the clue in the mirrored region.
@@ -274,7 +276,13 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 	}
 
 	@Override
-	public WorldPoint[] getLocations()
+	public WorldPoint getLocation(ClueScrollPlugin plugin)
+	{
+		return location;
+	}
+
+	@Override
+	public WorldPoint[] getLocations(ClueScrollPlugin plugin)
 	{
 		if (mirrorLocation != null)
 		{
@@ -311,7 +319,7 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 	@Override
 	public void makeWorldOverlayHint(Graphics2D graphics, ClueScrollPlugin plugin)
 	{
-		for (WorldPoint worldPoint : getLocations())
+		for (WorldPoint worldPoint : getLocations(plugin))
 		{
 			LocalPoint localLocation = LocalPoint.fromWorld(plugin.getClient(), worldPoint);
 
