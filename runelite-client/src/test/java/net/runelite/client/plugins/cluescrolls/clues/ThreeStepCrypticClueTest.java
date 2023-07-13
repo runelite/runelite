@@ -26,13 +26,21 @@ package net.runelite.client.plugins.cluescrolls.clues;
 
 import com.google.common.base.Joiner;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import net.runelite.client.util.Text;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
+@RunWith(MockitoJUnitRunner.class)
 public class ThreeStepCrypticClueTest
 {
+	@Mock
+	private ClueScrollPlugin plugin;
+
 	@Test
 	public void forTextEmptyString()
 	{
@@ -46,7 +54,7 @@ public class ThreeStepCrypticClueTest
 		final ThreeStepCrypticClue clue = ThreeStepCrypticClue.forText(Text.sanitizeMultilineText(clueText).toLowerCase(), clueText);
 
 		assertNotNull(clue);
-		for (final WorldPoint location : clue.getLocations())
+		for (final WorldPoint location : clue.getLocations(plugin))
 		{
 			assertNotNull(location);
 		}

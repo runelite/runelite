@@ -28,13 +28,17 @@ import com.google.common.collect.ImmutableList;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.List;
+import java.util.function.Function;
 import javax.annotation.Nullable;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.NPC;
 import static net.runelite.api.NullObjectID.NULL_1293;
 import net.runelite.api.ObjectComposition;
 import static net.runelite.api.ObjectID.*;
 import net.runelite.api.TileObject;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
@@ -49,6 +53,7 @@ import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
 @Getter
+@Slf4j
 public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClueScroll
 {
 	static final List<CrypticClue> CLUES = ImmutableList.of(
@@ -334,11 +339,13 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 	private final String text;
 	private final String npc;
 	private final int objectId;
-	@Nullable
-	private final WorldPoint location;
 	private final String solution;
 	@Nullable
 	private final String questionText;
+
+	@Nullable
+	@Getter(AccessLevel.PRIVATE)
+	private final Function<ClueScrollPlugin, WorldPoint> locationProvider;
 
 	private CrypticClue(String text, WorldPoint location, String solution)
 	{
@@ -376,15 +383,33 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		this(text, npc, objectId, location, solution, null);
 	}
 
-	private CrypticClue(String text, String npc, int objectId, @Nullable WorldPoint location, String solution, @Nullable String questionText)
+	private CrypticClue(String text, String npc, int objectId, @Nullable final WorldPoint location, String solution, @Nullable String questionText)
+	{
+		this(
+			text,
+			npc,
+			objectId,
+			location == null ? null : (_client) -> location,
+			solution,
+			questionText
+		);
+	}
+
+	private CrypticClue(String text, String npc, int objectId, @Nullable Function<ClueScrollPlugin, WorldPoint> locationProvider, String solution, @Nullable String questionText)
 	{
 		this.text = text;
 		this.npc = npc;
 		this.objectId = objectId;
-		this.location = location;
+		this.locationProvider = locationProvider;
 		this.solution = solution;
 		this.questionText = questionText;
-		setRequiresSpade(getLocation() != null && getNpc() == null && objectId == -1);
+		setRequiresSpade(locationProvider != null && getNpc() == null && objectId == -1);
+	}
+
+	@Nullable
+	public WorldPoint getLocation(ClueScrollPlugin plugin)
+	{
+		return locationProvider == null ? null : locationProvider.apply(plugin);
 	}
 
 	@Override
@@ -433,9 +458,10 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 	public void makeWorldOverlayHint(Graphics2D graphics, ClueScrollPlugin plugin)
 	{
 		// Mark dig location
-		if (getLocation() != null && getNpc() == null && objectId == -1)
+		WorldPoint location = getLocation(plugin);
+		if (location != null && getNpc() == null && objectId == -1)
 		{
-			LocalPoint localLocation = LocalPoint.fromWorld(plugin.getClient(), getLocation());
+			LocalPoint localLocation = LocalPoint.fromWorld(plugin.getClient(), location);
 
 			if (localLocation != null)
 			{

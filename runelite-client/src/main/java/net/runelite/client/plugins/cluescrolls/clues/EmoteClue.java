@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Client;
 import static net.runelite.api.EquipmentInventorySlot.AMMO;
@@ -230,6 +231,7 @@ public class EmoteClue extends ClueScroll implements LocationClueScroll
 	private final String locationName;
 	@Nullable
 	private final STASHUnit stashUnit;
+	@Getter(AccessLevel.PRIVATE)
 	private final WorldPoint location;
 	private final Emote firstEmote;
 	private final Emote secondEmote;
@@ -262,6 +264,12 @@ public class EmoteClue extends ClueScroll implements LocationClueScroll
 		this(text, locationName, stashUnit, location, firstEmote, secondEmote, itemRequirements);
 		setRequiresLight(true);
 		setFirePitVarbitId(firePitVarbitId);
+	}
+
+	@Override
+	public WorldPoint getLocation(ClueScrollPlugin plugin)
+	{
+		return location;
 	}
 
 	@Override

@@ -34,6 +34,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -70,6 +71,7 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 	private final String text;
 	private final String npc;
 	private final String solution;
+	@Getter(AccessLevel.PRIVATE)
 	private final WorldPoint npcLocation;
 	@Nullable
 	private HotColdSolver hotColdSolver;
@@ -102,7 +104,13 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 	}
 
 	@Override
-	public WorldPoint[] getLocations()
+	public WorldPoint getLocation(ClueScrollPlugin plugin)
+	{
+		return location;
+	}
+
+	@Override
+	public WorldPoint[] getLocations(ClueScrollPlugin plugin)
 	{
 		if (hotColdSolver == null)
 		{

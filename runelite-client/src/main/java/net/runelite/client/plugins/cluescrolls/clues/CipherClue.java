@@ -29,6 +29,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.List;
 import javax.annotation.Nullable;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
@@ -67,6 +68,7 @@ public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClu
 
 	private final String text;
 	private final int npcId;
+	@Getter(AccessLevel.PRIVATE)
 	private final WorldPoint location;
 	private final String area;
 	@Nullable
@@ -97,6 +99,12 @@ public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClu
 		this.area = area;
 		this.question = question;
 		this.answer = answer;
+	}
+
+	@Override
+	public WorldPoint getLocation(ClueScrollPlugin plugin)
+	{
+		return location;
 	}
 
 	@Override
