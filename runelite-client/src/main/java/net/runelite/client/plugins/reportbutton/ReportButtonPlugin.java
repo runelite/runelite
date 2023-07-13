@@ -66,7 +66,6 @@ public class ReportButtonPlugin extends Plugin
 	private DateTimeFormatter timeFormat;
 	private Instant loginTime;
 	private int ticksSinceLogin;
-	private int totalTicks = 0;
 	private boolean ready;
 
 	@Inject
@@ -131,7 +130,6 @@ public class ReportButtonPlugin extends Plugin
 	public void onGameTick(GameTick tick)
 	{
 		ticksSinceLogin++;
-		totalTicks++;
 
 		if (config.time() == TimeStyle.GAME_TICKS)
 		{
@@ -184,6 +182,9 @@ public class ReportButtonPlugin extends Plugin
 			case LOGIN_TIME:
 				reportButton.setText(getLoginTime());
 				break;
+			case TOTAL_LOGIN_TIME:
+				reportButton.setText(getTotalTimeLoggedIn());
+				break;
 			case IDLE_TIME:
 				reportButton.setText(getIdleTime());
 				break;
@@ -209,7 +210,14 @@ public class ReportButtonPlugin extends Plugin
 			return "Report";
 		}
 
-		Duration duration = config.useTotalLoginTime() ? Duration.ofMillis((long) totalTicks * Constants.GAME_TICK_LENGTH) : Duration.between(loginTime, Instant.now());
+		Duration duration = Duration.between(loginTime, Instant.now());
+		LocalTime time = LocalTime.ofSecondOfDay(duration.getSeconds());
+		return time.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+	}
+
+	private String getTotalTimeLoggedIn()
+	{
+		Duration duration = Duration.ofMillis((long) client.getTickCount() * Constants.GAME_TICK_LENGTH);
 		LocalTime time = LocalTime.ofSecondOfDay(duration.getSeconds());
 		return time.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 	}

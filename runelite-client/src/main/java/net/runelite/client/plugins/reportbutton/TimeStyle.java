@@ -28,6 +28,7 @@ public enum TimeStyle
 {
 	DATE("Date"),
 	LOGIN_TIME("Login Timer"),
+	TOTAL_LOGIN_TIME("Total Login Time"),
 	UTC("UTC Time"),
 	JAGEX("Jagex HQ Time"),
 	LOCAL_TIME("Local Time"),
