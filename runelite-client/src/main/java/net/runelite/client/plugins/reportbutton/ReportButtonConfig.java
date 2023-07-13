@@ -50,4 +50,14 @@ public interface ReportButtonConfig extends Config
 	{
 		return TimeFormat.TIME_12H;
 	}
+
+	@ConfigItem(
+			keyName = "useTotalLoginTime",
+			name = "Show total time logged in",
+			description = "Only reset the login timer when RuneLite is closed."
+	)
+	default boolean useTotalLoginTime()
+	{
+		return false;
+	}
 }
