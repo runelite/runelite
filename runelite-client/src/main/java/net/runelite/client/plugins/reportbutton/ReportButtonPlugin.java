@@ -183,7 +183,7 @@ public class ReportButtonPlugin extends Plugin
 				reportButton.setText(getLoginTime());
 				break;
 			case TOTAL_LOGIN_TIME:
-				reportButton.setText(getTotalTimeLoggedIn());
+				reportButton.setText(getTotalLoginTime());
 				break;
 			case IDLE_TIME:
 				reportButton.setText(getIdleTime());
@@ -215,7 +215,7 @@ public class ReportButtonPlugin extends Plugin
 		return time.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 	}
 
-	private String getTotalTimeLoggedIn()
+	private String getTotalLoginTime()
 	{
 		Duration duration = Duration.ofMillis((long) client.getTickCount() * Constants.GAME_TICK_LENGTH);
 		LocalTime time = LocalTime.ofSecondOfDay(duration.getSeconds());
