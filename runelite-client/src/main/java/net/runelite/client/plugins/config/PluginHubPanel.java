@@ -463,7 +463,7 @@ class PluginHubPanel extends PluginPanel
 	private List<PluginItem> plugins = null;
 	private PluginHubManifest.ManifestFull lastManifest;
 	private final Timer filterTimer;
-	private static final int FILTER_DELAY = 250; // in milliseconds
+	private static final int FILTER_DELAY = 400; // in milliseconds
 
 	@Inject
 	PluginHubPanel(
