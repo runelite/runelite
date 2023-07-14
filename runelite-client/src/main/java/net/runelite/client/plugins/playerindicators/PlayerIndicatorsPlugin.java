@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.playerindicators;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Provides;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
@@ -240,20 +241,27 @@ public class PlayerIndicatorsPlugin extends Plugin
 		}
 	}
 
-	private String decorateTarget(String oldTarget, PlayerIndicatorsService.Decorations decorations)
+	@VisibleForTesting
+	String decorateTarget(String oldTarget, PlayerIndicatorsService.Decorations decorations)
 	{
 		String newTarget = oldTarget;
 
 		if (decorations.getColor() != null && config.colorPlayerMenu())
 		{
-			// strip out existing <col...
-			int idx = oldTarget.indexOf('>');
+			String prefix = "";
+			int idx = oldTarget.indexOf("->");
 			if (idx != -1)
 			{
-				newTarget = oldTarget.substring(idx + 1);
+				prefix = oldTarget.substring(0, idx + 3); // <col=ff9040>Earth rune</col><col=ff> ->
+				oldTarget = oldTarget.substring(idx + 3);
 			}
 
-			newTarget = ColorUtil.prependColorTag(newTarget, decorations.getColor());
+			// <col=ff0000>title0RuneLitetitle1<col=ff>  (level-126)title2
+			idx = oldTarget.indexOf('>');
+			// remove leading <col>
+			oldTarget = oldTarget.substring(idx + 1);
+
+			newTarget = prefix + ColorUtil.prependColorTag(oldTarget, decorations.getColor());
 		}
 
 		FriendsChatRank rank = decorations.getFriendsChatRank();
