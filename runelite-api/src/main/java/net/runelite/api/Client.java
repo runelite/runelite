@@ -681,6 +681,24 @@ public interface Client extends OAuthApi, GameEngine
 	boolean isMenuOpen();
 
 	/**
+	 * Returns whether the currently open menu is scrollable.
+	 * @return
+	 */
+	boolean isMenuScrollable();
+
+	/**
+	 * Get the number of entries the currently open menu has been scrolled down.
+	 * @return
+	 */
+	int getMenuScroll();
+
+	/**
+	 * Set the number of entries the currently open menu has been scrolled down.
+	 * @param scroll
+	 */
+	void setMenuScroll(int scroll);
+
+	/**
 	 * Get the menu x location. Only valid if the menu is open.
 	 *
 	 * @return the menu x location
