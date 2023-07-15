@@ -114,7 +114,7 @@ public class ArdougneDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.FISHING, 81),
 			new SkillRequirement(Skill.COOKING, 91)
 		);
-		add("Attempt to picklock the door to the basement of Yanille Agility Dungeon.",
+		add("Picklock the door to the basement of Yanille Agility Dungeon.",
 			new SkillRequirement(Skill.THIEVING, 82));
 		add("Pickpocket a Hero.",
 			new SkillRequirement(Skill.THIEVING, 80));
