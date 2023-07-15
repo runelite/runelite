@@ -115,6 +115,7 @@ public class ProfileManager
 					Profiles profilesData = new Profiles();
 					profilesData.setProfiles(profiles);
 					gson.toJson(profilesData, writer);
+					writer.flush();
 					channel.force(true);
 				}
 
