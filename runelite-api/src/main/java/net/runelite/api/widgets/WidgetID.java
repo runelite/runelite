@@ -814,6 +814,7 @@ public final class WidgetID
 		static final int TITLE_CONTAINER = 2;
 		static final int ITEM_CONTAINER = 15;
 		static final int ITEM_TEXT = 16;
+		static final int SEARCH_BUTTON = 24;
 	}
 
 	static class ExplorersRing
