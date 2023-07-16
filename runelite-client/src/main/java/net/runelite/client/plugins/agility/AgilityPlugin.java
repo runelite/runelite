@@ -39,6 +39,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.Experience;
 import net.runelite.api.ItemID;
 import static net.runelite.api.ItemID.AGILITY_ARENA_TICKET;
 import net.runelite.api.NPC;
@@ -220,6 +221,8 @@ public class AgilityPlugin extends Plugin
 			return;
 		}
 
+		// Store previous agility level for possible goal laps recalculation
+		final int previousLevel = Experience.getLevelForXp(lastAgilityXp);
 		// Determine how much EXP was actually gained
 		int agilityXp = client.getSkillExperience(AGILITY);
 		int skillGained = agilityXp - lastAgilityXp;
@@ -227,25 +230,28 @@ public class AgilityPlugin extends Plugin
 
 		// Get course
 		Courses course = Courses.getCourse(client.getLocalPlayer().getWorldLocation().getRegionID());
-		if (course == null
-			|| (course.getCourseEndWorldPoints().length == 0
-			? Math.abs(course.getLastObstacleXp() - skillGained) > 1
-			: Arrays.stream(course.getCourseEndWorldPoints()).noneMatch(wp -> wp.equals(client.getLocalPlayer().getWorldLocation()))))
+		if (course == null)
 		{
 			return;
 		}
-
-		if (session != null && session.getCourse() == course)
+		else if (course.getCourseEndWorldPoints().length == 0
+			? Math.abs(course.getLastObstacleXp() - skillGained) > 1
+			: Arrays.stream(course.getCourseEndWorldPoints()).noneMatch(wp -> wp.equals(client.getLocalPlayer().getWorldLocation())))
 		{
-			session.incrementLapCount(client, xpTrackerService);
+			if (session != null && previousLevel != statChanged.getLevel())
+			{
+				session.recalculateLapsTillGoal(client, xpTrackerService);
+			}
+			return;
 		}
-		else
+
+		if (session == null || session.getCourse() != course)
 		{
 			session = new AgilitySession(course);
 			// New course found, reset lap count and set new course
 			session.resetLapCount();
-			session.incrementLapCount(client, xpTrackerService);
 		}
+		session.incrementLapCount(client, xpTrackerService);
 	}
 
 	@Subscribe
