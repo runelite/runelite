@@ -64,6 +64,7 @@ enum CannonSpots
 	MAGIC_AXE(new WorldPoint(3190, 3960, 0)),
 	MAMMOTH(new WorldPoint(3168, 3595, 0)),
 	MINIONS_OF_SCARABAS(new WorldPoint(3297, 9252, 0)),
+	MOSS_GIANT(new WorldPoint(3159, 9903, 0)),
 	ROGUE(new WorldPoint(3285, 3930, 0)),
 	SCORPION(new WorldPoint(3233, 10335, 0)),
 	SKELETON(new WorldPoint(3017, 3589, 0)),
