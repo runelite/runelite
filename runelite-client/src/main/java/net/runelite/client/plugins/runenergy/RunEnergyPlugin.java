@@ -321,6 +321,11 @@ public class RunEnergyPlugin extends Plugin
 	{
 		final int ticksLeft = getEstimatedTicksRemaining();
 
+		if (dispMode == RunEnergyConfig.EnergyDisplayMode.PERCENT)
+		{
+			return String.valueOf(client.getEnergy() / 100);
+		}
+
 		if (ticksLeft == -1)
 		{
 			return "Unknown";
@@ -332,10 +337,6 @@ public class RunEnergyPlugin extends Plugin
 		if (dispMode == RunEnergyConfig.EnergyDisplayMode.SECONDS)
 		{
 			return (int) Math.floor(secondsLeft) + "s";
-		}
-		else if (dispMode == RunEnergyConfig.EnergyDisplayMode.PERCENT)
-		{
-			return String.valueOf(client.getEnergy() / 100);
 		}
 		else if (dispMode == RunEnergyConfig.EnergyDisplayMode.TICKS)
 		{
