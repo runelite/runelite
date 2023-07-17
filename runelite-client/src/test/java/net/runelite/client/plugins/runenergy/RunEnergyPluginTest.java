@@ -149,10 +149,12 @@ public class RunEnergyPluginTest
 		when(equipment.count(RING_OF_ENDURANCE)).thenReturn(1);
 		when(client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE)).thenReturn(1);
 		when(client.getEnergy()).thenReturn(10000);
-		assertEquals("300s", runEnergyPlugin.getEstimatedRunTimeRemaining(true));
+		assertEquals("300s",
+			runEnergyPlugin.getFormattedRunOrbText(RunEnergyConfig.EnergyDisplayMode.SECONDS));
 
 		when(client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE)).thenReturn(0);
 		when(configManager.getRSProfileConfiguration(RunEnergyConfig.GROUP_NAME, "ringOfEnduranceCharges", Integer.class)).thenReturn(512);
-		assertEquals("1:47", runEnergyPlugin.getEstimatedRunTimeRemaining(false));
+		assertEquals("1:47",
+			runEnergyPlugin.getFormattedRunOrbText(RunEnergyConfig.EnergyDisplayMode.MINUTES_AND_SECONDS));
 	}
 }

@@ -81,15 +81,9 @@ class RunEnergyOverlay extends Overlay
 		{
 			StringBuilder sb = new StringBuilder();
 			sb.append("Weight: ").append(client.getWeight()).append(" kg</br>");
-
-			if (config.replaceOrbText())
-			{
-				sb.append("Run Energy: ").append(client.getEnergy() / 100).append('%');
-			}
-			else
-			{
-				sb.append("Run Time Remaining: ").append(plugin.getEstimatedRunTimeRemaining(false));
-			}
+			sb.append("Current Run Energy: ").append(client.getEnergy() / 100).append("%</br>");
+			sb.append("Estimated Time Remaining: ").append(
+				plugin.getFormattedRunOrbText(RunEnergyConfig.EnergyDisplayMode.MINUTES_AND_SECONDS));
 
 			if (client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE) == 0
 				&& plugin.isRingOfEnduranceEquipped()
