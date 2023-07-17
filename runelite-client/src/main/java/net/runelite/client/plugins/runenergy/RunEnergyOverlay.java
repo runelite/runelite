@@ -44,15 +44,13 @@ class RunEnergyOverlay extends Overlay
 {
 	private final RunEnergyPlugin plugin;
 	private final Client client;
-	private final RunEnergyConfig config;
 	private final TooltipManager tooltipManager;
 
 	@Inject
-	private RunEnergyOverlay(final RunEnergyPlugin plugin, final Client client, final RunEnergyConfig config, final TooltipManager tooltipManager)
+	private RunEnergyOverlay(final RunEnergyPlugin plugin, final Client client, final TooltipManager tooltipManager)
 	{
 		this.plugin = plugin;
 		this.client = client;
-		this.config = config;
 		this.tooltipManager = tooltipManager;
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
