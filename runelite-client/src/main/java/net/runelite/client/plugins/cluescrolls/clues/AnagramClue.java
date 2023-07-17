@@ -158,7 +158,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		AnagramClue.builder()
 			.text("BY LOOK")
 			.npc("Bolkoy")
-			.location(new WorldPoint(2526, 3162, 0))
+			.location(new WorldPoint(2525, 3162, 0))
 			.area("Tree Gnome Village general store")
 			.question("How many flowers are there in the clearing below this platform?")
 			.answer("13")
