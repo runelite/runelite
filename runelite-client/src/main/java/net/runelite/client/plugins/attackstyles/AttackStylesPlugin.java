@@ -28,7 +28,7 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import com.google.inject.Provides;
-import java.util.HashSet;
+import java.util.EnumSet;
 import java.util.Set;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -63,8 +63,8 @@ public class AttackStylesPlugin extends Plugin
 {
 	private int equippedWeaponTypeVarbit = -1;
 	private AttackStyle attackStyle;
-	private final Set<Skill> warnedSkills = new HashSet<>();
-	private boolean warnedSkillSelected = false;
+	private final Set<Skill> warnedSkills = EnumSet.noneOf(Skill.class);
+	private boolean warnedSkillSelected;
 	private final Table<WeaponType, WidgetInfo, Boolean> widgetsToHide = HashBasedTable.create();
 
 	@Inject
@@ -123,12 +123,12 @@ public class AttackStylesPlugin extends Plugin
 	}
 
 	@Nullable
-	public AttackStyle getAttackStyle()
+	AttackStyle getAttackStyle()
 	{
 		return attackStyle;
 	}
 
-	public boolean isWarnedSkillSelected()
+	boolean isWarnedSkillSelected()
 	{
 		return warnedSkillSelected;
 	}
@@ -349,7 +349,7 @@ public class AttackStylesPlugin extends Plugin
 		}
 	}
 
-	private void hideWidget(Widget widget, boolean hidden)
+	private static void hideWidget(Widget widget, boolean hidden)
 	{
 		if (widget != null)
 		{
