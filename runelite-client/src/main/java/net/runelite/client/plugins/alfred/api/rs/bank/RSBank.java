@@ -1,14 +1,20 @@
 package net.runelite.client.plugins.alfred.api.rs.bank;
 
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.GameObject;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.plugins.alfred.Alfred;
+import net.runelite.client.plugins.alfred.api.rs.item.RSGroundItem;
+import net.runelite.client.plugins.alfred.rpc.annotate.RPCClass;
+import net.runelite.client.plugins.alfred.rpc.annotate.RPCMethod;
 
 import java.awt.*;
 
 
+@Slf4j(topic = "RSBank")
+@RPCClass(name = "Bank", description = "Bank Object")
 public class RSBank {
 
     private final GameObject bankObject;
@@ -17,63 +23,169 @@ public class RSBank {
         this.bankObject = gameObject;
     }
 
-    public boolean isOpen() {
-        Widget widget = Alfred.getClientThread().invokeOnClientThread(() -> Alfred.getClient().getWidget(WidgetInfo.BANK_CONTAINER));
-        return widget != null && !widget.isHidden();
-    }
-
     public WorldPoint getWorldLocation() {
-        if (bankObject == null) {
-            return null;
-        }
         return bankObject.getWorldLocation();
     }
 
+    public Shape getClickbox() {
+        return bankObject.getClickbox();
+    }
+
+    public boolean isOpen() {
+        return Alfred.getClientThread().invokeOnClientThread(() -> {
+            Widget widget = Alfred.getClient().getWidget(786433);
+            if (widget == null) {
+                return false;
+            }
+
+            return !widget.isHidden() && !widget.isSelfHidden();
+        });
+    }
+
+    @RPCMethod(name = "Open bank", description = "Opens the bank")
     public boolean open() {
-        if (bankObject.getClickbox() == null) {
+        Alfred.setStatus("Opening bank");
+
+        if (getWorldLocation() == null) {
+            log.warn("Could not find bank world location");
             return false;
         }
 
-        Rectangle bankBounds = bankObject.getClickbox().getBounds();
-        if (bankBounds == null) {
+        Alfred.api.camera().lookAt(getWorldLocation());
+
+        if (getClickbox() == null) {
+            log.warn("Could not find bank clickbox");
             return false;
         }
 
-        Alfred.getMouse().rightClick(bankBounds);
-        Alfred.sleepUntil(() -> Alfred.api.menu().getMenu().hasAction("bank"), 200, 10);
+        if (getClickbox().getBounds() == null) {
+            log.warn("Could not find bank clickbox bounds");
+            return false;
+        }
+
+        if (isOpen()) {
+            return false;
+        }
+
+        Alfred.getMouse().rightClick(getClickbox().getBounds());
+
+        boolean foundAction = Alfred.sleepUntil(() -> Alfred.api.menu().getMenu().hasAction("bank"), 200, 2000);
+        if (!foundAction) {
+            log.warn("Could not find bank action");
+            return false;
+        }
 
         Alfred.api.menu().getMenu().clickAction("bank");
-        return Alfred.sleepUntil(this::isOpen, 1000, 10);
+
+        boolean openedBank = Alfred.sleepUntil(this::isOpen, 200, 1000 * 10);
+        if (!openedBank) {
+            log.warn("Could not open bank");
+            return false;
+        }
+
+        Alfred.setStatus("Opened bank");
+        return true;
+    }
+
+    @RPCMethod(name = "Close bank", description = "Closes the bank")
+    public boolean close() {
+        Alfred.setStatus("Closing bank");
+
+        Widget closeWidget = Alfred.api.widgets().getChildWidget(786434, 11);
+        if (closeWidget == null) {
+            log.warn("Could not find bank close button widget");
+            return false;
+        }
+
+        Alfred.getMouse().leftClick(closeWidget.getBounds());
+
+
+        boolean closedBank = Alfred.sleepUntil(() -> !isOpen(), 200, 1000 * 10);
+        if (!closedBank) {
+            log.warn("Could not close bank");
+            return false;
+        }
+
+        Alfred.setStatus("Closed bank");
+        return true;
     }
 
     public boolean clickViewAllItems() {
-        return Alfred.api.widgets().leftClickWidget(WidgetInfo.BANK_TAB_CONTAINER);
+        Widget bankContainerWidget = Alfred.api.widgets().getWidget(WidgetInfo.BANK_TAB_CONTAINER);
+        if (bankContainerWidget == null) {
+            log.warn("Could not find bank container widget");
+            return false;
+        }
+
+        Alfred.getMouse().leftClick(bankContainerWidget.getBounds());
+        return true;
     }
 
     public boolean clickSearch() {
-        return Alfred.api.widgets().leftClickWidget(WidgetInfo.BANK_SEARCH_BUTTON_BACKGROUND);
+        Widget bankSearchWidget = Alfred.api.widgets().getWidget(WidgetInfo.BANK_SEARCH_BUTTON_BACKGROUND);
+        if (bankSearchWidget == null) {
+            log.warn("Could not find bank search widget");
+            return false;
+        }
+
+        Alfred.getMouse().leftClick(bankSearchWidget.getBounds());
+        return true;
     }
 
     public boolean clickDepositInventory() {
-        return Alfred.api.widgets().leftClickWidget(WidgetInfo.BANK_DEPOSIT_INVENTORY);
+        Widget bankDepositInventoryWidget = Alfred.api.widgets().getWidget(WidgetInfo.BANK_DEPOSIT_INVENTORY);
+        if (bankDepositInventoryWidget == null) {
+            log.warn("Could not find bank deposit inventory widget");
+            return false;
+        }
+
+        Alfred.getMouse().leftClick(bankDepositInventoryWidget.getBounds());
+        return true;
+    }
+
+    public void depositAll(RSGroundItem rsGroundItem) {
+        Alfred.api.inventory().getItems(rsGroundItem.getId()).forEach(item -> {
+            item.clickAction("deposit-all");
+        });
+    }
+
+    public void depositAll(String itemName) {
+        Alfred.api.inventory().getItems(itemName).forEach(item -> {
+            System.out.println(item.getClass().toString());
+            item.clickAction("deposit-all");
+        });
     }
 
     public boolean clickDepositEquipment() {
-        return Alfred.api.widgets().leftClickWidget(WidgetInfo.BANK_DEPOSIT_EQUIPMENT);
+        Widget bankDepositEquipmentWidget = Alfred.api.widgets().getWidget(WidgetInfo.BANK_DEPOSIT_EQUIPMENT);
+        if (bankDepositEquipmentWidget == null) {
+            log.warn("Could not find bank deposit equipment widget");
+            return false;
+        }
+
+        Alfred.getMouse().leftClick(bankDepositEquipmentWidget.getBounds());
+        return true;
     }
 
     public boolean clickWithdrawAsItem() {
-        return Alfred.api.widgets().leftClickWidget(786454);
+        Widget bankWithdrawAsItemWidget = Alfred.api.widgets().getWidget(786454);
+        if (bankWithdrawAsItemWidget == null) {
+            log.warn("Could not find bank withdraw as item widget");
+            return false;
+        }
+
+        Alfred.getMouse().leftClick(bankWithdrawAsItemWidget.getBounds());
+        return true;
     }
 
     public boolean clickWithdrawAsNote() {
-        return Alfred.api.widgets().leftClickWidget(786456);
-    }
+        Widget bankWithdrawAsNoteWidget = Alfred.api.widgets().getWidget(786456);
+        if (bankWithdrawAsNoteWidget == null) {
+            log.warn("Could not find bank withdraw as note widget");
+            return false;
+        }
 
-    public boolean close() {
-        Widget widget = Alfred.getClientThread().invokeOnClientThread(() -> Alfred.getClient().getWidget(786434));
-        Widget childWidget = Alfred.api.widgets().getChildWidget(widget, 11);
-        Alfred.api.widgets().leftClickWidget(childWidget);
-        return Alfred.sleepUntil(() -> !isOpen(), 200, 10);
+        Alfred.getMouse().leftClick(bankWithdrawAsNoteWidget.getBounds());
+        return true;
     }
 }

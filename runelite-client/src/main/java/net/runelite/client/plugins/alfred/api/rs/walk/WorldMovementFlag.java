@@ -1,4 +1,4 @@
-package net.runelite.client.plugins.alfred.api.rs.world;
+package net.runelite.client.plugins.alfred.api.rs.walk;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

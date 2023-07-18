@@ -21,35 +21,29 @@ import javax.inject.Inject;
 )
 @Slf4j
 public class AlfredPlugin extends Plugin {
+    @Getter
+    private static Alfred alfred;
     @Inject
     private Client client;
-
     @Inject
     private ClientThread clientThread;
 
+    //    @Inject
+//    private AlfredConfig config;
     @Inject
     private ClientToolbar clientToolbar;
-
-//    @Inject
-//    private AlfredConfig config;
-
     @Inject
     private AlfredOverlay overlay;
-
     @Inject
     private OverlayManager overlayManager;
-
     private EventSelector eventSelector;
-
-    @Getter
-    private static Alfred alfred;
-
     private DebugThread debugThread;
 
     @Override
     protected void startUp() throws Exception {
         log.info("Alfred putting his suit on.");
         alfred = new Alfred(client, clientThread);
+        alfred.start();
 
         overlayManager.add(overlay);
 
@@ -67,6 +61,7 @@ public class AlfredPlugin extends Plugin {
         debugThread.stop();
         eventSelector.shutDown();
         overlayManager.remove(overlay);
+        alfred.stop();
         log.info("Alfred is going home for the day.");
     }
 }

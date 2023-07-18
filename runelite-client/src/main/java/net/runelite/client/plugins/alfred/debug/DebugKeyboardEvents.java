@@ -40,15 +40,15 @@ public class DebugKeyboardEvents implements KeyListener {
                 eventLocationVerbose = Integer.toString(e.getKeyLocation());
         }
 
-        System.out.println(String.format("Event Type: %s", e.getID()));
-        System.out.println(String.format("Event Type Verbose: %s", eventIDVerbose));
-        System.out.println(String.format("When: %d", e.getWhen()));
-        System.out.println(String.format("Modifiers: %d", e.getModifiersEx()));
-        System.out.println(String.format("KeyCode: %d", e.getKeyCode()));
-        System.out.println(String.format("Char: %s", e.getKeyChar()));
-        System.out.println(String.format("Location: %d", e.getKeyLocation()));
-        System.out.println(String.format("Location Verbose: %s", eventLocationVerbose));
-        System.out.println("");
+        System.out.printf("Event Type: %s%n", e.getID());
+        System.out.printf("Event Type Verbose: %s%n", eventIDVerbose);
+        System.out.printf("When: %d%n", e.getWhen());
+        System.out.printf("Modifiers: %d%n", e.getModifiersEx());
+        System.out.printf("KeyCode: %d%n", e.getKeyCode());
+        System.out.printf("Char: %s%n", e.getKeyChar());
+        System.out.printf("Location: %d%n", e.getKeyLocation());
+        System.out.printf("Location Verbose: %s%n", eventLocationVerbose);
+        System.out.println();
     }
 
     @Override

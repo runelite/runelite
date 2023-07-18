@@ -1,5 +1,6 @@
 package net.runelite.client.plugins.alfred.api.rs.objects;
 
+import lombok.Getter;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.plugins.alfred.Alfred;
@@ -10,6 +11,7 @@ import java.util.Objects;
 
 public class RSObject {
 
+    @Getter
     private final Object rsObject;
 
     public RSObject(GameObject gameObject) {

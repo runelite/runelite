@@ -209,8 +209,8 @@ public class Mouse {
         Point lastMousePosition = getLastMousePosition();
         double xs = lastMousePosition.getX();
         double ys = lastMousePosition.getY();
-        double xe = (double) x;
-        double ye = (double) y;
+        double xe = x;
+        double ye = y;
         double gravity = 9D;
         double wind = 3D;
         double minWait = 10D / speed;

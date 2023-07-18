@@ -1,42 +1,38 @@
 package net.runelite.client.plugins.alfred.api.rs.item;
 
 import net.runelite.api.ItemComposition;
+import net.runelite.api.Point;
+import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
-import net.runelite.api.widgets.Widget;
+import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.plugins.alfred.Alfred;
+import net.runelite.client.plugins.alfred.api.rs.menu.RSMenu;
+import net.runelite.client.plugins.alfred.api.rs.player.RSPlayer;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RSItem {
+public class RSGroundItem {
 
-    private final Object item;
+    private final TileItem tileItem;
+    private final Tile tile;
 
-    public RSItem(TileItem item) {
-        this.item = item;
-    }
-
-    public RSItem(Widget item) {
-        this.item = item;
+    public RSGroundItem(TileItem item, Tile tile) {
+        this.tileItem = item;
+        this.tile = tile;
     }
 
     public int getId() {
-        if (item instanceof TileItem) {
-            return ((TileItem) item).getId();
-        } else if (item instanceof Widget) {
-            return ((Widget) item).getItemId();
-        }
-        return -1;
+        return tileItem.getId();
     }
 
     public int getQuantity() {
-        if (item instanceof TileItem) {
-            return ((TileItem) item).getQuantity();
-        } else if (item instanceof Widget) {
-            return ((Widget) item).getItemQuantity();
-        }
-        return -1;
+        return tileItem.getQuantity();
+    }
+
+    public WorldPoint getWorldLocation() {
+        return tile.getWorldLocation();
     }
 
     public String getName() {
@@ -101,53 +97,49 @@ public class RSItem {
         });
     }
 
-    public Rectangle getBounds() {
-        if (item instanceof TileItem) {
-            throw new UnsupportedOperationException("TileItem does not have bounds");
-        } else if (item instanceof Widget) {
-            return ((Widget) item).getBounds();
-        }
-        return null;
-    }
-
-    public boolean drop() {
-        if (item instanceof TileItem) {
-            throw new UnsupportedOperationException("TileItem does not have bounds");
-        } else if (item instanceof Widget) {
-            Alfred.api.inventory().drop(this);
-        }
-        return false;
-    }
-
     public boolean leftClick() {
-        if (item instanceof TileItem) {
-            throw new UnsupportedOperationException("TileItem does not have bounds");
-        } else if (item instanceof Widget) {
-            Alfred.getMouse().leftClick(this.getBounds());
+        LocalPoint localPoint = tile.getLocalLocation();
+        int plane = tile.getPlane();
+
+        if (Alfred.api.screen().isPointOnScreen(localPoint, plane)) {
+            Point screenPoint = Alfred.api.screen().getLocalPointToScreenPoint(localPoint, plane);
+            Alfred.getMouse().leftClick(screenPoint);
+            return true;
         }
+
         return false;
     }
 
     public boolean rightClick() {
-        if (item instanceof TileItem) {
-            throw new UnsupportedOperationException("TileItem does not have bounds");
-        } else if (item instanceof Widget) {
-            Alfred.getMouse().rightClick(this.getBounds());
+        LocalPoint localPoint = tile.getLocalLocation();
+        int plane = tile.getPlane();
+
+        if (Alfred.api.screen().isPointOnScreen(localPoint, plane)) {
+            Point screenPoint = Alfred.api.screen().getLocalPointToScreenPoint(localPoint, plane);
+            Alfred.getMouse().rightClick(screenPoint);
+            return true;
         }
+
         return false;
     }
 
     public boolean clickAction(String action) {
-        if (item instanceof TileItem) {
-            throw new UnsupportedOperationException("TileItem does not have bounds");
-        } else if (item instanceof Widget) {
-            if (!rightClick()) {
-                return false;
-            }
-            Alfred.sleep(200, 600);
-            Alfred.api.inventory().clickAction(action);
+        if (!rightClick()) {
+            return false;
         }
-        return false;
-    }
 
+        Alfred.sleep(200, 400);
+        RSMenu rsMenu = Alfred.api.menu().getMenu();
+
+        if (rsMenu == null) {
+            return false;
+        }
+
+        if (!rsMenu.clickAction(action, getName())) {
+            return false;
+        }
+
+        Alfred.sleep(200, 400);
+        return true;
+    }
 }

@@ -46,10 +46,26 @@ public class RSMenu {
     }
 
     public boolean hasAction(String action) {
+        Alfred.setStatus("Checking if menu has action: " + action);
         return menuEntries.stream().anyMatch(entry -> entry.getOption().equalsIgnoreCase(action));
     }
 
+    public boolean hasAction(String action, String target) {
+        Alfred.setStatus("Checking if menu has action: " + action + " and target: " + target);
+
+        for (MenuEntry entry : menuEntries) {
+            String entryTarget = entry.getTarget().replaceAll("<.*?>", "");
+            if (entry.getOption().equalsIgnoreCase(action) && entryTarget.equalsIgnoreCase(target)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public boolean clickAction(String action) {
+        Alfred.setStatus("Clicking menu action: " + action);
+
         MenuEntry menuEntry = menuEntries.stream().filter(entry -> entry.getOption().equalsIgnoreCase(action)).findFirst().orElse(null);
         if (menuEntry == null) {
             return false;
@@ -61,5 +77,24 @@ public class RSMenu {
         Rectangle entryBounds = new Rectangle(actionMenuBounds.x, actionMenuBounds.y + (MENU_ENTRY_HEIGHT * index), actionMenuBounds.width, MENU_ENTRY_HEIGHT);
         Alfred.getMouse().leftClick(entryBounds);
         return true;
+    }
+
+    public boolean clickAction(String action, String target) {
+        Alfred.setStatus("Clicking menu action: " + action + " and target: " + target);
+
+        for (MenuEntry entry : menuEntries) {
+            String entryTarget = entry.getTarget().replaceAll("<.*?>", "");
+
+            if (entry.getOption().equalsIgnoreCase(action) && entryTarget.equalsIgnoreCase(target)) {
+                Rectangle actionMenuBounds = getActionMenuBounds();
+                int index = menuEntries.indexOf(entry);
+
+                Rectangle entryBounds = new Rectangle(actionMenuBounds.x, actionMenuBounds.y + (MENU_ENTRY_HEIGHT * index), actionMenuBounds.width, MENU_ENTRY_HEIGHT);
+                Alfred.getMouse().leftClick(entryBounds);
+                return true;
+            }
+        }
+
+        return false;
     }
 }

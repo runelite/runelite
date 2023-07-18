@@ -1,9 +1,5 @@
 package net.runelite.client.plugins.alfred.api.rs;
 
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.plugins.alfred.Alfred;
-
 import java.awt.*;
 
 public class Utility {
@@ -30,24 +26,6 @@ public class Utility {
 
     public static Point getRandomPointFromBounds(Polygon polygon) {
         return getRandomPointFromBounds(polygon.getBounds());
-    }
-
-    public static Rectangle getTabBounds(WidgetInfo widgetInfo) {
-        Widget widget = Alfred.getClient().getWidget(widgetInfo);
-        if (widget == null || widget.isHidden()) {
-            return null;
-        }
-
-        return widget.getBounds();
-    }
-
-    public static Rectangle getTabBounds(int widgetID) {
-        Widget widget = Alfred.getClient().getWidget(widgetID);
-        if (widget == null || widget.isHidden()) {
-            return null;
-        }
-
-        return widget.getBounds();
     }
 
 }

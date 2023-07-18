@@ -1,11 +1,18 @@
 package net.runelite.client.plugins.alfred.api.rs;
 
 import net.runelite.client.plugins.alfred.api.rs.bank.RSBankHelper;
+import net.runelite.client.plugins.alfred.api.rs.camera.RSCameraHelper;
+import net.runelite.client.plugins.alfred.api.rs.combat.RSCombatHelper;
 import net.runelite.client.plugins.alfred.api.rs.inventory.RSInventoryHelper;
+import net.runelite.client.plugins.alfred.api.rs.item.RSGroundItemHelper;
 import net.runelite.client.plugins.alfred.api.rs.menu.RSMenuHelper;
+import net.runelite.client.plugins.alfred.api.rs.minimap.RSMiniMapHelper;
+import net.runelite.client.plugins.alfred.api.rs.npc.RSNpcHelper;
 import net.runelite.client.plugins.alfred.api.rs.objects.RSObjectHelper;
 import net.runelite.client.plugins.alfred.api.rs.player.RSPlayerHelper;
+import net.runelite.client.plugins.alfred.api.rs.screen.RSScreenHelper;
 import net.runelite.client.plugins.alfred.api.rs.tab.RSTabHelper;
+import net.runelite.client.plugins.alfred.api.rs.walk.RSWalkHelper;
 import net.runelite.client.plugins.alfred.api.rs.widget.RSWidgetHelper;
 import net.runelite.client.plugins.alfred.api.rs.world.RSWorldHelper;
 
@@ -19,6 +26,13 @@ public class BaseAPI {
     private final RSInventoryHelper rsInventoryHelper;
     private final RSMenuHelper rsMenuHelper;
     private final RSWidgetHelper rsWidgetHelper;
+    private final RSCameraHelper rsCameraHelper;
+    private final RSNpcHelper rsNpcHelper;
+    private final RSScreenHelper rsScreenHelper;
+    private final RSMiniMapHelper rsMiniMapHelper;
+    private final RSCombatHelper rsCombatHelper;
+    private final RSGroundItemHelper rsGroundItemHelper;
+    private final RSWalkHelper rsWalkHelper;
 
     public BaseAPI() {
         rsBankHelper = new RSBankHelper();
@@ -29,6 +43,13 @@ public class BaseAPI {
         rsInventoryHelper = new RSInventoryHelper();
         rsMenuHelper = new RSMenuHelper();
         rsWidgetHelper = new RSWidgetHelper();
+        rsCameraHelper = new RSCameraHelper();
+        rsNpcHelper = new RSNpcHelper();
+        rsScreenHelper = new RSScreenHelper();
+        rsMiniMapHelper = new RSMiniMapHelper();
+        rsCombatHelper = new RSCombatHelper();
+        rsGroundItemHelper = new RSGroundItemHelper();
+        rsWalkHelper = new RSWalkHelper();
     }
 
     public RSBankHelper banks() {
@@ -61,5 +82,33 @@ public class BaseAPI {
 
     public RSWidgetHelper widgets() {
         return rsWidgetHelper;
+    }
+
+    public RSCameraHelper camera() {
+        return rsCameraHelper;
+    }
+
+    public RSNpcHelper npcs() {
+        return rsNpcHelper;
+    }
+
+    public RSScreenHelper screen() {
+        return rsScreenHelper;
+    }
+
+    public RSMiniMapHelper miniMap() {
+        return rsMiniMapHelper;
+    }
+
+    public RSCombatHelper combat() {
+        return rsCombatHelper;
+    }
+
+    public RSGroundItemHelper items() {
+        return rsGroundItemHelper;
+    }
+
+    public RSWalkHelper walk() {
+        return rsWalkHelper;
     }
 }

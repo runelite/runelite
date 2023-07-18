@@ -9,7 +9,6 @@ import java.util.Map;
 
 public class Keyboard {
 
-    private final Canvas gameCanvas = Alfred.getClient().getCanvas();
     private static final Map<Integer, Boolean> pressedKeys = new HashMap<>();
 
     static {
@@ -24,6 +23,8 @@ public class Keyboard {
             return false;
         });
     }
+
+    private final Canvas gameCanvas = Alfred.getClient().getCanvas();
 
     private void dispatchKeyboardEvent(int id, int key, int modifiers) {
         KeyEvent event = new KeyEvent(gameCanvas, id, System.currentTimeMillis(), modifiers, key, KeyEvent.CHAR_UNDEFINED);
