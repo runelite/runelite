@@ -63,21 +63,21 @@ public class AlfredOverlay extends Overlay {
     private void drawWalkablePoints(Graphics2D graphics) {
         graphics.setColor(Color.GREEN);
 
-        for (RSWalkableTile rsWalkableTile : Alfred.api.walk().getWalkableTiles()) {
-
-            Polygon poly = rsWalkableTile.getCanvasPolygon();
-
-            if (poly == null) {
-                continue;
-            }
-
-            graphics.setColor(Color.GREEN);
-            if (rsWalkableTile.isOperable()) {
-                graphics.setColor(Color.YELLOW);
-            }
-
-            graphics.drawPolygon(poly);
-        }
+//        for (RSWalkableTile rsWalkableTile : Alfred.api.walk().getWalkableTiles()) {
+//
+//            Polygon poly = rsWalkableTile.getCanvasPolygon();
+//
+//            if (poly == null) {
+//                continue;
+//            }
+//
+//            graphics.setColor(Color.GREEN);
+//            if (rsWalkableTile.isOperable()) {
+//                graphics.setColor(Color.YELLOW);
+//            }
+//
+//            graphics.drawPolygon(poly);
+//        }
 
         for (RSWalkableTile rsWalkableTile : Alfred.api.walk().getPath()) {
 

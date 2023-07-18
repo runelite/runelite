@@ -1,8 +1,14 @@
 package net.runelite.client.plugins.alfred.api.rs.walk;
 
 import lombok.Getter;
-import net.runelite.api.*;
+import net.runelite.api.Client;
+import net.runelite.api.ObjectID;
+import net.runelite.api.Point;
+import net.runelite.api.Tile;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.plugins.alfred.Alfred;
+import net.runelite.client.plugins.alfred.api.rs.math.Calculations;
+import net.runelite.client.plugins.alfred.api.rs.player.RSPlayer;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -16,6 +22,36 @@ public class RSWalkHelper {
     public RSWalkHelper() {
         operableObjectIds = new ArrayList<>();
         getOperateObjectIds();
+    }
+
+    public boolean walkTo(WorldPoint worldPoint) {
+        RSPlayer player = Alfred.api.players().getLocalPlayer();
+        WorldPoint start = player.getWorldLocation();
+        PathFinder pathFinder = new PathFinder(Alfred.api.walk().getWalkableTiles());
+        List<RSWalkableTile> pathTiles = pathFinder.getPath(start, worldPoint);
+
+        if (pathTiles == null) {
+            return false;
+        }
+
+        Alfred.sleepUntil(() -> !player.isMoving() && !player.isInteracting() && player.isIdle(), 500, 1000 * 10);
+
+        for (RSWalkableTile tile : pathTiles) {
+            int distance = (int) Calculations.distanceBetweenPoints(player.getWorldLocation(), tile.getWorldLocation());
+            Point minimapPoint = Alfred.api.miniMap().getWorldPointToScreenPoint(tile.getWorldLocation());
+
+            if (minimapPoint == null) {
+                continue;
+            }
+
+            if (distance >= 7 || tile.isOperable() || tile.equals(pathTiles.get(pathTiles.size() - 1))) {
+                Alfred.getMouse().leftClick(minimapPoint);
+                Alfred.sleep(1000);
+                Alfred.sleepUntil(() -> !player.isMoving() && !player.isInteracting() && player.isIdle(), 200, 1000 * 30);
+            }
+        }
+
+        return true;
     }
 
     public List<RSWalkableTile> getPath() {

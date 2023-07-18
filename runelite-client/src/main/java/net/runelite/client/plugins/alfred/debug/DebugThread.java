@@ -6,7 +6,6 @@ import net.runelite.client.plugins.alfred.Alfred;
 import net.runelite.client.plugins.alfred.api.rs.item.RSGroundItem;
 import net.runelite.client.plugins.alfred.api.rs.npc.RSNpc;
 import net.runelite.client.plugins.alfred.api.rs.player.RSPlayer;
-import net.runelite.client.plugins.alfred.api.rs.walk.PathFinder;
 import net.runelite.client.plugins.alfred.device.Keyboard;
 import net.runelite.client.plugins.alfred.device.Mouse;
 
@@ -34,9 +33,11 @@ public class DebugThread extends Thread {
     private void worldPointViewer() {
         Alfred.setStatus("Starting world point viewer");
         WorldPoint start = new WorldPoint(3183, 3444, 0);
-        WorldPoint end = new WorldPoint(3171, 3436, 0);
-        PathFinder pathFinder = new PathFinder(Alfred.api.walk().getWalkableTiles());
-        pathFinder.getPath(start, end);
+//        WorldPoint end = new WorldPoint(3171, 3436, 0);
+//        PathFinder pathFinder = new PathFinder(Alfred.api.walk().getWalkableTiles());
+//        pathFinder.getPath(start, end);
+
+        Alfred.api.walk().walkTo(start);
     }
 
     private void chickenKiller() {
