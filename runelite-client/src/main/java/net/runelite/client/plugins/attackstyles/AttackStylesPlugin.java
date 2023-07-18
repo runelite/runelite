@@ -357,7 +357,7 @@ public class AttackStylesPlugin extends Plugin
 
 	private void printWarnedStyleMessage()
 	{
-		if (warnedSkillSelected && attackStyle != prevAttackStyle && !config.hideChatWarnings())
+		if (warnedSkillSelected && attackStyle != prevAttackStyle && config.showChatWarnings())
 		{
 			final String message = new ChatMessageBuilder()
 				.append(ChatColorType.HIGHLIGHT)
