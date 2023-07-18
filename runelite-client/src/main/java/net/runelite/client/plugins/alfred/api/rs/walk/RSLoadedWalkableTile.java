@@ -1,49 +1,46 @@
 package net.runelite.client.plugins.alfred.api.rs.walk;
 
-import net.runelite.api.Perspective;
-import net.runelite.api.Tile;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.plugins.alfred.Alfred;
 
 import java.awt.*;
 import java.util.Set;
 
 
-public class RSWalkableTile extends RSTile {
+public class RSLoadedWalkableTile extends RSTile {
 
-    private final Tile tile;
+    private final int worldX;
+    private final int worldY;
+    private final int plane;
+    private final boolean isOperable;
+    private final Set<WorldMovementFlag> worldMovementFlags;
 
-    public RSWalkableTile(Tile tile) {
-        this.tile = tile;
+    public RSLoadedWalkableTile(int worldX, int worldY, int plane, boolean isOperable, Set<WorldMovementFlag> worldMovementFlags) {
+        this.worldX = worldX;
+        this.worldY = worldY;
+        this.plane = plane;
+        this.isOperable = isOperable;
+        this.worldMovementFlags = worldMovementFlags;
     }
-
 
     @Override
     public WorldPoint getWorldLocation() {
-        return tile.getWorldLocation();
+        return new WorldPoint(worldX, worldY, plane);
     }
 
     @Override
     public boolean isOperable() {
-        return Alfred.getClientThread().invokeOnClientThread(() -> {
-            if (tile.getWallObject() != null) {
-                return RSWalkHelper.getOperableObjectIds().contains(tile.getWallObject().getId());
-            }
-            return false;
-        });
+        return isOperable;
     }
 
     @Override
     public Polygon getCanvasPolygon() {
-        return Perspective.getCanvasTilePoly(Alfred.getClient(), tile.getLocalLocation());
+        return null;
     }
-
 
     @Override
     public boolean isWalkable(RSTile otherNode) {
-        Set<WorldMovementFlag> worldMovementFlags = Alfred.api.walk().getMovementFlagsForTile(tile);
-        int thisX = tile.getWorldLocation().getX();
-        int thisY = tile.getWorldLocation().getY();
+        int thisX = getWorldLocation().getX();
+        int thisY = getWorldLocation().getY();
 
         int otherX = otherNode.getWorldLocation().getX();
         int otherY = otherNode.getWorldLocation().getY();

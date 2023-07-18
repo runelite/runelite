@@ -1,6 +1,7 @@
 package net.runelite.client.plugins.alfred;
 
 import net.runelite.api.Client;
+import net.runelite.client.plugins.alfred.api.rs.walk.RSTile;
 import net.runelite.client.plugins.alfred.api.rs.walk.RSWalkableTile;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
@@ -79,7 +80,7 @@ public class AlfredOverlay extends Overlay {
 //            graphics.drawPolygon(poly);
 //        }
 
-        for (RSWalkableTile rsWalkableTile : Alfred.api.walk().getPath()) {
+        for (RSTile rsWalkableTile : Alfred.api.walk().getPath()) {
 
             Polygon poly = rsWalkableTile.getCanvasPolygon();
 

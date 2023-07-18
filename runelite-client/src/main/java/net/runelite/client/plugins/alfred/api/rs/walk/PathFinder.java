@@ -8,16 +8,16 @@ import java.util.List;
 
 public class PathFinder {
 
-    public static List<RSWalkableTile> path = new ArrayList<>();
+    public static List<RSTile> path = new ArrayList<>();
 
-    private final List<RSWalkableTile> walkableTiles;
+    private final List<RSTile> walkableTiles;
 
-    public PathFinder(List<RSWalkableTile> walkableTiles) {
+    public PathFinder(List<RSTile> walkableTiles) {
         this.walkableTiles = walkableTiles;
     }
 
-    private RSWalkableTile getWalkableTileFromWorldPoint(WorldPoint worldPoint) {
-        for (RSWalkableTile walkableTile : walkableTiles) {
+    private RSTile getWalkableTileFromWorldPoint(WorldPoint worldPoint) {
+        for (RSTile walkableTile : walkableTiles) {
             if (walkableTile.getWorldLocation().equals(worldPoint)) {
                 return walkableTile;
             }
@@ -26,12 +26,12 @@ public class PathFinder {
     }
 
 
-    public List<RSWalkableTile> getPath(WorldPoint start, WorldPoint end) {
-        List<RSWalkableTile> openNodes = new ArrayList<>();
-        List<RSWalkableTile> closedNodes = new ArrayList<>();
+    public List<RSTile> getPath(WorldPoint start, WorldPoint end) {
+        List<RSTile> openNodes = new ArrayList<>();
+        List<RSTile> closedNodes = new ArrayList<>();
 
-        RSWalkableTile startNode = getWalkableTileFromWorldPoint(start);
-        RSWalkableTile endNode = getWalkableTileFromWorldPoint(end);
+        RSTile startNode = getWalkableTileFromWorldPoint(start);
+        RSTile endNode = getWalkableTileFromWorldPoint(end);
 
         if (startNode == null || endNode == null) {
             return null;
@@ -40,9 +40,9 @@ public class PathFinder {
         openNodes.add(startNode);
 
         while (!openNodes.isEmpty()) {
-            RSWalkableTile currentNode = openNodes.get(0);
+            RSTile currentNode = openNodes.get(0);
 
-            for (RSWalkableTile node : openNodes) {
+            for (RSTile node : openNodes) {
                 if (node.getFCost() < currentNode.getFCost() || node.getFCost() == currentNode.getFCost()) {
                     if (node.getHCost() < currentNode.getHCost()) {
                         currentNode = node;
@@ -58,7 +58,7 @@ public class PathFinder {
                 return path;
             }
 
-            for (RSWalkableTile neighbour : currentNode.getNeighbors(walkableTiles)) {
+            for (RSTile neighbour : currentNode.getNeighbors(walkableTiles)) {
                 if (!currentNode.isWalkable(neighbour) || closedNodes.contains(neighbour)) {
                     continue;
                 }
@@ -80,9 +80,9 @@ public class PathFinder {
     }
 
 
-    private List<RSWalkableTile> getPath(RSWalkableTile startNode, RSWalkableTile endNode) {
-        List<RSWalkableTile> path = new ArrayList<>();
-        RSWalkableTile currentNode = endNode;
+    private List<RSTile> getPath(RSTile startNode, RSTile endNode) {
+        List<RSTile> path = new ArrayList<>();
+        RSTile currentNode = endNode;
 
         while (currentNode != startNode) {
             path.add(currentNode);
@@ -93,7 +93,7 @@ public class PathFinder {
         return path;
     }
 
-    private int getDistance(RSWalkableTile nodeA, RSWalkableTile nodeB) {
+    private int getDistance(RSTile nodeA, RSTile nodeB) {
         int distanceX = Math.abs(nodeA.getWorldLocation().getX() - nodeB.getWorldLocation().getX());
         int distanceY = Math.abs(nodeA.getWorldLocation().getY() - nodeB.getWorldLocation().getY());
 

@@ -1,11 +1,13 @@
 package net.runelite.client.plugins.alfred.debug;
 
 
+import com.google.gson.JsonArray;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.plugins.alfred.Alfred;
 import net.runelite.client.plugins.alfred.api.rs.item.RSGroundItem;
 import net.runelite.client.plugins.alfred.api.rs.npc.RSNpc;
 import net.runelite.client.plugins.alfred.api.rs.player.RSPlayer;
+import net.runelite.client.plugins.alfred.api.rs.walk.RSWalkableTile;
 import net.runelite.client.plugins.alfred.device.Keyboard;
 import net.runelite.client.plugins.alfred.device.Mouse;
 
@@ -27,16 +29,25 @@ public class DebugThread extends Thread {
 
     @Override
     public void run() {
-        worldPointViewer();
+        walkToGEBank();
     }
 
-    private void worldPointViewer() {
-        Alfred.setStatus("Starting world point viewer");
-        WorldPoint start = new WorldPoint(3183, 3444, 0);
-//        WorldPoint end = new WorldPoint(3171, 3436, 0);
-//        PathFinder pathFinder = new PathFinder(Alfred.api.walk().getWalkableTiles());
-//        pathFinder.getPath(start, end);
+//    private void collectWalkableTiles() {
+//        Alfred.setStatus("Starting tile collection");
+/////home/griffin/PycharmProjects/runlitebot/tiles/data
+//        while (true) {
+//
+//            JsonArray tiles = new JsonArray();
+//            for (RSWalkableTile rsWalkableTile : Alfred.api.walk().getWalkableTiles()) {
+//
+//            }
+//        }
+//
+//    }
 
+    private void walkToGEBank() {
+        Alfred.setStatus("Starting walker");
+        WorldPoint start = new WorldPoint(3183, 3444, 0);
         Alfred.api.walk().walkTo(start);
     }
 

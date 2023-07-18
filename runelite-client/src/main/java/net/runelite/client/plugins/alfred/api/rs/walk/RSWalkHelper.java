@@ -28,7 +28,7 @@ public class RSWalkHelper {
         RSPlayer player = Alfred.api.players().getLocalPlayer();
         WorldPoint start = player.getWorldLocation();
         PathFinder pathFinder = new PathFinder(Alfred.api.walk().getWalkableTiles());
-        List<RSWalkableTile> pathTiles = pathFinder.getPath(start, worldPoint);
+        List<RSTile> pathTiles = pathFinder.getPath(start, worldPoint);
 
         if (pathTiles == null) {
             return false;
@@ -36,7 +36,7 @@ public class RSWalkHelper {
 
         Alfred.sleepUntil(() -> !player.isMoving() && !player.isInteracting() && player.isIdle(), 500, 1000 * 10);
 
-        for (RSWalkableTile tile : pathTiles) {
+        for (RSTile tile : pathTiles) {
             int distance = (int) Calculations.distanceBetweenPoints(player.getWorldLocation(), tile.getWorldLocation());
             Point minimapPoint = Alfred.api.miniMap().getWorldPointToScreenPoint(tile.getWorldLocation());
 
@@ -44,17 +44,29 @@ public class RSWalkHelper {
                 continue;
             }
 
-            if (distance >= 7 || tile.isOperable() || tile.equals(pathTiles.get(pathTiles.size() - 1))) {
+            boolean isLastTile = tile.equals(pathTiles.get(pathTiles.size() - 1));
+
+            if (distance >= 7 || tile.isOperable() || isLastTile) {
                 Alfred.getMouse().leftClick(minimapPoint);
                 Alfred.sleep(1000);
-                Alfred.sleepUntil(() -> !player.isMoving() && !player.isInteracting() && player.isIdle(), 200, 1000 * 30);
+                Alfred.sleepUntil(() -> {
+                    int distanceToTarget = (int) Calculations.distanceBetweenPoints(player.getWorldLocation(), tile.getWorldLocation());
+                    boolean isStill = !player.isMoving() && !player.isInteracting() && player.isIdle();
+
+                    if (isLastTile) {
+                        return isStill;
+                    }
+
+                    boolean nearTile = distanceToTarget <= 2;
+                    return isStill || nearTile;
+                }, 200, 1000 * 30);
             }
         }
 
         return true;
     }
 
-    public List<RSWalkableTile> getPath() {
+    public List<RSTile> getPath() {
         return PathFinder.path;
     }
 
@@ -108,8 +120,8 @@ public class RSWalkHelper {
         return new HashSet<>();
     }
 
-    public List<RSWalkableTile> getWalkableTiles() {
-        List<RSWalkableTile> walkableTiles = new ArrayList<>();
+    public List<RSTile> getWalkableTiles() {
+        List<RSTile> walkableTiles = new ArrayList<>();
 
         for (Tile tile : Alfred.api.world().getTiles()) {
             Set<WorldMovementFlag> movementFlags = getMovementFlagsForTile(tile);
