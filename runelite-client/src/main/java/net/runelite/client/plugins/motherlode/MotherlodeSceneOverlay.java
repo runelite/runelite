@@ -115,7 +115,11 @@ class MotherlodeSceneOverlay extends Overlay
 				LocalPoint location = rock.getLocalLocation();
 				if (localLocation.distanceTo(location) <= MAX_DISTANCE)
 				{
-					renderRock(graphics, rock);
+					// Only draw rockfalls on the same level
+					if (plugin.isUpstairs(localLocation) == plugin.isUpstairs(rock.getLocalLocation()))
+					{
+						renderRock(graphics, rock);
+					}
 				}
 			}
 		}
