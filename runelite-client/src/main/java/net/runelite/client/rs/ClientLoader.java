@@ -561,6 +561,10 @@ public class ClientLoader implements Supplier<Applet>
 				{
 					name = name.substring(0, name.length() - 6);
 					classLoader.loadClass(name.replace('/', '.'));
+					if (!name.contains("/"))
+					{
+						Class.forName(name, true, classLoader);
+					}
 				}
 			}
 
