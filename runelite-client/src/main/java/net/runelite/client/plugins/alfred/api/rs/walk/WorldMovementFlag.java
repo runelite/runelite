@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
+public
 enum WorldMovementFlag {
     BLOCK_MOVEMENT_NORTH_WEST(CollisionDataFlag.BLOCK_MOVEMENT_NORTH_WEST),
     BLOCK_MOVEMENT_NORTH(CollisionDataFlag.BLOCK_MOVEMENT_NORTH),

@@ -1,19 +1,23 @@
 package net.runelite.client.plugins.alfred.debug;
 
 
-import com.google.gson.JsonArray;
+import net.runelite.api.Point;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.plugins.alfred.Alfred;
 import net.runelite.client.plugins.alfred.api.rs.item.RSGroundItem;
+import net.runelite.client.plugins.alfred.api.rs.math.Calculations;
 import net.runelite.client.plugins.alfred.api.rs.npc.RSNpc;
 import net.runelite.client.plugins.alfred.api.rs.player.RSPlayer;
-import net.runelite.client.plugins.alfred.api.rs.walk.RSWalkableTile;
+import net.runelite.client.plugins.alfred.api.rs.walk.PathFinder;
+import net.runelite.client.plugins.alfred.api.rs.walk.RSTile;
 import net.runelite.client.plugins.alfred.device.Keyboard;
 import net.runelite.client.plugins.alfred.device.Mouse;
 
 import java.awt.*;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 public class DebugThread extends Thread {
@@ -21,6 +25,8 @@ public class DebugThread extends Thread {
     Mouse mouse = Alfred.getMouse();
     Keyboard keyboard = Alfred.getKeyboard();
     Canvas canvas = Alfred.getClient().getCanvas();
+
+//    public ExecutorService executor = Executors.newFixedThreadPool(100);
 
     public DebugThread() {
         this.setDaemon(true);
@@ -32,23 +38,108 @@ public class DebugThread extends Thread {
         walkToGEBank();
     }
 
+    public void randomWalk() {
+        PathFinder pathFinder = new PathFinder(Alfred.api.walk().getWalkableTiles());
+        Alfred.setStatus("Walk randomly in a direction, sleeping for 10 seconds");
+        for (int i = 0; i < 10; i++) {
+            Alfred.setStatus("Time: " + i);
+            Alfred.sleep(1000);
+        }
+
+
+        for (int j = 0; j < 1000; j++) {
+            List<RSTile> newTiles = Alfred.api.walk().getWalkableTiles();
+            WorldPoint newPoint = pathFinder.getFurthestUnexploredWorldPointFromPlayer(newTiles);
+            if (newPoint == null) {
+                Alfred.setStatus("No new points to explore, sleeping for 10 seconds");
+                for (int i = 0; i < 10; i++) {
+                    Alfred.setStatus("Time: " + i);
+                    Alfred.sleep(1000);
+                }
+
+            } else {
+
+                Alfred.setStatus("Walking to new point: " + newPoint.toString());
+                pathFinder.addTiles(newTiles);
+
+                RSPlayer player = Alfred.api.players().getLocalPlayer();
+                WorldPoint playerPoint = player.getWorldLocation();
+
+                List<RSTile> pathTiles = pathFinder.getPath(playerPoint, newPoint);
+
+                if (pathTiles != null) {
+                    Alfred.sleepUntil(() -> !player.isMoving() && !player.isInteracting() && player.isIdle(), 500, 1000 * 10);
+
+                    for (RSTile tile : pathTiles) {
+                        int distance = (int) Calculations.distanceBetweenPoints(player.getWorldLocation(), tile.getWorldLocation());
+                        Point minimapPoint = Alfred.api.miniMap().getWorldPointToScreenPoint(tile.getWorldLocation());
+
+                        if (minimapPoint == null) {
+                            continue;
+                        }
+
+                        boolean isLastTile = tile.equals(pathTiles.get(pathTiles.size() - 1));
+
+                        if (isLastTile) {
+                            Alfred.getMouse().leftClick(minimapPoint);
+                            Alfred.sleep(1000);
+                            Alfred.sleepUntil(() -> !player.isMoving() && !player.isInteracting() && player.isIdle(), 200, 1000 * 30);
+
+                        } else if (distance < 7) {
+                            Alfred.getMouse().leftClick(minimapPoint);
+                            Alfred.sleep(1000);
+                            Alfred.sleepUntil(() -> !player.isMoving() && !player.isInteracting() && player.isIdle(), 200, 1000 * 30);
+
+                        } else if (distance >= 7 || tile.isOperable()) {
+                            Alfred.getMouse().leftClick(minimapPoint);
+                            Alfred.sleep(1000);
+                            Alfred.sleepUntil(() -> {
+                                int distanceToTarget = (int) Calculations.distanceBetweenPoints(player.getWorldLocation(), tile.getWorldLocation());
+                                boolean isStill = !player.isMoving() && !player.isInteracting() && player.isIdle();
+                                boolean nearTile = distanceToTarget <= 2;
+                                return isStill || nearTile;
+                            }, 200, 1000 * 30);
+                        }
+                    }
+                } else {
+                    Alfred.setStatus("No path found to new point, sleeping for 10 seconds");
+                    for (int i = 0; i < 10; i++) {
+                        Alfred.setStatus("Time: " + i);
+                        Alfred.sleep(1000);
+                    }
+                }
+            }
+        }
+    }
+
+
 //    private void collectWalkableTiles() {
 //        Alfred.setStatus("Starting tile collection");
-/////home/griffin/PycharmProjects/runlitebot/tiles/data
+//        int count = 0;
 //        while (true) {
-//
-//            JsonArray tiles = new JsonArray();
-//            for (RSWalkableTile rsWalkableTile : Alfred.api.walk().getWalkableTiles()) {
-//
-//            }
+//            Runnable worker = new WorldDataCollectorThread(count);
+//            executor.execute(worker);
+//            Alfred.setStatus("Starting worker: " + count);
+//            Alfred.sleep(5000);
+//            count++;
 //        }
-//
 //    }
 
     private void walkToGEBank() {
         Alfred.setStatus("Starting walker");
-        WorldPoint start = new WorldPoint(3183, 3444, 0);
-        Alfred.api.walk().walkTo(start);
+        WorldPoint ge = new WorldPoint(3164, 3486, 0);
+        WorldPoint geBank = new WorldPoint(3183, 3444, 0);
+        WorldPoint lumbridge = new WorldPoint(3122, 3218, 0);
+        WorldPoint cows = new WorldPoint(3259, 3267, 0);
+        WorldPoint chickens = new WorldPoint(3234, 3294, 0);
+        WorldPoint varrockBank = new WorldPoint(3253, 3421, 0);
+        WorldPoint edgevilleBank = new WorldPoint(3094, 3495, 0);
+
+//        Alfred.setStatus("Walking to lumbridge");
+//        Alfred.api.walk().walkTo(cows);
+//        Alfred.sleep(1000);
+        Alfred.setStatus("Walking to edgevilleBank");
+        Alfred.api.walk().walkTo(edgevilleBank);
     }
 
     private void chickenKiller() {

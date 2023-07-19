@@ -1,5 +1,6 @@
 package net.runelite.client.plugins.alfred.api.rs.walk;
 
+import lombok.Getter;
 import net.runelite.api.Perspective;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.WorldPoint;
@@ -11,12 +12,12 @@ import java.util.Set;
 
 public class RSWalkableTile extends RSTile {
 
+    @Getter
     private final Tile tile;
 
     public RSWalkableTile(Tile tile) {
         this.tile = tile;
     }
-
 
     @Override
     public WorldPoint getWorldLocation() {
@@ -37,7 +38,6 @@ public class RSWalkableTile extends RSTile {
     public Polygon getCanvasPolygon() {
         return Perspective.getCanvasTilePoly(Alfred.getClient(), tile.getLocalLocation());
     }
-
 
     @Override
     public boolean isWalkable(RSTile otherNode) {

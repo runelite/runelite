@@ -21,7 +21,7 @@ public class RSWalkHelper {
 
     public RSWalkHelper() {
         operableObjectIds = new ArrayList<>();
-        getOperateObjectIds();
+        gatherOperableObjectIds();
     }
 
     public boolean walkTo(WorldPoint worldPoint) {
@@ -31,6 +31,7 @@ public class RSWalkHelper {
         List<RSTile> pathTiles = pathFinder.getPath(start, worldPoint);
 
         if (pathTiles == null) {
+            Alfred.setStatus("Path is null");
             return false;
         }
 
@@ -39,24 +40,31 @@ public class RSWalkHelper {
         for (RSTile tile : pathTiles) {
             int distance = (int) Calculations.distanceBetweenPoints(player.getWorldLocation(), tile.getWorldLocation());
             Point minimapPoint = Alfred.api.miniMap().getWorldPointToScreenPoint(tile.getWorldLocation());
+            boolean isLastTile = tile.equals(pathTiles.get(pathTiles.size() - 1));
 
             if (minimapPoint == null) {
+                System.out.println("Minimap point is null");
+                if (distance <= 3 && isLastTile) {
+                    System.out.println("Close enough");
+                    return true;
+                }
                 continue;
             }
 
-            boolean isLastTile = tile.equals(pathTiles.get(pathTiles.size() - 1));
 
-            if (distance >= 7 || tile.isOperable() || isLastTile) {
+            if (isLastTile) {
+                System.out.println("Is last tile");
+                Alfred.getMouse().leftClick(minimapPoint);
+                Alfred.sleep(1000);
+                Alfred.sleepUntil(() -> !player.isMoving() && !player.isInteracting() && player.isIdle(), 200, 1000 * 10);
+
+            } else if (distance >= 7 || tile.isOperable()) {
+                System.out.println("Less than 7 tiles away or operable");
                 Alfred.getMouse().leftClick(minimapPoint);
                 Alfred.sleep(1000);
                 Alfred.sleepUntil(() -> {
                     int distanceToTarget = (int) Calculations.distanceBetweenPoints(player.getWorldLocation(), tile.getWorldLocation());
                     boolean isStill = !player.isMoving() && !player.isInteracting() && player.isIdle();
-
-                    if (isLastTile) {
-                        return isStill;
-                    }
-
                     boolean nearTile = distanceToTarget <= 2;
                     return isStill || nearTile;
                 }, 200, 1000 * 30);
@@ -70,7 +78,7 @@ public class RSWalkHelper {
         return PathFinder.path;
     }
 
-    private void getOperateObjectIds() {
+    private void gatherOperableObjectIds() {
         Field[] fields = ObjectID.class.getDeclaredFields();
         for (Field field : fields) {
             field.setAccessible(true);

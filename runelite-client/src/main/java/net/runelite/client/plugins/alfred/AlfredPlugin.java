@@ -50,15 +50,17 @@ public class AlfredPlugin extends Plugin {
         eventSelector = new EventSelector(clientToolbar);
         eventSelector.startUp();
 
-        debugThread = new DebugThread();
-        debugThread.start();
+//        debugThread = new DebugThread();
+//        debugThread.start();
 
         log.info("Alfred is suited up!");
     }
 
     @Override
     protected void shutDown() throws Exception {
-        debugThread.stop();
+//        debugThread.executor.shutdown();
+//        while (!debugThread.executor.isTerminated()) {}
+//        debugThread.stop();
         eventSelector.shutDown();
         overlayManager.remove(overlay);
         alfred.stop();

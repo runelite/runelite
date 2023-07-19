@@ -64,23 +64,7 @@ public class AlfredOverlay extends Overlay {
     private void drawWalkablePoints(Graphics2D graphics) {
         graphics.setColor(Color.GREEN);
 
-//        for (RSWalkableTile rsWalkableTile : Alfred.api.walk().getWalkableTiles()) {
-//
-//            Polygon poly = rsWalkableTile.getCanvasPolygon();
-//
-//            if (poly == null) {
-//                continue;
-//            }
-//
-//            graphics.setColor(Color.GREEN);
-//            if (rsWalkableTile.isOperable()) {
-//                graphics.setColor(Color.YELLOW);
-//            }
-//
-//            graphics.drawPolygon(poly);
-//        }
-
-        for (RSTile rsWalkableTile : Alfred.api.walk().getPath()) {
+        for (RSTile rsWalkableTile : Alfred.api.walk().getWalkableTiles()) {
 
             Polygon poly = rsWalkableTile.getCanvasPolygon();
 
@@ -88,13 +72,48 @@ public class AlfredOverlay extends Overlay {
                 continue;
             }
 
-            graphics.setColor(Color.BLUE);
+            graphics.setColor(Color.GREEN);
             if (rsWalkableTile.isOperable()) {
-                graphics.setColor(Color.RED);
+                graphics.setColor(Color.YELLOW);
             }
 
             graphics.drawPolygon(poly);
         }
+
+//        for (RSTile rsWalkableTile : Alfred.api.walk().getPath()) {
+//
+//            Polygon poly = rsWalkableTile.getCanvasPolygon();
+//
+//            if (poly == null) {
+//                continue;
+//            }
+//
+//            graphics.setColor(Color.BLUE);
+//            if (rsWalkableTile.isOperable()) {
+//                graphics.setColor(Color.RED);
+//            }
+//
+//            graphics.drawPolygon(poly);
+//        }
+
+//        for (RSTile currentWalkableTile : Alfred.api.walk().getWalkableTiles()) {
+//            for (RSTile pathTile : Alfred.api.walk().getPath()) {
+//                if (currentWalkableTile.getWorldLocation().equals(pathTile.getWorldLocation())) {
+//                    Polygon poly = currentWalkableTile.getCanvasPolygon();
+//
+//                    if (poly == null) {
+//                        continue;
+//                    }
+//
+//                    graphics.setColor(Color.BLUE);
+//                    if (currentWalkableTile.isOperable()) {
+//                        graphics.setColor(Color.RED);
+//                    }
+//
+//                    graphics.drawPolygon(poly);
+//                }
+//            }
+//        }
 
     }
 }
