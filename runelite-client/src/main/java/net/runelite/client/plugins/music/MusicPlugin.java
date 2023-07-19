@@ -308,6 +308,7 @@ public class MusicPlugin extends Plugin
 	}
 
 	@Subscribe
+	@SuppressWarnings("PMD.UnconditionalIfStatement")  //TODO: Remove PMD Supression
 	public void onVolumeChanged(VolumeChanged volumeChanged)
 	{
 		if (false)
@@ -317,6 +318,7 @@ public class MusicPlugin extends Plugin
 	}
 
 	@Subscribe
+	@SuppressWarnings("PMD.UnconditionalIfStatement") //TODO: Remove PMD Supression
 	public void onConfigChanged(ConfigChanged configChanged)
 	{
 		if (configChanged.getGroup().equals(MusicConfig.GROUP))
