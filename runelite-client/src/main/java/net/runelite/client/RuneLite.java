@@ -177,6 +177,7 @@ public class RuneLite
 			.defaultsTo(RuneLiteProperties.getJavConfig());
 		parser.accepts("disable-telemetry", "Disable telemetry");
 		parser.accepts("profile", "Configuration profile to use").withRequiredArg();
+		parser.accepts("noupdate", "Skips the launcher update");
 
 		final ArgumentAcceptingOptionSpec<File> sessionfile = parser.accepts("sessionfile", "Use a specified session file")
 			.withRequiredArg()
@@ -277,7 +278,8 @@ public class RuneLite
 				options.has("disable-telemetry"),
 				options.valueOf(sessionfile),
 				(String) options.valueOf("profile"),
-				options.has(insecureWriteCredentials)
+				options.has(insecureWriteCredentials),
+				options.has("noupdate")
 			));
 
 			injector.getInstance(RuneLite.class).start();
@@ -322,17 +324,9 @@ public class RuneLite
 			applet.setSize(Constants.GAME_FIXED_SIZE);
 
 			System.setProperty("jagex.disableBouncyCastle", "true");
-			// Change user.home so the client places jagexcache in the .runelite directory
-			String oldHome = System.setProperty("user.home", RUNELITE_DIR.getAbsolutePath());
-			try
-			{
-				applet.init();
-			}
-			finally
-			{
-				System.setProperty("user.home", oldHome);
-			}
+			System.setProperty("jagex.userhome", RUNELITE_DIR.getAbsolutePath());
 
+			applet.init();
 			applet.start();
 		}
 
@@ -346,6 +340,10 @@ public class RuneLite
 
 		// Tell the plugin manager if client is outdated or not
 		pluginManager.setOutdated(isOutdated);
+
+		// Update check requires ConfigManager to be ready before it runs
+		Updater updater = injector.getInstance(Updater.class);
+		updater.update(); // will exit if an update is in progress
 
 		// Load the plugins, but does not start them yet.
 		// This will initialize configuration
@@ -397,6 +395,7 @@ public class RuneLite
 		if (telemetryClient != null)
 		{
 			telemetryClient.submitTelemetry();
+			telemetryClient.submitVmErrors(LOGS_DIR);
 		}
 
 		ReflectUtil.queueInjectorAnnotationCacheInvalidation(injector);

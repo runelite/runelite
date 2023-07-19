@@ -681,6 +681,24 @@ public interface Client extends OAuthApi, GameEngine
 	boolean isMenuOpen();
 
 	/**
+	 * Returns whether the currently open menu is scrollable.
+	 * @return
+	 */
+	boolean isMenuScrollable();
+
+	/**
+	 * Get the number of entries the currently open menu has been scrolled down.
+	 * @return
+	 */
+	int getMenuScroll();
+
+	/**
+	 * Set the number of entries the currently open menu has been scrolled down.
+	 * @param scroll
+	 */
+	void setMenuScroll(int scroll);
+
+	/**
 	 * Get the menu x location. Only valid if the menu is open.
 	 *
 	 * @return the menu x location
@@ -1115,7 +1133,7 @@ public interface Client extends OAuthApi, GameEngine
 	 * @param endHeight end height of projectile - excludes tile height
 	 * @param target optional actor target
 	 * @param targetX target x - if an actor target is supplied should be the target x
-	 * @param targetY taret y - if an actor target is supplied should be the target y
+	 * @param targetY target y - if an actor target is supplied should be the target y
 	 * @return the new projectile
 	 */
 	Projectile createProjectile(int id, int plane, int startX, int startY, int startZ, int startCycle, int endCycle,
@@ -1198,17 +1216,6 @@ public interface Client extends OAuthApi, GameEngine
 	 * @param volume 0-255 inclusive
 	 */
 	void setMusicVolume(int volume);
-
-	/**
-	 * @return true if the current {@link #getMusicCurrentTrackId()} is a Jingle, otherwise its a Track
-	 */
-	boolean isPlayingJingle();
-
-	/**
-	 * @return Currently playing music/jingle id, or -1 if not playing
-	 * @see #isPlayingJingle()
-	 */
-	int getMusicCurrentTrackId();
 
 	/**
 	 * Play a sound effect at the player's current location. This is how UI,

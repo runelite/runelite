@@ -684,12 +684,14 @@ public final class Varbits
 	public static final int WIKI_ENTITY_LOOKUP = 10113;
 
 	/**
-	 * Whether the Special Attack orb is disabled due to being in a PvP area
+	 * Whether the player is in a PvP area
 	 * <p>
-	 * 0 = Enabled (player is not in PvP)
-	 * 1 = Disabled (player is in PvP)
-	 *
-	 * @see <a href="https://oldschool.runescape.wiki/w/Minimap#Special_attack_orb">The OSRS Wiki's Minimap page</a>
+	 * 0 = Player is not in PvP area
+	 * 1 = Player is in PvP area
+	 * <p>
+	 * Note: The name of this varbit comes from historical behavior where
+	 * the special attack orb would be disabled in PvP, but this was changed
+	 * on 2023-03-09 due to Poll 78. Yet, the varbit still updates as before.
 	 */
 	public static final int PVP_SPEC_ORB = 8121;
 
@@ -828,4 +830,11 @@ public final class Varbits
 	public static final int DISABLE_LEVEL_UP_INTERFACE = 9452;
 
 	public static final int PRAYERBOOK = 14826;
+
+	/**
+	 * During and after Curse of the Empty Lord, Viggora can be located in one of three locations,
+	 * which is uniquely and permanently set for each player.
+	 * This varbit determines which location he will appear in, which is useful for a master clue step.
+	 */
+	public static final int VIGGORA_LOCATION = 815;
 }

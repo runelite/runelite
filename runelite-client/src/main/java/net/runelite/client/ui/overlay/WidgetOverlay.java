@@ -82,11 +82,29 @@ public class WidgetOverlay extends Overlay
 			new WidgetOverlay(client, WidgetInfo.MULTICOMBAT_RESIZABLE_MODERN, OverlayPosition.CANVAS_TOP_RIGHT),
 			new WidgetOverlay(client, WidgetInfo.MULTICOMBAT_RESIZABLE_CLASSIC, OverlayPosition.CANVAS_TOP_RIGHT),
 			new WidgetOverlay(client, WidgetInfo.TEMPOROSS_STATUS_INDICATOR, OverlayPosition.TOP_LEFT),
+			new WidgetOverlay(client, WidgetInfo.TEMPOROSS_LOBBY, OverlayPosition.TOP_LEFT),
 			new WidgetOverlay(client, WidgetInfo.BA_HEAL_TEAMMATES, OverlayPosition.BOTTOM_LEFT),
 			new WidgetOverlay(client, WidgetInfo.BA_TEAM, OverlayPosition.TOP_RIGHT),
 			new WidgetOverlay(client, WidgetInfo.PVP_WILDERNESS_SKULL_CONTAINER, OverlayPosition.DYNAMIC),
 			new WidgetOverlay(client, WidgetInfo.TOA_PARTY_LAYER, OverlayPosition.TOP_LEFT),
-			new WidgetOverlay(client, WidgetInfo.TOA_RAID_LAYER, OverlayPosition.TOP_LEFT)
+			new WidgetOverlay(client, WidgetInfo.TOA_RAID_LAYER, OverlayPosition.TOP_LEFT),
+			new WidgetOverlay(client, WidgetInfo.GOTR_MAIN_DISPLAY, OverlayPosition.TOP_LEFT),
+			new WidgetOverlay(client, WidgetInfo.TROUBLE_BREWING_SCORE, OverlayPosition.BOTTOM_RIGHT),
+			new WidgetOverlay(client, WidgetInfo.TROUBLE_BREWING_LOBBY, OverlayPosition.BOTTOM_RIGHT),
+			new WidgetOverlay(client, WidgetInfo.MORTTON_TEMPLE_STATUS, OverlayPosition.TOP_RIGHT),
+			new WidgetOverlay(client, WidgetInfo.BGR_RANK_DISPLAY_DRAUGHTS, OverlayPosition.TOP_RIGHT),
+			new WidgetOverlay(client, WidgetInfo.BGR_RANK_DISPLAY_RUNELINK, OverlayPosition.TOP_RIGHT),
+			new WidgetOverlay(client, WidgetInfo.BGR_RANK_DISPLAY_RUNESQUARES, OverlayPosition.TOP_RIGHT),
+			new WidgetOverlay(client, WidgetInfo.BGR_RANK_DISPLAY_RUNEVERSI, OverlayPosition.TOP_RIGHT),
+			new WidgetOverlay(client, WidgetInfo.AGILITY_ARENA_LIGHT_INDICATOR, OverlayPosition.TOP_RIGHT),
+			new WidgetOverlay(client, WidgetInfo.GNOMEBALL_SCORE, OverlayPosition.TOP_RIGHT),
+			new WidgetOverlay(client, WidgetInfo.MTA_ALCHEMY_POINTS, OverlayPosition.TOP_RIGHT),
+			new WidgetOverlay(client, WidgetInfo.MTA_ENCHANT_POINTS, OverlayPosition.TOP_RIGHT),
+			new WidgetOverlay(client, WidgetInfo.MTA_ENCHANT_BONUS, OverlayPosition.BOTTOM_RIGHT),
+			new WidgetOverlay(client, WidgetInfo.MTA_TELEKINETIC_POINTS, OverlayPosition.TOP_RIGHT),
+			new WidgetOverlay(client, WidgetInfo.MTA_TELEKINETIC_SOLVED, OverlayPosition.BOTTOM_RIGHT),
+			new WidgetOverlay(client, WidgetInfo.MTA_GRAVEYARD_POINTS, OverlayPosition.TOP_RIGHT),
+			new WidgetOverlay(client, WidgetInfo.MTA_GRAVEYARD_VALUES, OverlayPosition.BOTTOM_RIGHT)
 		);
 	}
 

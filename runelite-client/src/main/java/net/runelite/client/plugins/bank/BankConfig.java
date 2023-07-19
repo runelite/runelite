@@ -137,7 +137,7 @@ public interface BankConfig extends Config
 	@ConfigItem(
 		keyName = "searchKeybind",
 		name = "Search Shortcut",
-		description = "Keyboard shortcut for initiating a bank search",
+		description = "Keyboard shortcut for initiating a bank or seed vault search",
 		position = 10
 	)
 	default Keybind searchKeybind()

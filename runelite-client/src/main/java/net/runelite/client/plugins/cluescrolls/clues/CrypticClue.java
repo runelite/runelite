@@ -28,13 +28,17 @@ import com.google.common.collect.ImmutableList;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.List;
+import java.util.function.Function;
 import javax.annotation.Nullable;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.NPC;
 import static net.runelite.api.NullObjectID.NULL_1293;
 import net.runelite.api.ObjectComposition;
 import static net.runelite.api.ObjectID.*;
 import net.runelite.api.TileObject;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
@@ -49,6 +53,7 @@ import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
 @Getter
+@Slf4j
 public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClueScroll
 {
 	static final List<CrypticClue> CLUES = ImmutableList.of(
@@ -83,7 +88,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		new CrypticClue("I wouldn't wear this jean on my legs.", "Father Jean", new WorldPoint(1734, 3576, 0), "Talk to father Jean in the Hosidius church."),
 		new CrypticClue("Search the crate in the Toad and Chicken pub.", CRATE_354, new WorldPoint(2913, 3536, 0), "The Toad and Chicken pub is located in Burthorpe."),
 		new CrypticClue("Search chests found in the upstairs of shops in Port Sarim.", CLOSED_CHEST_375, new WorldPoint(3016, 3205, 1), "Search the chest on the east wall found upstairs of Wydin's Food Store in Port Sarim."),
-		new CrypticClue("Right on the blessed border, cursed by the evil ones. On the spot inaccessible by both; I will be waiting. The bugs' imminent possession holds the answer.", new WorldPoint(3410, 3324, 0), "B I P. Dig right under the fairy ring."),
+		new CrypticClue("Right on the blessed border, cursed by the evil ones. On the spot inaccessible by both; I will be waiting. The bugs' imminent possession holds the answer.", new WorldPoint(3410, 3324, 0), "Dig right under the fairy ring BIP."),
 		new CrypticClue("The dead, red dragon watches over this chest. He must really dig the view.", "Barbarian", 375, new WorldPoint(3353, 3332, 0), "Search the chest underneath the Red Dragon's head in the Exam Centre. Kill a Barbarian in Barbarian Village or Barbarian Outpost to receive the key."),
 		new CrypticClue("My home is grey, and made of stone; A castle with a search for a meal. Hidden in some drawers I am, across from a wooden wheel.", DRAWERS_5618, new WorldPoint(3213, 3216, 1), "Open the drawers inside the room with the spinning wheel on the first floor of Lumbridge Castle."),
 		new CrypticClue("Come to the evil ledge, Yew know yew want to. Try not to get stung.", new WorldPoint(3089, 3468, 0), "Dig in Edgeville, just east of the Southern Yew tree."),
@@ -113,7 +118,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		new CrypticClue("I have many arms but legs, I have just one. I have little family but my seed you can grow on, I am not dead, yet I am but a spirit, and my power, on your quests, you will earn the right to free it.", NULL_1293, new WorldPoint(2544, 3170, 0), "Spirit Tree in Tree Gnome Village. Answer: 13112221", "What is the next number in the sequence? 1, 11, 21, 1211, 111221, 312211"),
 		new CrypticClue("I am the one who watches the giants. The giants in turn watch me. I watch with two while they watch with one. Come seek where I may be.", "Kamfreena", new WorldPoint(2840, 3538, 0), "Speak to Kamfreena on the top floor of the Warriors' Guild."),
 		new CrypticClue("In a town where wizards are known to gather, search upstairs in a large house to the north.", "Man", 375, new WorldPoint(2593, 3108, 1), "Search the chest upstairs in the house north of Yanille Wizard's Guild. Kill a man for the key."),
-		new CrypticClue("Probably filled with wizards socks.", "Wizard", DRAWERS_350, new WorldPoint(3116, 9562, 0), "Search the drawers in the basement of the Wizard's Tower south of Draynor Village. Kill one of the Wizards for the key. Fairy ring DIS"),
+		new CrypticClue("Probably filled with wizards socks.", "Wizard", DRAWERS_350, new WorldPoint(3116, 9562, 0), "Search the drawers in the basement of the Wizard's Tower south of Draynor Village. Kill one of the Wizards for the key. Fairy ring DIS."),
 		new CrypticClue("Even the seers say this clue goes right over their heads.", CRATE_14934, new WorldPoint(2707, 3488, 2), "Search the crate on the Seers Agility Course in Seers Village"),
 		new CrypticClue("Speak to a Wyse man.", "Wyson the gardener", new WorldPoint(3026, 3378, 0), "Talk to Wyson the gardener at Falador Park."),
 		new CrypticClue("You'll need to look for a town with a central fountain. Look for a locked chest in the town's chapel.", "Monk" , CLOSED_CHEST_5108, new WorldPoint(3256, 3487, 0), "Search the chest by the stairs in the Varrock church. Kill a Monk in Ardougne Monastery to obtain the key."),
@@ -121,7 +126,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		new CrypticClue("Mine was the strangest birth under the sun. I left the crimson sack, yet life had not begun. Entered the world, and yet was seen by none.", new WorldPoint(2832, 9586, 0), "Inside Karamja Volcano, dig directly underneath the Red spiders' eggs respawn."),
 		new CrypticClue("Search for a crate in Varrock Castle.", CRATE_5113, new WorldPoint(3224, 3492, 0), "Search the crate in the corner of the kitchen in Varrock Castle."),
 		new CrypticClue("And so on, and so on, and so on. Walking from the land of many unimportant things leads to a choice of paths.", new WorldPoint(2591, 3879, 0), "Dig on Etceteria next to the Evergreen tree in front of the castle walls."),
-		new CrypticClue("Speak to Donovan, the Family Handyman.", "Donovan the Family Handyman", new WorldPoint(2737, 3580, 0), "Donovan the Family Handyman is found on the first floor of Sinclair Mansion, north of Seers' Village."),
+		new CrypticClue("Speak to Donovan, the Family Handyman.", "Donovan the Family Handyman", new WorldPoint(2737, 3580, 0), "Donovan the Family Handyman is found on the first floor of Sinclair Mansion, north of Seers' Village. Fairy ring CJR."),
 		new CrypticClue("Search the crates in the Barbarian Village helmet shop.", CRATES_11600, new WorldPoint(3073, 3430, 0), "Peksa's Helmet Shop in Barbarian Village."),
 		new CrypticClue("Search the boxes of Falador's general store.", CRATES_24088, new WorldPoint(2955, 3390, 0), "Falador general store."),
 		new CrypticClue("In a village made of bamboo, look for some crates under one of the houses.", CRATE_356, new WorldPoint(2800, 3074, 0), "Search the crate by the house at the northern point of the broken jungle fence in Tai Bwo Wannai."),
@@ -143,7 +148,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		new CrypticClue("Search the Coffin in Edgeville.", COFFIN, new WorldPoint(3091, 3477, 0), "Search the coffin located by the Edgeville Wilderness teleport lever."),
 		new CrypticClue("When no weapons are at hand, then is the time to reflect. In Saradomin's name, redemption draws closer...", DRAWERS_350, new WorldPoint(2818, 3351, 0), "On Entrana, search the southern drawer in the house with the cooking range."),
 		new CrypticClue("Search the crates in a house in Yanille that has a piano.", CRATE_357, new WorldPoint(2598, 3105, 0), "The house is located northwest of the bank in Yanille."),
-		new CrypticClue("Speak to the staff of Sinclair mansion.", "Louisa", new WorldPoint(2736, 3578, 0), "Speak to Louisa, on the ground floor, found at the Sinclair Mansion. Fairy ring CJR"),
+		new CrypticClue("Speak to the staff of Sinclair mansion.", "Louisa", new WorldPoint(2736, 3578, 0), "Speak to Louisa, on the ground floor, found at the Sinclair Mansion. Fairy ring CJR."),
 		new CrypticClue("I am a token of the greatest love. I have no beginning or end. My eye is red, I can fit like a glove. Go to the place where it's money they lend, And dig by the gate to be my friend.", new WorldPoint(3191, 9825, 0), "Dig by the gate in the basement of the West Varrock bank."),
 		new CrypticClue("Speak to Kangai Mau.", "Kangai Mau", new WorldPoint(2791, 3183, 0), "Kangai Mau is found in the Shrimp and Parrot in Brimhaven."),
 		new CrypticClue("Speak to Hajedy.", "Hajedy", new WorldPoint(2779, 3211, 0), "Hajedy is found by the cart, located just south of the Brimhaven docks."),
@@ -264,7 +269,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		new CrypticClue("Thanks, Grandma!", "Tynan", new WorldPoint(1836, 3786, 0), "Tynan can be found in the north-east corner of Port Piscarilius."),
 		new CrypticClue("In a town where everyone has perfect vision, seek some locked drawers in a house that sits opposite a workshop.", "Chicken", DRAWERS_25766, new WorldPoint(2709, 3478, 0), "The Seers' Village house south of the Elemental Workshop entrance. Kill any Chicken to obtain a key."),
 		new CrypticClue("Search the crates in East Ardougne's general store.", CRATE_357, new WorldPoint(2615, 3291, 0), "Located south of the Ardougne church."),
-		new CrypticClue("Come brave adventurer, your sense is on fire. If you talk to me, it's an old god you desire.", "Viggora", null, "Speak to Viggora while wearing a ring of visibility and a Ghostspeak amulet."),
+		new CrypticClue("Come brave adventurer, your sense is on fire. If you talk to me, it's an old god you desire.", "Viggora", -1, CrypticClue::getViggoraLocation, "Speak to Viggora while wearing a ring of visibility and a Ghostspeak amulet.", null),
 		new CrypticClue("2 musical birds. Dig in front of the spinning light.", new WorldPoint(2671, 10396, 0), "Dig in front of the spinning light in Ping and Pong's room inside the Iceberg"),
 		new CrypticClue("Search the wheelbarrow in Rimmington mine.", WHEELBARROW_9625, new WorldPoint(2978, 3239, 0), "The Rimmington mining site is located north of Rimmington."),
 		new CrypticClue("Belladonna, my dear. If only I had gloves, then I could hold you at last.", "Tool Leprechaun", new WorldPoint(3088, 3357, 0), "Talk to Tool Leprechaun at Draynor Manor."),
@@ -317,7 +322,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		new CrypticClue("Search the boxes next to a chest that needs a crystal key.", BOXES_360, new WorldPoint(2915, 3452, 0), "The Crystal chest can be found in the house directly south of the Witch's house in Taverley."),
 		new CrypticClue("Talk to Turael in Burthorpe.", "Turael", new WorldPoint(2930, 3536, 0), "Turael is located in the small house east of the Toad and Chicken inn in Burthorpe."),
 		new CrypticClue("More resources than I can handle, but in a very dangerous area. Can't wait to strike gold!", new WorldPoint(3183, 3941, 0), "Dig between the three gold ores in the Wilderness Resource Area."),
-		new CrypticClue("Observing someone in a swamp, under the telescope lies treasure.", new WorldPoint(2221, 3091, 0), "Dig next to the telescope on Broken Handz's island in the poison wastes. (Accessible only through fairy ring DLR)"),
+		new CrypticClue("Observing someone in a swamp, under the telescope lies treasure.", new WorldPoint(2221, 3091, 0), "Dig next to the telescope on Broken Handz's island in the poison wastes. Fairy ring DLR."),
 		new CrypticClue("A general who sets a 'shining' example.", "General Hining", new WorldPoint(2186, 3148, 0), "Talk to General Hining in Tyras Camp."),
 		new CrypticClue("Has no one told you it is rude to ask a lady her age?", "Mawrth", new WorldPoint(2333, 3165, 0), "Talk to Mawrth in Lletya."),
 		new CrypticClue("Elvish onions.", new WorldPoint(3303, 6092, 0), "Dig in the onion patch east of the Prifddinas allotments."),
@@ -331,14 +336,20 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		new CrypticClue("The Big High War God left his mark on this place.", new WorldPoint(3572, 4372, 0), "Dig anywhere in Yu'biusk. Fairy ring BLQ.")
 	);
 
+	private static final WorldPoint VIGGORA_ROGUES_CASTLE = new WorldPoint(3295, 3934, 1);
+	private static final WorldPoint VIGGORA_SLAYER_TOWER = new WorldPoint(3447, 3547, 1);
+	private static final WorldPoint VIGGORA_EDGEVILLE_DUNGEON = new WorldPoint(3121, 9995, 0);
+
 	private final String text;
 	private final String npc;
 	private final int objectId;
-	@Nullable
-	private final WorldPoint location;
 	private final String solution;
 	@Nullable
 	private final String questionText;
+
+	@Nullable
+	@Getter(AccessLevel.PRIVATE)
+	private final Function<ClueScrollPlugin, WorldPoint> locationProvider;
 
 	private CrypticClue(String text, WorldPoint location, String solution)
 	{
@@ -376,15 +387,34 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		this(text, npc, objectId, location, solution, null);
 	}
 
-	private CrypticClue(String text, String npc, int objectId, @Nullable WorldPoint location, String solution, @Nullable String questionText)
+	private CrypticClue(String text, String npc, int objectId, @Nullable final WorldPoint location, String solution, @Nullable String questionText)
+	{
+		this(
+			text,
+			npc,
+			objectId,
+			location == null ? null : (_client) -> location,
+			solution,
+			questionText
+		);
+	}
+
+	private CrypticClue(String text, String npc, int objectId, @Nullable Function<ClueScrollPlugin, WorldPoint> locationProvider, String solution, @Nullable String questionText)
 	{
 		this.text = text;
 		this.npc = npc;
 		this.objectId = objectId;
-		this.location = location;
+		this.locationProvider = locationProvider;
 		this.solution = solution;
 		this.questionText = questionText;
-		setRequiresSpade(getLocation() != null && getNpc() == null && objectId == -1);
+		setRequiresSpade(locationProvider != null && getNpc() == null && objectId == -1);
+	}
+
+	@Nullable
+	@Override
+	public WorldPoint getLocation(ClueScrollPlugin plugin)
+	{
+		return locationProvider == null ? null : locationProvider.apply(plugin);
 	}
 
 	@Override
@@ -433,9 +463,10 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 	public void makeWorldOverlayHint(Graphics2D graphics, ClueScrollPlugin plugin)
 	{
 		// Mark dig location
-		if (getLocation() != null && getNpc() == null && objectId == -1)
+		WorldPoint location = getLocation(plugin);
+		if (location != null && getNpc() == null && objectId == -1)
 		{
-			LocalPoint localLocation = LocalPoint.fromWorld(plugin.getClient(), getLocation());
+			LocalPoint localLocation = LocalPoint.fromWorld(plugin.getClient(), location);
 
 			if (localLocation != null)
 			{
@@ -499,5 +530,25 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 	public int[] getConfigKeys()
 	{
 		return new int[]{text.hashCode()};
+	}
+
+	private static WorldPoint getViggoraLocation(ClueScrollPlugin plugin)
+	{
+		int varb = plugin.getClient().getVarbitValue(Varbits.VIGGORA_LOCATION);
+		switch (varb)
+		{
+			case 1:
+				return VIGGORA_ROGUES_CASTLE;
+
+			case 2:
+				return VIGGORA_SLAYER_TOWER;
+
+			case 3:
+				return VIGGORA_EDGEVILLE_DUNGEON;
+
+			default:
+				log.warn("Unknown viggora location for unexpected varb value {}", varb);
+				return null;
+		}
 	}
 }

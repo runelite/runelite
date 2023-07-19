@@ -292,6 +292,8 @@ enum DiscordGameEventType
 	MG_FISHING_TRAWLER("Fishing Trawler", DiscordAreaType.MINIGAMES, 7499),
 	MG_GAUNTLET("The Gauntlet", DiscordAreaType.MINIGAMES, 12127, 7512),
 	MG_CORRUPTED_GAUNTLET("Corrupted Gauntlet", DiscordAreaType.MINIGAMES, 7768),
+	MG_GIANTS_FOUNDRY("Giants' Foundry", DiscordAreaType.MINIGAMES, 13491),
+	MG_GUARDIANS_OF_THE_RIFT("Guardians of the Rift", DiscordAreaType.MINIGAMES, 14484),
 	MG_HALLOWED_SEPULCHRE("Hallowed Sepulchre", DiscordAreaType.MINIGAMES, 8797, 9051, 9052, 9053, 9054, 9309, 9563, 9565, 9821, 10074, 10075, 10077),
 	MG_INFERNO("The Inferno", DiscordAreaType.MINIGAMES, 9043),
 	MG_KELDAGRIM_RAT_PITS("Keldagrim Rat Pits", DiscordAreaType.MINIGAMES, 7753),
@@ -312,7 +314,6 @@ enum DiscordGameEventType
 	MG_TZHAAR_FIGHT_PITS("Tzhaar Fight Pits", DiscordAreaType.MINIGAMES, 9552),
 	MG_VARROCK_RAT_PITS("Varrock Rat Pits", DiscordAreaType.MINIGAMES, 11599),
 	MG_VOLCANIC_MINE("Volcanic Mine", DiscordAreaType.MINIGAMES, 15263, 15262),
-	MG_GUARDIANS_OF_THE_RIFT("Guardians of the Rift", DiscordAreaType.MINIGAMES, 14484),
 
 	// Raids
 	RAIDS_CHAMBERS_OF_XERIC("Chambers of Xeric", DiscordAreaType.RAIDS, 12889, 13136, 13137, 13138, 13139, 13140, 13141, 13145, 13393, 13394, 13395, 13396, 13397, 13401),

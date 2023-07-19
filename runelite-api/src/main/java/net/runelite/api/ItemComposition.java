@@ -273,4 +273,16 @@ public interface ItemComposition extends ParamHolder
 	 * @see net.runelite.api.coords.Angle
 	 */
 	void setZan2d(int angle);
+
+	/**
+	 * Get the ambient light value
+	 * @return
+	 */
+	int getAmbient();
+
+	/**
+	 * Get the contrast light value
+	 * @return
+	 */
+	int getContrast();
 }

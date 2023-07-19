@@ -124,15 +124,28 @@ public class BankPlugin extends Plugin
 			if (keybind.matches(e))
 			{
 				Widget bankContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
-				if (bankContainer == null || bankContainer.isSelfHidden())
+				if (bankContainer != null && !bankContainer.isSelfHidden())
 				{
-					return;
+					log.debug("Search hotkey pressed");
+					bankSearch.initSearch();
+					e.consume();
 				}
 
-				log.debug("Search hotkey pressed");
-
-				bankSearch.initSearch();
-				e.consume();
+				Widget seedVaultSearchButton = client.getWidget(WidgetInfo.SEED_VAULT_SEARCH_BUTTON);
+				if (seedVaultSearchButton != null)
+				{
+					log.debug("Search hotkey pressed");
+					clientThread.invoke(() ->
+					{
+						Widget searchButton = client.getWidget(WidgetInfo.SEED_VAULT_SEARCH_BUTTON);
+						if (searchButton == null || searchButton.isHidden())
+						{
+							return;
+						}
+						client.runScript(searchButton.getOnOpListener());
+					});
+					e.consume();
+				}
 			}
 		}
 

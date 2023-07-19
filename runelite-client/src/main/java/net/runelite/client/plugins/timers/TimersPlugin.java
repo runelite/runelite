@@ -26,11 +26,13 @@
  */
 package net.runelite.client.plugins.timers;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.IntPredicate;
 import java.util.function.IntUnaryOperator;
 import java.util.regex.Matcher;
@@ -69,6 +71,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.ItemVariationMapping;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -110,6 +113,12 @@ public class TimersPlugin extends Plugin
 	private static final String SILK_DRESSING_MESSAGE = "You quickly apply the dressing to your wounds.";
 	private static final String BLESSED_CRYSTAL_SCARAB_MESSAGE = "You crack the crystal in your hand.";
 	private static final String LIQUID_ADRENALINE_MESSAGE = "You drink some of the potion, reducing the energy cost of your special attacks.</col>";
+	private static final Set<Integer> STAVES_OF_THE_DEAD = new ImmutableSet.Builder<Integer>()
+		.addAll(ItemVariationMapping.getVariations(ItemID.STAFF_OF_THE_DEAD))
+		.addAll(ItemVariationMapping.getVariations(ItemID.TOXIC_STAFF_UNCHARGED))
+		.add(ItemID.STAFF_OF_LIGHT)
+		.add(ItemID.STAFF_OF_BALANCE)
+		.build();
 
 	private static final int VENOM_VALUE_CUTOFF = -38; // Antivenom < -38 <= Antipoison < 0
 	private static final int POISON_TICK_LENGTH = 30;
@@ -1093,11 +1102,7 @@ public class TimersPlugin extends Plugin
 		ItemContainer container = itemContainerChanged.getItemContainer();
 
 		Item weapon = container.getItem(EquipmentInventorySlot.WEAPON.getSlotIdx());
-		if (weapon == null ||
-			(weapon.getId() != ItemID.STAFF_OF_THE_DEAD &&
-				weapon.getId() != ItemID.TOXIC_STAFF_OF_THE_DEAD &&
-				weapon.getId() != ItemID.STAFF_OF_LIGHT &&
-				weapon.getId() != ItemID.TOXIC_STAFF_UNCHARGED))
+		if (weapon == null || STAVES_OF_THE_DEAD.contains(weapon.getId()))
 		{
 			// remove sotd timer if the staff has been unwielded
 			removeGameTimer(STAFF_OF_THE_DEAD);

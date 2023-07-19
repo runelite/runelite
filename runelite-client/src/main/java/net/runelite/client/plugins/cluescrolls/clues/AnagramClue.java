@@ -29,6 +29,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.List;
 import javax.annotation.Nullable;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import net.runelite.api.NPC;
@@ -773,6 +774,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 
 	private final String text;
 	private final String npc;
+	@Getter(AccessLevel.PRIVATE)
 	private final WorldPoint location;
 	private final String area;
 	@Nullable
@@ -781,6 +783,12 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 	private final String answer;
 	@Builder.Default
 	private final int objectId = -1;
+
+	@Override
+	public WorldPoint getLocation(ClueScrollPlugin plugin)
+	{
+		return location;
+	}
 
 	@Override
 	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin)
@@ -813,7 +821,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 	@Override
 	public void makeWorldOverlayHint(Graphics2D graphics, ClueScrollPlugin plugin)
 	{
-		if (!getLocation().isInScene(plugin.getClient()))
+		if (!getLocation(plugin).isInScene(plugin.getClient()))
 		{
 			return;
 		}

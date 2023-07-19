@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Client;
 import static net.runelite.api.EquipmentInventorySlot.AMMO;
@@ -219,7 +220,7 @@ public class EmoteClue extends ClueScroll implements LocationClueScroll
 		new EmoteClue("Bow to Brugsen Bursen at the Grand Exchange.", "Grand Exchange", null, new WorldPoint(3164, 3477, 0), BOW),
 		new EmoteClue("Cheer at Iffie Nitter. Equip a chef hat and a red cape.", "Varrock", FINE_CLOTHES_ENTRANCE, new WorldPoint(3205, 3416, 0), CHEER, item(CHEFS_HAT), item(RED_CAPE)),
 		new EmoteClue("Clap at Bob's Brilliant Axes. Equip a bronze axe and leather boots.", "Lumbridge", BOB_AXES_ENTRANCE, new WorldPoint(3231, 3203, 0), CLAP, item(BRONZE_AXE), item(LEATHER_BOOTS)),
-		new EmoteClue("Panic at Al Kharid mine.", "Al Kharid mine", null, new WorldPoint(3300, 3314, 0), PANIC),
+		new EmoteClue("Panic at Al Kharid mine.", "Al Kharid mine", null, new WorldPoint(3303, 3271, 0), PANIC),
 		new EmoteClue("Spin at Flynn's Mace Shop.", "Falador", null, new WorldPoint(2950, 3387, 0), SPIN),
 		new EmoteClue("Salute by the Charcoal Burners. Equip a Farmer's strawhat, Shayzien platebody (5) and Pyromancer robes.", "Charcoal Burners", CHARCOAL_BURNERS, new WorldPoint(1714, 3467, 0), SALUTE, any("Farmer's strawhat", item(FARMERS_STRAWHAT), item(FARMERS_STRAWHAT_13647)), item(SHAYZIEN_BODY_5), item(PYROMANCER_ROBE)));
 
@@ -230,6 +231,7 @@ public class EmoteClue extends ClueScroll implements LocationClueScroll
 	private final String locationName;
 	@Nullable
 	private final STASHUnit stashUnit;
+	@Getter(AccessLevel.PRIVATE)
 	private final WorldPoint location;
 	private final Emote firstEmote;
 	private final Emote secondEmote;
@@ -262,6 +264,12 @@ public class EmoteClue extends ClueScroll implements LocationClueScroll
 		this(text, locationName, stashUnit, location, firstEmote, secondEmote, itemRequirements);
 		setRequiresLight(true);
 		setFirePitVarbitId(firePitVarbitId);
+	}
+
+	@Override
+	public WorldPoint getLocation(ClueScrollPlugin plugin)
+	{
+		return location;
 	}
 
 	@Override
