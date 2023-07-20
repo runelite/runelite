@@ -726,7 +726,7 @@ public class MusicPlugin extends Plugin
 				sc.setValue(ParamID.SETTING_SLIDER_CUSTOM_SETPOS, 1);
 				sc.setValue(ParamID.SETTING_SLIDER_IS_DRAGGABLE, 1);
 				sc.setValue(ParamID.SETTING_SLIDER_DEADZONE, 0);
-				sc.setValue(ParamID.SETTING_SLIDER_DEADZONE, 0);
+				sc.setValue(ParamID.SETTING_SLIDER_DEADTIME, 0);
 				break;
 		}
 	}
