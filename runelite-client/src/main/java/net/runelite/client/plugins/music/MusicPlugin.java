@@ -73,6 +73,7 @@ import net.runelite.api.events.VolumeChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetConfig;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetPositionMode;
@@ -613,6 +614,7 @@ public class MusicPlugin extends Plugin
 			icon.setName(channel.getName());
 			icon.setOnMouseRepeatListener((Object[]) null);
 			icon.setOnOpListener((JavaScriptCallback) ev -> channel.toggleMute());
+			icon.setClickMask(0); // do not transmit op, it can get desynced from our state
 		}
 
 		@Override
@@ -628,6 +630,7 @@ public class MusicPlugin extends Plugin
 			if (this.icon != null)
 			{
 				this.icon.setOnOpListener((Object[]) null);
+				this.icon.setClickMask(WidgetConfig.transmitAction(0));
 			}
 
 			Widget root = client.getWidget(this.root);
