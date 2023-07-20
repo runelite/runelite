@@ -61,4 +61,6 @@ public final class ParamID
 
 	public static final int OC_PRAYER_COMPONENT = 1751;
 	public static final int OC_PRAYER_LEVEL = 1753;
+
+	public static final int NPC_DEATH_HIDER_EXCLUDE = 1799;
 }
