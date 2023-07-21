@@ -189,7 +189,7 @@ public class MusicPlugin extends Plugin
 			channels = new Channel[]{musicChannel, effectChannel, areaChannel};
 
 			addMusicButtons();
-			if (client.getGameState() == GameState.LOGGED_IN && false)
+			if (client.getGameState() == GameState.LOGGED_IN && musicConfig.granularSliders())
 			{
 				updateMusicOptions();
 				resetSettingsWindow();
@@ -253,7 +253,7 @@ public class MusicPlugin extends Plugin
 		}
 
 		if ((widgetLoaded.getGroupId() == WidgetID.SETTINGS_GROUP_ID || widgetLoaded.getGroupId() == WidgetID.SETTINGS_SIDE_GROUP_ID)
-			&& false)
+			&& musicConfig.granularSliders())
 		{
 			updateMusicOptions();
 		}
@@ -310,7 +310,7 @@ public class MusicPlugin extends Plugin
 	@Subscribe
 	public void onVolumeChanged(VolumeChanged volumeChanged)
 	{
-		if (false)
+		if (musicConfig.granularSliders())
 		{
 			updateMusicOptions();
 		}
@@ -325,7 +325,7 @@ public class MusicPlugin extends Plugin
 			{
 				if (MusicConfig.GRANULAR_SLIDERS.equals(configChanged.getKey()))
 				{
-					if (false)
+					if (musicConfig.granularSliders())
 					{
 						updateMusicOptions();
 						resetSettingsWindow();
@@ -711,7 +711,7 @@ public class MusicPlugin extends Plugin
 			case StructID.SETTINGS_MUSIC_VOLUME:
 			case StructID.SETTINGS_EFFECT_VOLUME:
 			case StructID.SETTINGS_AREA_VOLUME:
-				if (!false)
+				if (!musicConfig.granularSliders())
 				{
 					return;
 				}
@@ -738,7 +738,7 @@ public class MusicPlugin extends Plugin
 
 		if (ev.getScriptId() == ScriptID.SETTINGS_SLIDER_CHOOSE_ONOP)
 		{
-			if (!false)
+			if (!musicConfig.granularSliders())
 			{
 				return;
 			}
@@ -770,7 +770,7 @@ public class MusicPlugin extends Plugin
 			s.getChannel().setWindowSlider(s);
 		}
 
-		if (ev.getScriptId() == ScriptID.TOPLEVEL_REDRAW && false)
+		if (ev.getScriptId() == ScriptID.TOPLEVEL_REDRAW && musicConfig.granularSliders())
 		{
 			// we have to set the var to our value so toplevel_redraw doesn't try to set
 			// the volume to what vanilla has stored
