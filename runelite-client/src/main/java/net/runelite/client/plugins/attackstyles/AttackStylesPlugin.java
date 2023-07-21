@@ -285,12 +285,12 @@ public class AttackStylesPlugin extends Plugin
 				if (warnedSkills.contains(skill))
 				{
 					warnedSkillSelected = true;
+					printWarnedStyleMessage();
 					break;
 				}
 			}
 		}
 		hideWarnedStyles(config.removeWarnedStyles());
-		printWarnedStyleMessage();
 	}
 
 	private void hideWarnedStyles(boolean enabled)
@@ -357,7 +357,7 @@ public class AttackStylesPlugin extends Plugin
 
 	private void printWarnedStyleMessage()
 	{
-		if (warnedSkillSelected && attackStyle != prevAttackStyle && config.showChatWarnings())
+		if (attackStyle != prevAttackStyle && config.showChatWarnings())
 		{
 			final String message = new ChatMessageBuilder()
 				.append(ChatColorType.HIGHLIGHT)
