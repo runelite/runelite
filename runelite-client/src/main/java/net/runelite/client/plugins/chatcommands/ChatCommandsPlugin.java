@@ -1966,6 +1966,10 @@ public class ChatCommandsPlugin extends Plugin
 			case "vetion":
 				return "Vet'ion";
 
+			case "calvarion":
+			case "calv":
+				return "Calvar'ion";
+
 			case "vene":
 				return "Venenatis";
 
