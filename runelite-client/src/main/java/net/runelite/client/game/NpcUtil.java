@@ -34,6 +34,7 @@ import net.runelite.api.AnimationID;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.NpcID;
+import net.runelite.api.ParamID;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.NpcChanged;
 import net.runelite.client.RuntimeConfig;
@@ -175,8 +176,23 @@ public class NpcUtil
 				}
 
 				final NPCComposition npcComposition = npc.getTransformedComposition();
-				boolean hasAttack = npcComposition != null && ArrayUtils.contains(npcComposition.getActions(), "Attack");
-				return hasAttack && npc.isDead();
+				if (npcComposition == null)
+				{
+					return false;
+				}
+
+				boolean hasAttack = ArrayUtils.contains(npcComposition.getActions(), "Attack");
+				if (!hasAttack || !npc.isDead())
+				{
+					return false;
+				}
+
+				if (npcComposition.getIntValue(ParamID.NPC_DEATH_HIDER_EXCLUDE) != 0)
+				{
+					return false;
+				}
+
+				return true;
 		}
 	}
 

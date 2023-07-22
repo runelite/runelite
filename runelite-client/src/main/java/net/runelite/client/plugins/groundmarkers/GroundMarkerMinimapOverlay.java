@@ -41,7 +41,6 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
-import net.runelite.client.ui.overlay.OverlayUtil;
 
 class GroundMarkerMinimapOverlay extends Overlay
 {
@@ -121,7 +120,7 @@ class GroundMarkerMinimapOverlay extends Overlay
 
 		Stroke stroke = new BasicStroke(1f);
 		graphics.setStroke(stroke);
+		graphics.setColor(color);
 		graphics.drawPolygon(poly);
-		OverlayUtil.renderPolygon(graphics, poly, color);
 	}
 }
