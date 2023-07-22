@@ -122,9 +122,23 @@ public class WorldPoint
 		return x >= baseX && x < maxX && y >= baseY && y < maxY;
 	}
 
+	/**
+	 * Checks whether a tile is located in the current scene.
+	 *
+	 * @param client the client
+	 * @param x the tiles x coordinate
+	 * @param y the tiles y coordinate
+	 * @return true if the tile is in the scene, false otherwise
+	 */
 	public static boolean isInScene(Client client, int x, int y)
 	{
-		return isInScene(client.getScene(), x, y);
+		int baseX = client.getBaseX();
+		int baseY = client.getBaseY();
+
+		int maxX = baseX + Perspective.SCENE_SIZE;
+		int maxY = baseY + Perspective.SCENE_SIZE;
+
+		return x >= baseX && x < maxX && y >= baseY && y < maxY;
 	}
 
 	/**
@@ -147,7 +161,7 @@ public class WorldPoint
 	 */
 	public static WorldPoint fromLocal(Client client, LocalPoint local)
 	{
-		return fromLocal(client.getScene(), local.getX(), local.getY(), client.getPlane());
+		return fromLocal(client, local.getX(), local.getY(), client.getPlane());
 	}
 
 	/**
@@ -168,9 +182,22 @@ public class WorldPoint
 		);
 	}
 
+	/**
+	 * Gets the coordinate of the tile that contains the passed local point.
+	 *
+	 * @param client the client
+	 * @param x the local x-axis coordinate
+	 * @param y the local x-axis coordinate
+	 * @param plane the plane
+	 * @return the tile coordinate containing the local point
+	 */
 	public static WorldPoint fromLocal(Client client, int x, int y, int plane)
 	{
-		return fromLocal(client.getScene(), x, y, plane);
+		return new WorldPoint(
+			(x >>> Perspective.LOCAL_COORD_BITS) + client.getBaseX(),
+			(y >>> Perspective.LOCAL_COORD_BITS) + client.getBaseY(),
+			plane
+		);
 	}
 
 	/**
@@ -186,47 +213,41 @@ public class WorldPoint
 		return fromLocalInstance(client.getScene(), localPoint, client.getPlane());
 	}
 
+	/**
+	 * Gets the coordinate of the tile that contains the passed local point,
+	 * accounting for instances.
+	 *
+	 * @param client the client
+	 * @param localPoint the local coordinate
+	 * @param plane the plane the localpoint is on
+	 * @return the tile coordinate containing the local point
+	 */
 	public static WorldPoint fromLocalInstance(Client client, LocalPoint localPoint, int plane)
 	{
-		return fromLocalInstance(client.getScene(), localPoint, plane);
+		if (client.isInInstancedRegion())
+		{
+			return fromLocalInstance(client.getInstanceTemplateChunks(), localPoint, plane);
+		}
+		else
+		{
+			return fromLocal(client, localPoint.getX(), localPoint.getY(), plane);
+		}
 	}
 
 	/**
 	 * Gets the coordinate of the tile that contains the passed local point,
 	 * accounting for instances.
 	 *
-	 * @param scene the scene
+	 * @param scene      the scene
 	 * @param localPoint the local coordinate
-	 * @param plane the plane for the returned point, if it is not an instance
+	 * @param plane      the plane for the returned point, if it is not an instance
 	 * @return the tile coordinate containing the local point
 	 */
 	public static WorldPoint fromLocalInstance(Scene scene, LocalPoint localPoint, int plane)
 	{
 		if (scene.isInstance())
 		{
-			// get position in the scene
-			int sceneX = localPoint.getSceneX();
-			int sceneY = localPoint.getSceneY();
-
-			// get chunk from scene
-			int chunkX = sceneX / CHUNK_SIZE;
-			int chunkY = sceneY / CHUNK_SIZE;
-
-			// get the template chunk for the chunk
-			int[][][] instanceTemplateChunks = scene.getInstanceTemplateChunks();
-			int templateChunk = instanceTemplateChunks[plane][chunkX][chunkY];
-
-			int rotation = templateChunk >> 1 & 0x3;
-			int templateChunkY = (templateChunk >> 3 & 0x7FF) * CHUNK_SIZE;
-			int templateChunkX = (templateChunk >> 14 & 0x3FF) * CHUNK_SIZE;
-			int templateChunkPlane = templateChunk >> 24 & 0x3;
-
-			// calculate world point of the template
-			int x = templateChunkX + (sceneX & (CHUNK_SIZE - 1));
-			int y = templateChunkY + (sceneY & (CHUNK_SIZE - 1));
-
-			// create and rotate point back to 0, to match with template
-			return rotate(new WorldPoint(x, y, templateChunkPlane), 4 - rotation);
+			return fromLocalInstance(scene.getInstanceTemplateChunks(), localPoint, plane);
 		}
 		else
 		{
@@ -234,9 +255,46 @@ public class WorldPoint
 		}
 	}
 
+	private static WorldPoint fromLocalInstance(int[][][] instanceTemplateChunks, LocalPoint localPoint, int plane)
+	{
+		// get position in the scene
+		int sceneX = localPoint.getSceneX();
+		int sceneY = localPoint.getSceneY();
+
+		// get chunk from scene
+		int chunkX = sceneX / CHUNK_SIZE;
+		int chunkY = sceneY / CHUNK_SIZE;
+
+		// get the template chunk for the chunk
+		int templateChunk = instanceTemplateChunks[plane][chunkX][chunkY];
+
+		int rotation = templateChunk >> 1 & 0x3;
+		int templateChunkY = (templateChunk >> 3 & 0x7FF) * CHUNK_SIZE;
+		int templateChunkX = (templateChunk >> 14 & 0x3FF) * CHUNK_SIZE;
+		int templateChunkPlane = templateChunk >> 24 & 0x3;
+
+		// calculate world point of the template
+		int x = templateChunkX + (sceneX & (CHUNK_SIZE - 1));
+		int y = templateChunkY + (sceneY & (CHUNK_SIZE - 1));
+
+		// create and rotate point back to 0, to match with template
+		return rotate(new WorldPoint(x, y, templateChunkPlane), 4 - rotation);
+	}
+
+	/**
+	 * Get occurrences of a tile on the scene, accounting for instances. There may be
+	 * more than one if the same template chunk occurs more than once on the scene.
+	 */
 	public static Collection<WorldPoint> toLocalInstance(Client client, WorldPoint worldPoint)
 	{
-		return toLocalInstance(client.getScene(), worldPoint);
+		if (client.isInInstancedRegion())
+		{
+			return toLocalInstance(client.getInstanceTemplateChunks(), client.getBaseX(), client.getBaseY(), worldPoint);
+		}
+		else
+		{
+			return Collections.singleton(worldPoint);
+		}
 	}
 
 	/**
@@ -245,14 +303,20 @@ public class WorldPoint
 	 */
 	public static Collection<WorldPoint> toLocalInstance(Scene scene, WorldPoint worldPoint)
 	{
-		if (!scene.isInstance())
+		if (scene.isInstance())
+		{
+			return toLocalInstance(scene.getInstanceTemplateChunks(), scene.getBaseX(), scene.getBaseY(), worldPoint);
+		}
+		else
 		{
 			return Collections.singleton(worldPoint);
 		}
+	}
 
+	private static Collection<WorldPoint> toLocalInstance(int[][][] instanceTemplateChunks, int baseX, int baseY, WorldPoint worldPoint)
+	{
 		// find instance chunks using the template point. there might be more than one.
 		List<WorldPoint> worldPoints = new ArrayList<>();
-		int[][][] instanceTemplateChunks = scene.getInstanceTemplateChunks();
 		for (int z = 0; z < instanceTemplateChunks.length; z++)
 		{
 			for (int x = 0; x < instanceTemplateChunks[z].length; ++x)
@@ -268,8 +332,8 @@ public class WorldPoint
 						&& worldPoint.getY() >= templateChunkY && worldPoint.getY() < templateChunkY + CHUNK_SIZE
 						&& plane == worldPoint.getPlane())
 					{
-						WorldPoint p = new WorldPoint(scene.getBaseX() + x * CHUNK_SIZE + (worldPoint.getX() & (CHUNK_SIZE - 1)),
-							scene.getBaseY() + y * CHUNK_SIZE + (worldPoint.getY() & (CHUNK_SIZE - 1)),
+						WorldPoint p = new WorldPoint(baseX + x * CHUNK_SIZE + (worldPoint.getX() & (CHUNK_SIZE - 1)),
+							baseY + y * CHUNK_SIZE + (worldPoint.getY() & (CHUNK_SIZE - 1)),
 							z);
 						p = rotate(p, rotation);
 						worldPoints.add(p);
