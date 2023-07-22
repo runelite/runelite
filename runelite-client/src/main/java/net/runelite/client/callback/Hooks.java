@@ -534,12 +534,6 @@ public class Hooks implements Callbacks
 			// have been processed is typically more useful.
 			shouldProcessGameTick = true;
 		}
-
-		// Replay deferred events, otherwise if two npc
-		// update packets get processed in one client tick, a
-		// despawn event could be published prior to the
-		// spawn event, which is deferred
-		deferredEventBus.replay();
 	}
 
 	@Override
