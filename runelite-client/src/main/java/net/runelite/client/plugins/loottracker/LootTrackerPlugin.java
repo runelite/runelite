@@ -1049,6 +1049,15 @@ public class LootTrackerPlugin extends Plugin
 					case ItemID.CACHE_OF_RUNES:
 					case ItemID.INTRICATE_POUCH:
 					case ItemID.FROZEN_CACHE:
+					case ItemID.BOUNTY_CRATE_TIER_1:
+					case ItemID.BOUNTY_CRATE_TIER_2:
+					case ItemID.BOUNTY_CRATE_TIER_3:
+					case ItemID.BOUNTY_CRATE_TIER_4:
+					case ItemID.BOUNTY_CRATE_TIER_5:
+					case ItemID.BOUNTY_CRATE_TIER_6:
+					case ItemID.BOUNTY_CRATE_TIER_7:
+					case ItemID.BOUNTY_CRATE_TIER_8:
+					case ItemID.BOUNTY_CRATE_TIER_9:
 						onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, itemManager.getItemComposition(event.getItemId()).getName()));
 						break;
 					case ItemID.SUPPLY_CRATE_24884:
