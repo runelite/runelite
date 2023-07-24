@@ -70,51 +70,51 @@ public class RSWalkHelper {
                 Alfred.sleep(1000);
                 Alfred.sleepUntil(() -> !player.isMoving() && !player.isInteracting() && player.isIdle(), 200, 1000 * 10);
 
-            } else if (currentNodeIsOperable) {
-                System.out.println("Curret tile is operable");
-                Alfred.getMouse().leftClick(minimapPoint);
-                Alfred.sleep(1000);
-                Alfred.sleepUntil(() -> !player.isMoving() && !player.isInteracting() && player.isIdle(), 200, 1000 * 10);
-
-                List<RSTile> tiles = Alfred.api.walk().getWalkableTiles();
-                Tile foundTile = null;
-                for (RSTile tile : tiles) {
-                    if (tile.getWorldLocation().equals(node.getWorldLocation())) {
-                        foundTile = ((RSWalkableTile) tile).getTile();
-                        break;
-                    }
-                }
-
-                if (foundTile == null) {
-                    System.out.println("Found tile is null");
-                    continue;
-                }
-
-                WallObject wallObject = foundTile.getWallObject();
-                if (wallObject == null) {
-                    System.out.println("Wall object is null");
-                    continue;
-                }
-
-                Alfred.getMouse().rightClick(wallObject.getConvexHull().getBounds());
-                Alfred.sleep(200);
-                RSMenu rsMenu = Alfred.api.menu().getMenu();
-                if (rsMenu == null) {
-                    System.out.println("Menu is null");
-                    continue;
-                }
-
-                if (rsMenu.hasAction("open")) {
-                    rsMenu.clickAction("open");
-                } else {
-                    System.out.println("Menu does not have action open");
-                }
-
-            } else if (nextNodeIsOperable) {
-                System.out.println("Next tile is operable");
-                Alfred.getMouse().leftClick(minimapPoint);
-                Alfred.sleep(1000);
-                Alfred.sleepUntil(() -> !player.isMoving() && !player.isInteracting() && player.isIdle(), 200, 1000 * 10);
+//            } else if (currentNodeIsOperable) {
+//                System.out.println("Curret tile is operable");
+//                Alfred.getMouse().leftClick(minimapPoint);
+//                Alfred.sleep(1000);
+//                Alfred.sleepUntil(() -> !player.isMoving() && !player.isInteracting() && player.isIdle(), 200, 1000 * 10);
+//
+//                List<RSTile> tiles = Alfred.api.walk().getWalkableTiles();
+//                Tile foundTile = null;
+//                for (RSTile tile : tiles) {
+//                    if (tile.getWorldLocation().equals(node.getWorldLocation())) {
+//                        foundTile = ((RSWalkableTile) tile).getTile();
+//                        break;
+//                    }
+//                }
+//
+//                if (foundTile == null) {
+//                    System.out.println("Found tile is null");
+//                    continue;
+//                }
+//
+//                WallObject wallObject = foundTile.getWallObject();
+//                if (wallObject == null) {
+//                    System.out.println("Wall object is null");
+//                    continue;
+//                }
+//
+//                Alfred.getMouse().rightClick(wallObject.getConvexHull().getBounds());
+//                Alfred.sleep(200);
+//                RSMenu rsMenu = Alfred.api.menu().getMenu();
+//                if (rsMenu == null) {
+//                    System.out.println("Menu is null");
+//                    continue;
+//                }
+//
+//                if (rsMenu.hasAction("open")) {
+//                    rsMenu.clickAction("open");
+//                } else {
+//                    System.out.println("Menu does not have action open");
+//                }
+//
+//            } else if (nextNodeIsOperable) {
+//                System.out.println("Next tile is operable");
+//                Alfred.getMouse().leftClick(minimapPoint);
+//                Alfred.sleep(1000);
+//                Alfred.sleepUntil(() -> !player.isMoving() && !player.isInteracting() && player.isIdle(), 200, 1000 * 10);
 
             } else if (distance >= 7) {
                 System.out.println("Less than 7 tiles away or operable");

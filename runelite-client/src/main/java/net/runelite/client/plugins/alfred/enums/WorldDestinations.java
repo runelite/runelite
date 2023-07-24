@@ -32,12 +32,16 @@ public enum WorldDestinations {
     FALADOR_WEST_BANK("Falador West Bank", new WorldPoint(2945, 3370, 0)),
     FALADOR_PARTY_ROOM("Falador Party Room", new WorldPoint(3045, 3370, 0)),
 
+    AL_KHARID_BANK("Al Kharid Bank", new WorldPoint(3269, 3168, 0)),
+    AL_KHARID_MINE("Al Kharid Mine", new WorldPoint(3299, 3287, 0)),
+
     RIMMINGTON("Rimmington", new WorldPoint(2978, 3238, 0)),
     RIMMINGTON_MINE("Rimmington Mine", new WorldPoint(3045, 3370, 0)),
 
     BARBARIAN_VILLAGE("Barbarian Village", new WorldPoint(3084, 3419, 0)),
     WIZARDS_TOWER("Wizards Tower", new WorldPoint(3109, 3168, 0)),
     CRAFTING_GUILD("Crafting Guild", new WorldPoint(2933, 3291, 0)),
+    DUEL_ARENA_BANK("Duel Arena Bank", new WorldPoint(3384, 3269, 0)),
 
     NONE("None", new WorldPoint(0, 0, 0));
 
