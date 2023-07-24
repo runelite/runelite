@@ -8,7 +8,6 @@ import net.runelite.client.plugins.alfred.api.task.BaseTasks;
 import net.runelite.client.plugins.alfred.device.Keyboard;
 import net.runelite.client.plugins.alfred.device.Mouse;
 import net.runelite.client.plugins.alfred.event.EventHandler;
-import net.runelite.client.plugins.alfred.rpc.annotate.AnnotationMapper;
 import net.runelite.client.plugins.alfred.rpc.http.RPCServer;
 
 import java.util.function.BooleanSupplier;
@@ -35,6 +34,7 @@ public class Alfred {
         Alfred.tasks = new BaseTasks();
         Alfred.client = client;
         Alfred.clientThread = clientThread;
+//        Alfred.config = config;
         Alfred.mouse = new Mouse();
         Alfred.keyboard = new Keyboard();
         Alfred.eventHandler = new EventHandler();

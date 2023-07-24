@@ -1,8 +1,6 @@
 package net.runelite.client.plugins.alfred;
 
 import net.runelite.api.Client;
-import net.runelite.client.plugins.alfred.api.rs.walk.RSTile;
-import net.runelite.client.plugins.alfred.api.rs.walk.RSWalkableTile;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -26,14 +24,8 @@ public class AlfredOverlay extends Overlay {
 
     @Override
     public Dimension render(Graphics2D graphics) {
-        drawWalkablePoints(graphics);
-
-        Point cursorPosition = Alfred.getMouse().getCurrentMousePosition();
-        graphics.setColor(Color.RED);
-        graphics.fillOval(cursorPosition.x - 5, cursorPosition.y - 5, 10, 10);
-
+        drawMouse(graphics);
         drawStatusBox(graphics, Alfred.getStatus());
-
         return null;
     }
 
@@ -61,59 +53,9 @@ public class AlfredOverlay extends Overlay {
         graphics.drawString(status, statusBox.x + padding, statusBox.y + padding + fontMetrics.getAscent());
     }
 
-    private void drawWalkablePoints(Graphics2D graphics) {
-        graphics.setColor(Color.GREEN);
-
-        for (RSTile rsWalkableTile : Alfred.api.walk().getWalkableTiles()) {
-
-            Polygon poly = rsWalkableTile.getCanvasPolygon();
-
-            if (poly == null) {
-                continue;
-            }
-
-            graphics.setColor(Color.GREEN);
-            if (rsWalkableTile.isOperable()) {
-                graphics.setColor(Color.YELLOW);
-            }
-
-            graphics.drawPolygon(poly);
-        }
-
-//        for (RSTile rsWalkableTile : Alfred.api.walk().getPath()) {
-//
-//            Polygon poly = rsWalkableTile.getCanvasPolygon();
-//
-//            if (poly == null) {
-//                continue;
-//            }
-//
-//            graphics.setColor(Color.BLUE);
-//            if (rsWalkableTile.isOperable()) {
-//                graphics.setColor(Color.RED);
-//            }
-//
-//            graphics.drawPolygon(poly);
-//        }
-
-//        for (RSTile currentWalkableTile : Alfred.api.walk().getWalkableTiles()) {
-//            for (RSTile pathTile : Alfred.api.walk().getPath()) {
-//                if (currentWalkableTile.getWorldLocation().equals(pathTile.getWorldLocation())) {
-//                    Polygon poly = currentWalkableTile.getCanvasPolygon();
-//
-//                    if (poly == null) {
-//                        continue;
-//                    }
-//
-//                    graphics.setColor(Color.BLUE);
-//                    if (currentWalkableTile.isOperable()) {
-//                        graphics.setColor(Color.RED);
-//                    }
-//
-//                    graphics.drawPolygon(poly);
-//                }
-//            }
-//        }
-
+    private void drawMouse(Graphics2D graphics) {
+        Point cursorPosition = Alfred.getMouse().getCurrentMousePosition();
+        graphics.setColor(Color.RED);
+        graphics.fillOval(cursorPosition.x - 5, cursorPosition.y - 5, 10, 10);
     }
 }

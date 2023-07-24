@@ -23,6 +23,7 @@ public class PathFinder {
     public PathFinder(List<RSTile> walkableTiles) {
         this.walkableTiles = walkableTiles;
         readSavedPoints();
+//        setPenalties();
     }
 
     public void addTiles(List<RSTile> tiles) {
@@ -69,6 +70,29 @@ public class PathFinder {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+    }
+
+    private void setPenalties() {
+        Alfred.setStatus("Settings penalties");
+        for (RSTile walkableTile : walkableTiles) {
+            if (walkableTile.isOperable()) {
+                walkableTile.setMovementPenalty(1);
+            }
+
+            if (walkableTile.getBlocked()) {
+                for (RSTile neighbour : walkableTile.getNeighbors(walkableTiles)) {
+                    if (walkableTile.isWalkable(neighbour)) {
+                        neighbour.setMovementPenalty(4);
+                        for (RSTile subNeighbour : neighbour.getNeighbors(walkableTiles)) {
+                            subNeighbour.setMovementPenalty(2);
+                        }
+                    }
+                }
+            }
+        }
+
+        Alfred.setStatus("Done penalties");
 
     }
 
@@ -127,7 +151,7 @@ public class PathFinder {
             }
 
             for (RSTile neighbour : currentNode.getNeighbors(walkableTiles)) {
-                if (!currentNode.isWalkable(neighbour) || closedNodes.contains(neighbour)) {
+                if (!currentNode.isWalkable(neighbour) || neighbour.getBlocked() || closedNodes.contains(neighbour)) {
                     continue;
                 }
 
@@ -147,6 +171,96 @@ public class PathFinder {
         return new ArrayList<>();
     }
 
+
+    public List<RSTile> getPathWithHeap(WorldPoint start, WorldPoint end) {
+        Heap openNodes = new Heap(walkableTiles.size());
+        List<RSTile> closedNodes = new ArrayList<>();
+
+        RSTile startNode = getWalkableTileFromWorldPoint(start);
+        RSTile endNode = getWalkableTileFromWorldPoint(end);
+
+        if (startNode == null || endNode == null) {
+            return null;
+        }
+
+        openNodes.add(startNode);
+
+        while (openNodes.count() > 0) {
+            RSTile currentNode = openNodes.removeFirst();
+            closedNodes.add(currentNode);
+
+            if (currentNode == endNode) {
+                path = getPath(startNode, endNode);
+                return path;
+            }
+
+            for (RSTile neighbour : currentNode.getNeighbors(walkableTiles)) {
+                if (!currentNode.isWalkable(neighbour) || neighbour.getBlocked() || closedNodes.contains(neighbour)) {
+                    continue;
+                }
+
+                int newCostToNeighbour = currentNode.getGCost() + getDistance(currentNode, neighbour);
+                if (newCostToNeighbour < neighbour.getGCost() || !openNodes.contains(neighbour)) {
+                    neighbour.setGCost(newCostToNeighbour);
+                    neighbour.setHCost(getDistance(neighbour, endNode));
+                    neighbour.setParent(currentNode);
+
+                    if (!openNodes.contains(neighbour)) {
+                        openNodes.add(neighbour);
+                    } else {
+                        openNodes.updateItem(neighbour);
+                    }
+                }
+            }
+        }
+
+        return new ArrayList<>();
+    }
+
+    public List<RSTile> getPathWithHeapWithPenalty(WorldPoint start, WorldPoint end) {
+        Heap openNodes = new Heap(walkableTiles.size());
+        List<RSTile> closedNodes = new ArrayList<>();
+
+        RSTile startNode = getWalkableTileFromWorldPoint(start);
+        RSTile endNode = getWalkableTileFromWorldPoint(end);
+
+        if (startNode == null || endNode == null) {
+            return null;
+        }
+
+        openNodes.add(startNode);
+
+        while (openNodes.count() > 0) {
+            RSTile currentNode = openNodes.removeFirst();
+            closedNodes.add(currentNode);
+
+            if (currentNode == endNode) {
+                path = getPath(startNode, endNode);
+                return path;
+            }
+
+            for (RSTile neighbour : currentNode.getNeighbors(walkableTiles)) {
+                if (!currentNode.isWalkable(neighbour) || neighbour.getBlocked() || closedNodes.contains(neighbour)) {
+                    continue;
+                }
+
+                int newCostToNeighbour = currentNode.getGCost() + getDistance(currentNode, neighbour) + neighbour.getMovementPenalty();
+                if (newCostToNeighbour < neighbour.getGCost() || !openNodes.contains(neighbour)) {
+                    neighbour.setGCost(newCostToNeighbour);
+                    neighbour.setHCost(getDistance(neighbour, endNode));
+                    neighbour.setParent(currentNode);
+
+                    if (!openNodes.contains(neighbour)) {
+                        openNodes.add(neighbour);
+                    } else {
+                        openNodes.updateItem(neighbour);
+                    }
+                }
+            }
+        }
+
+        return new ArrayList<>();
+    }
 
     private List<RSTile> getPath(RSTile startNode, RSTile endNode) {
         List<RSTile> path = new ArrayList<>();

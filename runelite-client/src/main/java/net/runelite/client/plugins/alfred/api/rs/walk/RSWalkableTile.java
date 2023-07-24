@@ -7,6 +7,7 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.plugins.alfred.Alfred;
 
 import java.awt.*;
+import java.util.Arrays;
 import java.util.Set;
 
 
@@ -37,6 +38,20 @@ public class RSWalkableTile extends RSTile {
     @Override
     public Polygon getCanvasPolygon() {
         return Perspective.getCanvasTilePoly(Alfred.getClient(), tile.getLocalLocation());
+    }
+
+    @Override
+    public boolean getBlocked() {
+        Set<WorldMovementFlag> movementFlags = Alfred.api.walk().getMovementFlagsForTile(tile);
+
+        Boolean[] blocked = new Boolean[]{
+                movementFlags.contains(WorldMovementFlag.BLOCK_MOVEMENT_FULL),
+                movementFlags.contains(WorldMovementFlag.BLOCK_MOVEMENT_FLOOR),
+                movementFlags.contains(WorldMovementFlag.BLOCK_MOVEMENT_FLOOR_DECORATION),
+                movementFlags.contains(WorldMovementFlag.BLOCK_MOVEMENT_OBJECT)
+        };
+
+        return Arrays.asList(blocked).contains(true);
     }
 
     @Override
@@ -74,6 +89,30 @@ public class RSWalkableTile extends RSTile {
                 if (worldMovementFlags.contains(WorldMovementFlag.BLOCK_MOVEMENT_WEST)) {
                     return false;
                 }
+            }
+        }
+
+        if (otherX == thisX - 1 && otherY == thisY + 1){
+            if (worldMovementFlags.contains(WorldMovementFlag.BLOCK_MOVEMENT_NORTH) || worldMovementFlags.contains(WorldMovementFlag.BLOCK_MOVEMENT_WEST)) {
+                return false;
+            }
+        }
+
+        if (otherX == thisX + 1 && otherY == thisY + 1){
+            if (worldMovementFlags.contains(WorldMovementFlag.BLOCK_MOVEMENT_NORTH) || worldMovementFlags.contains(WorldMovementFlag.BLOCK_MOVEMENT_EAST)) {
+                return false;
+            }
+        }
+
+        if (otherX == thisX - 1 && otherY == thisY - 1){
+            if (worldMovementFlags.contains(WorldMovementFlag.BLOCK_MOVEMENT_SOUTH) || worldMovementFlags.contains(WorldMovementFlag.BLOCK_MOVEMENT_WEST)) {
+                return false;
+            }
+        }
+
+        if (otherX == thisX + 1 && otherY == thisY - 1){
+            if (worldMovementFlags.contains(WorldMovementFlag.BLOCK_MOVEMENT_SOUTH) || worldMovementFlags.contains(WorldMovementFlag.BLOCK_MOVEMENT_EAST)) {
+                return false;
             }
         }
 

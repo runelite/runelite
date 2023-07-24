@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class RSTile {
+    private boolean isBlocked;
 
     @Setter
     @Getter
@@ -19,7 +20,23 @@ public abstract class RSTile {
 
     @Getter
     @Setter
+    int heapIndex = -1;
+
+    @Getter
+    @Setter
+    int movementPenalty = 0;
+
+    @Getter
+    @Setter
     private RSTile parent;
+
+    public void setBlocked(boolean value) {
+        isBlocked = value;
+    }
+
+    public boolean getBlocked() {
+        return isBlocked;
+    }
 
     public abstract boolean isWalkable(RSTile otherNode);
 
@@ -37,6 +54,10 @@ public abstract class RSTile {
         points.add(new Point(1, 0));
         points.add(new Point(0, -1));
         points.add(new Point(0, 1));
+        points.add(new Point(-1, -1));
+        points.add(new Point(1, 1));
+        points.add(new Point(-1, 1));
+        points.add(new Point(1, -1));
 
         for (Point point : points) {
             int checkX = getWorldLocation().getX() + point.x;
@@ -57,5 +78,11 @@ public abstract class RSTile {
         return gCost + hCost;
     }
 
-
+    public int heapCompare(RSTile item) {
+        int compare = Integer.compare(getFCost(), item.getFCost());
+        if (compare == 0) {
+            compare = Integer.compare(getHCost(), item.getHCost());
+        }
+        return -compare;
+    }
 }
