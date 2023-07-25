@@ -13,6 +13,8 @@ public class ChickenKillerThread extends Thread {
 
     @Override
     public void run() {
+        Alfred.api.account().login();
+        Alfred.sleep(5000);
         RSPlayer player = Alfred.api.players().getLocalPlayer();
 
         if (!Alfred.api.combat().isPunchSelected()) {

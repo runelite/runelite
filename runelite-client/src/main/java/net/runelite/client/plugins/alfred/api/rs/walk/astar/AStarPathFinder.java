@@ -48,7 +48,11 @@ public class AStarPathFinder {
             }
 
             for (AStarNode neighbor : getNeighbors(currentNode)) {
-                if (!currentNode.isWalkable(neighbor) || neighbor.isBlocked() || closedNodes.contains(neighbor)) {
+                if (!currentNode.isWalkable(neighbor) || closedNodes.contains(neighbor)) {
+                    continue;
+                }
+
+                if (neighbor.isBlocked() && !neighbor.getIsOperable()) {
                     continue;
                 }
 

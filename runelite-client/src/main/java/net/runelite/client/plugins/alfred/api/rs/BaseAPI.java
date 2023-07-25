@@ -1,5 +1,6 @@
 package net.runelite.client.plugins.alfred.api.rs;
 
+import net.runelite.client.plugins.alfred.api.rs.account.RSAccountHelper;
 import net.runelite.client.plugins.alfred.api.rs.bank.RSBankHelper;
 import net.runelite.client.plugins.alfred.api.rs.camera.RSCameraHelper;
 import net.runelite.client.plugins.alfred.api.rs.combat.RSCombatHelper;
@@ -33,6 +34,7 @@ public class BaseAPI {
     private final RSCombatHelper rsCombatHelper;
     private final RSGroundItemHelper rsGroundItemHelper;
     private final RSWalkHelper rsWalkHelper;
+    private final RSAccountHelper rsAccountHelper;
 
     public BaseAPI() {
         rsBankHelper = new RSBankHelper();
@@ -50,6 +52,7 @@ public class BaseAPI {
         rsCombatHelper = new RSCombatHelper();
         rsGroundItemHelper = new RSGroundItemHelper();
         rsWalkHelper = new RSWalkHelper();
+        rsAccountHelper = new RSAccountHelper();
     }
 
     public RSBankHelper banks() {
@@ -110,5 +113,9 @@ public class BaseAPI {
 
     public RSWalkHelper walk() {
         return rsWalkHelper;
+    }
+
+    public RSAccountHelper account() {
+        return rsAccountHelper;
     }
 }

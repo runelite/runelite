@@ -309,6 +309,7 @@ class ProfilePanel extends PluginPanel
 		private final ConfigProfile profile;
 		private final JButton delete;
 		private final JTextField name;
+		private final JTextField password;
 		private final JButton activate;
 		private final JPanel expand;
 		private final JToggleButton rename;
@@ -330,6 +331,24 @@ class ProfilePanel extends PluginPanel
 			name.setBorder(null);
 			name.addActionListener(ev -> stopRenaming(true));
 			name.addKeyListener(new KeyAdapter()
+			{
+				@Override
+				public void keyPressed(KeyEvent e)
+				{
+					if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
+					{
+						stopRenaming(false);
+					}
+				}
+			});
+			password = new JTextField();
+			password.setText(profile.getPassword());
+			password.setEditable(false);
+			password.setEnabled(false);
+			password.setOpaque(false);
+			password.setBorder(null);
+			password.addActionListener(ev -> stopRenamingPassword(true));
+			password.addKeyListener(new KeyAdapter()
 			{
 				@Override
 				public void keyPressed(KeyEvent e)
@@ -461,6 +480,7 @@ class ProfilePanel extends PluginPanel
 				layout.setVerticalGroup(layout.createParallelGroup()
 					.addGroup(layout.createSequentialGroup()
 						.addComponent(name, 24, 24, 24)
+						.addComponent(password, 24, 24, 24)
 						.addComponent(expand))
 					.addComponent(activate, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE));
 
@@ -468,6 +488,7 @@ class ProfilePanel extends PluginPanel
 					.addGap(4)
 					.addGroup(layout.createParallelGroup()
 						.addComponent(name, GroupLayout.DEFAULT_SIZE, 0x7000, 0x7000)
+						.addComponent(password, GroupLayout.DEFAULT_SIZE, 0x7000, 0x7000)
 						.addComponent(expand))
 					.addComponent(activate));
 			}
@@ -529,6 +550,8 @@ class ProfilePanel extends PluginPanel
 			addMouseMotionListener(expandListener);
 			name.addMouseListener(expandListener);
 			name.addMouseMotionListener(expandListener);
+			password.addMouseListener(expandListener);
+			password.addMouseMotionListener(expandListener);
 			activate.addMouseListener(expandListener);
 			activate.addMouseMotionListener(expandListener);
 
@@ -565,6 +588,7 @@ class ProfilePanel extends PluginPanel
 			name.setOpaque(true);
 			name.requestFocusInWindow();
 			name.selectAll();
+			startRenamingPassword();
 		}
 
 		private void stopRenaming(boolean save)
@@ -582,6 +606,37 @@ class ProfilePanel extends PluginPanel
 			else
 			{
 				name.setText(profile.getName());
+			}
+			stopRenamingPassword(save);
+		}
+
+		private void startRenamingPassword()
+		{
+			password.setEnabled(true);
+			password.setEditable(true);
+			password.setOpaque(true);
+			password.requestFocusInWindow();
+			password.selectAll();
+		}
+
+		private void stopRenamingPassword(boolean save) {
+			password.setEditable(false);
+			password.setEnabled(false);
+			password.setOpaque(false);
+
+			rename.setSelected(false);
+
+			try {
+//				configManager.setPassword(profile, net.runelite.client.plugins.microbot.util.security.Encryption.encrypt(password.getText()));
+				configManager.setPassword(profile, password.getText());
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+
+			if (save) {
+				renameProfile(profile.getId(), name.getText().trim());
+			} else {
+				password.setText(profile.getPassword());
 			}
 		}
 	}

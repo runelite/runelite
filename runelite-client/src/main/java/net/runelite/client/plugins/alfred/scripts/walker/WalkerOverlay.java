@@ -1,6 +1,6 @@
 package net.runelite.client.plugins.alfred.scripts.walker;
 
-import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.Tile;
 import net.runelite.client.plugins.alfred.Alfred;
 import net.runelite.client.plugins.alfred.api.rs.walk.RSTile;
 import net.runelite.client.plugins.alfred.api.rs.walk.astar.AStarNode;
@@ -23,17 +23,17 @@ public class WalkerOverlay extends Overlay {
 
     @Override
     public Dimension render(Graphics2D graphics) {
-        for (RSTile currentWalkableTile : Alfred.api.walk().getWalkableTiles()) {
+        for (RSTile tile : Alfred.api.walk().getWalkableTiles()) {
             for (AStarNode node : Alfred.api.walk().getPath()) {
-                if (currentWalkableTile.getWorldLocation().equals(node.getWorldLocation())) {
-                    Polygon poly = currentWalkableTile.getCanvasPolygon();
+                if (tile.getWorldLocation().equals(node.getWorldLocation())) {
+                    Polygon poly = tile.getCanvasPolygon();
 
                     if (poly == null) {
                         continue;
                     }
 
                     graphics.setColor(Color.BLUE);
-                    if (currentWalkableTile.isOperable()) {
+                    if (tile.isOperable()) {
                         graphics.setColor(Color.RED);
                     }
 

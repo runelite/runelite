@@ -55,7 +55,7 @@ public class Mouse {
     private void internalClick(int x, int y, int button) {
         Point point = new Point(x, y);
         internalWindMouse(x, y);
-        Alfred.sleep(75, 300);
+        Alfred.sleep(75, 125);
 
         dispatchMouseEvent(MouseEvent.MOUSE_MOVED, point, button);
         Alfred.sleep(75, 175);

@@ -294,6 +294,25 @@ public class ConfigManager
 		}
 	}
 
+	public void setPassword(ConfigProfile profile, String password) {
+
+		// flush pending config changes first in the event the profile being
+		// synced is the active profile.
+		sendConfig();
+
+		try (ProfileManager.Lock lock = profileManager.lock())
+		{
+			profile = lock.findProfile(profile.getId());
+			if (profile == null || profile.getPassword().equals(password))
+			{
+				return;
+			}
+
+			profile.setPassword(password);
+			lock.dirty();
+		}
+	}
+
 	public void toggleSync(ConfigProfile profile, boolean sync)
 	{
 		log.debug("Setting sync for {}: {}", profile.getName(), sync);

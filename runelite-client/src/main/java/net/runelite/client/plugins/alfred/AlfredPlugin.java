@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.config.ProfileManager;
+import net.runelite.client.game.WorldService;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.alfred.event.EventSelector;
@@ -28,6 +30,10 @@ public class AlfredPlugin extends Plugin {
     private AlfredOverlay overlay;
     @Inject
     private OverlayManager overlayManager;
+    @Inject
+    private WorldService worldService;
+    @Inject
+    private ProfileManager profileManager;
     @Getter
     private static Alfred alfred;
     private EventSelector eventSelector;
@@ -35,7 +41,7 @@ public class AlfredPlugin extends Plugin {
     @Override
     protected void startUp() throws Exception {
         log.info("Alfred putting his suit on.");
-        alfred = new Alfred(client, clientThread);
+        alfred = new Alfred(client, clientThread, worldService, profileManager);
         alfred.start();
 
         overlayManager.add(overlay);

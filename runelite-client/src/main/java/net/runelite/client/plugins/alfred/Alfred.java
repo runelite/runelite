@@ -3,6 +3,8 @@ package net.runelite.client.plugins.alfred;
 import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.config.ProfileManager;
+import net.runelite.client.game.WorldService;
 import net.runelite.client.plugins.alfred.api.rs.BaseAPI;
 import net.runelite.client.plugins.alfred.api.task.BaseTasks;
 import net.runelite.client.plugins.alfred.device.Keyboard;
@@ -26,15 +28,20 @@ public class Alfred {
     private static Keyboard keyboard;
     @Getter
     private static EventHandler eventHandler;
+    @Getter
+    private static WorldService worldService;
+    @Getter
+    private static ProfileManager profileManager;
     private static String status;
     private static RPCServer rpcServer;
 
-    public Alfred(Client client, ClientThread clientThread) {
+    public Alfred(Client client, ClientThread clientThread, WorldService worldService, ProfileManager profileManager) {
         Alfred.api = new BaseAPI();
         Alfred.tasks = new BaseTasks();
         Alfred.client = client;
         Alfred.clientThread = clientThread;
-//        Alfred.config = config;
+        Alfred.worldService = worldService;
+        Alfred.profileManager = profileManager;
         Alfred.mouse = new Mouse();
         Alfred.keyboard = new Keyboard();
         Alfred.eventHandler = new EventHandler();

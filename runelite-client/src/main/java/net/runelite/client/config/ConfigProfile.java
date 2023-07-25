@@ -40,6 +40,9 @@ public class ConfigProfile
 	@Setter(AccessLevel.PACKAGE)
 	private String name;
 	@Getter
+	@Setter(AccessLevel.PACKAGE)
+	private String password;
+	@Getter
 	@Setter
 	private boolean sync;
 	@Getter
