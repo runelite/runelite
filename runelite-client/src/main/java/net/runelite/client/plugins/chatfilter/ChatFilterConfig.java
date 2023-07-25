@@ -175,4 +175,15 @@ public interface ChatFilterConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "filterAllFurtherMessages",
+		name = "Filter all further messages from player",
+		description = "Filter all further messages by a player after filtering one of their messages, only works when filter type is set to 'Remove message' or 'censor message'",
+		position = 14
+	)
+	default boolean filterAllFurtherMessages()
+	{
+		return false;
+	}
 }

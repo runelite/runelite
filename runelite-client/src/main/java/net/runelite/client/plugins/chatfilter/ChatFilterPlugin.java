@@ -360,8 +360,16 @@ public class ChatFilterPlugin extends Plugin
 						filtered = true;
 						break;
 					case CENSOR_MESSAGE:
+						if (username != null && config.filterAllFurtherMessages())
+						{
+							filteredNamePatterns.add(compilePattern(stripAccents(username)));
+						}
 						return CENSOR_MESSAGE;
 					case REMOVE_MESSAGE:
+						if (username != null && config.filterAllFurtherMessages())
+						{
+							filteredNamePatterns.add(compilePattern(stripAccents(username)));
+						}
 						return null;
 				}
 			}
