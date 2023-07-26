@@ -196,6 +196,7 @@ public final class WidgetID
 	public static final int BGR_RANK_RUNEVERSI_GROUP_ID = 46;
 	public static final int AGILITY_ARENA_HUD_GROUP_ID = 5;
 	public static final int GNOMEBALL_SCORE_GROUP_ID = 139;
+	public static final int CLANKRANK_POPUP = 289;
 
 	static class WorldMap
 	{
@@ -315,6 +316,7 @@ public final class WidgetID
 		static final int EQUIPMENT_CONTENT_CONTAINER = 69;
 		static final int SETTINGS_BUTTON = 113;
 		static final int EQUIPMENT_BUTTON = 114;
+		static final int JAGEX_ACCOUNT_AD = 116;
 	}
 
 	static class GroupStorage

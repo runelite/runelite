@@ -270,12 +270,20 @@ public class BankPlugin extends Plugin
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
-		if (event.getGroupId() != WidgetID.SEED_VAULT_GROUP_ID || !config.seedVaultValue())
+		if (event.getGroupId() == WidgetID.SEED_VAULT_GROUP_ID && config.seedVaultValue())
 		{
-			return;
+			updateSeedVaultTotal();
 		}
-
-		updateSeedVaultTotal();
+		else if (event.getGroupId() == WidgetID.CLANKRANK_POPUP // also the Jagex account ad in the bank
+			&& config.blockJagexAccountAd())
+		{
+			var wn = client.getComponentTable()
+				.get(WidgetInfo.BANK_JAGEX_ACCOUNT_AD.getId());
+			if (wn != null)
+			{
+				clientThread.invokeLater(() -> client.closeInterface(wn, true));
+			}
+		}
 	}
 
 	@Subscribe

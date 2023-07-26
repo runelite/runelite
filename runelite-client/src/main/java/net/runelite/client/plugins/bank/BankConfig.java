@@ -144,4 +144,15 @@ public interface BankConfig extends Config
 	{
 		return new Keybind(KeyEvent.VK_F, InputEvent.CTRL_DOWN_MASK);
 	}
+
+	@ConfigItem(
+		keyName = "blockJagexAccountAd",
+		name = "Block Jagex Account popup",
+		description = "Blocks the weekly reminder to migrate to a Jagex account",
+		position = 11
+	)
+	default boolean blockJagexAccountAd()
+	{
+		return false;
+	}
 }
