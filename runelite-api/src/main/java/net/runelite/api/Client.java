@@ -942,6 +942,13 @@ public interface Client extends OAuthApi, GameEngine
 	void queueChangedVarp(@Varp int varp);
 
 	/**
+	 * Close an interface
+	 * @param interfaceNode the {@link WidgetNode} linking the interface into the component tree
+	 * @param unload whether to null the client's widget table
+	 */
+	void closeInterface(WidgetNode interfaceNode, boolean unload);
+
+	/**
 	 * Gets the widget flags table.
 	 *
 	 * @return the widget flags table
