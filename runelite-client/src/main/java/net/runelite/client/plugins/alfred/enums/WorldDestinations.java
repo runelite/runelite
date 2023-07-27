@@ -11,7 +11,7 @@ public enum WorldDestinations {
     EDGEVILLE_BANK("Edgeville Bank", new WorldPoint(3094, 3495, 0)),
     LUMBRIDGE_CASTLE("Lumbridge Castle", new WorldPoint(3122, 3218, 0)),
     LUMBRIDGE_CHICKENS("Lumbridge Chickens", new WorldPoint(3234, 3294, 0)),
-    LUMBRIDGE_COWS("Lumbridge Cows", new WorldPoint(3259, 3267, 0)),
+    LUMBRIDGE_COWS("Lumbridge Cows", new WorldPoint(3258, 3266, 0)),
     LUMBRIDGE_SOUTH_EAST_MINE("Lumbridge Swamp East Mine", new WorldPoint(3227, 3146, 0)),
     LUMBRIDGE_SOUTH_WEST_MINE("Lumbridge Swamp West Mine", new WorldPoint(3147, 3148, 0)),
 
@@ -53,30 +53,3 @@ public enum WorldDestinations {
         return name;
     }
 }
-
-//// Welcome to the RuneLite Development Shell
-//// Everything executed here runs on the client thread by default.
-//// By default client, clientThread, configManager and log are in scope
-//// You can subscribe to the Event Bus by using subscribe(Event.class, ev -> handler);
-//// and you can access things in the global injector module with var thing = inject(Thing.class);
-//// Press Ctrl+R or F10 to execute the contents of this editor
-//
-//log.info("Hello {}", client.getGameState());
-//
-//import net.runelite.api.Client;
-//import net.runelite.api.ObjectID;
-//import net.runelite.api.Point;
-//import net.runelite.api.Tile;
-//import net.runelite.api.coords.WorldPoint;
-//import net.runelite.client.plugins.alfred.Alfred;
-//import net.runelite.client.plugins.alfred.api.rs.math.Calculations;
-//import net.runelite.client.plugins.alfred.api.rs.player.RSPlayer;
-//import net.runelite.client.plugins.alfred.api.rs.walk.astar.AStarPathFinder;
-//import net.runelite.client.plugins.alfred.api.rs.walk.astar.NodeLoader;
-//
-//RSPlayer player = Alfred.api.players().getLocalPlayer();
-//WorldPoint start = player.getWorldLocation();
-//
-//NodeLoader nodeLoader = new NodeLoader("/home/griffin/IdeaProjects/runelite/runelite-client/src/main/java/net/runelite/client/plugins/alfred/resources/tiles.csv");
-//AStarPathFinder pathFinder = new AStarPathFinder(nodeLoader.getGrid());
-//List<WorldPoint> pathPoints = pathFinder.findPath(start, new WorldPoint(3164, 3486, 0));

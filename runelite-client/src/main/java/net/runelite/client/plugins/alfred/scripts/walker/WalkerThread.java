@@ -1,5 +1,6 @@
 package net.runelite.client.plugins.alfred.scripts.walker;
 
+import net.runelite.api.GameState;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.plugins.alfred.Alfred;
 
@@ -13,7 +14,10 @@ public class WalkerThread extends Thread {
 
     @Override
     public void run() {
-        System.out.println(config.locations().getName());
+        if (Alfred.getClient().getGameState() != GameState.LOGGED_IN) {
+            Alfred.api.account().login();
+        }
+
         if (!config.locations().getName().equals("None")) {
             Alfred.setStatus("Walking to: " + config.locations().getName());
             Alfred.api.walk().walkTo(config.locations().getWorldPoint());

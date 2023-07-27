@@ -13,14 +13,20 @@ public class RSAccountHelper {
     }
 
     public void login() {
-        ConfigProfile profile = Alfred.getProfileManager().lock().findProfile("griffinscape@protonmail.com");
-        System.out.println(profile.getPassword());
+        ConfigProfile profile = Alfred.getProfileManager().lock().getProfiles().stream().filter(configProfile -> configProfile.isActive()).findFirst().orElse(null);
+        if (profile == null) {
+            System.out.println("No active profiles");
+        }
+
+        Alfred.sleep(300, 600);
         Alfred.getKeyboard().pressEnter();
         changeWorld(326);
-        Alfred.sleep(300);
-        Alfred.getClient().setUsername("griffinscape@protonmail.com");
-        Alfred.getClient().setPassword("VXqpUu6sVkv7eDvsyz07");
-        Alfred.sleep(300);
+//        changeWorld(316);
+        Alfred.sleep(300, 600);
+        Alfred.getClient().setUsername(profile.getName());
+        Alfred.sleep(300, 600);
+        Alfred.getClient().setPassword(profile.getPassword());
+        Alfred.sleep(300, 600);
         Alfred.getKeyboard().pressEnter();
         Alfred.sleepUntil(() -> Alfred.getClient().getGameState() == GameState.LOGGED_IN, 100, 1000 * 15);
         Alfred.sleep(500, 2000);

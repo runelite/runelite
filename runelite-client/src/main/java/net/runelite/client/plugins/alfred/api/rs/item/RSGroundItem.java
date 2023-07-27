@@ -124,6 +124,8 @@ public class RSGroundItem {
     }
 
     public boolean clickAction(String action) {
+        Alfred.setStatus("Clicking " + action + " on " + getName());
+
         if (!rightClick()) {
             return false;
         }
@@ -135,11 +137,6 @@ public class RSGroundItem {
             return false;
         }
 
-        if (!rsMenu.clickAction(action, getName())) {
-            return false;
-        }
-
-        Alfred.sleep(200, 400);
-        return true;
+        return rsMenu.clickAction(action, getName());
     }
 }

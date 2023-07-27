@@ -303,7 +303,7 @@ public class ConfigManager
 		try (ProfileManager.Lock lock = profileManager.lock())
 		{
 			profile = lock.findProfile(profile.getId());
-			if (profile == null || profile.getPassword().equals(password))
+			if (profile == null || profile.getPassword() == password)
 			{
 				return;
 			}

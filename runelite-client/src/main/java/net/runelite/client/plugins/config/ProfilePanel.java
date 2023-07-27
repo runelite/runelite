@@ -627,6 +627,7 @@ class ProfilePanel extends PluginPanel
 			rename.setSelected(false);
 
 			try {
+//				todo: add encryption
 //				configManager.setPassword(profile, net.runelite.client.plugins.microbot.util.security.Encryption.encrypt(password.getText()));
 				configManager.setPassword(profile, password.getText());
 			} catch (Exception e) {

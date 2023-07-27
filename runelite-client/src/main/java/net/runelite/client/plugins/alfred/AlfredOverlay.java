@@ -30,6 +30,10 @@ public class AlfredOverlay extends Overlay {
     }
 
     private void drawStatusBox(Graphics2D graphics, String status) {
+        if (status == null) {
+            return;
+        }
+
         FontMetrics fontMetrics = Alfred.getClient().getCanvas().getFontMetrics(FontManager.getRunescapeBoldFont());
 
         int padding = 5;

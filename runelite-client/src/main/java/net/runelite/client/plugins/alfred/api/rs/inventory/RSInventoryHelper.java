@@ -13,8 +13,6 @@ public class RSInventoryHelper {
     private final int INVENTORY_CONTAINER_ID = 9764864;
 
     public boolean isOpen() {
-        Alfred.setStatus("Checking if inventory is open");
-
         return Alfred.getClientThread().invokeOnClientThread(() -> {
             Widget widget = Alfred.getClient().getWidget(786433);
             if (widget == null) {
@@ -26,8 +24,6 @@ public class RSInventoryHelper {
     }
 
     public void open() {
-        Alfred.setStatus("Opening inventory");
-
         if (!isOpen()) {
             Alfred.api.tabs().clickInventoryTab();
             Alfred.sleepUntil(this::isOpen, 100, 2000);
@@ -49,7 +45,7 @@ public class RSInventoryHelper {
                     continue;
                 }
 
-                if (item.getName().length() > 0) {
+                if (!item.getName().isEmpty()) {
                     itemCount++;
                 }
             }
@@ -109,14 +105,14 @@ public class RSInventoryHelper {
         return Alfred.getClientThread().invokeOnClientThread(() -> {
             open();
 
-            List<RSInvetoryItem> rsInvetoryItemList = new ArrayList<>();
+            List<RSInvetoryItem> rsInventoryItemList = new ArrayList<>();
             Widget inventoryWidget = Alfred.api.widgets().getWidget(INVENTORY_CONTAINER_ID);
 
             for (Widget item : inventoryWidget.getDynamicChildren()) {
-                rsInvetoryItemList.add(new RSInvetoryItem(item));
+                rsInventoryItemList.add(new RSInvetoryItem(item));
             }
 
-            return rsInvetoryItemList;
+            return rsInventoryItemList;
         });
     }
 
@@ -125,11 +121,11 @@ public class RSInventoryHelper {
     }
 
     public List<RSInvetoryItem> getItems(int itemId) {
-        return internalGetItems().stream().filter(rsInvetoryItem -> rsInvetoryItem.getId() == itemId).collect(Collectors.toList());
+        return internalGetItems().stream().filter(rsInventoryItem -> rsInventoryItem.getId() == itemId).collect(Collectors.toList());
     }
 
     public List<RSInvetoryItem> getItems(String name) {
-        return internalGetItems().stream().filter(rsInvetoryItem -> rsInvetoryItem.getName().equalsIgnoreCase(name)).collect(Collectors.toList());
+        return internalGetItems().stream().filter(rsInventoryItem -> rsInventoryItem.getName().equalsIgnoreCase(name)).collect(Collectors.toList());
     }
 
     public boolean clickAction(String action) {
@@ -141,19 +137,15 @@ public class RSInventoryHelper {
         return rsMenu.clickAction(action);
     }
 
-    private boolean internalDrop(RSInvetoryItem rsInvetoryItem) {
-        if (rsInvetoryItem == null) {
-            return false;
-        }
-
-        Alfred.getMouse().rightClick(rsInvetoryItem.getBounds());
+    private boolean internalDrop(RSInvetoryItem rsInventoryItem) {
+        Alfred.getMouse().rightClick(rsInventoryItem.getBounds());
         Alfred.sleep(200, 600);
         return clickAction("drop");
     }
 
-    private boolean internalDropAll(List<RSInvetoryItem> rsInvetoryItems) {
-        for (RSInvetoryItem rsInvetoryItem : rsInvetoryItems) {
-            internalDrop(rsInvetoryItem);
+    private boolean internalDropAll(List<RSInvetoryItem> rsInventoryItems) {
+        for (RSInvetoryItem rsInventoryItem : rsInventoryItems) {
+            internalDrop(rsInventoryItem);
             Alfred.sleep(75, 150);
         }
         return true;
@@ -168,43 +160,46 @@ public class RSInventoryHelper {
             return true;
         }
 
-        RSInvetoryItem rsInvetoryItem = getItemFromSlot(slot);
-        internalDrop(rsInvetoryItem);
+        RSInvetoryItem rsInventoryItem = getItemFromSlot(slot);
+        internalDrop(rsInventoryItem);
         Alfred.sleep(75, 150);
         return true;
     }
 
-    public boolean drop(RSInvetoryItem rsInvetoryItem) {
-        return internalDrop(rsInvetoryItem);
+    public boolean drop(RSInvetoryItem rsInventoryItem) {
+        return internalDrop(rsInventoryItem);
     }
 
     public boolean dropFirst(String name) {
-        RSInvetoryItem rsInvetoryItem = getItems(name).stream().findFirst().orElse(null);
-        return internalDrop(rsInvetoryItem);
+        RSInvetoryItem rsInventoryItem = getItems(name).stream().findFirst().orElse(null);
+        if (rsInventoryItem == null) return false;
+        return internalDrop(rsInventoryItem);
     }
 
     public boolean dropFirst(int itemId) {
-        RSInvetoryItem rsInvetoryItem = getItems(itemId).stream().findFirst().orElse(null);
-        return internalDrop(rsInvetoryItem);
+        RSInvetoryItem rsInventoryItem = getItems(itemId).stream().findFirst().orElse(null);
+        if (rsInventoryItem == null) return false;
+        return internalDrop(rsInventoryItem);
     }
 
-    public boolean dropFirst(RSInvetoryItem rsInvetoryItem) {
-        return internalDrop(rsInvetoryItem);
+    public boolean dropFirst(RSInvetoryItem rsInventoryItem) {
+        return internalDrop(rsInventoryItem);
     }
 
     public boolean dropAll(String name) {
-        List<RSInvetoryItem> rsInvetoryItems = getItems(name);
-        return internalDropAll(rsInvetoryItems);
+        List<RSInvetoryItem> rsInventoryItems = getItems(name);
+        if (rsInventoryItems == null) return false;
+        return internalDropAll(rsInventoryItems);
     }
 
     public boolean dropAll(int itemId) {
-        List<RSInvetoryItem> rsInvetoryItems = getItems(itemId);
-        return internalDropAll(rsInvetoryItems);
+        List<RSInvetoryItem> rsInventoryItems = getItems(itemId);
+        return internalDropAll(rsInventoryItems);
     }
 
-    public boolean dropAll(RSInvetoryItem rsInvetoryItem) {
-        List<RSInvetoryItem> rsInvetoryItems = getItems(rsInvetoryItem.getId());
-        return internalDropAll(rsInvetoryItems);
+    public boolean dropAll(RSInvetoryItem rsInventoryItem) {
+        List<RSInvetoryItem> rsInventoryItems = getItems(rsInventoryItem.getId());
+        return internalDropAll(rsInventoryItems);
     }
 
     public boolean dropSlot(int slot) {
@@ -225,37 +220,38 @@ public class RSInventoryHelper {
         return true;
     }
 
-    private boolean internalInteract(RSInvetoryItem rsInvetoryItem, String action) {
-        if (rsInvetoryItem == null) {
+    private boolean internalInteract(RSInvetoryItem rsInventoryItem, String action) {
+        if (rsInventoryItem == null) {
             return false;
         }
 
-        if (!rsInvetoryItem.getInventoryActions().contains(action)) {
+        if (!rsInventoryItem.getInventoryActions().contains(action)) {
             return false;
         }
 
-        Alfred.getMouse().rightClick(rsInvetoryItem.getBounds());
+        Alfred.getMouse().rightClick(rsInventoryItem.getBounds());
         Alfred.sleep(200, 600);
         return clickAction(action);
     }
 
-    public boolean interactFirst(RSInvetoryItem rsInvetoryItem, String action) {
-        return internalInteract(rsInvetoryItem, action);
+    public boolean interactFirst(RSInvetoryItem rsInventoryItem, String action) {
+        return internalInteract(rsInventoryItem, action);
     }
 
     public boolean interactFirst(String name, String action) {
-        RSInvetoryItem rsInvetoryItem = getItems(name).stream().findFirst().orElse(null);
-        return internalInteract(rsInvetoryItem, action);
+        RSInvetoryItem rsInventoryItem = getItems(name).stream().findFirst().orElse(null);
+        return internalInteract(rsInventoryItem, action);
     }
 
     public boolean interactFirst(int itemId, String action) {
-        RSInvetoryItem rsInvetoryItem = getItems(itemId).stream().findFirst().orElse(null);
-        return internalInteract(rsInvetoryItem, action);
+        RSInvetoryItem rsInventoryItem = getItems(itemId).stream().findFirst().orElse(null);
+        return internalInteract(rsInventoryItem, action);
     }
 
-    public boolean interactAll(RSInvetoryItem rsInvetoryItem, String action) {
-        List<RSInvetoryItem> rsInvetoryItems = getItems(rsInvetoryItem.getId());
-        for (RSInvetoryItem item : rsInvetoryItems) {
+    public boolean interactAll(RSInvetoryItem rsInventoryItem, String action) {
+        List<RSInvetoryItem> rsInventoryItems = getItems(rsInventoryItem.getId());
+        for (RSInvetoryItem item : rsInventoryItems) {
+            Alfred.setStatus("Interacting with " + item.getName() + ", with action " + action);
             internalInteract(item, action);
             Alfred.sleep(75, 150);
         }
@@ -263,8 +259,9 @@ public class RSInventoryHelper {
     }
 
     public boolean interactAll(String name, String action) {
-        List<RSInvetoryItem> rsInvetoryItems = getItems(name);
-        for (RSInvetoryItem item : rsInvetoryItems) {
+        List<RSInvetoryItem> rsInventoryItems = getItems(name);
+        for (RSInvetoryItem item : rsInventoryItems) {
+            Alfred.setStatus("Interacting with " + item.getName() + ", with action " + action);
             internalInteract(item, action);
             Alfred.sleep(75, 150);
         }
@@ -272,9 +269,21 @@ public class RSInventoryHelper {
     }
 
     public boolean interactAll(int itemId, String action) {
-        List<RSInvetoryItem> rsInvetoryItems = getItems(itemId);
-        for (RSInvetoryItem item : rsInvetoryItems) {
+        List<RSInvetoryItem> rsInventoryItems = getItems(itemId);
+        for (RSInvetoryItem item : rsInventoryItems) {
+            Alfred.setStatus("Interacting with " + item.getName() + ", with action " + action);
             internalInteract(item, action);
+            Alfred.sleep(75, 150);
+        }
+        return true;
+    }
+
+    public boolean leftClickAll(String name) {
+
+        List<RSInvetoryItem> rsInventoryItems = getItems(name);
+        for (RSInvetoryItem item : rsInventoryItems) {
+            Alfred.setStatus("Clicking " + item.getName());
+            item.leftClick();
             Alfred.sleep(75, 150);
         }
         return true;

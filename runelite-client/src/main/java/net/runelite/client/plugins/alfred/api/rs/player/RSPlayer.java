@@ -2,6 +2,7 @@ package net.runelite.client.plugins.alfred.api.rs.player;
 
 
 import net.runelite.api.Player;
+import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
@@ -38,6 +39,10 @@ public class RSPlayer {
 
     public Shape getConvexHull() {
         return runelitePlayer.getConvexHull();
+    }
+
+    public int getRunEnergy() {
+        return Alfred.getClient().getEnergy() / 100;
     }
 
     public boolean isWalking() {
@@ -95,6 +100,10 @@ public class RSPlayer {
         if (value != isOn) {
             Alfred.api.widgets().leftClickWidget(WidgetInfo.MINIMAP_XP_ORB);
         }
+    }
+
+    public int getSkillLevel(Skill skill) {
+        return Alfred.getClient().getRealSkillLevel(skill);
     }
 
 //    public int getHealth() {

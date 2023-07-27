@@ -72,6 +72,14 @@ public class RSNpc {
         return npc.getAnimation() != -1;
     }
 
+    public boolean isVisible() {
+        return npc.getComposition().isVisible();
+    }
+
+    public boolean isClickable() {
+        return npc.getComposition().isClickable();
+    }
+
     public boolean isDead() {
         return npc.isDead();
     }
@@ -81,8 +89,6 @@ public class RSNpc {
     }
 
     public boolean attack() {
-        Alfred.setStatus("Attacking " + getName());
-
         if (npc.isInteracting() || npc.isDead()) {
             return false;
         }
@@ -93,9 +99,7 @@ public class RSNpc {
         }
 
         Alfred.getMouse().leftClick(clickBox);
-        Alfred.sleep(200);
-
-        return Alfred.sleepUntil(() -> Alfred.getClientThread().invokeOnClientThread(() -> {
+        return Alfred.sleepUntil(() -> {
             Actor interactingActor = npc.getInteracting();
             if (interactingActor == null) {
                 return false;
@@ -106,7 +110,7 @@ public class RSNpc {
             }
 
             return false;
-        }), 50, 1000);
+        }, 100, 3000);
     }
 
     public boolean interact(String action) {
@@ -125,8 +129,7 @@ public class RSNpc {
         Alfred.sleep(200, 600);
 
         RSMenu menu = Alfred.api.menu().getMenu();
-        menu.clickAction(action);
-        return true;
+        return menu.clickAction(action);
     }
 
 }

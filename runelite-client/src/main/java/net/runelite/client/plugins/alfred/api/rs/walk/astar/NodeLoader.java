@@ -2,7 +2,10 @@ package net.runelite.client.plugins.alfred.api.rs.walk.astar;
 
 import net.runelite.api.coords.WorldPoint;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,6 +67,8 @@ public class NodeLoader {
 
                 nodes.add(node);
             }
+
+            connection.close();
 
         } catch (Exception e) {
             e.printStackTrace();

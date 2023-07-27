@@ -9,7 +9,6 @@ import net.runelite.client.plugins.alfred.api.rs.menu.RSMenu;
 import net.runelite.client.plugins.alfred.api.rs.player.RSPlayer;
 import net.runelite.client.plugins.alfred.api.rs.walk.astar.AStarNode;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PathWalker {
@@ -21,11 +20,9 @@ public class PathWalker {
         this.player = Alfred.api.players().getLocalPlayer();
     }
 
-    public void walkPath() {
-        List<AStarNode> visitedNodes = new ArrayList<>();
 
+    public void walkPath() {
         for (AStarNode currentNode : tiles) {
-            visitedNodes.add(currentNode);
             Point minimapPoint = Alfred.api.miniMap().getWorldPointToScreenPoint(currentNode.getWorldLocation());
 
             if (minimapPoint == null) {
@@ -34,13 +31,6 @@ public class PathWalker {
 
             int distance = (int) Calculations.distanceBetweenPoints(player.getWorldLocation(), currentNode.getWorldLocation());
             boolean isLastNode = currentNode.getWorldLocation().equals(tiles.get(tiles.size() - 1).getWorldLocation());
-
-            int operableDistance = -1;
-            AStarNode nextOperableNode = tiles.stream().filter(node -> node.getIsOperable()).filter(node -> !visitedNodes.contains(node)).findFirst().orElse(null);
-
-            if (nextOperableNode != null) {
-                operableDistance = (int) Calculations.distanceBetweenPoints(player.getWorldLocation(), nextOperableNode.getWorldLocation());
-            }
 
             if (isLastNode && distance < 3) {
                 continue;
@@ -52,17 +42,6 @@ public class PathWalker {
 
             if (currentNode.getIsOperable()) {
                 RSTile realTile = findTile(currentNode);
-                if (realTile == null) {
-                    continue;
-                }
-
-                if (!operateOnTile(realTile.getTile())) {
-                    continue;
-                }
-            }
-
-            if (nextOperableNode != null && operableDistance <= 4) {
-                RSTile realTile = findTile(nextOperableNode);
                 if (realTile == null) {
                     continue;
                 }
@@ -97,13 +76,18 @@ public class PathWalker {
 
     private boolean operateOnTile(Tile tile) {
         Alfred.sleepUntil(() -> !player.isMoving() && !player.isInteracting() && player.isIdle(), 200, 1000 * 10);
-        Alfred.api.camera().lookAt(tile.getWorldLocation());
-
-        Alfred.sleep(100, 200);
+        Alfred.sleep(200, 400);
 
         WallObject wallObject = tile.getWallObject();
         if (wallObject == null) {
-            System.out.println("Wall object is null");
+            Tile operableNeighbor = getFirstOperableNeighbor(tile);
+            if (operableNeighbor != null) {
+                wallObject = operableNeighbor.getWallObject();
+            }
+        }
+
+        if (wallObject == null) {
+            System.out.println("Wall is null");
             return false;
         }
 
@@ -121,11 +105,15 @@ public class PathWalker {
             return true;
         }
 
-        boolean success = rsMenu.clickAction("open");
-        if (!success) {
+        if (!rsMenu.clickAction("open")) {
             System.out.println("Failed to operate on tile");
+            return false;
         }
-        return success;
+
+        Alfred.sleep(1000);
+        Alfred.sleepUntil(() -> !player.isMoving() && !player.isInteracting() && player.isIdle(), 200, 1000 * 10);
+        Alfred.sleep(250, 500);
+        return true;
     }
 
     private RSTile findTile(AStarNode node) {
@@ -133,6 +121,37 @@ public class PathWalker {
         for (RSTile tile : tiles) {
             if (tile.getWorldLocation().equals(node.getWorldLocation())) {
                 return tile;
+            }
+        }
+        return null;
+    }
+
+    private Tile getFirstOperableNeighbor(Tile tile) {
+        List<RSTile> walkableTiles = Alfred.api.walk().getWalkableTiles();
+
+        for (int x = -1; x < 2; x++) {
+            for (int y = -1; y < 2; y++) {
+                if (x == 0 && y == 0) {
+                    continue;
+                }
+
+                int checkX = tile.getWorldLocation().getX() + x;
+                int checkY = tile.getWorldLocation().getY() + y;
+
+                for (RSTile rsTile : walkableTiles) {
+                    if (rsTile.getWorldLocation().getX() != checkX || rsTile.getWorldLocation().getY() != checkY) {
+                        continue;
+                    }
+
+                    WallObject wallObject = rsTile.getTile().getWallObject();
+                    if (wallObject == null) {
+                        continue;
+                    }
+
+                    if (RSWalkHelper.getOperableObjectIds().contains(wallObject.getId())) {
+                        return rsTile.getTile();
+                    }
+                }
             }
         }
         return null;

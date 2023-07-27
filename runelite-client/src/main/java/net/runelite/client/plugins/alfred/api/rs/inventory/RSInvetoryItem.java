@@ -5,8 +5,9 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.client.plugins.alfred.Alfred;
 
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class RSInvetoryItem {
 
@@ -76,13 +77,7 @@ public class RSInvetoryItem {
     public List<String> getInventoryActions() {
         return Alfred.getClientThread().invokeOnClientThread(() -> {
             ItemComposition itemComposition = Alfred.getClient().getItemDefinition(this.getId());
-            List<String> actions = new ArrayList<>();
-            for (String action : itemComposition.getInventoryActions()) {
-                if (action != null) {
-                    actions.add(action);
-                }
-            }
-            return actions;
+            return Arrays.stream(itemComposition.getInventoryActions()).filter(action -> action != null).collect(Collectors.toList());
         });
     }
 
