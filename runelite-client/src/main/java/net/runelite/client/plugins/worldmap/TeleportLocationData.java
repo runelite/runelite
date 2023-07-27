@@ -48,7 +48,7 @@ enum TeleportLocationData
 	KHARYRLL(TeleportType.ANCIENT_MAGICKS, "Kharyrll", 66, new WorldPoint(3494, 3473, 0), "kharyrll_teleport_icon.png"),
 	LASSAR(TeleportType.ANCIENT_MAGICKS, "Lassar", 72, new WorldPoint(3002, 3472, 0), "lassar_teleport_icon.png"),
 	DAREEYAK(TeleportType.ANCIENT_MAGICKS, "Dareeyak", 78, new WorldPoint(2969, 3695, 0), "dareeyak_teleport_icon.png"),
-	CARRALLANGAR(TeleportType.ANCIENT_MAGICKS, "Carrallangar", 84, new WorldPoint(3157, 3667, 0), "carrallangar_teleport_icon.png"),
+	CARRALLANGER(TeleportType.ANCIENT_MAGICKS, "Carrallanger", 84, new WorldPoint(3157, 3667, 0), "carrallanger_teleport_icon.png"),
 	ANNAKARL(TeleportType.ANCIENT_MAGICKS, "Annakarl", 90, new WorldPoint(3288, 3888, 0), "annakarl_teleport_icon.png"),
 	GHORROCK(TeleportType.ANCIENT_MAGICKS, "Ghorrock", 96, new WorldPoint(2977, 3872, 0), "ghorrock_teleport_icon.png"),
 	MOONCLAN(TeleportType.LUNAR_MAGIC, "Moonclan", 69, new WorldPoint(2113, 3915, 0), "moonclan_teleport_icon.png"),

@@ -187,7 +187,7 @@ public class GameEventManager
 				ItemLayer itemLayer = tile.getItemLayer();
 				if (itemLayer != null)
 				{
-					Node current = itemLayer.getBottom();
+					Node current = itemLayer.getTop();
 					while (current instanceof TileItem)
 					{
 						final TileItem item = (TileItem) current;

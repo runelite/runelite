@@ -36,6 +36,8 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.image.VolatileImage;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nullable;
@@ -46,7 +48,6 @@ import net.runelite.api.Client;
 import net.runelite.api.MainBufferProvider;
 import net.runelite.api.Renderable;
 import net.runelite.api.Skill;
-import net.runelite.api.worldmap.WorldMapRenderer;
 import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.FakeXpDrop;
 import net.runelite.api.events.GameStateChanged;
@@ -58,6 +59,7 @@ import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetInfo.WORLD_MAP_VIEW;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.api.worldmap.WorldMap;
+import net.runelite.api.worldmap.WorldMapRenderer;
 import net.runelite.client.Notifier;
 import net.runelite.client.TelemetryClient;
 import net.runelite.client.chat.ChatMessageManager;
@@ -532,12 +534,6 @@ public class Hooks implements Callbacks
 			// have been processed is typically more useful.
 			shouldProcessGameTick = true;
 		}
-
-		// Replay deferred events, otherwise if two npc
-		// update packets get processed in one client tick, a
-		// despawn event could be published prior to the
-		// spawn event, which is deferred
-		deferredEventBus.replay();
 	}
 
 	@Override
@@ -635,9 +631,20 @@ public class Hooks implements Callbacks
 		long now = System.currentTimeMillis();
 		if (now > nextError)
 		{
+			var sw = new StringWriter();
+			sw.append(message);
+			if (reason != null)
+			{
+				sw.append(" - ").append(reason.toString()).append('\n');
+				try (var pw = new PrintWriter(sw))
+				{
+					reason.printStackTrace(pw);
+				}
+			}
+
 			telemetryClient.submitError(
 				"client error",
-				message + " - " + reason);
+				sw.toString());
 
 			if (rateLimitedError)
 			{

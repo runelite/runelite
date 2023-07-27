@@ -59,12 +59,12 @@ class Updater
 	private static final String LAUNCHER_EXECUTABLE_NAME_WIN = "RuneLite.exe";
 
 	// Props can be overwritten by rtconfig, which is unsigned, and so is not safe for this
-	private static final String WIN64_URL = "https://github.com/runelite/launcher/releases/download/2.6.4/RuneLiteSetup.exe";
-	private static final String WIN64_CHECKSUM = "ae1ef12e6a820c5a94c1b834246def883515e9669175a6a94e47aae35e2ca7ab";
-	private static final int WIN64_SIZE = 29440704;
-	private static final String WIN32_URL = "https://github.com/runelite/launcher/releases/download/2.6.4/RuneLiteSetup32.exe";
-	private static final String WIN32_CHECKSUM = "6655c149fa86d0750b0e66b575560f97e6e5b04f734c8d0e899457f694e3ff50";
-	private static final int WIN32_SIZE = 25297512;
+	private static final String WIN64_URL = "https://github.com/runelite/launcher/releases/download/2.6.7/RuneLiteSetup.exe";
+	private static final String WIN64_CHECKSUM = "6e388243311622782deaed24555fdcc89672c6d22b843245d8514fdaeee4586c";
+	private static final int WIN64_SIZE = 29440032;
+	private static final String WIN32_URL = "https://github.com/runelite/launcher/releases/download/2.6.7/RuneLiteSetup32.exe";
+	private static final String WIN32_CHECKSUM = "3e79a0aa4d09ff8782e8ca7a30b4948abb935eacdce8b71d6263fb92e1d25e79";
+	private static final int WIN32_SIZE = 25299936;
 
 	private final OkHttpClient okHttpClient;
 	private final RuntimeConfig runtimeConfig;

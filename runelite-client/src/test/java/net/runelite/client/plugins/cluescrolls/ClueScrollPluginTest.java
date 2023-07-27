@@ -129,7 +129,6 @@ public class ClueScrollPluginTest
 	@Before
 	public void before()
 	{
-		when(client.getScene()).thenReturn(scene);
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
 	}
 
@@ -171,8 +170,8 @@ public class ClueScrollPluginTest
 
 		// Move to SW of DRAYNOR_WHEAT_FIELD (hint arrow should be visible here)
 		when(localPlayer.getWorldLocation()).thenReturn(new WorldPoint(3105, 3265, 0));
-		when(scene.getBaseX()).thenReturn(3056);
-		when(scene.getBaseY()).thenReturn(3216);
+		when(client.getBaseX()).thenReturn(3056);
+		when(client.getBaseY()).thenReturn(3216);
 		plugin.onGameTick(new GameTick());
 		verify(client, times(++clueSetupHintArrowClears)).clearHintArrow();
 		verify(client).setHintArrow(HotColdLocation.DRAYNOR_WHEAT_FIELD.getWorldPoint());
