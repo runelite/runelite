@@ -35,4 +35,38 @@ public interface Animation
 	 * @return
 	 */
 	int getId();
+
+	/**
+	 * Applies the animation to the model at the specified frame.
+	 * {@link Mesh#cloneColors()} and {@link Mesh#cloneTransparencies()}
+	 * should be called before using this method.
+	 * 
+	 * @param m The model to apply the animation to.
+	 * @param frameId The frame ID (time step) to use from the animation.
+	 *                Must be &lt;= to {@link #getTotalFrames()}.
+	 * @return The transformed model, as a different reference. Some 
+	 * 		   buffers may be shared with the base model, so cloneX 
+	 * 		   should still be called before any mutation.
+	 */
+	Model transformModel(Model m, int frameId);
+
+	/**
+	 * Get the render type for this animation.
+	 * @return
+	 * 
+	 * @see AnimationType
+	 */
+	AnimationType getType();
+
+	/**
+	 * Get the length of each frame in display ticks. Only valid on animations with {@link AnimationType#VARIABLE_FRAME_LENGTH}.
+	 * @return An array containing the client ticks per animation frame.
+	 */
+	int[] getFrameLengths();
+
+	/**
+	 * Get the total amount of frames within this animation.
+	 * @return
+	 */
+	int getTotalFrames();
 }

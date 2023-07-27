@@ -25,6 +25,8 @@
  */
 package net.runelite.api;
 
+import java.util.function.IntConsumer;
+import java.util.function.Supplier;
 import net.runelite.api.coords.LocalPoint;
 
 /**
@@ -114,4 +116,23 @@ public interface RuneLiteObject extends GraphicsObject
 	 * @param drawFrontTilesFirst
 	 */
 	void setDrawFrontTilesFirst(boolean drawFrontTilesFirst);
+
+	/**
+	 * When used, the model supplier will be called on each frame to determine the model to render. This overrides 
+	 * and replaces the {@link #setModel(Model)}, {@link #setAnimation(Animation)}, and {@link #setShouldLoop(boolean)} 
+	 * methods, as well as removes the behaviour of removing the model when the animation ends. Callers must implement
+	 * these behaviours externally, if desired.
+	 * 
+	 * @param modelSupplier Called each frame to determine the model to render for that frame.
+	 */
+	void setModelSupplier(Supplier<Model> modelSupplier);
+
+	/**
+	 * This method can be used to register a callback whenever the RuneLiteObject recognizes a client tick. This
+	 * may not be <em>every</em> client tick if the framerate is lower than the tick rate, but the parameter to
+	 * this method will be the number of client ticks advanced in this frame.
+	 * 
+	 * @param onTickCallback The method to be called each time the RuneLiteObject ticks.
+	 */
+	void setOnTick(IntConsumer onTickCallback);
 }

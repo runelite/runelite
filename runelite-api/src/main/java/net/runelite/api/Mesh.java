@@ -43,25 +43,25 @@ public interface Mesh<T extends Mesh<T>>
 
 	/**
 	 * Rotates this model 90 degrees around the vertical axis.
-	 * {@link ModelData#cloneVertices()} should be called before calling this method
+	 * {@link #cloneVertices()} should be called before calling this method
 	 */
 	T rotateY90Ccw();
 
 	/**
 	 * Rotates this model 180 degrees around the vertical axis.
-	 * {@link ModelData#cloneVertices()} should be called before calling this method
+	 * {@link #cloneVertices()} should be called before calling this method
 	 */
 	T rotateY180Ccw();
 
 	/**
 	 * Rotates this model 270 degrees around the vertical axis.
-	 * {@link ModelData#cloneVertices()} should be called before calling this method
+	 * {@link #cloneVertices()} should be called before calling this method
 	 */
 	T rotateY270Ccw();
 
 	/**
 	 * Offsets this model by the passed amount (1/128ths of a tile).
-	 * {@link ModelData#cloneVertices()} should be called before calling this method
+	 * {@link #cloneVertices()} should be called before calling this method
 	 */
 	T translate(int x, int y, int z);
 
@@ -70,4 +70,27 @@ public interface Mesh<T extends Mesh<T>>
 	 * {@link ModelData#cloneVertices()} should be called before calling this method
 	 */
 	T scale(int x, int y, int z);
+
+	/**
+	 * Clones {@link #getVerticesX()}, {@link #getVerticesY()}, and {@link #getVerticesZ()} so
+	 * they can be safely mutated
+	 */
+	T cloneVertices();
+
+	/**
+	 * Clones {@link ModelData#getFaceColors()} for {@link ModelData} instances, or
+	 * {@link Model#getFaceColors1()}, {@link Model#getFaceColors2()}, and {@link Model#getFaceColors3()}
+	 * for {@link Model} instances, so they can be safely mutated
+	 */
+	T cloneColors();
+
+	/**
+	 * Clones {@link #getFaceTextures()} so they can be safely mutated
+	 */
+	T cloneTextures();
+
+	/**
+	 * Clones {@link #getFaceTransparencies()} so they can be safely mutated
+	 */
+	T cloneTransparencies();
 }
