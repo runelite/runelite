@@ -1,6 +1,7 @@
 package net.runelite.client.plugins.alfred.event;
 
 import net.runelite.client.plugins.alfred.Alfred;
+import net.runelite.client.plugins.alfred.debug.DebugKeyboardEvents;
 import net.runelite.client.ui.ClientUI;
 
 import javax.swing.*;
@@ -17,6 +18,9 @@ public class EventHandler extends EventQueue {
         blocked = false;
         gameCanvas = Alfred.getClient().getCanvas();
         gameFrame = ClientUI.getFrame();
+        DebugKeyboardEvents debugKeyboardEvents = new DebugKeyboardEvents();
+        gameFrame.addKeyListener(debugKeyboardEvents);
+        gameCanvas.addKeyListener(debugKeyboardEvents);
     }
 
     public boolean isBlocking() {

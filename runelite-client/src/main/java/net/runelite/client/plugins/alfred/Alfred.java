@@ -7,11 +7,13 @@ import net.runelite.client.config.ProfileManager;
 import net.runelite.client.game.WorldService;
 import net.runelite.client.plugins.alfred.api.rs.BaseAPI;
 import net.runelite.client.plugins.alfred.api.task.BaseTasks;
+import net.runelite.client.plugins.alfred.debug.DebugKeyboardEvents;
 import net.runelite.client.plugins.alfred.device.Keyboard;
 import net.runelite.client.plugins.alfred.device.Mouse;
 import net.runelite.client.plugins.alfred.event.EventHandler;
 import net.runelite.client.plugins.alfred.rpc.http.RPCServer;
 
+import java.awt.*;
 import java.util.function.BooleanSupplier;
 
 public class Alfred {
@@ -45,6 +47,9 @@ public class Alfred {
         Alfred.mouse = new Mouse();
         Alfred.keyboard = new Keyboard();
         Alfred.eventHandler = new EventHandler();
+//        if (!(Toolkit.getDefaultToolkit().getSystemEventQueue() instanceof EventHandler)) {
+//            Toolkit.getDefaultToolkit().getSystemEventQueue().push(Alfred.eventHandler);
+//        }
     }
 
     public void start() throws Exception {

@@ -40,11 +40,11 @@ public class RSCameraHelper {
         boolean turnLeft = distance > 0 && distance < 180;
 
         if (turnLeft) {
-            Alfred.getKeyboard().pressKey(KeyEvent.VK_RIGHT);
-            Alfred.sleepUntilExecution(() -> Alfred.getKeyboard().releaseKey(KeyEvent.VK_RIGHT), () -> isCameraAngleInRange(worldPoint, 15), 10, 1000 * 30);
+            Alfred.getKeyboard().holdArrowKey(KeyEvent.VK_RIGHT);
+            Alfred.sleepUntilExecution(() -> Alfred.getKeyboard().releaseArrowKey(KeyEvent.VK_RIGHT), () -> isCameraAngleInRange(worldPoint, 15), 10, 1000 * 30);
         } else {
-            Alfred.getKeyboard().pressKey(KeyEvent.VK_LEFT);
-            Alfred.sleepUntilExecution(() -> Alfred.getKeyboard().releaseKey(KeyEvent.VK_LEFT), () -> isCameraAngleInRange(worldPoint, 15), 10, 1000 * 30);
+            Alfred.getKeyboard().holdArrowKey(KeyEvent.VK_LEFT);
+            Alfred.sleepUntilExecution(() -> Alfred.getKeyboard().releaseArrowKey(KeyEvent.VK_LEFT), () -> isCameraAngleInRange(worldPoint, 15), 10, 1000 * 30);
         }
     }
 
