@@ -141,6 +141,12 @@ public class GeomancyManager
 				{
 					log.info("Found difference, overwriting patch state.\nOld State: " + previousPatchState + " \n New State:" + patchState);
 				}
+				if (patchState.getCropState() == CropState.DISEASED && config.notifyOnDisease())
+				{
+					StringBuilder stringBuilder = new StringBuilder();
+					farmingTracker.AppendCropInfo(stringBuilder, patchState.getCropState(), patchState.getProduce(), fp);
+					notifier.notify(stringBuilder.toString());
+				}
 				isDirty = true;
 				farmingTracker.loadCompletionTimes();
 				long unixNow = Instant.now().getEpochSecond();
