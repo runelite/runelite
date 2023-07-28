@@ -5,28 +5,28 @@ import net.runelite.api.Skill;
 import net.runelite.client.plugins.alfred.Alfred;
 import net.runelite.client.plugins.alfred.api.rs.player.RSPlayer;
 import net.runelite.client.plugins.alfred.scripts.gerber.tasks.Combat;
-import net.runelite.client.plugins.alfred.scripts.gerber.util.PlayTimer;
 
 public class GerberThread extends Thread {
 
     private final GerberConfig config;
-    private final PlayTimer playTimer;
 
     public GerberThread(GerberConfig config) {
         this.config = config;
-        this.playTimer = new PlayTimer();
     }
 
     @Override
     public void run() {
         login();
-        playTimer.setRandomTimeout(15, 90);
-        playTimer.start();
+        Alfred.getPlayTimer().setRandomTimeout(15, 90);
+        Alfred.getPlayTimer().start();
 
         if (trainCombat()) {
-            Combat combatTask = new Combat(config, playTimer);
+            Alfred.setTaskStatus("Training Combat");
+            Combat combatTask = new Combat(config);
             combatTask.run();
         }
+
+        Alfred.setTaskStatus("Stopping");
     }
 
     private void login() {

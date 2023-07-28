@@ -7,13 +7,12 @@ import net.runelite.client.config.ProfileManager;
 import net.runelite.client.game.WorldService;
 import net.runelite.client.plugins.alfred.api.rs.BaseAPI;
 import net.runelite.client.plugins.alfred.api.task.BaseTasks;
-import net.runelite.client.plugins.alfred.debug.DebugKeyboardEvents;
 import net.runelite.client.plugins.alfred.device.Keyboard;
 import net.runelite.client.plugins.alfred.device.Mouse;
 import net.runelite.client.plugins.alfred.event.EventHandler;
 import net.runelite.client.plugins.alfred.rpc.http.RPCServer;
+import net.runelite.client.plugins.alfred.util.PlayTimer;
 
-import java.awt.*;
 import java.util.function.BooleanSupplier;
 
 public class Alfred {
@@ -34,6 +33,13 @@ public class Alfred {
     private static WorldService worldService;
     @Getter
     private static ProfileManager profileManager;
+    @Getter
+    private static PlayTimer playTimer;
+    @Getter
+    private static String taskStatus;
+    @Getter
+    private static String taskSubStatus;
+    @Getter
     private static String status;
     private static RPCServer rpcServer;
 
@@ -44,12 +50,10 @@ public class Alfred {
         Alfred.clientThread = clientThread;
         Alfred.worldService = worldService;
         Alfred.profileManager = profileManager;
+        Alfred.playTimer = new PlayTimer();
         Alfred.mouse = new Mouse();
         Alfred.keyboard = new Keyboard();
         Alfred.eventHandler = new EventHandler();
-//        if (!(Toolkit.getDefaultToolkit().getSystemEventQueue() instanceof EventHandler)) {
-//            Toolkit.getDefaultToolkit().getSystemEventQueue().push(Alfred.eventHandler);
-//        }
     }
 
     public void start() throws Exception {
@@ -65,13 +69,19 @@ public class Alfred {
 //        rpcServer.stop();
     }
 
-    public static String getStatus() {
-        return Alfred.status;
-    }
-
     public static void setStatus(String status) {
         System.out.println(status);
         Alfred.status = status;
+    }
+
+    public static void setTaskStatus(String status) {
+        System.out.println(status);
+        Alfred.taskStatus = status;
+    }
+
+    public static void setTaskSubStatus(String status) {
+        System.out.println(status);
+        Alfred.taskSubStatus = status;
     }
 
     public static int getVarbitValue(int varbit) {

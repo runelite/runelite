@@ -1,6 +1,5 @@
 package net.runelite.client.plugins.alfred.scripts.walker;
 
-import net.runelite.api.Tile;
 import net.runelite.client.plugins.alfred.Alfred;
 import net.runelite.client.plugins.alfred.api.rs.walk.RSTile;
 import net.runelite.client.plugins.alfred.api.rs.walk.astar.AStarNode;

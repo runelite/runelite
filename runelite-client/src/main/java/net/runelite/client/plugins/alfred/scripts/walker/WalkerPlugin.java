@@ -9,7 +9,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 
 import javax.inject.Inject;
 
-@PluginDescriptor(name = "Alfred Walker", enabledByDefault = false)
+@PluginDescriptor(name = WalkerPlugin.CONFIG_GROUP, enabledByDefault = false)
 @Slf4j
 public class WalkerPlugin extends Plugin {
     static final String CONFIG_GROUP = "Alfred Walker";

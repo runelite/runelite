@@ -8,7 +8,6 @@ import net.runelite.client.plugins.alfred.api.rs.inventory.RSInvetoryItem;
 import net.runelite.client.plugins.alfred.api.rs.player.RSPlayer;
 import net.runelite.client.plugins.alfred.enums.WorldDestinations;
 import net.runelite.client.plugins.alfred.scripts.gerber.GerberConfig;
-import net.runelite.client.plugins.alfred.scripts.gerber.util.PlayTimer;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -18,7 +17,6 @@ public class Combat {
     private final GerberConfig config;
     private final WorldArea LUMBRIDGE_CHICKENS_WORLD_AREA = new WorldArea(3225, 3287, 12, 15, 0);
     private final WorldArea LUMBRDIGE_COWS_WORLD_AREA = new WorldArea(3255, 3258, 9, 37, 0);
-    private final PlayTimer playTimer;
 
     private enum ScriptState {
         WAITING, WALKING, FIGHTING, LOOTING,
@@ -28,21 +26,22 @@ public class Combat {
     private ScriptState scriptState;
 
 
-    public Combat(GerberConfig gerberConfig, PlayTimer playTimer) {
+    public Combat(GerberConfig gerberConfig) {
         this.config = gerberConfig;
-        this.playTimer = playTimer;
         scriptState = ScriptState.WAITING;
     }
 
     public void run() {
-        while (!playTimer.isTimerComplete()) {
+        while (!Alfred.getPlayTimer().isTimerComplete()) {
             int minimumSkillRequirement = getMinimumSkillRequirement();
 
             if (minimumSkillRequirement < 10) {
+                Alfred.setTaskSubStatus("Fighting Chickens");
                 fightChickens();
                 scriptState = ScriptState.WAITING;
 
             } else if (minimumSkillRequirement < 20) {
+                Alfred.setTaskSubStatus("Fighting Cows");
                 fightCows();
                 scriptState = ScriptState.WAITING;
 
@@ -130,7 +129,7 @@ public class Combat {
                 }
 
                 String[] itemNames = {"cowhide", "bones"};
-                Alfred.tasks.items().lootItems(itemNames, 3);
+                Alfred.tasks.items().lootItems(itemNames, 4);
             }
 
             scriptState = ScriptState.WAITING;

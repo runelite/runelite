@@ -24,7 +24,7 @@ public class NPCTasks {
             Alfred.setStatus("Waiting to finish attacking");
             Alfred.sleepUntil(() -> !player.isMoving() && player.isIdle(), 200, 1000 * 10);
             Alfred.sleepUntil(npc::isDead, 200, 1000 * 90);
-            Alfred.sleep(2500, 3000);
+            Alfred.sleep(3000, 3500);
         }
     }
 }

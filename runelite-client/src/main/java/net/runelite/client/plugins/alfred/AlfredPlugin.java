@@ -14,10 +14,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 
 import javax.inject.Inject;
 
-@PluginDescriptor(
-        name = "Alfred",
-        enabledByDefault = true
-)
+@PluginDescriptor(name = "Alfred", enabledByDefault = true)
 @Slf4j
 public class AlfredPlugin extends Plugin {
     @Inject

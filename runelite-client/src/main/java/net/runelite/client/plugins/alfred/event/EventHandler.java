@@ -1,68 +1,80 @@
 package net.runelite.client.plugins.alfred.event;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.runelite.client.plugins.alfred.Alfred;
 import net.runelite.client.ui.ClientUI;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
 
 public class EventHandler extends EventQueue {
 
-    private static boolean blocked;
-    private static Canvas gameCanvas;
-    private static JFrame gameFrame;
+    static class UnblockedEvent extends AWTEvent {
+
+        public AWTEvent event;
+
+        public UnblockedEvent(AWTEvent event) {
+            super(event.getSource(), event.getID());
+            this.event = event;
+        }
+    }
+
+    @Getter
+    @Setter
+    private boolean blocked;
+    private final Canvas gameCanvas;
+    private final JFrame gameFrame;
 
     public EventHandler() {
         blocked = false;
         gameCanvas = Alfred.getClient().getCanvas();
         gameFrame = ClientUI.getFrame();
-    }
-
-    public boolean isBlocking() {
-        return blocked;
-    }
-
-    public void setBlocking(boolean blocking) {
-        blocked = blocking;
 
         if (!(Toolkit.getDefaultToolkit().getSystemEventQueue() instanceof EventHandler)) {
             Toolkit.getDefaultToolkit().getSystemEventQueue().push(this);
         }
     }
 
+    public void dispatchUnblockedEvent(AWTEvent event) {
+        if (event != null && event.getSource() != null) {
+            postEvent(new UnblockedEvent(event));
+        }
+    }
+
     @Override
     protected void dispatchEvent(AWTEvent event) {
+        if (event instanceof UnblockedEvent) {
+            handleDispatchedEvent(((UnblockedEvent) event).event, true);
+        } else {
+            handleDispatchedEvent(event, false);
+        }
+    }
+
+    private void handleDispatchedEvent(AWTEvent event, boolean isUnblockedEvent) {
         Object eventSource = event.getSource();
 
-        if (eventSource == gameCanvas) {
-            handleGameCanvas(event);
-        } else if (eventSource == gameFrame) {
-            handleGameFrame(event);
-        } else {
-            super.dispatchEvent(event);
+        if (blocked && event instanceof FocusEvent) {
+            return;
         }
-    }
 
-    private void handleGameCanvas(AWTEvent event) {
-        if (event instanceof KeyEvent || event instanceof MouseWheelEvent || event instanceof FocusEvent || event instanceof WindowEvent) {
-            if (!blocked) {
-                super.dispatchEvent(event);
-            }
-        } else if (event instanceof MouseEvent) {
-            if (!blocked) {
-                super.dispatchEvent(event);
-            }
-        } else {
-            super.dispatchEvent(event);
-        }
-    }
+        if (isUnblockedEvent) {
+            ((Component) eventSource).dispatchEvent(event);
 
-    private void handleGameFrame(AWTEvent event) {
-        if (event instanceof KeyEvent) {
+        } else if (eventSource == gameCanvas && (event instanceof KeyEvent || event instanceof WindowEvent || event instanceof MouseEvent)) {
             if (!blocked) {
                 super.dispatchEvent(event);
             }
+
+        } else if (eventSource == gameFrame && event instanceof KeyEvent) {
+            if (!blocked) {
+                super.dispatchEvent(event);
+            }
+
         } else {
             super.dispatchEvent(event);
         }

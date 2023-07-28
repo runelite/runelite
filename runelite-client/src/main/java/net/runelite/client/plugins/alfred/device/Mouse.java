@@ -60,23 +60,21 @@ public class Mouse {
 
         Point lastMousePosition = getLastMousePosition();
 
-        boolean mousePreviouslyInCanvas = isInCanvas(lastMousePosition);
-        boolean mouseCurrentlyInCanvas = isInCanvas(point);
-
-
+//        boolean mousePreviouslyInCanvas = isInCanvas(lastMousePosition);
+//        boolean mouseCurrentlyInCanvas = isInCanvas(point);
 
         dispatchMouseEvent(MouseEvent.MOUSE_MOVED, point, button);
         Alfred.sleep(75, 175);
         dispatchMouseEvent(MouseEvent.MOUSE_PRESSED, point, button);
 
-        if (!mousePreviouslyInCanvas && mouseCurrentlyInCanvas) {
-            Alfred.sleep(25, 50);
-            dispatchFocusEvent(FocusEvent.FOCUS_GAINED);
-
-        } else if (mousePreviouslyInCanvas && !mouseCurrentlyInCanvas) {
-            Alfred.sleep(25, 50);
-            dispatchFocusEvent(FocusEvent.FOCUS_LOST);
-        }
+//        if (!mousePreviouslyInCanvas && mouseCurrentlyInCanvas) {
+//            Alfred.sleep(25, 50);
+//            dispatchFocusEvent(FocusEvent.FOCUS_GAINED);
+//
+//        } else if (mousePreviouslyInCanvas && !mouseCurrentlyInCanvas) {
+//            Alfred.sleep(25, 50);
+//            dispatchFocusEvent(FocusEvent.FOCUS_LOST);
+//        }
 
         dispatchMouseEvent(MouseEvent.MOUSE_RELEASED, point, button);
         dispatchMouseEvent(MouseEvent.MOUSE_CLICKED, point, button);
@@ -216,12 +214,12 @@ public class Mouse {
 
     private void dispatchMouseEvent(int mouseMovementEvent, Point point, int mouseButton) {
         MouseEvent mouseEvent = new MouseEvent(gameCanvas, mouseMovementEvent, System.currentTimeMillis(), 0, (int) point.getX(), (int) point.getY(), 1, false, mouseButton);
-        gameCanvas.dispatchEvent(mouseEvent);
+        Alfred.getEventHandler().dispatchUnblockedEvent(mouseEvent);
     }
 
     private void dispatchFocusEvent(int focusEvent) {
         FocusEvent event = new FocusEvent(gameCanvas, focusEvent, false, null);
-        gameCanvas.dispatchEvent(event);
+        Alfred.getEventHandler().dispatchUnblockedEvent(event);
     }
 
     private synchronized void internalWindMouse(int x, int y) {
