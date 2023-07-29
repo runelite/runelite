@@ -81,6 +81,7 @@ public class LootManager
 
 	private NPC delayedLootNpc;
 	private int delayedLootTickLimit;
+	private List<WorldArea> delayedLootAreas;
 
 	@Inject
 	private LootManager(EventBus eventBus, Client client, NpcUtil npcUtil)
@@ -98,8 +99,7 @@ public class LootManager
 
 		if (npc == delayedLootNpc)
 		{
-			delayedLootNpc = null;
-			delayedLootTickLimit = 0;
+			clearDelayedLootNpc();
 		}
 
 		if (!npcUtil.isDying(npc))
@@ -246,11 +246,19 @@ public class LootManager
 		{
 			delayedLootNpc = npc;
 			delayedLootTickLimit = 15;
+			delayedLootAreas = List.of(getAdjacentSquareLootTile(npc).toWorldArea());
 		}
 		else if (npc.getId() == NpcID.HOLE_IN_THE_WALL)
 		{
 			delayedLootNpc = npc;
 			delayedLootTickLimit = 2;
+			delayedLootAreas = List.of(getAdjacentSquareLootTile(npc).toWorldArea());
+		}
+		else if (npc.getId() == NpcID.DUKE_SUCELLUS_12192 || npc.getId() == NpcID.DUKE_SUCELLUS_12196)
+		{
+			delayedLootNpc = npc;
+			delayedLootTickLimit = 5;
+			delayedLootAreas = getDropLocations(npc);
 		}
 	}
 
@@ -270,21 +278,7 @@ public class LootManager
 
 	private void processDelayedLoot()
 	{
-		final WorldPoint adjacentLootTile = getAdjacentSquareLootTile(delayedLootNpc);
-		final LocalPoint localPoint = LocalPoint.fromWorld(client, adjacentLootTile);
-
-		if (localPoint == null)
-		{
-			log.debug("Scene changed away from delayed loot location");
-			delayedLootNpc = null;
-			delayedLootTickLimit = 0;
-			return;
-		}
-
-		final int sceneX = localPoint.getSceneX();
-		final int sceneY = localPoint.getSceneY();
-		final int packed = sceneX << 8 | sceneY;
-		final List<ItemStack> itemStacks = itemSpawns.get(packed);
+		final List<ItemStack> itemStacks = getItemStacksFromAreas(delayedLootAreas);
 		if (itemStacks.isEmpty())
 		{
 			// no loot yet
@@ -294,14 +288,23 @@ public class LootManager
 		log.debug("Got delayed loot stack from {}: {}", delayedLootNpc.getName(), itemStacks);
 		eventBus.post(new NpcLootReceived(delayedLootNpc, itemStacks));
 
-		delayedLootNpc = null;
-		delayedLootTickLimit = 0;
+		clearDelayedLootNpc();
 	}
 
 	private void processNpcLoot(NPC npc)
 	{
+		final List<ItemStack> allItems = getItemStacksFromAreas(getDropLocations(npc));
+
+		if (!allItems.isEmpty())
+		{
+			eventBus.post(new NpcLootReceived(npc, allItems));
+		}
+	}
+
+	private List<ItemStack> getItemStacksFromAreas(final List<WorldArea> areas)
+	{
 		final List<ItemStack> allItems = new ArrayList<>();
-		for (final WorldArea dropLocation : getDropLocations(npc))
+		for (final WorldArea dropLocation : areas)
 		{
 			final WorldPoint worldPoint = dropLocation.toWorldPoint();
 			final LocalPoint location = LocalPoint.fromWorld(client, worldPoint);
@@ -330,10 +333,7 @@ public class LootManager
 			}
 		}
 
-		if (!allItems.isEmpty())
-		{
-			eventBus.post(new NpcLootReceived(npc, allItems));
-		}
+		return allItems;
 	}
 
 	private List<WorldArea> getDropLocations(NPC npc)
@@ -420,6 +420,15 @@ public class LootManager
 			case NpcID.SPINDEL:
 				// Bones are dropped under the center of the boss and loot is dropped under the player
 				return ImmutableList.of(npc.getWorldArea(), playerLocationLastTick.toWorldArea());
+			case NpcID.DUKE_SUCELLUS_12192:
+			case NpcID.DUKE_SUCELLUS_12196:
+			{
+				final WorldPoint bossLocation = npc.getWorldLocation();
+				final int x = bossLocation.getX() + npc.getComposition().getSize() / 2;
+				final int y = bossLocation.getY() - 1;
+
+				return List.of(new WorldPoint(x, y, bossLocation.getPlane()).toWorldArea());
+			}
 		}
 
 		return Collections.singletonList(npc.getWorldArea());
@@ -472,5 +481,12 @@ public class LootManager
 		final int packed = sceneX << 8 | sceneY;
 		final List<ItemStack> itemStacks = itemSpawns.get(packed);
 		return Collections.unmodifiableList(itemStacks);
+	}
+
+	private void clearDelayedLootNpc()
+	{
+		delayedLootNpc = null;
+		delayedLootTickLimit = 0;
+		delayedLootAreas = null;
 	}
 }
