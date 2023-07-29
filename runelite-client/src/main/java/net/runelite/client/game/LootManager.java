@@ -343,6 +343,8 @@ public class LootManager
 			case NpcID.KRAKEN:
 			case NpcID.KRAKEN_6640:
 			case NpcID.KRAKEN_6656:
+			case NpcID.THE_LEVIATHAN:
+			case NpcID.THE_LEVIATHAN_12215:
 				return Collections.singletonList(playerLocationLastTick.toWorldArea());
 			case NpcID.CAVE_KRAKEN:
 				return Collections.singletonList(krakenPlayerLocation.toWorldArea());
