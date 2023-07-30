@@ -256,14 +256,14 @@ public class FlatStorage implements Storage
 	}
 
 	@Override
-	public byte[] loadArchive(Archive archive) throws IOException
+	public byte[] load(int index, int archive)
 	{
-		return data.get((long) archive.getIndex().getId() << 32 | archive.getArchiveId());
+		return data.get((long) index << 32 | archive);
 	}
 
 	@Override
-	public void saveArchive(Archive archive, byte[] bytes) throws IOException
+	public void store(int index, int archive, byte[] bytes)
 	{
-		data.put((long) archive.getIndex().getId() << 32 | archive.getArchiveId(), bytes);
+		data.put((long) index << 32 | archive, bytes);
 	}
 }
