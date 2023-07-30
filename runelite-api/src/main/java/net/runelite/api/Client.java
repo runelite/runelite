@@ -1045,9 +1045,15 @@ public interface Client extends OAuthApi, GameEngine
 	/**
 	 * Gets a entry out of a DBTable Row
 	 */
-	Object getDBTableField(int rowID, int column, int tupleIndex, int fieldIndex);
+	Object[] getDBTableField(int rowID, int column, int tupleIndex);
 
 	DBRowConfig getDBRowConfig(int rowID);
+
+	/**
+	 * Uses an index to find rows containing a certain value in a column.
+	 * An index must exist for this column.
+	 */
+	List<Integer> getDBRowsByValue(int table, int column, int tupleIndex, Object value);
 
 	/**
 	 * Get a map element config by id
