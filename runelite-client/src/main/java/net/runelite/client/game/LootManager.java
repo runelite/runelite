@@ -429,6 +429,12 @@ public class LootManager
 
 				return List.of(new WorldPoint(x, y, bossLocation.getPlane()).toWorldArea());
 			}
+			case NpcID.VARDORVIS:
+			case NpcID.VARDORVIS_12224:
+			{
+				final WorldArea bossArea = npc.getWorldArea();
+				return List.of(new WorldArea(bossArea.getX() - 2, bossArea.getY() - 2, bossArea.getWidth() + 4, bossArea.getHeight() + 4, bossArea.getPlane()));
+			}
 		}
 
 		return Collections.singletonList(npc.getWorldArea());
