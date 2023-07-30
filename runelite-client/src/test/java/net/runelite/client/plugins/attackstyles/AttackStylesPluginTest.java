@@ -36,7 +36,6 @@ import net.runelite.api.Varbits;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.ui.overlay.OverlayManager;
 import static org.junit.Assert.assertFalse;
@@ -63,10 +62,6 @@ public class AttackStylesPluginTest
 	@Mock
 	@Bind
 	AttackStylesConfig attackConfig;
-
-	@Mock
-	@Bind
-	ChatMessageManager chatMessageManager;
 
 	@Inject
 	AttackStylesPlugin attackPlugin;
