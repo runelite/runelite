@@ -179,9 +179,6 @@ public class FlatStorage implements Storage
 								case "crc":
 									archive.setCrc(Integer.parseInt(value));
 									continue;
-								case "hash":
-									archive.setHash(Base64.getDecoder().decode(value));
-									continue;
 								case "compression":
 									archive.setCompression(Integer.parseInt(value));
 									continue;
@@ -229,13 +226,6 @@ public class FlatStorage implements Storage
 					br.printf("namehash=%d\n", archive.getNameHash());
 					br.printf("revision=%d\n", archive.getRevision());
 					br.printf("crc=%d\n", archive.getCrc());
-
-					if (archive.getHash() != null)
-					{
-						br.append("hash=");
-						br.write(Base64.getEncoder().encode(archive.getHash()));
-						br.append("\n");
-					}
 
 					byte[] contents = store.getStorage().loadArchive(archive);
 					if (contents != null)
