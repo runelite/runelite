@@ -28,6 +28,9 @@ public final class DBTableID
 {
 	public interface Quest
 	{
+		int TABLE = 0;
 		int NAME = 2;
+		int MAP_ELEMENT = 14;
+		int MAIN_QUEST = 19;
 	}
 }
