@@ -759,8 +759,8 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		AnagramClue.builder()
 			.text("BRUCIE CATNAP")
 			.npc("Captain Bruce")
-			.location(new WorldPoint(1520, 3558, 0))
-			.area("Graveyard of Heroes")
+			.location(new WorldPoint(1529, 3567, 0))
+			.area("East of Shayzien Graveyard")
 			.build(),
 		AnagramClue.builder()
 			.text("UESNKRL NRIEDDO")
