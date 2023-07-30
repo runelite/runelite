@@ -120,13 +120,13 @@ public interface AttackStylesConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showChatWarnings",
-		name = "Show chat warnings",
-		description = "Show chat warnings about switching to an unwanted attack style",
+		keyName = "hideChatWarnings",
+		name = "Hide chat warnings",
+		description = "Hide chat warnings about switching to an unwanted attack style",
 		position = 9
 	)
-	default boolean showChatWarnings()
+	default boolean hideChatWarnings()
 	{
-		return true;
+		return false;
 	}
 }
