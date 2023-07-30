@@ -2466,19 +2466,13 @@ public class ChatCommandsPlugin extends Plugin
 				return "Phantom Muspah";
 
 			// Desert Treasure 2 bosses
-			case "the leviathan":
 			case "leviathan":
 				return "The Leviathan";
-
 			case "vardorvis":
 				return "Vardorvis";
-
-			case "duke sucellus":
 			case "duke":
 			case "sucellus":
 				return "Duke Sucellus";
-
-			case "the whisperer":
 			case "whisperer":
 				return "The Whisperer";
 
