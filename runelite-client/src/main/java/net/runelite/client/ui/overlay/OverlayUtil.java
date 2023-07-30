@@ -68,6 +68,33 @@ public class OverlayUtil
 		graphics.setStroke(originalStroke);
 	}
 
+	public static void renderPolygonCorners(Graphics2D graphics, Polygon poly, Color color, Color fillColor, Stroke borderStroke)
+	{
+		graphics.setColor(color);
+		final Stroke originalStroke = graphics.getStroke();
+		graphics.setStroke(borderStroke);
+
+		int divisor = 7;
+		for (int i = 0; i < poly.npoints; i++)
+		{
+			int ptx = poly.xpoints[i];
+			int pty = poly.ypoints[i];
+			int prev = (i - 1) < 0 ? (poly.npoints - 1) : (i - 1);
+			int next = (i + 1) > (poly.npoints - 1) ? 0 : (i + 1);
+			int ptxN = ((poly.xpoints[next]) - ptx) / divisor + ptx;
+			int ptyN = ((poly.ypoints[next]) - pty) / divisor + pty;
+			int ptxP = ((poly.xpoints[prev]) - ptx) / divisor + ptx;
+			int ptyP = ((poly.ypoints[prev]) - pty) / divisor + pty;
+			graphics.drawLine(ptx, pty, ptxN, ptyN);
+			graphics.drawLine(ptx, pty, ptxP, ptyP);
+		}
+
+		graphics.setColor(fillColor);
+		graphics.fill(poly);
+
+		graphics.setStroke(originalStroke);
+	}
+
 	public static void renderMinimapLocation(Graphics2D graphics, Point mini, Color color)
 	{
 		graphics.setColor(Color.BLACK);
