@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2023, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,30 +22,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.protocol.update.encoders;
+package net.runelite.cache.util;
 
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import org.junit.Assert;
-import org.junit.Test;
+import com.sun.jna.Library;
+import com.sun.jna.Native;
 
-public class XorEncoderTest
+public interface LibBZip2 extends Library
 {
-	@Test
-	public void testEncode() throws Exception
-	{
-		ByteBuf buf = Unpooled.buffer(1);
-		buf.markWriterIndex();
-		buf.writeByte(0xff);
+	LibBZip2 INSTANCE = Native.load("libbz2", LibBZip2.class);
 
-		XorEncoder encoder = new XorEncoder();
-		encoder.setKey((byte) 0x1);
+	int BZ_OK = 0;
+	int BZ_RUN_OK = 1;
+	int BZ_FLUSH_OK = 2;
+	int BZ_FINISH_OK = 3;
+	int BZ_STREAM_END = 4;
 
-		ByteBuf out = Unpooled.buffer(1);
-		encoder.encode(null, buf, out);
+	int BZ_RUN = 0;
+	int BZ_FLUSH = 1;
+	int BZ_FINISH = 2;
 
-		byte encoded = out.readByte();
-		Assert.assertEquals((Byte) (byte) 0xfe, (Byte) encoded);
-	}
-
+	int BZ2_bzCompressInit(BzStream stream, int blockSize100k, int verbosity, int workFactor);
+	int BZ2_bzCompress(BzStream stream, int action);
+	int BZ2_bzCompressEnd(BzStream stream);
 }

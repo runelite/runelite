@@ -3894,5 +3894,161 @@
       "z1": 1,
       "z2": 1
     }
+  ],
+  "9315": [ // Lassar Undercity northern science district (shadow realm version)
+    {
+      "rx1": 18,
+      "ry1": 44,
+      "rx2": 21,
+      "ry2": 44,
+      "z1": 1,
+      "z2": 1
+    },
+    {
+      "rx1": 13,
+      "ry1": 47,
+      "rx2": 15,
+      "ry2": 52,
+      "z1": 1,
+      "z2": 1
+    },
+    {
+      "rx1": 15,
+      "ry1": 53,
+      "rx2": 31,
+      "ry2": 56,
+      "z1": 1,
+      "z2": 1
+    },
+    {
+      "rx1": 31,
+      "ry1": 40,
+      "rx2": 36,
+      "ry2": 53,
+      "z1": 1,
+      "z2": 1
+    },
+    {
+      "rx1": 35,
+      "ry1": 57,
+      "rx2": 38,
+      "ry2": 60,
+      "z1": 1,
+      "z2": 1
+    },
+    {
+      "rx1": 37,
+      "ry1": 39,
+      "rx2": 41,
+      "ry2": 40,
+      "z1": 1,
+      "z2": 1
+    }
+  ],
+  "9572": [ // Lassar Undercity central residential district (shadow realm version)
+    {
+      "rx1": 60,
+      "ry1": 40,
+      "rx2": 60,
+      "ry2": 44,
+      "z1": 0,
+      "z2": 1
+    },
+    {
+      "rx1": 46,
+      "ry1": 5,
+      "rx2": 49,
+      "ry2": 10,
+      "z1": 1,
+      "z2": 1
+    }
+  ],
+  "9828": [ // Lassar Undercity eastern residential district (shadow realm version)
+    {
+      "rx1": 7,
+      "ry1": 28,
+      "rx2": 9,
+      "ry2": 32,
+      "z1": 0,
+      "z2": 1
+    }
+  ],
+  "10339": [ // Lassar Undercity northern science district
+    {
+      "rx1": 18,
+      "ry1": 44,
+      "rx2": 21,
+      "ry2": 44,
+      "z1": 1,
+      "z2": 1
+    },
+    {
+      "rx1": 13,
+      "ry1": 47,
+      "rx2": 15,
+      "ry2": 52,
+      "z1": 1,
+      "z2": 1
+    },
+    {
+      "rx1": 15,
+      "ry1": 53,
+      "rx2": 31,
+      "ry2": 56,
+      "z1": 1,
+      "z2": 1
+    },
+    {
+      "rx1": 31,
+      "ry1": 40,
+      "rx2": 36,
+      "ry2": 53,
+      "z1": 1,
+      "z2": 1
+    },
+    {
+      "rx1": 35,
+      "ry1": 57,
+      "rx2": 38,
+      "ry2": 60,
+      "z1": 1,
+      "z2": 1
+    },
+    {
+      "rx1": 37,
+      "ry1": 39,
+      "rx2": 41,
+      "ry2": 40,
+      "z1": 1,
+      "z2": 1
+    }
+  ],
+  "10596": [ // Lassar Undercity central residential district (normal version)
+    {
+      "rx1": 60,
+      "ry1": 40,
+      "rx2": 60,
+      "ry2": 44,
+      "z1": 0,
+      "z2": 1
+    },
+    {
+      "rx1": 46,
+      "ry1": 5,
+      "rx2": 49,
+      "ry2": 10,
+      "z1": 1,
+      "z2": 1
+    }
+  ],
+  "10852": [ // Lassar Undercity eastern residential district (normal version)
+    {
+      "rx1": 7,
+      "ry1": 28,
+      "rx2": 9,
+      "ry2": 32,
+      "z1": 0,
+      "z2": 1
+    }
   ]
 }

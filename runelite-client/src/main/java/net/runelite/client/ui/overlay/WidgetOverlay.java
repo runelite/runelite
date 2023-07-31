@@ -104,7 +104,9 @@ public class WidgetOverlay extends Overlay
 			new WidgetOverlay(client, WidgetInfo.MTA_TELEKINETIC_POINTS, OverlayPosition.TOP_RIGHT),
 			new WidgetOverlay(client, WidgetInfo.MTA_TELEKINETIC_SOLVED, OverlayPosition.BOTTOM_RIGHT),
 			new WidgetOverlay(client, WidgetInfo.MTA_GRAVEYARD_POINTS, OverlayPosition.TOP_RIGHT),
-			new WidgetOverlay(client, WidgetInfo.MTA_GRAVEYARD_VALUES, OverlayPosition.BOTTOM_RIGHT)
+			new WidgetOverlay(client, WidgetInfo.MTA_GRAVEYARD_VALUES, OverlayPosition.BOTTOM_RIGHT),
+			new WidgetOverlay(client, WidgetInfo.STRANGLER_INFECTION_OVERLAY, OverlayPosition.TOP_LEFT),
+			new WidgetOverlay(client, WidgetInfo.SANITY_OVERLAY, OverlayPosition.TOP_LEFT)
 		);
 	}
 

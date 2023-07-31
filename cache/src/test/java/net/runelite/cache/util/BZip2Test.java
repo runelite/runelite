@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2023, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,21 +22,50 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.protocol.update.encoders;
+package net.runelite.cache.util;
 
-import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.MessageToByteEncoder;
-import net.runelite.protocol.api.update.ArchiveRequestPacket;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.Random;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assume.assumeNoException;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
-public class ArchiveRequestEncoder extends MessageToByteEncoder<ArchiveRequestPacket>
+public class BZip2Test
 {
-	@Override
-	protected void encode(ChannelHandlerContext ctx, ArchiveRequestPacket archiveRequest, ByteBuf out) throws Exception
+	@BeforeClass
+	public static void beforeClass()
 	{
-		out.writeByte(archiveRequest.isPriority() ? 1 : 0);
-		out.writeByte(archiveRequest.getIndex());
-		out.writeShort(archiveRequest.getArchive());
+		try
+		{
+			var l = LibBZip2.INSTANCE;
+		}
+		catch (UnsatisfiedLinkError ex)
+		{
+			assumeNoException(ex);
+		}
 	}
 
+	@Test
+	public void testLibBZip2Small() throws IOException
+	{
+		byte[] data = "runelite".getBytes(StandardCharsets.UTF_8);
+		byte[] ddata = BZip2.compressLibBZip2(data);
+		byte[] idata = BZip2.decompress(ddata, ddata.length);
+		assertEquals("runelite", new String(idata));
+	}
+
+	@Test
+	public void testLibBZipLarge() throws IOException
+	{
+		byte[] data = new byte[1024 * 1024];
+		Random r = new Random(42);
+		r.nextBytes(data);
+
+		byte[] ddata = BZip2.compressLibBZip2(data);
+		byte[] idata = BZip2.decompress(ddata, ddata.length);
+		assertArrayEquals(data, idata);
+	}
 }

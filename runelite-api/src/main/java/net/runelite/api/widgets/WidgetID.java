@@ -197,6 +197,8 @@ public final class WidgetID
 	public static final int AGILITY_ARENA_HUD_GROUP_ID = 5;
 	public static final int GNOMEBALL_SCORE_GROUP_ID = 139;
 	public static final int CLANKRANK_POPUP = 289;
+	public static final int SANITY_GROUP_ID = 834;
+	public static final int THE_STRANGLER_INFECTION_GROUP_ID = 836;
 
 	static class WorldMap
 	{

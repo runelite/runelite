@@ -122,8 +122,6 @@
 
 	<modules>
 		<module>cache</module>
-		<module>cache-client</module>
-		<module>cache-updater</module>
 		<module>runelite-api</module>
 		<module>runelite-client</module>
 		<module>runelite-jshell</module>

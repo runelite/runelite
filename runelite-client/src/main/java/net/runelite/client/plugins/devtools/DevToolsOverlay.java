@@ -328,7 +328,7 @@ class DevToolsOverlay extends Overlay
 		{
 			if (player.getLocalLocation().distanceTo(itemLayer.getLocalLocation()) <= MAX_DISTANCE)
 			{
-				Node current = itemLayer.getBottom();
+				Node current = itemLayer.getTop();
 				while (current instanceof TileItem)
 				{
 					TileItem item = (TileItem) current;

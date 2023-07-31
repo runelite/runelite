@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2023, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,39 +22,67 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.protocol.update.encoders;
+package net.runelite.cache.util;
 
-import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.MessageToByteEncoder;
+import com.sun.jna.Pointer;
+import com.sun.jna.Structure;
+import java.util.Arrays;
+import java.util.List;
 
-public class XorEncoder extends MessageToByteEncoder<ByteBuf>
+public class BzStream extends Structure
 {
-	private byte key;
+	/*
+	  char *next_in;
+	  unsigned int avail_in;
+	  unsigned int total_in_lo32;
+	  unsigned int total_in_hi32;
 
-	public byte getKey()
-	{
-		return key;
-	}
+	  char *next_out;
+	  unsigned int avail_out;
+	  unsigned int total_out_lo32;
+	  unsigned int total_out_hi32;
 
-	public void setKey(byte key)
-	{
-		this.key = key;
-	}
+	  void *state;
+
+	  void *(*bzalloc)(void *,int,int);
+	  void (*bzfree)(void *,void *);
+	  void *opaque;
+	 */
+	public Pointer next_in;
+	public int avail_in;
+	public int total_in_lo32;
+	public int total_in_hi32;
+
+	public Pointer next_out;
+	public int avail_out;
+	public int total_out_lo32;
+	public int total_out_hi32;
+
+	public Pointer state;
+
+	public Pointer bzalloc;
+	public Pointer bzfree;
+	public Pointer opaque;
 
 	@Override
-	protected void encode(ChannelHandlerContext ctx, ByteBuf msg, ByteBuf out) throws Exception
+	protected List<String> getFieldOrder()
 	{
-		if (key == 0)
-		{
-			out.writeBytes(msg);
-			return;
-		}
+		return Arrays.asList(
+			"next_in",
+			"avail_in",
+			"total_in_lo32",
+			"total_in_hi32",
 
-		while (msg.isReadable())
-		{
-			out.writeByte(msg.readByte() ^ key);
-		}
+			"next_out",
+			"avail_out",
+			"total_out_lo32",
+			"total_out_hi32",
+
+			"state",
+
+			"bzalloc",
+			"bzfree",
+			"opaque"
+		);
 	}
-
 }
