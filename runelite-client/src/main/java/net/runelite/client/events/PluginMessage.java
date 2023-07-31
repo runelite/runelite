@@ -6,10 +6,10 @@
  * modification, are permitted provided that the following conditions are met:
  *
  * 1. Redistributions of source code must retain the above copyright notice, this
- *    list of conditions and the following disclaimer.
+ *	list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
+ *	this list of conditions and the following disclaimer in the documentation
+ *	and/or other materials provided with the distribution.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -30,24 +30,25 @@ import lombok.NonNull;
 import lombok.Value;
 import net.runelite.client.plugins.Plugin;
 
+
 @Value
 public class PluginMessage
 {
-    private final Plugin source;
-    private final String messageName;
-    private final Map<String, Object> messageData;
+	private final Plugin source;
+	private final String messageName;
+	private final Map<String, Object> messageData;
 
-    public PluginMessage(@NonNull final Plugin source, @NonNull final String messageName)
-    {
-        this.source = source;
-        this.messageName = messageName;
-        messageData = Collections.emptyMap();
-    }
+	public PluginMessage(@NonNull final Plugin source, @NonNull final String messageName)
+	{
+		this.source = source;
+		this.messageName = messageName;
+		messageData = Collections.emptyMap();
+	}
 
-    public PluginMessage(@NonNull final Plugin source, @NonNull final String messageName, @NonNull final Map<String, Object> data)
-    {
-        this.source = source;
-        this.messageName = messageName;
-        this.messageData = Map.copyOf(data);
-    }
+	public PluginMessage(@NonNull final Plugin source, @NonNull final String messageName, @NonNull final Map<String, Object> data)
+	{
+		this.source = source;
+		this.messageName = messageName;
+		this.messageData = Map.copyOf(data);
+	}
 }
