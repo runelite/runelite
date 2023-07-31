@@ -5,11 +5,13 @@ public class BaseTasks {
     private final BankTasks bankTasks;
     private final NPCTasks npcTasks;
     private final ItemTasks itemTasks;
+    private final ObjectTasks objectTasks;
 
     public BaseTasks() {
         bankTasks = new BankTasks();
         npcTasks = new NPCTasks();
         itemTasks = new ItemTasks();
+        objectTasks = new ObjectTasks();
     }
 
     public BankTasks banks() {
@@ -22,5 +24,9 @@ public class BaseTasks {
 
     public ItemTasks items() {
         return itemTasks;
+    }
+
+    public ObjectTasks objects() {
+        return objectTasks;
     }
 }

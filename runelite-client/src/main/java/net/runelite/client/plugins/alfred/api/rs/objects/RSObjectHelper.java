@@ -3,6 +3,7 @@ package net.runelite.client.plugins.alfred.api.rs.objects;
 import net.runelite.api.*;
 import net.runelite.client.plugins.alfred.Alfred;
 import net.runelite.client.plugins.alfred.api.rs.item.RSGroundItem;
+import net.runelite.client.ui.overlay.OverlayUtil;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -50,8 +51,11 @@ public class RSObjectHelper {
                 continue;
             }
 
-            for (TileItem tileItem : tile.getGroundItems()) {
+            Node current = itemLayer.getTop();
+            while (current instanceof TileItem) {
+                TileItem tileItem = (TileItem) current;
                 rsGroundItemList.add(new RSGroundItem(tileItem, tile));
+                current = current.getNext();
             }
         }
 
@@ -81,6 +85,18 @@ public class RSObjectHelper {
         }
 
         return rsObjectList;
+    }
+
+    public List<RSObject> getObjectsFromTiles(String name) {
+        List<RSObject> objects = new ArrayList<>();
+
+        for (RSObject rsObject : getObjectsFromTiles()) {
+            if (rsObject.getName().equalsIgnoreCase(name)) {
+                objects.add(rsObject);
+            }
+        }
+
+        return objects;
     }
 
     public String getObjectIdVariableName(int objectId) {

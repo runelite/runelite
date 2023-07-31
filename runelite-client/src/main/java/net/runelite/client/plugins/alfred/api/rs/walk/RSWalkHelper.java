@@ -27,7 +27,7 @@ public class RSWalkHelper {
         RSPlayer player = Alfred.api.players().getLocalPlayer();
         WorldPoint start = player.getWorldLocation();
 
-        NodeLoader nodeLoader = new NodeLoader("/home/griffin/PycharmProjects/worldmap/world/db.sqlite3");
+        NodeLoader nodeLoader = new NodeLoader("/home/griffin/PycharmProjects/OSRSWorld/world/db.sqlite3");
         AStarPathFinder pathFinder = new AStarPathFinder(nodeLoader.getGrid());
 
         List<AStarNode> pathNodes = pathFinder.findPath(start, worldPoint);

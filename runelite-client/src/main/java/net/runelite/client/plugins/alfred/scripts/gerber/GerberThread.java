@@ -5,6 +5,7 @@ import net.runelite.api.Skill;
 import net.runelite.client.plugins.alfred.Alfred;
 import net.runelite.client.plugins.alfred.api.rs.player.RSPlayer;
 import net.runelite.client.plugins.alfred.scripts.gerber.tasks.Combat;
+import net.runelite.client.plugins.alfred.scripts.gerber.tasks.Mining;
 
 public class GerberThread extends Thread {
 
@@ -19,6 +20,10 @@ public class GerberThread extends Thread {
         login();
         Alfred.getPlayTimer().setRandomTimeout(15, 90);
         Alfred.getPlayTimer().start();
+
+        Alfred.setTaskStatus("Training Mining");
+        Mining mining = new Mining(config);
+        mining.run();
 
         if (trainCombat()) {
             Alfred.setTaskStatus("Training Combat");

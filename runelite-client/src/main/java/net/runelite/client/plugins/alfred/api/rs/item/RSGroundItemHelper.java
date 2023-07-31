@@ -17,7 +17,7 @@ public class RSGroundItemHelper {
     }
 
     public List<RSGroundItem> getItemsFromTiles(String name) {
-        return internalGetGroundItems().stream().filter(rsGroundItem -> rsGroundItem.getName().equalsIgnoreCase(name)).collect(Collectors.toList());
+        return internalGetGroundItems().stream().filter(rsGroundItem -> rsGroundItem.getName().strip().equalsIgnoreCase(name.strip())).collect(Collectors.toList());
     }
 
     public List<RSGroundItem> getItemsFromTiles(int id) {
@@ -25,7 +25,8 @@ public class RSGroundItemHelper {
     }
 
     public List<RSGroundItem> getItemsFromTiles(int radius, String name) {
-        return internalGetGroundItems().stream().filter(rsGroundItem -> rsGroundItem.getName().equalsIgnoreCase(name) && rsGroundItem.getWorldLocation().distanceTo(Alfred.api.players().getLocalPlayer().getWorldLocation()) <= radius).sorted(Comparator.comparingInt(item -> item.getWorldLocation().distanceTo(Alfred.api.players().getLocalPlayer().getWorldLocation()))).collect(Collectors.toList());
+        return getItemsFromTiles(name).stream().filter(rsGroundItem -> rsGroundItem.getWorldLocation().distanceTo(Alfred.api.players().getLocalPlayer().getWorldLocation()) <= radius).collect(Collectors.toList());
+//        return items.stream().filter(rsGroundItem -> rsGroundItem.getWorldLocation().distanceTo(Alfred.api.players().getLocalPlayer().getWorldLocation()) <= radius).sorted(Comparator.comparingInt(item -> item.getWorldLocation().distanceTo(Alfred.api.players().getLocalPlayer().getWorldLocation()))).collect(Collectors.toList());
     }
 
     public List<RSGroundItem> getItemsFromTiles(int radius, int id) {

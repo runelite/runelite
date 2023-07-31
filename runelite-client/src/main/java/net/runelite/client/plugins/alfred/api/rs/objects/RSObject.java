@@ -2,8 +2,11 @@ package net.runelite.client.plugins.alfred.api.rs.objects;
 
 import lombok.Getter;
 import net.runelite.api.*;
+import net.runelite.api.Point;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.plugins.alfred.Alfred;
+import net.runelite.client.plugins.alfred.api.rs.menu.RSMenu;
 
 import java.awt.*;
 import java.util.Arrays;
@@ -93,6 +96,42 @@ public class RSObject {
         }
     }
 
+    public LocalPoint getLocalLocation() {
+        if (rsObject instanceof GameObject) {
+            return ((GameObject) rsObject).getLocalLocation();
+
+        } else if (rsObject instanceof GroundObject) {
+            return ((GroundObject) rsObject).getLocalLocation();
+
+        } else if (rsObject instanceof WallObject) {
+            return ((WallObject) rsObject).getLocalLocation();
+
+        } else if (rsObject instanceof DecorativeObject) {
+            return ((DecorativeObject) rsObject).getLocalLocation();
+
+        } else {
+            return null;
+        }
+    }
+
+    public int getPlane() {
+        if (rsObject instanceof GameObject) {
+            return ((GameObject) rsObject).getPlane();
+
+        } else if (rsObject instanceof GroundObject) {
+            return ((GroundObject) rsObject).getPlane();
+
+        } else if (rsObject instanceof WallObject) {
+            return ((WallObject) rsObject).getPlane();
+
+        } else if (rsObject instanceof DecorativeObject) {
+            return ((DecorativeObject) rsObject).getPlane();
+
+        } else {
+            return -1;
+        }
+    }
+
     public Rectangle getClickBox() {
         if (rsObject instanceof GameObject) {
             return ((GameObject) rsObject).getClickbox().getBounds();
@@ -134,5 +173,46 @@ public class RSObject {
         return Arrays.stream(objectComposition.getActions()).filter(Objects::nonNull).toArray(String[]::new);
     }
 
+    public boolean leftClick() {
+        LocalPoint localPoint = getLocalLocation();
+        int plane = getPlane();
 
+        if (Alfred.api.screen().isPointOnScreen(localPoint, plane)) {
+            Point screenPoint = Alfred.api.screen().getLocalPointToScreenPoint(localPoint, plane);
+            Alfred.getMouse().leftClick(screenPoint);
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean rightClick() {
+        LocalPoint localPoint = getLocalLocation();
+        int plane = getPlane();
+
+        if (Alfred.api.screen().isPointOnScreen(localPoint, plane)) {
+            Point screenPoint = Alfred.api.screen().getLocalPointToScreenPoint(localPoint, plane);
+            Alfred.getMouse().rightClick(screenPoint);
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean clickAction(String action) {
+        Alfred.setStatus("Clicking " + action + " on " + getName());
+
+        if (!rightClick()) {
+            return false;
+        }
+
+        Alfred.sleep(200, 400);
+        RSMenu rsMenu = Alfred.api.menu().getMenu();
+
+        if (rsMenu == null) {
+            return false;
+        }
+
+        return rsMenu.clickAction(action, getName());
+    }
 }
