@@ -7,40 +7,11 @@ import net.runelite.client.config.ConfigSection;
 
 @ConfigGroup(GerberPlugin.CONFIG_GROUP)
 public interface GerberConfig extends Config {
-    @ConfigSection(
-            name = "Settings",
-            description = "Settings",
-            position = 0,
-            closedByDefault = false
-    )
-    String settingsSection = "settings";
-
-    @ConfigItem(
-            keyName = "collectItems",
-            name = "Loot Items",
-            description = "Loot Items",
-            position = 0,
-            section = settingsSection
-    )
-    default boolean collectItems() {
-        return true;
-    }
-
-    @ConfigItem(
-            keyName = "buryBones",
-            name = "Bury Bones",
-            description = "Bury Bones",
-            position = 1,
-            section = settingsSection
-    )
-    default boolean buryBones() {
-        return true;
-    }
 
     @ConfigSection(
             name = "Skill Levels",
             description = "Skill Levels",
-            position = 1,
+            position = 0,
             closedByDefault = false
     )
     String skillsSection = "skills";
@@ -87,5 +58,95 @@ public interface GerberConfig extends Config {
     )
     default int prayerLevel() {
         return 0;
+    }
+
+    @ConfigItem(
+            keyName = "miningLevel",
+            name = "Mining",
+            description = " Mining Level",
+            position = 4,
+            section = skillsSection
+    )
+    default int miningLevel() {
+        return 0;
+    }
+
+    @ConfigItem(
+            keyName = "woodcuttingLevel",
+            name = "Woodcutting",
+            description = "Woodcutting Level",
+            position = 4,
+            section = skillsSection
+    )
+    default int woodcuttingLevel() {
+        return 0;
+    }
+
+    @ConfigSection(
+            name = "Combat Settings",
+            description = "Combat Settings",
+            position = 1,
+            closedByDefault = false
+    )
+    String combatSettingsSection = "combatSettings";
+
+    @ConfigItem(
+            keyName = "collectItems",
+            name = "Loot Items",
+            description = "Loot Items",
+            position = 0,
+            section = combatSettingsSection
+    )
+    default boolean collectItems() {
+        return true;
+    }
+
+    @ConfigItem(
+            keyName = "buryBones",
+            name = "Bury Bones",
+            description = "Bury Bones",
+            position = 1,
+            section = combatSettingsSection
+    )
+    default boolean buryBones() {
+        return true;
+    }
+
+    @ConfigSection(
+            name = "Mining Settings",
+            description = "Mining Settings",
+            position = 2,
+            closedByDefault = false
+    )
+    String miningSettingsSection = "miningSettings";
+
+    @ConfigItem(
+            keyName = "keepOre",
+            name = "Keep Ore",
+            description = "Keep Ore",
+            position = 0,
+            section = miningSettingsSection
+    )
+    default boolean keepOre() {
+        return true;
+    }
+
+    @ConfigSection(
+            name = "Woodcutting Settings",
+            description = "Woodcutting Settings",
+            position = 3,
+            closedByDefault = false
+    )
+    String woodcuttingSettingsSection = "woodcuttingSettings";
+
+    @ConfigItem(
+            keyName = "keepLogs",
+            name = "Keep Logs",
+            description = "Keep Logs",
+            position = 0,
+            section = woodcuttingSettingsSection
+    )
+    default boolean keepLogs() {
+        return true;
     }
 }

@@ -6,6 +6,7 @@ import net.runelite.client.plugins.alfred.Alfred;
 import net.runelite.client.plugins.alfred.api.rs.player.RSPlayer;
 import net.runelite.client.plugins.alfred.scripts.gerber.tasks.Combat;
 import net.runelite.client.plugins.alfred.scripts.gerber.tasks.Mining;
+import net.runelite.client.plugins.alfred.scripts.gerber.tasks.Woodcutting;
 
 public class GerberThread extends Thread {
 
@@ -21,9 +22,13 @@ public class GerberThread extends Thread {
         Alfred.getPlayTimer().setRandomTimeout(15, 90);
         Alfred.getPlayTimer().start();
 
-        Alfred.setTaskStatus("Training Mining");
-        Mining mining = new Mining(config);
-        mining.run();
+//        Alfred.setTaskStatus("Training Mining");
+//        Mining mining = new Mining(config);
+//        mining.run();
+
+        Alfred.setTaskStatus("Training Woodcutting");
+        Woodcutting woodcutting = new Woodcutting(config);
+        woodcutting.run();
 
         if (trainCombat()) {
             Alfred.setTaskStatus("Training Combat");
@@ -57,5 +62,15 @@ public class GerberThread extends Thread {
         }
 
         return false;
+    }
+
+    private boolean trainMining() {
+        RSPlayer player = Alfred.api.players().getLocalPlayer();
+        return player.getSkillLevel(Skill.MINING) < config.miningLevel();
+    }
+
+    private boolean trainWoodcutting() {
+        RSPlayer player = Alfred.api.players().getLocalPlayer();
+        return player.getSkillLevel(Skill.WOODCUTTING) < config.woodcuttingLevel();
     }
 }

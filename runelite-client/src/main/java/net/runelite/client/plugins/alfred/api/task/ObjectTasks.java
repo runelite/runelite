@@ -17,18 +17,49 @@ public class ObjectTasks {
         }
 
         RSObject nearestObject = objects.stream()
-                .min(Comparator.comparingInt(rsGroundItem -> rsGroundItem.getWorldLocation().distanceTo(player.getWorldLocation())))
+                .min(Comparator.comparingInt(gameObject -> gameObject.getWorldLocation().distanceTo(player.getWorldLocation())))
                 .orElse(null);
 
         if (nearestObject.getWorldLocation().distanceTo(player.getWorldLocation()) >= 5) {
             Alfred.api.walk().walkTo(nearestObject.getWorldLocation());
         }
 
+//        if (!Alfred.api.screen().isPointOnScreen(nearestObject.getWorldLocation())) {
         Alfred.api.camera().lookAt(nearestObject.getWorldLocation());
-        if (nearestObject.clickAction("mine")) {
+//        }
+
+//        if (nearestObject.clickAction("mine")) {
+        if (nearestObject.leftClick()) {
             Alfred.sleepUntil(player::isAnimating, 100, 1000 * 10);
             Alfred.setStatus("Waiting to finish mining");
-            Alfred.sleepUntil(() -> !player.isMoving() && player.isIdle() && !player.isAnimating(), 200, 1000 * 90);
+            Alfred.sleepUntil(() -> !player.isMoving() && player.isIdle() && !player.isAnimating(), 100, 1000 * 90);
+        }
+    }
+
+    public void chopTree(String name) {
+        RSPlayer player = Alfred.api.players().getLocalPlayer();
+        List<RSObject> objects = Alfred.api.objects().getObjectsFromTiles(name);
+        if (objects.isEmpty()) {
+            return;
+        }
+
+        RSObject nearestObject = objects.stream()
+                .min(Comparator.comparingInt(gameObject -> gameObject.getWorldLocation().distanceTo(player.getWorldLocation())))
+                .orElse(null);
+
+        if (nearestObject.getWorldLocation().distanceTo(player.getWorldLocation()) >= 5) {
+            Alfred.api.walk().walkTo(nearestObject.getWorldLocation());
+        }
+
+//        if (!Alfred.api.screen().isPointOnScreen(nearestObject.getWorldLocation())) {
+        Alfred.api.camera().lookAt(nearestObject.getWorldLocation());
+//        }
+
+        if (nearestObject.clickAction("chop down")) {
+//        if (nearestObject.leftClick()) {
+            Alfred.sleepUntil(player::isAnimating, 100, 1000 * 10);
+            Alfred.setStatus("Waiting to finish chopping down tree");
+            Alfred.sleepUntil(() -> !player.isMoving() && player.isIdle() && !player.isAnimating(), 100, 1000 * 90);
         }
     }
 }
