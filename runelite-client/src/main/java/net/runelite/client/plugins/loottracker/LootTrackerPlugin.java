@@ -365,6 +365,7 @@ public class LootTrackerPlugin extends Plugin
 	private int groundSnapshotCombatLevel;
 	private int groundSnapshotCycleDelay;
 	private Multiset<Integer> groundSnapshot;
+	private int groundSnapshotRegion;
 
 	private final List<LootRecord> queuedLoots = new ArrayList<>();
 	private String profileKey;
@@ -673,6 +674,8 @@ public class LootTrackerPlugin extends Plugin
 
 			groundSnapshotName = npc.getName();
 			groundSnapshotCombatLevel = npc.getCombatLevel();
+			// the entire arena fits in 1 region, so it doesn't matter what point we use
+			groundSnapshotRegion = npc.getWorldLocation().getRegionID();
 			groundSnapshot = ground;
 			// the loot spawns this tick, which is typically this cycle, but
 			// network latency can cause it to happen instead in the next few client cycles.
@@ -687,6 +690,11 @@ public class LootTrackerPlugin extends Plugin
 		if (groundSnapshotCycleDelay > 0)
 		{
 			groundSnapshotCycleDelay--;
+
+			if (client.getLocalPlayer().getWorldLocation().getRegionID() != groundSnapshotRegion)
+			{
+				return;
+			}
 
 			Multiset<Integer> ground = HashMultiset.create();
 			var scene = client.getScene();
