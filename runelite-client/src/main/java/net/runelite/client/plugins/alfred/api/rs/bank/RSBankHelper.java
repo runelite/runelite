@@ -3,6 +3,8 @@ package net.runelite.client.plugins.alfred.api.rs.bank;
 import net.runelite.api.GameObject;
 import net.runelite.api.ObjectID;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.plugins.alfred.Alfred;
 import net.runelite.client.plugins.alfred.api.rs.objects.RSObject;
 
@@ -11,6 +13,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RSBankHelper {
+
+    public boolean isOpen() {
+        return Alfred.getClientThread().invokeOnClientThread(() -> {
+            Widget widget = Alfred.getClient().getWidget(WidgetInfo.BANK_CONTAINER);
+            if (widget == null) {
+                return false;
+            }
+
+            return !widget.isHidden() && !widget.isSelfHidden();
+        });
+    }
 
     public List<RSBank> getNearestBanks() {
         List<RSBank> bankAPIList = new ArrayList<>();

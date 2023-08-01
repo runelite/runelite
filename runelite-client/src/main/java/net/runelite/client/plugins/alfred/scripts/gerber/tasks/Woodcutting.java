@@ -1,5 +1,6 @@
 package net.runelite.client.plugins.alfred.scripts.gerber.tasks;
 
+import net.runelite.api.ItemID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
@@ -9,6 +10,9 @@ import net.runelite.client.plugins.alfred.api.rs.inventory.RSInvetoryItem;
 import net.runelite.client.plugins.alfred.api.rs.player.RSPlayer;
 import net.runelite.client.plugins.alfred.enums.WorldDestinations;
 import net.runelite.client.plugins.alfred.scripts.gerber.GerberConfig;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Woodcutting {
 
@@ -47,6 +51,43 @@ public class Woodcutting {
             Alfred.sleep(100);
         }
     }
+
+    private List<Integer> getRecommendedAxes() {
+        RSPlayer player = Alfred.api.players().getLocalPlayer();
+        int skillLevel = player.getSkillLevel(Skill.WOODCUTTING);
+        List<Integer> itemIds = new ArrayList<>();
+
+        if (skillLevel >= 1) {
+            itemIds.add(ItemID.BRONZE_AXE);
+            itemIds.add(ItemID.IRON_AXE);
+        }
+
+        if (skillLevel >= 6) {
+            itemIds.add(ItemID.STEEL_AXE);
+        }
+
+        if (skillLevel >= 11) {
+            itemIds.add(ItemID.BLACK_AXE);
+        }
+
+        if (skillLevel >= 21) {
+            itemIds.add(ItemID.MITHRIL_AXE);
+        }
+
+        if (skillLevel >= 31) {
+            itemIds.add(ItemID.ADAMANT_AXE);
+        }
+
+//        if (skillLevel >= 35 && player.isMembers()) {
+//            itemIds.add(ItemID.BLESSED_AXE);
+//        }
+
+        if (skillLevel >= 41) {
+            itemIds.add(ItemID.RUNE_AXE);
+        }
+        return itemIds;
+    }
+
 
     private void chopTrees() {
         RSPlayer player = Alfred.api.players().getLocalPlayer();
@@ -101,6 +142,5 @@ public class Woodcutting {
         bank.close();
         Alfred.sleepUntil(bank::isClosed, 100, 5000);
     }
-
 
 }

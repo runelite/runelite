@@ -46,7 +46,8 @@ public class PathWalker {
                     continue;
                 }
 
-                if (!operateOnTile(realTile.getTile())) {
+//                if (!operateOnTile(realTile.getTile())) {
+                if (!operateOnTileV2(realTile.getTile())) {
                     continue;
                 }
             }
@@ -72,6 +73,39 @@ public class PathWalker {
             boolean nearTile = distanceToTarget <= 2;
             return isStill || nearTile;
         }, 200, 1000 * 30);
+    }
+
+    private boolean operateOnTileV2(Tile tile) {
+        Alfred.sleepUntil(() -> !player.isMoving() && !player.isInteracting() && player.isIdle(), 200, 1000 * 10);
+
+        WallObject wallObject = tile.getWallObject();
+        if (wallObject == null) {
+            return false;
+        }
+
+        Alfred.getMouse().rightClick(wallObject.getConvexHull().getBounds());
+        Alfred.sleep(200);
+
+        RSMenu rsMenu = Alfred.api.menu().getMenu();
+        if (rsMenu == null) {
+            System.out.println("Menu is null");
+            return false;
+        }
+
+        if (!rsMenu.hasAction("open")) {
+            System.out.println("Menu does not contain open action");
+            return true;
+        }
+
+        if (!rsMenu.clickAction("open")) {
+            System.out.println("Failed to operate on tile");
+            return false;
+        }
+
+        Alfred.sleep(1000);
+        Alfred.sleepUntil(() -> !player.isMoving() && !player.isInteracting() && player.isIdle(), 200, 1000 * 10);
+        Alfred.sleep(250, 500);
+        return true;
     }
 
     private boolean operateOnTile(Tile tile) {
