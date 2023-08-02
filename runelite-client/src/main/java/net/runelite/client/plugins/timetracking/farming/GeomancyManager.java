@@ -50,7 +50,6 @@ public class GeomancyManager
 	private final PaymentTracker paymentTracker;
 	private final CompostTracker compostTracker;
 	private final FarmingTracker farmingTracker;
-	private final GeomancyMaps geomancyMaps = new GeomancyMaps();
 
 	@Inject
 	private Notifier notifier;
@@ -70,11 +69,6 @@ public class GeomancyManager
 			int flags = (int) args[4];
 
 			GeomancyData data = new GeomancyData(coords);
-
-			if (enableVerboseLogging)
-			{
-				LogPatchInfo(jagexPatchID, cropItemID, data.minimumYield, data.isWatered, data.currentStage, data.maxStage, flags);
-			}
 
 			FarmingPatch fp = farmingWorld.getPatchByJagexID(jagexPatchID);
 			if (fp == null)
@@ -153,76 +147,6 @@ public class GeomancyManager
 				String value = jagexPatchID + ":" + cropItemID + ":" + flags + ":" + coords + ":" + unixNow;
 				configManager.setRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, fp.configKey(), value);
 			}
-		}
-	}
-
-	private void LogPatchInfo(int jagexPatchID, int cropItemID, int minimumYield, int isWatered, int currentStage, int maxStage, int flags)
-	{
-		log.info("_____" + jagexPatchID + "_____");
-		String patchName = geomancyMaps.patchNames.getOrDefault(jagexPatchID, "Patch");
-		log.info(patchName);
-		String patchType = geomancyMaps.patchTypes.getOrDefault(jagexPatchID, "Empty");
-		log.info(patchType);
-		String cropType = geomancyMaps.cropTypes.getOrDefault(cropItemID, "Crop");
-
-		if (cropItemID == ItemID.BUCKET)
-		{
-			log.info("Nothing is planted here.");
-		}
-		else if (cropItemID == ItemID.WEEDS)
-		{
-			log.info("Weeds are present here.");
-		}
-		else
-		{
-			log.info(cropType + " (" + cropItemID + ")");
-		}
-		log.info("Current growth stage is " + currentStage + " / " + maxStage);
-		if (minimumYield > 0)
-		{
-			log.info("Minimum yield is " + minimumYield);
-		}
-		if (isWatered == 1)
-		{
-			log.info("This patch is watered");
-		}
-		boolean isDiseased = testBit(flags, 0);
-		if (isDiseased)
-		{
-			log.info("This crop is diseased.");
-		}
-		boolean isDead = testBit(flags, 1);
-		if (isDead)
-		{
-			log.info("This crop is dead.");
-		}
-		if (testBit(flags, 2))
-		{
-			log.info("Gardener is protecting this patch.");
-		}
-		if (testBit(flags, 3))
-		{
-			log.info("Flower is protecting this patch.");
-		}
-		if (testBit(flags, 4))
-		{
-			log.info("Patch is dry.");
-		}
-		if (testBit(flags, 7))
-		{
-			log.info("Ultracompost.");
-		}
-		else if (testBit(flags, 6))
-		{
-			log.info("Supercompost.");
-		}
-		else if (testBit(flags, 5))
-		{
-			log.info("Normal compost.");
-		}
-		if (testBit(flags, 8))
-		{
-			log.info("Hosidius protection.");
 		}
 	}
 
