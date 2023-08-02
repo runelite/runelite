@@ -439,4 +439,16 @@ public final class ScriptID
 
 	@ScriptArguments(integer = 10, string = 3)
 	public static final int ACCOUNT_SUMMARY_SECTION_FORMAT = 3950;
+
+	/**
+	 * Called to populate data for the Geomancy widget
+	 * <ul>
+	 * <li> jagex patch ID </li>
+	 * <li> crop ID </li>
+	 * <li> packed coords with various data </li>
+	 * <li> flags with various data </li>
+	 * </ul>
+	 */
+	@ScriptArguments(integer = 4)
+	public static final int FARMING_VIEW_SET_PANEL = 1119;
 }

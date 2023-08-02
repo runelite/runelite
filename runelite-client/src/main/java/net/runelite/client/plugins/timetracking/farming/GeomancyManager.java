@@ -32,6 +32,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.ItemID;
+import net.runelite.api.ScriptID;
 import net.runelite.api.events.ScriptPreFired;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
@@ -59,7 +60,7 @@ public class GeomancyManager
 	@Subscribe
 	public void onScriptPreFired(ScriptPreFired scriptPreFired)
 	{
-		if (scriptPreFired.getScriptId() == 1119)
+		if (scriptPreFired.getScriptId() == ScriptID.FARMING_VIEW_SET_PANEL)
 		{
 			//args[0] is script ID
 			Object[] args = scriptPreFired.getScriptEvent().getArguments();
