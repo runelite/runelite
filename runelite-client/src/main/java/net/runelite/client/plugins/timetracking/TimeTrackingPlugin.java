@@ -170,6 +170,7 @@ public class TimeTrackingPlugin extends Plugin
 
 		eventBus.unregister(paymentTracker);
 		eventBus.unregister(compostTracker);
+		eventBus.unregister(geomancyManager);
 
 		if (panelUpdateFuture != null)
 		{
