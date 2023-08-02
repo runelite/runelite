@@ -116,7 +116,7 @@ public class GeomancyManager
 			}
 
 			//Patch State
-			PatchState patchState = FarmingTracker.GeneratePatchState(cropItemID, flags, coords);
+			PatchState patchState = convertGeomancyData(cropItemID, flags, coords);
 			String storedValue = configManager.getConfiguration(TimeTrackingConfig.CONFIG_GROUP, configManager.getRSProfileKey(), fp.configKey());
 			PatchState previousPatchState = null;
 			if (storedValue != null)
@@ -137,7 +137,7 @@ public class GeomancyManager
 				if (patchState.getCropState() == CropState.DISEASED && config.notifyOnDisease())
 				{
 					StringBuilder stringBuilder = new StringBuilder();
-					farmingTracker.AppendCropInfo(stringBuilder, patchState.getCropState(), patchState.getProduce(), fp);
+					farmingTracker.appendCropInfo(stringBuilder, patchState.getCropState(), patchState.getProduce(), fp);
 					notifier.notify(stringBuilder.toString());
 				}
 				isDirty = true;
@@ -157,6 +157,83 @@ public class GeomancyManager
 			return true;
 		}
 		return false;
+	}
+
+	static PatchState convertGeomancyData(int cropItemID, int flags, int coords)
+	{
+		///Unpack coords
+		int coordX = (coords >>> 14) & 0x3FFF;
+		//one-based
+		int currentStage = coordX % 64;
+		//one-based (unused but might be worth keeping?)
+		//int minimumYield = coordX / 64;
+		//coordY (in cs2 script) 1 if watered, 0 if not watered (unused but might be worth keeping?)
+		//int isWatered = (coords >>> 28) & 0x3;
+		int coordZ = coords & 0x3FFF;
+		//one-based
+		int maxStage = coordZ % 64;
+
+		/// Do some remapping to change the IDs Jagex uses to what the Produce enums are using.
+
+		//bucket is 'nothing' but seems like farming tracker considers nothing as weeds in the UI.
+		if (cropItemID == ItemID.BUCKET || cropItemID == ItemID.WEEDS)
+		{
+			return new PatchState(Produce.WEEDS, CropState.GROWING, 3);
+		}
+		//For some reason jagex is using Vodka Item ID for spirit tree...
+		if (cropItemID == ItemID.VODKA)
+		{
+			cropItemID = ItemID.SPIRIT_TREE;
+		}
+		//Produce should probably be using this too but don't want to change that
+		if (cropItemID == ItemID.CELASTRUS_BARK)
+		{
+			cropItemID = ItemID.BATTLESTAFF;
+		}
+		//Plural vs non-plural
+		if (cropItemID == ItemID.CRYSTAL_SHARD)
+		{
+			cropItemID = ItemID.CRYSTAL_SHARDS;
+		}
+
+		Produce produce = Produce.getByItemID(cropItemID);
+
+		//any dead herb gets the crop ID for VIAL
+		if (cropItemID == ItemID.VIAL)
+		{
+			produce = Produce.ANYHERB;
+		}
+		//We need to make sure that we get guam since Produce.ANYHERB also uses the guam leaf item ID
+		if (cropItemID == ItemID.GUAM_LEAF)
+		{
+			produce = Produce.GUAM;
+		}
+
+		CropState cropState = null;
+		if (testBit(flags, 0))
+		{
+			cropState = CropState.DISEASED;
+		}
+		else if (testBit(flags, 1))
+		{
+			cropState = CropState.DEAD;
+		}
+		else if (maxStage > 0 && currentStage == maxStage)
+		{
+			cropState = CropState.HARVESTABLE;
+		}
+		else
+		{
+			cropState = CropState.GROWING;
+		}
+
+		//convert current stage from one-based to zero-based
+		int zeroBasedStage = currentStage - 1;
+		if (zeroBasedStage < 0)
+		{
+			zeroBasedStage = 0;
+		}
+		return new PatchState(produce, cropState, zeroBasedStage);
 	}
 
 	static boolean testBit(int value, int position)
