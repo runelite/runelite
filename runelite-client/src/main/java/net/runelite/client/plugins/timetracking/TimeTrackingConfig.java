@@ -147,7 +147,7 @@ public interface TimeTrackingConfig extends Config
 	@ConfigItem(
 		keyName = "notifyOnDisease",
 		name = "Notify On Disease",
-		description = "Always send a notification when disease is detected via Geomancy.",
+		description = "Always send a notification when disease is detected.",
 		position = 3
 	)
 	default boolean notifyOnDisease()

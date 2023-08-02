@@ -552,6 +552,11 @@ public class FarmingTracker
 						continue;
 					}
 
+					if (config.notifyOnDisease() && prediction.getCropState() == CropState.DISEASED)
+					{
+						shouldNotify = true;
+					}
+
 					int tickRate = prediction.getProduce().getTickrate();
 
 					if (offsetPrecisionMins == null || offsetTimeMins == null || (offsetPrecisionMins < tickRate && offsetPrecisionMins < 40) || prediction.getProduce() == Produce.WEEDS
