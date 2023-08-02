@@ -73,7 +73,7 @@ public class GeomancyManager
 			FarmingPatch fp = farmingWorld.getPatchByJagexID(jagexPatchID);
 			if (fp == null)
 			{
-				log.error("Couldn't find farming patch to match Jagex patch ID " + jagexPatchID);
+				log.warn("Couldn't find farming patch to match Jagex patch ID {}", jagexPatchID);
 				return;
 			}
 
