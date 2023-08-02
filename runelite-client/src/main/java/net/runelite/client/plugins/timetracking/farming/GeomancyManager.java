@@ -69,8 +69,6 @@ public class GeomancyManager
 			int coords = (int) args[3];
 			int flags = (int) args[4];
 
-			GeomancyData data = new GeomancyData(coords);
-
 			FarmingPatch fp = farmingWorld.getPatchByJagexID(jagexPatchID);
 			if (fp == null)
 			{
@@ -118,7 +116,7 @@ public class GeomancyManager
 			}
 
 			//Patch State
-			PatchState patchState = FarmingTracker.GeneratePatchState(cropItemID, data.currentStage, data.maxStage, flags);
+			PatchState patchState = FarmingTracker.GeneratePatchState(cropItemID, flags, coords);
 			String storedValue = configManager.getConfiguration(TimeTrackingConfig.CONFIG_GROUP, configManager.getRSProfileKey(), fp.configKey());
 			PatchState previousPatchState = null;
 			if (storedValue != null)

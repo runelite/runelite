@@ -395,8 +395,7 @@ public class FarmingTracker
 				int flags = Integer.parseInt(parts[2]);
 				int coords = Integer.parseInt(parts[3]);
 				long unixTime = Long.parseLong(parts[4]);
-				GeomancyData data = new GeomancyData(coords);
-				PatchState state = GeneratePatchState(cropItemID, data.currentStage, data.maxStage, flags);
+				PatchState state = GeneratePatchState(cropItemID, flags, coords);
 				return new PatchStateAndTime(state, unixTime, false);
 			}
 			catch (NumberFormatException e)
@@ -663,9 +662,21 @@ public class FarmingTracker
 			.append('.');
 	}
 
-	public static PatchState GeneratePatchState(int cropItemID, int currentStage, int maxStage, int flags)
+	public static PatchState GeneratePatchState(int cropItemID, int flags, int coords)
 	{
-		/// Do some remapping to make change the IDs Jagex uses to what the Produce enums are using.
+		///Unpack coords
+		int coordX = (coords >>> 14) & 0x3FFF;
+		//one-based
+		int currentStage = coordX % 64;
+		//one-based (unused but might be worth keeping?)
+		//int minimumYield = coordX / 64;
+		//coordY (in cs2 script) 1 if watered, 0 if not watered (unused but might be worth keeping?)
+		//int isWatered = (coords >>> 28) & 0x3;
+		int coordZ = coords & 0x3FFF;
+		//one-based
+		int maxStage = coordZ % 64;
+
+		/// Do some remapping to change the IDs Jagex uses to what the Produce enums are using.
 
 		//bucket is 'nothing' but seems like farming tracker considers nothing as weeds in the UI.
 		if (cropItemID == ItemID.BUCKET || cropItemID == ItemID.WEEDS)
