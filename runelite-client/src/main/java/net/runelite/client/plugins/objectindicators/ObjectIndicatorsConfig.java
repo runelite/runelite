@@ -26,6 +26,8 @@
 package net.runelite.client.plugins.objectindicators;
 
 import java.awt.Color;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
@@ -141,5 +143,34 @@ public interface ObjectIndicatorsConfig extends Config
 	default boolean rememberObjectColors()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "menuHighlightMode",
+		name = "Menu Highlight Mode",
+		description = "Configures what to highlight in right-click menu",
+		position = 6
+	)
+	default MenuHighlightMode menuHighlightMode()
+	{
+		return MenuHighlightMode.OFF;
+	}
+
+	@Getter
+	@RequiredArgsConstructor
+	enum MenuHighlightMode
+	{
+		OPTION("Menu option"),
+		NAME("Menu item name"),
+		BOTH("Both"),
+		OFF("None");
+
+		private final String name;
+
+		@Override
+		public String toString()
+		{
+			return name;
+		}
 	}
 }

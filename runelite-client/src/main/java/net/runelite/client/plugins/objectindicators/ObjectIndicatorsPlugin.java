@@ -26,6 +26,7 @@
 package net.runelite.client.plugins.objectindicators;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableList;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Provides;
@@ -71,6 +72,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.ColorUtil;
 
 @PluginDescriptor(
 	name = "Object Markers",
@@ -84,6 +86,15 @@ public class ObjectIndicatorsPlugin extends Plugin
 	private static final String CONFIG_GROUP = "objectindicators";
 	private static final String MARK = "Mark object";
 	private static final String UNMARK = "Unmark object";
+	private static final List<MenuAction> VALID_OBJECT_ENTRIES = ImmutableList.of(
+		MenuAction.EXAMINE_OBJECT,
+		MenuAction.ITEM_USE_ON_GAME_OBJECT,
+		MenuAction.GAME_OBJECT_FIRST_OPTION,
+		MenuAction.GAME_OBJECT_SECOND_OPTION,
+		MenuAction.GAME_OBJECT_THIRD_OPTION,
+		MenuAction.GAME_OBJECT_FOURTH_OPTION,
+		MenuAction.GAME_OBJECT_FIFTH_OPTION
+	);
 
 	@Getter(AccessLevel.PACKAGE)
 	private final List<ColorTileObject> objects = new ArrayList<>();
@@ -204,7 +215,17 @@ public class ObjectIndicatorsPlugin extends Plugin
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		if (event.getType() != MenuAction.EXAMINE_OBJECT.getId() || !client.isKeyPressed(KeyCode.KC_SHIFT))
+		final MenuAction type = MenuAction.of(event.getType());
+
+		if (!VALID_OBJECT_ENTRIES.contains(type))
+		{
+			return;
+		}
+
+		// Small performance optimization when menu highlighting is disabled
+		if (config.menuHighlightMode() == ObjectIndicatorsConfig.MenuHighlightMode.OFF && (
+			type != MenuAction.EXAMINE_OBJECT ||
+			!client.isKeyPressed(KeyCode.KC_SHIFT)))
 		{
 			return;
 		}
@@ -217,14 +238,47 @@ public class ObjectIndicatorsPlugin extends Plugin
 			return;
 		}
 
-		client.createMenuEntry(-1)
-			.setOption(objects.stream().anyMatch(o -> o.getTileObject() == tileObject) ? UNMARK : MARK)
-			.setTarget(event.getTarget())
-			.setParam0(event.getActionParam0())
-			.setParam1(event.getActionParam1())
-			.setIdentifier(event.getIdentifier())
-			.setType(MenuAction.RUNELITE)
-			.onClick(this::markObject);
+		final ColorTileObject configObject = objects.stream().filter(o -> o.getTileObject() == tileObject).findAny().orElse(null);
+
+		if (type == MenuAction.EXAMINE_OBJECT)
+		{
+			if (client.isKeyPressed(KeyCode.KC_SHIFT))
+			{
+				client.createMenuEntry(-1)
+					.setOption(configObject != null ? UNMARK : MARK)
+					.setTarget(event.getTarget())
+					.setParam0(event.getActionParam0())
+					.setParam1(event.getActionParam1())
+					.setIdentifier(event.getIdentifier())
+					.setType(MenuAction.RUNELITE)
+					.onClick(this::markObject);
+			}
+		}
+		else if (configObject != null && config.menuHighlightMode() != ObjectIndicatorsConfig.MenuHighlightMode.OFF)
+		{
+			final MenuEntry[] menuEntries = client.getMenuEntries();
+			final MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
+			Color color = configObject.getColor();
+			if (color == null || !config.rememberObjectColors())
+			{
+				// Fallback to the current config if the object is marked before the addition of multiple colors
+				color = config.markerColor();
+			}
+
+			if (config.menuHighlightMode() == ObjectIndicatorsConfig.MenuHighlightMode.BOTH ||
+				config.menuHighlightMode() == ObjectIndicatorsConfig.MenuHighlightMode.OPTION)
+			{
+				lastEntry.setOption(ColorUtil.prependColorTag(lastEntry.getOption(), color));
+			}
+
+			if (config.menuHighlightMode() == ObjectIndicatorsConfig.MenuHighlightMode.BOTH ||
+				config.menuHighlightMode() == ObjectIndicatorsConfig.MenuHighlightMode.NAME)
+			{
+				final String target = lastEntry.getTarget();
+				final int i = target.lastIndexOf('>');
+				lastEntry.setTarget(target.substring(0, target.lastIndexOf('<')) + ColorUtil.colorTag(color) + target.substring(i + 1));
+			}
+		}
 	}
 
 	private void markObject(MenuEntry entry)
