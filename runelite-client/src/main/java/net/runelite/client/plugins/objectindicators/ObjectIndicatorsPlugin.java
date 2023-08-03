@@ -113,10 +113,17 @@ public class ObjectIndicatorsPlugin extends Plugin
 		return configManager.getConfig(ObjectIndicatorsConfig.class);
 	}
 
+	private static boolean reloadMapPointsOnStartup = false;
+
 	@Override
 	protected void startUp()
 	{
 		overlayManager.add(overlay);
+		if (reloadMapPointsOnStartup)
+		{
+			reloadMapPoints();
+			reloadMapPointsOnStartup = false;
+		}
 	}
 
 	@Override
@@ -125,6 +132,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 		overlayManager.remove(overlay);
 		points.clear();
 		objects.clear();
+		reloadMapPointsOnStartup = true;
 	}
 
 	@Subscribe
@@ -182,17 +190,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 		if (gameState == GameState.LOADING)
 		{
 			// Reload points with new map regions
-
-			points.clear();
-			for (int regionId : client.getMapRegions())
-			{
-				// load points for region
-				final Set<ObjectPoint> regionPoints = loadPoints(regionId);
-				if (regionPoints != null)
-				{
-					points.put(regionId, regionPoints);
-				}
-			}
+			reloadMapPoints();
 		}
 
 		if (gameStateChanged.getGameState() != GameState.LOGGED_IN && gameStateChanged.getGameState() != GameState.CONNECTION_LOST)
@@ -256,6 +254,20 @@ public class ObjectIndicatorsPlugin extends Plugin
 		markObject(objectDefinition, name, object);
 	}
 
+	private void reloadMapPoints()
+	{
+		points.clear();
+		for (int regionId : client.getMapRegions())
+		{
+			// load points for region
+			final Set<ObjectPoint> regionPoints = loadPoints(regionId);
+			if (regionPoints != null)
+			{
+				points.put(regionId, regionPoints);
+			}
+		}
+	}
+
 	private void checkObjectPoints(TileObject object)
 	{
 		if (object.getPlane() < 0)
@@ -287,9 +299,9 @@ public class ObjectIndicatorsPlugin extends Plugin
 		for (ObjectPoint objectPoint : objectPoints)
 		{
 			if (worldPoint.getRegionX() == objectPoint.getRegionX()
-					&& worldPoint.getRegionY() == objectPoint.getRegionY()
-					&& worldPoint.getPlane() == objectPoint.getZ()
-					&& objectPoint.getId() == object.getId())
+				&& worldPoint.getRegionY() == objectPoint.getRegionY()
+				&& worldPoint.getPlane() == objectPoint.getZ()
+				&& objectPoint.getId() == object.getId())
 			{
 				log.debug("Marking object {} due to matching {}", object, objectPoint);
 				objects.add(new ColorTileObject(object,
@@ -369,11 +381,12 @@ public class ObjectIndicatorsPlugin extends Plugin
 		return false;
 	}
 
-	/** mark or unmark an object
+	/**
+	 * mark or unmark an object
 	 *
 	 * @param objectComposition transformed composition of object based on vars
-	 * @param name name of objectComposition
-	 * @param object tile object, for multilocs object.getId() is the base id
+	 * @param name              name of objectComposition
+	 * @param object            tile object, for multilocs object.getId() is the base id
 	 */
 	private void markObject(ObjectComposition objectComposition, String name, final TileObject object)
 	{
