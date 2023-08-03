@@ -49,6 +49,7 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
@@ -73,10 +74,12 @@ import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MessageNode;
 import net.runelite.api.NPC;
+import net.runelite.api.NpcID;
 import net.runelite.api.ObjectID;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.SpriteID;
+import net.runelite.api.Tile;
 import net.runelite.api.Varbits;
 import net.runelite.api.WorldType;
 import net.runelite.api.coords.WorldPoint;
@@ -84,6 +87,8 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.NpcDespawned;
+import net.runelite.api.events.PostClientTick;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.client.account.AccountSession;
@@ -355,6 +360,12 @@ public class LootTrackerPlugin extends Plugin
 	private InventoryID inventoryId;
 	private Multiset<Integer> inventorySnapshot;
 	private InvChangeCallback inventorySnapshotCb;
+
+	private String groundSnapshotName;
+	private int groundSnapshotCombatLevel;
+	private int groundSnapshotCycleDelay;
+	private Multiset<Integer> groundSnapshot;
+	private int groundSnapshotRegion;
 
 	private final List<LootRecord> queuedLoots = new ArrayList<>();
 	private String profileKey;
@@ -628,6 +639,102 @@ public class LootTrackerPlugin extends Plugin
 	{
 		// For the wiki to determine drop rates based on dmm brackets / identify leagues drops
 		return client.getWorldType().contains(WorldType.SEASONAL) ? client.getWorld() : null;
+	}
+
+	@Subscribe
+	public void onNpcDespawned(NpcDespawned npcDespawned)
+	{
+		var npc = npcDespawned.getNpc();
+		if (npc.getId() == NpcID.THE_WHISPERER || npc.getId() == NpcID.THE_WHISPERER_12206)
+		{
+			// Whisperer death:
+			//   loot spawn at z=0, which you can't see since you are in the shadow realm on z=3
+			//   npc despawn on z=3
+			//   player teleport from z=3 to z=0
+			//   server sends zone clear packet
+			//   server spawns in the loot, along with any other items already on the ground
+			//
+			// We take advantage of that the items left on z=0 when you move into the shadow realm are not
+			// cleared until the zoneclear packet. So if you record them at the time the whisperer despawns,
+			// you can subtract it from the spawned items at the end of the tick.
+
+			// collect all items on z=0
+			Multiset<Integer> ground = HashMultiset.create();
+			var scene = client.getScene();
+			Tile[][] p0 = scene.getTiles()[0];
+			Arrays.stream(p0)
+				.flatMap(Arrays::stream)
+				.filter(Objects::nonNull)
+				.map(Tile::getGroundItems)
+				.filter(Objects::nonNull)
+				.flatMap(Collection::stream)
+				.forEach(item -> ground.add(item.getId(), item.getQuantity()));
+
+			log.debug("Recorded ground items {} on cycle {}", ground, client.getGameCycle());
+
+			groundSnapshotName = npc.getName();
+			groundSnapshotCombatLevel = npc.getCombatLevel();
+			// the entire arena is in an instance, which may not be region-aligned
+			groundSnapshotRegion = client.getLocalPlayer().getWorldLocation().getRegionID();
+			groundSnapshot = ground;
+			// the loot spawns this tick, which is typically this cycle, but
+			// network latency can cause it to happen instead in the next few client cycles.
+			// use 30 to be safe.
+			groundSnapshotCycleDelay = 30;
+		}
+	}
+
+	@Subscribe
+	public void onPostClientTick(PostClientTick postClientTick)
+	{
+		if (groundSnapshotCycleDelay > 0)
+		{
+			groundSnapshotCycleDelay--;
+
+			if (groundSnapshotCycleDelay == 0)
+			{
+				groundSnapshotName = null;
+				groundSnapshotCombatLevel = 0;
+				groundSnapshot = null;
+				return;
+			}
+
+			if (client.getLocalPlayer().getWorldLocation().getRegionID() != groundSnapshotRegion)
+			{
+				return;
+			}
+
+			Multiset<Integer> ground = HashMultiset.create();
+			var scene = client.getScene();
+			Tile[][] p0 = scene.getTiles()[0];
+			Arrays.stream(p0)
+				.flatMap(Arrays::stream)
+				.filter(Objects::nonNull)
+				.map(Tile::getGroundItems)
+				.filter(Objects::nonNull)
+				.flatMap(Collection::stream)
+				.forEach(item -> ground.add(item.getId(), item.getQuantity()));
+
+			var diff = Multisets.difference(ground, groundSnapshot);
+			if (diff.isEmpty())
+			{
+				// loot is not spawned yet
+				return;
+			}
+
+			log.debug("Loot received {} on cycle {}", diff, client.getGameCycle());
+
+			// convert to item stack
+			var items = diff.entrySet().stream()
+				.map(e -> new ItemStack(e.getElement(), e.getCount(), client.getLocalPlayer().getLocalLocation())) // made up location
+				.collect(Collectors.toList());
+			addLoot(groundSnapshotName, groundSnapshotCombatLevel, LootRecordType.NPC, null, items);
+
+			groundSnapshotName = null;
+			groundSnapshotCombatLevel = 0;
+			groundSnapshot = null;
+			groundSnapshotCycleDelay = 0;
+		}
 	}
 
 	@Subscribe

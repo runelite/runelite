@@ -23479,6 +23479,8 @@ public final class ObjectID
 	public static final int PESTLE_AND_MORTAR_47567 = 47567;
 	public static final int PICKAXE_47568 = 47568;
 	public static final int SKELETON_47569 = 47569;
+	public static final int ROCKS_47570 = 47570;
+	public static final int ROCKS_47571 = 47571;
 	public static final int CORRUPTED_SEED = 47573;
 	public static final int CORRUPTED_SEED_47574 = 47574;
 	public static final int CORRUPTED_SEED_47575 = 47575;

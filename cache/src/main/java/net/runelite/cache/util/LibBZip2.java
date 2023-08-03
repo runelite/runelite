@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2023, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,39 +22,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.protocol.update.encoders;
+package net.runelite.cache.util;
 
-import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.MessageToByteEncoder;
+import com.sun.jna.Library;
+import com.sun.jna.Native;
 
-public class XorEncoder extends MessageToByteEncoder<ByteBuf>
+public interface LibBZip2 extends Library
 {
-	private byte key;
+	LibBZip2 INSTANCE = Native.load("libbz2", LibBZip2.class);
 
-	public byte getKey()
-	{
-		return key;
-	}
+	int BZ_OK = 0;
+	int BZ_RUN_OK = 1;
+	int BZ_FLUSH_OK = 2;
+	int BZ_FINISH_OK = 3;
+	int BZ_STREAM_END = 4;
 
-	public void setKey(byte key)
-	{
-		this.key = key;
-	}
+	int BZ_RUN = 0;
+	int BZ_FLUSH = 1;
+	int BZ_FINISH = 2;
 
-	@Override
-	protected void encode(ChannelHandlerContext ctx, ByteBuf msg, ByteBuf out) throws Exception
-	{
-		if (key == 0)
-		{
-			out.writeBytes(msg);
-			return;
-		}
-
-		while (msg.isReadable())
-		{
-			out.writeByte(msg.readByte() ^ key);
-		}
-	}
-
+	int BZ2_bzCompressInit(BzStream stream, int blockSize100k, int verbosity, int workFactor);
+	int BZ2_bzCompress(BzStream stream, int action);
+	int BZ2_bzCompressEnd(BzStream stream);
 }

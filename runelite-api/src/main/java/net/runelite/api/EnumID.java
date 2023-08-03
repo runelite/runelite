@@ -37,8 +37,6 @@ public final class EnumID
 	 */
 	public static final int SLAYER_TASK_CREATURE = 693;
 
-	public static final int MUSIC_TRACK_NAMES = 812;
-	public static final int MUSIC_TRACK_IDS = 819;
 	/**
 	 * key: int 1-n+1
 	 * val: namedobj
@@ -64,12 +62,6 @@ public final class EnumID
 	 * val: string location name
 	 */
 	public static final int SLAYER_TASK_LOCATION = 4064;
-
-	/**
-	 * key: mapelement
-	 * val: dbrow
-	 */
-	public static final int MAPELEMENT_TO_QUEST = 4385;
 
 	public static final int PRAYERS_NORMAL = 4956;
 	public static final int PRAYERS_RUINOUS = 4959;

@@ -322,7 +322,7 @@ public class NpcAggroAreaPlugin extends Plugin
 		checkAreaNpcs(client.getCachedNPCs());
 	}
 
-	@Subscribe
+	@Subscribe(priority = -1) // run after slayer plugin so targets has time to populate
 	public void onNpcSpawned(NpcSpawned event)
 	{
 		if (config.alwaysActive())

@@ -2465,6 +2465,14 @@ public class ChatCommandsPlugin extends Plugin
 			case "pm":
 				return "Phantom Muspah";
 
+			// Desert Treasure 2 bosses
+			case "the leviathan":
+				return "Leviathan";
+			case "duke":
+				return "Duke Sucellus";
+			case "the whisperer":
+				return "Whisperer";
+
 			default:
 				return WordUtils.capitalize(boss);
 		}
