@@ -160,7 +160,7 @@ public class ChatCommandsPlugin extends Plugin
 	private int lastBossTime = -1;
 	private double lastPb = -1;
 	private String lastTeamSize;
-	private int modIconIdx = -1;
+	private int petsIconIdx = -1;
 	private int[] pets;
 
 	@Inject
@@ -226,22 +226,13 @@ public class ChatCommandsPlugin extends Plugin
 
 		clientThread.invoke(() ->
 		{
-			// enum config must be loaded for building pet icons
-			if (client.getModIcons() == null || client.getGameState().getState() < GameState.LOGIN_SCREEN.getState())
+			if (client.getGameState().getState() >= GameState.LOGIN_SCREEN.getState())
 			{
-				return false;
+				if (petsIconIdx == -1)
+				{
+					loadPets();
+				}
 			}
-
-			// !pets requires off thread pets access, so we just store a copy at startup
-			EnumComposition petsEnum = client.getEnum(EnumID.PETS);
-			pets = new int[petsEnum.size()];
-			for (int i = 0; i < petsEnum.size(); ++i)
-			{
-				pets[i] = petsEnum.getIntValue(i);
-			}
-
-			loadPetIcons();
-			return true;
 		});
 	}
 
@@ -310,18 +301,23 @@ public class ChatCommandsPlugin extends Plugin
 		return personalBest == null ? 0 : personalBest;
 	}
 
-	private void loadPetIcons()
+	private void loadPets()
 	{
-		if (modIconIdx != -1)
+		assert petsIconIdx == -1;
+
+		// !pets requires off thread pets access, so we just store a copy
+		EnumComposition petsEnum = client.getEnum(EnumID.PETS);
+		pets = new int[petsEnum.size()];
+		for (int i = 0; i < petsEnum.size(); ++i)
 		{
-			return;
+			pets[i] = petsEnum.getIntValue(i);
 		}
 
 		final IndexedSprite[] modIcons = client.getModIcons();
 		assert modIcons != null;
 
 		final IndexedSprite[] newModIcons = Arrays.copyOf(modIcons, modIcons.length + pets.length);
-		modIconIdx = modIcons.length;
+		petsIconIdx = modIcons.length;
 
 		client.setModIcons(newModIcons);
 
@@ -330,7 +326,7 @@ public class ChatCommandsPlugin extends Plugin
 			final int petId = pets[i];
 
 			final AsyncBufferedImage abi = itemManager.getImage(petId);
-			final int idx = modIconIdx + i;
+			final int idx = petsIconIdx + i;
 			Runnable r = () ->
 			{
 				final BufferedImage image = ImageUtil.resizeImage(abi, 18, 16);
@@ -864,6 +860,16 @@ public class ChatCommandsPlugin extends Plugin
 			case HOPPING:
 				pohOwner = null;
 				break;
+			case STARTING:
+				petsIconIdx = -1;
+				pets = null;
+				break;
+			case LOGIN_SCREEN:
+				if (petsIconIdx == -1)
+				{
+					loadPets();
+				}
+				break;
 		}
 	}
 
@@ -1323,7 +1329,7 @@ public class ChatCommandsPlugin extends Plugin
 			final int petId = pets[petIdx];
 			if (playerPetList.contains(petId))
 			{
-				responseBuilder.append(" ").img(modIconIdx + petIdx);
+				responseBuilder.append(" ").img(petsIconIdx + petIdx);
 			}
 		}
 

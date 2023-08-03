@@ -34,7 +34,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.function.BooleanSupplier;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import static net.runelite.api.ChatMessageType.FRIENDSCHATNOTIFICATION;
@@ -56,8 +55,8 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
-import static net.runelite.api.widgets.WidgetID.ADVENTURE_LOG_ID;
 import static net.runelite.api.widgets.WidgetID.ACHIEVEMENT_DIARY_SCROLL_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.ADVENTURE_LOG_ID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatClient;
@@ -181,9 +180,9 @@ public class ChatCommandsPluginTest
 		chatCommandsPlugin.startUp();
 
 		// clientthread callback
-		ArgumentCaptor<BooleanSupplier> captor = ArgumentCaptor.forClass(BooleanSupplier.class);
+		ArgumentCaptor<Runnable> captor = ArgumentCaptor.forClass(Runnable.class);
 		verify(clientThread).invoke(captor.capture());
-		captor.getValue().getAsBoolean();
+		captor.getValue().run();
 	}
 
 	@After
