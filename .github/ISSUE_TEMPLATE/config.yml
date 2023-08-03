@@ -1,4 +1,4 @@
-blank_issues_enabled: false
+blank_issues_enabled: true
 contact_links:
     - name: Suggestion or feature request
       url: https://github.com/runelite/runelite/discussions/categories/ideas
