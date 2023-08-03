@@ -27,7 +27,7 @@ public class BankTasks {
             return;
         }
 
-        if (rsBank.isOpen()) {
+        if (Alfred.api.banks().isOpen()) {
             return;
         }
 
@@ -41,7 +41,7 @@ public class BankTasks {
 
         Alfred.api.menu().getMenu().clickAction("bank");
 
-        boolean openedBank = Alfred.sleepUntil(rsBank::isOpen, 200, 1000 * 10);
+        boolean openedBank = Alfred.sleepUntil(() -> Alfred.api.banks().isOpen(), 200, 1000 * 10);
         if (!openedBank) {
             return;
         }

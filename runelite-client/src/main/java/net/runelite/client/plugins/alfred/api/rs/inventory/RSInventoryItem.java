@@ -3,17 +3,17 @@ package net.runelite.client.plugins.alfred.api.rs.inventory;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.plugins.alfred.Alfred;
+import net.runelite.client.plugins.alfred.api.rs.menu.RSMenu;
 
 import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class RSInvetoryItem {
-
+public class RSInventoryItem {
     private final Widget item;
 
-    public RSInvetoryItem(Widget item) {
+    public RSInventoryItem(Widget item) {
         this.item = item;
     }
 
@@ -99,12 +99,15 @@ public class RSInvetoryItem {
         return true;
     }
 
-    public boolean clickAction(String action) {
+    public boolean interact(String action) {
         if (!rightClick()) {
             return false;
         }
-        Alfred.sleep(200, 600);
-        return Alfred.api.inventory().clickAction(action);
+        if (!Alfred.sleepUntil(() -> Alfred.api.menu().getMenu().hasAction(action), 200, 2000)) {
+            return false;
+        }
+        RSMenu rsMenu = Alfred.api.menu().getMenu();
+        return rsMenu.clickAction(action);
     }
 
 }

@@ -2,6 +2,7 @@ package net.runelite.client.plugins.alfred.api.rs.player;
 
 
 import net.runelite.api.Player;
+import net.runelite.api.PlayerComposition;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldArea;

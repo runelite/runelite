@@ -4,7 +4,7 @@ import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.client.plugins.alfred.Alfred;
 import net.runelite.client.plugins.alfred.api.rs.bank.RSBank;
-import net.runelite.client.plugins.alfred.api.rs.inventory.RSInvetoryItem;
+import net.runelite.client.plugins.alfred.api.rs.inventory.RSInventoryItem;
 import net.runelite.client.plugins.alfred.api.rs.player.RSPlayer;
 import net.runelite.client.plugins.alfred.enums.WorldDestinations;
 import net.runelite.client.plugins.alfred.scripts.gerber.GerberConfig;
@@ -165,7 +165,7 @@ public class Combat {
             return;
         }
 
-        for (RSInvetoryItem item : Alfred.api.inventory().getItems("bones")) {
+        for (RSInventoryItem item : Alfred.api.inventory().getItems("bones")) {
             item.leftClick();
             Alfred.sleep(1000);
             Alfred.sleepUntil(() -> !player.isMoving() && !player.isInteracting() && player.isIdle(), 200, 1000 * 30);
@@ -178,14 +178,15 @@ public class Combat {
 
         if (bank == null) {
             System.out.println("HELP");
+            return;
         }
 
-        bank.open();
-        Alfred.sleepUntil(bank::isOpen, 100, 5000);
-        bank.clickDepositInventory();
+        Alfred.api.banks().open(bank);
+        Alfred.sleepUntil(() -> Alfred.api.banks().isOpen(), 100, 5000);
+        Alfred.api.banks().depositInventory();
         Alfred.sleepUntil(() -> Alfred.api.inventory().isEmpty(), 100, 5000);
-        bank.close();
-        Alfred.sleepUntil(bank::isClosed, 100, 5000);
+        Alfred.api.banks().close();
+        Alfred.sleepUntil(() -> Alfred.api.banks().isClosed(), 100, 5000);
     }
 
 

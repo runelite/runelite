@@ -55,7 +55,7 @@ public class RSTabHelper {
         }
 
         Alfred.getMouse().leftClick(bounds);
-        return true;
+        return Alfred.sleepUntil(() -> getCurrentTab() == widgetInfo, 100, 3000);
     }
 
     public boolean clickCombatTab() {

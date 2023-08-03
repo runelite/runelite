@@ -1,17 +1,9 @@
 package net.runelite.client.plugins.alfred.scripts.gerber.tasks;
 
-import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.plugins.alfred.Alfred;
-import net.runelite.client.plugins.alfred.api.rs.bank.RSBank;
-import net.runelite.client.plugins.alfred.api.rs.inventory.RSInvetoryItem;
-import net.runelite.client.plugins.alfred.api.rs.player.RSPlayer;
-
-import java.util.List;
-
 public abstract class BaseTask {
 //    abstract WorldPoint getBankLocation();
 //    abstract List<Integer> getRecommendedItems();
-//    private RSInvetoryItem retrieveRecommendedItem() {
+//    private RSInventoryItem retrieveRecommendedItem() {
 //        RSPlayer player = Alfred.api.players().getLocalPlayer();
 //
 //        // if we are too far away from the bank we don't have it open
