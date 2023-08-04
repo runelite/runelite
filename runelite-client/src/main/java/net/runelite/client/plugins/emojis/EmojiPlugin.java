@@ -25,24 +25,19 @@
 package net.runelite.client.plugins.emojis;
 
 import java.awt.image.BufferedImage;
-import java.util.Arrays;
 import java.util.regex.Pattern;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import joptsimple.internal.Strings;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
-import net.runelite.api.IndexedSprite;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.OverheadTextChanged;
-import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.ChatIconManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
@@ -56,64 +51,38 @@ public class EmojiPlugin extends Plugin
 	private static final Pattern WHITESPACE_REGEXP = Pattern.compile("[\\s\\u00A0]");
 
 	@Inject
-	private Client client;
+	private ChatIconManager chatIconManager;
 
-	@Inject
-	private ClientThread clientThread;
-
-	private int modIconsStart = -1;
+	private int[] iconIds;
 
 	@Override
 	protected void startUp()
 	{
-		clientThread.invoke(() ->
-		{
-			if (client.getModIcons() == null)
-			{
-				return false;
-			}
-			loadEmojiIcons();
-			return true;
-		});
+		loadEmojiIcons();
 	}
 
 	private void loadEmojiIcons()
 	{
-		if (modIconsStart != -1)
+		if (iconIds != null)
 		{
 			return;
 		}
 
-		final Emoji[] emojis = Emoji.values();
-		final IndexedSprite[] modIcons = client.getModIcons();
-		assert modIcons != null;
-		final IndexedSprite[] newModIcons = Arrays.copyOf(modIcons, modIcons.length + emojis.length);
-		modIconsStart = modIcons.length;
+		var emojis = Emoji.values();
+		iconIds = new int[emojis.length];
 
 		for (int i = 0; i < emojis.length; i++)
 		{
 			final Emoji emoji = emojis[i];
-
-			try
-			{
-				final BufferedImage image = emoji.loadImage();
-				final IndexedSprite sprite = ImageUtil.getImageIndexedSprite(image, client);
-				newModIcons[modIconsStart + i] = sprite;
-			}
-			catch (Exception ex)
-			{
-				log.warn("Failed to load the sprite for emoji " + emoji, ex);
-			}
+			final BufferedImage image = emoji.loadImage();
+			iconIds[i] = chatIconManager.registerChatIcon(image);
 		}
-
-		log.debug("Adding emoji icons");
-		client.setModIcons(newModIcons);
 	}
 
 	@Subscribe
 	public void onChatMessage(ChatMessage chatMessage)
 	{
-		if (client.getGameState() != GameState.LOGGED_IN || modIconsStart == -1)
+		if (iconIds == null)
 		{
 			return;
 		}
@@ -182,9 +151,8 @@ public class EmojiPlugin extends Plugin
 				continue;
 			}
 
-			final int emojiId = modIconsStart + emoji.ordinal();
-
-			messageWords[i] = messageWords[i].replace(trigger, "<img=" + emojiId + ">");
+			final int emojiId = iconIds[emoji.ordinal()];
+			messageWords[i] = messageWords[i].replace(trigger, "<img=" + chatIconManager.chatIconIndex(emojiId) + ">");
 			editedMessage = true;
 		}
 

@@ -24,7 +24,6 @@
  */
 package net.runelite.cache.fs.jagex;
 
-import com.google.common.primitives.Ints;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -37,7 +36,6 @@ import net.runelite.cache.fs.Storage;
 import net.runelite.cache.fs.Store;
 import net.runelite.cache.index.ArchiveData;
 import net.runelite.cache.index.IndexData;
-import net.runelite.cache.util.Crc32;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -87,6 +85,11 @@ public class DiskStorage implements Storage
 
 	private IndexFile getIndex(int i) throws FileNotFoundException
 	{
+		if (i == 255)
+		{
+			return index255;
+		}
+
 		for (IndexFile indexFile : indexFiles)
 		{
 			if (indexFile.getIndexFileId() == i)
@@ -158,30 +161,6 @@ public class DiskStorage implements Storage
 	}
 
 	@Override
-	public byte[] loadArchive(Archive archive) throws IOException
-	{
-		Index index = archive.getIndex();
-		IndexFile indexFile = getIndex(index.getId());
-
-		assert indexFile.getIndexFileId() == index.getId();
-
-		IndexEntry entry = indexFile.read(archive.getArchiveId());
-		if (entry == null)
-		{
-			logger.debug("can't read archive " + archive.getArchiveId() + " from index " + index.getId());
-			return null;
-		}
-
-		assert entry.getId() == archive.getArchiveId();
-
-		logger.trace("Loading archive {} for index {} from sector {} length {}",
-			archive.getArchiveId(), index.getId(), entry.getSector(), entry.getLength());
-
-		byte[] archiveData = data.read(index.getId(), entry.getId(), entry.getSector(), entry.getLength());
-		return archiveData;
-	}
-
-	@Override
 	public void save(Store store) throws IOException
 	{
 		logger.debug("Saving store");
@@ -200,40 +179,45 @@ public class DiskStorage implements Storage
 		Container container = new Container(index.getCompression(), -1); // index data revision is always -1
 		container.compress(data, null);
 		byte[] compressedData = container.data;
-		DataFileWriteResult res = this.data.write(index255.getIndexFileId(), index.getId(), compressedData);
 
-		index255.write(new IndexEntry(index255, index.getId(), res.sector, res.compressedLength));
+		store(255, index.getId(), compressedData);
 
-		Crc32 crc = new Crc32();
-		crc.update(compressedData, 0, compressedData.length);
-		index.setCrc(crc.getHash());
+		index.setCrc(container.crc);
 	}
 
 	@Override
-	public void saveArchive(Archive a, byte[] archiveData) throws IOException
+	public byte[] load(int index, int archive) throws IOException
 	{
-		Index index = a.getIndex();
-		IndexFile indexFile = getIndex(index.getId());
-		assert indexFile.getIndexFileId() == index.getId();
+		IndexFile indexFile = getIndex(index);
 
-		DataFileWriteResult res = data.write(index.getId(), a.getArchiveId(), archiveData);
-		indexFile.write(new IndexEntry(indexFile, a.getArchiveId(), res.sector, res.compressedLength));
+		assert indexFile.getIndexFileId() == index;
 
-		byte compression = archiveData[0];
-		int compressedSize = Ints.fromBytes(archiveData[1], archiveData[2],
-			archiveData[3], archiveData[4]);
+		IndexEntry entry = indexFile.read(archive);
+		if (entry == null)
+		{
+			logger.debug("can't read archive {} from index {}", archive, index);
+			return null;
+		}
 
-		// don't crc the appended revision, if it is there
-		int length = 1 // compression type
-			+ 4 // compressed size
-			+ compressedSize
-			+ (compression != CompressionType.NONE ? 4 : 0);
+		assert entry.getId() == archive;
 
-		Crc32 crc = new Crc32();
-		crc.update(archiveData, 0, length);
-		a.setCrc(crc.getHash());
+		logger.trace("Loading archive {} for index {} from sector {} length {}",
+			archive, index, entry.getSector(), entry.getLength());
+
+		byte[] archiveData = data.read(index, entry.getId(), entry.getSector(), entry.getLength());
+		return archiveData;
+	}
+
+	@Override
+	public void store(int index, int archive, byte[] archiveData) throws IOException
+	{
+		IndexFile indexFile = getIndex(index);
+		assert indexFile.getIndexFileId() == index;
+
+		DataFileWriteResult res = data.write(index, archive, archiveData);
+		indexFile.write(new IndexEntry(indexFile, archive, res.sector, res.compressedLength));
 
 		logger.trace("Saved archive {}/{} at sector {}, compressed length {}",
-			index.getId(), a.getArchiveId(), res.sector, res.compressedLength);
+			index, archive, res.sector, res.compressedLength);
 	}
 }

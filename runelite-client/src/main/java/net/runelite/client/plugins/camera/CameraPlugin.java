@@ -297,16 +297,22 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 			{
 				case CANCEL:
 				case WALK:
-					break;
 				case EXAMINE_OBJECT:
 				case EXAMINE_NPC:
 				case EXAMINE_ITEM_GROUND:
 				case EXAMINE_ITEM:
 				case CC_OP_LOW_PRIORITY:
-					if (config.ignoreExamine())
+					break;
+				case GAME_OBJECT_FIRST_OPTION:
+				case GAME_OBJECT_SECOND_OPTION:
+				case GAME_OBJECT_THIRD_OPTION:
+				case GAME_OBJECT_FOURTH_OPTION:
+				case GAME_OBJECT_FIFTH_OPTION:
+					if (config.rightClickObjects())
 					{
-						break;
+						return true;
 					}
+					break;
 				default:
 					return true;
 			}

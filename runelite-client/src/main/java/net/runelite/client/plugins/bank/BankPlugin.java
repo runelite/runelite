@@ -274,14 +274,22 @@ public class BankPlugin extends Plugin
 		{
 			updateSeedVaultTotal();
 		}
-		else if (event.getGroupId() == WidgetID.CLANKRANK_POPUP // also the Jagex account ad in the bank
+		else if (event.getGroupId() == WidgetID.CLANRANK_POPUP // also the Jagex account ad in the bank
 			&& config.blockJagexAccountAd())
 		{
 			var wn = client.getComponentTable()
-				.get(WidgetInfo.BANK_JAGEX_ACCOUNT_AD.getId());
+				.get(WidgetInfo.BANK_POPUP.getId());
 			if (wn != null)
 			{
-				clientThread.invokeLater(() -> client.closeInterface(wn, true));
+				clientThread.invokeLater(() ->
+				{
+					var w = client.getWidget(WidgetID.CLANRANK_POPUP, 4).getChild(1);
+					// this is also re-used by the clear all bank fillers popup
+					if (w.getText().equals("Want more bank space?"))
+					{
+						client.closeInterface(wn, true);
+					}
+				});
 			}
 		}
 	}

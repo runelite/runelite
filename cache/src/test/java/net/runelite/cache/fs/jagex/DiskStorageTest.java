@@ -66,12 +66,14 @@ public class DiskStorageTest
 			Container container = new Container(archive.getCompression(), -1);
 			container.compress(data, null);
 			byte[] compressedData = container.data;
+			archive.setCrc(container.crc);
 			storage.saveArchive(archive, compressedData);
 
 			container = new Container(archive.getCompression(), 42);
 			container.compress(data, null);
 			compressedData = container.data;
 			archive2.setRevision(42);
+			archive2.setCrc(container.crc);
 			storage.saveArchive(archive2, compressedData);
 
 			store.save();
