@@ -57,6 +57,7 @@ import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.HitsplatApplied;
+import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.VarbitChanged;
@@ -323,6 +324,18 @@ public class SpecialCounterPlugin extends Plugin
 
 		if (actor.isDead() && interactedNpcIndexes.contains(actor.getIndex()))
 		{
+			removeCounters();
+		}
+	}
+
+	@Subscribe
+	public void onNpcChanged(NpcChanged npcChanged)
+	{
+		final NPC npc = npcChanged.getNpc();
+		// Duke does not despawn when dead
+		if (npc.getId() == NpcID.DUKE_SUCELLUS_12192 || npc.getId() == NpcID.DUKE_SUCELLUS_12196)
+		{
+			log.debug("Duke died");
 			removeCounters();
 		}
 	}
