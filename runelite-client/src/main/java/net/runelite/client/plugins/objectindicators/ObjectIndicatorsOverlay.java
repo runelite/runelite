@@ -112,7 +112,7 @@ class ObjectIndicatorsOverlay extends Overlay
 				}
 			}
 
-			if (color == null || !config.rememberObjectColors())
+			if (color == null)
 			{
 				// Fallback to the current config if the object is marked before the addition of multiple colors
 				color = config.markerColor();
