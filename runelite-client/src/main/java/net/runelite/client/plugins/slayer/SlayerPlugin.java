@@ -58,6 +58,7 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.MessageNode;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
+import net.runelite.api.ParamID;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
@@ -369,8 +370,10 @@ public class SlayerPlugin extends Plugin
 			String taskName;
 			if (taskId == 98 /* Bosses, from [proc,helper_slayer_current_assignment] */)
 			{
-				taskName = client.getEnum(EnumID.SLAYER_TASK_BOSS)
-					.getStringValue(client.getVarbitValue(Varbits.SLAYER_TASK_BOSS));
+				int structId = client.getEnum(EnumID.SLAYER_TASK)
+					.getIntValue(client.getVarbitValue(Varbits.SLAYER_TASK_BOSS));
+				taskName = client.getStructComposition(structId)
+					.getStringValue(ParamID.SLAYER_TASK_NAME);
 			}
 			else
 			{
