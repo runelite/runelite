@@ -308,6 +308,24 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 				case GAME_OBJECT_THIRD_OPTION:
 				case GAME_OBJECT_FOURTH_OPTION:
 				case GAME_OBJECT_FIFTH_OPTION:
+				case NPC_FIRST_OPTION:
+				case NPC_SECOND_OPTION:
+				case NPC_THIRD_OPTION:
+				case NPC_FOURTH_OPTION:
+				case NPC_FIFTH_OPTION:
+				case GROUND_ITEM_FIRST_OPTION:
+				case GROUND_ITEM_SECOND_OPTION:
+				case GROUND_ITEM_THIRD_OPTION:
+				case GROUND_ITEM_FOURTH_OPTION:
+				case GROUND_ITEM_FIFTH_OPTION:
+				case PLAYER_FIRST_OPTION:
+				case PLAYER_SECOND_OPTION:
+				case PLAYER_THIRD_OPTION:
+				case PLAYER_FOURTH_OPTION:
+				case PLAYER_FIFTH_OPTION:
+				case PLAYER_SIXTH_OPTION:
+				case PLAYER_SEVENTH_OPTION:
+				case PLAYER_EIGHTH_OPTION:
 					if (config.rightClickObjects())
 					{
 						return true;

@@ -150,13 +150,13 @@ public interface CameraConfig extends Config
 	@ConfigItem(
 		keyName = "rightClickObjects",
 		name = "Right click objects",
-		description = "Right clicking objects opens the menu even with 'Right click moves camera' on",
+		description = "Right clicking objects opens the menu when 'Right click moves camera' is on",
 		position = 8,
 		section = mouseSettingsSection
 	)
 	default boolean rightClickObjects()
 	{
-		return false;
+		return true;
 	}
 
 	@ConfigItem(
