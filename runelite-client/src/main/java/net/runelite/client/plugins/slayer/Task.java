@@ -137,7 +137,7 @@ enum Task
 	NECHRYAEL("Nechryael", ItemID.NECHRYAEL, "Nechryarch"),
 	OGRES("Ogres", ItemID.ENSOULED_OGRE_HEAD, "Mogre", "Ogress", "Skogre", "Zogre"),
 	OTHERWORLDLY_BEING("Otherworldly beings", ItemID.GHOSTLY_HOOD),
-	PHANTOM_MUSPAH("Phantom Muspah", ItemID.MUPHIN),
+	PHANTOM_MUSPAH("The Phantom Muspah", ItemID.MUPHIN),
 	PIRATES("Pirates", ItemID.PIRATE_HAT, "Pirate"),
 	PYREFIENDS("Pyrefiends", ItemID.PYREFIEND, "Flaming pyrelord"),
 	RATS("Rats", ItemID.RATS_TAIL),
