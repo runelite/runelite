@@ -95,7 +95,7 @@ public class EmoteClue extends ClueScroll implements LocationClueScroll
 		ItemVariationMapping.getVariations(PHARAOHS_SCEPTRE).stream()
 			.map(ItemRequirements::item)
 			.toArray(SingleItemRequirement[]::new));
-	private static final AnyRequirementCollection ACTIVE_CRYSTAL_BOW_OR_BOW_OF_FAERDHINEN = any("Crystal Bow or Bow of Faerdhinen",
+	static final AnyRequirementCollection ACTIVE_CRYSTAL_BOW_OR_BOW_OF_FAERDHINEN = any("Crystal Bow or Bow of Faerdhinen",
 		Stream.of(
 			ItemVariationMapping.getVariations(BOW_OF_FAERDHINEN_INACTIVE).stream(),
 			Stream.of(CRYSTAL_BOW, CRYSTAL_BOW_24123))
