@@ -173,6 +173,11 @@ public class ChatIconManager
 	private synchronized void refreshIcons()
 	{
 		var chatIcons = client.getModIcons();
+		if (chatIcons == null)
+		{
+			return;
+		}
+
 		final var offset = chatIcons.length;
 
 		int newIcons = 0;
