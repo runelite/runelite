@@ -26,6 +26,7 @@
 package net.runelite.client.plugins.groundmarkers;
 
 import com.google.common.base.Strings;
+import com.google.common.util.concurrent.Runnables;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Provides;
@@ -248,7 +249,8 @@ public class GroundMarkerPlugin extends Plugin
 
 			final WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, selectedSceneTile.getLocalLocation());
 			final int regionId = worldPoint.getRegionID();
-			var existingOpt = getPoints(regionId).stream()
+			var regionPoints = getPoints(regionId);
+			var existingOpt = regionPoints.stream()
 				.filter(p -> p.getRegionX() == worldPoint.getRegionX() && p.getRegionY() == worldPoint.getRegionY() && p.getZ() == worldPoint.getPlane())
 				.findFirst();
 
@@ -279,6 +281,26 @@ public class GroundMarkerPlugin extends Plugin
 					.setOption("Color")
 					.setTarget("Tile")
 					.setType(MenuAction.RUNELITE_SUBMENU);
+
+				if (regionPoints.size() > 1)
+				{
+					client.createMenuEntry(-3)
+						.setOption("Reset all")
+						.setType(MenuAction.RUNELITE)
+						.setParent(menuColor)
+						.onClick(e ->
+							chatboxPanelManager.openTextMenuInput("Are you sure you want to reset the color of " + regionPoints.size() + " tiles?")
+								.option("Yes", () ->
+								{
+									var newPoints = regionPoints.stream()
+										.map(p -> new GroundMarkerPoint(p.getRegionId(), p.getRegionX(), p.getRegionY(), p.getZ(), config.markerColor(), p.getLabel()))
+										.collect(Collectors.toList());
+									savePoints(regionId, newPoints);
+									loadPoints();
+								})
+								.option("No", Runnables.doNothing())
+								.build());
+				}
 
 				client.createMenuEntry(-3)
 					.setOption("Pick")
