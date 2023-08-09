@@ -210,7 +210,7 @@ public class WorldPoint
 	 */
 	public static WorldPoint fromLocalInstance(Client client, LocalPoint localPoint)
 	{
-		return fromLocalInstance(client.getScene(), localPoint, client.getPlane());
+		return fromLocalInstance(client, localPoint, client.getPlane());
 	}
 
 	/**
