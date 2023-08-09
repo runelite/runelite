@@ -672,8 +672,6 @@ public class LootTrackerPlugin extends Plugin
 				.flatMap(Collection::stream)
 				.forEach(item -> ground.add(item.getId(), item.getQuantity()));
 
-			log.debug("Recorded ground items {} on cycle {}", ground, client.getGameCycle());
-
 			groundSnapshotName = npc.getName();
 			groundSnapshotCombatLevel = npc.getCombatLevel();
 			// the entire arena is in an instance, which appears to be never region aligned,
@@ -681,10 +679,12 @@ public class LootTrackerPlugin extends Plugin
 			// the player location can't be used because on death the player might have already been teleported.
 			groundSnapshotRegion = WorldPoint.fromLocalInstance(client, npc.getLocalLocation()).getRegionID();
 			groundSnapshot = ground;
-			// the loot spawns this tick, which is typically this cycle, but
-			// network latency can cause it to happen instead in the next few client cycles.
-			// use 30 to be safe.
-			groundSnapshotCycleDelay = 30;
+			// the loot spawns next tick, which is typically in 30 cycles, but
+			// network latency can cause it to happen a little later instead.
+			// use 59 to be safe.
+			groundSnapshotCycleDelay = 59;
+
+			log.debug("Ground snapshot: Recorded ground items {} on cycle {} region {}", ground, client.getGameCycle(), groundSnapshotRegion);
 		}
 	}
 
@@ -697,14 +697,17 @@ public class LootTrackerPlugin extends Plugin
 
 			if (groundSnapshotCycleDelay == 0)
 			{
+				log.debug("Ground snapshot: Loot timeout");
 				groundSnapshotName = null;
 				groundSnapshotCombatLevel = 0;
 				groundSnapshot = null;
 				return;
 			}
 
-			if (WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID() != groundSnapshotRegion)
+			var region = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID();
+			if (region != groundSnapshotRegion)
 			{
+				log.debug("Ground snapshot: In wrong region {} != {}", region, groundSnapshotRegion);
 				return;
 			}
 
@@ -723,10 +726,11 @@ public class LootTrackerPlugin extends Plugin
 			if (diff.isEmpty())
 			{
 				// loot is not spawned yet
+				log.debug("Ground snapshot: No loot yet");
 				return;
 			}
 
-			log.debug("Loot received {} on cycle {}", diff, client.getGameCycle());
+			log.debug("Ground snapshot: Loot received {} on cycle {}", diff, client.getGameCycle());
 
 			// convert to item stack
 			var items = diff.entrySet().stream()
