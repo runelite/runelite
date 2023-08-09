@@ -674,8 +674,10 @@ public class LootTrackerPlugin extends Plugin
 
 			groundSnapshotName = npc.getName();
 			groundSnapshotCombatLevel = npc.getCombatLevel();
-			// the entire arena is in an instance, which may not be region-aligned
-			groundSnapshotRegion = client.getLocalPlayer().getWorldLocation().getRegionID();
+			// the entire arena is in an instance, which appears to be never region aligned,
+			// however the template is, so use the region id from it.
+			// the player location can't be used because on death the player might have already been teleported.
+			groundSnapshotRegion = WorldPoint.fromLocalInstance(client, npc.getLocalLocation()).getRegionID();
 			groundSnapshot = ground;
 			// the loot spawns this tick, which is typically this cycle, but
 			// network latency can cause it to happen instead in the next few client cycles.
@@ -699,7 +701,7 @@ public class LootTrackerPlugin extends Plugin
 				return;
 			}
 
-			if (client.getLocalPlayer().getWorldLocation().getRegionID() != groundSnapshotRegion)
+			if (WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID() != groundSnapshotRegion)
 			{
 				return;
 			}
