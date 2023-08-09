@@ -163,6 +163,7 @@ public class LootTrackerPlugin extends Plugin
 	private static final String OTHER_CHEST_LOOTED_MESSAGE = "You steal some loot from the chest.";
 	private static final String DORGESH_KAAN_CHEST_LOOTED_MESSAGE = "You find treasure inside!";
 	private static final String GRUBBY_CHEST_LOOTED_MESSAGE = "You have opened the Grubby Chest";
+	private static final String ANCIENT_CHEST_LOOTED_MESSAGE = "You open the chest and find";
 	private static final Pattern HAM_CHEST_LOOTED_PATTERN = Pattern.compile("Your (?<key>[a-z]+) key breaks in the lock.*");
 	private static final int HAM_STOREROOM_REGION = 10321;
 	private static final Map<Integer, String> CHEST_EVENT_TYPES = new ImmutableMap.Builder<Integer, String>().
@@ -179,6 +180,7 @@ public class LootTrackerPlugin extends Plugin
 		put(8593, "Isle of Souls Chest").
 		put(7827, "Dark Chest").
 		put(13117, "Rogues' Chest").
+		put(13156, "Chest (Ancient Vault)").
 		build();
 
 	// Chests opened with keys from slayer tasks
@@ -913,7 +915,9 @@ public class LootTrackerPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getType() != ChatMessageType.GAMEMESSAGE && event.getType() != ChatMessageType.SPAM)
+		var chatType = event.getType();
+		if (chatType != ChatMessageType.GAMEMESSAGE && chatType != ChatMessageType.SPAM
+			&& chatType != ChatMessageType.MESBOX)
 		{
 			return;
 		}
@@ -922,9 +926,12 @@ public class LootTrackerPlugin extends Plugin
 
 		if (message.equals(CHEST_LOOTED_MESSAGE) || message.equals(OTHER_CHEST_LOOTED_MESSAGE)
 			|| message.equals(DORGESH_KAAN_CHEST_LOOTED_MESSAGE) || message.startsWith(GRUBBY_CHEST_LOOTED_MESSAGE)
+			|| message.startsWith(ANCIENT_CHEST_LOOTED_MESSAGE)
 			|| LARRAN_LOOTED_PATTERN.matcher(message).matches() || ROGUES_CHEST_PATTERN.matcher(message).matches())
 		{
 			final int regionID = client.getLocalPlayer().getWorldLocation().getRegionID();
+
+			log.debug("Chest loot matched '{}' region {}", message, regionID);
 			if (!CHEST_EVENT_TYPES.containsKey(regionID))
 			{
 				return;
