@@ -149,8 +149,6 @@ public class LootTrackerPluginTest
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
 
-		when(client.getScene()).thenReturn(scene);
-
 		Player player = mock(Player.class);
 		when(player.getWorldLocation()).thenReturn(new WorldPoint(0, 0, 0));
 		when(client.getLocalPlayer()).thenReturn(player);
@@ -293,8 +291,8 @@ public class LootTrackerPluginTest
 		when(itemManager.getItemComposition(ItemID.MAHOGANY_SEED)).thenReturn(compSeed);
 		when(compSeed.getHaPrice()).thenReturn(2_102);
 
-		when(scene.getBaseX()).thenReturn(3232);
-		when(scene.getBaseY()).thenReturn(4320);
+		when(client.getBaseX()).thenReturn(3232);
+		when(client.getBaseY()).thenReturn(4320);
 		LocalPoint localPoint = new LocalPoint(0, 0);
 		when(client.getLocalPlayer().getLocalLocation()).thenReturn(localPoint);
 
