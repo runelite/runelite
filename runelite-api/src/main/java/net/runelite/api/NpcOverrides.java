@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2023 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,51 +27,28 @@ package net.runelite.api;
 import javax.annotation.Nullable;
 
 /**
- * Represents a non-player character in the game.
+ * Dynamically applied NPC effects
  */
-public interface NPC extends Actor
+public interface NpcOverrides
 {
 	/**
-	 * Gets the ID of the NPC.
-	 *
-	 * @return the ID of the NPC
-	 * @see NpcID
-	 */
-	int getId();
-
-	@Override
-	String getName();
-
-	@Override
-	int getCombatLevel();
-
-	/**
-	 * Gets the index position of this NPC in the clients cached
-	 * NPC array.
-	 *
-	 * @return the NPC index
-	 * @see Client#getCachedNPCs()
-	 */
-	int getIndex();
-
-	/**
-	 * Gets the composition of this NPC.
-	 *
-	 * @return the composition
-	 */
-	NPCComposition getComposition();
-
-	/**
-	 * Get the composition for this NPC and transform it if required
-	 *
-	 * @return the transformed NPC
+	 * Entirely replaces this NPC's models
 	 */
 	@Nullable
-	NPCComposition getTransformedComposition();
+	int[] getModelIds();
+
+	/**
+	 * Replaces this NPC's recolor values. Does not replace it's keys, which must be set statically
+	 * in the cache
+	 */
+	@Nullable
+	short[] getColorToReplaceWith();
 
 	@Nullable
-	NpcOverrides getModelOverrides();
+	short[] getTextureToReplaceWith();
 
-	@Nullable
-	NpcOverrides getChatheadOverrides();
+	/**
+	 * Causes this NPC to use the model of the local player instead
+	 */
+	boolean useLocalPlayer();
 }
