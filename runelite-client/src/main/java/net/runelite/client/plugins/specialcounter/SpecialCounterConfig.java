@@ -131,4 +131,15 @@ public interface SpecialCounterConfig extends Config
 	{
 		return 0;
 	}
+
+	@ConfigItem(
+		position = 60,
+		keyName = "accursedSceptreThreshold",
+		name = "Accursed sceptre",
+		description = "Threshold for Accursed sceptre (0 to disable)"
+	)
+	default int accursedSceptreThreshold()
+	{
+		return 0;
+	}
 }
