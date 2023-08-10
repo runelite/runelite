@@ -110,7 +110,7 @@ public enum HotColdLocation
 	KANDARIN_MCGRUBORS_WOOD(MASTER, new WorldPoint(2653, 3485, 0), KANDARIN, "McGrubor's Wood", BRASSICAN_MAGE),
 	KANDARIN_FISHING_BUILD(MASTER, new WorldPoint(2590, 3369, 0), KANDARIN, "South of Fishing Guild", BRASSICAN_MAGE),
 	KANDARIN_WITCHHAVEN(MASTER, new WorldPoint(2707, 3306, 0), KANDARIN, "Outside Witchaven, west of Jeb, Holgart, and Caroline.", BRASSICAN_MAGE),
-	KANDARIN_NECRO_TOWER(MASTER, new WorldPoint(2667, 3241, 0), KANDARIN, "Ground floor inside the Necromancer Tower. Easily accessed by using fairy ring code djp.", ANCIENT_WIZARDS),
+	KANDARIN_NECRO_TOWER(MASTER, new WorldPoint(2667, 3241, 0), KANDARIN, "Ground floor inside the Necromancer Tower. Easily accessed by using fairy ring code DJP.", ANCIENT_WIZARDS),
 	KANDARIN_FIGHT_ARENA(MASTER, new WorldPoint(2587, 3135, 0), KANDARIN, "South of the Fight Arena, north-west of the Nightmare Zone.", BRASSICAN_MAGE),
 	KANDARIN_TREE_GNOME_VILLAGE(MASTER, new WorldPoint(2530, 3164, 0), KANDARIN, "Tree Gnome Village, near the general store icon.", BRASSICAN_MAGE),
 	KANDARIN_GRAVE_OF_SCORPIUS(MASTER, new WorldPoint(2467, 3227, 0), KANDARIN, "Grave of Scorpius", BRASSICAN_MAGE),
