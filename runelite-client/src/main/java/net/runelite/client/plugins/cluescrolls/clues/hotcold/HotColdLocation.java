@@ -136,7 +136,7 @@ public enum HotColdLocation
 	MISTHALIN_LUMBER_YARD(MASTER, new WorldPoint(3301, 3484, 0), MISTHALIN, "South of Lumber Yard, east of Assistant Serf.", BRASSICAN_MAGE),
 	MORYTANIA_BURGH_DE_ROTT(MASTER, new WorldPoint(3546, 3252, 0), MORYTANIA, "In the north-east area of Burgh de Rott, by the reverse-L-shaped ruins.", BRASSICAN_MAGE),
 	MORYTANIA_DARKMEYER(MASTER, new WorldPoint(3604, 3326, 0), MORYTANIA, "Southwestern part of Darkmeyer.", BRASSICAN_MAGE),
-	MORYTANIA_PORT_PHASMATYS(MASTER, new WorldPoint(3611, 3485, 0), MORYTANIA, "West of Port Phasmatys, south-east of fairy ring.", BRASSICAN_MAGE),
+	MORYTANIA_PORT_PHASMATYS(MASTER, new WorldPoint(3611, 3485, 0), MORYTANIA, "West of Port Phasmatys, south-east of fairy ring ALQ.", BRASSICAN_MAGE),
 	MORYTANIA_HOLLOWS(MASTER, new WorldPoint(3499, 3421, 0), MORYTANIA, "Inside The Hollows, south of the bridge which was repaired in a quest.", BRASSICAN_MAGE),
 	MORYTANIA_SWAMP(MASTER, new WorldPoint(3418, 3372, 0), MORYTANIA, "Inside the Mort Myre Swamp, north-west of the Nature Grotto.", BRASSICAN_MAGE),
 	MORYTANIA_HAUNTED_MINE(MASTER, new WorldPoint(3444, 3255, 0), MORYTANIA, "At Haunted Mine quest start.", BRASSICAN_MAGE),
