@@ -47,6 +47,7 @@ import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
+import net.runelite.api.Varbits;
 import net.runelite.api.WorldType;
 import net.runelite.api.annotations.Varp;
 import net.runelite.api.events.GameStateChanged;
@@ -54,6 +55,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.StatChanged;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.WidgetID;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.client.callback.ClientThread;
@@ -63,6 +65,11 @@ import net.runelite.client.game.NPCManager;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.attackstyles.AttackStyle;
+import net.runelite.client.plugins.attackstyles.WeaponType;
+import static net.runelite.client.plugins.attackstyles.AttackStyle.CASTING;
+import static net.runelite.client.plugins.attackstyles.AttackStyle.DEFENSIVE_CASTING;
+import static net.runelite.client.plugins.attackstyles.AttackStyle.OTHER;
 import static net.runelite.client.plugins.xptracker.XpWorldType.NORMAL;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.ClientToolbar;
@@ -93,7 +100,8 @@ public class XpTrackerPlugin extends Plugin
 		Skill.DEFENCE,
 		Skill.RANGED,
 		Skill.HITPOINTS,
-		Skill.MAGIC);
+		Skill.MAGIC
+	);
 
 	@Inject
 	private ClientToolbar clientToolbar;
@@ -132,6 +140,7 @@ public class XpTrackerPlugin extends Plugin
 	private boolean fetchXp; // fetch lastXp for the online xp tracker
 	private long lastXp = 0;
 	private boolean initializeTracker;
+	private AttackStyle attackStyle;
 
 	private final XpPauseState xpPauseState = new XpPauseState();
 
@@ -173,6 +182,11 @@ public class XpTrackerPlugin extends Plugin
 			{
 				lastAccount = client.getAccountHash();
 				lastWorldType = worldSetToType(client.getWorldType());
+
+				int attackStyleVarbit = client.getVarpValue(VarPlayer.ATTACK_STYLE);
+				int weaponTypeVarbit = client.getVarbitValue(Varbits.EQUIPPED_WEAPON_TYPE);
+				int castingModeVarbit = client.getVarbitValue(Varbits.DEFENSIVE_CASTING_MODE);
+				updateAttackStyle(weaponTypeVarbit, attackStyleVarbit, castingModeVarbit);
 			}
 		});
 	}
@@ -236,6 +250,23 @@ public class XpTrackerPlugin extends Plugin
 			{
 				xpClient.update(username);
 				lastXp = totalXp;
+			}
+		}
+	}
+
+	private void updateAttackStyle(int equippedWeaponType, int attackStyleIndex, int castingMode)
+	{
+		AttackStyle[] attackStyles = WeaponType.getWeaponType(equippedWeaponType).getAttackStyles();
+		if (attackStyleIndex < attackStyles.length)
+		{
+			attackStyle = attackStyles[attackStyleIndex];
+			if (attackStyle == null)
+			{
+				attackStyle = OTHER;
+			}
+			else if ((attackStyle == CASTING) && (castingMode == 1))
+			{
+				attackStyle = DEFENSIVE_CASTING;
 			}
 		}
 	}
@@ -372,6 +403,21 @@ public class XpTrackerPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onVarbitChanged(VarbitChanged event)
+	{
+		if (event.getVarpId() == VarPlayer.ATTACK_STYLE
+			|| event.getVarbitId() == Varbits.EQUIPPED_WEAPON_TYPE
+			|| event.getVarbitId() == Varbits.DEFENSIVE_CASTING_MODE)
+		{
+			final int currentAttackStyleVarbit = client.getVarpValue(VarPlayer.ATTACK_STYLE);
+			final int currentEquippedWeaponTypeVarbit = client.getVarbitValue(Varbits.EQUIPPED_WEAPON_TYPE);
+			final int currentCastingModeVarbit = client.getVarbitValue(Varbits.DEFENSIVE_CASTING_MODE);
+
+			updateAttackStyle(currentEquippedWeaponTypeVarbit, currentAttackStyleVarbit, currentCastingModeVarbit);
+		}
+	}
+
+	@Subscribe
 	public void onStatChanged(StatChanged statChanged)
 	{
 		final Skill skill = statChanged.getSkill();
@@ -401,13 +447,18 @@ public class XpTrackerPlugin extends Plugin
 		final Actor interacting = client.getLocalPlayer().getInteracting();
 		if (interacting instanceof NPC && COMBAT.contains(skill))
 		{
-			final int xpModifier = worldSetToType(client.getWorldType()).modifier(client);
+			final int worldXpModifier = worldSetToType(client.getWorldType()).modifier(client);
 			final NPC npc = (NPC) interacting;
-			xpState.updateNpcExperience(skill, npc, npcManager.getHealth(npc.getId()), xpModifier);
+			final Integer npcHealth = npcManager.getHealth(npc.getId());
+			xpState.updateNpcExperience(skill, npc, npcHealth, worldXpModifier, attackStyle);
 		}
 
 		final XpUpdateResult updateResult = xpState.updateSkill(skill, currentXp, startGoalXp, endGoalXp);
-		xpPanel.updateSkillExperience(updateResult == XpUpdateResult.UPDATED, xpPauseState.isPaused(skill), skill, xpState.getSkillSnapshot(skill));
+		final boolean updated = updateResult == XpUpdateResult.UPDATED;
+		final boolean paused = xpPauseState.isPaused(skill);
+		final XpSnapshotSingle xpSnapshotSingle = xpState.getSkillSnapshot(skill);
+
+		xpPanel.updateSkillExperience(updated, paused, skill, xpSnapshotSingle);
 
 		// Also update the total experience
 		xpState.updateOverall(client.getOverallExperience());
@@ -428,7 +479,10 @@ public class XpTrackerPlugin extends Plugin
 		{
 			final XpUpdateResult updateResult = xpState.updateNpcKills(skill, npc, npcManager.getHealth(npc.getId()));
 			final boolean updated = XpUpdateResult.UPDATED.equals(updateResult);
-			xpPanel.updateSkillExperience(updated, xpPauseState.isPaused(skill), skill, xpState.getSkillSnapshot(skill));
+			final boolean paused = xpPauseState.isPaused(skill);
+			final XpSnapshotSingle xpSnapshotSingle = xpState.getSkillSnapshot(skill);
+
+			xpPanel.updateSkillExperience(updated, paused, skill, xpSnapshotSingle);
 		}
 
 		xpPanel.updateTotal(xpState.getTotalSnapshot());
@@ -696,7 +750,11 @@ public class XpTrackerPlugin extends Plugin
 		// Rebuild calculated values like xp/hr in panel
 		for (Skill skill : Skill.values())
 		{
-			xpPanel.updateSkillExperience(false, xpPauseState.isPaused(skill), skill, xpState.getSkillSnapshot(skill));
+			final boolean updated = false;
+			final boolean paused = xpPauseState.isPaused(skill);
+			final XpSnapshotSingle xpSnapshotSingle = xpState.getSkillSnapshot(skill);
+
+			xpPanel.updateSkillExperience(updated, paused, skill, xpSnapshotSingle);
 		}
 
 		xpPanel.updateTotal(xpState.getTotalSnapshot());
@@ -706,7 +764,11 @@ public class XpTrackerPlugin extends Plugin
 	{
 		if (pause ? xpPauseState.pauseSkill(skill) : xpPauseState.unpauseSkill(skill))
 		{
-			xpPanel.updateSkillExperience(false, xpPauseState.isPaused(skill), skill, xpState.getSkillSnapshot(skill));
+			final boolean updated = false;
+			final boolean paused = xpPauseState.isPaused(skill);
+			final XpSnapshotSingle xpSnapshotSingle = xpState.getSkillSnapshot(skill);
+
+			xpPanel.updateSkillExperience(updated, paused, skill, xpSnapshotSingle);
 		}
 	}
 
