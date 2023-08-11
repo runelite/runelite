@@ -115,10 +115,7 @@ public class AttackStylesPlugin extends Plugin
 				int attackStyleVarbit = client.getVarpValue(VarPlayer.ATTACK_STYLE);
 				equippedWeaponTypeVarbit = client.getVarbitValue(Varbits.EQUIPPED_WEAPON_TYPE);
 				int castingModeVarbit = client.getVarbitValue(Varbits.DEFENSIVE_CASTING_MODE);
-				updateAttackStyle(
-					equippedWeaponTypeVarbit,
-					attackStyleVarbit,
-					castingModeVarbit);
+				updateAttackStyle(equippedWeaponTypeVarbit, attackStyleVarbit, castingModeVarbit);
 				updateWarning();
 				processWidgets();
 			}
@@ -185,8 +182,7 @@ public class AttackStylesPlugin extends Plugin
 
 			equippedWeaponTypeVarbit = currentEquippedWeaponTypeVarbit;
 
-			updateAttackStyle(equippedWeaponTypeVarbit, currentAttackStyleVarbit,
-				currentCastingModeVarbit);
+			updateAttackStyle(equippedWeaponTypeVarbit, currentAttackStyleVarbit, currentCastingModeVarbit);
 			updateWarning();
 
 			// this is required because the widgets need to be hidden prior to interface tick, which is soon after this,
