@@ -31,7 +31,6 @@ import javax.inject.Inject;
 import lombok.NonNull;
 import net.runelite.api.NPC;
 import net.runelite.api.Skill;
-import net.runelite.client.plugins.attackstyles.AttackStyle;
 
 /**
  * Internal state for the XpTrackerPlugin
@@ -41,11 +40,6 @@ import net.runelite.client.plugins.attackstyles.AttackStyle;
  */
 class XpState
 {
-	private static final double DEFAULT_XP_MODIFIER = 4.0;
-	private static final double HALF_XP_MODIFIER = 2.0;
-	private static final double SHARED_XP_MODIFIER = 1.33;
-	private static final double NO_XP_MODIFIER = 1;
-
 	private final Map<Skill, XpStateSingle> xpSkills = new EnumMap<>(Skill.class);
 	private XpStateSingle overall = new XpStateSingle(-1);
 	private NPC interactedNPC;
@@ -136,48 +130,6 @@ class XpState
 	}
 
 	/**
-	 * Determines the combat xp modifier for a skill based on the current attack style.
-	 *
-	 * @param attackStyle attack style of the player
-	 * @param skill       skill to determine modifier for
-	 * @return double value of the combat xp modifier
-	 */
-	private double getCombatXpModifier(AttackStyle attackStyle, Skill skill)
-	{
-		switch (attackStyle)
-		{
-			case ACCURATE:
-			case AGGRESSIVE:
-			case DEFENSIVE:
-			case RANGING:
-			case CASTING:
-				if (skill == Skill.HITPOINTS)
-				{
-					return SHARED_XP_MODIFIER;
-				}
-				return DEFAULT_XP_MODIFIER;
-			case CONTROLLED:
-				return SHARED_XP_MODIFIER;
-			case LONGRANGE:
-				if (skill == Skill.HITPOINTS)
-				{
-					return SHARED_XP_MODIFIER;
-				}
-				return HALF_XP_MODIFIER;
-			case DEFENSIVE_CASTING:
-				if (skill == Skill.MAGIC || skill == Skill.HITPOINTS)
-				{
-					return SHARED_XP_MODIFIER;
-				}
-				return NO_XP_MODIFIER;
-			case OTHER:
-				return NO_XP_MODIFIER;
-		}
-
-		return NO_XP_MODIFIER;
-	}
-
-	/**
 	 * Updates skill with average actions based on currently interacted NPC.
 	 *
 	 * @param skill     experience gained skill
@@ -189,15 +141,14 @@ class XpState
 		NPC npc,
 		Integer npcHealth,
 		int worldXpModifier,
-		AttackStyle attackStyle)
+		double combatXpModifier)
 	{
 		if (npc == null || npc.getCombatLevel() <= 0 || npcHealth == null)
 		{
 			return;
 		}
 
-		final double combatXpModifier = getCombatXpModifier(attackStyle, skill);
-		final int actionExp = (int) (npcHealth * combatXpModifier * worldXpModifier);
+		final int actionExp = (int) (npcHealth * worldXpModifier * combatXpModifier);
 
 		final XpStateSingle state = getSkill(skill);
 		final XpAction action = state.getXpAction(XpActionType.ACTOR_HEALTH);

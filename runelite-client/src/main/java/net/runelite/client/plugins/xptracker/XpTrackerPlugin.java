@@ -67,6 +67,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.attackstyles.AttackStyle;
 import net.runelite.client.plugins.attackstyles.WeaponType;
+import static net.runelite.client.plugins.attackstyles.WeaponType.TYPE_28;
 import static net.runelite.client.plugins.attackstyles.AttackStyle.CASTING;
 import static net.runelite.client.plugins.attackstyles.AttackStyle.DEFENSIVE_CASTING;
 import static net.runelite.client.plugins.attackstyles.AttackStyle.OTHER;
@@ -93,6 +94,11 @@ public class XpTrackerPlugin extends Plugin
 
 	private static final String MENUOP_ADD_CANVAS_TRACKER = "Add to canvas";
 	private static final String MENUOP_REMOVE_CANVAS_TRACKER = "Remove from canvas";
+
+	private static final double DEFAULT_XP_MODIFIER = 4.0;
+	private static final double HALF_XP_MODIFIER = 2.0;
+	private static final double SHARED_XP_MODIFIER = 1.33;
+	private static final double NO_XP_MODIFIER = 1;
 
 	static final List<Skill> COMBAT = ImmutableList.of(
 		Skill.ATTACK,
@@ -141,6 +147,7 @@ public class XpTrackerPlugin extends Plugin
 	private long lastXp = 0;
 	private boolean initializeTracker;
 	private AttackStyle attackStyle;
+	private WeaponType equippedWeaponType;
 
 	private final XpPauseState xpPauseState = new XpPauseState();
 
@@ -186,7 +193,10 @@ public class XpTrackerPlugin extends Plugin
 				int attackStyleVarbit = client.getVarpValue(VarPlayer.ATTACK_STYLE);
 				int weaponTypeVarbit = client.getVarbitValue(Varbits.EQUIPPED_WEAPON_TYPE);
 				int castingModeVarbit = client.getVarbitValue(Varbits.DEFENSIVE_CASTING_MODE);
-				updateAttackStyle(weaponTypeVarbit, attackStyleVarbit, castingModeVarbit);
+
+				equippedWeaponType = WeaponType.getWeaponType(weaponTypeVarbit);
+
+				updateAttackStyle(attackStyleVarbit, castingModeVarbit);
 			}
 		});
 	}
@@ -254,9 +264,9 @@ public class XpTrackerPlugin extends Plugin
 		}
 	}
 
-	private void updateAttackStyle(int equippedWeaponType, int attackStyleIndex, int castingMode)
+	private void updateAttackStyle(int attackStyleIndex, int castingMode)
 	{
-		AttackStyle[] attackStyles = WeaponType.getWeaponType(equippedWeaponType).getAttackStyles();
+		AttackStyle[] attackStyles = equippedWeaponType.getAttackStyles();
 		if (attackStyleIndex < attackStyles.length)
 		{
 			attackStyle = attackStyles[attackStyleIndex];
@@ -409,11 +419,13 @@ public class XpTrackerPlugin extends Plugin
 			|| event.getVarbitId() == Varbits.EQUIPPED_WEAPON_TYPE
 			|| event.getVarbitId() == Varbits.DEFENSIVE_CASTING_MODE)
 		{
-			final int currentAttackStyleVarbit = client.getVarpValue(VarPlayer.ATTACK_STYLE);
-			final int currentEquippedWeaponTypeVarbit = client.getVarbitValue(Varbits.EQUIPPED_WEAPON_TYPE);
-			final int currentCastingModeVarbit = client.getVarbitValue(Varbits.DEFENSIVE_CASTING_MODE);
+			final int attackStyleVarbit = client.getVarpValue(VarPlayer.ATTACK_STYLE);
+			final int weaponTypeVarbit = client.getVarbitValue(Varbits.EQUIPPED_WEAPON_TYPE);
+			final int castingModeVarbit = client.getVarbitValue(Varbits.DEFENSIVE_CASTING_MODE);
 
-			updateAttackStyle(currentEquippedWeaponTypeVarbit, currentAttackStyleVarbit, currentCastingModeVarbit);
+			equippedWeaponType = WeaponType.getWeaponType(weaponTypeVarbit);
+
+			updateAttackStyle(attackStyleVarbit, castingModeVarbit);
 		}
 	}
 
@@ -450,7 +462,9 @@ public class XpTrackerPlugin extends Plugin
 			final int worldXpModifier = worldSetToType(client.getWorldType()).modifier(client);
 			final NPC npc = (NPC) interacting;
 			final Integer npcHealth = npcManager.getHealth(npc.getId());
-			xpState.updateNpcExperience(skill, npc, npcHealth, worldXpModifier, attackStyle);
+			final double combatXpModifier = getCombatXpModifier(skill);
+
+			xpState.updateNpcExperience(skill, npc, npcHealth, worldXpModifier, combatXpModifier);
 		}
 
 		final XpUpdateResult updateResult = xpState.updateSkill(skill, currentXp, startGoalXp, endGoalXp);
@@ -590,6 +604,55 @@ public class XpTrackerPlugin extends Plugin
 	XpSnapshotSingle getSkillSnapshot(Skill skill)
 	{
 		return xpState.getSkillSnapshot(skill);
+	}
+
+	/**
+	 * Determines the combat xp modifier for a skill based on the current attack style and
+	 * equipped weapon type.
+	 *
+	 * @param skill       skill to determine modifier for
+	 * @return double value of the combat xp modifier
+	 */
+	private double getCombatXpModifier(Skill skill)
+	{
+		if (equippedWeaponType == TYPE_28)
+		{
+			return HALF_XP_MODIFIER;
+		}
+		else
+		{
+			switch (attackStyle)
+			{
+				case ACCURATE:
+				case AGGRESSIVE:
+				case DEFENSIVE:
+				case RANGING:
+				case CASTING:
+					if (skill == Skill.HITPOINTS)
+					{
+						return SHARED_XP_MODIFIER;
+					}
+					return DEFAULT_XP_MODIFIER;
+				case CONTROLLED:
+					return SHARED_XP_MODIFIER;
+				case LONGRANGE:
+					if (skill == Skill.HITPOINTS)
+					{
+						return SHARED_XP_MODIFIER;
+					}
+					return HALF_XP_MODIFIER;
+				case DEFENSIVE_CASTING:
+					if (skill == Skill.MAGIC || skill == Skill.HITPOINTS)
+					{
+						return SHARED_XP_MODIFIER;
+					}
+					return NO_XP_MODIFIER;
+				case OTHER:
+					return NO_XP_MODIFIER;
+			}
+		}
+
+		return NO_XP_MODIFIER;
 	}
 
 	private static @Varp int startGoalVarpForSkill(final Skill skill)
