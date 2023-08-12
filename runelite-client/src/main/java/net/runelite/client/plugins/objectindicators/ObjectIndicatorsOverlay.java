@@ -50,7 +50,6 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.outline.ModelOutlineRenderer;
-import net.runelite.client.util.ColorUtil;
 
 class ObjectIndicatorsOverlay extends Overlay
 {
@@ -90,7 +89,8 @@ class ObjectIndicatorsOverlay extends Overlay
 		for (ColorTileObject obj : objects)
 		{
 			TileObject object = obj.getTileObject();
-			Color color = obj.getColor();
+			Color borderColor = obj.getBorderColor();
+			Color fillColor = obj.getFillColor();
 
 			if (object.getPlane() != client.getPlane())
 			{
@@ -112,21 +112,26 @@ class ObjectIndicatorsOverlay extends Overlay
 				}
 			}
 
-			if (color == null)
+			if (borderColor == null)
 			{
 				// Fallback to the current config if the object is marked before the addition of multiple colors
-				color = config.markerColor();
+				borderColor = config.borderColor();
+			}
+
+			if (fillColor == null)
+			{
+				fillColor = config.fillColor();
 			}
 
 			final var flags = obj.getHighlightFlags() != 0 ? obj.getHighlightFlags() : defaultFlags;
 			if ((flags & HF_HULL) != 0)
 			{
-				renderConvexHull(graphics, object, color, stroke);
+				renderConvexHull(graphics, object, borderColor, fillColor, stroke);
 			}
 
 			if ((flags & HF_OUTLINE) != 0)
 			{
-				modelOutlineRenderer.drawOutline(object, (int)config.borderWidth(), color, config.outlineFeather());
+				modelOutlineRenderer.drawOutline(object, (int)config.borderWidth(), borderColor, config.outlineFeather());
 			}
 
 			if ((flags & HF_CLICKBOX) != 0)
@@ -134,8 +139,7 @@ class ObjectIndicatorsOverlay extends Overlay
 				Shape clickbox = object.getClickbox();
 				if (clickbox != null)
 				{
-					Color clickBoxColor = ColorUtil.colorWithAlpha(color, color.getAlpha() / 12);
-					OverlayUtil.renderPolygon(graphics, clickbox, color, clickBoxColor, stroke);
+					OverlayUtil.renderPolygon(graphics, clickbox, borderColor, fillColor, stroke);
 				}
 			}
 
@@ -144,8 +148,7 @@ class ObjectIndicatorsOverlay extends Overlay
 				Polygon tilePoly = object.getCanvasTilePoly();
 				if (tilePoly != null)
 				{
-					Color tileColor = ColorUtil.colorWithAlpha(color, color.getAlpha() / 12);
-					OverlayUtil.renderPolygon(graphics, tilePoly, color, tileColor, stroke);
+					OverlayUtil.renderPolygon(graphics, tilePoly, borderColor, fillColor, stroke);
 				}
 			}
 		}
@@ -153,7 +156,7 @@ class ObjectIndicatorsOverlay extends Overlay
 		return null;
 	}
 
-	private void renderConvexHull(Graphics2D graphics, TileObject object, Color color, Stroke stroke)
+	private void renderConvexHull(Graphics2D graphics, TileObject object, Color borderColor, Color fillColor, Stroke stroke)
 	{
 		final Shape polygon;
 		Shape polygon2 = null;
@@ -183,12 +186,12 @@ class ObjectIndicatorsOverlay extends Overlay
 
 		if (polygon != null)
 		{
-			OverlayUtil.renderPolygon(graphics, polygon, color, stroke);
+			OverlayUtil.renderPolygon(graphics, polygon, borderColor, fillColor, stroke);
 		}
 
 		if (polygon2 != null)
 		{
-			OverlayUtil.renderPolygon(graphics, polygon2, color, stroke);
+			OverlayUtil.renderPolygon(graphics, polygon2, borderColor, fillColor, stroke);
 		}
 	}
 }

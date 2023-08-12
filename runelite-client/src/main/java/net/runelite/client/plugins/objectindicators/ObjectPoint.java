@@ -44,7 +44,8 @@ class ObjectPoint
 	private int regionX;
 	private int regionY;
 	private int z;
-	private Color color;
+	private Color borderColor;
+	private Color fillColor;
 	// highlight options
 	private Boolean hull;
 	private Boolean outline;
