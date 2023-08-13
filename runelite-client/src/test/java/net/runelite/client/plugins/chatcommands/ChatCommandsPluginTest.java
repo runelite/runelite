@@ -34,7 +34,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.function.BooleanSupplier;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import static net.runelite.api.ChatMessageType.FRIENDSCHATNOTIFICATION;
@@ -56,8 +55,8 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
-import static net.runelite.api.widgets.WidgetID.ADVENTURE_LOG_ID;
 import static net.runelite.api.widgets.WidgetID.ACHIEVEMENT_DIARY_SCROLL_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.ADVENTURE_LOG_ID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatClient;
@@ -181,9 +180,9 @@ public class ChatCommandsPluginTest
 		chatCommandsPlugin.startUp();
 
 		// clientthread callback
-		ArgumentCaptor<BooleanSupplier> captor = ArgumentCaptor.forClass(BooleanSupplier.class);
+		ArgumentCaptor<Runnable> captor = ArgumentCaptor.forClass(Runnable.class);
 		verify(clientThread).invoke(captor.capture());
-		captor.getValue().getAsBoolean();
+		captor.getValue().run();
 	}
 
 	@After
@@ -1067,6 +1066,15 @@ public class ChatCommandsPluginTest
 		assertEquals(6 * 60 + 55.4, ChatCommandsPlugin.timeStringToSeconds("6:55.40"), DELTA);
 		// h:mm:ss
 		assertEquals(2 * 3600 + 50 * 60 + 30.2, ChatCommandsPlugin.timeStringToSeconds("2:50:30.20"), DELTA);
+	}
+
+	@Test
+	public void testSecondsToTimeString()
+	{
+		assertEquals("0:03.60", ChatCommandsPlugin.secondsToTimeString(3.6));
+		assertEquals("0:03", ChatCommandsPlugin.secondsToTimeString(3));
+		assertEquals("1:23:45.60", ChatCommandsPlugin.secondsToTimeString(5025.6));
+		assertEquals("8:00:00", ChatCommandsPlugin.secondsToTimeString(60 * 60 * 8));
 	}
 
 	@Test

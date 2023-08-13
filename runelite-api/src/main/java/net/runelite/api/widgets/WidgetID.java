@@ -105,6 +105,8 @@ public final class WidgetID
 	public static final int BARROWS_GROUP_ID = 24;
 	public static final int BLAST_MINE_GROUP_ID = 598;
 	public static final int MTA_ALCHEMY_GROUP_ID = 194;
+	public static final int MTA_ENCHANT_GROUP_ID = 195;
+	public static final int MTA_GRAVEYARD_GROUP_ID = 196;
 	public static final int MTA_TELEKINETIC_GROUP_ID = 198;
 	public static final int CORP_DAMAGE = 13;
 	public static final int DESTROY_ITEM_GROUP_ID = 584;
@@ -127,6 +129,7 @@ public final class WidgetID
 	public static final int LOOTING_BAG_GROUP_ID = 81;
 	public static final int SKOTIZO_GROUP_ID = 308;
 	public static final int FULLSCREEN_CONTAINER_TLI = 165;
+	public static final int CHARACTER_SUMMARY_GROUP_ID = 712;
 	public static final int QUESTLIST_GROUP_ID = 399;
 	public static final int SKILLS_GROUP_ID = 320;
 	public static final int MUSIC_GROUP_ID = 239;
@@ -161,6 +164,7 @@ public final class WidgetID
 	public static final int DUEL_INVENTORY_OTHER_GROUP_ID = 481;
 	public static final int TRAILBLAZER_AREAS_GROUP_ID = 512;
 	public static final int TEMPOROSS_GROUP_ID = 437;
+	public static final int TEMPOROSS_LOBBY_GROUP_ID = 687;
 	public static final int CLAN_GROUP_ID = 701;
 	public static final int CLAN_GUEST_GROUP_ID = 702;
 	public static final int GRAVESTONE_GROUP_ID = 672;
@@ -180,6 +184,21 @@ public final class WidgetID
 	 */
 	public static final int TOA_RAID_GROUP_ID = 481;
 	public static final int ACHIEVEMENT_DIARY_SCROLL_GROUP_ID = 741;
+	public static final int PRAYER_GROUP_ID = 541;
+	public static final int QUICK_PRAYERS_GROUP_ID = 77;
+	public static final int GOTR_GROUP_ID = 746;
+	public static final int TROUBLE_BREWING_GROUP_ID = 415;
+	public static final int TROUBLE_BREWING_LOBBY_GROUP_ID = 418;
+	public static final int MORTTON_TEMPLE_GROUP_ID = 171;
+	public static final int BGR_RANK_DRAUGHTS_GROUP_ID = 34;
+	public static final int BGR_RANK_RUNELINK_GROUP_ID = 38;
+	public static final int BGR_RANK_RUNESQUARES_GROUP_ID = 42;
+	public static final int BGR_RANK_RUNEVERSI_GROUP_ID = 46;
+	public static final int AGILITY_ARENA_HUD_GROUP_ID = 5;
+	public static final int GNOMEBALL_SCORE_GROUP_ID = 139;
+	public static final int CLANRANK_POPUP = 289;
+	public static final int SANITY_GROUP_ID = 834;
+	public static final int THE_STRANGLER_INFECTION_GROUP_ID = 836;
 
 	static class WorldMap
 	{
@@ -299,6 +318,7 @@ public final class WidgetID
 		static final int EQUIPMENT_CONTENT_CONTAINER = 69;
 		static final int SETTINGS_BUTTON = 113;
 		static final int EQUIPMENT_BUTTON = 114;
+		static final int POPUP = 116;
 	}
 
 	static class GroupStorage
@@ -699,7 +719,7 @@ public final class WidgetID
 
 	static class WorldSwitcher
 	{
-		static final int WORLD_LIST = 16;
+		static final int WORLD_LIST = 18;
 	}
 
 	static class Minigames
@@ -759,6 +779,13 @@ public final class WidgetID
 		static final int CONTAINER = 2;
 	}
 
+	public static class CharacterSummary
+	{
+		static final int CONTAINER = 2;
+
+		public static final int COMBAT_LEVEL_BOX_CHILD_ID = 9;
+	}
+
 	static class QuestList
 	{
 		static final int BOX = 0;
@@ -768,9 +795,9 @@ public final class WidgetID
 	static class Music
 	{
 		static final int CONTAINER = 0;
-		static final int SCROLL_CONTAINER = 3;
-		static final int LIST = 5;
-		static final int SCROLLBAR = 6;
+		static final int SCROLL_CONTAINER = 4;
+		static final int LIST = 6;
+		static final int SCROLLBAR = 7;
 	}
 
 	static class Barrows_Puzzle
@@ -791,6 +818,7 @@ public final class WidgetID
 		static final int TITLE_CONTAINER = 2;
 		static final int ITEM_CONTAINER = 15;
 		static final int ITEM_TEXT = 16;
+		static final int SEARCH_BUTTON = 24;
 	}
 
 	static class ExplorersRing
@@ -800,10 +828,11 @@ public final class WidgetID
 
 	static class SettingsSide
 	{
-		static final int CAMERA_ZOOM_SLIDER_TRACK = 100;
-		static final int MUSIC_SLIDER = 29;
-		static final int SOUND_EFFECT_SLIDER = 43;
-		static final int AREA_SOUND_SLIDER = 57;
+		static final int CAMERA_ZOOM_SLIDER_TRACK = 57;
+		static final int MUSIC_SLIDER = 92;
+		static final int MUSIC_SLIDER_STEP_HOLDER = 104;
+		static final int SOUND_EFFECT_SLIDER = 106;
+		static final int AREA_SOUND_SLIDER = 120;
 	}
 
 	static class Settings
@@ -873,6 +902,7 @@ public final class WidgetID
 	static class TemporossStatus
 	{
 		static final int STATUS_INDICATOR = 2;
+		static final int LOBBY = 5;
 	}
 
 	static class Clan
@@ -892,5 +922,10 @@ public final class WidgetID
 	static class Trade
 	{
 		static final int HEADER = 31;
+	}
+
+	static class TroubleBrewing
+	{
+		static final int SCORE = 68;
 	}
 }

@@ -25,14 +25,28 @@
 package net.runelite.client.plugins.cluescrolls.clues;
 
 import com.google.common.base.Joiner;
+import net.runelite.api.Client;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import net.runelite.client.util.Text;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import static org.mockito.Mockito.when;
+import org.mockito.junit.MockitoJUnitRunner;
 
+@RunWith(MockitoJUnitRunner.class)
 public class ThreeStepCrypticClueTest
 {
+	@Mock
+	private ClueScrollPlugin plugin;
+
+	@Mock
+	private Client client;
+
 	@Test
 	public void forTextEmptyString()
 	{
@@ -42,11 +56,14 @@ public class ThreeStepCrypticClueTest
 	@Test
 	public void nonNullLocations()
 	{
+		when(plugin.getClient()).thenReturn(client);
+		when(client.getVarbitValue(Varbits.VIGGORA_LOCATION)).thenReturn(1);
+
 		final String clueText = Joiner.on("<br><br>").join(CrypticClue.CLUES.stream().map(CrypticClue::getText).toArray());
 		final ThreeStepCrypticClue clue = ThreeStepCrypticClue.forText(Text.sanitizeMultilineText(clueText).toLowerCase(), clueText);
 
 		assertNotNull(clue);
-		for (final WorldPoint location : clue.getLocations())
+		for (final WorldPoint location : clue.getLocations(plugin))
 		{
 			assertNotNull(location);
 		}

@@ -57,6 +57,7 @@ import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.HitsplatApplied;
+import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.VarbitChanged;
@@ -226,13 +227,6 @@ public class SpecialCounterPlugin extends Plugin
 		}
 
 		this.specialPercentage = specialPercentage;
-		this.specialWeapon = usedSpecialWeapon();
-
-		if (this.specialWeapon == null)
-		{
-			// unrecognized special attack weapon
-			return;
-		}
 
 		// This event runs prior to player and npc updating, making getInteracting() too early to call..
 		// defer this with invokeLater(), but note that this will run after incrementing the server tick counter
@@ -240,6 +234,14 @@ public class SpecialCounterPlugin extends Plugin
 		final int serverTicks = client.getTickCount();
 		clientThread.invokeLater(() ->
 		{
+			this.specialWeapon = usedSpecialWeapon();
+
+			if (this.specialWeapon == null)
+			{
+				// unrecognized special attack weapon
+				return;
+			}
+
 			Actor target = client.getLocalPlayer().getInteracting();
 			lastSpecTarget = target instanceof NPC ? (NPC) target : null;
 			hitsplatTick = serverTicks + getHitDelay(specialWeapon, target);
@@ -322,6 +324,18 @@ public class SpecialCounterPlugin extends Plugin
 
 		if (actor.isDead() && interactedNpcIndexes.contains(actor.getIndex()))
 		{
+			removeCounters();
+		}
+	}
+
+	@Subscribe
+	public void onNpcChanged(NpcChanged npcChanged)
+	{
+		final NPC npc = npcChanged.getNpc();
+		// Duke does not despawn when dead
+		if (npc.getId() == NpcID.DUKE_SUCELLUS_12192 || npc.getId() == NpcID.DUKE_SUCELLUS_12196)
+		{
+			log.debug("Duke died");
 			removeCounters();
 		}
 	}

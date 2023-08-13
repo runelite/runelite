@@ -33,12 +33,10 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Experience;
-import net.runelite.api.Skill;
 
 @Slf4j
 class XpStateSingle
 {
-	private final Skill skill;
 	private final Map<XpActionType, XpAction> actions = new EnumMap<>(XpActionType.class);
 
 	@Getter
@@ -61,9 +59,8 @@ class XpStateSingle
 	private int startLevelExp = 0;
 	private int endLevelExp = 0;
 
-	XpStateSingle(Skill skill, long startXp)
+	XpStateSingle(long startXp)
 	{
-		this.skill = skill;
 		this.startXp = startXp;
 	}
 
@@ -232,11 +229,11 @@ class XpStateSingle
 		setSkillTime(0);
 	}
 
-	boolean update(long currentXp, int goalStartXp, int goalEndXp)
+	boolean update(long currentXp)
 	{
 		if (startXp == -1)
 		{
-			log.warn("Attempted to update skill state {} but was not initialized with current xp", skill);
+			log.warn("Attempted to update skill state {} but was not initialized with current xp", this);
 			return false;
 		}
 
@@ -271,32 +268,31 @@ class XpStateSingle
 		// Calculate experience gained
 		setXpGainedSinceReset((int) (currentXp - (startXp + xpGainedBeforeReset)));
 
-		// Determine XP goals, overall has no goals
-		if (skill != Skill.OVERALL)
-		{
-			if (goalStartXp < 0 || currentXp > goalEndXp)
-			{
-				startLevelExp = Experience.getXpForLevel(Experience.getLevelForXp((int) currentXp));
-			}
-			else
-			{
-				startLevelExp = goalStartXp;
-			}
+		return true;
+	}
 
-			if (goalEndXp <= 0 || currentXp > goalEndXp)
-			{
-				int currentLevel = Experience.getLevelForXp((int) currentXp);
-				endLevelExp = currentLevel + 1 <= Experience.MAX_VIRT_LEVEL
-					? Experience.getXpForLevel(currentLevel + 1)
-					: Experience.MAX_SKILL_XP;
-			}
-			else
-			{
-				endLevelExp = goalEndXp;
-			}
+	void updateGoals(long currentXp, int goalStartXp, int goalEndXp)
+	{
+		if (goalStartXp < 0 || currentXp > goalEndXp)
+		{
+			startLevelExp = Experience.getXpForLevel(Experience.getLevelForXp((int) currentXp));
+		}
+		else
+		{
+			startLevelExp = goalStartXp;
 		}
 
-		return true;
+		if (goalEndXp <= 0 || currentXp > goalEndXp)
+		{
+			int currentLevel = Experience.getLevelForXp((int) currentXp);
+			endLevelExp = currentLevel + 1 <= Experience.MAX_VIRT_LEVEL
+				? Experience.getXpForLevel(currentLevel + 1)
+				: Experience.MAX_SKILL_XP;
+		}
+		else
+		{
+			endLevelExp = goalEndXp;
+		}
 	}
 
 	public void tick(long delta)

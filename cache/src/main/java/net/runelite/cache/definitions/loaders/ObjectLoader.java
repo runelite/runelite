@@ -285,22 +285,22 @@ public class ObjectLoader
 		else if (opcode == 78)
 		{
 			def.setAmbientSoundId(is.readUnsignedShort());
-			def.setAnInt2083(is.readUnsignedByte());
+			def.setAmbientSoundDistance(is.readUnsignedByte());
 		}
 		else if (opcode == 79)
 		{
-			def.setAnInt2112(is.readUnsignedShort());
-			def.setAnInt2113(is.readUnsignedShort());
-			def.setAnInt2083(is.readUnsignedByte());
+			def.setAmbientSoundChangeTicksMin(is.readUnsignedShort());
+			def.setAmbientSoundChangeTicksMax(is.readUnsignedShort());
+			def.setAmbientSoundDistance(is.readUnsignedByte());
 			int length = is.readUnsignedByte();
-			int[] anIntArray2084 = new int[length];
+			int[] ambientSoundIds = new int[length];
 
 			for (int index = 0; index < length; ++index)
 			{
-				anIntArray2084[index] = is.readUnsignedShort();
+				ambientSoundIds[index] = is.readUnsignedShort();
 			}
 
-			def.setAmbientSoundIds(anIntArray2084);
+			def.setAmbientSoundIds(ambientSoundIds);
 		}
 		else if (opcode == 81)
 		{

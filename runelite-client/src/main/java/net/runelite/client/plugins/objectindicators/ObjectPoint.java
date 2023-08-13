@@ -30,6 +30,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * config structure for marked objects
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -42,4 +45,9 @@ class ObjectPoint
 	private int regionY;
 	private int z;
 	private Color color;
+	// highlight options
+	private Boolean hull;
+	private Boolean outline;
+	private Boolean clickbox;
+	private Boolean tile;
 }

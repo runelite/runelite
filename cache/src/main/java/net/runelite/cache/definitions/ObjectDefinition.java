@@ -43,7 +43,7 @@ public class ObjectDefinition
 	private short[] textureToReplace;
 	private int sizeX = 1;
 	private int sizeY = 1;
-	private int anInt2083 = 0;
+	private int ambientSoundDistance = 0;
 	private int[] ambientSoundIds;
 	private int offsetX = 0;
 	private boolean mergeNormals = false;
@@ -73,8 +73,8 @@ public class ObjectDefinition
 	private int varpID = -1;
 	private int ambientSoundId = -1;
 	private boolean aBool2111 = false;
-	private int anInt2112 = 0;
-	private int anInt2113 = 0;
+	private int ambientSoundChangeTicksMin = 0;
+	private int ambientSoundChangeTicksMax = 0;
 	private boolean blocksProjectile = true;
 	private boolean randomizeAnimStart;
 	private Map<Integer, Object> params = null;

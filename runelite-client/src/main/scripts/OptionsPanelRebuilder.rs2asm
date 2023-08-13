@@ -158,9 +158,9 @@ LABEL139:
    viewport_clampfov     
    jump                   LABEL150
 LABEL145:
-   iconst                 640
-   iconst                 768
-   iconst                 512
+   iconst                 192
+   iconst                 656
+   iconst                 448
    iconst                 512
    viewport_clampfov     
 LABEL150:

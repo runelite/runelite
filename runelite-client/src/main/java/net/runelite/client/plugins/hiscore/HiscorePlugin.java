@@ -38,6 +38,7 @@ import net.runelite.api.Client;
 import net.runelite.api.IconID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.Player;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
@@ -65,7 +66,7 @@ import net.runelite.client.util.Text;
 public class HiscorePlugin extends Plugin
 {
 	private static final String LOOKUP = "Lookup";
-	private static final Pattern BOUNTY_PATTERN = Pattern.compile("<col=ff0000>You've been assigned a target: (.*)</col>");
+	private static final Pattern BOUNTY_PATTERN = Pattern.compile("You have been assigned a new target: <col=[0-9a-f]+>(.*)</col>");
 
 	@Inject
 	@Nullable
@@ -201,7 +202,7 @@ public class HiscorePlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (!config.bountylookup() || !event.getType().equals(ChatMessageType.GAMEMESSAGE))
+		if (!event.getType().equals(ChatMessageType.GAMEMESSAGE) || !config.bountylookup())
 		{
 			return;
 		}
@@ -220,7 +221,7 @@ public class HiscorePlugin extends Plugin
 		localHiscoreEndpoint = findHiscoreEndpointFromLocalPlayer();
 	}
 
-	private void lookupPlayer(String playerName, HiscoreEndpoint endpoint)
+	void lookupPlayer(String playerName, HiscoreEndpoint endpoint)
 	{
 		SwingUtilities.invokeLater(() ->
 		{
@@ -251,13 +252,13 @@ public class HiscorePlugin extends Plugin
 
 		if (client != null)
 		{
-			switch (client.getAccountType())
+			switch (client.getVarbitValue(Varbits.ACCOUNT_TYPE))
 			{
-				case IRONMAN:
+				case 1:
 					return HiscoreEndpoint.IRONMAN;
-				case ULTIMATE_IRONMAN:
+				case 2:
 					return HiscoreEndpoint.ULTIMATE_IRONMAN;
-				case HARDCORE_IRONMAN:
+				case 3:
 					return HiscoreEndpoint.HARDCORE_IRONMAN;
 			}
 		}

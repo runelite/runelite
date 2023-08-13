@@ -29,6 +29,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.List;
 import javax.annotation.Nullable;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import net.runelite.api.NPC;
@@ -157,7 +158,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		AnagramClue.builder()
 			.text("BY LOOK")
 			.npc("Bolkoy")
-			.location(new WorldPoint(2529, 3162, 0))
+			.location(new WorldPoint(2526, 3162, 0))
 			.area("Tree Gnome Village general store")
 			.question("How many flowers are there in the clearing below this platform?")
 			.answer("13")
@@ -337,7 +338,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		AnagramClue.builder()
 			.text("HEORIC")
 			.npc("Eohric")
-			.location(new WorldPoint(2900, 3565, 0))
+			.location(new WorldPoint(2897, 3565, 0))
 			.area("Top floor of Burthorpe Castle")
 			.question("King Arthur and Merlin sit down at the Round Table with 8 knights. How many degrees does each get?")
 			.answer("36")
@@ -414,7 +415,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("LOW LAG")
 			.npc("Gallow")
 			.location(new WorldPoint(1805, 3566, 0))
-			.area("Vinery in the Great Kourend")
+			.area("Vinery southeast of Hosidius")
 			.question("How many vine patches can you find in this vinery?")
 			.answer("12")
 			.build(),
@@ -758,8 +759,8 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		AnagramClue.builder()
 			.text("BRUCIE CATNAP")
 			.npc("Captain Bruce")
-			.location(new WorldPoint(1520, 3558, 0))
-			.area("Graveyard of Heroes")
+			.location(new WorldPoint(1529, 3567, 0))
+			.area("East of Shayzien Graveyard")
 			.build(),
 		AnagramClue.builder()
 			.text("UESNKRL NRIEDDO")
@@ -773,6 +774,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 
 	private final String text;
 	private final String npc;
+	@Getter(AccessLevel.PRIVATE)
 	private final WorldPoint location;
 	private final String area;
 	@Nullable
@@ -781,6 +783,12 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 	private final String answer;
 	@Builder.Default
 	private final int objectId = -1;
+
+	@Override
+	public WorldPoint getLocation(ClueScrollPlugin plugin)
+	{
+		return location;
+	}
 
 	@Override
 	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin)
@@ -813,7 +821,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 	@Override
 	public void makeWorldOverlayHint(Graphics2D graphics, ClueScrollPlugin plugin)
 	{
-		if (!getLocation().isInScene(plugin.getClient()))
+		if (!getLocation(plugin).isInScene(plugin.getClient()))
 		{
 			return;
 		}

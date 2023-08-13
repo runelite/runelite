@@ -29,8 +29,9 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
@@ -91,6 +92,7 @@ import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.ImageCapture;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.LinkBrowser;
+import net.runelite.client.util.OSType;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
@@ -108,13 +110,14 @@ public class ScreenshotPlugin extends Plugin
 	private static final int CORRUPTED_GAUNTLET_REGION = 7768;
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
 	private static final Pattern LEVEL_UP_PATTERN = Pattern.compile(".*Your ([a-zA-Z]+) (?:level is|are)? now (\\d+)\\.");
+	private static final Pattern LEVEL_UP_MESSAGE_PATTERN = Pattern.compile("Congratulations, you've just advanced your ([a-zA-Z]+) level. You are now level (\\d+)\\.");
 	private static final Pattern BOSSKILL_MESSAGE_PATTERN = Pattern.compile("Your (.+) kill count is: <col=ff0000>(\\d+)</col>.");
 	private static final Pattern VALUABLE_DROP_PATTERN = Pattern.compile(".*Valuable drop: ([^<>]+?\\(((?:\\d+,?)+) coins\\))(?:</col>)?");
 	private static final Pattern UNTRADEABLE_DROP_PATTERN = Pattern.compile(".*Untradeable drop: ([^<>]+)(?:</col>)?");
 	private static final Pattern DUEL_END_PATTERN = Pattern.compile("You have now (won|lost) ([0-9,]+) duels?\\.");
 	private static final Pattern QUEST_PATTERN_1 = Pattern.compile(".+?ve\\.*? (?<verb>been|rebuilt|.+?ed)? ?(?:the )?'?(?<quest>.+?)'?(?: [Qq]uest)?[!.]?$");
 	private static final Pattern QUEST_PATTERN_2 = Pattern.compile("'?(?<quest>.+?)'?(?: [Qq]uest)? (?<verb>[a-z]\\w+?ed)?(?: f.*?)?[!.]?$");
-	private static final Pattern COMBAT_ACHIEVEMENTS_PATTERN = Pattern.compile("Congratulations, you've completed an? (?<tier>\\w+) combat task: <col=[0-9a-f]+>(?<task>(.+))</col>\\.");
+	private static final Pattern COMBAT_ACHIEVEMENTS_PATTERN = Pattern.compile("Congratulations, you've completed an? (?<tier>\\w+) combat task: <col=[0-9a-f]+>(?<task>(.+))</col>");
 	private static final ImmutableList<String> RFD_TAGS = ImmutableList.of("Another Cook", "freed", "defeated", "saved");
 	private static final ImmutableList<String> WORD_QUEST_IN_NAME_TAGS = ImmutableList.of("Another Cook", "Doric", "Heroes", "Legends", "Observatory", "Olaf", "Waterfall");
 	private static final ImmutableList<String> PET_MESSAGES = ImmutableList.of("You have a funny feeling like you're being followed",
@@ -524,6 +527,19 @@ public class ScreenshotPlugin extends Plugin
 				takeScreenshot(fileName, SD_COMBAT_ACHIEVEMENTS);
 			}
 		}
+
+		if (client.getVarbitValue(Varbits.DISABLE_LEVEL_UP_INTERFACE) == 1 && config.screenshotLevels())
+		{
+			Matcher m = LEVEL_UP_MESSAGE_PATTERN.matcher(chatMessage);
+			if (m.find())
+			{
+				String skillName = m.group(1);
+				String skillLevel = m.group(2);
+				String fileName = skillName + "(" + skillLevel + ")";
+				String screenshotSubDir = "Levels";
+				takeScreenshot(fileName, screenshotSubDir);
+			}
+		}
 	}
 
 	@Subscribe
@@ -724,8 +740,9 @@ public class ScreenshotPlugin extends Plugin
 				}
 				if (topText.equalsIgnoreCase("Combat Task Completed!") && config.screenshotCombatAchievements() && client.getVarbitValue(Varbits.COMBAT_ACHIEVEMENTS_POPUP) == 0)
 				{
-					String entry = Text.removeTags(bottomText).substring("Task Completed: ".length());
-					String fileName = "Combat task (" + entry.replaceAll("[:?]", "") + ")";
+					String[] s = bottomText.split("<.*?>");
+					String task = s[1];
+					String fileName = "Combat task (" + task.replaceAll("[:?]", "") + ")";
 					takeScreenshot(fileName, SD_COMBAT_ACHIEVEMENTS);
 				}
 				notificationStarted = false;
@@ -839,7 +856,7 @@ public class ScreenshotPlugin extends Plugin
 	static String parseCombatAchievementWidget(final String text)
 	{
 		final Matcher m = COMBAT_ACHIEVEMENTS_PATTERN.matcher(text);
-		if (m.matches())
+		if (m.find())
 		{
 			String task = m.group("task").replaceAll("[:?]", "");
 			return "Combat task (" + task + ")";
@@ -880,19 +897,36 @@ public class ScreenshotPlugin extends Plugin
 		}
 	}
 
+	private static int getScaledValue(final double scale, final int value)
+	{
+		return (int) (value * scale + .5);
+	}
+
 	private void takeScreenshot(String fileName, String subDir, Image image)
 	{
-		BufferedImage screenshot = config.includeFrame()
-			? new BufferedImage(clientUi.getWidth(), clientUi.getHeight(), BufferedImage.TYPE_INT_ARGB)
-			: new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-
-		Graphics graphics = screenshot.getGraphics();
-
-		int gameOffsetX = 0;
-		int gameOffsetY = 0;
-
-		if (config.includeFrame())
+		final BufferedImage screenshot;
+		if (!config.includeFrame())
 		{
+			// just simply copy the image
+			screenshot = ImageUtil.bufferedImageFromImage(image);
+		}
+		else
+		{
+			// create a new image, paint the client ui to it, and then draw the screenshot to that
+			final AffineTransform transform = OSType.getOSType() == OSType.MacOS ? new AffineTransform() :
+				clientUi.getGraphicsConfiguration().getDefaultTransform();
+
+			// scaled client dimensions
+			int clientWidth = getScaledValue(transform.getScaleX(), clientUi.getWidth());
+			int clientHeight = getScaledValue(transform.getScaleY(), clientUi.getHeight());
+
+			screenshot = new BufferedImage(clientWidth, clientHeight, BufferedImage.TYPE_INT_ARGB);
+
+			Graphics2D graphics = (Graphics2D) screenshot.getGraphics();
+			AffineTransform originalTransform = graphics.getTransform();
+			// scale g2d for the paint() call
+			graphics.setTransform(transform);
+
 			// Draw the client frame onto the screenshot
 			try
 			{
@@ -903,14 +937,17 @@ public class ScreenshotPlugin extends Plugin
 				log.warn("unable to paint client UI on screenshot", e);
 			}
 
-			// Evaluate the position of the game inside the frame
+			// Find the position of the canvas inside the frame
 			final Point canvasOffset = clientUi.getCanvasOffset();
-			gameOffsetX = canvasOffset.getX();
-			gameOffsetY = canvasOffset.getY();
+			final int gameOffsetX = getScaledValue(transform.getScaleX(), canvasOffset.getX());
+			final int gameOffsetY = getScaledValue(transform.getScaleY(), canvasOffset.getY());
+
+			// Draw the original screenshot onto the new screenshot
+			graphics.setTransform(originalTransform); // the original screenshot is already scaled
+			graphics.drawImage(image, gameOffsetX, gameOffsetY, null);
+			graphics.dispose();
 		}
 
-		// Draw the game onto the screenshot
-		graphics.drawImage(image, gameOffsetX, gameOffsetY, null);
 		imageCapture.takeScreenshot(screenshot, fileName, subDir, config.notifyWhenTaken(), config.uploadScreenshot());
 	}
 

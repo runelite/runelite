@@ -70,7 +70,6 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.vars.AccountType;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetID.ACHIEVEMENT_DIARY_SCROLL_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.ADVENTURE_LOG_ID;
@@ -161,7 +160,7 @@ public class ChatCommandsPlugin extends Plugin
 	private int lastBossTime = -1;
 	private double lastPb = -1;
 	private String lastTeamSize;
-	private int modIconIdx = -1;
+	private int petsIconIdx = -1;
 	private int[] pets;
 
 	@Inject
@@ -227,22 +226,13 @@ public class ChatCommandsPlugin extends Plugin
 
 		clientThread.invoke(() ->
 		{
-			// enum config must be loaded for building pet icons
-			if (client.getModIcons() == null || client.getGameState().getState() < GameState.LOGIN_SCREEN.getState())
+			if (client.getGameState().getState() >= GameState.LOGIN_SCREEN.getState())
 			{
-				return false;
+				if (petsIconIdx == -1)
+				{
+					loadPets();
+				}
 			}
-
-			// !pets requires off thread pets access, so we just store a copy at startup
-			EnumComposition petsEnum = client.getEnum(EnumID.PETS);
-			pets = new int[petsEnum.size()];
-			for (int i = 0; i < petsEnum.size(); ++i)
-			{
-				pets[i] = petsEnum.getIntValue(i);
-			}
-
-			loadPetIcons();
-			return true;
 		});
 	}
 
@@ -311,18 +301,23 @@ public class ChatCommandsPlugin extends Plugin
 		return personalBest == null ? 0 : personalBest;
 	}
 
-	private void loadPetIcons()
+	private void loadPets()
 	{
-		if (modIconIdx != -1)
+		assert petsIconIdx == -1;
+
+		// !pets requires off thread pets access, so we just store a copy
+		EnumComposition petsEnum = client.getEnum(EnumID.PETS);
+		pets = new int[petsEnum.size()];
+		for (int i = 0; i < petsEnum.size(); ++i)
 		{
-			return;
+			pets[i] = petsEnum.getIntValue(i);
 		}
 
 		final IndexedSprite[] modIcons = client.getModIcons();
 		assert modIcons != null;
 
 		final IndexedSprite[] newModIcons = Arrays.copyOf(modIcons, modIcons.length + pets.length);
-		modIconIdx = modIcons.length;
+		petsIconIdx = modIcons.length;
 
 		client.setModIcons(newModIcons);
 
@@ -331,7 +326,7 @@ public class ChatCommandsPlugin extends Plugin
 			final int petId = pets[i];
 
 			final AsyncBufferedImage abi = itemManager.getImage(petId);
-			final int idx = modIconIdx + i;
+			final int idx = petsIconIdx + i;
 			Runnable r = () ->
 			{
 				final BufferedImage image = ImageUtil.resizeImage(abi, 18, 16);
@@ -643,6 +638,20 @@ public class ChatCommandsPlugin extends Plugin
 		return Double.parseDouble(timeString);
 	}
 
+	@VisibleForTesting
+	static String secondsToTimeString(double seconds)
+	{
+		int hours = (int) (Math.floor(seconds) / 3600);
+		int minutes = (int) (Math.floor(seconds / 60) % 60);
+		seconds = seconds % 60;
+
+		String timeString = hours > 0 ? String.format("%d:%02d:", hours, minutes) : String.format("%d:", minutes);
+
+		// If the seconds is an integer, it is ambiguous if the pb is a precise
+		// pb or not. So we always show it without the trailing .00.
+		return timeString + (Math.floor(seconds) == seconds ? String.format("%02d", (int) seconds) : String.format("%05.2f", seconds));
+	}
+
 	private void matchPb(Matcher matcher)
 	{
 		double seconds = timeStringToSeconds(matcher.group("pb"));
@@ -850,6 +859,16 @@ public class ChatCommandsPlugin extends Plugin
 			case LOADING:
 			case HOPPING:
 				pohOwner = null;
+				break;
+			case STARTING:
+				petsIconIdx = -1;
+				pets = null;
+				break;
+			case LOGIN_SCREEN:
+				if (petsIconIdx == -1)
+				{
+					loadPets();
+				}
 				break;
 		}
 	}
@@ -1139,22 +1158,13 @@ public class ChatCommandsPlugin extends Plugin
 			return;
 		}
 
-		int minutes = (int) (Math.floor(pb) / 60);
-		double seconds = pb % 60;
-
-		// If the seconds is an integer, it is ambiguous if the pb is a precise
-		// pb or not. So we always show it without the trailing .00.
-		final String time = Math.floor(seconds) == seconds ?
-			String.format("%d:%02d", minutes, (int) seconds) :
-			String.format("%d:%05.2f", minutes, seconds);
-
 		String response = new ChatMessageBuilder()
 			.append(ChatColorType.HIGHLIGHT)
 			.append(search)
 			.append(ChatColorType.NORMAL)
 			.append(" personal best: ")
 			.append(ChatColorType.HIGHLIGHT)
-			.append(time)
+			.append(secondsToTimeString(pb))
 			.build();
 
 		log.debug("Setting response {}", response);
@@ -1319,7 +1329,7 @@ public class ChatCommandsPlugin extends Plugin
 			final int petId = pets[petIdx];
 			if (playerPetList.contains(petId))
 			{
-				responseBuilder.append(" ").img(modIconIdx + petIdx);
+				responseBuilder.append(" ").img(petsIconIdx + petIdx);
 			}
 		}
 
@@ -1865,7 +1875,7 @@ public class ChatCommandsPlugin extends Plugin
 			return endpoint;
 		}
 
-		return toEndPoint(client.getAccountType());
+		return toEndPoint(client.getVarbitValue(Varbits.ACCOUNT_TYPE));
 	}
 
 	/**
@@ -1904,15 +1914,15 @@ public class ChatCommandsPlugin extends Plugin
 	 * @param accountType account type
 	 * @return hiscore endpoint
 	 */
-	private static HiscoreEndpoint toEndPoint(final AccountType accountType)
+	private static HiscoreEndpoint toEndPoint(final int accountType)
 	{
 		switch (accountType)
 		{
-			case IRONMAN:
+			case 1:
 				return HiscoreEndpoint.IRONMAN;
-			case ULTIMATE_IRONMAN:
+			case 2:
 				return HiscoreEndpoint.ULTIMATE_IRONMAN;
-			case HARDCORE_IRONMAN:
+			case 3:
 				return HiscoreEndpoint.HARDCORE_IRONMAN;
 			default:
 				return HiscoreEndpoint.NORMAL;
@@ -1961,6 +1971,10 @@ public class ChatCommandsPlugin extends Plugin
 
 			case "vetion":
 				return "Vet'ion";
+
+			case "calvarion":
+			case "calv":
+				return "Calvar'ion";
 
 			case "vene":
 				return "Venenatis";
@@ -2457,6 +2471,14 @@ public class ChatCommandsPlugin extends Plugin
 			case "pm":
 				return "Phantom Muspah";
 
+			// Desert Treasure 2 bosses
+			case "the leviathan":
+				return "Leviathan";
+			case "duke":
+				return "Duke Sucellus";
+			case "the whisperer":
+				return "Whisperer";
+
 			default:
 				return WordUtils.capitalize(boss);
 		}
@@ -2529,7 +2551,7 @@ public class ChatCommandsPlugin extends Plugin
 				return net.runelite.api.Skill.CONSTRUCTION.getName();
 			case "ALL":
 			case "TOTAL":
-				return net.runelite.api.Skill.OVERALL.getName();
+				return "Overall";
 			default:
 				return skill;
 		}

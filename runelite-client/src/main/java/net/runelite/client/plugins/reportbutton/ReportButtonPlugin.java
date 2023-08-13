@@ -191,9 +191,6 @@ public class ReportButtonPlugin extends Plugin
 			case GAME_TICKS:
 				reportButton.setText(getGameTicks());
 				break;
-			case OFF:
-				reportButton.setText("Report");
-				break;
 		}
 	}
 

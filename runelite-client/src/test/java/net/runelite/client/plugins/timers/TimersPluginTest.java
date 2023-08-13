@@ -406,10 +406,8 @@ public class TimersPluginTest
 		when(timersConfig.showArceuus()).thenReturn(true);
 		when(client.getRealSkillLevel(Skill.MAGIC)).thenReturn(57);
 
-		VarbitChanged varbitChanged = new VarbitChanged();
-		varbitChanged.setVarbitId(Varbits.SHADOW_VEIL);
-		varbitChanged.setValue(1);
-		timersPlugin.onVarbitChanged(varbitChanged);
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=6800bf>Your thieving abilities have been enhanced.</col>", "", 0);
+		timersPlugin.onChatMessage(chatMessage);
 
 		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
 		verify(infoBoxManager).addInfoBox(captor.capture());
@@ -439,10 +437,8 @@ public class TimersPluginTest
 		when(timersConfig.showArceuus()).thenReturn(true);
 		when(client.getBoostedSkillLevel(Skill.MAGIC)).thenReturn(60);
 
-		VarbitChanged varbitChanged = new VarbitChanged();
-		varbitChanged.setVarbitId(Varbits.RESURRECT_THRALL);
-		varbitChanged.setValue(1);
-		timersPlugin.onVarbitChanged(varbitChanged);
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=ef0083>You resurrect a greater zombified thrall.</col>", "", 0);
+		timersPlugin.onChatMessage(chatMessage);
 
 		ArgumentCaptor<InfoBox> ibcaptor = ArgumentCaptor.forClass(InfoBox.class);
 		verify(infoBoxManager).addInfoBox(ibcaptor.capture());

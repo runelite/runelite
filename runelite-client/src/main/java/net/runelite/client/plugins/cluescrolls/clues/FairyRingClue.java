@@ -38,7 +38,6 @@ import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
-@Getter
 public class FairyRingClue extends ClueScroll implements LocationClueScroll
 {
 	static final List<FairyRingClue> CLUES = ImmutableList.of(
@@ -54,6 +53,7 @@ public class FairyRingClue extends ClueScroll implements LocationClueScroll
 		new FairyRingClue("D K S 2 3 1 0", new WorldPoint(2747, 3720, 0))
 	);
 
+	@Getter
 	private final String text;
 	private final WorldPoint location;
 
@@ -62,6 +62,12 @@ public class FairyRingClue extends ClueScroll implements LocationClueScroll
 		this.text = text;
 		this.location = location;
 		setRequiresSpade(true);
+	}
+
+	@Override
+	public WorldPoint getLocation(ClueScrollPlugin plugin)
+	{
+		return location;
 	}
 
 	@Override
@@ -84,7 +90,7 @@ public class FairyRingClue extends ClueScroll implements LocationClueScroll
 	@Override
 	public void makeWorldOverlayHint(Graphics2D graphics, ClueScrollPlugin plugin)
 	{
-		LocalPoint localLocation = LocalPoint.fromWorld(plugin.getClient(), getLocation());
+		LocalPoint localLocation = LocalPoint.fromWorld(plugin.getClient(), getLocation(plugin));
 
 		if (localLocation == null)
 		{

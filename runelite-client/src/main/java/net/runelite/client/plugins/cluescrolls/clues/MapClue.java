@@ -28,6 +28,7 @@ import com.google.common.collect.ImmutableList;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.List;
+import lombok.AccessLevel;
 import lombok.Getter;
 import static net.runelite.api.ItemID.*;
 import net.runelite.api.ObjectComposition;
@@ -95,6 +96,7 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 	);
 
 	private final int itemId;
+	@Getter(AccessLevel.PRIVATE)
 	private final WorldPoint location;
 	private final int objectId;
 	private final String description;
@@ -116,6 +118,12 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 		this.objectId = objectId;
 		this.description = description;
 		setRequiresSpade(objectId == -1);
+	}
+
+	@Override
+	public WorldPoint getLocation(ClueScrollPlugin plugin)
+	{
+		return location;
 	}
 
 	@Override

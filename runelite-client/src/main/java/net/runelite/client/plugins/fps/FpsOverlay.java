@@ -102,7 +102,7 @@ public class FpsOverlay extends Overlay
 		{
 			xOffset += logoutButton.getWidth();
 		}
-		
+
 		final String text = client.getFPS() + FPS_STRING;
 		final int textWidth = graphics.getFontMetrics().stringWidth(text);
 		final int textHeight = graphics.getFontMetrics().getAscent() - graphics.getFontMetrics().getDescent();
