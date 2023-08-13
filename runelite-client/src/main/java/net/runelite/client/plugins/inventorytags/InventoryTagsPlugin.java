@@ -29,7 +29,9 @@ import com.google.inject.Provides;
 import java.applet.Applet;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
@@ -183,7 +185,10 @@ public class InventoryTagsPlugin extends Plugin
 					.setTarget(entry.getTarget())
 					.setType(MenuAction.RUNELITE_SUBMENU);
 
-				for (Color color : invColors())
+				Set<Color> invEquipmentColors = new HashSet<>();
+				invEquipmentColors.addAll(invColors());
+				invEquipmentColors.addAll(equipmentColors());
+				for (Color color : invEquipmentColors)
 				{
 					if (tag == null || !tag.color.equals(color))
 					{
@@ -235,8 +240,18 @@ public class InventoryTagsPlugin extends Plugin
 
 	private List<Color> invColors()
 	{
+		return getTagsFromItemContainer(InventoryID.INVENTORY);
+	}
+
+	private List<Color> equipmentColors()
+	{
+		return getTagsFromItemContainer(InventoryID.EQUIPMENT);
+	}
+
+	private List<Color> getTagsFromItemContainer(InventoryID inventoryID)
+	{
 		List<Color> colors = new ArrayList<>();
-		ItemContainer container = client.getItemContainer(InventoryID.INVENTORY);
+		ItemContainer container = client.getItemContainer(inventoryID);
 		for (Item item : container.getItems())
 		{
 			Tag tag = getTag(item.getId());
