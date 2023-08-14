@@ -37,6 +37,8 @@ import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
+import static net.runelite.api.InventoryID.EQUIPMENT;
+import static net.runelite.api.InventoryID.INVENTORY;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.KeyCode;
@@ -186,8 +188,8 @@ public class InventoryTagsPlugin extends Plugin
 					.setType(MenuAction.RUNELITE_SUBMENU);
 
 				Set<Color> invEquipmentColors = new HashSet<>();
-				invEquipmentColors.addAll(invColors());
-				invEquipmentColors.addAll(equipmentColors());
+				invEquipmentColors.addAll(getColorsFromItemContainer(INVENTORY));
+				invEquipmentColors.addAll(getColorsFromItemContainer(EQUIPMENT));
 				for (Color color : invEquipmentColors)
 				{
 					if (tag == null || !tag.color.equals(color))
@@ -238,17 +240,7 @@ public class InventoryTagsPlugin extends Plugin
 		}
 	}
 
-	private List<Color> invColors()
-	{
-		return getTagsFromItemContainer(InventoryID.INVENTORY);
-	}
-
-	private List<Color> equipmentColors()
-	{
-		return getTagsFromItemContainer(InventoryID.EQUIPMENT);
-	}
-
-	private List<Color> getTagsFromItemContainer(InventoryID inventoryID)
+	private List<Color> getColorsFromItemContainer(InventoryID inventoryID)
 	{
 		List<Color> colors = new ArrayList<>();
 		ItemContainer container = client.getItemContainer(inventoryID);
