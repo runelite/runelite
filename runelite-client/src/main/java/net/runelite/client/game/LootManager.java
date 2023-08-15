@@ -430,16 +430,12 @@ public class LootManager
 			case NpcID.VARDORVIS:
 			case NpcID.VARDORVIS_12224:
 			{
-				final WorldArea bossArea = npc.getWorldArea();
-				return List.of(new WorldArea(bossArea.getX() - 2, bossArea.getY() - 2, bossArea.getWidth() + 4, bossArea.getHeight() + 4, bossArea.getPlane()));
+				return List.of(npc.getWorldArea().expand(2));
 			}
 			case NpcID.THE_LEVIATHAN:
 			case NpcID.THE_LEVIATHAN_12215:
 			{
-				final WorldArea bossArea = npc.getWorldArea();
-				final int expand = 8;
-				final WorldArea expandedArea = new WorldArea(bossArea.getX() - expand, bossArea.getY() - expand, bossArea.getWidth() + expand * 2, bossArea.getHeight() + expand * 2, bossArea.getPlane());
-				return List.of(expandedArea);
+				return List.of(npc.getWorldArea().expand(8));
 			}
 		}
 

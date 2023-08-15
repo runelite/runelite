@@ -88,6 +88,22 @@ public class WorldArea
 	}
 
 	/**
+	 * Increases the width and height by the given amount on each side.
+	 *
+	 * @param distance The amount to increase the area's width and height on each side
+	 * @return A new expanded area
+	 */
+	public WorldArea expand(final int distance)
+	{
+		return new WorldArea(
+			x - distance,
+			y - distance,
+			width + distance * 2,
+			height + distance * 2,
+			this.plane);
+	}
+
+	/**
 	 * Computes the shortest distance to another area.
 	 *
 	 * @param other the passed area
