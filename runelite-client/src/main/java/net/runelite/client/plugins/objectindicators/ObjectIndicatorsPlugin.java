@@ -135,6 +135,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 	protected void startUp()
 	{
 		overlayManager.add(overlay);
+		clientThread.invokeLater(this::reloadPoints);
 	}
 
 	@Override
@@ -193,6 +194,20 @@ public class ObjectIndicatorsPlugin extends Plugin
 		objects.removeIf(o -> o.getTileObject() == event.getGroundObject());
 	}
 
+	private void reloadPoints()
+	{
+		points.clear();
+		for (int regionId : client.getMapRegions())
+		{
+			// load points for region
+			final Set<ObjectPoint> regionPoints = loadPoints(regionId);
+			if (regionPoints != null)
+			{
+				points.put(regionId, regionPoints);
+			}
+		}
+	}
+
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
@@ -200,22 +215,8 @@ public class ObjectIndicatorsPlugin extends Plugin
 		if (gameState == GameState.LOADING)
 		{
 			// Reload points with new map regions
-
-			points.clear();
-			for (int regionId : client.getMapRegions())
-			{
-				// load points for region
-				final Set<ObjectPoint> regionPoints = loadPoints(regionId);
-				if (regionPoints != null)
-				{
-					points.put(regionId, regionPoints);
-				}
-			}
-		}
-
-		if (gameStateChanged.getGameState() != GameState.LOGGED_IN && gameStateChanged.getGameState() != GameState.CONNECTION_LOST)
-		{
 			objects.clear();
+			reloadPoints();
 		}
 	}
 
