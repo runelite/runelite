@@ -265,7 +265,7 @@ public class ConfigManager
 		// instead of overwritten. After a login send a PATCH for the offline $rsprofile to merge it with the
 		// remote $rsprofile so that when $rsprofile is synced later it doesn't overwrite and lose the local
 		// $rsprofile settings.
-		ConfigPatch patch = buildConfigPatch(rsProfileConfigProfile.get());
+		ConfigPatch patch = buildConfigPatch(rsProfile.getName(), rsProfileConfigProfile.get());
 		configClient.patch(patch, rsProfile.getId());
 		log.debug("patched remote {}", RSPROFILE_NAME);
 	}
@@ -318,12 +318,8 @@ public class ConfigManager
 				// sync the entire profile from disk
 				File from = ProfileManager.profileConfigFile(profile);
 				ConfigData data = new ConfigData(from);
-				ConfigPatch patch = buildConfigPatch(data.get());
-
-				long id = profile.getId();
-				String name = profile.getName();
-
-				configClient.patch(patch, profile.getId()).thenRun(() -> configClient.rename(id, name));
+				ConfigPatch patch = buildConfigPatch(profile.getName(), data.get());
+				configClient.patch(patch, profile.getId());
 			}
 			else
 			{
@@ -462,6 +458,37 @@ public class ConfigManager
 		log.info("Finished importing {} keys", keys);
 	}
 
+	private static void removeDuplicateProfiles(ProfileManager.Lock lock)
+	{
+		var seen = new HashMap<Long, ConfigProfile>();
+		for (var it = lock.getProfiles().iterator(); it.hasNext(); )
+		{
+			var profile = it.next();
+			if (seen.containsKey(profile.getId()))
+			{
+				var existing = seen.get(profile.getId());
+				log.warn("Duplicate profiles detected: {} and {}. Removing the latter.",
+					existing, profile);
+				it.remove();
+				lock.dirty();
+				continue;
+			}
+
+			seen.put(profile.getId(), profile);
+		}
+	}
+
+	private static void fixRsProfileName(ProfileManager.Lock lock)
+	{
+		var rsProfile = lock.findProfile(RSPROFILE_ID);
+		if (rsProfile != null && !rsProfile.getName().equals(RSPROFILE_NAME))
+		{
+			log.warn("renaming {} to {}", rsProfile, RSPROFILE_NAME);
+			rsProfile.setName(RSPROFILE_NAME);
+			lock.dirty();
+		}
+	}
+
 	public void load()
 	{
 		AccountSession session = sessionManager.getAccountSession();
@@ -488,12 +515,17 @@ public class ConfigManager
 
 		try (ProfileManager.Lock lock = profileManager.lock())
 		{
+			removeDuplicateProfiles(lock);
+			fixRsProfileName(lock);
+
 			ConfigProfile profile = null, rsProfile = null;
 
 			for (ConfigProfile p : lock.getProfiles())
 			{
 				if (p.isInternal())
 				{
+					log.debug("Profile '{}' (sync: {}, active: {}, internal)", p.getName(), p.isSync(), p.isActive());
+
 					if (p.getName().equals(RSPROFILE_NAME))
 					{
 						rsProfile = p;
@@ -1278,7 +1310,7 @@ public class ConfigManager
 		{
 			try
 			{
-				ConfigPatchResult patchResult = configClient.patch(buildConfigPatch(patch), profile.getId()).get();
+				ConfigPatchResult patchResult = configClient.patch(buildConfigPatch(profile.isInternal() ? profile.getName() : null, patch), profile.getId()).get();
 				if (patchResult == null)
 				{
 					profile.setRev(-1L);
@@ -1314,14 +1346,12 @@ public class ConfigManager
 		data.patch(patch);
 	}
 
-	private static ConfigPatch buildConfigPatch(Map<String, String> patchChanges)
+	private static ConfigPatch buildConfigPatch(@Nullable String profileName, Map<String, String> patchChanges)
 	{
-		if (patchChanges.isEmpty())
-		{
-			return null;
-		}
-
 		ConfigPatch patch = new ConfigPatch();
+		// Note profileName is only used for internal profiles and on initial sync, to prevent
+		// clients fighting over profile names.
+		patch.setProfileName(profileName);
 		for (Map.Entry<String, String> entry : patchChanges.entrySet())
 		{
 			final String key = entry.getKey(), value = entry.getValue();

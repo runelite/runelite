@@ -141,6 +141,11 @@ public class ProfileManager
 
 		public ConfigProfile createProfile(String name, long id)
 		{
+			if (findProfile(id) != null)
+			{
+				throw new IllegalArgumentException("profile " + id + " already exists");
+			}
+
 			ConfigProfile profile = new ConfigProfile(id);
 			profile.setName(name);
 			profile.setSync(false);
