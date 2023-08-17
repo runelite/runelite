@@ -259,7 +259,7 @@
 		<dependency>
 			<groupId>net.runelite.arn</groupId>
 			<artifactId>http-api</artifactId>
-			<version>1.2.6</version>
+			<version>1.2.12</version>
 		</dependency>
 		<dependency>
 			<groupId>net.runelite</groupId>
