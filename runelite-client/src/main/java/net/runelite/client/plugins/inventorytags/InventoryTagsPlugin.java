@@ -244,14 +244,17 @@ public class InventoryTagsPlugin extends Plugin
 	{
 		List<Color> colors = new ArrayList<>();
 		ItemContainer container = client.getItemContainer(inventoryID);
-		for (Item item : container.getItems())
+		if (container != null)
 		{
-			Tag tag = getTag(item.getId());
-			if (tag != null && tag.color != null)
+			for (Item item : container.getItems())
 			{
-				if (!colors.contains(tag.color))
+				Tag tag = getTag(item.getId());
+				if (tag != null && tag.color != null)
 				{
-					colors.add(tag.color);
+					if (!colors.contains(tag.color))
+					{
+						colors.add(tag.color);
+					}
 				}
 			}
 		}
