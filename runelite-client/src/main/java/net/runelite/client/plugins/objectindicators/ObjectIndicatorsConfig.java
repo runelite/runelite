@@ -94,7 +94,7 @@ public interface ObjectIndicatorsConfig extends Config
 	@Alpha
 	@ConfigItem(
 		position = 4,
-		keyName = "borderColor",
+		keyName = "markerColor",
 		name = "Border color",
 		description = "Configures the border color of an object marker",
 		section = renderStyleSection

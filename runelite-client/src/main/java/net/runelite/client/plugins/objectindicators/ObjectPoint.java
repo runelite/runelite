@@ -26,6 +26,8 @@
 package net.runelite.client.plugins.objectindicators;
 
 import java.awt.Color;
+
+import com.google.gson.annotations.SerializedName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -44,6 +46,7 @@ class ObjectPoint
 	private int regionX;
 	private int regionY;
 	private int z;
+	@SerializedName("color")
 	private Color borderColor;
 	private Color fillColor;
 	// highlight options
