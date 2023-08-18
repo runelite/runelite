@@ -31,6 +31,7 @@ import com.google.common.collect.Multimap;
 import com.google.common.hash.Hashing;
 import com.google.common.hash.HashingInputStream;
 import com.google.common.io.Files;
+import com.google.gson.Gson;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -48,13 +49,13 @@ import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.RuneLite;
-import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.EventBus;
@@ -90,6 +91,7 @@ public class ExternalPluginManager
 	private final PluginManager pluginManager;
 	private final EventBus eventBus;
 	private final OkHttpClient okHttpClient;
+	private final Gson gson;
 
 	@Inject
 	private ExternalPluginManager(
@@ -98,7 +100,8 @@ public class ExternalPluginManager
 		ScheduledExecutorService executor,
 		PluginManager pluginManager,
 		EventBus eventBus,
-		OkHttpClient okHttpClient
+		OkHttpClient okHttpClient,
+		Gson gson
 	)
 	{
 		this.configManager = configManager;
@@ -107,6 +110,7 @@ public class ExternalPluginManager
 		this.pluginManager = pluginManager;
 		this.eventBus = eventBus;
 		this.okHttpClient = okHttpClient;
+		this.gson = gson;
 
 		executor.scheduleWithFixedDelay(() -> externalPluginClient.submitPlugins(getInstalledExternalPlugins()),
 			new Random().nextInt(60), 180, TimeUnit.MINUTES);
@@ -149,10 +153,10 @@ public class ExternalPluginManager
 			}
 		}
 
-		Multimap<ExternalPluginManifest, Plugin> loadedExternalPlugins = HashMultimap.create();
+		Multimap<PluginHubManifest.JarData, Plugin> loadedExternalPlugins = HashMultimap.create();
 		for (Plugin p : pluginManager.getPlugins())
 		{
-			ExternalPluginManifest m = getExternalPluginManifest(p.getClass());
+			PluginHubManifest.JarData m = getJarData(p.getClass());
 			if (m != null)
 			{
 				loadedExternalPlugins.put(m, p);
@@ -179,41 +183,34 @@ public class ExternalPluginManager
 			Instant keepAfter = now.minus(3, ChronoUnit.DAYS);
 
 			SplashScreen.stage(splashStart, null, "Downloading external plugins");
-			Set<ExternalPluginManifest> externalPlugins = new HashSet<>();
+			Set<PluginHubManifest.JarData> externalPlugins = new HashSet<>();
 
 			RuneLite.PLUGINS_DIR.mkdirs();
 
-			List<ExternalPluginManifest> manifestList;
 			try
 			{
-				manifestList = externalPluginClient.downloadManifest();
-				Map<String, ExternalPluginManifest> manifests = manifestList
-					.stream().collect(ImmutableMap.toImmutableMap(ExternalPluginManifest::getInternalName, Function.identity()));
+				PluginHubManifest.ManifestLite manifest = externalPluginClient.downloadManifestLite();
+				Map<String, PluginHubManifest.JarData> manifests = manifest.getJars()
+					.stream().collect(ImmutableMap.toImmutableMap(PluginHubManifest.JarData::getInternalName, Function.identity()));
 
-				Set<ExternalPluginManifest> needsDownload = new HashSet<>();
+				Set<PluginHubManifest.JarData> needsDownload = new HashSet<>();
 				Set<File> keep = new HashSet<>();
 
 				for (String name : installedIDs)
 				{
-					ExternalPluginManifest manifest = manifests.get(name);
-					if (manifest != null)
+					PluginHubManifest.JarData jarData = manifests.get(name);
+					if (jarData != null)
 					{
-						if (Arrays.stream(manifest.getPlugins()).anyMatch(builtinExternalClasses::contains))
-						{
-							log.debug("Skipping loading [{}] from hub as a conflicting builtin external is present", manifest.getInternalName());
-							continue;
-						}
+						externalPlugins.add(jarData);
 
-						externalPlugins.add(manifest);
-
-						manifest.getJarFile().setLastModified(now.toEpochMilli());
-						if (!manifest.isValid())
+						jarData.getJarFile().setLastModified(now.toEpochMilli());
+						if (!jarData.isValid())
 						{
-							needsDownload.add(manifest);
+							needsDownload.add(jarData);
 						}
 						else
 						{
-							keep.add(manifest.getJarFile());
+							keep.add(jarData.getJarFile());
 						}
 					}
 				}
@@ -231,35 +228,32 @@ public class ExternalPluginManager
 					}
 				}
 
-				int toDownload = needsDownload.stream().mapToInt(ExternalPluginManifest::getSize).sum();
+				int toDownload = needsDownload.stream().mapToInt(PluginHubManifest.JarData::getJarSize).sum();
 				int downloaded = 0;
 
-				for (ExternalPluginManifest manifest : needsDownload)
+				for (PluginHubManifest.JarData jarData : needsDownload)
 				{
-					HttpUrl url = RuneLiteProperties.getPluginHubBase().newBuilder()
-						.addPathSegment(manifest.getInternalName())
-						.addPathSegment(manifest.getCommit() + ".jar")
-						.build();
+					HttpUrl url = externalPluginClient.getJarURL(jarData);
 
 					try (Response res = okHttpClient.newCall(new Request.Builder().url(url).build()).execute())
 					{
 						int fdownloaded = downloaded;
-						downloaded += manifest.getSize();
+						downloaded += jarData.getJarSize();
 						HashingInputStream his = new HashingInputStream(Hashing.sha256(),
 							new CountingInputStream(res.body().byteStream(), i ->
 								SplashScreen.stage(splashStart + (splashLength * .2), splashStart + (splashLength * .8),
-									null, "Downloading " + manifest.getDisplayName(),
+									null, "Downloading " + jarData.getDisplayName(),
 									i + fdownloaded, toDownload, true)));
-						Files.asByteSink(manifest.getJarFile()).writeFrom(his);
-						if (!his.hash().toString().equals(manifest.getHash()))
+						Files.asByteSink(jarData.getJarFile()).writeFrom(his);
+						if (!PluginHubManifest.HASH_ENCODER.encodeToString(his.hash().asBytes()).equals(jarData.getJarHash()))
 						{
-							throw new VerificationException("Plugin " + manifest.getInternalName() + " didn't match its hash");
+							throw new VerificationException("Plugin " + jarData.getInternalName() + " didn't match its hash");
 						}
 					}
 					catch (IOException | VerificationException e)
 					{
-						externalPlugins.remove(manifest);
-						log.error("Unable to download external plugin \"{}\"", manifest.getInternalName(), e);
+						externalPlugins.remove(jarData);
+						log.error("Unable to download external plugin \"{}\"", jarData.getInternalName(), e);
 					}
 				}
 			}
@@ -272,12 +266,12 @@ public class ExternalPluginManager
 			SplashScreen.stage(splashStart + (splashLength * .8), null, "Starting external plugins");
 
 			// TODO(abex): make sure the plugins get fully removed from the scheduler/eventbus/other managers (iterate and check classloader)
-			Set<ExternalPluginManifest> add = new HashSet<>();
-			for (ExternalPluginManifest ex : externalPlugins)
+			Set<PluginHubManifest.JarData> add = new HashSet<>();
+			for (PluginHubManifest.JarData jarData : externalPlugins)
 			{
-				if (loadedExternalPlugins.removeAll(ex).size() <= 0)
+				if (loadedExternalPlugins.removeAll(jarData).size() <= 0)
 				{
-					add.add(ex);
+					add.add(jarData);
 				}
 			}
 			// list of loaded external plugins that aren't in the manifest
@@ -307,23 +301,29 @@ public class ExternalPluginManager
 				pluginManager.remove(p);
 			}
 
-			for (ExternalPluginManifest manifest : add)
+			for (PluginHubManifest.JarData jarData : add)
 			{
 				// I think this can't happen, but just in case
-				if (!manifest.isValid())
+				if (!jarData.isValid())
 				{
-					log.warn("Invalid plugin for validated manifest: {}", manifest);
+					log.warn("Invalid plugin for validated manifest: {}", jarData);
 					continue;
 				}
 
-				log.info("Loading external plugin \"{}\" version \"{}\" commit \"{}\"", manifest.getInternalName(), manifest.getVersion(), manifest.getCommit());
+				log.info("Loading external plugin \"{}\" jar \"{}\"", jarData.getInternalName(), jarData.getJarHash());
 
 				List<Plugin> newPlugins = null;
 				try
 				{
-					ClassLoader cl = new ExternalPluginClassLoader(manifest, new URL[]{manifest.getJarFile().toURI().toURL()});
+					PluginHubClassLoader cl = new PluginHubClassLoader(jarData, new URL[]{jarData.getJarFile().toURI().toURL()}, gson);
+					if (Arrays.stream(cl.getStub().getPlugins()).anyMatch(builtinExternalClasses::contains))
+					{
+						log.debug("Skipping loading \"{}\" from hub as a conflicting builtin external is present", jarData.getInternalName());
+						continue;
+					}
+
 					List<Class<?>> clazzes = new ArrayList<>();
-					for (String className : manifest.getPlugins())
+					for (String className : cl.getStub().getPlugins())
 					{
 						clazzes.add(cl.loadClass(className));
 					}
@@ -355,7 +355,7 @@ public class ExternalPluginManager
 				}
 				catch (Throwable e)
 				{
-					log.warn("Unable to start or load external plugin \"{}\"", manifest.getInternalName(), e);
+					log.warn("Unable to start or load external plugin \"{}\"", jarData.getInternalName(), e);
 					if (newPlugins != null)
 					{
 						for (Plugin p : newPlugins)
@@ -376,7 +376,7 @@ public class ExternalPluginManager
 							}
 							catch (InterruptedException | InvocationTargetException e2)
 							{
-								log.info("Unable to fully stop plugin \"{}\"", manifest.getInternalName(), e2);
+								log.info("Unable to fully stop plugin \"{}\"", jarData.getInternalName(), e2);
 							}
 							pluginManager.remove(p);
 						}
@@ -386,7 +386,7 @@ public class ExternalPluginManager
 
 			if (!startup)
 			{
-				eventBus.post(new ExternalPluginsChanged(manifestList));
+				eventBus.post(new ExternalPluginsChanged());
 			}
 		}
 		finally
@@ -429,15 +429,35 @@ public class ExternalPluginManager
 		executor.submit(this::refreshPlugins);
 	}
 
-	public static ExternalPluginManifest getExternalPluginManifest(Class<? extends Plugin> plugin)
+	@Nullable
+	public static PluginHubManifest.JarData getJarData(Class<? extends Plugin> plugin)
 	{
 		ClassLoader cl = plugin.getClassLoader();
-		if (cl instanceof ExternalPluginClassLoader)
+		if (cl instanceof PluginHubClassLoader)
 		{
-			ExternalPluginClassLoader ecl = (ExternalPluginClassLoader) cl;
-			return ecl.getManifest();
+			PluginHubClassLoader ecl = (PluginHubClassLoader) cl;
+			return ecl.getJarData();
 		}
 		return null;
+	}
+
+	@Nullable
+	public static PluginHubManifest.DisplayData getDisplayData(Class<? extends Plugin> plugin)
+	{
+		ClassLoader cl = plugin.getClassLoader();
+		if (cl instanceof PluginHubClassLoader)
+		{
+			PluginHubClassLoader ecl = (PluginHubClassLoader) cl;
+			return ecl.getStub();
+		}
+		return null;
+	}
+
+	@Nullable
+	public static String getInternalName(Class<? extends Plugin> plugin)
+	{
+		PluginHubManifest.JarData jd = getJarData(plugin);
+		return jd == null ? null : jd.getInternalName();
 	}
 
 	public static void loadBuiltin(Class<? extends Plugin>... plugins)

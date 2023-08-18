@@ -43,6 +43,7 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.Player;
+import net.runelite.api.Scene;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
@@ -85,6 +86,10 @@ public class ClueScrollPluginTest
 	@Mock
 	@Bind
 	Client client;
+
+	@Mock
+	@Bind
+	Scene scene;
 
 	@Mock
 	@Bind

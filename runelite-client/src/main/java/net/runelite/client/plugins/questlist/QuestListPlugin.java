@@ -158,7 +158,7 @@ public class QuestListPlugin extends Plugin
 		final int intStackSize = client.getIntStackSize();
 
 		final int row = intStack[intStackSize - 1];
-		final String questName = (String) client.getDBTableField(row, DBTableID.Quest.NAME, 0, 0);
+		final String questName = (String) client.getDBTableField(row, DBTableID.Quest.NAME, 0)[0];
 
 		intStack[intStackSize - 2] = questName.toLowerCase().contains(filter.toLowerCase()) ? 0 : 1;
 	}

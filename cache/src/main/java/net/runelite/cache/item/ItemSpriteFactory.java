@@ -109,6 +109,7 @@ public class ItemSpriteFactory
 		}
 
 		RSTextureProvider rsTextureProvider = new RSTextureProvider(textureProvider, spriteProvider);
+		rsTextureProvider.brightness = JagexColor.BRIGHTNESS_MAX;
 
 		SpritePixels spritePixels = new SpritePixels(36, 32);
 		Graphics3D graphics = new Graphics3D(rsTextureProvider);

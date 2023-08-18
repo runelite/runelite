@@ -33,19 +33,18 @@ uniform int samplingMode;
 uniform ivec2 sourceDimensions;
 uniform ivec2 targetDimensions;
 
-#include scale/xbr_lv2_vert.glsl
+#include "scale/xbr_lv2_vert.glsl"
 
-layout (location = 0) in vec3 aPos;
-layout (location = 1) in vec2 aTexCoord;
+layout(location = 0) in vec3 aPos;
+layout(location = 1) in vec2 aTexCoord;
 
 out vec2 TexCoord;
 out XBRTable xbrTable;
 
-void main()
-{
-    gl_Position = vec4(aPos, 1.0);
-    TexCoord = aTexCoord;
+void main() {
+  gl_Position = vec4(aPos, 1.0);
+  TexCoord = aTexCoord;
 
-    if (samplingMode == SAMPLING_XBR)
-        xbrTable = xbr_vert(TexCoord, sourceDimensions);
+  if (samplingMode == SAMPLING_XBR)
+    xbrTable = xbr_vert(TexCoord, sourceDimensions);
 }

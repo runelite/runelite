@@ -65,6 +65,7 @@ public class FlatStorageTest
 			byte[] data = "test".getBytes();
 			Container container = new Container(archive.getCompression(), -1);
 			container.compress(data, null);
+			archive.setCrc(container.crc);
 			byte[] compressedData = container.data;
 			storage.saveArchive(archive, compressedData);
 
@@ -72,6 +73,7 @@ public class FlatStorageTest
 			container.compress(data, null);
 			compressedData = container.data;
 			archive2.setRevision(42);
+			archive2.setCrc(container.crc);
 			storage.saveArchive(archive2, compressedData);
 
 			store.save();

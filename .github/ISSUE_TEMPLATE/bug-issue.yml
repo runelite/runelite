@@ -55,8 +55,8 @@ body:
       label: RuneLite version
       description: RuneLite and launcher version used. (Open the info panel to find this information)
       placeholder: |
-        RuneLite version: 1.8.18.1
-        Launcher version: 2.4.2
+        RuneLite version:
+        Launcher version:
     validations:
       required: true
   - type: markdown

@@ -279,8 +279,15 @@ public class WikiPlugin extends Plugin
 				{
 					type = "npc";
 					NPC npc = ev.getMenuEntry().getNpc();
-					assert npc != null;
+					if (npc == null)
+					{
+						return;
+					}
 					NPCComposition nc = npc.getTransformedComposition();
+					if (nc == null)
+					{
+						return;
+					}
 					id = nc.getId();
 					name = nc.getName();
 					location = npc.getWorldLocation();

@@ -115,6 +115,7 @@ public class ProfileManager
 					Profiles profilesData = new Profiles();
 					profilesData.setProfiles(profiles);
 					gson.toJson(profilesData, writer);
+					writer.flush();
 					channel.force(true);
 				}
 
@@ -140,6 +141,11 @@ public class ProfileManager
 
 		public ConfigProfile createProfile(String name, long id)
 		{
+			if (findProfile(id) != null)
+			{
+				throw new IllegalArgumentException("profile " + id + " already exists");
+			}
+
 			ConfigProfile profile = new ConfigProfile(id);
 			profile.setName(name);
 			profile.setSync(false);

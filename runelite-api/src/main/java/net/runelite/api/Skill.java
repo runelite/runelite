@@ -52,11 +52,10 @@ public enum Skill
 	FARMING("Farming"),
 	RUNECRAFT("Runecraft"),
 	HUNTER("Hunter"),
-	CONSTRUCTION("Construction"),
-	/**
-	 * The level of all skills added together.
-	 */
-	OVERALL("Overall");
+	CONSTRUCTION("Construction");
+
+	@Deprecated
+	public static final Skill OVERALL = null;
 
 	private final String name;
 

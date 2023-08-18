@@ -26,6 +26,7 @@ package net.runelite.api.hooks;
 
 import net.runelite.api.Model;
 import net.runelite.api.Renderable;
+import net.runelite.api.Scene;
 import net.runelite.api.SceneTileModel;
 import net.runelite.api.SceneTilePaint;
 import net.runelite.api.Texture;
@@ -69,4 +70,8 @@ public interface DrawCallbacks
 	void postDrawScene();
 
 	void animate(Texture texture, int diff);
+
+	void loadScene(Scene scene);
+
+	void swapScene(Scene scene);
 }

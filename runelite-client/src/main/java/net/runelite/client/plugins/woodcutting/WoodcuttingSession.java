@@ -24,19 +24,54 @@
  */
 package net.runelite.client.plugins.woodcutting;
 
+import java.time.Duration;
 import java.time.Instant;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 
 class WoodcuttingSession
 {
+	private final Instant start = Instant.now();
+	@Getter(AccessLevel.PACKAGE)
 	private Instant lastChopping;
+	@Getter(AccessLevel.PACKAGE)
+	private int logsCut;
+	@Getter(AccessLevel.PACKAGE)
+	private int logsPerHr;
+	@Getter(AccessLevel.PACKAGE)
+	private int bark;
+	@Getter(AccessLevel.PACKAGE)
+	private int barkPerHr;
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
+	private boolean active = true;
 
 	void setLastChopping()
 	{
 		lastChopping = Instant.now();
+		setActive(true);
 	}
 
-	Instant getLastChopping()
+	void incrementLogsCut()
 	{
-		return lastChopping;
+		++logsCut;
+
+		Duration elapsed = Duration.between(start, Instant.now());
+		if (!elapsed.isZero())
+		{
+			logsPerHr = (int) ((double) logsCut * Duration.ofHours(1).toMillis() / elapsed.toMillis());
+		}
+	}
+
+	void incrementBark(int num)
+	{
+		bark += num;
+
+		Duration elapsed = Duration.between(start, Instant.now());
+		if (!elapsed.isZero())
+		{
+			barkPerHr = (int) ((double) bark * Duration.ofHours(1).toMillis() / elapsed.toMillis());
+		}
 	}
 }

@@ -65,6 +65,7 @@ import javax.swing.SwingUtilities;
 import joptsimple.ArgumentAcceptingOptionSpec;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
+import joptsimple.OptionSpec;
 import joptsimple.ValueConversionException;
 import joptsimple.ValueConverter;
 import joptsimple.util.EnumConverter;
@@ -106,7 +107,6 @@ public class RuneLite
 	public static final File SCREENSHOT_DIR = new File(RUNELITE_DIR, "screenshots");
 	public static final File LOGS_DIR = new File(RUNELITE_DIR, "logs");
 	public static final File DEFAULT_SESSION_FILE = new File(RUNELITE_DIR, "session");
-	public static final File DEFAULT_CONFIG_FILE = new File(RUNELITE_DIR, "settings.properties");
 
 	private static final int MAX_OKHTTP_CACHE_SIZE = 20 * 1024 * 1024; // 20mb
 	public static String USER_AGENT = "RuneLite/" + RuneLiteProperties.getVersion() + "-" + RuneLiteProperties.getCommit() + (RuneLiteProperties.isDirty() ? "+" : "");
@@ -177,16 +177,12 @@ public class RuneLite
 			.defaultsTo(RuneLiteProperties.getJavConfig());
 		parser.accepts("disable-telemetry", "Disable telemetry");
 		parser.accepts("profile", "Configuration profile to use").withRequiredArg();
+		parser.accepts("noupdate", "Skips the launcher update");
 
 		final ArgumentAcceptingOptionSpec<File> sessionfile = parser.accepts("sessionfile", "Use a specified session file")
 			.withRequiredArg()
 			.withValuesConvertedBy(new ConfigFileConverter())
 			.defaultsTo(DEFAULT_SESSION_FILE);
-
-		final ArgumentAcceptingOptionSpec<File> configfile = parser.accepts("config", "Use a specified config file (deprecated)")
-			.withRequiredArg()
-			.withValuesConvertedBy(new ConfigFileConverter())
-			.defaultsTo(DEFAULT_CONFIG_FILE);
 
 		final ArgumentAcceptingOptionSpec<ClientUpdateCheckMode> updateMode = parser
 			.accepts("rs", "Select client type")
@@ -201,6 +197,8 @@ public class RuneLite
 					return super.convert(v.toUpperCase());
 				}
 			});
+
+		final OptionSpec<Void> insecureWriteCredentials = parser.accepts("insecure-write-credentials", "Dump authentication tokens from the Jagex Launcher to a text file to be used for development");
 
 		parser.accepts("help", "Show this text").forHelp();
 		OptionSet options = parser.parse(args);
@@ -278,8 +276,9 @@ public class RuneLite
 				options.has("safe-mode"),
 				options.has("disable-telemetry"),
 				options.valueOf(sessionfile),
-				options.valueOf(configfile),
-				(String) options.valueOf("profile")
+				(String) options.valueOf("profile"),
+				options.has(insecureWriteCredentials),
+				options.has("noupdate")
 			));
 
 			injector.getInstance(RuneLite.class).start();
@@ -324,17 +323,9 @@ public class RuneLite
 			applet.setSize(Constants.GAME_FIXED_SIZE);
 
 			System.setProperty("jagex.disableBouncyCastle", "true");
-			// Change user.home so the client places jagexcache in the .runelite directory
-			String oldHome = System.setProperty("user.home", RUNELITE_DIR.getAbsolutePath());
-			try
-			{
-				applet.init();
-			}
-			finally
-			{
-				System.setProperty("user.home", oldHome);
-			}
+			System.setProperty("jagex.userhome", RUNELITE_DIR.getAbsolutePath());
 
+			applet.init();
 			applet.start();
 		}
 
@@ -348,6 +339,10 @@ public class RuneLite
 
 		// Tell the plugin manager if client is outdated or not
 		pluginManager.setOutdated(isOutdated);
+
+		// Update check requires ConfigManager to be ready before it runs
+		Updater updater = injector.getInstance(Updater.class);
+		updater.update(); // will exit if an update is in progress
 
 		// Load the plugins, but does not start them yet.
 		// This will initialize configuration
@@ -399,6 +394,7 @@ public class RuneLite
 		if (telemetryClient != null)
 		{
 			telemetryClient.submitTelemetry();
+			telemetryClient.submitVmErrors(LOGS_DIR);
 		}
 
 		ReflectUtil.queueInjectorAnnotationCacheInvalidation(injector);

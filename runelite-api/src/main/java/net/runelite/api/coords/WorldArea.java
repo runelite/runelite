@@ -31,7 +31,6 @@ import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.CollisionData;
 import net.runelite.api.CollisionDataFlag;
-import net.runelite.api.Constants;
 import net.runelite.api.Point;
 import net.runelite.api.Tile;
 
@@ -473,106 +472,6 @@ public class WorldArea
 			y = other.y;
 		}
 		return new Point(x, y);
-	}
-
-	/**
-	 * Calculates the next area that will be occupied if this area attempts
-	 * to move toward it by using the normal NPC travelling pattern.
-	 *
-	 * @param client the client to calculate with
-	 * @param target the target area
-	 * @param stopAtMeleeDistance whether to stop at melee distance to the target
-	 * @return the next occupied area
-	 */
-	public WorldArea calculateNextTravellingPoint(Client client, WorldArea target,
-		boolean stopAtMeleeDistance)
-	{
-		return calculateNextTravellingPoint(client, target, stopAtMeleeDistance, x -> true);
-	}
-
-	/**
-	 * Calculates the next area that will be occupied if this area attempts
-	 * to move toward it by using the normal NPC travelling pattern.
-	 *
-	 * @param client the client to calculate with
-	 * @param target the target area
-	 * @param stopAtMeleeDistance whether to stop at melee distance to the target
-	 * @param extraCondition an additional condition to perform when checking valid tiles,
-	 * 	                     such as performing a check for un-passable actors
-	 * @return the next occupied area
-	 */
-	public WorldArea calculateNextTravellingPoint(Client client, WorldArea target,
-		boolean stopAtMeleeDistance, Predicate<? super WorldPoint> extraCondition)
-	{
-		if (plane != target.getPlane())
-		{
-			return null;
-		}
-
-		if (this.intersectsWith(target))
-		{
-			if (stopAtMeleeDistance)
-			{
-				// Movement is unpredictable when the NPC and actor stand on top of each other
-				return null;
-			}
-			else
-			{
-				return this;
-			}
-		}
-
-		int dx = target.x - this.x;
-		int dy = target.y - this.y;
-		Point axisDistances = getAxisDistances(target);
-		if (stopAtMeleeDistance && axisDistances.getX() + axisDistances.getY() == 1)
-		{
-			// NPC is in melee distance of target, so no movement is done
-			return this;
-		}
-
-		LocalPoint lp = LocalPoint.fromWorld(client, x, y);
-		if (lp == null ||
-			lp.getSceneX() + dx < 0 || lp.getSceneX() + dy >= Constants.SCENE_SIZE ||
-			lp.getSceneY() + dx < 0 || lp.getSceneY() + dy >= Constants.SCENE_SIZE)
-		{
-			// NPC is travelling out of the scene, so collision data isn't available
-			return null;
-		}
-
-		int dxSig = Integer.signum(dx);
-		int dySig = Integer.signum(dy);
-		if (stopAtMeleeDistance && axisDistances.getX() == 1 && axisDistances.getY() == 1)
-		{
-			// When it needs to stop at melee distance, it will only attempt
-			// to travel along the x axis when it is standing diagonally
-			// from the target
-			if (this.canTravelInDirection(client, dxSig, 0, extraCondition))
-			{
-				return new WorldArea(x + dxSig, y, width, height, plane);
-			}
-		}
-		else
-		{
-			if (this.canTravelInDirection(client, dxSig, dySig, extraCondition))
-			{
-				return new WorldArea(x + dxSig, y + dySig, width, height, plane);
-			}
-			else if (dx != 0 && this.canTravelInDirection(client, dxSig, 0, extraCondition))
-			{
-				return new WorldArea(x + dxSig, y, width, height, plane);
-			}
-			else if (dy != 0 && Math.max(Math.abs(dx), Math.abs(dy)) > 1 &&
-				this.canTravelInDirection(client, 0, dy, extraCondition))
-			{
-				// Note that NPCs don't attempts to travel along the y-axis
-				// if the target is <= 1 tile distance away
-				return new WorldArea(x, y + dySig, width, height, plane);
-			}
-		}
-
-		// The NPC is stuck
-		return this;
 	}
 
 	/**

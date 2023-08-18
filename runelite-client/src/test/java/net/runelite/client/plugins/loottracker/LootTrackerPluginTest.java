@@ -46,6 +46,7 @@ import net.runelite.api.ItemID;
 import net.runelite.api.IterableHashTable;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
+import net.runelite.api.Scene;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
@@ -107,6 +108,10 @@ public class LootTrackerPluginTest
 	@Mock
 	@Bind
 	private Client client;
+
+	@Mock
+	@Bind
+	private Scene scene;
 
 	@Mock
 	@Bind

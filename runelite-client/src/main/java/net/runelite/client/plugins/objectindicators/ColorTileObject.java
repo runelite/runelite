@@ -38,6 +38,11 @@ import net.runelite.api.TileObject;
 @RequiredArgsConstructor
 class ColorTileObject
 {
+	static final int HF_HULL = 0x1;
+	static final int HF_OUTLINE = 0x2;
+	static final int HF_CLICKBOX = 0x4;
+	static final int HF_TILE = 0x8;
+
 	private final TileObject tileObject;
 	/**
 	 * Non-transformed object composition for the object
@@ -48,4 +53,5 @@ class ColorTileObject
 	 */
 	private final String name;
 	private final Color color;
+	byte highlightFlags;
 }
