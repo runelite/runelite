@@ -104,6 +104,7 @@
 								<exclude>net/runelite/api/widgets/WidgetTextAlignment.class</exclude>
 								<exclude>net/runelite/api/widgets/WidgetType.class</exclude>
 								<exclude>net/runelite/api/AnimationID.class</exclude>
+								<exclude>net/runelite/api/CollisionDataFlag.class</exclude>
 								<exclude>net/runelite/api/EnumID.class</exclude>
 								<exclude>net/runelite/api/FontID.class</exclude>
 								<exclude>net/runelite/api/GraphicID.class</exclude>
