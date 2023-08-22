@@ -44,8 +44,7 @@ public class CrowdsourcingDialogue
 	private CrowdsourcingManager manager;
 
 	private boolean inDialogue = false;
-	private String lastNpcDialogueText = null;
-	private String lastPlayerDialogueText = null;
+	private String lastDialogueText = null;
 	private Widget[] dialogueOptions;
 
 	private String sanitize(String dialogue)
@@ -73,25 +72,27 @@ public class CrowdsourcingDialogue
 		{
 			inDialogue = false;
 			manager.storeEvent(new StartEndData(false));
+			lastDialogueText = null;
 		}
 
-		if (npcDialogueTextWidget != null && !npcDialogueTextWidget.getText().equals(lastNpcDialogueText))
+		if (npcDialogueTextWidget != null && !npcDialogueTextWidget.getText().equals(lastDialogueText))
 		{
-			lastNpcDialogueText = npcDialogueTextWidget.getText();
+			lastDialogueText = npcDialogueTextWidget.getText();
 			String npcName = client.getWidget(WidgetInfo.DIALOG_NPC_NAME).getText();
-			NpcDialogueData data = new NpcDialogueData(sanitize(lastNpcDialogueText), npcName);
+			NpcDialogueData data = new NpcDialogueData(sanitize(lastDialogueText), npcName);
 			manager.storeEvent(data);
 		}
 
-		if (playerDialogueTextWidget != null && !playerDialogueTextWidget.getText().equals(lastPlayerDialogueText))
+		if (playerDialogueTextWidget != null && !playerDialogueTextWidget.getText().equals(lastDialogueText))
 		{
-			lastPlayerDialogueText = playerDialogueTextWidget.getText();
-			PlayerDialogueData data = new PlayerDialogueData(sanitize(lastPlayerDialogueText));
+			lastDialogueText = playerDialogueTextWidget.getText();
+			PlayerDialogueData data = new PlayerDialogueData(sanitize(lastDialogueText));
 			manager.storeEvent(data);
 		}
 
 		if (playerDialogueOptionsWidget != null && playerDialogueOptionsWidget.getChildren() != dialogueOptions)
 		{
+			lastDialogueText = null;
 			dialogueOptions = playerDialogueOptionsWidget.getChildren();
 			String[] optionsText = new String[dialogueOptions.length];
 			for (int i = 0; i < dialogueOptions.length; i++)
