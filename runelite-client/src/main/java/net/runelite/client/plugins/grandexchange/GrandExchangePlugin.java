@@ -45,14 +45,12 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.function.ToIntFunction;
+import java.util.function.ToDoubleFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import javax.inject.Inject;
@@ -111,7 +109,6 @@ import net.runelite.http.api.ge.GrandExchangeTrade;
 import net.runelite.http.api.item.ItemStats;
 import net.runelite.http.api.worlds.WorldType;
 import org.apache.commons.lang3.time.DurationFormatUtils;
-import org.apache.commons.text.similarity.FuzzyScore;
 
 @PluginDescriptor(
 	name = "Grand Exchange",
@@ -134,7 +131,6 @@ public class GrandExchangePlugin extends Plugin
 
 	private static final int MAX_RESULT_COUNT = 250;
 
-	private static final FuzzyScore FUZZY = new FuzzyScore(Locale.ENGLISH);
 	private static final Color FUZZY_HIGHLIGHT_COLOR = new Color(0x800000);
 
 	private static final int MAX_TRADE_HISTORY = 1024;
@@ -192,6 +188,9 @@ public class GrandExchangePlugin extends Plugin
 	private ScheduledExecutorService scheduledExecutorService;
 
 	@Inject
+	private FuzzySearchScorer fuzzySearchScorer;
+
+	@Inject
 	private GrandExchangeClient grandExchangeClient;
 	private int lastLoginTick;
 
@@ -200,49 +199,6 @@ public class GrandExchangePlugin extends Plugin
 	private String machineUuid;
 	private long lastAccount;
 	private int tradeSeq;
-
-	/**
-	 * Logic from {@link org.apache.commons.text.similarity.FuzzyScore}
-	 */
-	@VisibleForTesting
-	static List<Integer> findFuzzyIndices(String term, String query)
-	{
-		List<Integer> indices = new ArrayList<>();
-
-		// fuzzy logic is case insensitive. We normalize the Strings to lower
-		// case right from the start. Turning characters to lower case
-		// via Character.toLowerCase(char) is unfortunately insufficient
-		// as it does not accept a locale.
-		final String termLowerCase = term.toLowerCase();
-		final String queryLowerCase = query.toLowerCase();
-
-		// the position in the term which will be scanned next for potential
-		// query character matches
-		int termIndex = 0;
-
-		for (int queryIndex = 0; queryIndex < queryLowerCase.length(); queryIndex++)
-		{
-			final char queryChar = queryLowerCase.charAt(queryIndex);
-
-			boolean termCharacterMatchFound = false;
-			for (; termIndex < termLowerCase.length()
-					&& !termCharacterMatchFound; termIndex++)
-			{
-				final char termChar = termLowerCase.charAt(termIndex);
-
-				if (queryChar == termChar)
-				{
-					indices.add(termIndex);
-
-					// we can leave the nested loop. Every character in the
-					// query can match at most one character in the term.
-					termCharacterMatchFound = true;
-				}
-			}
-		}
-
-		return indices;
-	}
 
 	private SavedOffer getOffer(int slot)
 	{
@@ -692,7 +648,7 @@ public class GrandExchangePlugin extends Plugin
 		{
 			return;
 		}
-		String input = client.getVarcStrValue(VarClientStr.INPUT_TEXT);
+		String input = client.getVarcStrValue(VarClientStr.INPUT_TEXT).toLowerCase();
 
 		String underlineTag = "<u=" + ColorUtil.colorToHexCode(FUZZY_HIGHLIGHT_COLOR) + ">";
 
@@ -703,33 +659,23 @@ public class GrandExchangePlugin extends Plugin
 		for (int i = 0; i < resultCount; i++)
 		{
 			Widget itemNameWidget = children[i * 3 + 1];
-			String itemName = itemNameWidget.getText();
+			String itemName = itemNameWidget.getText(); // preserve case in underlined string
+			String itemNameLower = itemName.toLowerCase(); // but match case-insensitive
 
-			List<Integer> indices;
-			String otherName = itemName.replace('-', ' ');
-			if (!itemName.contains("-") || FUZZY.fuzzyScore(itemName, input) >= FUZZY.fuzzyScore(otherName, input))
+			int sharedPrefixLen = 0;
+			int maxLen = Math.min(input.length(), itemName.length());
+			while (sharedPrefixLen < maxLen && input.charAt(sharedPrefixLen) == itemNameLower.charAt(sharedPrefixLen))
 			{
-				indices = findFuzzyIndices(itemName, input);
-			}
-			else
-			{
-				indices = findFuzzyIndices(otherName, input);
-			}
-			Collections.reverse(indices);
-
-			StringBuilder newItemName = new StringBuilder(itemName);
-			for (int index : indices)
-			{
-				if (itemName.charAt(index) == ' ' || itemName.charAt(index) == '-')
-				{
-					continue;
-				}
-
-				newItemName.insert(index + 1, "</u>");
-				newItemName.insert(index, underlineTag);
+				sharedPrefixLen++;
 			}
 
-			itemNameWidget.setText(newItemName.toString());
+			if (sharedPrefixLen > 0)
+			{
+				StringBuilder newItemName = new StringBuilder(itemName);
+				newItemName.insert(sharedPrefixLen, "</u>");
+				newItemName.insert(0, underlineTag);
+				itemNameWidget.setText(newItemName.toString());
+			}
 		}
 	}
 
@@ -780,23 +726,12 @@ public class GrandExchangePlugin extends Plugin
 
 		if (resultCount == 0)
 		{
-			// We do this so that for example the items "Anti-venom ..." are still at the top
-			// when searching "anti venom"
-			ToIntFunction<ItemComposition> getScore = item ->
-			{
-				int score = FUZZY.fuzzyScore(item.getName(), input);
-				if (item.getName().contains("-"))
-				{
-					return Math.max(FUZZY.fuzzyScore(item.getName().replace('-', ' '), input), score);
-				}
-				return score;
-			};
-
+			ToDoubleFunction<ItemComposition> comparator = fuzzySearchScorer.comparator(input);
 			List<Integer> ids = IntStream.range(0, client.getItemCount())
 					.mapToObj(itemManager::getItemComposition)
 					.filter(item -> item.isTradeable() && item.getNote() == -1)
-					.filter(item -> getScore.applyAsInt(item) > 0)
-					.sorted(Comparator.comparingInt(getScore).reversed()
+					.filter(item -> comparator.applyAsDouble(item) > 0)
+					.sorted(Comparator.comparingDouble(comparator).reversed()
 						.thenComparing(ItemComposition::getName))
 					.limit(MAX_RESULT_COUNT)
 					.map(ItemComposition::getId)
