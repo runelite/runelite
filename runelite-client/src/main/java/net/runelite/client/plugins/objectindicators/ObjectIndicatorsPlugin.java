@@ -197,13 +197,16 @@ public class ObjectIndicatorsPlugin extends Plugin
 	private void reloadPoints()
 	{
 		points.clear();
-		for (int regionId : client.getMapRegions())
+		if (client.getMapRegions() != null)
 		{
-			// load points for region
-			final Set<ObjectPoint> regionPoints = loadPoints(regionId);
-			if (regionPoints != null)
+			for (int regionId : client.getMapRegions())
 			{
-				points.put(regionId, regionPoints);
+				// load points for region
+				final Set<ObjectPoint> regionPoints = loadPoints(regionId);
+				if (regionPoints != null)
+				{
+					points.put(regionId, regionPoints);
+				}
 			}
 		}
 	}
