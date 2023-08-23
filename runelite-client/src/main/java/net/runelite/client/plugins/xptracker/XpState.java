@@ -31,6 +31,7 @@ import javax.inject.Inject;
 import lombok.NonNull;
 import net.runelite.api.NPC;
 import net.runelite.api.Skill;
+import net.runelite.api.Experience;
 
 /**
  * Internal state for the XpTrackerPlugin
@@ -87,8 +88,10 @@ class XpState
 	 */
 	XpUpdateResult updateSkill(Skill skill, long currentXp, int goalStartXp, int goalEndXp)
 	{
+		if(xpTrackerConfig.hideMaxed() && currentXp >= Experience.MAX_SKILL_XP) {
+			return XpUpdateResult.NO_CHANGE;
+		}
 		XpStateSingle state = xpSkills.get(skill);
-
 		if (state == null || state.getStartXp() == -1)
 		{
 			assert currentXp >= 0;
