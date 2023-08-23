@@ -9513,6 +9513,18 @@
     22486,
     22664
   ],
+  "starter sword": [
+    22331,
+    28559
+  ],
+  "starter bow": [
+    22333,
+    28555
+  ],
+  "starter staff": [
+    22335,
+    28557
+  ],
   "bryophytas staff": [
     22368,
     22370
@@ -11522,5 +11534,91 @@
     28468,
     28469,
     28470
+  ],
+  "sigil of sustenance": [
+    28477,
+    28478
+  ],
+  "sigil of hoarding": [
+    28480,
+    28481
+  ],
+  "sigil of the alchemaniac": [
+    28483,
+    28484
+  ],
+  "sigil of the hunter": [
+    28486,
+    28487
+  ],
+  "sigil of resistance": [
+    28489,
+    28490
+  ],
+  "sigil of agile fortune": [
+    28492,
+    28493
+  ],
+  "sigil of the food master": [
+    28495,
+    28496
+  ],
+  "sigil of the wellfed": [
+    28498,
+    28499
+  ],
+  "sigil of the infernal chef": [
+    28501,
+    28502
+  ],
+  "sigil of the infernal smith": [
+    28504,
+    28505
+  ],
+  "sigil of the lightbearer": [
+    28507,
+    28508
+  ],
+  "sigil of the bloodhound": [
+    28510,
+    28511
+  ],
+  "sigil of precision": [
+    28513,
+    28514
+  ],
+  "sigil of the augmented thrall": [
+    28516,
+    28517
+  ],
+  "sigil of faith": [
+    28519,
+    28520
+  ],
+  "sigil of titanium": [
+    28522,
+    28523
+  ],
+  "sigil of the ninja": [
+    28525,
+    28526
+  ],
+  "sigil of woodcraft": [
+    28528,
+    28529
+  ],
+  "corrupted scythe of vitur": [
+    28543,
+    28545
+  ],
+  "corrupted tumekens shadow": [
+    28547,
+    28549
+  ],
+  "quest lamp": [
+    28551,
+    28552,
+    28553,
+    28554
   ]
 }
