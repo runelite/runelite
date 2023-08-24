@@ -433,7 +433,10 @@ public class TabInterface
 					// openTag will reset and relayout
 				}
 
-				client.playSoundEffect(SoundEffectID.UI_BOOP);
+				if (config.enableTagTabSound())
+				{
+					client.playSoundEffect(SoundEffectID.UI_BOOP);
+				}
 				break;
 			case Tab.CHANGE_ICON:
 				final String tag = Text.removeTags(event.getOpbase());
