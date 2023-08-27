@@ -43,6 +43,7 @@ import javax.swing.border.EmptyBorder;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.timetracking.clocks.ClockManager;
+import net.runelite.client.plugins.timetracking.farming.CompostTracker;
 import net.runelite.client.plugins.timetracking.farming.FarmingContractManager;
 import net.runelite.client.plugins.timetracking.farming.FarmingNextTickPanel;
 import net.runelite.client.plugins.timetracking.farming.FarmingTracker;
@@ -70,7 +71,7 @@ class TimeTrackingPanel extends PluginPanel
 
 	@Inject
 	TimeTrackingPanel(ItemManager itemManager, TimeTrackingConfig config, FarmingTracker farmingTracker,
-		BirdHouseTracker birdHouseTracker, ClockManager clockManager,
+		BirdHouseTracker birdHouseTracker, ClockManager clockManager, CompostTracker compostTracker,
 		FarmingContractManager farmingContractManager, ConfigManager configManager,
 		@Named("developerMode") boolean developerMode)
 	{
@@ -104,6 +105,8 @@ class TimeTrackingPanel extends PluginPanel
 		{
 			addTab(Tab.TIME_OFFSET, new FarmingNextTickPanel(farmingTracker, config, configManager));
 		}
+
+		compostTracker.onCompostAction(this::update);
 	}
 
 	private void addTab(Tab tab, TabContentPanel tabContentPanel)

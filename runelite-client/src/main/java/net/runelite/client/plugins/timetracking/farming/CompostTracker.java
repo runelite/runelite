@@ -93,6 +93,8 @@ public class CompostTracker
 	private final FarmingWorld farmingWorld;
 	private final ConfigManager configManager;
 
+	private Runnable onCompostActionCallback = null;
+
 	@VisibleForTesting
 	final Map<FarmingPatch, PendingCompost> pendingCompostActions = new HashMap<>();
 
@@ -199,6 +201,10 @@ public class CompostTracker
 			{
 				setCompostState(pc.getFarmingPatch(), compostUsed);
 				pendingCompostActions.remove(pc.getFarmingPatch());
+				if (onCompostActionCallback != null)
+				{
+					onCompostActionCallback.run();
+				}
 			});
 	}
 
@@ -289,6 +295,11 @@ public class CompostTracker
 		}
 
 		return null;
+	}
+
+	public void onCompostAction(Runnable r)
+	{
+		onCompostActionCallback = r;
 	}
 
 }
