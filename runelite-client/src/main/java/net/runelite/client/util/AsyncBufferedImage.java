@@ -33,9 +33,12 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
+import lombok.Getter;
+
 public class AsyncBufferedImage extends BufferedImage
 {
 	private final List<Runnable> listeners = new ArrayList<>();
+	@Getter
 	private boolean loaded;
 
 	public AsyncBufferedImage(int width, int height, int imageType)
