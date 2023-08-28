@@ -89,19 +89,22 @@ public class TileIndicatorsOverlay extends Overlay
 				return null;
 			}
 
-			int timeSinceLastMove = client.getGameCycle() - plugin.getLastTimePlayerMoved();
-			int fadeoutTime = config.trueTileFadeoutTime();
 			Color color = config.highlightCurrentColor();
 			Color fillColor = config.currentTileFillColor();
 			if (!config.trueTileFadeout())
 			{
 				renderTile(graphics, playerPosLocal, color, config.currentTileBorderWidth(), fillColor);
 			}
-			else if (timeSinceLastMove < fadeoutTime)
+			else
 			{
-				// Keep it solid color for 1 game tick, to prevent it from fading out when moving on consecutive game ticks.
-				double opacity = timeSinceLastMove <= 30 ? 1.0d : (1.0d - Math.pow((timeSinceLastMove - 30) / (double) (fadeoutTime - 30), 2));
-				renderTile(graphics, playerPosLocal, ColorUtil.colorWithAlpha(color, (int) (opacity * color.getAlpha())), config.currentTileBorderWidth(), ColorUtil.colorWithAlpha(fillColor, (int) (opacity * fillColor.getAlpha())));
+				int fadeoutTime = config.trueTileFadeoutTime();
+				int timeSinceLastMove = client.getGameCycle() - plugin.getLastTimePlayerMoved();
+				if (timeSinceLastMove < fadeoutTime)
+				{
+					// Keep it solid color for 1 game tick, to prevent it from fading out when moving on consecutive game ticks.
+					double opacity = timeSinceLastMove <= 30 ? 1.0d : (1.0d - Math.pow((timeSinceLastMove - 30) / (double) (fadeoutTime - 30), 2));
+					renderTile(graphics, playerPosLocal, ColorUtil.colorWithAlpha(color, (int) (opacity * color.getAlpha())), config.currentTileBorderWidth(), ColorUtil.colorWithAlpha(fillColor, (int) (opacity * fillColor.getAlpha())));
+				}
 			}
 		}
 

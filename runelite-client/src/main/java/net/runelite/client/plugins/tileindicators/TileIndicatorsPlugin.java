@@ -102,6 +102,7 @@ public class TileIndicatorsPlugin extends Plugin
 	{
 		if (e.getGameState() == GameState.LOGIN_SCREEN)
 		{
+			// When true tile fadeout is enabled, this prevents the true tile from showing up right after logging in.
 			lastPlayerPosition = null;
 		}
 	}
