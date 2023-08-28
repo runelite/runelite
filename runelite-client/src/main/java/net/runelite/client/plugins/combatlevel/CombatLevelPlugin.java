@@ -163,7 +163,7 @@ public class CombatLevelPlugin extends Plugin
 	public void onScriptPreFired(ScriptPreFired scriptPreFired)
 	{
 		final int scriptId = scriptPreFired.getScriptId();
-		if (scriptId != ScriptID.ACCOUNT_SUMMARY_TEXT_FORMAT && scriptId != ScriptID.ACCOUNT_SUMMARY_SECTION_FORMAT)
+		if (scriptId != ScriptID.ACCOUNT_SUMMARY_TEXT_FORMAT && scriptId != ScriptID.ACCOUNT_SUMMARY_SECTION_FORMAT || !config.showPreciseCombatLevel())
 		{
 			return;
 		}
