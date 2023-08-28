@@ -31,6 +31,7 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.Perspective;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
@@ -91,18 +92,22 @@ public class TileIndicatorsOverlay extends Overlay
 
 			Color color = config.highlightCurrentColor();
 			Color fillColor = config.currentTileFillColor();
-			if (!config.trueTileFadeout())
+			// When not fading out the current tile, or when it has been 1 game tick or less since the player last
+			// moved, draw the tile at full opacity. When using fadeout, drawing the indicator at full opacity for 1
+			// game tick prevents it from fading out when moving on consecutive ticks.
+			if (!config.trueTileFadeout() || client.getTickCount() - plugin.getLastTickPlayerMoved() <= 1)
 			{
 				renderTile(graphics, playerPosLocal, color, config.currentTileBorderWidth(), fillColor);
 			}
 			else
 			{
-				int fadeoutTime = config.trueTileFadeoutTime();
-				int timeSinceLastMove = client.getGameCycle() - plugin.getLastTimePlayerMoved();
-				if (timeSinceLastMove < fadeoutTime)
+				// It is 1 game tick after the player has stopped moving, so fade out the tile.
+				long timeSinceLastMove = System.currentTimeMillis() - plugin.getLastTimePlayerStoppedMoving();
+				// The fadeout does not begin for 1 game tick, so subtract that.
+				int fadeoutTime = config.trueTileFadeoutTime() - Constants.GAME_TICK_LENGTH;
+				if (fadeoutTime != 0 && timeSinceLastMove < fadeoutTime)
 				{
-					// Keep it solid color for 1 game tick, to prevent it from fading out when moving on consecutive game ticks.
-					double opacity = timeSinceLastMove <= 30 ? 1.0d : (1.0d - Math.pow((timeSinceLastMove - 30) / (double) (fadeoutTime - 30), 2));
+					double opacity = 1.0d - Math.pow(timeSinceLastMove / (double) fadeoutTime, 2);
 					renderTile(graphics, playerPosLocal, ColorUtil.colorWithAlpha(color, (int) (opacity * color.getAlpha())), config.currentTileBorderWidth(), ColorUtil.colorWithAlpha(fillColor, (int) (opacity * fillColor.getAlpha())));
 				}
 			}

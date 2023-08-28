@@ -59,7 +59,10 @@ public class TileIndicatorsPlugin extends Plugin
 	private WorldPoint lastPlayerPosition = null;
 
 	@Getter
-	private int lastTimePlayerMoved = 0;
+	private int lastTickPlayerMoved = 0;
+
+	@Getter
+	private long lastTimePlayerStoppedMoving = 0;
 
 	@Provides
 	TileIndicatorsConfig provideConfig(ConfigManager configManager)
@@ -89,9 +92,16 @@ public class TileIndicatorsPlugin extends Plugin
 			return;
 		}
 
-		if (lastPlayerPosition != null && !playerPos.equals(lastPlayerPosition))
+		if (lastPlayerPosition != null)
 		{
-			lastTimePlayerMoved = client.getGameCycle();
+			if (!playerPos.equals(lastPlayerPosition))
+			{
+				lastTickPlayerMoved = client.getTickCount();
+			}
+			else if (lastTickPlayerMoved + 1 == client.getTickCount())
+			{
+				lastTimePlayerStoppedMoving = System.currentTimeMillis();
+			}
 		}
 
 		lastPlayerPosition = playerPos;
