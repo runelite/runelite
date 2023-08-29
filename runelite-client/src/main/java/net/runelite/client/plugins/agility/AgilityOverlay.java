@@ -163,7 +163,7 @@ class AgilityOverlay extends Overlay
 	}
 
 	private void renderClickboxes(Graphics2D graphics, TileObject object, Obstacle obstacle,
-								  Point mousePosition, List<Tile> marksOfGrace)
+									Point mousePosition, List<Tile> marksOfGrace)
 	{
 		// This assumes that the obstacle is not clickable.
 		if (Obstacles.TRAP_OBSTACLE_IDS.contains(object.getId()))
