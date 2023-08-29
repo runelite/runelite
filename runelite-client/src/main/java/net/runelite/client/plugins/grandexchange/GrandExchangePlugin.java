@@ -929,7 +929,7 @@ public class GrandExchangePlugin extends Plugin
 			}
 		}
 
-		if (config.showActivelyTradedPrice())
+		if (config.showActivelyTradedPrice() && !client.getWorldType().contains(net.runelite.api.WorldType.DEADMAN))
 		{
 			final int price = itemManager.getItemPriceWithSource(itemId, true);
 			if (price > 0)
