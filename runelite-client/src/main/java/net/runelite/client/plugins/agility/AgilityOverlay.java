@@ -133,6 +133,35 @@ class AgilityOverlay extends Overlay
 		return null;
 	}
 
+	private void highlightTile(Graphics2D graphics, LocalPoint playerLocation, Tile tile, Color color)
+	{
+		if (config.extendDrawDistance())
+		{
+			if (tile.getPlane() == client.getPlane() && tile.getItemLayer() != null)
+			{
+				highlightTileOverlay(graphics, tile, color);
+			}
+		}
+		else
+		{
+			if (tile.getPlane() == client.getPlane() && tile.getItemLayer() != null
+				&& tile.getLocalLocation().distanceTo(playerLocation) < MAX_DISTANCE)
+			{
+				highlightTileOverlay(graphics, tile, color);
+			}
+		}
+	}
+
+	private void highlightTileOverlay(Graphics2D graphics, Tile tile, Color color)
+	{
+		final Polygon poly = tile.getItemLayer().getCanvasTilePoly();
+
+		if (poly != null)
+		{
+			OverlayUtil.renderPolygon(graphics, poly, color);
+		}
+	}
+
 	private void renderClickboxes(Graphics2D graphics, TileObject object, Obstacle obstacle,
 								  Point mousePosition, List<Tile> marksOfGrace)
 	{
@@ -181,35 +210,6 @@ class AgilityOverlay extends Overlay
 			graphics.draw(objectClickbox);
 			graphics.setColor(ColorUtil.colorWithAlpha(configColor, configColor.getAlpha() / 5));
 			graphics.fill(objectClickbox);
-		}
-	}
-
-	private void highlightTile(Graphics2D graphics, LocalPoint playerLocation, Tile tile, Color color)
-	{
-		if (config.extendDrawDistance())
-		{
-			if (tile.getPlane() == client.getPlane() && tile.getItemLayer() != null)
-			{
-				highlightTileOverlay(graphics, tile, color);
-			}
-		}
-		else
-		{
-			if (tile.getPlane() == client.getPlane() && tile.getItemLayer() != null
-				&& tile.getLocalLocation().distanceTo(playerLocation) < MAX_DISTANCE)
-			{
-				highlightTileOverlay(graphics, tile, color);
-			}
-		}
-	}
-
-	private void highlightTileOverlay(Graphics2D graphics, Tile tile, Color color)
-	{
-		final Polygon poly = tile.getItemLayer().getCanvasTilePoly();
-
-		if (poly != null)
-		{
-			OverlayUtil.renderPolygon(graphics, poly, color);
 		}
 	}
 }
