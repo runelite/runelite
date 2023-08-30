@@ -37,6 +37,17 @@ import net.runelite.api.coords.WorldPoint;
  */
 public interface TileObject
 {
+	/**
+	 * A bitfield containing various flags:
+	 * <pre>{@code
+	 * id = bits >> 17 & 0xffffffff
+	 * wall = bits >> 16 & 1
+	 * type = bits >> 14 & 3
+	 * scene y = bits >> 7 & 127
+	 * scene x = bits >> 0 & 127
+	 * }</pre>
+	 * Type 0 = player, 1 = npc, 2 = game object, 3 = item
+	 */
 	long getHash();
 
 	/**
