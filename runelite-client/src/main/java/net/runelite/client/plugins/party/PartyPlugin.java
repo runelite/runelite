@@ -37,6 +37,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -428,6 +429,10 @@ public class PartyPlugin extends Plugin
 		{
 			partyData.setVengeanceActive(event.getVengeanceActive());
 		}
+		if (event.getMemberColor() != null)
+		{
+			partyData.setColor(event.getMemberColor());
+		}
 
 		final PartyMember member = party.getMemberById(event.getMemberId());
 		if (event.getCharacterName() != null)
@@ -437,12 +442,10 @@ public class PartyPlugin extends Plugin
 			{
 				member.setDisplayName(name);
 				member.setLoggedIn(true);
-				partyData.setColor(ColorUtil.fromObject(name));
 			}
 			else
 			{
 				member.setLoggedIn(false);
-				partyData.setColor(Color.WHITE);
 			}
 		}
 
@@ -500,6 +503,7 @@ public class PartyPlugin extends Plugin
 		final int runEnergy = (int) Math.ceil(client.getEnergy() / 1000.0) * 10; // flatten to reduce network load
 		final int specEnergy = client.getVarpValue(VarPlayer.SPECIAL_ATTACK_PERCENT) / 10;
 		final boolean vengActive = client.getVarbitValue(Varbits.VENGEANCE_ACTIVE) == 1;
+		final Color memberColor = getLocalMemberColor();
 
 		final Player localPlayer = client.getLocalPlayer();
 		final String characterName = Strings.nullToEmpty(localPlayer != null && client.getGameState().getState() >= GameState.LOADING.getState() ? localPlayer.getName() : null);
@@ -546,6 +550,11 @@ public class PartyPlugin extends Plugin
 			shouldSend = true;
 			update.setVengeanceActive(vengActive);
 		}
+		if (forceSend || !Objects.equals(memberColor, lastStatus.getMemberColor()))
+		{
+			shouldSend = true;
+			update.setMemberColor(memberColor);
+		}
 
 		if (shouldSend)
 		{
@@ -559,7 +568,8 @@ public class PartyPlugin extends Plugin
 				prayerMax,
 				runEnergy,
 				specEnergy,
-				vengActive
+				vengActive,
+				memberColor
 			);
 		}
 	}
@@ -647,6 +657,26 @@ public class PartyPlugin extends Plugin
 			SwingUtilities.invokeLater(() -> panel.addMember(partyData));
 			return partyData;
 		});
+	}
+
+	private Color getLocalMemberColor()
+	{
+		Color memberColor = config.memberColor();
+		if (memberColor == null)
+		{
+			PartyMember local = party.getLocalMember();
+			if (local == null)
+			{
+				return null;
+			}
+
+			String localName = local.getDisplayName();
+			memberColor = ColorUtil.fromObject(localName);
+			log.debug("Computed member color {} for {}", memberColor, localName);
+			config.setMemberColor(memberColor);
+		}
+
+		return memberColor;
 	}
 
 	private static int messageFreq(int partySize)

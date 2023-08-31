@@ -58,6 +58,7 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.MessageNode;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
+import net.runelite.api.ParamID;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
@@ -257,11 +258,15 @@ public class SlayerPlugin extends Plugin
 	{
 		switch (event.getGameState())
 		{
+			// client (or with CONNECTION_LOST, the server...) will soon zero the slayer varps.
+			// zero task/amount so that this doesn't cause the plugin to reset the task, which
+			// would forget the initial amount. The vars are then resynced shortly after
 			case HOPPING:
 			case LOGGING_IN:
+			case CONNECTION_LOST:
 				taskName = "";
 				amount = 0;
-				loginFlag = true;
+				loginFlag = true; // to reinitialize initialAmount and avoid re-adding the infobox
 				targets.clear();
 				break;
 		}
@@ -328,7 +333,8 @@ public class SlayerPlugin extends Plugin
 		int varbitId = varbitChanged.getVarbitId();
 		if (varpId == VarPlayer.SLAYER_TASK_SIZE
 			|| varpId == VarPlayer.SLAYER_TASK_LOCATION
-			|| varpId == VarPlayer.SLAYER_TASK_CREATURE)
+			|| varpId == VarPlayer.SLAYER_TASK_CREATURE
+			|| varbitId == Varbits.SLAYER_TASK_BOSS)
 		{
 			clientThread.invokeLater(this::updateTask);
 		}
@@ -365,8 +371,10 @@ public class SlayerPlugin extends Plugin
 			String taskName;
 			if (taskId == 98 /* Bosses, from [proc,helper_slayer_current_assignment] */)
 			{
-				taskName = client.getEnum(EnumID.SLAYER_TASK_BOSS)
-					.getStringValue(client.getVarbitValue(Varbits.SLAYER_TASK_BOSS));
+				int structId = client.getEnum(EnumID.SLAYER_TASK)
+					.getIntValue(client.getVarbitValue(Varbits.SLAYER_TASK_BOSS));
+				taskName = client.getStructComposition(structId)
+					.getStringValue(ParamID.SLAYER_TASK_NAME);
 			}
 			else
 			{
@@ -486,11 +494,36 @@ public class SlayerPlugin extends Plugin
 	{
 		if (menuOptionClicked.getMenuAction() == MenuAction.CC_OP && menuOptionClicked.getMenuOption().equals("Check"))
 		{
-			Widget w = client.getWidget(menuOptionClicked.getParam1()).getChild(menuOptionClicked.getParam0());
-			int itemId = ItemVariationMapping.map(w.getItemId());
+			Widget w = client.getWidget(menuOptionClicked.getParam1());
+			if (w == null)
+			{
+				return;
+			}
+
+			if (menuOptionClicked.getParam0() != -1)
+			{
+				w = w.getChild(menuOptionClicked.getParam0());
+				if (w == null)
+				{
+					return;
+				}
+			}
+
+			// hack around equipment interface which has the item on a child component
+			int itemId = w.getItemId();
+			for (Widget child : w.getDynamicChildren())
+			{
+				if (itemId == -1)
+				{
+					itemId = child.getItemId();
+				}
+			}
+
+			itemId = ItemVariationMapping.map(itemId);
 			if (itemId == ItemID.SLAYER_HELMET || itemId == ItemID.SLAYER_RING_8
 				|| itemId == ItemID.ENCHANTED_GEM)
 			{
+				log.debug("Checked slayer task");
 				infoTimer = Instant.now();
 				addCounter();
 			}

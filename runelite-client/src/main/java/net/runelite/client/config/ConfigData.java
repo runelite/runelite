@@ -181,6 +181,7 @@ class ConfigData
 			{
 				channel.lock();
 				tempProps.store(writer, "RuneLite configuration");
+				writer.flush();
 				channel.force(true);
 			}
 

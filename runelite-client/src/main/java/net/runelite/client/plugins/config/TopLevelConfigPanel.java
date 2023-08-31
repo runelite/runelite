@@ -86,7 +86,7 @@ class TopLevelConfigPanel extends PluginPanel
 
 		addTab(pluginHubPanelProvider, "plugin_hub_icon.png", "Plugin Hub");
 
-		pluginListPanelTab.select();
+		tabGroup.select(pluginListPanelTab);
 	}
 
 	private MaterialTab addTab(PluginPanel panel, String image, String tooltip)

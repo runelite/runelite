@@ -125,14 +125,6 @@ public interface Tile
 	int getRenderLevel();
 
 	/**
-	 * Computes and returns whether this tile has line of sight to another.
-	 *
-	 * @param other the other tile
-	 * @return true if there is no sight obstruction, false otherwise
-	 */
-	boolean hasLineOfSightTo(Tile other);
-
-	/**
 	 * Get all the ground items for this tile
 	 *
 	 * @return the ground items

@@ -24,17 +24,15 @@
  */
 package net.runelite.client.plugins.gpu;
 
-import org.jocl.Pointer;
-import org.jocl.cl_mem;
-
 class GLBuffer
 {
+	String name;
 	int glBufferId = -1;
 	int size = -1;
-	cl_mem cl_mem;
+	long clBuffer = -1;
 
-	Pointer ptr()
+	GLBuffer(String name)
 	{
-		return cl_mem != null ? Pointer.to(cl_mem) : null;
+		this.name = name;
 	}
 }

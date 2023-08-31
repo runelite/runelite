@@ -46,6 +46,7 @@ class InventoryTagsOverlay extends WidgetItemOverlay
 	private final InventoryTagsConfig config;
 	private final Cache<Long, Image> fillCache;
 	private final Cache<Integer, Tag> tagCache;
+	private final Tag NONE = new Tag();
 
 	@Inject
 	private InventoryTagsOverlay(ItemManager itemManager, InventoryTagsPlugin plugin, InventoryTagsConfig config)
@@ -67,7 +68,7 @@ class InventoryTagsOverlay extends WidgetItemOverlay
 			.build();
 		tagCache = CacheBuilder.newBuilder()
 			.concurrencyLevel(1)
-			.maximumSize(32)
+			.maximumSize(39)
 			.build();
 	}
 
@@ -110,6 +111,12 @@ class InventoryTagsOverlay extends WidgetItemOverlay
 		{
 			tag = plugin.getTag(itemId);
 			if (tag == null)
+			{
+				tagCache.put(itemId, NONE);
+				return null;
+			}
+
+			if (tag == NONE)
 			{
 				return null;
 			}

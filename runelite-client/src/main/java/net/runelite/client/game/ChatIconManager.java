@@ -27,10 +27,13 @@ package net.runelite.client.game;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.AllArgsConstructor;
 import net.runelite.api.Client;
 import net.runelite.api.EnumComposition;
 import net.runelite.api.EnumID;
@@ -38,7 +41,11 @@ import net.runelite.api.FriendsChatRank;
 import net.runelite.api.GameState;
 import net.runelite.api.IndexedSprite;
 import net.runelite.api.clan.ClanTitle;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.util.AsyncBufferedImage;
 import net.runelite.client.util.ImageUtil;
 
 @Singleton
@@ -49,6 +56,7 @@ public class ChatIconManager
 
 	private final Client client;
 	private final SpriteManager spriteManager;
+	private final ClientThread clientThread;
 
 	private BufferedImage[] friendsChatRankImages;
 	private BufferedImage[] clanRankImages;
@@ -56,20 +64,80 @@ public class ChatIconManager
 	private int friendsChatOffset = -1;
 	private int clanOffset = -1;
 
+	private final List<ChatIcon> icons = new ArrayList<>();
+
 	@Inject
-	private ChatIconManager(Client client, SpriteManager spriteManager, ClientThread clientThread)
+	private ChatIconManager(Client client, SpriteManager spriteManager, ClientThread clientThread, EventBus eventBus)
 	{
 		this.client = client;
 		this.spriteManager = spriteManager;
+		this.clientThread = clientThread;
+		eventBus.register(this);
 		clientThread.invokeLater(() ->
 		{
+			// if the client is not booted yet, this will be picked up by the game state change handler below instead
 			if (client.getGameState().getState() >= GameState.LOGIN_SCREEN.getState())
 			{
-				loadRankIcons();
-				return true;
+				if (friendsChatOffset == -1)
+				{
+					loadRankIcons();
+				}
+				refreshIcons();
 			}
-			return false;
 		});
+	}
+
+	@AllArgsConstructor
+	private static class ChatIcon
+	{
+		int idx;
+		IndexedSprite sprite;
+	}
+
+	@Subscribe
+	private void onGameStateChanged(GameStateChanged gameStateChanged)
+	{
+		var state = gameStateChanged.getGameState();
+		if (state == GameState.STARTING)
+		{
+			friendsChatOffset = clanOffset = -1;
+			synchronized (this)
+			{
+				for (var icon : icons)
+				{
+					icon.idx = -1;
+				}
+			}
+		}
+		else if (state == GameState.LOGIN_SCREEN)
+		{
+			if (friendsChatOffset == -1)
+			{
+				loadRankIcons();
+			}
+			refreshIcons();
+		}
+	}
+
+	public synchronized int registerChatIcon(BufferedImage image)
+	{
+		if (image == null || image instanceof AsyncBufferedImage)
+		{
+			throw new IllegalArgumentException("invalid image");
+		}
+		var i = ImageUtil.getImageIndexedSprite(image, client);
+		icons.add(new ChatIcon(-1, i));
+		clientThread.invokeLater(this::refreshIcons);
+		return icons.size() - 1;
+	}
+
+	public int chatIconIndex(int iconId)
+	{
+		if (iconId < 0 || iconId >= icons.size())
+		{
+			return -1;
+		}
+		return icons.get(iconId).idx;
 	}
 
 	@Nullable
@@ -100,6 +168,46 @@ public class ChatIconManager
 	{
 		int rank = clanTitle.getId();
 		return clanOffset == -1 ? -1 : clanOffset + clanRankToIdx(rank);
+	}
+
+	private synchronized void refreshIcons()
+	{
+		var chatIcons = client.getModIcons();
+		if (chatIcons == null)
+		{
+			return;
+		}
+
+		final var offset = chatIcons.length;
+
+		int newIcons = 0;
+		for (var icon : icons)
+		{
+			assert icon.idx < offset;
+			if (icon.idx == -1)
+			{
+				++newIcons;
+			}
+		}
+
+		if (newIcons == 0)
+		{
+			return;
+		}
+
+		var newChatIcons = Arrays.copyOf(chatIcons, chatIcons.length + newIcons);
+
+		newIcons = 0;
+		for (var icon : icons)
+		{
+			if (icon.idx == -1)
+			{
+				icon.idx = offset + newIcons++;
+				newChatIcons[icon.idx] = icon.sprite;
+			}
+		}
+
+		client.setModIcons(newChatIcons);
 	}
 
 	private void loadRankIcons()

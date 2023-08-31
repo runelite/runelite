@@ -205,6 +205,16 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showHealGroup",
+		name = "Heal Group timer",
+		description = "Configures whether heal group timer is displayed"
+	)
+	default boolean showHealGroup()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "showTeleblock",
 		name = "Teleblock timer",
 		description = "Configures whether teleblock timer is displayed"

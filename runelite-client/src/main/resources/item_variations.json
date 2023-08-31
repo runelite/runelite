@@ -558,7 +558,8 @@
   ],
   "axe handle": [
     492,
-    7952
+    7952,
+    28177
   ],
   "broken axe": [
     494,
@@ -1664,7 +1665,8 @@
   ],
   "knife": [
     946,
-    5605
+    5605,
+    28413
   ],
   "rope": [
     954,
@@ -1893,7 +1895,8 @@
   ],
   "dragon med helm": [
     1149,
-    6967
+    6967,
+    28057
   ],
   "iron helm": [
     1153,
@@ -1953,7 +1956,8 @@
   ],
   "dragon sq shield": [
     1187,
-    12418
+    12418,
+    28059
   ],
   "bronze kiteshield": [
     1189,
@@ -2080,7 +2084,11 @@
     1231,
     5680,
     5698,
-    20407
+    20407,
+    28019,
+    28021,
+    28023,
+    28025
   ],
   "black dagger": [
     1217,
@@ -2135,7 +2143,11 @@
     1263,
     3176,
     5716,
-    5730
+    5730,
+    28041,
+    28043,
+    28045,
+    28047
   ],
   "iron pickaxe": [
     1267,
@@ -2153,6 +2165,11 @@
     1303,
     6897
   ],
+  "dragon longsword": [
+    1305,
+    27859,
+    28033
+  ],
   "runeh sword": [
     1319,
     20555
@@ -2169,10 +2186,19 @@
     1373,
     20552
   ],
+  "dragon battleaxe": [
+    1377,
+    28037
+  ],
   "ibans staff": [
     1409,
     1410,
     12658
+  ],
+  "dragon mace": [
+    1434,
+    27857,
+    28027
   ],
   "amulet of accuracy": [
     1478,
@@ -2194,6 +2220,10 @@
     1511,
     2511,
     24650
+  ],
+  "lockpick": [
+    1523,
+    28415
   ],
   "map part": [
     1535,
@@ -2311,7 +2341,8 @@
   ],
   "chisel": [
     1755,
-    5601
+    5601,
+    28414
   ],
   "molten glass": [
     1775,
@@ -2882,7 +2913,8 @@
     2513,
     3140,
     12414,
-    20428
+    20428,
+    28065
   ],
   "lamp": [
     2528,
@@ -3211,6 +3243,10 @@
     3157,
     3159
   ],
+  "dragon halberd": [
+    3204,
+    28049
+  ],
   "barrel bomb": [
     3218,
     3219
@@ -3527,7 +3563,8 @@
   "barricade": [
     4053,
     25209,
-    25210
+    25210,
+    28390
   ],
   "decorative sword": [
     4068,
@@ -3609,7 +3646,8 @@
     4087,
     4180,
     12415,
-    20429
+    20429,
+    28061
   ],
   "mystic hat": [
     4089,
@@ -3986,12 +4024,14 @@
   ],
   "dragon plateskirt": [
     4585,
-    12416
+    12416,
+    28063
   ],
   "dragon scimitar": [
     4587,
     20000,
-    20406
+    20406,
+    28031
   ],
   "note": [
     4597,
@@ -4277,6 +4317,10 @@
   "ogre artefact": [
     4818,
     21837
+  ],
+  "strange potion": [
+    4836,
+    28383
   ],
   "relicyms balm": [
     4842,
@@ -4672,14 +4716,6 @@
   "rosemary": [
     6014,
     8210
-  ],
-  "leaves": [
-    6020,
-    6022,
-    6024,
-    6026,
-    6028,
-    6030
   ],
   "plant cure": [
     6036,
@@ -5213,6 +5249,10 @@
     6992,
     7002
   ],
+  "gunpowder": [
+    7108,
+    28442
+  ],
   "fuse": [
     7109,
     10884,
@@ -5248,7 +5288,8 @@
   ],
   "dragonh sword": [
     7158,
-    20559
+    20559,
+    28051
   ],
   "mud pie": [
     7164,
@@ -6983,7 +7024,9 @@
   "fighter torso": [
     10551,
     20513,
-    24175
+    24175,
+    28067,
+    28069
   ],
   "penance gloves": [
     10553,
@@ -7091,7 +7134,8 @@
   ],
   "helm of neitiznot": [
     10828,
-    23591
+    23591,
+    28070
   ],
   "severed leg": [
     10857,
@@ -7135,7 +7179,8 @@
   ],
   "barrelchest anchor": [
     10887,
-    10888
+    10888,
+    27855
   ],
   "mixture step": [
     10909,
@@ -7290,7 +7335,8 @@
     12766,
     12767,
     12768,
-    20408
+    20408,
+    27853
   ],
   "dragonfire shield": [
     11283,
@@ -7505,6 +7551,10 @@
     11672,
     11673
   ],
+  "hair clip": [
+    11682,
+    28408
+  ],
   "beach boxing gloves": [
     11705,
     11706
@@ -7622,7 +7672,8 @@
   ],
   "dragon boots": [
     11840,
-    22234
+    22234,
+    28055
   ],
   "knights notes": [
     11842,
@@ -8378,7 +8429,11 @@
     13265,
     13267,
     13269,
-    13271
+    13271,
+    27861,
+    27863,
+    27865,
+    27867
   ],
   "unsired": [
     13273,
@@ -8424,6 +8479,18 @@
     21358,
     21359,
     21360
+  ],
+  "beaver": [
+    13322,
+    28229,
+    28230,
+    28231,
+    28232,
+    28233,
+    28234,
+    28235,
+    28236,
+    28237
   ],
   "baby chinchompa": [
     13323,
@@ -8635,7 +8702,8 @@
   "dragon warhammer": [
     13576,
     20785,
-    26710
+    26710,
+    28035
   ],
   "seed box": [
     13639,
@@ -8665,7 +8733,8 @@
   "dragon claws": [
     13652,
     20784,
-    26708
+    26708,
+    28039
   ],
   "bag of gems": [
     19473,
@@ -8703,7 +8772,8 @@
   ],
   "satchel": [
     19527,
-    19528
+    19528,
+    28392
   ],
   "tormented bracelet": [
     19544,
@@ -8869,15 +8939,18 @@
   ],
   "ruby key": [
     20767,
-    21053
+    21053,
+    28418
   ],
   "emerald key": [
     20768,
-    21054
+    21054,
+    28417
   ],
   "sapphire key": [
     20769,
-    21055
+    21055,
+    28416
   ],
   "notes": [
     20770,
@@ -9007,7 +9080,8 @@
   ],
   "dragon sword": [
     21009,
-    21206
+    21206,
+    28029
   ],
   "dragon hunter crossbow": [
     21012,
@@ -9250,7 +9324,8 @@
   ],
   "dragon crossbow": [
     21902,
-    21921
+    21921,
+    28053
   ],
   "dragon bolts": [
     21905,
@@ -9438,6 +9513,18 @@
     22486,
     22664
   ],
+  "starter sword": [
+    22331,
+    28559
+  ],
+  "starter bow": [
+    22333,
+    28555
+  ],
+  "starter staff": [
+    22335,
+    28557
+  ],
   "bryophytas staff": [
     22368,
     22370
@@ -9504,22 +9591,95 @@
     27785,
     27788
   ],
+  "vestas spear": [
+    22610,
+    27900,
+    27902
+  ],
   "vestas longsword": [
     22613,
     23615,
-    24619
+    24619,
+    27904,
+    27906
+  ],
+  "vestas chainbody": [
+    22616,
+    27831,
+    27925
+  ],
+  "vestas plateskirt": [
+    22619,
+    27832,
+    27928
   ],
   "statiuss warhammer": [
     22622,
-    23620
+    23620,
+    27908,
+    27910
+  ],
+  "statiuss helm": [
+    22625,
+    27833,
+    27931
+  ],
+  "statiuss platebody": [
+    22628,
+    27834,
+    27934
+  ],
+  "statiuss platelegs": [
+    22631,
+    27835,
+    27937
+  ],
+  "morrigans throwing axe": [
+    22634,
+    27912,
+    27914
   ],
   "morrigans javelin": [
     22636,
-    23619
+    23619,
+    27916,
+    27918
+  ],
+  "morrigans coif": [
+    22638,
+    27836,
+    27940
+  ],
+  "morrigans leather body": [
+    22641,
+    27837,
+    27943
+  ],
+  "morrigans leather chaps": [
+    22644,
+    27838,
+    27946
   ],
   "zuriels staff": [
     22647,
-    23617
+    23617,
+    27920,
+    27922
+  ],
+  "zuriels hood": [
+    22650,
+    27839,
+    27949
+  ],
+  "zuriels robe top": [
+    22653,
+    27840,
+    27952
+  ],
+  "zuriels robe bottom": [
+    22656,
+    27841,
+    27955
   ],
   "dragon hasta": [
     22731,
@@ -9628,6 +9788,10 @@
     23495,
     25842,
     25843
+  ],
+  "temple key": [
+    23502,
+    28389
   ],
   "giant egg sac": [
     23517,
@@ -9941,6 +10105,18 @@
   "spooky boots": [
     24304,
     24313
+  ],
+  "bounty crate": [
+    24329,
+    28082,
+    28084,
+    28086,
+    28088,
+    28090,
+    28092,
+    28094,
+    28096,
+    28098
   ],
   "bounty hunter hat": [
     24338,
@@ -10293,31 +10469,49 @@
     25467,
     25473
   ],
-  "webweaver bow": [
+  "soulreaper axe": [
     25484,
+    28338
+  ],
+  "ultor ring": [
     25485,
-    27652,
-    27655
+    28307
   ],
-  "ursine chainmace": [
+  "magus ring": [
     25486,
+    28313
+  ],
+  "venator ring": [
     25487,
-    27657,
-    27660
+    28310
   ],
-  "accursed sceptre": [
+  "bellator ring": [
     25488,
-    25489,
-    25491,
-    25492,
-    27662,
-    27665,
-    27676,
-    27679
+    28316
   ],
-  "voidwaker": [
+  "blood ancient sceptre": [
+    25489,
+    28238,
+    28260,
+    28473
+  ],
+  "ice ancient sceptre": [
     25490,
-    27690
+    28242,
+    28262,
+    28474
+  ],
+  "smoke ancient sceptre": [
+    25491,
+    28240,
+    28264,
+    28475
+  ],
+  "shadow ancient sceptre": [
+    25492,
+    28244,
+    28266,
+    28476
   ],
   "celestial ring": [
     25539,
@@ -10441,6 +10635,10 @@
     25953,
     27546,
     27548
+  ],
+  "lightbearer": [
+    25975,
+    27870
   ],
   "elidinis ward": [
     25985,
@@ -10936,6 +11134,10 @@
     26868,
     26874
   ],
+  "cell": [
+    26882,
+    28402
+  ],
   "portal talisman": [
     26887,
     26888,
@@ -11092,10 +11294,6 @@
     27402,
     27410
   ],
-  "platinum speedrun trophy": [
-    27424,
-    27783
-  ],
   "treat cauldron": [
     27463,
     27465,
@@ -11165,6 +11363,24 @@
     27635,
     27638
   ],
+  "webweaver bow": [
+    27652,
+    27655
+  ],
+  "ursine chainmace": [
+    27657,
+    27660
+  ],
+  "accursed sceptre": [
+    27662,
+    27665,
+    27676,
+    27679
+  ],
+  "voidwaker": [
+    27690,
+    27869
+  ],
   "oldschool jumper": [
     27822,
     27823,
@@ -11172,5 +11388,237 @@
     27825,
     27826,
     27827
+  ],
+  "corrupted vestas chainbody": [
+    27842,
+    27965
+  ],
+  "corrupted vestas plateskirt": [
+    27843,
+    27968
+  ],
+  "corrupted statiuss helm": [
+    27844,
+    27971
+  ],
+  "corrupted statiuss platebody": [
+    27845,
+    27974
+  ],
+  "corrupted statiuss platelegs": [
+    27846,
+    27977
+  ],
+  "corrupted morrigans coif": [
+    27847,
+    27980
+  ],
+  "corrupted morrigans leather body": [
+    27848,
+    27983
+  ],
+  "corrupted morrigans leather chaps": [
+    27849,
+    27986
+  ],
+  "corrupted zuriels hood": [
+    27850,
+    27989
+  ],
+  "corrupted zuriels robe top": [
+    27851,
+    27992
+  ],
+  "corrupted zuriels robe bottom": [
+    27852,
+    27995
+  ],
+  "nest hat": [
+    27875,
+    27877
+  ],
+  "esoteric emblem": [
+    27997,
+    27999,
+    28001,
+    28003,
+    28005,
+    28007,
+    28009,
+    28011,
+    28013,
+    28015
+  ],
+  "colourful scarf": [
+    28108,
+    28109,
+    28110,
+    28111,
+    28112,
+    28113,
+    28114,
+    28115
+  ],
+  "colourful jumper": [
+    28118,
+    28119,
+    28120,
+    28121,
+    28122,
+    28123,
+    28124,
+    28125
+  ],
+  "strange icon": [
+    28130,
+    28360
+  ],
+  "log basket": [
+    28140,
+    28142
+  ],
+  "forestry basket": [
+    28143,
+    28145
+  ],
+  "crystalh axe": [
+    28220,
+    28223
+  ],
+  "ring of shadows": [
+    28327,
+    28329
+  ],
+  "blackstone fragment": [
+    28356,
+    28357
+  ],
+  "icon segment": [
+    28361,
+    28362
+  ],
+  "shadow key": [
+    28370,
+    28371,
+    28372,
+    28373,
+    28374
+  ],
+  "perfected shadow torch schematic": [
+    28380,
+    28381
+  ],
+  "unfinished serum": [
+    28386,
+    28387
+  ],
+  "tatty page": [
+    28394,
+    28395,
+    28396,
+    28397,
+    28398,
+    28399,
+    28400
+  ],
+  "damp tablet": [
+    28439,
+    28440
+  ],
+  "slimy tablet": [
+    28465,
+    28466,
+    28467
+  ],
+  "gooey note": [
+    28468,
+    28469,
+    28470
+  ],
+  "sigil of sustenance": [
+    28477,
+    28478
+  ],
+  "sigil of hoarding": [
+    28480,
+    28481
+  ],
+  "sigil of the alchemaniac": [
+    28483,
+    28484
+  ],
+  "sigil of the hunter": [
+    28486,
+    28487
+  ],
+  "sigil of resistance": [
+    28489,
+    28490
+  ],
+  "sigil of agile fortune": [
+    28492,
+    28493
+  ],
+  "sigil of the food master": [
+    28495,
+    28496
+  ],
+  "sigil of the wellfed": [
+    28498,
+    28499
+  ],
+  "sigil of the infernal chef": [
+    28501,
+    28502
+  ],
+  "sigil of the infernal smith": [
+    28504,
+    28505
+  ],
+  "sigil of the lightbearer": [
+    28507,
+    28508
+  ],
+  "sigil of the bloodhound": [
+    28510,
+    28511
+  ],
+  "sigil of precision": [
+    28513,
+    28514
+  ],
+  "sigil of the augmented thrall": [
+    28516,
+    28517
+  ],
+  "sigil of faith": [
+    28519,
+    28520
+  ],
+  "sigil of titanium": [
+    28522,
+    28523
+  ],
+  "sigil of the ninja": [
+    28525,
+    28526
+  ],
+  "sigil of woodcraft": [
+    28528,
+    28529
+  ],
+  "corrupted scythe of vitur": [
+    28543,
+    28545
+  ],
+  "corrupted tumekens shadow": [
+    28547,
+    28549
+  ],
+  "quest lamp": [
+    28551,
+    28552,
+    28553,
+    28554
   ]
 }

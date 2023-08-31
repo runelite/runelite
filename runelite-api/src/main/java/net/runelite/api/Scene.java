@@ -80,4 +80,59 @@ public interface Scene
 	 * @return
 	 */
 	byte[][][] getTileShapes();
+
+	/**
+	 * Get the heights of the tiles on the scene.
+	 * @return
+	 */
+	int[][][] getTileHeights();
+
+	/**
+	 * Returns the x-axis base coordinate.
+	 * <p>
+	 * This value is the x-axis world coordinate of tile (0, 0) in
+	 * this scene (ie. the bottom-left most coordinates in the scene).
+	 *
+	 * @return the base x-axis coordinate
+	 */
+	int getBaseX();
+
+	/**
+	 * Returns the y-axis base coordinate.
+	 * <p>
+	 * This value is the y-axis world coordinate of tile (0, 0) in
+	 * this scene (ie. the bottom-left most coordinates in the scene).
+	 *
+	 * @return the base y-axis coordinate
+	 */
+	int getBaseY();
+
+	/**
+	 * Check if this scene is an instance
+	 * @see #getInstanceTemplateChunks()
+	 * @return
+	 */
+	boolean isInstance();
+
+	/**
+	 * Contains a 3D array of template chunks for instanced areas.
+	 * <p>
+	 * The array returned is of format [z][x][y], where z is the
+	 * plane, x and y the x-axis and y-axis coordinates of a tile
+	 * divided by the size of a chunk.
+	 * <p>
+	 * The bits of the int value held by the coordinates are -1 if there is no data,
+	 * structured in the following format:
+	 * <pre>{@code
+	 *  0                   1                   2                   3
+	 *  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+	 * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+	 * | |rot|     y chunk coord     |    x chunk coord    |pln|       |
+	 * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+	 * }</pre>
+	 * @return the array of instance template chunks
+	 * @see Constants#CHUNK_SIZE
+	 * @see InstanceTemplates
+	 */
+	int[][][] getInstanceTemplateChunks();
 }
