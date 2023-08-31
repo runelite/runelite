@@ -547,7 +547,7 @@ class ConfigPanel extends PluginPanel
 					colorPickerBtn.getColor(),
 					cid.getItem().name(),
 					alphaHidden);
-				colorPicker.setLocation(getLocationOnScreen());
+				colorPicker.setLocationRelativeTo(colorPickerBtn);
 				colorPicker.setOnColorChange(c ->
 				{
 					colorPickerBtn.setColor(c);
