@@ -26,7 +26,9 @@
 package net.runelite.client.plugins.crowdsourcing.dialogue;
 
 import javax.inject.Inject;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -52,7 +54,7 @@ public class CrowdsourcingDialogue
 	private String sanitize(String dialogue)
 	{
 		String username = client.getLocalPlayer().getName();
-		return dialogue.replaceAll(username, USERNAME_TOKEN);
+		return dialogue.replaceAll(" ", " ").replaceAll(username, USERNAME_TOKEN);
 	}
 
 	@Subscribe
@@ -127,6 +129,17 @@ public class CrowdsourcingDialogue
 			lastItemId2 = doubleSprite2Widget.getItemId();
 			lastDialogueText = doubleSpriteTextWidget.getText();
 			DoubleSpriteTextData data = new DoubleSpriteTextData(sanitize(lastDialogueText), lastItemId1, lastItemId2);
+			manager.storeEvent(data);
+		}
+	}
+
+	@Subscribe
+	public void onChatMessage(ChatMessage chatMessage)
+	{
+		if (chatMessage.getType() == ChatMessageType.DIALOG
+		|| chatMessage.getType() == ChatMessageType.MESBOX)
+		{
+			ChatMessageData data = new ChatMessageData(sanitize(chatMessage.getMessage()), chatMessage.getType());
 			manager.storeEvent(data);
 		}
 	}
