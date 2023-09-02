@@ -72,7 +72,6 @@ public class EntityHiderPluginTest
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
 
-		when(client.getIgnoreContainer()).thenReturn(ignoreNameableContainer);
 	}
 
 	@Test
