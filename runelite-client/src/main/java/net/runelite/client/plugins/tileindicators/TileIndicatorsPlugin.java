@@ -86,11 +86,6 @@ public class TileIndicatorsPlugin extends Plugin
 	public void onGameTick(GameTick e)
 	{
 		final WorldPoint playerPos = client.getLocalPlayer().getWorldLocation();
-		if (playerPos == null)
-		{
-			lastPlayerPosition = null;
-			return;
-		}
 
 		if (lastPlayerPosition != null)
 		{
