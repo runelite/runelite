@@ -216,7 +216,7 @@ public class EntityHiderPlugin extends Plugin
 			}
 			if (client.getIgnoreContainer().findByName(player.getName()) != null)
 			{
-				return !hideIgnoredPlayer;
+				return !hideIgnoredPlayers;
 			}
 			return true;
 		}
