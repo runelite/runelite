@@ -210,7 +210,7 @@ public class EntityHiderPlugin extends Plugin
 			{
 				return !hideClanMembers;
 			}
-			if (drawingUI ? hideOthers2D : hideOthers)
+			if ((drawingUI && hideOthers2D) || hideOthers)
 			{
 				return false;
 			}
