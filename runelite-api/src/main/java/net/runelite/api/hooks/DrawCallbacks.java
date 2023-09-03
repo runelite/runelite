@@ -33,6 +33,21 @@ import net.runelite.api.Texture;
 
 public interface DrawCallbacks
 {
+	/**
+	 * GPU mode on.
+	 */
+	int GPU = 1;
+	/**
+	 * GPU hillskew support. Enables the {@link Model#getUnskewedModel()}
+	 * API to get the unskewed model.
+	 */
+	int HILLSKEW = 2;
+	/**
+	 * Requests normals be computed for models. Enables the {@link Model#getVertexNormalsX()}
+	 * {@link Model#getVertexNormalsY()} {@link Model#getVertexNormalsZ()} API.
+	 */
+	int NORMALS = 4;
+
 	void draw(Renderable renderable, int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z, long hash);
 
 	void drawScenePaint(int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z,

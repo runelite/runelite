@@ -1864,8 +1864,7 @@ public interface Client extends OAuthApi, GameEngine
 	int getSkyboxColor();
 
 	boolean isGpu();
-
-	void setGpu(boolean gpu);
+	void setGpuFlags(int gpuflags);
 
 	int get3dZoom();
 	int getCenterX();

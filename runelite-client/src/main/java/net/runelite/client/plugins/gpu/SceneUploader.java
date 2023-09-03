@@ -54,6 +54,7 @@ class SceneUploader
 	int sceneId = (int) System.nanoTime();
 	private int offset;
 	private int uvoffset;
+	private int uniqueModels;
 
 	void upload(Scene scene, GpuIntBuffer vertexbuffer, GpuFloatBuffer uvBuffer)
 	{
@@ -62,6 +63,7 @@ class SceneUploader
 		++sceneId;
 		offset = 0;
 		uvoffset = 0;
+		uniqueModels = 0;
 		vertexbuffer.clear();
 		uvBuffer.clear();
 
@@ -81,7 +83,7 @@ class SceneUploader
 		}
 
 		stopwatch.stop();
-		log.debug("Scene upload time: {}", stopwatch);
+		log.debug("Scene upload time: {} unique models: {} length: {}KB", stopwatch, uniqueModels, (offset * 16) / 1024);
 	}
 
 	private void upload(Scene scene, Tile tile, GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer)
@@ -356,6 +358,12 @@ class SceneUploader
 
 	private void uploadSceneModel(Model model, GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer)
 	{
+		// deduplicate hillskewed models
+		if (model.getUnskewedModel() != null)
+		{
+			model = model.getUnskewedModel();
+		}
+
 		if (model.getSceneId() == sceneId)
 		{
 			return; // model has already been uploaded
@@ -371,6 +379,7 @@ class SceneUploader
 			model.setUvBufferOffset(-1);
 		}
 		model.setSceneId(sceneId);
+		++uniqueModels;
 
 		int len = pushModel(model, vertexBuffer, uvBuffer);
 

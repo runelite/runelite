@@ -27,8 +27,11 @@ package net.runelite.client.plugins.gpu;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.nio.LongBuffer;
+import java.nio.ShortBuffer;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Constants;
+import net.runelite.api.Scene;
 import net.runelite.client.plugins.gpu.template.Template;
 import net.runelite.client.util.OSType;
 import net.runelite.rlawt.AWTContext;
@@ -71,11 +74,13 @@ import org.lwjgl.opencl.CL12;
 import static org.lwjgl.opencl.CL12.CL_PROGRAM_BINARY_TYPE;
 import org.lwjgl.opencl.CLCapabilities;
 import org.lwjgl.opencl.CLContextCallback;
+import org.lwjgl.opencl.CLImageFormat;
 import static org.lwjgl.opencl.KHRGLSharing.CL_GLX_DISPLAY_KHR;
 import static org.lwjgl.opencl.KHRGLSharing.CL_GL_CONTEXT_KHR;
 import static org.lwjgl.opencl.KHRGLSharing.CL_WGL_HDC_KHR;
 import org.lwjgl.system.Configuration;
 import org.lwjgl.system.MemoryStack;
+import org.lwjgl.system.MemoryUtil;
 import static org.lwjgl.system.MemoryUtil.NULL;
 import static org.lwjgl.system.MemoryUtil.memASCII;
 import static org.lwjgl.system.MemoryUtil.memUTF8;
@@ -117,6 +122,8 @@ class OpenCLManager
 	private long kernelSmall;
 	private long kernelLarge;
 
+	private long tileHeightImage;
+
 	static
 	{
 		Configuration.OPENCL_EXPLICIT_INIT.set(true);
@@ -153,6 +160,11 @@ class OpenCLManager
 
 		try
 		{
+			if (tileHeightImage != 0L)
+			{
+				CL12.clReleaseMemObject(tileHeightImage);
+			}
+
 			CL12.clReleaseKernel(kernelUnordered);
 			CL12.clReleaseKernel(kernelSmall);
 			CL12.clReleaseKernel(kernelLarge);
@@ -396,6 +408,50 @@ class OpenCLManager
 		kernelLarge = getKernel(stack, programLarge, KERNEL_NAME_LARGE);
 	}
 
+	void uploadTileHeights(Scene scene)
+	{
+		if (tileHeightImage != 0L)
+		{
+			CL12.clReleaseMemObject(tileHeightImage);
+			tileHeightImage = 0L;
+		}
+
+		final int TILEHEIGHT_BUFFER_SIZE = Constants.MAX_Z * Constants.SCENE_SIZE * Constants.SCENE_SIZE * Short.BYTES;
+		ShortBuffer tileBuffer = MemoryUtil.memAllocShort(TILEHEIGHT_BUFFER_SIZE);
+		int[][][] tileHeights = scene.getTileHeights();
+		for (int z = 0; z < Constants.MAX_Z; ++z)
+		{
+			for (int y = 0; y < Constants.SCENE_SIZE; ++y)
+			{
+				for (int x = 0; x < Constants.SCENE_SIZE; ++x)
+				{
+					int h = tileHeights[z][x][y];
+					assert (h & 0b111) == 0;
+					h >>= 3;
+					tileBuffer.put((short) h);
+				}
+			}
+		}
+		tileBuffer.flip();
+
+		try (MemoryStack stack = MemoryStack.stackPush())
+		{
+			CLImageFormat imageFormat = CLImageFormat.calloc(stack);
+			imageFormat.image_channel_order(CL12.CL_R);
+			imageFormat.image_channel_data_type(CL12.CL_SIGNED_INT16);
+
+			IntBuffer errcode_ret = stack.callocInt(1);
+			tileHeightImage = CL12.clCreateImage3D(context, CL12.CL_MEM_READ_ONLY | CL12.CL_MEM_COPY_HOST_PTR, imageFormat,
+				Constants.SCENE_SIZE, Constants.SCENE_SIZE, Constants.MAX_Z,
+				0L, 0L,
+				tileBuffer,
+				errcode_ret);
+			checkCLError(errcode_ret);
+		}
+
+		MemoryUtil.memFree(tileBuffer);
+	}
+
 	void compute(int unorderedModels, int smallModels, int largeModels,
 		GLBuffer sceneVertexBuffer,
 		GLBuffer sceneUvBuffer,
@@ -456,6 +512,7 @@ class OpenCLManager
 				CL12.clSetKernelArg1p(kernelSmall, 6, outVertexBuffer.clBuffer);
 				CL12.clSetKernelArg1p(kernelSmall, 7, outUvBuffer.clBuffer);
 				CL12.clSetKernelArg1p(kernelSmall, 8, uniformBuffer.clBuffer);
+				CL12.clSetKernelArg1l(kernelSmall, 9, tileHeightImage);
 
 				CL12.clEnqueueNDRangeKernel(commandQueue, kernelSmall, 1, null,
 					stack.pointers(smallModels * (SMALL_SIZE / smallFaceCount)), stack.pointers(SMALL_SIZE / smallFaceCount),
@@ -474,6 +531,7 @@ class OpenCLManager
 				CL12.clSetKernelArg1p(kernelLarge, 6, outVertexBuffer.clBuffer);
 				CL12.clSetKernelArg1p(kernelLarge, 7, outUvBuffer.clBuffer);
 				CL12.clSetKernelArg1p(kernelLarge, 8, uniformBuffer.clBuffer);
+				CL12.clSetKernelArg1l(kernelLarge, 9, tileHeightImage);
 
 				CL12.clEnqueueNDRangeKernel(commandQueue, kernelLarge, 1, null,
 					stack.pointers(largeModels * (LARGE_SIZE / largeFaceCount)), stack.pointers(LARGE_SIZE / largeFaceCount),

@@ -23,6 +23,8 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+layout(binding = 2) uniform isampler3D tileHeightSampler;
+
 // Calculate adjusted priority for a face with a given priority, distance, and
 // model global min10 and face distance averages. This allows positioning faces
 // with priorities 10/11 into the correct 'slots' resulting in 18 possible
@@ -117,7 +119,7 @@ void get_face(uint localId, modelinfo minfo, int cameraYaw, int cameraPitch, out
   }
 
   if (localId < size) {
-    int radius = (flags & 0x7fffffff) >> 12;
+    int radius = (flags >> 12) & 0xfff;
     int orientation = flags & 0x7ff;
 
     // rotate for model orientation
@@ -210,6 +212,25 @@ void insert_face(uint localId, modelinfo minfo, int adjPrio, int distance, int p
   }
 }
 
+int tile_height(int z, int x, int y) {
+  return texelFetch(tileHeightSampler, ivec3(x, y, z), 0).r << 3;
+}
+
+ivec4 hillskew_vertex(ivec4 v, int hillskew, int y, int plane) {
+  if (hillskew == 1) {
+    int px = v.x & 127;
+    int pz = v.z & 127;
+    int sx = v.x >> 7;
+    int sz = v.z >> 7;
+    int h1 = px * tile_height(plane, sx + 1, sz) + (128 - px) * tile_height(plane, sx, sz) >> 7;
+    int h2 = px * tile_height(plane, sx + 1, sz + 1) + (128 - px) * tile_height(plane, sx, sz + 1) >> 7;
+    int h3 = pz * h2 + (128 - pz) * h1 >> 7;
+    return ivec4(v.x, v.y + h3 - y, v.z, v.w);
+  } else {
+    return v;
+  }
+}
+
 void sort_and_insert(uint localId, modelinfo minfo, int thisPriority, int thisDistance, ivec4 thisrvA, ivec4 thisrvB, ivec4 thisrvC) {
   int size = minfo.size;
 
@@ -233,13 +254,23 @@ void sort_and_insert(uint localId, modelinfo minfo, int thisPriority, int thisDi
       }
     }
 
+    // position into scene
     ivec4 pos = ivec4(minfo.x, minfo.y, minfo.z, 0);
-    int orientation = flags & 0x7ff;
+    thisrvA += pos;
+    thisrvB += pos;
+    thisrvC += pos;
 
-    // position vertices in scene and write to out buffer
-    vout[outOffset + myOffset * 3] = pos + thisrvA;
-    vout[outOffset + myOffset * 3 + 1] = pos + thisrvB;
-    vout[outOffset + myOffset * 3 + 2] = pos + thisrvC;
+    // apply hillskew
+    int plane = (flags >> 24) & 3;
+    int hillskew = (flags >> 26) & 1;
+    thisrvA = hillskew_vertex(thisrvA, hillskew, minfo.y, plane);
+    thisrvB = hillskew_vertex(thisrvB, hillskew, minfo.y, plane);
+    thisrvC = hillskew_vertex(thisrvC, hillskew, minfo.y, plane);
+
+    // write to out buffer
+    vout[outOffset + myOffset * 3] = thisrvA;
+    vout[outOffset + myOffset * 3 + 1] = thisrvB;
+    vout[outOffset + myOffset * 3 + 2] = thisrvC;
 
     if (toffset < 0) {
       uvout[outOffset + myOffset * 3] = vec4(0);
@@ -258,6 +289,7 @@ void sort_and_insert(uint localId, modelinfo minfo, int thisPriority, int thisDi
         texC = texb[toffset + localId * 3 + 2];
       }
 
+      int orientation = flags & 0x7ff;
       uvout[outOffset + myOffset * 3] = vec4(texA.x, rotatef(texA.yzw, orientation) + pos.xyz);
       uvout[outOffset + myOffset * 3 + 1] = vec4(texB.x, rotatef(texB.yzw, orientation) + pos.xyz);
       uvout[outOffset + myOffset * 3 + 2] = vec4(texC.x, rotatef(texC.yzw, orientation) + pos.xyz);
