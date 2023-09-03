@@ -119,7 +119,7 @@ void get_face(__local struct shared_data *shared, __constant struct uniform *uni
   }
 
   if (localId < size) {
-    int radius = (flags & 0x7fffffff) >> 12;
+    int radius = (flags >> 12) & 0xfff;
     int orientation = flags & 0x7ff;
 
     // rotate for model orientation
@@ -213,9 +213,30 @@ void insert_face(__local struct shared_data *shared, uint localId, struct modeli
   }
 }
 
+int tile_height(read_only image3d_t tileHeightImage, int z, int x, int y) {
+  const sampler_t tileHeightSampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_TO_EDGE;
+  int4 coord = (int4)(x, y, z, 0);
+  return read_imagei(tileHeightImage, tileHeightSampler, coord).x << 3;
+}
+
+int4 hillskew_vertex(read_only image3d_t tileHeightImage, int4 v, int hillskew, int y, int plane) {
+  if (hillskew == 1) {
+    int px = v.x & 127;
+    int pz = v.z & 127;
+    int sx = v.x >> 7;
+    int sz = v.z >> 7;
+    int h1 = px * tile_height(tileHeightImage, plane, sx + 1, sz) + (128 - px) * tile_height(tileHeightImage, plane, sx, sz) >> 7;
+    int h2 = px * tile_height(tileHeightImage, plane, sx + 1, sz + 1) + (128 - px) * tile_height(tileHeightImage, plane, sx, sz + 1) >> 7;
+    int h3 = pz * h2 + (128 - pz) * h1 >> 7;
+    return (int4)(v.x, v.y + h3 - y, v.z, v.w);
+  } else {
+    return v;
+  }
+}
+
 void sort_and_insert(__local struct shared_data *shared, __constant struct uniform *uni, __global const float4 *texb, __global const float4 *temptexb,
                      __global int4 *vout, __global float4 *uvout, uint localId, struct modelinfo minfo, int thisPriority, int thisDistance, int4 thisrvA,
-                     int4 thisrvB, int4 thisrvC) {
+                     int4 thisrvB, int4 thisrvC, read_only image3d_t tileHeightImage) {
   int size = minfo.size;
 
   if (localId < size) {
@@ -238,13 +259,23 @@ void sort_and_insert(__local struct shared_data *shared, __constant struct unifo
       }
     }
 
+    // position into scene
     int4 pos = (int4)(minfo.x, minfo.y, minfo.z, 0);
-    int orientation = flags & 0x7ff;
+    thisrvA += pos;
+    thisrvB += pos;
+    thisrvC += pos;
 
-    // position vertices in scene and write to out buffer
-    vout[outOffset + myOffset * 3] = pos + thisrvA;
-    vout[outOffset + myOffset * 3 + 1] = pos + thisrvB;
-    vout[outOffset + myOffset * 3 + 2] = pos + thisrvC;
+    // apply hillskew
+    int plane = (flags >> 24) & 3;
+    int hillskew = (flags >> 26) & 1;
+    thisrvA = hillskew_vertex(tileHeightImage, thisrvA, hillskew, minfo.y, plane);
+    thisrvB = hillskew_vertex(tileHeightImage, thisrvB, hillskew, minfo.y, plane);
+    thisrvC = hillskew_vertex(tileHeightImage, thisrvC, hillskew, minfo.y, plane);
+
+    // write to out buffer
+    vout[outOffset + myOffset * 3] = thisrvA;
+    vout[outOffset + myOffset * 3 + 1] = thisrvB;
+    vout[outOffset + myOffset * 3 + 2] = thisrvC;
 
     if (toffset < 0) {
       uvout[outOffset + myOffset * 3] = (float4)(0, 0, 0, 0);
@@ -263,6 +294,7 @@ void sort_and_insert(__local struct shared_data *shared, __constant struct unifo
         texC = texb[toffset + localId * 3 + 2];
       }
 
+      int orientation = flags & 0x7ff;
       uvout[outOffset + myOffset * 3] = (float4)(texA.x, rotatef_vertex(texA.yzw, orientation) + convert_float3(pos.xyz));
       uvout[outOffset + myOffset * 3 + 1] = (float4)(texB.x, rotatef_vertex(texB.yzw, orientation) + convert_float3(pos.xyz));
       uvout[outOffset + myOffset * 3 + 2] = (float4)(texC.x, rotatef_vertex(texC.yzw, orientation) + convert_float3(pos.xyz));

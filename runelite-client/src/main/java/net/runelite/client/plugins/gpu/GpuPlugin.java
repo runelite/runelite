@@ -37,12 +37,14 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.nio.ShortBuffer;
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.BufferProvider;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.GameState;
 import net.runelite.api.Model;
 import net.runelite.api.Perspective;
@@ -193,6 +195,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private final GLBuffer tmpOutUvBuffer = new GLBuffer("out tex buffer");
 
 	private int textureArrayId;
+	private int tileHeightTex;
 
 	private final GLBuffer uniformBuffer = new GLBuffer("uniform buffer");
 
@@ -380,7 +383,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				initUniformBuffer();
 
 				client.setDrawCallbacks(this);
-				client.setGpu(true);
+				client.setGpuFlags(DrawCallbacks.GPU
+					| (computeMode == ComputeMode.NONE ? 0 : DrawCallbacks.HILLSKEW)
+				);
 
 				// force rebuild of main buffer provider to enable alpha channel
 				client.resizeCanvas();
@@ -428,7 +433,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	{
 		clientThread.invoke(() ->
 		{
-			client.setGpu(false);
+			client.setGpuFlags(0);
 			client.setDrawCallbacks(null);
 			client.setUnlockedFps(false);
 
@@ -440,6 +445,12 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				{
 					textureManager.freeTextureArray(textureArrayId);
 					textureArrayId = -1;
+				}
+
+				if (tileHeightTex != 0)
+				{
+					GL43C.glDeleteTextures(tileHeightTex);
+					tileHeightTex = 0;
 				}
 
 				destroyGlBuffer(uniformBuffer);
@@ -1496,12 +1507,69 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		nextSceneId = sceneUploader.sceneId;
 	}
 
+	private void uploadTileHeights(Scene scene)
+	{
+		if (tileHeightTex != 0)
+		{
+			GL43C.glDeleteTextures(tileHeightTex);
+			tileHeightTex = 0;
+		}
+
+		final int TILEHEIGHT_BUFFER_SIZE = Constants.MAX_Z * Constants.SCENE_SIZE * Constants.SCENE_SIZE * Short.BYTES;
+		ShortBuffer tileBuffer = ByteBuffer
+			.allocateDirect(TILEHEIGHT_BUFFER_SIZE)
+			.order(ByteOrder.nativeOrder())
+			.asShortBuffer();
+
+		int[][][] tileHeights = scene.getTileHeights();
+		for (int z = 0; z < Constants.MAX_Z; ++z)
+		{
+			for (int y = 0; y < Constants.SCENE_SIZE; ++y)
+			{
+				for (int x = 0; x < Constants.SCENE_SIZE; ++x)
+				{
+					int h = tileHeights[z][x][y];
+					assert (h & 0b111) == 0;
+					h >>= 3;
+					tileBuffer.put((short) h);
+				}
+			}
+		}
+		tileBuffer.flip();
+
+		tileHeightTex = GL43C.glGenTextures();
+		GL43C.glBindTexture(GL43C.GL_TEXTURE_3D, tileHeightTex);
+		GL43C.glTexParameteri(GL43C.GL_TEXTURE_3D, GL43C.GL_TEXTURE_MIN_FILTER, GL43C.GL_LINEAR);
+		GL43C.glTexParameteri(GL43C.GL_TEXTURE_3D, GL43C.GL_TEXTURE_MAG_FILTER, GL43C.GL_LINEAR);
+		GL43C.glTexParameteri(GL43C.GL_TEXTURE_3D, GL43C.GL_TEXTURE_WRAP_S, GL43C.GL_CLAMP_TO_EDGE);
+		GL43C.glTexParameteri(GL43C.GL_TEXTURE_3D, GL43C.GL_TEXTURE_WRAP_T, GL43C.GL_CLAMP_TO_EDGE);
+		GL43C.glTexImage3D(GL43C.GL_TEXTURE_3D, 0, GL43C.GL_R16I,
+			Constants.SCENE_SIZE, Constants.SCENE_SIZE, Constants.MAX_Z,
+			0, GL43C.GL_RED_INTEGER, GL43C.GL_SHORT, tileBuffer);
+		GL43C.glBindTexture(GL43C.GL_TEXTURE_3D, 0);
+
+		// bind to texture 2
+		GL43C.glActiveTexture(GL43C.GL_TEXTURE2);
+		GL43C.glBindTexture(GL43C.GL_TEXTURE_3D, tileHeightTex); // binding = 2 in the shader
+		GL43C.glActiveTexture(GL43C.GL_TEXTURE0);
+	}
+
 	@Override
 	public void swapScene(Scene scene)
 	{
 		if (computeMode == ComputeMode.NONE)
 		{
 			return;
+		}
+
+		if (computeMode == ComputeMode.OPENCL)
+		{
+			openCLManager.uploadTileHeights(scene);
+		}
+		else
+		{
+			assert computeMode == ComputeMode.OPENGL;
+			uploadTileHeights(scene);
 		}
 
 		sceneId = nextSceneId;
@@ -1511,6 +1579,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		nextSceneVertexBuffer = null;
 		nextSceneTexBuffer = null;
 		nextSceneId = -1;
+
+		checkGLErrors();
 	}
 
 	/**
@@ -1576,36 +1646,33 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	@Override
 	public void draw(Renderable renderable, int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z, long hash)
 	{
-		if (computeMode == ComputeMode.NONE)
+		Model model, offsetModel;
+		if (renderable instanceof Model)
 		{
-			Model model = renderable instanceof Model ? (Model) renderable : renderable.getModel();
-			if (model != null)
+			model = (Model) renderable;
+			offsetModel = model.getUnskewedModel();
+			if (offsetModel == null)
 			{
-				// Apply height to renderable from the model
-				if (model != renderable)
-				{
-					renderable.setModelHeight(model.getModelHeight());
-				}
-
-				if (!isVisible(model, pitchSin, pitchCos, yawSin, yawCos, x, y, z))
-				{
-					return;
-				}
-
-				client.checkClickbox(model, orientation, pitchSin, pitchCos, yawSin, yawCos, x, y, z, hash);
-
-				targetBufferOffset += sceneUploader.pushSortedModel(
-					model, orientation,
-					pitchSin, pitchCos,
-					yawSin, yawCos,
-					x, y, z,
-					vertexBuffer, uvBuffer);
+				offsetModel = model;
 			}
 		}
-		// Model may be in the scene buffer
-		else if (renderable instanceof Model && ((Model) renderable).getSceneId() == sceneId)
+		else
 		{
-			Model model = (Model) renderable;
+			model = renderable.getModel();
+			if (model == null)
+			{
+				return;
+			}
+			offsetModel = model;
+		}
+
+		if (computeMode == ComputeMode.NONE)
+		{
+			// Apply height to renderable from the model
+			if (model != renderable)
+			{
+				renderable.setModelHeight(model.getModelHeight());
+			}
 
 			if (!isVisible(model, pitchSin, pitchCos, yawSin, yawCos, x, y, z))
 			{
@@ -1614,18 +1681,39 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 			client.checkClickbox(model, orientation, pitchSin, pitchCos, yawSin, yawCos, x, y, z, hash);
 
-			int tc = Math.min(MAX_TRIANGLE, model.getFaceCount());
-			int uvOffset = model.getUvBufferOffset();
+			targetBufferOffset += sceneUploader.pushSortedModel(
+				model, orientation,
+				pitchSin, pitchCos,
+				yawSin, yawCos,
+				x, y, z,
+				vertexBuffer, uvBuffer);
+		}
+		// Model may be in the scene buffer
+		else if (offsetModel.getSceneId() == sceneId)
+		{
+			assert model == renderable;
+
+			if (!isVisible(model, pitchSin, pitchCos, yawSin, yawCos, x, y, z))
+			{
+				return;
+			}
+
+			client.checkClickbox(model, orientation, pitchSin, pitchCos, yawSin, yawCos, x, y, z, hash);
+
+			int tc = Math.min(MAX_TRIANGLE, offsetModel.getFaceCount());
+			int uvOffset = offsetModel.getUvBufferOffset();
+			int plane = (int) ((hash >> 49) & 3);
+			boolean hillskew = offsetModel != model;
 
 			GpuIntBuffer b = bufferForTriangles(tc);
 
 			b.ensureCapacity(8);
 			IntBuffer buffer = b.getBuffer();
-			buffer.put(model.getBufferOffset());
+			buffer.put(offsetModel.getBufferOffset());
 			buffer.put(uvOffset);
 			buffer.put(tc);
 			buffer.put(targetBufferOffset);
-			buffer.put(FLAG_SCENE_BUFFER | (model.getRadius() << 12) | orientation);
+			buffer.put(FLAG_SCENE_BUFFER | (hillskew ? (1 << 26) : 0) | (plane << 24) | (model.getRadius() << 12) | orientation);
 			buffer.put(x + client.getCameraX2()).put(y + client.getCameraY2()).put(z + client.getCameraZ2());
 
 			targetBufferOffset += tc * 3;
@@ -1633,45 +1721,42 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		else
 		{
 			// Temporary model (animated or otherwise not a static Model on the scene)
-			Model model = renderable instanceof Model ? (Model) renderable : renderable.getModel();
-			if (model != null)
+
+			// Apply height to renderable from the model
+			if (model != renderable)
 			{
-				// Apply height to renderable from the model
-				if (model != renderable)
-				{
-					renderable.setModelHeight(model.getModelHeight());
-				}
-
-				if (!isVisible(model, pitchSin, pitchCos, yawSin, yawCos, x, y, z))
-				{
-					return;
-				}
-
-				client.checkClickbox(model, orientation, pitchSin, pitchCos, yawSin, yawCos, x, y, z, hash);
-
-				boolean hasUv = model.getFaceTextures() != null;
-
-				int len = sceneUploader.pushModel(model, vertexBuffer, uvBuffer);
-
-				GpuIntBuffer b = bufferForTriangles(len / 3);
-
-				b.ensureCapacity(8);
-				IntBuffer buffer = b.getBuffer();
-				buffer.put(tempOffset);
-				buffer.put(hasUv ? tempUvOffset : -1);
-				buffer.put(len / 3);
-				buffer.put(targetBufferOffset);
-				buffer.put((model.getRadius() << 12) | orientation);
-				buffer.put(x + client.getCameraX2()).put(y + client.getCameraY2()).put(z + client.getCameraZ2());
-
-				tempOffset += len;
-				if (hasUv)
-				{
-					tempUvOffset += len;
-				}
-
-				targetBufferOffset += len;
+				renderable.setModelHeight(model.getModelHeight());
 			}
+
+			if (!isVisible(model, pitchSin, pitchCos, yawSin, yawCos, x, y, z))
+			{
+				return;
+			}
+
+			client.checkClickbox(model, orientation, pitchSin, pitchCos, yawSin, yawCos, x, y, z, hash);
+
+			boolean hasUv = model.getFaceTextures() != null;
+
+			int len = sceneUploader.pushModel(model, vertexBuffer, uvBuffer);
+
+			GpuIntBuffer b = bufferForTriangles(len / 3);
+
+			b.ensureCapacity(8);
+			IntBuffer buffer = b.getBuffer();
+			buffer.put(tempOffset);
+			buffer.put(hasUv ? tempUvOffset : -1);
+			buffer.put(len / 3);
+			buffer.put(targetBufferOffset);
+			buffer.put((model.getRadius() << 12) | orientation);
+			buffer.put(x + client.getCameraX2()).put(y + client.getCameraY2()).put(z + client.getCameraZ2());
+
+			tempOffset += len;
+			if (hasUv)
+			{
+				tempUvOffset += len;
+			}
+
+			targetBufferOffset += len;
 		}
 	}
 
