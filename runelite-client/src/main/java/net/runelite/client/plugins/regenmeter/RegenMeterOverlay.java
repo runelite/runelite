@@ -100,9 +100,9 @@ class RegenMeterOverlay extends Overlay
 			{
 				renderRegen(g, WidgetInfo.MINIMAP_SPEC_ORB, plugin.getSpecialPercentage(), SPECIAL_COLOR);
 			}
-			else if(config.showSoulStack())
+			else if (config.showSoulStack())
 			{
-				renderRegen(g,WidgetInfo.MINIMAP_SPEC_ORB, plugin.getSoulStackPercentage(), SPECIAL_COLOR);
+				renderRegen(g, WidgetInfo.MINIMAP_SPEC_ORB, plugin.getSoulStackPercentage(), SPECIAL_COLOR);
 			}
 		}
 		return null;
