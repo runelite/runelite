@@ -71,7 +71,7 @@ public class EntityHiderPluginTest
 	public void before()
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
-
+		when(client.getIgnoreContainer()).thenReturn(ignoreNameableContainer);
 	}
 
 	@Test
@@ -252,7 +252,6 @@ public class EntityHiderPluginTest
 		Player player = mock(Player.class);
 		when(player.getName()).thenReturn("Adam");
 
-		when(client.getIgnoreContainer()).thenReturn(ignoreNameableContainer);
 		when(ignoreNameableContainer.findByName("Adam")).thenReturn(mock(Ignore.class));
 
 		//Test if hide Others overrides ignores.
