@@ -79,7 +79,6 @@ class RegenMeterOverlay extends Overlay
 		{
 			renderRegen(g, WidgetInfo.MINIMAP_HEALTH_ORB, plugin.getHitpointsPercentage(), HITPOINTS_COLOR);
 		}
-
 		if (config.showSpecial())
 		{
 			if (client.getVarpValue(VarPlayer.SPECIAL_ATTACK_ENABLED) == 1)
@@ -97,9 +96,15 @@ class RegenMeterOverlay extends Overlay
 				}
 			}
 
-			renderRegen(g, WidgetInfo.MINIMAP_SPEC_ORB, plugin.getSpecialPercentage(), SPECIAL_COLOR);
+			if (!plugin.wearingSoulreaperAxe)
+			{
+				renderRegen(g, WidgetInfo.MINIMAP_SPEC_ORB, plugin.getSpecialPercentage(), SPECIAL_COLOR);
+			}
+			else if(config.showSoulStack())
+			{
+				renderRegen(g,WidgetInfo.MINIMAP_SPEC_ORB, plugin.getSoulStackPercentage(), SPECIAL_COLOR);
+			}
 		}
-
 		return null;
 	}
 
