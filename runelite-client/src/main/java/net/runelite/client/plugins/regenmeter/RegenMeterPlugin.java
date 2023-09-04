@@ -138,8 +138,6 @@ public class RegenMeterPlugin extends Plugin
 			ticksSinceSpecRegen = 0;
 			wearingLightbearer = hasLightbearer;
 		}
-
-		System.out.println(hasSoulreaperAxe+":"+wearingSoulreaperAxe);
 		if (hasSoulreaperAxe == wearingSoulreaperAxe)
 		{
 			return;
@@ -158,7 +156,7 @@ public class RegenMeterPlugin extends Plugin
 		}
 		if (ev.getVarpId() == VarPlayer.SOUL_STACK)
 		{
-			ticksSinceSoulStackDecay=0;
+			ticksSinceSoulStackDecay = 0;
 		}
 	}
 
