@@ -377,6 +377,8 @@ public class WoodcuttingPlugin extends Plugin
 		{
 			case HOPPING:
 				respawns.clear();
+			case LOGGING_IN:
+				flowers.clear();
 			case LOADING:
 				treeObjects.clear();
 				roots.clear();
