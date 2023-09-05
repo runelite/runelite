@@ -66,8 +66,6 @@ public interface DrawCallbacks
 	 */
 	void draw(int overlayColor);
 
-	boolean drawFace(Model model, int face);
-
 	/**
 	 * Called before the scene is drawn
 	 * @param cameraX
