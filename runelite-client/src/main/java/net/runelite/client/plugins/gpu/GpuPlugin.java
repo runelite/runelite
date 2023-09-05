@@ -96,7 +96,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	static final int SMALL_TRIANGLE_COUNT = 512;
 	private static final int FLAG_SCENE_BUFFER = Integer.MIN_VALUE;
 	private static final int DEFAULT_DISTANCE = 25;
-	static final int MAX_DISTANCE = 90;
+	static final int MAX_DISTANCE = 184;
 	static final int MAX_FOG_DEPTH = 100;
 
 	@Inject
@@ -252,6 +252,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int uniFogColor;
 	private int uniFogDepth;
 	private int uniDrawDistance;
+	private int uniExpandedMapLoadingChunks;
 	private int uniProjectionMatrix;
 	private int uniBrightness;
 	private int uniTex;
@@ -386,6 +387,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				client.setGpuFlags(DrawCallbacks.GPU
 					| (computeMode == ComputeMode.NONE ? 0 : DrawCallbacks.HILLSKEW)
 				);
+				client.setExpandedMapLoading(config.expandedMapLoadingChunks());
 
 				// force rebuild of main buffer provider to enable alpha channel
 				client.resizeCanvas();
@@ -436,6 +438,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			client.setGpuFlags(0);
 			client.setDrawCallbacks(null);
 			client.setUnlockedFps(false);
+			client.setExpandedMapLoading(0);
 
 			sceneUploader.releaseSortingBuffers();
 
@@ -510,6 +513,17 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			{
 				log.debug("Rebuilding sync mode");
 				clientThread.invokeLater(this::setupSyncMode);
+			}
+			else if (configChanged.getKey().equals("expandedMapLoadingChunks"))
+			{
+				clientThread.invokeLater(() ->
+				{
+					client.setExpandedMapLoading(config.expandedMapLoadingChunks());
+					if (client.getGameState() == GameState.LOGGED_IN)
+					{
+						client.setGameState(GameState.LOADING);
+					}
+				});
 			}
 		}
 	}
@@ -598,6 +612,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		uniFogColor = GL43C.glGetUniformLocation(glProgram, "fogColor");
 		uniFogDepth = GL43C.glGetUniformLocation(glProgram, "fogDepth");
 		uniDrawDistance = GL43C.glGetUniformLocation(glProgram, "drawDistance");
+		uniExpandedMapLoadingChunks = GL43C.glGetUniformLocation(glProgram, "expandedMapLoadingChunks");
 		uniColorBlindMode = GL43C.glGetUniformLocation(glProgram, "colorBlindMode");
 		uniTextureLightMode = GL43C.glGetUniformLocation(glProgram, "textureLightMode");
 		uniTick = GL43C.glGetUniformLocation(glProgram, "tick");
@@ -1243,6 +1258,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			GL43C.glUniform4f(uniFogColor, (sky >> 16 & 0xFF) / 255f, (sky >> 8 & 0xFF) / 255f, (sky & 0xFF) / 255f, 1f);
 			GL43C.glUniform1i(uniFogDepth, fogDepth);
 			GL43C.glUniform1i(uniDrawDistance, drawDistance * Perspective.LOCAL_TILE_SIZE);
+			GL43C.glUniform1i(uniExpandedMapLoadingChunks, client.getExpandedMapLoading());
 
 			// Brightness happens to also be stored in the texture provider, so we use that
 			GL43C.glUniform1f(uniBrightness, (float) textureProvider.getBrightness());
@@ -1515,7 +1531,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			tileHeightTex = 0;
 		}
 
-		final int TILEHEIGHT_BUFFER_SIZE = Constants.MAX_Z * Constants.SCENE_SIZE * Constants.SCENE_SIZE * Short.BYTES;
+		final int TILEHEIGHT_BUFFER_SIZE = Constants.MAX_Z * Constants.EXTENDED_SCENE_SIZE * Constants.EXTENDED_SCENE_SIZE * Short.BYTES;
 		ShortBuffer tileBuffer = ByteBuffer
 			.allocateDirect(TILEHEIGHT_BUFFER_SIZE)
 			.order(ByteOrder.nativeOrder())
@@ -1524,9 +1540,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		int[][][] tileHeights = scene.getTileHeights();
 		for (int z = 0; z < Constants.MAX_Z; ++z)
 		{
-			for (int y = 0; y < Constants.SCENE_SIZE; ++y)
+			for (int y = 0; y < Constants.EXTENDED_SCENE_SIZE; ++y)
 			{
-				for (int x = 0; x < Constants.SCENE_SIZE; ++x)
+				for (int x = 0; x < Constants.EXTENDED_SCENE_SIZE; ++x)
 				{
 					int h = tileHeights[z][x][y];
 					assert (h & 0b111) == 0;
@@ -1544,7 +1560,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		GL43C.glTexParameteri(GL43C.GL_TEXTURE_3D, GL43C.GL_TEXTURE_WRAP_S, GL43C.GL_CLAMP_TO_EDGE);
 		GL43C.glTexParameteri(GL43C.GL_TEXTURE_3D, GL43C.GL_TEXTURE_WRAP_T, GL43C.GL_CLAMP_TO_EDGE);
 		GL43C.glTexImage3D(GL43C.GL_TEXTURE_3D, 0, GL43C.GL_R16I,
-			Constants.SCENE_SIZE, Constants.SCENE_SIZE, Constants.MAX_Z,
+			Constants.EXTENDED_SCENE_SIZE, Constants.EXTENDED_SCENE_SIZE, Constants.MAX_Z,
 			0, GL43C.GL_RED_INTEGER, GL43C.GL_SHORT, tileBuffer);
 		GL43C.glBindTexture(GL43C.GL_TEXTURE_3D, 0);
 

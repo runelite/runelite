@@ -53,6 +53,20 @@ public interface GpuPluginConfig extends Config
 		return 50;
 	}
 
+	@Range(
+		max = 5
+	)
+	@ConfigItem(
+		keyName = "expandedMapLoadingChunks",
+		name = "Extended map loading",
+		description = "Extra map area to load, in 8 tile chunks.",
+		position = 1
+	)
+	default int expandedMapLoadingChunks()
+	{
+		return 3;
+	}
+
 	@ConfigItem(
 		keyName = "smoothBanding",
 		name = "Remove Color Banding",

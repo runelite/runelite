@@ -32,9 +32,19 @@ public interface Scene
 	/**
 	 * Gets the tiles in the scene
 	 *
-	 * @return the tiles in [plane][x][y]
+	 * @return a 4x104x104 array of tiles in [plane][x][y]
 	 */
 	Tile[][][] getTiles();
+
+	/**
+	 * Get the extended scene. This is larger than 104x104, and its size is {@link Constants#EXTENDED_SCENE_SIZE}.
+	 */
+	Tile[][][] getExtendedTiles();
+
+	/**
+	 * Get the extended tile settings. This is larger than 104x104, and its size is {@link Constants#EXTENDED_SCENE_SIZE}.
+	 */
+	byte[][][] getExtendedTileSettings();
 
 	int getDrawDistance();
 	void setDrawDistance(int drawDistance);

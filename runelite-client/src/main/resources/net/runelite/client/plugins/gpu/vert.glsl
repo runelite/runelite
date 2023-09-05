@@ -27,8 +27,8 @@
 
 #define TILE_SIZE 128
 
-#define FOG_SCENE_EDGE_MIN TILE_SIZE
-#define FOG_SCENE_EDGE_MAX (103 * TILE_SIZE)
+#define FOG_SCENE_EDGE_MIN ((-expandedMapLoadingChunks * 8 + 1) * TILE_SIZE)
+#define FOG_SCENE_EDGE_MAX ((104 + expandedMapLoadingChunks * 8 - 1) * TILE_SIZE)
 #define FOG_CORNER_ROUNDING 1.5
 #define FOG_CORNER_ROUNDING_SQUARED (FOG_CORNER_ROUNDING * FOG_CORNER_ROUNDING)
 
@@ -51,6 +51,7 @@ uniform float brightness;
 uniform int useFog;
 uniform int fogDepth;
 uniform int drawDistance;
+uniform int expandedMapLoadingChunks;
 
 out ivec3 gVertex;
 out vec4 gColor;
@@ -80,6 +81,8 @@ void main() {
   gTextureId = int(uv.x);  // the texture id + 1;
   gTexPos = uv.yzw;
 
+  // the client draws one less tile to the north and east than it does to the south
+  // and west, so subtract a tiles width from the north and east edges.
   int fogWest = max(FOG_SCENE_EDGE_MIN, cameraX - drawDistance);
   int fogEast = min(FOG_SCENE_EDGE_MAX, cameraX + drawDistance - TILE_SIZE);
   int fogSouth = max(FOG_SCENE_EDGE_MIN, cameraZ - drawDistance);

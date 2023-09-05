@@ -421,14 +421,14 @@ class OpenCLManager
 			tileHeightImage = 0L;
 		}
 
-		final int TILEHEIGHT_BUFFER_SIZE = Constants.MAX_Z * Constants.SCENE_SIZE * Constants.SCENE_SIZE * Short.BYTES;
+		final int TILEHEIGHT_BUFFER_SIZE = Constants.MAX_Z * Constants.EXTENDED_SCENE_SIZE * Constants.EXTENDED_SCENE_SIZE * Short.BYTES;
 		ShortBuffer tileBuffer = MemoryUtil.memAllocShort(TILEHEIGHT_BUFFER_SIZE);
 		int[][][] tileHeights = scene.getTileHeights();
 		for (int z = 0; z < Constants.MAX_Z; ++z)
 		{
-			for (int y = 0; y < Constants.SCENE_SIZE; ++y)
+			for (int y = 0; y < Constants.EXTENDED_SCENE_SIZE; ++y)
 			{
-				for (int x = 0; x < Constants.SCENE_SIZE; ++x)
+				for (int x = 0; x < Constants.EXTENDED_SCENE_SIZE; ++x)
 				{
 					int h = tileHeights[z][x][y];
 					assert (h & 0b111) == 0;
@@ -447,7 +447,7 @@ class OpenCLManager
 
 			IntBuffer errcode_ret = stack.callocInt(1);
 			tileHeightImage = CL12.clCreateImage3D(context, CL12.CL_MEM_READ_ONLY | CL12.CL_MEM_COPY_HOST_PTR, imageFormat,
-				Constants.SCENE_SIZE, Constants.SCENE_SIZE, Constants.MAX_Z,
+				Constants.EXTENDED_SCENE_SIZE, Constants.EXTENDED_SCENE_SIZE, Constants.MAX_Z,
 				0L, 0L,
 				tileBuffer,
 				errcode_ret);
