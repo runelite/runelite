@@ -779,20 +779,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private void initUniformBuffer()
 	{
 		initGlBuffer(uniformBuffer);
-
-		IntBuffer uniformBuf = GpuIntBuffer.allocateDirect(8 + 2048 * 4);
-		uniformBuf.put(new int[8]); // uniform block
-		final int[] pad = new int[2];
-		for (int i = 0; i < 2048; i++)
-		{
-			uniformBuf.put(Perspective.SINE[i]);
-			uniformBuf.put(Perspective.COSINE[i]);
-			uniformBuf.put(pad); // ivec2 alignment in std140 is 16 bytes
-		}
-		uniformBuf.flip();
-
-		updateBuffer(uniformBuffer, GL43C.GL_UNIFORM_BUFFER, uniformBuf, GL43C.GL_DYNAMIC_DRAW, CL12.CL_MEM_READ_ONLY);
-		GL43C.glBindBuffer(GL43C.GL_UNIFORM_BUFFER, 0);
+		updateBuffer(uniformBuffer, GL43C.GL_UNIFORM_BUFFER, 8 * Integer.BYTES, GL43C.GL_DYNAMIC_DRAW, CL12.CL_MEM_READ_ONLY);
 	}
 
 	private void initAAFbo(int width, int height, int aaSamples)
@@ -859,7 +846,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		// viewport buffer.
 		targetBufferOffset = 0;
 
-		// UBO. Only the first 32 bytes get modified here, the rest is the constant sin/cos table.
+		// UBO.
 		// We can reuse the vertex buffer since it isn't used yet.
 		vertexBuffer.clear();
 		vertexBuffer.ensureCapacity(32);
