@@ -164,7 +164,7 @@ public class ConfigManager
 		// Ensure existing config is saved
 		sendConfig();
 
-		log.info("Switching profile to: {} ({})", newProfile.getName(), newProfile.getName());
+		log.info("Switching profile to: {} ({})", newProfile.getName(), newProfile.getId());
 
 		// sync the latest config revision from the server
 		if (sessionManager.getAccountSession() != null && newProfile.isSync())
