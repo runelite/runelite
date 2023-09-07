@@ -41,6 +41,7 @@ layout(std140) uniform uniforms {
   int cameraX;
   int cameraY;
   int cameraZ;
+  ivec2 sinCosTable[2048];
 };
 
 #include "uv.glsl"

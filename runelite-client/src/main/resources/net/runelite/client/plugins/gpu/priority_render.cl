@@ -123,9 +123,9 @@ void get_face(__local struct shared_data *shared, __constant struct uniform *uni
     int orientation = flags & 0x7ff;
 
     // rotate for model orientation
-    int4 thisrvA = rotate_vertex(thisA, orientation);
-    int4 thisrvB = rotate_vertex(thisB, orientation);
-    int4 thisrvC = rotate_vertex(thisC, orientation);
+    int4 thisrvA = rotate_vertex(uni, thisA, orientation);
+    int4 thisrvB = rotate_vertex(uni, thisB, orientation);
+    int4 thisrvC = rotate_vertex(uni, thisC, orientation);
 
     // calculate distance to face
     int thisPriority = (thisA.w >> 16) & 0xff;  // all vertices on the face have the same priority

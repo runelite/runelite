@@ -32,6 +32,7 @@ struct uniform {
   int cameraX;
   int cameraY;
   int cameraZ;
+  int4 sinCosTable[2048];
 };
 
 struct shared_data {
