@@ -89,6 +89,17 @@ public interface GroundItemsConfig extends Config
 	void setHiddenItems(String key);
 
 	@ConfigItem(
+		keyName = "alphabetizeListItems",
+		name = "Alphabetize List Items",
+		description = "Alphabetizes highlighted items in a -> z order",
+		section = itemLists
+	)
+
+	default boolean alphabetizeItemList() {
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "showHighlightedOnly",
 		name = "Show Highlighted items only",
 		description = "Configures whether or not to draw items only on your highlighted list",
