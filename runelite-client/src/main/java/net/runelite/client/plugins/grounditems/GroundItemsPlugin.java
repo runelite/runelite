@@ -434,8 +434,13 @@ public class GroundItemsPlugin extends Plugin
 		hiddenItemList = Text.fromCSV(config.getHiddenItems());
 
 		// gets the highlighted items from the text box in the config
-		highlightedItemsList = Text.fromCSV(config.getHighlightItems());
-
+		if (config.alphabetizeItemList())
+		{
+			highlightedItemsList = Text.fromCSV(alphabetizeItemList(config.getHighlightItems()));
+		} else
+		{
+			highlightedItemsList = Text.fromCSV(config.getHighlightItems());
+		}
 		highlightedItems = CacheBuilder.newBuilder()
 			.maximumSize(512L)
 			.expireAfterAccess(10, TimeUnit.MINUTES)
@@ -556,6 +561,13 @@ public class GroundItemsPlugin extends Plugin
 
 		config.setHiddenItems(Text.toCSV(hiddenItemSet));
 		config.setHighlightedItem(Text.toCSV(highlightedItemSet));
+	}
+
+	private String alphabetizeItemList(String itemList)
+	{
+		List<String> tempList = Text.fromCSV(itemList);
+		java.util.Collections.sort(tempList);
+		return Text.toCSV(tempList);
 	}
 
 	Color getHighlighted(NamedQuantity item, int gePrice, int haPrice)
