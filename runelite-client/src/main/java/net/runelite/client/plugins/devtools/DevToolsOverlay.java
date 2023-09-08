@@ -304,9 +304,12 @@ class DevToolsOverlay extends Overlay
 		if (poly != null && poly.contains(client.getMouseCanvasPosition().getX(), client.getMouseCanvasPosition().getY()))
 		{
 			WorldPoint worldLocation = tile.getWorldLocation();
+			Point sceneLocation = tile.getSceneLocation();
 			String tooltip = String.format("World location: %d, %d, %d</br>" +
+					"Scene location: %d, %d</br>" +
 					"Region ID: %d location: %d, %d",
 				worldLocation.getX(), worldLocation.getY(), worldLocation.getPlane(),
+				sceneLocation.getX(), sceneLocation.getY(),
 				(client.isInInstancedRegion() ? WorldPoint.fromLocalInstance(client, tileLocalLocation).getRegionID() : worldLocation.getRegionID()), worldLocation.getRegionX(), worldLocation.getRegionY());
 			toolTipManager.add(new Tooltip(tooltip));
 			OverlayUtil.renderPolygon(graphics, poly, GREEN);
