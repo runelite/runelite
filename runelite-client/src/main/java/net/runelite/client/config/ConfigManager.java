@@ -164,7 +164,7 @@ public class ConfigManager
 		// Ensure existing config is saved
 		sendConfig();
 
-		log.info("Switching profile to: {}", newProfile.getName());
+		log.info("Switching profile to: {} ({})", newProfile.getName(), newProfile.getId());
 
 		// sync the latest config revision from the server
 		if (sessionManager.getAccountSession() != null && newProfile.isSync())
@@ -524,7 +524,7 @@ public class ConfigManager
 			{
 				if (p.isInternal())
 				{
-					log.debug("Profile '{}' (sync: {}, active: {}, internal)", p.getName(), p.isSync(), p.isActive());
+					log.debug("Profile '{}' (sync: {}, active: {}, id: {}, internal)", p.getName(), p.isSync(), p.getId(), p.isActive());
 
 					if (p.getName().equals(RSPROFILE_NAME))
 					{
@@ -534,7 +534,7 @@ public class ConfigManager
 					continue;
 				}
 
-				log.info("Profile '{}' (sync: {}, active: {})", p.getName(), p.isSync(), p.isActive());
+				log.info("Profile '{}' (sync: {}, active: {}, id: {})", p.getName(), p.isSync(), p.isActive(), p.getId());
 
 				// --profile
 				if (configProfileName != null)
@@ -556,7 +556,7 @@ public class ConfigManager
 
 			if (profile != null)
 			{
-				log.info("Using profile: {}", profile.getName());
+				log.info("Using profile: {} ({})", profile.getName(), profile.getId());
 			}
 			else
 			{
@@ -568,7 +568,7 @@ public class ConfigManager
 					profile.setActive(true);
 				}
 
-				log.info("Creating profile: {}", profile.getName());
+				log.info("Creating profile: {} ({})", profile.getName(), profile.getId());
 			}
 
 			if (rsProfile == null)

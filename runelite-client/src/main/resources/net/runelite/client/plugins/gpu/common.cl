@@ -49,12 +49,12 @@ float3 toScreen(int4 vertex, int cameraYaw, int cameraPitch, int centerX, int ce
 /*
  * Rotate a vertex by a given orientation in JAU
  */
-int4 rotate_vertex(int4 vertex, int orientation) {
-  float rad = orientation * UNIT;
-  float s = sin(rad);
-  float c = cos(rad);
-  float x = vertex.z * s + vertex.x * c;
-  float z = vertex.z * c - vertex.x * s;
+int4 rotate_vertex(__constant struct uniform *uni, int4 vertex, int orientation) {
+  int4 sinCos = uni->sinCosTable[orientation];
+  int s = sinCos.x;
+  int c = sinCos.y;
+  int x = vertex.z * s + vertex.x * c >> 16;
+  int z = vertex.z * c - vertex.x * s >> 16;
   return (int4)(x, vertex.y, z, vertex.w);
 }
 
