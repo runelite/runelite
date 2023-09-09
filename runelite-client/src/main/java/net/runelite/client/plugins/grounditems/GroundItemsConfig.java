@@ -78,7 +78,7 @@ public interface GroundItemsConfig extends Config
 	)
 	default String getHiddenItems()
 	{
-		return "Vial, Ashes, Coins, Bones, Bucket, Jug, Seaweed";
+		return "Ashes, Bones, Bucket, Coins, Jug, Seaweed, Vial";
 	}
 
 	@ConfigItem(
@@ -87,17 +87,6 @@ public interface GroundItemsConfig extends Config
 		description = ""
 	)
 	void setHiddenItems(String key);
-
-	@ConfigItem(
-		keyName = "alphabetizeListItems",
-		name = "Alphabetize List Items",
-		description = "Alphabetizes highlighted items in a -> z order",
-		section = itemLists
-	)
-
-	default boolean alphabetizeItemList() {
-		return false;
-	}
 
 	@ConfigItem(
 		keyName = "showHighlightedOnly",

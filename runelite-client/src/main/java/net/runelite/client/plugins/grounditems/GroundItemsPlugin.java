@@ -38,6 +38,7 @@ import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -432,15 +433,8 @@ public class GroundItemsPlugin extends Plugin
 	{
 		// gets the hidden items from the text box in the config
 		hiddenItemList = Text.fromCSV(config.getHiddenItems());
+		highlightedItemsList = Text.fromCSV(config.getHighlightItems());
 
-		// gets the highlighted items from the text box in the config
-		if (config.alphabetizeItemList())
-		{
-			highlightedItemsList = Text.fromCSV(alphabetizeItemList(config.getHighlightItems()));
-		} else
-		{
-			highlightedItemsList = Text.fromCSV(config.getHighlightItems());
-		}
 		highlightedItems = CacheBuilder.newBuilder()
 			.maximumSize(512L)
 			.expireAfterAccess(10, TimeUnit.MINUTES)
@@ -552,22 +546,20 @@ public class GroundItemsPlugin extends Plugin
 			hiddenItemSet.removeIf(item::equalsIgnoreCase);
 		}
 
-		final List<String> items = hiddenList ? hiddenItemSet : highlightedItemSet;
+		List<String> items = hiddenList ? hiddenItemSet : highlightedItemSet;
 
 		if (!items.removeIf(item::equalsIgnoreCase))
 		{
 			items.add(item);
 		}
 
+		if (null != items)
+		{
+			Collections.sort(items);
+		}
+
 		config.setHiddenItems(Text.toCSV(hiddenItemSet));
 		config.setHighlightedItem(Text.toCSV(highlightedItemSet));
-	}
-
-	private String alphabetizeItemList(String itemList)
-	{
-		List<String> tempList = Text.fromCSV(itemList);
-		java.util.Collections.sort(tempList);
-		return Text.toCSV(tempList);
 	}
 
 	Color getHighlighted(NamedQuantity item, int gePrice, int haPrice)
