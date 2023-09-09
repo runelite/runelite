@@ -110,7 +110,7 @@ class OpenCLManager
 	private int largeFaceCount;
 	private int smallFaceCount;
 
-	private long device = -1;
+	private long device;
 	long context;
 	private long commandQueue;
 
@@ -131,6 +131,11 @@ class OpenCLManager
 
 	void init(AWTContext awtContext)
 	{
+		device = context = commandQueue = 0L;
+		programUnordered = programSmall = programLarge = 0L;
+		kernelUnordered = kernelSmall = kernelLarge = 0L;
+		tileHeightImage = 0L;
+
 		CL.create();
 		initialized = true;
 
