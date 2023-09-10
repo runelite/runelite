@@ -168,14 +168,13 @@ public class ChatCommandsPluginTest
 		}).when(client).setModIcons(any(IndexedSprite[].class));
 
 		when(client.getGameState()).thenReturn(GameState.LOGGED_IN);
-		when(client.createIndexedSprite()).thenReturn(mock(IndexedSprite.class));
 
 		EnumComposition enum_ = mock(EnumComposition.class);
 		when(enum_.size()).thenReturn(1);
 		when(enum_.getIntValue(0)).thenReturn(ItemID.CHOMPY_CHICK);
 		when(client.getEnum(EnumID.PETS)).thenReturn(enum_);
 
-		when(itemManager.getImage(anyInt())).thenReturn(new AsyncBufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
+		when(itemManager.getImage(anyInt())).thenReturn(new AsyncBufferedImage(clientThread, 1, 1, BufferedImage.TYPE_INT_ARGB));
 
 		chatCommandsPlugin.startUp();
 
