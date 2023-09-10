@@ -48,11 +48,12 @@ class FarmingPatch
 	private final int varbit;
 	@ToString.Include
 	private final PatchImplementation implementation;
+	private final int jagexID;
 	private int farmer = -1;
 
-	FarmingPatch(String name, @Varbit int varbit, PatchImplementation implementation, int farmer)
+	FarmingPatch(String name, @Varbit int varbit, PatchImplementation implementation, int jagexID, int farmer)
 	{
-		this(name, varbit, implementation);
+		this(name, varbit, implementation, jagexID);
 		this.farmer = farmer;
 	}
 

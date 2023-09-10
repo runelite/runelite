@@ -259,7 +259,7 @@ public class FarmingTabPanel extends TabContentPanel
 
 	private AsyncBufferedImage getPatchImage(CompostState compostState, boolean protected_)
 	{
-		return protected_ ? itemManager.getImage(ItemID.APPLES5) :
+		return protected_ ? itemManager.getImage(ItemID.DECORATIVE_SHIELD_4507) :
 			(compostState != null ? itemManager.getImage(compostState.getItemId()) : null);
 	}
 

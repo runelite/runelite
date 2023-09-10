@@ -59,6 +59,7 @@ import net.runelite.client.plugins.timetracking.farming.CompostTracker;
 import net.runelite.client.plugins.timetracking.farming.FarmingContractManager;
 import net.runelite.client.plugins.timetracking.farming.FarmingTracker;
 import net.runelite.client.plugins.timetracking.farming.PaymentTracker;
+import net.runelite.client.plugins.timetracking.farming.GeomancyManager;
 import net.runelite.client.plugins.timetracking.hunter.BirdHouseTracker;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.NavigationButton;
@@ -88,6 +89,9 @@ public class TimeTrackingPlugin extends Plugin
 
 	@Inject
 	private PaymentTracker paymentTracker;
+
+	@Inject
+	private GeomancyManager geomancyManager;
 
 	@Inject
 	private FarmingTracker farmingTracker;
@@ -139,6 +143,7 @@ public class TimeTrackingPlugin extends Plugin
 
 		eventBus.register(compostTracker);
 		eventBus.register(paymentTracker);
+		eventBus.register(geomancyManager);
 
 		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "watch.png");
 
@@ -165,6 +170,7 @@ public class TimeTrackingPlugin extends Plugin
 
 		eventBus.unregister(paymentTracker);
 		eventBus.unregister(compostTracker);
+		eventBus.unregister(geomancyManager);
 
 		if (panelUpdateFuture != null)
 		{
@@ -244,8 +250,9 @@ public class TimeTrackingPlugin extends Plugin
 		boolean birdHouseDataChanged = birdHouseTracker.updateData(loc);
 		boolean farmingDataChanged = farmingTracker.updateData(loc, client.getTickCount() - lastModalCloseTick);
 		boolean farmingContractDataChanged = farmingContractManager.updateData(loc);
+		boolean geomancyDataChanged = geomancyManager.hasDataChanged();
 
-		if (birdHouseDataChanged || farmingDataChanged || farmingContractDataChanged)
+		if (birdHouseDataChanged || farmingDataChanged || farmingContractDataChanged || geomancyDataChanged)
 		{
 			panel.update();
 		}

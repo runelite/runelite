@@ -153,69 +153,58 @@ public class FarmingTracker
 
 				if (storedValue != null)
 				{
-					String[] parts = storedValue.split(":");
-					if (parts.length == 2)
+					PatchStateAndTime previousPatchStateAndTime = convertStoredValueToPatchStateAndTime(patch, storedValue);
+					PatchState previousPatchState = previousPatchStateAndTime.patchState;
+					long unixTime = previousPatchStateAndTime.unixTime;
+
+					if (previousPatchState != null && previousPatchState.equals(currentPatchState))
 					{
-						if (parts[0].equals(strVarbit))
+						if (unixTime + (5 * 60) > unixNow && unixNow + 30 > unixTime)
 						{
-							long unixTime = 0;
-							try
+							continue;
+						}
+					}
+					else if (!newRegionLoaded && timeSinceModalClose > 1)
+					{
+						if (previousPatchState == null)
+						{
+							continue;
+						}
+
+						int patchTickRate = previousPatchState.getTickRate();
+
+						if (isObservedGrowthTick(previousPatchState, currentPatchState) && previousPatchStateAndTime.isVarbitData)
+						{
+							Integer storedOffsetPrecision = configManager.getRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, TimeTrackingConfig.FARM_TICK_OFFSET_PRECISION, int.class);
+							Integer storedOffsetMins = configManager.getRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, TimeTrackingConfig.FARM_TICK_OFFSET, int.class);
+
+							int offsetMins = (int) Math.abs(((Instant.now().getEpochSecond() / 60) % patchTickRate) - patchTickRate);
+							log.debug("Observed an exact growth tick. Offset is: {} from a {} minute tick", offsetMins, patchTickRate);
+
+							if (storedOffsetMins != null && storedOffsetMins != 0 && offsetMins != storedOffsetMins % patchTickRate)
 							{
-								unixTime = Long.parseLong(parts[1]);
+								WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
+								log.error("Offset error! Observed new offset of {}, previous observed offset was {} ({}) Player Loc:{}", offsetMins, storedOffsetMins, storedOffsetMins % patchTickRate, playerLocation);
 							}
-							catch (NumberFormatException e)
+
+							if (storedOffsetPrecision == null || patchTickRate >= storedOffsetPrecision)
 							{
-								// ignored
-							}
-							if (unixTime + (5 * 60) > unixNow && unixNow + 30 > unixTime)
-							{
-								continue;
+								log.debug("Found a longer growth tick {}, saving new offset", patchTickRate);
+
+								configManager.setRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, TimeTrackingConfig.FARM_TICK_OFFSET_PRECISION, patchTickRate);
+								configManager.setRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, TimeTrackingConfig.FARM_TICK_OFFSET, offsetMins);
 							}
 						}
-						else if (!newRegionLoaded && timeSinceModalClose > 1)
+						if (currentPatchState.getTickRate() != 0
+							// Don't set wasNotified to false if witnessing a check-health action
+							&& !(previousPatchState.getCropState() == CropState.GROWING && currentPatchState.getCropState() == CropState.HARVESTABLE && currentPatchState.getProduce().getPatchImplementation().isHealthCheckRequired()))
 						{
-							PatchState previousPatchState = patch.getImplementation().forVarbitValue(Integer.parseInt(parts[0]));
-
-							if (previousPatchState == null)
-							{
-								continue;
-							}
-
-							int patchTickRate = previousPatchState.getTickRate();
-
-							if (isObservedGrowthTick(previousPatchState, currentPatchState))
-							{
-								Integer storedOffsetPrecision = configManager.getRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, TimeTrackingConfig.FARM_TICK_OFFSET_PRECISION, int.class);
-								Integer storedOffsetMins = configManager.getRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, TimeTrackingConfig.FARM_TICK_OFFSET, int.class);
-
-								int offsetMins = (int) Math.abs(((Instant.now().getEpochSecond() / 60) % patchTickRate) - patchTickRate);
-								log.debug("Observed an exact growth tick. Offset is: {} from a {} minute tick", offsetMins, patchTickRate);
-
-								if (storedOffsetMins != null && storedOffsetMins != 0 && offsetMins != storedOffsetMins % patchTickRate)
-								{
-									WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
-									log.error("Offset error! Observed new offset of {}, previous observed offset was {} ({}) Player Loc:{}", offsetMins, storedOffsetMins, storedOffsetMins % patchTickRate, playerLocation);
-								}
-
-								if (storedOffsetPrecision == null || patchTickRate >= storedOffsetPrecision)
-								{
-									log.debug("Found a longer growth tick {}, saving new offset", patchTickRate);
-
-									configManager.setRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, TimeTrackingConfig.FARM_TICK_OFFSET_PRECISION, patchTickRate);
-									configManager.setRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, TimeTrackingConfig.FARM_TICK_OFFSET, offsetMins);
-								}
-							}
-							if (currentPatchState.getTickRate() != 0
-								// Don't set wasNotified to false if witnessing a check-health action
-								&& !(previousPatchState.getCropState() == CropState.GROWING && currentPatchState.getCropState() == CropState.HARVESTABLE && currentPatchState.getProduce().getPatchImplementation().isHealthCheckRequired()))
-							{
-								wasNotified.put(new ProfilePatch(patch, configManager.getRSProfileKey()), false);
-							}
+							wasNotified.put(new ProfilePatch(patch, configManager.getRSProfileKey()), false);
 						}
-						else
-						{
-							log.debug("ignoring growth tick for offset calculation; newRegionLoaded={} timeSinceModalClose={}", newRegionLoaded, timeSinceModalClose);
-						}
+					}
+					else
+					{
+						log.debug("ignoring growth tick for offset calculation; newRegionLoaded={} timeSinceModalClose={}", newRegionLoaded, timeSinceModalClose);
 					}
 				}
 
@@ -311,30 +300,13 @@ public class FarmingTracker
 			return null;
 		}
 
-		long unixTime = 0;
-		int value = 0;
-		{
-			String[] parts = storedValue.split(":");
-			if (parts.length == 2)
-			{
-				try
-				{
-					value = Integer.parseInt(parts[0]);
-					unixTime = Long.parseLong(parts[1]);
-				}
-				catch (NumberFormatException e)
-				{
-				}
-			}
-		}
-
+		PatchStateAndTime patchStateAndTime = convertStoredValueToPatchStateAndTime(patch, storedValue);
+		long unixTime = patchStateAndTime.unixTime;
 		if (unixTime <= 0)
 		{
 			return null;
 		}
-
-		PatchState state = patch.getImplementation().forVarbitValue(value);
-
+		PatchState state = patchStateAndTime.patchState;
 		if (state == null)
 		{
 			return null;
@@ -379,6 +351,58 @@ public class FarmingTracker
 			stage,
 			stages
 		);
+	}
+
+	@RequiredArgsConstructor
+	public class PatchStateAndTime
+	{
+		final PatchState patchState;
+		final long unixTime;
+		final boolean isVarbitData;
+	}
+
+	public PatchStateAndTime convertStoredValueToPatchStateAndTime(FarmingPatch patch, String storedValue)
+	{
+		String[] parts = storedValue.split(":");
+		if (parts.length == 2)
+		{
+			//[0] = patch varbit
+			//[1] = unix time of last update
+			try
+			{
+				int value = Integer.parseInt(parts[0]);
+				long unixTime = Long.parseLong(parts[1]);
+				PatchState state = patch.getImplementation().forVarbitValue(value);
+				return new PatchStateAndTime(state, unixTime, true);
+			}
+			catch (NumberFormatException e)
+			{
+
+			}
+		}
+		else if (parts.length == 5)
+		{
+			//[0] = jagexPatchID
+			//[1] = cropItemID
+			//[2] = flags
+			//[3] = coords
+			//[4] = unix time of last update
+			try
+			{
+				int cropItemID = Integer.parseInt(parts[1]);
+				int flags = Integer.parseInt(parts[2]);
+				int coords = Integer.parseInt(parts[3]);
+				long unixTime = Long.parseLong(parts[4]);
+				PatchState state = GeomancyManager.convertGeomancyData(cropItemID, flags, coords);
+				return new PatchStateAndTime(state, unixTime, false);
+			}
+			catch (NumberFormatException e)
+			{
+
+			}
+		}
+
+		return new PatchStateAndTime(null, 0, false);
 	}
 
 	public long getTickTime(int tickRate, int ticks)
@@ -528,6 +552,11 @@ public class FarmingTracker
 						continue;
 					}
 
+					if (config.notifyOnDisease() && prediction.getCropState() == CropState.DISEASED)
+					{
+						shouldNotify = true;
+					}
+
 					int tickRate = prediction.getProduce().getTickrate();
 
 					if (offsetPrecisionMins == null || offsetTimeMins == null || (offsetPrecisionMins < tickRate && offsetPrecisionMins < 40) || prediction.getProduce() == Produce.WEEDS
@@ -596,15 +625,22 @@ public class FarmingTracker
 			}
 		}
 
+		appendCropInfo(stringBuilder, prediction.getCropState(), prediction.getProduce(), patch);
+
+		notifier.notify(stringBuilder.toString());
+	}
+
+	void appendCropInfo(StringBuilder stringBuilder, CropState cropState, Produce produce, FarmingPatch patch)
+	{
 		stringBuilder
 			.append("Your ")
-			.append(prediction.getProduce().getName());
+			.append(produce.getName());
 
-		switch (prediction.getCropState())
+		switch (cropState)
 		{
 			case HARVESTABLE:
 			case GROWING:
-				if (prediction.getProduce().getName().toLowerCase(Locale.ENGLISH).contains("compost"))
+				if (produce.getName().toLowerCase(Locale.ENGLISH).contains("compost"))
 				{
 					stringBuilder.append(" is ready to collect in ");
 				}
@@ -627,7 +663,5 @@ public class FarmingTracker
 		stringBuilder.append(patch.getRegion().isDefinite() ? "the " : "")
 			.append(patch.getRegion().getName())
 			.append('.');
-
-		notifier.notify(stringBuilder.toString());
 	}
 }

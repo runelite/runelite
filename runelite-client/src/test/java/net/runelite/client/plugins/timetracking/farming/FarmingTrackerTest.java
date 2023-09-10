@@ -31,6 +31,7 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.util.EnumSet;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.NpcID;
 import net.runelite.api.Player;
 import net.runelite.api.Varbits;
 import net.runelite.api.WorldType;
@@ -99,11 +100,11 @@ public class FarmingTrackerTest
 
 		PatchPrediction patchPrediction = new PatchPrediction(Produce.EMPTY_COMPOST_BIN, CropState.EMPTY, 0L, 0, 0);
 		FarmingRegion region = new FarmingRegion("Ardougne", 10548, false,
-			new FarmingPatch("North", Varbits.FARMING_4771, PatchImplementation.ALLOTMENT),
-			new FarmingPatch("South", Varbits.FARMING_4772, PatchImplementation.ALLOTMENT),
-			new FarmingPatch("", Varbits.FARMING_4773, PatchImplementation.FLOWER),
-			new FarmingPatch("", Varbits.FARMING_4774, PatchImplementation.HERB),
-			new FarmingPatch("", Varbits.FARMING_4775, PatchImplementation.COMPOST)
+			new FarmingPatch("North", Varbits.FARMING_4771, PatchImplementation.ALLOTMENT, 12, NpcID.KRAGEN),
+			new FarmingPatch("South", Varbits.FARMING_4772, PatchImplementation.ALLOTMENT, 13, NpcID.KRAGEN),
+			new FarmingPatch("", Varbits.FARMING_4773, PatchImplementation.FLOWER, 29),
+			new FarmingPatch("", Varbits.FARMING_4774, PatchImplementation.HERB, 45),
+			new FarmingPatch("", Varbits.FARMING_4775, PatchImplementation.COMPOST, 42)
 		);
 		FarmingPatch patch = region.getPatches()[4];
 		patch.setRegion(region);
@@ -117,11 +118,11 @@ public class FarmingTrackerTest
 
 		PatchPrediction patchPrediction = new PatchPrediction(Produce.RANARR, CropState.HARVESTABLE, 0L, 0, 0);
 		FarmingRegion region = new FarmingRegion("Ardougne", 10548, false,
-			new FarmingPatch("North", Varbits.FARMING_4771, PatchImplementation.ALLOTMENT),
-			new FarmingPatch("South", Varbits.FARMING_4772, PatchImplementation.ALLOTMENT),
-			new FarmingPatch("", Varbits.FARMING_4773, PatchImplementation.FLOWER),
-			new FarmingPatch("", Varbits.FARMING_4774, PatchImplementation.HERB),
-			new FarmingPatch("", Varbits.FARMING_4775, PatchImplementation.COMPOST)
+			new FarmingPatch("North", Varbits.FARMING_4771, PatchImplementation.ALLOTMENT, 12, NpcID.KRAGEN),
+			new FarmingPatch("South", Varbits.FARMING_4772, PatchImplementation.ALLOTMENT, 13, NpcID.KRAGEN),
+			new FarmingPatch("", Varbits.FARMING_4773, PatchImplementation.FLOWER, 29),
+			new FarmingPatch("", Varbits.FARMING_4774, PatchImplementation.HERB, 45),
+			new FarmingPatch("", Varbits.FARMING_4775, PatchImplementation.COMPOST, 42)
 		);
 		FarmingPatch patch = region.getPatches()[3];
 		patch.setRegion(region);
