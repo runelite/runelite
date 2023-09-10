@@ -417,7 +417,7 @@ public class ItemManager
 	 */
 	private AsyncBufferedImage loadImage(int itemId, int quantity, boolean stackable)
 	{
-		AsyncBufferedImage img = new AsyncBufferedImage(Constants.ITEM_SPRITE_WIDTH, Constants.ITEM_SPRITE_HEIGHT, BufferedImage.TYPE_INT_ARGB);
+		AsyncBufferedImage img = new AsyncBufferedImage(clientThread, Constants.ITEM_SPRITE_WIDTH, Constants.ITEM_SPRITE_HEIGHT, BufferedImage.TYPE_INT_ARGB);
 		clientThread.invoke(() ->
 		{
 			if (client.getGameState().ordinal() < GameState.LOGIN_SCREEN.ordinal())
