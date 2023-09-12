@@ -25,7 +25,6 @@
 package net.runelite.api;
 
 import java.awt.Shape;
-import net.runelite.api.coords.Angle;
 
 /**
  * Represents a game object.
@@ -75,11 +74,11 @@ public interface GameObject extends TileObject
 	Shape getConvexHull();
 
 	/**
-	 * Gets the orientation of the object.
-	 *
-	 * @return the orientation
+	 * Get the orientation of the object
+	 * @see net.runelite.api.coords.Angle
+	 * @return
 	 */
-	Angle getOrientation();
+	int getOrientation();
 
 	Renderable getRenderable();
 
@@ -97,8 +96,8 @@ public interface GameObject extends TileObject
 	/**
 	 * A bitfield containing various flags:
 	 * <pre>{@code
-	 * object type id = bits & 0x20
-	 * orientation (0-3) = bits >>> 6 & 3
+	 * object type = bits & 31
+	 * orientation = bits >>> 6 & 3
 	 * supports items = bits >>> 8 & 1
 	 * }</pre>
 	 */

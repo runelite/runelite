@@ -50,6 +50,7 @@ enum FairyRingLocation
 	BKR("BKR", new WorldPoint(3468, 3433, 0)),
 	BLP("BLP", new WorldPoint(2432, 5127, 0)),
 	BLR("BLR", new WorldPoint(2739, 3353, 0)),
+	BLS("BLS", new WorldPoint(1293, 3495, 0)),
 	CIP("CIP", new WorldPoint(2512, 3886, 0)),
 	CIR("CIR", new WorldPoint(1303, 3762, 0)),
 	CIQ("CIQ", new WorldPoint(2527, 3129, 0)),
@@ -67,7 +68,7 @@ enum FairyRingLocation
 	DKS("DKS", new WorldPoint(2743, 3721, 0)),
 	DLQ("DLQ", new WorldPoint(3422, 3018, 0)),
 	DLR("DLR", new WorldPoint(2212, 3101, 0)),
-	CIS("CIS", new WorldPoint(1638, 3868, 0)),
+	CIS("CIS", new WorldPoint(1636, 3869, 0)),
 	CLR("CLR", new WorldPoint(2737, 2739, 0)),
 	ZANARIS("Zanaris", new WorldPoint(2411, 4436, 0));
 

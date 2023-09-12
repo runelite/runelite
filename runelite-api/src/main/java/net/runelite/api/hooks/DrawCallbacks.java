@@ -26,12 +26,28 @@ package net.runelite.api.hooks;
 
 import net.runelite.api.Model;
 import net.runelite.api.Renderable;
+import net.runelite.api.Scene;
 import net.runelite.api.SceneTileModel;
 import net.runelite.api.SceneTilePaint;
 import net.runelite.api.Texture;
 
 public interface DrawCallbacks
 {
+	/**
+	 * GPU mode on.
+	 */
+	int GPU = 1;
+	/**
+	 * GPU hillskew support. Enables the {@link Model#getUnskewedModel()}
+	 * API to get the unskewed model.
+	 */
+	int HILLSKEW = 2;
+	/**
+	 * Requests normals be computed for models. Enables the {@link Model#getVertexNormalsX()}
+	 * {@link Model#getVertexNormalsY()} {@link Model#getVertexNormalsZ()} API.
+	 */
+	int NORMALS = 4;
+
 	void draw(Renderable renderable, int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z, long hash);
 
 	void drawScenePaint(int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z,
@@ -50,8 +66,6 @@ public interface DrawCallbacks
 	 */
 	void draw(int overlayColor);
 
-	boolean drawFace(Model model, int face);
-
 	/**
 	 * Called before the scene is drawn
 	 * @param cameraX
@@ -69,4 +83,8 @@ public interface DrawCallbacks
 	void postDrawScene();
 
 	void animate(Texture texture, int diff);
+
+	void loadScene(Scene scene);
+
+	void swapScene(Scene scene);
 }

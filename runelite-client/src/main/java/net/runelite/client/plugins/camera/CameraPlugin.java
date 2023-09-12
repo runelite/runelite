@@ -42,7 +42,6 @@ import net.runelite.api.VarPlayer;
 import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.FocusChanged;
-import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.WidgetLoaded;
@@ -83,7 +82,6 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	 * Whether or not the current menu has any non-ignored menu entries
 	 */
 	private boolean menuHasEntries;
-	private int savedCameraYaw;
 
 	@Inject
 	private Client client;
@@ -299,16 +297,40 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 			{
 				case CANCEL:
 				case WALK:
-					break;
 				case EXAMINE_OBJECT:
 				case EXAMINE_NPC:
 				case EXAMINE_ITEM_GROUND:
 				case EXAMINE_ITEM:
 				case CC_OP_LOW_PRIORITY:
-					if (config.ignoreExamine())
+					break;
+				case GAME_OBJECT_FIRST_OPTION:
+				case GAME_OBJECT_SECOND_OPTION:
+				case GAME_OBJECT_THIRD_OPTION:
+				case GAME_OBJECT_FOURTH_OPTION:
+				case GAME_OBJECT_FIFTH_OPTION:
+				case NPC_FIRST_OPTION:
+				case NPC_SECOND_OPTION:
+				case NPC_THIRD_OPTION:
+				case NPC_FOURTH_OPTION:
+				case NPC_FIFTH_OPTION:
+				case GROUND_ITEM_FIRST_OPTION:
+				case GROUND_ITEM_SECOND_OPTION:
+				case GROUND_ITEM_THIRD_OPTION:
+				case GROUND_ITEM_FOURTH_OPTION:
+				case GROUND_ITEM_FIFTH_OPTION:
+				case PLAYER_FIRST_OPTION:
+				case PLAYER_SECOND_OPTION:
+				case PLAYER_THIRD_OPTION:
+				case PLAYER_FOURTH_OPTION:
+				case PLAYER_FIFTH_OPTION:
+				case PLAYER_SIXTH_OPTION:
+				case PLAYER_SEVENTH_OPTION:
+				case PLAYER_EIGHTH_OPTION:
+					if (config.rightClickObjects())
 					{
-						break;
+						return true;
 					}
+					break;
 				default:
 					return true;
 			}
@@ -334,7 +356,7 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 		{
 			case ScriptID.SETTINGS_SLIDER_CHOOSE_ONOP:
 			{
-				int arg = client.getIntStackSize() - 7;
+				int arg = client.getIntStackSize() - 11;
 				int[] is = client.getIntStack();
 
 				if (is[arg] == SettingID.CAMERA_ZOOM)
@@ -377,24 +399,6 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 		if (sliderTooltip != null)
 		{
 			tooltipManager.add(sliderTooltip);
-		}
-	}
-
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
-	{
-		switch (gameStateChanged.getGameState())
-		{
-			case HOPPING:
-				savedCameraYaw = client.getMapAngle();
-				break;
-			case LOGGED_IN:
-				if (savedCameraYaw != 0 && config.preserveYaw())
-				{
-					client.setCameraYawTarget(savedCameraYaw);
-				}
-				savedCameraYaw = 0;
-				break;
 		}
 	}
 

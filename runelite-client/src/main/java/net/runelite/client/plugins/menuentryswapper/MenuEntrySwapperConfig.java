@@ -471,7 +471,7 @@ public interface MenuEntrySwapperConfig extends Config
 	@ConfigItem(
 		keyName = "swapMorytaniaLegs",
 		name = "Morytania Legs",
-		description = "Swap Wear with the Ectofunctus or Burgh de Rott teleport on the Morytania Legs.",
+		description = "Swap Wear with the Ectofuntus or Burgh de Rott teleport on the Morytania Legs.",
 		section = itemSection
 	)
 	default MorytaniaLegsMode swapMorytaniaLegsMode()

@@ -26,14 +26,19 @@ package net.runelite.client.plugins.inventorytags;
 
 import com.google.gson.Gson;
 import com.google.inject.Provides;
+import java.applet.Applet;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
+import static net.runelite.api.InventoryID.EQUIPMENT;
+import static net.runelite.api.InventoryID.INVENTORY;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.KeyCode;
@@ -65,21 +70,11 @@ public class InventoryTagsPlugin extends Plugin
 	private static final String ITEM_KEY_PREFIX = "item_";
 	private static final String TAG_KEY_PREFIX = "tag_";
 
-	private static final String SETNAME_GROUP_1 = "Group 1";
-	private static final String SETNAME_GROUP_2 = "Group 2";
-	private static final String SETNAME_GROUP_3 = "Group 3";
-	private static final String SETNAME_GROUP_4 = "Group 4";
-	private static final String SETNAME_GROUP_5 = "Group 5";
-	private static final String SETNAME_GROUP_6 = "Group 6";
-
 	@Inject
 	private Client client;
 
 	@Inject
 	private ConfigManager configManager;
-
-	@Inject
-	private InventoryTagsConfig config;
 
 	@Inject
 	private InventoryTagsOverlay overlay;
@@ -137,37 +132,25 @@ public class InventoryTagsPlugin extends Plugin
 	private void convertConfig()
 	{
 		String migrated = configManager.getConfiguration(InventoryTagsConfig.GROUP, "migrated");
-		if (migrated != null)
+		if (!"1".equals(migrated))
 		{
 			return;
 		}
 
+		int removed = 0;
 		List<String> keys = configManager.getConfigurationKeys(InventoryTagsConfig.GROUP + "." + ITEM_KEY_PREFIX);
 		for (String key : keys)
 		{
 			String[] str = key.split("\\.", 2);
 			if (str.length == 2)
 			{
-				int itemId = Integer.parseInt(str[1].substring(ITEM_KEY_PREFIX.length()));
-				String tag = configManager.getConfiguration(str[0], str[1]);
-				if (tag != null)
-				{
-					Color color = getGroupNameColor(tag);
-					if (color != null)
-					{
-						Tag t = new Tag();
-						t.color = color;
-						setTag(itemId, t);
-						log.debug("Converted tag {} {} -> {}", itemId, tag, t);
-					}
-
-					// uncomment to delete these later
-					// configManager.unsetConfiguration(str[0], str[1]);
-				}
+				configManager.unsetConfiguration(str[0], str[1]);
+				++removed;
 			}
 		}
 
-		configManager.setConfiguration(InventoryTagsConfig.GROUP, "migrated", "1");
+		log.debug("Removed {} old tags", removed);
+		configManager.setConfiguration(InventoryTagsConfig.GROUP, "migrated", "2");
 	}
 
 	@Subscribe
@@ -199,16 +182,42 @@ public class InventoryTagsPlugin extends Plugin
 				final int itemId = w.getItemId();
 				final Tag tag = getTag(itemId);
 
-				client.createMenuEntry(idx)
-					.setOption("Pick inventory tag")
+				final MenuEntry parent = client.createMenuEntry(idx)
+					.setOption("Inventory tag")
 					.setTarget(entry.getTarget())
+					.setType(MenuAction.RUNELITE_SUBMENU);
+
+				Set<Color> invEquipmentColors = new HashSet<>();
+				invEquipmentColors.addAll(getColorsFromItemContainer(INVENTORY));
+				invEquipmentColors.addAll(getColorsFromItemContainer(EQUIPMENT));
+				for (Color color : invEquipmentColors)
+				{
+					if (tag == null || !tag.color.equals(color))
+					{
+						client.createMenuEntry(idx)
+							.setOption(ColorUtil.prependColorTag("Color", color))
+							.setType(MenuAction.RUNELITE)
+							.setParent(parent)
+							.onClick(e ->
+							{
+								Tag t = new Tag();
+								t.color = color;
+								setTag(itemId, t);
+							});
+					}
+				}
+
+				client.createMenuEntry(idx)
+					.setOption("Pick")
 					.setType(MenuAction.RUNELITE)
+					.setParent(parent)
 					.onClick(e ->
 					{
 						Color color = tag == null ? Color.WHITE : tag.color;
 						SwingUtilities.invokeLater(() ->
 						{
-							RuneliteColorPicker colorPicker = colorPickerManager.create(null, color, "Inventory Tag", true);
+							RuneliteColorPicker colorPicker = colorPickerManager.create(SwingUtilities.windowForComponent((Applet) client),
+								color, "Inventory Tag", true);
 							colorPicker.setOnClose(c ->
 							{
 								Tag t = new Tag();
@@ -222,62 +231,30 @@ public class InventoryTagsPlugin extends Plugin
 				if (tag != null)
 				{
 					client.createMenuEntry(idx)
-						.setOption("Clear inventory tag")
-						.setTarget(entry.getTarget())
+						.setOption("Reset")
 						.setType(MenuAction.RUNELITE)
+						.setParent(parent)
 						.onClick(e -> unsetTag(itemId));
-				}
-
-				for (Color color : invColors())
-				{
-					client.createMenuEntry(idx)
-						.setOption(ColorUtil.prependColorTag("Inventory tag", color))
-						.setTarget(entry.getTarget())
-						.setType(MenuAction.RUNELITE)
-						.onClick(e ->
-						{
-							Tag t = new Tag();
-							t.color = color;
-							setTag(itemId, t);
-						});
 				}
 			}
 		}
 	}
 
-	Color getGroupNameColor(final String name)
-	{
-		switch (name)
-		{
-			case SETNAME_GROUP_1:
-				return config.getGroup1Color();
-			case SETNAME_GROUP_2:
-				return config.getGroup2Color();
-			case SETNAME_GROUP_3:
-				return config.getGroup3Color();
-			case SETNAME_GROUP_4:
-				return config.getGroup4Color();
-			case SETNAME_GROUP_5:
-				return config.getGroup5Color();
-			case SETNAME_GROUP_6:
-				return config.getGroup6Color();
-		}
-
-		return null;
-	}
-
-	private List<Color> invColors()
+	private List<Color> getColorsFromItemContainer(InventoryID inventoryID)
 	{
 		List<Color> colors = new ArrayList<>();
-		ItemContainer container = client.getItemContainer(InventoryID.INVENTORY);
-		for (Item item : container.getItems())
+		ItemContainer container = client.getItemContainer(inventoryID);
+		if (container != null)
 		{
-			Tag tag = getTag(item.getId());
-			if (tag != null && tag.color != null)
+			for (Item item : container.getItems())
 			{
-				if (!colors.contains(tag.color))
+				Tag tag = getTag(item.getId());
+				if (tag != null && tag.color != null)
 				{
-					colors.add(tag.color);
+					if (!colors.contains(tag.color))
+					{
+						colors.add(tag.color);
+					}
 				}
 			}
 		}

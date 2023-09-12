@@ -24,11 +24,13 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues;
 
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -38,14 +40,17 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.Point;
 import net.runelite.api.TileObject;
+import net.runelite.client.game.ItemVariationMapping;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_BORDER_COLOR;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_FILL_COLOR;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_HOVER_BORDER_COLOR;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMAGE_Z_OFFSET;
+import net.runelite.client.plugins.cluescrolls.clues.item.AllRequirementsCollection;
 import net.runelite.client.plugins.cluescrolls.clues.item.AnyRequirementCollection;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
+import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements;
 import static net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements.*;
 import net.runelite.client.plugins.cluescrolls.clues.item.SingleItemRequirement;
 import net.runelite.client.ui.FontManager;
@@ -64,8 +69,8 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 		CHARLIE("Charlie the Tramp", "Southern Entrance to Varrock"),
 		SHERLOCK("Sherlock", "East of the Sorcerer's Tower in Seers' Village");
 
-		private String name;
-		private String location;
+		private final String name;
+		private final String location;
 	}
 
 	private static final AnyRequirementCollection ANY_PICKAXE = any("Any Pickaxe",
@@ -128,16 +133,31 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 		item(ItemID.IMCANDO_HAMMER)
 	);
 
-	private static final List<SkillChallengeClue> CLUES = ImmutableList.of(
+	private static final AllRequirementsCollection A_FULL_GRACEFUL_SET = all("A full Graceful set",
+		any("" /* graceful hood   */, ItemVariationMapping.getVariations(ItemID.GRACEFUL_HOOD).stream().map(ItemRequirements::item).toArray(SingleItemRequirement[]::new)),
+		any("" /* graceful top    */, ItemVariationMapping.getVariations(ItemID.GRACEFUL_TOP).stream().map(ItemRequirements::item).toArray(SingleItemRequirement[]::new)),
+		any("" /* graceful legs   */, ItemVariationMapping.getVariations(ItemID.GRACEFUL_LEGS).stream().map(ItemRequirements::item).toArray(SingleItemRequirement[]::new)),
+		any("" /* graceful gloves */, ItemVariationMapping.getVariations(ItemID.GRACEFUL_GLOVES).stream().map(ItemRequirements::item).toArray(SingleItemRequirement[]::new)),
+		any("" /* graceful boots  */, ItemVariationMapping.getVariations(ItemID.GRACEFUL_BOOTS).stream().map(ItemRequirements::item).toArray(SingleItemRequirement[]::new)),
+		any("" /* graceful cape   */, Stream.of(
+			ItemVariationMapping.getVariations(ItemID.GRACEFUL_CAPE).stream(),
+			ItemVariationMapping.getVariations(ItemID.AGILITY_CAPE).stream(),
+			ItemVariationMapping.getVariations(ItemID.MAX_CAPE).stream())
+			.reduce(Stream::concat)
+			.orElseGet(Stream::empty)
+			.map(ItemRequirements::item).toArray(SingleItemRequirement[]::new))
+	);
+
+	static final List<SkillChallengeClue> CLUES = ImmutableList.of(
 		// Charlie Tasks
-		new SkillChallengeClue("Cook a Pike", "i need to cook charlie a pike.", "i need to take the cooked pike to charlie.", item(ItemID.PIKE), item(ItemID.RAW_PIKE)),
-		new SkillChallengeClue("Cook a Trout", "i need to cook charlie a trout.", "i need to take the cooked trout to charlie.", item(ItemID.TROUT), item(ItemID.RAW_TROUT)),
-		new SkillChallengeClue("Craft a Leather Body", "i need to craft charlie a leather body.", "i need to take the leather body i crafted to charlie.", item(ItemID.LEATHER_BODY), item(ItemID.LEATHER), item(ItemID.NEEDLE), item(ItemID.THREAD)),
-		new SkillChallengeClue("Craft some Leather Chaps", "i need to craft charlie some leather chaps.", "i need to take the leather chaps i crafted to charlie.", item(ItemID.LEATHER_CHAPS), item(ItemID.LEATHER), item(ItemID.NEEDLE), item(ItemID.THREAD)),
-		new SkillChallengeClue("Fish a Herring", "i need to fish charlie a herring.", "i need to take a raw herring to charlie.", item(ItemID.RAW_HERRING), any("Fishing rod", item(ItemID.FISHING_ROD), item(ItemID.PEARL_FISHING_ROD)), item(ItemID.FISHING_BAIT)),
-		new SkillChallengeClue("Fish a Trout", "i need to fish charlie a trout.", "i need to take a raw trout to charlie.", item(ItemID.RAW_TROUT), any("Fly fishing rod", item(ItemID.FLY_FISHING_ROD), item(ItemID.PEARL_FLY_FISHING_ROD)), item(ItemID.FEATHER)),
-		new SkillChallengeClue("Mine a piece of Iron Ore", "i need to mine charlie a piece of iron ore from an iron vein.", "i need to take the iron ore to charlie.", item(ItemID.IRON_ORE), ANY_PICKAXE),
-		new SkillChallengeClue("Smith an Iron Dagger", "i need to smith charlie one iron dagger.", "i need to take the iron dagger i smithed to charlie.", item(ItemID.IRON_DAGGER), item(ItemID.IRON_BAR), ANY_HAMMER),
+		new SkillChallengeClue(ChallengeType.CHARLIE, "i need to give charlie a cooked pike.", item(ItemID.PIKE)),
+		new SkillChallengeClue(ChallengeType.CHARLIE, "i need to give charlie a cooked trout.", item(ItemID.TROUT)),
+		new SkillChallengeClue(ChallengeType.CHARLIE, "i need to give charlie a leather body.", item(ItemID.LEATHER_BODY)),
+		new SkillChallengeClue(ChallengeType.CHARLIE, "i need to give charlie some leather chaps.", item(ItemID.LEATHER_CHAPS)),
+		new SkillChallengeClue(ChallengeType.CHARLIE, "i need to give charlie a raw herring.", item(ItemID.RAW_HERRING)),
+		new SkillChallengeClue(ChallengeType.CHARLIE, "i need to give charlie a raw trout.", item(ItemID.RAW_TROUT)),
+		new SkillChallengeClue(ChallengeType.CHARLIE, "i need to give charlie a piece of iron ore.", item(ItemID.IRON_ORE)),
+		new SkillChallengeClue(ChallengeType.CHARLIE, "i need to give charlie one iron dagger.", item(ItemID.IRON_DAGGER)),
 		// Elite Sherlock Tasks
 		new SkillChallengeClue("Equip a Dragon Scimitar.", true, any("Any Dragon Scimitar", item(ItemID.DRAGON_SCIMITAR), item(ItemID.DRAGON_SCIMITAR_OR))),
 		new SkillChallengeClue("Enchant some Dragonstone Jewellery.", "enchant a piece of dragonstone jewellery.",
@@ -155,40 +175,13 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 		new SkillChallengeClue("String a yew longbow.", item(ItemID.YEW_LONGBOW_U), item(ItemID.BOW_STRING)),
 		new SkillChallengeClue("Kill a Dust Devil.", "slay a dust devil.", true,
 			any("Facemask or Slayer Helmet",
-				item(ItemID.FACEMASK),
-				item(ItemID.SLAYER_HELMET),
-				item(ItemID.SLAYER_HELMET_I),
-				item(ItemID.BLACK_SLAYER_HELMET),
-				item(ItemID.BLACK_SLAYER_HELMET_I),
-				item(ItemID.PURPLE_SLAYER_HELMET),
-				item(ItemID.PURPLE_SLAYER_HELMET_I),
-				item(ItemID.RED_SLAYER_HELMET),
-				item(ItemID.RED_SLAYER_HELMET_I),
-				item(ItemID.GREEN_SLAYER_HELMET),
-				item(ItemID.GREEN_SLAYER_HELMET_I),
-				item(ItemID.TURQUOISE_SLAYER_HELMET),
-				item(ItemID.TURQUOISE_SLAYER_HELMET_I),
-				item(ItemID.HYDRA_SLAYER_HELMET),
-				item(ItemID.HYDRA_SLAYER_HELMET_I),
-				item(ItemID.TWISTED_SLAYER_HELMET),
-				item(ItemID.TWISTED_SLAYER_HELMET_I),
-				item(ItemID.TZTOK_SLAYER_HELMET),
-				item(ItemID.TZTOK_SLAYER_HELMET_I),
-				item(ItemID.VAMPYRIC_SLAYER_HELMET),
-				item(ItemID.VAMPYRIC_SLAYER_HELMET_I),
-				item(ItemID.TZKAL_SLAYER_HELMET),
-				item(ItemID.TZKAL_SLAYER_HELMET_I),
-				item(ItemID.SLAYER_HELMET_I_25177),
-				item(ItemID.BLACK_SLAYER_HELMET_I_25179),
-				item(ItemID.GREEN_SLAYER_HELMET_I_25181),
-				item(ItemID.RED_SLAYER_HELMET_I_25183),
-				item(ItemID.PURPLE_SLAYER_HELMET_I_25185),
-				item(ItemID.TURQUOISE_SLAYER_HELMET_I_25187),
-				item(ItemID.HYDRA_SLAYER_HELMET_I_25189),
-				item(ItemID.TWISTED_SLAYER_HELMET_I_25191),
-				item(ItemID.TZTOK_SLAYER_HELMET_I_25902),
-				item(ItemID.VAMPYRIC_SLAYER_HELMET_I_25908),
-				item(ItemID.TZKAL_SLAYER_HELMET_I_25914))),
+				Stream.of(
+					ItemVariationMapping.getVariations(ItemID.SLAYER_HELMET).stream(),
+					Stream.of(ItemID.FACEMASK))
+					.reduce(Stream::concat)
+					.orElseGet(Stream::empty)
+					.map(ItemRequirements::item)
+					.toArray(SingleItemRequirement[]::new))),
 		new SkillChallengeClue("Catch a black warlock.", item(ItemID.BUTTERFLY_JAR), any("Butterfly Net", item(ItemID.BUTTERFLY_NET), item(ItemID.MAGIC_BUTTERFLY_NET))),
 		new SkillChallengeClue("Catch a red chinchompa.", item(ItemID.BOX_TRAP)),
 		new SkillChallengeClue("Mine a mithril ore.", ANY_PICKAXE),
@@ -203,7 +196,7 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 		new SkillChallengeClue("Activate the Chivalry prayer."),
 		new SkillChallengeClue("Hand in a Tier 2 or higher set of Shayzien supply armour. (Requires 11 lovakite bars)", "take the lovakengj armourers a boxed set of shayzien supply armour at tier 2 or above.", any("Shayzien Supply Set (Tier 2 or higher)", item(ItemID.SHAYZIEN_SUPPLY_SET_2), item(ItemID.SHAYZIEN_SUPPLY_SET_3), item(ItemID.SHAYZIEN_SUPPLY_SET_4), item(ItemID.SHAYZIEN_SUPPLY_SET_5))),
 		// Master Sherlock Tasks
-		new SkillChallengeClue("Equip an abyssal whip in front of the abyssal demons of the Slayer Tower.", true, any("Abyssal Whip", item(ItemID.ABYSSAL_WHIP), item(ItemID.FROZEN_ABYSSAL_WHIP), item(ItemID.VOLCANIC_ABYSSAL_WHIP), item(ItemID.ABYSSAL_WHIP_OR))),
+		new SkillChallengeClue("Equip an abyssal whip in front of the abyssal demons of the Slayer Tower.", true, any("Abyssal Whip", item(ItemID.ABYSSAL_WHIP), item(ItemID.FROZEN_ABYSSAL_WHIP), item(ItemID.VOLCANIC_ABYSSAL_WHIP), item(ItemID.ABYSSAL_WHIP_OR), item(ItemID.ABYSSAL_TENTACLE), item(ItemID.ABYSSAL_TENTACLE_OR))),
 		new SkillChallengeClue("Smith a runite med helm.", ANY_HAMMER, item(ItemID.RUNITE_BAR)),
 		new SkillChallengeClue("Teleport to a spirit tree you planted yourself."),
 		new SkillChallengeClue("Create a Barrows teleport tablet.", item(ItemID.DARK_ESSENCE_BLOCK), xOfItem(ItemID.BLOOD_RUNE, 1), xOfItem(ItemID.LAW_RUNE, 2), xOfItem(ItemID.SOUL_RUNE, 2)),
@@ -212,14 +205,7 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 		new SkillChallengeClue("Create an unstrung dragonstone amulet at a furnace.", item(ItemID.GOLD_BAR), item(ItemID.DRAGONSTONE), item(ItemID.AMULET_MOULD)),
 		new SkillChallengeClue("Burn a magic log.", item(ItemID.MAGIC_LOGS), item(ItemID.TINDERBOX)),
 		new SkillChallengeClue("Burn a redwood log.", item(ItemID.REDWOOD_LOGS), item(ItemID.TINDERBOX)),
-		new SkillChallengeClue("Complete a lap of Rellekka's Rooftop Agility Course", "complete a lap of the rellekka rooftop agility course whilst sporting the finest amount of grace.", true,
-			all("A full Graceful set",
-				any("", item(ItemID.GRACEFUL_HOOD), item(ItemID.GRACEFUL_HOOD_11851), item(ItemID.GRACEFUL_HOOD_13579), item(ItemID.GRACEFUL_HOOD_13580), item(ItemID.GRACEFUL_HOOD_13591), item(ItemID.GRACEFUL_HOOD_13592), item(ItemID.GRACEFUL_HOOD_13603), item(ItemID.GRACEFUL_HOOD_13604), item(ItemID.GRACEFUL_HOOD_13615), item(ItemID.GRACEFUL_HOOD_13616), item(ItemID.GRACEFUL_HOOD_13627), item(ItemID.GRACEFUL_HOOD_13628), item(ItemID.GRACEFUL_HOOD_13667), item(ItemID.GRACEFUL_HOOD_13668), item(ItemID.GRACEFUL_HOOD_21061), item(ItemID.GRACEFUL_HOOD_21063), item(ItemID.GRACEFUL_HOOD_24743), item(ItemID.GRACEFUL_HOOD_24745), item(ItemID.GRACEFUL_HOOD_25069), item(ItemID.GRACEFUL_HOOD_25071)),
-				any("", item(ItemID.GRACEFUL_CAPE), item(ItemID.GRACEFUL_CAPE_11853), item(ItemID.GRACEFUL_CAPE_13581), item(ItemID.GRACEFUL_CAPE_13582), item(ItemID.GRACEFUL_CAPE_13593), item(ItemID.GRACEFUL_CAPE_13594), item(ItemID.GRACEFUL_CAPE_13605), item(ItemID.GRACEFUL_CAPE_13606), item(ItemID.GRACEFUL_CAPE_13617), item(ItemID.GRACEFUL_CAPE_13618), item(ItemID.GRACEFUL_CAPE_13629), item(ItemID.GRACEFUL_CAPE_13630), item(ItemID.GRACEFUL_CAPE_13669), item(ItemID.GRACEFUL_CAPE_13670), item(ItemID.GRACEFUL_CAPE_21064), item(ItemID.GRACEFUL_CAPE_21066), item(ItemID.GRACEFUL_CAPE_24746), item(ItemID.GRACEFUL_CAPE_24748), item(ItemID.GRACEFUL_CAPE_25072), item(ItemID.GRACEFUL_CAPE_25074), item(ItemID.AGILITY_CAPE), item(ItemID.AGILITY_CAPE_13340), item(ItemID.AGILITY_CAPET), item(ItemID.AGILITY_CAPET_13341), item(ItemID.MAX_CAPE), item(ItemID.MAX_CAPE_13342)),
-				any("", item(ItemID.GRACEFUL_TOP), item(ItemID.GRACEFUL_TOP_11855), item(ItemID.GRACEFUL_TOP_13583), item(ItemID.GRACEFUL_TOP_13584), item(ItemID.GRACEFUL_TOP_13595), item(ItemID.GRACEFUL_TOP_13596), item(ItemID.GRACEFUL_TOP_13607), item(ItemID.GRACEFUL_TOP_13608), item(ItemID.GRACEFUL_TOP_13619), item(ItemID.GRACEFUL_TOP_13620), item(ItemID.GRACEFUL_TOP_13631), item(ItemID.GRACEFUL_TOP_13632), item(ItemID.GRACEFUL_TOP_13671), item(ItemID.GRACEFUL_TOP_13672), item(ItemID.GRACEFUL_TOP_21067), item(ItemID.GRACEFUL_TOP_21069), item(ItemID.GRACEFUL_TOP_24749), item(ItemID.GRACEFUL_TOP_24751), item(ItemID.GRACEFUL_TOP_25075), item(ItemID.GRACEFUL_TOP_25077)),
-				any("", item(ItemID.GRACEFUL_LEGS), item(ItemID.GRACEFUL_LEGS_11857), item(ItemID.GRACEFUL_LEGS_13585), item(ItemID.GRACEFUL_LEGS_13586), item(ItemID.GRACEFUL_LEGS_13597), item(ItemID.GRACEFUL_LEGS_13598), item(ItemID.GRACEFUL_LEGS_13609), item(ItemID.GRACEFUL_LEGS_13610), item(ItemID.GRACEFUL_LEGS_13621), item(ItemID.GRACEFUL_LEGS_13622), item(ItemID.GRACEFUL_LEGS_13633), item(ItemID.GRACEFUL_LEGS_13634), item(ItemID.GRACEFUL_LEGS_13673), item(ItemID.GRACEFUL_LEGS_13674), item(ItemID.GRACEFUL_LEGS_21070), item(ItemID.GRACEFUL_LEGS_21072), item(ItemID.GRACEFUL_LEGS_24752), item(ItemID.GRACEFUL_LEGS_24754), item(ItemID.GRACEFUL_LEGS_25078), item(ItemID.GRACEFUL_LEGS_25080)),
-				any("", item(ItemID.GRACEFUL_GLOVES), item(ItemID.GRACEFUL_GLOVES_11859), item(ItemID.GRACEFUL_GLOVES_13587), item(ItemID.GRACEFUL_GLOVES_13588), item(ItemID.GRACEFUL_GLOVES_13599), item(ItemID.GRACEFUL_GLOVES_13600), item(ItemID.GRACEFUL_GLOVES_13611), item(ItemID.GRACEFUL_GLOVES_13612), item(ItemID.GRACEFUL_GLOVES_13623), item(ItemID.GRACEFUL_GLOVES_13624), item(ItemID.GRACEFUL_GLOVES_13635), item(ItemID.GRACEFUL_GLOVES_13636), item(ItemID.GRACEFUL_GLOVES_13675), item(ItemID.GRACEFUL_GLOVES_13676), item(ItemID.GRACEFUL_GLOVES_21073), item(ItemID.GRACEFUL_GLOVES_21075), item(ItemID.GRACEFUL_GLOVES_24755), item(ItemID.GRACEFUL_GLOVES_24757), item(ItemID.GRACEFUL_GLOVES_25081), item(ItemID.GRACEFUL_GLOVES_25083)),
-				any("", item(ItemID.GRACEFUL_BOOTS), item(ItemID.GRACEFUL_BOOTS_11861), item(ItemID.GRACEFUL_BOOTS_13589), item(ItemID.GRACEFUL_BOOTS_13590), item(ItemID.GRACEFUL_BOOTS_13601), item(ItemID.GRACEFUL_BOOTS_13602), item(ItemID.GRACEFUL_BOOTS_13613), item(ItemID.GRACEFUL_BOOTS_13614), item(ItemID.GRACEFUL_BOOTS_13625), item(ItemID.GRACEFUL_BOOTS_13626), item(ItemID.GRACEFUL_BOOTS_13637), item(ItemID.GRACEFUL_BOOTS_13638), item(ItemID.GRACEFUL_BOOTS_13677), item(ItemID.GRACEFUL_BOOTS_13678), item(ItemID.GRACEFUL_BOOTS_21076), item(ItemID.GRACEFUL_BOOTS_21078), item(ItemID.GRACEFUL_BOOTS_24758), item(ItemID.GRACEFUL_BOOTS_24760), item(ItemID.GRACEFUL_BOOTS_25084), item(ItemID.GRACEFUL_BOOTS_25086)))),
+		new SkillChallengeClue("Complete a lap of Rellekka's Rooftop Agility Course", "complete a lap of the rellekka rooftop agility course whilst sporting the finest amount of grace.", true, A_FULL_GRACEFUL_SET),
 		new SkillChallengeClue("Mix an anti-venom potion.", item(ItemID.ANTIDOTE4_5952), xOfItem(ItemID.ZULRAHS_SCALES, 20)),
 		new SkillChallengeClue("Mine a piece of Runite ore", "mine a piece of runite ore whilst sporting the finest mining gear.", true, ANY_PICKAXE,
 			all("Prospector kit",
@@ -241,7 +227,12 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 				any("", item(ItemID.ANGLER_TOP), item(ItemID.SPIRIT_ANGLER_TOP)),
 				any("", item(ItemID.ANGLER_WADERS), item(ItemID.SPIRIT_ANGLER_WADERS)),
 				any("", item(ItemID.ANGLER_BOOTS), item(ItemID.SPIRIT_ANGLER_BOOTS)))),
-		new SkillChallengeClue("Chop a redwood log.", "chop a redwood log whilst sporting the finest lumberjack gear.", true, ANY_AXE, all("Lumberjack outfit", item(ItemID.LUMBERJACK_HAT), item(ItemID.LUMBERJACK_TOP), item(ItemID.LUMBERJACK_LEGS), item(ItemID.LUMBERJACK_BOOTS))),
+		new SkillChallengeClue("Chop a redwood log.", "chop a redwood log whilst sporting the finest lumberjack gear.", true, ANY_AXE,
+			all("Lumberjack outfit",
+				any("", item(ItemID.LUMBERJACK_HAT), item(ItemID.FORESTRY_HAT)),
+				any("", item(ItemID.LUMBERJACK_TOP), item(ItemID.FORESTRY_TOP)),
+				any("", item(ItemID.LUMBERJACK_LEGS), item(ItemID.FORESTRY_LEGS)),
+				any("", item(ItemID.LUMBERJACK_BOOTS), item(ItemID.FORESTRY_BOOTS)))),
 		new SkillChallengeClue("Craft a light orb in the Dorgesh-Kaan bank.", item(ItemID.CAVE_GOBLIN_WIRE), item(ItemID.EMPTY_LIGHT_ORB)),
 		new SkillChallengeClue("Kill a reanimated Abyssal Demon.", "kill a reanimated abyssal.", xOfItem(ItemID.SOUL_RUNE, 4), xOfItem(ItemID.BLOOD_RUNE, 2), any("Nature Rune x4", xOfItem(ItemID.NATURE_RUNE, 4), item(ItemID.BRYOPHYTAS_STAFF)), range("Ensouled abyssal head", ItemID.ENSOULED_ABYSSAL_HEAD, ItemID.ENSOULED_ABYSSAL_HEAD_13508)),
 		new SkillChallengeClue("Kill a Fiyr shade inside Mort'tons shade catacombs.",
@@ -263,15 +254,16 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 	private boolean challengeCompleted;
 
 	// Charlie Tasks
-	private SkillChallengeClue(String challenge, String rawChallenge, String returnText, SingleItemRequirement returnItem, ItemRequirement ... itemRequirements)
+	private SkillChallengeClue(ChallengeType challengeType, String clueText, SingleItemRequirement returnItem)
 	{
-		this.type = ChallengeType.CHARLIE;
-		this.challenge = challenge;
-		this.rawChallenge = rawChallenge;
-		this.returnText = returnText;
-		this.itemRequirements = itemRequirements;
+		Preconditions.checkArgument(challengeType == ChallengeType.CHARLIE);
+		this.type = challengeType;
+		this.challenge = "";
+		this.rawChallenge = clueText;
+		this.returnText = clueText;
+		this.itemRequirements = new ItemRequirement[0];
 		this.returnItem = returnItem;
-		this.challengeCompleted = false;
+		this.challengeCompleted = true;
 		this.requireEquip = false;
 		this.objectNames = new String[0];
 		this.objectRegions = null;
@@ -369,6 +361,8 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 				}
 			}
 		}
+
+		renderOverlayNote(panelComponent, plugin);
 	}
 
 	@Override
@@ -462,8 +456,14 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 	}
 
 	@Override
-	public String[] getNpcs()
+	public String[] getNpcs(ClueScrollPlugin plugin)
 	{
 		return new String[] {type.getName()};
+	}
+
+	@Override
+	public int[] getConfigKeys()
+	{
+		return new int[]{rawChallenge.hashCode()};
 	}
 }

@@ -28,10 +28,15 @@ package net.runelite.client.ui.components.colorpicker;
 import com.google.common.base.Strings;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.GraphicsConfiguration;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
@@ -57,6 +62,7 @@ import javax.swing.text.DocumentFilter;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.util.ColorUtil;
 import org.pushingpixels.substance.internal.SubstanceSynapse;
@@ -108,6 +114,7 @@ public class RuneliteColorPicker extends JDialog
 		setSize(FRAME_WIDTH, FRAME_HEIGHT);
 		setBackground(ColorScheme.PROGRESS_COMPLETE_COLOR);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		setIconImage(ClientUI.ICON);
 
 		JPanel content = new JPanel(new BorderLayout());
 		content.putClientProperty(SubstanceSynapse.COLORIZATION_FACTOR, 1.0);
@@ -393,6 +400,60 @@ public class RuneliteColorPicker extends JDialog
 
 		colorChange(color);
 		updatePanels();
+	}
+
+	@Override
+	public void setLocationRelativeTo(Component c)
+	{
+		if (this.getOwner() == null)
+		{
+			super.setLocationRelativeTo(c);
+			return;
+		}
+
+		GraphicsConfiguration gc = this.getOwner().getGraphicsConfiguration();
+		Insets insets = Toolkit.getDefaultToolkit().getScreenInsets(gc);
+
+		Rectangle gcBounds = gc.getBounds();
+		gcBounds.setRect(
+			gcBounds.x + insets.left,
+			gcBounds.y + insets.top,
+			gcBounds.width - insets.left - insets.right,
+			gcBounds.height - insets.top - insets.bottom);
+
+		Dimension compSize = c.getSize();
+		Point compLocation = c.getLocationOnScreen();
+		Dimension windowSize = getSize();
+
+		int dx = compLocation.x + ((compSize.width - windowSize.width) / 2);
+		int dy = compLocation.y + ((compSize.height - windowSize.height) / 2);
+
+		// Avoid being placed off the edge of the screen:
+		// bottom
+		if (dy + windowSize.height > gcBounds.y + gcBounds.height)
+		{
+			dy = gcBounds.y + gcBounds.height - windowSize.height;
+		}
+
+		// top
+		if (dy < gcBounds.y)
+		{
+			dy = gcBounds.y;
+		}
+
+		// right
+		if (dx + windowSize.width > gcBounds.x + gcBounds.width)
+		{
+			dx = gcBounds.x + gcBounds.width - windowSize.width;
+		}
+
+		// left
+		if (dx < gcBounds.x)
+		{
+			dx = gcBounds.x;
+		}
+
+		setLocation(dx, dy);
 	}
 
 	/**

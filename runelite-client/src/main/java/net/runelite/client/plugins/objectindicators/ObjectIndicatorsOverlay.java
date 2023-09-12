@@ -40,6 +40,10 @@ import net.runelite.api.GroundObject;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.TileObject;
 import net.runelite.api.WallObject;
+import static net.runelite.client.plugins.objectindicators.ColorTileObject.HF_CLICKBOX;
+import static net.runelite.client.plugins.objectindicators.ColorTileObject.HF_HULL;
+import static net.runelite.client.plugins.objectindicators.ColorTileObject.HF_OUTLINE;
+import static net.runelite.client.plugins.objectindicators.ColorTileObject.HF_TILE;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -71,18 +75,29 @@ class ObjectIndicatorsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		Stroke stroke = new BasicStroke((float) config.borderWidth());
-		for (ColorTileObject colorTileObject : plugin.getObjects())
+		var objects = plugin.getObjects();
+		if (objects.isEmpty())
 		{
-			TileObject object = colorTileObject.getTileObject();
-			Color color = colorTileObject.getColor();
+			return null;
+		}
+
+		Stroke stroke = new BasicStroke((float) config.borderWidth());
+		final var defaultFlags =
+			(config.highlightHull() ? HF_HULL : 0) |
+			(config.highlightOutline() ? HF_OUTLINE : 0) |
+			(config.highlightClickbox() ? HF_CLICKBOX : 0) |
+			(config.highlightTile() ? HF_TILE : 0);
+		for (ColorTileObject obj : objects)
+		{
+			TileObject object = obj.getTileObject();
+			Color color = obj.getColor();
 
 			if (object.getPlane() != client.getPlane())
 			{
 				continue;
 			}
 
-			ObjectComposition composition = colorTileObject.getComposition();
+			ObjectComposition composition = obj.getComposition();
 			if (composition.getImpostorIds() != null)
 			{
 				// This is a multiloc
@@ -91,29 +106,30 @@ class ObjectIndicatorsOverlay extends Overlay
 				if (composition == null
 					|| Strings.isNullOrEmpty(composition.getName())
 					|| "null".equals(composition.getName())
-					|| !composition.getName().equals(colorTileObject.getName()))
+					|| !composition.getName().equals(obj.getName()))
 				{
 					continue;
 				}
 			}
 
-			if (color == null || !config.rememberObjectColors())
+			if (color == null)
 			{
 				// Fallback to the current config if the object is marked before the addition of multiple colors
 				color = config.markerColor();
 			}
 
-			if (config.highlightHull())
+			final var flags = obj.getHighlightFlags() != 0 ? obj.getHighlightFlags() : defaultFlags;
+			if ((flags & HF_HULL) != 0)
 			{
 				renderConvexHull(graphics, object, color, stroke);
 			}
 
-			if (config.highlightOutline())
+			if ((flags & HF_OUTLINE) != 0)
 			{
 				modelOutlineRenderer.drawOutline(object, (int)config.borderWidth(), color, config.outlineFeather());
 			}
 
-			if (config.highlightClickbox())
+			if ((flags & HF_CLICKBOX) != 0)
 			{
 				Shape clickbox = object.getClickbox();
 				if (clickbox != null)
@@ -123,7 +139,7 @@ class ObjectIndicatorsOverlay extends Overlay
 				}
 			}
 
-			if (config.highlightTile())
+			if ((flags & HF_TILE) != 0)
 			{
 				Polygon tilePoly = object.getCanvasTilePoly();
 				if (tilePoly != null)

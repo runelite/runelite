@@ -104,6 +104,16 @@ public class RunEnergyPluginTest
 	}
 
 	@Test
+	public void testCheck1000()
+	{
+		String checkMessage = "Your Ring of endurance is charged with 1,000 stamina doses.";
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", checkMessage, "", 0);
+
+		runEnergyPlugin.onChatMessage(chatMessage);
+		verify(configManager).setRSProfileConfiguration(RunEnergyConfig.GROUP_NAME, "ringOfEnduranceCharges", 1000);
+	}
+
+	@Test
 	public void testPotionMessage()
 	{
 		String potionMessage = "Your Ring of endurance doubles the duration of your stamina potion's effect.";
@@ -138,7 +148,7 @@ public class RunEnergyPluginTest
 		when(client.getItemContainer(InventoryID.EQUIPMENT)).thenReturn(equipment);
 		when(equipment.count(RING_OF_ENDURANCE)).thenReturn(1);
 		when(client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE)).thenReturn(1);
-		when(client.getEnergy()).thenReturn(100);
+		when(client.getEnergy()).thenReturn(10000);
 		assertEquals("300s", runEnergyPlugin.getEstimatedRunTimeRemaining(true));
 
 		when(client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE)).thenReturn(0);

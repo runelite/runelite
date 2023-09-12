@@ -147,7 +147,7 @@ public interface EntityHiderConfig extends Config
 	@ConfigItem(
 		position = 11,
 		keyName = "hidePets",
-		name = "Hide Pets",
+		name = "Hide Other Players' Pets",
 		description = "Configures whether or not other player pets are hidden"
 	)
 	default boolean hidePets()
@@ -184,6 +184,28 @@ public interface EntityHiderConfig extends Config
 		description = "Hides NPCs when their health reaches 0"
 	)
 	default boolean hideDeadNpcs()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 15,
+		keyName = "hideThralls",
+		name = "Hide Thralls",
+		description = "Configures whether or not Thralls are hidden"
+	)
+	default boolean hideThralls()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 16,
+		keyName = "hideRandomEvents",
+		name = "Hide Random Events",
+		description = "Configures whether or not Random events are hidden"
+	)
+	default boolean hideRandomEvents()
 	{
 		return false;
 	}

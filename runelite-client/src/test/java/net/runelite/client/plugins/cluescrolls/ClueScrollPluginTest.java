@@ -43,6 +43,7 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.Player;
+import net.runelite.api.Scene;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
@@ -54,7 +55,9 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.plugins.banktags.TagManager;
 import net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdLocation;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -86,6 +89,10 @@ public class ClueScrollPluginTest
 
 	@Mock
 	@Bind
+	Scene scene;
+
+	@Mock
+	@Bind
 	ClientThread clientThread;
 
 	@Inject
@@ -110,6 +117,14 @@ public class ClueScrollPluginTest
 	@Mock
 	@Bind
 	TagManager tagManager;
+
+	@Mock
+	@Bind
+	ConfigManager configManager;
+
+	@Mock
+	@Bind
+	ChatboxPanelManager chatboxPanelManager;
 
 	@Before
 	public void before()

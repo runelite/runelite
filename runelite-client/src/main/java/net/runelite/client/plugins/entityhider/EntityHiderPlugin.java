@@ -26,12 +26,16 @@
 package net.runelite.client.plugins.entityhider;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
+import java.util.Set;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GraphicID;
 import net.runelite.api.GraphicsObject;
 import net.runelite.api.NPC;
+import net.runelite.api.NpcID;
+import net.runelite.api.NullNpcID;
 import net.runelite.api.Player;
 import net.runelite.api.Projectile;
 import net.runelite.api.Renderable;
@@ -51,6 +55,36 @@ import net.runelite.client.plugins.PluginDescriptor;
 )
 public class EntityHiderPlugin extends Plugin
 {
+	private static final Set<Integer> THRALL_IDS = ImmutableSet.of(
+		NullNpcID.NULL_10878, NullNpcID.NULL_10881, NullNpcID.NULL_10884,  // Lesser Thrall (ghost, skeleton, zombie)
+		NullNpcID.NULL_10879, NullNpcID.NULL_10882, NullNpcID.NULL_10885,  // Superior Thrall (ghost, skeleton, zombie)
+		NullNpcID.NULL_10880, NullNpcID.NULL_10883, NullNpcID.NULL_10886   // Greater Thrall (ghost, skeleton, zombie)
+	);
+	private static final Set<Integer> RANDOM_EVENT_NPC_IDS = ImmutableSet.of(
+		NpcID.BEE_KEEPER_6747,
+		NpcID.CAPT_ARNAV,
+		NpcID.DR_JEKYLL, NpcID.DR_JEKYLL_314,
+		NpcID.DRUNKEN_DWARF,
+		NpcID.DUNCE_6749,
+		NpcID.EVIL_BOB, NpcID.EVIL_BOB_6754,
+		NpcID.FLIPPA_6744,
+		NpcID.FREAKY_FORESTER_6748,
+		NpcID.FROG_5429, NpcID.FROG_5430, NpcID.FROG_5431, NpcID.FROG_5432, NpcID.FROG, NpcID.FROG_PRINCE, NpcID.FROG_PRINCESS,
+		NpcID.GENIE, NpcID.GENIE_327,
+		NpcID.GILES, NpcID.GILES_5441,
+		NpcID.LEO_6746,
+		NpcID.MILES, NpcID.MILES_5440,
+		NpcID.MYSTERIOUS_OLD_MAN_6750, NpcID.MYSTERIOUS_OLD_MAN_6751,
+		NpcID.MYSTERIOUS_OLD_MAN_6752, NpcID.MYSTERIOUS_OLD_MAN_6753,
+		NpcID.NILES, NpcID.NILES_5439,
+		NpcID.PILLORY_GUARD,
+		NpcID.POSTIE_PETE_6738,
+		NpcID.QUIZ_MASTER_6755,
+		NpcID.RICK_TURPENTINE, NpcID.RICK_TURPENTINE_376,
+		NpcID.SANDWICH_LADY,
+		NpcID.SERGEANT_DAMIEN_6743
+	);
+
 	@Inject
 	private Client client;
 
@@ -75,6 +109,8 @@ public class EntityHiderPlugin extends Plugin
 	private boolean hideNPCs2D;
 	private boolean hideDeadNpcs;
 	private boolean hidePets;
+	private boolean hideThralls;
+	private boolean hideRandomEvents;
 	private boolean hideAttackers;
 	private boolean hideProjectiles;
 
@@ -127,6 +163,9 @@ public class EntityHiderPlugin extends Plugin
 		hideDeadNpcs = config.hideDeadNpcs();
 
 		hidePets = config.hidePets();
+
+		hideThralls = config.hideThralls();
+		hideRandomEvents = config.hideRandomEvents();
 
 		hideAttackers = config.hideAttackers();
 
@@ -203,6 +242,16 @@ public class EntityHiderPlugin extends Plugin
 					b &= drawingUI ? hideNPCs2D : hideNPCs;
 				}
 				return !b;
+			}
+
+			if (THRALL_IDS.contains(npc.getId()))
+			{
+				return !hideThralls;
+			}
+
+			if (RANDOM_EVENT_NPC_IDS.contains(npc.getId()))
+			{
+				return !hideRandomEvents;
 			}
 
 			return !(drawingUI ? hideNPCs2D : hideNPCs);

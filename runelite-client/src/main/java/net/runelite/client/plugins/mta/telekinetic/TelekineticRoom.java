@@ -426,7 +426,7 @@ public class TelekineticRoom extends MTARoom
 	private LocalPoint neighbour(LocalPoint point, Direction direction)
 	{
 		WorldPoint worldPoint = WorldPoint.fromLocal(client, point);
-		WorldArea area = new WorldArea(worldPoint, 1, 1);
+		WorldArea area = worldPoint.toWorldArea();
 
 		int dx, dy;
 
@@ -457,7 +457,7 @@ public class TelekineticRoom extends MTARoom
 			worldPoint = area.toWorldPoint()
 				.dx(dx)
 				.dy(dy);
-			area = new WorldArea(worldPoint, 1, 1);
+			area = worldPoint.toWorldArea();
 		}
 
 		return LocalPoint.fromWorld(client, worldPoint);

@@ -124,7 +124,7 @@ public class KingdomPlugin extends Plugin
 				setApproval(approval);
 			}
 		}
-		else if (event.getVarpId() == VarPlayer.THRONE_OF_MISCELLANIA.getId())
+		else if (event.getVarpId() == VarPlayer.THRONE_OF_MISCELLANIA)
 		{
 			processInfobox();
 		}

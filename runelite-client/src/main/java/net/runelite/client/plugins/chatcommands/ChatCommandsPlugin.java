@@ -70,7 +70,6 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.vars.AccountType;
 import net.runelite.api.widgets.Widget;
 import static net.runelite.api.widgets.WidgetID.ACHIEVEMENT_DIARY_SCROLL_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.ADVENTURE_LOG_ID;
@@ -161,7 +160,7 @@ public class ChatCommandsPlugin extends Plugin
 	private int lastBossTime = -1;
 	private double lastPb = -1;
 	private String lastTeamSize;
-	private int modIconIdx = -1;
+	private int petsIconIdx = -1;
 	private int[] pets;
 
 	@Inject
@@ -227,22 +226,13 @@ public class ChatCommandsPlugin extends Plugin
 
 		clientThread.invoke(() ->
 		{
-			// enum config must be loaded for building pet icons
-			if (client.getModIcons() == null || client.getGameState().getState() < GameState.LOGIN_SCREEN.getState())
+			if (client.getGameState().getState() >= GameState.LOGIN_SCREEN.getState())
 			{
-				return false;
+				if (petsIconIdx == -1)
+				{
+					loadPets();
+				}
 			}
-
-			// !pets requires off thread pets access, so we just store a copy at startup
-			EnumComposition petsEnum = client.getEnum(EnumID.PETS);
-			pets = new int[petsEnum.size()];
-			for (int i = 0; i < petsEnum.size(); ++i)
-			{
-				pets[i] = petsEnum.getIntValue(i);
-			}
-
-			loadPetIcons();
-			return true;
 		});
 	}
 
@@ -311,18 +301,23 @@ public class ChatCommandsPlugin extends Plugin
 		return personalBest == null ? 0 : personalBest;
 	}
 
-	private void loadPetIcons()
+	private void loadPets()
 	{
-		if (modIconIdx != -1)
+		assert petsIconIdx == -1;
+
+		// !pets requires off thread pets access, so we just store a copy
+		EnumComposition petsEnum = client.getEnum(EnumID.PETS);
+		pets = new int[petsEnum.size()];
+		for (int i = 0; i < petsEnum.size(); ++i)
 		{
-			return;
+			pets[i] = petsEnum.getIntValue(i);
 		}
 
 		final IndexedSprite[] modIcons = client.getModIcons();
 		assert modIcons != null;
 
 		final IndexedSprite[] newModIcons = Arrays.copyOf(modIcons, modIcons.length + pets.length);
-		modIconIdx = modIcons.length;
+		petsIconIdx = modIcons.length;
 
 		client.setModIcons(newModIcons);
 
@@ -331,17 +326,15 @@ public class ChatCommandsPlugin extends Plugin
 			final int petId = pets[i];
 
 			final AsyncBufferedImage abi = itemManager.getImage(petId);
-			final int idx = modIconIdx + i;
-			Runnable r = () ->
+			final int idx = petsIconIdx + i;
+			abi.onLoaded(() ->
 			{
 				final BufferedImage image = ImageUtil.resizeImage(abi, 18, 16);
 				final IndexedSprite sprite = ImageUtil.getImageIndexedSprite(image, client);
 				// modicons array might be replaced in between when we assign it and the callback,
 				// so fetch modicons again
 				client.getModIcons()[idx] = sprite;
-			};
-			abi.onLoaded(r);
-			r.run();
+			});
 		}
 	}
 
@@ -466,6 +459,12 @@ public class ChatCommandsPlugin extends Plugin
 					// TOB team size isn't sent in the kill message, but can be computed from varbits
 					int tobTeamSize = tobTeamSize();
 					lastTeamSize = tobTeamSize == 1 ? "Solo" : (tobTeamSize + " players");
+				}
+				else if (renamedBoss.contains("Tombs of Amascut"))
+				{
+					// TOA team size isn't sent in the kill message, but can be computed from varbits
+					int toaTeamSize = toaTeamSize();
+					lastTeamSize = toaTeamSize == 1 ? "Solo" : (toaTeamSize + " players");
 				}
 
 				final double pb = getPb(renamedBoss);
@@ -635,6 +634,20 @@ public class ChatCommandsPlugin extends Plugin
 			return Integer.parseInt(s[0]) * 60 * 60 + Integer.parseInt(s[1]) * 60 + Double.parseDouble(s[2]);
 		}
 		return Double.parseDouble(timeString);
+	}
+
+	@VisibleForTesting
+	static String secondsToTimeString(double seconds)
+	{
+		int hours = (int) (Math.floor(seconds) / 3600);
+		int minutes = (int) (Math.floor(seconds / 60) % 60);
+		seconds = seconds % 60;
+
+		String timeString = hours > 0 ? String.format("%d:%02d:", hours, minutes) : String.format("%d:", minutes);
+
+		// If the seconds is an integer, it is ambiguous if the pb is a precise
+		// pb or not. So we always show it without the trailing .00.
+		return timeString + (Math.floor(seconds) == seconds ? String.format("%02d", (int) seconds) : String.format("%05.2f", seconds));
 	}
 
 	private void matchPb(Matcher matcher)
@@ -844,6 +857,16 @@ public class ChatCommandsPlugin extends Plugin
 			case LOADING:
 			case HOPPING:
 				pohOwner = null;
+				break;
+			case STARTING:
+				petsIconIdx = -1;
+				pets = null;
+				break;
+			case LOGIN_SCREEN:
+				if (petsIconIdx == -1)
+				{
+					loadPets();
+				}
 				break;
 		}
 	}
@@ -1133,22 +1156,13 @@ public class ChatCommandsPlugin extends Plugin
 			return;
 		}
 
-		int minutes = (int) (Math.floor(pb) / 60);
-		double seconds = pb % 60;
-
-		// If the seconds is an integer, it is ambiguous if the pb is a precise
-		// pb or not. So we always show it without the trailing .00.
-		final String time = Math.floor(seconds) == seconds ?
-			String.format("%d:%02d", minutes, (int) seconds) :
-			String.format("%d:%05.2f", minutes, seconds);
-
 		String response = new ChatMessageBuilder()
 			.append(ChatColorType.HIGHLIGHT)
 			.append(search)
 			.append(ChatColorType.NORMAL)
 			.append(" personal best: ")
 			.append(ChatColorType.HIGHLIGHT)
-			.append(time)
+			.append(secondsToTimeString(pb))
 			.build();
 
 		log.debug("Setting response {}", response);
@@ -1313,7 +1327,7 @@ public class ChatCommandsPlugin extends Plugin
 			final int petId = pets[petIdx];
 			if (playerPetList.contains(petId))
 			{
-				responseBuilder.append(" ").img(modIconIdx + petIdx);
+				responseBuilder.append(" ").img(petsIconIdx + petIdx);
 			}
 		}
 
@@ -1859,7 +1873,7 @@ public class ChatCommandsPlugin extends Plugin
 			return endpoint;
 		}
 
-		return toEndPoint(client.getAccountType());
+		return toEndPoint(client.getVarbitValue(Varbits.ACCOUNT_TYPE));
 	}
 
 	/**
@@ -1898,15 +1912,15 @@ public class ChatCommandsPlugin extends Plugin
 	 * @param accountType account type
 	 * @return hiscore endpoint
 	 */
-	private static HiscoreEndpoint toEndPoint(final AccountType accountType)
+	private static HiscoreEndpoint toEndPoint(final int accountType)
 	{
 		switch (accountType)
 		{
-			case IRONMAN:
+			case 1:
 				return HiscoreEndpoint.IRONMAN;
-			case ULTIMATE_IRONMAN:
+			case 2:
 				return HiscoreEndpoint.ULTIMATE_IRONMAN;
-			case HARDCORE_IRONMAN:
+			case 3:
 				return HiscoreEndpoint.HARDCORE_IRONMAN;
 			default:
 				return HiscoreEndpoint.NORMAL;
@@ -1955,6 +1969,10 @@ public class ChatCommandsPlugin extends Plugin
 
 			case "vetion":
 				return "Vet'ion";
+
+			case "calvarion":
+			case "calv":
+				return "Calvar'ion";
 
 			case "vene":
 				return "Venenatis";
@@ -2175,13 +2193,69 @@ public class ChatCommandsPlugin extends Plugin
 			// Tombs of Amascut
 			case "toa":
 				return "Tombs of Amascut";
+			case "toa 1":
+			case "toa solo":
+				return "Tombs of Amascut Solo";
+			case "toa 2":
+			case "toa duo":
+				return "Tombs of Amascut 2 players";
+			case "toa 3":
+				return "Tombs of Amascut 3 players";
+			case "toa 4":
+				return "Tombs of Amascut 4 players";
+			case "toa 5":
+				return "Tombs of Amascut 5 players";
+			case "toa 6":
+				return "Tombs of Amascut 6 players";
+			case "toa 7":
+				return "Tombs of Amascut 7 players";
+			case "toa 8":
+				return "Tombs of Amascut 8 players";
 			case "toa entry":
+			case "tombs of amascut - entry":
 			case "toa entry mode":
 				return "Tombs of Amascut Entry Mode";
+			case "toa entry 1":
+			case "toa entry solo":
+				return "Tombs of Amascut Entry Mode Solo";
+			case "toa entry 2":
+			case "toa entry duo":
+				return "Tombs of Amascut Entry Mode 2 players";
+			case "toa entry 3":
+				return "Tombs of Amascut Entry Mode 3 players";
+			case "toa entry 4":
+				return "Tombs of Amascut Entry Mode 4 players";
+			case "toa entry 5":
+				return "Tombs of Amascut Entry Mode 5 players";
+			case "toa entry 6":
+				return "Tombs of Amascut Entry Mode 6 players";
+			case "toa entry 7":
+				return "Tombs of Amascut Entry Mode 7 players";
+			case "toa entry 8":
+				return "Tombs of Amascut Entry Mode 8 players";
 			case "tombs of amascut: expert mode":
 			case "toa expert":
+			case "tombs of amascut - expert":
 			case "toa expert mode":
 				return "Tombs of Amascut Expert Mode";
+			case "toa expert 1":
+			case "toa expert solo":
+				return "Tombs of Amascut Expert Mode Solo";
+			case "toa expert 2":
+			case "toa expert duo":
+				return "Tombs of Amascut Expert Mode 2 players";
+			case "toa expert 3":
+				return "Tombs of Amascut Expert Mode 3 players";
+			case "toa expert 4":
+				return "Tombs of Amascut Expert Mode 4 players";
+			case "toa expert 5":
+				return "Tombs of Amascut Expert Mode 5 players";
+			case "toa expert 6":
+				return "Tombs of Amascut Expert Mode 6 players";
+			case "toa expert 7":
+				return "Tombs of Amascut Expert Mode 7 players";
+			case "toa expert 8":
+				return "Tombs of Amascut Expert Mode 8 players";
 
 			// The Gauntlet
 			case "gaunt":
@@ -2270,7 +2344,7 @@ public class ChatCommandsPlugin extends Plugin
 			case "al-kharid agility":
 			case "alkharid":
 			case "alkharid agility":
-				return "Al-Kharid Rooftop";
+				return "Al Kharid Rooftop";
 
 			// Varrock Rooftop Course
 			case "varrock":
@@ -2384,6 +2458,25 @@ public class ChatCommandsPlugin extends Plugin
 			case "rifts closed":
 				return "Guardians of the Rift";
 
+			// Tempoross
+			case "fishingtodt":
+			case "fishtodt":
+				return "Tempoross";
+
+			// Phantom Muspah
+			case "phantom":
+			case "muspah":
+			case "pm":
+				return "Phantom Muspah";
+
+			// Desert Treasure 2 bosses
+			case "the leviathan":
+				return "Leviathan";
+			case "duke":
+				return "Duke Sucellus";
+			case "the whisperer":
+				return "Whisperer";
+
 			default:
 				return WordUtils.capitalize(boss);
 		}
@@ -2456,7 +2549,7 @@ public class ChatCommandsPlugin extends Plugin
 				return net.runelite.api.Skill.CONSTRUCTION.getName();
 			case "ALL":
 			case "TOTAL":
-				return net.runelite.api.Skill.OVERALL.getName();
+				return "Overall";
 			default:
 				return skill;
 		}
@@ -2488,6 +2581,17 @@ public class ChatCommandsPlugin extends Plugin
 			Math.min(client.getVarbitValue(Varbits.THEATRE_OF_BLOOD_ORB3), 1) +
 			Math.min(client.getVarbitValue(Varbits.THEATRE_OF_BLOOD_ORB4), 1) +
 			Math.min(client.getVarbitValue(Varbits.THEATRE_OF_BLOOD_ORB5), 1);
+	}
+
+	private int toaTeamSize()
+	{
+		return Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_0_HEALTH), 1) +
+			Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_1_HEALTH), 1) +
+			Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_2_HEALTH), 1) +
+			Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_3_HEALTH), 1) +
+			Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_4_HEALTH), 1) +
+			Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_6_HEALTH), 1) +
+			Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_7_HEALTH), 1);
 	}
 
 	private int findPet(String name)

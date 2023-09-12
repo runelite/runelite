@@ -133,12 +133,12 @@ public class SpecialCounterPluginTest
 
 		// Set up special attack energy
 		VarbitChanged varbitChanged = new VarbitChanged();
-		varbitChanged.setVarpId(VarPlayer.SPECIAL_ATTACK_PERCENT.getId());
+		varbitChanged.setVarpId(VarPlayer.SPECIAL_ATTACK_PERCENT);
 		varbitChanged.setValue(100);
 		specialCounterPlugin.onVarbitChanged(varbitChanged);
 
 		// Set up item image for spec info drop
-		when(itemManager.getImage(anyInt())).thenReturn(new AsyncBufferedImage(24, 24, BufferedImage.TYPE_INT_ARGB));
+		when(itemManager.getImage(anyInt())).thenReturn(new AsyncBufferedImage(clientThread, 24, 24, BufferedImage.TYPE_INT_ARGB));
 	}
 
 	private static HitsplatApplied hitsplat(Actor target, @HitsplatType int type)
@@ -159,11 +159,15 @@ public class SpecialCounterPluginTest
 		when(client.getLocalPlayer()).thenReturn(player);
 		when(player.getInteracting()).thenReturn(target);
 
+		when(client.getTickCount()).thenReturn(0);
+
 		// spec npc
 		VarbitChanged varbitChanged = new VarbitChanged();
-		varbitChanged.setVarpId(VarPlayer.SPECIAL_ATTACK_PERCENT.getId());
+		varbitChanged.setVarpId(VarPlayer.SPECIAL_ATTACK_PERCENT);
 		varbitChanged.setValue(50);
 		specialCounterPlugin.onVarbitChanged(varbitChanged);
+
+		when(client.getTickCount()).thenReturn(1);
 
 		// clientthread callback
 		ArgumentCaptor<Runnable> captor = ArgumentCaptor.forClass(Runnable.class);
@@ -192,11 +196,15 @@ public class SpecialCounterPluginTest
 		when(specialCounterConfig.bandosGodswordThreshold()).thenReturn(2);
 		when(specialCounterConfig.thresholdNotification()).thenReturn(true);
 
+		when(client.getTickCount()).thenReturn(0);
+
 		// First special attack
 		VarbitChanged varbitChanged = new VarbitChanged();
-		varbitChanged.setVarpId(VarPlayer.SPECIAL_ATTACK_PERCENT.getId());
+		varbitChanged.setVarpId(VarPlayer.SPECIAL_ATTACK_PERCENT);
 		varbitChanged.setValue(50);
 		specialCounterPlugin.onVarbitChanged(varbitChanged);
+
+		when(client.getTickCount()).thenReturn(1);
 
 		// clientthread callback
 		ArgumentCaptor<Runnable> captor = ArgumentCaptor.forClass(Runnable.class);
@@ -207,6 +215,8 @@ public class SpecialCounterPluginTest
 
 		specialCounterPlugin.onGameTick(new GameTick());
 
+		when(client.getTickCount()).thenReturn(2);
+
 		// Set up spec weapon as BGS(OR)
 		ItemContainer equipment = mock(ItemContainer.class);
 		when(equipment.getItem(EquipmentInventorySlot.WEAPON.getSlotIdx())).thenReturn(new Item(ItemID.BANDOS_GODSWORD_OR, 1));
@@ -215,9 +225,11 @@ public class SpecialCounterPluginTest
 		// Second special attack
 		reset(clientThread);
 		varbitChanged = new VarbitChanged();
-		varbitChanged.setVarpId(VarPlayer.SPECIAL_ATTACK_PERCENT.getId());
+		varbitChanged.setVarpId(VarPlayer.SPECIAL_ATTACK_PERCENT);
 		varbitChanged.setValue(0);
 		specialCounterPlugin.onVarbitChanged(varbitChanged);
+
+		when(client.getTickCount()).thenReturn(3);
 
 		// clientthread callback
 		captor = ArgumentCaptor.forClass(Runnable.class);
@@ -243,11 +255,15 @@ public class SpecialCounterPluginTest
 		when(specialCounterConfig.bandosGodswordThreshold()).thenReturn(3);
 		lenient().when(specialCounterConfig.thresholdNotification()).thenReturn(true);
 
+		when(client.getTickCount()).thenReturn(0);
+
 		// First special attack
 		VarbitChanged varbitChanged = new VarbitChanged();
-		varbitChanged.setVarpId(VarPlayer.SPECIAL_ATTACK_PERCENT.getId());
+		varbitChanged.setVarpId(VarPlayer.SPECIAL_ATTACK_PERCENT);
 		varbitChanged.setValue(50);
 		specialCounterPlugin.onVarbitChanged(varbitChanged);
+
+		when(client.getTickCount()).thenReturn(1);
 
 		// clientthread callback
 		ArgumentCaptor<Runnable> captor = ArgumentCaptor.forClass(Runnable.class);
@@ -258,12 +274,16 @@ public class SpecialCounterPluginTest
 
 		specialCounterPlugin.onGameTick(new GameTick());
 
+		when(client.getTickCount()).thenReturn(2);
+
 		reset(clientThread);
 		// Second special attack
 		varbitChanged = new VarbitChanged();
-		varbitChanged.setVarpId(VarPlayer.SPECIAL_ATTACK_PERCENT.getId());
+		varbitChanged.setVarpId(VarPlayer.SPECIAL_ATTACK_PERCENT);
 		varbitChanged.setValue(0);
 		specialCounterPlugin.onVarbitChanged(varbitChanged);
+
+		when(client.getTickCount()).thenReturn(3);
 
 		// clientthread callback
 		captor = ArgumentCaptor.forClass(Runnable.class);

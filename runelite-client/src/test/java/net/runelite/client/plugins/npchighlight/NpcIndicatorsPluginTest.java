@@ -39,7 +39,9 @@ import net.runelite.api.NPCComposition;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcSpawned;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.menus.TestMenuEntry;
+import net.runelite.client.ui.components.colorpicker.ColorPickerManager;
 import net.runelite.client.ui.overlay.OverlayManager;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -73,6 +75,14 @@ public class NpcIndicatorsPluginTest
 	@Mock
 	@Bind
 	private OverlayManager overlayManager;
+
+	@Mock
+	@Bind
+	private ConfigManager configManager;
+
+	@Mock
+	@Bind
+	private ColorPickerManager colorPickerManager;
 
 	@Before
 	public void setUp()

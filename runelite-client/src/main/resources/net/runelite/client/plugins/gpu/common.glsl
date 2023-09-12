@@ -23,7 +23,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include to_screen.glsl
+#include "to_screen.glsl"
 
 /*
  * Rotate a vertex by a given orientation in JAU
@@ -35,6 +35,14 @@ ivec4 rotate(ivec4 vertex, int orientation) {
   int x = vertex.z * s + vertex.x * c >> 16;
   int z = vertex.z * c - vertex.x * s >> 16;
   return ivec4(x, vertex.y, z, vertex.w);
+}
+
+vec3 rotatef(vec3 vertex, int orientation) {
+  float rad = orientation * UNIT;
+  float s = sin(rad);
+  float c = cos(rad);
+  mat3 m = mat3(c, 0, s, 0, 1, 0, -s, 0, c);
+  return vertex * m;
 }
 
 /*

@@ -55,6 +55,41 @@ public final class Varbits
 	public static final int STAMINA_EFFECT = 24;
 
 	/**
+	 * Antifire timer
+	 * Number of game ticks remaining on antifire in intervals of 30; for a value X there are 30 * X game ticks remaining.
+	 * The antifire expires once this reaches 0.
+	 */
+	public static final int ANTIFIRE = 3981;
+
+	/**
+	 * Super Antifire timer
+	 * Number of game ticks remaining on super antifire in intervals of 20; for a value X there are 20 * X game ticks remaining.
+	 * The super antifire expires once this reaches 0.
+	 */
+	public static final int SUPER_ANTIFIRE = 6101;
+
+	/**
+	 * Magic imbue timer
+	 * Number of game ticks remaining on magic imbue effect in intervals of 10; for a value X there are 10 * X game ticks remaining.
+	 * The magic imbue effect expires once this reaches 0.
+	 */
+	public static final int MAGIC_IMBUE = 5438;
+
+	/**
+	 * Divine effect timers
+	 * Number of game ticks remaining on a divine effect.
+	 * A potion that combines multiple effects will set the varbits for the individual effects as well as its own effect.
+	 */
+	public static final int DIVINE_SUPER_ATTACK = 8429;
+	public static final int DIVINE_SUPER_STRENGTH = 8430;
+	public static final int DIVINE_SUPER_DEFENCE = 8431;
+	public static final int DIVINE_RANGING = 8432;
+	public static final int DIVINE_MAGIC = 8433;
+	public static final int DIVINE_SUPER_COMBAT = 13663;
+	public static final int DIVINE_BASTION = 13664;
+	public static final int DIVINE_BATTLEMAGE = 13665;
+
+	/**
 	 * Ring of endurance effect timer, stamina duration extended from using the ring of endurance
 	 * Number of game ticks remaining on ring of endurance effect in intervals of 10; for a value X there are 10 * X game ticks remaining.
 	 * Unequipping the ring of endurance will cause this to change to 0.
@@ -485,7 +520,15 @@ public final class Varbits
 	public static final int AUTOWEED = 5557;
 
 	/**
-	 * The varbit that stores the players {@code AccountType}.
+	 * The player's account type.
+	 * <p>
+	 * 0 = normal
+	 * 1 = ironman
+	 * 2 = ultimate ironman
+	 * 3 = hardcore ironman
+	 * 4 = group ironman
+	 * 5 = hardcore group ironman
+	 * 6 = unranked group ironman
 	 */
 	public static final int ACCOUNT_TYPE = 1777;
 
@@ -540,15 +583,23 @@ public final class Varbits
 	public static final int WORLDHOPPER_FAVROITE_2 = 4598;
 
 	/**
-	 * Vengeance is active
+	 * Spell activeness
 	 */
 	public static final int VENGEANCE_ACTIVE = 2450;
+	public static final int DEATH_CHARGE = 12411;
+	public static final int RESURRECT_THRALL = 12413;
+	public static final int SHADOW_VEIL = 12414;
 
 	/**
 	 * Spell cooldowns
 	 */
+	public static final int HEAL_GROUP_COOLDOWN = 925;
 	public static final int VENGEANCE_COOLDOWN = 2451;
+	public static final int DEATH_CHARGE_COOLDOWN = 12138;
 	public static final int CORRUPTION_COOLDOWN = 12288;
+	public static final int RESURRECT_THRALL_COOLDOWN = 12290;
+	public static final int SHADOW_VEIL_COOLDOWN = 12291;
+	public static final int WARD_OF_ARCEUUS_COOLDOWN = 12293;
 
 	/**
 	 * Imbued Heart cooldown
@@ -556,6 +607,13 @@ public final class Varbits
 	 * The heart regains its power once this reaches 0.
 	 */
 	public static final int IMBUED_HEART_COOLDOWN = 5361;
+
+	/**
+	 * Dragonfire shield cooldown
+	 * <p>
+	 * Number of game ticks remaining on cooldown in intervals of 8; for a value X there are 8 * X game ticks remaining.
+	 */
+	public static final int DRAGONFIRE_SHIELD_COOLDOWN = 6539;
 
 	/**
 	 * Amount of items in each bank tab
@@ -626,12 +684,14 @@ public final class Varbits
 	public static final int WIKI_ENTITY_LOOKUP = 10113;
 
 	/**
-	 * Whether the Special Attack orb is disabled due to being in a PvP area
+	 * Whether the player is in a PvP area
 	 * <p>
-	 * 0 = Enabled (player is not in PvP)
-	 * 1 = Disabled (player is in PvP)
-	 *
-	 * @see <a href="https://oldschool.runescape.wiki/w/Minimap#Special_attack_orb">The OSRS Wiki's Minimap page</a>
+	 * 0 = Player is not in PvP area
+	 * 1 = Player is in PvP area
+	 * <p>
+	 * Note: The name of this varbit comes from historical behavior where
+	 * the special attack orb would be disabled in PvP, but this was changed
+	 * on 2023-03-09 due to Poll 78. Yet, the varbit still updates as before.
 	 */
 	public static final int PVP_SPEC_ORB = 8121;
 
@@ -652,6 +712,18 @@ public final class Varbits
 	 * 1 = popup notification disabled
 	 */
 	public static final int COMBAT_ACHIEVEMENTS_POPUP = 12455;
+
+	/**
+	 * Combat Achievement tier completion variables
+	 *
+	 * 2 = completed
+	 */
+	public static final int COMBAT_ACHIEVEMENT_TIER_EASY = 12863;
+	public static final int COMBAT_ACHIEVEMENT_TIER_MEDIUM = 12864;
+	public static final int COMBAT_ACHIEVEMENT_TIER_HARD = 12865;
+	public static final int COMBAT_ACHIEVEMENT_TIER_ELITE = 12866;
+	public static final int COMBAT_ACHIEVEMENT_TIER_MASTER = 12867;
+	public static final int COMBAT_ACHIEVEMENT_TIER_GRANDMASTER = 12868;
 
 	/**
 	 * Show boss health overlay setting
@@ -684,6 +756,20 @@ public final class Varbits
 	public static final int TELEBLOCK = 4163;
 
 	/**
+	 * Farmer's Affinity effect timer
+	 * Number of game ticks remaining on Farmer's Affinity effect in intervals of 20; for a value X there are 20 * X game ticks remaining.
+	 * The Farmer's Affinity expires once this reaches 0.
+	 */
+	public static final int FARMERS_AFFINITY = 11765;
+
+	/**
+	 * If the player has Menaphite remedy effect active.
+	 * This will go down by 1 every 25 ticks (15 seconds) and the player's combat stats will be restored by 6 + 16%.
+	 * Set to 20 upon consuming potion.
+	 */
+	public static final int MENAPHITE_REMEDY = 14448;
+
+	/**
 	 * How many salt stat boost refreshes the player has remaining.
 	 * This will go down by 1 every 25 ticks (15 seconds) and the player's stats will be restored.
 	 * Set to 32 upon crushing salts.
@@ -701,6 +787,10 @@ public final class Varbits
 	public static final int TOA_RAID_LEVEL = 14380;
 	public static final int TOA_RAID_DAMAGE = 14325;
 
+	/**
+	 * Tombs of Amascut orb healths
+	 * 0=hide 1-27=% of health - 27 is 100% health and 1 is 0% health, 30=dead
+	 */
 	public static final int TOA_MEMBER_0_HEALTH = 14346;
 	public static final int TOA_MEMBER_1_HEALTH = 14347;
 	public static final int TOA_MEMBER_2_HEALTH = 14348;
@@ -709,4 +799,42 @@ public final class Varbits
 	public static final int TOA_MEMBER_5_HEALTH = 14351;
 	public static final int TOA_MEMBER_6_HEALTH = 14352;
 	public static final int TOA_MEMBER_7_HEALTH = 14353;
+
+	/**
+	 * How many NMZ overload refreshes the player has remaining.
+	 * <p>
+	 * This will go down by 1 every 25 ticks (15 seconds) and the player's stats will be restored.
+	 * Set to 20 upon drinking an overload.
+	 */
+	public static final int NMZ_OVERLOAD_REFRESHES_REMAINING = 3955;
+
+	/**
+	 * How many Chambers of Xeric overload refreshes the player has remaining.
+	 * <p>
+	 * This will go down by 1 every 25 ticks (15 seconds) and the player's stats will be restored.
+	 * Set to 20 upon drinking an overload.
+	 */
+	public static final int COX_OVERLOAD_REFRESHES_REMAINING = 5418;
+
+	public static final int SLAYER_POINTS = 4068;
+	public static final int SLAYER_TASK_STREAK = 4069;
+
+	/**
+	 * The assigned boss for boss slayer.
+	 */
+	public static final int SLAYER_TASK_BOSS = 4723;
+
+	/**
+	 * Whether the level up interface is disabled
+	 */
+	public static final int DISABLE_LEVEL_UP_INTERFACE = 9452;
+
+	public static final int PRAYERBOOK = 14826;
+
+	/**
+	 * During and after Curse of the Empty Lord, Viggora can be located in one of three locations,
+	 * which is uniquely and permanently set for each player.
+	 * This varbit determines which location he will appear in, which is useful for a master clue step.
+	 */
+	public static final int VIGGORA_LOCATION = 815;
 }

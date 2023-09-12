@@ -67,6 +67,10 @@ public enum WorldType
 	 */
 	LAST_MAN_STANDING(1 << 14),
 	/**
+	 * Beta world.
+	 */
+	BETA_WORLD(1 << 16),
+	/**
 	 * Beta worlds without profiles that are saved.
 	 */
 	NOSAVE_MODE(1 << 25),
@@ -74,6 +78,10 @@ public enum WorldType
 	 * Tournament world type
 	 */
 	TOURNAMENT_WORLD(1 << 26),
+	/**
+	 * Fresh start world type
+	 */
+	FRESH_START_WORLD(1 << 27),
 	/**
 	 * Deadman world type.
 	 */

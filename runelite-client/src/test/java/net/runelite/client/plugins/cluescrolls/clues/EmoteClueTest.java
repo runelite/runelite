@@ -78,4 +78,23 @@ public class EmoteClueTest
 		assertTrue("Full Torag set, degraded", fullBarrowsSetRequirement.fulfilledBy(new Item[]{ item(TORAGS_HAMMERS_50), item(TORAGS_HELM_50), item(TORAGS_PLATEBODY_50), item(TORAGS_PLATELEGS_50) }));
 		assertTrue("Full Verac set, degraded", fullBarrowsSetRequirement.fulfilledBy(new Item[]{ item(VERACS_FLAIL_50), item(VERACS_HELM_50), item(VERACS_BRASSARD_50), item(VERACS_PLATESKIRT_50) }));
 	}
+
+	@Test
+	public void itemRequirementsCombatBraceletAllTypes()
+	{
+		EmoteClue slayerTowerClue = EmoteClue.forText("Headbang at the top of Slayer Tower. Equip a seercull, a combat bracelet and helm of Neitiznot.");
+		ItemRequirement[] requirements = slayerTowerClue.getItemRequirements();
+
+		assertEquals(3, requirements.length);
+
+		ItemRequirement combatBraceletRequirement = requirements[1];
+
+		assertTrue("Combat Bracelet", combatBraceletRequirement.fulfilledBy(COMBAT_BRACELET));
+		assertTrue("Combat Bracelet (1)", combatBraceletRequirement.fulfilledBy(COMBAT_BRACELET1));
+		assertTrue("Combat Bracelet (2)", combatBraceletRequirement.fulfilledBy(COMBAT_BRACELET2));
+		assertTrue("Combat Bracelet (3)", combatBraceletRequirement.fulfilledBy(COMBAT_BRACELET3));
+		assertTrue("Combat Bracelet (4)", combatBraceletRequirement.fulfilledBy(COMBAT_BRACELET4));
+		assertTrue("Combat Bracelet (5)", combatBraceletRequirement.fulfilledBy(COMBAT_BRACELET5));
+		assertTrue("Combat Bracelet (6)", combatBraceletRequirement.fulfilledBy(COMBAT_BRACELET6));
+	}
 }

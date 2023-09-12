@@ -43,12 +43,14 @@ import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
+import net.runelite.api.annotations.Varp;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.events.ProfileChanged;
 import net.runelite.client.ui.JagexColors;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
@@ -75,7 +77,6 @@ public class ChatMessageManager
 		this.chatColorConfig = chatColorConfig;
 		this.clientThread = clientThread;
 		eventBus.register(this);
-		loadColors();
 	}
 
 	@Subscribe
@@ -86,6 +87,13 @@ public class ChatMessageManager
 			loadColors();
 			clientThread.invokeLater(client::refreshChat);
 		}
+	}
+
+	@Subscribe
+	public void onProfileChanged(ProfileChanged profileChanged)
+	{
+		loadColors();
+		clientThread.invokeLater(client::refreshChat);
 	}
 
 	@VisibleForTesting
@@ -226,7 +234,7 @@ public class ChatMessageManager
 
 		final String[] stringStack = client.getStringStack();
 		final int stringStackSize = client.getStringStackSize();
-		
+
 		String fromToUsername = stringStack[stringStackSize - 1];
 		if (wrap)
 		{
@@ -300,7 +308,7 @@ public class ChatMessageManager
 	}
 
 	// get the variable holding the chat color from the settings, from script4484
-	private static VarPlayer getSettingsColor(ChatMessageType type, boolean transparent)
+	private static @Varp int getSettingsColor(ChatMessageType type, boolean transparent)
 	{
 		if (transparent)
 		{
@@ -376,7 +384,7 @@ public class ChatMessageManager
 					return VarPlayer.SETTINGS_OPAQUE_CHAT_IRON_GROUP_BROADCAST;
 			}
 		}
-		return null;
+		return -1;
 	}
 
 	/**
@@ -821,7 +829,7 @@ public class ChatMessageManager
 
 		// Update the message with RuneLite additions
 		line.setRuneLiteFormatMessage(message.getRuneLiteFormattedMessage());
-		
+
 		if (message.getTimestamp() != 0)
 		{
 			line.setTimestamp(message.getTimestamp());
@@ -865,8 +873,8 @@ public class ChatMessageManager
 				{
 					Color color = chatColor.getColor();
 
-					VarPlayer varp = chatColor.getSetting();
-					if (varp != null)
+					@Varp int varp = chatColor.getSetting();
+					if (varp != -1)
 					{
 						// Apply configured color from game settings, if set
 						assert chatColor.isDefault();

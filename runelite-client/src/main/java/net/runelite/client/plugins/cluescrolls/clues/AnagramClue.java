@@ -29,6 +29,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.List;
 import javax.annotation.Nullable;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import net.runelite.api.NPC;
@@ -48,12 +49,12 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 
 @Getter
 @Builder
-public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueScroll, ObjectClueScroll
+public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClueScroll
 {
 	private static final String ANAGRAM_TEXT = "This anagram reveals who to speak to next: ";
 	private static final String ANAGRAM_TEXT_BEGINNER = "The anagram reveals who to speak to next: ";
 
-	private static final List<AnagramClue> CLUES = ImmutableList.of(
+	static final List<AnagramClue> CLUES = ImmutableList.of(
 		AnagramClue.builder()
 			.text("A BAKER")
 			.npc("Baraek")
@@ -157,7 +158,7 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		AnagramClue.builder()
 			.text("BY LOOK")
 			.npc("Bolkoy")
-			.location(new WorldPoint(2529, 3162, 0))
+			.location(new WorldPoint(2526, 3162, 0))
 			.area("Tree Gnome Village general store")
 			.question("How many flowers are there in the clearing below this platform?")
 			.answer("13")
@@ -337,7 +338,7 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		AnagramClue.builder()
 			.text("HEORIC")
 			.npc("Eohric")
-			.location(new WorldPoint(2900, 3565, 0))
+			.location(new WorldPoint(2897, 3565, 0))
 			.area("Top floor of Burthorpe Castle")
 			.question("King Arthur and Merlin sit down at the Round Table with 8 knights. How many degrees does each get?")
 			.answer("36")
@@ -414,7 +415,7 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 			.text("LOW LAG")
 			.npc("Gallow")
 			.location(new WorldPoint(1805, 3566, 0))
-			.area("Vinery in the Great Kourend")
+			.area("Vinery southeast of Hosidius")
 			.question("How many vine patches can you find in this vinery?")
 			.answer("12")
 			.build(),
@@ -758,8 +759,8 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 		AnagramClue.builder()
 			.text("BRUCIE CATNAP")
 			.npc("Captain Bruce")
-			.location(new WorldPoint(1520, 3558, 0))
-			.area("Graveyard of Heroes")
+			.location(new WorldPoint(1529, 3567, 0))
+			.area("East of Shayzien Graveyard")
 			.build(),
 		AnagramClue.builder()
 			.text("UESNKRL NRIEDDO")
@@ -773,6 +774,7 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 
 	private final String text;
 	private final String npc;
+	@Getter(AccessLevel.PRIVATE)
 	private final WorldPoint location;
 	private final String area;
 	@Nullable
@@ -781,6 +783,12 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 	private final String answer;
 	@Builder.Default
 	private final int objectId = -1;
+
+	@Override
+	public WorldPoint getLocation(ClueScrollPlugin plugin)
+	{
+		return location;
+	}
 
 	@Override
 	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin)
@@ -806,12 +814,14 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 				.leftColor(TITLED_CONTENT_COLOR)
 				.build());
 		}
+
+		renderOverlayNote(panelComponent, plugin);
 	}
 
 	@Override
 	public void makeWorldOverlayHint(Graphics2D graphics, ClueScrollPlugin plugin)
 	{
-		if (!getLocation().isInScene(plugin.getClient()))
+		if (!getLocation(plugin).isInScene(plugin.getClient()))
 		{
 			return;
 		}
@@ -856,7 +866,7 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 	}
 
 	@Override
-	public String[] getNpcs()
+	public String[] getNpcs(ClueScrollPlugin plugin)
 	{
 		return new String[]{npc};
 	}
@@ -865,5 +875,11 @@ public class AnagramClue extends ClueScroll implements TextClueScroll, NpcClueSc
 	public int[] getObjectIds()
 	{
 		return new int[]{objectId};
+	}
+
+	@Override
+	public int[] getConfigKeys()
+	{
+		return new int[]{text.hashCode()};
 	}
 }

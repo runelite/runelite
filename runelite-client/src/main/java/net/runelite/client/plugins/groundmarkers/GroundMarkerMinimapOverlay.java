@@ -24,9 +24,12 @@
  */
 package net.runelite.client.plugins.groundmarkers;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Polygon;
+import java.awt.Stroke;
 import java.util.Collection;
 import javax.inject.Inject;
 import net.runelite.api.Client;
@@ -38,14 +41,9 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
-import net.runelite.client.ui.overlay.OverlayUtil;
 
 class GroundMarkerMinimapOverlay extends Overlay
 {
-	private static final int MAX_DRAW_DISTANCE = 16;
-	private static final int TILE_WIDTH = 4;
-	private static final int TILE_HEIGHT = 4;
-
 	private final Client client;
 	private final GroundMarkerConfig config;
 	private final GroundMarkerPlugin plugin;
@@ -79,9 +77,9 @@ class GroundMarkerMinimapOverlay extends Overlay
 			}
 
 			Color tileColor = point.getColor();
-			if (tileColor == null || !config.rememberTileColors())
+			if (tileColor == null)
 			{
-				// If this is an old tile which has no color, or rememberTileColors is off, use marker color
+				// If this is an old tile which has no color, use marker color
 				tileColor = config.markerColor();
 			}
 
@@ -93,25 +91,36 @@ class GroundMarkerMinimapOverlay extends Overlay
 
 	private void drawOnMinimap(Graphics2D graphics, WorldPoint point, Color color)
 	{
-		WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
-
-		if (point.distanceTo(playerLocation) >= MAX_DRAW_DISTANCE)
+		if (!point.isInScene(client))
 		{
 			return;
 		}
 
-		LocalPoint lp = LocalPoint.fromWorld(client, point);
-		if (lp == null)
+		int x = point.getX() - client.getBaseX();
+		int y = point.getY() - client.getBaseY();
+
+		x <<= Perspective.LOCAL_COORD_BITS;
+		y <<= Perspective.LOCAL_COORD_BITS;
+
+		Point mp1 = Perspective.localToMinimap(client, new LocalPoint(x, y));
+		Point mp2 = Perspective.localToMinimap(client, new LocalPoint(x, y + Perspective.LOCAL_TILE_SIZE));
+		Point mp3 = Perspective.localToMinimap(client, new LocalPoint(x + Perspective.LOCAL_TILE_SIZE, y + Perspective.LOCAL_TILE_SIZE));
+		Point mp4 = Perspective.localToMinimap(client, new LocalPoint(x + Perspective.LOCAL_TILE_SIZE, y));
+
+		if (mp1 == null || mp2 == null || mp3 == null || mp4 == null)
 		{
 			return;
 		}
 
-		Point posOnMinimap = Perspective.localToMinimap(client, lp);
-		if (posOnMinimap == null)
-		{
-			return;
-		}
+		Polygon poly = new Polygon();
+		poly.addPoint(mp1.getX(), mp1.getY());
+		poly.addPoint(mp2.getX(), mp2.getY());
+		poly.addPoint(mp3.getX(), mp3.getY());
+		poly.addPoint(mp4.getX(), mp4.getY());
 
-		OverlayUtil.renderMinimapRect(client, graphics, posOnMinimap, TILE_WIDTH, TILE_HEIGHT, color);
+		Stroke stroke = new BasicStroke(1f);
+		graphics.setStroke(stroke);
+		graphics.setColor(color);
+		graphics.drawPolygon(poly);
 	}
 }

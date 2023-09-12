@@ -43,6 +43,7 @@ class XpState
 	private static final double DEFAULT_XP_MODIFIER = 4.0;
 	private static final double SHARED_XP_MODIFIER = DEFAULT_XP_MODIFIER / 3.0;
 	private final Map<Skill, XpStateSingle> xpSkills = new EnumMap<>(Skill.class);
+	private XpStateSingle overall = new XpStateSingle(-1);
 	private NPC interactedNPC;
 
 	@Inject
@@ -54,18 +55,7 @@ class XpState
 	void reset()
 	{
 		xpSkills.clear();
-	}
-
-	/**
-	 * Resets a single skill
-	 *
-	 * @param skill     Skill to reset
-	 * @param currentXp Current XP to set to, if unknown set to -1
-	 */
-	void resetSkill(Skill skill, long currentXp)
-	{
-		xpSkills.remove(skill);
-		xpSkills.put(skill, new XpStateSingle(skill, currentXp));
+		overall = new XpStateSingle(-1);
 	}
 
 	/**
@@ -76,6 +66,11 @@ class XpState
 	void resetSkillPerHour(Skill skill)
 	{
 		xpSkills.get(skill).resetPerHour();
+	}
+
+	void resetOverallPerHour()
+	{
+		overall.resetPerHour();
 	}
 
 	/**
@@ -92,19 +87,13 @@ class XpState
 	 */
 	XpUpdateResult updateSkill(Skill skill, long currentXp, int goalStartXp, int goalEndXp)
 	{
-		XpStateSingle state = getSkill(skill);
+		XpStateSingle state = xpSkills.get(skill);
 
-		if (state.getStartXp() == -1)
+		if (state == null || state.getStartXp() == -1)
 		{
-			if (currentXp >= 0)
-			{
-				initializeSkill(skill, currentXp);
-				return XpUpdateResult.INITIALIZED;
-			}
-			else
-			{
-				return XpUpdateResult.NO_CHANGE;
-			}
+			assert currentXp >= 0;
+			initializeSkill(skill, currentXp);
+			return XpUpdateResult.INITIALIZED;
 		}
 		else
 		{
@@ -119,8 +108,26 @@ class XpState
 			}
 			else
 			{
-				return state.update(currentXp, goalStartXp, goalEndXp) ? XpUpdateResult.UPDATED : XpUpdateResult.NO_CHANGE;
+				if (!state.update(currentXp))
+				{
+					return XpUpdateResult.NO_CHANGE;
+				}
+
+				state.updateGoals(currentXp, goalStartXp, goalEndXp);
+				return XpUpdateResult.UPDATED;
 			}
+		}
+	}
+
+	void updateOverall(long currentXp)
+	{
+		if (overall == null || overall.getStartXp() + overall.getTotalXpGained() > currentXp)
+		{
+			overall = new XpStateSingle(currentXp);
+		}
+		else
+		{
+			overall.update(currentXp);
 		}
 	}
 
@@ -199,7 +206,16 @@ class XpState
 	void tick(Skill skill, long delta)
 	{
 		final XpStateSingle state = getSkill(skill);
+		tick(state, delta);
+	}
 
+	void tickOverall(long delta)
+	{
+		tick(overall, delta);
+	}
+
+	private void tick(XpStateSingle state, long delta)
+	{
 		state.tick(delta);
 
 		int resetAfterMinutes = xpTrackerConfig.resetSkillRateAfter();
@@ -225,7 +241,12 @@ class XpState
 	 */
 	void initializeSkill(Skill skill, long currentXp)
 	{
-		xpSkills.put(skill, new XpStateSingle(skill, currentXp));
+		xpSkills.put(skill, new XpStateSingle(currentXp));
+	}
+
+	void initializeOverall(long currentXp)
+	{
+		overall = new XpStateSingle(currentXp);
 	}
 
 	boolean isInitialized(Skill skill)
@@ -234,10 +255,15 @@ class XpState
 		return xpStateSingle != null && xpStateSingle.getStartXp() != -1;
 	}
 
+	boolean isOverallInitialized()
+	{
+		return overall.getStartXp() != -1;
+	}
+
 	@NonNull
 	XpStateSingle getSkill(Skill skill)
 	{
-		return xpSkills.computeIfAbsent(skill, (s) -> new XpStateSingle(s, -1));
+		return xpSkills.computeIfAbsent(skill, (s) -> new XpStateSingle(-1));
 	}
 
 	/**
@@ -262,6 +288,6 @@ class XpState
 	@NonNull
 	XpSnapshotSingle getTotalSnapshot()
 	{
-		return getSkill(Skill.OVERALL).snapshot();
+		return overall.snapshot();
 	}
 }

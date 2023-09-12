@@ -30,17 +30,23 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.ScheduledExecutorService;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Named;
 import net.runelite.api.Client;
 import net.runelite.client.RuneLite;
+import net.runelite.client.account.SessionManager;
 import net.runelite.client.eventbus.EventBus;
 import org.junit.Assert;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import org.mockito.Mock;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -63,8 +69,9 @@ public class ConfigManagerTest
 	File sessionfile = RuneLite.DEFAULT_SESSION_FILE;
 
 	@Bind
-	@Named("config")
-	File config = RuneLite.DEFAULT_CONFIG_FILE;
+	@Named("profile")
+	@Nullable
+	String profile;
 
 	@Mock
 	@Bind
@@ -74,6 +81,14 @@ public class ConfigManagerTest
 	@Bind
 	ConfigClient configClient;
 
+	@Mock
+	@Bind
+	SessionManager sessionManager;
+
+	@Mock
+	@Bind
+	ProfileManager profileManager;
+
 	@Inject
 	ConfigManager manager;
 
@@ -81,6 +96,28 @@ public class ConfigManagerTest
 	public void before()
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
+
+		ProfileManager.Lock lock = mock(ProfileManager.Lock.class);
+		when(lock.createProfile(anyString())).thenAnswer(a ->
+		{
+			String name = a.getArgument(0);
+			ConfigProfile profile = new ConfigProfile(System.nanoTime());
+			profile.setName(name);
+			return profile;
+		});
+
+		when(lock.createProfile(anyString(), anyLong())).thenAnswer(a ->
+		{
+			String name = a.getArgument(0);
+			long id = a.getArgument(1);
+			ConfigProfile profile = new ConfigProfile(id);
+			profile.setName(name);
+			return profile;
+		});
+
+		when(profileManager.lock()).thenReturn(lock);
+
+		manager.load();
 	}
 
 	@Test

@@ -49,7 +49,6 @@ class PrayerBarOverlay extends Overlay
 {
 	private static final Color BAR_FILL_COLOR = new Color(0, 149, 151);
 	private static final Color BAR_BG_COLOR = Color.black;
-	private static final Color FLICK_HELP_COLOR = Color.white;
 	private static final Dimension PRAYER_BAR_SIZE = new Dimension(30, 5);
 	private static final int HD_PRAYER_BAR_PADDING = 1;
 	private static final BufferedImage HD_FRONT_BAR = ImageUtil.loadImageResource(PrayerPlugin.class, "front.png");
@@ -111,7 +110,7 @@ class PrayerBarOverlay extends Overlay
 
 				final int xOffset = (int) (-Math.cos(t) * halfBarWidth) + halfBarWidth;
 
-				graphics.setColor(FLICK_HELP_COLOR);
+				graphics.setColor(config.prayerFlickColor());
 				// Padding is accounted for in the offset calculation
 				graphics.fillRect(barX + xOffset, barY + HD_PRAYER_BAR_PADDING, 1, barHeight - HD_PRAYER_BAR_PADDING * 2);
 			}
@@ -141,7 +140,7 @@ class PrayerBarOverlay extends Overlay
 
 			final int xOffset = (int) (-Math.cos(t) * barWidth / 2) + barWidth / 2;
 
-			graphics.setColor(FLICK_HELP_COLOR);
+			graphics.setColor(config.prayerFlickColor());
 			graphics.fillRect(barX + xOffset, barY, 1, barHeight);
 		}
 

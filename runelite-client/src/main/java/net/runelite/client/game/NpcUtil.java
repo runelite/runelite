@@ -34,6 +34,7 @@ import net.runelite.api.AnimationID;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.NpcID;
+import net.runelite.api.ParamID;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.NpcChanged;
 import net.runelite.client.RuntimeConfig;
@@ -68,25 +69,10 @@ public class NpcUtil
 		{
 			// These NPCs hit 0hp but don't actually die
 			case NpcID.GARGOYLE:
-			case NpcID.GARGOYLE_413:
 			case NpcID.GARGOYLE_1543:
 			case NpcID.MARBLE_GARGOYLE:
-			case NpcID.MARBLE_GARGOYLE_7408:
-			case NpcID.DAWN:
-			case NpcID.DAWN_7852:
-			case NpcID.DAWN_7853:
 			case NpcID.DAWN_7884:
-			case NpcID.DAWN_7885:
-			case NpcID.DUSK:
-			case NpcID.DUSK_7851:
-			case NpcID.DUSK_7854:
-			case NpcID.DUSK_7855:
-			case NpcID.DUSK_7882:
-			case NpcID.DUSK_7883:
-			case NpcID.DUSK_7886:
-			case NpcID.DUSK_7887:
 			case NpcID.DUSK_7888:
-			case NpcID.DUSK_7889:
 			case NpcID.ZYGOMITE:
 			case NpcID.ZYGOMITE_1024:
 			case NpcID.ANCIENT_ZYGOMITE:
@@ -104,6 +90,7 @@ public class NpcUtil
 			// them to be considered dead when reaching 0hp.
 			case NpcID.KALPHITE_QUEEN_963:
 			case NpcID.VETION:
+			case NpcID.CALVARION:
 			case NpcID.WITCHS_EXPERIMENT:
 			case NpcID.WITCHS_EXPERIMENT_6394:
 			case NpcID.WITCHS_EXPERIMENT_HARD:
@@ -138,7 +125,15 @@ public class NpcUtil
 			case NpcID.ENT_7234:
 			case NpcID.HOPELESS_CREATURE:
 			case NpcID.HOPELESS_CREATURE_1073:
+			case NpcID.GADDERANKS_4484:
 			case NpcID.WALL_BEAST:
+			case NpcID.RUNITE_GOLEM:
+			case NpcID.RUNITE_ROCKS:
+			case NpcID.STRANGE_CREATURE_12076: // Secrets of the North transitioning to Jhallan
+			case NpcID.BOUNCER_3509:
+			// Agrith Naar restores health upon reaching 0hp if the player does not have Silverlight
+			// equipped, or moved away immediately after applying the killing blow.
+			case NpcID.AGRITH_NAAR:
 				return false;
 			// These NPCs have no attack options, but are the dead and uninteractable form of otherwise attackable NPCs,
 			// thus should not be considered alive.
@@ -150,6 +145,12 @@ public class NpcUtil
 			case NpcID.XARPUS_10773:
 			case NpcID.THE_NIGHTMARE_9433:
 			case NpcID.PHOSANIS_NIGHTMARE_9424:
+			// Gargoyles, Dawn, and Dusk each have cracking forms which contain their death animations, so should always
+			// be considered dead.
+			case NpcID.GARGOYLE_413:
+			case NpcID.MARBLE_GARGOYLE_7408:
+			case NpcID.DAWN_7885:
+			case NpcID.DUSK_7889:
 				return true;
 			case NpcID.ZALCANO_9050:
 				return npc.isDead();
@@ -176,8 +177,23 @@ public class NpcUtil
 				}
 
 				final NPCComposition npcComposition = npc.getTransformedComposition();
-				boolean hasAttack = npcComposition != null && ArrayUtils.contains(npcComposition.getActions(), "Attack");
-				return hasAttack && npc.isDead();
+				if (npcComposition == null)
+				{
+					return false;
+				}
+
+				boolean hasAttack = ArrayUtils.contains(npcComposition.getActions(), "Attack");
+				if (!hasAttack || !npc.isDead())
+				{
+					return false;
+				}
+
+				if (npcComposition.getIntValue(ParamID.NPC_DEATH_HIDER_EXCLUDE) != 0)
+				{
+					return false;
+				}
+
+				return true;
 		}
 	}
 
@@ -192,7 +208,8 @@ public class NpcUtil
 			// Prior form(s) should be added to the `isDying()` exceptions list above to ensure they are not hidden or
 			// made uninteractable during their death animations.
 			case NpcID.KALPHITE_QUEEN_965:
-			case NpcID.VETION_REBORN:
+			case NpcID.VETION_12002:    // Vet'ion and Calvar'ion have a non-attackable form for the animation between
+			case NpcID.CALVARION_11995: // their first and second phase; resetting isDead() for that form works best
 			case NpcID.WITCHS_EXPERIMENT_FOURTH_FORM:
 			case NpcID.WITCHS_EXPERIMENT_FOURTH_FORM_6397:
 			case NpcID.WITCHS_EXPERIMENT_FOURTH_FORM_HARD:
@@ -206,6 +223,7 @@ public class NpcUtil
 			case NpcID.DAMIS_6347:
 			case NpcID.DAMIS_HARD_1135:
 			case NpcID.HOPELESS_CREATURE_1074:
+			case NpcID.GADDERANKS_4485:
 			// The Nightmare should be considered alive again once reaching its sleeping form
 			case NpcID.THE_NIGHTMARE:
 			case NpcID.PHOSANIS_NIGHTMARE:
@@ -214,6 +232,7 @@ public class NpcUtil
 			case NpcID.AWAKENED_ALTAR_7290:
 			case NpcID.AWAKENED_ALTAR_7292:
 			case NpcID.AWAKENED_ALTAR_7294:
+			case NpcID.BOUNCER_3508:
 				npc.setDead(false);
 				break;
 			default:

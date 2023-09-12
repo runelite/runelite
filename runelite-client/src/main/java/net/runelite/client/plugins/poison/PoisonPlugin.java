@@ -144,7 +144,7 @@ public class PoisonPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		if (event.getVarpId() == VarPlayer.POISON.getId())
+		if (event.getVarpId() == VarPlayer.POISON)
 		{
 			final int poisonValue = event.getValue();
 			nextPoisonTick = Instant.now().plus(Duration.of(POISON_TICK_MILLIS, ChronoUnit.MILLIS));
@@ -185,7 +185,7 @@ public class PoisonPlugin extends Plugin
 
 			checkHealthIcon();
 		}
-		else if (event.getVarpId() == VarPlayer.DISEASE_VALUE.getId())
+		else if (event.getVarpId() == VarPlayer.DISEASE_VALUE)
 		{
 			checkHealthIcon();
 		}
@@ -297,7 +297,7 @@ public class PoisonPlugin extends Plugin
 		}
 
 		final BufferedImage newHeart;
-		final int poison = client.getVarpValue(VarPlayer.IS_POISONED);
+		final int poison = client.getVarpValue(VarPlayer.POISON);
 
 		if (poison >= VENOM_THRESHOLD)
 		{

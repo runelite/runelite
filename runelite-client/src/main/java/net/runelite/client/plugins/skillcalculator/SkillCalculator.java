@@ -53,6 +53,7 @@ import net.runelite.api.Experience;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.WorldType;
+import net.runelite.api.annotations.Varp;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
@@ -154,7 +155,7 @@ class SkillCalculator extends JPanel
 			currentCalculator = calculatorType;
 			currentBonus = null;
 
-			VarPlayer endGoalVarp = endGoalVarpForSkill(calculatorType.getSkill());
+			@Varp int endGoalVarp = endGoalVarpForSkill(calculatorType.getSkill());
 			int endGoal = client.getVarpValue(endGoalVarp);
 			if (endGoal != -1)
 			{
@@ -511,7 +512,7 @@ class SkillCalculator extends JPanel
 		};
 	}
 
-	private static VarPlayer endGoalVarpForSkill(final Skill skill)
+	private static @Varp int endGoalVarpForSkill(final Skill skill)
 	{
 		switch (skill)
 		{

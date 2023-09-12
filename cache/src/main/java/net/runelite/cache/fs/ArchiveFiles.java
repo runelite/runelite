@@ -92,7 +92,7 @@ public class ArchiveFiles
 	{
 		return fileMap.get(fileId);
 	}
-	
+
 	public void clear()
 	{
 		files.clear();
