@@ -626,9 +626,10 @@ public class ObjectIndicatorsPlugin extends Plugin
 			{
 				for (var p : points)
 				{
-					if (p.getColor() != null)
+					Color c = p.getColor();
+					if (c != null & !colors.contains(c))
 					{
-						colors.add(p.getColor());
+						colors.add(c);
 						if (colors.size() >= 5)
 						{
 							return colors;
