@@ -119,7 +119,7 @@ public class XpUpdaterPlugin extends Plugin
 				lastXp = totalXp;
 			}
 		}
-		else if (config.worldhop() && state == GameState.HOPPING)
+		else if (state == GameState.HOPPING)
 		{
 			Player local = client.getLocalPlayer();
 			if (local == null)
