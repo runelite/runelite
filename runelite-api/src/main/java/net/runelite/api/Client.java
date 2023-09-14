@@ -1879,8 +1879,6 @@ public interface Client extends OAuthApi, GameEngine
 
 	TextureProvider getTextureProvider();
 
-	void setRenderArea(boolean[][] renderArea);
-
 	int getRasterizer3D_clipMidX2();
 	int getRasterizer3D_clipNegativeMidX();
 	int getRasterizer3D_clipNegativeMidY();
