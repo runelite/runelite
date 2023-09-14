@@ -327,16 +327,14 @@ public class ChatCommandsPlugin extends Plugin
 
 			final AsyncBufferedImage abi = itemManager.getImage(petId);
 			final int idx = petsIconIdx + i;
-			Runnable r = () ->
+			abi.onLoaded(() ->
 			{
 				final BufferedImage image = ImageUtil.resizeImage(abi, 18, 16);
 				final IndexedSprite sprite = ImageUtil.getImageIndexedSprite(image, client);
 				// modicons array might be replaced in between when we assign it and the callback,
 				// so fetch modicons again
 				client.getModIcons()[idx] = sprite;
-			};
-			abi.onLoaded(r);
-			r.run();
+			});
 		}
 	}
 
