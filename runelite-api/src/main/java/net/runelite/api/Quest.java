@@ -215,6 +215,7 @@ public enum Quest
 	SECRETS_OF_THE_NORTH(2338, "Secrets of the North"),
 	DESERT_TREASURE_II__THE_FALLEN_EMPIRE(2343, "Desert Treasure II - The Fallen Empire"),
 	HIS_FAITHFUL_SERVANTS(3250, "His Faithful Servants"),
+	THE_PATH_OF_GLOUPHRIE(3425, "The Path of Glouphrie"),
 	;
 
 	@Getter
