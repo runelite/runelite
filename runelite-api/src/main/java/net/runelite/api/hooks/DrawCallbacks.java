@@ -87,4 +87,9 @@ public interface DrawCallbacks
 	void loadScene(Scene scene);
 
 	void swapScene(Scene scene);
+
+	default boolean tileInFrustum(Scene scene, int pitchSin, int pitchCos, int yawSin, int yawCos, int cameraX, int cameraY, int cameraZ, int plane, int msx, int msy)
+	{
+		return true;
+	}
 }

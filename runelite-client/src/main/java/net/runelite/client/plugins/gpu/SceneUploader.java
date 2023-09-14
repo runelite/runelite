@@ -48,8 +48,6 @@ import net.runelite.api.WallObject;
 @Slf4j
 class SceneUploader
 {
-	private static final int SCENE_OFFSET = (Constants.EXTENDED_SCENE_SIZE - Constants.SCENE_SIZE) / 2; // offset for sxy -> msxy
-
 	@Inject
 	private Client client;
 
@@ -212,8 +210,8 @@ class SceneUploader
 		final int localX = offsetX;
 		final int localY = offsetY;
 
-		tileX += SCENE_OFFSET;
-		tileY += SCENE_OFFSET;
+		tileX += GpuPlugin.SCENE_OFFSET;
+		tileY += GpuPlugin.SCENE_OFFSET;
 		int swHeight = tileHeights[tileZ][tileX][tileY];
 		int seHeight = tileHeights[tileZ][tileX + 1][tileY];
 		int neHeight = tileHeights[tileZ][tileX + 1][tileY + 1];
