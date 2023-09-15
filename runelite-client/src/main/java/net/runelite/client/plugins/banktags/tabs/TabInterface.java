@@ -744,7 +744,7 @@ public class TabInterface
 				// Tag an item dragged on a tag tab
 				if (draggedOn.getId() == parent.getId())
 				{
-					tagManager.addTag(draggedWidget.getItemId(), draggedOn.getName(), shiftDown);
+					tagManager.addTag(draggedWidget.getItemId(), draggedOn.getName(), shiftDown ^ config.tagAllItemVariations());
 					updateTabIfActive(Lists.newArrayList(Text.standardize(draggedOn.getName())));
 				}
 			}
@@ -765,7 +765,7 @@ public class TabInterface
 
 				if (draggedWidget.getItemId() > 0 && entry.getOption().equals(VIEW_TAB) && draggedOn.getId() != draggedWidget.getId())
 				{
-					entry.setOption(TAG_SEARCH + Text.removeTags(entry.getTarget()) + (shiftDown ? VAR_TAG_SUFFIX : ""));
+					entry.setOption(TAG_SEARCH + Text.removeTags(entry.getTarget()) + (shiftDown ^ config.tagAllItemVariations() ? VAR_TAG_SUFFIX : ""));
 					entry.setTarget(draggedWidget.getName());
 				}
 
