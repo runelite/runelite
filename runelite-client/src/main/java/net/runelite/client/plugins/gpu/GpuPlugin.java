@@ -98,6 +98,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private static final int DEFAULT_DISTANCE = 25;
 	static final int MAX_DISTANCE = 184;
 	static final int MAX_FOG_DEPTH = 100;
+	static final int SCENE_OFFSET = (Constants.EXTENDED_SCENE_SIZE - Constants.SCENE_SIZE) / 2; // offset for sxy -> msxy
 
 	@Inject
 	private Client client;
@@ -1597,6 +1598,50 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		nextSceneId = -1;
 
 		checkGLErrors();
+	}
+
+	@Override
+	public boolean tileInFrustum(Scene scene, int pitchSin, int pitchCos, int yawSin, int yawCos, int cameraX, int cameraY, int cameraZ, int plane, int msx, int msy)
+	{
+		int[][][] tileHeights = scene.getTileHeights();
+		int x = ((msx - SCENE_OFFSET) << Perspective.LOCAL_COORD_BITS) + 64 - cameraX;
+		int z = ((msy - SCENE_OFFSET) << Perspective.LOCAL_COORD_BITS) + 64 - cameraZ;
+		int y = Math.max(
+			Math.max(tileHeights[plane][msx][msy], tileHeights[plane][msx][msy + 1]),
+			Math.max(tileHeights[plane][msx + 1][msy], tileHeights[plane][msx + 1][msy + 1])
+		) - cameraY;
+
+		int radius = 96; // ~ 64 * sqrt(2)
+
+		int zoom = client.get3dZoom();
+		int Rasterizer3D_clipMidX2 = client.getRasterizer3D_clipMidX2();
+		int Rasterizer3D_clipNegativeMidX = client.getRasterizer3D_clipNegativeMidX();
+		int Rasterizer3D_clipNegativeMidY = client.getRasterizer3D_clipNegativeMidY();
+
+		int var11 = yawCos * z - yawSin * x >> 16;
+		int var12 = pitchSin * y + pitchCos * var11 >> 16;
+		int var13 = pitchCos * radius >> 16;
+		int depth = var12 + var13;
+		if (depth > 50)
+		{
+			int rx = z * yawSin + yawCos * x >> 16;
+			int var16 = (rx - radius) * zoom;
+			int var17 = (rx + radius) * zoom;
+			// left && right
+			if (var16 < Rasterizer3D_clipMidX2 * depth && var17 > Rasterizer3D_clipNegativeMidX * depth)
+			{
+				int ry = pitchCos * y - var11 * pitchSin >> 16;
+				int ybottom = pitchSin * radius >> 16;
+				int var20 = (ry + ybottom) * zoom;
+				// top
+				if (var20 > Rasterizer3D_clipNegativeMidY * depth)
+				{
+					// we don't test the bottom so we don't have to find the height of all the models on the tile
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	/**
