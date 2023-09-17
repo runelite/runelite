@@ -80,6 +80,7 @@ class InventoryGridOverlay extends Overlay
 
 		// grid is only supported on bank inventory and inventory
 		if (draggingWidget.getId() != WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getId()
+			&& draggingWidget.getId() != WidgetInfo.BANK_EQUIPMENT_INVENTORY_ITEMS_CONTAINER.getId()
 			&& draggingWidget.getId() != WidgetInfo.INVENTORY.getId())
 		{
 			return null;
