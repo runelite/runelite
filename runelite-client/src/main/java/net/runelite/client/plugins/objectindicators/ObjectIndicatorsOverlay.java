@@ -121,7 +121,8 @@ class ObjectIndicatorsOverlay extends Overlay
 			final var flags = obj.getHighlightFlags() != 0 ? obj.getHighlightFlags() : defaultFlags;
 			if ((flags & HF_HULL) != 0)
 			{
-				renderConvexHull(graphics, object, color, stroke);
+				Color fillColor = ColorUtil.colorWithAlpha(color, color.getAlpha() / 12);
+				renderConvexHull(graphics, object, color, fillColor, stroke);
 			}
 
 			if ((flags & HF_OUTLINE) != 0)
@@ -153,7 +154,7 @@ class ObjectIndicatorsOverlay extends Overlay
 		return null;
 	}
 
-	private void renderConvexHull(Graphics2D graphics, TileObject object, Color color, Stroke stroke)
+	private void renderConvexHull(Graphics2D graphics, TileObject object, Color color, Color fillColor, Stroke stroke)
 	{
 		final Shape polygon;
 		Shape polygon2 = null;
@@ -183,12 +184,12 @@ class ObjectIndicatorsOverlay extends Overlay
 
 		if (polygon != null)
 		{
-			OverlayUtil.renderPolygon(graphics, polygon, color, stroke);
+			OverlayUtil.renderPolygon(graphics, polygon, color, fillColor, stroke);
 		}
 
 		if (polygon2 != null)
 		{
-			OverlayUtil.renderPolygon(graphics, polygon2, color, stroke);
+			OverlayUtil.renderPolygon(graphics, polygon2, color, fillColor, stroke);
 		}
 	}
 }
