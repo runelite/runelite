@@ -39,6 +39,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
@@ -251,14 +252,15 @@ public class ObjectIndicatorsPlugin extends Plugin
 
 		if (marked.isPresent())
 		{
-			idx = createTagColorMenu(idx, event.getTarget(), tileObject, marked.get());
+			idx = createTagBorderColorMenu(idx, event.getTarget(), tileObject, marked.get());
+			idx = createTagFillColorMenu(idx, event.getTarget(), tileObject, marked.get());
 			idx = createTagStyleMenu(idx, event.getTarget(), tileObject);
 		}
 	}
 
-	private int createTagColorMenu(int idx, String target, TileObject object, ColorTileObject colorTileObject)
+	private int createTagBorderColorMenu(int idx, String target, TileObject object, ColorTileObject colorTileObject)
 	{
-		List<Color> colors = getUsedColors();
+		List<Color> colors = getUsedColors(ObjectPoint::getBorderColor);
 		// add a few default colors
 		for (Color default_ : new Color[]{Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.MAGENTA})
 		{
@@ -269,7 +271,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 		}
 
 		MenuEntry parent = client.createMenuEntry(idx--)
-			.setOption("Mark color")
+			.setOption("Mark border color")
 			.setTarget(target)
 			.setType(MenuAction.RUNELITE_SUBMENU);
 
@@ -279,7 +281,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 				.setOption(ColorUtil.prependColorTag("Set color", c))
 				.setType(MenuAction.RUNELITE)
 				.setParent(parent)
-				.onClick(e -> updateObjectConfig(object, p -> p.setColor(c)));
+				.onClick(e -> updateObjectConfig(object, p -> p.setBorderColor(c)));
 		}
 
 		client.createMenuEntry(idx--)
@@ -289,12 +291,66 @@ public class ObjectIndicatorsPlugin extends Plugin
 			.onClick(e -> SwingUtilities.invokeLater(() ->
 			{
 				RuneliteColorPicker colorPicker = colorPickerManager.create(SwingUtilities.windowForComponent((Applet) client),
-					MoreObjects.firstNonNull(colorTileObject.getColor(), config.markerColor()), "Mark Color", false);
+					MoreObjects.firstNonNull(colorTileObject.getBorderColor(), config.markerColor()), "Mark Border Color", false);
 				colorPicker.setOnClose(c ->
 					clientThread.invokeLater(() ->
-						updateObjectConfig(object, p -> p.setColor(c))));
+						updateObjectConfig(object, p -> p.setBorderColor(c))));
 				colorPicker.setVisible(true);
 			}));
+
+		return idx;
+	}
+
+	private int createTagFillColorMenu(int idx, String target, TileObject object, ColorTileObject colorTileObject)
+	{
+		List<Color> colors = getUsedColors(ObjectPoint::getFillColor);
+		// add a few default colors
+		for (Color default_ : new Color[]{Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.MAGENTA})
+		{
+			default_ = ColorUtil.colorWithAlpha(default_, default_.getAlpha() / 12);
+			if (colors.size() < 5 && !colors.contains(default_))
+			{
+				colors.add(default_);
+			}
+		}
+
+		MenuEntry parent = client.createMenuEntry(idx--)
+			.setOption("Mark fill color")
+			.setTarget(target)
+			.setType(MenuAction.RUNELITE_SUBMENU);
+
+		for (final Color c : colors)
+		{
+			client.createMenuEntry(idx--)
+				.setOption(ColorUtil.prependColorTag("Set color", c))
+				.setType(MenuAction.RUNELITE)
+				.setParent(parent)
+				.onClick(e -> updateObjectConfig(object, p -> p.setFillColor(c)));
+		}
+
+		client.createMenuEntry(idx--)
+			.setOption("Pick color")
+			.setType(MenuAction.RUNELITE)
+			.setParent(parent)
+			.onClick(e -> SwingUtilities.invokeLater(() ->
+			{
+				var borderColor = MoreObjects.firstNonNull(colorTileObject.getBorderColor(), config.markerColor());
+				var previousColor = MoreObjects.firstNonNull(colorTileObject.getFillColor(),
+					ColorUtil.colorWithAlpha(borderColor, borderColor.getAlpha() / 12));
+
+				RuneliteColorPicker colorPicker = colorPickerManager.create(SwingUtilities.windowForComponent((Applet) client),
+					previousColor, "Mark Fill Color", false);
+				colorPicker.setOnClose(c ->
+					clientThread.invokeLater(() ->
+						updateObjectConfig(object, p -> p.setFillColor(c))));
+				colorPicker.setVisible(true);
+			}));
+
+		client.createMenuEntry(idx--)
+			.setOption("Reset")
+			.setType(MenuAction.RUNELITE)
+			.setParent(parent)
+			.onClick(e -> updateObjectConfig(object, p -> p.setFillColor(null)));
 
 		return idx;
 	}
@@ -440,7 +496,8 @@ public class ObjectIndicatorsPlugin extends Plugin
 				objects.add(new ColorTileObject(object,
 					objectComposition,
 					objectPoint.getName(),
-					objectPoint.getColor(),
+					objectPoint.getBorderColor(),
+					objectPoint.getFillColor(),
 					(byte) flags));
 				break;
 			}
@@ -528,7 +585,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 	{
 		final WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, object.getLocalLocation());
 		final int regionId = worldPoint.getRegionID();
-		final Color color = config.markerColor();
+		final Color borderColor = config.markerColor();
 		final ObjectPoint point = new ObjectPoint(
 			object.getId(),
 			name,
@@ -536,7 +593,8 @@ public class ObjectIndicatorsPlugin extends Plugin
 			worldPoint.getRegionX(),
 			worldPoint.getRegionY(),
 			worldPoint.getPlane(),
-			color,
+			borderColor,
+			null,
 			// use the default config values
 			null, null, null, null);
 
@@ -557,7 +615,8 @@ public class ObjectIndicatorsPlugin extends Plugin
 			objects.add(new ColorTileObject(object,
 				client.getObjectDefinition(object.getId()),
 				name,
-				color,
+				borderColor,
+				null,
 				(byte) 0));
 			log.debug("Marking object: {}", point);
 		}
@@ -617,7 +676,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 		return objectComposition.getImpostorIds() == null ? objectComposition : objectComposition.getImpostor();
 	}
 
-	private List<Color> getUsedColors()
+	private List<Color> getUsedColors(Function<ObjectPoint, Color> getColor)
 	{
 		List<Color> colors = new ArrayList<>();
 		for (int region : client.getMapRegions())
@@ -627,7 +686,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 			{
 				for (var p : points)
 				{
-					Color c = p.getColor();
+					Color c = getColor.apply(p);
 					if (c != null & !colors.contains(c))
 					{
 						colors.add(c);

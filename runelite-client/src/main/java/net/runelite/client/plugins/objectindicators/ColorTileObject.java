@@ -54,6 +54,8 @@ class ColorTileObject
 	 */
 	private final String name;
 	@Nullable
-	private final Color color;
+	private final Color borderColor;
+	@Nullable
+	private final Color fillColor;
 	byte highlightFlags;
 }
