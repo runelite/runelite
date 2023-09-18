@@ -26,6 +26,7 @@
 package net.runelite.client.plugins.objectindicators;
 
 import java.awt.Color;
+import javax.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -44,6 +45,7 @@ class ObjectPoint
 	private int regionX;
 	private int regionY;
 	private int z;
+	@Nullable
 	private Color color;
 	// highlight options
 	private Boolean hull;

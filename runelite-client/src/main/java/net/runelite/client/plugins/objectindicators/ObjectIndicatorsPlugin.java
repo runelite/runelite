@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.objectindicators;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -238,9 +239,9 @@ public class ObjectIndicatorsPlugin extends Plugin
 		}
 
 		int idx = -1;
-		final var marked = objects.stream().anyMatch(o -> o.getTileObject() == tileObject);
+		final var marked = objects.stream().filter(o -> o.getTileObject() == tileObject).findFirst();
 		client.createMenuEntry(idx--)
-			.setOption(marked ? UNMARK : MARK)
+			.setOption(marked.isPresent() ? UNMARK : MARK)
 			.setTarget(event.getTarget())
 			.setParam0(event.getActionParam0())
 			.setParam1(event.getActionParam1())
@@ -248,14 +249,14 @@ public class ObjectIndicatorsPlugin extends Plugin
 			.setType(MenuAction.RUNELITE)
 			.onClick(this::markObject);
 
-		if (marked)
+		if (marked.isPresent())
 		{
-			idx = createTagColorMenu(idx, event.getTarget(), tileObject);
+			idx = createTagColorMenu(idx, event.getTarget(), tileObject, marked.get());
 			idx = createTagStyleMenu(idx, event.getTarget(), tileObject);
 		}
 	}
 
-	private int createTagColorMenu(int idx, String target, TileObject object)
+	private int createTagColorMenu(int idx, String target, TileObject object, ColorTileObject colorTileObject)
 	{
 		List<Color> colors = getUsedColors();
 		// add a few default colors
@@ -288,7 +289,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 			.onClick(e -> SwingUtilities.invokeLater(() ->
 			{
 				RuneliteColorPicker colorPicker = colorPickerManager.create(SwingUtilities.windowForComponent((Applet) client),
-					Color.WHITE, "Mark Color", false);
+					MoreObjects.firstNonNull(colorTileObject.getColor(), config.markerColor()), "Mark Color", false);
 				colorPicker.setOnClose(c ->
 					clientThread.invokeLater(() ->
 						updateObjectConfig(object, p -> p.setColor(c))));
