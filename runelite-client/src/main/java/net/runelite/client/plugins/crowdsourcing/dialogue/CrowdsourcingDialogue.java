@@ -26,7 +26,9 @@
 package net.runelite.client.plugins.crowdsourcing.dialogue;
 
 import javax.inject.Inject;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -44,14 +46,15 @@ public class CrowdsourcingDialogue
 	private CrowdsourcingManager manager;
 
 	private boolean inDialogue = false;
-	private String lastNpcDialogueText = null;
-	private String lastPlayerDialogueText = null;
+	private String lastDialogueText = null;
+	private int lastItemId1 = -1;
+	private int lastItemId2 = -1;
 	private Widget[] dialogueOptions;
 
 	private String sanitize(String dialogue)
 	{
 		String username = client.getLocalPlayer().getName();
-		return dialogue.replaceAll(username, USERNAME_TOKEN);
+		return dialogue.replaceAll(" ", " ").replaceAll(username, USERNAME_TOKEN);
 	}
 
 	@Subscribe
@@ -60,38 +63,46 @@ public class CrowdsourcingDialogue
 		Widget npcDialogueTextWidget = client.getWidget(WidgetInfo.DIALOG_NPC_TEXT);
 		Widget playerDialogueTextWidget = client.getWidget(WidgetInfo.DIALOG_PLAYER_TEXT);
 		Widget playerDialogueOptionsWidget = client.getWidget(WidgetInfo.DIALOG_OPTION_OPTIONS);
+		Widget spriteWidget = client.getWidget(WidgetInfo.DIALOG_SPRITE_SPRITE);
+		Widget spriteTextWidget = client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT);
+		Widget doubleSpriteTextWidget = client.getWidget(WidgetInfo.DIALOG_DOUBLE_SPRITE_TEXT);
+		Widget doubleSprite1Widget = client.getWidget(WidgetInfo.DIALOG_DOUBLE_SPRITE_SPRITE1);
+		Widget doubleSprite2Widget = client.getWidget(WidgetInfo.DIALOG_DOUBLE_SPRITE_SPRITE2);
 
 		// If we were not in a conversation, but now one of these widgets is not null, we have started a conversation.
 		// Else if we were in a conversation, but now there is no widget, we have left the conversation.
-		if (!inDialogue && (npcDialogueTextWidget != null || playerDialogueTextWidget != null || playerDialogueOptionsWidget != null))
+		if (!inDialogue && (npcDialogueTextWidget != null || playerDialogueTextWidget != null || playerDialogueOptionsWidget != null
+			|| spriteTextWidget != null || doubleSpriteTextWidget != null))
 		{
 			inDialogue = true;
 			manager.storeEvent(new StartEndData(true));
 		}
 		else if (inDialogue && npcDialogueTextWidget == null && playerDialogueTextWidget == null
-			&& playerDialogueOptionsWidget == null)
+			&& playerDialogueOptionsWidget == null && spriteTextWidget == null && doubleSpriteTextWidget == null)
 		{
 			inDialogue = false;
 			manager.storeEvent(new StartEndData(false));
+			lastDialogueText = null;
 		}
 
-		if (npcDialogueTextWidget != null && !npcDialogueTextWidget.getText().equals(lastNpcDialogueText))
+		if (npcDialogueTextWidget != null && !npcDialogueTextWidget.getText().equals(lastDialogueText))
 		{
-			lastNpcDialogueText = npcDialogueTextWidget.getText();
+			lastDialogueText = npcDialogueTextWidget.getText();
 			String npcName = client.getWidget(WidgetInfo.DIALOG_NPC_NAME).getText();
-			NpcDialogueData data = new NpcDialogueData(sanitize(lastNpcDialogueText), npcName);
+			NpcDialogueData data = new NpcDialogueData(sanitize(lastDialogueText), npcName);
 			manager.storeEvent(data);
 		}
 
-		if (playerDialogueTextWidget != null && !playerDialogueTextWidget.getText().equals(lastPlayerDialogueText))
+		if (playerDialogueTextWidget != null && !playerDialogueTextWidget.getText().equals(lastDialogueText))
 		{
-			lastPlayerDialogueText = playerDialogueTextWidget.getText();
-			PlayerDialogueData data = new PlayerDialogueData(sanitize(lastPlayerDialogueText));
+			lastDialogueText = playerDialogueTextWidget.getText();
+			PlayerDialogueData data = new PlayerDialogueData(sanitize(lastDialogueText));
 			manager.storeEvent(data);
 		}
 
 		if (playerDialogueOptionsWidget != null && playerDialogueOptionsWidget.getChildren() != dialogueOptions)
 		{
+			lastDialogueText = null;
 			dialogueOptions = playerDialogueOptionsWidget.getChildren();
 			String[] optionsText = new String[dialogueOptions.length];
 			for (int i = 0; i < dialogueOptions.length; i++)
@@ -99,6 +110,36 @@ public class CrowdsourcingDialogue
 				optionsText[i] = sanitize(dialogueOptions[i].getText());
 			}
 			DialogueOptionsData data = new DialogueOptionsData(optionsText);
+			manager.storeEvent(data);
+		}
+
+		if (spriteWidget != null && spriteTextWidget != null && (!spriteTextWidget.getText().equals(lastDialogueText)
+			|| spriteWidget.getItemId() != lastItemId1))
+		{
+			lastItemId1 = spriteWidget.getItemId();
+			lastDialogueText = spriteTextWidget.getText();
+			SpriteTextData data = new SpriteTextData(sanitize(lastDialogueText), lastItemId1);
+			manager.storeEvent(data);
+		}
+
+		if (doubleSprite1Widget != null && doubleSpriteTextWidget != null && (!doubleSpriteTextWidget.getText().equals(lastDialogueText)
+			|| doubleSprite1Widget.getItemId() != lastItemId1 || doubleSprite2Widget.getItemId() != lastItemId2))
+		{
+			lastItemId1 = doubleSprite1Widget.getItemId();
+			lastItemId2 = doubleSprite2Widget.getItemId();
+			lastDialogueText = doubleSpriteTextWidget.getText();
+			DoubleSpriteTextData data = new DoubleSpriteTextData(sanitize(lastDialogueText), lastItemId1, lastItemId2);
+			manager.storeEvent(data);
+		}
+	}
+
+	@Subscribe
+	public void onChatMessage(ChatMessage chatMessage)
+	{
+		if (chatMessage.getType() == ChatMessageType.DIALOG
+		|| chatMessage.getType() == ChatMessageType.MESBOX)
+		{
+			ChatMessageData data = new ChatMessageData(sanitize(chatMessage.getMessage()), chatMessage.getType());
 			manager.storeEvent(data);
 		}
 	}
