@@ -102,6 +102,9 @@ public class WintertodtPlugin extends Plugin
 	private WintertodtOverlay overlay;
 
 	@Inject
+	private WintertodtIdleOverlay idleOverlay;
+
+	@Inject
 	private WintertodtConfig config;
 
 	@Getter(AccessLevel.PACKAGE)
@@ -125,6 +128,7 @@ public class WintertodtPlugin extends Plugin
 
 	private Instant lastActionTime;
 
+	@Getter(AccessLevel.PACKAGE)
 	private int previousTimerValue;
 
 	@Provides
@@ -138,12 +142,14 @@ public class WintertodtPlugin extends Plugin
 	{
 		reset();
 		overlayManager.add(overlay);
+		overlayManager.add(idleOverlay);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(overlay);
+		overlayManager.remove(idleOverlay);
 		reset();
 	}
 
