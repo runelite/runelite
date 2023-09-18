@@ -449,8 +449,18 @@ public class RaidsPlugin extends Plugin
 			.append(raidData)
 			.build();
 
+		ChatMessageType messageType;
+		if (config.layoutMessageChannel() == RaidsConfig.LayoutMessageType.CHANNEL)
+		{
+			messageType = ChatMessageType.FRIENDSCHATNOTIFICATION;
+		}
+		else
+		{
+			messageType = ChatMessageType.GAMEMESSAGE;
+		}
+
 		chatMessageManager.queue(QueuedMessage.builder()
-			.type(ChatMessageType.FRIENDSCHATNOTIFICATION)
+			.type(messageType)
 			.runeLiteFormattedMessage(layoutMessage)
 			.build());
 

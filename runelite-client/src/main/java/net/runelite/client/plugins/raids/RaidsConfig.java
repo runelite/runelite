@@ -33,6 +33,12 @@ import net.runelite.client.util.ImageUploadStyle;
 @ConfigGroup("raids")
 public interface RaidsConfig extends Config
 {
+	enum LayoutMessageType
+	{
+		CHANNEL,
+		GAME
+	}
+
 	@ConfigItem(
 		position = 0,
 		keyName = "raidsTimer",
@@ -177,7 +183,18 @@ public interface RaidsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 13,
+			position = 13,
+			keyName = "layoutMessageChannel",
+			name = "Message channel",
+			description = "Determines which channel to send the raid layout message to."
+	)
+	default LayoutMessageType layoutMessageChannel()
+	{
+		return LayoutMessageType.CHANNEL;
+	}
+
+	@ConfigItem(
+		position = 14,
 		keyName = "screenshotHotkey",
 		name = "Screenshot hotkey",
 		description = "Hotkey used to screenshot the scouting overlay"
@@ -188,7 +205,7 @@ public interface RaidsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 14,
+		position = 15,
 		keyName = "uploadScreenshot",
 		name = "Upload screenshot",
 		description = "Uploads the scouting screenshot to Imgur or the clipboard"
