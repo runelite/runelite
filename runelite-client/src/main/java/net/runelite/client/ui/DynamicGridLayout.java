@@ -33,6 +33,7 @@ import java.util.function.Function;
 
 /**
  * Grid layout implementation with support for cells with unequal size.
+ * Gaps are applied to all cells regardless of visibility.
  *
  * See https://www.javaworld.com/article/2077486/core-java/java-tip-121--flex-your-grid-layout.html
  */
