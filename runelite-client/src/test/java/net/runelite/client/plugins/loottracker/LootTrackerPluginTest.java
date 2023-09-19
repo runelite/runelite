@@ -63,6 +63,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemStack;
 import net.runelite.client.game.SpriteManager;
+import net.runelite.client.ui.ClientToolbar;
 import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.loottracker.LootRecordType;
 import static org.junit.Assert.assertEquals;
@@ -146,6 +147,10 @@ public class LootTrackerPluginTest
 	@Mock
 	@Bind
 	private ConfigManager configManager;
+
+	@Mock
+	@Bind
+	private ClientToolbar clientToolbar;
 
 	@Before
 	public void setUp()

@@ -30,9 +30,11 @@ import java.awt.Container;
 import java.awt.EventQueue;
 import java.awt.SecondaryLoop;
 import java.awt.Toolkit;
+import javax.annotation.Nullable;
 import javax.swing.AbstractButton;
 import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.ui.Activatable;
 
 /**
  * Various Swing utilities.
@@ -98,6 +100,36 @@ public class SwingUtil
 			SecondaryLoop l = eq.createSecondaryLoop();
 			SwingUtilities.invokeLater(l::exit);
 			l.enter();
+		}
+	}
+
+	public static void activate(@Nullable Object maybeActivatable)
+	{
+		if (maybeActivatable instanceof Activatable)
+		{
+			try
+			{
+				((Activatable) maybeActivatable).onActivate();
+			}
+			catch (Exception e)
+			{
+				log.warn("uncaught exception in activate", e);
+			}
+		}
+	}
+
+	public static void deactivate(@Nullable Object maybeActivatable)
+	{
+		if (maybeActivatable instanceof Activatable)
+		{
+			try
+			{
+				((Activatable) maybeActivatable).onDeactivate();
+			}
+			catch (Exception e)
+			{
+				log.warn("uncaught exception in deactivate", e);
+			}
 		}
 	}
 }

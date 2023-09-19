@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2023 Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,13 +22,38 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.events;
+package net.runelite.client.ui.laf;
 
-import lombok.Value;
-import net.runelite.client.ui.NavigationButton;
+import com.formdev.flatlaf.ui.FlatRootPaneUI;
+import java.beans.PropertyChangeEvent;
+import javax.swing.JComponent;
+import javax.swing.plaf.ComponentUI;
 
-@Value
-public class NavigationButtonAdded
+public class RuneLiteRootPaneUI extends FlatRootPaneUI
 {
-	private NavigationButton button;
+	public static final String PROP_RUNELITE_TITLEBAR = "runelite.titleBar";
+
+	public static ComponentUI createUI(JComponent c)
+	{
+		return new RuneLiteRootPaneUI();
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent e)
+	{
+		super.propertyChange(e);
+
+		if (e.getPropertyName().equals(PROP_RUNELITE_TITLEBAR))
+		{
+			boolean titleBar = rootPane.getClientProperty(PROP_RUNELITE_TITLEBAR) == Boolean.TRUE;
+			if (!titleBar)
+			{
+				throw new IllegalStateException();
+			}
+
+			setTitlePane(createTitlePane());
+
+			rootPane.setLayout(createRootLayout());
+		}
+	}
 }
