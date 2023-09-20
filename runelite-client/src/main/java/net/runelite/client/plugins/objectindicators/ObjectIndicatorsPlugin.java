@@ -334,9 +334,8 @@ public class ObjectIndicatorsPlugin extends Plugin
 			.setParent(parent)
 			.onClick(e -> SwingUtilities.invokeLater(() ->
 			{
-				var borderColor = MoreObjects.firstNonNull(colorTileObject.getBorderColor(), config.markerColor());
-				var previousColor = MoreObjects.firstNonNull(colorTileObject.getFillColor(),
-					ColorUtil.colorWithAlpha(borderColor, borderColor.getAlpha() / 12));
+				// default fill color depends on the highlight type. just use a=50 from hull fill.
+				var previousColor = MoreObjects.firstNonNull(colorTileObject.getFillColor(), new Color(0, 0, 0, 50));
 
 				RuneliteColorPicker colorPicker = colorPickerManager.create(SwingUtilities.windowForComponent((Applet) client),
 					previousColor, "Mark Fill Color", false);
