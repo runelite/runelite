@@ -585,6 +585,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 		final WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, object.getLocalLocation());
 		final int regionId = worldPoint.getRegionID();
 		final Color borderColor = config.markerColor();
+		final Color fillColor = config.fillColor();
 		final ObjectPoint point = new ObjectPoint(
 			object.getId(),
 			name,
@@ -593,7 +594,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 			worldPoint.getRegionY(),
 			worldPoint.getPlane(),
 			borderColor,
-			null,
+			fillColor,
 			// use the default config values
 			null, null, null, null);
 
@@ -615,7 +616,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 				client.getObjectDefinition(object.getId()),
 				name,
 				borderColor,
-				null,
+				fillColor,
 				(byte) 0));
 			log.debug("Marking object: {}", point);
 		}
