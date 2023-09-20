@@ -1253,7 +1253,8 @@ public final class SpriteID
 	public static final int SPELL_DARK_LURE = 1316;
 	public static final int SPELL_VILE_VIGOUR = 1317;
 	public static final int SPELL_DEGRIME = 1318;
-	/* Unmapped: 1319~1324 */
+	/* Unmapped: 1319~1323 */
+	public static final int SPELL_MARK_OF_DARKNESS_DISABLED = 1324;
 	public static final int SPELL_WARD_OF_ARCEUUS_DISABLED = 1325;
 	/* Unmapped: 1326 */
 	public static final int SPELL_GREATER_CORRUPTION_DISABLED = 1327;
