@@ -48,8 +48,6 @@ public interface NPCComposition extends ParamHolder
 	 */
 	String[] getActions();
 
-	boolean isClickable();
-
 	/**
 	 * NPC can be interacting with via menu options
 	 * @return

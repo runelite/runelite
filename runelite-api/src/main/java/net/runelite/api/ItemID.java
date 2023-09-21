@@ -11263,8 +11263,6 @@ public final class ItemID
 	public static final int BLIGHTED_SUPER_RESTORE2 = 24603;
 	public static final int BLIGHTED_SUPER_RESTORE1 = 24605;
 	public static final int BLIGHTED_ANCIENT_ICE_SACK = 24607;
-	public static final int BLIGHTED_BIND_SACK = 24609;
-	public static final int BLIGHTED_SNARE_SACK = 24611;
 	public static final int BLIGHTED_ENTANGLE_SACK = 24613;
 	public static final int BLIGHTED_TELEPORT_SPELL_SACK = 24615;
 	public static final int VESTAS_BLIGHTED_LONGSWORD = 24617;
@@ -12452,7 +12450,6 @@ public final class ItemID
 	public static final int SAIKAS_HOOD_BROKEN = 26701;
 	public static final int SAIKAS_VEIL_BROKEN = 26702;
 	public static final int SAIKAS_SHROUD_BROKEN = 26703;
-	public static final int BLIGHTED_WAVE_SACK = 26704;
 	public static final int BLIGHTED_SURGE_SACK = 26705;
 	public static final int SCROLL_OF_IMBUING = 26706;
 	public static final int DRAGON_CLAWS_ORNAMENT_KIT = 26707;
