@@ -464,4 +464,19 @@ public class ChatFilterPluginTest
 		String message = chatFilterPlugin.censorMessage("Adam", "start f<lt>ilte<gt>r end");
 		assertEquals("start ******** end", message);
 	}
+
+	@Test
+	public void testFilterUsersMessagesAfterViolation()
+	{
+		when(chatFilterConfig.filterUsersMessagesAfterViolation()).thenReturn(true);
+		when(chatFilterConfig.filterType()).thenReturn(ChatFilterType.REMOVE_MESSAGE);
+		when(chatFilterConfig.filteredRegex()).thenReturn("remote infernal service");
+		chatFilterPlugin.updateFilteredPatterns();
+
+		// matches filter
+		chatFilterPlugin.onScriptCallbackEvent(createCallbackEvent("offenderName", "remote infernal service", ChatMessageType.PUBLICCHAT));
+		// doesn't match filter, but blocked due to prior violation
+		chatFilterPlugin.onScriptCallbackEvent(createCallbackEvent("offenderName", "we have the best prices", ChatMessageType.PUBLICCHAT));
+		assertEquals(0, client.getIntStack()[client.getIntStackSize() - 3]);
+	}
 }
