@@ -147,6 +147,18 @@ public interface MenuEntrySwapperConfig extends Config
 
 	@ConfigItem(
 		position = -2,
+		keyName = "swapPotionDosesSeparately",
+		name = "Swap potion doses separately",
+		description = "Allows separate left and shift-click options for 1, 2, 3, and 4-dose potions",
+		section = itemSection
+	)
+	default boolean swapPotionDosesSeparately()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = -2,
 		keyName = "objectLeftClickCustomization",
 		name = "Customizable left and shift click",
 		description = "Allows customization of left-clicks on objects",
