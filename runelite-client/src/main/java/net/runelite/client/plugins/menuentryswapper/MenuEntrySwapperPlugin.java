@@ -93,7 +93,7 @@ import net.runelite.client.util.Text;
 @Slf4j
 public class MenuEntrySwapperPlugin extends Plugin
 {
-	private static final HashSet<Integer> POTION_IDS = new HashSet<Integer>(Arrays.asList(
+	private static final HashSet<Integer> POTION_IDS = new HashSet<>(Arrays.asList(
 		10000, 10002, 10004, 10925, 10927, 10929, 10931, 113, 11429, 11431, 11433,
 		11435, 11437, 11439, 11441, 11443, 11445, 11447, 11449, 11451, 11453, 11455,
 		11457, 11459, 11461, 11463, 11465, 11467, 11469, 11471, 11477, 11479, 11481,
