@@ -881,9 +881,15 @@ public class WorldHopperPlugin extends Plugin
 			return;
 		}
 
-		currentPing = ping(currentWorld);
+		int ping = ping(currentWorld);
 		log.trace("Ping for current world is: {}", currentPing);
 
+		if (ping < 0)
+		{
+			return;
+		}
+
+		currentPing = ping;
 		SwingUtilities.invokeLater(() -> panel.updatePing(currentWorld.getId(), currentPing));
 	}
 
