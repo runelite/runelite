@@ -68,14 +68,17 @@ public interface DrawCallbacks
 
 	/**
 	 * Called before the scene is drawn
-	 * @param cameraX
-	 * @param cameraY
-	 * @param cameraZ
-	 * @param cameraPitch
-	 * @param cameraYaw
-	 * @param plane
 	 */
-	void drawScene(int cameraX, int cameraY, int cameraZ, int cameraPitch, int cameraYaw, int plane);
+	default void drawScene(double cameraX, double cameraY, double cameraZ, double cameraPitch, double cameraYaw, int plane)
+	{
+	}
+
+	/**
+	 * Called before the scene is drawn
+	 */
+	default void drawScene(int cameraX, int cameraY, int cameraZ, int cameraPitch, int cameraYaw, int plane)
+	{
+	}
 
 	/**
 	 * Called after the scene has been drawn
