@@ -63,6 +63,7 @@ public class DefaultWorldPlugin extends Plugin
 	@Inject
 	private WorldService worldService;
 
+	@Inject
 	@Named("safeMode")
 	private boolean safeMode;
 
