@@ -64,7 +64,7 @@ public class DefaultWorldPlugin extends Plugin
 	private WorldService worldService;
 
 	@Named("safeMode")
-	private boolean safeMode; // NOPMD: ImmutableField
+	private boolean safeMode;
 
 	@Override
 	protected void startUp()
