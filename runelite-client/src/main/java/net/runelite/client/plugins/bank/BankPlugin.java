@@ -272,7 +272,7 @@ public class BankPlugin extends Plugin
 	{
 		if (event.getGroupId() == WidgetID.SEED_VAULT_GROUP_ID && config.seedVaultValue())
 		{
-			updateSeedVaultTotal();
+			clientThread.invokeLater(this::updateSeedVaultTotal);
 		}
 		else if (event.getGroupId() == WidgetID.CLANRANK_POPUP // also the Jagex account ad in the bank
 			&& config.blockJagexAccountAd())
