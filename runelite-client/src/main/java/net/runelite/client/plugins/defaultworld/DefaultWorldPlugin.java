@@ -26,6 +26,7 @@ package net.runelite.client.plugins.defaultworld;
 
 import com.google.inject.Provides;
 import javax.inject.Inject;
+import javax.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -60,6 +61,9 @@ public class DefaultWorldPlugin extends Plugin
 
 	@Inject
 	private WorldService worldService;
+
+	@Named("safeMode")
+	private boolean safeMode;
 
 	@Override
 	protected void startUp()
@@ -103,7 +107,7 @@ public class DefaultWorldPlugin extends Plugin
 
 	private void applyWorld()
 	{
-		if (client.getGameState() != GameState.LOGIN_SCREEN)
+		if (client.getGameState() != GameState.LOGIN_SCREEN || safeMode)
 		{
 			return;
 		}
