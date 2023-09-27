@@ -41,6 +41,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.WorldUtil;
 import net.runelite.http.api.worlds.World;
 import net.runelite.http.api.worlds.WorldResult;
+import net.runelite.http.api.worlds.WorldType;
 
 @PluginDescriptor(
 	name = "Default World",
@@ -133,6 +134,13 @@ public class DefaultWorldPlugin extends Plugin
 		if (world == null)
 		{
 			log.warn("World {} not found.", correctedWorld);
+			return;
+		}
+
+		if (world.getTypes().contains(WorldType.BETA_WORLD) ||
+			world.getTypes().contains(WorldType.NOSAVE_MODE))
+		{
+			log.debug("Skipping world {}", world);
 			return;
 		}
 
