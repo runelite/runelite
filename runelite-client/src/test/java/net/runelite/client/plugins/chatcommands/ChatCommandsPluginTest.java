@@ -1365,7 +1365,7 @@ public class ChatCommandsPluginTest
 	public void testFirstSleddingPb()
 	{
 		// This for some reason publishes:
-		// "New personal best: <col=[0-9a-f]{6}>1:23</col>" for the first race, then "You completed the race in: <col=[0-9a-f]{6}>1:23</col>. Personal best: 1:23" subsequently.
+		// "New personal best: <col=[0-9a-f]{6}>1:23</col>" for the PB race, then "You completed the race in: <col=[0-9a-f]{6}>1:23</col>. Personal best: 1:23" subsequently.
 		// We can only tell it's sledding (and not one of the many other races) by the subsequent chat message "You land softly in a pile of snow at the bottom of the slope."
 
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "New personal best: <col=ef1020>1:05</col>", null, 0);
@@ -1378,10 +1378,10 @@ public class ChatCommandsPluginTest
 	}
 
 	@Test
-	public void testSubsequentSleddingPb()
+	public void testSubsequentSleddingCompletion()
 	{
 		// This for some reason publishes:
-		// "New personal best: <col=[0-9a-f]{6}>1:23</col>" for the first race, then "You completed the race in: <col=[0-9a-f]{6}>1:23</col>. Personal best: 1:23" subsequently.
+		// "New personal best: <col=[0-9a-f]{6}>1:23</col>" for the PB race, then "You completed the race in: <col=[0-9a-f]{6}>1:23</col>. Personal best: 1:23" subsequently.
 		// We can only tell it's sledding (and not one of the many other races) by the subsequent chat message "You land softly in a pile of snow at the bottom of the slope."
 
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "You completed the race in: <col=ef1020>1:23</col>. Personal best: 1:05", null, 0);
