@@ -209,12 +209,6 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 			return;
 		}
 
-		if ("lookPreservePitch".equals(event.getEventName()) && config.compassLookPreservePitch())
-		{
-			intStack[intStackSize - 1] = client.getCameraPitch();
-			return;
-		}
-
 		if (config.innerLimit())
 		{
 			// This lets the options panel's slider have an exponential rate

@@ -123,17 +123,6 @@ public interface CameraConfig extends Config
 		return 25;
 	}
 
-	@ConfigItem(
-		keyName = "compassLookPreservePitch",
-		name = "Preserve pitch on compass look",
-		description = "Preserves the current pitch value (vertical angle) when using the compass look options.",
-		position = 7
-	)
-	default boolean compassLookPreservePitch()
-	{
-		return false;
-	}
-
 	// region mouse settings
 	@ConfigItem(
 		keyName = "rightClickMovesCamera",
