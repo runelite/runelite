@@ -88,7 +88,7 @@ public enum FishingSpot
 	KARAMBWAN("Karambwan", ItemID.RAW_KARAMBWAN,
 		FISHING_SPOT_4712, FISHING_SPOT_4713
 	),
-	KARAMBWANJI("Karambwanji, Shrimp", "Karambwanji", ItemID.KARAMBWANJI,
+	KARAMBWANJI("Karambwanji, Shrimp", "Karambwanji", ItemID.RAW_KARAMBWANJI,
 		FISHING_SPOT_4710
 	),
 	SACRED_EEL("Sacred eel", ItemID.SACRED_EEL,
