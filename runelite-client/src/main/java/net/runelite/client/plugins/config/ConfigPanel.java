@@ -314,10 +314,27 @@ class ConfigPanel extends PluginPanel
 			// Add listeners to each part of the header so that it's easier to toggle them
 			final MouseAdapter adapter = new MouseAdapter()
 			{
+				boolean isClicking = false;
+
 				@Override
-				public void mouseClicked(MouseEvent e)
+				public void mousePressed(MouseEvent e)
 				{
-					toggleSection(csd, sectionToggle, sectionContents);
+					isClicking = true;
+				}
+
+				@Override
+				public void mouseExited(MouseEvent e)
+				{
+					isClicking = false;
+				}
+
+				@Override
+				public void mouseReleased(MouseEvent e)
+				{
+					if (isClicking)
+					{
+						toggleSection(csd, sectionToggle, sectionContents);
+					}
 				}
 			};
 			sectionToggle.addActionListener(actionEvent -> toggleSection(csd, sectionToggle, sectionContents));
