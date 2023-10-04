@@ -32,8 +32,8 @@
 		<version>1.10.15-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>script-assembler-plugin</artifactId>
-	<name>Script Assembler Plugin</name>
+	<artifactId>runelite-maven-plugin</artifactId>
+	<name>RuneLite Maven Plugin</name>
 	<packaging>maven-plugin</packaging>
 
 	<dependencies>

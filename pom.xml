@@ -125,7 +125,7 @@
 		<module>runelite-api</module>
 		<module>runelite-client</module>
 		<module>runelite-jshell</module>
-		<module>runelite-script-assembler-plugin</module>
+		<module>runelite-maven-plugin</module>
 	</modules>
 
 	<dependencyManagement>
