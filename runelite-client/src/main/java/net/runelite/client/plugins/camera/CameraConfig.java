@@ -149,10 +149,22 @@ public interface CameraConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "rightClickExamine",
+		name = "Right click examine",
+		description = "Right clicking examinable objects opens the menu when 'Right click moves camera' is on",
+		position = 9,
+		section = mouseSettingsSection
+	)
+	default boolean rightClickExamine()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "middleClickMenu",
 		name = "Middle-button opens menu",
 		description = "Remaps middle mouse click to right click",
-		position = 9,
+		position = 11,
 		section = mouseSettingsSection
 	)
 	default boolean middleClickMenu()
