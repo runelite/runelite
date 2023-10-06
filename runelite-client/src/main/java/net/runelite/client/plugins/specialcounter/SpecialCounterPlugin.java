@@ -488,8 +488,9 @@ public class SpecialCounterPlugin extends Plugin
 
 	private int getHitDelay(SpecialWeapon specialWeapon, Actor target)
 	{
-		// DORGESHUUN_CROSSBOW is the only ranged wep we support, so everything else is just melee and delay 1
-		if (specialWeapon != SpecialWeapon.DORGESHUUN_CROSSBOW || target == null)
+		// DORGESHUUN_CROSSBOW and ACCURSED_SCEPTRE are the only ranged wep we support, so everything else is just melee and delay 1
+		// In the future with more ranged weapons, we'll add it to the config to differentiate
+		if ((specialWeapon != SpecialWeapon.DORGESHUUN_CROSSBOW && specialWeapon != SpecialWeapon.ACCURSED_SCEPTRE) || target == null)
 			return 1;
 
 		Player player = client.getLocalPlayer();
