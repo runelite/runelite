@@ -59,9 +59,7 @@ import net.runelite.api.Client;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
-import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
-import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
+import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
@@ -116,17 +114,17 @@ public class ScriptInspector extends DevToolsFrame
 			if (source != null)
 			{
 				int id = source.getId();
-				output += "  -  " + TO_GROUP(id) + "." + TO_CHILD(id);
+				output += "  -  " + WidgetUtil.componentToInterface(id) + "." + WidgetUtil.componentToId(id);
 
 				if (source.getIndex() != -1)
 				{
 					output += "[" + source.getIndex() + "]";
 				}
 
-				WidgetInfo info = WidgetInspector.getWidgetInfo(id);
-				if (info != null)
+				var name = WidgetInspector.getWidgetName(id);
+				if (name != null)
 				{
-					output += " " + info.name();
+					output += " " + name;
 				}
 			}
 

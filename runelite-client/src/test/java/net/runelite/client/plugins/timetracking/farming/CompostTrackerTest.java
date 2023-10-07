@@ -42,8 +42,8 @@ import net.runelite.api.Tile;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -254,7 +254,7 @@ public class CompostTrackerTest
 	{
 		Widget widget = mock(Widget.class);
 		when(client.getSelectedWidget()).thenReturn(widget);
-		when(widget.getId()).thenReturn(WidgetInfo.SPELL_LUNAR_FERTILE_SOIL.getPackedId());
+		when(widget.getId()).thenReturn(ComponentID.SPELLBOOK_FERTILE_SOIL);
 
 		MenuOptionClicked inspectPatchAction = mock(MenuOptionClicked.class);
 		when(inspectPatchAction.getMenuAction()).thenReturn(MenuAction.WIDGET_TARGET_ON_GAME_OBJECT);

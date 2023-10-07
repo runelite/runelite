@@ -25,21 +25,20 @@
 package net.runelite.client.plugins.combatlevel;
 
 import com.google.common.annotations.VisibleForTesting;
-import net.runelite.api.Client;
-import net.runelite.api.Experience;
-import net.runelite.api.Skill;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.client.ui.overlay.Overlay;
-import net.runelite.client.ui.overlay.tooltip.Tooltip;
-import net.runelite.client.ui.overlay.tooltip.TooltipManager;
-import net.runelite.client.util.ColorUtil;
-import javax.inject.Inject;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import javax.inject.Inject;
+import net.runelite.api.Client;
+import net.runelite.api.Experience;
+import net.runelite.api.Skill;
+import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.widgets.Widget;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.tooltip.Tooltip;
+import net.runelite.client.ui.overlay.tooltip.TooltipManager;
+import net.runelite.client.util.ColorUtil;
 
 class CombatLevelOverlay extends Overlay
 {
@@ -65,8 +64,8 @@ class CombatLevelOverlay extends Overlay
 			return null;
 		}
 
-		Widget combatTabLevelWidget = client.getWidget(WidgetInfo.COMBAT_LEVEL);
-		Widget characterTabWidget = client.getWidget(WidgetInfo.CHARACTER_SUMMARY_CONTAINER);
+		Widget combatTabLevelWidget = client.getWidget(ComponentID.COMBAT_LEVEL);
+		Widget characterTabWidget = client.getWidget(ComponentID.CHARACTER_SUMMARY_CONTAINER);
 
 		Rectangle combatCanvas = null;
 		if (combatTabLevelWidget != null && !combatTabLevelWidget.isHidden())
@@ -75,7 +74,7 @@ class CombatLevelOverlay extends Overlay
 		}
 		else if (characterTabWidget != null && !characterTabWidget.isHidden())
 		{
-			combatCanvas = characterTabWidget.getChild(WidgetID.CharacterSummary.COMBAT_LEVEL_BOX_CHILD_ID).getBounds();
+			combatCanvas = characterTabWidget.getChild(9).getBounds();
 		}
 
 		if (combatCanvas == null)

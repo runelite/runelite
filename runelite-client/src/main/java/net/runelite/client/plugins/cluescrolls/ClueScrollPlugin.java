@@ -69,6 +69,7 @@ import net.runelite.api.ScriptID;
 import net.runelite.api.Tile;
 import net.runelite.api.TileObject;
 import net.runelite.api.Varbits;
+import net.runelite.api.annotations.Component;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
@@ -88,9 +89,9 @@ import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.widgets.InterfaceID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -634,7 +635,7 @@ public class ClueScrollPlugin extends Plugin
 
 		// Reset clue when receiving a new beginner or master clue
 		// These clues use a single item ID, so we cannot detect step changes based on the item ID changing
-		final Widget chatDialogClueItem = client.getWidget(WidgetInfo.DIALOG_SPRITE_SPRITE);
+		final Widget chatDialogClueItem = client.getWidget(ComponentID.DIALOG_SPRITE_SPRITE);
 		if (chatDialogClueItem != null
 			&& (chatDialogClueItem.getItemId() == ItemID.CLUE_SCROLL_BEGINNER || chatDialogClueItem.getItemId() == ItemID.CLUE_SCROLL_MASTER))
 		{
@@ -645,16 +646,16 @@ public class ClueScrollPlugin extends Plugin
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
-		if (event.getGroupId() >= WidgetID.BEGINNER_CLUE_MAP_CHAMPIONS_GUILD
-			&& event.getGroupId() <= WidgetID.BEGINNER_CLUE_MAP_WIZARDS_TOWER)
+		if (event.getGroupId() >= InterfaceID.CLUE_BEGINNER_MAP_CHAMPIONS_GUILD
+			&& event.getGroupId() <= InterfaceID.CLUE_BEGINNER_MAP_WIZARDS_TOWER)
 		{
 			updateClue(BeginnerMapClue.forWidgetID(event.getGroupId()));
 		}
-		else if (event.getGroupId() == WidgetID.CLUE_SCROLL_GROUP_ID)
+		else if (event.getGroupId() == InterfaceID.CLUESCROLL)
 		{
 			clientThread.invokeLater(() ->
 			{
-				final Widget clueScrollText = client.getWidget(WidgetInfo.CLUE_SCROLL_TEXT);
+				final Widget clueScrollText = client.getWidget(ComponentID.CLUESCROLL_TEXT);
 				if (clueScrollText != null)
 				{
 					ClueScroll clueScroll = findClueScroll(clueScrollText.getText());
@@ -1128,7 +1129,7 @@ public class ClueScrollPlugin extends Plugin
 		textComponent.render(graphics);
 	}
 
-	void scrollToWidget(WidgetInfo list, WidgetInfo scrollbar, Widget ... toHighlight)
+	void scrollToWidget(@Component int list, @Component int scrollbar, Widget ... toHighlight)
 	{
 		final Widget parent = client.getWidget(list);
 		int averageCentralY = 0;
@@ -1151,8 +1152,8 @@ public class ClueScrollPlugin extends Plugin
 
 		client.runScript(
 			ScriptID.UPDATE_SCROLLBAR,
-			scrollbar.getId(),
-			list.getId(),
+			scrollbar,
+			list,
 			newScroll
 		);
 	}

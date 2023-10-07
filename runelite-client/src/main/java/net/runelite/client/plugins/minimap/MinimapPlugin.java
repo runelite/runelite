@@ -34,8 +34,8 @@ import net.runelite.api.ScriptID;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ScriptPostFired;
+import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
@@ -136,21 +136,21 @@ public class MinimapPlugin extends Plugin
 
 	private void updateMinimapWidgetVisibility(boolean enable)
 	{
-		final Widget resizableStonesWidget = client.getWidget(WidgetInfo.RESIZABLE_MINIMAP_STONES_WIDGET);
+		final Widget resizableStonesWidget = client.getWidget(ComponentID.RESIZABLE_VIEWPORT_MINIMAP);
 
 		if (resizableStonesWidget != null)
 		{
 			resizableStonesWidget.setHidden(enable);
 		}
 
-		final Widget resizableNormalWidget = client.getWidget(WidgetInfo.RESIZABLE_MINIMAP_WIDGET);
+		final Widget resizableNormalWidget = client.getWidget(ComponentID.RESIZABLE_VIEWPORT_BOTTOM_LINE_MINIMAP);
 
 		if (resizableNormalWidget != null && !resizableNormalWidget.isSelfHidden())
 		{
 			for (Widget widget : resizableNormalWidget.getStaticChildren())
 			{
-				if (widget.getId() != WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_LOGOUT_BUTTON.getId() &&
-					widget.getId() != WidgetInfo.RESIZABLE_MINIMAP_LOGOUT_BUTTON.getId())
+				if (widget.getId() != ComponentID.RESIZABLE_VIEWPORT_BOTTOM_LINE_LOGOUT_BUTTON_OVERLAY &&
+					widget.getId() != ComponentID.RESIZABLE_VIEWPORT_BOTTOM_LINE_MINIMAP_LOGOUT_BUTTON)
 				{
 					widget.setHidden(enable);
 				}

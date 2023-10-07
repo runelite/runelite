@@ -34,8 +34,8 @@ import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.VarClientInt;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -83,7 +83,7 @@ class MouseHighlightOverlay extends Overlay
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		// additionally allow tooltips above the full screen world map and welcome screen
-		drawAfterInterface(WidgetID.FULLSCREEN_CONTAINER_TLI);
+		drawAfterInterface(InterfaceID.FULLSCREEN_CONTAINER_TLI);
 		this.client = client;
 		this.tooltipManager = tooltipManager;
 		this.config = config;
@@ -139,19 +139,19 @@ class MouseHighlightOverlay extends Overlay
 		if (WIDGET_MENU_ACTIONS.contains(type))
 		{
 			final int widgetId = menuEntry.getParam1();
-			final int groupId = WidgetInfo.TO_GROUP(widgetId);
+			final int groupId = WidgetUtil.componentToInterface(widgetId);
 
 			if (!config.uiTooltip())
 			{
 				return null;
 			}
 
-			if (!config.chatboxTooltip() && groupId == WidgetInfo.CHATBOX.getGroupId())
+			if (!config.chatboxTooltip() && groupId == InterfaceID.CHATBOX)
 			{
 				return null;
 			}
 
-			if (config.disableSpellbooktooltip() && groupId == WidgetID.SPELLBOOK_GROUP_ID)
+			if (config.disableSpellbooktooltip() && groupId == InterfaceID.SPELLBOOK)
 			{
 				return null;
 			}

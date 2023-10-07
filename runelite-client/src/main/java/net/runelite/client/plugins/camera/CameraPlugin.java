@@ -46,10 +46,10 @@ import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.widgets.InterfaceID;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -121,13 +121,13 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 		mouseManager.registerMouseListener(this);
 		clientThread.invoke(() ->
 		{
-			Widget sideSlider = client.getWidget(WidgetInfo.SETTINGS_SIDE_CAMERA_ZOOM_SLIDER_TRACK);
+			Widget sideSlider = client.getWidget(ComponentID.SETTINGS_SIDE_CAMERA_ZOOM_SLIDER_TRACK);
 			if (sideSlider != null)
 			{
 				addZoomTooltip(sideSlider);
 			}
 
-			Widget settingsInit = client.getWidget(WidgetInfo.SETTINGS_INIT);
+			Widget settingsInit = client.getWidget(ComponentID.SETTINGS_INIT);
 			if (settingsInit != null)
 			{
 				client.createScriptEvent(settingsInit.getOnLoadListener())
@@ -149,13 +149,13 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 
 		clientThread.invoke(() ->
 		{
-			Widget sideSlider = client.getWidget(WidgetInfo.SETTINGS_SIDE_CAMERA_ZOOM_SLIDER_TRACK);
+			Widget sideSlider = client.getWidget(ComponentID.SETTINGS_SIDE_CAMERA_ZOOM_SLIDER_TRACK);
 			if (sideSlider != null)
 			{
 				sideSlider.setOnMouseRepeatListener((Object[]) null);
 			}
 
-			Widget settingsInit = client.getWidget(WidgetInfo.SETTINGS_INIT);
+			Widget settingsInit = client.getWidget(ComponentID.SETTINGS_INIT);
 			if (settingsInit != null)
 			{
 				client.createScriptEvent(settingsInit.getOnLoadListener())
@@ -376,9 +376,9 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	@Subscribe
 	private void onWidgetLoaded(WidgetLoaded ev)
 	{
-		if (ev.getGroupId() == WidgetID.SETTINGS_SIDE_GROUP_ID)
+		if (ev.getGroupId() == InterfaceID.SETTINGS_SIDE)
 		{
-			addZoomTooltip(client.getWidget(WidgetInfo.SETTINGS_SIDE_CAMERA_ZOOM_SLIDER_TRACK));
+			addZoomTooltip(client.getWidget(ComponentID.SETTINGS_SIDE_CAMERA_ZOOM_SLIDER_TRACK));
 		}
 	}
 

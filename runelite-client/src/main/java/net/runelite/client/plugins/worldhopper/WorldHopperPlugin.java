@@ -64,7 +64,9 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WorldListLoad;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -385,11 +387,11 @@ public class WorldHopperPlugin extends Plugin
 		}
 
 		final int componentId = event.getActionParam1();
-		int groupId = WidgetInfo.TO_GROUP(componentId);
+		int groupId = WidgetUtil.componentToInterface(componentId);
 		String option = event.getOption();
 
-		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() || groupId == WidgetInfo.FRIENDS_CHAT.getGroupId()
-			|| componentId == WidgetInfo.CLAN_MEMBER_LIST.getId() || componentId == WidgetInfo.CLAN_GUEST_MEMBER_LIST.getId())
+		if (groupId == InterfaceID.FRIEND_LIST || groupId == InterfaceID.FRIENDS_CHAT
+			|| componentId == ComponentID.CLAN_MEMBERS || componentId == ComponentID.CLAN_GUEST_MEMBERS)
 		{
 			boolean after;
 
@@ -705,7 +707,7 @@ public class WorldHopperPlugin extends Plugin
 			return;
 		}
 
-		if (client.getWidget(WidgetInfo.WORLD_SWITCHER_LIST) == null)
+		if (client.getWidget(ComponentID.WORLD_SWITCHER_WORLD_LIST) == null)
 		{
 			client.openWorldHopper();
 

@@ -31,8 +31,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetModelType;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -56,14 +56,14 @@ public class PaymentTracker
 	@Subscribe
 	public void onGameTick(GameTick gameTick)
 	{
-		Widget text = client.getWidget(WidgetInfo.DIALOG_NPC_TEXT);
+		Widget text = client.getWidget(ComponentID.DIALOG_NPC_TEXT);
 		if (text == null || (!PAYMENT_MALE.equals(text.getText()) && !PAYMENT_FEMALE.equals(text.getText())))
 		{
 			return;
 		}
 
-		Widget name = client.getWidget(WidgetInfo.DIALOG_NPC_NAME);
-		Widget head = client.getWidget(WidgetInfo.DIALOG_NPC_HEAD_MODEL);
+		Widget name = client.getWidget(ComponentID.DIALOG_NPC_NAME);
+		Widget head = client.getWidget(ComponentID.DIALOG_NPC_HEAD_MODEL);
 		if (name == null || head == null || head.getModelType() != WidgetModelType.NPC_CHATHEAD)
 		{
 			return;

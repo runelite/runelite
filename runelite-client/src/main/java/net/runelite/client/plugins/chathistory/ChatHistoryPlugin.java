@@ -50,10 +50,10 @@ import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.vars.InputType;
+import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.widgets.InterfaceID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
-import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
-import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
+import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -196,10 +196,10 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 			return;
 		}
 
-		final int groupId = TO_GROUP(entry.getParam1());
-		final int childId = TO_CHILD(entry.getParam1());
+		final int groupId = WidgetUtil.componentToInterface(entry.getParam1());
+		final int childId = WidgetUtil.componentToId(entry.getParam1());
 
-		if (groupId != WidgetInfo.CHATBOX.getGroupId())
+		if (groupId != InterfaceID.CHATBOX)
 		{
 			return;
 		}
@@ -207,14 +207,14 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 		final Widget widget = client.getWidget(groupId, childId);
 		final Widget parent = widget.getParent();
 
-		if (WidgetInfo.CHATBOX_MESSAGE_LINES.getId() != parent.getId())
+		if (ComponentID.CHATBOX_MESSAGE_LINES != parent.getId())
 		{
 			return;
 		}
 
 		// Get child id of first chat message static child so we can substract this offset to link to dynamic child
 		// later
-		final int first = WidgetInfo.CHATBOX_FIRST_MESSAGE.getChildId();
+		final int first = WidgetUtil.componentToId(ComponentID.CHATBOX_FIRST_MESSAGE);
 
 		// Convert current message static widget id to dynamic widget id of message node with message contents
 		// When message is right clicked, we are actually right clicking static widget that contains only sender.

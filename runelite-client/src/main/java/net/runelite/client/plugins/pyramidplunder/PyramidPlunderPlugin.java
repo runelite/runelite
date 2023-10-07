@@ -48,8 +48,8 @@ import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.WallObjectSpawned;
+import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -140,7 +140,7 @@ public class PyramidPlunderPlugin extends Plugin
 
 		clientThread.invoke(() ->
 		{
-			Widget ppWidget = client.getWidget(WidgetInfo.PYRAMID_PLUNDER_DATA);
+			Widget ppWidget = client.getWidget(ComponentID.PYRAMID_PLUNDER_DATA);
 			if (ppWidget != null)
 			{
 				ppWidget.setHidden(false);

@@ -38,8 +38,8 @@ import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.Point;
 import net.runelite.api.Skill;
+import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -89,7 +89,7 @@ class PrayerDoseOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		final Widget xpOrb = client.getWidget(WidgetInfo.MINIMAP_QUICK_PRAYER_ORB);
+		final Widget xpOrb = client.getWidget(ComponentID.MINIMAP_QUICK_PRAYER_ORB);
 		if (xpOrb == null || xpOrb.isHidden())
 		{
 			return null;
