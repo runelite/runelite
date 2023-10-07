@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2023, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,20 +22,34 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.events;
+package net.runelite.api.widgets;
 
-import lombok.Data;
+import net.runelite.api.annotations.Component;
 import net.runelite.api.annotations.Interface;
 
-/**
- * An event where a {@link net.runelite.api.widgets.Widget} has been loaded.
- */
-@Data
-public class WidgetLoaded
+public class WidgetUtil
 {
 	/**
-	 * The group ID of the loaded widget.
+	 * Utility method that converts a component id to the interface it
+	 * belongs to.
+	 *
+	 * @param c component id
+	 * @return the interface id
 	 */
 	@Interface
-	private int groupId;
+	public static int componentToInterface(@Component int c)
+	{
+		return c >>> 16;
+	}
+
+	/**
+	 * Utility method that converts a component id to the id it is within
+	 * its interface.
+	 *
+	 * @param c component id
+	 */
+	public static int componentToId(@Component int c)
+	{
+		return c & 0xFFFF;
+	}
 }

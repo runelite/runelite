@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2023, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,20 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.events;
+package net.runelite.api.annotations;
 
-import lombok.Data;
-import net.runelite.api.annotations.Interface;
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import net.runelite.api.widgets.ComponentID;
+import org.intellij.lang.annotations.MagicConstant;
 
-/**
- * An event where a {@link net.runelite.api.widgets.Widget} has been loaded.
- */
-@Data
-public class WidgetLoaded
+@MagicConstant(valuesFromClass = ComponentID.class)
+@Documented
+@Retention(RetentionPolicy.SOURCE)
+public @interface Component
 {
-	/**
-	 * The group ID of the loaded widget.
-	 */
-	@Interface
-	private int groupId;
 }

@@ -34,6 +34,7 @@ package net.runelite.api.widgets;
  * For a more direct group-child widget mapping, use the
  * {@link WidgetInfo} enum class.
  */
+@Deprecated
 public final class WidgetID
 {
 	public static final int FAIRY_RING_PANEL_GROUP_ID = 381;

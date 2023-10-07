@@ -29,6 +29,7 @@ package net.runelite.api.widgets;
  * <p>
  * For getting a specific widget from the client, see {@link net.runelite.api.Client#getWidget(WidgetInfo)}.
  */
+@Deprecated
 public enum WidgetInfo
 {
 	FAIRY_RING_TELEPORT_BUTTON(WidgetID.FAIRY_RING_GROUP_ID, WidgetID.FairyRing.TELEPORT_BUTTON),
