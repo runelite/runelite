@@ -39,7 +39,7 @@ import net.runelite.api.ScriptID;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
-import net.runelite.api.events.ClientTick;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.Widget;
@@ -228,7 +228,7 @@ public class AttackStylesPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onClientTick(ClientTick clientTick)
+	public void onGameTick(GameTick gameTick)
 	{
 		if (attackStyle != prevAttackStyle && warnedSkillSelected && config.showChatWarnings())
 		{
