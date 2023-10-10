@@ -104,8 +104,8 @@ enum TransportationPointLocation
 	ROW_BOAT_PORT_PHASMATYS_EAST("Rowboat to Braindeath Island", new WorldPoint(3680, 3538, 0), new WorldPoint(2161, 5117, 0)),
 	ROW_BOAT_SHAYZIEN("Rowboat to Molch/Molch Island/Battlefront", new WorldPoint(1405, 3612, 0)),
 	ROW_BOAT_SLEPE("Rowboat to Port Phasmatys", new WorldPoint(3661, 3279, 0), new WorldPoint(3670, 3545, 0)),
-	ROW_BOAT_MOUNT_QUIDAMORTEM("Rowboat to the Stranglewood", new WorldPoint(1228, 3470, 0), new WorldPoint(3670, 3545, 0)),
-	ROW_BOAT_STRANGLEWOOD("Rowboat to Mount Quidamortem", new WorldPoint(1193, 3452, 0), new WorldPoint(3670, 3545, 0)),
+	ROW_BOAT_MOUNT_QUIDAMORTEM("Rowboat to The Stranglewood", new WorldPoint(1228, 3470, 0), new WorldPoint(1193, 3452, 0)),
+	ROW_BOAT_STRANGLEWOOD("Rowboat to Mount Quidamortem", new WorldPoint(1193, 3452, 0), new WorldPoint(1228, 3470, 0)),
 	OGRE_BOAT_FELDIP("Ogre Boat to Karamja", new WorldPoint(2653, 2964, 0), new WorldPoint(2757, 3085, 0)),
 	OGRE_BOAT_KARAMJA("Ogre Boat to Feldip", new WorldPoint(2757, 3085, 0), new WorldPoint(2653, 2964, 0)),
 
