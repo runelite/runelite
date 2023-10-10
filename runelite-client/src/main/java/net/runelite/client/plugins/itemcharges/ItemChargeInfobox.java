@@ -29,6 +29,7 @@ import java.awt.image.BufferedImage;
 import lombok.Getter;
 import lombok.ToString;
 import net.runelite.client.ui.overlay.infobox.Counter;
+import net.runelite.client.util.QuantityFormatter;
 
 @Getter
 @ToString
@@ -48,6 +49,12 @@ class ItemChargeInfobox extends Counter
 		setTooltip(name);
 		this.plugin = plugin;
 		this.item = item;
+	}
+
+	@Override
+	public String getText()
+	{
+		return QuantityFormatter.quantityToRSDecimalStack(getCount());
 	}
 
 	@Override
