@@ -150,6 +150,8 @@ enum TeleportLocationData
 	RING_OF_THE_ELEMENTS_WATER(TeleportType.OTHER, "Ring of the elements", "Water Altar", new WorldPoint(3166, 3158, 0), "ring_of_the_elements_teleport_icon.png"),
 	RING_OF_THE_ELEMENTS_EARTH(TeleportType.OTHER, "Ring of the elements", "Earth Altar", new WorldPoint(3288, 3468, 0), "ring_of_the_elements_teleport_icon.png"),
 	RING_OF_THE_ELEMENTS_FIRE(TeleportType.OTHER, "Ring of the elements", "Fire Altar", new WorldPoint(3315, 3278, 0), "ring_of_the_elements_teleport_icon.png"),
+	RING_OF_SHADOWS_LASSAR_UNDERCITY(TeleportType.OTHER, "Ring of shadows", "Lassar Undercity", new WorldPoint(2588, 6435, 0), "ring_of_shadows_teleport_icon.png"),
+	RING_OF_SHADOWS_THE_STRANGLEWOOD(TeleportType.OTHER, "Ring of shadows", "The Stranglewood", new WorldPoint(1175, 3422, 0), "ring_of_shadows_teleport_icon.png"),
 
 	// Wilderness
 	OBELISK_13(TeleportType.OTHER, "Obelisk", "13", new WorldPoint(3156, 3620, 0), "obelisk_icon.png"),
