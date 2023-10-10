@@ -113,6 +113,8 @@ enum TeleportLocationData
 	CHAOS_TEMPLE(TeleportType.JEWELLERY, "Burning Amulet" , "Chaos Temple (lvl 15)", new WorldPoint(3234, 3637, 0), "burning_amulet_teleport_icon.png"),
 	BANDIT_CAMP(TeleportType.JEWELLERY, "Burning Amulet" , "Bandit Camp (lvl 17)", new WorldPoint(3038, 3651, 0), "burning_amulet_teleport_icon.png"),
 	LAVA_MAZE(TeleportType.JEWELLERY, "Burning Amulet" , "Lava Maze (lvl 41)", new WorldPoint(3028, 3840, 0), "burning_amulet_teleport_icon.png"),
+	LASSAR_UNDERCITY(TeleportType.JEWELLERY, "Ring of Shadows", "Lassar Undercity", new WorldPoint(2588, 6434, 0), "ring_of_shadows_icon.png"),
+	THE_STRANGLEWOOD(TeleportType.JEWELLERY, "Ring of Shadows", "The Stranglewood", new WorldPoint(1173, 3421, 0), "ring_of_shadows_icon.png"),
 
 	// Misc
 	XERICS_LOOKOUT(TeleportType.OTHER, "Xeric's Talisman", "Xeric's Lookout", new WorldPoint(1576, 3528, 0), "xerics_talisman_teleport_icon.png"),
