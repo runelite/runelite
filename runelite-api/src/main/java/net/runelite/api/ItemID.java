@@ -7083,6 +7083,7 @@ public final class ItemID
 	public static final int ZAMORAK_MIX2 = 11521;
 	public static final int ZAMORAK_MIX1 = 11523;
 	public static final int FEATHER_11525 = 11525;
+	public static final int AVAS_DEVICE = 11628;
 	public static final int BOOK_OF_KNOWLEDGE = 11640;
 	public static final int GLASSBLOWING_BOOK = 11656;
 	public static final int VOID_MAGE_HELM = 11663;
