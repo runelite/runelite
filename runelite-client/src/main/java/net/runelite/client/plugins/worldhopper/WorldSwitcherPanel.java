@@ -39,6 +39,7 @@ import java.util.function.Function;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.Setter;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
@@ -55,6 +56,9 @@ class WorldSwitcherPanel extends PluginPanel
 	private static final int PING_COLUMN_WIDTH = 47;
 
 	private final JPanel listContainer = new JPanel();
+
+	@Getter(AccessLevel.PACKAGE)
+	private boolean active;
 
 	private WorldTableHeader worldHeader;
 	private WorldTableHeader playersHeader;
@@ -86,6 +90,19 @@ class WorldSwitcherPanel extends PluginPanel
 
 		add(headerContainer);
 		add(listContainer);
+	}
+
+	@Override
+	public void onActivate()
+	{
+		active = true;
+		updateList();
+	}
+
+	@Override
+	public void onDeactivate()
+	{
+		active = false;
 	}
 
 	void switchCurrentHighlight(int newWorld, int lastWorld)

@@ -123,17 +123,6 @@ public interface CameraConfig extends Config
 		return 25;
 	}
 
-	@ConfigItem(
-		keyName = "compassLookPreservePitch",
-		name = "Preserve pitch on compass look",
-		description = "Preserves the current pitch value (vertical angle) when using the compass look options.",
-		position = 7
-	)
-	default boolean compassLookPreservePitch()
-	{
-		return false;
-	}
-
 	// region mouse settings
 	@ConfigItem(
 		keyName = "rightClickMovesCamera",
@@ -160,10 +149,22 @@ public interface CameraConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "rightClickExamine",
+		name = "Right click examine",
+		description = "Right clicking examinable objects opens the menu when 'Right click moves camera' is on",
+		position = 9,
+		section = mouseSettingsSection
+	)
+	default boolean rightClickExamine()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "middleClickMenu",
 		name = "Middle-button opens menu",
 		description = "Remaps middle mouse click to right click",
-		position = 9,
+		position = 11,
 		section = mouseSettingsSection
 	)
 	default boolean middleClickMenu()

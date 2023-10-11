@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2023, Weird Gloop <admin@weirdgloop.org>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,38 +22,16 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.client.plugins.crowdsourcing.dialogue;
 
-package net.runelite.client.plugins.objectindicators;
-
-import com.google.gson.annotations.SerializedName;
-import java.awt.Color;
-import javax.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import net.runelite.api.ChatMessageType;
 
-/**
- * config structure for marked objects
- */
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-class ObjectPoint
+public class ChatMessageData
 {
-	private int id = -1;
-	private String name;
-	private int regionId;
-	private int regionX;
-	private int regionY;
-	private int z;
-	@Nullable
-	@SerializedName("color")
-	private Color borderColor;
-	@Nullable
-	private Color fillColor;
-	// highlight options
-	private Boolean hull;
-	private Boolean outline;
-	private Boolean clickbox;
-	private Boolean tile;
+	private final String message;
+	private final ChatMessageType type;
 }

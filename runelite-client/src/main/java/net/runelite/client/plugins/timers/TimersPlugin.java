@@ -689,6 +689,7 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(RESURRECT_THRALL_COOLDOWN);
 			removeGameTimer(SHADOW_VEIL_COOLDOWN);
 			removeGameTimer(WARD_OF_ARCEUUS_COOLDOWN);
+			removeGameTimer(CORRUPTION_COOLDOWN);
 		}
 
 		if (!config.showAntiPoison())
