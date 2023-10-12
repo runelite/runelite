@@ -36,14 +36,20 @@ class NpcAggroAreaNotWorkingOverlay extends OverlayPanel
 {
 	private final NpcAggroAreaPlugin plugin;
 
+	private final NpcAggroAreaConfig config;
+
 	@Inject
-	private NpcAggroAreaNotWorkingOverlay(NpcAggroAreaPlugin plugin)
+	private NpcAggroAreaNotWorkingOverlay(NpcAggroAreaPlugin plugin, NpcAggroAreaConfig config)
 	{
 		this.plugin = plugin;
+		this.config = config;
 
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Unaggressive NPC timers require calibration. Teleport far away or enter a dungeon, then run until this overlay disappears.")
-			.build());
+		if (!this.config.hideCalibrationMessage())
+		{
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left("Unaggressive NPC timers require calibration. Teleport far away or enter a dungeon, then run until this overlay disappears.")
+				.build());
+		}
 
 		setPriority(OverlayPriority.LOW);
 		setPosition(OverlayPosition.TOP_LEFT);

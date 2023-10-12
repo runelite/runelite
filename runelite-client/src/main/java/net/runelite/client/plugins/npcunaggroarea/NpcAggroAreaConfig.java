@@ -139,4 +139,15 @@ public interface NpcAggroAreaConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "hideCalibrationMessage",
+		name = "Hide Unagressive NPC calibration message",
+		description = "Enable to hide message telling you to teleport away or to move from the overlay zone",
+		position = 10
+	)
+	default boolean hideCalibrationMessage()
+	{
+		return false;
+	}
 }
