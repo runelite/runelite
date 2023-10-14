@@ -53,6 +53,17 @@ public interface GpuPluginConfig extends Config
 		return 50;
 	}
 
+	@ConfigItem(
+		keyName = "hideUnrelatedMaps",
+		name = "Hide unrelated maps",
+		description = "Hide unrelated map areas you shouldn't see.",
+		position = 2
+	)
+	default boolean hideUnrelatedMaps()
+	{
+		return true;
+	}
+
 	@Range(
 		max = 5
 	)
