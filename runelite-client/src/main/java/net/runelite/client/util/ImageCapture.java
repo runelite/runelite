@@ -53,6 +53,8 @@ import net.runelite.api.Point;
 import net.runelite.client.Notifier;
 import static net.runelite.client.RuneLite.SCREENSHOT_DIR;
 import net.runelite.client.config.RuneScapeProfileType;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.events.ScreenshotTaken;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.DrawManager;
 
@@ -68,6 +70,7 @@ public class ImageCapture
 	private final ClientUI clientUi;
 	private final DrawManager drawManager;
 	private final ScheduledExecutorService executor;
+	private final EventBus eventBus;
 
 	/**
 	 * Take a screenshot and save it
@@ -235,6 +238,12 @@ public class ImageCapture
 		{
 			notifier.notify("A screenshot was saved to " + screenshotFile, TrayIcon.MessageType.INFO);
 		}
+
+		ScreenshotTaken screenshotTaken = new ScreenshotTaken(
+			screenshotFile,
+			screenshot
+		);
+		eventBus.post(screenshotTaken);
 	}
 
 	/**
