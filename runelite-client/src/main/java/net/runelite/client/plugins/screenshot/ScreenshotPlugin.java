@@ -29,11 +29,8 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
-import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
 import java.util.Map;
 import java.util.Set;
@@ -42,7 +39,6 @@ import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
-import javax.swing.SwingUtilities;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -51,7 +47,6 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
-import net.runelite.api.Point;
 import net.runelite.api.ScriptID;
 import net.runelite.api.SpriteID;
 import net.runelite.api.VarClientStr;
@@ -84,7 +79,6 @@ import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientToolbar;
-import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.DrawManager;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -92,7 +86,6 @@ import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.ImageCapture;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.LinkBrowser;
-import net.runelite.client.util.OSType;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.StringUtils;
 
@@ -177,9 +170,6 @@ public class ScreenshotPlugin extends Plugin
 
 	@Inject
 	private Client client;
-
-	@Inject
-	private ClientUI clientUi;
 
 	@Inject
 	private ClientToolbar clientToolbar;
@@ -885,7 +875,7 @@ public class ScreenshotPlugin extends Plugin
 		Consumer<Image> imageCallback = (img) ->
 		{
 			// This callback is on the game thread, move to executor thread
-			executor.submit(() -> takeScreenshot(fileName, subDir, img));
+			executor.submit(() -> saveScreenshot(fileName, subDir, img));
 		};
 
 		if (config.displayDate() && REPORT_BUTTON_TLIS.contains(client.getTopLevelInterfaceId()))
@@ -898,12 +888,7 @@ public class ScreenshotPlugin extends Plugin
 		}
 	}
 
-	private static int getScaledValue(final double scale, final int value)
-	{
-		return (int) (value * scale + .5);
-	}
-
-	private void takeScreenshot(String fileName, String subDir, Image image)
+	private void saveScreenshot(String fileName, String subDir, Image image)
 	{
 		final BufferedImage screenshot;
 		if (!config.includeFrame())
@@ -913,40 +898,7 @@ public class ScreenshotPlugin extends Plugin
 		}
 		else
 		{
-			// create a new image, paint the client ui to it, and then draw the screenshot to that
-			final AffineTransform transform = OSType.getOSType() == OSType.MacOS ? new AffineTransform() :
-				clientUi.getGraphicsConfiguration().getDefaultTransform();
-
-			// scaled client dimensions
-			int clientWidth = getScaledValue(transform.getScaleX(), clientUi.getWidth());
-			int clientHeight = getScaledValue(transform.getScaleY(), clientUi.getHeight());
-
-			screenshot = new BufferedImage(clientWidth, clientHeight, BufferedImage.TYPE_INT_ARGB);
-
-			Graphics2D graphics = (Graphics2D) screenshot.getGraphics();
-			AffineTransform originalTransform = graphics.getTransform();
-			// scale g2d for the paint() call
-			graphics.setTransform(transform);
-
-			// Draw the client frame onto the screenshot
-			try
-			{
-				SwingUtilities.invokeAndWait(() -> clientUi.paint(graphics));
-			}
-			catch (InterruptedException | InvocationTargetException e)
-			{
-				log.warn("unable to paint client UI on screenshot", e);
-			}
-
-			// Find the position of the canvas inside the frame
-			final Point canvasOffset = clientUi.getCanvasOffset();
-			final int gameOffsetX = getScaledValue(transform.getScaleX(), canvasOffset.getX());
-			final int gameOffsetY = getScaledValue(transform.getScaleY(), canvasOffset.getY());
-
-			// Draw the original screenshot onto the new screenshot
-			graphics.setTransform(originalTransform); // the original screenshot is already scaled
-			graphics.drawImage(image, gameOffsetX, gameOffsetY, null);
-			graphics.dispose();
+			screenshot = imageCapture.addClientFrame(image);
 		}
 
 		imageCapture.saveScreenshot(screenshot, fileName, subDir, config.notifyWhenTaken(), config.copyToClipboard());
