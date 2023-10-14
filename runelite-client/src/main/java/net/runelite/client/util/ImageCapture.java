@@ -26,12 +26,16 @@
 package net.runelite.client.util;
 
 import com.google.common.base.Strings;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.awt.datatransfer.Clipboard;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -39,12 +43,15 @@ import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.Point;
 import net.runelite.client.Notifier;
 import static net.runelite.client.RuneLite.SCREENSHOT_DIR;
 import net.runelite.client.config.RuneScapeProfileType;
+import net.runelite.client.ui.ClientUI;
 
 @Slf4j
 @Singleton
@@ -54,15 +61,69 @@ public class ImageCapture
 
 	private final Client client;
 	private final Notifier notifier;
+	private final ClientUI clientUi;
 
 	@Inject
 	private ImageCapture(
 		final Client client,
-		final Notifier notifier
+		final Notifier notifier,
+		final ClientUI clientUi
 	)
 	{
 		this.client = client;
 		this.notifier = notifier;
+		this.clientUi = clientUi;
+	}
+
+	/**
+	 * Add the client frame to a screenshot
+	 *
+	 * @param image the screenshot
+	 * @return
+	 */
+	public BufferedImage addClientFrame(Image image)
+	{
+		// create a new image, paint the client ui to it, and then draw the screenshot to that
+		final AffineTransform transform = OSType.getOSType() == OSType.MacOS ? new AffineTransform() :
+			clientUi.getGraphicsConfiguration().getDefaultTransform();
+
+		// scaled client dimensions
+		int clientWidth = getScaledValue(transform.getScaleX(), clientUi.getWidth());
+		int clientHeight = getScaledValue(transform.getScaleY(), clientUi.getHeight());
+
+		final BufferedImage screenshot = new BufferedImage(clientWidth, clientHeight, BufferedImage.TYPE_INT_ARGB);
+
+		Graphics2D graphics = (Graphics2D) screenshot.getGraphics();
+		AffineTransform originalTransform = graphics.getTransform();
+		// scale g2d for the paint() call
+		graphics.setTransform(transform);
+
+		// Draw the client frame onto the screenshot
+		try
+		{
+			SwingUtilities.invokeAndWait(() -> clientUi.paint(graphics));
+		}
+		catch (InterruptedException | InvocationTargetException e)
+		{
+			log.warn("unable to paint client UI on screenshot", e);
+		}
+
+		// Find the position of the canvas inside the frame
+		final Point canvasOffset = clientUi.getCanvasOffset();
+		final int gameOffsetX = getScaledValue(transform.getScaleX(), canvasOffset.getX());
+		final int gameOffsetY = getScaledValue(transform.getScaleY(), canvasOffset.getY());
+
+		// Draw the original screenshot onto the new screenshot
+		graphics.setTransform(originalTransform); // the original screenshot is already scaled
+		graphics.drawImage(image, gameOffsetX, gameOffsetY, null);
+		graphics.dispose();
+
+		return screenshot;
+	}
+
+	private static int getScaledValue(final double scale, final int value)
+	{
+		return (int) (value * scale + .5);
 	}
 
 	/**
