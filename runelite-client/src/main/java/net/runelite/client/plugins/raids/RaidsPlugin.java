@@ -848,7 +848,7 @@ public class RaidsPlugin extends Plugin
 		graphic.fillRect(0, 0, overlayDimensions.width, overlayDimensions.height);
 		overlay.render(graphic);
 
-		imageCapture.takeScreenshot(overlayImage, "CoX_scout-", false, config.uploadScreenshot());
+		imageCapture.saveScreenshot(overlayImage, "CoX_scout", null, false, config.copyToClipboard());
 		graphic.dispose();
 	}
 
