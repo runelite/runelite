@@ -36,7 +36,6 @@ import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.vars.AccountType;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -169,7 +168,7 @@ public class DailyTasksPlugin extends Plugin
 
 	private void checkHerbBoxes(boolean dailyReset)
 	{
-		if (client.getAccountType() == AccountType.NORMAL
+		if (client.getVarbitValue(Varbits.ACCOUNT_TYPE) == 0
 			&& client.getVarpValue(VarPlayer.NMZ_REWARD_POINTS) >= HERB_BOX_COST
 			&& (client.getVarbitValue(Varbits.DAILY_HERB_BOXES_COLLECTED) < HERB_BOX_MAX
 			|| dailyReset))
@@ -210,7 +209,7 @@ public class DailyTasksPlugin extends Plugin
 
 	private void checkSand(boolean dailyReset)
 	{
-		if (client.getAccountType() != AccountType.ULTIMATE_IRONMAN
+		if (client.getVarbitValue(Varbits.ACCOUNT_TYPE) != 2 /* UIM */
 			&& client.getVarbitValue(Varbits.QUEST_THE_HAND_IN_THE_SAND) >= SAND_QUEST_COMPLETE
 			&& (client.getVarbitValue(Varbits.DAILY_SAND_COLLECTED) == 0
 			|| dailyReset))

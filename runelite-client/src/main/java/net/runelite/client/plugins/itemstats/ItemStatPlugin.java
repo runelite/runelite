@@ -145,7 +145,7 @@ public class ItemStatPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		if (event.getVarpId() == VarPlayer.CURRENT_GE_ITEM.getId() && config.geStats())
+		if (event.getVarpId() == VarPlayer.CURRENT_GE_ITEM && config.geStats())
 		{
 			resetGEInventory();
 		}

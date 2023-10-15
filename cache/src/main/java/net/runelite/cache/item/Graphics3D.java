@@ -33,26 +33,12 @@ class Graphics3D extends Rasterizer2D
 	public static final int[] SINE = new int[2048]; // sine angles for each of the 2048 units, * 65536 and stored as an int
 	public static final int[] COSINE = new int[2048]; // cosine
 
-	private static int[] field1932 = new int[512];
-	static int[] field1933 = new int[2048];
-
 	static
 	{
 		for (int i = 0; i < 2048; ++i)
 		{
 			SINE[i] = (int) (65536.0D * Math.sin((double) i * UNIT));
 			COSINE[i] = (int) (65536.0D * Math.cos((double) i * UNIT));
-		}
-
-		int var0;
-		for (var0 = 1; var0 < 512; ++var0)
-		{
-			field1932[var0] = 32768 / var0;
-		}
-
-		for (var0 = 1; var0 < 2048; ++var0)
-		{
-			field1933[var0] = 65536 / var0;
 		}
 	}
 

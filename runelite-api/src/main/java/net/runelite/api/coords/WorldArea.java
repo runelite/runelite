@@ -31,7 +31,6 @@ import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.CollisionData;
 import net.runelite.api.CollisionDataFlag;
-import net.runelite.api.Constants;
 import net.runelite.api.Point;
 import net.runelite.api.Tile;
 
@@ -476,106 +475,6 @@ public class WorldArea
 	}
 
 	/**
-	 * Calculates the next area that will be occupied if this area attempts
-	 * to move toward it by using the normal NPC travelling pattern.
-	 *
-	 * @param client the client to calculate with
-	 * @param target the target area
-	 * @param stopAtMeleeDistance whether to stop at melee distance to the target
-	 * @return the next occupied area
-	 */
-	public WorldArea calculateNextTravellingPoint(Client client, WorldArea target,
-		boolean stopAtMeleeDistance)
-	{
-		return calculateNextTravellingPoint(client, target, stopAtMeleeDistance, x -> true);
-	}
-
-	/**
-	 * Calculates the next area that will be occupied if this area attempts
-	 * to move toward it by using the normal NPC travelling pattern.
-	 *
-	 * @param client the client to calculate with
-	 * @param target the target area
-	 * @param stopAtMeleeDistance whether to stop at melee distance to the target
-	 * @param extraCondition an additional condition to perform when checking valid tiles,
-	 * 	                     such as performing a check for un-passable actors
-	 * @return the next occupied area
-	 */
-	public WorldArea calculateNextTravellingPoint(Client client, WorldArea target,
-		boolean stopAtMeleeDistance, Predicate<? super WorldPoint> extraCondition)
-	{
-		if (plane != target.getPlane())
-		{
-			return null;
-		}
-
-		if (this.intersectsWith(target))
-		{
-			if (stopAtMeleeDistance)
-			{
-				// Movement is unpredictable when the NPC and actor stand on top of each other
-				return null;
-			}
-			else
-			{
-				return this;
-			}
-		}
-
-		int dx = target.x - this.x;
-		int dy = target.y - this.y;
-		Point axisDistances = getAxisDistances(target);
-		if (stopAtMeleeDistance && axisDistances.getX() + axisDistances.getY() == 1)
-		{
-			// NPC is in melee distance of target, so no movement is done
-			return this;
-		}
-
-		LocalPoint lp = LocalPoint.fromWorld(client, x, y);
-		if (lp == null ||
-			lp.getSceneX() + dx < 0 || lp.getSceneX() + dy >= Constants.SCENE_SIZE ||
-			lp.getSceneY() + dx < 0 || lp.getSceneY() + dy >= Constants.SCENE_SIZE)
-		{
-			// NPC is travelling out of the scene, so collision data isn't available
-			return null;
-		}
-
-		int dxSig = Integer.signum(dx);
-		int dySig = Integer.signum(dy);
-		if (stopAtMeleeDistance && axisDistances.getX() == 1 && axisDistances.getY() == 1)
-		{
-			// When it needs to stop at melee distance, it will only attempt
-			// to travel along the x axis when it is standing diagonally
-			// from the target
-			if (this.canTravelInDirection(client, dxSig, 0, extraCondition))
-			{
-				return new WorldArea(x + dxSig, y, width, height, plane);
-			}
-		}
-		else
-		{
-			if (this.canTravelInDirection(client, dxSig, dySig, extraCondition))
-			{
-				return new WorldArea(x + dxSig, y + dySig, width, height, plane);
-			}
-			else if (dx != 0 && this.canTravelInDirection(client, dxSig, 0, extraCondition))
-			{
-				return new WorldArea(x + dxSig, y, width, height, plane);
-			}
-			else if (dy != 0 && Math.max(Math.abs(dx), Math.abs(dy)) > 1 &&
-				this.canTravelInDirection(client, 0, dy, extraCondition))
-			{
-				// Note that NPCs don't attempts to travel along the y-axis
-				// if the target is <= 1 tile distance away
-				return new WorldArea(x, y + dySig, width, height, plane);
-			}
-		}
-
-		// The NPC is stuck
-		return this;
-	}
-
-	/**
 	 * Determine if this WorldArea has line of sight to another WorldArea.
 	 * <p>
 	 * Note that the reverse isn't necessarily true, meaning this can return true
@@ -665,7 +564,121 @@ public class WorldArea
 		{
 			return false;
 		}
-		return sourceTile.hasLineOfSightTo(targetTile);
+		return hasLineOfSightTo(client, sourceTile, targetTile);
+	}
+
+	private static boolean hasLineOfSightTo(Client client, Tile from, Tile to)
+	{
+		// Thanks to Henke for this method :)
+
+		if (from.getPlane() != to.getPlane())
+		{
+			return false;
+		}
+
+		CollisionData[] collisionData = client.getCollisionMaps();
+		if (collisionData == null)
+		{
+			return false;
+		}
+
+		int z = from.getPlane();
+		int[][] collisionDataFlags = collisionData[z].getFlags();
+
+		Point p1 = from.getSceneLocation();
+		Point p2 = to.getSceneLocation();
+		if (p1.getX() == p2.getX() && p1.getY() == p2.getY())
+		{
+			return true;
+		}
+
+		int dx = p2.getX() - p1.getX();
+		int dy = p2.getY() - p1.getY();
+		int dxAbs = Math.abs(dx);
+		int dyAbs = Math.abs(dy);
+
+		int xFlags = CollisionDataFlag.BLOCK_LINE_OF_SIGHT_FULL;
+		int yFlags = CollisionDataFlag.BLOCK_LINE_OF_SIGHT_FULL;
+		if (dx < 0)
+		{
+			xFlags |= CollisionDataFlag.BLOCK_LINE_OF_SIGHT_EAST;
+		}
+		else
+		{
+			xFlags |= CollisionDataFlag.BLOCK_LINE_OF_SIGHT_WEST;
+		}
+		if (dy < 0)
+		{
+			yFlags |= CollisionDataFlag.BLOCK_LINE_OF_SIGHT_NORTH;
+		}
+		else
+		{
+			yFlags |= CollisionDataFlag.BLOCK_LINE_OF_SIGHT_SOUTH;
+		}
+
+		if (dxAbs > dyAbs)
+		{
+			int x = p1.getX();
+			int yBig = p1.getY() << 16; // The y position is represented as a bigger number to handle rounding
+			int slope = (dy << 16) / dxAbs;
+			yBig += 0x8000; // Add half of a tile
+			if (dy < 0)
+			{
+				yBig--; // For correct rounding
+			}
+			int direction = dx < 0 ? -1 : 1;
+
+			while (x != p2.getX())
+			{
+				x += direction;
+				int y = yBig >>> 16;
+				if ((collisionDataFlags[x][y] & xFlags) != 0)
+				{
+					// Collision while traveling on the x axis
+					return false;
+				}
+				yBig += slope;
+				int nextY = yBig >>> 16;
+				if (nextY != y && (collisionDataFlags[x][nextY] & yFlags) != 0)
+				{
+					// Collision while traveling on the y axis
+					return false;
+				}
+			}
+		}
+		else
+		{
+			int y = p1.getY();
+			int xBig = p1.getX() << 16; // The x position is represented as a bigger number to handle rounding
+			int slope = (dx << 16) / dyAbs;
+			xBig += 0x8000; // Add half of a tile
+			if (dx < 0)
+			{
+				xBig--; // For correct rounding
+			}
+			int direction = dy < 0 ? -1 : 1;
+
+			while (y != p2.getY())
+			{
+				y += direction;
+				int x = xBig >>> 16;
+				if ((collisionDataFlags[x][y] & yFlags) != 0)
+				{
+					// Collision while traveling on the y axis
+					return false;
+				}
+				xBig += slope;
+				int nextX = xBig >>> 16;
+				if (nextX != x && (collisionDataFlags[nextX][y] & xFlags) != 0)
+				{
+					// Collision while traveling on the x axis
+					return false;
+				}
+			}
+		}
+
+		// No collision
+		return true;
 	}
 
 	/**

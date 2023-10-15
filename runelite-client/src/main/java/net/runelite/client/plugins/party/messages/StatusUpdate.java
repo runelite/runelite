@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.party.messages;
 
 import com.google.gson.annotations.SerializedName;
+import java.awt.Color;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -62,5 +63,8 @@ public class StatusUpdate extends PartyMemberMessage
 
 	@SerializedName("v")
 	private Boolean vengeanceActive = null;
+
+	@SerializedName("c")
+	private Color memberColor = null;
 
 }

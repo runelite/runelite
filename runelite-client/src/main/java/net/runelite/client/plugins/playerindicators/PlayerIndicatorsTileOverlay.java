@@ -58,13 +58,13 @@ public class PlayerIndicatorsTileOverlay extends Overlay
 			return null;
 		}
 
-		playerIndicatorsService.forEachPlayer((player, color) ->
+		playerIndicatorsService.forEachPlayer((player, decorations) ->
 		{
 			final Polygon poly = player.getCanvasTilePoly();
 
 			if (poly != null)
 			{
-				OverlayUtil.renderPolygon(graphics, poly, color);
+				OverlayUtil.renderPolygon(graphics, poly, decorations.getColor());
 			}
 		});
 

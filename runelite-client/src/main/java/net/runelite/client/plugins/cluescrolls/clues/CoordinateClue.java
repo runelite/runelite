@@ -29,6 +29,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NonNull;
 import net.runelite.api.Varbits;
@@ -159,10 +160,10 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 		.put(new WorldPoint(2712, 3732, 0), new CoordinateClueInfo("North-east of Rellekka (DKS).", SARADOMIN_WIZARD))
 		.put(new WorldPoint(2970, 3749, 0), new CoordinateClueInfo("Wilderness. Forgotten Cemetery.", ZAMORAK_WIZARD))
 		.put(new WorldPoint(3094, 3764, 0), new CoordinateClueInfo("Wilderness. Mining site north of Bandit Camp.", ZAMORAK_WIZARD))
-		.put(new WorldPoint(3311, 3769, 0), new CoordinateClueInfo("Wilderness. North of Venenatis.", ZAMORAK_WIZARD))
+		.put(new WorldPoint(3311, 3769, 0), new CoordinateClueInfo("Wilderness. South of the Silk Chasm (Venenatis).", ZAMORAK_WIZARD))
 		.put(new WorldPoint(1460, 3782, 0), new CoordinateClueInfo("Lovakengj, near burning man.", SARADOMIN_WIZARD))
 		.put(new WorldPoint(3244, 3792, 0), new CoordinateClueInfo("Wilderness. South-east of Lava Dragon Isle by some Chaos Dwarves.", ZAMORAK_WIZARD))
-		.put(new WorldPoint(3140, 3804, 0), new CoordinateClueInfo("Wilderness. North of Ruins.", ZAMORAK_WIZARD))
+		.put(new WorldPoint(3140, 3804, 0), new CoordinateClueInfo("Wilderness. North of black chinchompa hunter area.", ZAMORAK_WIZARD))
 		.put(new WorldPoint(2946, 3819, 0), new CoordinateClueInfo("Wilderness. Chaos Temple (level 38).", ZAMORAK_WIZARD))
 		.put(new WorldPoint(3771, 3825, 0), new CoordinateClueInfo("Fossil Island. East of Museum Camp.", SARADOMIN_WIZARD))
 		.put(new WorldPoint(3013, 3846, 0), new CoordinateClueInfo("Wilderness. West of Lava Maze, before KBD's lair.", ZAMORAK_WIZARD))
@@ -188,7 +189,7 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 		.put(new WorldPoint(2180, 3282, 0), new CoordinateClueInfo("North of Iorwerth Camp.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
 		.put(new WorldPoint(2870, 2997, 0), new CoordinateClueInfo("North-east corner in Shilo Village.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
 		.put(new WorldPoint(3302, 2988, 0), new CoordinateClueInfo("On top of a cliff to the west of Pollnivneach.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
-		.put(new WorldPoint(2511, 2980, 0), new CoordinateClueInfo("Just south of Gu'Tanoth, west of gnome glider.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
+		.put(new WorldPoint(2511, 2980, 0), new CoordinateClueInfo("Just south of Gu'Tanoth, west of gnome glider (AKS).", ARMADYLEAN_OR_BANDOSIAN_GUARD))
 		.put(new WorldPoint(2732, 3372, 0), new CoordinateClueInfo("Legends' Guild.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
 		.put(new WorldPoint(3573, 3425, 0), new CoordinateClueInfo("North of Dessous's tomb from Desert Treasure.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
 		.put(new WorldPoint(3828, 2848, 0), new CoordinateClueInfo("East of Harmony Island.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
@@ -250,6 +251,7 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 		.build();
 
 	private final String text;
+	@Getter(AccessLevel.PRIVATE)
 	private final WorldPoint location;
 	/**
 	 * For regions which are mirrored, the location of the the clue in the mirrored region.
@@ -274,7 +276,13 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 	}
 
 	@Override
-	public WorldPoint[] getLocations()
+	public WorldPoint getLocation(ClueScrollPlugin plugin)
+	{
+		return location;
+	}
+
+	@Override
+	public WorldPoint[] getLocations(ClueScrollPlugin plugin)
 	{
 		if (mirrorLocation != null)
 		{
@@ -311,7 +319,7 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 	@Override
 	public void makeWorldOverlayHint(Graphics2D graphics, ClueScrollPlugin plugin)
 	{
-		for (WorldPoint worldPoint : getLocations())
+		for (WorldPoint worldPoint : getLocations(plugin))
 		{
 			LocalPoint localLocation = LocalPoint.fromWorld(plugin.getClient(), worldPoint);
 

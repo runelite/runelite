@@ -39,6 +39,7 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.IndexedSprite;
+import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
@@ -46,6 +47,7 @@ import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.VarbitComposition;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.ScriptCallbackEvent;
@@ -130,6 +132,7 @@ public class DevToolsPlugin extends Plugin
 	private DevToolsButton location;
 	private DevToolsButton chunkBorders;
 	private DevToolsButton mapSquares;
+	private DevToolsButton loadingLines;
 	private DevToolsButton validMovement;
 	private DevToolsButton movementFlags;
 	private DevToolsButton lineOfSight;
@@ -146,6 +149,7 @@ public class DevToolsPlugin extends Plugin
 	private DevToolsButton inventoryInspector;
 	private DevToolsButton roofs;
 	private DevToolsButton shell;
+	private DevToolsButton menus;
 	private NavigationButton navButton;
 
 	@Provides
@@ -176,6 +180,7 @@ public class DevToolsPlugin extends Plugin
 
 		chunkBorders = new DevToolsButton("Chunk Borders");
 		mapSquares = new DevToolsButton("Map Squares");
+		loadingLines = new DevToolsButton("Loading Lines");
 
 		lineOfSight = new DevToolsButton("Line Of Sight");
 		validMovement = new DevToolsButton("Valid Movement");
@@ -191,6 +196,7 @@ public class DevToolsPlugin extends Plugin
 		inventoryInspector = new DevToolsButton("Inventory Inspector");
 		roofs = new DevToolsButton("Roofs");
 		shell = new DevToolsButton("Shell");
+		menus = new DevToolsButton("Menus");
 
 		overlayManager.add(overlay);
 		overlayManager.add(locationOverlay);
@@ -371,11 +377,20 @@ public class DevToolsPlugin extends Plugin
 				player.setPoseAnimation(-1);
 				break;
 			}
-			case "cape":
+			case "wear":
 			{
-				int id = Integer.parseInt(args[0]);
+				int slot = Integer.parseInt(args[0]);
+				int id = Integer.parseInt(args[1]);
 				Player player = client.getLocalPlayer();
-				player.getPlayerComposition().getEquipmentIds()[KitType.CAPE.getIndex()] = id + 512;
+				player.getPlayerComposition().getEquipmentIds()[slot] = id + 512;
+				player.getPlayerComposition().setHash();
+				break;
+			}
+			case "tex":
+			{
+				Player player = client.getLocalPlayer();
+				player.getPlayerComposition().getEquipmentIds()[KitType.CAPE.getIndex()] = ItemID.FIRE_CAPE + 512;
+				player.getPlayerComposition().getEquipmentIds()[KitType.SHIELD.getIndex()] = ItemID.MIRROR_SHIELD + 512;
 				player.getPlayerComposition().setHash();
 				break;
 			}
@@ -500,6 +515,43 @@ public class DevToolsPlugin extends Plugin
 		if ("devtoolsEnabled".equals(ev.getEventName()))
 		{
 			client.getIntStack()[client.getIntStackSize() - 1] = 1;
+		}
+	}
+
+	@Subscribe
+	public void onClientTick(ClientTick clientTick)
+	{
+		if (menus.isActive() && !client.isMenuOpen())
+		{
+			for (int i = 0; i < 100; ++i)
+			{
+				final int i_ = i;
+				if (i % 30 == 0)
+				{
+					MenuEntry parent = client.createMenuEntry(1)
+						.setOption("pmenu" + i)
+						.setTarget("devtools")
+						.setType(MenuAction.RUNELITE_SUBMENU);
+
+					for (int j = 0; j < 4; ++j)
+					{
+						final int j_ = j;
+						client.createMenuEntry(1)
+							.setOption("submenu" + j)
+							.setTarget("devtools")
+							.setType(MenuAction.RUNELITE)
+							.setParent(parent)
+							.onClick(c -> client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "menu " + i_ + " sub " + j_, null));
+					}
+					continue;
+				}
+
+				client.createMenuEntry(1)
+					.setOption("menu" + i)
+					.setTarget("devtools")
+					.setType(MenuAction.RUNELITE)
+					.onClick(c -> client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "menu " + i_, null));
+			}
 		}
 	}
 }

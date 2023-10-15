@@ -36,7 +36,7 @@ import lombok.extern.slf4j.Slf4j;
 public class OSXUtil
 {
 	/**
-	 * Enables the osx native fullscreen if running on a mac.
+	 * Enables the osx native fullscreen if running on a Mac.
 	 *
 	 * @param gui The gui to enable the fullscreen on.
 	 */
@@ -44,6 +44,7 @@ public class OSXUtil
 	{
 		if (OSType.getOSType() == OSType.MacOS)
 		{
+			OSXFullScreenAdapter.install(gui);
 			FullScreenUtilities.setWindowCanFullScreen(gui, true);
 			log.debug("Enabled fullscreen on macOS");
 		}

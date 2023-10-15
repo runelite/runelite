@@ -68,4 +68,10 @@ public interface NPC extends Actor
 	 */
 	@Nullable
 	NPCComposition getTransformedComposition();
+
+	@Nullable
+	NpcOverrides getModelOverrides();
+
+	@Nullable
+	NpcOverrides getChatheadOverrides();
 }

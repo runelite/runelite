@@ -31,14 +31,19 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.GameObject;
 import net.runelite.api.ItemID;
+import net.runelite.api.ObjectComposition;
+import net.runelite.api.ObjectID;
 import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.ItemSpawned;
 import net.runelite.client.Notifier;
 import net.runelite.client.plugins.woodcutting.config.ClueNestTier;
 import net.runelite.client.ui.overlay.OverlayManager;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.Test;
@@ -248,5 +253,116 @@ public class WoodcuttingPluginTest
 		woodcuttingPlugin.onChatMessage(nestChatMessage);
 		woodcuttingPlugin.onGameTick(null);
 		verify(notifier).notify("A bird nest has spawned!");
+	}
+
+	@Test
+	public void testForestrySaplingRottingLeaves()
+	{
+		var rottingLeaves = makeObject(ObjectID.ROTTING_LEAVES, "Rotting leaves");
+		when(client.getObjectDefinition(ObjectID.ROTTING_LEAVES)).thenReturn(rottingLeaves);
+
+		var gameObject = mock(GameObject.class);
+		when(gameObject.getId()).thenReturn(ObjectID.ROTTING_LEAVES);
+
+		var gameObjectSpawned = new GameObjectSpawned();
+		gameObjectSpawned.setGameObject(gameObject);
+		woodcuttingPlugin.onGameObjectSpawned(gameObjectSpawned);
+
+		var chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "The sapling seems to love <col=0000b2>rotting leaves</col> as the <col=0000b2>third ingredient</col>.", "", 0);
+		woodcuttingPlugin.onChatMessage(chatMessage);
+
+		assertEquals(gameObject, woodcuttingPlugin.getSaplingOrder()[2]);
+	}
+
+	@Test
+	public void testForestrySaplingGreenLeaves()
+	{
+		var rottingLeaves = makeObject(ObjectID.GREEN_LEAVES, "Green leaves");
+		when(client.getObjectDefinition(ObjectID.GREEN_LEAVES)).thenReturn(rottingLeaves);
+
+		var gameObject = mock(GameObject.class);
+		when(gameObject.getId()).thenReturn(ObjectID.GREEN_LEAVES);
+
+		var gameObjectSpawned = new GameObjectSpawned();
+		gameObjectSpawned.setGameObject(gameObject);
+		woodcuttingPlugin.onGameObjectSpawned(gameObjectSpawned);
+
+		var chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "The sapling seems to love <col=0000b2>green leaves</col> as the <col=0000b2>third ingredient</col>.", "", 0);
+		woodcuttingPlugin.onChatMessage(chatMessage);
+
+		assertEquals(gameObject, woodcuttingPlugin.getSaplingOrder()[2]);
+	}
+
+	@Test
+	public void testForestrySaplingSplinteredBark()
+	{
+		var rottingLeaves = makeObject(ObjectID.SPLINTERED_BARK, "Splintered bark");
+		when(client.getObjectDefinition(ObjectID.SPLINTERED_BARK)).thenReturn(rottingLeaves);
+
+		var gameObject = mock(GameObject.class);
+		when(gameObject.getId()).thenReturn(ObjectID.SPLINTERED_BARK);
+
+		var gameObjectSpawned = new GameObjectSpawned();
+		gameObjectSpawned.setGameObject(gameObject);
+		woodcuttingPlugin.onGameObjectSpawned(gameObjectSpawned);
+
+		var chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "The sapling seems to love <col=0000b2>splintered bark</col> as the <col=0000b2>first ingredient</col>.", "", 0);
+		woodcuttingPlugin.onChatMessage(chatMessage);
+
+		assertEquals(gameObject, woodcuttingPlugin.getSaplingOrder()[0]);
+	}
+
+	@Test
+	public void testForestrySaplingDroppings()
+	{
+		var rottingLeaves = makeObject(ObjectID.DROPPINGS, "Droppings");
+		when(client.getObjectDefinition(ObjectID.DROPPINGS)).thenReturn(rottingLeaves);
+
+		var gameObject = mock(GameObject.class);
+		when(gameObject.getId()).thenReturn(ObjectID.DROPPINGS);
+
+		var gameObjectSpawned = new GameObjectSpawned();
+		gameObjectSpawned.setGameObject(gameObject);
+		woodcuttingPlugin.onGameObjectSpawned(gameObjectSpawned);
+
+		var chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "The sapling seems to love <col=0000b2>droppings</col> as the <col=0000b2>second ingredient</col>.", "", 0);
+		woodcuttingPlugin.onChatMessage(chatMessage);
+
+		assertEquals(gameObject, woodcuttingPlugin.getSaplingOrder()[1]);
+	}
+
+	@Test
+	public void testForestrySaplingWildMushrooms()
+	{
+		var rottingLeaves = makeObject(ObjectID.WILD_MUSHROOMS, "Wild mushrooms");
+		when(client.getObjectDefinition(ObjectID.WILD_MUSHROOMS)).thenReturn(rottingLeaves);
+
+		var gameObject = mock(GameObject.class);
+		when(gameObject.getId()).thenReturn(ObjectID.WILD_MUSHROOMS);
+
+		var gameObjectSpawned = new GameObjectSpawned();
+		gameObjectSpawned.setGameObject(gameObject);
+		woodcuttingPlugin.onGameObjectSpawned(gameObjectSpawned);
+
+		var chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "The sapling seems to love <col=0000b2>wild mushrooms</col> as the <col=0000b2>second ingredient</col>.", "", 0);
+		woodcuttingPlugin.onChatMessage(chatMessage);
+
+		assertEquals(gameObject, woodcuttingPlugin.getSaplingOrder()[1]);
+	}
+
+	private static ObjectComposition makeObject(int id, String name)
+	{
+		var obj = mock(ObjectComposition.class);
+		when(obj.getName()).thenReturn(name);
+		return obj;
+	}
+
+	@Test
+	public void testAnimaInfusedBark()
+	{
+		var chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "You've been awarded <col=0000b2>88 Anima-infused bark</col>.", "", 0);
+		woodcuttingPlugin.onChatMessage(chatMessage);
+		assertNotNull(woodcuttingPlugin.getSession());
+		assertEquals(88, woodcuttingPlugin.getSession().getBark());
 	}
 }

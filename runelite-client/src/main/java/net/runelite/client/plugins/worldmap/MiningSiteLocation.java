@@ -198,6 +198,7 @@ enum MiningSiteLocation
 	SHILO_VILLAGE_SURFACE(new WorldPoint(2822, 3001, 0), new Rock(7, Ore.GEM_ROCK)),
 	SILVAREA(new WorldPoint(3371, 3498, 0), new Rock(7, Ore.LIMESTONE)),
 	SLEPE_UNDERGROUND(new WorldPoint(3888, 9749, 0), new Rock(6, Ore.IRON), new Rock(14, Ore.COAL)),
+	STRANGLEWOOD_MINE(new WorldPoint(1169, 3323, 0), new Rock(3, Ore.IRON), new Rock(3, Ore.COAL), new Rock(3, Ore.MITHRIL), new Rock(3, Ore.ADAMANTITE), new Rock(1, Ore.RUNITE)),
 	TRAHEARN(new WorldPoint(3295, 12387, 0),
 		new Rock(26, Ore.IRON), new Rock(8, Ore.SILVER), new Rock(19, Ore.COAL), new Rock(14, Ore.GOLD),
 		new Rock(7, Ore.MITHRIL), new Rock(10, Ore.SOFT_CLAY), new Rock(7, Ore.ADAMANTITE), new Rock(4, Ore.RUNITE)),

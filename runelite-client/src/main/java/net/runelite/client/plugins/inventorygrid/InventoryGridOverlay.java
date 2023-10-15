@@ -67,7 +67,7 @@ class InventoryGridOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		final Widget draggingWidget = getDraggedWidget();
+		final Widget draggingWidget = client.getDraggedWidget();
 		if (draggingWidget == null)
 		{
 			initialMousePoint = null;
@@ -76,8 +76,11 @@ class InventoryGridOverlay extends Overlay
 			return null;
 		}
 
+		assert draggingWidget.isIf3();
+
 		// grid is only supported on bank inventory and inventory
 		if (draggingWidget.getId() != WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getId()
+			&& draggingWidget.getId() != WidgetInfo.BANK_EQUIPMENT_INVENTORY_ITEMS_CONTAINER.getId()
 			&& draggingWidget.getId() != WidgetInfo.INVENTORY.getId())
 		{
 			return null;
@@ -86,7 +89,7 @@ class InventoryGridOverlay extends Overlay
 		final Widget inventoryWidget = draggingWidget.getParent();
 		final net.runelite.api.Point mouse = client.getMouseCanvasPosition();
 		final Point mousePoint = new Point(mouse.getX(), mouse.getY());
-		final int draggedItemIndex = draggingWidget.isIf3() ? draggingWidget.getIndex() : client.getIf1DraggedItemIndex();
+		final int draggedItemIndex = draggingWidget.getIndex();
 		final WidgetItem draggedItem = getWidgetItem(inventoryWidget, draggedItemIndex);
 		final Rectangle initialBounds = draggedItem.getCanvasBounds(false);
 
@@ -96,7 +99,7 @@ class InventoryGridOverlay extends Overlay
 		}
 
 		if (draggedItem.getId() == -1
-			|| !(draggingWidget.isIf3() ? client.getDragTime() > draggingWidget.getDragDeadTime() : client.getItemPressedDuration() >= 5)
+			|| !(client.getDragTime() > draggingWidget.getDragDeadTime())
 			|| !hoverActive && initialMousePoint.distance(mousePoint) < DISTANCE_TO_ACTIVATE_HOVER)
 		{
 			return null;
@@ -131,27 +134,11 @@ class InventoryGridOverlay extends Overlay
 		return null;
 	}
 
-	private Widget getDraggedWidget()
-	{
-		Widget widget = client.getIf1DraggedWidget(); // if1 drag
-		if (widget != null)
-		{
-			return widget;
-		}
-		return client.getDraggedWidget(); // if3 drag
-	}
-
 	private static WidgetItem getWidgetItem(Widget parentWidget, int idx)
 	{
-		if (parentWidget.isIf3())
-		{
-			Widget wi = parentWidget.getChild(idx);
-			return new WidgetItem(wi.getItemId(), wi.getItemQuantity(), -1, wi.getBounds(), parentWidget, wi.getBounds());
-		}
-		else
-		{
-			return parentWidget.getWidgetItem(idx);
-		}
+		assert parentWidget.isIf3();
+		Widget wi = parentWidget.getChild(idx);
+		return new WidgetItem(wi.getItemId(), wi.getItemQuantity(), wi.getBounds(), parentWidget, wi.getBounds());
 	}
 
 	private void drawItem(Graphics2D graphics, Rectangle bounds, WidgetItem item)

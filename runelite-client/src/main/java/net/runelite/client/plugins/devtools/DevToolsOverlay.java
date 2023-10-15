@@ -31,6 +31,7 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Shape;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import javax.inject.Inject;
@@ -210,6 +211,26 @@ class DevToolsOverlay extends Overlay
 
 			String text = composition.getName() + " (ID:" + composition.getId() + ")" +
 				" (A: " + npc.getAnimation() + ") (P: " + npc.getPoseAnimation() + ") (G: " + npc.getGraphic() + ")";
+			if (npc.getModelOverrides() != null)
+			{
+				var mo = npc.getModelOverrides();
+				if (mo.getModelIds() != null)
+				{
+					text += " (M: " + Arrays.toString(mo.getModelIds()) + ")";
+				}
+				if (mo.getColorToReplaceWith() != null)
+				{
+					text += " (C: " + Arrays.toString(mo.getColorToReplaceWith()) + ")";
+				}
+				if (mo.getTextureToReplaceWith() != null)
+				{
+					text += " (T: " + Arrays.toString(mo.getTextureToReplaceWith()) + ")";
+				}
+				if (mo.useLocalPlayer())
+				{
+					text += " (LocalPlayer)";
+				}
+			}
 			OverlayUtil.renderActorOverlay(graphics, npc, text, color);
 		}
 	}
@@ -283,9 +304,12 @@ class DevToolsOverlay extends Overlay
 		if (poly != null && poly.contains(client.getMouseCanvasPosition().getX(), client.getMouseCanvasPosition().getY()))
 		{
 			WorldPoint worldLocation = tile.getWorldLocation();
+			Point sceneLocation = tile.getSceneLocation();
 			String tooltip = String.format("World location: %d, %d, %d</br>" +
+					"Scene location: %d, %d</br>" +
 					"Region ID: %d location: %d, %d",
 				worldLocation.getX(), worldLocation.getY(), worldLocation.getPlane(),
+				sceneLocation.getX(), sceneLocation.getY(),
 				(client.isInInstancedRegion() ? WorldPoint.fromLocalInstance(client, tileLocalLocation).getRegionID() : worldLocation.getRegionID()), worldLocation.getRegionX(), worldLocation.getRegionY());
 			toolTipManager.add(new Tooltip(tooltip));
 			OverlayUtil.renderPolygon(graphics, poly, GREEN);
@@ -328,7 +352,7 @@ class DevToolsOverlay extends Overlay
 		{
 			if (player.getLocalLocation().distanceTo(itemLayer.getLocalLocation()) <= MAX_DISTANCE)
 			{
-				Node current = itemLayer.getBottom();
+				Node current = itemLayer.getTop();
 				while (current instanceof TileItem)
 				{
 					TileItem item = (TileItem) current;

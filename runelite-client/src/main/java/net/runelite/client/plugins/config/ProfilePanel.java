@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.config;
 
+import com.google.common.base.CharMatcher;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -37,6 +38,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,12 +59,16 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.RuneLite;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.ConfigProfile;
 import net.runelite.client.config.ProfileManager;
-import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ProfileChanged;
 import net.runelite.client.events.SessionClose;
@@ -71,6 +77,8 @@ import net.runelite.client.plugins.screenmarkers.ScreenMarkerPlugin;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.PluginPanel;
+import net.runelite.client.ui.components.DragAndDropReorderPane;
+import net.runelite.client.ui.components.MouseDragEventForwarder;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.SwingUtil;
 
@@ -93,15 +101,16 @@ class ProfilePanel extends PluginPanel
 	private final ProfileManager profileManager;
 	private final SessionManager sessionManager;
 	private final ScheduledExecutorService executor;
-	private final EventBus eventBus;
 
-	private final JPanel profilesList;
+	private final DragAndDropReorderPane profilesList;
 	private final JButton addButton;
 	private final JButton importButton;
 
-	private final Map<Long, ProfileCard> cards = new HashMap<>();
+	private Map<Long, ProfileCard> cards = new HashMap<>();
 
-	private File lastFileChooserDirectory;
+	private File lastFileChooserDirectory = RuneLite.RUNELITE_DIR;
+
+	private boolean active;
 
 	static
 	{
@@ -119,23 +128,21 @@ class ProfilePanel extends PluginPanel
 		ConfigManager configManager,
 		ProfileManager profileManager,
 		SessionManager sessionManager,
-		ScheduledExecutorService executor,
-		EventBus eventBus
+		ScheduledExecutorService executor
 	)
 	{
 		this.profileManager = profileManager;
 		this.configManager = configManager;
 		this.sessionManager = sessionManager;
 		this.executor = executor;
-		this.eventBus = eventBus;
 
 		setBorder(new EmptyBorder(10, 10, 10, 10));
 
 		GroupLayout layout = new GroupLayout(this);
 		setLayout(layout);
 
-		profilesList = new JPanel();
-		profilesList.setLayout(new DynamicGridLayout(0, 1, 0, 6));
+		profilesList = new DragAndDropReorderPane();
+		profilesList.addDragListener(this::handleDrag);
 
 		addButton = new JButton("New Profile", ADD_ICON);
 		addButton.addActionListener(ev -> createProfile());
@@ -194,20 +201,26 @@ class ProfilePanel extends PluginPanel
 	@Override
 	public void onActivate()
 	{
-		eventBus.register(this);
+		active = true;
 		reload();
 	}
 
 	@Override
 	public void onDeactivate()
 	{
+		active = false;
 		SwingUtil.fastRemoveAll(profilesList);
-		eventBus.unregister(this);
+		cards.clear();
 	}
 
 	@Subscribe
 	private void onProfileChanged(ProfileChanged ev)
 	{
+		if (!active)
+		{
+			return;
+		}
+
 		SwingUtilities.invokeLater(() ->
 		{
 			for (ProfileCard card : cards.values())
@@ -229,12 +242,22 @@ class ProfilePanel extends PluginPanel
 	@Subscribe
 	public void onSessionOpen(SessionOpen sessionOpen)
 	{
+		if (!active)
+		{
+			return;
+		}
+
 		reload();
 	}
 
 	@Subscribe
 	public void onSessionClose(SessionClose sessionClose)
 	{
+		if (!active)
+		{
+			return;
+		}
+
 		reload();
 	}
 
@@ -254,7 +277,9 @@ class ProfilePanel extends PluginPanel
 		SwingUtilities.invokeLater(() ->
 		{
 			SwingUtil.fastRemoveAll(profilesList);
-			cards.clear();
+
+			Map<Long, ProfileCard> prevCards = cards;
+			cards = new HashMap<>();
 
 			long activePanel = configManager.getProfile().getId();
 			boolean limited = profiles.stream().filter(v -> !v.isInternal()).count() >= MAX_PROFILES;
@@ -266,7 +291,8 @@ class ProfilePanel extends PluginPanel
 					continue;
 				}
 
-				ProfileCard pc = new ProfileCard(profile, activePanel == profile.getId(), limited);
+				ProfileCard prev = prevCards.get(profile.getId());
+				ProfileCard pc = new ProfileCard(profile, activePanel == profile.getId(), limited, prev);
 				cards.put(profile.getId(), pc);
 				profilesList.add(pc);
 			}
@@ -290,7 +316,7 @@ class ProfilePanel extends PluginPanel
 		private boolean expanded;
 		private boolean active;
 
-		private ProfileCard(ConfigProfile profile, boolean isActive, boolean limited)
+		private ProfileCard(ConfigProfile profile, boolean isActive, boolean limited, ProfileCard prev)
 		{
 			this.profile = profile;
 
@@ -312,6 +338,27 @@ class ProfilePanel extends PluginPanel
 					{
 						stopRenaming(false);
 					}
+				}
+			});
+			((AbstractDocument) name.getDocument()).setDocumentFilter(new DocumentFilter()
+			{
+				@Override
+				public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException
+				{
+					super.insertString(fb, offset, filter(string), attr);
+				}
+
+				@Override
+				public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException
+				{
+					super.replace(fb, offset, length, filter(text), attrs);
+				}
+
+				private String filter(String in)
+				{
+					// characters commonly forbidden in file names
+					return CharMatcher.noneOf("/\\<>:\"|?*\r\n\0")
+						.retainFrom(in);
 				}
 			});
 
@@ -425,7 +472,7 @@ class ProfilePanel extends PluginPanel
 					.addComponent(activate));
 			}
 
-			MouseAdapter expandListener = new MouseAdapter()
+			MouseAdapter expandListener = new MouseDragEventForwarder(profilesList)
 			{
 				@Override
 				public void mouseClicked(MouseEvent ev)
@@ -479,11 +526,14 @@ class ProfilePanel extends PluginPanel
 				}
 			};
 			addMouseListener(expandListener);
+			addMouseMotionListener(expandListener);
 			name.addMouseListener(expandListener);
+			name.addMouseMotionListener(expandListener);
 			activate.addMouseListener(expandListener);
+			activate.addMouseMotionListener(expandListener);
 
 			setActive(isActive);
-			setExpanded(false);
+			setExpanded(prev != null && prev.expanded);
 		}
 
 		void setActive(boolean active)
@@ -529,6 +579,10 @@ class ProfilePanel extends PluginPanel
 			{
 				renameProfile(profile.getId(), name.getText().trim());
 			}
+			else
+			{
+				name.setText(profile.getName());
+			}
 		}
 	}
 
@@ -543,7 +597,7 @@ class ProfilePanel extends PluginPanel
 				name = "New Profile (" + (number++) + ")";
 			}
 
-			log.debug("selected new profile name: {}", name);
+			log.info("Creating new profile: {}", name);
 			lock.createProfile(name);
 
 			reload(lock.getProfiles());
@@ -552,6 +606,8 @@ class ProfilePanel extends PluginPanel
 
 	private void deleteProfile(ConfigProfile profile)
 	{
+		log.info("Deleting profile {}", profile.getName());
+
 		// disabling sync causes the profile to be deleted
 		configManager.toggleSync(profile, false);
 
@@ -576,11 +632,12 @@ class ProfilePanel extends PluginPanel
 				return;
 			}
 
-			log.debug("renaming profile {} to {}", profile, name);
+			log.info("Renaming profile {} ({}) to {}", profile, profile.getId(), name);
 
 			lock.renameProfile(profile, name);
-			// the panel updates the name label so it isn't necessary to rebuild
 			configManager.renameProfile(profile, name);
+
+			reload(lock.getProfiles());
 		}
 	}
 
@@ -657,11 +714,10 @@ class ProfilePanel extends PluginPanel
 
 				log.debug("selected new profile name: {}", name);
 				ConfigProfile profile = lock.createProfile(name);
-				ConfigProfile rsProfile = lock.findProfile("$rsprofile");
 
 				reload(lock.getProfiles());
 
-				ConfigManager.importAndMigrate(file, profile, rsProfile);
+				configManager.importAndMigrate(lock, file, profile);
 			}
 		});
 	}
@@ -712,8 +768,39 @@ class ProfilePanel extends PluginPanel
 
 	private void toggleSync(ActionEvent event, ConfigProfile profile, boolean sync)
 	{
-		log.debug("Setting sync for {}: {}", profile.getName(), sync);
+		log.info("{} sync for: {}", sync ? "Enabling" : "Disabling", profile.getName());
 		configManager.toggleSync(profile, sync);
 		((JToggleButton) event.getSource()).setToolTipText(sync ? "Disable cloud sync" : "Enable cloud sync");
+	}
+
+	private void handleDrag(Component component)
+	{
+		ProfileCard c = (ProfileCard) component;
+		int newPosition = profilesList.getPosition(component);
+		log.debug("Drag profile {} to position {}", c.profile.getName(), newPosition);
+
+		try (ProfileManager.Lock lock = profileManager.lock())
+		{
+			// Because the profilesList indexes don't include internal profiles, they can't be used to manipulate the
+			// profile list directly. Just re-sort the profiles instead.
+			List<ConfigProfile> profiles = lock.getProfiles();
+			profiles.sort(Comparator.comparing(p ->
+			{
+				Component[] components = profilesList.getComponents();
+				for (int idx = 0; idx < components.length; ++idx)
+				{
+					ProfileCard card = (ProfileCard) components[idx];
+					if (card.profile.getId() == p.getId())
+					{
+						return idx;
+					}
+				}
+				return -1;
+			}));
+
+			lock.dirty();
+
+			reload(profiles);
+		}
 	}
 }

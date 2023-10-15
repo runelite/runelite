@@ -206,8 +206,18 @@ public class ItemChargePluginTest
 	@Test
 	public void testRofBreak()
 	{
-		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BREAK_RING_OF_FORGING, "", 0);
-		itemChargePlugin.onChatMessage(chatMessage);
+		// Create equipment inventory with ring of forging
+		ItemContainer equipmentItemContainer = mock(ItemContainer.class);
+		when(client.getItemContainer(InventoryID.EQUIPMENT)).thenReturn(equipmentItemContainer);
+		when(equipmentItemContainer.contains(ItemID.RING_OF_FORGING)).thenReturn(true);
+		when(equipmentItemContainer.getItems()).thenReturn(new Item[0]);
+		// Run message to break ring and then use ring, to simulate actual client behavior
+		ChatMessage breakMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BREAK_RING_OF_FORGING, "", 0);
+		itemChargePlugin.onChatMessage(breakMessage);
+		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_RING_OF_FORGING, 141);
+		when(configManager.getRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_RING_OF_FORGING, Integer.class)).thenReturn(141);
+		ChatMessage useMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", USED_RING_OF_FORGING, "", 0);
+		itemChargePlugin.onChatMessage(useMessage);
 		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_RING_OF_FORGING, 140);
 	}
 

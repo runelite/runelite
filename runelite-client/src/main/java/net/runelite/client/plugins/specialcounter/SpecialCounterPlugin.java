@@ -57,6 +57,7 @@ import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.HitsplatApplied;
+import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.VarbitChanged;
@@ -213,7 +214,7 @@ public class SpecialCounterPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged event)
 	{
-		if (event.getVarpId() != VarPlayer.SPECIAL_ATTACK_PERCENT.getId())
+		if (event.getVarpId() != VarPlayer.SPECIAL_ATTACK_PERCENT)
 		{
 			return;
 		}
@@ -226,13 +227,6 @@ public class SpecialCounterPlugin extends Plugin
 		}
 
 		this.specialPercentage = specialPercentage;
-		this.specialWeapon = usedSpecialWeapon();
-
-		if (this.specialWeapon == null)
-		{
-			// unrecognized special attack weapon
-			return;
-		}
 
 		// This event runs prior to player and npc updating, making getInteracting() too early to call..
 		// defer this with invokeLater(), but note that this will run after incrementing the server tick counter
@@ -240,6 +234,14 @@ public class SpecialCounterPlugin extends Plugin
 		final int serverTicks = client.getTickCount();
 		clientThread.invokeLater(() ->
 		{
+			this.specialWeapon = usedSpecialWeapon();
+
+			if (this.specialWeapon == null)
+			{
+				// unrecognized special attack weapon
+				return;
+			}
+
 			Actor target = client.getLocalPlayer().getInteracting();
 			lastSpecTarget = target instanceof NPC ? (NPC) target : null;
 			hitsplatTick = serverTicks + getHitDelay(specialWeapon, target);
@@ -322,6 +324,18 @@ public class SpecialCounterPlugin extends Plugin
 
 		if (actor.isDead() && interactedNpcIndexes.contains(actor.getIndex()))
 		{
+			removeCounters();
+		}
+	}
+
+	@Subscribe
+	public void onNpcChanged(NpcChanged npcChanged)
+	{
+		final NPC npc = npcChanged.getNpc();
+		// Duke does not despawn when dead
+		if (npc.getId() == NpcID.DUKE_SUCELLUS_12192 || npc.getId() == NpcID.DUKE_SUCELLUS_12196)
+		{
+			log.debug("Duke died");
 			removeCounters();
 		}
 	}
@@ -474,8 +488,7 @@ public class SpecialCounterPlugin extends Plugin
 
 	private int getHitDelay(SpecialWeapon specialWeapon, Actor target)
 	{
-		// DORGESHUUN_CROSSBOW is the only ranged wep we support, so everything else is just melee and delay 1
-		if (specialWeapon != SpecialWeapon.DORGESHUUN_CROSSBOW || target == null)
+		if (target == null)
 			return 1;
 
 		Player player = client.getLocalPlayer();
@@ -491,13 +504,13 @@ public class SpecialCounterPlugin extends Plugin
 			return 1;
 
 		final int distance = targetArea.distanceTo(playerWp);
-		// Dorgeshuun special attack projectile, anim delay, and hitsplat is 60 + distance * 3 with the projectile
-		// starting at 41 cycles. Since we are computing the delay when the spec var changes, and not when the
-		// projectile first moves, this should be 60 and not 19
-		final int cycles = 60 + distance * 3;
-		// The server performs no rounding and instead delays (cycles / 30) cycles from the next cycle
-		final int serverCycles = (cycles / 30) + 1;
-		log.debug("Projectile distance {} cycles {} server cycles {}", distance, cycles, serverCycles);
+		final int serverCycles = specialWeapon.getHitDelay(distance);
+
+		if (serverCycles != 1)
+		{
+			log.debug("Projectile distance {} server cycles {}", distance, serverCycles);
+		}
+
 		return serverCycles;
 	}
 }

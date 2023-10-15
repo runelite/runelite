@@ -29,6 +29,7 @@ import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.Skill;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
@@ -59,15 +60,23 @@ class CombatLevelOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		Widget combatLevelWidget = client.getWidget(WidgetInfo.COMBAT_LEVEL);
-		if (!config.showLevelsUntil()
-			|| client.getLocalPlayer().getCombatLevel() == Experience.MAX_COMBAT_LEVEL
-			|| combatLevelWidget == null || combatLevelWidget.isHidden())
+		if (!config.showLevelsUntil() || client.getLocalPlayer().getCombatLevel() == Experience.MAX_COMBAT_LEVEL)
 		{
 			return null;
 		}
 
-		Rectangle combatCanvas = combatLevelWidget.getBounds();
+		Widget combatTabLevelWidget = client.getWidget(WidgetInfo.COMBAT_LEVEL);
+		Widget characterTabWidget = client.getWidget(WidgetInfo.CHARACTER_SUMMARY_CONTAINER);
+
+		Rectangle combatCanvas = null;
+		if (combatTabLevelWidget != null && !combatTabLevelWidget.isHidden())
+		{
+			combatCanvas = combatTabLevelWidget.getBounds();
+		}
+		else if (characterTabWidget != null && !characterTabWidget.isHidden())
+		{
+			combatCanvas = characterTabWidget.getChild(WidgetID.CharacterSummary.COMBAT_LEVEL_BOX_CHILD_ID).getBounds();
+		}
 
 		if (combatCanvas == null)
 		{

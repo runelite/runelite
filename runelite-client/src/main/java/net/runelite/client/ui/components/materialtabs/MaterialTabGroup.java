@@ -96,7 +96,7 @@ public class MaterialTabGroup extends JPanel
 	 */
 	public boolean select(MaterialTab selectedTab)
 	{
-		if (!tabs.contains(selectedTab))
+		if (!tabs.contains(selectedTab) || selectedTab.isSelected())
 		{
 			return false;
 		}

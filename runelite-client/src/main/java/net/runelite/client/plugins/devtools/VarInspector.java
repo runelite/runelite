@@ -91,12 +91,14 @@ class VarInspector extends DevToolsFrame
 	private static final Map<Integer, String> VARBIT_NAMES;
 	private static final Map<Integer, String> VARCINT_NAMES;
 	private static final Map<Integer, String> VARCSTR_NAMES;
+	private static final Map<Integer, String> VARP_NAMES;
 
 	static
 	{
 		ImmutableMap.Builder<Integer, String> varbits = new ImmutableMap.Builder<>();
 		ImmutableMap.Builder<Integer, String> varcint = new ImmutableMap.Builder<>();
 		ImmutableMap.Builder<Integer, String> varcstr = new ImmutableMap.Builder<>();
+		ImmutableMap.Builder<Integer, String> varp = new ImmutableMap.Builder<>();
 
 		try
 		{
@@ -114,6 +116,11 @@ class VarInspector extends DevToolsFrame
 			{
 				varcstr.put(f.getInt(null), f.getName());
 			}
+
+			for (Field f : VarPlayer.class.getDeclaredFields())
+			{
+				varp.put(f.getInt(null), f.getName());
+			}
 		}
 		catch (IllegalAccessException ex)
 		{
@@ -123,6 +130,7 @@ class VarInspector extends DevToolsFrame
 		VARBIT_NAMES = varbits.build();
 		VARCINT_NAMES = varcint.build();
 		VARCSTR_NAMES = varcstr.build();
+		VARP_NAMES = varp.build();
 	}
 
 	private final Client client;
@@ -268,14 +276,14 @@ class VarInspector extends DevToolsFrame
 		int neew = varps[index];
 		if (old != neew)
 		{
-			String name = Integer.toString(index);
-			for (VarPlayer varp : VarPlayer.values())
+			String name = VARP_NAMES.get(index);
+			if (name != null)
 			{
-				if (varp.getId() == index)
-				{
-					name = String.format("%s(%d)", varp.name(), index);
-					break;
-				}
+				name += "(" + index + ")";
+			}
+			else
+			{
+				name = Integer.toString(index);
 			}
 			addVarLog(VarType.VARP, name, old, neew);
 		}

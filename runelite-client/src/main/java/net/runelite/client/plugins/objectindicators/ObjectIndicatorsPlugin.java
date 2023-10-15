@@ -25,10 +25,12 @@
  */
 package net.runelite.client.plugins.objectindicators;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.inject.Provides;
+import java.applet.Applet;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,9 +38,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
+import javax.swing.SwingUtilities;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -66,11 +72,19 @@ import net.runelite.api.events.GroundObjectSpawned;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import static net.runelite.client.plugins.objectindicators.ColorTileObject.HF_CLICKBOX;
+import static net.runelite.client.plugins.objectindicators.ColorTileObject.HF_HULL;
+import static net.runelite.client.plugins.objectindicators.ColorTileObject.HF_OUTLINE;
+import static net.runelite.client.plugins.objectindicators.ColorTileObject.HF_TILE;
+import net.runelite.client.ui.components.colorpicker.ColorPickerManager;
+import net.runelite.client.ui.components.colorpicker.RuneliteColorPicker;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.ColorUtil;
 
 @PluginDescriptor(
 	name = "Object Markers",
@@ -107,6 +121,12 @@ public class ObjectIndicatorsPlugin extends Plugin
 	@Inject
 	private Gson gson;
 
+	@Inject
+	private ColorPickerManager colorPickerManager;
+
+	@Inject
+	private ClientThread clientThread;
+
 	@Provides
 	ObjectIndicatorsConfig provideConfig(ConfigManager configManager)
 	{
@@ -117,6 +137,7 @@ public class ObjectIndicatorsPlugin extends Plugin
 	protected void startUp()
 	{
 		overlayManager.add(overlay);
+		clientThread.invokeLater(this::reloadPoints);
 	}
 
 	@Override
@@ -175,15 +196,11 @@ public class ObjectIndicatorsPlugin extends Plugin
 		objects.removeIf(o -> o.getTileObject() == event.getGroundObject());
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	private void reloadPoints()
 	{
-		GameState gameState = gameStateChanged.getGameState();
-		if (gameState == GameState.LOADING)
+		points.clear();
+		if (client.getMapRegions() != null)
 		{
-			// Reload points with new map regions
-
-			points.clear();
 			for (int regionId : client.getMapRegions())
 			{
 				// load points for region
@@ -194,10 +211,17 @@ public class ObjectIndicatorsPlugin extends Plugin
 				}
 			}
 		}
+	}
 
-		if (gameStateChanged.getGameState() != GameState.LOGGED_IN && gameStateChanged.getGameState() != GameState.CONNECTION_LOST)
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	{
+		GameState gameState = gameStateChanged.getGameState();
+		if (gameState == GameState.LOADING)
 		{
+			// Reload points with new map regions
 			objects.clear();
+			reloadPoints();
 		}
 	}
 
@@ -209,34 +233,177 @@ public class ObjectIndicatorsPlugin extends Plugin
 			return;
 		}
 
-		final Tile tile = client.getScene().getTiles()[client.getPlane()][event.getActionParam0()][event.getActionParam1()];
-		final TileObject tileObject = findTileObject(tile, event.getIdentifier());
-
+		final TileObject tileObject = findTileObject(client.getPlane(), event.getActionParam0(), event.getActionParam1(), event.getIdentifier());
 		if (tileObject == null)
 		{
 			return;
 		}
 
-		client.createMenuEntry(-1)
-			.setOption(objects.stream().anyMatch(o -> o.getTileObject() == tileObject) ? UNMARK : MARK)
+		int idx = -1;
+		final var marked = objects.stream().filter(o -> o.getTileObject() == tileObject).findFirst();
+		client.createMenuEntry(idx--)
+			.setOption(marked.isPresent() ? UNMARK : MARK)
 			.setTarget(event.getTarget())
 			.setParam0(event.getActionParam0())
 			.setParam1(event.getActionParam1())
 			.setIdentifier(event.getIdentifier())
 			.setType(MenuAction.RUNELITE)
 			.onClick(this::markObject);
+
+		if (marked.isPresent())
+		{
+			idx = createTagBorderColorMenu(idx, event.getTarget(), tileObject, marked.get());
+			idx = createTagFillColorMenu(idx, event.getTarget(), tileObject, marked.get());
+			idx = createTagStyleMenu(idx, event.getTarget(), tileObject);
+		}
+	}
+
+	private int createTagBorderColorMenu(int idx, String target, TileObject object, ColorTileObject colorTileObject)
+	{
+		List<Color> colors = getUsedColors(ObjectPoint::getBorderColor);
+		// add a few default colors
+		for (Color default_ : new Color[]{Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.MAGENTA})
+		{
+			if (colors.size() < 5 && !colors.contains(default_))
+			{
+				colors.add(default_);
+			}
+		}
+
+		MenuEntry parent = client.createMenuEntry(idx--)
+			.setOption("Mark border color")
+			.setTarget(target)
+			.setType(MenuAction.RUNELITE_SUBMENU);
+
+		for (final Color c : colors)
+		{
+			client.createMenuEntry(idx--)
+				.setOption(ColorUtil.prependColorTag("Set color", c))
+				.setType(MenuAction.RUNELITE)
+				.setParent(parent)
+				.onClick(e -> updateObjectConfig(object, p -> p.setBorderColor(c)));
+		}
+
+		client.createMenuEntry(idx--)
+			.setOption("Pick color")
+			.setType(MenuAction.RUNELITE)
+			.setParent(parent)
+			.onClick(e -> SwingUtilities.invokeLater(() ->
+			{
+				RuneliteColorPicker colorPicker = colorPickerManager.create(SwingUtilities.windowForComponent((Applet) client),
+					MoreObjects.firstNonNull(colorTileObject.getBorderColor(), config.markerColor()), "Mark Border Color", false);
+				colorPicker.setOnClose(c ->
+					clientThread.invokeLater(() ->
+						updateObjectConfig(object, p -> p.setBorderColor(c))));
+				colorPicker.setVisible(true);
+			}));
+
+		return idx;
+	}
+
+	private int createTagFillColorMenu(int idx, String target, TileObject object, ColorTileObject colorTileObject)
+	{
+		List<Color> colors = getUsedColors(ObjectPoint::getFillColor);
+		// add a few default colors
+		for (Color default_ : new Color[]{Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.MAGENTA})
+		{
+			default_ = ColorUtil.colorWithAlpha(default_, default_.getAlpha() / 12);
+			if (colors.size() < 5 && !colors.contains(default_))
+			{
+				colors.add(default_);
+			}
+		}
+
+		MenuEntry parent = client.createMenuEntry(idx--)
+			.setOption("Mark fill color")
+			.setTarget(target)
+			.setType(MenuAction.RUNELITE_SUBMENU);
+
+		for (final Color c : colors)
+		{
+			client.createMenuEntry(idx--)
+				.setOption(ColorUtil.prependColorTag("Set color", c))
+				.setType(MenuAction.RUNELITE)
+				.setParent(parent)
+				.onClick(e -> updateObjectConfig(object, p -> p.setFillColor(c)));
+		}
+
+		client.createMenuEntry(idx--)
+			.setOption("Pick color")
+			.setType(MenuAction.RUNELITE)
+			.setParent(parent)
+			.onClick(e -> SwingUtilities.invokeLater(() ->
+			{
+				// default fill color depends on the highlight type. just use a=50 from hull fill.
+				var previousColor = MoreObjects.firstNonNull(colorTileObject.getFillColor(), new Color(0, 0, 0, 50));
+
+				RuneliteColorPicker colorPicker = colorPickerManager.create(SwingUtilities.windowForComponent((Applet) client),
+					previousColor, "Mark Fill Color", false);
+				colorPicker.setOnClose(c ->
+					clientThread.invokeLater(() ->
+						updateObjectConfig(object, p -> p.setFillColor(c))));
+				colorPicker.setVisible(true);
+			}));
+
+		client.createMenuEntry(idx--)
+			.setOption("Reset")
+			.setType(MenuAction.RUNELITE)
+			.setParent(parent)
+			.onClick(e -> updateObjectConfig(object, p -> p.setFillColor(null)));
+
+		return idx;
+	}
+
+	private int createTagStyleMenu(int idx, String target, TileObject object)
+	{
+		MenuEntry parent = client.createMenuEntry(idx--)
+			.setOption("Mark style")
+			.setTarget(target)
+			.setType(MenuAction.RUNELITE_SUBMENU);
+
+		client.createMenuEntry(idx--)
+			.setOption("Hull")
+			.setType(MenuAction.RUNELITE)
+			.setParent(parent)
+			.onClick(e -> updateObjectConfig(object, c -> c.setHull(c.getHull() != Boolean.TRUE)));
+
+		client.createMenuEntry(idx--)
+			.setOption("Outline")
+			.setType(MenuAction.RUNELITE)
+			.setParent(parent)
+			.onClick(e -> updateObjectConfig(object, c -> c.setOutline(c.getOutline() != Boolean.TRUE)));
+
+		client.createMenuEntry(idx--)
+			.setOption("Clickbox")
+			.setType(MenuAction.RUNELITE)
+			.setParent(parent)
+			.onClick(e -> updateObjectConfig(object, c -> c.setClickbox(c.getClickbox() != Boolean.TRUE)));
+
+		client.createMenuEntry(idx--)
+			.setOption("Tile")
+			.setType(MenuAction.RUNELITE)
+			.setParent(parent)
+			.onClick(e -> updateObjectConfig(object, c -> c.setTile(c.getTile() != Boolean.TRUE)));
+
+		client.createMenuEntry(idx--)
+			.setOption("Reset")
+			.setType(MenuAction.RUNELITE)
+			.setParent(parent)
+			.onClick(e ->
+				updateObjectConfig(object, c ->
+				{
+					c.setHull(null);
+					c.setOutline(null);
+					c.setClickbox(null);
+					c.setTile(null);
+				}));
+
+		return idx;
 	}
 
 	private void markObject(MenuEntry entry)
 	{
-		Scene scene = client.getScene();
-		Tile[][][] tiles = scene.getTiles();
-		final int x = entry.getParam0();
-		final int y = entry.getParam1();
-		final int z = client.getPlane();
-		final Tile tile = tiles[z][x][y];
-
-		TileObject object = findTileObject(tile, entry.getIdentifier());
+		TileObject object = findTileObject(client.getPlane(), entry.getParam0(), entry.getParam1(), entry.getIdentifier());
 		if (object == null)
 		{
 			return;
@@ -254,6 +421,34 @@ public class ObjectIndicatorsPlugin extends Plugin
 		}
 
 		markObject(objectDefinition, name, object);
+	}
+
+	private void updateObjectConfig(TileObject object, Consumer<ObjectPoint> c)
+	{
+		final WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, object.getLocalLocation());
+		final int regionId = worldPoint.getRegionID();
+		Set<ObjectPoint> objectPoints = points.get(regionId);
+		if (objectPoints.isEmpty())
+		{
+			return;
+		}
+
+		final ObjectComposition objectComposition = getObjectComposition(object.getId());
+		ObjectPoint objectPoint = objectPoints.stream().filter(findObjectPredicate(objectComposition, object, worldPoint)).findFirst().orElse(null);
+		if (objectPoint == null)
+		{
+			return;
+		}
+
+		c.accept(objectPoint);
+
+		savePoints(regionId, objectPoints);
+
+		// rebuild the ColorTileObject from the new config
+		if (objects.removeIf(o -> o.getTileObject() == object))
+		{
+			checkObjectPoints(object);
+		}
 	}
 
 	private void checkObjectPoints(TileObject object)
@@ -292,17 +487,27 @@ public class ObjectIndicatorsPlugin extends Plugin
 					&& objectPoint.getId() == object.getId())
 			{
 				log.debug("Marking object {} due to matching {}", object, objectPoint);
+				var flags =
+					(objectPoint.getHull() == Boolean.TRUE ? HF_HULL : 0) |
+					(objectPoint.getOutline() == Boolean.TRUE ? HF_OUTLINE : 0) |
+					(objectPoint.getClickbox() == Boolean.TRUE ? HF_CLICKBOX : 0) |
+					(objectPoint.getTile() == Boolean.TRUE ? HF_TILE : 0);
 				objects.add(new ColorTileObject(object,
 					objectComposition,
 					objectPoint.getName(),
-					objectPoint.getColor()));
+					objectPoint.getBorderColor(),
+					objectPoint.getFillColor(),
+					(byte) flags));
 				break;
 			}
 		}
 	}
 
-	private TileObject findTileObject(Tile tile, int id)
+	private TileObject findTileObject(int z, int x, int y, int id)
 	{
+		Scene scene = client.getScene();
+		Tile[][][] tiles = scene.getTiles();
+		final Tile tile = tiles[z][x][y];
 		if (tile == null)
 		{
 			return null;
@@ -379,7 +584,8 @@ public class ObjectIndicatorsPlugin extends Plugin
 	{
 		final WorldPoint worldPoint = WorldPoint.fromLocalInstance(client, object.getLocalLocation());
 		final int regionId = worldPoint.getRegionID();
-		final Color color = config.markerColor();
+		final Color borderColor = config.markerColor();
+		final Color fillColor = config.fillColor();
 		final ObjectPoint point = new ObjectPoint(
 			object.getId(),
 			name,
@@ -387,20 +593,16 @@ public class ObjectIndicatorsPlugin extends Plugin
 			worldPoint.getRegionX(),
 			worldPoint.getRegionY(),
 			worldPoint.getPlane(),
-			color);
+			borderColor,
+			fillColor,
+			// use the default config values
+			null, null, null, null);
 
 		Set<ObjectPoint> objectPoints = points.computeIfAbsent(regionId, k -> new HashSet<>());
 
 		if (objects.removeIf(o -> o.getTileObject() == object))
 		{
-			// Find the object point that caused this object to be marked, there are two cases:
-			// 1) object is a multiloc, the name may have changed since marking - match from base id
-			// 2) not a multiloc, but an object has spawned with an identical name and a different
-			//    id as what was originally marked
-			if (!objectPoints.removeIf(op -> ((op.getId() == -1 || op.getId() == object.getId()) || op.getName().equals(objectComposition.getName()))
-				&& op.getRegionX() == worldPoint.getRegionX()
-				&& op.getRegionY() == worldPoint.getRegionY()
-				&& op.getZ() == worldPoint.getPlane()))
+			if (!objectPoints.removeIf(findObjectPredicate(objectComposition, object, worldPoint)))
 			{
 				log.warn("unable to find object point for unmarked object {}", object.getId());
 			}
@@ -413,11 +615,25 @@ public class ObjectIndicatorsPlugin extends Plugin
 			objects.add(new ColorTileObject(object,
 				client.getObjectDefinition(object.getId()),
 				name,
-				color));
+				borderColor,
+				fillColor,
+				(byte) 0));
 			log.debug("Marking object: {}", point);
 		}
 
 		savePoints(regionId, objectPoints);
+	}
+
+	private static Predicate<ObjectPoint> findObjectPredicate(ObjectComposition objectComposition, TileObject object, WorldPoint worldPoint)
+	{
+		// Find the ObjectPoint for the given composition, object, and world point. There are two cases:
+		// 1) object is a multiloc, the name may have changed since marking - match from base id
+		// 2) not a multiloc, but an object has spawned with an identical name and a different
+		//    id as what was originally marked
+		return op -> ((op.getId() == -1 || op.getId() == object.getId()) || op.getName().equals(objectComposition.getName()))
+			&& op.getRegionX() == worldPoint.getRegionX()
+			&& op.getRegionY() == worldPoint.getRegionY()
+			&& op.getZ() == worldPoint.getPlane();
 	}
 
 	private void savePoints(final int id, final Set<ObjectPoint> points)
@@ -458,5 +674,30 @@ public class ObjectIndicatorsPlugin extends Plugin
 	{
 		ObjectComposition objectComposition = client.getObjectDefinition(id);
 		return objectComposition.getImpostorIds() == null ? objectComposition : objectComposition.getImpostor();
+	}
+
+	private List<Color> getUsedColors(Function<ObjectPoint, Color> getColor)
+	{
+		List<Color> colors = new ArrayList<>();
+		for (int region : client.getMapRegions())
+		{
+			var points = this.points.get(region);
+			if (points != null)
+			{
+				for (var p : points)
+				{
+					Color c = getColor.apply(p);
+					if (c != null & !colors.contains(c))
+					{
+						colors.add(c);
+						if (colors.size() >= 5)
+						{
+							return colors;
+						}
+					}
+				}
+			}
+		}
+		return colors;
 	}
 }

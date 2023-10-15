@@ -58,6 +58,7 @@ public enum FairyRings
 	BLP("TzHaar area"),
 	BLQ("Yu'biusk"),
 	BLR("Legends' Guild"),
+	BLS("South of Mount Quidamortem", "vardorvis the stranglewood chambers of xeric"),
 
 	// C
 	CIP("(Island) Miscellania"),

@@ -26,11 +26,13 @@
  */
 package net.runelite.client.plugins.timers;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.IntPredicate;
 import java.util.function.IntUnaryOperator;
 import java.util.regex.Matcher;
@@ -52,7 +54,10 @@ import net.runelite.api.NpcID;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
+import static net.runelite.api.VarPlayer.LAST_HOME_TELEPORT;
+import static net.runelite.api.VarPlayer.LAST_MINIGAME_TELEPORT;
 import net.runelite.api.Varbits;
+import net.runelite.api.annotations.Varp;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.ChatMessage;
@@ -66,6 +71,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.ItemVariationMapping;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -98,6 +104,8 @@ public class TimersPlugin extends Plugin
 	private static final String STAFF_OF_THE_DEAD_SPEC_MESSAGE = "Spirits of deceased evildoers offer you their protection";
 	private static final String PRAYER_ENHANCE_EXPIRED = "<col=ff0000>Your prayer enhance effect has worn off.</col>";
 	private static final String SHADOW_VEIL_MESSAGE = ">Your thieving abilities have been enhanced.</col>";
+	private static final String RESURRECT_THRALL_MESSAGE_START = ">You resurrect a ";
+	private static final String RESURRECT_THRALL_MESSAGE_END = " thrall.</col>";
 	private static final String WARD_OF_ARCEUUS_MESSAGE = ">Your defence against Arceuus magic has been strengthened.</col>";
 	private static final String PICKPOCKET_FAILURE_MESSAGE = "You fail to pick ";
 	private static final String DODGY_NECKLACE_PROTECTION_MESSAGE = "Your dodgy necklace protects you.";
@@ -105,6 +113,12 @@ public class TimersPlugin extends Plugin
 	private static final String SILK_DRESSING_MESSAGE = "You quickly apply the dressing to your wounds.";
 	private static final String BLESSED_CRYSTAL_SCARAB_MESSAGE = "You crack the crystal in your hand.";
 	private static final String LIQUID_ADRENALINE_MESSAGE = "You drink some of the potion, reducing the energy cost of your special attacks.</col>";
+	private static final Set<Integer> STAVES_OF_THE_DEAD = new ImmutableSet.Builder<Integer>()
+		.addAll(ItemVariationMapping.getVariations(ItemID.STAFF_OF_THE_DEAD))
+		.addAll(ItemVariationMapping.getVariations(ItemID.TOXIC_STAFF_UNCHARGED))
+		.add(ItemID.STAFF_OF_LIGHT)
+		.add(ItemID.STAFF_OF_BALANCE)
+		.build();
 
 	private static final int VENOM_VALUE_CUTOFF = -38; // Antivenom < -38 <= Antipoison < 0
 	private static final int POISON_TICK_LENGTH = 30;
@@ -156,8 +170,8 @@ public class TimersPlugin extends Plugin
 	{
 		if (config.showHomeMinigameTeleports())
 		{
-			checkTeleport(VarPlayer.LAST_HOME_TELEPORT);
-			checkTeleport(VarPlayer.LAST_MINIGAME_TELEPORT);
+			checkTeleport(LAST_HOME_TELEPORT);
+			checkTeleport(LAST_MINIGAME_TELEPORT);
 		}
 	}
 
@@ -192,6 +206,18 @@ public class TimersPlugin extends Plugin
 			else
 			{
 				removeGameTimer(VENGEANCE);
+			}
+		}
+
+		if (event.getVarbitId() == Varbits.HEAL_GROUP_COOLDOWN && config.showHealGroup())
+		{
+			if (event.getValue() == 1)
+			{
+				createGameTimer(HEAL_GROUP);
+			}
+			else
+			{
+				removeGameTimer(HEAL_GROUP);
 			}
 		}
 
@@ -279,35 +305,17 @@ public class TimersPlugin extends Plugin
 			}
 		}
 
-		if (event.getVarbitId() == Varbits.RESURRECT_THRALL && config.showArceuus())
+		if (event.getVarbitId() == Varbits.RESURRECT_THRALL && event.getValue() == 0 && config.showArceuus())
 		{
-			if (event.getValue() == 1)
-			{
-				// by default the thrall lasts 1 tick per magic level
-				int t = client.getBoostedSkillLevel(Skill.MAGIC);
-				// ca tiers being completed boosts this
-				if (client.getVarbitValue(Varbits.COMBAT_ACHIEVEMENT_TIER_GRANDMASTER) == 2)
-				{
-					t += t; // 100% boost
-				}
-				else if (client.getVarbitValue(Varbits.COMBAT_ACHIEVEMENT_TIER_MASTER) == 2)
-				{
-					t += t / 2; // 50% boost
-				}
-				createGameTimer(RESURRECT_THRALL, Duration.of(t, RSTimeUnit.GAME_TICKS));
-			}
-			else
-			{
-				removeGameTimer(RESURRECT_THRALL);
-			}
+			removeGameTimer(RESURRECT_THRALL);
 		}
 
-		if (event.getVarbitId() == Varbits.SHADOW_VEIL && config.showArceuus())
+		if (event.getVarbitId() == Varbits.SHADOW_VEIL && event.getValue() == 0 && config.showArceuus())
 		{
-			updateVarTimer(SHADOW_VEIL, event.getValue(), i -> client.getRealSkillLevel(Skill.MAGIC));
+			removeGameTimer(SHADOW_VEIL);
 		}
 
-		if (event.getVarpId() == VarPlayer.POISON.getId() && config.showAntiPoison())
+		if (event.getVarpId() == VarPlayer.POISON && config.showAntiPoison())
 		{
 			final int poisonVarp = event.getValue();
 			final int tickCount = client.getTickCount();
@@ -353,7 +361,7 @@ public class TimersPlugin extends Plugin
 			updateVarTimer(TELEBLOCK, event.getValue() - 100, i -> i <= 0, IntUnaryOperator.identity());
 		}
 
-		if (event.getVarpId() == VarPlayer.CHARGE_GOD_SPELL.getId() && config.showCharge())
+		if (event.getVarpId() == VarPlayer.CHARGE_GOD_SPELL && config.showCharge())
 		{
 			updateVarTimer(CHARGE, event.getValue(), i -> i * 2);
 		}
@@ -368,14 +376,14 @@ public class TimersPlugin extends Plugin
 			updateVarTimer(DRAGON_FIRE_SHIELD, event.getValue(), i -> i * 8);
 		}
 
-		if (event.getVarpId() == VarPlayer.LAST_HOME_TELEPORT.getId() && config.showHomeMinigameTeleports())
+		if (event.getVarpId() == LAST_HOME_TELEPORT && config.showHomeMinigameTeleports())
 		{
-			checkTeleport(VarPlayer.LAST_HOME_TELEPORT);
+			checkTeleport(LAST_HOME_TELEPORT);
 		}
 
-		if (event.getVarpId() == VarPlayer.LAST_MINIGAME_TELEPORT.getId() && config.showHomeMinigameTeleports())
+		if (event.getVarpId() == LAST_MINIGAME_TELEPORT && config.showHomeMinigameTeleports())
 		{
-			checkTeleport(VarPlayer.LAST_MINIGAME_TELEPORT);
+			checkTeleport(LAST_MINIGAME_TELEPORT);
 		}
 
 		if (event.getVarbitId() == Varbits.RUN_SLOWED_DEPLETION_ACTIVE
@@ -541,16 +549,9 @@ public class TimersPlugin extends Plugin
 			updateVarTimer(MENAPHITE_REMEDY, event.getValue(), i -> i * 25);
 		}
 
-		if (event.getVarbitId() == Varbits.LIQUID_ADERNALINE_ACTIVE && config.showLiquidAdrenaline())
+		if (event.getVarbitId() == Varbits.LIQUID_ADERNALINE_ACTIVE && event.getValue() == 0 && config.showLiquidAdrenaline())
 		{
-			if (event.getValue() == 1)
-			{
-				createGameTimer(LIQUID_ADRENALINE);
-			}
-			else
-			{
-				removeGameTimer(LIQUID_ADRENALINE);
-			}
+			removeGameTimer(LIQUID_ADRENALINE);
 		}
 
 		if (event.getVarbitId() == Varbits.FARMERS_AFFINITY && config.showFarmersAffinity())
@@ -574,8 +575,8 @@ public class TimersPlugin extends Plugin
 		}
 		else
 		{
-			checkTeleport(VarPlayer.LAST_HOME_TELEPORT);
-			checkTeleport(VarPlayer.LAST_MINIGAME_TELEPORT);
+			checkTeleport(LAST_HOME_TELEPORT);
+			checkTeleport(LAST_MINIGAME_TELEPORT);
 		}
 
 		if (!config.showAntiFire())
@@ -648,6 +649,11 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(VENGEANCE);
 		}
 
+		if (!config.showHealGroup())
+		{
+			removeGameTimer(HEAL_GROUP);
+		}
+
 		if (!config.showVengeanceActive())
 		{
 			removeGameIndicator(VENGEANCE_ACTIVE);
@@ -683,6 +689,7 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(RESURRECT_THRALL_COOLDOWN);
 			removeGameTimer(SHADOW_VEIL_COOLDOWN);
 			removeGameTimer(WARD_OF_ARCEUUS_COOLDOWN);
+			removeGameTimer(CORRUPTION_COOLDOWN);
 		}
 
 		if (!config.showAntiPoison())
@@ -816,11 +823,26 @@ public class TimersPlugin extends Plugin
 			final int magicLevel = client.getRealSkillLevel(Skill.MAGIC);
 			if (message.endsWith(SHADOW_VEIL_MESSAGE))
 			{
-				updateVarTimer(SHADOW_VEIL, 1, i -> magicLevel);
+				createGameTimer(SHADOW_VEIL, Duration.of(magicLevel, RSTimeUnit.GAME_TICKS));
 			}
 			else if (message.endsWith(WARD_OF_ARCEUUS_MESSAGE))
 			{
 				createGameTimer(WARD_OF_ARCEUUS, Duration.of(magicLevel, RSTimeUnit.GAME_TICKS));
+			}
+			else if (message.contains(RESURRECT_THRALL_MESSAGE_START) && message.endsWith(RESURRECT_THRALL_MESSAGE_END))
+			{
+				// by default the thrall lasts 1 tick per magic level
+				int t = client.getBoostedSkillLevel(Skill.MAGIC);
+				// ca tiers being completed boosts this
+				if (client.getVarbitValue(Varbits.COMBAT_ACHIEVEMENT_TIER_GRANDMASTER) == 2)
+				{
+					t += t; // 100% boost
+				}
+				else if (client.getVarbitValue(Varbits.COMBAT_ACHIEVEMENT_TIER_MASTER) == 2)
+				{
+					t += t / 2; // 50% boost
+				}
+				createGameTimer(RESURRECT_THRALL, Duration.of(t, RSTimeUnit.GAME_TICKS));
 			}
 		}
 
@@ -935,7 +957,7 @@ public class TimersPlugin extends Plugin
 		}
 	}
 
-	private void checkTeleport(VarPlayer varPlayer)
+	private void checkTeleport(@Varp int varPlayer)
 	{
 		final GameTimer teleport;
 		switch (varPlayer)
@@ -1081,11 +1103,7 @@ public class TimersPlugin extends Plugin
 		ItemContainer container = itemContainerChanged.getItemContainer();
 
 		Item weapon = container.getItem(EquipmentInventorySlot.WEAPON.getSlotIdx());
-		if (weapon == null ||
-			(weapon.getId() != ItemID.STAFF_OF_THE_DEAD &&
-				weapon.getId() != ItemID.TOXIC_STAFF_OF_THE_DEAD &&
-				weapon.getId() != ItemID.STAFF_OF_LIGHT &&
-				weapon.getId() != ItemID.TOXIC_STAFF_UNCHARGED))
+		if (weapon == null || STAVES_OF_THE_DEAD.contains(weapon.getId()))
 		{
 			// remove sotd timer if the staff has been unwielded
 			removeGameTimer(STAFF_OF_THE_DEAD);

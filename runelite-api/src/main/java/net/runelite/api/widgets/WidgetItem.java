@@ -50,15 +50,6 @@ public class WidgetItem
 	 */
 	private final int quantity;
 	/**
-	 * The index position of this WidgetItem inside its parents
-	 * WidgetItem array.
-	 *
-	 * @see Widget#getWidgetItems()
-	 * @deprecated use getWidget().getIndex() instead for the if3 inventory
-	 */
-	@Deprecated
-	private final int index;
-	/**
 	 * The area where the widget is drawn on the canvas.
 	 */
 	private final Rectangle canvasBounds;

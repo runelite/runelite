@@ -139,11 +139,11 @@ public enum Produce
 	SUPERCOMPOST("Supercompost", PatchImplementation.COMPOST, ItemID.SUPERCOMPOST, 40, 3, 0, 15),
 	ULTRACOMPOST("Ultracompost", PatchImplementation.COMPOST, ItemID.ULTRACOMPOST, 0, 3, 0, 15), // Ultra doesn't compost,
 	ROTTEN_TOMATO("Rotten Tomato", PatchImplementation.COMPOST, ItemID.ROTTEN_TOMATO, 40, 3, 0, 15),
-	EMPTY_GIANT_COMPOST_BIN("Giant Compost Bin", PatchImplementation.COMPOST, ItemID.COMPOST_BIN, 0, 1, 0, 0), // Dummy produce for the empty state
-	GIANT_COMPOST("Compost", PatchImplementation.GIANT_COMPOST, ItemID.COMPOST, 40, 3, 0, 30),
-	GIANT_SUPERCOMPOST("Supercompost", PatchImplementation.GIANT_COMPOST, ItemID.SUPERCOMPOST, 40, 3, 0, 30),
-	GIANT_ULTRACOMPOST("Ultracompost", PatchImplementation.GIANT_COMPOST, ItemID.ULTRACOMPOST, 0, 3, 0, 30), // Ultra doesn't compost
-	GIANT_ROTTEN_TOMATO("Rotten Tomato", PatchImplementation.GIANT_COMPOST, ItemID.ROTTEN_TOMATO, 40, 3, 0, 30);
+	EMPTY_BIG_COMPOST_BIN("Big Compost Bin", PatchImplementation.COMPOST, ItemID.COMPOST_BIN, 0, 1, 0, 0), // Dummy produce for the empty state
+	BIG_COMPOST("Compost", PatchImplementation.BIG_COMPOST, ItemID.COMPOST, 40, 3, 0, 30),
+	BIG_SUPERCOMPOST("Supercompost", PatchImplementation.BIG_COMPOST, ItemID.SUPERCOMPOST, 40, 3, 0, 30),
+	BIG_ULTRACOMPOST("Ultracompost", PatchImplementation.BIG_COMPOST, ItemID.ULTRACOMPOST, 0, 3, 0, 30), // Ultra doesn't compost
+	BIG_ROTTEN_TOMATO("Rotten Tomato", PatchImplementation.BIG_COMPOST, ItemID.ROTTEN_TOMATO, 40, 3, 0, 30);
 
 	/**
 	 * User-visible name

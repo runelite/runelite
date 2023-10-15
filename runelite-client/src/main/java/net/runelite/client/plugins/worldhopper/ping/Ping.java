@@ -58,7 +58,7 @@ public class Ping
 		}
 		catch (UnknownHostException ex)
 		{
-			log.warn("error resolving host for world ping", ex);
+			log.debug("error resolving host for world ping", ex);
 			return -1;
 		}
 

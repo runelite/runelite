@@ -88,7 +88,7 @@ public enum FishingSpot
 	KARAMBWAN("Karambwan", ItemID.RAW_KARAMBWAN,
 		FISHING_SPOT_4712, FISHING_SPOT_4713
 	),
-	KARAMBWANJI("Karambwanji, Shrimp", "Karambwanji", ItemID.KARAMBWANJI,
+	KARAMBWANJI("Karambwanji, Shrimp", "Karambwanji", ItemID.RAW_KARAMBWANJI,
 		FISHING_SPOT_4710
 	),
 	SACRED_EEL("Sacred eel", ItemID.SACRED_EEL,
@@ -105,6 +105,12 @@ public enum FishingSpot
 	),
 	COMMON_TENCH("Common tench, Bluegill, Greater siren, Mottled eel", "Greater siren", ItemID.COMMON_TENCH,
 		FISHING_SPOT_8523
+	),
+	CAMDOZAAL_TETRA("Guppy, Cavefish, Tetra, Catfish, Barronite shards, Barronite handle", "Tetra", ItemID.TETRA,
+		FISHING_SPOT_10686
+	),
+	CAMDOZAAL_CAVE_EEL("Slimy eel, Cave eel", "Cave eel", ItemID.CAVE_EEL,
+		FISHING_SPOT_10653
 	),
 	TUTORIAL_SHRIMP("Shrimp", ItemID.RAW_SHRIMPS,
 		FISHING_SPOT_3317

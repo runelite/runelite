@@ -27,6 +27,7 @@ package net.runelite.client.plugins.timetracking.hunter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.VarPlayer;
+import net.runelite.api.annotations.Varp;
 
 @AllArgsConstructor
 @Getter
@@ -38,5 +39,6 @@ enum BirdHouseSpace
 	VALLEY_SOUTH("Verdant Valley (Southwest)", VarPlayer.BIRD_HOUSE_VALLEY_SOUTH);
 
 	private final String name;
-	private final VarPlayer varp;
+	@Varp
+	private final int varp;
 }

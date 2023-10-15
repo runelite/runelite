@@ -38,27 +38,29 @@ import lombok.Setter;
 import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.Constants;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
 import net.runelite.api.HintArrowType;
+import static net.runelite.api.ObjectID.BARRONITE_ROCKS;
+import static net.runelite.api.ObjectID.BARRONITE_ROCKS_41548;
 import static net.runelite.api.ObjectID.DEPLETED_VEIN;
 import static net.runelite.api.ObjectID.DEPLETED_VEIN_26665;
 import static net.runelite.api.ObjectID.DEPLETED_VEIN_26666;
 import static net.runelite.api.ObjectID.DEPLETED_VEIN_26667;
 import static net.runelite.api.ObjectID.DEPLETED_VEIN_26668;
 import static net.runelite.api.ObjectID.EMPTY_WALL;
-import static net.runelite.api.ObjectID.MINERAL_VEIN;
-import static net.runelite.api.ObjectID.MINERAL_VEIN_5990;
-import static net.runelite.api.ObjectID.MINERAL_VEIN_5991;
-import static net.runelite.api.ObjectID.ORE_VEIN_26661;
+import static net.runelite.api.ObjectID.GOLD_VEIN;
+import static net.runelite.api.ObjectID.GOLD_VEIN_5990;
+import static net.runelite.api.ObjectID.GOLD_VEIN_5991;
+import static net.runelite.api.ObjectID.ORE_VEIN;
 import static net.runelite.api.ObjectID.ORE_VEIN_26662;
 import static net.runelite.api.ObjectID.ORE_VEIN_26663;
 import static net.runelite.api.ObjectID.ORE_VEIN_26664;
-import static net.runelite.api.ObjectID.ROCKS_41547;
-import static net.runelite.api.ObjectID.ROCKS_41548;
 import static net.runelite.api.ObjectID.ROCKS_41549;
 import static net.runelite.api.ObjectID.ROCKS_41550;
 import net.runelite.api.Player;
+import net.runelite.api.ScriptID;
 import net.runelite.api.WallObject;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
@@ -67,6 +69,7 @@ import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.WallObjectSpawned;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -328,16 +331,6 @@ public class MiningPlugin extends Plugin
 				respawns.add(rockRespawn);
 				break;
 			}
-			case DEPLETED_VEIN_26665: // Depleted motherlode vein
-			case DEPLETED_VEIN_26666: // Depleted motherlode vein
-			case DEPLETED_VEIN_26667: // Depleted motherlode vein
-			case DEPLETED_VEIN_26668: // Depleted motherlode vein
-			{
-				Rock rock = Rock.ORE_VEIN;
-				RockRespawn rockRespawn = new RockRespawn(rock, object.getWorldLocation(), Instant.now(), (int) rock.getRespawnTime(region).toMillis(), rock.getZOffset());
-				respawns.add(rockRespawn);
-				break;
-			}
 			case ROCKS_41549: // Depleted barronite vein
 			case ROCKS_41550: // Depleted barronite vein
 			{
@@ -353,15 +346,15 @@ public class MiningPlugin extends Plugin
 				respawns.add(rockRespawn);
 				break;
 			}
-			case ORE_VEIN_26661: // Motherlode vein
+			case ORE_VEIN: // Motherlode vein
 			case ORE_VEIN_26662: // Motherlode vein
 			case ORE_VEIN_26663: // Motherlode vein
 			case ORE_VEIN_26664: // Motherlode vein
-			case ROCKS_41547: // Barronite vein
-			case ROCKS_41548: // Barronite vein
-			case MINERAL_VEIN: // Arzinian gold vein
-			case MINERAL_VEIN_5990: // Gold vein
-			case MINERAL_VEIN_5991: // Gold vein
+			case BARRONITE_ROCKS: // Barronite vein
+			case BARRONITE_ROCKS_41548: // Barronite vein
+			case GOLD_VEIN: // Arzinian gold vein
+			case GOLD_VEIN_5990: // Gold vein
+			case GOLD_VEIN_5991: // Gold vein
 			{
 				// If the vein respawns before the timer is up, remove it
 				final WorldPoint point = object.getWorldLocation();
@@ -384,6 +377,33 @@ public class MiningPlugin extends Plugin
 				}
 
 				session.setLastMined();
+			}
+		}
+	}
+
+	@Subscribe
+	public void onScriptPreFired(ScriptPreFired scriptPreFired)
+	{
+		if (scriptPreFired.getScriptId() == ScriptID.ADD_OVERLAYTIMER_LOC)
+		{
+			var args = scriptPreFired.getScriptEvent().getArguments();
+			int locCoord = (int) args[1];
+			int locId = (int) args[2];
+			int ticks = (int) args[5];
+
+			switch (locId)
+			{
+				case DEPLETED_VEIN_26665: // Depleted motherlode vein
+				case DEPLETED_VEIN_26666: // Depleted motherlode vein
+				case DEPLETED_VEIN_26667: // Depleted motherlode vein
+				case DEPLETED_VEIN_26668: // Depleted motherlode vein
+				{
+					WorldPoint worldPoint = new WorldPoint((locCoord >>> 14) & 0x3FFF, locCoord & 0x3FFF, (locCoord >>> 28) & 0x3);
+					Rock rock = Rock.ORE_VEIN;
+					RockRespawn rockRespawn = new RockRespawn(rock, worldPoint, Instant.now(), ticks * Constants.GAME_TICK_LENGTH, rock.getZOffset());
+					respawns.add(rockRespawn);
+					break;
+				}
 			}
 		}
 	}

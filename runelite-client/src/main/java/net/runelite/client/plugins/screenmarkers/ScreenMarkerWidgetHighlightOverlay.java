@@ -34,8 +34,6 @@ import net.runelite.api.Client;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
-import net.runelite.api.widgets.WidgetItem;
-import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -88,21 +86,10 @@ class ScreenMarkerWidgetHighlightOverlay extends Overlay
 		Rectangle bounds = null;
 		if (childIdx > -1)
 		{
-			if (widget.getType() == WidgetType.INVENTORY)
+			final Widget child = widget.getChild(childIdx);
+			if (child != null)
 			{
-				final WidgetItem widgetItem = widget.getWidgetItem(childIdx);
-				if (widgetItem != null)
-				{
-					bounds = widgetItem.getCanvasBounds();
-				}
-			}
-			else
-			{
-				final Widget child = widget.getChild(childIdx);
-				if (child != null)
-				{
-					bounds = child.getBounds();
-				}
+				bounds = child.getBounds();
 			}
 		}
 		else

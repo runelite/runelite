@@ -219,7 +219,9 @@ public class FarmingTracker
 					}
 				}
 
-				if (currentPatchState.getCropState() == CropState.DEAD || currentPatchState.getCropState() == CropState.HARVESTABLE)
+				if (currentPatchState.getCropState() == CropState.DEAD ||
+					currentPatchState.getCropState() == CropState.HARVESTABLE ||
+					currentPatchState.getCropState() == CropState.EMPTY)
 				{
 					compostTracker.setCompostState(patch, null);
 					paymentTracker.setProtectedState(patch, false);

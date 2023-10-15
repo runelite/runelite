@@ -33,13 +33,17 @@ import com.google.common.hash.Hasher;
 import com.google.common.hash.Hashing;
 import com.google.common.primitives.Shorts;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.lang.reflect.Type;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -47,6 +51,7 @@ import java.util.EnumSet;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -81,6 +86,7 @@ import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.account.SessionManager;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.Subscribe;
@@ -128,8 +134,10 @@ public class GrandExchangePlugin extends Plugin
 	private static final int MAX_RESULT_COUNT = 250;
 
 	private static final FuzzyScore FUZZY = new FuzzyScore(Locale.ENGLISH);
-
 	private static final Color FUZZY_HIGHLIGHT_COLOR = new Color(0x800000);
+
+	private static final int MAX_TRADE_HISTORY = 1024;
+	private static final int MAX_TRADE_DAYS = 365;
 
 	@Getter(AccessLevel.PACKAGE)
 	private NavigationButton button;
@@ -177,6 +185,12 @@ public class GrandExchangePlugin extends Plugin
 
 	@Inject
 	private RuneLiteConfig runeLiteConfig;
+
+	@Inject
+	private ClientThread clientThread;
+
+	@Inject
+	private ScheduledExecutorService scheduledExecutorService;
 
 	@Inject
 	private GrandExchangeClient grandExchangeClient;
@@ -251,6 +265,39 @@ public class GrandExchangePlugin extends Plugin
 		configManager.unsetRSProfileConfiguration("geoffer", Integer.toString(slot));
 	}
 
+	private synchronized void saveTrade(Trade trade)
+	{
+		List<Trade> trades = new ArrayList<>();
+		String history = configManager.getRSProfileConfiguration(GrandExchangeConfig.CONFIG_GROUP, "tradeHistory");
+		//CHECKSTYLE:OFF
+		final Type type = new TypeToken<List<Trade>>() {}.getType();
+		//CHECKSTYLE:ON
+		if (history != null)
+		{
+			try
+			{
+				List<Trade> t = gson.fromJson(history, type);
+				if (t != null)
+				{
+					trades = t;
+				}
+			}
+			catch (JsonSyntaxException ex)
+			{
+				log.warn("error updating saved trades", ex);
+			}
+		}
+
+		Instant ago = Instant.now().minus(MAX_TRADE_DAYS, ChronoUnit.DAYS);
+		while (!trades.isEmpty() && (trades.size() >= MAX_TRADE_HISTORY || trades.get(0).time.isBefore(ago)))
+		{
+			trades.remove(0);
+		}
+
+		trades.add(trade);
+		configManager.setRSProfileConfiguration(GrandExchangeConfig.CONFIG_GROUP, "tradeHistory", gson.toJson(trades, type));
+	}
+
 	@Provides
 	GrandExchangeConfig provideConfig(ConfigManager configManager)
 	{
@@ -290,6 +337,18 @@ public class GrandExchangePlugin extends Plugin
 		}
 
 		lastLoginTick = -1;
+
+		if (client.getGameState() == GameState.LOGGED_IN)
+		{
+			final GrandExchangeOffer[] offers = client.getGrandExchangeOffers();
+			for (int i = 0; i < offers.length; i++)
+			{
+				final int slot = i;
+				clientThread.invokeLater(() -> updatePanel(slot, offers[slot]));
+
+				updateConfig(i, offers[i]);
+			}
+		}
 	}
 
 	@Override
@@ -353,10 +412,7 @@ public class GrandExchangePlugin extends Plugin
 		log.debug("GE offer updated: state: {}, slot: {}, item: {}, qty: {}, lastLoginTick: {}",
 			offer.getState(), slot, offer.getItemId(), offer.getQuantitySold(), lastLoginTick);
 
-		ItemComposition offerItem = itemManager.getItemComposition(offer.getItemId());
-		boolean shouldStack = offerItem.isStackable() || offer.getTotalQuantity() > 1;
-		BufferedImage itemImage = itemManager.getImage(offer.getItemId(), offer.getTotalQuantity(), shouldStack);
-		SwingUtilities.invokeLater(() -> panel.getOffersPanel().updateOffer(offerItem, itemImage, offer, slot));
+		updatePanel(slot, offer);
 
 		updateLimitTimer(offer);
 
@@ -426,6 +482,7 @@ public class GrandExchangePlugin extends Plugin
 
 			log.debug("Submitting cancelled: {}", grandExchangeTrade);
 			grandExchangeClient.submit(grandExchangeTrade);
+			saveTrade(grandExchangeTrade);
 			return;
 		}
 
@@ -453,6 +510,25 @@ public class GrandExchangePlugin extends Plugin
 
 		log.debug("Submitting trade: {}", grandExchangeTrade);
 		grandExchangeClient.submit(grandExchangeTrade);
+		saveTrade(grandExchangeTrade);
+	}
+
+	private void saveTrade(GrandExchangeTrade trade)
+	{
+		// Completed trades are either fully completed (qty == total) or partially complete
+		// (qty > 0) and cancelled.
+		if (trade.getQty() > 0 && (trade.isCancel() || trade.getQty() == trade.getTotal()))
+		{
+			Trade t = new Trade();
+			t.setBuy(trade.isBuy());
+			t.setItemId(trade.getItemId());
+			t.setQuantity(trade.getQty());
+			t.setPrice(trade.getSpent() / trade.getQty());
+			t.setTime(Instant.now());
+
+			log.debug("Saving trade: {}", t);
+			scheduledExecutorService.execute(() -> saveTrade(t));
+		}
 	}
 
 	private WorldType getGeWorldType()
@@ -461,6 +537,10 @@ public class GrandExchangePlugin extends Plugin
 		if (worldTypes.contains(net.runelite.api.WorldType.SEASONAL))
 		{
 			return WorldType.SEASONAL;
+		}
+		else if (worldTypes.contains(net.runelite.api.WorldType.TOURNAMENT_WORLD))
+		{
+			return WorldType.TOURNAMENT;
 		}
 		else if (worldTypes.contains(net.runelite.api.WorldType.DEADMAN))
 		{
@@ -474,6 +554,14 @@ public class GrandExchangePlugin extends Plugin
 		{
 			return null;
 		}
+	}
+
+	private void updatePanel(int slot, GrandExchangeOffer offer)
+	{
+		ItemComposition offerItem = itemManager.getItemComposition(offer.getItemId());
+		boolean shouldStack = offerItem.isStackable() || offer.getTotalQuantity() > 1;
+		BufferedImage itemImage = itemManager.getImage(offer.getItemId(), offer.getTotalQuantity(), shouldStack);
+		SwingUtilities.invokeLater(() -> panel.getOffersPanel().updateOffer(offerItem, itemImage, offer, slot));
 	}
 
 	private void updateConfig(int slot, GrandExchangeOffer offer)
@@ -498,16 +586,20 @@ public class GrandExchangePlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (!this.config.enableNotifications() || event.getType() != ChatMessageType.GAMEMESSAGE)
+		if (event.getType() != ChatMessageType.GAMEMESSAGE)
 		{
 			return;
 		}
 
 		String message = Text.removeTags(event.getMessage());
 
-		if (message.startsWith("Grand Exchange:"))
+		if (message.startsWith("Grand Exchange:") && config.enableNotifications())
 		{
-			this.notifier.notify(message);
+			notifier.notify(message);
+		}
+		else if (message.startsWith("Grand Exchange: Finished") && config.notifyOnOfferComplete())
+		{
+			notifier.notify(message);
 		}
 	}
 
@@ -837,7 +929,7 @@ public class GrandExchangePlugin extends Plugin
 			}
 		}
 
-		if (config.showActivelyTradedPrice())
+		if (config.showActivelyTradedPrice() && !client.getWorldType().contains(net.runelite.api.WorldType.DEADMAN))
 		{
 			final int price = itemManager.getItemPriceWithSource(itemId, true);
 			if (price > 0)

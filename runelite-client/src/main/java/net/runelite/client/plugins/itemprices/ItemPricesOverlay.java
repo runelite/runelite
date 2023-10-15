@@ -55,7 +55,7 @@ class ItemPricesOverlay extends Overlay
 	private static final int SEED_VAULT_ITEM_WIDGETID = WidgetInfo.SEED_VAULT_ITEM_CONTAINER.getPackedId();
 	private static final int SEED_VAULT_INVENTORY_ITEM_WIDGETID = WidgetInfo.SEED_VAULT_INVENTORY_ITEMS_CONTAINER.getPackedId();
 	private static final int POH_TREASURE_CHEST_INVENTORY_ITEM_WIDGETID = WidgetInfo.POH_TREASURE_CHEST_INVENTORY_CONTAINER.getPackedId();
-	
+
 	private final Client client;
 	private final ItemPricesConfig config;
 	private final TooltipManager tooltipManager;
@@ -192,7 +192,7 @@ class ItemPricesOverlay extends Overlay
 		{
 			container = client.getItemContainer(InventoryID.SEED_VAULT);
 		}
-		
+
 		if (container == null)
 		{
 			return null;

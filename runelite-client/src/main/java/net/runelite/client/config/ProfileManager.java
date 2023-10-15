@@ -85,7 +85,7 @@ public class ProfileManager
 		{
 			try (FileInputStream in = new FileInputStream(PROFILES))
 			{
-				return gson.fromJson(new InputStreamReader(in), Profiles.class)
+				return gson.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), Profiles.class)
 					.getProfiles();
 			}
 			catch (FileNotFoundException ex)
@@ -115,6 +115,7 @@ public class ProfileManager
 					Profiles profilesData = new Profiles();
 					profilesData.setProfiles(profiles);
 					gson.toJson(profilesData, writer);
+					writer.flush();
 					channel.force(true);
 				}
 
@@ -140,6 +141,11 @@ public class ProfileManager
 
 		public ConfigProfile createProfile(String name, long id)
 		{
+			if (findProfile(id) != null)
+			{
+				throw new IllegalArgumentException("profile " + id + " already exists");
+			}
+
 			ConfigProfile profile = new ConfigProfile(id);
 			profile.setName(name);
 			profile.setSync(false);
@@ -196,6 +202,7 @@ public class ProfileManager
 			if (!oldFile.exists())
 			{
 				// no config file is valid if the profile hasn't been used yet.
+				log.info("Old profile file {} does not exist", oldFile.getName());
 				return;
 			}
 
@@ -206,6 +213,7 @@ public class ProfileManager
 					newFile.toPath(),
 					StandardCopyOption.REPLACE_EXISTING
 				);
+				log.info("Renamed profile file {} to {}", oldFile.getName(), newFile.getName());
 			}
 			catch (IOException e)
 			{

@@ -25,7 +25,6 @@
  */
 package net.runelite.client.plugins.playerindicators;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -34,7 +33,6 @@ import javax.inject.Singleton;
 import net.runelite.api.FriendsChatRank;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
-import net.runelite.api.clan.ClanTitle;
 import net.runelite.client.game.ChatIconManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -66,11 +64,11 @@ public class PlayerIndicatorsOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		playerIndicatorsService.forEachPlayer((player, color) -> renderPlayerOverlay(graphics, player, color));
+		playerIndicatorsService.forEachPlayer((player, decorations) -> renderPlayerOverlay(graphics, player, decorations));
 		return null;
 	}
 
-	private void renderPlayerOverlay(Graphics2D graphics, Player actor, Color color)
+	private void renderPlayerOverlay(Graphics2D graphics, Player actor, PlayerIndicatorsService.Decorations decorations)
 	{
 		final PlayerNameLocation drawPlayerNamesConfig = config.playerNamePosition();
 		if (drawPlayerNamesConfig == PlayerNameLocation.DISABLED)
@@ -110,22 +108,16 @@ public class PlayerIndicatorsOverlay extends Overlay
 		}
 
 		BufferedImage rankImage = null;
-		if (actor.isFriendsChatMember() && config.highlightFriendsChat() && config.showFriendsChatRanks())
+		if (decorations.getFriendsChatRank() != null && config.showFriendsChatRanks())
 		{
-			final FriendsChatRank rank = playerIndicatorsService.getFriendsChatRank(actor);
-
-			if (rank != FriendsChatRank.UNRANKED)
+			if (decorations.getFriendsChatRank() != FriendsChatRank.UNRANKED)
 			{
-				rankImage = chatIconManager.getRankImage(rank);
+				rankImage = chatIconManager.getRankImage(decorations.getFriendsChatRank());
 			}
 		}
-		else if (actor.isClanMember() && config.highlightClanMembers() && config.showClanChatRanks())
+		else if (decorations.getClanTitle() != null && config.showClanChatRanks())
 		{
-			ClanTitle clanTitle = playerIndicatorsService.getClanTitle(actor);
-			if (clanTitle != null)
-			{
-				rankImage = chatIconManager.getRankImage(clanTitle);
-			}
+			rankImage = chatIconManager.getRankImage(decorations.getClanTitle());
 		}
 
 		if (rankImage != null)
@@ -153,6 +145,6 @@ public class PlayerIndicatorsOverlay extends Overlay
 			textLocation = new Point(textLocation.getX() + imageTextMargin, textLocation.getY());
 		}
 
-		OverlayUtil.renderTextLocation(graphics, textLocation, name, color);
+		OverlayUtil.renderTextLocation(graphics, textLocation, name, decorations.getColor());
 	}
 }
