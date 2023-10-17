@@ -63,4 +63,15 @@ public interface OpponentInfoConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "onlyShowBossHealthOverlay",
+		name = "Only show boss health overlay",
+		description = "Hides this plugin's additional health overlay; only modifies the in-game setting 'boss health overlay'",
+		position = 4
+	)
+	default boolean onlyShowBossHealthOverlay()
+	{
+		return false;
+	}
 }
