@@ -79,7 +79,10 @@ public interface ScreenshotConfig extends Config
 		description = "Copies the saved screenshot to clipboard",
 		position = 4
 	)
-	boolean copyToClipboard();
+	default boolean copyToClipboard()
+	{
+		return false;
+	}
 
 	@ConfigItem(
 		keyName = "hotkey",
