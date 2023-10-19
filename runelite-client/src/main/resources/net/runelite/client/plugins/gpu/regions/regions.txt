@@ -182,3 +182,55 @@ R 30 86 31 87
 // demonic gorillas
 n
 R 32 88 33 88
+
+// sourhog lair
+n
+r 49 151
+
+// draynor manor basement
+n
+r 48 152
+
+// ham hideout
+n
+r 49 150
+
+// draynor sewer
+n
+R 48 150 48 151
+
+// mage bank
+n
+r 39 73
+
+// bob fishing random
+n
+r 39 74
+
+// frog random
+n
+r 38 74
+
+// grand tree basement
+n
+r 38 154
+
+// lighthouse basement
+n
+r 39 156
+
+// haunted mine
+n
+R 42 69 43 71
+
+// mm hangar
+n
+r 41 70
+
+// tree gnome village underground
+n
+r 40 69
+
+// maze random
+n
+r 45 71
