@@ -120,6 +120,11 @@ public class Perspective
 	 */
 	public static Point localToCanvas(@Nonnull Client client, int x, int y, int z)
 	{
+		return client.isGpu() ? localToCanvasGpu(client, x, y, z) : localToCanvasCpu(client, x, y, z);
+	}
+
+	private static Point localToCanvasCpu(Client client, int x, int y, int z)
+	{
 		if (x >= -ESCENE_OFFSET << LOCAL_COORD_BITS && y >= -ESCENE_OFFSET << LOCAL_COORD_BITS &&
 			x <= SCENE_SIZE + ESCENE_OFFSET << LOCAL_COORD_BITS && y <= SCENE_SIZE + ESCENE_OFFSET << LOCAL_COORD_BITS)
 		{
@@ -148,7 +153,47 @@ public class Perspective
 				final int pointY = client.getViewportHeight() / 2 + y2 * scale / z1;
 				return new Point(
 					pointX + client.getViewportXOffset(),
-					pointY + client.getViewportYOffset());
+					pointY + client.getViewportYOffset()
+				);
+			}
+		}
+
+		return null;
+	}
+
+	private static Point localToCanvasGpu(Client client, int x, int y, int z)
+	{
+		if (x >= -ESCENE_OFFSET << LOCAL_COORD_BITS && y >= -ESCENE_OFFSET << LOCAL_COORD_BITS &&
+			x <= SCENE_SIZE + ESCENE_OFFSET << LOCAL_COORD_BITS && y <= SCENE_SIZE + ESCENE_OFFSET << LOCAL_COORD_BITS)
+		{
+			final double
+				cameraPitch = client.getCameraFpPitch(),
+				cameraYaw = client.getCameraFpYaw();
+
+			final float
+				fx = x - (float) client.getCameraFpX(),
+				fy = y - (float) client.getCameraFpY(),
+				fz = z - (float) client.getCameraFpZ(),
+				pitchSin = (float) Math.sin(cameraPitch),
+				pitchCos = (float) Math.cos(cameraPitch),
+				yawSin = (float) Math.sin(cameraYaw),
+				yawCos = (float) Math.cos(cameraYaw);
+
+			final float
+				x1 = fx * yawCos + fy * yawSin,
+				y1 = fy * yawCos - fx * yawSin,
+				y2 = fz * pitchCos - y1 * pitchSin,
+				z1 = y1 * pitchCos + fz * pitchSin;
+
+			if (z1 >= 50f)
+			{
+				final int scale = client.getScale();
+				final int pointX = Math.round(client.getViewportWidth() / 2f + x1 * scale / z1);
+				final int pointY = Math.round(client.getViewportHeight() / 2f + y2 * scale / z1);
+				return new Point(
+					pointX + client.getViewportXOffset(),
+					pointY + client.getViewportYOffset()
+				);
 			}
 		}
 
@@ -156,12 +201,12 @@ public class Perspective
 	}
 
 	/**
-	 * Translates a model's vertices into 2d space. There is a separate implementation for GPU since GPU
-	 * uses a slightly more precise projection that can cause features like model outlines being noticeably
-	 * off otherwise.
+	 * Translates a model's vertices into 2d space.
 	 */
 	public static void modelToCanvas(Client client, int end, int x3dCenter, int y3dCenter, int z3dCenter, int rotate, int[] x3d, int[] y3d, int[] z3d, int[] x2d, int[] y2d)
 	{
+		// There is a separate implementation for GPU since GPU uses a slightly more precise projection that can
+		// cause features like model outlines being noticeably off otherwise.
 		if (client.isGpu())
 		{
 			modelToCanvasGpu(client, end, x3dCenter, y3dCenter, z3dCenter, rotate, x3d, y3d, z3d, x2d, y2d);
@@ -174,20 +219,20 @@ public class Perspective
 
 	private static void modelToCanvasGpu(Client client, int end, int x3dCenter, int y3dCenter, int z3dCenter, int rotate, int[] x3d, int[] y3d, int[] z3d, int[] x2d, int[] y2d)
 	{
-		final int
-			cameraPitch = client.getCameraPitch(),
-			cameraYaw = client.getCameraYaw();
+		final double
+			cameraPitch = client.getCameraFpPitch(),
+			cameraYaw = client.getCameraFpYaw();
 		final float
-			pitchSin = SINE[cameraPitch] / 65536.0f,
-			pitchCos = COSINE[cameraPitch] / 65536.0f,
-			yawSin = SINE[cameraYaw] / 65536.0f,
-			yawCos = COSINE[cameraYaw] / 65536.0f,
+			pitchSin = (float) Math.sin(cameraPitch),
+			pitchCos = (float) Math.cos(cameraPitch),
+			yawSin = (float) Math.sin(cameraYaw),
+			yawCos = (float) Math.cos(cameraYaw),
 			rotateSin = SINE[rotate] / 65536.0f,
 			rotateCos = COSINE[rotate] / 65536.0f,
 
-			cx = x3dCenter - client.getCameraX(),
-			cy = y3dCenter - client.getCameraY(),
-			cz = z3dCenter - client.getCameraZ(),
+			cx = x3dCenter - (float) client.getCameraFpX(),
+			cy = y3dCenter - (float) client.getCameraFpY(),
+			cz = z3dCenter - (float) client.getCameraFpZ(),
 
 			viewportXMiddle = client.getViewportWidth() / 2f,
 			viewportYMiddle = client.getViewportHeight() / 2f,
