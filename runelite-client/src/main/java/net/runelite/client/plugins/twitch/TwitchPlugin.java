@@ -113,7 +113,8 @@ public class TwitchPlugin extends Plugin implements TwitchListener
 				channel = "#" + channel;
 			}
 			String token = twitchConfig.oauthToken().trim();
-			if (!token.startsWith("oauth:")) {
+			if (!token.startsWith("oauth:"))
+			{
 				token = "oauth:" + token;
 			}
 
