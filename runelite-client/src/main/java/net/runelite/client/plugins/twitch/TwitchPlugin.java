@@ -112,13 +112,17 @@ public class TwitchPlugin extends Plugin implements TwitchListener
 			{
 				channel = "#" + channel;
 			}
+			String token = twitchConfig.oauthToken().trim();
+			if (!token.startsWith("oauth:")) {
+				token = "oauth:" + token;
+			}
 
 			log.debug("Connecting to Twitch as {}", twitchConfig.username());
 
 			twitchIRCClient = new TwitchIRCClient(
 				this,
 				twitchConfig.username(),
-				twitchConfig.oauthToken(),
+				token,
 				channel
 			);
 			twitchIRCClient.start();
