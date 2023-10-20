@@ -27,14 +27,14 @@
 #define UNIT PI / 1024.0f
 
 layout(std140) uniform uniforms {
-  int cameraYaw;
-  int cameraPitch;
+  float cameraYaw;
+  float cameraPitch;
   int centerX;
   int centerY;
   int zoom;
-  int cameraX;
-  int cameraY;
-  int cameraZ;
+  float cameraX;
+  float cameraY;
+  float cameraZ;
   ivec2 sinCosTable[2048];
 };
 

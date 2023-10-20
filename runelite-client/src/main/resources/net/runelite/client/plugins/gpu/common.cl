@@ -26,12 +26,12 @@
 #define PI 3.1415926535897932384626433832795f
 #define UNIT PI / 1024.0f
 
-float3 toScreen(int4 vertex, int cameraYaw, int cameraPitch, int centerX, int centerY, int zoom) {
-  float yawSin = sin(cameraYaw * UNIT);
-  float yawCos = cos(cameraYaw * UNIT);
+float3 toScreen(float3 vertex, float cameraYaw, float cameraPitch, int centerX, int centerY, int zoom) {
+  float yawSin = sin(cameraYaw);
+  float yawCos = cos(cameraYaw);
 
-  float pitchSin = sin(cameraPitch * UNIT);
-  float pitchCos = cos(cameraPitch * UNIT);
+  float pitchSin = sin(cameraPitch);
+  float pitchCos = cos(cameraPitch);
 
   float rotatedX = (vertex.z * yawSin) + (vertex.x * yawCos);
   float rotatedZ = (vertex.z * yawCos) - (vertex.x * yawSin);
@@ -70,12 +70,12 @@ float3 rotatef_vertex(float3 vertex, int orientation) {
 /*
  * Calculate the distance to a vertex given the camera angle
  */
-int vertex_distance(int4 vertex, int cameraYaw, int cameraPitch) {
-  int yawSin = (int)(65536.0f * sin(cameraYaw * UNIT));
-  int yawCos = (int)(65536.0f * cos(cameraYaw * UNIT));
+int vertex_distance(int4 vertex, float cameraYaw, float cameraPitch) {
+  int yawSin = (int)(65536.0f * sin(cameraYaw));
+  int yawCos = (int)(65536.0f * cos(cameraYaw));
 
-  int pitchSin = (int)(65536.0f * sin(cameraPitch * UNIT));
-  int pitchCos = (int)(65536.0f * cos(cameraPitch * UNIT));
+  int pitchSin = (int)(65536.0f * sin(cameraPitch));
+  int pitchCos = (int)(65536.0f * cos(cameraPitch));
 
   int j = vertex.z * yawCos - vertex.x * yawSin >> 16;
   int l = vertex.y * pitchSin + j * pitchCos >> 16;
@@ -86,7 +86,7 @@ int vertex_distance(int4 vertex, int cameraYaw, int cameraPitch) {
 /*
  * Calculate the distance to a face
  */
-int face_distance(int4 vA, int4 vB, int4 vC, int cameraYaw, int cameraPitch) {
+int face_distance(int4 vA, int4 vB, int4 vC, float cameraYaw, float cameraPitch) {
   int dvA = vertex_distance(vA, cameraYaw, cameraPitch);
   int dvB = vertex_distance(vB, cameraYaw, cameraPitch);
   int dvC = vertex_distance(vC, cameraYaw, cameraPitch);
@@ -99,14 +99,15 @@ int face_distance(int4 vA, int4 vB, int4 vC, int cameraYaw, int cameraPitch) {
  */
 bool face_visible(__constant struct uniform *uni, int4 vA, int4 vB, int4 vC, int4 position) {
   // Move model to scene location, and account for camera offset
-  int4 cameraPos = (int4)(uni->cameraX, uni->cameraY, uni->cameraZ, 0);
-  vA += position - cameraPos;
-  vB += position - cameraPos;
-  vC += position - cameraPos;
+  float4 cameraPos = (float4)(uni->cameraX, uni->cameraY, uni->cameraZ, 0);
 
-  float3 sA = toScreen(vA, uni->cameraYaw, uni->cameraPitch, uni->centerX, uni->centerY, uni->zoom);
-  float3 sB = toScreen(vB, uni->cameraYaw, uni->cameraPitch, uni->centerX, uni->centerY, uni->zoom);
-  float3 sC = toScreen(vC, uni->cameraYaw, uni->cameraPitch, uni->centerX, uni->centerY, uni->zoom);
+  float4 lA = convert_float4(vA + position) - cameraPos;
+  float4 lB = convert_float4(vB + position) - cameraPos;
+  float4 lC = convert_float4(vC + position) - cameraPos;
+
+  float3 sA = toScreen(lA.xyz, uni->cameraYaw, uni->cameraPitch, uni->centerX, uni->centerY, uni->zoom);
+  float3 sB = toScreen(lB.xyz, uni->cameraYaw, uni->cameraPitch, uni->centerX, uni->centerY, uni->zoom);
+  float3 sC = toScreen(lC.xyz, uni->cameraYaw, uni->cameraPitch, uni->centerX, uni->centerY, uni->zoom);
 
   return (sA.x - sB.x) * (sC.y - sB.y) - (sC.x - sB.x) * (sA.y - sB.y) > 0;
 }
