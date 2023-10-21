@@ -99,7 +99,8 @@ public class MusicPlugin extends Plugin
 	private static final int SLIDER_HANDLE_SIZE = 16;
 
 	private static final Set<Integer> SOURCELESS_PLAYER_SOUNDS = ImmutableSet.of(
-		SoundEffectID.TELEPORT_VWOOP
+		SoundEffectID.TELEPORT_VWOOP,
+		SoundEffectID.GEM_FOUND
 	);
 
 	private static final Set<Integer> PRAYER_SOUNDS = ImmutableSet.of(

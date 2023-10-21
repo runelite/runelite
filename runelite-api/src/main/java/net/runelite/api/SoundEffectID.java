@@ -63,6 +63,8 @@ public final class SoundEffectID
 	public final static int TAKE_DAMAGE_SPLAT = 510;
 	public final static int ATTACK_HIT = 2498;
 
+	public final static int GEM_FOUND = 2655;
+
 	public final static int PRAYER_ACTIVATE_THICK_SKIN = 2690;
 	public final static int PRAYER_ACTIVATE_BURST_OF_STRENGTH = 2688;
 	public final static int PRAYER_ACTIVATE_CLARITY_OF_THOUGHT = 2664;
