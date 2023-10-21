@@ -76,6 +76,18 @@ public interface BankTagsConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "tagAllItemVariations",
+		name = "Tag all item variations",
+		description = "Tag all variations of an item (e.g., all dosages for potions, all charges for jewellery)<br>" +
+			"when dragged onto a Tag Tab. Hold {Shift} to tag only the single variation.",
+		position = 5
+	)
+	default boolean tagAllItemVariations()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "position",
 		name = "",
 		description = "",
