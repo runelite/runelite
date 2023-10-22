@@ -107,6 +107,7 @@ public class TimersPlugin extends Plugin
 	private static final String RESURRECT_THRALL_MESSAGE_START = ">You resurrect a ";
 	private static final String RESURRECT_THRALL_MESSAGE_END = " thrall.</col>";
 	private static final String WARD_OF_ARCEUUS_MESSAGE = ">Your defence against Arceuus magic has been strengthened.</col>";
+	private static final String MARK_OF_DARKNESS_MESSAGE = "You have placed a Mark of Darkness upon yourself.</col>";
 	private static final String PICKPOCKET_FAILURE_MESSAGE = "You fail to pick ";
 	private static final String DODGY_NECKLACE_PROTECTION_MESSAGE = "Your dodgy necklace protects you.";
 	private static final String SHADOW_VEIL_PROTECTION_MESSAGE = "Your attempt to steal goes unnoticed.";
@@ -681,6 +682,7 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(RESURRECT_THRALL);
 			removeGameTimer(SHADOW_VEIL);
 			removeGameTimer(WARD_OF_ARCEUUS);
+			removeGameTimer(MARK_OF_DARKNESS);
 		}
 
 		if (!config.showArceuusCooldown())
@@ -690,6 +692,7 @@ public class TimersPlugin extends Plugin
 			removeGameTimer(SHADOW_VEIL_COOLDOWN);
 			removeGameTimer(WARD_OF_ARCEUUS_COOLDOWN);
 			removeGameTimer(CORRUPTION_COOLDOWN);
+			removeGameTimer(MARK_OF_DARKNESS_COOLDOWN);
 		}
 
 		if (!config.showAntiPoison())
@@ -829,6 +832,10 @@ public class TimersPlugin extends Plugin
 			{
 				createGameTimer(WARD_OF_ARCEUUS, Duration.of(magicLevel, RSTimeUnit.GAME_TICKS));
 			}
+			else if (message.endsWith(MARK_OF_DARKNESS_MESSAGE))
+			{
+				createGameTimer(MARK_OF_DARKNESS, Duration.of(magicLevel, RSTimeUnit.GAME_TICKS));
+			}
 			else if (message.contains(RESURRECT_THRALL_MESSAGE_START) && message.endsWith(RESURRECT_THRALL_MESSAGE_END))
 			{
 				// by default the thrall lasts 1 tick per magic level
@@ -843,6 +850,15 @@ public class TimersPlugin extends Plugin
 					t += t / 2; // 50% boost
 				}
 				createGameTimer(RESURRECT_THRALL, Duration.of(t, RSTimeUnit.GAME_TICKS));
+			}
+		}
+
+		if (config.showArceuusCooldown())
+		{
+			final int magicLevel = client.getRealSkillLevel(Skill.MAGIC);
+			if (message.endsWith(MARK_OF_DARKNESS_MESSAGE))
+			{
+				createGameTimer(MARK_OF_DARKNESS_COOLDOWN, Duration.of(magicLevel - 10, RSTimeUnit.GAME_TICKS));
 			}
 		}
 
