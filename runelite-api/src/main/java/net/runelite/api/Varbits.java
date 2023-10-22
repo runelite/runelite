@@ -837,4 +837,11 @@ public final class Varbits
 	 * This varbit determines which location he will appear in, which is useful for a master clue step.
 	 */
 	public static final int VIGGORA_LOCATION = 815;
+
+	/**
+ 	* Escape Crystal
+	*/
+	public static final int ESCAPE_CRYSTAL_INACTIVITY_TELEPORT_TIME = 14849;
+	public static final int ESCAPE_CRYSTAL_INACTIVITY_TELEPORT_ACTIVE = 14838;
+	public static final int ESCAPE_CRYSTAL_RING_OF_LIFE_TELEPORT_ACTIVE = 14857;
 }
