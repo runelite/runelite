@@ -56,13 +56,13 @@ public class TileIndicatorsPlugin extends Plugin
 	private Client client;
 
 	@Getter
-	private WorldPoint lastPlayerPosition = null;
+	private WorldPoint lastPlayerPosition;
 
 	@Getter
-	private int lastTickPlayerMoved = 0;
+	private int lastTickPlayerMoved;
 
 	@Getter
-	private long lastTimePlayerStoppedMoving = 0;
+	private long lastTimePlayerStoppedMoving;
 
 	@Provides
 	TileIndicatorsConfig provideConfig(ConfigManager configManager)
@@ -79,6 +79,8 @@ public class TileIndicatorsPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
+		// Null this value so that the true tile does not pop up when turning the plugin on, if using fading true tile.
+		lastPlayerPosition = null;
 		overlayManager.remove(overlay);
 	}
 
@@ -95,7 +97,7 @@ public class TileIndicatorsPlugin extends Plugin
 			}
 			else if (lastTickPlayerMoved + 1 == client.getTickCount())
 			{
-				lastTimePlayerStoppedMoving = System.currentTimeMillis();
+				lastTimePlayerStoppedMoving = System.nanoTime();
 			}
 		}
 

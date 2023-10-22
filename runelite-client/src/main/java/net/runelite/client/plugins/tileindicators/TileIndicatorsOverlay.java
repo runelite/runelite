@@ -102,7 +102,7 @@ public class TileIndicatorsOverlay extends Overlay
 			else
 			{
 				// It is 1 game tick after the player has stopped moving, so fade out the tile.
-				long timeSinceLastMove = System.currentTimeMillis() - plugin.getLastTimePlayerStoppedMoving();
+				long timeSinceLastMove = (System.nanoTime() - plugin.getLastTimePlayerStoppedMoving()) / 1_000_000;
 				// The fadeout does not begin for 1 game tick, so subtract that.
 				int fadeoutTime = config.trueTileFadeoutTime() - Constants.GAME_TICK_LENGTH;
 				if (fadeoutTime != 0 && timeSinceLastMove < fadeoutTime)
