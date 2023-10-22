@@ -83,10 +83,14 @@ public class AccountPlugin extends Plugin
 			.onClick(this::loginClick)
 			.build();
 
+		final String signOutSuffix = sessionManager.getAccountSession() != null
+				? " (" + sessionManager.getAccountSession().getUsername() + ")"
+				: "";
+
 		logoutButton = NavigationButton.builder()
 			.tab(false)
 			.icon(LOGOUT_IMAGE)
-			.tooltip("Sign out of RuneLite")
+			.tooltip(String.format("Sign out of RuneLite%s", signOutSuffix))
 			.onClick(this::logoutClick)
 			.build();
 
