@@ -36,6 +36,7 @@ import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
+import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.ObjectID;
@@ -78,7 +79,7 @@ class WoodcuttingSceneOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		renderAxes(graphics);
+		renderRedwoods(graphics);
 		renderTimers(graphics);
 		renderForestryRoots(graphics);
 		renderForestrySapling(graphics);
@@ -219,15 +220,9 @@ class WoodcuttingSceneOverlay extends Overlay
 		}
 	}
 
-	private void renderAxes(Graphics2D graphics)
+	private void renderRedwoods(Graphics2D graphics)
 	{
 		if (plugin.getSession() == null || !config.showRedwoodTrees())
-		{
-			return;
-		}
-
-		Axe axe = plugin.getAxe();
-		if (axe == null)
 		{
 			return;
 		}
@@ -243,7 +238,7 @@ class WoodcuttingSceneOverlay extends Overlay
 				{
 					continue;
 				}
-				OverlayUtil.renderImageLocation(client, graphics, treeObject.getLocalLocation(), itemManager.getImage(axe.getItemId()), 120);
+				OverlayUtil.renderImageLocation(client, graphics, treeObject.getLocalLocation(), itemManager.getImage(ItemID.REDWOOD_LOGS), 120);
 			}
 		}
 	}

@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.woodcutting;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
@@ -40,6 +41,30 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.AnimationID;
+import static net.runelite.api.AnimationID.WOODCUTTING_2H_3A;
+import static net.runelite.api.AnimationID.WOODCUTTING_2H_ADAMANT;
+import static net.runelite.api.AnimationID.WOODCUTTING_2H_BLACK;
+import static net.runelite.api.AnimationID.WOODCUTTING_2H_BRONZE;
+import static net.runelite.api.AnimationID.WOODCUTTING_2H_CRYSTAL;
+import static net.runelite.api.AnimationID.WOODCUTTING_2H_DRAGON;
+import static net.runelite.api.AnimationID.WOODCUTTING_2H_IRON;
+import static net.runelite.api.AnimationID.WOODCUTTING_2H_MITHRIL;
+import static net.runelite.api.AnimationID.WOODCUTTING_2H_RUNE;
+import static net.runelite.api.AnimationID.WOODCUTTING_2H_STEEL;
+import static net.runelite.api.AnimationID.WOODCUTTING_3A_AXE;
+import static net.runelite.api.AnimationID.WOODCUTTING_ADAMANT;
+import static net.runelite.api.AnimationID.WOODCUTTING_BLACK;
+import static net.runelite.api.AnimationID.WOODCUTTING_BRONZE;
+import static net.runelite.api.AnimationID.WOODCUTTING_CRYSTAL;
+import static net.runelite.api.AnimationID.WOODCUTTING_DRAGON;
+import static net.runelite.api.AnimationID.WOODCUTTING_DRAGON_OR;
+import static net.runelite.api.AnimationID.WOODCUTTING_GILDED;
+import static net.runelite.api.AnimationID.WOODCUTTING_INFERNAL;
+import static net.runelite.api.AnimationID.WOODCUTTING_IRON;
+import static net.runelite.api.AnimationID.WOODCUTTING_MITHRIL;
+import static net.runelite.api.AnimationID.WOODCUTTING_RUNE;
+import static net.runelite.api.AnimationID.WOODCUTTING_STEEL;
+import static net.runelite.api.AnimationID.WOODCUTTING_TRAILBLAZER;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
@@ -75,6 +100,15 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @Slf4j
 public class WoodcuttingPlugin extends Plugin
 {
+	static final Set<Integer> WOODCUTTING_ANIMS = ImmutableSet.of(
+		WOODCUTTING_BRONZE, WOODCUTTING_IRON, WOODCUTTING_STEEL, WOODCUTTING_BLACK, WOODCUTTING_MITHRIL,
+		WOODCUTTING_ADAMANT, WOODCUTTING_RUNE, WOODCUTTING_GILDED, WOODCUTTING_DRAGON, WOODCUTTING_DRAGON_OR,
+		WOODCUTTING_INFERNAL, WOODCUTTING_3A_AXE, WOODCUTTING_CRYSTAL, WOODCUTTING_TRAILBLAZER,
+		WOODCUTTING_2H_BRONZE, WOODCUTTING_2H_IRON, WOODCUTTING_2H_STEEL, WOODCUTTING_2H_BLACK,
+		WOODCUTTING_2H_MITHRIL, WOODCUTTING_2H_ADAMANT, WOODCUTTING_2H_RUNE, WOODCUTTING_2H_DRAGON,
+		WOODCUTTING_2H_CRYSTAL, WOODCUTTING_2H_3A
+	);
+
 	private static final Pattern WOOD_CUT_PATTERN = Pattern.compile("You get (?:some|an)[\\w ]+(?:logs?|mushrooms)\\.");
 	private static final Pattern ANIMA_BARK_PATTERN = Pattern.compile("You've been awarded <col=[0-9a-f]+>(\\d+) Anima-infused bark</col>\\.");
 
@@ -100,10 +134,6 @@ public class WoodcuttingPlugin extends Plugin
 	@Nullable
 	@Setter(AccessLevel.PACKAGE)
 	private WoodcuttingSession session;
-
-	@Getter
-	@Nullable
-	private Axe axe;
 
 	@Getter
 	private final Set<GameObject> treeObjects = new HashSet<>();
@@ -152,7 +182,6 @@ public class WoodcuttingPlugin extends Plugin
 		saplingIngredients.clear();
 		Arrays.fill(saplingOrder, null);
 		session = null;
-		axe = null;
 		clueTierSpawned = null;
 	}
 
@@ -170,7 +199,7 @@ public class WoodcuttingPlugin extends Plugin
 			return;
 		}
 
-		if (axe != null && axe.matchesChoppingAnimation(client.getLocalPlayer()))
+		if (WOODCUTTING_ANIMS.contains(client.getLocalPlayer().getAnimation()))
 		{
 			session.setLastChopping();
 			return;
@@ -182,7 +211,6 @@ public class WoodcuttingPlugin extends Plugin
 		if (sinceCut.compareTo(statTimeout) >= 0)
 		{
 			session.setActive(false);
-			axe = null;
 		}
 	}
 
@@ -396,16 +424,6 @@ public class WoodcuttingPlugin extends Plugin
 	public void onAnimationChanged(final AnimationChanged event)
 	{
 		var actor = event.getActor();
-		if (client.getLocalPlayer() == actor)
-		{
-			int animId = actor.getAnimation();
-			Axe axe = Axe.findAxeByAnimId(animId);
-			if (axe != null)
-			{
-				this.axe = axe;
-			}
-		}
-
 		if (actor.getAnimation() == AnimationID.LOOKING_INTO && flowers.contains(actor.getInteracting()))
 		{
 			var flower = (NPC) actor.getInteracting();
