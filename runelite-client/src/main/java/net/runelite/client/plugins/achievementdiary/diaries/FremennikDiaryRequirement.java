@@ -111,7 +111,7 @@ public class FremennikDiaryRequirement extends GenericDiaryRequirement
 			new QuestRequirement(Quest.THE_GIANT_DWARF, true));
 
 		// ELITE
-		add("Craft 56 astral runes at once from Essence.",
+		add("Craft 56 astral runes from Essence simultaneously from Essence without the use of Extracts.",
 			new SkillRequirement(Skill.RUNECRAFT, 82),
 			new QuestRequirement(Quest.LUNAR_DIPLOMACY));
 		add("Create a dragonstone amulet in the Neitiznot furnace.",
