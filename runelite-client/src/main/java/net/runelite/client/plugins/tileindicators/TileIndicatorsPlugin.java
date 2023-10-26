@@ -26,12 +26,8 @@ package net.runelite.client.plugins.tileindicators;
 
 import com.google.inject.Provides;
 import javax.inject.Inject;
-import lombok.Getter;
-import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
@@ -52,18 +48,6 @@ public class TileIndicatorsPlugin extends Plugin
 	@Inject
 	private TileIndicatorsOverlay overlay;
 
-	@Inject
-	private Client client;
-
-	@Getter
-	private WorldPoint lastPlayerPosition;
-
-	@Getter
-	private int lastTickPlayerMoved;
-
-	@Getter
-	private long lastTimePlayerStoppedMoving;
-
 	@Provides
 	TileIndicatorsConfig provideConfig(ConfigManager configManager)
 	{
@@ -80,28 +64,8 @@ public class TileIndicatorsPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		// Null this value so that the true tile does not pop up when turning the plugin on, if using fading true tile.
-		lastPlayerPosition = null;
+		overlay.setLastPlayerPosition(null);
 		overlayManager.remove(overlay);
-	}
-
-	@Subscribe
-	public void onGameTick(GameTick e)
-	{
-		final WorldPoint playerPos = client.getLocalPlayer().getWorldLocation();
-
-		if (lastPlayerPosition != null)
-		{
-			if (!playerPos.equals(lastPlayerPosition))
-			{
-				lastTickPlayerMoved = client.getTickCount();
-			}
-			else if (lastTickPlayerMoved + 1 == client.getTickCount())
-			{
-				lastTimePlayerStoppedMoving = System.nanoTime();
-			}
-		}
-
-		lastPlayerPosition = playerPos;
 	}
 
 	@Subscribe
@@ -110,7 +74,7 @@ public class TileIndicatorsPlugin extends Plugin
 		if (e.getGameState() == GameState.LOGIN_SCREEN)
 		{
 			// When true tile fadeout is enabled, this prevents the true tile from showing up right after logging in.
-			lastPlayerPosition = null;
+			overlay.setLastPlayerPosition(null);
 		}
 	}
 }
