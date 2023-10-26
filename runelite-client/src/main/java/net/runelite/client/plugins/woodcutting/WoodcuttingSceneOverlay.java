@@ -84,6 +84,10 @@ class WoodcuttingSceneOverlay extends Overlay
 		renderForestryRoots(graphics);
 		renderForestrySapling(graphics);
 		renderForestryFlowers(graphics);
+		renderForestryPoachers(graphics);
+		renderForestryPheasants(graphics);
+		renderForestryBeeHive(graphics);
+		renderEnchantmentRitual(graphics);
 		return null;
 	}
 
@@ -216,6 +220,73 @@ class WoodcuttingSceneOverlay extends Overlay
 				{
 					OverlayUtil.renderPolygon(graphics, poly, Color.YELLOW);
 				}
+			}
+		}
+	}
+
+	private void renderForestryPoachers(Graphics2D graphics)
+	{
+		if (plugin.getFoxTrap() != null && config.highlightFoxTrap())
+		{
+			var foxTrap = plugin.getFoxTrap();
+			var poly = foxTrap.getCanvasTilePoly();
+			if (poly != null)
+			{
+				OverlayUtil.renderPolygon(graphics, poly, Color.RED);
+			}
+		}
+	}
+
+	private void renderForestryPheasants(Graphics2D graphics)
+	{
+		if (!plugin.getPheasantNests().isEmpty() && config.highlightPheasantNest())
+		{
+			for (var nest : plugin.getPheasantNests())
+			{
+				if (nest.getId() == ObjectID.PHEASANT_NEST_49937)
+				{
+					var poly = nest.getCanvasTilePoly();
+					if (poly != null)
+					{
+						OverlayUtil.renderPolygon(graphics, poly, Color.GREEN);
+					}
+				}
+			}
+
+			var forester = plugin.getFreakyForester();
+			if (forester != null)
+			{
+				var poly = forester.getCanvasTilePoly();
+				if (poly != null)
+				{
+					OverlayUtil.renderPolygon(graphics, poly, Color.GREEN);
+				}
+			}
+		}
+	}
+
+	private void renderForestryBeeHive(Graphics2D graphics)
+	{
+		if (plugin.getUnfinishedBeeHive() != null && config.highlightBeeHive())
+		{
+			var beehive = plugin.getUnfinishedBeeHive();
+			var poly = beehive.getCanvasTilePoly();
+			if (poly != null)
+			{
+				OverlayUtil.renderPolygon(graphics, poly, Color.ORANGE);
+			}
+		}
+	}
+
+	private void renderEnchantmentRitual(Graphics2D graphics)
+	{
+		var solution = plugin.solveCircles();
+		if (solution != null && config.highlightRitualCircle())
+		{
+			var poly = solution.getCanvasTilePoly();
+			if (poly != null)
+			{
+				OverlayUtil.renderPolygon(graphics, poly, Color.GREEN);
 			}
 		}
 	}

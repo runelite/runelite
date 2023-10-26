@@ -150,6 +150,16 @@ public class WoodcuttingPlugin extends Plugin
 	private final List<GameObject> saplingIngredients = new ArrayList<>(5);
 	@Getter(AccessLevel.PACKAGE)
 	private final GameObject[] saplingOrder = new GameObject[3];
+	@Getter(AccessLevel.PACKAGE)
+	private NPC foxTrap;
+	@Getter(AccessLevel.PACKAGE)
+	private final List<GameObject> pheasantNests = new ArrayList<>(4);
+	@Getter(AccessLevel.PACKAGE)
+	private NPC freakyForester;
+	@Getter(AccessLevel.PACKAGE)
+	private NPC unfinishedBeeHive;
+	private final List<NPC> circles = new ArrayList<>(5);
+	private final List<NPC> entlings = new ArrayList<>(0);
 
 	@Getter(AccessLevel.PACKAGE)
 	private final List<TreeRespawn> respawns = new ArrayList<>();
@@ -347,6 +357,10 @@ public class WoodcuttingPlugin extends Plugin
 			case ObjectID.SPLINTERED_BARK:
 				saplingIngredients.add(gameObject);
 				break;
+			case ObjectID.PHEASANT_NEST:
+			case ObjectID.PHEASANT_NEST_49937:
+				pheasantNests.add(gameObject);
+				break;
 		}
 	}
 
@@ -395,6 +409,14 @@ public class WoodcuttingPlugin extends Plugin
 					log.debug("Struggling Sapling event is over");
 				}
 				break;
+			case ObjectID.PHEASANT_NEST:
+			case ObjectID.PHEASANT_NEST_49937:
+				pheasantNests.remove(object);
+				if (pheasantNests.isEmpty())
+				{
+					log.debug("Pheasant event is over");
+				}
+				break;
 		}
 	}
 
@@ -408,6 +430,11 @@ public class WoodcuttingPlugin extends Plugin
 				respawns.clear();
 				flowers.clear();
 				activeFlowers.clear();
+				foxTrap = null;
+				freakyForester = null;
+				unfinishedBeeHive = null;
+				circles.clear();
+				entlings.clear();
 				// fallthrough
 			case LOADING:
 				treeObjects.clear();
@@ -449,7 +476,8 @@ public class WoodcuttingPlugin extends Plugin
 	public void onNpcSpawned(NpcSpawned event)
 	{
 		NPC npc = event.getNpc();
-		if (isFloweringBush(npc.getId()))
+		var id = npc.getId();
+		if (isFloweringBush(id))
 		{
 			if (flowers.isEmpty() && config.forestryFloweringTreeNotification())
 			{
@@ -458,9 +486,56 @@ public class WoodcuttingPlugin extends Plugin
 
 			flowers.add(npc);
 		}
-		else if (npc.getId() == NpcID.WOODCUTTING_LEPRECHAUN && config.forestryLeprechaunNotification())
+		else if (id == NpcID.WOODCUTTING_LEPRECHAUN && config.forestryLeprechaunNotification())
 		{
 			notifier.notify("A Leprechaun event spawned!");
+		}
+		else if (id == NpcID.FRIGHTENED_FOX && config.forestryPoachersNotification())
+		{
+			notifier.notify("A Poachers event spawned!");
+		}
+		else if (id == NpcID.FOX_TRAP)
+		{
+			foxTrap = npc;
+		}
+		else if (id == NpcID.FREAKY_FORESTER_12536)
+		{
+			freakyForester = npc;
+
+			if (config.forestryPheasantControlNotification())
+			{
+				notifier.notify("A Pheasant Control event has spawned!");
+			}
+		}
+		else if (id == NpcID.WILD_BEE_HIVE)
+		{
+			if (config.forestryBeeHiveNotification())
+			{
+				notifier.notify("A Bee Hive event has spawned!");
+			}
+		}
+		else if (id == NpcID.UNFINISHED_BEE_HIVE || id == NpcID.UNFINISHED_BEE_HIVE_12516)
+		{
+			unfinishedBeeHive = npc;
+		}
+		else if (id >= NpcID.RITUAL_CIRCLE_GREEN && id <= NpcID.RITUAL_CIRCLE_RED_12535)
+		{
+			circles.add(npc);
+		}
+		else if (id == NpcID.DRYAD_12519)
+		{
+			if (config.forestryEnchantmentRitualNotification())
+			{
+				notifier.notify("An Enchantment Ritual event has spawned!");
+			}
+		}
+		else if (id == NpcID.ENTLING)
+		{
+			entlings.add(npc);
+			if (entlings.size() == 1 && config.forestryFriendlyEntNotification())
+			{
+				notifier.notify("A Friendly Ent event has spawned!");
+			}
 		}
 	}
 
@@ -479,6 +554,20 @@ public class WoodcuttingPlugin extends Plugin
 				lastInteractFlower = null;
 			}
 		}
+		if (foxTrap == npc)
+		{
+			foxTrap = null;
+		}
+		if (freakyForester == npc)
+		{
+			freakyForester = null;
+		}
+		if (unfinishedBeeHive == npc)
+		{
+			unfinishedBeeHive = null;
+		}
+		circles.remove(npc);
+		entlings.remove(npc);
 	}
 
 	@Subscribe
@@ -504,5 +593,30 @@ public class WoodcuttingPlugin extends Plugin
 			npcId == NpcID.FLOWERING_BUSH_WHITE ||
 			npcId == NpcID.FLOWERING_BUSH_GREEN ||
 			npcId == NpcID.FLOWERING_BUSH_BLUE;
+	}
+
+	NPC solveCircles()
+	{
+		int s = 0;
+		for (var npc : circles)
+		{
+			int off = npc.getId() - NpcID.RITUAL_CIRCLE_GREEN;
+			int shape = off / 4;
+			int color = off % 4;
+			int id = (16 << shape) | (1 << color);
+			s ^= id;
+		}
+		for (var npc : circles)
+		{
+			int off = npc.getId() - NpcID.RITUAL_CIRCLE_GREEN;
+			int shape = off / 4;
+			int color = off % 4;
+			int id = (16 << shape) | (1 << color);
+			if ((id & s) == id)
+			{
+				return npc;
+			}
+		}
+		return null;
 	}
 }
