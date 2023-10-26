@@ -441,6 +441,7 @@ public class WoodcuttingPlugin extends Plugin
 				roots.clear();
 				saplingIngredients.clear();
 				Arrays.fill(saplingOrder, null);
+				pheasantNests.clear();
 				break;
 			case LOGGED_IN:
 				// After login trees that are depleted will be changed,
