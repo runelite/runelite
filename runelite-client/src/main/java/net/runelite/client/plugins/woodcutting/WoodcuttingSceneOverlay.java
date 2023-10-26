@@ -51,7 +51,7 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.ProgressPieComponent;
 import net.runelite.client.util.ColorUtil;
 
-class WoodcuttingTreesOverlay extends Overlay
+class WoodcuttingSceneOverlay extends Overlay
 {
 	private static final Color ROTTING_LEAVES = new Color(179, 0, 0);
 	private static final Color GREEN_LEAVES = new Color(0, 179, 0);
@@ -65,7 +65,7 @@ class WoodcuttingTreesOverlay extends Overlay
 	private final WoodcuttingPlugin plugin;
 
 	@Inject
-	private WoodcuttingTreesOverlay(final Client client, final WoodcuttingConfig config, final ItemManager itemManager, final WoodcuttingPlugin plugin)
+	private WoodcuttingSceneOverlay(final Client client, final WoodcuttingConfig config, final ItemManager itemManager, final WoodcuttingPlugin plugin)
 	{
 		this.client = client;
 		this.config = config;

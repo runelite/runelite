@@ -91,7 +91,7 @@ public class WoodcuttingPlugin extends Plugin
 	private WoodcuttingOverlay overlay;
 
 	@Inject
-	private WoodcuttingTreesOverlay treesOverlay;
+	private WoodcuttingSceneOverlay treesOverlay;
 
 	@Inject
 	private WoodcuttingConfig config;
