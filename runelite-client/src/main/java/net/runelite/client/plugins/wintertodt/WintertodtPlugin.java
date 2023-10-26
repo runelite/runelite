@@ -39,6 +39,16 @@ import static net.runelite.api.AnimationID.FIREMAKING;
 import static net.runelite.api.AnimationID.FLETCHING_BOW_CUTTING;
 import static net.runelite.api.AnimationID.IDLE;
 import static net.runelite.api.AnimationID.LOOKING_INTO;
+import static net.runelite.api.AnimationID.WOODCUTTING_2H_3A;
+import static net.runelite.api.AnimationID.WOODCUTTING_2H_ADAMANT;
+import static net.runelite.api.AnimationID.WOODCUTTING_2H_BLACK;
+import static net.runelite.api.AnimationID.WOODCUTTING_2H_BRONZE;
+import static net.runelite.api.AnimationID.WOODCUTTING_2H_CRYSTAL;
+import static net.runelite.api.AnimationID.WOODCUTTING_2H_DRAGON;
+import static net.runelite.api.AnimationID.WOODCUTTING_2H_IRON;
+import static net.runelite.api.AnimationID.WOODCUTTING_2H_MITHRIL;
+import static net.runelite.api.AnimationID.WOODCUTTING_2H_RUNE;
+import static net.runelite.api.AnimationID.WOODCUTTING_2H_STEEL;
 import static net.runelite.api.AnimationID.WOODCUTTING_3A_AXE;
 import static net.runelite.api.AnimationID.WOODCUTTING_ADAMANT;
 import static net.runelite.api.AnimationID.WOODCUTTING_BLACK;
@@ -425,6 +435,16 @@ public class WintertodtPlugin extends Plugin
 			case WOODCUTTING_3A_AXE:
 			case WOODCUTTING_CRYSTAL:
 			case WOODCUTTING_TRAILBLAZER:
+			case WOODCUTTING_2H_BRONZE:
+			case WOODCUTTING_2H_IRON:
+			case WOODCUTTING_2H_STEEL:
+			case WOODCUTTING_2H_BLACK:
+			case WOODCUTTING_2H_MITHRIL:
+			case WOODCUTTING_2H_ADAMANT:
+			case WOODCUTTING_2H_RUNE:
+			case WOODCUTTING_2H_DRAGON:
+			case WOODCUTTING_2H_CRYSTAL:
+			case WOODCUTTING_2H_3A:
 				setActivity(WintertodtActivity.WOODCUTTING);
 				break;
 
