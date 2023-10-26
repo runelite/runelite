@@ -403,8 +403,12 @@ public class WoodcuttingPlugin extends Plugin
 	{
 		switch (event.getGameState())
 		{
+			case LOGIN_SCREEN:
 			case HOPPING:
 				respawns.clear();
+				flowers.clear();
+				activeFlowers.clear();
+				// fallthrough
 			case LOADING:
 				treeObjects.clear();
 				roots.clear();
