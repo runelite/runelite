@@ -36,6 +36,7 @@ import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
+import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.ObjectID;
@@ -51,7 +52,7 @@ import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.ProgressPieComponent;
 import net.runelite.client.util.ColorUtil;
 
-class WoodcuttingTreesOverlay extends Overlay
+class WoodcuttingSceneOverlay extends Overlay
 {
 	private static final Color ROTTING_LEAVES = new Color(179, 0, 0);
 	private static final Color GREEN_LEAVES = new Color(0, 179, 0);
@@ -65,7 +66,7 @@ class WoodcuttingTreesOverlay extends Overlay
 	private final WoodcuttingPlugin plugin;
 
 	@Inject
-	private WoodcuttingTreesOverlay(final Client client, final WoodcuttingConfig config, final ItemManager itemManager, final WoodcuttingPlugin plugin)
+	private WoodcuttingSceneOverlay(final Client client, final WoodcuttingConfig config, final ItemManager itemManager, final WoodcuttingPlugin plugin)
 	{
 		this.client = client;
 		this.config = config;
@@ -78,11 +79,15 @@ class WoodcuttingTreesOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		renderAxes(graphics);
+		renderRedwoods(graphics);
 		renderTimers(graphics);
 		renderForestryRoots(graphics);
 		renderForestrySapling(graphics);
 		renderForestryFlowers(graphics);
+		renderForestryPoachers(graphics);
+		renderForestryPheasants(graphics);
+		renderForestryBeeHive(graphics);
+		renderEnchantmentRitual(graphics);
 		return null;
 	}
 
@@ -219,15 +224,76 @@ class WoodcuttingTreesOverlay extends Overlay
 		}
 	}
 
-	private void renderAxes(Graphics2D graphics)
+	private void renderForestryPoachers(Graphics2D graphics)
+	{
+		if (plugin.getFoxTrap() != null && config.highlightFoxTrap())
+		{
+			var foxTrap = plugin.getFoxTrap();
+			var poly = foxTrap.getCanvasTilePoly();
+			if (poly != null)
+			{
+				OverlayUtil.renderPolygon(graphics, poly, Color.RED);
+			}
+		}
+	}
+
+	private void renderForestryPheasants(Graphics2D graphics)
+	{
+		if (!plugin.getPheasantNests().isEmpty() && config.highlightPheasantNest())
+		{
+			for (var nest : plugin.getPheasantNests())
+			{
+				if (nest.getId() == ObjectID.PHEASANT_NEST_49937)
+				{
+					var poly = nest.getCanvasTilePoly();
+					if (poly != null)
+					{
+						OverlayUtil.renderPolygon(graphics, poly, Color.GREEN);
+					}
+				}
+			}
+
+			var forester = plugin.getFreakyForester();
+			if (forester != null)
+			{
+				var poly = forester.getCanvasTilePoly();
+				if (poly != null)
+				{
+					OverlayUtil.renderPolygon(graphics, poly, Color.GREEN);
+				}
+			}
+		}
+	}
+
+	private void renderForestryBeeHive(Graphics2D graphics)
+	{
+		if (plugin.getUnfinishedBeeHive() != null && config.highlightBeeHive())
+		{
+			var beehive = plugin.getUnfinishedBeeHive();
+			var poly = beehive.getCanvasTilePoly();
+			if (poly != null)
+			{
+				OverlayUtil.renderPolygon(graphics, poly, Color.ORANGE);
+			}
+		}
+	}
+
+	private void renderEnchantmentRitual(Graphics2D graphics)
+	{
+		var solution = plugin.solveCircles();
+		if (solution != null && config.highlightRitualCircle())
+		{
+			var poly = solution.getCanvasTilePoly();
+			if (poly != null)
+			{
+				OverlayUtil.renderPolygon(graphics, poly, Color.GREEN);
+			}
+		}
+	}
+
+	private void renderRedwoods(Graphics2D graphics)
 	{
 		if (plugin.getSession() == null || !config.showRedwoodTrees())
-		{
-			return;
-		}
-
-		Axe axe = plugin.getAxe();
-		if (axe == null)
 		{
 			return;
 		}
@@ -243,7 +309,7 @@ class WoodcuttingTreesOverlay extends Overlay
 				{
 					continue;
 				}
-				OverlayUtil.renderImageLocation(client, graphics, treeObject.getLocalLocation(), itemManager.getImage(axe.getItemId()), 120);
+				OverlayUtil.renderImageLocation(client, graphics, treeObject.getLocalLocation(), itemManager.getImage(ItemID.REDWOOD_LOGS), 120);
 			}
 		}
 	}

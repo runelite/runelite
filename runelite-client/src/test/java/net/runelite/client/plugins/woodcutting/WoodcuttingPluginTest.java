@@ -82,7 +82,7 @@ public class WoodcuttingPluginTest
 
 	@Mock
 	@Bind
-	WoodcuttingTreesOverlay woodcuttingTreesOverlay;
+	WoodcuttingSceneOverlay woodcuttingSceneOverlay;
 
 	@Mock
 	@Bind
