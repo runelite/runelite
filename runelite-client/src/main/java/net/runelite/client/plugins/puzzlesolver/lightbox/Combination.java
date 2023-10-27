@@ -24,7 +24,45 @@
  */
 package net.runelite.client.plugins.puzzlesolver.lightbox;
 
+import java.util.HashMap;
+import java.util.Map;
+import net.runelite.api.widgets.WidgetInfo;
+
 public enum Combination
 {
-	A, B, C, D, E, F, G, H;
+	A(WidgetInfo.LIGHT_BOX_BUTTON_A.getId()),
+	B(WidgetInfo.LIGHT_BOX_BUTTON_B.getId()),
+	C(WidgetInfo.LIGHT_BOX_BUTTON_C.getId()),
+	D(WidgetInfo.LIGHT_BOX_BUTTON_D.getId()),
+	E(WidgetInfo.LIGHT_BOX_BUTTON_E.getId()),
+	F(WidgetInfo.LIGHT_BOX_BUTTON_F.getId()),
+	G(WidgetInfo.LIGHT_BOX_BUTTON_G.getId()),
+	H(WidgetInfo.LIGHT_BOX_BUTTON_H.getId());
+
+	private static final Map<String, Integer> combinations = new HashMap<>();
+
+	private final int id;
+
+	static
+	{
+		for (Combination combination : values())
+		{
+			combinations.put(combination.name(), combination.getId());
+		}
+	}
+
+	Combination(int id)
+	{
+		this.id = id;
+	}
+
+	private int getId()
+	{
+		return id;
+	}
+
+	public static int find(String letter)
+	{
+		return combinations.get(letter);
+	}
 }
