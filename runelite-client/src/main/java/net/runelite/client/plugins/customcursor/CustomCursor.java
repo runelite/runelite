@@ -37,6 +37,7 @@ public enum CustomCursor
 	DRAGON_DAGGER("Dragon Dagger", "cursor-dragon-dagger.png"),
 	DRAGON_DAGGER_POISON("Dragon Dagger (p)", "cursor-dragon-dagger-p.png"),
 	TROUT("Trout", "cursor-trout.png"),
+	SALMON("Salmon", "cursor-salmon.png"),
 	DRAGON_SCIMITAR("Dragon Scimitar", "cursor-dragon-scimitar.png"),
 	EQUIPPED_WEAPON("Equipped Weapon"),
 	CUSTOM_IMAGE("Custom Image");
