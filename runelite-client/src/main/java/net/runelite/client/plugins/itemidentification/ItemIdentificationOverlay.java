@@ -33,11 +33,14 @@ import static net.runelite.api.widgets.WidgetID.KEPT_ON_DEATH_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.LOOTING_BAG_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.SEED_BOX_GROUP_ID;
 import static net.runelite.api.widgets.WidgetID.KINGDOM_GROUP_ID;
+import static net.runelite.api.widgets.WidgetID.EQUIPMENT_INVENTORY_GROUP_ID;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.WidgetItemOverlay;
 import net.runelite.client.ui.overlay.components.TextComponent;
+
+
 
 class ItemIdentificationOverlay extends WidgetItemOverlay
 {
@@ -51,7 +54,8 @@ class ItemIdentificationOverlay extends WidgetItemOverlay
 		this.itemManager = itemManager;
 		showOnInventory();
 		showOnBank();
-		showOnInterfaces(KEPT_ON_DEATH_GROUP_ID, GUIDE_PRICE_GROUP_ID, LOOTING_BAG_GROUP_ID, SEED_BOX_GROUP_ID, KINGDOM_GROUP_ID);
+		showOnEquipment();
+		showOnInterfaces(KEPT_ON_DEATH_GROUP_ID, GUIDE_PRICE_GROUP_ID, LOOTING_BAG_GROUP_ID, SEED_BOX_GROUP_ID, KINGDOM_GROUP_ID, EQUIPMENT_INVENTORY_GROUP_ID);
 	}
 
 	@Override
