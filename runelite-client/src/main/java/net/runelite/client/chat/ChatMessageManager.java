@@ -41,10 +41,13 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
+import net.runelite.api.VarClientStr;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.annotations.Varp;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.eventbus.EventBus;
@@ -117,6 +120,7 @@ public class ChatMessageManager
 		final boolean isChatboxTransparent = client.isResized() && client.getVarbitValue(Varbits.TRANSPARENT_CHATBOX) == 1;
 		Color usernameColor = null;
 		Color channelColor = null;
+		Color inputColor = null;
 
 		switch (chatMessageType)
 		{
@@ -160,6 +164,8 @@ public class ChatMessageManager
 				usernameColor = isChatboxTransparent ? chatColorConfig.transparentClanChatGuestUsernames() : chatColorConfig.opaqueClanChatGuestUsernames();
 				channelColor = isChatboxTransparent ? chatColorConfig.transparentClanChannelGuestName() : chatColorConfig.opaqueClanGuestChatChannelName();
 				break;
+			case CHAT_INPUT_TEXT:
+				inputColor = isChatboxTransparent ? chatColorConfig.transparentInputText() : chatColorConfig.opaqueInputText();
 		}
 
 		if (usernameColor != null)
@@ -170,6 +176,11 @@ public class ChatMessageManager
 		if (channelColor != null && !Strings.isNullOrEmpty(channel))
 		{
 			stringStack[size - 4] = ColorUtil.wrapWithColorTag(channel, channelColor);
+		}
+
+		if (inputColor != null && !Strings.isNullOrEmpty(channel))
+		{
+			stringStack[size - 4] = ColorUtil.wrapWithColorTag(channel, inputColor);
 		}
 
 		String prefix = "";
@@ -274,6 +285,8 @@ public class ChatMessageManager
 				case CLAN_GUEST_MESSAGE:
 				case CLAN_GIM_MESSAGE:
 					return JagexColors.CHAT_GAME_EXAMINE_TEXT_OPAQUE_BACKGROUND;
+				case CHAT_INPUT_TEXT:
+					return JagexColors.CHAT_TYPED_TEXT_OPAQUE_BACKGROUND;
 			}
 		}
 		else
@@ -301,6 +314,9 @@ public class ChatMessageManager
 				case CLAN_GUEST_MESSAGE:
 				case CLAN_GIM_MESSAGE:
 					return JagexColors.CHAT_GAME_EXAMINE_TEXT_TRANSPARENT_BACKGROUND;
+				case CHAT_INPUT_TEXT:
+					return JagexColors.CHAT_TYPED_TEXT_TRANSPARENT_BACKGROUND;
+
 			}
 		}
 
@@ -345,6 +361,8 @@ public class ChatMessageManager
 					return VarPlayer.SETTINGS_TRANSPARENT_CHAT_CLAN_BROADCAST;
 				case CLAN_GIM_MESSAGE:
 					return VarPlayer.SETTINGS_TRANSPARENT_CHAT_IRON_GROUP_BROADCAST;
+				case CHAT_INPUT_TEXT:
+					return VarPlayer.SETTINGS_TRANSPARENT_CHAT_INPUT_TEXT;
 			}
 		}
 		else
@@ -382,16 +400,30 @@ public class ChatMessageManager
 					return VarPlayer.SETTINGS_OPAQUE_CHAT_CLAN_BROADCAST;
 				case CLAN_GIM_MESSAGE:
 					return VarPlayer.SETTINGS_OPAQUE_CHAT_IRON_GROUP_BROADCAST;
+				case CHAT_INPUT_TEXT:
+					return VarPlayer.SETTINGS_OPAQUE_CHAT_INPUT_TEXT;
 			}
 		}
 		return -1;
 	}
 
+	void setChatboxWidgetInput(Widget widget, String input)
+	{
+		String text = widget.getText();
+		int idx = text.indexOf(':');
+		if (idx != -1)
+		{
+			String newText = text.substring(0, idx) + ": " + input;
+			widget.setText(newText);
+		}
+	}
 	/**
 	 * Load all configured colors
 	 */
 	private void loadColors()
 	{
+		Widget chatboxInput = client.getWidget(WidgetInfo.CHATBOX_INPUT);
+		boolean isChatboxTransparent = client.isResized() && client.getVarbitValue(Varbits.TRANSPARENT_CHATBOX) == 1;
 		colorCache.clear();
 
 		// Apply defaults
@@ -596,6 +628,20 @@ public class ChatMessageManager
 			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.opaquePrivateUsernames(), false),
 				ChatMessageType.LOGINLOGOUTNOTIFICATION);
 		}
+		if (chatColorConfig.opaqueInputText() != null)
+		{
+			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.opaqueInputText(), false),
+				ChatMessageType.CHAT_INPUT_TEXT);
+			if (chatboxInput != null)
+			{
+				if (client.getVarcStrValue(VarClientStr.CHATBOX_TYPED_TEXT).length() > 1)
+					setChatboxWidgetInput(chatboxInput, ColorUtil.wrapWithColorTag(client.getVarcStrValue(VarClientStr.CHATBOX_TYPED_TEXT) + "*", new ChatColor(ChatColorType.NORMAL, chatColorConfig.opaqueInputText(), false).getColor()));
+				else
+				{
+					setChatboxWidgetInput(chatboxInput, ColorUtil.wrapWithColorTag("Press Enter to Chat...", new ChatColor(ChatColorType.NORMAL, chatColorConfig.opaqueInputText(), false).getColor()));
+				}
+			}
+			}
 
 		//Transparent Chat Colours
 		if (chatColorConfig.transparentPublicChat() != null)
@@ -785,6 +831,20 @@ public class ChatMessageManager
 		{
 			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.transparentPrivateUsernames(), true),
 				ChatMessageType.LOGINLOGOUTNOTIFICATION);
+		}
+		if (chatColorConfig.transparentInputText() != null)
+		{
+			cacheColor(new ChatColor(ChatColorType.NORMAL, chatColorConfig.transparentInputText(), true),
+				ChatMessageType.CHAT_INPUT_TEXT);
+			if (chatboxInput != null && isChatboxTransparent)
+			{
+				if (client.getVarcStrValue(VarClientStr.CHATBOX_TYPED_TEXT).length() > 1)
+					setChatboxWidgetInput(chatboxInput, ColorUtil.wrapWithColorTag(client.getVarcStrValue(VarClientStr.CHATBOX_TYPED_TEXT) + "*", new ChatColor(ChatColorType.NORMAL, chatColorConfig.transparentInputText(), true).getColor()));
+				else
+				{
+					setChatboxWidgetInput(chatboxInput, ColorUtil.wrapWithColorTag("Press Enter to Chat...", new ChatColor(ChatColorType.NORMAL, chatColorConfig.transparentInputText(), true).getColor()));
+				}
+			}
 		}
 	}
 

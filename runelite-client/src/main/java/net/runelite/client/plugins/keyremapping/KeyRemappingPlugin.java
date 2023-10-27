@@ -39,6 +39,7 @@ import net.runelite.api.Varbits;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -69,6 +70,9 @@ public class KeyRemappingPlugin extends Plugin
 
 	@Inject
 	private KeyRemappingListener inputListener;
+
+	@Inject
+	private  ChatColorConfig chatColorConfig;
 
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
@@ -160,9 +164,15 @@ public class KeyRemappingPlugin extends Plugin
 		{
 			case "setChatboxInput":
 				Widget chatboxInput = client.getWidget(WidgetInfo.CHATBOX_INPUT);
+				final boolean isChatboxTransparent = client.isResized() && client.getVarbitValue(Varbits.TRANSPARENT_CHATBOX) == 1;
+				final Color textColor = isChatboxTransparent ? chatColorConfig.transparentInputText() : chatColorConfig.opaqueInputText();
 				if (chatboxInput != null && !typing)
 				{
-					setChatboxWidgetInput(chatboxInput, PRESS_ENTER_TO_CHAT);
+					setChatboxWidgetInput(chatboxInput, ColorUtil.wrapWithColorTag(PRESS_ENTER_TO_CHAT , textColor));
+				}
+				if (chatboxInput != null && typing)
+				{
+					setChatboxWidgetInput(chatboxInput, ColorUtil.wrapWithColorTag(client.getVarcStrValue(VarClientStr.CHATBOX_TYPED_TEXT) + "*", textColor));
 				}
 				break;
 			case "blockChatInput":

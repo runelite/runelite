@@ -133,6 +133,10 @@ public enum ChatMessageType
 	 */
 	MODAUTOTYPER(91),
 	/**
+	 * Chat type for input box
+	 */
+	CHAT_INPUT_TEXT(92),
+	/**
 	 * A game message. (ie. when a setting is changed)
 	 */
 	CONSOLE(99),
