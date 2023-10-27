@@ -359,7 +359,8 @@ public final class WidgetID
 	static class GuidePrices
 	{
 		static final int ITEM_CONTAINER = 2;
-		static final int INVENTORY_ITEM_CONTAINER = 0;
+		static final int MAIN_CONTAINER = 0;
+		static final int ITEMS_VALUE = 12;
 	}
 
 	static class Equipment

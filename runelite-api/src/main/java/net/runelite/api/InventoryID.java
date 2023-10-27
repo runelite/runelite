@@ -29,6 +29,8 @@ package net.runelite.api;
  */
 public enum InventoryID
 {
+
+	GUIDE_PRICES(90),
 	/**
 	 * Reward from fishing trawler
 	 */
