@@ -38,7 +38,9 @@ class ColorTileMarker
 {
 	private WorldPoint worldPoint;
 	@Nullable
-	private Color color;
+	private Color borderColor;
+	@Nullable
+	private Color fillColor;
 	@Nullable
 	private String label;
 }
