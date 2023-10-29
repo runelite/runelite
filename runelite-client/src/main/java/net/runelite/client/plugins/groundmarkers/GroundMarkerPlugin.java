@@ -278,7 +278,8 @@ public class GroundMarkerPlugin extends Plugin
 		}
 	}
 
-	private int createTileLabelMenu(int idx, GroundMarkerPoint existingPoint){
+	private int createTileLabelMenu(int idx, GroundMarkerPoint existingPoint)
+	{
 		client.createMenuEntry(idx--)
 			.setOption("Label")
 			.setTarget("Tile")
@@ -287,7 +288,8 @@ public class GroundMarkerPlugin extends Plugin
 		return idx;
 	}
 
-	private int createTileBorderColorMenu(int idx, GroundMarkerPoint existingPoint, int regionId, Collection<GroundMarkerPoint> regionPoints){
+	private int createTileBorderColorMenu(int idx, GroundMarkerPoint existingPoint, int regionId, Collection<GroundMarkerPoint> regionPoints)
+	{
 		MenuEntry borderColorMenu = client.createMenuEntry(idx--)
 			.setOption("Mark border color")
 			.setTarget("Tile")
@@ -349,7 +351,8 @@ public class GroundMarkerPlugin extends Plugin
 		return idx;
 	}
 
-	private int createTileFillColorMenu(int idx, GroundMarkerPoint existingPoint, int regionId, Collection<GroundMarkerPoint> regionPoints){
+	private int createTileFillColorMenu(int idx, GroundMarkerPoint existingPoint, int regionId, Collection<GroundMarkerPoint> regionPoints)
+	{
 		MenuEntry fillColorMenu = client.createMenuEntry(idx--)
 			.setOption("Mark fill color")
 			.setTarget("Tile")
