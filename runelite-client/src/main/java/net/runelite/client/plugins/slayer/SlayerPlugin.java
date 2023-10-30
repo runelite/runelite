@@ -109,6 +109,9 @@ public class SlayerPlugin extends Plugin
 	private static final Pattern TASK_STRING_VALIDATION = Pattern.compile("[^a-zA-Z0-9' -]");
 	private static final int TASK_STRING_MAX_LENGTH = 50;
 
+	// Task streak
+	private static final int KRYSTILIA_SLAYER_MASTER = 7;
+
 	@Inject
 	private Client client;
 
@@ -350,7 +353,7 @@ public class SlayerPlugin extends Plugin
 				addCounter();
 			}
 		}
-		else if (varbitId == VarbitID.SLAYER_TASKS_COMPLETED)
+		else if (varbitId == VarbitID.SLAYER_TASKS_COMPLETED || varbitId == VarbitID.SLAYER_WILDERNESS_TASKS_COMPLETED)
 		{
 			setProfileConfig(SlayerConfig.STREAK_KEY, varbitChanged.getValue());
 
@@ -657,8 +660,11 @@ public class SlayerPlugin extends Plugin
 				+ " " + initialAmount;
 		}
 
+		final int streak = client.getVarbitValue(VarbitID.SLAYER_MASTER) == KRYSTILIA_SLAYER_MASTER
+			? client.getVarbitValue(VarbitID.SLAYER_WILDERNESS_TASKS_COMPLETED)
+			: client.getVarbitValue(VarbitID.SLAYER_TASKS_COMPLETED);
 		counter = new TaskCounter(taskImg, this, amount);
-		counter.setTooltip(String.format(taskTooltip, capsString(taskName), client.getVarbitValue(VarbitID.SLAYER_POINTS), client.getVarbitValue(VarbitID.SLAYER_TASKS_COMPLETED)));
+		counter.setTooltip(String.format(taskTooltip, capsString(taskName), client.getVarbitValue(VarbitID.SLAYER_POINTS),  streak));
 
 		infoBoxManager.addInfoBox(counter);
 	}
