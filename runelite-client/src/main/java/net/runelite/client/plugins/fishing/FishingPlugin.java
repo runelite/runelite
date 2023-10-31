@@ -33,6 +33,8 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.AccessLevel;
@@ -83,6 +85,7 @@ public class FishingPlugin extends Plugin
 	private static final int TRAWLER_SHIP_REGION_NORMAL = 7499;
 	private static final int TRAWLER_SHIP_REGION_SINKING = 8011;
 	private static final int TRAWLER_TIME_LIMIT_IN_SECONDS = 314;
+	private static final Pattern CAUGHT_KARAMBWANJI_MESSAGE = Pattern.compile("You catch (\\d+) Karambwanji.");
 
 	private Instant trawlerStartTime;
 
@@ -193,15 +196,18 @@ public class FishingPlugin extends Plugin
 			return;
 		}
 
-		if (event.getMessage().contains("You catch a") || event.getMessage().contains("You catch some") ||
-			event.getMessage().equals("Your cormorant returns with its catch."))
+		String message = event.getMessage();
+		Matcher m = CAUGHT_KARAMBWANJI_MESSAGE.matcher(message);
+
+		if (message.contains("You catch a") || message.contains("You catch some") ||
+			message.equals("Your cormorant returns with its catch.") || m.matches())
 		{
 			session.setLastFishCaught(Instant.now());
 			spotOverlay.setHidden(false);
 			fishingSpotMinimapOverlay.setHidden(false);
 		}
 
-		if (event.getMessage().equals("A flying fish jumps up and eats some of your minnows!") && config.flyingFishNotification())
+		if (message.equals("A flying fish jumps up and eats some of your minnows!") && config.flyingFishNotification())
 		{
 			notifier.notify("A flying fish is eating your minnows!");
 		}
