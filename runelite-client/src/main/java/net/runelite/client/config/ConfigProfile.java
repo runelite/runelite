@@ -41,10 +41,16 @@ public class ConfigProfile
 	private String name;
 	@Getter
 	@Setter
+	private String linkedAccount;
+	@Getter
+	@Setter
 	private boolean sync;
 	@Getter
 	@Setter
 	private boolean active;
+	@Getter
+	@Setter
+	private boolean root;
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
 	private long rev;
@@ -52,5 +58,14 @@ public class ConfigProfile
 	public boolean isInternal()
 	{
 		return name.startsWith("$");
+	}
+
+	public boolean hasLinkedAccount() {
+		if (linkedAccount == null)
+		{
+			return false;
+		}
+
+		return !linkedAccount.isEmpty();
 	}
 }
