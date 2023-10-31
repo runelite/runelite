@@ -148,7 +148,9 @@ public class ProfileManager
 
 			ConfigProfile profile = new ConfigProfile(id);
 			profile.setName(name);
+			profile.setLinkedAccount("");
 			profile.setSync(false);
+			profile.setRoot(false);
 			profile.setRev(-1);
 			profiles.add(profile);
 			modified = true;
