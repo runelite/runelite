@@ -328,6 +328,29 @@ public class ConfigManager
 		}
 	}
 
+	public boolean updateLinkedProfile(ConfigProfile profile, String rsn)
+	{
+		log.debug("Updating linked account for {}: {}", profile.getName(), rsn);
+
+		// flush pending config changes first in the event the profile being
+		// synced is the active profile.
+		sendConfig();
+
+		try (ProfileManager.Lock lock = profileManager.lock())
+		{
+			profile = lock.findProfile(profile.getId());
+			if (profile == null || profile.getLinkedAccount() == rsn)
+			{
+				return false;
+			}
+
+			profile.setLinkedAccount(rsn);
+			lock.dirty();
+
+			return true;
+		}
+	}
+
 	public void renameProfile(ConfigProfile profile, String name)
 	{
 		if (profile.isSync() && sessionManager.getAccountSession() != null)
