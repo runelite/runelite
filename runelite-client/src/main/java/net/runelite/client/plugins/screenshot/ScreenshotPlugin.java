@@ -533,7 +533,8 @@ public class ScreenshotPlugin extends Plugin
 			}
 
 			Matcher m99 = LEVEL_UP_MESSAGE_PATTERN_99.matcher(chatMessage);
-			if (m99.find()) {
+			if (m99.find())
+			{
 				String skillName = StringUtils.capitalize(m99.group(1));
 				String fileName = skillName + "(99)";
 				String screenshotSubDir = "Levels";
