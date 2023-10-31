@@ -28,7 +28,11 @@ import java.awt.image.BufferedImage;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.swing.SwingUtilities;
+
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
@@ -66,6 +70,9 @@ public class ConfigPlugin extends Plugin
 
 	@Inject
 	private ChatColorConfig chatColorConfig;
+
+	@Inject
+	private Client client;
 
 	private TopLevelConfigPanel topLevelConfigPanel;
 
@@ -128,6 +135,15 @@ public class ConfigPlugin extends Plugin
 				}
 				topLevelConfigPanel.openConfigurationPanel(plugin.getName());
 			});
+		}
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	{
+		if (gameStateChanged.getGameState() == GameState.LOGGED_IN)
+		{
+			System.out.println(client.getLocalPlayer());
 		}
 	}
 }
