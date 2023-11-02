@@ -142,6 +142,10 @@ public class XpDropPlugin extends Plugin
 		{
 			text.setTextColor(color);
 		}
+		else if (config.getDefaultXpDropColor() != null)
+		{
+			text.setTextColor(config.getDefaultXpDropColor().getRGB());
+		}
 		else
 		{
 			resetTextColor(text);
