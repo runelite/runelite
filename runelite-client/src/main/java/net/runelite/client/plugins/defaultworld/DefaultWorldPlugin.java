@@ -82,11 +82,6 @@ public class DefaultWorldPlugin extends Plugin
 		});
 	}
 
-	@Override
-	protected void shutDown()
-	{
-	}
-
 	@Provides
 	DefaultWorldConfig getConfig(ConfigManager configManager)
 	{
