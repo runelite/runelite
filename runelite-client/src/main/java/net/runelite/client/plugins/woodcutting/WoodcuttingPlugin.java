@@ -598,6 +598,11 @@ public class WoodcuttingPlugin extends Plugin
 
 	NPC solveCircles()
 	{
+		if (circles.size() != 5)
+		{
+			return null;
+		}
+
 		int s = 0;
 		for (var npc : circles)
 		{
