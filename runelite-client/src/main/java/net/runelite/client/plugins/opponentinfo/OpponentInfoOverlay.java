@@ -140,8 +140,8 @@ class OpponentInfoOverlay extends OverlayPanel
 		}
 
 		// The in-game hp hud is more accurate than our overlay and duplicates all of the information on it,
-		// so hide ours if it is visible.
-		if (opponentName == null || hasHpHud(opponent))
+		// so hide ours if it is visible, or if our overlay is toggled off.
+		if (opponentName == null || hasHpHud(opponent) || !opponentInfoConfig.showOpponentHealthOverlay())
 		{
 			return null;
 		}

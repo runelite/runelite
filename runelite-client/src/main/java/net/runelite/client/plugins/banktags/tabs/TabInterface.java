@@ -70,12 +70,11 @@ import net.runelite.api.Varbits;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.ItemQuantityMode;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetConfig;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetSizeMode;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.Notifier;
@@ -204,7 +203,7 @@ public class TabInterface
 		}
 
 		currentTabIndex = config.position();
-		parent = client.getWidget(WidgetInfo.BANK_CONTENT_CONTAINER);
+		parent = client.getWidget(ComponentID.BANK_CONTENT_CONTAINER);
 
 		updateBounds();
 
@@ -240,8 +239,8 @@ public class TabInterface
 			openTag(config.tab());
 		}
 
-		Widget equipmentButton = client.getWidget(WidgetInfo.BANK_EQUIPMENT_BUTTON);
-		Widget titleBar = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
+		Widget equipmentButton = client.getWidget(ComponentID.BANK_EQUIPMENT_BUTTON);
+		Widget titleBar = client.getWidget(ComponentID.BANK_TITLE_BAR);
 		if (equipmentButton == null || titleBar == null || titleBar.getOriginalX() > 0)
 		{
 			// don't keep moving widgets if they have already been moved
@@ -252,7 +251,7 @@ public class TabInterface
 		equipmentButton.setOriginalY(4);
 		equipmentButton.revalidate();
 
-		Widget bankItemCountTop = client.getWidget(WidgetInfo.BANK_ITEM_COUNT_TOP);
+		Widget bankItemCountTop = client.getWidget(ComponentID.BANK_ITEM_COUNT_TOP);
 		if (bankItemCountTop == null)
 		{
 			return;
@@ -260,9 +259,9 @@ public class TabInterface
 
 		int equipmentButtonTotalWidth = equipmentButton.getWidth() + equipmentButton.getOriginalX() - bankItemCountTop.getOriginalX();
 		// the bank item count is 3 widgets
-		for (int child = WidgetInfo.BANK_ITEM_COUNT_TOP.getChildId(); child <= WidgetInfo.BANK_ITEM_COUNT_BOTTOM.getChildId(); child++)
+		for (int c = ComponentID.BANK_ITEM_COUNT_TOP; c <= ComponentID.BANK_ITEM_COUNT_BOTTOM; c++)
 		{
-			Widget widget = client.getWidget(WidgetID.BANK_GROUP_ID, child);
+			Widget widget = client.getWidget(c);
 			if (widget == null)
 			{
 				return;
@@ -276,7 +275,7 @@ public class TabInterface
 		titleBar.setOriginalWidth(titleBar.getWidth() - equipmentButton.getWidth());
 		titleBar.revalidate();
 
-		Widget groupStorageButton = client.getWidget(WidgetInfo.BANK_GROUP_STORAGE_BUTTON);
+		Widget groupStorageButton = client.getWidget(ComponentID.BANK_GROUP_STORAGE_BUTTON);
 		if (groupStorageButton == null)
 		{
 			return;
@@ -620,12 +619,12 @@ public class TabInterface
 
 
 		if (activeTab != null
-			&& event.getActionParam1() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
+			&& event.getActionParam1() == ComponentID.BANK_ITEM_CONTAINER
 			&& event.getOption().equals("Examine"))
 		{
 			createMenuEntry(event, REMOVE_TAG + " (" + activeTab.getTag() + ")", event.getTarget());
 		}
-		else if (event.getActionParam1() == WidgetInfo.BANK_DEPOSIT_INVENTORY.getId()
+		else if (event.getActionParam1() == ComponentID.BANK_DEPOSIT_INVENTORY
 			&& event.getOption().equals("Deposit inventory"))
 		{
 			createMenuEntry(event, TAG_INVENTORY, event.getTarget());
@@ -635,7 +634,7 @@ public class TabInterface
 				createMenuEntry(event, TAG_INVENTORY, ColorUtil.wrapWithColorTag(activeTab.getTag(), HILIGHT_COLOR));
 			}
 		}
-		else if (event.getActionParam1() == WidgetInfo.BANK_DEPOSIT_EQUIPMENT.getId()
+		else if (event.getActionParam1() == ComponentID.BANK_DEPOSIT_EQUIPMENT
 			&& event.getOption().equals("Deposit worn items"))
 		{
 			createMenuEntry(event, TAG_GEAR, event.getTarget());
@@ -668,7 +667,7 @@ public class TabInterface
 			activateTab(null);
 		}
 		else if (activeTab != null
-			&& event.getParam1() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
+			&& event.getParam1() == ComponentID.BANK_ITEM_CONTAINER
 			&& event.getMenuAction() == MenuAction.RUNELITE
 			&& event.getMenuOption().startsWith(REMOVE_TAG))
 		{
@@ -680,14 +679,14 @@ public class TabInterface
 			bankSearch.layoutBank(); // re-layout to filter the removed item out
 		}
 		else if (event.getMenuAction() == MenuAction.RUNELITE
-			&& ((event.getParam1() == WidgetInfo.BANK_DEPOSIT_INVENTORY.getId() && event.getMenuOption().equals(TAG_INVENTORY))
-			|| (event.getParam1() == WidgetInfo.BANK_DEPOSIT_EQUIPMENT.getId() && event.getMenuOption().equals(TAG_GEAR))))
+			&& ((event.getParam1() == ComponentID.BANK_DEPOSIT_INVENTORY && event.getMenuOption().equals(TAG_INVENTORY))
+			|| (event.getParam1() == ComponentID.BANK_DEPOSIT_EQUIPMENT && event.getMenuOption().equals(TAG_GEAR))))
 		{
-			handleDeposit(event, event.getParam1() == WidgetInfo.BANK_DEPOSIT_INVENTORY.getId());
+			handleDeposit(event, event.getParam1() == ComponentID.BANK_DEPOSIT_INVENTORY);
 		}
-		else if (activeTab != null && ((event.getParam1() == WidgetInfo.BANK_EQUIPMENT_BUTTON.getId() && event.getMenuOption().equals(SHOW_WORN))
-			|| (event.getParam1() == WidgetInfo.BANK_SETTINGS_BUTTON.getId() && event.getMenuOption().equals(SHOW_SETTINGS))
-			|| (event.getParam1() == WidgetInfo.BANK_TUTORIAL_BUTTON.getId() && event.getMenuOption().equals(SHOW_TUTORIAL))))
+		else if (activeTab != null && ((event.getParam1() == ComponentID.BANK_EQUIPMENT_BUTTON && event.getMenuOption().equals(SHOW_WORN))
+			|| (event.getParam1() == ComponentID.BANK_SETTINGS_BUTTON && event.getMenuOption().equals(SHOW_SETTINGS))
+			|| (event.getParam1() == ComponentID.BANK_TUTORIAL_BUTTON && event.getMenuOption().equals(SHOW_TUTORIAL))))
 		{
 			saveTab();
 		}
@@ -725,7 +724,7 @@ public class TabInterface
 
 		// Returning early or nulling the drag release listener has no effect. Hence, we need to
 		// null the draggedOnWidget instead.
-		if (draggedWidget.getId() == WidgetInfo.BANK_ITEM_CONTAINER.getId() && isActive()
+		if (draggedWidget.getId() == ComponentID.BANK_ITEM_CONTAINER && isActive()
 			&& config.preventTagTabDrags())
 		{
 			client.setDraggedOnWidget(null);
@@ -803,7 +802,7 @@ public class TabInterface
 
 	private boolean isHidden()
 	{
-		Widget widget = client.getWidget(WidgetInfo.BANK_CONTAINER);
+		Widget widget = client.getWidget(ComponentID.BANK_CONTAINER);
 		return !config.tabs() || widget == null || widget.isHidden();
 	}
 
@@ -856,7 +855,7 @@ public class TabInterface
 		if (tagTab.getMenu() == null)
 		{
 			Widget menu = createGraphic(
-				client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER),
+				client.getWidget(ComponentID.BANK_ITEM_CONTAINER),
 				ColorUtil.wrapWithColorTag(tagTab.getTag(), HILIGHT_COLOR),
 				-1,
 				tagTab.getIconItemId(),
@@ -1019,7 +1018,7 @@ public class TabInterface
 
 	private void updateBounds()
 	{
-		Widget itemContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
+		Widget itemContainer = client.getWidget(ComponentID.BANK_ITEM_CONTAINER);
 		if (itemContainer == null)
 		{
 			return;
@@ -1036,7 +1035,7 @@ public class TabInterface
 		bounds.setSize(TAB_WIDTH + MARGIN * 2, height);
 		bounds.setLocation(MARGIN, TAB_HEIGHT + MARGIN);
 
-		Widget incinerator = client.getWidget(WidgetInfo.BANK_INCINERATOR);
+		Widget incinerator = client.getWidget(ComponentID.BANK_INCINERATOR);
 
 		if (incinerator != null && !incinerator.isHidden())
 		{
@@ -1183,7 +1182,7 @@ public class TabInterface
 		// and remove the timer. However since we are going from a bank search to our fake search this will not remove
 		// the timer but instead re-add it and reset the background. So remove the timer and the background. This is the
 		// same as bankmain_search_setbutton.
-		Widget searchButtonBackground = client.getWidget(WidgetInfo.BANK_SEARCH_BUTTON_BACKGROUND);
+		Widget searchButtonBackground = client.getWidget(ComponentID.BANK_SEARCH_BUTTON_BACKGROUND);
 		searchButtonBackground.setOnTimerListener((Object[]) null);
 		searchButtonBackground.setSpriteId(SpriteID.EQUIPMENT_SLOT_TILE);
 	}

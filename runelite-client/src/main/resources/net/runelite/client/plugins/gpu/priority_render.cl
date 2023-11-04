@@ -90,7 +90,7 @@ int count_prio_offset(__local struct shared_data *shared, int priority) {
 }
 
 void get_face(__local struct shared_data *shared, __constant struct uniform *uni, __global const int4 *vb, __global const int4 *tempvb, uint localId,
-              struct modelinfo minfo, int cameraYaw, int cameraPitch,
+              struct modelinfo minfo, float cameraYaw, float cameraPitch,
               /* out */ int *prio, int *dis, int4 *o1, int4 *o2, int4 *o3) {
   int size = minfo.size;
   int offset = minfo.offset;

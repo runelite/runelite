@@ -82,7 +82,7 @@ public class FaladorDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.MAGIC, 37));
 
 		// HARD
-		add("Craft 140 Mind runes simultaneously from Essence.",
+		add("Craft 140 Mind runes simultaneously from Essence without the use of Extracts.",
 			new SkillRequirement(Skill.RUNECRAFT, 56));
 		add("Change your family crest to the Saradomin symbol.",
 			new SkillRequirement(Skill.PRAYER, 70));
@@ -104,7 +104,7 @@ public class FaladorDiaryRequirement extends GenericDiaryRequirement
 			new QuestRequirement(Quest.GRIM_TALES));
 
 		// ELITE
-		add("Craft 252 Air Runes simultaneously from Essence.",
+		add("Craft 252 Air Runes simultaneously from Essence without the use of Extracts.",
 			new SkillRequirement(Skill.RUNECRAFT, 88));
 		add("Purchase a White 2h Sword from Sir Vyvin.",
 			new QuestRequirement(Quest.WANTED));

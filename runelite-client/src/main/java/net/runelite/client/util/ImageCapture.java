@@ -26,89 +26,155 @@
 package net.runelite.client.util;
 
 import com.google.common.base.Strings;
-import com.google.gson.Gson;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
+import java.lang.reflect.InvocationTargetException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Base64;
 import java.util.Date;
+import java.util.concurrent.ScheduledExecutorService;
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.inject.Singleton;
-import lombok.Data;
+import javax.swing.SwingUtilities;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.Point;
 import net.runelite.client.Notifier;
 import static net.runelite.client.RuneLite.SCREENSHOT_DIR;
 import net.runelite.client.config.RuneScapeProfileType;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.HttpUrl;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.events.ScreenshotTaken;
+import net.runelite.client.ui.ClientUI;
+import net.runelite.client.ui.DrawManager;
 
 @Slf4j
 @Singleton
+@RequiredArgsConstructor(onConstructor = @__(@Inject))
 public class ImageCapture
 {
 	private static final DateFormat TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
-	private static final HttpUrl IMGUR_IMAGE_UPLOAD_URL = HttpUrl.get("https://api.imgur.com/3/image");
-	private static final MediaType JSON = MediaType.get("application/json");
 
 	private final Client client;
 	private final Notifier notifier;
-	private final OkHttpClient okHttpClient;
-	private final Gson gson;
-	private final String imgurClientId;
+	private final ClientUI clientUi;
+	private final DrawManager drawManager;
+	private final ScheduledExecutorService executor;
+	private final EventBus eventBus;
 
-	@Inject
-	private ImageCapture(
-		final Client client,
-		final Notifier notifier,
-		final OkHttpClient okHttpClient,
-		final Gson gson,
-		@Named("runelite.imgur.client.id") final String imgurClientId
-	)
+	/**
+	 * Take a screenshot and save it
+	 * @param subDir the subdirectory to save the screenshot in
+	 * @param fileName the filename for the screenshot
+	 * @param includeClientFrame whether to include the client ui in the screenshot
+	 * @param notify whether to send a notification
+	 * @param copyToClipboard whether to copy the screenshot to clipboard
+	 */
+	public void takeScreenshot(@Nullable String subDir, String fileName, boolean includeClientFrame,
+		boolean notify, boolean copyToClipboard)
 	{
-		this.client = client;
-		this.notifier = notifier;
-		this.okHttpClient = okHttpClient;
-		this.gson = gson;
-		this.imgurClientId = imgurClientId;
+		drawManager.requestNextFrameListener((img) ->
+		{
+			// This callback is on the client thread, move to executor thread now that we have the screenshot
+			executor.submit(() ->
+			{
+				final BufferedImage screenshot;
+				if (includeClientFrame)
+				{
+					screenshot = addClientFrame(img);
+				}
+				else
+				{
+					screenshot = ImageUtil.bufferedImageFromImage(img);
+				}
+
+				saveScreenshot(screenshot, fileName, subDir, notify, copyToClipboard);
+			});
+		});
 	}
 
 	/**
-	 * Saves a screenshot of the client window to the screenshot folder as a PNG,
-	 * and optionally uploads it to an image-hosting service.
+	 * Add the client frame to a screenshot
 	 *
-	 * @param screenshot BufferedImage to capture.
+	 * @param image the screenshot
+	 * @return
+	 */
+	public BufferedImage addClientFrame(Image image)
+	{
+		// create a new image, paint the client ui to it, and then draw the screenshot to that
+		final AffineTransform transform = OSType.getOSType() == OSType.MacOS ? new AffineTransform() :
+			clientUi.getGraphicsConfiguration().getDefaultTransform();
+
+		// scaled client dimensions
+		int clientWidth = getScaledValue(transform.getScaleX(), clientUi.getWidth());
+		int clientHeight = getScaledValue(transform.getScaleY(), clientUi.getHeight());
+
+		final BufferedImage screenshot = new BufferedImage(clientWidth, clientHeight, BufferedImage.TYPE_INT_ARGB);
+
+		Graphics2D graphics = (Graphics2D) screenshot.getGraphics();
+		AffineTransform originalTransform = graphics.getTransform();
+		// scale g2d for the paint() call
+		graphics.setTransform(transform);
+
+		// Draw the client frame onto the screenshot
+		try
+		{
+			SwingUtilities.invokeAndWait(() -> clientUi.paint(graphics));
+		}
+		catch (InterruptedException | InvocationTargetException e)
+		{
+			log.warn("unable to paint client UI on screenshot", e);
+		}
+
+		// Find the position of the canvas inside the frame
+		final Point canvasOffset = clientUi.getCanvasOffset();
+		final int gameOffsetX = getScaledValue(transform.getScaleX(), canvasOffset.getX());
+		final int gameOffsetY = getScaledValue(transform.getScaleY(), canvasOffset.getY());
+
+		// Draw the original screenshot onto the new screenshot
+		graphics.setTransform(originalTransform); // the original screenshot is already scaled
+		graphics.drawImage(image, gameOffsetX, gameOffsetY, null);
+		graphics.dispose();
+
+		return screenshot;
+	}
+
+	private static int getScaledValue(final double scale, final int value)
+	{
+		return (int) (value * scale + .5);
+	}
+
+	/**
+	 * Save a screenshot to disk. And optionally send a notification and copy it to clipboard.
+	 *
+	 * @param screenshot screenshot
 	 * @param fileName Filename to use, without file extension.
 	 * @param subDir Directory within the player screenshots dir to store the captured screenshot to.
 	 * @param notify Send a notification to the system tray when the image is captured.
-	 * @param imageUploadStyle which method to use to upload the screenshot (Imgur or directly to clipboard).
+	 * @param saveToClipboard Whether to also save the screenshot to clipboard
 	 */
-	public void takeScreenshot(BufferedImage screenshot, String fileName, @Nullable String subDir, boolean notify, ImageUploadStyle imageUploadStyle)
+	public void saveScreenshot(
+		BufferedImage screenshot,
+		String fileName,
+		@Nullable String subDir,
+		boolean notify,
+		boolean saveToClipboard
+	)
 	{
 		if (client.getGameState() == GameState.LOGIN_SCREEN)
 		{
 			// Prevent the screenshot from being captured
-			log.info("Login screenshot prevented");
+			log.debug("Login screenshot prevented");
 			return;
 		}
 
@@ -138,109 +204,70 @@ public class ImageCapture
 
 		fileName += (fileName.isEmpty() ? "" : " ") + format(new Date());
 
+		File screenshotFile = new File(playerFolder, fileName + ".png");
+		// To make sure that screenshots don't get overwritten, check if file exists,
+		// and if it does create file with same name and suffix.
+		int i = 1;
+		while (screenshotFile.exists())
+		{
+			screenshotFile = new File(playerFolder, fileName + String.format("(%d)", i++) + ".png");
+		}
+
 		try
 		{
-			File screenshotFile = new File(playerFolder, fileName + ".png");
-
-			// To make sure that screenshots don't get overwritten, check if file exists,
-			// and if it does create file with same name and suffix.
-			int i = 1;
-			while (screenshotFile.exists())
-			{
-				screenshotFile = new File(playerFolder, fileName + String.format("(%d)", i++) + ".png");
-			}
-
 			ImageIO.write(screenshot, "PNG", screenshotFile);
-
-			if (imageUploadStyle == ImageUploadStyle.IMGUR)
-			{
-				uploadScreenshot(screenshotFile, notify);
-			}
-			else if (imageUploadStyle == ImageUploadStyle.CLIPBOARD)
-			{
-				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-				TransferableBufferedImage transferableBufferedImage = new TransferableBufferedImage(screenshot);
-				clipboard.setContents(transferableBufferedImage, null);
-
-				if (notify)
-				{
-					notifier.notify("A screenshot was saved and inserted into your clipboard!", TrayIcon.MessageType.INFO);
-				}
-			}
-			else if (notify)
-			{
-				notifier.notify("A screenshot was saved to " + screenshotFile, TrayIcon.MessageType.INFO);
-			}
 		}
 		catch (IOException ex)
 		{
-			log.warn("error writing screenshot", ex);
+			log.error("error writing screenshot", ex);
+			return;
 		}
+
+		if (saveToClipboard)
+		{
+			Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+			TransferableBufferedImage transferableBufferedImage = new TransferableBufferedImage(screenshot);
+			clipboard.setContents(transferableBufferedImage, null);
+
+			if (notify)
+			{
+				notifier.notify("A screenshot was saved and inserted into your clipboard!", TrayIcon.MessageType.INFO);
+			}
+		}
+		else if (notify)
+		{
+			notifier.notify("A screenshot was saved to " + screenshotFile, TrayIcon.MessageType.INFO);
+		}
+
+		ScreenshotTaken screenshotTaken = new ScreenshotTaken(
+			screenshotFile,
+			screenshot
+		);
+		eventBus.post(screenshotTaken);
 	}
 
 	/**
-	 * Saves a screenshot of the client window to the screenshot folder as a PNG,
-	 * and optionally uploads it to an image-hosting service.
-	 *
-	 * @param screenshot BufferedImage to capture.
-	 * @param fileName Filename to use, without file extension.
-	 * @param notify Send a notification to the system tray when the image is captured.
-	 * @param imageUploadStyle which method to use to upload the screenshot (Imgur or directly to clipboard).
+	 * Saves a screenshot to the screenshots folder as a PNG, and fires a ScreenshotTaken
+	 * event afterward.
+	 * @deprecated This method formerly could upload the image to Imgur, which is no longer supported. Use saveScreenshot instead.
+	 * @see #saveScreenshot(BufferedImage, String, String, boolean, boolean)
 	 */
+	@Deprecated
+	public void takeScreenshot(BufferedImage screenshot, String fileName, @Nullable String subDir, boolean notify, ImageUploadStyle imageUploadStyle)
+	{
+		saveScreenshot(screenshot, fileName, subDir, notify, imageUploadStyle == ImageUploadStyle.CLIPBOARD);
+	}
+
+	/**
+	  * Saves a screenshot to the screenshots folder as a PNG, and fires a ScreenshotTaken
+	  * event afterward.
+	 * @deprecated This method formerly could upload the image to Imgur, which is no longer supported. Use saveScreenshot instead.
+	 * @see #saveScreenshot(BufferedImage, String, String, boolean, boolean)
+	 */
+	@Deprecated
 	public void takeScreenshot(BufferedImage screenshot, String fileName, boolean notify, ImageUploadStyle imageUploadStyle)
 	{
 		takeScreenshot(screenshot, fileName, null, notify, imageUploadStyle);
-	}
-
-	/**
-	 * Uploads a screenshot to the Imgur image-hosting service,
-	 * and copies the image link to the clipboard.
-	 *
-	 * @param screenshotFile Image file to upload.
-	 * @throws IOException Thrown if the file cannot be read.
-	 */
-	private void uploadScreenshot(File screenshotFile, boolean notify) throws IOException
-	{
-		String json = gson.toJson(new ImageUploadRequest(screenshotFile));
-
-		Request request = new Request.Builder()
-			.url(IMGUR_IMAGE_UPLOAD_URL)
-			.addHeader("Authorization", "Client-ID " + imgurClientId)
-			.post(RequestBody.create(JSON, json))
-			.build();
-
-		okHttpClient.newCall(request).enqueue(new Callback()
-		{
-			@Override
-			public void onFailure(Call call, IOException ex)
-			{
-				log.warn("error uploading screenshot", ex);
-			}
-
-			@Override
-			public void onResponse(Call call, Response response) throws IOException
-			{
-				try (InputStream in = response.body().byteStream())
-				{
-					ImageUploadResponse imageUploadResponse =
-						gson.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), ImageUploadResponse.class);
-
-					if (imageUploadResponse.isSuccess())
-					{
-						String link = imageUploadResponse.getData().getLink();
-
-						StringSelection selection = new StringSelection(link);
-						Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-						clipboard.setContents(selection, selection);
-
-						if (notify)
-						{
-							notifier.notify("A screenshot was uploaded and inserted into your clipboard!", TrayIcon.MessageType.INFO);
-						}
-					}
-				}
-			}
-		});
 	}
 
 	private static String format(Date date)
@@ -248,32 +275,6 @@ public class ImageCapture
 		synchronized (TIME_FORMAT)
 		{
 			return TIME_FORMAT.format(date);
-		}
-	}
-
-	@Data
-	private static class ImageUploadResponse
-	{
-		private Data data;
-		private boolean success;
-
-		@lombok.Data
-		private static class Data
-		{
-			private String link;
-		}
-	}
-
-	@Data
-	private static class ImageUploadRequest
-	{
-		private final String image;
-		private final String type;
-
-		ImageUploadRequest(File imageFile) throws IOException
-		{
-			this.image = Base64.getEncoder().encodeToString(Files.readAllBytes(imageFile.toPath()));
-			this.type = "base64";
 		}
 	}
 }

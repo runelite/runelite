@@ -28,6 +28,7 @@ import java.awt.Rectangle;
 import javax.annotation.Nullable;
 import net.runelite.api.FontTypeFace;
 import net.runelite.api.Point;
+import net.runelite.api.annotations.Component;
 import org.intellij.lang.annotations.MagicConstant;
 import org.jetbrains.annotations.Range;
 
@@ -53,6 +54,7 @@ public interface Widget
 	 *
 	 * @see WidgetID
 	 */
+	@Component
 	int getId();
 
 	/**

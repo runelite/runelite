@@ -29,8 +29,8 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.plugins.cluescrolls.clues.ClueScroll;
 import net.runelite.client.plugins.cluescrolls.clues.MusicClue;
 import net.runelite.client.ui.overlay.Overlay;
@@ -68,14 +68,14 @@ class ClueScrollMusicOverlay extends Overlay
 
 		MusicClue musicClue = (MusicClue) clue;
 
-		Widget musicContainer = client.getWidget(WidgetInfo.MUSIC_WINDOW);
+		Widget musicContainer = client.getWidget(ComponentID.MUSIC_CONTAINER);
 
 		if (musicContainer == null || musicContainer.isHidden())
 		{
 			return null;
 		}
 
-		Widget trackList = client.getWidget(WidgetInfo.MUSIC_TRACK_LIST);
+		Widget trackList = client.getWidget(ComponentID.MUSIC_LIST);
 		String trackToFind = musicClue.getSong();
 		Widget found = null;
 
@@ -101,7 +101,7 @@ class ClueScrollMusicOverlay extends Overlay
 		if (!hasScrolled)
 		{
 			hasScrolled = true;
-			plugin.scrollToWidget(WidgetInfo.MUSIC_TRACK_SCROLL_CONTAINER, WidgetInfo.MUSIC_TRACK_SCROLLBAR, found);
+			plugin.scrollToWidget(ComponentID.MUSIC_SCROLL_CONTAINER, ComponentID.MUSIC_SCROLLBAR, found);
 		}
 		plugin.highlightWidget(graphics, found, trackList, PADDING, null);
 

@@ -53,12 +53,12 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
+import net.runelite.api.widgets.ComponentID;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.Quest;
 import net.runelite.api.QuestState;
 import net.runelite.client.config.ConfigManager;
@@ -296,7 +296,7 @@ public class KourendLibraryPlugin extends Plugin
 
 		if (lastBookcaseAnimatedOn != null)
 		{
-			Widget find = client.getWidget(WidgetInfo.DIALOG_SPRITE_SPRITE);
+			Widget find = client.getWidget(ComponentID.DIALOG_SPRITE_SPRITE);
 			if (find != null)
 			{
 				Book book = Book.byId(find.getItemId());
@@ -309,12 +309,12 @@ public class KourendLibraryPlugin extends Plugin
 			}
 		}
 
-		Widget npcHead = client.getWidget(WidgetInfo.DIALOG_NPC_HEAD_MODEL);
+		Widget npcHead = client.getWidget(ComponentID.DIALOG_NPC_HEAD_MODEL);
 		if (npcHead != null)
 		{
 			if (isLibraryCustomer(npcHead.getModelId()))
 			{
-				Widget textw = client.getWidget(WidgetInfo.DIALOG_NPC_TEXT);
+				Widget textw = client.getWidget(ComponentID.DIALOG_NPC_TEXT);
 				String text = textw.getText();
 				Matcher m = BOOK_EXTRACTOR.matcher(text);
 				if (m.find())

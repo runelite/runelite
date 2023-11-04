@@ -91,7 +91,7 @@ int count_prio_offset(int priority) {
   return total;
 }
 
-void get_face(uint localId, modelinfo minfo, int cameraYaw, int cameraPitch, out int prio, out int dis, out ivec4 o1, out ivec4 o2, out ivec4 o3) {
+void get_face(uint localId, modelinfo minfo, float cameraYaw, float cameraPitch, out int prio, out int dis, out ivec4 o1, out ivec4 o2, out ivec4 o3) {
   int size = minfo.size;
   int offset = minfo.offset;
   int flags = minfo.flags;

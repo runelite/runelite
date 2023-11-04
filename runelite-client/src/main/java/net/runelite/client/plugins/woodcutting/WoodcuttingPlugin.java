@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.woodcutting;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
@@ -40,6 +41,30 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.AnimationID;
+import static net.runelite.api.AnimationID.WOODCUTTING_2H_3A;
+import static net.runelite.api.AnimationID.WOODCUTTING_2H_ADAMANT;
+import static net.runelite.api.AnimationID.WOODCUTTING_2H_BLACK;
+import static net.runelite.api.AnimationID.WOODCUTTING_2H_BRONZE;
+import static net.runelite.api.AnimationID.WOODCUTTING_2H_CRYSTAL;
+import static net.runelite.api.AnimationID.WOODCUTTING_2H_DRAGON;
+import static net.runelite.api.AnimationID.WOODCUTTING_2H_IRON;
+import static net.runelite.api.AnimationID.WOODCUTTING_2H_MITHRIL;
+import static net.runelite.api.AnimationID.WOODCUTTING_2H_RUNE;
+import static net.runelite.api.AnimationID.WOODCUTTING_2H_STEEL;
+import static net.runelite.api.AnimationID.WOODCUTTING_3A_AXE;
+import static net.runelite.api.AnimationID.WOODCUTTING_ADAMANT;
+import static net.runelite.api.AnimationID.WOODCUTTING_BLACK;
+import static net.runelite.api.AnimationID.WOODCUTTING_BRONZE;
+import static net.runelite.api.AnimationID.WOODCUTTING_CRYSTAL;
+import static net.runelite.api.AnimationID.WOODCUTTING_DRAGON;
+import static net.runelite.api.AnimationID.WOODCUTTING_DRAGON_OR;
+import static net.runelite.api.AnimationID.WOODCUTTING_GILDED;
+import static net.runelite.api.AnimationID.WOODCUTTING_INFERNAL;
+import static net.runelite.api.AnimationID.WOODCUTTING_IRON;
+import static net.runelite.api.AnimationID.WOODCUTTING_MITHRIL;
+import static net.runelite.api.AnimationID.WOODCUTTING_RUNE;
+import static net.runelite.api.AnimationID.WOODCUTTING_STEEL;
+import static net.runelite.api.AnimationID.WOODCUTTING_TRAILBLAZER;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
@@ -75,6 +100,15 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @Slf4j
 public class WoodcuttingPlugin extends Plugin
 {
+	static final Set<Integer> WOODCUTTING_ANIMS = ImmutableSet.of(
+		WOODCUTTING_BRONZE, WOODCUTTING_IRON, WOODCUTTING_STEEL, WOODCUTTING_BLACK, WOODCUTTING_MITHRIL,
+		WOODCUTTING_ADAMANT, WOODCUTTING_RUNE, WOODCUTTING_GILDED, WOODCUTTING_DRAGON, WOODCUTTING_DRAGON_OR,
+		WOODCUTTING_INFERNAL, WOODCUTTING_3A_AXE, WOODCUTTING_CRYSTAL, WOODCUTTING_TRAILBLAZER,
+		WOODCUTTING_2H_BRONZE, WOODCUTTING_2H_IRON, WOODCUTTING_2H_STEEL, WOODCUTTING_2H_BLACK,
+		WOODCUTTING_2H_MITHRIL, WOODCUTTING_2H_ADAMANT, WOODCUTTING_2H_RUNE, WOODCUTTING_2H_DRAGON,
+		WOODCUTTING_2H_CRYSTAL, WOODCUTTING_2H_3A
+	);
+
 	private static final Pattern WOOD_CUT_PATTERN = Pattern.compile("You get (?:some|an)[\\w ]+(?:logs?|mushrooms)\\.");
 	private static final Pattern ANIMA_BARK_PATTERN = Pattern.compile("You've been awarded <col=[0-9a-f]+>(\\d+) Anima-infused bark</col>\\.");
 
@@ -91,7 +125,7 @@ public class WoodcuttingPlugin extends Plugin
 	private WoodcuttingOverlay overlay;
 
 	@Inject
-	private WoodcuttingTreesOverlay treesOverlay;
+	private WoodcuttingSceneOverlay treesOverlay;
 
 	@Inject
 	private WoodcuttingConfig config;
@@ -100,10 +134,6 @@ public class WoodcuttingPlugin extends Plugin
 	@Nullable
 	@Setter(AccessLevel.PACKAGE)
 	private WoodcuttingSession session;
-
-	@Getter
-	@Nullable
-	private Axe axe;
 
 	@Getter
 	private final Set<GameObject> treeObjects = new HashSet<>();
@@ -120,6 +150,16 @@ public class WoodcuttingPlugin extends Plugin
 	private final List<GameObject> saplingIngredients = new ArrayList<>(5);
 	@Getter(AccessLevel.PACKAGE)
 	private final GameObject[] saplingOrder = new GameObject[3];
+	@Getter(AccessLevel.PACKAGE)
+	private NPC foxTrap;
+	@Getter(AccessLevel.PACKAGE)
+	private final List<GameObject> pheasantNests = new ArrayList<>(4);
+	@Getter(AccessLevel.PACKAGE)
+	private NPC freakyForester;
+	@Getter(AccessLevel.PACKAGE)
+	private NPC unfinishedBeeHive;
+	private final List<NPC> circles = new ArrayList<>(5);
+	private final List<NPC> entlings = new ArrayList<>(0);
 
 	@Getter(AccessLevel.PACKAGE)
 	private final List<TreeRespawn> respawns = new ArrayList<>();
@@ -152,7 +192,6 @@ public class WoodcuttingPlugin extends Plugin
 		saplingIngredients.clear();
 		Arrays.fill(saplingOrder, null);
 		session = null;
-		axe = null;
 		clueTierSpawned = null;
 	}
 
@@ -170,7 +209,7 @@ public class WoodcuttingPlugin extends Plugin
 			return;
 		}
 
-		if (axe != null && axe.matchesChoppingAnimation(client.getLocalPlayer()))
+		if (WOODCUTTING_ANIMS.contains(client.getLocalPlayer().getAnimation()))
 		{
 			session.setLastChopping();
 			return;
@@ -182,7 +221,6 @@ public class WoodcuttingPlugin extends Plugin
 		if (sinceCut.compareTo(statTimeout) >= 0)
 		{
 			session.setActive(false);
-			axe = null;
 		}
 	}
 
@@ -319,6 +357,10 @@ public class WoodcuttingPlugin extends Plugin
 			case ObjectID.SPLINTERED_BARK:
 				saplingIngredients.add(gameObject);
 				break;
+			case ObjectID.PHEASANT_NEST:
+			case ObjectID.PHEASANT_NEST_49937:
+				pheasantNests.add(gameObject);
+				break;
 		}
 	}
 
@@ -367,6 +409,14 @@ public class WoodcuttingPlugin extends Plugin
 					log.debug("Struggling Sapling event is over");
 				}
 				break;
+			case ObjectID.PHEASANT_NEST:
+			case ObjectID.PHEASANT_NEST_49937:
+				pheasantNests.remove(object);
+				if (pheasantNests.isEmpty())
+				{
+					log.debug("Pheasant event is over");
+				}
+				break;
 		}
 	}
 
@@ -375,13 +425,23 @@ public class WoodcuttingPlugin extends Plugin
 	{
 		switch (event.getGameState())
 		{
+			case LOGIN_SCREEN:
 			case HOPPING:
 				respawns.clear();
+				flowers.clear();
+				activeFlowers.clear();
+				foxTrap = null;
+				freakyForester = null;
+				unfinishedBeeHive = null;
+				circles.clear();
+				entlings.clear();
+				// fallthrough
 			case LOADING:
 				treeObjects.clear();
 				roots.clear();
 				saplingIngredients.clear();
 				Arrays.fill(saplingOrder, null);
+				pheasantNests.clear();
 				break;
 			case LOGGED_IN:
 				// After login trees that are depleted will be changed,
@@ -396,16 +456,6 @@ public class WoodcuttingPlugin extends Plugin
 	public void onAnimationChanged(final AnimationChanged event)
 	{
 		var actor = event.getActor();
-		if (client.getLocalPlayer() == actor)
-		{
-			int animId = actor.getAnimation();
-			Axe axe = Axe.findAxeByAnimId(animId);
-			if (axe != null)
-			{
-				this.axe = axe;
-			}
-		}
-
 		if (actor.getAnimation() == AnimationID.LOOKING_INTO && flowers.contains(actor.getInteracting()))
 		{
 			var flower = (NPC) actor.getInteracting();
@@ -427,7 +477,8 @@ public class WoodcuttingPlugin extends Plugin
 	public void onNpcSpawned(NpcSpawned event)
 	{
 		NPC npc = event.getNpc();
-		if (isFloweringBush(npc.getId()))
+		var id = npc.getId();
+		if (isFloweringBush(id))
 		{
 			if (flowers.isEmpty() && config.forestryFloweringTreeNotification())
 			{
@@ -436,9 +487,56 @@ public class WoodcuttingPlugin extends Plugin
 
 			flowers.add(npc);
 		}
-		else if (npc.getId() == NpcID.WOODCUTTING_LEPRECHAUN && config.forestryLeprechaunNotification())
+		else if (id == NpcID.WOODCUTTING_LEPRECHAUN && config.forestryLeprechaunNotification())
 		{
 			notifier.notify("A Leprechaun event spawned!");
+		}
+		else if ((id == NpcID.FRIGHTENED_FOX || id == NpcID.FRIGHTENED_FOX_12560) && config.forestryPoachersNotification())
+		{
+			notifier.notify("A Poachers event spawned!");
+		}
+		else if (id == NpcID.FOX_TRAP)
+		{
+			foxTrap = npc;
+		}
+		else if (id == NpcID.FREAKY_FORESTER_12536)
+		{
+			freakyForester = npc;
+
+			if (config.forestryPheasantControlNotification())
+			{
+				notifier.notify("A Pheasant Control event has spawned!");
+			}
+		}
+		else if (id == NpcID.WILD_BEEHIVE)
+		{
+			if (config.forestryBeeHiveNotification())
+			{
+				notifier.notify("A Bee Hive event has spawned!");
+			}
+		}
+		else if (id == NpcID.UNFINISHED_BEEHIVE || id == NpcID.UNFINISHED_BEEHIVE_12516)
+		{
+			unfinishedBeeHive = npc;
+		}
+		else if (id >= NpcID.RITUAL_CIRCLE_GREEN && id <= NpcID.RITUAL_CIRCLE_RED_12535)
+		{
+			circles.add(npc);
+		}
+		else if (id == NpcID.DRYAD_12519)
+		{
+			if (config.forestryEnchantmentRitualNotification())
+			{
+				notifier.notify("An Enchantment Ritual event has spawned!");
+			}
+		}
+		else if (id == NpcID.ENTLING)
+		{
+			entlings.add(npc);
+			if (entlings.size() == 1 && config.forestryFriendlyEntNotification())
+			{
+				notifier.notify("A Friendly Ent event has spawned!");
+			}
 		}
 	}
 
@@ -457,6 +555,20 @@ public class WoodcuttingPlugin extends Plugin
 				lastInteractFlower = null;
 			}
 		}
+		if (foxTrap == npc)
+		{
+			foxTrap = null;
+		}
+		if (freakyForester == npc)
+		{
+			freakyForester = null;
+		}
+		if (unfinishedBeeHive == npc)
+		{
+			unfinishedBeeHive = null;
+		}
+		circles.remove(npc);
+		entlings.remove(npc);
 	}
 
 	@Subscribe
@@ -482,5 +594,35 @@ public class WoodcuttingPlugin extends Plugin
 			npcId == NpcID.FLOWERING_BUSH_WHITE ||
 			npcId == NpcID.FLOWERING_BUSH_GREEN ||
 			npcId == NpcID.FLOWERING_BUSH_BLUE;
+	}
+
+	NPC solveCircles()
+	{
+		if (circles.size() != 5)
+		{
+			return null;
+		}
+
+		int s = 0;
+		for (var npc : circles)
+		{
+			int off = npc.getId() - NpcID.RITUAL_CIRCLE_GREEN;
+			int shape = off / 4;
+			int color = off % 4;
+			int id = (16 << shape) | (1 << color);
+			s ^= id;
+		}
+		for (var npc : circles)
+		{
+			int off = npc.getId() - NpcID.RITUAL_CIRCLE_GREEN;
+			int shape = off / 4;
+			int color = off % 4;
+			int id = (16 << shape) | (1 << color);
+			if ((id & s) == id)
+			{
+				return npc;
+			}
+		}
+		return null;
 	}
 }

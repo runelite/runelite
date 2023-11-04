@@ -54,10 +54,9 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.widgets.InterfaceID;
 import net.runelite.api.widgets.Widget;
-import static net.runelite.api.widgets.WidgetID.ACHIEVEMENT_DIARY_SCROLL_GROUP_ID;
-import static net.runelite.api.widgets.WidgetID.ADVENTURE_LOG_ID;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatClient;
 import net.runelite.client.chat.ChatCommandManager;
@@ -935,7 +934,7 @@ public class ChatCommandsPluginTest
 	public void testPlayerPetList()
 	{
 		Widget logEntryHeaderWidget = mock(Widget.class);
-		when(client.getWidget(WidgetInfo.COLLECTION_LOG_ENTRY_HEADER)).thenReturn(logEntryHeaderWidget);
+		when(client.getWidget(ComponentID.COLLECTION_LOG_ENTRY_HEADER)).thenReturn(logEntryHeaderWidget);
 
 		Widget[] logEntryHeaderItemsWidget = new Widget[1];
 		when(logEntryHeaderWidget.getChildren()).thenReturn(logEntryHeaderItemsWidget);
@@ -946,7 +945,7 @@ public class ChatCommandsPluginTest
 		when(logEntryHeaderTitleWidget.getText()).thenReturn("All Pets");
 
 		Widget logEntryItemsWidget = mock(Widget.class);
-		when(client.getWidget(WidgetInfo.COLLECTION_LOG_ENTRY_ITEMS)).thenReturn(logEntryItemsWidget);
+		when(client.getWidget(ComponentID.COLLECTION_LOG_ENTRY_ITEMS)).thenReturn(logEntryItemsWidget);
 
 		Widget[] logPetEntriesWidget = new Widget[3];
 		for (int i = 0; i < 3; i++)
@@ -972,7 +971,7 @@ public class ChatCommandsPluginTest
 	public void testEmptyPlayerPetList()
 	{
 		Widget logEntryHeaderWidget = mock(Widget.class);
-		when(client.getWidget(WidgetInfo.COLLECTION_LOG_ENTRY_HEADER)).thenReturn(logEntryHeaderWidget);
+		when(client.getWidget(ComponentID.COLLECTION_LOG_ENTRY_HEADER)).thenReturn(logEntryHeaderWidget);
 
 		Widget[] logEntryHeaderItemsWidget = new Widget[1];
 		when(logEntryHeaderWidget.getChildren()).thenReturn(logEntryHeaderItemsWidget);
@@ -983,7 +982,7 @@ public class ChatCommandsPluginTest
 		when(logEntryHeaderTitleWidget.getText()).thenReturn("All Pets");
 
 		Widget logEntryItemsWidget = mock(Widget.class);
-		when(client.getWidget(WidgetInfo.COLLECTION_LOG_ENTRY_ITEMS)).thenReturn(logEntryItemsWidget);
+		when(client.getWidget(ComponentID.COLLECTION_LOG_ENTRY_ITEMS)).thenReturn(logEntryItemsWidget);
 
 		Widget[] logPetEntriesWidget = new Widget[3];
 		for (int i = 0; i < 3; i++)
@@ -1006,7 +1005,7 @@ public class ChatCommandsPluginTest
 	public void testUpdatePlayerPetList()
 	{
 		Widget logEntryHeaderWidget = mock(Widget.class);
-		when(client.getWidget(WidgetInfo.COLLECTION_LOG_ENTRY_HEADER)).thenReturn(logEntryHeaderWidget);
+		when(client.getWidget(ComponentID.COLLECTION_LOG_ENTRY_HEADER)).thenReturn(logEntryHeaderWidget);
 
 		Widget[] logEntryHeaderItemsWidget = new Widget[1];
 		when(logEntryHeaderWidget.getChildren()).thenReturn(logEntryHeaderItemsWidget);
@@ -1017,7 +1016,7 @@ public class ChatCommandsPluginTest
 		when(logEntryHeaderTitleWidget.getText()).thenReturn("All Pets");
 
 		Widget logEntryItemsWidget = mock(Widget.class);
-		when(client.getWidget(WidgetInfo.COLLECTION_LOG_ENTRY_ITEMS)).thenReturn(logEntryItemsWidget);
+		when(client.getWidget(ComponentID.COLLECTION_LOG_ENTRY_ITEMS)).thenReturn(logEntryItemsWidget);
 
 		Widget[] logPetEntriesWidget = new Widget[3];
 		for (int i = 0; i < 3; i++)
@@ -1221,10 +1220,10 @@ public class ChatCommandsPluginTest
 		Widget advLogExploitsTextWidget = mock(Widget.class);
 		when(advLogWidget.getChild(ChatCommandsPlugin.ADV_LOG_EXPLOITS_TEXT_INDEX)).thenReturn(advLogExploitsTextWidget);
 		when(advLogExploitsTextWidget.getText()).thenReturn("The Exploits of " + PLAYER_NAME);
-		when(client.getWidget(WidgetInfo.ADVENTURE_LOG)).thenReturn(advLogWidget);
+		when(client.getWidget(ComponentID.ADVENTURE_LOG_CONTAINER)).thenReturn(advLogWidget);
 
 		// counters
-		when(client.getWidget(WidgetInfo.ACHIEVEMENT_DIARY_SCROLL_TEXT)).thenAnswer(a ->
+		when(client.getWidget(ComponentID.ACHIEVEMENT_DIARY_SCROLL_TEXT)).thenAnswer(a ->
 		{
 			Widget widget = mock(Widget.class);
 			Widget[] children = Arrays.stream(log)
@@ -1240,12 +1239,12 @@ public class ChatCommandsPluginTest
 		});
 
 		WidgetLoaded advLogEvent = new WidgetLoaded();
-		advLogEvent.setGroupId(ADVENTURE_LOG_ID);
+		advLogEvent.setGroupId(InterfaceID.ADVENTURE_LOG);
 		chatCommandsPlugin.onWidgetLoaded(advLogEvent);
 		chatCommandsPlugin.onGameTick(new GameTick());
 
 		WidgetLoaded countersLogEvent = new WidgetLoaded();
-		countersLogEvent.setGroupId(ACHIEVEMENT_DIARY_SCROLL_GROUP_ID);
+		countersLogEvent.setGroupId(InterfaceID.ACHIEVEMENT_DIARY_SCROLL);
 		chatCommandsPlugin.onWidgetLoaded(countersLogEvent);
 		chatCommandsPlugin.onGameTick(new GameTick());
 

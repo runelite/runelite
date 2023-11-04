@@ -22,84 +22,65 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.script;
+package net.runelite.mvn;
 
-import com.google.common.io.Files;
+import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import net.runelite.cache.IndexType;
-import net.runelite.cache.definitions.ScriptDefinition;
-import net.runelite.cache.definitions.savers.ScriptSaver;
-import net.runelite.cache.script.RuneLiteInstructions;
-import net.runelite.cache.script.assembler.Assembler;
+import static java.lang.Integer.parseInt;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
 @Mojo(
-	name = "assemble",
+	name = "build-index",
 	defaultPhase = LifecyclePhase.GENERATE_RESOURCES
 )
-public class AssembleMojo extends AbstractMojo
+public class IndexMojo extends AbstractMojo
 {
 	@Parameter(required = true)
-	private File scriptDirectory;
+	private File archiveOverlayDirectory;
 
 	@Parameter(required = true)
-	private File outputDirectory;
-
-	private final Log log = getLog();
+	private File indexFile;
 
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException
 	{
-		RuneLiteInstructions instructions = new RuneLiteInstructions();
-		instructions.init();
-
-		Assembler assembler = new Assembler(instructions);
-		ScriptSaver saver = new ScriptSaver();
-
-		int count = 0;
-		File scriptOut = new File(outputDirectory, Integer.toString(IndexType.CLIENTSCRIPT.getNumber()));
-		scriptOut.mkdirs();
-
-		for (File scriptFile : scriptDirectory.listFiles((dir, name) -> name.endsWith(".rs2asm")))
+		try (DataOutputStream fout = new DataOutputStream(new FileOutputStream(indexFile)))
 		{
-			log.debug("Assembling " + scriptFile);
-
-			try (FileInputStream fin = new FileInputStream(scriptFile))
+			for (File indexFolder : archiveOverlayDirectory.listFiles())
 			{
-				ScriptDefinition script = assembler.assemble(fin);
-				byte[] packedScript = saver.save(script);
-
-				File targetFile = new File(scriptOut, Integer.toString(script.getId()));
-				Files.write(packedScript, targetFile);
-
-				// Copy hash file
-
-				File hashFile = new File(scriptDirectory, Files.getNameWithoutExtension(scriptFile.getName()) + ".hash");
-				if (hashFile.exists())
+				if (indexFolder.isDirectory())
 				{
-					Files.copy(hashFile, new File(scriptOut, Integer.toString(script.getId()) + ".hash"));
-				}
-				else if (script.getId() < 10000) // Scripts >=10000 are RuneLite scripts, so they shouldn't have a .hash
-				{
-					throw new MojoExecutionException("Unable to find hash file for " + scriptFile);
-				}
+					int indexId = parseInt(indexFolder.getName());
+					for (File archiveFile : indexFolder.listFiles())
+					{
+						int archiveId;
+						try
+						{
+							archiveId = parseInt(archiveFile.getName());
+						}
+						catch (NumberFormatException ex)
+						{
+							continue;
+						}
 
-				++count;
+						fout.writeInt(indexId << 16 | archiveId);
+					}
+				}
 			}
-			catch (IOException ex)
-			{
-				throw new MojoFailureException("unable to open file", ex);
-			}
+
+			fout.writeInt(-1);
 		}
-
-		log.info("Assembled " + count + " scripts");
+		catch (IOException ex)
+		{
+			throw new MojoExecutionException("error build index file", ex);
+		}
 	}
+
 }

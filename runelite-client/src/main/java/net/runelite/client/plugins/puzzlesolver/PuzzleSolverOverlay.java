@@ -43,10 +43,10 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import static net.runelite.api.SpriteID.MINIMAP_DESTINATION_FLAG;
+import net.runelite.api.widgets.ComponentID;
 import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver.BLANK_TILE_VALUE;
 import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver.DIMENSION;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver;
 import net.runelite.client.plugins.puzzlesolver.solver.PuzzleState;
@@ -120,7 +120,7 @@ public class PuzzleSolverOverlay extends Overlay
 			}
 		}
 
-		Widget puzzleBox = client.getWidget(WidgetInfo.PUZZLE_BOX);
+		Widget puzzleBox = client.getWidget(ComponentID.PUZZLE_BOX_VISIBLE_BOX);
 
 		if (puzzleBox == null)
 		{

@@ -102,7 +102,7 @@ public class XpUpdaterPlugin extends Plugin
 				fetchXp = true;
 			}
 		}
-		else if (state == GameState.LOGIN_SCREEN)
+		else if (state == GameState.LOGIN_SCREEN || state == GameState.HOPPING)
 		{
 			Player local = client.getLocalPlayer();
 			if (local == null)

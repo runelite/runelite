@@ -61,9 +61,9 @@ import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.widgets.InterfaceID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -341,10 +341,10 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		if (event.getActionParam1() == WidgetInfo.BANK_ITEM_CONTAINER.getId()
+		if (event.getActionParam1() == ComponentID.BANK_ITEM_CONTAINER
 			&& event.getOption().equals("Examine"))
 		{
-			Widget container = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
+			Widget container = client.getWidget(ComponentID.BANK_ITEM_CONTAINER);
 			Widget item = container.getChild(event.getActionParam0());
 			int itemID = item.getItemId();
 			String text = EDIT_TAGS_MENU_OPTION;
@@ -460,12 +460,12 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 			if (tabInterface.isTagTabActive())
 			{
 				// Tag tab tab has its own title since it isn't a real tag
-				Widget bankTitle = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
+				Widget bankTitle = client.getWidget(ComponentID.BANK_TITLE_BAR);
 				bankTitle.setText("Tag tab tab");
 			}
 			else if (activeTab != null)
 			{
-				Widget bankTitle = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
+				Widget bankTitle = client.getWidget(ComponentID.BANK_TITLE_BAR);
 				bankTitle.setText("Tag tab <col=ff0000>" + activeTab.getTag() + "</col>");
 			}
 
@@ -473,7 +473,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 			// space that the separators took.
 			if (tabInterface.isTagTabActive() || (tabInterface.isActive() && config.removeSeparators()))
 			{
-				Widget itemContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
+				Widget itemContainer = client.getWidget(ComponentID.BANK_ITEM_CONTAINER);
 				Widget[] children = itemContainer.getChildren();
 				int items = 0;
 				for (Widget child : children)
@@ -521,7 +521,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 			return;
 		}
 
-		Widget itemContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
+		Widget itemContainer = client.getWidget(ComponentID.BANK_ITEM_CONTAINER);
 		if (itemContainer == null)
 		{
 			return;
@@ -583,7 +583,7 @@ public class BankTagsPlugin extends Plugin implements MouseWheelListener
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
-		if (event.getGroupId() == WidgetID.BANK_GROUP_ID)
+		if (event.getGroupId() == InterfaceID.BANK)
 		{
 			tabInterface.init();
 		}

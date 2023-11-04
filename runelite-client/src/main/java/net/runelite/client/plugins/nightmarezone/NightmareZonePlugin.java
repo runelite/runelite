@@ -35,10 +35,10 @@ import net.runelite.api.Client;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.widgets.ComponentID;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -100,7 +100,7 @@ public class NightmareZonePlugin extends Plugin
 		overlayManager.remove(overlay);
 		overlay.removeAbsorptionCounter();
 
-		Widget nmzWidget = client.getWidget(WidgetInfo.NIGHTMARE_ZONE);
+		Widget nmzWidget = client.getWidget(ComponentID.NMZ_CONTAINER);
 
 		if (nmzWidget != null)
 		{
@@ -130,7 +130,7 @@ public class NightmareZonePlugin extends Plugin
 			return;
 		}
 
-		Widget nmzWidget = client.getWidget(WidgetInfo.NIGHTMARE_ZONE);
+		Widget nmzWidget = client.getWidget(ComponentID.NMZ_CONTAINER);
 		if (nmzWidget != null)
 		{
 			nmzWidget.setHidden(true);

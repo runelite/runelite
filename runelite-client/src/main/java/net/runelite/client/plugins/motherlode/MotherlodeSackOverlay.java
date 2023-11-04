@@ -33,8 +33,8 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Varbits;
+import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -67,7 +67,7 @@ class MotherlodeSackOverlay extends OverlayPanel
 			return null;
 		}
 
-		Widget sack = client.getWidget(WidgetInfo.MOTHERLODE_MINE);
+		Widget sack = client.getWidget(ComponentID.MLM_CONTAINER);
 
 		panelComponent.setBackgroundColor(ComponentConstants.STANDARD_BACKGROUND_COLOR);
 

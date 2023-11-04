@@ -47,16 +47,17 @@ import net.runelite.api.MenuEntry;
 import net.runelite.api.ScriptID;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.VarClientStr;
+import net.runelite.api.annotations.Component;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuShouldLeftClick;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.widgets.InterfaceID;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.Keybind;
@@ -123,7 +124,7 @@ public class BankPlugin extends Plugin
 			Keybind keybind = config.searchKeybind();
 			if (keybind.matches(e))
 			{
-				Widget bankContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
+				Widget bankContainer = client.getWidget(ComponentID.BANK_ITEM_CONTAINER);
 				if (bankContainer != null && !bankContainer.isSelfHidden())
 				{
 					log.debug("Search hotkey pressed");
@@ -131,13 +132,13 @@ public class BankPlugin extends Plugin
 					e.consume();
 				}
 
-				Widget seedVaultSearchButton = client.getWidget(WidgetInfo.SEED_VAULT_SEARCH_BUTTON);
+				Widget seedVaultSearchButton = client.getWidget(ComponentID.SEED_VAULT_SEARCH_BUTTON);
 				if (seedVaultSearchButton != null)
 				{
 					log.debug("Search hotkey pressed");
 					clientThread.invoke(() ->
 					{
-						Widget searchButton = client.getWidget(WidgetInfo.SEED_VAULT_SEARCH_BUTTON);
+						Widget searchButton = client.getWidget(ComponentID.SEED_VAULT_SEARCH_BUTTON);
 						if (searchButton == null || searchButton.isHidden())
 						{
 							return;
@@ -270,20 +271,20 @@ public class BankPlugin extends Plugin
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
-		if (event.getGroupId() == WidgetID.SEED_VAULT_GROUP_ID && config.seedVaultValue())
+		if (event.getGroupId() == InterfaceID.SEED_VAULT && config.seedVaultValue())
 		{
 			clientThread.invokeLater(this::updateSeedVaultTotal);
 		}
-		else if (event.getGroupId() == WidgetID.CLANRANK_POPUP // also the Jagex account ad in the bank
+		else if (event.getGroupId() == InterfaceID.CLANRANK_POPUP // also the Jagex account ad in the bank
 			&& config.blockJagexAccountAd())
 		{
 			var wn = client.getComponentTable()
-				.get(WidgetInfo.BANK_POPUP.getId());
+				.get(ComponentID.BANK_POPUP);
 			if (wn != null)
 			{
 				clientThread.invokeLater(() ->
 				{
-					var w = client.getWidget(WidgetID.CLANRANK_POPUP, 4).getChild(1);
+					var w = client.getWidget(InterfaceID.CLANRANK_POPUP, 4).getChild(1);
 					// this is also re-used by the clear all bank fillers popup
 					if (w.getText().equals("Want more bank space?"))
 					{
@@ -299,13 +300,13 @@ public class BankPlugin extends Plugin
 	{
 		if (event.getScriptId() == ScriptID.BANKMAIN_BUILD)
 		{
-			ContainerPrices price = getWidgetContainerPrices(WidgetInfo.BANK_ITEM_CONTAINER, InventoryID.BANK);
+			ContainerPrices price = getWidgetContainerPrices(ComponentID.BANK_ITEM_CONTAINER, InventoryID.BANK);
 			if (price == null)
 			{
 				return;
 			}
 
-			Widget bankTitle = client.getWidget(WidgetInfo.BANK_TITLE_BAR);
+			Widget bankTitle = client.getWidget(ComponentID.BANK_TITLE_BAR);
 			bankTitle.setText(bankTitle.getText() + createValueText(price.getGePrice(), price.getHighAlchPrice()));
 		}
 		else if (event.getScriptId() == ScriptID.BANKMAIN_SEARCH_REFRESH)
@@ -321,13 +322,13 @@ public class BankPlugin extends Plugin
 		}
 		else if (event.getScriptId() == ScriptID.GROUP_IRONMAN_STORAGE_BUILD)
 		{
-			ContainerPrices price = getWidgetContainerPrices(WidgetInfo.GROUP_STORAGE_ITEM_CONTAINER, InventoryID.GROUP_STORAGE);
+			ContainerPrices price = getWidgetContainerPrices(ComponentID.GROUP_STORAGE_ITEM_CONTAINER, InventoryID.GROUP_STORAGE);
 			if (price == null)
 			{
 				return;
 			}
 
-			Widget bankTitle = client.getWidget(WidgetInfo.GROUP_STORAGE_UI).getChild(1);
+			Widget bankTitle = client.getWidget(ComponentID.GROUP_STORAGE_UI).getChild(1);
 			bankTitle.setText(bankTitle.getText() + createValueText(price.getGePrice(), price.getHighAlchPrice()));
 		}
 	}
@@ -395,7 +396,7 @@ public class BankPlugin extends Plugin
 
 	private void updateSeedVaultTotal()
 	{
-		final Widget titleContainer = client.getWidget(WidgetInfo.SEED_VAULT_TITLE_CONTAINER);
+		final Widget titleContainer = client.getWidget(ComponentID.SEED_VAULT_TITLE_CONTAINER);
 		if (titleContainer == null)
 		{
 			return;
@@ -579,9 +580,9 @@ public class BankPlugin extends Plugin
 		}
 	}
 
-	private ContainerPrices getWidgetContainerPrices(WidgetInfo widgetInfo, InventoryID inventoryID)
+	private ContainerPrices getWidgetContainerPrices(@Component int componentId, InventoryID inventoryID)
 	{
-		final Widget widget = client.getWidget(widgetInfo);
+		final Widget widget = client.getWidget(componentId);
 		final ItemContainer itemContainer = client.getItemContainer(inventoryID);
 		final Widget[] children = widget.getChildren();
 		ContainerPrices prices = null;

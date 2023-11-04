@@ -415,7 +415,7 @@
 			</plugin>
 			<plugin>
 				<groupId>net.runelite</groupId>
-				<artifactId>script-assembler-plugin</artifactId>
+				<artifactId>runelite-maven-plugin</artifactId>
 				<version>${project.version}</version>
 				<executions>
 					<execution>

@@ -33,14 +33,14 @@ layout(triangles) in;
 layout(triangle_strip, max_vertices = 3) out;
 
 layout(std140) uniform uniforms {
-  int cameraYaw;
-  int cameraPitch;
+  float cameraYaw;
+  float cameraPitch;
   int centerX;
   int centerY;
   int zoom;
-  int cameraX;
-  int cameraY;
-  int cameraZ;
+  float cameraX;
+  float cameraY;
+  float cameraZ;
   ivec2 sinCosTable[2048];
 };
 
@@ -68,7 +68,7 @@ void main() {
   vec2 uv[3];
 
   if (textureId > 0) {
-    ivec3 cameraPos = ivec3(cameraX, cameraY, cameraZ);
+    vec3 cameraPos = vec3(cameraX, cameraY, cameraZ);
     compute_uv(cameraPos, gVertex[0], gVertex[1], gVertex[2], gTexPos[0], gTexPos[1], gTexPos[2], uv[0], uv[1], uv[2]);
 
     vec2 textureAnim = textureAnimations[textureId - 1];

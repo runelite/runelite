@@ -40,8 +40,8 @@ import net.runelite.api.WorldType;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.ScriptPreFired;
+import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
@@ -99,7 +99,7 @@ public class CombatLevelPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(overlay);
-		Widget combatLevelWidget = client.getWidget(WidgetInfo.COMBAT_LEVEL);
+		Widget combatLevelWidget = client.getWidget(ComponentID.COMBAT_LEVEL);
 
 		if (combatLevelWidget != null)
 		{
@@ -122,7 +122,7 @@ public class CombatLevelPlugin extends Plugin
 			return;
 		}
 
-		Widget combatLevelWidget = client.getWidget(WidgetInfo.COMBAT_LEVEL);
+		Widget combatLevelWidget = client.getWidget(ComponentID.COMBAT_LEVEL);
 		if (combatLevelWidget == null || !config.showPreciseCombatLevel())
 		{
 			return;
@@ -214,7 +214,7 @@ public class CombatLevelPlugin extends Plugin
 
 	private void appendAttackLevelRangeText()
 	{
-		final Widget wildernessLevelWidget = client.getWidget(WidgetInfo.PVP_WILDERNESS_LEVEL);
+		final Widget wildernessLevelWidget = client.getWidget(ComponentID.PVP_WILDERNESS_LEVEL);
 		if (wildernessLevelWidget == null)
 		{
 			return;
@@ -241,7 +241,7 @@ public class CombatLevelPlugin extends Plugin
 			return;
 		}
 
-		final Widget wildernessLevelWidget = client.getWidget(WidgetInfo.PVP_WILDERNESS_LEVEL);
+		final Widget wildernessLevelWidget = client.getWidget(ComponentID.PVP_WILDERNESS_LEVEL);
 		if (wildernessLevelWidget != null)
 		{
 			String wildernessLevelText = wildernessLevelWidget.getText();

@@ -49,8 +49,8 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.ScriptPostFired;
+import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -272,7 +272,7 @@ public class RunEnergyPlugin extends Plugin
 
 	private void setRunOrbText(String text)
 	{
-		Widget runOrbText = client.getWidget(WidgetInfo.MINIMAP_RUN_ORB_TEXT);
+		Widget runOrbText = client.getWidget(ComponentID.MINIMAP_RUN_ORB_TEXT);
 
 		if (runOrbText != null)
 		{
@@ -390,7 +390,7 @@ public class RunEnergyPlugin extends Plugin
 		}
 		lastCheckTick = currentTick;
 
-		final Widget widgetDestroyItemName = client.getWidget(WidgetInfo.DESTROY_ITEM_NAME);
+		final Widget widgetDestroyItemName = client.getWidget(ComponentID.DESTROY_ITEM_NAME);
 		if (widgetDestroyItemName == null)
 		{
 			return;
