@@ -659,6 +659,8 @@ public final class Varbits
 	public static final int LEAGUE_RELIC_4 = 10052;
 	public static final int LEAGUE_RELIC_5 = 10053;
 	public static final int LEAGUE_RELIC_6 = 11696;
+	public static final int LEAGUE_RELIC_7 = 17301;
+	public static final int LEAGUE_RELIC_8 = 17302;
 
 	/**
 	 * Muted volume restore values

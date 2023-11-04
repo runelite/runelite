@@ -749,6 +749,28 @@ public class LootTrackerPlugin extends Plugin
 		}
 	}
 
+	private Object buildNpcMetadata(NPC npc)
+	{
+		if (client.getWorldType().contains(WorldType.SEASONAL))
+		{
+			var md = new NpcMetadata();
+			md.setId(npc.getId());
+			md.setR1(client.getVarbitValue(Varbits.LEAGUE_RELIC_1));
+			md.setR2(client.getVarbitValue(Varbits.LEAGUE_RELIC_2));
+			md.setR3(client.getVarbitValue(Varbits.LEAGUE_RELIC_3));
+			md.setR4(client.getVarbitValue(Varbits.LEAGUE_RELIC_4));
+			md.setR5(client.getVarbitValue(Varbits.LEAGUE_RELIC_5));
+			md.setR6(client.getVarbitValue(Varbits.LEAGUE_RELIC_6));
+			md.setR7(client.getVarbitValue(Varbits.LEAGUE_RELIC_7));
+			md.setR8(client.getVarbitValue(Varbits.LEAGUE_RELIC_8));
+			return md;
+		}
+		else
+		{
+			return npc.getId();
+		}
+	}
+
 	@Subscribe
 	public void onNpcLootReceived(final NpcLootReceived npcLootReceived)
 	{
@@ -757,7 +779,7 @@ public class LootTrackerPlugin extends Plugin
 		final String name = npc.getName();
 		final int combat = npc.getCombatLevel();
 
-		addLoot(name, combat, LootRecordType.NPC, npc.getId(), items);
+		addLoot(name, combat, LootRecordType.NPC, buildNpcMetadata(npc), items);
 
 		if (config.npcKillChatMessage())
 		{
