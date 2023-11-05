@@ -353,6 +353,6 @@ class StatusBarsOverlay extends Overlay
 
 	private boolean inLms()
 	{
-		return client.getWidget(ComponentID.LMS_KDA_INFO) != null;
+		return client.getWidget(ComponentID.LMS_INGAME_INFO) != null;
 	}
 }
