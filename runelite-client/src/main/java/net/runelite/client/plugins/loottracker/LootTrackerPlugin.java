@@ -813,7 +813,7 @@ public class LootTrackerPlugin extends Plugin
 				container = client.getItemContainer(InventoryID.CHAMBERS_OF_XERIC_CHEST);
 				chestLooted = true;
 				break;
-			case InterfaceID.TOB:
+			case InterfaceID.TOB_REWARD:
 				if (chestLooted || !inTobChestRegion())
 				{
 					return;
