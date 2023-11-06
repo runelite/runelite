@@ -300,7 +300,7 @@ public class LootTrackerPluginTest
 		when(client.getLocalPlayer().getLocalLocation()).thenReturn(localPoint);
 
 		WidgetLoaded widgetLoaded = new WidgetLoaded();
-		widgetLoaded.setGroupId(InterfaceID.TOB);
+		widgetLoaded.setGroupId(InterfaceID.TOB_REWARD);
 		spyPlugin.onWidgetLoaded(widgetLoaded);
 
 		ArgumentCaptor<QueuedMessage> captor = ArgumentCaptor.forClass(QueuedMessage.class);
@@ -451,7 +451,7 @@ public class LootTrackerPluginTest
 		spyPlugin.onGameStateChanged(loading);
 
 		WidgetLoaded widgetLoaded = new WidgetLoaded();
-		widgetLoaded.setGroupId(InterfaceID.TOB);
+		widgetLoaded.setGroupId(InterfaceID.TOB_REWARD);
 		spyPlugin.onWidgetLoaded(widgetLoaded);
 
 		verify(spyPlugin).addLoot("Theatre of Blood", -1, LootRecordType.EVENT, null, Collections.singletonList(
@@ -480,7 +480,7 @@ public class LootTrackerPluginTest
 		spyPlugin.onGameStateChanged(loading);
 
 		WidgetLoaded widgetLoaded = new WidgetLoaded();
-		widgetLoaded.setGroupId(InterfaceID.TOB);
+		widgetLoaded.setGroupId(InterfaceID.TOB_REWARD);
 		spyPlugin.onWidgetLoaded(widgetLoaded);
 
 		verify(spyPlugin).addLoot("Theatre of Blood", -1, LootRecordType.EVENT, null, Collections.singletonList(
@@ -509,7 +509,7 @@ public class LootTrackerPluginTest
 		spyPlugin.onGameStateChanged(loading);
 
 		WidgetLoaded widgetLoaded = new WidgetLoaded();
-		widgetLoaded.setGroupId(InterfaceID.TOB);
+		widgetLoaded.setGroupId(InterfaceID.TOB_REWARD);
 		spyPlugin.onWidgetLoaded(widgetLoaded);
 
 		verify(spyPlugin).addLoot("Theatre of Blood", -1, LootRecordType.EVENT, null, Collections.singletonList(
