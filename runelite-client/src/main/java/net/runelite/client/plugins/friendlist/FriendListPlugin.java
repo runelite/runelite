@@ -207,7 +207,7 @@ public class FriendListPlugin extends Plugin
 
 	private void setFriendsListTitle(final String title)
 	{
-		Widget friendListTitleWidget = client.getWidget(ComponentID.FRIENDS_CHAT_TITLE);
+		Widget friendListTitleWidget = client.getWidget(ComponentID.FRIEND_LIST_TITLE);
 		if (friendListTitleWidget != null)
 		{
 			friendListTitleWidget.setText(title);
