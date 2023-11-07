@@ -203,10 +203,8 @@ public class XpUpdaterPlugin extends Plugin
 		{
 			HttpUrl url = new HttpUrl.Builder()
 				.scheme("https")
-				.host(
-					worldTypes.contains(WorldType.SEASONAL) ? "seasonal.api.wiseoldman.net" :
-						"api.wiseoldman.net")
-				.addPathSegment("v2")
+				.host("api.wiseoldman.net")
+				.addPathSegment(worldTypes.contains(WorldType.SEASONAL) ? "league" : "v2")
 				.addPathSegment("players")
 				.addPathSegment(username)
 				.build();
