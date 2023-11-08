@@ -30,9 +30,7 @@ import javax.inject.Provider;
 import javax.swing.SwingUtilities;
 
 import net.runelite.api.Client;
-import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
-import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
@@ -72,11 +70,13 @@ public class ConfigPlugin extends Plugin
 	private ChatColorConfig chatColorConfig;
 
 	@Inject
-	private Client client;
+	ProfilePanel profilePanel;
 
 	private TopLevelConfigPanel topLevelConfigPanel;
 
 	private NavigationButton navButton;
+
+	private String currentRSN = "";
 
 	@Override
 	protected void startUp() throws Exception
@@ -135,15 +135,6 @@ public class ConfigPlugin extends Plugin
 				}
 				topLevelConfigPanel.openConfigurationPanel(plugin.getName());
 			});
-		}
-	}
-
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
-	{
-		if (gameStateChanged.getGameState() == GameState.LOGGED_IN)
-		{
-			System.out.println(client.getLocalPlayer());
 		}
 	}
 }

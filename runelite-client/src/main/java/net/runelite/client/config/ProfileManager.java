@@ -150,7 +150,6 @@ public class ProfileManager
 			profile.setName(name);
 			profile.setLinkedAccount("");
 			profile.setSync(false);
-			profile.setRoot(false);
 			profile.setRev(-1);
 			profile.setDefaultForRsProfiles(new ArrayList<>());
 			profiles.add(profile);
@@ -181,6 +180,18 @@ public class ProfileManager
 			for (ConfigProfile configProfile : profiles)
 			{
 				if (configProfile.getId() == id)
+				{
+					return configProfile;
+				}
+			}
+			return null;
+		}
+
+		public ConfigProfile findLinkedProfile(String rsn)
+		{
+			for (ConfigProfile configProfile : profiles)
+			{
+				if (configProfile.getLinkedAccount() != null && configProfile.getLinkedAccount().equalsIgnoreCase(rsn))
 				{
 					return configProfile;
 				}

@@ -64,11 +64,14 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.Client;
+import net.runelite.api.events.GameTick;
 import net.runelite.client.RuneLite;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.ConfigProfile;
 import net.runelite.client.config.ProfileManager;
+import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ProfileChanged;
 import net.runelite.client.events.SessionClose;
@@ -81,10 +84,14 @@ import net.runelite.client.ui.components.DragAndDropReorderPane;
 import net.runelite.client.ui.components.MouseDragEventForwarder;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.SwingUtil;
+import net.runelite.http.api.config.Profile;
 
 @Slf4j
 class ProfilePanel extends PluginPanel
 {
+	@Inject
+	private Client client;
+
 	private static final int MAX_PROFILES = 20;
 
 	private static final ImageIcon ADD_ICON = new ImageIcon(ImageUtil.loadImageResource(ScreenMarkerPlugin.class, "add_icon.png"));
@@ -113,6 +120,7 @@ class ProfilePanel extends PluginPanel
 	private File lastFileChooserDirectory = RuneLite.RUNELITE_DIR;
 
 	private boolean active;
+	private String currentRSN = "";
 
 	static
 	{
@@ -265,6 +273,25 @@ class ProfilePanel extends PluginPanel
 		}
 
 		reload();
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		if (!currentRSN.equals(client.getLocalPlayer().getName()))
+		{
+			currentRSN = client.getLocalPlayer().getName();
+			ConfigProfile profile;
+			try (ProfileManager.Lock lock = profileManager.lock())
+			{
+				profile = lock.findLinkedProfile(currentRSN);
+			}
+
+			if (profile != null)
+			{
+				switchToProfile(profile.getId());
+			}
+		}
 	}
 
 	private void reload()
@@ -466,10 +493,44 @@ class ProfilePanel extends PluginPanel
 						(profile.hasLinkedAccount() ? profile.getLinkedAccount() : "")
 					);
 
+					if (newRSN.length() > 12)
+					{
+						JOptionPane.showConfirmDialog(ProfileCard.this,
+							"RSN Entered is too long. Must be 12 characters or less.",
+							"Warning", JOptionPane.WARNING_MESSAGE
+						);
+
+						newRSN = null;
+					}
+
 					if (newRSN == null) {
 						acc.setSelected(false);
 					} else {
 						acc.setSelected(!newRSN.isEmpty());
+
+						ConfigProfile conflictProfile;
+						try (ProfileManager.Lock lock = profileManager.lock())
+						{
+							conflictProfile = lock.findLinkedProfile(newRSN);
+						}
+
+						if (conflictProfile != null)
+						{
+							int confirm = JOptionPane.showConfirmDialog(ProfileCard.this,
+								"The RSN you entered is already being used for the profile: " + conflictProfile.getName() +
+									"\nDo you wish to remove this link and add it to this profile instead?",
+								"Warning - RSN Already Used", JOptionPane.OK_CANCEL_OPTION
+							);
+
+							if (confirm == 0)
+							{
+								configManager.updateLinkedProfile(conflictProfile, "");
+							}
+							else
+							{
+								newRSN = null;
+							}
+						}
 					}
 
 					updateLinkedAccount(ev, profile, (newRSN == null ? oldRSN : newRSN));
