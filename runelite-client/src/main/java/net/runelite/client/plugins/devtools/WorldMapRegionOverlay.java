@@ -33,9 +33,9 @@ import java.awt.geom.Rectangle2D;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Point;
+import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.widgets.InterfaceID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.worldmap.WorldMap;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -58,7 +58,7 @@ class WorldMapRegionOverlay extends Overlay
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.HIGH);
 		setLayer(OverlayLayer.MANUAL);
-		drawAfterInterface(WidgetID.WORLD_MAP_GROUP_ID);
+		drawAfterInterface(InterfaceID.WORLD_MAP);
 		this.client = client;
 		this.plugin = plugin;
 	}
@@ -78,7 +78,7 @@ class WorldMapRegionOverlay extends Overlay
 	private void drawRegionOverlay(Graphics2D graphics)
 	{
 		WorldMap worldMap = client.getWorldMap();
-		Widget map = client.getWidget(WidgetInfo.WORLD_MAP_VIEW);
+		Widget map = client.getWidget(ComponentID.WORLD_MAP_MAPVIEW);
 		float pixelsPerTile = worldMap.getWorldMapZoom();
 
 		if (map == null)

@@ -25,6 +25,7 @@
 package net.runelite.api.events;
 
 import lombok.Data;
+import net.runelite.api.annotations.Interface;
 
 /**
  * An event where a {@link net.runelite.api.widgets.Widget} has been loaded.
@@ -35,5 +36,6 @@ public class WidgetLoaded
 	/**
 	 * The group ID of the loaded widget.
 	 */
+	@Interface
 	private int groupId;
 }

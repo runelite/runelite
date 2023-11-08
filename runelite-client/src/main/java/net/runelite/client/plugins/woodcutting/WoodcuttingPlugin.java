@@ -491,7 +491,7 @@ public class WoodcuttingPlugin extends Plugin
 		{
 			notifier.notify("A Leprechaun event spawned!");
 		}
-		else if (id == NpcID.FRIGHTENED_FOX && config.forestryPoachersNotification())
+		else if ((id == NpcID.FRIGHTENED_FOX || id == NpcID.FRIGHTENED_FOX_12560) && config.forestryPoachersNotification())
 		{
 			notifier.notify("A Poachers event spawned!");
 		}
@@ -508,14 +508,14 @@ public class WoodcuttingPlugin extends Plugin
 				notifier.notify("A Pheasant Control event has spawned!");
 			}
 		}
-		else if (id == NpcID.WILD_BEE_HIVE)
+		else if (id == NpcID.WILD_BEEHIVE)
 		{
 			if (config.forestryBeeHiveNotification())
 			{
 				notifier.notify("A Bee Hive event has spawned!");
 			}
 		}
-		else if (id == NpcID.UNFINISHED_BEE_HIVE || id == NpcID.UNFINISHED_BEE_HIVE_12516)
+		else if (id == NpcID.UNFINISHED_BEEHIVE || id == NpcID.UNFINISHED_BEEHIVE_12516)
 		{
 			unfinishedBeeHive = npc;
 		}
@@ -598,6 +598,11 @@ public class WoodcuttingPlugin extends Plugin
 
 	NPC solveCircles()
 	{
+		if (circles.size() != 5)
+		{
+			return null;
+		}
+
 		int s = 0;
 		for (var npc : circles)
 		{

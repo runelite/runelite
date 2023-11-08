@@ -70,11 +70,9 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.widgets.InterfaceID;
 import net.runelite.api.widgets.Widget;
-import static net.runelite.api.widgets.WidgetID.ACHIEVEMENT_DIARY_SCROLL_GROUP_ID;
-import static net.runelite.api.widgets.WidgetID.ADVENTURE_LOG_ID;
-import static net.runelite.api.widgets.WidgetID.KILL_LOGS_GROUP_ID;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatClient;
 import net.runelite.client.chat.ChatColorType;
@@ -690,7 +688,7 @@ public class ChatCommandsPlugin extends Plugin
 		{
 			advLogLoaded = false;
 
-			Widget adventureLog = client.getWidget(WidgetInfo.ADVENTURE_LOG);
+			Widget adventureLog = client.getWidget(ComponentID.ADVENTURE_LOG_CONTAINER);
 
 			if (adventureLog != null)
 			{
@@ -706,9 +704,9 @@ public class ChatCommandsPlugin extends Plugin
 		{
 			bossLogLoaded = false;
 
-			Widget title = client.getWidget(WidgetInfo.KILL_LOG_TITLE);
-			Widget bossMonster = client.getWidget(WidgetInfo.KILL_LOG_MONSTER);
-			Widget bossKills = client.getWidget(WidgetInfo.KILL_LOG_KILLS);
+			Widget title = client.getWidget(ComponentID.KILL_LOG_TITLE);
+			Widget bossMonster = client.getWidget(ComponentID.KILL_LOG_MONSTER);
+			Widget bossKills = client.getWidget(ComponentID.KILL_LOG_KILLS);
 
 			if (title == null || bossMonster == null || bossKills == null
 				|| !"Boss Kill Log".equals(title.getText()))
@@ -740,7 +738,7 @@ public class ChatCommandsPlugin extends Plugin
 
 			if (client.getLocalPlayer().getName().equals(pohOwner))
 			{
-				Widget parent = client.getWidget(WidgetInfo.ACHIEVEMENT_DIARY_SCROLL_TEXT);
+				Widget parent = client.getWidget(ComponentID.ACHIEVEMENT_DIARY_SCROLL_TEXT);
 				// Each line is a separate static child
 				Widget[] children = parent.getStaticChildren();
 				String[] text = Arrays.stream(children)
@@ -805,14 +803,14 @@ public class ChatCommandsPlugin extends Plugin
 
 		if (pohOwner == null || pohOwner.equals(client.getLocalPlayer().getName()))
 		{
-			Widget collectionLogEntryHeader = client.getWidget(WidgetInfo.COLLECTION_LOG_ENTRY_HEADER);
+			Widget collectionLogEntryHeader = client.getWidget(ComponentID.COLLECTION_LOG_ENTRY_HEADER);
 			if (collectionLogEntryHeader != null && collectionLogEntryHeader.getChildren() != null)
 			{
 				Widget entryTitle = collectionLogEntryHeader.getChild(COL_LOG_ENTRY_HEADER_TITLE_INDEX);
 				// Make sure that the player is looking in the All Pets tab of the collection log
 				if (entryTitle.getText().equals("All Pets"))
 				{
-					Widget collectionLogEntryItems = client.getWidget(WidgetInfo.COLLECTION_LOG_ENTRY_ITEMS);
+					Widget collectionLogEntryItems = client.getWidget(ComponentID.COLLECTION_LOG_ENTRY_ITEMS);
 					if (collectionLogEntryItems != null && collectionLogEntryItems.getChildren() != null)
 					{
 						List<Integer> petList = new ArrayList<>();
@@ -837,13 +835,13 @@ public class ChatCommandsPlugin extends Plugin
 	{
 		switch (widget.getGroupId())
 		{
-			case ADVENTURE_LOG_ID:
+			case InterfaceID.ADVENTURE_LOG:
 				advLogLoaded = true;
 				break;
-			case KILL_LOGS_GROUP_ID:
+			case InterfaceID.KILL_LOG:
 				bossLogLoaded = true;
 				break;
-			case ACHIEVEMENT_DIARY_SCROLL_GROUP_ID:
+			case InterfaceID.ACHIEVEMENT_DIARY_SCROLL:
 				scrollInterfaceLoaded = true;
 				break;
 		}

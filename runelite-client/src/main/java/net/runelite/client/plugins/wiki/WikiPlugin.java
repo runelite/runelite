@@ -45,13 +45,14 @@ import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.widgets.InterfaceID;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetConfig;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetPositionMode;
 import net.runelite.api.widgets.WidgetType;
+import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -119,7 +120,7 @@ public class WikiPlugin extends Plugin
 
 	private void removeWidgets()
 	{
-		Widget wikiBannerParent = client.getWidget(WidgetInfo.MINIMAP_WIKI_BANNER_PARENT);
+		Widget wikiBannerParent = client.getWidget(ComponentID.MINIMAP_WIKI_BANNER_PARENT);
 		if (wikiBannerParent == null)
 		{
 			return;
@@ -131,7 +132,7 @@ public class WikiPlugin extends Plugin
 		}
 		children[0] = null;
 
-		Widget vanilla = client.getWidget(WidgetInfo.MINIMAP_WIKI_BANNER);
+		Widget vanilla = client.getWidget(ComponentID.MINIMAP_WIKI_BANNER);
 		if (vanilla != null && client.getVarbitValue(Varbits.WIKI_ENTITY_LOOKUP) == 0)
 		{
 			vanilla.setHidden(false);
@@ -144,7 +145,7 @@ public class WikiPlugin extends Plugin
 	@Subscribe
 	private void onWidgetLoaded(WidgetLoaded l)
 	{
-		if (l.getGroupId() == WidgetID.MINIMAP_GROUP_ID)
+		if (l.getGroupId() == InterfaceID.MINIMAP)
 		{
 			addWidgets();
 		}
@@ -152,7 +153,7 @@ public class WikiPlugin extends Plugin
 
 	private void addWidgets()
 	{
-		Widget wikiBannerParent = client.getWidget(WidgetInfo.MINIMAP_WIKI_BANNER_PARENT);
+		Widget wikiBannerParent = client.getWidget(ComponentID.MINIMAP_WIKI_BANNER_PARENT);
 		if (wikiBannerParent == null)
 		{
 			return;
@@ -170,7 +171,7 @@ public class WikiPlugin extends Plugin
 			wikiBannerParent.revalidate();
 		}
 
-		Widget vanilla = client.getWidget(WidgetInfo.MINIMAP_WIKI_BANNER);
+		Widget vanilla = client.getWidget(ComponentID.MINIMAP_WIKI_BANNER);
 		if (vanilla != null)
 		{
 			vanilla.setHidden(true);
@@ -216,7 +217,7 @@ public class WikiPlugin extends Plugin
 	{
 		if (scriptPostFired.getScriptId() == ScriptID.WIKI_ICON_UPDATE)
 		{
-			Widget w = client.getWidget(WidgetInfo.MINIMAP_WIKI_BANNER);
+			Widget w = client.getWidget(ComponentID.MINIMAP_WIKI_BANNER);
 			w.setHidden(true);
 		}
 	}
@@ -402,10 +403,10 @@ public class WikiPlugin extends Plugin
 			}
 		}
 
-		if (WidgetInfo.TO_GROUP(widgetID) == WidgetInfo.SKILLS_CONTAINER.getGroupId())
+		if (WidgetUtil.componentToInterface(widgetID) == InterfaceID.SKILLS)
 		{
 			Widget w = getWidget(widgetID, widgetIndex);
-			if (w.getActions() == null || w.getParentId() != WidgetInfo.SKILLS_CONTAINER.getId())
+			if (w.getActions() == null || w.getParentId() != ComponentID.SKILLS_CONTAINER)
 			{
 				return;
 			}

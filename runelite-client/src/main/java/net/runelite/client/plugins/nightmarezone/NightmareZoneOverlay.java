@@ -32,8 +32,8 @@ import net.runelite.api.ItemID;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
+import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.game.ItemManager;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayPanel;
@@ -81,7 +81,7 @@ class NightmareZoneOverlay extends OverlayPanel
 			{
 				removeAbsorptionCounter();
 				// Restore original widget
-				Widget nmzWidget = client.getWidget(WidgetInfo.NIGHTMARE_ZONE);
+				Widget nmzWidget = client.getWidget(ComponentID.NMZ_CONTAINER);
 				if (nmzWidget != null)
 				{
 					nmzWidget.setHidden(false);

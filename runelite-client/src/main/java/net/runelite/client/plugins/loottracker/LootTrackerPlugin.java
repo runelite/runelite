@@ -90,7 +90,7 @@ import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.PostClientTick;
 import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.widgets.WidgetID;
+import net.runelite.api.widgets.InterfaceID;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.callback.ClientThread;
@@ -800,11 +800,11 @@ public class LootTrackerPlugin extends Plugin
 
 		switch (widgetLoaded.getGroupId())
 		{
-			case (WidgetID.BARROWS_REWARD_GROUP_ID):
+			case InterfaceID.BARROWS_REWARD:
 				event = "Barrows";
 				container = client.getItemContainer(InventoryID.BARROWS_REWARD);
 				break;
-			case (WidgetID.CHAMBERS_OF_XERIC_REWARD_GROUP_ID):
+			case InterfaceID.CHAMBERS_OF_XERIC_REWARD:
 				if (chestLooted)
 				{
 					return;
@@ -813,7 +813,7 @@ public class LootTrackerPlugin extends Plugin
 				container = client.getItemContainer(InventoryID.CHAMBERS_OF_XERIC_CHEST);
 				chestLooted = true;
 				break;
-			case (WidgetID.THEATRE_OF_BLOOD_GROUP_ID):
+			case InterfaceID.TOB_REWARD:
 				if (chestLooted || !inTobChestRegion())
 				{
 					return;
@@ -822,7 +822,7 @@ public class LootTrackerPlugin extends Plugin
 				container = client.getItemContainer(InventoryID.THEATRE_OF_BLOOD_CHEST);
 				chestLooted = true;
 				break;
-			case WidgetID.TOA_REWARD_GROUP_ID:
+			case InterfaceID.TOA_REWARD:
 				if (chestLooted)
 				{
 					return;
@@ -844,21 +844,21 @@ public class LootTrackerPlugin extends Plugin
 				metadata = new int[]{ raidLevel, teamSize, raidDamage };
 				chestLooted = true;
 				break;
-			case (WidgetID.KINGDOM_GROUP_ID):
+			case InterfaceID.KINGDOM:
 				event = "Kingdom of Miscellania";
 				container = client.getItemContainer(InventoryID.KINGDOM_OF_MISCELLANIA);
 				break;
-			case (WidgetID.FISHING_TRAWLER_REWARD_GROUP_ID):
+			case InterfaceID.TRAWLER_REWARD:
 				event = "Fishing Trawler";
 				metadata = client.getBoostedSkillLevel(Skill.FISHING);
 				container = client.getItemContainer(InventoryID.FISHING_TRAWLER_REWARD);
 				break;
-			case (WidgetID.DRIFT_NET_FISHING_REWARD_GROUP_ID):
+			case InterfaceID.DRIFT_NET_FISHING_REWARD:
 				event = "Drift Net";
 				metadata = client.getBoostedSkillLevel(Skill.FISHING);
 				container = client.getItemContainer(InventoryID.DRIFT_NET_FISHING_REWARD);
 				break;
-			case WidgetID.WILDERNESS_LOOT_CHEST:
+			case InterfaceID.WILDERNESS_LOOT_CHEST:
 				if (chestLooted)
 				{
 					return;

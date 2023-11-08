@@ -51,25 +51,16 @@ import net.runelite.api.ScriptID;
 import net.runelite.api.SpriteID;
 import net.runelite.api.VarClientStr;
 import net.runelite.api.Varbits;
+import net.runelite.api.annotations.Component;
 import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.widgets.InterfaceID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
-import static net.runelite.api.widgets.WidgetID.BARROWS_REWARD_GROUP_ID;
-import static net.runelite.api.widgets.WidgetID.CHAMBERS_OF_XERIC_REWARD_GROUP_ID;
-import static net.runelite.api.widgets.WidgetID.CLUE_SCROLL_REWARD_GROUP_ID;
-import static net.runelite.api.widgets.WidgetID.DIALOG_SPRITE_GROUP_ID;
-import static net.runelite.api.widgets.WidgetID.KINGDOM_GROUP_ID;
-import static net.runelite.api.widgets.WidgetID.LEVEL_UP_GROUP_ID;
-import static net.runelite.api.widgets.WidgetID.QUEST_COMPLETED_GROUP_ID;
-import static net.runelite.api.widgets.WidgetID.THEATRE_OF_BLOOD_REWARD_GROUP_ID;
-import static net.runelite.api.widgets.WidgetID.TOA_REWARD_GROUP_ID;
-import static net.runelite.api.widgets.WidgetID.WILDERNESS_LOOT_CHEST;
-import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.client.RuneLite.SCREENSHOT_DIR;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -104,7 +95,7 @@ public class ScreenshotPlugin extends Plugin
 	private static final int CORRUPTED_GAUNTLET_REGION = 7768;
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
 	private static final Pattern LEVEL_UP_PATTERN = Pattern.compile(".*Your ([a-zA-Z]+) (?:level is|are)? now (\\d+)\\.");
-	private static final Pattern LEVEL_UP_MESSAGE_PATTERN = Pattern.compile("Congratulations, you've just advanced your ([a-zA-Z]+) level. You are now level (\\d+)\\.");
+	private static final Pattern LEVEL_UP_MESSAGE_PATTERN = Pattern.compile("Congratulations, you've (just advanced your (?<skill>[a-zA-Z]+) level\\. You are now level (?<level>\\d+)|reached the highest possible (?<skill99>[a-zA-Z]+) level of 99)\\.");
 	private static final Pattern BOSSKILL_MESSAGE_PATTERN = Pattern.compile("Your (.+) kill count is: <col=ff0000>(\\d+)</col>.");
 	private static final Pattern VALUABLE_DROP_PATTERN = Pattern.compile(".*Valuable drop: ([^<>]+?\\(((?:\\d+,?)+) coins\\))(?:</col>)?");
 	private static final Pattern UNTRADEABLE_DROP_PATTERN = Pattern.compile(".*Untradeable drop: ([^<>]+)(?:</col>)?");
@@ -119,9 +110,9 @@ public class ScreenshotPlugin extends Plugin
 		"You have a funny feeling like you would have been followed");
 	private static final Pattern BA_HIGH_GAMBLE_REWARD_PATTERN = Pattern.compile("(?<reward>.+)!<br>High level gamble count: <col=7f0000>(?<gambleCount>.+)</col>");
 	private static final Set<Integer> REPORT_BUTTON_TLIS = ImmutableSet.of(
-		WidgetID.FIXED_VIEWPORT_GROUP_ID,
-		WidgetID.RESIZABLE_VIEWPORT_OLD_SCHOOL_BOX_GROUP_ID,
-		WidgetID.RESIZABLE_VIEWPORT_BOTTOM_LINE_GROUP_ID);
+		InterfaceID.FIXED_VIEWPORT,
+		InterfaceID.RESIZABLE_VIEWPORT,
+		InterfaceID.RESIZABLE_VIEWPORT_BOTTOM_LINE);
 	private static final String SD_KINGDOM_REWARDS = "Kingdom Rewards";
 	private static final String SD_BOSS_KILLS = "Boss Kills";
 	private static final String SD_CLUE_SCROLL_REWARDS = "Clue Scroll Rewards";
@@ -261,14 +252,14 @@ public class ScreenshotPlugin extends Plugin
 		String screenshotSubDir = null;
 
 		String fileName = null;
-		if (client.getWidget(WidgetInfo.LEVEL_UP_LEVEL) != null)
+		if (client.getWidget(ComponentID.LEVEL_UP_LEVEL) != null)
 		{
-			fileName = parseLevelUpWidget(WidgetInfo.LEVEL_UP_LEVEL);
+			fileName = parseLevelUpWidget(ComponentID.LEVEL_UP_LEVEL);
 			screenshotSubDir = "Levels";
 		}
-		else if (client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT) != null)
+		else if (client.getWidget(ComponentID.DIALOG_SPRITE_TEXT) != null)
 		{
-			String text = client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT).getText();
+			String text = client.getWidget(ComponentID.DIALOG_SPRITE_TEXT).getText();
 			if (Text.removeTags(text).contains("High level gamble"))
 			{
 				if (config.screenshotHighGamble())
@@ -281,14 +272,14 @@ public class ScreenshotPlugin extends Plugin
 			{
 				if (config.screenshotLevels())
 				{
-					fileName = parseLevelUpWidget(WidgetInfo.DIALOG_SPRITE_TEXT);
+					fileName = parseLevelUpWidget(ComponentID.DIALOG_SPRITE_TEXT);
 					screenshotSubDir = "Levels";
 				}
 			}
 		}
-		else if (client.getWidget(WidgetInfo.QUEST_COMPLETED_NAME_TEXT) != null)
+		else if (client.getWidget(ComponentID.QUEST_COMPLETED_NAME_TEXT) != null)
 		{
-			String text = client.getWidget(WidgetInfo.QUEST_COMPLETED_NAME_TEXT).getText();
+			String text = client.getWidget(ComponentID.QUEST_COMPLETED_NAME_TEXT).getText();
 			fileName = parseQuestCompletedWidget(text);
 			screenshotSubDir = "Quests";
 		}
@@ -522,10 +513,10 @@ public class ScreenshotPlugin extends Plugin
 		if (client.getVarbitValue(Varbits.DISABLE_LEVEL_UP_INTERFACE) == 1 && config.screenshotLevels())
 		{
 			Matcher m = LEVEL_UP_MESSAGE_PATTERN.matcher(chatMessage);
-			if (m.find())
+			if (m.matches())
 			{
-				String skillName = StringUtils.capitalize(m.group(1));
-				String skillLevel = m.group(2);
+				String skillName = StringUtils.capitalize(m.group("skill") != null ? m.group("skill") : m.group("skill99"));
+				String skillLevel = m.group("level") != null ? m.group("level") : "99";
 				String fileName = skillName + "(" + skillLevel + ")";
 				String screenshotSubDir = "Levels";
 				takeScreenshot(fileName, screenshotSubDir);
@@ -542,36 +533,36 @@ public class ScreenshotPlugin extends Plugin
 
 		switch (groupId)
 		{
-			case QUEST_COMPLETED_GROUP_ID:
-			case CLUE_SCROLL_REWARD_GROUP_ID:
-			case CHAMBERS_OF_XERIC_REWARD_GROUP_ID:
-			case THEATRE_OF_BLOOD_REWARD_GROUP_ID:
-			case TOA_REWARD_GROUP_ID:
-			case BARROWS_REWARD_GROUP_ID:
+			case InterfaceID.QUEST_COMPLETED:
+			case InterfaceID.CLUESCROLL_REWARD:
+			case InterfaceID.CHAMBERS_OF_XERIC_REWARD:
+			case InterfaceID.TOB_REWARD:
+			case InterfaceID.TOA_REWARD:
+			case InterfaceID.BARROWS_REWARD:
 				if (!config.screenshotRewards())
 				{
 					return;
 				}
 				break;
-			case LEVEL_UP_GROUP_ID:
+			case InterfaceID.LEVEL_UP:
 				if (!config.screenshotLevels())
 				{
 					return;
 				}
 				break;
-			case DIALOG_SPRITE_GROUP_ID:
+			case InterfaceID.DIALOG_SPRITE:
 				if (!(config.screenshotLevels() || config.screenshotHighGamble()))
 				{
 					return;
 				}
 				break;
-			case KINGDOM_GROUP_ID:
+			case InterfaceID.KINGDOM:
 				if (!config.screenshotKingdom())
 				{
 					return;
 				}
 				break;
-			case WILDERNESS_LOOT_CHEST:
+			case InterfaceID.WILDERNESS_LOOT_CHEST:
 				if (!config.screenshotWildernessLootChest())
 				{
 					return;
@@ -581,13 +572,13 @@ public class ScreenshotPlugin extends Plugin
 
 		switch (groupId)
 		{
-			case KINGDOM_GROUP_ID:
+			case InterfaceID.KINGDOM:
 			{
 				fileName = "Kingdom " + LocalDate.now();
 				screenshotSubDir = SD_KINGDOM_REWARDS;
 				break;
 			}
-			case CHAMBERS_OF_XERIC_REWARD_GROUP_ID:
+			case InterfaceID.CHAMBERS_OF_XERIC_REWARD:
 			{
 				if (killType == KillType.COX)
 				{
@@ -607,7 +598,7 @@ public class ScreenshotPlugin extends Plugin
 				}
 				return;
 			}
-			case THEATRE_OF_BLOOD_REWARD_GROUP_ID:
+			case InterfaceID.TOB_REWARD:
 			{
 				if (killType != KillType.TOB && killType != KillType.TOB_SM && killType != KillType.TOB_HM)
 				{
@@ -634,7 +625,7 @@ public class ScreenshotPlugin extends Plugin
 				killCountNumber = 0;
 				break;
 			}
-			case TOA_REWARD_GROUP_ID:
+			case InterfaceID.TOA_REWARD:
 			{
 				if (killType != KillType.TOA && killType != KillType.TOA_ENTRY_MODE && killType != KillType.TOA_EXPERT_MODE)
 				{
@@ -661,7 +652,7 @@ public class ScreenshotPlugin extends Plugin
 				killCountNumber = 0;
 				break;
 			}
-			case BARROWS_REWARD_GROUP_ID:
+			case InterfaceID.BARROWS_REWARD:
 			{
 				if (killType != KillType.BARROWS)
 				{
@@ -674,15 +665,15 @@ public class ScreenshotPlugin extends Plugin
 				killCountNumber = 0;
 				break;
 			}
-			case LEVEL_UP_GROUP_ID:
-			case DIALOG_SPRITE_GROUP_ID:
-			case QUEST_COMPLETED_GROUP_ID:
+			case InterfaceID.LEVEL_UP:
+			case InterfaceID.DIALOG_SPRITE:
+			case InterfaceID.QUEST_COMPLETED:
 			{
 				// level up widget gets loaded prior to the text being set, so wait until the next tick
 				shouldTakeScreenshot = true;
 				return;
 			}
-			case CLUE_SCROLL_REWARD_GROUP_ID:
+			case InterfaceID.CLUESCROLL_REWARD:
 			{
 				if (clueType == null || clueNumber == null)
 				{
@@ -695,7 +686,7 @@ public class ScreenshotPlugin extends Plugin
 				clueNumber = null;
 				break;
 			}
-			case WILDERNESS_LOOT_CHEST:
+			case InterfaceID.WILDERNESS_LOOT_CHEST:
 			{
 				fileName = "Loot key";
 				screenshotSubDir = SD_WILDERNESS_LOOT_CHEST;
@@ -747,14 +738,11 @@ public class ScreenshotPlugin extends Plugin
 	}
 
 	/**
-	 * Receives a WidgetInfo pointing to the middle widget of the level-up dialog,
-	 * and parses it into a shortened string for filename usage.
+	 * Parses skill name and level from levelup component.
 	 *
-	 * @param levelUpLevel WidgetInfo pointing to the required text widget,
-	 *                     with the format "Your Skill (level is/are) now 99."
 	 * @return Shortened string in the format "Skill(99)"
 	 */
-	String parseLevelUpWidget(WidgetInfo levelUpLevel)
+	String parseLevelUpWidget(@Component int levelUpLevel)
 	{
 		Widget levelChild = client.getWidget(levelUpLevel);
 		if (levelChild == null)
@@ -776,7 +764,6 @@ public class ScreenshotPlugin extends Plugin
 	/**
 	 * Parses the passed quest completion dialog text into a shortened string for filename usage.
 	 *
-	 * @param text The {@link Widget#getText() text} of the {@link WidgetInfo#QUEST_COMPLETED_NAME_TEXT} widget.
 	 * @return Shortened string in the format "Quest(The Corsair Curse)"
 	 */
 	@VisibleForTesting
@@ -820,7 +807,6 @@ public class ScreenshotPlugin extends Plugin
 	/**
 	 * Parses the Barbarian Assault high gamble reward dialog text into a shortened string for filename usage.
 	 *
-	 * @param text The {@link Widget#getText() text} of the {@link WidgetInfo#DIALOG_SPRITE_TEXT} widget.
 	 * @return Shortened string in the format "High Gamble(100)"
 	 */
 	@VisibleForTesting

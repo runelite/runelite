@@ -31,22 +31,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import lombok.AccessLevel;
 import lombok.Setter;
+import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.widgets.InterfaceID;
 import net.runelite.api.widgets.Widget;
-import static net.runelite.api.widgets.WidgetID.BANK_INVENTORY_GROUP_ID;
-import static net.runelite.api.widgets.WidgetID.DEPOSIT_BOX_GROUP_ID;
-import static net.runelite.api.widgets.WidgetID.DUEL_INVENTORY_GROUP_ID;
-import static net.runelite.api.widgets.WidgetID.DUEL_INVENTORY_OTHER_GROUP_ID;
-import static net.runelite.api.widgets.WidgetID.EQUIPMENT_GROUP_ID;
-import static net.runelite.api.widgets.WidgetID.EQUIPMENT_INVENTORY_GROUP_ID;
-import static net.runelite.api.widgets.WidgetID.GRAND_EXCHANGE_INVENTORY_GROUP_ID;
-import static net.runelite.api.widgets.WidgetID.GUIDE_PRICES_INVENTORY_GROUP_ID;
-import static net.runelite.api.widgets.WidgetID.INVENTORY_GROUP_ID;
-import static net.runelite.api.widgets.WidgetID.PLAYER_TRADE_INVENTORY_GROUP_ID;
-import static net.runelite.api.widgets.WidgetID.PLAYER_TRADE_SCREEN_GROUP_ID;
-import static net.runelite.api.widgets.WidgetID.POH_TREASURE_CHEST_INVENTORY_GROUP_ID;
-import static net.runelite.api.widgets.WidgetID.SEED_VAULT_INVENTORY_GROUP_ID;
-import static net.runelite.api.widgets.WidgetID.SHOP_INVENTORY_GROUP_ID;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 
 public abstract class WidgetItemOverlay extends Overlay
@@ -117,30 +104,30 @@ public abstract class WidgetItemOverlay extends Overlay
 	protected void showOnInventory()
 	{
 		showOnInterfaces(
-			DEPOSIT_BOX_GROUP_ID,
-			BANK_INVENTORY_GROUP_ID,
-			SHOP_INVENTORY_GROUP_ID,
-			GRAND_EXCHANGE_INVENTORY_GROUP_ID,
-			GUIDE_PRICES_INVENTORY_GROUP_ID,
-			EQUIPMENT_INVENTORY_GROUP_ID,
-			INVENTORY_GROUP_ID,
-			SEED_VAULT_INVENTORY_GROUP_ID,
-			DUEL_INVENTORY_GROUP_ID,
-			DUEL_INVENTORY_OTHER_GROUP_ID,
-			PLAYER_TRADE_SCREEN_GROUP_ID,
-			PLAYER_TRADE_INVENTORY_GROUP_ID,
-			POH_TREASURE_CHEST_INVENTORY_GROUP_ID);
+			InterfaceID.DEPOSIT_BOX,
+			InterfaceID.BANK_INVENTORY,
+			InterfaceID.SHOP_INVENTORY,
+			InterfaceID.GRAND_EXCHANGE_INVENTORY,
+			InterfaceID.GUIDE_PRICES_INVENTORY,
+			InterfaceID.EQUIPMENT_INVENTORY,
+			InterfaceID.INVENTORY,
+			InterfaceID.SEED_VAULT_INVENTORY,
+			InterfaceID.DUEL_INVENTORY,
+			InterfaceID.DUEL_INVENTORY_OTHER,
+			InterfaceID.TRADE,
+			InterfaceID.TRADE_INVENTORY,
+			InterfaceID.POH_TREASURE_CHEST_INV);
 	}
 
 	protected void showOnBank()
 	{
-		drawAfterLayer(WidgetInfo.BANK_ITEM_CONTAINER);
-		drawAfterLayer(WidgetInfo.GROUP_STORAGE_ITEM_CONTAINER);
+		drawAfterLayer(ComponentID.BANK_ITEM_CONTAINER);
+		drawAfterLayer(ComponentID.GROUP_STORAGE_ITEM_CONTAINER);
 	}
 
 	protected void showOnEquipment()
 	{
-		showOnInterfaces(EQUIPMENT_GROUP_ID);
+		showOnInterfaces(InterfaceID.EQUIPMENT);
 	}
 
 	protected void showOnInterfaces(int... ids)

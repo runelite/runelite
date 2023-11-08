@@ -29,11 +29,11 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.10.15-SNAPSHOT</version>
+		<version>1.10.17-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>script-assembler-plugin</artifactId>
-	<name>Script Assembler Plugin</name>
+	<artifactId>runelite-maven-plugin</artifactId>
+	<name>RuneLite Maven Plugin</name>
 	<packaging>maven-plugin</packaging>
 
 	<dependencies>
@@ -52,6 +52,22 @@
 			<groupId>org.apache.maven.plugin-tools</groupId>
 			<artifactId>maven-plugin-annotations</artifactId>
 			<version>3.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-core</artifactId>
+			<version>3.0.5</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.tomlj</groupId>
+			<artifactId>tomlj</artifactId>
+			<version>1.1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.squareup</groupId>
+			<artifactId>javapoet</artifactId>
+			<version>1.13.0</version>
 		</dependency>
 	</dependencies>
 

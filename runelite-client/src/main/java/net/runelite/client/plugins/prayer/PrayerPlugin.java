@@ -43,8 +43,8 @@ import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
@@ -345,7 +345,7 @@ public class PrayerPlugin extends Plugin
 
 	private void setPrayerOrbText(String text)
 	{
-		Widget prayerOrbText = client.getWidget(WidgetInfo.MINIMAP_PRAYER_ORB_TEXT);
+		Widget prayerOrbText = client.getWidget(ComponentID.MINIMAP_PRAYER_ORB_TEXT);
 		if (prayerOrbText != null)
 		{
 			prayerOrbText.setText(text);

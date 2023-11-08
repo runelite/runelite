@@ -41,7 +41,6 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.PostHealthBar;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -246,9 +245,9 @@ public class InterfaceStylesPlugin extends Plugin
 
 				if (spritePixels != null)
 				{
-					for (WidgetInfo widgetInfo : widgetOverride.getWidgetInfo())
+					for (int widgetInfo : widgetOverride.getWidgetInfo())
 					{
-						client.getWidgetSpriteOverrides().put(widgetInfo.getPackedId(), spritePixels);
+						client.getWidgetSpriteOverrides().put(widgetInfo, spritePixels);
 					}
 				}
 			}
@@ -259,9 +258,9 @@ public class InterfaceStylesPlugin extends Plugin
 	{
 		for (WidgetOverride widgetOverride : WidgetOverride.values())
 		{
-			for (WidgetInfo widgetInfo : widgetOverride.getWidgetInfo())
+			for (int widgetInfo : widgetOverride.getWidgetInfo())
 			{
-				client.getWidgetSpriteOverrides().remove(widgetInfo.getPackedId());
+				client.getWidgetSpriteOverrides().remove(widgetInfo);
 			}
 		}
 	}
@@ -291,7 +290,7 @@ public class InterfaceStylesPlugin extends Plugin
 				continue;
 			}
 
-			Widget widget = client.getWidget(widgetOffset.getWidgetInfo());
+			Widget widget = client.getWidget(widgetOffset.getComponent());
 
 			if (widget != null)
 			{
@@ -398,7 +397,7 @@ public class InterfaceStylesPlugin extends Plugin
 	{
 		for (WidgetOffset widgetOffset : WidgetOffset.values())
 		{
-			Widget widget = client.getWidget(widgetOffset.getWidgetInfo());
+			Widget widget = client.getWidget(widgetOffset.getComponent());
 
 			if (widget != null)
 			{

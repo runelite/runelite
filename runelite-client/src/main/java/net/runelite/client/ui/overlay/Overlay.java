@@ -37,6 +37,8 @@ import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.annotations.Component;
+import net.runelite.api.annotations.Interface;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.components.LayoutableRenderableEntity;
@@ -108,7 +110,7 @@ public abstract class Overlay implements LayoutableRenderableEntity
 	 * @param interfaceId The interface id
 	 * @see net.runelite.api.widgets.WidgetID
 	 */
-	protected void drawAfterInterface(int interfaceId)
+	protected void drawAfterInterface(@Interface int interfaceId)
 	{
 		drawHooks.add(interfaceId << 16 | 0xffff);
 	}
@@ -141,9 +143,25 @@ public abstract class Overlay implements LayoutableRenderableEntity
 	 * @param layer The layer
 	 * @see WidgetInfo
 	 */
+	@Deprecated
 	protected void drawAfterLayer(WidgetInfo layer)
 	{
 		drawHooks.add(layer.getId());
+	}
+
+	/**
+	 * Configure to draw this overlay after the given layer is drawn. Except
+	 * in rare circumstances, you probably also want to {@link #setLayer(OverlayLayer)} to
+	 * {@link OverlayLayer#MANUAL} to avoid the overlay being drawn a 2nd time during the
+	 * default {@link OverlayLayer#UNDER_WIDGETS} pass.
+	 *
+	 * The layer must be a widget of {@link net.runelite.api.widgets.WidgetType} {@link net.runelite.api.widgets.WidgetType#LAYER}
+	 * @param component The layer
+	 * @see WidgetInfo
+	 */
+	protected void drawAfterLayer(@Component int component)
+	{
+		drawHooks.add(component);
 	}
 
 	public void onMouseOver()

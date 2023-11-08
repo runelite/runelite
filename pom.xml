@@ -28,7 +28,7 @@
 
 	<groupId>net.runelite</groupId>
 	<artifactId>runelite-parent</artifactId>
-	<version>1.10.15-SNAPSHOT</version>
+	<version>1.10.17-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>RuneLite</name>
@@ -46,7 +46,7 @@
 		<checkstyle.skip>true</checkstyle.skip>
 		<glslang.path></glslang.path>
 
-		<rs.version>217</rs.version>
+		<rs.version>218</rs.version>
 	</properties>
 
 	<licenses>
@@ -125,7 +125,7 @@
 		<module>runelite-api</module>
 		<module>runelite-client</module>
 		<module>runelite-jshell</module>
-		<module>runelite-script-assembler-plugin</module>
+		<module>runelite-maven-plugin</module>
 	</modules>
 
 	<dependencyManagement>

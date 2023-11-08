@@ -46,7 +46,9 @@ import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.NameableNameChanged;
 import net.runelite.api.events.RemovedFriend;
 import net.runelite.api.events.ScriptCallbackEvent;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -224,11 +226,11 @@ public class FriendNotesPlugin extends Plugin
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		final int groupId = WidgetInfo.TO_GROUP(event.getActionParam1());
+		final int groupId = WidgetUtil.componentToInterface(event.getActionParam1());
 
 		// Look for "Message" on friends list
-		if ((groupId == WidgetInfo.FRIENDS_LIST.getGroupId() && event.getOption().equals("Message")) ||
-				(groupId == WidgetInfo.IGNORE_LIST.getGroupId() && event.getOption().equals("Delete")))
+		if ((groupId == InterfaceID.FRIEND_LIST && event.getOption().equals("Message")) ||
+				(groupId == InterfaceID.IGNORE_LIST && event.getOption().equals("Delete")))
 		{
 			// Friends have color tags
 			setHoveredFriend(Text.toJagexName(Text.removeTags(event.getTarget())));
@@ -339,15 +341,15 @@ public class FriendNotesPlugin extends Plugin
 			log.debug("Rebuilding friends list");
 			client.runScript(
 				ScriptID.FRIENDS_UPDATE,
-				WidgetInfo.FRIEND_LIST_FULL_CONTAINER.getPackedId(),
-				WidgetInfo.FRIEND_LIST_SORT_BY_NAME_BUTTON.getPackedId(),
-				WidgetInfo.FRIEND_LIST_SORT_BY_LAST_WORLD_CHANGE_BUTTON.getPackedId(),
-				WidgetInfo.FRIEND_LIST_SORT_BY_WORLD_BUTTON.getPackedId(),
-				WidgetInfo.FRIEND_LIST_LEGACY_SORT_BUTTON.getPackedId(),
-				WidgetInfo.FRIEND_LIST_NAMES_CONTAINER.getPackedId(),
-				WidgetInfo.FRIEND_LIST_SCROLL_BAR.getPackedId(),
-				WidgetInfo.FRIEND_LIST_LOADING_TEXT.getPackedId(),
-				WidgetInfo.FRIEND_LIST_PREVIOUS_NAME_HOLDER.getPackedId()
+				ComponentID.FRIEND_LIST_FULL_CONTAINER,
+				ComponentID.FRIEND_LIST_SORT_BY_NAME_BUTTON,
+				ComponentID.FRIEND_LIST_SORT_BY_LAST_WORLD_CHANGE_BUTTON,
+				ComponentID.FRIEND_LIST_SORT_BY_WORLD_BUTTON,
+				ComponentID.FRIEND_LIST_LEGACY_SORT_BUTTON,
+				ComponentID.FRIEND_LIST_NAMES_CONTAINER,
+				ComponentID.FRIEND_LIST_SCROLL_BAR,
+				ComponentID.FRIEND_LIST_LOADING_TEXT,
+				ComponentID.FRIEND_LIST_PREVIOUS_NAME_HOLDER
 			);
 		});
 	}
@@ -359,13 +361,13 @@ public class FriendNotesPlugin extends Plugin
 			log.debug("Rebuilding ignore list");
 			client.runScript(
 				ScriptID.IGNORE_UPDATE,
-				WidgetInfo.IGNORE_FULL_CONTAINER.getPackedId(),
-				WidgetInfo.IGNORE_SORT_BY_NAME_BUTTON.getPackedId(),
-				WidgetInfo.IGNORE_LEGACY_SORT_BUTTON.getPackedId(),
-				WidgetInfo.IGNORE_NAMES_CONTAINER.getPackedId(),
-				WidgetInfo.IGNORE_SCROLL_BAR.getPackedId(),
-				WidgetInfo.IGNORE_LOADING_TEXT.getPackedId(),
-				WidgetInfo.IGNORE_PREVIOUS_NAME_HOLDER.getPackedId()
+				ComponentID.IGNORE_LIST_FULL_CONTAINER,
+				ComponentID.IGNORE_LIST_SORT_BY_NAME_BUTTON,
+				ComponentID.IGNORE_LIST_LEGACY_SORT_BUTTON,
+				ComponentID.IGNORE_LIST_NAMES_CONTAINER,
+				ComponentID.IGNORE_LIST_SCROLL_BAR,
+				ComponentID.IGNORE_LIST_LOADING_TEXT,
+				ComponentID.IGNORE_LIST_PREVIOUS_NAME_HOLDER
 			);
 		});
 	}

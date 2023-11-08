@@ -55,7 +55,7 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.widgets.WidgetID;
+import net.runelite.api.widgets.InterfaceID;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
@@ -259,7 +259,7 @@ public class LootTrackerPluginTest
 		when(itemManager.getItemPrice(ItemID.PURE_ESSENCE)).thenReturn(6);
 
 		WidgetLoaded widgetLoaded = new WidgetLoaded();
-		widgetLoaded.setGroupId(WidgetID.CHAMBERS_OF_XERIC_REWARD_GROUP_ID);
+		widgetLoaded.setGroupId(InterfaceID.CHAMBERS_OF_XERIC_REWARD);
 		lootTrackerPlugin.onWidgetLoaded(widgetLoaded);
 
 		ArgumentCaptor<QueuedMessage> captor = ArgumentCaptor.forClass(QueuedMessage.class);
@@ -300,7 +300,7 @@ public class LootTrackerPluginTest
 		when(client.getLocalPlayer().getLocalLocation()).thenReturn(localPoint);
 
 		WidgetLoaded widgetLoaded = new WidgetLoaded();
-		widgetLoaded.setGroupId(WidgetID.THEATRE_OF_BLOOD_GROUP_ID);
+		widgetLoaded.setGroupId(InterfaceID.TOB_REWARD);
 		spyPlugin.onWidgetLoaded(widgetLoaded);
 
 		ArgumentCaptor<QueuedMessage> captor = ArgumentCaptor.forClass(QueuedMessage.class);
@@ -451,7 +451,7 @@ public class LootTrackerPluginTest
 		spyPlugin.onGameStateChanged(loading);
 
 		WidgetLoaded widgetLoaded = new WidgetLoaded();
-		widgetLoaded.setGroupId(WidgetID.THEATRE_OF_BLOOD_GROUP_ID);
+		widgetLoaded.setGroupId(InterfaceID.TOB_REWARD);
 		spyPlugin.onWidgetLoaded(widgetLoaded);
 
 		verify(spyPlugin).addLoot("Theatre of Blood", -1, LootRecordType.EVENT, null, Collections.singletonList(
@@ -480,7 +480,7 @@ public class LootTrackerPluginTest
 		spyPlugin.onGameStateChanged(loading);
 
 		WidgetLoaded widgetLoaded = new WidgetLoaded();
-		widgetLoaded.setGroupId(WidgetID.THEATRE_OF_BLOOD_GROUP_ID);
+		widgetLoaded.setGroupId(InterfaceID.TOB_REWARD);
 		spyPlugin.onWidgetLoaded(widgetLoaded);
 
 		verify(spyPlugin).addLoot("Theatre of Blood", -1, LootRecordType.EVENT, null, Collections.singletonList(
@@ -509,7 +509,7 @@ public class LootTrackerPluginTest
 		spyPlugin.onGameStateChanged(loading);
 
 		WidgetLoaded widgetLoaded = new WidgetLoaded();
-		widgetLoaded.setGroupId(WidgetID.THEATRE_OF_BLOOD_GROUP_ID);
+		widgetLoaded.setGroupId(InterfaceID.TOB_REWARD);
 		spyPlugin.onWidgetLoaded(widgetLoaded);
 
 		verify(spyPlugin).addLoot("Theatre of Blood", -1, LootRecordType.EVENT, null, Collections.singletonList(
