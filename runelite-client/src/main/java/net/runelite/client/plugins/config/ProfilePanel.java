@@ -96,8 +96,6 @@ class ProfilePanel extends PluginPanel
 	private static final ImageIcon ARROW_RIGHT_ICON = new ImageIcon(ImageUtil.loadImageResource(ProfilePanel.class, "/util/arrow_right.png"));
 	private static final ImageIcon SYNC_ICON;
 	private static final ImageIcon SYNC_ACTIVE_ICON;
-	private static final ImageIcon ROOT_ICON;
-	private static final ImageIcon ROOT_ACTIVE_ICON;
 	private static final ImageIcon ACCOUNT_ICON;
 	private static final ImageIcon ACCOUNT_ACTIVE_ICON;
 
@@ -125,10 +123,6 @@ class ProfilePanel extends PluginPanel
 		BufferedImage sync = ImageUtil.loadImageResource(ProfilePanel.class, "cloud_sync.png");
 		SYNC_ICON = new ImageIcon(sync);
 		SYNC_ACTIVE_ICON = new ImageIcon(ImageUtil.recolorImage(sync, ColorScheme.BRAND_ORANGE));
-
-		BufferedImage root = ImageUtil.loadImageResource(ProfilePanel.class, "root_profile.png");
-		ROOT_ICON = new ImageIcon(root);
-		ROOT_ACTIVE_ICON = new ImageIcon(ImageUtil.recolorImage(root, ColorScheme.BRAND_ORANGE));
 
 		BufferedImage acc = ImageUtil.loadImageResource(ProfilePanel.class, "account_icon.png");
 		ACCOUNT_ICON = new ImageIcon(acc);
@@ -324,7 +318,6 @@ class ProfilePanel extends PluginPanel
 		private final JButton activate;
 		private final JPanel expand;
 		private final JToggleButton rename;
-		private final JToggleButton root;
 		private final JToggleButton acc;
 
 		private boolean expanded;
@@ -454,24 +447,6 @@ class ProfilePanel extends PluginPanel
 					sync.addActionListener(ev -> toggleSync(ev, profile, sync.isSelected()));
 					btns.add(sync);
 				}
-
-				root = new JToggleButton(ROOT_ICON);
-				root.setSelectedIcon(ROOT_ACTIVE_ICON);
-				root.setToolTipText("Set profile as the root profile.");
-				SwingUtil.removeButtonDecorations(root);
-				root.addActionListener(ev ->
-				{
-					if (root.isSelected())
-					{
-						//TODO: Set this profile as the root profile and if any other profile is set as root unselect it
-						log.debug("Setup when root button is pressed");
-					}
-					else
-					{
-						//TODO: Do anything that to make profile not the root now
-					}
-				});
-				btns.add(root);
 
 				acc = new JToggleButton(ACCOUNT_ICON);
 				acc.setSelectedIcon(ACCOUNT_ACTIVE_ICON);

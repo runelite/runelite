@@ -48,9 +48,6 @@ public class ConfigProfile
 	@Getter
 	@Setter
 	private boolean active;
-	@Getter
-	@Setter
-	private boolean root;
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
 	private long rev;
