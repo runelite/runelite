@@ -62,6 +62,7 @@ import net.runelite.api.Varbits;
 import net.runelite.api.annotations.Component;
 import net.runelite.api.annotations.Varbit;
 import net.runelite.api.annotations.Varp;
+import net.runelite.api.events.AmbientSoundEffectCreated;
 import net.runelite.api.events.AreaSoundEffectPlayed;
 import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.ClientTick;
@@ -991,6 +992,15 @@ public class MusicPlugin extends Plugin
 			&& PRAYER_SOUNDS.contains(soundEffectPlayed.getSoundId()))
 		{
 			soundEffectPlayed.consume();
+		}
+	}
+
+	@Subscribe
+	public void onAmbientSoundEffectCreated(AmbientSoundEffectCreated ev)
+	{
+		if (musicConfig.muteAmbientSounds())
+		{
+			client.getAmbientSoundEffects().clear();
 		}
 	}
 }

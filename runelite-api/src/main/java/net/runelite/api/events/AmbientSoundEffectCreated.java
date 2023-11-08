@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Adam <Adam@sigterm.info>
+ * Copyright (c) 2023, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,47 +22,17 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.api.events;
 
-import javax.annotation.Nullable;
-import net.runelite.api.coords.LocalPoint;
+import lombok.Value;
+import net.runelite.api.AmbientSoundEffect;
 
 /**
- * An ambient sound effect. These are loaded only at scene load and are used to play ambient
- * sound effects that are purely client side and not sent from the server.
+ * An event fired when an ambient sound effect is created. Note that ambient sound effects
+ * created during map load do not have an event fired.
  */
-public interface AmbientSoundEffect
+@Value
+public class AmbientSoundEffectCreated
 {
-	/**
-	 * The id of the sound effect
-	 * @see SoundEffectID
-	 * @return
-	 */
-	int getSoundEffectId();
-
-	/**
-	 * The background sound effect ids. One sound effect is picked from this at random.
-	 * @see SoundEffectID
-	 * @return
-	 */
-	@Nullable
-	int[] getBackgroundSoundEffectIds();
-
-	/**
-	 * The plane the sound effect is on
-	 * @return
-	 */
-	int getPlane();
-
-	/**
-	 * The min x/y position of the area this sound effect is at.
-	 * @return
-	 */
-	LocalPoint getMinPosition();
-
-	/**
-	 * The max x/y position of the area this sound effect is at
-	 * @return
-	 */
-	LocalPoint getMaxPosition();
+	private AmbientSoundEffect ambientSoundEffect;
 }
