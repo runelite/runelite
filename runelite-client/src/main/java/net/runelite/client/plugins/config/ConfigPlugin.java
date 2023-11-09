@@ -75,8 +75,6 @@ public class ConfigPlugin extends Plugin
 
 	private NavigationButton navButton;
 
-	private String currentRSN = "";
-
 	@Override
 	protected void startUp() throws Exception
 	{
