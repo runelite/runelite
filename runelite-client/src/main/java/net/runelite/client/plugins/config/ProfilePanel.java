@@ -71,7 +71,6 @@ import net.runelite.client.account.SessionManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.ConfigProfile;
 import net.runelite.client.config.ProfileManager;
-import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ProfileChanged;
 import net.runelite.client.events.SessionClose;
@@ -84,7 +83,6 @@ import net.runelite.client.ui.components.DragAndDropReorderPane;
 import net.runelite.client.ui.components.MouseDragEventForwarder;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.SwingUtil;
-import net.runelite.http.api.config.Profile;
 
 @Slf4j
 class ProfilePanel extends PluginPanel
@@ -485,7 +483,7 @@ class ProfilePanel extends PluginPanel
 					String oldRSN = profile.hasLinkedAccount() ? profile.getLinkedAccount() : "";
 					String newRSN = (String)JOptionPane.showInputDialog(ProfileCard.this,
 						"Please type the Account's RSN that\n"
-						+"you wish to link with this profile.",
+						+ "you wish to link with this profile.",
 						"Account Link",
 						JOptionPane.PLAIN_MESSAGE,
 						null,
@@ -503,9 +501,12 @@ class ProfilePanel extends PluginPanel
 						newRSN = null;
 					}
 
-					if (newRSN == null) {
+					if (newRSN == null)
+					{
 						acc.setSelected(false);
-					} else {
+					}
+					else
+					{
 						acc.setSelected(!newRSN.isEmpty());
 
 						ConfigProfile conflictProfile;

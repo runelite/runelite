@@ -63,7 +63,8 @@ public class ConfigProfile
 		return name.startsWith("$");
 	}
 
-	public boolean hasLinkedAccount() {
+	public boolean hasLinkedAccount()
+	{
 		if (linkedAccount == null)
 		{
 			return false;

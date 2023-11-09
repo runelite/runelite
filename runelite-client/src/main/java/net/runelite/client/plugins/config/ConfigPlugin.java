@@ -29,7 +29,6 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.swing.SwingUtilities;
 
-import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.client.config.ChatColorConfig;
 import net.runelite.client.config.ConfigManager;
