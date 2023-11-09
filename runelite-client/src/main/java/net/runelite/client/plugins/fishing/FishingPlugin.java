@@ -85,7 +85,7 @@ public class FishingPlugin extends Plugin
 	private static final int TRAWLER_SHIP_REGION_NORMAL = 7499;
 	private static final int TRAWLER_SHIP_REGION_SINKING = 8011;
 	private static final int TRAWLER_TIME_LIMIT_IN_SECONDS = 314;
-	private static final Pattern CAUGHT_KARAMBWANJI_MESSAGE = Pattern.compile("You catch (\\d+) Karambwanji.");
+	private static final Pattern CAUGHT_FISH_MESSAGE = Pattern.compile("You catch (?:a|some|\\d+ Karambwanji\\.)");
 
 	private Instant trawlerStartTime;
 
@@ -197,10 +197,9 @@ public class FishingPlugin extends Plugin
 		}
 
 		String message = event.getMessage();
-		Matcher m = CAUGHT_KARAMBWANJI_MESSAGE.matcher(message);
+		Matcher m = CAUGHT_FISH_MESSAGE.matcher(message);
 
-		if (message.contains("You catch a") || message.contains("You catch some") ||
-			message.equals("Your cormorant returns with its catch.") || m.matches())
+		if (message.equals("Your cormorant returns with its catch.") || m.find())
 		{
 			session.setLastFishCaught(Instant.now());
 			spotOverlay.setHidden(false);
