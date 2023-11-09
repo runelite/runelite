@@ -873,7 +873,8 @@ class ProfilePanel extends PluginPanel
 		((JToggleButton) event.getSource()).setToolTipText(sync ? "Disable cloud sync" : "Enable cloud sync");
 	}
 
-	private void updateLinkedAccount(ActionEvent event, ConfigProfile profile, String rsn) {
+	private void updateLinkedAccount(ActionEvent event, ConfigProfile profile, String rsn)
+	{
 		if (configManager.updateLinkedProfile(profile, rsn))
 		{
 			reload();
