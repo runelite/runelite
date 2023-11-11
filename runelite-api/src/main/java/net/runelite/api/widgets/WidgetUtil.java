@@ -52,4 +52,16 @@ public class WidgetUtil
 	{
 		return c & 0xFFFF;
 	}
+
+	/**
+	 * Utility method that packs a component id from an interface id and child id.
+	 * @param interfaceId interface id
+	 * @param childId id within the interface
+	 * @return the component id
+	 */
+	@Component
+	public static int packComponentId(@Interface int interfaceId, int childId)
+	{
+		return (interfaceId << 16) | childId;
+	}
 }
