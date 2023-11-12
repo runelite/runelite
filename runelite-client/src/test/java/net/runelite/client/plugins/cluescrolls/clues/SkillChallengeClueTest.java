@@ -24,7 +24,14 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues;
 
+import static net.runelite.api.ItemID.BLOOD_RUNE;
+import static net.runelite.api.ItemID.DARK_ESSENCE_BLOCK;
+import static net.runelite.api.ItemID.LAW_RUNE;
+import static net.runelite.api.ItemID.SOUL_RUNE;
+import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 public class SkillChallengeClueTest
@@ -33,5 +40,24 @@ public class SkillChallengeClueTest
 	public void forTextEmptyString()
 	{
 		assertNull(SkillChallengeClue.forText("", ""));
+	}
+
+	@Test
+	public void itemRequirementsCreateABarrowsTeleportTablet()
+	{
+		String clueText = "Create a Barrows teleport tablet.";
+		SkillChallengeClue barrowsClue = SkillChallengeClue.forText(clueText.toLowerCase(), clueText.toLowerCase());
+		ItemRequirement[] requirements = barrowsClue.getItemRequirements();
+
+		assertEquals(4, requirements.length);
+		ItemRequirement darkEssenceBlock = requirements[0];
+		ItemRequirement bloodRune = requirements[1];
+		ItemRequirement lawRune = requirements[2];
+		ItemRequirement soulRune = requirements[3];
+
+		assertTrue("Dark Essence Block", darkEssenceBlock.fulfilledBy(DARK_ESSENCE_BLOCK));
+		assertTrue("Blood Rune x1", bloodRune.fulfilledBy(BLOOD_RUNE));
+		assertTrue("Law Rune x2", lawRune.fulfilledBy(LAW_RUNE));
+		assertTrue("Soul Rune x2", soulRune.fulfilledBy(SOUL_RUNE));
 	}
 }
