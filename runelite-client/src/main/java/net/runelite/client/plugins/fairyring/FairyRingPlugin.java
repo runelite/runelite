@@ -47,9 +47,10 @@ import net.runelite.api.ScriptID;
 import net.runelite.api.SoundEffectID;
 import net.runelite.api.SpriteID;
 import net.runelite.api.Varbits;
+import net.runelite.api.events.MenuEntryAdded;
+import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.InterfaceID;
-import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
@@ -101,6 +102,7 @@ public class FairyRingPlugin extends Plugin
 	private ConfigManager configManager;
 
 	private ChatboxTextInput searchInput = null;
+	private ChatboxTextInput tagInput = null;
 	private Widget searchBtn;
 	private Collection<CodeWidgets> codes = null;
 
@@ -220,7 +222,7 @@ public class FairyRingPlugin extends Plugin
 		searchBtn.setAction(1, MENU_CLOSE);
 		searchBtn.setOnOpListener((JavaScriptCallback) this::menuClose);
 		searchInput = chatboxPanelManager.openTextInput("Filter fairy rings")
-			.onChanged(s -> clientThread.invokeLater(() -> updateFilter(s)))
+			.onChanged(s -> clientThread.invokeLater(() -> updateFilter(s.toLowerCase())))
 			.onDone(s -> false)
 			.onClose(() ->
 			{
@@ -237,17 +239,17 @@ public class FairyRingPlugin extends Plugin
 		// This has to happen because the only widget that gets hidden is the tli one
 		Widget fairyRingTeleportButton = client.getWidget(ComponentID.FAIRY_RING_TELEPORT_BUTTON);
 		boolean fairyRingWidgetOpen = fairyRingTeleportButton != null && !fairyRingTeleportButton.isHidden();
-		boolean chatboxOpen = searchInput != null && chatboxPanelManager.getCurrentInput() == searchInput;
+		boolean searchInputBoxOpen = searchInput != null && chatboxPanelManager.getCurrentInput() == searchInput;
+		boolean tagInputBoxOpen = tagInput != null && chatboxPanelManager.getCurrentInput() == tagInput;
 
-		if (!fairyRingWidgetOpen && chatboxOpen)
+		if (!fairyRingWidgetOpen && (searchInputBoxOpen || tagInputBoxOpen))
 		{
 			chatboxPanelManager.close();
 		}
 	}
 
-	private void updateFilter(String filter)
+	private void updateFilter(final String filter)
 	{
-		final String finalFilter = filter.toLowerCase();
 		final Widget list = client.getWidget(ComponentID.FAIRY_RING_PANEL_LIST);
 		final Widget favorites = client.getWidget(ComponentID.FAIRY_RING_PANEL_FAVORITES);
 
@@ -307,22 +309,45 @@ public class FairyRingPlugin extends Plugin
 				c.setCode(w);
 			}
 
+			if (favorites != null)
+			{
+				for (Widget w : favorites.getStaticChildren())
+				{
+					if (w.getId() == ComponentID.FAIRY_RING_PANEL_SEPARATOR)
+					{
+						continue;
+					}
+
+					// Favorites widgets are pre-allocated and hidden if the max of 4 favorites isn't reached
+					if (w.getSpriteId() != -1 && !w.isSelfHidden())
+					{
+						codeMap.computeIfAbsent(w.getRelativeY(), k -> new CodeWidgets()).setFavorite(w);
+					}
+					else if (!Strings.isNullOrEmpty(w.getName()) && !w.isSelfHidden())
+					{
+						codeMap.computeIfAbsent(w.getRelativeY(), k -> new CodeWidgets()).setDescription(w);
+					}
+					else if (!Strings.isNullOrEmpty(w.getText()) && !w.isSelfHidden())
+					{
+						codeMap.computeIfAbsent(w.getRelativeY(), k -> new CodeWidgets()).setCode(w);
+					}
+				}
+			}
+
 			codes = codeMap.values();
+		}
+
+		// reset the separator widget
+		Widget separator = client.getWidget(ComponentID.FAIRY_RING_PANEL_SEPARATOR);
+		if (separator != null)
+		{
+			separator.setHidden(true);
+			separator.setOriginalY(3);
 		}
 
 		// Relayout the panel
 		int y = 0;
-
-		if (favorites != null)
-		{
-			boolean hide = !finalFilter.isEmpty();
-			favorites.setHidden(hide);
-			if (!hide)
-			{
-				y += favorites.getOriginalHeight() + ENTRY_PADDING;
-			}
-		}
-
+		CodeWidgets lastFavorite = null;
 		for (CodeWidgets c : codes)
 		{
 			String code = Text.removeTags(c.getDescription().getName()).replaceAll(" ", "");
@@ -341,12 +366,19 @@ public class FairyRingPlugin extends Plugin
 				}
 			}
 
-			boolean hidden = !(finalFilter.isEmpty()
-				|| Text.removeTags(c.getDescription().getText()).toLowerCase().contains(finalFilter)
-				|| code.toLowerCase().contains(finalFilter)
-				|| tags != null && tags.contains(finalFilter)
-				|| (tags != null && getTags(code).stream().anyMatch(s -> s.contains(finalFilter))
+			boolean hidden = !(filter.isEmpty()
+				|| Text.removeTags(c.getDescription().getText()).toLowerCase().contains(filter)
+				|| code.toLowerCase().contains(filter)
+				|| tags != null && tags.contains(filter)
+				|| (tags != null && getTags(code).stream().anyMatch(s -> s.contains(filter))
 			));
+
+			// add padding to the first widget after the separator
+			if (!hidden && lastFavorite != null && (c.getFavorite() == null || c.getFavorite().getSpriteId() == SpriteID.FAIRY_RING_ADD_FAVOURITE))
+			{
+				y += ENTRY_PADDING;
+				lastFavorite = null;
+			}
 
 			if (c.getCode() != null)
 			{
@@ -366,6 +398,17 @@ public class FairyRingPlugin extends Plugin
 			if (!hidden)
 			{
 				y += c.getDescription().getHeight() + ENTRY_PADDING;
+
+				if (c.getFavorite() != null && c.getFavorite().getSpriteId() == SpriteID.FAIRY_RING_REMOVE_FAVOURITE)
+				{
+					separator.setHidden(false);
+					lastFavorite = c;
+				}
+			}
+			else if (c.getFavorite() != null && c.getFavorite().getSpriteId() == SpriteID.FAIRY_RING_REMOVE_FAVOURITE)
+			{
+				// separator widget layouts from the bottom of the favorites container
+				separator.setOriginalY(separator.getOriginalY() + c.getDescription().getHeight() + ENTRY_PADDING);
 			}
 		}
 
@@ -409,6 +452,15 @@ public class FairyRingPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onScriptPostFired(ScriptPostFired event)
+	{
+		if (event.getScriptId() == ScriptID.FAIRYRINGS_SORT_UPDATE && searchInput != null && tagInput == null)
+		{
+			clientThread.invokeLater(() -> updateFilter(searchInput.getValue().toLowerCase()));
+		}
+	}
+
 	Collection<String> getTags(String fairyRingCode)
 	{
 		return new LinkedHashSet<>(Text.fromCSV(getTagString(fairyRingCode).toLowerCase()));
@@ -442,7 +494,7 @@ public class FairyRingPlugin extends Plugin
 		String code = Text.removeTags(menuEntry.getTarget()).replaceAll(" ", "");
 		String initialValue = Text.toCSV(getTags(code));
 		client.playSoundEffect(SoundEffectID.UI_BOOP);
-		searchInput = chatboxPanelManager.openTextInput("Code " + code + " tags:")
+		tagInput = chatboxPanelManager.openTextInput("Code " + code + " tags:")
 			.value(initialValue)
 			.onDone(s ->
 			{
