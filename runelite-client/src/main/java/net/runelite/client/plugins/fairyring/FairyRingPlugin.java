@@ -83,7 +83,7 @@ public class FairyRingPlugin extends Plugin
 
 	private static final String MENU_OPEN = "Open";
 	private static final String MENU_CLOSE = "Close";
-	private static final String SET_TAG_MENU_OPTION = "Set Tag";
+	private static final String EDIT_TAGS_MENU_OPTION = "Edit Tags";
 
 	@Inject
 	private Client client;
@@ -402,17 +402,11 @@ public class FairyRingPlugin extends Plugin
 				.setParam0(event.getActionParam0())
 				.setParam1(event.getActionParam1())
 				.setTarget(event.getTarget())
-				.setOption(SET_TAG_MENU_OPTION)
+				.setOption(EDIT_TAGS_MENU_OPTION)
 				.setType(MenuAction.RUNELITE)
 				.setIdentifier(event.getIdentifier())
-				.onClick(this::editTags);
+				.onClick(this::setTagMenuOpen);
 		}
-	}
-
-	private void editTags(MenuEntry menuEntry)
-	{
-		String fairyRingCode = Text.removeTags(menuEntry.getTarget()).replaceAll(" ", "");
-		this.setTagMenuOpen(fairyRingCode);
 	}
 
 	Collection<String> getTags(String fairyRingCode)
@@ -443,11 +437,12 @@ public class FairyRingPlugin extends Plugin
 		}
 	}
 
-	private void setTagMenuOpen(String code)
+	private void setTagMenuOpen(MenuEntry menuEntry)
 	{
+		String code = Text.removeTags(menuEntry.getTarget()).replaceAll(" ", "");
 		String initialValue = Text.toCSV(getTags(code));
 		client.playSoundEffect(SoundEffectID.UI_BOOP);
-		searchInput = chatboxPanelManager.openTextInput("Code " + code + ": Enter tags (empty to remove)")
+		searchInput = chatboxPanelManager.openTextInput("Code " + code + " tags:")
 			.value(initialValue)
 			.onDone(s ->
 			{
