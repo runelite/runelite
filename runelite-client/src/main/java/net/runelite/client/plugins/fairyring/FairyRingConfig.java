@@ -34,9 +34,21 @@ public interface FairyRingConfig extends Config
 	@ConfigItem(
 		keyName = "autoOpen",
 		name = "Open search automatically",
-		description = "Open the search widget every time you enter a fairy ring"
+		description = "Open the search widget every time you enter a fairy ring",
+		position = 1
 	)
 	default boolean autoOpen()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "enableFairyTags",
+		name = "Enable Tag searching",
+		description = "Enable the ability to add tags to search fairy ring codes by",
+		position = 2
+	)
+	default boolean enableFairyTags()
 	{
 		return true;
 	}

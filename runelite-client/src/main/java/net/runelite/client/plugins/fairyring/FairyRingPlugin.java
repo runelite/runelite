@@ -31,6 +31,8 @@ package net.runelite.client.plugins.fairyring;
 import com.google.common.base.Strings;
 import com.google.inject.Provides;
 import java.util.Collection;
+import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import javax.annotation.Nullable;
@@ -38,6 +40,8 @@ import javax.inject.Inject;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.MenuAction;
+import net.runelite.api.MenuEntry;
 import net.runelite.api.ScriptEvent;
 import net.runelite.api.ScriptID;
 import net.runelite.api.SoundEffectID;
@@ -45,15 +49,18 @@ import net.runelite.api.SpriteID;
 import net.runelite.api.Varbits;
 import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.game.chatbox.ChatboxTextInput;
 import net.runelite.client.plugins.Plugin;
@@ -68,6 +75,7 @@ import net.runelite.client.util.Text;
 )
 public class FairyRingPlugin extends Plugin
 {
+	public static final String CONFIG_GROUP_TAGS = "fairyringtags";
 	private static final String[] leftDial = {"A", "D", "C", "B"};
 	private static final String[] middleDial = {"I", "L", "K", "J"};
 	private static final String[] rightDial = {"P", "S", "R", "Q"};
@@ -76,6 +84,7 @@ public class FairyRingPlugin extends Plugin
 
 	private static final String MENU_OPEN = "Open";
 	private static final String MENU_CLOSE = "Close";
+	private static final String SET_TAG_MENU_OPTION = "Set Tag";
 
 	@Inject
 	private Client client;
@@ -89,9 +98,13 @@ public class FairyRingPlugin extends Plugin
 	@Inject
 	private ClientThread clientThread;
 
+	@Inject
+	private ConfigManager configManager;
+
 	private ChatboxTextInput searchInput = null;
 	private Widget searchBtn;
 	private Collection<CodeWidgets> codes = null;
+	private boolean enableTagSearching;
 
 	@Data
 	private static class CodeWidgets
@@ -110,6 +123,32 @@ public class FairyRingPlugin extends Plugin
 	FairyRingConfig getConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(FairyRingConfig.class);
+	}
+
+	@Override
+	public void resetConfiguration()
+	{
+		List<String> keys = configManager.getConfigurationKeys(CONFIG_GROUP_TAGS);
+		for (String key : keys)
+		{
+			String[] str = key.split("\\.", 2);
+			if (str.length == 2)
+			{
+				configManager.unsetConfiguration(str[0], str[1]);
+			}
+		}
+	}
+
+	@Override
+	public void startUp()
+	{
+		enableTagSearching = config.enableFairyTags();
+	}
+
+	@Override
+	public void shutDown()
+	{
+		enableTagSearching = false;
 	}
 
 	@Subscribe
@@ -316,10 +355,13 @@ public class FairyRingPlugin extends Plugin
 				}
 			}
 
+			String finalFilter = filter;
 			boolean hidden = !(filter.isEmpty()
 				|| Text.removeTags(c.getDescription().getText()).toLowerCase().contains(filter)
 				|| code.toLowerCase().contains(filter)
-				|| tags != null && tags.contains(filter));
+				|| tags != null && tags.contains(filter)
+				|| (enableTagSearching && tags != null && getTags(code).stream().anyMatch(s -> s.contains(finalFilter))
+			));
 
 			if (c.getCode() != null)
 			{
@@ -363,5 +405,79 @@ public class FairyRingPlugin extends Plugin
 			ComponentID.FAIRY_RING_PANEL_LIST,
 			newHeight
 		);
+	}
+	@Subscribe
+	public void onConfigChanged(ConfigChanged configChanged)
+	{
+		if (configChanged.getGroup().equals(CONFIG_GROUP_TAGS) && configChanged.getKey().equals("enableFairyTags"))
+		{
+			enableTagSearching = config.enableFairyTags();
+		}
+	}
+
+	@Subscribe
+	public void onMenuEntryAdded(MenuEntryAdded event)
+	{
+		if (event.getOption().equals("Use code")
+			&& WidgetUtil.componentToInterface(event.getActionParam1()) == InterfaceID.FAIRY_RING_PANEL)
+		{
+			client.createMenuEntry(-1)
+				.setParam0(event.getActionParam0())
+				.setParam1(event.getActionParam1())
+				.setTarget(event.getTarget())
+				.setOption(SET_TAG_MENU_OPTION)
+				.setType(MenuAction.RUNELITE)
+				.setIdentifier(event.getIdentifier())
+				.onClick(this::editTags);
+		}
+	}
+
+	private void editTags(MenuEntry menuEntry)
+	{
+		String fairyRingCode = Text.removeTags(menuEntry.getTarget()).replaceAll(" ", "");
+		this.setTagMenuOpen(fairyRingCode);
+	}
+
+	Collection<String> getTags(String fairyRingCode)
+	{
+		return new LinkedHashSet<>(Text.fromCSV(getTagString(fairyRingCode).toLowerCase()));
+	}
+
+	String getTagString(String fairyRingCode)
+	{
+		String config = configManager.getConfiguration(CONFIG_GROUP_TAGS, fairyRingCode);
+		if (config == null)
+		{
+			return "";
+		}
+
+		return config;
+	}
+
+	void setTagString(String fairyRingCode, String tags)
+	{
+		if (Strings.isNullOrEmpty(tags))
+		{
+			configManager.unsetConfiguration(CONFIG_GROUP_TAGS, fairyRingCode);
+		}
+		else
+		{
+			configManager.setConfiguration(CONFIG_GROUP_TAGS, fairyRingCode, tags);
+		}
+	}
+
+	private void setTagMenuOpen(String code)
+	{
+		String initialValue = Text.toCSV(getTags(code));
+		client.playSoundEffect(SoundEffectID.UI_BOOP);
+		searchInput = chatboxPanelManager.openTextInput("Code " + code + ": Enter tags (empty to reset)")
+			.value(initialValue)
+			.onDone(s -> {
+				setTagString(code, s);
+				if (config.autoOpen()) {
+					clientThread.invokeLater(this::openSearch);
+				}
+			})
+			.build();
 	}
 }
