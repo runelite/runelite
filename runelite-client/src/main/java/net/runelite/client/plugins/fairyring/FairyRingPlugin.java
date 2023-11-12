@@ -60,7 +60,6 @@ import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
 import net.runelite.client.game.chatbox.ChatboxTextInput;
 import net.runelite.client.plugins.Plugin;
@@ -104,7 +103,6 @@ public class FairyRingPlugin extends Plugin
 	private ChatboxTextInput searchInput = null;
 	private Widget searchBtn;
 	private Collection<CodeWidgets> codes = null;
-	private boolean enableTagSearching;
 
 	@Data
 	private static class CodeWidgets
@@ -137,18 +135,6 @@ public class FairyRingPlugin extends Plugin
 				configManager.unsetConfiguration(str[0], str[1]);
 			}
 		}
-	}
-
-	@Override
-	public void startUp()
-	{
-		enableTagSearching = config.enableFairyTags();
-	}
-
-	@Override
-	public void shutDown()
-	{
-		enableTagSearching = false;
 	}
 
 	@Subscribe
@@ -261,7 +247,7 @@ public class FairyRingPlugin extends Plugin
 
 	private void updateFilter(String filter)
 	{
-		filter = filter.toLowerCase();
+		final String finalFilter = filter.toLowerCase();
 		final Widget list = client.getWidget(ComponentID.FAIRY_RING_PANEL_LIST);
 		final Widget favorites = client.getWidget(ComponentID.FAIRY_RING_PANEL_FAVORITES);
 
@@ -329,7 +315,7 @@ public class FairyRingPlugin extends Plugin
 
 		if (favorites != null)
 		{
-			boolean hide = !filter.isEmpty();
+			boolean hide = !finalFilter.isEmpty();
 			favorites.setHidden(hide);
 			if (!hide)
 			{
@@ -355,12 +341,11 @@ public class FairyRingPlugin extends Plugin
 				}
 			}
 
-			String finalFilter = filter;
-			boolean hidden = !(filter.isEmpty()
-				|| Text.removeTags(c.getDescription().getText()).toLowerCase().contains(filter)
-				|| code.toLowerCase().contains(filter)
-				|| tags != null && tags.contains(filter)
-				|| (enableTagSearching && tags != null && getTags(code).stream().anyMatch(s -> s.contains(finalFilter))
+			boolean hidden = !(finalFilter.isEmpty()
+				|| Text.removeTags(c.getDescription().getText()).toLowerCase().contains(finalFilter)
+				|| code.toLowerCase().contains(finalFilter)
+				|| tags != null && tags.contains(finalFilter)
+				|| (tags != null && getTags(code).stream().anyMatch(s -> s.contains(finalFilter) && config.enableFairyTags())
 			));
 
 			if (c.getCode() != null)
@@ -405,15 +390,6 @@ public class FairyRingPlugin extends Plugin
 			ComponentID.FAIRY_RING_PANEL_LIST,
 			newHeight
 		);
-	}
-
-	@Subscribe
-	public void onConfigChanged(ConfigChanged configChanged)
-	{
-		if (configChanged.getGroup().equals(CONFIG_GROUP_TAGS) && configChanged.getKey().equals("enableFairyTags"))
-		{
-			enableTagSearching = config.enableFairyTags();
-		}
 	}
 
 	@Subscribe
