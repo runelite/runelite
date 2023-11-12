@@ -345,7 +345,7 @@ public class FairyRingPlugin extends Plugin
 				|| Text.removeTags(c.getDescription().getText()).toLowerCase().contains(finalFilter)
 				|| code.toLowerCase().contains(finalFilter)
 				|| tags != null && tags.contains(finalFilter)
-				|| (tags != null && getTags(code).stream().anyMatch(s -> s.contains(finalFilter) && config.enableFairyTags())
+				|| (tags != null && getTags(code).stream().anyMatch(s -> s.contains(finalFilter))
 			));
 
 			if (c.getCode() != null)
