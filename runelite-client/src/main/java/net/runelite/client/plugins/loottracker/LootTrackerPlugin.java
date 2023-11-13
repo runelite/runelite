@@ -124,6 +124,7 @@ import net.runelite.http.api.loottracker.GameItem;
 import net.runelite.http.api.loottracker.LootRecord;
 import net.runelite.http.api.loottracker.LootRecordType;
 import org.apache.commons.text.WordUtils;
+import net.runelite.api.NpcID;
 
 @PluginDescriptor(
 	name = "Loot Tracker",
@@ -306,6 +307,31 @@ public class LootTrackerPlugin extends Plugin
 	private static final String TOMBS_OF_AMASCUT = "Tombs of Amascut";
 
 	private static final Set<Character> VOWELS = ImmutableSet.of('a', 'e', 'i', 'o', 'u');
+
+	// Animated Armour (Warrior's Guild)
+	private static final Multimap<Integer, Integer> ANIMATED_ARMOUR_PARTS = new ImmutableMultimap.Builder<Integer, Integer>().
+		put(NpcID.ANIMATED_BRONZE_ARMOUR, ItemID.BRONZE_FULL_HELM).
+		put(NpcID.ANIMATED_BRONZE_ARMOUR, ItemID.BRONZE_PLATEBODY).
+		put(NpcID.ANIMATED_BRONZE_ARMOUR, ItemID.BRONZE_PLATELEGS).
+		put(NpcID.ANIMATED_IRON_ARMOUR, ItemID.IRON_FULL_HELM).
+		put(NpcID.ANIMATED_IRON_ARMOUR, ItemID.IRON_PLATEBODY).
+		put(NpcID.ANIMATED_IRON_ARMOUR, ItemID.IRON_PLATELEGS).
+		put(NpcID.ANIMATED_STEEL_ARMOUR, ItemID.STEEL_FULL_HELM).
+		put(NpcID.ANIMATED_STEEL_ARMOUR, ItemID.STEEL_PLATEBODY).
+		put(NpcID.ANIMATED_STEEL_ARMOUR, ItemID.STEEL_PLATELEGS).
+		put(NpcID.ANIMATED_BLACK_ARMOUR, ItemID.BLACK_FULL_HELM).
+		put(NpcID.ANIMATED_BLACK_ARMOUR, ItemID.BLACK_PLATEBODY).
+		put(NpcID.ANIMATED_BLACK_ARMOUR, ItemID.BLACK_PLATELEGS).
+		put(NpcID.ANIMATED_MITHRIL_ARMOUR, ItemID.MITHRIL_FULL_HELM).
+		put(NpcID.ANIMATED_MITHRIL_ARMOUR, ItemID.MITHRIL_PLATEBODY).
+		put(NpcID.ANIMATED_MITHRIL_ARMOUR, ItemID.MITHRIL_PLATELEGS).
+		put(NpcID.ANIMATED_ADAMANT_ARMOUR, ItemID.ADAMANT_FULL_HELM).
+		put(NpcID.ANIMATED_ADAMANT_ARMOUR, ItemID.ADAMANT_PLATEBODY).
+		put(NpcID.ANIMATED_ADAMANT_ARMOUR, ItemID.ADAMANT_PLATELEGS).
+		put(NpcID.ANIMATED_RUNE_ARMOUR, ItemID.RUNE_FULL_HELM).
+		put(NpcID.ANIMATED_RUNE_ARMOUR, ItemID.RUNE_PLATEBODY).
+		put(NpcID.ANIMATED_RUNE_ARMOUR, ItemID.RUNE_PLATELEGS).
+		build();
 
 	@Inject
 	private ClientToolbar clientToolbar;
@@ -756,6 +782,13 @@ public class LootTrackerPlugin extends Plugin
 		final Collection<ItemStack> items = npcLootReceived.getItems();
 		final String name = npc.getName();
 		final int combat = npc.getCombatLevel();
+
+		items.removeIf(item -> ANIMATED_ARMOUR_PARTS.containsEntry(npc.getId(), item.getId()));
+
+		if (items.isEmpty())
+		{
+			return;
+		}
 
 		addLoot(name, combat, LootRecordType.NPC, npc.getId(), items);
 
