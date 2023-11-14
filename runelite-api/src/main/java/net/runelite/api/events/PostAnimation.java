@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Trevor <https://github.com/Trevor159>
+ * Copyright (c) 2023 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,35 +22,16 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.api.events;
+
+import lombok.Value;
+import net.runelite.api.Animation;
 
 /**
- * Represents an animation of a renderable
+ * An event posted when an {@link Animation} is loaded
  */
-public interface Animation
+@Value
+public class PostAnimation
 {
-	/**
-	 * Get the id for this animation
-	 * @see AnimationID
-	 * @return
-	 */
-	int getId();
-
-	/**
-	 * Get how many distinct frames this animation has.
-	 *
-	 * For animaya animations, this is the duration in client ticks. For classic
-	 * animations, this is how many keyframes it has, not it's duration in ticks.
-	 */
-	int getNumFrames();
-
-	/**
-	 * How this animation behaves when its restarted during playback
-	 */
-	int getRestartMode();
-
-	/**
-	 * @see #getRestartMode()
-	 */
-	void setRestartMode(int restartMode);
+	private Animation animation;
 }
