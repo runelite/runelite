@@ -439,4 +439,7 @@ public final class ScriptID
 
 	@ScriptArguments(integer = 10, string = 3)
 	public static final int ACCOUNT_SUMMARY_SECTION_FORMAT = 3950;
+
+	@ScriptArguments(integer = 6, string = 8)
+	public static final int INTERFACE_INV_DRAW_SLOT_BIG = 154;
 }

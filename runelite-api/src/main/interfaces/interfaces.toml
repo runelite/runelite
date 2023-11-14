@@ -292,6 +292,7 @@ inventory_item_container=0
 
 [equipment_inventory]
 id=85
+container=0
 
 [experience_tracker]
 id=122
