@@ -2554,7 +2554,9 @@
     26975,
     26977,
     26979,
-    27781
+    27781,
+    28678,
+    28680
   ],
   "empty cup": [
     1980,
@@ -11650,5 +11652,33 @@
   "beehive": [
     28676,
     28677
+  ],
+  "blazing blowpipe": [
+    28687,
+    28688
+  ],
+  "trailblazer reloaded headband": [
+    28712,
+    28724,
+    28736
+  ],
+  "trailblazer reloaded top": [
+    28715,
+    28727,
+    28739
+  ],
+  "trailblazer reloaded trousers": [
+    28718,
+    28730,
+    28742
+  ],
+  "trailblazer reloaded boots": [
+    28721,
+    28733,
+    28745
+  ],
+  "trailblazer reloaded relic hunter armour set": [
+    28777,
+    28780
   ]
 }
