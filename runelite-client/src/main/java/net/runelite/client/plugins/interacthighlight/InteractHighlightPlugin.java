@@ -168,7 +168,9 @@ public class InteractHighlightPlugin extends Plugin
 				interactedObject = null;
 				interactedNpc = menuOptionClicked.getMenuEntry().getNpc();
 				attacked = menuOptionClicked.getMenuAction() == MenuAction.NPC_SECOND_OPTION ||
-					menuOptionClicked.getMenuAction() == MenuAction.WIDGET_TARGET_ON_NPC && WidgetUtil.componentToInterface(client.getSelectedWidget().getId()) == InterfaceID.SPELLBOOK;
+					menuOptionClicked.getMenuAction() == MenuAction.WIDGET_TARGET_ON_NPC
+						&& client.getSelectedWidget() != null
+						&& WidgetUtil.componentToInterface(client.getSelectedWidget().getId()) == InterfaceID.SPELLBOOK;
 				clickTick = client.getTickCount();
 				gameCycle = client.getGameCycle();
 				break;

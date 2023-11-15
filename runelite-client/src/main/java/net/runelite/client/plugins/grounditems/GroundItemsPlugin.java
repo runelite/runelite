@@ -683,7 +683,9 @@ public class GroundItemsPlugin extends Plugin
 			// item spawns that are drops
 			droppedItemQueue.add(itemId);
 		}
-		else if (menuOptionClicked.getMenuAction() == MenuAction.WIDGET_TARGET_ON_GAME_OBJECT && client.getSelectedWidget().getId() == ComponentID.INVENTORY_CONTAINER)
+		else if (menuOptionClicked.getMenuAction() == MenuAction.WIDGET_TARGET_ON_GAME_OBJECT
+			&& client.getSelectedWidget() != null
+			&& client.getSelectedWidget().getId() == ComponentID.INVENTORY_CONTAINER)
 		{
 			lastUsedItem = client.getSelectedWidget().getItemId();
 		}

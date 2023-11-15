@@ -115,7 +115,9 @@ public class CrowdsourcingCooking
 			|| action == MenuAction.GAME_OBJECT_THIRD_OPTION
 			|| action == MenuAction.GAME_OBJECT_FOURTH_OPTION
 			|| action == MenuAction.GAME_OBJECT_FIFTH_OPTION
-			|| action == MenuAction.WIDGET_TARGET_ON_GAME_OBJECT && client.getSelectedWidget().getId() == ComponentID.INVENTORY_CONTAINER)
+			|| (action == MenuAction.WIDGET_TARGET_ON_GAME_OBJECT
+				&& client.getSelectedWidget() != null
+				&& client.getSelectedWidget().getId() == ComponentID.INVENTORY_CONTAINER))
 		{
 			lastGameObjectClicked = menuOptionClicked.getId();
 		}

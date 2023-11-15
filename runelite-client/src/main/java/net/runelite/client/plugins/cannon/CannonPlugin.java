@@ -273,7 +273,9 @@ public class CannonPlugin extends Plugin
 		}
 
 		// Check if cannonballs are being used on the cannon
-		if (event.getMenuAction() == MenuAction.WIDGET_TARGET_ON_GAME_OBJECT && client.getSelectedWidget().getId() == ComponentID.INVENTORY_CONTAINER)
+		if (event.getMenuAction() == MenuAction.WIDGET_TARGET_ON_GAME_OBJECT
+			&& client.getSelectedWidget() != null
+			&& client.getSelectedWidget().getId() == ComponentID.INVENTORY_CONTAINER)
 		{
 			final Widget selected = client.getSelectedWidget();
 			final int itemId = selected.getItemId();
