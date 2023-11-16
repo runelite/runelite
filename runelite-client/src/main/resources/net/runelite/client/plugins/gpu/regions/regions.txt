@@ -235,3 +235,7 @@ r 40 69
 // maze random
 n
 r 45 71
+
+// pyramid plunder
+n
+r 30 69
