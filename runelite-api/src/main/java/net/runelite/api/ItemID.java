@@ -5820,7 +5820,7 @@ public final class ItemID
 	public static final int IRON_BOLTS_UNF = 9377;
 	public static final int STEEL_BOLTS_UNF = 9378;
 	public static final int MITHRIL_BOLTS_UNF = 9379;
-	public static final int ADAMANT_BOLTSUNF = 9380;
+	public static final int ADAMANT_BOLTS_UNF = 9380;
 	public static final int RUNITE_BOLTS_UNF = 9381;
 	public static final int SILVER_BOLTS_UNF = 9382;
 	public static final int GRAPPLE = 9415;
