@@ -218,6 +218,7 @@ class RunepouchOverlay extends WidgetItemOverlay
 	private void renderGrid(Graphics2D graphics, WidgetItem widgetItem, int[] runeIds, int[] amounts, int numRunes)
 	{
 		final Point location = widgetItem.getCanvasLocation();
+		int c = 0;
 		for (int i = 0; i < NUM_SLOTS; ++i)
 		{
 			final int runeId = runeIds[i];
@@ -228,10 +229,11 @@ class RunepouchOverlay extends WidgetItemOverlay
 				continue;
 			}
 
-			final int iconX = location.getX() + 2 + (i % 2 == 1 ? IMAGE_SIZE + 2 /* pad */ + 2 /* bar offset */ : 0);
+			final int iconX = location.getX() + 2 + (c % 2 == 1 ? IMAGE_SIZE + 2 /* pad */ + 2 /* bar offset */ : 0);
 			final int iconY = numRunes > 4 ?
-				location.getY() - 1 + (i / 2) * IMAGE_SIZE :
-				location.getY() + 5 + (i >= 2 ? IMAGE_SIZE + 2 /* pad */ : 0);
+				location.getY() - 1 + (c / 2) * IMAGE_SIZE :
+				location.getY() + 5 + (c >= 2 ? IMAGE_SIZE + 2 /* pad */ : 0);
+			c++;
 
 			BufferedImage image = getRuneImage(runeId);
 			if (image != null)
