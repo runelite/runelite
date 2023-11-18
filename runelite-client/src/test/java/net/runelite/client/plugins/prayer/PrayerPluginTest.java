@@ -51,6 +51,7 @@ import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyInt;
 import org.mockito.Mock;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -156,5 +157,50 @@ public class PrayerPluginTest
 		prayerPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.EQUIPMENT.getId(), itemContainer));
 
 		assertEquals("79m", prayerPlugin.getEstimatedTimeRemaining(true));
+	}
+
+	@Test
+	public void testTimeRemaining()
+	{
+		prayerPlugin.setPrayerBonus(42);
+
+		assertTime(PrayerType.THICK_SKIN, "47:31");
+		assertTime(PrayerType.BURST_OF_STRENGTH, "47:31");
+		assertTime(PrayerType.CLARITY_OF_THOUGHT, "47:31");
+		assertTime(PrayerType.SHARP_EYE, "47:31");
+		assertTime(PrayerType.MYSTIC_WILL, "47:31");
+		assertTime(PrayerType.ROCK_SKIN, "23:45");
+		assertTime(PrayerType.SUPERHUMAN_STRENGTH, "23:45");
+		assertTime(PrayerType.IMPROVED_REFLEXES, "23:45");
+		assertTime(PrayerType.RAPID_RESTORE, "2:22:33");
+		assertTime(PrayerType.RAPID_HEAL, "1:11:16");
+		assertTime(PrayerType.PROTECT_ITEM, "1:11:16");
+		assertTime(PrayerType.HAWK_EYE, "23:45");
+		assertTime(PrayerType.MYSTIC_LORE, "23:45");
+		assertTime(PrayerType.STEEL_SKIN, "11:52");
+		assertTime(PrayerType.ULTIMATE_STRENGTH, "11:52");
+		assertTime(PrayerType.INCREDIBLE_REFLEXES, "11:52");
+		assertTime(PrayerType.PROTECT_FROM_MAGIC, "11:52");
+		assertTime(PrayerType.PROTECT_FROM_MISSILES, "11:52");
+		assertTime(PrayerType.PROTECT_FROM_MELEE, "11:52");
+		assertTime(PrayerType.EAGLE_EYE, "11:52");
+		assertTime(PrayerType.MYSTIC_MIGHT, "11:52");
+		assertTime(PrayerType.RETRIBUTION, "47:31");
+		assertTime(PrayerType.REDEMPTION, "23:45");
+		assertTime(PrayerType.SMITE, "7:55");
+		assertTime(PrayerType.PRESERVE, "1:11:16");
+		assertTime(PrayerType.CHIVALRY, "5:56");
+		assertTime(PrayerType.PIETY, "5:56");
+		assertTime(PrayerType.RIGOUR, "5:56");
+		assertTime(PrayerType.AUGURY, "5:56");
+	}
+
+	private void assertTime(PrayerType prayer, String time)
+	{
+		reset(client);
+		when(client.getBoostedSkillLevel(Skill.PRAYER)).thenReturn(99);
+		when(client.isPrayerActive(prayer.getPrayer())).thenReturn(true);
+		var est = prayerPlugin.getEstimatedTimeRemaining(false);
+		assertEquals(time, est);
 	}
 }

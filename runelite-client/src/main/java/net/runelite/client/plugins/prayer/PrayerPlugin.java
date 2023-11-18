@@ -34,6 +34,7 @@ import javax.annotation.Nullable;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.InventoryID;
@@ -72,6 +73,7 @@ public class PrayerPlugin extends Plugin
 	private boolean prayersActive = false;
 
 	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private int prayerBonus;
 
 	@Inject
