@@ -356,11 +356,11 @@ public class PrayerPlugin extends Plugin
 	{
 		double drainRate = 0.0;
 
-		for (Prayer prayer : Prayer.values())
+		for (PrayerType prayerType : PrayerType.values())
 		{
-			if (client.isPrayerActive(prayer))
+			if (client.isPrayerActive(prayerType.getPrayer()))
 			{
-				drainRate += prayer.getDrainRate();
+				drainRate += prayerType.getDrainRate();
 			}
 		}
 
