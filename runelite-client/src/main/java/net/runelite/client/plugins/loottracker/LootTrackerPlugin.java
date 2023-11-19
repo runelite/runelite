@@ -854,17 +854,17 @@ public class LootTrackerPlugin extends Plugin
 				int raidLevel = client.getVarbitValue(Varbits.TOA_RAID_LEVEL);
 				int teamSize =
 					Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_0_HEALTH), 1) +
-					Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_1_HEALTH), 1) +
-					Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_2_HEALTH), 1) +
-					Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_3_HEALTH), 1) +
-					Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_4_HEALTH), 1) +
-					Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_5_HEALTH), 1) +
-					Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_6_HEALTH), 1) +
-					Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_7_HEALTH), 1);
+						Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_1_HEALTH), 1) +
+						Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_2_HEALTH), 1) +
+						Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_3_HEALTH), 1) +
+						Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_4_HEALTH), 1) +
+						Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_5_HEALTH), 1) +
+						Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_6_HEALTH), 1) +
+						Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_7_HEALTH), 1);
 				int raidDamage = client.getVarbitValue(Varbits.TOA_RAID_DAMAGE);
 				event = TOMBS_OF_AMASCUT;
 				container = client.getItemContainer(InventoryID.TOA_REWARD_CHEST);
-				metadata = new int[]{ raidLevel, teamSize, raidDamage };
+				metadata = new int[]{raidLevel, teamSize, raidDamage};
 				chestLooted = true;
 				break;
 			case InterfaceID.KINGDOM:
@@ -958,7 +958,7 @@ public class LootTrackerPlugin extends Plugin
 
 			final int regionID = client.getLocalPlayer().getWorldLocation().getRegionID();
 
-			if(!lastChestChecked.isEmpty() && CHEST_EVENT_TYPES.get(regionID).equals(lastChestChecked))
+			if (!lastChestChecked.isEmpty() && CHEST_EVENT_TYPES.get(regionID).equals(lastChestChecked))
 			{
 				lastChestChecked = "";
 				return;
@@ -1233,9 +1233,10 @@ public class LootTrackerPlugin extends Plugin
 					}
 				}));
 			}
-		} else if(event.getMenuOption().equals("Check"))
+		}
+		else if (event.getMenuOption().equals("Check"))
 		{
-			lastChestChecked =  (Text.removeTags(event.getMenuTarget()));
+			lastChestChecked = (Text.removeTags(event.getMenuTarget()));
 		}
 	}
 
