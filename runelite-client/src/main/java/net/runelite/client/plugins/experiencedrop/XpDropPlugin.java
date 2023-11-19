@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2018, Cameron <https://github.com/noremac201>, SoyChai <https://github.com/SoyChai>
+ * Copyright (c) 2023, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,17 +25,23 @@
  */
 package net.runelite.client.plugins.experiencedrop;
 
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.IntStream;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.EnumComposition;
 import net.runelite.api.EnumID;
+import net.runelite.api.Prayer;
 import static net.runelite.api.ScriptID.XPDROPS_SETDROPSIZE;
 import static net.runelite.api.ScriptID.XPDROP_DISABLED;
 import net.runelite.api.Skill;
@@ -56,6 +63,32 @@ import net.runelite.client.plugins.PluginDescriptor;
 )
 public class XpDropPlugin extends Plugin
 {
+	enum PrayerType
+	{
+		MELEE,
+		RANGE,
+		MAGIC;
+	}
+
+	private static final Multimap<Prayer, PrayerType> PRAYER_TYPE = new ImmutableMultimap.Builder<Prayer, PrayerType>()
+		.put(Prayer.BURST_OF_STRENGTH, PrayerType.MELEE)
+		.put(Prayer.CLARITY_OF_THOUGHT, PrayerType.MELEE)
+		.put(Prayer.SHARP_EYE, PrayerType.RANGE)
+		.put(Prayer.MYSTIC_WILL, PrayerType.MAGIC)
+		.put(Prayer.SUPERHUMAN_STRENGTH, PrayerType.MELEE)
+		.put(Prayer.IMPROVED_REFLEXES, PrayerType.MELEE)
+		.put(Prayer.HAWK_EYE, PrayerType.RANGE)
+		.put(Prayer.MYSTIC_LORE, PrayerType.MAGIC)
+		.put(Prayer.ULTIMATE_STRENGTH, PrayerType.MELEE)
+		.put(Prayer.INCREDIBLE_REFLEXES, PrayerType.MELEE)
+		.put(Prayer.EAGLE_EYE, PrayerType.RANGE)
+		.put(Prayer.MYSTIC_MIGHT, PrayerType.MAGIC)
+		.put(Prayer.CHIVALRY, PrayerType.MELEE)
+		.put(Prayer.PIETY, PrayerType.MELEE)
+		.put(Prayer.RIGOUR, PrayerType.RANGE)
+		.put(Prayer.AUGURY, PrayerType.MAGIC)
+		.build();
+
 	@Inject
 	private Client client;
 
@@ -65,7 +98,7 @@ public class XpDropPlugin extends Plugin
 	private int tickCounter = 0;
 	private int previousExpGained;
 	private boolean hasDropped = false;
-	private boolean correctPrayer;
+	private int xpdropColor;
 	private Skill lastSkill = null;
 	private final Map<Skill, Integer> previousSkillExpTable = new EnumMap<>(Skill.class);
 
@@ -96,51 +129,64 @@ public class XpDropPlugin extends Plugin
 		// child 0 is the xpdrop text, everything else are sprite ids for skills
 		final Widget text = children[0];
 
-		PrayerType prayer = getActivePrayerType();
-		if (prayer == null)
+		Collection<PrayerType> prayers = getActivePrayerType();
+		if (prayers.isEmpty())
 		{
 			hideSkillIcons(xpdrop);
 			resetTextColor(text);
 			return;
 		}
 
-		final IntStream spriteIDs =
+		final List<PrayerType> xpDropTypes =
 			Arrays.stream(children)
 				.skip(1) // skip text
 				.filter(Objects::nonNull)
-				.mapToInt(Widget::getSpriteId);
+				.map(Widget::getSpriteId)
+				.map(id ->
+				{
+					if (id == SpriteID.SKILL_ATTACK || id == SpriteID.SKILL_STRENGTH || id == SpriteID.SKILL_DEFENCE)
+					{
+						return PrayerType.MELEE;
+					}
+					if (id == SpriteID.SKILL_RANGED)
+					{
+						return PrayerType.RANGE;
+					}
+					if (id == SpriteID.SKILL_MAGIC)
+					{
+						return PrayerType.MAGIC;
+					}
+					return null;
+				})
+				.filter(Objects::nonNull)
+				.distinct()
+				.collect(Collectors.toList());
 
-		int color = 0;
-
-		switch (prayer)
+		if (xpDropTypes.contains(PrayerType.MELEE))
 		{
-			case MELEE:
-				if (correctPrayer || spriteIDs.anyMatch(id ->
-					id == SpriteID.SKILL_ATTACK || id == SpriteID.SKILL_STRENGTH || id == SpriteID.SKILL_DEFENCE))
-				{
-					color = config.getMeleePrayerColor().getRGB();
-					correctPrayer = true;
-				}
-				break;
-			case RANGE:
-				if (correctPrayer || spriteIDs.anyMatch(id -> id == SpriteID.SKILL_RANGED))
-				{
-					color = config.getRangePrayerColor().getRGB();
-					correctPrayer = true;
-				}
-				break;
-			case MAGIC:
-				if (correctPrayer || spriteIDs.anyMatch(id -> id == SpriteID.SKILL_MAGIC))
-				{
-					color = config.getMagePrayerColor().getRGB();
-					correctPrayer = true;
-				}
-				break;
+			if (prayers.contains(PrayerType.MELEE))
+			{
+				xpdropColor = config.getMeleePrayerColor().getRGB();
+			}
+		}
+		else if (xpDropTypes.contains(PrayerType.RANGE))
+		{
+			if (prayers.contains(PrayerType.RANGE))
+			{
+				xpdropColor = config.getRangePrayerColor().getRGB();
+			}
+		}
+		else if (xpDropTypes.contains(PrayerType.MAGIC))
+		{
+			if (prayers.contains(PrayerType.MAGIC))
+			{
+				xpdropColor = config.getMagePrayerColor().getRGB();
+			}
 		}
 
-		if (color != 0)
+		if (xpdropColor != 0)
 		{
-			text.setTextColor(color);
+			text.setTextColor(xpdropColor);
 		}
 		else
 		{
@@ -177,22 +223,22 @@ public class XpDropPlugin extends Plugin
 		}
 	}
 
-	private PrayerType getActivePrayerType()
+	private Collection<PrayerType> getActivePrayerType()
 	{
-		for (XpPrayer prayer : XpPrayer.values())
+		for (Prayer prayer : PRAYER_TYPE.keySet())
 		{
-			if (client.getServerVarbitValue(prayer.getPrayer().getVarbit()) == 1)
+			if (client.getServerVarbitValue(prayer.getVarbit()) == 1)
 			{
-				return prayer.getType();
+				return PRAYER_TYPE.get(prayer);
 			}
 		}
-		return null;
+		return Collections.emptyList();
 	}
 
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
-		correctPrayer = false;
+		xpdropColor = 0;
 
 		final int fakeTickDelay = config.fakeXpDropDelay();
 
