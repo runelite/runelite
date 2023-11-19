@@ -958,7 +958,8 @@ public class LootTrackerPlugin extends Plugin
 
 			final int regionID = client.getLocalPlayer().getWorldLocation().getRegionID();
 
-			if(!lastChestChecked.isEmpty() && CHEST_EVENT_TYPES.get(regionID).equals(lastChestChecked)) {
+			if(!lastChestChecked.isEmpty() && CHEST_EVENT_TYPES.get(regionID).equals(lastChestChecked))
+			{
 				lastChestChecked = "";
 				return;
 			}
@@ -1232,7 +1233,8 @@ public class LootTrackerPlugin extends Plugin
 					}
 				}));
 			}
-		} else if(event.getMenuOption().equals("Check")){
+		} else if(event.getMenuOption().equals("Check"))
+		{
 			lastChestChecked =  (Text.removeTags(event.getMenuTarget()));
 		}
 	}
