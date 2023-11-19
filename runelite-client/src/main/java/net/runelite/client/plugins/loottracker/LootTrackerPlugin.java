@@ -354,6 +354,7 @@ public class LootTrackerPlugin extends Plugin
 	private NavigationButton navButton;
 
 	private boolean chestLooted;
+	private String lastChestChecked = "";
 	private boolean lastLoadingIntoInstance;
 	private String lastPickpocketTarget;
 
@@ -954,7 +955,13 @@ public class LootTrackerPlugin extends Plugin
 			|| message.startsWith(ANCIENT_CHEST_LOOTED_MESSAGE)
 			|| LARRAN_LOOTED_PATTERN.matcher(message).matches() || ROGUES_CHEST_PATTERN.matcher(message).matches())
 		{
+
 			final int regionID = client.getLocalPlayer().getWorldLocation().getRegionID();
+
+			if(!lastChestChecked.isEmpty() && CHEST_EVENT_TYPES.get(regionID).equals(lastChestChecked)) {
+				lastChestChecked = "";
+				return;
+			}
 
 			log.debug("Chest loot matched '{}' region {}", message, regionID);
 			if (!CHEST_EVENT_TYPES.containsKey(regionID))
@@ -1225,6 +1232,8 @@ public class LootTrackerPlugin extends Plugin
 					}
 				}));
 			}
+		} else if(event.getMenuOption().equals("Check")){
+			lastChestChecked =  (Text.removeTags(event.getMenuTarget()));
 		}
 	}
 
