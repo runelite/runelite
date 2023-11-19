@@ -23,7 +23,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.experiencedrop;
+package net.runelite.client.plugins.xpdrop;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
