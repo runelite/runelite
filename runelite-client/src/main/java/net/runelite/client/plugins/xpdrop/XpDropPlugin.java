@@ -87,6 +87,15 @@ public class XpDropPlugin extends Plugin
 		.put(Prayer.PIETY, PrayerType.MELEE)
 		.put(Prayer.RIGOUR, PrayerType.RANGE)
 		.put(Prayer.AUGURY, PrayerType.MAGIC)
+		// RP
+		.put(Prayer.RP_ANCIENT_STRENGTH, PrayerType.MELEE)
+		.put(Prayer.RP_ANCIENT_SIGHT, PrayerType.RANGE)
+		.put(Prayer.RP_ANCIENT_WILL, PrayerType.MAGIC)
+		.putAll(Prayer.RP_TRINITAS, PrayerType.MELEE, PrayerType.RANGE, PrayerType.MAGIC)
+		.put(Prayer.RP_DECIMATE, PrayerType.MELEE)
+		.put(Prayer.RP_ANNIHILATE, PrayerType.RANGE)
+		.put(Prayer.RP_VAPORISE, PrayerType.MAGIC)
+		.putAll(Prayer.RP_INTENSIFY, PrayerType.MELEE, PrayerType.RANGE, PrayerType.MAGIC)
 		.build();
 
 	@Inject
