@@ -354,36 +354,37 @@ public class PrayerPlugin extends Plugin
 		}
 	}
 
-	private static double getPrayerDrainRate(Client client)
+	private static int getDrainEffect(Client client)
 	{
-		double drainRate = 0.0;
+		int drainEffect = 0;
 
 		for (PrayerType prayerType : PrayerType.values())
 		{
 			if (client.isPrayerActive(prayerType.getPrayer()))
 			{
-				drainRate += prayerType.getDrainRate();
+				drainEffect += prayerType.getDrainEffect();
 			}
 		}
 
-		return drainRate;
+		return drainEffect;
 	}
 
 	String getEstimatedTimeRemaining(boolean formatForOrb)
 	{
-		final double drainRate = getPrayerDrainRate(client);
+		final int drainEffect = getDrainEffect(client);
 
-		if (drainRate == 0)
+		if (drainEffect == 0)
 		{
 			return "N/A";
 		}
 
-		final int currentPrayer = client.getBoostedSkillLevel(Skill.PRAYER);
-
 		// Calculate how many seconds each prayer points last so the prayer bonus can be applied
-		final double secondsPerPoint = (60.0 / drainRate) * (1.0 + (prayerBonus / 30.0));
+		// https://oldschool.runescape.wiki/w/Prayer#Prayer_drain_mechanics
+		final int drainResistance = 2 * prayerBonus + 60;
+		final double secondsPerPoint = 0.6 * ((double) drainResistance / drainEffect);
 
 		// Calculate the number of seconds left
+		final int currentPrayer = client.getBoostedSkillLevel(Skill.PRAYER);
 		final double secondsLeft = (currentPrayer * secondsPerPoint);
 
 		LocalTime timeLeft = LocalTime.ofSecondOfDay((long) secondsLeft);
