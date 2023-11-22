@@ -24,9 +24,13 @@
  */
 package net.runelite.client.plugins.timetracking;
 
+import java.awt.Color;
+import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
+import net.runelite.client.config.Range;
 import net.runelite.client.config.Units;
 
 @ConfigGroup("timetracking")
@@ -44,6 +48,13 @@ public interface TimeTrackingConfig extends Config
 	String BIRDHOUSE_NOTIFY = "birdHouseNotification";
 	String COMPOST = "compost";
 	String PROTECTED = "protected";
+
+	@ConfigSection(
+		name = "Compost Indicators",
+		description = "Settings for composted patch highlights",
+		position = 8
+	)
+	String compostSection = "Compost Indicators";
 
 	@ConfigItem(
 		keyName = "timeFormatMode",
@@ -122,6 +133,84 @@ public interface TimeTrackingConfig extends Config
 	default boolean preferSoonest()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "compostHighlights",
+		name = "Show compost highlights on treated patches",
+		description = "Highlights farming patches/crops colored based on compost type they were treated with.",
+		position = 9,
+		section = compostSection
+	)
+	default boolean compostHighlights()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "borderWidth",
+		name = "Border Width",
+		description = "Width of the outlined border",
+		position = 10,
+		section = compostSection
+	)
+	default int borderWidth()
+	{
+		return 4;
+	}
+
+	@ConfigItem(
+		keyName = "outlineFeather",
+		name = "Outline feather",
+		description = "Specify between 0-4 how much of the model outline should be faded",
+		position = 11,
+		section = compostSection
+	)
+	@Range(
+		max = 4
+	)
+	default int outlineFeather()
+	{
+		return 4;
+	}
+
+	@Alpha
+	@ConfigItem(
+		keyName = "compostHighlightColor",
+		name = "Compost Color",
+		description = "Overlay color for patches treated with regular Compost",
+		position = 12,
+		section = compostSection
+	)
+	default Color compostHighlightColor()
+	{
+		return new Color(85, 119, 39, 60);
+	}
+
+	@Alpha
+	@ConfigItem(
+		keyName = "supercompostHighlightColor",
+		name = "Supercompost Color",
+		description = "Overlay color for patches treated with Supercompost",
+		position = 13,
+		section = compostSection
+	)
+	default Color supercompostHighlightColor()
+	{
+		return new Color(253, 133, 81, 60);
+	}
+
+	@Alpha
+	@ConfigItem(
+		keyName = "ultracompostHighlightColor",
+		name = "Ultracompost Color",
+		description = "Overlay color for patches treated with Ultracompost",
+		position = 14,
+		section = compostSection
+	)
+	default Color ultracompostHighlightColor()
+	{
+		return new Color(157, 65, 210, 60);
 	}
 
 	@ConfigItem(
