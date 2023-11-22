@@ -30,13 +30,16 @@ import com.google.common.collect.Multimap;
 import com.google.inject.Inject;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -46,6 +49,7 @@ import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.CompoundBorder;
+import javax.swing.border.MatteBorder;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -64,6 +68,8 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
+import net.runelite.client.ui.components.IconTextField;
+import net.runelite.client.util.SwingUtil;
 
 @Slf4j
 class VarInspector extends DevToolsFrame
@@ -138,8 +144,10 @@ class VarInspector extends DevToolsFrame
 	private final EventBus eventBus;
 
 	private final JPanel tracker = new JPanel();
+	private Pattern searchPattern = Pattern.compile("");
 
-	private int lastTick = 0;
+	private int lastTick = -1;
+	private JLabel lastTickHeader;
 
 	private int[] oldVarps = null;
 	private int[] oldVarps2 = null;
@@ -187,27 +195,91 @@ class VarInspector extends DevToolsFrame
 				lastMaximum = actualMax();
 			}
 		});
-
 		add(trackerScroller, BorderLayout.CENTER);
 
-		final JPanel trackerOpts = new JPanel();
-		trackerOpts.setLayout(new FlowLayout());
+		add(createTrackerOptions(), BorderLayout.SOUTH);
+
+		pack();
+	}
+
+	private JPanel createTrackerOptions()
+	{
+		JPanel optionsPanel = new JPanel(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		c.weightx = 1;
+		c.weighty = 1;
+
+		c.gridy = 0;
 		for (VarType cb : VarType.values())
 		{
-			trackerOpts.add(cb.getCheckBox());
+			c.gridx += 1;
+			optionsPanel.add(cb.getCheckBox(), c);
 		}
 
-		final JButton clearBtn = new JButton("Clear");
+		c.gridy = 1;
+		c.gridx = 0;
+		c.gridwidth = 3;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		optionsPanel.add(createSearchField(), c);
+
+		JButton clearBtn = new JButton("Clear");
 		clearBtn.addActionListener(e ->
 		{
 			tracker.removeAll();
 			tracker.revalidate();
 		});
-		trackerOpts.add(clearBtn);
+		c.gridx = 3;
+		c.gridwidth = 1;
+		c.fill = GridBagConstraints.NONE;
+		optionsPanel.add(clearBtn, c);
 
-		add(trackerOpts, BorderLayout.SOUTH);
+		return optionsPanel;
+	}
 
-		pack();
+	private IconTextField createSearchField()
+	{
+		IconTextField searchField = new IconTextField();
+		searchField.setIcon(IconTextField.Icon.SEARCH);
+		searchField.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		searchField.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
+		searchField.setBorder(new MatteBorder(1, 1, 1, 1, ColorScheme.MEDIUM_GRAY_COLOR));
+
+		searchField.getDocument().addDocumentListener(
+				SwingUtil.documentListener(() -> updateTrackWithSearchFilter(searchField.getText()))
+		);
+		return searchField;
+	}
+
+	private void updateTrackWithSearchFilter(String searchText)
+	{
+		try
+		{
+			searchPattern = Pattern.compile(searchText);
+		}
+		catch (PatternSyntaxException e)
+		{
+			log.warn("`" + searchText + "` is an invalid regex, still using old pattern: `" + searchPattern + "`.", e);
+		}
+		SwingUtilities.invokeLater(() ->
+		{
+			boolean tickContainsVisibleVarChange = false;
+			for (int i = tracker.getComponentCount() - 1; i >= 0; i--)
+			{
+				JLabel label = (JLabel) tracker.getComponent(i);
+				String text = label.getText();
+				if (text.startsWith("Tick"))
+				{
+					label.setVisible(tickContainsVisibleVarChange);
+					tickContainsVisibleVarChange = false;
+				}
+				else
+				{
+					boolean varChangeIsVisible = searchPattern.matcher(text).find();
+					tickContainsVisibleVarChange |= varChangeIsVisible;
+					label.setVisible(varChangeIsVisible);
+				}
+			}
+		});
 	}
 
 	private void addVarLog(VarType type, String name, int old, int neew)
@@ -225,18 +297,27 @@ class VarInspector extends DevToolsFrame
 		int tick = client.getTickCount();
 		SwingUtilities.invokeLater(() ->
 		{
+			String varChangeText = String.format("%s %s changed: %s -> %s", type.getName(), name, old, neew);
+			boolean matchesSearchTerm = searchPattern.matcher(varChangeText).find();
 			if (tick != lastTick)
 			{
 				lastTick = tick;
-				JLabel header = new JLabel("Tick " + tick);
-				header.setFont(FontManager.getRunescapeSmallFont());
-				header.setBorder(new CompoundBorder(
-					BorderFactory.createMatteBorder(0, 0, 1, 0, ColorScheme.LIGHT_GRAY_COLOR),
-					BorderFactory.createEmptyBorder(3, 6, 0, 0)
+				lastTickHeader = new JLabel("Tick " + tick);
+				lastTickHeader.setFont(FontManager.getRunescapeSmallFont());
+				lastTickHeader.setBorder(new CompoundBorder(
+						BorderFactory.createMatteBorder(0, 0, 1, 0, ColorScheme.LIGHT_GRAY_COLOR),
+						BorderFactory.createEmptyBorder(3, 6, 0, 0)
 				));
-				tracker.add(header);
+				tracker.add(lastTickHeader);
+				lastTickHeader.setVisible(matchesSearchTerm);
 			}
-			tracker.add(new JLabel(String.format("%s %s changed: %s -> %s", type.getName(), name, old, neew)));
+			else if (matchesSearchTerm)
+			{
+				lastTickHeader.setVisible(true);
+			}
+			JLabel varChangeLbl = new JLabel(varChangeText);
+			varChangeLbl.setVisible(matchesSearchTerm);
+			tracker.add(varChangeLbl);
 
 			// Cull very old stuff
 			while (tracker.getComponentCount() > MAX_LOG_ENTRIES)
