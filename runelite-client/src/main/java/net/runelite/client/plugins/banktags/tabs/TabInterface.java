@@ -67,6 +67,8 @@ import net.runelite.api.SpriteID;
 import net.runelite.api.VarClientInt;
 import net.runelite.api.VarClientStr;
 import net.runelite.api.Varbits;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ScriptCallbackEvent;
@@ -95,6 +97,7 @@ import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
 
 @Singleton
+@Slf4j
 public class TabInterface
 {
 	public static final IntPredicate FILTERED_CHARS = c -> "</>:".indexOf(c) == -1;
@@ -151,6 +154,10 @@ public class TabInterface
 	private boolean tagTabActive;
 	private int maxTabs;
 	private int currentTabIndex;
+
+	@Setter
+	private boolean viewAllTags;
+
 	private Instant startScroll = Instant.now();
 
 	@Getter
@@ -506,10 +513,18 @@ public class TabInterface
 
 	public void update()
 	{
+		if (viewAllTags && !isHidden())
+		{
+			client.setVarbit(Varbits.CURRENT_BANK_TAB, 0);
+			openTag(TAB_MENU_KEY);
+			viewAllTags = false;
+		}
+
 		if (isHidden())
 		{
 			parent = null;
-
+			viewAllTags = false;
+			
 			saveTab();
 			return;
 		}
