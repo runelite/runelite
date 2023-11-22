@@ -1462,6 +1462,7 @@ public class LootTrackerPlugin extends Plugin
 	{
 		return itemStacks.stream()
 			.map(itemStack -> buildLootTrackerItem(itemStack.getId(), itemStack.getQuantity()))
+			.filter(lootTrackerItem -> lootTrackerItem.getTotalGePrice() > config.ignoreLootBasedOnACertainValue())
 			.toArray(LootTrackerItem[]::new);
 	}
 
