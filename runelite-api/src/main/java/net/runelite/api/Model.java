@@ -83,4 +83,6 @@ public interface Model extends Mesh, Renderable
 	int[] getTexIndices3();
 
 	Model getUnskewedModel();
+
+	void drawFrustum(int zero, int xRotate, int yRotate, int zRotate, int xCamera, int yCamera, int zCamera);
 }
