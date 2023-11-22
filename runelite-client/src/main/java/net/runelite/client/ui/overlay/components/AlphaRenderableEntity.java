@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Tyler <https://github.com/tylerthardy>
+ * Copyright (c) 2021, Cyborger1
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,31 +22,16 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui.overlay.tooltip;
+package net.runelite.client.ui.overlay.components;
 
-import lombok.Data;
-import net.runelite.client.ui.overlay.components.LayoutableRenderableEntity;
+import net.runelite.client.ui.overlay.RenderableEntity;
 
-@Data
-public class Tooltip
+public interface AlphaRenderableEntity extends RenderableEntity
 {
-	private String text;
-	private double alphaModifier = 1.0;
-	private LayoutableRenderableEntity component;
-
-	public Tooltip(final String text)
-	{
-		this.text = text;
-	}
-
-	public Tooltip(final String text, double alphaModifier)
-	{
-		this(text);
-		this.alphaModifier = alphaModifier;
-	}
-
-	public Tooltip(final LayoutableRenderableEntity component)
-	{
-		this.component = component;
-	}
+	/**
+	 * Multiplier for the alpha of everything in the component. A value of 1.0 has no effect.
+	 *
+	 * @param multiplier The alpha multiplier.
+	 */
+	void setAlphaMultiplier(double multiplier);
 }
