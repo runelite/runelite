@@ -26,19 +26,25 @@ package net.runelite.client.plugins.grandexchange;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.util.Collection;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import net.runelite.api.Client;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.widgets.Widget;
+import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.ItemMapping;
 import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.MouseAdapter;
 import static net.runelite.client.plugins.grandexchange.GrandExchangePlugin.SEARCH_GRAND_EXCHANGE;
-import net.runelite.client.util.Text;
 
 public class GrandExchangeInputListener extends MouseAdapter implements KeyListener
 {
 	private final Client client;
 	private final GrandExchangePlugin plugin;
+
+	@Inject
+	private ItemManager itemManager;
 
 	@Inject
 	private GrandExchangeInputListener(Client client, GrandExchangePlugin plugin)
@@ -58,7 +64,23 @@ public class GrandExchangeInputListener extends MouseAdapter implements KeyListe
 			{
 				if (menuEntry.getOption().equals(SEARCH_GRAND_EXCHANGE))
 				{
-					search(Text.removeTags(menuEntry.getTarget()));
+					final int widgetIndex = menuEntry.getParam0();
+					final int widgetId = menuEntry.getParam1();
+					final Widget widget = getWidget(widgetId, widgetIndex);
+
+					int itemId = itemManager.canonicalize(widget.getItemId());
+
+					// Try to replace an untradeable item id with a tradeable component
+					final Collection<ItemMapping> mappedItems = ItemMapping.map(itemId);
+					if (mappedItems != null)
+					{
+						final ItemMapping firstMappedItem = mappedItems.iterator().next();
+						itemId = firstMappedItem.getTradeableItem();
+					}
+
+					String itemName = itemManager.getItemComposition(itemId).getMembersName();
+					search(itemName);
+
 					e.consume();
 					break;
 				}
@@ -66,6 +88,17 @@ public class GrandExchangeInputListener extends MouseAdapter implements KeyListe
 		}
 
 		return super.mouseClicked(e);
+	}
+
+	// Copied from WikiPlugin
+	private Widget getWidget(int wid, int index)
+	{
+		Widget w = client.getWidget(wid);
+		if (index != -1)
+		{
+			w = w.getChild(index);
+		}
+		return w;
 	}
 
 	private void search(final String itemName)
