@@ -125,6 +125,17 @@ public interface TimeTrackingConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "farmingExamineTime",
+		name = "Show farming time on examine",
+		description = "When a farming patch is examined, the predicted finish time will be displayed as an additional examine message.",
+		position = 8
+	)
+	default boolean farmingExamineTime()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "activeTab",
 		name = "Active Tab",
 		description = "The currently selected tab",

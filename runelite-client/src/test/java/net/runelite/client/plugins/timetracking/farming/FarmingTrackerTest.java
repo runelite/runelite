@@ -35,6 +35,7 @@ import net.runelite.api.Player;
 import net.runelite.api.Varbits;
 import net.runelite.api.WorldType;
 import net.runelite.client.Notifier;
+import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneScapeProfile;
 import net.runelite.client.config.RuneScapeProfileType;
@@ -78,6 +79,10 @@ public class FarmingTrackerTest
 	@Mock
 	@Bind
 	private Notifier notifier;
+
+	@Mock
+	@Bind
+	private ChatMessageManager chatMessageManager;
 
 	@Before
 	public void before()

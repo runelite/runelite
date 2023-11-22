@@ -29,9 +29,11 @@ import com.google.inject.Inject;
 import com.google.inject.Provides;
 import java.awt.image.BufferedImage;
 import java.time.Instant;
+import java.util.Locale;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -73,6 +75,21 @@ import net.runelite.client.util.ImageUtil;
 public class TimeTrackingPlugin extends Plugin
 {
 	private static final String CONTRACT_COMPLETED = "You've completed a Farming Guild Contract. You should return to Guildmaster Jane.";
+
+	private static final Pattern FARMING_PATTERN = Pattern.compile(
+			"(.*)" +
+					"(growing in this |sown in this |planted in this |planted )" +
+					"(Farming |farming |tree |fruit tree |anima )*" +
+					"(patch|allotment|here)" +
+					"(\\.)*" +
+					"|(It's )(getting|small,).*(darn big|bigger)(\\.)*" +
+					"|(This is about as big as it gets)(\\.)*" +
+					"|(A fully grown )(Attas|Iasor|Kronos)( plant)(\\.)*" +
+					"|(This).*(plant looks like it is almost out of energy)(\\.)*" +
+					"|(A Spirit Tree\\.)" +
+					"|(A shrivelled plant\\.)" +
+					"|(Tomatoes|Vegetation)( is| are)( rotting in here)(( to make )(super)?(compost))?(\\.)"
+	);
 
 	@Inject
 	private ClientToolbar clientToolbar;
@@ -263,7 +280,24 @@ public class TimeTrackingPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getType() != ChatMessageType.GAMEMESSAGE || !event.getMessage().equals(CONTRACT_COMPLETED))
+		if (configManager.getConfig(TimeTrackingConfig.class).farmingExamineTime()
+				&& event.getType() == ChatMessageType.OBJECT_EXAMINE)
+		{
+			String message = event.getMessage();
+			if (FARMING_PATTERN.matcher(message).matches())
+			{
+				WorldPoint loc = lastTickLocation;
+
+				if (loc == null || loc.getRegionID() != lastTickLocation.getRegionID())
+				{
+					return;
+				}
+
+				farmingTracker.setFarmingExamineText(loc, message.toLowerCase(Locale.ENGLISH));
+			}
+			return;
+		}
+		else if (event.getType() != ChatMessageType.GAMEMESSAGE || !event.getMessage().equals(CONTRACT_COMPLETED))
 		{
 			return;
 		}

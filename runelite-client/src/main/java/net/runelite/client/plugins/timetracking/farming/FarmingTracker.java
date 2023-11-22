@@ -27,6 +27,8 @@ package net.runelite.client.plugins.timetracking.farming;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Singleton;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.EnumMap;
 import java.util.HashMap;
@@ -34,11 +36,14 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.Varbits;
@@ -46,12 +51,17 @@ import net.runelite.api.WidgetNode;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.WidgetModalMode;
 import net.runelite.client.Notifier;
+import net.runelite.client.chat.ChatColorType;
+import net.runelite.client.chat.ChatMessageBuilder;
+import net.runelite.client.chat.ChatMessageManager;
+import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneScapeProfile;
 import net.runelite.client.config.RuneScapeProfileType;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.timetracking.SummaryState;
 import net.runelite.client.plugins.timetracking.Tab;
+import net.runelite.client.plugins.timetracking.TabContentPanel;
 import net.runelite.client.plugins.timetracking.TimeTrackingConfig;
 import net.runelite.client.util.Text;
 
@@ -71,6 +81,9 @@ public class FarmingTracker
 	private final Notifier notifier;
 	private final CompostTracker compostTracker;
 	private final PaymentTracker paymentTracker;
+
+	@Inject
+	private ChatMessageManager chatMessageManager;
 
 	private final Map<Tab, SummaryState> summaries = new EnumMap<>(Tab.class);
 
@@ -612,5 +625,279 @@ public class FarmingTracker
 			.append('.');
 
 		notifier.notify(stringBuilder.toString());
+	}
+
+	/**
+	 * Matches a farming patch examine message to the corresponding type of patch.
+	 *
+	 * @param message The examine text corresponding to a farming patch.
+	 * @return A PatchImplementation value matching the given examine text.
+	 */
+	private PatchImplementation getPatchImplementationFromString(String message)
+	{
+		PatchImplementation type;
+		if (message.contains("herb"))
+		{
+			type = PatchImplementation.HERB;
+		}
+		else if (message.contains("allotment"))
+		{
+			type = PatchImplementation.ALLOTMENT;
+		}
+		else if (message.contains("shrivelled"))
+		{
+			type = PatchImplementation.HESPORI;
+		}
+		else if (message.contains("bush"))
+		{
+			type = PatchImplementation.BUSH;
+		}
+		else if (message.contains("fruit tree"))
+		{
+			type = PatchImplementation.FRUIT_TREE;
+		}
+		else if (message.contains("redwood"))
+		{
+			type = PatchImplementation.REDWOOD;
+		}
+		else if (message.contains("cactus"))
+		{
+			type = PatchImplementation.CACTUS;
+		}
+		else if (message.contains("seaweed"))
+		{
+			type = PatchImplementation.SEAWEED;
+		}
+		else if (message.contains("celastrus"))
+		{
+			type = PatchImplementation.CELASTRUS;
+		}
+		else if (message.contains("teak") || message.contains("mahogany"))
+		{
+			type = PatchImplementation.HARDWOOD_TREE;
+		}
+		else if (message.contains("big"))
+		{
+			type = PatchImplementation.GRAPES;
+		}
+		else if (message.contains("nightshade"))
+		{
+			type = PatchImplementation.BELLADONNA;
+		}
+		else if (message.contains("bittercap"))
+		{
+			type = PatchImplementation.MUSHROOM;
+		}
+		else if (message.contains("calquat"))
+		{
+			type = PatchImplementation.CALQUAT;
+		}
+		else if (message.contains("crystal"))
+		{
+			type = PatchImplementation.CRYSTAL_TREE;
+		}
+		else if (message.contains("spirit"))
+		{
+			type = PatchImplementation.SPIRIT_TREE;
+		}
+		else if (message.contains("tree"))
+		{
+			type = PatchImplementation.TREE;
+		}
+		else if (message.contains("rotting"))
+		{
+			type = PatchImplementation.COMPOST;
+		}
+		else if (message.contains("attas") || message.contains("iasor") || message.contains("kronos"))
+		{
+			type = PatchImplementation.ANIMA;
+		}
+		else if (message.contains("marigold") || message.contains("rosemary") || message.contains("nasturtium")
+				|| message.contains("woad") || message.contains("limpwurt") || message.contains("lily"))
+		{
+			type = PatchImplementation.FLOWER;
+		}
+		else if (message.contains("barley") || message.contains("hammerstone") || message.contains("asgarnian")
+				|| message.contains("jute") || message.contains("yanillian") || message.contains("krandorian")
+				|| message.contains("wildblood"))
+		{
+			type = PatchImplementation.HOPS;
+		}
+		else
+		{
+			throw new IllegalArgumentException("Message: " + message + " does not correspond to any farming crop.");
+		}
+
+		return type;
+	}
+
+	/**
+	 * Gets a map of the predicted times to the name of the produce or patch associated with the time.
+	 *
+	 * @param currentPatches List of the farming patches that match the examine text.
+	 * @return Map of predicted times to produce/patch names.
+	 */
+	private SortedMap<Long, String> getPatchPredictionTimes(List<FarmingPatch> currentPatches)
+	{
+		SortedMap<Long, String> estimates = new TreeMap<>();
+		long unixNow = Instant.now().getEpochSecond();
+
+		for (FarmingPatch patch : currentPatches)
+		{
+			PatchPrediction prediction = predictPatch(patch);
+			assert prediction != null;
+			if (prediction.getCropState().equals(CropState.GROWING) && !prediction.getProduce().equals(Produce.WEEDS))
+			{
+				long predictedTime = prediction.getDoneEstimate() - unixNow;
+				if (predictedTime > 0)
+				{
+					String produceName = prediction.getProduce().getName();
+					// Replace the produce name with the patch name if different produce have the same completion time.
+					if (estimates.containsKey(predictedTime) && !estimates.get(predictedTime).equals(produceName))
+					{
+						estimates.put(predictedTime, getPatchType(patch));
+					}
+					else
+					{
+						estimates.put(predictedTime, produceName);
+					}
+				}
+			}
+		}
+
+		return estimates;
+	}
+
+	/**
+	 * Gets a readable name for the type of the given patch.
+	 *
+	 * @param patch The current farming patch being examined.
+	 * @return The name of the type of patch.
+	 */
+	private String getPatchType(FarmingPatch patch)
+	{
+		String patchType = patch.getImplementation().getName();
+		if (patchType.length() == 0)
+		{
+			patchType = patch.getImplementation().toString().toLowerCase(Locale.ENGLISH);
+			patchType = patchType.replace('_', ' ');
+		}
+
+		return patchType.substring(0, 1).toUpperCase(Locale.ENGLISH) + patchType.substring(1);
+	}
+
+	/**
+	 * Gets the message to be written to the chat box.
+	 *
+	 * @param earliestTime The earliest patch completion time.
+	 * @param latestTime The latest patch completion time.
+	 * @param patchName The name to use to indicate which patch or patches were examined.
+	 * @return The message to write to the chat box.
+	 */
+	private ChatMessageBuilder getPatchPredictionMessage(String earliestTime, String latestTime, String patchName)
+	{
+		ChatMessageBuilder message = new ChatMessageBuilder()
+				.append(ChatColorType.HIGHLIGHT)
+				.append(patchName)
+				.append(ChatColorType.NORMAL);
+
+		if (earliestTime.equals(latestTime))
+		{
+			message.append(": done ")
+					.append(ChatColorType.NORMAL)
+					.append(earliestTime);
+		}
+		else
+		{
+			message.append(": earliest time done ")
+					.append(ChatColorType.NORMAL)
+					.append(earliestTime)
+					.append(", latest time done ")
+					.append(latestTime);
+		}
+
+		return message;
+	}
+
+	/**
+	 * Writes the predicted completion times for the patches matching the examine text to the chat box.
+	 *
+	 * @param currentPatches The list of patches that correspond with the current examine text.
+	 */
+	private void writePredictedTime(List<FarmingPatch> currentPatches)
+	{
+		if (currentPatches.size() == 0)
+		{
+			return;
+		}
+
+		SortedMap<Long, String> estimates = getPatchPredictionTimes(currentPatches);
+
+		if (estimates.size() == 0)
+		{
+			return;
+		}
+
+		String earliestTime = TabContentPanel.getFormattedEstimate(estimates.firstKey(), config.timeFormatMode());
+		String latestTime = TabContentPanel.getFormattedEstimate(estimates.lastKey(), config.timeFormatMode());
+
+		String earliestProduce = estimates.get(estimates.firstKey());
+		String latestProduce = estimates.get(estimates.lastKey());
+		String patchName = earliestProduce.equals(latestProduce)
+				? earliestProduce : getPatchType(currentPatches.get(0));
+
+		ChatMessageBuilder message = getPatchPredictionMessage(earliestTime, latestTime, patchName);
+		chatMessageManager.queue(QueuedMessage.builder()
+				.type(ChatMessageType.OBJECT_EXAMINE)
+				.runeLiteFormattedMessage(message.build())
+				.build());
+	}
+
+	/**
+	 * Gets the predicted finish times of each of the farming patches that correspond to the
+	 * given object examine text, then writes these times out to the chat box.
+	 *
+	 * @param loc		The current location of the player.
+	 * @param message	The text from the object examine.
+	 */
+	public void setFarmingExamineText(WorldPoint loc, String message)
+	{
+		Collection<FarmingRegion> regions = farmingWorld.getRegionsForLocation(loc);
+
+		for (FarmingRegion region : regions)
+		{
+			List<FarmingPatch> regionPatches = Arrays.asList(region.getPatches());
+
+			if (regionPatches.size() == 1)
+			{
+				writePredictedTime(regionPatches);
+			}
+			else
+			{
+				PatchImplementation type = getPatchImplementationFromString(message);
+				List<FarmingPatch> currentPatches = new ArrayList<>();
+
+				// Get Hespori time from outside the cave.
+				if (type.equals(PatchImplementation.HESPORI))
+				{
+					regionPatches = new ArrayList<>(farmingWorld.getTabs().get(Tab.SPECIAL));
+				}
+				// Used to determine when to use the GIANT_COMPOST type.
+				else if (type.equals(PatchImplementation.COMPOST) && region.getName().equals("Farming Guild"))
+				{
+					type = PatchImplementation.GIANT_COMPOST;
+				}
+
+				for (FarmingPatch patch : regionPatches)
+				{
+					if (patch.getImplementation().equals(type))
+					{
+						currentPatches.add(patch);
+					}
+				}
+
+				writePredictedTime(currentPatches);
+			}
+		}
 	}
 }
