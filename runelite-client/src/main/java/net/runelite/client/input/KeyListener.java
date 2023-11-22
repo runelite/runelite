@@ -26,8 +26,21 @@ package net.runelite.client.input;
 
 public interface KeyListener extends java.awt.event.KeyListener
 {
+	enum Priority
+	{
+		HIGH,
+		MEDIUM,
+		NONE,
+		LOW
+	}
+
 	default boolean isEnabledOnLoginScreen()
 	{
 		return false;
+	}
+
+	default Priority getPriority()
+	{
+		return Priority.NONE;
 	}
 }

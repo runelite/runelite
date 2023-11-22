@@ -30,6 +30,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.MultimapBuilder;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -41,12 +45,16 @@ public class KeyManager
 	private final Client client;
 
 	@Inject
-	private KeyManager(@Nullable final Client client)
+	KeyManager(@Nullable final Client client)
 	{
 		this.client = client;
 	}
 
 	private final List<KeyListener> keyListeners = new CopyOnWriteArrayList<>();
+
+	// Map used to order KeyListeners by KeyListener::Priority natural enum order followed by registration order.
+	@VisibleForTesting
+	Multimap<KeyListener.Priority, KeyListener> keyListenerMap = MultimapBuilder.treeKeys().arrayListValues().build();
 
 	public void registerKeyListener(KeyListener keyListener)
 	{
@@ -54,6 +62,7 @@ public class KeyManager
 		{
 			log.debug("Registering key listener: {}", keyListener);
 			keyListeners.add(keyListener);
+			rebuildPriorityMap();
 		}
 	}
 
@@ -63,6 +72,7 @@ public class KeyManager
 		if (unregistered)
 		{
 			log.debug("Unregistered key listener: {}", keyListener);
+			rebuildPriorityMap();
 		}
 	}
 
@@ -73,7 +83,7 @@ public class KeyManager
 			return;
 		}
 
-		for (KeyListener keyListener : keyListeners)
+		for (KeyListener keyListener : keyListenerMap.values())
 		{
 			if (!shouldProcess(keyListener))
 			{
@@ -98,7 +108,7 @@ public class KeyManager
 			return;
 		}
 
-		for (KeyListener keyListener : keyListeners)
+		for (KeyListener keyListener : keyListenerMap.values())
 		{
 			if (!shouldProcess(keyListener))
 			{
@@ -123,7 +133,7 @@ public class KeyManager
 			return;
 		}
 
-		for (KeyListener keyListener : keyListeners)
+		for (KeyListener keyListener : keyListenerMap.values())
 		{
 			if (!shouldProcess(keyListener))
 			{
@@ -156,5 +166,17 @@ public class KeyManager
 		}
 
 		return true;
+	}
+
+	void rebuildPriorityMap()
+	{
+		Multimap<KeyListener.Priority, KeyListener> keyListenerMap = MultimapBuilder.treeKeys().arrayListValues().build();
+
+		for (KeyListener keyListener : keyListeners)
+		{
+			keyListenerMap.put(keyListener.getPriority(), keyListener);
+		}
+
+		this.keyListenerMap = keyListenerMap;
 	}
 }

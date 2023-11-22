@@ -27,6 +27,10 @@ package net.runelite.client.plugins.wiki;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Keybind;
+
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 
 @ConfigGroup(WikiPlugin.CONFIG_GROUP_KEY)
 public interface WikiConfig extends Config
@@ -40,5 +44,27 @@ public interface WikiConfig extends Config
 	default boolean leftClickSearch()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+			keyName = "searchShortcut",
+			name = "Enable Search Shortcut",
+			description = "Enables keyboard shortcut for initiating a wiki search",
+			position = 2
+	)
+	default boolean searchShortcut()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "searchKeybinding",
+			name = "Search Shortcut",
+			description = "Keyboard shortcut for initiating a wiki search",
+			position = 3
+	)
+	default Keybind searchKeybinding()
+	{
+		return new Keybind(KeyEvent.VK_F, InputEvent.CTRL_DOWN_MASK);
 	}
 }

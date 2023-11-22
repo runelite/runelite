@@ -25,6 +25,8 @@
 package net.runelite.client.plugins.wiki;
 
 import com.google.inject.Provides;
+
+import java.awt.event.KeyEvent;
 import java.util.Arrays;
 import java.util.stream.Stream;
 import javax.inject.Inject;
@@ -58,6 +60,8 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.input.KeyListener;
+import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.JagexColors;
@@ -92,6 +96,9 @@ public class WikiPlugin extends Plugin
 	private ItemManager itemManager;
 
 	@Inject
+	private KeyManager keyManager;
+
+	@Inject
 	private Provider<WikiSearchChatboxTextInput> wikiSearchChatboxTextInputProvider;
 
 	private Widget icon;
@@ -109,14 +116,45 @@ public class WikiPlugin extends Plugin
 	@Override
 	public void startUp()
 	{
+
+		keyManager.registerKeyListener(searchHotkeyListener);
 		clientThread.invokeLater(this::addWidgets);
 	}
 
 	@Override
 	public void shutDown()
 	{
+		keyManager.unregisterKeyListener(searchHotkeyListener);
 		clientThread.invokeLater(this::removeWidgets);
 	}
+
+	private final KeyListener searchHotkeyListener = new KeyListener()
+	{
+		@Override
+		public void keyTyped(KeyEvent e)
+		{
+		}
+
+		@Override
+		public void keyPressed(KeyEvent e)
+		{
+			if (!config.searchShortcut())
+				return;
+
+			if (config.searchKeybinding().matches(e))
+			{
+				log.debug("Wiki Search hotkey pressed");
+
+				openSearchInput();
+				e.consume();
+			}
+		}
+
+		@Override
+		public void keyReleased(KeyEvent e)
+		{
+		}
+	};
 
 	private void removeWidgets()
 	{
