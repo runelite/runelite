@@ -199,4 +199,27 @@ public interface InteractHighlightConfig extends Config
 	{
 		return 4;
 	}
+
+	@ConfigItem(
+		keyName = "clickFlash",
+		name = "Click flash",
+		description = "Flash the outline when clicked",
+		position = 9
+	)
+	default boolean clickFlash()
+	{
+		return true;
+	}
+
+	@Alpha
+	@ConfigItem(
+		keyName = "clickColor",
+		name = "Click color",
+		description = "The color of the highlight on click",
+		position = 10
+	)
+	default Color clickColor()
+	{
+		return new Color(0x90ffffff, true);
+	}
 }
