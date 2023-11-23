@@ -41,6 +41,7 @@ import lombok.RequiredArgsConstructor;
 import net.runelite.client.RuntimeConfig;
 import net.runelite.client.RuntimeConfigLoader;
 import net.runelite.client.ui.FatalErrorDialog;
+import net.runelite.client.util.LinkBrowser;
 
 @RequiredArgsConstructor
 class RSAppletStub implements AppletStub
@@ -129,11 +130,24 @@ class RSAppletStub implements AppletStub
 						.replace("/", "")
 						.replace(".ws", "");
 
-					SwingUtilities.invokeLater(() ->
-						new FatalErrorDialog("OldSchool RuneScape has crashed with the message: " + code + "")
-							.setTitle("RuneLite", "OldSchool RuneScape has crashed")
-							.addHelpButtons()
-							.open());
+					if (code.equals("error_game_js5connect"))
+					{
+						SwingUtilities.invokeLater(() ->
+							new FatalErrorDialog("RuneLite is unable to connect to the RuneScape update server. " +
+								"RuneScape might be offline for an update, check the game status page. If the game " +
+								"is online, then either a firewall is blocking RuneLite, or you don't have internet access.")
+								.setTitle("RuneLite", "Unable to connect to update server")
+								.addButton("Game Status", () -> LinkBrowser.browse("https://secure.runescape.com/m=news/game-status-information-centre?oldschool=1"))
+								.open());
+					}
+					else
+					{
+						SwingUtilities.invokeLater(() ->
+							new FatalErrorDialog("OldSchool RuneScape has crashed with the message: " + code + "")
+								.setTitle("RuneLite", "OldSchool RuneScape has crashed")
+								.addHelpButtons()
+								.open());
+					}
 				}
 			}
 
