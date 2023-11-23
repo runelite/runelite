@@ -886,4 +886,12 @@ public final class Varbits
 	 * 1 = active
 	 */
 	public static final int SPELLBOOK_SWAP = 3617;
+
+	/**
+	 * The woodcutting group bonus.
+	 * If the bonus stops being applied, the varbit does not get reset to 0,
+	 * but {@link VarPlayer#BUFF_BAR_WC_GROUP_BONUS} will signal that the buff bar infobox should be removed.
+	 * The varbit does get changed to 0 when chopping trees in the woodcutting guild.
+	 */
+	public static final int WOODCUTTING_GROUP_BONUS = 15348;
 }
