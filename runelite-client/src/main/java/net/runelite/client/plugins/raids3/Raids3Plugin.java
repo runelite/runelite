@@ -321,28 +321,15 @@ public class Raids3Plugin extends Plugin {
       if (this.currentRoom == TOA_Rooms.AKKHA_ROOM) {
         this.akkhaRoom.onBeforeRender();
       } else {
-        boolean isAutoPrayerOn = false;
         switch(this.currentRoom) {
           case ZEBAK_ROOM:
-            if (this.config.ZebakAutoPrayer()) {
-              isAutoPrayerOn = true;
-            }
             break;
           case WARDEN_ROOM:
-            if (this.config.WardenAutoPray()) {
-              isAutoPrayerOn = true;
-            }
             break;
           default:
             return;
         }
-
         this.currentProtectionPrayer = this.prayerQue.prayerPriority;
-        if (isAutoPrayerOn && this.prayerQue.isReadyToSwitch && this.prayerTimer.isDone()) {
-          this.prayerTimer.Reset();
-          this.HandlePrayers();
-        }
-
         this.prayerQue.HandleQue();
       }
     }
@@ -624,28 +611,6 @@ public class Raids3Plugin extends Plugin {
     return this.client.getBoostedSkillLevel(Skill.PRAYER) == 0;
   }
 
-  public void TurnOnPrayer(Prayer prayer) {
-    if (!this.client.isPrayerActive(prayer)) {
-      if (!this.NoPrayerPoints()) {
-        if (!OneUpUtilityPlugin.isMouseLocked) {
-          if (!this.utility.IsTabOpen(TabType.Prayer)) {
-            if ((double)System.currentTimeMillis() - this.tabStartTime >= this.tabWaitTime) {
-              this.keyboardUtils.pressKey(((OneUpUtilityConfig)this.configManager.getConfig(OneUpUtilityConfig.class)).PrayerTab().getKeyCode());
-              this.tabWaitTime = (double)this.getRandomIntBetweenRange(50, 150);
-              this.tabStartTime = (double)System.currentTimeMillis();
-            }
-          } else {
-            Widget widget = this.utility.GetPrayerWidget(prayer.name());
-            if (widget != null) {
-              Point point = this.getRandomPointWithinRec(widget.getCanvasLocation(), widget.getWidth(), widget.getHeight());
-              this.mouse.click(point, this.client.getMouseCanvasPosition());
-            }
-          }
-        }
-      }
-    }
-  }
-
   public Point getRandomPointWithinRec(Point point, int width, int height) {
     return new Point(this.getRandomIntBetweenRange(point.getX(), point.getX() + width), this.getRandomIntBetweenRange(point.getY(), point.getY() + height));
   }
@@ -656,30 +621,5 @@ public class Raids3Plugin extends Plugin {
 
   public void DebugLog(String message) {
     System.out.println(message);
-  }
-
-  public void HandlePrayers() {
-    boolean isMagicActive = this.client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC);
-    boolean isRangeActive = this.client.isPrayerActive(Prayer.PROTECT_FROM_MISSILES);
-    boolean isMeleeActive = this.client.isPrayerActive(Prayer.PROTECT_FROM_MELEE);
-    if (this.currentProtectionPrayer != null) {
-      switch(this.currentProtectionPrayer) {
-        case PROTECT_FROM_MELEE:
-          if (!isMeleeActive) {
-            this.TurnOnPrayer(Prayer.PROTECT_FROM_MELEE);
-          }
-          break;
-        case PROTECT_FROM_MISSILES:
-          if (!isRangeActive) {
-            this.TurnOnPrayer(Prayer.PROTECT_FROM_MISSILES);
-          }
-          break;
-        case PROTECT_FROM_MAGIC:
-          if (!isMagicActive) {
-            this.TurnOnPrayer(Prayer.PROTECT_FROM_MAGIC);
-          }
-      }
-
-    }
   }
 }

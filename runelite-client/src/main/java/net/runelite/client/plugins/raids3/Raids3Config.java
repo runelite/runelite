@@ -71,12 +71,6 @@ public interface Raids3Config extends Config {
   )
   String MirrorRoomSection = "MirrorRoomSection";
   @ConfigSection(
-      name = "Palm Room",
-      description = "Palm Room Settings",
-      position = 74
-  )
-  String PalmRoomSection = "PalmRoomSection";
-  @ConfigSection(
       name = "Zebak",
       description = "Zebak Settings",
       position = 75
@@ -824,28 +818,6 @@ public interface Raids3Config extends Config {
   )
   default FontTypes FontType() {
     return FontTypes.REGULAR;
-  }
-
-  @ConfigItem(
-      position = 1,
-      keyName = "AutoPalmRoom",
-      name = "Auto Palm Room",
-      description = "Auto Palm Room - While its running make sure to move the camera so objects are visible in the viewport.",
-      section = "PalmRoomSection"
-  )
-  default boolean AutoPalmRoom() {
-    return false;
-  }
-
-  @ConfigItem(
-      position = 1,
-      keyName = "ZebakAutoPrayer",
-      name = "Auto Prayer",
-      description = "",
-      section = "ZebakSection"
-  )
-  default boolean ZebakAutoPrayer() {
-    return false;
   }
 
   @ConfigItem(

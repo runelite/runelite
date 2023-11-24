@@ -22,9 +22,9 @@ public class PrayerPriorityQue {
     PrayerRequest prayerRequest = new PrayerRequest(prayer, switchSpeed, this.currentTick, textColor);
     this.que.add(prayerRequest);
     if (this.que.size() == 1) {
-      this.prayerPriority = ((PrayerRequest)this.que.get(0)).prayer;
-      this.switchTick = ((PrayerRequest)this.que.get(0)).switchTick;
-      this.endTick = ((PrayerRequest)this.que.get(0)).endTick;
+      this.prayerPriority = this.que.get(0).prayer;
+      this.switchTick = this.que.get(0).switchTick;
+      this.endTick = this.que.get(0).endTick;
     }
 
   }
@@ -39,12 +39,12 @@ public class PrayerPriorityQue {
     }
 
     if (this.que.size() != 0) {
-      if (this.currentTick > ((PrayerRequest)this.que.get(0)).endTick) {
+      if (this.currentTick > this.que.get(0).endTick) {
         this.que.remove(0);
         if (this.que.size() > 0) {
-          this.switchTick = ((PrayerRequest)this.que.get(0)).switchTick;
-          this.endTick = ((PrayerRequest)this.que.get(0)).endTick;
-          this.prayerPriority = ((PrayerRequest)this.que.get(0)).prayer;
+          this.switchTick = this.que.get(0).switchTick;
+          this.endTick = this.que.get(0).endTick;
+          this.prayerPriority = this.que.get(0).prayer;
         }
 
         this.isReadyToSwitch = false;
