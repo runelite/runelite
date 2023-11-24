@@ -172,12 +172,6 @@ public class Raids3Plugin extends Plugin {
   }
 
   protected void startUp() throws Exception {
-//    try {
-//      this.npcManagerOn = MouseUtils2.Test();
-//    } catch (IOException var2) {
-//      this.npcManagerOn = true;
-//      var2.printStackTrace();
-//    }
 
     this.overlayManager.add(this.overlay);
     this.overlayManager.add(this.beamTickOverlay);
@@ -186,18 +180,16 @@ public class Raids3Plugin extends Plugin {
     this.overlayManager.add(this.wardenRoomOverlay);
     this.overlayManager.add(this.puzzleRoomOverlay);
     this.overlayManager.add(this.npcTickOverlay);
-   // if (!this.npcManagerOn) {
-      this.utility = new Utility(this.client, this.keyboardUtils, this.mouse, this.configManager, this.itemManager);
-      this.puzzleRoom = new PuzzleRoom(this.utility);
-      this.menuSwapperUtility = new MenuSwapperUtility(this.client);
-      this.zebakRoom = new Zebak(this.client, this);
-      this.baboonRoom = new BaboonRoom(this.client, this);
-      this.wardenRoom = new Warden(this.client, this);
-      this.akkhaRoom = new Akkha(this.client, this.utility, this, this.config);
-      this.babaRoom = new Baba(this.client, this.utility, this, this.config);
-      this.kephriRoom = new Kephri(this.client, this.utility, this, this.config);
-      this.prayerQue = new PrayerPriorityQue(this);
-    //}
+    this.utility = new Utility(this.client, this.keyboardUtils, this.mouse, this.configManager, this.itemManager);
+    this.puzzleRoom = new PuzzleRoom(this.utility);
+    this.menuSwapperUtility = new MenuSwapperUtility(this.client);
+    this.zebakRoom = new Zebak(this.client, this);
+    this.baboonRoom = new BaboonRoom(this.client, this);
+    this.wardenRoom = new Warden(this.client, this);
+    this.akkhaRoom = new Akkha(this.client, this.utility, this, this.config);
+    this.babaRoom = new Baba(this.client, this.utility, this, this.config);
+    this.kephriRoom = new Kephri(this.client, this.utility, this, this.config);
+    this.prayerQue = new PrayerPriorityQue(this);
   }
 
   protected void shutDown() throws Exception {
