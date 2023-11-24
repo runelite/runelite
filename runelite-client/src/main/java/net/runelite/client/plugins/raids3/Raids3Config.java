@@ -491,17 +491,6 @@ public interface Raids3Config extends Config {
   }
 
   @ConfigItem(
-      position = 1,
-      keyName = "WardenAutoPray",
-      name = "Auto Pray",
-      description = "",
-      section = "WardenRoomSection"
-  )
-  default boolean WardenAutoPray() {
-    return true;
-  }
-
-  @ConfigItem(
       position = 42,
       keyName = "HighlightWardenUnstableBolt",
       name = "Highlight Unstable Bolt Tiles",
@@ -884,54 +873,6 @@ public interface Raids3Config extends Config {
   )
   default SpeedInvocation SpeedInvocation() {
     return SpeedInvocation.Normal;
-  }
-
-  @ConfigItem(
-      position = 82,
-      keyName = "AutoGearSwitching",
-      name = "Auto Gear Switching",
-      description = "",
-      section = "GearSwapper",
-      hidden = true
-  )
-  default boolean AutoGearSwitching() {
-    return false;
-  }
-
-  @ConfigItem(
-      position = 83,
-      keyName = "MeleeGearMacro",
-      name = "Melee Gear Macro",
-      description = "",
-      section = "GearSwapper",
-      hidden = true
-  )
-  default String MeleeGearMacro() {
-    return "";
-  }
-
-  @ConfigItem(
-      position = 84,
-      keyName = "MagicGearMacro",
-      name = "Magic Gear Macro",
-      description = "",
-      section = "GearSwapper",
-      hidden = true
-  )
-  default String MagicGearMacro() {
-    return "";
-  }
-
-  @ConfigItem(
-      position = 85,
-      keyName = "RangeGearMacro",
-      name = "Range Gear Macro",
-      description = "",
-      section = "GearSwapper",
-      hidden = true
-  )
-  default String RangeGearMacro() {
-    return "";
   }
 
   @ConfigItem(
