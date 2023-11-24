@@ -71,12 +71,6 @@ public interface Raids3Config extends Config {
   )
   String MirrorRoomSection = "MirrorRoomSection";
   @ConfigSection(
-      name = "Palm Room",
-      description = "Palm Room Settings",
-      position = 74
-  )
-  String PalmRoomSection = "PalmRoomSection";
-  @ConfigSection(
       name = "Zebak",
       description = "Zebak Settings",
       position = 75
@@ -268,17 +262,6 @@ public interface Raids3Config extends Config {
   }
 
   @ConfigItem(
-      position = 1,
-      keyName = "AkkhaAutoPrayer",
-      name = "Auto Prayer",
-      description = "",
-      section = "AkkhaSection"
-  )
-  default boolean AkkhaAutoPrayer() {
-    return true;
-  }
-
-  @ConfigItem(
       position = 18,
       keyName = "MemoryBlast",
       name = "Highlight Memory Blast",
@@ -287,17 +270,6 @@ public interface Raids3Config extends Config {
   )
   default boolean MemoryBlast() {
     return true;
-  }
-
-  @ConfigItem(
-      position = 19,
-      keyName = "AutoWalkMemoryBlast",
-      name = "Auto Memory Blast",
-      description = "",
-      section = "AkkhaSection"
-  )
-  default boolean AutoWalkMemoryBlast() {
-    return false;
   }
 
   @ConfigItem(
@@ -496,61 +468,6 @@ public interface Raids3Config extends Config {
   }
 
   @ConfigItem(
-      position = 1,
-      keyName = "KephriAutoPray",
-      name = "Auto Prayer",
-      description = "",
-      section = "KephriRoomSection"
-  )
-  default boolean KephriAutoPray() {
-    return false;
-  }
-
-  @ConfigItem(
-      position = 3,
-      keyName = "AutoPrayArcaneScarab",
-      name = "Arcane Scarab",
-      description = "Prayer Overlay:  protect from magic when Arcane Scarab attack is almost fully charged",
-      section = "KephriRoomSection"
-  )
-  default boolean AutoPrayArcaneScarab() {
-    return true;
-  }
-
-  @ConfigItem(
-      position = 4,
-      keyName = "AutoPrayAgileScarab",
-      name = "Agile Scarab",
-      description = "Prayer Overlay:  protect from missiles when Agile Scarab is spawned.",
-      section = "KephriRoomSection"
-  )
-  default boolean AutoPrayAgileScarab() {
-    return true;
-  }
-
-  @ConfigItem(
-      position = 5,
-      keyName = "AutoPraySpittingScarab",
-      name = "Spitting Scarab",
-      description = "Prayer Overlay:  protect from missiles when Spitting Scarab is spawned.",
-      section = "KephriRoomSection"
-  )
-  default boolean AutoPraySpittingScarab() {
-    return true;
-  }
-
-  @ConfigItem(
-      position = 6,
-      keyName = "AutoPraySoliderScarab",
-      name = "Soldier Scarab",
-      description = "Prayer Overlay:  protect from melee if Solider Scarab is within 2 tiles.",
-      section = "KephriRoomSection"
-  )
-  default boolean AutoPraySoliderScarab() {
-    return false;
-  }
-
-  @ConfigItem(
       position = 7,
       keyName = "HightlightKephriFireBall",
       name = "Hightlight FireBall",
@@ -571,17 +488,6 @@ public interface Raids3Config extends Config {
   )
   default Color KephriFireballColor() {
     return new Color(-1359010266, true);
-  }
-
-  @ConfigItem(
-      position = 1,
-      keyName = "WardenAutoPray",
-      name = "Auto Pray",
-      description = "",
-      section = "WardenRoomSection"
-  )
-  default boolean WardenAutoPray() {
-    return true;
   }
 
   @ConfigItem(
@@ -805,17 +711,6 @@ public interface Raids3Config extends Config {
   }
 
   @ConfigItem(
-      position = 1,
-      keyName = "BaboonAutoPray",
-      name = "Auto Prayer",
-      description = "",
-      section = "BaboonRoomSection"
-  )
-  default boolean BaboonAutoPray() {
-    return false;
-  }
-
-  @ConfigItem(
       position = 2,
       keyName = "ShowWeakness",
       name = "Show Weakness",
@@ -823,17 +718,6 @@ public interface Raids3Config extends Config {
       section = "BaboonRoomSection"
   )
   default boolean ShowWeakness() {
-    return true;
-  }
-
-  @ConfigItem(
-      position = 3,
-      keyName = "RedSkullOverlay",
-      name = "Apmeken's Sight Overlay",
-      description = "Apmeken's Sight Overlay",
-      section = "BaboonRoomSection"
-  )
-  default boolean RedSkullOverlay() {
     return true;
   }
 
@@ -927,28 +811,6 @@ public interface Raids3Config extends Config {
 
   @ConfigItem(
       position = 1,
-      keyName = "AutoPalmRoom",
-      name = "Auto Palm Room",
-      description = "Auto Palm Room - While its running make sure to move the camera so objects are visible in the viewport.",
-      section = "PalmRoomSection"
-  )
-  default boolean AutoPalmRoom() {
-    return false;
-  }
-
-  @ConfigItem(
-      position = 1,
-      keyName = "ZebakAutoPrayer",
-      name = "Auto Prayer",
-      description = "",
-      section = "ZebakSection"
-  )
-  default boolean ZebakAutoPrayer() {
-    return false;
-  }
-
-  @ConfigItem(
-      position = 1,
       keyName = "feelingSpecial",
       name = "Feeling Special?",
       description = "The Memory Blast attack will only provide two ticks for players to move between safe quadrants.",
@@ -1011,54 +873,6 @@ public interface Raids3Config extends Config {
   )
   default SpeedInvocation SpeedInvocation() {
     return SpeedInvocation.Normal;
-  }
-
-  @ConfigItem(
-      position = 82,
-      keyName = "AutoGearSwitching",
-      name = "Auto Gear Switching",
-      description = "",
-      section = "GearSwapper",
-      hidden = true
-  )
-  default boolean AutoGearSwitching() {
-    return false;
-  }
-
-  @ConfigItem(
-      position = 83,
-      keyName = "MeleeGearMacro",
-      name = "Melee Gear Macro",
-      description = "",
-      section = "GearSwapper",
-      hidden = true
-  )
-  default String MeleeGearMacro() {
-    return "";
-  }
-
-  @ConfigItem(
-      position = 84,
-      keyName = "MagicGearMacro",
-      name = "Magic Gear Macro",
-      description = "",
-      section = "GearSwapper",
-      hidden = true
-  )
-  default String MagicGearMacro() {
-    return "";
-  }
-
-  @ConfigItem(
-      position = 85,
-      keyName = "RangeGearMacro",
-      name = "Range Gear Macro",
-      description = "",
-      section = "GearSwapper",
-      hidden = true
-  )
-  default String RangeGearMacro() {
-    return "";
   }
 
   @ConfigItem(
@@ -1129,14 +943,4 @@ public interface Raids3Config extends Config {
     return 4;
   }
 
-  @ConfigItem(
-      position = 90,
-      keyName = "AutoButterflyTechWalk",
-      name = "AutoButterflyTechWalk",
-      description = "AutoButterflyTechWalk",
-      hidden = true
-  )
-  default boolean AutoButterflyTechWalk() {
-    return false;
-  }
 }

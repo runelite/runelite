@@ -58,16 +58,6 @@ public class Kephri {
 
   }
 
-  public void onBeforeRender() {
-    if (this.config.KephriAutoPray()) {
-      if (this.prayerTimer.isDone()) {
-        this.prayerTimer.Reset();
-        this.plugin.HandlePrayers();
-      }
-
-    }
-  }
-
   private int GetAttackSpeed() {
     byte attackSpeed;
     switch(this.pathLvl) {
@@ -128,41 +118,13 @@ public class Kephri {
     while(var4.hasNext()) {
       NPC npc = (NPC)var4.next();
       if (npc.getName() != null) {
-        if (this.config.AutoPraySoliderScarab() && npc.getName().equalsIgnoreCase("Soldier Scarab") && OneUpUtilityPlugin.SceneDistance(npc, this.client.getLocalPlayer()) < 3.0D) {
+        if (npc.getName().equalsIgnoreCase("Soldier Scarab") && OneUpUtilityPlugin.SceneDistance(npc, this.client.getLocalPlayer()) < 3.0D) {
           shouldPrayMelee = true;
           break;
         }
 
-        if (this.config.AutoPraySpittingScarab() && npc.getName().equalsIgnoreCase("Spitting Scarab") || this.config.AutoPrayAgileScarab() && npc.getName().equalsIgnoreCase("Agile Scarab")) {
+        if (npc.getName().equalsIgnoreCase("Spitting Scarab") || npc.getName().equalsIgnoreCase("Agile Scarab")) {
           shouldPrayRange = true;
-        }
-      }
-    }
-
-    if (this.config.AutoPrayArcaneScarab()) {
-      int charges = 0;
-      Iterator var8 = this.client.getGraphicsObjects().iterator();
-
-      while(var8.hasNext()) {
-        GraphicsObject graphicsObject = (GraphicsObject)var8.next();
-        if (graphicsObject.getId() == 2149) {
-          ++charges;
-          if (charges >= 7) {
-            shouldPrayMage = true;
-            break;
-          }
-        }
-      }
-
-      if (!shouldPrayMage) {
-        var8 = this.client.getProjectiles().iterator();
-
-        while(var8.hasNext()) {
-          Projectile projectile = (Projectile)var8.next();
-          if (projectile.getId() == 2149) {
-            shouldPrayMage = true;
-            break;
-          }
         }
       }
     }

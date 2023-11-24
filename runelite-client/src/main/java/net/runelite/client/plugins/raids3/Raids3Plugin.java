@@ -60,7 +60,6 @@ import net.runelite.client.plugins.raids3.overlays.InfoOverlay;
 import net.runelite.client.plugins.raids3.overlays.NPCTickOverlay;
 import net.runelite.client.plugins.raids3.overlays.PrayerOverlay;
 import net.runelite.client.plugins.raids3.overlays.Raids3Overlay;
-import net.runelite.client.plugins.raids3.PalmRoom.PalmRoom;
 import net.runelite.client.plugins.raids3.PuzzleRoom.PuzzleRoom;
 import net.runelite.client.plugins.raids3.PuzzleRoom.PuzzleRoomOverlay;
 import net.runelite.client.plugins.raids3.Warden.Warden;
@@ -137,7 +136,6 @@ public class Raids3Plugin extends Plugin {
   public Zebak zebakRoom;
   public Warden wardenRoom;
   public Akkha akkhaRoom;
-  public PalmRoom palmRoom;
   public Baba babaRoom;
   public Kephri kephriRoom;
   public NPC babaNPC;
@@ -174,12 +172,6 @@ public class Raids3Plugin extends Plugin {
   }
 
   protected void startUp() throws Exception {
-//    try {
-//      this.npcManagerOn = MouseUtils2.Test();
-//    } catch (IOException var2) {
-//      this.npcManagerOn = true;
-//      var2.printStackTrace();
-//    }
 
     this.overlayManager.add(this.overlay);
     this.overlayManager.add(this.beamTickOverlay);
@@ -188,19 +180,16 @@ public class Raids3Plugin extends Plugin {
     this.overlayManager.add(this.wardenRoomOverlay);
     this.overlayManager.add(this.puzzleRoomOverlay);
     this.overlayManager.add(this.npcTickOverlay);
-   // if (!this.npcManagerOn) {
-      this.utility = new Utility(this.client, this.keyboardUtils, this.mouse, this.configManager, this.itemManager);
-      this.puzzleRoom = new PuzzleRoom(this.utility);
-      this.menuSwapperUtility = new MenuSwapperUtility(this.client);
-      this.zebakRoom = new Zebak(this.client, this);
-      this.baboonRoom = new BaboonRoom(this.client, this);
-      this.wardenRoom = new Warden(this.client, this);
-      this.akkhaRoom = new Akkha(this.client, this.utility, this, this.config);
-      this.palmRoom = new PalmRoom(this.client, this.mouse, this.utility, this.config, this.chatMessageManager);
-      this.babaRoom = new Baba(this.client, this.utility, this, this.config);
-      this.kephriRoom = new Kephri(this.client, this.utility, this, this.config);
-      this.prayerQue = new PrayerPriorityQue(this);
-    //}
+    this.utility = new Utility(this.client, this.keyboardUtils, this.mouse, this.configManager, this.itemManager);
+    this.puzzleRoom = new PuzzleRoom(this.utility);
+    this.menuSwapperUtility = new MenuSwapperUtility(this.client);
+    this.zebakRoom = new Zebak(this.client, this);
+    this.baboonRoom = new BaboonRoom(this.client, this);
+    this.wardenRoom = new Warden(this.client, this);
+    this.akkhaRoom = new Akkha(this.client, this.utility, this, this.config);
+    this.babaRoom = new Baba(this.client, this.utility, this, this.config);
+    this.kephriRoom = new Kephri(this.client, this.utility, this, this.config);
+    this.prayerQue = new PrayerPriorityQue(this);
   }
 
   protected void shutDown() throws Exception {
@@ -321,48 +310,21 @@ public class Raids3Plugin extends Plugin {
   @Subscribe
   public void onBeforeRender(BeforeRender br) {
     if (this.client.getGameState() == GameState.LOGGED_IN) {
-      if (this.currentRoom == TOA_Rooms.KEPHRI_ROOM) {
-        this.kephriRoom.onBeforeRender();
-      } else if (this.currentRoom == TOA_Rooms.PALM_ROOM) {
-        this.palmRoom.onBeforeRender();
-      } else if (this.currentRoom == TOA_Rooms.AKKHA_ROOM) {
+      if (this.currentRoom == TOA_Rooms.AKKHA_ROOM) {
         this.akkhaRoom.onBeforeRender();
-      } else if (this.currentRoom == TOA_Rooms.BABOON_ROOM) {
-        this.baboonRoom.onBeforeRender();
       } else {
-        boolean isAutoPrayerOn = false;
         switch(this.currentRoom) {
           case ZEBAK_ROOM:
-            if (this.config.ZebakAutoPrayer()) {
-              isAutoPrayerOn = true;
-            }
             break;
           case WARDEN_ROOM:
-            if (this.config.WardenAutoPray()) {
-              isAutoPrayerOn = true;
-            }
             break;
           default:
             return;
         }
-
         this.currentProtectionPrayer = this.prayerQue.prayerPriority;
-        if (isAutoPrayerOn && this.prayerQue.isReadyToSwitch && this.prayerTimer.isDone()) {
-          this.prayerTimer.Reset();
-          this.HandlePrayers();
-        }
-
         this.prayerQue.HandleQue();
       }
     }
-  }
-
-  @Subscribe
-  private void onMenuOptionClicked(MenuOptionClicked event) {
-    if (this.currentRoom.equals(TOA_Rooms.PALM_ROOM)) {
-      this.palmRoom.onMenuOptionClicked(event);
-    }
-
   }
 
   @Subscribe
@@ -376,11 +338,6 @@ public class Raids3Plugin extends Plugin {
       }
 
     }
-  }
-
-  @Subscribe
-  public void onConfigChanged(ConfigChanged event) {
-    this.akkhaRoom.onConfigChanged();
   }
 
   @Subscribe
@@ -511,9 +468,6 @@ public class Raids3Plugin extends Plugin {
   @Subscribe
   public void onChatMessage(ChatMessage event) {
     if (event.getType() == ChatMessageType.GAMEMESSAGE) {
-      if (this.currentRoom == TOA_Rooms.PALM_ROOM) {
-        this.palmRoom.onChatMessage(event.getMessage());
-      }
 
       if (this.currentRoom == TOA_Rooms.PUZZLE_ROOM) {
         this.puzzleRoom.OnChatMessage(event.getMessage());
@@ -605,9 +559,6 @@ public class Raids3Plugin extends Plugin {
           this.UpdateRoomStatus(TOA_Rooms.PUZZLE_ROOM);
           break;
         case 45398:
-        case 45414:
-          this.palmRoom.onGameObjectSpawned(event.getGameObject());
-          break;
         case 45496:
           this.UpdateRoomStatus(TOA_Rooms.BABOON_ROOM);
           break;
@@ -645,34 +596,11 @@ public class Raids3Plugin extends Plugin {
   private void ResetRaid() {
     this.currentProtectionPrayer = null;
     this.wardenRoom.Reset();
-    this.palmRoom.Reset();
     this.puzzleRoom.Reset();
   }
 
   private boolean NoPrayerPoints() {
     return this.client.getBoostedSkillLevel(Skill.PRAYER) == 0;
-  }
-
-  public void TurnOnPrayer(Prayer prayer) {
-    if (!this.client.isPrayerActive(prayer)) {
-      if (!this.NoPrayerPoints()) {
-        if (!OneUpUtilityPlugin.isMouseLocked) {
-          if (!this.utility.IsTabOpen(TabType.Prayer)) {
-            if ((double)System.currentTimeMillis() - this.tabStartTime >= this.tabWaitTime) {
-              this.keyboardUtils.pressKey(((OneUpUtilityConfig)this.configManager.getConfig(OneUpUtilityConfig.class)).PrayerTab().getKeyCode());
-              this.tabWaitTime = (double)this.getRandomIntBetweenRange(50, 150);
-              this.tabStartTime = (double)System.currentTimeMillis();
-            }
-          } else {
-            Widget widget = this.utility.GetPrayerWidget(prayer.name());
-            if (widget != null) {
-              Point point = this.getRandomPointWithinRec(widget.getCanvasLocation(), widget.getWidth(), widget.getHeight());
-              this.mouse.click(point, this.client.getMouseCanvasPosition());
-            }
-          }
-        }
-      }
-    }
   }
 
   public Point getRandomPointWithinRec(Point point, int width, int height) {
@@ -685,74 +613,5 @@ public class Raids3Plugin extends Plugin {
 
   public void DebugLog(String message) {
     System.out.println(message);
-  }
-
-  public void CreateChatMessage(String message) {
-    if (this.client.getGameState() == GameState.LOGGED_IN) {
-      String chatMessage = (new ChatMessageBuilder()).append(ChatColorType.HIGHLIGHT).append(Color.CYAN, "[1Up Raids3] - ").append(Color.BLACK, message).build();
-      this.chatMessageManager.queue(QueuedMessage.builder().type(ChatMessageType.GAMEMESSAGE).runeLiteFormattedMessage(chatMessage).build());
-    }
-  }
-
-//  public void SwitchGear(GearType gearType) {
-//    String macroName = "";
-//    switch(gearType) {
-//      case Magic:
-//        macroName = this.config.MagicGearMacro().toLowerCase();
-//        break;
-//      case Melee:
-//        macroName = this.config.MeleeGearMacro().toLowerCase();
-//        break;
-//      case Range:
-//        macroName = this.config.RangeGearMacro().toLowerCase();
-//    }
-//
-//    this.DebugLog("Switching Gear: " + gearType + " Macro Name: " + macroName);
-//    if (MacroCombatPlugin.macroCombatPlugin != null) {
-//      Iterator var3 = MacroCombatPlugin.macroCombatPlugin.macroData.macroProfiles.iterator();
-//
-//      while(var3.hasNext()) {
-//        MacroProfile macroProfile = (MacroProfile)var3.next();
-//        Iterator var5 = macroProfile.userMacros.iterator();
-//
-//        while(var5.hasNext()) {
-//          UserMacro userMacro = (UserMacro)var5.next();
-//          if (userMacro.macroName.equalsIgnoreCase(macroName)) {
-//            if (!MacroCombatPlugin.macroCombatPlugin.isEquipmentWorn(userMacro)) {
-//              this.DebugLog("--Switching--");
-//              MacroCombatPlugin.macroCombatPlugin.AddUserMacros(userMacro);
-//            } else {
-//              this.DebugLog("Already Equipped");
-//            }
-//          }
-//        }
-//      }
-//    }
-//
-//  }
-
-  public void HandlePrayers() {
-    boolean isMagicActive = this.client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC);
-    boolean isRangeActive = this.client.isPrayerActive(Prayer.PROTECT_FROM_MISSILES);
-    boolean isMeleeActive = this.client.isPrayerActive(Prayer.PROTECT_FROM_MELEE);
-    if (this.currentProtectionPrayer != null) {
-      switch(this.currentProtectionPrayer) {
-        case PROTECT_FROM_MELEE:
-          if (!isMeleeActive) {
-            this.TurnOnPrayer(Prayer.PROTECT_FROM_MELEE);
-          }
-          break;
-        case PROTECT_FROM_MISSILES:
-          if (!isRangeActive) {
-            this.TurnOnPrayer(Prayer.PROTECT_FROM_MISSILES);
-          }
-          break;
-        case PROTECT_FROM_MAGIC:
-          if (!isMagicActive) {
-            this.TurnOnPrayer(Prayer.PROTECT_FROM_MAGIC);
-          }
-      }
-
-    }
   }
 }
