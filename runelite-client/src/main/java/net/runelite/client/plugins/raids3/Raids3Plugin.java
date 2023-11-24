@@ -321,9 +321,7 @@ public class Raids3Plugin extends Plugin {
   @Subscribe
   public void onBeforeRender(BeforeRender br) {
     if (this.client.getGameState() == GameState.LOGGED_IN) {
-      if (this.currentRoom == TOA_Rooms.KEPHRI_ROOM) {
-        this.kephriRoom.onBeforeRender();
-      } else if (this.currentRoom == TOA_Rooms.PALM_ROOM) {
+      if (this.currentRoom == TOA_Rooms.PALM_ROOM) {
         this.palmRoom.onBeforeRender();
       } else if (this.currentRoom == TOA_Rooms.AKKHA_ROOM) {
         this.akkhaRoom.onBeforeRender();

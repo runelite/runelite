@@ -474,61 +474,6 @@ public interface Raids3Config extends Config {
   }
 
   @ConfigItem(
-      position = 1,
-      keyName = "KephriAutoPray",
-      name = "Auto Prayer",
-      description = "",
-      section = "KephriRoomSection"
-  )
-  default boolean KephriAutoPray() {
-    return false;
-  }
-
-  @ConfigItem(
-      position = 3,
-      keyName = "AutoPrayArcaneScarab",
-      name = "Arcane Scarab",
-      description = "Prayer Overlay:  protect from magic when Arcane Scarab attack is almost fully charged",
-      section = "KephriRoomSection"
-  )
-  default boolean AutoPrayArcaneScarab() {
-    return true;
-  }
-
-  @ConfigItem(
-      position = 4,
-      keyName = "AutoPrayAgileScarab",
-      name = "Agile Scarab",
-      description = "Prayer Overlay:  protect from missiles when Agile Scarab is spawned.",
-      section = "KephriRoomSection"
-  )
-  default boolean AutoPrayAgileScarab() {
-    return true;
-  }
-
-  @ConfigItem(
-      position = 5,
-      keyName = "AutoPraySpittingScarab",
-      name = "Spitting Scarab",
-      description = "Prayer Overlay:  protect from missiles when Spitting Scarab is spawned.",
-      section = "KephriRoomSection"
-  )
-  default boolean AutoPraySpittingScarab() {
-    return true;
-  }
-
-  @ConfigItem(
-      position = 6,
-      keyName = "AutoPraySoliderScarab",
-      name = "Soldier Scarab",
-      description = "Prayer Overlay:  protect from melee if Solider Scarab is within 2 tiles.",
-      section = "KephriRoomSection"
-  )
-  default boolean AutoPraySoliderScarab() {
-    return false;
-  }
-
-  @ConfigItem(
       position = 7,
       keyName = "HightlightKephriFireBall",
       name = "Hightlight FireBall",
