@@ -728,17 +728,6 @@ public interface Raids3Config extends Config {
   }
 
   @ConfigItem(
-      position = 1,
-      keyName = "BaboonAutoPray",
-      name = "Auto Prayer",
-      description = "",
-      section = "BaboonRoomSection"
-  )
-  default boolean BaboonAutoPray() {
-    return false;
-  }
-
-  @ConfigItem(
       position = 2,
       keyName = "ShowWeakness",
       name = "Show Weakness",
@@ -746,17 +735,6 @@ public interface Raids3Config extends Config {
       section = "BaboonRoomSection"
   )
   default boolean ShowWeakness() {
-    return true;
-  }
-
-  @ConfigItem(
-      position = 3,
-      keyName = "RedSkullOverlay",
-      name = "Apmeken's Sight Overlay",
-      description = "Apmeken's Sight Overlay",
-      section = "BaboonRoomSection"
-  )
-  default boolean RedSkullOverlay() {
     return true;
   }
 

@@ -28,50 +28,50 @@ public class BaboonRoom {
     this.raids3Plugin = raids3Plugin;
   }
 
-  public void HandleBaboonPrayers() {
-    if (!this.raids3Plugin.config.BaboonAutoPray()) {
-      this.raids3Plugin.currentProtectionPrayer = null;
-    } else {
-      List<Projectile> projectiles = new ArrayList<>();
-      int baboonMagicProjectileID = 2247; // Corrected the IDs from 'true'
-      int baboonRangeProjectileID = 2242;
-      int baboonRangeProjectile2ID = 2243;
-      Iterator<Projectile> var5 = this.client.getProjectiles().iterator();
-
-      while (var5.hasNext()) {
-        Projectile projectile = var5.next();
-        if (projectile.getId() == baboonMagicProjectileID ||
-            projectile.getId() == baboonRangeProjectileID ||
-            projectile.getId() == baboonRangeProjectile2ID) {
-          projectiles.add(projectile);
-        }
-      }
-
-      if (!projectiles.isEmpty()) {
-        this.lastAttackedBaboonTimer.Reset();
-        projectiles.sort(Comparator.comparing(Projectile::getRemainingCycles));
-        int projectileId = projectiles.get(0).getId();
-        if (projectileId == baboonMagicProjectileID) {
-          this.raids3Plugin.currentProtectionPrayer = Prayer.PROTECT_FROM_MAGIC;
-        } else if (projectileId == baboonRangeProjectileID || projectileId == baboonRangeProjectile2ID) {
-          this.raids3Plugin.currentProtectionPrayer = Prayer.PROTECT_FROM_MISSILES;
-        }
-      } else {
-        for (NPC npc : this.client.getNpcs()) {
-          if ((npc.getName().equalsIgnoreCase("Baboon Thrall") ||
-              npc.getName().equalsIgnoreCase("Baboon Brawler")) &&
-              OneUpUtilityPlugin.SceneDistance(npc, this.client.getLocalPlayer()) < 3.0D) {
-            this.raids3Plugin.currentProtectionPrayer = Prayer.PROTECT_FROM_MELEE;
-            return;
-          }
-        }
-
-        if (this.lastAttackedBaboonTimer.isDone()) {
-          this.raids3Plugin.currentProtectionPrayer = null;
-        }
-      }
-    }
-  }
+//  public void HandleBaboonPrayers() {
+//    if (!this.raids3Plugin.config.BaboonAutoPray()) {
+//      this.raids3Plugin.currentProtectionPrayer = null;
+//    } else {
+//      List<Projectile> projectiles = new ArrayList<>();
+//      int baboonMagicProjectileID = 2247; // Corrected the IDs from 'true'
+//      int baboonRangeProjectileID = 2242;
+//      int baboonRangeProjectile2ID = 2243;
+//      Iterator<Projectile> var5 = this.client.getProjectiles().iterator();
+//
+//      while (var5.hasNext()) {
+//        Projectile projectile = var5.next();
+//        if (projectile.getId() == baboonMagicProjectileID ||
+//            projectile.getId() == baboonRangeProjectileID ||
+//            projectile.getId() == baboonRangeProjectile2ID) {
+//          projectiles.add(projectile);
+//        }
+//      }
+//
+//      if (!projectiles.isEmpty()) {
+//        this.lastAttackedBaboonTimer.Reset();
+//        projectiles.sort(Comparator.comparing(Projectile::getRemainingCycles));
+//        int projectileId = projectiles.get(0).getId();
+//        if (projectileId == baboonMagicProjectileID) {
+//          this.raids3Plugin.currentProtectionPrayer = Prayer.PROTECT_FROM_MAGIC;
+//        } else if (projectileId == baboonRangeProjectileID || projectileId == baboonRangeProjectile2ID) {
+//          this.raids3Plugin.currentProtectionPrayer = Prayer.PROTECT_FROM_MISSILES;
+//        }
+//      } else {
+//        for (NPC npc : this.client.getNpcs()) {
+//          if ((npc.getName().equalsIgnoreCase("Baboon Thrall") ||
+//              npc.getName().equalsIgnoreCase("Baboon Brawler")) &&
+//              OneUpUtilityPlugin.SceneDistance(npc, this.client.getLocalPlayer()) < 3.0D) {
+//            this.raids3Plugin.currentProtectionPrayer = Prayer.PROTECT_FROM_MELEE;
+//            return;
+//          }
+//        }
+//
+//        if (this.lastAttackedBaboonTimer.isDone()) {
+//          this.raids3Plugin.currentProtectionPrayer = null;
+//        }
+//      }
+//    }
+//  }
 
   public void HandleBaboonRedSkull(Point point) {
     this.redSkullGameTick = 0;
@@ -83,18 +83,8 @@ public class BaboonRoom {
 
   }
 
-  public void onBeforeRender() {
-    if (this.raids3Plugin.config.BaboonAutoPray()) {
-      if (this.prayerTimer.isDone()) {
-        this.prayerTimer.Reset();
-        this.raids3Plugin.HandlePrayers();
-      }
-
-    }
-  }
-
   public void onGameTick() {
-    this.HandleBaboonPrayers();
+    //this.HandleBaboonPrayers();
     if (this.redSkullGameTick != -1) {
       ++this.redSkullGameTick;
     }
