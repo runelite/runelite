@@ -566,6 +566,28 @@ public class ClientUI
 							clientBounds.x, clientBounds.y, clientBounds.width, clientBounds.height);
 						// Reset the position, but not the size
 						frame.setLocationRelativeTo(frame.getOwner());
+
+						// Check if the window is now in bounds
+						gc = findDisplayFromBounds(frame.getBounds());
+						if (gc == null)
+						{
+
+							gc = findDisplayFromIntersect(frame.getBounds());
+							if (gc != null)
+							{
+								Rectangle adjustedBounds = gc.getBounds();
+
+								// Adjust for macOS top bar
+								if (OSType.getOSType() == OSType.MacOS)
+								{
+									adjustedBounds.y += 44; // Shift down by 44 pixels
+									adjustedBounds.height -= 44; // Reduce height accordingly
+								}
+
+								log.info("Resetting client size.");
+								frame.setBounds(adjustedBounds);
+							}
+						}
 					}
 				}
 				else
@@ -640,13 +662,29 @@ public class ClientUI
 	private GraphicsConfiguration findDisplayFromBounds(final Rectangle bounds)
 	{
 		GraphicsDevice[] gds = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices();
-
 		for (GraphicsDevice gd : gds)
 		{
 			GraphicsConfiguration gc = gd.getDefaultConfiguration();
 
 			final Rectangle displayBounds = gc.getBounds();
 			if (displayBounds.contains(bounds))
+			{
+				return gc;
+			}
+		}
+
+		return null;
+	}
+
+	private GraphicsConfiguration findDisplayFromIntersect(final Rectangle bounds)
+	{
+		GraphicsDevice[] gds = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices();
+		for (GraphicsDevice gd : gds)
+		{
+			GraphicsConfiguration gc = gd.getDefaultConfiguration();
+
+			final Rectangle displayBounds = gc.getBounds();
+			if (displayBounds.intersects(bounds))
 			{
 				return gc;
 			}
