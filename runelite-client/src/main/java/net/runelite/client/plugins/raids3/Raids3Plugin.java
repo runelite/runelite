@@ -60,7 +60,6 @@ import net.runelite.client.plugins.raids3.overlays.InfoOverlay;
 import net.runelite.client.plugins.raids3.overlays.NPCTickOverlay;
 import net.runelite.client.plugins.raids3.overlays.PrayerOverlay;
 import net.runelite.client.plugins.raids3.overlays.Raids3Overlay;
-import net.runelite.client.plugins.raids3.PalmRoom.PalmRoom;
 import net.runelite.client.plugins.raids3.PuzzleRoom.PuzzleRoom;
 import net.runelite.client.plugins.raids3.PuzzleRoom.PuzzleRoomOverlay;
 import net.runelite.client.plugins.raids3.Warden.Warden;
@@ -137,7 +136,6 @@ public class Raids3Plugin extends Plugin {
   public Zebak zebakRoom;
   public Warden wardenRoom;
   public Akkha akkhaRoom;
-  public PalmRoom palmRoom;
   public Baba babaRoom;
   public Kephri kephriRoom;
   public NPC babaNPC;
@@ -196,7 +194,6 @@ public class Raids3Plugin extends Plugin {
       this.baboonRoom = new BaboonRoom(this.client, this);
       this.wardenRoom = new Warden(this.client, this);
       this.akkhaRoom = new Akkha(this.client, this.utility, this, this.config);
-      this.palmRoom = new PalmRoom(this.client, this.mouse, this.utility, this.config, this.chatMessageManager);
       this.babaRoom = new Baba(this.client, this.utility, this, this.config);
       this.kephriRoom = new Kephri(this.client, this.utility, this, this.config);
       this.prayerQue = new PrayerPriorityQue(this);
@@ -321,12 +318,8 @@ public class Raids3Plugin extends Plugin {
   @Subscribe
   public void onBeforeRender(BeforeRender br) {
     if (this.client.getGameState() == GameState.LOGGED_IN) {
-      if (this.currentRoom == TOA_Rooms.PALM_ROOM) {
-        this.palmRoom.onBeforeRender();
-      } else if (this.currentRoom == TOA_Rooms.AKKHA_ROOM) {
+      if (this.currentRoom == TOA_Rooms.AKKHA_ROOM) {
         this.akkhaRoom.onBeforeRender();
-      } else if (this.currentRoom == TOA_Rooms.BABOON_ROOM) {
-        this.baboonRoom.onBeforeRender();
       } else {
         boolean isAutoPrayerOn = false;
         switch(this.currentRoom) {
@@ -353,14 +346,6 @@ public class Raids3Plugin extends Plugin {
         this.prayerQue.HandleQue();
       }
     }
-  }
-
-  @Subscribe
-  private void onMenuOptionClicked(MenuOptionClicked event) {
-    if (this.currentRoom.equals(TOA_Rooms.PALM_ROOM)) {
-      this.palmRoom.onMenuOptionClicked(event);
-    }
-
   }
 
   @Subscribe
@@ -504,9 +489,6 @@ public class Raids3Plugin extends Plugin {
   @Subscribe
   public void onChatMessage(ChatMessage event) {
     if (event.getType() == ChatMessageType.GAMEMESSAGE) {
-      if (this.currentRoom == TOA_Rooms.PALM_ROOM) {
-        this.palmRoom.onChatMessage(event.getMessage());
-      }
 
       if (this.currentRoom == TOA_Rooms.PUZZLE_ROOM) {
         this.puzzleRoom.OnChatMessage(event.getMessage());
@@ -598,9 +580,6 @@ public class Raids3Plugin extends Plugin {
           this.UpdateRoomStatus(TOA_Rooms.PUZZLE_ROOM);
           break;
         case 45398:
-        case 45414:
-          this.palmRoom.onGameObjectSpawned(event.getGameObject());
-          break;
         case 45496:
           this.UpdateRoomStatus(TOA_Rooms.BABOON_ROOM);
           break;
@@ -638,7 +617,6 @@ public class Raids3Plugin extends Plugin {
   private void ResetRaid() {
     this.currentProtectionPrayer = null;
     this.wardenRoom.Reset();
-    this.palmRoom.Reset();
     this.puzzleRoom.Reset();
   }
 
