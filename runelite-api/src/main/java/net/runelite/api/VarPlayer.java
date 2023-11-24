@@ -240,4 +240,11 @@ public final class VarPlayer
 	 * Assigned slayer task location. The mapping of value to name can be found in {@link EnumID#SLAYER_TASK_LOCATION}
 	 */
 	public static final int SLAYER_TASK_LOCATION = 2096;
+
+	/**
+	 * Determines whether the woodcutting group bonus should be displayed on the buff bar or not.
+	 * 96 = displayed (including the woodcutting guild).
+	 * -1 = not displayed (including normal trees or trees grown through farming).
+	 */
+	public static final int BUFF_BAR_WC_GROUP_BONUS = 4007;
 }
