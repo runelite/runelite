@@ -15,7 +15,6 @@ import net.runelite.client.plugins.raids3.FloorPuzzle;
 import net.runelite.client.plugins.raids3.Raids3Config;
 import net.runelite.client.plugins.raids3.Raids3Plugin;
 import net.runelite.client.plugins.raids3.Timer;
-import net.runelite.client.plugins.raids3.Akkha.ButterflyTech.ButterflyTech;
 import net.runelite.client.plugins.raids3Util.Utility;
 
 public class Akkha {
@@ -42,7 +41,6 @@ public class Akkha {
   public HashMap<Point, HashMap<Integer, UnstableOrb>> unstableOrbs = new HashMap();
   public List<NPC> explodingOrbs = new ArrayList();
   HashMap<Integer, UnstableOrb> orbIndexMap = new HashMap();
-  ButterflyTech butterflyTech;
   int savedAkkhaID = 0;
   public Timer prayerSwitchDelayTimer = new Timer(651, 1200);
   int gearSwitchDelay;
@@ -54,18 +52,10 @@ public class Akkha {
     this.plugin = raids3Plugin;
     this.utility = utility;
     this.raids3Config = raids3Config;
-    this.butterflyTech = new ButterflyTech(client, raids3Plugin);
     this.gearSwitchDelay = utility.getRandomIntBetweenRange(1, 3);
   }
 
   public void onBeforeRender() {
-    if (this.raids3Config.AutoWalkMemoryBlast()) {
-      this.HandleAutoWalk();
-    }
-
-    if (this.raids3Config.AutoButterflyTechWalk()) {
-      this.butterflyTech.onBeforeRender();
-    }
 
     if (this.akkhaPrayerTimer.isDone()) {
       this.akkhaPrayerTimer.Reset();
@@ -77,9 +67,6 @@ public class Akkha {
   private void HandleAkkhaPrayers() {
     if (this.unstableOrbs.size() > 0) {
       this.plugin.currentProtectionPrayer = Prayer.PROTECT_FROM_MAGIC;
-      if (this.raids3Config.AkkhaAutoPrayer()) {
-        this.plugin.TurnOnPrayer(this.plugin.currentProtectionPrayer);
-      }
 
     } else if (this.plugin.akkhaNpc != null) {
       if (this.savedAkkhaID != this.plugin.akkhaNpc.getId()) {
@@ -99,10 +86,6 @@ public class Akkha {
           break;
         default:
           this.plugin.currentProtectionPrayer = null;
-      }
-
-      if (this.raids3Config.AkkhaAutoPrayer() && this.plugin.currentProtectionPrayer != null && this.prayerSwitchDelayTimer.isDone()) {
-        this.plugin.TurnOnPrayer(this.plugin.currentProtectionPrayer);
       }
 
     }
@@ -163,35 +146,11 @@ public class Akkha {
     return -vector1.getX() == vector2.getX() && -vector1.getY() == vector2.getY();
   }
 
-  private void HandleAutoWalk() {
-    if (this.akkhaFloorPuzzle.size() != 0 && this.akkhaMemoryTilesIndex < this.akkhaFloorPuzzle.size() && this.walkDelayTimer.isDone()) {
-      WorldPoint walkLocation = ((FloorPuzzle)this.akkhaFloorPuzzle.get(this.akkhaMemoryTilesIndex)).walkTileLocation;
-      LocalPoint currentLocation = LocalPoint.fromWorld(this.client, this.client.getLocalPlayer().getWorldLocation());
-      LocalPoint destinationLocation = this.client.getLocalDestinationLocation();
-      LocalPoint playerLocation;
-      if (destinationLocation == null) {
-        playerLocation = currentLocation;
-      } else {
-        playerLocation = destinationLocation;
-      }
-
-      if (playerLocation.getSceneX() != walkLocation.getX() || playerLocation.getSceneY() != walkLocation.getY()) {
-        this.walkDelayTimer.Reset();
-        this.plugin.mouse.ClickSceneTile(walkLocation, 5, 25);
-      }
-
-    }
-  }
-
   public void onGameTick() {
     if (this.plugin.akkhaNpc == null) {
       this.plugin.akkhaNpc = this.utility.FindNPC(11795);
     } else if (this.plugin.akkhaNpc.isDead()) {
       this.plugin.akkhaNpc = null;
-    }
-
-    if (this.plugin.config.AutoGearSwitching()) {
-      this.HandleAkkhaGearSwitching();
     }
 
     this.GrabUnstableOrbs();
@@ -212,9 +171,6 @@ public class Akkha {
       ++this.gameTickCt;
     }
 
-  }
-
-  public void HandleAkkhaGearSwitching() {
   }
 
   private void GrabUnstableOrbs() {
@@ -303,8 +259,6 @@ public class Akkha {
         this.floorSkullLocation.add(new WorldPoint(event.getGameObject().getLocalLocation().getSceneX(), event.getGameObject().getLocalLocation().getSceneY() - 1, 0));
         this.floorSkullLocation.add(new WorldPoint(event.getGameObject().getLocalLocation().getSceneX() - 1, event.getGameObject().getLocalLocation().getSceneY() - 1, 0));
         this.floor_Skull_Scene_Location = new Point(event.getGameObject().getLocalLocation().getSceneX(), event.getGameObject().getLocalLocation().getSceneY());
-        this.butterflyTech.BuildButterflyTechMap(this.floor_Skull_Scene_Location);
-        this.butterflyTech.currentButterflyTechRegion = this.butterflyTech.GetPlayerRegion();
         this.akkhaFloorPuzzle.add(new FloorPuzzle(45871, this.utility.findTileObject(event.getTile(), event.getGameObject().getId()), this.floorSkullLocation, new WorldPoint(event.getGameObject().getLocalLocation().getSceneX() - 1, event.getGameObject().getLocalLocation().getSceneY() - 1, event.getGameObject().getWorldLocation().getPlane())));
     }
 
@@ -316,14 +270,6 @@ public class Akkha {
     this.akkhaMemoryTilesIndex = 0;
     this.akkhaFloorPuzzle.clear();
     this.explodingOrbs.clear();
-    this.butterflyTech.onDeath();
-  }
-
-  public void onConfigChanged() {
-    if (this.raids3Config.AutoButterflyTechWalk()) {
-      this.butterflyTech.onConfigChanged();
-    }
-
   }
 
   public void onNpcChanged() {

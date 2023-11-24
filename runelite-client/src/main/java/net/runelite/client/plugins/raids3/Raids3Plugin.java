@@ -379,11 +379,6 @@ public class Raids3Plugin extends Plugin {
   }
 
   @Subscribe
-  public void onConfigChanged(ConfigChanged event) {
-    this.akkhaRoom.onConfigChanged();
-  }
-
-  @Subscribe
   public void onGameTick(GameTick event) {
     if (!this.npcManagerOn) {
       if (this.client.getGameState() == GameState.LOGGED_IN) {
@@ -686,50 +681,6 @@ public class Raids3Plugin extends Plugin {
   public void DebugLog(String message) {
     System.out.println(message);
   }
-
-  public void CreateChatMessage(String message) {
-    if (this.client.getGameState() == GameState.LOGGED_IN) {
-      String chatMessage = (new ChatMessageBuilder()).append(ChatColorType.HIGHLIGHT).append(Color.CYAN, "[1Up Raids3] - ").append(Color.BLACK, message).build();
-      this.chatMessageManager.queue(QueuedMessage.builder().type(ChatMessageType.GAMEMESSAGE).runeLiteFormattedMessage(chatMessage).build());
-    }
-  }
-
-//  public void SwitchGear(GearType gearType) {
-//    String macroName = "";
-//    switch(gearType) {
-//      case Magic:
-//        macroName = this.config.MagicGearMacro().toLowerCase();
-//        break;
-//      case Melee:
-//        macroName = this.config.MeleeGearMacro().toLowerCase();
-//        break;
-//      case Range:
-//        macroName = this.config.RangeGearMacro().toLowerCase();
-//    }
-//
-//    this.DebugLog("Switching Gear: " + gearType + " Macro Name: " + macroName);
-//    if (MacroCombatPlugin.macroCombatPlugin != null) {
-//      Iterator var3 = MacroCombatPlugin.macroCombatPlugin.macroData.macroProfiles.iterator();
-//
-//      while(var3.hasNext()) {
-//        MacroProfile macroProfile = (MacroProfile)var3.next();
-//        Iterator var5 = macroProfile.userMacros.iterator();
-//
-//        while(var5.hasNext()) {
-//          UserMacro userMacro = (UserMacro)var5.next();
-//          if (userMacro.macroName.equalsIgnoreCase(macroName)) {
-//            if (!MacroCombatPlugin.macroCombatPlugin.isEquipmentWorn(userMacro)) {
-//              this.DebugLog("--Switching--");
-//              MacroCombatPlugin.macroCombatPlugin.AddUserMacros(userMacro);
-//            } else {
-//              this.DebugLog("Already Equipped");
-//            }
-//          }
-//        }
-//      }
-//    }
-//
-//  }
 
   public void HandlePrayers() {
     boolean isMagicActive = this.client.isPrayerActive(Prayer.PROTECT_FROM_MAGIC);

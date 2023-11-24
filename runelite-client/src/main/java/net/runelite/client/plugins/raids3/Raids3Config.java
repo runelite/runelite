@@ -268,17 +268,6 @@ public interface Raids3Config extends Config {
   }
 
   @ConfigItem(
-      position = 1,
-      keyName = "AkkhaAutoPrayer",
-      name = "Auto Prayer",
-      description = "",
-      section = "AkkhaSection"
-  )
-  default boolean AkkhaAutoPrayer() {
-    return true;
-  }
-
-  @ConfigItem(
       position = 18,
       keyName = "MemoryBlast",
       name = "Highlight Memory Blast",
@@ -287,17 +276,6 @@ public interface Raids3Config extends Config {
   )
   default boolean MemoryBlast() {
     return true;
-  }
-
-  @ConfigItem(
-      position = 19,
-      keyName = "AutoWalkMemoryBlast",
-      name = "Auto Memory Blast",
-      description = "",
-      section = "AkkhaSection"
-  )
-  default boolean AutoWalkMemoryBlast() {
-    return false;
   }
 
   @ConfigItem(
@@ -1129,14 +1107,4 @@ public interface Raids3Config extends Config {
     return 4;
   }
 
-  @ConfigItem(
-      position = 90,
-      keyName = "AutoButterflyTechWalk",
-      name = "AutoButterflyTechWalk",
-      description = "AutoButterflyTechWalk",
-      hidden = true
-  )
-  default boolean AutoButterflyTechWalk() {
-    return false;
-  }
 }
