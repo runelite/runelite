@@ -215,6 +215,17 @@ public interface Raids3Config extends Config {
   }
 
   @ConfigItem(
+      position = 5,
+      keyName = "prayerSound",
+      name = "Prayer Sound",
+      description = "Should the old man help you?",
+      section = "PrayerOverlaySection"
+  )
+  default boolean prayerSound() {
+    return true;
+  }
+
+  @ConfigItem(
       position = 1,
       keyName = "HighlightWeakness",
       name = "Highlight Boss Weakness",

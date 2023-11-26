@@ -20,6 +20,7 @@ public class PrayerOverlay extends Overlay {
   private final Raids3Plugin plugin;
   private final Raids3Config config;
   private final ClientUI clientUI;
+  private boolean soundHasPlayed = false;
 
   @Inject
   PrayerOverlay(Client client, Raids3Plugin plugin, Raids3Config config, ClientUI clientUI) {
@@ -43,10 +44,19 @@ public class PrayerOverlay extends Overlay {
       }
 
       ImagePanelComponent imagePanelComponent = new ImagePanelComponent(this.config, this.plugin);
+
       if (!this.client.isPrayerActive(this.plugin.currentProtectionPrayer)) {
         imagePanelComponent.setBackgroundColor(this.config.WrongColor());
+
+        if (config.prayerSound()) {
+          if (!soundHasPlayed) {
+            SoundPlayer.playSound("/changePrayer.wav");
+            soundHasPlayed = true;
+          }
+        }
       } else {
         imagePanelComponent.setBackgroundColor(this.config.CorrectColor());
+        soundHasPlayed = false;
       }
 
       imagePanelComponent.setImage(prayerImage);

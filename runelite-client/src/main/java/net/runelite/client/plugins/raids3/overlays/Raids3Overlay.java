@@ -32,6 +32,8 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.outline.ModelOutlineRenderer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Raids3Overlay extends Overlay {
   private final Client client;
@@ -48,6 +50,8 @@ public class Raids3Overlay extends Overlay {
   private static final Color INTERACTING_COLOR;
   private static final int INTERACTING_SHIFT = -16;
   private static final Polygon ARROW_HEAD;
+  private static final Logger logger = LoggerFactory.getLogger(Raids3Overlay.class);
+
 
   public String getName() {
     return "Raids3Overlay";
@@ -275,13 +279,42 @@ public class Raids3Overlay extends Overlay {
   }
 
   private void LabelTile(Graphics2D graphics, LocalPoint localPoint, String text) {
+
+    // Additional logging for context
+    WorldPoint playerWorldLocation = client.getLocalPlayer().getWorldLocation();
+    LocalPoint playerLocalLocation = client.getLocalPlayer().getLocalLocation();
+    logger.debug("Player World Loc: {}, Player Local Loc: {}, Target Local Loc: {}",
+        playerWorldLocation, playerLocalLocation, localPoint);
+
+
+    // In the LabelTile method or similar location
+    WorldPoint worldPoint = WorldPoint.fromLocalInstance(this.client, localPoint);
+    logger.debug("WorldPoint for LocalPoint {}: {}", localPoint, worldPoint);
+
+    if (localPoint == null) {
+      logger.warn("LabelTile called with null LocalPoint");
+      return;
+    }
+
     Point canvasTextLocation = Perspective.getCanvasTextLocation(this.client, graphics, localPoint, text, this.client.getPlane());
+    if (canvasTextLocation == null) {
+      logger.warn("Canvas text location is null for LocalPoint: {}", localPoint);
+      return;
+    }
+
     Font savedFont = graphics.getFont();
     Font tickFont = new Font(this.config.TickFontType().getName(), 0, this.config.TickFontSize());
     graphics.setFont(tickFont);
-    OverlayUtil.renderTextLocation(graphics, canvasTextLocation, text, Color.white);
+
+    try {
+      OverlayUtil.renderTextLocation(graphics, canvasTextLocation, text, Color.white);
+    } catch (Exception e) {
+      logger.error("Error rendering text location", e);
+    }
+
     graphics.setFont(savedFont);
   }
+
 
   private void HandleBaboonRoom(Graphics2D graphics) {
     try {
