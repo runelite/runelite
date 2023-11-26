@@ -305,6 +305,9 @@ public class LootTrackerPlugin extends Plugin
 	private static final String THEATRE_OF_BLOOD = "Theatre of Blood";
 	private static final String TOMBS_OF_AMASCUT = "Tombs of Amascut";
 
+	private static final int FONT_OF_CONSUMPTION_REGION = 12106;
+	private static final String FONT_OF_CONSUMPTION_USE_MESSAGE = "You place the Unsired into the Font of Consumption...";
+
 	private static final Set<Character> VOWELS = ImmutableSet.of('a', 'e', 'i', 'o', 'u');
 
 	@Inject
@@ -1098,6 +1101,11 @@ public class LootTrackerPlugin extends Plugin
 		{
 			onInvChange(collectInvItems(LootRecordType.EVENT, client.getLocalPlayer().getInteracting().getName()));
 			return;
+		}
+
+		if (regionID == FONT_OF_CONSUMPTION_REGION && message.equals(FONT_OF_CONSUMPTION_USE_MESSAGE))
+		{
+			onInvChange(collectInvItems(LootRecordType.EVENT, "Unsired"));
 		}
 	}
 
