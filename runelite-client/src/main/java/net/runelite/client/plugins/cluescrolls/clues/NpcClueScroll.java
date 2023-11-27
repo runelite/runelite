@@ -25,8 +25,15 @@
 package net.runelite.client.plugins.cluescrolls.clues;
 
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
+import javax.annotation.Nullable;
 
 public interface NpcClueScroll
 {
 	String[] getNpcs(ClueScrollPlugin plugin);
+
+	@Nullable
+	default int[] getNpcRegions()
+	{
+		return null;
+	}
 }
