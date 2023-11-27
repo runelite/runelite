@@ -940,7 +940,7 @@ public class TimersPlugin extends Plugin
 			createGameTimer(LIQUID_ADRENALINE);
 		}
 
-		if(message.equals(UNDYING_RETRIBUTION_MESSAGE) && config.showUndyingRetribution())
+		if (message.equals(UNDYING_RETRIBUTION_MESSAGE) && config.showUndyingRetribution())
 		{
 			createGameTimer(UNDYING_RETRIBUTION);
 		}
