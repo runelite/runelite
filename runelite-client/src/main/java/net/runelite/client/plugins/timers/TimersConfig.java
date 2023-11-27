@@ -353,4 +353,14 @@ public interface TimersConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			keyName = "showUndyingRetribution",
+			name = "Undying Retribution",
+			description = "Configures whether Undying Retribution timer is displayed"
+	)
+	default boolean showUndyingRetribution()
+	{
+		return true;
+	}
 }
