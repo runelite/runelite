@@ -251,6 +251,7 @@ id=231
 head_model=2
 name=4
 text=6
+click_here_to_continue=5
 
 [dialog_option]
 id=219

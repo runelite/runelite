@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.timetracking.farming;
 
+import java.util.Objects;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.AccessLevel;
@@ -31,12 +32,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetModelType;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.timetracking.TimeTrackingConfig;
+import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.ScriptID;
 
 @Slf4j
 @RequiredArgsConstructor(
@@ -53,41 +57,89 @@ public class PaymentTracker
 	private final ConfigManager configManager;
 	private final FarmingWorld farmingWorld;
 
+	private int chosenPatch = -1;
+	private boolean widgetActive = false;
+
 	@Subscribe
 	public void onGameTick(GameTick gameTick)
 	{
-		Widget text = client.getWidget(ComponentID.DIALOG_NPC_TEXT);
-		if (text == null || (!PAYMENT_MALE.equals(text.getText()) && !PAYMENT_FEMALE.equals(text.getText())))
+		Widget npcTextWidget = client.getWidget(ComponentID.DIALOG_NPC_TEXT);
+		Widget npcNameWidget = client.getWidget(ComponentID.DIALOG_NPC_NAME);
+		Widget npcHeadWidget = client.getWidget(ComponentID.DIALOG_NPC_HEAD_MODEL);
+
+		if (npcTextWidget == null || (!PAYMENT_MALE.equals(npcTextWidget.getText()) && !PAYMENT_FEMALE.equals(npcTextWidget.getText())))
 		{
 			return;
 		}
 
-		Widget name = client.getWidget(ComponentID.DIALOG_NPC_NAME);
-		Widget head = client.getWidget(ComponentID.DIALOG_NPC_HEAD_MODEL);
-		if (name == null || head == null || head.getModelType() != WidgetModelType.NPC_CHATHEAD)
+		if (npcNameWidget == null || npcHeadWidget == null || npcHeadWidget.getModelType() != WidgetModelType.NPC_CHATHEAD)
 		{
 			return;
 		}
 
-		final int npcId = head.getModelId();
+		final int npcId = npcHeadWidget.getModelId();
+
+		if (chosenPatch == -1)
+		{
+			log.debug("No chosen patch to protect for {} ({})", npcNameWidget.getText(), npcId);
+		}
+
 		final FarmingPatch patch = findPatchForNpc(npcId);
-		if (patch == null)
+
+		if (patch == null || getProtectedState(patch))
 		{
 			return;
 		}
 
-		if (getProtectedState(patch))
-		{
-			return;
-		}
-
-		log.debug("Detected patch payment for {} ({})", name.getText(), npcId);
+		log.debug("Detected patch payment for {} ({})", npcNameWidget.getText(), npcId);
 		setProtectedState(patch, true);
 	}
 
 	private static String configKey(FarmingPatch fp)
 	{
 		return fp.configKey() + "." + TimeTrackingConfig.PROTECTED;
+	}
+
+	@Subscribe
+	public void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
+	{
+		switch (menuOptionClicked.getMenuAction())
+		{
+			case NPC_THIRD_OPTION:
+				chosenPatch = 1;
+				break;
+			case NPC_FOURTH_OPTION:
+				chosenPatch = 2;
+				break;
+			case WIDGET_CONTINUE:
+				chosenPatch = (menuOptionClicked.getActionParam() != 1 && menuOptionClicked.getActionParam() != 2) ? -1 : menuOptionClicked.getActionParam();
+				break;
+			default:
+				chosenPatch = -1;
+		}
+	}
+
+	@Subscribe
+	public void onScriptPreFired(ScriptPreFired event)
+	{
+		if (event.getScriptId() != ScriptID.KEYINPUT_MATCHED)
+		{
+			return;
+		}
+
+		int pressedKey = client.getIntStack()[1];
+		int componentID = client.getIntStack()[0];
+
+		if ((pressedKey == 1 || pressedKey == 2) && widgetActive)
+		{
+			chosenPatch = pressedKey;
+			widgetActive = false;
+		}
+
+		if (componentID == ComponentID.DIALOG_NPC_CLICK_HERE_TO_CONTINUE)
+		{
+			widgetActive = true;
+		}
 	}
 
 	public void setProtectedState(FarmingPatch fp, boolean state)
@@ -110,25 +162,31 @@ public class PaymentTracker
 			Boolean.class));
 	}
 
+	private boolean isItTheCorrectPatch(FarmingPatch patch)
+	{
+		if (chosenPatch == 1 && (Objects.equals(patch.getName(), "North") || Objects.equals(patch.getName(), "North West")))
+		{
+			return true;
+		}
+		else return chosenPatch == 2 && (Objects.equals(patch.getName(), "South") || Objects.equals(patch.getName(), "South East"));
+	}
+
 	private FarmingPatch findPatchForNpc(int npcId)
 	{
 		FarmingPatch p = null;
+
 		for (FarmingRegion region : farmingWorld.getRegionsForLocation(client.getLocalPlayer().getWorldLocation()))
 		{
 			for (FarmingPatch patch : region.getPatches())
 			{
-				if (patch.getFarmer() == npcId)
+				if (patch.getFarmer() == npcId && isItTheCorrectPatch(patch))
 				{
-					if (p != null)
-					{
-						log.debug("Ambiguous payment to {} between {} and {}", npcId, p, patch);
-						return null;
-					}
-
 					p = patch;
 				}
 			}
 		}
+
+		chosenPatch = -1;
 		return p;
 	}
 }

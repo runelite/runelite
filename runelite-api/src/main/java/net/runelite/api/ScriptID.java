@@ -228,6 +228,12 @@ public final class ScriptID
 	public static final int GE_ITEM_SEARCH = 752;
 
 	/**
+	 * Catches the hotkey pressed by user
+	 */
+	@ScriptArguments(integer = 8)
+	public static final int KEYINPUT_MATCHED = 2153;
+
+	/**
 	 * On load listener for building the quest list interface
 	 */
 	@ScriptArguments(integer = 8)
