@@ -106,6 +106,9 @@ public class RaidsPlugin extends Plugin
 	private static final int SECOND_FLOOR_PLANE = 2;
 	private static final int ROOMS_PER_PLANE = 8;
 	private static final int AMOUNT_OF_ROOMS_PER_X_AXIS_PER_PLANE = 4;
+
+	/** Varbit value when raid reloading */
+	private static final int RAID_RELOADING = 5;
 	private static final String RAID_START_MESSAGE = "The raid has begun!";
 	private static final String LEVEL_COMPLETE_MESSAGE = "level complete!";
 	private static final String RAID_COMPLETE_MESSAGE = "Congratulations - your raid is complete!";
@@ -197,6 +200,8 @@ public class RaidsPlugin extends Plugin
 	boolean checkInRaid;
 	private boolean loggedIn;
 
+	private boolean reloading;
+
 	@Provides
 	RaidsConfig provideConfig(ConfigManager configManager)
 	{
@@ -276,6 +281,22 @@ public class RaidsPlugin extends Plugin
 			}
 
 			inRaidChambers = tempInRaid;
+		}
+
+		if (event.getVarbitId() == Varbits.RAID_STATE)
+		{
+			if (reloading)
+			{
+				log.debug("Reloading raid");
+				reloading = false;
+				reset();
+				checkRaidPresence();
+			}
+			else
+			{
+				reloading = client.getVarbitValue(Varbits.RAID_STATE) == RAID_RELOADING;
+			}
+
 		}
 	}
 
