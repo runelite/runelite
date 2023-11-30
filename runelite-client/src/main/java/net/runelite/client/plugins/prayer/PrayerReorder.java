@@ -118,6 +118,7 @@ class PrayerReorder
 	{
 		reordering = false;
 		clearPrayerTabMenus();
+		clientThread.invokeLater(() -> rebuildPrayers(false));
 		clientThread.invokeLater(this::redrawPrayers);
 	}
 

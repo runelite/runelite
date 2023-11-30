@@ -92,27 +92,40 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 		item(ItemID.GILDED_PICKAXE),
 		item(ItemID._3RD_AGE_PICKAXE),
 		item(ItemID.CRYSTAL_PICKAXE),
-		item(ItemID.CRYSTAL_PICKAXE_INACTIVE)
+		item(ItemID.CRYSTAL_PICKAXE_INACTIVE),
+		item(ItemID.TRAILBLAZER_PICKAXE)
 	);
 
 	private static final AnyRequirementCollection ANY_AXE = any("Any Axe",
 		item(ItemID.BRONZE_AXE),
+		item(ItemID.BRONZE_FELLING_AXE),
 		item(ItemID.IRON_AXE),
+		item(ItemID.IRON_FELLING_AXE),
 		item(ItemID.STEEL_AXE),
+		item(ItemID.STEEL_FELLING_AXE),
 		item(ItemID.BLACK_AXE),
+		item(ItemID.BLACK_FELLING_AXE),
 		item(ItemID.MITHRIL_AXE),
+		item(ItemID.MITHRIL_FELLING_AXE),
 		item(ItemID.ADAMANT_AXE),
+		item(ItemID.ADAMANT_FELLING_AXE),
 		item(ItemID.RUNE_AXE),
+		item(ItemID.RUNE_FELLING_AXE),
 		item(ItemID.DRAGON_AXE),
 		item(ItemID.DRAGON_AXE_OR),
+		item(ItemID.DRAGON_FELLING_AXE),
 		item(ItemID.INFERNAL_AXE),
 		item(ItemID.INFERNAL_AXE_OR),
 		item(ItemID.INFERNAL_AXE_UNCHARGED),
 		item(ItemID.INFERNAL_AXE_UNCHARGED_25371),
 		item(ItemID.GILDED_AXE),
 		item(ItemID._3RD_AGE_AXE),
+		item(ItemID._3RD_AGE_FELLING_AXE),
 		item(ItemID.CRYSTAL_AXE),
-		item(ItemID.CRYSTAL_AXE_INACTIVE)
+		item(ItemID.CRYSTAL_AXE_INACTIVE),
+		item(ItemID.CRYSTAL_FELLING_AXE),
+		item(ItemID.CRYSTAL_FELLING_AXE_INACTIVE),
+		item(ItemID.TRAILBLAZER_AXE)
 	);
 
 	private static final AnyRequirementCollection ANY_HARPOON = any("Harpoon",
@@ -125,7 +138,8 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 		item(ItemID.INFERNAL_HARPOON_UNCHARGED),
 		item(ItemID.INFERNAL_HARPOON_UNCHARGED_25367),
 		item(ItemID.CRYSTAL_HARPOON),
-		item(ItemID.CRYSTAL_HARPOON_INACTIVE)
+		item(ItemID.CRYSTAL_HARPOON_INACTIVE),
+		item(ItemID.TRAILBLAZER_HARPOON)
 	);
 
 	private static final AnyRequirementCollection ANY_HAMMER = any("Hammer",
