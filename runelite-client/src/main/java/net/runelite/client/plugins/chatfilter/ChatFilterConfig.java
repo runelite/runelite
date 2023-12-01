@@ -175,4 +175,15 @@ public interface ChatFilterConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+			keyName = "filterUsersMessagesAfterViolation",
+			name = "Filter Violators",
+			description = "Filter a player's future messages if they violate a configured filter",
+			position = 14
+	)
+	default boolean filterUsersMessagesAfterViolation()
+	{
+		return true;
+	}
 }

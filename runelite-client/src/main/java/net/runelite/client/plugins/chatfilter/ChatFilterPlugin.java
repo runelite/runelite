@@ -32,6 +32,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -97,6 +98,7 @@ public class ChatFilterPlugin extends Plugin
 	private final CharMatcher jagexPrintableCharMatcher = Text.JAGEX_PRINTABLE_CHAR_MATCHER;
 	private List<Pattern> filteredPatterns = Collections.emptyList();
 	private List<Pattern> filteredNamePatterns = Collections.emptyList();
+	private HashSet<String> playersInViolation = new HashSet<>();
 
 	private static class Duplicate
 	{
@@ -139,6 +141,7 @@ public class ChatFilterPlugin extends Plugin
 	{
 		filteredPatterns = Collections.emptyList();
 		filteredNamePatterns = Collections.emptyList();
+		playersInViolation.clear();
 		client.refreshChat();
 	}
 
@@ -171,6 +174,7 @@ public class ChatFilterPlugin extends Plugin
 		final int messageType = intStack[intStackSize - 2];
 		final int messageId = intStack[intStackSize - 1];
 		String message = stringStack[stringStackSize - 1];
+		String originalMessage = message;
 
 		ChatMessageType chatMessageType = ChatMessageType.of(messageType);
 		final MessageNode messageNode = client.getMessages().get(messageId);
@@ -211,6 +215,11 @@ public class ChatFilterPlugin extends Plugin
 					blockMessage = message == null;
 				}
 				break;
+		}
+
+		if (!Objects.equals(message, originalMessage))
+		{
+			playersInViolation.add(name);
 		}
 
 		boolean shouldCollapse = chatMessageType == PUBLICCHAT || chatMessageType == MODCHAT
@@ -398,6 +407,7 @@ public class ChatFilterPlugin extends Plugin
 
 		filteredPatterns = patterns;
 		filteredNamePatterns = namePatterns;
+		playersInViolation.clear();
 	}
 
 	private String stripAccents(String input)
@@ -434,6 +444,11 @@ public class ChatFilterPlugin extends Plugin
 	@VisibleForTesting
 	boolean shouldFilterByName(final String playerName)
 	{
+		if (config.filterUsersMessagesAfterViolation() && playersInViolation.contains(playerName))
+		{
+			return true;
+		}
+
 		String sanitizedName = Text.standardize(playerName);
 		for (Pattern pattern : filteredNamePatterns)
 		{
