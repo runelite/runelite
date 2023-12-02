@@ -30,9 +30,7 @@ import com.google.common.collect.Lists;
 import com.google.common.primitives.Shorts;
 import com.google.inject.Provides;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -46,14 +44,11 @@ import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
-import net.runelite.api.ScriptID;
-import net.runelite.api.SpriteID;
 import net.runelite.api.VarClientStr;
 import net.runelite.api.events.GrandExchangeSearched;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ScriptCallbackEvent;
-import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
@@ -86,11 +81,6 @@ public class BankTagsPlugin extends Plugin
 	public static final String ICON_SEARCH = "icon_";
 	public static final String TAG_TABS_CONFIG = "tagtabs";
 	public static final String VAR_TAG_SUFFIX = "*";
-	private static final int ITEMS_PER_ROW = 8;
-	private static final int ITEM_VERTICAL_SPACING = 36;
-	private static final int ITEM_HORIZONTAL_SPACING = 48;
-	private static final int ITEM_ROW_START = 51;
-	private static final int ITEM_CONTAINER_BOTTOM_PADDING = 4;
 
 	private static final int MAX_RESULT_COUNT = 250;
 
@@ -439,60 +429,6 @@ public class BankTagsPlugin extends Plugin
 		if (configChanged.getGroup().equals(CONFIG_GROUP) && configChanged.getKey().equals("useTabs"))
 		{
 			clientThread.invokeLater(this::reinitBank);
-		}
-	}
-
-	@Subscribe
-	public void onScriptPostFired(ScriptPostFired event)
-	{
-		if (event.getScriptId() != ScriptID.BANKMAIN_BUILD)
-		{
-			return;
-		}
-
-		Widget itemContainer = client.getWidget(ComponentID.BANK_ITEM_CONTAINER);
-		if (itemContainer == null)
-		{
-			return;
-		}
-
-		if (!tabInterface.isActive() || !config.removeSeparators())
-		{
-			return;
-		}
-
-		int items = 0;
-
-		Widget[] containerChildren = itemContainer.getDynamicChildren();
-
-		// sort the child array as the items are not in the displayed order
-		Arrays.sort(containerChildren, Comparator.comparingInt(Widget::getOriginalY)
-			.thenComparingInt(Widget::getOriginalX));
-
-		for (Widget child : containerChildren)
-		{
-			if (child.getItemId() != -1 && !child.isHidden())
-			{
-				// calculate correct item position as if this was a normal tab
-				int adjYOffset = (items / ITEMS_PER_ROW) * ITEM_VERTICAL_SPACING;
-				int adjXOffset = (items % ITEMS_PER_ROW) * ITEM_HORIZONTAL_SPACING + ITEM_ROW_START;
-
-				if (child.getOriginalY() != adjYOffset || child.getOriginalX() != adjXOffset)
-				{
-					child.setOriginalY(adjYOffset);
-					child.setOriginalX(adjXOffset);
-					child.revalidate();
-				}
-
-				items++;
-			}
-
-			// separator line or tab text
-			if (child.getSpriteId() == SpriteID.RESIZEABLE_MODE_SIDE_PANEL_BACKGROUND
-				|| child.getText().contains("Tab"))
-			{
-				child.setHidden(true);
-			}
 		}
 	}
 }

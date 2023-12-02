@@ -38,6 +38,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -62,6 +63,7 @@ import net.runelite.api.MenuEntry;
 import net.runelite.api.ScriptEvent;
 import net.runelite.api.ScriptID;
 import net.runelite.api.SoundEffectID;
+import net.runelite.api.SpriteID;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.DraggingWidgetChanged;
 import net.runelite.api.events.MenuEntryAdded;
@@ -261,6 +263,11 @@ public class TabInterface
 				bankTitle.setText("Tag tab <col=ff0000>" + activeTab.getTag() + "</col>");
 			}
 
+			if (activeTab != null && config.removeSeparators())
+			{
+				removeSeparators();
+			}
+
 			// Recompute scroll size. Only required for tag tab tab and with remove separators, to remove the
 			// space that the separators took.
 			if (tagTabActive || (activeTab != null && config.removeSeparators()))
@@ -396,6 +403,43 @@ public class TabInterface
 		upButton = downButton = newTab = tabLayer = null;
 
 		tabManager.clear();
+	}
+
+	private void removeSeparators()
+	{
+		Widget itemContainer = client.getWidget(ComponentID.BANK_ITEM_CONTAINER);
+		Widget[] containerChildren = itemContainer.getDynamicChildren();
+
+		// sort the child array as the items are not in the displayed order
+		Arrays.sort(containerChildren, Comparator.comparingInt(Widget::getOriginalY)
+			.thenComparingInt(Widget::getOriginalX));
+
+		int items = 0;
+		for (Widget child : containerChildren)
+		{
+			if (child.getItemId() != -1 && !child.isHidden())
+			{
+				// calculate correct item position as if this was a normal tab
+				int adjYOffset = (items / BANK_ITEMS_PER_ROW) * (BANK_ITEM_HEIGHT + BANK_ITEM_Y_PADDING);
+				int adjXOffset = (items % BANK_ITEMS_PER_ROW) * (BANK_ITEM_WIDTH + BANK_ITEM_X_PADDING) + BANK_ITEM_START_X;
+
+				if (child.getOriginalY() != adjYOffset || child.getOriginalX() != adjXOffset)
+				{
+					child.setOriginalY(adjYOffset);
+					child.setOriginalX(adjXOffset);
+					child.revalidate();
+				}
+
+				items++;
+			}
+
+			// separator line or tab text
+			if (child.getSpriteId() == SpriteID.RESIZEABLE_MODE_SIDE_PANEL_BACKGROUND
+				|| child.getText().contains("Tab"))
+			{
+				child.setHidden(true);
+			}
+		}
 	}
 
 	private void handleDeposit(MenuOptionClicked event, boolean inventory)
