@@ -112,9 +112,8 @@ public interface Widget
 
 	/**
 	 * Gets a dynamic child by index
-	 *
-	 * @throws IndexOutOfBoundsException if the index is outside of the child array
 	 */
+	@Nullable
 	Widget getChild(int index);
 
 	/**

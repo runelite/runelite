@@ -66,7 +66,6 @@ import net.runelite.api.Varbits;
 import net.runelite.api.events.DraggingWidgetChanged;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.widgets.ComponentID;
@@ -75,7 +74,6 @@ import net.runelite.api.widgets.ItemQuantityMode;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetConfig;
-import net.runelite.api.widgets.WidgetPositionMode;
 import net.runelite.api.widgets.WidgetSizeMode;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
@@ -154,6 +152,7 @@ public class TabInterface
 	private TagTab activeTab;
 	@Getter
 	private boolean tagTabActive;
+	private int tagTabFirstChildIdx = -1;
 	private int currentTabIndex;
 	private Instant startScroll = Instant.now();
 
@@ -161,7 +160,6 @@ public class TabInterface
 	private Widget downButton;
 	private Widget newTab;
 	private Widget tabLayer;
-	private Widget tabTabLayer;
 
 	@Inject
 	private TabInterface(
@@ -237,27 +235,56 @@ public class TabInterface
 				closeTag(false);
 			}
 		}
-	}
-
-	@Subscribe
-	public void onScriptPostFired(ScriptPostFired event)
-	{
-		if (event.getScriptId() == ScriptID.BANKMAIN_BUILD && enabled)
+		else if (event.getScriptId() == ScriptID.BANKMAIN_FINISHBUILDING && enabled)
 		{
 			if (tagTabActive)
 			{
-				rebuildTagTabTab();
-				tabTabLayer.setHidden(false);
-				client.getWidget(ComponentID.BANK_ITEM_CONTAINER).setHidden(true);
-			}
-			else
-			{
-				tabTabLayer.setHidden(true);
-				client.getWidget(ComponentID.BANK_ITEM_CONTAINER).setHidden(false);
+				hideBank();
 			}
 
 			resizeTabLayer();
 			rebuildTabs();
+			rebuildTagTabTab();
+
+			// Since we apply tag tab search filters even when the bank is not in search mode,
+			// bankkmain_build will reset the bank title to "The Bank of Gielinor". So apply our
+			// own title.
+			if (tagTabActive)
+			{
+				// Tag tab tab has its own title since it isn't a real tag
+				Widget bankTitle = client.getWidget(ComponentID.BANK_TITLE_BAR);
+				bankTitle.setText("Tag tab tab");
+			}
+			else if (activeTab != null)
+			{
+				Widget bankTitle = client.getWidget(ComponentID.BANK_TITLE_BAR);
+				bankTitle.setText("Tag tab <col=ff0000>" + activeTab.getTag() + "</col>");
+			}
+
+			// Recompute scroll size. Only required for tag tab tab and with remove separators, to remove the
+			// space that the separators took.
+			if (tagTabActive || (activeTab != null && config.removeSeparators()))
+			{
+				Widget itemContainer = client.getWidget(ComponentID.BANK_ITEM_CONTAINER);
+				int items = 0;
+				for (Widget child : itemContainer.getChildren())
+				{
+					if (child != null && child.getItemId() != -1 && !child.isHidden())
+					{
+						++items;
+					}
+				}
+
+				// New scroll height for if_setscrollsize
+				final int adjustedScrollHeight = (Math.max(0, items - 1) / BANK_ITEMS_PER_ROW) * (BANK_ITEM_HEIGHT + BANK_ITEM_Y_PADDING) +
+					(BANK_ITEM_HEIGHT + BANK_ITEM_Y_PADDING) + BANK_ITEM_Y_PADDING;
+
+				// This is prior to bankmain_finishbuilding running, so the arguments are still on the stack. Overwrite
+				// argument int12 (7 from the end) which is the height passed to if_setscrollsize
+				final int[] intStack = client.getIntStack();
+				final int intStackSize = client.getIntStackSize();
+				intStack[intStackSize - 7] = adjustedScrollHeight;
+			}
 		}
 	}
 
@@ -267,9 +294,10 @@ public class TabInterface
 		if (event.getGroupId() == InterfaceID.BANK && event.isUnload())
 		{
 			enabled = false;
-			upButton = downButton = newTab = tabLayer = tabTabLayer = null;
+			upButton = downButton = newTab = tabLayer = null;
 			activeTab = null;
 			tagTabActive = false;
+			tagTabFirstChildIdx = -1;
 		}
 	}
 
@@ -283,15 +311,6 @@ public class TabInterface
 		tabLayer.setHasListener(true);
 		tabLayer.setNoScrollThrough(true);
 		tabLayer.setOnScrollWheelListener((JavaScriptCallback) (event) -> scrollTab(event.getMouseY()));
-
-		tabTabLayer = parent.createStaticChild(WidgetType.LAYER);
-		tabTabLayer.setOriginalX(1);
-		tabTabLayer.setOriginalY(39);
-		tabTabLayer.setYPositionMode(WidgetPositionMode.ABSOLUTE_RIGHT);
-		tabTabLayer.setOriginalWidth(460);
-		tabTabLayer.setOriginalHeight(81);
-		tabTabLayer.setHeightMode(WidgetSizeMode.MINUS);
-		tabTabLayer.setHidden(true);
 
 		upButton = createGraphic(parent, "", TabSprites.UP_ARROW.getSpriteId(), -1, TAB_WIDTH, BUTTON_HEIGHT, MARGIN, 0, true);
 		upButton.setAction(1, SCROLL_UP);
@@ -374,8 +393,7 @@ public class TabInterface
 		downButton.setHidden(true);
 		newTab.setHidden(true);
 		tabLayer.setHidden(true);
-		tabTabLayer.setHidden(true);
-		upButton = downButton = newTab = tabLayer = tabTabLayer = null;
+		upButton = downButton = newTab = tabLayer = null;
 
 		tabManager.clear();
 	}
@@ -679,7 +697,8 @@ public class TabInterface
 		// is dragging widget and mouse button released
 		if (client.getMouseCurrentButton() == 0)
 		{
-			if (draggedWidget.getId() == ComponentID.BANK_ITEM_CONTAINER
+			if (!tagTabActive
+				&& draggedWidget.getId() == ComponentID.BANK_ITEM_CONTAINER
 				&& draggedWidget.getItemId() != -1
 				&& draggedOn.getId() == tabLayer.getId())
 			{
@@ -687,7 +706,7 @@ public class TabInterface
 				tagManager.addTag(draggedWidget.getItemId(), draggedOn.getName(), shiftDown);
 				reloadActiveTab();
 			}
-			else if ((draggedWidget.getId() == tabTabLayer.getId() && draggedOn.getId() == tabTabLayer.getId())
+			else if ((tagTabActive && draggedWidget.getId() == ComponentID.BANK_ITEM_CONTAINER && draggedOn.getId() == ComponentID.BANK_ITEM_CONTAINER)
 				|| (tabLayer.getId() == draggedOn.getId() && tabLayer.getId() == draggedWidget.getId()))
 			{
 				// Reorder tag tabs
@@ -996,19 +1015,47 @@ public class TabInterface
 		int itemY = BANK_ITEM_START_Y;
 		int rowIndex = 0;
 
-		tabTabLayer.deleteAllChildren();
+		// tabs are stored at the end of the item container to avoid interfering with the real items,
+		// this is easier than making a layer for them because the bank scrollbar has to be adjusted
+		// otherwise for the new layer
+		Widget parent = client.getWidget(ComponentID.BANK_ITEM_CONTAINER);
+		if (tagTabFirstChildIdx == -1)
+		{
+			tagTabFirstChildIdx = parent.getChildren().length;
+		}
+
+		int idx = tagTabFirstChildIdx;
+		Widget w;
+		while ((w = parent.getChild(idx++)) != null)
+		{
+			w.setHidden(true);
+		}
+
+		if (!tagTabActive)
+		{
+			return;
+		}
+
+		idx = tagTabFirstChildIdx;
 		for (TagTab tagTab : tabManager.getTabs())
 		{
-			Widget menu = createGraphic(
-				tabTabLayer,
-				ColorUtil.wrapWithColorTag(tagTab.getTag(), HILIGHT_COLOR),
-				-1,
-				tagTab.getIconItemId(),
-				BANK_ITEM_WIDTH, BANK_ITEM_HEIGHT,
-				itemX, itemY,
-				true);
+			Widget menu = parent.getChild(idx++);
+			if (menu == null)
+			{
+				menu = parent.createChild(-1, WidgetType.GRAPHIC);
+				menu.setOriginalWidth(BANK_ITEM_WIDTH);
+				menu.setOriginalHeight(BANK_ITEM_HEIGHT);
+			}
+			menu.setHidden(false);
+			menu.setOriginalX(itemX);
+			menu.setOriginalY(itemY);
+			menu.setName(ColorUtil.wrapWithColorTag(tagTab.getTag(), HILIGHT_COLOR));
+			menu.setItemId(tagTab.getIconItemId());
+			menu.setItemQuantity(-1);
+			menu.setBorderType(1);
 			addTabActions(menu);
 			addTabOptions(menu);
+			menu.revalidate();
 
 			rowIndex++;
 			if (rowIndex == BANK_ITEMS_PER_ROW)
@@ -1021,6 +1068,16 @@ public class TabInterface
 			{
 				itemX += BANK_ITEM_X_PADDING + BANK_ITEM_WIDTH;
 			}
+		}
+	}
+
+	private void hideBank()
+	{
+		// hide the items & the separators
+		Widget parent = client.getWidget(ComponentID.BANK_ITEM_CONTAINER);
+		for (Widget w : parent.getChildren())
+		{
+			w.setHidden(true);
 		}
 	}
 

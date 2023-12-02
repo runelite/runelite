@@ -54,7 +54,6 @@ import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.ScriptPostFired;
-import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
@@ -440,56 +439,6 @@ public class BankTagsPlugin extends Plugin
 		if (configChanged.getGroup().equals(CONFIG_GROUP) && configChanged.getKey().equals("useTabs"))
 		{
 			clientThread.invokeLater(this::reinitBank);
-		}
-	}
-
-	@Subscribe
-	public void onScriptPreFired(ScriptPreFired event)
-	{
-		int scriptId = event.getScriptId();
-		if (scriptId == ScriptID.BANKMAIN_FINISHBUILDING)
-		{
-			// Since we apply tag tab search filters even when the bank is not in search mode,
-			// bankkmain_build will reset the bank title to "The Bank of Gielinor". So apply our
-			// own title.
-			TagTab activeTab = tabInterface.getActiveTab();
-			if (tabInterface.isTagTabActive())
-			{
-				// Tag tab tab has its own title since it isn't a real tag
-				Widget bankTitle = client.getWidget(ComponentID.BANK_TITLE_BAR);
-				bankTitle.setText("Tag tab tab");
-			}
-			else if (activeTab != null)
-			{
-				Widget bankTitle = client.getWidget(ComponentID.BANK_TITLE_BAR);
-				bankTitle.setText("Tag tab <col=ff0000>" + activeTab.getTag() + "</col>");
-			}
-
-			// Recompute scroll size. Only required for tag tab tab and with remove separators, to remove the
-			// space that the separators took.
-			if (tabInterface.isTagTabActive() || (tabInterface.isActive() && config.removeSeparators()))
-			{
-				Widget itemContainer = client.getWidget(ComponentID.BANK_ITEM_CONTAINER);
-				Widget[] children = itemContainer.getChildren();
-				int items = 0;
-				for (Widget child : children)
-				{
-					if (child != null && child.getItemId() != -1 && !child.isHidden())
-					{
-						++items;
-					}
-				}
-
-				// New scroll height for if_setscrollsize
-				final int adjustedScrollHeight = (Math.max(0, items - 1) / ITEMS_PER_ROW) * ITEM_VERTICAL_SPACING +
-					ITEM_VERTICAL_SPACING + ITEM_CONTAINER_BOTTOM_PADDING;
-
-				// This is prior to bankmain_finishbuilding running, so the arguments are still on the stack. Overwrite
-				// argument int12 (7 from the end) which is the height passed to if_setscrollsize
-				final int[] intStack = client.getIntStack();
-				final int intStackSize = client.getIntStackSize();
-				intStack[intStackSize - 7] = adjustedScrollHeight;
-			}
 		}
 	}
 
