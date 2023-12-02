@@ -175,6 +175,7 @@ public final class ScriptID
 	 * because you need an op listener attached to it for it to work
 	 */
 	@ScriptArguments()
+	@Deprecated
 	public static final int NULL = 10003;
 
 	/**

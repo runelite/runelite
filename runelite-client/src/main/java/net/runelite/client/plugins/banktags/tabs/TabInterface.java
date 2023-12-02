@@ -319,21 +319,24 @@ public class TabInterface
 		tabLayer.setNoScrollThrough(true);
 		tabLayer.setOnScrollWheelListener((JavaScriptCallback) (event) -> scrollTab(event.getMouseY()));
 
-		upButton = createGraphic(parent, "", TabSprites.UP_ARROW.getSpriteId(), -1, TAB_WIDTH, BUTTON_HEIGHT, MARGIN, 0, true);
+		upButton = createGraphic(parent, "", TabSprites.UP_ARROW.getSpriteId(), -1, TAB_WIDTH, BUTTON_HEIGHT, MARGIN, 0);
 		upButton.setAction(1, SCROLL_UP);
 		int clickmask = upButton.getClickMask();
 		clickmask |= WidgetConfig.DRAG;
 		upButton.setClickMask(clickmask);
+		upButton.setHasListener(true);
 		upButton.setOnOpListener((JavaScriptCallback) (event) -> scrollTab(-1));
 
-		downButton = createGraphic(parent, "", TabSprites.DOWN_ARROW.getSpriteId(), -1, TAB_WIDTH, BUTTON_HEIGHT, MARGIN, 0, true);
+		downButton = createGraphic(parent, "", TabSprites.DOWN_ARROW.getSpriteId(), -1, TAB_WIDTH, BUTTON_HEIGHT, MARGIN, 0);
 		downButton.setAction(1, SCROLL_DOWN);
 		clickmask = downButton.getClickMask();
 		clickmask |= WidgetConfig.DRAG;
 		downButton.setClickMask(clickmask);
+		downButton.setHasListener(true);
 		downButton.setOnOpListener((JavaScriptCallback) (event) -> scrollTab(1));
 
-		newTab = createGraphic(parent, "", TabSprites.NEW_TAB.getSpriteId(), -1, TAB_WIDTH, 39, MARGIN, 0, true);
+		newTab = createGraphic(parent, "", TabSprites.NEW_TAB.getSpriteId(), -1, TAB_WIDTH, 39, MARGIN, 0);
+		newTab.setHasListener(true);
 		newTab.setAction(NEWTAB_OP_NEW_TAB, NEW_TAB);
 		newTab.setAction(NEWTAB_OP_IMPORT_TAB, IMPORT_TAB);
 		newTab.setAction(NEWTAB_OP_OPEN_TAB_MENU, OPEN_TAB_MENU);
@@ -811,6 +814,7 @@ public class TabInterface
 		w.setAction(TAB_OP_DELETE_TAB, REMOVE_TAB);
 		w.setAction(TAB_OP_EXPORT_TAB, EXPORT_TAB);
 		w.setAction(TAB_OP_RENAME_TAB, RENAME_TAB);
+		w.setHasListener(true);
 		w.setOnOpListener((JavaScriptCallback) this::handleTagTab);
 	}
 
@@ -1034,7 +1038,7 @@ public class TabInterface
 		{
 			Widget background = createGraphic(tabLayer, ColorUtil.wrapWithColorTag(tab.getTag(), HILIGHT_COLOR),
 				(activeTab == tab ? TabSprites.TAB_BACKGROUND_ACTIVE : TabSprites.TAB_BACKGROUND).getSpriteId(),
-				-1, TAB_WIDTH, TAB_HEIGHT, MARGIN, y, true);
+				-1, TAB_WIDTH, TAB_HEIGHT, MARGIN, y);
 			addTabActions(background);
 
 			Widget icon = createGraphic(
@@ -1043,8 +1047,7 @@ public class TabInterface
 				-1,
 				tab.getIconItemId(),
 				Constants.ITEM_SPRITE_WIDTH, Constants.ITEM_SPRITE_HEIGHT,
-				MARGIN + 3, y + 4,
-				false);
+				MARGIN + 3, y + 4);
 			addTabOptions(icon);
 
 			y += TAB_HEIGHT + MARGIN;
@@ -1125,7 +1128,7 @@ public class TabInterface
 		}
 	}
 
-	private Widget createGraphic(Widget container, String name, int spriteId, int itemId, int width, int height, int x, int y, boolean hasListener)
+	private Widget createGraphic(Widget container, String name, int spriteId, int itemId, int width, int height, int x, int y)
 	{
 		Widget widget = container.createChild(-1, WidgetType.GRAPHIC);
 		widget.setOriginalWidth(width);
@@ -1140,12 +1143,6 @@ public class TabInterface
 			widget.setItemId(itemId);
 			widget.setItemQuantity(-1);
 			widget.setBorderType(1);
-		}
-
-		if (hasListener)
-		{
-			widget.setOnOpListener(ScriptID.NULL);
-			widget.setHasListener(true);
 		}
 
 		widget.setName(name);
