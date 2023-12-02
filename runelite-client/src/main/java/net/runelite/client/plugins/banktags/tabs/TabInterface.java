@@ -443,6 +443,7 @@ public class TabInterface
 
 							resizeTabLayer();
 							rebuildTabs();
+							rebuildTagTabTab();
 						}
 					}))
 					.build();
@@ -490,6 +491,7 @@ public class TabInterface
 
 					resizeTabLayer();
 					rebuildTabs();
+					rebuildTagTabTab();
 
 					if (activeTab != null && name.equals(activeTab.getTag()))
 					{
@@ -779,6 +781,7 @@ public class TabInterface
 
 		resizeTabLayer();
 		rebuildTabs();
+		rebuildTagTabTab();
 		scrollTab(0);
 	}
 
