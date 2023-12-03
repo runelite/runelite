@@ -252,6 +252,7 @@ public class PrayerPlugin extends Plugin
 		boolean hasPrayerPotion = false;
 		boolean hasSuperRestore = false;
 		boolean hasSanfew = false;
+		boolean hasTearsOfElidinis = false;
 		boolean hasWrench = false;
 
 		for (Item item : inventory.getItems())
@@ -270,6 +271,9 @@ public class PrayerPlugin extends Plugin
 						break;
 					case SANFEWPOT:
 						hasSanfew = true;
+						break;
+					case TEARS_OF_ELIDINIS:
+						hasTearsOfElidinis = true;
 						break;
 					case HOLYWRENCH:
 						hasWrench = true;
@@ -295,6 +299,7 @@ public class PrayerPlugin extends Plugin
 		// Prayer potion: floor(7 + 25% of base level) - 27% with holy wrench
 		// Super restore: floor(8 + 25% of base level) - 27% with holy wrench
 		// Sanfew serum: floor(4 + 30% of base level) - 32% with holy wrench
+		// Tears of Elidinis: floor(10 + 25% of base level) - No change with holy wrench
 		final int prayerLevel = client.getRealSkillLevel(Skill.PRAYER);
 		int restored = 0;
 		if (hasSanfew)
@@ -308,6 +313,10 @@ public class PrayerPlugin extends Plugin
 		if (hasPrayerPotion)
 		{
 			restored = Math.max(restored, 7 + (int) Math.floor(prayerLevel *  (hasWrench ? .27 : .25)));
+		}
+		if (hasTearsOfElidinis)
+		{
+			restored = Math.max(restored, 10 + (int) Math.floor(prayerLevel *  .25));
 		}
 
 		doseOverlay.setRestoreAmount(restored);
