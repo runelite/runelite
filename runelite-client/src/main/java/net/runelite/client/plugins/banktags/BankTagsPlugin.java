@@ -104,9 +104,6 @@ public class BankTagsPlugin extends Plugin
 	private ChatboxPanelManager chatboxPanelManager;
 
 	@Inject
-	private BankTagsConfig config;
-
-	@Inject
 	private TagManager tagManager;
 
 	@Inject
