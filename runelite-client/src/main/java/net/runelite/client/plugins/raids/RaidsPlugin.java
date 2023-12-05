@@ -266,10 +266,18 @@ public class RaidsPlugin extends Plugin
 			boolean inRaid = event.getValue() == 1;
 			inRaidChambers = inRaid;
 
-			// if the player is inside of a raid then check the raid
-			if (client.getGameState() == GameState.LOGGED_IN && inRaid)
+			if (client.getGameState() == GameState.LOGGED_IN)
 			{
-				scoutRaid();
+				// if the player is inside of a raid then check the raid
+				if (inRaid)
+				{
+					scoutRaid();
+				}
+				else if (raidPartyID == -1)
+				{
+					log.debug("Raid has ended");
+					reset();
+				}
 			}
 		}
 	}
