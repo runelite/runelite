@@ -56,7 +56,7 @@ public class BankSearch
 	public void layoutBank()
 	{
 		Widget bankContainer = client.getWidget(ComponentID.BANK_ITEM_CONTAINER);
-		if (bankContainer == null || bankContainer.isHidden())
+		if (bankContainer == null)
 		{
 			return;
 		}

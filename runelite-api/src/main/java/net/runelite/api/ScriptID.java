@@ -175,6 +175,7 @@ public final class ScriptID
 	 * because you need an op listener attached to it for it to work
 	 */
 	@ScriptArguments()
+	@Deprecated
 	public static final int NULL = 10003;
 
 	/**
@@ -301,6 +302,9 @@ public final class ScriptID
 	@ScriptArguments(integer = 4, string = 1)
 	public static final int XPDROPS_SETDROPSIZE = 996;
 
+	@ScriptArguments(integer = 34)
+	public static final int BANKMAIN_INIT = 274;
+
 	/**
 	 * Main layout script for the bank
 	 * <ul>
@@ -329,6 +333,9 @@ public final class ScriptID
 	 */
 	@ScriptArguments(integer = 18)
 	public static final int BANKMAIN_SEARCH_TOGGLE = 281;
+
+	@ScriptArguments(integer = 6)
+	public static final int BANKMAIN_SIZE_CHECK = 840;
 
 	/**
 	 * Chooses the click handler for a {@link ParamID#SETTING_SLIDER_CUSTOM_ONOP} = 1 settings slider

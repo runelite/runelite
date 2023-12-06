@@ -50,6 +50,7 @@ public final class EnumID
 	 * val: namedobj
 	 */
 	public static final int PETS = 2158;
+	public static final int POH_COSTUME_MEMBERS = 3077;
 	public static final int POH_COSTUMES_CLUE_BEGINNER = 3293;
 	public static final int POH_COSTUMES_CLUE_EASY = 3294;
 	public static final int POH_COSTUMES_CLUE_MEDIUM = 3295;
