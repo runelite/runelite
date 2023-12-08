@@ -871,4 +871,10 @@ public final class Varbits
 	 * This varbit determines which location he will appear in, which is useful for a master clue step.
 	 */
 	public static final int VIGGORA_LOCATION = 815;
+
+	/*
+	 * Soul Wars
+	 */
+	public static final int SOUL_WARS_ACTIVITY = 9794;
+	public static final int SOUL_WARS_ZEAL_COUNT = 2876;
 }
