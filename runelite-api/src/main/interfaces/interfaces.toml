@@ -321,6 +321,7 @@ root_interface_container=16
 minimap_draw_area=21
 fixed_viewport=32
 multicombat_indicator=36
+quest_speedrunning_container=38
 friends_chat_tab=46
 ignores_tab=47
 friends_tab=48
@@ -651,6 +652,7 @@ id=500
 
 [resizable_viewport]
 id=161
+quest_speedrunning_container=12
 resizable_viewport_old_school_box=15
 multicombat_indicator=19
 minimap_draw_area=29
@@ -691,6 +693,7 @@ inventory_parent=95
 
 [resizable_viewport_bottom_line]
 id=164
+quest_speedrunning_container=12
 resizable_viewport_bottom_line=15
 multicombat_indicator=19
 minimap_draw_area=29

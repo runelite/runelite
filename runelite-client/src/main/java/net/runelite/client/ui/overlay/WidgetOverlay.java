@@ -35,6 +35,7 @@ import net.runelite.api.Varbits;
 import net.runelite.api.annotations.Component;
 import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
+import org.apache.commons.lang3.ArrayUtils;
 
 @Slf4j
 public class WidgetOverlay extends Overlay
@@ -106,7 +107,10 @@ public class WidgetOverlay extends Overlay
 			new WidgetOverlay(client, ComponentID.MTA_GRAVEYARD_POINTS, "MTA_GRAVEYARD_POINTS", OverlayPosition.TOP_RIGHT),
 			new WidgetOverlay(client, ComponentID.MTA_GRAVEYARD_VALUES, "MTA_GRAVEYARD_VALUES", OverlayPosition.BOTTOM_RIGHT),
 			new WidgetOverlay(client, ComponentID.STRANGLER_OVERLAY, "STRANGLER_INFECTION_OVERLAY", OverlayPosition.TOP_LEFT),
-			new WidgetOverlay(client, ComponentID.SANITY_OVERLAY, "SANITY_OVERLAY", OverlayPosition.TOP_LEFT)
+			new WidgetOverlay(client, ComponentID.SANITY_OVERLAY, "SANITY_OVERLAY", OverlayPosition.TOP_LEFT),
+			new QuestSpeedrunningWidgetOverlay(client, ComponentID.FIXED_VIEWPORT_QUEST_SPEEDRUNNING_CONTAINER, "QUEST_SPEEDRUNNING_FIXED", OverlayPosition.TOP_LEFT),
+			new QuestSpeedrunningWidgetOverlay(client, ComponentID.RESIZABLE_VIEWPORT_BOTTOM_LINE_QUEST_SPEEDRUNNING_CONTAINER, "QUEST_SPEEDRUNNING_RESIZABLE_MODERN", OverlayPosition.TOP_LEFT),
+			new QuestSpeedrunningWidgetOverlay(client, ComponentID.RESIZABLE_VIEWPORT_QUEST_SPEEDRUNNING_CONTAINER, "QUEST_SPEEDRUNNING_RESIZABLE_CLASSIC", OverlayPosition.TOP_LEFT)
 		);
 	}
 
@@ -310,6 +314,27 @@ public class WidgetOverlay extends Overlay
 			}
 
 			return null;
+		}
+	}
+
+	private static class QuestSpeedrunningWidgetOverlay extends WidgetOverlay
+	{
+		private QuestSpeedrunningWidgetOverlay(Client client, @Component int component, String name, OverlayPosition overlayPosition)
+		{
+			super(client, component, name, overlayPosition);
+		}
+
+		@Override
+		public Dimension render(Graphics2D graphics)
+		{
+			// Don't draw widget overlay if a quest speedrun is not underway
+			final Widget widget = client.getWidget(componentId);
+			if (widget == null || ArrayUtils.isEmpty(widget.getNestedChildren()))
+			{
+				return null;
+			}
+
+			return super.render(graphics);
 		}
 	}
 }
