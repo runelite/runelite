@@ -248,15 +248,18 @@ public class RaidsPlugin extends Plugin
 		// if the player's party state has changed
 		if (event.getVarpId() == VarPlayer.IN_RAID_PARTY)
 		{
-			boolean inRaid = client.getVarbitValue(Varbits.IN_RAID) == 1;
+			boolean inRaid = inRaidChambers;
+			int prevRaidID = raidPartyID;
 			raidPartyID = event.getValue();
 
-			// Party dissolution
-			if (client.getGameState() == GameState.LOGGED_IN
-				&& !inRaid)
+			if (client.getGameState() == GameState.LOGGED_IN)
 			{
-				log.debug("Raid party has been dissolved");
-				reset();
+				// Party dissolution
+				if (!inRaid || (prevRaidID != -1 && raidPartyID != -1 && prevRaidID != raidPartyID))
+				{
+					log.debug("Raid party has been dissolved");
+					reset();
+				}
 			}
 		}
 
