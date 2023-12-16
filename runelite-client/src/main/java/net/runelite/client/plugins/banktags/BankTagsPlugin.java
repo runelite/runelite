@@ -415,12 +415,6 @@ public class BankTagsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked event)
-	{
-		tabInterface.handleClick(event);
-	}
-
-	@Subscribe
 	public void onConfigChanged(ConfigChanged configChanged)
 	{
 		if (configChanged.getGroup().equals(CONFIG_GROUP) && configChanged.getKey().equals("useTabs"))

@@ -682,7 +682,8 @@ public class TabInterface
 		}
 	}
 
-	public void handleClick(MenuOptionClicked event)
+	@Subscribe
+	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		// Close the chatbox input when clicking on things in the bank, to mimic how actions like withdrawing
 		// items or changing tabs close the withdraw-x input or the bank search input.
