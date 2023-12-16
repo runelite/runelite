@@ -78,6 +78,7 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetConfig;
 import net.runelite.api.widgets.WidgetSizeMode;
 import net.runelite.api.widgets.WidgetType;
+import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
@@ -683,12 +684,18 @@ public class TabInterface
 
 	public void handleClick(MenuOptionClicked event)
 	{
+		// Close the chatbox input when clicking on things in the bank, to mimic how actions like withdrawing
+		// items or changing tabs close the withdraw-x input or the bank search input.
 		if (chatboxPanelManager.getCurrentInput() != null
-			&& event.getMenuAction() != MenuAction.CANCEL
+			&& event.getWidget() != null
 			&& !event.getMenuOption().equals(SCROLL_UP)
 			&& !event.getMenuOption().equals(SCROLL_DOWN))
 		{
-			chatboxPanelManager.close();
+			int interfaceId = WidgetUtil.componentToInterface(event.getWidget().getId());
+			if (interfaceId == InterfaceID.BANK || interfaceId == InterfaceID.BANK_INVENTORY)
+			{
+				chatboxPanelManager.close();
+			}
 		}
 
 		if (event.getMenuOption().startsWith("View tab") || event.getMenuOption().equals("View all items"))
