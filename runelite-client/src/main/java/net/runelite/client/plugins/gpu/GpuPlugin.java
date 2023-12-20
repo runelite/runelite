@@ -1279,7 +1279,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			// Calculate projection matrix
 			float[] projectionMatrix = Mat4.scale(client.getScale(), client.getScale(), 1);
 			Mat4.mul(projectionMatrix, Mat4.projection(viewportWidth, viewportHeight, 50));
-			Mat4.mul(projectionMatrix, Mat4.rotateX((float) -(Math.PI - cameraPitch)));
+			Mat4.mul(projectionMatrix, Mat4.rotateX((float) cameraPitch));
 			Mat4.mul(projectionMatrix, Mat4.rotateY((float) cameraYaw));
 			Mat4.mul(projectionMatrix, Mat4.translate((float) -cameraX, (float) -cameraY, (float) -cameraZ));
 			GL43C.glUniformMatrix4fv(uniProjectionMatrix, false, projectionMatrix);
