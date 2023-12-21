@@ -167,6 +167,7 @@ public class NpcAggroAreaPlugin extends Plugin
 		loggingIn = false;
 		npcNamePatterns = null;
 		active = false;
+		notifyOnce = false;
 
 		Arrays.fill(linesToDisplay, null);
 	}
@@ -498,7 +499,7 @@ public class NpcAggroAreaPlugin extends Plugin
 				safeCenters[0] = null;
 				safeCenters[1] = null;
 				lastPlayerLocation = null;
-				endTime = null;
+				removeTimer();
 				break;
 		}
 	}

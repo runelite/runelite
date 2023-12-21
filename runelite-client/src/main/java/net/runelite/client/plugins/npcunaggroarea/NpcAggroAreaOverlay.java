@@ -66,7 +66,7 @@ class NpcAggroAreaOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!plugin.isActive() || plugin.getSafeCenters()[1] == null)
+		if (!plugin.isActive() || plugin.getSafeCenters()[0] == null || plugin.getSafeCenters()[1] == null)
 		{
 			return null;
 		}
