@@ -1207,17 +1207,20 @@ public class ClueScrollPlugin extends Plugin
 		return false;
 	}
 
+	// from [proc,poh_costumes_countmembers] and [proc,poh_costumes_countalternates]
 	private boolean testTreasureChestTag(int itemId)
 	{
 		EnumComposition members = client.getEnum(EnumID.POH_COSTUME_MEMBERS);
 		EnumComposition[] enums = {
-			client.getEnum(EnumID.POH_COSTUMES_CLUE_BEGINNER),
-			client.getEnum(EnumID.POH_COSTUMES_CLUE_EASY),
-			client.getEnum(EnumID.POH_COSTUMES_CLUE_MEDIUM),
-			client.getEnum(EnumID.POH_COSTUMES_CLUE_HARD),
-			client.getEnum(EnumID.POH_COSTUMES_CLUE_ELITE),
-			client.getEnum(EnumID.POH_COSTUMES_CLUE_MASTER)
+			client.getEnum(EnumID.POH_COSTUME_CLUE_BEGINNER),
+			client.getEnum(EnumID.POH_COSTUME_CLUE_EASY),
+			client.getEnum(EnumID.POH_COSTUME_CLUE_MEDIUM),
+			client.getEnum(EnumID.POH_COSTUME_CLUE_HARD),
+			client.getEnum(EnumID.POH_COSTUME_CLUE_ELITE),
+			client.getEnum(EnumID.POH_COSTUME_CLUE_MASTER)
 		};
+		EnumComposition alt = client.getEnum(EnumID.POH_COSTUME_ALTERNATE);
+		EnumComposition alts = client.getEnum(EnumID.POH_COSTUME_ALTERNATES);
 		for (var tierEnum : enums)
 		{
 			for (int baseItem : tierEnum.getIntVals())
@@ -1228,22 +1231,56 @@ public class ClueScrollPlugin extends Plugin
 				}
 
 				int membersEnumId = members.getIntValue(baseItem);
-				if (membersEnumId == -1)
+				if (membersEnumId != -1)
 				{
-					continue;
-				}
+					// check members in the group
+					var memberEnum = client.getEnum(membersEnumId);
+					for (int memberItem : memberEnum.getIntVals())
+					{
+						if (memberItem == itemId)
+						{
+							return true;
+						}
 
-				// check members in the group
-				var memberEnum = client.getEnum(membersEnumId);
-				for (int memberItem : memberEnum.getIntVals())
+						if (checkAlternates(alt, alts, itemId, memberItem))
+						{
+							return true;
+						}
+					}
+				}
+				else
 				{
-					if (memberItem == itemId)
+					// single member group
+					if (checkAlternates(alt, alts, itemId, baseItem))
 					{
 						return true;
 					}
 				}
 			}
 		}
+		return false;
+	}
+
+	private boolean checkAlternates(EnumComposition alt, EnumComposition alts, int targetItemId, int checkItemId)
+	{
+		if (alt.getIntValue(checkItemId) == targetItemId)
+		{
+			return true;
+		}
+
+		int altsEnumId = alts.getIntValue(checkItemId);
+		if (altsEnumId != -1)
+		{
+			var e = client.getEnum(altsEnumId);
+			for (int item : e.getIntVals())
+			{
+				if (item == targetItemId)
+				{
+					return true;
+				}
+			}
+		}
+
 		return false;
 	}
 
