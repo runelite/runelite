@@ -130,7 +130,7 @@ public class TagManager
 		final String prefix = CONFIG_GROUP + "." + ITEM_KEY_PREFIX;
 		return configManager.getConfigurationKeys(prefix).stream()
 			.map(item -> Integer.parseInt(item.replace(prefix, "")))
-			.filter(item -> getTags(item, false).contains(tag) || getTags(item, true).contains(tag))
+			.filter(item -> getTags(item, item < 0).contains(tag))
 			.collect(Collectors.toList());
 	}
 

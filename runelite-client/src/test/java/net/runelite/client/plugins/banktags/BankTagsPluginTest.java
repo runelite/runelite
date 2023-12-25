@@ -27,13 +27,19 @@ package net.runelite.client.plugins.banktags;
 import com.google.inject.Guice;
 import com.google.inject.testing.fieldbinder.Bind;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.ItemID;
 import static net.runelite.api.ItemID.ABYSSAL_WHIP;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.ItemVariationMapping;
 import net.runelite.client.plugins.banktags.tabs.TabInterface;
 import net.runelite.client.plugins.cluescrolls.ClueScrollService;
 import static org.junit.Assert.assertEquals;
@@ -41,7 +47,10 @@ import static org.junit.Assert.assertFalse;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import org.mockito.Mock;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -147,5 +156,37 @@ public class BankTagsPluginTest
 
 		bankTagsPlugin.onScriptCallbackEvent(EVENT);
 		assertEquals(1, client.getIntStack()[0]);
+	}
+
+	/**
+	 * Regression test for item ids being added by getItemsForTag that were not necessary, when items
+	 * from a variation tag are included in a different bank tag.
+	 */
+	@Test
+	public void testMinimumBankTagLength()
+	{
+		Map<String, String> configManagerMap = new HashMap<>();
+		doAnswer(invocation ->
+		{
+			configManagerMap.put(invocation.getArgument(0) + "." + invocation.getArgument(1), invocation.getArgument(2));
+			return null;
+		}).when(configManager).setConfiguration(anyString(), anyString(), anyString());
+		when(configManager.getConfiguration(anyString(), anyString())).thenAnswer(invocation ->
+		{
+			return configManagerMap.get(invocation.getArgument(0) + "." + invocation.getArgument(1));
+		});
+		when(configManager.getConfigurationKeys(anyString())).thenAnswer(invocation ->
+		{
+			return configManagerMap.keySet().stream().filter(s -> s.startsWith(invocation.getArgument(0))).collect(Collectors.toList());
+		});
+		when(itemManager.canonicalize(anyInt())).thenAnswer(invocation -> invocation.getArgument(0));
+
+		tagManager.addTag(ItemID.SUPER_ANTIFIRE_POTION4, "tag1", true);
+		List<Integer> tag1IdsBefore = tagManager.getItemsForTag("tag1");
+		tagManager.addTag(ItemID.SUPER_ANTIFIRE_POTION4, "tag2", false);
+		List<Integer> tag1IdsAfter = tagManager.getItemsForTag("tag1");
+
+		assertEquals(List.of(-ItemVariationMapping.map(ItemID.SUPER_ANTIFIRE_POTION4)), tag1IdsBefore);
+		assertEquals(tag1IdsBefore, tag1IdsAfter);
 	}
 }
