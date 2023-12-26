@@ -175,9 +175,9 @@ public class BankTagsPluginTest
 		{
 			return configManagerMap.get(invocation.getArgument(0) + "." + invocation.getArgument(1));
 		});
-		when(configManager.getConfigurationKeys(anyString())).thenAnswer(invocation ->
+		when(configManager.getConfigurationEntries(anyString())).thenAnswer(invocation ->
 		{
-			return configManagerMap.keySet().stream().filter(s -> s.startsWith(invocation.getArgument(0))).collect(Collectors.toList());
+			return configManagerMap.entrySet().stream().filter(e -> e.getKey().startsWith(invocation.getArgument(0))).collect(Collectors.toList());
 		});
 		when(itemManager.canonicalize(anyInt())).thenAnswer(invocation -> invocation.getArgument(0));
 

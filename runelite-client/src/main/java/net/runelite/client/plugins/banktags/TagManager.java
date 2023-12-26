@@ -128,9 +128,9 @@ public class TagManager
 	public List<Integer> getItemsForTag(String tag)
 	{
 		final String prefix = CONFIG_GROUP + "." + ITEM_KEY_PREFIX;
-		return configManager.getConfigurationKeys(prefix).stream()
-			.map(item -> Integer.parseInt(item.replace(prefix, "")))
-			.filter(item -> getTags(item, item < 0).contains(tag))
+		return configManager.getConfigurationEntries(prefix).stream()
+			.filter(e -> Text.fromCSV(e.getValue().toLowerCase()).contains(tag))
+			.map(e -> Integer.parseInt(e.getKey().replace(prefix, "")))
 			.collect(Collectors.toList());
 	}
 
