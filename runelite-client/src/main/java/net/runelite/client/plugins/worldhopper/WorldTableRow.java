@@ -98,8 +98,7 @@ class WorldTableRow extends JPanel
 
 	private Color lastBackground;
 
-	WorldTableRow(World world, boolean current, boolean favorite, Integer ping, Consumer<World> onSelect,
-				  BiConsumer<World, Boolean> onFavorite, boolean isWestCoast)
+	WorldTableRow(World world, boolean current, boolean favorite, Integer ping, Consumer<World> onSelect, BiConsumer<World, Boolean> onFavorite, boolean isWestCoast)
 	{
 		this.world = world;
 		this.onFavorite = onFavorite;
