@@ -79,7 +79,7 @@ class SceneUploader
 		}
 	}
 
-	void upload(Scene scene, GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer)
+	void upload(Scene scene, GpuFloatBuffer vertexBuffer, GpuFloatBuffer uvBuffer)
 	{
 		++sceneId;
 		offset = 0;
@@ -113,7 +113,7 @@ class SceneUploader
 		log.debug("Scene upload time: {} unique models: {} length: {}KB", stopwatch, uniqueModels, (offset * 16) / 1024);
 	}
 
-	private void upload(Scene scene, Tile tile, GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer)
+	private void upload(Scene scene, Tile tile, GpuFloatBuffer vertexBuffer, GpuFloatBuffer uvBuffer)
 	{
 		Tile bridge = tile.getBridge();
 		if (bridge != null)
@@ -228,7 +228,7 @@ class SceneUploader
 		}
 	}
 
-	int upload(Scene scene, SceneTilePaint tile, int tileZ, int tileX, int tileY, GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer,
+	int upload(Scene scene, SceneTilePaint tile, int tileZ, int tileX, int tileY, GpuFloatBuffer vertexBuffer, GpuFloatBuffer uvBuffer,
 		int lx, int lz, boolean padUvs)
 	{
 		tileX += GpuPlugin.SCENE_OFFSET;
@@ -277,13 +277,13 @@ class SceneUploader
 		final int lz3 = lz + Perspective.LOCAL_TILE_SIZE;
 		final int hsl3 = nwColor;
 
-		vertexBuffer.put(lx2, ly2, lz2, hsl2);
-		vertexBuffer.put(lx3, ly3, lz3, hsl3);
-		vertexBuffer.put(lx1, ly1, lz1, hsl1);
+		vertexBuffer.put(lx2, ly2, lz2, Float.intBitsToFloat(0x00800000 | hsl2));
+		vertexBuffer.put(lx3, ly3, lz3, Float.intBitsToFloat(0x00800000 | hsl3));
+		vertexBuffer.put(lx1, ly1, lz1, Float.intBitsToFloat(0x00800000 | hsl1));
 
-		vertexBuffer.put(lx0, ly0, lz0, hsl0);
-		vertexBuffer.put(lx1, ly1, lz1, hsl1);
-		vertexBuffer.put(lx3, ly3, lz3, hsl3);
+		vertexBuffer.put(lx0, ly0, lz0, Float.intBitsToFloat(0x00800000 | hsl0));
+		vertexBuffer.put(lx1, ly1, lz1, Float.intBitsToFloat(0x00800000 | hsl1));
+		vertexBuffer.put(lx3, ly3, lz3, Float.intBitsToFloat(0x00800000 | hsl3));
 
 		if (padUvs || tile.getTexture() != -1)
 		{
@@ -310,7 +310,7 @@ class SceneUploader
 	}
 
 	int upload(SceneTileModel sceneTileModel, int lx, int lz,
-		GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer, boolean padUvs)
+		GpuFloatBuffer vertexBuffer, GpuFloatBuffer uvBuffer, boolean padUvs)
 	{
 		final int[] faceX = sceneTileModel.getFaceX();
 		final int[] faceY = sceneTileModel.getFaceY();
@@ -362,9 +362,9 @@ class SceneUploader
 			int ly2 = vertexY[vertex2];
 			int lz2 = vertexZ[vertex2] - lz;
 
-			vertexBuffer.put(lx0, ly0, lz0, hsl0);
-			vertexBuffer.put(lx1, ly1, lz1, hsl1);
-			vertexBuffer.put(lx2, ly2, lz2, hsl2);
+			vertexBuffer.put(lx0, ly0, lz0, Float.intBitsToFloat(0x00800000 | hsl0));
+			vertexBuffer.put(lx1, ly1, lz1, Float.intBitsToFloat(0x00800000 | hsl1));
+			vertexBuffer.put(lx2, ly2, lz2, Float.intBitsToFloat(0x00800000 | hsl2));
 
 			if (padUvs || triangleTextures != null)
 			{
@@ -396,7 +396,7 @@ class SceneUploader
 		return cnt;
 	}
 
-	private void uploadSceneModel(Model model, GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer)
+	private void uploadSceneModel(Model model, GpuFloatBuffer vertexBuffer, GpuFloatBuffer uvBuffer)
 	{
 		// deduplicate hillskewed models
 		if (model.getUnskewedModel() != null)
@@ -430,7 +430,7 @@ class SceneUploader
 		}
 	}
 
-	public int pushModel(Model model, GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer)
+	public int pushModel(Model model, GpuFloatBuffer vertexBuffer, GpuFloatBuffer uvBuffer)
 	{
 		final int triangleCount = Math.min(model.getFaceCount(), GpuPlugin.MAX_TRIANGLE);
 
@@ -508,9 +508,9 @@ class SceneUploader
 			int triangleB = indices2[face];
 			int triangleC = indices3[face];
 
-			vertexBuffer.put(vertexX[triangleA], vertexY[triangleA], vertexZ[triangleA], packAlphaPriority | color1);
-			vertexBuffer.put(vertexX[triangleB], vertexY[triangleB], vertexZ[triangleB], packAlphaPriority | color2);
-			vertexBuffer.put(vertexX[triangleC], vertexY[triangleC], vertexZ[triangleC], packAlphaPriority | color3);
+			vertexBuffer.put(vertexX[triangleA], vertexY[triangleA], vertexZ[triangleA], Float.intBitsToFloat(packAlphaPriority | color1));
+			vertexBuffer.put(vertexX[triangleB], vertexY[triangleB], vertexZ[triangleB], Float.intBitsToFloat(packAlphaPriority | color2));
+			vertexBuffer.put(vertexX[triangleC], vertexY[triangleC], vertexZ[triangleC], Float.intBitsToFloat(packAlphaPriority | color3));
 
 			if (faceTextures != null)
 			{
@@ -611,7 +611,7 @@ class SceneUploader
 		orderedFaces = null;
 	}
 
-	int pushSortedModel(Model model, int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z, GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer)
+	int pushSortedModel(Model model, int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z, GpuFloatBuffer vertexBuffer, GpuFloatBuffer uvBuffer)
 	{
 		final int vertexCount = model.getVerticesCount();
 		final int[] verticesX = model.getVerticesX();
@@ -932,7 +932,7 @@ class SceneUploader
 		return len;
 	}
 
-	private int pushFace(Model model, int face, GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer)
+	private int pushFace(Model model, int face, GpuFloatBuffer vertexBuffer, GpuFloatBuffer uvBuffer)
 	{
 		final int[] indices1 = model.getFaceIndices1();
 		final int[] indices2 = model.getFaceIndices2();
@@ -982,9 +982,9 @@ class SceneUploader
 			}
 		}
 
-		vertexBuffer.put(modelLocalX[triangleA], modelLocalY[triangleA], modelLocalZ[triangleA], packAlphaPriority | color1);
-		vertexBuffer.put(modelLocalX[triangleB], modelLocalY[triangleB], modelLocalZ[triangleB], packAlphaPriority | color2);
-		vertexBuffer.put(modelLocalX[triangleC], modelLocalY[triangleC], modelLocalZ[triangleC], packAlphaPriority | color3);
+		vertexBuffer.put(modelLocalX[triangleA], modelLocalY[triangleA], modelLocalZ[triangleA], Float.intBitsToFloat(packAlphaPriority | color1));
+		vertexBuffer.put(modelLocalX[triangleB], modelLocalY[triangleB], modelLocalZ[triangleB], Float.intBitsToFloat(packAlphaPriority | color2));
+		vertexBuffer.put(modelLocalX[triangleC], modelLocalY[triangleC], modelLocalZ[triangleC], Float.intBitsToFloat(packAlphaPriority | color3));
 
 		if (faceTextures != null && faceTextures[face] != -1)
 		{
@@ -1031,7 +1031,7 @@ class SceneUploader
 		{
 			priority = (facePriorities[face] & 0xff) << 16;
 		}
-		return alpha | priority;
+		return alpha | priority | 0x00800000;
 	}
 
 	private static int interpolateHSL(int hsl, byte hue2, byte sat2, byte lum2, byte lerp)

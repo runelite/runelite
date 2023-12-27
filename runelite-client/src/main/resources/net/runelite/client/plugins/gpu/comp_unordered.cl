@@ -26,9 +26,9 @@
 
 #include "cl_types.cl"
 
-__kernel __attribute__((reqd_work_group_size(6, 1, 1))) void computeUnordered(__global const struct modelinfo *ol, __global const int4 *vb,
-                                                                              __global const int4 *tempvb, __global const float4 *texb,
-                                                                              __global const float4 *temptexb, __global int4 *vout, __global float4 *uvout) {
+__kernel __attribute__((reqd_work_group_size(6, 1, 1))) void computeUnordered(__global const struct modelinfo *ol, __global const float4 *vb,
+                                                                              __global const float4 *tempvb, __global const float4 *texb,
+                                                                              __global const float4 *temptexb, __global float4 *vout, __global float4 *uvout) {
   size_t groupId = get_group_id(0);
   size_t localId = get_local_id(0);
   struct modelinfo minfo = ol[groupId];
@@ -44,27 +44,27 @@ __kernel __attribute__((reqd_work_group_size(6, 1, 1))) void computeUnordered(__
   }
 
   uint ssboOffset = localId;
-  int4 thisA, thisB, thisC;
+  float4 vertA, vertB, vertC;
 
   // Grab triangle vertices from the correct buffer
   if (flags < 0) {
-    thisA = vb[offset + ssboOffset * 3];
-    thisB = vb[offset + ssboOffset * 3 + 1];
-    thisC = vb[offset + ssboOffset * 3 + 2];
+    vertA = vb[offset + ssboOffset * 3];
+    vertB = vb[offset + ssboOffset * 3 + 1];
+    vertC = vb[offset + ssboOffset * 3 + 2];
   } else {
-    thisA = tempvb[offset + ssboOffset * 3];
-    thisB = tempvb[offset + ssboOffset * 3 + 1];
-    thisC = tempvb[offset + ssboOffset * 3 + 2];
+    vertA = tempvb[offset + ssboOffset * 3];
+    vertB = tempvb[offset + ssboOffset * 3 + 1];
+    vertC = tempvb[offset + ssboOffset * 3 + 2];
   }
 
   uint myOffset = localId;
-  int4 pos = (int4)(minfo.x, minfo.y, minfo.z, 0);
-  float4 texPos = convert_float4(pos.wxyz);
+  float4 pos = (float4)(minfo.x, minfo.y, minfo.z, 0);
+  float4 texPos = pos.wxyz;
 
   // position vertices in scene and write to out buffer
-  vout[outOffset + myOffset * 3] = pos + thisA;
-  vout[outOffset + myOffset * 3 + 1] = pos + thisB;
-  vout[outOffset + myOffset * 3 + 2] = pos + thisC;
+  vout[outOffset + myOffset * 3] = pos + vertA;
+  vout[outOffset + myOffset * 3 + 1] = pos + vertB;
+  vout[outOffset + myOffset * 3 + 2] = pos + vertC;
 
   if (toffset < 0) {
     uvout[outOffset + myOffset * 3] = (float4)(0.0f, 0.0f, 0.0f, 0.0f);
