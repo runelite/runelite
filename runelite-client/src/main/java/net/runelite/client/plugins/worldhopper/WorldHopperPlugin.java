@@ -29,6 +29,7 @@ package net.runelite.client.plugins.worldhopper;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Provides;
+
 import java.awt.image.BufferedImage;
 import java.time.Instant;
 import java.util.EnumSet;
@@ -42,12 +43,15 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.ChatPlayer;
 import net.runelite.api.Client;
+import net.runelite.api.EnumComposition;
+import net.runelite.api.EnumID;
 import net.runelite.api.Friend;
 import net.runelite.api.FriendsChatManager;
 import net.runelite.api.FriendsChatMember;
@@ -162,6 +166,8 @@ public class WorldHopperPlugin extends Plugin
 	private int currentPing;
 
 	private final Map<Integer, Integer> storedPings = new HashMap<>();
+
+	private Map<Integer, Boolean> isWestCoastWorld = null;
 
 	private final HotkeyListener previousKeyListener = new HotkeyListener(() -> config.previousKey())
 	{
@@ -504,7 +510,9 @@ public class WorldHopperPlugin extends Plugin
 		WorldResult worldResult = worldService.getWorlds();
 		if (worldResult != null)
 		{
-			SwingUtilities.invokeLater(() -> panel.populate(worldResult.getWorlds()));
+			SwingUtilities.invokeLater(() -> panel.populate(
+				worldResult.getWorlds(),
+				getIsWestCoastWorld()));
 		}
 	}
 
@@ -918,5 +926,26 @@ public class WorldHopperPlugin extends Plugin
 		int ping = Ping.ping(world);
 		storedPings.put(world.getId(), ping);
 		return ping;
+	}
+
+	private Map<Integer, Boolean> getIsWestCoastWorld()
+	{
+		if (isWestCoastWorld == null)
+		{
+			// Map worlds to whether or not they are East/West coast
+			// https://abextm.github.io/cache2/#/viewer/enum/4992
+			// https://oldschool.runescape.wiki/w/Server
+			// As of writing this the runelite API doesn't give world coast information: https://api.runelite.net/runelite-1.10.18-SNAPSHOT/worlds.js
+			final EnumComposition worldCoastEnum = client.getEnum(EnumID.WORLD_COASTS);
+			int[] keys = worldCoastEnum.getKeys();
+			int[] values = worldCoastEnum.getIntVals();
+			isWestCoastWorld = new HashMap<>();
+
+			for (int i = 0; i < keys.length; i++)
+			{
+				isWestCoastWorld.put(keys[i], values[i] == -73);
+			}
+		}
+		return isWestCoastWorld;
 	}
 }

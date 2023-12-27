@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.worldhopper;
 
 import com.google.common.collect.Ordering;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -38,6 +39,7 @@ import java.util.Set;
 import java.util.function.Function;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -245,7 +247,7 @@ class WorldSwitcherPanel extends PluginPanel
 		}
 	}
 
-	void populate(List<World> worlds)
+	void populate(List<World> worlds, Map<Integer, Boolean> isWestCoast)
 	{
 		rows.clear();
 
@@ -287,7 +289,10 @@ class WorldSwitcherPanel extends PluginPanel
 				}
 			}
 
-			rows.add(buildRow(world, i % 2 == 0, world.getId() == plugin.getCurrentWorld() && plugin.getLastWorld() != 0, plugin.isFavorite(world)));
+			rows.add(buildRow(world, i % 2 == 0,
+				world.getId() == plugin.getCurrentWorld() && plugin.getLastWorld() != 0,
+				plugin.isFavorite(world),
+				isWestCoast.getOrDefault(world.getId(), false)));
 		}
 
 		updateList();
@@ -407,7 +412,7 @@ class WorldSwitcherPanel extends PluginPanel
 	/**
 	 * Builds a table row, that displays the world's information.
 	 */
-	private WorldTableRow buildRow(World world, boolean stripe, boolean current, boolean favorite)
+	private WorldTableRow buildRow(World world, boolean stripe, boolean current, boolean favorite, boolean isWestCoast)
 	{
 		WorldTableRow row = new WorldTableRow(world, current, favorite, plugin.getStoredPing(world),
 			plugin::hopTo,
@@ -423,7 +428,8 @@ class WorldSwitcherPanel extends PluginPanel
 				}
 
 				updateList();
-			}
+			},
+			isWestCoast
 		);
 		row.setBackground(stripe ? ODD_ROW : ColorScheme.DARK_GRAY_COLOR);
 		return row;
