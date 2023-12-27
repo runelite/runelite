@@ -52,7 +52,7 @@ public class PlayerIndicatorsOverlay extends Overlay
 
 	@Inject
 	private PlayerIndicatorsOverlay(PlayerIndicatorsConfig config, PlayerIndicatorsService playerIndicatorsService,
-		ChatIconManager chatIconManager)
+									ChatIconManager chatIconManager)
 	{
 		this.config = config;
 		this.playerIndicatorsService = playerIndicatorsService;
@@ -87,8 +87,14 @@ public class PlayerIndicatorsOverlay extends Overlay
 				zOffset = actor.getLogicalHeight() + ACTOR_OVERHEAD_TEXT_MARGIN;
 		}
 
-		final String name = Text.sanitize(actor.getName());
-		Point textLocation = actor.getCanvasTextLocation(graphics, name, zOffset);
+		final String playerName = actor.getName();
+		if (playerName == null)
+		{
+			return;
+		}
+
+		final String finalName = config.showPlayerLevel() ? playerName + " (" + actor.getCombatLevel() + ")" : playerName;
+		Point textLocation = actor.getCanvasTextLocation(graphics, finalName, zOffset);
 
 		if (drawPlayerNamesConfig == PlayerNameLocation.MODEL_RIGHT)
 		{
@@ -145,6 +151,6 @@ public class PlayerIndicatorsOverlay extends Overlay
 			textLocation = new Point(textLocation.getX() + imageTextMargin, textLocation.getY());
 		}
 
-		OverlayUtil.renderTextLocation(graphics, textLocation, name, decorations.getColor());
+		OverlayUtil.renderTextLocation(graphics, textLocation, finalName, decorations.getColor());
 	}
 }
