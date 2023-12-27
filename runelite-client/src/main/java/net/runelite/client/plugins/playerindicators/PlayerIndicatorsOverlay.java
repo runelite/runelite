@@ -93,7 +93,8 @@ public class PlayerIndicatorsOverlay extends Overlay
 			return;
 		}
 
-		final String finalName = config.showPlayerLevel() ? playerName + " (" + actor.getCombatLevel() + ")" : playerName;
+		final String sanitizedPlayerName = Text.sanitize(playerName);
+		final String finalName = config.showPlayerLevel() ? sanitizedPlayerName + " (" + actor.getCombatLevel() + ")" : sanitizedPlayerName;
 		Point textLocation = actor.getCanvasTextLocation(graphics, finalName, zOffset);
 
 		if (drawPlayerNamesConfig == PlayerNameLocation.MODEL_RIGHT)
