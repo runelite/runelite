@@ -77,7 +77,7 @@ class AmbientSoundEffectOverlay extends Overlay
 		setLayer(OverlayLayer.ABOVE_SCENE);
 	}
 
-	@Subscribe(priority = -3) // priority -3 to run after AnnoyanceMutePlugin
+	@Subscribe(priority = 1) // priority 1 to run before Music Plugin
 	public void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		GameState gameState = gameStateChanged.getGameState();
@@ -87,9 +87,10 @@ class AmbientSoundEffectOverlay extends Overlay
 		}
 	}
 
-	@Subscribe(priority = -3) // priority -3 to run after AnnoyanceMutePlugin
+	@Subscribe(priority = 1) // priority 1 to run before Music Plugin
 	public void onAmbientSoundEffectCreated(AmbientSoundEffectCreated ambientSoundEffectCreated)
 	{
+		// single created sounds are added to client's AmbientSound deque
 		addSounds();
 	}
 
@@ -118,18 +119,18 @@ class AmbientSoundEffectOverlay extends Overlay
 		StringBuilder stringBuilder = new StringBuilder();
 		if (ambientSoundEffectBackgroundSoundEffectIds == null)
 		{
-			stringBuilder.append(",");
+			stringBuilder.append(',');
 		}
 		else
 		{
 			for (int i : ambientSoundEffectBackgroundSoundEffectIds)
 			{
-				stringBuilder.append(",").append(i);
+				stringBuilder.append(',').append(i);
 			}
 		}
 
-		markTile(ambientSoundEffect.getMinPosition(), ambientSoundEffect.getSoundEffectId() + " min position (" + stringBuilder.toString().substring(1) + ")");
-		markTile(ambientSoundEffect.getMaxPosition(), ambientSoundEffect.getSoundEffectId() + " max position (" + stringBuilder.toString().substring(1) + ")");
+		markTile(ambientSoundEffect.getMinPosition(), ambientSoundEffect.getSoundEffectId() + " min position (" + stringBuilder.substring(1) + ")");
+		markTile(ambientSoundEffect.getMaxPosition(), ambientSoundEffect.getSoundEffectId() + " max position (" + stringBuilder.substring(1) + ")");
 	}
 
 	private void markTile(LocalPoint localPoint, String label)
@@ -241,26 +242,28 @@ class AmbientSoundEffectOverlay extends Overlay
 	}
 
 	@Value
+	static
 	class AmbientSoundTileMarker
 	{
-		private WorldPoint worldPoint;
+		WorldPoint worldPoint;
 		@Nullable
-		private Color color;
+		Color color;
 		@Nullable
-		private String label;
+		String label;
 	}
 
 	@Value
+	static
 	class AmbientSoundPoint
 	{
-		private int regionId;
-		private int regionX;
-		private int regionY;
-		private int z;
+		int regionId;
+		int regionX;
+		int regionY;
+		int z;
 		@Nullable
-		private Color color;
+		Color color;
 		@Nullable
-		private String label;
+		String label;
 	}
 
 }
