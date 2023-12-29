@@ -258,6 +258,9 @@ public final class AnimationID
 	public static final int HOME_MAKE_TABLET = 4067;
 	public static final int DRAGONFIRE_SHIELD_SPECIAL = 6696;
 	public static final int MILKING_COW = 2305;
+	public static final int CHURN_MILK_SHORT = 2793;
+	public static final int CHURN_MILK_MEDIUM = 2794;
+	public static final int CHURN_MILK_LONG = 2795;
 
 	// Ectofuntus animations
 	public static final int ECTOFUNTUS_FILL_SLIME_BUCKET = 4471;
