@@ -97,7 +97,6 @@
 								<exclude>net/runelite/api/widgets/ComponentID.class</exclude>
 								<exclude>net/runelite/api/widgets/InterfaceID.class</exclude>
 								<exclude>net/runelite/api/widgets/ItemQuantityMode.class</exclude>
-								<exclude>net/runelite/api/widgets/WidgetConfig.class</exclude>
 								<exclude>net/runelite/api/widgets/WidgetID*.class</exclude>
 								<exclude>net/runelite/api/widgets/WidgetModalMode.class</exclude>
 								<exclude>net/runelite/api/widgets/WidgetModelType.class</exclude>
