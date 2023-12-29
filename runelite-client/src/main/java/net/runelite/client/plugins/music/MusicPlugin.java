@@ -215,6 +215,18 @@ public class MusicPlugin extends Plugin
 			shuttingDown = true;
 			teardownMusicOptions();
 		});
+
+		if (musicConfig.muteAmbientSounds())
+		{
+			clientThread.invoke(() ->
+			{
+				// Reload the scene to reapply ambient sounds
+				if (client.getGameState() == GameState.LOGGED_IN)
+				{
+					client.setGameState(GameState.LOADING);
+				}
+			});
+		}
 	}
 
 	@Provides
