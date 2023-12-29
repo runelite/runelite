@@ -27,12 +27,14 @@ package net.runelite.client.plugins.cluescrolls.clues;
 import com.google.common.collect.ImmutableList;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
 import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Singular;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.NPC;
 import net.runelite.api.NullObjectID;
@@ -68,6 +70,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("Talk to the bartender of the Rusty Anchor in Port Sarim.")
 			.location(new WorldPoint(3045, 3256, 0))
 			.npc("Bartender")
+			.npcRegion(12082)
 			.solution("The Rusty Anchor is located in the north of Port Sarim.")
 			.build(),
 		CrypticClue.builder()
@@ -141,6 +144,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("Speak to Sarah at Falador farm.")
 			.location(new WorldPoint(3038, 3292, 0))
 			.npc("Sarah")
+			.npcRegion(12083)
 			.solution("Talk to Sarah at Falador farm, north of Port Sarim.")
 			.build(),
 		CrypticClue.builder()
@@ -183,6 +187,10 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("In a town where thieves steal from stalls, search for some drawers in the upstairs of a house near the bank.")
 			.location(new WorldPoint(2611, 3324, 1))
 			.npc("Guard")
+			.npcRegion(10291)
+			.npcRegion(10292)
+			.npcRegion(10547)
+			.npcRegion(10548)
 			.objectId(ObjectID.DRAWERS)
 			.solution("Kill any Guard located around East Ardougne for a medium key. Then search the drawers in the upstairs hallway of Jerico's house, which is the house with pigeon cages located south of the northern East Ardougne bank.")
 			.build(),
@@ -213,6 +221,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("Speak to the bartender of the Blue Moon Inn in Varrock.")
 			.location(new WorldPoint(3226, 3399, 0))
 			.npc("Bartender")
+			.npcRegion(12853)
 			.solution("Talk to the bartender in Blue Moon Inn in Varrock.")
 			.build(),
 		CrypticClue.builder()
@@ -419,6 +428,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("In a town where wizards are known to gather, search upstairs in a large house to the north.")
 			.location(new WorldPoint(2593, 3108, 1))
 			.npc("Man")
+			.npcRegion(10288)
 			.objectId(ObjectID.CLOSED_CHEST_375)
 			.solution("Search the chest upstairs in the house north of Yanille Wizard's Guild. Kill a man for the key.")
 			.build(),
@@ -426,6 +436,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("Probably filled with wizards socks.")
 			.location(new WorldPoint(3116, 9562, 0))
 			.npc("Wizard")
+			.npcRegion(12337)
 			.objectId(ObjectID.DRAWERS_350)
 			.solution("Search the drawers in the basement of the Wizard's Tower south of Draynor Village. Kill one of the Wizards for the key. Fairy ring DIS.")
 			.build(),
@@ -445,6 +456,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("You'll need to look for a town with a central fountain. Look for a locked chest in the town's chapel.")
 			.location(new WorldPoint(3256, 3487, 0))
 			.npc("Monk")
+			.npcRegion(10290)
 			.objectId(ObjectID.CLOSED_CHEST_5108)
 			.solution("Search the chest by the stairs in the Varrock church. Kill a Monk in Ardougne Monastery to obtain the key.")
 			.build(),
@@ -509,6 +521,8 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("In a town where the guards are armed with maces, search the upstairs rooms of the Public House.")
 			.location(new WorldPoint(2574, 3326, 1))
 			.npc("Guard dog")
+			.npcRegion(10547)
+			.npcRegion(10548)
 			.objectId(ObjectID.DRAWERS)
 			.solution("Search the drawers upstairs in the pub north of Ardougne Castle. Kill a Guard dog at Handelmort Mansion to obtain the key.")
 			.build(),
@@ -552,6 +566,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("I live in a deserted crack collecting soles.")
 			.location(new WorldPoint(3371, 9320, 0))
 			.npc("Genie")
+			.npcRegion(13457)
 			.solution("Enter the crack west of Nardah Rug merchant, and talk to the Genie. You'll need a light source and a rope.")
 			.requiresLight(true)
 			.build(),
@@ -937,6 +952,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("Go to this building to be illuminated, and check the drawers while you are there.")
 			.location(new WorldPoint(2512, 3641, 1))
 			.npc("Market Guard")
+			.npcRegion(10553)
 			.objectId(ObjectID.DRAWERS_350)
 			.solution("Search the drawers in the first floor of the Lighthouse. Kill a Rellekka marketplace guard to obtain the key.")
 			.build(),
@@ -1132,6 +1148,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("Where safe to speak, the man who offers the pouch of smallest size wishes to see your alignment.")
 			.location(new WorldPoint(3260, 3385, 0))
 			.npc("Mage of Zamorak")
+			.npcRegion(12852)
 			.solution("Speak to the Mage of Zamorak south of the Rune Shop in Varrock while wearing three Zamorakian items.")
 			.build(),
 		CrypticClue.builder()
@@ -1267,6 +1284,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("Anger those who adhere to Saradomin's edicts to prevent travel.")
 			.location(new WorldPoint(3042, 3236, 0))
 			.npc("Monk of Entrana")
+			.npcRegion(12082)
 			.solution("Port Sarim Docks, try to charter a ship to Entrana with armour or weapons equipped.")
 			.build(),
 		CrypticClue.builder()
@@ -1278,6 +1296,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("Talk to the Squire in the White Knights' castle in Falador.")
 			.location(new WorldPoint(2977, 3343, 0))
 			.npc("Squire")
+			.npcRegion(11828)
 			.solution("The squire is located in the courtyard of the White Knights' Castle.")
 			.build(),
 		CrypticClue.builder()
@@ -1320,6 +1339,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("Belladonna, my dear. If only I had gloves, then I could hold you at last.")
 			.location(new WorldPoint(3088, 3357, 0))
 			.npc("Tool Leprechaun")
+			.npcRegion(12340)
 			.solution("Talk to Tool Leprechaun at Draynor Manor.")
 			.build(),
 		CrypticClue.builder()
@@ -1503,6 +1523,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("In the place Duke Horacio calls home, talk to a man with a hat dropped by goblins.")
 			.location(new WorldPoint(3208, 3213, 0))
 			.npc("Cook")
+			.npcRegion(12850)
 			.solution("Talk to the Cook in Lumbridge Castle.")
 			.build(),
 		CrypticClue.builder()
@@ -1545,6 +1566,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("Talk to Charles at Port Piscarilius.")
 			.location(new WorldPoint(1821, 3690, 0))
 			.npc("Charles")
+			.npcRegion(7225)
 			.solution("Charles is found by Veos' ship in Port Piscarilius.")
 			.build(),
 		CrypticClue.builder()
@@ -1563,6 +1585,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("Talk to the cook in the Blue Moon Inn in Varrock.")
 			.location(new WorldPoint(3230, 3401, 0))
 			.npc("Cook")
+			.npcRegion(12853)
 			.solution("The Blue Moon Inn can be found by the southern entrance to Varrock.")
 			.build(),
 		CrypticClue.builder()
@@ -1680,10 +1703,10 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 	private final String solution;
 	@Nullable
 	private final String questionText;
-
 	@Nullable
 	@Getter(AccessLevel.PRIVATE)
 	private final Function<ClueScrollPlugin, WorldPoint> locationProvider;
+	private final List<Integer> npcRegions;
 
 	@Builder
 	private CrypticClue(
@@ -1694,7 +1717,8 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		@Nullable Function<ClueScrollPlugin, WorldPoint> locationProvider,
 		String solution,
 		@Nullable String questionText,
-		boolean requiresLight
+		boolean requiresLight,
+		@Singular List<Integer> npcRegions
 	)
 	{
 		this.text = text;
@@ -1703,6 +1727,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		this.locationProvider = locationProvider != null ? locationProvider : (location != null ? (plugin) -> location : null);
 		this.solution = solution;
 		this.questionText = questionText;
+		this.npcRegions = npcRegions;
 		setRequiresSpade(this.locationProvider != null && npc == null && objectId == -1);
 		setRequiresLight(requiresLight);
 	}
@@ -1821,6 +1846,12 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 	public String[] getNpcs(ClueScrollPlugin plugin)
 	{
 		return new String[]{npc};
+	}
+
+	@Override
+	public Collection<Integer> getNpcRegions()
+	{
+		return npcRegions;
 	}
 
 	@Override
