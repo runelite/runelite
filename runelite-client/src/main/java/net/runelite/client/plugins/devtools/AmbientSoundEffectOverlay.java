@@ -124,7 +124,7 @@ class AmbientSoundEffectOverlay extends Overlay
 		{
 			for (int i : ambientSoundEffectBackgroundSoundEffectIds)
 			{
-				stringBuilder.append("," + i);
+				stringBuilder.append(",").append(i);
 			}
 		}
 
