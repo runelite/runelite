@@ -34,6 +34,7 @@ import java.awt.image.BufferedImage;
 import java.time.Instant;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -167,8 +168,6 @@ public class WorldHopperPlugin extends Plugin
 
 	private final Map<Integer, Integer> storedPings = new HashMap<>();
 
-	private Map<Integer, Boolean> isWestCoastWorld = null;
-
 	private final HotkeyListener previousKeyListener = new HotkeyListener(() -> config.previousKey())
 	{
 		@Override
@@ -231,7 +230,7 @@ public class WorldHopperPlugin extends Plugin
 		currPingFuture = hopperExecutorService.scheduleWithFixedDelay(this::pingCurrentWorld, 15, 1, TimeUnit.SECONDS);
 
 		// populate initial world list
-		updateList();
+		clientThread.invokeLater(this::updateList);
 	}
 
 	@Override
@@ -510,9 +509,8 @@ public class WorldHopperPlugin extends Plugin
 		WorldResult worldResult = worldService.getWorlds();
 		if (worldResult != null)
 		{
-			SwingUtilities.invokeLater(() -> panel.populate(
-				worldResult.getWorlds(),
-				getIsWestCoastWorld()));
+			setWestCoastWorlds();
+			SwingUtilities.invokeLater(() -> panel.populate(worldResult.getWorlds()));
 		}
 	}
 
@@ -928,24 +926,26 @@ public class WorldHopperPlugin extends Plugin
 		return ping;
 	}
 
-	private Map<Integer, Boolean> getIsWestCoastWorld()
+	private void setWestCoastWorlds()
 	{
-		if (isWestCoastWorld == null)
+		if (panel.getWestCoastWorlds() == null)
 		{
-			// Map worlds to whether or not they are East/West coast
+			// Determine which worlds are east/west coast
 			// https://abextm.github.io/cache2/#/viewer/enum/4992
 			// https://oldschool.runescape.wiki/w/Server
-			// As of writing this the runelite API doesn't give world coast information: https://api.runelite.net/runelite-1.10.18-SNAPSHOT/worlds.js
 			final EnumComposition worldCoastEnum = client.getEnum(EnumID.WORLD_COASTS);
 			int[] keys = worldCoastEnum.getKeys();
 			int[] values = worldCoastEnum.getIntVals();
-			isWestCoastWorld = new HashMap<>();
+			Set<Integer> westCoastWorlds = new HashSet<>();
 
 			for (int i = 0; i < keys.length; i++)
 			{
-				isWestCoastWorld.put(keys[i], values[i] == -73);
+				if (values[i] == -73)
+				{
+					westCoastWorlds.add(keys[i]);
+				}
 			}
+			panel.setWestCoastWorlds(westCoastWorlds);
 		}
-		return isWestCoastWorld;
 	}
 }

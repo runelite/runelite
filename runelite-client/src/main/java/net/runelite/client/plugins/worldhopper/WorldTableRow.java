@@ -31,6 +31,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.EnumSet;
+import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import javax.swing.ImageIcon;
@@ -52,6 +53,7 @@ class WorldTableRow extends JPanel
 {
 	private static final ImageIcon FLAG_AUS;
 	private static final ImageIcon FLAG_UK;
+	private static final ImageIcon FLAG_US;
 	private static final ImageIcon FLAG_US_EAST;
 	private static final ImageIcon FLAG_US_WEST;
 	private static final ImageIcon FLAG_GER;
@@ -74,13 +76,14 @@ class WorldTableRow extends JPanel
 	{
 		FLAG_AUS = new ImageIcon(ImageUtil.loadImageResource(WorldHopperPlugin.class, "flag_aus.png"));
 		FLAG_UK = new ImageIcon(ImageUtil.loadImageResource(WorldHopperPlugin.class, "flag_uk.png"));
+		FLAG_US = new ImageIcon(ImageUtil.loadImageResource(WorldHopperPlugin.class, "flag_us.png"));
 		FLAG_US_EAST = new ImageIcon(ImageUtil.loadImageResource(WorldHopperPlugin.class, "flag_us_east.png"));
 		FLAG_US_WEST = new ImageIcon(ImageUtil.loadImageResource(WorldHopperPlugin.class, "flag_us_west.png"));
 		FLAG_GER = new ImageIcon(ImageUtil.loadImageResource(WorldHopperPlugin.class, "flag_ger.png"));
 	}
 
 	private final JMenuItem favoriteMenuOption = new JMenuItem();
-	private final boolean isWestCoast;
+	private final Set<Integer> westCoastWorlds;
 
 	private JLabel worldField;
 	private JLabel playerCountField;
@@ -98,12 +101,12 @@ class WorldTableRow extends JPanel
 
 	private Color lastBackground;
 
-	WorldTableRow(World world, boolean current, boolean favorite, Integer ping, Consumer<World> onSelect, BiConsumer<World, Boolean> onFavorite, boolean isWestCoast)
+	WorldTableRow(World world, boolean current, boolean favorite, Integer ping, Consumer<World> onSelect, BiConsumer<World, Boolean> onFavorite, Set<Integer> westCoastWorlds)
 	{
 		this.world = world;
 		this.onFavorite = onFavorite;
 		this.updatedPlayerCount = world.getPlayers();
-		this.isWestCoast = isWestCoast;
+		this.westCoastWorlds = westCoastWorlds;
 
 		setLayout(new BorderLayout());
 		setBorder(new EmptyBorder(2, 0, 2, 0));
@@ -392,7 +395,7 @@ class WorldTableRow extends JPanel
 
 		worldField = new JLabel(world.getId() + "");
 
-		ImageIcon flagIcon = getFlag(world, isWestCoast);
+		ImageIcon flagIcon = getFlag(world, westCoastWorlds);
 		if (flagIcon != null)
 		{
 			JLabel flag = new JLabel(flagIcon);
@@ -403,12 +406,12 @@ class WorldTableRow extends JPanel
 		return column;
 	}
 
-	private static ImageIcon getFlag(World world, boolean isWestCoast)
+	private static ImageIcon getFlag(World world, Set<Integer> westCoastWorlds)
 	{
 		WorldRegion region = world.getRegion();
-		if (region == WorldRegion.UNITED_STATES_OF_AMERICA)
+		if (region == WorldRegion.UNITED_STATES_OF_AMERICA && westCoastWorlds != null)
 		{
-			if (isWestCoast)
+			if (westCoastWorlds.contains(world.getId()))
 			{
 				return FLAG_US_WEST;
 			}
@@ -421,6 +424,8 @@ class WorldTableRow extends JPanel
 		{
 			switch (region)
 			{
+				case UNITED_STATES_OF_AMERICA:
+					return FLAG_US;
 				case UNITED_KINGDOM:
 					return FLAG_UK;
 				case AUSTRALIA:

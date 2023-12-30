@@ -78,6 +78,9 @@ class WorldSwitcherPanel extends PluginPanel
 	private Set<RegionFilterMode> regionFilterMode;
 	@Setter(AccessLevel.PACKAGE)
 	private Set<WorldTypeFilter> worldTypeFilters;
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
+	private Set<Integer> westCoastWorlds = null;
 
 	WorldSwitcherPanel(WorldHopperPlugin plugin)
 	{
@@ -247,7 +250,7 @@ class WorldSwitcherPanel extends PluginPanel
 		}
 	}
 
-	void populate(List<World> worlds, Map<Integer, Boolean> isWestCoast)
+	void populate(List<World> worlds)
 	{
 		rows.clear();
 
@@ -292,7 +295,7 @@ class WorldSwitcherPanel extends PluginPanel
 			rows.add(buildRow(world, i % 2 == 0,
 				world.getId() == plugin.getCurrentWorld() && plugin.getLastWorld() != 0,
 				plugin.isFavorite(world),
-				isWestCoast.getOrDefault(world.getId(), false)));
+				westCoastWorlds));
 		}
 
 		updateList();
@@ -412,7 +415,7 @@ class WorldSwitcherPanel extends PluginPanel
 	/**
 	 * Builds a table row, that displays the world's information.
 	 */
-	private WorldTableRow buildRow(World world, boolean stripe, boolean current, boolean favorite, boolean isWestCoast)
+	private WorldTableRow buildRow(World world, boolean stripe, boolean current, boolean favorite, Set<Integer> westCoastWorlds)
 	{
 		WorldTableRow row = new WorldTableRow(world, current, favorite, plugin.getStoredPing(world),
 			plugin::hopTo,
@@ -429,7 +432,7 @@ class WorldSwitcherPanel extends PluginPanel
 
 				updateList();
 			},
-			isWestCoast
+			westCoastWorlds
 		);
 		row.setBackground(stripe ? ODD_ROW : ColorScheme.DARK_GRAY_COLOR);
 		return row;
