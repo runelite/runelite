@@ -193,15 +193,17 @@ public class FishingPlugin extends Plugin
 			return;
 		}
 
-		if (event.getMessage().contains("You catch a") || event.getMessage().contains("You catch some") ||
-			event.getMessage().equals("Your cormorant returns with its catch."))
+		var message = event.getMessage();
+		if (message.contains("You catch a") || message.contains("You catch some")
+			|| message.equals("Your cormorant returns with its catch.")
+			|| (message.startsWith("You catch") && message.contains("Karambwanji")))
 		{
 			session.setLastFishCaught(Instant.now());
 			spotOverlay.setHidden(false);
 			fishingSpotMinimapOverlay.setHidden(false);
 		}
 
-		if (event.getMessage().equals("A flying fish jumps up and eats some of your minnows!") && config.flyingFishNotification())
+		if (message.equals("A flying fish jumps up and eats some of your minnows!") && config.flyingFishNotification())
 		{
 			notifier.notify("A flying fish is eating your minnows!");
 		}
