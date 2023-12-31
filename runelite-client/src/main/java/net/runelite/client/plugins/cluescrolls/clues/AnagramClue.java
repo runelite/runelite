@@ -304,7 +304,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		AnagramClue.builder()
 			.text("FORLUN")
 			.npc("Runolf")
-			.location(new WorldPoint(2512, 10256, 0))
+			.location(new WorldPoint(2509, 3846, 0))
 			.area("Miscellania & Etceteria Dungeon")
 			.build(),
 		AnagramClue.builder()
