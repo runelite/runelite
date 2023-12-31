@@ -208,7 +208,7 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 		.put(new WorldPoint(3215, 3835, 0), new CoordinateClueInfo("Wilderness. Lava Dragon Isle.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
 		.put(new WorldPoint(3369, 3894, 0), new CoordinateClueInfo("Wilderness. Fountain of Rune.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
 		.put(new WorldPoint(2065, 3923, 0), new CoordinateClueInfo("Outside the western wall on Lunar Isle.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
-		.put(new WorldPoint(3188, 3933, 0), new CoordinateClueInfo("Wilderness. Resource Area.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
+		.put(new WorldPoint(3188, 3933, 0), new CoordinateClueInfo("Wilderness. Resource Area. An entry fee of 7,500 coins is required, or less if Wilderness Diaries have been completed.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
 		.put(new WorldPoint(3043, 3940, 0), new CoordinateClueInfo("Wilderness. South of Pirates' Hideout.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
 		.put(new WorldPoint(3380, 3963, 0), new CoordinateClueInfo("Wilderness. North of Volcano.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
 		.put(new WorldPoint(3051, 3736, 0), new CoordinateClueInfo("East of the Wilderness Obelisk in 28 Wilderness.", ARMADYLEAN_OR_BANDOSIAN_GUARD))

@@ -1622,7 +1622,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("More resources than I can handle, but in a very dangerous area. Can't wait to strike gold!")
 			.location(new WorldPoint(3183, 3941, 0))
-			.solution("Dig between the three gold ores in the Wilderness Resource Area.")
+			.solution("Dig between the three gold ores in the Wilderness Resource Area. An entry fee of 7,500 coins is required, or less if Wilderness Diaries have been completed.")
 			.build(),
 		CrypticClue.builder()
 			.text("Observing someone in a swamp, under the telescope lies treasure.")
