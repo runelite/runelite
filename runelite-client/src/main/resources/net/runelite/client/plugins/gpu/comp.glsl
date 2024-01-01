@@ -46,6 +46,7 @@ void main() {
   uint groupId = gl_WorkGroupID.x;
   uint localId = gl_LocalInvocationID.x * FACES_PER_THREAD;
   modelinfo minfo = ol[groupId];
+  ivec4 pos = ivec4(minfo.x, minfo.y, minfo.z, 0);
 
   if (localId == 0) {
     min10 = 6000;
@@ -60,9 +61,9 @@ void main() {
 
   int prio[FACES_PER_THREAD];
   int dis[FACES_PER_THREAD];
-  vec4 vA[FACES_PER_THREAD];
-  vec4 vB[FACES_PER_THREAD];
-  vec4 vC[FACES_PER_THREAD];
+  ivec4 vA[FACES_PER_THREAD];
+  ivec4 vB[FACES_PER_THREAD];
+  ivec4 vC[FACES_PER_THREAD];
 
   for (int i = 0; i < FACES_PER_THREAD; i++) {
     get_face(localId + i, minfo, cameraYaw, cameraPitch, prio[i], dis[i], vA[i], vB[i], vC[i]);
@@ -72,7 +73,7 @@ void main() {
   barrier();
 
   for (int i = 0; i < FACES_PER_THREAD; i++) {
-    add_face_prio_distance(localId + i, minfo, vA[i], vB[i], vC[i], prio[i], dis[i]);
+    add_face_prio_distance(localId + i, minfo, vA[i], vB[i], vC[i], prio[i], dis[i], pos);
   }
 
   memoryBarrierShared();

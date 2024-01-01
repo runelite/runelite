@@ -89,9 +89,9 @@ int count_prio_offset(__local struct shared_data *shared, int priority) {
   return total;
 }
 
-void get_face(__local struct shared_data *shared, __constant struct uniform *uni, __global const float4 *vb, __global const float4 *tempvb, uint localId,
+void get_face(__local struct shared_data *shared, __constant struct uniform *uni, __global const int4 *vb, __global const int4 *tempvb, uint localId,
               struct modelinfo minfo, float cameraYaw, float cameraPitch,
-              /* out */ int *prio, int *dis, float4 *o1, float4 *o2, float4 *o3) {
+              /* out */ int *prio, int *dis, int4 *o1, int4 *o2, int4 *o3) {
   int size = minfo.size;
   int offset = minfo.offset;
   int flags = minfo.flags;
@@ -103,53 +103,53 @@ void get_face(__local struct shared_data *shared, __constant struct uniform *uni
     ssboOffset = 0;
   }
 
-  float4 vertA, vertB, vertC;
+  int4 thisA;
+  int4 thisB;
+  int4 thisC;
 
   // Grab triangle vertices from the correct buffer
   if (flags < 0) {
-    vertA = vb[offset + ssboOffset * 3];
-    vertB = vb[offset + ssboOffset * 3 + 1];
-    vertC = vb[offset + ssboOffset * 3 + 2];
+    thisA = vb[offset + ssboOffset * 3];
+    thisB = vb[offset + ssboOffset * 3 + 1];
+    thisC = vb[offset + ssboOffset * 3 + 2];
   } else {
-    vertA = tempvb[offset + ssboOffset * 3];
-    vertB = tempvb[offset + ssboOffset * 3 + 1];
-    vertC = tempvb[offset + ssboOffset * 3 + 2];
+    thisA = tempvb[offset + ssboOffset * 3];
+    thisB = tempvb[offset + ssboOffset * 3 + 1];
+    thisC = tempvb[offset + ssboOffset * 3 + 2];
   }
 
   if (localId < size) {
     int orientation = flags & 0x7ff;
 
     // rotate for model orientation
-    float4 rvertA = rotate_vertex(vertA, orientation);
-    float4 rvertB = rotate_vertex(vertB, orientation);
-    float4 rvertC = rotate_vertex(vertC, orientation);
+    int4 thisrvA = rotate_vertex(uni, thisA, orientation);
+    int4 thisrvB = rotate_vertex(uni, thisB, orientation);
+    int4 thisrvC = rotate_vertex(uni, thisC, orientation);
 
     // calculate distance to face
-    float w = vertA.w;
-    int thisPriority = ((*(int *)&w) >> 16) & 0xf;  // all vertices on the face have the same priority
-    int thisDistance = face_distance(rvertA, rvertB, rvertC, cameraYaw, cameraPitch);
+    int thisPriority = (thisA.w >> 16) & 0xff;  // all vertices on the face have the same priority
+    int thisDistance = face_distance(thisrvA, thisrvB, thisrvC, cameraYaw, cameraPitch);
 
-    *o1 = rvertA;
-    *o2 = rvertB;
-    *o3 = rvertC;
+    *o1 = thisrvA;
+    *o2 = thisrvB;
+    *o3 = thisrvC;
 
     *prio = thisPriority;
     *dis = thisDistance;
   } else {
-    *o1 = (float4)(0, 0, 0, 0);
-    *o2 = (float4)(0, 0, 0, 0);
-    *o3 = (float4)(0, 0, 0, 0);
+    *o1 = (int4)(0, 0, 0, 0);
+    *o2 = (int4)(0, 0, 0, 0);
+    *o3 = (int4)(0, 0, 0, 0);
     *prio = 0;
     *dis = 0;
   }
 }
 
-void add_face_prio_distance(__local struct shared_data *shared, __constant struct uniform *uni, uint localId, struct modelinfo minfo, float4 rvertA,
-                            float4 rvertB, float4 rvertC, int thisPriority, int thisDistance) {
+void add_face_prio_distance(__local struct shared_data *shared, __constant struct uniform *uni, uint localId, struct modelinfo minfo, int4 thisrvA,
+                            int4 thisrvB, int4 thisrvC, int thisPriority, int thisDistance, int4 pos) {
   if (localId < minfo.size) {
     // if the face is not culled, it is calculated into priority distance averages
-    int4 pos = (int4)(minfo.x, minfo.y, minfo.z, 0);
-    if (face_visible(uni, rvertA, rvertB, rvertC, pos)) {
+    if (face_visible(uni, thisrvA, thisrvB, thisrvC, pos)) {
       atomic_add(&shared->totalNum[thisPriority], 1);
       atomic_add(&shared->totalDistance[thisPriority], thisDistance);
 
@@ -214,25 +214,24 @@ int tile_height(read_only image3d_t tileHeightImage, int z, int x, int y) {
   return read_imagei(tileHeightImage, tileHeightSampler, coord).x << 3;
 }
 
-float4 hillskew_vertex(read_only image3d_t tileHeightImage, float4 v, int hillskew, int y, int plane) {
+int4 hillskew_vertex(read_only image3d_t tileHeightImage, int4 v, int hillskew, int y, int plane) {
   if (hillskew == 1) {
-    float fx = v.x / 128;
-    float fz = v.z / 128;
-    int sx = (int)(floor(fx));
-    int sz = (int)(floor(fz));
-    float it;
-    float h1 = mix(tile_height(tileHeightImage, plane, sx, sz), tile_height(tileHeightImage, plane, sx + 1, sz), fract(fx, &it));
-    float h2 = mix(tile_height(tileHeightImage, plane, sx, sz + 1), tile_height(tileHeightImage, plane, sx + 1, sz + 1), fract(fx, &it));
-    float h3 = mix(h1, h2, fract(fz, &it));
-    return (float4)(v.x, v.y + (int)(h3)-y, v.z, v.w);
+    int px = v.x & 127;
+    int pz = v.z & 127;
+    int sx = v.x >> 7;
+    int sz = v.z >> 7;
+    int h1 = px * tile_height(tileHeightImage, plane, sx + 1, sz) + (128 - px) * tile_height(tileHeightImage, plane, sx, sz) >> 7;
+    int h2 = px * tile_height(tileHeightImage, plane, sx + 1, sz + 1) + (128 - px) * tile_height(tileHeightImage, plane, sx, sz + 1) >> 7;
+    int h3 = pz * h2 + (128 - pz) * h1 >> 7;
+    return (int4)(v.x, v.y + h3 - y, v.z, v.w);
   } else {
     return v;
   }
 }
 
 void sort_and_insert(__local struct shared_data *shared, __constant struct uniform *uni, __global const float4 *texb, __global const float4 *temptexb,
-                     __global float4 *vout, __global float4 *uvout, uint localId, struct modelinfo minfo, int thisPriority, int thisDistance, float4 rvertA,
-                     float4 rvertB, float4 rvertC, read_only image3d_t tileHeightImage) {
+                     __global int4 *vout, __global float4 *uvout, uint localId, struct modelinfo minfo, int thisPriority, int thisDistance, int4 thisrvA,
+                     int4 thisrvB, int4 thisrvC, read_only image3d_t tileHeightImage) {
   int size = minfo.size;
 
   if (localId < size) {
@@ -256,22 +255,22 @@ void sort_and_insert(__local struct shared_data *shared, __constant struct unifo
     }
 
     // position into scene
-    float4 pos = (float4)(minfo.x, minfo.y, minfo.z, 0);
-    rvertA += pos;
-    rvertB += pos;
-    rvertC += pos;
+    int4 pos = (int4)(minfo.x, minfo.y, minfo.z, 0);
+    thisrvA += pos;
+    thisrvB += pos;
+    thisrvC += pos;
 
     // apply hillskew
     int plane = (flags >> 24) & 3;
     int hillskew = (flags >> 26) & 1;
-    rvertA = hillskew_vertex(tileHeightImage, rvertA, hillskew, minfo.y, plane);
-    rvertB = hillskew_vertex(tileHeightImage, rvertB, hillskew, minfo.y, plane);
-    rvertC = hillskew_vertex(tileHeightImage, rvertC, hillskew, minfo.y, plane);
+    thisrvA = hillskew_vertex(tileHeightImage, thisrvA, hillskew, minfo.y, plane);
+    thisrvB = hillskew_vertex(tileHeightImage, thisrvB, hillskew, minfo.y, plane);
+    thisrvC = hillskew_vertex(tileHeightImage, thisrvC, hillskew, minfo.y, plane);
 
     // write to out buffer
-    vout[outOffset + myOffset * 3] = rvertA;
-    vout[outOffset + myOffset * 3 + 1] = rvertB;
-    vout[outOffset + myOffset * 3 + 2] = rvertC;
+    vout[outOffset + myOffset * 3] = thisrvA;
+    vout[outOffset + myOffset * 3 + 1] = thisrvB;
+    vout[outOffset + myOffset * 3 + 2] = thisrvC;
 
     if (toffset < 0) {
       uvout[outOffset + myOffset * 3] = (float4)(0, 0, 0, 0);
@@ -291,9 +290,9 @@ void sort_and_insert(__local struct shared_data *shared, __constant struct unifo
       }
 
       int orientation = flags & 0x7ff;
-      uvout[outOffset + myOffset * 3] = (float4)(texA.x, rotate_vertex((float4)(texA.yzw, 0), orientation).xyz + pos.xyz);
-      uvout[outOffset + myOffset * 3 + 1] = (float4)(texB.x, rotate_vertex((float4)(texB.yzw, 0), orientation).xyz + pos.xyz);
-      uvout[outOffset + myOffset * 3 + 2] = (float4)(texC.x, rotate_vertex((float4)(texC.yzw, 0), orientation).xyz + pos.xyz);
+      uvout[outOffset + myOffset * 3] = (float4)(texA.x, rotatef_vertex(texA.yzw, orientation) + convert_float3(pos.xyz));
+      uvout[outOffset + myOffset * 3 + 1] = (float4)(texB.x, rotatef_vertex(texB.yzw, orientation) + convert_float3(pos.xyz));
+      uvout[outOffset + myOffset * 3 + 2] = (float4)(texC.x, rotatef_vertex(texC.yzw, orientation) + convert_float3(pos.xyz));
     }
   }
 }

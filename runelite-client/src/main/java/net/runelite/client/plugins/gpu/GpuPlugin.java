@@ -201,11 +201,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	private final GLBuffer uniformBuffer = new GLBuffer("uniform buffer");
 
-	private final IntBuffer uniformBuf = ByteBuffer.allocateDirect(32 * Integer.BYTES)
-		.order(ByteOrder.nativeOrder())
-		.asIntBuffer();
-
-	private GpuFloatBuffer vertexBuffer;
+	private GpuIntBuffer vertexBuffer;
 	private GpuFloatBuffer uvBuffer;
 
 	private GpuIntBuffer modelBufferUnordered;
@@ -280,7 +276,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	private int sceneId;
 	private int nextSceneId;
-	private GpuFloatBuffer nextSceneVertexBuffer;
+	private GpuIntBuffer nextSceneVertexBuffer;
 	private GpuFloatBuffer nextSceneTexBuffer;
 
 	@Override
@@ -368,7 +364,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 					}
 				}
 
-				vertexBuffer = new GpuFloatBuffer();
+				vertexBuffer = new GpuIntBuffer();
 				uvBuffer = new GpuFloatBuffer();
 
 				modelBufferUnordered = new GpuIntBuffer();
@@ -667,14 +663,11 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 		GL43C.glEnableVertexAttribArray(0);
 		GL43C.glBindBuffer(GL43C.GL_ARRAY_BUFFER, tmpOutBuffer.glBufferId);
-		GL43C.glVertexAttribPointer(0, 3, GL43C.GL_FLOAT, false, 16, 0);
+		GL43C.glVertexAttribIPointer(0, 4, GL43C.GL_INT, 0, 0);
 
 		GL43C.glEnableVertexAttribArray(1);
-		GL43C.glVertexAttribIPointer(1, 1, GL43C.GL_INT, 16, 12);
-
-		GL43C.glEnableVertexAttribArray(2);
 		GL43C.glBindBuffer(GL43C.GL_ARRAY_BUFFER, tmpOutUvBuffer.glBufferId);
-		GL43C.glVertexAttribPointer(2, 4, GL43C.GL_FLOAT, false, 0, 0);
+		GL43C.glVertexAttribPointer(1, 4, GL43C.GL_FLOAT, false, 0, 0);
 
 		// Create temp VAO
 		vaoTemp = GL43C.glGenVertexArrays();
@@ -682,14 +675,11 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 		GL43C.glEnableVertexAttribArray(0);
 		GL43C.glBindBuffer(GL43C.GL_ARRAY_BUFFER, tmpVertexBuffer.glBufferId);
-		GL43C.glVertexAttribPointer(0, 3, GL43C.GL_FLOAT, false, 16, 0);
+		GL43C.glVertexAttribIPointer(0, 4, GL43C.GL_INT, 0, 0);
 
 		GL43C.glEnableVertexAttribArray(1);
-		GL43C.glVertexAttribIPointer(1, 1, GL43C.GL_INT, 16, 12);
-
-		GL43C.glEnableVertexAttribArray(2);
 		GL43C.glBindBuffer(GL43C.GL_ARRAY_BUFFER, tmpUvBuffer.glBufferId);
-		GL43C.glVertexAttribPointer(2, 4, GL43C.GL_FLOAT, false, 0, 0);
+		GL43C.glVertexAttribPointer(1, 4, GL43C.GL_FLOAT, false, 0, 0);
 
 		// Create UI VAO
 		vaoUiHandle = GL43C.glGenVertexArrays();
@@ -807,7 +797,20 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private void initUniformBuffer()
 	{
 		initGlBuffer(uniformBuffer);
-		updateBuffer(uniformBuffer, GL43C.GL_UNIFORM_BUFFER, 32, GL43C.GL_DYNAMIC_DRAW, CL12.CL_MEM_READ_ONLY);
+
+		IntBuffer uniformBuf = GpuIntBuffer.allocateDirect(8 + 2048 * 4);
+		uniformBuf.put(new int[8]); // uniform block
+		final int[] pad = new int[2];
+		for (int i = 0; i < 2048; i++)
+		{
+			uniformBuf.put(Perspective.SINE[i]);
+			uniformBuf.put(Perspective.COSINE[i]);
+			uniformBuf.put(pad); // ivec2 alignment in std140 is 16 bytes
+		}
+		uniformBuf.flip();
+
+		updateBuffer(uniformBuffer, GL43C.GL_UNIFORM_BUFFER, uniformBuf, GL43C.GL_DYNAMIC_DRAW, CL12.CL_MEM_READ_ONLY);
+		GL43C.glBindBuffer(GL43C.GL_UNIFORM_BUFFER, 0);
 	}
 
 	private void initAAFbo(int width, int height, int aaSamples)
@@ -877,8 +880,11 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		// viewport buffer.
 		targetBufferOffset = 0;
 
-		// UBO.
-		uniformBuf.clear();
+		// UBO. Only the first 32 bytes get modified here, the rest is the constant sin/cos table.
+		// We can reuse the vertex buffer since it isn't used yet.
+		vertexBuffer.clear();
+		vertexBuffer.ensureCapacity(32);
+		IntBuffer uniformBuf = vertexBuffer.getBuffer();
 		uniformBuf
 			.put(Float.floatToIntBits((float) cameraYaw))
 			.put(Float.floatToIntBits((float) cameraPitch))
@@ -909,7 +915,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			vertexBuffer.flip();
 			uvBuffer.flip();
 
-			FloatBuffer vertexBuffer = this.vertexBuffer.getBuffer();
+			IntBuffer vertexBuffer = this.vertexBuffer.getBuffer();
 			FloatBuffer uvBuffer = this.uvBuffer.getBuffer();
 
 			updateBuffer(tmpVertexBuffer, GL43C.GL_ARRAY_BUFFER, vertexBuffer, GL43C.GL_DYNAMIC_DRAW, 0L);
@@ -926,7 +932,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		modelBufferSmall.flip();
 		modelBufferUnordered.flip();
 
-		FloatBuffer vertexBuffer = this.vertexBuffer.getBuffer();
+		IntBuffer vertexBuffer = this.vertexBuffer.getBuffer();
 		FloatBuffer uvBuffer = this.uvBuffer.getBuffer();
 		IntBuffer modelBuffer = this.modelBuffer.getBuffer();
 		IntBuffer modelBufferSmall = this.modelBufferSmall.getBuffer();
@@ -944,7 +950,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		// Output buffers
 		updateBuffer(tmpOutBuffer,
 			GL43C.GL_ARRAY_BUFFER,
-			targetBufferOffset * 16, // each element is a vec4, which is 16 bytes
+			targetBufferOffset * 16, // each element is an ivec4, which is 16 bytes
 			GL43C.GL_STREAM_DRAW,
 			CL12.CL_MEM_WRITE_ONLY);
 		updateBuffer(tmpOutUvBuffer,
@@ -1509,7 +1515,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			return;
 		}
 
-		GpuFloatBuffer vertexBuffer = new GpuFloatBuffer();
+		GpuIntBuffer vertexBuffer = new GpuIntBuffer();
 		GpuFloatBuffer uvBuffer = new GpuFloatBuffer();
 
 		sceneUploader.upload(scene, vertexBuffer, uvBuffer);
