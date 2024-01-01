@@ -35,6 +35,7 @@ layout(std140) uniform uniforms {
   float cameraX;
   float cameraY;
   float cameraZ;
+  ivec2 sinCosTable[2048];
 };
 
 struct modelinfo {
@@ -53,15 +54,15 @@ layout(std430, binding = 0) readonly buffer modelbuffer_in {
 };
 
 layout(std430, binding = 1) readonly buffer vertexbuffer_in {
-  vec4 vb[];
+  ivec4 vb[];
 };
 
 layout(std430, binding = 2) readonly buffer tempvertexbuffer_in {
-  vec4 tempvb[];
+  ivec4 tempvb[];
 };
 
 layout(std430, binding = 3) writeonly buffer vertex_out {
-  vec4 vout[];
+  ivec4 vout[];
 };
 
 layout(std430, binding = 4) writeonly buffer uv_out {

@@ -43,6 +43,7 @@ layout(std140) uniform uniforms {
   float cameraX;
   float cameraY;
   float cameraZ;
+  ivec2 sinCosTable[2048];
 };
 
 #include "uv.glsl"
@@ -51,7 +52,7 @@ uniform vec2 textureAnimations[128];
 uniform int tick;
 uniform mat4 projectionMatrix;
 
-in vec3 gVertex[3];
+in ivec3 gVertex[3];
 in vec4 gColor[3];
 in float gHsl[3];
 in int gTextureId[3];
