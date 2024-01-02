@@ -111,6 +111,13 @@ import org.pushingpixels.substance.internal.utils.SubstanceTitlePaneUtilities;
 @Singleton
 public class ClientUI
 {
+	public enum ChromeMode
+	{
+		CUSTOM,
+		SYSTEM,
+		NONE;
+	}
+
 	private static final String CONFIG_GROUP = "runelite";
 	private static final String CONFIG_CLIENT_BOUNDS = "clientBounds";
 	private static final String CONFIG_CLIENT_MAXIMIZED = "clientMaximized";
@@ -452,8 +459,9 @@ public class ClientUI
 			mouseManager.registerMouseListener(mouseListener);
 
 			// Decorate window with custom chrome and titlebar if needed
-			withTitleBar = config.enableCustomChrome();
-			frame.setUndecorated(withTitleBar);
+			final ChromeMode chromeMode = config.enableCustomChrome();
+			withTitleBar = chromeMode == ChromeMode.CUSTOM;
+			frame.setUndecorated(chromeMode != ChromeMode.SYSTEM);
 
 			if (withTitleBar)
 			{
