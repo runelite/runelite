@@ -208,6 +208,11 @@ public class Notifier
 			mouseLastPressedMillis = client.getMouseLastPressedMillis();
 		}
 
+		if (runeLiteConfig.notificationFlashTaskbar())
+		{
+			clientUI.flashTaskbar();
+		}
+
 		log.debug(message);
 	}
 
