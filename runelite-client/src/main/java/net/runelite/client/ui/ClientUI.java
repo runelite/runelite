@@ -794,7 +794,8 @@ public class ClientUI
 	/**
 	 * Request user attention to the window (flash the taskbar)
 	 */
-	public void flashTaskbar() {
+	public void flashTaskbar()
+	{
 		Taskbar.getTaskbar().requestWindowUserAttention(frame);
 	}
 
