@@ -166,7 +166,7 @@ class MouseHighlightOverlay extends Overlay
 
 		// If this varc is set, a tooltip is already being displayed
 		int tooltipDisplayed = client.getVarcIntValue(VarClientInt.TOOLTIP_VISIBLE);
-		if (tooltipDisplayed == 1)
+		if (tooltipDisplayed == 1 && !config.forceTooltip())
 		{
 			return null;
 		}
