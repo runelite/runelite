@@ -48,6 +48,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.ChatPlayer;
 import net.runelite.api.Client;
+import net.runelite.api.EnumID;
 import net.runelite.api.Friend;
 import net.runelite.api.FriendsChatManager;
 import net.runelite.api.FriendsChatMember;
@@ -503,7 +504,11 @@ public class WorldHopperPlugin extends Plugin
 		WorldResult worldResult = worldService.getWorlds();
 		if (worldResult != null)
 		{
-			SwingUtilities.invokeLater(() -> panel.populate(worldResult.getWorlds()));
+			clientThread.invokeLater(() ->
+			{
+				var locationEnum = client.getGameState().getState() >= GameState.LOGIN_SCREEN.getState() ? client.getEnum(EnumID.WORLD_LOCATIONS) : null;
+				SwingUtilities.invokeLater(() -> panel.populate(worldResult.getWorlds(), locationEnum));
+			});
 		}
 	}
 

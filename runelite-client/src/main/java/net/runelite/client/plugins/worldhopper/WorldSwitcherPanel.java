@@ -36,11 +36,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
+import javax.annotation.Nullable;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import net.runelite.api.EnumComposition;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.PluginPanel;
@@ -245,7 +247,7 @@ class WorldSwitcherPanel extends PluginPanel
 		}
 	}
 
-	void populate(List<World> worlds)
+	void populate(List<World> worlds, @Nullable EnumComposition worldLocations)
 	{
 		rows.clear();
 
@@ -287,7 +289,10 @@ class WorldSwitcherPanel extends PluginPanel
 				}
 			}
 
-			rows.add(buildRow(world, i % 2 == 0, world.getId() == plugin.getCurrentWorld() && plugin.getLastWorld() != 0, plugin.isFavorite(world)));
+			rows.add(buildRow(world, i % 2 == 0,
+				world.getId() == plugin.getCurrentWorld() && plugin.getLastWorld() != 0,
+				plugin.isFavorite(world),
+				worldLocations != null ? worldLocations.getIntValue(world.getId()) : -1));
 		}
 
 		updateList();
@@ -407,7 +412,7 @@ class WorldSwitcherPanel extends PluginPanel
 	/**
 	 * Builds a table row, that displays the world's information.
 	 */
-	private WorldTableRow buildRow(World world, boolean stripe, boolean current, boolean favorite)
+	private WorldTableRow buildRow(World world, boolean stripe, boolean current, boolean favorite, int worldLocation)
 	{
 		WorldTableRow row = new WorldTableRow(world, current, favorite, plugin.getStoredPing(world),
 			plugin::hopTo,
@@ -423,7 +428,8 @@ class WorldSwitcherPanel extends PluginPanel
 				}
 
 				updateList();
-			}
+			},
+			worldLocation
 		);
 		row.setBackground(stripe ? ODD_ROW : ColorScheme.DARK_GRAY_COLOR);
 		return row;

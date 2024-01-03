@@ -71,6 +71,8 @@ public final class EnumID
 	public static final int PRAYERS_NORMAL = 4956;
 	public static final int PRAYERS_RUINOUS = 4959;
 
+	public static final int WORLD_LOCATIONS = 4992;
+
 	/**
 	 * key: int
 	 * val: struct slayer task
