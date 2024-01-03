@@ -42,6 +42,7 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.LayoutManager;
 import java.awt.Rectangle;
+import java.awt.Taskbar;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.awt.desktop.QuitStrategy;
@@ -788,6 +789,14 @@ public class ClientUI
 		}
 
 		giveClientFocus();
+	}
+
+	/**
+	 * Request user attention to the window (flash the taskbar)
+	 */
+	public void flashTaskbar()
+	{
+		Taskbar.getTaskbar().requestWindowUserAttention(frame);
 	}
 
 	/**

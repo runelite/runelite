@@ -169,6 +169,9 @@ public class Notifier
 			case REQUEST:
 				clientUI.requestFocus();
 				break;
+			case TASKBAR:
+				clientUI.flashTaskbar();
+				break;
 			case FORCE:
 				clientUI.forceFocus();
 				break;
