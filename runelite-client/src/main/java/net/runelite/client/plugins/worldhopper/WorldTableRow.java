@@ -76,19 +76,18 @@ class WorldTableRow extends JPanel
 		FLAG_GER = new ImageIcon(ImageUtil.loadImageResource(WorldHopperPlugin.class, "flag_ger.png"));
 	}
 
+	@Getter
+	private final World world;
+	private final BiConsumer<World, Boolean> onFavorite;
+	@Getter(AccessLevel.PACKAGE)
+	private int playerCount;
+
 	private final JMenuItem favoriteMenuOption = new JMenuItem();
 
 	private JLabel worldField;
 	private JLabel playerCountField;
 	private JLabel activityField;
 	private JLabel pingField;
-	private final BiConsumer<World, Boolean> onFavorite;
-
-	@Getter
-	private final World world;
-
-	@Getter(AccessLevel.PACKAGE)
-	private int updatedPlayerCount;
 
 	private int ping;
 
@@ -98,7 +97,7 @@ class WorldTableRow extends JPanel
 	{
 		this.world = world;
 		this.onFavorite = onFavorite;
-		this.updatedPlayerCount = world.getPlayers();
+		this.playerCount = world.getPlayers();
 
 		setLayout(new BorderLayout());
 		setBorder(new EmptyBorder(2, 0, 2, 0));
@@ -202,15 +201,12 @@ class WorldTableRow extends JPanel
 			favoriteMenuOption.removeActionListener(listener);
 		}
 
-		favoriteMenuOption.addActionListener(e ->
-		{
-			onFavorite.accept(world, !favorite);
-		});
+		favoriteMenuOption.addActionListener(e -> onFavorite.accept(world, !favorite));
 	}
 
 	void updatePlayerCount(int playerCount)
 	{
-		this.updatedPlayerCount = playerCount;
+		this.playerCount = playerCount;
 		playerCountField.setText(playerCountString(playerCount));
 	}
 

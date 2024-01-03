@@ -190,7 +190,7 @@ class WorldSwitcherPanel extends PluginPanel
 				case WORLD:
 					return getCompareValue(r1, r2, row -> row.getWorld().getId());
 				case PLAYERS:
-					return getCompareValue(r1, r2, WorldTableRow::getUpdatedPlayerCount);
+					return getCompareValue(r1, r2, WorldTableRow::getPlayerCount);
 				case ACTIVITY:
 					// Leave empty activity worlds on the bottom of the list
 					return getCompareValue(r1, r2, row ->
@@ -411,15 +411,15 @@ class WorldSwitcherPanel extends PluginPanel
 	{
 		WorldTableRow row = new WorldTableRow(world, current, favorite, plugin.getStoredPing(world),
 			plugin::hopTo,
-			(world12, add) ->
+			(w, add) ->
 			{
 				if (add)
 				{
-					plugin.addToFavorites(world12);
+					plugin.addToFavorites(w);
 				}
 				else
 				{
-					plugin.removeFromFavorites(world12);
+					plugin.removeFromFavorites(w);
 				}
 
 				updateList();

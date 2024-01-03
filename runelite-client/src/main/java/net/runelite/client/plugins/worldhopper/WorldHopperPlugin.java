@@ -217,15 +217,14 @@ public class WorldHopperPlugin extends Plugin
 
 		// The plugin has its own executor for pings, as it blocks for a long time
 		hopperExecutorService = new ExecutorServiceExceptionLogger(Executors.newSingleThreadScheduledExecutor());
+		// populate initial world list
+		hopperExecutorService.execute(this::updateList);
 		// Run the first-run ping
 		hopperExecutorService.execute(this::pingInitialWorlds);
 
-		// Give some initial delay - this won't run until after pingInitialWorlds finishes from tick() anyway
+		// Give some initial delay - this won't run until after pingInitialWorlds finishes anyway
 		pingFuture = hopperExecutorService.scheduleWithFixedDelay(this::pingNextWorld, 15, 3, TimeUnit.SECONDS);
 		currPingFuture = hopperExecutorService.scheduleWithFixedDelay(this::pingCurrentWorld, 15, 1, TimeUnit.SECONDS);
-
-		// populate initial world list
-		updateList();
 	}
 
 	@Override
