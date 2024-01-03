@@ -297,18 +297,6 @@ public interface RuneLiteConfig extends Config
 	}
 
 	@ConfigItem(
-			keyName = "notificationFlashTaskbar",
-			name = "Flash Taskbar",
-			description = "Flash the taskbar when notifications are displayed",
-			position = 29,
-			section = notificationSettings
-	)
-	default boolean notificationFlashTaskbar()
-	{
-		return false;
-	}
-
-	@ConfigItem(
 		keyName = "fontType",
 		name = "Dynamic Overlay Font",
 		description = "Configures what font type is used for in-game overlays such as player name, ground items, etc.",

@@ -169,6 +169,9 @@ public class Notifier
 			case REQUEST:
 				clientUI.requestFocus();
 				break;
+			case TASKBAR:
+				clientUI.flashTaskbar();
+				break;
 			case FORCE:
 				clientUI.forceFocus();
 				break;
@@ -206,11 +209,6 @@ public class Notifier
 		{
 			flashStart = Instant.now();
 			mouseLastPressedMillis = client.getMouseLastPressedMillis();
-		}
-
-		if (runeLiteConfig.notificationFlashTaskbar())
-		{
-			clientUI.flashTaskbar();
 		}
 
 		log.debug(message);
