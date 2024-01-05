@@ -446,4 +446,7 @@ public final class ScriptID
 
 	@ScriptArguments(integer = 10, string = 3)
 	public static final int ACCOUNT_SUMMARY_SECTION_FORMAT = 3950;
+
+	@ScriptArguments(integer = 6, string = 2)
+	public static final int CHATBOX_KEYINPUT_MATCHED = 2153;
 }
