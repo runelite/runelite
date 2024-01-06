@@ -1723,12 +1723,12 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 	{
 		this.text = text;
 		this.npc = npc;
-		this.objectId = objectId;
+		this.objectId = objectId > 0 ? objectId : -1;
 		this.locationProvider = locationProvider != null ? locationProvider : (location != null ? (plugin) -> location : null);
 		this.solution = solution;
 		this.questionText = questionText;
 		this.npcRegions = npcRegions;
-		setRequiresSpade(this.locationProvider != null && npc == null && objectId == -1);
+		setRequiresSpade(this.locationProvider != null && npc == null && this.objectId == -1);
 		setRequiresLight(requiresLight);
 	}
 
