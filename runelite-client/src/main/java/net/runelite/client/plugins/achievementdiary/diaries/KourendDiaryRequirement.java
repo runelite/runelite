@@ -95,8 +95,6 @@ public class KourendDiaryRequirement extends GenericDiaryRequirement
 		add("Plant some Logavano seeds at the Tithe Farm.",
 			new SkillRequirement(Skill.FARMING, 74),
 			new FavourRequirement(FavourRequirement.Favour.HOSIDIUS, 100));
-		add("Teleport to Xeric's Heart using Xeric's Talisman.",
-			new QuestRequirement(Quest.ARCHITECTURAL_ALLIANCE));
 		add("Deliver an artefact to Captain Khaled.",
 			new SkillRequirement(Skill.THIEVING, 49),
 			new FavourRequirement(FavourRequirement.Favour.PISCARILIUS, 75));
