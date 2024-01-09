@@ -8485,6 +8485,7 @@ public final class ItemID
 	public static final int SHAYZIEN_SUPPLY_GREAVES_5 = 13561;
 	public static final int SHAYZIEN_SUPPLY_PLATEBODY_5 = 13562;
 	public static final int SHAYZIEN_SUPPLY_CRATE = 13563;
+	public static final int SHAYZIEN_SUPPLY_CRATE_13564 = 13564;
 	public static final int SHAYZIEN_SUPPLY_SET_1 = 13565;
 	public static final int SHAYZIEN_SUPPLY_SET_2 = 13566;
 	public static final int SHAYZIEN_SUPPLY_SET_3 = 13567;
@@ -8605,6 +8606,39 @@ public final class ItemID
 	public static final int NEW_CRYSTAL_HALBERD_FULL_I_16892 = 16892;
 	public static final int NEW_CRYSTAL_HALBERD_FULL_16893 = 16893;
 	public static final int DEAD_ORB_17152 = 17152;
+	public static final int SHAYZIEN_MEDPACK_18459 = 18459;
+	public static final int SULPHUROUS_FERTILISER_18467 = 18467;
+	public static final int SHAYZIEN_SUPPLY_GLOVES_1_18555 = 18555;
+	public static final int SHAYZIEN_SUPPLY_BOOTS_1_18556 = 18556;
+	public static final int SHAYZIEN_SUPPLY_HELM_1_18557 = 18557;
+	public static final int SHAYZIEN_SUPPLY_GREAVES_1_18558 = 18558;
+	public static final int SHAYZIEN_SUPPLY_PLATEBODY_1_18559 = 18559;
+	public static final int SHAYZIEN_SUPPLY_GLOVES_2_18560 = 18560;
+	public static final int SHAYZIEN_SUPPLY_BOOTS_2_18561 = 18561;
+	public static final int SHAYZIEN_SUPPLY_HELM_2_18562 = 18562;
+	public static final int SHAYZIEN_SUPPLY_GREAVES_2_18563 = 18563;
+	public static final int SHAYZIEN_SUPPLY_PLATEBODY_2_18564 = 18564;
+	public static final int SHAYZIEN_SUPPLY_GLOVES_3_18565 = 18565;
+	public static final int SHAYZIEN_SUPPLY_BOOTS_3_18566 = 18566;
+	public static final int SHAYZIEN_SUPPLY_HELM_3_18567 = 18567;
+	public static final int SHAYZIEN_SUPPLY_GREAVES_3_18568 = 18568;
+	public static final int SHAYZIEN_SUPPLY_PLATEBODY_3_18569 = 18569;
+	public static final int SHAYZIEN_SUPPLY_GLOVES_4_18570 = 18570;
+	public static final int SHAYZIEN_SUPPLY_BOOTS_4_18571 = 18571;
+	public static final int SHAYZIEN_SUPPLY_HELM_4_18572 = 18572;
+	public static final int SHAYZIEN_SUPPLY_GREAVES_4_18573 = 18573;
+	public static final int SHAYZIEN_SUPPLY_PLATEBODY_4_18574 = 18574;
+	public static final int SHAYZIEN_SUPPLY_GLOVES_5_18575 = 18575;
+	public static final int SHAYZIEN_SUPPLY_BOOTS_5_18576 = 18576;
+	public static final int SHAYZIEN_SUPPLY_HELM_5_18577 = 18577;
+	public static final int SHAYZIEN_SUPPLY_GREAVES_5_18578 = 18578;
+	public static final int SHAYZIEN_SUPPLY_PLATEBODY_5_18579 = 18579;
+	public static final int SHAYZIEN_SUPPLY_CRATE_18580 = 18580;
+	public static final int SHAYZIEN_SUPPLY_SET_1_18581 = 18581;
+	public static final int SHAYZIEN_SUPPLY_SET_2_18582 = 18582;
+	public static final int SHAYZIEN_SUPPLY_SET_3_18583 = 18583;
+	public static final int SHAYZIEN_SUPPLY_SET_4_18584 = 18584;
+	public static final int SHAYZIEN_SUPPLY_SET_5_18585 = 18585;
 	public static final int BAG_FULL_OF_GEMS = 19473;
 	public static final int ACHIEVEMENT_DIARY_CAPE = 19476;
 	public static final int LIGHT_BALLISTA = 19478;
@@ -9855,7 +9889,7 @@ public final class ItemID
 	public static final int ROCK_THROWNHAMMER = 21754;
 	public static final int VARLAMORE_ENVOY = 21756;
 	public static final int ROYAL_ACCORD_OF_TWILL = 21758;
-	public static final int HOSIDIUS_FAVOUR_CERTIFICATE = 21759;
+	public static final int CERTIFICATE_21759 = 21759;
 	public static final int KHAREDSTS_MEMOIRS = 21760;
 	public static final int LUNCH_BY_THE_LANCALLIUMS = 21762;
 	public static final int THE_FISHERS_FLUTE = 21764;
@@ -9864,7 +9898,7 @@ public final class ItemID
 	public static final int A_DARK_DISPOSITION = 21770;
 	public static final int SECRET_PAGE = 21772;
 	public static final int LETTER_21774 = 21774;
-	public static final int PISCARILIUS_FAVOUR_CERTIFICATE = 21775;
+	public static final int CERTIFICATE_21775 = 21775;
 	public static final int IMBUED_SARADOMIN_MAX_CAPE = 21776;
 	public static final int IMBUED_SARADOMIN_MAX_HOOD = 21778;
 	public static final int IMBUED_ZAMORAK_MAX_CAPE = 21780;
@@ -10172,8 +10206,8 @@ public final class ItemID
 	public static final int PEACEFUL_HANDEGG = 22358;
 	public static final int CHAOTIC_HANDEGG = 22361;
 	public static final int OCULUS_ORB = 22364;
-	public static final int SHAYZIEN_FAVOUR_CERTIFICATE = 22365;
-	public static final int KOUREND_FAVOUR_CERTIFICATE = 22367;
+	public static final int CERTIFICATE_22365 = 22365;
+	public static final int CERTIFICATE_22367 = 22367;
 	public static final int BRYOPHYTAS_STAFF_UNCHARGED = 22368;
 	public static final int BRYOPHYTAS_STAFF = 22370;
 	public static final int BRYOPHYTAS_ESSENCE = 22372;
@@ -10354,7 +10388,7 @@ public final class ItemID
 	public static final int WYRM_BONEMEAL = 22754;
 	public static final int DRAKE_BONEMEAL = 22756;
 	public static final int HYDRA_BONEMEAL = 22758;
-	public static final int LOVAKENGJ_FAVOUR_CERTIFICATE = 22760;
+	public static final int CERTIFICATE_22760 = 22760;
 	public static final int DINHS_HAMMER = 22761;
 	public static final int GENERATOR_CRANK = 22762;
 	public static final int _8GALLON_JUG = 22763;
@@ -10370,7 +10404,7 @@ public final class ItemID
 	public static final int UNKNOWN_FLUID_5 = 22773;
 	public static final int OLD_NOTES_22774 = 22774;
 	public static final int ANCIENT_LETTER = 22775;
-	public static final int ARCEUUS_FAVOUR_CERTIFICATE = 22777;
+	public static final int CERTIFICATE_22777 = 22777;
 	public static final int WYRM_BONES = 22780;
 	public static final int DRAKE_BONES = 22783;
 	public static final int HYDRA_BONES = 22786;
@@ -13625,5 +13659,8 @@ public final class ItemID
 	public static final int TRAILBLAZER_RELOADED_RELIC_HUNTER_T1_ARMOUR_SET = 28777;
 	public static final int TRAILBLAZER_RELOADED_RELIC_HUNTER_T2_ARMOUR_SET = 28780;
 	public static final int TRAILBLAZER_RELOADED_RELIC_HUNTER_T3_ARMOUR_SET = 28783;
+	public static final int ICY_JUMPER = 28786;
+	public static final int SNOWGLOBE_HELMET = 28788;
+	public static final int KOUREND_CASTLE_TELEPORT = 28790;
 	/* This file is automatically generated. Do not edit. */
 }
