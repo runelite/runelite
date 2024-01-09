@@ -127,7 +127,6 @@ public final class WidgetID
 	public static final int FISHING_TRAWLER_GROUP_ID = InterfaceID.TRAWLER;
 	public static final int FISHING_TRAWLER_REWARD_GROUP_ID = InterfaceID.TRAWLER_REWARD;
 	public static final int ZEAH_MESS_HALL_GROUP_ID = InterfaceID.ZEAH_MESS_HALL;
-	public static final int KOUREND_FAVOUR_GROUP_ID = InterfaceID.KOUREND_FAVOUR;
 	public static final int LOOTING_BAG_GROUP_ID = InterfaceID.LOOTING_BAG;
 	public static final int SKOTIZO_GROUP_ID = InterfaceID.SKOTIZO;
 	public static final int FULLSCREEN_CONTAINER_TLI = InterfaceID.FULLSCREEN_CONTAINER_TLI;

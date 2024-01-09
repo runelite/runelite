@@ -469,10 +469,6 @@ streak=15
 [kingdom]
 id=616
 
-[kourend_favour]
-id=246
-overlay=1
-
 [level_up]
 id=233
 skill=1
