@@ -112,6 +112,9 @@ public class DevToolsPlugin extends Plugin
 	private SoundEffectOverlay soundEffectOverlay;
 
 	@Inject
+	private AmbientSoundEffectOverlay ambientSoundEffectOverlay;
+
+	@Inject
 	private EventBus eventBus;
 
 	@Inject
@@ -205,6 +208,7 @@ public class DevToolsPlugin extends Plugin
 		overlayManager.add(worldMapLocationOverlay);
 		overlayManager.add(mapRegionOverlay);
 		overlayManager.add(soundEffectOverlay);
+		overlayManager.add(ambientSoundEffectOverlay);
 
 		final DevToolsPanel panel = injector.getInstance(DevToolsPanel.class);
 
@@ -220,12 +224,14 @@ public class DevToolsPlugin extends Plugin
 		clientToolbar.addNavigation(navButton);
 
 		eventBus.register(soundEffectOverlay);
+		eventBus.register(ambientSoundEffectOverlay);
 	}
 
 	@Override
 	protected void shutDown() throws Exception
 	{
 		eventBus.unregister(soundEffectOverlay);
+		eventBus.unregister(ambientSoundEffectOverlay);
 		overlayManager.remove(overlay);
 		overlayManager.remove(locationOverlay);
 		overlayManager.remove(sceneOverlay);
@@ -233,6 +239,7 @@ public class DevToolsPlugin extends Plugin
 		overlayManager.remove(worldMapLocationOverlay);
 		overlayManager.remove(mapRegionOverlay);
 		overlayManager.remove(soundEffectOverlay);
+		overlayManager.remove(ambientSoundEffectOverlay);
 		clientToolbar.removeNavigation(navButton);
 	}
 
