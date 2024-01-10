@@ -109,17 +109,6 @@ class KourendLibraryOverlay extends Overlay
 				boolean bookIsKnown = bookcase.isBookSet();
 				Book book = bookcase.getBook();
 				Set<Book> possible = bookcase.getPossibleBooks();
-				if (bookIsKnown && book == null)
-				{
-					for (Book b : possible)
-					{
-						if (b != null && b.isDarkManuscript())
-						{
-							book = b;
-							break;
-						}
-					}
-				}
 
 				if (!bookIsKnown && possible.size() == 1)
 				{
@@ -127,8 +116,7 @@ class KourendLibraryOverlay extends Overlay
 					bookIsKnown = true;
 				}
 
-				if ((book == Book.VARLAMORE_ENVOY && !plugin.showVarlamoreEnvoy())
-					|| (book != null && book.isDarkManuscript() && config.hideDarkManuscript()))
+				if (book == Book.VARLAMORE_ENVOY && !plugin.showVarlamoreEnvoy())
 				{
 					continue;
 				}
@@ -241,7 +229,6 @@ class KourendLibraryOverlay extends Overlay
 	{
 		return config.hideDuplicateBook()
 			&& book != null
-			&& !book.isDarkManuscript()
 			&& plugin.doesPlayerContainBook(book);
 	}
 }
