@@ -129,7 +129,11 @@ public class OverlayManager
 	{
 		synchronized (this)
 		{
-			overlays.forEach(this::loadOverlay);
+			overlays.forEach((o) ->
+			{
+				loadOverlay(o);
+				o.revalidate();
+			});
 		}
 		rebuildOverlayLayers();
 	}
