@@ -1169,7 +1169,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.solution("Kill a Bloodveld.")
 			.build(),
 		CrypticClue.builder()
-			.text("She's small but can build both literally and figuratively, as long as you have their favour.")
+			.text("She's small but can build both literally and figuratively.")
 			.location(new WorldPoint(1486, 3834, 0))
 			.npc("Lovada")
 			.solution("Speak to Lovada by the entrance to the blast mine in Lovakengj.")
