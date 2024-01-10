@@ -337,6 +337,8 @@ public class IdleNotifierPlugin extends Plugin
 			case CHURN_MILK_SHORT:
 			case CHURN_MILK_MEDIUM:
 			case CHURN_MILK_LONG:
+			case CLEANING_SPECIMENS_1:
+			case CLEANING_SPECIMENS_2:
 			case LOOKING_INTO:
 				resetTimers();
 				lastAnimation = animation;
