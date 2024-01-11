@@ -114,7 +114,7 @@ public class TabInterface
 	private static final String REMOVE_TAG = "Remove-tag";
 	private static final String TAG_GEAR = "Tag-equipment";
 	private static final String TAG_INVENTORY = "Tag-inventory";
-	private static final String TAB_MENU_KEY = "tagtabs";
+	private static final String TAB_MENU_KEY = "tagtabs>";
 	private static final String OPEN_TAB_MENU = "View tag tabs";
 	private static final int TAB_HEIGHT = 40;
 	private static final int TAB_WIDTH = 39;
