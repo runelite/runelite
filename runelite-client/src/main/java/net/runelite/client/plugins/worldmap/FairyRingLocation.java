@@ -60,7 +60,7 @@ enum FairyRingLocation
 	CKS("CKS", new WorldPoint(3446, 3472, 0)),
 	CLP("CLP", new WorldPoint(3081, 3208, 0)),
 	CLS("CLS", new WorldPoint(2681, 3083, 0)),
-	DIP("DIP", new WorldPoint(3039, 4757, 0)),
+	DIP("DIP", new WorldPoint(3036, 4761, 0)),
 	DIS("DIS", new WorldPoint(3109, 3149, 0)),
 	DJP("DJP", new WorldPoint(2657, 3232, 0)),
 	DJR("DJR", new WorldPoint(1452, 3659, 0)),
