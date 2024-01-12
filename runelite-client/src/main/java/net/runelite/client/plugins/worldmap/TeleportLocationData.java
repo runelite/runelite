@@ -197,7 +197,42 @@ enum TeleportLocationData
 	ZULANDRA_SCROLL(TeleportType.SCROLL, "Zul-Andra Teleport", new WorldPoint(2197, 3056, 0), "scroll_teleport_icon.png"),
 	KEY_MASTER_SCROLL(TeleportType.SCROLL, "Key Master Teleport", new WorldPoint(2686, 9882, 0), "scroll_teleport_icon.png"),
 	REVENANT_CAVE_SCROLL(TeleportType.SCROLL, "Revenant Cave Teleport", new WorldPoint(3127, 3833, 0), "scroll_teleport_icon.png"),
-	WATSON_SCROLL(TeleportType.SCROLL, "Watson Teleport", new WorldPoint(1645, 3579, 0), "scroll_teleport_icon.png");
+	WATSON_SCROLL(TeleportType.SCROLL, "Watson Teleport", new WorldPoint(1645, 3579, 0), "scroll_teleport_icon.png"),
+
+	// Skillcapes
+	ACHIEVEMENT_CAPE_TWO_PINTS(TeleportType.OTHER, "Achievement Cape", "Two-pints", new WorldPoint(2574, 3324, 0), "achievement_cape_icon.png"),
+	ACHIEVEMENT_CAPE_JARR(TeleportType.OTHER, "Achievement Cape", "Jarr", new WorldPoint(3300, 3121, 0), "achievement_cape_icon.png"),
+	ACHIEVEMENT_CAPE_SIR_REBRAL(TeleportType.OTHER, "Achievement Cape", "Sir Rebral", new WorldPoint(2977, 3345, 0), "achievement_cape_icon.png"),
+	ACHIEVEMENT_CAPE_THORODIN(TeleportType.OTHER, "Achievement Cape", "Thorodin", new WorldPoint(2659, 3627, 0), "achievement_cape_icon.png"),
+	ACHIEVEMENT_CAPE_FLAX_KEEPER(TeleportType.OTHER, "Achievement Cape", "Flax Keeper", new WorldPoint(2744, 3444, 0), "achievement_cape_icon.png"),
+	ACHIEVEMENT_CAPE_JACKIE_THE_FRUIT(TeleportType.OTHER, "Achievement Cape", "Pirate Jackie the Fruit", new WorldPoint(2810, 3191, 0), "achievement_cape_icon.png"),
+	ACHIEVEMENT_CAPE_KALEB_PARAMAYA(TeleportType.OTHER, "Achievement Cape", "Kaleb Paramaya", new WorldPoint(2861, 2995, 1), "achievement_cape_icon.png"),
+	ACHIEVEMENT_CAPE_JUNGLE_FORESTER(TeleportType.OTHER, "Achievement Cape", "Jungle forester", new WorldPoint(2795, 2945, 0), "achievement_cape_icon.png"),
+	ACHIEVEMENT_CAPE_TZHAAR_MEJ(TeleportType.OTHER, "Achievement Cape", "TzHaar-Mej", new WorldPoint(2455, 5133, 0), "achievement_cape_icon.png"),
+	ACHIEVEMENT_CAPE_ELISE(TeleportType.OTHER, "Achievement Cape", "Elise", new WorldPoint(1647, 3666, 0), "achievement_cape_icon.png"),
+	ACHIEVEMENT_CAPE_HATIUS_COSAINTUS(TeleportType.OTHER, "Achievement Cape", "Hatius Cosaintus", new WorldPoint(3239, 3220, 0), "achievement_cape_icon.png"),
+	ACHIEVEMENT_CAPE_LE_SABRE(TeleportType.OTHER, "Achievement Cape", "Le-sabrè", new WorldPoint(3465, 3477, 0), "achievement_cape_icon.png"),
+	ACHIEVEMENT_CAPE_TOBY(TeleportType.OTHER, "Achievement Cape", "Toby", new WorldPoint(3224, 3414, 0), "achievement_cape_icon.png"),
+	ACHIEVEMENT_CAPE_LESSER_FANATIC(TeleportType.OTHER, "Achievement Cape", "Lesser Fanatic", new WorldPoint(3122, 3516, 0), "achievement_cape_icon.png"),
+	ACHIEVEMENT_CAPE_ELDER_GNOME_CHILD(TeleportType.OTHER, "Achievement Cape", "Elder Gnome child", new WorldPoint(2467, 3459, 0), "achievement_cape_icon.png"),
+	ACHIEVEMENT_CAPE_TWIGGY_OKORN(TeleportType.OTHER, "Achievement Cape", "Twiggy O'Korn", new WorldPoint(3097, 3226, 0), "achievement_cape_icon.png"),
+	CONSTRUCTION_CAPE_RIMMINGTON(TeleportType.OTHER, "Construction Cape", "Rimmington", new WorldPoint(2954, 3224, 0), "construction_cape_icon.png"),
+	CONSTRUCTION_CAPE_TAVERLEY(TeleportType.OTHER, "Construction Cape", "Taverley", new WorldPoint(2894, 3465, 0), "construction_cape_icon.png"),
+	CONSTRUCTION_CAPE_POLLNIVNEACH(TeleportType.OTHER, "Construction Cape", "Pollnivneach", new WorldPoint(3340, 3004, 0), "construction_cape_icon.png"),
+	CONSTRUCTION_CAPE_HOSIDIUS(TeleportType.OTHER, "Construction Cape", "Hosidius", new WorldPoint(1744, 3517, 0), "construction_cape_icon.png"),
+	CONSTRUCTION_CAPE_RELLEKKA(TeleportType.OTHER, "Construction Cape", "Rellekka", new WorldPoint(2670, 3632, 0), "construction_cape_icon.png"),
+	CONSTRUCTION_CAPE_BRIMHAVEN(TeleportType.OTHER, "Construction Cape", "Brimhaven", new WorldPoint(2758, 3178, 0), "construction_cape_icon.png"),
+	CONSTRUCTION_CAPE_YANILLE(TeleportType.OTHER, "Construction Cape", "Yanille", new WorldPoint(2544, 3095, 0), "construction_cape_icon.png"),
+	CONSTRUCTION_CAPE_PRIFDDINAS(TeleportType.OTHER, "Construction Cape", "Prifddinas", new WorldPoint(3239, 6076, 0), "construction_cape_icon.png"),
+	CRAFTING_CAPE(TeleportType.OTHER, "Crafting Cape", new WorldPoint(2931, 3286, 0), "crafting_cape_icon.png"),
+	FARMING_CAPE(TeleportType.OTHER, "Farming Cape", new WorldPoint(1248, 3725, 0), "farming_cape_icon.png"),
+	FISHING_CAPE_FISHING_GUILD(TeleportType.OTHER, "Fishing Cape", "Fishing Guild", new WorldPoint(2604, 3401, 0), "fishing_cape_icon.png"),
+	FISHING_CAPE_OTTOS_GROTTO(TeleportType.OTHER, "Fishing Cape", "Otto's Grotto", new WorldPoint(2504, 3484, 0), "fishing_cape_icon.png"),
+	HUNTER_CAPE_CARNIVOROUS(TeleportType.OTHER, "Hunter Cape", "Carnivorous Chinchompa Area", new WorldPoint(2556, 2916, 0), "hunter_cape_icon.png"),
+	HUNTER_CAPE_BLACK(TeleportType.OTHER, "Hunter Cape", "Black Chinchompa Area", new WorldPoint(3144, 3772, 0), "hunter_cape_icon.png"),
+	STRENGTH_CAPE(TeleportType.OTHER, "Strength Cape", new WorldPoint(2865, 3546, 0), "strength_cape_icon.png"),
+	QUEST_CAPE(TeleportType.OTHER, "Quest Cape", new WorldPoint(2729, 3348, 0), "quest_cape_icon.png"),
+	MUSIC_CAPE(TeleportType.OTHER, "Music Cape", "Falo the Bard", new WorldPoint(2689, 3547, 0), "music_cape_icon.png");
 
 	private final TeleportType type;
 	private final String tooltip;
