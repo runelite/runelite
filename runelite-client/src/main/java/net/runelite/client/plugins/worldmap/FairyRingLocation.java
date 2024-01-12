@@ -50,6 +50,7 @@ enum FairyRingLocation
 	BJS("BJS", new WorldPoint(2147, 3069, 0)),
 	BKP("BKP", new WorldPoint(2384, 3037, 0)),
 	BKR("BKR", new WorldPoint(3468, 3433, 0)),
+	BKS("BKS", new WorldPoint(2411, 4436, 0)),
 	BLP("BLP", new WorldPoint(2432, 5127, 0)),
 	BLR("BLR", new WorldPoint(2739, 3353, 0)),
 	BLS("BLS", new WorldPoint(1293, 3495, 0)),
@@ -71,8 +72,7 @@ enum FairyRingLocation
 	DKR("DKR", new WorldPoint(3126, 3496, 0)),
 	DKS("DKS", new WorldPoint(2743, 3721, 0)),
 	DLQ("DLQ", new WorldPoint(3422, 3018, 0)),
-	DLR("DLR", new WorldPoint(2212, 3101, 0)),
-	ZANARIS("Zanaris", new WorldPoint(2411, 4436, 0));
+	DLR("DLR", new WorldPoint(2212, 3101, 0));
 
 	private final String code;
 	private final WorldPoint location;
