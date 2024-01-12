@@ -41,6 +41,7 @@ enum FairyRingLocation
 	AKS("AKS", new WorldPoint(2570, 2958, 0)),
 	ALP("ALP", new WorldPoint(2502, 3638, 0)),
 	ALQ("ALQ", new WorldPoint(3598, 3496, 0)),
+	ALR("ALR", new WorldPoint(3059, 4877, 0)),
 	ALS("ALS", new WorldPoint(2643, 3497, 0)),
 	BIP("BIP", new WorldPoint(3409, 3326, 0)),
 	BIQ("BIQ", new WorldPoint(3248, 3095, 0)),
