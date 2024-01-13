@@ -570,6 +570,7 @@ public class ClientUI
 			}
 
 			// Move frame around (needs to be done after frame is packed)
+			boolean appliedSize = false;
 			if (config.rememberScreenBounds() && !safeMode)
 			{
 				Rectangle clientBounds = configManager.getConfiguration(
@@ -577,6 +578,7 @@ public class ClientUI
 				if (clientBounds != null)
 				{
 					frame.setBounds(clientBounds);
+					appliedSize = true;
 
 					// Check that the bounds are contained inside a valid display
 					GraphicsConfiguration gc = findDisplayFromBounds(clientBounds);
@@ -601,6 +603,11 @@ public class ClientUI
 			else
 			{
 				frame.setLocationRelativeTo(frame.getOwner());
+			}
+
+			if (!appliedSize)
+			{
+				applyGameSize(true);
 			}
 
 			// Show frame
@@ -1120,6 +1127,11 @@ public class ClientUI
 			configManager.unsetConfiguration(CONFIG_GROUP, CONFIG_CLIENT_BOUNDS);
 		}
 
+		applyGameSize(false);
+	}
+
+	private void applyGameSize(boolean force)
+	{
 		if (client == null)
 		{
 			return;
@@ -1131,18 +1143,10 @@ public class ClientUI
 		int height = Math.max(Math.min(config.gameSize().height, 2160), Constants.GAME_FIXED_HEIGHT);
 		final Dimension size = new Dimension(width, height);
 
-		if (!size.equals(lastClientSize))
+		if (force || !size.equals(lastClientSize))
 		{
 			lastClientSize = size;
-			client.setSize(size);
-			client.setPreferredSize(size);
-			client.getParent().setPreferredSize(size);
-			client.getParent().setSize(size);
-
-			if (frame.isVisible())
-			{
-				frame.pack();
-			}
+			((Layout) content.getLayout()).forceClientSize(width, height);
 		}
 	}
 
@@ -1269,8 +1273,22 @@ public class ClientUI
 			}
 		}
 
+		void forceClientSize(int width, int height)
+		{
+			Component client = content.getComponent(0);
+			client.setSize(width, height);
+			// must adjust content height since the client height is derived from the content height
+			content.setSize(content.getWidth(), height);
+			layout(content, true);
+		}
+
 		@Override
 		public void layoutContainer(Container content)
+		{
+			layout(content, false);
+		}
+
+		private void layout(Container content, boolean forceSizingClient)
 		{
 			int changed = prevState ^ frame.getExtendedState();
 			prevState = frame.getExtendedState();
@@ -1306,7 +1324,7 @@ public class ClientUI
 				: 0;
 
 			boolean keepGameSize = (frame.getExtendedState() & Frame.MAXIMIZED_HORIZ) == 0
-				&& config.automaticResizeType() == ExpandResizeType.KEEP_GAME_SIZE;
+				&& (config.automaticResizeType() == ExpandResizeType.KEEP_GAME_SIZE || forceSizingClient);
 
 			if (keepGameSize)
 			{
