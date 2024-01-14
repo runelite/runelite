@@ -191,7 +191,7 @@ public class IconTextField extends JPanel
 		suggestionButton.setText("▾");
 		suggestionButton.addActionListener(e ->
 		{
-			popup.setPopupSize(getWidth(), suggestionList.getPreferredSize().height);
+			suggestionList.setPreferredSize(new Dimension(getWidth(), suggestionList.getPreferredSize().height));
 			popup.show(IconTextField.this, 0, suggestionButton.getHeight());
 			popup.revalidate();
 			popup.requestFocusInWindow();
