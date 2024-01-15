@@ -1353,8 +1353,10 @@ public class ClientUI
 			client.setBounds(insets.left, insets.top, clientWidth, innerHeight);
 			sidebar.setBounds(insets.left + clientWidth, insets.top, sidebarWidth, innerHeight);
 
+			Dimension oldSize = frame.getSize();
 			frame.revalidateMinimumSize();
-			if (OSType.getOSType() != OSType.Windows || (changed & Frame.MAXIMIZED_BOTH) == 0)
+			if ((OSType.getOSType() != OSType.Windows || (changed & Frame.MAXIMIZED_BOTH) == 0)
+				&& !frame.getPreferredSize().equals(oldSize))
 			{
 				frame.containedSetSize(frame.getPreferredSize());
 			}
