@@ -28,6 +28,7 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.FlatSystemProperties;
 import java.awt.Color;
+import java.awt.RenderingHints;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Field;
@@ -129,6 +130,7 @@ public class RuneLiteLAF extends FlatDarkLaf
 		UIDefaults d = super.getDefaults();
 
 		d.put("defaultFont", FontManager.getRunescapeFont());
+		d.put(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
 
 		return d;
 	}
