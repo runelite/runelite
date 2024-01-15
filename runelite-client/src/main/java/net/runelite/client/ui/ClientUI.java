@@ -1262,7 +1262,16 @@ public class ClientUI
 		{
 			synchronized (content.getTreeLock())
 			{
-				return size(content, Component::getMinimumSize);
+				return size(content, c ->
+				{
+					if (c == content.getComponent(1))
+					{
+						// the sidebar always is given it's pref width exactly
+						return new Dimension(c.getPreferredSize().width, c.getMinimumSize().height);
+					}
+
+					return c.getMinimumSize();
+				});
 			}
 		}
 
