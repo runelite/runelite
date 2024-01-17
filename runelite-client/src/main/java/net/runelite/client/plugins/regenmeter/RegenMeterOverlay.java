@@ -35,9 +35,8 @@ import java.awt.geom.Arc2D;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.VarPlayer;
-import net.runelite.api.annotations.Component;
-import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -78,14 +77,13 @@ class RegenMeterOverlay extends Overlay
 
 		if (config.showHitpoints())
 		{
-			renderRegen(g, ComponentID.MINIMAP_HEALTH_ORB, plugin.getHitpointsPercentage(), HITPOINTS_COLOR);
+			renderRegen(g, WidgetInfo.MINIMAP_HEALTH_ORB, plugin.getHitpointsPercentage(), HITPOINTS_COLOR);
 		}
-
 		if (config.showSpecial())
 		{
 			if (client.getVarpValue(VarPlayer.SPECIAL_ATTACK_ENABLED) == 1)
 			{
-				final Widget widget = client.getWidget(ComponentID.MINIMAP_SPEC_ORB);
+				final Widget widget = client.getWidget(WidgetInfo.MINIMAP_SPEC_ORB);
 
 				if (widget != null && !widget.isHidden())
 				{
@@ -98,15 +96,21 @@ class RegenMeterOverlay extends Overlay
 				}
 			}
 
-			renderRegen(g, ComponentID.MINIMAP_SPEC_ORB, plugin.getSpecialPercentage(), SPECIAL_COLOR);
+			if (!plugin.wearingSoulreaperAxe)
+			{
+				renderRegen(g, WidgetInfo.MINIMAP_SPEC_ORB, plugin.getSpecialPercentage(), SPECIAL_COLOR);
+			}
+			else if (config.showSoulStack())
+			{
+				renderRegen(g, WidgetInfo.MINIMAP_SPEC_ORB, plugin.getSoulStackPercentage(), SPECIAL_COLOR);
+			}
 		}
-
 		return null;
 	}
 
-	private void renderRegen(Graphics2D g, @Component int componentId, double percent, Color color)
+	private void renderRegen(Graphics2D g, WidgetInfo widgetInfo, double percent, Color color)
 	{
-		Widget widget = client.getWidget(componentId);
+		Widget widget = client.getWidget(widgetInfo);
 		if (widget == null || widget.isHidden())
 		{
 			return;
