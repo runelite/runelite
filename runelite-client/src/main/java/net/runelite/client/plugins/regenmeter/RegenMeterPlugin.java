@@ -30,20 +30,8 @@ package net.runelite.client.plugins.regenmeter;
 import com.google.inject.Provides;
 import javax.inject.Inject;
 import lombok.Getter;
-import net.runelite.api.Client;
-import net.runelite.api.Constants;
-import net.runelite.api.GameState;
-import net.runelite.api.InventoryID;
-import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
-import net.runelite.api.Prayer;
-import net.runelite.api.Skill;
-import net.runelite.api.VarPlayer;
-import net.runelite.api.Varbits;
-import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.GameTick;
-import net.runelite.api.events.ItemContainerChanged;
-import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.*;
+import net.runelite.api.events.*;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -95,6 +83,8 @@ public class RegenMeterPlugin extends Plugin
 	private boolean wearingLightbearer;
 	protected boolean wearingSoulreaperAxe;
 
+	private String Username;
+
 	@Provides
 	RegenMeterConfig provideConfig(ConfigManager configManager)
 	{
@@ -105,6 +95,7 @@ public class RegenMeterPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(overlay);
+		Username=client.getLocalPlayer().getName();
 	}
 
 	@Override
@@ -223,7 +214,16 @@ public class RegenMeterPlugin extends Plugin
 			soulStackPercentage = 1 - soulStackPercentage;
 		}
 	}
-
+	@Subscribe
+	public void onHitsplatApplied(HitsplatApplied hitsplatApplied)
+	{
+		Hitsplat hitsplat = hitsplatApplied.getHitsplat();
+		String hitsplatEntity = hitsplatApplied.getActor().getName();
+		if(hitsplat.isMine() && client.getVarpValue(VarPlayer.SOUL_STACK) == 5 && !hitsplatEntity.equals(Username))
+		{
+			ticksSinceSoulStackDecay = 0;
+		}
+	}
 	private boolean shouldNotifyHpRegenThisTick(int ticksPerHPRegen)
 	{
 		// if the configured duration lies between two ticks, choose the earlier tick
