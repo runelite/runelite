@@ -97,6 +97,14 @@ class RegenMeterOverlay extends Overlay
 						(int) DIAMETER, (int) DIAMETER);
 				}
 			}
+			if (!plugin.wearingSoulreaperAxe)
+			{
+				renderRegen(g, ComponentID.MINIMAP_HEALTH_ORB, plugin.getSpecialPercentage(), SPECIAL_COLOR);
+			}
+			else if (config.showSoulStack())
+			{
+				renderRegen(g, ComponentID.MINIMAP_HEALTH_ORB, plugin.getSoulStackPercentage(), SPECIAL_COLOR);
+			}
 
 			renderRegen(g, ComponentID.MINIMAP_SPEC_ORB, plugin.getSpecialPercentage(), SPECIAL_COLOR);
 		}

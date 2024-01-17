@@ -240,4 +240,9 @@ public final class VarPlayer
 	 * Assigned slayer task location. The mapping of value to name can be found in {@link EnumID#SLAYER_TASK_LOCATION}
 	 */
 	public static final int SLAYER_TASK_LOCATION = 2096;
+
+	/**
+	 * Soul Stack from the Soulreaper Axe ranging from 0-5 depending on the number of hits done already.
+	 */
+	public static final int SOUL_STACK = 3784;
 }

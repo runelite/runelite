@@ -51,6 +51,15 @@ public interface RegenMeterConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showSoulStack",
+		name = "Show Soul Stack decay",
+		description = "Show a ring around the Special Attack orb when wielding the Soulreaper Axe")
+	default boolean showSoulStack()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "showWhenNoChange",
 		name = "Show at full hitpoints",
 		description = "Always show the hitpoints regen orb, even if there will be no stat change")
