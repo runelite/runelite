@@ -42,8 +42,10 @@ import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.Hitsplat;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -60,6 +62,7 @@ public class RegenMeterPlugin extends Plugin
 {
 	private static final int SPEC_REGEN_TICKS = 50;
 	private static final int NORMAL_HP_REGEN_TICKS = 100;
+	private static final int SOUL_STACK_DECAY = 10;
 
 	@Inject
 	private Client client;
@@ -82,10 +85,17 @@ public class RegenMeterPlugin extends Plugin
 	@Getter
 	private double specialPercentage;
 
+	@Getter
+	private double soulStackPercentage;
+
 	private int ticksSinceSpecRegen;
 	private int ticksSinceHPRegen;
+	private int ticksSinceSoulStackDecay;
 
 	private boolean wearingLightbearer;
+	protected boolean wearingSoulreaperAxe;
+
+	private String Username;
 
 	@Provides
 	RegenMeterConfig provideConfig(ConfigManager configManager)
@@ -97,6 +107,7 @@ public class RegenMeterPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(overlay);
+		Username = client.getLocalPlayer().getName();
 	}
 
 	@Override
@@ -125,13 +136,21 @@ public class RegenMeterPlugin extends Plugin
 
 		ItemContainer equipment = event.getItemContainer();
 		final boolean hasLightbearer = equipment.contains(ItemID.LIGHTBEARER);
+		final boolean hasSoulreaperAxe = equipment.contains(ItemID.SOULREAPER_AXE_28338);
+
 		if (hasLightbearer == wearingLightbearer)
+		{
+			return;
+		}
+		if (hasSoulreaperAxe == wearingSoulreaperAxe)
 		{
 			return;
 		}
 
 		ticksSinceSpecRegen = 0;
 		wearingLightbearer = hasLightbearer;
+		ticksSinceSoulStackDecay = 0;
+		wearingSoulreaperAxe = hasSoulreaperAxe;
 	}
 
 	@Subscribe
@@ -140,6 +159,10 @@ public class RegenMeterPlugin extends Plugin
 		if (ev.getVarbitId() == Varbits.PRAYER_RAPID_HEAL)
 		{
 			ticksSinceHPRegen = 0;
+		}
+		if (ev.getVarpId() == VarPlayer.SOUL_STACK)
+		{
+			ticksSinceSoulStackDecay = 0;
 		}
 	}
 
@@ -184,6 +207,29 @@ public class RegenMeterPlugin extends Plugin
 		if (config.getNotifyBeforeHpRegenSeconds() > 0 && currentHP < maxHP && shouldNotifyHpRegenThisTick(ticksPerHPRegen))
 		{
 			notifier.notify("Your next hitpoint will regenerate soon!");
+		}
+
+		soulStackPercentage = ticksSinceSoulStackDecay / (double) SOUL_STACK_DECAY;
+		if (client.getVarpValue(VarPlayer.SOUL_STACK) == 0)
+		{
+			//No Decay when at 0 hits
+			ticksSinceSoulStackDecay = 0;
+		}
+		else
+		{
+			ticksSinceSoulStackDecay = (ticksSinceSoulStackDecay + 1) % SOUL_STACK_DECAY;
+			soulStackPercentage = 1 - soulStackPercentage;
+		}
+	}
+
+	@Subscribe
+	public void onHitsplatApplied(HitsplatApplied hitsplatApplied)
+	{
+		Hitsplat hitsplat = hitsplatApplied.getHitsplat();
+		String hitsplatEntity = hitsplatApplied.getActor().getName();
+		if (hitsplat.isMine() && client.getVarpValue(VarPlayer.SOUL_STACK) == 5 && !hitsplatEntity.equals(Username))
+		{
+			ticksSinceSoulStackDecay = 0;
 		}
 	}
 
