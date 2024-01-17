@@ -95,7 +95,7 @@ public class RegenMeterPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(overlay);
-		Username=client.getLocalPlayer().getName();
+		Username = client.getLocalPlayer().getName();
 	}
 
 	@Override
@@ -219,7 +219,7 @@ public class RegenMeterPlugin extends Plugin
 	{
 		Hitsplat hitsplat = hitsplatApplied.getHitsplat();
 		String hitsplatEntity = hitsplatApplied.getActor().getName();
-		if(hitsplat.isMine() && client.getVarpValue(VarPlayer.SOUL_STACK) == 5 && !hitsplatEntity.equals(Username))
+		if (hitsplat.isMine() && client.getVarpValue(VarPlayer.SOUL_STACK) == 5 && !hitsplatEntity.equals(Username))
 		{
 			ticksSinceSoulStackDecay = 0;
 		}
