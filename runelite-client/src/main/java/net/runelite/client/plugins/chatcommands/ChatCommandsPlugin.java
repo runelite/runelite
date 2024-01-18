@@ -2161,7 +2161,7 @@ public class ChatCommandsPlugin extends Plugin
 			case "tob sm":
 			case "tob story mode":
 			case "tob story":
-			case "Theatre of Blood: Entry Mode":
+			case "theatre of blood: entry mode":
 			case "tob em":
 			case "tob entry mode":
 			case "tob entry":
