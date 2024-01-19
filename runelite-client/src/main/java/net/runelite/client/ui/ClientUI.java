@@ -537,7 +537,8 @@ public class ClientUI
 					rp.setWindowDecorationStyle(JRootPane.FRAME);
 				}
 
-				content.setBorder(new MatteBorder(0, 4, 4, 4, ColorScheme.DARKER_GRAY_COLOR));
+				frame.addWindowStateListener(_ev -> applyCustomChromeBorder());
+				applyCustomChromeBorder();
 
 				sidebarNavBtn = toolbarPanel.add(NavigationButton
 					.builder()
@@ -563,6 +564,13 @@ public class ClientUI
 				toggleSidebar(false, true);
 			}
 		});
+	}
+
+	private void applyCustomChromeBorder()
+	{
+		content.setBorder((frame.getExtendedState() & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH
+			? null
+			: new MatteBorder(0, 4, 4, 4, ColorScheme.DARKER_GRAY_COLOR));
 	}
 
 	public void show()
