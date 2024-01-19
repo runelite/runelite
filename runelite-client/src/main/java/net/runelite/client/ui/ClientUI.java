@@ -1299,7 +1299,8 @@ public class ClientUI
 			Component client = content.getComponent(0);
 			client.setSize(width, height);
 			// must adjust content height since the client height is derived from the content height
-			content.setSize(content.getWidth(), height);
+			Insets insets = content.getInsets();
+			content.setSize(content.getWidth(), height + insets.top + insets.bottom);
 			layout(content, true);
 		}
 
