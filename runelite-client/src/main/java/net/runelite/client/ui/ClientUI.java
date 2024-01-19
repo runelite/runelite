@@ -71,6 +71,7 @@ import javax.swing.Box;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
@@ -84,6 +85,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 import javax.swing.ToolTipManager;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.MatteBorder;
 import javax.swing.event.HyperlinkEvent;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -524,9 +526,19 @@ public class ClientUI
 				}
 				else
 				{
+					if (OSType.getOSType() == OSType.Linux)
+					{
+						// FlatLaf explicitly checks this property when checking for custom window decorations on Linux
+						JDialog.setDefaultLookAndFeelDecorated(true);
+						JFrame.setDefaultLookAndFeelDecorated(true);
+					}
+
 					frame.setUndecorated(true);
 					rp.setWindowDecorationStyle(JRootPane.FRAME);
 				}
+
+				frame.addWindowStateListener(_ev -> applyCustomChromeBorder());
+				applyCustomChromeBorder();
 
 				sidebarNavBtn = toolbarPanel.add(NavigationButton
 					.builder()
@@ -552,6 +564,13 @@ public class ClientUI
 				toggleSidebar(false, true);
 			}
 		});
+	}
+
+	private void applyCustomChromeBorder()
+	{
+		content.setBorder((frame.getExtendedState() & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH
+			? null
+			: new MatteBorder(0, 4, 4, 4, ColorScheme.DARKER_GRAY_COLOR));
 	}
 
 	public void show()
@@ -1262,7 +1281,16 @@ public class ClientUI
 		{
 			synchronized (content.getTreeLock())
 			{
-				return size(content, Component::getMinimumSize);
+				return size(content, c ->
+				{
+					if (c == content.getComponent(1))
+					{
+						// the sidebar always is given it's pref width exactly
+						return new Dimension(c.getPreferredSize().width, c.getMinimumSize().height);
+					}
+
+					return c.getMinimumSize();
+				});
 			}
 		}
 
@@ -1286,29 +1314,30 @@ public class ClientUI
 			int changed = prevState ^ frame.getExtendedState();
 			prevState = frame.getExtendedState();
 
+			Insets insets = content.getInsets();
+			int insetWidth = insets.left + insets.right;
+			int insetHeight = insets.top + insets.bottom;
+
 			Component client = content.getComponent(0);
 			Component sidebar = content.getComponent(1);
 
 			log.trace("starting layout  - content={} client={} sidebar={} frame={} prevContent={}", content.getWidth(), client.getWidth(), sidebar.getWidth(), frame.getWidth(), previousContentWidth);
 
 			// adjust sidebar height first, as changing it's height can make it's min width change too
-			int height = Math.max(content.getHeight(), Math.max(
+			int innerHeight = Math.max(content.getHeight() - insetHeight, Math.max(
 				client.getMinimumSize().height,
 				sidebar.getMinimumSize().height));
 			{
-				sidebar.setSize(sidebar.getWidth(), height);
+				sidebar.setSize(sidebar.getWidth(), innerHeight);
 			}
 
 			Dimension minimumSize = minimumLayoutSize(content);
 
-			int contentWidth = Math.max(minimumSize.width, content.getWidth());
+			int contentWidth = Math.max(minimumSize.width, content.getWidth()) - insetWidth;
 			if (previousContentWidth <= 0)
 			{
 				previousContentWidth = contentWidth;
 			}
-
-			// we do not handle insets for the content frame
-			assert content.getInsets().equals(new Insets(0, 0, 0, 0));
 
 			final int clientMinWidth = client.getMinimumSize().width;
 			int clientWidth = Math.max(client.getWidth(), clientMinWidth);
@@ -1322,7 +1351,7 @@ public class ClientUI
 			if (keepGameSize)
 			{
 				// adjust client for window resizes
-				clientWidth = Math.max(clientMinWidth, clientWidth + content.getWidth() - previousContentWidth);
+				clientWidth = Math.max(clientMinWidth, clientWidth + content.getWidth() - insetWidth - previousContentWidth);
 			}
 			else
 			{
@@ -1333,15 +1362,17 @@ public class ClientUI
 			// fit window to client
 			int width = clientWidth + sidebarWidth;
 
-			content.setSize(width, height);
+			content.setSize(width + insetWidth, innerHeight + insetHeight);
 			content.setPreferredSize(content.getSize());
 			previousContentWidth = width;
 
-			client.setBounds(0, 0, clientWidth, height);
-			sidebar.setBounds(clientWidth, 0, sidebarWidth, height);
+			client.setBounds(insets.left, insets.top, clientWidth, innerHeight);
+			sidebar.setBounds(insets.left + clientWidth, insets.top, sidebarWidth, innerHeight);
 
+			Dimension oldSize = frame.getSize();
 			frame.revalidateMinimumSize();
-			if (OSType.getOSType() != OSType.Windows || (changed & Frame.MAXIMIZED_BOTH) == 0)
+			if ((OSType.getOSType() != OSType.Windows || (changed & Frame.MAXIMIZED_BOTH) == 0)
+				&& !frame.getPreferredSize().equals(oldSize))
 			{
 				frame.containedSetSize(frame.getPreferredSize());
 			}

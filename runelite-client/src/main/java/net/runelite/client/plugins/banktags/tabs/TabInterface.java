@@ -962,7 +962,7 @@ public class TabInterface
 	private void openTag(TagTab tab, boolean relayout)
 	{
 		activeTab = tab;
-		tagTabActive = false;
+		tagTabActive = tab != null && TAB_MENU_KEY.equals(tab.getTag());
 		config.tab(tab != null ? tab.getTag() : "");
 
 		if (relayout)

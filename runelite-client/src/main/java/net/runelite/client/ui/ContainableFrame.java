@@ -28,9 +28,11 @@ import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Insets;
 import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
 import javax.swing.JFrame;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.util.OSType;
 
 @Slf4j
 public class ContainableFrame extends JFrame
@@ -178,7 +180,17 @@ public class ContainableFrame extends JFrame
 	 */
 	public void revalidateMinimumSize()
 	{
-		setMinimumSize(getLayout().minimumLayoutSize(this));
+		Dimension minSize = getLayout().minimumLayoutSize(this);
+		if (OSType.getOSType() == OSType.Windows)
+		{
+			// JDK-8221452 - Window.setMinimumSize does not respect DPI scaling
+			AffineTransform transform = getGraphicsConfiguration().getDefaultTransform();
+			int scaledX = (int) Math.round(minSize.width * transform.getScaleX());
+			int scaledY = (int) Math.round(minSize.height * transform.getScaleY());
+			minSize = new Dimension(scaledX, scaledY);
+		}
+
+		setMinimumSize(minSize);
 	}
 
 	private boolean isFullScreen()
