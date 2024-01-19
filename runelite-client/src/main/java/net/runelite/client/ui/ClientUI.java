@@ -71,6 +71,7 @@ import javax.swing.Box;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
@@ -525,6 +526,13 @@ public class ClientUI
 				}
 				else
 				{
+					if (OSType.getOSType() == OSType.Linux)
+					{
+						// FlatLaf explicitly checks this property when checking for custom window decorations on Linux
+						JDialog.setDefaultLookAndFeelDecorated(true);
+						JFrame.setDefaultLookAndFeelDecorated(true);
+					}
+
 					frame.setUndecorated(true);
 					rp.setWindowDecorationStyle(JRootPane.FRAME);
 				}
