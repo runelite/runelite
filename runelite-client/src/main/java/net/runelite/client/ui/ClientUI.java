@@ -1375,7 +1375,7 @@ public class ClientUI
 			if ((OSType.getOSType() != OSType.Windows || (changed & Frame.MAXIMIZED_BOTH) == 0)
 				&& !frame.getPreferredSize().equals(oldSize))
 			{
-				frame.containedSetSize(frame.getPreferredSize());
+				frame.containedSetSize(frame.getPreferredSize(), oldSize);
 			}
 
 			log.trace("finishing layout - content={} client={} sidebar={} frame={}", content.getWidth(), client.getWidth(), sidebar.getWidth(), frame.getWidth());

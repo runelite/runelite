@@ -76,7 +76,7 @@ public class ContainableFrame extends JFrame
 			return;
 		}
 
-		applyChange(x, y, width, height, getX(), getY(), false);
+		applyChange(x, y, width, height, getX(), getY(), getWidth(), false);
 	}
 
 	@Override
@@ -95,7 +95,7 @@ public class ContainableFrame extends JFrame
 
 	// we must use the deprecated variants since that it what Component ultimately delegates to
 	@SuppressWarnings("deprecation")
-	private void applyChange(int x, int y, int width, int height, int oldX, int oldY, boolean contain)
+	private void applyChange(int x, int y, int width, int height, int oldX, int oldY, int oldWidth, boolean contain)
 	{
 		try
 		{
@@ -113,10 +113,10 @@ public class ContainableFrame extends JFrame
 					rightSideSuction = getBounds().getMaxX() + SCREEN_EDGE_CLOSE_DISTANCE >= dpyBounds.getMaxX();
 				}
 
-				if (rightSideSuction && width < this.getWidth())
+				if (rightSideSuction && width < oldWidth)
 				{
 					// shift the window so the right side is near the edge again
-					rect.x += this.getWidth() - width;
+					rect.x += oldWidth - width;
 				}
 
 				rect.x -= Math.max(0, rect.getMaxX() - dpyBounds.getMaxX());
@@ -133,7 +133,7 @@ public class ContainableFrame extends JFrame
 					rect.y = Math.max(rect.y, dpyBounds.y);
 				}
 
-				if (width > this.getWidth() && rect.x < x)
+				if (width > oldWidth && rect.x < x)
 				{
 					// we have shifted the window left to avoid the right side going oob
 					rightSideSuction = true;
@@ -170,9 +170,10 @@ public class ContainableFrame extends JFrame
 	/**
 	 * Adjust the frame's size, containing to the screen if {@code Mode.RESIZING} is set
 	 */
-	public void containedSetSize(Dimension size)
+	public void containedSetSize(Dimension size, Dimension oldSize)
 	{
-		applyChange(getX(), getY(), size.width, size.height, getX(), getY(), this.containedInScreen != Mode.NEVER);
+		// accept oldSize from the outside since the min size might have been set, which forces the size to change
+		applyChange(getX(), getY(), size.width, size.height, getX(), getY(), oldSize.width, this.containedInScreen != Mode.NEVER);
 	}
 
 	/**
