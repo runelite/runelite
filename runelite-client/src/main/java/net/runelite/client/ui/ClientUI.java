@@ -47,6 +47,7 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.LayoutManager2;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.SystemTray;
 import java.awt.Taskbar;
@@ -94,7 +95,6 @@ import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.GameState;
 import net.runelite.api.Player;
-import net.runelite.api.Point;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
@@ -875,7 +875,7 @@ public class ClientUI
 			return;
 		}
 
-		final java.awt.Point hotspot = new java.awt.Point(0, 0);
+		final Point hotspot = new Point(0, 0);
 		final Cursor cursorAwt = Toolkit.getDefaultToolkit().createCustomCursor(image, hotspot, name);
 		defaultCursor = cursorAwt;
 		setCursor(cursorAwt);
@@ -917,12 +917,16 @@ public class ClientUI
 			final Canvas canvas = ((Client) client).getCanvas();
 			if (canvas != null)
 			{
-				final java.awt.Point point = SwingUtilities.convertPoint(canvas, 0, 0, frame);
-				return new Point(point.x, point.y);
+				return SwingUtilities.convertPoint(canvas, 0, 0, frame);
 			}
 		}
 
 		return new Point(0, 0);
+	}
+
+	public Insets getInsets()
+	{
+		return frame.getInsets();
 	}
 
 	/**
