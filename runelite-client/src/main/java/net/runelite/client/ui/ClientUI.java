@@ -637,6 +637,8 @@ public class ClientUI
 			requestFocus();
 			log.debug("Showing frame {}", frame);
 			frame.revalidateMinimumSize();
+			// this must run after the native window border is installed on the window
+			frame.updateContainsInScreen();
 		});
 
 		// Show out of date dialog if needed
@@ -1128,6 +1130,7 @@ public class ClientUI
 		}
 
 		frame.setContainedInScreen(config.containInScreen());
+		frame.updateContainsInScreen();
 
 		if (!config.rememberScreenBounds())
 		{

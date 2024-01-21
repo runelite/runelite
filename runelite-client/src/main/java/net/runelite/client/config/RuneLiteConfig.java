@@ -99,7 +99,7 @@ public interface RuneLiteConfig extends Config
 	@ConfigItem(
 		keyName = "containInScreen2",
 		name = "Contain in screen",
-		description = "Makes the client move itself to stay within the screen when resizing.",
+		description = "Makes the client move itself to stay within the screen when resizing..<br>Note: 'Always' only works on Windows and if custom chrome is enabled.",
 		position = 13,
 		section = windowSettings
 	)

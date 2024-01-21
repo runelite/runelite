@@ -24,6 +24,7 @@
  */
 package net.runelite.client.ui;
 
+import com.formdev.flatlaf.ui.FlatNativeWindowsLibrary;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Insets;
@@ -39,6 +40,7 @@ public class ContainableFrame extends JFrame
 {
 	public enum Mode
 	{
+		ALWAYS,
 		RESIZING,
 		NEVER;
 	}
@@ -248,5 +250,13 @@ public class ContainableFrame extends JFrame
 	private boolean isFullScreen()
 	{
 		return (getExtendedState() & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH;
+	}
+
+	void updateContainsInScreen()
+	{
+		if (FlatNativeWindowsLibrary.isLoaded())
+		{
+			FlatNativeWindowsLibrary.setContainInScreen(this, containedInScreen == Mode.ALWAYS);
+		}
 	}
 }
