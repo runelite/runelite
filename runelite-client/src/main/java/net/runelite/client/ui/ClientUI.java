@@ -1299,7 +1299,8 @@ public class ClientUI
 			Component client = content.getComponent(0);
 			client.setSize(width, height);
 			// must adjust content height since the client height is derived from the content height
-			content.setSize(content.getWidth(), height);
+			Insets insets = content.getInsets();
+			content.setSize(content.getWidth(), height + insets.top + insets.bottom);
 			layout(content, true);
 		}
 
@@ -1374,7 +1375,7 @@ public class ClientUI
 			if ((OSType.getOSType() != OSType.Windows || (changed & Frame.MAXIMIZED_BOTH) == 0)
 				&& !frame.getPreferredSize().equals(oldSize))
 			{
-				frame.containedSetSize(frame.getPreferredSize());
+				frame.containedSetSize(frame.getPreferredSize(), oldSize);
 			}
 
 			log.trace("finishing layout - content={} client={} sidebar={} frame={}", content.getWidth(), client.getWidth(), sidebar.getWidth(), frame.getWidth());
