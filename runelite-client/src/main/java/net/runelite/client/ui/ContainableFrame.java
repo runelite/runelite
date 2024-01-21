@@ -49,6 +49,7 @@ public class ContainableFrame extends JFrame
 	private Mode containedInScreen;
 	private boolean rightSideSuction;
 	private boolean boundsOpSet;
+	private boolean scaleMinSize = false;
 
 	@Override
 	@SuppressWarnings("deprecation")
@@ -182,16 +183,57 @@ public class ContainableFrame extends JFrame
 	public void revalidateMinimumSize()
 	{
 		Dimension minSize = getLayout().minimumLayoutSize(this);
+		setMinimumSize(minSize);
+	}
+
+	@Override
+	public void setMinimumSize(Dimension minSize)
+	{
 		if (OSType.getOSType() == OSType.Windows)
 		{
 			// JDK-8221452 - Window.setMinimumSize does not respect DPI scaling
-			AffineTransform transform = getGraphicsConfiguration().getDefaultTransform();
-			int scaledX = (int) Math.round(minSize.width * transform.getScaleX());
-			int scaledY = (int) Math.round(minSize.height * transform.getScaleY());
-			minSize = new Dimension(scaledX, scaledY);
+			// Window::setMinimumSize will call setSize if the window is smaller
+			// than the new minimum size. Because of this, and other places reading
+			// minimumSize expecting scaling to be unscaled, we have to scale the size
+			// only when WWindowPeer::updateMinimumSize is called. This is also called
+			// during pack, but we call this afterwards so it doesn't matter much
+			synchronized (getTreeLock())
+			{
+				try
+				{
+					scaleMinSize = true;
+					super.setMinimumSize(minSize);
+				}
+				finally
+				{
+					scaleMinSize = false;
+				}
+			}
 		}
+		else
+		{
+			super.setMinimumSize(minSize);
+		}
+	}
 
-		setMinimumSize(minSize);
+	@Override
+	public Dimension getMinimumSize()
+	{
+		Dimension minSize = super.getMinimumSize();
+		if (OSType.getOSType() == OSType.Windows && minSize != null)
+		{
+			synchronized (getTreeLock())
+			{
+				if (scaleMinSize)
+				{
+					AffineTransform transform = getGraphicsConfiguration().getDefaultTransform();
+					int scaledX = (int) Math.round(minSize.width * transform.getScaleX());
+					int scaledY = (int) Math.round(minSize.height * transform.getScaleY());
+					minSize = new Dimension(scaledX, scaledY);
+				}
+			}
+		}
+		return minSize;
 	}
 
 	private boolean isFullScreen()
