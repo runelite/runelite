@@ -133,22 +133,6 @@ public interface RuneLiteConfig extends Config
 		return OSType.getOSType() == OSType.Windows;
 	}
 
-	@Range(
-		min = 10,
-		max = 100
-	)
-	@ConfigItem(
-		keyName = "uiWindowOpacity",
-		name = "Window opacity",
-		description = "Set the windows opacity. Requires \"Enable custom window chrome\" to be enabled.",
-		position = 16,
-		section = windowSettings
-	)
-	default int windowOpacity()
-	{
-		return 100;
-	}
-
 	@ConfigItem(
 		keyName = "gameAlwaysOnTop",
 		name = "Always on top",

@@ -1099,14 +1099,6 @@ public class ClientUI
 			return;
 		}
 
-		// Update window opacity if the frame is undecorated, translucency capable and not fullscreen
-		if (frame.isUndecorated() &&
-			frame.getGraphicsConfiguration().isTranslucencyCapable() &&
-			frame.getGraphicsConfiguration().getDevice().getFullScreenWindow() == null)
-		{
-			frame.setOpacity(((float) config.windowOpacity()) / 100.0f);
-		}
-
 		if (config.usernameInTitle() && (client instanceof Client))
 		{
 			final Player player = ((Client) client).getLocalPlayer();
