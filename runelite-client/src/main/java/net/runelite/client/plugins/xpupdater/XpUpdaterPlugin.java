@@ -177,19 +177,15 @@ public class XpUpdaterPlugin extends Plugin
 		{
 			HttpUrl url = new HttpUrl.Builder()
 				.scheme("https")
-				.host("runetracker.org")
-				.addPathSegment("updateUserJS.php")
-				.build();
-
-			RequestBody formBody = new FormBody.Builder()
-				.add("user", username)
+				.host("rscript.org")
+				.addPathSegment("lookup.php")
+				.addQueryParameter("type", "stats07")
+				.addQueryParameter("user", username)
 				.build();
 
 			Request request = new Request.Builder()
 				.header("User-Agent", "RuneLite")
-				.header("Referer", "https://runetracker.org/track07-")
 				.url(url)
-				.post(formBody)
 				.build();
 
 			sendRequest("RuneTracker", request);
