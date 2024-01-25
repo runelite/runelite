@@ -24,6 +24,7 @@
  */
 package net.runelite.client.ui;
 
+import com.formdev.flatlaf.ui.FlatNativeWindowsLibrary;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Insets;
@@ -39,6 +40,7 @@ public class ContainableFrame extends JFrame
 {
 	public enum Mode
 	{
+		ALWAYS,
 		RESIZING,
 		NEVER;
 	}
@@ -49,6 +51,7 @@ public class ContainableFrame extends JFrame
 	private Mode containedInScreen;
 	private boolean rightSideSuction;
 	private boolean boundsOpSet;
+	private boolean scaleMinSize = false;
 
 	@Override
 	@SuppressWarnings("deprecation")
@@ -76,7 +79,7 @@ public class ContainableFrame extends JFrame
 			return;
 		}
 
-		applyChange(x, y, width, height, getX(), getY(), false);
+		applyChange(x, y, width, height, getX(), getY(), getWidth(), false);
 	}
 
 	@Override
@@ -95,7 +98,7 @@ public class ContainableFrame extends JFrame
 
 	// we must use the deprecated variants since that it what Component ultimately delegates to
 	@SuppressWarnings("deprecation")
-	private void applyChange(int x, int y, int width, int height, int oldX, int oldY, boolean contain)
+	private void applyChange(int x, int y, int width, int height, int oldX, int oldY, int oldWidth, boolean contain)
 	{
 		try
 		{
@@ -113,10 +116,19 @@ public class ContainableFrame extends JFrame
 					rightSideSuction = getBounds().getMaxX() + SCREEN_EDGE_CLOSE_DISTANCE >= dpyBounds.getMaxX();
 				}
 
-				if (rightSideSuction && width < this.getWidth())
+				if (rightSideSuction && width < oldWidth)
 				{
 					// shift the window so the right side is near the edge again
-					rect.x += this.getWidth() - width;
+					rect.x += oldWidth - width;
+				}
+
+				if (width > oldWidth
+					&& rect.getMaxX() > dpyBounds.getMaxX()
+					&& oldX + oldWidth + SCREEN_EDGE_CLOSE_DISTANCE > dpyBounds.getMaxX()
+					&& oldX + oldWidth <= dpyBounds.getMaxX())
+				{
+					// attempt to retain the distance between us and the edge when shifting left
+					rect.x -= width - oldWidth;
 				}
 
 				rect.x -= Math.max(0, rect.getMaxX() - dpyBounds.getMaxX());
@@ -133,7 +145,7 @@ public class ContainableFrame extends JFrame
 					rect.y = Math.max(rect.y, dpyBounds.y);
 				}
 
-				if (width > this.getWidth() && rect.x < x)
+				if (width > oldWidth && rect.x < x)
 				{
 					// we have shifted the window left to avoid the right side going oob
 					rightSideSuction = true;
@@ -170,9 +182,10 @@ public class ContainableFrame extends JFrame
 	/**
 	 * Adjust the frame's size, containing to the screen if {@code Mode.RESIZING} is set
 	 */
-	public void containedSetSize(Dimension size)
+	public void containedSetSize(Dimension size, Dimension oldSize)
 	{
-		applyChange(getX(), getY(), size.width, size.height, getX(), getY(), this.containedInScreen != Mode.NEVER);
+		// accept oldSize from the outside since the min size might have been set, which forces the size to change
+		applyChange(getX(), getY(), size.width, size.height, getX(), getY(), oldSize.width, this.containedInScreen != Mode.NEVER);
 	}
 
 	/**
@@ -181,20 +194,69 @@ public class ContainableFrame extends JFrame
 	public void revalidateMinimumSize()
 	{
 		Dimension minSize = getLayout().minimumLayoutSize(this);
+		setMinimumSize(minSize);
+	}
+
+	@Override
+	public void setMinimumSize(Dimension minSize)
+	{
 		if (OSType.getOSType() == OSType.Windows)
 		{
 			// JDK-8221452 - Window.setMinimumSize does not respect DPI scaling
-			AffineTransform transform = getGraphicsConfiguration().getDefaultTransform();
-			int scaledX = (int) Math.round(minSize.width * transform.getScaleX());
-			int scaledY = (int) Math.round(minSize.height * transform.getScaleY());
-			minSize = new Dimension(scaledX, scaledY);
+			// Window::setMinimumSize will call setSize if the window is smaller
+			// than the new minimum size. Because of this, and other places reading
+			// minimumSize expecting scaling to be unscaled, we have to scale the size
+			// only when WWindowPeer::updateMinimumSize is called. This is also called
+			// during pack, but we call this afterwards so it doesn't matter much
+			synchronized (getTreeLock())
+			{
+				try
+				{
+					scaleMinSize = true;
+					super.setMinimumSize(minSize);
+				}
+				finally
+				{
+					scaleMinSize = false;
+				}
+			}
 		}
+		else
+		{
+			super.setMinimumSize(minSize);
+		}
+	}
 
-		setMinimumSize(minSize);
+	@Override
+	public Dimension getMinimumSize()
+	{
+		Dimension minSize = super.getMinimumSize();
+		if (OSType.getOSType() == OSType.Windows && minSize != null)
+		{
+			synchronized (getTreeLock())
+			{
+				if (scaleMinSize)
+				{
+					AffineTransform transform = getGraphicsConfiguration().getDefaultTransform();
+					int scaledX = (int) Math.round(minSize.width * transform.getScaleX());
+					int scaledY = (int) Math.round(minSize.height * transform.getScaleY());
+					minSize = new Dimension(scaledX, scaledY);
+				}
+			}
+		}
+		return minSize;
 	}
 
 	private boolean isFullScreen()
 	{
 		return (getExtendedState() & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH;
+	}
+
+	void updateContainsInScreen()
+	{
+		if (FlatNativeWindowsLibrary.isLoaded())
+		{
+			FlatNativeWindowsLibrary.setContainInScreen(this, containedInScreen == Mode.ALWAYS);
+		}
 	}
 }

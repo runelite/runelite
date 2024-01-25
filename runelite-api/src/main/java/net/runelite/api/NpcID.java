@@ -6475,6 +6475,12 @@ public final class NpcID
 	public static final int MANIACAL_MONKEY_7214 = 7214;
 	public static final int MANIACAL_MONKEY_7215 = 7215;
 	public static final int MANIACAL_MONKEY_7216 = 7216;
+	public static final int SCURRY = 7219;
+	public static final int RAT_BOSS_TEST_NPC = 7220;
+	public static final int SCURRIUS = 7221;
+	public static final int SCURRIUS_7222 = 7222;
+	public static final int GIANT_RAT_7223 = 7223;
+	public static final int HISTORIAN_ALDO = 7226;
 	public static final int MIRIAM = 7227;
 	public static final int TRAXI = 7228;
 	public static final int RAELI = 7229;
@@ -6815,6 +6821,8 @@ public final class NpcID
 	public static final int KRATO = 7612;
 	public static final int EKTHEME = 7613;
 	public static final int ARCHEIO = 7614;
+	public static final int HISTORIAN_ALDO_7615 = 7615;
+	public static final int SCURRY_7616 = 7616;
 	public static final int STULIETTE = 7619;
 	public static final int TEMPLE_GUARDIAN = 7620;
 	public static final int KHAZARD_WARLORD_7621 = 7621;
