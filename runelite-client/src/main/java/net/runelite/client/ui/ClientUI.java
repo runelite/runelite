@@ -570,7 +570,7 @@ public class ClientUI
 	{
 		content.setBorder((frame.getExtendedState() & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH
 			? null
-			: new MatteBorder(0, 4, 4, 4, ColorScheme.DARKER_GRAY_COLOR));
+			: new MatteBorder(4, 4, 4, 4, ColorScheme.DARKER_GRAY_COLOR));
 	}
 
 	public void show()
