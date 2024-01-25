@@ -124,8 +124,8 @@ public class ContainableFrame extends JFrame
 
 				if (width > oldWidth
 					&& rect.getMaxX() > dpyBounds.getMaxX()
-					&& oldX + oldWidth + SCREEN_EDGE_CLOSE_DISTANCE > dpyBounds.getMaxX()
-					&& oldX + oldWidth <= dpyBounds.getMaxX())
+					&& (oldX + insets.left) + (oldWidth - (insets.left + insets.right)) + SCREEN_EDGE_CLOSE_DISTANCE > dpyBounds.getMaxX()
+					&& (oldX + insets.left) + (oldWidth - (insets.left + insets.right)) <= dpyBounds.getMaxX())
 				{
 					// attempt to retain the distance between us and the edge when shifting left
 					rect.x -= width - oldWidth;
