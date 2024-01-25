@@ -599,6 +599,15 @@ public class ClientUI
 					frame.setBounds(clientBounds);
 					appliedSize = true;
 
+					// Adjust for insets before performing display test
+					Insets insets = frame.getInsets();
+					clientBounds = new Rectangle(
+						clientBounds.x + insets.left,
+						clientBounds.y + insets.top,
+						clientBounds.width - (insets.left + insets.right),
+						clientBounds.height - (insets.top + insets.bottom)
+					);
+
 					// Check that the bounds are contained inside a valid display
 					GraphicsConfiguration gc = findDisplayFromBounds(clientBounds);
 					if (gc == null)
