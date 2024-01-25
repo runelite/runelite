@@ -162,6 +162,8 @@ enum MiningSiteLocation
 	MINING_GUILD_SOUTH(new WorldPoint(3032, 9720, 0),
 		new Rock(8, Ore.IRON), new Rock(20, Ore.COAL), new Rock(10, Ore.MITHRIL), new Rock(8, Ore.ADAMANTITE),
 		new Rock(2, Ore.RUNITE)),
+	MINING_GUILD_WEST(new WorldPoint(3006, 9711, 0),
+			new Rock(36, Ore.AMETHYST)),
 	MISCELLANIA(new WorldPoint(2526, 3891, 0), new Rock(9, Ore.COAL)),
 	MISCELLANIA_DUNGEON(new WorldPoint(2504, 10287, 0), new Rock(4, Ore.COAL)),
 	MOR_UL_REK_NORTH(new WorldPoint(2458, 5167, 0), new Rock(3, Ore.SILVER), new Rock(3, Ore.GOLD)),
