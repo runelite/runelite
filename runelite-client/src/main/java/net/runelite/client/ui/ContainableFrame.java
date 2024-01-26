@@ -113,7 +113,7 @@ public class ContainableFrame extends JFrame
 				if (rightSideSuction)
 				{
 					// only keep suction while where are near the screen edge
-					rightSideSuction = getBounds().getMaxX() + SCREEN_EDGE_CLOSE_DISTANCE >= dpyBounds.getMaxX();
+					rightSideSuction = oldX + oldWidth - insets.right + SCREEN_EDGE_CLOSE_DISTANCE >= dpyBounds.getMaxX();
 				}
 
 				if (rightSideSuction && width < oldWidth)
@@ -145,7 +145,7 @@ public class ContainableFrame extends JFrame
 					rect.y = Math.max(rect.y, dpyBounds.y);
 				}
 
-				if (width > oldWidth && rect.x < x)
+				if (width > oldWidth && rect.x < oldX + insets.left)
 				{
 					// we have shifted the window left to avoid the right side going oob
 					rightSideSuction = true;
@@ -182,10 +182,10 @@ public class ContainableFrame extends JFrame
 	/**
 	 * Adjust the frame's size, containing to the screen if {@code Mode.RESIZING} is set
 	 */
-	public void containedSetSize(Dimension size, Dimension oldSize)
+	public void containedSetSize(Dimension size, Rectangle oldBounds)
 	{
 		// accept oldSize from the outside since the min size might have been set, which forces the size to change
-		applyChange(getX(), getY(), size.width, size.height, getX(), getY(), oldSize.width, this.containedInScreen != Mode.NEVER);
+		applyChange(getX(), getY(), size.width, size.height, oldBounds.x, oldBounds.y, oldBounds.width, this.containedInScreen != Mode.NEVER);
 	}
 
 	/**

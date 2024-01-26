@@ -1378,12 +1378,12 @@ public class ClientUI
 			client.setBounds(insets.left, insets.top, clientWidth, innerHeight);
 			sidebar.setBounds(insets.left + clientWidth, insets.top, sidebarWidth, innerHeight);
 
-			Dimension oldSize = frame.getSize();
+			Rectangle oldBounds = frame.getBounds();
 			frame.revalidateMinimumSize();
 			if ((OSType.getOSType() != OSType.Windows || (changed & Frame.MAXIMIZED_BOTH) == 0)
-				&& !frame.getPreferredSize().equals(oldSize))
+				&& !frame.getPreferredSize().equals(oldBounds.getSize()))
 			{
-				frame.containedSetSize(frame.getPreferredSize(), oldSize);
+				frame.containedSetSize(frame.getPreferredSize(), oldBounds);
 			}
 
 			log.trace("finishing layout - content={} client={} sidebar={} frame={}", content.getWidth(), client.getWidth(), sidebar.getWidth(), frame.getWidth());
