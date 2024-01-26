@@ -76,6 +76,16 @@ class RequirementCollections
 			.filter(itemId -> itemId != BOW_OF_FAERDHINEN_INACTIVE)
 			.map(ItemRequirements::item)
 			.toArray(SingleItemRequirement[]::new));
+	static final AnyRequirementCollection DRAGON_OR_AVERNIC_DEFENDER = any("Dragon or Avernic Defender",
+		Stream.of(
+			ItemVariationMapping.getVariations(DRAGON_DEFENDER).stream(),
+			ItemVariationMapping.getVariations(AVERNIC_DEFENDER).stream(),
+			ItemVariationMapping.getVariations(GHOMMALS_AVERNIC_DEFENDER_5).stream())
+			.reduce(Stream::concat)
+			.orElseGet(Stream::empty)
+			.filter(itemId -> itemId != DRAGON_DEFENDER_BROKEN && itemId != AVERNIC_DEFENDER_BROKEN)
+			.map(ItemRequirements::item)
+			.toArray(SingleItemRequirement[]::new));
 	static final AnyRequirementCollection ANY_HAMMER = any("Hammer",
 		item(HAMMER),
 		item(IMCANDO_HAMMER)
