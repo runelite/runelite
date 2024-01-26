@@ -57,9 +57,11 @@ public class FaloTheBardClue extends ClueScroll implements NpcClueScroll
 	static final AnyRequirementCollection DRAGON_DEFENDER_OR_AVERNIC_DEFENDER = any("Dragon or Avernic Defender",
 		Stream.of(
 			ItemVariationMapping.getVariations(DRAGON_DEFENDER).stream(),
-			ItemVariationMapping.getVariations(AVERNIC_DEFENDER).stream())
+			ItemVariationMapping.getVariations(AVERNIC_DEFENDER).stream(),
+			ItemVariationMapping.getVariations(GHOMMALS_AVERNIC_DEFENDER_5).stream())
 			.reduce(Stream::concat)
 			.orElseGet(Stream::empty)
+			.filter(itemId -> itemId != DRAGON_DEFENDER_BROKEN && itemId != AVERNIC_DEFENDER_BROKEN)
 			.map(ItemRequirements::item)
 			.toArray(SingleItemRequirement[]::new));
 	static final List<FaloTheBardClue> CLUES = ImmutableList.of(
