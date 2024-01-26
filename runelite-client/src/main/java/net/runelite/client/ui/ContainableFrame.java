@@ -98,7 +98,7 @@ public class ContainableFrame extends JFrame
 
 	// we must use the deprecated variants since that it what Component ultimately delegates to
 	@SuppressWarnings("deprecation")
-	private void applyChange(int x, int y, int width, int height, int oldX, int oldY, int oldWidth, boolean contain)
+	private void applyChange(int wX, int wY, int wWidth, int wHeight, int wOldx, int wOldY, int wOldWidth, boolean contain)
 	{
 		try
 		{
@@ -106,71 +106,71 @@ public class ContainableFrame extends JFrame
 
 			if (contain && !isFullScreen())
 			{
-				Rectangle dpyBounds = this.getGraphicsConfiguration().getBounds();
+				Rectangle cDpyBounds = this.getGraphicsConfiguration().getBounds();
 				Insets insets = this.getInsets();
-				Rectangle rect = new Rectangle(x + insets.left, y + insets.top, width - (insets.left + insets.right), height - (insets.top + insets.bottom));
+				Rectangle cRect = new Rectangle(wX + insets.left, wY + insets.top, wWidth - (insets.left + insets.right), wHeight - (insets.top + insets.bottom));
 
 				if (rightSideSuction)
 				{
 					// only keep suction while where are near the screen edge
-					rightSideSuction = getBounds().getMaxX() + SCREEN_EDGE_CLOSE_DISTANCE >= dpyBounds.getMaxX();
+					rightSideSuction = wOldx + wOldWidth - insets.right + SCREEN_EDGE_CLOSE_DISTANCE >= cDpyBounds.getMaxX();
 				}
 
-				if (rightSideSuction && width < oldWidth)
+				if (rightSideSuction && wWidth < wOldWidth)
 				{
 					// shift the window so the right side is near the edge again
-					rect.x += oldWidth - width;
+					cRect.x += wOldWidth - wWidth;
 				}
 
-				if (width > oldWidth
-					&& rect.getMaxX() > dpyBounds.getMaxX()
-					&& oldX + oldWidth + SCREEN_EDGE_CLOSE_DISTANCE > dpyBounds.getMaxX()
-					&& oldX + oldWidth <= dpyBounds.getMaxX())
+				if (wWidth > wOldWidth
+					&& cRect.getMaxX() > cDpyBounds.getMaxX()
+					&& (wOldx + insets.left) + (wOldWidth - (insets.left + insets.right)) + SCREEN_EDGE_CLOSE_DISTANCE > cDpyBounds.getMaxX()
+					&& (wOldx + insets.left) + (wOldWidth - (insets.left + insets.right)) <= cDpyBounds.getMaxX())
 				{
 					// attempt to retain the distance between us and the edge when shifting left
-					rect.x -= width - oldWidth;
+					cRect.x -= wWidth - wOldWidth;
 				}
 
-				rect.x -= Math.max(0, rect.getMaxX() - dpyBounds.getMaxX());
-				rect.y -= Math.max(0, rect.getMaxY() - dpyBounds.getMaxY());
+				cRect.x -= Math.max(0, cRect.getMaxX() - cDpyBounds.getMaxX());
+				cRect.y -= Math.max(0, cRect.getMaxY() - cDpyBounds.getMaxY());
 
 				// if we are just resizing don't try to move the left side out
-				if (rect.x != oldX + insets.left)
+				if (cRect.x != wOldx + insets.left)
 				{
-					rect.x = Math.max(rect.x, dpyBounds.x);
+					cRect.x = Math.max(cRect.x, cDpyBounds.x);
 				}
 
-				if (rect.y != oldY + insets.top)
+				if (cRect.y != wOldY + insets.top)
 				{
-					rect.y = Math.max(rect.y, dpyBounds.y);
+					cRect.y = Math.max(cRect.y, cDpyBounds.y);
 				}
 
-				if (width > oldWidth && rect.x < x)
+				if (wWidth > wOldWidth && cRect.x < wOldx + insets.left)
 				{
 					// we have shifted the window left to avoid the right side going oob
 					rightSideSuction = true;
 				}
 
-				x = rect.x - insets.left;
-				y = rect.y - insets.top;
-				width = rect.width + insets.left + insets.right;
-				height = rect.height + insets.top + insets.bottom;
+				wX = cRect.x - insets.left;
+				wY = cRect.y - insets.top;
+				wWidth = cRect.width + insets.left + insets.right;
+				wHeight = cRect.height + insets.top + insets.bottom;
 			}
 
-			boolean xyDifferent = getX() != x || getY() != y;
-			boolean whDifferent = getWidth() != width || getHeight() != height;
+			boolean xyDifferent = getX() != wX || getY() != wY;
+			boolean whDifferent = getWidth() != wWidth || getHeight() != wHeight;
 
 			if (xyDifferent && whDifferent)
 			{
-				super.reshape(x, y, width, height);
+				super.reshape(wX, wY, wWidth, wHeight);
 			}
 			else if (xyDifferent)
 			{
-				super.move(x, y);
+				super.move(wX, wY);
 			}
 			else if (whDifferent)
 			{
-				super.resize(width, height);
+				super.resize(wWidth, wHeight);
 			}
 		}
 		finally
@@ -182,10 +182,10 @@ public class ContainableFrame extends JFrame
 	/**
 	 * Adjust the frame's size, containing to the screen if {@code Mode.RESIZING} is set
 	 */
-	public void containedSetSize(Dimension size, Dimension oldSize)
+	public void containedSetSize(Dimension size, Rectangle oldBounds)
 	{
 		// accept oldSize from the outside since the min size might have been set, which forces the size to change
-		applyChange(getX(), getY(), size.width, size.height, getX(), getY(), oldSize.width, this.containedInScreen != Mode.NEVER);
+		applyChange(getX(), getY(), size.width, size.height, oldBounds.x, oldBounds.y, oldBounds.width, this.containedInScreen != Mode.NEVER);
 	}
 
 	/**
