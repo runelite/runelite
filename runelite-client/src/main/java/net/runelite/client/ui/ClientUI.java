@@ -1114,6 +1114,11 @@ public class ClientUI
 			return;
 		}
 
+		if (frame.getGraphicsConfiguration().getDevice().getFullScreenWindow() == null)
+		{
+			frame.setOpacity(config.windowOpacity() / 100.0f);
+		}
+
 		if (config.usernameInTitle() && (client instanceof Client))
 		{
 			final Player player = ((Client) client).getLocalPlayer();

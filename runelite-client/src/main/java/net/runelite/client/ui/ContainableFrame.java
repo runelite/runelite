@@ -27,6 +27,7 @@ package net.runelite.client.ui;
 import com.formdev.flatlaf.ui.FlatNativeWindowsLibrary;
 import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.IllegalComponentStateException;
 import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
@@ -52,6 +53,7 @@ public class ContainableFrame extends JFrame
 	private boolean rightSideSuction;
 	private boolean boundsOpSet;
 	private boolean scaleMinSize = false;
+	private boolean overrideUndecorated;
 
 	@Override
 	@SuppressWarnings("deprecation")
@@ -258,5 +260,31 @@ public class ContainableFrame extends JFrame
 		{
 			FlatNativeWindowsLibrary.setContainInScreen(this, containedInScreen == Mode.ALWAYS);
 		}
+	}
+
+	@Override
+	public void setOpacity(float opacity)
+	{
+		// JDK-6993784 requires the frame to be undecorated to apply opacity, but in practice it works on Windows regardless.
+		// Temporarily pretend to be an undecorated frame to satisfy Frame.setOpacity().
+		overrideUndecorated = true;
+		try
+		{
+			super.setOpacity(opacity);
+		}
+		catch (IllegalComponentStateException | UnsupportedOperationException | IllegalArgumentException ex)
+		{
+			log.warn("unable to set opacity {}", opacity, ex);
+		}
+		finally
+		{
+			overrideUndecorated = false;
+		}
+	}
+
+	@Override
+	public boolean isUndecorated()
+	{
+		return overrideUndecorated || super.isUndecorated();
 	}
 }
