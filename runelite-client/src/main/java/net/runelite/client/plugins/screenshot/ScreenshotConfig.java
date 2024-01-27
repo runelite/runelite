@@ -30,9 +30,11 @@ import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
 import net.runelite.client.config.Keybind;
 
-@ConfigGroup("screenshot")
+@ConfigGroup(ScreenshotConfig.CONFIG_GROUP)
 public interface ScreenshotConfig extends Config
 {
+	String CONFIG_GROUP = "screenshot";
+
 	@ConfigSection(
 		name = "What to Screenshot",
 		description = "All the options that select what to screenshot",
@@ -251,11 +253,25 @@ public interface ScreenshotConfig extends Config
 		return false;
 	}
 
+	String UNTRADEABLE_BLACKLIST_KEY = "untradeableDropBlacklist";
+
+	@ConfigItem(
+		keyName = UNTRADEABLE_BLACKLIST_KEY,
+		name = "Untradeable drop blacklist",
+		description = "Prevent these drops from being screenshotted. Format is a comma separated list e.g. \"Hallowed mark, Serafina's diary\"",
+		position = 17,
+		section = whatSection
+	)
+	default String untradeableDropBlacklist()
+	{
+		return "Hallowed mark, Serafina's diary, The butcher, Arachnids of vampyrium, The shadow realm, The wild hunt, Verzik vitur - patient record, Apmeken's capture, Crondis' capture, Het's capture, Scabaras' capture, The wardens";
+	}
+
 	@ConfigItem(
 		keyName = "ccKick",
 		name = "Screenshot Kicks from FC",
 		description = "Take a screenshot when you kick a user from a friends chat.",
-		position = 17,
+		position = 18,
 		section = whatSection
 	)
 	default boolean screenshotKick()
@@ -267,7 +283,7 @@ public interface ScreenshotConfig extends Config
 		keyName = "baHighGamble",
 		name = "Screenshot BA high gambles",
 		description = "Take a screenshot of your reward from a high gamble at Barbarian Assault.",
-		position = 18,
+		position = 19,
 		section = whatSection
 	)
 	default boolean screenshotHighGamble()
@@ -279,7 +295,7 @@ public interface ScreenshotConfig extends Config
 		keyName = "collectionLogEntries",
 		name = "Screenshot collection log entries",
 		description = "Take a screenshot when completing an entry in the collection log",
-		position = 19,
+		position = 20,
 		section = whatSection
 	)
 	default boolean screenshotCollectionLogEntries()
@@ -291,7 +307,7 @@ public interface ScreenshotConfig extends Config
 		keyName = "combatAchievements",
 		name = "Screenshot combat achievements",
 		description = "Take a screenshot when completing a combat achievement task",
-		position = 20,
+		position = 21,
 		section = whatSection
 	)
 	default boolean screenshotCombatAchievements()

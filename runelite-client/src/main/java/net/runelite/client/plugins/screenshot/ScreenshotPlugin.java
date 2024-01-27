@@ -32,6 +32,8 @@ import com.google.inject.Provides;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
@@ -64,6 +66,7 @@ import net.runelite.api.widgets.Widget;
 import static net.runelite.client.RuneLite.SCREENSHOT_DIR;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.PlayerLootReceived;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.input.KeyManager;
@@ -98,7 +101,7 @@ public class ScreenshotPlugin extends Plugin
 	private static final Pattern LEVEL_UP_MESSAGE_PATTERN = Pattern.compile("Congratulations, you've (just advanced your (?<skill>[a-zA-Z]+) level\\. You are now level (?<level>\\d+)|reached the highest possible (?<skill99>[a-zA-Z]+) level of 99)\\.");
 	private static final Pattern BOSSKILL_MESSAGE_PATTERN = Pattern.compile("Your (.+) kill count is: <col=ff0000>(\\d+)</col>.");
 	private static final Pattern VALUABLE_DROP_PATTERN = Pattern.compile(".*Valuable drop: ([^<>]+?\\(((?:\\d+,?)+) coins\\))(?:</col>)?");
-	private static final Pattern UNTRADEABLE_DROP_PATTERN = Pattern.compile(".*Untradeable drop: ([^<>]+)(?:</col>)?");
+	private static final Pattern UNTRADEABLE_DROP_PATTERN = Pattern.compile(".*Untradeable drop: ((?:\\d+ x )?([^<>]+))(?:</col>)?");
 	private static final Pattern DUEL_END_PATTERN = Pattern.compile("You have now (won|lost) ([0-9,]+) duels?\\.");
 	private static final Pattern QUEST_PATTERN_1 = Pattern.compile(".+?ve\\.*? (?<verb>been|rebuilt|.+?ed)? ?(?:the )?'?(?<quest>.+?)'?(?: [Qq]uest)?[!.]?$");
 	private static final Pattern QUEST_PATTERN_2 = Pattern.compile("'?(?<quest>.+?)'?(?: [Qq]uest)? (?<verb>[a-z]\\w+?ed)?(?: f.*?)?[!.]?$");
@@ -130,6 +133,8 @@ public class ScreenshotPlugin extends Plugin
 
 	private String clueType;
 	private Integer clueNumber;
+
+	private List<String> untradeableDropBlacklist = Collections.emptyList();
 
 	enum KillType
 	{
@@ -227,6 +232,8 @@ public class ScreenshotPlugin extends Plugin
 		clientToolbar.addNavigation(titleBarButton);
 
 		spriteManager.getSpriteAsync(SpriteID.CHATBOX_REPORT_BUTTON, 0, s -> reportButton = s);
+
+		untradeableDropBlacklist = Text.fromCSV(config.untradeableDropBlacklist());
 	}
 
 	@Override
@@ -475,9 +482,16 @@ public class ScreenshotPlugin extends Plugin
 			Matcher m = UNTRADEABLE_DROP_PATTERN.matcher(chatMessage);
 			if (m.matches())
 			{
-				String untradeableDropName = m.group(1);
-				String fileName = "Untradeable drop " + untradeableDropName;
-				takeScreenshot(fileName, SD_UNTRADEABLE_DROPS);
+				String itemName = m.group(2);
+				boolean blacklisted = untradeableDropBlacklist.stream()
+					.filter(blacklistedDrop -> itemName.equalsIgnoreCase(blacklistedDrop))
+					.findAny().isPresent();
+				if (!blacklisted)
+				{
+					String untradeableDropName = m.group(1);
+					String fileName = "Untradeable drop " + untradeableDropName;
+					takeScreenshot(fileName, SD_UNTRADEABLE_DROPS);
+				}
 			}
 		}
 
@@ -728,6 +742,15 @@ public class ScreenshotPlugin extends Plugin
 				}
 				notificationStarted = false;
 				break;
+		}
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged e)
+	{
+		if (e.getGroup().equals(ScreenshotConfig.CONFIG_GROUP) && e.getKey().equals(ScreenshotConfig.UNTRADEABLE_BLACKLIST_KEY))
+		{
+			untradeableDropBlacklist = Text.fromCSV(config.untradeableDropBlacklist());
 		}
 	}
 

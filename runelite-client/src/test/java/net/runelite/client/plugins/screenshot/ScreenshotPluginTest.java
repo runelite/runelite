@@ -75,6 +75,8 @@ public class ScreenshotPluginTest
 	private static final String NOT_SO_VALUABLE_DROP = "<col=ef1020>Valuable drop: 6 x Bronze arrow (42 coins)</col>";
 	private static final String VALUABLE_DROP = "<col=ef1020>Valuable drop: Rune scimitar (25,600 coins)</col>";
 	private static final String UNTRADEABLE_DROP = "<col=ef1020>Untradeable drop: Rusty sword";
+	private static final String UNTRADEABLE_DROP_BLACKLISTED_SINGLE = "<col=ef1020>Untradeable drop: Hallowed mark";
+	private static final String UNTRADEABLE_DROP_BLACKLISTED_MULTIPLE = "<col=ef1020>Untradeable drop: 5 x Hallowed mark";
 	private static final String BA_HIGH_GAMBLE_REWARD = "Raw shark (x 300)!<br>High level gamble count: <col=7f0000>100</col>";
 	private static final String HUNTER_LEVEL_2_TEXT = "<col=000080>Congratulations, you've just advanced a Hunter level.<col=000000><br><br>Your Hunter level is now 2.";
 	private static final String CRAFTING_LEVEL_96_MESSAGE = "Congratulations, you've just advanced your Crafting level. You are now level 96.";
@@ -125,7 +127,7 @@ public class ScreenshotPluginTest
 	private ImageCapture imageCapture;
 
 	@Before
-	public void before()
+	public void before() throws Exception
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
 		screenshotPlugin = spy(screenshotPlugin);
@@ -135,6 +137,8 @@ public class ScreenshotPluginTest
 		when(screenshotConfig.screenshotUntradeableDrop()).thenReturn(true);
 		when(screenshotConfig.screenshotCollectionLogEntries()).thenReturn(true);
 		when(screenshotConfig.screenshotDuels()).thenReturn(true);
+		when(screenshotConfig.untradeableDropBlacklist()).thenReturn("serafina's diary, hallowed mark, the wardens");
+		screenshotPlugin.startUp();
 	}
 
 	@Test
@@ -255,6 +259,24 @@ public class ScreenshotPluginTest
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
 		verify(screenshotPlugin).takeScreenshot("Untradeable drop Rusty sword", "Untradeable Drops");
+	}
+
+	@Test
+	public void testBlacklistedSingleUntradeableDrop()
+	{
+		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", UNTRADEABLE_DROP_BLACKLISTED_SINGLE, null, 0);
+		screenshotPlugin.onChatMessage(chatMessageEvent);
+
+		verify(screenshotPlugin, never()).takeScreenshot(anyString(), anyString());
+	}
+
+	@Test
+	public void testBlacklistedMultipleUntradeableDrop()
+	{
+		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", UNTRADEABLE_DROP_BLACKLISTED_MULTIPLE, null, 0);
+		screenshotPlugin.onChatMessage(chatMessageEvent);
+
+		verify(screenshotPlugin, never()).takeScreenshot(anyString(), anyString());
 	}
 
 	@Test
