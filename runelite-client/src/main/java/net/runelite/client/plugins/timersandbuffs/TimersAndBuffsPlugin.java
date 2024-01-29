@@ -614,6 +614,11 @@ public class TimersAndBuffsPlugin extends Plugin
 
 			updateVarTimer(MOONLIGHT_POTION, moonlightValue, IntUnaryOperator.identity());
 		}
+
+		if (event.getVarbitId() == Varbits.SCURRIUS_FOOD_PILE_COOLDOWN && config.showScurriusFoodPile())
+		{
+			updateVarTimer(SCURRIUS_FOOD_PILE, event.getValue(), i -> i * 100);
+		}
 	}
 
 	@Subscribe
@@ -825,6 +830,11 @@ public class TimersAndBuffsPlugin extends Plugin
 		if (!config.showMoonlightPotion())
 		{
 			removeVarTimer(MOONLIGHT_POTION);
+		}
+
+		if (!config.showScurriusFoodPile())
+		{
+			removeGameTimer(SCURRIUS_FOOD_PILE);
 		}
 	}
 

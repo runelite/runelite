@@ -916,4 +916,9 @@ public final class Varbits
 	 * The amount of Doom stacks received in the Fortis Colosseum.
 	 */
 	public static final int COLOSSEUM_DOOM = 9801;
+
+	/**
+	 * How long is left on Scurrius's food pile's cooldown (in minutes).
+	 */
+	public static final int SCURRIUS_FOOD_PILE_COOLDOWN = 9581;
 }
