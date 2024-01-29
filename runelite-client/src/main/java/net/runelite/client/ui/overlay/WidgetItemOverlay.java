@@ -144,6 +144,12 @@ public abstract class WidgetItemOverlay extends Overlay
 	}
 
 	@Override
+	public void setPriority(float priority)
+	{
+		throw new IllegalStateException();
+	}
+
+	@Override
 	public void setPriority(OverlayPriority priority)
 	{
 		throw new IllegalStateException();
