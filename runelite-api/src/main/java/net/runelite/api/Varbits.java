@@ -871,4 +871,9 @@ public final class Varbits
 	 * This varbit determines which location he will appear in, which is useful for a master clue step.
 	 */
 	public static final int VIGGORA_LOCATION = 815;
+
+	/**
+	 * How long is left on Scurrius's food pile's cooldown (in minutes).
+	 */
+	public static final int SCURRIUS_FOOD_PILE_COOLDOWN = 9581;
 }
