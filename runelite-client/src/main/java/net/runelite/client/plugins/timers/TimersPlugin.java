@@ -567,7 +567,7 @@ public class TimersPlugin extends Plugin
 		if (event.getVarbitId() == Varbits.SCURRIUS_FOOD_PILE_COOLDOWN && config.showScurriusFoodPile())
 		{
 			updateVarTimer(SCURRIUS_FOOD_PILE, event.getValue(), i -> i * 100);
-    }
+    	}
 	}
 
 	@Subscribe
