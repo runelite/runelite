@@ -96,6 +96,7 @@ enum GameTimer
 	LIQUID_ADRENALINE(ItemID.LIQUID_ADRENALINE_2, GameTimerImageType.ITEM, "Liquid adrenaline", 150, ChronoUnit.SECONDS, false),
 	SILK_DRESSING(ItemID.SILK_DRESSING_2, GameTimerImageType.ITEM, "Silk dressing", 100, GAME_TICKS, true),
 	BLESSED_CRYSTAL_SCARAB(ItemID.BLESSED_CRYSTAL_SCARAB_2, GameTimerImageType.ITEM, "Blessed crystal scarab", 40, GAME_TICKS, true),
+	SCURRIUS_FOOD_PILE(ItemID.CHEESE, GameTimerImageType.ITEM, "Scurrius' food pile", 10, ChronoUnit.MINUTES),
 	;
 
 	@Nullable

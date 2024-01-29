@@ -114,6 +114,7 @@ public class TimersPlugin extends Plugin
 	private static final String SILK_DRESSING_MESSAGE = "You quickly apply the dressing to your wounds.";
 	private static final String BLESSED_CRYSTAL_SCARAB_MESSAGE = "You crack the crystal in your hand.";
 	private static final String LIQUID_ADRENALINE_MESSAGE = "You drink some of the potion, reducing the energy cost of your special attacks.</col>";
+	private static final String SCURRIUS_FOOD_PILE_MESSAGE = "You take food from the food pile and eat it, restoring your hitpoints.";
 	private static final Set<Integer> STAVES_OF_THE_DEAD = new ImmutableSet.Builder<Integer>()
 		.addAll(ItemVariationMapping.getVariations(ItemID.STAFF_OF_THE_DEAD))
 		.addAll(ItemVariationMapping.getVariations(ItemID.TOXIC_STAFF_UNCHARGED))
@@ -937,6 +938,10 @@ public class TimersPlugin extends Plugin
 		if (message.equals(LIQUID_ADRENALINE_MESSAGE) && config.showLiquidAdrenaline())
 		{
 			createGameTimer(LIQUID_ADRENALINE);
+		}
+		if (message.equalsIgnoreCase(SCURRIUS_FOOD_PILE_MESSAGE) && config.showScurriusFoodPile())
+		{
+			createGameTimer(SCURRIUS_FOOD_PILE);
 		}
 	}
 
