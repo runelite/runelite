@@ -44,7 +44,7 @@ public abstract class WidgetItemOverlay extends Overlay
 	protected WidgetItemOverlay()
 	{
 		super.setPosition(OverlayPosition.DYNAMIC);
-		super.setPriority(OverlayPriority.LOW);
+		super.setPriority(PRIORITY_LOW);
 		super.setLayer(OverlayLayer.MANUAL);
 	}
 

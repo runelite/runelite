@@ -29,7 +29,6 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.LineComponent;
 
 class NpcAggroAreaNotWorkingOverlay extends OverlayPanel
@@ -45,7 +44,7 @@ class NpcAggroAreaNotWorkingOverlay extends OverlayPanel
 			.left("Unaggressive NPC timers require calibration. Teleport far away or enter a dungeon, then run until this overlay disappears.")
 			.build());
 
-		setPriority(OverlayPriority.LOW);
+		setPriority(PRIORITY_LOW);
 		setPosition(OverlayPosition.TOP_LEFT);
 		setClearChildren(false);
 	}
