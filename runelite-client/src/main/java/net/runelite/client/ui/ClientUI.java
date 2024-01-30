@@ -1306,6 +1306,7 @@ public class ClientUI
 	{
 		private int prevState;
 		private int previousContentWidth;
+		private boolean doingLayout;
 
 		@Override
 		public void addLayoutComponent(String name, Component comp)
@@ -1431,6 +1432,21 @@ public class ClientUI
 				&& !frame.getPreferredSize().equals(oldBounds.getSize()))
 			{
 				frame.containedSetSize(frame.getPreferredSize(), oldBounds);
+				if (!doingLayout)
+				{
+					try
+					{
+						// synchronously layout the frame and it's root pane so we don't get re-layouted
+						// with the root pane's old size before it gets layouted automatically. This can
+						// call us recursively if we calculate size wrong, so don't do that.
+						doingLayout = true;
+						frame.validate();
+					}
+					finally
+					{
+						doingLayout = false;
+					}
+				}
 			}
 
 			log.trace("finishing layout - content={} client={} sidebar={} frame={}", content.getWidth(), client.getWidth(), sidebar.getWidth(), frame.getWidth());
