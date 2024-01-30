@@ -46,6 +46,7 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.KeyboardFocusManager;
 import java.awt.LayoutManager2;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -54,6 +55,8 @@ import java.awt.Taskbar;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.awt.desktop.QuitStrategy;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -62,6 +65,7 @@ import java.time.Duration;
 import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Deque;
+import java.util.List;
 import java.util.TreeSet;
 import java.util.function.Function;
 import javax.annotation.Nonnull;
@@ -109,7 +113,6 @@ import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ClientShutdown;
 import net.runelite.client.events.ConfigChanged;
-import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseAdapter;
 import net.runelite.client.input.MouseListener;
 import net.runelite.client.input.MouseManager;
@@ -138,7 +141,6 @@ public class ClientUI
 	private TrayIcon trayIcon;
 
 	private final RuneLiteConfig config;
-	private final KeyManager keyManager;
 	private final MouseManager mouseManager;
 	private final Applet client;
 	private final ConfigManager configManager;
@@ -173,6 +175,8 @@ public class ClientUI
 	@Named("recommendedMemoryLimit")
 	private int recommendedMemoryLimit = 512;
 
+	private List<KeyListener> keyListeners;
+
 	@RequiredArgsConstructor
 	private static class HistoryEntry
 	{
@@ -183,7 +187,6 @@ public class ClientUI
 	@Inject
 	private ClientUI(
 		RuneLiteConfig config,
-		KeyManager keyManager,
 		MouseManager mouseManager,
 		@Nullable Applet client,
 		ConfigManager configManager,
@@ -194,7 +197,6 @@ public class ClientUI
 	)
 	{
 		this.config = config;
-		this.keyManager = keyManager;
 		this.mouseManager = mouseManager;
 		this.client = client;
 		this.configManager = configManager;
@@ -447,27 +449,24 @@ public class ClientUI
 			frame.setContentPane(content);
 
 			// Add key listener
-			final HotkeyListener sidebarListener = new HotkeyListener(config::sidebarToggleKey)
-			{
-				@Override
-				public void hotkeyPressed()
+			keyListeners = List.of(
+				new HotkeyListener(config::sidebarToggleKey)
 				{
-					toggleSidebar();
-				}
-			};
-			sidebarListener.setEnabledOnLoginScreen(true);
-			keyManager.registerKeyListener(sidebarListener);
-
-			final HotkeyListener pluginPanelListener = new HotkeyListener(config::panelToggleKey)
-			{
-				@Override
-				public void hotkeyPressed()
+					@Override
+					public void hotkeyPressed()
+					{
+						toggleSidebar();
+					}
+				},
+				new HotkeyListener(config::panelToggleKey)
 				{
-					togglePluginPanel();
-				}
-			};
-			pluginPanelListener.setEnabledOnLoginScreen(true);
-			keyManager.registerKeyListener(pluginPanelListener);
+					@Override
+					public void hotkeyPressed()
+					{
+						togglePluginPanel();
+					}
+				});
+			KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(this::dispatchWindowKeyEvent);
 
 			// Add mouse listener
 			final MouseListener mouseListener = new MouseAdapter()
@@ -684,6 +683,37 @@ public class ClientUI
 					ep, "Max memory limit low", JOptionPane.WARNING_MESSAGE);
 			});
 		}
+	}
+
+	private boolean dispatchWindowKeyEvent(KeyEvent ev)
+	{
+		if (!frame.isFocused())
+		{
+			return false;
+		}
+
+		for (var listener : keyListeners)
+		{
+			switch (ev.getID())
+			{
+				case KeyEvent.KEY_TYPED:
+					listener.keyTyped(ev);
+					break;
+				case KeyEvent.KEY_PRESSED:
+					listener.keyPressed(ev);
+					break;
+				case KeyEvent.KEY_RELEASED:
+					listener.keyReleased(ev);
+					break;
+			}
+
+			if (ev.isConsumed())
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	private void logGraphicsEnvironment()
