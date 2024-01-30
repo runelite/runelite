@@ -46,6 +46,7 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.KeyboardFocusManager;
 import java.awt.LayoutManager2;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -54,13 +55,17 @@ import java.awt.Taskbar;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.awt.desktop.QuitStrategy;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.util.ArrayDeque;
+import java.util.Arrays;
 import java.util.Deque;
+import java.util.List;
 import java.util.TreeSet;
 import java.util.function.Function;
 import javax.annotation.Nonnull;
@@ -108,7 +113,6 @@ import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ClientShutdown;
 import net.runelite.client.events.ConfigChanged;
-import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseAdapter;
 import net.runelite.client.input.MouseListener;
 import net.runelite.client.input.MouseManager;
@@ -130,13 +134,13 @@ public class ClientUI
 	private static final String CONFIG_CLIENT_BOUNDS = "clientBounds";
 	private static final String CONFIG_CLIENT_MAXIMIZED = "clientMaximized";
 	private static final String CONFIG_CLIENT_SIDEBAR_CLOSED = "clientSidebarClosed";
-	public static final BufferedImage ICON = ImageUtil.loadImageResource(ClientUI.class, "/runelite.png");
+	public static final BufferedImage ICON_128 = ImageUtil.loadImageResource(ClientUI.class, "runelite_128.png");
+	public static final BufferedImage ICON_16 = ImageUtil.loadImageResource(ClientUI.class, "runelite_16.png");
 
 	@Getter
 	private TrayIcon trayIcon;
 
 	private final RuneLiteConfig config;
-	private final KeyManager keyManager;
 	private final MouseManager mouseManager;
 	private final Applet client;
 	private final ConfigManager configManager;
@@ -171,6 +175,8 @@ public class ClientUI
 	@Named("recommendedMemoryLimit")
 	private int recommendedMemoryLimit = 512;
 
+	private List<KeyListener> keyListeners;
+
 	@RequiredArgsConstructor
 	private static class HistoryEntry
 	{
@@ -181,7 +187,6 @@ public class ClientUI
 	@Inject
 	private ClientUI(
 		RuneLiteConfig config,
-		KeyManager keyManager,
 		MouseManager mouseManager,
 		@Nullable Applet client,
 		ConfigManager configManager,
@@ -192,7 +197,6 @@ public class ClientUI
 	)
 	{
 		this.config = config;
-		this.keyManager = keyManager;
 		this.mouseManager = mouseManager;
 		this.client = client;
 		this.configManager = configManager;
@@ -321,7 +325,7 @@ public class ClientUI
 			OSXUtil.tryEnableFullscreen(frame);
 
 			frame.setTitle(title);
-			frame.setIconImage(ICON);
+			frame.setIconImages(Arrays.asList(ICON_128, ICON_16));
 			frame.setLocationRelativeTo(frame.getOwner());
 			frame.setResizable(true);
 
@@ -407,6 +411,11 @@ public class ClientUI
 					{
 						SwingUtil.activate(newSelectedTab.getPanel());
 					}
+
+					if (newSelectedTab == null)
+					{
+						giveClientFocus();
+					}
 				}
 			});
 			sidebar.addMouseListener(new java.awt.event.MouseAdapter()
@@ -445,27 +454,24 @@ public class ClientUI
 			frame.setContentPane(content);
 
 			// Add key listener
-			final HotkeyListener sidebarListener = new HotkeyListener(config::sidebarToggleKey)
-			{
-				@Override
-				public void hotkeyPressed()
+			keyListeners = List.of(
+				new HotkeyListener(config::sidebarToggleKey)
 				{
-					toggleSidebar();
-				}
-			};
-			sidebarListener.setEnabledOnLoginScreen(true);
-			keyManager.registerKeyListener(sidebarListener);
-
-			final HotkeyListener pluginPanelListener = new HotkeyListener(config::panelToggleKey)
-			{
-				@Override
-				public void hotkeyPressed()
+					@Override
+					public void hotkeyPressed()
+					{
+						toggleSidebar();
+					}
+				},
+				new HotkeyListener(config::panelToggleKey)
 				{
-					togglePluginPanel();
-				}
-			};
-			pluginPanelListener.setEnabledOnLoginScreen(true);
-			keyManager.registerKeyListener(pluginPanelListener);
+					@Override
+					public void hotkeyPressed()
+					{
+						togglePluginPanel();
+					}
+				});
+			KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(this::dispatchWindowKeyEvent);
 
 			// Add mouse listener
 			final MouseListener mouseListener = new MouseAdapter()
@@ -585,7 +591,7 @@ public class ClientUI
 			// Create tray icon (needs to be created after frame is packed)
 			if (config.enableTrayIcon())
 			{
-				trayIcon = createTrayIcon(ICON, title, frame);
+				trayIcon = createTrayIcon(ICON_16, title, frame);
 			}
 
 			// Move frame around (needs to be done after frame is packed)
@@ -682,6 +688,37 @@ public class ClientUI
 					ep, "Max memory limit low", JOptionPane.WARNING_MESSAGE);
 			});
 		}
+	}
+
+	private boolean dispatchWindowKeyEvent(KeyEvent ev)
+	{
+		if (!frame.isFocused())
+		{
+			return false;
+		}
+
+		for (var listener : keyListeners)
+		{
+			switch (ev.getID())
+			{
+				case KeyEvent.KEY_TYPED:
+					listener.keyTyped(ev);
+					break;
+				case KeyEvent.KEY_PRESSED:
+					listener.keyPressed(ev);
+					break;
+				case KeyEvent.KEY_RELEASED:
+					listener.keyReleased(ev);
+					break;
+			}
+
+			if (ev.isConsumed())
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	private void logGraphicsEnvironment()
@@ -1037,6 +1074,11 @@ public class ClientUI
 			}
 		}
 
+		if (!open)
+		{
+			giveClientFocus();
+		}
+
 		if (sidebarNavBtn != null)
 		{
 			sidebarNavBtn.setIcon(new ImageIcon(open ? sidebarCloseIcon : sidebarOpenIcon));
@@ -1112,6 +1154,11 @@ public class ClientUI
 		if (frame == null)
 		{
 			return;
+		}
+
+		if (frame.getGraphicsConfiguration().getDevice().getFullScreenWindow() == null)
+		{
+			frame.setOpacity(config.windowOpacity() / 100.0f);
 		}
 
 		if (config.usernameInTitle() && (client instanceof Client))
@@ -1259,6 +1306,7 @@ public class ClientUI
 	{
 		private int prevState;
 		private int previousContentWidth;
+		private boolean doingLayout;
 
 		@Override
 		public void addLayoutComponent(String name, Component comp)
@@ -1384,6 +1432,21 @@ public class ClientUI
 				&& !frame.getPreferredSize().equals(oldBounds.getSize()))
 			{
 				frame.containedSetSize(frame.getPreferredSize(), oldBounds);
+				if (!doingLayout)
+				{
+					try
+					{
+						// synchronously layout the frame and it's root pane so we don't get re-layouted
+						// with the root pane's old size before it gets layouted automatically. This can
+						// call us recursively if we calculate size wrong, so don't do that.
+						doingLayout = true;
+						frame.validate();
+					}
+					finally
+					{
+						doingLayout = false;
+					}
+				}
 			}
 
 			log.trace("finishing layout - content={} client={} sidebar={} frame={}", content.getWidth(), client.getWidth(), sidebar.getWidth(), frame.getWidth());

@@ -31,6 +31,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 import javax.annotation.Nullable;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -66,19 +67,18 @@ public class SplashScreen extends JFrame implements ActionListener
 
 	private SplashScreen()
 	{
-		BufferedImage logo = ImageUtil.loadImageResource(SplashScreen.class, "runelite_transparent.png");
-
 		setTitle("RuneLite Launcher");
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setUndecorated(true);
-		setIconImage(logo);
+		setIconImages(Arrays.asList(ClientUI.ICON_128, ClientUI.ICON_16));
 		setLayout(null);
 		Container pane = getContentPane();
 		pane.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 		Font font = new Font(Font.DIALOG, Font.PLAIN, 12);
 
+		BufferedImage logo = ImageUtil.loadImageResource(SplashScreen.class, "runelite_splash.png");
 		JLabel logoLabel = new JLabel(new ImageIcon(logo));
 		pane.add(logoLabel);
 		logoLabel.setBounds(0, 0, WIDTH, WIDTH);
