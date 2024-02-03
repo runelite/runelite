@@ -1404,7 +1404,7 @@ public class ClientUI
 				: 0;
 
 			boolean keepGameSize = (frame.getExtendedState() & Frame.MAXIMIZED_HORIZ) == 0
-				&& (config.automaticResizeType() == ExpandResizeType.KEEP_GAME_SIZE || forceSizingClient);
+				&& ((config.automaticResizeType() == ExpandResizeType.KEEP_GAME_SIZE && !WinUtil.isWindowArranged(frame)) || forceSizingClient);
 
 			if (keepGameSize)
 			{
