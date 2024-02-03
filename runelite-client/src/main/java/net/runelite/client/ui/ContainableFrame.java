@@ -35,6 +35,7 @@ import javax.swing.JFrame;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.util.OSType;
+import net.runelite.client.util.WinUtil;
 
 @Slf4j
 public class ContainableFrame extends JFrame
@@ -58,13 +59,15 @@ public class ContainableFrame extends JFrame
 	@SuppressWarnings("deprecation")
 	private void applyChange(int wX, int wY, int wWidth, int wHeight, int wOldx, int wOldY, int wOldWidth, boolean contain)
 	{
-		if (contain && !isFullScreen())
+		boolean isSnapped = WinUtil.isWindowArranged(this);
+
+		if ((contain || isSnapped) && !isFullScreen())
 		{
 			Rectangle cDpyBounds = this.getGraphicsConfiguration().getBounds();
 			Insets insets = this.getInsets();
 			Rectangle cRect = new Rectangle(wX + insets.left, wY + insets.top, wWidth - (insets.left + insets.right), wHeight - (insets.top + insets.bottom));
 
-			if (rightSideSuction)
+			if (rightSideSuction || isSnapped)
 			{
 				// only keep suction while where are near the screen edge
 				rightSideSuction = wOldx + wOldWidth - insets.right + SCREEN_EDGE_CLOSE_DISTANCE >= cDpyBounds.getMaxX();
