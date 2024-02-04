@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Psikoi <https://github.com/psikoi>
+ * Copyright (c) 2023 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,54 +22,55 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui.components;
+package net.runelite.client.ui.laf;
 
-import java.awt.Color;
-import java.awt.Component;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.ListCellRenderer;
-import javax.swing.border.EmptyBorder;
-import net.runelite.client.ui.ColorScheme;
-import net.runelite.client.util.Text;
+import com.formdev.flatlaf.ui.FlatRadioButtonUI;
+import com.formdev.flatlaf.ui.FlatStylingSupport;
+import com.formdev.flatlaf.ui.FlatUIUtils;
+import java.awt.AlphaComposite;
+import java.awt.Composite;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import javax.swing.JComponent;
+import javax.swing.plaf.ComponentUI;
 
-/**
- * A custom list renderer to avoid substance's weird coloring.
- * Substance was making selected items' foreground color black, this
- * was very hard to see in the dark gray background, this makes the selected
- * item white and adds some padding to the elements for more readable list.
- */
-public final class ComboBoxListRenderer<T> extends JLabel implements ListCellRenderer<T>
+public class RuneLiteRadioButtonUI extends FlatRadioButtonUI
 {
+	@FlatStylingSupport.Styleable
+	protected float rolloverIconAlpha = 1.0f;
+
+	public static ComponentUI createUI(JComponent c)
+	{
+		return FlatUIUtils.canUseSharedUI(c)
+			? FlatUIUtils.createSharedUI(RuneLiteRadioButtonUI.class, () -> new RuneLiteRadioButtonUI(true))
+			: new RuneLiteRadioButtonUI(false);
+	}
+
+	protected RuneLiteRadioButtonUI(boolean shared)
+	{
+		super(shared);
+	}
 
 	@Override
-	public Component getListCellRendererComponent(JList<? extends T> list, T o, int index, boolean isSelected, boolean cellHasFocus)
+	protected void paintIcon(Graphics g, JComponent c, Rectangle iconRect)
 	{
-		if (isSelected)
+		if (rolloverIconAlpha != 1.0f && RuneLiteButtonUI.useRolloverEffect(c))
 		{
-			setBackground(ColorScheme.DARK_GRAY_COLOR);
-			setForeground(Color.WHITE);
-		}
-		else
-		{
-			setBackground(list.getBackground());
-			setForeground(ColorScheme.LIGHT_GRAY_COLOR);
-		}
-
-		setBorder(new EmptyBorder(5, 5, 5, 0));
-
-		String text;
-		if (o instanceof Enum<?>)
-		{
-			text = Text.titleCase((Enum<?>) o);
-		}
-		else
-		{
-			text = o.toString();
+			Graphics2D g2d = (Graphics2D) g;
+			Composite composite = g2d.getComposite();
+			try
+			{
+				g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, rolloverIconAlpha));
+				super.paintIcon(g, c, iconRect);
+			}
+			finally
+			{
+				g2d.setComposite(composite);
+			}
+			return;
 		}
 
-		setText(text);
-
-		return this;
+		super.paintIcon(g, c, iconRect);
 	}
 }

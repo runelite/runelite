@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
- * Copyright (c) 2018, Psikoi <https://github.com/psikoi>
+ * Copyright (c) 2017, Psikoi <https://github.com/psikoi>
+ * Copyright (c) 2023, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,14 +23,27 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui.skin;
+package net.runelite.client.ui.components;
 
-import org.pushingpixels.substance.api.SubstanceLookAndFeel;
+import java.awt.Component;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JList;
+import net.runelite.client.util.Text;
 
-public class SubstanceRuneLiteLookAndFeel extends SubstanceLookAndFeel
+public final class TitleCaseListCellRenderer extends DefaultListCellRenderer
 {
-	public SubstanceRuneLiteLookAndFeel()
+	@Override
+	public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus)
 	{
-		super(new ObsidianSkin());
+		String text;
+		if (value instanceof Enum<?>)
+		{
+			text = Text.titleCase((Enum<?>) value);
+		}
+		else
+		{
+			text = value.toString();
+		}
+		return super.getListCellRendererComponent(list, text, index, isSelected, cellHasFocus);
 	}
 }

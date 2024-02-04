@@ -109,6 +109,7 @@ public enum HiscoreSkill
 	PHANTOM_MUSPAH("Phantom Muspah", BOSS),
 	SARACHNIS("Sarachnis", BOSS),
 	SCORPIA("Scorpia", BOSS),
+	SCURRIUS("Scurrius", BOSS),
 	SKOTIZO("Skotizo", BOSS),
 	SPINDEL("Spindel", BOSS),
 	TEMPOROSS("Tempoross", BOSS),

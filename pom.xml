@@ -28,7 +28,7 @@
 
 	<groupId>net.runelite</groupId>
 	<artifactId>runelite-parent</artifactId>
-	<version>1.10.19-SNAPSHOT</version>
+	<version>1.10.22-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>RuneLite</name>
@@ -41,12 +41,13 @@
 		<lombok.version>1.18.30</lombok.version>
 		<logback.version>1.2.9</logback.version>
 		<slf4j.version>1.7.25</slf4j.version>
+		<flatlaf.version>3.2.5-rl4</flatlaf.version>
 
 		<maven.javadoc.skip>true</maven.javadoc.skip>
 		<checkstyle.skip>true</checkstyle.skip>
 		<glslang.path></glslang.path>
 
-		<rs.version>218</rs.version>
+		<rs.version>219</rs.version>
 	</properties>
 
 	<licenses>

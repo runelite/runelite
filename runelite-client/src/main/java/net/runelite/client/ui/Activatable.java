@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 William <https://github.com/monsterxsync>
+ * Copyright (c) 2020 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,49 +22,15 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.achievementdiary;
+package net.runelite.client.ui;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import net.runelite.api.Client;
-import net.runelite.api.Varbits;
-import net.runelite.api.annotations.Varbit;
-
-@RequiredArgsConstructor
-@Getter
-public class FavourRequirement implements Requirement
+public interface Activatable
 {
-	/**
-	 * An enumeration of Kourend house favour the player can earn.
-	 */
-	@RequiredArgsConstructor
-	public enum Favour
+	default void onActivate()
 	{
-		ARCEUUS("Arceuus", Varbits.KOUREND_FAVOR_ARCEUUS),
-		HOSIDIUS("Hosidius", Varbits.KOUREND_FAVOR_HOSIDIUS),
-		LOVAKENGJ("Lovakengj", Varbits.KOUREND_FAVOR_LOVAKENGJ),
-		PISCARILIUS("Piscarilius", Varbits.KOUREND_FAVOR_PISCARILIUS),
-		SHAYZIEN("Shayzien", Varbits.KOUREND_FAVOR_SHAYZIEN);
-
-		@Getter
-		private final String name;
-		@Getter(onMethod_ = {@Varbit})
-		private final int varbit;
 	}
 
-	private final Favour house;
-	private final int percent;
-
-	@Override
-	public String toString()
+	default void onDeactivate()
 	{
-		return percent + "% " + house.getName() + " favour";
-	}
-
-	@Override
-	public boolean satisfiesRequirement(Client client)
-	{
-		int realFavour = client.getVarbitValue(house.getVarbit());
-		return (realFavour / 10) >= percent;
 	}
 }

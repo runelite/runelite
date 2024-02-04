@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
+ * Copyright (c) 2022 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,13 +22,20 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.events;
+package net.runelite.client.ui.laf;
 
-import lombok.Value;
-import net.runelite.client.ui.NavigationButton;
+import com.formdev.flatlaf.ui.FlatScrollBarUI;
+import javax.swing.JComponent;
+import javax.swing.JScrollBar;
+import javax.swing.plaf.ComponentUI;
 
-@Value
-public class NavigationButtonRemoved
+public class RuneLiteScrollBarUI extends FlatScrollBarUI
 {
-	private NavigationButton button;
+	public static ComponentUI createUI(JComponent c)
+	{
+		JScrollBar bar = (JScrollBar) c;
+		// by default 1 click = 1 px, which is unusably slow
+		bar.setUnitIncrement(16);
+		return new RuneLiteScrollBarUI();
+	}
 }

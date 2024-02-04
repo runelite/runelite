@@ -140,10 +140,8 @@ public class GrandExchangePlugin extends Plugin
 	private static final int MAX_TRADE_HISTORY = 1024;
 	private static final int MAX_TRADE_DAYS = 365;
 
-	@Getter(AccessLevel.PACKAGE)
 	private NavigationButton button;
 
-	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
 	private GrandExchangePanel panel;
 
@@ -361,6 +359,16 @@ public class GrandExchangePlugin extends Plugin
 		machineUuid = null;
 		lastAccount = -1L;
 		tradeSeq = 0;
+	}
+
+	void search(final String itemName)
+	{
+		SwingUtilities.invokeLater(() ->
+		{
+			panel.showSearch();
+			clientToolbar.openPanel(button);
+			panel.getSearchPanel().priceLookup(itemName);
+		});
 	}
 
 	@Subscribe

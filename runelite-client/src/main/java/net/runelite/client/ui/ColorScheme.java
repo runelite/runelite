@@ -42,6 +42,10 @@ public class ColorScheme
 	public static final Color MEDIUM_GRAY_COLOR = new Color(77, 77, 77);
 	public static final Color LIGHT_GRAY_COLOR = new Color(165, 165, 165);
 
+	public static final Color TEXT_COLOR = new Color(198, 198, 198);
+	public static final Color CONTROL_COLOR = new Color(30, 30, 30);
+	public static final Color BORDER_COLOR = new Color(23, 23, 23);
+
 	public static final Color DARKER_GRAY_HOVER_COLOR = new Color(60, 60, 60);
 	public static final Color DARK_GRAY_HOVER_COLOR = new Color(35, 35, 35);
 

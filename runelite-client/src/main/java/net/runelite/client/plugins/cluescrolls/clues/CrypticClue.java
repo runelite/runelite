@@ -437,6 +437,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.location(new WorldPoint(3116, 9562, 0))
 			.npc("Wizard")
 			.npcRegion(12337)
+			.npcRegion(12437)
 			.objectId(ObjectID.DRAWERS_350)
 			.solution("Search the drawers in the basement of the Wizard's Tower south of Draynor Village. Kill one of the Wizards for the key. Fairy ring DIS.")
 			.build(),
@@ -486,7 +487,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("Speak to Donovan, the Family Handyman.")
 			.location(new WorldPoint(2737, 3580, 0))
 			.npc("Donovan the Family Handyman")
-			.solution("Donovan the Family Handyman is found on the first floor of Sinclair Mansion, north of Seers' Village. Fairy ring CJR.")
+			.solution("Donovan the Family Handyman is found on the top floor of Sinclair Mansion, north of Seers' Village. Fairy ring CJR.")
 			.build(),
 		CrypticClue.builder()
 			.text("Search the crates in the Barbarian Village helmet shop.")
@@ -1169,7 +1170,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.solution("Kill a Bloodveld.")
 			.build(),
 		CrypticClue.builder()
-			.text("She's small but can build both literally and figuratively, as long as you have their favour.")
+			.text("She's small but can build both literally and figuratively.")
 			.location(new WorldPoint(1486, 3834, 0))
 			.npc("Lovada")
 			.solution("Speak to Lovada by the entrance to the blast mine in Lovakengj.")
@@ -1723,12 +1724,12 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 	{
 		this.text = text;
 		this.npc = npc;
-		this.objectId = objectId;
+		this.objectId = objectId > 0 ? objectId : -1;
 		this.locationProvider = locationProvider != null ? locationProvider : (location != null ? (plugin) -> location : null);
 		this.solution = solution;
 		this.questionText = questionText;
 		this.npcRegions = npcRegions;
-		setRequiresSpade(this.locationProvider != null && npc == null && objectId == -1);
+		setRequiresSpade(this.locationProvider != null && npc == null && this.objectId == -1);
 		setRequiresLight(requiresLight);
 	}
 

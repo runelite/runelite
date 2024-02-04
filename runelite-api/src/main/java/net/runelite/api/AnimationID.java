@@ -261,6 +261,8 @@ public final class AnimationID
 	public static final int CHURN_MILK_SHORT = 2793;
 	public static final int CHURN_MILK_MEDIUM = 2794;
 	public static final int CHURN_MILK_LONG = 2795;
+	public static final int CLEANING_SPECIMENS_1 = 6217;
+	public static final int CLEANING_SPECIMENS_2 = 6459;
 
 	// Ectofuntus animations
 	public static final int ECTOFUNTUS_FILL_SLIME_BUCKET = 4471;
