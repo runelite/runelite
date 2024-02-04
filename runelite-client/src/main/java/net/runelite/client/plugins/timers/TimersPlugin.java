@@ -99,7 +99,6 @@ public class TimersPlugin extends Plugin
 	private static final String CANNON_DESTROYED_MESSAGE = "Your cannon has been destroyed!";
 	private static final String CANNON_BROKEN_MESSAGE = "<col=ef1020>Your cannon has broken!";
 	private static final String FROZEN_MESSAGE = "<col=ef1020>You have been frozen!</col>";
-	private static final String GOD_WARS_ALTAR_MESSAGE = "you recharge your prayer.";
 	private static final String STAFF_OF_THE_DEAD_SPEC_EXPIRED_MESSAGE = "Your protection fades away";
 	private static final String STAFF_OF_THE_DEAD_SPEC_MESSAGE = "Spirits of deceased evildoers offer you their protection";
 	private static final String PRAYER_ENHANCE_EXPIRED = "<col=ff0000>Your prayer enhance effect has worn off.</col>";
@@ -559,6 +558,11 @@ public class TimersPlugin extends Plugin
 		{
 			updateVarTimer(FARMERS_AFFINITY, event.getValue(), i -> i * 20);
 		}
+
+		if (event.getVarbitId() == Varbits.GOD_WARS_ALTAR_COOLDOWN && config.showGodWarsAltar())
+		{
+			updateVarTimer(GOD_WARS_ALTAR, event.getValue(), i -> i * 100);
+		}
 	}
 
 	@Subscribe
@@ -715,6 +719,11 @@ public class TimersPlugin extends Plugin
 			removeVarTimer(FARMERS_AFFINITY);
 		}
 
+		if (!config.showGodWarsAltar())
+		{
+			removeVarTimer(GOD_WARS_ALTAR);
+		}
+
 		if (!config.showLiquidAdrenaline())
 		{
 			removeGameTimer(LIQUID_ADRENALINE);
@@ -765,11 +774,6 @@ public class TimersPlugin extends Plugin
 		if (message.equals(ABYSSAL_SIRE_STUN_MESSAGE) && config.showAbyssalSireStun())
 		{
 			createGameTimer(ABYSSAL_SIRE_STUN);
-		}
-
-		if (config.showGodWarsAltar() && message.equalsIgnoreCase(GOD_WARS_ALTAR_MESSAGE))//Normal altars are "You recharge your Prayer points." while gwd is "You recharge your Prayer."
-		{
-			createGameTimer(GOD_WARS_ALTAR);
 		}
 
 		if (config.showCannon())

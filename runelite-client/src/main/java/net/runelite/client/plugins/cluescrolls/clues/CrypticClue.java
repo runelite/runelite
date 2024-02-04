@@ -437,6 +437,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.location(new WorldPoint(3116, 9562, 0))
 			.npc("Wizard")
 			.npcRegion(12337)
+			.npcRegion(12437)
 			.objectId(ObjectID.DRAWERS_350)
 			.solution("Search the drawers in the basement of the Wizard's Tower south of Draynor Village. Kill one of the Wizards for the key. Fairy ring DIS.")
 			.build(),

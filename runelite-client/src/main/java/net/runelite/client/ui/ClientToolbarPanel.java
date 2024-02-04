@@ -67,7 +67,7 @@ class ClientToolbarPanel extends JPanel
 		SwingUtil.removeButtonDecorations(jb);
 		jb.setToolTipText(nb.getTooltip());
 		jb.setFocusable(false);
-		jb.setPreferredSize(new Dimension(24, 24));
+		jb.setPreferredSize(new Dimension(23, 23));
 		jb.setAlignmentX(.5f);
 		jb.setAlignmentY(.5f);
 

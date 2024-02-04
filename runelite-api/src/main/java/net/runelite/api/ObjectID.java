@@ -8034,6 +8034,10 @@ public final class ObjectID
 	public static final int STATUE_14195 = 14195;
 	public static final int CHEST_14196 = 14196;
 	public static final int CHEST_14197 = 14197;
+	public static final int BROKEN_BARS = 14203;
+	public static final int SEWAGE_WATER = 14204;
+	public static final int FOOD_PILE = 14205;
+	public static final int FOOD_PILE_14206 = 14206;
 	public static final int HERBS_14209 = 14209;
 	public static final int WALL_14212 = 14212;
 	public static final int WALL_14213 = 14213;
@@ -24565,6 +24569,11 @@ public final class ObjectID
 	public static final int PORTAL_49997 = 49997;
 	public static final int PORTAL_49998 = 49998;
 	public static final int STEPS_50000 = 50000;
+	public static final int CORPSE_50003 = 50003;
+	public static final int CORPSE_50004 = 50004;
+	public static final int ROOTS_50007 = 50007;
+	public static final int ROOTS_50008 = 50008;
+	public static final int ROOTS_50009 = 50009;
 	public static final int TREE_50034 = 50034;
 	public static final int TREE_STUMP_50035 = 50035;
 	public static final int SNOW_SHARK = 50036;
