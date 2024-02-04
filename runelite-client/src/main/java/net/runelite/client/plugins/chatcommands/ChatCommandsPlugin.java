@@ -2588,6 +2588,7 @@ public class ChatCommandsPlugin extends Plugin
 			Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_2_HEALTH), 1) +
 			Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_3_HEALTH), 1) +
 			Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_4_HEALTH), 1) +
+			Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_5_HEALTH), 1) +
 			Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_6_HEALTH), 1) +
 			Math.min(client.getVarbitValue(Varbits.TOA_MEMBER_7_HEALTH), 1);
 	}
