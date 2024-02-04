@@ -28,6 +28,7 @@ import com.google.common.collect.ImmutableList;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.List;
+import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import lombok.Getter;
 import net.runelite.api.Item;
@@ -35,12 +36,12 @@ import net.runelite.api.NPC;
 import net.runelite.api.coords.WorldPoint;
 import static net.runelite.api.ItemID.*;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
+
+import net.runelite.client.game.ItemVariationMapping;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMAGE_Z_OFFSET;
-import net.runelite.client.plugins.cluescrolls.clues.item.AnyRequirementCollection;
-import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
-import net.runelite.client.plugins.cluescrolls.clues.item.RangeItemRequirement;
-import net.runelite.client.plugins.cluescrolls.clues.item.SingleItemRequirement;
+
+import net.runelite.client.plugins.cluescrolls.clues.item.*;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.LineComponent;
@@ -50,6 +51,17 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 @Getter
 public class FaloTheBardClue extends ClueScroll implements NpcClueScroll
 {
+	static final AnyRequirementCollection DRAGON_DEFENDER_OR_AVERNIC_DEFENDER = any("Dragon or Avernic Defender",
+		Stream.of(
+			ItemVariationMapping.getVariations(DRAGON_DEFENDER).stream(),
+			ItemVariationMapping.getVariations(AVERNIC_DEFENDER).stream(),
+			ItemVariationMapping.getVariations(GHOMMALS_AVERNIC_DEFENDER_5).stream())
+			.reduce(Stream::concat)
+			.orElseGet(Stream::empty)
+			.filter(itemId -> itemId != DRAGON_DEFENDER_BROKEN && itemId != AVERNIC_DEFENDER_BROKEN)
+			.map(ItemRequirements::item)
+			.toArray(SingleItemRequirement[]::new));
+
 	static final List<FaloTheBardClue> CLUES = ImmutableList.of(
 		new FaloTheBardClue("A blood red weapon, a strong curved sword, found on the island of primate lords.", any("Dragon scimitar", item(DRAGON_SCIMITAR), item(DRAGON_SCIMITAR_OR))),
 		new FaloTheBardClue("A book that preaches of some great figure, lending strength, might and vigour.", any("Any god book (must be complete)", item(HOLY_BOOK), item(BOOK_OF_BALANCE), item(UNHOLY_BOOK), item(BOOK_OF_LAW), item(BOOK_OF_WAR), item(BOOK_OF_DARKNESS), item(HOLY_BOOK_OR), item(BOOK_OF_BALANCE_OR), item(UNHOLY_BOOK_OR), item(BOOK_OF_LAW_OR), item(BOOK_OF_WAR_OR), item(BOOK_OF_DARKNESS_OR))),
@@ -58,7 +70,7 @@ public class FaloTheBardClue extends ClueScroll implements NpcClueScroll
 		new FaloTheBardClue("A mark used to increase one's grace, found atop a seer's place.", item(MARK_OF_GRACE)),
 		new FaloTheBardClue("A molten beast with fiery breath, you acquire these with its death.", item(LAVA_DRAGON_BONES)),
 		new FaloTheBardClue("A shiny helmet of flight, to obtain this with melee, struggle you might.", item(ARMADYL_HELMET)),
-		new FaloTheBardClue("A sword held in the other hand, red its colour, Cyclops strength you must withstand.", any("Dragon or Avernic Defender", item(DRAGON_DEFENDER), item(DRAGON_DEFENDER_T), item(DRAGON_DEFENDER_L), item(AVERNIC_DEFENDER), item(AVERNIC_DEFENDER_L), item(GHOMMALS_AVERNIC_DEFENDER_5), item(GHOMMALS_AVERNIC_DEFENDER_5_L), item(GHOMMALS_AVERNIC_DEFENDER_6), item(GHOMMALS_AVERNIC_DEFENDER_6_L))),
+		new FaloTheBardClue("A sword held in the other hand, red its colour, Cyclops strength you must withstand.", DRAGON_DEFENDER_OR_AVERNIC_DEFENDER),
 		new FaloTheBardClue("A token used to kill mythical beasts, in hopes of a blade or just for an xp feast.", item(WARRIOR_GUILD_TOKEN)),
 		new FaloTheBardClue("Green is my favourite, mature ale I do love, this takes your herblore above.", item(GREENMANS_ALEM)),
 		new FaloTheBardClue("It can hold down a boat or crush a goat, this object, you see, is quite heavy.", any("Barrelchest anchor", item(BARRELCHEST_ANCHOR), item(BARRELCHEST_ANCHOR_BH))),
