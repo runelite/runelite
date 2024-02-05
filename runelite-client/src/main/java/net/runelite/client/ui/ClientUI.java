@@ -55,6 +55,8 @@ import java.awt.Taskbar;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.awt.desktop.QuitStrategy;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -89,6 +91,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JRootPane;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import javax.swing.ToolTipManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
@@ -168,6 +171,9 @@ public class ClientUI
 	private Dimension lastClientSize;
 	private Cursor defaultCursor;
 
+	private String lastNormalBounds;
+	private final Timer normalBoundsTimer;
+
 	@Inject(optional = true)
 	@Named("minMemoryLimit")
 	private int minMemoryLimit = 400;
@@ -205,6 +211,9 @@ public class ClientUI
 		this.eventBus = eventBus;
 		this.safeMode = safeMode;
 		this.title = title + (safeMode ? " (safe mode)" : "");
+
+		normalBoundsTimer = new Timer(250, _ev -> setLastNormalBounds());
+		normalBoundsTimer.setRepeats(false);
 	}
 
 	@Subscribe
@@ -365,6 +374,20 @@ public class ClientUI
 					{
 						shutdownClient();
 					}
+				}
+			});
+			frame.addComponentListener(new ComponentAdapter()
+			{
+				@Override
+				public void componentResized(ComponentEvent e)
+				{
+					windowBoundsChanged();
+				}
+
+				@Override
+				public void componentMoved(ComponentEvent e)
+				{
+					windowBoundsChanged();
 				}
 			});
 
@@ -1219,28 +1242,49 @@ public class ClientUI
 		}
 	}
 
+	private void windowBoundsChanged()
+	{
+		// Sometimes when maximizing windowMoved can be delivered before extendedState is updated, so defer
+		// actually saving for some ms to reduce the likelyhood of this
+		normalBoundsTimer.stop();
+		if ((frame.getExtendedState() & JFrame.MAXIMIZED_BOTH) == 0)
+		{
+			normalBoundsTimer.start();
+		}
+	}
+
+	private void setLastNormalBounds()
+	{
+		if ((frame.getExtendedState() & JFrame.MAXIMIZED_BOTH) == 0)
+		{
+			Insets insets = frame.getInsets();
+			char mode;
+			Dimension size;
+			if (config.automaticResizeType() == ExpandResizeType.KEEP_GAME_SIZE)
+			{
+				mode = 'g';
+				size = clientPanel.getSize();
+			}
+			else
+			{
+				mode = 'c';
+				size = frame.getSize();
+				size.width -= insets.left + insets.right;
+				size.height -= insets.top + insets.bottom;
+			}
+			Point point = frame.getLocation();
+			point.x += insets.left;
+			point.y += insets.top;
+			lastNormalBounds = point.x + ":" + point.y + ":" + size.width + ":" + size.height + ":" + mode;
+		}
+	}
+
 	private void saveClientBoundsConfig()
 	{
-		Insets insets = frame.getInsets();
-		char mode;
-		Dimension size;
-		if (config.automaticResizeType() == ExpandResizeType.KEEP_GAME_SIZE)
+		if (lastNormalBounds != null)
 		{
-			mode = 'g';
-			size = clientPanel.getSize();
+			configManager.setConfiguration(CONFIG_GROUP, CONFIG_CLIENT_BOUNDS, lastNormalBounds);
 		}
-		else
-		{
-			mode = 'c';
-			size = frame.getSize();
-			size.width -= insets.left + insets.right;
-			size.height -= insets.top + insets.bottom;
-		}
-		Point point = frame.getLocation();
-		point.x += insets.left;
-		point.y += insets.top;
-		String serialized = point.x + ":" + point.y + ":" + size.width + ":" + size.height + ":" + mode;
-		configManager.setConfiguration(CONFIG_GROUP, CONFIG_CLIENT_BOUNDS, serialized);
 
 		if ((frame.getExtendedState() & JFrame.MAXIMIZED_BOTH) != 0)
 		{
