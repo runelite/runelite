@@ -25,41 +25,36 @@
  */
 package net.runelite.client.plugins.grounditems;
 
+import com.google.common.base.Strings;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.LoadingCache;
 import com.google.common.collect.EvictingQueue;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Table;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.google.inject.Provides;
+
+import java.applet.Applet;
 import java.awt.Color;
 import java.awt.Rectangle;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
+import javax.swing.*;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.Value;
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
-import net.runelite.api.ItemComposition;
-import net.runelite.api.ItemID;
-import net.runelite.api.MenuAction;
-import net.runelite.api.MenuEntry;
-import net.runelite.api.Tile;
-import net.runelite.api.TileItem;
+import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.FocusChanged;
@@ -89,6 +84,9 @@ import net.runelite.client.plugins.grounditems.config.MenuHighlightMode;
 import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.BOTH;
 import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.NAME;
 import static net.runelite.client.plugins.grounditems.config.MenuHighlightMode.OPTION;
+
+import net.runelite.client.ui.components.colorpicker.ColorPickerManager;
+import net.runelite.client.ui.components.colorpicker.RuneliteColorPicker;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.QuantityFormatter;
@@ -110,6 +108,9 @@ public class GroundItemsPlugin extends Plugin
 
 	// ItemID for coins
 	private static final int COINS = ItemID.COINS_995;
+	private static final String TAKE = "Take";
+	private static final String CONFIG_GROUP = "groundItemGroups";
+	private static final String KEY = "coloredGroundItems";
 
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
@@ -130,7 +131,9 @@ public class GroundItemsPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
 	private boolean hideAll;
-
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
+	private List<Color> topColors;
 	private List<String> hiddenItemList = new CopyOnWriteArrayList<>();
 	private List<String> highlightedItemsList = new CopyOnWriteArrayList<>();
 
@@ -169,6 +172,12 @@ public class GroundItemsPlugin extends Plugin
 
 	@Inject
 	private ScheduledExecutorService executor;
+	@Inject
+	private Gson gson;
+	@Inject
+	private ConfigManager configManager;
+	@Inject
+	private ColorPickerManager colorPickerManager;
 
 	@Getter
 	private final Table<WorldPoint, Integer, GroundItem> collectedGroundItems = HashBasedTable.create();
@@ -178,6 +187,7 @@ public class GroundItemsPlugin extends Plugin
 	private final Queue<Integer> droppedItemQueue = EvictingQueue.create(16); // recently dropped items
 	private int lastUsedItem;
 	private final Map<WorldPoint, Lootbeam> lootbeams = new HashMap<>();
+	private final List<GroundItemHighlight> groundItemHighlights = new ArrayList<>();
 
 	@Provides
 	GroundItemsConfig provideConfig(ConfigManager configManager)
@@ -188,6 +198,7 @@ public class GroundItemsPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
+		loadGroundItemHighlights();
 		overlayManager.add(overlay);
 		mouseManager.registerMouseListener(mouseAdapter);
 		keyManager.registerKeyListener(hotkeyListener);
@@ -526,6 +537,40 @@ public class GroundItemsPlugin extends Plugin
 				lastEntry.setTarget(lastEntry.getTarget() + " (" + quantity + ")");
 			}
 
+			final boolean hotKeyPressed = client.isKeyPressed(KeyCode.KC_SHIFT);
+			if (hotKeyPressed && canBeRecolored && event.getOption().contains(TAKE))
+			{
+				MenuEntry menuHighlight = client.createMenuEntry(-1)
+						.setOption("Set highlight color")
+						.setTarget(event.getTarget())
+						.setType(MenuAction.RUNELITE_SUBMENU);
+				topColors.stream().filter(c -> !c.equals(color)).forEach(topColor -> client.createMenuEntry(-1)
+						.setOption(ColorUtil.prependColorTag("Set color", topColor))
+						.setType(MenuAction.RUNELITE)
+						.setParent(menuHighlight)
+						.onClick(e -> highlightGroundItem(groundItem.getName(), topColor)));
+				client.createMenuEntry(-1 - getTopColors().size())
+						.setOption("Pick")
+						.setType(MenuAction.RUNELITE)
+						.setParent(menuHighlight)
+						.onClick(e ->
+								SwingUtilities.invokeLater(() ->
+								{
+									RuneliteColorPicker colorPicker = colorPickerManager.create(SwingUtilities.windowForComponent((Applet) client),
+											color != null ? color : Color.decode("#FFFFFF"), "Highlighted item color", true);
+									colorPicker.setOnClose(c -> highlightGroundItem(groundItem.getName(), c));
+									colorPicker.setVisible(true);
+								}));
+				if (color != null && !color.equals(config.highlightedColor()))
+				{
+					client.createMenuEntry(-2 - getTopColors().size())
+							.setOption("Reset")
+							.setType(MenuAction.RUNELITE)
+							.setParent(menuHighlight)
+							.onClick(e -> clearGroundItemHighlight(groundItem));
+				}
+			}
+
 			if (hidden != null && highlighted == null && config.deprioritizeHiddenItems())
 			{
 				lastEntry.setDeprioritized(true);
@@ -562,7 +607,8 @@ public class GroundItemsPlugin extends Plugin
 	{
 		if (TRUE.equals(highlightedItems.getUnchecked(item)))
 		{
-			return config.highlightedColor();
+			var newItem = groundItemHighlights.stream().filter(groundItemHighlight -> Objects.equals(groundItemHighlight.getName(), item.getName())).findFirst();
+			return newItem.map(GroundItemHighlight::getColor).orElse(config.highlightedColor());
 		}
 
 		// Explicit hide takes priority over implicit highlight
@@ -720,7 +766,8 @@ public class GroundItemsPlugin extends Plugin
 			if (config.showLootbeamForHighlighted()
 				&& TRUE.equals(highlightedItems.getUnchecked(item)))
 			{
-				addLootbeam(worldPoint, config.highlightedColor());
+				//No price is needed for this execution of getHighlighted since we are only focused on highlighted items
+				addLootbeam(worldPoint, getHighlighted(item, 0, 0));
 				return;
 			}
 
@@ -790,4 +837,62 @@ public class GroundItemsPlugin extends Plugin
 			lootbeam.remove();
 		}
 	}
+	private List<Color> calculateTopColors()
+	{
+		var colorsByUse = groundItemHighlights.stream().map(GroundItemHighlight::getColor).collect(Collectors.groupingBy(e -> e, Collectors.counting()));
+		return colorsByUse.entrySet().stream().sorted(Map.Entry.comparingByValue()).limit(5).map(Map.Entry::getKey).collect(Collectors.toList());
+	}
+
+	private void loadGroundItemHighlights()
+	{
+		groundItemHighlights.clear();
+		Collection<GroundItemHighlight> loadedGroundItemHighlights = getExistingGroundItemHighlights();
+		groundItemHighlights.addAll(loadedGroundItemHighlights);
+		setTopColors(calculateTopColors());
+	}
+
+	private Collection<GroundItemHighlight> getExistingGroundItemHighlights()
+	{
+		String json = configManager.getConfiguration(CONFIG_GROUP, KEY);
+		if (Strings.isNullOrEmpty(json))
+		{
+			return Collections.emptyList();
+		}
+		// CHECKSTYLE:OFF
+		return gson.fromJson(json, new TypeToken<List<GroundItemHighlight>>() {}.getType());
+		// CHECKSTYLE:ON
+	}
+
+	private void saveGroundItemHighlights(Collection<GroundItemHighlight> groundItemHighlights)
+	{
+		if (groundItemHighlights == null || groundItemHighlights.isEmpty())
+		{
+			configManager.unsetConfiguration(CONFIG_GROUP, KEY);
+			return;
+		}
+
+		String json = gson.toJson(groundItemHighlights);
+		configManager.setConfiguration(CONFIG_GROUP, KEY, json);
+	}
+
+	private void highlightGroundItem(String name, Color color)
+	{
+		GroundItemHighlight groundItemHighlight = new GroundItemHighlight(name, color);
+		Collection<GroundItemHighlight> groundItemHighlights = new ArrayList<>(getExistingGroundItemHighlights());
+		var itemInList = groundItemHighlights.stream().filter(item -> Objects.equals(item.getName(), groundItemHighlight.getName())).findFirst();
+		itemInList.ifPresent(groundItemHighlights::remove);
+		groundItemHighlights.add(groundItemHighlight);
+		saveGroundItemHighlights(groundItemHighlights);
+		loadGroundItemHighlights();
+	}
+
+	private void clearGroundItemHighlight(GroundItem groundItem)
+	{
+		Collection<GroundItemHighlight> groundItemHighlights = new ArrayList<>(getExistingGroundItemHighlights());
+		var itemInList = groundItemHighlights.stream().filter(item -> Objects.equals(item.getName(), groundItem.getName())).findFirst();
+		itemInList.ifPresent(groundItemHighlights::remove);
+		saveGroundItemHighlights(groundItemHighlights);
+		loadGroundItemHighlights();
+	}
+
 }
