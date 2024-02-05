@@ -163,6 +163,7 @@ public class ClientUI
 
 	private ContainableFrame frame;
 	private JPanel content;
+	private ClientPanel clientPanel;
 	private JButton sidebarNavBtn;
 	private Dimension lastClientSize;
 	private Cursor defaultCursor;
@@ -369,7 +370,9 @@ public class ClientUI
 
 			content = new JPanel();
 			content.setLayout(new Layout());
-			content.add(new ClientPanel(client));
+
+			clientPanel = new ClientPanel(client);
+			content.add(clientPanel);
 
 			sidebar = new JTabbedPane(JTabbedPane.RIGHT);
 			sidebar.setBackground(ColorScheme.DARKER_GRAY_COLOR);
@@ -598,15 +601,13 @@ public class ClientUI
 			boolean appliedSize = false;
 			if (config.rememberScreenBounds() && !safeMode)
 			{
-				Rectangle clientBounds = configManager.getConfiguration(
-					CONFIG_GROUP, CONFIG_CLIENT_BOUNDS, Rectangle.class);
-				if (clientBounds != null)
+				appliedSize = restoreClientBoundsConfig();
+				if (appliedSize)
 				{
-					frame.setBounds(clientBounds);
-					appliedSize = true;
-
 					// Adjust for insets before performing display test
 					Insets insets = frame.getInsets();
+					Rectangle clientBounds = frame.getBounds();
+
 					clientBounds = new Rectangle(
 						clientBounds.x + insets.left,
 						clientBounds.y + insets.top,
@@ -1220,25 +1221,85 @@ public class ClientUI
 
 	private void saveClientBoundsConfig()
 	{
-		final Rectangle bounds = frame.getBounds();
+		Insets insets = frame.getInsets();
+		char mode;
+		Dimension size;
+		if (config.automaticResizeType() == ExpandResizeType.KEEP_GAME_SIZE)
+		{
+			mode = 'g';
+			size = clientPanel.getSize();
+		}
+		else
+		{
+			mode = 'c';
+			size = frame.getSize();
+			size.width -= insets.left + insets.right;
+			size.height -= insets.top + insets.bottom;
+		}
+		Point point = frame.getLocation();
+		point.x += insets.left;
+		point.y += insets.top;
+		String serialized = point.x + ":" + point.y + ":" + size.width + ":" + size.height + ":" + mode;
+		configManager.setConfiguration(CONFIG_GROUP, CONFIG_CLIENT_BOUNDS, serialized);
+
 		if ((frame.getExtendedState() & JFrame.MAXIMIZED_BOTH) != 0)
 		{
-			configManager.setConfiguration(CONFIG_GROUP, CONFIG_CLIENT_BOUNDS, bounds);
+			// leave the previous bounds there, so when the client starts maximized it
+			// can restore to the restored size from the previous run
 			configManager.setConfiguration(CONFIG_GROUP, CONFIG_CLIENT_MAXIMIZED, true);
 		}
 		else
 		{
-			if (config.automaticResizeType() == ExpandResizeType.KEEP_GAME_SIZE)
+			configManager.unsetConfiguration(CONFIG_GROUP, CONFIG_CLIENT_MAXIMIZED);
+		}
+	}
+
+	private boolean restoreClientBoundsConfig()
+	{
+		String str = configManager.getConfiguration(CONFIG_GROUP, CONFIG_CLIENT_BOUNDS);
+		if (str == null)
+		{
+			return false;
+		}
+
+		try
+		{
+			String[] splitStr = str.split(":");
+			int x = Integer.parseInt(splitStr[0]);
+			int y = Integer.parseInt(splitStr[1]);
+			int width = Integer.parseInt(splitStr[2]);
+			int height = Integer.parseInt(splitStr[3]);
+			String mode = null;
+			if (splitStr.length > 4)
 			{
-				if (sidebar.isVisible() && sidebar.getSelectedComponent() != null)
-				{
-					// Try to contract plugin panel
-					bounds.width -= sidebar.getSelectedComponent().getWidth();
-				}
+				mode = splitStr[4];
 			}
 
-			configManager.unsetConfiguration(CONFIG_GROUP, CONFIG_CLIENT_MAXIMIZED);
-			configManager.setConfiguration(CONFIG_GROUP, CONFIG_CLIENT_BOUNDS, bounds);
+			Insets insets = frame.getInsets();
+
+			if (mode != null)
+			{
+				// null mode means legacy exact frame bounds
+				x -= insets.left;
+				y -= insets.top;
+			}
+
+			frame.setLocation(x, y);
+
+			if ("g".equals(mode))
+			{
+				((Layout) content.getLayout()).forceClientSize(width, height);
+			}
+			else
+			{
+				frame.setSize(width + insets.left + insets.right, height + insets.top + insets.bottom);
+			}
+
+			return true;
+		}
+		catch (RuntimeException ignored)
+		{
+			return false;
 		}
 	}
 
