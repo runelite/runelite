@@ -209,6 +209,18 @@ public class TimersPlugin extends Plugin
 			}
 		}
 
+		if (event.getVarbitId() == Varbits.SPELLBOOK_SWAP && config.showSpellbookSwap())
+		{
+			if (event.getValue() == 1)
+			{
+				createGameTimer(SPELLBOOK_SWAP);
+			}
+			else
+			{
+				removeGameTimer(SPELLBOOK_SWAP);
+			}
+		}
+
 		if (event.getVarbitId() == Varbits.HEAL_GROUP_COOLDOWN && config.showHealGroup())
 		{
 			if (event.getValue() == 1)
