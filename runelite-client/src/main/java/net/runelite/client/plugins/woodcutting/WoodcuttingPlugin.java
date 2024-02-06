@@ -46,6 +46,7 @@ import static net.runelite.api.AnimationID.WOODCUTTING_2H_ADAMANT;
 import static net.runelite.api.AnimationID.WOODCUTTING_2H_BLACK;
 import static net.runelite.api.AnimationID.WOODCUTTING_2H_BRONZE;
 import static net.runelite.api.AnimationID.WOODCUTTING_2H_CRYSTAL;
+import static net.runelite.api.AnimationID.WOODCUTTING_2H_CRYSTAL_INACTIVE;
 import static net.runelite.api.AnimationID.WOODCUTTING_2H_DRAGON;
 import static net.runelite.api.AnimationID.WOODCUTTING_2H_IRON;
 import static net.runelite.api.AnimationID.WOODCUTTING_2H_MITHRIL;
@@ -110,7 +111,7 @@ public class WoodcuttingPlugin extends Plugin
 		WOODCUTTING_INFERNAL, WOODCUTTING_3A_AXE, WOODCUTTING_CRYSTAL, WOODCUTTING_TRAILBLAZER,
 		WOODCUTTING_2H_BRONZE, WOODCUTTING_2H_IRON, WOODCUTTING_2H_STEEL, WOODCUTTING_2H_BLACK,
 		WOODCUTTING_2H_MITHRIL, WOODCUTTING_2H_ADAMANT, WOODCUTTING_2H_RUNE, WOODCUTTING_2H_DRAGON,
-		WOODCUTTING_2H_CRYSTAL, WOODCUTTING_2H_3A
+		WOODCUTTING_2H_CRYSTAL, WOODCUTTING_2H_CRYSTAL_INACTIVE, WOODCUTTING_2H_3A
 	);
 
 	private static final Pattern WOOD_CUT_PATTERN = Pattern.compile("You get (?:some|an)[\\w ]+(?:logs?|mushrooms)\\.");
