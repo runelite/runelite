@@ -635,6 +635,11 @@ public class GroundItemsPlugin extends Plugin
 		return null;
 	}
 
+	boolean getItemIsHighlighted(NamedQuantity item)
+	{
+		return TRUE.equals(highlightedItems.getUnchecked(item));
+	}
+
 	Color getHidden(NamedQuantity item, int gePrice, int haPrice, boolean isTradeable)
 	{
 		final boolean isExplicitHidden = TRUE.equals(hiddenItems.getUnchecked(item));

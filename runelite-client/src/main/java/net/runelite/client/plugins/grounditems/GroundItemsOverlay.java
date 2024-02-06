@@ -350,7 +350,7 @@ public class GroundItemsOverlay extends Overlay
 				drawRectangle(graphics, itemHiddenBox, topItem && mouseInHiddenBox ? Color.RED : color, hidden != null, true);
 
 				// Draw highlight box
-				drawRectangle(graphics, itemHighlightBox, topItem && mouseInHighlightBox ? Color.GREEN : color, highlighted != null, false);
+				drawRectangle(graphics, itemHighlightBox, topItem && mouseInHighlightBox ? Color.GREEN : color, plugin.getItemIsHighlighted(new NamedQuantity(item)), false);
 			}
 
 			// When the hotkey is pressed the hidden/highlight boxes are drawn to the right of the text,
