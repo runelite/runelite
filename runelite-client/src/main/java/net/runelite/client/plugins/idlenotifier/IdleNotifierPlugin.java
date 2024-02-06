@@ -52,6 +52,7 @@ import net.runelite.api.events.GraphicChanged;
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.NpcChanged;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -103,6 +104,7 @@ public class IdleNotifierPlugin extends Plugin
 	private Instant sixHourWarningTime;
 	private boolean ready;
 	private boolean lastInteractWasCombat;
+	private static final int BUFF_BAR_NOT_DISPLAYED = -1;
 
 	@Provides
 	IdleNotifierConfig provideConfig(ConfigManager configManager)
@@ -572,6 +574,17 @@ public class IdleNotifierPlugin extends Plugin
 		if (checkFullSpecEnergy())
 		{
 			notifier.notify("You have restored spec energy!");
+		}
+	}
+
+	@Subscribe
+	public void onVarbitChanged(VarbitChanged event)
+	{
+		if (event.getVarpId() == VarPlayer.BUFF_BAR_WC_GROUP_BONUS && event.getValue() == BUFF_BAR_NOT_DISPLAYED)
+		{
+			resetTimers();
+			lastAnimation = WOODCUTTING_RUNE;
+			lastAnimating = Instant.now();
 		}
 	}
 
