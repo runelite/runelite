@@ -31,6 +31,7 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
+import net.runelite.api.VarPlayer;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -40,6 +41,7 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 class WoodcuttingOverlay extends OverlayPanel
 {
 	private static final String WOODCUTTING_RESET = "Reset";
+	private static final int BUFF_BAR_DISPLAYED = 96;
 
 	private final Client client;
 	private final WoodcuttingPlugin plugin;
@@ -66,7 +68,8 @@ class WoodcuttingOverlay extends OverlayPanel
 			return null;
 		}
 
-		if (WoodcuttingPlugin.WOODCUTTING_ANIMS.contains(client.getLocalPlayer().getAnimation()))
+		if (WoodcuttingPlugin.WOODCUTTING_ANIMS.contains(client.getLocalPlayer().getAnimation())
+			|| client.getVarpValue(VarPlayer.BUFF_BAR_WC_GROUP_BONUS) == BUFF_BAR_DISPLAYED)
 		{
 			panelComponent.getChildren().add(TitleComponent.builder()
 				.text("Woodcutting")
