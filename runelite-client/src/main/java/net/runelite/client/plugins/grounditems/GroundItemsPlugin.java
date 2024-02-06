@@ -538,10 +538,10 @@ public class GroundItemsPlugin extends Plugin
 			}
 
 			final boolean hotKeyPressed = client.isKeyPressed(KeyCode.KC_SHIFT);
-			if (hotKeyPressed && canBeRecolored && event.getOption().contains(TAKE))
+			if (hotKeyPressed && hidden == null && event.getOption().contains(TAKE))
 			{
 				MenuEntry menuHighlight = client.createMenuEntry(-1)
-						.setOption("Set highlight color")
+						.setOption("Set custom color")
 						.setTarget(event.getTarget())
 						.setType(MenuAction.RUNELITE_SUBMENU);
 				topColors.stream().filter(c -> !c.equals(color)).forEach(topColor -> client.createMenuEntry(-1)
@@ -557,11 +557,11 @@ public class GroundItemsPlugin extends Plugin
 								SwingUtilities.invokeLater(() ->
 								{
 									RuneliteColorPicker colorPicker = colorPickerManager.create(SwingUtilities.windowForComponent((Applet) client),
-											color != null ? color : Color.decode("#FFFFFF"), "Highlighted item color", true);
+											color != null ? color : Color.decode("#FFFFFF"), "Custom ground item color", true);
 									colorPicker.setOnClose(c -> highlightGroundItem(groundItem.getName(), c));
 									colorPicker.setVisible(true);
 								}));
-				if (color != null && !color.equals(config.highlightedColor()))
+				if (color != null)
 				{
 					client.createMenuEntry(-2 - getTopColors().size())
 							.setOption("Reset")
@@ -605,10 +605,16 @@ public class GroundItemsPlugin extends Plugin
 
 	Color getHighlighted(NamedQuantity item, int gePrice, int haPrice)
 	{
+		var colorOverride = groundItemHighlights.stream().filter(groundItemHighlight -> Objects.equals(groundItemHighlight.getName(), item.getName())).findFirst();
+
+		if (colorOverride.isPresent() && FALSE.equals(hiddenItems.getUnchecked(item)))
+		{
+			return colorOverride.get().getColor();
+		}
+
 		if (TRUE.equals(highlightedItems.getUnchecked(item)))
 		{
-			var newItem = groundItemHighlights.stream().filter(groundItemHighlight -> Objects.equals(groundItemHighlight.getName(), item.getName())).findFirst();
-			return newItem.map(GroundItemHighlight::getColor).orElse(config.highlightedColor());
+			return config.highlightedColor();
 		}
 
 		// Explicit hide takes priority over implicit highlight
@@ -749,7 +755,7 @@ public class GroundItemsPlugin extends Plugin
 			return;
 		}
 
-		int price = -1;
+		GroundItem priciestGroundItem = null;
 		Collection<GroundItem> groundItems = collectedGroundItems.row(worldPoint).values();
 		for (GroundItem groundItem : groundItems)
 		{
@@ -763,8 +769,12 @@ public class GroundItemsPlugin extends Plugin
 			 * we can early return
 			 */
 			NamedQuantity item = new NamedQuantity(groundItem);
+			//var color = getHighlighted(item, groundItem.getGePrice(), groundItem.getHaPrice());
+			var isHidden = hiddenItems.getUnchecked(item);
+			var isHighlighted = highlightedItems.getUnchecked(item);
+
 			if (config.showLootbeamForHighlighted()
-				&& TRUE.equals(highlightedItems.getUnchecked(item)))
+				&& TRUE.equals(isHighlighted))
 			{
 				//No price is needed for this execution of getHighlighted since we are only focused on highlighted items
 				addLootbeam(worldPoint, getHighlighted(item, 0, 0));
@@ -772,21 +782,35 @@ public class GroundItemsPlugin extends Plugin
 			}
 
 			// Explicit hide takes priority over implicit highlight
-			if (TRUE.equals(hiddenItems.getUnchecked(item)))
+			if (TRUE.equals(isHidden))
 			{
 				continue;
 			}
 
 			int itemPrice = getValueByMode(groundItem.getGePrice(), groundItem.getHaPrice());
-			price = Math.max(itemPrice, price);
+			if (priciestGroundItem == null || itemPrice > getValueByMode(priciestGroundItem.getGePrice(), priciestGroundItem.getHaPrice()))
+			{
+				priciestGroundItem = groundItem;
+			}
 		}
 
+		GroundItem finalPriciestGroundItem = priciestGroundItem;
 		if (config.showLootbeamTier() != HighlightTier.OFF)
 		{
 			for (PriceHighlight highlight : priceChecks)
 			{
+				var price = finalPriciestGroundItem != null ? getValueByMode(finalPriciestGroundItem.getGePrice(), finalPriciestGroundItem.getHaPrice()) : -1;
 				if (price > highlight.getPrice() && price > config.showLootbeamTier().getValueFromTier(config))
 				{
+					if (finalPriciestGroundItem != null)
+					{
+						var colorOverride = groundItemHighlights.stream().filter(groundItemHighlight -> Objects.equals(groundItemHighlight.getName(), finalPriciestGroundItem.getName())).findFirst();
+						if (colorOverride.isPresent())
+						{
+							addLootbeam(worldPoint, colorOverride.get().getColor());
+							return;
+						}
+					}
 					addLootbeam(worldPoint, highlight.color);
 					return;
 				}
@@ -884,6 +908,7 @@ public class GroundItemsPlugin extends Plugin
 		groundItemHighlights.add(groundItemHighlight);
 		saveGroundItemHighlights(groundItemHighlights);
 		loadGroundItemHighlights();
+		handleLootbeams();
 	}
 
 	private void clearGroundItemHighlight(GroundItem groundItem)
@@ -893,6 +918,7 @@ public class GroundItemsPlugin extends Plugin
 		itemInList.ifPresent(groundItemHighlights::remove);
 		saveGroundItemHighlights(groundItemHighlights);
 		loadGroundItemHighlights();
+		handleLootbeams();
 	}
 
 }
