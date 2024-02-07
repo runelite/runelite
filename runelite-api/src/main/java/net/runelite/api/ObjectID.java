@@ -24574,6 +24574,7 @@ public final class ObjectID
 	public static final int ROOTS_50007 = 50007;
 	public static final int ROOTS_50008 = 50008;
 	public static final int ROOTS_50009 = 50009;
+	public static final int BIG_EGG_50019 = 50019;
 	public static final int TREE_50034 = 50034;
 	public static final int TREE_STUMP_50035 = 50035;
 	public static final int SNOW_SHARK = 50036;
