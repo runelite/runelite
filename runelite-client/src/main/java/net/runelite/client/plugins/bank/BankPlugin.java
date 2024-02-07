@@ -33,6 +33,7 @@ import com.google.common.collect.Multiset;
 import com.google.inject.Provides;
 import java.awt.event.KeyEvent;
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.annotation.Nullable;
@@ -146,7 +147,14 @@ public class BankPlugin extends Plugin
 						}
 
 						Object[] searchToggleArgs = searchButton.getOnOpListener();
-						// the search toggle script requires 1 as its first argument
+						if (searchToggleArgs == null)
+						{
+							return;
+						}
+
+						searchToggleArgs = Arrays.copyOf(searchToggleArgs, searchToggleArgs.length);
+						// this calls [clientscript,shared_bank_search_toggle]
+						// the first argument is event_op and we need to spoof op1
 						searchToggleArgs[1] = 1;
 						client.runScript(searchToggleArgs);
 					});
