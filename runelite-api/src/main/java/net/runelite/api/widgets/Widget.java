@@ -622,13 +622,6 @@ public interface Widget
 	String[] getActions();
 
 	/**
-	 * Create a static widget child
-	 * @param type the {@link WidgetType} of the widget
-	 * @return
-	 */
-	Widget createStaticChild(@MagicConstant(valuesFromClass = WidgetType.class) int type);
-
-	/**
 	 * Creates a dynamic widget child
 	 *
 	 * @param index the index of the new widget in the children list or -1 to append to the back
