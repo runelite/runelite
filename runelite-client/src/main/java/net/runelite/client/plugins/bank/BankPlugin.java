@@ -151,11 +151,9 @@ public class BankPlugin extends Plugin
 							return;
 						}
 
-						searchToggleArgs = searchToggleArgs.clone();
-						// this calls [clientscript,shared_bank_search_toggle]
-						// the first argument is event_op and we need to spoof op1
-						searchToggleArgs[1] = 1;
-						client.runScript(searchToggleArgs);
+						client.createScriptEvent(searchToggleArgs) // [clientscript,shared_bank_search_toggle]
+							.setOp(1)
+							.run();
 					});
 					e.consume();
 				}
