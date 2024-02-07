@@ -2,6 +2,7 @@
  * Copyright (c) 2018, TheLonelyDev <https://github.com/TheLonelyDev>
  * Copyright (c) 2018, Jeremy Plsek <https://github.com/jplsek>
  * Copyright (c) 2019, Hydrox6 <ikada@protonmail.ch>
+ * Copyright (c) 2024, PhraZier <https://github.com/phrazier>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -129,6 +130,33 @@ public class BankPlugin extends Plugin
 				{
 					log.debug("Search hotkey pressed");
 					bankSearch.initSearch();
+					e.consume();
+				}
+
+				Widget groupStorageSearchButton = client.getWidget(ComponentID.GROUP_STORAGE_SEARCH_BUTTON);
+				if (groupStorageSearchButton != null)
+				{
+					log.debug("Search hotkey pressed");
+					clientThread.invoke(() ->
+					{
+						Widget searchButton = client.getWidget(ComponentID.GROUP_STORAGE_SEARCH_BUTTON);
+						if (searchButton == null || searchButton.isHidden())
+						{
+							return;
+						}
+
+						Object[] searchToggleArgs = searchButton.getOnOpListener();
+						if (searchToggleArgs == null)
+						{
+							return;
+						}
+
+						searchToggleArgs = searchToggleArgs.clone();
+						// this calls [clientscript,shared_bank_search_toggle]
+						// the first argument is event_op and we need to spoof op1
+						searchToggleArgs[1] = 1;
+						client.runScript(searchToggleArgs);
+					});
 					e.consume();
 				}
 
