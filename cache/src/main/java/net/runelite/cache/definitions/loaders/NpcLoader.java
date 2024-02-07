@@ -41,6 +41,12 @@ public class NpcLoader
 	private int defaultHeadIconArchive = -1;
 	private boolean rev210HeadIcons = true;
 
+	public NpcLoader configureForRevision(int rev)
+	{
+		this.rev210HeadIcons = rev >= NpcLoader.REV_210_NPC_ARCHIVE_REV;
+		return this;
+	}
+
 	public NpcDefinition load(int id, byte[] b)
 	{
 		NpcDefinition def = new NpcDefinition(id);
@@ -259,7 +265,9 @@ public class NpcLoader
 		}
 		else if (opcode == 111)
 		{
-			def.isPet = true;
+			// removed in 220
+			def.isFollower = true;
+			def.lowPriorityFollowerOps = true;
 		}
 		else if (opcode == 114)
 		{
@@ -316,6 +324,14 @@ public class NpcLoader
 			}
 
 			def.configs[length + 1] = var;
+		}
+		else if (opcode == 122)
+		{
+			def.isFollower = true;
+		}
+		else if (opcode == 123)
+		{
+			def.lowPriorityFollowerOps = true;
 		}
 		else if (opcode == 249)
 		{
