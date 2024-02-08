@@ -10571,6 +10571,8 @@ public final class NpcID
 	public static final int BARBARIAN_BARTENDER = 12603;
 	public static final int WAITRESS = 12604;
 	public static final int GOOSE_12605 = 12605;
+	public static final int LAVA_DRAGON_12607 = 12607;
+	public static final int LAVA_DRAGON_12608 = 12608;
 	public static final int TRADER_STAN_12630 = 12630;
 	public static final int TRADER_STAN_12631 = 12631;
 	public static final int TRADER_CREWMEMBER_12632 = 12632;
