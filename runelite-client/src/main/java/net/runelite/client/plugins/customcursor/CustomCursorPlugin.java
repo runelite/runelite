@@ -25,6 +25,8 @@
 package net.runelite.client.plugins.customcursor;
 
 import com.google.inject.Provides;
+
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.imageio.ImageIO;
@@ -45,6 +47,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientUI;
+import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
 	name = "Custom Cursor",
@@ -92,7 +95,7 @@ public class CustomCursorPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getGroup().equals("customcursor") && event.getKey().equals("cursorStyle"))
+		if (event.getGroup().equals("customcursor") && (event.getKey().equals("cursorStyle") || event.getKey().equals("showWeapon")))
 		{
 			updateCursor();
 		}
@@ -101,7 +104,7 @@ public class CustomCursorPlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
-		if (config.selectedCursor() == CustomCursor.EQUIPPED_WEAPON && event.getContainerId() == InventoryID.EQUIPMENT.getId())
+		if ((config.selectedCursor() == CustomCursor.EQUIPPED_WEAPON || config.showWeapon()) && event.getContainerId() == InventoryID.EQUIPMENT.getId())
 		{
 			updateCursor();
 		}
@@ -110,6 +113,7 @@ public class CustomCursorPlugin extends Plugin
 	private void updateCursor()
 	{
 		CustomCursor selectedCursor = config.selectedCursor();
+		boolean showWeapon = config.showWeapon();
 
 		if (selectedCursor == CustomCursor.CUSTOM_IMAGE)
 		{
@@ -170,6 +174,57 @@ public class CustomCursorPlugin extends Plugin
 		{
 			assert selectedCursor.getCursorImage() != null;
 			clientUI.setCursor(selectedCursor.getCursorImage(), selectedCursor.getName());
+		}
+		if (showWeapon && selectedCursor != CustomCursor.EQUIPPED_WEAPON)
+		{
+			// load current cursor image
+			BufferedImage currentCursorImage = selectedCursor.getCursorImage();
+			if (currentCursorImage != null) {
+				clientThread.invokeLater(() ->
+				{
+					final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
+
+					if (equipment == null) {
+						clientUI.resetCursor();
+						return;
+					}
+
+					Item weapon = equipment.getItem(EquipmentInventorySlot.WEAPON.getSlotIdx());
+					if (weapon == null) {
+						clientUI.resetCursor();
+						return;
+					}
+
+					final BufferedImage weaponImage = itemManager.getImage(weapon.getId());
+
+					// combine them
+					int width = Math.max(weaponImage.getWidth(), currentCursorImage.getWidth());
+					int height = Math.max(weaponImage.getHeight(), currentCursorImage.getHeight());
+					BufferedImage combinedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+
+					// use Graphics object to draw the two on top of each other
+					Graphics g = combinedImage.getGraphics();
+					g.drawImage(weaponImage, 0, 0, null);
+					g.drawImage(currentCursorImage, 0, 0, null);
+
+					// dispose of Graphics object
+					g.dispose();
+
+					// set cursor to composite image
+					if (weapon.getQuantity() > 0)
+					{
+						clientUI.setCursor(combinedImage, selectedCursor.getName());
+					}
+					else
+					{
+						clientUI.resetCursor();
+					}
+				});
+			}
+			else
+			{
+				clientUI.resetCursor();
+			}
 		}
 	}
 }
