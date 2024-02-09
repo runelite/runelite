@@ -106,12 +106,12 @@ public class FremennikDiaryRequirement extends GenericDiaryRequirement
 		add("Teleport to Waterbirth Island.",
 			new SkillRequirement(Skill.MAGIC, 72),
 			new QuestRequirement(Quest.LUNAR_DIPLOMACY));
-		add("Obtain the Blast Furnace Foreman's permission to use the Blast Furnace for free.",
+		add("Obtain the Blast Furnace Foremans permission to use the Blast Furnace for free.",
 			new SkillRequirement(Skill.SMITHING, 60),
 			new QuestRequirement(Quest.THE_GIANT_DWARF, true));
 
 		// ELITE
-		add("Craft 56 astral runes simultaneously from Essence without the use of Extracts.",
+		add("Craft 56 astral runes from Essence simultaneously from Essence without the use of Extracts.",
 			new SkillRequirement(Skill.RUNECRAFT, 82),
 			new QuestRequirement(Quest.LUNAR_DIPLOMACY));
 		add("Create a dragonstone amulet in the Neitiznot furnace.",

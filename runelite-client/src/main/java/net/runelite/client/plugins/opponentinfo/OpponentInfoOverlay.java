@@ -49,7 +49,6 @@ import net.runelite.client.hiscore.HiscoreSkill;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.ProgressBarComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
@@ -87,7 +86,7 @@ class OpponentInfoOverlay extends OverlayPanel
 		this.npcManager = npcManager;
 
 		setPosition(OverlayPosition.TOP_LEFT);
-		setPriority(OverlayPriority.HIGH);
+		setPriority(PRIORITY_HIGH);
 
 		panelComponent.setBorder(new Rectangle(2, 2, 2, 2));
 		panelComponent.setGap(new Point(0, 2));

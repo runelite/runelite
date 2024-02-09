@@ -159,6 +159,7 @@ public class IdleNotifierPlugin extends Plugin
 			case WOODCUTTING_2H_RUNE:
 			case WOODCUTTING_2H_DRAGON:
 			case WOODCUTTING_2H_CRYSTAL:
+			case WOODCUTTING_2H_CRYSTAL_INACTIVE:
 			case WOODCUTTING_2H_3A:
 			case BLISTERWOOD_JUMP_SCARE:
 			/* Firemaking */

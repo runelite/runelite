@@ -416,6 +416,7 @@ id=726
 id=724
 ui=2
 item_container=10
+search_button=16
 
 [group_storage_inventory]
 id=725

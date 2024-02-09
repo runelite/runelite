@@ -47,7 +47,6 @@ import net.runelite.api.VarClientInt;
 import net.runelite.api.VarClientStr;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.MenuEntryAdded;
-import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.vars.InputType;
 import net.runelite.api.widgets.ComponentID;
@@ -76,6 +75,7 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 	private static final String WELCOME_MESSAGE = "Welcome to Old School RuneScape";
 	private static final String CLEAR_HISTORY = "Clear history";
 	private static final String COPY_TO_CLIPBOARD = "Copy to clipboard";
+	private static final String REPORT = "Report";
 	private static final int CYCLE_HOTKEY = KeyEvent.VK_TAB;
 	private static final int FRIENDS_MAX_SIZE = 5;
 
@@ -181,71 +181,6 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 	}
 
 	@Subscribe
-	public void onMenuOpened(MenuOpened event)
-	{
-		if (event.getMenuEntries().length < 2 || !config.copyToClipboard())
-		{
-			return;
-		}
-
-		// Use second entry as first one can be walk here with transparent chatbox
-		final MenuEntry entry = event.getMenuEntries()[event.getMenuEntries().length - 2];
-
-		if (entry.getType() != MenuAction.CC_OP_LOW_PRIORITY && entry.getType() != MenuAction.RUNELITE)
-		{
-			return;
-		}
-
-		final int groupId = WidgetUtil.componentToInterface(entry.getParam1());
-		final int childId = WidgetUtil.componentToId(entry.getParam1());
-
-		if (groupId != InterfaceID.CHATBOX)
-		{
-			return;
-		}
-
-		final Widget widget = client.getWidget(groupId, childId);
-		final Widget parent = widget.getParent();
-
-		if (ComponentID.CHATBOX_MESSAGE_LINES != parent.getId())
-		{
-			return;
-		}
-
-		// Get child id of first chat message static child so we can substract this offset to link to dynamic child
-		// later
-		final int first = WidgetUtil.componentToId(ComponentID.CHATBOX_FIRST_MESSAGE);
-
-		// Convert current message static widget id to dynamic widget id of message node with message contents
-		// When message is right clicked, we are actually right clicking static widget that contains only sender.
-		// The actual message contents are stored in dynamic widgets that follow same order as static widgets.
-		// Every first dynamic widget is message sender, every second one is message contents,
-		// every third one is clan name and every fourth one is clan rank icon.
-		// The last two are hidden when the message is not from a clan chat or guest clan chat.
-		final int dynamicChildId = (childId - first) * 4 + 1;
-
-		// Extract and store message contents when menu is opened because dynamic children can change while right click
-		// menu is open and dynamicChildId will be outdated
-		final Widget messageContents = parent.getChild(dynamicChildId);
-		if (messageContents == null)
-		{
-			return;
-		}
-
-		String currentMessage = messageContents.getText();
-
-		client.createMenuEntry(1)
-			.setOption(COPY_TO_CLIPBOARD)
-			.setTarget(entry.getTarget())
-			.setType(MenuAction.RUNELITE)
-			.onClick(e ->
-			{
-				final StringSelection stringSelection = new StringSelection(Text.removeTags(currentMessage));
-				Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
-			});
-	}
-
-	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		final String menuOption = event.getMenuOption();
@@ -260,35 +195,86 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded entry)
 	{
-		if (entry.getType() != MenuAction.CC_OP.getId())
+		if (entry.getType() != MenuAction.CC_OP.getId() && entry.getType() != MenuAction.CC_OP_LOW_PRIORITY.getId())
 		{
 			return;
 		}
 
 		ChatboxTab tab = ChatboxTab.of(entry.getActionParam1());
-		if (tab == null || tab.getAfter() == null || !config.clearHistory() || !entry.getOption().endsWith(tab.getAfter()))
+		if (tab != null && tab.getAfter() != null && config.clearHistory() && entry.getOption().endsWith(tab.getAfter()))
 		{
+			final MenuEntry clearEntry = client.createMenuEntry(-2)
+					.setType(MenuAction.RUNELITE_HIGH_PRIORITY);
+			clearEntry.setParam1(entry.getActionParam1());
+
+			final StringBuilder optionBuilder = new StringBuilder();
+			if (tab != ChatboxTab.ALL)
+			{
+				// Pull tab name from menu since Trade/Group is variable
+				String option = entry.getOption();
+				int idx = option.indexOf(':');
+				if (idx != -1)
+				{
+					optionBuilder.append(option, 0, idx).append(":</col> ");
+				}
+			}
+
+			optionBuilder.append(CLEAR_HISTORY);
+			clearEntry.setOption(optionBuilder.toString());
 			return;
 		}
 
-		final MenuEntry clearEntry = client.createMenuEntry(-2)
-			.setType(MenuAction.RUNELITE_HIGH_PRIORITY);
-		clearEntry.setParam1(entry.getActionParam1());
-
-		final StringBuilder optionBuilder = new StringBuilder();
-		if (tab != ChatboxTab.ALL)
+		if (entry.getOption().equals(REPORT) && config.copyToClipboard())
 		{
-			// Pull tab name from menu since Trade/Group is variable
-			String option = entry.getOption();
-			int idx = option.indexOf(':');
-			if (idx != -1)
+			final int groupId = WidgetUtil.componentToInterface(entry.getActionParam1());
+			final int childId = WidgetUtil.componentToId(entry.getActionParam1());
+
+			if (groupId != InterfaceID.CHATBOX)
 			{
-				optionBuilder.append(option, 0, idx).append(":</col> ");
+				return;
 			}
+
+			final Widget widget = client.getWidget(groupId, childId);
+			final Widget parent = widget.getParent();
+
+			if (ComponentID.CHATBOX_MESSAGE_LINES != parent.getId())
+			{
+				return;
+			}
+
+			// Get child id of first chat message static child so we can substract this offset to link to dynamic child
+			// later
+			final int first = WidgetUtil.componentToId(ComponentID.CHATBOX_FIRST_MESSAGE);
+
+			// Convert current message static widget id to dynamic widget id of message node with message contents
+			// When message is right clicked, we are actually right clicking static widget that contains only sender.
+			// The actual message contents are stored in dynamic widgets that follow same order as static widgets.
+			// Every first dynamic widget is message sender, every second one is message contents,
+			// every third one is clan name and every fourth one is clan rank icon.
+			// The last two are hidden when the message is not from a clan chat or guest clan chat.
+			final int dynamicChildId = (childId - first) * 4 + 1;
+
+			// Extract and store message contents when menu is opened because dynamic children can change while right click
+			// menu is open and dynamicChildId will be outdated
+			final Widget messageContents = parent.getChild(dynamicChildId);
+			if (messageContents == null)
+			{
+				return;
+			}
+
+			String currentMessage = messageContents.getText();
+
+			client.createMenuEntry(1)
+					.setOption(COPY_TO_CLIPBOARD)
+					.setTarget(entry.getTarget())
+					.setType(MenuAction.RUNELITE)
+					.onClick(e ->
+					{
+						final StringSelection stringSelection = new StringSelection(Text.removeTags(currentMessage));
+						Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
+					});
 		}
 
-		optionBuilder.append(CLEAR_HISTORY);
-		clearEntry.setOption(optionBuilder.toString());
 	}
 
 	private void clearMessageQueue(ChatboxTab tab)

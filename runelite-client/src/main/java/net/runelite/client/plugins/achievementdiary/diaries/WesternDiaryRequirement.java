@@ -128,7 +128,7 @@ public class WesternDiaryRequirement extends GenericDiaryRequirement
 		add("Fletch a Magic Longbow in Tirannwn.",
 			new SkillRequirement(Skill.FLETCHING, 85),
 			new QuestRequirement(Quest.MOURNINGS_END_PART_I));
-		add("Kill the Thermonuclear Smoke devil (Does not require task).",
+		add("Kill the Thermonuclear Smoke devil.",
 			new SkillRequirement(Skill.SLAYER, 93));
 		add("Have Prissy Scilla protect your Magic tree.",
 			new SkillRequirement(Skill.FARMING, 75));

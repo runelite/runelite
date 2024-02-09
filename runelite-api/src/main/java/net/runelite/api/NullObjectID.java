@@ -25428,6 +25428,15 @@ public final class NullObjectID
 	public static final int NULL_50016 = 50016;
 	public static final int NULL_50017 = 50017;
 	public static final int NULL_50018 = 50018;
+	public static final int NULL_50020 = 50020;
+	public static final int NULL_50021 = 50021;
+	public static final int NULL_50022 = 50022;
+	public static final int NULL_50023 = 50023;
+	public static final int NULL_50024 = 50024;
+	public static final int NULL_50025 = 50025;
+	public static final int NULL_50026 = 50026;
+	public static final int NULL_50027 = 50027;
+	public static final int NULL_50028 = 50028;
 	public static final int NULL_50038 = 50038;
 	public static final int NULL_50039 = 50039;
 	public static final int NULL_50040 = 50040;
