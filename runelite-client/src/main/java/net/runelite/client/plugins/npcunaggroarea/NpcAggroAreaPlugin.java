@@ -101,9 +101,6 @@ public class NpcAggroAreaPlugin extends Plugin
 	private NpcAggroAreaOverlay overlay;
 
 	@Inject
-	private NpcAggroAreaNotWorkingOverlay notWorkingOverlay;
-
-	@Inject
 	private OverlayManager overlayManager;
 
 	@Inject
@@ -150,8 +147,8 @@ public class NpcAggroAreaPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(overlay);
-		overlayManager.add(notWorkingOverlay);
 		npcNamePatterns = NAME_SPLITTER.splitToList(config.npcNamePatterns());
+		infoBoxManager.addInfoBox(new UncalibratedInfobox(itemManager.getImage(ItemID.ENSOULED_DEMON_HEAD), this));
 		recheckActive();
 	}
 
@@ -160,7 +157,7 @@ public class NpcAggroAreaPlugin extends Plugin
 	{
 		removeTimer();
 		overlayManager.remove(overlay);
-		overlayManager.remove(notWorkingOverlay);
+		infoBoxManager.removeIf(UncalibratedInfobox.class::isInstance);
 		Arrays.fill(safeCenters, null);
 		lastPlayerLocation = null;
 		endTime = null;
@@ -482,7 +479,7 @@ public class NpcAggroAreaPlugin extends Plugin
 					onLogin();
 				}
 
-				recheckActive();
+				calculateLinesToDisplay(); // scene base has changed, so the lines need to be recomputed
 				break;
 
 			case LOGGING_IN:

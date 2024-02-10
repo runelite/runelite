@@ -44,7 +44,7 @@ public abstract class WidgetItemOverlay extends Overlay
 	protected WidgetItemOverlay()
 	{
 		super.setPosition(OverlayPosition.DYNAMIC);
-		super.setPriority(OverlayPriority.LOW);
+		super.setPriority(PRIORITY_LOW);
 		super.setLayer(OverlayLayer.MANUAL);
 	}
 
@@ -139,6 +139,12 @@ public abstract class WidgetItemOverlay extends Overlay
 
 	@Override
 	public void setPosition(OverlayPosition position)
+	{
+		throw new IllegalStateException();
+	}
+
+	@Override
+	public void setPriority(float priority)
 	{
 		throw new IllegalStateException();
 	}

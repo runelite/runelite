@@ -156,13 +156,15 @@ public class TabInterface
 	@Getter
 	private boolean tagTabActive;
 	private int tagTabFirstChildIdx = -1;
-	private int currentTabIndex;
+	private int tabScrollOffset;
 	private Instant startScroll = Instant.now();
+	private int tabCount;
 
+	private Widget parent;
+	private Widget scrollComponent;
 	private Widget upButton;
 	private Widget downButton;
 	private Widget newTab;
-	private Widget tabLayer;
 
 	@Inject
 	private TabInterface(
@@ -227,7 +229,11 @@ public class TabInterface
 			{
 				log.debug("Bank resize!");
 				// This is right before the bank is resized, so wait until after so the computed tab layer size is right
-				clientThread.invokeLater(this::resizeTabLayer);
+				clientThread.invokeLater(() ->
+				{
+					repositionButtons();
+					rebuildTabs();
+				});
 			}
 		}
 		else if (event.getScriptId() == ScriptID.BANKMAIN_SEARCH_TOGGLE)
@@ -245,7 +251,7 @@ public class TabInterface
 				hideBank();
 			}
 
-			resizeTabLayer();
+			repositionButtons();
 			rebuildTabs();
 			rebuildTagTabTab();
 
@@ -302,7 +308,7 @@ public class TabInterface
 		if (event.getGroupId() == InterfaceID.BANK && event.isUnload())
 		{
 			enabled = false;
-			upButton = downButton = newTab = tabLayer = null;
+			upButton = downButton = newTab = scrollComponent = parent = null;
 			activeTab = null;
 			tagTabActive = false;
 			tagTabFirstChildIdx = -1;
@@ -311,14 +317,13 @@ public class TabInterface
 
 	private void init()
 	{
-		Widget parent = client.getWidget(ComponentID.BANK_CONTENT_CONTAINER);
+		assert parent == null; // avoid double init
+		parent = client.getWidget(ComponentID.BANK_CONTENT_CONTAINER);
 
-		assert tabLayer == null; // avoid double init
-
-		tabLayer = parent.createStaticChild(WidgetType.LAYER);
-		tabLayer.setHasListener(true);
-		tabLayer.setNoScrollThrough(true);
-		tabLayer.setOnScrollWheelListener((JavaScriptCallback) (event) -> scrollTab(event.getMouseY()));
+		scrollComponent = parent.createChild(-1, WidgetType.TEXT); // not really text, but just to capture scroll
+		scrollComponent.setHasListener(true);
+		scrollComponent.setNoScrollThrough(true);
+		scrollComponent.setOnScrollWheelListener((JavaScriptCallback) (event) -> scrollTab(event.getMouseY()));
 
 		upButton = createGraphic(parent, "", TabSprites.UP_ARROW.getSpriteId(), -1, TAB_WIDTH, BUTTON_HEIGHT, MARGIN, 0);
 		upButton.setAction(1, SCROLL_UP);
@@ -346,7 +351,7 @@ public class TabInterface
 		tabManager.clear();
 		tabManager.getAllTabs().forEach(this::loadTab);
 
-		currentTabIndex = config.position();
+		tabScrollOffset = config.position();
 		scrollTab(0);
 
 		if (config.rememberTab() && !Strings.isNullOrEmpty(config.tab()))
@@ -399,12 +404,9 @@ public class TabInterface
 		enabled = false;
 		activeTab = null;
 
-		// we can't easily remove these, just hide and orphan them
-		upButton.setHidden(true);
-		downButton.setHidden(true);
-		newTab.setHidden(true);
-		tabLayer.setHidden(true);
-		upButton = downButton = newTab = tabLayer = null;
+		upButton = downButton = newTab = scrollComponent = null;
+		parent.deleteAllChildren();
+		parent = null;
 
 		tabManager.clear();
 	}
@@ -507,7 +509,7 @@ public class TabInterface
 							loadTab(tagName);
 							tabManager.save();
 
-							resizeTabLayer();
+							repositionButtons();
 							rebuildTabs();
 							rebuildTagTabTab();
 						}
@@ -555,7 +557,7 @@ public class TabInterface
 					loadTab(name);
 					tabManager.save();
 
-					resizeTabLayer();
+					repositionButtons();
 					rebuildTabs();
 					rebuildTagTabTab();
 
@@ -755,16 +757,19 @@ public class TabInterface
 			if (!tagTabActive
 				&& draggedWidget.getId() == ComponentID.BANK_ITEM_CONTAINER
 				&& draggedWidget.getItemId() != -1
-				&& draggedOn.getId() == tabLayer.getId())
+				&& draggedOn.getParent() == parent
+				&& draggedOn.getIndex() > 3) // skip buttons
 			{
 				// Tag an item dragged on a tag tab
+				log.debug("Dragged {} to tab {}", draggedWidget.getItemId(), Text.removeTags(draggedOn.getName()));
 				tagManager.addTag(draggedWidget.getItemId(), draggedOn.getName(), shiftDown);
 				reloadActiveTab();
 			}
 			else if ((tagTabActive && draggedWidget.getId() == ComponentID.BANK_ITEM_CONTAINER && draggedOn.getId() == ComponentID.BANK_ITEM_CONTAINER)
-				|| (tabLayer.getId() == draggedOn.getId() && tabLayer.getId() == draggedWidget.getId()))
+				|| (draggedWidget.getParent() == parent && draggedOn.getParent() == parent))
 			{
 				// Reorder tag tabs
+				log.debug("Reorder tag tab {} <-> {}", draggedWidget, draggedOn);
 				moveTagTab(draggedWidget, draggedOn);
 			}
 		}
@@ -854,7 +859,7 @@ public class TabInterface
 		tabManager.remove(tag);
 		tabManager.save();
 
-		resizeTabLayer();
+		repositionButtons();
 		rebuildTabs();
 		rebuildTagTabTab();
 		scrollTab(0);
@@ -927,24 +932,22 @@ public class TabInterface
 
 	private void scrollTab(int d)
 	{
-		currentTabIndex += d;
+		tabScrollOffset += d;
 
-		int maxTabs = tabLayer.getHeight() / TAB_HEIGHT;
-		int maxScroll = tabManager.size() - maxTabs;
-		if (currentTabIndex > maxScroll)
+		int maxScroll = tabManager.size() - tabCount;
+		if (tabScrollOffset > maxScroll)
 		{
-			currentTabIndex = maxScroll;
+			tabScrollOffset = maxScroll;
 		}
 
-		if (currentTabIndex < 0)
+		if (tabScrollOffset < 0)
 		{
-			currentTabIndex = 0;
+			tabScrollOffset = 0;
 		}
 
-		int amt = (MARGIN + TAB_HEIGHT) * currentTabIndex;
-		tabLayer.setScrollY(amt);
+		config.position(tabScrollOffset);
 
-		config.position(currentTabIndex);
+		rebuildTabs();
 	}
 
 	private void openNamedTag(String name, boolean relayout)
@@ -991,7 +994,7 @@ public class TabInterface
 		}
 	}
 
-	private void resizeTabLayer()
+	private void repositionButtons()
 	{
 		Widget incinerator = client.getWidget(ComponentID.BANK_INCINERATOR);
 		int incineratorHeight = 0;
@@ -1019,38 +1022,43 @@ public class TabInterface
 			incineratorHeight = incinerator.getHeight();
 		}
 
-		Widget parent = tabLayer.getParent();
-		tabLayer.setOriginalY(41 + BUTTON_HEIGHT);
-		tabLayer.setOriginalWidth(TAB_WIDTH + MARGIN * 2);
+		scrollComponent.setOriginalY(41 + BUTTON_HEIGHT);
+		scrollComponent.setOriginalWidth(TAB_WIDTH + MARGIN * 2);
 
 		// Keep the tab layer height a multiple of the tab heights
-		int tabLayerHeight = parent.getHeight() - tabLayer.getOriginalY() - 61 - incineratorHeight;
-		int numTabs = tabLayerHeight / (TAB_HEIGHT + MARGIN);
-		tabLayer.setOriginalHeight(numTabs * (TAB_HEIGHT + MARGIN));
+		int tabLayerHeight = parent.getHeight() - scrollComponent.getOriginalY() - 61 - incineratorHeight;
+		tabCount = tabLayerHeight / (TAB_HEIGHT + MARGIN);
+		scrollComponent.setOriginalHeight(tabCount * (TAB_HEIGHT + MARGIN));
 
-		tabLayer.revalidate();
+		scrollComponent.revalidate();
 
 		upButton.setOriginalY(41);
 		upButton.revalidate();
 
-		downButton.setOriginalY(41 + BUTTON_HEIGHT + numTabs * (TAB_HEIGHT + MARGIN) + MARGIN);
+		downButton.setOriginalY(41 + BUTTON_HEIGHT + tabCount * (TAB_HEIGHT + MARGIN) + MARGIN);
 		downButton.revalidate();
 	}
 
 	private void rebuildTabs()
 	{
-		int y = MARGIN;
+		// remove the tag tabs but keep the buttons and scroll component
+		parent.setChildren(Arrays.copyOf(parent.getChildren(), 4));
 
-		tabLayer.deleteAllChildren();
-		for (TagTab tab : tabManager.getTabs())
+		int y = scrollComponent.getOriginalY();
+		y += MARGIN;
+
+		var tabs = tabManager.getTabs();
+		for (int i = tabScrollOffset; i < tabScrollOffset + tabCount && i < tabs.size(); ++i)
 		{
-			Widget background = createGraphic(tabLayer, ColorUtil.wrapWithColorTag(tab.getTag(), HILIGHT_COLOR),
+			TagTab tab = tabs.get(i);
+
+			Widget background = createGraphic(parent, ColorUtil.wrapWithColorTag(tab.getTag(), HILIGHT_COLOR),
 				(activeTab == tab ? TabSprites.TAB_BACKGROUND_ACTIVE : TabSprites.TAB_BACKGROUND).getSpriteId(),
 				-1, TAB_WIDTH, TAB_HEIGHT, MARGIN, y);
 			addTabActions(background);
 
 			Widget icon = createGraphic(
-				tabLayer,
+				parent,
 				ColorUtil.wrapWithColorTag(tab.getTag(), HILIGHT_COLOR),
 				-1,
 				tab.getIconItemId(),
@@ -1060,8 +1068,6 @@ public class TabInterface
 
 			y += TAB_HEIGHT + MARGIN;
 		}
-
-		tabLayer.setScrollHeight(y);
 	}
 
 	private void rebuildTagTabTab()
