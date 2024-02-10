@@ -47,7 +47,6 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.ClientUI;
-import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
 	name = "Custom Cursor",
@@ -179,18 +178,21 @@ public class CustomCursorPlugin extends Plugin
 		{
 			// load current cursor image
 			BufferedImage currentCursorImage = selectedCursor.getCursorImage();
-			if (currentCursorImage != null) {
+			if (currentCursorImage != null) 
+			{
 				clientThread.invokeLater(() ->
 				{
 					final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
 
-					if (equipment == null) {
+					if (equipment == null) 
+					{
 						clientUI.resetCursor();
 						return;
 					}
 
 					Item weapon = equipment.getItem(EquipmentInventorySlot.WEAPON.getSlotIdx());
-					if (weapon == null) {
+					if (weapon == null) 
+					{
 						clientUI.resetCursor();
 						return;
 					}
