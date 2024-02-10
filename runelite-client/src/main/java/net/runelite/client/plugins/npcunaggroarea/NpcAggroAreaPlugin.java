@@ -481,6 +481,8 @@ public class NpcAggroAreaPlugin extends Plugin
 					loggingIn = false;
 					onLogin();
 				}
+
+				recheckActive();
 				break;
 
 			case LOGGING_IN:
