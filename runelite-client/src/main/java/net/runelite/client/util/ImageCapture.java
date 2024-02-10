@@ -239,7 +239,7 @@ public class ImageCapture
 			final File colorProfile = new File("/System/Library/ColorSync/Profiles/Display P3.icc");
 
 			final List<String> embedCommand = new ArrayList<>();
-			Collections.addAll(embedCommand, "sips", "-e", colorProfile.getAbsolutePath(), screenshotFile.getAbsolutePath());
+			Collections.addAll(embedCommand, "sips", "-E", colorProfile.getAbsolutePath(), screenshotFile.getAbsolutePath());
 			try
 			{
 				new ProcessBuilder(embedCommand)
