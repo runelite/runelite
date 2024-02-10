@@ -139,4 +139,15 @@ public interface NpcAggroAreaConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "disableCalibrationOverlay",
+		name = "Disable calibration overlay",
+		description = "Enable to stop showing the calibration overlay.",
+		position = 9
+	)
+	default boolean disableCalibrationOverlay()
+	{
+		return false;
+	}
 }

@@ -150,7 +150,9 @@ public class NpcAggroAreaPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(overlay);
-		overlayManager.add(notWorkingOverlay);
+		if (!config.disableCalibrationOverlay()) {
+			overlayManager.add(notWorkingOverlay);
+		}
 		npcNamePatterns = NAME_SPLITTER.splitToList(config.npcNamePatterns());
 		recheckActive();
 	}
@@ -159,7 +161,9 @@ public class NpcAggroAreaPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		removeTimer();
-		overlayManager.remove(overlay);
+		if (!config.disableCalibrationOverlay()) {
+			overlayManager.remove(overlay);
+		}
 		overlayManager.remove(notWorkingOverlay);
 		Arrays.fill(safeCenters, null);
 		lastPlayerLocation = null;
@@ -408,6 +412,12 @@ public class NpcAggroAreaPlugin extends Plugin
 				npcNamePatterns = NAME_SPLITTER.splitToList(config.npcNamePatterns());
 				recheckActive();
 				break;
+			case "disableCalibrationOverlay":
+				if (event.getNewValue() == null) {
+					overlayManager.add(notWorkingOverlay);
+				} else {
+					overlayManager.remove(notWorkingOverlay);
+				}
 		}
 	}
 
