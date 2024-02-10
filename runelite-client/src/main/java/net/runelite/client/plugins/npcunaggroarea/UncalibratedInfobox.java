@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Woox <https://github.com/wooxsolo>
+ * Copyright (c) 2024, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,39 +24,39 @@
  */
 package net.runelite.client.plugins.npcunaggroarea;
 
-import com.google.inject.Inject;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import net.runelite.client.ui.overlay.OverlayPanel;
-import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.LineComponent;
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+import net.runelite.client.ui.overlay.infobox.InfoBox;
+import net.runelite.client.ui.overlay.infobox.InfoBoxPriority;
 
-class NpcAggroAreaNotWorkingOverlay extends OverlayPanel
+class UncalibratedInfobox extends InfoBox
 {
 	private final NpcAggroAreaPlugin plugin;
 
-	@Inject
-	private NpcAggroAreaNotWorkingOverlay(NpcAggroAreaPlugin plugin)
+	public UncalibratedInfobox(BufferedImage image, NpcAggroAreaPlugin plugin)
 	{
+		super(image, plugin);
 		this.plugin = plugin;
 
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Unaggressive NPC timers require calibration. Teleport far away or enter a dungeon, then run until this overlay disappears.")
-			.build());
-
-		setPriority(PRIORITY_LOW);
-		setPosition(OverlayPosition.TOP_LEFT);
-		setClearChildren(false);
+		setTooltip("Unaggressive NPC timers require calibration.</br>Teleport far away or enter a dungeon, then run until this infobox disappears.");
+		setPriority(InfoBoxPriority.HIGH);
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics)
+	public String getText()
 	{
-		if (plugin.getSafeCenters()[1] != null)
-		{
-			return null;
-		}
+		return "?";
+	}
 
-		return super.render(graphics);
+	@Override
+	public Color getTextColor()
+	{
+		return Color.WHITE;
+	}
+
+	@Override
+	public boolean render()
+	{
+		return plugin.getSafeCenters()[1] == null;
 	}
 }
