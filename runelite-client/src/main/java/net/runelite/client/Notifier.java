@@ -51,6 +51,7 @@ import javax.inject.Singleton;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import lombok.Getter;
@@ -476,6 +477,12 @@ public class Notifier
 				return;
 			}
 		}
+
+		// converts user controlled linear volume ranging 1-100 to exponential decibel gains
+		float volume = runeLiteConfig.notificationVolume() / 100f;
+		float gainDB = (float) Math.log10(volume) * 20;
+		FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+		gainControl.setValue(gainDB);
 
 		// Using loop instead of start + setFramePosition prevents the clip
 		// from not being played sometimes, presumably a race condition in the
