@@ -28,6 +28,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import jdk.jshell.spi.ExecutionControl;
+import lombok.SneakyThrows;
 import org.junit.Before;
 import org.junit.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -108,6 +111,18 @@ public class PluginSearchTest
 		public List<String> getKeywords()
 		{
 			return keywords;
+		}
+
+		@SneakyThrows
+		@Override
+		public boolean isPluginEnabled() {
+			throw new ExecutionControl.NotImplementedException("LOUIS HACK");
+		}
+
+		@SneakyThrows
+		@Override
+		public boolean isInstalled() {
+			throw new ExecutionControl.NotImplementedException("LOUIS HACK");
 		}
 	}
 }

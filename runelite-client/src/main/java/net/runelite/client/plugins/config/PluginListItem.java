@@ -207,6 +207,17 @@ class PluginListItem extends JPanel implements SearchablePlugin
 		onOffToggle.setSelected(enabled);
 	}
 
+	@Override
+	public boolean isPluginEnabled() {
+		return onOffToggle.isSelected();
+	}
+
+	@Override
+	public boolean isInstalled() {
+		// plugin list items are by definition installed.
+		return true;
+	}
+
 	private void openGroupConfigPanel()
 	{
 		pluginListPanel.openConfigurationPanel(pluginConfig);

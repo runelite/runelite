@@ -25,12 +25,16 @@
 package net.runelite.client.plugins.config;
 
 import com.google.common.base.Splitter;
+
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+
+import com.google.common.collect.Lists;
 import net.runelite.client.util.Text;
 import org.apache.commons.lang3.StringUtils;
 
@@ -40,8 +44,37 @@ public class PluginSearch
 
 	public static <T extends SearchablePlugin> List<T> search(Collection<T> searchablePlugins, String query)
 	{
+		ArrayList<String> search_terms = Lists.newArrayList(SPLITTER.split(query.toLowerCase()));
+
+		if (search_terms.remove("enabled")) {
+			searchablePlugins = searchablePlugins.stream()
+				.filter(SearchablePlugin::isPluginEnabled)
+				.filter(SearchablePlugin::isInstalled)
+				.collect(Collectors.toList());
+		}
+		if (search_terms.remove("disabled"))
+		{
+			searchablePlugins = searchablePlugins.stream()
+				.filter(plugin -> !plugin.isPluginEnabled())
+				.filter(SearchablePlugin::isInstalled)
+				.collect(Collectors.toList());
+		}
+		if (search_terms.remove("installed"))
+		{
+			searchablePlugins = searchablePlugins.stream()
+				.filter(SearchablePlugin::isInstalled)
+				.collect(Collectors.toList());
+		}
+
+		if (search_terms.remove("pinned") || search_terms.remove("starred"))
+		{
+			searchablePlugins = searchablePlugins.stream()
+				.filter(SearchablePlugin::isPinned)
+				.collect(Collectors.toList());
+		}
+
 		return searchablePlugins.stream()
-			.filter(plugin -> Text.matchesSearchTerms(SPLITTER.split(query.toLowerCase()), plugin.getKeywords()))
+			.filter(plugin -> Text.matchesSearchTerms(search_terms, plugin.getKeywords()))
 			.sorted(comparator(query))
 			.collect(Collectors.toList());
 	}

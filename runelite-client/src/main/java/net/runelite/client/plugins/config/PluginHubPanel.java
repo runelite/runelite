@@ -44,6 +44,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -73,16 +74,21 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ExternalPluginsChanged;
 import net.runelite.client.externalplugins.ExternalPluginClient;
 import net.runelite.client.externalplugins.ExternalPluginManager;
 import net.runelite.client.externalplugins.PluginHubManifest;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.PluginManager;
+import static net.runelite.client.plugins.config.PluginListPanel.PINNED_PLUGINS_CONFIG_KEY;
+import static net.runelite.client.plugins.config.PluginListPanel.RUNELITE_GROUP_NAME;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
@@ -91,6 +97,7 @@ import net.runelite.client.ui.components.IconTextField;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.SwingUtil;
+import net.runelite.client.util.Text;
 import net.runelite.client.util.VerificationException;
 
 @Slf4j
@@ -215,7 +222,20 @@ class PluginHubPanel extends PluginPanel
 		@Getter
 		private final boolean installed;
 
-		PluginItem(PluginHubManifest.DisplayData newManifest, PluginHubManifest.JarData jarData, Collection<Plugin> loadedPlugins, int userCount, boolean installed)
+		@Getter
+		private final boolean enabled;
+
+		@Getter
+		private final boolean pinned;
+
+		PluginItem(
+			PluginHubManifest.DisplayData newManifest,
+			PluginHubManifest.JarData jarData,
+			Collection<Plugin> loadedPlugins,
+			int userCount,
+			boolean installed,
+			boolean enabled,
+			boolean pinned)
 		{
 			if (newManifest != null)
 			{
@@ -229,6 +249,8 @@ class PluginHubPanel extends PluginPanel
 			this.jarData = jarData;
 			this.userCount = userCount;
 			this.installed = installed;
+			this.enabled = enabled;
+			this.pinned = pinned;
 
 			Collections.addAll(keywords, SPACES.split(manifest.getDisplayName().toLowerCase()));
 
@@ -439,12 +461,18 @@ class PluginHubPanel extends PluginPanel
 		{
 			return manifest.getDisplayName();
 		}
+
+		@Override
+		public boolean isPluginEnabled() {
+			return this.enabled;
+		}
 	}
 
 	private final TopLevelConfigPanel topLevelConfigPanel;
 	private final ExternalPluginManager externalPluginManager;
 	private final PluginManager pluginManager;
 	private final ExternalPluginClient externalPluginClient;
+	private final ConfigManager configManager;
 	private final ScheduledExecutorService executor;
 
 	private final Deque<PluginIcon> iconLoadQueue = new ArrayDeque<>();
@@ -461,6 +489,7 @@ class PluginHubPanel extends PluginPanel
 		ExternalPluginManager externalPluginManager,
 		PluginManager pluginManager,
 		ExternalPluginClient externalPluginClient,
+		ConfigManager configManager,
 		ScheduledExecutorService executor)
 	{
 		super(false);
@@ -468,6 +497,7 @@ class PluginHubPanel extends PluginPanel
 		this.externalPluginManager = externalPluginManager;
 		this.pluginManager = pluginManager;
 		this.externalPluginClient = externalPluginClient;
+		this.configManager = configManager;
 		this.executor = executor;
 
 		{
@@ -641,6 +671,11 @@ class PluginHubPanel extends PluginPanel
 			.collect(ImmutableMap.toImmutableMap(PluginHubManifest.JarData::getInternalName, Function.identity()));
 
 		Multimap<String, Plugin> loadedPlugins = HashMultimap.create();
+		Map<String, Boolean> pluginEnableStatus = new HashMap<>();
+
+		List<String> configPinned = getPinnedPluginNames();
+		Map<String, Boolean> pinned = new HashMap<>();
+
 		for (Plugin p : pluginManager.getPlugins())
 		{
 			Class<? extends Plugin> clazz = p.getClass();
@@ -648,10 +683,15 @@ class PluginHubPanel extends PluginPanel
 			if (iname != null)
 			{
 				loadedPlugins.put(iname, p);
+
+				pluginEnableStatus.put(iname, pluginManager.isPluginEnabled(p));
+				PluginDescriptor descriptor = clazz.getAnnotation(PluginDescriptor.class);
+				pinned.put(iname, configPinned.contains(descriptor.name()));
 			}
 		}
 
 		Set<String> installed = new HashSet<>(externalPluginManager.getInstalledExternalPlugins());
+
 
 		SwingUtilities.invokeLater(() ->
 		{
@@ -662,8 +702,15 @@ class PluginHubPanel extends PluginPanel
 
 			plugins = Sets.union(display.keySet(), loadedPlugins.keySet())
 				.stream()
-				.map(id -> new PluginItem(display.get(id), jars.get(id), loadedPlugins.get(id),
-					pluginCounts.getOrDefault(id, -1), installed.contains(id)))
+				.map(id -> new PluginItem(
+					display.get(id),
+					jars.get(id),
+					loadedPlugins.get(id),
+					pluginCounts.getOrDefault(id, -1),
+					installed.contains(id),
+                    pluginEnableStatus.getOrDefault(id, false),
+					pinned.getOrDefault(id, false)
+				))
 				.collect(Collectors.toList());
 
 			refreshing.setVisible(false);
@@ -744,5 +791,17 @@ class PluginHubPanel extends PluginPanel
 			refreshing.setVisible(true);
 			reloadPluginList(lastManifest, pluginCounts);
 		}
+	}
+
+	private List<String> getPinnedPluginNames()
+	{
+		final String config = configManager.getConfiguration(RUNELITE_GROUP_NAME, PINNED_PLUGINS_CONFIG_KEY);
+
+		if (config == null)
+		{
+			return Collections.emptyList();
+		}
+
+		return Text.fromCSV(config);
 	}
 }

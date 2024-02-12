@@ -32,8 +32,9 @@ public interface SearchablePlugin
 
 	List<String> getKeywords();
 
-	default boolean isPinned()
-	{
-		return false;
-	}
+	boolean isPluginEnabled();
+
+	boolean isInstalled();
+
+	boolean isPinned();
 }
