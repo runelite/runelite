@@ -62,7 +62,8 @@ public class KourendDiaryRequirement extends GenericDiaryRequirement
 		add("Enter the Farming Guild.",
 			new SkillRequirement(Skill.FARMING, 45));
 		add("Repair a Piscarilius crane.",
-			new SkillRequirement(Skill.CRAFTING, 30));
+			new SkillRequirement(Skill.CRAFTING, 30),
+			new SkillRequirement(Skill.CONSTRUCTION, 30));
 		add("Catch a Bluegill on Molch Island.",
 			new SkillRequirement(Skill.FISHING, 43),
 			new SkillRequirement(Skill.HUNTER, 35));
