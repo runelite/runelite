@@ -1351,8 +1351,10 @@ public class ClientUI
 	{
 		// Force heavy-weight popups/tooltips.
 		// Prevents them from being obscured by the game applet.
-		ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
-		ToolTipManager.sharedInstance().setInitialDelay(300);
+		var tooltipManager = ToolTipManager.sharedInstance();
+		tooltipManager.setLightWeightPopupEnabled(false);
+		tooltipManager.setInitialDelay(300);
+		tooltipManager.setDismissDelay(10_000);
 		JPopupMenu.setDefaultLightWeightPopupEnabled(false);
 
 		// Do not fill in background on repaint. Reduces flickering when
