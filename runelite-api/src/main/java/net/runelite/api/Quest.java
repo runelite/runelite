@@ -216,6 +216,7 @@ public enum Quest
 	HIS_FAITHFUL_SERVANTS(3250, "His Faithful Servants"),
 	THE_PATH_OF_GLOUPHRIE(3425, "The Path of Glouphrie"),
 	CHILDREN_OF_THE_SUN(3450, "Children of the Sun"),
+	BARBARIAN_TRAINING(3451, "Barbarian Training"),
 	;
 
 	@Getter
