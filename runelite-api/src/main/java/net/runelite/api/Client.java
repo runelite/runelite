@@ -1502,6 +1502,12 @@ public interface Client extends OAuthApi, GameEngine
 	void setCameraPitchTarget(int cameraPitchTarget);
 
 	/**
+	 * Sets the camera speed
+	 * @param speed
+	 */
+	void setCameraSpeed(float speed);
+
+	/**
 	 * Sets the mask for which mouse buttons control the camera.
 	 * Use 0 for the default behavior of mouse button 4 if "middle mouse moves camera" is on.
 	 * @param mask

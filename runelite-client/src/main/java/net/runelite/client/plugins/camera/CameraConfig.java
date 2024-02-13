@@ -123,6 +123,17 @@ public interface CameraConfig extends Config
 		return 25;
 	}
 
+	@ConfigItem(
+		keyName = "cameraSpeed",
+		name = "Camera Speed",
+		description = "Speed which the camera moves from input",
+		position = 7
+	)
+	default double cameraSpeed()
+	{
+		return 1f;
+	}
+
 	// region mouse settings
 	@ConfigItem(
 		keyName = "rightClickMovesCamera",
