@@ -58,9 +58,10 @@ class WoodcuttingSession
 		++logsCut;
 
 		Duration elapsed = Duration.between(start, Instant.now());
-		if (!elapsed.isZero())
+		long elapsedMs = elapsed.toMillis();
+		if (elapsedMs > 0)
 		{
-			logsPerHr = (int) ((double) logsCut * Duration.ofHours(1).toMillis() / elapsed.toMillis());
+			logsPerHr = (int) ((double) logsCut * Duration.ofHours(1).toMillis() / elapsedMs);
 		}
 	}
 
