@@ -1502,6 +1502,13 @@ public interface Client extends OAuthApi, GameEngine
 	void setCameraPitchTarget(int cameraPitchTarget);
 
 	/**
+	 * Sets the mask for which mouse buttons control the camera.
+	 * Use 0 for the default behavior of mouse button 4 if "middle mouse moves camera" is on.
+	 * @param mask
+	 */
+	void setCameraMouseButtonMask(int mask);
+
+	/**
 	 * Sets whether the camera pitch can exceed the normal limits set
 	 * by the RuneScape client.
 	 *
