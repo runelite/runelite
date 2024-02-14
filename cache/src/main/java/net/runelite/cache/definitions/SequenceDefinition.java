@@ -26,6 +26,7 @@ package net.runelite.cache.definitions;
 
 import java.util.Map;
 import lombok.Data;
+import lombok.Value;
 
 @Data
 public class SequenceDefinition
@@ -34,7 +35,7 @@ public class SequenceDefinition
 	public int[] frameIDs; // top 16 bits are FrameDefinition ids
 	public int[] chatFrameIds;
 	public int[] frameLenghts;
-	public int[] frameSounds;
+	public Sound[] frameSounds;
 	public int frameStep = -1;
 	public int[] interleaveLeave;
 	public boolean stretches = false;
@@ -46,8 +47,17 @@ public class SequenceDefinition
 	public int priority = -1;
 	public int replyMode = 2;
 	public int animMayaID = -1;
-	public Map<Integer, Integer> animMayaFrameSounds;
+	public Map<Integer, Sound> animMayaFrameSounds;
 	public int animMayaStart;
 	public int animMayaEnd;
 	public boolean[] animMayaMasks;
+
+	@Value
+	public static class Sound
+	{
+		public int id;
+		public int loops;
+		public int location;
+		public int retain;
+	}
 }
