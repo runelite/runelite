@@ -292,7 +292,11 @@ public class PartyPlugin extends Plugin
 			return;
 		}
 
-		event.consume();
+		if (!config.navigateToPingedTile())
+		{
+			event.consume();
+		}
+
 		final TilePing tilePing = new TilePing(selectedSceneTile.getWorldLocation());
 		party.send(tilePing);
 	}

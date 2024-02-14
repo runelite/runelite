@@ -71,10 +71,21 @@ public interface PartyConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "navigateToPingedTile",
+		name = "Navigate to pinged tile",
+		description = "Navigate to tile after sending a tile ping",
+		position = 4
+	)
+	default boolean navigateToPingedTile()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "pingHotkey",
 		name = "Ping hotkey",
 		description = "Key to hold to send a tile ping",
-		position = 4
+		position = 5
 	)
 	default Keybind pingHotkey()
 	{
