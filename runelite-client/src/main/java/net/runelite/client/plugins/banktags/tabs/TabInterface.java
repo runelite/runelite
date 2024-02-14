@@ -49,6 +49,7 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -151,6 +152,15 @@ public class TabInterface
 	private final ChatMessageManager chatMessageManager;
 
 	private boolean enabled;
+
+	/**
+	 * Whether the search script was manually fired or
+	 * not.
+	 */
+	@Getter
+	@Setter
+	private boolean manuallyFired;
+
 	@Getter
 	private TagTab activeTab;
 	@Getter
@@ -958,6 +968,7 @@ public class TabInterface
 
 		if (relayout)
 		{
+			manuallyFired = true;
 			bankSearch.reset(true);
 		}
 	}
@@ -970,6 +981,7 @@ public class TabInterface
 
 		if (relayout)
 		{
+			manuallyFired = true;
 			bankSearch.reset(true);
 		}
 	}
