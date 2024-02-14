@@ -26,18 +26,20 @@ package net.runelite.client.plugins.config;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.HashMultimap;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 import com.google.common.html.HtmlEscapers;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Graphics;
+
+import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -50,12 +52,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
+import javax.inject.Provider;
 import javax.inject.Singleton;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
@@ -78,7 +83,9 @@ import javax.swing.event.DocumentListener;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigDescriptor;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ExternalPluginsChanged;
 import net.runelite.client.externalplugins.ExternalPluginClient;
@@ -92,6 +99,7 @@ import static net.runelite.client.plugins.config.PluginListPanel.RUNELITE_GROUP_
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
+import net.runelite.client.ui.MultiplexingPluginPanel;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.IconTextField;
 import net.runelite.client.util.ImageUtil;
@@ -110,6 +118,20 @@ class PluginHubPanel extends PluginPanel
 	private static final ImageIcon PLUGIN_UNAVAILABLE_ICON;
 	private static final Pattern SPACES = Pattern.compile(" +");
 
+	private static final ImmutableList<String> CATEGORY_TAGS = ImmutableList.of(
+		"Combat",
+		"Chat",
+		"Item",
+		"Minigame",
+		"Notification",
+		"Skilling",
+		"XP",
+		"Enabled",
+		"Disabled",
+		"Installed",
+		"Pinned"
+	);
+
 	static
 	{
 		BufferedImage missingIcon = ImageUtil.loadImageResource(PluginHubPanel.class, "pluginhub_missingicon.png");
@@ -123,6 +145,8 @@ class PluginHubPanel extends PluginPanel
 
 		PLUGIN_UNAVAILABLE_ICON = new ImageIcon(ImageUtil.loadImageResource(PluginHubPanel.class, "mdi_alert.png"));
 	}
+
+
 
 	private class PluginIcon extends JLabel
 	{
@@ -341,14 +365,24 @@ class PluginHubPanel extends PluginPanel
 					}
 					else
 					{
-						configure.addActionListener(l -> topLevelConfigPanel.openConfigurationPanel(plugin));
+//						configure.addActionListener(l -> topLevelConfigPanel.openConfigurationPanel(plugin));
+						configure.addActionListener(l ->
+						{
+							openConfigurationPanel(plugin);
+						});
 					}
 				}
 
+				// 0% code coverage behavior
+				// if search is null, then the plugin is not installed
+				// defer to trying to find the plugin by name
 				if (search != null)
 				{
-					final String javaIsABadLanguage = search;
-					configure.addActionListener(l -> topLevelConfigPanel.openWithFilter(javaIsABadLanguage));
+//					final String javaIsABadLanguage = search;
+//					configure.addActionListener(l -> {
+//						searchBar.setText(javaIsABadLanguage);
+//					});
+					configure.setVisible(false);
 				}
 			}
 			else
@@ -454,6 +488,7 @@ class PluginHubPanel extends PluginPanel
 						.addComponent(configure, BOTTOM_LINE_HEIGHT, BOTTOM_LINE_HEIGHT, BOTTOM_LINE_HEIGHT)
 						.addComponent(addrm, BOTTOM_LINE_HEIGHT, BOTTOM_LINE_HEIGHT, BOTTOM_LINE_HEIGHT))
 					.addGap(5)));
+
 		}
 
 		@Override
@@ -468,7 +503,7 @@ class PluginHubPanel extends PluginPanel
 		}
 	}
 
-	private final TopLevelConfigPanel topLevelConfigPanel;
+//	private final TopLevelConfigPanel topLevelConfigPanel;
 	private final ExternalPluginManager externalPluginManager;
 	private final PluginManager pluginManager;
 	private final ExternalPluginClient externalPluginClient;
@@ -480,23 +515,33 @@ class PluginHubPanel extends PluginPanel
 	private final IconTextField searchBar;
 	private final JLabel refreshing;
 	private final JPanel mainPanel;
+	private final JScrollPane scrollPane;
+	private final FixedWidthPanel mainPanelWrapper;
 	private List<PluginItem> plugins = null;
 	private PluginHubManifest.ManifestFull lastManifest;
+	private final Provider<ConfigPanel> configPanelProvider;
+	@Getter
+	private final MultiplexingPluginPanel muxer;
+	private Plugin selectedPlugin;
+	private boolean requireReload = false;
 
 	@Inject
 	PluginHubPanel(
-		TopLevelConfigPanel topLevelConfigPanel,
+//		TopLevelConfigPanel topLevelConfigPanel,
 		ExternalPluginManager externalPluginManager,
 		PluginManager pluginManager,
 		ExternalPluginClient externalPluginClient,
 		ConfigManager configManager,
+		Provider<ConfigPanel> configPanelProvider,
+		EventBus eventBus,
 		ScheduledExecutorService executor)
 	{
 		super(false);
-		this.topLevelConfigPanel = topLevelConfigPanel;
+//		this.topLevelConfigPanel = topLevelConfigPanel;
 		this.externalPluginManager = externalPluginManager;
 		this.pluginManager = pluginManager;
 		this.externalPluginClient = externalPluginClient;
+		this.configPanelProvider = configPanelProvider;
 		this.configManager = configManager;
 		this.executor = executor;
 
@@ -513,12 +558,28 @@ class PluginHubPanel extends PluginPanel
 			});
 		}
 
+		muxer = new MultiplexingPluginPanel(this)
+		{
+			@Override
+			protected void onAdd(PluginPanel p)
+			{
+				eventBus.register(p);
+			}
+
+			@Override
+			protected void onRemove(PluginPanel p)
+			{
+				eventBus.unregister(p);
+			}
+		};
+
 		setBackground(ColorScheme.DARK_GRAY_COLOR);
 
 		searchBar = new IconTextField();
 		searchBar.setIcon(IconTextField.Icon.SEARCH);
 		searchBar.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		searchBar.setHoverBackgroundColor(ColorScheme.DARK_GRAY_HOVER_COLOR);
+
 		searchBar.getDocument().addDocumentListener(new DocumentListener()
 		{
 			@Override
@@ -528,10 +589,7 @@ class PluginHubPanel extends PluginPanel
 			}
 
 			@Override
-			public void removeUpdate(DocumentEvent e)
-			{
-				filter();
-			}
+			public void removeUpdate(DocumentEvent e) { filter();}
 
 			@Override
 			public void changedUpdate(DocumentEvent e)
@@ -539,6 +597,7 @@ class PluginHubPanel extends PluginPanel
 				filter();
 			}
 		});
+		CATEGORY_TAGS.forEach(searchBar.getSuggestionListModel()::addElement);
 
 		JLabel externalPluginWarning1 = new JLabel("<html>External plugins are verified to not be " +
 			"malicious or rule-breaking, but are not " +
@@ -565,7 +624,7 @@ class PluginHubPanel extends PluginPanel
 		refreshing = new JLabel("Loading...");
 		refreshing.setHorizontalAlignment(JLabel.CENTER);
 
-		JPanel mainPanelWrapper = new FixedWidthPanel();
+		mainPanelWrapper = new FixedWidthPanel();
 
 		{
 			GroupLayout layout = new GroupLayout(mainPanelWrapper);
@@ -586,7 +645,7 @@ class PluginHubPanel extends PluginPanel
 				.addComponent(refreshing, 0, Short.MAX_VALUE, Short.MAX_VALUE));
 		}
 
-		JScrollPane scrollPane = new JScrollPane();
+		scrollPane = new JScrollPane();
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		// Can't use Short.MAX_VALUE like the docs say because of JDK-8079640
 		scrollPane.setPreferredSize(new Dimension(0x7000, 0x7000));
@@ -610,55 +669,70 @@ class PluginHubPanel extends PluginPanel
 				.addComponent(scrollPane));
 		}
 
+		scrollPane.getVerticalScrollBar().addAdjustmentListener(e -> {
+//			log.info("scrollPane.getVerticalScrollBar().getValue(): " + scrollPane.getVerticalScrollBar().getValue());
+//			log.info("scrollPane.getVerticalScrollBar().getMinimum(): " + scrollPane.getVerticalScrollBar().getMinimum());
+//			log.info("scrollPane.getVerticalScrollBar().getMaximum(): " + scrollPane.getVerticalScrollBar().getMaximum());
+			scrollPane.getVerticalScrollBar().setToolTipText(
+				"scrollPane.getVerticalScrollBar().getValue(): " + scrollPane.getVerticalScrollBar().getValue() + "\n" +
+				"scrollPane.getVerticalScrollBar().getMaximum(): " + scrollPane.getVerticalScrollBar().getMaximum() + "\n" +
+				"Max - Value = " + (scrollPane.getVerticalScrollBar().getMaximum() - scrollPane.getVerticalScrollBar().getValue()) + "\n"
+			);
+		});
+
 		revalidate();
 
-		refreshing.setVisible(false);
 		reloadPluginList();
-	}
+
+		// require reloading plugin list every 2 minutes
+		executor.scheduleWithFixedDelay( () -> {
+			requireReload = true;
+		}, 0, 10, TimeUnit.SECONDS);
+
+		log.info("Hub constructor was called.");
+    }
 
 	private void reloadPluginList()
 	{
-		if (refreshing.isVisible())
-		{
-			return;
-		}
 
-		refreshing.setVisible(true);
-		mainPanel.removeAll();
-
-		executor.submit(() ->
+		SwingUtilities.invokeLater(() ->
 		{
-			PluginHubManifest.ManifestFull manifest;
-			try
+
+			refreshing.setVisible(true);
+			mainPanel.removeAll();
+
+			executor.submit(() ->
 			{
-				manifest = externalPluginClient.downloadManifestFull();
-			}
-			catch (IOException | VerificationException e)
-			{
-				log.error("", e);
-				SwingUtilities.invokeLater(() ->
+				PluginHubManifest.ManifestFull manifest;
+				try
 				{
-					refreshing.setVisible(false);
-					mainPanel.add(new JLabel("Downloading the plugin manifest failed"));
+					manifest = externalPluginClient.downloadManifestFull();
+				} catch (IOException | VerificationException e)
+				{
+					log.error("", e);
+					SwingUtilities.invokeLater(() ->
+					{
+						refreshing.setVisible(false);
+						mainPanel.add(new JLabel("Downloading the plugin manifest failed"));
 
-					JButton retry = new JButton("Retry");
-					retry.addActionListener(l -> reloadPluginList());
-					mainPanel.add(retry);
-				});
-				return;
-			}
+						JButton retry = new JButton("Retry");
+						retry.addActionListener(l -> reloadPluginList());
+						mainPanel.add(retry);
+					});
+					return;
+				}
 
-			Map<String, Integer> pluginCounts = Collections.emptyMap();
-			try
-			{
-				pluginCounts = externalPluginClient.getPluginCounts();
-			}
-			catch (IOException e)
-			{
-				log.warn("unable to download plugin counts", e);
-			}
+				Map<String, Integer> pluginCounts = Collections.emptyMap();
+				try
+				{
+					pluginCounts = externalPluginClient.getPluginCounts();
+				} catch (IOException e)
+				{
+					log.warn("unable to download plugin counts", e);
+				}
 
-			reloadPluginList(manifest, pluginCounts);
+				reloadPluginList(manifest, pluginCounts);
+			});
 		});
 	}
 
@@ -693,26 +767,26 @@ class PluginHubPanel extends PluginPanel
 		Set<String> installed = new HashSet<>(externalPluginManager.getInstalledExternalPlugins());
 
 
+		if (!refreshing.isVisible())
+		{
+			return;
+		}
+
+		plugins = Sets.union(display.keySet(), loadedPlugins.keySet())
+			.stream()
+			.map(id -> new PluginItem(
+				display.get(id),
+				jars.get(id),
+				loadedPlugins.get(id),
+				pluginCounts.getOrDefault(id, -1),
+				installed.contains(id),
+				pluginEnableStatus.getOrDefault(id, false),
+				pinned.getOrDefault(id, false)
+			))
+			.collect(Collectors.toList());
+
 		SwingUtilities.invokeLater(() ->
 		{
-			if (!refreshing.isVisible())
-			{
-				return;
-			}
-
-			plugins = Sets.union(display.keySet(), loadedPlugins.keySet())
-				.stream()
-				.map(id -> new PluginItem(
-					display.get(id),
-					jars.get(id),
-					loadedPlugins.get(id),
-					pluginCounts.getOrDefault(id, -1),
-					installed.contains(id),
-                    pluginEnableStatus.getOrDefault(id, false),
-					pinned.getOrDefault(id, false)
-				))
-				.collect(Collectors.toList());
-
 			refreshing.setVisible(false);
 			filter();
 		});
@@ -720,60 +794,140 @@ class PluginHubPanel extends PluginPanel
 
 	void filter()
 	{
-		if (refreshing.isVisible() || plugins == null)
+		SwingUtilities.invokeLater(() ->
 		{
-			return;
-		}
 
-		mainPanel.removeAll();
+			if (refreshing.isVisible() || plugins == null)
+			{
+				return;
+			}
 
-		Stream<PluginItem> stream = plugins.stream();
+			mainPanel.removeAll();
 
-		String query = searchBar.getText();
-		boolean isSearching = query != null && !query.trim().isEmpty();
-		if (isSearching)
-		{
-			PluginSearch.search(plugins, query).forEach(mainPanel::add);
-		}
-		else
-		{
-			stream.filter(p -> p.isInstalled() || p.getJarData() != null)
-				.sorted(Comparator.comparing((PluginItem p) -> p.getJarData() == null)
-					.thenComparing(PluginItem::isInstalled)
-					.thenComparingInt(PluginItem::getUserCount)
-					.reversed()
-					.thenComparing(p -> p.manifest.getDisplayName())
-				)
-				.forEach(mainPanel::add);
-		}
+			Stream<PluginItem> stream = plugins.stream();
 
-		mainPanel.revalidate();
+			String query = searchBar.getText();
+			boolean isSearching = query != null && !query.trim().isEmpty();
+			if (isSearching)
+			{
+				PluginSearch.search(plugins, query).forEach(mainPanel::add);
+			} else
+			{
+				AtomicInteger order = new AtomicInteger();
+				stream.filter(p -> p.isInstalled() || p.getJarData() != null)
+					.sorted(Comparator.comparing((PluginItem p) -> p.getJarData() == null)
+						.thenComparing(PluginItem::isInstalled)
+						.thenComparingInt(PluginItem::getUserCount)
+						.reversed()
+						.thenComparing(p -> p.manifest.getDisplayName())
+					)
+					.forEach((PluginItem p) ->
+					{
+						((JLabel) p.getComponent(0)).setText(
+							order + ": " + ((JLabel) p.getComponent(0)).getText()
+						);
+						order.addAndGet(1);
+
+						mainPanel.add(p);
+					});
+			}
+
+			revalidate();
+
+			if (selectedPlugin != null)
+			{
+				ScrollToPlugin(selectedPlugin);
+				selectedPlugin = null;
+			}
+		});
 	}
+
+	private void ScrollToPlugin(Plugin plugin)
+	{
+		SwingUtilities.invokeLater(() -> {
+			// find pluginItem index using plugin searchable name
+			int index = -1;
+			for (int i = 0; i < mainPanel.getComponentCount(); i++)
+			{
+				PluginItem pi = (PluginItem) mainPanel.getComponent(i);
+				if (pi.getSearchableName().equals(plugin.getName()))
+				{
+					index = i;
+					break;
+				}
+			}
+
+			if (index != -1)
+			{
+				ScrollToIndex(index);
+			}
+			else
+			{
+				log.info("ScrollToPlugin: " + plugin.getName() + " not found");
+			}
+		});
+	}
+
+	private void ScrollToIndex(int index)
+	{
+		// clamp index between 0 and mainPanel.getComponentCount()
+		final int clamped_index = Math.max(0, Math.min(index, mainPanel.getComponentCount() - 1));
+//		log.info("ScrollToIndex: " + index);
+		scrollPane.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
+			@Override
+			public void adjustmentValueChanged(AdjustmentEvent e) {
+				scrollPane.getVerticalScrollBar().removeAdjustmentListener(this);
+				SwingUtilities.invokeLater(() -> {
+					Rectangle bounds = mainPanel.getComponent(clamped_index).getBounds();
+//					log.info("scrollPane.getVerticalScrollBar().getMaximum(): " + scrollPane.getVerticalScrollBar().getMaximum());
+//					log.info("mainpanel space bounds: " + bounds);
+					bounds = SwingUtilities.convertRectangle(mainPanel, bounds, scrollPane.getViewport().getView());
+//					log.info("scrollpane.Viewport.View space bounds: " + bounds);
+					scrollPane.getVerticalScrollBar().setValue(bounds.y);
+
+				});
+			}
+		});
+
+		SwingUtilities.invokeLater(() -> {
+			// intentionally trigger the adjustment listener
+			scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getValue());
+		});
+    }
 
 	@Override
 	public void onActivate()
 	{
-		revalidate();
-		reloadPluginList();
-		searchBar.setText("");
+		SwingUtilities.invokeLater(() -> {
+				mainPanel.revalidate();
+			}
+		);
+		if (requireReload)
+		{
+			requireReload = false;
+			reloadPluginList();
+		}
+//		searchBar.setText("");
 		searchBar.requestFocusInWindow();
+
 	}
 
 	@Override
 	public void onDeactivate()
 	{
-		mainPanel.removeAll();
-		refreshing.setVisible(false);
-		plugins = null;
-		lastManifest = null;
+//		mainPanel.removeAll();
+//		refreshing.setVisible(false);
+//		plugins = null;
+//		lastManifest = null;
 
-		synchronized (iconLoadQueue)
-		{
-			for (PluginIcon pi; (pi = iconLoadQueue.poll()) != null; )
-			{
-				pi.loadingStarted = false;
-			}
-		}
+//		synchronized (iconLoadQueue)
+//		{
+//			for (PluginIcon pi; (pi = iconLoadQueue.poll()) != null; )
+//			{
+//				pi.loadingStarted = false;
+//			}
+//		}
+
 	}
 
 	@Subscribe
@@ -803,5 +957,33 @@ class PluginHubPanel extends PluginPanel
 		}
 
 		return Text.fromCSV(config);
+	}
+
+	void openConfigurationPanel(Plugin plugin)
+	{
+		selectedPlugin = plugin;
+		ConfigPanel panel = configPanelProvider.get();
+		panel.setRootMuxer(muxer);
+
+		PluginDescriptor descriptor = plugin.getClass().getAnnotation(PluginDescriptor.class);
+
+		Config config = pluginManager.getPluginConfigProxy(plugin);
+		ConfigDescriptor configDescriptor = config == null ? null : configManager.getConfigDescriptor(config);
+		List<String> conflicts = pluginManager.conflictsForPlugin(plugin).stream()
+			.map(Plugin::getName)
+			.collect(Collectors.toList());
+
+		panel.init(
+			new PluginConfigurationDescriptor(
+				descriptor.name(),
+				descriptor.description(),
+				descriptor.tags(),
+				plugin,
+				config,
+				configDescriptor,
+				conflicts)
+		);
+//		muxer.pushState(this);
+		muxer.pushState(panel);
 	}
 }

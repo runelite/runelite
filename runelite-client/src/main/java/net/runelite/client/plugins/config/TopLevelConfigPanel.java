@@ -49,7 +49,7 @@ class TopLevelConfigPanel extends PluginPanel
 
 	private final EventBus eventBus;
 	private final PluginListPanel pluginListPanel;
-	private final MaterialTab pluginListPanelTab;
+    private final MaterialTab pluginListPanelTab;
 
 	private boolean active = false;
 	private PluginPanel current;
@@ -60,7 +60,7 @@ class TopLevelConfigPanel extends PluginPanel
 		EventBus eventBus,
 		PluginListPanel pluginListPanel,
 		ProfilePanel profilePanel,
-		Provider<PluginHubPanel> pluginHubPanelProvider
+		PluginHubPanel pluginHubPanel
 	)
 	{
 		super(false);
@@ -84,7 +84,7 @@ class TopLevelConfigPanel extends PluginPanel
 
 		addTab(profilePanel, "profile_icon.png", "Profiles");
 
-		addTab(pluginHubPanelProvider, "plugin_hub_icon.png", "Plugin Hub");
+        addTab(pluginHubPanel.getMuxer(), "plugin_hub_icon.png", "Plugin Hub");
 
 		tabGroup.select(pluginListPanelTab);
 	}

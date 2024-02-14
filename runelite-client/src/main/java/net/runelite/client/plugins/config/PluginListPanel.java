@@ -82,7 +82,10 @@ class PluginListPanel extends PluginPanel
 		"Notification",
 		"Plugin Hub",
 		"Skilling",
-		"XP"
+		"XP",
+		"Enabled",
+		"Disabled",
+		"Pinned"
 	);
 
 	private final ConfigManager configManager;
@@ -287,11 +290,13 @@ class PluginListPanel extends PluginPanel
 		}
 	}
 
+
 	void openConfigurationPanel(PluginConfigurationDescriptor plugin)
 	{
 		ConfigPanel panel = configPanelProvider.get();
+		panel.setRootMuxer(muxer);
 		panel.init(plugin);
-		muxer.pushState(this);
+//		muxer.pushState(this);
 		muxer.pushState(panel);
 	}
 

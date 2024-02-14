@@ -73,6 +73,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 import javax.swing.event.ChangeListener;
 import javax.swing.text.JTextComponent;
+
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.config.ConfigDescriptor;
 import net.runelite.client.config.ConfigGroup;
@@ -96,6 +98,7 @@ import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
+import net.runelite.client.ui.MultiplexingPluginPanel;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.ColorJButton;
 import net.runelite.client.ui.components.TitleCaseListCellRenderer;
@@ -140,8 +143,10 @@ class ConfigPanel extends PluginPanel
 	private final FixedWidthPanel mainPanel;
 	private final JLabel title;
 	private final PluginToggleButton pluginToggle;
-
 	private PluginConfigurationDescriptor pluginConfig = null;
+
+	@Setter
+	private MultiplexingPluginPanel rootMuxer = null;
 
 	@Inject
 	private ConfigPanel(PluginListPanel pluginList, ConfigManager configManager, PluginManager pluginManager,
@@ -180,7 +185,14 @@ class ConfigPanel extends PluginPanel
 		SwingUtil.removeButtonDecorations(topPanelBackButton);
 		topPanelBackButton.setPreferredSize(new Dimension(22, 0));
 		topPanelBackButton.setBorder(new EmptyBorder(0, 0, 0, 5));
-		topPanelBackButton.addActionListener(e -> pluginList.getMuxer().popState());
+		topPanelBackButton.addActionListener(e ->
+        {
+			if (rootMuxer != null) {
+				rootMuxer.popState();
+			} else {
+				log.error("ConfigPanel missing rootMuxer. Must use SetRootMuxer(..) to set the presenting muxer, before pushState.");
+			}
+        });
 		topPanelBackButton.setToolTipText("Back");
 		topPanel.add(topPanelBackButton, BorderLayout.WEST);
 
@@ -418,7 +430,14 @@ class ConfigPanel extends PluginPanel
 		mainPanel.add(resetButton);
 
 		JButton backButton = new JButton("Back");
-		backButton.addActionListener(e -> pluginList.getMuxer().popState());
+		backButton.addActionListener(e ->
+        {
+			if (rootMuxer != null) {
+				rootMuxer.popState();
+			} else {
+				pluginList.getMuxer().popState();
+			}
+        });
 		mainPanel.add(backButton);
 
 		revalidate();
@@ -744,7 +763,11 @@ class ConfigPanel extends PluginPanel
 		if (pluginManager.getPlugins().stream()
 			.noneMatch(p -> p == this.pluginConfig.getPlugin()))
 		{
-			pluginList.getMuxer().popState();
+			if (rootMuxer != null) {
+				rootMuxer.popState();
+			} else {
+				pluginList.getMuxer().popState();
+			}
 		}
 		SwingUtilities.invokeLater(this::rebuild);
 	}
@@ -772,4 +795,10 @@ class ConfigPanel extends PluginPanel
 		});
 		return menuItem;
 	}
+
+	@Override
+	public void onActivate() {
+		SwingUtilities.invokeLater(this::rebuild);
+	}
+
 }
