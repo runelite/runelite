@@ -171,15 +171,4 @@ class TopLevelConfigPanel extends PluginPanel
 		pluginListPanel.openConfigurationPanel(name);
 	}
 
-	public void openConfigurationPanel(Plugin plugin)
-	{
-		tabGroup.select(pluginListPanelTab);
-		pluginListPanel.openConfigurationPanel(plugin);
-	}
-
-	public void openWithFilter(String filter)
-	{
-		tabGroup.select(pluginListPanelTab);
-		pluginListPanel.openWithFilter(filter);
-	}
 }

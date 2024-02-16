@@ -47,10 +47,10 @@ public class PluginSearchTest
 	public void setUp()
 	{
 		plugins = new HashMap<>();
-		plugins.put("Discord", new TestSearchablePlugin("Discord", false, "action", "activity", "external", "integration", "status"));
-		plugins.put("Emojis", new TestSearchablePlugin("Emojis", true, "replaces", "common", "emoticons"));
-		plugins.put("Grand Exchange", new TestSearchablePlugin("Grand Exchange", true, "external", "integration", "notifications", "panel", "prices", "trade"));
-		plugins.put("Status Bars", new TestSearchablePlugin("Status Bars", false, "Draws", "status", "bars"));
+		plugins.put("Discord", new TestSearchablePlugin("Discord", false, true, true, "action", "activity", "external", "integration", "status"));
+		plugins.put("Emojis", new TestSearchablePlugin("Emojis", true, false, false, "replaces", "common", "emoticons"));
+		plugins.put("Grand Exchange", new TestSearchablePlugin("Grand Exchange", true, false, false, "external", "integration", "notifications", "panel", "prices", "trade"));
+		plugins.put("Status Bars", new TestSearchablePlugin("Status Bars", false, false, true, "Draws", "status", "bars"));
 	}
 
 	@Test
@@ -82,17 +82,44 @@ public class PluginSearchTest
 		assertThat(results, contains(plugins.get("Grand Exchange"), plugins.get("Discord")));
 	}
 
+	@Test
+	public void searchFiltersByEnabled()
+	{
+		List<SearchablePlugin> results = PluginSearch.search(plugins.values(), "enabled");
+		assertThat(results, contains(plugins.get("Discord")));
+	}
+
+	@Test
+	public void searchFiltersByDisabled()
+	{
+		List<SearchablePlugin> results = PluginSearch.search(plugins.values(), "disabled");
+		assertThat(results, contains(plugins.get("Status Bars")));
+	}
+
+	@Test
+	public void searchFiltersByInstalled()
+	{
+		List<SearchablePlugin> results = PluginSearch.search(plugins.values(), "installed");
+		assertThat(results, contains(plugins.get("Discord"), plugins.get("Status Bars")));
+	}
+
+
+
 	private static class TestSearchablePlugin implements SearchablePlugin
 	{
 		private final String name;
 		private final boolean pinned;
 		private final List<String> keywords;
+		private final boolean enabled;
+		private final boolean installed;
 
-		public TestSearchablePlugin(String name, boolean pinned, String... keywords)
+		public TestSearchablePlugin(String name, boolean pinned, boolean enabled, boolean installed, String... keywords)
 		{
 			this.name = name;
 			this.pinned = pinned;
 			this.keywords = Arrays.asList(keywords);
+			this.enabled = enabled;
+			this.installed = installed;
 		}
 
 		@Override
@@ -113,16 +140,20 @@ public class PluginSearchTest
 			return keywords;
 		}
 
-		@SneakyThrows
 		@Override
 		public boolean isPluginEnabled() {
-			throw new ExecutionControl.NotImplementedException("LOUIS HACK");
+			return enabled;
 		}
 
-		@SneakyThrows
 		@Override
 		public boolean isInstalled() {
-			throw new ExecutionControl.NotImplementedException("LOUIS HACK");
+			return installed;
+		}
+
+		@Override
+		public String toString()
+		{
+			return name;
 		}
 	}
 }

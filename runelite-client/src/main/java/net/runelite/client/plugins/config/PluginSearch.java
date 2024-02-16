@@ -44,14 +44,19 @@ public class PluginSearch
 
 	public static <T extends SearchablePlugin> List<T> search(Collection<T> searchablePlugins, String query)
 	{
+		// split the query into lower-case search terms
 		ArrayList<String> search_terms = Lists.newArrayList(SPLITTER.split(query.toLowerCase()));
 
+		// Search for plugins that are installed and enabled.
+		// Remove the terms' first occurrence if found, we don't literally want plugins named "Enabled".
 		if (search_terms.remove("enabled")) {
 			searchablePlugins = searchablePlugins.stream()
 				.filter(SearchablePlugin::isPluginEnabled)
 				.filter(SearchablePlugin::isInstalled)
 				.collect(Collectors.toList());
 		}
+		// Search for plugins that are installed and disabled.
+		// Remove the terms' first occurrence if found, we don't literally want plugins named "Disabled".
 		if (search_terms.remove("disabled"))
 		{
 			searchablePlugins = searchablePlugins.stream()
@@ -59,6 +64,8 @@ public class PluginSearch
 				.filter(SearchablePlugin::isInstalled)
 				.collect(Collectors.toList());
 		}
+		// Search for plugins that are installed.
+		// Remove the terms' first occurrence if found, we don't literally want plugins named "Installed".
 		if (search_terms.remove("installed"))
 		{
 			searchablePlugins = searchablePlugins.stream()
@@ -66,6 +73,16 @@ public class PluginSearch
 				.collect(Collectors.toList());
 		}
 
+		// Search for plugins that are not installed.
+		// Remove the terms' first occurrence if found, we don't literally want plugins named "Not Installed".
+		if (search_terms.remove("not-installed"))
+		{
+			searchablePlugins = searchablePlugins.stream()
+				.filter(plugin -> !plugin.isInstalled())
+				.collect(Collectors.toList());
+		}
+
+		// Search for plugins that are pinned.
 		if (search_terms.remove("pinned") || search_terms.remove("starred"))
 		{
 			searchablePlugins = searchablePlugins.stream()
@@ -73,6 +90,7 @@ public class PluginSearch
 				.collect(Collectors.toList());
 		}
 
+		// search for plugins that match the search terms
 		return searchablePlugins.stream()
 			.filter(plugin -> Text.matchesSearchTerms(search_terms, plugin.getKeywords()))
 			.sorted(comparator(query))

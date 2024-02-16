@@ -74,6 +74,7 @@ import javax.swing.border.MatteBorder;
 import javax.swing.event.ChangeListener;
 import javax.swing.text.JTextComponent;
 
+import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.config.ConfigDescriptor;
@@ -187,9 +188,14 @@ class ConfigPanel extends PluginPanel
 		topPanelBackButton.setBorder(new EmptyBorder(0, 0, 0, 5));
 		topPanelBackButton.addActionListener(e ->
         {
-			if (rootMuxer != null) {
+			// ConfigPanel has a common rootMuxer for both PluginListPanel and PluginHubPanel
+			// So we now use the common rootMuxer to pop the state, for muxer ConfigPanel is currently presenting.
+			if (rootMuxer != null)
+			{
 				rootMuxer.popState();
-			} else {
+			} else
+			{
+				// For the odd case ConfigPanel is presented but rootMuxer is not set
 				log.error("ConfigPanel missing rootMuxer. Must use SetRootMuxer(..) to set the presenting muxer, before pushState.");
 			}
         });
@@ -798,6 +804,9 @@ class ConfigPanel extends PluginPanel
 
 	@Override
 	public void onActivate() {
+		// Rebuild the panel when it is activated to ensure that the configuration is up-to-date
+		// This is necessary because the ConfigPanel can be opened by both
+		// the PluginListPanel and the PluginHubPanel
 		SwingUtilities.invokeLater(this::rebuild);
 	}
 

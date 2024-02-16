@@ -72,7 +72,9 @@ import net.runelite.client.util.Text;
 @Singleton
 class PluginListPanel extends PluginPanel
 {
+	// Protected because PluginHubPanel needs to access these for the search bar
 	protected static final String RUNELITE_GROUP_NAME = RuneLiteConfig.class.getAnnotation(ConfigGroup.class).value();
+	// Protected because PluginHubPanel needs to access these for the search bar
 	protected static final String PINNED_PLUGINS_CONFIG_KEY = "pinnedPlugins";
 	private static final ImmutableList<String> CATEGORY_TAGS = ImmutableList.of(
 		"Combat",
@@ -83,9 +85,9 @@ class PluginListPanel extends PluginPanel
 		"Plugin Hub",
 		"Skilling",
 		"XP",
-		"Enabled",
-		"Disabled",
-		"Pinned"
+		"Enabled", // Special search term for enabled plugins
+		"Disabled", // Special search term for disabled plugins
+		"Pinned" // Special search term for pinned plugins
 	);
 
 	private final ConfigManager configManager;
@@ -294,9 +296,11 @@ class PluginListPanel extends PluginPanel
 	void openConfigurationPanel(PluginConfigurationDescriptor plugin)
 	{
 		ConfigPanel panel = configPanelProvider.get();
-		panel.setRootMuxer(muxer);
 		panel.init(plugin);
-//		muxer.pushState(this);
+
+		// ConfigPanel has a common rootMuxer for both PluginListPanel and PluginHubPanel
+		// So we need to switch over the rootMuxer to PluginListPanel's muxer
+		panel.setRootMuxer(muxer);
 		muxer.pushState(panel);
 	}
 

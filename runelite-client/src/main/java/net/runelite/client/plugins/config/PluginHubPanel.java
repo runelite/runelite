@@ -31,6 +31,8 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 import com.google.common.html.HtmlEscapers;
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -39,7 +41,6 @@ import java.awt.event.AdjustmentListener;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -53,13 +54,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
-import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 import javax.swing.AbstractAction;
@@ -126,10 +125,11 @@ class PluginHubPanel extends PluginPanel
 		"Notification",
 		"Skilling",
 		"XP",
-		"Enabled",
-		"Disabled",
-		"Installed",
-		"Pinned"
+		"Enabled", // Special search for plugins that are installed and enabled.
+		"Disabled", // Special search for plugins that are installed and disabled.
+		"Installed", // Special search for plugins that are installed.
+		"Not-Installed", // Special search for plugins that are not installed.
+		"Pinned" // Special search for plugins that are pinned.
 	);
 
 	static
@@ -246,9 +246,10 @@ class PluginHubPanel extends PluginPanel
 		@Getter
 		private final boolean installed;
 
-		@Getter
+		// Have to be careful not to use @Getter for isEnabled() here, as isEnabled is method on Component
 		private final boolean enabled;
 
+		// Pinned status of the plugin
 		@Getter
 		private final boolean pinned;
 
@@ -365,7 +366,6 @@ class PluginHubPanel extends PluginPanel
 					}
 					else
 					{
-//						configure.addActionListener(l -> topLevelConfigPanel.openConfigurationPanel(plugin));
 						configure.addActionListener(l ->
 						{
 							openConfigurationPanel(plugin);
@@ -373,15 +373,10 @@ class PluginHubPanel extends PluginPanel
 					}
 				}
 
-				// 0% code coverage behavior
 				// if search is null, then the plugin is not installed
-				// defer to trying to find the plugin by name
 				if (search != null)
 				{
-//					final String javaIsABadLanguage = search;
-//					configure.addActionListener(l -> {
-//						searchBar.setText(javaIsABadLanguage);
-//					});
+					// if the plugin is installed, then it's not configurable.
 					configure.setVisible(false);
 				}
 			}
@@ -497,8 +492,10 @@ class PluginHubPanel extends PluginPanel
 			return manifest.getDisplayName();
 		}
 
+		// Have to be careful not to use isEnabled() here, as it's a method on Component
 		@Override
-		public boolean isPluginEnabled() {
+		public boolean isPluginEnabled()
+		{
 			return this.enabled;
 		}
 	}
@@ -522,8 +519,13 @@ class PluginHubPanel extends PluginPanel
 	private final Provider<ConfigPanel> configPanelProvider;
 	@Getter
 	private final MultiplexingPluginPanel muxer;
-	private Plugin selectedPlugin;
+	private Plugin highlightedPlugin;
+	// Whether to require reloading the plugin list, this is set to true every in a scheduled task
 	private boolean requireReload = false;
+	// The interval in seconds to require reloading the plugin list
+	// We want to reload the plugin list so that the user can see the latest manifest
+	// However, for UI/UX and performance, we don't reload the plugin hub every visit
+	private final int reloadInterval;
 
 	@Inject
 	PluginHubPanel(
@@ -537,13 +539,30 @@ class PluginHubPanel extends PluginPanel
 		ScheduledExecutorService executor)
 	{
 		super(false);
-//		this.topLevelConfigPanel = topLevelConfigPanel;
 		this.externalPluginManager = externalPluginManager;
 		this.pluginManager = pluginManager;
 		this.externalPluginClient = externalPluginClient;
 		this.configPanelProvider = configPanelProvider;
 		this.configManager = configManager;
 		this.executor = executor;
+
+		// check system property for reload interval
+		String reloadIntervalStr = System.getProperty("runelite.pluginhub.reloadinterval");
+		int _reloadInterval = 120;
+		if (reloadIntervalStr != null)
+		{
+			try
+			{
+				_reloadInterval = Integer.parseInt(reloadIntervalStr);
+			}
+			catch (NumberFormatException e)
+			{
+				log.warn("Invalid reload interval: {}", reloadIntervalStr);
+			}
+		}
+		reloadInterval = _reloadInterval;
+
+		log.info("PluginHub Reload interval: {}", reloadInterval);
 
 		{
 			Object refresh = "this could just be a lambda, but no, it has to be abstracted";
@@ -558,6 +577,9 @@ class PluginHubPanel extends PluginPanel
 			});
 		}
 
+		// PluginHubPanel owns a muxer independent of PluginListPanel
+		// With this change can show a ConfigPanel without needing switch
+		// tabs to PluginListPanel
 		muxer = new MultiplexingPluginPanel(this)
 		{
 			@Override
@@ -585,16 +607,19 @@ class PluginHubPanel extends PluginPanel
 			@Override
 			public void insertUpdate(DocumentEvent e)
 			{
-				filter();
+				rebuild();
 			}
 
 			@Override
-			public void removeUpdate(DocumentEvent e) { filter();}
+			public void removeUpdate(DocumentEvent e)
+			{
+				rebuild();
+			}
 
 			@Override
 			public void changedUpdate(DocumentEvent e)
 			{
-				filter();
+				rebuild();
 			}
 		});
 		CATEGORY_TAGS.forEach(searchBar.getSuggestionListModel()::addElement);
@@ -669,25 +694,25 @@ class PluginHubPanel extends PluginPanel
 				.addComponent(scrollPane));
 		}
 
-		scrollPane.getVerticalScrollBar().addAdjustmentListener(e -> {
+		// Debug code to show scroll bar values
+//		scrollPane.getVerticalScrollBar().addAdjustmentListener(e -> {
 //			log.info("scrollPane.getVerticalScrollBar().getValue(): " + scrollPane.getVerticalScrollBar().getValue());
 //			log.info("scrollPane.getVerticalScrollBar().getMinimum(): " + scrollPane.getVerticalScrollBar().getMinimum());
 //			log.info("scrollPane.getVerticalScrollBar().getMaximum(): " + scrollPane.getVerticalScrollBar().getMaximum());
-			scrollPane.getVerticalScrollBar().setToolTipText(
-				"scrollPane.getVerticalScrollBar().getValue(): " + scrollPane.getVerticalScrollBar().getValue() + "\n" +
-				"scrollPane.getVerticalScrollBar().getMaximum(): " + scrollPane.getVerticalScrollBar().getMaximum() + "\n" +
-				"Max - Value = " + (scrollPane.getVerticalScrollBar().getMaximum() - scrollPane.getVerticalScrollBar().getValue()) + "\n"
-			);
-		});
-
-		revalidate();
+//			scrollPane.getVerticalScrollBar().setToolTipText(
+//				"scrollPane.getVerticalScrollBar().getValue(): " + scrollPane.getVerticalScrollBar().getValue() + "\n" +
+//				"scrollPane.getVerticalScrollBar().getMaximum(): " + scrollPane.getVerticalScrollBar().getMaximum() + "\n" +
+//				"Max - Value = " + (scrollPane.getVerticalScrollBar().getMaximum() - scrollPane.getVerticalScrollBar().getValue()) + "\n"
+//			);
+//		});
 
 		reloadPluginList();
 
 		// require reloading plugin list every 2 minutes
-		executor.scheduleWithFixedDelay( () -> {
+		executor.scheduleWithFixedDelay( () ->
+		{
 			requireReload = true;
-		}, 0, 10, TimeUnit.SECONDS);
+		}, 0, reloadInterval, TimeUnit.SECONDS);
 
 		log.info("Hub constructor was called.");
     }
@@ -707,7 +732,8 @@ class PluginHubPanel extends PluginPanel
 				try
 				{
 					manifest = externalPluginClient.downloadManifestFull();
-				} catch (IOException | VerificationException e)
+				}
+				catch (IOException | VerificationException e)
 				{
 					log.error("", e);
 					SwingUtilities.invokeLater(() ->
@@ -726,7 +752,8 @@ class PluginHubPanel extends PluginPanel
 				try
 				{
 					pluginCounts = externalPluginClient.getPluginCounts();
-				} catch (IOException e)
+				}
+				catch (IOException e)
 				{
 					log.warn("unable to download plugin counts", e);
 				}
@@ -745,9 +772,11 @@ class PluginHubPanel extends PluginPanel
 			.collect(ImmutableMap.toImmutableMap(PluginHubManifest.JarData::getInternalName, Function.identity()));
 
 		Multimap<String, Plugin> loadedPlugins = HashMultimap.create();
+		// Map for enable status of plugin for PluginItem
 		Map<String, Boolean> pluginEnableStatus = new HashMap<>();
-
+		// Map the pinned status of plugin for PluginItem
 		List<String> configPinned = getPinnedPluginNames();
+		// Map the pinned status of plugin for PluginItem
 		Map<String, Boolean> pinned = new HashMap<>();
 
 		for (Plugin p : pluginManager.getPlugins())
@@ -758,14 +787,15 @@ class PluginHubPanel extends PluginPanel
 			{
 				loadedPlugins.put(iname, p);
 
+				// Store the enable status of plugin for PluginItem
 				pluginEnableStatus.put(iname, pluginManager.isPluginEnabled(p));
+				// Store the pinned status of plugin for PluginItem
 				PluginDescriptor descriptor = clazz.getAnnotation(PluginDescriptor.class);
 				pinned.put(iname, configPinned.contains(descriptor.name()));
 			}
 		}
 
 		Set<String> installed = new HashSet<>(externalPluginManager.getInstalledExternalPlugins());
-
 
 		if (!refreshing.isVisible())
 		{
@@ -788,11 +818,12 @@ class PluginHubPanel extends PluginPanel
 		SwingUtilities.invokeLater(() ->
 		{
 			refreshing.setVisible(false);
-			filter();
+			rebuild();
 		});
 	}
 
-	void filter()
+	// renamed from filter() to rebuild() to better reflect what it does
+	void rebuild()
 	{
 		SwingUtilities.invokeLater(() ->
 		{
@@ -811,9 +842,11 @@ class PluginHubPanel extends PluginPanel
 			if (isSearching)
 			{
 				PluginSearch.search(plugins, query).forEach(mainPanel::add);
-			} else
+			}
+			else
 			{
-				AtomicInteger order = new AtomicInteger();
+				// Used to debug the index of plugins
+//				AtomicInteger order = new AtomicInteger();
 				stream.filter(p -> p.isInstalled() || p.getJarData() != null)
 					.sorted(Comparator.comparing((PluginItem p) -> p.getJarData() == null)
 						.thenComparing(PluginItem::isInstalled)
@@ -823,34 +856,40 @@ class PluginHubPanel extends PluginPanel
 					)
 					.forEach((PluginItem p) ->
 					{
-						((JLabel) p.getComponent(0)).setText(
-							order + ": " + ((JLabel) p.getComponent(0)).getText()
-						);
-						order.addAndGet(1);
+						// Debug code to show index of plugins
+//						((JLabel) p.getComponent(0)).setText(
+//							order + ": " + ((JLabel) p.getComponent(0)).getText()
+//						);
+//						order.addAndGet(1);
 
 						mainPanel.add(p);
 					});
+
 			}
 
 			revalidate();
 
-			if (selectedPlugin != null)
+			// plugin is highlighted if user is the plugin's ConfigPanel
+			// and the user navigates back to PluginHubPanel.
+			if (highlightedPlugin != null)
 			{
-				ScrollToPlugin(selectedPlugin);
-				selectedPlugin = null;
+				ScrollToPlugin(highlightedPlugin);
+				highlightedPlugin = null;
 			}
 		});
 	}
 
 	private void ScrollToPlugin(Plugin plugin)
 	{
-		SwingUtilities.invokeLater(() -> {
+		SwingUtilities.invokeLater(() ->
+		{
 			// find pluginItem index using plugin searchable name
 			int index = -1;
 			for (int i = 0; i < mainPanel.getComponentCount(); i++)
 			{
 				PluginItem pi = (PluginItem) mainPanel.getComponent(i);
-				if (pi.getSearchableName().equals(plugin.getName()))
+
+				if (pi.jarData.getInternalName().equals(ExternalPluginManager.getInternalName(plugin.getClass())))
 				{
 					index = i;
 					break;
@@ -872,33 +911,49 @@ class PluginHubPanel extends PluginPanel
 	{
 		// clamp index between 0 and mainPanel.getComponentCount()
 		final int clamped_index = Math.max(0, Math.min(index, mainPanel.getComponentCount() - 1));
-//		log.info("ScrollToIndex: " + index);
-		scrollPane.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
+
+		// Sophisticated hack to ensure the scrollPane scrolls to the correct position
+		// This is necessary because the scrollPane's viewport is not updated
+		// until the next layout pass.
+		// InvokeLater is not enough to ensure the viewport is updated with the new layout.
+		// This is the only way I found to ensure the viewport is updated with the new layout.
+		scrollPane.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener()
+		{
 			@Override
-			public void adjustmentValueChanged(AdjustmentEvent e) {
+			public void adjustmentValueChanged(AdjustmentEvent e)
+			{
+				// remove the listener after running once
 				scrollPane.getVerticalScrollBar().removeAdjustmentListener(this);
-				SwingUtilities.invokeLater(() -> {
+
+				// InvokeLater is also necessary to ensure the viewport is updated with the new layout
+				SwingUtilities.invokeLater(() ->
+				{
+					// All of that just to make sure the following three lines are executed
+					// in the next layout pass
+
+					// get the bounds of the pluginItem
 					Rectangle bounds = mainPanel.getComponent(clamped_index).getBounds();
-//					log.info("scrollPane.getVerticalScrollBar().getMaximum(): " + scrollPane.getVerticalScrollBar().getMaximum());
-//					log.info("mainpanel space bounds: " + bounds);
+					// convert the bounds to the viewport's coordinate space
 					bounds = SwingUtilities.convertRectangle(mainPanel, bounds, scrollPane.getViewport().getView());
-//					log.info("scrollpane.Viewport.View space bounds: " + bounds);
+					// scroll to the PluginItem
 					scrollPane.getVerticalScrollBar().setValue(bounds.y);
 
 				});
 			}
 		});
 
-		SwingUtilities.invokeLater(() -> {
-			// intentionally trigger the adjustment listener
+		// intentionally trigger the adjustment listener
+		SwingUtilities.invokeLater(() ->
+		{
 			scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getValue());
 		});
-    }
+	}
 
 	@Override
 	public void onActivate()
 	{
-		SwingUtilities.invokeLater(() -> {
+		SwingUtilities.invokeLater(() ->
+			{
 				mainPanel.revalidate();
 			}
 		);
@@ -961,8 +1016,13 @@ class PluginHubPanel extends PluginPanel
 
 	void openConfigurationPanel(Plugin plugin)
 	{
-		selectedPlugin = plugin;
+		// highlight the plugin in the list
+		// so that when the user navigates back to PluginHubPanel
+		// the plugin is scrolled to, if a rebuild is triggered
+		highlightedPlugin = plugin;
 		ConfigPanel panel = configPanelProvider.get();
+		// ConfigPanel has a common rootMuxer for both PluginListPanel and PluginHubPanel
+		// So we need to switch over the rootMuxer to PluginListPanel's muxer
 		panel.setRootMuxer(muxer);
 
 		PluginDescriptor descriptor = plugin.getClass().getAnnotation(PluginDescriptor.class);
@@ -983,7 +1043,6 @@ class PluginHubPanel extends PluginPanel
 				configDescriptor,
 				conflicts)
 		);
-//		muxer.pushState(this);
 		muxer.pushState(panel);
 	}
 }
