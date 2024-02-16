@@ -868,8 +868,9 @@ class PluginHubPanel extends PluginPanel
 
 			revalidate();
 
-			// plugin is highlighted if user is the plugin's ConfigPanel
-			// and the user navigates back to PluginHubPanel.
+			// plugin is highlighted if user visited ConfigPanel,
+			// we scroll back to the plugin when user navigates back to PluginHubPanel.
+			// Set in PluginHubPanel::openConfigurationPanel
 			if (highlightedPlugin != null)
 			{
 				ScrollToPlugin(highlightedPlugin);
