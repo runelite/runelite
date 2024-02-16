@@ -41,6 +41,7 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
+import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.client.config.ConfigManager;
@@ -68,10 +69,12 @@ public class InfoBoxManager
 	private static final String DETACH = "Detach";
 	private static final String FLIP = "Flip";
 	private static final String DELETE = "Delete";
+	private static final String WHICH_PLUGIN = "Which Plugin";
 
 	private static final OverlayMenuEntry DETACH_ME = new OverlayMenuEntry(MenuAction.RUNELITE_INFOBOX, DETACH, "InfoBox");
 	private static final OverlayMenuEntry FLIP_ME = new OverlayMenuEntry(MenuAction.RUNELITE_INFOBOX, FLIP, "InfoBox Group");
 	private static final OverlayMenuEntry DELETE_ME = new OverlayMenuEntry(MenuAction.RUNELITE_INFOBOX, DELETE, "InfoBox Group");
+	private static final OverlayMenuEntry WHICH_PLUGIN_ME = new OverlayMenuEntry(MenuAction.RUNELITE_INFOBOX, WHICH_PLUGIN, "InfoBox");
 
 	private final Map<String, InfoBoxOverlay> layers = new ConcurrentHashMap<>();
 
@@ -143,6 +146,13 @@ public class InfoBoxManager
 				mergeInfoBoxes(source, dest);
 			}
 		}
+		else if (WHICH_PLUGIN.equals(event.getEntry().getOption()))
+		{
+			log.debug("InfoBox {} was created by {}", event.getInfoBox().getName(), event.getInfoBox().getPlugin().getName());
+			// send in-game chat message
+			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "InfoBox " + event.getInfoBox().getName() + " was created by " + event.getInfoBox().getPlugin().getName(), null);
+
+		}
 	}
 
 	public void addInfoBox(InfoBox infoBox)
@@ -158,6 +168,7 @@ public class InfoBoxManager
 		List<OverlayMenuEntry> menuEntries = infoBox.getMenuEntries();
 		menuEntries.add(DETACH_ME);
 		menuEntries.add(FLIP_ME);
+		menuEntries.add(WHICH_PLUGIN_ME);
 		if (!layerName.equals(DEFAULT_LAYER))
 		{
 			// Non default-group infoboxes have a delete option to delete the group
@@ -200,6 +211,7 @@ public class InfoBoxManager
 		infoBox.getMenuEntries().remove(DETACH_ME);
 		infoBox.getMenuEntries().remove(FLIP_ME);
 		infoBox.getMenuEntries().remove(DELETE_ME);
+		infoBox.getMenuEntries().remove(WHICH_PLUGIN_ME);
 	}
 
 	public synchronized void removeIf(Predicate<InfoBox> filter)
