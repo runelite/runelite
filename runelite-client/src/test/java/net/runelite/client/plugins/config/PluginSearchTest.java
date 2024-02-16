@@ -139,12 +139,14 @@ public class PluginSearchTest
 		}
 
 		@Override
-		public boolean isPluginEnabled() {
+		public boolean isPluginEnabled()
+		{
 			return enabled;
 		}
 
 		@Override
-		public boolean isInstalled() {
+		public boolean isInstalled()
+		{
 			return installed;
 		}
 
