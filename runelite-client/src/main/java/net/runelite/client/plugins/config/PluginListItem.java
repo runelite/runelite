@@ -208,12 +208,14 @@ class PluginListItem extends JPanel implements SearchablePlugin
 	}
 
 	@Override
-	public boolean isPluginEnabled() {
+	public boolean isPluginEnabled()
+	{
 		return onOffToggle.isSelected();
 	}
 
 	@Override
-	public boolean isInstalled() {
+	public boolean isInstalled()
+	{
 		// plugin list items are by definition installed.
 		return true;
 	}

@@ -49,7 +49,8 @@ public class PluginSearch
 
 		// Search for plugins that are installed and enabled.
 		// Remove the terms' first occurrence if found, we don't literally want plugins named "Enabled".
-		if (search_terms.remove("enabled")) {
+		if (search_terms.remove("enabled"))
+		{
 			searchablePlugins = searchablePlugins.stream()
 				.filter(SearchablePlugin::isPluginEnabled)
 				.filter(SearchablePlugin::isInstalled)

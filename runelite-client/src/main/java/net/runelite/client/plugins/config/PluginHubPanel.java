@@ -32,7 +32,6 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 import com.google.common.html.HtmlEscapers;
 import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -715,7 +714,7 @@ class PluginHubPanel extends PluginPanel
 		}, 0, reloadInterval, TimeUnit.SECONDS);
 
 		log.info("Hub constructor was called.");
-    }
+	}
 
 	private void reloadPluginList()
 	{
