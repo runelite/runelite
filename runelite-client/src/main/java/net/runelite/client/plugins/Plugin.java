@@ -70,5 +70,4 @@ public abstract class Plugin implements Module
 	{
 		return getClass().getAnnotation(PluginDescriptor.class).name();
 	}
-
 }

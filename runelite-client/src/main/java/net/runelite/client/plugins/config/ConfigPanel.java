@@ -187,8 +187,8 @@ class ConfigPanel extends PluginPanel
 		topPanelBackButton.setBorder(new EmptyBorder(0, 0, 0, 5));
 		topPanelBackButton.addActionListener(e ->
 		{
-			// ConfigPanel has a common rootMuxer for both PluginListPanel and PluginHubPanel
-			// So we now use the common rootMuxer to pop the state, for muxer ConfigPanel is currently presenting.
+			// ConfigPanel has a rootMuxer variable for PluginListPanel and PluginHubPanel to set.
+			// So we now use the rootMuxer to pop the state, for the muxer ConfigPanel is currently presenting from.
 			if (rootMuxer != null)
 			{
 				rootMuxer.popState();
