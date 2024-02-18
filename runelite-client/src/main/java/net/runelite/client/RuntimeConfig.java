@@ -48,6 +48,7 @@ public class RuntimeConfig
 	private Set<Integer> forceDeadAnimations;
 	private Set<Integer> nonAttackNpcs;
 
+	private Set<String> outdatedClientVersions;
 	private String[] updateLauncherWinVers;
 	private double updateRollout;
 

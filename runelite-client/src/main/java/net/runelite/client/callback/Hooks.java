@@ -40,6 +40,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -61,6 +62,8 @@ import net.runelite.api.widgets.WidgetItem;
 import net.runelite.api.worldmap.WorldMap;
 import net.runelite.api.worldmap.WorldMapRenderer;
 import net.runelite.client.Notifier;
+import net.runelite.client.RuneLiteProperties;
+import net.runelite.client.RuntimeConfig;
 import net.runelite.client.TelemetryClient;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.eventbus.EventBus;
@@ -107,6 +110,8 @@ public class Hooks implements Callbacks
 	private final ClientUI clientUi;
 	@Nullable
 	private final TelemetryClient telemetryClient;
+	@Nullable
+	private final RuntimeConfig runtimeConfig;
 
 	private Dimension lastStretchedDimensions;
 	private VolatileImage stretchedImage;
@@ -168,7 +173,8 @@ public class Hooks implements Callbacks
 		DrawManager drawManager,
 		Notifier notifier,
 		ClientUI clientUi,
-		@Nullable TelemetryClient telemetryClient
+		@Nullable TelemetryClient telemetryClient,
+		@Nullable RuntimeConfig runtimeConfig
 	)
 	{
 		this.client = client;
@@ -185,6 +191,7 @@ public class Hooks implements Callbacks
 		this.notifier = notifier;
 		this.clientUi = clientUi;
 		this.telemetryClient = telemetryClient;
+		this.runtimeConfig = runtimeConfig;
 		eventBus.register(this);
 	}
 
@@ -669,5 +676,22 @@ public class Hooks implements Callbacks
 	public void openUrl(String url)
 	{
 		LinkBrowser.browse(url);
+	}
+
+	@Override
+	public boolean isRuneLiteClientOutdated()
+	{
+		if (runtimeConfig == null)
+		{
+			return false;
+		}
+
+		Set<String> outdatedClientVersions = runtimeConfig.getOutdatedClientVersions();
+		if (outdatedClientVersions == null)
+		{
+			return false;
+		}
+
+		return outdatedClientVersions.contains(RuneLiteProperties.getVersion());
 	}
 }
