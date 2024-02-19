@@ -218,7 +218,8 @@ public interface ScreenshotConfig extends Config
 	@ConfigItem(
 		keyName = "valuableDrop",
 		name = "Screenshot Valuable drops",
-		description = "Configures whether or not screenshots are automatically taken when you receive a valuable drop.",
+		description = "Configures whether or not screenshots are automatically taken when you receive a valuable drop.<br>"
+			+ "Requires 'Loot drop notifications' to be enabled in the RuneScape settings.",
 		position = 14,
 		section = whatSection
 	)
@@ -230,7 +231,8 @@ public interface ScreenshotConfig extends Config
 	@ConfigItem(
 		keyName = "valuableDropThreshold",
 		name = "Valuable Threshold",
-		description = "The minimum value to save screenshots of valuable drops.",
+		description = "The minimum value to save screenshots of valuable drops.<br>"
+			+ "Requires 'Minimum item value needed for loot notification' to be set to a lesser or equal value in the RuneScape settings.",
 		position = 15,
 		section = whatSection
 	)
@@ -242,7 +244,8 @@ public interface ScreenshotConfig extends Config
 	@ConfigItem(
 		keyName = "untradeableDrop",
 		name = "Screenshot Untradeable drops",
-		description = "Configures whether or not screenshots are automatically taken when you receive an untradeable drop.",
+		description = "Configures whether or not screenshots are automatically taken when you receive an untradeable drop.<br>"
+			+ "Requires 'Untradeable loot notifications' to be enabled in the RuneScape settings.",
 		position = 16,
 		section = whatSection
 	)
@@ -278,7 +281,8 @@ public interface ScreenshotConfig extends Config
 	@ConfigItem(
 		keyName = "collectionLogEntries",
 		name = "Screenshot collection log entries",
-		description = "Take a screenshot when completing an entry in the collection log",
+		description = "Take a screenshot when completing an entry in the collection log.<br>"
+			+ "Requires 'Collection log - New addition notification' to be enabled in the RuneScape settings.",
 		position = 19,
 		section = whatSection
 	)
