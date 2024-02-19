@@ -82,7 +82,7 @@ public class RuntimeConfigLoader implements Supplier<RuntimeConfig>
 		}
 	}
 
-	private CompletableFuture<RuntimeConfig> fetch()
+	CompletableFuture<RuntimeConfig> fetch()
 	{
 		CompletableFuture<RuntimeConfig> future = new CompletableFuture<>();
 

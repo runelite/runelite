@@ -77,4 +77,15 @@ public class RuntimeConfig
 		});
 		return true;
 	}
+
+	void refresh(RuntimeConfig config)
+	{
+		ignoreDeadNpcs = config.ignoreDeadNpcs;
+		forceDeadNpcs = config.forceDeadNpcs;
+		resetDeadOnChangeNpcs = config.resetDeadOnChangeNpcs;
+		forceDeadAnimations = config.forceDeadAnimations;
+		nonAttackNpcs = config.nonAttackNpcs;
+
+		outdatedClientVersions = config.outdatedClientVersions;
+	}
 }

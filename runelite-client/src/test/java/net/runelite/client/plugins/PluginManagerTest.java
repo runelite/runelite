@@ -49,6 +49,7 @@ import net.runelite.api.Client;
 import net.runelite.client.RuneLite;
 import net.runelite.client.RuneLiteModule;
 import net.runelite.client.RuntimeConfig;
+import net.runelite.client.RuntimeConfigLoader;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigManager;
@@ -105,8 +106,11 @@ public class PluginManagerTest
 				return mock(c);
 			});
 
+		RuntimeConfigLoader configLoader = mock(RuntimeConfigLoader.class);
+		when(configLoader.get()).thenReturn(mock(RuntimeConfig.class));
+
 		Injector injector = Guice.createInjector(Modules
-			.override(new RuneLiteModule(okHttpClient, () -> null, () -> mock(RuntimeConfig.class), true, false, false,
+			.override(new RuneLiteModule(okHttpClient, () -> null, configLoader, true, false, false,
 				RuneLite.DEFAULT_SESSION_FILE,
 				null, false, false
 			))
