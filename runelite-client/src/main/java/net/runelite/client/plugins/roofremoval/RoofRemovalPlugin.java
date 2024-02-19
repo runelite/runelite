@@ -106,8 +106,8 @@ public class RoofRemovalPlugin extends Plugin
 			if (client.getGameState() == GameState.LOGGED_IN)
 			{
 				performRoofRemoval();
+				client.getScene().setRoofRemovalMode(buildRoofRemovalFlags());
 			}
-			client.getScene().setRoofRemovalMode(buildRoofRemovalFlags());
 		});
 	}
 
