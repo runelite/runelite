@@ -217,6 +217,8 @@ public enum Quest
 	THE_PATH_OF_GLOUPHRIE(3425, "The Path of Glouphrie"),
 	CHILDREN_OF_THE_SUN(3450, "Children of the Sun"),
 	BARBARIAN_TRAINING(3451, "Barbarian Training"),
+	DEFENDER_OF_VARROCK(3466, "Defender of Varrock"),
+	WHILE_GUTHIX_SLEEPS(3467, "While Guthix Sleeps"),
 	;
 
 	@Getter
