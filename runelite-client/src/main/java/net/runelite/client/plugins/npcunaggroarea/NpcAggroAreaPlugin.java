@@ -296,17 +296,20 @@ public class NpcAggroAreaPlugin extends Plugin
 
 	private void checkAreaNpcs(final NPC... npcs)
 	{
-		for (NPC npc : npcs)
+		if (!active)
 		{
-			if (npc == null)
+			for (NPC npc : npcs)
 			{
-				continue;
-			}
+				if (npc == null)
+				{
+					continue;
+				}
 
-			if (isNpcMatch(npc))
-			{
-				active = true;
-				break;
+				if (isNpcMatch(npc))
+				{
+					active = true;
+					break;
+				}
 			}
 		}
 
@@ -322,7 +325,7 @@ public class NpcAggroAreaPlugin extends Plugin
 	@Subscribe(priority = -1) // run after slayer plugin so targets has time to populate
 	public void onNpcSpawned(NpcSpawned event)
 	{
-		if (config.alwaysActive())
+		if (active)
 		{
 			return;
 		}
