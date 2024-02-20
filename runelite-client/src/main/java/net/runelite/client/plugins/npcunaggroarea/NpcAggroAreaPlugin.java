@@ -479,7 +479,7 @@ public class NpcAggroAreaPlugin extends Plugin
 					onLogin();
 				}
 
-				calculateLinesToDisplay(); // scene base has changed, so the lines need to be recomputed
+				recheckActive();
 				break;
 
 			case LOGGING_IN:
