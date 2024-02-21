@@ -558,7 +558,7 @@ public interface Client extends OAuthApi, GameEngine
 	/**
 	 * Gets the widget that is being dragged on.
 	 * <p>
-	 * The widget being dragged has the {@link net.runelite.api.widgets.WidgetConfig#DRAG_ON}
+	 * The widget being dragged has the {@link net.runelite.api.widgets.WidgetConfig#DRAG}
 	 * flag set, and is the widget currently under the dragged widget.
 	 *
 	 * @return the dragged on widget, null if not dragging any widget

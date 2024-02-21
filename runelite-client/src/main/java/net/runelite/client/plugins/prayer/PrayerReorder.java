@@ -368,17 +368,13 @@ class PrayerReorder
 				int widgetConfig = prayerWidget.getClickMask();
 				if (unlocked)
 				{
-					// allow dragging of this widget
-					widgetConfig |= DRAG;
-					// allow this widget to be dragged on
-					widgetConfig |= DRAG_ON;
+					// allow dragging of this widget & to be dragged on
+					widgetConfig |= DRAG | DRAG_ON;
 				}
 				else
 				{
-					// remove drag flag
-					widgetConfig &= ~DRAG;
-					// remove drag on flag
-					widgetConfig &= ~DRAG_ON;
+					// remove drag flag & drag on flags
+					widgetConfig &= ~(DRAG | DRAG_ON);
 				}
 				prayerWidget.setClickMask(widgetConfig);
 

@@ -328,7 +328,7 @@ public class TabInterface
 		upButton = createGraphic(parent, "", TabSprites.UP_ARROW.getSpriteId(), -1, TAB_WIDTH, BUTTON_HEIGHT, MARGIN, 0);
 		upButton.setAction(1, SCROLL_UP);
 		int clickmask = upButton.getClickMask();
-		clickmask |= WidgetConfig.DRAG;
+		clickmask |= WidgetConfig.DRAG_ON;
 		upButton.setClickMask(clickmask);
 		upButton.setHasListener(true);
 		upButton.setOnOpListener((JavaScriptCallback) (event) -> scrollTab(-1));
@@ -336,7 +336,7 @@ public class TabInterface
 		downButton = createGraphic(parent, "", TabSprites.DOWN_ARROW.getSpriteId(), -1, TAB_WIDTH, BUTTON_HEIGHT, MARGIN, 0);
 		downButton.setAction(1, SCROLL_DOWN);
 		clickmask = downButton.getClickMask();
-		clickmask |= WidgetConfig.DRAG;
+		clickmask |= WidgetConfig.DRAG_ON;
 		downButton.setClickMask(clickmask);
 		downButton.setHasListener(true);
 		downButton.setOnOpListener((JavaScriptCallback) (event) -> scrollTab(1));
