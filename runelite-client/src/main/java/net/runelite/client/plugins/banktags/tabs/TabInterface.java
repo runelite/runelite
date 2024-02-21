@@ -358,8 +358,9 @@ public class TabInterface
 		{
 			// the server will resync the last opened vanilla tab when the bank is opened
 			client.setVarbit(Varbits.CURRENT_BANK_TAB, 0);
-			activeTab = tabManager.find(config.tab());
-			tagTabActive = false;
+			var tab = config.tab();
+			activeTab = tabManager.find(tab);
+			tagTabActive = TAB_MENU_KEY.equals(tab);
 		}
 
 		// Move equipment button to the titlebar
