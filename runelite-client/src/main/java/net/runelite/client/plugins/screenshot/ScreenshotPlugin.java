@@ -52,6 +52,7 @@ import net.runelite.api.SpriteID;
 import net.runelite.api.VarClientStr;
 import net.runelite.api.Varbits;
 import net.runelite.api.annotations.Component;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
@@ -93,6 +94,7 @@ public class ScreenshotPlugin extends Plugin
 	private static final Map<Integer, String> CHEST_LOOT_EVENTS = ImmutableMap.of(12127, "The Gauntlet");
 	private static final int GAUNTLET_REGION = 7512;
 	private static final int CORRUPTED_GAUNTLET_REGION = 7768;
+	private static final Set<Integer> LAST_MAN_STANDING_REGIONS = ImmutableSet.of(13658, 13659, 13160, 13914, 13915, 13916, 13918, 13919, 13920, 14174, 14175, 14176, 14430, 14431, 14432);
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
 	private static final Pattern LEVEL_UP_PATTERN = Pattern.compile(".*Your ([a-zA-Z]+) (?:level is|are)? now (\\d+)\\.");
 	private static final Pattern LEVEL_UP_MESSAGE_PATTERN = Pattern.compile("Congratulations, you've (just advanced your (?<skill>[a-zA-Z]+) level\\. You are now level (?<level>\\d+)|reached the highest possible (?<skill99>[a-zA-Z]+) level of 99)\\.");
@@ -298,7 +300,11 @@ public class ScreenshotPlugin extends Plugin
 			Player player = (Player) actor;
 			if (player == client.getLocalPlayer() && config.screenshotPlayerDeath())
 			{
-				takeScreenshot("Death", SD_DEATHS);
+				final int regionID = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID();
+				if (!(config.ignoreLMSDeaths() && LAST_MAN_STANDING_REGIONS.contains(regionID)))
+				{
+					takeScreenshot("Death", SD_DEATHS);
+				}
 			}
 			else if (player != client.getLocalPlayer()
 				&& player.getCanvasTilePoly() != null
