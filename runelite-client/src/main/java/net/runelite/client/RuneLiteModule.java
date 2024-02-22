@@ -128,6 +128,7 @@ public class RuneLiteModule extends AbstractModule
 		bind(ScheduledExecutorService.class).toInstance(new ExecutorServiceExceptionLogger(Executors.newSingleThreadScheduledExecutor()));
 		bind(OkHttpClient.class).toInstance(okHttpClient);
 		bind(RuntimeConfigLoader.class).toInstance(configLoader);
+		bind(RuntimeConfigRefresher.class).asEagerSingleton();
 		bind(MenuManager.class);
 		bind(ChatMessageManager.class);
 		bind(ItemManager.class);
