@@ -43,6 +43,7 @@ import java.util.List;
 import java.util.Set;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
@@ -112,6 +113,7 @@ public class Hooks implements Callbacks
 	private final TelemetryClient telemetryClient;
 	@Nullable
 	private final RuntimeConfig runtimeConfig;
+	private final boolean developerMode;
 
 	private Dimension lastStretchedDimensions;
 	private VolatileImage stretchedImage;
@@ -174,7 +176,8 @@ public class Hooks implements Callbacks
 		Notifier notifier,
 		ClientUI clientUi,
 		@Nullable TelemetryClient telemetryClient,
-		@Nullable RuntimeConfig runtimeConfig
+		@Nullable RuntimeConfig runtimeConfig,
+		@Named("developerMode") final boolean developerMode
 	)
 	{
 		this.client = client;
@@ -192,6 +195,7 @@ public class Hooks implements Callbacks
 		this.clientUi = clientUi;
 		this.telemetryClient = telemetryClient;
 		this.runtimeConfig = runtimeConfig;
+		this.developerMode = developerMode;
 		eventBus.register(this);
 	}
 
@@ -681,7 +685,7 @@ public class Hooks implements Callbacks
 	@Override
 	public boolean isRuneLiteClientOutdated()
 	{
-		if (runtimeConfig == null)
+		if (runtimeConfig == null || developerMode)
 		{
 			return false;
 		}
