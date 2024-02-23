@@ -194,6 +194,11 @@ public class InterfaceStylesPlugin extends Plugin
 	private void overrideSprites()
 	{
 		final Skin configuredSkin = config.skin();
+		if (configuredSkin == Skin.DEFAULT)
+		{
+			return;
+		}
+
 		for (SpriteOverride spriteOverride : SpriteOverride.values())
 		{
 			for (Skin skin : spriteOverride.getSkin())
@@ -232,6 +237,11 @@ public class InterfaceStylesPlugin extends Plugin
 	private void overrideWidgetSprites()
 	{
 		final Skin configuredSkin = config.skin();
+		if (configuredSkin == Skin.DEFAULT)
+		{
+			return;
+		}
+
 		for (WidgetOverride widgetOverride : WidgetOverride.values())
 		{
 			if (widgetOverride.getSkin() == configuredSkin
@@ -283,9 +293,15 @@ public class InterfaceStylesPlugin extends Plugin
 
 	private void adjustWidgetDimensions()
 	{
+		var skin = config.skin();
+		if (skin == Skin.DEFAULT)
+		{
+			return;
+		}
+
 		for (WidgetOffset widgetOffset : WidgetOffset.values())
 		{
-			if (widgetOffset.getSkin() != config.skin())
+			if (widgetOffset.getSkin() != skin)
 			{
 				continue;
 			}
