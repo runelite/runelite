@@ -36,8 +36,8 @@ import net.runelite.api.HealthBar;
 import net.runelite.api.SpriteID;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.events.BeforeMenuRender;
-import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.PostClientTick;
 import net.runelite.api.events.PostHealthBar;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.widgets.Widget;
@@ -141,7 +141,7 @@ public class InterfaceStylesPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onBeforeRender(BeforeRender event)
+	public void onPostClientTick(PostClientTick event)
 	{
 		adjustWidgetDimensions();
 	}
