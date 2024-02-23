@@ -449,4 +449,7 @@ public final class ScriptID
 
 	@ScriptArguments(integer = 6, string = 2)
 	public static final int CHATBOX_KEYINPUT_MATCHED = 2153;
+
+	@ScriptArguments(integer = 6)
+	public static final int EQUIPMENT_SET_STAT_BONUS_SETUP = 3517;
 }
