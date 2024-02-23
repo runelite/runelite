@@ -539,7 +539,7 @@ public class PartyPlugin extends Plugin
 		if (forceSend || specEnergy != lastStatus.getSpecEnergy())
 		{
 			hasChange = true;
-			canDelay = !forceSend && specEnergy - lastStatus.getSpecEnergy() != 10; // delay regen
+			canDelay = !forceSend && specEnergy - lastStatus.getSpecEnergy() == 10; // delay regen
 			update.setSpecEnergy(specEnergy);
 		}
 		if (forceSend || vengActive != lastStatus.getVengeanceActive())
