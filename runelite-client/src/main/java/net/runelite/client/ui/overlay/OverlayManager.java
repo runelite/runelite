@@ -426,6 +426,14 @@ public class OverlayManager
 	private OverlayPosition loadOverlayPosition(final Overlay overlay)
 	{
 		final String locationKey = overlay.getName() + OVERLAY_CONFIG_PREFERRED_POSITION;
-		return configManager.getConfiguration(RUNELITE_CONFIG_GROUP_NAME, locationKey, OverlayPosition.class);
+		OverlayPosition position = configManager.getConfiguration(RUNELITE_CONFIG_GROUP_NAME, locationKey, OverlayPosition.class);
+
+		boolean isChatbox = overlay.getName().equals("RESIZABLE_VIEWPORT_CHATBOX_PARENT") || overlay.getName().equals("RESIZABLE_VIEWPORT_BOTTOM_LINE_CHATBOX_PARENT");
+		if (isChatbox && (position == OverlayPosition.BOTTOM_LEFT || position == OverlayPosition.ABOVE_CHATBOX_RIGHT))
+		{
+			return null;
+		}
+
+		return position;
 	}
 }

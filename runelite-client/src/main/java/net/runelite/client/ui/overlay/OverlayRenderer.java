@@ -112,6 +112,7 @@ public class OverlayRenderer extends MouseAdapter
 	// Overlay state validation
 	private Rectangle viewportBounds;
 	private Rectangle chatboxBounds;
+	private Rectangle chatboxParentBounds;
 	private boolean chatboxHidden;
 	private boolean isResizeable;
 	private OverlayBounds emptySnapCorners, snapCorners;
@@ -667,6 +668,14 @@ public class OverlayRenderer extends MouseAdapter
 						// overlay moves back to default position
 						position = null;
 					}
+					else
+					{
+						boolean isChatbox = currentManagedOverlay.getName().equals("RESIZABLE_VIEWPORT_CHATBOX_PARENT") || currentManagedOverlay.getName().equals("RESIZABLE_VIEWPORT_BOTTOM_LINE_CHATBOX_PARENT");
+						if (isChatbox && (position == OverlayPosition.BOTTOM_LEFT || position == OverlayPosition.ABOVE_CHATBOX_RIGHT))
+						{
+							continue;
+						}
+					}
 
 					currentManagedOverlay.setPreferredPosition(position);
 					currentManagedOverlay.setPreferredLocation(null); // from dragging
@@ -785,6 +794,7 @@ public class OverlayRenderer extends MouseAdapter
 	private boolean shouldInvalidateBounds()
 	{
 		final Widget chatbox = client.getWidget(ComponentID.CHATBOX_FRAME);
+		final Widget chatboxParent = client.getWidget(ComponentID.CHATBOX_PARENT);
 		final boolean resizeableChanged = isResizeable != client.isResized();
 		boolean changed = false;
 
@@ -799,6 +809,14 @@ public class OverlayRenderer extends MouseAdapter
 		if (chatboxBoundsChanged)
 		{
 			chatboxBounds = chatbox != null ? chatbox.getBounds() : new Rectangle();
+			changed = true;
+		}
+
+		final boolean chatboxParentBoundsChanged = chatboxParent == null || !chatboxParent.getBounds().equals(chatboxParentBounds);
+
+		if (chatboxParentBoundsChanged)
+		{
+			chatboxParentBounds = chatboxParent != null ? chatboxParent.getBounds() : new Rectangle();
 			changed = true;
 		}
 
@@ -855,12 +873,8 @@ public class OverlayRenderer extends MouseAdapter
 			topCenterPoint.y);
 
 		final Point bottomLeftPoint = new Point(
-			topLeftPoint.x,
-			viewportBounds.y + viewportBounds.height - BORDER);
-
-		final Point bottomRightPoint = new Point(
-			topRightPoint.x,
-			bottomLeftPoint.y);
+			chatboxParentBounds.x + BORDER,
+			chatboxParentBounds.y - BORDER);
 
 		// Check to see if chat box is minimized
 		if (isResizeable && chatboxHidden)
@@ -868,8 +882,12 @@ public class OverlayRenderer extends MouseAdapter
 			bottomLeftPoint.y += chatboxBounds.height;
 		}
 
+		final Point bottomRightPoint = new Point(
+			topRightPoint.x,
+			viewportBounds.y + viewportBounds.height - BORDER);
+
 		final Point rightChatboxPoint = isResizeable ? new Point(
-			viewportBounds.x + chatboxBounds.width - BORDER,
+			bottomLeftPoint.x + chatboxParentBounds.width - BORDER,
 			bottomLeftPoint.y) : bottomRightPoint;
 
 		final Point canvasTopRightPoint = isResizeable ? new Point(
