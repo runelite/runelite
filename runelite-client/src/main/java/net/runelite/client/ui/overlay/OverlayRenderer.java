@@ -55,6 +55,7 @@ import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.VarbitID;
+import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.chat.ChatMessageManager;
@@ -113,6 +114,7 @@ public class OverlayRenderer extends MouseAdapter
 	private Overlay lastHoveredOverlay; // for off-thread access
 
 	private final SnapCorners snapCorners = new SnapCorners();
+	private Rectangle chatboxParentBounds;
 	private boolean dragWarn;
 
 	@Inject
@@ -652,6 +654,14 @@ public class OverlayRenderer extends MouseAdapter
 						// overlay moves back to default position
 						position = null;
 					}
+					else
+					{
+						boolean isChatbox = currentManagedOverlay.getName().equals("RESIZABLE_VIEWPORT_CHATBOX_PARENT") || currentManagedOverlay.getName().equals("RESIZABLE_VIEWPORT_BOTTOM_LINE_CHATBOX_PARENT");
+						if (isChatbox && (position == OverlayPosition.BOTTOM_LEFT || position == OverlayPosition.ABOVE_CHATBOX_RIGHT))
+						{
+							continue;
+						}
+					}
 
 					currentManagedOverlay.setPreferredPosition(position);
 					currentManagedOverlay.setPreferredLocation(null); // from dragging
@@ -797,6 +807,8 @@ public class OverlayRenderer extends MouseAdapter
 		final Widget chatbox = client.getWidget(InterfaceID.Chatbox.CHATAREA);
 		final boolean chatboxHidden = chatbox == null || chatbox.isHidden();
 		final Rectangle chatboxBounds = chatbox != null ? chatbox.getBounds() : new Rectangle();
+		final Widget chatboxParent = client.getWidget(ComponentID.CHATBOX_PARENT);
+		chatboxParentBounds = chatboxParent != null ? chatboxParent.getBounds() : new Rectangle();
 
 		snapCorners.topLeft.setPosition(
 			viewportBounds.x + BORDER,
@@ -811,8 +823,8 @@ public class OverlayRenderer extends MouseAdapter
 			viewportBounds.x + viewportBounds.width - BORDER,
 			viewportBounds.y + BORDER);
 
-		int bottomLeftX = viewportBounds.x + BORDER;
-		int bottomLeftY = viewportBounds.y + viewportBounds.height - BORDER;
+		int bottomLeftX = chatboxParentBounds.x + BORDER;
+		int bottomLeftY = chatboxParentBounds.y - BORDER;
 		// Check to see if chat box is minimized
 		if (isResizeable && chatboxHidden)
 		{
@@ -826,7 +838,7 @@ public class OverlayRenderer extends MouseAdapter
 
 		if (isResizeable)
 		{
-			snapCorners.aboveChatboxRight.setPosition(viewportBounds.x + chatboxBounds.width - BORDER, bottomLeftY);
+			snapCorners.aboveChatboxRight.setPosition(chatboxParentBounds.x + chatboxParentBounds.width - BORDER, bottomLeftY);
 			snapCorners.canvasTopRight.setPosition((int) client.getRealDimensions().getWidth(), 0);
 		}
 		else
