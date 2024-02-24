@@ -27,6 +27,7 @@ package net.runelite.client;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +40,7 @@ import net.runelite.client.eventbus.Subscribe;
 @Singleton
 class RuntimeConfigRefresher
 {
+	@Nullable
 	private final RuntimeConfig managedRuntimeConfig;
 	private final RuntimeConfigLoader configLoader;
 
@@ -46,7 +48,7 @@ class RuntimeConfigRefresher
 
 	@Inject
 	private RuntimeConfigRefresher(
-		RuntimeConfig managedRuntimeConfig,
+		@Nullable RuntimeConfig managedRuntimeConfig,
 		RuntimeConfigLoader configLoader,
 		EventBus eventBus
 	)
