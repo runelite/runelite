@@ -668,13 +668,9 @@ public class OverlayRenderer extends MouseAdapter
 						// overlay moves back to default position
 						position = null;
 					}
-					else
+					else if (position != null && position.isOverlayBlacklisted(currentManagedOverlay.getName()))
 					{
-						boolean isChatbox = currentManagedOverlay.getName().equals("RESIZABLE_VIEWPORT_CHATBOX_PARENT") || currentManagedOverlay.getName().equals("RESIZABLE_VIEWPORT_BOTTOM_LINE_CHATBOX_PARENT");
-						if (isChatbox && (position == OverlayPosition.BOTTOM_LEFT || position == OverlayPosition.ABOVE_CHATBOX_RIGHT))
-						{
-							continue;
-						}
+						continue;
 					}
 
 					currentManagedOverlay.setPreferredPosition(position);
