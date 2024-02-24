@@ -45,9 +45,9 @@ public class WesternDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.MINING, 15));
 		add("Claim any Chompy bird hat from Rantz.",
 			new QuestRequirement(Quest.BIG_CHOMPY_BIRD_HUNTING));
-		add("Have Brimstail teleport you to the Essence mine.",
+		add("Have Brimstail teleport you to the Essence Mine.",
 			new QuestRequirement(Quest.RUNE_MYSTERIES));
-		add("Fletch an Oak shortbow from the Gnome Stronghold.",
+		add("Fletch an Oak Shortbow in the Gnome Stronghold.",
 			new SkillRequirement(Skill.FLETCHING, 20));
 
 		// MEDIUM
@@ -128,7 +128,7 @@ public class WesternDiaryRequirement extends GenericDiaryRequirement
 		add("Fletch a Magic Longbow in Tirannwn.",
 			new SkillRequirement(Skill.FLETCHING, 85),
 			new QuestRequirement(Quest.MOURNINGS_END_PART_I));
-		add("Kill the Thermonuclear Smoke devil.",
+		add("Kill the Thermonuclear Smoke devil (Does not require task).",
 			new SkillRequirement(Skill.SLAYER, 93));
 		add("Have Prissy Scilla protect your Magic tree.",
 			new SkillRequirement(Skill.FARMING, 75));

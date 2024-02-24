@@ -138,6 +138,7 @@ public class TabInterface
 	private static final int NEWTAB_OP_NEW_TAB = 1;
 	private static final int NEWTAB_OP_IMPORT_TAB = 2;
 	private static final int NEWTAB_OP_OPEN_TAB_MENU = 3;
+	private static final int TAGTAB_CHILD_OFFSET = 4;
 
 	private final Client client;
 	private final ClientThread clientThread;
@@ -232,7 +233,7 @@ public class TabInterface
 				clientThread.invokeLater(() ->
 				{
 					repositionButtons();
-					rebuildTabs();
+					layoutTabs();
 				});
 			}
 		}
@@ -328,7 +329,7 @@ public class TabInterface
 		upButton = createGraphic(parent, "", TabSprites.UP_ARROW.getSpriteId(), -1, TAB_WIDTH, BUTTON_HEIGHT, MARGIN, 0);
 		upButton.setAction(1, SCROLL_UP);
 		int clickmask = upButton.getClickMask();
-		clickmask |= WidgetConfig.DRAG;
+		clickmask |= WidgetConfig.DRAG_ON;
 		upButton.setClickMask(clickmask);
 		upButton.setHasListener(true);
 		upButton.setOnOpListener((JavaScriptCallback) (event) -> scrollTab(-1));
@@ -336,7 +337,7 @@ public class TabInterface
 		downButton = createGraphic(parent, "", TabSprites.DOWN_ARROW.getSpriteId(), -1, TAB_WIDTH, BUTTON_HEIGHT, MARGIN, 0);
 		downButton.setAction(1, SCROLL_DOWN);
 		clickmask = downButton.getClickMask();
-		clickmask |= WidgetConfig.DRAG;
+		clickmask |= WidgetConfig.DRAG_ON;
 		downButton.setClickMask(clickmask);
 		downButton.setHasListener(true);
 		downButton.setOnOpListener((JavaScriptCallback) (event) -> scrollTab(1));
@@ -358,8 +359,9 @@ public class TabInterface
 		{
 			// the server will resync the last opened vanilla tab when the bank is opened
 			client.setVarbit(Varbits.CURRENT_BANK_TAB, 0);
-			activeTab = tabManager.find(config.tab());
-			tagTabActive = false;
+			var tab = config.tab();
+			activeTab = tabManager.find(tab);
+			tagTabActive = TAB_MENU_KEY.equals(tab);
 		}
 
 		// Move equipment button to the titlebar
@@ -758,7 +760,7 @@ public class TabInterface
 				&& draggedWidget.getId() == ComponentID.BANK_ITEM_CONTAINER
 				&& draggedWidget.getItemId() != -1
 				&& draggedOn.getParent() == parent
-				&& draggedOn.getIndex() > 3) // skip buttons
+				&& draggedOn.getIndex() >= TAGTAB_CHILD_OFFSET) // skip buttons
 			{
 				// Tag an item dragged on a tag tab
 				log.debug("Dragged {} to tab {}", draggedWidget.getItemId(), Text.removeTags(draggedOn.getName()));
@@ -766,11 +768,16 @@ public class TabInterface
 				reloadActiveTab();
 			}
 			else if ((tagTabActive && draggedWidget.getId() == ComponentID.BANK_ITEM_CONTAINER && draggedOn.getId() == ComponentID.BANK_ITEM_CONTAINER)
-				|| (draggedWidget.getParent() == parent && draggedOn.getParent() == parent))
+				|| (draggedWidget.getParent() == parent && draggedOn.getParent() == parent && draggedWidget.getIndex() >= TAGTAB_CHILD_OFFSET && draggedOn.getIndex() >= TAGTAB_CHILD_OFFSET))
 			{
 				// Reorder tag tabs
 				log.debug("Reorder tag tab {} <-> {}", draggedWidget, draggedOn);
 				moveTagTab(draggedWidget, draggedOn);
+			}
+			else
+			{
+				// Rebuild to avoid the dragged tab being left over due to it being excluded from being hidden when layouted
+				rebuildTabs();
 			}
 		}
 		else if (draggedWidget.getItemId() != -1)
@@ -947,7 +954,7 @@ public class TabInterface
 
 		config.position(tabScrollOffset);
 
-		rebuildTabs();
+		layoutTabs();
 	}
 
 	private void openNamedTag(String name, boolean relayout)
@@ -1042,19 +1049,14 @@ public class TabInterface
 	private void rebuildTabs()
 	{
 		// remove the tag tabs but keep the buttons and scroll component
-		parent.setChildren(Arrays.copyOf(parent.getChildren(), 4));
-
-		int y = scrollComponent.getOriginalY();
-		y += MARGIN;
+		parent.setChildren(Arrays.copyOf(parent.getChildren(), TAGTAB_CHILD_OFFSET));
 
 		var tabs = tabManager.getTabs();
-		for (int i = tabScrollOffset; i < tabScrollOffset + tabCount && i < tabs.size(); ++i)
+		for (TagTab tab : tabs)
 		{
-			TagTab tab = tabs.get(i);
-
 			Widget background = createGraphic(parent, ColorUtil.wrapWithColorTag(tab.getTag(), HILIGHT_COLOR),
 				(activeTab == tab ? TabSprites.TAB_BACKGROUND_ACTIVE : TabSprites.TAB_BACKGROUND).getSpriteId(),
-				-1, TAB_WIDTH, TAB_HEIGHT, MARGIN, y);
+				-1, TAB_WIDTH, TAB_HEIGHT, MARGIN, -1);
 			addTabActions(background);
 
 			Widget icon = createGraphic(
@@ -1063,8 +1065,42 @@ public class TabInterface
 				-1,
 				tab.getIconItemId(),
 				Constants.ITEM_SPRITE_WIDTH, Constants.ITEM_SPRITE_HEIGHT,
-				MARGIN + 3, y + 4);
+				MARGIN + 3, -1);
 			addTabOptions(icon);
+		}
+
+		layoutTabs();
+	}
+
+	// layout the tabs for their position due to scroll or window resize
+	private void layoutTabs()
+	{
+		Widget[] children = parent.getChildren();
+		Widget draggedWidget = client.getDraggedWidget();
+		for (int i = TAGTAB_CHILD_OFFSET; i < children.length; ++i)
+		{
+			Widget child = children[i];
+			// avoid hiding dragged widget if scrolling from drag
+			if (draggedWidget != child)
+			{
+				child.setHidden(true);
+			}
+		}
+
+		int y = scrollComponent.getOriginalY();
+		y += MARGIN;
+
+		for (int i = tabScrollOffset; i < tabScrollOffset + tabCount && i * 2 + 1 < children.length - TAGTAB_CHILD_OFFSET; ++i)
+		{
+			Widget background = children[TAGTAB_CHILD_OFFSET + i * 2];
+			background.setOriginalY(y);
+			background.setHidden(false);
+			background.revalidate();
+
+			Widget icon = children[TAGTAB_CHILD_OFFSET + i * 2 + 1];
+			icon.setOriginalY(y + 4);
+			icon.setHidden(false);
+			icon.revalidate();
 
 			y += TAB_HEIGHT + MARGIN;
 		}

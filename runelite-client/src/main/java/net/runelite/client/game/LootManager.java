@@ -80,7 +80,7 @@ public class LootManager
 	private WorldPoint krakenPlayerLocation;
 
 	private NPC delayedLootNpc;
-	private int delayedLootTickLimit;
+	private int delayedLootTick;
 	private List<WorldArea> delayedLootAreas;
 
 	@Inject
@@ -245,19 +245,20 @@ public class LootManager
 		if (npc.getId() == NpcID.THE_NIGHTMARE_9433 || npc.getId() == NpcID.PHOSANIS_NIGHTMARE_9424)
 		{
 			delayedLootNpc = npc;
-			delayedLootTickLimit = 15;
-			delayedLootAreas = List.of(getAdjacentSquareLootTile(npc).toWorldArea());
+			delayedLootTick = 10;
+			// it is too early to call getAdjacentSquareLootTile() because the player might move before the
+			// loot location is calculated by the server.
 		}
 		else if (npc.getId() == NpcID.HOLE_IN_THE_WALL)
 		{
 			delayedLootNpc = npc;
-			delayedLootTickLimit = 2;
-			delayedLootAreas = List.of(getAdjacentSquareLootTile(npc).toWorldArea());
+			delayedLootTick = 1;
+			delayedLootAreas = getDropLocations(npc);
 		}
 		else if (npc.getId() == NpcID.DUKE_SUCELLUS_12192 || npc.getId() == NpcID.DUKE_SUCELLUS_12196)
 		{
 			delayedLootNpc = npc;
-			delayedLootTickLimit = 5;
+			delayedLootTick = 5;
 			delayedLootAreas = getDropLocations(npc);
 		}
 	}
@@ -265,9 +266,10 @@ public class LootManager
 	@Subscribe
 	public void onGameTick(GameTick gameTick)
 	{
-		if (delayedLootNpc != null && delayedLootTickLimit-- > 0)
+		if (delayedLootNpc != null && --delayedLootTick == 0)
 		{
 			processDelayedLoot();
+			clearDelayedLootNpc();
 		}
 
 		playerLocationLastTick = client.getLocalPlayer().getWorldLocation();
@@ -278,17 +280,22 @@ public class LootManager
 
 	private void processDelayedLoot()
 	{
-		final List<ItemStack> itemStacks = getItemStacksFromAreas(delayedLootAreas);
-		if (itemStacks.isEmpty())
+		if (delayedLootAreas == null)
 		{
-			// no loot yet
-			return;
+			// This is only for nightmare
+			delayedLootAreas = List.of(getAdjacentSquareLootTile(delayedLootNpc).toWorldArea());
 		}
 
-		log.debug("Got delayed loot stack from {}: {}", delayedLootNpc.getName(), itemStacks);
-		eventBus.post(new NpcLootReceived(delayedLootNpc, itemStacks));
-
-		clearDelayedLootNpc();
+		final List<ItemStack> itemStacks = getItemStacksFromAreas(delayedLootAreas);
+		if (!itemStacks.isEmpty())
+		{
+			log.debug("Got delayed loot stack from {}: {}", delayedLootNpc.getName(), itemStacks);
+			eventBus.post(new NpcLootReceived(delayedLootNpc, itemStacks));
+		}
+		else
+		{
+			log.debug("Delayed loot expired with no loot");
+		}
 	}
 
 	private void processNpcLoot(NPC npc)
@@ -441,6 +448,11 @@ public class LootManager
 				final WorldArea expandedArea = new WorldArea(bossArea.getX() - expand, bossArea.getY() - expand, bossArea.getWidth() + expand * 2, bossArea.getHeight() + expand * 2, bossArea.getPlane());
 				return List.of(expandedArea);
 			}
+			case NpcID.HOLE_IN_THE_WALL:
+			{
+				final WorldArea bossArea = npc.getWorldArea();
+				return List.of(new WorldArea(bossArea.getX() - 1, bossArea.getY() - 1, 3, 3, bossArea.getPlane()));
+			}
 		}
 
 		return Collections.singletonList(npc.getWorldArea());
@@ -498,7 +510,7 @@ public class LootManager
 	private void clearDelayedLootNpc()
 	{
 		delayedLootNpc = null;
-		delayedLootTickLimit = 0;
+		delayedLootTick = 0;
 		delayedLootAreas = null;
 	}
 }

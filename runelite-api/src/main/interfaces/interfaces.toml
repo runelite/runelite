@@ -71,6 +71,12 @@ settings_button=113
 equipment_button=114
 popup=116
 
+[bank_equipment]
+id=12
+parent=69
+set_bonus=109
+stat_bonus=121
+
 [bank_inventory]
 id=15
 item_container=3
@@ -289,6 +295,12 @@ emote_scrollbar=4
 [equipment]
 id=387
 inventory_item_container=0
+
+[equipment_bonuses]
+id=84
+parent=1
+set_bonus=43
+stat_bonus=48
 
 [equipment_inventory]
 id=85
