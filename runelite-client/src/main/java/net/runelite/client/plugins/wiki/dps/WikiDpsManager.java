@@ -24,10 +24,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.wiki;
+package net.runelite.client.plugins.wiki.dps;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import java.io.IOException;
 import javax.annotation.Nullable;
@@ -48,6 +49,7 @@ import net.runelite.api.SpriteID;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.annotations.Component;
+import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.InterfaceID;
@@ -69,7 +71,7 @@ import okhttp3.Response;
 
 @Slf4j
 @Singleton
-class WikiDpsManager
+public class WikiDpsManager
 {
 	private static final int[] SPRITE_IDS_INACTIVE = {
 		SpriteID.DIALOG_BACKGROUND_BRIGHTER,
@@ -133,6 +135,15 @@ class WikiDpsManager
 	{
 		eventBus.unregister(this);
 		clientThread.invokeLater(this::removeButton);
+	}
+
+	@Subscribe
+	public void onCommandExecuted(CommandExecuted commandExecuted)
+	{
+		if (commandExecuted.getCommand().equals("dps"))
+		{
+			this.launch();
+		}
 	}
 
 	@Subscribe
@@ -347,6 +358,44 @@ class WikiDpsManager
 		return null;
 	}
 
+	@Nullable
+	private JsonElement getCombatStyle()
+	{
+		WeaponCategory category = WeaponCategory.fromVarb(client.getVarbitValue(Varbits.EQUIPPED_WEAPON_TYPE));
+		if (category == null)
+		{
+			return null;
+		}
+
+		PlayerCombatStyle style = category.styleFromVarp(client.getVarpValue(VarPlayer.ATTACK_STYLE));
+		if (style == null)
+		{
+			return null;
+		}
+
+		if (client.getVarbitValue(Varbits.DEFENSIVE_CASTING_MODE) == 1)
+		{
+			style = style.withStance("Defensive Autocast");
+		}
+
+		return gson.toJsonTree(style);
+	}
+
+	@Nullable
+	private JsonObject getSpell()
+	{
+		Spell spell = Spell.fromVarb(client.getVarbitValue(Varbits.AUTOCAST_SPELL));
+		if (spell == null)
+		{
+			return null;
+		}
+
+		// the spell type on the site includes other metadata so only send the name and the site will expand the rest
+		JsonObject spellObj = new JsonObject();
+		spellObj.addProperty("name", spell.getName());
+		return spellObj;
+	}
+
 	private JsonObject buildShortlinkData()
 	{
 		JsonObject j = new JsonObject();
@@ -382,6 +431,28 @@ class WikiDpsManager
 		skills.addProperty("str", client.getRealSkillLevel(Skill.STRENGTH));
 		l.add("skills", skills);
 
+		JsonElement style = getCombatStyle();
+		if (style != null)
+		{
+			l.add("style", style);
+		}
+
+		JsonElement spell = getSpell();
+		if (spell != null)
+		{
+			l.add("spell", spell);
+		}
+
+		JsonArray prayers = new JsonArray();
+		for (DpsPrayer prayer : DpsPrayer.values())
+		{
+			if (client.isPrayerActive(prayer.getRlPrayer()))
+			{
+				prayers.add(prayer.getJsValue());
+			}
+		}
+		l.add("prayers", prayers);
+
 		JsonObject buffs = new JsonObject();
 		buffs.addProperty("inWilderness", client.getVarbitValue(Varbits.IN_WILDERNESS) == 1);
 		buffs.addProperty("kandarinDiary", client.getVarbitValue(Varbits.DIARY_KANDARIN_HARD) == 1);
@@ -402,7 +473,7 @@ class WikiDpsManager
 		String data;
 	}
 
-	void launch()
+	public void launch()
 	{
 		JsonObject jsonBody = buildShortlinkData();
 		Request request = new Request.Builder()

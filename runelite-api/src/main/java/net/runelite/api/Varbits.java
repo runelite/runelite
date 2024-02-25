@@ -258,6 +258,11 @@ public final class Varbits
 	public static final int EQUIPPED_WEAPON_TYPE = 357;
 
 	/**
+	 * Current selected spell for autocasting
+	 */
+	public static final int AUTOCAST_SPELL = 276;
+
+	/**
 	 * Defensive casting mode
 	 */
 	public static final int DEFENSIVE_CASTING_MODE = 2668;
