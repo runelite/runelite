@@ -25,11 +25,7 @@
  */
 package net.runelite.client.plugins.xptracker;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -102,40 +98,56 @@ class XpInfoBoxOverlay extends OverlayPanel
 		final String bottomRightNum = config.onScreenDisplayModeBottom().getValueFunc().apply(snapshot);
 
 		final LineComponent xpLineBottom = LineComponent.builder()
-				.left(bottomLeftStr + ":")
-				.right(bottomRightNum)
-				.build();
+					.left(bottomLeftStr + ":")
+					.right(bottomRightNum)
+					.build();
 
 		final SplitComponent xpSplit = SplitComponent.builder()
-				.first(xpLine)
-				.second(xpLineBottom)
-				.orientation(ComponentOrientation.VERTICAL)
-				.build();
+					.first(xpLine)
+					.second(xpLineBottom)
+					.orientation(ComponentOrientation.VERTICAL)
+					.build();
 
-		final ImageComponent imageComponent = new ImageComponent(icon);
+		BufferedImage xpIcon;
+		if (config.onScreenDisplayOneLine()){
+			//Shrink image by half to make one-line display smaller.
+			Image shrunkIcon = icon.getScaledInstance(icon.getWidth()/2, icon.getHeight()/2, Image.SCALE_DEFAULT);
+			xpIcon = new BufferedImage(shrunkIcon.getWidth(null), shrunkIcon.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+
+			// Draw the shrunk image on to the buffered xp image
+			Graphics2D bGr = xpIcon.createGraphics();
+			bGr.drawImage(shrunkIcon, 0, 0, null);
+			bGr.dispose();
+		}
+		else {
+			xpIcon = icon;
+		}
+
+		final ImageComponent imageComponent = new ImageComponent(xpIcon);
 		final SplitComponent iconXpSplit = SplitComponent.builder()
 				.first(imageComponent)
-				.second(xpSplit)
+				.second(config.onScreenDisplayOneLine() ? xpLine : xpSplit)
 				.orientation(ComponentOrientation.HORIZONTAL)
 				.gap(new Point(XP_AND_ICON_GAP, 0))
 				.build();
 
 		iconXpSplitPanel.getChildren().add(iconXpSplit);
-
-		final ProgressBarComponent progressBarComponent = new ProgressBarComponent();
-
-		progressBarComponent.setBackgroundColor(new Color(61, 56, 49));
-		progressBarComponent.setForegroundColor(SkillColor.find(skill).getColor());
-
-		progressBarComponent.setLeftLabel(String.valueOf(snapshot.getStartLevel()));
-		progressBarComponent.setRightLabel(snapshot.getEndGoalXp() == Experience.MAX_SKILL_XP
-			? "200M"
-			: String.valueOf(snapshot.getEndLevel()));
-
-		progressBarComponent.setValue(snapshot.getSkillProgressToGoal());
-
 		panelComponent.getChildren().add(iconXpSplitPanel);
-		panelComponent.getChildren().add(progressBarComponent);
+
+		if (config.onScreenDisplayProgressBar()) {
+			final ProgressBarComponent progressBarComponent = new ProgressBarComponent();
+
+			progressBarComponent.setBackgroundColor(new Color(61, 56, 49));
+			progressBarComponent.setForegroundColor(SkillColor.find(skill).getColor());
+
+			progressBarComponent.setLeftLabel(String.valueOf(snapshot.getStartLevel()));
+			progressBarComponent.setRightLabel(snapshot.getEndGoalXp() == Experience.MAX_SKILL_XP
+					? "200M"
+					: String.valueOf(snapshot.getEndLevel()));
+
+			progressBarComponent.setValue(snapshot.getSkillProgressToGoal());
+			panelComponent.getChildren().add(progressBarComponent);
+		}
 
 		return super.render(graphics);
 	}
