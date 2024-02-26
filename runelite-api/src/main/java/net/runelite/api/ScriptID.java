@@ -378,7 +378,7 @@ public final class ScriptID
 	/**
 	 * Sets the initial text and color for the active notification.
 	 */
-	@ScriptArguments(integer = 2, string = 1)
+	@ScriptArguments(string = 2, integer = 1)
 	public static final int NOTIFICATION_DISPLAY_INIT = 3343;
 
 	/**
