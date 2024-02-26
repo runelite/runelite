@@ -376,6 +376,12 @@ public final class ScriptID
 	public static final int COLLECTION_DRAW_LIST = 2730;
 
 	/**
+	 * Sets the initial text and color for the active notification.
+	 */
+	@ScriptArguments(integer = 3)
+	public static final int NOTIFICATION_DISPLAY_INIT = 3343;
+
+	/**
 	 * Draws the active notification in increasing sizes (increasing horizontally first, then vertically) to show a
 	 * starting animation.
 	 */
