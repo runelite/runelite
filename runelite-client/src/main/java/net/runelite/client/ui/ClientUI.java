@@ -656,6 +656,10 @@ public class ClientUI
 				if (configManager.getConfiguration(CONFIG_GROUP, CONFIG_CLIENT_MAXIMIZED) != null)
 				{
 					frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+					// According to the documentation of JFrame#setExtendedState, if the frame isn't visible, a window
+					// state change event isn't guaranteed to be fired. Since RuneLite's custom chrome borders rely on a
+					// state change listener, borders need to be applied manually when maximizing prior to setVisible
+					applyCustomChromeBorder();
 				}
 			}
 			else
