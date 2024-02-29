@@ -96,7 +96,7 @@ r 35 75
 n
 r 36 75
 
-// air altar
+// nature altar
 n
 r 37 75
 
@@ -127,9 +127,10 @@ r 42 75
 n
 r 43 75
 
-// nature altar
+// air altar
 n
-r 44 75
+m 44 75
+C 0 0 6 7
 
 // essence mine
 n
@@ -234,3 +235,7 @@ r 40 69
 // maze random
 n
 r 45 71
+
+// pyramid plunder
+n
+r 30 69

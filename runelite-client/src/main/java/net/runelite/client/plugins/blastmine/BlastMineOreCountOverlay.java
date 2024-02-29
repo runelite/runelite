@@ -32,8 +32,8 @@ import net.runelite.api.Client;
 import net.runelite.api.ItemID;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Varbits;
+import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.game.ItemManager;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayPanel;
@@ -62,7 +62,7 @@ class BlastMineOreCountOverlay extends OverlayPanel
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		final Widget blastMineWidget = client.getWidget(WidgetInfo.BLAST_MINE);
+		final Widget blastMineWidget = client.getWidget(ComponentID.BLAST_MINE_CONTAINER);
 
 		if (blastMineWidget == null)
 		{

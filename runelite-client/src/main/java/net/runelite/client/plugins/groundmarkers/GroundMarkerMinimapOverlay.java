@@ -40,7 +40,6 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
 
 class GroundMarkerMinimapOverlay extends Overlay
 {
@@ -55,7 +54,7 @@ class GroundMarkerMinimapOverlay extends Overlay
 		this.config = config;
 		this.plugin = plugin;
 		setPosition(OverlayPosition.DYNAMIC);
-		setPriority(OverlayPriority.LOW);
+		setPriority(PRIORITY_LOW);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 	}
 

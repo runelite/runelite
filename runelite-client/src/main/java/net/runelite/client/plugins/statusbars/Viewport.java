@@ -27,23 +27,23 @@ package net.runelite.client.plugins.statusbars;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.Point;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.ComponentID;
 
 @Getter
 @AllArgsConstructor
 enum Viewport
 {
-	RESIZED_BOX(WidgetInfo.RESIZABLE_VIEWPORT_OLD_SCHOOL_BOX, WidgetInfo.RESIZABLE_VIEWPORT_INTERFACE_CONTAINER,
+	RESIZED_BOX(ComponentID.RESIZABLE_VIEWPORT_RESIZABLE_VIEWPORT_OLD_SCHOOL_BOX, ComponentID.RESIZABLE_VIEWPORT_INTERFACE_CONTAINER,
 			new Point(20, -4), new Point(0, -4)),
-	RESIZED_BOTTOM(WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE, WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INTERFACE_CONTAINER,
+	RESIZED_BOTTOM(ComponentID.RESIZABLE_VIEWPORT_BOTTOM_LINE_RESIZABLE_VIEWPORT_BOTTOM_LINE, ComponentID.RESIZABLE_VIEWPORT_BOTTOM_LINE_INTERFACE_CONTAINER,
 			new Point(61, -12), new Point(35, -12)),
-	FIXED(WidgetInfo.FIXED_VIEWPORT, WidgetInfo.FIXED_VIEWPORT_INTERFACE_CONTAINER,
+	FIXED(ComponentID.FIXED_VIEWPORT_FIXED_VIEWPORT, ComponentID.FIXED_VIEWPORT_INTERFACE_CONTAINER,
 			new Point(20, -4), new Point(0, -4)),
-	FIXED_BANK(WidgetInfo.BANK_CONTAINER, WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER,
+	FIXED_BANK(ComponentID.BANK_CONTAINER, ComponentID.BANK_INVENTORY_ITEM_CONTAINER,
 			new Point(20, -4), new Point(0, -4));
 
-	private WidgetInfo container;
-	private WidgetInfo viewport;
+	private int container;
+	private int viewport;
 	private Point offsetLeft;
 	private Point offsetRight;
 }

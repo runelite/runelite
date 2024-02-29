@@ -51,12 +51,14 @@ import net.runelite.client.util.ImageUtil;
 
 class RunepouchOverlay extends WidgetItemOverlay
 {
-	private static final int NUM_SLOTS = 4;
+	private static final int NUM_SLOTS = 6;
 	private static final int[] AMOUNT_VARBITS = {
-		Varbits.RUNE_POUCH_AMOUNT1, Varbits.RUNE_POUCH_AMOUNT2, Varbits.RUNE_POUCH_AMOUNT3, Varbits.RUNE_POUCH_AMOUNT4
+		Varbits.RUNE_POUCH_AMOUNT1, Varbits.RUNE_POUCH_AMOUNT2, Varbits.RUNE_POUCH_AMOUNT3, Varbits.RUNE_POUCH_AMOUNT4,
+		Varbits.RUNE_POUCH_AMOUNT5, Varbits.RUNE_POUCH_AMOUNT6
 	};
 	private static final int[] RUNE_VARBITS = {
-		Varbits.RUNE_POUCH_RUNE1, Varbits.RUNE_POUCH_RUNE2, Varbits.RUNE_POUCH_RUNE3, Varbits.RUNE_POUCH_RUNE4
+		Varbits.RUNE_POUCH_RUNE1, Varbits.RUNE_POUCH_RUNE2, Varbits.RUNE_POUCH_RUNE3, Varbits.RUNE_POUCH_RUNE4,
+		Varbits.RUNE_POUCH_RUNE5, Varbits.RUNE_POUCH_RUNE6
 	};
 	private static final int IMAGE_SIZE = 11;
 	private static final BufferedImage[] RUNE_IMAGES = {
@@ -143,7 +145,7 @@ class RunepouchOverlay extends WidgetItemOverlay
 			}
 			else
 			{
-				renderGrid(graphics, widgetItem, runeIds, amounts);
+				renderGrid(graphics, widgetItem, runeIds, amounts, num);
 			}
 		}
 
@@ -213,9 +215,10 @@ class RunepouchOverlay extends WidgetItemOverlay
 		}
 	}
 
-	private void renderGrid(Graphics2D graphics, WidgetItem widgetItem, int[] runeIds, int[] amounts)
+	private void renderGrid(Graphics2D graphics, WidgetItem widgetItem, int[] runeIds, int[] amounts, int numRunes)
 	{
 		final Point location = widgetItem.getCanvasLocation();
+		int c = 0;
 		for (int i = 0; i < NUM_SLOTS; ++i)
 		{
 			final int runeId = runeIds[i];
@@ -226,8 +229,11 @@ class RunepouchOverlay extends WidgetItemOverlay
 				continue;
 			}
 
-			final int iconX = location.getX() + 2 + (i == 1 || i == 3 ? IMAGE_SIZE + 2 /* pad */ + 2 /* bar offset */ : 0);
-			final int iconY = location.getY() + 5 + (i >= 2 ? IMAGE_SIZE + 2 /* pad */ : 0);
+			final int iconX = location.getX() + 2 + (c % 2 == 1 ? IMAGE_SIZE + 2 /* pad */ + 2 /* bar offset */ : 0);
+			final int iconY = numRunes > 4 ?
+				location.getY() - 1 + (c / 2) * IMAGE_SIZE :
+				location.getY() + 5 + (c >= 2 ? IMAGE_SIZE + 2 /* pad */ : 0);
+			c++;
 
 			BufferedImage image = getRuneImage(runeId);
 			if (image != null)

@@ -61,7 +61,6 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
@@ -91,7 +90,7 @@ class DevToolsOverlay extends Overlay
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
-		setPriority(OverlayPriority.HIGHEST);
+		setPriority(PRIORITY_HIGHEST);
 		this.client = client;
 		this.plugin = plugin;
 		this.toolTipManager = toolTipManager;
@@ -303,14 +302,12 @@ class DevToolsOverlay extends Overlay
 		Polygon poly = Perspective.getCanvasTilePoly(client, tileLocalLocation);
 		if (poly != null && poly.contains(client.getMouseCanvasPosition().getX(), client.getMouseCanvasPosition().getY()))
 		{
-			WorldPoint worldLocation = tile.getWorldLocation();
-			Point sceneLocation = tile.getSceneLocation();
+			WorldPoint worldLocation = WorldPoint.fromLocalInstance(client, tileLocalLocation);
+			byte flags = client.getTileSettings()[tile.getRenderLevel()][tile.getSceneLocation().getX()][tile.getSceneLocation().getY()];
 			String tooltip = String.format("World location: %d, %d, %d</br>" +
-					"Scene location: %d, %d</br>" +
-					"Region ID: %d location: %d, %d",
+					"Flags: %d",
 				worldLocation.getX(), worldLocation.getY(), worldLocation.getPlane(),
-				sceneLocation.getX(), sceneLocation.getY(),
-				(client.isInInstancedRegion() ? WorldPoint.fromLocalInstance(client, tileLocalLocation).getRegionID() : worldLocation.getRegionID()), worldLocation.getRegionX(), worldLocation.getRegionY());
+				flags);
 			toolTipManager.add(new Tooltip(tooltip));
 			OverlayUtil.renderPolygon(graphics, poly, GREEN);
 		}

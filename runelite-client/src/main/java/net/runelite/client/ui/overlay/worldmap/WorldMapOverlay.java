@@ -41,17 +41,16 @@ import net.runelite.api.Client;
 import net.runelite.api.MenuAction;
 import net.runelite.api.Point;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.widgets.InterfaceID;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.worldmap.WorldMap;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.JagexColors;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.util.ColorUtil;
 
 @Singleton
@@ -80,9 +79,9 @@ public class WorldMapOverlay extends Overlay
 		this.client = client;
 		this.worldMapPointManager = worldMapPointManager;
 		setPosition(OverlayPosition.DYNAMIC);
-		setPriority(OverlayPriority.HIGHEST);
+		setPriority(PRIORITY_HIGHEST);
 		setLayer(OverlayLayer.MANUAL);
-		drawAfterInterface(WidgetID.WORLD_MAP_GROUP_ID);
+		drawAfterInterface(InterfaceID.WORLD_MAP);
 	}
 
 	@Override
@@ -95,8 +94,8 @@ public class WorldMapOverlay extends Overlay
 			return null;
 		}
 
-		Widget widget = client.getWidget(WidgetInfo.WORLD_MAP_VIEW);
-		Widget bottomBar = client.getWidget(WidgetInfo.WORLD_MAP_BOTTOM_BAR);
+		Widget widget = client.getWidget(ComponentID.WORLD_MAP_MAPVIEW);
+		Widget bottomBar = client.getWidget(ComponentID.WORLD_MAP_BOTTOM_BAR);
 		if (widget == null || bottomBar == null)
 		{
 			return null;
@@ -229,7 +228,7 @@ public class WorldMapOverlay extends Overlay
 			}
 		}
 
-		final Widget rsTooltip = client.getWidget(WidgetInfo.WORLD_MAP_TOOLTIP);
+		final Widget rsTooltip = client.getWidget(ComponentID.WORLD_MAP_TOOLTIP);
 		if (rsTooltip != null)
 		{
 			rsTooltip.setHidden(tooltipPoint != null);
@@ -260,7 +259,7 @@ public class WorldMapOverlay extends Overlay
 
 		float pixelsPerTile = worldMap.getWorldMapZoom();
 
-		Widget map = client.getWidget(WidgetInfo.WORLD_MAP_VIEW);
+		Widget map = client.getWidget(ComponentID.WORLD_MAP_MAPVIEW);
 		if (map != null)
 		{
 			Rectangle worldMapRect = map.getBounds();
@@ -300,8 +299,8 @@ public class WorldMapOverlay extends Overlay
 	 */
 	private Shape getWorldMapClipArea(Rectangle baseRectangle)
 	{
-		final Widget overview = client.getWidget(WidgetInfo.WORLD_MAP_OVERVIEW_MAP);
-		final Widget surfaceSelector = client.getWidget(WidgetInfo.WORLD_MAP_SURFACE_SELECTOR);
+		final Widget overview = client.getWidget(ComponentID.WORLD_MAP_OVERVIEW_MAP);
+		final Widget surfaceSelector = client.getWidget(ComponentID.WORLD_MAP_SURFACE_SELECTOR);
 
 		Area clipArea = new Area(baseRectangle);
 		boolean subtracted = false;

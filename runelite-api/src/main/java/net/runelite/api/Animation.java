@@ -43,4 +43,14 @@ public interface Animation
 	 * animations, this is how many keyframes it has, not it's duration in ticks.
 	 */
 	int getNumFrames();
+
+	/**
+	 * How this animation behaves when its restarted during playback
+	 */
+	int getRestartMode();
+
+	/**
+	 * @see #getRestartMode()
+	 */
+	void setRestartMode(int restartMode);
 }

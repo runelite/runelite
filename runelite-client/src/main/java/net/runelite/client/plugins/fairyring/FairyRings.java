@@ -38,6 +38,7 @@ public enum FairyRings
 	AJS("Penguins near Miscellania"),
 	AKP("Necropolis"),
 	AKQ("Piscatoris Hunter area"),
+	AKR("Hosidius Vinery"),
 	AKS("Feldip Hunter area"),
 	ALP("(Island) Lighthouse"),
 	ALQ("Haunted Woods east of Canifis"),

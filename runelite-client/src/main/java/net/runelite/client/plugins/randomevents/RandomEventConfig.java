@@ -304,4 +304,15 @@ public interface RandomEventConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "notifyCountCheck",
+		name = "Notify on Count Check",
+		description = "",
+		section = notificationSection
+	)
+	default boolean notifyCountCheck()
+	{
+		return false;
+	}
 }

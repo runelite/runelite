@@ -54,6 +54,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import static net.runelite.client.plugins.grandexchange.GrandExchangePlugin.findFuzzyIndices;
+import net.runelite.client.ui.ClientToolbar;
 import net.runelite.http.api.ge.GrandExchangeTrade;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -124,6 +125,10 @@ public class GrandExchangePluginTest
 	@Mock
 	@Bind
 	private ScheduledExecutorService scheduledExecutorService;
+
+	@Mock
+	@Bind
+	private ClientToolbar clientToolbar;
 
 	@Inject
 	private Gson gson;

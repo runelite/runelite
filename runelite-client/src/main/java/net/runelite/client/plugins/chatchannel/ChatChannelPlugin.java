@@ -70,8 +70,8 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.VarClientStrChanged;
+import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -293,10 +293,10 @@ public class ChatChannelPlugin extends Plugin
 			return;
 		}
 
-		Widget chatList = client.getWidget(WidgetInfo.FRIENDS_CHAT_LIST);
+		Widget chatList = client.getWidget(ComponentID.FRIENDS_CHAT_LIST);
 		if (chatList != null)
 		{
-			Widget owner = client.getWidget(WidgetInfo.FRIENDS_CHAT_OWNER);
+			Widget owner = client.getWidget(ComponentID.FRIENDS_CHAT_OWNER);
 			FriendsChatManager friendsChatManager = client.getFriendsChatManager();
 			if ((friendsChatManager == null || friendsChatManager.getCount() <= 0)
 				&& chatList.getChildren() == null && !Strings.isNullOrEmpty(owner.getText())
@@ -608,7 +608,7 @@ public class ChatChannelPlugin extends Plugin
 			}
 
 			FriendsChatManager friendsChatManager = client.getFriendsChatManager();
-			Widget chatTitle = client.getWidget(WidgetInfo.FRIENDS_CHAT_TITLE);
+			Widget chatTitle = client.getWidget(ComponentID.FRIENDS_CHAT_TITLE);
 			if (friendsChatManager != null && friendsChatManager.getCount() > 0 && chatTitle != null)
 			{
 				chatTitle.setText(chatTitle.getText() + " (" + friendsChatManager.getCount() + "/" + friendsChatManager.getSize() + ")");
@@ -618,12 +618,12 @@ public class ChatChannelPlugin extends Plugin
 		{
 			if (config.clanChatShowOnlineMemberCount())
 			{
-				updateClanTitle(WidgetInfo.CLAN_HEADER, client.getClanChannel());
+				updateClanTitle(ComponentID.CLAN_HEADER, client.getClanChannel());
 			}
 
 			if (config.guestClanChatShowOnlineMemberCount())
 			{
-				updateClanTitle(WidgetInfo.CLAN_GUEST_HEADER, client.getGuestClanChannel());
+				updateClanTitle(ComponentID.CLAN_GUEST_HEADER, client.getGuestClanChannel());
 			}
 		}
 	}
@@ -642,7 +642,7 @@ public class ChatChannelPlugin extends Plugin
 
 	private void rebuildFriendsChat()
 	{
-		Widget chat = client.getWidget(WidgetInfo.FRIENDS_CHAT_ROOT);
+		Widget chat = client.getWidget(ComponentID.FRIENDS_CHAT_ROOT);
 		if (chat == null)
 		{
 			return;
@@ -654,8 +654,8 @@ public class ChatChannelPlugin extends Plugin
 
 	private void loadFriendsChats()
 	{
-		Widget chatOwner = client.getWidget(WidgetInfo.FRIENDS_CHAT_OWNER);
-		Widget chatList = client.getWidget(WidgetInfo.FRIENDS_CHAT_LIST);
+		Widget chatOwner = client.getWidget(ComponentID.FRIENDS_CHAT_OWNER);
+		Widget chatList = client.getWidget(ComponentID.FRIENDS_CHAT_LIST);
 		if (chatList == null || chatOwner == null)
 		{
 			return;
@@ -718,7 +718,7 @@ public class ChatChannelPlugin extends Plugin
 
 	private void colorIgnoredPlayers(Color ignoreColor)
 	{
-		Widget chatList = client.getWidget(WidgetInfo.FRIENDS_CHAT_LIST);
+		Widget chatList = client.getWidget(ComponentID.FRIENDS_CHAT_LIST);
 		if (chatList == null || chatList.getChildren() == null)
 		{
 			return;
@@ -743,7 +743,7 @@ public class ChatChannelPlugin extends Plugin
 	{
 		clientThread.invokeLater(() ->
 		{
-			Widget w = client.getWidget(WidgetInfo.CLAN_LAYER);
+			Widget w = client.getWidget(ComponentID.CLAN_LAYER);
 			if (w != null)
 			{
 				client.runScript(w.getOnVarTransmitListener());
@@ -752,7 +752,7 @@ public class ChatChannelPlugin extends Plugin
 
 		clientThread.invokeLater(() ->
 		{
-			Widget w = client.getWidget(WidgetInfo.CLAN_GUEST_LAYER);
+			Widget w = client.getWidget(ComponentID.CLAN_GUEST_LAYER);
 			if (w != null)
 			{
 				client.runScript(w.getOnVarTransmitListener());
@@ -760,7 +760,7 @@ public class ChatChannelPlugin extends Plugin
 		});
 	}
 
-	private void updateClanTitle(WidgetInfo widget, ClanChannel channel)
+	private void updateClanTitle(int widget, ClanChannel channel)
 	{
 		Widget header = client.getWidget(widget);
 		if (header != null && channel != null)

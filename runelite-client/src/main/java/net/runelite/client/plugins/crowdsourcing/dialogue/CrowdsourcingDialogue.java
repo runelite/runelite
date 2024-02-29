@@ -30,8 +30,8 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.crowdsourcing.CrowdsourcingManager;
 
@@ -60,14 +60,14 @@ public class CrowdsourcingDialogue
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
-		Widget npcDialogueTextWidget = client.getWidget(WidgetInfo.DIALOG_NPC_TEXT);
-		Widget playerDialogueTextWidget = client.getWidget(WidgetInfo.DIALOG_PLAYER_TEXT);
-		Widget playerDialogueOptionsWidget = client.getWidget(WidgetInfo.DIALOG_OPTION_OPTIONS);
-		Widget spriteWidget = client.getWidget(WidgetInfo.DIALOG_SPRITE_SPRITE);
-		Widget spriteTextWidget = client.getWidget(WidgetInfo.DIALOG_SPRITE_TEXT);
-		Widget doubleSpriteTextWidget = client.getWidget(WidgetInfo.DIALOG_DOUBLE_SPRITE_TEXT);
-		Widget doubleSprite1Widget = client.getWidget(WidgetInfo.DIALOG_DOUBLE_SPRITE_SPRITE1);
-		Widget doubleSprite2Widget = client.getWidget(WidgetInfo.DIALOG_DOUBLE_SPRITE_SPRITE2);
+		Widget npcDialogueTextWidget = client.getWidget(ComponentID.DIALOG_NPC_TEXT);
+		Widget playerDialogueTextWidget = client.getWidget(ComponentID.DIALOG_PLAYER_TEXT);
+		Widget playerDialogueOptionsWidget = client.getWidget(ComponentID.DIALOG_OPTION_OPTIONS);
+		Widget spriteWidget = client.getWidget(ComponentID.DIALOG_SPRITE_SPRITE);
+		Widget spriteTextWidget = client.getWidget(ComponentID.DIALOG_SPRITE_TEXT);
+		Widget doubleSpriteTextWidget = client.getWidget(ComponentID.DIALOG_DOUBLE_SPRITE_TEXT);
+		Widget doubleSprite1Widget = client.getWidget(ComponentID.DIALOG_DOUBLE_SPRITE_SPRITE1);
+		Widget doubleSprite2Widget = client.getWidget(ComponentID.DIALOG_DOUBLE_SPRITE_SPRITE2);
 
 		// If we were not in a conversation, but now one of these widgets is not null, we have started a conversation.
 		// Else if we were in a conversation, but now there is no widget, we have left the conversation.
@@ -88,7 +88,7 @@ public class CrowdsourcingDialogue
 		if (npcDialogueTextWidget != null && !npcDialogueTextWidget.getText().equals(lastDialogueText))
 		{
 			lastDialogueText = npcDialogueTextWidget.getText();
-			String npcName = client.getWidget(WidgetInfo.DIALOG_NPC_NAME).getText();
+			String npcName = client.getWidget(ComponentID.DIALOG_NPC_NAME).getText();
 			NpcDialogueData data = new NpcDialogueData(sanitize(lastDialogueText), npcName);
 			manager.storeEvent(data);
 		}

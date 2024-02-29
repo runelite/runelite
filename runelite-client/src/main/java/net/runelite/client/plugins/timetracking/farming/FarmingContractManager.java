@@ -37,8 +37,8 @@ import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.NullNpcID;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.timetracking.SummaryState;
@@ -183,14 +183,14 @@ public class FarmingContractManager
 
 	private void handleGuildmasterJaneWidgetDialog()
 	{
-		Widget npcDialog = client.getWidget(WidgetInfo.DIALOG_NPC_HEAD_MODEL);
+		Widget npcDialog = client.getWidget(ComponentID.DIALOG_NPC_HEAD_MODEL);
 
 		if (npcDialog == null || npcDialog.getModelId() != GUILDMASTER_JANE_NPC_ID)
 		{
 			return;
 		}
 
-		String dialogText = Text.removeTags(client.getWidget(WidgetInfo.DIALOG_NPC_TEXT).getText());
+		String dialogText = Text.removeTags(client.getWidget(ComponentID.DIALOG_NPC_TEXT).getText());
 
 		if (dialogText.equals(CONTRACT_REWARDED))
 		{

@@ -57,9 +57,9 @@ import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.widgets.InterfaceID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -193,15 +193,17 @@ public class FishingPlugin extends Plugin
 			return;
 		}
 
-		if (event.getMessage().contains("You catch a") || event.getMessage().contains("You catch some") ||
-			event.getMessage().equals("Your cormorant returns with its catch."))
+		var message = event.getMessage();
+		if (message.contains("You catch a") || message.contains("You catch some")
+			|| message.equals("Your cormorant returns with its catch.")
+			|| (message.startsWith("You catch") && message.contains("Karambwanji")))
 		{
 			session.setLastFishCaught(Instant.now());
 			spotOverlay.setHidden(false);
 			fishingSpotMinimapOverlay.setHidden(false);
 		}
 
-		if (event.getMessage().equals("A flying fish jumps up and eats some of your minnows!") && config.flyingFishNotification())
+		if (message.equals("A flying fish jumps up and eats some of your minnows!") && config.flyingFishNotification())
 		{
 			notifier.notify("A flying fish is eating your minnows!");
 		}
@@ -348,7 +350,7 @@ public class FishingPlugin extends Plugin
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
-		if (event.getGroupId() == WidgetID.FISHING_TRAWLER_GROUP_ID)
+		if (event.getGroupId() == InterfaceID.TRAWLER)
 		{
 			trawlerStartTime = Instant.now();
 			log.debug("Trawler session started");
@@ -371,7 +373,7 @@ public class FishingPlugin extends Plugin
 			return;
 		}
 
-		Widget trawlerContributionWidget = client.getWidget(WidgetInfo.FISHING_TRAWLER_CONTRIBUTION);
+		Widget trawlerContributionWidget = client.getWidget(ComponentID.TRAWLER_CONTRIBUTION);
 		if (trawlerContributionWidget == null)
 		{
 			return;
@@ -404,7 +406,7 @@ public class FishingPlugin extends Plugin
 			return;
 		}
 
-		Widget trawlerTimerWidget = client.getWidget(WidgetInfo.FISHING_TRAWLER_TIMER);
+		Widget trawlerTimerWidget = client.getWidget(ComponentID.TRAWLER_TIMER);
 		if (trawlerTimerWidget == null)
 		{
 			return;

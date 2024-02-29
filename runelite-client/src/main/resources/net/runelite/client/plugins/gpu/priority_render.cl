@@ -119,7 +119,6 @@ void get_face(__local struct shared_data *shared, __constant struct uniform *uni
   }
 
   if (localId < size) {
-    int radius = (flags >> 12) & 0xfff;
     int orientation = flags & 0x7ff;
 
     // rotate for model orientation
@@ -129,12 +128,7 @@ void get_face(__local struct shared_data *shared, __constant struct uniform *uni
 
     // calculate distance to face
     int thisPriority = (thisA.w >> 16) & 0xff;  // all vertices on the face have the same priority
-    int thisDistance;
-    if (radius == 0) {
-      thisDistance = 0;
-    } else {
-      thisDistance = face_distance(thisrvA, thisrvB, thisrvC, cameraYaw, cameraPitch) + radius;
-    }
+    int thisDistance = face_distance(thisrvA, thisrvB, thisrvC, cameraYaw, cameraPitch);
 
     *o1 = thisrvA;
     *o2 = thisrvB;
@@ -206,15 +200,15 @@ void insert_face(__local struct shared_data *shared, uint localId, struct modeli
   if (localId < size) {
     // calculate base offset into renderPris based on number of faces with a lower priority
     int baseOff = count_prio_offset(shared, adjPrio);
-    // the furthest faces draw first, and have the highest value
+    // the furthest faces draw first, and have the highest priority.
     // if two faces have the same distance, the one with the
-    // lower id draws first
-    shared->renderPris[baseOff + prioIdx] = ((uint)(distance << 16)) | (~localId & 0xffffu);
+    // lower id draws first.
+    shared->renderPris[baseOff + prioIdx] = distance << 16 | (int)(~localId & 0xffffu);
   }
 }
 
 int tile_height(read_only image3d_t tileHeightImage, int z, int x, int y) {
-#define ESCENE_OFFSET 40 // (184-104)/2
+#define ESCENE_OFFSET 40  // (184-104)/2
   const sampler_t tileHeightSampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_TO_EDGE;
   int4 coord = (int4)(x + ESCENE_OFFSET, y + ESCENE_OFFSET, z, 0);
   return read_imagei(tileHeightImage, tileHeightSampler, coord).x << 3;
@@ -250,7 +244,7 @@ void sort_and_insert(__local struct shared_data *shared, __constant struct unifo
     const int numOfPriority = shared->totalMappedNum[thisPriority];
     const int start = priorityOffset;                // index of first face with this priority
     const int end = priorityOffset + numOfPriority;  // index of last face with this priority
-    const uint renderPriority = ((uint)(thisDistance << 16)) | (~localId & 0xffffu);
+    const int renderPriority = thisDistance << 16 | (int)(~localId & 0xffffu);
     int myOffset = priorityOffset;
 
     // calculate position this face will be in

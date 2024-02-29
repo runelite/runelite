@@ -63,7 +63,6 @@ import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
-import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerModel;
@@ -99,7 +98,7 @@ import net.runelite.client.ui.DynamicGridLayout;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.components.ColorJButton;
-import net.runelite.client.ui.components.ComboBoxListRenderer;
+import net.runelite.client.ui.components.TitleCaseListCellRenderer;
 import net.runelite.client.ui.components.colorpicker.ColorPickerManager;
 import net.runelite.client.ui.components.colorpicker.RuneliteColorPicker;
 import net.runelite.client.util.ColorUtil;
@@ -113,11 +112,8 @@ class ConfigPanel extends PluginPanel
 {
 	private static final int SPINNER_FIELD_WIDTH = 6;
 	private static final ImageIcon SECTION_EXPAND_ICON;
-	private static final ImageIcon SECTION_EXPAND_ICON_HOVER;
 	private static final ImageIcon SECTION_RETRACT_ICON;
-	private static final ImageIcon SECTION_RETRACT_ICON_HOVER;
 	static final ImageIcon BACK_ICON;
-	static final ImageIcon BACK_ICON_HOVER;
 
 	private static final Map<ConfigSectionDescriptor, Boolean> sectionExpandStates = new HashMap<>();
 
@@ -125,15 +121,12 @@ class ConfigPanel extends PluginPanel
 	{
 		final BufferedImage backIcon = ImageUtil.loadImageResource(ConfigPanel.class, "config_back_icon.png");
 		BACK_ICON = new ImageIcon(backIcon);
-		BACK_ICON_HOVER = new ImageIcon(ImageUtil.alphaOffset(backIcon, -100));
 
 		BufferedImage sectionRetractIcon = ImageUtil.loadImageResource(ConfigPanel.class, "/util/arrow_right.png");
 		sectionRetractIcon = ImageUtil.luminanceOffset(sectionRetractIcon, -121);
 		SECTION_EXPAND_ICON = new ImageIcon(sectionRetractIcon);
-		SECTION_EXPAND_ICON_HOVER = new ImageIcon(ImageUtil.alphaOffset(sectionRetractIcon, -100));
 		final BufferedImage sectionExpandIcon = ImageUtil.rotateImage(sectionRetractIcon, Math.PI / 2);
 		SECTION_RETRACT_ICON = new ImageIcon(sectionExpandIcon);
-		SECTION_RETRACT_ICON_HOVER = new ImageIcon(ImageUtil.alphaOffset(sectionExpandIcon, -100));
 	}
 
 	private final PluginListPanel pluginList;
@@ -142,7 +135,7 @@ class ConfigPanel extends PluginPanel
 	private final ExternalPluginManager externalPluginManager;
 	private final ColorPickerManager colorPickerManager;
 
-	private final ListCellRenderer<Enum<?>> listCellRenderer = new ComboBoxListRenderer<>();
+	private final TitleCaseListCellRenderer listCellRenderer = new TitleCaseListCellRenderer();
 
 	private final FixedWidthPanel mainPanel;
 	private final JLabel title;
@@ -184,7 +177,6 @@ class ConfigPanel extends PluginPanel
 		add(scrollPane, BorderLayout.CENTER);
 
 		JButton topPanelBackButton = new JButton(BACK_ICON);
-		topPanelBackButton.setRolloverIcon(BACK_ICON_HOVER);
 		SwingUtil.removeButtonDecorations(topPanelBackButton);
 		topPanelBackButton.setPreferredSize(new Dimension(22, 0));
 		topPanelBackButton.setBorder(new EmptyBorder(0, 0, 0, 5));
@@ -249,7 +241,6 @@ class ConfigPanel extends PluginPanel
 		boolean newState = !contents.isVisible();
 		contents.setVisible(newState);
 		button.setIcon(newState ? SECTION_RETRACT_ICON : SECTION_EXPAND_ICON);
-		button.setRolloverIcon(newState ? SECTION_RETRACT_ICON_HOVER : SECTION_EXPAND_ICON_HOVER);
 		button.setToolTipText(newState ? "Retract" : "Expand");
 		sectionExpandStates.put(csd, newState);
 		SwingUtilities.invokeLater(contents::revalidate);
@@ -288,7 +279,6 @@ class ConfigPanel extends PluginPanel
 			section.add(sectionHeader, BorderLayout.NORTH);
 
 			final JButton sectionToggle = new JButton(isOpen ? SECTION_RETRACT_ICON : SECTION_EXPAND_ICON);
-			sectionToggle.setRolloverIcon(isOpen ? SECTION_RETRACT_ICON_HOVER : SECTION_EXPAND_ICON_HOVER);
 			sectionToggle.setPreferredSize(new Dimension(18, 0));
 			sectionToggle.setBorder(new EmptyBorder(0, 0, 0, 5));
 			sectionToggle.setToolTipText(isOpen ? "Retract" : "Expand");
@@ -437,7 +427,6 @@ class ConfigPanel extends PluginPanel
 	private JCheckBox createCheckbox(ConfigDescriptor cd, ConfigItemDescriptor cid)
 	{
 		JCheckBox checkbox = new JCheckBox();
-		checkbox.setBackground(ColorScheme.LIGHT_GRAY_COLOR);
 		checkbox.setSelected(Boolean.parseBoolean(configManager.getConfiguration(cd.getGroup().value(), cid.getItem().keyName())));
 		checkbox.addActionListener(ae -> changeConfiguration(checkbox, cd, cid));
 		return checkbox;
@@ -494,6 +483,7 @@ class ConfigPanel extends PluginPanel
 		if (cid.getItem().secret())
 		{
 			textField = new JPasswordField();
+			textField.setFont(FontManager.getDefaultFont());
 		}
 		else
 		{
@@ -604,9 +594,7 @@ class ConfigPanel extends PluginPanel
 		// to build components for each combobox element in order to compute the display size of the
 		// combobox
 		box.setRenderer(listCellRenderer);
-		box.setPreferredSize(new Dimension(box.getPreferredSize().width, 25));
-		box.setForeground(Color.WHITE);
-		box.setFocusable(false);
+		box.setPreferredSize(new Dimension(box.getPreferredSize().width, 22));
 
 		try
 		{

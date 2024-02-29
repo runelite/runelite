@@ -52,9 +52,9 @@ import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.widgets.InterfaceID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -547,11 +547,11 @@ public class ItemChargePlugin extends Plugin
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded widgetLoaded)
 	{
-		if (widgetLoaded.getGroupId() == WidgetID.DIALOG_SPRITE_GROUP_ID)
+		if (widgetLoaded.getGroupId() == InterfaceID.DIALOG_SPRITE)
 		{
 			clientThread.invokeLater(() ->
 			{
-				Widget sprite = client.getWidget(WidgetInfo.DIALOG_SPRITE_SPRITE);
+				Widget sprite = client.getWidget(ComponentID.DIALOG_SPRITE_SPRITE);
 				if (sprite != null)
 				{
 					switch (sprite.getItemId())
@@ -652,7 +652,7 @@ public class ItemChargePlugin extends Plugin
 		}
 		lastCheckTick = currentTick;
 
-		final Widget widgetDestroyItemName = client.getWidget(WidgetInfo.DESTROY_ITEM_NAME);
+		final Widget widgetDestroyItemName = client.getWidget(ComponentID.DESTROY_ITEM_NAME);
 		if (widgetDestroyItemName == null)
 		{
 			return;

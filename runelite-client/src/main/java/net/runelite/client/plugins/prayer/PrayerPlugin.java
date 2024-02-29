@@ -34,6 +34,7 @@ import javax.annotation.Nullable;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.InventoryID;
@@ -43,8 +44,8 @@ import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
@@ -72,6 +73,7 @@ public class PrayerPlugin extends Plugin
 	private boolean prayersActive = false;
 
 	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
 	private int prayerBonus;
 
 	@Inject
@@ -345,43 +347,44 @@ public class PrayerPlugin extends Plugin
 
 	private void setPrayerOrbText(String text)
 	{
-		Widget prayerOrbText = client.getWidget(WidgetInfo.MINIMAP_PRAYER_ORB_TEXT);
+		Widget prayerOrbText = client.getWidget(ComponentID.MINIMAP_PRAYER_ORB_TEXT);
 		if (prayerOrbText != null)
 		{
 			prayerOrbText.setText(text);
 		}
 	}
 
-	private static double getPrayerDrainRate(Client client)
+	private static int getDrainEffect(Client client)
 	{
-		double drainRate = 0.0;
+		int drainEffect = 0;
 
-		for (Prayer prayer : Prayer.values())
+		for (PrayerType prayerType : PrayerType.values())
 		{
-			if (client.isPrayerActive(prayer))
+			if (client.isPrayerActive(prayerType.getPrayer()))
 			{
-				drainRate += prayer.getDrainRate();
+				drainEffect += prayerType.getDrainEffect();
 			}
 		}
 
-		return drainRate;
+		return drainEffect;
 	}
 
 	String getEstimatedTimeRemaining(boolean formatForOrb)
 	{
-		final double drainRate = getPrayerDrainRate(client);
+		final int drainEffect = getDrainEffect(client);
 
-		if (drainRate == 0)
+		if (drainEffect == 0)
 		{
 			return "N/A";
 		}
 
-		final int currentPrayer = client.getBoostedSkillLevel(Skill.PRAYER);
-
 		// Calculate how many seconds each prayer points last so the prayer bonus can be applied
-		final double secondsPerPoint = (60.0 / drainRate) * (1.0 + (prayerBonus / 30.0));
+		// https://oldschool.runescape.wiki/w/Prayer#Prayer_drain_mechanics
+		final int drainResistance = 2 * prayerBonus + 60;
+		final double secondsPerPoint = 0.6 * ((double) drainResistance / drainEffect);
 
 		// Calculate the number of seconds left
+		final int currentPrayer = client.getBoostedSkillLevel(Skill.PRAYER);
 		final double secondsLeft = (currentPrayer * secondsPerPoint);
 
 		LocalTime timeLeft = LocalTime.ofSecondOfDay((long) secondsLeft);

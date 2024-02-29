@@ -57,10 +57,21 @@ public final class AnimationID
 	public static final int WOODCUTTING_2H_RUNE = 10070;
 	public static final int WOODCUTTING_2H_DRAGON = 10071;
 	public static final int WOODCUTTING_2H_CRYSTAL = 10072;
+	public static final int WOODCUTTING_2H_CRYSTAL_INACTIVE = 10073;
 	public static final int WOODCUTTING_2H_3A = 10074;
 	public static final int CONSUMING = 829; // consuming consumables
 	public static final int FIREMAKING = 733;
-	public static final int FIREMAKING_FORESTERS_CAMPFIRE = 10572;
+	public static final int FIREMAKING_FORESTERS_CAMPFIRE_ARCTIC_PINE = 10563;
+	public static final int FIREMAKING_FORESTERS_CAMPFIRE_BLISTERWOOD = 10564;
+	public static final int FIREMAKING_FORESTERS_CAMPFIRE_LOGS = 10565;
+	public static final int FIREMAKING_FORESTERS_CAMPFIRE_MAGIC = 10566;
+	public static final int FIREMAKING_FORESTERS_CAMPFIRE_MAHOGANY = 10567;
+	public static final int FIREMAKING_FORESTERS_CAMPFIRE_MAPLE = 10568;
+	public static final int FIREMAKING_FORESTERS_CAMPFIRE_OAK = 10569;
+	public static final int FIREMAKING_FORESTERS_CAMPFIRE_REDWOOD = 10570;
+	public static final int FIREMAKING_FORESTERS_CAMPFIRE_TEAK = 10571;
+	public static final int FIREMAKING_FORESTERS_CAMPFIRE_WILLOW = 10572;
+	public static final int FIREMAKING_FORESTERS_CAMPFIRE_YEW = 10573;
 	public static final int DEATH = 836;
 	public static final int COOKING_FIRE = 897;
 	public static final int COOKING_RANGE = 896;
@@ -247,6 +258,12 @@ public final class AnimationID
 	public static final int PISCARILIUS_CRANE_REPAIR = 7199;
 	public static final int HOME_MAKE_TABLET = 4067;
 	public static final int DRAGONFIRE_SHIELD_SPECIAL = 6696;
+	public static final int MILKING_COW = 2305;
+	public static final int CHURN_MILK_SHORT = 2793;
+	public static final int CHURN_MILK_MEDIUM = 2794;
+	public static final int CHURN_MILK_LONG = 2795;
+	public static final int CLEANING_SPECIMENS_1 = 6217;
+	public static final int CLEANING_SPECIMENS_2 = 6459;
 
 	// Ectofuntus animations
 	public static final int ECTOFUNTUS_FILL_SLIME_BUCKET = 4471;

@@ -95,9 +95,9 @@ import net.runelite.http.api.config.Profile;
 public class ConfigManager
 {
 	public static final String RSPROFILE_GROUP = "rsprofile";
+	public static final String RSPROFILE_DISPLAY_NAME = "displayName";
+	public static final String RSPROFILE_TYPE = "type";
 
-	private static final String RSPROFILE_DISPLAY_NAME = "displayName";
-	private static final String RSPROFILE_TYPE = "type";
 	private static final String RSPROFILE_ACCOUNT_HASH = "accountHash";
 
 	private static final long RSPROFILE_ID = -1L;
@@ -157,7 +157,7 @@ public class ConfigManager
 	{
 		if (newProfile.getId() == profile.getId())
 		{
-			log.warn("switching to existing profile!");
+			log.warn("switching to already-active profile!");
 			return;
 		}
 
@@ -1500,6 +1500,35 @@ public class ConfigManager
 		{
 			String name = ev.getPlayer().getName();
 			setRSProfileConfiguration(RSPROFILE_GROUP, RSPROFILE_DISPLAY_NAME, name);
+		}
+	}
+
+	@Subscribe
+	private void onRuneScapeProfileChanged(RuneScapeProfileChanged ev)
+	{
+		ConfigProfile switchToProfile = null;
+		try (ProfileManager.Lock lock = profileManager.lock())
+		{
+			for (final ConfigProfile lockProfile : lock.getProfiles())
+			{
+				final List<String> get = lockProfile.getDefaultForRsProfiles();
+				if (get != null && get.contains(rsProfileKey))
+				{
+					switchToProfile = lockProfile;
+
+					// change active profile
+					lock.getProfiles().forEach(p -> p.setActive(false));
+					switchToProfile.setActive(true);
+					lock.dirty();
+					break;
+				}
+			}
+		}
+
+		if (switchToProfile != null)
+		{
+			log.debug("Switching to default profile {} for rsprofile {}", switchToProfile.getName(), rsProfileKey);
+			switchProfile(switchToProfile);
 		}
 	}
 

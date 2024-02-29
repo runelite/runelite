@@ -90,7 +90,7 @@ import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.PostClientTick;
 import net.runelite.api.events.WidgetLoaded;
-import net.runelite.api.widgets.WidgetID;
+import net.runelite.api.widgets.InterfaceID;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.callback.ClientThread;
@@ -304,6 +304,9 @@ public class LootTrackerPlugin extends Plugin
 	private static final String CHAMBERS_OF_XERIC = "Chambers of Xeric";
 	private static final String THEATRE_OF_BLOOD = "Theatre of Blood";
 	private static final String TOMBS_OF_AMASCUT = "Tombs of Amascut";
+
+	private static final int FONT_OF_CONSUMPTION_REGION = 12106;
+	private static final String FONT_OF_CONSUMPTION_USE_MESSAGE = "You place the Unsired into the Font of Consumption...";
 
 	private static final Set<Character> VOWELS = ImmutableSet.of('a', 'e', 'i', 'o', 'u');
 
@@ -749,6 +752,28 @@ public class LootTrackerPlugin extends Plugin
 		}
 	}
 
+	private Object buildNpcMetadata(NPC npc)
+	{
+		if (client.getWorldType().contains(WorldType.SEASONAL))
+		{
+			var md = new NpcMetadata();
+			md.setId(npc.getId());
+			md.setR1(client.getVarbitValue(Varbits.LEAGUE_RELIC_1));
+			md.setR2(client.getVarbitValue(Varbits.LEAGUE_RELIC_2));
+			md.setR3(client.getVarbitValue(Varbits.LEAGUE_RELIC_3));
+			md.setR4(client.getVarbitValue(Varbits.LEAGUE_RELIC_4));
+			md.setR5(client.getVarbitValue(Varbits.LEAGUE_RELIC_5));
+			md.setR6(client.getVarbitValue(Varbits.LEAGUE_RELIC_6));
+			md.setR7(client.getVarbitValue(Varbits.LEAGUE_RELIC_7));
+			md.setR8(client.getVarbitValue(Varbits.LEAGUE_RELIC_8));
+			return md;
+		}
+		else
+		{
+			return npc.getId();
+		}
+	}
+
 	@Subscribe
 	public void onNpcLootReceived(final NpcLootReceived npcLootReceived)
 	{
@@ -757,7 +782,7 @@ public class LootTrackerPlugin extends Plugin
 		final String name = npc.getName();
 		final int combat = npc.getCombatLevel();
 
-		addLoot(name, combat, LootRecordType.NPC, npc.getId(), items);
+		addLoot(name, combat, LootRecordType.NPC, buildNpcMetadata(npc), items);
 
 		if (config.npcKillChatMessage())
 		{
@@ -800,11 +825,11 @@ public class LootTrackerPlugin extends Plugin
 
 		switch (widgetLoaded.getGroupId())
 		{
-			case (WidgetID.BARROWS_REWARD_GROUP_ID):
+			case InterfaceID.BARROWS_REWARD:
 				event = "Barrows";
 				container = client.getItemContainer(InventoryID.BARROWS_REWARD);
 				break;
-			case (WidgetID.CHAMBERS_OF_XERIC_REWARD_GROUP_ID):
+			case InterfaceID.CHAMBERS_OF_XERIC_REWARD:
 				if (chestLooted)
 				{
 					return;
@@ -813,7 +838,7 @@ public class LootTrackerPlugin extends Plugin
 				container = client.getItemContainer(InventoryID.CHAMBERS_OF_XERIC_CHEST);
 				chestLooted = true;
 				break;
-			case (WidgetID.THEATRE_OF_BLOOD_GROUP_ID):
+			case InterfaceID.TOB_REWARD:
 				if (chestLooted || !inTobChestRegion())
 				{
 					return;
@@ -822,7 +847,7 @@ public class LootTrackerPlugin extends Plugin
 				container = client.getItemContainer(InventoryID.THEATRE_OF_BLOOD_CHEST);
 				chestLooted = true;
 				break;
-			case WidgetID.TOA_REWARD_GROUP_ID:
+			case InterfaceID.TOA_REWARD:
 				if (chestLooted)
 				{
 					return;
@@ -844,21 +869,21 @@ public class LootTrackerPlugin extends Plugin
 				metadata = new int[]{ raidLevel, teamSize, raidDamage };
 				chestLooted = true;
 				break;
-			case (WidgetID.KINGDOM_GROUP_ID):
+			case InterfaceID.KINGDOM:
 				event = "Kingdom of Miscellania";
 				container = client.getItemContainer(InventoryID.KINGDOM_OF_MISCELLANIA);
 				break;
-			case (WidgetID.FISHING_TRAWLER_REWARD_GROUP_ID):
+			case InterfaceID.TRAWLER_REWARD:
 				event = "Fishing Trawler";
 				metadata = client.getBoostedSkillLevel(Skill.FISHING);
 				container = client.getItemContainer(InventoryID.FISHING_TRAWLER_REWARD);
 				break;
-			case (WidgetID.DRIFT_NET_FISHING_REWARD_GROUP_ID):
+			case InterfaceID.DRIFT_NET_FISHING_REWARD:
 				event = "Drift Net";
 				metadata = client.getBoostedSkillLevel(Skill.FISHING);
 				container = client.getItemContainer(InventoryID.DRIFT_NET_FISHING_REWARD);
 				break;
-			case WidgetID.WILDERNESS_LOOT_CHEST:
+			case InterfaceID.WILDERNESS_LOOT_CHEST:
 				if (chestLooted)
 				{
 					return;
@@ -1076,6 +1101,11 @@ public class LootTrackerPlugin extends Plugin
 		{
 			onInvChange(collectInvItems(LootRecordType.EVENT, client.getLocalPlayer().getInteracting().getName()));
 			return;
+		}
+
+		if (regionID == FONT_OF_CONSUMPTION_REGION && message.equals(FONT_OF_CONSUMPTION_USE_MESSAGE))
+		{
+			onInvChange(collectInvItems(LootRecordType.EVENT, "Unsired"));
 		}
 	}
 
