@@ -30,7 +30,7 @@ public final class DBTableID
 	{
 		int TABLE = 0;
 		int NAME = 2;
-		int MAP_ELEMENT = 14;
-		int MAIN_QUEST = 19;
+		int MAP_ELEMENT = 16;
+		int MAIN_QUEST = 21;
 	}
 }
