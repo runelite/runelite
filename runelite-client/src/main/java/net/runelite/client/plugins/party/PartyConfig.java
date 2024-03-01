@@ -52,7 +52,7 @@ public interface PartyConfig extends Config
 	@ConfigItem(
 		keyName = "sounds",
 		name = "Sound on ping",
-		description = "Enables sound notification on party ping",
+		description = "Enables sound notification on party ping.",
 		position = 2
 	)
 	default boolean sounds()
@@ -63,7 +63,7 @@ public interface PartyConfig extends Config
 	@ConfigItem(
 		keyName = "recolorNames",
 		name = "Recolor names",
-		description = "Recolor party members names based on unique color hash",
+		description = "Recolor party members names based on unique color hash.",
 		position = 3
 	)
 	default boolean recolorNames()
