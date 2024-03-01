@@ -30,12 +30,17 @@ import java.util.function.Predicate;
 import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 
 @Singleton
 public class WorldMapPointManager
 {
 	@Getter(AccessLevel.PACKAGE)
 	private final List<WorldMapPoint> worldMapPoints = new CopyOnWriteArrayList<>();
+
+	@Setter
+	@Getter
+	private WorldMapArea worldMapArea = WorldMapArea.ANY;
 
 	public void add(WorldMapPoint worldMapPoint)
 	{

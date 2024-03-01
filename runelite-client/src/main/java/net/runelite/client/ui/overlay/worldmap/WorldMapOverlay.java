@@ -114,7 +114,7 @@ public class WorldMapOverlay extends Overlay
 				.setOption(FOCUS_ON)
 				.setType(MenuAction.RUNELITE)
 				.onClick(m -> client.getWorldMap().setWorldMapPositionTarget(
-					MoreObjects.firstNonNull(worldPoint.getTarget(), worldPoint.getWorldPoint())));
+					MoreObjects.firstNonNull(worldPoint.getTarget(), worldPoint.getMapWorldPoint())));
 		});
 		bottomBar.setHasListener(true);
 
@@ -136,8 +136,15 @@ public class WorldMapOverlay extends Overlay
 
 		for (WorldMapPoint worldPoint : points)
 		{
+			if (worldPoint.getWorldMapArea() != null &&
+				worldPoint.getWorldMapArea() != WorldMapArea.ANY &&
+				worldPoint.getWorldMapArea() != worldMapPointManager.getWorldMapArea())
+			{
+				continue;
+			}
+
 			BufferedImage image = worldPoint.getImage();
-			WorldPoint point = worldPoint.getWorldPoint();
+			WorldPoint point = worldPoint.getMapWorldPoint();
 
 			if (image != null && point != null)
 			{
@@ -257,6 +264,19 @@ public class WorldMapOverlay extends Overlay
 			return null;
 		}
 
+		return mapWorldPointToGraphicsPointIncludingNonSurfaces(worldPoint);
+	}
+
+	/**
+	 * Get the screen coordinates for a WorldPoint on the world map
+	 *
+	 * @param worldPoint WorldPoint to get screen coordinates of
+	 * @return Point of screen coordinates of the center of the world point
+	 */
+	public Point mapWorldPointToGraphicsPointIncludingNonSurfaces(WorldPoint worldPoint)
+	{
+		WorldMap worldMap = client.getWorldMap();
+
 		float pixelsPerTile = worldMap.getWorldMapZoom();
 
 		Widget map = client.getWidget(ComponentID.WORLD_MAP_MAPVIEW);
@@ -325,7 +345,7 @@ public class WorldMapOverlay extends Overlay
 	private void drawTooltip(Graphics2D graphics, WorldMapPoint worldPoint)
 	{
 		String tooltip = worldPoint.getTooltip();
-		Point drawPoint = mapWorldPointToGraphicsPoint(worldPoint.getWorldPoint());
+		Point drawPoint = mapWorldPointToGraphicsPoint(worldPoint.getMapWorldPoint());
 		if (tooltip == null || tooltip.length() <= 0 || drawPoint == null)
 		{
 			return;

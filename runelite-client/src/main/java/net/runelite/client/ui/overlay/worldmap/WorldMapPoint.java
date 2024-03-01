@@ -39,6 +39,10 @@ public class WorldMapPoint
 
 	private WorldPoint worldPoint;
 
+	private WorldPoint worldPointToMapWorldPoint;
+
+	private WorldMapArea worldMapArea;
+
 	/**
 	 * The WorldPoint which the worldmap will jump to when clicked
 	 */
@@ -69,7 +73,7 @@ public class WorldMapPoint
 
 	public WorldMapPoint(WorldPoint worldPoint, BufferedImage image)
 	{
-		this.worldPoint = worldPoint;
+		setWorldPoint(worldPoint);
 		this.image = image;
 	}
 
@@ -79,5 +83,34 @@ public class WorldMapPoint
 
 	public void onEdgeUnsnap()
 	{
+	}
+
+	public WorldPoint getMapWorldPoint()
+	{
+		if (worldPointToMapWorldPoint != null) return worldPointToMapWorldPoint;
+		WorldPointWithWorldMapArea worldPointWithWorldMapArea = WorldPointToWorldMapPoint
+			.getMapWorldPointFromRealWorldPoint(worldPoint);
+		this.worldPointToMapWorldPoint = worldPointWithWorldMapArea.getWorldPoint();
+		this.worldMapArea = worldPointWithWorldMapArea.getWorldMapArea();
+
+		return worldPointToMapWorldPoint;
+	}
+
+	public WorldMapArea getWorldMapArea()
+	{
+		if (worldMapArea != null) return worldMapArea;
+		WorldPointWithWorldMapArea worldPointWithWorldMapArea = WorldPointToWorldMapPoint
+			.getMapWorldPointFromRealWorldPoint(worldPoint);
+		worldPointToMapWorldPoint = worldPointWithWorldMapArea.getWorldPoint();
+		worldMapArea = worldPointWithWorldMapArea.getWorldMapArea();
+
+		return worldMapArea;
+	}
+
+	public void setWorldPoint(WorldPoint worldPoint)
+	{
+		this.worldPoint = worldPoint;
+		this.worldPointToMapWorldPoint = null;
+		this.worldMapArea = WorldMapArea.ANY;
 	}
 }
