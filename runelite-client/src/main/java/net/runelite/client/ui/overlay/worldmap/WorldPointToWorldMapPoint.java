@@ -39,8 +39,8 @@ public class WorldPointToWorldMapPoint
 		/* Ancient Cavern */
 		addMapping(6995, new PlaneMapping(WorldMapArea.ANCIENT_CAVERN, 1, 7252));
 		addMapping(6994, new PlaneMapping(WorldMapArea.ANCIENT_CAVERN, 1, 7251));
+
 		// DS2 version of Ancient Cavern
-		// ISSUE: This should mirror, so that it won't
 		addMapping(6483, new PlaneMapping(WorldMapArea.ANCIENT_CAVERN, 0, 6995, true));
 		addMapping(6483, new PlaneMapping(WorldMapArea.ANCIENT_CAVERN, 1, 6995, true));
 
@@ -86,7 +86,6 @@ public class WorldPointToWorldMapPoint
 		PlaneMapping godwarsZilyanaRoom = new PlaneMapping(WorldMapArea.GOD_WARS_DUNGEON, 0, 11601, 8, 40);
 		godwarsZilyanaRoom.setYMax(24);
 		addMapping(11602, godwarsZilyanaRoom);
-		// Zaros area is speculative that it's moves down a region and shifted up rather than just shifted down
 		addMapping(11345, new PlaneMapping(WorldMapArea.GOD_WARS_DUNGEON, 0, 11344, 0, 32));
 		addMapping(11601, new PlaneMapping(WorldMapArea.GOD_WARS_DUNGEON, 0, 11600, 0, 32));
 
@@ -108,8 +107,7 @@ public class WorldPointToWorldMapPoint
 		PlaneMapping karuulmF1SE = new PlaneMapping(WorldMapArea.KEBOS_UNDERGROUND, 1, 5023, -24, 24);
 		karuulmF1SE.setXMax(32);
 		addMapping(5536, karuulmF1SE);
-		// 1179, 10279, 0 (FAKE 1st FLOOR)
-		// 1323, 10215, 0 (REAL 1st FLOOR)
+
 		addMapping(5023, new PlaneMapping(WorldMapArea.KEBOS_UNDERGROUND, 2, 4512, -16, 0));
 		addMapping(5279, new PlaneMapping(WorldMapArea.KEBOS_UNDERGROUND, 2, 4768, -16, 0));
 		addMapping(5535, new PlaneMapping(WorldMapArea.KEBOS_UNDERGROUND, 2, 5024, -16, 0));
@@ -176,13 +174,13 @@ public class WorldPointToWorldMapPoint
 		addMapping(9316, new PlaneMapping(WorldMapArea.LASSAR_UNDERCITY, 10340, true));
 
 
-		addMapping(9570, new PlaneMapping(WorldMapArea.LASSAR_UNDERCITY, 10594));
-		addMapping(9571, new PlaneMapping(WorldMapArea.LASSAR_UNDERCITY, 10595));
-		addMapping(9572, new PlaneMapping(WorldMapArea.LASSAR_UNDERCITY, 10596));
+		addMapping(9570, new PlaneMapping(WorldMapArea.LASSAR_UNDERCITY, 10594, true));
+		addMapping(9571, new PlaneMapping(WorldMapArea.LASSAR_UNDERCITY, 10595, true));
+		addMapping(9572, new PlaneMapping(WorldMapArea.LASSAR_UNDERCITY, 10596, true));
 
-		addMapping(9826, new PlaneMapping(WorldMapArea.LASSAR_UNDERCITY, 10850));
-		addMapping(9827, new PlaneMapping(WorldMapArea.LASSAR_UNDERCITY, 10851));
-		addMapping(9828, new PlaneMapping(WorldMapArea.LASSAR_UNDERCITY, 10852));
+		addMapping(9826, new PlaneMapping(WorldMapArea.LASSAR_UNDERCITY, 10850, true));
+		addMapping(9827, new PlaneMapping(WorldMapArea.LASSAR_UNDERCITY, 10851, true));
+		addMapping(9828, new PlaneMapping(WorldMapArea.LASSAR_UNDERCITY, 10852, true));
 
 		/* Miscellania Underground */
 		// All correctly placed
@@ -362,9 +360,6 @@ public class WorldPointToWorldMapPoint
 		PlaneMapping poisonSpiderRoom = new PlaneMapping(WorldMapArea.YANILLE_UNDERGROUND, 0, 10131, 24, 8);
 		poisonSpiderRoom.setXMax(47);
 		addMapping(10389, poisonSpiderRoom);
-
-		// Preferred implementation:
-		// Loop through regionList, take oldX, oldY, oldPlane -> newX, newY
 	}
 
 	static void addMapping(Integer chunkID, PlaneMapping planeMapping)
@@ -374,8 +369,6 @@ public class WorldPointToWorldMapPoint
 
 	static public WorldPointWithWorldMapArea getMapWorldPointFromRealWorldPoint(WorldPoint realWorldPoint)
 	{
-		// TODO: Look into WORLDMAP_GETMAPNAME
-//		ChunkWithPlane realChunkWithPlane = new ChunkWithPlane(realWorldPoint.getRegionID(), realWorldPoint.getPlane());
 		List<PlaneMapping> mappedPlanes = realChunkToMapChunk.get(realWorldPoint.getRegionID());
 		if (mappedPlanes == null)
 		{
@@ -406,7 +399,6 @@ public class WorldPointToWorldMapPoint
 				realWorldPoint.getPlane()), mappedPlane.worldMapArea);
 		}
 
-		// If no match is found, return the original realWorldPoint
 		return new WorldPointWithWorldMapArea(realWorldPoint, WorldMapArea.ANY);
 	}
 
@@ -431,18 +423,15 @@ public class WorldPointToWorldMapPoint
 
 				WorldPoint shiftedWorldPoint = new WorldPoint(shiftedWorldX, shiftedWorldY, 0);
 
-				// Check if the mapWorldPoint's chunk ID matches any PlaneMapping's targetChunkId
 				if (planeMapping.getTargetChunkId() == shiftedWorldPoint.getRegionID())
 				{
-					// Calculate the real world point based on the offsets
 					int realRegionX = shiftedWorldPoint.getRegionX();
 					int realRegionY = shiftedWorldPoint.getRegionY();
 					int realPlane = planeMapping.getPlane();
 
-					// Check if the calculated realRegionX and realRegionY fall within the bounds of the PlaneMapping
 					if ((planeMapping.getXMin() <= realRegionX && realRegionX < planeMapping.getXMax()) ||
 						(planeMapping.getXMin() == -1 && planeMapping.getXMax() == -1))
-					{ // -1 for no bounds
+					{
 						if (planeMapping.getXMin() <= realRegionX && realRegionX < planeMapping.getXMax() &&
 							planeMapping.getYMin() <= realRegionY && realRegionY < planeMapping.getYMax())
 						{
@@ -455,7 +444,6 @@ public class WorldPointToWorldMapPoint
 			}
 		}
 
-		// If no matching mapping is found, return the original mapWorldPoint with WorldMapArea.ANY
 		return new WorldPointWithWorldMapArea(mapWorldPoint, WorldMapArea.ANY);
 	}
 }
