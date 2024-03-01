@@ -40,7 +40,7 @@ import net.runelite.api.worldmap.WorldMap;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.worldmap.WorldMapArea;
+import net.runelite.client.ui.overlay.worldmap.WorldMapAreaManager;
 import net.runelite.client.ui.overlay.worldmap.WorldMapOverlay;
 import net.runelite.client.ui.overlay.worldmap.WorldPointToWorldMapPoint;
 import net.runelite.client.ui.overlay.worldmap.WorldPointWithWorldMapArea;
@@ -49,15 +49,15 @@ public class WorldMapLocationOverlay extends Overlay
 {
 	private final Client client;
 	private final WorldMapOverlay worldMapOverlay;
+	private final WorldMapAreaManager worldMapAreaManager;
 	private final DevToolsPlugin plugin;
 
-	WorldMapArea area = WorldMapArea.ANY;
-
 	@Inject
-	private WorldMapLocationOverlay(Client client, WorldMapOverlay worldMapOverlay, DevToolsPlugin plugin)
+	private WorldMapLocationOverlay(Client client, WorldMapOverlay worldMapOverlay, WorldMapAreaManager worldMapAreaManager, DevToolsPlugin plugin)
 	{
 		this.client = client;
 		this.worldMapOverlay = worldMapOverlay;
+		this.worldMapAreaManager = worldMapAreaManager;
 		this.plugin = plugin;
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(PRIORITY_HIGHEST);
@@ -87,7 +87,7 @@ public class WorldMapLocationOverlay extends Overlay
 		graphics.setColor(Color.CYAN);
 
 		WorldPoint mapWorldPointMapFocus = new WorldPoint(worldMap.getWorldMapPosition().getX(), worldMap.getWorldMapPosition().getY(), 0);
-		WorldPointWithWorldMapArea realWorldPointOfMapFocus = WorldPointToWorldMapPoint.getRealWorldPointFromMapPoint(mapWorldPointMapFocus, area);
+		WorldPointWithWorldMapArea realWorldPointOfMapFocus = WorldPointToWorldMapPoint.getRealWorldPointFromMapPoint(mapWorldPointMapFocus, worldMapAreaManager.getWorldMapArea());
 		Point focusPoint = worldMapOverlay.mapWorldPointToGraphicsPoint(mapWorldPointMapFocus);
 
 		WorldPoint mapCenterWorldPoint = realWorldPointOfMapFocus.getWorldPoint();

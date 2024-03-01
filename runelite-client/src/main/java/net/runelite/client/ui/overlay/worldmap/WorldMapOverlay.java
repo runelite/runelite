@@ -67,6 +67,7 @@ public class WorldMapOverlay extends Overlay
 	private static final Splitter TOOLTIP_SPLITTER = Splitter.on("<br>").trimResults().omitEmptyStrings();
 
 	private final WorldMapPointManager worldMapPointManager;
+	private final WorldMapAreaManager worldMapAreaManager;
 	private final Client client;
 
 	private WorldMapPoint hoveredPoint;
@@ -74,9 +75,11 @@ public class WorldMapOverlay extends Overlay
 	@Inject
 	private WorldMapOverlay(
 		Client client,
+		WorldMapAreaManager worldMapAreaManager,
 		WorldMapPointManager worldMapPointManager)
 	{
 		this.client = client;
+		this.worldMapAreaManager = worldMapAreaManager;
 		this.worldMapPointManager = worldMapPointManager;
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(PRIORITY_HIGHEST);
@@ -138,7 +141,7 @@ public class WorldMapOverlay extends Overlay
 		{
 			if (worldPoint.getWorldMapArea() != null &&
 				worldPoint.getWorldMapArea() != WorldMapArea.ANY &&
-				worldPoint.getWorldMapArea() != worldMapPointManager.getWorldMapArea())
+				worldPoint.getWorldMapArea() != worldMapAreaManager.getWorldMapArea())
 			{
 				continue;
 			}

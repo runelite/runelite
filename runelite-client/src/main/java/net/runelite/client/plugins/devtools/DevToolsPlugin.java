@@ -83,6 +83,7 @@ import net.runelite.client.ui.JagexColors;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.worldmap.WorldMapArea;
+import net.runelite.client.ui.overlay.worldmap.WorldMapAreaManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.ImageUtil;
@@ -123,6 +124,9 @@ public class DevToolsPlugin extends Plugin
 
 	@Inject
 	private WorldMapLocationOverlay worldMapLocationOverlay;
+
+	@Inject
+	private WorldMapAreaManager worldMapAreaManager;
 
 	@Inject
 	private WorldMapRegionOverlay mapRegionOverlay;
@@ -633,36 +637,6 @@ public class DevToolsPlugin extends Plugin
 					.setType(MenuAction.RUNELITE)
 					.onClick(c -> client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "menu " + i_, null));
 			}
-		}
-	}
-
-	@Subscribe
-	public void onScriptPreFired(ScriptPreFired event)
-	{
-		final int WORLD_MAP_NEW_MAP_SELECTED = 1711;
-		if (event.getScriptId() == WORLD_MAP_NEW_MAP_SELECTED)
-		{
-			worldMapLocationOverlay.area = WorldMapArea.fromId(event.getScriptEvent().getSource().getIndex());
-		}
-	}
-
-	@Subscribe
-	public void onScriptPostFired(ScriptPostFired scriptPostFired)
-	{
-		if (scriptPostFired.getScriptId() == ScriptID.WORLDMAP_LOADMAP)
-		{
-			Widget worldMapSearch = client.getWidget(ComponentID.WORLD_MAP_SEARCH);
-			if (worldMapSearch == null)
-			{
-				return;
-			}
-			Widget currentMapWidget = worldMapSearch.getChild(4);
-			if (currentMapWidget == null)
-			{
-				return;
-			}
-
-			worldMapLocationOverlay.area = WorldMapArea.fromName(currentMapWidget.getText());
 		}
 	}
 }
