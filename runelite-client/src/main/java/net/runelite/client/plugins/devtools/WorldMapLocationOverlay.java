@@ -40,13 +40,18 @@ import net.runelite.api.worldmap.WorldMap;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.worldmap.WorldMapArea;
 import net.runelite.client.ui.overlay.worldmap.WorldMapOverlay;
+import net.runelite.client.ui.overlay.worldmap.WorldPointToWorldMapPoint;
+import net.runelite.client.ui.overlay.worldmap.WorldPointWithWorldMapArea;
 
 public class WorldMapLocationOverlay extends Overlay
 {
 	private final Client client;
 	private final WorldMapOverlay worldMapOverlay;
 	private final DevToolsPlugin plugin;
+
+	WorldMapArea area = WorldMapArea.ANY;
 
 	@Inject
 	private WorldMapLocationOverlay(Client client, WorldMapOverlay worldMapOverlay, DevToolsPlugin plugin)
@@ -81,23 +86,31 @@ public class WorldMapLocationOverlay extends Overlay
 		graphics.setClip(worldMapRectangle);
 		graphics.setColor(Color.CYAN);
 
-		WorldPoint mapCenterPoint = new WorldPoint(worldMap.getWorldMapPosition().getX(), worldMap.getWorldMapPosition().getY(), 0);
-		Point middle = worldMapOverlay.mapWorldPointToGraphicsPoint(mapCenterPoint);
+		WorldPoint mapWorldPointMapFocus = new WorldPoint(worldMap.getWorldMapPosition().getX(), worldMap.getWorldMapPosition().getY(), 0);
+		WorldPointWithWorldMapArea realWorldPointOfMapFocus = WorldPointToWorldMapPoint.getRealWorldPointFromMapPoint(mapWorldPointMapFocus, area);
+		Point focusPoint = worldMapOverlay.mapWorldPointToGraphicsPoint(mapWorldPointMapFocus);
 
-		if (middle == null)
+		WorldPoint mapCenterWorldPoint = realWorldPointOfMapFocus.getWorldPoint();
+		Point trueFocusPoint = worldMapOverlay.mapWorldPointToGraphicsPointIncludingNonSurfaces(mapCenterWorldPoint);
+
+		if (focusPoint == null)
 		{
 			return null;
 		}
 
-		graphics.drawLine(middle.getX(), worldMapRectangle.y, middle.getX(), worldMapRectangle.y + worldMapRectangle.height);
-		graphics.drawLine(worldMapRectangle.x, middle.getY(), worldMapRectangle.x + worldMapRectangle.width, middle.getY());
+		graphics.drawLine(focusPoint.getX(), worldMapRectangle.y, focusPoint.getX(), worldMapRectangle.y + worldMapRectangle.height);
+		graphics.drawLine(worldMapRectangle.x, focusPoint.getY(), worldMapRectangle.x + worldMapRectangle.width, focusPoint.getY());
+		if (trueFocusPoint != null)
+		{
+			graphics.drawRect(trueFocusPoint.getX() - 5, trueFocusPoint.getY() - 5, 10, 10);
+		}
 
-		String output = "Center: " + mapCenterPoint.getX() + ", " + mapCenterPoint.getY();
+		String output = "Center: " + mapCenterWorldPoint.getX() + ", " + mapCenterWorldPoint.getY() + ", " + mapCenterWorldPoint.getPlane();
 		graphics.setColor(Color.white);
 		FontMetrics fm = graphics.getFontMetrics();
 		int height = fm.getHeight();
 		int width = fm.stringWidth(output);
-		graphics.fillRect((int)worldMapRectangle.getX(), (int)worldMapRectangle.getY() + worldMapRectangle.height - height, (int)worldMapRectangle.getX() + width, (int)worldMapRectangle.getY() + worldMapRectangle.height);
+		graphics.fillRect((int)worldMapRectangle.getX(), (int) worldMapRectangle.getY() + worldMapRectangle.height - height, (int)worldMapRectangle.getX() + width, (int)worldMapRectangle.getY() + worldMapRectangle.height);
 
 		graphics.setColor(Color.BLACK);
 		graphics.drawString(output, (int) worldMapRectangle.getX(), (int) worldMapRectangle.getY() + worldMapRectangle.height);

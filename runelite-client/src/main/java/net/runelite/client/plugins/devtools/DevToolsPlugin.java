@@ -55,6 +55,7 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
+import net.runelite.api.ScriptID;
 import net.runelite.api.Skill;
 import net.runelite.api.VarbitComposition;
 import net.runelite.api.coords.WorldPoint;
@@ -62,9 +63,13 @@ import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.CommandExecuted;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.events.ScriptPostFired;
+import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.StatChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.kit.KitType;
+import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.widgets.Widget;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
@@ -77,6 +82,7 @@ import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.JagexColors;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.ui.overlay.worldmap.WorldMapArea;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.ImageUtil;
@@ -627,6 +633,36 @@ public class DevToolsPlugin extends Plugin
 					.setType(MenuAction.RUNELITE)
 					.onClick(c -> client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "menu " + i_, null));
 			}
+		}
+	}
+
+	@Subscribe
+	public void onScriptPreFired(ScriptPreFired event)
+	{
+		final int WORLD_MAP_NEW_MAP_SELECTED = 1711;
+		if (event.getScriptId() == WORLD_MAP_NEW_MAP_SELECTED)
+		{
+			worldMapLocationOverlay.area = WorldMapArea.fromId(event.getScriptEvent().getSource().getIndex());
+		}
+	}
+
+	@Subscribe
+	public void onScriptPostFired(ScriptPostFired scriptPostFired)
+	{
+		if (scriptPostFired.getScriptId() == ScriptID.WORLDMAP_LOADMAP)
+		{
+			Widget worldMapSearch = client.getWidget(ComponentID.WORLD_MAP_SEARCH);
+			if (worldMapSearch == null)
+			{
+				return;
+			}
+			Widget currentMapWidget = worldMapSearch.getChild(4);
+			if (currentMapWidget == null)
+			{
+				return;
+			}
+
+			worldMapLocationOverlay.area = WorldMapArea.fromName(currentMapWidget.getText());
 		}
 	}
 }
