@@ -430,7 +430,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.npc("Man")
 			.npcRegion(10288)
 			.objectId(ObjectID.CLOSED_CHEST_375)
-			.solution("Search the chest upstairs in the house north of Yanille Wizard's Guild. Kill a man for the key.")
+			.solution("Search the chest upstairs in the house north of Yanille Wizards' Guild. Kill a man for the key.")
 			.build(),
 		CrypticClue.builder()
 			.text("Probably filled with wizards socks.")
@@ -439,7 +439,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.npcRegion(12337)
 			.npcRegion(12437)
 			.objectId(ObjectID.DRAWERS_350)
-			.solution("Search the drawers in the basement of the Wizard's Tower south of Draynor Village. Kill one of the Wizards for the key. Fairy ring DIS.")
+			.solution("Search the drawers in the basement of the Wizards' Tower south of Draynor Village. Kill one of the Wizards for the key. Fairy ring DIS.")
 			.build(),
 		CrypticClue.builder()
 			.text("Even the seers say this clue goes right over their heads.")
@@ -855,7 +855,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("The magic of 4 colours, an early experience you could learn. The large beast caged up top, rages, as his demised kin's loot now returns.")
 			.location(new WorldPoint(3103, 3163, 2))
 			.npc("Wizard Mizgog")
-			.solution("Speak to Wizard Mizgog at the top of the Wizard's Tower south of Draynor.")
+			.solution("Speak to Wizard Mizgog at the top of the Wizards' Tower south of Draynor.")
 			.build(),
 		CrypticClue.builder()
 			.text("Aggie I see. Lonely and southern I feel. I am neither inside nor outside the house, yet no home would be complete without me. The treasure lies beneath me!")
