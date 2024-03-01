@@ -59,6 +59,7 @@ import net.runelite.client.game.AgilityShortcut;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.worldmap.WorldMapArea;
+import net.runelite.client.ui.overlay.worldmap.WorldMapAreaManager;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 import net.runelite.client.util.ImageUtil;
@@ -162,6 +163,9 @@ public class WorldMapPlugin extends Plugin
 	@Inject
 	private WorldMapPointManager worldMapPointManager;
 
+	@Inject
+	private WorldMapAreaManager worldMapAreaManager;
+
 	private int agilityLevel = 0;
 	private int woodcuttingLevel = 0;
 
@@ -237,34 +241,7 @@ public class WorldMapPlugin extends Plugin
 			// this is called whenever the map is opened or the map is changed
 			updateQuestStartPointIcons();
 		}
-
-		if (scriptPostFired.getScriptId() == ScriptID.WORLDMAP_LOADMAP)
-		{
-			Widget worldMapSearch = client.getWidget(ComponentID.WORLD_MAP_SEARCH);
-			if (worldMapSearch == null)
-			{
-				return;
-			}
-			Widget currentMapWidget = worldMapSearch.getChild(4);
-			if (currentMapWidget == null)
-			{
-				return;
-			}
-
-			worldMapPointManager.setWorldMapArea(WorldMapArea.fromName(currentMapWidget.getText()));
-		}
 	}
-
-	@Subscribe
-	public void onScriptPreFired(ScriptPreFired event)
-	{
-		final int WORLD_MAP_NEW_MAP_SELECTED = 1711;
-		if (event.getScriptId() == WORLD_MAP_NEW_MAP_SELECTED)
-		{
-			worldMapPointManager.setWorldMapArea(WorldMapArea.fromId(event.getScriptEvent().getSource().getIndex()));
-		}
-	}
-
 
 	@Subscribe
 	public void onClientTick(ClientTick clientTick)

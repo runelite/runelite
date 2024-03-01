@@ -24,32 +24,60 @@
  */
 package net.runelite.client.ui.overlay.worldmap;
 
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.function.Predicate;
+import javax.inject.Inject;
 import javax.inject.Singleton;
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
+import net.runelite.api.Client;
+import net.runelite.api.ScriptID;
+import net.runelite.api.events.ScriptPostFired;
+import net.runelite.api.events.ScriptPreFired;
+import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.widgets.Widget;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 
 @Singleton
-public class WorldMapPointManager
+public class WorldMapAreaManager
 {
-	@Getter(AccessLevel.PACKAGE)
-	private final List<WorldMapPoint> worldMapPoints = new CopyOnWriteArrayList<>();
+	@Getter
+	private WorldMapArea worldMapArea = WorldMapArea.ANY;
 
-	public void add(WorldMapPoint worldMapPoint)
+	private final Client client;
+
+	@Inject
+	private WorldMapAreaManager(Client client, EventBus eventBus)
 	{
-		worldMapPoints.add(worldMapPoint);
+		this.client = client;
+		eventBus.register(this);
 	}
 
-	public void remove(WorldMapPoint worldMapPoint)
+	@Subscribe
+	public void onScriptPostFired(ScriptPostFired scriptPostFired)
 	{
-		worldMapPoints.remove(worldMapPoint);
+		if (scriptPostFired.getScriptId() == ScriptID.WORLDMAP_LOADMAP)
+		{
+			Widget worldMapSearch = client.getWidget(ComponentID.WORLD_MAP_SEARCH);
+			if (worldMapSearch == null)
+			{
+				return;
+			}
+			Widget currentMapWidget = worldMapSearch.getChild(4);
+			if (currentMapWidget == null)
+			{
+				return;
+			}
+
+			worldMapArea = WorldMapArea.fromName(currentMapWidget.getText());
+		}
 	}
 
-	public void removeIf(Predicate<WorldMapPoint> filter)
+	@Subscribe
+	public void onScriptPreFired(ScriptPreFired event)
 	{
-		worldMapPoints.removeIf(filter);
+		final int WORLD_MAP_NEW_MAP_SELECTED = 1711;
+		if (event.getScriptId() == WORLD_MAP_NEW_MAP_SELECTED)
+		{
+			worldMapArea = WorldMapArea.fromId(event.getScriptEvent().getSource().getIndex());
+		}
 	}
 }
