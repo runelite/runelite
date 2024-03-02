@@ -25,7 +25,10 @@
 package net.runelite.client.ui.overlay.worldmap;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
+@Getter
 public enum WorldMapArea
 {
 	ANY(0, "Any"),
@@ -72,18 +75,9 @@ public enum WorldMapArea
 	GHORROCK_PRISON(41, "Ghorrock Prison"),
 	LASSAR_UNDERCITY(42, "Lassar Undercity");
 
-	@Getter
 	private final int id;
 
-	@Getter
 	private final String name;
-
-
-	WorldMapArea(int id, String name)
-	{
-		this.id = id;
-		this.name = name;
-	}
 
 	public static WorldMapArea fromId(int id)
 	{
@@ -111,4 +105,3 @@ public enum WorldMapArea
 		return ANY;
 	}
 }
-
