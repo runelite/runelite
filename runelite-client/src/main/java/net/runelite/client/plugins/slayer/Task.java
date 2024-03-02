@@ -151,7 +151,7 @@ enum Task
 	SCORPIA("Scorpia", ItemID.SCORPIAS_OFFSPRING),
 	SCORPIONS("Scorpions", ItemID.ENSOULED_SCORPION_HEAD, "Scorpia", "Lobstrosity"),
 	SEA_SNAKES("Sea snakes", ItemID.SNAKE_CORPSE),
-	SHADES("Shades", ItemID.SHADE_ROBE_TOP, "Loar", "Phrin", "Riyl", "Asyn", "Fiyr"),
+	SHADES("Shades", ItemID.SHADE_ROBE_TOP, "Loar", "Phrin", "Riyl", "Asyn", "Fiyr", "Urium"),
 	SHADOW_WARRIORS("Shadow warriors", ItemID.BLACK_FULL_HELM),
 	SKELETAL_WYVERNS("Skeletal wyverns", ItemID.SKELETAL_WYVERN),
 	SKELETONS("Skeletons", ItemID.SKELETON_GUARD, "Vet'ion", "Calvar'ion"),
