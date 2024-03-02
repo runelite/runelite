@@ -24,9 +24,7 @@
  */
 package net.runelite.client.ui.overlay.worldmap;
 
-import java.util.Arrays;
 import lombok.Getter;
-import net.runelite.api.coords.WorldPoint;
 
 @Getter
 public enum WorldMapPointMapping
