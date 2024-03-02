@@ -30,7 +30,6 @@ import java.util.function.Predicate;
 import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
 
 @Singleton
 public class WorldMapPointManager
