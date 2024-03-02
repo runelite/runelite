@@ -88,7 +88,7 @@ public class WorldMapPoint
 	public WorldPoint getMapWorldPoint()
 	{
 		if (worldPointToMapWorldPoint != null) return worldPointToMapWorldPoint;
-		WorldPointWithWorldMapArea worldPointWithWorldMapArea = WorldPointToWorldMapPoint
+		WorldPointWithWorldMapArea worldPointWithWorldMapArea = WorldPointMapper
 			.getMapWorldPointFromRealWorldPoint(worldPoint);
 		this.worldPointToMapWorldPoint = worldPointWithWorldMapArea.getWorldPoint();
 		this.worldMapArea = worldPointWithWorldMapArea.getWorldMapArea();
@@ -99,7 +99,7 @@ public class WorldMapPoint
 	public WorldMapArea getWorldMapArea()
 	{
 		if (worldMapArea != null) return worldMapArea;
-		WorldPointWithWorldMapArea worldPointWithWorldMapArea = WorldPointToWorldMapPoint
+		WorldPointWithWorldMapArea worldPointWithWorldMapArea = WorldPointMapper
 			.getMapWorldPointFromRealWorldPoint(worldPoint);
 		worldPointToMapWorldPoint = worldPointWithWorldMapArea.getWorldPoint();
 		worldMapArea = worldPointWithWorldMapArea.getWorldMapArea();
