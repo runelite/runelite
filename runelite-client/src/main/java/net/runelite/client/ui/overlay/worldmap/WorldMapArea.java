@@ -34,65 +34,58 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public enum WorldMapArea
 {
-	ANY(0, "Any"),
-	GIELINOR_SURFACE(1, "Gielinor Surface"),
-	ANCIENT_CAVERN(2, "Ancient Cavern"),
-	ARDOUGNE_UNDERGROUND(3, "Ardougne Underground"),
-	ASGARNIA_ICE_CAVE(4, "Asgarnia Ice Cave"),
-	BRAINDEATH_ISLAND(5, "Braindeath Island"),
-	DORGESH_KAAN(6, "Dorgesh-Kaan"),
-	DWARVEN_MINES(7, "Dwarven Mines"),
-	GOD_WARS_DUNGEON(8, "God Wars Dungeon"),
-	KARAMJA_UNDERGROUND(9, "Karamja Underground"),
-	KELDAGRIM(10, "Keldagrim"),
-	LMS_WILD_VARROCK(11, "LMS Wild Varrock"),
-	LMS_DESERT_ISLAND(12, "LMS Desert Island"),
-	MISCELLANIA_UNDERGROUND(13, "Miscellania Underground"),
-	MISTHALIN_UNDERGROUND(14, "Misthalin Underground"),
-	MOLE_HOLE(15, "Mole Hole"),
-	MORYTANIA_UNDERGROUND(16, "Morytania Underground"),
-	MOS_LEHARMLESS_CAVE(17, "Mos Le'Harmless Cave"),
-	OURANIA_ALTAR(18, "Ourania Altar"),
-	RUINS_OF_CAMDOZAAL(19, "Ruins of Camdozaal"),
-	FREMENNIK_SLAYER_CAVE(20, "Fremennik Slayer Cave"),
-	STRONGHOLD_OF_SECURITY(21, "Stronghold of Security"),
-	TAVERLEY_UNDERGROUND(22, "Taverley Underground"),
-	TOLNAS_RIFT(23, "Tolna's Rift"),
-	TROLL_STRONGHOLD(24, "Troll Stronghold"),
-	MOR_UL_REK(25, "Mor Ul Rek"),
-	LAIR_OF_TARN_RAZORLOR(26, "Lair of Tarn Razorlor"),
-	WATERBIRTH_DUNGEON(27, "Waterbirth Dungeon"),
-	WILDERNESS_DUNGEONS(28, "Wilderness Dungeons"),
-	YANILLE_UNDERGROUND(29, "Yanille Underground"),
-	ZANARIS(30, "Zanaris"),
-	STRONGHOLD_UNDERGROUND(31, "Stronghold Underground"),
-	KOUREND_UNDERGROUND(32, "Kourend Underground"),
-	FOSSIL_ISLAND_UNDERGROUND(33, "Fossil Island Underground"),
-	FELDIP_HILLS_UNDERGROUND(34, "Feldip Hills Underground"),
-	KEBOS_UNDERGROUND(35, "Kebos Underground"),
-	PRIFFDDINAS(36, "Prifddinas"),
-	PRIFFDDINAS_UNDERGROUND(37, "Prifddinas Underground"),
-	PRIFDDINAS_GRAND_LIBRARY(38, "Prifddinas Grand Library"),
-	THE_ABYSS(39, "The Abyss"),
-	KHARIDIAN_DESERT_UNDERGROUND(40, "Kharidian Desert Underground"),
-	GHORROCK_PRISON(41, "Ghorrock Prison"),
-	LASSAR_UNDERCITY(42, "Lassar Undercity");
+	ANY("Any"),
+	GIELINOR_SURFACE("Gielinor Surface"),
+	ANCIENT_CAVERN("Ancient Cavern"),
+	ARDOUGNE_UNDERGROUND("Ardougne Underground"),
+	ASGARNIA_ICE_CAVE("Asgarnia Ice Cave"),
+	BRAINDEATH_ISLAND("Braindeath Island"),
+	DORGESH_KAAN("Dorgesh-Kaan"),
+	DWARVEN_MINES("Dwarven Mines"),
+	GOD_WARS_DUNGEON("God Wars Dungeon"),
+	KARAMJA_UNDERGROUND("Karamja Underground"),
+	KELDAGRIM("Keldagrim"),
+	LMS_WILD_VARROCK("LMS Wild Varrock"),
+	LMS_DESERT_ISLAND("LMS Desert Island"),
+	MISCELLANIA_UNDERGROUND("Miscellania Underground"),
+	MISTHALIN_UNDERGROUND("Misthalin Underground"),
+	MOLE_HOLE("Mole Hole"),
+	MORYTANIA_UNDERGROUND("Morytania Underground"),
+	MOS_LEHARMLESS_CAVE("Mos Le'Harmless Cave"),
+	OURANIA_ALTAR("Ourania Altar"),
+	RUINS_OF_CAMDOZAAL("Ruins of Camdozaal"),
+	FREMENNIK_SLAYER_CAVE("Fremennik Slayer Cave"),
+	STRONGHOLD_OF_SECURITY("Stronghold of Security"),
+	TAVERLEY_UNDERGROUND("Taverley Underground"),
+	TOLNAS_RIFT("Tolna's Rift"),
+	TROLL_STRONGHOLD("Troll Stronghold"),
+	MOR_UL_REK("Mor Ul Rek"),
+	LAIR_OF_TARN_RAZORLOR("Lair of Tarn Razorlor"),
+	WATERBIRTH_DUNGEON("Waterbirth Dungeon"),
+	WILDERNESS_DUNGEONS("Wilderness Dungeons"),
+	YANILLE_UNDERGROUND("Yanille Underground"),
+	ZANARIS("Zanaris"),
+	STRONGHOLD_UNDERGROUND("Stronghold Underground"),
+	KOUREND_UNDERGROUND("Kourend Underground"),
+	FOSSIL_ISLAND_UNDERGROUND("Fossil Island Underground"),
+	FELDIP_HILLS_UNDERGROUND("Feldip Hills Underground"),
+	KEBOS_UNDERGROUND("Kebos Underground"),
+	PRIFFDDINAS("Prifddinas"),
+	PRIFFDDINAS_UNDERGROUND("Prifddinas Underground"),
+	PRIFDDINAS_GRAND_LIBRARY("Prifddinas Grand Library"),
+	THE_ABYSS("The Abyss"),
+	KHARIDIAN_DESERT_UNDERGROUND("Kharidian Desert Underground"),
+	GHORROCK_PRISON("Ghorrock Prison"),
+	LASSAR_UNDERCITY("Lassar Undercity");
 
-	private final int id;
+	private static final WorldMapArea[] AREAS = values();
 
 	private final String name;
 
-	public static WorldMapArea fromId(int id)
+	public static WorldMapArea fromId(int areaId)
 	{
-		for (WorldMapArea area : values())
-		{
-			if (area.getId() == id)
-			{
-				return area;
-			}
-		}
-
-		return ANY;
+		if (areaId < 0 || areaId >= WorldMapArea.values().length) return ANY;
+		return AREAS[areaId];
 	}
 
 	public static WorldMapArea fromName(String name)
