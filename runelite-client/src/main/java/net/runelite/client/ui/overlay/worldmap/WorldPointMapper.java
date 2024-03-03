@@ -30,7 +30,7 @@ import net.runelite.api.coords.WorldPoint;
 public class WorldPointMapper
 {
 	/**
-	 * Converts a real WorldPoint to its corresponding world map point
+	 * Converts a real WorldPoint to its corresponding world map WorldPoint
 	 *
 	 * @param realWorldPoint The real {@link WorldPoint} to be converted.
 	 * @return The Map's WorldPoint and the Map Area the point should appear on.
@@ -121,8 +121,8 @@ public class WorldPointMapper
 	 * Converts the given mapping and world map point to a {@link WorldPointWithWorldMapArea} representing the real WorldPoint.
 	 *
 	 * @param mapping      The mapping to use for conversion.
-	 * @param mapWorldPoint The map point to convert back to a real-world point.
-	 * @return A new {@link WorldPointWithWorldMapArea} object representing the real-world point.
+	 * @param mapWorldPoint The map point to convert back to a real WorldPoint.
+	 * @return A new {@link WorldPointWithWorldMapArea} object representing the real WorldPoint.
 	 */
 	private static WorldPointWithWorldMapArea convertToRealWorldPointWithWorldMapArea(WorldMapPointMapping mapping, WorldPoint mapWorldPoint)
 	{

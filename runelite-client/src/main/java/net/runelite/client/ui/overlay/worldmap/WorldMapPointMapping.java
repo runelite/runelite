@@ -193,5 +193,3 @@ public enum WorldMapPointMapping
 		this.mirror = mirror;
 	}
 }
-
-
