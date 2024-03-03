@@ -27,6 +27,9 @@ package net.runelite.client.ui.overlay.worldmap;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Enum of the index and text of each map area of the world map as it appears in the world map area selection dropdown.
+ */
 @RequiredArgsConstructor
 @Getter
 public enum WorldMapArea
