@@ -39,8 +39,15 @@ public class WorldMapPoint
 
 	private WorldPoint worldPoint;
 
-	private WorldPoint worldPointToMapWorldPoint;
+	/**
+	 * The WorldPoint that {@link #worldPoint} should map to on the world map to be located correctly
+	 */
+	@Nullable
+	private WorldPoint mapWorldPoint;
 
+	/**
+	 * The {@link WorldMapArea} the WorldMapPoint should appear in on the world map
+	 */
 	private WorldMapArea worldMapArea;
 
 	/**
@@ -77,38 +84,59 @@ public class WorldMapPoint
 		this.image = image;
 	}
 
+	/**
+	 * Gets the {@link WorldPoint} that this WorldMapPoint should map to on the world map.
+	 *
+	 * @return The WorldPoint that this WorldMapPoint maps to on the world map.
+	 */
+	public WorldPoint getMapWorldPoint()
+	{
+		ensureMapPointAndAreaCalculated();
+		return mapWorldPoint;
+	}
+
+	/**
+	 * Gets the {@link WorldMapArea} that this WorldMapPoint should be associated with on the world map.
+	 *
+	 * @return The WorldMapArea that this WorldMapPoint maps to on the world map.
+	 */
+	public WorldMapArea getWorldMapArea()
+	{
+		ensureMapPointAndAreaCalculated();
+		return worldMapArea;
+	}
+
+	/**
+	 * Ensures the {@link #mapWorldPoint} and {@link #worldMapArea} are updated based on the current {@link #worldPoint}.
+	 * This method acts as a lazy loader, only recalculating mapWorldPoint and worldMapArea when necessary.
+	 */
+	private void ensureMapPointAndAreaCalculated()
+	{
+		if (mapWorldPoint == null)
+		{
+			WorldPointWithWorldMapArea wpWithArea = WorldPointMapper.getMapWorldPointFromRealWorldPoint(worldPoint);
+			this.mapWorldPoint = wpWithArea.getWorldPoint();
+			this.worldMapArea = wpWithArea.getWorldMapArea();
+		}
+	}
+
+	/**
+	 * Sets the world point and invalidates the cached mapWorldPoint and worldMapArea to ensure they are recalculated.
+	 *
+	 * @param worldPoint The new WorldPoint to set.
+	 */
+	public void setWorldPoint(WorldPoint worldPoint)
+	{
+		this.worldPoint = worldPoint;
+		this.mapWorldPoint = null;
+		this.worldMapArea = WorldMapArea.ANY;
+	}
+
 	public void onEdgeSnap()
 	{
 	}
 
 	public void onEdgeUnsnap()
 	{
-	}
-
-	public WorldPoint getMapWorldPoint()
-	{
-		if (worldPointToMapWorldPoint != null) return worldPointToMapWorldPoint;
-		WorldPointWithWorldMapArea worldPointWithWorldMapArea = WorldPointMapper.getMapWorldPointFromRealWorldPoint(worldPoint);
-		this.worldPointToMapWorldPoint = worldPointWithWorldMapArea.getWorldPoint();
-		this.worldMapArea = worldPointWithWorldMapArea.getWorldMapArea();
-
-		return worldPointToMapWorldPoint;
-	}
-
-	public WorldMapArea getWorldMapArea()
-	{
-		if (worldMapArea != null) return worldMapArea;
-		WorldPointWithWorldMapArea worldPointWithWorldMapArea = WorldPointMapper.getMapWorldPointFromRealWorldPoint(worldPoint);
-		worldPointToMapWorldPoint = worldPointWithWorldMapArea.getWorldPoint();
-		worldMapArea = worldPointWithWorldMapArea.getWorldMapArea();
-
-		return worldMapArea;
-	}
-
-	public void setWorldPoint(WorldPoint worldPoint)
-	{
-		this.worldPoint = worldPoint;
-		this.worldPointToMapWorldPoint = null;
-		this.worldMapArea = WorldMapArea.ANY;
 	}
 }
