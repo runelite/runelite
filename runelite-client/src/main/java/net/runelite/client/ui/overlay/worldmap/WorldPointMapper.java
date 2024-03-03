@@ -30,19 +30,37 @@ import net.runelite.api.coords.WorldPoint;
 public class WorldPointMapper
 {
 	/**
-	 * Converts a real WorldPoint to its corresponding world map WorldPoint
+	 * Converts a real {@link WorldPoint} to its corresponding world map WorldPoint.
 	 *
-	 * @param realWorldPoint The real {@link WorldPoint} to be converted.
-	 * @return The Map's WorldPoint and the Map Area the point should appear on.
+	 * @param realWorldPoint The real WorldPoint to be converted.
+	 * @return The corresponding WorldPoint on the map and the Map Area it should appear in.
 	 */
 	public static WorldPointWithWorldMapArea getMapWorldPointFromRealWorldPoint(WorldPoint realWorldPoint)
 	{
 		return Arrays.stream(WorldMapPointMapping.values())
 			.filter(mapping -> mapping.getWorldChunkID() == realWorldPoint.getRegionID())
-			.filter(mapping -> isRealPointInMapPointArea(mapping, realWorldPoint))
+			.filter(mapping -> isRealWorldPointInMappingArea(mapping, realWorldPoint))
 			.findFirst()
-			.map(mapping -> convertToWorldPointWithWorldMapArea(mapping, realWorldPoint))
+			.map(mapping -> convertToMapWorldPointWithWorldMapArea(mapping, realWorldPoint))
 			.orElse(new WorldPointWithWorldMapArea(realWorldPoint, WorldMapArea.ANY));
+	}
+
+	/**
+	 * Converts a world map WorldPoint back to its corresponding real WorldPoint.
+	 *
+	 * @param mapWorldPoint The map WorldPoint to be converted.
+	 * @param worldMapArea The map area of the point.
+	 * @return The corresponding real WorldPoint and its map area.
+	 */
+	public static WorldPointWithWorldMapArea getRealWorldPointFromMapPoint(WorldPoint mapWorldPoint, WorldMapArea worldMapArea)
+	{
+		return Arrays.stream(WorldMapPointMapping.values())
+			.filter(mapping -> mapping.getArea() == worldMapArea || worldMapArea == WorldMapArea.ANY)
+			.filter(mapping -> !mapping.isMirror())
+			.filter(mapping -> isWorldMapPointInMappingArea(mapping, mapWorldPoint))
+			.findFirst()
+			.map(mapping -> convertToRealWorldPointWithWorldMapArea(mapping, mapWorldPoint))
+			.orElse(new WorldPointWithWorldMapArea(mapWorldPoint, WorldMapArea.ANY));
 	}
 
 	/**
@@ -52,13 +70,41 @@ public class WorldPointMapper
 	 * @param realWorldPoint The real WorldPoint to be checked against the mapping.
 	 * @return {@code true} if the mapping applies to the real WorldPoint; {@code false} otherwise.
 	 */
-	private static boolean isRealPointInMapPointArea(WorldMapPointMapping mapping, WorldPoint realWorldPoint)
+	private static boolean isRealWorldPointInMappingArea(WorldMapPointMapping mapping, WorldPoint realWorldPoint)
 	{
-		return (mapping.getPlane() == -1 || mapping.getPlane() == realWorldPoint.getPlane()) &&
-			(mapping.getMinX() == -1 || realWorldPoint.getRegionX() >= mapping.getMinX()) &&
-			(mapping.getMaxX() == -1 || realWorldPoint.getRegionX() < mapping.getMaxX()) &&
-			(mapping.getMinY() == -1 || realWorldPoint.getRegionY() >= mapping.getMinY()) &&
-			(mapping.getMaxY() == -1 || realWorldPoint.getRegionY() < mapping.getMaxY());
+		if (mapping.getPlane() != -1 && mapping.getPlane() != realWorldPoint.getPlane())
+		{
+			return false;
+		}
+
+		return isInMappingArea(mapping, realWorldPoint);
+	}
+
+	/**
+	 * Checks if a given mapping applies to the specified world map {@link WorldPoint}.
+	 *
+	 * @param mapping      The mapping to check.
+	 * @param mapWorldPoint The map point to be checked against the mapping.
+	 * @return {@code true} if the mapping matches the map point; {@code false} otherwise.
+	 */
+	private static boolean isWorldMapPointInMappingArea(WorldMapPointMapping mapping, WorldPoint mapWorldPoint)
+	{
+		int shiftedWorldX = mapWorldPoint.getX() - mapping.getShiftX();
+		int shiftedWorldY = mapWorldPoint.getY() - mapping.getShiftY();
+		WorldPoint shiftedWorldPoint = new WorldPoint(shiftedWorldX, shiftedWorldY, mapWorldPoint.getPlane());
+
+		if (shiftedWorldPoint.getRegionID() != mapping.getMapChunkID())
+		{
+			return false;
+		}
+
+		return isInMappingArea(mapping, shiftedWorldPoint);
+	}
+
+	private static boolean isInMappingArea(WorldMapPointMapping mapping, WorldPoint worldPoint)
+	{
+		return worldPoint.getRegionX() >= mapping.getMinX() && worldPoint.getRegionX() < mapping.getMaxX() &&
+			worldPoint.getRegionY() >= mapping.getMinY() && worldPoint.getRegionY() < mapping.getMaxY();
 	}
 
 	/**
@@ -68,53 +114,13 @@ public class WorldPointMapper
 	 * @param realWorldPoint The real WorldPoint to convert.
 	 * @return A new {@link WorldPointWithWorldMapArea} object representing world map WorldPoint and WorldMapArea.
 	 */
-	private static WorldPointWithWorldMapArea convertToWorldPointWithWorldMapArea(WorldMapPointMapping mapping, WorldPoint realWorldPoint)
+	private static WorldPointWithWorldMapArea convertToMapWorldPointWithWorldMapArea(WorldMapPointMapping mapping, WorldPoint realWorldPoint)
 	{
 		WorldPoint mappedPoint = WorldPoint.fromRegion(mapping.getMapChunkID(),
 			realWorldPoint.getRegionX() + mapping.getShiftX(),
 			realWorldPoint.getRegionY() + mapping.getShiftY(),
 			realWorldPoint.getPlane());
 		return new WorldPointWithWorldMapArea(mappedPoint, mapping.getArea());
-	}
-
-	/**
-	 * Converts a world map WorldPoint back to its corresponding real WorldPoint using the defined mappings.
-	 *
-	 * @param mapWorldPoint The map point to be converted back to a real WorldPoint.
-	 * @param worldMapArea  The world map area to which the map point belongs.
-	 * @return A {@link WorldPointWithWorldMapArea} object representing the real WorldPoint,
-	 *         along with the associated world map area. If no mapping is found, returns the original point with {@code WorldMapArea.ANY}.
-	 */
-	public static WorldPointWithWorldMapArea getRealWorldPointFromMapPoint(WorldPoint mapWorldPoint, WorldMapArea worldMapArea)
-	{
-		return Arrays.stream(WorldMapPointMapping.values())
-			.filter(mapping -> mapping.getArea() == worldMapArea || worldMapArea == WorldMapArea.ANY)
-			.filter(mapping -> !mapping.isMirror())
-			.filter(mapping -> mappingRegionCheck(mapping, mapWorldPoint))
-			.findFirst()
-			.map(mapping -> convertToRealWorldPointWithWorldMapArea(mapping, mapWorldPoint))
-			.orElse(new WorldPointWithWorldMapArea(mapWorldPoint, WorldMapArea.ANY));
-	}
-
-	/**
-	 * Checks if a given mapping matches the specified world map point.
-	 *
-	 * @param mapping      The mapping to check.
-	 * @param mapWorldPoint The map point to be checked against the mapping.
-	 * @return {@code true} if the mapping matches the map point; {@code false} otherwise.
-	 */
-	private static boolean mappingRegionCheck(WorldMapPointMapping mapping, WorldPoint mapWorldPoint)
-	{
-		int shiftedWorldX = mapWorldPoint.getX() - mapping.getShiftX();
-		int shiftedWorldY = mapWorldPoint.getY() - mapping.getShiftY();
-		WorldPoint shiftedWorldPoint = new WorldPoint(shiftedWorldX, shiftedWorldY, mapWorldPoint.getPlane());
-
-		return (
-			shiftedWorldPoint.getRegionID() == mapping.getMapChunkID() &&
-			shiftedWorldPoint.getRegionX() >= mapping.getMinX()) &&
-			(shiftedWorldPoint.getRegionX() < mapping.getMaxX()) &&
-			(shiftedWorldPoint.getRegionY() >= mapping.getMinY()) &&
-			(shiftedWorldPoint.getRegionY() < mapping.getMaxY());
 	}
 
 	/**
@@ -126,9 +132,10 @@ public class WorldPointMapper
 	 */
 	private static WorldPointWithWorldMapArea convertToRealWorldPointWithWorldMapArea(WorldMapPointMapping mapping, WorldPoint mapWorldPoint)
 	{
-		int realRegionX = mapWorldPoint.getRegionX() - mapping.getShiftX();
-		int realRegionY = mapWorldPoint.getRegionY() - mapping.getShiftY();
-		WorldPoint realWorldPoint = WorldPoint.fromRegion(mapping.getWorldChunkID(), realRegionX, realRegionY, mapping.getPlane());
+		int shiftedWorldX = mapWorldPoint.getX() - mapping.getShiftX();
+		int shiftedWorldY = mapWorldPoint.getY() - mapping.getShiftY();
+		WorldPoint shiftedWorldPoint = new WorldPoint(shiftedWorldX, shiftedWorldY, mapWorldPoint.getPlane());
+		WorldPoint realWorldPoint = WorldPoint.fromRegion(mapping.getWorldChunkID(), shiftedWorldPoint.getRegionX(), shiftedWorldPoint.getRegionY(), mapping.getPlane());
 
 		return new WorldPointWithWorldMapArea(realWorldPoint, mapping.getArea());
 	}
