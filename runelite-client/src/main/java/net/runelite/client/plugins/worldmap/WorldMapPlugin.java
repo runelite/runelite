@@ -55,7 +55,6 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.AgilityShortcut;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.ui.overlay.worldmap.WorldMapAreaManager;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPoint;
 import net.runelite.client.ui.overlay.worldmap.WorldMapPointManager;
 import net.runelite.client.util.ImageUtil;
@@ -158,9 +157,6 @@ public class WorldMapPlugin extends Plugin
 
 	@Inject
 	private WorldMapPointManager worldMapPointManager;
-
-	@Inject
-	private WorldMapAreaManager worldMapAreaManager;
 
 	private int agilityLevel = 0;
 	private int woodcuttingLevel = 0;
