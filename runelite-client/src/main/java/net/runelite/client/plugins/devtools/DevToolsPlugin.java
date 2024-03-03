@@ -77,7 +77,6 @@ import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.JagexColors;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
-import net.runelite.client.ui.overlay.worldmap.WorldMapAreaManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.ImageUtil;
@@ -118,9 +117,6 @@ public class DevToolsPlugin extends Plugin
 
 	@Inject
 	private WorldMapLocationOverlay worldMapLocationOverlay;
-
-	@Inject
-	private WorldMapAreaManager worldMapAreaManager;
 
 	@Inject
 	private WorldMapRegionOverlay mapRegionOverlay;
