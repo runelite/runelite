@@ -24,12 +24,10 @@
  */
 package net.runelite.client.plugins.woodcutting;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.ConfigSection;
-import net.runelite.client.config.Units;
+import net.runelite.client.config.*;
 import net.runelite.client.plugins.woodcutting.config.ClueNestTier;
+import net.runelite.client.config.Alpha;
+import java.awt.Color;
 
 @ConfigGroup("woodcutting")
 public interface WoodcuttingConfig extends Config
@@ -40,6 +38,13 @@ public interface WoodcuttingConfig extends Config
 		position = 10
 	)
 	String forestrySection = "forestry";
+
+	@ConfigSection(
+		name = "Event colors",
+		description = "Color options for forestry events",
+		position = 12
+	)
+	String eventColors = "eventColors";
 
 	@ConfigItem(
 		position = 1,
@@ -299,4 +304,83 @@ public interface WoodcuttingConfig extends Config
 	{
 		return true;
 	}
+
+	@Alpha
+	@ConfigItem(
+		keyName = "growingRootsColor",
+		name = "Growing roots",
+		description = "Color for the glowing roots event",
+		position = 3,
+		section = eventColors
+	)
+	default Color growingRootsColor()
+	{
+		return Color.GREEN;
+	}
+
+	@Alpha
+	@ConfigItem(
+		keyName = "foxTrapColor",
+		name = "Fox trap",
+		description = "Color for the fox trap event",
+		position = 3,
+		section = eventColors
+	)
+	default Color foxTrapColor()
+	{
+		return Color.RED;
+	}
+
+	@Alpha
+	@ConfigItem(
+		keyName = "ritualCircleColor",
+		name = "Ritual circle",
+		description = "Color for the ritual circle event",
+		position = 3,
+		section = eventColors
+	)
+	default Color ritualCircleColor()
+	{
+		return Color.GREEN;
+	}
+
+	@Alpha
+	@ConfigItem(
+		keyName = "beehiveColor",
+		name = "Beehive",
+		description = "Color for the beehive event",
+		position = 3,
+		section = eventColors
+	)
+	default Color beehiveColor()
+	{
+		return Color.GREEN;
+	}
+
+	@Alpha
+	@ConfigItem(
+		keyName = "freakyForesterColor",
+		name = "Freaky Forester",
+		description = "Color for the Forester NPC",
+		position = 3,
+		section = eventColors
+	)
+	default Color freakyForesterColor()
+	{
+		return Color.GREEN;
+	}
+
+	@Alpha
+	@ConfigItem(
+		keyName = "pheasantNestColor",
+		name = "Pheasant nest",
+		description = "Color for the pheasant nest",
+		position = 3,
+		section = eventColors
+	)
+	default Color pheasantNestColor()
+	{
+		return Color.GREEN;
+	}
+
 }

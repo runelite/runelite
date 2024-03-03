@@ -107,7 +107,7 @@ class WoodcuttingSceneOverlay extends Overlay
 					continue;
 				}
 
-				Color color = Color.GREEN;
+				Color color = config.growingRootsColor();
 				graphics.setColor(color);
 				graphics.draw(clickbox);
 				graphics.setColor(ColorUtil.colorWithAlpha(color, color.getAlpha() / 5));
@@ -231,7 +231,7 @@ class WoodcuttingSceneOverlay extends Overlay
 			var poly = foxTrap.getCanvasTilePoly();
 			if (poly != null)
 			{
-				OverlayUtil.renderPolygon(graphics, poly, Color.RED);
+				OverlayUtil.renderPolygon(graphics, poly, config.foxTrapColor());
 			}
 		}
 	}
@@ -247,7 +247,7 @@ class WoodcuttingSceneOverlay extends Overlay
 					var poly = nest.getCanvasTilePoly();
 					if (poly != null)
 					{
-						OverlayUtil.renderPolygon(graphics, poly, Color.GREEN);
+						OverlayUtil.renderPolygon(graphics, poly, config.pheasantNestColor());
 					}
 				}
 			}
@@ -258,7 +258,7 @@ class WoodcuttingSceneOverlay extends Overlay
 				var poly = forester.getCanvasTilePoly();
 				if (poly != null)
 				{
-					OverlayUtil.renderPolygon(graphics, poly, Color.GREEN);
+					OverlayUtil.renderPolygon(graphics, poly, config.freakyForesterColor());
 				}
 			}
 		}
@@ -272,7 +272,7 @@ class WoodcuttingSceneOverlay extends Overlay
 			var poly = beehive.getCanvasTilePoly();
 			if (poly != null)
 			{
-				OverlayUtil.renderPolygon(graphics, poly, Color.ORANGE);
+				OverlayUtil.renderPolygon(graphics, poly, config.beehiveColor());
 			}
 		}
 	}
@@ -285,7 +285,7 @@ class WoodcuttingSceneOverlay extends Overlay
 			var poly = solution.getCanvasTilePoly();
 			if (poly != null)
 			{
-				OverlayUtil.renderPolygon(graphics, poly, Color.GREEN);
+				OverlayUtil.renderPolygon(graphics, poly, config.ritualCircleColor());
 			}
 		}
 	}
@@ -324,8 +324,8 @@ class WoodcuttingSceneOverlay extends Overlay
 			}
 
 			LocalPoint centeredLocation = new LocalPoint(
-					minLocation.getX() + treeRespawn.getLenX() * Perspective.LOCAL_HALF_TILE_SIZE,
-					minLocation.getY() + treeRespawn.getLenY() * Perspective.LOCAL_HALF_TILE_SIZE);
+				minLocation.getX() + treeRespawn.getLenX() * Perspective.LOCAL_HALF_TILE_SIZE,
+				minLocation.getY() + treeRespawn.getLenY() * Perspective.LOCAL_HALF_TILE_SIZE);
 			float percent = (now.toEpochMilli() - treeRespawn.getStartTime().toEpochMilli()) / (float) treeRespawn.getRespawnTime();
 			Point point = Perspective.localToCanvas(client, centeredLocation, client.getPlane());
 			if (point == null || percent > 1.0f)
