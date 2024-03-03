@@ -147,9 +147,9 @@ public enum WorldMapPointMapping
 	YANILLE_UNDERGROUND_POISON_SPIDERS(WorldMapArea.YANILLE_UNDERGROUND, 0, 10389, 10131, 24, 8, 0, 0, 47, 64, false);
 
 	private final WorldMapArea area;
+	private final int plane;
 	private final int worldChunkID;
 	private final int mapChunkID;
-	private final int plane;
 	private final int shiftX;
 	private final int shiftY;
 	private final int minX;
