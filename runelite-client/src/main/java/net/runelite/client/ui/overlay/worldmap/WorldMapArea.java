@@ -90,7 +90,7 @@ public enum WorldMapArea
 
 	public static WorldMapArea fromName(String name)
 	{
-		for (WorldMapArea area : values())
+		for (WorldMapArea area : AREAS)
 		{
 			if (area.getName().equals(name))
 			{
