@@ -23,6 +23,8 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+layout(binding = 2) uniform isampler3D tileHeightSampler;
+
 // Calculate adjusted priority for a face with a given priority, distance, and
 // model global min10 and face distance averages. This allows positioning faces
 // with priorities 10/11 into the correct 'slots' resulting in 18 possible
@@ -31,16 +33,26 @@ int priority_map(int p, int distance, int _min10, int avg1, int avg2, int avg3) 
   // (10, 11)  0  1  2  (10, 11)  3  4  (10, 11)  5  6  7  8  9  (10, 11)
   //   0   1   2  3  4    5   6   7  8    9  10  11 12 13 14 15   16  17
   switch (p) {
-    case 0: return 2;
-    case 1: return 3;
-    case 2: return 4;
-    case 3: return 7;
-    case 4: return 8;
-    case 5: return 11;
-    case 6: return 12;
-    case 7: return 13;
-    case 8: return 14;
-    case 9: return 15;
+    case 0:
+      return 2;
+    case 1:
+      return 3;
+    case 2:
+      return 4;
+    case 3:
+      return 7;
+    case 4:
+      return 8;
+    case 5:
+      return 11;
+    case 6:
+      return 12;
+    case 7:
+      return 13;
+    case 8:
+      return 14;
+    case 9:
+      return 15;
     case 10:
       if (distance > avg1) {
         return 0;
@@ -74,13 +86,12 @@ int count_prio_offset(int priority) {
   priority = clamp(priority, 0, 17);
   int total = 0;
   for (int i = 0; i < priority; i++) {
-      total += totalMappedNum[i];
+    total += totalMappedNum[i];
   }
   return total;
 }
 
-void get_face(uint localId, modelinfo minfo, int cameraYaw, int cameraPitch,
-    out int prio, out int dis, out ivec4 o1, out ivec4 o2, out ivec4 o3) {
+void get_face(uint localId, modelinfo minfo, float cameraYaw, float cameraPitch, out int prio, out int dis, out ivec4 o1, out ivec4 o2, out ivec4 o3) {
   int size = minfo.size;
   int offset = minfo.offset;
   int flags = minfo.flags;
@@ -108,7 +119,6 @@ void get_face(uint localId, modelinfo minfo, int cameraYaw, int cameraPitch,
   }
 
   if (localId < size) {
-    int radius = (flags & 0x7fffffff) >> 12;
     int orientation = flags & 0x7ff;
 
     // rotate for model orientation
@@ -117,13 +127,8 @@ void get_face(uint localId, modelinfo minfo, int cameraYaw, int cameraPitch,
     ivec4 thisrvC = rotate(thisC, orientation);
 
     // calculate distance to face
-    int thisPriority = (thisA.w >> 16) & 0xff;// all vertices on the face have the same priority
-    int thisDistance;
-    if (radius == 0) {
-      thisDistance = 0;
-    } else {
-      thisDistance = face_distance(thisrvA, thisrvB, thisrvC, cameraYaw, cameraPitch) + radius;
-    }
+    int thisPriority = (thisA.w >> 16) & 0xff;  // all vertices on the face have the same priority
+    int thisDistance = face_distance(thisrvA, thisrvB, thisrvC, cameraYaw, cameraPitch);
 
     o1 = thisrvA;
     o2 = thisrvB;
@@ -188,66 +193,101 @@ int map_face_priority(uint localId, modelinfo minfo, int thisPriority, int thisD
   return 0;
 }
 
-void insert_dfs(uint localId, modelinfo minfo, int adjPrio, int distance, int prioIdx) {
+void insert_face(uint localId, modelinfo minfo, int adjPrio, int distance, int prioIdx) {
   int size = minfo.size;
 
   if (localId < size) {
-    // calculate base offset into dfs based on number of faces with a lower priority
+    // calculate base offset into renderPris based on number of faces with a lower priority
     int baseOff = count_prio_offset(adjPrio);
-    // store into face array offset array by unique index
-    dfs[baseOff + prioIdx] = (int(localId) << 16) | distance;
+    // the furthest faces draw first, and have the highest priority.
+    // if two faces have the same distance, the one with the
+    // lower id draws first.
+    renderPris[baseOff + prioIdx] = distance << 16 | int(~localId & 0xffffu);
+  }
+}
+
+int tile_height(int z, int x, int y) {
+#define ESCENE_OFFSET 40  // (184-104)/2
+  return texelFetch(tileHeightSampler, ivec3(x + ESCENE_OFFSET, y + ESCENE_OFFSET, z), 0).r << 3;
+}
+
+ivec4 hillskew_vertex(ivec4 v, int hillskew, int y, int plane) {
+  if (hillskew == 1) {
+    int px = v.x & 127;
+    int pz = v.z & 127;
+    int sx = v.x >> 7;
+    int sz = v.z >> 7;
+    int h1 = px * tile_height(plane, sx + 1, sz) + (128 - px) * tile_height(plane, sx, sz) >> 7;
+    int h2 = px * tile_height(plane, sx + 1, sz + 1) + (128 - px) * tile_height(plane, sx, sz + 1) >> 7;
+    int h3 = pz * h2 + (128 - pz) * h1 >> 7;
+    return ivec4(v.x, v.y + h3 - y, v.z, v.w);
+  } else {
+    return v;
   }
 }
 
 void sort_and_insert(uint localId, modelinfo minfo, int thisPriority, int thisDistance, ivec4 thisrvA, ivec4 thisrvB, ivec4 thisrvC) {
-  /* compute face distance */
   int size = minfo.size;
 
   if (localId < size) {
     int outOffset = minfo.idx;
-    int uvOffset = minfo.uvOffset;
+    int toffset = minfo.toffset;
     int flags = minfo.flags;
-    ivec4 pos = ivec4(minfo.x, minfo.y, minfo.z, 0);
-
-    const int priorityOffset = count_prio_offset(thisPriority);
-    const int numOfPriority = totalMappedNum[thisPriority];
-    int start = priorityOffset; // index of first face with this priority
-    int end = priorityOffset + numOfPriority; // index of last face with this priority
-    int myOffset = priorityOffset;
 
     // we only have to order faces against others of the same priority
+    const int priorityOffset = count_prio_offset(thisPriority);
+    const int numOfPriority = totalMappedNum[thisPriority];
+    const int start = priorityOffset;                // index of first face with this priority
+    const int end = priorityOffset + numOfPriority;  // index of last face with this priority
+    const int renderPriority = thisDistance << 16 | int(~localId & 0xffffu);
+    int myOffset = priorityOffset;
+
     // calculate position this face will be in
     for (int i = start; i < end; ++i) {
-      int d1 = dfs[i];
-      int theirId = d1 >> 16;
-      int theirDistance = d1 & 0xffff;
-
-      // the closest faces draw last, so have the highest index
-      // if two faces have the same distance, the one with the
-      // higher id draws last
-      if ((theirDistance > thisDistance)
-        || (theirDistance == thisDistance && theirId < localId)) {
+      if (renderPriority < renderPris[i]) {
         ++myOffset;
       }
     }
 
-    // position vertices in scene and write to out buffer
-    vout[outOffset + myOffset * 3]     = pos + thisrvA;
-    vout[outOffset + myOffset * 3 + 1] = pos + thisrvB;
-    vout[outOffset + myOffset * 3 + 2] = pos + thisrvC;
+    // position into scene
+    ivec4 pos = ivec4(minfo.x, minfo.y, minfo.z, 0);
+    thisrvA += pos;
+    thisrvB += pos;
+    thisrvC += pos;
 
-    if (uvOffset < 0) {
-      uvout[outOffset + myOffset * 3]     = vec4(0, 0, 0, 0);
-      uvout[outOffset + myOffset * 3 + 1] = vec4(0, 0, 0, 0);
-      uvout[outOffset + myOffset * 3 + 2] = vec4(0, 0, 0, 0);
-    } else if (flags >= 0) {
-      uvout[outOffset + myOffset * 3]     = tempuv[uvOffset + localId * 3];
-      uvout[outOffset + myOffset * 3 + 1] = tempuv[uvOffset + localId * 3 + 1];
-      uvout[outOffset + myOffset * 3 + 2] = tempuv[uvOffset + localId * 3 + 2];
+    // apply hillskew
+    int plane = (flags >> 24) & 3;
+    int hillskew = (flags >> 26) & 1;
+    thisrvA = hillskew_vertex(thisrvA, hillskew, minfo.y, plane);
+    thisrvB = hillskew_vertex(thisrvB, hillskew, minfo.y, plane);
+    thisrvC = hillskew_vertex(thisrvC, hillskew, minfo.y, plane);
+
+    // write to out buffer
+    vout[outOffset + myOffset * 3] = thisrvA;
+    vout[outOffset + myOffset * 3 + 1] = thisrvB;
+    vout[outOffset + myOffset * 3 + 2] = thisrvC;
+
+    if (toffset < 0) {
+      uvout[outOffset + myOffset * 3] = vec4(0);
+      uvout[outOffset + myOffset * 3 + 1] = vec4(0);
+      uvout[outOffset + myOffset * 3 + 2] = vec4(0);
     } else {
-      uvout[outOffset + myOffset * 3]     = uv[uvOffset + localId * 3];
-      uvout[outOffset + myOffset * 3 + 1] = uv[uvOffset + localId * 3 + 1];
-      uvout[outOffset + myOffset * 3 + 2] = uv[uvOffset + localId * 3 + 2];
+      vec4 texA, texB, texC;
+
+      if (flags >= 0) {
+        texA = temptexb[toffset + localId * 3];
+        texB = temptexb[toffset + localId * 3 + 1];
+        texC = temptexb[toffset + localId * 3 + 2];
+      } else {
+        texA = texb[toffset + localId * 3];
+        texB = texb[toffset + localId * 3 + 1];
+        texC = texb[toffset + localId * 3 + 2];
+      }
+
+      int orientation = flags & 0x7ff;
+      uvout[outOffset + myOffset * 3] = vec4(texA.x, rotatef(texA.yzw, orientation) + pos.xyz);
+      uvout[outOffset + myOffset * 3 + 1] = vec4(texB.x, rotatef(texB.yzw, orientation) + pos.xyz);
+      uvout[outOffset + myOffset * 3 + 2] = vec4(texC.x, rotatef(texC.yzw, orientation) + pos.xyz);
     }
   }
 }

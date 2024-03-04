@@ -30,7 +30,6 @@ import java.util.Properties;
 import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.Getter;
-import okhttp3.HttpUrl;
 
 public class RuneLiteProperties
 {
@@ -45,7 +44,6 @@ public class RuneLiteProperties
 	private static final String DNS_CHANGE_LINK = "runelite.dnschange.link";
 	private static final String JAV_CONFIG = "runelite.jav_config";
 	private static final String JAV_CONFIG_BACKUP = "runelite.jav_config_backup";
-	private static final String PLUGINHUB_BASE = "runelite.pluginhub.url";
 	private static final String PLUGINHUB_VERSION = "runelite.pluginhub.version";
 	private static final String API_BASE = "runelite.api.base";
 	private static final String RUNELITE_CONFIG = "runelite.config";
@@ -122,10 +120,9 @@ public class RuneLiteProperties
 		return properties.getProperty(JAV_CONFIG_BACKUP);
 	}
 
-	public static HttpUrl getPluginHubBase()
+	public static String getPluginHubVersion()
 	{
-		String version = System.getProperty(PLUGINHUB_VERSION, properties.getProperty(PLUGINHUB_VERSION));
-		return HttpUrl.get(properties.get(PLUGINHUB_BASE) + "/" + version);
+		return System.getProperty(PLUGINHUB_VERSION, properties.getProperty(PLUGINHUB_VERSION));
 	}
 
 	public static String getApiBase()

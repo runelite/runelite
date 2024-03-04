@@ -109,10 +109,14 @@ public final class Varbits
 	public static final int RUNE_POUCH_RUNE2 = 1622;
 	public static final int RUNE_POUCH_RUNE3 = 1623;
 	public static final int RUNE_POUCH_RUNE4 = 14285;
+	public static final int RUNE_POUCH_RUNE5 = 15373;
+	public static final int RUNE_POUCH_RUNE6 = 15374;
 	public static final int RUNE_POUCH_AMOUNT1 = 1624;
 	public static final int RUNE_POUCH_AMOUNT2 = 1625;
 	public static final int RUNE_POUCH_AMOUNT3 = 1626;
 	public static final int RUNE_POUCH_AMOUNT4 = 14286;
+	public static final int RUNE_POUCH_AMOUNT5 = 15375;
+	public static final int RUNE_POUCH_AMOUNT6 = 15376;
 
 	/**
 	 * Prayers
@@ -147,6 +151,34 @@ public final class Varbits
 	public static final int PRAYER_PRESERVE = 5466;
 	public static final int PRAYER_RIGOUR = 5464;
 	public static final int PRAYER_AUGURY = 5465;
+
+	/**
+	 * Ruinous Powers
+	 */
+	public static final int PRAYER_RP_REJUVENATION = 14840;
+	public static final int PRAYER_RP_ANCIENT_STRENGTH = 14829;
+	public static final int PRAYER_RP_ANCIENT_SIGHT = 14830;
+	public static final int PRAYER_RP_ANCIENT_WILL = 14831;
+	public static final int PRAYER_RP_PROTECT_ITEM = 14966;
+	public static final int PRAYER_RP_RUINOUS_GRACE = 14841;
+	public static final int PRAYER_RP_DAMPEN_MAGIC = 14964;
+	public static final int PRAYER_RP_DAMPEN_RANGED = 14963;
+	public static final int PRAYER_RP_DAMPEN_MELEE = 14962;
+	public static final int PRAYER_RP_TRINITAS = 14832;
+	public static final int PRAYER_RP_BERSERKER = 14844;
+	public static final int PRAYER_RP_PURGE = 14839;
+	public static final int PRAYER_RP_METABOLISE = 14843;
+	public static final int PRAYER_RP_REBUKE = 14850;
+	public static final int PRAYER_RP_VINDICATION = 14851;
+	public static final int PRAYER_RP_DECIMATE = 14833;
+	public static final int PRAYER_RP_ANNIHILATE = 14834;
+	public static final int PRAYER_RP_VAPORISE = 14835;
+	public static final int PRAYER_RP_FUMUS_VOW = 14845;
+	public static final int PRAYER_RP_UMBRA_VOW = 14847;
+	public static final int PRAYER_RP_CRUORS_VOW = 14846;
+	public static final int PRAYER_RP_GLACIES_VOW = 14848;
+	public static final int PRAYER_RP_WRATH = 14842;
+	public static final int PRAYER_RP_INTENSIFY = 14965;
 
 	/**
 	 * Diary Entries
@@ -520,7 +552,15 @@ public final class Varbits
 	public static final int AUTOWEED = 5557;
 
 	/**
-	 * The varbit that stores the players {@code AccountType}.
+	 * The player's account type.
+	 * <p>
+	 * 0 = normal
+	 * 1 = ironman
+	 * 2 = ultimate ironman
+	 * 3 = hardcore ironman
+	 * 4 = group ironman
+	 * 5 = hardcore group ironman
+	 * 6 = unranked group ironman
 	 */
 	public static final int ACCOUNT_TYPE = 1777;
 
@@ -585,6 +625,7 @@ public final class Varbits
 	/**
 	 * Spell cooldowns
 	 */
+	public static final int HEAL_GROUP_COOLDOWN = 925;
 	public static final int VENGEANCE_COOLDOWN = 2451;
 	public static final int DEATH_CHARGE_COOLDOWN = 12138;
 	public static final int CORRUPTION_COOLDOWN = 12288;
@@ -650,6 +691,8 @@ public final class Varbits
 	public static final int LEAGUE_RELIC_4 = 10052;
 	public static final int LEAGUE_RELIC_5 = 10053;
 	public static final int LEAGUE_RELIC_6 = 11696;
+	public static final int LEAGUE_RELIC_7 = 17301;
+	public static final int LEAGUE_RELIC_8 = 17302;
 
 	/**
 	 * Muted volume restore values
@@ -675,12 +718,14 @@ public final class Varbits
 	public static final int WIKI_ENTITY_LOOKUP = 10113;
 
 	/**
-	 * Whether the Special Attack orb is disabled due to being in a PvP area
+	 * Whether the player is in a PvP area
 	 * <p>
-	 * 0 = Enabled (player is not in PvP)
-	 * 1 = Disabled (player is in PvP)
-	 *
-	 * @see <a href="https://oldschool.runescape.wiki/w/Minimap#Special_attack_orb">The OSRS Wiki's Minimap page</a>
+	 * 0 = Player is not in PvP area
+	 * 1 = Player is in PvP area
+	 * <p>
+	 * Note: The name of this varbit comes from historical behavior where
+	 * the special attack orb would be disabled in PvP, but this was changed
+	 * on 2023-03-09 due to Poll 78. Yet, the varbit still updates as before.
 	 */
 	public static final int PVP_SPEC_ORB = 8121;
 
@@ -745,6 +790,13 @@ public final class Varbits
 	public static final int TELEBLOCK = 4163;
 
 	/**
+	 * Cooldown timer remaining before eligible to restore at a god wars dungeon altar.
+	 * Number of game ticks remaining is in intervals of 100; for a value X there are 100 * X game ticks remaining.
+	 * A player can pray at a god wars altar once this reaches 0.
+	 */
+	public static final int GOD_WARS_ALTAR_COOLDOWN = 4099;
+
+	/**
 	 * Farmer's Affinity effect timer
 	 * Number of game ticks remaining on Farmer's Affinity effect in intervals of 20; for a value X there are 20 * X game ticks remaining.
 	 * The Farmer's Affinity expires once this reaches 0.
@@ -804,4 +856,34 @@ public final class Varbits
 	 * Set to 20 upon drinking an overload.
 	 */
 	public static final int COX_OVERLOAD_REFRESHES_REMAINING = 5418;
+
+	public static final int SLAYER_POINTS = 4068;
+	public static final int SLAYER_TASK_STREAK = 4069;
+
+	/**
+	 * The assigned boss for boss slayer.
+	 */
+	public static final int SLAYER_TASK_BOSS = 4723;
+
+	/**
+	 * Whether the level up interface is disabled
+	 */
+	public static final int DISABLE_LEVEL_UP_INTERFACE = 9452;
+
+	public static final int PRAYERBOOK = 14826;
+
+	/**
+	 * During and after Curse of the Empty Lord, Viggora can be located in one of three locations,
+	 * which is uniquely and permanently set for each player.
+	 * This varbit determines which location he will appear in, which is useful for a master clue step.
+	 */
+	public static final int VIGGORA_LOCATION = 815;
+
+	/**
+	 * If the player has a spellbook swap active
+	 * <p>
+	 * 0 = inactive
+	 * 1 = active
+	 */
+	public static final int SPELLBOOK_SWAP = 3617;
 }

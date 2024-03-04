@@ -24,31 +24,31 @@
  */
 
 struct uniform {
-  int cameraYaw;
-  int cameraPitch;
+  float cameraYaw;
+  float cameraPitch;
   int centerX;
   int centerY;
   int zoom;
-  int cameraX;
-  int cameraY;
-  int cameraZ;
+  float cameraX;
+  float cameraY;
+  float cameraZ;
   int4 sinCosTable[2048];
 };
 
 struct shared_data {
-  int totalNum[12]; // number of faces with a given priority
-  int totalDistance[12]; // sum of distances to faces of a given priority
-  int totalMappedNum[18]; // number of faces with a given adjusted priority
-  int min10; // minimum distance to a face of priority 10
-  int dfs[0]; // packed face id and distance, size 512 for small, 4096 for large
+  int totalNum[12];        // number of faces with a given priority
+  int totalDistance[12];   // sum of distances to faces of a given priority
+  int totalMappedNum[18];  // number of faces with a given adjusted priority
+  int min10;               // minimum distance to a face of priority 10
+  int renderPris[0];       // priority for face draw order
 };
 
 struct modelinfo {
-  int offset;   // offset into buffer
-  int uvOffset; // offset into uv buffer
+  int offset;   // offset into vertex buffer
+  int toffset;  // offset into texture buffer
   int size;     // length in faces
   int idx;      // write idx in target buffer
-  int flags;    // radius, orientation
+  int flags;    // buffer, hillskew, plane, orientation
   int x;        // scene position x
   int y;        // scene position y
   int z;        // scene position z

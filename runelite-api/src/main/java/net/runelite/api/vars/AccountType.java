@@ -27,6 +27,7 @@ package net.runelite.api.vars;
 /**
  * An enumeration of possible account types.
  */
+@Deprecated
 public enum AccountType
 {
 	/**

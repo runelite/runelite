@@ -54,7 +54,6 @@ public class IndexData
 		{
 			throw new IllegalArgumentException("Unknown flags");
 		}
-		assert (hash & ~3) == 0;
 		int validArchivesCount = protocol >= 7 ? stream.readBigSmart() : stream.readUnsignedShort();
 		int lastArchiveId = 0;
 

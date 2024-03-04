@@ -29,6 +29,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.List;
 import javax.annotation.Nullable;
+import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
@@ -57,7 +58,7 @@ public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClu
 		new CipherClue("UZZU MUJHRKYYKJ", NpcID.OTTO_GODBLESSED, new WorldPoint(2501, 3487, 0), "Otto's Grotto", "How many pyre sites are found around this lake?", "3"),
 		new CipherClue("XJABSE USBJCPSO", NpcID.WIZARD_TRAIBORN, new WorldPoint(3112, 3162, 0), "First floor of Wizards Tower. Fairy ring DIS", "How many air runes would I need to cast 630 wind waves?", "3150"),
 		new CipherClue("HCKTA IQFHCVJGT", NpcID.FAIRY_GODFATHER, new WorldPoint(2446, 4428, 0), "Zanaris throne room", "There are 3 inputs and 4 letters on each ring How many total individual fairy ring codes are possible?", "64"),
-		new CipherClue("ZSBKDO ZODO", NpcID.PIRATE_PETE, new WorldPoint(3680, 3537, 0), "Dock northeast of the Ectofunctus"),
+		new CipherClue("ZSBKDO ZODO", NpcID.PIRATE_PETE, new WorldPoint(3680, 3537, 0), "Dock northeast of the Ectofuntus"),
 		new CipherClue("GBJSZ RVFFO", NpcID.FAIRY_QUEEN, new WorldPoint(2347, 4435, 0), "Fairy Resistance Hideout"),
 		new CipherClue("QSPGFTTPS HSBDLMFCPOF", NpcID.PROFESSOR_GRACKLEBONE, new WorldPoint(1625, 3802, 0), "Ground floor of Arceuus Library", "How many round tables can be found on this floor of the library?", "9"),
 		new CipherClue("IWPPLQTP", NpcID.GUNNJORN, new WorldPoint(2541, 3548, 0), "Barbarian Outpost Agility course"),
@@ -67,6 +68,7 @@ public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClu
 
 	private final String text;
 	private final int npcId;
+	@Getter(AccessLevel.PRIVATE)
 	private final WorldPoint location;
 	private final String area;
 	@Nullable
@@ -97,6 +99,12 @@ public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClu
 		this.area = area;
 		this.question = question;
 		this.answer = answer;
+	}
+
+	@Override
+	public WorldPoint getLocation(ClueScrollPlugin plugin)
+	{
+		return location;
 	}
 
 	@Override

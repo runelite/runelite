@@ -40,8 +40,6 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
-import net.runelite.client.ui.overlay.OverlayUtil;
 
 class GroundMarkerMinimapOverlay extends Overlay
 {
@@ -56,7 +54,7 @@ class GroundMarkerMinimapOverlay extends Overlay
 		this.config = config;
 		this.plugin = plugin;
 		setPosition(OverlayPosition.DYNAMIC);
-		setPriority(OverlayPriority.LOW);
+		setPriority(PRIORITY_LOW);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 	}
 
@@ -78,9 +76,9 @@ class GroundMarkerMinimapOverlay extends Overlay
 			}
 
 			Color tileColor = point.getColor();
-			if (tileColor == null || !config.rememberTileColors())
+			if (tileColor == null)
 			{
-				// If this is an old tile which has no color, or rememberTileColors is off, use marker color
+				// If this is an old tile which has no color, use marker color
 				tileColor = config.markerColor();
 			}
 
@@ -121,7 +119,7 @@ class GroundMarkerMinimapOverlay extends Overlay
 
 		Stroke stroke = new BasicStroke(1f);
 		graphics.setStroke(stroke);
+		graphics.setColor(color);
 		graphics.drawPolygon(poly);
-		OverlayUtil.renderPolygon(graphics, poly, color);
 	}
 }

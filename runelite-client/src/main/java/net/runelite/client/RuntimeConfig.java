@@ -48,6 +48,10 @@ public class RuntimeConfig
 	private Set<Integer> forceDeadAnimations;
 	private Set<Integer> nonAttackNpcs;
 
+	private Set<String> outdatedClientVersions;
+	private String[] updateLauncherWinVers;
+	private double updateRollout;
+
 	public boolean showOutageMessage()
 	{
 		if (Strings.isNullOrEmpty(getOutageMessage()))
@@ -72,5 +76,16 @@ public class RuntimeConfig
 			fed.open();
 		});
 		return true;
+	}
+
+	void refresh(RuntimeConfig config)
+	{
+		ignoreDeadNpcs = config.ignoreDeadNpcs;
+		forceDeadNpcs = config.forceDeadNpcs;
+		resetDeadOnChangeNpcs = config.resetDeadOnChangeNpcs;
+		forceDeadAnimations = config.forceDeadAnimations;
+		nonAttackNpcs = config.nonAttackNpcs;
+
+		outdatedClientVersions = config.outdatedClientVersions;
 	}
 }

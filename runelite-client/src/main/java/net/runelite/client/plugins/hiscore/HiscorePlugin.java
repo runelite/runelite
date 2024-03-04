@@ -38,12 +38,14 @@ import net.runelite.api.Client;
 import net.runelite.api.IconID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.Player;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
@@ -65,7 +67,7 @@ import net.runelite.client.util.Text;
 public class HiscorePlugin extends Plugin
 {
 	private static final String LOOKUP = "Lookup";
-	private static final Pattern BOUNTY_PATTERN = Pattern.compile("<col=ff0000>You've been assigned a target: (.*)</col>");
+	private static final Pattern BOUNTY_PATTERN = Pattern.compile("You have been assigned a new target: <col=[0-9a-f]+>(.*)</col>");
 
 	@Inject
 	@Nullable
@@ -153,15 +155,15 @@ public class HiscorePlugin extends Plugin
 
 		final String option = event.getOption();
 		final int componentId = event.getActionParam1();
-		final int groupId = WidgetInfo.TO_GROUP(componentId);
+		final int groupId = WidgetUtil.componentToInterface(componentId);
 
-		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() && option.equals("Delete")
-			|| groupId == WidgetInfo.FRIENDS_CHAT.getGroupId() && (option.equals("Add ignore") || option.equals("Remove friend"))
-			|| groupId == WidgetInfo.CHATBOX.getGroupId() && (option.equals("Add ignore") || option.equals("Message"))
-			|| groupId == WidgetInfo.IGNORE_LIST.getGroupId() && option.equals("Delete")
-			|| (componentId == WidgetInfo.CLAN_MEMBER_LIST.getId() || componentId == WidgetInfo.CLAN_GUEST_MEMBER_LIST.getId()) && (option.equals("Add ignore") || option.equals("Remove friend"))
-			|| groupId == WidgetInfo.PRIVATE_CHAT_MESSAGE.getGroupId() && (option.equals("Add ignore") || option.equals("Message"))
-			|| groupId == WidgetID.GROUP_IRON_GROUP_ID && (option.equals("Add friend") || option.equals("Remove friend") || option.equals("Remove ignore"))
+		if (groupId == InterfaceID.FRIEND_LIST && option.equals("Delete")
+			|| groupId == InterfaceID.FRIENDS_CHAT && (option.equals("Add ignore") || option.equals("Remove friend"))
+			|| groupId == InterfaceID.CHATBOX && (option.equals("Add ignore") || option.equals("Message"))
+			|| groupId == InterfaceID.IGNORE_LIST && option.equals("Delete")
+			|| (componentId == ComponentID.CLAN_MEMBERS || componentId == ComponentID.CLAN_GUEST_MEMBERS) && (option.equals("Add ignore") || option.equals("Remove friend"))
+			|| groupId == InterfaceID.PRIVATE_CHAT && (option.equals("Add ignore") || option.equals("Message"))
+			|| groupId == InterfaceID.GROUP_IRON && (option.equals("Add friend") || option.equals("Remove friend") || option.equals("Remove ignore"))
 		)
 		{
 			client.createMenuEntry(-2)
@@ -201,7 +203,7 @@ public class HiscorePlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (!config.bountylookup() || !event.getType().equals(ChatMessageType.GAMEMESSAGE))
+		if (!event.getType().equals(ChatMessageType.GAMEMESSAGE) || !config.bountylookup())
 		{
 			return;
 		}
@@ -220,14 +222,11 @@ public class HiscorePlugin extends Plugin
 		localHiscoreEndpoint = findHiscoreEndpointFromLocalPlayer();
 	}
 
-	private void lookupPlayer(String playerName, HiscoreEndpoint endpoint)
+	void lookupPlayer(String playerName, HiscoreEndpoint endpoint)
 	{
 		SwingUtilities.invokeLater(() ->
 		{
-			if (!navButton.isSelected())
-			{
-				navButton.getOnSelect().run();
-			}
+			clientToolbar.openPanel(navButton);
 			hiscorePanel.lookup(playerName, endpoint);
 		});
 	}
@@ -251,13 +250,13 @@ public class HiscorePlugin extends Plugin
 
 		if (client != null)
 		{
-			switch (client.getAccountType())
+			switch (client.getVarbitValue(Varbits.ACCOUNT_TYPE))
 			{
-				case IRONMAN:
+				case 1:
 					return HiscoreEndpoint.IRONMAN;
-				case ULTIMATE_IRONMAN:
+				case 2:
 					return HiscoreEndpoint.ULTIMATE_IRONMAN;
-				case HARDCORE_IRONMAN:
+				case 3:
 					return HiscoreEndpoint.HARDCORE_IRONMAN;
 			}
 		}

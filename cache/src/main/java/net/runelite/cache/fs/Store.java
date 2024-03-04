@@ -26,7 +26,6 @@ package net.runelite.cache.fs;
 
 import java.io.Closeable;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -94,7 +93,7 @@ public final class Store implements Closeable
 		return true;
 	}
 
-	public final Index addIndex(int id) throws FileNotFoundException
+	public final Index addIndex(int id)
 	{
 		for (Index i : indexes)
 		{

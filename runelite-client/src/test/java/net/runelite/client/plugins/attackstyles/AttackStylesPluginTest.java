@@ -34,8 +34,9 @@ import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.ui.overlay.OverlayManager;
 import static org.junit.Assert.assertFalse;
@@ -62,6 +63,10 @@ public class AttackStylesPluginTest
 	@Mock
 	@Bind
 	AttackStylesConfig attackConfig;
+
+	@Mock
+	@Bind
+	ChatMessageManager chatMessageManager;
 
 	@Inject
 	AttackStylesPlugin attackPlugin;
@@ -91,7 +96,7 @@ public class AttackStylesPluginTest
 
 		// Setup attack in style that gives attack xp
 		VarbitChanged varbitChanged = new VarbitChanged();
-		varbitChanged.setVarpId(VarPlayer.ATTACK_STYLE.getId());
+		varbitChanged.setVarpId(VarPlayer.ATTACK_STYLE);
 		when(client.getVarpValue(VarPlayer.ATTACK_STYLE)).thenReturn(AttackStyle.ACCURATE.ordinal());
 
 		// verify that earning xp in a warned skill will display red text on the widget
@@ -123,8 +128,8 @@ public class AttackStylesPluginTest
 		// Set up mock widgets for atk and str attack styles
 		Widget atkWidget = mock(Widget.class);
 		Widget strWidget = mock(Widget.class);
-		when(client.getWidget(WidgetInfo.COMBAT_STYLE_ONE)).thenReturn(atkWidget);
-		when(client.getWidget(WidgetInfo.COMBAT_STYLE_TWO)).thenReturn(strWidget);
+		when(client.getWidget(ComponentID.COMBAT_STYLE_ONE)).thenReturn(atkWidget);
+		when(client.getWidget(ComponentID.COMBAT_STYLE_TWO)).thenReturn(strWidget);
 		// Set widgets to return their hidden value in widgetsToHide when isHidden() is called
 		when(atkWidget.isHidden()).thenAnswer(x -> isAtkHidden());
 		when(strWidget.isHidden()).thenAnswer(x -> isStrHidden());
@@ -168,9 +173,9 @@ public class AttackStylesPluginTest
 
 		// verify that the aggressive and accurate attack style widgets are no longer hidden
 		assertFalse(attackPlugin.getHiddenWidgets().get(WeaponType.TYPE_4,
-			WidgetInfo.COMBAT_STYLE_ONE));
+			ComponentID.COMBAT_STYLE_ONE));
 		assertFalse(attackPlugin.getHiddenWidgets().get(WeaponType.TYPE_4,
-			WidgetInfo.COMBAT_STYLE_THREE));
+			ComponentID.COMBAT_STYLE_THREE));
 	}
 
 	private boolean isAtkHidden()
@@ -179,7 +184,7 @@ public class AttackStylesPluginTest
 		{
 			return false;
 		}
-		return attackPlugin.getHiddenWidgets().get(WeaponType.TYPE_4, WidgetInfo.COMBAT_STYLE_ONE);
+		return attackPlugin.getHiddenWidgets().get(WeaponType.TYPE_4, ComponentID.COMBAT_STYLE_ONE);
 	}
 
 	private boolean isStrHidden()
@@ -188,6 +193,6 @@ public class AttackStylesPluginTest
 		{
 			return false;
 		}
-		return attackPlugin.getHiddenWidgets().get(WeaponType.TYPE_4, WidgetInfo.COMBAT_STYLE_TWO);
+		return attackPlugin.getHiddenWidgets().get(WeaponType.TYPE_4, ComponentID.COMBAT_STYLE_TWO);
 	}
 }

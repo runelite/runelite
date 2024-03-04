@@ -85,7 +85,7 @@ public class ArdougneDiaryRequirement extends GenericDiaryRequirement
 			new QuestRequirement(Quest.LEGENDS_QUEST));
 		add("Enter the Magic Guild.",
 			new SkillRequirement(Skill.MAGIC, 66));
-		add("Attempt to steal from a chest in Ardougne Castle.",
+		add("Steal from a chest in Ardougne Castle.",
 			new SkillRequirement(Skill.THIEVING, 72));
 		add("Have a zookeeper put you in Ardougne Zoo's monkey cage.",
 			new QuestRequirement(Quest.MONKEY_MADNESS_I, true));
@@ -114,7 +114,7 @@ public class ArdougneDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.FISHING, 81),
 			new SkillRequirement(Skill.COOKING, 91)
 		);
-		add("Attempt to picklock the door to the basement of Yanille Agility Dungeon.",
+		add("Picklock the door to the basement of Yanille Agility Dungeon.",
 			new SkillRequirement(Skill.THIEVING, 82));
 		add("Pickpocket a Hero.",
 			new SkillRequirement(Skill.THIEVING, 80));
@@ -122,7 +122,7 @@ public class ArdougneDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.CRAFTING, 10),
 			new SkillRequirement(Skill.SMITHING, 91),
 			new SkillRequirement(Skill.FLETCHING, 69));
-		add("Imbue a salve amulet at Nightmare Zone or equip an imbued salve amulet.",
+		add("Imbue a Salve amulet at Nightmare Zone, or equip a Salve amulet that was imbued there.",
 			new QuestRequirement(Quest.HAUNTED_MINE));
 		add("Pick some Torstol from the patch north of Ardougne.",
 			new SkillRequirement(Skill.FARMING, 85));

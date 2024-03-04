@@ -14,11 +14,19 @@
    iload                  0
    iconst                 301
    iconst                 300
+   iconst                 3784
    iconst                 284
-   iconst                 3
+   iconst                 4
    sconst                 "IY"
    iload                  0
    if_setonvartransmit   
+   iconst                 186
+   iload                  0
+   iconst                 3
+   iconst                 1
+   sconst                 "IY"
+   iload                  0
+   if_setonstattransmit  
    iconst                 186
    iload                  0
    iconst                 94

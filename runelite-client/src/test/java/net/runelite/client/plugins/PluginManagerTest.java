@@ -49,8 +49,10 @@ import net.runelite.api.Client;
 import net.runelite.client.RuneLite;
 import net.runelite.client.RuneLiteModule;
 import net.runelite.client.RuntimeConfig;
+import net.runelite.client.RuntimeConfigLoader;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -83,6 +85,10 @@ public class PluginManagerTest
 	@Bind
 	public Client client;
 
+	@Mock
+	@Bind
+	private ConfigManager configManager;
+
 	private Set<Class<?>> pluginClasses;
 	private Set<Class<?>> configClasses;
 
@@ -93,10 +99,21 @@ public class PluginManagerTest
 		when(okHttpClient.newCall(any(Request.class)))
 			.thenThrow(new RuntimeException("in plugin manager test"));
 
+		when(configManager.getConfig(any(Class.class)))
+			.thenAnswer(a ->
+			{
+				Class<?> c = a.getArgument(0);
+				return mock(c);
+			});
+
+		RuntimeConfigLoader configLoader = mock(RuntimeConfigLoader.class);
+		when(configLoader.get()).thenReturn(mock(RuntimeConfig.class));
+
 		Injector injector = Guice.createInjector(Modules
-			.override(new RuneLiteModule(okHttpClient, () -> null, () -> mock(RuntimeConfig.class), true, false, false,
+			.override(new RuneLiteModule(okHttpClient, () -> null, configLoader, true, false, false,
 				RuneLite.DEFAULT_SESSION_FILE,
-				RuneLite.DEFAULT_CONFIG_FILE))
+				null, false, false
+			))
 			.with(BoundFieldModule.of(this)));
 
 		RuneLite.setInjector(injector);

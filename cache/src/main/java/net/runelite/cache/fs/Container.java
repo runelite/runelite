@@ -88,6 +88,10 @@ public class Container
 		}
 
 		this.data = stream.flip();
+
+		Crc32 crc32 = new Crc32();
+		crc32.update(this.data, 0, this.data.length - (revision != -1 ? 2 : 0));
+		this.crc = crc32.getHash();
 	}
 
 	public static Container decompress(byte[] b, int[] keys) throws IOException
@@ -144,12 +148,6 @@ public class Container
 
 				int decompressedLength = stream.readInt();
 				data = BZip2.decompress(stream.getRemaining(), compressedLength);
-
-				if (data == null)
-				{
-					return null;
-				}
-
 				assert data.length == decompressedLength;
 
 				break;
@@ -172,12 +170,6 @@ public class Container
 
 				int decompressedLength = stream.readInt();
 				data = GZip.decompress(stream.getRemaining(), compressedLength);
-
-				if (data == null)
-				{
-					return null;
-				}
-
 				assert data.length == decompressedLength;
 
 				break;

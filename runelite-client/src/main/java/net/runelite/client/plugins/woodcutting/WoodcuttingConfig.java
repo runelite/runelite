@@ -27,12 +27,20 @@ package net.runelite.client.plugins.woodcutting;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
 import net.runelite.client.config.Units;
 import net.runelite.client.plugins.woodcutting.config.ClueNestTier;
 
 @ConfigGroup("woodcutting")
 public interface WoodcuttingConfig extends Config
 {
+	@ConfigSection(
+		name = "Forestry",
+		description = "Configuration for forestry",
+		position = 10
+	)
+	String forestrySection = "forestry";
+
 	@ConfigItem(
 		position = 1,
 		keyName = "statTimeout",
@@ -96,6 +104,198 @@ public interface WoodcuttingConfig extends Config
 		description = "Configures whether to display the respawn timer overlay"
 	)
 	default boolean showRespawnTimers()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 10,
+		keyName = "forestryLeprechaunNotification",
+		name = "Leprechaun notification",
+		description = "Configures whether to notify you of a Leprechaun event",
+		section = forestrySection
+	)
+	default boolean forestryLeprechaunNotification()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 11,
+		keyName = "forestryRisingRootsNotification",
+		name = "Rising Roots notification",
+		description = "Configures whether to notify you of a Rising Roots event",
+		section = forestrySection
+	)
+	default boolean forestryRisingRootsNotification()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 12,
+		keyName = "forestryStrugglingSaplingNotification",
+		name = "Struggling Sapling notification",
+		description = "Configures whether to notify you of a Struggling Sapling event",
+		section = forestrySection
+	)
+	default boolean forestryStrugglingSaplingNotification()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 13,
+		keyName = "forestryFloweringTreeNotification",
+		name = "Flowering Tree notification",
+		description = "Configures whether to notify you of a Flowering Tree event",
+		section = forestrySection
+	)
+	default boolean forestryFloweringTreeNotification()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 14,
+		keyName = "forestryPoachersNotification",
+		name = "Poachers notification",
+		description = "Configures whether to notify you of a Poachers event",
+		section = forestrySection
+	)
+	default boolean forestryPoachersNotification()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 15,
+		keyName = "forestryPheasantControlNotification",
+		name = "Pheasant Control notification",
+		description = "Configures whether to notify you of a Pheasant Control event",
+		section = forestrySection
+	)
+	default boolean forestryPheasantControlNotification()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 16,
+		keyName = "forestryBeeHiveNotification",
+		name = "Bee Hive notification",
+		description = "Configures whether to notify you of a Bee Hive event",
+		section = forestrySection
+	)
+	default boolean forestryBeeHiveNotification()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 17,
+		keyName = "forestryEnchantmentRitualNotification",
+		name = "Enchantment Ritual notification",
+		description = "Configures whether to notify you of an Enchantment Ritual event",
+		section = forestrySection
+	)
+	default boolean forestryEnchantmentRitualNotification()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 18,
+		keyName = "forestryFriendlyEntNotification",
+		name = "Friendly Ent notification",
+		description = "Configures whether to notify you of a Friendly Ent event",
+		section = forestrySection
+	)
+	default boolean forestryFriendlyEntNotification()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 20,
+		keyName = "highlightGlowingRoots",
+		name = "Highlight glowing roots",
+		description = "Highlights glowing roots during Rising Roots events",
+		section = forestrySection
+	)
+	default boolean highlightGlowingRoots()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 21,
+		keyName = "highlightMulch",
+		name = "Highlight mulch ingredients",
+		description = "Highlights mulch ingredients during Struggling Sapling events",
+		section = forestrySection
+	)
+	default boolean highlightMulch()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 22,
+		keyName = "highlightFlowers",
+		name = "Highlight flowers",
+		description = "Highlights flowers during Flowering Tree events",
+		section = forestrySection
+	)
+	default boolean highlightFlowers()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 23,
+		keyName = "highlightFoxTrap",
+		name = "Highlight fox trap",
+		description = "Highlights the fox trap during Poachers events",
+		section = forestrySection
+	)
+	default boolean highlightFoxTrap()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 24,
+		keyName = "highlightPheasantNest",
+		name = "Highlight pheasant nest",
+		description = "Highlights the pheasant next during Pheasant Control events",
+		section = forestrySection
+	)
+	default boolean highlightPheasantNest()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 25,
+		keyName = "highlightBeeHive",
+		name = "Highlight bee hive",
+		description = "Highlights the bee hive during Bee Hive events",
+		section = forestrySection
+	)
+	default boolean highlightBeeHive()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 26,
+		keyName = "highlightRitualCircle",
+		name = "Highlight ritual circle",
+		description = "Highlights the Ritual Circle during Enchantment Ritual events",
+		section = forestrySection
+	)
+	default boolean highlightRitualCircle()
 	{
 		return true;
 	}

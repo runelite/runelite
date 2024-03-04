@@ -24,21 +24,23 @@
  */
 package net.runelite.cache.util;
 
+import com.sun.jna.Memory;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
+import static net.runelite.cache.util.LibBZip2.BZ_FINISH_OK;
+import static net.runelite.cache.util.LibBZip2.BZ_OK;
+import static net.runelite.cache.util.LibBZip2.BZ_STREAM_END;
 import org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStream;
 import org.apache.commons.compress.compressors.bzip2.BZip2CompressorOutputStream;
 import org.apache.commons.compress.utils.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class BZip2
 {
-	private static final Logger logger = LoggerFactory.getLogger(BZip2.class);
+	private static final boolean USE_NATIVE_BZIP2 = "true".equalsIgnoreCase(System.getProperty("runelite.useNativeBzip"));
 
 	private static final byte[] BZIP_HEADER = new byte[]
 	{
@@ -48,6 +50,11 @@ public class BZip2
 	};
 
 	public static byte[] compress(byte[] bytes) throws IOException
+	{
+		return USE_NATIVE_BZIP2 ? compressLibBZip2(bytes) : compressApache(bytes);
+	}
+
+	public static byte[] compressApache(byte[] bytes) throws IOException
 	{
 		InputStream is = new ByteArrayInputStream(bytes);
 		ByteArrayOutputStream bout = new ByteArrayOutputStream();
@@ -64,6 +71,59 @@ public class BZip2
 		assert BZIP_HEADER[3] == out[3];
 
 		return Arrays.copyOfRange(out, BZIP_HEADER.length, out.length); // remove header..
+	}
+
+	// byte-for-byte compatability with Jagex's compression
+	public static byte[] compressLibBZip2(byte[] data) throws IOException
+	{
+		LibBZip2 libBZip2 = LibBZip2.INSTANCE;
+
+		BzStream stream = new BzStream();
+		stream.next_in = new Memory(data.length);
+		stream.avail_in = data.length;
+		stream.next_in.write(0, data, 0, data.length);
+
+		int outsz = 65536;
+		Memory out = new Memory(outsz);
+		stream.next_out = out;
+		stream.avail_out = outsz;
+
+		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+
+		if (libBZip2.BZ2_bzCompressInit(stream, 1, 0, 0) != BZ_OK)
+		{
+			throw new IOException("BZ2_bzCompressInit() error");
+		}
+		try
+		{
+			int offset = BZIP_HEADER.length;
+			int i;
+			do
+			{
+				i = libBZip2.BZ2_bzCompress(stream, LibBZip2.BZ_FINISH);
+				if (i == BZ_FINISH_OK || i == BZ_STREAM_END)
+				{
+					int wrote = outsz - stream.avail_out;
+					buffer.write(out.getByteArray(offset, wrote - offset));
+					offset = 0;
+					stream.next_out = out;
+					stream.avail_out = outsz;
+				}
+				else
+				{
+					throw new IOException("BZ2_bzCompress() error");
+				}
+			} while (i != BZ_STREAM_END);
+		}
+		finally
+		{
+			if (libBZip2.BZ2_bzCompressEnd(stream) != BZ_OK)
+			{
+				throw new IOException("BZ2_bzCompressEnd() error");
+			}
+		}
+
+		return buffer.toByteArray();
 	}
 
 	public static byte[] decompress(byte[] bytes, int len) throws IOException

@@ -45,13 +45,13 @@ public class TextComponentTest
 {
 	@Mock
 	private Graphics2D graphics;
-	
+
 	@Before
 	public void before()
 	{
 		when(graphics.getFontMetrics()).thenReturn(mock(FontMetrics.class));
 	}
-	
+
 	@Test
 	public void testRender()
 	{
@@ -62,7 +62,7 @@ public class TextComponentTest
 		verify(graphics, times(2)).drawString(eq("test"), anyInt(), anyInt());
 		verify(graphics, atLeastOnce()).setColor(Color.RED);
 	}
-	
+
 	@Test
 	public void testRender2()
 	{
@@ -72,7 +72,7 @@ public class TextComponentTest
 		verify(graphics, times(2)).drawString(eq("test"), anyInt(), anyInt());
 		verify(graphics, atLeastOnce()).setColor(Color.BLUE);
 	}
-	
+
 	@Test
 	public void testRender3()
 	{

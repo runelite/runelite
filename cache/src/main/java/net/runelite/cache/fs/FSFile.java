@@ -99,7 +99,7 @@ public class FSFile
 	{
 		this.contents = contents;
 	}
-	
+
 	public int getSize()
 	{
 		return contents.length;

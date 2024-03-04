@@ -36,12 +36,11 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.api.EnumComposition;
-import net.runelite.api.EnumID;
 import net.runelite.api.Quest;
 import net.runelite.api.ScriptID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.dbtable.DBTableID;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.StatChanged;
@@ -256,7 +255,6 @@ public class WorldMapPlugin extends Plugin
 		// WorldMapRenderer only loads icons that are visible, so lazy load the quest start locations by checking
 		// what icons are loaded each tick.
 		WorldMapRegion[][] regions = wmm.getMapRegions();
-		EnumComposition mapElementToQuest = client.getEnum(EnumID.MAPELEMENT_TO_QUEST);
 		Map<Integer, Quest> questMap = Arrays.stream(Quest.values())
 			.collect(Collectors.toMap(Quest::getId, Function.identity()));
 		for (int i = 0; i < regions.length; ++i) // NOPMD: ForLoopCanBeForeach
@@ -269,20 +267,27 @@ public class WorldMapPlugin extends Plugin
 					MapElementConfig config = client.getMapElementConfig(icon.getType());
 					if (config.getCategory() == CATEGORY_QUEST)
 					{
-						int questDbRowId = mapElementToQuest.getIntValue(icon.getType());
-
-						// our quest ids are actually dbrow ids
-						Quest quest = questMap.get(questDbRowId);
-						if (quest == null)
+						var quests = client.getDBRowsByValue(DBTableID.Quest.TABLE, DBTableID.Quest.MAP_ELEMENT, 0, icon.getType());
+						for (int questID : quests)
 						{
-							continue;
-						}
+							if (client.getDBTableField(questID, DBTableID.Quest.MAIN_QUEST, 0).length > 0)
+							{
+								// rfd subquests all have the same map element
+								continue;
+							}
+							// our quest ids are actually dbrow ids
+							Quest quest = questMap.get(questID);
+							if (quest == null)
+							{
+								continue;
+							}
 
-						if (!questStartLocations.containsKey(quest))
-						{
-							log.debug("Found quest start location {} for {}", icon.getCoordinate(), quest);
-							questStartLocations.put(quest, icon.getCoordinate());
-							worldMapPointManager.add(createQuestStartPoint(quest, icon));
+							if (!questStartLocations.containsKey(quest))
+							{
+								log.debug("Found quest start location {} for {}", icon.getCoordinate(), quest);
+								questStartLocations.put(quest, icon.getCoordinate());
+								worldMapPointManager.add(createQuestStartPoint(quest, icon));
+							}
 						}
 					}
 				}

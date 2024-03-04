@@ -25,7 +25,9 @@
  */
 package net.runelite.client.plugins.devtools;
 
+import com.formdev.flatlaf.extras.FlatUIDefaultsInspector;
 import com.google.inject.ProvisionException;
+import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.TrayIcon;
 import java.util.concurrent.ScheduledExecutorService;
@@ -91,6 +93,7 @@ class DevToolsPanel extends PluginPanel
 		add(createOptionsPanel());
 	}
 
+	@SuppressWarnings("PMD.DoubleBraceInitialization")
 	private JPanel createOptionsPanel()
 	{
 		final JPanel container = new JPanel();
@@ -116,6 +119,7 @@ class DevToolsPanel extends PluginPanel
 
 		container.add(plugin.getChunkBorders());
 		container.add(plugin.getMapSquares());
+		container.add(plugin.getLoadingLines());
 
 		container.add(plugin.getLineOfSight());
 		container.add(plugin.getValidMovement());
@@ -191,6 +195,26 @@ class DevToolsPanel extends PluginPanel
 		catch (Exception e)
 		{
 			log.info("Shell couldn't be loaded", e);
+		}
+
+		container.add(plugin.getMenus());
+
+		try
+		{
+			FlatUIDefaultsInspector.class.getName();
+
+			DevToolsButton uiDefaultsBtn = plugin.getUiDefaultsInspector();
+			uiDefaultsBtn.addFrame(new DevToolsFrame()
+			{
+				{
+					getContentPane().add(FlatUIDefaultsInspector.createInspectorPanel(), BorderLayout.CENTER);
+					pack();
+				}
+			});
+			container.add(uiDefaultsBtn);
+		}
+		catch (LinkageError e)
+		{
 		}
 
 		return container;

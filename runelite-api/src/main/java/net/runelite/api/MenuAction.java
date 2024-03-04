@@ -170,6 +170,7 @@ public enum MenuAction
 	/**
 	 * Menu action when using a component on an item
 	 */
+	@Deprecated
 	WIDGET_USE_ON_ITEM(32),
 
 	/**

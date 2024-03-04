@@ -58,19 +58,22 @@ class DiscordState
 	private final String runeliteTitle;
 	private final String runeliteVersion;
 	private DiscordPresence lastPresence;
+	private final boolean safeMode;
 
 	@Inject
 	private DiscordState(
 		final DiscordService discordService,
 		final DiscordConfig config,
 		@Named("runelite.title") final String runeliteTitle,
-		@Named("runelite.version") final String runeliteVersion
+		@Named("runelite.version") final String runeliteVersion,
+		@Named("safeMode") boolean safeMode
 	)
 	{
 		this.discordService = discordService;
 		this.config = config;
 		this.runeliteTitle = runeliteTitle;
 		this.runeliteVersion = runeliteVersion;
+		this.safeMode = safeMode;
 	}
 
 	/**
@@ -164,10 +167,16 @@ class DiscordState
 		// Replace snapshot with + to make tooltip shorter (so it will span only 1 line)
 		final String versionShortHand = runeliteVersion.replace("-SNAPSHOT", "+");
 
+		StringBuilder largeImageTooltipText = new StringBuilder(runeliteTitle + " v" + versionShortHand);
+		if (safeMode)
+		{
+			largeImageTooltipText.append(" (safe mode)");
+		}
+
 		final DiscordPresence.DiscordPresenceBuilder presenceBuilder = DiscordPresence.builder()
 			.state(MoreObjects.firstNonNull(state, ""))
 			.details(MoreObjects.firstNonNull(details, ""))
-			.largeImageText(runeliteTitle + " v" + versionShortHand)
+			.largeImageText(largeImageTooltipText.toString())
 			.smallImageKey(imageKey);
 
 		final Instant startTime;

@@ -177,7 +177,7 @@ public enum MagicAction implements SkillAction
 	DARK_DEMONBANE("Dark Demonbane", 82, 43.5f, SpriteID.SPELL_DARK_DEMONBANE, true),
 	FERTILE_SOIL("Fertile Soil", 83, 87, SpriteID.SPELL_FERTILE_SOIL, true),
 	BARROWS_TELEPORT("Barrows Teleport", 83, 90, SpriteID.SPELL_BARROWS_TELEPORT, true),
-	CARRALLANGAR_TELEPORT("Carrallangar Teleport", 84, 82, SpriteID.SPELL_CARRALLANGAR_TELEPORT, true),
+	CARRALLANGER_TELEPORT("Carrallanger Teleport", 84, 82, SpriteID.SPELL_CARRALLANGAR_TELEPORT, true),
 	BOOST_POTION_SHARE("Boost Potion Share", 84, 88, SpriteID.SPELL_BOOST_POTION_SHARE, true),
 	DEMONIC_OFFERING("Demonic Offering", 84, 175, SpriteID.SPELL_DEMONIC_OFFERING, true),
 	WATER_SURGE("Water Surge", 85, 46, SpriteID.SPELL_WATER_SURGE, true),

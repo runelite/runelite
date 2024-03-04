@@ -73,7 +73,7 @@ public class FpsDrawListener implements Runnable
 			: config.maxFps();
 
 		targetDelay = 1000 / Math.max(1, fps);
-		
+
 		sleepDelay = targetDelay;
 
 		for (int i = 0; i < SAMPLE_SIZE; i++)

@@ -36,8 +36,8 @@ import static net.runelite.api.ItemID.RING_OF_ENDURANCE;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.ScriptCallbackEvent;
+import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -104,6 +104,16 @@ public class RunEnergyPluginTest
 	}
 
 	@Test
+	public void testCheck1000()
+	{
+		String checkMessage = "Your Ring of endurance is charged with 1,000 stamina doses.";
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", checkMessage, "", 0);
+
+		runEnergyPlugin.onChatMessage(chatMessage);
+		verify(configManager).setRSProfileConfiguration(RunEnergyConfig.GROUP_NAME, "ringOfEnduranceCharges", 1000);
+	}
+
+	@Test
 	public void testPotionMessage()
 	{
 		String potionMessage = "Your Ring of endurance doubles the duration of your stamina potion's effect.";
@@ -121,7 +131,7 @@ public class RunEnergyPluginTest
 		when(client.getTickCount()).thenReturn(1);
 
 		Widget enduranceWidget = mock(Widget.class);
-		when(client.getWidget(WidgetInfo.DESTROY_ITEM_NAME)).thenReturn(enduranceWidget);
+		when(client.getWidget(ComponentID.DESTROY_ITEM_NAME)).thenReturn(enduranceWidget);
 		when(enduranceWidget.getText()).thenReturn("Ring of endurance");
 
 		ScriptCallbackEvent scriptCallbackEvent = new ScriptCallbackEvent();

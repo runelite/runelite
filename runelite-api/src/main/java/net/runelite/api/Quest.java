@@ -32,7 +32,6 @@ public enum Quest
 {
 	ANIMAL_MAGNETISM(0, "Animal Magnetism"),
 	ANOTHER_SLICE_OF_HAM(1, "Another Slice of H.A.M."),
-	ARCHITECTURAL_ALLIANCE(2, "Architectural Alliance"),
 	THE_ASCENT_OF_ARCEUUS(3, "The Ascent of Arceuus"),
 	ALFRED_GRIMHANDS_BARCRAWL(4, "Alfred Grimhand's Barcrawl"),
 	BEAR_YOUR_SOUL(5, "Bear Your Soul"),
@@ -213,6 +212,13 @@ public enum Quest
 	RECIPE_FOR_DISASTER__KING_AWOWOGEI(2315, "Recipe for Disaster - King Awowogei"),
 	RECIPE_FOR_DISASTER__CULINAROMANCER(2316, "Recipe for Disaster - Culinaromancer"),
 	SECRETS_OF_THE_NORTH(2338, "Secrets of the North"),
+	DESERT_TREASURE_II__THE_FALLEN_EMPIRE(2343, "Desert Treasure II - The Fallen Empire"),
+	HIS_FAITHFUL_SERVANTS(3250, "His Faithful Servants"),
+	THE_PATH_OF_GLOUPHRIE(3425, "The Path of Glouphrie"),
+	CHILDREN_OF_THE_SUN(3450, "Children of the Sun"),
+	BARBARIAN_TRAINING(3451, "Barbarian Training"),
+	DEFENDER_OF_VARROCK(3466, "Defender of Varrock"),
+	WHILE_GUTHIX_SLEEPS(3467, "While Guthix Sleeps"),
 	;
 
 	@Getter

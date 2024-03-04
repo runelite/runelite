@@ -215,19 +215,15 @@ public class AgilityPlugin extends Plugin
 
 		agilityLevel = statChanged.getBoostedLevel();
 
-		if (!config.showLapCount())
-		{
-			return;
-		}
-
 		// Determine how much EXP was actually gained
-		int agilityXp = client.getSkillExperience(AGILITY);
+		int agilityXp = statChanged.getXp();
 		int skillGained = agilityXp - lastAgilityXp;
 		lastAgilityXp = agilityXp;
 
 		// Get course
 		Courses course = Courses.getCourse(client.getLocalPlayer().getWorldLocation().getRegionID());
 		if (course == null
+			|| !config.showLapCount()
 			|| (course.getCourseEndWorldPoints().length == 0
 			? Math.abs(course.getLastObstacleXp() - skillGained) > 1
 			: Arrays.stream(course.getCourseEndWorldPoints()).noneMatch(wp -> wp.equals(client.getLocalPlayer().getWorldLocation()))))
@@ -235,17 +231,11 @@ public class AgilityPlugin extends Plugin
 			return;
 		}
 
-		if (session != null && session.getCourse() == course)
-		{
-			session.incrementLapCount(client, xpTrackerService);
-		}
-		else
+		if (session == null || session.getCourse() != course)
 		{
 			session = new AgilitySession(course);
-			// New course found, reset lap count and set new course
-			session.resetLapCount();
-			session.incrementLapCount(client, xpTrackerService);
 		}
+		session.incrementLapCount(client, xpTrackerService);
 	}
 
 	@Subscribe

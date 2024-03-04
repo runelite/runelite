@@ -26,8 +26,14 @@ package net.runelite.client.util;
 
 import com.google.common.collect.ImmutableMap;
 import java.awt.Color;
+import java.util.List;
 import java.util.Map;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 public class ColorUtilTest
@@ -45,6 +51,18 @@ public class ColorUtilTest
 	private static final Map<Color, String> COLOR_ALPHA_HEXSTRING_MAP = ImmutableMap.of(
 		new Color(0x00000000, true), "00000000",
 		new Color(0xA1B2C3D4, true), "a1b2c3d4"
+	);
+
+	private static final List<String> INVALID_COLOR_HEXSTRING_LIST = List.of(
+		"#ffffffffffffffff",
+		"##abcdef",
+		"fffffg",
+		"0xabcdefg",
+		"0x",
+		"#",
+		"#######",
+		"#########",
+		""
 	);
 
 	@Test
@@ -107,6 +125,11 @@ public class ColorUtilTest
 			alpha[0] += 73;
 			alpha[0] %= 255;
 		});
+
+		COLOR_HEXSTRING_MAP.keySet().forEach((color) ->
+		{
+			assertEquals(color, ColorUtil.colorWithAlpha(color, 255));
+		});
 	}
 
 	@Test
@@ -125,6 +148,98 @@ public class ColorUtilTest
 		COLOR_HEXSTRING_MAP.forEach((color, hex) ->
 		{
 			assertEquals(hex, ColorUtil.colorToHexCode(color));
+		});
+	}
+
+	@Test
+	public void colorToAlphaHexCode()
+	{
+		COLOR_ALPHA_HEXSTRING_MAP.forEach((color, hex) ->
+		{
+			assertEquals(hex, ColorUtil.colorToAlphaHexCode(color));
+		});
+	}
+
+	@Test
+	public void isHex()
+	{
+		COLOR_HEXSTRING_MAP.values().forEach((hex) ->
+		{
+			assertTrue(ColorUtil.isHex(hex));
+		});
+
+		COLOR_ALPHA_HEXSTRING_MAP.values().forEach((hex) ->
+		{
+			assertTrue(ColorUtil.isHex(hex));
+		});
+
+		INVALID_COLOR_HEXSTRING_LIST.forEach((string) ->
+		{
+			assertFalse(ColorUtil.isHex(string));
+		});
+	}
+
+	@Test
+	public void isAlphaHex()
+	{
+		COLOR_ALPHA_HEXSTRING_MAP.values().forEach((hex) ->
+		{
+			assertTrue(ColorUtil.isAlphaHex(hex));
+		});
+
+		COLOR_HEXSTRING_MAP.values().forEach((hex) ->
+		{
+			assertFalse(ColorUtil.isAlphaHex(hex));
+		});
+
+		INVALID_COLOR_HEXSTRING_LIST.forEach((string) ->
+		{
+			assertFalse(ColorUtil.isAlphaHex(string));
+		});
+	}
+
+	@Test
+	public void fromString()
+	{
+		String WHITE_MAX_ALPHA = "-1";
+		String WHITE_ZERO_ALPHA = "0xffffff";
+		String TOO_LARGE = "0xffffffff";
+		String INVALID_FORMAT = "ffffff";
+
+		assertEquals(Color.WHITE, ColorUtil.fromString(WHITE_MAX_ALPHA));
+		assertEquals(ColorUtil.colorWithAlpha(Color.WHITE, 0), ColorUtil.fromString(WHITE_ZERO_ALPHA));
+		assertNotEquals(Color.WHITE, ColorUtil.fromString(WHITE_ZERO_ALPHA));
+
+		assertNull(ColorUtil.fromString(TOO_LARGE));
+		assertNull(ColorUtil.fromString(INVALID_FORMAT));
+	}
+
+	@Test
+	public void fromHex()
+	{
+		assertEquals(Color.BLACK, ColorUtil.fromHex("0x000000"));
+		assertEquals(Color.BLACK, ColorUtil.fromHex("#000000"));
+		assertEquals(Color.BLACK, ColorUtil.fromHex("000000"));
+
+		assertEquals(Color.BLACK, ColorUtil.fromHex("0x0"));
+		assertEquals(Color.BLACK, ColorUtil.fromHex("#0"));
+
+		assertEquals(ColorUtil.colorWithAlpha(Color.BLACK, 0), ColorUtil.fromHex("0x00000000"));
+		assertEquals(Color.WHITE, ColorUtil.fromHex("0xFFFFFFFF"));
+
+		INVALID_COLOR_HEXSTRING_LIST.forEach((string) ->
+		{
+			assertNull(ColorUtil.fromHex(string));
+		});
+	}
+
+	@Test
+	public void fromObject()
+	{
+		List<Object> ASSORTED_OBJECTS = List.of("Wise Old Man", 7, true, 1.337, COLOR_ALPHA_HEXSTRING_MAP);
+		ASSORTED_OBJECTS.forEach((object) ->
+		{
+			assertNotNull(ColorUtil.fromObject(object));
 		});
 	}
 }

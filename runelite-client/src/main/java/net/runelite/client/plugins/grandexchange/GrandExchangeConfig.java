@@ -47,12 +47,23 @@ public interface GrandExchangeConfig extends Config
 	@ConfigItem(
 		position = 2,
 		keyName = "enableNotifications",
-		name = "Enable Notifications",
+		name = "Notify on offer update",
 		description = "Configures whether to enable notifications when an offer updates"
 	)
 	default boolean enableNotifications()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		position = 2,
+		keyName = "notifyOnOfferComplete",
+		name = "Notify on offer complete",
+		description = "Configures whether to enable notifications when an offer completes"
+	)
+	default boolean notifyOnOfferComplete()
+	{
+		return false;
 	}
 
 	@ConfigItem(

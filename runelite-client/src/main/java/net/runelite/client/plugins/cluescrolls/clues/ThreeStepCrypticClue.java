@@ -160,17 +160,17 @@ public class ThreeStepCrypticClue extends ClueScroll implements ObjectClueScroll
 	}
 
 	@Override
-	public WorldPoint getLocation()
+	public WorldPoint getLocation(ClueScrollPlugin plugin)
 	{
 		return null;
 	}
 
 	@Override
-	public WorldPoint[] getLocations()
+	public WorldPoint[] getLocations(ClueScrollPlugin plugin)
 	{
 		return clueSteps.stream()
 			.filter(s -> !s.getValue())
-			.map(s -> s.getKey().getLocation())
+			.map(s -> s.getKey().getLocation(plugin))
 			.filter(Objects::nonNull)
 			.toArray(WorldPoint[]::new);
 	}

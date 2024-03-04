@@ -553,7 +553,7 @@ class ScreenMarkerPanel extends JPanel
 			fillColor.getAlpha() == 0 ? ColorUtil.colorWithAlpha(fillColor, DEFAULT_FILL_OPACITY) : fillColor,
 			marker.getMarker().getName() + " Fill",
 			false);
-		colorPicker.setLocation(getLocationOnScreen());
+		colorPicker.setLocationRelativeTo(this);
 		colorPicker.setOnColorChange(c ->
 		{
 			marker.getMarker().setFill(c);
@@ -570,7 +570,7 @@ class ScreenMarkerPanel extends JPanel
 			marker.getMarker().getColor(),
 			marker.getMarker().getName() + " Border",
 			false);
-		colorPicker.setLocation(getLocationOnScreen());
+		colorPicker.setLocationRelativeTo(this);
 		colorPicker.setOnColorChange(c ->
 		{
 			marker.getMarker().setColor(c);

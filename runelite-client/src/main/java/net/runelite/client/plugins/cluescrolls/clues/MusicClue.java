@@ -106,7 +106,7 @@ public class MusicClue extends ClueScroll implements NpcClueScroll, LocationClue
 	}
 
 	@Override
-	public WorldPoint getLocation()
+	public WorldPoint getLocation(ClueScrollPlugin plugin)
 	{
 		return LOCATION;
 	}

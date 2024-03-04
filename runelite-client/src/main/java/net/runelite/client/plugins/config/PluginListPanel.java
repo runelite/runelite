@@ -37,7 +37,6 @@ import java.util.stream.Stream;
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
-import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
@@ -56,6 +55,7 @@ import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ExternalPluginsChanged;
 import net.runelite.client.events.PluginChanged;
+import net.runelite.client.events.ProfileChanged;
 import net.runelite.client.externalplugins.ExternalPluginManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -107,8 +107,7 @@ class PluginListPanel extends PluginPanel
 		PluginManager pluginManager,
 		ExternalPluginManager externalPluginManager,
 		EventBus eventBus,
-		Provider<ConfigPanel> configPanelProvider,
-		Provider<PluginHubPanel> pluginHubPanelProvider)
+		Provider<ConfigPanel> configPanelProvider)
 	{
 		super(false);
 
@@ -172,12 +171,6 @@ class PluginListPanel extends PluginPanel
 		mainPanel.setBorder(new EmptyBorder(8, 10, 10, 10));
 		mainPanel.setLayout(new DynamicGridLayout(0, 1, 0, 5));
 		mainPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-
-		JButton externalPluginButton = new JButton("Plugin Hub");
-		externalPluginButton.setBorder(new EmptyBorder(5, 5, 5, 5));
-		externalPluginButton.setLayout(new BorderLayout(0, BORDER_OFFSET));
-		externalPluginButton.addActionListener(l -> muxer.pushState(pluginHubPanelProvider.get()));
-		add(externalPluginButton, BorderLayout.SOUTH);
 
 		JPanel northPanel = new FixedWidthPanel();
 		northPanel.setLayout(new BorderLayout());
@@ -298,6 +291,7 @@ class PluginListPanel extends PluginPanel
 	{
 		ConfigPanel panel = configPanelProvider.get();
 		panel.init(plugin);
+		muxer.pushState(this);
 		muxer.pushState(panel);
 	}
 
@@ -376,6 +370,12 @@ class PluginListPanel extends PluginPanel
 
 	@Subscribe
 	private void onExternalPluginsChanged(ExternalPluginsChanged ev)
+	{
+		SwingUtilities.invokeLater(this::rebuildPluginList);
+	}
+
+	@Subscribe
+	private void onProfileChanged(ProfileChanged ev)
 	{
 		SwingUtilities.invokeLater(this::rebuildPluginList);
 	}

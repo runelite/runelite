@@ -53,6 +53,7 @@ import net.runelite.api.Experience;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.WorldType;
+import net.runelite.api.annotations.Varp;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
@@ -154,7 +155,7 @@ class SkillCalculator extends JPanel
 			currentCalculator = calculatorType;
 			currentBonus = null;
 
-			VarPlayer endGoalVarp = endGoalVarpForSkill(calculatorType.getSkill());
+			@Varp int endGoalVarp = endGoalVarpForSkill(calculatorType.getSkill());
 			int endGoal = client.getVarpValue(endGoalVarp);
 			if (endGoal != -1)
 			{
@@ -256,7 +257,11 @@ class SkillCalculator extends JPanel
 			JPanel checkboxPanel = buildCheckboxPanel(bonus);
 
 			add(checkboxPanel);
-			add(Box.createRigidArea(new Dimension(0, 5)));
+		}
+
+		if (skillBonuses.length > 0)
+		{
+			add(Box.createRigidArea(new Dimension(0, 4)));
 		}
 	}
 
@@ -269,13 +274,10 @@ class SkillCalculator extends JPanel
 		uiLabel.setForeground(Color.WHITE);
 		uiLabel.setFont(FontManager.getRunescapeSmallFont());
 
-		uiOption.setBorder(BorderFactory.createEmptyBorder(3, 7, 3, 0));
-		uiOption.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		uiOption.setBorder(BorderFactory.createEmptyBorder(1, 7, 1, 0));
 
 		// Adjust XP bonus depending on check-state of the boxes.
 		uiCheckbox.addActionListener(event -> adjustCheckboxes(uiCheckbox, bonus));
-
-		uiCheckbox.setBackground(ColorScheme.MEDIUM_GRAY_COLOR);
 
 		uiOption.add(uiLabel, BorderLayout.WEST);
 		uiOption.add(uiCheckbox, BorderLayout.EAST);
@@ -511,7 +513,7 @@ class SkillCalculator extends JPanel
 		};
 	}
 
-	private static VarPlayer endGoalVarpForSkill(final Skill skill)
+	private static @Varp int endGoalVarpForSkill(final Skill skill)
 	{
 		switch (skill)
 		{

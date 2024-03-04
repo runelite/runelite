@@ -316,7 +316,7 @@ public class NpcIndicatorsPlugin extends Plugin
 
 			if (color == null && highlightedNpcs.containsKey(npc) && config.highlightMenuNames() && (!npcUtil.isDying(npc) || !config.ignoreDeadNpcs()))
 			{
-				color = config.highlightColor();
+				color = MoreObjects.firstNonNull(getNpcHighlightColor(npc.getId()), config.highlightColor());
 			}
 
 			if (color != null)

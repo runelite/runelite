@@ -95,27 +95,31 @@ public class HiscorePanel extends PluginPanel
 	 * Bosses, ordered in the way they should be displayed in the panel.
 	 */
 	private static final List<HiscoreSkill> BOSSES = ImmutableList.of(
-		ABYSSAL_SIRE, ALCHEMICAL_HYDRA, BARROWS_CHESTS,
-		BRYOPHYTA, CALLISTO, CERBERUS,
-		CHAMBERS_OF_XERIC, CHAMBERS_OF_XERIC_CHALLENGE_MODE, CHAOS_ELEMENTAL,
-		CHAOS_FANATIC, COMMANDER_ZILYANA, CORPOREAL_BEAST,
+		ABYSSAL_SIRE, ALCHEMICAL_HYDRA, ARTIO,
+		BARROWS_CHESTS, BRYOPHYTA, CALLISTO,
+		CALVARION, CERBERUS, CHAMBERS_OF_XERIC,
+		CHAMBERS_OF_XERIC_CHALLENGE_MODE, CHAOS_ELEMENTAL, CHAOS_FANATIC,
+		COMMANDER_ZILYANA, CORPOREAL_BEAST, CRAZY_ARCHAEOLOGIST,
 		DAGANNOTH_PRIME, DAGANNOTH_REX, DAGANNOTH_SUPREME,
-		CRAZY_ARCHAEOLOGIST, DERANGED_ARCHAEOLOGIST, GENERAL_GRAARDOR,
+		DERANGED_ARCHAEOLOGIST, DUKE_SUCELLUS, GENERAL_GRAARDOR,
 		GIANT_MOLE, GROTESQUE_GUARDIANS, HESPORI,
 		KALPHITE_QUEEN, KING_BLACK_DRAGON, KRAKEN,
 		KREEARRA, KRIL_TSUTSAROTH, MIMIC,
 		NEX, NIGHTMARE, PHOSANIS_NIGHTMARE,
 		OBOR, PHANTOM_MUSPAH, SARACHNIS,
-		SCORPIA, SKOTIZO, TEMPOROSS,
-		THE_GAUNTLET, THE_CORRUPTED_GAUNTLET, THEATRE_OF_BLOOD,
-		THEATRE_OF_BLOOD_HARD_MODE, THERMONUCLEAR_SMOKE_DEVIL, TOMBS_OF_AMASCUT,
-		TOMBS_OF_AMASCUT_EXPERT, TZKAL_ZUK, TZTOK_JAD,
-		VENENATIS, VETION, VORKATH,
-		WINTERTODT, ZALCANO, ZULRAH
+		SCORPIA, SCURRIUS, SKOTIZO,
+		SPINDEL, TEMPOROSS, THE_GAUNTLET,
+		THE_CORRUPTED_GAUNTLET, THE_LEVIATHAN, THE_WHISPERER,
+		THEATRE_OF_BLOOD, THEATRE_OF_BLOOD_HARD_MODE, THERMONUCLEAR_SMOKE_DEVIL,
+		TOMBS_OF_AMASCUT, TOMBS_OF_AMASCUT_EXPERT, TZKAL_ZUK,
+		TZTOK_JAD, VARDORVIS, VENENATIS,
+		VETION, VORKATH, WINTERTODT,
+		ZALCANO, ZULRAH
 	);
 
 	private static final HiscoreEndpoint[] ENDPOINTS = {
-		HiscoreEndpoint.NORMAL, HiscoreEndpoint.IRONMAN, HiscoreEndpoint.HARDCORE_IRONMAN, HiscoreEndpoint.ULTIMATE_IRONMAN, HiscoreEndpoint.DEADMAN, HiscoreEndpoint.FRESH_START_WORLD
+		HiscoreEndpoint.NORMAL, HiscoreEndpoint.IRONMAN, HiscoreEndpoint.HARDCORE_IRONMAN, HiscoreEndpoint.ULTIMATE_IRONMAN,
+		HiscoreEndpoint.DEADMAN, HiscoreEndpoint.PURE, HiscoreEndpoint.LEVEL_3_SKILLER, HiscoreEndpoint.LEAGUE
 	};
 
 	private final HiscorePlugin plugin;
@@ -199,7 +203,7 @@ public class HiscorePanel extends PluginPanel
 		c.gridy++;
 
 		tabGroup = new MaterialTabGroup();
-		tabGroup.setLayout(new GridLayout(1, 5, 7, 7));
+		tabGroup.setLayout(new GridLayout(2, 4, 7, 7));
 
 		for (HiscoreEndpoint endpoint : ENDPOINTS)
 		{
@@ -383,6 +387,8 @@ public class HiscorePanel extends PluginPanel
 			return;
 		}
 
+		repaint();
+
 		searchBar.setEditable(false);
 		searchBar.setIcon(IconTextField.Icon.LOADING_DARKER);
 		loading = true;
@@ -437,6 +443,7 @@ public class HiscorePanel extends PluginPanel
 	private void applyHiscoreResult(HiscoreResult result)
 	{
 		assert SwingUtilities.isEventDispatchThread();
+		repaint();
 
 		nameAutocompleter.addToSearchHistory(result.getPlayer().toLowerCase());
 

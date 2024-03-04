@@ -26,10 +26,8 @@
 package net.runelite.client.plugins.runepouch;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.util.Arrays;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.EnumComposition;
@@ -49,23 +47,48 @@ import net.runelite.client.ui.overlay.WidgetItemOverlay;
 import net.runelite.client.ui.overlay.tooltip.Tooltip;
 import net.runelite.client.ui.overlay.tooltip.TooltipManager;
 import net.runelite.client.util.ColorUtil;
+import net.runelite.client.util.ImageUtil;
 
 class RunepouchOverlay extends WidgetItemOverlay
 {
-	private static final int NUM_SLOTS = 4;
+	private static final int NUM_SLOTS = 6;
 	private static final int[] AMOUNT_VARBITS = {
-		Varbits.RUNE_POUCH_AMOUNT1, Varbits.RUNE_POUCH_AMOUNT2, Varbits.RUNE_POUCH_AMOUNT3, Varbits.RUNE_POUCH_AMOUNT4
+		Varbits.RUNE_POUCH_AMOUNT1, Varbits.RUNE_POUCH_AMOUNT2, Varbits.RUNE_POUCH_AMOUNT3, Varbits.RUNE_POUCH_AMOUNT4,
+		Varbits.RUNE_POUCH_AMOUNT5, Varbits.RUNE_POUCH_AMOUNT6
 	};
 	private static final int[] RUNE_VARBITS = {
-		Varbits.RUNE_POUCH_RUNE1, Varbits.RUNE_POUCH_RUNE2, Varbits.RUNE_POUCH_RUNE3, Varbits.RUNE_POUCH_RUNE4
+		Varbits.RUNE_POUCH_RUNE1, Varbits.RUNE_POUCH_RUNE2, Varbits.RUNE_POUCH_RUNE3, Varbits.RUNE_POUCH_RUNE4,
+		Varbits.RUNE_POUCH_RUNE5, Varbits.RUNE_POUCH_RUNE6
 	};
-	private static final Dimension IMAGE_SIZE = new Dimension(11, 11);
+	private static final int IMAGE_SIZE = 11;
+	private static final BufferedImage[] RUNE_IMAGES = {
+		ImageUtil.loadImageResource(RunepouchOverlay.class, "air_rune.png"),
+		ImageUtil.loadImageResource(RunepouchOverlay.class, "water_rune.png"),
+		ImageUtil.loadImageResource(RunepouchOverlay.class, "earth_rune.png"),
+		ImageUtil.loadImageResource(RunepouchOverlay.class, "fire_rune.png"),
+		ImageUtil.loadImageResource(RunepouchOverlay.class, "mind_rune.png"),
+		ImageUtil.loadImageResource(RunepouchOverlay.class, "chaos_rune.png"),
+		ImageUtil.loadImageResource(RunepouchOverlay.class, "death_rune.png"),
+		ImageUtil.loadImageResource(RunepouchOverlay.class, "blood_rune.png"),
+		ImageUtil.loadImageResource(RunepouchOverlay.class, "cosmic_rune.png"),
+		ImageUtil.loadImageResource(RunepouchOverlay.class, "nature_rune.png"),
+		ImageUtil.loadImageResource(RunepouchOverlay.class, "law_rune.png"),
+		ImageUtil.loadImageResource(RunepouchOverlay.class, "body_rune.png"),
+		ImageUtil.loadImageResource(RunepouchOverlay.class, "soul_rune.png"),
+		ImageUtil.loadImageResource(RunepouchOverlay.class, "astral_rune.png"),
+		ImageUtil.loadImageResource(RunepouchOverlay.class, "mist_rune.png"),
+		ImageUtil.loadImageResource(RunepouchOverlay.class, "mud_rune.png"),
+		ImageUtil.loadImageResource(RunepouchOverlay.class, "dust_rune.png"),
+		ImageUtil.loadImageResource(RunepouchOverlay.class, "lava_rune.png"),
+		ImageUtil.loadImageResource(RunepouchOverlay.class, "steam_rune.png"),
+		ImageUtil.loadImageResource(RunepouchOverlay.class, "smoke_rune.png"),
+		ImageUtil.loadImageResource(RunepouchOverlay.class, "wrath_rune.png")
+	};
 
 	private final Client client;
 	private final RunepouchConfig config;
 	private final TooltipManager tooltipManager;
 	private final ItemManager itemManager;
-	private BufferedImage[] runeIcons = new BufferedImage[0];
 
 	@Inject
 	RunepouchOverlay(Client client, RunepouchConfig config, TooltipManager tooltipManager, ItemManager itemManager)
@@ -118,11 +141,11 @@ class RunepouchOverlay extends WidgetItemOverlay
 		{
 			if (num < 4)
 			{
-				renderList(graphics, widgetItem, runepouchEnum, runeIds, amounts);
+				renderList(graphics, widgetItem, runeIds, amounts);
 			}
 			else
 			{
-				renderGrid(graphics, widgetItem, runepouchEnum, runeIds, amounts);
+				renderGrid(graphics, widgetItem, runeIds, amounts, num);
 			}
 		}
 
@@ -151,7 +174,7 @@ class RunepouchOverlay extends WidgetItemOverlay
 		}
 	}
 
-	private void renderList(Graphics2D graphics, WidgetItem widgetItem, EnumComposition runepouchEnum, int[] runeIds, int[] amounts)
+	private void renderList(Graphics2D graphics, WidgetItem widgetItem, int[] runeIds, int[] amounts)
 	{
 		graphics.setFont(FontManager.getRunescapeSmallFont());
 
@@ -179,7 +202,7 @@ class RunepouchOverlay extends WidgetItemOverlay
 			graphics.setColor(config.fontColor());
 			graphics.drawString(text, textX, textY);
 
-			BufferedImage image = getRuneImage(runepouchEnum, runeId);
+			BufferedImage image = getRuneImage(runeId);
 			if (image != null)
 			{
 				OverlayUtil.renderImageLocation(graphics,
@@ -192,9 +215,10 @@ class RunepouchOverlay extends WidgetItemOverlay
 		}
 	}
 
-	private void renderGrid(Graphics2D graphics, WidgetItem widgetItem, EnumComposition runepouchEnum, int[] runeIds, int[] amounts)
+	private void renderGrid(Graphics2D graphics, WidgetItem widgetItem, int[] runeIds, int[] amounts, int numRunes)
 	{
 		final Point location = widgetItem.getCanvasLocation();
+		int c = 0;
 		for (int i = 0; i < NUM_SLOTS; ++i)
 		{
 			final int runeId = runeIds[i];
@@ -205,10 +229,13 @@ class RunepouchOverlay extends WidgetItemOverlay
 				continue;
 			}
 
-			final int iconX = location.getX() + 2 + (i == 1 || i == 3 ? IMAGE_SIZE.width + 2 /* pad */ + 2 /* bar offset */ : 0);
-			final int iconY = location.getY() + 5 + (i >= 2 ? IMAGE_SIZE.height + 2 /* pad */ : 0);
+			final int iconX = location.getX() + 2 + (c % 2 == 1 ? IMAGE_SIZE + 2 /* pad */ + 2 /* bar offset */ : 0);
+			final int iconY = numRunes > 4 ?
+				location.getY() - 1 + (c / 2) * IMAGE_SIZE :
+				location.getY() + 5 + (c >= 2 ? IMAGE_SIZE + 2 /* pad */ : 0);
+			c++;
 
-			BufferedImage image = getRuneImage(runepouchEnum, runeId);
+			BufferedImage image = getRuneImage(runeId);
 			if (image != null)
 			{
 				OverlayUtil.renderImageLocation(graphics,
@@ -233,34 +260,14 @@ class RunepouchOverlay extends WidgetItemOverlay
 			}
 
 			graphics.setColor(color);
-			graphics.fillRect(iconX + IMAGE_SIZE.width, iconY + 1 + (10 - height), 2, height);
+			graphics.fillRect(iconX + IMAGE_SIZE, iconY + 1 + (10 - height), 2, height);
 		}
 	}
 
-	private BufferedImage getRuneImage(EnumComposition runepouchEnum, int runeId)
+	private BufferedImage getRuneImage(int runeId)
 	{
-		if (runeId < runeIcons.length && runeIcons[runeId] != null)
-		{
-			return runeIcons[runeId];
-		}
-
-		BufferedImage runeImg = itemManager.getImage(runepouchEnum.getIntValue(runeId));
-		if (runeImg == null)
-		{
-			return null;
-		}
-
-		BufferedImage resizedImg = new BufferedImage(IMAGE_SIZE.width, IMAGE_SIZE.height, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g = resizedImg.createGraphics();
-		g.drawImage(runeImg, 0, 0, IMAGE_SIZE.width, IMAGE_SIZE.height, null);
-		g.dispose();
-
-		if (runeId >= runeIcons.length)
-		{
-			runeIcons = Arrays.copyOf(runeIcons, runeId + 1);
-		}
-		runeIcons[runeId] = resizedImg;
-		return resizedImg;
+		runeId--;
+		return runeId >= 0 && runeId < RUNE_IMAGES.length ? RUNE_IMAGES[runeId] : null;
 	}
 
 	private static String formatNumber(int amount)

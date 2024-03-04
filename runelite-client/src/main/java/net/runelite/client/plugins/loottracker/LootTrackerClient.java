@@ -25,14 +25,8 @@
 package net.runelite.client.plugins.loottracker;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonParseException;
-import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.Collection;
-import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import javax.inject.Inject;
@@ -42,7 +36,6 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.http.api.RuneLiteAPI;
 import static net.runelite.http.api.RuneLiteAPI.JSON;
-import net.runelite.http.api.loottracker.LootAggregate;
 import net.runelite.http.api.loottracker.LootRecord;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -114,68 +107,5 @@ public class LootTrackerClient
 		});
 
 		return future;
-	}
-
-	public Collection<LootAggregate> get() throws IOException
-	{
-		HttpUrl url = apiBase.newBuilder()
-			.addPathSegment("loottracker")
-			.build();
-
-		Request request = new Request.Builder()
-			.header(RuneLiteAPI.RUNELITE_AUTH, uuid.toString())
-			.url(url)
-			.build();
-
-		try (Response response = client.newCall(request).execute())
-		{
-			if (!response.isSuccessful())
-			{
-				log.debug("Error looking up loot: {}", response);
-				return null;
-			}
-
-			InputStream in = response.body().byteStream();
-			// CHECKSTYLE:OFF
-			return gson.fromJson(new InputStreamReader(in, StandardCharsets.UTF_8), new TypeToken<List<LootAggregate>>(){}.getType());
-			// CHECKSTYLE:ON
-		}
-		catch (JsonParseException ex)
-		{
-			throw new IOException(ex);
-		}
-	}
-
-	public void delete(String eventId)
-	{
-		HttpUrl.Builder builder = apiBase.newBuilder()
-			.addPathSegment("loottracker");
-
-		if (eventId != null)
-		{
-			builder.addQueryParameter("eventId", eventId);
-		}
-
-		Request request = new Request.Builder()
-			.header(RuneLiteAPI.RUNELITE_AUTH, uuid.toString())
-			.delete()
-			.url(builder.build())
-			.build();
-
-		client.newCall(request).enqueue(new Callback()
-		{
-			@Override
-			public void onFailure(Call call, IOException e)
-			{
-				log.warn("unable to delete loot", e);
-			}
-
-			@Override
-			public void onResponse(Call call, Response response)
-			{
-				log.debug("Deleted loot");
-				response.close();
-			}
-		});
 	}
 }
