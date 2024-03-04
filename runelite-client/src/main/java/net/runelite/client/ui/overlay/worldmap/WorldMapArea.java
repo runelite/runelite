@@ -84,7 +84,7 @@ public enum WorldMapArea
 
 	public static WorldMapArea fromId(int areaId)
 	{
-		if (areaId < 0 || areaId >= WorldMapArea.values().length) return ANY;
+		if (areaId < 0 || areaId >= AREAS.length) return ANY;
 		return AREAS[areaId];
 	}
 
