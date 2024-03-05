@@ -104,7 +104,6 @@ public class WorldMapPlugin extends Plugin
 	static final String CONFIG_KEY_DUNGEON_TOOLTIPS = "dungeonTooltips";
 	static final String CONFIG_KEY_HUNTER_AREA_TOOLTIPS = "hunterAreaTooltips";
 	static final String CONFIG_KEY_FISHING_SPOT_TOOLTIPS = "fishingSpotTooltips";
-	static final String CONFIG_KEY_KOUREND_TASK_TOOLTIPS = "kourendTaskTooltips";
 
 	static
 	{
@@ -537,21 +536,6 @@ public class WorldMapPlugin extends Plugin
 					)
 					.forEach(worldMapPointManager::add)
 			);
-		}
-
-		worldMapPointManager.removeIf(isType(MapPoint.Type.KOUREND_TASK));
-		if (config.kourendTaskTooltips())
-		{
-			Arrays.stream(KourendTaskLocation.values())
-				.map(l ->
-					MapPoint.builder()
-						.type(MapPoint.Type.KOUREND_TASK)
-						.worldPoint(l.getLocation())
-						.image(BLANK_ICON)
-						.tooltip(l.getTooltip())
-						.build()
-				)
-				.forEach(worldMapPointManager::add);
 		}
 	}
 
