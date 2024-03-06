@@ -167,6 +167,7 @@ public class DevToolsPlugin extends Plugin
 	private DevToolsButton shell;
 	private DevToolsButton menus;
 	private DevToolsButton uiDefaultsInspector;
+	private DevToolsButton refreshSidePlugins;
 	private NavigationButton navButton;
 
 	private HotkeyListener swingInspectorHotkeyListener = new HotkeyListener(() -> config.swingInspectorHotkey())
@@ -267,6 +268,7 @@ public class DevToolsPlugin extends Plugin
 		roofs = new DevToolsButton("Roofs");
 		shell = new DevToolsButton("Shell");
 		menus = new DevToolsButton("Menus");
+		refreshSidePlugins = new DevToolsButton("Refresh Side Plugins");
 
 		uiDefaultsInspector = new DevToolsButton("Swing Defaults");
 
