@@ -285,7 +285,7 @@ public class NpcAggroAreaPlugin extends Plugin
 
 		for (String pattern : npcNamePatterns)
 		{
-			if (npc.getCombatLevel() != 0 && WildcardMatcher.matches(pattern, npcName))
+			if (WildcardMatcher.matches(pattern, npcName))
 			{
 				return true;
 			}
