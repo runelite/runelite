@@ -26,6 +26,7 @@
  */
 package net.runelite.client.plugins.timers;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.time.Duration;
@@ -634,6 +635,7 @@ public class TimersPlugin extends Plugin
 		if (!config.showCannon())
 		{
 			removeGameTimer(CANNON);
+			removeGameTimer(CANNON_REPAIR);
 		}
 
 		if (!config.showMagicImbue())
@@ -754,6 +756,21 @@ public class TimersPlugin extends Plugin
 		if (!config.showBlessedCrystalScarab())
 		{
 			removeGameTimer(BLESSED_CRYSTAL_SCARAB);
+		}
+
+		if (!config.showAbyssalSireStun())
+		{
+			removeGameTimer(ABYSSAL_SIRE_STUN);
+		}
+
+		if (!config.showPickpocketStun())
+		{
+			removeGameTimer(PICKPOCKET_STUN);
+		}
+
+		if (!config.showSpellbookSwap())
+		{
+			removeGameTimer(SPELLBOOK_SWAP);
 		}
 	}
 
@@ -1198,7 +1215,8 @@ public class TimersPlugin extends Plugin
 		return t;
 	}
 
-	private void removeGameTimer(GameTimer timer)
+	@VisibleForTesting
+	void removeGameTimer(GameTimer timer)
 	{
 		infoBoxManager.removeIf(t -> t instanceof TimerTimer && ((TimerTimer) t).getTimer() == timer);
 	}
