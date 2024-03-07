@@ -2469,11 +2469,33 @@ public class ChatCommandsPlugin extends Plugin
 
 			// Desert Treasure 2 bosses
 			case "the leviathan":
+			case "levi":
 				return "Leviathan";
 			case "duke":
 				return "Duke Sucellus";
 			case "the whisperer":
+			case "whisp":
+			case "wisp":
 				return "Whisperer";
+			case "vard":
+				return "Vardorvis";
+
+			// dt2 awakened variants
+			case "leviathan awakened":
+			case "the leviathan awakened":
+			case "levi awakened":
+				return "Leviathan (awakened)";
+			case "duke sucellus awakened":
+			case "duke awakened":
+				return "Duke Sucellus (awakened)";
+			case "whisperer awakened":
+			case "the whisperer awakened":
+			case "whisp awakened":
+			case "wisp awakened":
+				return "Whisperer (awakened)";
+			case "vardorvis awakened":
+			case "vard awakened":
+				return "Vardorvis (awakened)";
 
 			default:
 				return WordUtils.capitalize(boss);
