@@ -755,6 +755,11 @@ public class TimersPlugin extends Plugin
 		{
 			removeGameTimer(BLESSED_CRYSTAL_SCARAB);
 		}
+
+		if (!config.showSpellbookSwap())
+		{
+			removeGameTimer(SPELLBOOK_SWAP);
+		}
 	}
 
 	@Subscribe
