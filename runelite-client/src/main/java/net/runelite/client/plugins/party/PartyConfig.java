@@ -179,6 +179,18 @@ public interface PartyConfig extends Config
 	}
 
 	@ConfigItem(
+		section = SECTION_STATUS_OVERLAY,
+		keyName = "joinPreviousPartyOnStartup",
+		name = "Join previous party on startup",
+		description = "Join the previous party on startup of the runelite client.",
+		position = 107
+	)
+	default boolean joinPreviousPartyOnStartup()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "previousPartyId",
 		name = "",
 		description = "",
