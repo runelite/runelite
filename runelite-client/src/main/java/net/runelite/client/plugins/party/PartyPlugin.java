@@ -396,7 +396,6 @@ public class PartyPlugin extends Plugin
 	@Subscribe
 	public void onDiscordReady(final DiscordReady event)
 	{
-		log.info("discord is ready");
 		if (!party.isInParty() && config.joinPreviousPartyOnStartup() && !config.previousPartyId().isEmpty())
 		{
 			party.changeParty(config.previousPartyId());
