@@ -64,6 +64,7 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.discord.events.DiscordReady;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.PartyChanged;
@@ -203,7 +204,7 @@ public class PartyPlugin extends Plugin
 		wsClient.registerMessage(LocationUpdate.class);
 		wsClient.registerMessage(StatusUpdate.class);
 		// Delay sync so the eventbus can register prior to the sync response
-		SwingUtilities.invokeLater(this::requestSync);	
+		SwingUtilities.invokeLater(this::requestSync);
 	}
 
 	@Override
@@ -390,11 +391,16 @@ public class PartyPlugin extends Plugin
 			final UserSync userSync = new UserSync();
 			party.send(userSync);
 		}
+	}
 
+	@Subscribe
+	public void onDiscordReady(final DiscordReady event)
+	{
+		log.info("discord is ready");
 		if (!party.isInParty() && config.joinPreviousPartyOnStartup() && !config.previousPartyId().isEmpty())
 		{
 			party.changeParty(config.previousPartyId());
-		}	
+		}
 	}
 
 	@Subscribe
