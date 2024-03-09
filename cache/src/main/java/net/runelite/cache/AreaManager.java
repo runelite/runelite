@@ -1,4 +1,4 @@
-/*
+ /*
  * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
@@ -21,14 +21,19 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
+*/
+
 package net.runelite.cache;
 
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import net.runelite.cache.definitions.AreaDefinition;
 import net.runelite.cache.definitions.loaders.AreaLoader;
 import net.runelite.cache.fs.Archive;
@@ -38,40 +43,49 @@ import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Storage;
 import net.runelite.cache.fs.Store;
 
-public class AreaManager
-{
-	private final Store store;
-	private final Map<Integer, AreaDefinition> areas = new HashMap<>();
+public class AreaManager {
+    private static final Logger LOGGER = Logger.getLogger(AreaManager.class.getName());
+    private final Store store;
+    private final Map<Integer, AreaDefinition> areas = new ConcurrentHashMap<>();
+    private final ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
-	public AreaManager(Store store)
-	{
-		this.store = store;
-	}
+    public AreaManager(Store store) {
+        this.store = store;
+    }
 
-	public void load() throws IOException
-	{
-		Storage storage = store.getStorage();
-		Index index = store.getIndex(IndexType.CONFIGS);
-		Archive archive = index.getArchive(ConfigType.AREA.getId());
+    public void load() throws IOException, InterruptedException {
+        Storage storage = store.getStorage();
+        Index index = store.getIndex(IndexType.CONFIGS);
+        Archive archive = index.getArchive(ConfigType.AREA.getId());
 
-		byte[] archiveData = storage.loadArchive(archive);
-		ArchiveFiles files = archive.getFiles(archiveData);
+        byte[] archiveData = storage.loadArchive(archive);
+        ArchiveFiles files = archive.getFiles(archiveData);
 
-		for (FSFile file : files.getFiles())
-		{
-			AreaLoader loader = new AreaLoader();
-			AreaDefinition area = loader.load(file.getContents(), file.getFileId());
-			areas.put(area.id, area);
-		}
-	}
+        CompletableFuture<?>[] futures = files.getFiles().stream()
+            .map(file -> CompletableFuture.runAsync(() -> {
+                try {
+                    loadAreaDefinition(file);
+                } catch (IOException e) {
+                    LOGGER.log(Level.WARNING, "Failed to load area definition: " + file.getFileId(), e);
+                }
+            }, executorService))
+            .toArray(CompletableFuture[]::new);
 
-	public Collection<AreaDefinition> getAreas()
-	{
-		return Collections.unmodifiableCollection(areas.values());
-	}
+        CompletableFuture.allOf(futures).join();
+        executorService.shutdown();
+    }
 
-	public AreaDefinition getArea(int areaId)
-	{
-		return areas.get(areaId);
-	}
+    private void loadAreaDefinition(FSFile file) throws IOException {
+        AreaLoader loader = new AreaLoader();
+        AreaDefinition area = loader.load(file.getContents(), file.getFileId());
+        areas.put(area.id, area);
+    }
+
+    public Collection<AreaDefinition> getAreas() {
+        return Collections.unmodifiableCollection(areas.values());
+    }
+
+    public AreaDefinition getArea(int areaId) {
+        return areas.get(areaId);
+    }
 }
