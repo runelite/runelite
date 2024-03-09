@@ -84,6 +84,12 @@ public class MiningPluginTest
 	}
 
 	@Test
+	public void testRunite()
+	{
+		testMessage("You manage to mine some runite.");
+	}
+
+	@Test
 	public void testSandstone()
 	{
 		testMessage("You manage to quarry some sandstone.");
