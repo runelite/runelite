@@ -203,12 +203,7 @@ public class PartyPlugin extends Plugin
 		wsClient.registerMessage(LocationUpdate.class);
 		wsClient.registerMessage(StatusUpdate.class);
 		// Delay sync so the eventbus can register prior to the sync response
-		SwingUtilities.invokeLater(this::requestSync);
-
-		if (config.joinPreviousPartyOnStartup() && !config.previousPartyId().isEmpty())
-		{
-			party.changeParty(config.previousPartyId());
-		}		
+		SwingUtilities.invokeLater(this::requestSync);	
 	}
 
 	@Override
@@ -395,6 +390,11 @@ public class PartyPlugin extends Plugin
 			final UserSync userSync = new UserSync();
 			party.send(userSync);
 		}
+
+		if (!party.isInParty() && config.joinPreviousPartyOnStartup() && !config.previousPartyId().isEmpty())
+		{
+			party.changeParty(config.previousPartyId());
+		}	
 	}
 
 	@Subscribe
