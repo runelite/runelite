@@ -205,7 +205,7 @@ public class PartyPlugin extends Plugin
 		// Delay sync so the eventbus can register prior to the sync response
 		SwingUtilities.invokeLater(this::requestSync);
 
-		if (config.joinPreviousPartyOnStartup() &&  && !config.previousPartyId().isEmpty())
+		if (config.joinPreviousPartyOnStartup() && !config.previousPartyId().isEmpty())
 		{
 			party.changeParty(config.previousPartyId());
 		}		
