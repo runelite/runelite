@@ -30,6 +30,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
+import java.util.List;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Point;
@@ -40,25 +41,29 @@ import net.runelite.api.worldmap.WorldMap;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.worldmap.*;
 
 class WorldMapRegionOverlay extends Overlay
 {
 	private static final Color WHITE_TRANSLUCENT = new Color(255, 255, 255, 127);
+	private static final Color YELLOW_TRANSLUCENT = new Color(255, 255, 224, 127);
 	private static final int LABEL_PADDING = 4;
 	private static final int REGION_SIZE = 1 << 6;
 	// Bitmask to return first coordinate in region
 	private static final int REGION_TRUNCATE = ~((1 << 6) - 1);
 	private final Client client;
+	private final WorldMapAreaManager worldMapAreaManager;
 	private final DevToolsPlugin plugin;
 
 	@Inject
-	private WorldMapRegionOverlay(Client client, DevToolsPlugin plugin)
+	private WorldMapRegionOverlay(Client client, WorldMapAreaManager worldMapAreaManager, DevToolsPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(PRIORITY_HIGH);
 		setLayer(OverlayLayer.MANUAL);
 		drawAfterInterface(InterfaceID.WORLD_MAP);
 		this.client = client;
+		this.worldMapAreaManager = worldMapAreaManager;
 		this.plugin = plugin;
 	}
 
@@ -105,28 +110,76 @@ class WorldMapRegionOverlay extends Overlay
 		{
 			for (int y = yRegionMin; y < yRegionMax; y += REGION_SIZE)
 			{
-				graphics.setColor(WHITE_TRANSLUCENT);
-
 				int yTileOffset = -(yTileMin - y);
 				int xTileOffset = x + widthInTiles / 2 - worldMapPosition.getX();
 
-				int xPos = ((int) (xTileOffset * pixelsPerTile)) + (int) worldMapRect.getX();
-				int yPos = (worldMapRect.height - (int) (yTileOffset * pixelsPerTile)) + (int) worldMapRect.getY();
-				// Offset y-position by a single region to correct for drawRect starting from the top
-				yPos -= regionPixelSize;
-
-				graphics.drawRect(xPos, yPos, regionPixelSize, regionPixelSize);
-
 				int regionId = ((x >> 6) << 8) | (y >> 6);
-				String regionText = String.valueOf(regionId);
-				FontMetrics fm = graphics.getFontMetrics();
-				Rectangle2D textBounds = fm.getStringBounds(regionText, graphics);
-				int labelWidth = (int) textBounds.getWidth() + 2 * LABEL_PADDING;
-				int labelHeight = (int) textBounds.getHeight() + 2 * LABEL_PADDING;
-				graphics.fillRect(xPos, yPos, labelWidth, labelHeight);
-				graphics.setColor(Color.BLACK);
-				graphics.drawString(regionText, xPos + LABEL_PADDING, yPos + (int) textBounds.getHeight() + LABEL_PADDING);
+
+				boolean regionMappedForArea = false;
+				List<WorldMapPointMapping> mappings = WorldPointMapper.getMappingsInRegion(regionId);
+				if (mappings != null)
+				{
+					regionMappedForArea = drawMappedRegion(graphics, regionId, pixelsPerTile, xTileOffset, yTileOffset, worldMapRect);
+				}
+				if (!regionMappedForArea)
+				{
+					graphics.setColor(WHITE_TRANSLUCENT);
+					int xPos = ((int) (xTileOffset * pixelsPerTile)) + (int) worldMapRect.getX();
+					int yPos = (worldMapRect.height - (int) (yTileOffset * pixelsPerTile)) + (int) worldMapRect.getY();
+					// Offset y-position by a single region to correct for drawRect starting from the top
+					yPos -= regionPixelSize;
+
+					graphics.drawRect(xPos, yPos, regionPixelSize, regionPixelSize);
+
+					drawRegionText(graphics, String.valueOf(regionId), xPos, yPos);
+				}
 			}
 		}
+	}
+
+	private boolean drawMappedRegion(Graphics2D graphics, int regionId, float pixelsPerTile, int xTileOffset, int yTileOffset, Rectangle worldMapRect)
+	{
+		boolean regionMappedForArea = false;
+		List<WorldMapPointMapping> mappings = WorldPointMapper.getMappingsInRegion(regionId);
+
+		for (WorldMapPointMapping mapping : mappings)
+		{
+			if (mapping.getArea() != worldMapAreaManager.getWorldMapArea())
+			{
+				continue;
+			}
+			regionMappedForArea = true;
+
+			graphics.setColor(YELLOW_TRANSLUCENT);
+
+			int pixelShiftMinX = (int) ((mapping.getMinX() + mapping.getShiftX()) * pixelsPerTile);
+			int pixelShiftMaxX = (int) ((mapping.getMaxX() + mapping.getShiftX()) * pixelsPerTile);
+			int pixelShiftMinY = (int) ((mapping.getMinY() + mapping.getShiftY()) * pixelsPerTile);
+			int pixelShiftMaxY = (int) ((mapping.getMaxY() + mapping.getShiftY()) * pixelsPerTile);
+
+			int rectX = ((int) (xTileOffset * pixelsPerTile)) + pixelShiftMinX + (int) worldMapRect.getX();
+			int rectY = (worldMapRect.height - (int) (yTileOffset * pixelsPerTile)) - pixelShiftMaxY + (int) worldMapRect.getY();
+
+			int rectWidth = pixelShiftMaxX - pixelShiftMinX;
+			int rectHeight = pixelShiftMaxY - pixelShiftMinY;
+
+			graphics.drawRect(rectX, rectY, rectWidth, rectHeight);
+
+			String mappingLabel = "M:" + mapping.getWorldChunkID();
+			drawRegionText(graphics, mappingLabel, rectX, rectY);
+		}
+
+		return regionMappedForArea;
+	}
+
+	private void drawRegionText(Graphics2D graphics, String regionText, int x, int y)
+	{
+		FontMetrics fm = graphics.getFontMetrics();
+		Rectangle2D textBounds = fm.getStringBounds(regionText, graphics);
+		int labelWidth = (int) textBounds.getWidth() + 2 * LABEL_PADDING;
+		int labelHeight = (int) textBounds.getHeight() + 2 * LABEL_PADDING;
+		graphics.fillRect(x, y, labelWidth, labelHeight);
+		graphics.setColor(Color.BLACK);
+		graphics.drawString(regionText, x + LABEL_PADDING, y + (int) textBounds.getHeight() + LABEL_PADDING);
 	}
 }
