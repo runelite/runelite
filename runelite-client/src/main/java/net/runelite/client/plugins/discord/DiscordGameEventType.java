@@ -38,8 +38,8 @@ import net.runelite.api.Skill;
 enum DiscordGameEventType
 {
 
-	IN_MENU("In Menu", -3, true, true, true, false, true),
-	IN_GAME("In Game", -3, true, false, false, false, true),
+	IN_MENU("In Menu", -3, true, true, true, false),
+	IN_GAME("In Game", -3, true, false, false, false),
 	PLAYING_DEADMAN("Playing Deadman Mode", -3),
 	PLAYING_PVP("Playing in a PVP world", -3),
 	TRAINING_ATTACK(Skill.ATTACK),
@@ -495,11 +495,6 @@ enum DiscordGameEventType
 	private int priority;
 
 	/**
-	 * Marks this event as root event. (eg. event that should be used for total time tracking)
-	 */
-	private boolean root;
-
-	/**
 	 * Determines if event should clear other clearable events when triggered
 	 */
 	private boolean shouldClear;
@@ -547,7 +542,7 @@ enum DiscordGameEventType
 		this.shouldClear = true;
 	}
 
-	DiscordGameEventType(String state, int priority, boolean shouldClear, boolean shouldTimeout, boolean shouldRestart, boolean shouldBeCleared, boolean root)
+	DiscordGameEventType(String state, int priority, boolean shouldClear, boolean shouldTimeout, boolean shouldRestart, boolean shouldBeCleared)
 	{
 		this.state = state;
 		this.priority = priority;
@@ -555,12 +550,11 @@ enum DiscordGameEventType
 		this.shouldTimeout = shouldTimeout;
 		this.shouldRestart = shouldRestart;
 		this.shouldBeCleared = shouldBeCleared;
-		this.root = root;
 	}
 
 	DiscordGameEventType(String state, int priority)
 	{
-		this(state, priority, true, false, false, true, false);
+		this(state, priority, true, false, false, true);
 	}
 
 	private static String training(final Skill skill)
