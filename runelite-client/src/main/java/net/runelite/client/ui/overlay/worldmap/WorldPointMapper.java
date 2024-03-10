@@ -26,9 +26,38 @@ package net.runelite.client.ui.overlay.worldmap;
 
 import java.util.Arrays;
 import net.runelite.api.coords.WorldPoint;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class WorldPointMapper
 {
+	private static final Map<Integer, List<WorldMapPointMapping>> PROCESSED_MAPPINGS = new HashMap<>();
+
+	static
+	{
+		for (WorldMapPointMapping mapping : WorldMapPointMapping.values())
+		{
+			if (mapping.isMirror())
+			{
+				continue;
+			}
+			PROCESSED_MAPPINGS.computeIfAbsent(mapping.getMapChunkID(), k -> new ArrayList<>()).add(mapping);
+		}
+	}
+
+	/**
+	 * Get all of the {@link WorldMapPointMapping}s for a certain region ID.
+	 *
+	 * @param regionId The region ID to get all associated mappings for.
+	 * @return The list of WorldMapPointMappings for the region.
+	 */
+	public static List<WorldMapPointMapping> getMappingsInRegion(int regionId)
+	{
+		return PROCESSED_MAPPINGS.get(regionId);
+	}
+
 	/**
 	 * Converts a real {@link WorldPoint} to its corresponding world map WorldPoint.
 	 *
@@ -49,7 +78,7 @@ public class WorldPointMapper
 	 * Converts a world map WorldPoint back to its corresponding real WorldPoint.
 	 *
 	 * @param mapWorldPoint The map WorldPoint to be converted.
-	 * @param worldMapArea The map area of the point.
+	 * @param worldMapArea  The map area of the point.
 	 * @return The corresponding real WorldPoint and its map area.
 	 */
 	public static WorldPointWithWorldMapArea getRealWorldPointFromMapPoint(WorldPoint mapWorldPoint, WorldMapArea worldMapArea)
@@ -83,7 +112,7 @@ public class WorldPointMapper
 	/**
 	 * Checks if a given mapping applies to the specified world map {@link WorldPoint}.
 	 *
-	 * @param mapping      The mapping to check.
+	 * @param mapping       The mapping to check.
 	 * @param mapWorldPoint The map point to be checked against the mapping.
 	 * @return {@code true} if the mapping matches the map point; {@code false} otherwise.
 	 */
@@ -126,7 +155,7 @@ public class WorldPointMapper
 	/**
 	 * Converts the given mapping and world map point to a {@link WorldPointWithWorldMapArea} representing the real WorldPoint.
 	 *
-	 * @param mapping      The mapping to use for conversion.
+	 * @param mapping       The mapping to use for conversion.
 	 * @param mapWorldPoint The map point to convert back to a real WorldPoint.
 	 * @return A new {@link WorldPointWithWorldMapArea} object representing the real WorldPoint.
 	 */
