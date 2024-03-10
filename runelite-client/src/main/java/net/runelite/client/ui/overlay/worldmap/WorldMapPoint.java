@@ -62,6 +62,8 @@ public class WorldMapPoint
 	 */
 	private Point imagePoint;
 
+	private boolean castToRealWorldPoint;
+
 	private boolean snapToEdge;
 
 	private boolean currentlyEdgeSnapped;
@@ -84,6 +86,13 @@ public class WorldMapPoint
 		this.image = image;
 	}
 
+	public WorldMapPoint(WorldPoint worldPoint, BufferedImage image, boolean castToRealWorldPoint)
+	{
+		setWorldPoint(worldPoint);
+		this.image = image;
+		this.castToRealWorldPoint = castToRealWorldPoint;
+	}
+
 	/**
 	 * Gets the {@link WorldPoint} that this WorldMapPoint should map to on the world map.
 	 *
@@ -91,8 +100,12 @@ public class WorldMapPoint
 	 */
 	public WorldPoint getMapWorldPoint()
 	{
-		ensureMapPointAndAreaCalculated();
-		return mapWorldPoint;
+		if (castToRealWorldPoint)
+		{
+			ensureMapPointAndAreaCalculated();
+			return mapWorldPoint;
+		}
+		return worldPoint;
 	}
 
 	/**
