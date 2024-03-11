@@ -277,9 +277,13 @@ class StatusBarsOverlay extends Overlay
 		BarRenderer left = barRenderers.get(config.leftBarMode());
 		BarRenderer right = barRenderers.get(config.rightBarMode());
 
-		if (left != null)
+		if (left != null && right != null)
 		{
 			left.renderBar(config, g, offsetLeftBarX, offsetLeftBarY, width, height);
+		}
+		else if (left != null)
+		{
+			right = left;
 		}
 
 		if (right != null)
