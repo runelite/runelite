@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2022, Macweese <https://github.com/Macweese>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,34 +24,9 @@
  */
 package net.runelite.client.config;
 
-import java.lang.reflect.Type;
-import lombok.Value;
-
-@Value
-public class ConfigItemDescriptor extends ConfigItemComparator implements ConfigObject
+public enum WarningPrompt
 {
-	private final ConfigItem item;
-	private final Type type;
-	private final Range range;
-	private final Alpha alpha;
-	private final Units units;
-	private final Warn warn;
-
-	@Override
-	public String key()
-	{
-		return item.keyName();
-	}
-
-	@Override
-	public String name()
-	{
-		return item.name();
-	}
-
-	@Override
-	public int position()
-	{
-		return item.position();
-	}
+	ALWAYS,
+	ON_ENABLE,
+	ON_DISABLE;
 }

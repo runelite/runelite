@@ -124,9 +124,12 @@ public interface RuneLiteConfig extends Config
 		keyName = "uiEnableCustomChrome",
 		name = "Enable custom window chrome",
 		description = "Use RuneLite's custom window title and borders.",
-		warning = "Please restart your client after changing this setting",
 		position = 15,
 		section = windowSettings
+	)
+	@Warn(
+		WARNING_PROMPT = WarningPrompt.ALWAYS,
+		message = "Please restart your client after changing this setting"
 	)
 	default boolean enableCustomChrome()
 	{
@@ -189,9 +192,12 @@ public interface RuneLiteConfig extends Config
 		keyName = "trayIcon",
 		name = "Enable tray icon",
 		description = "Enables icon in system tray",
-		warning = "Disabling this may limit your ability to receive tray notifications.\nPlease restart your client after changing this setting.",
 		position = 20,
 		section = notificationSettings
+	)
+	@Warn(
+		WARNING_PROMPT = WarningPrompt.ALWAYS,
+		message = "Disabling this may limit your ability to receive tray notifications.\nPlease restart your client after changing this setting."
 	)
 	default boolean enableTrayIcon()
 	{
