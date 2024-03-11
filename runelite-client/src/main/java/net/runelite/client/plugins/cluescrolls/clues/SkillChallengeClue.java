@@ -208,7 +208,7 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 		new SkillChallengeClue("Craft multiple cosmic runes from a single essence.", any("Pure essence or Daeyalt essence", item(ItemID.PURE_ESSENCE), item(ItemID.DAEYALT_ESSENCE))),
 		new SkillChallengeClue("Plant a watermelon seed.", item(ItemID.RAKE), item(ItemID.SEED_DIBBER), xOfItem(ItemID.WATERMELON_SEED, 3)),
 		new SkillChallengeClue("Activate the Chivalry prayer."),
-		new SkillChallengeClue("Smith a tier 2 or above Shayzien platebody. (Requires 4 lovakite bars)", "smith a tier 2 or above shayzien platebody.", any("Shayzien platebody (Tier 2 or higher)", xOfItem(ItemID.LOVAKITE_BAR, 4))),
+		new SkillChallengeClue("Smith a tier 2 or above Shayzien platebody. (Requires 4 lovakite bars)", "smith a tier 2 or above shayzien platebody.", xOfItem(ItemID.LOVAKITE_BAR, 4)),
 		// Master Sherlock Tasks
 		new SkillChallengeClue("Equip an abyssal whip in front of the abyssal demons of the Slayer Tower.", true, any("Abyssal Whip", item(ItemID.ABYSSAL_WHIP), item(ItemID.FROZEN_ABYSSAL_WHIP), item(ItemID.VOLCANIC_ABYSSAL_WHIP), item(ItemID.ABYSSAL_WHIP_OR), item(ItemID.ABYSSAL_TENTACLE), item(ItemID.ABYSSAL_TENTACLE_OR))),
 		new SkillChallengeClue("Smith a runite med helm.", ANY_HAMMER, item(ItemID.RUNITE_BAR)),
