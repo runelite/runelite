@@ -219,7 +219,22 @@ public class GroundItemsOverlay extends Overlay
 				}
 			}
 
-			final Color color = plugin.getItemColor(highlighted, hidden);
+			Color color = null;
+			if (config.showGoldenCoins())
+			{
+				if (item.getQuantity() >= config.GoldenCoinsMin() && item.getItemId() == 995)
+				{
+					color = plugin.getItemColor(new Color(255, 255,0), hidden);
+				}
+				else
+				{
+					color = plugin.getItemColor(highlighted, hidden);
+				}
+			}
+			else
+			{
+				color = plugin.getItemColor(highlighted, hidden);
+			}
 
 			if (config.highlightTiles())
 			{
