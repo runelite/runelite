@@ -236,7 +236,8 @@ public class Notifier
 	{
 		FlashNotification flashNotification = runeLiteConfig.flashNotification();
 
-		if (flashStart == null || client.getGameState() != GameState.LOGGED_IN
+		if (flashStart == null
+			|| (client.getGameState() != GameState.LOGGED_IN && client.getGameState() != GameState.LOADING)
 			|| flashNotification == FlashNotification.DISABLED)
 		{
 			flashStart = null;
