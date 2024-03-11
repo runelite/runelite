@@ -25,6 +25,7 @@
  */
 package net.runelite.api;
 
+import java.util.function.Function;
 import net.runelite.api.coords.LocalPoint;
 
 /**
@@ -114,4 +115,14 @@ public interface RuneLiteObject extends GraphicsObject
 	 * @param drawFrontTilesFirst
 	 */
 	void setDrawFrontTilesFirst(boolean drawFrontTilesFirst);
+
+	/**
+	 * A callback that supplies the model after it has been transformed by the current animation, taking back the 
+	 * result of the passed lambda as the new model to be rendered. The input to this lambda is the model
+	 * immediately after the animation is applied, which shares face transparencies, face indices, and textures with 
+	 * the source model, but has distinct vertices. If the shared properties will be mutated, the corresponding cloneX 
+	 * method should be called first.
+	 * @param onModelAnimated The model transformer to apply after the animation.
+	 */
+	void setOnModelAnimated(Function<Model, Model> onModelAnimated);
 }
