@@ -47,6 +47,8 @@ import java.util.Queue;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -238,16 +240,16 @@ public class GroundItemsPlugin extends Plugin
 
 		GroundItem groundItem = buildGroundItem(tile, item);
 		GroundItem existing = collectedGroundItems.get(tile.getWorldLocation(), item.getId());
-		if (existing != null)
+		if (existing == null)
+		{
+			collectedGroundItems.put(tile.getWorldLocation(), item.getId(), groundItem);
+		}
+		else
 		{
 			existing.setQuantity(existing.getQuantity() + groundItem.getQuantity());
 			// The spawn time remains set at the oldest spawn
 		}
-		else
-		{
-			collectedGroundItems.put(tile.getWorldLocation(), item.getId(), groundItem);
-		}
-
+		
 		if (!config.onlyShowLoot())
 		{
 			notifyHighlightedItem(groundItem);
@@ -351,7 +353,37 @@ public class GroundItemsPlugin extends Plugin
 		}
 
 		Collections.reverse(newEntries);
+		
+		if (config.sortByGEPrice())
+		{
+			newEntries.sort((a, b) ->
+			{
+				final MenuAction aMenuType = a.getEntry().getType();
+				if (aMenuType == MenuAction.GROUND_ITEM_FIRST_OPTION || aMenuType == MenuAction.GROUND_ITEM_SECOND_OPTION || aMenuType == MenuAction.GROUND_ITEM_THIRD_OPTION
+					|| aMenuType == MenuAction.GROUND_ITEM_FOURTH_OPTION || aMenuType == MenuAction.GROUND_ITEM_FIFTH_OPTION || aMenuType == MenuAction.EXAMINE_ITEM_GROUND
+					|| aMenuType == MenuAction.WALK)
+				{
+					final MenuAction bMenuType = b.getEntry().getType();
+					if (bMenuType == MenuAction.GROUND_ITEM_FIRST_OPTION || bMenuType == MenuAction.GROUND_ITEM_SECOND_OPTION || bMenuType == MenuAction.GROUND_ITEM_THIRD_OPTION
+						|| bMenuType == MenuAction.GROUND_ITEM_FOURTH_OPTION || bMenuType == MenuAction.GROUND_ITEM_FIFTH_OPTION || bMenuType == MenuAction.EXAMINE_ITEM_GROUND
+						|| bMenuType == MenuAction.WALK)
+					{
+						final MenuEntry aEntry = a.getEntry();
+						final int aId = aEntry.getIdentifier();
+						final int aQuantity = getCollapsedItemQuantity(aId, aEntry.getTarget());
 
+						final MenuEntry bEntry = b.getEntry();
+						final int bId = bEntry.getIdentifier();
+						final int bQuantity = getCollapsedItemQuantity(bId, bEntry.getTarget());
+
+						return (getGePriceFromItemId(aId) * aQuantity) - (getGePriceFromItemId(bId) * bQuantity);
+					}
+				}
+
+				return 0;
+			});
+		}
+		
 		client.setMenuEntries(newEntries.stream().map(e ->
 		{
 			final MenuEntry entry = e.getEntry();
@@ -363,6 +395,36 @@ public class GroundItemsPlugin extends Plugin
 
 			return entry;
 		}).toArray(MenuEntry[]::new));
+	}
+	
+	private int getGePriceFromItemId(final int itemId)
+	{
+		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
+		final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemId;
+		
+		return itemManager.getItemPrice(realItemId);
+	}
+	
+	private int getCollapsedItemQuantity(final int itemId, final String item)
+	{
+		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
+		final boolean itemNameIncludesQuantity = Pattern.compile("\\(\\d+\\)").matcher(itemComposition.getName()).find();
+		
+		final Matcher matcher = Pattern.compile("\\((\\d+)\\)").matcher(item);
+		int matches = 0;
+		String lastMatch = "1";
+		while (matcher.find())
+		{
+			// so that "Prayer Potion (4)" returns 1 instead of 4 and "Coins (25)" returns 25 instead of 1
+			if (!itemNameIncludesQuantity || matches >= 1)
+			{
+				lastMatch = matcher.group(1);
+			}
+			
+			matches++;
+		}
+		
+		return Integer.parseInt(lastMatch);
 	}
 
 	private void lootReceived(Collection<ItemStack> items, LootType lootType)
