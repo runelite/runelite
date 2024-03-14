@@ -27,7 +27,6 @@ package net.runelite.client.plugins.banktags.tabs;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import net.runelite.api.widgets.Widget;
 
 @Data
 @EqualsAndHashCode(of = "tag")
@@ -35,31 +34,10 @@ public class TagTab
 {
 	private String tag;
 	private int iconItemId;
-	private Widget background;
-	private Widget icon;
-	private Widget menu;
 
 	TagTab(int iconItemId, String tag)
 	{
 		this.iconItemId = iconItemId;
 		this.tag = tag;
-	}
-
-	void setHidden(boolean hide)
-	{
-		if (background != null)
-		{
-			background.setHidden(hide);
-		}
-
-		if (icon != null)
-		{
-			icon.setHidden(hide);
-		}
-
-		if (menu != null)
-		{
-			menu.setHidden(hide);
-		}
 	}
 }

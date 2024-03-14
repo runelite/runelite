@@ -224,10 +224,10 @@ public class ItemStatChanges
 		// Mixed combat potions
 		add(new MixedPotion(3, attackPot), ATTACK_MIX1, ATTACK_MIX2);
 		add(new MixedPotion(3, strengthPot), STRENGTH_MIX1, STRENGTH_MIX2);
+		add(new MixedPotion(3, combatPot), COMBAT_MIX1, COMBAT_MIX2);
 		add(new MixedPotion(6, defencePot), DEFENCE_MIX1, DEFENCE_MIX2);
 		add(new MixedPotion(6, magicPot), MAGIC_MIX1, MAGIC_MIX2);
 		add(new MixedPotion(6, rangingPot), RANGING_MIX1, RANGING_MIX2);
-		add(new MixedPotion(6, combatPot), COMBAT_MIX1, COMBAT_MIX2);
 		add(new MixedPotion(6, superAttackPot), SUPERATTACK_MIX1, SUPERATTACK_MIX2);
 		add(new MixedPotion(6, superStrengthPot), SUPER_STR_MIX1, SUPER_STR_MIX2);
 		add(new MixedPotion(6, superDefencePot), SUPER_DEF_MIX1, SUPER_DEF_MIX2);
@@ -266,7 +266,7 @@ public class ItemStatChanges
 
 		// Mixed recovery potions
 		add(new MixedPotion(3, restorePot), RESTORE_MIX1, RESTORE_MIX2);
-		add(new MixedPotion(6, energyPot), ENERGY_MIX1, ENERGY_MIX2);
+		add(new MixedPotion(3, energyPot), ENERGY_MIX1, ENERGY_MIX2);
 		add(new MixedPotion(6, prayerPot), PRAYER_MIX1, PRAYER_MIX2);
 		add(new MixedPotion(6, superEnergyPot), SUPER_ENERGY_MIX1, SUPER_ENERGY_MIX2);
 		add(new MixedPotion(6, superRestorePot), SUPER_RESTORE_MIX1, SUPER_RESTORE_MIX2);

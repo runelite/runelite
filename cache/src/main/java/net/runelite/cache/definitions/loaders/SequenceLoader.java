@@ -25,11 +25,27 @@
 package net.runelite.cache.definitions.loaders;
 
 import java.util.HashMap;
+import lombok.Data;
+import lombok.experimental.Accessors;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.cache.definitions.SequenceDefinition;
 import net.runelite.cache.io.InputStream;
 
+@Accessors(chain = true)
+@Data
+@Slf4j
 public class SequenceLoader
 {
+	public static final int REV_220_SEQ_ARCHIVE_REV = 1141;
+
+	private boolean rev220FrameSounds = true;
+
+	public SequenceLoader configureForRevision(int rev)
+	{
+		this.rev220FrameSounds = rev > REV_220_SEQ_ARCHIVE_REV;
+		return this;
+	}
+
 	public SequenceDefinition load(int id, byte[] b)
 	{
 		SequenceDefinition def = new SequenceDefinition(id);
@@ -141,11 +157,11 @@ public class SequenceLoader
 		else if (opcode == 13)
 		{
 			var3 = stream.readUnsignedByte();
-			def.frameSounds = new int[var3];
+			def.frameSounds = new SequenceDefinition.Sound[var3];
 
 			for (var4 = 0; var4 < var3; ++var4)
 			{
-				def.frameSounds[var4] = stream.read24BitInt();
+				def.frameSounds[var4] = this.readFrameSound(stream);
 			}
 		}
 		else if (opcode == 14)
@@ -159,9 +175,8 @@ public class SequenceLoader
 
 			for (var4 = 0; var4 < var3; ++var4)
 			{
-				int var5 = stream.readUnsignedShort();
-				int var6 = stream.read24BitInt();
-				def.animMayaFrameSounds.put(var5, var6);
+				int frame = stream.readUnsignedShort();
+				def.animMayaFrameSounds.put(frame, this.readFrameSound(stream));
 			}
 		}
 		else if (opcode == 16)
@@ -179,6 +194,42 @@ public class SequenceLoader
 			{
 				def.animMayaMasks[stream.readUnsignedByte()] = true;
 			}
+		}
+		else
+		{
+			log.warn("Unrecognized opcode {}", opcode);
+		}
+	}
+
+	private SequenceDefinition.Sound readFrameSound(InputStream stream)
+	{
+		int id;
+		int loops;
+		int location;
+		int retain;
+		if (!rev220FrameSounds)
+		{
+			int bits = stream.read24BitInt();
+			location = bits & 15;
+			id = bits >> 8;
+			loops = bits >> 4 & 7;
+			retain = 0;
+		}
+		else
+		{
+			id = stream.readUnsignedShort();
+			loops = stream.readUnsignedByte();
+			location = stream.readUnsignedByte();
+			retain = stream.readUnsignedByte();
+		}
+
+		if (id >= 1 && loops >= 1 && location >= 0 && retain >= 0)
+		{
+			return new SequenceDefinition.Sound(id, loops, location, retain);
+		}
+		else
+		{
+			return null;
 		}
 	}
 }

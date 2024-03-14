@@ -71,14 +71,14 @@ public final class WidgetConfig
 	public static final int USE_WIDGET = 32 << 11;
 
 	/**
-	 * Controls whether or not a widget can have another dragged onto it.
+	 * Controls whether this widget can be dragged around.
 	 */
-	public static final int DRAG_ON = 1 << 17;
+	public static final int DRAG = 1 << 17;
 
 	/**
-	 * Controls whether or not a widget can be dragged around.
+	 * Controls whether this widget can have other widgets dragged onto it.
 	 */
-	public static final int DRAG = 1 << 20;
+	public static final int DRAG_ON = 1 << 20;
 
 	/**
 	 * Can widgets with USE_WIDGET be used on this widget

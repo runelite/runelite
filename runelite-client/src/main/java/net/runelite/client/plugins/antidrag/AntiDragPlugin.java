@@ -34,9 +34,9 @@ import net.runelite.api.ScriptID;
 import net.runelite.api.events.FocusChanged;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.widgets.InterfaceID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -190,13 +190,13 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 			return;
 		}
 
-		if (widgetLoaded.getGroupId() == WidgetID.BANK_GROUP_ID ||
-			widgetLoaded.getGroupId() == WidgetID.BANK_INVENTORY_GROUP_ID ||
-			widgetLoaded.getGroupId() == WidgetID.DEPOSIT_BOX_GROUP_ID)
+		if (widgetLoaded.getGroupId() == InterfaceID.BANK ||
+			widgetLoaded.getGroupId() == InterfaceID.BANK_INVENTORY ||
+			widgetLoaded.getGroupId() == InterfaceID.DEPOSIT_BOX)
 		{
 			setBankDragDelay(config.dragDelay());
 		}
-		else if (widgetLoaded.getGroupId() == WidgetID.INVENTORY_GROUP_ID)
+		else if (widgetLoaded.getGroupId() == InterfaceID.INVENTORY)
 		{
 			setInvDragDelay(config.dragDelay());
 		}
@@ -207,7 +207,7 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 	{
 		if (ev.getScriptId() == ScriptID.INVENTORY_DRAWITEM)
 		{
-			Widget inv = client.getWidget(WidgetInfo.INVENTORY);
+			Widget inv = client.getWidget(ComponentID.INVENTORY_CONTAINER);
 			final int delay = config.dragDelay();
 			boolean overriding = isOverriding();
 			for (Widget child : inv.getDynamicChildren())
@@ -239,10 +239,10 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 
 	private void setBankDragDelay(int delay)
 	{
-		final Widget bankItemContainer = client.getWidget(WidgetInfo.BANK_ITEM_CONTAINER);
-		final Widget bankInventoryItemsContainer = client.getWidget(WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER);
-		final Widget bankDepositContainer = client.getWidget(WidgetInfo.DEPOSIT_BOX_INVENTORY_ITEMS_CONTAINER);
-		final Widget coxPrivateChest = client.getWidget(WidgetInfo.RAIDS_PRIVATE_STORAGE_ITEM_CONTAINER);
+		final Widget bankItemContainer = client.getWidget(ComponentID.BANK_ITEM_CONTAINER);
+		final Widget bankInventoryItemsContainer = client.getWidget(ComponentID.BANK_INVENTORY_ITEM_CONTAINER);
+		final Widget bankDepositContainer = client.getWidget(ComponentID.DEPOSIT_BOX_INVENTORY_ITEM_CONTAINER);
+		final Widget coxPrivateChest = client.getWidget(ComponentID.CHAMBERS_OF_XERIC_STORAGE_UNIT_PRIVATE_ITEM_CONTAINER);
 
 		applyDragDelay(bankItemContainer, delay);
 		applyDragDelay(bankInventoryItemsContainer, delay);
@@ -252,13 +252,13 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 
 	private void setInvDragDelay(int delay)
 	{
-		final Widget inventory = client.getWidget(WidgetInfo.INVENTORY);
+		final Widget inventory = client.getWidget(ComponentID.INVENTORY_CONTAINER);
 		applyDragDelay(inventory, delay);
 	}
 
 	private void setCoxDragDelay(int delay)
 	{
-		final Widget coxChest = client.getWidget(WidgetInfo.RAIDS_PRIVATE_STORAGE_ITEM_CONTAINER);
+		final Widget coxChest = client.getWidget(ComponentID.CHAMBERS_OF_XERIC_STORAGE_UNIT_PRIVATE_ITEM_CONTAINER);
 		applyDragDelay(coxChest, delay);
 	}
 

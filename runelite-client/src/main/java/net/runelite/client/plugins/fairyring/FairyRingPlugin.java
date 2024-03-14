@@ -43,14 +43,14 @@ import net.runelite.api.ScriptID;
 import net.runelite.api.SoundEffectID;
 import net.runelite.api.SpriteID;
 import net.runelite.api.Varbits;
+import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.widgets.InterfaceID;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -121,11 +121,11 @@ public class FairyRingPlugin extends Plugin
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded widgetLoaded)
 	{
-		if (widgetLoaded.getGroupId() == WidgetID.FAIRY_RING_PANEL_GROUP_ID)
+		if (widgetLoaded.getGroupId() == InterfaceID.FAIRY_RING_PANEL)
 		{
 			setWidgetTextToDestination();
 
-			Widget header = client.getWidget(WidgetInfo.FAIRY_RING_HEADER);
+			Widget header = client.getWidget(ComponentID.FAIRY_RING_PANEL_HEADER);
 			if (header != null)
 			{
 				searchBtn = header.createChild(-1, WidgetType.GRAPHIC);
@@ -165,7 +165,7 @@ public class FairyRingPlugin extends Plugin
 
 	private void setWidgetTextToDestination()
 	{
-		Widget fairyRingTeleportButton = client.getWidget(WidgetInfo.FAIRY_RING_TELEPORT_BUTTON);
+		Widget fairyRingTeleportButton = client.getWidget(ComponentID.FAIRY_RING_TELEPORT_BUTTON);
 		if (fairyRingTeleportButton != null && !fairyRingTeleportButton.isHidden())
 		{
 			String destination;
@@ -210,7 +210,7 @@ public class FairyRingPlugin extends Plugin
 	public void onGameTick(GameTick t)
 	{
 		// This has to happen because the only widget that gets hidden is the tli one
-		Widget fairyRingTeleportButton = client.getWidget(WidgetInfo.FAIRY_RING_TELEPORT_BUTTON);
+		Widget fairyRingTeleportButton = client.getWidget(ComponentID.FAIRY_RING_TELEPORT_BUTTON);
 		boolean fairyRingWidgetOpen = fairyRingTeleportButton != null && !fairyRingTeleportButton.isHidden();
 		boolean chatboxOpen = searchInput != null && chatboxPanelManager.getCurrentInput() == searchInput;
 
@@ -223,8 +223,8 @@ public class FairyRingPlugin extends Plugin
 	private void updateFilter(String filter)
 	{
 		filter = filter.toLowerCase();
-		final Widget list = client.getWidget(WidgetInfo.FAIRY_RING_LIST);
-		final Widget favorites = client.getWidget(WidgetInfo.FAIRY_RING_FAVORITES);
+		final Widget list = client.getWidget(ComponentID.FAIRY_RING_PANEL_LIST);
+		final Widget favorites = client.getWidget(ComponentID.FAIRY_RING_PANEL_FAVORITES);
 
 		if (list == null)
 		{
@@ -359,8 +359,8 @@ public class FairyRingPlugin extends Plugin
 		list.revalidateScroll();
 		client.runScript(
 			ScriptID.UPDATE_SCROLLBAR,
-			WidgetInfo.FAIRY_RING_LIST_SCROLLBAR.getId(),
-			WidgetInfo.FAIRY_RING_LIST.getId(),
+			ComponentID.FAIRY_RING_PANEL_SCROLLBAR,
+			ComponentID.FAIRY_RING_PANEL_LIST,
 			newHeight
 		);
 	}

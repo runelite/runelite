@@ -35,12 +35,11 @@ import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.Point;
 import net.runelite.api.TileObject;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.outline.ModelOutlineRenderer;
 import net.runelite.client.util.ColorUtil;
 
@@ -62,7 +61,7 @@ class InteractHighlightOverlay extends Overlay
 		this.modelOutlineRenderer = modelOutlineRenderer;
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
-		setPriority(OverlayPriority.HIGH);
+		setPriority(PRIORITY_HIGH);
 	}
 
 	@Override
@@ -116,7 +115,7 @@ class InteractHighlightOverlay extends Overlay
 				if (npc != null && config.npcShowHover() && (npc != plugin.getInteractedTarget() || !config.npcShowInteract()))
 				{
 					Color highlightColor = menuAction == MenuAction.NPC_SECOND_OPTION
-						|| menuAction == MenuAction.WIDGET_TARGET_ON_NPC && WidgetInfo.TO_GROUP(client.getSelectedWidget().getId()) == WidgetID.SPELLBOOK_GROUP_ID
+						|| menuAction == MenuAction.WIDGET_TARGET_ON_NPC && WidgetUtil.componentToInterface(client.getSelectedWidget().getId()) == InterfaceID.SPELLBOOK
 						? config.npcAttackHoverHighlightColor() : config.npcHoverHighlightColor();
 					modelOutlineRenderer.drawOutline(npc, config.borderWidth(), highlightColor, config.outlineFeather());
 				}

@@ -32,7 +32,6 @@ import javax.inject.Inject;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
 public class PlayerIndicatorsTileOverlay extends Overlay
@@ -47,7 +46,7 @@ public class PlayerIndicatorsTileOverlay extends Overlay
 		this.playerIndicatorsService = playerIndicatorsService;
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		setPosition(OverlayPosition.DYNAMIC);
-		setPriority(OverlayPriority.MED);
+		setPriority(PRIORITY_MED);
 	}
 
 	@Override

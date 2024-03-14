@@ -50,8 +50,8 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.timetracking.TimeTrackingConfig;
@@ -137,7 +137,7 @@ public class CompostTracker
 			.stream()
 			.flatMap(fr -> Arrays.stream(fr.getPatches()))
 			.filter(fp -> fp.getVarbit() == patchDef.getVarbitId())
-			.filter(fp -> fp.getImplementation() != PatchImplementation.COMPOST && fp.getImplementation() != PatchImplementation.GIANT_COMPOST)
+			.filter(fp -> fp.getImplementation() != PatchImplementation.COMPOST && fp.getImplementation() != PatchImplementation.BIG_COMPOST)
 			.findFirst()
 			.orElse(null);
 		if (targetPatch == null)
@@ -160,8 +160,7 @@ public class CompostTracker
 		{
 			case WIDGET_TARGET_ON_GAME_OBJECT:
 				Widget w = client.getSelectedWidget();
-				assert w != null;
-				return COMPOST_ITEMS.contains(w.getItemId()) || w.getId() == WidgetInfo.SPELL_LUNAR_FERTILE_SOIL.getPackedId();
+				return w != null && (COMPOST_ITEMS.contains(w.getItemId()) || w.getId() == ComponentID.SPELLBOOK_FERTILE_SOIL);
 
 			case GAME_OBJECT_FIRST_OPTION:
 			case GAME_OBJECT_SECOND_OPTION:

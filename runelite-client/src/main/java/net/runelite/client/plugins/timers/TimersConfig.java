@@ -353,4 +353,14 @@ public interface TimersConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showSpellbookSwap",
+		name = "Spellbook Swap timer",
+		description = "Configures whether Spellbook Swap timer is displayed"
+	)
+	default boolean showSpellbookSwap()
+	{
+		return true;
+	}
 }

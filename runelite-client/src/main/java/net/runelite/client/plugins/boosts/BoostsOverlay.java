@@ -33,7 +33,6 @@ import net.runelite.api.Client;
 import net.runelite.api.Skill;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.util.ColorUtil;
 
@@ -51,7 +50,7 @@ class BoostsOverlay extends OverlayPanel
 		this.client = client;
 		this.config = config;
 		setPosition(OverlayPosition.TOP_LEFT);
-		setPriority(OverlayPriority.MED);
+		setPriority(PRIORITY_MED);
 	}
 
 	@Override

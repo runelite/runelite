@@ -38,7 +38,6 @@ import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
 class ZalcanoOverlay extends Overlay
@@ -53,7 +52,7 @@ class ZalcanoOverlay extends Overlay
 		this.zalcanoPlugin = zalcanoPlugin;
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
-		setPriority(OverlayPriority.MED);
+		setPriority(PRIORITY_MED);
 	}
 
 	@Override

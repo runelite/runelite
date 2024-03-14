@@ -24,6 +24,10 @@
  */
 package net.runelite.client.ui.overlay;
 
+/**
+ * @deprecated use floating point overlay priorities instead
+ */
+@Deprecated
 public enum OverlayPriority
 {
 	LOW,

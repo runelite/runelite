@@ -39,6 +39,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.timetracking.SummaryState;
 import net.runelite.client.plugins.timetracking.TimeTrackingConfig;
+import net.runelite.client.ui.ClientToolbar;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -92,6 +93,10 @@ public class FarmingContractManagerTest
 	@Mock
 	@Bind
 	private ScheduledExecutorService executor;
+
+	@Mock
+	@Bind
+	private ClientToolbar clientToolbar;
 
 	@Before
 	public void before()

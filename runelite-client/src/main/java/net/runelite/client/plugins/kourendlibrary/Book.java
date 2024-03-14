@@ -34,17 +34,6 @@ import net.runelite.client.game.ItemManager;
 
 enum Book
 {
-	DARK_MANUSCRIPT_13514(ItemID.DARK_MANUSCRIPT),
-	DARK_MANUSCRIPT_13515(ItemID.DARK_MANUSCRIPT_13515),
-	DARK_MANUSCRIPT_13516(ItemID.DARK_MANUSCRIPT_13516),
-	DARK_MANUSCRIPT_13517(ItemID.DARK_MANUSCRIPT_13517),
-	DARK_MANUSCRIPT_13518(ItemID.DARK_MANUSCRIPT_13518),
-	DARK_MANUSCRIPT_13519(ItemID.DARK_MANUSCRIPT_13519),
-	DARK_MANUSCRIPT_13520(ItemID.DARK_MANUSCRIPT_13520),
-	DARK_MANUSCRIPT_13521(ItemID.DARK_MANUSCRIPT_13521),
-	DARK_MANUSCRIPT_13522(ItemID.DARK_MANUSCRIPT_13522),
-	DARK_MANUSCRIPT_13523(ItemID.DARK_MANUSCRIPT_13523),
-
 	RADAS_CENSUS(ItemID.RADAS_CENSUS, "Rada's Census", "Census of King Rada III, by Matthias Vorseth."),
 	RICKTORS_DIARY_7(ItemID.RICKTORS_DIARY_7, "Ricktor's Diary 7", "Diary of Steklan Ricktor, volume 7."),
 	EATHRAM_RADA_EXTRACT(ItemID.EATHRAM__RADA_EXTRACT, "Eathram & Rada extract", "An extract from Eathram & Rada, by Anonymous."),
@@ -81,10 +70,7 @@ enum Book
 		HashMap<String, Book> byName = new HashMap<>();
 		for (Book b : Book.values())
 		{
-			if (!b.isDarkManuscript)
-			{
-				byName.put(b.name, b);
-			}
+			byName.put(b.name, b);
 		}
 		return Collections.unmodifiableMap(byName);
 	}
@@ -111,23 +97,12 @@ enum Book
 	@Getter
 	private AsyncBufferedImage icon;
 
-	@Getter
-	private final boolean isDarkManuscript;
 
 	Book(int id, String shortName, String name)
 	{
 		this.item = id;
-		this.isDarkManuscript = false;
 		this.shortName = shortName;
 		this.name = name;
-	}
-
-	Book(int id)
-	{
-		this.item = id;
-		this.isDarkManuscript = true;
-		this.name = "Dark Manuscript";
-		this.shortName = "Dark Manuscript";
 	}
 
 	static void fillImages(ItemManager itemManager)

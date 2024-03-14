@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.kourendlibrary;
 
+import com.google.common.annotations.VisibleForTesting;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -51,9 +52,7 @@ import static net.runelite.client.plugins.kourendlibrary.Book.*;
  * Each of the 352 bookcase slots "Bookcase"s has an index which is used to
  * place the book inside of them. The game chooses one of the 5 sequences and a
  * bookcase starting index, then places a book from the sequence into every 13th
- * bookcase, by index. Each sequence contains 26 Books, consisting of 16 books
- * and 10 dark manuscripts. You can only get one dark manuscript at a time, though
- * they are all placed into shelves.
+ * bookcase, by index. Each sequence contains 16 Books.
  */
 @Singleton
 @Slf4j
@@ -65,7 +64,8 @@ class Library
 
 	private final List<List<Book>> sequences = populateSequences();
 
-	private final int step;
+	@VisibleForTesting
+	final int step;
 
 	@Getter
 	private SolvedState state;
@@ -110,7 +110,7 @@ class Library
 		log.info("Library is now reset");
 	}
 
-	synchronized void mark(WorldPoint loc, Book book)
+	void mark(WorldPoint loc, Book book)
 	{
 		Bookcase bookcase = byPoint.get(loc);
 		if (bookcase == null)
@@ -119,12 +119,23 @@ class Library
 			return;
 		}
 
+		mark(bookcase, book);
+	}
+
+	@VisibleForTesting
+	void mark(int bookcaseIndex, Book book)
+	{
+		mark(byIndex.get(bookcaseIndex), book);
+	}
+
+	synchronized void mark(Bookcase bookcase, Book book)
+	{
 		if (bookcase.isBookSet())
 		{
 			// Bookcase is set from a previous mark
-			// Check for a mismatch, unless it is now null and had a dark manuscript or Varlamore Envoy
+			// Check for a mismatch, unless it is now null and has Varlamore Envoy
 			if (book != bookcase.getBook()
-				&& !(book == null && (bookcase.getBook().isDarkManuscript() || bookcase.getBook() == VARLAMORE_ENVOY)))
+				&& !(book == null && bookcase.getBook() == VARLAMORE_ENVOY))
 			{
 				reset();
 			}
@@ -141,11 +152,11 @@ class Library
 
 		if (state == SolvedState.COMPLETE)
 		{
-			// Reset if we found nothing when we expected something that wasn't a Dark Manuscript or Varlamore Envoy
+			// Reset if we found nothing when we expected something that wasn't Varlamore Envoy
 			// since the layout has changed
 			if (book == null
 				&& !bookcase.getPossibleBooks().isEmpty()
-				&& bookcase.getPossibleBooks().stream().noneMatch(b -> b.isDarkManuscript() || b == VARLAMORE_ENVOY))
+				&& bookcase.getPossibleBooks().stream().noneMatch(b -> b == VARLAMORE_ENVOY))
 			{
 				reset();
 			}
@@ -179,7 +190,6 @@ class Library
 
 			// Map each sequence to the number of bookcases that match the sequence
 			// return 0 if it is a mismatch.
-			// Keep in mind that Bookcases with dark manuscripts may be set to null.
 			int[] certainty = sequences.stream().mapToInt(sequence ->
 			{
 				int zero = getBookcaseZeroIndexForSequenceWithBook(sequence, bookcaseIndex, book);
@@ -195,8 +205,7 @@ class Library
 						if (iBookcase.isBookSet() && seqI < sequence.size())
 						{
 							Book seqBook = sequence.get(seqI);
-							boolean isSeqManuscript = seqBook == null || seqBook.isDarkManuscript();
-							if (!((isSeqManuscript && iBookcase.getBook() == null) || (iBookcase.getBook() == seqBook)))
+							if (iBookcase.getBook() != seqBook)
 							{
 								log.debug("Bailing @ i={} ai={} {}; {} != {}", i, ai, iBookcase.getIndex(), iBookcase.getBook(), seqBook);
 								found = 0;
@@ -285,113 +294,73 @@ class Library
 	{
 		List<List<Book>> books = Arrays.asList(
 			Arrays.asList(
-				DARK_MANUSCRIPT_13516,
 				KILLING_OF_A_KING,
-				DARK_MANUSCRIPT_13520,
 				IDEOLOGY_OF_DARKNESS,
 				RADAS_JOURNEY,
 				TRANSVERGENCE_THEORY,
 				TRISTESSAS_TRAGEDY,
-				DARK_MANUSCRIPT_13523,
-				DARK_MANUSCRIPT_13521,
 				RADAS_CENSUS,
 				TREACHERY_OF_ROYALTY,
 				HOSIDIUS_LETTER,
-				DARK_MANUSCRIPT_13519,
 				RICKTORS_DIARY_7,
-				DARK_MANUSCRIPT_13514,
 				EATHRAM_RADA_EXTRACT,
-				DARK_MANUSCRIPT_13522,
 				VARLAMORE_ENVOY,
 				WINTERTODT_PARABLE,
 				TWILL_ACCORD,
-				DARK_MANUSCRIPT_13515,
 				BYRNES_CORONATION_SPEECH,
-				DARK_MANUSCRIPT_13517,
 				SOUL_JOURNEY,
-				DARK_MANUSCRIPT_13518,
 				TRANSPORTATION_INCANTATIONS
 			),
 			Arrays.asList(
-				DARK_MANUSCRIPT_13516,
 				KILLING_OF_A_KING,
-				DARK_MANUSCRIPT_13520,
 				IDEOLOGY_OF_DARKNESS,
 				RADAS_JOURNEY,
 				TRANSVERGENCE_THEORY,
 				TRISTESSAS_TRAGEDY,
-				DARK_MANUSCRIPT_13523,
-				DARK_MANUSCRIPT_13521,
 				RADAS_CENSUS,
 				TREACHERY_OF_ROYALTY,
 				HOSIDIUS_LETTER,
 				VARLAMORE_ENVOY,
-				DARK_MANUSCRIPT_13519,
 				RICKTORS_DIARY_7,
-				DARK_MANUSCRIPT_13514,
 				EATHRAM_RADA_EXTRACT,
-				DARK_MANUSCRIPT_13522,
 				SOUL_JOURNEY,
 				WINTERTODT_PARABLE,
 				TWILL_ACCORD,
-				DARK_MANUSCRIPT_13515,
 				BYRNES_CORONATION_SPEECH,
-				DARK_MANUSCRIPT_13517,
-				DARK_MANUSCRIPT_13518,
 				TRANSPORTATION_INCANTATIONS
 			),
 			Arrays.asList(
 				RICKTORS_DIARY_7,
 				VARLAMORE_ENVOY,
-				DARK_MANUSCRIPT_13514,
 				EATHRAM_RADA_EXTRACT,
 				IDEOLOGY_OF_DARKNESS,
-				DARK_MANUSCRIPT_13516,
-				DARK_MANUSCRIPT_13521,
 				RADAS_CENSUS,
-				DARK_MANUSCRIPT_13515,
 				KILLING_OF_A_KING,
-				DARK_MANUSCRIPT_13520,
 				TREACHERY_OF_ROYALTY,
 				HOSIDIUS_LETTER,
-				DARK_MANUSCRIPT_13519,
 				BYRNES_CORONATION_SPEECH,
-				DARK_MANUSCRIPT_13517,
 				SOUL_JOURNEY,
-				DARK_MANUSCRIPT_13522,
 				WINTERTODT_PARABLE,
 				TWILL_ACCORD,
 				RADAS_JOURNEY,
 				TRANSVERGENCE_THEORY,
 				TRISTESSAS_TRAGEDY,
-				DARK_MANUSCRIPT_13523,
-				DARK_MANUSCRIPT_13518,
 				TRANSPORTATION_INCANTATIONS
 			),
 			Arrays.asList(
 				RADAS_CENSUS,
-				DARK_MANUSCRIPT_13522,
 				RICKTORS_DIARY_7,
-				DARK_MANUSCRIPT_13514,
 				EATHRAM_RADA_EXTRACT,
-				DARK_MANUSCRIPT_13516,
 				KILLING_OF_A_KING,
-				DARK_MANUSCRIPT_13520,
 				HOSIDIUS_LETTER,
-				DARK_MANUSCRIPT_13519,
-				DARK_MANUSCRIPT_13521,
 				WINTERTODT_PARABLE,
 				TWILL_ACCORD,
-				DARK_MANUSCRIPT_13515,
 				BYRNES_CORONATION_SPEECH,
-				DARK_MANUSCRIPT_13517,
 				IDEOLOGY_OF_DARKNESS,
 				RADAS_JOURNEY,
 				TRANSVERGENCE_THEORY,
 				TRISTESSAS_TRAGEDY,
-				DARK_MANUSCRIPT_13523,
 				TREACHERY_OF_ROYALTY,
-				DARK_MANUSCRIPT_13518,
 				TRANSPORTATION_INCANTATIONS,
 				SOUL_JOURNEY,
 				VARLAMORE_ENVOY
@@ -402,26 +371,16 @@ class Library
 				TREACHERY_OF_ROYALTY,
 				RADAS_JOURNEY,
 				KILLING_OF_A_KING,
-				DARK_MANUSCRIPT_13520,
 				VARLAMORE_ENVOY,
-				DARK_MANUSCRIPT_13522,
 				BYRNES_CORONATION_SPEECH,
-				DARK_MANUSCRIPT_13517,
 				HOSIDIUS_LETTER,
-				DARK_MANUSCRIPT_13516,
-				DARK_MANUSCRIPT_13519,
 				TRISTESSAS_TRAGEDY,
-				DARK_MANUSCRIPT_13523,
-				DARK_MANUSCRIPT_13521,
 				RICKTORS_DIARY_7,
-				DARK_MANUSCRIPT_13514,
 				IDEOLOGY_OF_DARKNESS,
 				WINTERTODT_PARABLE,
 				TWILL_ACCORD,
 				SOUL_JOURNEY,
-				DARK_MANUSCRIPT_13515,
 				EATHRAM_RADA_EXTRACT,
-				DARK_MANUSCRIPT_13518,
 				TRANSPORTATION_INCANTATIONS
 			)
 		);

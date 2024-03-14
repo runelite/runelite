@@ -53,7 +53,6 @@ import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
 import static net.runelite.api.ItemID.*;
 import net.runelite.api.SpritePixels;
-import net.runelite.api.WorldType;
 import net.runelite.api.widgets.ItemQuantityMode;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.RuneLiteConfig;
@@ -325,12 +324,6 @@ public class ItemManager
 	 */
 	public int getWikiPrice(ItemPrice itemPrice)
 	{
-		if (client.getWorldType().contains(WorldType.FRESH_START_WORLD))
-		{
-			// thresholds don't apply to fsw pricing.
-			return itemPrice.getWikiPriceFsw() <= 0 ? itemPrice.getPrice() : itemPrice.getWikiPriceFsw();
-		}
-
 		final int wikiPrice = itemPrice.getWikiPrice();
 		final int jagPrice = itemPrice.getPrice();
 		if (wikiPrice <= 0)
@@ -424,7 +417,7 @@ public class ItemManager
 	 */
 	private AsyncBufferedImage loadImage(int itemId, int quantity, boolean stackable)
 	{
-		AsyncBufferedImage img = new AsyncBufferedImage(Constants.ITEM_SPRITE_WIDTH, Constants.ITEM_SPRITE_HEIGHT, BufferedImage.TYPE_INT_ARGB);
+		AsyncBufferedImage img = new AsyncBufferedImage(clientThread, Constants.ITEM_SPRITE_WIDTH, Constants.ITEM_SPRITE_HEIGHT, BufferedImage.TYPE_INT_ARGB);
 		clientThread.invoke(() ->
 		{
 			if (client.getGameState().ordinal() < GameState.LOGIN_SCREEN.ordinal())

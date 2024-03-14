@@ -34,7 +34,6 @@ import net.runelite.client.game.ItemManager;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.ComponentOrientation;
 import net.runelite.client.ui.overlay.components.ImageComponent;
 
@@ -49,7 +48,7 @@ class TeamCapesOverlay extends OverlayPanel
 	{
 		super(plugin);
 		setPosition(OverlayPosition.TOP_LEFT);
-		setPriority(OverlayPriority.LOW);
+		setPriority(PRIORITY_LOW);
 		this.plugin = plugin;
 		this.config = config;
 		this.manager = manager;

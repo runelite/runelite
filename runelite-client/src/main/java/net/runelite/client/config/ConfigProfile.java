@@ -24,6 +24,8 @@
  */
 package net.runelite.client.config;
 
+import java.util.List;
+import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -48,6 +50,10 @@ public class ConfigProfile
 	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
 	private long rev;
+	@Getter
+	@Setter
+	@Nullable
+	private List<String> defaultForRsProfiles;
 
 	public boolean isInternal()
 	{

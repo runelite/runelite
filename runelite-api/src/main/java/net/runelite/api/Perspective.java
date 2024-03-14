@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import static net.runelite.api.Constants.EXTENDED_SCENE_SIZE;
 import static net.runelite.api.Constants.TILE_FLAG_BRIDGE;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.geometry.RectangleUnion;
@@ -60,6 +61,8 @@ public class Perspective
 
 	public static final int[] SINE = new int[2048]; // sine angles for each of the 2048 units, * 65536 and stored as an int
 	public static final int[] COSINE = new int[2048]; // cosine
+
+	private static final int ESCENE_OFFSET = (Constants.EXTENDED_SCENE_SIZE - Constants.SCENE_SIZE) / 2;
 
 	static
 	{
@@ -117,7 +120,13 @@ public class Perspective
 	 */
 	public static Point localToCanvas(@Nonnull Client client, int x, int y, int z)
 	{
-		if (x >= 128 && y >= 128 && x <= 13056 && y <= 13056)
+		return client.isGpu() ? localToCanvasGpu(client, x, y, z) : localToCanvasCpu(client, x, y, z);
+	}
+
+	private static Point localToCanvasCpu(Client client, int x, int y, int z)
+	{
+		if (x >= -ESCENE_OFFSET << LOCAL_COORD_BITS && y >= -ESCENE_OFFSET << LOCAL_COORD_BITS &&
+			x <= SCENE_SIZE + ESCENE_OFFSET << LOCAL_COORD_BITS && y <= SCENE_SIZE + ESCENE_OFFSET << LOCAL_COORD_BITS)
 		{
 			x -= client.getCameraX();
 			y -= client.getCameraY();
@@ -144,7 +153,47 @@ public class Perspective
 				final int pointY = client.getViewportHeight() / 2 + y2 * scale / z1;
 				return new Point(
 					pointX + client.getViewportXOffset(),
-					pointY + client.getViewportYOffset());
+					pointY + client.getViewportYOffset()
+				);
+			}
+		}
+
+		return null;
+	}
+
+	private static Point localToCanvasGpu(Client client, int x, int y, int z)
+	{
+		if (x >= -ESCENE_OFFSET << LOCAL_COORD_BITS && y >= -ESCENE_OFFSET << LOCAL_COORD_BITS &&
+			x <= SCENE_SIZE + ESCENE_OFFSET << LOCAL_COORD_BITS && y <= SCENE_SIZE + ESCENE_OFFSET << LOCAL_COORD_BITS)
+		{
+			final double
+				cameraPitch = client.getCameraFpPitch(),
+				cameraYaw = client.getCameraFpYaw();
+
+			final float
+				fx = x - (float) client.getCameraFpX(),
+				fy = y - (float) client.getCameraFpY(),
+				fz = z - (float) client.getCameraFpZ(),
+				pitchSin = (float) Math.sin(cameraPitch),
+				pitchCos = (float) Math.cos(cameraPitch),
+				yawSin = (float) Math.sin(cameraYaw),
+				yawCos = (float) Math.cos(cameraYaw);
+
+			final float
+				x1 = fx * yawCos + fy * yawSin,
+				y1 = fy * yawCos - fx * yawSin,
+				y2 = fz * pitchCos - y1 * pitchSin,
+				z1 = y1 * pitchCos + fz * pitchSin;
+
+			if (z1 >= 50f)
+			{
+				final int scale = client.getScale();
+				final int pointX = Math.round(client.getViewportWidth() / 2f + x1 * scale / z1);
+				final int pointY = Math.round(client.getViewportHeight() / 2f + y2 * scale / z1);
+				return new Point(
+					pointX + client.getViewportXOffset(),
+					pointY + client.getViewportYOffset()
+				);
 			}
 		}
 
@@ -152,12 +201,12 @@ public class Perspective
 	}
 
 	/**
-	 * Translates a model's vertices into 2d space. There is a separate implementation for GPU since GPU
-	 * uses a slightly more precise projection that can cause features like model outlines being noticeably
-	 * off otherwise.
+	 * Translates a model's vertices into 2d space.
 	 */
 	public static void modelToCanvas(Client client, int end, int x3dCenter, int y3dCenter, int z3dCenter, int rotate, int[] x3d, int[] y3d, int[] z3d, int[] x2d, int[] y2d)
 	{
+		// There is a separate implementation for GPU since GPU uses a slightly more precise projection that can
+		// cause features like model outlines being noticeably off otherwise.
 		if (client.isGpu())
 		{
 			modelToCanvasGpu(client, end, x3dCenter, y3dCenter, z3dCenter, rotate, x3d, y3d, z3d, x2d, y2d);
@@ -170,20 +219,20 @@ public class Perspective
 
 	private static void modelToCanvasGpu(Client client, int end, int x3dCenter, int y3dCenter, int z3dCenter, int rotate, int[] x3d, int[] y3d, int[] z3d, int[] x2d, int[] y2d)
 	{
-		final int
-			cameraPitch = client.getCameraPitch(),
-			cameraYaw = client.getCameraYaw();
+		final double
+			cameraPitch = client.getCameraFpPitch(),
+			cameraYaw = client.getCameraFpYaw();
 		final float
-			pitchSin = SINE[cameraPitch] / 65536.0f,
-			pitchCos = COSINE[cameraPitch] / 65536.0f,
-			yawSin = SINE[cameraYaw] / 65536.0f,
-			yawCos = COSINE[cameraYaw] / 65536.0f,
+			pitchSin = (float) Math.sin(cameraPitch),
+			pitchCos = (float) Math.cos(cameraPitch),
+			yawSin = (float) Math.sin(cameraYaw),
+			yawCos = (float) Math.cos(cameraYaw),
 			rotateSin = SINE[rotate] / 65536.0f,
 			rotateCos = COSINE[rotate] / 65536.0f,
 
-			cx = x3dCenter - client.getCameraX(),
-			cy = y3dCenter - client.getCameraY(),
-			cz = z3dCenter - client.getCameraZ(),
+			cx = x3dCenter - (float) client.getCameraFpX(),
+			cy = y3dCenter - (float) client.getCameraFpY(),
+			cz = z3dCenter - (float) client.getCameraFpZ(),
 
 			viewportXMiddle = client.getViewportWidth() / 2f,
 			viewportYMiddle = client.getViewportHeight() / 2f,
@@ -416,19 +465,15 @@ public class Perspective
 	/**
 	 * Get the height of a location, in local coordinates. Interpolates the height from the adjacent tiles.
 	 * Does not account for bridges.
-	 * @param client
-	 * @param localX
-	 * @param localY
-	 * @param plane
 	 * @return
 	 */
-	private static int getHeight(@Nonnull Client client, int localX, int localY, int plane)
+	private static int getHeight(@Nonnull Scene scene, int localX, int localY, int plane)
 	{
-		int sceneX = localX >> LOCAL_COORD_BITS;
-		int sceneY = localY >> LOCAL_COORD_BITS;
-		if (sceneX >= 0 && sceneY >= 0 && sceneX < SCENE_SIZE && sceneY < SCENE_SIZE)
+		int sceneX = (localX >> LOCAL_COORD_BITS) + ESCENE_OFFSET;
+		int sceneY = (localY >> LOCAL_COORD_BITS) + ESCENE_OFFSET;
+		if (sceneX >= 0 && sceneY >= 0 && sceneX < Constants.EXTENDED_SCENE_SIZE && sceneY < Constants.EXTENDED_SCENE_SIZE)
 		{
-			int[][][] tileHeights = client.getTileHeights();
+			int[][][] tileHeights = scene.getTileHeights();
 
 			int x = localX & (LOCAL_TILE_SIZE - 1);
 			int y = localY & (LOCAL_TILE_SIZE - 1);
@@ -499,17 +544,20 @@ public class Perspective
 		int plane,
 		int zOffset)
 	{
-		if (!localLocation.isInScene())
+		final int msx = localLocation.getSceneX() + ESCENE_OFFSET;
+		final int msy = localLocation.getSceneY() + ESCENE_OFFSET;
+
+		if (msx < 0 || msy < 0 || msx >= EXTENDED_SCENE_SIZE || msy >= EXTENDED_SCENE_SIZE)
 		{
+			// out of scene
 			return null;
 		}
 
-		final byte[][][] tileSettings = client.getTileSettings();
-		final int sceneX = localLocation.getSceneX();
-		final int sceneY = localLocation.getSceneY();
+		var scene = client.getScene();
+		final byte[][][] tileSettings = scene.getExtendedTileSettings();
 
 		int tilePlane = plane;
-		if (plane < Constants.MAX_Z - 1 && (tileSettings[1][sceneX][sceneY] & TILE_FLAG_BRIDGE) == TILE_FLAG_BRIDGE)
+		if (plane < Constants.MAX_Z - 1 && (tileSettings[1][msx][msy] & TILE_FLAG_BRIDGE) == TILE_FLAG_BRIDGE)
 		{
 			tilePlane = plane + 1;
 		}
@@ -526,10 +574,10 @@ public class Perspective
 		final int nwX = neX;
 		final int nwY = swY;
 
-		final int swHeight = getHeight(client, swX, swY, tilePlane) - zOffset;
-		final int nwHeight = getHeight(client, nwX, nwY, tilePlane) - zOffset;
-		final int neHeight = getHeight(client, neX, neY, tilePlane) - zOffset;
-		final int seHeight = getHeight(client, seX, seY, tilePlane) - zOffset;
+		final int swHeight = getHeight(scene, swX, swY, tilePlane) - zOffset;
+		final int nwHeight = getHeight(scene, nwX, nwY, tilePlane) - zOffset;
+		final int neHeight = getHeight(scene, neX, neY, tilePlane) - zOffset;
+		final int seHeight = getHeight(scene, seX, seY, tilePlane) - zOffset;
 
 		Point p1 = localToCanvas(client, swX, swY, swHeight);
 		Point p2 = localToCanvas(client, nwX, nwY, nwHeight);

@@ -26,12 +26,12 @@
 /*
  * Convert a vertex to screen space
  */
-vec3 toScreen(ivec3 vertex, int cameraYaw, int cameraPitch, int centerX, int centerY, int zoom) {
-  float yawSin = sin(cameraYaw * UNIT);
-  float yawCos = cos(cameraYaw * UNIT);
+vec3 toScreen(vec3 vertex, float cameraYaw, float cameraPitch, int centerX, int centerY, int zoom) {
+  float yawSin = sin(cameraYaw);
+  float yawCos = cos(cameraYaw);
 
-  float pitchSin = sin(cameraPitch * UNIT);
-  float pitchCos = cos(cameraPitch * UNIT);
+  float pitchSin = sin(cameraPitch);
+  float pitchCos = cos(cameraPitch);
 
   float rotatedX = (vertex.z * yawSin) + (vertex.x * yawCos);
   float rotatedZ = (vertex.z * yawCos) - (vertex.x * yawSin);

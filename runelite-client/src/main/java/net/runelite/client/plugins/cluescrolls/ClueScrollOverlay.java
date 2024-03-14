@@ -42,7 +42,6 @@ import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
 import static net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements.item;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayPanel;
-import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.ComponentConstants;
 import net.runelite.client.ui.overlay.components.LineComponent;
 
@@ -97,7 +96,7 @@ public class ClueScrollOverlay extends OverlayPanel
 		super(plugin);
 		this.plugin = plugin;
 		this.client = client;
-		setPriority(OverlayPriority.LOW);
+		setPriority(PRIORITY_LOW);
 		addMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Clue Scroll overlay");
 		addMenuEntry(RUNELITE_OVERLAY, "Reset", "Clue Scroll overlay", e -> plugin.resetClue(true));
 	}

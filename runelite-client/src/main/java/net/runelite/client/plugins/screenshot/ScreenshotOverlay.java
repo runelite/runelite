@@ -45,7 +45,6 @@ import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
 
 class ScreenshotOverlay extends Overlay
 {
@@ -62,7 +61,7 @@ class ScreenshotOverlay extends Overlay
 	private ScreenshotOverlay(Client client, DrawManager drawManager, ScreenshotPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
-		setPriority(OverlayPriority.HIGH);
+		setPriority(PRIORITY_HIGH);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.client = client;
 		this.drawManager = drawManager;

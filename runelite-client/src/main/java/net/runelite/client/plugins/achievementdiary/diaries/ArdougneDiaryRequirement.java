@@ -122,7 +122,7 @@ public class ArdougneDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.CRAFTING, 10),
 			new SkillRequirement(Skill.SMITHING, 91),
 			new SkillRequirement(Skill.FLETCHING, 69));
-		add("Imbue a salve amulet at Nightmare Zone or equip an imbued salve amulet.",
+		add("Imbue a Salve amulet at Nightmare Zone, or equip a Salve amulet that was imbued there.",
 			new QuestRequirement(Quest.HAUNTED_MINE));
 		add("Pick some Torstol from the patch north of Ardougne.",
 			new SkillRequirement(Skill.FARMING, 85));

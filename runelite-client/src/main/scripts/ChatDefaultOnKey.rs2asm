@@ -1027,7 +1027,7 @@ LABEL828:
    if_icmpeq              LABEL832
    jump                   LABEL877
 LABEL832:
-   iconst                 40697936
+   iconst                 40697938
    iconst                 1
    cc_find               
    iconst                 1

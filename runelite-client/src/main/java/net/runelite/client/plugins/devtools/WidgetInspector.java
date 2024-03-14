@@ -32,6 +32,7 @@ import com.google.inject.Singleton;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.lang.reflect.Field;
 import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -57,13 +58,12 @@ import net.runelite.api.MenuEntry;
 import net.runelite.api.SpriteID;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetConfig;
-import net.runelite.api.widgets.WidgetInfo;
-import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
-import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
 import net.runelite.api.widgets.WidgetType;
+import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
@@ -75,7 +75,7 @@ import net.runelite.client.util.ColorUtil;
 @Singleton
 class WidgetInspector extends DevToolsFrame
 {
-	private static final Map<Integer, WidgetInfo> widgetIdMap = new HashMap<>();
+	private static final Map<Integer, String> widgetNames = new HashMap<>();
 
 	static final Color SELECTED_WIDGET_COLOR = Color.CYAN;
 	private static final float SELECTED_WIDGET_HUE;
@@ -326,20 +326,26 @@ class WidgetInspector extends DevToolsFrame
 		});
 	}
 
-	static WidgetInfo getWidgetInfo(int packedId)
+	static String getWidgetName(int componentId)
 	{
-		if (widgetIdMap.isEmpty())
+		if (widgetNames.isEmpty())
 		{
-			//Initialize map here so it doesn't create the index
+			//Initialize map here, so it doesn't create the index
 			//until it's actually needed.
-			WidgetInfo[] widgets = WidgetInfo.values();
-			for (WidgetInfo w : widgets)
+			try
 			{
-				widgetIdMap.put(w.getPackedId(), w);
+				for (Field f : ComponentID.class.getDeclaredFields())
+				{
+					widgetNames.put(f.getInt(null), f.getName());
+				}
+			}
+			catch (IllegalAccessException ex)
+			{
+				log.error("error setting up widget names", ex);
 			}
 		}
 
-		return widgetIdMap.get(packedId);
+		return widgetNames.get(componentId);
 	}
 
 	@Override
@@ -386,7 +392,7 @@ class WidgetInspector extends DevToolsFrame
 		removePickerWidget();
 
 		int x = 10, y = 2;
-		Widget parent = client.getWidget(WidgetInfo.MINIMAP_ORBS);
+		Widget parent = client.getWidget(ComponentID.MINIMAP_CONTAINER);
 		if (parent == null)
 		{
 			Widget[] roots = client.getWidgetRoots();
@@ -404,7 +410,7 @@ class WidgetInspector extends DevToolsFrame
 
 		picker = parent.createChild(-1, WidgetType.GRAPHIC);
 
-		log.info("Picker is {}.{} [{}]", TO_GROUP(picker.getId()), TO_CHILD(picker.getId()), picker.getIndex());
+		log.info("Picker is {}.{} [{}]", WidgetUtil.componentToInterface(picker.getId()), WidgetUtil.componentToId(picker.getId()), picker.getIndex());
 
 		picker.setSpriteId(SpriteID.MOBILE_FINGER_ON_INTERFACE);
 		picker.setOriginalWidth(15);
@@ -470,7 +476,7 @@ class WidgetInspector extends DevToolsFrame
 			{
 				continue;
 			}
-			String name = TO_GROUP(entry.getParam1()) + "." + TO_CHILD(entry.getParam1());
+			String name = WidgetUtil.componentToInterface(entry.getParam1()) + "." + WidgetUtil.componentToId(entry.getParam1());
 
 			if (entry.getParam0() != -1)
 			{
@@ -509,17 +515,17 @@ class WidgetInspector extends DevToolsFrame
 	public static String getWidgetIdentifier(Widget widget)
 	{
 		int id = widget.getId();
-		String str = TO_GROUP(id) + "." + TO_CHILD(id);
+		String str = WidgetUtil.componentToInterface(id) + "." + WidgetUtil.componentToId(id);
 
 		if (widget.getIndex() != -1)
 		{
 			str += "[" + widget.getIndex() + "]";
 		}
 
-		WidgetInfo info = WidgetInspector.getWidgetInfo(id);
-		if (info != null)
+		var name = getWidgetName(id);
+		if (name != null)
 		{
-			str += " " + info.name();
+			str += " " + name;
 		}
 
 		return str;

@@ -36,9 +36,10 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.widgets.InterfaceID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.itemstats.potions.PotionDuration;
 import net.runelite.client.ui.JagexColors;
@@ -97,12 +98,12 @@ public class ItemStatOverlay extends Overlay
 			return null;
 		}
 
-		final int group = WidgetInfo.TO_GROUP(widget.getId());
+		final int group = WidgetUtil.componentToInterface(widget.getId());
 		int itemId = -1;
 
-		if (group == WidgetInfo.EQUIPMENT.getGroupId() ||
+		if (group == InterfaceID.EQUIPMENT ||
 			// For bank worn equipment, check widget parent to differentiate from normal bank items
-			(group == WidgetID.BANK_GROUP_ID && widget.getParentId() == WidgetInfo.BANK_EQUIPMENT_CONTAINER.getId()))
+			(group == InterfaceID.BANK && widget.getParentId() == ComponentID.BANK_INVENTORY_EQUIPMENT_ITEM_CONTAINER))
 		{
 			final Widget widgetItem = widget.getChild(1);
 			if (widgetItem != null)
@@ -110,12 +111,12 @@ public class ItemStatOverlay extends Overlay
 				itemId = widgetItem.getItemId();
 			}
 		}
-		else if (widget.getId() == WidgetInfo.INVENTORY.getId()
-			|| group == WidgetInfo.EQUIPMENT_INVENTORY_ITEMS_CONTAINER.getGroupId()
-			|| widget.getId() == WidgetInfo.BANK_ITEM_CONTAINER.getId() && config.showStatsInBank()
-			|| group == WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getGroupId() && config.showStatsInBank()
-			|| widget.getId() == WidgetInfo.GROUP_STORAGE_ITEM_CONTAINER.getId() && config.showStatsInBank()
-			|| group == WidgetID.GROUP_STORAGE_INVENTORY_GROUP_ID && config.showStatsInBank())
+		else if (widget.getId() == ComponentID.INVENTORY_CONTAINER
+			|| group == InterfaceID.EQUIPMENT_INVENTORY
+			|| widget.getId() == ComponentID.BANK_ITEM_CONTAINER && config.showStatsInBank()
+			|| group == InterfaceID.BANK_INVENTORY && config.showStatsInBank()
+			|| widget.getId() == ComponentID.GROUP_STORAGE_ITEM_CONTAINER && config.showStatsInBank()
+			|| group == InterfaceID.GROUP_STORAGE_INVENTORY && config.showStatsInBank())
 		{
 			itemId = widget.getItemId();
 		}

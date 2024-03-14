@@ -88,20 +88,9 @@ class HerbiboarOverlay extends Overlay
 		// Draw trail objects (mushrooms, mud, etc)
 		if (config.isObjectShown() && !(finishId > 0 || currentGroup == null))
 		{
-			if (plugin.isRuleApplicable())
-			{
-				WorldPoint correct = Iterables.getLast(plugin.getCurrentPath()).getLocation();
-				TileObject object = plugin.getTrailObjects().get(correct);
-				drawObjectLocation(graphics, object, config.getObjectColor());
-			}
-			else
-			{
-				for (WorldPoint trailLoc : HerbiboarSearchSpot.getGroupLocations(plugin.getCurrentGroup()))
-				{
-					TileObject object = plugin.getTrailObjects().get(trailLoc);
-					drawObjectLocation(graphics, object, config.getObjectColor());
-				}
-			}
+			WorldPoint correct = Iterables.getLast(plugin.getCurrentPath()).getLocation();
+			TileObject object = plugin.getTrailObjects().get(correct);
+			drawObjectLocation(graphics, object, config.getObjectColor());
 		}
 
 		// Draw finish tunnels

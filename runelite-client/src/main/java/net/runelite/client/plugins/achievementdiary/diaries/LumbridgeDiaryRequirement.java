@@ -92,7 +92,7 @@ public class LumbridgeDiaryRequirement extends GenericDiaryRequirement
 		add("Squeeze past the jutting wall on your way to the cosmic altar.",
 			new SkillRequirement(Skill.AGILITY, 46),
 			new QuestRequirement(Quest.LOST_CITY));
-		add("Craft 56 Cosmic runes simultaneously from Essence.",
+		add("Craft 56 Cosmic runes simultaneously from Essence without the use of Extracts.",
 			new SkillRequirement(Skill.RUNECRAFT, 59),
 			new QuestRequirement(Quest.LOST_CITY));
 		add("Travel from Lumbridge to Edgeville on a Waka Canoe.",
@@ -126,7 +126,7 @@ public class LumbridgeDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.WOODCUTTING, 75));
 		add("Smith an Adamant platebody down Draynor sewer.",
 			new SkillRequirement(Skill.SMITHING, 88));
-		add("Craft 140 or more Water runes at once from Essence.",
+		add("Craft 140 or more Water runes simultaneously from Essence without the use of Extracts.",
 			new SkillRequirement(Skill.RUNECRAFT, 76));
 	}
 }

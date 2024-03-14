@@ -32,7 +32,7 @@ import javax.swing.PopupFactory;
  * Popup factory for Java 11 which forces heavyweight popups. Lightweight popups do not render correctly
  * over AWT canvases on OSX.
  */
-class MacOSPopupFactory extends PopupFactory
+public class MacOSPopupFactory extends PopupFactory
 {
 	@Override
 	protected Popup getPopup(Component owner, Component contents, int x, int y, boolean isHeavyWeightPopup) throws IllegalArgumentException

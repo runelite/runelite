@@ -36,10 +36,9 @@ import net.runelite.api.ItemID;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.widgets.InterfaceID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
-import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
+import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -147,14 +146,14 @@ public class ExaminePlugin extends Plugin
 
 	private int[] findItemFromWidget(int widgetId, int childIdx)
 	{
-		final int widgetGroup = TO_GROUP(widgetId);
+		final int widgetGroup = WidgetUtil.componentToInterface(widgetId);
 		final Widget widget = client.getWidget(widgetId);
 		if (widget == null)
 		{
 			return null;
 		}
 
-		if (WidgetInfo.EQUIPMENT.getGroupId() == widgetGroup)
+		if (InterfaceID.EQUIPMENT == widgetGroup)
 		{
 			Widget widgetItem = widget.getChild(1);
 			if (widgetItem != null)
@@ -162,7 +161,7 @@ public class ExaminePlugin extends Plugin
 				return new int[]{widgetItem.getItemQuantity(), widgetItem.getItemId()};
 			}
 		}
-		else if (WidgetInfo.SMITHING_INVENTORY_ITEMS_CONTAINER.getGroupId() == widgetGroup)
+		else if (InterfaceID.SMITHING == widgetGroup)
 		{
 			Widget widgetItem = widget.getChild(2);
 			if (widgetItem != null)
@@ -170,7 +169,7 @@ public class ExaminePlugin extends Plugin
 				return new int[]{widgetItem.getItemQuantity(), widgetItem.getItemId()};
 			}
 		}
-		else if (WidgetID.SHOP_GROUP_ID == widgetGroup)
+		else if (InterfaceID.SHOP == widgetGroup)
 		{
 			Widget widgetItem = widget.getChild(childIdx);
 			if (widgetItem != null)

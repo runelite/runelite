@@ -59,7 +59,7 @@ public class NpcManager
 		Index index = store.getIndex(IndexType.CONFIGS);
 		Archive archive = index.getArchive(ConfigType.NPC.getId());
 
-		loader.setRev210HeadIcons(archive.getRevision() >= NpcLoader.REV_210_NPC_ARCHIVE_REV);
+		loader.configureForRevision(archive.getRevision());
 
 		byte[] archiveData = storage.loadArchive(archive);
 		ArchiveFiles files = archive.getFiles(archiveData);

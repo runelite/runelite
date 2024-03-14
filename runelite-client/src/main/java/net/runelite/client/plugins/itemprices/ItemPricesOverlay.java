@@ -36,8 +36,9 @@ import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -48,13 +49,13 @@ import net.runelite.client.util.QuantityFormatter;
 
 class ItemPricesOverlay extends Overlay
 {
-	private static final int INVENTORY_ITEM_WIDGETID = WidgetInfo.INVENTORY.getPackedId();
-	private static final int BANK_INVENTORY_ITEM_WIDGETID = WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER.getPackedId();
-	private static final int BANK_ITEM_WIDGETID = WidgetInfo.BANK_ITEM_CONTAINER.getPackedId();
-	private static final int EXPLORERS_RING_ITEM_WIDGETID = WidgetInfo.EXPLORERS_RING_ALCH_INVENTORY.getPackedId();
-	private static final int SEED_VAULT_ITEM_WIDGETID = WidgetInfo.SEED_VAULT_ITEM_CONTAINER.getPackedId();
-	private static final int SEED_VAULT_INVENTORY_ITEM_WIDGETID = WidgetInfo.SEED_VAULT_INVENTORY_ITEMS_CONTAINER.getPackedId();
-	private static final int POH_TREASURE_CHEST_INVENTORY_ITEM_WIDGETID = WidgetInfo.POH_TREASURE_CHEST_INVENTORY_CONTAINER.getPackedId();
+	private static final int INVENTORY_ITEM_WIDGETID = ComponentID.INVENTORY_CONTAINER;
+	private static final int BANK_INVENTORY_ITEM_WIDGETID = ComponentID.BANK_INVENTORY_ITEM_CONTAINER;
+	private static final int BANK_ITEM_WIDGETID = ComponentID.BANK_ITEM_CONTAINER;
+	private static final int EXPLORERS_RING_ITEM_WIDGETID = ComponentID.EXPLORERS_RING_INVENTORY;
+	private static final int SEED_VAULT_ITEM_WIDGETID = ComponentID.SEED_VAULT_ITEM_CONTAINER;
+	private static final int SEED_VAULT_INVENTORY_ITEM_WIDGETID = ComponentID.SEED_VAULT_INVENTORY_ITEM_CONTAINER;
+	private static final int POH_TREASURE_CHEST_INVENTORY_ITEM_WIDGETID = ComponentID.POH_TREASURE_CHEST_INV_CONTAINER;
 
 	private final Client client;
 	private final ItemPricesConfig config;
@@ -92,7 +93,7 @@ class ItemPricesOverlay extends Overlay
 		final MenuEntry menuEntry = menuEntries[last];
 		final MenuAction action = menuEntry.getType();
 		final int widgetId = menuEntry.getParam1();
-		final int groupId = WidgetInfo.TO_GROUP(widgetId);
+		final int groupId = WidgetUtil.componentToInterface(widgetId);
 		final boolean isAlching = menuEntry.getOption().equals("Cast") && menuEntry.getTarget().contains("High Level Alchemy");
 
 		// Tooltip action type handling
@@ -100,7 +101,7 @@ class ItemPricesOverlay extends Overlay
 		{
 			case WIDGET_TARGET_ON_WIDGET:
 				// Check target widget is the inventory
-				if (menuEntry.getWidget().getId() != WidgetInfo.INVENTORY.getId())
+				if (menuEntry.getWidget().getId() != ComponentID.INVENTORY_CONTAINER)
 				{
 					break;
 				}
@@ -123,7 +124,7 @@ class ItemPricesOverlay extends Overlay
 				break;
 			case WIDGET_TARGET:
 				// Check that this is the inventory
-				if (menuEntry.getWidget().getId() == WidgetInfo.INVENTORY.getId())
+				if (menuEntry.getWidget().getId() == ComponentID.INVENTORY_CONTAINER)
 				{
 					addTooltip(menuEntry, isAlching, groupId);
 				}
@@ -137,22 +138,22 @@ class ItemPricesOverlay extends Overlay
 		// Item tooltip values
 		switch (groupId)
 		{
-			case WidgetID.EXPLORERS_RING_ALCH_GROUP_ID:
+			case InterfaceID.EXPLORERS_RING:
 				if (!config.showWhileAlching())
 				{
 					return;
 				}
-			case WidgetID.INVENTORY_GROUP_ID:
-			case WidgetID.POH_TREASURE_CHEST_INVENTORY_GROUP_ID:
+			case InterfaceID.INVENTORY:
+			case InterfaceID.POH_TREASURE_CHEST_INV:
 				if (config.hideInventory() && (!config.showWhileAlching() || !isAlching))
 				{
 					return;
 				}
 				// FALLTHROUGH
-			case WidgetID.BANK_GROUP_ID:
-			case WidgetID.BANK_INVENTORY_GROUP_ID:
-			case WidgetID.SEED_VAULT_GROUP_ID:
-			case WidgetID.SEED_VAULT_INVENTORY_GROUP_ID:
+			case InterfaceID.BANK:
+			case InterfaceID.BANK_INVENTORY:
+			case InterfaceID.SEED_VAULT:
+			case InterfaceID.SEED_VAULT_INVENTORY:
 				// Make tooltip
 				final String text = makeValueTooltip(menuEntry);
 				if (text != null)

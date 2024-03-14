@@ -33,19 +33,22 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.HealthBar;
+import net.runelite.api.MenuAction;
+import net.runelite.api.MenuEntry;
+import net.runelite.api.Player;
 import net.runelite.api.SpriteID;
 import net.runelite.api.SpritePixels;
 import net.runelite.api.events.BeforeMenuRender;
-import net.runelite.api.events.BeforeRender;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.MenuOpened;
+import net.runelite.api.events.PostClientTick;
 import net.runelite.api.events.PostHealthBar;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -83,7 +86,7 @@ public class InterfaceStylesPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		clientThread.invoke(this::updateAllOverrides);
+		queueUpdateAllOverrides();
 	}
 
 	@Override
@@ -99,11 +102,85 @@ public class InterfaceStylesPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	{
+		if (gameStateChanged.getGameState() == GameState.STARTING)
+		{
+			queueUpdateAllOverrides();
+		}
+	}
+
+	private void queueUpdateAllOverrides()
+	{
+		clientThread.invoke(() ->
+		{
+			// Cross sprites and widget sprite cache are not setup until login screen
+			if (client.getGameState().getState() < GameState.LOGIN_SCREEN.getState())
+			{
+				return false;
+			}
+			updateAllOverrides();
+			return true;
+		});
+	}
+
+	@Subscribe
 	public void onConfigChanged(ConfigChanged config)
 	{
 		if (config.getGroup().equals("interfaceStyles"))
 		{
 			clientThread.invoke(this::updateAllOverrides);
+		}
+	}
+
+	// Use a higher priority so that player menu entries added by other sources are added to the player's submenu
+	@Subscribe(priority = 1)
+	public void onMenuOpened(MenuOpened event)
+	{
+		if (config.condensePlayerOptions())
+		{
+			condensePlayerOptions();
+		}
+	}
+
+	private void condensePlayerOptions()
+	{
+		MenuEntry[] menuEntries = client.getMenuEntries();
+		MenuEntry parentMenu = null;
+		Player prev = null;
+		for (int i = menuEntries.length - 1; i >= 0; --i)
+		{
+			MenuEntry menuEntry = menuEntries[i];
+			MenuAction type = menuEntry.getType();
+
+			Player player = menuEntry.getPlayer();
+			if (player != null && type != MenuAction.ITEM_USE_ON_PLAYER && type != MenuAction.WIDGET_TARGET_ON_PLAYER)
+			{
+				if (prev != player)
+				{
+					// This works by making the top most player menu the submenu, then adding a new
+					// menu with a copy of what this one was.
+					MenuEntry copy = client.createMenuEntry(-1)
+						.setIdentifier(menuEntry.getIdentifier())
+						.setOption(menuEntry.getOption())
+						.setTarget(menuEntry.getTarget())
+						.setType(menuEntry.getType())
+						.setParam0(menuEntry.getParam0())
+						.setParam1(menuEntry.getParam1())
+						.setDeprioritized(menuEntry.isDeprioritized());
+
+					menuEntry.setOption("");
+					menuEntry.setType(MenuAction.RUNELITE_SUBMENU);
+					menuEntry.setDeprioritized(false);
+
+					parentMenu = menuEntry;
+					menuEntry = copy;
+				}
+
+				menuEntry.setParent(parentMenu);
+			}
+
+			prev = player;
 		}
 	}
 
@@ -119,7 +196,7 @@ public class InterfaceStylesPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onBeforeRender(BeforeRender event)
+	public void onPostClientTick(PostClientTick event)
 	{
 		adjustWidgetDimensions();
 	}
@@ -141,22 +218,6 @@ public class InterfaceStylesPlugin extends Plugin
 			// Increase padding to show some more green at very low hp percentages
 			healthBar.setPadding(override.getPadding());
 		}
-	}
-
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
-	{
-		if (gameStateChanged.getGameState() != GameState.LOGIN_SCREEN)
-		{
-			return;
-		}
-
-		/*
-		 * The cross sprites aren't loaded yet when the initial config change event is received.
-		 * So run the overriding for cross sprites when we reach the login screen,
-		 * at which point the cross sprites will have been loaded.
-		 */
-		overrideCrossSprites();
 	}
 
 	private void updateAllOverrides()
@@ -188,6 +249,11 @@ public class InterfaceStylesPlugin extends Plugin
 	private void overrideSprites()
 	{
 		final Skin configuredSkin = config.skin();
+		if (configuredSkin == Skin.DEFAULT)
+		{
+			return;
+		}
+
 		for (SpriteOverride spriteOverride : SpriteOverride.values())
 		{
 			for (Skin skin : spriteOverride.getSkin())
@@ -226,6 +292,11 @@ public class InterfaceStylesPlugin extends Plugin
 	private void overrideWidgetSprites()
 	{
 		final Skin configuredSkin = config.skin();
+		if (configuredSkin == Skin.DEFAULT)
+		{
+			return;
+		}
+
 		for (WidgetOverride widgetOverride : WidgetOverride.values())
 		{
 			if (widgetOverride.getSkin() == configuredSkin
@@ -239,9 +310,9 @@ public class InterfaceStylesPlugin extends Plugin
 
 				if (spritePixels != null)
 				{
-					for (WidgetInfo widgetInfo : widgetOverride.getWidgetInfo())
+					for (int widgetInfo : widgetOverride.getWidgetInfo())
 					{
-						client.getWidgetSpriteOverrides().put(widgetInfo.getPackedId(), spritePixels);
+						client.getWidgetSpriteOverrides().put(widgetInfo, spritePixels);
 					}
 				}
 			}
@@ -252,9 +323,9 @@ public class InterfaceStylesPlugin extends Plugin
 	{
 		for (WidgetOverride widgetOverride : WidgetOverride.values())
 		{
-			for (WidgetInfo widgetInfo : widgetOverride.getWidgetInfo())
+			for (int widgetInfo : widgetOverride.getWidgetInfo())
 			{
-				client.getWidgetSpriteOverrides().remove(widgetInfo.getPackedId());
+				client.getWidgetSpriteOverrides().remove(widgetInfo);
 			}
 		}
 	}
@@ -277,14 +348,20 @@ public class InterfaceStylesPlugin extends Plugin
 
 	private void adjustWidgetDimensions()
 	{
+		var skin = config.skin();
+		if (skin == Skin.DEFAULT)
+		{
+			return;
+		}
+
 		for (WidgetOffset widgetOffset : WidgetOffset.values())
 		{
-			if (widgetOffset.getSkin() != config.skin())
+			if (widgetOffset.getSkin() != skin)
 			{
 				continue;
 			}
 
-			Widget widget = client.getWidget(widgetOffset.getWidgetInfo());
+			Widget widget = client.getWidget(widgetOffset.getComponent());
 
 			if (widget != null)
 			{
@@ -391,7 +468,7 @@ public class InterfaceStylesPlugin extends Plugin
 	{
 		for (WidgetOffset widgetOffset : WidgetOffset.values())
 		{
-			Widget widget = client.getWidget(widgetOffset.getWidgetInfo());
+			Widget widget = client.getWidget(widgetOffset.getComponent());
 
 			if (widget != null)
 			{

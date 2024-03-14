@@ -26,6 +26,7 @@ package net.runelite.client.plugins.defaultworld;
 
 import com.google.inject.Provides;
 import javax.inject.Inject;
+import javax.inject.Named;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -33,13 +34,13 @@ import net.runelite.api.events.WorldChanged;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.events.ProfileChanged;
 import net.runelite.client.game.WorldService;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.WorldUtil;
 import net.runelite.http.api.worlds.World;
 import net.runelite.http.api.worlds.WorldResult;
+import net.runelite.http.api.worlds.WorldType;
 
 @PluginDescriptor(
 	name = "Default World",
@@ -61,6 +62,10 @@ public class DefaultWorldPlugin extends Plugin
 	@Inject
 	private WorldService worldService;
 
+	@Inject
+	@Named("safeMode")
+	private boolean safeMode;
+
 	@Override
 	protected void startUp()
 	{
@@ -76,21 +81,10 @@ public class DefaultWorldPlugin extends Plugin
 		});
 	}
 
-	@Override
-	protected void shutDown()
-	{
-	}
-
 	@Provides
 	DefaultWorldConfig getConfig(ConfigManager configManager)
 	{
 		return configManager.getConfig(DefaultWorldConfig.class);
-	}
-
-	@Subscribe
-	public void onProfileChanged(ProfileChanged profileChanged)
-	{
-		clientThread.invokeLater(this::applyWorld);
 	}
 
 	@Subscribe
@@ -103,7 +97,7 @@ public class DefaultWorldPlugin extends Plugin
 
 	private void applyWorld()
 	{
-		if (client.getGameState() != GameState.LOGIN_SCREEN)
+		if (client.getGameState() != GameState.LOGIN_SCREEN || safeMode)
 		{
 			return;
 		}
@@ -129,6 +123,13 @@ public class DefaultWorldPlugin extends Plugin
 		if (world == null)
 		{
 			log.warn("World {} not found.", correctedWorld);
+			return;
+		}
+
+		if (world.getTypes().contains(WorldType.BETA_WORLD) ||
+			world.getTypes().contains(WorldType.NOSAVE_MODE))
+		{
+			log.debug("Skipping world {}", world);
 			return;
 		}
 

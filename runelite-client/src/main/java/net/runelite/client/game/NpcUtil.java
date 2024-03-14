@@ -130,6 +130,7 @@ public class NpcUtil
 			case NpcID.RUNITE_GOLEM:
 			case NpcID.RUNITE_ROCKS:
 			case NpcID.STRANGE_CREATURE_12076: // Secrets of the North transitioning to Jhallan
+			case NpcID.BOUNCER_3509:
 			// Agrith Naar restores health upon reaching 0hp if the player does not have Silverlight
 			// equipped, or moved away immediately after applying the killing blow.
 			case NpcID.AGRITH_NAAR:
@@ -231,6 +232,7 @@ public class NpcUtil
 			case NpcID.AWAKENED_ALTAR_7290:
 			case NpcID.AWAKENED_ALTAR_7292:
 			case NpcID.AWAKENED_ALTAR_7294:
+			case NpcID.BOUNCER_3508:
 				npc.setDead(false);
 				break;
 			default:

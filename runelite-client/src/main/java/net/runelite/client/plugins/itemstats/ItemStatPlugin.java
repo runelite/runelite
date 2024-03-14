@@ -47,9 +47,9 @@ import net.runelite.api.Varbits;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetTextAlignment;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
@@ -135,8 +135,8 @@ public class ItemStatPlugin extends Plugin
 	public void onGameTick(GameTick event)
 	{
 		if (itemInformationTitle != null && config.geStats()
-			&& (client.getWidget(WidgetInfo.GRAND_EXCHANGE_WINDOW_CONTAINER) == null
-			|| client.getWidget(WidgetInfo.GRAND_EXCHANGE_WINDOW_CONTAINER).isHidden()))
+			&& (client.getWidget(ComponentID.GRAND_EXCHANGE_WINDOW_CONTAINER) == null
+			|| client.getWidget(ComponentID.GRAND_EXCHANGE_WINDOW_CONTAINER).isHidden()))
 		{
 			resetGEInventory();
 		}
@@ -180,7 +180,7 @@ public class ItemStatPlugin extends Plugin
 			return;
 		}
 
-		final Widget geInv = client.getWidget(WidgetInfo.GRAND_EXCHANGE_INVENTORY_ITEMS_CONTAINER);
+		final Widget geInv = client.getWidget(ComponentID.GRAND_EXCHANGE_INVENTORY_INVENTORY_ITEM_CONTAINER);
 
 		if (geInv == null)
 		{
@@ -390,7 +390,7 @@ public class ItemStatPlugin extends Plugin
 			itemInformationTitle = null;
 		}
 
-		final Widget geInv = client.getWidget(WidgetInfo.GRAND_EXCHANGE_INVENTORY_ITEMS_CONTAINER);
+		final Widget geInv = client.getWidget(ComponentID.GRAND_EXCHANGE_INVENTORY_INVENTORY_ITEM_CONTAINER);
 		if (geInv != null)
 		{
 			geInv.setHidden(false);
@@ -415,16 +415,16 @@ public class ItemStatPlugin extends Plugin
 		{
 			if (client.getVarbitValue(Varbits.SIDE_PANELS) == 1)
 			{
-				return client.getWidget(WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY_CONTAINER);
+				return client.getWidget(ComponentID.RESIZABLE_VIEWPORT_BOTTOM_LINE_INVENTORY_CONTAINER);
 			}
 			else
 			{
-				return client.getWidget(WidgetInfo.RESIZABLE_VIEWPORT_INVENTORY_CONTAINER);
+				return client.getWidget(ComponentID.RESIZABLE_VIEWPORT_INVENTORY_CONTAINER);
 			}
 		}
 		else
 		{
-			return client.getWidget(WidgetInfo.FIXED_VIEWPORT_INVENTORY_CONTAINER);
+			return client.getWidget(ComponentID.FIXED_VIEWPORT_INVENTORY_CONTAINER);
 		}
 	}
 }

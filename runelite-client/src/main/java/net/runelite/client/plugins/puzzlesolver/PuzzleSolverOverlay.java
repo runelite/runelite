@@ -43,12 +43,12 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import static net.runelite.api.SpriteID.MINIMAP_DESTINATION_FLAG;
-import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver.BLANK_TILE_VALUE;
-import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver.DIMENSION;
+import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver;
+import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver.BLANK_TILE_VALUE;
+import static net.runelite.client.plugins.puzzlesolver.solver.PuzzleSolver.DIMENSION;
 import net.runelite.client.plugins.puzzlesolver.solver.PuzzleState;
 import net.runelite.client.plugins.puzzlesolver.solver.heuristics.ManhattanDistance;
 import net.runelite.client.plugins.puzzlesolver.solver.pathfinding.IDAStar;
@@ -56,7 +56,6 @@ import net.runelite.client.plugins.puzzlesolver.solver.pathfinding.IDAStarMM;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.BackgroundComponent;
 import net.runelite.client.ui.overlay.components.TextComponent;
@@ -89,7 +88,7 @@ public class PuzzleSolverOverlay extends Overlay
 	public PuzzleSolverOverlay(Client client, PuzzleSolverConfig config, ScheduledExecutorService executorService, SpriteManager spriteManager)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
-		setPriority(OverlayPriority.HIGH);
+		setPriority(PRIORITY_HIGH);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		this.client = client;
 		this.config = config;
@@ -120,7 +119,7 @@ public class PuzzleSolverOverlay extends Overlay
 			}
 		}
 
-		Widget puzzleBox = client.getWidget(WidgetInfo.PUZZLE_BOX);
+		Widget puzzleBox = client.getWidget(ComponentID.PUZZLE_BOX_VISIBLE_BOX);
 
 		if (puzzleBox == null)
 		{

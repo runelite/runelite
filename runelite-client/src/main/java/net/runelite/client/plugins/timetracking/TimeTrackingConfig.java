@@ -37,7 +37,6 @@ public interface TimeTrackingConfig extends Config
 	String FARM_TICK_OFFSET_PRECISION = "farmTickOffsetPrecision";
 	String AUTOWEED = "autoweed";
 	String BIRD_HOUSE = "birdhouse";
-	String BOTANIST = "botanist";
 	String TIMERS = "timers";
 	String STOPWATCHES = "stopwatches";
 	String PREFER_SOONEST = "preferSoonest";

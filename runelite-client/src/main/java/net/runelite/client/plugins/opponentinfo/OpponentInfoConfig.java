@@ -63,4 +63,15 @@ public interface OpponentInfoConfig extends Config
 	{
 		return false;
 	}
+
+	@ConfigItem(
+		keyName = "showOpponentHealthOverlay",
+		name = "Show opponent health overlay",
+		description = "Shows a health bar overlay when a boss health overlay is not present",
+		position = 4
+	)
+	default boolean showOpponentHealthOverlay()
+	{
+		return true;
+	}
 }

@@ -32,7 +32,6 @@ import net.runelite.api.Player;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.OverlayPanel;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.LineComponent;
 
 class KourendLibraryTutorialOverlay extends OverlayPanel
@@ -60,7 +59,7 @@ class KourendLibraryTutorialOverlay extends OverlayPanel
 		completeMessageComponent = LineComponent.builder().left("All books found.").build();
 		sidebarMessageComponent = LineComponent.builder().left("Locations are in the sidebar.").build();
 
-		setPriority(OverlayPriority.LOW);
+		setPriority(PRIORITY_LOW);
 		setPosition(OverlayPosition.TOP_LEFT);
 	}
 

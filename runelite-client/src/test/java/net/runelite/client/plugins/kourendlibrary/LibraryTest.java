@@ -27,7 +27,6 @@ package net.runelite.client.plugins.kourendlibrary;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.testing.fieldbinder.BoundFieldModule;
-import net.runelite.api.coords.WorldPoint;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,32 +45,20 @@ public class LibraryTest
 	@Test
 	public void testVarlamoreEnvoyFindingProcess()
 	{
-		library.mark(new WorldPoint(1610, 3799, 1), null);
-		library.mark(new WorldPoint(1608, 3799, 1), null);
-		library.mark(new WorldPoint(1615, 3799, 1), null);
-		library.mark(new WorldPoint(1616, 3799, 1), null);
-		library.mark(new WorldPoint(1621, 3799, 1), null);
-		library.mark(new WorldPoint(1624, 3796, 1), null);
-		library.mark(new WorldPoint(1624, 3792, 1), null);
-		library.mark(new WorldPoint(1624, 3791, 1), null);
-		library.mark(new WorldPoint(1623, 3789, 1), null);
-
 		assertEquals(SolvedState.NO_DATA, library.getState());
-
-		library.mark(new WorldPoint(1621, 3789, 1), Book.WINTERTODT_PARABLE);
-
+		library.mark(0, Book.RADAS_JOURNEY);
 		assertEquals(SolvedState.INCOMPLETE, library.getState());
-
-		library.mark(new WorldPoint(1618, 3799, 2), null);
-		library.mark(new WorldPoint(1613, 3792, 2), null);
-		library.mark(new WorldPoint(1618, 3790, 2), Book.TRANSPORTATION_INCANTATIONS);
-		library.mark(new WorldPoint(1609, 3816, 2), Book.RICKTORS_DIARY_7);
-
+		library.mark(library.step, Book.KILLING_OF_A_KING);
 		assertEquals(SolvedState.COMPLETE, library.getState());
 
 		// The Varlamore Envoy book can be found in this bookcase, but should not cause a state reset if not found
-		library.mark(new WorldPoint(1622, 3816, 2), null);
-
+		library.mark(library.step * 2, null);
 		assertEquals(SolvedState.COMPLETE, library.getState());
+		library.mark(library.step * 2, Book.VARLAMORE_ENVOY);
+		assertEquals(SolvedState.COMPLETE, library.getState());
+
+		// not valid, should reset
+		library.mark(library.step * 2, Book.TRANSPORTATION_INCANTATIONS);
+		assertEquals(SolvedState.INCOMPLETE, library.getState());
 	}
 }

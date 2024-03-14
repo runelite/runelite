@@ -26,29 +26,25 @@
 package net.runelite.client.ui;
 
 import java.awt.image.BufferedImage;
+import java.util.Comparator;
 import java.util.Map;
 import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Value;
 
 /**
  * UI navigation button.
  */
-@Data
+@Value
 @Builder
-@EqualsAndHashCode(of = {"tooltip"})
 public class NavigationButton
 {
+	static final Comparator<NavigationButton> COMPARATOR = Comparator.comparing(NavigationButton::getPriority)
+		.thenComparing(NavigationButton::getTooltip);
+
 	/**
 	 * Icon of button.
 	 */
 	private final BufferedImage icon;
-
-	/**
-	 * If the button is tab or not
-	 */
-	@Builder.Default
-	private boolean tab = true;
 
 	/**
 	 * Tooltip to show when hovered.
@@ -57,32 +53,22 @@ public class NavigationButton
 	private final String tooltip = "";
 
 	/**
-	 * Button selection state
-	 */
-	private boolean selected;
-
-	/**
 	 * On click action of the button.
 	 */
-	private Runnable onClick;
-
-	/**
-	 * On select action of the button.
-	 */
-	private Runnable onSelect;
+	private final Runnable onClick;
 
 	/**
 	 * Plugin panel, used when expanding and contracting sidebar.
 	 */
-	private PluginPanel panel;
+	private final PluginPanel panel;
 
 	/**
 	 * The order in which the button should be displayed in the side bar. (from lower to higher)
 	 */
-	private int priority;
+	private final int priority;
 
 	/**
 	 * Map of key-value pairs for setting the popup menu
 	 */
-	private Map<String, Runnable> popup;
+	private final Map<String, Runnable> popup;
 }

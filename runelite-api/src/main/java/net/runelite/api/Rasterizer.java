@@ -70,4 +70,8 @@ public interface Rasterizer
 	 * Draws a gouraud shaded filled triangle onto the rasterizer buffer at rasterizer opacity
 	 */
 	void rasterGouraud(int y0, int y1, int y2, int x0, int x1, int x2, int hsl0, int hsl1, int hsl2);
+
+	void setDrawRegion(int x0, int y0, int x1, int x2);
+
+	void resetRasterClipping();
 }

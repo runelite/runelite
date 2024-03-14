@@ -36,9 +36,9 @@ import net.runelite.api.VarClientInt;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.vars.InputType;
+import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
@@ -127,8 +127,8 @@ public class ChatboxPanelManager
 
 		currentInput = input;
 		client.setVarcIntValue(VarClientInt.INPUT_TYPE, InputType.RUNELITE_CHATBOX_PANEL.getType());
-		client.getWidget(WidgetInfo.CHATBOX_TITLE).setHidden(true);
-		client.getWidget(WidgetInfo.CHATBOX_FULL_INPUT).setHidden(true);
+		client.getWidget(ComponentID.CHATBOX_TITLE).setHidden(true);
+		client.getWidget(ComponentID.CHATBOX_FULL_INPUT).setHidden(true);
 
 		Widget c = getContainerWidget();
 		c.deleteAllChildren();
@@ -200,14 +200,14 @@ public class ChatboxPanelManager
 
 	public Widget getContainerWidget()
 	{
-		return client.getWidget(WidgetInfo.CHATBOX_CONTAINER);
+		return client.getWidget(ComponentID.CHATBOX_CONTAINER);
 	}
 
 	public boolean shouldTakeInput()
 	{
 		// the search box on the world map can be focused, and chat input goes there, even
 		// though the chatbox still has its key listener.
-		Widget worldMapSearch = client.getWidget(WidgetInfo.WORLD_MAP_SEARCH);
+		Widget worldMapSearch = client.getWidget(ComponentID.WORLD_MAP_SEARCH);
 		return worldMapSearch == null || client.getVarcIntValue(VarClientInt.WORLD_MAP_SEARCH_FOCUSED) != 1;
 	}
 }

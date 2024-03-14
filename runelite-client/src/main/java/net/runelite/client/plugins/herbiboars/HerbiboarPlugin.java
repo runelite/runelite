@@ -148,7 +148,6 @@ public class HerbiboarPlugin extends Plugin
 	private boolean started;
 	private WorldPoint startPoint;
 	private HerbiboarStart startSpot;
-	private boolean ruleApplicable;
 
 	@Provides
 	HerbiboarConfig provideConfig(ConfigManager configManager)
@@ -232,8 +231,6 @@ public class HerbiboarPlugin extends Plugin
 			startSpot = HerbiboarStart.from(startPoint);
 		}
 
-		ruleApplicable = HerbiboarRule.canApplyRule(startSpot, currentPath);
-
 		if (finished)
 		{
 			resetTrailData();
@@ -268,7 +265,6 @@ public class HerbiboarPlugin extends Plugin
 		started = false;
 		startPoint = null;
 		startSpot = null;
-		ruleApplicable = false;
 	}
 
 	private void clearCache()

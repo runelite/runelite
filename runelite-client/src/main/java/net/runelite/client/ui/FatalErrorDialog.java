@@ -35,6 +35,7 @@ import java.awt.image.BufferedImage;
 import java.net.ConnectException;
 import java.net.UnknownHostException;
 import java.security.GeneralSecurityException;
+import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -51,7 +52,6 @@ import net.runelite.client.RuneLiteProperties;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.VerificationException;
-import org.pushingpixels.substance.internal.SubstanceSynapse;
 
 @Slf4j
 public class FatalErrorDialog extends JDialog
@@ -71,9 +71,9 @@ public class FatalErrorDialog extends JDialog
 
 		try
 		{
-			BufferedImage logo = ImageUtil.loadImageResource(FatalErrorDialog.class, "runelite_transparent.png");
-			setIconImage(logo);
+			setIconImages(Arrays.asList(ClientUI.ICON_128, ClientUI.ICON_16));
 
+			BufferedImage logo = ImageUtil.loadImageResource(FatalErrorDialog.class, "runelite_splash.png");
 			JLabel runelite = new JLabel();
 			runelite.setIcon(new ImageIcon(logo));
 			runelite.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -99,7 +99,6 @@ public class FatalErrorDialog extends JDialog
 
 		JPanel pane = (JPanel) getContentPane();
 		pane.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		pane.putClientProperty(SubstanceSynapse.COLORIZATION_FACTOR, 1.0);
 
 		JPanel leftPane = new JPanel();
 		leftPane.setBackground(ColorScheme.DARKER_GRAY_COLOR);

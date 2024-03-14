@@ -26,6 +26,7 @@ package net.runelite.client.plugins.devtools;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Arrays;
 import javax.swing.JFrame;
 import lombok.AccessLevel;
 import lombok.Setter;
@@ -38,7 +39,7 @@ public class DevToolsFrame extends JFrame
 
 	public DevToolsFrame()
 	{
-		setIconImage(ClientUI.ICON);
+		setIconImages(Arrays.asList(ClientUI.ICON_128, ClientUI.ICON_16));
 
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter()

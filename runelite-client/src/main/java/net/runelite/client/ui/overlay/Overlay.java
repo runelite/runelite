@@ -37,6 +37,8 @@ import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.annotations.Component;
+import net.runelite.api.annotations.Interface;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.components.LayoutableRenderableEntity;
@@ -45,6 +47,12 @@ import net.runelite.client.ui.overlay.components.LayoutableRenderableEntity;
 @Setter
 public abstract class Overlay implements LayoutableRenderableEntity
 {
+	public static final float PRIORITY_LOW = 0f;
+	public static final float PRIORITY_DEFAULT = 0.25f;
+	public static final float PRIORITY_MED = 0.5f;
+	public static final float PRIORITY_HIGH = 0.75f;
+	public static final float PRIORITY_HIGHEST = 1f;
+
 	@Nullable
 	private final Plugin plugin;
 	private Point preferredLocation;
@@ -52,7 +60,11 @@ public abstract class Overlay implements LayoutableRenderableEntity
 	private OverlayPosition preferredPosition;
 	private Rectangle bounds = new Rectangle();
 	private OverlayPosition position = OverlayPosition.TOP_LEFT;
-	private OverlayPriority priority = OverlayPriority.NONE;
+	/**
+	 * The overlay priority, which determines the order the overlay renders in relative
+	 * to other overlays.
+	 */
+	private float priority = PRIORITY_DEFAULT;
 	private OverlayLayer layer = OverlayLayer.UNDER_WIDGETS;
 	private final List<Integer> drawHooks = new ArrayList<>();
 	private final List<OverlayMenuEntry> menuEntries = new ArrayList<>();
@@ -90,6 +102,33 @@ public abstract class Overlay implements LayoutableRenderableEntity
 		this.plugin = plugin;
 	}
 
+	public void setPriority(float priority)
+	{
+		this.priority = priority;
+	}
+
+	public void setPriority(OverlayPriority overlayPriority)
+	{
+		switch (overlayPriority)
+		{
+			case LOW:
+				priority = PRIORITY_LOW;
+				break;
+			case NONE:
+				priority = PRIORITY_DEFAULT;
+				break;
+			case MED:
+				priority = PRIORITY_MED;
+				break;
+			case HIGH:
+				priority = PRIORITY_HIGH;
+				break;
+			case HIGHEST:
+				priority = PRIORITY_HIGHEST;
+				break;
+		}
+	}
+
 	/**
 	 * Overlay name, used for saving the overlay, needs to be unique
 	 *
@@ -108,7 +147,7 @@ public abstract class Overlay implements LayoutableRenderableEntity
 	 * @param interfaceId The interface id
 	 * @see net.runelite.api.widgets.WidgetID
 	 */
-	protected void drawAfterInterface(int interfaceId)
+	protected void drawAfterInterface(@Interface int interfaceId)
 	{
 		drawHooks.add(interfaceId << 16 | 0xffff);
 	}
@@ -141,9 +180,25 @@ public abstract class Overlay implements LayoutableRenderableEntity
 	 * @param layer The layer
 	 * @see WidgetInfo
 	 */
+	@Deprecated
 	protected void drawAfterLayer(WidgetInfo layer)
 	{
 		drawHooks.add(layer.getId());
+	}
+
+	/**
+	 * Configure to draw this overlay after the given layer is drawn. Except
+	 * in rare circumstances, you probably also want to {@link #setLayer(OverlayLayer)} to
+	 * {@link OverlayLayer#MANUAL} to avoid the overlay being drawn a 2nd time during the
+	 * default {@link OverlayLayer#UNDER_WIDGETS} pass.
+	 *
+	 * The layer must be a widget of {@link net.runelite.api.widgets.WidgetType} {@link net.runelite.api.widgets.WidgetType#LAYER}
+	 * @param component The layer
+	 * @see WidgetInfo
+	 */
+	protected void drawAfterLayer(@Component int component)
+	{
+		drawHooks.add(component);
 	}
 
 	public void onMouseOver()

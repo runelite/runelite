@@ -76,7 +76,8 @@ public class RandomEventPlugin extends Plugin
 		NpcID.QUIZ_MASTER_6755,
 		NpcID.RICK_TURPENTINE, NpcID.RICK_TURPENTINE_376,
 		NpcID.SANDWICH_LADY,
-		NpcID.SERGEANT_DAMIEN_6743
+		NpcID.SERGEANT_DAMIEN_6743,
+		NpcID.COUNT_CHECK_12551, NpcID.COUNT_CHECK_12552
 	);
 	private static final Set<String> EVENT_OPTIONS = ImmutableSet.of(
 		"Talk-to",
@@ -230,6 +231,9 @@ public class RandomEventPlugin extends Plugin
 				return config.notifySandwich();
 			case NpcID.FLIPPA_6744:
 				return config.notifyFlippa();
+			case NpcID.COUNT_CHECK_12551:
+			case NpcID.COUNT_CHECK_12552:
+				return config.notifyCountCheck();
 			default:
 				return false;
 		}

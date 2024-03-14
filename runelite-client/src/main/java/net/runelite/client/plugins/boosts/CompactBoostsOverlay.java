@@ -37,7 +37,6 @@ import net.runelite.api.Skill;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.TextComponent;
 import net.runelite.client.util.ImageUtil;
 
@@ -66,7 +65,7 @@ class CompactBoostsOverlay extends Overlay
 		this.plugin = plugin;
 		this.skillIconManager = skillIconManager;
 		setPosition(OverlayPosition.TOP_LEFT);
-		setPriority(OverlayPriority.MED);
+		setPriority(PRIORITY_MED);
 	}
 
 	@Override

@@ -60,11 +60,18 @@ public interface ScriptEvent
 	Object[] getArguments();
 
 	/**
-	 * Gets the menu index of the event
+	 * Gets the menu op of the event
 	 *
-	 * @return the index
+	 * @return the menu op
 	 */
 	int getOp();
+
+	/**
+	 * Set the menu op of the event
+	 *
+	 * @param op
+	 */
+	ScriptEvent setOp(int op);
 
 	/**
 	 * Gets the target of the menu option

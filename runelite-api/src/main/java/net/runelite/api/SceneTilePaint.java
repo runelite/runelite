@@ -46,6 +46,8 @@ public interface SceneTilePaint
 
 	int getTexture();
 
+	boolean isFlat();
+
 	int getBufferOffset();
 	void setBufferOffset(int bufferOffset);
 

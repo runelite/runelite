@@ -48,6 +48,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.ChatPlayer;
 import net.runelite.api.Client;
+import net.runelite.api.EnumID;
 import net.runelite.api.Friend;
 import net.runelite.api.FriendsChatManager;
 import net.runelite.api.FriendsChatMember;
@@ -64,7 +65,9 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WorldListLoad;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -215,15 +218,14 @@ public class WorldHopperPlugin extends Plugin
 
 		// The plugin has its own executor for pings, as it blocks for a long time
 		hopperExecutorService = new ExecutorServiceExceptionLogger(Executors.newSingleThreadScheduledExecutor());
+		// populate initial world list
+		hopperExecutorService.execute(this::updateList);
 		// Run the first-run ping
 		hopperExecutorService.execute(this::pingInitialWorlds);
 
-		// Give some initial delay - this won't run until after pingInitialWorlds finishes from tick() anyway
+		// Give some initial delay - this won't run until after pingInitialWorlds finishes anyway
 		pingFuture = hopperExecutorService.scheduleWithFixedDelay(this::pingNextWorld, 15, 3, TimeUnit.SECONDS);
 		currPingFuture = hopperExecutorService.scheduleWithFixedDelay(this::pingCurrentWorld, 15, 1, TimeUnit.SECONDS);
-
-		// populate initial world list
-		updateList();
 	}
 
 	@Override
@@ -385,11 +387,11 @@ public class WorldHopperPlugin extends Plugin
 		}
 
 		final int componentId = event.getActionParam1();
-		int groupId = WidgetInfo.TO_GROUP(componentId);
+		int groupId = WidgetUtil.componentToInterface(componentId);
 		String option = event.getOption();
 
-		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() || groupId == WidgetInfo.FRIENDS_CHAT.getGroupId()
-			|| componentId == WidgetInfo.CLAN_MEMBER_LIST.getId() || componentId == WidgetInfo.CLAN_GUEST_MEMBER_LIST.getId())
+		if (groupId == InterfaceID.FRIEND_LIST || groupId == InterfaceID.FRIENDS_CHAT
+			|| componentId == ComponentID.CLAN_MEMBERS || componentId == ComponentID.CLAN_GUEST_MEMBERS)
 		{
 			boolean after;
 
@@ -502,7 +504,11 @@ public class WorldHopperPlugin extends Plugin
 		WorldResult worldResult = worldService.getWorlds();
 		if (worldResult != null)
 		{
-			SwingUtilities.invokeLater(() -> panel.populate(worldResult.getWorlds()));
+			clientThread.invokeLater(() ->
+			{
+				var locationEnum = client.getGameState().getState() >= GameState.LOGIN_SCREEN.getState() ? client.getEnum(EnumID.WORLD_LOCATIONS) : null;
+				SwingUtilities.invokeLater(() -> panel.populate(worldResult.getWorlds(), locationEnum));
+			});
 		}
 	}
 
@@ -705,7 +711,7 @@ public class WorldHopperPlugin extends Plugin
 			return;
 		}
 
-		if (client.getWidget(WidgetInfo.WORLD_SWITCHER_LIST) == null)
+		if (client.getWidget(ComponentID.WORLD_SWITCHER_WORLD_LIST) == null)
 		{
 			client.openWorldHopper();
 
@@ -859,7 +865,11 @@ public class WorldHopperPlugin extends Plugin
 
 		int ping = ping(world);
 		log.trace("Ping for world {} is: {}", world.getId(), ping);
-		SwingUtilities.invokeLater(() -> panel.updatePing(world.getId(), ping));
+
+		if (panel.isActive())
+		{
+			SwingUtilities.invokeLater(() -> panel.updatePing(world.getId(), ping));
+		}
 	}
 
 	/**
@@ -881,10 +891,20 @@ public class WorldHopperPlugin extends Plugin
 			return;
 		}
 
-		currentPing = ping(currentWorld);
+		int ping = ping(currentWorld);
 		log.trace("Ping for current world is: {}", currentPing);
 
-		SwingUtilities.invokeLater(() -> panel.updatePing(currentWorld.getId(), currentPing));
+		if (ping < 0)
+		{
+			return;
+		}
+
+		currentPing = ping;
+
+		if (panel.isActive())
+		{
+			SwingUtilities.invokeLater(() -> panel.updatePing(currentWorld.getId(), currentPing));
+		}
 	}
 
 	Integer getStoredPing(World world)

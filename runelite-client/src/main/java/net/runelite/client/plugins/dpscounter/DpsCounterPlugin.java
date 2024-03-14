@@ -88,6 +88,7 @@ public class DpsCounterPlugin extends Plugin
 		OBOR,
 		SARACHNIS,
 		SCORPIA,
+		SCURRIUS, SCURRIUS_7222,
 		SKOTIZO,
 		THERMONUCLEAR_SMOKE_DEVIL,
 		TZKALZUK,

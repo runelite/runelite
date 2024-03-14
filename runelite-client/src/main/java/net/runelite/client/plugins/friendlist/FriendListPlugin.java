@@ -44,8 +44,10 @@ import net.runelite.api.VarPlayer;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.ScriptPostFired;
+import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.widgets.InterfaceID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
@@ -166,10 +168,10 @@ public class FriendListPlugin extends Plugin
 	@Subscribe
 	public void onMenuEntryAdded(MenuEntryAdded event)
 	{
-		final int groupId = WidgetInfo.TO_GROUP(event.getActionParam1());
+		final int groupId = WidgetUtil.componentToInterface(event.getActionParam1());
 
 		// Look for "Message" on friends list
-		if (groupId == WidgetInfo.FRIENDS_LIST.getGroupId() && event.getOption().equals("Message"))
+		if (groupId == InterfaceID.FRIEND_LIST && event.getOption().equals("Message"))
 		{
 			String friend = Text.toJagexName(Text.removeTags(event.getTarget()));
 
@@ -205,7 +207,7 @@ public class FriendListPlugin extends Plugin
 
 	private void setFriendsListTitle(final String title)
 	{
-		Widget friendListTitleWidget = client.getWidget(WidgetInfo.FRIEND_CHAT_TITLE);
+		Widget friendListTitleWidget = client.getWidget(ComponentID.FRIEND_LIST_TITLE);
 		if (friendListTitleWidget != null)
 		{
 			friendListTitleWidget.setText(title);
@@ -214,7 +216,7 @@ public class FriendListPlugin extends Plugin
 
 	private void setIgnoreListTitle(final String title)
 	{
-		Widget ignoreTitleWidget = client.getWidget(WidgetInfo.IGNORE_TITLE);
+		Widget ignoreTitleWidget = client.getWidget(ComponentID.IGNORE_LIST_TITLE);
 		if (ignoreTitleWidget != null)
 		{
 			ignoreTitleWidget.setText(title);

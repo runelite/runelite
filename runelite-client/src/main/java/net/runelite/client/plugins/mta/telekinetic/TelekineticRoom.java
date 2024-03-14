@@ -59,7 +59,7 @@ import net.runelite.api.events.GroundObjectSpawned;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.WallObjectSpawned;
-import net.runelite.api.widgets.WidgetID;
+import net.runelite.api.widgets.InterfaceID;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.mta.MTAConfig;
 import net.runelite.client.plugins.mta.MTARoom;
@@ -214,7 +214,7 @@ public class TelekineticRoom extends MTARoom
 	@Override
 	public boolean inside()
 	{
-		return client.getWidget(WidgetID.MTA_TELEKINETIC_GROUP_ID, 0) != null;
+		return client.getWidget(InterfaceID.MTA_TELEKINETIC, 0) != null;
 	}
 
 	@Override

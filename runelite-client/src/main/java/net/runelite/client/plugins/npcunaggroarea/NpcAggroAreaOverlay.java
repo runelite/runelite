@@ -41,7 +41,6 @@ import net.runelite.api.geometry.Geometry;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
 
 class NpcAggroAreaOverlay extends Overlay
 {
@@ -59,7 +58,7 @@ class NpcAggroAreaOverlay extends Overlay
 		this.plugin = plugin;
 
 		setLayer(OverlayLayer.ABOVE_SCENE);
-		setPriority(OverlayPriority.LOW);
+		setPriority(PRIORITY_LOW);
 		setPosition(OverlayPosition.DYNAMIC);
 	}
 

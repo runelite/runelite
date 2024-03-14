@@ -37,7 +37,6 @@ import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.ImageUtil;
@@ -56,7 +55,7 @@ class PlayerInfoDropOverlay extends Overlay
 		this.config = config;
 		this.client = client;
 		setPosition(OverlayPosition.DYNAMIC);
-		setPriority(OverlayPriority.MED);
+		setPriority(PRIORITY_MED);
 	}
 
 	@Override

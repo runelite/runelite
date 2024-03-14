@@ -58,6 +58,8 @@ import net.runelite.api.events.StatChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.widgets.WidgetID;
 import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
+import net.runelite.api.widgets.InterfaceID;
+import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -568,7 +570,7 @@ public class XpTrackerPlugin extends Plugin
 	{
 		int widgetID = event.getActionParam1();
 
-		if (TO_GROUP(widgetID) != WidgetID.SKILLS_GROUP_ID
+		if (WidgetUtil.componentToInterface(widgetID) != InterfaceID.SKILLS
 			|| !event.getOption().startsWith("View")
 			|| !xpTrackerConfig.skillTabOverlayMenuOptions())
 		{

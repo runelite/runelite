@@ -33,7 +33,6 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -62,18 +61,20 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 	private static final HotColdClue BEGINNER_CLUE = new HotColdClue("Buried beneath the ground, who knows where it's found. Lucky for you, A man called Reldo may have a clue.",
 		"Reldo",
 		"Speak to Reldo to receive a strange device.",
-		new WorldPoint(3211, 3494, 0));
+		new WorldPoint(3211, 3494, 0),
+		true);
 	private static final HotColdClue MASTER_CLUE = new HotColdClue("Buried beneath the ground, who knows where it's found. Lucky for you, A man called Jorral may have a clue.",
 		"Jorral",
 		"Speak to Jorral to receive a strange device.",
-		new WorldPoint(2436, 3347, 0));
+		new WorldPoint(2436, 3347, 0),
+		false);
 
 	private final String text;
 	private final String npc;
 	private final String solution;
 	@Getter(AccessLevel.PRIVATE)
 	private final WorldPoint npcLocation;
-	@Nullable
+	private final boolean isBeginner;
 	private HotColdSolver hotColdSolver;
 	private WorldPoint location;
 
@@ -93,14 +94,14 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 		return null;
 	}
 
-	private HotColdClue(String text, String npc, String solution, WorldPoint npcLocation)
+	private HotColdClue(String text, String npc, String solution, WorldPoint npcLocation, boolean isBeginner)
 	{
 		this.text = text;
 		this.npc = npc;
 		this.solution = solution;
 		this.npcLocation = npcLocation;
+		this.isBeginner = isBeginner;
 		setRequiresSpade(true);
-		initializeSolver();
 	}
 
 	@Override
@@ -112,11 +113,6 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 	@Override
 	public WorldPoint[] getLocations(ClueScrollPlugin plugin)
 	{
-		if (hotColdSolver == null)
-		{
-			return new WorldPoint[0];
-		}
-
 		if (hotColdSolver.getLastWorldPoint() == null)
 		{
 			return new WorldPoint[] {npcLocation};
@@ -130,11 +126,6 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 	@Override
 	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin)
 	{
-		if (hotColdSolver == null)
-		{
-			return;
-		}
-
 		panelComponent.getChildren().add(TitleComponent.builder()
 			.text("Hot/Cold Clue")
 			.build());
@@ -229,11 +220,6 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 	@Override
 	public void makeWorldOverlayHint(Graphics2D graphics, ClueScrollPlugin plugin)
 	{
-		if (hotColdSolver == null)
-		{
-			return;
-		}
-
 		// when final location has been found
 		if (location != null)
 		{
@@ -278,25 +264,11 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 
 	public boolean update(final String message, final ClueScrollPlugin plugin)
 	{
-		if (hotColdSolver == null)
-		{
-			return false;
-		}
-
 		final Set<HotColdTemperature> temperatureSet;
 
-		if (this == BEGINNER_CLUE)
-		{
-			temperatureSet = HotColdTemperature.BEGINNER_HOT_COLD_TEMPERATURES;
-		}
-		else if (this == MASTER_CLUE)
-		{
-			temperatureSet = HotColdTemperature.MASTER_HOT_COLD_TEMPERATURES;
-		}
-		else
-		{
-			temperatureSet = null;
-		}
+		temperatureSet = isBeginner() ?
+			HotColdTemperature.BEGINNER_HOT_COLD_TEMPERATURES :
+			HotColdTemperature.MASTER_HOT_COLD_TEMPERATURES;
 
 		final HotColdTemperature temperature = HotColdTemperature.getFromTemperatureSet(temperatureSet, message);
 
@@ -308,13 +280,8 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 		// Convert from real to overworld
 		final WorldPoint localWorld = WorldPoint.getMirrorPoint(plugin.getClient().getLocalPlayer().getWorldLocation(), true);
 
-		if (localWorld == null)
-		{
-			return false;
-		}
-
-		if ((this == BEGINNER_CLUE && temperature == HotColdTemperature.BEGINNER_VISIBLY_SHAKING)
-			|| (this == MASTER_CLUE && temperature == HotColdTemperature.MASTER_VISIBLY_SHAKING))
+		if ((isBeginner() && temperature == HotColdTemperature.BEGINNER_VISIBLY_SHAKING)
+			|| (!isBeginner() && temperature == HotColdTemperature.MASTER_VISIBLY_SHAKING))
 		{
 			markFinalSpot(localWorld);
 		}
@@ -338,26 +305,8 @@ public class HotColdClue extends ClueScroll implements LocationClueScroll, Locat
 
 	private void initializeSolver()
 	{
-		final boolean isBeginner;
-
-		if (this == BEGINNER_CLUE)
-		{
-			isBeginner = true;
-		}
-		else if (this == MASTER_CLUE)
-		{
-			isBeginner = false;
-		}
-		else
-		{
-			log.warn("Hot cold solver could not be initialized, clue type is unknown; text: {}, npc: {}, solution: {}",
-				text, npc, solution);
-			hotColdSolver = null;
-			return;
-		}
-
 		final Set<HotColdLocation> locations = Arrays.stream(HotColdLocation.values())
-			.filter(l -> l.isBeginnerClue() == isBeginner)
+			.filter(l -> l.isBeginnerClue() == isBeginner())
 			.collect(Collectors.toSet());
 		hotColdSolver = new HotColdSolver(locations);
 	}

@@ -35,6 +35,7 @@ public class WorldUtil
 	/**
 	 * Converts http-api world types to runelite-api world types
 	 * TODO: Find a better way to handle these to not have duplicate interfaces
+	 *
 	 * @param apiTypes http-api world types
 	 * @return runelite-api world types
 	 */
@@ -44,9 +45,46 @@ public class WorldUtil
 
 		for (net.runelite.http.api.worlds.WorldType apiType : apiTypes)
 		{
-			types.add(WorldType.valueOf(apiType.name()));
+			types.add(fromApiWorldType(apiType));
 		}
 
 		return types;
+	}
+
+	private static WorldType fromApiWorldType(net.runelite.http.api.worlds.WorldType apiType)
+	{
+		switch (apiType)
+		{
+			case MEMBERS:
+				return WorldType.MEMBERS;
+			case PVP:
+				return WorldType.PVP;
+			case BOUNTY:
+				return WorldType.BOUNTY;
+			case PVP_ARENA:
+				return WorldType.PVP_ARENA;
+			case SKILL_TOTAL:
+				return WorldType.SKILL_TOTAL;
+			case QUEST_SPEEDRUNNING:
+				return WorldType.QUEST_SPEEDRUNNING;
+			case HIGH_RISK:
+				return WorldType.HIGH_RISK;
+			case LAST_MAN_STANDING:
+				return WorldType.LAST_MAN_STANDING;
+			case BETA_WORLD:
+				return WorldType.BETA_WORLD;
+			case NOSAVE_MODE:
+				return WorldType.NOSAVE_MODE;
+			case TOURNAMENT:
+				return WorldType.TOURNAMENT_WORLD;
+			case FRESH_START_WORLD:
+				return WorldType.FRESH_START_WORLD;
+			case DEADMAN:
+				return WorldType.DEADMAN;
+			case SEASONAL:
+				return WorldType.SEASONAL;
+			default:
+				throw new IllegalArgumentException("unknown world type " + apiType);
+		}
 	}
 }

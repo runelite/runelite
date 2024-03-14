@@ -44,6 +44,7 @@ public enum RuneScapeProfileType
 	TRAILBLAZER_LEAGUE,
 	DEADMAN_REBORN,
 	SHATTERED_RELICS_LEAGUE,
+	TRAILBLAZER_RELOADED_LEAGUE(client -> client.getWorldType().contains(WorldType.SEASONAL)),
 	;
 
 	private final Predicate<Client> test;

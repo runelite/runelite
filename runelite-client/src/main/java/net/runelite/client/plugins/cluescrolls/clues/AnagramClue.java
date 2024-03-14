@@ -548,7 +548,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.npc("Squire")
 			.location(new WorldPoint(2975, 3343, 0))
 			.area("Falador Castle Courtyard")
-			.question("White knights are superior to black knights. 2 white knights can handle 3 black knights. How many knights do we need for an army of 981 black knights?")
+			.question("White Knights of Falador are stronger than the Black Knights of the Kinshra. 2 White Knights can handle 3 Kinshra. How many White Knights would we need against an army of 981 Kinshra?")
 			.answer("654")
 			.build(),
 		AnagramClue.builder()

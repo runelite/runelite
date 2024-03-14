@@ -26,15 +26,26 @@ package net.runelite.client.plugins.devtools;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
+import com.formdev.flatlaf.extras.FlatInspector;
 import com.google.common.collect.ImmutableList;
 import com.google.common.primitives.Ints;
 import com.google.inject.Provides;
+import java.awt.AWTEvent;
+import java.awt.KeyboardFocusManager;
+import java.awt.Toolkit;
+import java.awt.Window;
+import java.awt.event.AWTEventListener;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import static java.lang.Math.min;
 import java.util.Arrays;
 import java.util.List;
 import javax.inject.Inject;
+import javax.swing.JOptionPane;
+import javax.swing.JRootPane;
+import javax.swing.RootPaneContainer;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
@@ -67,9 +78,11 @@ import net.runelite.client.ui.JagexColors;
 import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
+import net.runelite.client.util.HotkeyListener;
 import net.runelite.client.util.ImageUtil;
 import org.slf4j.LoggerFactory;
 
+@Slf4j
 @PluginDescriptor(
 	name = "Developer Tools",
 	tags = {"panel"},
@@ -120,6 +133,9 @@ public class DevToolsPlugin extends Plugin
 	@Inject
 	private ChatMessageManager chatMessageManager;
 
+	@Inject
+	private DevToolsConfig config;
+
 	private DevToolsButton players;
 	private DevToolsButton npcs;
 	private DevToolsButton groundItems;
@@ -150,7 +166,61 @@ public class DevToolsPlugin extends Plugin
 	private DevToolsButton roofs;
 	private DevToolsButton shell;
 	private DevToolsButton menus;
+	private DevToolsButton uiDefaultsInspector;
 	private NavigationButton navButton;
+
+	private HotkeyListener swingInspectorHotkeyListener = new HotkeyListener(() -> config.swingInspectorHotkey())
+	{
+		Object inspector;
+
+		@Override
+		public void hotkeyPressed()
+		{
+			Window window = KeyboardFocusManager.getCurrentKeyboardFocusManager().getActiveWindow();
+			try
+			{
+				if (inspector == null)
+				{
+					JRootPane rootPane = ((RootPaneContainer) window).getRootPane();
+					FlatInspector fi = new FlatInspector(rootPane);
+					fi.setEnabled(true);
+					inspector = fi;
+					fi.addPropertyChangeListener(ev ->
+					{
+						if ("enabled".equals(ev.getPropertyName()) && !fi.isEnabled() && inspector == ev.getSource())
+						{
+							inspector = null;
+						}
+					});
+				}
+				else
+				{
+					((FlatInspector) inspector).setEnabled(false);
+				}
+			}
+			catch (LinkageError | Exception e)
+			{
+				log.warn("unable to open swing inspector", e);
+				JOptionPane.showMessageDialog(window, "The swing inspector is not available.");
+			}
+		}
+	};
+
+	private AWTEventListener swingInspectorKeyListener = rawEv ->
+	{
+		if (rawEv instanceof KeyEvent)
+		{
+			KeyEvent kev = (KeyEvent) rawEv;
+			if (kev.getID() == KeyEvent.KEY_PRESSED)
+			{
+				swingInspectorHotkeyListener.keyPressed(kev);
+			}
+			else if (kev.getID() == KeyEvent.KEY_RELEASED)
+			{
+				swingInspectorHotkeyListener.keyReleased(kev);
+			}
+		}
+	};
 
 	@Provides
 	DevToolsConfig provideConfig(ConfigManager configManager)
@@ -198,6 +268,8 @@ public class DevToolsPlugin extends Plugin
 		shell = new DevToolsButton("Shell");
 		menus = new DevToolsButton("Menus");
 
+		uiDefaultsInspector = new DevToolsButton("Swing Defaults");
+
 		overlayManager.add(overlay);
 		overlayManager.add(locationOverlay);
 		overlayManager.add(sceneOverlay);
@@ -220,6 +292,8 @@ public class DevToolsPlugin extends Plugin
 		clientToolbar.addNavigation(navButton);
 
 		eventBus.register(soundEffectOverlay);
+
+		Toolkit.getDefaultToolkit().addAWTEventListener(swingInspectorKeyListener, AWTEvent.KEY_EVENT_MASK);
 	}
 
 	@Override
@@ -234,6 +308,7 @@ public class DevToolsPlugin extends Plugin
 		overlayManager.remove(mapRegionOverlay);
 		overlayManager.remove(soundEffectOverlay);
 		clientToolbar.removeNavigation(navButton);
+		Toolkit.getDefaultToolkit().removeAWTEventListener(swingInspectorKeyListener);
 	}
 
 	@Subscribe

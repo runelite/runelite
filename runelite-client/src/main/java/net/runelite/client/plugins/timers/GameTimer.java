@@ -57,10 +57,9 @@ enum GameTimer
 	IMBUEDHEART(ItemID.IMBUED_HEART, GameTimerImageType.ITEM, "Imbued/Saturated heart", false),
 	VENGEANCE(SpriteID.SPELL_VENGEANCE, GameTimerImageType.SPRITE, "Vengeance", 30, ChronoUnit.SECONDS),
 	HEAL_GROUP(SpriteID.SPELL_HEAL_GROUP, GameTimerImageType.SPRITE, "Heal Group", 150, GAME_TICKS),
-	EXSUPERANTIFIRE(ItemID.EXTENDED_SUPER_ANTIFIRE4, GameTimerImageType.ITEM, "Extended Super AntiFire", 6, ChronoUnit.MINUTES),
 	OVERLOAD_RAID(ItemID.OVERLOAD_4_20996, GameTimerImageType.ITEM, "Overload", false),
 	PRAYER_ENHANCE(ItemID.PRAYER_ENHANCE_4, GameTimerImageType.ITEM, "Prayer enhance", 290, ChronoUnit.SECONDS, true),
-	GOD_WARS_ALTAR(SpriteID.SKILL_PRAYER, GameTimerImageType.SPRITE, "God wars altar", 10, ChronoUnit.MINUTES),
+	GOD_WARS_ALTAR(SpriteID.SKILL_PRAYER, GameTimerImageType.SPRITE, "God wars altar", false),
 	CHARGE(SpriteID.SPELL_CHARGE, GameTimerImageType.SPRITE, "Charge", false),
 	STAFF_OF_THE_DEAD(ItemID.STAFF_OF_THE_DEAD, GameTimerImageType.ITEM, "Staff of the Dead", 1, ChronoUnit.MINUTES),
 	ABYSSAL_SIRE_STUN(ItemID.ABYSSAL_ORPHAN, GameTimerImageType.ITEM, "Abyssal Sire Stun", 30, ChronoUnit.SECONDS, true),
@@ -82,11 +81,13 @@ enum GameTimer
 	RESURRECT_THRALL(SpriteID.SPELL_RESURRECT_SUPERIOR_SKELETON, GameTimerImageType.SPRITE, "Resurrect thrall", false),
 	WARD_OF_ARCEUUS(SpriteID.SPELL_WARD_OF_ARCEUUS, GameTimerImageType.SPRITE, "Ward of Arceuus", true),
 	DEATH_CHARGE(SpriteID.SPELL_DEATH_CHARGE, GameTimerImageType.SPRITE, "Death charge", false),
+	MARK_OF_DARKNESS(SpriteID.SPELL_MARK_OF_DARKNESS, GameTimerImageType.SPRITE, "Mark of Darkness", true),
 	SHADOW_VEIL_COOLDOWN(SpriteID.SPELL_SHADOW_VEIL_DISABLED, GameTimerImageType.SPRITE, "Shadow veil cooldown", 30, ChronoUnit.SECONDS),
 	RESURRECT_THRALL_COOLDOWN(SpriteID.SPELL_RESURRECT_SUPERIOR_SKELETON_DISABLED, GameTimerImageType.SPRITE, "Resurrect thrall cooldown", 17, GAME_TICKS),
 	WARD_OF_ARCEUUS_COOLDOWN(SpriteID.SPELL_WARD_OF_ARCEUUS_DISABLED, GameTimerImageType.SPRITE, "Ward of Arceuus cooldown", 30, ChronoUnit.SECONDS),
 	DEATH_CHARGE_COOLDOWN(SpriteID.SPELL_DEATH_CHARGE_DISABLED, GameTimerImageType.SPRITE, "Death charge cooldown", 60, ChronoUnit.SECONDS),
 	CORRUPTION_COOLDOWN(SpriteID.SPELL_GREATER_CORRUPTION_DISABLED, GameTimerImageType.SPRITE, "Corruption cooldown", 30, ChronoUnit.SECONDS),
+	MARK_OF_DARKNESS_COOLDOWN(SpriteID.SPELL_MARK_OF_DARKNESS_DISABLED, GameTimerImageType.SPRITE, "Mark of Darkness cooldown", 90, GAME_TICKS, true),
 	PICKPOCKET_STUN(SpriteID.SKILL_THIEVING, GameTimerImageType.SPRITE, "Stunned", true),
 	FARMERS_AFFINITY(ItemID.GRAIN, GameTimerImageType.ITEM, "Farmer's Affinity", false),
 	SMELLING_SALTS(ItemID.SMELLING_SALTS_2, GameTimerImageType.ITEM, "Smelling salts", true),
@@ -94,6 +95,7 @@ enum GameTimer
 	LIQUID_ADRENALINE(ItemID.LIQUID_ADRENALINE_2, GameTimerImageType.ITEM, "Liquid adrenaline", 150, ChronoUnit.SECONDS, false),
 	SILK_DRESSING(ItemID.SILK_DRESSING_2, GameTimerImageType.ITEM, "Silk dressing", 100, GAME_TICKS, true),
 	BLESSED_CRYSTAL_SCARAB(ItemID.BLESSED_CRYSTAL_SCARAB_2, GameTimerImageType.ITEM, "Blessed crystal scarab", 40, GAME_TICKS, true),
+	SPELLBOOK_SWAP(SpriteID.SPELL_SPELLBOOK_SWAP, GameTimerImageType.SPRITE, "Spellbook Reset", 120, ChronoUnit.SECONDS, false),
 	;
 
 	@Nullable

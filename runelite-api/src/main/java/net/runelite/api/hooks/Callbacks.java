@@ -206,4 +206,17 @@ public interface Callbacks
 	 * @param reason
 	 */
 	void error(String message, Throwable reason);
+
+	/**
+	 * Called when the client wants to open a URL
+	 * @param url
+	 */
+	void openUrl(String url);
+
+	/**
+	 * Returns if the current runelite client is outdated or not
+	 *
+	 * @return
+	 */
+	boolean isRuneLiteClientOutdated();
 }

@@ -222,7 +222,7 @@ public class ChatFilterPluginTest
 	public void testMessageFromFriendIsFiltered()
 	{
 		when(chatFilterConfig.filterFriends()).thenReturn(true);
-		assertTrue(chatFilterPlugin.shouldFilterPlayerMessage("Iron Mammal"));
+		assertTrue(chatFilterPlugin.canFilterPlayer("Iron Mammal"));
 	}
 
 	@Test
@@ -230,7 +230,7 @@ public class ChatFilterPluginTest
 	{
 		when(client.isFriended("Iron Mammal", false)).thenReturn(true);
 		when(chatFilterConfig.filterFriends()).thenReturn(false);
-		assertFalse(chatFilterPlugin.shouldFilterPlayerMessage("Iron Mammal"));
+		assertFalse(chatFilterPlugin.canFilterPlayer("Iron Mammal"));
 	}
 
 	@Test
@@ -238,7 +238,7 @@ public class ChatFilterPluginTest
 	{
 		when(client.isFriended("B0aty", false)).thenReturn(false);
 		when(chatFilterConfig.filterFriendsChat()).thenReturn(true);
-		assertTrue(chatFilterPlugin.shouldFilterPlayerMessage("B0aty"));
+		assertTrue(chatFilterPlugin.canFilterPlayer("B0aty"));
 	}
 
 	@Test
@@ -246,21 +246,21 @@ public class ChatFilterPluginTest
 	{
 		when(friendsChatManager.findByName("B0aty")).thenReturn(mock(FriendsChatMember.class));
 		when(chatFilterConfig.filterFriendsChat()).thenReturn(false);
-		assertFalse(chatFilterPlugin.shouldFilterPlayerMessage("B0aty"));
+		assertFalse(chatFilterPlugin.canFilterPlayer("B0aty"));
 	}
 
 	@Test
 	public void testMessageFromSelfIsNotFiltered()
 	{
 		when(localPlayer.getName()).thenReturn("Swampletics");
-		assertFalse(chatFilterPlugin.shouldFilterPlayerMessage("Swampletics"));
+		assertFalse(chatFilterPlugin.canFilterPlayer("Swampletics"));
 	}
 
 	@Test
 	public void testMessageFromNonFriendNonFCIsFiltered()
 	{
 		when(client.isFriended("Woox", false)).thenReturn(false);
-		assertTrue(chatFilterPlugin.shouldFilterPlayerMessage("Woox"));
+		assertTrue(chatFilterPlugin.canFilterPlayer("Woox"));
 	}
 
 	@Test
@@ -269,8 +269,8 @@ public class ChatFilterPluginTest
 		when(chatFilterConfig.filteredNames()).thenReturn("Gamble [0-9]*");
 
 		chatFilterPlugin.updateFilteredPatterns();
-		assertTrue(chatFilterPlugin.shouldFilterByName("Gamble 1234"));
-		assertFalse(chatFilterPlugin.shouldFilterByName("Adam"));
+		assertTrue(chatFilterPlugin.isNameFiltered("Gamble 1234"));
+		assertFalse(chatFilterPlugin.isNameFiltered("Adam"));
 	}
 
 	@Test

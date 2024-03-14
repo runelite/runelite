@@ -29,21 +29,25 @@ import com.google.inject.Provides;
 import java.applet.Applet;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
+import static net.runelite.api.InventoryID.EQUIPMENT;
+import static net.runelite.api.InventoryID.INVENTORY;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.KeyCode;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.events.MenuOpened;
+import net.runelite.api.widgets.InterfaceID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
@@ -172,7 +176,7 @@ public class InventoryTagsPlugin extends Plugin
 			final MenuEntry entry = entries[idx];
 			final Widget w = entry.getWidget();
 
-			if (w != null && WidgetInfo.TO_GROUP(w.getId()) == WidgetID.INVENTORY_GROUP_ID
+			if (w != null && WidgetUtil.componentToInterface(w.getId()) == InterfaceID.INVENTORY
 				&& "Examine".equals(entry.getOption()) && entry.getIdentifier() == 10)
 			{
 				final int itemId = w.getItemId();
@@ -183,7 +187,10 @@ public class InventoryTagsPlugin extends Plugin
 					.setTarget(entry.getTarget())
 					.setType(MenuAction.RUNELITE_SUBMENU);
 
-				for (Color color : invColors())
+				Set<Color> invEquipmentColors = new HashSet<>();
+				invEquipmentColors.addAll(getColorsFromItemContainer(INVENTORY));
+				invEquipmentColors.addAll(getColorsFromItemContainer(EQUIPMENT));
+				for (Color color : invEquipmentColors)
 				{
 					if (tag == null || !tag.color.equals(color))
 					{
@@ -233,18 +240,21 @@ public class InventoryTagsPlugin extends Plugin
 		}
 	}
 
-	private List<Color> invColors()
+	private List<Color> getColorsFromItemContainer(InventoryID inventoryID)
 	{
 		List<Color> colors = new ArrayList<>();
-		ItemContainer container = client.getItemContainer(InventoryID.INVENTORY);
-		for (Item item : container.getItems())
+		ItemContainer container = client.getItemContainer(inventoryID);
+		if (container != null)
 		{
-			Tag tag = getTag(item.getId());
-			if (tag != null && tag.color != null)
+			for (Item item : container.getItems())
 			{
-				if (!colors.contains(tag.color))
+				Tag tag = getTag(item.getId());
+				if (tag != null && tag.color != null)
 				{
-					colors.add(tag.color);
+					if (!colors.contains(tag.color))
+					{
+						colors.add(tag.color);
+					}
 				}
 			}
 		}

@@ -254,7 +254,7 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 	@Getter(AccessLevel.PRIVATE)
 	private final WorldPoint location;
 	/**
-	 * For regions which are mirrored, the location of the the clue in the mirrored region.
+	 * For regions which are mirrored, the location of the clue in the mirrored region.
 	 */
 	@Nullable
 	private final WorldPoint mirrorLocation;

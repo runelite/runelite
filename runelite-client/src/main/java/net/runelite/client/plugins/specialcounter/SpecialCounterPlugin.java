@@ -488,8 +488,7 @@ public class SpecialCounterPlugin extends Plugin
 
 	private int getHitDelay(SpecialWeapon specialWeapon, Actor target)
 	{
-		// DORGESHUUN_CROSSBOW is the only ranged wep we support, so everything else is just melee and delay 1
-		if (specialWeapon != SpecialWeapon.DORGESHUUN_CROSSBOW || target == null)
+		if (target == null)
 			return 1;
 
 		Player player = client.getLocalPlayer();
@@ -505,13 +504,13 @@ public class SpecialCounterPlugin extends Plugin
 			return 1;
 
 		final int distance = targetArea.distanceTo(playerWp);
-		// Dorgeshuun special attack projectile, anim delay, and hitsplat is 60 + distance * 3 with the projectile
-		// starting at 41 cycles. Since we are computing the delay when the spec var changes, and not when the
-		// projectile first moves, this should be 60 and not 19
-		final int cycles = 60 + distance * 3;
-		// The server performs no rounding and instead delays (cycles / 30) cycles from the next cycle
-		final int serverCycles = (cycles / 30) + 1;
-		log.debug("Projectile distance {} cycles {} server cycles {}", distance, cycles, serverCycles);
+		final int serverCycles = specialWeapon.getHitDelay(distance);
+
+		if (serverCycles != 1)
+		{
+			log.debug("Projectile distance {} server cycles {}", distance, serverCycles);
+		}
+
 		return serverCycles;
 	}
 }

@@ -50,7 +50,32 @@ public interface GpuPluginConfig extends Config
 	)
 	default int drawDistance()
 	{
-		return 25;
+		return 50;
+	}
+
+	@ConfigItem(
+		keyName = "hideUnrelatedMaps",
+		name = "Hide unrelated maps",
+		description = "Hide unrelated map areas you shouldn't see.",
+		position = 2
+	)
+	default boolean hideUnrelatedMaps()
+	{
+		return true;
+	}
+
+	@Range(
+		max = 5
+	)
+	@ConfigItem(
+		keyName = "expandedMapLoadingChunks",
+		name = "Extended map loading",
+		description = "Extra map area to load, in 8 tile chunks.",
+		position = 1
+	)
+	default int expandedMapLoadingChunks()
+	{
+		return 3;
 	}
 
 	@ConfigItem(
@@ -61,7 +86,7 @@ public interface GpuPluginConfig extends Config
 	)
 	default boolean smoothBanding()
 	{
-		return false;
+		return true;
 	}
 
 	@ConfigItem(
@@ -72,7 +97,7 @@ public interface GpuPluginConfig extends Config
 	)
 	default AntiAliasingMode antiAliasingMode()
 	{
-		return AntiAliasingMode.DISABLED;
+		return AntiAliasingMode.MSAA_2;
 	}
 
 	@ConfigItem(
@@ -124,7 +149,7 @@ public interface GpuPluginConfig extends Config
 	)
 	default int anisotropicFilteringLevel()
 	{
-		return 0;
+		return 1;
 	}
 
 	@ConfigItem(
@@ -157,7 +182,7 @@ public interface GpuPluginConfig extends Config
 	)
 	default boolean unlockFps()
 	{
-		return false;
+		return true;
 	}
 
 	enum SyncMode
@@ -175,7 +200,7 @@ public interface GpuPluginConfig extends Config
 	)
 	default SyncMode syncMode()
 	{
-		return SyncMode.ADAPTIVE;
+		return SyncMode.OFF;
 	}
 
 	@ConfigItem(

@@ -30,6 +30,7 @@ import java.awt.Graphics2D;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import static net.runelite.api.Constants.CHUNK_SIZE;
+import static net.runelite.api.Constants.SCENE_SIZE;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.OverlayPanel;
@@ -57,61 +58,80 @@ public class LocationOverlay extends OverlayPanel
 			return null;
 		}
 
-		WorldPoint localWorld = client.getLocalPlayer().getWorldLocation();
+		WorldPoint worldPoint = client.getLocalPlayer().getWorldLocation();
 		LocalPoint localPoint = client.getLocalPlayer().getLocalLocation();
-
-		int regionID = localWorld.getRegionID();
 
 		if (client.isInInstancedRegion())
 		{
-			regionID = WorldPoint.fromLocalInstance(client, localPoint).getRegionID();
+			worldPoint = WorldPoint.fromLocalInstance(client, localPoint);
 
 			panelComponent.getChildren().add(LineComponent.builder()
 				.left("Instance")
 				.build());
-
-			int[][][] instanceTemplateChunks = client.getInstanceTemplateChunks();
-			int z = client.getPlane();
-			int chunkData = instanceTemplateChunks[z][localPoint.getSceneX() / CHUNK_SIZE][localPoint.getSceneY() / CHUNK_SIZE];
-
-			int rotation = chunkData >> 1 & 0x3;
-			int chunkY = (chunkData >> 3 & 0x7FF) * CHUNK_SIZE;
-			int chunkX = (chunkData >> 14 & 0x3FF) * CHUNK_SIZE;
-
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left("Chunk " + localPoint.getSceneX() / CHUNK_SIZE + "," + localPoint.getSceneY() / CHUNK_SIZE)
-				.right(rotation + " " + chunkX + " " + chunkY)
-				.build());
 		}
 
 		panelComponent.getChildren().add(LineComponent.builder()
+			.left("Local")
+			.right(localPoint.getX() + ", " + localPoint.getY())
+			.build());
+
+		panelComponent.getChildren().add(LineComponent.builder()
+			.left("World")
+			.right(worldPoint.getX() + ", " + worldPoint.getY() + ", " + client.getPlane())
+			.build());
+
+		panelComponent.getChildren().add(LineComponent.builder()
+			.left("Scene")
+			.right(localPoint.getSceneX() + ", " + localPoint.getSceneY())
+			.build());
+
+		if (client.isInInstancedRegion())
+		{
+			int[][][] instanceTemplateChunks = client.getInstanceTemplateChunks();
+			int z = client.getPlane();
+			for (int cy = 0; cy < SCENE_SIZE / CHUNK_SIZE; ++cy)
+			{
+				for (int cx = 0; cx < SCENE_SIZE / CHUNK_SIZE; ++cx)
+				{
+					int chunkData = instanceTemplateChunks[z][cx][cy];
+
+					if (chunkData == -1)
+					{
+						continue;
+					}
+
+					int rotation = chunkData >> 1 & 0x3; // NOPMD
+					int chunkY = (chunkData >> 3 & 0x7FF);
+					int chunkX = (chunkData >> 14 & 0x3FF);
+					int chunkPlane = chunkData >> 24 & 0x3;
+
+					boolean myChunk = cx == localPoint.getSceneX() / CHUNK_SIZE && cy == localPoint.getSceneY() / CHUNK_SIZE;
+					panelComponent.getChildren().add(LineComponent.builder()
+						.left("Chunk")
+						.right(chunkX + ", " + chunkY + ", " + chunkPlane)
+						.rightColor(myChunk ? Color.GREEN : Color.WHITE)
+						.build());
+				}
+			}
+		}
+		else
+		{
+			panelComponent.getChildren().add(LineComponent.builder()
 				.left("Base")
 				.right(client.getBaseX() + ", " + client.getBaseY())
 				.build());
-
-		panelComponent.getChildren().add(LineComponent.builder()
-				.left("Local")
-				.right(localPoint.getX() + ", " + localPoint.getY())
-				.build());
-
-		panelComponent.getChildren().add(LineComponent.builder()
-				.left("Scene")
-				.right(localPoint.getSceneX() + ", " + localPoint.getSceneY())
-				.build());
-
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Tile")
-			.right(localWorld.getX() + ", " + localWorld.getY() + ", " + client.getPlane())
-			.build());
+		}
 
 		for (int i = 0; i < client.getMapRegions().length; i++)
 		{
 			int region = client.getMapRegions()[i];
+			int mx = region >> 8;
+			int my = region & 0xff;
 
 			panelComponent.getChildren().add(LineComponent.builder()
 				.left((i == 0) ? "Map regions" : " ")
-				.right(String.valueOf(region))
-				.rightColor((region == regionID) ? Color.GREEN : Color.WHITE)
+				.right(mx + ", " + my)
+				.rightColor((region == worldPoint.getRegionID()) ? Color.GREEN : Color.WHITE)
 				.build());
 		}
 

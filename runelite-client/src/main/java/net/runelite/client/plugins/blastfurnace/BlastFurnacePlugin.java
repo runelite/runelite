@@ -41,8 +41,8 @@ import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
@@ -164,7 +164,7 @@ public class BlastFurnacePlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		Widget npcDialog = client.getWidget(WidgetInfo.DIALOG_NPC_TEXT);
+		Widget npcDialog = client.getWidget(ComponentID.DIALOG_NPC_TEXT);
 		if (npcDialog == null)
 		{
 			return;

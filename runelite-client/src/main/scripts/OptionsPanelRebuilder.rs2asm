@@ -6,13 +6,13 @@
    iconst                 73
    iconst                 73
    iload                  1
-   iconst                 10551386
+   iconst                 10551388
    enum                  
    istore                 2
    iconst                 73
    iconst                 73
    iload                  1
-   iconst                 10551388
+   iconst                 10551390
    enum                  
    istore                 3
    iconst                 73
@@ -95,7 +95,7 @@ LABEL74:
    iconst                 73
    iconst                 73
    iload                  1
-   iconst                 10551329
+   iconst                 10551330
    enum                  
    istore                 6
    iload                  6
@@ -536,7 +536,7 @@ LABEL480:
    iconst                 73
    iconst                 73
    iload                  1
-   iconst                 10551314
+   iconst                 10551315
    enum                  
    istore                 20
    iconst                 0
@@ -653,7 +653,7 @@ LABEL576:
    iconst                 73
    iconst                 73
    iload                  1
-   iconst                 10551329
+   iconst                 10551330
    enum                  
    iload                  1
    invoke                 920

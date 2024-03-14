@@ -64,16 +64,6 @@ public interface KourendLibraryConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "hideDarkManuscript",
-		name = "Hide Dark Manuscript",
-		description = "Whether to hide Dark Manuscripts"
-	)
-	default boolean hideDarkManuscript()
-	{
-		return false;
-	}
-
-	@ConfigItem(
 		keyName = "showTutorialOverlay",
 		name = "Show tutorial overlay",
 		description = "Whether to show an overlay to help understand how to use the plugin"

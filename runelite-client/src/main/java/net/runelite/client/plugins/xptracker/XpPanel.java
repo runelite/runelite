@@ -174,11 +174,10 @@ class XpPanel extends PluginPanel
 
 		return new HttpUrl.Builder()
 			.scheme("https")
-			.host(worldTypes.contains(WorldType.SEASONAL) ? "seasonal.wiseoldman.net" : "wiseoldman.net")
+			.host(worldTypes.contains(WorldType.SEASONAL) ? "league.wiseoldman.net" : "wiseoldman.net")
 			.addPathSegment("players")
 			.addPathSegment(player.getName())
 			.addPathSegment("gained")
-			.addPathSegment("skilling")
 			.addQueryParameter("metric", skill == null ? "overall" : skill.getName().toLowerCase())
 			.addQueryParameter("period", "week")
 			.build()
