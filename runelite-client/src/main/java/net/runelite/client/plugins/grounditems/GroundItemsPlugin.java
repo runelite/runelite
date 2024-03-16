@@ -242,10 +242,13 @@ public class GroundItemsPlugin extends Plugin
 		{
 			existing.setQuantity(existing.getQuantity() + groundItem.getQuantity());
 			// The spawn time remains set at the oldest spawn
+
+			updateItemColor(existing);
 		}
 		else
 		{
 			collectedGroundItems.put(tile.getWorldLocation(), item.getId(), groundItem);
+			updateItemColor(groundItem);
 		}
 
 		if (!config.onlyShowLoot())
@@ -254,6 +257,22 @@ public class GroundItemsPlugin extends Plugin
 		}
 
 		handleLootbeam(tile.getWorldLocation());
+	}
+
+	void updateItemColor(GroundItem item)
+	{
+		if (item.color != null)
+		{
+			return;
+		}
+
+		var namedQuantity = new NamedQuantity(item);
+		final Color highlighted = getHighlighted(namedQuantity, item.getGePrice(), item.getHaPrice());
+		final Color hidden = getHidden(namedQuantity, item.getGePrice(), item.getHaPrice(), item.isTradeable());
+
+		item.highlighted = highlighted != null;
+		item.hidden = hidden != null;
+		item.color = getItemColor(highlighted, hidden);
 	}
 
 	@Subscribe
@@ -471,6 +490,7 @@ public class GroundItemsPlugin extends Plugin
 
 		priceChecks = priceCheckBuilder.build();
 
+		clientThread.invokeLater(() -> collectedGroundItems.values().forEach(GroundItem::reset));
 		clientThread.invokeLater(this::handleLootbeams);
 	}
 
@@ -491,23 +511,20 @@ public class GroundItemsPlugin extends Plugin
 
 			final WorldPoint worldPoint = WorldPoint.fromScene(client, sceneX, sceneY, client.getPlane());
 			GroundItem groundItem = collectedGroundItems.get(worldPoint, itemId);
-			int quantity = groundItem.getQuantity();
 
-			final int gePrice = groundItem.getGePrice();
-			final int haPrice = groundItem.getHaPrice();
-			final Color hidden = getHidden(new NamedQuantity(groundItem.getName(), quantity), gePrice, haPrice, groundItem.isTradeable());
-			final Color highlighted = getHighlighted(new NamedQuantity(groundItem.getName(), quantity), gePrice, haPrice);
-			final Color color = getItemColor(highlighted, hidden);
-			final boolean canBeRecolored = highlighted != null || (hidden != null && config.recolorMenuHiddenItems());
+			updateItemColor(groundItem);
+
+			int quantity = groundItem.getQuantity();
+			final boolean canBeRecolored = groundItem.highlighted || (groundItem.hidden && config.recolorMenuHiddenItems());
 
 			if ((config.itemHighlightMode() == ItemHighlightMode.MENU || config.itemHighlightMode() == ItemHighlightMode.BOTH) &&
-				(color != null && canBeRecolored && !color.equals(config.defaultColor())))
+				(canBeRecolored && !groundItem.color.equals(config.defaultColor())))
 			{
 				final MenuHighlightMode mode = config.menuHighlightMode();
 
 				if (mode == BOTH || mode == OPTION)
 				{
-					lastEntry.setOption(ColorUtil.prependColorTag(lastEntry.getOption(), color));
+					lastEntry.setOption(ColorUtil.prependColorTag(lastEntry.getOption(), groundItem.color));
 				}
 
 				if (mode == BOTH || mode == NAME)
@@ -517,7 +534,7 @@ public class GroundItemsPlugin extends Plugin
 					String target = lastEntry.getTarget();
 
 					int i = target.lastIndexOf('>');
-					lastEntry.setTarget(target.substring(0, i - 11) + ColorUtil.colorTag(color) + target.substring(i + 1));
+					lastEntry.setTarget(target.substring(0, i - 11) + ColorUtil.colorTag(groundItem.color) + target.substring(i + 1));
 				}
 			}
 
@@ -526,7 +543,7 @@ public class GroundItemsPlugin extends Plugin
 				lastEntry.setTarget(lastEntry.getTarget() + " (" + quantity + ")");
 			}
 
-			if (hidden != null && highlighted == null && config.deprioritizeHiddenItems())
+			if (groundItem.hidden && !groundItem.highlighted && config.deprioritizeHiddenItems())
 			{
 				lastEntry.setDeprioritized(true);
 			}
@@ -558,7 +575,7 @@ public class GroundItemsPlugin extends Plugin
 		config.setHighlightedItem(Text.toCSV(highlightedItemSet));
 	}
 
-	Color getHighlighted(NamedQuantity item, int gePrice, int haPrice)
+	private Color getHighlighted(NamedQuantity item, int gePrice, int haPrice)
 	{
 		if (TRUE.equals(highlightedItems.getUnchecked(item)))
 		{
@@ -583,7 +600,7 @@ public class GroundItemsPlugin extends Plugin
 		return null;
 	}
 
-	Color getHidden(NamedQuantity item, int gePrice, int haPrice, boolean isTradeable)
+	private Color getHidden(NamedQuantity item, int gePrice, int haPrice, boolean isTradeable)
 	{
 		final boolean isExplicitHidden = TRUE.equals(hiddenItems.getUnchecked(item));
 		final boolean isExplicitHighlight = TRUE.equals(highlightedItems.getUnchecked(item));
@@ -597,7 +614,7 @@ public class GroundItemsPlugin extends Plugin
 			: null;
 	}
 
-	Color getItemColor(Color highlighted, Color hidden)
+	private Color getItemColor(Color highlighted, Color hidden)
 	{
 		if (highlighted != null)
 		{
