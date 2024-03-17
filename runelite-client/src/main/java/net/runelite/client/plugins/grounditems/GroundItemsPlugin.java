@@ -530,6 +530,11 @@ public class GroundItemsPlugin extends Plugin
 			{
 				lastEntry.setDeprioritized(true);
 			}
+
+			if (highlighted == null && config.deprioritizeNonHighlightedItems())
+			{
+				lastEntry.setDeprioritized(true);
+			}
 		}
 	}
 
