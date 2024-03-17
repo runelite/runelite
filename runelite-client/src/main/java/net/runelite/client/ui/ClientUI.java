@@ -85,6 +85,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import static javax.swing.JOptionPane.ERROR_MESSAGE;
 import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -687,10 +688,21 @@ public class ClientUI
 		// Show out of date dialog if needed
 		if (client != null && !(client instanceof Client))
 		{
-			SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(frame,
-				"RuneLite has not yet been updated to work with the latest\n"
-					+ "game update, it will work with reduced functionality until then.",
-				"RuneLite is outdated", INFORMATION_MESSAGE));
+			if (!Strings.isNullOrEmpty(RuneLiteProperties.getLauncherVersion()))
+			{
+				SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(frame,
+					"RuneLite has not yet been updated to work with the latest\n"
+						+ "game update, it will work with reduced functionality until then.",
+					"RuneLite is outdated", INFORMATION_MESSAGE));
+			}
+			else
+			{
+				SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(frame,
+					"RuneLite is outdated and is not compatible with the latest game update.\n"
+						+ "If you are doing pluginhub development, update the runeliteVersion property in build.gradle."
+						+ " Otherwise, git pull and rebuild.",
+					"RuneLite is outdated", ERROR_MESSAGE));
+			}
 		}
 
 		final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024L / 1024L);
