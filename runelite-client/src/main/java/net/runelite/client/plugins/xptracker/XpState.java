@@ -132,9 +132,11 @@ class XpState
 	/**
 	 * Updates skill with average actions based on currently interacted NPC.
 	 *
-	 * @param skill     experience gained skill
-	 * @param npc       currently interacted NPC
-	 * @param npcHealth health of currently interacted NPC
+	 * @param skill     				experience gained skill
+	 * @param npc       				currently interacted NPC
+	 * @param npcHealth 				health of currently interacted NPC
+	 * @param worldXpModifier 	xp modifier of current world
+	 * @param combatXpModifier 	xp modifier of current attack style and equipped weapon type
 	 */
 	void updateNpcExperience(
 		Skill skill,
