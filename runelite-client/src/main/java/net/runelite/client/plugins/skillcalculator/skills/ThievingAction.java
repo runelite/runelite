@@ -62,7 +62,7 @@ public enum ThievingAction implements NamedSkillAction
 	SILVER_STALL("Silver Stall", 50, 54, ItemID.SILVER_BAR),
 	WALL_SAFE("Wall Safe", 50, 70, ItemID.STETHOSCOPE),
 	DESERT_BANDIT("Desert Bandit", 53, 79.5f, ItemID.BANDIT),
-	KNIGHT("Knight", 55, 84.3f, ItemID.KNIGHT_OF_ARDOUGNE),
+	KNIGHT("Knight", 55, 84.3f, ItemID.KNIGHT),
 	POLLNIVNIAN_BANDIT("Pollnivnian Bandit", 55, 84.3f, ItemID.BANDIT_6781),
 	STONE_CHEST("Stone Chest", 64, 280, ItemID.XERICIAN_FABRIC),
 	MAGIC_STALL("Magic Stall", 65, 100, ItemID.AIR_RUNE_6422),
