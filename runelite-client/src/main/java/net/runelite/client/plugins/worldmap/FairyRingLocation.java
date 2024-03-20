@@ -34,6 +34,7 @@ enum FairyRingLocation
 	AIQ("AIQ", new WorldPoint(2995, 3112, 0)),
 	AIR("AIR", new WorldPoint(2699, 3249, 0)),
 	// AJQ - Exists in game but not on World Map
+	AJP("AJP", new WorldPoint(1648, 3011, 0)),
 	AJR("AJR", new WorldPoint(2779, 3615, 0)),
 	AJS("AJS", new WorldPoint(2499, 3898, 0)),
 	AKP("AKP", new WorldPoint(3283, 2704, 0)),
