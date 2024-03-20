@@ -140,6 +140,9 @@ public enum STASHUnit
 	BOB_AXES_ENTRANCE(NullObjectID.NULL_34738, new WorldPoint(3233, 3200, 0)),
 	CRYSTALLINE_MAPLE_TREES(NullObjectID.NULL_34953, new WorldPoint(2213, 3427, 0)),
 	CHARCOAL_BURNERS(NullObjectID.NULL_41758, new WorldPoint(1712, 3470, 0)),
+	FORTIS_GRAND_MUSEUM(NullObjectID.NULL_50738, new WorldPoint(1723, 3153, 0)),
+	TEMPLE_SOUTHEAST_OF_THE_BAZAAR(NullObjectID.NULL_50739, new WorldPoint(1702, 3079, 0)),
+	CAM_TORUM_ENTRANCE(NullObjectID.NULL_50740, new WorldPoint(1428, 3118, 0)),
 	;
 
 	private final int objectId;
