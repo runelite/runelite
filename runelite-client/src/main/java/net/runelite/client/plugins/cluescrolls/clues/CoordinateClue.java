@@ -127,6 +127,7 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 		.put(new WorldPoint(2828, 3234, 0), new CoordinateClueInfo("Southern coast of Crandor."))
 		.put(new WorldPoint(1247, 3726, 0), new CoordinateClueInfo("Just inside the Farming Guild"))
 		.put(new WorldPoint(3770, 3898, 0), new CoordinateClueInfo("On the small island north-east of Fossil Island's mushroom forest."))
+		.put(new WorldPoint(1659, 3111, 0), new CoordinateClueInfo("Dig west of the Bazaar in Civitas illa Fortis."))
 		// Hard
 		.put(new WorldPoint(2209, 3161, 0), new CoordinateClueInfo("North-east of Tyras Camp (BJS if 76 Agility).", SARADOMIN_WIZARD))
 		.put(new WorldPoint(2181, 3206, 0), new CoordinateClueInfo("South of Iorwerth Camp.", SARADOMIN_WIZARD))
@@ -220,6 +221,7 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 		.put(new WorldPoint(2094, 2889, 0), new CoordinateClueInfo("West side of the Isle of Souls.", ARMADYLEAN_GUARD))
 		.put(new WorldPoint(1451, 3509, 0), new CoordinateClueInfo("Ruins of Morra.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
 		.put(new WorldPoint(3318, 2706, 0), new CoordinateClueInfo("Necropolis mine", ARMADYLEAN_OR_BANDOSIAN_GUARD))
+		.put(new WorldPoint(1557, 3183, 0), new CoordinateClueInfo("North of Ortus Farm", ARMADYLEAN_GUARD))
 		// Master
 		.put(new WorldPoint(2178, 3209, 0), new CoordinateClueInfo("South of Iorwerth Camp.", BRASSICAN_MAGE))
 		.put(new WorldPoint(2155, 3100, 0), new CoordinateClueInfo("South of Port Tyras (BJS if 76 Agility).", BRASSICAN_MAGE))
