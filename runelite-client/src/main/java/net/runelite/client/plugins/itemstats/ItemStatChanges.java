@@ -36,6 +36,7 @@ import net.runelite.client.plugins.itemstats.delta.DeltaPercentage;
 import net.runelite.client.plugins.itemstats.food.Anglerfish;
 import net.runelite.client.plugins.itemstats.food.CookedBream;
 import net.runelite.client.plugins.itemstats.food.CookedMossLizard;
+import net.runelite.client.plugins.itemstats.special.SunlightMoth;
 import net.runelite.client.plugins.itemstats.potions.Ambrosia;
 import net.runelite.client.plugins.itemstats.potions.AncientBrew;
 import net.runelite.client.plugins.itemstats.potions.MixedPotion;
@@ -370,6 +371,10 @@ public class ItemStatChanges
 		// Soul Wars
 		add(combo(heal(HITPOINTS, perc(.15, 1)), heal(RUN_ENERGY, 100)), BANDAGES_25202);
 		add(combo(boost(ATTACK, perc(.15, 5)), boost(STRENGTH, perc(.15, 5)), boost(DEFENCE, perc(.15, 5)), boost(RANGED, perc(.15, 5)), boost(MAGIC, perc(.15, 5)), heal(PRAYER, perc(.25, 8))), POTION_OF_POWER1, POTION_OF_POWER2, POTION_OF_POWER3, POTION_OF_POWER4);
+
+		// Moths
+		add(new SunlightMoth(.2, 6), SUNLIGHT_MOTH_28890, SUNLIGHT_MOTH_MIX_1, SUNLIGHT_MOTH_MIX_2);
+		add(heal(PRAYER, 22), MOONLIGHT_MOTH_28893, MOONLIGHT_MOTH_MIX_1, MOONLIGHT_MOTH_MIX_2);
 
 		log.debug("{} items; {} behaviours loaded", effects.size(), new HashSet<>(effects.values()).size());
 	}

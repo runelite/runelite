@@ -302,6 +302,82 @@ public class ItemStatEffectTest
 	}
 
 	@Test
+	public void testMoonlightMoth()
+	{
+		final Effect moonlightMoth = new ItemStatChanges().get(ItemID.MOONLIGHT_MOTH_28893);
+
+		assertEquals(0, skillChange(Skill.PRAYER, 1, 1, moonlightMoth));
+		assertEquals(5, skillChange(Skill.PRAYER, 7, 2, moonlightMoth));
+		assertEquals(22, skillChange(Skill.PRAYER, 30, 0, moonlightMoth));
+		assertEquals(19, skillChange(Skill.PRAYER, 68, 49, moonlightMoth));
+		assertEquals(22, skillChange(Skill.PRAYER, 99, 70, moonlightMoth));
+
+		final Effect moonlightMothMix = new ItemStatChanges().get(ItemID.MOONLIGHT_MOTH_MIX_1);
+
+		assertEquals(0, skillChange(Skill.PRAYER, 1, 1, moonlightMothMix));
+		assertEquals(5, skillChange(Skill.PRAYER, 7, 2, moonlightMothMix));
+		assertEquals(22, skillChange(Skill.PRAYER, 30, 0, moonlightMothMix));
+		assertEquals(19, skillChange(Skill.PRAYER, 68, 49, moonlightMothMix));
+		assertEquals(22, skillChange(Skill.PRAYER, 99, 70, moonlightMothMix));
+	}
+
+	@Test
+	public void testSunlightMoth()
+	{
+		final Effect sunlightMoth = new ItemStatChanges().get(ItemID.SUNLIGHT_MOTH_28890);
+
+		assertEquals(16, skillChange(Skill.AGILITY, 50, 1, sunlightMoth));
+		assertEquals(0, skillChange(Skill.ATTACK, 70, 70, sunlightMoth));
+		assertEquals(17, skillChange(Skill.CONSTRUCTION, 66, 49, sunlightMoth));
+		assertEquals(0, skillChange(Skill.COOKING, 70, 70, sunlightMoth));
+		assertEquals(12, skillChange(Skill.CRAFTING, 70, 58, sunlightMoth));
+		assertEquals(21, skillChange(Skill.DEFENCE, 75, 2, sunlightMoth));
+		assertEquals(13, skillChange(Skill.FARMING, 83, 70, sunlightMoth));
+		assertEquals(1, skillChange(Skill.FIREMAKING, 71, 70, sunlightMoth));
+		assertEquals(19, skillChange(Skill.FISHING, 89, 70, sunlightMoth));
+		assertEquals(7, skillChange(Skill.FLETCHING, 77, 70, sunlightMoth));
+		assertEquals(0, skillChange(Skill.HERBLORE, 1, 1, sunlightMoth));
+		assertEquals(1, skillChange(Skill.HITPOINTS, 84, 83, sunlightMoth));
+		assertEquals(0, skillChange(Skill.HUNTER, 75, 77, sunlightMoth));
+		assertEquals(12, skillChange(Skill.MAGIC, 30, 0, sunlightMoth));
+		assertEquals(19, skillChange(Skill.MINING, 68, 49, sunlightMoth));
+		assertEquals(0, skillChange(Skill.PRAYER, 99, 70, sunlightMoth));
+		assertEquals(25, skillChange(Skill.RANGED, 99, 70, sunlightMoth));
+		assertEquals(25, skillChange(Skill.RUNECRAFT, 99, 70, sunlightMoth));
+		assertEquals(12, skillChange(Skill.SLAYER, 99, 87, sunlightMoth));
+		assertEquals(0, skillChange(Skill.SMITHING, 31, 31, sunlightMoth));
+		assertEquals(0, skillChange(Skill.STRENGTH, 68, 81, sunlightMoth));
+		assertEquals(11, skillChange(Skill.THIEVING, 28, 10, sunlightMoth));
+		assertEquals(3, skillChange(Skill.WOODCUTTING, 54, 51, sunlightMoth));
+
+		final Effect sunlightMothMix = new ItemStatChanges().get(ItemID.SUNLIGHT_MOTH_MIX_1);
+
+		assertEquals(16, skillChange(Skill.AGILITY, 50, 1, sunlightMothMix));
+		assertEquals(0, skillChange(Skill.ATTACK, 70, 70, sunlightMothMix));
+		assertEquals(17, skillChange(Skill.CONSTRUCTION, 66, 49, sunlightMothMix));
+		assertEquals(0, skillChange(Skill.COOKING, 70, 70, sunlightMothMix));
+		assertEquals(12, skillChange(Skill.CRAFTING, 70, 58, sunlightMothMix));
+		assertEquals(21, skillChange(Skill.DEFENCE, 75, 2, sunlightMothMix));
+		assertEquals(13, skillChange(Skill.FARMING, 83, 70, sunlightMothMix));
+		assertEquals(1, skillChange(Skill.FIREMAKING, 71, 70, sunlightMothMix));
+		assertEquals(19, skillChange(Skill.FISHING, 89, 70, sunlightMothMix));
+		assertEquals(7, skillChange(Skill.FLETCHING, 77, 70, sunlightMothMix));
+		assertEquals(0, skillChange(Skill.HERBLORE, 1, 1, sunlightMothMix));
+		assertEquals(1, skillChange(Skill.HITPOINTS, 84, 83, sunlightMothMix));
+		assertEquals(0, skillChange(Skill.HUNTER, 75, 77, sunlightMothMix));
+		assertEquals(12, skillChange(Skill.MAGIC, 30, 0, sunlightMothMix));
+		assertEquals(19, skillChange(Skill.MINING, 68, 49, sunlightMothMix));
+		assertEquals(0, skillChange(Skill.PRAYER, 99, 70, sunlightMothMix));
+		assertEquals(25, skillChange(Skill.RANGED, 99, 70, sunlightMothMix));
+		assertEquals(25, skillChange(Skill.RUNECRAFT, 99, 70, sunlightMothMix));
+		assertEquals(12, skillChange(Skill.SLAYER, 99, 87, sunlightMothMix));
+		assertEquals(0, skillChange(Skill.SMITHING, 31, 31, sunlightMothMix));
+		assertEquals(0, skillChange(Skill.STRENGTH, 68, 81, sunlightMothMix));
+		assertEquals(11, skillChange(Skill.THIEVING, 28, 10, sunlightMothMix));
+		assertEquals(3, skillChange(Skill.WOODCUTTING, 54, 51, sunlightMothMix));
+	}
+
+	@Test
 	public void prayerRestoreVariants()
 	{
 		final ItemContainer equipment = mock(ItemContainer.class);
