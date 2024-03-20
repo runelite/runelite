@@ -100,7 +100,11 @@ public enum InventoryID
 	/**
 	 * TOA reward chest
 	 */
-	TOA_REWARD_CHEST(811);
+	TOA_REWARD_CHEST(811),
+	/**
+	 * Reward chest for Moons of Peril
+	 */
+	LUNAR_CHEST(847);
 
 	private final int id;
 
