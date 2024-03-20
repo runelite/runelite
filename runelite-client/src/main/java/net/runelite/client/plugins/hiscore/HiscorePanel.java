@@ -336,12 +336,17 @@ public class HiscorePanel extends PluginPanel
 		{
 			directory = "/skill_icons/";
 		}
-		else if (skill.getType() == HiscoreSkillType.BOSS)
+		else if (skillType == HiscoreSkillType.BOSS)
 		{
 			directory = "bosses/";
 		}
+		else if (skillType == HiscoreSkillType.ACTIVITY)
+		{
+			directory = "activities/";
+		}
 		else
 		{
+			assert skillType == HiscoreSkillType.SKILL;
 			directory = "/skill_icons_small/";
 		}
 
