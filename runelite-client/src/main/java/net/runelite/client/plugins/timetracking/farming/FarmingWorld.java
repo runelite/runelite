@@ -318,6 +318,18 @@ class FarmingWorld
 			), 12895, 12894, 13150,
 			/* Underground */ 12994, 12993, 12737, 12738, 12126, 12127, 13250);
 
+		add(new FarmingRegion("Ortus Farm", 6192, true,
+			new FarmingPatch("North", Varbits.FARMING_4771, PatchImplementation.ALLOTMENT, NpcID.HARMINIA, 0),
+			new FarmingPatch("South", Varbits.FARMING_4772, PatchImplementation.ALLOTMENT, NpcID.HARMINIA, 1),
+			new FarmingPatch("", Varbits.FARMING_4773, PatchImplementation.FLOWER),
+			new FarmingPatch("", Varbits.FARMING_4774, PatchImplementation.HERB),
+			new FarmingPatch("", Varbits.FARMING_4775, PatchImplementation.COMPOST)
+		), 6448);
+
+		add(new FarmingRegion("Locus Oasis", 6702, true,
+			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.TREE, NpcID.MARCELLUS)
+		));
+
 		// Finalize
 		this.regions = Multimaps.unmodifiableMultimap(this.regions);
 		Map<Tab, Set<FarmingPatch>> umtabs = new TreeMap<>();
