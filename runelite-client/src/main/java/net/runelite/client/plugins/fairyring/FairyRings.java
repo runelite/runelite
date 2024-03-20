@@ -33,6 +33,7 @@ public enum FairyRings
 	// A
 	AIQ("Mudskipper Point"),
 	AIR("(Island) South-east of Ardougne"),
+	AJP("Avium Savannah"),
 	AJQ("Cave south of Dorgesh-Kaan"),
 	AJR("Slayer cave"),
 	AJS("Penguins near Miscellania"),
