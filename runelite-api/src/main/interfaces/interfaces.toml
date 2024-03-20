@@ -526,6 +526,9 @@ logout_button=6
 id=81
 looting_bag_inventory=5
 
+[lunar_chest]
+id=868
+
 [minigames]
 id=160
 teleport_button=30

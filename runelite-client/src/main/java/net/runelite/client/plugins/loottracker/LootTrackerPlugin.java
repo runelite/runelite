@@ -892,6 +892,10 @@ public class LootTrackerPlugin extends Plugin
 				container = client.getItemContainer(InventoryID.WILDERNESS_LOOT_CHEST);
 				chestLooted = true;
 				break;
+			case InterfaceID.LUNAR_CHEST:
+				event = "Lunar Chest";
+				container = client.getItemContainer(InventoryID.LUNAR_CHEST);
+				break;
 			default:
 				return;
 		}
