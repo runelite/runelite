@@ -27,6 +27,7 @@ package net.runelite.client.plugins.worldmap;
 
 import java.util.stream.Stream;
 import static org.apache.commons.lang3.ArrayUtils.isSorted;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
@@ -36,5 +37,11 @@ public class MinigameLocationTest
 	public void testMinigameLocationsAlphabetized()
 	{
 		assertTrue("Minigame location entries must be in alphabetical order", isSorted(Stream.of(MinigameLocation.values()).map(Enum::name).toArray(String[]::new)));
+	}
+
+	@Test
+	public void testUniqueWorldPoints()
+	{
+		assertEquals("Minigame location entries must have unique world points", Stream.of(MinigameLocation.values()).map(MinigameLocation::getLocation).distinct().count(), MinigameLocation.values().length);
 	}
 }
