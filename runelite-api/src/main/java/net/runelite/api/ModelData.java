@@ -95,4 +95,11 @@ public interface ModelData extends Mesh<ModelData>, Renderable
 	 * Clones {@link #getFaceTransparencies()} so they can be safely mutated
 	 */
 	ModelData cloneTransparencies();
+
+	/**
+	 * Clones {@link #getFaceTransparencies()} so they can be safely mutated
+	 *
+	 * @param force Ensure {@link #getFaceTransparencies()} is non null
+	 */
+	ModelData cloneTransparencies(boolean force);
 }
