@@ -200,4 +200,5 @@ public final class WidgetID
 	public static final int CLANRANK_POPUP = InterfaceID.CLANRANK_POPUP;
 	public static final int SANITY_GROUP_ID = InterfaceID.SANITY;
 	public static final int THE_STRANGLER_INFECTION_GROUP_ID = InterfaceID.STRANGLER;
+	public static final int PERILOUS_MOONS_GROUP_ID = InterfaceID.PERILOUS_MOONS;
 }

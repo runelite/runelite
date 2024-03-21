@@ -589,6 +589,10 @@ layer=1
 id=202
 container=0
 
+[perilous_moons]
+id=869
+layer=2
+
 [pest_control]
 id=408
 knight_info_container=2
@@ -898,4 +902,3 @@ world_list=18
 [zeah_mess_hall]
 id=235
 cooking_display=2
-
