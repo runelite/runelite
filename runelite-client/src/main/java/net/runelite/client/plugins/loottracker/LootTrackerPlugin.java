@@ -1231,6 +1231,24 @@ public class LootTrackerPlugin extends Plugin
 					case ItemID.ORE_PACK_27693:
 						onInvChange(collectInvItems(LootRecordType.EVENT, ORE_PACK_VM_EVENT));
 						break;
+					//Hunters loot sacks are stackable and multiple can be opened in one tick.
+					//This provides an accurate count of how many were opened for each event
+					case ItemID.HUNTERS_LOOT_SACK:
+					case ItemID.HUNTERS_LOOT_SACK_BASIC:
+					case ItemID.HUNTERS_LOOT_SACK_TIER_1:
+					case ItemID.HUNTERS_LOOT_SACK_TIER_2:
+					case ItemID.HUNTERS_LOOT_SACK_TIER_3:
+						final int itemId = event.getItemId();
+						onInvChange((((invItems, groundItems, removedItems) ->
+						{
+							int cnt = removedItems.count(itemId);
+							if (cnt > 0)
+							{
+								String name = itemManager.getItemComposition(itemId).getMembersName();
+								addLoot(name, -1, LootRecordType.EVENT, null, invItems, cnt);
+							}
+						})));
+						break;
 				}
 			}
 			else if (event.getMenuOption().equals("Loot") && IMPLING_JARS.contains(event.getItemId()))
