@@ -209,7 +209,7 @@ enum MiningSiteLocation
 		new Rock(26, Ore.IRON), new Rock(8, Ore.SILVER), new Rock(19, Ore.COAL), new Rock(14, Ore.GOLD),
 		new Rock(7, Ore.MITHRIL), new Rock(10, Ore.SOFT_CLAY), new Rock(7, Ore.ADAMANTITE), new Rock(4, Ore.RUNITE)),
 	// TUTORIAL ISLAND -- NOT AVAILABLE ON WORLD MAP
-	UZER(new WorldPoint(3415, 3160, 0), new Rock(10, Ore.CLAY)),
+	UZER(new WorldPoint(3424, 3164, 0), new Rock(10, Ore.CLAY)),
 	VARROCK_SOUTH_EAST(new WorldPoint(3286, 3365, 0),
 		new Rock(9, Ore.COPPER), new Rock(6, Ore.TIN), new Rock(4, Ore.IRON)),
 	VARROCK_SOUTH_WEST(new WorldPoint(3176, 3370, 0),
