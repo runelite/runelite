@@ -58,13 +58,13 @@ int4 rotate_vertex(__constant struct uniform *uni, int4 vertex, int orientation)
   return (int4)(x, vertex.y, z, vertex.w);
 }
 
-float3 rotatef_vertex(float3 vertex, int orientation) {
+float4 rotatef_vertex(float4 vertex, int orientation) {
   float rad = orientation * UNIT;
   float s = sin(rad);
   float c = cos(rad);
   float x = vertex.z * s + vertex.x * c;
   float z = vertex.z * c - vertex.x * s;
-  return (float3)(x, vertex.y, z);
+  return (float4)(x, vertex.y, z, vertex.w);
 }
 
 /*

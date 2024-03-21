@@ -211,6 +211,21 @@ int tile_height(int z, int x, int y) {
   return texelFetch(tileHeightSampler, ivec3(x + ESCENE_OFFSET, y + ESCENE_OFFSET, z), 0).r << 3;
 }
 
+vec4 hillskew_vertexf(vec4 v, int hillskew, int y, int plane) {
+  if (hillskew == 1) {
+    float fx = v.x / 128;
+    float fz = v.z / 128;
+    int sx = int(floor(fx));
+    int sz = int(floor(fz));
+    float h1 = mix(tile_height(plane, sx, sz), tile_height(plane, sx + 1, sz), fract(fx));
+    float h2 = mix(tile_height(plane, sx, sz + 1), tile_height(plane, sx + 1, sz + 1), fract(fx));
+    float h3 = mix(h1, h2, fract(fz));
+    return vec4(v.x, v.y + h3 - y, v.z, v.w);
+  } else {
+    return v;
+  }
+}
+
 ivec4 hillskew_vertex(ivec4 v, int hillskew, int y, int plane) {
   if (hillskew == 1) {
     int px = v.x & 127;
@@ -285,9 +300,25 @@ void sort_and_insert(uint localId, modelinfo minfo, int thisPriority, int thisDi
       }
 
       int orientation = flags & 0x7ff;
-      uvout[outOffset + myOffset * 3] = vec4(texA.x, rotatef(texA.yzw, orientation) + pos.xyz);
-      uvout[outOffset + myOffset * 3 + 1] = vec4(texB.x, rotatef(texB.yzw, orientation) + pos.xyz);
-      uvout[outOffset + myOffset * 3 + 2] = vec4(texC.x, rotatef(texC.yzw, orientation) + pos.xyz);
+      // swizzle from (tex,x,y,z) to (x,y,z,tex) for rotate and hillskew
+      texA = texA.yzwx;
+      texB = texB.yzwx;
+      texC = texC.yzwx;
+      // rotate
+      texA = rotatef(texA, orientation);
+      texB = rotatef(texB, orientation);
+      texC = rotatef(texC, orientation);
+      // position
+      texA += pos;
+      texB += pos;
+      texC += pos;
+      // hillskew
+      texA = hillskew_vertexf(texA, hillskew, minfo.y, plane);
+      texB = hillskew_vertexf(texB, hillskew, minfo.y, plane);
+      texC = hillskew_vertexf(texC, hillskew, minfo.y, plane);
+      uvout[outOffset + myOffset * 3] = texA.wxyz;
+      uvout[outOffset + myOffset * 3 + 1] = texB.wxyz;
+      uvout[outOffset + myOffset * 3 + 2] = texC.wxyz;
     }
   }
 }
