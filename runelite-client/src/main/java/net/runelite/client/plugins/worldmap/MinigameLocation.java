@@ -42,6 +42,8 @@ enum MinigameLocation
 	CLAN_WARS("Clan Wars", new WorldPoint(3133, 3621, 0)),
 	DUMMY_ROOM("Dummy Room", new WorldPoint(2857, 3551, 0)),
 	FISHING_TRAWLER("Fishing Trawler", new WorldPoint(2667, 3163, 0)),
+	FORTIS_COLOSSEUM("Fortis Colosseum", new WorldPoint(1807, 9507, 0)),
+	FORTIS_COLOSSEUM_SURFACE("Fortis Colosseum", new WorldPoint(1798, 3107, 0)),
 	GNOME_BALL("Gnome Ball", new WorldPoint(2381, 3488, 0)),
 	GNOME_RESTAURANT("Gnome Restaurant", new WorldPoint(2436, 3502, 0)),
 	HALLOWED_SEPULCHRE("Hallowed Sepulchre", new WorldPoint(3653, 3386, 1)),
