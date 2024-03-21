@@ -662,7 +662,7 @@ public class GroundItemsPlugin extends Plugin
 			return itemColor;
 		}
 
-		final int price = getValueByMode(groundItem.getGePrice(), groundItem.getHaPrice());
+		final int price = getValueByMode(groundItem.getStackGePrice(), groundItem.getStackHaPrice());
 		for (PriceHighlight highlight : priceChecks)
 		{
 			if (price > highlight.getPrice())
@@ -679,14 +679,24 @@ public class GroundItemsPlugin extends Plugin
 		var item = new NamedQuantity(groundItem);
 		final boolean isExplicitHidden = TRUE.equals(hiddenItems.getUnchecked(item));
 		final boolean isExplicitHighlight = TRUE.equals(highlightedItems.getUnchecked(item));
-		final boolean canBeHidden = groundItem.getGePrice() > 0 || groundItem.isTradeable() || !config.dontHideUntradeables();
-		final boolean underGe = groundItem.getGePrice() < config.getHideUnderValue();
-		final boolean underHa = groundItem.getHaPrice() < config.getHideUnderValue();
+		final boolean canBeHidden =
+			groundItem.getStackGePrice() > 0 || groundItem.isTradeable() || !config.dontHideUntradeables();
+		final boolean showHaProfitable =
+			config.showMinimumHaProfit() > 0 && getHaProfit(groundItem) >= config.showMinimumHaProfit();
+		final boolean underGe = groundItem.getStackGePrice() < config.getHideUnderValue();
+		final boolean underHa = groundItem.getStackHaPrice() < config.getHideUnderValue();
 
 		// Explicit highlight takes priority over implicit hide
-		return isExplicitHidden || (!isExplicitHighlight && canBeHidden && underGe && underHa)
+		return isExplicitHidden || (!isExplicitHighlight && canBeHidden && !showHaProfitable && underGe && underHa)
 			? config.hiddenColor()
 			: null;
+	}
+
+	private int getHaProfit(GroundItem groundItem)
+	{
+		return groundItem.getHaPrice() -
+			itemManager.getItemPrice(ItemID.NATURE_RUNE) -
+			itemManager.getItemPrice(ItemID.FIRE_RUNE);
 	}
 
 	private Color getItemColor(Color highlighted, Color hidden)
@@ -719,7 +729,9 @@ public class GroundItemsPlugin extends Plugin
 			TRUE.equals(highlightedItems.getUnchecked(new NamedQuantity(item)));
 
 		final boolean shouldNotifyTier = config.notifyTier() != HighlightTier.OFF &&
-			getValueByMode(item.getGePrice(), item.getHaPrice()) > config.notifyTier().getValueFromTier(config) &&
+			getValueByMode(item.getStackGePrice(),
+				item.getStackHaPrice()) > config.notifyTier()
+				.getValueFromTier(config) &&
 			FALSE.equals(hiddenItems.getUnchecked(new NamedQuantity(item)));
 
 		final String dropType;
@@ -824,7 +836,7 @@ public class GroundItemsPlugin extends Plugin
 				continue;
 			}
 
-			int itemPrice = getValueByMode(groundItem.getGePrice(), groundItem.getHaPrice());
+			int itemPrice = getValueByMode(groundItem.getStackGePrice(), groundItem.getStackHaPrice());
 			if (itemPrice > highestPrice)
 			{
 				highestPrice = itemPrice;
