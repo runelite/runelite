@@ -42,6 +42,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -927,31 +928,28 @@ public class ClueScrollPlugin extends Plugin
 		final Tile[][][] tiles = scene.getTiles();
 		final Tile tile = tiles[client.getPlane()][localLocation.getSceneX()][localLocation.getSceneY()];
 
-		for (GameObject object : tile.getGameObjects())
-		{
-			if (object == null)
+		Stream.concat(Stream.of(tile.getGameObjects()), Stream.of(tile.getDecorativeObject()))
+			.filter(Objects::nonNull)
+			.forEach((object) ->
 			{
-				continue;
-			}
-
-			for (int id : objectIds)
-			{
-				if (object.getId() == id)
+				for (int id : objectIds)
 				{
-					objectsToMark.add(object);
-					continue;
-				}
+					if (object.getId() == id)
+					{
+						objectsToMark.add(object);
+						continue;
+					}
 
-				// Check impostors
-				final ObjectComposition comp = client.getObjectDefinition(object.getId());
-				final ObjectComposition impostor = comp.getImpostorIds() != null ? comp.getImpostor() : comp;
+					// Check impostors
+					final ObjectComposition comp = client.getObjectDefinition(object.getId());
+					final ObjectComposition impostor = comp.getImpostorIds() != null ? comp.getImpostor() : comp;
 
-				if (impostor != null && impostor.getId() == id)
-				{
-					objectsToMark.add(object);
+					if (impostor != null && impostor.getId() == id)
+					{
+						objectsToMark.add(object);
+					}
 				}
-			}
-		}
+			});
 	}
 
 	private void checkClueNPCs(ClueScroll clue, final NPC... npcs)
