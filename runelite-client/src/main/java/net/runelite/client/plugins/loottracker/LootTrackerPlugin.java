@@ -896,6 +896,15 @@ public class LootTrackerPlugin extends Plugin
 				event = "Lunar Chest";
 				container = client.getItemContainer(InventoryID.LUNAR_CHEST);
 				break;
+			case InterfaceID.FORTIS_COLOSSEUM_REWARD:
+				if (chestLooted)
+				{
+					return;
+				}
+				event = "Fortis Colosseum";
+				container = client.getItemContainer(InventoryID.FORTIS_COLOSSEUM_REWARD_CHEST);
+				chestLooted = true;
+				break;
 			default:
 				return;
 		}

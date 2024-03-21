@@ -365,6 +365,9 @@ bank_container=78
 interface_container=79
 inventory_container=83
 
+[fortis_colosseum_reward]
+id=864
+
 [fossil_island_oxygen_bar]
 id=609
 bar=1
