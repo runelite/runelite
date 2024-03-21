@@ -104,7 +104,11 @@ public enum InventoryID
 	/**
 	 * Reward chest for Moons of Peril
 	 */
-	LUNAR_CHEST(847);
+	LUNAR_CHEST(847),
+	/**
+	 * Reward chest for the Fortis Colosseum
+	 */
+	FORTIS_COLOSSEUM_REWARD_CHEST(843);
 
 	private final int id;
 
