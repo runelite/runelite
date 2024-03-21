@@ -86,7 +86,7 @@ enum FarmingPatchLocation
 		new WorldPoint(2572, 3102, 0),
 		new WorldPoint(2661, 3523, 0),
 		new WorldPoint(3224, 3313, 0),
-		new WorldPoint(3812, 3334, 0)
+		new WorldPoint(2812, 3334, 0)
 	),
 	MUSHROOM("Mushroom", new WorldPoint(3449, 3471, 0)),
 	REDWOOD("Redwood", new WorldPoint(1233, 3754, 0)),
