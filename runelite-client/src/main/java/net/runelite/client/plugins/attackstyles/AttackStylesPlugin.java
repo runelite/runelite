@@ -32,6 +32,8 @@ import java.util.EnumSet;
 import java.util.Set;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
+import lombok.AccessLevel;
+import lombok.Getter;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -67,9 +69,14 @@ import net.runelite.client.ui.overlay.OverlayManager;
 public class AttackStylesPlugin extends Plugin
 {
 	private int equippedWeaponTypeVarbit = -1;
+	@Getter(AccessLevel.PACKAGE)
+	@Nullable
 	private AttackStyle attackStyle;
 	private AttackStyle prevAttackStyle;
+	@Getter(AccessLevel.PACKAGE)
+	@VisibleForTesting
 	private final Set<Skill> warnedSkills = EnumSet.noneOf(Skill.class);
+	@Getter(AccessLevel.PACKAGE)
 	private boolean warnedSkillSelected;
 	private final Table<WeaponType, Integer, Boolean> widgetsToHide = HashBasedTable.create();
 
@@ -129,17 +136,6 @@ public class AttackStylesPlugin extends Plugin
 		processWidgets();
 		hideWidget(client.getWidget(ComponentID.COMBAT_AUTO_RETALIATE), false);
 		warnedSkills.clear();
-	}
-
-	@Nullable
-	AttackStyle getAttackStyle()
-	{
-		return attackStyle;
-	}
-
-	boolean isWarnedSkillSelected()
-	{
-		return warnedSkillSelected;
 	}
 
 	@Subscribe
@@ -256,18 +252,14 @@ public class AttackStylesPlugin extends Plugin
 
 	private void updateAttackStyle(int equippedWeaponType, int attackStyleIndex, int castingMode)
 	{
-		AttackStyle[] attackStyles = WeaponType.getWeaponType(equippedWeaponType).getAttackStyles();
-		if (attackStyleIndex < attackStyles.length)
+		attackStyle = WeaponType.getWeaponType(equippedWeaponType).getAttackStyles()[attackStyleIndex];
+		if (attackStyle == null)
 		{
-			attackStyle = attackStyles[attackStyleIndex];
-			if (attackStyle == null)
-			{
-				attackStyle = OTHER;
-			}
-			else if ((attackStyle == CASTING) && (castingMode == 1))
-			{
-				attackStyle = DEFENSIVE_CASTING;
-			}
+			attackStyle = OTHER;
+		}
+		else if (attackStyle == CASTING && castingMode == 1)
+		{
+			attackStyle = DEFENSIVE_CASTING;
 		}
 	}
 
@@ -370,12 +362,6 @@ public class AttackStylesPlugin extends Plugin
 		{
 			widget.setHidden(hidden);
 		}
-	}
-
-	@VisibleForTesting
-	Set<Skill> getWarnedSkills()
-	{
-		return warnedSkills;
 	}
 
 	@VisibleForTesting
