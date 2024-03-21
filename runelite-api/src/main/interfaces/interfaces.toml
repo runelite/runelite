@@ -557,6 +557,10 @@ worldmap_options=53
 id=382
 container=0
 
+[moons_of_peril]
+id=869
+layer=2
+
 [mortton_temple]
 id=171
 status=2
