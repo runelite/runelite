@@ -127,7 +127,7 @@ class FarmingWorld
 			new FarmingPatch("", Varbits.FARMING_4773, PatchImplementation.FLOWER),
 			new FarmingPatch("", Varbits.FARMING_4774, PatchImplementation.HERB),
 			new FarmingPatch("", Varbits.FARMING_4775, PatchImplementation.COMPOST)
-		), 6448);
+		), 6447, 6448, 6449, 6191, 6193);
 
 		add(new FarmingRegion("Champions' Guild", 12596, true,
 			new FarmingPatch("", Varbits.FARMING_4771, PatchImplementation.BUSH, NpcID.DREVEN)
