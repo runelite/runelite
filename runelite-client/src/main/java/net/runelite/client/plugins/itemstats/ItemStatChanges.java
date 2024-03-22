@@ -180,6 +180,12 @@ public class ItemStatChanges
 		add(combo(food(2), heal(PRAYER, perc(.04, -2))), BLOODY_BRACER);
 		add(combo(food(1), boost(AGILITY, 1), heal(STRENGTH, -1)), ELVEN_DAWN);
 		add(combo(boost(RANGED, 4), new BoostedStatBoost(STRENGTH, false, perc(.04, -2)), new BoostedStatBoost(MAGIC, false, perc(.04, -2))), LIZARDKICKER);
+		add(combo(food(1), boost(HUNTER, 2), dec(STRENGTH, 1), dec(ATTACK, 2)), TRAPPERS_TIPPLE);
+		add(combo(food(1), boost(AGILITY, 1), boost(STRENGTH, 1), new BoostedStatBoost(ATTACK, false, perc(.05, -1))), SUNBEAM_ALE);
+		add(combo(food(5), boost(STRENGTH, perc(.05, 1)), new BoostedStatBoost(ATTACK, false, perc(0.02, -3))), MOONLITE);
+		add(combo(food(5), boost(STRENGTH, perc(.05, 1)), new BoostedStatBoost(ATTACK, false, perc(0.02, -3))), SUNSHINE);
+		add(combo(food(5), boost(STRENGTH, 5), new BoostedStatBoost(ATTACK, false, perc(.02, -3))), RUM_28896);
+		add(combo(food(16), boost(WOODCUTTING, 1), heal(ATTACK, -5), heal(FLETCHING, -1)), ECLIPSE_RED);
 
 		// Sq'irk Juice
 		add(heal(RUN_ENERGY, 5), WINTER_SQIRKJUICE);
