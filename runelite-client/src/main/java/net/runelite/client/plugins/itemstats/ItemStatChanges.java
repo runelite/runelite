@@ -37,6 +37,7 @@ import net.runelite.client.plugins.itemstats.food.Anglerfish;
 import net.runelite.client.plugins.itemstats.potions.Ambrosia;
 import net.runelite.client.plugins.itemstats.potions.AncientBrew;
 import net.runelite.client.plugins.itemstats.potions.MixedPotion;
+import net.runelite.client.plugins.itemstats.potions.MoonlightPotion;
 import net.runelite.client.plugins.itemstats.potions.PrayerPotion;
 import net.runelite.client.plugins.itemstats.potions.SaradominBrew;
 import net.runelite.client.plugins.itemstats.potions.StaminaPotion;
@@ -220,6 +221,7 @@ public class ItemStatChanges
 			SUPER_COMBAT_POTION4_23543, SUPER_COMBAT_POTION3_23545, SUPER_COMBAT_POTION2_23547, SUPER_COMBAT_POTION1_23549 /* LMS */);
 		add(ancientBrew, ANCIENT_BREW1, ANCIENT_BREW2, ANCIENT_BREW3, ANCIENT_BREW4);
 		add(new AncientBrew(.08, 3), FORGOTTEN_BREW1, FORGOTTEN_BREW2, FORGOTTEN_BREW3, FORGOTTEN_BREW4);
+		add(new MoonlightPotion(), MOONLIGHT_POTION1, MOONLIGHT_POTION2, MOONLIGHT_POTION3, MOONLIGHT_POTION4);
 
 		// Mixed combat potions
 		add(new MixedPotion(3, attackPot), ATTACK_MIX1, ATTACK_MIX2);
