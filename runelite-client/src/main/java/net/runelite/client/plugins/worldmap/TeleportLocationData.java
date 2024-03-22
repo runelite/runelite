@@ -230,6 +230,7 @@ enum TeleportLocationData
 	FISHING_CAPE_OTTOS_GROTTO(TeleportType.OTHER, "Fishing Cape", "Otto's Grotto", new WorldPoint(2504, 3484, 0), "fishing_cape_icon.png"),
 	HUNTER_CAPE_CARNIVOROUS(TeleportType.OTHER, "Hunter Cape", "Carnivorous Chinchompa Area", new WorldPoint(2556, 2916, 0), "hunter_cape_icon.png"),
 	HUNTER_CAPE_BLACK(TeleportType.OTHER, "Hunter Cape", "Black Chinchompa Area", new WorldPoint(3144, 3772, 0), "hunter_cape_icon.png"),
+	HUNTER_CAPE_GUILD(TeleportType.OTHER, "Hunter Cape", "Hunter Guild", new WorldPoint(1558, 3046, 0), "hunter_cape_icon.png"),
 	STRENGTH_CAPE(TeleportType.OTHER, "Strength Cape", new WorldPoint(2865, 3546, 0), "strength_cape_icon.png"),
 	QUEST_CAPE(TeleportType.OTHER, "Quest Cape", new WorldPoint(2729, 3348, 0), "quest_cape_icon.png"),
 	MUSIC_CAPE(TeleportType.OTHER, "Music Cape", "Falo the Bard", new WorldPoint(2689, 3547, 0), "music_cape_icon.png");
