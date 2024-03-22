@@ -259,13 +259,11 @@ public class GroundItemsPlugin extends Plugin
 		{
 			existing.setQuantity(existing.getQuantity() + groundItem.getQuantity());
 			// The spawn time remains set at the oldest spawn
-
-			updateItemColor(existing);
+			existing.reset();
 		}
 		else
 		{
 			collectedGroundItems.put(tile.getWorldLocation(), item.getId(), groundItem);
-			updateItemColor(groundItem);
 		}
 
 		if (!config.onlyShowLoot())
@@ -314,6 +312,7 @@ public class GroundItemsPlugin extends Plugin
 			// it is not known which item is picked up, so we invalidate the spawn
 			// time
 			groundItem.setSpawnTime(null);
+			groundItem.reset();
 		}
 
 		handleLootbeam(tile.getWorldLocation());
