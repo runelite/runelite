@@ -34,6 +34,9 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -60,6 +63,7 @@ import net.runelite.client.ui.components.ProgressBar;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.QuantityFormatter;
+import org.apache.commons.lang3.tuple.Pair;
 
 class XpInfoBox extends JPanel
 {
@@ -98,14 +102,11 @@ class XpInfoBox extends JPanel
 
 	private final ProgressBar progressBar = new ProgressBar();
 
-	private final JLabel topLeftStat = new JLabel();
-	private final JLabel bottomLeftStat = new JLabel();
-	private final JLabel topRightStat = new JLabel();
-	private final JLabel bottomRightStat = new JLabel();
 	private final JMenuItem pauseSkill = new JMenuItem("Pause");
 	private final JMenuItem canvasItem = new JMenuItem(ADD_STATE);
 
 	private final XpTrackerConfig xpTrackerConfig;
+	private final List<Pair<JLabel, Supplier<XpPanelLabel>>> statLabels;
 
 	private boolean paused = false;
 
@@ -114,6 +115,24 @@ class XpInfoBox extends JPanel
 		this.xpTrackerConfig = xpTrackerConfig;
 		this.panel = panel;
 		this.skill = skill;
+
+		this.statLabels = Stream.<Supplier<XpPanelLabel>>of(
+				xpTrackerConfig::xpPanelLabel1,
+				xpTrackerConfig::xpPanelLabel2,
+				xpTrackerConfig::xpPanelLabel3,
+				xpTrackerConfig::xpPanelLabel4,
+				xpTrackerConfig::xpPanelLabel5,
+				xpTrackerConfig::xpPanelLabel6,
+				xpTrackerConfig::xpPanelLabel7
+			)
+			.map(xpPanelLabelSupplier ->
+				{
+					JLabel label = new JLabel();
+					label.setFont(FontManager.getRunescapeSmallFont());
+					return Pair.of(label, xpPanelLabelSupplier);
+				}
+			)
+			.collect(Collectors.toList());
 
 		setLayout(new BorderLayout());
 		setBorder(new EmptyBorder(5, 0, 0, 0));
@@ -190,20 +209,7 @@ class XpInfoBox extends JPanel
 		headerPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		headerPanel.setLayout(new BorderLayout());
 
-		statsPanel.setLayout(new DynamicGridLayout(2, 2));
-		statsPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
-		statsPanel.setBorder(new EmptyBorder(9, 2, 9, 2));
-
-
-		topLeftStat.setFont(FontManager.getRunescapeSmallFont());
-		bottomLeftStat.setFont(FontManager.getRunescapeSmallFont());
-		topRightStat.setFont(FontManager.getRunescapeSmallFont());
-		bottomRightStat.setFont(FontManager.getRunescapeSmallFont());
-
-		statsPanel.add(topLeftStat);     // top left
-		statsPanel.add(topRightStat);    // top right
-		statsPanel.add(bottomLeftStat);  // bottom left
-		statsPanel.add(bottomRightStat); // bottom right
+		relayoutStatsPanel();
 
 		headerPanel.add(skillIcon, BorderLayout.WEST);
 		headerPanel.add(statsPanel, BorderLayout.CENTER);
@@ -234,6 +240,28 @@ class XpInfoBox extends JPanel
 		progressBar.addMouseMotionListener(mouseDragEventForwarder);
 
 		add(container, BorderLayout.NORTH);
+	}
+
+	void relayoutStatsPanel()
+	{
+		var panels = statLabels.stream()
+			.filter(pair -> pair.getRight().get() != XpPanelLabel.NONE)
+			.collect(Collectors.toList());
+
+		int numRows = Math.max(1, (panels.size() + 1) / 2);
+
+		statsPanel.removeAll();
+		statsPanel.setLayout(new DynamicGridLayout(numRows, 2));
+		statsPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
+		statsPanel.setBorder(new EmptyBorder(9, 2, 9, 2));
+
+		for (var pair : panels)
+		{
+			JLabel label = pair.getLeft();
+			statsPanel.add(label);
+		}
+
+		statsPanel.revalidate();
 	}
 
 	void reset()
@@ -322,10 +350,12 @@ class XpInfoBox extends JPanel
 
 		// Update information labels
 		// Update exp per hour separately, every time (not only when there's an update)
-		topLeftStat.setText(htmlLabel(xpTrackerConfig.xpPanelLabel1(), xpSnapshotSingle));
-		topRightStat.setText(htmlLabel(xpTrackerConfig.xpPanelLabel2(), xpSnapshotSingle));
-		bottomLeftStat.setText(htmlLabel(xpTrackerConfig.xpPanelLabel3(), xpSnapshotSingle));
-		bottomRightStat.setText(htmlLabel(xpTrackerConfig.xpPanelLabel4(), xpSnapshotSingle));
+		for (var pair : statLabels)
+		{
+			JLabel label = pair.getLeft();
+			XpPanelLabel xpPanelLabel = pair.getRight().get();
+			label.setText(xpPanelLabel == XpPanelLabel.NONE ? "" : htmlLabel(xpPanelLabel, xpSnapshotSingle));
+		}
 	}
 
 	static String htmlLabel(XpPanelLabel panelLabel, XpSnapshotSingle xpSnapshotSingle)
