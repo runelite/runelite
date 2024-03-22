@@ -203,6 +203,14 @@ public class AgilityPlugin extends Plugin
 		{
 			removeAgilityArenaTimer();
 		}
+
+		if (event.getGroup().equals("agility") && event.getKey().equals("overlayOnTop"))
+		{
+			agilityOverlay.updateLayer();
+
+			overlayManager.remove(agilityOverlay);
+			overlayManager.add(agilityOverlay);
+		}
 	}
 
 	@Subscribe
