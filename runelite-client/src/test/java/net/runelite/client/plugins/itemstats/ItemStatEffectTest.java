@@ -248,6 +248,60 @@ public class ItemStatEffectTest
 	}
 
 	@Test
+	public void testMoonlightPotion()
+	{
+		final Effect moonlightPotion = new ItemStatChanges().get(ItemID.MOONLIGHT_POTION1);
+
+		when(client.getBoostedSkillLevel(Skill.HERBLORE)).thenReturn(11);
+		assertEquals(12, skillChange(Skill.ATTACK, 99, 1, moonlightPotion));
+		assertEquals(0, skillChange(Skill.STRENGTH, 99, 99, moonlightPotion));
+		assertEquals(0, skillChange(Skill.DEFENCE, 40, 33, moonlightPotion));
+		assertEquals(0, skillChange(Skill.PRAYER, 99, 54, moonlightPotion));
+
+		when(client.getBoostedSkillLevel(Skill.HERBLORE)).thenReturn(38);
+		assertEquals(12, skillChange(Skill.ATTACK, 99, 99, moonlightPotion));
+		assertEquals(12, skillChange(Skill.STRENGTH, 99, 99, moonlightPotion));
+		assertEquals(4, skillChange(Skill.DEFENCE, 40, 43, moonlightPotion));
+		assertEquals(31, skillChange(Skill.PRAYER, 99, 0, moonlightPotion));
+		assertEquals(9, skillChange(Skill.PRAYER, 99, 90, moonlightPotion));
+
+		when(client.getBoostedSkillLevel(Skill.HERBLORE)).thenReturn(54);
+		assertEquals(3, skillChange(Skill.ATTACK, 60, 71, moonlightPotion));
+		assertEquals(2, skillChange(Skill.STRENGTH, 60, 67, moonlightPotion));
+		assertEquals(2, skillChange(Skill.DEFENCE, 60, 67, moonlightPotion));
+		assertEquals(31, skillChange(Skill.PRAYER, 99, 10, moonlightPotion));
+
+		when(client.getBoostedSkillLevel(Skill.HERBLORE)).thenReturn(65);
+		assertEquals(12, skillChange(Skill.ATTACK, 50, 19, moonlightPotion));
+		assertEquals(13, skillChange(Skill.STRENGTH, 58, 22, moonlightPotion));
+		assertEquals(0, skillChange(Skill.DEFENCE, 34, 40, moonlightPotion));
+		assertEquals(26, skillChange(Skill.PRAYER, 42, 0, moonlightPotion));
+		assertEquals(4, skillChange(Skill.PRAYER, 42, 38, moonlightPotion));
+
+		when(client.getBoostedSkillLevel(Skill.HERBLORE)).thenReturn(77);
+		assertEquals(30, skillChange(Skill.PRAYER, 77, 18, moonlightPotion));
+
+		when(client.getBoostedSkillLevel(Skill.HERBLORE)).thenReturn(80);
+		assertEquals(6, skillChange(Skill.ATTACK, 80, 91, moonlightPotion));
+		assertEquals(7, skillChange(Skill.STRENGTH, 92, 103, moonlightPotion));
+		assertEquals(8, skillChange(Skill.DEFENCE, 75, 89, moonlightPotion));
+		assertEquals(31, skillChange(Skill.PRAYER, 77, 18, moonlightPotion));
+
+		when(client.getBoostedSkillLevel(Skill.HERBLORE)).thenReturn(99);
+		assertEquals(19, skillChange(Skill.ATTACK, 99, 99, moonlightPotion));
+		assertEquals(19, skillChange(Skill.STRENGTH, 99, 99, moonlightPotion));
+		assertEquals(26, skillChange(Skill.DEFENCE, 99, 99, moonlightPotion));
+		assertEquals(36, skillChange(Skill.PRAYER, 99, 0, moonlightPotion));
+
+		when(client.getBoostedSkillLevel(Skill.HERBLORE)).thenReturn(102);
+		assertEquals(37, skillChange(Skill.PRAYER, 99, 0, moonlightPotion));
+
+		when(client.getBoostedSkillLevel(Skill.HERBLORE)).thenReturn(104);
+		assertEquals(33, skillChange(Skill.PRAYER, 34, 1, moonlightPotion));
+		assertEquals(38, skillChange(Skill.PRAYER, 54, 0, moonlightPotion));
+	}
+
+	@Test
 	public void prayerRestoreVariants()
 	{
 		final ItemContainer equipment = mock(ItemContainer.class);
