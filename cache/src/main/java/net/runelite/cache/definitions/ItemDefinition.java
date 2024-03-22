@@ -33,6 +33,7 @@ public class ItemDefinition
 	public final int id;
 
 	public String name = "null";
+	public String examine;
 	public String unknown1;
 
 	public int resizeX = 128;
