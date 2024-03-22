@@ -63,7 +63,8 @@ public class CipherClue extends ClueScroll implements NpcClueScroll, LocationClu
 		new CipherClue("QSPGFTTPS HSBDLMFCPOF", NpcID.PROFESSOR_GRACKLEBONE, new WorldPoint(1625, 3802, 0), "Ground floor of Arceuus Library", "How many round tables can be found on this floor of the library?", "9"),
 		new CipherClue("IWPPLQTP", NpcID.GUNNJORN, new WorldPoint(2541, 3548, 0), "Barbarian Outpost Agility course"),
 		new CipherClue("BSOPME MZETQPS", NpcID.ARNOLD_LYDSPOR, new WorldPoint(2329, 3689, 0), "Piscatoris Fishing Colony general store/bank"),
-		new CipherClue("ESBZOPS QJH QFO", new WorldPoint(3077, 3260, 0), "Inside of Martin the Master Gardener's pig pen in Draynor Village.")
+		new CipherClue("ESBZOPS QJH QFO", new WorldPoint(3077, 3260, 0), "Inside of Martin the Master Gardener's pig pen in Draynor Village."),
+		new CipherClue("BXJA UNJMNA YRCAR", NpcID.SOAR_LEADER_PITRI, new WorldPoint(1559, 3045, 0), "Top of the Hunter Guild")
 	);
 
 	private final String text;

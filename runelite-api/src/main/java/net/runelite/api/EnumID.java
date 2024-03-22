@@ -78,4 +78,10 @@ public final class EnumID
 	 * val: struct slayer task
 	 */
 	public static final int SLAYER_TASK = 5008;
+
+	/**
+	 * key: weapon type
+	 * val: enum
+	 */
+	public static final int WEAPON_STYLES = 3908;
 }

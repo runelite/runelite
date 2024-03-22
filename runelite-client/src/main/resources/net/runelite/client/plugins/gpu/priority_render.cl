@@ -236,8 +236,8 @@ float4 hillskew_vertexf(read_only image3d_t tileHeightImage, float4 v, int hills
     int sx = (int)(floor(fx));
     int sz = (int)(floor(fz));
     float it;
-    float h1 = mix(tile_height(tileHeightImage, plane, sx, sz), tile_height(tileHeightImage, plane, sx + 1, sz), fract(fx, &it));
-    float h2 = mix(tile_height(tileHeightImage, plane, sx, sz + 1), tile_height(tileHeightImage, plane, sx + 1, sz + 1), fract(fx, &it));
+    float h1 = mix((float)tile_height(tileHeightImage, plane, sx, sz), (float)tile_height(tileHeightImage, plane, sx + 1, sz), fract(fx, &it));
+    float h2 = mix((float)tile_height(tileHeightImage, plane, sx, sz + 1), (float)tile_height(tileHeightImage, plane, sx + 1, sz + 1), fract(fx, &it));
     float h3 = mix(h1, h2, fract(fz, &it));
     return (float4)(v.x, v.y + h3 - y, v.z, v.w);
   } else {

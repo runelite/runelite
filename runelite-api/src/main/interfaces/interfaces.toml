@@ -365,6 +365,9 @@ bank_container=78
 interface_container=79
 inventory_container=83
 
+[fortis_colosseum_reward]
+id=864
+
 [fossil_island_oxygen_bar]
 id=609
 bar=1
@@ -526,6 +529,9 @@ logout_button=6
 id=81
 looting_bag_inventory=5
 
+[lunar_chest]
+id=868
+
 [minigames]
 id=160
 teleport_button=30
@@ -550,6 +556,10 @@ worldmap_options=53
 [mlm]
 id=382
 container=0
+
+[moons_of_peril]
+id=869
+layer=2
 
 [mortton_temple]
 id=171

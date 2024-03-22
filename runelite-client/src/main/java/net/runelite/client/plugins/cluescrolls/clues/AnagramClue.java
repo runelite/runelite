@@ -769,6 +769,12 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.area("Shayzien pub")
 			.question("If 13 Shayzien Soldiers kill 46 Lizardmen each in a day, how many Lizardmen have they killed in total in a single day?")
 			.answer("598")
+			.build(),
+		AnagramClue.builder()
+			.text("LAME T")
+			.npc("Metla")
+			.location(new WorldPoint(1742, 2977, 0))
+			.area("Stonecutter Outpost")
 			.build()
 	);
 

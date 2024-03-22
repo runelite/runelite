@@ -252,7 +252,8 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 		new SkillChallengeClue("Kill a Fiyr shade inside Mort'tons shade catacombs.",
 			any("Any Gold or Silver Shade Key",
 				item(ItemID.GOLD_KEY_RED), item(ItemID.GOLD_KEY_BROWN), item(ItemID.GOLD_KEY_CRIMSON), item(ItemID.GOLD_KEY_BLACK), item(ItemID.GOLD_KEY_PURPLE),
-				item(ItemID.SILVER_KEY_RED), item(ItemID.SILVER_KEY_BROWN), item(ItemID.SILVER_KEY_CRIMSON), item(ItemID.SILVER_KEY_BLACK), item(ItemID.SILVER_KEY_PURPLE)))
+				item(ItemID.SILVER_KEY_RED), item(ItemID.SILVER_KEY_BROWN), item(ItemID.SILVER_KEY_CRIMSON), item(ItemID.SILVER_KEY_BLACK), item(ItemID.SILVER_KEY_PURPLE))),
+		new SkillChallengeClue("Catch a Tecu salamander", item(ItemID.ROPE), item(ItemID.SMALL_FISHING_NET))
 	);
 
 	private final ChallengeType type;

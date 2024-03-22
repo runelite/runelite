@@ -81,6 +81,42 @@ public class FishingPluginTest
 	}
 
 	@Test
+	public void testLobster()
+	{
+		ChatMessage chatMessage = new ChatMessage();
+		chatMessage.setType(ChatMessageType.SPAM);
+		chatMessage.setMessage("You catch a Lobster.");
+
+		fishingPlugin.onChatMessage(chatMessage);
+
+		assertNotNull(fishingPlugin.getSession().getLastFishCaught());
+	}
+
+	@Test
+	public void testAnglerfish()
+	{
+		ChatMessage chatMessage = new ChatMessage();
+		chatMessage.setType(ChatMessageType.SPAM);
+		chatMessage.setMessage("You catch an Anglerfish.");
+
+		fishingPlugin.onChatMessage(chatMessage);
+
+		assertNotNull(fishingPlugin.getSession().getLastFishCaught());
+	}
+
+	@Test
+	public void testCormorant()
+	{
+		ChatMessage chatMessage = new ChatMessage();
+		chatMessage.setType(ChatMessageType.SPAM);
+		chatMessage.setMessage("Your cormorant returns with its catch.");
+
+		fishingPlugin.onChatMessage(chatMessage);
+
+		assertNotNull(fishingPlugin.getSession().getLastFishCaught());
+	}
+
+	@Test
 	public void testKarambwanji()
 	{
 		ChatMessage chatMessage = new ChatMessage();

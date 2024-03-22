@@ -43,6 +43,7 @@ import static net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdArea.
 import static net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdArea.KARAMJA;
 import static net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdArea.MISTHALIN;
 import static net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdArea.MORYTANIA;
+import static net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdArea.VARLAMORE;
 import static net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdArea.WESTERN_PROVINCE;
 import static net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdArea.WILDERNESS;
 import static net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdArea.ZEAH;
@@ -147,6 +148,9 @@ public enum HotColdLocation
 	MORYTANIA_DRAGONTOOTH_SOUTH(MASTER, new WorldPoint(3803, 3532, 0), MORYTANIA, "Southern part of Dragontooth Island.", BRASSICAN_MAGE),
 	MORYTANIA_SLEPE_TENTS(MASTER, new WorldPoint(3769, 3383, 0), MORYTANIA, "North-east of Slepe, near the tents.", BRASSICAN_MAGE),
 	NORTHEAST_OF_AL_KHARID_MINE(BEGINNER, new WorldPoint(3332, 3313, 0), MISTHALIN, "Northeast of Al Kharid Mine"),
+	VARLAMORE_BAZAAR(MASTER, new WorldPoint(1680, 3107, 0), VARLAMORE, "In the centre of the Bazaar in Civitas illa Fortis.", BRASSICAN_MAGE),
+	VARLAMORE_LOCUS_OASIS(MASTER, new WorldPoint(1695, 2990, 0), VARLAMORE, "Amongst the trees at the Locus Oasis.", BRASSICAN_MAGE),
+	VARLAMORE_SUNSET_COAST(MASTER, new WorldPoint(1534, 2997, 0), VARLAMORE, "North-east corner of Sunset Coast.", ANCIENT_WIZARDS),
 	WESTERN_PROVINCE_EAGLES_PEAK(MASTER, new WorldPoint(2297, 3529, 0), WESTERN_PROVINCE, "North-west of Eagles' Peak.", BRASSICAN_MAGE),
 	WESTERN_PROVINCE_PISCATORIS(MASTER, new WorldPoint(2334, 3685, 0), WESTERN_PROVINCE, "Piscatoris Fishing Colony", ANCIENT_WIZARDS),
 	WESTERN_PROVINCE_PISCATORIS_HUNTER_AREA(MASTER, new WorldPoint(2359, 3564, 0), WESTERN_PROVINCE, "Eastern part of Piscatoris Hunter area, south-west of the Falconry.", BRASSICAN_MAGE),

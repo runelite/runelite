@@ -39,6 +39,7 @@ public enum HotColdArea
 	KARAMJA("Karamja"),
 	MISTHALIN("Misthalin"),
 	MORYTANIA("Morytania"),
+	VARLAMORE("Varlamore"),
 	WESTERN_PROVINCE("Western Province"),
 	WILDERNESS("Wilderness"),
 	ZEAH("Zeah");

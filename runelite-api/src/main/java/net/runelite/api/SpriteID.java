@@ -1708,4 +1708,6 @@ public final class SpriteID
 	public static final int PRAYER_RP_VINDICATION = 4863;
 	public static final int PRAYER_RP_PROTECT_ITEM = 4865;
 	public static final int ACTIVATED_PRAYER_BACKGROUND = 4892;
+	/* Unmapped: 4893~5250 */
+	public static final int EMOTE_FORTIS_SALUTE = 5251;
 }

@@ -176,6 +176,7 @@ public class HunterPlugin extends Plugin
 			case ObjectID.SHAKING_BOX_9382: // Grey chinchompa caught
 			case ObjectID.SHAKING_BOX_9383: // Red chinchompa caught
 			case ObjectID.SHAKING_BOX_9384: // Ferret caught
+			case ObjectID.SHAKING_BOX_50727: // Embertailed jerboa caught
 			case ObjectID.BOULDER_20648: // Prickly kebbit caught
 			case ObjectID.BOULDER_20649: // Sabre-tooth kebbit caught
 			case ObjectID.BOULDER_20650: // Barb-tailed kebbit caught
