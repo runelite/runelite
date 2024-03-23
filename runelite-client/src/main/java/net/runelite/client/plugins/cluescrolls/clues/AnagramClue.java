@@ -476,7 +476,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		AnagramClue.builder()
 			.text("NO OWNER")
 			.npc("Oronwen")
-			.location(new WorldPoint(1162, 3178, 0))
+			.location(new WorldPoint(2326, 3178, 0))
 			.area("Lletya Seamstress shop in Lletya")
 			.question("What is the minimum amount of quest points required to reach Lletya?")
 			.answer("20")
