@@ -82,7 +82,14 @@ enum ImplingSpawn
 	SPAWN_ECLECTIC1(new WorldPoint(2567, 4319, 0), ImplingType.ECLECTIC),
 	SPAWN_ECLECTIC2(new WorldPoint(2591, 4340, 0), ImplingType.ECLECTIC),
 	SPAWN_ECLECTIC3(new WorldPoint(2591, 4295, 0), ImplingType.ECLECTIC),
-	SPAWN_ECLECTIC4(new WorldPoint(2615, 4326, 0), ImplingType.ECLECTIC);
+	SPAWN_ECLECTIC4(new WorldPoint(2615, 4326, 0), ImplingType.ECLECTIC),
+
+	//Essence spawns
+	SPAWN_ESSENCE1(new WorldPoint(2574, 4317, 0), ImplingType.ESSENCE),
+	SPAWN_ESSENCE2(new WorldPoint(2572, 4340, 0 ), ImplingType.ESSENCE),
+	SPAWN_ESSENCE3(new WorldPoint(2601, 4340, 0 ), ImplingType.ESSENCE),
+	SPAWN_ESSENCE4(new WorldPoint(2612, 4319, 0 ), ImplingType.ESSENCE),
+	SPAWN_ESSENCE5(new WorldPoint(2587, 4299, 0 ), ImplingType.ESSENCE);
 
 	private final WorldPoint spawnLocation;
 	private final ImplingType type;
