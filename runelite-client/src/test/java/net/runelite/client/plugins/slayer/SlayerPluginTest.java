@@ -276,11 +276,16 @@ public class SlayerPluginTest
 	@Test
 	public void npcMatching()
 	{
+		assertTrue(matches("Abyssal Sire", Task.ABYSSAL_DEMONS));
 		assertTrue(matches("Abyssal demon", Task.ABYSSAL_DEMONS));
 		assertTrue(matches("Baby blue dragon", Task.BLUE_DRAGONS));
+		assertTrue(matches("Vorkath", Task.BLUE_DRAGONS));
+		assertTrue(matches("Brutal red dragon", Task.RED_DRAGONS));
 		assertTrue(matches("Duck", Task.BIRDS));
 		assertTrue(matches("Donny the Lad", Task.BANDITS));
 		assertTrue(matches("Revenant Imp", Task.GHOSTS));
+		assertTrue(matches("Spiked Turoth", Task.TUROTH));
+		assertTrue(matches("Urium Shade", Task.SHADES));
 
 		assertFalse(matches("Rat", Task.PIRATES));
 		assertFalse(matches("Wolf", Task.WEREWOLVES));
