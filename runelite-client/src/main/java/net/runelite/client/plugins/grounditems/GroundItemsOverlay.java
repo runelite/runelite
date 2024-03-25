@@ -187,16 +187,18 @@ public class GroundItemsOverlay extends Overlay
 		plugin.setHiddenBoxBounds(null);
 		plugin.setHighlightBoxBounds(null);
 
-		final boolean onlyShowLoot = config.onlyShowLoot();
 		final DespawnTimerMode groundItemTimers = config.groundItemTimers();
 		final boolean outline = config.textOutline();
 
 		for (GroundItem item : groundItemList)
 		{
 			final LocalPoint groundPoint = LocalPoint.fromWorld(client, item.getLocation());
+			final LocalPoint mouseTileLocation = client.getSelectedSceneTile().getLocalLocation();
 
 			if (groundPoint == null || localLocation.distanceTo(groundPoint) > MAX_DISTANCE
-				|| (onlyShowLoot && !item.isMine()))
+				|| (config.onlyShowLoot() && !item.isMine())
+				|| (config.showOnMouseHover() && mouseTileLocation != null
+					&& !(groundPoint.distanceTo(mouseTileLocation) == 0)))
 			{
 				continue;
 			}
