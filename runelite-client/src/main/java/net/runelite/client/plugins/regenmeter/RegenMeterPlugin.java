@@ -141,6 +141,10 @@ public class RegenMeterPlugin extends Plugin
 		{
 			ticksSinceHPRegen = 0;
 		}
+		if (ev.getVarpId() == VarPlayer.SPECIAL_ATTACK_PERCENT)
+		{
+			ticksSinceSpecRegen = 0;
+		}
 	}
 
 	@Subscribe
