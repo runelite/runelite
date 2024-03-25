@@ -364,8 +364,14 @@ public class ItemStatChanges
 		add(combo(heal(HITPOINTS, perc(.15, 1)), heal(RUN_ENERGY, 100)), BANDAGES_25202);
 		add(combo(boost(ATTACK, perc(.15, 5)), boost(STRENGTH, perc(.15, 5)), boost(DEFENCE, perc(.15, 5)), boost(RANGED, perc(.15, 5)), boost(MAGIC, perc(.15, 5)), heal(PRAYER, perc(.25, 8))), POTION_OF_POWER1, POTION_OF_POWER2, POTION_OF_POWER3, POTION_OF_POWER4);
 
-		// Moths
+		// Moths & Butterflies
+		final Effect rubyHarvest = boost(ATTACK, perc(.15, 4));
+		final Effect snowyKnight = heal(HITPOINTS, perc(.15, 4));
+		final Effect sapphireGlacialBlackWarlock = boost(STRENGTH, perc(.15, 4));
 		final SunlightMoth sunlightMoth = new SunlightMoth(.2, 6);
+		add(rubyHarvest, RUBY_HARVEST, RUBY_HARVEST_MIX_1, RUBY_HARVEST_MIX_2);
+		add(snowyKnight, SNOWY_KNIGHT, SNOWY_KNIGHT_MIX_1, SNOWY_KNIGHT_MIX_2);
+		add(sapphireGlacialBlackWarlock, SAPPHIRE_GLACIALIS, SAPPHIRE_GLACIALIS_MIX_1, SAPPHIRE_GLACIALIS_MIX_2, BLACK_WARLOCK, BLACK_WARLOCK_MIX_1, BLACK_WARLOCK_MIX_2);
 		add(sunlightMoth, SUNLIGHT_MOTH_28890, SUNLIGHT_MOTH_MIX_1, SUNLIGHT_MOTH_MIX_2);
 		add(heal(PRAYER, 22), MOONLIGHT_MOTH_28893, MOONLIGHT_MOTH_MIX_1, MOONLIGHT_MOTH_MIX_2);
 
