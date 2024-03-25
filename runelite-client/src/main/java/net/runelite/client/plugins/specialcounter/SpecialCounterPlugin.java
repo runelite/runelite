@@ -99,7 +99,9 @@ public class SpecialCounterPlugin extends Plugin
 	private int hitsplatTick;
 	// most recent hitsplat and the target it was on
 	private Hitsplat lastSpecHitsplat;
+	private Hitsplat secondToLastSpecHitsplat;
 	private NPC lastSpecTarget;
+	private int tonalHitsCount = 0;
 
 	private final Set<Integer> interactedNpcIndexes = new HashSet<>();
 	private final SpecialCounter[] specialCounter = new SpecialCounter[SpecialWeapon.values().length];
@@ -163,6 +165,7 @@ public class SpecialCounterPlugin extends Plugin
 		specialWeapon = null;
 		lastSpecTarget = null;
 		lastSpecHitsplat = null;
+		secondToLastSpecHitsplat = null;
 		removeCounters();
 		overlayManager.remove(playerInfoDropOverlay);
 		wsClient.unregisterMessage(SpecialCounterUpdate.class);
@@ -185,12 +188,23 @@ public class SpecialCounterPlugin extends Plugin
 		{
 			if (lastSpecHitsplat.getAmount() > 0)
 			{
+				if(specialWeapon.equals(SpecialWeapon.TONALZTICS_OF_RALOS))
+				{
+					tonalHitsCount++;
+				}
 				specialAttackHit(specialWeapon, lastSpecHitsplat, lastSpecTarget);
+			}
+			if(specialWeapon.equals(SpecialWeapon.TONALZTICS_OF_RALOS) && secondToLastSpecHitsplat != null
+					&& secondToLastSpecHitsplat.getAmount() > 0)
+			{
+				specialAttackHit(specialWeapon, secondToLastSpecHitsplat, lastSpecTarget);
 			}
 
 			specialWeapon = null;
 			lastSpecHitsplat = null;
+			secondToLastSpecHitsplat = null;
 			lastSpecTarget = null;
+			tonalHitsCount = 0;
 		}
 	}
 
@@ -246,12 +260,14 @@ public class SpecialCounterPlugin extends Plugin
 			lastSpecTarget = target instanceof NPC ? (NPC) target : null;
 			hitsplatTick = serverTicks + getHitDelay(specialWeapon, target);
 			log.debug("Special attack used - percent: {} weapon: {} server cycle {} hitsplat cycle {}", specialPercentage, specialWeapon, serverTicks, hitsplatTick);
+			log.info("expecting hitsplat on tick " + hitsplatTick); //todo remove
 		});
 	}
 
 	@Subscribe
 	public void onHitsplatApplied(HitsplatApplied hitsplatApplied)
 	{
+		log.info("hitsplat arrived on tick " + client.getTickCount()); //todo remove
 		Actor target = hitsplatApplied.getActor();
 		Hitsplat hitsplat = hitsplatApplied.getHitsplat();
 		// Ignore all hitsplats other than mine
@@ -286,6 +302,7 @@ public class SpecialCounterPlugin extends Plugin
 		// venge or thralls.
 		if (hitsplatTick == client.getTickCount())
 		{
+			secondToLastSpecHitsplat = lastSpecHitsplat;
 			lastSpecHitsplat = hitsplat;
 		}
 	}
@@ -411,6 +428,7 @@ public class SpecialCounterPlugin extends Plugin
 
 	private void updateCounter(SpecialWeapon specialWeapon, String name, int hit)
 	{
+		log.info(name + " hit " + hit + " with " + specialWeapon.getName()); //todo remove
 		SpecialCounter counter = specialCounter[specialWeapon.ordinal()];
 
 		if (counter == null)
