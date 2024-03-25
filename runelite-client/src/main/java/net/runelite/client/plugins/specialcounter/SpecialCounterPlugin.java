@@ -38,19 +38,7 @@ import javax.inject.Named;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.Actor;
-import net.runelite.api.Client;
-import net.runelite.api.EquipmentInventorySlot;
-import net.runelite.api.GameState;
-import net.runelite.api.Hitsplat;
-import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
-import net.runelite.api.ItemContainer;
-import net.runelite.api.NPC;
-import net.runelite.api.NpcID;
-import net.runelite.api.Player;
-import net.runelite.api.ScriptID;
-import net.runelite.api.VarPlayer;
+import net.runelite.api.*;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.CommandExecuted;
@@ -192,12 +180,20 @@ public class SpecialCounterPlugin extends Plugin
 				{
 					tonalHitsCount++;
 				}
-				specialAttackHit(specialWeapon, lastSpecHitsplat, lastSpecTarget);
+				else
+				{
+					specialAttackHit(specialWeapon, lastSpecHitsplat, lastSpecTarget);
+				}
 			}
 			if(specialWeapon.equals(SpecialWeapon.TONALZTICS_OF_RALOS) && secondToLastSpecHitsplat != null
 					&& secondToLastSpecHitsplat.getAmount() > 0)
 			{
-				specialAttackHit(specialWeapon, secondToLastSpecHitsplat, lastSpecTarget);
+				tonalHitsCount++;
+			}
+
+			if(tonalHitsCount > 0)
+			{
+				specialAttackHit(specialWeapon, lastSpecHitsplat, lastSpecTarget);
 			}
 
 			specialWeapon = null;
@@ -267,7 +263,6 @@ public class SpecialCounterPlugin extends Plugin
 	@Subscribe
 	public void onHitsplatApplied(HitsplatApplied hitsplatApplied)
 	{
-		log.info("hitsplat arrived on tick " + client.getTickCount()); //todo remove
 		Actor target = hitsplatApplied.getActor();
 		Hitsplat hitsplat = hitsplatApplied.getHitsplat();
 		// Ignore all hitsplats other than mine
@@ -428,7 +423,6 @@ public class SpecialCounterPlugin extends Plugin
 
 	private void updateCounter(SpecialWeapon specialWeapon, String name, int hit)
 	{
-		log.info(name + " hit " + hit + " with " + specialWeapon.getName()); //todo remove
 		SpecialCounter counter = specialCounter[specialWeapon.ordinal()];
 
 		if (counter == null)
@@ -488,6 +482,10 @@ public class SpecialCounterPlugin extends Plugin
 
 	private int getHit(SpecialWeapon specialWeapon, Hitsplat hitsplat)
 	{
+		if(specialWeapon.equals(SpecialWeapon.TONALZTICS_OF_RALOS))
+		{
+			return tonalHitsCount;
+		}
 		return specialWeapon.isDamage() ? hitsplat.getAmount() : 1;
 	}
 
