@@ -75,6 +75,17 @@ public interface TimersAndBuffsConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showCurseOfTheMoons",
+		name = "Curse of the Moons buff",
+		description = "Configures whether Curse of the Moons buff is displayed",
+		section = bossesSection
+	)
+	default boolean showCurseOfTheMoons()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "showTzhaarTimers",
 		name = "Fight Caves and Inferno timers",
 		description = "Display elapsed time in the Fight Caves and Inferno",
