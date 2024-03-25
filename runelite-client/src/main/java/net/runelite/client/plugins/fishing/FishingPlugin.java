@@ -65,6 +65,7 @@ import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.FishingSpot;
+import net.runelite.client.game.GameArea;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -81,8 +82,6 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @Slf4j
 public class FishingPlugin extends Plugin
 {
-	private static final int TRAWLER_SHIP_REGION_NORMAL = 7499;
-	private static final int TRAWLER_SHIP_REGION_SINKING = 8011;
 	private static final int TRAWLER_TIME_LIMIT_IN_SECONDS = 314;
 
 	private static final Pattern FISHING_CATCH_REGEX = Pattern.compile(
@@ -365,7 +364,7 @@ public class FishingPlugin extends Plugin
 	private void updateTrawlerContribution()
 	{
 		int regionID = client.getLocalPlayer().getWorldLocation().getRegionID();
-		if (regionID != TRAWLER_SHIP_REGION_NORMAL && regionID != TRAWLER_SHIP_REGION_SINKING)
+		if (!GameArea.FISHING_TRAWLER.containsRegion(regionID))
 		{
 			return;
 		}
@@ -396,7 +395,7 @@ public class FishingPlugin extends Plugin
 		}
 
 		int regionID = client.getLocalPlayer().getWorldLocation().getRegionID();
-		if (regionID != TRAWLER_SHIP_REGION_NORMAL && regionID != TRAWLER_SHIP_REGION_SINKING)
+		if (GameArea.FISHING_TRAWLER.containsRegion(regionID))
 		{
 			log.debug("Trawler session ended");
 			trawlerStartTime = null;

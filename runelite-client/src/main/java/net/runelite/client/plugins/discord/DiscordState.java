@@ -39,6 +39,7 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.discord.DiscordPresence;
 import net.runelite.client.discord.DiscordService;
+import net.runelite.client.game.GameArea;
 
 /**
  * This class contains data about currently active discord state.
@@ -50,6 +51,7 @@ class DiscordState
 	private static class EventWithTime
 	{
 		private final DiscordGameEventType type;
+		private GameArea area;
 		private Instant start;
 		private Instant updated;
 	}
@@ -101,11 +103,18 @@ class DiscordState
 		if (foundEvent.isPresent())
 		{
 			event = foundEvent.get();
+			event.setArea(events.get(0).getArea());
 		}
 		else
 		{
 			event = new EventWithTime(eventType);
 			event.setStart(Instant.now());
+
+			if (!events.isEmpty())
+			{
+				event.setArea(events.get(0).getArea());
+			}
+
 			events.add(event);
 		}
 
@@ -131,6 +140,29 @@ class DiscordState
 		updatePresenceWithLatestEvent();
 	}
 
+	/**
+	 * Update the current activity's area.
+	 *
+	 * @param gameArea Area to be updated to
+	 */
+	void updateArea(final GameArea gameArea)
+	{
+		if (events.isEmpty())
+		{
+			return;
+		}
+
+		final EventWithTime event = events.get(0);
+
+		if (event.getArea() == gameArea)
+		{
+			return;
+		}
+
+		event.setArea(gameArea);
+		updatePresenceWithLatestEvent();
+	}
+
 	private void updatePresenceWithLatestEvent()
 	{
 		if (events.isEmpty())
@@ -144,6 +176,12 @@ class DiscordState
 		String imageKey = null;
 		String state = null;
 		String details = null;
+
+		// Default state to current area; don't use previous events' areas for state
+		if (event.getArea() != null)
+		{
+			state = event.getArea().getState();
+		}
 
 		for (EventWithTime eventWithTime : events)
 		{

@@ -53,6 +53,7 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.GameArea;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -70,7 +71,6 @@ public class PyramidPlunderPlugin extends Plugin
 {
 	// Total time of a pyramid plunder game (5 minutes)
 	private static final Duration PYRAMID_PLUNDER_DURATION = Duration.of(501, RSTimeUnit.GAME_TICKS);
-	private static final int PYRAMID_PLUNDER_REGION = 7749;
 
 	static final Set<Integer> TOMB_DOOR_WALL_IDS = ImmutableSet.of(NullObjectID.NULL_26618, NullObjectID.NULL_26619, NullObjectID.NULL_26620, NullObjectID.NULL_26621);
 	static final int TOMB_DOOR_CLOSED_ID = ObjectID.TOMB_DOOR_20948;
@@ -210,7 +210,7 @@ public class PyramidPlunderPlugin extends Plugin
 	public boolean isInPyramidPlunder()
 	{
 		return client.getLocalPlayer() != null
-			&& PYRAMID_PLUNDER_REGION == client.getLocalPlayer().getWorldLocation().getRegionID()
+			&& GameArea.PYRAMID_PLUNDER.containsRegion(client.getLocalPlayer().getWorldLocation().getRegionID())
 			&& client.getVarbitValue(Varbits.PYRAMID_PLUNDER_TIMER) > 0;
 	}
 }

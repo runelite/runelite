@@ -56,6 +56,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.nullable;
 import org.mockito.Mock;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -248,7 +249,8 @@ public class TimersPluginTest
 	public void testTzhaarTimer()
 	{
 		when(timersConfig.showTzhaarTimers()).thenReturn(true);
-		when(client.getMapRegions()).thenReturn(new int[]{TimersPlugin.FIGHT_CAVES_REGION_ID});
+		timersPlugin = spy(timersPlugin);
+		doReturn(true).when(timersPlugin).isInFightCaves();
 
 		class InstantRef
 		{
@@ -310,7 +312,8 @@ public class TimersPluginTest
 	public void testInfernoTimerStartOffset()
 	{
 		when(timersConfig.showTzhaarTimers()).thenReturn(true);
-		when(client.getMapRegions()).thenReturn(new int[]{TimersPlugin.INFERNO_REGION_ID});
+		timersPlugin = spy(timersPlugin);
+		doReturn(true).when(timersPlugin).isInInferno();
 
 		class InstantRef
 		{
