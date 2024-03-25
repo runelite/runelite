@@ -84,6 +84,7 @@ public class RegenMeterPlugin extends Plugin
 
 	private int ticksSinceSpecRegen;
 	private int ticksSinceHPRegen;
+	private int previousSpecPercentage;
 
 	private boolean wearingLightbearer;
 
@@ -112,6 +113,7 @@ public class RegenMeterPlugin extends Plugin
 		{
 			ticksSinceHPRegen = -2; // For some reason this makes this accurate
 			ticksSinceSpecRegen = 0;
+			previousSpecPercentage = getCurrentSpecAmount();
 		}
 	}
 
@@ -143,7 +145,11 @@ public class RegenMeterPlugin extends Plugin
 		}
 		if (ev.getVarpId() == VarPlayer.SPECIAL_ATTACK_PERCENT)
 		{
-			ticksSinceSpecRegen = 0;
+			if (previousSpecPercentage < getCurrentSpecAmount())
+			{
+				ticksSinceSpecRegen = 0;
+			}
+			previousSpecPercentage = getCurrentSpecAmount();
 		}
 	}
 
@@ -152,7 +158,7 @@ public class RegenMeterPlugin extends Plugin
 	{
 		final int ticksPerSpecRegen = wearingLightbearer ? SPEC_REGEN_TICKS / 2 : SPEC_REGEN_TICKS;
 
-		if (client.getVarpValue(VarPlayer.SPECIAL_ATTACK_PERCENT) == 1000)
+		if (getCurrentSpecAmount() == 1000)
 		{
 			// The recharge doesn't tick when at 100%
 			ticksSinceSpecRegen = 0;
@@ -197,5 +203,10 @@ public class RegenMeterPlugin extends Plugin
 		final int ticksBeforeHPRegen = ticksPerHPRegen - ticksSinceHPRegen;
 		final int notifyTick = (int) Math.ceil(config.getNotifyBeforeHpRegenSeconds() * 1000d / Constants.GAME_TICK_LENGTH);
 		return ticksBeforeHPRegen == notifyTick;
+	}
+
+	private int getCurrentSpecAmount()
+	{
+		return client.getVarpValue(VarPlayer.SPECIAL_ATTACK_PERCENT);
 	}
 }
