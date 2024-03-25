@@ -36,16 +36,16 @@ import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
+import net.runelite.api.Player;
 import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
+import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.api.Hitsplat;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -95,7 +95,6 @@ public class RegenMeterPlugin extends Plugin
 	private boolean wearingLightbearer;
 	protected boolean wearingSoulreaperAxe;
 
-	private String Username;
 
 	@Provides
 	RegenMeterConfig provideConfig(ConfigManager configManager)
@@ -107,7 +106,6 @@ public class RegenMeterPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(overlay);
-		Username = client.getLocalPlayer().getName();
 	}
 
 	@Override
@@ -133,23 +131,19 @@ public class RegenMeterPlugin extends Plugin
 		{
 			return;
 		}
-
 		ItemContainer equipment = event.getItemContainer();
 		final boolean hasLightbearer = equipment.contains(ItemID.LIGHTBEARER);
 		final boolean hasSoulreaperAxe = equipment.contains(ItemID.SOULREAPER_AXE_28338);
 
-		if (hasLightbearer == wearingLightbearer)
+		if (hasLightbearer != wearingLightbearer)
 		{
-			return;
+			ticksSinceSpecRegen = 0;
 		}
-		if (hasSoulreaperAxe == wearingSoulreaperAxe)
-		{
-			return;
-		}
-
-		ticksSinceSpecRegen = 0;
 		wearingLightbearer = hasLightbearer;
-		ticksSinceSoulStackDecay = 0;
+		if (hasSoulreaperAxe != wearingSoulreaperAxe)
+		{
+			ticksSinceSoulStackDecay = 0;
+		}
 		wearingSoulreaperAxe = hasSoulreaperAxe;
 	}
 
@@ -223,15 +217,22 @@ public class RegenMeterPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onHitsplatApplied(HitsplatApplied hitsplatApplied)
+	public void onAnimationChanged(final AnimationChanged event)
 	{
-		Hitsplat hitsplat = hitsplatApplied.getHitsplat();
-		String hitsplatEntity = hitsplatApplied.getActor().getName();
-		if (hitsplat.isMine() && client.getVarpValue(VarPlayer.SOUL_STACK) == 5 && !hitsplatEntity.equals(Username))
+		Player local = client.getLocalPlayer();
+
+		if (event.getActor() != local)
+		{
+			return;
+		}
+
+		int animId = local.getAnimation();
+		if(animId == 10172 && client.getVarpValue(VarPlayer.SOUL_STACK) == 5)
 		{
 			ticksSinceSoulStackDecay = 0;
 		}
 	}
+
 
 	private boolean shouldNotifyHpRegenThisTick(int ticksPerHPRegen)
 	{
