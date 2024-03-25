@@ -24,7 +24,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.timers;
+package net.runelite.client.plugins.timersandbuffs;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableSet;
@@ -76,19 +76,20 @@ import net.runelite.client.game.ItemVariationMapping;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import static net.runelite.client.plugins.timers.GameIndicator.VENGEANCE_ACTIVE;
-import static net.runelite.client.plugins.timers.GameTimer.*;
+import static net.runelite.client.plugins.timersandbuffs.GameIndicator.VENGEANCE_ACTIVE;
+import static net.runelite.client.plugins.timersandbuffs.GameTimer.*;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.RSTimeUnit;
 import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
-	name = "Timers",
-	description = "Show various timers in an infobox",
-	tags = {"combat", "items", "magic", "potions", "prayer", "overlay", "abyssal", "sire", "inferno", "fight", "caves", "cape", "timer", "tzhaar", "thieving", "pickpocket", "hunter", "impling", "puro"}
+	name = "Timers & Buffs",
+	configName = "TimersPlugin",
+	description = "Show various timers and buffs in an infobox",
+	tags = {"combat", "items", "magic", "potions", "prayer", "overlay", "abyssal", "sire", "inferno", "fight", "caves", "cape", "timer", "tzhaar", "thieving", "pickpocket", "hunter", "impling", "puro", "buff"}
 )
 @Slf4j
-public class TimersPlugin extends Plugin
+public class TimersAndBuffsPlugin extends Plugin
 {
 	private static final String ABYSSAL_SIRE_STUN_MESSAGE = "The Sire has been disorientated temporarily.";
 	private static final String CANNON_BASE_MESSAGE = "You place the cannon base on the ground.";
@@ -154,15 +155,15 @@ public class TimersPlugin extends Plugin
 	private Client client;
 
 	@Inject
-	private TimersConfig config;
+	private TimersAndBuffsConfig config;
 
 	@Inject
 	private InfoBoxManager infoBoxManager;
 
 	@Provides
-	TimersConfig getConfig(ConfigManager configManager)
+	TimersAndBuffsConfig getConfig(ConfigManager configManager)
 	{
-		return configManager.getConfig(TimersConfig.class);
+		return configManager.getConfig(TimersAndBuffsConfig.class);
 	}
 
 	@Override
@@ -580,7 +581,7 @@ public class TimersPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (!event.getGroup().equals(TimersConfig.GROUP))
+		if (!event.getGroup().equals(TimersAndBuffsConfig.GROUP))
 		{
 			return;
 		}
