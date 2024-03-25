@@ -422,4 +422,15 @@ public interface TimersAndBuffsConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showCurseOfTheMoons",
+		name = "Curse of the Moons buff",
+		description = "Configures whether Curse of the Moons buff is displayed",
+		section = bossesSection
+	)
+	default boolean showCurseOfTheMoons()
+	{
+		return true;
+	}
 }
