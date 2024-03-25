@@ -2190,6 +2190,11 @@ public class ChatCommandsPlugin extends Plugin
 
 			// Tombs of Amascut
 			case "toa":
+			case "tombs":
+			case "amascut":
+			case "warden":
+			case "wardens":
+			case "raids 3":
 				return "Tombs of Amascut";
 			case "toa 1":
 			case "toa solo":
