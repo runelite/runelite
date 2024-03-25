@@ -27,6 +27,7 @@ package net.runelite.client.plugins.timersandbuffs;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
 import java.time.Instant;
 
 @ConfigGroup(TimersAndBuffsConfig.GROUP)
@@ -34,22 +35,63 @@ public interface TimersAndBuffsConfig extends Config
 {
 	String GROUP = "timers";
 
-	@ConfigItem(
-		keyName = "showHomeMinigameTeleports",
-		name = "Teleport cooldown timers",
-		description = "Configures whether timers for home and minigame teleport cooldowns are displayed"
+	@ConfigSection(
+		name = "Bosses",
+		description = "Timers and buffs related to bosses",
+		position = 0
 	)
-	default boolean showHomeMinigameTeleports()
+	String bossesSection = "bossesSection";
+
+	@ConfigSection(
+		name = "Consumables",
+		description = "Timers and buffs related to consumables/boosts",
+		position = 1
+	)
+	String consumablesSection = "consumablesSection";
+
+	@ConfigSection(
+		name = "Spells",
+		description = "Timers and buffs related to spells you cast",
+		position = 2
+	)
+	String spellsSection = "spellsSection";
+
+	@ConfigSection(
+		name = "Miscellaneous",
+		description = "Timers and buffs related to miscellaneous items or activities",
+		position = 3
+	)
+	String miscellaneousSection = "miscellaneousSection";
+
+	@ConfigItem(
+		keyName = "showAbyssalSireStun",
+		name = "Abyssal Sire stun timer",
+		description = "Configures whether Abyssal Sire stun timer is displayed",
+		section = bossesSection
+	)
+	default boolean showAbyssalSireStun()
 	{
 		return true;
 	}
 
 	@ConfigItem(
-		keyName = "showAntipoison",
-		name = "Antipoison/Venom timers",
-		description = "Configures whether timers for poison and venom protection are displayed"
+		keyName = "showTzhaarTimers",
+		name = "Fight Caves and Inferno timers",
+		description = "Display elapsed time in the Fight Caves and Inferno",
+		section = bossesSection
 	)
-	default boolean showAntiPoison()
+	default boolean showTzhaarTimers()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showGodWarsAltar",
+		name = "God wars altar timer",
+		description = "Configures whether god wars altar timer is displayed",
+		section = bossesSection
+	)
+	default boolean showGodWarsAltar()
 	{
 		return true;
 	}
@@ -57,7 +99,8 @@ public interface TimersAndBuffsConfig extends Config
 	@ConfigItem(
 		keyName = "showAntiFire",
 		name = "Antifire timer",
-		description = "Configures whether antifire timer is displayed"
+		description = "Configures whether antifire timer is displayed",
+		section = consumablesSection
 	)
 	default boolean showAntiFire()
 	{
@@ -65,21 +108,45 @@ public interface TimersAndBuffsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showStamina",
-		name = "Stamina timer",
-		description = "Configures whether stamina timer is displayed"
+		keyName = "showAntipoison",
+		name = "Antipoison/Venom timers",
+		description = "Configures whether timers for poison and venom protection are displayed",
+		section = consumablesSection
 	)
-	default boolean showStamina()
+	default boolean showAntiPoison()
 	{
 		return true;
 	}
 
 	@ConfigItem(
-		keyName = "showOverload",
-		name = "Overload timer",
-		description = "Configures whether overload timer is displayed"
+		keyName = "showBlessedCrystalScarab",
+		name = "Blessed crystal scarab timer",
+		description = "Configures whether blessed crystal scarab timer is displayed",
+		section = consumablesSection
 	)
-	default boolean showOverload()
+	default boolean showBlessedCrystalScarab()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showDivine",
+		name = "Divine potion timer",
+		description = "Configures whether divine potion timer is displayed",
+		section = consumablesSection
+	)
+	default boolean showDivine()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showImbuedHeart",
+		name = "Imbued heart timer",
+		description = "Configures whether imbued heart timer is displayed",
+		section = consumablesSection
+	)
+	default boolean showImbuedHeart()
 	{
 		return true;
 	}
@@ -87,7 +154,8 @@ public interface TimersAndBuffsConfig extends Config
 	@ConfigItem(
 		keyName = "showLiquidAdrenaline",
 		name = "Liquid adrenaline timer",
-		description = "Configures whether liquid adrenaline timer is displayed"
+		description = "Configures whether liquid adrenaline timer is displayed",
+		section = consumablesSection
 	)
 	default boolean showLiquidAdrenaline()
 	{
@@ -97,7 +165,8 @@ public interface TimersAndBuffsConfig extends Config
 	@ConfigItem(
 		keyName = "showMenaphiteRemedy",
 		name = "Menaphite remedy timer",
-		description = "Configures whether Menaphite remedy timer is displayed"
+		description = "Configures whether Menaphite remedy timer is displayed",
+		section = consumablesSection
 	)
 	default boolean showMenaphiteRemedy()
 	{
@@ -105,21 +174,12 @@ public interface TimersAndBuffsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showSilkDressing",
-		name = "Silk dressing timer",
-		description = "Configures whether silk dressing timer is displayed"
+		keyName = "showOverload",
+		name = "Overload timer",
+		description = "Configures whether overload timer is displayed",
+		section = consumablesSection
 	)
-	default boolean showSilkDressing()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showBlessedCrystalScarab",
-		name = "Blessed crystal scarab timer",
-		description = "Configures whether blessed crystal scarab timer is displayed"
-	)
-	default boolean showBlessedCrystalScarab()
+	default boolean showOverload()
 	{
 		return true;
 	}
@@ -127,7 +187,8 @@ public interface TimersAndBuffsConfig extends Config
 	@ConfigItem(
 		keyName = "showPrayerEnhance",
 		name = "Prayer enhance timer",
-		description = "Configures whether prayer enhance timer is displayed"
+		description = "Configures whether prayer enhance timer is displayed",
+		section = consumablesSection
 	)
 	default boolean showPrayerEnhance()
 	{
@@ -135,31 +196,45 @@ public interface TimersAndBuffsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showDivine",
-		name = "Divine potion timer",
-		description = "Configures whether divine potion timer is displayed"
+		keyName = "showSilkDressing",
+		name = "Silk dressing timer",
+		description = "Configures whether silk dressing timer is displayed",
+		section = consumablesSection
 	)
-	default boolean showDivine()
+	default boolean showSilkDressing()
 	{
 		return true;
 	}
 
 	@ConfigItem(
-		keyName = "showCannon",
-		name = "Cannon timer",
-		description = "Configures whether cannon timer is displayed"
+		keyName = "showStamina",
+		name = "Stamina timer",
+		description = "Configures whether stamina timer is displayed",
+		section = consumablesSection
 	)
-	default boolean showCannon()
+	default boolean showStamina()
 	{
 		return true;
 	}
 
 	@ConfigItem(
-		keyName = "showMagicImbue",
-		name = "Magic imbue timer",
-		description = "Configures whether magic imbue timer is displayed"
+		keyName = "showArceuusCooldown",
+		name = "Arceuus spells cooldown",
+		description = "Whether to show cooldown timers for Arceuus spellbook spells",
+		section = spellsSection
 	)
-	default boolean showMagicImbue()
+	default boolean showArceuusCooldown()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "showArceuus",
+		name = "Arceuus spells duration",
+		description = "Whether to show Arceuus spellbook spell timers",
+		section = spellsSection
+	)
+	default boolean showArceuus()
 	{
 		return true;
 	}
@@ -167,7 +242,8 @@ public interface TimersAndBuffsConfig extends Config
 	@ConfigItem(
 		keyName = "showCharge",
 		name = "Charge timer",
-		description = "Configures whether to show a timer for the Charge spell"
+		description = "Configures whether to show a timer for the Charge spell",
+		section = spellsSection
 	)
 	default boolean showCharge()
 	{
@@ -175,39 +251,10 @@ public interface TimersAndBuffsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showImbuedHeart",
-		name = "Imbued heart timer",
-		description = "Configures whether imbued heart timer is displayed"
-	)
-	default boolean showImbuedHeart()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showVengeance",
-		name = "Vengeance timer",
-		description = "Configures whether vengeance and vengeance other timer is displayed"
-	)
-	default boolean showVengeance()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showVengeanceActive",
-		name = "Vengeance active",
-		description = "Configures whether an indicator for vengeance being active is displayed"
-	)
-	default boolean showVengeanceActive()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "showHealGroup",
 		name = "Heal Group timer",
-		description = "Configures whether heal group timer is displayed"
+		description = "Configures whether heal group timer is displayed",
+		section = spellsSection
 	)
 	default boolean showHealGroup()
 	{
@@ -215,11 +262,78 @@ public interface TimersAndBuffsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showTeleblock",
-		name = "Teleblock timer",
-		description = "Configures whether teleblock timer is displayed"
+		keyName = "showMagicImbue",
+		name = "Magic imbue timer",
+		description = "Configures whether magic imbue timer is displayed",
+		section = spellsSection
 	)
-	default boolean showTeleblock()
+	default boolean showMagicImbue()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showSpellbookSwap",
+		name = "Spellbook Swap timer",
+		description = "Configures whether Spellbook Swap timer is displayed",
+		section = spellsSection
+	)
+	default boolean showSpellbookSwap()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showVengeanceActive",
+		name = "Vengeance active",
+		description = "Configures whether an indicator for vengeance being active is displayed",
+		section = spellsSection
+	)
+	default boolean showVengeanceActive()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showVengeance",
+		name = "Vengeance timer",
+		description = "Configures whether vengeance and vengeance other timer is displayed",
+		section = spellsSection
+	)
+	default boolean showVengeance()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showCannon",
+		name = "Cannon timer",
+		description = "Configures whether cannon timer is displayed",
+		section = miscellaneousSection
+	)
+	default boolean showCannon()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showDfsSpecial",
+		name = "Dragonfire Shield special timer",
+		description = "Configures whether the special attack cooldown timer for the Dragonfire Shield is displayed",
+		section = miscellaneousSection
+	)
+	default boolean showDFSSpecial()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showFarmersAffinity",
+		name = "Farmer's Affinity",
+		description = "Configures whether Farmer's Affinity (Puro-Puro) timer is displayed",
+		section = miscellaneousSection
+	)
+	default boolean showFarmersAffinity()
 	{
 		return true;
 	}
@@ -227,7 +341,8 @@ public interface TimersAndBuffsConfig extends Config
 	@ConfigItem(
 		keyName = "showFreezes",
 		name = "Freeze timer",
-		description = "Configures whether freeze timer is displayed"
+		description = "Configures whether freeze timer is displayed",
+		section = miscellaneousSection
 	)
 	default boolean showFreezes()
 	{
@@ -235,21 +350,45 @@ public interface TimersAndBuffsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showGodWarsAltar",
-		name = "God wars altar timer",
-		description = "Configures whether god wars altar timer is displayed"
+		keyName = "showPickpocketStun",
+		name = "Pickpocket stun timer",
+		description = "Configures whether pickpocket stun timer is displayed",
+		section = miscellaneousSection
 	)
-	default boolean showGodWarsAltar()
+	default boolean showPickpocketStun()
 	{
 		return true;
 	}
 
 	@ConfigItem(
-		keyName = "showTzhaarTimers",
-		name = "Fight Caves and Inferno timers",
-		description = "Display elapsed time in the Fight Caves and Inferno"
+		keyName = "showStaffOfTheDead",
+		name = "Staff of the Dead timer",
+		description = "Configures whether staff of the dead timer is displayed",
+		section = miscellaneousSection
 	)
-	default boolean showTzhaarTimers()
+	default boolean showStaffOfTheDead()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showTeleblock",
+		name = "Teleblock timer",
+		description = "Configures whether teleblock timer is displayed",
+		section = miscellaneousSection
+	)
+	default boolean showTeleblock()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "showHomeMinigameTeleports",
+		name = "Teleport cooldown timers",
+		description = "Configures whether timers for home and minigame teleport cooldowns are displayed",
+		section = miscellaneousSection
+	)
+	default boolean showHomeMinigameTeleports()
 	{
 		return true;
 	}
@@ -283,84 +422,4 @@ public interface TimersAndBuffsConfig extends Config
 		description = ""
 	)
 	void tzhaarLastTime(Instant tzhaarLastTime);
-
-	@ConfigItem(
-		keyName = "showStaffOfTheDead",
-		name = "Staff of the Dead timer",
-		description = "Configures whether staff of the dead timer is displayed"
-	)
-	default boolean showStaffOfTheDead()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showAbyssalSireStun",
-		name = "Abyssal Sire stun timer",
-		description = "Configures whether Abyssal Sire stun timer is displayed"
-	)
-	default boolean showAbyssalSireStun()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showDfsSpecial",
-		name = "Dragonfire Shield special timer",
-		description = "Configures whether the special attack cooldown timer for the Dragonfire Shield is displayed"
-	)
-	default boolean showDFSSpecial()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showArceuus",
-		name = "Arceuus spells duration",
-		description = "Whether to show Arceuus spellbook spell timers"
-	)
-	default boolean showArceuus()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showArceuusCooldown",
-		name = "Arceuus spells cooldown",
-		description = "Whether to show cooldown timers for Arceuus spellbook spells"
-	)
-	default boolean showArceuusCooldown()
-	{
-		return false;
-	}
-
-	@ConfigItem(
-		keyName = "showPickpocketStun",
-		name = "Pickpocket stun timer",
-		description = "Configures whether pickpocket stun timer is displayed"
-	)
-	default boolean showPickpocketStun()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showFarmersAffinity",
-		name = "Farmer's Affinity",
-		description = "Configures whether Farmer's Affinity (Puro-Puro) timer is displayed"
-	)
-	default boolean showFarmersAffinity()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showSpellbookSwap",
-		name = "Spellbook Swap timer",
-		description = "Configures whether Spellbook Swap timer is displayed"
-	)
-	default boolean showSpellbookSwap()
-	{
-		return true;
-	}
 }
