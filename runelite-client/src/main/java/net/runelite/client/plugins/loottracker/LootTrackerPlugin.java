@@ -892,6 +892,19 @@ public class LootTrackerPlugin extends Plugin
 				container = client.getItemContainer(InventoryID.WILDERNESS_LOOT_CHEST);
 				chestLooted = true;
 				break;
+			case InterfaceID.LUNAR_CHEST:
+				event = "Lunar Chest";
+				container = client.getItemContainer(InventoryID.LUNAR_CHEST);
+				break;
+			case InterfaceID.FORTIS_COLOSSEUM_REWARD:
+				if (chestLooted)
+				{
+					return;
+				}
+				event = "Fortis Colosseum";
+				container = client.getItemContainer(InventoryID.FORTIS_COLOSSEUM_REWARD_CHEST);
+				chestLooted = true;
+				break;
 			default:
 				return;
 		}
@@ -1217,6 +1230,24 @@ public class LootTrackerPlugin extends Plugin
 						break;
 					case ItemID.ORE_PACK_27693:
 						onInvChange(collectInvItems(LootRecordType.EVENT, ORE_PACK_VM_EVENT));
+						break;
+					//Hunters loot sacks are stackable and multiple can be opened in one tick.
+					//This provides an accurate count of how many were opened for each event
+					case ItemID.HUNTERS_LOOT_SACK:
+					case ItemID.HUNTERS_LOOT_SACK_BASIC:
+					case ItemID.HUNTERS_LOOT_SACK_TIER_1:
+					case ItemID.HUNTERS_LOOT_SACK_TIER_2:
+					case ItemID.HUNTERS_LOOT_SACK_TIER_3:
+						final int itemId = event.getItemId();
+						onInvChange((((invItems, groundItems, removedItems) ->
+						{
+							int cnt = removedItems.count(itemId);
+							if (cnt > 0)
+							{
+								String name = itemManager.getItemComposition(itemId).getMembersName();
+								addLoot(name, -1, LootRecordType.EVENT, null, invItems, cnt);
+							}
+						})));
 						break;
 				}
 			}

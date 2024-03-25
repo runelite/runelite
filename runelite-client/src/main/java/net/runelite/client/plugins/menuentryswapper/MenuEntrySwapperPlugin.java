@@ -63,6 +63,7 @@ import net.runelite.api.events.PostItemComposition;
 import net.runelite.api.events.PostMenuSort;
 import net.runelite.api.widgets.InterfaceID;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetConfig;
 import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -1150,7 +1151,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 		for (int idx = entries.length - 1; idx >= 0; --idx)
 		{
 			final MenuEntry entry = entries[idx];
-			if (entry.getType() == MenuAction.CC_OP || entry.getType() == MenuAction.CC_OP_LOW_PRIORITY)
+			if (entry.getType() == MenuAction.CC_OP || entry.getType() == MenuAction.CC_OP_LOW_PRIORITY
+				|| entry.getType() == MenuAction.WIDGET_TARGET)
 			{
 				final Widget w = entry.getWidget();
 				if (w == null || w.getActions() == null)
@@ -1178,12 +1180,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 					// find lowest op from the widget actions, to prevent setting a swap to the default left click
 					// action regardless of what is swapped.
-					int lowestOp = 0;
-					while (lowestOp < w.getActions().length && Strings.isNullOrEmpty(w.getActions()[lowestOp]))
-					{
-						++lowestOp;
-					}
-					++lowestOp; // from 0-indexed to 1-indexed
+					final int lowestOp = findLowestOp(w);
 
 					// find highest op from the current menu, post any existing swaps, for inserting Reset
 					int highestOp = 10;
@@ -1283,6 +1280,40 @@ public class MenuEntrySwapperPlugin extends Plugin
 				}
 			}
 		}
+	}
+
+	private int findLowestOp(Widget w)
+	{
+		for (int i = 0; i <= 9; ++i)
+		{
+			if (i == 5)
+			{
+				if (isOpTarget(w) && !Strings.isNullOrEmpty(w.getTargetVerb()))
+				{
+					return 0;
+				}
+			}
+
+			if ((testOpMask(w, i) || w.getOnOpListener() != null) && !Strings.isNullOrEmpty(w.getActions()[i]))
+			{
+				return i + 1;
+			}
+		}
+		return -1;
+	}
+
+	private boolean testOpMask(Widget w, int op)
+	{
+		var n = client.getWidgetFlags().get((long) w.getId() << 32 | w.getIndex());
+		int mask = n != null ? n.getValue() : w.getClickMask();
+		return (mask >> op + 1 & 1) != 0;
+	}
+
+	private boolean isOpTarget(Widget w)
+	{
+		var n = client.getWidgetFlags().get((long) w.getId() << 32 | w.getIndex());
+		int mask = n != null ? n.getValue() : w.getClickMask();
+		return (mask & (WidgetConfig.USE_GROUND_ITEM | WidgetConfig.USE_NPC | WidgetConfig.USE_OBJECT | WidgetConfig.USE_PLAYER | WidgetConfig.USE_ITEM | WidgetConfig.USE_WIDGET)) != 0;
 	}
 
 	private Consumer<MenuEntry> uiConsumer(String option, String target, boolean shift, int componentId, int itemId, int opId)
@@ -1500,22 +1531,14 @@ public class MenuEntrySwapperPlugin extends Plugin
 		}
 
 		// UI swaps
-		if ((menuAction == MenuAction.CC_OP || menuAction == MenuAction.CC_OP_LOW_PRIORITY)
+		if ((menuAction == MenuAction.CC_OP || menuAction == MenuAction.CC_OP_LOW_PRIORITY || menuAction == MenuAction.WIDGET_TARGET)
 			&& w != null && (w.getIndex() == -1 || w.getItemId() != -1)
 			&& w.getActions() != null
 			&& !itemOp && WidgetUtil.componentToInterface(w.getId()) != InterfaceID.EQUIPMENT)
 		{
-			int numActions = 0;
-			for (String action : w.getActions())
-			{
-				if (!Strings.isNullOrEmpty(action))
-				{
-					++numActions;
-				}
-			}
-
 			// fast check to avoid hitting config on components with single ops
-			if (numActions > 1)
+			if ((index > 0 && menuEntries[index - 1].getWidget() == w) ||
+				(index + 1 < menuEntries.length && menuEntries[index + 1].getWidget() == w))
 			{
 				final int componentId = w.getId(); // on dynamic components, this is the parent layer id
 				final int itemId = w.getIndex() == -1 ? -1 : ItemVariationMapping.map(w.getItemId());

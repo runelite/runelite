@@ -226,10 +226,7 @@ public class HiscorePlugin extends Plugin
 	{
 		SwingUtilities.invokeLater(() ->
 		{
-			if (!navButton.isSelected())
-			{
-				navButton.getOnSelect().run();
-			}
+			clientToolbar.openPanel(navButton);
 			hiscorePanel.lookup(playerName, endpoint);
 		});
 	}

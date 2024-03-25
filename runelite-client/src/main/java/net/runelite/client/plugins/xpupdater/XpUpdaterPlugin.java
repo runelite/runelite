@@ -53,7 +53,7 @@ import okhttp3.Response;
 @PluginDescriptor(
 	name = "XP Updater",
 	description = "Automatically updates your stats on external xptrackers when you log out",
-	tags = {"cml", "crystalmathlabs", "templeosrs", "temple", "wom", "wiseoldman", "wise old man", "external", "integration"},
+	tags = {"cml", "crystalmathlabs", "runetracker", "templeosrs", "temple", "wom", "wiseoldman", "wise old man", "external", "integration"},
 	enabledByDefault = false
 )
 @Slf4j
@@ -136,6 +136,7 @@ public class XpUpdaterPlugin extends Plugin
 		EnumSet<WorldType> worldTypes = client.getWorldType();
 		username = username.replace(" ", "_");
 		updateCml(username, worldTypes);
+		updateRunetracker(username, worldTypes);
 		updateTempleosrs(accountHash, username, worldTypes);
 		updateWom(accountHash, username, worldTypes);
 	}
@@ -163,6 +164,31 @@ public class XpUpdaterPlugin extends Plugin
 				.build();
 
 			sendRequest("CrystalMathLabs", request);
+		}
+	}
+
+	private void updateRunetracker(String username, EnumSet<WorldType> worldTypes)
+	{
+		if (config.runetracker()
+			&& !worldTypes.contains(WorldType.SEASONAL)
+			&& !worldTypes.contains(WorldType.DEADMAN)
+			&& !worldTypes.contains(WorldType.NOSAVE_MODE)
+			&& !worldTypes.contains(WorldType.FRESH_START_WORLD))
+		{
+			HttpUrl url = new HttpUrl.Builder()
+				.scheme("https")
+				.host("rscript.org")
+				.addPathSegment("lookup.php")
+				.addQueryParameter("type", "stats07")
+				.addQueryParameter("user", username)
+				.build();
+
+			Request request = new Request.Builder()
+				.header("User-Agent", "RuneLite")
+				.url(url)
+				.build();
+
+			sendRequest("RuneTracker", request);
 		}
 	}
 

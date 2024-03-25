@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2023 Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,25 +22,38 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache.definitions;
+package net.runelite.client.ui.laf;
 
-import java.util.List;
-import lombok.Data;
-import net.runelite.cache.region.Position;
+import com.formdev.flatlaf.ui.FlatRootPaneUI;
+import java.beans.PropertyChangeEvent;
+import javax.swing.JComponent;
+import javax.swing.plaf.ComponentUI;
 
-@Data
-public class WorldMapDefinition
+public class RuneLiteRootPaneUI extends FlatRootPaneUI
 {
-	public String name;
-	public int field450;
-	public int defaultZoom;
-	public int fileId;
-	public int field453;
-	public int field454;
-	public int field456;
-	public boolean isSurface;
-	public List regionList;
-	public String safeName;
-	public Position position;
-	public int field463;
+	public static final String PROP_RUNELITE_TITLEBAR = "runelite.titleBar";
+
+	public static ComponentUI createUI(JComponent c)
+	{
+		return new RuneLiteRootPaneUI();
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent e)
+	{
+		super.propertyChange(e);
+
+		if (e.getPropertyName().equals(PROP_RUNELITE_TITLEBAR))
+		{
+			boolean titleBar = rootPane.getClientProperty(PROP_RUNELITE_TITLEBAR) == Boolean.TRUE;
+			if (!titleBar)
+			{
+				throw new IllegalStateException();
+			}
+
+			setTitlePane(createTitlePane());
+
+			rootPane.setLayout(createRootLayout());
+		}
+	}
 }

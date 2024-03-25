@@ -119,7 +119,6 @@ void get_face(uint localId, modelinfo minfo, float cameraYaw, float cameraPitch,
   }
 
   if (localId < size) {
-    int radius = (flags >> 12) & 0xfff;
     int orientation = flags & 0x7ff;
 
     // rotate for model orientation
@@ -129,12 +128,7 @@ void get_face(uint localId, modelinfo minfo, float cameraYaw, float cameraPitch,
 
     // calculate distance to face
     int thisPriority = (thisA.w >> 16) & 0xff;  // all vertices on the face have the same priority
-    int thisDistance;
-    if (radius == 0) {
-      thisDistance = 0;
-    } else {
-      thisDistance = face_distance(thisrvA, thisrvB, thisrvC, cameraYaw, cameraPitch) + radius;
-    }
+    int thisDistance = face_distance(thisrvA, thisrvB, thisrvC, cameraYaw, cameraPitch);
 
     o1 = thisrvA;
     o2 = thisrvB;
@@ -205,16 +199,31 @@ void insert_face(uint localId, modelinfo minfo, int adjPrio, int distance, int p
   if (localId < size) {
     // calculate base offset into renderPris based on number of faces with a lower priority
     int baseOff = count_prio_offset(adjPrio);
-    // the furthest faces draw first, and have the highest value
+    // the furthest faces draw first, and have the highest priority.
     // if two faces have the same distance, the one with the
-    // lower id draws first
-    renderPris[baseOff + prioIdx] = uint(distance << 16) | (~localId & 0xffffu);
+    // lower id draws first.
+    renderPris[baseOff + prioIdx] = distance << 16 | int(~localId & 0xffffu);
   }
 }
 
 int tile_height(int z, int x, int y) {
-#define ESCENE_OFFSET 40 // (184-104)/2
+#define ESCENE_OFFSET 40  // (184-104)/2
   return texelFetch(tileHeightSampler, ivec3(x + ESCENE_OFFSET, y + ESCENE_OFFSET, z), 0).r << 3;
+}
+
+vec4 hillskew_vertexf(vec4 v, int hillskew, int y, int plane) {
+  if (hillskew == 1) {
+    float fx = v.x / 128;
+    float fz = v.z / 128;
+    int sx = int(floor(fx));
+    int sz = int(floor(fz));
+    float h1 = mix(tile_height(plane, sx, sz), tile_height(plane, sx + 1, sz), fract(fx));
+    float h2 = mix(tile_height(plane, sx, sz + 1), tile_height(plane, sx + 1, sz + 1), fract(fx));
+    float h3 = mix(h1, h2, fract(fz));
+    return vec4(v.x, v.y + h3 - y, v.z, v.w);
+  } else {
+    return v;
+  }
 }
 
 ivec4 hillskew_vertex(ivec4 v, int hillskew, int y, int plane) {
@@ -245,7 +254,7 @@ void sort_and_insert(uint localId, modelinfo minfo, int thisPriority, int thisDi
     const int numOfPriority = totalMappedNum[thisPriority];
     const int start = priorityOffset;                // index of first face with this priority
     const int end = priorityOffset + numOfPriority;  // index of last face with this priority
-    const uint renderPriority = uint(thisDistance << 16) | (~localId & 0xffffu);
+    const int renderPriority = thisDistance << 16 | int(~localId & 0xffffu);
     int myOffset = priorityOffset;
 
     // calculate position this face will be in
@@ -291,9 +300,25 @@ void sort_and_insert(uint localId, modelinfo minfo, int thisPriority, int thisDi
       }
 
       int orientation = flags & 0x7ff;
-      uvout[outOffset + myOffset * 3] = vec4(texA.x, rotatef(texA.yzw, orientation) + pos.xyz);
-      uvout[outOffset + myOffset * 3 + 1] = vec4(texB.x, rotatef(texB.yzw, orientation) + pos.xyz);
-      uvout[outOffset + myOffset * 3 + 2] = vec4(texC.x, rotatef(texC.yzw, orientation) + pos.xyz);
+      // swizzle from (tex,x,y,z) to (x,y,z,tex) for rotate and hillskew
+      texA = texA.yzwx;
+      texB = texB.yzwx;
+      texC = texC.yzwx;
+      // rotate
+      texA = rotatef(texA, orientation);
+      texB = rotatef(texB, orientation);
+      texC = rotatef(texC, orientation);
+      // position
+      texA += pos;
+      texB += pos;
+      texC += pos;
+      // hillskew
+      texA = hillskew_vertexf(texA, hillskew, minfo.y, plane);
+      texB = hillskew_vertexf(texB, hillskew, minfo.y, plane);
+      texC = hillskew_vertexf(texC, hillskew, minfo.y, plane);
+      uvout[outOffset + myOffset * 3] = texA.wxyz;
+      uvout[outOffset + myOffset * 3 + 1] = texB.wxyz;
+      uvout[outOffset + myOffset * 3 + 2] = texC.wxyz;
     }
   }
 }

@@ -56,6 +56,7 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ProfileChanged;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.menus.WidgetMenuOption;
 import org.apache.commons.lang3.ArrayUtils;
@@ -367,17 +368,13 @@ class PrayerReorder
 				int widgetConfig = prayerWidget.getClickMask();
 				if (unlocked)
 				{
-					// allow dragging of this widget
-					widgetConfig |= DRAG;
-					// allow this widget to be dragged on
-					widgetConfig |= DRAG_ON;
+					// allow dragging of this widget & to be dragged on
+					widgetConfig |= DRAG | DRAG_ON;
 				}
 				else
 				{
-					// remove drag flag
-					widgetConfig &= ~DRAG;
-					// remove drag on flag
-					widgetConfig &= ~DRAG_ON;
+					// remove drag flag & drag on flags
+					widgetConfig &= ~(DRAG | DRAG_ON);
 				}
 				prayerWidget.setClickMask(widgetConfig);
 
@@ -494,5 +491,11 @@ class PrayerReorder
 				}
 			}
 		}
+	}
+
+	@Subscribe
+	public void onProfileChanged(ProfileChanged e)
+	{
+		clientThread.invokeLater(this::redrawPrayers);
 	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Woox <https://github.com/wooxsolo>
+ * Copyright (c) 2023 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,42 +22,55 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.npcunaggroarea;
+package net.runelite.client.ui.laf;
 
-import com.google.inject.Inject;
-import java.awt.Dimension;
+import com.formdev.flatlaf.ui.FlatRadioButtonUI;
+import com.formdev.flatlaf.ui.FlatStylingSupport;
+import com.formdev.flatlaf.ui.FlatUIUtils;
+import java.awt.AlphaComposite;
+import java.awt.Composite;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
-import net.runelite.client.ui.overlay.OverlayPanel;
-import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
-import net.runelite.client.ui.overlay.components.LineComponent;
+import java.awt.Rectangle;
+import javax.swing.JComponent;
+import javax.swing.plaf.ComponentUI;
 
-class NpcAggroAreaNotWorkingOverlay extends OverlayPanel
+public class RuneLiteRadioButtonUI extends FlatRadioButtonUI
 {
-	private final NpcAggroAreaPlugin plugin;
+	@FlatStylingSupport.Styleable
+	protected float rolloverIconAlpha = 1.0f;
 
-	@Inject
-	private NpcAggroAreaNotWorkingOverlay(NpcAggroAreaPlugin plugin)
+	public static ComponentUI createUI(JComponent c)
 	{
-		this.plugin = plugin;
+		return FlatUIUtils.canUseSharedUI(c)
+			? FlatUIUtils.createSharedUI(RuneLiteRadioButtonUI.class, () -> new RuneLiteRadioButtonUI(true))
+			: new RuneLiteRadioButtonUI(false);
+	}
 
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Unaggressive NPC timers require calibration. Teleport far away or enter a dungeon, then run until this overlay disappears.")
-			.build());
-
-		setPriority(OverlayPriority.LOW);
-		setPosition(OverlayPosition.TOP_LEFT);
-		setClearChildren(false);
+	protected RuneLiteRadioButtonUI(boolean shared)
+	{
+		super(shared);
 	}
 
 	@Override
-	public Dimension render(Graphics2D graphics)
+	protected void paintIcon(Graphics g, JComponent c, Rectangle iconRect)
 	{
-		if (plugin.getSafeCenters()[1] != null)
+		if (rolloverIconAlpha != 1.0f && RuneLiteButtonUI.useRolloverEffect(c))
 		{
-			return null;
+			Graphics2D g2d = (Graphics2D) g;
+			Composite composite = g2d.getComposite();
+			try
+			{
+				g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, rolloverIconAlpha));
+				super.paintIcon(g, c, iconRect);
+			}
+			finally
+			{
+				g2d.setComposite(composite);
+			}
+			return;
 		}
 
-		return super.render(graphics);
+		super.paintIcon(g, c, iconRect);
 	}
 }

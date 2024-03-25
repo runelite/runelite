@@ -112,9 +112,8 @@ public interface Widget
 
 	/**
 	 * Gets a dynamic child by index
-	 *
-	 * @throws IndexOutOfBoundsException if the index is outside of the child array
 	 */
+	@Nullable
 	Widget getChild(int index);
 
 	/**
@@ -621,13 +620,6 @@ public interface Widget
 	 */
 	@Nullable
 	String[] getActions();
-
-	/**
-	 * Create a static widget child
-	 * @param type the {@link WidgetType} of the widget
-	 * @return
-	 */
-	Widget createStaticChild(@MagicConstant(valuesFromClass = WidgetType.class) int type);
 
 	/**
 	 * Creates a dynamic widget child

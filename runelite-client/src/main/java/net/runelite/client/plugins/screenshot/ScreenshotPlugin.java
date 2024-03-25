@@ -212,7 +212,6 @@ public class ScreenshotPlugin extends Plugin
 		final BufferedImage iconImage = ImageUtil.loadImageResource(getClass(), "screenshot.png");
 
 		titleBarButton = NavigationButton.builder()
-			.tab(false)
 			.tooltip("Take screenshot")
 			.icon(iconImage)
 			.onClick(this::manualScreenshot)

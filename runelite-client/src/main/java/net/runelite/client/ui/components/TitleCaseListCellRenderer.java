@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2019 William <https://github.com/monsterxsync>
+ * Copyright (c) 2017, Psikoi <https://github.com/psikoi>
+ * Copyright (c) 2023, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,49 +23,27 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.achievementdiary;
+package net.runelite.client.ui.components;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import net.runelite.api.Client;
-import net.runelite.api.Varbits;
-import net.runelite.api.annotations.Varbit;
+import java.awt.Component;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JList;
+import net.runelite.client.util.Text;
 
-@RequiredArgsConstructor
-@Getter
-public class FavourRequirement implements Requirement
+public final class TitleCaseListCellRenderer extends DefaultListCellRenderer
 {
-	/**
-	 * An enumeration of Kourend house favour the player can earn.
-	 */
-	@RequiredArgsConstructor
-	public enum Favour
-	{
-		ARCEUUS("Arceuus", Varbits.KOUREND_FAVOR_ARCEUUS),
-		HOSIDIUS("Hosidius", Varbits.KOUREND_FAVOR_HOSIDIUS),
-		LOVAKENGJ("Lovakengj", Varbits.KOUREND_FAVOR_LOVAKENGJ),
-		PISCARILIUS("Piscarilius", Varbits.KOUREND_FAVOR_PISCARILIUS),
-		SHAYZIEN("Shayzien", Varbits.KOUREND_FAVOR_SHAYZIEN);
-
-		@Getter
-		private final String name;
-		@Getter(onMethod_ = {@Varbit})
-		private final int varbit;
-	}
-
-	private final Favour house;
-	private final int percent;
-
 	@Override
-	public String toString()
+	public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus)
 	{
-		return percent + "% " + house.getName() + " favour";
-	}
-
-	@Override
-	public boolean satisfiesRequirement(Client client)
-	{
-		int realFavour = client.getVarbitValue(house.getVarbit());
-		return (realFavour / 10) >= percent;
+		String text;
+		if (value instanceof Enum<?>)
+		{
+			text = Text.titleCase((Enum<?>) value);
+		}
+		else
+		{
+			text = value.toString();
+		}
+		return super.getListCellRendererComponent(list, text, index, isSelected, cellHasFocus);
 	}
 }

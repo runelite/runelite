@@ -119,7 +119,6 @@ void get_face(__local struct shared_data *shared, __constant struct uniform *uni
   }
 
   if (localId < size) {
-    int radius = (flags >> 12) & 0xfff;
     int orientation = flags & 0x7ff;
 
     // rotate for model orientation
@@ -129,12 +128,7 @@ void get_face(__local struct shared_data *shared, __constant struct uniform *uni
 
     // calculate distance to face
     int thisPriority = (thisA.w >> 16) & 0xff;  // all vertices on the face have the same priority
-    int thisDistance;
-    if (radius == 0) {
-      thisDistance = 0;
-    } else {
-      thisDistance = face_distance(thisrvA, thisrvB, thisrvC, cameraYaw, cameraPitch) + radius;
-    }
+    int thisDistance = face_distance(thisrvA, thisrvB, thisrvC, cameraYaw, cameraPitch);
 
     *o1 = thisrvA;
     *o2 = thisrvB;
@@ -206,15 +200,15 @@ void insert_face(__local struct shared_data *shared, uint localId, struct modeli
   if (localId < size) {
     // calculate base offset into renderPris based on number of faces with a lower priority
     int baseOff = count_prio_offset(shared, adjPrio);
-    // the furthest faces draw first, and have the highest value
+    // the furthest faces draw first, and have the highest priority.
     // if two faces have the same distance, the one with the
-    // lower id draws first
-    shared->renderPris[baseOff + prioIdx] = ((uint)(distance << 16)) | (~localId & 0xffffu);
+    // lower id draws first.
+    shared->renderPris[baseOff + prioIdx] = distance << 16 | (int)(~localId & 0xffffu);
   }
 }
 
 int tile_height(read_only image3d_t tileHeightImage, int z, int x, int y) {
-#define ESCENE_OFFSET 40 // (184-104)/2
+#define ESCENE_OFFSET 40  // (184-104)/2
   const sampler_t tileHeightSampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_TO_EDGE;
   int4 coord = (int4)(x + ESCENE_OFFSET, y + ESCENE_OFFSET, z, 0);
   return read_imagei(tileHeightImage, tileHeightSampler, coord).x << 3;
@@ -235,6 +229,22 @@ int4 hillskew_vertex(read_only image3d_t tileHeightImage, int4 v, int hillskew, 
   }
 }
 
+float4 hillskew_vertexf(read_only image3d_t tileHeightImage, float4 v, int hillskew, int y, int plane) {
+  if (hillskew == 1) {
+    float fx = v.x / 128;
+    float fz = v.z / 128;
+    int sx = (int)(floor(fx));
+    int sz = (int)(floor(fz));
+    float it;
+    float h1 = mix((float)tile_height(tileHeightImage, plane, sx, sz), (float)tile_height(tileHeightImage, plane, sx + 1, sz), fract(fx, &it));
+    float h2 = mix((float)tile_height(tileHeightImage, plane, sx, sz + 1), (float)tile_height(tileHeightImage, plane, sx + 1, sz + 1), fract(fx, &it));
+    float h3 = mix(h1, h2, fract(fz, &it));
+    return (float4)(v.x, v.y + h3 - y, v.z, v.w);
+  } else {
+    return v;
+  }
+}
+
 void sort_and_insert(__local struct shared_data *shared, __constant struct uniform *uni, __global const float4 *texb, __global const float4 *temptexb,
                      __global int4 *vout, __global float4 *uvout, uint localId, struct modelinfo minfo, int thisPriority, int thisDistance, int4 thisrvA,
                      int4 thisrvB, int4 thisrvC, read_only image3d_t tileHeightImage) {
@@ -250,7 +260,7 @@ void sort_and_insert(__local struct shared_data *shared, __constant struct unifo
     const int numOfPriority = shared->totalMappedNum[thisPriority];
     const int start = priorityOffset;                // index of first face with this priority
     const int end = priorityOffset + numOfPriority;  // index of last face with this priority
-    const uint renderPriority = ((uint)(thisDistance << 16)) | (~localId & 0xffffu);
+    const int renderPriority = thisDistance << 16 | (int)(~localId & 0xffffu);
     int myOffset = priorityOffset;
 
     // calculate position this face will be in
@@ -296,9 +306,25 @@ void sort_and_insert(__local struct shared_data *shared, __constant struct unifo
       }
 
       int orientation = flags & 0x7ff;
-      uvout[outOffset + myOffset * 3] = (float4)(texA.x, rotatef_vertex(texA.yzw, orientation) + convert_float3(pos.xyz));
-      uvout[outOffset + myOffset * 3 + 1] = (float4)(texB.x, rotatef_vertex(texB.yzw, orientation) + convert_float3(pos.xyz));
-      uvout[outOffset + myOffset * 3 + 2] = (float4)(texC.x, rotatef_vertex(texC.yzw, orientation) + convert_float3(pos.xyz));
+      // swizzle from (tex,x,y,z) to (x,y,z,tex) for rotate and hillskew
+      texA = texA.yzwx;
+      texB = texB.yzwx;
+      texC = texC.yzwx;
+      // rotate
+      texA = rotatef_vertex(texA, orientation);
+      texB = rotatef_vertex(texB, orientation);
+      texC = rotatef_vertex(texC, orientation);
+      // position
+      texA += convert_float4(pos);
+      texB += convert_float4(pos);
+      texC += convert_float4(pos);
+      // hillskew
+      texA = hillskew_vertexf(tileHeightImage, texA, hillskew, minfo.y, plane);
+      texB = hillskew_vertexf(tileHeightImage, texB, hillskew, minfo.y, plane);
+      texC = hillskew_vertexf(tileHeightImage, texC, hillskew, minfo.y, plane);
+      uvout[outOffset + myOffset * 3] = texA.wxyz;
+      uvout[outOffset + myOffset * 3 + 1] = texB.wxyz;
+      uvout[outOffset + myOffset * 3 + 2] = texC.wxyz;
     }
   }
 }

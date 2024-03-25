@@ -30,9 +30,7 @@ import com.google.common.collect.Lists;
 import com.google.common.primitives.Shorts;
 import com.google.inject.Provides;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -46,15 +44,10 @@ import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
-import net.runelite.api.ScriptID;
-import net.runelite.api.SpriteID;
 import net.runelite.api.VarClientStr;
 import net.runelite.api.events.GrandExchangeSearched;
 import net.runelite.api.events.MenuEntryAdded;
-import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.ScriptCallbackEvent;
-import net.runelite.api.events.ScriptPostFired;
-import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
@@ -87,11 +80,6 @@ public class BankTagsPlugin extends Plugin
 	public static final String ICON_SEARCH = "icon_";
 	public static final String TAG_TABS_CONFIG = "tagtabs";
 	public static final String VAR_TAG_SUFFIX = "*";
-	private static final int ITEMS_PER_ROW = 8;
-	private static final int ITEM_VERTICAL_SPACING = 36;
-	private static final int ITEM_HORIZONTAL_SPACING = 48;
-	private static final int ITEM_ROW_START = 51;
-	private static final int ITEM_CONTAINER_BOTTOM_PADDING = 4;
 
 	private static final int MAX_RESULT_COUNT = 250;
 
@@ -113,9 +101,6 @@ public class BankTagsPlugin extends Plugin
 
 	@Inject
 	private ChatboxPanelManager chatboxPanelManager;
-
-	@Inject
-	private BankTagsConfig config;
 
 	@Inject
 	private TagManager tagManager;
@@ -429,121 +414,11 @@ public class BankTagsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked event)
-	{
-		tabInterface.handleClick(event);
-	}
-
-	@Subscribe
 	public void onConfigChanged(ConfigChanged configChanged)
 	{
 		if (configChanged.getGroup().equals(CONFIG_GROUP) && configChanged.getKey().equals("useTabs"))
 		{
 			clientThread.invokeLater(this::reinitBank);
-		}
-	}
-
-	@Subscribe
-	public void onScriptPreFired(ScriptPreFired event)
-	{
-		int scriptId = event.getScriptId();
-		if (scriptId == ScriptID.BANKMAIN_FINISHBUILDING)
-		{
-			// Since we apply tag tab search filters even when the bank is not in search mode,
-			// bankkmain_build will reset the bank title to "The Bank of Gielinor". So apply our
-			// own title.
-			TagTab activeTab = tabInterface.getActiveTab();
-			if (tabInterface.isTagTabActive())
-			{
-				// Tag tab tab has its own title since it isn't a real tag
-				Widget bankTitle = client.getWidget(ComponentID.BANK_TITLE_BAR);
-				bankTitle.setText("Tag tab tab");
-			}
-			else if (activeTab != null)
-			{
-				Widget bankTitle = client.getWidget(ComponentID.BANK_TITLE_BAR);
-				bankTitle.setText("Tag tab <col=ff0000>" + activeTab.getTag() + "</col>");
-			}
-
-			// Recompute scroll size. Only required for tag tab tab and with remove separators, to remove the
-			// space that the separators took.
-			if (tabInterface.isTagTabActive() || (tabInterface.isActive() && config.removeSeparators()))
-			{
-				Widget itemContainer = client.getWidget(ComponentID.BANK_ITEM_CONTAINER);
-				Widget[] children = itemContainer.getChildren();
-				int items = 0;
-				for (Widget child : children)
-				{
-					if (child != null && child.getItemId() != -1 && !child.isHidden())
-					{
-						++items;
-					}
-				}
-
-				// New scroll height for if_setscrollsize
-				final int adjustedScrollHeight = (Math.max(0, items - 1) / ITEMS_PER_ROW) * ITEM_VERTICAL_SPACING +
-					ITEM_VERTICAL_SPACING + ITEM_CONTAINER_BOTTOM_PADDING;
-
-				// This is prior to bankmain_finishbuilding running, so the arguments are still on the stack. Overwrite
-				// argument int12 (7 from the end) which is the height passed to if_setscrollsize
-				final int[] intStack = client.getIntStack();
-				final int intStackSize = client.getIntStackSize();
-				intStack[intStackSize - 7] = adjustedScrollHeight;
-			}
-		}
-	}
-
-	@Subscribe
-	public void onScriptPostFired(ScriptPostFired event)
-	{
-		if (event.getScriptId() != ScriptID.BANKMAIN_BUILD)
-		{
-			return;
-		}
-
-		Widget itemContainer = client.getWidget(ComponentID.BANK_ITEM_CONTAINER);
-		if (itemContainer == null)
-		{
-			return;
-		}
-
-		if (!tabInterface.isActive() || !config.removeSeparators())
-		{
-			return;
-		}
-
-		int items = 0;
-
-		Widget[] containerChildren = itemContainer.getDynamicChildren();
-
-		// sort the child array as the items are not in the displayed order
-		Arrays.sort(containerChildren, Comparator.comparingInt(Widget::getOriginalY)
-			.thenComparingInt(Widget::getOriginalX));
-
-		for (Widget child : containerChildren)
-		{
-			if (child.getItemId() != -1 && !child.isHidden())
-			{
-				// calculate correct item position as if this was a normal tab
-				int adjYOffset = (items / ITEMS_PER_ROW) * ITEM_VERTICAL_SPACING;
-				int adjXOffset = (items % ITEMS_PER_ROW) * ITEM_HORIZONTAL_SPACING + ITEM_ROW_START;
-
-				if (child.getOriginalY() != adjYOffset || child.getOriginalX() != adjXOffset)
-				{
-					child.setOriginalY(adjYOffset);
-					child.setOriginalX(adjXOffset);
-					child.revalidate();
-				}
-
-				items++;
-			}
-
-			// separator line or tab text
-			if (child.getSpriteId() == SpriteID.RESIZEABLE_MODE_SIDE_PANEL_BACKGROUND
-				|| child.getText().contains("Tab"))
-			{
-				child.setHidden(true);
-			}
 		}
 	}
 }

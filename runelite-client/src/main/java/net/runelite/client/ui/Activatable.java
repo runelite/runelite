@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Psikoi <https://github.com/psikoi>
+ * Copyright (c) 2020 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,54 +22,15 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.ui.components;
+package net.runelite.client.ui;
 
-import java.awt.Color;
-import java.awt.Component;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.ListCellRenderer;
-import javax.swing.border.EmptyBorder;
-import net.runelite.client.ui.ColorScheme;
-import net.runelite.client.util.Text;
-
-/**
- * A custom list renderer to avoid substance's weird coloring.
- * Substance was making selected items' foreground color black, this
- * was very hard to see in the dark gray background, this makes the selected
- * item white and adds some padding to the elements for more readable list.
- */
-public final class ComboBoxListRenderer<T> extends JLabel implements ListCellRenderer<T>
+public interface Activatable
 {
-
-	@Override
-	public Component getListCellRendererComponent(JList<? extends T> list, T o, int index, boolean isSelected, boolean cellHasFocus)
+	default void onActivate()
 	{
-		if (isSelected)
-		{
-			setBackground(ColorScheme.DARK_GRAY_COLOR);
-			setForeground(Color.WHITE);
-		}
-		else
-		{
-			setBackground(list.getBackground());
-			setForeground(ColorScheme.LIGHT_GRAY_COLOR);
-		}
+	}
 
-		setBorder(new EmptyBorder(5, 5, 5, 0));
-
-		String text;
-		if (o instanceof Enum<?>)
-		{
-			text = Text.titleCase((Enum<?>) o);
-		}
-		else
-		{
-			text = o.toString();
-		}
-
-		setText(text);
-
-		return this;
+	default void onDeactivate()
+	{
 	}
 }

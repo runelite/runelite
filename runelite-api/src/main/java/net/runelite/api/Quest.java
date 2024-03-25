@@ -32,7 +32,6 @@ public enum Quest
 {
 	ANIMAL_MAGNETISM(0, "Animal Magnetism"),
 	ANOTHER_SLICE_OF_HAM(1, "Another Slice of H.A.M."),
-	ARCHITECTURAL_ALLIANCE(2, "Architectural Alliance"),
 	THE_ASCENT_OF_ARCEUUS(3, "The Ascent of Arceuus"),
 	ALFRED_GRIMHANDS_BARCRAWL(4, "Alfred Grimhand's Barcrawl"),
 	BEAR_YOUR_SOUL(5, "Bear Your Soul"),
@@ -216,6 +215,14 @@ public enum Quest
 	DESERT_TREASURE_II__THE_FALLEN_EMPIRE(2343, "Desert Treasure II - The Fallen Empire"),
 	HIS_FAITHFUL_SERVANTS(3250, "His Faithful Servants"),
 	THE_PATH_OF_GLOUPHRIE(3425, "The Path of Glouphrie"),
+	CHILDREN_OF_THE_SUN(3450, "Children of the Sun"),
+	BARBARIAN_TRAINING(3451, "Barbarian Training"),
+	DEFENDER_OF_VARROCK(3466, "Defender of Varrock"),
+	WHILE_GUTHIX_SLEEPS(3467, "While Guthix Sleeps"),
+	TWILIGHTS_PROMISE(3512, "Twilight's Promise"),
+	AT_FIRST_LIGHT(3513, "At First Light"),
+	PERILOUS_MOONS(3514, "Perilous Moons"),
+	THE_RIBBITING_TALE_OF_A_LILY_PAD_LABOUR_DISPUTE(3515, "The Ribbiting Tale of a Lily Pad Labour Dispute"),
 	;
 
 	@Getter

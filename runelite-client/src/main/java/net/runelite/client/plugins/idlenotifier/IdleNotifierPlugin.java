@@ -159,6 +159,7 @@ public class IdleNotifierPlugin extends Plugin
 			case WOODCUTTING_2H_RUNE:
 			case WOODCUTTING_2H_DRAGON:
 			case WOODCUTTING_2H_CRYSTAL:
+			case WOODCUTTING_2H_CRYSTAL_INACTIVE:
 			case WOODCUTTING_2H_3A:
 			case BLISTERWOOD_JUMP_SCARE:
 			/* Firemaking */
@@ -333,6 +334,12 @@ public class IdleNotifierPlugin extends Plugin
 			case PISCARILIUS_CRANE_REPAIR:
 			case HOME_MAKE_TABLET:
 			case SAND_COLLECTION:
+			case MILKING_COW:
+			case CHURN_MILK_SHORT:
+			case CHURN_MILK_MEDIUM:
+			case CHURN_MILK_LONG:
+			case CLEANING_SPECIMENS_1:
+			case CLEANING_SPECIMENS_2:
 			case LOOKING_INTO:
 				resetTimers();
 				lastAnimation = animation;
