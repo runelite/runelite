@@ -378,6 +378,46 @@ public class ItemStatEffectTest
 	}
 
 	@Test
+	public void testRubyHarvest()
+	{
+		final Effect rubyHarvest = new ItemStatChanges().get(ItemID.RUBY_HARVEST);
+
+		assertEquals(16, skillChange(Skill.ATTACK, 82, 82, rubyHarvest));
+	}
+
+	@Test
+	public void testSapphireGlacial()
+	{
+		final Effect sapphireGlacial = new ItemStatChanges().get(ItemID.SAPPHIRE_GLACIALIS);
+
+		assertEquals(13, skillChange(Skill.DEFENCE, 64, 64, sapphireGlacial));
+	}
+
+	@Test
+	public void testBlackWarlock()
+	{
+		final Effect blackWarlock = new ItemStatChanges().get(ItemID.BLACK_WARLOCK);
+
+		assertEquals(13, skillChange(Skill.STRENGTH, 64, 64, blackWarlock));
+	}
+
+	@Test
+	public void testSnowyKnight()
+	{
+		final Effect snowyKnight = new ItemStatChanges().get(ItemID.SNOWY_KNIGHT);
+
+		assertEquals(5, skillChange(Skill.HITPOINTS, 49, 44, snowyKnight));
+		assertEquals(0, skillChange(Skill.HITPOINTS, 64, 64, snowyKnight));
+		assertEquals(15, skillChange(Skill.HITPOINTS, 99, 77, snowyKnight));
+
+		final Effect snowyKnightMix = new ItemStatChanges().get(ItemID.SNOWY_KNIGHT_MIX_1);
+
+		assertEquals(5, skillChange(Skill.HITPOINTS, 50, 45, snowyKnightMix));
+		assertEquals(0, skillChange(Skill.HITPOINTS, 64, 64, snowyKnightMix));
+		assertEquals(8, skillChange(Skill.HITPOINTS, 99, 10, snowyKnightMix));
+	}
+
+	@Test
 	public void prayerRestoreVariants()
 	{
 		final ItemContainer equipment = mock(ItemContainer.class);
