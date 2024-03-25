@@ -44,15 +44,13 @@ class RunEnergyOverlay extends Overlay
 {
 	private final RunEnergyPlugin plugin;
 	private final Client client;
-	private final RunEnergyConfig config;
 	private final TooltipManager tooltipManager;
 
 	@Inject
-	private RunEnergyOverlay(final RunEnergyPlugin plugin, final Client client, final RunEnergyConfig config, final TooltipManager tooltipManager)
+	private RunEnergyOverlay(final RunEnergyPlugin plugin, final Client client, final TooltipManager tooltipManager)
 	{
 		this.plugin = plugin;
 		this.client = client;
-		this.config = config;
 		this.tooltipManager = tooltipManager;
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
@@ -81,15 +79,9 @@ class RunEnergyOverlay extends Overlay
 		{
 			StringBuilder sb = new StringBuilder();
 			sb.append("Weight: ").append(client.getWeight()).append(" kg</br>");
-
-			if (config.replaceOrbText())
-			{
-				sb.append("Run Energy: ").append(client.getEnergy() / 100).append('%');
-			}
-			else
-			{
-				sb.append("Run Time Remaining: ").append(plugin.getEstimatedRunTimeRemaining(false));
-			}
+			sb.append("Current Run Energy: ").append(client.getEnergy() / 100).append("%</br>");
+			sb.append("Estimated Time Remaining: ").append(
+				plugin.getFormattedRunOrbText(RunEnergyConfig.EnergyDisplayMode.MINUTES_AND_SECONDS));
 
 			if (client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE) == 0
 				&& plugin.isRingOfEnduranceEquipped()
