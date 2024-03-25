@@ -59,8 +59,7 @@ public enum SpecialWeapon
 		new int[]{ItemID.TONALZTICS_OF_RALOS},
 		false,
 		(distance) -> 50, //The hitsplat is always applied 2t after spec regardless of distance
-		(c) -> 0)
-	;
+		(c) -> 0);
 
 	private final String name;
 	private final int[] itemID;

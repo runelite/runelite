@@ -188,7 +188,7 @@ public class SpecialCounterPlugin extends Plugin
 		{
 			if (lastSpecHitsplat.getAmount() > 0)
 			{
-				if(specialWeapon.equals(SpecialWeapon.TONALZTICS_OF_RALOS))
+				if (specialWeapon.equals(SpecialWeapon.TONALZTICS_OF_RALOS))
 				{
 					tonalHitsCount++;
 				}
@@ -197,13 +197,13 @@ public class SpecialCounterPlugin extends Plugin
 					specialAttackHit(specialWeapon, lastSpecHitsplat, lastSpecTarget);
 				}
 			}
-			if(specialWeapon.equals(SpecialWeapon.TONALZTICS_OF_RALOS) && secondToLastSpecHitsplat != null
-					&& secondToLastSpecHitsplat.getAmount() > 0)
+			if (specialWeapon.equals(SpecialWeapon.TONALZTICS_OF_RALOS) && secondToLastSpecHitsplat != null
+				&& secondToLastSpecHitsplat.getAmount() > 0)
 			{
 				tonalHitsCount++;
 			}
 
-			if(tonalHitsCount > 0)
+			if (tonalHitsCount > 0)
 			{
 				specialAttackHit(specialWeapon, lastSpecHitsplat, lastSpecTarget);
 			}
@@ -493,7 +493,7 @@ public class SpecialCounterPlugin extends Plugin
 
 	private int getHit(SpecialWeapon specialWeapon, Hitsplat hitsplat)
 	{
-		if(specialWeapon.equals(SpecialWeapon.TONALZTICS_OF_RALOS))
+		if (specialWeapon.equals(SpecialWeapon.TONALZTICS_OF_RALOS))
 		{
 			return tonalHitsCount;
 		}
@@ -516,19 +516,27 @@ public class SpecialCounterPlugin extends Plugin
 	private int getHitDelay(SpecialWeapon specialWeapon, Actor target)
 	{
 		if (target == null)
+		{
 			return 1;
+		}
 
 		Player player = client.getLocalPlayer();
 		if (player == null)
+		{
 			return 1;
+		}
 
 		WorldPoint playerWp = player.getWorldLocation();
 		if (playerWp == null)
+		{
 			return 1;
+		}
 
 		WorldArea targetArea = target.getWorldArea();
 		if (targetArea == null)
+		{
 			return 1;
+		}
 
 		final int distance = targetArea.distanceTo(playerWp);
 		final int serverCycles = specialWeapon.getHitDelay(distance);
