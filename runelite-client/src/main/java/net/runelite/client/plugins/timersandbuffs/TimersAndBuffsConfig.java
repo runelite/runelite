@@ -22,15 +22,15 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.timers;
+package net.runelite.client.plugins.timersandbuffs;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import java.time.Instant;
 
-@ConfigGroup(TimersConfig.GROUP)
-public interface TimersConfig extends Config
+@ConfigGroup(TimersAndBuffsConfig.GROUP)
+public interface TimersAndBuffsConfig extends Config
 {
 	String GROUP = "timers";
 
