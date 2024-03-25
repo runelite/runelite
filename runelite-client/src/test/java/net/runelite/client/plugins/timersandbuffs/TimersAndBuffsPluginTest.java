@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.timers;
+package net.runelite.client.plugins.timersandbuffs;
 
 import com.google.inject.Guice;
 import com.google.inject.Inject;
@@ -66,14 +66,14 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 
 @RunWith(MockitoJUnitRunner.class)
-public class TimersPluginTest
+public class TimersAndBuffsPluginTest
 {
 	@Inject
-	private TimersPlugin timersPlugin;
+	private TimersAndBuffsPlugin timersAndBuffsPlugin;
 
 	@Mock
 	@Bind
-	private TimersConfig timersConfig;
+	private TimersAndBuffsConfig timersAndBuffsConfig;
 
 	@Mock
 	@Bind
@@ -100,27 +100,27 @@ public class TimersPluginTest
 	@Test
 	public void removeTimersOnConfigChanged()
 	{
-		timersPlugin = spy(timersPlugin);
+		timersAndBuffsPlugin = spy(timersAndBuffsPlugin);
 		final ConfigChanged configChanged = new ConfigChanged();
-		configChanged.setGroup(TimersConfig.GROUP);
+		configChanged.setGroup(TimersAndBuffsConfig.GROUP);
 
-		timersPlugin.onConfigChanged(configChanged);
+		timersAndBuffsPlugin.onConfigChanged(configChanged);
 
 		for (GameTimer timer : GameTimer.values())
 		{
-			verify(timersPlugin).removeGameTimer(timer);
+			verify(timersAndBuffsPlugin).removeGameTimer(timer);
 		}
 	}
 
 	@Test
 	public void testDivineRanging()
 	{
-		when(timersConfig.showDivine()).thenReturn(true);
+		when(timersAndBuffsConfig.showDivine()).thenReturn(true);
 
 		VarbitChanged varbitChanged = new VarbitChanged();
 		varbitChanged.setVarbitId(Varbits.DIVINE_RANGING);
 		varbitChanged.setValue(500);
-		timersPlugin.onVarbitChanged(varbitChanged);
+		timersAndBuffsPlugin.onVarbitChanged(varbitChanged);
 
 		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
 		verify(infoBoxManager).addInfoBox(captor.capture());
@@ -131,24 +131,24 @@ public class TimersPluginTest
 	@Test
 	public void testDivineBastion()
 	{
-		when(timersConfig.showDivine()).thenReturn(true);
+		when(timersAndBuffsConfig.showDivine()).thenReturn(true);
 
 		VarbitChanged rangingVarbitChanged = new VarbitChanged();
 		rangingVarbitChanged.setVarbitId(Varbits.DIVINE_RANGING);
 		rangingVarbitChanged.setValue(500);
-		timersPlugin.onVarbitChanged(rangingVarbitChanged);
+		timersAndBuffsPlugin.onVarbitChanged(rangingVarbitChanged);
 		when(client.getVarbitValue(Varbits.DIVINE_RANGING)).thenReturn(500);
 
 		VarbitChanged superDefenceVarbitChanged = new VarbitChanged();
 		superDefenceVarbitChanged.setVarbitId(Varbits.DIVINE_SUPER_DEFENCE);
 		superDefenceVarbitChanged.setValue(500);
-		timersPlugin.onVarbitChanged(superDefenceVarbitChanged);
+		timersAndBuffsPlugin.onVarbitChanged(superDefenceVarbitChanged);
 		when(client.getVarbitValue(Varbits.DIVINE_SUPER_DEFENCE)).thenReturn(500);
 
 		VarbitChanged bastionVarbitChanged = new VarbitChanged();
 		bastionVarbitChanged.setVarbitId(Varbits.DIVINE_BASTION);
 		bastionVarbitChanged.setValue(500);
-		timersPlugin.onVarbitChanged(bastionVarbitChanged);
+		timersAndBuffsPlugin.onVarbitChanged(bastionVarbitChanged);
 
 		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
 		verify(infoBoxManager, times(3)).addInfoBox(captor.capture());
@@ -174,13 +174,13 @@ public class TimersPluginTest
 	@Test
 	public void testDivineRangingAfterBastion()
 	{
-		when(timersConfig.showDivine()).thenReturn(true);
+		when(timersAndBuffsConfig.showDivine()).thenReturn(true);
 		when(client.getVarbitValue(Varbits.DIVINE_BASTION)).thenReturn(400);
 
 		VarbitChanged varbitChanged = new VarbitChanged();
 		varbitChanged.setVarbitId(Varbits.DIVINE_RANGING);
 		varbitChanged.setValue(500);
-		timersPlugin.onVarbitChanged(varbitChanged);
+		timersAndBuffsPlugin.onVarbitChanged(varbitChanged);
 
 		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
 		verify(infoBoxManager).addInfoBox(captor.capture());
@@ -191,14 +191,14 @@ public class TimersPluginTest
 	@Test
 	public void testStamina()
 	{
-		when(timersConfig.showStamina()).thenReturn(true);
+		when(timersAndBuffsConfig.showStamina()).thenReturn(true);
 		when(client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE)).thenReturn(1);
 		when(client.getVarbitValue(Varbits.STAMINA_EFFECT)).thenReturn(20);
 		when(client.getVarbitValue(Varbits.RING_OF_ENDURANCE_EFFECT)).thenReturn(0);
 
 		VarbitChanged varbitChanged = new VarbitChanged();
 		varbitChanged.setVarbitId(Varbits.RUN_SLOWED_DEPLETION_ACTIVE); // just has to be one of the vars
-		timersPlugin.onVarbitChanged(varbitChanged);
+		timersAndBuffsPlugin.onVarbitChanged(varbitChanged);
 
 		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
 		verify(infoBoxManager).addInfoBox(captor.capture());
@@ -210,9 +210,9 @@ public class TimersPluginTest
 	@Test
 	public void testSireStunTimer()
 	{
-		when(timersConfig.showAbyssalSireStun()).thenReturn(true);
+		when(timersAndBuffsConfig.showAbyssalSireStun()).thenReturn(true);
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "The Sire has been disorientated temporarily.", "", 0);
-		timersPlugin.onChatMessage(chatMessage);
+		timersAndBuffsPlugin.onChatMessage(chatMessage);
 
 		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
 		verify(infoBoxManager).addInfoBox(captor.capture());
@@ -224,14 +224,14 @@ public class TimersPluginTest
 	@Test
 	public void testEndurance()
 	{
-		when(timersConfig.showStamina()).thenReturn(true);
+		when(timersAndBuffsConfig.showStamina()).thenReturn(true);
 		when(client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE)).thenReturn(1);
 		when(client.getVarbitValue(Varbits.STAMINA_EFFECT)).thenReturn(20);
 		when(client.getVarbitValue(Varbits.RING_OF_ENDURANCE_EFFECT)).thenReturn(20);
 
 		VarbitChanged varbitChanged = new VarbitChanged();
 		varbitChanged.setVarbitId(Varbits.RUN_SLOWED_DEPLETION_ACTIVE); // just has to be one of the vars
-		timersPlugin.onVarbitChanged(varbitChanged);
+		timersAndBuffsPlugin.onVarbitChanged(varbitChanged);
 
 		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
 		verify(infoBoxManager).addInfoBox(captor.capture());
@@ -241,7 +241,7 @@ public class TimersPluginTest
 
 		// unwield ring
 		when(client.getVarbitValue(Varbits.RING_OF_ENDURANCE_EFFECT)).thenReturn(0);
-		timersPlugin.onVarbitChanged(varbitChanged);
+		timersAndBuffsPlugin.onVarbitChanged(varbitChanged);
 		int mins = (int) infoBox.getDuration().toMinutes();
 		assertEquals(2, mins);
 	}
@@ -249,8 +249,8 @@ public class TimersPluginTest
 	@Test
 	public void testTzhaarTimer()
 	{
-		when(timersConfig.showTzhaarTimers()).thenReturn(true);
-		when(client.getMapRegions()).thenReturn(new int[]{TimersPlugin.FIGHT_CAVES_REGION_ID});
+		when(timersAndBuffsConfig.showTzhaarTimers()).thenReturn(true);
+		when(client.getMapRegions()).thenReturn(new int[]{TimersAndBuffsPlugin.FIGHT_CAVES_REGION_ID});
 
 		class InstantRef
 		{
@@ -258,33 +258,33 @@ public class TimersPluginTest
 		}
 
 		InstantRef startTime = new InstantRef();
-		when(timersConfig.tzhaarStartTime()).then(a -> startTime.i);
+		when(timersAndBuffsConfig.tzhaarStartTime()).then(a -> startTime.i);
 		doAnswer((Answer<Void>) invocationOnMock ->
 		{
 			Object argument = invocationOnMock.getArguments()[0];
 			startTime.i = (Instant) argument;
 			return null;
-		}).when(timersConfig).tzhaarStartTime(nullable(Instant.class));
+		}).when(timersAndBuffsConfig).tzhaarStartTime(nullable(Instant.class));
 
 		InstantRef lastTime = new InstantRef();
-		when(timersConfig.tzhaarLastTime()).then(a -> lastTime.i);
+		when(timersAndBuffsConfig.tzhaarLastTime()).then(a -> lastTime.i);
 		doAnswer((Answer<Void>) invocationOnMock ->
 		{
 			Object argument = invocationOnMock.getArguments()[0];
 			lastTime.i = (Instant) argument;
 			return null;
-		}).when(timersConfig).tzhaarLastTime(nullable(Instant.class));
+		}).when(timersAndBuffsConfig).tzhaarLastTime(nullable(Instant.class));
 
 		// test timer creation: verify the infobox was added and that it is an ElapsedTimer
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=ef1020>Wave: 1</col>", "", 0);
-		timersPlugin.onChatMessage(chatMessage);
+		timersAndBuffsPlugin.onChatMessage(chatMessage);
 		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
 		verify(infoBoxManager, times(1)).addInfoBox(captor.capture());
 		assertTrue(captor.getValue() instanceof ElapsedTimer);
 
 		// test timer pause: verify the added ElapsedTimer has a non-null lastTime
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=ef1020>The Inferno has been paused. You may now log out.", "", 0);
-		timersPlugin.onChatMessage(chatMessage);
+		timersAndBuffsPlugin.onChatMessage(chatMessage);
 		verify(infoBoxManager, times(1)).removeInfoBox(captor.capture());
 		verify(infoBoxManager, times(2)).addInfoBox(captor.capture());
 		assertTrue(captor.getValue() instanceof ElapsedTimer);
@@ -294,7 +294,7 @@ public class TimersPluginTest
 
 		// test timer unpause: verify the last time is null after being unpaused
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=ef1020>Wave: 2</col>", "", 0);
-		timersPlugin.onChatMessage(chatMessage);
+		timersAndBuffsPlugin.onChatMessage(chatMessage);
 		verify(infoBoxManager, times(2)).removeInfoBox(captor.capture());
 		verify(infoBoxManager, times(3)).addInfoBox(captor.capture());
 		assertTrue(captor.getValue() instanceof ElapsedTimer);
@@ -306,8 +306,8 @@ public class TimersPluginTest
 		final GameStateChanged gameStateChanged = new GameStateChanged();
 		gameStateChanged.setGameState(GameState.LOADING);
 		when(client.getMapRegions()).thenReturn(new int[0]);
-		timersPlugin.onChatMessage(chatMessage);
-		timersPlugin.onGameStateChanged(gameStateChanged);
+		timersAndBuffsPlugin.onChatMessage(chatMessage);
+		timersAndBuffsPlugin.onGameStateChanged(gameStateChanged);
 		verify(infoBoxManager, times(3)).removeInfoBox(captor.capture());
 		verify(infoBoxManager, times(3)).addInfoBox(captor.capture());
 	}
@@ -315,8 +315,8 @@ public class TimersPluginTest
 	@Test
 	public void testInfernoTimerStartOffset()
 	{
-		when(timersConfig.showTzhaarTimers()).thenReturn(true);
-		when(client.getMapRegions()).thenReturn(new int[]{TimersPlugin.INFERNO_REGION_ID});
+		when(timersAndBuffsConfig.showTzhaarTimers()).thenReturn(true);
+		when(client.getMapRegions()).thenReturn(new int[]{TimersAndBuffsPlugin.INFERNO_REGION_ID});
 
 		class InstantRef
 		{
@@ -324,16 +324,16 @@ public class TimersPluginTest
 		}
 
 		InstantRef startTime = new InstantRef();
-		when(timersConfig.tzhaarStartTime()).then(a -> startTime.i);
+		when(timersAndBuffsConfig.tzhaarStartTime()).then(a -> startTime.i);
 		doAnswer((Answer<Void>) invocationOnMock ->
 		{
 			Object argument = invocationOnMock.getArguments()[0];
 			startTime.i = (Instant) argument;
 			return null;
-		}).when(timersConfig).tzhaarStartTime(nullable(Instant.class));
+		}).when(timersAndBuffsConfig).tzhaarStartTime(nullable(Instant.class));
 
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=ef1020>Wave: 1</col>", "", 0);
-		timersPlugin.onChatMessage(chatMessage);
+		timersAndBuffsPlugin.onChatMessage(chatMessage);
 
 		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
 		verify(infoBoxManager, times(1)).addInfoBox(captor.capture());
@@ -346,12 +346,12 @@ public class TimersPluginTest
 	@Test
 	public void testDeathChargeCast()
 	{
-		when(timersConfig.showArceuus()).thenReturn(true);
+		when(timersAndBuffsConfig.showArceuus()).thenReturn(true);
 		when(client.getRealSkillLevel(Skill.MAGIC)).thenReturn(50);
 		VarbitChanged varbitChanged = new VarbitChanged();
 		varbitChanged.setVarbitId(Varbits.DEATH_CHARGE);
 		varbitChanged.setValue(1);
-		timersPlugin.onVarbitChanged(varbitChanged);
+		timersAndBuffsPlugin.onVarbitChanged(varbitChanged);
 
 		ArgumentCaptor<InfoBox> ibcaptor = ArgumentCaptor.forClass(InfoBox.class);
 		verify(infoBoxManager).addInfoBox(ibcaptor.capture());
@@ -363,12 +363,12 @@ public class TimersPluginTest
 	@Test
 	public void testDeathChargeCooldown()
 	{
-		when(timersConfig.showArceuusCooldown()).thenReturn(true);
+		when(timersAndBuffsConfig.showArceuusCooldown()).thenReturn(true);
 
 		VarbitChanged varbitChanged = new VarbitChanged();
 		varbitChanged.setVarbitId(Varbits.DEATH_CHARGE_COOLDOWN);
 		varbitChanged.setValue(1);
-		timersPlugin.onVarbitChanged(varbitChanged);
+		timersAndBuffsPlugin.onVarbitChanged(varbitChanged);
 
 		ArgumentCaptor<InfoBox> ibcaptor = ArgumentCaptor.forClass(InfoBox.class);
 		verify(infoBoxManager).addInfoBox(ibcaptor.capture());
@@ -379,10 +379,10 @@ public class TimersPluginTest
 	@Test
 	public void testArceuusWard()
 	{
-		when(timersConfig.showArceuus()).thenReturn(true);
+		when(timersAndBuffsConfig.showArceuus()).thenReturn(true);
 		when(client.getRealSkillLevel(Skill.MAGIC)).thenReturn(57);
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=0000b2>Your defence against Arceuus magic has been strengthened.</col>", "", 0);
-		timersPlugin.onChatMessage(chatMessage);
+		timersAndBuffsPlugin.onChatMessage(chatMessage);
 
 		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
 		verify(infoBoxManager).addInfoBox(captor.capture());
@@ -394,12 +394,12 @@ public class TimersPluginTest
 	@Test
 	public void testArceuusWardCooldown()
 	{
-		when(timersConfig.showArceuusCooldown()).thenReturn(true);
+		when(timersAndBuffsConfig.showArceuusCooldown()).thenReturn(true);
 
 		VarbitChanged varbitChanged = new VarbitChanged();
 		varbitChanged.setVarbitId(Varbits.WARD_OF_ARCEUUS_COOLDOWN);
 		varbitChanged.setValue(1);
-		timersPlugin.onVarbitChanged(varbitChanged);
+		timersAndBuffsPlugin.onVarbitChanged(varbitChanged);
 
 		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
 		verify(infoBoxManager).addInfoBox(captor.capture());
@@ -410,12 +410,12 @@ public class TimersPluginTest
 	@Test
 	public void testCorruptionCooldown()
 	{
-		when(timersConfig.showArceuusCooldown()).thenReturn(true);
+		when(timersAndBuffsConfig.showArceuusCooldown()).thenReturn(true);
 
 		VarbitChanged varbitChanged = new VarbitChanged();
 		varbitChanged.setVarbitId(Varbits.CORRUPTION_COOLDOWN);
 		varbitChanged.setValue(1);
-		timersPlugin.onVarbitChanged(varbitChanged);
+		timersAndBuffsPlugin.onVarbitChanged(varbitChanged);
 
 		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
 		verify(infoBoxManager).addInfoBox(captor.capture());
@@ -426,11 +426,11 @@ public class TimersPluginTest
 	@Test
 	public void testShadowVeil()
 	{
-		when(timersConfig.showArceuus()).thenReturn(true);
+		when(timersAndBuffsConfig.showArceuus()).thenReturn(true);
 		when(client.getRealSkillLevel(Skill.MAGIC)).thenReturn(57);
 
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=6800bf>Your thieving abilities have been enhanced.</col>", "", 0);
-		timersPlugin.onChatMessage(chatMessage);
+		timersAndBuffsPlugin.onChatMessage(chatMessage);
 
 		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
 		verify(infoBoxManager).addInfoBox(captor.capture());
@@ -441,12 +441,12 @@ public class TimersPluginTest
 	@Test
 	public void testShadowVeilCooldown()
 	{
-		when(timersConfig.showArceuusCooldown()).thenReturn(true);
+		when(timersAndBuffsConfig.showArceuusCooldown()).thenReturn(true);
 
 		VarbitChanged varbitChanged = new VarbitChanged();
 		varbitChanged.setVarbitId(Varbits.SHADOW_VEIL_COOLDOWN);
 		varbitChanged.setValue(1);
-		timersPlugin.onVarbitChanged(varbitChanged);
+		timersAndBuffsPlugin.onVarbitChanged(varbitChanged);
 
 		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
 		verify(infoBoxManager).addInfoBox(captor.capture());
@@ -457,11 +457,11 @@ public class TimersPluginTest
 	@Test
 	public void testThrall()
 	{
-		when(timersConfig.showArceuus()).thenReturn(true);
+		when(timersAndBuffsConfig.showArceuus()).thenReturn(true);
 		when(client.getBoostedSkillLevel(Skill.MAGIC)).thenReturn(60);
 
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=ef0083>You resurrect a greater zombified thrall.</col>", "", 0);
-		timersPlugin.onChatMessage(chatMessage);
+		timersAndBuffsPlugin.onChatMessage(chatMessage);
 
 		ArgumentCaptor<InfoBox> ibcaptor = ArgumentCaptor.forClass(InfoBox.class);
 		verify(infoBoxManager).addInfoBox(ibcaptor.capture());
@@ -473,12 +473,12 @@ public class TimersPluginTest
 	@Test
 	public void testThrallCooldown()
 	{
-		when(timersConfig.showArceuusCooldown()).thenReturn(true);
+		when(timersAndBuffsConfig.showArceuusCooldown()).thenReturn(true);
 
 		VarbitChanged varbitChanged = new VarbitChanged();
 		varbitChanged.setVarbitId(Varbits.RESURRECT_THRALL_COOLDOWN);
 		varbitChanged.setValue(1);
-		timersPlugin.onVarbitChanged(varbitChanged);
+		timersAndBuffsPlugin.onVarbitChanged(varbitChanged);
 
 		ArgumentCaptor<InfoBox> ibcaptor = ArgumentCaptor.forClass(InfoBox.class);
 		verify(infoBoxManager).addInfoBox(ibcaptor.capture());
@@ -490,12 +490,12 @@ public class TimersPluginTest
 	@Test
 	public void testImbuedHeartStart()
 	{
-		when(timersConfig.showImbuedHeart()).thenReturn(true);
+		when(timersAndBuffsConfig.showImbuedHeart()).thenReturn(true);
 
 		VarbitChanged varbitChanged = new VarbitChanged();
 		varbitChanged.setVarbitId(Varbits.IMBUED_HEART_COOLDOWN);
 		varbitChanged.setValue(70);
-		timersPlugin.onVarbitChanged(varbitChanged);
+		timersAndBuffsPlugin.onVarbitChanged(varbitChanged);
 
 		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
 		verify(infoBoxManager).addInfoBox(captor.capture());
@@ -507,15 +507,15 @@ public class TimersPluginTest
 	@Test
 	public void testImbuedHeartEnd()
 	{
-		when(timersConfig.showImbuedHeart()).thenReturn(true);
+		when(timersAndBuffsConfig.showImbuedHeart()).thenReturn(true);
 
 		VarbitChanged varbitChanged = new VarbitChanged();
 		varbitChanged.setVarbitId(Varbits.IMBUED_HEART_COOLDOWN);
 		varbitChanged.setValue(70);
-		timersPlugin.onVarbitChanged(varbitChanged); // Calls removeIf once (on createGameTimer)
+		timersAndBuffsPlugin.onVarbitChanged(varbitChanged); // Calls removeIf once (on createGameTimer)
 
 		ArgumentCaptor<Predicate<InfoBox>> prcaptor = ArgumentCaptor.forClass(Predicate.class);
-		TimerTimer imbuedHeartInfoBox = new TimerTimer(GameTimer.IMBUEDHEART, Duration.ofSeconds(420), timersPlugin);
+		TimerTimer imbuedHeartInfoBox = new TimerTimer(GameTimer.IMBUEDHEART, Duration.ofSeconds(420), timersAndBuffsPlugin);
 		verify(infoBoxManager, times (1)).addInfoBox(any());
 		verify(infoBoxManager, times(1)).removeIf(prcaptor.capture());
 		Predicate<InfoBox> pred = prcaptor.getValue();
@@ -524,7 +524,7 @@ public class TimersPluginTest
 		varbitChanged = new VarbitChanged();
 		varbitChanged.setVarbitId(Varbits.IMBUED_HEART_COOLDOWN);
 		varbitChanged.setValue(0);
-		timersPlugin.onVarbitChanged(varbitChanged); // Calls removeIf once
+		timersAndBuffsPlugin.onVarbitChanged(varbitChanged); // Calls removeIf once
 
 		verify(infoBoxManager, times(1)).addInfoBox(any());
 		verify(infoBoxManager, times(2)).removeIf(prcaptor.capture());
@@ -535,9 +535,9 @@ public class TimersPluginTest
 	@Test
 	public void testMartinPickpocket()
 	{
-		when(timersConfig.showPickpocketStun()).thenReturn(true);
+		when(timersAndBuffsConfig.showPickpocketStun()).thenReturn(true);
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You fail to pick Martin's pocket.", "", 0);
-		timersPlugin.onChatMessage(chatMessage);
+		timersAndBuffsPlugin.onChatMessage(chatMessage);
 
 		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
 		verify(infoBoxManager).addInfoBox(captor.capture());
@@ -549,16 +549,16 @@ public class TimersPluginTest
 	@Test
 	public void testCoXOverload()
 	{
-		when(timersConfig.showOverload()).thenReturn(true);
+		when(timersAndBuffsConfig.showOverload()).thenReturn(true);
 		ArgumentCaptor<Predicate<InfoBox>> prcaptor = ArgumentCaptor.forClass(Predicate.class);
 
 		when(client.getVarbitValue(Varbits.IN_RAID)).thenReturn(1);
 		VarbitChanged varbitChanged = new VarbitChanged();
 		varbitChanged.setVarbitId(Varbits.COX_OVERLOAD_REFRESHES_REMAINING);
 		varbitChanged.setValue(15);
-		timersPlugin.onVarbitChanged(varbitChanged);
+		timersAndBuffsPlugin.onVarbitChanged(varbitChanged);
 
-		TimerTimer overloadInfobox = new TimerTimer(GameTimer.OVERLOAD_RAID, Duration.ofSeconds(225), timersPlugin);
+		TimerTimer overloadInfobox = new TimerTimer(GameTimer.OVERLOAD_RAID, Duration.ofSeconds(225), timersAndBuffsPlugin);
 		verify(infoBoxManager).addInfoBox(any());
 		verify(infoBoxManager).removeIf(prcaptor.capture());
 		Predicate<InfoBox> pred = prcaptor.getValue();
@@ -566,7 +566,7 @@ public class TimersPluginTest
 
 		// Remove on running out
 		varbitChanged.setValue(0);
-		timersPlugin.onVarbitChanged(varbitChanged);
+		timersAndBuffsPlugin.onVarbitChanged(varbitChanged);
 
 		verify(infoBoxManager).addInfoBox(any());
 		verify(infoBoxManager, times(2)).removeIf(any());
@@ -575,15 +575,15 @@ public class TimersPluginTest
 	@Test
 	public void testNMZOverload()
 	{
-		when(timersConfig.showOverload()).thenReturn(true);
+		when(timersAndBuffsConfig.showOverload()).thenReturn(true);
 		ArgumentCaptor<Predicate<InfoBox>> prcaptor = ArgumentCaptor.forClass(Predicate.class);
 
 		VarbitChanged varbitChanged = new VarbitChanged();
 		varbitChanged.setVarbitId(Varbits.NMZ_OVERLOAD_REFRESHES_REMAINING);
 		varbitChanged.setValue(9);
-		timersPlugin.onVarbitChanged(varbitChanged);
+		timersAndBuffsPlugin.onVarbitChanged(varbitChanged);
 
-		TimerTimer overloadInfobox = new TimerTimer(GameTimer.OVERLOAD, Duration.ofSeconds(135), timersPlugin);
+		TimerTimer overloadInfobox = new TimerTimer(GameTimer.OVERLOAD, Duration.ofSeconds(135), timersAndBuffsPlugin);
 		verify(infoBoxManager).addInfoBox(any());
 		verify(infoBoxManager).removeIf(prcaptor.capture());
 		Predicate<InfoBox> pred = prcaptor.getValue();
@@ -591,7 +591,7 @@ public class TimersPluginTest
 
 		// Remove on running out
 		varbitChanged.setValue(0);
-		timersPlugin.onVarbitChanged(varbitChanged);
+		timersAndBuffsPlugin.onVarbitChanged(varbitChanged);
 
 		verify(infoBoxManager).addInfoBox(any());
 		verify(infoBoxManager, times(2)).removeIf(any());

@@ -22,35 +22,35 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.timers;
+package net.runelite.client.plugins.timersandbuffs;
 
 import java.awt.Color;
-import lombok.AccessLevel;
 import lombok.Getter;
-import net.runelite.api.SpriteID;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.ui.overlay.infobox.InfoBox;
+import net.runelite.client.ui.overlay.infobox.InfoBoxPriority;
 
-@Getter(AccessLevel.PACKAGE)
-enum GameIndicator
+public class IndicatorIndicator extends InfoBox
 {
-	VENGEANCE_ACTIVE(SpriteID.SPELL_VENGEANCE_OTHER, GameTimerImageType.SPRITE, "Vengeance active");
+	@Getter
+	private final GameIndicator indicator;
 
-	private final String description;
-	private String text;
-	private Color textColor;
-	private final int imageId;
-	private final GameTimerImageType imageType;
-
-	GameIndicator(int imageId, GameTimerImageType idType, String description, String text, Color textColor)
+	IndicatorIndicator(GameIndicator indicator, Plugin plugin)
 	{
-		this.imageId = imageId;
-		this.imageType = idType;
-		this.description = description;
-		this.text = text;
-		this.textColor = textColor;
+		super(null, plugin);
+		this.indicator = indicator;
+		setPriority(InfoBoxPriority.MED);
 	}
 
-	GameIndicator(int imageId, GameTimerImageType idType, String description)
+	@Override
+	public String getText()
 	{
-		this(imageId, idType, description, "", null);
+		return indicator.getText();
+	}
+
+	@Override
+	public Color getTextColor()
+	{
+		return indicator.getTextColor();
 	}
 }
