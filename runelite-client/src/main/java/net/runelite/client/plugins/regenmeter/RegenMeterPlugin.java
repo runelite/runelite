@@ -227,7 +227,7 @@ public class RegenMeterPlugin extends Plugin
 		}
 
 		int animId = local.getAnimation();
-		if(animId == 10172 && client.getVarpValue(VarPlayer.SOUL_STACK) == 5)
+		if (animId == 10172 && client.getVarpValue(VarPlayer.SOUL_STACK) == 5)
 		{
 			ticksSinceSoulStackDecay = 0;
 		}
