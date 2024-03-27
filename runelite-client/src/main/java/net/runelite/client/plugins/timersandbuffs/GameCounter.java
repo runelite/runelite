@@ -36,6 +36,7 @@ import net.runelite.api.SpriteID;
 @AllArgsConstructor
 enum GameCounter
 {
+	COLOSSEUM_DOOM(SpriteID.COLOSSEUM_DOOM, GameTimerImageType.SPRITE, "Doom"),
 	CURSE_OF_THE_MOONS_BLUE(ItemID.BLUE_MOON_HELM, GameTimerImageType.ITEM, "Curse of the Moons (Blue Moon)", ColorBoundaryType.GREATER_THAN_EQUAL_TO, 18, Color.RED),
 	CURSE_OF_THE_MOONS_ECLIPSE(ItemID.ECLIPSE_MOON_HELM, GameTimerImageType.ITEM, "Curse of the Moons (Eclipse Moon)"),
 	VENGEANCE_ACTIVE(SpriteID.SPELL_VENGEANCE_OTHER, GameTimerImageType.SPRITE, "Vengeance active", false),
