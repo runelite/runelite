@@ -433,4 +433,15 @@ public interface TimersAndBuffsConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showColosseumDoom",
+		name = "Colosseum Doom buff",
+		description = "Configures whether Fortis Colosseum Doom buff is displayed",
+		section = bossesSection
+	)
+	default boolean showColosseumDoom()
+	{
+		return true;
+	}
 }
