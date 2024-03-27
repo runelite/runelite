@@ -75,6 +75,17 @@ public interface TimersAndBuffsConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showColosseumDoom",
+		name = "Colosseum Doom buff",
+		description = "Configures whether Fortis Colosseum Doom buff is displayed",
+		section = bossesSection
+	)
+	default boolean showColosseumDoom()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "showCurseOfTheMoons",
 		name = "Curse of the Moons buff",
 		description = "Configures whether Curse of the Moons buff is displayed",
