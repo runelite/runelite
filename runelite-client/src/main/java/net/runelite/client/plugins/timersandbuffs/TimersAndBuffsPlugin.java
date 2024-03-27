@@ -587,6 +587,11 @@ public class TimersAndBuffsPlugin extends Plugin
 				updateVarCounter(CURSE_OF_THE_MOONS_BLUE, event.getValue());
 			}
 		}
+
+		if (event.getVarbitId() == Varbits.COLOSSEUM_DOOM && config.showColosseumDoom())
+		{
+			updateVarCounter(COLOSSEUM_DOOM, event.getValue());
+		}
 	}
 
 	@Subscribe
@@ -788,6 +793,11 @@ public class TimersAndBuffsPlugin extends Plugin
 		{
 			removeVarCounter(CURSE_OF_THE_MOONS_BLUE);
 			removeVarCounter(CURSE_OF_THE_MOONS_ECLIPSE);
+		}
+
+		if (!config.showColosseumDoom())
+		{
+			removeVarCounter(COLOSSEUM_DOOM);
 		}
 	}
 
@@ -1077,6 +1087,8 @@ public class TimersAndBuffsPlugin extends Plugin
 					config.tzhaarStartTime(null);
 					config.tzhaarLastTime(null);
 				}
+				// Varbits.COLOSSEUM_DOOM is not set to 0 when teleporting out of the Colosseum.
+				removeVarCounter(COLOSSEUM_DOOM);
 				break;
 			case LOGIN_SCREEN:
 				// fall through
