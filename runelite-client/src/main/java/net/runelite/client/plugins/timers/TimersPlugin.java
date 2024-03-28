@@ -781,7 +781,7 @@ public class TimersPlugin extends Plugin
 		if (!config.showScurriusFoodPile())
 		{
 			removeGameTimer(SCURRIUS_FOOD_PILE);
-    }
+		}
 	}
 
 	@Subscribe
