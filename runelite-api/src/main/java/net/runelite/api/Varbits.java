@@ -886,4 +886,9 @@ public final class Varbits
 	 * 1 = active
 	 */
 	public static final int SPELLBOOK_SWAP = 3617;
+
+	/**
+	 * How long is left on Scurrius's food pile's cooldown (in minutes).
+	 */
+	public static final int SCURRIUS_FOOD_PILE_COOLDOWN = 9581;
 }
