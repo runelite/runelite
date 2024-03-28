@@ -106,6 +106,12 @@ public class BankPlugin extends Plugin
 	private BankSearch bankSearch;
 
 	@Inject
+	private GroupStorageSearch groupStorageSearch;
+
+	@Inject
+	private SeedVaultSearch seedVaultSearch;
+
+	@Inject
 	private KeyManager keyManager;
 
 	private boolean forceRightClickFlag;
@@ -137,24 +143,7 @@ public class BankPlugin extends Plugin
 				if (groupStorageSearchButton != null)
 				{
 					log.debug("Search hotkey pressed");
-					clientThread.invoke(() ->
-					{
-						Widget searchButton = client.getWidget(ComponentID.GROUP_STORAGE_SEARCH_BUTTON);
-						if (searchButton == null || searchButton.isHidden())
-						{
-							return;
-						}
-
-						Object[] searchToggleArgs = searchButton.getOnOpListener();
-						if (searchToggleArgs == null)
-						{
-							return;
-						}
-
-						client.createScriptEvent(searchToggleArgs) // [clientscript,shared_bank_search_toggle]
-							.setOp(1)
-							.run();
-					});
+					groupStorageSearch.initSearch();
 					e.consume();
 				}
 
@@ -162,15 +151,7 @@ public class BankPlugin extends Plugin
 				if (seedVaultSearchButton != null)
 				{
 					log.debug("Search hotkey pressed");
-					clientThread.invoke(() ->
-					{
-						Widget searchButton = client.getWidget(ComponentID.SEED_VAULT_SEARCH_BUTTON);
-						if (searchButton == null || searchButton.isHidden())
-						{
-							return;
-						}
-						client.runScript(searchButton.getOnOpListener());
-					});
+					seedVaultSearch.initSearch();
 					e.consume();
 				}
 			}
@@ -356,6 +337,28 @@ public class BankPlugin extends Plugin
 
 			Widget bankTitle = client.getWidget(ComponentID.GROUP_STORAGE_UI).getChild(1);
 			bankTitle.setText(bankTitle.getText() + createValueText(price.getGePrice(), price.getHighAlchPrice()));
+		}
+		else if (event.getScriptId() == ScriptID.SHARED_BANK_SEARCH_REFRESH)
+		{
+			// vanilla only lays out the group storage every 40 client ticks, so if the search input has changed,
+			// and the group storage wasn't laid out this tick, lay it out early
+			final String inputText = client.getVarcStrValue(VarClientStr.INPUT_TEXT);
+			if (searchString != inputText && client.getGameCycle() % 40 != 0)
+			{
+				clientThread.invokeLater(groupStorageSearch::layoutGroupStorage);
+				searchString = inputText;
+			}
+		}
+		else if (event.getScriptId() == ScriptID.SEED_VAULT_SEARCH_REFRESH)
+		{
+			// vanilla only lays out the seed vault every 40 client ticks, so if the search input has changed,
+			// and the group storage wasn't laid out this tick, lay it out early
+			final String inputText = client.getVarcStrValue(VarClientStr.INPUT_TEXT);
+			if (searchString != inputText && client.getGameCycle() % 40 != 0)
+			{
+				clientThread.invokeLater(seedVaultSearch::layoutSeedVault);
+				searchString = inputText;
+			}
 		}
 	}
 

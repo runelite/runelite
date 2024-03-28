@@ -276,6 +276,18 @@ public final class ScriptID
 	public static final int BANKMAIN_SEARCH_REFRESH = 283;
 
 	/**
+	 * Called in an onTimer, determines whether to layout the group storage interface during a search
+	 */
+	@ScriptArguments(integer = 8)
+	public static final int SHARED_BANK_SEARCH_REFRESH = 5277;
+
+	/**
+	 * Called in an onTimer, determines whether to layout the seed vault interface during a search
+	 */
+	@ScriptArguments(integer = 8)
+	public static final int SEED_VAULT_SEARCH_REFRESH = 2867;
+
+	/**
 	 * Called to update the PVP widget (wilderness level/protection)
 	 */
 	@ScriptArguments(integer = 1)
