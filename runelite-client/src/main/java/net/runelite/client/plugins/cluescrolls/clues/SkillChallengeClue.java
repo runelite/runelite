@@ -196,7 +196,7 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 					.orElseGet(Stream::empty)
 					.map(ItemRequirements::item)
 					.toArray(SingleItemRequirement[]::new))),
-		new SkillChallengeClue("Catch a black warlock.", item(ItemID.BUTTERFLY_JAR), any("Butterfly Net", item(ItemID.BUTTERFLY_NET), item(ItemID.MAGIC_BUTTERFLY_NET))),
+		new SkillChallengeClue("Catch a black warlock.", any("Butterfly Net", item(ItemID.BUTTERFLY_NET), item(ItemID.MAGIC_BUTTERFLY_NET))),
 		new SkillChallengeClue("Catch a red chinchompa.", item(ItemID.BOX_TRAP)),
 		new SkillChallengeClue("Mine a mithril ore.", ANY_PICKAXE),
 		new SkillChallengeClue("Smith a mithril 2h sword.", ANY_HAMMER, xOfItem(ItemID.MITHRIL_BAR, 3)),
