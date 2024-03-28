@@ -90,7 +90,7 @@ enum ImplingSpawn
 	SPAWN_ECLECTIC2(new WorldPoint(2591, 4340, 0), ImplingType.ECLECTIC),
 	SPAWN_ECLECTIC3(new WorldPoint(2591, 4295, 0), ImplingType.ECLECTIC),
 	SPAWN_ECLECTIC4(new WorldPoint(2615, 4326, 0), ImplingType.ECLECTIC);
-	
+
 	private final WorldPoint spawnLocation;
 	private final ImplingType type;
 }
