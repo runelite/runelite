@@ -60,6 +60,7 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.wiki.dps.WikiDpsManager;
 import net.runelite.client.ui.JagexColors;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.Text;
