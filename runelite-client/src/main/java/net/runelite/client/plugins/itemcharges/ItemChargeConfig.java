@@ -453,4 +453,16 @@ public interface ItemChargeConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "amuletOfChemistryNotification",
+		name = "Amulet of Chemistry Notification",
+		description = "Send a notification when an Amulet of Chemistry breaks",
+		position = 33,
+		section = notificationSection
+	)
+	default boolean amuletOfChemistryNotification()
+	{
+		return true;
+	}
 }
