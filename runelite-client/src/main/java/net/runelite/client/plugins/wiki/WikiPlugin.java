@@ -94,6 +94,9 @@ public class WikiPlugin extends Plugin
 	@Inject
 	private Provider<WikiSearchChatboxTextInput> wikiSearchChatboxTextInputProvider;
 
+	@Inject
+	private WikiDpsManager wikiDpsManager;
+
 	private Widget icon;
 
 	private boolean wikiSelected = false;
@@ -110,12 +113,14 @@ public class WikiPlugin extends Plugin
 	public void startUp()
 	{
 		clientThread.invokeLater(this::addWidgets);
+		wikiDpsManager.startUp();
 	}
 
 	@Override
 	public void shutDown()
 	{
 		clientThread.invokeLater(this::removeWidgets);
+		wikiDpsManager.shutDown();
 	}
 
 	private void removeWidgets()
@@ -177,6 +182,11 @@ public class WikiPlugin extends Plugin
 			vanilla.setHidden(true);
 		}
 
+		if (!config.showWikiMinimapButton())
+		{
+			return;
+		}
+
 		icon = wikiBannerParent.createChild(0, WidgetType.GRAPHIC);
 		icon.setSpriteId(SpriteID.WIKI_DESELECTED);
 		icon.setOriginalX(0);
@@ -199,11 +209,17 @@ public class WikiPlugin extends Plugin
 
 		final int searchIndex = config.leftClickSearch() ? 4 : 5;
 		icon.setAction(searchIndex, "Search");
+		icon.setAction(6, "DPS");
 		icon.setOnOpListener((JavaScriptCallback) ev ->
 		{
-			if (ev.getOp() == searchIndex + 1)
+			int op = ev.getOp() - 1;
+			if (op == searchIndex)
 			{
 				openSearchInput();
+			}
+			else if (op == 6)
+			{
+				wikiDpsManager.launch();
 			}
 		});
 

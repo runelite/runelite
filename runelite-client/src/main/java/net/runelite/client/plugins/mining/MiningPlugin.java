@@ -93,7 +93,7 @@ public class MiningPlugin extends Plugin
 			"(?:manage to|just)" +
 			" (?:mined?|quarry) " +
 			"(?:some|an?) " +
-			"(?:copper|tin|clay|iron|silver|coal|gold|mithril|adamantite|runeite|amethyst|sandstone|granite|barronite shards|barronite deposit|Opal|piece of Jade|Red Topaz|Emerald|Sapphire|Ruby|Diamond)" +
+			"(?:copper|tin|clay|iron|silver|coal|gold|mithril|adamantite|runite|amethyst|sandstone|granite|barronite shards|barronite deposit|Opal|piece of Jade|Red Topaz|Emerald|Sapphire|Ruby|Diamond)" +
 			"(?:\\.|!)");
 
 	@Inject
@@ -304,7 +304,7 @@ public class MiningPlugin extends Plugin
 			client.setHintArrow(object.getWorldLocation());
 		}
 		// If the Lovakite ore respawns before the timer is up, remove it
-		else if (rock == Rock.LOVAKITE)
+		else if (rock == Rock.LOVAKITE || rock == Rock.CALCIFIED_ROCK)
 		{
 			final WorldPoint point = object.getWorldLocation();
 			respawns.removeIf(rockRespawn -> rockRespawn.getWorldPoint().equals(point));

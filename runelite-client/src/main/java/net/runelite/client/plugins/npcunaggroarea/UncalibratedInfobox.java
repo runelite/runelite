@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2024, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,25 +22,41 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache.definitions;
+package net.runelite.client.plugins.npcunaggroarea;
 
-import java.util.List;
-import lombok.Data;
-import net.runelite.cache.region.Position;
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+import net.runelite.client.ui.overlay.infobox.InfoBox;
+import net.runelite.client.ui.overlay.infobox.InfoBoxPriority;
 
-@Data
-public class WorldMapDefinition
+class UncalibratedInfobox extends InfoBox
 {
-	public String name;
-	public int field450;
-	public int defaultZoom;
-	public int fileId;
-	public int field453;
-	public int field454;
-	public int field456;
-	public boolean isSurface;
-	public List regionList;
-	public String safeName;
-	public Position position;
-	public int field463;
+	private final NpcAggroAreaPlugin plugin;
+
+	public UncalibratedInfobox(BufferedImage image, NpcAggroAreaPlugin plugin)
+	{
+		super(image, plugin);
+		this.plugin = plugin;
+
+		setTooltip("Unaggressive NPC timers require calibration.</br>Teleport far away or enter a dungeon, then run until this infobox disappears.");
+		setPriority(InfoBoxPriority.HIGH);
+	}
+
+	@Override
+	public String getText()
+	{
+		return "?";
+	}
+
+	@Override
+	public Color getTextColor()
+	{
+		return Color.WHITE;
+	}
+
+	@Override
+	public boolean render()
+	{
+		return plugin.getSafeCenters()[1] == null;
+	}
 }

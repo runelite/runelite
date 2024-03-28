@@ -355,6 +355,16 @@ public interface TimersConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showSpellbookSwap",
+		name = "Spellbook Swap timer",
+		description = "Configures whether Spellbook Swap timer is displayed"
+	)
+	default boolean showSpellbookSwap()
+	{
+		return true;
+	}
+
+  @ConfigItem(
 		keyName = "showScurriusFoodPile",
 		name = "Scurrius' Food Pile",
 		description = "Configures whether Scurrius' Food Pile timer is displayed"

@@ -40,7 +40,6 @@ import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.outline.ModelOutlineRenderer;
 import net.runelite.client.util.ColorUtil;
 
@@ -62,7 +61,7 @@ class InteractHighlightOverlay extends Overlay
 		this.modelOutlineRenderer = modelOutlineRenderer;
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
-		setPriority(OverlayPriority.HIGH);
+		setPriority(PRIORITY_HIGH);
 	}
 
 	@Override

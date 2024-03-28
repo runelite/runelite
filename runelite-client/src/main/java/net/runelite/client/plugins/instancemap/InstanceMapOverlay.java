@@ -46,7 +46,6 @@ import net.runelite.client.game.SpriteManager;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.BackgroundComponent;
 
 @Singleton
@@ -100,7 +99,7 @@ class InstanceMapOverlay extends Overlay
 	{
 		this.client = client;
 		this.spriteManager = spriteManager;
-		setPriority(OverlayPriority.HIGH);
+		setPriority(PRIORITY_HIGH);
 		setPosition(OverlayPosition.TOP_LEFT);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 		backgroundComponent.setFill(false);

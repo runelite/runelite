@@ -38,7 +38,6 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
 
 @Singleton
 public class WidgetInspectorOverlay extends Overlay
@@ -57,7 +56,7 @@ public class WidgetInspectorOverlay extends Overlay
 
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
-		setPriority(OverlayPriority.HIGHEST);
+		setPriority(PRIORITY_HIGHEST);
 		drawAfterInterface(InterfaceID.FULLSCREEN_CONTAINER_TLI);
 	}
 

@@ -140,6 +140,8 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	@Override
 	protected void shutDown()
 	{
+		client.setCameraMouseButtonMask(0);
+		client.setCameraSpeed(1f);
 		client.setCameraPitchRelaxerEnabled(false);
 		client.setInvertYaw(false);
 		client.setInvertPitch(false);
@@ -167,6 +169,14 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 
 	void copyConfigs()
 	{
+		// rightClickMenuBlocksCamera=true works because mousePressed() does *not* remap rmb->mmb when the menu has object menus.
+		// The camera click mask is mmb, so no camera movement happens.
+		//
+		// rightClickMenuBlocksCamera=false works because the camera click mask is set to 2 or 4. Clicking on objects does *not*
+		// remap rmb->mmb, so the rmb click both opens the menu and moves the camera. Clicking on nothing *does* remap rmb->mmb
+		// which moves the camera, but won't open a Walk-here only menu.
+		client.setCameraMouseButtonMask(!config.rightClickMenuBlocksCamera() ? ((1 << MouseEvent.BUTTON2) | (1 << 4 /* button 4 */)) : 0);
+		client.setCameraSpeed((float) config.cameraSpeed());
 		client.setCameraPitchRelaxerEnabled(config.relaxCameraPitch());
 		client.setInvertYaw(config.invertYaw());
 		client.setInvertPitch(config.invertPitch());
@@ -248,7 +258,10 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	@Subscribe
 	public void onConfigChanged(ConfigChanged ev)
 	{
-		copyConfigs();
+		if (ev.getGroup().equals("zoom"))
+		{
+			copyConfigs();
+		}
 	}
 
 	@Override

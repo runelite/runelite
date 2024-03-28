@@ -45,9 +45,9 @@ public class WesternDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.MINING, 15));
 		add("Claim any Chompy bird hat from Rantz.",
 			new QuestRequirement(Quest.BIG_CHOMPY_BIRD_HUNTING));
-		add("Have Brimstail teleport you to the Essence mine.",
+		add("Have Brimstail teleport you to the Essence Mine.",
 			new QuestRequirement(Quest.RUNE_MYSTERIES));
-		add("Fletch an Oak shortbow from the Gnome Stronghold.",
+		add("Fletch an Oak Shortbow in the Gnome Stronghold.",
 			new SkillRequirement(Skill.FLETCHING, 20));
 
 		// MEDIUM

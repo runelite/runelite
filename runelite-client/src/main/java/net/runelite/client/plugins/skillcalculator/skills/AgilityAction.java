@@ -53,6 +53,7 @@ public enum AgilityAction implements NamedSkillAction
 	WEREWOLF_AGILITY_COURSE("Werewolf Agility Course", 60, 730, ItemID.STICK),
 	HALLOWED_SEPULCHRE_FLOOR_2("Hallowed Sepulchre Floor 2", 62, 925, ItemID.RING_OF_ENDURANCE),
 	POLLNIVNEACH_ROOFTOP("Pollnivneach Rooftop", 70, 890, ItemID.MARK_OF_GRACE),
+	DORGESH_KAAN_AGILITY_COURSE("Dorgesh-Kaan Agility Course", 70, 2750, ItemID.POWERBOX),
 	HALLOWED_SEPULCHRE_FLOOR_3("Hallowed Sepulchre Floor 3", 72, 1500, ItemID.RING_OF_ENDURANCE),
 	PRIFDDINAS_AGILITY_COURSE("Prifddinas Agility Course", 75, 1337, ItemID.CRYSTAL_SHARD),
 	RELLEKKA_ROOFTOP("Rellekka Rooftop", 80, 780, ItemID.MARK_OF_GRACE),

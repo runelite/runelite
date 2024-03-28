@@ -234,11 +234,28 @@ public interface RuneLiteConfig extends Config
 		return Notifier.NativeCustomOff.NATIVE;
 	}
 
+	@Range(
+		min = 0,
+		max = 100
+	)
+	@ConfigItem(
+		keyName = "notificationVolume",
+		name = "Notification volume",
+		description = "Configures the volume of custom notifications (does not control native volume).",
+		position = 24,
+		section = notificationSettings
+	)
+	@Units(Units.PERCENT)
+	default int notificationVolume()
+	{
+		return 100;
+	}
+
 	@ConfigItem(
 		keyName = "notificationTimeout",
 		name = "Notification timeout",
 		description = "How long notification will be shown in milliseconds. A value of 0 will make it use the system configuration. (Linux only)",
-		position = 24,
+		position = 25,
 		section = notificationSettings
 	)
 	@Units(Units.MILLISECONDS)
@@ -251,7 +268,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "notificationGameMessage",
 		name = "Game message notifications",
 		description = "Adds a notification message to the chatbox",
-		position = 25,
+		position = 26,
 		section = notificationSettings
 	)
 	default boolean enableGameMessageNotification()
@@ -263,7 +280,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "flashNotification",
 		name = "Flash",
 		description = "Flashes the game frame as a notification",
-		position = 26,
+		position = 27,
 		section = notificationSettings
 	)
 	default FlashNotification flashNotification()
@@ -275,7 +292,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "notificationFocused",
 		name = "Send notifications when focused",
 		description = "Toggles all notifications for when the client is focused",
-		position = 27,
+		position = 28,
 		section = notificationSettings
 	)
 	default boolean sendNotificationsWhenFocused()
@@ -288,7 +305,7 @@ public interface RuneLiteConfig extends Config
 		keyName = "notificationFlashColor",
 		name = "Notification Flash",
 		description = "Sets the color of the notification flashes.",
-		position = 28,
+		position = 29,
 		section = notificationSettings
 	)
 	default Color notificationFlashColor()

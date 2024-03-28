@@ -35,7 +35,6 @@ import net.runelite.api.widgets.Widget;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 
 class WorldHopperPingOverlay extends Overlay
@@ -54,7 +53,7 @@ class WorldHopperPingOverlay extends Overlay
 		this.worldHopperPlugin = worldHopperPlugin;
 		this.worldHopperConfig = worldHopperConfig;
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
-		setPriority(OverlayPriority.HIGH);
+		setPriority(PRIORITY_HIGH);
 		setPosition(OverlayPosition.DYNAMIC);
 	}
 

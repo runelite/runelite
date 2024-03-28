@@ -476,7 +476,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		AnagramClue.builder()
 			.text("NO OWNER")
 			.npc("Oronwen")
-			.location(new WorldPoint(1162, 3178, 0))
+			.location(new WorldPoint(2326, 3178, 0))
 			.area("Lletya Seamstress shop in Lletya")
 			.question("What is the minimum amount of quest points required to reach Lletya?")
 			.answer("20")
@@ -548,7 +548,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.npc("Squire")
 			.location(new WorldPoint(2975, 3343, 0))
 			.area("Falador Castle Courtyard")
-			.question("White knights are superior to black knights. 2 white knights can handle 3 black knights. How many knights do we need for an army of 981 black knights?")
+			.question("White Knights of Falador are stronger than the Black Knights of the Kinshra. 2 White Knights can handle 3 Kinshra. How many White Knights would we need against an army of 981 Kinshra?")
 			.answer("654")
 			.build(),
 		AnagramClue.builder()
@@ -769,6 +769,12 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.area("Shayzien pub")
 			.question("If 13 Shayzien Soldiers kill 46 Lizardmen each in a day, how many Lizardmen have they killed in total in a single day?")
 			.answer("598")
+			.build(),
+		AnagramClue.builder()
+			.text("LAME T")
+			.npc("Metla")
+			.location(new WorldPoint(1742, 2977, 0))
+			.area("Stonecutter Outpost")
 			.build()
 	);
 
