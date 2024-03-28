@@ -71,6 +71,13 @@ enum ImplingSpawn
 	SPAWN_GOURMET8(new WorldPoint(2615, 4298, 0), ImplingType.GOURMET),
 	SPAWN_GOURMET9(new WorldPoint(2618, 4321, 0), ImplingType.GOURMET),
 
+	//Essence spawns
+	SPAWN_ESSENCE1(new WorldPoint(2574, 4317, 0), ImplingType.ESSENCE),
+	SPAWN_ESSENCE2(new WorldPoint(2576, 4337, 0 ), ImplingType.ESSENCE),
+	SPAWN_ESSENCE3(new WorldPoint(2585, 4298, 0 ), ImplingType.ESSENCE),
+	SPAWN_ESSENCE4(new WorldPoint(2601, 4343, 0 ), ImplingType.ESSENCE),
+	SPAWN_ESSENCE5(new WorldPoint(2612, 4318, 0 ), ImplingType.ESSENCE),
+
 	//Earth spawns
 	SPAWN_EARTH1(new WorldPoint(2570, 4330, 0), ImplingType.EARTH),
 	SPAWN_EARTH2(new WorldPoint(2598, 4340, 0), ImplingType.EARTH),
@@ -82,14 +89,9 @@ enum ImplingSpawn
 	SPAWN_ECLECTIC1(new WorldPoint(2567, 4319, 0), ImplingType.ECLECTIC),
 	SPAWN_ECLECTIC2(new WorldPoint(2591, 4340, 0), ImplingType.ECLECTIC),
 	SPAWN_ECLECTIC3(new WorldPoint(2591, 4295, 0), ImplingType.ECLECTIC),
-	SPAWN_ECLECTIC4(new WorldPoint(2615, 4326, 0), ImplingType.ECLECTIC),
+	SPAWN_ECLECTIC4(new WorldPoint(2615, 4326, 0), ImplingType.ECLECTIC);
 
-	//Essence spawns
-	SPAWN_ESSENCE1(new WorldPoint(2574, 4317, 0), ImplingType.ESSENCE),
-	SPAWN_ESSENCE2(new WorldPoint(2572, 4340, 0 ), ImplingType.ESSENCE),
-	SPAWN_ESSENCE3(new WorldPoint(2601, 4340, 0 ), ImplingType.ESSENCE),
-	SPAWN_ESSENCE4(new WorldPoint(2612, 4319, 0 ), ImplingType.ESSENCE),
-	SPAWN_ESSENCE5(new WorldPoint(2587, 4299, 0 ), ImplingType.ESSENCE);
+
 
 
 
