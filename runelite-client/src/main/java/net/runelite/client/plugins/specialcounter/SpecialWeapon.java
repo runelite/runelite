@@ -54,7 +54,12 @@ public enum SpecialWeapon
 		(distance) -> 46 + distance * 10,
 		(c) -> 0
 	),
-	;
+	TONALZTICS_OF_RALOS(
+		"Tonalztics of Ralos",
+		new int[]{ItemID.TONALZTICS_OF_RALOS},
+		false,
+		(distance) -> 50, //The hitsplat is always applied 2t after spec regardless of distance
+		(c) -> 0);
 
 	private final String name;
 	private final int[] itemID;

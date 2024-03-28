@@ -99,7 +99,9 @@ public class SpecialCounterPlugin extends Plugin
 	private int hitsplatTick;
 	// most recent hitsplat and the target it was on
 	private Hitsplat lastSpecHitsplat;
+	private Hitsplat secondToLastSpecHitsplat;
 	private NPC lastSpecTarget;
+	private int tonalHitsCount = 0;
 
 	private final Set<Integer> interactedNpcIndexes = new HashSet<>();
 	private final SpecialCounter[] specialCounter = new SpecialCounter[SpecialWeapon.values().length];
@@ -163,6 +165,7 @@ public class SpecialCounterPlugin extends Plugin
 		specialWeapon = null;
 		lastSpecTarget = null;
 		lastSpecHitsplat = null;
+		secondToLastSpecHitsplat = null;
 		removeCounters();
 		overlayManager.remove(playerInfoDropOverlay);
 		wsClient.unregisterMessage(SpecialCounterUpdate.class);
@@ -185,12 +188,31 @@ public class SpecialCounterPlugin extends Plugin
 		{
 			if (lastSpecHitsplat.getAmount() > 0)
 			{
+				if (specialWeapon.equals(SpecialWeapon.TONALZTICS_OF_RALOS))
+				{
+					tonalHitsCount++;
+				}
+				else
+				{
+					specialAttackHit(specialWeapon, lastSpecHitsplat, lastSpecTarget);
+				}
+			}
+			if (specialWeapon.equals(SpecialWeapon.TONALZTICS_OF_RALOS) && secondToLastSpecHitsplat != null
+				&& secondToLastSpecHitsplat.getAmount() > 0)
+			{
+				tonalHitsCount++;
+			}
+
+			if (tonalHitsCount > 0)
+			{
 				specialAttackHit(specialWeapon, lastSpecHitsplat, lastSpecTarget);
 			}
 
 			specialWeapon = null;
 			lastSpecHitsplat = null;
+			secondToLastSpecHitsplat = null;
 			lastSpecTarget = null;
+			tonalHitsCount = 0;
 		}
 	}
 
@@ -286,6 +308,7 @@ public class SpecialCounterPlugin extends Plugin
 		// venge or thralls.
 		if (hitsplatTick == client.getTickCount())
 		{
+			secondToLastSpecHitsplat = lastSpecHitsplat;
 			lastSpecHitsplat = hitsplat;
 		}
 	}
@@ -470,6 +493,10 @@ public class SpecialCounterPlugin extends Plugin
 
 	private int getHit(SpecialWeapon specialWeapon, Hitsplat hitsplat)
 	{
+		if (specialWeapon.equals(SpecialWeapon.TONALZTICS_OF_RALOS))
+		{
+			return tonalHitsCount;
+		}
 		return specialWeapon.isDamage() ? hitsplat.getAmount() : 1;
 	}
 
@@ -489,19 +516,27 @@ public class SpecialCounterPlugin extends Plugin
 	private int getHitDelay(SpecialWeapon specialWeapon, Actor target)
 	{
 		if (target == null)
+		{
 			return 1;
+		}
 
 		Player player = client.getLocalPlayer();
 		if (player == null)
+		{
 			return 1;
+		}
 
 		WorldPoint playerWp = player.getWorldLocation();
 		if (playerWp == null)
+		{
 			return 1;
+		}
 
 		WorldArea targetArea = target.getWorldArea();
 		if (targetArea == null)
+		{
 			return 1;
+		}
 
 		final int distance = targetArea.distanceTo(playerWp);
 		final int serverCycles = specialWeapon.getHitDelay(distance);
