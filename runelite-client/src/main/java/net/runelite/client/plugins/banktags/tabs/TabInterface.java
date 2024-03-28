@@ -49,6 +49,7 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
@@ -152,6 +153,15 @@ public class TabInterface
 	private final ChatMessageManager chatMessageManager;
 
 	private boolean enabled;
+
+	/**
+	 * Whether the search script was manually fired or
+	 * not.
+	 */
+	@Getter
+	@Setter
+	private boolean manuallyFired;
+
 	@Getter
 	private TagTab activeTab;
 	@Getter
@@ -239,7 +249,7 @@ public class TabInterface
 		}
 		else if (event.getScriptId() == ScriptID.BANKMAIN_SEARCH_TOGGLE)
 		{
-			if (activeTab != null)
+			if (activeTab != null || tagTabActive)
 			{
 				// close the active tab when search is pressed
 				closeTag(false);
@@ -965,6 +975,7 @@ public class TabInterface
 
 		if (relayout)
 		{
+			manuallyFired = true;
 			bankSearch.reset(true);
 		}
 	}
@@ -977,6 +988,7 @@ public class TabInterface
 
 		if (relayout)
 		{
+			manuallyFired = true;
 			bankSearch.reset(true);
 		}
 	}

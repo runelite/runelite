@@ -307,9 +307,10 @@ public class BankTagsPlugin extends Plugin
 				{
 					search = search.substring(TAG_SEARCH.length()).trim();
 				}
-
-				if (tagManager.findTag(itemId, search))
+				BankTagsConfig config = getConfig(configManager);
+				if (tagManager.findTag(itemId, search, tabInterface.isManuallyFired() || config.explicitSearch()))
 				{
+					tabInterface.setManuallyFired(false);
 					// return true
 					intStack[intStackSize - 2] = 1;
 				}
