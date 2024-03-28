@@ -34,9 +34,13 @@ import static net.runelite.api.ItemID.*;
 import static net.runelite.client.plugins.itemstats.Builders.*;
 import net.runelite.client.plugins.itemstats.delta.DeltaPercentage;
 import net.runelite.client.plugins.itemstats.food.Anglerfish;
+import net.runelite.client.plugins.itemstats.food.CookedBream;
+import net.runelite.client.plugins.itemstats.food.CookedMossLizard;
+import net.runelite.client.plugins.itemstats.special.SunlightMoth;
 import net.runelite.client.plugins.itemstats.potions.Ambrosia;
 import net.runelite.client.plugins.itemstats.potions.AncientBrew;
 import net.runelite.client.plugins.itemstats.potions.MixedPotion;
+import net.runelite.client.plugins.itemstats.potions.MoonlightPotion;
 import net.runelite.client.plugins.itemstats.potions.PrayerPotion;
 import net.runelite.client.plugins.itemstats.potions.SaradominBrew;
 import net.runelite.client.plugins.itemstats.potions.StaminaPotion;
@@ -105,6 +109,8 @@ public class ItemStatChanges
 		add(food(maxHP -> (int) Math.ceil(maxHP * .06)), STRAWBERRY);
 		add(food(maxHP -> (int) Math.ceil(maxHP * .05)), WATERMELON_SLICE);
 		add(food(perc(.1, 1)), COOKED_SWEETCORN, SWEETCORN_7088 /* Bowl of cooked sweetcorn */);
+		add(new CookedBream(), COOKED_BREAM);
+		add(new CookedMossLizard(), COOKED_MOSS_LIZARD);
 		add(combo(food(1), boost(DEFENCE, perc(.02, 1))), CABBAGE_1967 /* Draynor Manor */);
 		add(combo(food(8), heal(RUN_ENERGY, 5)), PAPAYA_FRUIT);
 		add(combo(food(3), boost(ATTACK, perc(.02, 2))), CUP_OF_TEA_1978 /* Standard tea */);
@@ -162,6 +168,11 @@ public class ItemStatChanges
 		add(combo(food(2), heal(PRAYER, perc(.04, -2))), BLOODY_BRACER);
 		add(combo(food(1), boost(AGILITY, 1), heal(STRENGTH, -1)), ELVEN_DAWN);
 		add(combo(boost(RANGED, 4), new BoostedStatBoost(STRENGTH, false, perc(.04, -2)), new BoostedStatBoost(MAGIC, false, perc(.04, -2))), LIZARDKICKER);
+		add(combo(food(1), boost(HUNTER, 2), dec(STRENGTH, 1), dec(ATTACK, 2)), TRAPPERS_TIPPLE);
+		add(combo(food(1), boost(AGILITY, 1), boost(STRENGTH, 1), dec(ATTACK, 5)), SUNBEAM_ALE);
+		add(combo(food(5), boost(STRENGTH, 5), dec(ATTACK, 4)), MOONLITE);
+		add(combo(food(5), boost(STRENGTH, 4), dec(ATTACK, 4)), SUNSHINE);
+		add(combo(food(16), dec(ATTACK, 5)), ECLIPSE_WINE);
 
 		// Sq'irk Juice
 		add(heal(RUN_ENERGY, 5), WINTER_SQIRKJUICE);
@@ -220,6 +231,7 @@ public class ItemStatChanges
 			SUPER_COMBAT_POTION4_23543, SUPER_COMBAT_POTION3_23545, SUPER_COMBAT_POTION2_23547, SUPER_COMBAT_POTION1_23549 /* LMS */);
 		add(ancientBrew, ANCIENT_BREW1, ANCIENT_BREW2, ANCIENT_BREW3, ANCIENT_BREW4);
 		add(new AncientBrew(.08, 3), FORGOTTEN_BREW1, FORGOTTEN_BREW2, FORGOTTEN_BREW3, FORGOTTEN_BREW4);
+		add(new MoonlightPotion(), MOONLIGHT_POTION1, MOONLIGHT_POTION2, MOONLIGHT_POTION3, MOONLIGHT_POTION4);
 
 		// Mixed combat potions
 		add(new MixedPotion(3, attackPot), ATTACK_MIX1, ATTACK_MIX2);
@@ -351,6 +363,17 @@ public class ItemStatChanges
 		// Soul Wars
 		add(combo(heal(HITPOINTS, perc(.15, 1)), heal(RUN_ENERGY, 100)), BANDAGES_25202);
 		add(combo(boost(ATTACK, perc(.15, 5)), boost(STRENGTH, perc(.15, 5)), boost(DEFENCE, perc(.15, 5)), boost(RANGED, perc(.15, 5)), boost(MAGIC, perc(.15, 5)), heal(PRAYER, perc(.25, 8))), POTION_OF_POWER1, POTION_OF_POWER2, POTION_OF_POWER3, POTION_OF_POWER4);
+
+		// Moths & Butterflies
+		final Effect rubyHarvest = boost(ATTACK, perc(.15, 4));
+		final Effect snowyKnight = heal(HITPOINTS, perc(.15, 4));
+		final Effect sapphireGlacialBlackWarlock = boost(STRENGTH, perc(.15, 4));
+		final SunlightMoth sunlightMoth = new SunlightMoth(.2, 6);
+		add(rubyHarvest, RUBY_HARVEST, RUBY_HARVEST_MIX_1, RUBY_HARVEST_MIX_2);
+		add(snowyKnight, SNOWY_KNIGHT, SNOWY_KNIGHT_MIX_1, SNOWY_KNIGHT_MIX_2);
+		add(sapphireGlacialBlackWarlock, SAPPHIRE_GLACIALIS, SAPPHIRE_GLACIALIS_MIX_1, SAPPHIRE_GLACIALIS_MIX_2, BLACK_WARLOCK, BLACK_WARLOCK_MIX_1, BLACK_WARLOCK_MIX_2);
+		add(sunlightMoth, SUNLIGHT_MOTH_28890, SUNLIGHT_MOTH_MIX_1, SUNLIGHT_MOTH_MIX_2);
+		add(heal(PRAYER, 22), MOONLIGHT_MOTH_28893, MOONLIGHT_MOTH_MIX_1, MOONLIGHT_MOTH_MIX_2);
 
 		log.debug("{} items; {} behaviours loaded", effects.size(), new HashSet<>(effects.values()).size());
 	}
