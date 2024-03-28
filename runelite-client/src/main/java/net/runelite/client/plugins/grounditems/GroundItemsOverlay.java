@@ -246,25 +246,25 @@ public class GroundItemsOverlay extends Overlay
 
 			if (config.priceDisplayMode() == PriceDisplayMode.BOTH)
 			{
-				if (item.getGePrice() > 0)
+				if (item.getStackGePrice() > 0)
 				{
 					itemStringBuilder.append(" (GE: ")
-						.append(QuantityFormatter.quantityToStackSize(item.getGePrice()))
+						.append(QuantityFormatter.quantityToStackSize(item.getStackGePrice()))
 						.append(" gp)");
 				}
 
-				if (item.getHaPrice() > 0)
+				if (item.getStackHaPrice() > 0)
 				{
 					itemStringBuilder.append(" (HA: ")
-						.append(QuantityFormatter.quantityToStackSize(item.getHaPrice()))
+						.append(QuantityFormatter.quantityToStackSize(item.getStackHaPrice()))
 						.append(" gp)");
 				}
 			}
 			else if (config.priceDisplayMode() != PriceDisplayMode.OFF)
 			{
 				final int price = config.priceDisplayMode() == PriceDisplayMode.GE
-					? item.getGePrice()
-					: item.getHaPrice();
+					? item.getStackGePrice()
+					: item.getStackHaPrice();
 
 				if (price > 0)
 				{
