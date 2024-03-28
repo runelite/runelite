@@ -126,7 +126,7 @@ public enum HotColdLocation
 	KARAMJA_WEST_BRIMHAVEN(MASTER, new WorldPoint(2718, 3167, 0), KARAMJA, "West of Brimhaven.", BRASSICAN_MAGE),
 	KARAMJA_GLIDER(MASTER, new WorldPoint(2966, 2976, 0), KARAMJA, "West of the gnome glider.", BRASSICAN_MAGE),
 	KARAMJA_KHARAZI_NE(MASTER, new WorldPoint(2904, 2925, 0), KARAMJA, "North-eastern part of Kharazi Jungle.", BRASSICAN_MAGE),
-	KARAMJA_KHARAZI_SW(MASTER, new WorldPoint(2786, 2899, 0), KARAMJA, "South-western part of Kharazi Jungle.", BRASSICAN_MAGE),
+	KARAMJA_KHARAZI_SW(MASTER, new WorldPoint(2786, 2899, 0), KARAMJA, "South-western part of Kharazi Jungle.", ANCIENT_WIZARDS),
 	KARAMJA_CRASH_ISLAND(MASTER, new WorldPoint(2909, 2737, 0), KARAMJA, "Northern part of Crash Island.", BRASSICAN_MAGE),
 	LUMBRIDGE_COW_FIELD(BEGINNER,  new WorldPoint(3174, 3336, 0), MISTHALIN, "Cow field north of Lumbridge"),
 	MISTHALIN_VARROCK_STONE_CIRCLE(MASTER, new WorldPoint(3225, 3356, 0), MISTHALIN, "South of the stone circle near Varrock's entrance.", BRASSICAN_MAGE),
