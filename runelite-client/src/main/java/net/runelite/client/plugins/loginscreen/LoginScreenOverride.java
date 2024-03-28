@@ -46,6 +46,7 @@ public enum LoginScreenOverride
 	A_KINGDOM_DIVIDED("akd.jpg"),
 	NEX("nex.jpg"),
 	TOMBS_OF_AMASCUT("toa.jpg"),
+	VARLAMORE("varlamore.jpg"),
 	CUSTOM,
 	RANDOM;
 
