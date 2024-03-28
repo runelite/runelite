@@ -27,6 +27,8 @@ package net.runelite.client.plugins.groundmarkers;
 
 import java.awt.Color;
 import javax.annotation.Nullable;
+
+import com.google.gson.annotations.SerializedName;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 
@@ -34,7 +36,7 @@ import lombok.Value;
  * Used for serialization of ground marker points.
  */
 @Value
-@EqualsAndHashCode(exclude = { "color", "label" })
+@EqualsAndHashCode(exclude = { "borderColor", "fillColor", "label" })
 class GroundMarkerPoint
 {
 	private int regionId;
@@ -42,7 +44,10 @@ class GroundMarkerPoint
 	private int regionY;
 	private int z;
 	@Nullable
-	private Color color;
+	@SerializedName("color")
+	private Color borderColor;
+	@Nullable
+	private Color fillColor;
 	@Nullable
 	private String label;
 }

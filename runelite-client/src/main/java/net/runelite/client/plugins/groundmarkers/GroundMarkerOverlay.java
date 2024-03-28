@@ -82,20 +82,27 @@ public class GroundMarkerOverlay extends Overlay
 				continue;
 			}
 
-			Color tileColor = point.getColor();
-			if (tileColor == null)
+			Color borderColor = point.getBorderColor();
+			if (borderColor == null)
 			{
 				// If this is an old tile which has no color, use marker color
-				tileColor = config.markerColor();
+				borderColor = config.borderColor();
 			}
 
-			drawTile(graphics, worldPoint, tileColor, point.getLabel(), stroke);
+			Color fillColor = point.getFillColor();
+			if (fillColor == null)
+			{
+				// If this is an old tile which has no fill color, use default color
+				fillColor = config.fillColor();
+			}
+
+			drawTile(graphics, worldPoint, borderColor, fillColor, point.getLabel(), stroke);
 		}
 
 		return null;
 	}
 
-	private void drawTile(Graphics2D graphics, WorldPoint point, Color color, @Nullable String label, Stroke borderStroke)
+	private void drawTile(Graphics2D graphics, WorldPoint point, Color borderColor, Color fillColor, @Nullable String label, Stroke borderStroke)
 	{
 		WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
 
@@ -113,7 +120,7 @@ public class GroundMarkerOverlay extends Overlay
 		Polygon poly = Perspective.getCanvasTilePoly(client, lp);
 		if (poly != null)
 		{
-			OverlayUtil.renderPolygon(graphics, poly, color, new Color(0, 0, 0, config.fillOpacity()), borderStroke);
+			OverlayUtil.renderPolygon(graphics, poly, borderColor, fillColor, borderStroke);
 		}
 
 		if (!Strings.isNullOrEmpty(label))
@@ -121,7 +128,7 @@ public class GroundMarkerOverlay extends Overlay
 			Point canvasTextLocation = Perspective.getCanvasTextLocation(client, graphics, lp, label, 0);
 			if (canvasTextLocation != null)
 			{
-				OverlayUtil.renderTextLocation(graphics, canvasTextLocation, label, color);
+				OverlayUtil.renderTextLocation(graphics, canvasTextLocation, label, borderColor);
 			}
 		}
 	}

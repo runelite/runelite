@@ -75,20 +75,27 @@ class GroundMarkerMinimapOverlay extends Overlay
 				continue;
 			}
 
-			Color tileColor = point.getColor();
-			if (tileColor == null)
+			Color borderColor = point.getBorderColor();
+			if (borderColor == null)
 			{
 				// If this is an old tile which has no color, use marker color
-				tileColor = config.markerColor();
+				borderColor = config.borderColor();
 			}
 
-			drawOnMinimap(graphics, worldPoint, tileColor);
+			Color fillColor = point.getFillColor();
+			if (fillColor == null)
+			{
+				// If this is an old tile which has no fill color, use default color
+				fillColor = config.fillColor();
+			}
+
+			drawOnMinimap(graphics, worldPoint, borderColor, fillColor);
 		}
 
 		return null;
 	}
 
-	private void drawOnMinimap(Graphics2D graphics, WorldPoint point, Color color)
+	private void drawOnMinimap(Graphics2D graphics, WorldPoint point, Color borderColor, Color fillColor)
 	{
 		if (!point.isInScene(client))
 		{
@@ -119,7 +126,9 @@ class GroundMarkerMinimapOverlay extends Overlay
 
 		Stroke stroke = new BasicStroke(1f);
 		graphics.setStroke(stroke);
-		graphics.setColor(color);
+		graphics.setColor(fillColor);
+		graphics.fillPolygon(poly);
+		graphics.setColor(borderColor);
 		graphics.drawPolygon(poly);
 	}
 }
