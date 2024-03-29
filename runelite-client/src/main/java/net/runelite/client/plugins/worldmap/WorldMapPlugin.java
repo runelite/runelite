@@ -110,8 +110,11 @@ public class WorldMapPlugin extends Plugin
 		//A size of 17 gives us a buffer when triggering tooltips
 		final int iconBufferSize = 17;
 
-		//Quest icons are a bit bigger.
-		final int questIconBufferSize = 22;
+		// Quest icons are a bit bigger than regular icons
+		// A size of 25 aligns the quest icons when converting the world map point to pixel coordinates
+		// The new quest icons must be offset by 5, for a size of 25, to align when drawing on top of the original icon
+		final int questIconBufferSize = 25;
+		final int questIconOffset = 5;
 
 		BLANK_ICON = new BufferedImage(iconBufferSize, iconBufferSize, BufferedImage.TYPE_INT_ARGB);
 
@@ -125,15 +128,15 @@ public class WorldMapPlugin extends Plugin
 
 		NOT_STARTED_ICON = new BufferedImage(questIconBufferSize, questIconBufferSize, BufferedImage.TYPE_INT_ARGB);
 		final BufferedImage notStartedIcon = ImageUtil.loadImageResource(WorldMapPlugin.class, "quest_not_started_icon.png");
-		NOT_STARTED_ICON.getGraphics().drawImage(notStartedIcon, 4, 4, null);
+		NOT_STARTED_ICON.createGraphics().drawImage(notStartedIcon, questIconOffset, questIconOffset, null);
 
 		STARTED_ICON = new BufferedImage(questIconBufferSize, questIconBufferSize, BufferedImage.TYPE_INT_ARGB);
 		final BufferedImage startedIcon = ImageUtil.loadImageResource(WorldMapPlugin.class, "quest_started_icon.png");
-		STARTED_ICON.getGraphics().drawImage(startedIcon, 4, 4, null);
+		STARTED_ICON.createGraphics().drawImage(startedIcon, questIconOffset, questIconOffset, null);
 
 		FINISHED_ICON = new BufferedImage(questIconBufferSize, questIconBufferSize, BufferedImage.TYPE_INT_ARGB);
 		final BufferedImage finishedIcon = ImageUtil.loadImageResource(WorldMapPlugin.class, "quest_completed_icon.png");
-		FINISHED_ICON.getGraphics().drawImage(finishedIcon, 4, 4, null);
+		FINISHED_ICON.createGraphics().drawImage(finishedIcon, questIconOffset, questIconOffset, null);
 
 		MINING_SITE_ICON = new BufferedImage(iconBufferSize, iconBufferSize, BufferedImage.TYPE_INT_ARGB);
 		final BufferedImage miningSiteIcon = ImageUtil.loadImageResource(WorldMapPlugin.class, "mining_site_icon.png");
