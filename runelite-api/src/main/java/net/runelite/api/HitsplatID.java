@@ -57,4 +57,6 @@ public final class HitsplatID
 	public static final int BLEED = 67;
 	public static final int SANITY_DRAIN = 71;
 	public static final int SANITY_RESTORE = 72;
+	public static final int DOOM = 73;
+	public static final int BURN = 74;
 }

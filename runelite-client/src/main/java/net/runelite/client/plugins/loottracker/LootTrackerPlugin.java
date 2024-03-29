@@ -1235,9 +1235,9 @@ public class LootTrackerPlugin extends Plugin
 					//This provides an accurate count of how many were opened for each event
 					case ItemID.HUNTERS_LOOT_SACK:
 					case ItemID.HUNTERS_LOOT_SACK_BASIC:
-					case ItemID.HUNTERS_LOOT_SACK_TIER_1:
-					case ItemID.HUNTERS_LOOT_SACK_TIER_2:
-					case ItemID.HUNTERS_LOOT_SACK_TIER_3:
+					case ItemID.HUNTERS_LOOT_SACK_ADEPT:
+					case ItemID.HUNTERS_LOOT_SACK_EXPERT:
+					case ItemID.HUNTERS_LOOT_SACK_MASTER:
 						final int itemId = event.getItemId();
 						onInvChange((((invItems, groundItems, removedItems) ->
 						{
