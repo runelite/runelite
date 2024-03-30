@@ -48,10 +48,10 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.util.ColorUtil;
 
 @PluginDescriptor(
-	name = "Chat Timestamps",
-	description = "Add timestamps to chat messages",
-	tags = {"timestamp"},
-	enabledByDefault = false
+		name = "Chat Timestamps",
+		description = "Add timestamps to chat messages",
+		tags = {"timestamp"},
+		enabledByDefault = false
 )
 public class TimestampPlugin extends Plugin
 {
@@ -95,8 +95,9 @@ public class TimestampPlugin extends Plugin
 				case "format":
 					updateFormatter();
 					break;
-				case "opaqueTimestamp":
-				case "transparentTimestamp":
+				case "opaqueChatboxTimestamp":
+				case "transparentChatboxTimestamp":
+				case "splitPMTimestamp":
 					clientThread.invokeLater(() -> client.runScript(ScriptID.SPLITPM_CHANGED));
 					break;
 			}
@@ -128,15 +129,27 @@ public class TimestampPlugin extends Plugin
 
 	private Color getTimestampColour()
 	{
+		boolean isSplitPM = client.getIntStack()[client.getIntStackSize() - 2] == 1;
 		boolean isChatboxTransparent = client.isResized() && client.getVarbitValue(Varbits.TRANSPARENT_CHATBOX) == 1;
 
-		return isChatboxTransparent ? config.transparentTimestamp() : config.opaqueTimestamp();
+		if (isSplitPM)
+		{
+			return config.splitPMTimestamp();
+		}
+		else if (isChatboxTransparent)
+		{
+			return config.transparentChatboxTimestamp();
+		}
+		else
+		{
+			return config.opaqueChatboxTimestamp();
+		}
 	}
 
 	String generateTimestamp(int timestamp, ZoneId zoneId)
 	{
 		final ZonedDateTime time = ZonedDateTime.ofInstant(
-			Instant.ofEpochSecond(timestamp), zoneId);
+				Instant.ofEpochSecond(timestamp), zoneId);
 
 		return formatter.format(Date.from(time.toInstant()));
 	}
