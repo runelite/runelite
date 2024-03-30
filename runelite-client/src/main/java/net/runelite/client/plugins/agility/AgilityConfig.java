@@ -56,7 +56,7 @@ public interface AgilityConfig extends Config
 	@ConfigItem(
 		keyName = "extendDrawDistance",
 		name = "Extend Clickbox Draw Distances",
-		description = "Show agility course and obstacle clickboxes from further away",
+		description = "Show agility course and obstacle clickboxes from further away. May reduce performance on weaker machines.",
 		position = 1
 	)
 	default boolean extendDrawDistance()
