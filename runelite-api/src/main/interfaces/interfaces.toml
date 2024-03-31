@@ -291,6 +291,7 @@ emote_scrollbar=4
 id=387
 inventory_item_container=0
 cape=16
+dizanas_quiver_item_container=28
 
 [equipment_bonuses]
 id=84
