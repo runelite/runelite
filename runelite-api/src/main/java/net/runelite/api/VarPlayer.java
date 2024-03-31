@@ -240,4 +240,18 @@ public final class VarPlayer
 	 * Assigned slayer task location. The mapping of value to name can be found in {@link EnumID#SLAYER_TASK_LOCATION}
 	 */
 	public static final int SLAYER_TASK_LOCATION = 2096;
+
+	/**
+	 * The amount of ammo in Dizana's quiver's inventory slot.
+	 * 0 means the quiver is empty.
+	 * @see #DIZANAS_QUIVER_ITEM_ID
+	 */
+	public static final int DIZANAS_QUIVER_ITEM_COUNT = 4141;
+
+	/**
+	 * The item ID of the ammo in Dizana's quiver inventory slot.
+	 * -1 means the quiver is empty.
+	 * @see #DIZANAS_QUIVER_ITEM_COUNT
+	 */
+	public static final int DIZANAS_QUIVER_ITEM_ID = 4142;
 }
