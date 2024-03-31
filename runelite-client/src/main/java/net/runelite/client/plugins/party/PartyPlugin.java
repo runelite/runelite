@@ -305,6 +305,18 @@ public class PartyPlugin extends Plugin
 			lastLogout = Instant.now();
 		}
 
+		if (event.getGameState() == GameState.LOGGED_IN)
+		{
+			// Check to see if the player has opted into auto joining their previous party
+			if (!party.isInParty() &&
+				config.autoJoinPreviousParty() &&
+				!config.skipAutoJoinPreviousParty() &&
+				config.previousPartyId() != null)
+			{
+				party.changeParty(config.previousPartyId());
+			}
+		}
+
 		checkStateChanged(false);
 	}
 
@@ -600,6 +612,12 @@ public class PartyPlugin extends Plugin
 		if (event.getPartyId() != null)
 		{
 			config.setPreviousPartyId(event.getPassphrase());
+
+			// Need to disable the skip flag here, as if the player leaves the party manually we disable it.
+			if (config.autoJoinPreviousParty())
+			{
+				config.setSkipAutoJoinPreviousParty(false);
+			}
 		}
 
 		SwingUtilities.invokeLater(panel::removeAllMembers);

@@ -138,6 +138,8 @@ class PartyPanel extends PluginPanel
 				if (result == JOptionPane.YES_OPTION)
 				{
 					plugin.leaveParty();
+					// disable auto joining the previous party if the player manually leaves.
+					config.setSkipAutoJoinPreviousParty(true);
 				}
 			}
 			else
@@ -221,7 +223,7 @@ class PartyPanel extends PluginPanel
 		else if (plugin.getPartyDataMap().size() <= 1)
 		{
 			partyEmptyPanel.setContent("Party created", "You can now invite friends!<br/>" +
-					"Your party passphrase is: " + party.getPartyPassphrase() + ".");
+				"Your party passphrase is: " + party.getPartyPassphrase() + ".");
 			add(partyEmptyPanel);
 		}
 	}

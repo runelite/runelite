@@ -72,11 +72,22 @@ public interface PartyConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "autoJoinPreviousParty",
+		name = "Auto join previous party",
+		description = "Automatically join your previous party on login. Will not automatically rejoin if you manually leave the party.",
+		position = 4
+	)
+	default boolean autoJoinPreviousParty()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "pingHotkey",
 		name = "Ping hotkey",
 		description = "Key to hold to send a tile ping.<br>"
 			+ "To ping, hold the ping hotkey down and click on the tile you want to ping.",
-		position = 4
+		position = 5
 	)
 	default Keybind pingHotkey()
 	{
@@ -87,7 +98,7 @@ public interface PartyConfig extends Config
 		keyName = "memberColor",
 		name = "Self-Color",
 		description = "Which color you will appear as in the party panel and tile pings.",
-		position = 5
+		position = 6
 	)
 	Color memberColor();
 
@@ -95,7 +106,7 @@ public interface PartyConfig extends Config
 		keyName = "memberColor",
 		name = "",
 		description = "",
-		position = 5
+		position = 7
 	)
 	void setMemberColor(Color newMemberColor);
 
@@ -196,4 +207,25 @@ public interface PartyConfig extends Config
 		hidden = true
 	)
 	void setPreviousPartyId(String id);
+
+
+	@ConfigItem(
+		keyName = "skipAutoJoinPreviousParty",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default boolean skipAutoJoinPreviousParty()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		keyName = "skipAutoJoinPreviousParty",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	void setSkipAutoJoinPreviousParty(boolean skip);
+
 }
