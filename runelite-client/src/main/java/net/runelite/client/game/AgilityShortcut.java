@@ -46,6 +46,8 @@ import static net.runelite.api.NullObjectID.NULL_33328;
 import static net.runelite.api.NullObjectID.NULL_39541;
 import static net.runelite.api.NullObjectID.NULL_39542;
 import static net.runelite.api.NullObjectID.NULL_43840;
+import static net.runelite.api.NullObjectID.NULL_40960;
+import static net.runelite.api.NullObjectID.NULL_40962;
 import static net.runelite.api.ObjectID.*;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
@@ -270,6 +272,7 @@ public enum AgilityShortcut
 	MOUNT_KARUULM_PIPE_SOUTH(88, "Pipe", new WorldPoint(1316, 10214, 0), MYSTERIOUS_PIPE),
 	MOUNT_KARUULM_PIPE_NORTH(88, "Pipe", new WorldPoint(1345, 10230, 0), MYSTERIOUS_PIPE),
 	REVENANT_CAVES_CHAMBER_JUMP(89, "Jump", new WorldPoint(3240, 10144, 0), PILLAR_31561),
+	VIYELDI_CAVES_CLIMB(91, "Rock Climb", null, NULL_40960, NULL_40962),
 	MEIYERDITCH_LAB_ADVANCED_TUNNELS_WEST(93, "Cave", new WorldPoint(3499, 9802, 0), CAVE_43759),
 	MEIYERDITCH_LAB_ADVANCED_TUNNELS_MIDDLE(93, "Cave", new WorldPoint(3597, 9768, 0), NULL_43840),
 	MEIYERDITCH_LAB_ADVANCED_TUNNELS_EAST(93, "Cave", new WorldPoint(3604, 9772, 0), CAVE_43762, CAVE_43763);
