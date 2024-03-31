@@ -1202,9 +1202,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 				}
 
 				final int interId = WidgetUtil.componentToInterface(w.getId());
-				if (interId == InterfaceID.INVENTORY || interId == InterfaceID.EQUIPMENT)
+				if (interId == InterfaceID.INVENTORY || (interId == InterfaceID.EQUIPMENT && w.getId() != ComponentID.EQUIPMENT_DIZANAS_QUIVER_ITEM_CONTAINER))
 				{
 					// inventory and worn items have their own swap systems
+					// other than dizanas quiver, since it's not actually an inventory slot but some static widgets
 					continue;
 				}
 
@@ -1556,7 +1557,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 			&& w != null && (w.getIndex() == -1 || w.getItemId() != -1)
 			&& w.getActions() != null
 			&& WidgetUtil.componentToInterface(w.getId()) != InterfaceID.INVENTORY
-			&& WidgetUtil.componentToInterface(w.getId()) != InterfaceID.EQUIPMENT)
+			&& (WidgetUtil.componentToInterface(w.getId()) != InterfaceID.EQUIPMENT || w.getId() == ComponentID.EQUIPMENT_DIZANAS_QUIVER_ITEM_CONTAINER))
 		{
 			// fast check to avoid hitting config on components with single ops
 			if ((index > 0 && menuEntries[index - 1].getWidget() == w) ||
