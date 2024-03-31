@@ -320,4 +320,7 @@ public final class AnimationID
 
 	// POH Animations
 	public static final int INCENSE_BURNER = 3687;
+
+
+	public static final int SOULREAPER_AXE_SWING = 10172;
 }

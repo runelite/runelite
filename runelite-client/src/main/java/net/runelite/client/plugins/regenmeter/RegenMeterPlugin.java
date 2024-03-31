@@ -30,6 +30,7 @@ package net.runelite.client.plugins.regenmeter;
 import com.google.inject.Provides;
 import javax.inject.Inject;
 import lombok.Getter;
+import static net.runelite.api.AnimationID.SOULREAPER_AXE_SWING;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.GameState;
@@ -227,7 +228,7 @@ public class RegenMeterPlugin extends Plugin
 		}
 
 		int animId = local.getAnimation();
-		if (animId == 10172 && client.getVarpValue(VarPlayer.SOUL_STACK) == 5)
+		if (animId == SOULREAPER_AXE_SWING && client.getVarpValue(VarPlayer.SOUL_STACK) == 5)
 		{
 			ticksSinceSoulStackDecay = 0;
 		}
