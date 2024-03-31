@@ -29,6 +29,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
+import net.runelite.client.config.Notification;
 
 @ConfigGroup("randomevents")
 public interface RandomEventConfig extends Config
@@ -58,9 +59,9 @@ public interface RandomEventConfig extends Config
 		position = -2,
 		section = notificationSection
 	)
-	default boolean notifyAllEvents()
+	default Notification notifyAllEvents()
 	{
-		return false;
+		return Notification.OFF;
 	}
 
 	@ConfigItem(
@@ -69,9 +70,9 @@ public interface RandomEventConfig extends Config
 		description = "",
 		section = notificationSection
 	)
-	default boolean notifyArnav()
+	default Notification notifyArnav()
 	{
-		return false;
+		return Notification.OFF;
 	}
 
 	@ConfigItem(
@@ -80,9 +81,9 @@ public interface RandomEventConfig extends Config
 		description = "",
 		section = notificationSection
 	)
-	default boolean notifyBeekeeper()
+	default Notification notifyBeekeeper()
 	{
-		return false;
+		return Notification.OFF;
 	}
 
 	@ConfigItem(
@@ -91,9 +92,9 @@ public interface RandomEventConfig extends Config
 		description = "",
 		section = notificationSection
 	)
-	default boolean notifyBob()
+	default Notification notifyBob()
 	{
-		return false;
+		return Notification.OFF;
 	}
 
 	@ConfigItem(
@@ -102,9 +103,9 @@ public interface RandomEventConfig extends Config
 		description = "",
 		section = notificationSection
 	)
-	default boolean notifyCerters()
+	default Notification notifyCerters()
 	{
-		return false;
+		return Notification.OFF;
 	}
 
 	@ConfigItem(
@@ -113,9 +114,9 @@ public interface RandomEventConfig extends Config
 		description = "",
 		section = notificationSection
 	)
-	default boolean notifyDemon()
+	default Notification notifyDemon()
 	{
-		return false;
+		return Notification.OFF;
 	}
 
 	@ConfigItem(
@@ -124,9 +125,9 @@ public interface RandomEventConfig extends Config
 		description = "",
 		section = notificationSection
 	)
-	default boolean notifyDunce()
+	default Notification notifyDunce()
 	{
-		return false;
+		return Notification.OFF;
 	}
 
 	@ConfigItem(
@@ -135,9 +136,9 @@ public interface RandomEventConfig extends Config
 		description = "",
 		section = notificationSection
 	)
-	default boolean notifyDwarf()
+	default Notification notifyDwarf()
 	{
-		return false;
+		return Notification.OFF;
 	}
 
 	@ConfigItem(
@@ -146,9 +147,9 @@ public interface RandomEventConfig extends Config
 		description = "",
 		section = notificationSection
 	)
-	default boolean notifyForester()
+	default Notification notifyForester()
 	{
-		return false;
+		return Notification.OFF;
 	}
 
 	@ConfigItem(
@@ -157,9 +158,9 @@ public interface RandomEventConfig extends Config
 		description = "",
 		section = notificationSection
 	)
-	default boolean notifyFlippa()
+	default Notification notifyFlippa()
 	{
-		return false;
+		return Notification.OFF;
 	}
 
 	@ConfigItem(
@@ -168,9 +169,9 @@ public interface RandomEventConfig extends Config
 		description = "",
 		section = notificationSection
 	)
-	default boolean notifyFrog()
+	default Notification notifyFrog()
 	{
-		return false;
+		return Notification.OFF;
 	}
 
 	@ConfigItem(
@@ -179,9 +180,9 @@ public interface RandomEventConfig extends Config
 		description = "",
 		section = notificationSection
 	)
-	default boolean notifyGenie()
+	default Notification notifyGenie()
 	{
-		return false;
+		return Notification.OFF;
 	}
 
 	@ConfigItem(
@@ -190,9 +191,9 @@ public interface RandomEventConfig extends Config
 		description = "",
 		section = notificationSection
 	)
-	default boolean notifyGravedigger()
+	default Notification notifyGravedigger()
 	{
-		return false;
+		return Notification.OFF;
 	}
 
 	@ConfigItem(
@@ -201,9 +202,9 @@ public interface RandomEventConfig extends Config
 		description = "",
 		section = notificationSection
 	)
-	default boolean notifyJekyll()
+	default Notification notifyJekyll()
 	{
-		return false;
+		return Notification.OFF;
 	}
 
 	@ConfigItem(
@@ -212,9 +213,9 @@ public interface RandomEventConfig extends Config
 		description = "",
 		section = notificationSection
 	)
-	default boolean notifyMaze()
+	default Notification notifyMaze()
 	{
-		return false;
+		return Notification.OFF;
 	}
 
 	@ConfigItem(
@@ -223,9 +224,9 @@ public interface RandomEventConfig extends Config
 		description = "",
 		section = notificationSection
 	)
-	default boolean notifyMime()
+	default Notification notifyMime()
 	{
-		return false;
+		return Notification.OFF;
 	}
 
 	@ConfigItem(
@@ -234,9 +235,9 @@ public interface RandomEventConfig extends Config
 		description = "",
 		section = notificationSection
 	)
-	default boolean notifyMoM()
+	default Notification notifyMoM()
 	{
-		return false;
+		return Notification.OFF;
 	}
 
 	@ConfigItem(
@@ -245,9 +246,9 @@ public interface RandomEventConfig extends Config
 		description = "",
 		section = notificationSection
 	)
-	default boolean notifyPillory()
+	default Notification notifyPillory()
 	{
-		return false;
+		return Notification.OFF;
 	}
 
 	@ConfigItem(
@@ -256,9 +257,9 @@ public interface RandomEventConfig extends Config
 		description = "",
 		section = notificationSection
 	)
-	default boolean notifyPrison()
+	default Notification notifyPrison()
 	{
-		return false;
+		return Notification.OFF;
 	}
 
 	@ConfigItem(
@@ -267,9 +268,9 @@ public interface RandomEventConfig extends Config
 		description = "",
 		section = notificationSection
 	)
-	default boolean notifyQuiz()
+	default Notification notifyQuiz()
 	{
-		return false;
+		return Notification.OFF;
 	}
 
 	@ConfigItem(
@@ -278,9 +279,9 @@ public interface RandomEventConfig extends Config
 		description = "",
 		section = notificationSection
 	)
-	default boolean notifySandwich()
+	default Notification notifySandwich()
 	{
-		return false;
+		return Notification.OFF;
 	}
 
 	@ConfigItem(
@@ -289,9 +290,9 @@ public interface RandomEventConfig extends Config
 		description = "",
 		section = notificationSection
 	)
-	default boolean notifyTurpentine()
+	default Notification notifyTurpentine()
 	{
-		return false;
+		return Notification.OFF;
 	}
 
 	@ConfigItem(
@@ -300,9 +301,9 @@ public interface RandomEventConfig extends Config
 		description = "",
 		section = notificationSection
 	)
-	default boolean notifyTwin()
+	default Notification notifyTwin()
 	{
-		return false;
+		return Notification.OFF;
 	}
 
 	@ConfigItem(
@@ -311,8 +312,8 @@ public interface RandomEventConfig extends Config
 		description = "",
 		section = notificationSection
 	)
-	default boolean notifyCountCheck()
+	default Notification notifyCountCheck()
 	{
-		return false;
+		return Notification.OFF;
 	}
 }

@@ -48,6 +48,7 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.Notification;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
@@ -166,39 +167,33 @@ public class ChatNotificationsPlugin extends Plugin
 		switch (chatMessage.getType())
 		{
 			case TRADEREQ:
-				if (chatMessage.getMessage().contains("wishes to trade with you.") && config.notifyOnTrade())
+				if (chatMessage.getMessage().contains("wishes to trade with you."))
 				{
-					notifier.notify(chatMessage.getMessage());
+					notifier.notify(config.notifyOnTrade(), chatMessage.getMessage());
 				}
 				break;
 			case CHALREQ_TRADE:
-				if (chatMessage.getMessage().contains("wishes to duel with you.") && config.notifyOnDuel())
+				if (chatMessage.getMessage().contains("wishes to duel with you."))
 				{
-					notifier.notify(chatMessage.getMessage());
+					notifier.notify(config.notifyOnDuel(), chatMessage.getMessage());
 				}
 				break;
 			case BROADCAST:
-				if (config.notifyOnBroadcast())
+				// Some broadcasts have links attached, notated by `|` followed by a number, while others contain color tags.
+				// We don't want to see either in the printed notification.
+				String broadcast = chatMessage.getMessage();
+
+				int urlTokenIndex = broadcast.lastIndexOf('|');
+				if (urlTokenIndex != -1)
 				{
-					// Some broadcasts have links attached, notated by `|` followed by a number, while others contain color tags.
-					// We don't want to see either in the printed notification.
-					String broadcast = chatMessage.getMessage();
-
-					int urlTokenIndex = broadcast.lastIndexOf('|');
-					if (urlTokenIndex != -1)
-					{
-						broadcast = broadcast.substring(0, urlTokenIndex);
-					}
-
-					notifier.notify(Text.removeFormattingTags(broadcast));
+					broadcast = broadcast.substring(0, urlTokenIndex);
 				}
+
+				notifier.notify(config.notifyOnBroadcast(), Text.removeFormattingTags(broadcast));
 				break;
 			case PRIVATECHAT:
 			case MODPRIVATECHAT:
-				if (config.notifyOnPM())
-				{
-					notifier.notify(Text.removeTags(chatMessage.getName()) + ": " + chatMessage.getMessage());
-				}
+				notifier.notify(config.notifyOnPM(), Text.removeTags(chatMessage.getName()) + ": " + chatMessage.getMessage());
 				break;
 			case PRIVATECHATOUT:
 			case DIALOG:
@@ -259,15 +254,15 @@ public class ChatNotificationsPlugin extends Plugin
 				messageNode.setValue(stringBuffer.toString());
 				update = true;
 
-				if (config.notifyOnOwnName() && (chatMessage.getType() == ChatMessageType.PUBLICCHAT
+				if (chatMessage.getType() == ChatMessageType.PUBLICCHAT
 					|| chatMessage.getType() == ChatMessageType.PRIVATECHAT
 					|| chatMessage.getType() == ChatMessageType.FRIENDSCHAT
 					|| chatMessage.getType() == ChatMessageType.MODCHAT
 					|| chatMessage.getType() == ChatMessageType.MODPRIVATECHAT
 					|| chatMessage.getType() == ChatMessageType.CLAN_CHAT
-					|| chatMessage.getType() == ChatMessageType.CLAN_GUEST_CHAT))
+					|| chatMessage.getType() == ChatMessageType.CLAN_GUEST_CHAT)
 				{
-					sendNotification(chatMessage);
+					sendNotification(config.notifyOnOwnName(), chatMessage);
 				}
 			}
 		}
@@ -313,10 +308,7 @@ public class ChatNotificationsPlugin extends Plugin
 		if (matchesHighlight)
 		{
 			messageNode.setValue(nodeValue);
-			if (config.notifyOnHighlight())
-			{
-				sendNotification(chatMessage);
-			}
+			sendNotification(config.notifyOnHighlight(), chatMessage);
 		}
 
 		if (update)
@@ -325,7 +317,7 @@ public class ChatNotificationsPlugin extends Plugin
 		}
 	}
 
-	private void sendNotification(ChatMessage message)
+	private void sendNotification(Notification notification, ChatMessage message)
 	{
 		String name = Text.removeTags(message.getName());
 		String sender = message.getSender();
@@ -342,8 +334,8 @@ public class ChatNotificationsPlugin extends Plugin
 		}
 
 		stringBuilder.append(Text.removeTags(message.getMessage()));
-		String notification = stringBuilder.toString();
-		notifier.notify(notification);
+		String m = stringBuilder.toString();
+		notifier.notify(notification, m);
 	}
 
 	private String quoteAndIgnoreColor(String str)

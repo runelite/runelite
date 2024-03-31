@@ -29,6 +29,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
+import net.runelite.client.config.Notification;
 
 @ConfigGroup(RunecraftConfig.GROUP)
 public interface RunecraftConfig extends Config
@@ -239,8 +240,8 @@ public interface RunecraftConfig extends Config
 		description = "Send a notification when a pouch degrades",
 		position = 19
 	)
-	default boolean degradingNotification()
+	default Notification degradingNotification()
 	{
-		return true;
+		return Notification.ON;
 	}
 }

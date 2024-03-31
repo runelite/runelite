@@ -121,10 +121,7 @@ public class ClockManager
 				timer.pause();
 				changed = true;
 
-				if (config.timerNotification())
-				{
-					notifier.notify("[" + timer.getName() + "] has finished counting down.");
-				}
+				notifier.notify(config.timerNotification(), "[" + timer.getName() + "] has finished counting down.");
 
 				if (timer.isLoop())
 				{

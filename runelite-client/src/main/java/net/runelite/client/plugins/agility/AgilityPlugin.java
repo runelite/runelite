@@ -290,10 +290,7 @@ public class AgilityPlugin extends Plugin
 			{
 				log.debug("Ticked position moved from {} to {}", oldTickPosition, newTicketPosition);
 
-				if (config.notifyAgilityArena())
-				{
-					notifier.notify("Ticket location changed");
-				}
+				notifier.notify(config.notifyAgilityArena(), "Ticket location changed");
 
 				if (config.showAgilityArenaTimer())
 				{
