@@ -2677,7 +2677,7 @@ public enum PatchImplementation
 				return null;
 			}
 		},
-	GIANT_COMPOST(Tab.SPECIAL, "Giant Compost Bin", true)
+	BIG_COMPOST(Tab.SPECIAL, "Big Compost Bin", true)
 		{
 			@Override
 			PatchState forVarbitValue(int value)
@@ -2685,97 +2685,97 @@ public enum PatchImplementation
 				if (value == 0)
 				{
 					// Big compost bin[Examine] 33762
-					return new PatchState(Produce.EMPTY_GIANT_COMPOST_BIN, CropState.EMPTY, 0);
+					return new PatchState(Produce.EMPTY_BIG_COMPOST_BIN, CropState.EMPTY, 0);
 				}
 				if (value >= 1 && value <= 15)
 				{
 					// Big compost bin[Examine,Dump] 33763..33777
-					return new PatchState(Produce.GIANT_COMPOST, CropState.FILLING, value - 1);
+					return new PatchState(Produce.BIG_COMPOST, CropState.FILLING, value - 1);
 				}
 				if (value >= 16 && value <= 30)
 				{
 					// Big compost bin[Take,Examine,Dump] 33795..33809
-					return new PatchState(Produce.GIANT_COMPOST, CropState.HARVESTABLE, value - 16);
+					return new PatchState(Produce.BIG_COMPOST, CropState.HARVESTABLE, value - 16);
 				}
 				if (value >= 33 && value <= 47)
 				{
 					// Big compost bin[Examine,Dump] 33825..33839
-					return new PatchState(Produce.GIANT_SUPERCOMPOST, CropState.FILLING, value - 33);
+					return new PatchState(Produce.BIG_SUPERCOMPOST, CropState.FILLING, value - 33);
 				}
 				if (value >= 48 && value <= 62)
 				{
 					// Big compost bin[Take,Examine,Dump] 33857..33871
-					return new PatchState(Produce.GIANT_SUPERCOMPOST, CropState.HARVESTABLE, value - 48);
+					return new PatchState(Produce.BIG_SUPERCOMPOST, CropState.HARVESTABLE, value - 48);
 				}
 				if (value >= 63 && value <= 77)
 				{
 					// Big compost bin[Examine,Dump] 33778..33792
-					return new PatchState(Produce.GIANT_COMPOST, CropState.FILLING, 15 + value - 63);
+					return new PatchState(Produce.BIG_COMPOST, CropState.FILLING, 15 + value - 63);
 				}
 				if (value >= 78 && value <= 92)
 				{
 					// Giant compost bin[Take,Examine,Dump] 33810..33824
-					return new PatchState(Produce.GIANT_COMPOST, CropState.HARVESTABLE, 15 + value - 78);
+					return new PatchState(Produce.BIG_COMPOST, CropState.HARVESTABLE, 15 + value - 78);
 				}
 				if (value == 93)
 				{
 					// Giant compost bin[Open,Examine,Dump] 33794
-					return new PatchState(Produce.GIANT_COMPOST, CropState.GROWING, Produce.GIANT_COMPOST.getStages() - 1);
+					return new PatchState(Produce.BIG_COMPOST, CropState.GROWING, Produce.BIG_COMPOST.getStages() - 1);
 				}
 				if (value >= 97 && value <= 99)
 				{
 					// Giant compost bin[Open,Examin,Dump] 33855,33855
-					return new PatchState(Produce.GIANT_SUPERCOMPOST, CropState.GROWING, value - 97); // Once closed, starts rotting (super compost)
+					return new PatchState(Produce.BIG_SUPERCOMPOST, CropState.GROWING, value - 97); // Once closed, starts rotting (super compost)
 				}
 				if (value >= 100 && value <= 114)
 				{
 					// Giant compost bin[Take,Examine,Dump] 33872..33886
-					return new PatchState(Produce.GIANT_SUPERCOMPOST, CropState.HARVESTABLE, 15 + value - 100);
+					return new PatchState(Produce.BIG_SUPERCOMPOST, CropState.HARVESTABLE, 15 + value - 100);
 				}
 				if (value >= 127 && value <= 128)
 				{
 					// Giant compost bin[Open,Examine,Dump] 33793,33793
-					return new PatchState(Produce.GIANT_COMPOST, CropState.GROWING, value - 127);
+					return new PatchState(Produce.BIG_COMPOST, CropState.GROWING, value - 127);
 				}
 				if (value >= 129 && value <= 143)
 				{
 					// Giant compost bin[Close,Examine,Dump] 33887..33901
-					return new PatchState(Produce.GIANT_ROTTEN_TOMATO, CropState.FILLING, value - 129);
+					return new PatchState(Produce.BIG_ROTTEN_TOMATO, CropState.FILLING, value - 129);
 				}
 				if (value >= 144 && value <= 158)
 				{
 					// Giant compost bin[Take,Examine,Dump] 33919..33933
-					return new PatchState(Produce.GIANT_ROTTEN_TOMATO, CropState.HARVESTABLE, value - 144);
+					return new PatchState(Produce.BIG_ROTTEN_TOMATO, CropState.HARVESTABLE, value - 144);
 				}
 				if (value >= 159 && value <= 160)
 				{
 					// Giant compost bin[Open,Examine,Dump] 33917,33917
-					return new PatchState(Produce.GIANT_ROTTEN_TOMATO, CropState.GROWING, value - 159);
+					return new PatchState(Produce.BIG_ROTTEN_TOMATO, CropState.GROWING, value - 159);
 				}
 				if (value >= 161 && value <= 175)
 				{
 					// Giant compost bin[Examine,Dump] 33840..33854
-					return new PatchState(Produce.GIANT_SUPERCOMPOST, CropState.FILLING, 15 + value - 161); // 161 means there are 16 items
+					return new PatchState(Produce.BIG_SUPERCOMPOST, CropState.FILLING, 15 + value - 161); // 161 means there are 16 items
 				}
 				if (value >= 176 && value <= 205)
 				{
 					// Giant compost bin[Take,Examine,Dump] 33957..33986
-					return new PatchState(Produce.GIANT_ULTRACOMPOST, CropState.HARVESTABLE, value - 176);
+					return new PatchState(Produce.BIG_ULTRACOMPOST, CropState.HARVESTABLE, value - 176);
 				}
 				if (value >= 207 && value <= 221)
 				{
 					// Giant compost bin[Take,Examine,Dump] 33934..33948
-					return new PatchState(Produce.GIANT_ROTTEN_TOMATO, CropState.HARVESTABLE, 15 + value - 207);
+					return new PatchState(Produce.BIG_ROTTEN_TOMATO, CropState.HARVESTABLE, 15 + value - 207);
 				}
 				if (value == 222)
 				{
 					// Giant compost bin[Open,Examine,Dump] 33918
-					return new PatchState(Produce.GIANT_ROTTEN_TOMATO, CropState.GROWING, Produce.GIANT_ROTTEN_TOMATO.getStages() - 1);
+					return new PatchState(Produce.BIG_ROTTEN_TOMATO, CropState.GROWING, Produce.BIG_ROTTEN_TOMATO.getStages() - 1);
 				}
 				if (value >= 223 && value <= 237)
 				{
 					// Giant compost bin[Close,Examine,Dump] 33902..33916
-					return new PatchState(Produce.GIANT_ROTTEN_TOMATO, CropState.FILLING, 15 + value  - 223);
+					return new PatchState(Produce.BIG_ROTTEN_TOMATO, CropState.FILLING, 15 + value  - 223);
 				}
 				return null;
 			}

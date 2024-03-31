@@ -43,6 +43,7 @@ import static net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdArea.
 import static net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdArea.KARAMJA;
 import static net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdArea.MISTHALIN;
 import static net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdArea.MORYTANIA;
+import static net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdArea.VARLAMORE;
 import static net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdArea.WESTERN_PROVINCE;
 import static net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdArea.WILDERNESS;
 import static net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdArea.ZEAH;
@@ -125,7 +126,7 @@ public enum HotColdLocation
 	KARAMJA_WEST_BRIMHAVEN(MASTER, new WorldPoint(2718, 3167, 0), KARAMJA, "West of Brimhaven.", BRASSICAN_MAGE),
 	KARAMJA_GLIDER(MASTER, new WorldPoint(2966, 2976, 0), KARAMJA, "West of the gnome glider.", BRASSICAN_MAGE),
 	KARAMJA_KHARAZI_NE(MASTER, new WorldPoint(2904, 2925, 0), KARAMJA, "North-eastern part of Kharazi Jungle.", BRASSICAN_MAGE),
-	KARAMJA_KHARAZI_SW(MASTER, new WorldPoint(2786, 2899, 0), KARAMJA, "South-western part of Kharazi Jungle.", BRASSICAN_MAGE),
+	KARAMJA_KHARAZI_SW(MASTER, new WorldPoint(2786, 2899, 0), KARAMJA, "South-western part of Kharazi Jungle.", ANCIENT_WIZARDS),
 	KARAMJA_CRASH_ISLAND(MASTER, new WorldPoint(2909, 2737, 0), KARAMJA, "Northern part of Crash Island.", BRASSICAN_MAGE),
 	LUMBRIDGE_COW_FIELD(BEGINNER,  new WorldPoint(3174, 3336, 0), MISTHALIN, "Cow field north of Lumbridge"),
 	MISTHALIN_VARROCK_STONE_CIRCLE(MASTER, new WorldPoint(3225, 3356, 0), MISTHALIN, "South of the stone circle near Varrock's entrance.", BRASSICAN_MAGE),
@@ -147,6 +148,9 @@ public enum HotColdLocation
 	MORYTANIA_DRAGONTOOTH_SOUTH(MASTER, new WorldPoint(3803, 3532, 0), MORYTANIA, "Southern part of Dragontooth Island.", BRASSICAN_MAGE),
 	MORYTANIA_SLEPE_TENTS(MASTER, new WorldPoint(3769, 3383, 0), MORYTANIA, "North-east of Slepe, near the tents.", BRASSICAN_MAGE),
 	NORTHEAST_OF_AL_KHARID_MINE(BEGINNER, new WorldPoint(3332, 3313, 0), MISTHALIN, "Northeast of Al Kharid Mine"),
+	VARLAMORE_BAZAAR(MASTER, new WorldPoint(1680, 3107, 0), VARLAMORE, "In the centre of the Bazaar in Civitas illa Fortis.", BRASSICAN_MAGE),
+	VARLAMORE_LOCUS_OASIS(MASTER, new WorldPoint(1695, 2990, 0), VARLAMORE, "Amongst the trees at the Locus Oasis.", BRASSICAN_MAGE),
+	VARLAMORE_SUNSET_COAST(MASTER, new WorldPoint(1534, 2997, 0), VARLAMORE, "North-east corner of Sunset Coast.", ANCIENT_WIZARDS),
 	WESTERN_PROVINCE_EAGLES_PEAK(MASTER, new WorldPoint(2297, 3529, 0), WESTERN_PROVINCE, "North-west of Eagles' Peak.", BRASSICAN_MAGE),
 	WESTERN_PROVINCE_PISCATORIS(MASTER, new WorldPoint(2334, 3685, 0), WESTERN_PROVINCE, "Piscatoris Fishing Colony", ANCIENT_WIZARDS),
 	WESTERN_PROVINCE_PISCATORIS_HUNTER_AREA(MASTER, new WorldPoint(2359, 3564, 0), WESTERN_PROVINCE, "Eastern part of Piscatoris Hunter area, south-west of the Falconry.", BRASSICAN_MAGE),
@@ -174,7 +178,7 @@ public enum HotColdLocation
 	ZEAH_SULPHR_MINE(MASTER, new WorldPoint(1428, 3869, 0), ZEAH, "Western entrance in the Lovakengj sulphur mine. Facemask or Slayer Helmet recommended.", BRASSICAN_MAGE),
 	ZEAH_SHAYZIEN_BANK(MASTER, new WorldPoint(1498, 3627, 0), ZEAH, "South-east of the bank in Shayzien Encampment.", BRASSICAN_MAGE),
 	ZEAH_OVERPASS(MASTER, new WorldPoint(1467, 3714, 0), ZEAH, "Overpass between Lovakengj and Shayzien.", BRASSICAN_MAGE),
-	ZEAH_LIZARDMAN(MASTER, new WorldPoint(1490, 3698, 0), ZEAH, "Within Lizardman Canyon, east of the ladder. Requires 5% favour with Shayzien.", ANCIENT_WIZARDS),
+	ZEAH_LIZARDMAN(MASTER, new WorldPoint(1490, 3698, 0), ZEAH, "Within Lizardman Canyon, east of the ladder.", ANCIENT_WIZARDS),
 	ZEAH_COMBAT_RING(MASTER, new WorldPoint(1557, 3624, 0), ZEAH, "Shayzien Encampment, south-east of the Combat Ring.", BRASSICAN_MAGE),
 	ZEAH_SHAYZIEN_BANK_2(MASTER, new WorldPoint(1490, 3602, 0), ZEAH, "North of the bank in Shayzien.", BRASSICAN_MAGE),
 	ZEAH_LIBRARY(MASTER, new WorldPoint(1603, 3843, 0), ZEAH, "North-west of the Arceuus Library.", BRASSICAN_MAGE),

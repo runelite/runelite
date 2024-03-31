@@ -138,7 +138,7 @@ public class SpecialCounterPluginTest
 		specialCounterPlugin.onVarbitChanged(varbitChanged);
 
 		// Set up item image for spec info drop
-		when(itemManager.getImage(anyInt())).thenReturn(new AsyncBufferedImage(24, 24, BufferedImage.TYPE_INT_ARGB));
+		when(itemManager.getImage(anyInt())).thenReturn(new AsyncBufferedImage(clientThread, 24, 24, BufferedImage.TYPE_INT_ARGB));
 	}
 
 	private static HitsplatApplied hitsplat(Actor target, @HitsplatType int type)

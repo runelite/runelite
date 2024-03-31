@@ -44,6 +44,17 @@ public interface XpUpdaterConfig extends Config
 
 	@ConfigItem(
 		position = 2,
+		keyName = "runetracker",
+		name = "RuneTracker",
+		description = "Automatically updates your stats on runetracker.org when you log out"
+	)
+	default boolean runetracker()
+	{
+		return false;
+	}
+
+	@ConfigItem(
+		position = 3,
 		keyName = "templeosrs",
 		name = "TempleOSRS",
 		description = "Automatically updates your stats on templeosrs.com when you log out"
@@ -54,7 +65,7 @@ public interface XpUpdaterConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 3,
+		position = 4,
 		keyName = "wiseoldman",
 		name = "Wise Old Man",
 		description = "Automatically updates your stats on wiseoldman.net when you log out"

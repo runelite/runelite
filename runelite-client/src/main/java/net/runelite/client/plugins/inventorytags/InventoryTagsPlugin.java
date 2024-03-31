@@ -45,9 +45,9 @@ import net.runelite.api.KeyCode;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.events.MenuOpened;
+import net.runelite.api.widgets.InterfaceID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
@@ -176,7 +176,7 @@ public class InventoryTagsPlugin extends Plugin
 			final MenuEntry entry = entries[idx];
 			final Widget w = entry.getWidget();
 
-			if (w != null && WidgetInfo.TO_GROUP(w.getId()) == WidgetID.INVENTORY_GROUP_ID
+			if (w != null && WidgetUtil.componentToInterface(w.getId()) == InterfaceID.INVENTORY
 				&& "Examine".equals(entry.getOption()) && entry.getIdentifier() == 10)
 			{
 				final int itemId = w.getItemId();

@@ -52,8 +52,8 @@ import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -273,7 +273,9 @@ public class CannonPlugin extends Plugin
 		}
 
 		// Check if cannonballs are being used on the cannon
-		if (event.getMenuAction() == MenuAction.WIDGET_TARGET_ON_GAME_OBJECT && client.getSelectedWidget().getId() == WidgetInfo.INVENTORY.getId())
+		if (event.getMenuAction() == MenuAction.WIDGET_TARGET_ON_GAME_OBJECT
+			&& client.getSelectedWidget() != null
+			&& client.getSelectedWidget().getId() == ComponentID.INVENTORY_CONTAINER)
 		{
 			final Widget selected = client.getSelectedWidget();
 			final int itemId = selected.getItemId();

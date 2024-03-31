@@ -32,6 +32,8 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import net.runelite.api.annotations.Component;
+import net.runelite.api.annotations.Interface;
 import net.runelite.api.annotations.VarCInt;
 import net.runelite.api.annotations.VarCStr;
 import net.runelite.api.annotations.Varbit;
@@ -245,6 +247,13 @@ public interface Client extends OAuthApi, GameEngine
 	int getCameraX();
 
 	/**
+	 * Floating point camera position, x-axis
+	 * @see #getCameraX()
+	 * @return
+	 */
+	double getCameraFpX();
+
+	/**
 	 * Gets the y-axis coordinate of the camera.
 	 * <p>
 	 * This value is a local coordinate value similar to
@@ -253,6 +262,13 @@ public interface Client extends OAuthApi, GameEngine
 	 * @return the camera y coordinate
 	 */
 	int getCameraY();
+
+	/**
+	 * Floating point camera position, y-axis
+	 * @see #getCameraY()
+	 * @return
+	 */
+	double getCameraFpY();
 
 	/**
 	 * Gets the z-axis coordinate of the camera.
@@ -265,7 +281,14 @@ public interface Client extends OAuthApi, GameEngine
 	int getCameraZ();
 
 	/**
-	 * Gets the actual pitch of the camera.
+	 * Floating point camera position, z-axis
+	 * @see #getCameraZ()
+	 * @return
+	 */
+	double getCameraFpZ();
+
+	/**
+	 * Gets the pitch of the camera.
 	 * <p>
 	 * The value returned by this method is measured in JAU, or Jagex
 	 * Angle Unit, which is 1/1024 of a revolution.
@@ -275,11 +298,25 @@ public interface Client extends OAuthApi, GameEngine
 	int getCameraPitch();
 
 	/**
+	 * Floating point camera pitch.
+	 * @see #getCameraPitch()
+	 * @return
+	 */
+	double getCameraFpPitch();
+
+	/**
 	 * Gets the yaw of the camera.
 	 *
 	 * @return the camera yaw
 	 */
 	int getCameraYaw();
+
+	/**
+	 * Floating point camera yaw
+	 * @see #getCameraYaw()
+	 * @return
+	 */
+	double getCameraFpYaw();
 
 	/**
 	 * Gets the current world number of the logged in player.
@@ -521,7 +558,7 @@ public interface Client extends OAuthApi, GameEngine
 	/**
 	 * Gets the widget that is being dragged on.
 	 * <p>
-	 * The widget being dragged has the {@link net.runelite.api.widgets.WidgetConfig#DRAG_ON}
+	 * The widget being dragged has the {@link net.runelite.api.widgets.WidgetConfig#DRAG}
 	 * flag set, and is the widget currently under the dragged widget.
 	 *
 	 * @return the dragged on widget, null if not dragging any widget
@@ -547,6 +584,7 @@ public interface Client extends OAuthApi, GameEngine
 	/**
 	 * Gets Interface ID of the root widget
 	 */
+	@Interface
 	int getTopLevelInterfaceId();
 
 	/**
@@ -563,30 +601,26 @@ public interface Client extends OAuthApi, GameEngine
 	 * @return the widget
 	 */
 	@Nullable
+	@Deprecated
 	Widget getWidget(WidgetInfo widget);
 
 	/**
 	 * Gets a widget by its raw group ID and child ID.
-	 * <p>
-	 * Note: Use {@link #getWidget(WidgetInfo)} for a more human-readable
-	 * version of this method.
 	 *
 	 * @param groupId the group ID
 	 * @param childId the child widget ID
 	 * @return the widget corresponding to the group and child pair
 	 */
 	@Nullable
-	Widget getWidget(int groupId, int childId);
+	Widget getWidget(@Interface int groupId, int childId);
 
 	/**
-	 * Gets a widget by it's packed ID.
+	 * Gets a widget by its component id.
 	 *
-	 * <p>
-	 * Note: Use {@link #getWidget(WidgetInfo)} or {@link #getWidget(int, int)} for
-	 * a more readable version of this method.
+	 * @param componentId the component id
 	 */
 	@Nullable
-	Widget getWidget(int packedID);
+	Widget getWidget(@Component int componentId);
 
 	/**
 	 * Gets an array containing the x-axis canvas positions
@@ -1468,6 +1502,19 @@ public interface Client extends OAuthApi, GameEngine
 	void setCameraPitchTarget(int cameraPitchTarget);
 
 	/**
+	 * Sets the camera speed
+	 * @param speed
+	 */
+	void setCameraSpeed(float speed);
+
+	/**
+	 * Sets the mask for which mouse buttons control the camera.
+	 * Use 0 for the default behavior of mouse button 4 if "middle mouse moves camera" is on.
+	 * @param mask
+	 */
+	void setCameraMouseButtonMask(int mask);
+
+	/**
 	 * Sets whether the camera pitch can exceed the normal limits set
 	 * by the RuneScape client.
 	 *
@@ -1864,8 +1911,10 @@ public interface Client extends OAuthApi, GameEngine
 	int getSkyboxColor();
 
 	boolean isGpu();
+	void setGpuFlags(int gpuflags);
 
-	void setGpu(boolean gpu);
+	void setExpandedMapLoading(int chunks);
+	int getExpandedMapLoading();
 
 	int get3dZoom();
 	int getCenterX();
@@ -1876,8 +1925,6 @@ public interface Client extends OAuthApi, GameEngine
 	int getCameraZ2();
 
 	TextureProvider getTextureProvider();
-
-	void setRenderArea(boolean[][] renderArea);
 
 	int getRasterizer3D_clipMidX2();
 	int getRasterizer3D_clipNegativeMidX();
@@ -1913,6 +1960,11 @@ public interface Client extends OAuthApi, GameEngine
 	 * @return
 	 */
 	NodeCache getObjectCompositionCache();
+
+	/**
+	 * Returns the client {@link Animation} cache
+	 */
+	NodeCache getAnimationCache();
 
 	/**
 	 * Returns the array of cross sprites that appear and animate when left-clicking

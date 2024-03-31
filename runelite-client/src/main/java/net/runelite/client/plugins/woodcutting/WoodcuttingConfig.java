@@ -157,6 +157,66 @@ public interface WoodcuttingConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 14,
+		keyName = "forestryPoachersNotification",
+		name = "Poachers notification",
+		description = "Configures whether to notify you of a Poachers event",
+		section = forestrySection
+	)
+	default boolean forestryPoachersNotification()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 15,
+		keyName = "forestryPheasantControlNotification",
+		name = "Pheasant Control notification",
+		description = "Configures whether to notify you of a Pheasant Control event",
+		section = forestrySection
+	)
+	default boolean forestryPheasantControlNotification()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 16,
+		keyName = "forestryBeeHiveNotification",
+		name = "Bee Hive notification",
+		description = "Configures whether to notify you of a Bee Hive event",
+		section = forestrySection
+	)
+	default boolean forestryBeeHiveNotification()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 17,
+		keyName = "forestryEnchantmentRitualNotification",
+		name = "Enchantment Ritual notification",
+		description = "Configures whether to notify you of an Enchantment Ritual event",
+		section = forestrySection
+	)
+	default boolean forestryEnchantmentRitualNotification()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 18,
+		keyName = "forestryFriendlyEntNotification",
+		name = "Friendly Ent notification",
+		description = "Configures whether to notify you of a Friendly Ent event",
+		section = forestrySection
+	)
+	default boolean forestryFriendlyEntNotification()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		position = 20,
 		keyName = "highlightGlowingRoots",
 		name = "Highlight glowing roots",
@@ -188,6 +248,54 @@ public interface WoodcuttingConfig extends Config
 		section = forestrySection
 	)
 	default boolean highlightFlowers()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 23,
+		keyName = "highlightFoxTrap",
+		name = "Highlight fox trap",
+		description = "Highlights the fox trap during Poachers events",
+		section = forestrySection
+	)
+	default boolean highlightFoxTrap()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 24,
+		keyName = "highlightPheasantNest",
+		name = "Highlight pheasant nest",
+		description = "Highlights the pheasant next during Pheasant Control events",
+		section = forestrySection
+	)
+	default boolean highlightPheasantNest()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 25,
+		keyName = "highlightBeeHive",
+		name = "Highlight bee hive",
+		description = "Highlights the bee hive during Bee Hive events",
+		section = forestrySection
+	)
+	default boolean highlightBeeHive()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 26,
+		keyName = "highlightRitualCircle",
+		name = "Highlight ritual circle",
+		description = "Highlights the Ritual Circle during Enchantment Ritual events",
+		section = forestrySection
+	)
+	default boolean highlightRitualCircle()
 	{
 		return true;
 	}

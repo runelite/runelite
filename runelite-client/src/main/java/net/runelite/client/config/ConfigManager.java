@@ -95,9 +95,9 @@ import net.runelite.http.api.config.Profile;
 public class ConfigManager
 {
 	public static final String RSPROFILE_GROUP = "rsprofile";
+	public static final String RSPROFILE_DISPLAY_NAME = "displayName";
+	public static final String RSPROFILE_TYPE = "type";
 
-	private static final String RSPROFILE_DISPLAY_NAME = "displayName";
-	private static final String RSPROFILE_TYPE = "type";
 	private static final String RSPROFILE_ACCOUNT_HASH = "accountHash";
 
 	private static final long RSPROFILE_ID = -1L;
@@ -157,14 +157,14 @@ public class ConfigManager
 	{
 		if (newProfile.getId() == profile.getId())
 		{
-			log.warn("switching to existing profile!");
+			log.warn("switching to already-active profile!");
 			return;
 		}
 
 		// Ensure existing config is saved
 		sendConfig();
 
-		log.info("Switching profile to: {}", newProfile.getName());
+		log.info("Switching profile to: {} ({})", newProfile.getName(), newProfile.getId());
 
 		// sync the latest config revision from the server
 		if (sessionManager.getAccountSession() != null && newProfile.isSync())
@@ -524,7 +524,7 @@ public class ConfigManager
 			{
 				if (p.isInternal())
 				{
-					log.debug("Profile '{}' (sync: {}, active: {}, internal)", p.getName(), p.isSync(), p.isActive());
+					log.debug("Profile '{}' (sync: {}, active: {}, id: {}, internal)", p.getName(), p.isSync(), p.getId(), p.isActive());
 
 					if (p.getName().equals(RSPROFILE_NAME))
 					{
@@ -534,7 +534,7 @@ public class ConfigManager
 					continue;
 				}
 
-				log.info("Profile '{}' (sync: {}, active: {})", p.getName(), p.isSync(), p.isActive());
+				log.info("Profile '{}' (sync: {}, active: {}, id: {})", p.getName(), p.isSync(), p.isActive(), p.getId());
 
 				// --profile
 				if (configProfileName != null)
@@ -556,7 +556,7 @@ public class ConfigManager
 
 			if (profile != null)
 			{
-				log.info("Using profile: {}", profile.getName());
+				log.info("Using profile: {} ({})", profile.getName(), profile.getId());
 			}
 			else
 			{
@@ -568,7 +568,7 @@ public class ConfigManager
 					profile.setActive(true);
 				}
 
-				log.info("Creating profile: {}", profile.getName());
+				log.info("Creating profile: {} ({})", profile.getName(), profile.getId());
 			}
 
 			if (rsProfile == null)
@@ -1500,6 +1500,35 @@ public class ConfigManager
 		{
 			String name = ev.getPlayer().getName();
 			setRSProfileConfiguration(RSPROFILE_GROUP, RSPROFILE_DISPLAY_NAME, name);
+		}
+	}
+
+	@Subscribe
+	private void onRuneScapeProfileChanged(RuneScapeProfileChanged ev)
+	{
+		ConfigProfile switchToProfile = null;
+		try (ProfileManager.Lock lock = profileManager.lock())
+		{
+			for (final ConfigProfile lockProfile : lock.getProfiles())
+			{
+				final List<String> get = lockProfile.getDefaultForRsProfiles();
+				if (get != null && get.contains(rsProfileKey))
+				{
+					switchToProfile = lockProfile;
+
+					// change active profile
+					lock.getProfiles().forEach(p -> p.setActive(false));
+					switchToProfile.setActive(true);
+					lock.dirty();
+					break;
+				}
+			}
+		}
+
+		if (switchToProfile != null)
+		{
+			log.debug("Switching to default profile {} for rsprofile {}", switchToProfile.getName(), rsProfileKey);
+			switchProfile(switchToProfile);
 		}
 	}
 

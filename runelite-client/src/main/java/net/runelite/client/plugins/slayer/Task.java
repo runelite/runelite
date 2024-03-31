@@ -31,6 +31,7 @@ import java.util.Map;
 import javax.annotation.Nullable;
 import lombok.Getter;
 import net.runelite.api.ItemID;
+import net.runelite.api.NullItemID;
 
 @Getter
 enum Task
@@ -173,6 +174,7 @@ enum Task
 	VETION("Vet'ion", ItemID.VETION_JR),
 	VORKATH("Vorkath", ItemID.VORKI),
 	WALL_BEASTS("Wall beasts", ItemID.SWAMP_WALLBEAST),
+	WARPED_CREATURES("Warped Creatures", NullItemID.NULL_28582, "Warped terrorbird", "Warped tortoise", "Mutated terrorbird", "Mutated tortoise"),
 	WATERFIENDS("Waterfiends", ItemID.WATER_ORB),
 	WEREWOLVES("Werewolves", ItemID.WOLFBANE, "Werewolf"),
 	WOLVES("Wolves", ItemID.GREY_WOLF_FUR, "Wolf"),

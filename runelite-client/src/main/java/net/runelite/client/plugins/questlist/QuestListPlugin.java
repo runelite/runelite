@@ -38,9 +38,9 @@ import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.VarClientIntChanged;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetPositionMode;
 import net.runelite.api.widgets.WidgetType;
 import net.runelite.client.callback.ClientThread;
@@ -81,7 +81,7 @@ public class QuestListPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
-		Widget header = client.getWidget(WidgetInfo.QUESTLIST_BOX);
+		Widget header = client.getWidget(ComponentID.QUEST_LIST_BOX);
 		if (header != null)
 		{
 			header.deleteAllChildren();
@@ -99,7 +99,7 @@ public class QuestListPlugin extends Plugin
 
 	private void addQuestButtons()
 	{
-		Widget header = client.getWidget(WidgetInfo.QUESTLIST_BOX);
+		Widget header = client.getWidget(ComponentID.QUEST_LIST_BOX);
 		if (header != null)
 		{
 			header.deleteAllChildren();
@@ -199,7 +199,7 @@ public class QuestListPlugin extends Plugin
 
 	private void redrawQuests()
 	{
-		Widget w = client.getWidget(WidgetInfo.QUESTLIST_CONTAINER);
+		Widget w = client.getWidget(ComponentID.QUEST_LIST_CONTAINER);
 		if (w == null)
 		{
 			return;

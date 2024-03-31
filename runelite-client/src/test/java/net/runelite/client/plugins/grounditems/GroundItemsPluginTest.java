@@ -39,6 +39,7 @@ import net.runelite.api.TileItem;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ItemSpawned;
 import net.runelite.client.Notifier;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.input.KeyManager;
@@ -97,6 +98,10 @@ public class GroundItemsPluginTest
 	@Mock
 	@Bind
 	private ScheduledExecutorService executor;
+
+	@Mock
+	@Bind
+	private ConfigManager configManager;
 
 	@Before
 	public void setUp()

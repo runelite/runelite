@@ -51,6 +51,7 @@ import javax.inject.Singleton;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import lombok.Getter;
@@ -168,6 +169,9 @@ public class Notifier
 		{
 			case REQUEST:
 				clientUI.requestFocus();
+				break;
+			case TASKBAR:
+				clientUI.flashTaskbar();
 				break;
 			case FORCE:
 				clientUI.forceFocus();
@@ -402,7 +406,7 @@ public class Notifier
 	{
 		if (OSType.getOSType() == OSType.Linux && !Files.exists(notifyIconPath))
 		{
-			try (InputStream stream = Notifier.class.getResourceAsStream("/runelite.png"))
+			try (InputStream stream = Notifier.class.getResourceAsStream("/net/runelite/client/ui/runelite_128.png"))
 			{
 				Files.copy(stream, notifyIconPath);
 			}
@@ -474,7 +478,13 @@ public class Notifier
 			}
 		}
 
-		// Using loop instead of start + setFramePosition prevents a the clip
+		// converts user controlled linear volume ranging 1-100 to exponential decibel gains
+		float volume = runeLiteConfig.notificationVolume() / 100f;
+		float gainDB = (float) Math.log10(volume) * 20;
+		FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+		gainControl.setValue(gainDB);
+
+		// Using loop instead of start + setFramePosition prevents the clip
 		// from not being played sometimes, presumably a race condition in the
 		// underlying line driver
 		clip.loop(1);

@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.grounditems;
 
+import java.awt.Color;
 import java.time.Instant;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -51,6 +52,11 @@ class GroundItem
 	private Instant spawnTime;
 	private boolean stackable;
 
+	// cached values derived from config
+	boolean highlighted;
+	boolean hidden;
+	Color color;
+
 	int getHaPrice()
 	{
 		return haPrice * quantity;
@@ -64,5 +70,11 @@ class GroundItem
 	boolean isMine()
 	{
 		return lootType != LootType.UNKNOWN;
+	}
+
+	void reset()
+	{
+		highlighted = hidden = false;
+		color = null;
 	}
 }

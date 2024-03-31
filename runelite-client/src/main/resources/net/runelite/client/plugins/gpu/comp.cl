@@ -32,7 +32,7 @@
 __kernel __attribute__((work_group_size_hint(256, 1, 1))) void computeLarge(__local struct shared_data *shared, __global const struct modelinfo *ol,
                                                                             __global const int4 *vb, __global const int4 *tempvb, __global const float4 *texb,
                                                                             __global const float4 *temptexb, __global int4 *vout, __global float4 *uvout,
-                                                                            __constant struct uniform *uni) {
+                                                                            __constant struct uniform *uni, read_only image3d_t tileHeightImage) {
   size_t groupId = get_group_id(0);
   size_t localId = get_local_id(0) * FACE_COUNT;
   struct modelinfo minfo = ol[groupId];
@@ -82,6 +82,6 @@ __kernel __attribute__((work_group_size_hint(256, 1, 1))) void computeLarge(__lo
   barrier(CLK_LOCAL_MEM_FENCE);
 
   for (int i = 0; i < FACE_COUNT; i++) {
-    sort_and_insert(shared, uni, texb, temptexb, vout, uvout, localId + i, minfo, prioAdj[i], dis[i], v1[i], v2[i], v3[i]);
+    sort_and_insert(shared, uni, texb, temptexb, vout, uvout, localId + i, minfo, prioAdj[i], dis[i], v1[i], v2[i], v3[i], tileHeightImage);
   }
 }

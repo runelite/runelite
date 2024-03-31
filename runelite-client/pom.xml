@@ -29,7 +29,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.10.11-SNAPSHOT</version>
+		<version>1.10.27-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>client</artifactId>
@@ -93,15 +93,9 @@
 			<artifactId>gson</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>net.runelite.pushingpixels</groupId>
-			<artifactId>substance</artifactId>
-			<version>8.0.02</version>
-		</dependency>
-		<dependency>
-			<groupId>net.runelite.pushingpixels</groupId>
-			<artifactId>trident</artifactId>
-			<version>1.5.00</version>
-			<scope>runtime</scope>
+			<groupId>net.runelite</groupId>
+			<artifactId>flatlaf</artifactId>
+			<version>${flatlaf.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -415,7 +409,7 @@
 			</plugin>
 			<plugin>
 				<groupId>net.runelite</groupId>
-				<artifactId>script-assembler-plugin</artifactId>
+				<artifactId>runelite-maven-plugin</artifactId>
 				<version>${project.version}</version>
 				<executions>
 					<execution>

@@ -65,7 +65,6 @@ class TabManager
 
 	void clear()
 	{
-		tabs.forEach(t -> t.setHidden(true));
 		tabs.clear();
 	}
 
@@ -123,7 +122,6 @@ class TabManager
 
 		if (tagTab != null)
 		{
-			tagTab.setHidden(true);
 			tabs.remove(tagTab);
 			removeIcon(tag);
 		}

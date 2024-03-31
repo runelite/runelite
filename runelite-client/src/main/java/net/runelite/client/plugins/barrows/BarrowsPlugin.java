@@ -41,9 +41,9 @@ import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.WidgetClosed;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.widgets.InterfaceID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.chat.ChatColorType;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
@@ -69,10 +69,10 @@ import org.apache.commons.lang3.ArrayUtils;
 )
 public class BarrowsPlugin extends Plugin
 {
-	private static final ImmutableList<WidgetInfo> POSSIBLE_SOLUTIONS = ImmutableList.of(
-		WidgetInfo.BARROWS_PUZZLE_ANSWER1,
-		WidgetInfo.BARROWS_PUZZLE_ANSWER2,
-		WidgetInfo.BARROWS_PUZZLE_ANSWER3
+	private static final ImmutableList<Integer> POSSIBLE_SOLUTIONS = ImmutableList.of(
+		ComponentID.BARROWS_PUZZLE_ANSWER1,
+		ComponentID.BARROWS_PUZZLE_ANSWER2,
+		ComponentID.BARROWS_PUZZLE_ANSWER3
 	);
 
 	private static final long PRAYER_DRAIN_INTERVAL_MS = 18200;
@@ -133,13 +133,13 @@ public class BarrowsPlugin extends Plugin
 		stopPrayerDrainTimer();
 
 		// Restore widgets
-		final Widget potential = client.getWidget(WidgetInfo.BARROWS_POTENTIAL);
+		final Widget potential = client.getWidget(ComponentID.BARROWS_POTENTIAL);
 		if (potential != null)
 		{
 			potential.setHidden(false);
 		}
 
-		final Widget barrowsBrothers = client.getWidget(WidgetInfo.BARROWS_BROTHERS);
+		final Widget barrowsBrothers = client.getWidget(ComponentID.BARROWS_BROTHERS);
 		if (barrowsBrothers != null)
 		{
 			barrowsBrothers.setHidden(false);
@@ -175,7 +175,7 @@ public class BarrowsPlugin extends Plugin
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
-		if (event.getGroupId() == WidgetID.BARROWS_REWARD_GROUP_ID && config.showChestValue())
+		if (event.getGroupId() == InterfaceID.BARROWS_REWARD && config.showChestValue())
 		{
 			ItemContainer barrowsRewardContainer = client.getItemContainer(InventoryID.BARROWS_REWARD);
 			if (barrowsRewardContainer == null)
@@ -204,18 +204,18 @@ public class BarrowsPlugin extends Plugin
 				.runeLiteFormattedMessage(message.build())
 				.build());
 		}
-		else if (event.getGroupId() == WidgetID.BARROWS_PUZZLE_GROUP_ID)
+		else if (event.getGroupId() == InterfaceID.BARROWS_PUZZLE)
 		{
-			final int answer = client.getWidget(WidgetInfo.BARROWS_FIRST_PUZZLE).getModelId() - 3;
+			final int answer = client.getWidget(ComponentID.BARROWS_PUZZLE_SEQUENCE_1).getModelId() - 3;
 			puzzleAnswer = null;
 
-			for (WidgetInfo puzzleNode : POSSIBLE_SOLUTIONS)
+			for (int puzzleComponent : POSSIBLE_SOLUTIONS)
 			{
-				final Widget widgetToCheck = client.getWidget(puzzleNode);
+				final Widget widgetToCheck = client.getWidget(puzzleComponent);
 
 				if (widgetToCheck != null && widgetToCheck.getModelId() == answer)
 				{
-					puzzleAnswer = client.getWidget(puzzleNode);
+					puzzleAnswer = widgetToCheck;
 					break;
 				}
 			}
@@ -229,13 +229,13 @@ public class BarrowsPlugin extends Plugin
 		// hidden here instead of in the overlay, because if the overlay renders on the ABOVE_WIDGETS
 		// layer due to being moved outside of the snap corner, it will be running after the overlays
 		// had already been rendered.
-		final Widget barrowsBrothers = client.getWidget(WidgetInfo.BARROWS_BROTHERS);
+		final Widget barrowsBrothers = client.getWidget(ComponentID.BARROWS_BROTHERS);
 		if (barrowsBrothers != null)
 		{
 			barrowsBrothers.setHidden(true);
 		}
 
-		final Widget potential = client.getWidget(WidgetInfo.BARROWS_POTENTIAL);
+		final Widget potential = client.getWidget(ComponentID.BARROWS_POTENTIAL);
 		if (potential != null)
 		{
 			potential.setHidden(true);
@@ -245,7 +245,7 @@ public class BarrowsPlugin extends Plugin
 	@Subscribe
 	public void onWidgetClosed(WidgetClosed widgetClosed)
 	{
-		if (widgetClosed.getGroupId() == WidgetID.BARROWS_PUZZLE_GROUP_ID)
+		if (widgetClosed.getGroupId() == InterfaceID.BARROWS_PUZZLE)
 		{
 			puzzleAnswer = null;
 		}

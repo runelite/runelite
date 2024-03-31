@@ -88,6 +88,14 @@ enum WorldTypeFilter
 			{
 				return types.contains(WorldType.SKILL_TOTAL);
 			}
+		},
+	HIGH_RISK
+		{
+			@Override
+			boolean matches(Set<WorldType> types)
+			{
+				return types.contains(WorldType.HIGH_RISK);
+			}
 		};
 
 	abstract boolean matches(Set<WorldType> types);

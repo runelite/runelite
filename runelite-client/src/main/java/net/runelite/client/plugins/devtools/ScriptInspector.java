@@ -32,6 +32,7 @@ import java.awt.FlowLayout;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
@@ -59,9 +60,7 @@ import net.runelite.api.Client;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
-import static net.runelite.api.widgets.WidgetInfo.TO_CHILD;
-import static net.runelite.api.widgets.WidgetInfo.TO_GROUP;
+import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
@@ -97,11 +96,12 @@ public class ScriptInspector extends DevToolsFrame
 	}
 
 	@Data
-	private class ScriptTreeNode extends DefaultMutableTreeNode
+	private static class ScriptTreeNode extends DefaultMutableTreeNode
 	{
 		private final int scriptId;
 		private Widget source;
 		private int duplicateNumber = 1;
+		private Object[] args;
 
 		@Override
 		public String toString()
@@ -116,18 +116,23 @@ public class ScriptInspector extends DevToolsFrame
 			if (source != null)
 			{
 				int id = source.getId();
-				output += "  -  " + TO_GROUP(id) + "." + TO_CHILD(id);
+				output += "  -  " + WidgetUtil.componentToInterface(id) + "." + WidgetUtil.componentToId(id);
 
 				if (source.getIndex() != -1)
 				{
 					output += "[" + source.getIndex() + "]";
 				}
 
-				WidgetInfo info = WidgetInspector.getWidgetInfo(id);
-				if (info != null)
+				var name = WidgetInspector.getWidgetName(id);
+				if (name != null)
 				{
-					output += " " + info.name();
+					output += " " + name;
 				}
+			}
+
+			if (args != null)
+			{
+				output += " args: " + Arrays.toString(args);
 			}
 
 			return output;
@@ -278,6 +283,7 @@ public class ScriptInspector extends DevToolsFrame
 		if (event.getScriptEvent() != null)
 		{
 			newNode.setSource(event.getScriptEvent().getSource());
+			newNode.setArgs(event.getScriptEvent().getArguments());
 		}
 
 		if (currentNode == null)

@@ -121,7 +121,7 @@ public class CrowdsourcingWoodcutting
 		add(ObjectID.MAPLE_TREE_10832).
 		add(ObjectID.MAPLE_TREE_4674).
 		add(ObjectID.MAPLE_TREE_8444).
-		add(ObjectID.MAHOGANY).
+		add(ObjectID.MAHOGANY_TREE_36688).
 		add(ObjectID.TEAK_TREE_15062).
 		add(ObjectID.TEAK_TREE_15062).
 		add(ObjectID.MAGIC_TREE_10834).

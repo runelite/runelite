@@ -72,6 +72,7 @@ public class GroundItemsOverlay extends Overlay
 	private static final Color PUBLIC_TIMER_COLOR = Color.YELLOW;
 	private static final Color PRIVATE_TIMER_COLOR = Color.GREEN;
 	private static final int TIMER_OVERLAY_DIAMETER = 10;
+	private static final Duration DESPAWN_TIME_INFERNO = Duration.ofMinutes(180);
 	private static final Duration DESPAWN_TIME_INSTANCE = Duration.ofMinutes(30);
 	private static final Duration DESPAWN_TIME_LOOT = Duration.ofMinutes(2);
 	private static final Duration DESPAWN_TIME_DROP = Duration.ofMinutes(3);
@@ -87,6 +88,7 @@ public class GroundItemsOverlay extends Overlay
 	private static final int NIGHTMARE_REGION = 15515;
 	private static final int TEMPOROSS_REGION = 12078;
 	private static final int KALPHITE_QUEEN_REGION = 13972;
+	private static final int INFERNO_REGION = 9043;
 
 	private final Client client;
 	private final GroundItemsPlugin plugin;
@@ -199,13 +201,12 @@ public class GroundItemsOverlay extends Overlay
 				continue;
 			}
 
-			final Color highlighted = plugin.getHighlighted(new NamedQuantity(item), item.getGePrice(), item.getHaPrice());
-			final Color hidden = plugin.getHidden(new NamedQuantity(item), item.getGePrice(), item.getHaPrice(), item.isTradeable());
+			plugin.updateItemColor(item);
 
-			if (highlighted == null && !plugin.isHotKeyPressed())
+			if (!item.highlighted && !plugin.isHotKeyPressed())
 			{
 				// Do not display hidden items
-				if (hidden != null)
+				if (item.hidden)
 				{
 					continue;
 				}
@@ -217,7 +218,7 @@ public class GroundItemsOverlay extends Overlay
 				}
 			}
 
-			final Color color = plugin.getItemColor(highlighted, hidden);
+			final Color color = item.color;
 
 			if (config.highlightTiles())
 			{
@@ -345,10 +346,10 @@ public class GroundItemsOverlay extends Overlay
 				}
 
 				// Draw hidden box
-				drawRectangle(graphics, itemHiddenBox, topItem && mouseInHiddenBox ? Color.RED : color, hidden != null, true);
+				drawRectangle(graphics, itemHiddenBox, topItem && mouseInHiddenBox ? Color.RED : color, item.hidden, true);
 
 				// Draw highlight box
-				drawRectangle(graphics, itemHighlightBox, topItem && mouseInHighlightBox ? Color.GREEN : color, highlighted != null, false);
+				drawRectangle(graphics, itemHighlightBox, topItem && mouseInHighlightBox ? Color.GREEN : color, item.highlighted, false);
 			}
 
 			// When the hotkey is pressed the hidden/highlight boxes are drawn to the right of the text,
@@ -445,6 +446,10 @@ public class GroundItemsOverlay extends Overlay
 						despawnTime = spawnTime.plus(DESPAWN_TIME_LOOT);
 					}
 				}
+			}
+			else if (playerRegionID == INFERNO_REGION)
+			{
+				despawnTime = spawnTime.plus(DESPAWN_TIME_INFERNO);
 			}
 			else if (playerRegionID == ZILYANA_REGION || playerRegionID == GRAARDOR_REGION ||
 				playerRegionID == KRIL_TSUTSAROTH_REGION || playerRegionID == KREEARRA_REGION ||
