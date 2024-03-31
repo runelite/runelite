@@ -325,16 +325,13 @@ public class Notifier
 		final String title,
 		final String message)
 	{
-		final String escapedTitle = SHELL_ESCAPE.escape(title);
-		final String escapedMessage = SHELL_ESCAPE.escape(message);
-
 		switch (OSType.getOSType())
 		{
 			case Linux:
-				sendLinuxNotification(notification, escapedTitle, escapedMessage);
+				sendLinuxNotification(notification, title, message);
 				break;
 			case MacOS:
-				sendMacNotification(escapedTitle, escapedMessage);
+				sendMacNotification(title, message);
 				break;
 			default:
 				sendTrayNotification(notification, title, message);
@@ -416,11 +413,11 @@ public class Notifier
 			commands.add("-e");
 
 			final String script = "display notification " + DOUBLE_QUOTE +
-				message +
+				SHELL_ESCAPE.escape(message) +
 				DOUBLE_QUOTE +
 				" with title " +
 				DOUBLE_QUOTE +
-				title +
+				SHELL_ESCAPE.escape(title) +
 				DOUBLE_QUOTE;
 
 			commands.add(script);
