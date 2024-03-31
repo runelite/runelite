@@ -87,7 +87,7 @@ public enum AgilityShortcut
 			// Asgarnian Ice Dungeon
 			STEPS,
 			// Fossil Island Wyvern Cave
-			STAIRS_31485,
+			STAIRS_31485, STAIRS_30847,
 			// Trollweiss Mountain Cave
 			ROCKY_HANDHOLDS, ROCKY_HANDHOLDS_19847,
 			// Witchaven Dungeon
