@@ -198,6 +198,7 @@ enum TransportationPointLocation
 	TELEPORT_HARMLESS_FROM_HARMONY("Teleport to Mos Le'Harmless", new WorldPoint(3784, 2828, 0)),
 	TELEPORT_RUNE_ARDOUGNE("Teleport to Rune Essence", new WorldPoint(2681, 3325, 0)),
 	TELEPORT_RUNE_YANILLE("Teleport to Rune Essence", new WorldPoint(2592, 3089, 0)),
+	TELEPORT_RUNE_WIZARDS_TOWER("Teleport to Rune Essence", new WorldPoint(3103, 9572, 0)),
 	TELEPORT_SORCERESS_GARDEN("Teleport to Sorceress's Garden", new WorldPoint(3320, 3141, 0)),
 	TELEPORT_PRIFDDINAS_LIBRARY("Teleport to Prifddinas Library", new WorldPoint(3254, 6082, 2)),
 
