@@ -203,6 +203,7 @@ enum TransportationPointLocation
 	TELEPORT_PRIFDDINAS_LIBRARY("Teleport to Prifddinas Library", new WorldPoint(3254, 6082, 2)),
 
 	//Other
+	ABYSS_LEVER_LUMBRIDGE("Lever to Lumbridge", new WorldPoint(3031, 4793, 0)),
 	ALTER_KOUREND_UNDERGROUND("Altar to Skotizo", new WorldPoint(1662, 10047, 0)),
 	FAIRY_RING_ZANARIS_TO_KHARID("Fairy Ring to Al Kharid", new WorldPoint(2483, 4471, 0)),
 	FAIRY_RING_ZANARIS_TO_SHACK("Fairy Ring to Shack", new WorldPoint(2451, 4471, 0)),
