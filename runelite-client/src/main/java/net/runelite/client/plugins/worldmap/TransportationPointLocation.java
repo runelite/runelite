@@ -180,6 +180,7 @@ enum TransportationPointLocation
 	SPIRITTREE_GNOMESTRONGHOLD("Spirit Tree", new WorldPoint(2459, 3446, 0)),
 	SPIRITTREE_GNOMEVILLAGE("Spirit Tree", new WorldPoint(2538, 3166, 0)),
 	SPIRITTREE_GRANDEXCHANGE("Spirit Tree", new WorldPoint(3184, 3510, 0)),
+	SPIRITTREE_POISON_WASTE("Spirit Tree", new WorldPoint(2338, 3111, 0)),
 	SPIRITTREE_PRIFDDINAS("Spirit Tree", new WorldPoint(3274, 6124, 0)),
 
 	//Carpets
