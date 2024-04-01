@@ -43,9 +43,11 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.dbtable.DBTableID;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.ScriptPostFired;
+import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.StatChanged;
 import net.runelite.api.worldmap.MapElementConfig;
 import net.runelite.api.worldmap.WorldMap;
+import net.runelite.api.worldmap.WorldMapArea;
 import net.runelite.api.worldmap.WorldMapIcon;
 import net.runelite.api.worldmap.WorldMapRegion;
 import net.runelite.api.worldmap.WorldMapRenderer;
@@ -155,6 +157,7 @@ public class WorldMapPlugin extends Plugin
 
 	private int agilityLevel = 0;
 	private int woodcuttingLevel = 0;
+	private int worldMapArea;
 
 	private final Map<Quest, WorldPoint> questStartLocations = new EnumMap<>(Quest.class);
 
@@ -218,6 +221,21 @@ public class WorldMapPlugin extends Plugin
 				break;
 			}
 		}
+	}
+
+	@Subscribe
+	public void onScriptPreFired(ScriptPreFired scriptPreFired)
+	{
+		if (scriptPreFired.getScriptId() != ScriptID.WORLDMAP_LOADMAP)
+		{
+			return;
+		}
+
+		final int[] intStack = client.getIntStack();
+		final int iSize = client.getIntStackSize();
+		worldMapArea = intStack[iSize - 9];
+
+		updateShownIcons();
 	}
 
 	@Subscribe
@@ -431,22 +449,24 @@ public class WorldMapPlugin extends Plugin
 		Arrays.stream(TeleportLocationData.values())
 			.filter(data ->
 			{
+				final boolean currentWorldMap = (data.getWorldMapArea() == WorldMapArea.ANY || data.getWorldMapArea() == worldMapArea);
+
 				switch (data.getType())
 				{
 					case NORMAL_MAGIC:
-						return config.normalTeleportIcon();
+						return config.normalTeleportIcon() && currentWorldMap;
 					case ANCIENT_MAGICKS:
-						return config.ancientTeleportIcon();
+						return config.ancientTeleportIcon() && currentWorldMap;
 					case LUNAR_MAGIC:
-						return config.lunarTeleportIcon();
+						return config.lunarTeleportIcon() && currentWorldMap;
 					case ARCEUUS_MAGIC:
-						return config.arceuusTeleportIcon();
+						return config.arceuusTeleportIcon() && currentWorldMap;
 					case JEWELLERY:
-						return config.jewelleryTeleportIcon();
+						return config.jewelleryTeleportIcon() && currentWorldMap;
 					case SCROLL:
-						return config.scrollTeleportIcon();
+						return config.scrollTeleportIcon() && currentWorldMap;
 					case OTHER:
-						return config.miscellaneousTeleportIcon();
+						return config.miscellaneousTeleportIcon() && currentWorldMap;
 					default:
 						return false;
 				}
@@ -510,6 +530,7 @@ public class WorldMapPlugin extends Plugin
 		if (config.hunterAreaTooltips())
 		{
 			Arrays.stream(HunterAreaLocation.values())
+				.filter(location -> (location.getWorldMapArea() == WorldMapArea.ANY || location.getWorldMapArea() == worldMapArea))
 				.map(l ->
 					MapPoint.builder()
 						.type(MapPoint.Type.HUNTER)

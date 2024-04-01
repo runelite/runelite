@@ -27,6 +27,7 @@ package net.runelite.client.plugins.worldmap;
 
 import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.worldmap.WorldMapArea;
 
 @Getter
 enum TeleportLocationData
@@ -152,7 +153,7 @@ enum TeleportLocationData
 	RING_OF_THE_ELEMENTS_FIRE(TeleportType.OTHER, "Ring of the elements", "Fire Altar", new WorldPoint(3315, 3278, 0), "ring_of_the_elements_teleport_icon.png"),
 	RING_OF_SHADOWS_LASSAR_UNDERCITY(TeleportType.OTHER, "Ring of shadows", "Lassar Undercity", new WorldPoint(2588, 6435, 0), "ring_of_shadows_teleport_icon.png"),
 	RING_OF_SHADOWS_THE_STRANGLEWOOD(TeleportType.OTHER, "Ring of shadows", "The Stranglewood", new WorldPoint(1175, 3422, 0), "ring_of_shadows_teleport_icon.png"),
-	CALCIFIED_MOTH(TeleportType.OTHER, "Calcified Moth", "Cam Torum", new WorldPoint(1439, 9551, 1), "calcified_moth_icon.png"),
+	CALCIFIED_MOTH(TeleportType.OTHER, "Calcified Moth", "Cam Torum", new WorldPoint(1439, 9551, 1), WorldMapArea.CAM_TORUM, "calcified_moth_icon.png"),
 	QUETZAL_WHISTLE(TeleportType.OTHER, "Quetzal Whistle", "Hunter Guild", new WorldPoint(1585, 3053, 0), "quetzal_whistle_teleport_icon.png"),
 
 	// Wilderness
@@ -241,20 +242,28 @@ enum TeleportLocationData
 	private final String tooltip;
 	private final WorldPoint location;
 	private final String iconPath;
+	private final int worldMapArea;
 
 	TeleportLocationData(TeleportType type, String destination, int magicLevel, WorldPoint location, String iconPath)
 	{
 		this.type = type;
 		this.tooltip = type.getPrefix() + " " + destination + " - lvl " + magicLevel;
 		this.location = location;
+		this.worldMapArea = WorldMapArea.ANY;
 		this.iconPath = iconPath;
 	}
 
 	TeleportLocationData(TeleportType type, String item, String destination, WorldPoint location, String iconPath)
 	{
+		this(type, item, destination, location, WorldMapArea.ANY, iconPath);
+	}
+
+	TeleportLocationData(TeleportType type, String item, String destination, WorldPoint location,  int worldMapArea, String iconPath)
+	{
 		this.type = type;
 		this.tooltip = item + " - " + destination;
 		this.location = location;
+		this.worldMapArea = worldMapArea;
 		this.iconPath = iconPath;
 	}
 
@@ -263,6 +272,7 @@ enum TeleportLocationData
 		this.type = type;
 		this.tooltip = item;
 		this.location = location;
+		this.worldMapArea = WorldMapArea.ANY;
 		this.iconPath = iconPath;
 	}
 }

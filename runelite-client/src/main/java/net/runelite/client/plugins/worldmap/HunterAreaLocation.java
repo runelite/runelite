@@ -29,6 +29,7 @@ import com.google.common.base.Joiner;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.worldmap.WorldMapArea;
 
 @Getter
 enum HunterAreaLocation
@@ -67,6 +68,8 @@ enum HunterAreaLocation
 	LAKE_MOLCH(new WorldPoint(1363, 3632, 0), HunterCreature.BLUEGILL, HunterCreature.COMMON_TENCH,
 		HunterCreature.MOTTLED_EEL, HunterCreature.GREATER_SIREN),
 	NECROPOLIS(new WorldPoint(3285, 2739, 0), HunterCreature.ORANGE_SALAMANDER),
+	NEYPOTZLI_EARTHBOUND_CAVERN_NORTH(new WorldPoint(1390, 9709, 0), WorldMapArea.NEYPOTZLI, HunterCreature.MOSSY_LIZARD, HunterCreature.MOONLIGHT_MOTH),
+	NEYPOTZLI_EARTHBOUND_CAVERN_SOUTH(new WorldPoint(1378, 9682, 0), WorldMapArea.NEYPOTZLI, HunterCreature.MOSSY_LIZARD, HunterCreature.MOONLIGHT_MOTH),
 	OURANIA_HUNTER_AREA_EAST(new WorldPoint(2447, 3219, 0), HunterCreature.RED_SALAMANDER),
 	OURANIA_HUNTER_AREA_SOUTH(new WorldPoint(2475, 3240, 0), HunterCreature.RED_SALAMANDER),
 	PISCATORIS_HUNTER_AREA(new WorldPoint(2335, 3584, 0), HunterCreature.COMMON_KEBBIT, HunterCreature.COPPER_LONGTAIL,
@@ -85,10 +88,17 @@ enum HunterAreaLocation
 
 	private final WorldPoint location;
 	private final String tooltip;
+	private final int worldMapArea;
 
 	HunterAreaLocation(WorldPoint location, HunterCreature... creatures)
 	{
+		this(location, WorldMapArea.ANY, creatures);
+	}
+
+	HunterAreaLocation(WorldPoint location, int worldMapArea, HunterCreature... creatures)
+	{
 		this.location = location;
+		this.worldMapArea = worldMapArea;
 		this.tooltip = Joiner.on("<br>").join(creatures);
 	}
 
@@ -121,6 +131,7 @@ enum HunterAreaLocation
 		// IMP and MANIACAL_MONKEY do not have a specific hunter area
 		MOONLIGHT_ANTELOPE("Moonlight Antelope", 91),
 		MOONLIGHT_MOTH("Moonlight Moth", 75),
+		MOSSY_LIZARD("Mossy Lizard", 20),
 		MOTTLED_EEL("Mottled eel", 68),
 		ORANGE_SALAMANDER("Orange salamander", 47),
 		POLAR_KEBBIT("Polar kebbit", 1),
