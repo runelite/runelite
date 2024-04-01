@@ -54,7 +54,7 @@ enum HunterAreaLocation
 	ISLE_OF_SOULS_NORTH(new WorldPoint(2207, 2964, 0), HunterCreature.COPPER_LONGTAIL),
 	ISLE_OF_SOULS_NORTH_WEST(new WorldPoint(2127, 2950, 0), HunterCreature.CHINCHOMPA),
 	ISLE_OF_SOULS_SOUTH_WEST(new WorldPoint(2158, 2822, 0), HunterCreature.CRIMSON_SWIFT),
-	HUNTER_GUILD_CAVERNS(new WorldPoint(1559, 9420, 0), HunterCreature.MOONLIGHT_ANTELOPE),
+	HUNTER_GUILD_CAVERNS(new WorldPoint(1559, 9420, 0), HunterCreature.MOONLIGHT_ANTELOPE, HunterCreature.MOONLIGHT_MOTH),
 	HUNTER_GUILD_NORTH(new WorldPoint(1556, 3091, 0), HunterCreature.SUNLIGHT_MOTH),
 	HUNTER_GUILD_SOUTHEAST(new WorldPoint(1575, 3020, 0), HunterCreature.SUNLIGHT_MOTH),
 	HUNTER_GUILD_WEST(new WorldPoint(1515, 3047, 0), HunterCreature.EMBERTAILED_JERBOA),
@@ -120,6 +120,7 @@ enum HunterAreaLocation
 		HORNED_GRAAHK("Horned graahk", 41),
 		// IMP and MANIACAL_MONKEY do not have a specific hunter area
 		MOONLIGHT_ANTELOPE("Moonlight Antelope", 91),
+		MOONLIGHT_MOTH("Moonlight Moth", 75),
 		MOTTLED_EEL("Mottled eel", 68),
 		ORANGE_SALAMANDER("Orange salamander", 47),
 		POLAR_KEBBIT("Polar kebbit", 1),
