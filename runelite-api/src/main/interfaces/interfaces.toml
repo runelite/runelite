@@ -67,15 +67,15 @@ deposit_equipment=44
 incinerator=46
 incinerator_confirm=47
 equipment_content_container=69
-settings_button=113
-equipment_button=114
-popup=116
+settings_button=114
+equipment_button=115
+popup=117
 
 [bank_equipment]
 id=12
 parent=69
-set_bonus=109
-stat_bonus=121
+set_bonus=110
+stat_bonus=122
 
 [bank_inventory]
 id=15
@@ -299,8 +299,8 @@ inventory_item_container=0
 [equipment_bonuses]
 id=84
 parent=1
-set_bonus=43
-stat_bonus=48
+set_bonus=44
+stat_bonus=49
 
 [equipment_inventory]
 id=85
@@ -364,6 +364,9 @@ magic_icon=76
 bank_container=78
 interface_container=79
 inventory_container=83
+
+[fortis_colosseum_reward]
+id=864
 
 [fossil_island_oxygen_bar]
 id=609
@@ -526,6 +529,9 @@ logout_button=6
 id=81
 looting_bag_inventory=5
 
+[lunar_chest]
+id=868
+
 [minigames]
 id=160
 teleport_button=30
@@ -550,6 +556,10 @@ worldmap_options=53
 [mlm]
 id=382
 container=0
+
+[moons_of_peril]
+id=869
+layer=2
 
 [mortton_temple]
 id=171
@@ -792,11 +802,11 @@ inventory_item_container=0
 id=218
 kourend_home_teleport=4
 catherby_home_teleport=5
-lumbridge_home_teleport=6
-edgeville_home_teleport=100
-lunar_home_teleport=101
-arceuus_home_teleport=145
-fertile_soil=126
+lumbridge_home_teleport=7
+edgeville_home_teleport=103
+lunar_home_teleport=104
+arceuus_home_teleport=148
+fertile_soil=129
 
 [tempoross]
 id=437

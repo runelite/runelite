@@ -54,7 +54,10 @@ enum RareTreeLocation
 		new WorldPoint(2333, 3049, 0),
 
 		// Prifddinas
-		new WorldPoint(3309, 6123, 0)),
+		new WorldPoint(3309, 6123, 0),
+
+		// Varlamore
+		new WorldPoint(1694, 2989, 0)),
 
 	SWAYING("Swaying tree", 40,
 		// The Fremennik Trials
@@ -143,6 +146,10 @@ enum RareTreeLocation
 		new WorldPoint(1553, 3551, 0),
 		new WorldPoint(1496, 3582, 0),
 
+		// Varlamore
+		new WorldPoint(1733, 3119, 0),
+		new WorldPoint(1749, 3106, 0),
+
 		// Tirannwn
 		new WorldPoint(2217, 3141, 0),
 
@@ -226,6 +233,9 @@ enum RareTreeLocation
 		new WorldPoint(1681, 3689, 0),
 		new WorldPoint(1751, 3564, 0),
 		new WorldPoint(1796, 3600, 0),
+
+		// Varlamore
+		new WorldPoint(1394, 3164, 0),
 
 		// Misthalin
 		new WorldPoint(3355, 3312, 0),

@@ -11,7 +11,7 @@ body:
         - Confirm your issue happens in safe mode (with the exception of GPU-plugin related issues).
         - Search for your issue in both [the issue listing](https://github.com/runelite/runelite/issues) and the [Q&A discussion listing](https://github.com/runelite/runelite/discussions/categories/q-a). If you find that it already exists, respond with a reaction or add any further information that may be helpful.
 
-        We do not accept bug reports for 3rd party/pluginhub plugins. Confirm your issue is not caused by a 3rd party plugin by running RuneLite in safe mode via `"%localappdata%\RuneLite\RuneLite.exe" --safe-mode`.
+        We do not accept bug reports for 3rd party/pluginhub plugins. Confirm your issue is not caused by a 3rd party plugin by running RuneLite in [safe mode](https://github.com/runelite/runelite/wiki/FAQ#how-do-i-run-runelite-in-safe-mode).
   - type: dropdown
     attributes:
       label: Type

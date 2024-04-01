@@ -43,6 +43,7 @@ public class FairyRingClue extends ClueScroll implements LocationClueScroll
 	static final List<FairyRingClue> CLUES = ImmutableList.of(
 		new FairyRingClue("A I R 2 3 3 1", new WorldPoint(2702, 3246, 0)),
 		new FairyRingClue("A I Q 0 4 4 0", new WorldPoint(3000, 3110, 0)),
+		new FairyRingClue("A J P 3 0 1 5", new WorldPoint(1646, 3012, 0)),
 		new FairyRingClue("A L P 1 1 4 0", new WorldPoint(2504, 3633, 0)),
 		new FairyRingClue("B L P 6 2 0 0", new WorldPoint(2439, 5132, 0)),
 		new FairyRingClue("B J R 1 1 2 3", new WorldPoint(2648, 4729, 0)),

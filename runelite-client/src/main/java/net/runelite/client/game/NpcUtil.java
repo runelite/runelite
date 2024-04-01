@@ -86,6 +86,7 @@ public class NpcUtil
 			case NpcID.SMALL_LIZARD:
 			case NpcID.SMALL_LIZARD_463:
 			case NpcID.GROWTHLING:
+			case NpcID.BEE_SWARM:
 			// These NPCs die, but transform into forms which are attackable or interactable, so it would be jarring for
 			// them to be considered dead when reaching 0hp.
 			case NpcID.KALPHITE_QUEEN_963:

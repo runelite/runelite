@@ -201,13 +201,12 @@ public class GroundItemsOverlay extends Overlay
 				continue;
 			}
 
-			final Color highlighted = plugin.getHighlighted(new NamedQuantity(item), item.getGePrice(), item.getHaPrice());
-			final Color hidden = plugin.getHidden(new NamedQuantity(item), item.getGePrice(), item.getHaPrice(), item.isTradeable());
+			plugin.updateItemColor(item);
 
-			if (highlighted == null && !plugin.isHotKeyPressed())
+			if (!item.highlighted && !plugin.isHotKeyPressed())
 			{
 				// Do not display hidden items
-				if (hidden != null)
+				if (item.hidden)
 				{
 					continue;
 				}
@@ -219,7 +218,7 @@ public class GroundItemsOverlay extends Overlay
 				}
 			}
 
-			final Color color = plugin.getItemColor(highlighted, hidden);
+			final Color color = item.color;
 
 			if (config.highlightTiles())
 			{
@@ -347,10 +346,10 @@ public class GroundItemsOverlay extends Overlay
 				}
 
 				// Draw hidden box
-				drawRectangle(graphics, itemHiddenBox, topItem && mouseInHiddenBox ? Color.RED : color, hidden != null, true);
+				drawRectangle(graphics, itemHiddenBox, topItem && mouseInHiddenBox ? Color.RED : color, item.hidden, true);
 
 				// Draw highlight box
-				drawRectangle(graphics, itemHighlightBox, topItem && mouseInHighlightBox ? Color.GREEN : color, highlighted != null, false);
+				drawRectangle(graphics, itemHighlightBox, topItem && mouseInHighlightBox ? Color.GREEN : color, item.highlighted, false);
 			}
 
 			// When the hotkey is pressed the hidden/highlight boxes are drawn to the right of the text,

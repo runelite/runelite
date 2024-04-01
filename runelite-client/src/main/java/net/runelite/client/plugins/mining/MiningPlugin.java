@@ -304,7 +304,7 @@ public class MiningPlugin extends Plugin
 			client.setHintArrow(object.getWorldLocation());
 		}
 		// If the Lovakite ore respawns before the timer is up, remove it
-		else if (rock == Rock.LOVAKITE)
+		else if (rock == Rock.LOVAKITE || rock == Rock.CALCIFIED_ROCK)
 		{
 			final WorldPoint point = object.getWorldLocation();
 			respawns.removeIf(rockRespawn -> rockRespawn.getWorldPoint().equals(point));

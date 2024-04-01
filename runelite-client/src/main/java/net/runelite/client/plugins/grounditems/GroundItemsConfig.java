@@ -40,9 +40,11 @@ import net.runelite.client.plugins.grounditems.config.MenuHighlightMode;
 import net.runelite.client.plugins.grounditems.config.PriceDisplayMode;
 import net.runelite.client.plugins.grounditems.config.ValueCalculationMode;
 
-@ConfigGroup("grounditems")
+@ConfigGroup(GroundItemsConfig.GROUP)
 public interface GroundItemsConfig extends Config
 {
+	String GROUP = "grounditems";
+
 	@ConfigSection(
 		name = "Item Lists",
 		description = "The highlighted and hidden item lists",

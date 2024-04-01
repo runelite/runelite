@@ -39,6 +39,7 @@ enum TeleportLocationData
 	CAMELOT_BANK(TeleportType.NORMAL_MAGIC, "Camelot Bank", 45, new WorldPoint(2726, 3485, 0), "camelot_teleport_icon.png"),
 	KOUREND(TeleportType.NORMAL_MAGIC, "Kourend", 48, new WorldPoint(1643, 3672, 0), "kourend_teleport_icon.png"),
 	ARDOUGNE(TeleportType.NORMAL_MAGIC, "Ardougne", 51, new WorldPoint(2664, 3306, 0), "ardougne_teleport_icon.png"),
+	CIVITAS_ILLA_FORTIS(TeleportType.NORMAL_MAGIC, "Civitas illa Fortis", 54, new WorldPoint(1681, 3133, 0), "civitas_illa_fortis_teleport_icon.png"),
 	WATCHTOWER(TeleportType.NORMAL_MAGIC, "Watchtower", 58, new WorldPoint(2547, 3114, 0), "watchtower_teleport_icon.png"),
 	WATCHTOWER_YANILLE(TeleportType.NORMAL_MAGIC, "Watchtower Yanille", 58, new WorldPoint(2584, 3097, 0), "watchtower_teleport_icon.png"),
 	TROLLHEIM(TeleportType.NORMAL_MAGIC, "Trollheim", 61, new WorldPoint(2891, 3678, 0), "trollheim_teleport_icon.png"),
