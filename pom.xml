@@ -197,7 +197,7 @@
 				<version>2.22.2</version>
 				<configuration>
 					<enableAssertions>true</enableAssertions>
-					<argLine>-Xmx512m</argLine>
+					<argLine>-Xmx512m -Duser.language=en -Duser.region=US</argLine>
 					<systemProperties>
 						<glslang.path>${glslang.path}</glslang.path>
 					</systemProperties>
