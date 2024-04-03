@@ -647,7 +647,9 @@ public class LootTrackerPlugin extends Plugin
 	{
 		// For the wiki to determine drop rates based on dmm brackets / identify leagues drops
 		var worldType = client.getWorldType();
-		return worldType.contains(WorldType.SEASONAL) || worldType.contains(WorldType.TOURNAMENT_WORLD) ? client.getWorld() : null;
+		return worldType.contains(WorldType.SEASONAL)
+			|| worldType.contains(WorldType.TOURNAMENT_WORLD)
+			|| worldType.contains(WorldType.BETA_WORLD) ? client.getWorld() : null;
 	}
 
 	@Subscribe
