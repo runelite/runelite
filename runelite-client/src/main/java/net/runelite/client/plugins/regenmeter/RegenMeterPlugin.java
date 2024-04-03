@@ -130,7 +130,9 @@ public class RegenMeterPlugin extends Plugin
 			return;
 		}
 
-		ticksSinceSpecRegen = 0;
+		// Lightbearer switch preserves time until next spec regen if <25 ticks remain
+		// If unequipping Lightbearer, this will always evaluate to 0
+		ticksSinceSpecRegen = Math.max(0, ticksSinceSpecRegen - 25);
 		wearingLightbearer = hasLightbearer;
 	}
 
