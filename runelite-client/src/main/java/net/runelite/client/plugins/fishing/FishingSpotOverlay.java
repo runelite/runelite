@@ -53,8 +53,7 @@ import net.runelite.client.util.ImageUtil;
 
 class FishingSpotOverlay extends Overlay
 {
-	private static final Duration MINNOW_MOVE = Duration.ofSeconds(15);
-	private static final Duration MINNOW_WARN = Duration.ofSeconds(3);
+	private static final float WARN_FRAC = 0.2f;
 	private static final int ONE_TICK_AERIAL_FISHING = 3;
 
 	private final FishingPlugin plugin;
@@ -124,31 +123,6 @@ class FishingSpotOverlay extends Overlay
 				color = config.getOverlayColor();
 			}
 
-			if (spot == FishingSpot.MINNOW && config.showMinnowOverlay())
-			{
-				MinnowSpot minnowSpot = plugin.getMinnowSpots().get(npc.getIndex());
-				if (minnowSpot != null)
-				{
-					long millisLeft = MINNOW_MOVE.toMillis() - Duration.between(minnowSpot.getTime(), Instant.now()).toMillis();
-					if (millisLeft < MINNOW_WARN.toMillis())
-					{
-						color = Color.ORANGE;
-					}
-
-					LocalPoint localPoint = npc.getLocalLocation();
-					Point location = Perspective.localToCanvas(client, localPoint, client.getPlane());
-
-					if (location != null)
-					{
-						ProgressPieComponent pie = new ProgressPieComponent();
-						pie.setFill(color);
-						pie.setBorderColor(color);
-						pie.setPosition(location);
-						pie.setProgress((float) millisLeft / MINNOW_MOVE.toMillis());
-						pie.render(graphics);
-					}
-				}
-			}
 
 			if (config.showSpotTiles())
 			{
@@ -191,10 +165,68 @@ class FishingSpotOverlay extends Overlay
 				}
 			}
 
+			if (plugin.shouldDrawTimer(spot))
+			{
+				TrackedFishingSpot trackedFishingSpot = plugin.getTrackedFishingSpots().get(npc.getIndex());
+				if (trackedFishingSpot != null)
+				{
+					final long elapsedMillis = Duration.between(trackedFishingSpot.getTime(), Instant.now()).toMillis();
+					final long totalMillis = getMaxSpotTime(spot).toMillis();
+					final float progress = (float)elapsedMillis / (float)totalMillis;
+					final Color warnColor = config.getWarningOverlayColor();
+					if ((1 - progress) < WARN_FRAC)
+					{
+						color = warnColor;
+					}
+					else
+					{
+						final float lerpFrac = progress / ((1 - WARN_FRAC));
+						final float[] a = color.getRGBComponents(null);
+						final float[] b = warnColor.getRGBComponents(null);
+						float[] lerpComponents = {0f, 0f, 0f, 0f};
+						for (int i = 0; i < 4; ++i)
+						{
+							lerpComponents[i] = a[i] + lerpFrac * (b[i] - a[i]);
+						}
+						color = new Color(lerpComponents[0], lerpComponents[1], lerpComponents[2], lerpComponents[3]);
+					}
+
+					LocalPoint localPoint = npc.getLocalLocation();
+					localPoint = new LocalPoint(localPoint.getX() - 32, localPoint.getY() - 32);
+					Point location = Perspective.localToCanvas(client, localPoint, client.getPlane());
+
+					if (location != null)
+					{
+						ProgressPieComponent pie = new ProgressPieComponent();
+						pie.setFill(color);
+						pie.setBorderColor(color);
+						pie.setPosition(location);
+						pie.setProgress(progress);
+						pie.setDiameter(15);
+						pie.render(graphics);
+
+					}
+				}
+			}
+
 			previousSpot = spot;
 			previousLocation = npc.getWorldLocation();
 		}
 
 		return null;
+	}
+
+
+	public Duration getMaxSpotTime(FishingSpot spot)
+	{
+		switch (spot)
+		{
+			case MINNOW:
+				return Duration.ofSeconds(15);
+			default:
+				// 530 ticks, as per the wiki: https://oldschool.runescape.wiki/w/Fishing_spots
+				// The wiki claims that Anglerfish spots last longer than normal spots but this didn't seem to be true in testing.
+				return Duration.ofMinutes(5).plus(Duration.ofSeconds(18));
+		}
 	}
 }
