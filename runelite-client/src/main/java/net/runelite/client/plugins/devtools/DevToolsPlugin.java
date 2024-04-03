@@ -38,6 +38,9 @@ import java.awt.event.AWTEventListener;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import static java.lang.Math.min;
+
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 import javax.inject.Inject;
@@ -53,10 +56,13 @@ import net.runelite.api.IndexedSprite;
 import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
+import net.runelite.api.Model;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
+import net.runelite.api.RuneLiteObject;
 import net.runelite.api.Skill;
 import net.runelite.api.VarbitComposition;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.CommandExecuted;
@@ -65,6 +71,7 @@ import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.StatChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.kit.KitType;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageBuilder;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
@@ -96,6 +103,9 @@ public class DevToolsPlugin extends Plugin
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private ClientThread clientThread;
 
 	@Inject
 	private ClientToolbar clientToolbar;
@@ -541,6 +551,51 @@ public class DevToolsPlugin extends Plugin
 					.type(ChatMessageType.GAMEMESSAGE)
 					.runeLiteFormattedMessage(builder.build())
 					.build());
+				break;
+			}
+			case "spawnobject":
+			{
+				final int id = Integer.parseInt(args[0]);
+				final LocalPoint objectLocation = client.getLocalPlayer().getLocalLocation();
+
+				if (objectLocation == null)
+				{
+					break;
+				}
+
+				final RuneLiteObject newObject = client.createRuneLiteObject();
+				Model newModel = client.loadModel(id);
+
+				if (newModel == null)
+				{
+					final Instant loadTimeOutInstant = Instant.now().plus(Duration.ofSeconds(5));
+
+					clientThread.invoke(() ->
+					{
+						if (Instant.now().isAfter(loadTimeOutInstant))
+						{
+							return true;
+						}
+
+						Model reloadedModel = client.loadModel(id);
+
+						if (reloadedModel == null)
+						{
+							return false;
+						}
+
+						newObject.setModel(reloadedModel);
+
+						return true;
+					});
+				}
+				else
+				{
+					newObject.setModel(newModel);
+				}
+
+				newObject.setLocation(objectLocation, client.getPlane());
+				newObject.setActive(true);
 				break;
 			}
 		}
