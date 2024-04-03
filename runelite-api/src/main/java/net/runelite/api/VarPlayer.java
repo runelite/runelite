@@ -240,4 +240,9 @@ public final class VarPlayer
 	 * Assigned slayer task location. The mapping of value to name can be found in {@link EnumID#SLAYER_TASK_LOCATION}
 	 */
 	public static final int SLAYER_TASK_LOCATION = 2096;
+
+	/**
+	 * The maximum glory achieved in the Fortis Colosseum minigame
+	 */
+	public static final int FORTIS_COLOSSEUM_GLORY = 4130;
 }
