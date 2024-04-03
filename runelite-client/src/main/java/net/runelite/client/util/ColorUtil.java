@@ -153,6 +153,18 @@ public class ColorUtil
 	}
 
 	/**
+	 * Gets the same RGB color with the specified alpha multiplier.
+	 *
+	 * @param color           The RGB color to use.
+	 * @param alphaMultiplier The alpha multiplier.
+	 * @return                A Color with the given RGB and multiplied alpha.
+	 */
+	public static Color colorWithAlphaMultiplier(Color color, double alphaMultiplier)
+	{
+		return colorWithAlpha(color, (int) (color.getAlpha() * alphaMultiplier));
+	}
+
+	/**
 	 * Determines if the passed hex string is an alpha hex color.
 	 *
 	 * @param hex The hex to test.

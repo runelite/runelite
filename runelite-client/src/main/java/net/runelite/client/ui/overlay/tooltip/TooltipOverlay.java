@@ -115,6 +115,7 @@ public class TooltipOverlay extends Overlay
 				final TooltipComponent tooltipComponent = new TooltipComponent();
 				tooltipComponent.setModIcons(client.getModIcons());
 				tooltipComponent.setText(tooltip.getText());
+				tooltipComponent.setAlphaMultiplier(tooltip.getAlphaModifier());
 				tooltipComponent.setBackgroundColor(runeLiteConfig.overlayBackgroundColor());
 				entity = tooltipComponent;
 			}
