@@ -116,6 +116,7 @@ public class Notifier
 	private final String appName;
 	private final Path notifyIconPath;
 	private boolean terminalNotifierAvailable;
+	private boolean readyToCancelFlash;
 	private Instant flashStart;
 	private long mouseLastPressedMillis;
 	private long lastClipMTime = CLIP_MTIME_UNLOADED;
@@ -243,6 +244,14 @@ public class Notifier
 			return;
 		}
 
+		// Any interaction with the client since the notification started will cancel it after the minimum duration
+		if ((client.getMouseIdleTicks() < MINIMUM_FLASH_DURATION_TICKS
+			|| client.getKeyboardIdleTicks() < MINIMUM_FLASH_DURATION_TICKS
+			|| client.getMouseLastPressedMillis() > mouseLastPressedMillis) && clientUI.isFocused())
+		{
+			readyToCancelFlash = true;
+		}
+
 		if (Instant.now().minusMillis(MINIMUM_FLASH_DURATION_MILLIS).isAfter(flashStart))
 		{
 			switch (flashNotification)
@@ -250,15 +259,14 @@ public class Notifier
 				case FLASH_TWO_SECONDS:
 				case SOLID_TWO_SECONDS:
 					flashStart = null;
+					readyToCancelFlash = false;
 					return;
 				case SOLID_UNTIL_CANCELLED:
 				case FLASH_UNTIL_CANCELLED:
-					// Any interaction with the client since the notification started will cancel it after the minimum duration
-					if ((client.getMouseIdleTicks() < MINIMUM_FLASH_DURATION_TICKS
-						|| client.getKeyboardIdleTicks() < MINIMUM_FLASH_DURATION_TICKS
-						|| client.getMouseLastPressedMillis() > mouseLastPressedMillis) && clientUI.isFocused())
+					if (readyToCancelFlash)
 					{
 						flashStart = null;
+						readyToCancelFlash = false;
 						return;
 					}
 					break;
