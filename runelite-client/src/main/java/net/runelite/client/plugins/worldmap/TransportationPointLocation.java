@@ -82,7 +82,7 @@ enum TransportationPointLocation
 
 	//Row Boats
 	ROW_BOAT_BATTLEFRONT("Rowboat to Molch/Molch Island/Shayzien", new WorldPoint(1383, 3663, 0)),
-	ROW_BOAT_BRAIN_DEATH("Rowboat to Port Phasmatys", new WorldPoint(2161, 5117, 0), new WorldPoint(3680, 3538, 0)),
+	ROW_BOAT_BRAIN_DEATH("Rowboat to Port Phasmatys", new WorldPoint(2161, 5117, 0)),
 	ROW_BOAT_BURGH_DE_ROTT("Rowboat to Meiyerditch / Icyene Graveyard / Slepe", new WorldPoint(3525, 3169, 0)),
 	ROW_BOAT_CRABCLAW("Rowboat to Hosidius", new WorldPoint(1780, 3417, 0), new WorldPoint(1779, 3457, 0)),
 	ROW_BOAT_DIVING_ISLAND("Rowboat to Barge/Camp/North of Island", new WorldPoint(3764, 3901, 0)),
@@ -102,7 +102,7 @@ enum TransportationPointLocation
 	ROW_BOAT_MUSHROOM_FOREST_WEST("Rowboat to Lithkren", new WorldPoint(3659, 3849, 0), new WorldPoint(3582, 3973, 0)),
 	ROW_BOAT_MUSHROOM_FOREST_NE("Rowboat to Barge/Camp/Sea", new WorldPoint(3733, 3894, 0)),
 	ROW_BOAT_PORT_PHASMATYS_NORTH("Rowboat to Slepe", new WorldPoint(3670, 3545, 0), new WorldPoint(3661, 3279, 0)),
-	ROW_BOAT_PORT_PHASMATYS_EAST("Rowboat to Braindeath Island", new WorldPoint(3680, 3538, 0), new WorldPoint(2161, 5117, 0)),
+	ROW_BOAT_PORT_PHASMATYS_EAST("Rowboat to Braindeath Island", new WorldPoint(3680, 3538, 0)),
 	ROW_BOAT_SHAYZIEN("Rowboat to Molch/Molch Island/Battlefront", new WorldPoint(1405, 3612, 0)),
 	ROW_BOAT_SLEPE("Rowboat to Burgh de Rott/Icyne Graveyard/Meiyerditch/Port Phasmatys", new WorldPoint(3661, 3279, 0), new WorldPoint(3670, 3545, 0)),
 	ROW_BOAT_MOUNT_QUIDAMORTEM("Rowboat to The Stranglewood", new WorldPoint(1228, 3470, 0), new WorldPoint(1193, 3452, 0)),
