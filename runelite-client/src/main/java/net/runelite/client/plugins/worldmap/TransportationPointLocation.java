@@ -217,6 +217,8 @@ enum TransportationPointLocation
 	PORTAL_BOUNTY_HUNTER_TO_FEROX("", new WorldPoint(3422, 4064, 0), new WorldPoint(3137, 3622, 0)),
 	PORTAL_FEROX_TO_BOUNTY_HUNTER("", new WorldPoint(3137, 3622, 0), new WorldPoint(3422, 4064, 0)),
 	PORTAL_FEROX_TO_CASTLE_WARS("", new WorldPoint(3145, 3639, 0), new WorldPoint(2439, 3092, 0)),
+	PORTAL_LUMBRIDGE_TO_THE_NODE("Portal to The Node", new WorldPoint(3216, 3235, 0), new WorldPoint(3091, 3039, 0)),
+	PORTAL_THE_NODE_TO_LUMBRIDGE("Portal to Lumbridge", new WorldPoint(3091, 3039, 0), new WorldPoint(3216, 3235, 0)),
 	PRIFDDINAS_GRAND_LIBRARY_PORTAL("Portal to Lletya", new WorldPoint(2814, 6088, 0)),
 	SOUL_WARS_PORTAL("Portal to Edgeville/Ferox Enclave", new WorldPoint(2204, 2858, 0)),
 	TELEPORTER_THE_PALACE("Teleporter - The Palace", new WorldPoint(2592, 6424, 0)),
