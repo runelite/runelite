@@ -205,6 +205,7 @@ enum MiningSiteLocation
 	SLEPE_UNDERGROUND(new WorldPoint(3888, 9749, 0), new Rock(6, Ore.IRON), new Rock(14, Ore.COAL)),
 	STONECUTTER_OUTPOST(new WorldPoint(1747, 2955, 0), new Rock(5, Ore.CLAY), new Rock(6, Ore.IRON), new Rock(4, Ore.SILVER), new Rock(10, Ore.COAL), new Rock(3, Ore.GOLD), new Rock(4, Ore.MITHRIL)),
 	STRANGLEWOOD_MINE(new WorldPoint(1169, 3323, 0), new Rock(3, Ore.IRON), new Rock(3, Ore.COAL), new Rock(3, Ore.MITHRIL), new Rock(3, Ore.ADAMANTITE), new Rock(1, Ore.RUNITE)),
+	THE_NODE(new WorldPoint(3106, 3012, 0), new Rock(4, Ore.IRON)),
 	TRAHEARN(new WorldPoint(3295, 12387, 0),
 		new Rock(26, Ore.IRON), new Rock(8, Ore.SILVER), new Rock(19, Ore.COAL), new Rock(14, Ore.GOLD),
 		new Rock(7, Ore.MITHRIL), new Rock(10, Ore.SOFT_CLAY), new Rock(7, Ore.ADAMANTITE), new Rock(4, Ore.RUNITE)),
