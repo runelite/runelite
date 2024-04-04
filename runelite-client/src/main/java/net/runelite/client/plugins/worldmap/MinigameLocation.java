@@ -39,7 +39,7 @@ enum MinigameLocation
 	BURGH_DE_ROTT_RAMBLE("Burgh de Rott Ramble", new WorldPoint(3434, 3487, 0)),
 	BURTHORPE_GAMES_ROOM("Burthorpe Games Room", new WorldPoint(2900, 3565, 0)),
 	CASTLE_WARS("Castle Wars", new WorldPoint(2439, 3092, 0)),
-	CASTLE_WARS_PORTAL("Castle Wars Portal", new WorldPoint(3140, 3626, 0)),
+	CASTLE_WARS_PORTAL("Castle Wars Portal", new WorldPoint(3145, 3639, 0)),
 	CATAPULT_ROOM("Catapult Room", new WorldPoint(2842, 3545, 0)),
 	CLAN_WARS("Clan Wars", new WorldPoint(3129, 3622, 0)),
 	DUMMY_ROOM("Dummy Room", new WorldPoint(2857, 3551, 0)),
