@@ -103,4 +103,15 @@ public interface CannonConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			keyName = "cannonCounterTextSize",
+			name = "Counter text size",
+			description = "Configures the size of the cannon counter text",
+			position = 7
+	)
+	default int cannonCounterTextSize()
+	{
+		return 14;
+	}
 }

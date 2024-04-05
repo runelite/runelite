@@ -53,6 +53,7 @@ class CannonOverlay extends Overlay
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(PRIORITY_MED);
+		setCounterTextSize(config.cannonCounterTextSize());
 		this.client = client;
 		this.config = config;
 		this.plugin = plugin;
@@ -138,5 +139,10 @@ class CannonOverlay extends Overlay
 				OverlayUtil.renderPolygon(graphics, poly, color);
 			}
 		}
+	}
+
+	public void setCounterTextSize(int size)
+	{
+		textComponent.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, size));
 	}
 }

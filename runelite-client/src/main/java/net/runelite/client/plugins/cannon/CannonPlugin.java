@@ -213,6 +213,8 @@ public class CannonPlugin extends Plugin
 	{
 		if (event.getGroup().equals("cannon"))
 		{
+			cannonOverlay.setCounterTextSize(config.cannonCounterTextSize());
+
 			if (!config.showInfobox())
 			{
 				removeCounter();
