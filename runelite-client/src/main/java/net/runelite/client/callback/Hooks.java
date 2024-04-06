@@ -79,7 +79,6 @@ import net.runelite.client.ui.overlay.OverlayRenderer;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.DeferredEventBus;
 import net.runelite.client.util.LinkBrowser;
-import net.runelite.client.util.OSType;
 import net.runelite.client.util.RSTimeUnit;
 
 /**
@@ -472,8 +471,7 @@ public class Hooks implements Callbacks
 	private Image screenshot(Image src)
 	{
 		// scale source image to the size of the client ui
-		final AffineTransform transform = OSType.getOSType() == OSType.MacOS ? new AffineTransform() :
-			clientUi.getGraphicsConfiguration().getDefaultTransform();
+		final AffineTransform transform = clientUi.getGraphicsConfiguration().getDefaultTransform();
 		int swidth = src.getWidth(null);
 		int sheight = src.getHeight(null);
 		int twidth = (int) (swidth * transform.getScaleX() + .5);
