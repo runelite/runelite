@@ -41,10 +41,12 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.cache.definitions.AreaDefinition;
+import net.runelite.cache.definitions.FontDefinition;
 import net.runelite.cache.definitions.ObjectDefinition;
 import net.runelite.cache.definitions.OverlayDefinition;
 import net.runelite.cache.definitions.SpriteDefinition;
 import net.runelite.cache.definitions.UnderlayDefinition;
+import net.runelite.cache.definitions.WorldMapElementDefinition;
 import net.runelite.cache.definitions.loaders.OverlayLoader;
 import net.runelite.cache.definitions.loaders.SpriteLoader;
 import net.runelite.cache.definitions.loaders.UnderlayLoader;
@@ -94,6 +96,8 @@ public class MapImageDumper
 	private final RegionLoader regionLoader;
 	private final AreaManager areas;
 	private final SpriteManager sprites;
+	private final FontManager fonts;
+	private final WorldMapManager worldMapManager;
 	private RSTextureProvider rsTextureProvider;
 	private final ObjectManager objectManager;
 
@@ -119,6 +123,10 @@ public class MapImageDumper
 
 	@Getter
 	@Setter
+	private boolean renderLabels = true;
+
+	@Getter
+	@Setter
 	private boolean transparency = false;
 
 	@Getter
@@ -136,6 +144,8 @@ public class MapImageDumper
 		this.regionLoader = regionLoader;
 		this.areas = new AreaManager(store);
 		this.sprites = new SpriteManager(store);
+		this.fonts = new FontManager(store);
+		this.worldMapManager = new WorldMapManager(store);
 		this.objectManager = new ObjectManager(store);
 	}
 
@@ -218,6 +228,8 @@ public class MapImageDumper
 		areas.load();
 		sprites.load();
 		loadSprites();
+		fonts.load();
+		worldMapManager.load();
 
 		return this;
 	}
@@ -253,6 +265,7 @@ public class MapImageDumper
 		drawMap(image, z);
 		drawObjects(image, z);
 		drawMapIcons(image, z);
+		drawMapLabels(image, z);
 
 		return image;
 	}
@@ -919,6 +932,57 @@ public class MapImageDumper
 		}
 	}
 
+	private void drawMapLabels(BufferedImage image, int z)
+	{
+		if (!renderLabels)
+		{
+			return;
+		}
+
+		FontName[] fontSizes = new FontName[] { FontName.VERDANA_11,  FontName.VERDANA_13,  FontName.VERDANA_15 };
+		List<WorldMapElementDefinition> elements = worldMapManager.getElements();
+		for (WorldMapElementDefinition element : elements)
+		{
+			AreaDefinition area = areas.getArea(element.getAreaDefinitionId());
+			if (area == null || area.getName() == null || element.getPosition().getZ() != z)
+			{
+				continue;
+			}
+
+			FontName fontSize = fontSizes[area.getTextScale()];
+			FontDefinition font = fonts.findFontByName(fontSize.getName());
+			String areaLabel = area.getName();
+			String[] lines = areaLabel.split("<br>");
+			int ascent = 0;
+
+			for (String line : lines)
+			{
+				int advance = 0;
+				int stringWidth = font.stringWidth(line);
+				for (int i = 0; i < line.length(); ++i)
+				{
+					char c = line.charAt(i);
+					SpriteDefinition sprite = sprites.findSpriteByArchiveName(fontSize.getName(), c);
+					if (sprite.getWidth() != 0 && sprite.getHeight() != 0)
+					{
+						Position position = element.getPosition();
+						int drawX = position.getX() - regionLoader.getLowestX().getBaseX();
+						int drawY = regionLoader.getHighestY().getBaseY() - position.getY() + Region.Y - 2;
+						blitGlyph(image,
+								(drawX * MAP_SCALE) + advance - (stringWidth / 2),
+								(drawY * MAP_SCALE) + ascent - (font.getAscent() / 2),
+								area.getTextColor(),
+								sprite
+						);
+					}
+
+					advance += font.getAdvances()[c];
+				}
+				ascent += font.getAscent() / 2;
+			}
+		}
+	}
+
 	private ObjectDefinition findObject(int id)
 	{
 		return objectManager.getObject(id);
@@ -1163,5 +1227,28 @@ public class MapImageDumper
 				}
 			}
 		}
+	}
+
+	private void blitGlyph(BufferedImage dst, int x, int y, int color, SpriteDefinition glyph)
+	{
+		int[] pixels = glyph.getPixels();
+		int[] shadowPixels = new int[pixels.length];
+		for (int i = 0; i < pixels.length; ++i)
+		{
+			if (pixels[i] != 0)
+			{
+				pixels[i] = color;
+				shadowPixels[i] = 0xFF000000;
+			}
+		}
+		SpriteDefinition shadow = new SpriteDefinition();
+		shadow.setPixels(shadowPixels);
+		shadow.setOffsetX(glyph.getOffsetX());
+		shadow.setOffsetY(glyph.getOffsetY());
+		shadow.setWidth(glyph.getWidth());
+		shadow.setHeight(glyph.getHeight());
+
+		blitIcon(dst, x + 1, y + 1, shadow);
+		blitIcon(dst, x, y, glyph);
 	}
 }
