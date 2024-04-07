@@ -40,13 +40,13 @@ public class WorldMapCompositeLoader
 		int worldData0Count = in.readUnsignedShort();
 		for (int i = 0; i < worldData0Count; ++i)
 		{
-			worldMapCompositeDefinition.worldMapData0Definitions.add(worldMapDataLoader.load0(in));
+			worldMapCompositeDefinition.mapSquareDefinitions.add(worldMapDataLoader.loadMapSquare(in));
 		}
 
 		int worldData1Amount = in.readUnsignedShort();
 		for (int i = 0; i < worldData1Amount; ++i)
 		{
-			worldMapCompositeDefinition.worldMapData1Definitions.add(worldMapDataLoader.load1(in));
+			worldMapCompositeDefinition.zoneDefinitions.add(worldMapDataLoader.loadZone(in));
 		}
 
 		int iconAmount = in.readUnsignedShort();

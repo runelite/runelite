@@ -33,7 +33,7 @@ import java.util.Set;
 @Data
 public class WorldMapCompositeDefinition
 {
-	public final Set<WorldMapData0Definition> worldMapData0Definitions = new HashSet<>();
-	public final Set<WorldMapData1Definition> worldMapData1Definitions = new HashSet<>();
+	public final Set<MapSquareDefinition> mapSquareDefinitions = new HashSet<>();
+	public final Set<ZoneDefinition> zoneDefinitions = new HashSet<>();
 	public final List<WorldMapElementDefinition> worldMapElementDefinitions = new ArrayList<>();
 }

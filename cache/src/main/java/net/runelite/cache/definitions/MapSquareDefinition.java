@@ -25,16 +25,27 @@
 package net.runelite.cache.definitions;
 
 import lombok.Data;
+import lombok.ToString;
 
 @Data
-public abstract class AbstractWorldMapDataDefinition
+@ToString(callSuper = true)
+public class MapSquareDefinition extends AbstractWorldMapDataDefinition
 {
-	public int minLevel;
-	public int levels;
-	public int displaySquareX;
-	public int displaySquareZ;
-	public int sourceSquareX;
-	public int sourceSquareZ;
-	public int groupId;
-	public int fileId;
+	public boolean equals(Object obj)
+	{
+		if (!(obj instanceof MapSquareDefinition))
+		{
+			return false;
+		}
+		else
+		{
+			MapSquareDefinition other = (MapSquareDefinition) obj;
+			return other.sourceSquareX == this.sourceSquareX && other.sourceSquareZ == this.sourceSquareZ;
+		}
+	}
+
+	public int hashCode()
+	{
+		return this.sourceSquareX | this.sourceSquareZ << 8;
+	}
 }

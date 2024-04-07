@@ -24,13 +24,13 @@
  */
 package net.runelite.cache.definitions.loaders;
 
-import net.runelite.cache.definitions.WorldMapData0Definition;
-import net.runelite.cache.definitions.WorldMapData1Definition;
+import net.runelite.cache.definitions.MapSquareDefinition;
+import net.runelite.cache.definitions.ZoneDefinition;
 import net.runelite.cache.io.InputStream;
 
 public class WorldMapDataLoader
 {
-	public WorldMapData0Definition load0(InputStream in)
+	public MapSquareDefinition loadMapSquare(InputStream in)
 	{
 		int worldMapDataType = in.readUnsignedByte();
 
@@ -39,20 +39,20 @@ public class WorldMapDataLoader
 			throw new RuntimeException("Expected worldMapDataType 0 got " + worldMapDataType);
 		}
 
-		WorldMapData0Definition worldMapData0Definition = new WorldMapData0Definition();
-		worldMapData0Definition.field1 = in.readUnsignedByte();
-		worldMapData0Definition.planes = in.readUnsignedByte();
-		worldMapData0Definition.field2 = in.readUnsignedShort();
-		worldMapData0Definition.field3 = in.readUnsignedShort();
-		worldMapData0Definition.regionX = in.readUnsignedShort();
-		worldMapData0Definition.regionY = in.readUnsignedShort();
-		worldMapData0Definition.archiveId = in.readBigSmart2();
-		worldMapData0Definition.fileId = in.readBigSmart2();
+		MapSquareDefinition mapSquareDefinition = new MapSquareDefinition();
+		mapSquareDefinition.minLevel = in.readUnsignedByte();
+		mapSquareDefinition.levels = in.readUnsignedByte();
+		mapSquareDefinition.displaySquareX = in.readUnsignedShort();
+		mapSquareDefinition.displaySquareZ = in.readUnsignedShort();
+		mapSquareDefinition.sourceSquareX = in.readUnsignedShort();
+		mapSquareDefinition.sourceSquareZ = in.readUnsignedShort();
+		mapSquareDefinition.groupId = in.readBigSmart2();
+		mapSquareDefinition.fileId = in.readBigSmart2();
 
-		return worldMapData0Definition;
+		return mapSquareDefinition;
 	}
 
-	public WorldMapData1Definition load1(InputStream in)
+	public ZoneDefinition loadZone(InputStream in)
 	{
 		int worldMapDataType = in.readUnsignedByte();
 
@@ -61,20 +61,20 @@ public class WorldMapDataLoader
 			throw new RuntimeException("Expected worldMapDataType 1 got " + worldMapDataType);
 		}
 
-		WorldMapData1Definition worldMapData1Definition = new WorldMapData1Definition();
-		worldMapData1Definition.field1 = in.readUnsignedByte();
-		worldMapData1Definition.planes = in.readUnsignedByte();
-		worldMapData1Definition.field2 = in.readUnsignedShort();
-		worldMapData1Definition.field3 = in.readUnsignedShort();
-		worldMapData1Definition.chunkXLow = in.readUnsignedByte();
-		worldMapData1Definition.chunkYLow = in.readUnsignedByte();
-		worldMapData1Definition.regionX = in.readUnsignedShort();
-		worldMapData1Definition.regionY = in.readUnsignedShort();
-		worldMapData1Definition.chunkX = in.readUnsignedByte();
-		worldMapData1Definition.chunkY = in.readUnsignedByte();
-		worldMapData1Definition.archiveId = in.readBigSmart2();
-		worldMapData1Definition.fileId = in.readBigSmart2();
+		ZoneDefinition zoneDefinition = new ZoneDefinition();
+		zoneDefinition.minLevel = in.readUnsignedByte();
+		zoneDefinition.levels = in.readUnsignedByte();
+		zoneDefinition.displaySquareX = in.readUnsignedShort();
+		zoneDefinition.displaySquareZ = in.readUnsignedShort();
+		zoneDefinition.displayZoneX = in.readUnsignedByte();
+		zoneDefinition.displayZoneY = in.readUnsignedByte();
+		zoneDefinition.sourceSquareX = in.readUnsignedShort();
+		zoneDefinition.sourceSquareZ = in.readUnsignedShort();
+		zoneDefinition.sourceZoneX = in.readUnsignedByte();
+		zoneDefinition.sourceZoneZ = in.readUnsignedByte();
+		zoneDefinition.groupId = in.readBigSmart2();
+		zoneDefinition.fileId = in.readBigSmart2();
 
-		return worldMapData1Definition;
+		return zoneDefinition;
 	}
 }
