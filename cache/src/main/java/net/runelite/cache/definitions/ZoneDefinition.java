@@ -52,6 +52,6 @@ public class ZoneDefinition extends AbstractWorldMapDataDefinition
 
 	public int hashCode()
 	{
-		return this.sourceSquareX | this.sourceSquareX << 8 | this.sourceZoneX << 16 | this.sourceZoneZ << 24;
+		return this.sourceSquareX | this.sourceSquareZ << 8 | this.sourceZoneX << 16 | this.sourceZoneZ << 24;
 	}
 }
