@@ -43,6 +43,7 @@ import static net.runelite.api.NullObjectID.NULL_31849;
 import static net.runelite.api.NullObjectID.NULL_31852;
 import static net.runelite.api.NullObjectID.NULL_33327;
 import static net.runelite.api.NullObjectID.NULL_33328;
+import static net.runelite.api.NullObjectID.NULL_37273;
 import static net.runelite.api.NullObjectID.NULL_39541;
 import static net.runelite.api.NullObjectID.NULL_39542;
 import static net.runelite.api.NullObjectID.NULL_40960;
@@ -94,7 +95,9 @@ public enum AgilityShortcut
 			// Witchaven Dungeon
 			SHORTCUT,
 			// Ungael
-			NULL_25337, NULL_29869, NULL_31823, ICE_CHUNKS_31824, ICE_CHUNKS_31990, ICE_CHUNKS_47324, NULL_47325),
+			NULL_25337, NULL_29869, NULL_31823, ICE_CHUNKS_31824, ICE_CHUNKS_31990, ICE_CHUNKS_47324, NULL_47325,
+			// Poison Waste
+			NULL_37273),
 	WEISS_BROKEN_FENCE(1, "Shortcut", null, /* base id */ NullObjectID.NULL_46815)
 	{
 		@Override
