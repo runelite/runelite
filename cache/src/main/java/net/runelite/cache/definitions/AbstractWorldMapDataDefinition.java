@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2024, Christopher Brown <christoabrown@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,94 +22,19 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.cache.definitions;
 
-package net.runelite.cache.region;
+import lombok.Data;
 
-public class Position
+@Data
+public abstract class AbstractWorldMapDataDefinition
 {
-	private final int x;
-	private final int y;
-	private final int z;
-
-	public Position(int x, int y, int z)
-	{
-		this.x = x;
-		this.y = y;
-		this.z = z;
-	}
-
-	public static Position fromPacked(int packedPosition)
-	{
-		if (packedPosition == -1)
-		{
-			return new Position(-1, -1, -1);
-		}
-
-		int z = packedPosition >> 28 & 3;
-		int x = packedPosition >> 14 & 16383;
-		int y = packedPosition & 16383;
-		return new Position(x, y, z);
-	}
-
-	@Override
-	public String toString()
-	{
-		return "Position{" + "x=" + x + ", y=" + y + ", z=" + z + '}';
-	}
-
-	@Override
-	public int hashCode()
-	{
-		int hash = 7;
-		hash = 67 * hash + this.x;
-		hash = 67 * hash + this.y;
-		hash = 67 * hash + this.z;
-		return hash;
-	}
-
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (this == obj)
-		{
-			return true;
-		}
-		if (obj == null)
-		{
-			return false;
-		}
-		if (getClass() != obj.getClass())
-		{
-			return false;
-		}
-		final Position other = (Position) obj;
-		if (this.x != other.x)
-		{
-			return false;
-		}
-		if (this.y != other.y)
-		{
-			return false;
-		}
-		if (this.z != other.z)
-		{
-			return false;
-		}
-		return true;
-	}
-
-	public int getX()
-	{
-		return x;
-	}
-
-	public int getY()
-	{
-		return y;
-	}
-
-	public int getZ()
-	{
-		return z;
-	}
+	public int minLevel;
+	public int levels;
+	public int displaySquareX;
+	public int displaySquareZ;
+	public int sourceSquareX;
+	public int sourceSquareZ;
+	public int groupId;
+	public int fileId;
 }
