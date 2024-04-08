@@ -139,7 +139,7 @@ public interface SlayerConfig extends Config
 		position = 9,
 		keyName = "weaknessPrompt",
 		name = "Show Monster Weakness",
-		description = "Show an overlay on a monster when it is weak enough to finish off (Only Lizards, Gargoyles & Rockslugs)"
+		description = "Show an overlay on a monster when it is weak enough to finish off (Only Lizards, Gargoyles, Rockslugs & Zygomites)"
 	)
 	default boolean weaknessPrompt()
 	{
