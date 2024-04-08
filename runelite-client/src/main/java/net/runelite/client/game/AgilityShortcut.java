@@ -111,7 +111,9 @@ public enum AgilityShortcut
 			// Weiss Farming Patch
 			LITTLE_BOULDER,
 			// The Abyss
-			PASSAGE_27054, PASSAGE_27055),
+			PASSAGE_27054, PASSAGE_27055,
+			// Nature Grotto
+			BRIDGE_3522),
 	KARAMJA_GLIDER_LOG(1, "Log Balance", new WorldPoint(2906, 3050, 0), A_WOODEN_LOG),
 	WEISS_BROKEN_FENCE(1, "Shortcut", null, /* base id */ NullObjectID.NULL_46815)
 	{
