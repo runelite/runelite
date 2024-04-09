@@ -29,7 +29,6 @@ import java.util.regex.Pattern;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import joptsimple.internal.Strings;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
 import net.runelite.api.events.ChatMessage;
@@ -45,7 +44,6 @@ import net.runelite.client.util.Text;
 	description = "Replaces common emoticons such as :) with their corresponding emoji in the chat",
 	enabledByDefault = false
 )
-@Slf4j
 public class EmojiPlugin extends Plugin
 {
 	private static final Pattern WHITESPACE_REGEXP = Pattern.compile("[\\s\\u00A0]");

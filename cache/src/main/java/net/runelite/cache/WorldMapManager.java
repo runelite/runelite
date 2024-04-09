@@ -24,7 +24,6 @@
  */
 package net.runelite.cache;
 
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.cache.definitions.WorldMapCompositeDefinition;
 import net.runelite.cache.definitions.WorldMapElementDefinition;
 import net.runelite.cache.definitions.loaders.WorldMapCompositeLoader;
@@ -38,7 +37,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Slf4j
 public class WorldMapManager
 {
 	private final Store store;
