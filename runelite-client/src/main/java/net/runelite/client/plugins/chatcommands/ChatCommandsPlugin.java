@@ -2497,6 +2497,13 @@ public class ChatCommandsPlugin extends Plugin
 			case "vard awakened":
 				return "Vardorvis (awakened)";
 
+			// lunar chest variants
+			case "lunar chests":
+			case "perilous moons":
+			case "perilous moon":
+			case "moons of peril":
+				return "Lunar Chest";
+
 			default:
 				return WordUtils.capitalize(boss);
 		}
