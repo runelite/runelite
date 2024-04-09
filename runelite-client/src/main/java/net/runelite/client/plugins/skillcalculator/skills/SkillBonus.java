@@ -24,6 +24,9 @@
  */
 package net.runelite.client.plugins.skillcalculator.skills;
 
+import java.util.Collections;
+import java.util.Set;
+
 /**
  * An object representing a skill bonus, such as from a skilling outfit or activity granting boosted xp.
  */
@@ -44,4 +47,15 @@ public interface SkillBonus
 	 * @return The skill bonus multiplier.
 	 */
 	float getValue();
+
+
+	/**
+	 * Gets the list of skill bonuses this skill bonus can be stacked with.
+	 *
+	 * @return List of stackable skill bonuses
+	 */
+	default Set<? extends SkillBonus> getCanBeStackedWith()
+	{
+		return Collections.emptySet();
+	}
 }
