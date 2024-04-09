@@ -31,6 +31,7 @@ import lombok.Getter;
 import net.runelite.api.ItemID;
 import static net.runelite.client.plugins.skillcalculator.skills.PrayerBonus.DEMONIC_OFFERING;
 import static net.runelite.client.plugins.skillcalculator.skills.PrayerBonus.MORYTANIA_DIARY_3_SHADES;
+import static net.runelite.client.plugins.skillcalculator.skills.PrayerBonus.ZEALOT_ROBES;
 
 @AllArgsConstructor
 @Getter
@@ -112,6 +113,7 @@ public enum PrayerAction implements ItemSkillAction
 	);
 	private static final Set<PrayerBonus> EXCLUDED_BONUSES_FOR_ASHES = EnumSet.complementOf(EnumSet.of(DEMONIC_OFFERING));
 	private static final Set<PrayerBonus> EXCLUDED_BONUSES_FOR_REMAINS = EnumSet.complementOf(EnumSet.of(MORYTANIA_DIARY_3_SHADES));
+	private static final Set<PrayerBonus> EXCLUDE_ALL_EXCEPT_ZEALOT_ROBES = EnumSet.complementOf(EnumSet.of(ZEALOT_ROBES));
 
 	private final int itemId;
 	private final int level;
@@ -127,6 +129,9 @@ public enum PrayerAction implements ItemSkillAction
 				return EXCLUDED_BONUSES_FOR_BONES;
 			case DEMONIC_ASHES:
 				return EXCLUDED_BONUSES_FOR_ASHES;
+			case ENSOULED_HEAD:
+			case PREPARED_FISH:
+				return EXCLUDE_ALL_EXCEPT_ZEALOT_ROBES;
 			case SHADE_REMAINS:
 				return EXCLUDED_BONUSES_FOR_REMAINS;
 			default:

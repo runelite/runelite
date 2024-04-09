@@ -41,6 +41,7 @@ public enum PrayerBonus implements SkillBonus
 	SINISTER_OFFERING("Sinister Offering (300%)", 3),
 	DEMONIC_OFFERING("Demonic Offering (300%)", 3),
 	SACRED_BONE_BURNER("Sacred Bone Burner (300%)", 3),
+	ZEALOT_ROBES("Zealot Robes (105%)", 1.05f),
 	;
 
 	private final String name;
@@ -56,6 +57,9 @@ public enum PrayerBonus implements SkillBonus
 			case ECTOFUNTUS:
 			case LIT_GILDED_ALTAR:
 			case CHAOS_ALTAR:
+				others.add(ZEALOT_ROBES);
+				others.add(DEMONIC_OFFERING);
+				break;
 			case SACRED_BONE_BURNER:
 			case BONECRUSHER:
 				others.add(DEMONIC_OFFERING);
@@ -63,6 +67,12 @@ public enum PrayerBonus implements SkillBonus
 			case MORYTANIA_DIARY_3_SHADES:
 				others.add(DEMONIC_OFFERING);
 				others.add(SINISTER_OFFERING);
+				break;
+			case ZEALOT_ROBES:
+				others.add(ECTOFUNTUS);
+				others.add(LIT_GILDED_ALTAR);
+				others.add(CHAOS_ALTAR);
+				others.add(DEMONIC_OFFERING);
 				break;
 			case DEMONIC_OFFERING:
 				return EnumSet.complementOf(EnumSet.of(DEMONIC_OFFERING));
