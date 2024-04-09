@@ -24,6 +24,8 @@
  */
 package net.runelite.client.plugins.skillcalculator.skills;
 
+import java.util.Collections;
+import java.util.Set;
 import net.runelite.api.ItemComposition;
 import net.runelite.client.game.ItemManager;
 
@@ -92,8 +94,13 @@ public interface SkillAction
 	 */
 	default boolean isBonusApplicable(SkillBonus bonus)
 	{
-		return true;
+		return !getExcludedSkillBonuses().contains(bonus);
 	}
 
 	boolean isMembers(final ItemManager itemManager);
+
+	default Set<? extends SkillBonus> getExcludedSkillBonuses()
+	{
+		return Collections.emptySet();
+	}
 }

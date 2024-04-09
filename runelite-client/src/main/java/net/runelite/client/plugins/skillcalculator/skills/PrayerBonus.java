@@ -24,6 +24,8 @@
  */
 package net.runelite.client.plugins.skillcalculator.skills;
 
+import java.util.EnumSet;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -41,15 +43,35 @@ public enum PrayerBonus implements SkillBonus
 	SACRED_BONE_BURNER("Sacred Bone Burner (300%)", 3),
 	;
 
-	static final PrayerBonus[] BONE_BONUSES = {
-		LIT_GILDED_ALTAR,
-		ECTOFUNTUS,
-		CHAOS_ALTAR,
-		BONECRUSHER,
-		SINISTER_OFFERING,
-		SACRED_BONE_BURNER,
-	};
-
 	private final String name;
 	private final float value;
+
+	@Override
+	public Set<PrayerBonus> getCanBeStackedWith()
+	{
+		final Set<PrayerBonus> others = EnumSet.noneOf(PrayerBonus.class);
+
+		switch (this)
+		{
+			case ECTOFUNTUS:
+			case LIT_GILDED_ALTAR:
+			case CHAOS_ALTAR:
+			case SACRED_BONE_BURNER:
+			case BONECRUSHER:
+				others.add(DEMONIC_OFFERING);
+				break;
+			case MORYTANIA_DIARY_3_SHADES:
+				others.add(DEMONIC_OFFERING);
+				others.add(SINISTER_OFFERING);
+				break;
+			case DEMONIC_OFFERING:
+				return EnumSet.complementOf(EnumSet.of(DEMONIC_OFFERING));
+			case SINISTER_OFFERING:
+				others.add(MORYTANIA_DIARY_3_SHADES);
+				others.add(DEMONIC_OFFERING);
+				break;
+		}
+
+		return others;
+	}
 }

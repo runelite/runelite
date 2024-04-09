@@ -24,6 +24,9 @@
  */
 package net.runelite.client.plugins.skillcalculator.skills;
 
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.ItemID;
@@ -86,6 +89,8 @@ public enum RunecraftAction implements ItemSkillAction
 	WRATH_RUNE(ItemID.WRATH_RUNE, 95, 8, false),
 	;
 
+	private static final Set<RunecraftBonus> RUNECRAFT_BONUSES = EnumSet.allOf(RunecraftBonus.class);
+
 	private final int itemId;
 	private final int level;
 	private final float xp;
@@ -98,8 +103,13 @@ public enum RunecraftAction implements ItemSkillAction
 	}
 
 	@Override
-	public boolean isBonusApplicable(SkillBonus bonus)
+	public Set<RunecraftBonus> getExcludedSkillBonuses()
 	{
-		return !ignoreBonus;
+		if (ignoreBonus)
+		{
+			return RUNECRAFT_BONUSES;
+		}
+
+		return Collections.emptySet();
 	}
 }
