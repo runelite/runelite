@@ -24,6 +24,8 @@
  */
 package net.runelite.client.plugins.skillcalculator.skills;
 
+import java.util.EnumSet;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -32,8 +34,17 @@ import lombok.Getter;
 public enum FiremakingBonus implements SkillBonus
 {
 	PYROMANCER_OUTFIT("Pyromancer Outfit (+2.5%)", 1.025f),
+	FORESTERS_CAMPFIRE("Forester's Campfire (33%)", 0.33333333f),
 	;
 
 	private final String name;
 	private final float value;
+
+	@Override
+	public Set<FiremakingBonus> getCanBeStackedWith()
+	{
+		final EnumSet<FiremakingBonus> others = EnumSet.allOf(FiremakingBonus.class);
+		others.remove(this);
+		return others;
+	}
 }
