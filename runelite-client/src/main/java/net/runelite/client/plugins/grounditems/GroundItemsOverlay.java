@@ -435,7 +435,14 @@ public class GroundItemsOverlay extends Overlay
 				// NMZ and the KBD lair uses the same region ID but NMZ uses planes 1-3 and KBD uses plane 0
 				if (client.getLocalPlayer().getWorldLocation().getPlane() == 0)
 				{
-					despawnTime = spawnTime.plus(DESPAWN_TIME_INSTANCE);
+					if (ItemVariationMapping.getVariations(ItemID.CLUE_SCROLL).contains(groundItem.getItemId()))
+					{
+						despawnTime = spawnTime.plus(DESPAWN_TIME_DROPPED_CLUE);
+					}
+					else
+					{
+						despawnTime = spawnTime.plus(DESPAWN_TIME_INSTANCE);
+					}
 				}
 				else
 				{
@@ -461,9 +468,21 @@ public class GroundItemsOverlay extends Overlay
 				playerRegionID == CLAN_HALL_REGION)
 			{
 				// GWD, Kalphite Queen, Nightmare, and Tempoross instances use the normal despawn timers
-				despawnTime = spawnTime.plus(groundItem.getLootType() == LootType.DROPPED
-					? DESPAWN_TIME_DROP
-					: DESPAWN_TIME_LOOT);
+				if (groundItem.getLootType() == LootType.DROPPED)
+				{
+					if (ItemVariationMapping.getVariations(ItemID.CLUE_SCROLL).contains(groundItem.getItemId()))
+					{
+						despawnTime = spawnTime.plus(DESPAWN_TIME_DROPPED_CLUE);
+					}
+					else
+					{
+						despawnTime = spawnTime.plus(DESPAWN_TIME_DROP);
+					}
+				}
+				else
+				{
+					despawnTime = spawnTime.plus(DESPAWN_TIME_LOOT);
+				}
 			}
 			else
 			{
