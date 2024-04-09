@@ -1415,13 +1415,10 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		// Set the sampling function used when stretching the UI.
 		// This is probably better done with sampler objects instead of texture parameters, but this is easier and likely more portable.
 		// See https://www.khronos.org/opengl/wiki/Sampler_Object for details.
-		if (client.isStretchedEnabled())
-		{
-			// GL_NEAREST makes sampling for bicubic/xBR simpler, so it should be used whenever linear isn't
-			final int function = uiScalingMode == UIScalingMode.LINEAR ? GL43C.GL_LINEAR : GL43C.GL_NEAREST;
-			GL43C.glTexParameteri(GL43C.GL_TEXTURE_2D, GL43C.GL_TEXTURE_MIN_FILTER, function);
-			GL43C.glTexParameteri(GL43C.GL_TEXTURE_2D, GL43C.GL_TEXTURE_MAG_FILTER, function);
-		}
+		// GL_NEAREST makes sampling for bicubic/xBR simpler, so it should be used whenever linear isn't
+		final int function = uiScalingMode == UIScalingMode.LINEAR ? GL43C.GL_LINEAR : GL43C.GL_NEAREST;
+		GL43C.glTexParameteri(GL43C.GL_TEXTURE_2D, GL43C.GL_TEXTURE_MIN_FILTER, function);
+		GL43C.glTexParameteri(GL43C.GL_TEXTURE_2D, GL43C.GL_TEXTURE_MAG_FILTER, function);
 
 		// Texture on UI
 		GL43C.glBindVertexArray(vaoUiHandle);
