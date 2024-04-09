@@ -2502,8 +2502,6 @@ public class ChatCommandsPlugin extends Plugin
 			case "perilous moons":
 			case "perilous moon":
 			case "moons of peril":
-			case "mop":
-			case "lc":
 				return "Lunar Chest";
 
 			default:
