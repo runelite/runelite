@@ -723,6 +723,7 @@ emote_icon=48
 music_icon=49
 inventory_tab=55
 prayer_tab=57
+magic_tab=58
 cmb_icon=59
 skills_icon=60
 quests_icon=61
@@ -800,6 +801,7 @@ inventory_item_container=0
 
 [spellbook]
 id=218
+parent=0
 kourend_home_teleport=4
 catherby_home_teleport=5
 lumbridge_home_teleport=7

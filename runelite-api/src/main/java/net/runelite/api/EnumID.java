@@ -90,4 +90,7 @@ public final class EnumID
 	 * val: enum
 	 */
 	public static final int WEAPON_STYLES = 3908;
+
+	public static final int SPELLBOOKS = 1981;
+	public static final int SPELLBOOKS_SUB = 5280;
 }
