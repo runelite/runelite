@@ -41,6 +41,7 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.menus.TestMenuEntry;
+import org.junit.After;
 import static org.junit.Assert.assertArrayEquals;
 import org.junit.Before;
 import org.junit.Test;
@@ -111,7 +112,13 @@ public class MenuEntrySwapperPluginTest
 			return null;
 		}).when(client).setMenuEntries(any(MenuEntry[].class));
 
-		menuEntrySwapperPlugin.setupSwaps();
+		menuEntrySwapperPlugin.startUp();
+	}
+
+	@After
+	public void after()
+	{
+		menuEntrySwapperPlugin.shutDown();
 	}
 
 	private MenuEntry menu(String option, String target, MenuAction menuAction)

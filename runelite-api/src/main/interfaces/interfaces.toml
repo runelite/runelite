@@ -7,9 +7,11 @@ id=741
 title=2
 text=3
 
+# this is actually just a generic menu
 [adventure_log]
 id=187
 container=0
+options=3
 
 [agility_arena]
 id=5
@@ -295,6 +297,7 @@ emote_scrollbar=4
 [equipment]
 id=387
 inventory_item_container=0
+cape=16
 
 [equipment_bonuses]
 id=84
