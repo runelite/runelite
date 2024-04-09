@@ -486,7 +486,14 @@ public class GroundItemsOverlay extends Overlay
 			}
 			else
 			{
-				despawnTime = spawnTime.plus(DESPAWN_TIME_INSTANCE);
+				if (ItemVariationMapping.getVariations(ItemID.CLUE_SCROLL).contains(groundItem.getItemId()))
+				{
+					despawnTime = spawnTime.plus(DESPAWN_TIME_DROPPED_CLUE);
+				}
+				else
+				{
+					despawnTime = spawnTime.plus(DESPAWN_TIME_INSTANCE);
+				}
 			}
 		}
 		else
