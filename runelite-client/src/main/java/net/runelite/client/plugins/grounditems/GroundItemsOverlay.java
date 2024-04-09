@@ -41,11 +41,13 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.ItemID;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.client.game.ItemVariationMapping;
 import net.runelite.client.plugins.grounditems.config.DespawnTimerMode;
 import static net.runelite.client.plugins.grounditems.config.ItemHighlightMode.MENU;
 import static net.runelite.client.plugins.grounditems.config.ItemHighlightMode.NONE;
@@ -75,6 +77,7 @@ public class GroundItemsOverlay extends Overlay
 	private static final Duration DESPAWN_TIME_INFERNO = Duration.ofMinutes(180);
 	private static final Duration DESPAWN_TIME_INSTANCE = Duration.ofMinutes(30);
 	private static final Duration DESPAWN_TIME_LOOT = Duration.ofMinutes(2);
+	private static final Duration DESPAWN_TIME_DROPPED_CLUE = Duration.ofMinutes(60);
 	private static final Duration DESPAWN_TIME_DROP = Duration.ofMinutes(3);
 	private static final Duration DESPAWN_TIME_TABLE = Duration.ofMinutes(10);
 	private static final int KRAKEN_REGION = 9116;
@@ -472,7 +475,14 @@ public class GroundItemsOverlay extends Overlay
 			switch (groundItem.getLootType())
 			{
 				case DROPPED:
-					despawnTime = spawnTime.plus(DESPAWN_TIME_DROP);
+					if (ItemVariationMapping.getVariations(ItemID.CLUE_SCROLL).contains(groundItem.getItemId()))
+					{
+						despawnTime = spawnTime.plus(DESPAWN_TIME_DROPPED_CLUE);
+					}
+					else
+					{
+						despawnTime = spawnTime.plus(DESPAWN_TIME_DROP);
+					}
 					break;
 				case TABLE:
 					despawnTime = spawnTime.plus(DESPAWN_TIME_TABLE);
