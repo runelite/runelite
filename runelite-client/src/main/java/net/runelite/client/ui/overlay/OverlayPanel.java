@@ -96,15 +96,18 @@ public abstract class OverlayPanel extends Overlay
 			panelComponent.setBackgroundColor(getPreferredColor());
 		}
 
-		final Dimension dimension = panelComponent.render(graphics);
-
-		if (clearChildren)
+		try
 		{
-			panelComponent.getChildren().clear();
+			return panelComponent.render(graphics);
 		}
-
-		panelComponent.setPreferredSize(oldSize);
-		panelComponent.setBackgroundColor(oldBackgroundColor);
-		return dimension;
+		finally
+		{
+			if (clearChildren)
+			{
+				panelComponent.getChildren().clear();
+			}
+			panelComponent.setPreferredSize(oldSize);
+			panelComponent.setBackgroundColor(oldBackgroundColor);
+		}
 	}
 }
