@@ -24,8 +24,10 @@
  */
 package net.runelite.cache;
 
+import net.runelite.cache.definitions.ScriptDefinition;
 import net.runelite.cache.definitions.WorldMapCompositeDefinition;
 import net.runelite.cache.definitions.WorldMapElementDefinition;
+import net.runelite.cache.definitions.loaders.ScriptLoader;
 import net.runelite.cache.definitions.loaders.WorldMapCompositeLoader;
 import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.ArchiveFiles;
@@ -33,15 +35,21 @@ import net.runelite.cache.fs.FSFile;
 import net.runelite.cache.fs.Storage;
 import net.runelite.cache.fs.Store;
 import net.runelite.cache.fs.Index;
+import net.runelite.cache.region.Position;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class WorldMapManager
 {
 	private final Store store;
 	private final List<WorldMapCompositeDefinition> worldMapCompositeDefinitions = new ArrayList<>();
 	private final List<WorldMapElementDefinition> elements = new ArrayList<>();
+	private final Map<Position, Position> intermapLinks = new HashMap<>();
 
 	public WorldMapManager(Store store)
 	{
@@ -66,10 +74,51 @@ public class WorldMapManager
 		{
 			elements.addAll(compositeDefinition.getWorldMapElementDefinitions());
 		}
+
+		// Intermap links. These are stored in a client script, so we have to parse it from there.
+		final int intermapLinkScriptId = 1705;
+		Index scriptIndex = store.getIndex(IndexType.CLIENTSCRIPT);
+		Archive intermapLinkScript = scriptIndex.getArchive(intermapLinkScriptId);
+		byte[] data = storage.loadArchive(intermapLinkScript);
+		FSFile file = intermapLinkScript.getFiles(data).findFile(0);
+
+		ScriptLoader scriptLoader = new ScriptLoader();
+		ScriptDefinition scriptDefinition = scriptLoader.load(intermapLinkScriptId, file.getContents());
+
+		List<Position> linkEnds = new ArrayList<>();
+		for (int i = 1; i < scriptDefinition.getIntOperands().length; ++i)
+		{
+			// 1706 is the script that gets called to jump to a location and the position is the int just before it
+			if (scriptDefinition.getIntOperands()[i] == 1706)
+			{
+				linkEnds.add(Position.fromPacked(scriptDefinition.getIntOperands()[i - 1]));
+			}
+		}
+
+		// The starting positions are in switch cases. We need to sort the cases by their jump positions
+		// so that they correspond to the end position in the int operands.
+		Map<Integer, Integer> linkSwitch = scriptDefinition.getSwitches()[0];
+		int[] linkStarts = Arrays.stream(linkSwitch.keySet().toArray())
+				.sorted(Comparator.comparingInt(linkSwitch::get))
+				.mapToInt(i -> (int)i)
+				.toArray();
+		assert (linkStarts.length - 1) == linkEnds.size(); // The last case in the switch statement is the default case
+
+		for (int i = 0; i < linkStarts.length; ++i)
+		{
+			Position linkStartPosition = Position.fromPacked(linkStarts[i]);
+			Position linkEndPosition = linkEnds.get(i);
+			intermapLinks.put(linkStartPosition, linkEndPosition);
+		}
 	}
 
 	public List<WorldMapElementDefinition> getElements()
 	{
 		return elements;
+	}
+
+	public Map<Position, Position> getIntermapLinks()
+	{
+		return intermapLinks;
 	}
 }
