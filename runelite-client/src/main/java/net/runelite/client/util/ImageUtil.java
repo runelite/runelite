@@ -117,7 +117,6 @@ public class ImageUtil
 	public static BufferedImage luminanceOffset(final Image rawImg, final int offset)
 	{
 		BufferedImage image = toARGB(rawImg);
-		final float offsetFloat = (float) offset;
 		final int numComponents = image.getColorModel().getNumComponents();
 		final float[] scales = new float[numComponents];
 		final float[] offsets = new float[numComponents];
@@ -125,7 +124,7 @@ public class ImageUtil
 		Arrays.fill(scales, 1f);
 		for (int i = 0; i < numComponents; i++)
 		{
-			offsets[i] = offsetFloat;
+			offsets[i] = offset;
 		}
 		// Set alpha to not offset
 		offsets[numComponents - 1] = 0f;
@@ -171,14 +170,13 @@ public class ImageUtil
 	public static BufferedImage alphaOffset(final Image rawImg, final int offset)
 	{
 		BufferedImage image = toARGB(rawImg);
-		final float offsetFloat = (float) offset;
 		final int numComponents = image.getColorModel().getNumComponents();
 		final float[] scales = new float[numComponents];
 		final float[] offsets = new float[numComponents];
 
 		Arrays.fill(scales, 1f);
 		Arrays.fill(offsets, 0f);
-		offsets[numComponents - 1] = offsetFloat;
+		offsets[numComponents - 1] = offset;
 		return offset(image, scales, offsets);
 	}
 
