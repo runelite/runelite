@@ -95,7 +95,7 @@ public class ChatFilterPlugin extends Plugin
 		MODCHAT
 	);
 
-	private final CharMatcher jagexPrintableCharMatcher = Text.JAGEX_PRINTABLE_CHAR_MATCHER;
+	private static final CharMatcher jagexPrintableCharMatcher = Text.JAGEX_PRINTABLE_CHAR_MATCHER;
 	private List<Pattern> filteredPatterns = Collections.emptyList();
 	private List<Pattern> filteredNamePatterns = Collections.emptyList();
 

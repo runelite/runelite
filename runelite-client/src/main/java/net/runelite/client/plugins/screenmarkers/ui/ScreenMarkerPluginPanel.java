@@ -56,21 +56,16 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 
 	private static final int DEFAULT_BORDER_THICKNESS = 3;
 
+	public static final Color SELECTED_COLOR = DEFAULT_BORDER_COLOR;
+	public static final Color SELECTED_FILL_COLOR = DEFAULT_FILL_COLOR;
+	public static final int SELECTED_BORDER_THICKNESS = DEFAULT_BORDER_THICKNESS;
+
 	private final JLabel addMarker = new JLabel(ADD_ICON);
 	private final JLabel title = new JLabel();
 	private final PluginErrorPanel noMarkersPanel = new PluginErrorPanel();
 	private final JPanel markerView = new JPanel(new GridBagLayout());
 
 	private final ScreenMarkerPlugin plugin;
-
-	@Getter
-	private final Color selectedColor = DEFAULT_BORDER_COLOR;
-
-	@Getter
-	private final Color selectedFillColor = DEFAULT_FILL_COLOR;
-
-	@Getter
-	private final int selectedBorderThickness = DEFAULT_BORDER_THICKNESS;
 
 	@Getter
 	private final ScreenMarkerCreationPanel creationPanel;
