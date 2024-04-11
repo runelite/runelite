@@ -70,6 +70,7 @@ import net.runelite.client.party.PartyService;
 import net.runelite.client.party.WSClient;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import static net.runelite.client.plugins.specialcounter.SpecialWeapon.TONALZTICS_OF_RALOS;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.ImageUtil;
@@ -99,7 +100,9 @@ public class SpecialCounterPlugin extends Plugin
 	private int hitsplatTick;
 	// most recent hitsplat and the target it was on
 	private Hitsplat lastSpecHitsplat;
+	private Hitsplat secondToLastSpecHitsplat;
 	private NPC lastSpecTarget;
+	private int specialAttackHits = 0;
 
 	private final Set<Integer> interactedNpcIndexes = new HashSet<>();
 	private final SpecialCounter[] specialCounter = new SpecialCounter[SpecialWeapon.values().length];
@@ -163,6 +166,7 @@ public class SpecialCounterPlugin extends Plugin
 		specialWeapon = null;
 		lastSpecTarget = null;
 		lastSpecHitsplat = null;
+		secondToLastSpecHitsplat = null;
 		removeCounters();
 		overlayManager.remove(playerInfoDropOverlay);
 		wsClient.unregisterMessage(SpecialCounterUpdate.class);
@@ -185,12 +189,25 @@ public class SpecialCounterPlugin extends Plugin
 		{
 			if (lastSpecHitsplat.getAmount() > 0)
 			{
-				specialAttackHit(specialWeapon, lastSpecHitsplat, lastSpecTarget);
+				specialAttackHits++;
+			}
+			if (specialWeapon == TONALZTICS_OF_RALOS && secondToLastSpecHitsplat != null
+				&& secondToLastSpecHitsplat.getAmount() > 0)
+			{
+				specialAttackHits++;
+			}
+
+			if (specialAttackHits > 0)
+			{
+				int hit = specialWeapon == TONALZTICS_OF_RALOS ? specialAttackHits : getHit(specialWeapon, lastSpecHitsplat);
+				specialAttackHit(specialWeapon, hit, lastSpecTarget);
 			}
 
 			specialWeapon = null;
 			lastSpecHitsplat = null;
+			secondToLastSpecHitsplat = null;
 			lastSpecTarget = null;
+			specialAttackHits = 0;
 		}
 	}
 
@@ -286,16 +303,16 @@ public class SpecialCounterPlugin extends Plugin
 		// venge or thralls.
 		if (hitsplatTick == client.getTickCount())
 		{
+			secondToLastSpecHitsplat = lastSpecHitsplat;
 			lastSpecHitsplat = hitsplat;
 		}
 	}
 
-	private void specialAttackHit(SpecialWeapon specialWeapon, Hitsplat hitsplat, NPC target)
+	private void specialAttackHit(SpecialWeapon specialWeapon, int hit, NPC target)
 	{
-		int hit = getHit(specialWeapon, hitsplat);
 		int localPlayerId = client.getLocalPlayer().getId();
 
-		log.debug("Special attack hit {} hitsplat {}", specialWeapon, hitsplat.getAmount());
+		log.debug("Special attack hit {} hitsplat {}", specialWeapon, hit);
 
 		if (config.infobox())
 		{
