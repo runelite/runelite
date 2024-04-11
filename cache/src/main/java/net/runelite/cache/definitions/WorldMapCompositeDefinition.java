@@ -25,6 +25,7 @@
 package net.runelite.cache.definitions;
 
 import lombok.Data;
+import net.runelite.cache.region.Position;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -36,4 +37,35 @@ public class WorldMapCompositeDefinition
 	public final Set<MapSquareDefinition> mapSquareDefinitions = new HashSet<>();
 	public final Set<ZoneDefinition> zoneDefinitions = new HashSet<>();
 	public final List<WorldMapElementDefinition> worldMapElementDefinitions = new ArrayList<>();
+
+	public Position calculateWorldOffset(Position position)
+	{
+		int squareX = position.getX() / 64;
+		int squareZ = position.getY() / 64;
+		int zoneX = (position.getX() & 63) / 8;
+		int zoneZ = (position.getY() & 63) / 8;
+		Position offset = null;
+
+		for (MapSquareDefinition mapSquare : mapSquareDefinitions)
+		{
+			if (squareX == mapSquare.sourceSquareX && squareZ == mapSquare.sourceSquareZ)
+			{
+				int shiftX = ((mapSquare.displaySquareX - mapSquare.sourceSquareX) * 64);
+				int shiftZ = ((mapSquare.displaySquareZ - mapSquare.sourceSquareZ) * 64);
+				offset = new Position(shiftX, shiftZ, mapSquare.getMinLevel());
+			}
+		}
+
+		for (ZoneDefinition zone : zoneDefinitions)
+		{
+			if (squareX == zone.sourceSquareX && squareZ == zone.sourceSquareZ && zoneX == zone.sourceZoneX && zoneZ == zone.sourceZoneZ)
+			{
+				int shiftX = ((zone.displaySquareX - zone.sourceSquareX) * 64) + ((zone.displayZoneX - zone.sourceZoneX) * 8);
+				int shiftZ = ((zone.displaySquareZ - zone.sourceSquareZ) * 64) + ((zone.displayZoneY - zone.sourceZoneZ) * 8);
+				offset = new Position(shiftX, shiftZ, zone.getMinLevel());
+			}
+		}
+
+		return offset;
+	}
 }
