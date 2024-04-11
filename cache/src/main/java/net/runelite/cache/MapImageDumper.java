@@ -1096,13 +1096,9 @@ public class MapImageDumper
 		{
 			int localX = location.getPosition().getX() - region.getBaseX();
 			int localY = location.getPosition().getY() - region.getBaseY();
-			boolean isBridge = (region.getTileSetting(1, localX, localY) & 2) != 0;
 
-			int tileZ = z + (isBridge ? 1 : 0);
-			int localZ = location.getPosition().getZ();
-			if (z != 0 && localZ != tileZ)
+			if (z != location.getPosition().getZ())
 			{
-				// draw all icons on z=0
 				continue;
 			}
 
@@ -1122,8 +1118,8 @@ public class MapImageDumper
 				assert sprite != null;
 
 				blitIcon(img,
-					2 + (drawX * MAP_SCALE) - (sprite.getMaxWidth() / 2),
-					2 + (drawY * MAP_SCALE) - (sprite.getMaxHeight() / 2),
+					(drawX * MAP_SCALE) - (sprite.getMaxWidth() / 2),
+					(drawY * MAP_SCALE) - (sprite.getMaxHeight() / 2),
 					sprite);
 			}
 		}
