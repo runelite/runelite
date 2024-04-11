@@ -179,7 +179,7 @@ class ConfigPanel extends PluginPanel
 		mainPanel = new FixedWidthPanel();
 		mainPanel.setBorder(new EmptyBorder(8, 10, 10, 10));
 		mainPanel.setLayout(new DynamicGridLayout(0, 1, 0, 5));
-		mainPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+		mainPanel.setAlignmentX(LEFT_ALIGNMENT);
 
 		JPanel northPanel = new FixedWidthPanel();
 		northPanel.setLayout(new BorderLayout());
@@ -666,7 +666,7 @@ class ConfigPanel extends PluginPanel
 		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout());
 
-		JButton button = new JButton(ConfigPanel.CONFIG_ICON);
+		JButton button = new JButton(CONFIG_ICON);
 		SwingUtil.removeButtonDecorations(button);
 		button.setPreferredSize(new Dimension(25, 0));
 		button.addActionListener(l ->

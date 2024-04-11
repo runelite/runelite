@@ -193,7 +193,7 @@ public class DragAndDropReorderPane extends JLayeredPane
 	{
 		private DragAndDropReorderLayoutManager()
 		{
-			super(DragAndDropReorderPane.this, BoxLayout.Y_AXIS);
+			super(DragAndDropReorderPane.this, Y_AXIS);
 		}
 
 		@Override

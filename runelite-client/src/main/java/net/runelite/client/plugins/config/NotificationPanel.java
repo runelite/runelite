@@ -106,7 +106,7 @@ class NotificationPanel extends PluginPanel
 		mainPanel = new FixedWidthPanel();
 		mainPanel.setBorder(new EmptyBorder(8, 10, 10, 10));
 		mainPanel.setLayout(new DynamicGridLayout(0, 1, 0, 5));
-		mainPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+		mainPanel.setAlignmentX(LEFT_ALIGNMENT);
 
 		JPanel contentsPanel = new FixedWidthPanel();
 		contentsPanel.setLayout(new BorderLayout());

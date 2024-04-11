@@ -33,11 +33,11 @@ import net.runelite.api.widgets.InterfaceID;
 public class BeginnerMapClue extends MapClue implements LocationClueScroll
 {
 	private static final ImmutableList<BeginnerMapClue> CLUES = ImmutableList.of(
-		new BeginnerMapClue(InterfaceID.CLUE_BEGINNER_MAP_CHAMPIONS_GUILD, new WorldPoint(3166, 3361, 0), MapClue.CHAMPIONS_GUILD),
-		new BeginnerMapClue(InterfaceID.CLUE_BEGINNER_MAP_VARROCK_EAST_MINE, new WorldPoint(3290, 3374, 0), MapClue.VARROCK_EAST_MINE),
-		new BeginnerMapClue(InterfaceID.CLUE_BEGINNER_MAP_DYANOR, new WorldPoint(3093, 3226, 0), MapClue.SOUTH_OF_DRAYNOR_BANK),
-		new BeginnerMapClue(InterfaceID.CLUE_BEGINNER_MAP_NORTH_OF_FALADOR, new WorldPoint(3043, 3398, 0), MapClue.STANDING_STONES),
-		new BeginnerMapClue(InterfaceID.CLUE_BEGINNER_MAP_WIZARDS_TOWER, new WorldPoint(3110, 3152, 0), MapClue.WIZARDS_TOWER_DIS)
+		new BeginnerMapClue(InterfaceID.CLUE_BEGINNER_MAP_CHAMPIONS_GUILD, new WorldPoint(3166, 3361, 0), CHAMPIONS_GUILD),
+		new BeginnerMapClue(InterfaceID.CLUE_BEGINNER_MAP_VARROCK_EAST_MINE, new WorldPoint(3290, 3374, 0), VARROCK_EAST_MINE),
+		new BeginnerMapClue(InterfaceID.CLUE_BEGINNER_MAP_DYANOR, new WorldPoint(3093, 3226, 0), SOUTH_OF_DRAYNOR_BANK),
+		new BeginnerMapClue(InterfaceID.CLUE_BEGINNER_MAP_NORTH_OF_FALADOR, new WorldPoint(3043, 3398, 0), STANDING_STONES),
+		new BeginnerMapClue(InterfaceID.CLUE_BEGINNER_MAP_WIZARDS_TOWER, new WorldPoint(3110, 3152, 0), WIZARDS_TOWER_DIS)
 	);
 
 	private final int widgetGroupID;

@@ -26,7 +26,6 @@ package net.runelite.client.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.WindowAdapter;
@@ -76,7 +75,7 @@ public class FatalErrorDialog extends JDialog
 			BufferedImage logo = ImageUtil.loadImageResource(FatalErrorDialog.class, "runelite_splash.png");
 			JLabel runelite = new JLabel();
 			runelite.setIcon(new ImageIcon(logo));
-			runelite.setAlignmentX(Component.CENTER_ALIGNMENT);
+			runelite.setAlignmentX(CENTER_ALIGNMENT);
 			runelite.setBackground(ColorScheme.DARK_GRAY_COLOR);
 			runelite.setOpaque(true);
 			rightColumn.add(runelite);
@@ -152,7 +151,7 @@ public class FatalErrorDialog extends JDialog
 			BorderFactory.createMatteBorder(1, 0, 0, 0, ColorScheme.DARK_GRAY_COLOR.brighter()),
 			new EmptyBorder(4, 4, 4, 4)
 		));
-		button.setAlignmentX(Component.CENTER_ALIGNMENT);
+		button.setAlignmentX(CENTER_ALIGNMENT);
 		button.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
 		button.setFocusPainted(false);
 		button.addChangeListener(ev ->

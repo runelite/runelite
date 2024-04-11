@@ -26,7 +26,6 @@ package net.runelite.client.ui;
 
 import com.formdev.flatlaf.ui.FlatNativeWindowsLibrary;
 import java.awt.Dimension;
-import java.awt.Frame;
 import java.awt.IllegalComponentStateException;
 import java.awt.Insets;
 import java.awt.Rectangle;
@@ -201,7 +200,7 @@ public class ContainableFrame extends JFrame
 
 	private boolean isFullScreen()
 	{
-		return (getExtendedState() & Frame.MAXIMIZED_BOTH) == Frame.MAXIMIZED_BOTH;
+		return (getExtendedState() & MAXIMIZED_BOTH) == MAXIMIZED_BOTH;
 	}
 
 	void updateContainsInScreen()

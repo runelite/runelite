@@ -31,7 +31,6 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 import com.google.common.html.HtmlEscapers;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
@@ -530,7 +529,7 @@ class PluginHubPanel extends PluginPanel
 		mainPanel = new JPanel();
 		mainPanel.setBorder(BorderFactory.createEmptyBorder(0, 7, 7, 7));
 		mainPanel.setLayout(new DynamicGridLayout(0, 1, 0, 5));
-		mainPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+		mainPanel.setAlignmentX(LEFT_ALIGNMENT);
 
 		refreshing = new JLabel("Loading...");
 		refreshing.setHorizontalAlignment(JLabel.CENTER);

@@ -422,7 +422,7 @@ public class RuneLite
 			}
 			else
 			{
-				file = new File(RuneLite.RUNELITE_DIR, fileName);
+				file = new File(RUNELITE_DIR, fileName);
 			}
 
 			if (file.exists() && (!file.isFile() || !file.canWrite()))

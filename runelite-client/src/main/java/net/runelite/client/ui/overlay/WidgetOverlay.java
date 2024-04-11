@@ -120,7 +120,7 @@ public class WidgetOverlay extends Overlay
 
 	private WidgetOverlay(final Client client, @Component final int componentId, final String name, final OverlayPosition overlayPosition)
 	{
-		this(client, componentId, name, overlayPosition, Overlay.PRIORITY_HIGHEST);
+		this(client, componentId, name, overlayPosition, PRIORITY_HIGHEST);
 	}
 
 	private WidgetOverlay(final Client client, @Component final int componentId, final String name, final OverlayPosition overlayPosition, final float overlayPriority)
