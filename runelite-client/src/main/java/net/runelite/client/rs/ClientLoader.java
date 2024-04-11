@@ -241,7 +241,7 @@ public class ClientLoader implements Supplier<Applet>
 		catch (IOException ex)
 		{
 			log.debug("error downloading backup config", ex);
-			throw err; // use error from Jagex's servers
+			throw err; // NOPMD: PreserveStackTrace - use error from Jagex's servers
 		}
 	}
 
