@@ -1879,6 +1879,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		return new int[]{text.hashCode()};
 	}
 
+	@SuppressWarnings("PMD.UnusedPrivateMethod")
 	private static WorldPoint getViggoraLocation(ClueScrollPlugin plugin)
 	{
 		int varb = plugin.getClient().getVarbitValue(Varbits.VIGGORA_LOCATION);
