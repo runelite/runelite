@@ -69,7 +69,7 @@ public class SplashScreen extends JFrame implements ActionListener
 	{
 		setTitle("RuneLite Launcher");
 
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setUndecorated(true);
 		setIconImages(Arrays.asList(ClientUI.ICON_128, ClientUI.ICON_16));
 		setLayout(null);
@@ -203,7 +203,7 @@ public class SplashScreen extends JFrame implements ActionListener
 			// from its list, causing events to get dispatched to disposed frames. The frames handle the events
 			// regardless of being disposed and will run the configured close operation. Set the close operation
 			// to DO_NOTHING_ON_CLOSE prior to disposing to prevent this.
-			INSTANCE.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+			INSTANCE.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 			INSTANCE.dispose();
 			INSTANCE = null;
 		});

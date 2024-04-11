@@ -87,7 +87,7 @@ class XpPanel extends PluginPanel
 
 		// Create open xp tracker menu
 		final JMenuItem openXpTracker = new JMenuItem("Open Wise Old Man");
-		openXpTracker.addActionListener(e -> LinkBrowser.browse(XpPanel.buildXpTrackerUrl(
+		openXpTracker.addActionListener(e -> LinkBrowser.browse(buildXpTrackerUrl(
 			client.getWorldType(), client.getLocalPlayer(), null)));
 
 		// Create reset all menu

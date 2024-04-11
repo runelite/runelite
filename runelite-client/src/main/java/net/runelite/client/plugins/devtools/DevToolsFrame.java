@@ -41,7 +41,7 @@ public class DevToolsFrame extends JFrame
 	{
 		setIconImages(Arrays.asList(ClientUI.ICON_128, ClientUI.ICON_16));
 
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter()
 		{
 			@Override

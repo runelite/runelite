@@ -58,7 +58,7 @@ enum Book
 	private static Map<Integer, Book> buildById()
 	{
 		HashMap<Integer, Book> byId = new HashMap<>();
-		for (Book b : Book.values())
+		for (Book b : values())
 		{
 			byId.put(b.item, b);
 		}
@@ -68,7 +68,7 @@ enum Book
 	private static Map<String, Book> buildByName()
 	{
 		HashMap<String, Book> byName = new HashMap<>();
-		for (Book b : Book.values())
+		for (Book b : values())
 		{
 			byName.put(b.name, b);
 		}

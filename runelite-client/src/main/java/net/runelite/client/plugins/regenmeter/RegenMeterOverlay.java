@@ -90,7 +90,7 @@ class RegenMeterOverlay extends Overlay
 				if (widget != null && !widget.isHidden())
 				{
 					final Rectangle bounds = widget.getBounds();
-					g.setColor(RegenMeterOverlay.OVERLAY_COLOR);
+					g.setColor(OVERLAY_COLOR);
 					g.fillOval(
 						bounds.x + OFFSET,
 						bounds.y + (int) (bounds.height / 2 - (DIAMETER) / 2),

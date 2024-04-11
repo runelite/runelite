@@ -387,8 +387,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				initUniformBuffer();
 
 				client.setDrawCallbacks(this);
-				client.setGpuFlags(DrawCallbacks.GPU
-					| (computeMode == ComputeMode.NONE ? 0 : DrawCallbacks.HILLSKEW)
+				client.setGpuFlags(GPU
+					| (computeMode == ComputeMode.NONE ? 0 : HILLSKEW)
 				);
 				client.setExpandedMapLoading(config.expandedMapLoadingChunks());
 

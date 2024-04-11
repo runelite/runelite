@@ -334,7 +334,7 @@ class OpenCLManager
 	private void ensureMinWorkGroupSize()
 	{
 		long[] maxWorkGroupSize = new long[1];
-		CL12.clGetDeviceInfo(device, CL_DEVICE_MAX_WORK_GROUP_SIZE, maxWorkGroupSize, null);
+		clGetDeviceInfo(device, CL_DEVICE_MAX_WORK_GROUP_SIZE, maxWorkGroupSize, null);
 		log.debug("Device CL_DEVICE_MAX_WORK_GROUP_SIZE: {}", maxWorkGroupSize[0]);
 
 		if (maxWorkGroupSize[0] < MIN_WORK_GROUP_SIZE)
@@ -353,7 +353,7 @@ class OpenCLManager
 	private void initQueue()
 	{
 		long[] l = new long[1];
-		CL12.clGetDeviceInfo(device, CL_DEVICE_QUEUE_PROPERTIES, l, null);
+		clGetDeviceInfo(device, CL_DEVICE_QUEUE_PROPERTIES, l, null);
 
 		commandQueue = CL12.clCreateCommandQueue(context, device, l[0] & CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE, (int[]) null);
 		log.debug("Created command_queue {}, properties {}", commandQueue, l[0] & CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE);

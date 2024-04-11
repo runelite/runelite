@@ -58,23 +58,23 @@ public enum HiscoreEndpoint
 		if (worldTypes.contains(WorldType.SEASONAL))
 		{
 			// this changes between LEAGUE and TOURNAMENT
-			return HiscoreEndpoint.LEAGUE;
+			return LEAGUE;
 		}
 		else if (worldTypes.contains(WorldType.TOURNAMENT_WORLD))
 		{
-			return HiscoreEndpoint.TOURNAMENT;
+			return TOURNAMENT;
 		}
 		else if (worldTypes.contains(WorldType.DEADMAN))
 		{
-			return HiscoreEndpoint.DEADMAN;
+			return DEADMAN;
 		}
 		else if (worldTypes.contains(WorldType.FRESH_START_WORLD))
 		{
-			return HiscoreEndpoint.FRESH_START_WORLD;
+			return FRESH_START_WORLD;
 		}
 		else
 		{
-			return HiscoreEndpoint.NORMAL;
+			return NORMAL;
 		}
 	}
 }

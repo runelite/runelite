@@ -33,7 +33,6 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import lombok.Getter;
@@ -121,8 +120,8 @@ public class MaterialTab extends JLabel
 		this("", group, content);
 		setIcon(icon);
 		setOpaque(true);
-		setVerticalAlignment(SwingConstants.CENTER);
-		setHorizontalAlignment(SwingConstants.CENTER);
+		setVerticalAlignment(CENTER);
+		setHorizontalAlignment(CENTER);
 		setBackground(ColorScheme.DARKER_GRAY_COLOR);
 
 		addMouseListener(new MouseAdapter()

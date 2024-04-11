@@ -39,7 +39,7 @@ public abstract class PluginPanel extends JPanel implements Activatable
 	public static final int SCROLLBAR_WIDTH = 17;
 	public static final int BORDER_OFFSET = 6;
 	private static final EmptyBorder BORDER_PADDING = new EmptyBorder(BORDER_OFFSET, BORDER_OFFSET, BORDER_OFFSET, BORDER_OFFSET);
-	private static final Dimension OUTER_PREFERRED_SIZE = new Dimension(PluginPanel.PANEL_WIDTH + SCROLLBAR_WIDTH, 0);
+	private static final Dimension OUTER_PREFERRED_SIZE = new Dimension(PANEL_WIDTH + SCROLLBAR_WIDTH, 0);
 
 	@Getter(AccessLevel.PROTECTED)
 	private final JScrollPane scrollPane;

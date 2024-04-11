@@ -403,7 +403,7 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 	private Tooltip makeSliderTooltip()
 	{
 		int value = client.getVarcIntValue(VarClientInt.CAMERA_ZOOM_RESIZABLE_VIEWPORT);
-		int max = config.innerLimit() ? config.INNER_ZOOM_LIMIT : CameraPlugin.DEFAULT_INNER_ZOOM_LIMIT;
+		int max = config.innerLimit() ? config.INNER_ZOOM_LIMIT : DEFAULT_INNER_ZOOM_LIMIT;
 		return new Tooltip("Camera Zoom: " + value + " / " + max);
 	}
 

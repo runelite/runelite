@@ -106,7 +106,7 @@ class InventoryDeltaPanel extends JPanel implements Scrollable
 		if (added != null && added.length > 0)
 		{
 			final JLabel label = new JLabel("Items Added:", JLabel.CENTER);
-			label.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+			label.setAlignmentX(CENTER_ALIGNMENT);
 			add(label);
 			add(addedGrid);
 
@@ -119,7 +119,7 @@ class InventoryDeltaPanel extends JPanel implements Scrollable
 		if (removed != null && removed.length > 0)
 		{
 			final JLabel label = new JLabel("Items Removed:", JLabel.CENTER);
-			label.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+			label.setAlignmentX(CENTER_ALIGNMENT);
 			add(label);
 			add(removedGrid);
 
@@ -130,7 +130,7 @@ class InventoryDeltaPanel extends JPanel implements Scrollable
 		}
 
 		final JLabel label = new JLabel("Items in Inventory:", JLabel.CENTER);
-		label.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+		label.setAlignmentX(CENTER_ALIGNMENT);
 		add(label);
 		add(currentGrid);
 
