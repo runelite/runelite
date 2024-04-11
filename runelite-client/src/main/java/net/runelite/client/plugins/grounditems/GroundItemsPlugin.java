@@ -38,6 +38,7 @@ import java.awt.Color;
 import java.awt.Rectangle;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -101,6 +102,7 @@ import net.runelite.client.ui.components.colorpicker.RuneliteColorPicker;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.QuantityFormatter;
+import net.runelite.client.util.RSTimeUnit;
 import net.runelite.client.util.Text;
 
 @PluginDescriptor(
@@ -447,6 +449,8 @@ public class GroundItemsPlugin extends Plugin
 			.lootType(dropped ? LootType.DROPPED : (table ? LootType.TABLE : LootType.UNKNOWN))
 			.spawnTime(Instant.now())
 			.stackable(itemComposition.isStackable())
+			.despawnTime(Duration.of(item.getDespawnTime(), RSTimeUnit.GAME_TICKS))
+			.visibleTime(Duration.of(item.getVisibleTime(), RSTimeUnit.GAME_TICKS))
 			.build();
 
 		// Update item price in case it is coins
