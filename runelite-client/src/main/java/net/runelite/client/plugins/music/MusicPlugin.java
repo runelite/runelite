@@ -908,7 +908,7 @@ public class MusicPlugin extends Plugin
 		public void updateVar()
 		{
 			int val = getValue();
-			int varVal = Math.round((float) val / (max / 100.f));
+			int varVal = Math.round(val / (max / 100.f));
 			client.getVarps()[this.var] = varVal;
 		}
 

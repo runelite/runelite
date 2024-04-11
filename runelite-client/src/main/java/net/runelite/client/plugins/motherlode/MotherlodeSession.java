@@ -149,7 +149,7 @@ public class MotherlodeSession
 		Duration timeSinceStart = Duration.between(recentPayDirtMined, now);
 		if (!timeSinceStart.isZero())
 		{
-			perHour = (int) ((double) recentMined * (double) HOUR.toMillis() / (double) timeSinceStart.toMillis());
+			perHour = (int) ((double) recentMined * HOUR.toMillis() / timeSinceStart.toMillis());
 		}
 	}
 

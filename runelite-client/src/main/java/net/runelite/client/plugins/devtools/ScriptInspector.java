@@ -424,7 +424,7 @@ public class ScriptInspector extends DevToolsFrame
 			return;
 		}
 
-		int script = (Integer) listModel.get(index);
+		int script = listModel.get(index);
 		getSet().remove(script);
 		refreshList();
 	}
