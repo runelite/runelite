@@ -136,7 +136,7 @@ public class ClientLoader implements Supplier<Applet>
 			ClassLoader classLoader;
 			try (FileChannel lockfile = FileChannel.open(LOCK_FILE.toPath(),
 				StandardOpenOption.CREATE, StandardOpenOption.READ, StandardOpenOption.WRITE);
-				FileLock flock = lockfile.lock())
+				@SuppressWarnings("PMD.UnusedLocalVariable") FileLock flock = lockfile.lock())
 			{
 				SplashScreen.stage(.05, null, "Downloading Old School RuneScape");
 				try
