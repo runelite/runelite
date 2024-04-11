@@ -1123,6 +1123,31 @@ public class MapImageDumper
 					sprite);
 			}
 		}
+
+		// Draw the intermap link icons which are not stored with the map locations
+		List<WorldMapElementDefinition> elements = worldMapManager.getElements();
+		for (WorldMapElementDefinition element : elements)
+		{
+			AreaDefinition area = areas.getArea(element.getAreaDefinitionId());
+			Position worldPosition = element.getWorldPosition();
+			int regionX = worldPosition.getX() / Region.X;
+			int regionY = worldPosition.getY() / Region.Y;
+
+			if (area == null || area.getName() != null || worldPosition.getZ() != z || regionX != region.getRegionX() || regionY != region.getRegionY())
+			{
+				continue;
+			}
+
+			int localX = worldPosition.getX() - region.getBaseX();
+			int localY = worldPosition.getY() - region.getBaseY();
+			int drawX = drawBaseX + localX;
+			int drawY = drawBaseY + (Region.Y - 1 - localY);
+			SpriteDefinition sprite = sprites.findSprite(area.spriteId, 0);
+			blitIcon(img,
+					(drawX * MAP_SCALE) - (sprite.getMaxWidth() / 2),
+					(drawY * MAP_SCALE) - (sprite.getMaxHeight() / 2),
+					sprite);
+		}
 	}
 
 	private void loadRegions() throws IOException
