@@ -64,12 +64,15 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 	private final ScreenMarkerPlugin plugin;
 
 	@Getter
+	@SuppressWarnings("PMD.FinalFieldCouldBeStatic")
 	private final Color selectedColor = DEFAULT_BORDER_COLOR;
 
 	@Getter
+	@SuppressWarnings("PMD.FinalFieldCouldBeStatic")
 	private final Color selectedFillColor = DEFAULT_FILL_COLOR;
 
 	@Getter
+	@SuppressWarnings("PMD.FinalFieldCouldBeStatic")
 	private final int selectedBorderThickness = DEFAULT_BORDER_THICKNESS;
 
 	@Getter
