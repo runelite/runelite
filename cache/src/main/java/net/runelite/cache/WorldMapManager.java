@@ -41,6 +41,7 @@ public class WorldMapManager
 {
 	private final Store store;
 	private final List<WorldMapCompositeDefinition> worldMapCompositeDefinitions = new ArrayList<>();
+	private final List<WorldMapElementDefinition> elements = new ArrayList<>();
 
 	public WorldMapManager(Store store)
 	{
@@ -60,16 +61,15 @@ public class WorldMapManager
 			WorldMapCompositeDefinition composite = worldMapCompositeLoader.load(compositeFile.getContents());
 			worldMapCompositeDefinitions.add(composite);
 		}
-	}
 
-	public List<WorldMapElementDefinition> getElements()
-	{
-		List<WorldMapElementDefinition> elements = new ArrayList<>();
 		for (WorldMapCompositeDefinition compositeDefinition : worldMapCompositeDefinitions)
 		{
 			elements.addAll(compositeDefinition.getWorldMapElementDefinitions());
 		}
+	}
 
+	public List<WorldMapElementDefinition> getElements()
+	{
 		return elements;
 	}
 }

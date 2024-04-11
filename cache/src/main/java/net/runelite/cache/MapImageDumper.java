@@ -944,7 +944,8 @@ public class MapImageDumper
 		for (WorldMapElementDefinition element : elements)
 		{
 			AreaDefinition area = areas.getArea(element.getAreaDefinitionId());
-			if (area == null || area.getName() == null || element.getPosition().getZ() != z)
+			Position worldPosition = element.getWorldPosition();
+			if (area == null || area.getName() == null || worldPosition.getZ() != z)
 			{
 				continue;
 			}
@@ -965,9 +966,8 @@ public class MapImageDumper
 					SpriteDefinition sprite = sprites.findSpriteByArchiveName(fontSize.getName(), c);
 					if (sprite.getWidth() != 0 && sprite.getHeight() != 0)
 					{
-						Position position = element.getPosition();
-						int drawX = position.getX() - regionLoader.getLowestX().getBaseX();
-						int drawY = regionLoader.getHighestY().getBaseY() - position.getY() + Region.Y - 2;
+						int drawX = worldPosition.getX() - regionLoader.getLowestX().getBaseX();
+						int drawY = regionLoader.getHighestY().getBaseY() - worldPosition.getY() + Region.Y - 2;
 						blitGlyph(image,
 								(drawX * MAP_SCALE) + advance - (stringWidth / 2),
 								(drawY * MAP_SCALE) + ascent - (font.getAscent() / 2),

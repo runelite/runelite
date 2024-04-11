@@ -25,7 +25,9 @@
 package net.runelite.cache.definitions.loaders;
 
 import net.runelite.cache.definitions.WorldMapCompositeDefinition;
+import net.runelite.cache.definitions.WorldMapElementDefinition;
 import net.runelite.cache.io.InputStream;
+import net.runelite.cache.region.Position;
 
 public class WorldMapCompositeLoader
 {
@@ -53,6 +55,15 @@ public class WorldMapCompositeLoader
 		for (int i = 0; i < iconAmount; ++i)
 		{
 			worldMapCompositeDefinition.worldMapElementDefinitions.add(worldMapElementLoader.load(in));
+		}
+
+		// The graphics in the world map are patched together from parts of the map and the position of
+		// the map elements are based on the result of that. This calculates the offset needed to place the element back
+		// into world coordinates.
+		for (WorldMapElementDefinition element : worldMapCompositeDefinition.worldMapElementDefinitions)
+		{
+			Position position = element.getPosition();
+			element.setOffset(worldMapCompositeDefinition.calculateWorldOffset(position));
 		}
 
 		return worldMapCompositeDefinition;

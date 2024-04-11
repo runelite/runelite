@@ -31,6 +31,17 @@ import net.runelite.cache.region.Position;
 public class WorldMapElementDefinition
 {
 	public Position position;
+	public Position offset;
 	public int areaDefinitionId;
 	public boolean membersOnly;
+
+	public Position getWorldPosition()
+	{
+		if (offset == null)
+		{
+			return new Position(position.getX(), position.getY(), 0);
+		}
+
+		return new Position(position.getX() + offset.getX(), position.getY() + offset.getY(), offset.getZ());
+	}
 }
