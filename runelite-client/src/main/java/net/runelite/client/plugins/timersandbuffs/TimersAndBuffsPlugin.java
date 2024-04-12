@@ -69,6 +69,7 @@ import net.runelite.api.gameval.VarbitID;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.game.GameArea;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemVariationMapping;
 import net.runelite.client.game.SpriteManager;
@@ -78,7 +79,6 @@ import static net.runelite.client.plugins.timersandbuffs.GameCounter.*;
 import static net.runelite.client.plugins.timersandbuffs.GameTimer.*;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.RSTimeUnit;
-import org.apache.commons.lang3.ArrayUtils;
 
 @PluginDescriptor(
 	name = "Timers & Buffs",
@@ -1127,14 +1127,22 @@ public class TimersAndBuffsPlugin extends Plugin
 		return magicLevel;
 	}
 
-	private boolean isInFightCaves()
+	@VisibleForTesting
+	boolean isInFightCaves()
 	{
-		return client.getMapRegions() != null && ArrayUtils.contains(client.getMapRegions(), FIGHT_CAVES_REGION_ID);
+		final Player localPlayer = client.getLocalPlayer();
+		return localPlayer != null
+			&& GameArea.TZHAAR_FIGHT_CAVES.containsRegion(
+				WorldPoint.fromLocalInstance(client, localPlayer.getLocalLocation()).getRegionID());
 	}
 
-	private boolean isInInferno()
+	@VisibleForTesting
+	boolean isInInferno()
 	{
-		return client.getMapRegions() != null && ArrayUtils.contains(client.getMapRegions(), INFERNO_REGION_ID);
+		final Player localPlayer = client.getLocalPlayer();
+		return localPlayer != null
+			&& GameArea.INFERNO.containsRegion(
+				WorldPoint.fromLocalInstance(client, localPlayer.getLocalLocation()).getRegionID());
 	}
 
 	private void createTzhaarTimer()
