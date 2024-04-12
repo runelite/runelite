@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.skillcalculator;
 
+import com.google.common.annotations.VisibleForTesting;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -272,7 +273,7 @@ class SkillCalculator extends JPanel
 	private JPanel buildCheckboxPanel(SkillBonus bonus)
 	{
 		JPanel uiOption = new JPanel(new BorderLayout());
-		JLabel uiLabel = new JLabel(bonus.getName());
+		JLabel uiLabel = new JLabel(generateDisplayNameForBonus(bonus));
 		JCheckBox uiCheckbox = new JCheckBox();
 
 		uiLabel.setForeground(Color.WHITE);
@@ -288,6 +289,28 @@ class SkillCalculator extends JPanel
 		bonusCheckBoxes.put(bonus, uiCheckbox);
 
 		return uiOption;
+	}
+
+	private static String generateDisplayNameForBonus(SkillBonus bonus)
+	{
+		return bonus.getName() + " (" + formatBonusPercentage(bonus.getValue()) + "%)";
+	}
+
+	@VisibleForTesting
+	static String formatBonusPercentage(float bonus)
+	{
+		final int bonusValue = Math.round(10_000 * bonus);
+		final float bonusPercent = bonusValue / 100f;
+		final int bonusPercentInt = (int) bonusPercent;
+
+		if (bonusPercent == bonusPercentInt)
+		{
+			return String.valueOf(bonusPercentInt);
+		}
+		else
+		{
+			return String.valueOf(bonusPercent);
+		}
 	}
 
 	private void adjustCheckboxes(JCheckBox target, SkillBonus bonus)
