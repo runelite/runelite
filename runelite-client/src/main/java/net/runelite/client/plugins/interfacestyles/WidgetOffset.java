@@ -187,13 +187,13 @@ enum WidgetOffset
 	FIXED_2006_MUSIC_HIGHLIGHT(Skin.AROUND_2006, ComponentID.FIXED_VIEWPORT_MUSIC_TAB, 206, null, 33, 36),
 	FIXED_2006_MUSIC_ICON(Skin.AROUND_2006, ComponentID.FIXED_VIEWPORT_MUSIC_ICON, 202, -1, null, null);
 
-	private Skin skin;
+	private final Skin skin;
 	@Component
-	private int component;
-	private Integer offsetX;
-	private Integer offsetY;
-	private Integer width;
-	private Integer height;
+	private final int component;
+	private final Integer offsetX;
+	private final Integer offsetY;
+	private final Integer width;
+	private final Integer height;
 
 	WidgetOffset(Skin skin, @Component int component, Integer offsetX, Integer offsetY, Integer width, Integer height)
 	{

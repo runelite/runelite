@@ -160,7 +160,7 @@ enum HealthbarOverride implements SpriteOverride
 	private final String fileName;
 
 	@Getter
-	private int padding = 1;
+	private final int padding = 1;
 
 	private static final Map<Integer, HealthbarOverride> MAP;
 

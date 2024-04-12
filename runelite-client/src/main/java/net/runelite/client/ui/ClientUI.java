@@ -178,10 +178,12 @@ public class ClientUI
 
 	@Inject(optional = true)
 	@Named("minMemoryLimit")
+	@SuppressWarnings("PMD.ImmutableField")
 	private int minMemoryLimit = 400;
 
 	@Inject(optional = true)
 	@Named("recommendedMemoryLimit")
+	@SuppressWarnings("PMD.ImmutableField")
 	private int recommendedMemoryLimit = 512;
 
 	private List<KeyListener> keyListeners;

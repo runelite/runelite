@@ -87,10 +87,12 @@ public class ItemManager
 
 	@Inject(optional = true)
 	@Named("activePriceThreshold")
+	@SuppressWarnings("PMD.ImmutableField")
 	private double activePriceThreshold = 5;
 
 	@Inject(optional = true)
 	@Named("lowPriceThreshold")
+	@SuppressWarnings("PMD.ImmutableField")
 	private int lowPriceThreshold = 1000;
 
 	private Map<Integer, ItemPrice> itemPrices = Collections.emptyMap();

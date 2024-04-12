@@ -54,7 +54,7 @@ class SceneUploader
 	private final Client client;
 	private final GpuPluginConfig gpuConfig;
 
-	private Regions regions;
+	private final Regions regions;
 
 	int sceneId = (int) System.nanoTime();
 	private int offset;

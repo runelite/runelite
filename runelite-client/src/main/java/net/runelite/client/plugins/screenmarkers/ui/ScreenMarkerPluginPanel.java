@@ -64,16 +64,16 @@ public class ScreenMarkerPluginPanel extends PluginPanel
 	private final ScreenMarkerPlugin plugin;
 
 	@Getter
-	private Color selectedColor = DEFAULT_BORDER_COLOR;
+	private final Color selectedColor = DEFAULT_BORDER_COLOR;
 
 	@Getter
-	private Color selectedFillColor = DEFAULT_FILL_COLOR;
+	private final Color selectedFillColor = DEFAULT_FILL_COLOR;
 
 	@Getter
-	private int selectedBorderThickness = DEFAULT_BORDER_THICKNESS;
+	private final int selectedBorderThickness = DEFAULT_BORDER_THICKNESS;
 
 	@Getter
-	private ScreenMarkerCreationPanel creationPanel;
+	private final ScreenMarkerCreationPanel creationPanel;
 
 	static
 	{
