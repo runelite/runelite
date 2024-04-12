@@ -114,6 +114,7 @@ import net.runelite.client.events.PlayerLootReceived;
 import net.runelite.client.events.RuneScapeProfileChanged;
 import net.runelite.client.events.SessionClose;
 import net.runelite.client.events.SessionOpen;
+import net.runelite.client.game.GameArea;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemStack;
 import net.runelite.client.game.LootManager;
@@ -144,11 +145,6 @@ public class LootTrackerPlugin extends Plugin
 
 	// Activity/Event loot handling
 	private static final Pattern CLUE_SCROLL_PATTERN = Pattern.compile("You have completed [0-9]+ ([a-z]+) Treasure Trails?\\.");
-	private static final int THEATRE_OF_BLOOD_REGION = 12867;
-	private static final int THEATRE_OF_BLOOD_LOBBY = 14642;
-	private static final int ARAXXOR_LAIR = 14489;
-	private static final int ROYAL_TITANS_REGION = 11669;
-	private static final int BA_LOBBY_REGION = 10039;
 
 	// Herbiboar loot handling
 	@VisibleForTesting
@@ -162,7 +158,6 @@ public class LootTrackerPlugin extends Plugin
 	// Hespori loot handling
 	private static final String HESPORI_LOOTED_MESSAGE = "You have successfully cleared this patch for new crops.";
 	private static final String HESPORI_EVENT = "Hespori";
-	private static final int HESPORI_REGION = 5021;
 
 	// Chest loot handling
 	private static final String CHEST_LOOTED_MESSAGE = "You find some treasure in the chest!";
@@ -174,7 +169,6 @@ public class LootTrackerPlugin extends Plugin
 	private static final String GRUBBY_CHEST_LOOTED_MESSAGE = "You have opened the Grubby Chest";
 	private static final String ANCIENT_CHEST_LOOTED_MESSAGE = "You open the chest and find";
 	private static final Pattern HAM_CHEST_LOOTED_PATTERN = Pattern.compile("Your (?<key>[a-z]+) key breaks in the lock.*");
-	private static final int HAM_STOREROOM_REGION = 10321;
 	private static final int LAVA_MAZE_NORTH_EAST_REGION = 12348;
 	private static final Map<Integer, String> CHEST_EVENT_TYPES = new ImmutableMap.Builder<Integer, String>().
 		put(5179, "Brimstone Chest").
@@ -236,12 +230,8 @@ public class LootTrackerPlugin extends Plugin
 	// Hallow Sepulchre Coffin handling
 	private static final String COFFIN_LOOTED_MESSAGE = "You push the coffin lid aside.";
 	private static final String HALLOWED_SEPULCHRE_COFFIN_EVENT = "Coffin (Hallowed Sepulchre)";
-	private static final Set<Integer> HALLOWED_SEPULCHRE_MAP_REGIONS = ImmutableSet.of(8797, 10077, 9308, 10074, 9050); // one map region per floor
 
 	private static final String HALLOWED_SACK_EVENT = "Hallowed Sack";
-
-	// Last man standing map regions
-	private static final Set<Integer> LAST_MAN_STANDING_REGIONS = ImmutableSet.of(13658, 13659, 13660, 13914, 13915, 13916, 13918, 13919, 13920, 14174, 14175, 14176, 14430, 14431, 14432);
 
 	private static final Pattern PICKPOCKET_REGEX = Pattern.compile("You pick (the )?(?<target>.+)'s? pocket.*");
 
@@ -287,18 +277,15 @@ public class LootTrackerPlugin extends Plugin
 
 	// Soul Wars
 	private static final String SPOILS_OF_WAR_EVENT = "Spoils of war";
-	private static final Set<Integer> SOUL_WARS_REGIONS = ImmutableSet.of(8493, 8749, 9005);
 
 	// Tempoross
 	private static final String TEMPOROSS_EVENT = "Reward pool (Tempoross)";
 	private static final String TEMPOROSS_CASKET_EVENT = "Casket (Tempoross)";
 	private static final String TEMPOROSS_LOOT_STRING = "You found some loot: ";
-	private static final int TEMPOROSS_REGION = 12588;
 
 	// Guardians of the Rift
 	private static final String GUARDIANS_OF_THE_RIFT_EVENT = "Guardians of the Rift";
 	private static final String GUARDIANS_OF_THE_RIFT_LOOT_STRING = "You found some loot: ";
-	private static final int GUARDIANS_OF_THE_RIFT_REGION = 14484;
 
 	// Mahogany Homes
 	private static final String MAHOGANY_CRATE_EVENT = "Supply crate (Mahogany Homes)";
@@ -844,8 +831,12 @@ public class LootTrackerPlugin extends Plugin
 	@Subscribe
 	public void onPlayerLootReceived(final PlayerLootReceived playerLootReceived)
 	{
+		final int regionID = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID();
 		// Ignore Last Man Standing and Soul Wars player loots
-		if (isPlayerWithinMapRegion(LAST_MAN_STANDING_REGIONS) || isPlayerWithinMapRegion(SOUL_WARS_REGIONS))
+		if (GameArea.anyContainsRegion(regionID,
+			GameArea.LAST_MAN_STANDING_DESERTED_ISLAND,
+			GameArea.LAST_MAN_STANDING_WILD_VARROCK,
+			GameArea.SOUL_WARS))
 		{
 			return;
 		}
@@ -1011,14 +1002,13 @@ public class LootTrackerPlugin extends Plugin
 		}
 
 		final String message = event.getMessage();
+		final int regionID = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID();
 
 		if (message.equals(CHEST_LOOTED_MESSAGE) || message.equals(OTHER_CHEST_LOOTED_MESSAGE)
 			|| message.equals(DORGESH_KAAN_CHEST_LOOTED_MESSAGE) || message.startsWith(GRUBBY_CHEST_LOOTED_MESSAGE)
 			|| message.startsWith(ANCIENT_CHEST_LOOTED_MESSAGE)
 			|| LARRAN_LOOTED_PATTERN.matcher(message).matches() || ROGUES_CHEST_PATTERN.matcher(message).matches())
 		{
-			final int regionID = client.getLocalPlayer().getWorldLocation().getRegionID();
-
 			log.debug("Chest loot matched '{}' region {}", message, regionID);
 			if (!CHEST_EVENT_TYPES.containsKey(regionID))
 			{
@@ -1043,8 +1033,7 @@ public class LootTrackerPlugin extends Plugin
 			return;
 		}
 
-		if (message.equals(COFFIN_LOOTED_MESSAGE) &&
-			isPlayerWithinMapRegion(HALLOWED_SEPULCHRE_MAP_REGIONS))
+		if (message.equals(COFFIN_LOOTED_MESSAGE) && GameArea.HALLOWED_SEPULCHRE.containsRegion(regionID))
 		{
 			onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, HALLOWED_SEPULCHRE_COFFIN_EVENT));
 			return;
@@ -1061,15 +1050,14 @@ public class LootTrackerPlugin extends Plugin
 			return;
 		}
 
-		final int regionID = client.getLocalPlayer().getWorldLocation().getRegionID();
-		if (HESPORI_REGION == regionID && message.equals(HESPORI_LOOTED_MESSAGE))
+		if (GameArea.HESPORI.containsRegion(regionID) && message.equals(HESPORI_LOOTED_MESSAGE))
 		{
 			onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, HESPORI_EVENT));
 			return;
 		}
 
 		final Matcher hamStoreroomMatcher = HAM_CHEST_LOOTED_PATTERN.matcher(message);
-		if (hamStoreroomMatcher.matches() && regionID == HAM_STOREROOM_REGION)
+		if (hamStoreroomMatcher.matches() && GameArea.HAM_STORE_ROOM.containsRegion(regionID))
 		{
 			String keyType = hamStoreroomMatcher.group("key");
 			onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, String.format("H.A.M. chest (%s)", keyType)));
@@ -1152,13 +1140,13 @@ public class LootTrackerPlugin extends Plugin
 			return;
 		}
 
-		if (regionID == TEMPOROSS_REGION && message.startsWith(TEMPOROSS_LOOT_STRING))
+		if (GameArea.RUINS_OF_UNKAH.containsRegion(regionID) && message.startsWith(TEMPOROSS_LOOT_STRING))
 		{
 			onInvChange(collectInvItems(LootRecordType.EVENT, TEMPOROSS_EVENT, client.getBoostedSkillLevel(Skill.FISHING)));
 			return;
 		}
 
-		if (regionID == GUARDIANS_OF_THE_RIFT_REGION && message.startsWith(GUARDIANS_OF_THE_RIFT_LOOT_STRING))
+		if (GameArea.GUARDIANS_OF_THE_RIFT.containsRegion(regionID) && message.startsWith(GUARDIANS_OF_THE_RIFT_LOOT_STRING))
 		{
 			onInvChange(collectInvItems(LootRecordType.EVENT, GUARDIANS_OF_THE_RIFT_EVENT, client.getBoostedSkillLevel(Skill.RUNECRAFT)));
 			return;
@@ -1181,7 +1169,7 @@ public class LootTrackerPlugin extends Plugin
 			onInvChange(collectInvItems(LootRecordType.EVENT, "Unsired"));
 		}
 
-		if (regionID == BA_LOBBY_REGION && chatType == ChatMessageType.MESBOX)
+		if (inBaLobby() && chatType == ChatMessageType.MESBOX)
 		{
 			if (message.contains("High level gamble count:"))
 			{
@@ -1367,11 +1355,11 @@ public class LootTrackerPlugin extends Plugin
 		}
 
 		int region = WorldPoint.fromLocalInstance(client, actor.getLocalLocation()).getRegionID();
-		if (region == ARAXXOR_LAIR && lastNpcTypeTarget == NpcID.ARAXXOR_DEAD
-			|| region == ROYAL_TITANS_REGION && (lastNpcTypeTarget == NpcID.RT_FIRE_QUEEN_INACTIVE || lastNpcTypeTarget == NpcID.RT_ICE_KING_INACTIVE))
+		if (GameArea.ARAXXOR.containsRegion(region) && lastNpcTypeTarget == NpcID.ARAXXOR_DEAD
+			|| GameArea.THE_ROYAL_TITANS.containsRegion(region) && (lastNpcTypeTarget == NpcID.RT_FIRE_QUEEN_INACTIVE || lastNpcTypeTarget == NpcID.RT_ICE_KING_INACTIVE))
 		{
 			Object metadata = null;
-			if (region == ROYAL_TITANS_REGION)
+			if (GameArea.THE_ROYAL_TITANS.containsRegion(region))
 			{
 				metadata = Map.<String, Object>of(
 					"PLAYERS", client.getPlayers().size(),
@@ -1558,7 +1546,14 @@ public class LootTrackerPlugin extends Plugin
 	boolean inTobChestRegion()
 	{
 		int region = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID();
-		return region == THEATRE_OF_BLOOD_REGION || region == THEATRE_OF_BLOOD_LOBBY;
+		return GameArea.anyContainsRegion(region, GameArea.VERZIK_VITURS_TREASURE_VAULT, GameArea.VER_SINHAZA);
+	}
+
+	@VisibleForTesting
+	boolean inBaLobby()
+	{
+		int region = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID();
+		return GameArea.BARBARIAN_OUTPOST.containsRegion(region);
 	}
 
 	void toggleItem(String name, boolean ignore)
@@ -1645,24 +1640,6 @@ public class LootTrackerPlugin extends Plugin
 			items[i >> 1] = buildLootTrackerItem(id, qty);
 		}
 		return new LootTrackerRecord(configLoot.name, "", configLoot.type, items, configLoot.kills);
-	}
-
-	/**
-	 * Is player currently within the provided map regions
-	 */
-	private boolean isPlayerWithinMapRegion(Set<Integer> definedMapRegions)
-	{
-		final int[] mapRegions = client.getMapRegions();
-
-		for (int region : mapRegions)
-		{
-			if (definedMapRegions.contains(region))
-			{
-				return true;
-			}
-		}
-
-		return false;
 	}
 
 	private void lootReceivedChatMessage(final Collection<ItemStack> items, final String name)
