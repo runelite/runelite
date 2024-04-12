@@ -36,6 +36,7 @@ import net.runelite.client.game.ItemManager;
 @Getter
 public enum RunecraftAction implements ItemSkillAction
 {
+	AIR_RUNE(ItemID.AIR_RUNE, 1, 5, false),
 	AIR_TIARA(ItemID.AIR_TIARA, 1, 25, true),
 	MIND_TIARA(ItemID.MIND_TIARA, 1, 27.5f, true),
 	WATER_TIARA(ItemID.WATER_TIARA, 1, 30, true),
@@ -48,7 +49,6 @@ public enum RunecraftAction implements ItemSkillAction
 	LAW_TIARA(ItemID.LAW_TIARA, 1, 47.5f, true),
 	DEATH_TIARA(ItemID.DEATH_TIARA, 1, 50, true),
 	WRATH_TIARA(ItemID.WRATH_TIARA, 1, 52.5f, true),
-	AIR_RUNE(ItemID.AIR_RUNE, 1, 5, false),
 	MIND_RUNE(ItemID.MIND_RUNE, 2, 5.5f, false),
 	MIND_CORE(ItemID.MIND_CORE, 2, 55, true),
 	WATER_RUNE(ItemID.WATER_RUNE, 5, 6, false),
@@ -69,20 +69,20 @@ public enum RunecraftAction implements ItemSkillAction
 	NATURE_RUNE(ItemID.NATURE_RUNE, 44, 9, false, true),
 	LAW_RUNE(ItemID.LAW_RUNE, 54, 9.5f, false, true),
 	DEATH_RUNE(ItemID.DEATH_RUNE, 65, 10, false, true),
-	ZEAH_BLOOD_RUNE(ItemID.BLOOD_RUNE, 77, 24.425f, true)
-	{
-		@Override
-		public String getName(final ItemManager itemManager)
-		{
-			return "Blood rune (Zeah)";
-		}
-	},
 	TRUE_BLOOD_RUNE(ItemID.BLOOD_RUNE, 77, 10.5f, false)
 	{
 		@Override
 		public String getName(final ItemManager itemManager)
 		{
 			return "Blood rune (True Altar)";
+		}
+	},
+	ZEAH_BLOOD_RUNE(ItemID.BLOOD_RUNE, 77, 24.425f, true)
+	{
+		@Override
+		public String getName(final ItemManager itemManager)
+		{
+			return "Blood rune (Zeah)";
 		}
 	},
 	SOUL_RUNE(ItemID.SOUL_RUNE, 90, 30.325f, true),
