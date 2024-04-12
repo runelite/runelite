@@ -24,10 +24,15 @@
  */
 package net.runelite.client.plugins.skillcalculator.skills;
 
+import java.util.EnumSet;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.ItemID;
 import net.runelite.client.game.ItemManager;
+import static net.runelite.client.plugins.skillcalculator.skills.AgilityBonus.WILDERNESS_AGILITY_TICKET_101_PLUS;
+import static net.runelite.client.plugins.skillcalculator.skills.AgilityBonus.WILDERNESS_AGILITY_TICKET_11_TO_50;
+import static net.runelite.client.plugins.skillcalculator.skills.AgilityBonus.WILDERNESS_AGILITY_TICKET_51_TO_100;
 
 @AllArgsConstructor
 @Getter
@@ -47,6 +52,7 @@ public enum AgilityAction implements NamedSkillAction
 	SHAYZIEN_ADVANCED_COURSE("Shayzien Advanced Course", 48, 474.3f, ItemID.SHAYZIEN_HELM_5),
 	APE_ATOLL_COURSE("Ape Atoll", 48, 580, ItemID.GORILLA_GREEGREE),
 	FALADOR_ROOFTOP("Falador Rooftop", 50, 440, ItemID.MARK_OF_GRACE),
+	WILDERNESS_AGILITY_COURSE_TICKET("Wilderness Agility Ticket", 52, 200, ItemID.WILDERNESS_AGILITY_TICKET),
 	WILDERNESS_AGILITY_COURSE("Wilderness Agility Course", 52, 571.4f, ItemID.SKULL),
 	HALLOWED_SEPULCHRE_FLOOR_1("Hallowed Sepulchre Floor 1", 52, 575, ItemID.RING_OF_ENDURANCE),
 	SEERS_VILLAGE_ROOFTOP("Seers' Village Rooftop", 60, 570, ItemID.MARK_OF_GRACE),
@@ -71,5 +77,20 @@ public enum AgilityAction implements NamedSkillAction
 	public boolean isMembers(final ItemManager itemManager)
 	{
 		return true;
+	}
+
+	@Override
+	public Set<AgilityBonus> getExcludedSkillBonuses()
+	{
+		final EnumSet<AgilityBonus> others = EnumSet.allOf(AgilityBonus.class);
+
+		if (this == WILDERNESS_AGILITY_COURSE_TICKET)
+		{
+			others.remove(WILDERNESS_AGILITY_TICKET_11_TO_50);
+			others.remove(WILDERNESS_AGILITY_TICKET_51_TO_100);
+			others.remove(WILDERNESS_AGILITY_TICKET_101_PLUS);
+		}
+
+		return others;
 	}
 }
