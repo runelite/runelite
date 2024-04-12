@@ -24,6 +24,8 @@
  */
 package net.runelite.client.plugins.skillcalculator.skills;
 
+import java.util.EnumSet;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -32,8 +34,17 @@ import lombok.Getter;
 public enum WoodcuttingBonus implements SkillBonus
 {
 	LUMBERJACK_OUTFIT("Lumberjack Outfit", 1.025f),
+	FELLING_AXE_RATIONS("Felling Axe + Rations", 1.1f),
 	;
 
 	private final String name;
 	private final float value;
+
+	@Override
+	public Set<WoodcuttingBonus> getCanBeStackedWith()
+	{
+		final EnumSet<WoodcuttingBonus> others = EnumSet.allOf(WoodcuttingBonus.class);
+		others.remove(this);
+		return others;
+	}
 }
