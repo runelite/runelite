@@ -77,7 +77,7 @@ public enum ThievingAction implements NamedSkillAction
 	DORGESH_KAAN_RICH_CHEST("Dorgesh-Kaan Rich Chest", 78, 650, ItemID.MINING_HELMET),
 	HERO("Hero", 80, 275, ItemID.HERO),
 	VYRE("Vyre", 82, 306.9f, ItemID.VYRE),
-	ROGUES_CASTLE_CHEST("Wilderness Rogues' Chest", 84, 100, ItemID.DRAGONSTONE),
+	ROGUES_CASTLE_CHEST("Wilderness Rogues' Chest", 84, 701.7f, ItemID.DRAGONSTONE),
 	ELF("Elf", 85, 353, ItemID.ELF),
 	TZHAAR_HUR("TzHaar-Hur", 90, 103.4f, ItemID.TZHAARHUR),
 	;
