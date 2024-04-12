@@ -81,7 +81,7 @@ public class CannonPlugin extends Plugin
 	private int cannonWorld = -1;
 
 	@Getter
-	private List<WorldPoint> spotPoints = new ArrayList<>();
+	private final List<WorldPoint> spotPoints = new ArrayList<>();
 
 	@Inject
 	private ItemManager itemManager;

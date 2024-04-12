@@ -151,8 +151,8 @@ enum SpriteOverride
 	RESIZEABLE_MODE_TAB_STONE_MIDDLE(SpriteID.RESIZEABLE_MODE_TAB_STONE_MIDDLE, AROUND_2010),
 	RESIZEABLE_MODE_TAB_STONE_MIDDLE_SELECTED(SpriteID.RESIZEABLE_MODE_TAB_STONE_MIDDLE_SELECTED, AROUND_2010);
 
-	private int spriteID;
-	private Skin[] skin;
+	private final int spriteID;
+	private final Skin[] skin;
 
 	SpriteOverride(int spriteID, Skin... skin)
 	{

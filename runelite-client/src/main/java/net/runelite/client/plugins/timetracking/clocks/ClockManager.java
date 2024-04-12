@@ -63,7 +63,7 @@ public class ClockManager
 	private final List<Stopwatch> stopwatches = new ArrayList<>();
 
 	@Getter
-	private ClockTabPanel clockTabPanel = new ClockTabPanel(this);
+	private final ClockTabPanel clockTabPanel = new ClockTabPanel(this);
 
 	void addTimer()
 	{

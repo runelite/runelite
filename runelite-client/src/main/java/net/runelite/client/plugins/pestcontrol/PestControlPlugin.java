@@ -64,7 +64,7 @@ public class PestControlPlugin extends Plugin
 	private final Pattern SHIELD_DROP = Pattern.compile("The ([a-z]+), [^ ]+ portal shield has dropped!", Pattern.CASE_INSENSITIVE);
 
 	@Getter(AccessLevel.PACKAGE)
-	private List<NPC> spinners = new ArrayList<>();
+	private final List<NPC> spinners = new ArrayList<>();
 
 	@Inject
 	private OverlayManager overlayManager;
