@@ -33,8 +33,8 @@ import net.runelite.client.game.ItemManager;
 @Getter
 public enum WoodcuttingAction implements ItemSkillAction
 {
-	LOGS(ItemID.LOGS, 1, 25),
 	ACHEY_TREE_LOGS(ItemID.ACHEY_TREE_LOGS, 1, 25),
+	LOGS(ItemID.LOGS, 1, 25),
 	OAK_LOGS(ItemID.OAK_LOGS, 15, 37.5f),
 	WILLOW_LOGS(ItemID.WILLOW_LOGS, 30, 67.5f),
 	TEAK_LOGS(ItemID.TEAK_LOGS, 35, 85),

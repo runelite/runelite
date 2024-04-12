@@ -33,8 +33,8 @@ import net.runelite.client.game.ItemManager;
 @Getter
 public enum HunterAction implements NamedSkillAction
 {
-	CRIMSON_SWIFT("Crimson Swift", 1, 34, ItemID.CRIMSON_SWIFT),
 	POLAR_KEBBIT("Polar Kebbit", 1, 30, ItemID.KEBBIT),
+	CRIMSON_SWIFT("Crimson Swift", 1, 34, ItemID.CRIMSON_SWIFT),
 	COMMON_KEBBIT("Common Kebbit", 3, 36, ItemID.KEBBIT_9954),
 	GOLDEN_WARBLER("Golden Warbler", 5, 47, ItemID.GOLDEN_WARBLER),
 	REGULAR_BIRD_HOUSE("Regular Bird House", 5, 280, ItemID.BIRD_HOUSE),
@@ -83,14 +83,14 @@ public enum HunterAction implements NamedSkillAction
 	BLACK_SALAMANDER("Black Salamander", 67, 319.5f, ItemID.BLACK_SALAMANDER),
 	DASHING_KEBBIT("Dashing Kebbit", 69, 156, ItemID.KEBBIT_9964),
 	BLACK_CHINCHOMPA("Black Chinchompa", 73, 315, ItemID.BLACK_CHINCHOMPA),
-	MAGIC_BIRD_HOUSE("Magic Bird House", 74, 1140, ItemID.MAGIC_BIRD_HOUSE),
 	NINJA_IMPLING("Ninja Impling", 74, 52, ItemID.NINJA_IMPLING_JAR),
 	NINJA_IMPLING_GIELINOR("Ninja Impling (Gielinor)", 74, 240, ItemID.NINJA_IMPLING_JAR),
+	MAGIC_BIRD_HOUSE("Magic Bird House", 74, 1140, ItemID.MAGIC_BIRD_HOUSE),
 	CRYSTAL_IMPLING("Crystal Impling", 80, 280, ItemID.CRYSTAL_IMPLING_JAR),
 	DRAGON_IMPLING("Dragon Impling", 83, 65, ItemID.DRAGON_IMPLING_JAR),
 	DRAGON_IMPLING_GIELINOR("Dragon Impling (Gielinor)", 83, 300, ItemID.DRAGON_IMPLING_JAR),
-	REDWOOD_BIRD_HOUSE("Redwood Bird House", 89, 1200, ItemID.REDWOOD_BIRD_HOUSE),
 	LUCKY_IMPLING("Lucky Impling", 89, 380, ItemID.LUCKY_IMPLING_JAR),
+	REDWOOD_BIRD_HOUSE("Redwood Bird House", 89, 1200, ItemID.REDWOOD_BIRD_HOUSE),
 	;
 
 	private final String name;
