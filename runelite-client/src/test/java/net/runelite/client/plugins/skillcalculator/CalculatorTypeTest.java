@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.skillcalculator;
 
 import net.runelite.client.plugins.skillcalculator.skills.SkillAction;
+import net.runelite.client.plugins.skillcalculator.skills.SkillBonus;
 import static org.junit.Assert.fail;
 import org.junit.Test;
 
@@ -66,6 +67,32 @@ public class CalculatorTypeTest
 				prevLevel = currentLevel;
 				prevXP = currentXP;
 				prevName = currentName;
+			}
+		}
+	}
+
+	@Test
+	public void testSkillBonusesMutuallyStack()
+	{
+		for (final CalculatorType calculatorType : CalculatorType.values())
+		{
+			final SkillBonus[] skillBonuses = calculatorType.getSkillBonuses();
+			if (skillBonuses == null)
+			{
+				continue;
+			}
+
+			final String skillName = calculatorType.getSkill().getName();
+
+			for (final SkillBonus skillBonus : skillBonuses)
+			{
+				for (final SkillBonus stackedSkillBonus : skillBonus.getCanBeStackedWith())
+				{
+					if (!stackedSkillBonus.getCanBeStackedWith().contains(skillBonus))
+					{
+						fail(skillName + " skill bonus " + skillBonus + " is not mutually stacked with skill bonus " + stackedSkillBonus);
+					}
+				}
 			}
 		}
 	}
