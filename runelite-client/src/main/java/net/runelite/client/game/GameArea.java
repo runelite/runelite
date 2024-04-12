@@ -1,12 +1,17 @@
 package net.runelite.client.game;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import net.runelite.api.Client;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 
@@ -248,20 +253,24 @@ public enum GameArea
 	// Minigames
 	ARDOUGNE_RAT_PITS("Ardougne Rat Pits", GameAreaType.MINIGAMES, 10646),
 	BARBARIAN_ASSAULT("Barbarian Assault", GameAreaType.MINIGAMES, 7508, 7509, 10322),
-	BARROWS("Barrows", GameAreaType.MINIGAMES, 14131, 14231),
+	BARROWS("Barrows", GameAreaType.MINIGAMES, 14131),
+	BARROWS_CRYPT("Barrows", GameAreaType.MINIGAMES, 14231),
 	BLAST_FURNACE("Blast Furnace", GameAreaType.MINIGAMES, 7757),
 	BRIMHAVEN_AGILITY_ARENA("Brimhaven Agility Arena", GameAreaType.MINIGAMES, 11157),
 	BURTHORPE_GAMES_ROOM("Burthorpe Games Room", GameAreaType.MINIGAMES, 8781),
 	CASTLE_WARS("Castle Wars", GameAreaType.MINIGAMES, 9520, 9620),
 	CLAN_WARS("Clan Wars", GameAreaType.MINIGAMES, 12621, 12622, 12623, 13130, 13131, 13133, 13134, 13135, 13386, 13387, 13390, 13641, 13642, 13643, 13644, 13645, 13646, 13647, 13899, 13900, 14155, 14156),
-	FISHING_TRAWLER("Fishing Trawler", GameAreaType.MINIGAMES, 7499),
+	// 7499 is default trawler, 8011 is waterlogged trawler
+	FISHING_TRAWLER("Fishing Trawler", GameAreaType.MINIGAMES, 7499, 8011),
 	FORTIS_COLOSSEUM("Fortis Colosseum", GameAreaType.MINIGAMES, 7216),
 	FORTIS_COLOSSEUM_LOBBY("Fortis Colosseum Lobby", GameAreaType.MINIGAMES, 7316),
-	GAUNTLET("The Gauntlet", GameAreaType.MINIGAMES, 12127, 7512),
+	GAUNTLET_LOBBY("The Gauntlet Lobby", GameAreaType.MINIGAMES, 12127),
+	GAUNTLET("The Gauntlet", GameAreaType.MINIGAMES, 7512),
 	CORRUPTED_GAUNTLET("Corrupted Gauntlet", GameAreaType.MINIGAMES, 7768),
 	GIANTS_FOUNDRY("Giants' Foundry", GameAreaType.MINIGAMES, 13491),
 	GUARDIANS_OF_THE_RIFT("Guardians of the Rift", GameAreaType.MINIGAMES, 14484),
-	HALLOWED_SEPULCHRE("Hallowed Sepulchre", GameAreaType.MINIGAMES, 8797, 9051, 9052, 9053, 9054, 9309, 9563, 9565, 9821, 10074, 10075, 10077),
+	HALLOWED_SEPULCHRE("Hallowed Sepulchre", GameAreaType.MINIGAMES, 8797, 9051, 9052, 9053, 9054, 9309, 9563, 9821, 10074, 10075, 10077),
+	HALLOWED_SEPULCHRE_LOBBY("Hallowed Sepulchre Lobby", GameAreaType.MINIGAMES, 9565),
 	INFERNO("The Inferno", GameAreaType.MINIGAMES, 9043),
 	KELDAGRIM_RAT_PITS("Keldagrim Rat Pits", GameAreaType.MINIGAMES, 7753),
 	LAST_MAN_STANDING_DESERTED_ISLAND("LMS - Deserted Island", GameAreaType.MINIGAMES, 13658, 13659, 13660, 13914, 13915, 13916),
@@ -276,7 +285,8 @@ public enum GameArea
 	PYRAMID_PLUNDER("Pyramid Plunder", GameAreaType.MINIGAMES, 7749),
 	ROGUES_DEN("Rogues' Den", GameAreaType.MINIGAMES, 11854, 11855, 12109, 12110, 12111),
 	SORCERESS_GARDEN("Sorceress's Garden", GameAreaType.MINIGAMES, 11605),
-	SOUL_WARS("Soul Wars", GameAreaType.MINIGAMES, 8493, 8748, 8749, 9005),
+	SOUL_WARS("Soul Wars", GameAreaType.MINIGAMES, 8493, 8749, 9005),
+	SOUL_WARS_LOBBY("Soul Wars", GameAreaType.MINIGAMES, 8748),
 	TEMPLE_TREKKING("Temple Trekking", GameAreaType.MINIGAMES, 8014, 8270, 8256, 8782, 9038, 9294, 9550, 9806),
 	TITHE_FARM("Tithe Farm", GameAreaType.MINIGAMES, 7222),
 	TROUBLE_BREWING("Trouble Brewing", GameAreaType.MINIGAMES, 15150),
@@ -287,7 +297,8 @@ public enum GameArea
 
 	// Raids
 	CHAMBERS_OF_XERIC("Chambers of Xeric", GameAreaType.RAIDS, 12889, 13136, 13137, 13138, 13139, 13140, 13141, 13145, 13393, 13394, 13395, 13396, 13397, 13401),
-	THEATRE_OF_BLOOD("Theatre of Blood", GameAreaType.RAIDS, 12611, 12612, 12613, 12867, 12869, 13122, 13123, 13125, 13379),
+	THEATRE_OF_BLOOD("Theatre of Blood", GameAreaType.RAIDS, 12611, 12612, 12613, 12869, 13122, 13123, 13125),
+	VERZIK_VITURS_TREASURE_VAULT("Verzik Vitur's Treasure Vault", GameAreaType.RAIDS, 12867),
 	TOMBS_OF_AMASCUT("Tombs of Amascut", GameAreaType.RAIDS, 14160, 14162, 14164, 14674, 14676, 15184, 15186, 15188, 15696, 15698, 15700),
 	JALTEVAS_PYRAMID("Jaltevas Pyramid", GameAreaType.RAIDS, 13454),
 	OSMUMTENS_BURIAL_CHAMBER("Osmumten's Burial Chamber", GameAreaType.RAIDS, 14672),
@@ -309,6 +320,7 @@ public enum GameArea
 	BLAST_MINE("Blast Mine", GameAreaType.REGIONS, 5948),
 	BODY_ALTAR("Body Altar", GameAreaType.REGIONS, 10059),
 	CHAOS_ALTAR("Chaos Altar", GameAreaType.REGIONS, 9035),
+	CLAN_HALL("Clan Hall", GameAreaType.REGIONS, 6997),
 	COSMIC_ALTAR("Cosmic Altar", GameAreaType.REGIONS, 8523),
 	COSMIC_ENTITYS_PLANE("Cosmic Entity's Plane", GameAreaType.REGIONS, 8267),
 	CRABCLAW_ISLE("Crabclaw Isle", GameAreaType.REGIONS, 6965),
@@ -448,6 +460,9 @@ public enum GameArea
 	private final GameAreaType gameAreaType;
 	private final List<RegionArea> regionAreas;
 
+	@Getter(AccessLevel.NONE)
+	private Set<Integer> fullRegions;
+
 	GameArea(String areaName, GameAreaType areaType, int... regionIds)
 	{
 		this(areaName, areaType, regionGameAreas(regionIds));
@@ -496,5 +511,86 @@ public enum GameArea
 		return Arrays.stream(regionIds)
 			.mapToObj(RegionArea::new)
 			.collect(Collectors.toList());
+	}
+
+	/**
+	 * Get a set complete regions the area contains. (This excludes any sub-regions this area spans to)
+	 * <p>
+	 * Note: A player is not guaranteed to be in this area if within this region, as another area's sub-region may cover
+	 *       the player's location within the region.
+	 *
+	 * @return A set of full regions which correspond to the area.
+	 */
+	public Set<Integer> getFullRegions()
+	{
+		if (fullRegions != null)
+		{
+			return fullRegions;
+		}
+
+		final ImmutableSet.Builder<Integer> regions = ImmutableSet.builder();
+		for (final RegionArea regionArea : getRegionAreas())
+		{
+			if (regionArea.getArea() == null)
+			{
+				regions.add(regionArea.getRegion());
+			}
+		}
+		fullRegions = regions.build();
+		return fullRegions;
+	}
+
+	/**
+	 * Check if the area contains the given point.
+	 * <p>
+	 * Note: Sub-region definitions assume that {@link WorldPoint WorldPoints} will be translated from instances, such
+	 *       as via {@link WorldPoint#fromLocalInstance(Client, LocalPoint)}. Points from instances will not return the
+	 *       correct value otherwise.
+	 *
+	 * @param worldPoint The point to check whether is contained in the area.
+	 * @return {@code true} if a region or sub-region of the area contains {@code worldPoint}, {@code false} otherwise.
+	 */
+	public boolean contains(final WorldPoint worldPoint)
+	{
+		for (final RegionArea regionArea : getRegionAreas())
+		{
+			final WorldArea subRegion = regionArea.getArea();
+			if ((subRegion != null && subRegion.contains2D(worldPoint))
+				|| worldPoint.getRegionID() == regionArea.getRegion())
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Check if the area fully covers the given region.
+	 *
+	 * @param regionId ID of the region to check whether is contained in the area.
+	 * @return {@code true} if the region is fully covered by the area, {@code false} otherwise.
+	 */
+	public boolean containsRegion(final int regionId)
+	{
+		return getFullRegions().contains(regionId);
+	}
+
+	/**
+	 * Check if the given region is fully covered by any of the given game areas.
+	 *
+	 * @param regionId  ID of the region to check whether is fully contained in any of the given areas.
+	 * @param gameAreas Areas to check whether they contain the given region.
+	 * @return {@code true} if the region is fully covered by any of the given areas, {@code false} otherwise.
+	 */
+	public static boolean anyContainsRegion(final int regionId, final GameArea... gameAreas)
+	{
+		for (final GameArea gameArea : gameAreas)
+		{
+			if (gameArea.containsRegion(regionId))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 }
