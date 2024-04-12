@@ -33,8 +33,8 @@ import lombok.Getter;
 @Getter(onMethod_ = @Override)
 public enum FiremakingBonus implements SkillBonus
 {
-	PYROMANCER_OUTFIT("Pyromancer Outfit (+2.5%)", 1.025f),
-	FORESTERS_CAMPFIRE("Forester's Campfire (33%)", 0.33333333f),
+	PYROMANCER_OUTFIT("Pyromancer Outfit", 1.025f),
+	FORESTERS_CAMPFIRE("Forester's Campfire", 0.33333333f),
 	;
 
 	private final String name;

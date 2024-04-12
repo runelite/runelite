@@ -31,7 +31,7 @@ import lombok.Getter;
 @Getter(onMethod_ = @Override)
 public enum FishingBonus implements SkillBonus
 {
-	ANGLERS_OUTFIT("Angler's Outfit (+2.5%)", 1.025f),
+	ANGLERS_OUTFIT("Angler's Outfit", 1.025f),
 	;
 
 	private final String name;

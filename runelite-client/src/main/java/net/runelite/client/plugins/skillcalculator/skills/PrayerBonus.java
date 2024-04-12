@@ -33,15 +33,15 @@ import lombok.Getter;
 @Getter(onMethod_ = @Override)
 public enum PrayerBonus implements SkillBonus
 {
-	LIT_GILDED_ALTAR("Lit Gilded Altar (350%)", 3.5f),
-	ECTOFUNTUS("Ectofuntus (400%)", 4),
-	CHAOS_ALTAR("Chaos Altar (700%)", 7),
-	MORYTANIA_DIARY_3_SHADES("Morytania Diary 3 Shades (150%)", 1.5f),
-	BONECRUSHER("Bonecrusher (50%)", 0.5f),
-	SINISTER_OFFERING("Sinister Offering (300%)", 3),
-	DEMONIC_OFFERING("Demonic Offering (300%)", 3),
-	SACRED_BONE_BURNER("Sacred Bone Burner (300%)", 3),
-	ZEALOT_ROBES("Zealot Robes (105%)", 1.05f),
+	LIT_GILDED_ALTAR("Lit Gilded Altar", 3.5f),
+	ECTOFUNTUS("Ectofuntus", 4),
+	CHAOS_ALTAR("Chaos Altar", 7),
+	MORYTANIA_DIARY_3_SHADES("Morytania Diary 3 Shades", 1.5f),
+	BONECRUSHER("Bonecrusher", 0.5f),
+	SINISTER_OFFERING("Sinister Offering", 3),
+	DEMONIC_OFFERING("Demonic Offering", 3),
+	SACRED_BONE_BURNER("Sacred Bone Burner", 3),
+	ZEALOT_ROBES("Zealot Robes", 1.05f),
 	;
 
 	private final String name;
