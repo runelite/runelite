@@ -380,7 +380,9 @@ public final class SpriteID
 	public static final int SPELL_WATER_SURGE = 363;
 	public static final int SPELL_EARTH_SURGE = 364;
 	public static final int SPELL_FIRE_SURGE = 365;
-	/* Unmapped: 366, 367, 368 */
+	/* Unmapped: 366 */
+	public static final int SPELL_CIVITAS_ILLA_FORTIS_TELEPORT = 367;
+	/* Unmapped: 368 */
 	public static final int SPELL_BIND_DISABLED = 369;
 	public static final int SPELL_SNARE_DISABLED = 370;
 	public static final int SPELL_ENTANGLE_DISABLED = 371;

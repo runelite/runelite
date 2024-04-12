@@ -61,6 +61,7 @@ public enum ThievingAction implements NamedSkillAction
 	CROSSBOW_STALL("Crossbow Stall", 49, 52, ItemID.CROSSBOW),
 	SILVER_STALL("Silver Stall", 50, 54, ItemID.SILVER_BAR),
 	WALL_SAFE("Wall Safe", 50, 70, ItemID.STETHOSCOPE),
+	WEALTHY_CITIZEN("Wealthy Citizen", 50, 96, ItemID.WEALTHY_CITIZEN),
 	DESERT_BANDIT("Desert Bandit", 53, 79.5f, ItemID.BANDIT),
 	KNIGHT("Knight", 55, 84.3f, ItemID.KNIGHT),
 	POLLNIVNIAN_BANDIT("Pollnivnian Bandit", 55, 84.3f, ItemID.BANDIT_6781),

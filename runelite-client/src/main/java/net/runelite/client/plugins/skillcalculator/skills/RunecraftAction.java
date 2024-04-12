@@ -63,6 +63,7 @@ public enum RunecraftAction implements ItemSkillAction
 	BODY_CORE(ItemID.BODY_CORE, 20, 75, true),
 	LAVA_RUNE(ItemID.LAVA_RUNE, 23, 10.5f, false),
 	COSMIC_RUNE(ItemID.COSMIC_RUNE, 27, 8, false, true),
+	SUNFIRE_RUNE(ItemID.SUNFIRE_RUNE, 33, 9, false),
 	CHAOS_RUNE(ItemID.CHAOS_RUNE, 35, 8.5f, false, true),
 	CHAOS_CORE(ItemID.CHAOS_CORE, 35, 85, true),
 	ASTRAL_RUNE(ItemID.ASTRAL_RUNE, 40, 8.7f, false),

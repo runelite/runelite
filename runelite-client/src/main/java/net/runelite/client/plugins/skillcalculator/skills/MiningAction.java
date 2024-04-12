@@ -73,6 +73,14 @@ public enum MiningAction implements ItemSkillAction
 			}
 		},
 	GOLD_ORE(ItemID.GOLD_ORE, 40, 65),
+	CALCIFIED_ROCKS(ItemID.BLESSED_BONE_SHARDS, 41, 33)
+	{
+		@Override
+		public String getName(final ItemManager itemManager)
+		{
+			return "Calcified Rocks";
+		}
+	},
 	GRANITE_500G(ItemID.GRANITE_500G, 45, 50),
 	GRANITE_2KG(ItemID.GRANITE_2KG, 45, 60),
 	GRANITE_5KG(ItemID.GRANITE_5KG, 45, 75),
