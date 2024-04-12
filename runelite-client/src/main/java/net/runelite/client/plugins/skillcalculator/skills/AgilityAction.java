@@ -47,7 +47,7 @@ public enum AgilityAction implements NamedSkillAction
 	SHAYZIEN_ADVANCED_COURSE("Shayzien Advanced Course", 48, 474.3f, ItemID.SHAYZIEN_HELM_5),
 	APE_ATOLL_COURSE("Ape Atoll", 48, 580, ItemID.GORILLA_GREEGREE),
 	FALADOR_ROOFTOP("Falador Rooftop", 50, 440, ItemID.MARK_OF_GRACE),
-	WILDERNESS_AGILITY_COURSE("Wilderness Agility Course", 52, 571, ItemID.SKULL),
+	WILDERNESS_AGILITY_COURSE("Wilderness Agility Course", 52, 571.4f, ItemID.SKULL),
 	HALLOWED_SEPULCHRE_FLOOR_1("Hallowed Sepulchre Floor 1", 52, 575, ItemID.RING_OF_ENDURANCE),
 	SEERS_VILLAGE_ROOFTOP("Seers' Village Rooftop", 60, 570, ItemID.MARK_OF_GRACE),
 	WEREWOLF_AGILITY_COURSE("Werewolf Agility Course", 60, 730, ItemID.STICK),
