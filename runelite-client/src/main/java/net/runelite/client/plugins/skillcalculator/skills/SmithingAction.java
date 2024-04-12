@@ -24,10 +24,11 @@
  */
 package net.runelite.client.plugins.skillcalculator.skills;
 
+import java.util.EnumSet;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.ItemID;
-import net.runelite.client.game.ItemManager;
 
 @AllArgsConstructor
 @Getter
@@ -117,20 +118,6 @@ public enum SmithingAction implements ItemSkillAction
 	STEEL_SQ_SHIELD(ItemID.STEEL_SQ_SHIELD, 38, 75),
 	STEEL_WARHAMMER(ItemID.STEEL_WARHAMMER, 39, 112.5f),
 	GOLD_BAR(ItemID.GOLD_BAR, 40, 22.5f),
-	GOLD_BAR_GOLDSMITH_GAUNTLETS(ItemID.GOLD_BAR, 40, 56.2f)
-	{
-		@Override
-		public String getName(final ItemManager itemManager)
-		{
-			return "Gold bar (Goldsmith gauntlets)";
-		}
-
-		@Override
-		public boolean isMembers(final ItemManager itemManager)
-		{
-			return true;
-		}
-	},
 	STEEL_BATTLEAXE(ItemID.STEEL_BATTLEAXE, 40, 112.5f),
 	STEEL_CHAINBODY(ItemID.STEEL_CHAINBODY, 41, 112.5f),
 	STEEL_KITESHIELD(ItemID.STEEL_KITESHIELD, 42, 112.5f),
@@ -232,4 +219,17 @@ public enum SmithingAction implements ItemSkillAction
 	private final int itemId;
 	private final int level;
 	private final float xp;
+
+	@Override
+	public Set<SmithingBonus> getExcludedSkillBonuses()
+	{
+		final EnumSet<SmithingBonus> others = EnumSet.allOf(SmithingBonus.class);
+
+		if (this == GOLD_BAR)
+		{
+			others.remove(SmithingBonus.GOLDSMITH_GAUNTLETS);
+		}
+
+		return others;
+	}
 }
