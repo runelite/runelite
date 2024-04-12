@@ -29,6 +29,7 @@ import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.ItemID;
+import static net.runelite.client.plugins.skillcalculator.skills.PrayerBonus.BLESSED_SUNFIRE_WINE;
 import static net.runelite.client.plugins.skillcalculator.skills.PrayerBonus.DEMONIC_OFFERING;
 import static net.runelite.client.plugins.skillcalculator.skills.PrayerBonus.MORYTANIA_DIARY_3_SHADES;
 import static net.runelite.client.plugins.skillcalculator.skills.PrayerBonus.ZEALOT_ROBES;
@@ -49,6 +50,7 @@ public enum PrayerAction implements ItemSkillAction
 	BIG_BONES(ItemID.BIG_BONES, 1, 15, PrayerMethod.BONES),
 	JOGRE_BONES(ItemID.JOGRE_BONES, 1, 15, PrayerMethod.BONES),
 	CATFISH(ItemID.CATFISH, 1, 16, PrayerMethod.PREPARED_FISH),
+	WYRMLING_BONES(ItemID.WYRMLING_BONES, 1, 21, PrayerMethod.BONES),
 	ZOGRE_BONES(ItemID.ZOGRE_BONES, 1, 22.5f, PrayerMethod.BONES),
 	SHAIKAHAN_BONES(ItemID.SHAIKAHAN_BONES, 1, 25, PrayerMethod.BONES),
 	VILE_ASHES(ItemID.VILE_ASHES, 1, 25, PrayerMethod.DEMONIC_ASHES),
@@ -95,6 +97,7 @@ public enum PrayerAction implements ItemSkillAction
 	ENSOULED_AVIANSIE_HEAD(ItemID.ENSOULED_AVIANSIE_HEAD, 1, 1234, PrayerMethod.ENSOULED_HEAD),
 	ENSOULED_ABYSSAL_HEAD(ItemID.ENSOULED_ABYSSAL_HEAD, 1, 1300, PrayerMethod.ENSOULED_HEAD),
 	ENSOULED_DRAGON_HEAD(ItemID.ENSOULED_DRAGON_HEAD, 1, 1560, PrayerMethod.ENSOULED_HEAD),
+	BLESSED_BONE_SHARDS(ItemID.BLESSED_BONE_SHARDS, 30, 5, PrayerMethod.BLESSED_SUNFIRE_WINE),
 	SUPERIOR_DRAGON_BONES(ItemID.SUPERIOR_DRAGON_BONES, 70, 150, PrayerMethod.BONES),
 	;
 
@@ -105,14 +108,17 @@ public enum PrayerAction implements ItemSkillAction
 		ENSOULED_HEAD,
 		PREPARED_FISH,
 		SHADE_REMAINS,
+		BLESSED_SUNFIRE_WINE,
 	}
 
 	private static final Set<PrayerBonus> EXCLUDED_BONUSES_FOR_BONES = EnumSet.of(
 		MORYTANIA_DIARY_3_SHADES,
-		DEMONIC_OFFERING
+		DEMONIC_OFFERING,
+		BLESSED_SUNFIRE_WINE
 	);
 	private static final Set<PrayerBonus> EXCLUDED_BONUSES_FOR_ASHES = EnumSet.complementOf(EnumSet.of(DEMONIC_OFFERING));
 	private static final Set<PrayerBonus> EXCLUDED_BONUSES_FOR_REMAINS = EnumSet.complementOf(EnumSet.of(MORYTANIA_DIARY_3_SHADES));
+	private static final Set<PrayerBonus> EXCLUDED_BONUSES_FOR_BLESSED_SUNFIRE_WINE = EnumSet.complementOf(EnumSet.of(ZEALOT_ROBES, BLESSED_SUNFIRE_WINE));
 	private static final Set<PrayerBonus> EXCLUDE_ALL_EXCEPT_ZEALOT_ROBES = EnumSet.complementOf(EnumSet.of(ZEALOT_ROBES));
 
 	private final int itemId;
@@ -134,6 +140,8 @@ public enum PrayerAction implements ItemSkillAction
 				return EXCLUDE_ALL_EXCEPT_ZEALOT_ROBES;
 			case SHADE_REMAINS:
 				return EXCLUDED_BONUSES_FOR_REMAINS;
+			case BLESSED_SUNFIRE_WINE:
+				return EXCLUDED_BONUSES_FOR_BLESSED_SUNFIRE_WINE;
 			default:
 				return EnumSet.allOf(PrayerBonus.class);
 		}

@@ -39,6 +39,7 @@ public enum PrayerBonus implements SkillBonus
 	LIT_GILDED_ALTAR("Lit Gilded Altar", 3.5f),
 	ECTOFUNTUS("Ectofuntus", 4),
 	CHAOS_ALTAR("Chaos Altar", 7),
+	BLESSED_SUNFIRE_WINE("Blessed Sunfire Wine", 1.2f),
 	DEMONIC_OFFERING("Demonic Offering", 3),
 	MORYTANIA_DIARY_3_SHADES("Morytania Diary 3 Shades", 1.5f),
 	ZEALOT_ROBES("Zealot Robes", 1.05f),
