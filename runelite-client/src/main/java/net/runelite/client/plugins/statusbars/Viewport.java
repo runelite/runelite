@@ -31,19 +31,43 @@ import net.runelite.api.widgets.ComponentID;
 
 @Getter
 @AllArgsConstructor
-enum Viewport
+enum PossibleViewports
 {
-	RESIZED_BOX(ComponentID.RESIZABLE_VIEWPORT_RESIZABLE_VIEWPORT_OLD_SCHOOL_BOX, ComponentID.RESIZABLE_VIEWPORT_INTERFACE_CONTAINER,
-			new Point(20, -4), new Point(0, -4)),
-	RESIZED_BOTTOM(ComponentID.RESIZABLE_VIEWPORT_BOTTOM_LINE_RESIZABLE_VIEWPORT_BOTTOM_LINE, ComponentID.RESIZABLE_VIEWPORT_BOTTOM_LINE_INTERFACE_CONTAINER,
-			new Point(61, -12), new Point(35, -12)),
-	FIXED(ComponentID.FIXED_VIEWPORT_FIXED_VIEWPORT, ComponentID.FIXED_VIEWPORT_INTERFACE_CONTAINER,
-			new Point(20, -4), new Point(0, -4)),
-	FIXED_BANK(ComponentID.BANK_CONTAINER, ComponentID.BANK_INVENTORY_ITEM_CONTAINER,
-			new Point(20, -4), new Point(0, -4));
+	RESIZEABLE_MODERN(
+		ComponentID.RESIZABLE_VIEWPORT_BOTTOM_LINE_RESIZABLE_VIEWPORT_BOTTOM_LINE,
+		ComponentID.RESIZABLE_VIEWPORT_BOTTOM_LINE_INTERFACE_CONTAINER,
+		new Point(0, -1),
+		-1,
+		2
+	),
 
-	private int container;
-	private int viewport;
-	private Point offsetLeft;
-	private Point offsetRight;
+	RESIZEABLE_CLASSIC(
+		ComponentID.RESIZABLE_VIEWPORT_RESIZABLE_VIEWPORT_OLD_SCHOOL_BOX,
+		ComponentID.RESIZABLE_VIEWPORT_INTERFACE_CONTAINER,
+		new Point(-20, 5),
+		20,
+		-11
+	),
+
+	FIXED_CLASSIC(
+		ComponentID.FIXED_VIEWPORT_FIXED_VIEWPORT,
+		ComponentID.FIXED_VIEWPORT_INTERFACE_CONTAINER,
+		new Point(-20, 5),
+		20,
+		-11
+	),
+
+	FIXED_CLASSIC_BANK(
+		ComponentID.BANK_CONTAINER,
+		ComponentID.BANK_INVENTORY_ITEM_CONTAINER,
+		new Point(-20, 5),
+		20,
+		-11
+	);
+
+	private final int container;
+	private final int targetWidget;
+	private final Point originOffset;
+	private final int forcedBarWidth;
+	private final int barHeightOffset;
 }

@@ -37,25 +37,27 @@ import net.runelite.client.ui.overlay.components.TextComponent;
 @RequiredArgsConstructor
 class BarRenderer
 {
-	private static final Color BACKGROUND = new Color(0, 0, 0, 150);
+	private static final Color BORDER_COLOR = new Color(0, 0, 0, 200);
 	private static final Color OVERHEAL_COLOR = new Color(216, 255, 139, 150);
+
 	private static final int SKILL_ICON_HEIGHT = 35;
 	private static final int COUNTER_ICON_HEIGHT = 18;
-	private static final int BORDER_SIZE = 1;
 	private static final int MIN_ICON_AND_COUNTER_WIDTH = 16;
-	static final int DEFAULT_WIDTH = 20;
-	static final int MIN_WIDTH = 3;
-	static final int MAX_WIDTH = 40;
+
 	private final Supplier<Integer> maxValueSupplier;
 	private final Supplier<Integer> currentValueSupplier;
 	private final Supplier<Integer> healSupplier;
 	private final Supplier<Color> colorSupplier;
 	private final Supplier<Color> healColorSupplier;
 	private final Supplier<Image> iconSupplier;
+
 	private int maxValue;
 	private int currentValue;
 
-	private void refreshSkills()
+	/**
+	 * Updates the max and current values for our targeted Skill/Resource
+	 */
+	private void refreshValues()
 	{
 		maxValue = maxValueSupplier.get();
 		currentValue = currentValueSupplier.get();
@@ -63,44 +65,56 @@ class BarRenderer
 
 	/**
 	 * Renders a status bar along with its restoration bar(s), icons and counters as appropriate
-	 * @param config Plugin configuration which dictates certain settings, such as whether to show restoration bars and
-	 *               whether or not to draw icons.
+	 *
+	 * @param config   Plugin configuration which dictates certain settings, such as whether to show restoration bars and
+	 *                 whether or not to draw icons.
 	 * @param graphics Graphics.
-	 * @param x The location on the client where it will draw the bar on the x axis starting on the left side.
-	 * @param y The location on the client where it will draw the bar on the y axis starting on the bottom side.
-	 * @param height The height of the bar.
+	 * @param x        The location on the client where it will draw the bar on the x axis starting on the left side.
+	 * @param y        The location on the client where it will draw the bar on the y axis starting on the bottom side.
+	 * @param height   The height of the bar.
 	 */
 	void renderBar(StatusBarsConfig config, Graphics2D graphics, int x, int y, int width, int height)
 	{
-		final int filledHeight = getBarHeight(maxValue, currentValue, height);
-		final Color fill = colorSupplier.get();
-		refreshSkills();
+		refreshValues();
 
-		graphics.setColor(BACKGROUND);
-		graphics.drawRect(x, y, width - BORDER_SIZE, height - BORDER_SIZE);
+		// Draw the borders
+		int borderSize = config.borderSize();
+		// Don't allow the border to be wider than half the actual bar
+		borderSize = Math.min(width / 2, borderSize);
+
+		graphics.setColor(BORDER_COLOR);
 		graphics.fillRect(x, y, width, height);
 
+		// Draw the actual bar
+		final int filledHeight = getBarHeight(maxValue, currentValue, height);
+		final Color fill = colorSupplier.get();
+
 		graphics.setColor(fill);
-		graphics.fillRect(x + BORDER_SIZE,
-			y + BORDER_SIZE + (height - filledHeight),
-			width - BORDER_SIZE * 2,
-			filledHeight - BORDER_SIZE * 2);
+		// By starting at `x + borderSize`, and making the width
+		// `width - borderSize`, we're accounting for the border being twice as wide
+		// overall as what the user has defined.
+		graphics.fillRect(
+			x + borderSize,
+			y + borderSize + (height - filledHeight),
+			width - (borderSize * 2),
+			filledHeight - (borderSize * 2)
+		);
 
 		if (config.enableRestorationBars())
 		{
-			renderRestore(graphics, x, y, width, height);
+			renderRestore(graphics, x, y, width, height, borderSize);
 		}
 
 		if (config.enableSkillIcon() || config.enableCounter())
 		{
-			renderIconsAndCounters(config, graphics, x, y, width);
+			renderIconsAndCounters(config, graphics, x, y, width, borderSize);
 		}
 	}
 
-	private void renderIconsAndCounters(StatusBarsConfig config, Graphics2D graphics, int x, int y, int width)
+	private void renderIconsAndCounters(StatusBarsConfig config, Graphics2D graphics, int x, int y, int width, int borderSize)
 	{
 		// Icons and counters overlap the bar at small widths, so they are not drawn when the bars are too small
-		if (width < MIN_ICON_AND_COUNTER_WIDTH)
+		if (width - (borderSize * 2) < MIN_ICON_AND_COUNTER_WIDTH)
 		{
 			return;
 		}
@@ -110,8 +124,11 @@ class BarRenderer
 		if (skillIconEnabled)
 		{
 			final Image icon = iconSupplier.get();
-			final int xDraw = x + (width / 2) - (icon.getWidth(null) / 2);
-			graphics.drawImage(icon, xDraw, y, null);
+			if (icon != null)
+			{
+				final int xDraw = x + (width / 2) - (icon.getWidth(null) / 2);
+				graphics.drawImage(icon, xDraw, y, null);
+			}
 		}
 
 		if (config.enableCounter())
@@ -129,7 +146,7 @@ class BarRenderer
 		}
 	}
 
-	private void renderRestore(Graphics2D graphics, int x, int y, int width, int height)
+	private void renderRestore(Graphics2D graphics, int x, int y, int width, int height, int borderSize)
 	{
 		final Color color = healColorSupplier.get();
 		final int heal = healSupplier.get();
@@ -147,30 +164,34 @@ class BarRenderer
 		if (filledHealHeight + filledCurrentHeight > height)
 		{
 			graphics.setColor(OVERHEAL_COLOR);
-			fillY = y + BORDER_SIZE;
-			fillHeight = height - filledCurrentHeight - BORDER_SIZE;
+			fillY = y + borderSize;
+			fillHeight = height - filledCurrentHeight - borderSize;
 		}
 		else
 		{
-			fillY = y + BORDER_SIZE + height - (filledCurrentHeight + filledHealHeight);
+			fillY = y + borderSize + height - (filledCurrentHeight + filledHealHeight);
 			fillHeight = filledHealHeight;
 		}
 
-		graphics.fillRect(x + BORDER_SIZE,
+		graphics.fillRect(x + borderSize,
 			fillY,
-			width - BORDER_SIZE * 2,
+			width - borderSize * 2,
 			fillHeight);
 	}
 
-	private static int getBarHeight(int base, int current, int size)
+	/**
+	 * Determines number of pixels that correspond to the current percentage of
+	 * the maximum for the Bar
+	 */
+	private static int getBarHeight(int maxValue, int currentValue, int barMaxHeight)
 	{
-		final double ratio = (double) current / base;
+		final double ratio = (double) currentValue / maxValue;
 
 		if (ratio >= 1)
 		{
-			return size;
+			return barMaxHeight;
 		}
 
-		return (int) Math.round(ratio * size);
+		return (int) Math.round(ratio * barMaxHeight);
 	}
 }

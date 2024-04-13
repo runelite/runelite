@@ -1,0 +1,107 @@
+/*
+ * Copyright (c) 2019, Jos <Malevolentdev@gmail.com>
+ * Copyright (c) 2019, Rheon <https://github.com/Rheon-D>
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+package net.runelite.client.plugins.statusbars;
+
+import java.awt.Graphics2D;
+import java.util.Map;
+import lombok.RequiredArgsConstructor;
+import net.runelite.api.Point;
+import net.runelite.api.widgets.Widget;
+import net.runelite.client.plugins.statusbars.config.BarMode;
+
+@RequiredArgsConstructor
+class BarGroupRenderer
+{
+	private Map<BarMode, BarRenderer> barRenderers;
+
+	void attachRenderers(Map<BarMode, BarRenderer> rendererMap)
+	{
+		barRenderers = rendererMap;
+	}
+
+	/**
+	 * Renders one or more Status Bars, as a singular group for placement purposes
+	 *
+	 * @param config   Plugin configuration which dictates certain settings, such as whether to show restoration bars and
+	 *                 whether or not to draw icons.
+	 * @param graphics Graphics.
+	 */
+	void renderBars(StatusBarsConfig config, Graphics2D graphics, Widget targetWidget, PossibleViewports currentViewport)
+	{
+		// Grab the appropriate renderers for each bar
+		BarRenderer leftBar = barRenderers.get(config.leftBarMode()),
+			rightBar = barRenderers.get(config.rightBarMode());
+
+		//#region Determine bar positioning values
+		final Point origin = targetWidget.getCanvasLocation();
+		final Point originOffset = currentViewport.getOriginOffset();
+
+		// Adjust the height and width of our bars as necessary
+		int barHeight = targetWidget.getHeight() + currentViewport.getBarHeightOffset();
+		int barWidth = currentViewport.getForcedBarWidth();
+		if (barWidth <= -1)
+		{
+			// Indicates a "no force" value, so use the config value
+			barWidth = config.barWidth();
+		}
+
+		// Adjust the positioning based on offset and total group size
+		int barGap = config.barGap();
+
+		int currentX = origin.getX() + originOffset.getX(),
+			currentY = origin.getY() + originOffset.getY();
+
+		if (currentViewport != PossibleViewports.RESIZEABLE_MODERN)
+		{
+			// Fixed/Classic layouts have bars on either side of the interface, so we need to change the
+			// barGap to align things properly
+			barGap = targetWidget.getWidth();
+		}
+		else
+		{
+			// In resized/floating, we want to move the entire group to the left so that
+			// the rightmost bar will be aligned as we expect
+			int totalGroupWidth = (leftBar != null ? barWidth + barGap : 0) + (rightBar != null ? barWidth : 0);
+			currentX -= totalGroupWidth;
+		}
+		//#endregion
+
+		// Now we can actually render both bars
+		if (leftBar != null)
+		{
+			leftBar.renderBar(config, graphics, currentX, currentY, barWidth, barHeight);
+
+			// Increase the offset by barGap so the next bar is correctly positioned
+			currentX += barWidth + barGap;
+		}
+
+		if (rightBar != null)
+		{
+			rightBar.renderBar(config, graphics, currentX, currentY, barWidth, barHeight);
+		}
+
+	}
+}

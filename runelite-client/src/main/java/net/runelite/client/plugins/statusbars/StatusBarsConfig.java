@@ -30,6 +30,7 @@ import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.Range;
 import net.runelite.client.config.Units;
 import net.runelite.client.plugins.statusbars.config.BarMode;
+import net.runelite.client.plugins.statusbars.config.BarPosition;
 
 @ConfigGroup(StatusBarsConfig.GROUP)
 public interface StatusBarsConfig extends Config
@@ -39,7 +40,8 @@ public interface StatusBarsConfig extends Config
 	@ConfigItem(
 		keyName = "enableCounter",
 		name = "Show counters",
-		description = "Shows current value of the status on the bar"
+		description = "Shows current numerical value of the status on the bar.",
+		position = 0
 	)
 	default boolean enableCounter()
 	{
@@ -49,7 +51,8 @@ public interface StatusBarsConfig extends Config
 	@ConfigItem(
 		keyName = "enableSkillIcon",
 		name = "Show icons",
-		description = "Adds skill icons at the top of the bars."
+		description = "Adds skill icons at the top of the bars.",
+		position = 1
 	)
 	default boolean enableSkillIcon()
 	{
@@ -59,7 +62,8 @@ public interface StatusBarsConfig extends Config
 	@ConfigItem(
 		keyName = "enableRestorationBars",
 		name = "Show restores",
-		description = "Visually shows how much will be restored to your status bar."
+		description = "Visually shows how much will be restored to your status bar.",
+		position = 2
 	)
 	default boolean enableRestorationBars()
 	{
@@ -69,7 +73,8 @@ public interface StatusBarsConfig extends Config
 	@ConfigItem(
 		keyName = "leftBarMode",
 		name = "Left Bar",
-		description = "Configures the left status bar"
+		description = "Configures the left status bar.",
+		position = 3
 	)
 	default BarMode leftBarMode()
 	{
@@ -79,7 +84,8 @@ public interface StatusBarsConfig extends Config
 	@ConfigItem(
 		keyName = "rightBarMode",
 		name = "Right Bar",
-		description = "Configures the right status bar"
+		description = "Configures the right status bar.",
+		position = 4
 	)
 	default BarMode rightBarMode()
 	{
@@ -89,7 +95,8 @@ public interface StatusBarsConfig extends Config
 	@ConfigItem(
 		keyName = "hideAfterCombatDelay",
 		name = "Hide after combat delay",
-		description = "Amount of ticks before hiding status bars after no longer in combat. 0 = always show status bars."
+		description = "Number of ticks outside of combat after which bars will hide. 0 = always show status bars.",
+		position = 5
 	)
 	@Units(Units.TICKS)
 	default int hideAfterCombatDelay()
@@ -98,16 +105,61 @@ public interface StatusBarsConfig extends Config
 	}
 
 	@Range(
-		min = BarRenderer.MIN_WIDTH,
-		max = BarRenderer.MAX_WIDTH
+		min = 0,
+		max = 5
+	)
+	@ConfigItem(
+		keyName = "borderSize",
+		name = "Border Size",
+		description = "The width of the border on each bar",
+		position = 6
+	)
+	@Units(Units.PIXELS)
+	default int borderSize()
+	{
+		return 1;
+	}
+
+	@Range(
+		min = 3,
+		max = 50
 	)
 	@ConfigItem(
 		keyName = "barWidth",
 		name = "Bar Width",
-		description = "The width of the status bars in the modern resizeable layout."
+		description = "The width of each bar. Not used in Fixed UI mode.",
+		position = 7
 	)
+	@Units(Units.PIXELS)
 	default int barWidth()
 	{
-		return BarRenderer.DEFAULT_WIDTH;
+		return 20;
+	}
+
+	@Range(
+		min = 0,
+		max = 32
+	)
+	@ConfigItem(
+		keyName = "barGap",
+		name = "Gap between Bars",
+		description = "The spacing between each bar. Not used in Fixed UI mode.",
+		position = 8
+	)
+	@Units(Units.PIXELS)
+	default int barGap()
+	{
+		return 4;
+	}
+
+	@ConfigItem(
+		keyName = "overlayPosition",
+		name = "Overlay Position",
+		description = "Determines where the Bars will be displayed on screen.",
+		position = 9
+	)
+	default BarPosition overlayPosition()
+	{
+		return BarPosition.ON_INTERFACE;
 	}
 }
