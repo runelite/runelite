@@ -40,9 +40,7 @@ class BarRenderer
 	private static final Color BORDER_COLOR = new Color(0, 0, 0, 200);
 	private static final Color OVERHEAL_COLOR = new Color(216, 255, 139, 150);
 
-	private static final int SKILL_ICON_HEIGHT = 35;
-	private static final int COUNTER_ICON_HEIGHT = 18;
-	private static final int MIN_ICON_AND_COUNTER_WIDTH = 16;
+	private static final int MIN_COUNTER_WIDTH = 12;
 
 	private final Supplier<Integer> maxValueSupplier;
 	private final Supplier<Integer> currentValueSupplier;
@@ -107,41 +105,43 @@ class BarRenderer
 
 		if (config.enableSkillIcon() || config.enableCounter())
 		{
-			renderIconsAndCounters(config, graphics, x, y, width, borderSize);
+			renderIconsAndCounters(config, graphics, x, y, width, borderSize, height);
 		}
 	}
 
-	private void renderIconsAndCounters(StatusBarsConfig config, Graphics2D graphics, int x, int y, int width, int borderSize)
+	private void renderIconsAndCounters(StatusBarsConfig config, Graphics2D graphics, int x, int y, int barWidth, int borderSize, int totalBarHeight)
 	{
-		// Icons and counters overlap the bar at small widths, so they are not drawn when the bars are too small
-		if (width - (borderSize * 2) < MIN_ICON_AND_COUNTER_WIDTH)
-		{
-			return;
-		}
-
 		final boolean skillIconEnabled = config.enableSkillIcon();
+
+		// 2px is just for padding at the top of the bar
+		int yWithOffsets = y + borderSize + 2;
+		int iconSize = 0;
 
 		if (skillIconEnabled)
 		{
 			final Image icon = iconSupplier.get();
 			if (icon != null)
 			{
-				final int xDraw = x + (width / 2) - (icon.getWidth(null) / 2);
-				graphics.drawImage(icon, xDraw, y, null);
+				iconSize = icon.getWidth(null);
+
+				final int xDraw = x + (barWidth / 2) - (iconSize / 2);
+				graphics.drawImage(icon, xDraw, yWithOffsets, null);
 			}
 		}
 
-		if (config.enableCounter())
+		// Skip drawing counters on very small bars
+		if (config.enableCounter() && barWidth - (borderSize * 2) > MIN_COUNTER_WIDTH)
 		{
-			graphics.setFont(FontManager.getRunescapeSmallFont());
+			graphics.setFont(config.largeCounterText() ? FontManager.getRunescapeFont() : FontManager.getRunescapeSmallFont());
+
 			final String counterText = Integer.toString(currentValue);
 			final int widthOfCounter = graphics.getFontMetrics().stringWidth(counterText);
-			final int centerText = (width / 2) - (widthOfCounter / 2);
-			final int yOffset = skillIconEnabled ? SKILL_ICON_HEIGHT : COUNTER_ICON_HEIGHT;
+			final int centerText = (barWidth / 2) - (widthOfCounter / 2);
+			final int yPosition = Math.round((config.counterYOffset() / 100f) * totalBarHeight);
 
 			final TextComponent textComponent = new TextComponent();
 			textComponent.setText(counterText);
-			textComponent.setPosition(new Point(x + centerText, y + yOffset));
+			textComponent.setPosition(new Point(x + centerText, yWithOffsets + yPosition));
 			textComponent.render(graphics);
 		}
 	}

@@ -36,7 +36,6 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.MenuEntry;
-import net.runelite.api.Point;
 import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
 import net.runelite.api.SpriteID;
@@ -44,7 +43,6 @@ import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.AlternateSprites;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.game.SpriteManager;
@@ -58,6 +56,7 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.util.ImageUtil;
+import org.slf4j.LoggerFactory;
 
 class StatusBarsOverlay extends Overlay
 {
@@ -74,14 +73,11 @@ class StatusBarsOverlay extends Overlay
 	private static final Color ENERGY_COLOR = new Color(199, 174, 0, 220);
 	private static final Color DISEASE_COLOR = new Color(255, 193, 75, 181);
 	private static final Color PARASITE_COLOR = new Color(196, 62, 109, 181);
-	private static final int HEIGHT = 252;
-	private static final int RESIZED_BOTTOM_HEIGHT = 272;
-	private static final int IMAGE_SIZE = 17;
-	private static final Dimension ICON_DIMENSIONS = new Dimension(26, 25);
-	private static final int RESIZED_BOTTOM_OFFSET_Y = 12;
-	private static final int RESIZED_BOTTOM_OFFSET_X = 10;
+
 	private static final int MAX_SPECIAL_ATTACK_VALUE = 100;
 	private static final int MAX_RUN_ENERGY_VALUE = 100;
+
+	private static final int MAX_ICON_SIZE = 24;
 
 	private final Client client;
 	private final StatusBarsPlugin plugin;
@@ -89,15 +85,17 @@ class StatusBarsOverlay extends Overlay
 	private final ItemStatChangesService itemStatService;
 	private final SpriteManager spriteManager;
 
-	private final Image heartIcon;
-	private final Image specialIcon;
-	private final Image energyIcon;
-	private final Image prayerIcon;
-	private final Image heartDisease;
-	private final Image heartPoison;
-	private final Image heartVenom;
+	private int currentBarWidth;
+	private Image heartIcon;
+	private Image specialIcon;
+	private Image energyIcon;
+	private Image prayerIcon;
+	private Image heartDisease;
+	private Image heartPoison;
+	private Image heartVenom;
 
 	private final BarGroupRenderer barGroupRenderer = new BarGroupRenderer();
+	private final org.slf4j.Logger logger = LoggerFactory.getLogger(StatusBarsOverlay.class);
 
 	@Inject
 	private StatusBarsOverlay(Client client, StatusBarsPlugin plugin, StatusBarsConfig config, SkillIconManager skillIconManager, ItemStatChangesService itemstatservice, SpriteManager spriteManager)
@@ -122,23 +120,7 @@ class StatusBarsOverlay extends Overlay
 
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 
-		// Register all images
-		heartIcon = resizeIcon(loadSpriteId(SpriteID.MINIMAP_ORB_HITPOINTS_ICON));
-		energyIcon = resizeIcon(loadSpriteId(SpriteID.MINIMAP_ORB_WALK_ICON));
-		specialIcon = resizeIcon(loadSpriteId(SpriteID.MINIMAP_ORB_SPECIAL_ICON));
-		prayerIcon = resizeIcon(loadSpriteId(SpriteID.SKILL_PRAYER));
-		//prayerIcon = ImageUtil.resizeCanvas(ImageUtil.resizeImage(skillIconManager.getSkillImage(Skill.PRAYER, true), IMAGE_SIZE, IMAGE_SIZE), ICON_DIMENSIONS.width, ICON_DIMENSIONS.height);
-		heartDisease = resizeIcon(loadAlternateSprite(AlternateSprites.DISEASE_HEART));
-		heartPoison = resizeIcon(loadAlternateSprite(AlternateSprites.POISON_HEART));
-		heartVenom = resizeIcon(loadAlternateSprite(AlternateSprites.VENOM_HEART));
-
 		initRenderers();
-	}
-
-	@Subscribe
-	private void onViewModeChange()
-	{
-
 	}
 
 	private void initRenderers()
@@ -266,9 +248,9 @@ class StatusBarsOverlay extends Overlay
 
 		if (barPosition == BarPosition.ON_INTERFACE)
 		{
-			// Find one of our targeted interfaces to attach to
 			for (PossibleViewports vp : PossibleViewports.values())
 			{
+				// Find one of our targeted widgets to attach to
 				final Widget targetWidget = client.getWidget(vp.getTargetWidget());
 
 				if (targetWidget != null && !targetWidget.isHidden())
@@ -283,11 +265,24 @@ class StatusBarsOverlay extends Overlay
 
 		if (currentViewport == null)
 		{
-			// Unable to find the active Viewport, so we probably shouldn't render the bars
+			// Unable to find a matching Possible Viewport, so there's no place for us
+			// to attach the bars to
 			return null;
 		}
 
-		barGroupRenderer.renderBars(config, g, currentWidget, currentViewport);
+		// Get the bar width here, since we may need to reload images due to the size of the bar
+		int barWidth = currentViewport.getForcedBarWidth();
+		if (barWidth <= -1)
+		{
+			// Indicates a "no force" value, so use the config value
+			barWidth = config.barWidth();
+		}
+
+		// Ensure we have the images we need. Can't be done in the constructor as the sprites aren't
+		// loaded when this plugin mounts
+		ensureImagesAreLoaded(barWidth);
+
+		barGroupRenderer.renderBars(config, g, currentBarWidth, currentWidget, currentViewport);
 
 		return null;
 	}
@@ -335,6 +330,27 @@ class StatusBarsOverlay extends Overlay
 		return restoreValue;
 	}
 
+	/**
+	 * Loads necessary icons for all possible Status Bar types
+	 */
+	private void ensureImagesAreLoaded(int barWidth)
+	{
+		if (currentBarWidth != barWidth)
+		{
+			// Store this, so we only update when necessary
+			currentBarWidth = barWidth;
+
+			heartIcon = resizeIcon(loadSprite(SpriteID.MINIMAP_ORB_HITPOINTS_ICON));
+			energyIcon = resizeIcon(loadSprite(SpriteID.MINIMAP_ORB_WALK_ICON));
+			specialIcon = resizeIcon(loadSprite(SpriteID.MINIMAP_ORB_SPECIAL_ICON));
+			prayerIcon = resizeIcon(loadSprite(SpriteID.MINIMAP_ORB_PRAYER_ICON));
+
+			heartDisease = resizeIcon(loadAltSprite(AlternateSprites.DISEASE_HEART));
+			heartPoison = resizeIcon(loadAltSprite(AlternateSprites.POISON_HEART));
+			heartVenom = resizeIcon(loadAltSprite(AlternateSprites.VENOM_HEART));
+		}
+	}
+
 	private BufferedImage resizeIcon(BufferedImage originalImage)
 	{
 		if (originalImage == null)
@@ -342,15 +358,31 @@ class StatusBarsOverlay extends Overlay
 			return null;
 		}
 
-		return ImageUtil.resizeCanvas(originalImage, ICON_DIMENSIONS.width, ICON_DIMENSIONS.height);
+		// Make sure the image won't be any larger or smaller than it needs to be
+		int iconSize = Math.min(
+			Math.max(
+				currentBarWidth - (config.borderSize() * 2) - 4,
+				0
+			),
+			// Don't let the icons get too big
+			MAX_ICON_SIZE
+		);
+
+		// Double resizing is necessary so positioning/cropping is correct
+		return ImageUtil.resizeCanvas(
+			ImageUtil.resizeImage(originalImage,
+				iconSize, iconSize
+			),
+			iconSize, iconSize
+		);
 	}
 
-	private BufferedImage loadSpriteId(int spriteId)
+	private BufferedImage loadSprite(int spriteId)
 	{
 		return spriteManager.getSprite(spriteId, 0);
 	}
 
-	private BufferedImage loadAlternateSprite(String resourceName)
+	private BufferedImage loadAltSprite(String resourceName)
 	{
 		return ImageUtil.loadImageResource(AlternateSprites.class, resourceName);
 	}

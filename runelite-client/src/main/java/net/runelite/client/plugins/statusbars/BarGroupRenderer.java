@@ -24,7 +24,7 @@ class BarGroupRenderer
 	 *                 whether or not to draw icons.
 	 * @param graphics Graphics.
 	 */
-	void renderBars(StatusBarsConfig config, Graphics2D graphics, Widget targetWidget, PossibleViewports currentViewport)
+	void renderBars(StatusBarsConfig config, Graphics2D graphics, int barWidth, Widget targetWidget, PossibleViewports currentViewport)
 	{
 		// Grab the appropriate renderers for each bar
 		BarRenderer leftBar = barRenderers.get(config.leftBarMode()),
@@ -36,12 +36,6 @@ class BarGroupRenderer
 
 		// Adjust the height and width of our bars as necessary
 		int barHeight = targetWidget.getHeight() + currentViewport.getBarHeightOffset();
-		int barWidth = currentViewport.getForcedBarWidth();
-		if (barWidth <= -1)
-		{
-			// Indicates a "no force" value, so use the config value
-			barWidth = config.barWidth();
-		}
 
 		// Adjust the positioning based on offset and total group size
 		int barGap = config.barGap();
@@ -68,8 +62,11 @@ class BarGroupRenderer
 		if (leftBar != null)
 		{
 			leftBar.renderBar(config, graphics, currentX, currentY, barWidth, barHeight);
+		}
 
-			// Increase the offset by barGap so the next bar is correctly positioned
+		if(leftBar != null || currentViewport != PossibleViewports.RESIZEABLE_MODERN){
+			// When we render the left bar, OR we're in a Classic layout, we need to offset the
+			// Right bar so that it's in the correct spot still
 			currentX += barWidth + barGap;
 		}
 
