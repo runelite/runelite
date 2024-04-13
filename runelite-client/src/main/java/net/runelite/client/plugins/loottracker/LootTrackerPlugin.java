@@ -1455,7 +1455,7 @@ public class LootTrackerPlugin extends Plugin
 			drops.add(new ItemStack(itemManager.search(matcher.group(5)).get(0).getId(), 1, client.getLocalPlayer().getLocalLocation()));
 		}
 
-		else if(matcher2.matches())
+		else if (matcher2.matches())
 		{
 			drops.add(new ItemStack(itemManager.search(matcher2.group(2)).get(0).getId(), Integer.parseInt(matcher2.group(1)), client.getLocalPlayer().getLocalLocation()));
 			drops.add(new ItemStack(itemManager.search(matcher2.group(4)).get(0).getId(), Integer.parseInt(matcher2.group(3)), client.getLocalPlayer().getLocalLocation()));
