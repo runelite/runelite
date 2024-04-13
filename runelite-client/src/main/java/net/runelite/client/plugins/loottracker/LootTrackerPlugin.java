@@ -154,7 +154,11 @@ public class LootTrackerPlugin extends Plugin
 	private static final String HESPORI_LOOTED_MESSAGE = "You have successfully cleared this patch for new crops.";
 	private static final String HESPORI_EVENT = "Hespori";
 	private static final int HESPORI_REGION = 5021;
-
+	//Wilderness Agility dispenser loot handling
+	private static final String AGILITY_DISPENSER_EVENT = "Agility Dispenser";
+	private static final Pattern AGILITY_DISPENSER_LOOTED_PATTERN = Pattern.compile("You have been awarded .+ from the Agility dispenser.");
+	private static final Pattern AGILITY_DISPENSER_LOOT_PATTERN_CONSUMABLE = Pattern.compile(".+>(\\d).{3}(.+?)<.+?>+(\\d).{3}(.+?)<.+?>.+>+(.+)<.+");
+	private static final Pattern AGILITY_DISPENSER_LOOT_PATTERN_NO_CONSUMABLE = Pattern.compile(".+>(\\d).{3}(.+?)<.+?>+(\\d).{3}(.+?)<.+?>.+(>+(.+)<.+)?.+");
 	// Chest loot handling
 	private static final String CHEST_LOOTED_MESSAGE = "You find some treasure in the chest!";
 	private static final Pattern ROGUES_CHEST_PATTERN = Pattern.compile("You find (a|some)([a-z\\s]*) inside.");
@@ -1008,6 +1012,12 @@ public class LootTrackerPlugin extends Plugin
 			onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, HERBIBOAR_EVENT, client.getBoostedSkillLevel(Skill.HERBLORE)));
 			return;
 		}
+		final Matcher agilityDispenserMatcher = AGILITY_DISPENSER_LOOTED_PATTERN.matcher(message);
+		if (agilityDispenserMatcher.matches())
+		{
+			processAgilityDispenserLoot(event);
+			return;
+		}
 
 		final int regionID = client.getLocalPlayer().getWorldLocation().getRegionID();
 		if (HESPORI_REGION == regionID && message.equals(HESPORI_LOOTED_MESSAGE))
@@ -1429,6 +1439,32 @@ public class LootTrackerPlugin extends Plugin
 
 		int herbloreLevel = client.getBoostedSkillLevel(Skill.HERBLORE);
 		addLoot(HERBIBOAR_EVENT, -1, LootRecordType.EVENT, herbloreLevel, herbs);
+		return true;
+	}
+
+	private boolean processAgilityDispenserLoot(ChatMessage message)
+	{
+		List<ItemStack> drops = new ArrayList<>();
+		Matcher matcher = AGILITY_DISPENSER_LOOT_PATTERN_CONSUMABLE.matcher(message.getMessage());
+		Matcher matcher2 = AGILITY_DISPENSER_LOOT_PATTERN_NO_CONSUMABLE.matcher(message.getMessage());
+
+		if (matcher.matches())
+		{
+			drops.add(new ItemStack(itemManager.search(matcher.group(2)).get(0).getId(), Integer.parseInt(matcher.group(1)), client.getLocalPlayer().getLocalLocation()));
+			drops.add(new ItemStack(itemManager.search(matcher.group(4)).get(0).getId(), Integer.parseInt(matcher.group(3)), client.getLocalPlayer().getLocalLocation()));
+			drops.add(new ItemStack(itemManager.search(matcher.group(5)).get(0).getId(), 1, client.getLocalPlayer().getLocalLocation()));
+		}
+
+		else if(matcher2.matches())
+		{
+			drops.add(new ItemStack(itemManager.search(matcher2.group(2)).get(0).getId(), Integer.parseInt(matcher2.group(1)), client.getLocalPlayer().getLocalLocation()));
+			drops.add(new ItemStack(itemManager.search(matcher2.group(4)).get(0).getId(), Integer.parseInt(matcher2.group(3)), client.getLocalPlayer().getLocalLocation()));
+		}
+		else
+		{
+			return false;
+		}
+		addLoot(AGILITY_DISPENSER_EVENT, -1, LootRecordType.EVENT, null, drops);
 		return true;
 	}
 
