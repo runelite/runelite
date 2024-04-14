@@ -1449,8 +1449,7 @@ public class LootTrackerPlugin extends Plugin
 		{
 			if (matcher.group(1) != null)
 			{
-				//CLUE_SCROLL_MEDIUM id is 2801
-				drops.add(new ItemStack(2801, 1, client.getLocalPlayer().getLocalLocation()));
+				drops.add(new ItemStack(ItemID.CLUE_SCROLL_MEDIUM, 1, client.getLocalPlayer().getLocalLocation()));
 			}
 			if (matcher.group(7) != null)
 			{
