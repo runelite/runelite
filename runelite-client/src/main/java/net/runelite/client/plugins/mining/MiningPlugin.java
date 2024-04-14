@@ -91,9 +91,9 @@ public class MiningPlugin extends Plugin
 	private static final Pattern MINING_PATTERN = Pattern.compile(
 		"You " +
 			"(?:manage to|just)" +
-			" (?:mined?|quarry) " +
+			" (?:mined?|quarry|chip off) " +
 			"(?:some|an?) " +
-			"(?:copper|tin|clay|iron|silver|coal|gold|mithril|adamantite|runite|amethyst|sandstone|granite|barronite shards|barronite deposit|Opal|piece of Jade|Red Topaz|Emerald|Sapphire|Ruby|Diamond)" +
+			"(?:copper|tin|clay|iron|silver|coal|gold|mithril|adamantite|runite|amethyst|sandstone|granite|barronite shards|barronite deposit|Opal|piece of Jade|Red Topaz|Emerald|Sapphire|Ruby|Diamond|bone shards)" +
 			"(?:\\.|!)");
 
 	@Inject
