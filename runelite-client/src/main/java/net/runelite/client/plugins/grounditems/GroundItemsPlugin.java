@@ -568,6 +568,11 @@ public class GroundItemsPlugin extends Plugin
 			{
 				lastEntry.setDeprioritized(true);
 			}
+
+			if (highlighted == null && config.deprioritizeNonHighlightedItems())
+			{
+				lastEntry.setDeprioritized(true);
+			}
 		}
 		else if (hotKeyPressed && type == MenuAction.EXAMINE_ITEM_GROUND)
 		{
