@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -93,6 +94,43 @@ import net.runelite.client.util.Text;
 @Slf4j
 public class MenuEntrySwapperPlugin extends Plugin
 {
+	private static final HashSet<Integer> POTION_IDS = new HashSet<>(Arrays.asList(
+		10000, 10002, 10004, 10925, 10927, 10929, 10931, 113, 11429, 11431, 11433,
+		11435, 11437, 11439, 11441, 11443, 11445, 11447, 11449, 11451, 11453, 11455,
+		11457, 11459, 11461, 11463, 11465, 11467, 11469, 11471, 11477, 11479, 11481,
+		11483, 11485, 11487, 11489, 11491, 11493, 11495, 11497, 11499, 115, 11501,
+		11503, 11505, 11507, 11509, 11511, 11513, 11515, 11517, 11519, 11521, 11523,
+		117, 11722, 11723, 11724, 11725, 11726, 11727, 11728, 11729, 11730, 11731,
+		11732, 11733, 119, 11960, 11962, 121, 123, 125, 12625, 12627, 12629,
+		12631, 12633, 12635, 12695, 12697, 12699, 127, 12701, 129, 131, 133,
+		135, 137, 139, 141, 143, 145, 147, 149, 151, 153, 155,
+		157, 159, 161, 163, 165, 167, 169, 171, 173, 189, 191,
+		193, 20393, 20394, 20395, 20396, 20548, 20549, 20550, 20551, 20697, 20699,
+		20700, 20701, 20702, 20913, 20914, 20915, 20916, 20917, 20918, 20919, 20920,
+		20921, 20922, 20923, 20924, 20925, 20926, 20927, 20928, 20929, 20930, 20931,
+		20932, 20933, 20934, 20935, 20936, 20937, 20938, 20939, 20940, 20941, 20942,
+		20943, 20944, 20945, 20946, 20947, 20948, 20953, 20954, 20955, 20956, 20961,
+		20962, 20963, 20964, 20965, 20966, 20967, 20968, 20969, 20970, 20971, 20972,
+		20985, 20986, 20987, 20988, 20989, 20990, 20991, 20992, 20993, 20994, 20995,
+		20996, 21978, 21981, 21984, 21987, 21994, 21997, 22096, 22209, 22212, 22215,
+		22218, 22221, 22224, 22449, 22452, 22455, 22458, 22461, 22464, 22467, 22470,
+		23543, 23545, 23547, 23549, 23551, 23553, 23555, 23557, 23559, 23561, 23563,
+		23565, 23567, 23569, 23571, 23573, 23575, 23577, 23579, 23581, 23583, 23585,
+		23587, 23589, 23685, 23688, 23691, 23694, 23697, 23700, 23703, 23706, 23709,
+		23712, 23715, 23718, 23721, 23724, 23727, 23730, 23733, 23736, 23739, 23742,
+		23745, 23748, 23751, 23754, 23882, 23883, 23884, 23885, 2428, 2430, 2432,
+		2434, 2436, 2438, 2440, 2442, 2444, 2450, 2452, 2454, 2456, 2458,
+		24598, 24601, 24603, 24605, 24623, 24626, 24629, 24632, 24635, 24638, 24641,
+		24644, 25159, 25160, 25161, 25162, 25203, 25204, 25205, 25206, 25758, 25759,
+		25760, 25761, 26150, 26151, 26152, 26153, 26340, 26342, 26344, 26346, 26350,
+		26353, 26581, 26583, 26585, 26587, 27629, 27632, 27635, 27638, 3008, 3010,
+		3012, 3014, 3016, 3018, 3020, 3022, 3024, 3026, 3028, 3030, 3032,
+		3034, 3036, 3038, 3040, 3042, 3044, 3046, 3408, 3410, 3412, 3414,
+		3416, 3417, 3418, 3419, 4417, 4419, 4421, 4423, 4842, 4844, 4846,
+		4848, 5942, 5943, 5945, 5947, 5949, 5951, 5952, 5954, 5956, 5958,
+		6470, 6472, 6474, 6476, 6685, 6687, 6689, 6691, 9739, 9741, 9743,
+		9745, 9998
+	));
 	private static final String SHIFTCLICK_CONFIG_GROUP = "shiftclick";
 	private static final String ITEM_KEY_PREFIX = "item_";
 	private static final String OBJECT_KEY_PREFIX = "object_";
@@ -432,7 +470,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	private Integer getItemSwapConfig(boolean shift, int itemId)
 	{
-		itemId = ItemVariationMapping.map(itemId);
+		itemId = resolveItemVariant(itemId);
 		String config = configManager.getConfiguration(shift ? SHIFTCLICK_CONFIG_GROUP : MenuEntrySwapperConfig.GROUP, ITEM_KEY_PREFIX + itemId);
 		if (config == null || config.isEmpty())
 		{
@@ -444,19 +482,19 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	private void setItemSwapConfig(boolean shift, int itemId, int index)
 	{
-		itemId = ItemVariationMapping.map(itemId);
+		itemId = resolveItemVariant(itemId);
 		configManager.setConfiguration(shift ? SHIFTCLICK_CONFIG_GROUP : MenuEntrySwapperConfig.GROUP, ITEM_KEY_PREFIX + itemId, index);
 	}
 
 	private void unsetItemSwapConfig(boolean shift, int itemId)
 	{
-		itemId = ItemVariationMapping.map(itemId);
+		itemId = resolveItemVariant(itemId);
 		configManager.unsetConfiguration(shift ? SHIFTCLICK_CONFIG_GROUP : MenuEntrySwapperConfig.GROUP, ITEM_KEY_PREFIX + itemId);
 	}
 
 	private Integer getWornItemSwapConfig(boolean shift, int itemId)
 	{
-		itemId = ItemVariationMapping.map(itemId);
+		itemId = resolveItemVariant(itemId);
 		String config = configManager.getConfiguration(MenuEntrySwapperConfig.GROUP,
 			(shift ? WORN_ITEM_SHIFT_KEY_PREFIX : WORN_ITEM_KEY_PREFIX) + itemId);
 		if (config == null || config.isEmpty())
@@ -469,14 +507,14 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	private void setWornItemSwapConfig(boolean shift, int itemId, int index)
 	{
-		itemId = ItemVariationMapping.map(itemId);
+		itemId = resolveItemVariant(itemId);
 		configManager.setConfiguration(MenuEntrySwapperConfig.GROUP,
 			(shift ? WORN_ITEM_SHIFT_KEY_PREFIX : WORN_ITEM_KEY_PREFIX) + itemId, index);
 	}
 
 	private void unsetWornItemSwapConfig(boolean shift, int itemId)
 	{
-		itemId = ItemVariationMapping.map(itemId);
+		itemId = resolveItemVariant(itemId);
 		configManager.unsetConfiguration(MenuEntrySwapperConfig.GROUP,
 			(shift ? WORN_ITEM_SHIFT_KEY_PREFIX : WORN_ITEM_KEY_PREFIX) + itemId);
 	}
@@ -1174,7 +1212,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 				if (w.getIndex() == -1 || w.getItemId() != -1)
 				{
 					final int componentId = w.getId(); // on dynamic components, this is the parent layer id
-					final int itemId = w.getIndex() == -1 ? -1 : ItemVariationMapping.map(w.getItemId());
+					final int itemId = w.getIndex() == -1 ? -1 : resolveItemVariant(w.getItemId());
 					final int identifier = entry.getIdentifier();
 					final Integer leftClick = getUiSwapConfig(false, componentId, itemId);
 					final Integer shiftClick = getUiSwapConfig(true, componentId, itemId);
@@ -1542,7 +1580,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 				(index + 1 < menuEntries.length && menuEntries[index + 1].getWidget() == w))
 			{
 				final int componentId = w.getId(); // on dynamic components, this is the parent layer id
-				final int itemId = w.getIndex() == -1 ? -1 : ItemVariationMapping.map(w.getItemId());
+				final int itemId = w.getIndex() == -1 ? -1 : resolveItemVariant(w.getItemId());
 				final Integer op = getUiSwapConfig(shiftModifier(), componentId, itemId);
 				if (op != null && op == menuEntry.getIdentifier())
 				{
@@ -1944,5 +1982,17 @@ public class MenuEntrySwapperPlugin extends Plugin
 	{
 		configManager.unsetConfiguration(MenuEntrySwapperConfig.GROUP,
 			(shift ? UI_SHIFT_KEY_PREFIX : UI_KEY_PREFIX) + componentId + (itemId != -1 ? "_" + itemId : ""));
+	}
+
+	private int resolveItemVariant(int itemId)
+	{
+		if (config.swapPotionDosesSeparately() && POTION_IDS.contains(itemId))
+		{
+			return itemId;
+		}
+		else
+		{
+			return ItemVariationMapping.map(itemId);
+		}
 	}
 }
