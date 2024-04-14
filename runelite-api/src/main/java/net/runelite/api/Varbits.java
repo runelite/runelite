@@ -320,12 +320,6 @@ public final class Varbits
 	public static final int IN_WILDERNESS = 5963;
 
 	/**
-	 * 0 = Outside wilderness agility course
-	 * 1 = In wilderness agility course
-	 */
-	public static final int IN_WILDERNESS_AGILITY_COURSE = 5961;
-
-	/**
 	 * 0 = Have not paid 150k into dispenser
 	 * 1 = Paid 150k into dispenser
 	 */
