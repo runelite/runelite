@@ -1013,7 +1013,7 @@ public class LootTrackerPlugin extends Plugin
 		final Matcher agilityDispenserMatcher = AGILITY_DISPENSER_PATTERN.matcher(message);
 		if (agilityDispenserMatcher.matches() && client.getVarbitValue(Varbits.AGILITY_DISPENSER) == 1)
 		{
-			processAgilityDispenserLoot(event);
+			processAgilityDispenserLoot(agilityDispenserMatcher);
 			return;
 		}
 
@@ -1440,11 +1440,9 @@ public class LootTrackerPlugin extends Plugin
 		return true;
 	}
 
-	private void processAgilityDispenserLoot(ChatMessage message)
+	private void processAgilityDispenserLoot(Matcher matcher)
 	{
 		List<ItemStack> drops = new ArrayList<>();
-		Matcher matcher = AGILITY_DISPENSER_PATTERN.matcher(message.getMessage());
-
 		if (matcher.matches())
 		{
 			if (matcher.group(1) != null)

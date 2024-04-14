@@ -49,6 +49,7 @@ import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
 import net.runelite.api.Scene;
 import net.runelite.api.Skill;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
@@ -104,6 +105,23 @@ public class LootTrackerPluginTest
 		.put(ItemID.GRIMY_DWARF_WEED, "Grimy dwarf weed")
 		.put(ItemID.GRIMY_TORSTOL, "Grimy torstol")
 		.build();
+
+	private static final Map<Integer, String> AGILITY_DISPENSER_IDS_TO_NAMES = ImmutableMap.<Integer, String>builder()
+			.put(ItemID.RUNE_MED_HELM, "Rune med helm")
+			.put(ItemID.ADAMANT_PLATEBODY, "Adamant platebody")
+			.put(ItemID.STEEL_PLATEBODY, "Steel platebody")
+			.put(ItemID.ADAMANT_PLATELEGS, "Adamant platelegs")
+			.put(ItemID.MITHRIL_CHAINBODY, "Mithril chainbody")
+			.put(ItemID.MITHRIL_PLATELEGS, "Mithril platelegs")
+			.put(ItemID.MITHRIL_PLATESKIRT, "Mithril plateskirt")
+			.put(ItemID.ADAMANT_FULL_HELM, "Adamant full helm")
+			.put(ItemID.BLIGHTED_ANGLERFISH, "Blighted anglerfish")
+			.put(ItemID.BLIGHTED_MANTA_RAY, "Blighted manta ray")
+			.put(ItemID.BLIGHTED_KARAMBWAN, "Blighted karambwan")
+			.put(ItemID.RUNE_KITESHIELD, "Rune kiteshield")
+			.put(ItemID.RUNE_CHAINBODY, "Rune chainbody")
+			.put(ItemID.BLIGHTED_SUPER_RESTORE4, "Blighted super restore(4)")
+			.build();
 
 	@Mock
 	@Bind
@@ -247,6 +265,59 @@ public class LootTrackerPluginTest
 		}
 	}
 
+	@Test
+	public void testAgilityDispenserLoot()
+	{
+		when(client.getVarbitValue(Varbits.AGILITY_DISPENSER)).thenReturn(1);
+		for(Map.Entry<Integer, String> dispenser : AGILITY_DISPENSER_IDS_TO_NAMES.entrySet()) {
+			final int id = dispenser.getKey();
+			final String name = dispenser.getValue();
+			final ItemPrice dispenserPrice = new ItemPrice();
+			dispenserPrice.setId(id);
+			dispenserPrice.setName(name);
+			when(itemManager.search(name)).thenReturn(Collections.singletonList(dispenserPrice));
+			for(int quantity = 3; quantity <= 20; quantity++)
+			{
+				final String dispenser_2_loot_msg = String.format("You have been awarded <col=ef1020>%d x %s</col> and <col=ef1020>%d x %s</col> from the Agility dispenser.", quantity, name, quantity, name);
+				ChatMessage chatMessage_2_loot = new ChatMessage(null, ChatMessageType.SPAM, "", dispenser_2_loot_msg, "", 0);
+				lootTrackerPlugin.onChatMessage(chatMessage_2_loot);
+
+				verify(lootTrackerPlugin).addLoot("Agility Dispenser", -1, LootRecordType.EVENT, null, Arrays.asList(
+						new ItemStack(id, quantity, null),
+						new ItemStack(id, quantity, null)
+				));
+				final String dispenser_2_loot_msg_clue_scroll = String.format("You have been awarded a clue scroll,<col=ef1020>%d x %s</col> and <col=ef1020>%d x %s</col> from the Agility dispenser", quantity, name, quantity, name);
+				ChatMessage chatMessage_2_loot_clue_scroll = new ChatMessage(null, ChatMessageType.SPAM, "", dispenser_2_loot_msg_clue_scroll, "", 0);
+				lootTrackerPlugin.onChatMessage(chatMessage_2_loot_clue_scroll);
+				verify(lootTrackerPlugin).addLoot("Agility Dispenser", -1, LootRecordType.EVENT, null, Arrays.asList(
+						new ItemStack(ItemID.CLUE_SCROLL_MEDIUM, 1, null),
+						new ItemStack(id, quantity, null),
+						new ItemStack(id, quantity, null)
+				));
+
+
+				final String dispenser_3_loot_msg = String.format("You have been awarded <col=ef1020>%d x %s</col> and <col=ef1020>%d x %s</col>, and an extra <col=ef1020>%s</col> from the Agility dispenser", quantity, name, quantity, name, name);
+				ChatMessage chatMessage_3_loot = new ChatMessage(null, ChatMessageType.SPAM, "", dispenser_3_loot_msg, "", 0);
+				lootTrackerPlugin.onChatMessage(chatMessage_3_loot);
+				verify(lootTrackerPlugin).addLoot("Agility Dispenser", -1, LootRecordType.EVENT, null, Arrays.asList(
+						new ItemStack(id, 1, null),
+						new ItemStack(id, quantity, null),
+						new ItemStack(id, quantity, null)
+				));
+
+				final String dispenser_3_loot_msg_clue_scroll = String.format("You have been awarded a clue scroll,<col=ef1020>%d x %s</col> and <col=ef1020>%d x %s</col>, and an extra <col=ef1020>%s</col> from the Agility dispenser", quantity, name, quantity, name, name);
+				ChatMessage chatMessage_3_loot_clue_scroll = new ChatMessage(null, ChatMessageType.SPAM, "", dispenser_3_loot_msg_clue_scroll, "", 0);
+				lootTrackerPlugin.onChatMessage(chatMessage_3_loot_clue_scroll);
+				verify(lootTrackerPlugin).addLoot("Agility Dispenser", -1, LootRecordType.EVENT, null, Arrays.asList(
+						new ItemStack(ItemID.CLUE_SCROLL_MEDIUM, 1, null),
+						new ItemStack(id, 1, null),
+						new ItemStack(id, quantity, null),
+						new ItemStack(id,quantity,null)
+				));
+			}
+
+		}
+	}
 	@Test
 	public void testCoXRaidsLootValue()
 	{
