@@ -31,6 +31,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.MouseInfo;
 import java.awt.Point;
+import java.awt.event.HierarchyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -48,12 +49,16 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import lombok.Getter;
 import net.runelite.client.ui.ColorScheme;
+import static net.runelite.client.ui.ColorScheme.BRAND_ORANGE;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.SwingUtil;
 
 class PluginListItem extends JPanel implements SearchablePlugin
 {
+	private static final Color DEFAULT_COLOR = Color.WHITE;
+	private static final Color HOVER_COLOR = BRAND_ORANGE;
+
 	private static final ImageIcon CONFIG_ICON;
 	private static final ImageIcon ON_STAR;
 	private static final ImageIcon OFF_STAR;
@@ -106,7 +111,7 @@ class PluginListItem extends JPanel implements SearchablePlugin
 		setPreferredSize(new Dimension(PluginPanel.PANEL_WIDTH, 20));
 
 		JLabel nameLabel = new JLabel(pluginConfig.getName());
-		nameLabel.setForeground(Color.WHITE);
+		nameLabel.setForeground(DEFAULT_COLOR);
 
 		if (!pluginConfig.getDescription().isEmpty())
 		{
@@ -240,8 +245,6 @@ class PluginListItem extends JPanel implements SearchablePlugin
 
 		label.addMouseListener(new MouseAdapter()
 		{
-			private Color lastForeground;
-
 			@Override
 			public void mouseClicked(MouseEvent mouseEvent)
 			{
@@ -254,14 +257,23 @@ class PluginListItem extends JPanel implements SearchablePlugin
 			@Override
 			public void mouseEntered(MouseEvent mouseEvent)
 			{
-				lastForeground = label.getForeground();
-				label.setForeground(ColorScheme.BRAND_ORANGE);
+				label.setForeground(HOVER_COLOR);
 			}
 
 			@Override
 			public void mouseExited(MouseEvent mouseEvent)
 			{
-				label.setForeground(lastForeground);
+				label.setForeground(DEFAULT_COLOR);
+			}
+		});
+		// ensure label color is reset when it is hidden (as that could cause mouseExited not to occur)
+		label.addHierarchyListener(e ->
+		{
+			if (e.getChanged() == label
+				&& (e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0
+				&& !label.isShowing())
+			{
+				label.setForeground(DEFAULT_COLOR);
 			}
 		});
 	}
