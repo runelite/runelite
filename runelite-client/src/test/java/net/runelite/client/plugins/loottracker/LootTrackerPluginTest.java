@@ -269,14 +269,15 @@ public class LootTrackerPluginTest
 	public void testAgilityDispenserLoot()
 	{
 		when(client.getVarbitValue(Varbits.AGILITY_DISPENSER)).thenReturn(1);
-		for(Map.Entry<Integer, String> dispenser : AGILITY_DISPENSER_IDS_TO_NAMES.entrySet()) {
+		for (Map.Entry<Integer, String> dispenser : AGILITY_DISPENSER_IDS_TO_NAMES.entrySet())
+		{
 			final int id = dispenser.getKey();
 			final String name = dispenser.getValue();
 			final ItemPrice dispenserPrice = new ItemPrice();
 			dispenserPrice.setId(id);
 			dispenserPrice.setName(name);
 			when(itemManager.search(name)).thenReturn(Collections.singletonList(dispenserPrice));
-			for(int quantity = 3; quantity <= 20; quantity++)
+			for (int quantity = 3; quantity <= 20; quantity++)
 			{
 				final String dispenser_2_loot_msg = String.format("You have been awarded <col=ef1020>%d x %s</col> and <col=ef1020>%d x %s</col> from the Agility dispenser.", quantity, name, quantity, name);
 				ChatMessage chatMessage_2_loot = new ChatMessage(null, ChatMessageType.SPAM, "", dispenser_2_loot_msg, "", 0);
@@ -312,7 +313,7 @@ public class LootTrackerPluginTest
 						new ItemStack(ItemID.CLUE_SCROLL_MEDIUM, 1, null),
 						new ItemStack(id, 1, null),
 						new ItemStack(id, quantity, null),
-						new ItemStack(id,quantity,null)
+						new ItemStack(id, quantity, null)
 				));
 			}
 
