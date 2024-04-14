@@ -24,24 +24,19 @@
  */
 package net.runelite.client.plugins.mining;
 
+import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Pattern;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import net.runelite.api.AnimationID;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
-import net.runelite.api.Constants;
-import net.runelite.api.GameObject;
-import net.runelite.api.GameState;
-import net.runelite.api.HintArrowType;
+import net.runelite.api.*;
+
 import static net.runelite.api.ObjectID.BARRONITE_ROCKS;
 import static net.runelite.api.ObjectID.BARRONITE_ROCKS_41548;
 import static net.runelite.api.ObjectID.DEPLETED_VEIN;
@@ -59,18 +54,11 @@ import static net.runelite.api.ObjectID.ORE_VEIN_26663;
 import static net.runelite.api.ObjectID.ORE_VEIN_26664;
 import static net.runelite.api.ObjectID.ROCKS_41549;
 import static net.runelite.api.ObjectID.ROCKS_41550;
-import net.runelite.api.Player;
-import net.runelite.api.ScriptID;
-import net.runelite.api.WallObject;
+
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.AnimationChanged;
-import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.GameObjectDespawned;
-import net.runelite.api.events.GameObjectSpawned;
-import net.runelite.api.events.GameStateChanged;
-import net.runelite.api.events.GameTick;
-import net.runelite.api.events.ScriptPreFired;
-import net.runelite.api.events.WallObjectSpawned;
+import net.runelite.api.events.*;
+import net.runelite.client.Notifier;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
@@ -82,7 +70,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @PluginDescriptor(
 	name = "Mining",
 	description = "Show mining statistics and ore respawn timers",
-	tags = {"overlay", "skilling", "timers"},
+	tags = {"overlay", "skilling", "timers", "cam torum"},
 	enabledByDefault = false
 )
 @PluginDependency(XpTrackerPlugin.class)
@@ -100,6 +88,9 @@ public class MiningPlugin extends Plugin
 	private Client client;
 
 	@Inject
+	private ClientThread clientThread;
+
+	@Inject
 	private OverlayManager overlayManager;
 
 	@Inject
@@ -111,6 +102,9 @@ public class MiningPlugin extends Plugin
 	@Inject
 	private MiningConfig config;
 
+	@Inject
+	private Notifier notifier;
+
 	@Getter
 	@Nullable
 	@Setter(AccessLevel.PACKAGE)
@@ -119,6 +113,22 @@ public class MiningPlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private final List<RockRespawn> respawns = new ArrayList<>();
 	private boolean recentlyLoggedIn;
+
+	private static final int CAM_TORUM_REGION = 6037;
+	@Getter(AccessLevel.PACKAGE)
+	private boolean inCamTorumMiningRegion;
+
+	@Getter(AccessLevel.PACKAGE)
+	private final Map<TileObject, Tile> camTorumStreams = new HashMap<>();
+	@Getter(AccessLevel.PACKAGE)
+	private final Map<WorldPoint, TileObject> camTorumDepletedRocks = new HashMap<>();
+	private static final Set<Integer> CAM_TORUM_DEPLETED_ROCK_IDS = ImmutableSet.of(
+		ObjectID.ROCKS_51486,
+		ObjectID.ROCKS_51488,
+		ObjectID.ROCKS_51490,
+		ObjectID.ROCKS_51492
+	);
+	private int camTorumLastNotificationTick;
 
 	@Getter
 	@Nullable
@@ -135,6 +145,7 @@ public class MiningPlugin extends Plugin
 	{
 		overlayManager.add(overlay);
 		overlayManager.add(rocksOverlay);
+		initializeCamTorumState();
 	}
 
 	@Override
@@ -146,6 +157,9 @@ public class MiningPlugin extends Plugin
 		overlayManager.remove(rocksOverlay);
 		respawns.forEach(respawn -> clearHintArrowAt(respawn.getWorldPoint()));
 		respawns.clear();
+		camTorumStreams.clear();
+		camTorumDepletedRocks.clear();
+		inCamTorumMiningRegion = false;
 	}
 
 	@Subscribe
@@ -155,14 +169,24 @@ public class MiningPlugin extends Plugin
 		{
 			case HOPPING:
 				respawns.clear();
+				initializeCamTorumState();
 				break;
 			case LOGGED_IN:
 				// After login rocks that are depleted will be changed,
 				// so wait for the next game tick before watching for
 				// rocks to deplete
 				recentlyLoggedIn = true;
+				initializeCamTorumState();
 				break;
 		}
+	}
+
+	private void initializeCamTorumState()
+	{
+		camTorumStreams.clear();
+		camTorumDepletedRocks.clear();
+		inCamTorumMiningRegion = client.getLocalPlayer().getWorldLocation().getRegionID() == CAM_TORUM_REGION;
+		camTorumLastNotificationTick = -100; // negative value so instant logging in on water will still notify
 	}
 
 	@Subscribe
@@ -203,6 +227,11 @@ public class MiningPlugin extends Plugin
 		clearExpiredRespawns();
 		recentlyLoggedIn = false;
 
+		if (inCamTorumMiningRegion)
+		{
+			handleCamTorumStreamNotifications();
+		}
+
 		if (session == null || session.getLastMined() == null)
 		{
 			return;
@@ -220,6 +249,43 @@ public class MiningPlugin extends Plugin
 		if (sinceMined.compareTo(statTimeout) >= 0)
 		{
 			resetSession();
+		}
+	}
+
+	private void handleCamTorumStreamNotifications()
+	{
+		if (camTorumStreams.isEmpty() || !config.camTorumNotifyWaterSpawn())
+		{
+			return;
+		}
+		int ticksSinceNotif = client.getTickCount() - camTorumLastNotificationTick;
+		if (ticksSinceNotif < 52)
+		{ // streams last for about 45 or 50 game ticks
+			return; // skip, already notified for the current streams
+		}
+		camTorumLastNotificationTick = client.getTickCount();
+
+		boolean alreadyMiningStream = false;
+		boolean inCamTorumMine = false;
+		WorldPoint wp = client.getLocalPlayer().getWorldLocation();
+		for (Map.Entry<TileObject, Tile> entry : camTorumStreams.entrySet())
+		{
+			Tile tile = entry.getValue();
+			int distanceToStream = Math.abs(wp.getX() - tile.getWorldLocation().getX()) + Math.abs(wp.getY() - tile.getWorldLocation().getY());
+			if (distanceToStream <= config.camTorumMaxDistanceHighlight())
+			{
+				inCamTorumMine = true;
+			}
+			if (distanceToStream == 1 && pickaxe != null && pickaxe.matchesMiningAnimation(client.getLocalPlayer()))
+			{ // if stream is directly adjacent to player and player is in mining animation
+				alreadyMiningStream = true;
+				break;
+			}
+		}
+
+		if (inCamTorumMine && !alreadyMiningStream)
+		{
+			notifier.notify("Watery rocks spawned!");
 		}
 	}
 
@@ -274,6 +340,10 @@ public class MiningPlugin extends Plugin
 				respawns.add(rockRespawn);
 			}
 		}
+		if (inCamTorumMiningRegion && CAM_TORUM_DEPLETED_ROCK_IDS.contains(object.getId()))
+		{
+			camTorumDepletedRocks.remove(object.getWorldLocation());
+		}
 	}
 
 	private void clearHintArrowAt(WorldPoint worldPoint)
@@ -308,6 +378,10 @@ public class MiningPlugin extends Plugin
 		{
 			final WorldPoint point = object.getWorldLocation();
 			respawns.removeIf(rockRespawn -> rockRespawn.getWorldPoint().equals(point));
+		}
+		if (inCamTorumMiningRegion && CAM_TORUM_DEPLETED_ROCK_IDS.contains(object.getId()))
+		{
+			camTorumDepletedRocks.put(object.getWorldLocation(), object);
 		}
 	}
 
@@ -365,6 +439,25 @@ public class MiningPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onDecorativeObjectSpawned(DecorativeObjectSpawned event)
+	{
+		DecorativeObject object = event.getDecorativeObject();
+		if (inCamTorumMiningRegion && object.getId() == 51493)
+		{
+			camTorumStreams.put(object, event.getTile());
+		}
+	}
+
+	@Subscribe
+	public void onDecorativeObjectDespawned(DecorativeObjectDespawned event)
+	{
+		if (inCamTorumMiningRegion)
+		{
+			camTorumStreams.remove(event.getDecorativeObject());
+		}
+	}
+
+	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() == ChatMessageType.SPAM || event.getType() == ChatMessageType.GAMEMESSAGE)
@@ -404,6 +497,29 @@ public class MiningPlugin extends Plugin
 					respawns.add(rockRespawn);
 					break;
 				}
+			}
+		}
+	}
+
+	@Subscribe
+	public void onMenuEntryAdded(MenuEntryAdded event)
+	{
+		if (inCamTorumMiningRegion && config.camTorumDynamicMenuEntrySwap())
+		{
+			swapRockMenuEntries(event);
+		}
+	}
+
+	private void swapRockMenuEntries(MenuEntryAdded event)
+	{
+		String target = event.getTarget();
+		if (target.contains("Rocks"))
+		{
+			MenuEntry entry = event.getMenuEntry();
+			WorldPoint entryTargetPoint = WorldPoint.fromScene(client, entry.getParam0(), entry.getParam1(), client.getPlane());
+			if (camTorumDepletedRocks.get(entryTargetPoint) != null)
+			{
+				entry.setDeprioritized(true);
 			}
 		}
 	}

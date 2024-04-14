@@ -25,18 +25,25 @@
  */
 package net.runelite.client.plugins.mining;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.Units;
+import net.runelite.client.config.*;
+
+import java.awt.*;
 
 @ConfigGroup("mining")
 public interface MiningConfig extends Config
 {
+	@ConfigSection(
+		name = "Cam Torum Mine",
+		description = "Configuration for Cam Torum Mine",
+		position = 10
+	)
+	String camTorumMineSection = "camTorumMineSection";
+
 	@ConfigItem(
 		keyName = "statTimeout",
 		name = "Reset stats",
-		description = "Duration the mining indicator and session stats are displayed before being reset"
+		description = "Duration the mining indicator and session stats are displayed before being reset",
+		position = 0
 	)
 	@Units(Units.MINUTES)
 	default int statTimeout()
@@ -47,9 +54,70 @@ public interface MiningConfig extends Config
 	@ConfigItem(
 		keyName = "showMiningStats",
 		name = "Show session stats",
-		description = "Configures whether to display mining session stats"
+		description = "Configures whether to display mining session stats",
+		position = 1
 	)
 	default boolean showMiningStats()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "maxDistance",
+		name = "Max Distance",
+		description = "The maximum distance in which you wish to see highlighted water streams.",
+		position = 2,
+		section = camTorumMineSection
+	)
+	default int camTorumMaxDistanceHighlight()
+	{
+		return 10;
+	}
+
+	@ConfigItem(
+		keyName = "waterHighlightColor",
+		name = "Water Fill Color",
+		description = "Color of inner water fill",
+		position = 3,
+		section = camTorumMineSection
+	)
+	default Color camTorumWaterFillColor()
+	{
+		return Color.CYAN;
+	}
+
+	@ConfigItem(
+		keyName = "waterOutlineColor",
+		name = "Water Clickbox Color",
+		description = "Color of outer water clickbox",
+		position = 4,
+		section = camTorumMineSection
+	)
+	default Color camTorumWaterOutlineColor()
+	{
+		return Color.GREEN;
+	}
+
+	@ConfigItem(
+		keyName = "notifyWater",
+		name = "Notify Water Spawn",
+		description = "Notifies you when watery rocks spawn",
+		position = 5,
+		section = camTorumMineSection
+	)
+	default boolean camTorumNotifyWaterSpawn()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "dynamicMenuEntrySwap",
+		name = "Swap depleted rock menu entries",
+		description = "Swap menu entries to only make calcified rocks clickable.",
+		position = 6,
+		section = camTorumMineSection
+	)
+	default boolean camTorumDynamicMenuEntrySwap()
 	{
 		return true;
 	}
