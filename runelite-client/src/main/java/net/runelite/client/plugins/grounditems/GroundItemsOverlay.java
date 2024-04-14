@@ -241,6 +241,32 @@ public class GroundItemsOverlay extends Overlay
 						.append(" gp)");
 				}
 			}
+			else if (config.priceDisplayMode() == PriceDisplayMode.HIGHEST)
+			{
+				final int ge = item.getGePrice();
+				final int ha = item.getHaPrice();
+				if (ge == ha)
+				{
+					itemStringBuilder
+						.append(" (GE/HA: ")
+						.append(QuantityFormatter.quantityToStackSize(ge))
+						.append(" gp)");
+				}
+				else if (ge > ha)
+				{
+					itemStringBuilder
+						.append(" (GE: ")
+						.append(QuantityFormatter.quantityToStackSize(ge))
+						.append(" gp)");
+				}
+				else
+				{
+					itemStringBuilder
+						.append(" (HA: ")
+						.append(QuantityFormatter.quantityToStackSize(ha))
+						.append(" gp)");
+				}
+			}
 			else if (config.priceDisplayMode() != PriceDisplayMode.OFF)
 			{
 				final int price = config.priceDisplayMode() == PriceDisplayMode.GE

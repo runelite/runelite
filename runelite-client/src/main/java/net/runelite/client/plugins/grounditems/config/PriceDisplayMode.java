@@ -34,6 +34,7 @@ public enum PriceDisplayMode
 	HA("High Alchemy"),
 	GE("Grand Exchange"),
 	BOTH("Both"),
+	HIGHEST("Highest"),
 	OFF("Off");
 
 	private final String name;
