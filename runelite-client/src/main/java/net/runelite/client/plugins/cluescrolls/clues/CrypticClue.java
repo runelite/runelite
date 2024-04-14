@@ -906,7 +906,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.build(),
 		CrypticClue.builder()
 			.text("Surround my bones in fire, ontop the wooden pyre. Finally lay me to rest, before my one last test.")
-			.solution("Kill a confused/lost barbarian to receive mangled bones. Construct and burn a pyre ship. Kill the ferocious barbarian spirit that spawns to receive a clue casket.")
+			.solution("Kill a Confused or Lost barbarian in the Ancient Cavern to receive mangled bones. Construct and burn a pyre ship with logs, a tinderbox, and an axe. Kill the Ferocious barbarian spirit that spawns.")
 			.build(),
 		CrypticClue.builder()
 			.text("Fiendish cooks probably won't dig the dirty dishes.")
@@ -1393,7 +1393,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Desert insects is what I see. Taking care of them was my responsibility. Your solution is found by digging near me.")
 			.location(new WorldPoint(3307, 9505, 0))
-			.solution("Dig next to the Entomologist, Kalphite area, near Shantay Pass.")
+			.solution("Dig next to the Entomologist, Kalphite Cave, east of Shantay Pass.")
 			.build(),
 		CrypticClue.builder()
 			.text("Search the crates in the most north-western house in Al Kharid.")
@@ -1455,7 +1455,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("Hopefully this set of armour will help you to keep surviving.")
 			.location(new WorldPoint(2982, 3336, 2))
 			.npc("Sir Vyvin")
-			.solution("Speak to Sir Vyvin, located in the White Knight's Castle, while wearing a white platebody and platelegs.")
+			.solution("Speak to Sir Vyvin, located on the second floor of the White Knight's Castle, while wearing a white platebody and platelegs.")
 			.build(),
 		CrypticClue.builder()
 			.text("The beasts retreat, for their Queen is gone; the song of this town still plays on. Dig near the birthplace of a blade, be careful not to melt your spade.")
@@ -1622,7 +1622,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("More resources than I can handle, but in a very dangerous area. Can't wait to strike gold!")
 			.location(new WorldPoint(3183, 3941, 0))
-			.solution("Dig between the three gold ores in the Wilderness Resource Area.")
+			.solution("Dig between the three gold ores in the Wilderness Resource Area. An entry fee of 7,500 coins is required, or less if Wilderness Diaries have been completed.")
 			.build(),
 		CrypticClue.builder()
 			.text("Observing someone in a swamp, under the telescope lies treasure.")
