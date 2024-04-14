@@ -30,13 +30,25 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import javax.inject.Inject;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.DecorativeObject;
+import net.runelite.api.GameState;
+import net.runelite.api.Player;
+import net.runelite.api.Tile;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.DecorativeObjectSpawned;
+import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
+import net.runelite.client.Notifier;
 import net.runelite.client.ui.overlay.OverlayManager;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -64,6 +76,10 @@ public class MiningPluginTest
 	@Mock
 	@Bind
 	OverlayManager overlayManager;
+
+	@Mock
+	@Bind
+	private Notifier notifier;
 
 	@Before
 	public void before()
@@ -148,5 +164,32 @@ public class MiningPluginTest
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", gameMessage, "", 0);
 		miningPlugin.onChatMessage(chatMessage);
 		assertNotNull(miningPlugin.getSession());
+	}
+
+	@Test
+	public void testCamTorumWaterNotify()
+	{
+		when(client.getLocalPlayer()).thenReturn(mock(Player.class));
+		when(client.getLocalPlayer().getWorldLocation()).thenReturn(new WorldPoint(1501, 9538, 1));
+
+		GameStateChanged gameStateChanged = new GameStateChanged();
+		gameStateChanged.setGameState(GameState.LOGGED_IN);
+		miningPlugin.onGameStateChanged(gameStateChanged);
+		when(miningConfig.camTorumMaxDistanceHighlight()).thenReturn(10);
+		when(miningConfig.camTorumNotifyWaterSpawn()).thenReturn(true);
+
+		Tile tile = mock(Tile.class);
+		when(tile.getWorldLocation()).thenReturn(new WorldPoint(1505, 9537, 1));
+
+		DecorativeObject object = mock(DecorativeObject.class);
+		when(object.getId()).thenReturn(51493);
+
+		DecorativeObjectSpawned event = mock(DecorativeObjectSpawned.class);
+		when(event.getDecorativeObject()).thenReturn(object);
+		when(event.getTile()).thenReturn(tile);
+		miningPlugin.onDecorativeObjectSpawned(event);
+		miningPlugin.onGameTick(new GameTick());
+
+		verify(notifier).notify("Watery rocks spawned!");
 	}
 }
