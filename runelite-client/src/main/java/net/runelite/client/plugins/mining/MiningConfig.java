@@ -25,9 +25,13 @@
  */
 package net.runelite.client.plugins.mining;
 
-import net.runelite.client.config.*;
+import java.awt.Color;
+import net.runelite.client.config.Config;
+import net.runelite.client.config.ConfigGroup;
+import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
+import net.runelite.client.config.Units;
 
-import java.awt.*;
 
 @ConfigGroup("mining")
 public interface MiningConfig extends Config
@@ -63,37 +67,13 @@ public interface MiningConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "maxDistance",
-		name = "Max Distance",
-		description = "The maximum distance in which you wish to see highlighted water streams.",
+		keyName = "waterOverlayColor",
+		name = "Water Overlay Color",
+		description = "Color of water overlay",
 		position = 2,
 		section = camTorumMineSection
 	)
-	default int camTorumMaxDistanceHighlight()
-	{
-		return 10;
-	}
-
-	@ConfigItem(
-		keyName = "waterHighlightColor",
-		name = "Water Fill Color",
-		description = "Color of inner water fill",
-		position = 3,
-		section = camTorumMineSection
-	)
-	default Color camTorumWaterFillColor()
-	{
-		return Color.CYAN;
-	}
-
-	@ConfigItem(
-		keyName = "waterOutlineColor",
-		name = "Water Clickbox Color",
-		description = "Color of outer water clickbox",
-		position = 4,
-		section = camTorumMineSection
-	)
-	default Color camTorumWaterOutlineColor()
+	default Color camTorumWaterOverlayColor()
 	{
 		return Color.GREEN;
 	}
@@ -102,22 +82,10 @@ public interface MiningConfig extends Config
 		keyName = "notifyWater",
 		name = "Notify Water Spawn",
 		description = "Notifies you when watery rocks spawn",
-		position = 5,
+		position = 3,
 		section = camTorumMineSection
 	)
 	default boolean camTorumNotifyWaterSpawn()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "dynamicMenuEntrySwap",
-		name = "Swap depleted rock menu entries",
-		description = "Swap menu entries to only make calcified rocks clickable.",
-		position = 6,
-		section = camTorumMineSection
-	)
-	default boolean camTorumDynamicMenuEntrySwap()
 	{
 		return true;
 	}

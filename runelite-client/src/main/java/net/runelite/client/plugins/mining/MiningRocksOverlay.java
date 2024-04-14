@@ -24,16 +24,21 @@
  */
 package net.runelite.client.plugins.mining;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Shape;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
 
-import net.runelite.api.*;
+import net.runelite.api.Client;
+import net.runelite.api.Perspective;
 import net.runelite.api.Point;
+import net.runelite.api.Tile;
+import net.runelite.api.TileObject;
 import net.runelite.api.coords.LocalPoint;
-import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -135,21 +140,16 @@ class MiningRocksOverlay extends Overlay
 
 	public void handleCamTorumWaterStreamHighlights(Graphics2D graphics, Map<TileObject, Tile> streams)
 	{
-		WorldPoint playerLocation = client.getLocalPlayer().getWorldLocation();
 		streams.forEach((object, tile) ->
 		{
-			int distanceToStream = tile.getWorldLocation().distanceTo(playerLocation);
-			if (distanceToStream <= config.camTorumMaxDistanceHighlight())
+			Shape objectClickbox = object.getClickbox();
+			if (objectClickbox != null)
 			{
-				Shape objectClickbox = object.getClickbox();
-				if (objectClickbox != null)
-				{
-					graphics.setColor(config.camTorumWaterOutlineColor());
-					graphics.draw(objectClickbox);
-					Color waterFillColor = config.camTorumWaterFillColor();
-					graphics.setColor(ColorUtil.colorWithAlpha(waterFillColor, waterFillColor.getAlpha() / 12));
-					graphics.fill(objectClickbox);
-				}
+				Color overlayColor = config.camTorumWaterOverlayColor();
+				graphics.setColor(overlayColor);
+				graphics.draw(objectClickbox);
+				graphics.setColor(ColorUtil.colorWithAlpha(overlayColor, overlayColor.getAlpha() / 12));
+				graphics.fill(objectClickbox);
 			}
 		});
 	}

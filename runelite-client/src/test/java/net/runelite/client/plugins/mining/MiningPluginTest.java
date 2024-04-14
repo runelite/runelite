@@ -175,7 +175,6 @@ public class MiningPluginTest
 		GameStateChanged gameStateChanged = new GameStateChanged();
 		gameStateChanged.setGameState(GameState.LOGGED_IN);
 		miningPlugin.onGameStateChanged(gameStateChanged);
-		when(miningConfig.camTorumMaxDistanceHighlight()).thenReturn(10);
 		when(miningConfig.camTorumNotifyWaterSpawn()).thenReturn(true);
 
 		Tile tile = mock(Tile.class);
