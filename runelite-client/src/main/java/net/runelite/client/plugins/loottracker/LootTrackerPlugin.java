@@ -1012,11 +1012,14 @@ public class LootTrackerPlugin extends Plugin
 			onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, HERBIBOAR_EVENT, client.getBoostedSkillLevel(Skill.HERBLORE)));
 			return;
 		}
-		final Matcher agilityDispenserMatcher = AGILITY_DISPENSER_PATTERN.matcher(message);
-		if (agilityDispenserMatcher.matches() && client.getVarbitValue(Varbits.AGILITY_DISPENSER) == 1)
+
+		if (client.getVarbitValue(Varbits.AGILITY_DISPENSER) == 1)
 		{
-			processAgilityDispenserLoot(agilityDispenserMatcher);
-			return;
+			final Matcher agilityDispenserMatcher = AGILITY_DISPENSER_PATTERN.matcher(message);
+			if(agilityDispenserMatcher.matches()) {
+				processAgilityDispenserLoot(agilityDispenserMatcher);
+				return;
+			}
 		}
 
 		final int regionID = client.getLocalPlayer().getWorldLocation().getRegionID();
