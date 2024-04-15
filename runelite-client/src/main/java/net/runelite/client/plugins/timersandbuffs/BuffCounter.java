@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tyler <https://github.com/tylerthardy>
+ * Copyright (c) 2024, YvesW <https://github.com/YvesW>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,32 +25,35 @@
 package net.runelite.client.plugins.timersandbuffs;
 
 import java.awt.Color;
+import lombok.AccessLevel;
 import lombok.Getter;
-import net.runelite.client.plugins.Plugin;
-import net.runelite.client.ui.overlay.infobox.InfoBox;
-import net.runelite.client.ui.overlay.infobox.InfoBoxPriority;
+import net.runelite.client.ui.overlay.infobox.Counter;
 
-public class IndicatorIndicator extends InfoBox
+@Getter(AccessLevel.PACKAGE)
+class BuffCounter extends Counter
 {
-	@Getter
-	private final GameIndicator indicator;
+	private final TimersAndBuffsPlugin plugin;
+	private final GameCounter gameCounter;
 
-	IndicatorIndicator(GameIndicator indicator, Plugin plugin)
+	BuffCounter(
+		TimersAndBuffsPlugin plugin,
+		GameCounter gameCounter,
+		int count)
 	{
-		super(null, plugin);
-		this.indicator = indicator;
-		setPriority(InfoBoxPriority.MED);
+		super(null, plugin, count);
+		this.plugin = plugin;
+		this.gameCounter = gameCounter;
 	}
 
 	@Override
 	public String getText()
 	{
-		return indicator.getText();
+		return gameCounter.isShouldDisplayCount() ? Integer.toString(getCount()) : "";
 	}
 
 	@Override
 	public Color getTextColor()
 	{
-		return indicator.getTextColor();
+		return gameCounter.getColorBoundaryType().shouldRecolor(getCount(), gameCounter.getBoundary()) ? gameCounter.getColor() : Color.WHITE;
 	}
 }
