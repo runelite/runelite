@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tyler <https://github.com/tylerthardy>
+ * Copyright (c) 2024, YvesW <https://github.com/YvesW>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,32 +25,54 @@
 package net.runelite.client.plugins.timersandbuffs;
 
 import java.awt.Color;
+import java.util.function.BiPredicate;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.SpriteID;
 
 @Getter(AccessLevel.PACKAGE)
-enum GameIndicator
+@AllArgsConstructor
+enum GameCounter
 {
-	VENGEANCE_ACTIVE(SpriteID.SPELL_VENGEANCE_OTHER, GameTimerImageType.SPRITE, "Vengeance active");
+	VENGEANCE_ACTIVE(SpriteID.SPELL_VENGEANCE_OTHER, GameTimerImageType.SPRITE, "Vengeance active", false),
+	;
 
-	private final String description;
-	private String text;
-	private Color textColor;
 	private final int imageId;
 	private final GameTimerImageType imageType;
+	private final String description;
+	private final ColorBoundaryType colorBoundaryType;
+	private final int boundary;
+	private final Color color;
+	private final boolean shouldDisplayCount;
 
-	GameIndicator(int imageId, GameTimerImageType idType, String description, String text, Color textColor)
+	GameCounter(int imageId, GameTimerImageType idType, String description, ColorBoundaryType colorBoundaryType, int boundary, Color color)
 	{
-		this.imageId = imageId;
-		this.imageType = idType;
-		this.description = description;
-		this.text = text;
-		this.textColor = textColor;
+		this(imageId, idType, description, colorBoundaryType, boundary, color, true);
 	}
 
-	GameIndicator(int imageId, GameTimerImageType idType, String description)
+	GameCounter(int imageId, GameTimerImageType idType, String description, boolean shouldDisplayCount)
 	{
-		this(imageId, idType, description, "", null);
+		this(imageId, idType, description, ColorBoundaryType.NO_BOUNDARY, 0, Color.WHITE, shouldDisplayCount);
+	}
+
+	GameCounter(int imageId, GameTimerImageType idType, String description)
+	{
+		this(imageId, idType, description, ColorBoundaryType.NO_BOUNDARY, 0, Color.WHITE, true);
+	}
+
+	@AllArgsConstructor
+	enum ColorBoundaryType
+	{
+		GREATER_THAN_EQUAL_TO((count, boundary) -> count >= boundary),
+		LESS_THAN_EQUAL_TO((count, boundary) -> count <= boundary),
+		NO_BOUNDARY((count, boundary) -> false);
+
+		final BiPredicate<Integer, Integer> shouldRecolorPredicate;
+
+		boolean shouldRecolor(int count, int boundary)
+		{
+			return shouldRecolorPredicate.test(count, boundary);
+		}
 	}
 }
