@@ -1016,7 +1016,8 @@ public class LootTrackerPlugin extends Plugin
 		if (client.getVarbitValue(Varbits.AGILITY_DISPENSER) == 1)
 		{
 			final Matcher agilityDispenserMatcher = AGILITY_DISPENSER_PATTERN.matcher(message);
-			if(agilityDispenserMatcher.matches()) {
+			if (agilityDispenserMatcher.matches())
+			{
 				processAgilityDispenserLoot(agilityDispenserMatcher);
 				return;
 			}
