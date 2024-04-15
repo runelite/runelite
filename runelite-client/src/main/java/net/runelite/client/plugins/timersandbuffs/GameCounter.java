@@ -39,6 +39,7 @@ enum GameCounter
 	COLOSSEUM_DOOM(SpriteID.COLOSSEUM_DOOM, GameTimerImageType.SPRITE, "Doom"),
 	CURSE_OF_THE_MOONS_BLUE(ItemID.BLUE_MOON_HELM, GameTimerImageType.ITEM, "Curse of the Moons (Blue Moon)", ColorBoundaryType.GREATER_THAN_EQUAL_TO, 18, Color.RED),
 	CURSE_OF_THE_MOONS_ECLIPSE(ItemID.ECLIPSE_MOON_HELM, GameTimerImageType.ITEM, "Curse of the Moons (Eclipse Moon)"),
+	VENGEANCE_ACTIVE(SpriteID.SPELL_VENGEANCE_OTHER, GameTimerImageType.SPRITE, "Vengeance active", false),
 	;
 
 	private final int imageId;
@@ -47,10 +48,21 @@ enum GameCounter
 	private final ColorBoundaryType colorBoundaryType;
 	private final int boundary;
 	private final Color color;
+	private final boolean shouldDisplayCount;
+
+	GameCounter(int imageId, GameTimerImageType idType, String description, ColorBoundaryType colorBoundaryType, int boundary, Color color)
+	{
+		this(imageId, idType, description, colorBoundaryType, boundary, color, true);
+	}
+
+	GameCounter(int imageId, GameTimerImageType idType, String description, boolean shouldDisplayCount)
+	{
+		this(imageId, idType, description, ColorBoundaryType.NO_BOUNDARY, 0, Color.WHITE, shouldDisplayCount);
+	}
 
 	GameCounter(int imageId, GameTimerImageType idType, String description)
 	{
-		this(imageId, idType, description, ColorBoundaryType.NO_BOUNDARY, 0, Color.WHITE);
+		this(imageId, idType, description, ColorBoundaryType.NO_BOUNDARY, 0, Color.WHITE, true);
 	}
 
 	@AllArgsConstructor

@@ -46,6 +46,12 @@ class BuffCounter extends Counter
 	}
 
 	@Override
+	public String getText()
+	{
+		return gameCounter.isShouldDisplayCount() ? Integer.toString(getCount()) : "";
+	}
+
+	@Override
 	public Color getTextColor()
 	{
 		return gameCounter.getColorBoundaryType().shouldRecolor(getCount(), gameCounter.getBoundary()) ? gameCounter.getColor() : Color.WHITE;

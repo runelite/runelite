@@ -77,7 +77,6 @@ import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import static net.runelite.client.plugins.timersandbuffs.GameCounter.*;
-import static net.runelite.client.plugins.timersandbuffs.GameIndicator.VENGEANCE_ACTIVE;
 import static net.runelite.client.plugins.timersandbuffs.GameTimer.*;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.RSTimeUnit;
@@ -302,14 +301,7 @@ public class TimersAndBuffsPlugin extends Plugin
 
 		if (event.getVarbitId() == Varbits.VENGEANCE_ACTIVE && config.showVengeanceActive())
 		{
-			if (event.getValue() == 1)
-			{
-				createGameIndicator(VENGEANCE_ACTIVE);
-			}
-			else
-			{
-				removeGameIndicator(VENGEANCE_ACTIVE);
-			}
+			updateVarCounter(VENGEANCE_ACTIVE, event.getValue());
 		}
 
 		if (event.getVarbitId() == Varbits.DEATH_CHARGE && config.showArceuus())
@@ -699,7 +691,7 @@ public class TimersAndBuffsPlugin extends Plugin
 
 		if (!config.showVengeanceActive())
 		{
-			removeGameIndicator(VENGEANCE_ACTIVE);
+			removeVarCounter(VENGEANCE_ACTIVE);
 		}
 
 		if (!config.showTeleblock())
@@ -1246,31 +1238,6 @@ public class TimersAndBuffsPlugin extends Plugin
 	void removeGameTimer(GameTimer timer)
 	{
 		infoBoxManager.removeIf(t -> t instanceof TimerTimer && ((TimerTimer) t).getTimer() == timer);
-	}
-
-	private IndicatorIndicator createGameIndicator(GameIndicator gameIndicator)
-	{
-		removeGameIndicator(gameIndicator);
-
-		IndicatorIndicator indicator = new IndicatorIndicator(gameIndicator, this);
-		switch (gameIndicator.getImageType())
-		{
-			case SPRITE:
-				spriteManager.getSpriteAsync(gameIndicator.getImageId(), 0, indicator);
-				break;
-			case ITEM:
-				indicator.setImage(itemManager.getImage(gameIndicator.getImageId()));
-				break;
-		}
-		indicator.setTooltip(gameIndicator.getDescription());
-		infoBoxManager.addInfoBox(indicator);
-
-		return indicator;
-	}
-
-	private void removeGameIndicator(GameIndicator indicator)
-	{
-		infoBoxManager.removeIf(t -> t instanceof IndicatorIndicator && ((IndicatorIndicator) t).getIndicator() == indicator);
 	}
 
 	private void updateVarTimer(final GameTimer gameTimer, final int varValue, final IntUnaryOperator tickDuration)
