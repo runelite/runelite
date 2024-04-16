@@ -29,6 +29,7 @@ import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Notification;
 import net.runelite.client.config.Units;
 
 @ConfigGroup("fishing")
@@ -166,9 +167,9 @@ public interface FishingConfig extends Config
 		name = "Flying fish notification",
 		description = "Send a notification when a flying fish spawns on your fishing spot."
 	)
-	default boolean flyingFishNotification()
+	default Notification flyingFishNotification()
 	{
-		return true;
+		return Notification.ON;
 	}
 
 	@ConfigItem(

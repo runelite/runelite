@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Trevor <https://github.com/Trevor159>
+ * Copyright (c) 2024, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,16 +22,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.events;
+package net.runelite.client.config;
 
-import java.awt.TrayIcon;
-import lombok.Value;
-import net.runelite.client.config.Notification;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-@Value
-public class NotificationFired
+@Documented
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface ConfigSerializer
 {
-	final Notification notification;
-	final String message;
-	final TrayIcon.MessageType type;
+	Class<? extends Serializer<?>> value();
 }

@@ -302,9 +302,9 @@ public class CannonPlugin extends Plugin
 		{
 			cballsLeft = varbitChanged.getValue();
 
-			if (config.showCannonNotifications() && !cannonBallNotificationSent && cballsLeft > 0 && config.lowWarningThreshold() >= cballsLeft)
+			if (!cannonBallNotificationSent && cballsLeft > 0 && config.lowWarningThreshold() >= cballsLeft)
 			{
-				notifier.notify(String.format("Your cannon has %d cannon balls remaining!", cballsLeft));
+				notifier.notify(config.showCannonNotifications(), String.format("Your cannon has %d cannon balls remaining!", cballsLeft));
 				cannonBallNotificationSent = true;
 			}
 		}
@@ -366,10 +366,7 @@ public class CannonPlugin extends Plugin
 		}
 		else if (event.getMessage().contains("Your cannon is out of ammo!"))
 		{
-			if (config.showCannonNotifications())
-			{
-				notifier.notify("Your cannon is out of ammo!");
-			}
+			notifier.notify(config.showCannonNotifications(), "Your cannon is out of ammo!");
 		}
 		else if (event.getMessage().equals("This isn't your cannon!") || event.getMessage().equals("This is not your cannon."))
 		{

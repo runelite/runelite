@@ -30,6 +30,7 @@ import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Notification;
 import net.runelite.client.config.Units;
 
 @ConfigGroup(SlayerConfig.GROUP_NAME)
@@ -73,9 +74,9 @@ public interface SlayerConfig extends Config
 		name = "Superior foe notification",
 		description = "Toggles notifications on superior foe encounters"
 	)
-	default boolean showSuperiorNotification()
+	default Notification showSuperiorNotification()
 	{
-		return true;
+		return Notification.ON;
 	}
 
 	@ConfigItem(

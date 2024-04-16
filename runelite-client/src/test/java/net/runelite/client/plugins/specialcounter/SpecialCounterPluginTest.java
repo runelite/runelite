@@ -48,6 +48,7 @@ import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.config.Notification;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.party.PartyService;
 import net.runelite.client.party.WSClient;
@@ -194,7 +195,7 @@ public class SpecialCounterPluginTest
 
 		when(client.getLocalPlayer()).thenReturn(player);
 		when(specialCounterConfig.bandosGodswordThreshold()).thenReturn(2);
-		when(specialCounterConfig.thresholdNotification()).thenReturn(true);
+		when(specialCounterConfig.thresholdNotification()).thenReturn(Notification.ON);
 
 		when(client.getTickCount()).thenReturn(0);
 
@@ -240,7 +241,7 @@ public class SpecialCounterPluginTest
 
 		specialCounterPlugin.onGameTick(new GameTick());
 
-		verify(notifier).notify("Bandos Godsword special attack threshold reached!");
+		verify(notifier).notify(Notification.ON, "Bandos Godsword special attack threshold reached!");
 	}
 
 	@Test
@@ -253,7 +254,7 @@ public class SpecialCounterPluginTest
 		when(client.getLocalPlayer()).thenReturn(player);
 		when(player.getInteracting()).thenReturn(target);
 		when(specialCounterConfig.bandosGodswordThreshold()).thenReturn(3);
-		lenient().when(specialCounterConfig.thresholdNotification()).thenReturn(true);
+		lenient().when(specialCounterConfig.thresholdNotification()).thenReturn(Notification.ON);
 
 		when(client.getTickCount()).thenReturn(0);
 

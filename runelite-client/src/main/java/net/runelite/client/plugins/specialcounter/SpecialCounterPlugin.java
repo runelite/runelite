@@ -463,9 +463,9 @@ public class SpecialCounterPlugin extends Plugin
 	private void sendNotification(SpecialWeapon weapon, SpecialCounter counter)
 	{
 		int threshold = weapon.getThreshold().apply(config);
-		if (threshold > 0 && counter.getCount() >= threshold && config.thresholdNotification())
+		if (threshold > 0 && counter.getCount() >= threshold)
 		{
-			notifier.notify(weapon.getName() + " special attack threshold reached!");
+			notifier.notify(config.thresholdNotification(), weapon.getName() + " special attack threshold reached!");
 		}
 	}
 
