@@ -2262,7 +2262,6 @@ public class ChatCommandsPlugin extends Plugin
 
 			// The Gauntlet
 			case "gaunt":
-			case "gauntlet":
 			case "the gauntlet":
 				return "Gauntlet";
 
