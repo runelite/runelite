@@ -1879,7 +1879,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		sortedInsert(list2, index1);
 	}
 
-	private static <T extends Comparable<? super T>> void sortedInsert(List<T> list, T value) // NOPMD: UnusedPrivateMethod: false positive
+	private static <T extends Comparable<? super T>> void sortedInsert(List<T> list, T value)
 	{
 		int idx = Collections.binarySearch(list, value);
 		list.add(idx < 0 ? -idx - 1 : idx, value);
