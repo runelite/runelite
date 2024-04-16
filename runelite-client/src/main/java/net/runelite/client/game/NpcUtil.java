@@ -132,6 +132,8 @@ public class NpcUtil
 			case NpcID.RUNITE_ROCKS:
 			case NpcID.STRANGE_CREATURE_12076: // Secrets of the North transitioning to Jhallan
 			case NpcID.BOUNCER_3509:
+			// Tutorial island giant rats respawn instantly.
+			case NpcID.GIANT_RAT_3313:
 			// Agrith Naar restores health upon reaching 0hp if the player does not have Silverlight
 			// equipped, or moved away immediately after applying the killing blow.
 			case NpcID.AGRITH_NAAR:

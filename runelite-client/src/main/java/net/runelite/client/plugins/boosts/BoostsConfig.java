@@ -27,6 +27,7 @@ package net.runelite.client.plugins.boosts;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Notification;
 
 @ConfigGroup("boosts")
 public interface BoostsConfig extends Config
@@ -140,8 +141,8 @@ public interface BoostsConfig extends Config
 		description = "Configures whether or not a notification will be sent for boosted stats.",
 		position = 13
 	)
-	default boolean notifyOnBoost()
+	default Notification notifyOnBoost()
 	{
-		return true;
+		return Notification.ON;
 	}
 }

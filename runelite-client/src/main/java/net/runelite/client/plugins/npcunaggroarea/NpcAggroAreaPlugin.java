@@ -340,10 +340,7 @@ public class NpcAggroAreaPlugin extends Plugin
 
 		if (active && notifyOnce && Instant.now().isAfter(endTime))
 		{
-			if (config.notifyExpire())
-			{
-				notifier.notify("NPC aggression has expired!");
-			}
+			notifier.notify(config.notifyExpire(), "NPC aggression has expired!");
 
 			notifyOnce = false;
 		}

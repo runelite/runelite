@@ -30,6 +30,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
+import net.runelite.client.config.Notification;
 import net.runelite.client.config.Units;
 
 @ConfigGroup("agility")
@@ -196,9 +197,9 @@ public interface AgilityConfig extends Config
 		description = "Notify on ticket location change in Agility Arena",
 		position = 13
 	)
-	default boolean notifyAgilityArena()
+	default Notification notifyAgilityArena()
 	{
-		return true;
+		return Notification.ON;
 	}
 
 	@ConfigItem(

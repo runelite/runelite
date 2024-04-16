@@ -1270,7 +1270,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			if (gameState == GameState.LOGGED_IN)
 			{
 				// avoid textures animating during loading
-				GL43C.glUniform1i(uniTick, client.getGameCycle());
+				GL43C.glUniform1i(uniTick, client.getGameCycle() & 127);
 			}
 
 			// Calculate projection matrix

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Hydrox6 <ikada@protonmail.ch>
+ * Copyright (c) 2024, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,44 +22,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.loginscreen;
+package net.runelite.client.config;
 
-import lombok.Getter;
-
-public enum LoginScreenOverride
+public interface Serializer<T>
 {
-	OFF,
-	NORMAL("normal.jpg"),
-	OLD("old.jpg"),
-	CHRISTMAS("christmas.jpg"),
-	CHAMBERS_OF_XERIC("cox.jpg"),
-	DARKMEYER("darkmeyer.jpg"),
-	DRAGON_SLAYER_2("ds2.jpg"),
-	FOSSIL_ISLAND("fossil_island.jpg"),
-	HALLOWEEN("halloween.jpg"),
-	HALLOWEEN_2019("halloween_2019.jpg"),
-	INFERNO("inferno.jpg"),
-	KEBOS("kebos.jpg"),
-	MONKEY_MADNESS_2("mm2.jpg"),
-	PRIFDDINAS("prifddinas.jpg"),
-	THEATRE_OF_BLOOD("tob.jpg"),
-	A_KINGDOM_DIVIDED("akd.jpg"),
-	NEX("nex.jpg"),
-	TOMBS_OF_AMASCUT("toa.jpg"),
-	VARLAMORE("varlamore.jpg"),
-	CUSTOM,
-	RANDOM;
+	String serialize(T value);
 
-	@Getter
-	private final String fileName;
-
-	LoginScreenOverride()
-	{
-		this.fileName = null;
-	}
-
-	LoginScreenOverride(String fileName)
-	{
-		this.fileName = fileName;
-	}
+	T deserialize(String s);
 }

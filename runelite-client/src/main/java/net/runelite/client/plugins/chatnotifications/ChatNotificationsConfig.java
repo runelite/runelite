@@ -29,6 +29,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
+import net.runelite.client.config.Notification;
 
 @ConfigGroup("chatnotification")
 public interface ChatNotificationsConfig extends Config
@@ -81,9 +82,9 @@ public interface ChatNotificationsConfig extends Config
 		name = "Notify on own name",
 		description = "Notifies you whenever someone mentions you by name"
 	)
-	default boolean notifyOnOwnName()
+	default Notification notifyOnOwnName()
 	{
-		return false;
+		return Notification.OFF;
 	}
 
 	@ConfigItem(
@@ -92,9 +93,9 @@ public interface ChatNotificationsConfig extends Config
 		name = "Notify on highlight",
 		description = "Notifies you whenever a highlighted word is matched"
 	)
-	default boolean notifyOnHighlight()
+	default Notification notifyOnHighlight()
 	{
-		return false;
+		return Notification.OFF;
 	}
 
 	@ConfigItem(
@@ -103,9 +104,9 @@ public interface ChatNotificationsConfig extends Config
 		name = "Notify on trade",
 		description = "Notifies you whenever you are traded"
 	)
-	default boolean notifyOnTrade()
+	default Notification notifyOnTrade()
 	{
-		return false;
+		return Notification.OFF;
 	}
 
 	@ConfigItem(
@@ -114,9 +115,9 @@ public interface ChatNotificationsConfig extends Config
 		name = "Notify on duel",
 		description = "Notifies you whenever you are challenged to a duel"
 	)
-	default boolean notifyOnDuel()
+	default Notification notifyOnDuel()
 	{
-		return false;
+		return Notification.OFF;
 	}
 
 	@ConfigItem(
@@ -125,9 +126,9 @@ public interface ChatNotificationsConfig extends Config
 		name = "Notify on broadcast",
 		description = "Notifies you whenever you receive a broadcast message"
 	)
-	default boolean notifyOnBroadcast()
+	default Notification notifyOnBroadcast()
 	{
-		return false;
+		return Notification.OFF;
 	}
 
 	@ConfigItem(
@@ -136,8 +137,8 @@ public interface ChatNotificationsConfig extends Config
 		name = "Notify on private message",
 		description = "Notifies you whenever you receive a private message"
 	)
-	default boolean notifyOnPM()
+	default Notification notifyOnPM()
 	{
-		return false;
+		return Notification.OFF;
 	}
 }

@@ -49,6 +49,7 @@ import net.runelite.api.events.GrandExchangeOfferChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.account.SessionManager;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.Notification;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.input.KeyManager;
@@ -337,7 +338,7 @@ public class GrandExchangePluginTest
 	@Test
 	public void testNotifyPartial()
 	{
-		when(grandExchangeConfig.enableNotifications()).thenReturn(true);
+		when(grandExchangeConfig.enableNotifications()).thenReturn(Notification.ON);
 
 		ChatMessage chatMessage = new ChatMessage();
 		chatMessage.setType(ChatMessageType.GAMEMESSAGE);
@@ -345,13 +346,13 @@ public class GrandExchangePluginTest
 
 		grandExchangePlugin.onChatMessage(chatMessage);
 
-		verify(notifier).notify(anyString());
+		verify(notifier).notify(any(Notification.class), anyString());
 	}
 
 	@Test
 	public void testNotifyComplete()
 	{
-		when(grandExchangeConfig.notifyOnOfferComplete()).thenReturn(true);
+		when(grandExchangeConfig.notifyOnOfferComplete()).thenReturn(Notification.ON);
 
 		ChatMessage chatMessage = new ChatMessage();
 		chatMessage.setType(ChatMessageType.GAMEMESSAGE);
@@ -359,6 +360,6 @@ public class GrandExchangePluginTest
 
 		grandExchangePlugin.onChatMessage(chatMessage);
 
-		verify(notifier).notify(anyString());
+		verify(notifier).notify(any(Notification.class), anyString());
 	}
 }

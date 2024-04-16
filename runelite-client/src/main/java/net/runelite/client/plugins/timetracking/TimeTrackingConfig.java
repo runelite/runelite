@@ -27,6 +27,7 @@ package net.runelite.client.plugins.timetracking;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Notification;
 import net.runelite.client.config.Units;
 
 @ConfigGroup("timetracking")
@@ -62,9 +63,9 @@ public interface TimeTrackingConfig extends Config
 		description = "Notify you whenever a timer has finished counting down",
 		position = 2
 	)
-	default boolean timerNotification()
+	default Notification timerNotification()
 	{
-		return false;
+		return Notification.OFF;
 	}
 
 	@ConfigItem(
