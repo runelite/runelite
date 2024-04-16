@@ -575,6 +575,11 @@ public class TimersPlugin extends Plugin
 		{
 			updateVarTimer(GOD_WARS_ALTAR, event.getValue(), i -> i * 100);
 		}
+
+		if (event.getVarbitId() == Varbits.SCURRIUS_FOOD_PILE_COOLDOWN && config.showScurriusFoodPile())
+		{
+			updateVarTimer(SCURRIUS_FOOD_PILE, event.getValue(), i -> i * 100);
+		}
 	}
 
 	@Subscribe
@@ -770,6 +775,11 @@ public class TimersPlugin extends Plugin
 		if (!config.showSpellbookSwap())
 		{
 			removeGameTimer(SPELLBOOK_SWAP);
+		}
+
+		if (!config.showScurriusFoodPile())
+		{
+			removeGameTimer(SCURRIUS_FOOD_PILE);
 		}
 	}
 
