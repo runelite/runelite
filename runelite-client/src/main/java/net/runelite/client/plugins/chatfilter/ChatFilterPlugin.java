@@ -270,7 +270,7 @@ public class ChatFilterPlugin extends Plugin
 	@Subscribe
 	public void onOverheadTextChanged(OverheadTextChanged event)
 	{
-		if (!(event.getActor() instanceof Player) || event.getActor().getName() == null || !canFilterPlayer(event.getActor().getName())) // NOPMD: SimplifyConditional
+		if (!(event.getActor() instanceof Player) || event.getActor().getName() == null || !canFilterPlayer(event.getActor().getName()))
 		{
 			return;
 		}
