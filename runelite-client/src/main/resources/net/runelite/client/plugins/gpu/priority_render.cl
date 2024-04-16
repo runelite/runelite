@@ -89,9 +89,9 @@ int count_prio_offset(__local struct shared_data *shared, int priority) {
   return total;
 }
 
-void get_face(__local struct shared_data *shared, __constant struct uniform *uni, __global const int4 *vb, __global const int4 *tempvb, uint localId,
-              struct modelinfo minfo, float cameraYaw, float cameraPitch,
-              /* out */ int *prio, int *dis, int4 *o1, int4 *o2, int4 *o3) {
+void get_face(__local struct shared_data *shared, __global const struct vert *vb, __global const struct vert *tempvb, uint localId, struct modelinfo minfo,
+              float cameraYaw, float cameraPitch,
+              /* out */ int *prio, int *dis, struct vert *o1, struct vert *o2, struct vert *o3) {
   int size = minfo.size;
   int offset = minfo.offset;
   int flags = minfo.flags;
@@ -103,9 +103,9 @@ void get_face(__local struct shared_data *shared, __constant struct uniform *uni
     ssboOffset = 0;
   }
 
-  int4 thisA;
-  int4 thisB;
-  int4 thisC;
+  struct vert thisA;
+  struct vert thisB;
+  struct vert thisC;
 
   // Grab triangle vertices from the correct buffer
   if (flags < 0) {
@@ -122,34 +122,37 @@ void get_face(__local struct shared_data *shared, __constant struct uniform *uni
     int orientation = flags & 0x7ff;
 
     // rotate for model orientation
-    int4 thisrvA = rotate_vertex(uni, thisA, orientation);
-    int4 thisrvB = rotate_vertex(uni, thisB, orientation);
-    int4 thisrvC = rotate_vertex(uni, thisC, orientation);
+    float4 thisrvA = rotate_vertex((float4)(thisA.x, thisA.y, thisA.z, 0), orientation);
+    float4 thisrvB = rotate_vertex((float4)(thisB.x, thisB.y, thisB.z, 0), orientation);
+    float4 thisrvC = rotate_vertex((float4)(thisC.x, thisC.y, thisC.z, 0), orientation);
 
     // calculate distance to face
-    int thisPriority = (thisA.w >> 16) & 0xff;  // all vertices on the face have the same priority
+    int thisPriority = (thisA.ahsl >> 16) & 0xff;  // all vertices on the face have the same priority
     int thisDistance = face_distance(thisrvA, thisrvB, thisrvC, cameraYaw, cameraPitch);
 
-    *o1 = thisrvA;
-    *o2 = thisrvB;
-    *o3 = thisrvC;
+    *o1 = (struct vert){thisrvA.x, thisrvA.y, thisrvA.z, thisA.ahsl};
+    *o2 = (struct vert){thisrvB.x, thisrvB.y, thisrvB.z, thisB.ahsl};
+    *o3 = (struct vert){thisrvC.x, thisrvC.y, thisrvC.z, thisC.ahsl};
 
     *prio = thisPriority;
     *dis = thisDistance;
   } else {
-    *o1 = (int4)(0, 0, 0, 0);
-    *o2 = (int4)(0, 0, 0, 0);
-    *o3 = (int4)(0, 0, 0, 0);
+    *o1 = (struct vert){0, 0, 0, 0};
+    *o2 = (struct vert){0, 0, 0, 0};
+    *o3 = (struct vert){0, 0, 0, 0};
     *prio = 0;
     *dis = 0;
   }
 }
 
-void add_face_prio_distance(__local struct shared_data *shared, __constant struct uniform *uni, uint localId, struct modelinfo minfo, int4 thisrvA,
-                            int4 thisrvB, int4 thisrvC, int thisPriority, int thisDistance, int4 pos) {
+void add_face_prio_distance(__local struct shared_data *shared, __constant struct uniform *uni, uint localId, struct modelinfo minfo, struct vert thisrvA,
+                            struct vert thisrvB, struct vert thisrvC, int thisPriority, int thisDistance, int4 pos) {
   if (localId < minfo.size) {
     // if the face is not culled, it is calculated into priority distance averages
-    if (face_visible(uni, thisrvA, thisrvB, thisrvC, pos)) {
+    float3 posA = (float3)(thisrvA.x, thisrvA.y, thisrvA.z);
+    float3 posB = (float3)(thisrvB.x, thisrvB.y, thisrvB.z);
+    float3 posC = (float3)(thisrvC.x, thisrvC.y, thisrvC.z);
+    if (face_visible(uni, posA, posB, posC, pos)) {
       atomic_add(&shared->totalNum[thisPriority], 1);
       atomic_add(&shared->totalDistance[thisPriority], thisDistance);
 
@@ -214,21 +217,6 @@ int tile_height(read_only image3d_t tileHeightImage, int z, int x, int y) {
   return read_imagei(tileHeightImage, tileHeightSampler, coord).x << 3;
 }
 
-int4 hillskew_vertex(read_only image3d_t tileHeightImage, int4 v, int hillskew, int y, int plane) {
-  if (hillskew == 1) {
-    int px = v.x & 127;
-    int pz = v.z & 127;
-    int sx = v.x >> 7;
-    int sz = v.z >> 7;
-    int h1 = px * tile_height(tileHeightImage, plane, sx + 1, sz) + (128 - px) * tile_height(tileHeightImage, plane, sx, sz) >> 7;
-    int h2 = px * tile_height(tileHeightImage, plane, sx + 1, sz + 1) + (128 - px) * tile_height(tileHeightImage, plane, sx, sz + 1) >> 7;
-    int h3 = pz * h2 + (128 - pz) * h1 >> 7;
-    return (int4)(v.x, v.y + h3 - y, v.z, v.w);
-  } else {
-    return v;
-  }
-}
-
 float4 hillskew_vertexf(read_only image3d_t tileHeightImage, float4 v, int hillskew, int y, int plane) {
   if (hillskew == 1) {
     float fx = v.x / 128;
@@ -246,8 +234,8 @@ float4 hillskew_vertexf(read_only image3d_t tileHeightImage, float4 v, int hills
 }
 
 void sort_and_insert(__local struct shared_data *shared, __constant struct uniform *uni, __global const float4 *texb, __global const float4 *temptexb,
-                     __global int4 *vout, __global float4 *uvout, uint localId, struct modelinfo minfo, int thisPriority, int thisDistance, int4 thisrvA,
-                     int4 thisrvB, int4 thisrvC, read_only image3d_t tileHeightImage) {
+                     __global struct vert *vout, __global float4 *uvout, uint localId, struct modelinfo minfo, int thisPriority, int thisDistance,
+                     struct vert thisrvA, struct vert thisrvB, struct vert thisrvC, read_only image3d_t tileHeightImage) {
   int size = minfo.size;
 
   if (localId < size) {
@@ -271,22 +259,22 @@ void sort_and_insert(__local struct shared_data *shared, __constant struct unifo
     }
 
     // position into scene
-    int4 pos = (int4)(minfo.x, minfo.y, minfo.z, 0);
-    thisrvA += pos;
-    thisrvB += pos;
-    thisrvC += pos;
+    float4 pos = (float4)(minfo.x, minfo.y, minfo.z, 0);
+    float4 vertA = (float4)(thisrvA.x, thisrvA.y, thisrvA.z, 0) + pos;
+    float4 vertB = (float4)(thisrvB.x, thisrvB.y, thisrvB.z, 0) + pos;
+    float4 vertC = (float4)(thisrvC.x, thisrvC.y, thisrvC.z, 0) + pos;
 
     // apply hillskew
     int plane = (flags >> 24) & 3;
     int hillskew = (flags >> 26) & 1;
-    thisrvA = hillskew_vertex(tileHeightImage, thisrvA, hillskew, minfo.y, plane);
-    thisrvB = hillskew_vertex(tileHeightImage, thisrvB, hillskew, minfo.y, plane);
-    thisrvC = hillskew_vertex(tileHeightImage, thisrvC, hillskew, minfo.y, plane);
+    vertA = hillskew_vertexf(tileHeightImage, vertA, hillskew, minfo.y, plane);
+    vertB = hillskew_vertexf(tileHeightImage, vertB, hillskew, minfo.y, plane);
+    vertC = hillskew_vertexf(tileHeightImage, vertC, hillskew, minfo.y, plane);
 
     // write to out buffer
-    vout[outOffset + myOffset * 3] = thisrvA;
-    vout[outOffset + myOffset * 3 + 1] = thisrvB;
-    vout[outOffset + myOffset * 3 + 2] = thisrvC;
+    vout[outOffset + myOffset * 3] = (struct vert){vertA.x, vertA.y, vertA.z, thisrvA.ahsl};
+    vout[outOffset + myOffset * 3 + 1] = (struct vert){vertB.x, vertB.y, vertB.z, thisrvB.ahsl};
+    vout[outOffset + myOffset * 3 + 2] = (struct vert){vertC.x, vertC.y, vertC.z, thisrvC.ahsl};
 
     if (toffset < 0) {
       uvout[outOffset + myOffset * 3] = (float4)(0, 0, 0, 0);
@@ -311,13 +299,13 @@ void sort_and_insert(__local struct shared_data *shared, __constant struct unifo
       texB = texB.yzwx;
       texC = texC.yzwx;
       // rotate
-      texA = rotatef_vertex(texA, orientation);
-      texB = rotatef_vertex(texB, orientation);
-      texC = rotatef_vertex(texC, orientation);
+      texA = rotate_vertex(texA, orientation);
+      texB = rotate_vertex(texB, orientation);
+      texC = rotate_vertex(texC, orientation);
       // position
-      texA += convert_float4(pos);
-      texB += convert_float4(pos);
-      texC += convert_float4(pos);
+      texA += pos;
+      texB += pos;
+      texC += pos;
       // hillskew
       texA = hillskew_vertexf(tileHeightImage, texA, hillskew, minfo.y, plane);
       texB = hillskew_vertexf(tileHeightImage, texB, hillskew, minfo.y, plane);
