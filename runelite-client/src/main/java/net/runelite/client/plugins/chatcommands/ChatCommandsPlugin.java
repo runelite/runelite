@@ -2463,6 +2463,7 @@ public class ChatCommandsPlugin extends Plugin
 			// Tempoross
 			case "fishingtodt":
 			case "fishtodt":
+			case "temp":
 				return "Tempoross";
 
 			// Phantom Muspah
