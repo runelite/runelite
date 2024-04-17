@@ -2025,15 +2025,18 @@ public class MenuEntrySwapperPlugin extends Plugin
 			.addSub("Prifddinas", () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 8));
 		teleportSwap("Other Teleports", ItemID.MAX_CAPE_13342)
 			.worn()
-			.addSub("Feldip hills", () -> {
+			.addSub("Feldip hills", () ->
+			{
 				pauseresume(ComponentID.DIALOG_OPTION_OPTIONS, 1); // Chinchompa Teleports
 				pauseresume(ComponentID.DIALOG_OPTION_OPTIONS, 1); // Carnivorous chinchompas (Feldip Hills)
 			})
-			.addSub("Black chinchompas", () -> {
+			.addSub("Black chinchompas", () ->
+			{
 				pauseresume(ComponentID.DIALOG_OPTION_OPTIONS, 1); // Chinchompa Teleports
 				pauseresume(ComponentID.DIALOG_OPTION_OPTIONS, 2); // Black chinchompas (Wilderness)
 			})
-			.addSub("Hunter Guild", () -> {
+			.addSub("Hunter Guild", () ->
+			{
 				pauseresume(ComponentID.DIALOG_OPTION_OPTIONS, 1); // Chinchompa Teleports
 				pauseresume(ComponentID.DIALOG_OPTION_OPTIONS, 3); // Hunter Guild
 			})
@@ -2048,47 +2051,58 @@ public class MenuEntrySwapperPlugin extends Plugin
 			.addSub("Crafting Guild", () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 2))
 			.addSub("Farming Guild", () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 3))
 			.addSub("Otto's Grotto", () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 4))
-			.addSub("Feldip hills", () -> {
+			.addSub("Feldip hills", () ->
+			{
 				pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 5); // Chinchompas
 				pauseresume(ComponentID.DIALOG_OPTION_OPTIONS, 1); // Carnivorous chinchompas (Feldip Hills)
 			})
-			.addSub("Black chinchompas", () -> {
+			.addSub("Black chinchompas", () ->
+			{
 				pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 5); // Chinchompas
 				pauseresume(ComponentID.DIALOG_OPTION_OPTIONS, 2); // Black chinchompas (Wilderness)
 			})
-			.addSub("Hunter Guild", () -> {
+			.addSub("Hunter Guild", () ->
+			{
 				pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 5); // Chinchompas
 				pauseresume(ComponentID.DIALOG_OPTION_OPTIONS, 3); // Hunter Guild
 			})
-			.addSub("Home", () -> {
+			.addSub("Home", () ->
+			{
 				pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 6); // POH Portals
 				pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 0);
 			})
-			.addSub("Rimmington", () -> {
+			.addSub("Rimmington", () ->
+			{
 				pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 6); // POH Portals
 				pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 1);
 			})
-			.addSub("Taverley", () -> {
+			.addSub("Taverley", () ->
+			{
 				pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 6); // POH Portals
 				pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 2);
 			})
-			.addSub("Pollnivneach", () -> {
+			.addSub("Pollnivneach", () ->
+			{
 				pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 6); // POH Portals
 				pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 3);
 			})
-			.addSub("Hosidius", () -> {
+			.addSub("Hosidius", () ->
+			{
 				pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 6); // POH Portals
 				pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 4);
 			})
-			.addSub("Rellekka", () -> {
+			.addSub("Rellekka", () ->
+			{
 				pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 6); // POH Portals
 				pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 5);
 			})
-			.addSub("Yanille", () -> {
+			.addSub("Yanille", () ->
+			{
 				pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 6); // POH Portals
 				pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 6);
 			})
-			.addSub("Prifddinas", () -> {
+			.addSub("Prifddinas", () ->
+			{
 				pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 6); // POH Portals
 				pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 7);
 			});
@@ -2179,7 +2193,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 						.setTarget(target)
 						.setType(MenuAction.RUNELITE)
 						.setParent(me)
-						.onClick(e -> clientThread.invokeLater(() -> {
+						.onClick(e -> clientThread.invokeLater(() ->
+						{
 							client.menuAction(p0, p1, MenuAction.CC_OP, id, itemId, option, target);
 							sub.execute.run();
 						}));
@@ -2216,7 +2231,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 						.setTarget(target)
 						.setType(MenuAction.RUNELITE)
 						.setParent(me)
-						.onClick(e -> clientThread.invokeLater(() -> {
+						.onClick(e -> clientThread.invokeLater(() ->
+						{
 							client.menuAction(p0, p1, MenuAction.CC_OP, id, itemId, option, target);
 							sub.execute.run();
 						}));
