@@ -2,8 +2,6 @@ package net.runelite.client.plugins.statusbars;
 
 import java.awt.Graphics2D;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.Point;
 import net.runelite.api.widgets.Widget;
@@ -17,7 +15,7 @@ class BarGroupRenderer
 
 
 	private Map<BarMode, BarRenderer> barRendererModes;
-	
+
 	private BarRenderer leftBar;
 	private BarRenderer rightBar;
 
