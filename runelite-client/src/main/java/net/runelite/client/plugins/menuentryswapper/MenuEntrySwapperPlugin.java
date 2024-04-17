@@ -898,27 +898,30 @@ public class MenuEntrySwapperPlugin extends Plugin
 						}
 					}
 
-					var subSwaps = teleportSwaps.get(itemComposition.getId())
-						.stream()
-						.filter(ts -> ts.worn)
-						.collect(Collectors.toList());
-					for (TeleportSwap top : subSwaps)
+					if (config.teleportSubmenus())
 					{
-						for (TeleportSub sub : top.subs)
+						var subSwaps = teleportSwaps.get(itemComposition.getId())
+							.stream()
+							.filter(ts -> ts.worn)
+							.collect(Collectors.toList());
+						for (TeleportSwap top : subSwaps)
 						{
-							if (leftClickOp == null || leftClickOp != sub.option.hashCode())
+							for (TeleportSub sub : top.subs)
 							{
-								leftClickMenus.add(client.createMenuEntry(idx)
-									.setOption(sub.option)
-									.setType(MenuAction.RUNELITE)
-									.onClick(wornItemConsumer(itemComposition, sub.option, sub.option.hashCode(), false)));
-							}
-							if (shiftClickOp == null || shiftClickOp != sub.option.hashCode())
-							{
-								shiftClickMenus.add(client.createMenuEntry(idx)
-									.setOption(sub.option)
-									.setType(MenuAction.RUNELITE)
-									.onClick(wornItemConsumer(itemComposition, sub.option, sub.option.hashCode(), true)));
+								if (leftClickOp == null || leftClickOp != sub.option.hashCode())
+								{
+									leftClickMenus.add(client.createMenuEntry(idx)
+										.setOption(sub.option)
+										.setType(MenuAction.RUNELITE)
+										.onClick(wornItemConsumer(itemComposition, sub.option, sub.option.hashCode(), false)));
+								}
+								if (shiftClickOp == null || shiftClickOp != sub.option.hashCode())
+								{
+									shiftClickMenus.add(client.createMenuEntry(idx)
+										.setOption(sub.option)
+										.setType(MenuAction.RUNELITE)
+										.onClick(wornItemConsumer(itemComposition, sub.option, sub.option.hashCode(), true)));
+								}
 							}
 						}
 					}
@@ -1081,27 +1084,30 @@ public class MenuEntrySwapperPlugin extends Plugin
 					}
 				}
 
-				var subSwaps = teleportSwaps.get(itemComposition.getId())
-					.stream()
-					.filter(ts -> ts.held)
-					.collect(Collectors.toList());
-				for (TeleportSwap top : subSwaps)
+				if (config.teleportSubmenus())
 				{
-					for (TeleportSub sub : top.subs)
+					var subSwaps = teleportSwaps.get(itemComposition.getId())
+						.stream()
+						.filter(ts -> ts.held)
+						.collect(Collectors.toList());
+					for (TeleportSwap top : subSwaps)
 					{
-						if (leftClickOp == null || leftClickOp != sub.option.hashCode())
+						for (TeleportSub sub : top.subs)
 						{
-							leftClickMenus.add(client.createMenuEntry(idx)
-								.setOption(sub.option)
-								.setType(MenuAction.RUNELITE)
-								.onClick(heldItemConsumer(itemComposition, sub.option, sub.option.hashCode(), false)));
-						}
-						if (shiftClickOp == null || shiftClickOp != sub.option.hashCode())
-						{
-							shiftClickMenus.add(client.createMenuEntry(idx)
-								.setOption(sub.option)
-								.setType(MenuAction.RUNELITE)
-								.onClick(heldItemConsumer(itemComposition, sub.option, sub.option.hashCode(), true)));
+							if (leftClickOp == null || leftClickOp != sub.option.hashCode())
+							{
+								leftClickMenus.add(client.createMenuEntry(idx)
+									.setOption(sub.option)
+									.setType(MenuAction.RUNELITE)
+									.onClick(heldItemConsumer(itemComposition, sub.option, sub.option.hashCode(), false)));
+							}
+							if (shiftClickOp == null || shiftClickOp != sub.option.hashCode())
+							{
+								shiftClickMenus.add(client.createMenuEntry(idx)
+									.setOption(sub.option)
+									.setType(MenuAction.RUNELITE)
+									.onClick(heldItemConsumer(itemComposition, sub.option, sub.option.hashCode(), true)));
+							}
 						}
 					}
 				}
