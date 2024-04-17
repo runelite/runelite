@@ -179,7 +179,7 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 		.put(new WorldPoint(3189, 3963, 0), new CoordinateClueInfo("Wilderness. North of Resource Area, near magic axe hut.", ZAMORAK_WIZARD))
 		.put(new WorldPoint(2341, 3697, 0), new CoordinateClueInfo("North-east of the Piscatoris Fishing Colony bank.", SARADOMIN_WIZARD))
 		.put(new WorldPoint(3143, 3774, 0), new CoordinateClueInfo("In level 32 Wilderness, by the black chinchompa hunting area.", ZAMORAK_WIZARD))
-		.put(new WorldPoint(2992, 3941, 0), new CoordinateClueInfo("Wilderness Agility Course, past the log balance.", ZAMORAK_WIZARD))
+		.put(new WorldPoint(2970, 3913, 0), new CoordinateClueInfo("Frozen Waste Plateau, south-west of Wilderness Agility Course.", ZAMORAK_WIZARD))
 		.put(new WorldPoint(1410, 3611, 0), new CoordinateClueInfo("Lake Molch dock west of Shayzien Encampment.", SARADOMIN_WIZARD))
 		.put(new WorldPoint(1409, 3483, 0), new CoordinateClueInfo("South of Shayziens' Wall.", SARADOMIN_WIZARD))
 		// Elite
@@ -248,7 +248,7 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 		.put(new WorldPoint(3380, 3929, 0), new CoordinateClueInfo("Wilderness. Near Volcano.", ANCIENT_WIZARDS))
 		.put(new WorldPoint(3188, 3939, 0), new CoordinateClueInfo("Wilderness. Resource Area.", BRASSICAN_MAGE))
 		.put(new WorldPoint(3304, 3941, 0), new CoordinateClueInfo("Wilderness. East of Rogues' Castle.", ANCIENT_WIZARDS))
-		.put(new WorldPoint(2994, 3961, 0), new CoordinateClueInfo("Wilderness. Inside Agility Training Area.", BRASSICAN_MAGE))
+		.put(new WorldPoint(3028, 3928, 0), new CoordinateClueInfo("Wilderness. South-east of Agility Training Area.", BRASSICAN_MAGE))
 		.put(new WorldPoint(1769, 3418, 0), new CoordinateClueInfo("Crabclaw Isle", ANCIENT_WIZARDS))
 		.build();
 
