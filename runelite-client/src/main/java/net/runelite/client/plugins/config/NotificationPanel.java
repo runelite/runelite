@@ -343,7 +343,7 @@ class NotificationPanel extends PluginPanel
 					saveNotification(n.withFlash((FlashNotification) comboboxFlash.getSelectedItem()));
 				}
 			});
-			item("Flash", "Flashes the game frame as a notification", combobox(FlashNotification.class, notif.getFlash()));
+			item("Flash", "Flashes the game frame as a notification", comboboxFlash);
 
 			var colorpickerFlashColor = createColorPicker("Flash color", notif.getFlashColor(), c ->
 			{
