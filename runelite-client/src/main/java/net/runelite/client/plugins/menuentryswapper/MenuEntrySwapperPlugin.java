@@ -535,13 +535,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 						continue;
 					}
 
-					if ("Build".equals(actions[actionIdx])
-						|| "Remove".equals(actions[actionIdx]))
-					{
-						// https://secure.runescape.com/m=news/third-party-client-guidelines?oldschool=1
-						continue;
-					}
-
 					final MenuAction menuAction = OBJECT_MENU_TYPES.get(actionIdx);
 					if (menuAction != currentAction)
 					{
