@@ -382,7 +382,7 @@ LABEL343:
    iconst                 0
    istore                 25
    iload                  22
-   iconst                 2
+   iconst                 1 ; run our filter+sort even when there is only one vanilla spell
    if_icmpge              LABEL349
    jump                   LABEL357
 LABEL349:
