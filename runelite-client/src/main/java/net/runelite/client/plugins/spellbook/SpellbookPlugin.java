@@ -53,6 +53,7 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ProfileChanged;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.menus.WidgetMenuOption;
 import net.runelite.client.plugins.Plugin;
@@ -124,6 +125,12 @@ public class SpellbookPlugin extends Plugin
 	{
 		clearReoderMenus();
 		clientThread.invokeLater(this::reinitializeSpellbook);
+	}
+
+	@Subscribe
+	public void onProfileChanged(ProfileChanged event)
+	{
+		clientThread.invokeLater(this::redrawSpellbook);
 	}
 
 	@Override
