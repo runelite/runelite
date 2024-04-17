@@ -55,7 +55,6 @@ import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.util.ImageUtil;
-import org.slf4j.LoggerFactory;
 
 class StatusBarsOverlay extends Overlay
 {
@@ -92,7 +91,6 @@ class StatusBarsOverlay extends Overlay
 	private Image heartVenom;
 
 	private final BarGroupRenderer barGroupRenderer = new BarGroupRenderer();
-	private final org.slf4j.Logger logger = LoggerFactory.getLogger(StatusBarsOverlay.class);
 
 	@Inject
 	private StatusBarsOverlay(Client client, StatusBarsPlugin plugin, StatusBarsConfig config, SkillIconManager skillIconManager, ItemStatChangesService itemstatservice, SpriteManager spriteManager)
