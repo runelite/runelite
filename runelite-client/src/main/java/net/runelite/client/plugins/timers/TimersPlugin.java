@@ -132,6 +132,8 @@ public class TimersPlugin extends Plugin
 	private static final Pattern TZHAAR_WAVE_MESSAGE = Pattern.compile("Wave: (\\d+)");
 	private static final Pattern TZHAAR_PAUSED_MESSAGE = Pattern.compile("The (?:Inferno|Fight Cave) has been paused. You may now log out.");
 
+	private static final Pattern DELAYED_FOOD_HEAL_MESSAGE = Pattern.compile("You eat the (?:larupia|graahk|kyatt|pyre fox|barb-tailed|(?:wild|dashing) kebbit|(?:sun|moon)light antelope) meat.");
+
 	private TimerTimer freezeTimer;
 	private int freezeTime = -1; // time frozen, in game ticks
 
@@ -771,6 +773,11 @@ public class TimersPlugin extends Plugin
 		{
 			removeGameTimer(SPELLBOOK_SWAP);
 		}
+
+		if (!config.showDelayedFoodHeal())
+		{
+			removeGameTimer(DELAYED_FOOD_HEAL);
+		}
 	}
 
 	@Subscribe
@@ -960,6 +967,12 @@ public class TimersPlugin extends Plugin
 		if (message.equals(LIQUID_ADRENALINE_MESSAGE) && config.showLiquidAdrenaline())
 		{
 			createGameTimer(LIQUID_ADRENALINE);
+		}
+
+		final Matcher specialFoodMatcher = DELAYED_FOOD_HEAL_MESSAGE.matcher(message);
+		if (specialFoodMatcher.matches() && config.showDelayedFoodHeal())
+		{
+			createGameTimer(DELAYED_FOOD_HEAL);
 		}
 	}
 
