@@ -2102,15 +2102,20 @@ public class MenuEntrySwapperPlugin extends Plugin
 				pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 6); // POH Portals
 				pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 5);
 			})
-			.addSub("Yanille", () ->
+			.addSub("Brimhaven", () ->
 			{
 				pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 6); // POH Portals
 				pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 6);
 			})
-			.addSub("Prifddinas", () ->
+			.addSub("Yanille", () ->
 			{
 				pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 6); // POH Portals
 				pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 7);
+			})
+			.addSub("Prifddinas", () ->
+			{
+				pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 6); // POH Portals
+				pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 8);
 			});
 		// endregion
 
