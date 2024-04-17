@@ -2197,7 +2197,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 				final String target = me.getTarget();
 				for (TeleportSub sub : swap.subs)
 				{
-					client.createMenuEntry(-1 - off++)
+					client.createMenuEntry(-2 - off++)
 						.setParam0(p0)
 						.setParam1(p1)
 						.setOption(sub.option)
@@ -2235,7 +2235,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 				final String target = me.getTarget();
 				for (TeleportSub sub : swap.subs)
 				{
-					client.createMenuEntry(-1 - off++)
+					client.createMenuEntry(-2 - off++)
 						.setParam0(p0)
 						.setParam1(p1)
 						.setOption(sub.option)
