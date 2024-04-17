@@ -102,9 +102,13 @@ public class StatusBarsPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (StatusBarsConfig.GROUP.equals(event.getGroup()) && event.getKey().equals("hideAfterCombatDelay"))
-		{
-			clientThread.invokeLater(this::checkStatusBars);
+		if (StatusBarsConfig.GROUP.equals(event.getGroup())){
+			if(event.getKey().equals("hideAfterCombatDelay"))
+			{
+				clientThread.invokeLater(this::checkStatusBars);
+			}
+
+			overlay.updateConfig(config);
 		}
 	}
 

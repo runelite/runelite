@@ -40,6 +40,7 @@ class BarRenderer
 	private static final Color BORDER_COLOR = new Color(0, 0, 0, 200);
 	private static final Color OVERHEAL_COLOR = new Color(216, 255, 139, 150);
 
+	private static final int COUNTER_Y_PADDING = 2;
 	private static final int MIN_COUNTER_WIDTH = 12;
 
 	private final Supplier<Integer> maxValueSupplier;
@@ -64,22 +65,19 @@ class BarRenderer
 	/**
 	 * Renders a status bar along with its restoration bar(s), icons and counters as appropriate
 	 *
-	 * @param config   Plugin configuration which dictates certain settings, such as whether to show restoration bars and
-	 *                 whether or not to draw icons.
+	 * @param config   Plugin configuration which dictates certain settings, such as whether to show
+	 *                 restoration bars and icons.
 	 * @param graphics Graphics.
-	 * @param x        The location on the client where it will draw the bar on the x axis starting on the left side.
-	 * @param y        The location on the client where it will draw the bar on the y axis starting on the bottom side.
+	 * @param x        The location on the client where it will draw the bar on the x-axis starting on the left side.
+	 * @param y        The location on the client where it will draw the bar on the y-axis starting on the bottom side.
 	 * @param height   The height of the bar.
 	 */
 	void renderBar(StatusBarsConfig config, Graphics2D graphics, int x, int y, int width, int height)
 	{
 		refreshValues();
 
-		// Draw the borders
-		int borderSize = config.borderSize();
 		// Don't allow the border to be wider than half the actual bar
-		borderSize = Math.min(width / 2, borderSize);
-
+		final int borderSize = Math.min(width / 2, config.borderSize());
 		graphics.setColor(BORDER_COLOR);
 		graphics.fillRect(x, y, width, height);
 
@@ -113,19 +111,18 @@ class BarRenderer
 	{
 		final boolean skillIconEnabled = config.enableSkillIcon();
 
-		// 2px is just for padding at the top of the bar
-		int yWithOffsets = y + borderSize + 2;
 		int iconSize = 0;
-
 		if (skillIconEnabled)
 		{
 			final Image icon = iconSupplier.get();
 			if (icon != null)
 			{
+				final int iconYPos = y + borderSize + 2;
+
 				iconSize = icon.getWidth(null);
 
 				final int xDraw = x + (barWidth / 2) - (iconSize / 2);
-				graphics.drawImage(icon, xDraw, yWithOffsets, null);
+				graphics.drawImage(icon, xDraw, iconYPos, null);
 			}
 		}
 
@@ -137,11 +134,26 @@ class BarRenderer
 			final String counterText = Integer.toString(currentValue);
 			final int widthOfCounter = graphics.getFontMetrics().stringWidth(counterText);
 			final int centerText = (barWidth / 2) - (widthOfCounter / 2);
-			final int yPosition = Math.round((config.counterYOffset() / 100f) * totalBarHeight);
+
+			final int heightOfCounter = graphics.getFontMetrics().getHeight();
+			int counterYPos = y;
+
+			switch (config.counterAlignment())
+			{
+				case TOP:
+					counterYPos += COUNTER_Y_PADDING + heightOfCounter + (skillIconEnabled ? iconSize + COUNTER_Y_PADDING : 0);
+					break;
+				case MIDDLE:
+					counterYPos += Math.round(totalBarHeight / 2f) + Math.round(heightOfCounter / 2f);
+					break;
+				case BOTTOM:
+					counterYPos += totalBarHeight - borderSize - COUNTER_Y_PADDING;
+					break;
+			}
 
 			final TextComponent textComponent = new TextComponent();
 			textComponent.setText(counterText);
-			textComponent.setPosition(new Point(x + centerText, yWithOffsets + yPosition));
+			textComponent.setPosition(new Point(x + centerText, counterYPos));
 			textComponent.render(graphics);
 		}
 	}

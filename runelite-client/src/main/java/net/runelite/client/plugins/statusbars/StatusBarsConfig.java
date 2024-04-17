@@ -30,8 +30,9 @@ import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
 import net.runelite.client.config.Range;
 import net.runelite.client.config.Units;
+import net.runelite.client.plugins.statusbars.config.BarAlignment;
 import net.runelite.client.plugins.statusbars.config.BarMode;
-import net.runelite.client.plugins.statusbars.config.BarPosition;
+import net.runelite.client.plugins.statusbars.config.CounterAlignment;
 
 @ConfigGroup(StatusBarsConfig.GROUP)
 public interface StatusBarsConfig extends Config
@@ -71,11 +72,34 @@ public interface StatusBarsConfig extends Config
 		return true;
 	}
 
+	@ConfigItem(
+		keyName = "enableRestorationBars",
+		name = "Show restores",
+		description = "Visually shows how much will be restored to your status bar.",
+		position = 3
+	)
+	default boolean enableRestorationBars()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "hideAfterCombatDelay",
+		name = "Hide after combat delay",
+		description = "Number of ticks outside of combat after which bars will hide. 0 = always show status bars.",
+		position = 4
+	)
+	@Units(Units.TICKS)
+	default int hideAfterCombatDelay()
+	{
+		return 0;
+	}
+
 	//#region Counter Options
 	@ConfigSection(
 		name = "Counters",
 		description = "Options for the showing of Counters",
-		position = 3,
+		position = 5,
 		closedByDefault = false
 	)
 	String countersSection = "countersSection";
@@ -94,7 +118,7 @@ public interface StatusBarsConfig extends Config
 
 	@ConfigItem(
 		keyName = "largeCounterText",
-		name = "Large Counter Text",
+		name = "Large Text",
 		description = "If checked, the font for Counters will be larger",
 		position = 2,
 		section = countersSection
@@ -104,21 +128,16 @@ public interface StatusBarsConfig extends Config
 		return false;
 	}
 
-	@Range(
-		min = -5,
-		max = 100
-	)
 	@ConfigItem(
-		keyName = "counterYPos",
-		name = "Vertical Position",
-		description = "Percentage down the bar to display the Counters",
+		keyName = "counterAlignment",
+		name = "Counter Alignment",
+		description = "Where the counters will be shown on the Bar",
 		position = 3,
 		section = countersSection
 	)
-	@Units(Units.PERCENT)
-	default int counterYOffset()
+	default CounterAlignment counterAlignment()
 	{
-		return 10;
+		return CounterAlignment.TOP;
 	}
 	//#endregion
 
@@ -126,7 +145,7 @@ public interface StatusBarsConfig extends Config
 	@ConfigSection(
 		name = "Sizing",
 		description = "Options related to sizes of the bars/borders",
-		position = 4,
+		position = 6,
 		closedByDefault = false
 	)
 	String sizingSection = "sizingSection";
@@ -149,6 +168,35 @@ public interface StatusBarsConfig extends Config
 	}
 
 	@Range(
+		min = 10,
+		max = 150
+	)
+	@ConfigItem(
+		keyName = "barHeight",
+		name = "Bar Height",
+		description = "Relative height of the Status Bars",
+		position = 2,
+		section = sizingSection
+	)
+	@Units(Units.PERCENT)
+	default int barHeight()
+	{
+		return 100;
+	}
+
+	@ConfigItem(
+		keyName = "barAlignment",
+		name = "Bar Alignment",
+		description = "Dictates if the bars should stick to the top or bottom of the interface",
+		position = 3,
+		section = sizingSection
+	)
+	default BarAlignment barAlignment()
+	{
+		return BarAlignment.TOP;
+	}
+
+	@Range(
 		min = 0,
 		max = 5
 	)
@@ -156,7 +204,7 @@ public interface StatusBarsConfig extends Config
 		keyName = "borderSize",
 		name = "Border Size",
 		description = "The width of the border on each bar",
-		position = 2,
+		position = 4,
 		section = sizingSection
 	)
 	@Units(Units.PIXELS)
@@ -173,7 +221,7 @@ public interface StatusBarsConfig extends Config
 		keyName = "barGap",
 		name = "Gap between Bars",
 		description = "The spacing between each bar. Not used in Fixed UI mode.",
-		position = 3,
+		position = 5,
 		section = sizingSection
 	)
 	@Units(Units.PIXELS)
@@ -181,64 +229,22 @@ public interface StatusBarsConfig extends Config
 	{
 		return 4;
 	}
-	//#endregion
 
-	//#region Restore Options
-	@ConfigSection(
-		name = "Restoration",
-		description = "Restoration related options",
-		position = 5,
-		closedByDefault = true
+	@Range(
+		min = 8,
+		max = 30
 	)
-	String restorationSection = "restorationSection";
-
 	@ConfigItem(
-		keyName = "enableRestorationBars",
-		name = "Show restores",
-		description = "Visually shows how much will be restored to your status bar.",
-		position = 1,
-		section = restorationSection
-	)
-	default boolean enableRestorationBars()
-	{
-		return true;
-	}
-	//#endregion
-
-	//#region Display Options
-	@ConfigSection(
-		name = "Display",
-		description = "Display and Visibility related options",
+		keyName = "iconSize",
+		name = "Icon Size",
+		description = "Size of Icons, if shown",
 		position = 6,
-		closedByDefault = true
+		section = sizingSection
 	)
-	String displaySection = "displaySection";
-
-	@ConfigItem(
-		keyName = "hideAfterCombatDelay",
-		name = "Hide after combat delay",
-		description = "Number of ticks outside of combat after which bars will hide. 0 = always show status bars.",
-		position = 1,
-		section = displaySection
-	)
-	@Units(Units.TICKS)
-	default int hideAfterCombatDelay()
+	@Units(Units.PIXELS)
+	default int iconSize()
 	{
-		return 0;
+		return 16;
 	}
-
-
-	@ConfigItem(
-		keyName = "overlayPosition",
-		name = "Overlay Position",
-		description = "Determines where the Bars will be displayed on screen. On Interface will always be active in Classic UI mode.",
-		position = 2,
-		section = displaySection
-	)
-	default BarPosition overlayPosition()
-	{
-		return BarPosition.ON_INTERFACE;
-	}
-
 	//#endregion
 }

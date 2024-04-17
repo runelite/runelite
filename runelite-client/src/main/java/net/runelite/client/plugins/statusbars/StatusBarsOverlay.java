@@ -51,7 +51,6 @@ import net.runelite.client.plugins.itemstats.ItemStatChangesService;
 import net.runelite.client.plugins.itemstats.StatChange;
 import net.runelite.client.plugins.itemstats.stats.Stats;
 import net.runelite.client.plugins.statusbars.config.BarMode;
-import net.runelite.client.plugins.statusbars.config.BarPosition;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
@@ -77,15 +76,13 @@ class StatusBarsOverlay extends Overlay
 	private static final int MAX_SPECIAL_ATTACK_VALUE = 100;
 	private static final int MAX_RUN_ENERGY_VALUE = 100;
 
-	private static final int MAX_ICON_SIZE = 24;
-
 	private final Client client;
+	private StatusBarsConfig config;
 	private final StatusBarsPlugin plugin;
-	private final StatusBarsConfig config;
 	private final ItemStatChangesService itemStatService;
 	private final SpriteManager spriteManager;
 
-	private int currentBarWidth;
+	private boolean iconsNeedRefresh = true; // Ensure this runs on the first check
 	private Image heartIcon;
 	private Image specialIcon;
 	private Image energyIcon;
@@ -100,27 +97,28 @@ class StatusBarsOverlay extends Overlay
 	@Inject
 	private StatusBarsOverlay(Client client, StatusBarsPlugin plugin, StatusBarsConfig config, SkillIconManager skillIconManager, ItemStatChangesService itemstatservice, SpriteManager spriteManager)
 	{
+
 		this.client = client;
 		this.plugin = plugin;
-		this.config = config;
 		this.itemStatService = itemstatservice;
 		this.spriteManager = spriteManager;
-
-		// Convert the plugin-specific position to an Overlay position
-		switch (config.overlayPosition())
-		{
-			case ON_INTERFACE:
-				setPosition(OverlayPosition.DYNAMIC);
-				break;
-			case FLOATING:
-				// Actual value doesn't matter tons
-				setPosition(OverlayPosition.BOTTOM_RIGHT);
-				break;
-		}
 
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
 
 		initRenderers();
+
+		updateConfig(config);
+	}
+
+	public void updateConfig(StatusBarsConfig updatedConfig)
+	{
+		config = updatedConfig;
+		barGroupRenderer.updateConfig(updatedConfig);
+
+		setPosition(OverlayPosition.DYNAMIC);
+
+		// Mark that icons likely changed, and need to be re-built
+		iconsNeedRefresh = true;
 	}
 
 	private void initRenderers()
@@ -241,25 +239,24 @@ class StatusBarsOverlay extends Overlay
 			return null;
 		}
 
-		BarPosition barPosition = config.overlayPosition();
+		// Ensure we have the images we need. Can't be done in the constructor as the sprites aren't
+		// loaded when this plugin mounts
+		ensureImagesAreLoaded();
 
 		PossibleViewports currentViewport = null;
 		Widget currentWidget = null;
 
-		if (barPosition == BarPosition.ON_INTERFACE)
+		for (PossibleViewports vp : PossibleViewports.values())
 		{
-			for (PossibleViewports vp : PossibleViewports.values())
+			// Find one of our targeted widgets to attach to
+			final Widget targetWidget = client.getWidget(vp.getTargetWidget());
+
+			if (targetWidget != null && !targetWidget.isHidden())
 			{
-				// Find one of our targeted widgets to attach to
-				final Widget targetWidget = client.getWidget(vp.getTargetWidget());
+				currentViewport = vp;
+				currentWidget = targetWidget;
 
-				if (targetWidget != null && !targetWidget.isHidden())
-				{
-					currentViewport = vp;
-					currentWidget = targetWidget;
-
-					break;
-				}
+				break;
 			}
 		}
 
@@ -270,19 +267,7 @@ class StatusBarsOverlay extends Overlay
 			return null;
 		}
 
-		// Get the bar width here, since we may need to reload images due to the size of the bar
-		int barWidth = currentViewport.getForcedBarWidth();
-		if (barWidth <= -1)
-		{
-			// Indicates a "no force" value, so use the config value
-			barWidth = config.barWidth();
-		}
-
-		// Ensure we have the images we need. Can't be done in the constructor as the sprites aren't
-		// loaded when this plugin mounts
-		ensureImagesAreLoaded(barWidth);
-
-		barGroupRenderer.renderBars(config, g, currentBarWidth, currentWidget, currentViewport);
+		barGroupRenderer.drawBars(g, currentWidget, currentViewport);
 
 		return null;
 	}
@@ -333,12 +318,11 @@ class StatusBarsOverlay extends Overlay
 	/**
 	 * Loads necessary icons for all possible Status Bar types
 	 */
-	private void ensureImagesAreLoaded(int barWidth)
+	private void ensureImagesAreLoaded()
 	{
-		if (currentBarWidth != barWidth)
+		if (iconsNeedRefresh)
 		{
-			// Store this, so we only update when necessary
-			currentBarWidth = barWidth;
+			iconsNeedRefresh = false;
 
 			heartIcon = resizeIcon(loadSprite(SpriteID.MINIMAP_ORB_HITPOINTS_ICON));
 			energyIcon = resizeIcon(loadSprite(SpriteID.MINIMAP_ORB_WALK_ICON));
@@ -358,15 +342,7 @@ class StatusBarsOverlay extends Overlay
 			return null;
 		}
 
-		// Make sure the image won't be any larger or smaller than it needs to be
-		int iconSize = Math.min(
-			Math.max(
-				currentBarWidth - (config.borderSize() * 2) - 4,
-				0
-			),
-			// Don't let the icons get too big
-			MAX_ICON_SIZE
-		);
+		final int iconSize = config.iconSize();
 
 		// Double resizing is necessary so positioning/cropping is correct
 		return ImageUtil.resizeCanvas(

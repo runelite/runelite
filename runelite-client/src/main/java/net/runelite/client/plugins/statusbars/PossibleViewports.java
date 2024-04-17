@@ -69,5 +69,8 @@ enum PossibleViewports
 	private final int targetWidget;
 	private final Point originOffset;
 	private final int forcedBarWidth;
+	/**
+	 * Pixel height offset, relative to the attached-to Widget
+	 */
 	private final int barHeightOffset;
 }
