@@ -373,11 +373,16 @@ public class SpellbookPlugin extends Plugin
 				{
 					Widget s = e.getSource();
 
-					boolean hidden = isHidden(spellbookEnum, spellObjId);
+					// Spells can be shared between spellbooks, so we can't assume spellbookEnum is the current spellbook.
+					// from ~magic_spellbook_redraw
+					int subSpellbookId = client.getEnum(EnumID.SPELLBOOKS_SUB).getIntValue(client.getVarbitValue(Varbits.SPELLBOOK));
+					int spellbookId = client.getEnum(subSpellbookId).getIntValue(client.getVarbitValue(Varbits.SPELLBOOK_SUBMENU));
+
+					boolean hidden = isHidden(spellbookId, spellObjId);
 					hidden = !hidden;
 
 					log.debug("Changing {} to hidden: {}", s.getName(), hidden);
-					setHidden(spellbookEnum, spellObjId, hidden);
+					setHidden(spellbookId, spellObjId, hidden);
 
 					s.setOpacity(hidden ? 100 : 0);
 					s.setAction(HIDE_UNHIDE_OP, hidden ? "Unhide" : "Hide");
