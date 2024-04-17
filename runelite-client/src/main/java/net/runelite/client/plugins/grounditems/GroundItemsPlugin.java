@@ -450,7 +450,7 @@ public class GroundItemsPlugin extends Plugin
 			.spawnTime(Instant.now())
 			.stackable(itemComposition.isStackable())
 			.despawnTime(Duration.of(item.getDespawnTime(), RSTimeUnit.GAME_TICKS))
-			.visibleTime(Duration.of(item.getVisibleTime(), RSTimeUnit.GAME_TICKS))
+			.visibleTime(item.getVisibleTime() > 0 ? Duration.of(item.getVisibleTime(), RSTimeUnit.GAME_TICKS) : null)
 			.build();
 
 		// Update item price in case it is coins

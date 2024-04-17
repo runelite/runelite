@@ -53,6 +53,7 @@ class GroundItem
 	private Instant spawnTime;
 	private boolean stackable;
 	private Duration despawnTime;
+	@Nullable
 	private Duration visibleTime;
 
 	// cached values derived from config

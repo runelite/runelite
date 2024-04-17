@@ -405,13 +405,25 @@ public class GroundItemsOverlay extends Overlay
 
 		final Instant now = Instant.now();
 		final Instant despawnTime = spawnTime.plus(groundItem.getDespawnTime());
-		final Instant visibleTime = spawnTime.plus(groundItem.getVisibleTime());
 
-		if (visibleTime != null && visibleTime.isAfter(now))
+		if (groundItem.getVisibleTime() == null)
+		{
+			// if there is no visible time, it is always private
+			if (despawnTime.isAfter(now))
+			{
+				return PRIVATE_TIMER_COLOR;
+			}
+
+			return null;
+		}
+
+		// otherwise it is private until visibleTime, then it is public
+		final Instant visibleTime = spawnTime.plus(groundItem.getVisibleTime());
+		if (visibleTime.isAfter(now))
 		{
 			return PRIVATE_TIMER_COLOR;
 		}
-		if (despawnTime != null && despawnTime.isAfter(now))
+		if (despawnTime.isAfter(now))
 		{
 			return PUBLIC_TIMER_COLOR;
 		}
