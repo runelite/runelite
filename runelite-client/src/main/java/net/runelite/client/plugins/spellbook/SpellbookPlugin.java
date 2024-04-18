@@ -107,6 +107,9 @@ public class SpellbookPlugin extends Plugin
 
 	private boolean reordering;
 
+	private int spellbookEnumId;
+	private int[] spells;
+
 	@Provides
 	SpellbookConfig getConfig(ConfigManager configManager)
 	{
@@ -123,8 +126,14 @@ public class SpellbookPlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
+		reordering = false;
 		clearReoderMenus();
-		clientThread.invokeLater(this::reinitializeSpellbook);
+
+		clientThread.invokeLater(() ->
+		{
+			reinitializeSpellbook();
+			resetSpells();
+		});
 	}
 
 	@Subscribe
@@ -295,12 +304,12 @@ public class SpellbookPlugin extends Plugin
 		int[] stack = client.getIntStack();
 		int size = client.getIntStackSize();
 
-		int spellbookEnumId = stack[size - 3];
+		spellbookEnumId = stack[size - 3];
 		int spellArrayId = stack[size - 2];
 		int numSpells = stack[size - 1];
 
 		EnumComposition spellbookEnum = client.getEnum(spellbookEnumId);
-		int[] spells = client.getArray(spellArrayId); // enum indices
+		spells = client.getArray(spellArrayId); // enum indices
 		int[] newSpells = new int[numSpells];
 		int numNewSpells = 0;
 		for (int i = 0; i < numSpells; ++i)
@@ -359,6 +368,29 @@ public class SpellbookPlugin extends Plugin
 
 		System.arraycopy(newSpells, 0, spells, 0, numNewSpells);
 		stack[size - 1] = numSpells = numNewSpells;
+	}
+
+	private void resetSpells()
+	{
+		EnumComposition spellbookEnum = client.getEnum(spellbookEnumId);
+
+		for (int i : spells)
+		{
+			final ItemComposition spellObj = client.getItemDefinition(spellbookEnum.getIntValue(i));
+			final Widget widget = client.getWidget(spellObj.getIntValue(ParamID.SPELL_BUTTON));
+
+			if (widget == null)
+			{
+				continue;
+			}
+
+			int widgetConfig = widget.getClickMask();
+			widgetConfig &= ~(DRAG | DRAG_ON);
+			widget.setClickMask(widgetConfig);
+			widget.setOpacity(0);
+			widget.setHidden(false);
+			widget.setOnOpListener(null);
+		}
 	}
 
 	private void initializeSpells(int spellbookEnum)
