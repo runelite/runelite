@@ -160,4 +160,30 @@ class RequirementCollections
 			.orElseGet(Stream::empty)
 			.map(ItemRequirements::item).toArray(SingleItemRequirement[]::new))
 	);
+	static final AnyRequirementCollection ANY_FULL_BARROWS_SET = any("Any full Barrows set",
+		all(any("Ahrim's hood", item(AHRIMS_HOOD), range(AHRIMS_HOOD_100, AHRIMS_HOOD_0)),
+			any("Ahrim's staff", item(AHRIMS_STAFF), range(AHRIMS_STAFF_100, AHRIMS_STAFF_0)),
+			any("Ahrim's robetop", item(AHRIMS_ROBETOP), range(AHRIMS_ROBETOP_100, AHRIMS_ROBETOP_0)),
+			any("Ahrim's robeskirt", item(AHRIMS_ROBESKIRT), range(AHRIMS_ROBESKIRT_100, AHRIMS_ROBESKIRT_0))),
+		all(any("Dharok's helm", item(DHAROKS_HELM), range(DHAROKS_HELM_100, DHAROKS_HELM_0)),
+			any("Dharok's greataxe", item(DHAROKS_GREATAXE), range(DHAROKS_GREATAXE_100, DHAROKS_GREATAXE_0)),
+			any("Dharok's platebody", item(DHAROKS_PLATEBODY), range(DHAROKS_PLATEBODY_100, DHAROKS_PLATEBODY_0)),
+			any("Dharok's platelegs", item(DHAROKS_PLATELEGS), range(DHAROKS_PLATELEGS_100, DHAROKS_PLATELEGS_0))),
+		all(any("Guthan's helm", item(GUTHANS_HELM), range(GUTHANS_HELM_100, GUTHANS_HELM_0)),
+			any("Guthan's warspear", item(GUTHANS_WARSPEAR), range(GUTHANS_WARSPEAR_100, GUTHANS_WARSPEAR_0)),
+			any("Guthan's platebody", item(GUTHANS_PLATEBODY), range(GUTHANS_PLATEBODY_100, GUTHANS_PLATEBODY_0)),
+			any("Guthan's chainskirt", item(GUTHANS_CHAINSKIRT), range(GUTHANS_CHAINSKIRT_100, GUTHANS_CHAINSKIRT_0))),
+		all(any("Karil's coif", item(KARILS_COIF), range(KARILS_COIF_100, KARILS_COIF_0)),
+			any("Karil's crossbow", item(KARILS_CROSSBOW), range(KARILS_CROSSBOW_100, KARILS_CROSSBOW_0)),
+			any("Karil's leathertop", item(KARILS_LEATHERTOP), range(KARILS_LEATHERTOP_100, KARILS_LEATHERTOP_0)),
+			any("Karil's leatherskirt", item(KARILS_LEATHERSKIRT), range(KARILS_LEATHERSKIRT_100, KARILS_LEATHERSKIRT_0))),
+		all(any("Torag's helm", item(TORAGS_HELM), range(TORAGS_HELM_100, TORAGS_HELM_0)),
+			any("Torag's hammers", item(TORAGS_HAMMERS), range(TORAGS_HAMMERS_100, TORAGS_HAMMERS_0)),
+			any("Torag's platebody", item(TORAGS_PLATEBODY), range(TORAGS_PLATEBODY_100, TORAGS_PLATEBODY_0)),
+			any("Torag's platelegs", item(TORAGS_PLATELEGS), range(TORAGS_PLATELEGS_100, TORAGS_PLATELEGS_0))),
+		all(any("Verac's helm", item(VERACS_HELM), range(VERACS_HELM_100, VERACS_HELM_0)),
+			any("Verac's flail", item(VERACS_FLAIL), range(VERACS_FLAIL_100, VERACS_FLAIL_0)),
+			any("Verac's brassard", item(VERACS_BRASSARD), range(VERACS_BRASSARD_100, VERACS_BRASSARD_0)),
+			any("Verac's plateskirt", item(VERACS_PLATESKIRT), range(VERACS_PLATESKIRT_100, VERACS_PLATESKIRT_0)))
+	);
 }
