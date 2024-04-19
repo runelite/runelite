@@ -30,7 +30,6 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -40,17 +39,13 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.Point;
 import net.runelite.api.TileObject;
-import net.runelite.client.game.ItemVariationMapping;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollOverlay.TITLED_CONTENT_COLOR;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_BORDER_COLOR;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_FILL_COLOR;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.CLICKBOX_HOVER_BORDER_COLOR;
 import static net.runelite.client.plugins.cluescrolls.ClueScrollWorldOverlay.IMAGE_Z_OFFSET;
-import net.runelite.client.plugins.cluescrolls.clues.item.AllRequirementsCollection;
-import net.runelite.client.plugins.cluescrolls.clues.item.AnyRequirementCollection;
 import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirement;
-import net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements;
 import static net.runelite.client.plugins.cluescrolls.clues.item.ItemRequirements.*;
 import net.runelite.client.plugins.cluescrolls.clues.item.SingleItemRequirement;
 import net.runelite.client.ui.FontManager;
@@ -72,95 +67,6 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 		private final String name;
 		private final String location;
 	}
-
-	private static final AnyRequirementCollection ANY_PICKAXE = any("Any Pickaxe",
-		item(ItemID.BRONZE_PICKAXE),
-		item(ItemID.IRON_PICKAXE),
-		item(ItemID.STEEL_PICKAXE),
-		item(ItemID.BLACK_PICKAXE),
-		item(ItemID.MITHRIL_PICKAXE),
-		item(ItemID.ADAMANT_PICKAXE),
-		item(ItemID.RUNE_PICKAXE),
-		item(ItemID.DRAGON_PICKAXE),
-		item(ItemID.DRAGON_PICKAXE_12797),
-		item(ItemID.DRAGON_PICKAXE_OR),
-		item(ItemID.DRAGON_PICKAXE_OR_25376),
-		item(ItemID.INFERNAL_PICKAXE),
-		item(ItemID.INFERNAL_PICKAXE_OR),
-		item(ItemID.INFERNAL_PICKAXE_UNCHARGED),
-		item(ItemID.INFERNAL_PICKAXE_UNCHARGED_25369),
-		item(ItemID.GILDED_PICKAXE),
-		item(ItemID._3RD_AGE_PICKAXE),
-		item(ItemID.CRYSTAL_PICKAXE),
-		item(ItemID.CRYSTAL_PICKAXE_INACTIVE),
-		item(ItemID.TRAILBLAZER_PICKAXE)
-	);
-
-	private static final AnyRequirementCollection ANY_AXE = any("Any Axe",
-		item(ItemID.BRONZE_AXE),
-		item(ItemID.BRONZE_FELLING_AXE),
-		item(ItemID.IRON_AXE),
-		item(ItemID.IRON_FELLING_AXE),
-		item(ItemID.STEEL_AXE),
-		item(ItemID.STEEL_FELLING_AXE),
-		item(ItemID.BLACK_AXE),
-		item(ItemID.BLACK_FELLING_AXE),
-		item(ItemID.MITHRIL_AXE),
-		item(ItemID.MITHRIL_FELLING_AXE),
-		item(ItemID.ADAMANT_AXE),
-		item(ItemID.ADAMANT_FELLING_AXE),
-		item(ItemID.RUNE_AXE),
-		item(ItemID.RUNE_FELLING_AXE),
-		item(ItemID.DRAGON_AXE),
-		item(ItemID.DRAGON_AXE_OR),
-		item(ItemID.DRAGON_FELLING_AXE),
-		item(ItemID.INFERNAL_AXE),
-		item(ItemID.INFERNAL_AXE_OR),
-		item(ItemID.INFERNAL_AXE_UNCHARGED),
-		item(ItemID.INFERNAL_AXE_UNCHARGED_25371),
-		item(ItemID.GILDED_AXE),
-		item(ItemID._3RD_AGE_AXE),
-		item(ItemID._3RD_AGE_FELLING_AXE),
-		item(ItemID.CRYSTAL_AXE),
-		item(ItemID.CRYSTAL_AXE_INACTIVE),
-		item(ItemID.CRYSTAL_FELLING_AXE),
-		item(ItemID.CRYSTAL_FELLING_AXE_INACTIVE),
-		item(ItemID.TRAILBLAZER_AXE)
-	);
-
-	private static final AnyRequirementCollection ANY_HARPOON = any("Harpoon",
-		item(ItemID.HARPOON),
-		item(ItemID.BARBTAIL_HARPOON),
-		item(ItemID.DRAGON_HARPOON),
-		item(ItemID.DRAGON_HARPOON_OR),
-		item(ItemID.INFERNAL_HARPOON),
-		item(ItemID.INFERNAL_HARPOON_OR),
-		item(ItemID.INFERNAL_HARPOON_UNCHARGED),
-		item(ItemID.INFERNAL_HARPOON_UNCHARGED_25367),
-		item(ItemID.CRYSTAL_HARPOON),
-		item(ItemID.CRYSTAL_HARPOON_INACTIVE),
-		item(ItemID.TRAILBLAZER_HARPOON)
-	);
-
-	private static final AnyRequirementCollection ANY_HAMMER = any("Hammer",
-		item(ItemID.HAMMER),
-		item(ItemID.IMCANDO_HAMMER)
-	);
-
-	private static final AllRequirementsCollection A_FULL_GRACEFUL_SET = all("A full Graceful set",
-		any("" /* graceful hood   */, ItemVariationMapping.getVariations(ItemID.GRACEFUL_HOOD).stream().map(ItemRequirements::item).toArray(SingleItemRequirement[]::new)),
-		any("" /* graceful top    */, ItemVariationMapping.getVariations(ItemID.GRACEFUL_TOP).stream().map(ItemRequirements::item).toArray(SingleItemRequirement[]::new)),
-		any("" /* graceful legs   */, ItemVariationMapping.getVariations(ItemID.GRACEFUL_LEGS).stream().map(ItemRequirements::item).toArray(SingleItemRequirement[]::new)),
-		any("" /* graceful gloves */, ItemVariationMapping.getVariations(ItemID.GRACEFUL_GLOVES).stream().map(ItemRequirements::item).toArray(SingleItemRequirement[]::new)),
-		any("" /* graceful boots  */, ItemVariationMapping.getVariations(ItemID.GRACEFUL_BOOTS).stream().map(ItemRequirements::item).toArray(SingleItemRequirement[]::new)),
-		any("" /* graceful cape   */, Stream.of(
-			ItemVariationMapping.getVariations(ItemID.GRACEFUL_CAPE).stream(),
-			ItemVariationMapping.getVariations(ItemID.AGILITY_CAPE).stream(),
-			ItemVariationMapping.getVariations(ItemID.MAX_CAPE).stream())
-			.reduce(Stream::concat)
-			.orElseGet(Stream::empty)
-			.map(ItemRequirements::item).toArray(SingleItemRequirement[]::new))
-	);
 
 	static final List<SkillChallengeClue> CLUES = ImmutableList.of(
 		// Charlie Tasks
@@ -187,31 +93,23 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 		new SkillChallengeClue("Steal from a chest in Ardougne Castle."),
 		new SkillChallengeClue("Craft a green dragonhide body.", xOfItem(ItemID.GREEN_DRAGON_LEATHER, 3), item(ItemID.NEEDLE), item(ItemID.THREAD)),
 		new SkillChallengeClue("String a yew longbow.", item(ItemID.YEW_LONGBOW_U), item(ItemID.BOW_STRING)),
-		new SkillChallengeClue("Kill a Dust Devil.", "slay a dust devil.", true,
-			any("Facemask or Slayer Helmet",
-				Stream.of(
-					ItemVariationMapping.getVariations(ItemID.SLAYER_HELMET).stream(),
-					Stream.of(ItemID.FACEMASK))
-					.reduce(Stream::concat)
-					.orElseGet(Stream::empty)
-					.map(ItemRequirements::item)
-					.toArray(SingleItemRequirement[]::new))),
+		new SkillChallengeClue("Kill a Dust Devil.", "slay a dust devil.", true, any("Facemask or Slayer Helmet", item(ItemID.FACEMASK), RequirementCollections.ANY_SLAYER_HELMET)),
 		new SkillChallengeClue("Catch a black warlock.", any("Butterfly Net", item(ItemID.BUTTERFLY_NET), item(ItemID.MAGIC_BUTTERFLY_NET))),
 		new SkillChallengeClue("Catch a red chinchompa.", item(ItemID.BOX_TRAP)),
-		new SkillChallengeClue("Mine a mithril ore.", ANY_PICKAXE),
-		new SkillChallengeClue("Smith a mithril 2h sword.", ANY_HAMMER, xOfItem(ItemID.MITHRIL_BAR, 3)),
-		new SkillChallengeClue("Catch a raw shark.", ANY_HARPOON),
-		new SkillChallengeClue("Cut a yew log.", ANY_AXE),
+		new SkillChallengeClue("Mine a mithril ore.", RequirementCollections.ANY_PICKAXE),
+		new SkillChallengeClue("Smith a mithril 2h sword.", RequirementCollections.ANY_HAMMER, xOfItem(ItemID.MITHRIL_BAR, 3)),
+		new SkillChallengeClue("Catch a raw shark.", RequirementCollections.ANY_HARPOON),
+		new SkillChallengeClue("Cut a yew log.", RequirementCollections.ANY_AXE),
 		new SkillChallengeClue("Fix a magical lamp in Dorgesh-Kaan.", new String[] { "Broken lamp" }, new int[] { 10834, 10835 }, item(ItemID.LIGHT_ORB)),
 		new SkillChallengeClue("Burn a yew log.", item(ItemID.YEW_LOGS), item(ItemID.TINDERBOX)),
 		new SkillChallengeClue("Cook a swordfish", "cook a swordfish", item(ItemID.RAW_SWORDFISH)),
 		new SkillChallengeClue("Craft multiple cosmic runes from a single essence.", any("Pure essence or Daeyalt essence", item(ItemID.PURE_ESSENCE), item(ItemID.DAEYALT_ESSENCE))),
 		new SkillChallengeClue("Plant a watermelon seed.", item(ItemID.RAKE), item(ItemID.SEED_DIBBER), xOfItem(ItemID.WATERMELON_SEED, 3)),
 		new SkillChallengeClue("Activate the Chivalry prayer."),
-		new SkillChallengeClue("Smith a tier 2 or above Shayzien platebody.", "smith a tier 2 or above shayzien platebody.", ANY_HAMMER, xOfItem(ItemID.LOVAKITE_BAR, 4)),
+		new SkillChallengeClue("Smith a tier 2 or above Shayzien platebody.", "smith a tier 2 or above shayzien platebody.", RequirementCollections.ANY_HAMMER, xOfItem(ItemID.LOVAKITE_BAR, 4)),
 		// Master Sherlock Tasks
 		new SkillChallengeClue("Equip an abyssal whip in front of the abyssal demons of the Slayer Tower.", true, any("Abyssal Whip", item(ItemID.ABYSSAL_WHIP), item(ItemID.FROZEN_ABYSSAL_WHIP), item(ItemID.VOLCANIC_ABYSSAL_WHIP), item(ItemID.ABYSSAL_WHIP_OR), item(ItemID.ABYSSAL_TENTACLE), item(ItemID.ABYSSAL_TENTACLE_OR))),
-		new SkillChallengeClue("Smith a runite med helm.", ANY_HAMMER, item(ItemID.RUNITE_BAR)),
+		new SkillChallengeClue("Smith a runite med helm.", RequirementCollections.ANY_HAMMER, item(ItemID.RUNITE_BAR)),
 		new SkillChallengeClue("Teleport to a spirit tree you planted yourself."),
 		new SkillChallengeClue("Create a Barrows teleport tablet.", item(ItemID.DARK_ESSENCE_BLOCK), xOfItem(ItemID.BLOOD_RUNE, 1), xOfItem(ItemID.LAW_RUNE, 2), xOfItem(ItemID.SOUL_RUNE, 2)),
 		new SkillChallengeClue("Kill a Nechryael in the Slayer Tower.", "slay a nechryael in the slayer tower."),
@@ -219,9 +117,9 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 		new SkillChallengeClue("Create an unstrung dragonstone amulet at a furnace.", item(ItemID.GOLD_BAR), item(ItemID.DRAGONSTONE), item(ItemID.AMULET_MOULD)),
 		new SkillChallengeClue("Burn a magic log.", item(ItemID.MAGIC_LOGS), item(ItemID.TINDERBOX)),
 		new SkillChallengeClue("Burn a redwood log.", item(ItemID.REDWOOD_LOGS), item(ItemID.TINDERBOX)),
-		new SkillChallengeClue("Complete a lap of Rellekka's Rooftop Agility Course", "complete a lap of the rellekka rooftop agility course whilst sporting the finest amount of grace.", true, A_FULL_GRACEFUL_SET),
+		new SkillChallengeClue("Complete a lap of Rellekka's Rooftop Agility Course", "complete a lap of the rellekka rooftop agility course whilst sporting the finest amount of grace.", true, RequirementCollections.A_FULL_GRACEFUL_SET),
 		new SkillChallengeClue("Mix an anti-venom potion.", item(ItemID.ANTIDOTE4_5952), xOfItem(ItemID.ZULRAHS_SCALES, 20)),
-		new SkillChallengeClue("Mine a piece of Runite ore", "mine a piece of runite ore whilst sporting the finest mining gear.", true, ANY_PICKAXE,
+		new SkillChallengeClue("Mine a piece of Runite ore", "mine a piece of runite ore whilst sporting the finest mining gear.", true, RequirementCollections.ANY_PICKAXE,
 			all("Prospector kit",
 				any("", item(ItemID.PROSPECTOR_HELMET), item(ItemID.GOLDEN_PROSPECTOR_HELMET)),
 				any("", item(ItemID.PROSPECTOR_JACKET), item(ItemID.VARROCK_ARMOUR_4), item(ItemID.GOLDEN_PROSPECTOR_JACKET)),
@@ -241,7 +139,7 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 				any("", item(ItemID.ANGLER_TOP), item(ItemID.SPIRIT_ANGLER_TOP)),
 				any("", item(ItemID.ANGLER_WADERS), item(ItemID.SPIRIT_ANGLER_WADERS)),
 				any("", item(ItemID.ANGLER_BOOTS), item(ItemID.SPIRIT_ANGLER_BOOTS)))),
-		new SkillChallengeClue("Chop a redwood log.", "chop a redwood log whilst sporting the finest lumberjack gear.", true, ANY_AXE,
+		new SkillChallengeClue("Chop a redwood log.", "chop a redwood log whilst sporting the finest lumberjack gear.", true, RequirementCollections.ANY_AXE,
 			all("Lumberjack outfit",
 				any("", item(ItemID.LUMBERJACK_HAT), item(ItemID.FORESTRY_HAT)),
 				any("", item(ItemID.LUMBERJACK_TOP), item(ItemID.FORESTRY_TOP)),
