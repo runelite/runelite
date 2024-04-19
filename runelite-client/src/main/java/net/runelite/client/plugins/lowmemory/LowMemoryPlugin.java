@@ -28,6 +28,7 @@ import com.google.inject.Provides;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.Scene;
 import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.client.callback.ClientThread;
@@ -114,7 +115,12 @@ public class LowMemoryPlugin extends Plugin
 	{
 		// This needs to be set to the current plane, but there is no event for plane change, so
 		// just set it each render.
-		client.getScene().
-			setMinLevel(config.hideLowerPlanes() ? client.getPlane() : 0);
+		final Scene scene = client.getScene();
+		if (scene == null)
+		{
+			return;
+		}
+
+		scene.setMinLevel(config.hideLowerPlanes() ? client.getPlane() : 0);
 	}
 }
