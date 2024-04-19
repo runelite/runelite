@@ -104,12 +104,8 @@ public class AttackStylesPluginTest
 		EnumComposition typeEnum = mock(EnumComposition.class);
 		when(typeEnum.getIntVals()).thenReturn(STYLE_STRUCT_IDS);
 
-		EnumComposition empty = mock(EnumComposition.class);
-		when(empty.getIntVals()).thenReturn(new int[0]);
-
 		when(client.getEnum(EnumID.WEAPON_STYLES)).thenReturn(stylesEnum);
 		when(client.getEnum(TYPE_ENUM_ID)).thenReturn(typeEnum);
-		when(client.getEnum(0)).thenReturn(empty);
 
 		int i = 0;
 		for (int styleStructId : STYLE_STRUCT_IDS)
