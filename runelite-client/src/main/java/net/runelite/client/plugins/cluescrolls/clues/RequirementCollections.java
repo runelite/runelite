@@ -51,6 +51,10 @@ class RequirementCollections
 		ItemVariationMapping.getVariations(PHARAOHS_SCEPTRE).stream()
 			.map(ItemRequirements::item)
 			.toArray(SingleItemRequirement[]::new));
+	static final AnyRequirementCollection ANY_RUNE_HERALDIC_SHIELD = any("Any Rune shield (h)",
+		ItemVariationMapping.getVariations(RUNE_SHIELD_H1).stream()
+			.map(ItemRequirements::item)
+			.toArray(SingleItemRequirement[]::new));
 	static final AnyRequirementCollection ANY_TEAM_CAPE = any("Any team cape",
 		Stream.of(
 			ItemVariationMapping.getVariations(TEAM1_CAPE).stream(),
