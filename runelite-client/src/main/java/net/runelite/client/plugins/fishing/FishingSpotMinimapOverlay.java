@@ -48,7 +48,7 @@ class FishingSpotMinimapOverlay extends Overlay
 	private boolean hidden;
 
 	@Inject
-	public FishingSpotMinimapOverlay(FishingPlugin plugin, FishingConfig config)
+	private FishingSpotMinimapOverlay(FishingPlugin plugin, FishingConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
