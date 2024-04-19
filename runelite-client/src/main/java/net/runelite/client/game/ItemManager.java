@@ -182,7 +182,7 @@ public class ItemManager
 		build();
 
 	@Inject
-	public ItemManager(Client client, ScheduledExecutorService scheduledExecutorService, ClientThread clientThread,
+	private ItemManager(Client client, ScheduledExecutorService scheduledExecutorService, ClientThread clientThread,
 		ItemClient itemClient, RuneLiteConfig runeLiteConfig)
 	{
 		this.client = client;

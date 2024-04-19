@@ -57,7 +57,7 @@ public class PestControlOverlay extends Overlay
 	private Game game;
 
 	@Inject
-	public PestControlOverlay(PestControlPlugin plugin, Client client)
+	private PestControlOverlay(PestControlPlugin plugin, Client client)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		this.plugin = plugin;

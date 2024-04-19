@@ -60,7 +60,7 @@ public class PohOverlay extends Overlay
 	private final PohPlugin plugin;
 
 	@Inject
-	public PohOverlay(Client client, PohConfig config, PohPlugin plugin)
+	private PohOverlay(Client client, PohConfig config, PohPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
