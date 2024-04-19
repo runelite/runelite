@@ -55,6 +55,10 @@ class RequirementCollections
 		ItemVariationMapping.getVariations(RUNE_SHIELD_H1).stream()
 			.map(ItemRequirements::item)
 			.toArray(SingleItemRequirement[]::new));
+	static final AnyRequirementCollection ANY_RUNE_HERALDIC_HELM = any("Any Rune helm (h)",
+		ItemVariationMapping.getVariations(RUNE_HELM_H1).stream()
+			.map(ItemRequirements::item)
+			.toArray(SingleItemRequirement[]::new));
 	static final AnyRequirementCollection ANY_TEAM_CAPE = any("Any team cape",
 		Stream.of(
 			ItemVariationMapping.getVariations(TEAM1_CAPE).stream(),
