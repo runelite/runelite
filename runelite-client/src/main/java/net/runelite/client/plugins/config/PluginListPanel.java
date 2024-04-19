@@ -102,7 +102,7 @@ class PluginListPanel extends PluginPanel
 	private List<PluginListItem> pluginList;
 
 	@Inject
-	public PluginListPanel(
+	private PluginListPanel(
 		ConfigManager configManager,
 		PluginManager pluginManager,
 		ExternalPluginManager externalPluginManager,
