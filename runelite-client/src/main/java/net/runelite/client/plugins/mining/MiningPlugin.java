@@ -64,7 +64,6 @@ import static net.runelite.api.ObjectID.ORE_VEIN_26664;
 import static net.runelite.api.ObjectID.ROCKS_41549;
 import static net.runelite.api.ObjectID.ROCKS_41550;
 import static net.runelite.api.NullObjectID.NULL_51493;
-
 import net.runelite.api.Player;
 import net.runelite.api.ScriptID;
 import net.runelite.api.Tile;
@@ -190,7 +189,7 @@ public class MiningPlugin extends Plugin
 	private void initializeCamTorumState()
 	{
 		camTorumStreams.clear();
-		camTorumLastNotificationTick = -100; // negative value so instant logging in on water will still notify
+		camTorumLastNotificationTick = -1; // negative value so notifications can fire when logging in
 	}
 
 	@Subscribe

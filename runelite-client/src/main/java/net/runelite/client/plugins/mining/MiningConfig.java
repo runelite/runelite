@@ -32,7 +32,6 @@ import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
 import net.runelite.client.config.Units;
 
-
 @ConfigGroup("mining")
 public interface MiningConfig extends Config
 {
