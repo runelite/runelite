@@ -37,7 +37,7 @@ public class TranslateMouseWheelListener implements MouseWheelListener
 	private final Client client;
 
 	@Inject
-	public TranslateMouseWheelListener(Client client)
+	private TranslateMouseWheelListener(Client client)
 	{
 		this.client = client;
 	}

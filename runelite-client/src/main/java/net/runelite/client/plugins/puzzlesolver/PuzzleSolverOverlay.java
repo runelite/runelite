@@ -85,7 +85,7 @@ public class PuzzleSolverOverlay extends Overlay
 	private BufferedImage rightArrow;
 
 	@Inject
-	public PuzzleSolverOverlay(Client client, PuzzleSolverConfig config, ScheduledExecutorService executorService, SpriteManager spriteManager)
+	private PuzzleSolverOverlay(Client client, PuzzleSolverConfig config, ScheduledExecutorService executorService, SpriteManager spriteManager)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(PRIORITY_HIGH);

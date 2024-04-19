@@ -26,7 +26,6 @@ package net.runelite.client.plugins.barbarianassault;
 
 import java.time.Duration;
 import java.time.Instant;
-import javax.inject.Inject;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -50,8 +49,7 @@ class Round
 	@Setter
 	private boolean fightersKilled;
 
-	@Inject
-	public Round(@NonNull Role role)
+	Round(@NonNull Role role)
 	{
 		this.roundRole = role;
 		this.roundStartTime = Instant.now().plus(Duration.of(2, GAME_TICKS));

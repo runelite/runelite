@@ -60,7 +60,7 @@ class RegenMeterOverlay extends Overlay
 	}
 
 	@Inject
-	public RegenMeterOverlay(Client client, RegenMeterPlugin plugin, RegenMeterConfig config)
+	private RegenMeterOverlay(Client client, RegenMeterPlugin plugin, RegenMeterConfig config)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_WIDGETS);
