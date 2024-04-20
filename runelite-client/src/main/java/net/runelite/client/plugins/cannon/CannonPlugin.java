@@ -414,6 +414,6 @@ public class CannonPlugin extends Plugin
 
 	private static WorldArea buildCannonWorldArea(WorldPoint worldPoint)
 	{
-		return new WorldArea(worldPoint.getX() - 1, worldPoint.getY() - 1, 3, 3, worldPoint.getPlane());
+		return worldPoint.toWorldArea().expand(1);
 	}
 }
