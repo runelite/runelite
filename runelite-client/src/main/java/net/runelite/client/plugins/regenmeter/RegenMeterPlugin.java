@@ -43,6 +43,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.VarClientIntChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.Notifier;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
@@ -63,6 +64,9 @@ public class RegenMeterPlugin extends Plugin
 	private Client client;
 
 	@Inject
+	private ClientThread clientThread;
+
+	@Inject
 	private OverlayManager overlayManager;
 
 	@Inject
@@ -79,6 +83,7 @@ public class RegenMeterPlugin extends Plugin
 
 	@Getter
 	private double specialPercentage;
+	private int specialAttack;
 
 	private int ticksSinceSpecRegen;
 	private int ticksSinceHPRegen;
@@ -93,6 +98,14 @@ public class RegenMeterPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(overlay);
+
+		if (client.getGameState() == GameState.LOGGED_IN)
+		{
+			clientThread.invoke(() ->
+			{
+				specialAttack = client.getVarpValue(VarPlayer.SPECIAL_ATTACK_PERCENT);
+			});
+		}
 	}
 
 	@Override
@@ -117,6 +130,12 @@ public class RegenMeterPlugin extends Plugin
 		if (ev.getVarbitId() == Varbits.PRAYER_RAPID_HEAL)
 		{
 			ticksSinceHPRegen = 0;
+		}
+		else if (ev.getVarpId() == VarPlayer.SPECIAL_ATTACK_PERCENT)
+		{
+			int spec = client.getVarpValue(VarPlayer.SPECIAL_ATTACK_PERCENT);
+			ticksSinceSpecRegen = specialAttack > spec ? ticksSinceSpecRegen : 0;
+			specialAttack = spec;
 		}
 	}
 
