@@ -2164,44 +2164,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 			.addSub("Black Chinchompas", () -> pauseresume(ComponentID.DIALOG_OPTION_OPTIONS, 2))
 			.addSub("Hunter Guild", () -> pauseresume(ComponentID.DIALOG_OPTION_OPTIONS, 3));
 		// endregion
-
-		// region Amulet of Glory
-		teleportSwap("Rub", ItemID.AMULET_OF_GLORY1, ItemID.AMULET_OF_GLORY2, ItemID.AMULET_OF_GLORY3, ItemID.AMULET_OF_GLORY4, ItemID.AMULET_OF_GLORY5, ItemID.AMULET_OF_GLORY6, ItemID.AMULET_OF_GLORY_T1, ItemID.AMULET_OF_GLORY_T2, ItemID.AMULET_OF_GLORY_T3, ItemID.AMULET_OF_GLORY_T4, ItemID.AMULET_OF_GLORY_T5, ItemID.AMULET_OF_GLORY_T6)
-			.held()
-			.addSub("Edgeville", () -> pauseresume(ComponentID.DIALOG_OPTION_OPTIONS, 1))
-			.addSub("Karamja", () -> pauseresume(ComponentID.DIALOG_OPTION_OPTIONS, 2))
-			.addSub("Draynor Village",  () -> pauseresume(ComponentID.DIALOG_OPTION_OPTIONS, 3))
-			.addSub("Al Kharid",  () -> pauseresume(ComponentID.DIALOG_OPTION_OPTIONS, 4));
-		// endregion
-
-		// region Combat Bracelet
-		teleportSwap("Rub", ItemID.COMBAT_BRACELET1, ItemID.COMBAT_BRACELET2, ItemID.COMBAT_BRACELET3, ItemID.COMBAT_BRACELET4, ItemID.COMBAT_BRACELET5, ItemID.COMBAT_BRACELET6)
-			.held()
-			.addSub("Warriors' Guild", () -> pauseresume(ComponentID.DIALOG_OPTION_OPTIONS, 1))
-			.addSub("Champions' Guild", () -> pauseresume(ComponentID.DIALOG_OPTION_OPTIONS, 2))
-			.addSub("Monastery",  () -> pauseresume(ComponentID.DIALOG_OPTION_OPTIONS, 3))
-			.addSub("Ranging Guild",  () -> pauseresume(ComponentID.DIALOG_OPTION_OPTIONS, 4));
-		// endregion
-
-		// region Skills Necklace
-		teleportSwap("Rub", ItemID.SKILLS_NECKLACE1, ItemID.SKILLS_NECKLACE2, ItemID.SKILLS_NECKLACE3, ItemID.SKILLS_NECKLACE4, ItemID.SKILLS_NECKLACE5, ItemID.SKILLS_NECKLACE6)
-			.held()
-			.addSub("Fishing Guild", () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 0))
-			.addSub("Mining Guild", () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 1))
-			.addSub("Crafting Guild",  () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 2))
-			.addSub("Cooking Guild",  () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 3))
-			.addSub("Woodcutting Guild",  () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 4))
-			.addSub("Farming Guild",  () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 5));
-		// endregion
-
-		// region Ring of Wealth
-		teleportSwap("Rub", ItemID.RING_OF_WEALTH_1, ItemID.RING_OF_WEALTH_2, ItemID.RING_OF_WEALTH_3, ItemID.RING_OF_WEALTH_4, ItemID.RING_OF_WEALTH_5, ItemID.RING_OF_WEALTH_I1, ItemID.RING_OF_WEALTH_I2, ItemID.RING_OF_WEALTH_I3, ItemID.RING_OF_WEALTH_I4, ItemID.RING_OF_WEALTH_I5)
-			.held()
-			.addSub("Miscellania", () -> pauseresume(ComponentID.DIALOG_OPTION_OPTIONS, 1))
-			.addSub("Grand Exchange", () -> pauseresume(ComponentID.DIALOG_OPTION_OPTIONS, 2))
-			.addSub("Falador Park",  () -> pauseresume(ComponentID.DIALOG_OPTION_OPTIONS, 3))
-			.addSub("Dondakan's Rock",  () -> pauseresume(ComponentID.DIALOG_OPTION_OPTIONS, 4));
-		// endregion
 	}
 
 	private TeleportSwap teleportSwap(String option, int... items)
