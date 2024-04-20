@@ -634,7 +634,7 @@ public class LootTrackerPlugin extends Plugin
 		final LootTrackerItem[] entries = buildEntries(stack(items));
 		SwingUtilities.invokeLater(() -> panel.add(name, type, combatLevel, entries, amount));
 
-		LootRecord lootRecord = new LootRecord(name, type, metadata, toGameItems(items), Instant.now(), getLootWorldId());
+		LootRecord lootRecord = new LootRecord(name, type, metadata, toGameItems(items), Instant.now(), getLootWorldId(), amount);
 		synchronized (queuedLoots)
 		{
 			queuedLoots.add(lootRecord);
@@ -1311,7 +1311,7 @@ public class LootTrackerPlugin extends Plugin
 		{
 			ConfigLoot key = new ConfigLoot(record.getType(), record.getEventId());
 			ConfigLoot loot = map.computeIfAbsent(key, k -> key);
-			loot.kills++;
+			loot.kills += record.getAmount();
 			for (GameItem item : record.getDrops())
 			{
 				loot.add(item.getId(), item.getQty());
