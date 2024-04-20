@@ -2155,6 +2155,15 @@ public class MenuEntrySwapperPlugin extends Plugin
 			.addSub("Elder Gnome child", () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 14))
 			.addSub("Twiggy O'Korn", () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 15));
 		// endregion
+
+		// region Hunter cape
+		teleportSwap("Teleport", ItemID.HUNTER_CAPE, ItemID.HUNTER_CAPET)
+			.worn()
+			.held()
+			.addSub("Carnivorous Chinchompas", () -> pauseresume(ComponentID.DIALOG_OPTION_OPTIONS, 1))
+			.addSub("Black Chinchompas", () -> pauseresume(ComponentID.DIALOG_OPTION_OPTIONS, 2))
+			.addSub("Hunter Guild", () -> pauseresume(ComponentID.DIALOG_OPTION_OPTIONS, 3));
+		// endregion
 	}
 
 	private TeleportSwap teleportSwap(String option, int... items)
