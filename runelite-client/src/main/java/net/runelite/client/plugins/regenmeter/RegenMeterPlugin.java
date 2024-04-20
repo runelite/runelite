@@ -33,16 +33,14 @@ import lombok.Getter;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.GameState;
-import net.runelite.api.InventoryID;
-import net.runelite.api.ItemContainer;
-import net.runelite.api.ItemID;
 import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
+import net.runelite.api.VarClientInt;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.events.VarClientIntChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
@@ -58,7 +56,7 @@ import net.runelite.client.ui.overlay.OverlayManager;
 )
 public class RegenMeterPlugin extends Plugin
 {
-	private static final int SPEC_REGEN_TICKS = 50;
+	private static int specRegenTicks = 50;
 	private static final int NORMAL_HP_REGEN_TICKS = 100;
 
 	@Inject
@@ -84,8 +82,6 @@ public class RegenMeterPlugin extends Plugin
 
 	private int ticksSinceSpecRegen;
 	private int ticksSinceHPRegen;
-
-	private boolean wearingLightbearer;
 
 	@Provides
 	RegenMeterConfig provideConfig(ConfigManager configManager)
@@ -116,27 +112,6 @@ public class RegenMeterPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onItemContainerChanged(ItemContainerChanged event)
-	{
-		if (event.getContainerId() != InventoryID.EQUIPMENT.getId())
-		{
-			return;
-		}
-
-		ItemContainer equipment = event.getItemContainer();
-		final boolean hasLightbearer = equipment.contains(ItemID.LIGHTBEARER);
-		if (hasLightbearer == wearingLightbearer)
-		{
-			return;
-		}
-
-		// Lightbearer switch preserves time until next spec regen if <25 ticks remain
-		// If unequipping Lightbearer, this will always evaluate to 0
-		ticksSinceSpecRegen = Math.max(0, ticksSinceSpecRegen - 25);
-		wearingLightbearer = hasLightbearer;
-	}
-
-	@Subscribe
 	private void onVarbitChanged(VarbitChanged ev)
 	{
 		if (ev.getVarbitId() == Varbits.PRAYER_RAPID_HEAL)
@@ -146,10 +121,22 @@ public class RegenMeterPlugin extends Plugin
 	}
 
 	@Subscribe
+	private void onVarClientIntChanged(VarClientIntChanged event)
+	{
+		if (event.getIndex() == VarClientInt.SPEC_REGEN_INTERVAL)
+		{
+			int var = client.getVarcIntValue(VarClientInt.SPEC_REGEN_INTERVAL);
+			specRegenTicks = (var & ((1 << 22) - 1)) >> 11;
+
+			// Equipping a lightbearer after 25 ticks since last spec regen
+			// will carry over (ticksSinceSpecRegen - 25) ticks to the new cycle
+			ticksSinceSpecRegen = Math.max(0, ticksSinceSpecRegen - 25);
+		}
+	}
+
+	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		final int ticksPerSpecRegen = wearingLightbearer ? SPEC_REGEN_TICKS / 2 : SPEC_REGEN_TICKS;
-
 		if (client.getVarpValue(VarPlayer.SPECIAL_ATTACK_PERCENT) == 1000)
 		{
 			// The recharge doesn't tick when at 100%
@@ -157,9 +144,9 @@ public class RegenMeterPlugin extends Plugin
 		}
 		else
 		{
-			ticksSinceSpecRegen = (ticksSinceSpecRegen + 1) % ticksPerSpecRegen;
+			ticksSinceSpecRegen = (ticksSinceSpecRegen + 1) % specRegenTicks;
 		}
-		specialPercentage = ticksSinceSpecRegen / (double) ticksPerSpecRegen;
+		specialPercentage = ticksSinceSpecRegen / (double) specRegenTicks;
 
 
 		int ticksPerHPRegen = NORMAL_HP_REGEN_TICKS;
