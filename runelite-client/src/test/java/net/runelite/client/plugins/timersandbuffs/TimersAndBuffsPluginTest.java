@@ -155,7 +155,7 @@ public class TimersAndBuffsPluginTest
 		List<InfoBox> infoBoxes = captor.getAllValues();
 
 		ArgumentCaptor<Predicate<InfoBox>> prcaptor = ArgumentCaptor.forClass(Predicate.class);
-		verify(infoBoxManager, times(5)).removeIf(prcaptor.capture());
+		verify(infoBoxManager, times(6)).removeIf(prcaptor.capture());
 		List<Predicate<InfoBox>> filters = prcaptor.getAllValues();
 
 		// test defence, ranging, and bastion infoboxes added
@@ -165,10 +165,12 @@ public class TimersAndBuffsPluginTest
 
 		// test ranging and defence infoboxes removed
 		assertTrue(filters.get(0).test(infoBoxes.get(0)));  // divine ranging infobox added
-		assertTrue(filters.get(1).test(infoBoxes.get(1)));  // divine super defence infobox added
-		assertTrue(filters.get(2).test(infoBoxes.get(0)));  // divine ranging infobox removed
-		assertTrue(filters.get(3).test(infoBoxes.get(1)));  // divine super defence infobox removed
-		assertTrue(filters.get(4).test(infoBoxes.get(2)));  // divine bastion infobox added
+		// filters.get(1) tries to remove a non-existent moonlight potion timer since Varbits.DIVINE_SUPER_DEFENCE
+		// was changed
+		assertTrue(filters.get(2).test(infoBoxes.get(1)));  // divine super defence infobox added
+		assertTrue(filters.get(3).test(infoBoxes.get(0)));  // divine ranging infobox removed
+		assertTrue(filters.get(4).test(infoBoxes.get(1)));  // divine super defence infobox removed
+		assertTrue(filters.get(5).test(infoBoxes.get(2)));  // divine bastion infobox added
 	}
 
 	@Test

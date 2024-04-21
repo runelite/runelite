@@ -90,6 +90,15 @@ public final class Varbits
 	public static final int DIVINE_BATTLEMAGE = 13665;
 
 	/**
+	 * Moonlight potion timer.
+	 * When at least 70 herblore, the moonlight potion's defense effect will be removed when this timer runs out.
+	 * If the player drinks a dose of moonlight potion while already under its effects, desync between
+	 * Varbits.MOONLIGHT_POTION and Varbits.DIVINE_SUPER_DEFENCE can occur, with the latter being 1 tick greater.
+	 * In case of desync, the moonlight defence effect will be removed once Varbits.DIVINE_SUPER_DEFENCE becomes 0.
+	 */
+	public static final int MOONLIGHT_POTION = 10029;
+
+	/**
 	 * Ring of endurance effect timer, stamina duration extended from using the ring of endurance
 	 * Number of game ticks remaining on ring of endurance effect in intervals of 10; for a value X there are 10 * X game ticks remaining.
 	 * Unequipping the ring of endurance will cause this to change to 0.

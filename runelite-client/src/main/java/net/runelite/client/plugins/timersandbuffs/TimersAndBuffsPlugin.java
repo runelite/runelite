@@ -476,9 +476,18 @@ public class TimersAndBuffsPlugin extends Plugin
 		{
 			if (client.getVarbitValue(Varbits.DIVINE_SUPER_COMBAT) > event.getValue()
 				|| client.getVarbitValue(Varbits.DIVINE_BASTION) > event.getValue()
-				|| client.getVarbitValue(Varbits.DIVINE_BATTLEMAGE) > event.getValue())
+				|| client.getVarbitValue(Varbits.DIVINE_BATTLEMAGE) > event.getValue()
+				// When drinking a dose of moonlight potion while already under its effects, desync between
+				// Varbits.MOONLIGHT_POTION and Varbits.DIVINE_SUPER_DEFENCE can occur, with the latter being 1 tick
+				// greater
+				|| client.getVarbitValue(Varbits.MOONLIGHT_POTION) >= event.getValue())
 			{
 				return;
+			}
+
+			if (client.getVarbitValue(Varbits.MOONLIGHT_POTION) < event.getValue())
+			{
+				removeVarTimer(MOONLIGHT_POTION);
 			}
 
 			updateVarTimer(DIVINE_SUPER_DEFENCE, event.getValue(), IntUnaryOperator.identity());
@@ -591,6 +600,19 @@ public class TimersAndBuffsPlugin extends Plugin
 		if (event.getVarbitId() == Varbits.COLOSSEUM_DOOM && config.showColosseumDoom())
 		{
 			updateVarCounter(COLOSSEUM_DOOM, event.getValue());
+		}
+
+		if (event.getVarbitId() == Varbits.MOONLIGHT_POTION && config.showMoonlightPotion())
+		{
+			int moonlightValue = event.getValue();
+			// Increase the timer by 1 tick in case of desync due to drinking a dose of moonlight potion while already
+			// under its effects. Otherwise, the timer would be 1 tick shorter than it is meant to be.
+			if (client.getVarbitValue(Varbits.DIVINE_SUPER_DEFENCE) == moonlightValue + 1)
+			{
+				moonlightValue++;
+			}
+
+			updateVarTimer(MOONLIGHT_POTION, moonlightValue, IntUnaryOperator.identity());
 		}
 	}
 
@@ -798,6 +820,11 @@ public class TimersAndBuffsPlugin extends Plugin
 		if (!config.showColosseumDoom())
 		{
 			removeVarCounter(COLOSSEUM_DOOM);
+		}
+
+		if (!config.showMoonlightPotion())
+		{
+			removeVarTimer(MOONLIGHT_POTION);
 		}
 	}
 
