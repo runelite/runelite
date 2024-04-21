@@ -30,6 +30,7 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.annotation.Nullable;
 import lombok.Setter;
@@ -65,9 +66,16 @@ public class TextComponent implements RenderableEntity
 
 		final FontMetrics fontMetrics = graphics.getFontMetrics();
 
-		if (COL_TAG_PATTERN_W_LOOKAHEAD.matcher(text).find())
+		Matcher matcher = COL_TAG_PATTERN_W_LOOKAHEAD.matcher(text);
+		if (matcher.find())
 		{
 			final String[] parts = COL_TAG_PATTERN_W_LOOKAHEAD.split(text);
+			// The code after this expects every part to start with a color tag. If the start of the first match is not
+			// at the start of the text, then the first part does not have a color tag and needs one to be added.
+			if (matcher.start() != 0)
+			{
+				parts[0] = ColorUtil.colorTag(color) + parts[0];
+			}
 			int x = position.x;
 
 			for (String textSplitOnCol : parts)
