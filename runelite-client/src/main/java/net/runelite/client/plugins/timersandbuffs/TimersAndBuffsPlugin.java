@@ -476,7 +476,8 @@ public class TimersAndBuffsPlugin extends Plugin
 		{
 			if (client.getVarbitValue(Varbits.DIVINE_SUPER_COMBAT) > event.getValue()
 				|| client.getVarbitValue(Varbits.DIVINE_BASTION) > event.getValue()
-				|| client.getVarbitValue(Varbits.DIVINE_BATTLEMAGE) > event.getValue())
+				|| client.getVarbitValue(Varbits.DIVINE_BATTLEMAGE) > event.getValue()
+				|| client.getVarbitValue(Varbits.MOONLIGHT_POTION) > event.getValue())
 			{
 				return;
 			}
@@ -592,6 +593,24 @@ public class TimersAndBuffsPlugin extends Plugin
 				updateVarCounter(CURSE_OF_THE_MOONS_BLUE, event.getValue());
 			}
 		}
+
+		if (event.getVarbitId() == Varbits.MOONLIGHT_POTION && config.showMoonlightPotion())
+		{
+			int moonlightValue = event.getValue();
+			// When drinking a dose of moonlight potion while already under its effects, desync between
+			// Varbits.MOONLIGHT_POTION and Varbits.DIVINE_SUPER_DEFENCE can occur, with the latter being 1 tick greater
+			// In case of desync, the moonlight defense effect will be removed once Varbits.SUPER_DEFENCE becomes 0.
+			if (client.getVarbitValue(Varbits.DIVINE_SUPER_DEFENCE) == moonlightValue + 1)
+			{
+				moonlightValue++;
+			}
+			if (client.getVarbitValue(Varbits.DIVINE_SUPER_DEFENCE) == moonlightValue)
+			{
+				removeVarTimer(DIVINE_SUPER_DEFENCE);
+			}
+
+			updateVarTimer(MOONLIGHT_POTION, moonlightValue, IntUnaryOperator.identity());
+		}
 	}
 
 	@Subscribe
@@ -646,6 +665,11 @@ public class TimersAndBuffsPlugin extends Plugin
 			removeVarTimer(DIVINE_SUPER_COMBAT);
 			removeVarTimer(DIVINE_BASTION);
 			removeVarTimer(DIVINE_BATTLEMAGE);
+		}
+
+		if (!config.showMoonlightPotion())
+		{
+			removeVarTimer(MOONLIGHT_POTION);
 		}
 
 		if (!config.showCannon())

@@ -196,6 +196,17 @@ public interface TimersAndBuffsConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showMoonlightPotion",
+		name = "Moonlight potion timer",
+		description = "Configures whether Moonlight potion timer is displayed",
+		section = consumablesSection
+	)
+	default boolean showMoonlightPotion()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "showOverload",
 		name = "Overload timer",
 		description = "Configures whether overload timer is displayed",
