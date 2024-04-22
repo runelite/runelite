@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2018, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,34 +24,23 @@
  */
 package net.runelite.client.config;
 
-import java.lang.reflect.Type;
-import lombok.Value;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-@Value
-public class ConfigItemDescriptor implements ConfigObject
+/**
+ * Used with ConfigItem, describes valid double range for a config item.
+ */
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+@Documented
+public @interface RangeDouble 
 {
-	private final ConfigItem item;
-	private final Type type;
-	private final Range range;
-	private final RangeDouble rangeDouble;
-	private final Alpha alpha;
-	private final Units units;
-
-	@Override
-	public String key()
-	{
-		return item.keyName();
-	}
-
-	@Override
-	public String name()
-	{
-		return item.name();
-	}
-
-	@Override
-	public int position()
-	{
-		return item.position();
-	}
+    double min() default 0;
+    
+    double max() default Double.MAX_VALUE;
+    
+    double step() default 0.1;
 }

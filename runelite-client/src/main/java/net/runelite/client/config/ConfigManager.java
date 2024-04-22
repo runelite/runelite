@@ -1018,6 +1018,7 @@ public class ConfigManager
 				m.getDeclaredAnnotation(ConfigItem.class),
 				m.getGenericReturnType(),
 				m.getDeclaredAnnotation(Range.class),
+				m.getDeclaredAnnotation(RangeDouble.class),
 				m.getDeclaredAnnotation(Alpha.class),
 				m.getDeclaredAnnotation(Units.class)
 			))
