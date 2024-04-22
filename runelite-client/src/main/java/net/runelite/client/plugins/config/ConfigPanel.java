@@ -487,14 +487,14 @@ class ConfigPanel extends PluginPanel
 
 		RangeDouble rangeDouble = cid.getRangeDouble();
 		double min = 0.0, max = Double.MAX_VALUE, step = 0.1;
-		
-		if (rangeDouble != null) 
+
+		if (rangeDouble != null)
 		{
 			min = rangeDouble.min();
 			max = rangeDouble.max();
 			step = rangeDouble.step();
 		}
-		
+
 		SpinnerModel model = new SpinnerNumberModel(value, min, max, step);
 		JSpinner spinner = new JSpinner(model);
 		Component editor = spinner.getEditor();

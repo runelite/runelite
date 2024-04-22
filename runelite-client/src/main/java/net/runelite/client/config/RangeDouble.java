@@ -36,11 +36,11 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 @Documented
-public @interface RangeDouble 
-{
-    double min() default 0;
-    
-    double max() default Double.MAX_VALUE;
-    
-    double step() default 0.1;
+public @interface RangeDouble
+{ 
+	double min() default 0;
+
+	double max() default Double.MAX_VALUE;
+
+	double step() default 0.1;
 }
