@@ -37,7 +37,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Documented
 public @interface RangeDouble
-{ 
+{
 	double min() default 0;
 
 	double max() default Double.MAX_VALUE;
