@@ -904,7 +904,8 @@ public class GroundItemsPlugin extends Plugin
 	void setItemColor(int itemId, Color color)
 	{
 		ItemComposition itemComposition = itemManager.getItemComposition(itemId);
-		if (itemComposition.getNote() != -1) {
+		if (itemComposition.getNote() != -1)
+		{
 			int realItemId = itemComposition.getLinkedNoteId();
 			configManager.setConfiguration(GroundItemsConfig.GROUP, HIGHLIGHT_COLOR_PREFIX + realItemId, color);
 		}
@@ -914,7 +915,8 @@ public class GroundItemsPlugin extends Plugin
 	void unsetItemColor(int itemId)
 	{
 		ItemComposition itemComposition = itemManager.getItemComposition(itemId);
-		if (itemComposition.getNote() != -1) {
+		if (itemComposition.getNote() != -1)
+		{
 			int realItemId = itemComposition.getLinkedNoteId();
 			configManager.unsetConfiguration(GroundItemsConfig.GROUP, HIGHLIGHT_COLOR_PREFIX + realItemId);
 		}
