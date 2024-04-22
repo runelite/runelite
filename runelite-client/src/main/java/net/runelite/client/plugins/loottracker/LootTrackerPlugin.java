@@ -148,6 +148,10 @@ public class LootTrackerPlugin extends Plugin
 	private static final String HERBIBOAR_EVENT = "Herbiboar";
 	private static final Pattern HERBIBOAR_HERB_SACK_PATTERN = Pattern.compile(".+(Grimy .+?) herb.+");
 
+	// Zombie Pirate Locker loot handling
+	static final String ZOMBIE_PIRATE_LOCKER_EVENT = "Zombie Pirate's Locker";
+	private static final Pattern ZOMBIE_PIRATE_LOCKER_PATTERN = Pattern.compile("You loot the locker and receive <col=[\\da-f]{6}>(?<qty>[\\d,]+) x (?<item>.+)</col>\\.");
+
 	// Seed Pack loot handling
 	private static final String SEEDPACK_EVENT = "Seed pack";
 
@@ -943,6 +947,12 @@ public class LootTrackerPlugin extends Plugin
 			return;
 		}
 
+		final Matcher zombiePirateLockerMatcher = ZOMBIE_PIRATE_LOCKER_PATTERN.matcher(message);
+		if (zombiePirateLockerMatcher.matches())
+		{
+			processZombiePirateLockerLoot(zombiePirateLockerMatcher);
+		}
+
 		if (message.equals(HERBIBOAR_LOOTED_MESSAGE))
 		{
 			if (processHerbiboarHerbSackLoot(event.getTimestamp()))
@@ -1424,6 +1434,14 @@ public class LootTrackerPlugin extends Plugin
 		int herbloreLevel = client.getBoostedSkillLevel(Skill.HERBLORE);
 		addLoot(HERBIBOAR_EVENT, -1, LootRecordType.EVENT, herbloreLevel, herbs);
 		return true;
+	}
+
+	private void processZombiePirateLockerLoot(Matcher matcher)
+	{
+		final int quantity = Integer.parseInt(matcher.group("qty").replaceAll(",", ""));
+		final String itemName = matcher.group("item");
+		final int itemId = "Coins".equals(itemName) ? ItemID.COINS : itemManager.search(itemName).get(0).getId();
+		addLoot(ZOMBIE_PIRATE_LOCKER_EVENT, -1, LootRecordType.EVENT, null, List.of(new ItemStack(itemId, quantity)));
 	}
 
 	@VisibleForTesting

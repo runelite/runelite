@@ -63,6 +63,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemStack;
 import net.runelite.client.game.SpriteManager;
+import static net.runelite.client.plugins.loottracker.LootTrackerPlugin.ZOMBIE_PIRATE_LOCKER_EVENT;
 import net.runelite.client.ui.ClientToolbar;
 import net.runelite.http.api.item.ItemPrice;
 import net.runelite.http.api.loottracker.LootRecordType;
@@ -621,6 +622,51 @@ public class LootTrackerPluginTest
 
 		verify(lootTrackerPlugin).addLoot("Reward cart (Wintertodt)", -1, LootRecordType.EVENT, 99, Collections.singletonList(
 			new ItemStack(ItemID.COINS, 4694)
+		));
+	}
+
+	@Test
+	public void testZombiePirateLockerLoot()
+	{
+		Map.of(
+			ItemID.BLIGHTED_4DOSE2RESTORE, "Blighted super restore(4)",
+			ItemID.BLIGHTED_SACK_ICEBARRAGE, "Blighted ancient ice sack",
+			ItemID.COINS, "Coins",
+			ItemID.RUNE_SWORD, "Rune sword"
+		).forEach((itemId, itemName) ->
+		{
+			final ItemPrice itemPrice = new ItemPrice();
+			itemPrice.setId(itemId);
+			itemPrice.setName(itemName);
+			when(itemManager.search(itemName)).thenReturn(List.of(itemPrice));
+		});
+
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "You loot the locker and receive <col=ef1020>6 x Blighted super restore(4)</col>.", "", 0);
+		lootTrackerPlugin.onChatMessage(chatMessage);
+
+		verify(lootTrackerPlugin).addLoot(ZOMBIE_PIRATE_LOCKER_EVENT, -1, LootRecordType.EVENT, null, List.of(
+			new ItemStack(ItemID.BLIGHTED_4DOSE2RESTORE, 6)
+		));
+
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "You loot the locker and receive <col=ef1020>32 x Blighted ancient ice sack</col>.", "", 0);
+		lootTrackerPlugin.onChatMessage(chatMessage);
+
+		verify(lootTrackerPlugin).addLoot(ZOMBIE_PIRATE_LOCKER_EVENT, -1, LootRecordType.EVENT, null, List.of(
+			new ItemStack(ItemID.BLIGHTED_SACK_ICEBARRAGE, 32)
+		));
+
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "You loot the locker and receive <col=ef1020>6,604 x Coins</col>.", "", 0);
+		lootTrackerPlugin.onChatMessage(chatMessage);
+
+		verify(lootTrackerPlugin).addLoot(ZOMBIE_PIRATE_LOCKER_EVENT, -1, LootRecordType.EVENT, null, List.of(
+			new ItemStack(ItemID.COINS, 6604)
+		));
+
+		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "You loot the locker and receive <col=ef1020>2 x Rune sword</col>.", "", 0);
+		lootTrackerPlugin.onChatMessage(chatMessage);
+
+		verify(lootTrackerPlugin).addLoot(ZOMBIE_PIRATE_LOCKER_EVENT, -1, LootRecordType.EVENT, null, List.of(
+			new ItemStack(ItemID.RUNE_SWORD, 2)
 		));
 	}
 }
