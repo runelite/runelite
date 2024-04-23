@@ -38,7 +38,7 @@ public enum FiremakingAction implements NamedSkillAction
 {
 	MAKING_PYRE_LOGS_2_DOSE("Making pyre logs (2 dose)", 1, 10, ItemID.SACRED_OIL2, FiremakingMethod.SACRED_OIL),
 	MAKING_PYRE_LOGS_3_DOSE("Making pyre logs (3 dose)", 1, 12, ItemID.SACRED_OIL3, FiremakingMethod.SACRED_OIL),
-	MAKING_PYRE_LOGS_4_DOSE("Making pyre logs (3 dose)", 1, 16,ItemID.SACRED_OIL4, FiremakingMethod.SACRED_OIL),
+	MAKING_PYRE_LOGS_4_DOSE("Making pyre logs (3 dose)", 1, 16, ItemID.SACRED_OIL4, FiremakingMethod.SACRED_OIL),
 	ACHEY_TREE_LOGS("Achey tree logs", 1, 40, ItemID.ACHEY_TREE_LOGS, FiremakingMethod.NORMAL_LOGS),
 	LOGS("Logs", 1, 40, ItemID.LOGS, FiremakingMethod.NORMAL_LOGS),
 	PYRE_LOGS("Pyre logs", 5, 50, ItemID.PYRE_LOGS, FiremakingMethod.PYRE_LOGS),
