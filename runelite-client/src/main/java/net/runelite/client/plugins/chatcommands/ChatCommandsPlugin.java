@@ -588,6 +588,7 @@ public class ChatCommandsPlugin extends Plugin
 			setKc("Hallowed Sepulchre", kc);
 		}
 
+		matcher = HUNTER_RUMOUR_KC_PATTERN.matcher(message);
 		if (matcher.find())
 		{
 			int kc = Integer.parseInt(matcher.group(1));
