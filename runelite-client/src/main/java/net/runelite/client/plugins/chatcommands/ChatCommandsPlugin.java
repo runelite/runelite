@@ -591,7 +591,7 @@ public class ChatCommandsPlugin extends Plugin
 		matcher = HUNTER_RUMOUR_KC_PATTERN.matcher(message);
 		if (matcher.find())
 		{
-			int kc = Integer.parseInt(matcher.group(1));
+			int kc = Integer.parseInt(matcher.group(1).replaceAll(",", ""));
 			setKc("Hunter Rumours", kc);
 		}
 
