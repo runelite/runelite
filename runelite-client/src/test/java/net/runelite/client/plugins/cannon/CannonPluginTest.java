@@ -42,6 +42,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -115,20 +117,17 @@ public class CannonPluginTest
 	@Test
 	public void testCannonPickedUpOrEmptiedShouldNotNotify()
 	{
-		when(config.showCannonNotifications()).thenReturn(true);
-
 		cannonAmmoChanged.setValue(22);
 		plugin.onVarbitChanged(cannonAmmoChanged);
 		cannonAmmoChanged.setValue(0);
 		plugin.onVarbitChanged(cannonAmmoChanged);
 
-		verify(notifier, never()).notify("Your cannon is out of ammo!");
+		verify(notifier, never()).notify(any(Notification.class), eq("Your cannon is out of ammo!"));
 	}
 
 	@Test
 	public void testCannonOutOfAmmo()
 	{
-		when(config.showCannonNotifications()).thenReturn(true);
 		cannonAmmoChanged.setValue(1);
 		plugin.onVarbitChanged(cannonAmmoChanged);
 		cannonAmmoChanged.setValue(0);

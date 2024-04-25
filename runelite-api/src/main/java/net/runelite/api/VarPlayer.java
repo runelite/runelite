@@ -248,8 +248,8 @@ public final class VarPlayer
 	 * -1 = not displayed (including normal trees or trees grown through farming).
 	 */
 	public static final int BUFF_BAR_WC_GROUP_BONUS = 4007;
-  
-  /**
+
+	/**
 	 * The location of the player's dwarf cannon, represented by a bit-packed int of the following format:
 	 * <p>
 	 * 0zzzxxxxxxxxxxxxxxyyyyyyyyyyyyyy<br>

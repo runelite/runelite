@@ -45,6 +45,7 @@ import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.Notification;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
@@ -131,7 +132,7 @@ public class CannonPlugin extends Plugin
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{
 			clientThread.invoke(this::setFields);
-			clientThread.invokeLater(this::addCounter);
+			addCounter();
 		}
 	}
 
@@ -141,6 +142,7 @@ public class CannonPlugin extends Plugin
 		cannonSpotOverlay.setHidden(true);
 		overlayManager.remove(cannonOverlay);
 		overlayManager.remove(cannonSpotOverlay);
+		state = Cannon.NULL;
 		cannonWorld = -1;
 		cballsLeft = 0;
 		removeCounter();
@@ -194,18 +196,18 @@ public class CannonPlugin extends Plugin
 
 			// VarPlayer.DWARF_CANNON_LOCATION is fired before VarPlayer.CANNON_AMMO when the cannon is picked up
 			// The location will be null before the cannon ammo is emptied to zero, preventing a false empty notification
-			if (!config.showCannonNotifications() || cannonWorldPoint == null || previousAmmoCount != cballsLeft + 1)
+			if (cannonWorldPoint == null || previousAmmoCount != cballsLeft + 1)
 			{
 				return;
 			}
 
 			if (cballsLeft == 0 && previousAmmoCount == 1)
 			{
-				notifier.notify("Your cannon is out of ammo!");
+				notifier.notify(Notification.ON, "Your cannon is out of ammo!");
 			}
 			else if (cballsLeft <= config.lowWarningThreshold() && previousAmmoCount > config.lowWarningThreshold())
 			{
-				notifier.notify(String.format("Your cannon has %d cannon balls remaining!", cballsLeft));
+				notifier.notify(config.showCannonNotifications(), String.format("Your cannon has %d cannon balls remaining!", cballsLeft));
 			}
 		}
 
@@ -332,9 +334,9 @@ public class CannonPlugin extends Plugin
 		int parts = client.getVarpValue(VarPlayer.DWARF_CANNON_PARTS_ASSEMBLED);
 
 		state = parts == 4
-				? Cannon.COMPLETE
-				: parts == 0
-						? Cannon.NULL
-						: Cannon.INCOMPLETE;
+			? Cannon.COMPLETE
+			: parts == 0
+				? Cannon.NULL
+				: Cannon.INCOMPLETE;
 	}
 }

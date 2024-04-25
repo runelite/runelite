@@ -890,8 +890,8 @@ public final class Varbits
 
 	public static final int SPELLBOOK = 4070;
 	public static final int SPELLBOOK_SUBMENU = 9730;
-  
-  /**
+
+	/**
 	 * The state of the players dwarf cannon
 	 * <p>
 	 * 0 = Normal
