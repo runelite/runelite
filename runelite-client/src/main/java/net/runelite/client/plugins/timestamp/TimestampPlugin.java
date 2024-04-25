@@ -116,7 +116,7 @@ public class TimestampPlugin extends Plugin
 		assert messageNode != null : "chat message build for unknown message";
 
 		String timestamp = generateTimestamp(messageNode.getTimestamp(), ZoneId.systemDefault());
-		
+
 		Color timestampColour = getTimestampColour();
 		if (timestampColour != null)
 		{

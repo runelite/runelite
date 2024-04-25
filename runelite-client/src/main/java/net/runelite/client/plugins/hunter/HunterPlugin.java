@@ -139,10 +139,11 @@ public class HunterPlugin extends Plugin
 				}
 				break;
 
-			case ObjectID.NET_TRAP_9343: // Net trap placed at green sallys
-			case ObjectID.NET_TRAP: // Net trap placed at orange sallys
-			case ObjectID.NET_TRAP_8992: // Net trap placed at red sallys
-			case ObjectID.NET_TRAP_9002: // Net trap placed at black sallys
+			case ObjectID.NET_TRAP_9343: // Net trap placed at Green salamanders
+			case ObjectID.NET_TRAP: // Net trap placed at Orange salamanders
+			case ObjectID.NET_TRAP_8992: // Net trap placed at Red salamanders
+			case ObjectID.NET_TRAP_9002: // Net trap placed at Black salamanders
+			case ObjectID.NET_TRAP_50723: // Net trap placed at Tecu salamanders
 				if (lastTickLocalPlayerLocation != null
 						&& trapLocation.distanceTo(lastTickLocalPlayerLocation) == 0)
 				{
@@ -176,19 +177,22 @@ public class HunterPlugin extends Plugin
 			case ObjectID.SHAKING_BOX_9382: // Grey chinchompa caught
 			case ObjectID.SHAKING_BOX_9383: // Red chinchompa caught
 			case ObjectID.SHAKING_BOX_9384: // Ferret caught
+			case ObjectID.SHAKING_BOX_50727: // Embertailed jerboa caught
 			case ObjectID.BOULDER_20648: // Prickly kebbit caught
 			case ObjectID.BOULDER_20649: // Sabre-tooth kebbit caught
 			case ObjectID.BOULDER_20650: // Barb-tailed kebbit caught
 			case ObjectID.BOULDER_20651: // Wild kebbit caught
+			case ObjectID.BOULDER_50726: // Pyre fox caught
 			case ObjectID.BIRD_SNARE_9373: // Crimson swift caught
 			case ObjectID.BIRD_SNARE_9375: // Cerulean twitch caught
 			case ObjectID.BIRD_SNARE_9377: // Golden warbler caught
 			case ObjectID.BIRD_SNARE_9379: // Copper longtail caught
 			case ObjectID.BIRD_SNARE_9348: // Tropical wagtail caught
-			case ObjectID.NET_TRAP_9004: // Green sally caught
-			case ObjectID.NET_TRAP_8986: // Red sally caught
-			case ObjectID.NET_TRAP_8734: // Orange sally caught
-			case ObjectID.NET_TRAP_8996: // Black sally caught
+			case ObjectID.NET_TRAP_9004: // Green salamander caught
+			case ObjectID.NET_TRAP_8986: // Red salamander caught
+			case ObjectID.NET_TRAP_8734: // Orange salamander caught
+			case ObjectID.NET_TRAP_8996: // Black salamander caught
+			case ObjectID.NET_TRAP_50717: // Tecu salamander caught
 			case ObjectID.LARGE_BOULDER_28830: // Maniacal monkey tail obtained
 			case ObjectID.LARGE_BOULDER_28831: // Maniacal monkey tail obtained
 				if (myTrap != null)
@@ -196,9 +200,9 @@ public class HunterPlugin extends Plugin
 					myTrap.setState(HunterTrap.State.FULL);
 					myTrap.resetTimer();
 
-					if (config.maniacalMonkeyNotify() && myTrap.getObjectId() == ObjectID.MONKEY_TRAP)
+					if (myTrap.getObjectId() == ObjectID.MONKEY_TRAP)
 					{
-						notifier.notify("You've caught part of a monkey's tail.");
+						notifier.notify(config.maniacalMonkeyNotify(), "You've caught part of a monkey's tail.");
 					}
 				}
 
@@ -211,6 +215,8 @@ public class HunterPlugin extends Plugin
 			case ObjectID.MAGIC_BOX_FAILED: //Empty imp box
 			case ObjectID.BOX_TRAP_9385: //Empty box trap
 			case ObjectID.BIRD_SNARE: //Empty box trap
+			case ObjectID.BOULDER_19215: //Empty deadfall trap
+			case ObjectID.NET_TRAP_50719: //Empty net trap
 				if (myTrap != null)
 				{
 					myTrap.setState(HunterTrap.State.EMPTY);
@@ -249,6 +255,12 @@ public class HunterPlugin extends Plugin
 			case ObjectID.BOX_TRAP_9396:
 			case ObjectID.BOX_TRAP_9397:
 
+			// Embertailed Jerboa box
+			case ObjectID.BOX_TRAP_50728:
+			case ObjectID.BOX_TRAP_50729:
+			case ObjectID.BOX_TRAP_50730:
+			case ObjectID.BOX_TRAP_50731:
+
 			// Bird traps
 			case ObjectID.BIRD_SNARE_9346:
 			case ObjectID.BIRD_SNARE_9347:
@@ -264,6 +276,8 @@ public class HunterPlugin extends Plugin
 			case ObjectID.DEADFALL_20129:
 			case ObjectID.DEADFALL_20130:
 			case ObjectID.DEADFALL_20131:
+			case ObjectID.DEADFALL_50724:
+			case ObjectID.DEADFALL_50725:
 
 			// Net trap
 			case ObjectID.NET_TRAP_9003:
@@ -274,6 +288,8 @@ public class HunterPlugin extends Plugin
 			case ObjectID.NET_TRAP_8987:
 			case ObjectID.NET_TRAP_8993:
 			case ObjectID.NET_TRAP_8997:
+			case ObjectID.NET_TRAP_50716:
+			case ObjectID.NET_TRAP_50718:
 
 			// Maniacal monkey boulder trap
 			case ObjectID.MONKEY_TRAP_28828:
@@ -340,7 +356,8 @@ public class HunterPlugin extends Plugin
 					// Check for young trees (used while catching salamanders) in the tile.
 					// Otherwise, hunter timers will never disappear after a trap is dismantled
 					if (object.getId() == ObjectID.YOUNG_TREE_8732 || object.getId() == ObjectID.YOUNG_TREE_8990 ||
-						object.getId() == ObjectID.YOUNG_TREE_9000 || object.getId() == ObjectID.YOUNG_TREE_9341)
+						object.getId() == ObjectID.YOUNG_TREE_9000 || object.getId() == ObjectID.YOUNG_TREE_9341 ||
+						object.getId() == ObjectID.YOUNG_TREE_50721 || object.getId() == ObjectID.YOUNG_TREE_50722)
 					{
 						containsYoungTree = true;
 					}
@@ -358,10 +375,10 @@ public class HunterPlugin extends Plugin
 				log.debug("Special trap removed from personal trap collection, {} left", traps.size());
 
 				// Case we have notifications enabled and the action was not manual, throw notification
-				if (config.maniacalMonkeyNotify() && trap.getObjectId() == ObjectID.MONKEY_TRAP &&
+				if (trap.getObjectId() == ObjectID.MONKEY_TRAP &&
 					!trap.getState().equals(HunterTrap.State.FULL) && !trap.getState().equals(HunterTrap.State.OPEN))
 				{
-					notifier.notify("The monkey escaped.");
+					notifier.notify(config.maniacalMonkeyNotify(), "The monkey escaped.");
 				}
 			}
 		}

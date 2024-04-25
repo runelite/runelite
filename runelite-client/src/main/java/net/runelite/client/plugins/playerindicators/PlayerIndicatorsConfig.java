@@ -30,9 +30,11 @@ import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
 
-@ConfigGroup("playerindicators")
+@ConfigGroup(PlayerIndicatorsConfig.GROUP)
 public interface PlayerIndicatorsConfig extends Config
 {
+	String GROUP = "playerindicators";
+
 	@ConfigSection(
 		name = "Highlight Options",
 		description = "Toggle highlighted players by type (self, friends, etc.) and choose their highlight colors",
@@ -40,16 +42,23 @@ public interface PlayerIndicatorsConfig extends Config
 	)
 	String highlightSection = "section";
 
+	enum HighlightSetting
+	{
+		DISABLED,
+		ENABLED,
+		PVP;
+	}
+
 	@ConfigItem(
 		position = 0,
-		keyName = "drawOwnName",
+		keyName = "highlightSelf",
 		name = "Highlight own player",
-		description = "Configures whether or not your own player should be highlighted",
+		description = "Configures whether your own player should be highlighted",
 		section = highlightSection
 	)
-	default boolean highlightOwnPlayer()
+	default HighlightSetting highlightOwnPlayer()
 	{
-		return false;
+		return HighlightSetting.DISABLED;
 	}
 
 	@ConfigItem(
@@ -66,14 +75,14 @@ public interface PlayerIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 2,
-		keyName = "drawPartyMembers",
+		keyName = "highlightPartyMembers",
 		name = "Highlight party members",
-		description = "Configures whether or not party members should be highlighted",
+		description = "Configures whether party members should be highlighted",
 		section = highlightSection
 	)
-	default boolean highlightPartyMembers()
+	default HighlightSetting highlightPartyMembers()
 	{
-		return true;
+		return HighlightSetting.ENABLED;
 	}
 
 	@ConfigItem(
@@ -90,14 +99,14 @@ public interface PlayerIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 4,
-		keyName = "drawFriendNames",
+		keyName = "highlightFriends",
 		name = "Highlight friends",
-		description = "Configures whether or not friends should be highlighted",
+		description = "Configures whether friends should be highlighted",
 		section = highlightSection
 	)
-	default boolean highlightFriends()
+	default HighlightSetting highlightFriends()
 	{
-		return true;
+		return HighlightSetting.ENABLED;
 	}
 
 	@ConfigItem(
@@ -114,14 +123,14 @@ public interface PlayerIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 6,
-		keyName = "drawClanMemberNames",
+		keyName = "highlightFriendsChat",
 		name = "Highlight friends chat members",
-		description = "Configures if friends chat members should be highlighted",
+		description = "Configures whether friends chat members should be highlighted",
 		section = highlightSection
 	)
-	default boolean highlightFriendsChat()
+	default HighlightSetting highlightFriendsChat()
 	{
-		return true;
+		return HighlightSetting.ENABLED;
 	}
 
 	@ConfigItem(
@@ -138,14 +147,14 @@ public interface PlayerIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 8,
-		keyName = "drawTeamMemberNames",
+		keyName = "highlightTeamMembers",
 		name = "Highlight team members",
-		description = "Configures whether or not team members should be highlighted",
+		description = "Configures whether team members should be highlighted",
 		section = highlightSection
 	)
-	default boolean highlightTeamMembers()
+	default HighlightSetting highlightTeamMembers()
 	{
-		return true;
+		return HighlightSetting.ENABLED;
 	}
 
 	@ConfigItem(
@@ -162,14 +171,14 @@ public interface PlayerIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 10,
-		keyName = "drawClanChatMemberNames",
+		keyName = "highlightClanMembers",
 		name = "Highlight clan members",
-		description = "Configures whether or not clan members should be highlighted",
+		description = "Configures whether clan members should be highlighted",
 		section = highlightSection
 	)
-	default boolean highlightClanMembers()
+	default HighlightSetting highlightClanMembers()
 	{
-		return true;
+		return HighlightSetting.ENABLED;
 	}
 
 	@ConfigItem(
@@ -186,14 +195,14 @@ public interface PlayerIndicatorsConfig extends Config
 
 	@ConfigItem(
 		position = 12,
-		keyName = "drawNonClanMemberNames",
+		keyName = "highlightOthers",
 		name = "Highlight others",
-		description = "Configures whether or not other players should be highlighted",
+		description = "Configures whether other players should be highlighted",
 		section = highlightSection
 	)
-	default boolean highlightOthers()
+	default HighlightSetting highlightOthers()
 	{
-		return false;
+		return HighlightSetting.DISABLED;
 	}
 
 	@ConfigItem(
@@ -272,16 +281,5 @@ public interface PlayerIndicatorsConfig extends Config
 	default boolean showClanChatRanks()
 	{
 		return true;
-	}
-
-	@ConfigItem(
-		position = 16,
-		keyName = "disableOutsidePvP",
-		name = "Disable outside PvP",
-		description = "Disable the overlays outside of PvP areas"
-	)
-	default boolean disableOutsidePvP()
-	{
-		return false;
 	}
 }

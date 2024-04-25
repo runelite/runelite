@@ -26,12 +26,15 @@ package net.runelite.client.plugins.playerindicators;
 
 import java.awt.Color;
 import java.util.function.BiConsumer;
+import java.util.function.Predicate;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import lombok.Value;
 import net.runelite.api.Client;
 import net.runelite.api.FriendsChatManager;
 import net.runelite.api.FriendsChatMember;
 import net.runelite.api.FriendsChatRank;
+import static net.runelite.api.FriendsChatRank.UNRANKED;
 import net.runelite.api.Player;
 import net.runelite.api.Varbits;
 import net.runelite.api.clan.ClanChannel;
@@ -43,7 +46,7 @@ import net.runelite.client.party.PartyService;
 import net.runelite.client.util.Text;
 
 @Singleton
-public class PlayerIndicatorsService
+class PlayerIndicatorsService
 {
 	private final Client client;
 	private final PlayerIndicatorsConfig config;
@@ -57,24 +60,8 @@ public class PlayerIndicatorsService
 		this.partyService = partyService;
 	}
 
-	public void forEachPlayer(final BiConsumer<Player, Color> consumer)
+	void forEachPlayer(final BiConsumer<Player, Decorations> consumer)
 	{
-		if (!config.highlightOwnPlayer() && !config.highlightFriendsChat()
-			&& !config.highlightFriends() && !config.highlightOthers()
-			&& !config.highlightClanMembers() && !config.highlightPartyMembers())
-		{
-			return;
-		}
-
-		boolean inWilderness = client.getVarbitValue(Varbits.IN_WILDERNESS) == 1;
-		boolean inPvp = client.getVarbitValue(Varbits.PVP_SPEC_ORB) == 1;
-		if (!inWilderness && !inPvp && config.disableOutsidePvP())
-		{
-			return;
-		}
-
-		final Player localPlayer = client.getLocalPlayer();
-
 		for (Player player : client.getPlayers())
 		{
 			if (player == null || player.getName() == null)
@@ -82,44 +69,85 @@ public class PlayerIndicatorsService
 				continue;
 			}
 
-			boolean isFriendsChatMember = player.isFriendsChatMember();
-			boolean isClanMember = player.isClanMember();
-
-			if (player == localPlayer)
+			Decorations decorations = getDecorations(player);
+			if (decorations != null && decorations.getColor() != null)
 			{
-				if (config.highlightOwnPlayer())
-				{
-					consumer.accept(player, config.getOwnPlayerColor());
-				}
-			}
-			else if (partyService.isInParty() && config.highlightPartyMembers() && partyService.getMemberByDisplayName(player.getName()) != null)
-			{
-				consumer.accept(player, config.getPartyMemberColor());
-			}
-			else if (config.highlightFriends() && player.isFriend())
-			{
-				consumer.accept(player, config.getFriendColor());
-			}
-			else if (config.highlightFriendsChat() && isFriendsChatMember)
-			{
-				consumer.accept(player, config.getFriendsChatMemberColor());
-			}
-			else if (config.highlightTeamMembers() && localPlayer.getTeam() > 0 && localPlayer.getTeam() == player.getTeam())
-			{
-				consumer.accept(player, config.getTeamMemberColor());
-			}
-			else if (config.highlightClanMembers() && isClanMember)
-			{
-				consumer.accept(player, config.getClanMemberColor());
-			}
-			else if (config.highlightOthers() && !isFriendsChatMember && !isClanMember)
-			{
-				consumer.accept(player, config.getOthersColor());
+				consumer.accept(player, decorations);
 			}
 		}
 	}
 
-	ClanTitle getClanTitle(Player player)
+	Decorations getDecorations(Player player)
+	{
+		if (player.getName() == null)
+		{
+			return null;
+		}
+
+		final Predicate<PlayerIndicatorsConfig.HighlightSetting> isEnabled = (hs) -> hs == PlayerIndicatorsConfig.HighlightSetting.ENABLED ||
+			(hs == PlayerIndicatorsConfig.HighlightSetting.PVP && (client.getVarbitValue(Varbits.IN_WILDERNESS) == 1 || client.getVarbitValue(Varbits.PVP_SPEC_ORB) == 1));
+
+		Color color = null;
+		if (player == client.getLocalPlayer())
+		{
+			if (isEnabled.test(config.highlightOwnPlayer()))
+			{
+				color = config.getOwnPlayerColor();
+			}
+		}
+		else if (partyService.isInParty() && isEnabled.test(config.highlightPartyMembers()) && partyService.getMemberByDisplayName(player.getName()) != null)
+		{
+			color = config.getPartyMemberColor();
+		}
+		else if (player.isFriend() && isEnabled.test(config.highlightFriends()))
+		{
+			color = config.getFriendColor();
+		}
+		else if (player.isFriendsChatMember() && isEnabled.test(config.highlightFriendsChat()))
+		{
+			color = config.getFriendsChatMemberColor();
+		}
+		else if (player.getTeam() > 0 && client.getLocalPlayer().getTeam() == player.getTeam() && isEnabled.test(config.highlightTeamMembers()))
+		{
+			color = config.getTeamMemberColor();
+		}
+		else if (player.isClanMember() && isEnabled.test(config.highlightClanMembers()))
+		{
+			color = config.getClanMemberColor();
+		}
+		else if (!player.isFriendsChatMember() && !player.isClanMember() && isEnabled.test(config.highlightOthers()))
+		{
+			color = config.getOthersColor();
+		}
+
+		FriendsChatRank rank = null;
+		ClanTitle clanTitle = null;
+		if (player.isFriendsChatMember() && config.showFriendsChatRanks())
+		{
+			rank = getFriendsChatRank(player);
+		}
+		if (player.isClanMember() && config.showClanChatRanks())
+		{
+			clanTitle = getClanTitle(player);
+		}
+
+		if (color == null && rank == null && clanTitle == null)
+		{
+			return null;
+		}
+
+		return new Decorations(rank, clanTitle, color);
+	}
+
+	@Value
+	static class Decorations
+	{
+		FriendsChatRank friendsChatRank;
+		ClanTitle clanTitle;
+		Color color;
+	}
+
+	private ClanTitle getClanTitle(Player player)
 	{
 		ClanChannel clanChannel = client.getClanChannel();
 		ClanSettings clanSettings = client.getClanSettings();
@@ -138,15 +166,15 @@ public class PlayerIndicatorsService
 		return clanSettings.titleForRank(rank);
 	}
 
-	FriendsChatRank getFriendsChatRank(Player player)
+	private FriendsChatRank getFriendsChatRank(Player player)
 	{
 		final FriendsChatManager friendsChatManager = client.getFriendsChatManager();
 		if (friendsChatManager == null)
 		{
-			return FriendsChatRank.UNRANKED;
+			return UNRANKED;
 		}
 
 		FriendsChatMember friendsChatMember = friendsChatManager.findByName(Text.removeTags(player.getName()));
-		return friendsChatMember != null ? friendsChatMember.getRank() : FriendsChatRank.UNRANKED;
+		return friendsChatMember != null ? friendsChatMember.getRank() : UNRANKED;
 	}
 }

@@ -93,7 +93,7 @@ public class BirdHouseTracker
 
 		for (BirdHouseSpace space : BirdHouseSpace.values())
 		{
-			String key = TimeTrackingConfig.BIRD_HOUSE + "." + space.getVarp().getId();
+			String key = TimeTrackingConfig.BIRD_HOUSE + "." + space.getVarp();
 			String storedValue = configManager.getRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, key);
 
 			if (storedValue != null)
@@ -242,7 +242,7 @@ public class BirdHouseTracker
 	{
 		for (BirdHouseData data : updatedData.values())
 		{
-			String key = TimeTrackingConfig.BIRD_HOUSE + "." + data.getSpace().getVarp().getId();
+			String key = TimeTrackingConfig.BIRD_HOUSE + "." + data.getSpace().getVarp();
 			configManager.setRSProfileConfiguration(TimeTrackingConfig.CONFIG_GROUP, key, data.getVarp() + ":" + data.getTimestamp());
 		}
 	}

@@ -43,19 +43,18 @@ public enum IndexType
 	FONTS(13),
 	MUSIC_SAMPLES(14),
 	MUSIC_PATCHES(15),
-	WORLDMAP_OLD(16), // looks unused
 	WORLDMAP_GEOGRAPHY(18),
 	WORLDMAP(19),
 	WORLDMAP_GROUND(20),
 	DBTABLEINDEX(21);
 
 	private int id;
-	
+
 	IndexType(int id)
 	{
 		this.id = id;
 	}
-	
+
 	public int getNumber()
 	{
 		return id;

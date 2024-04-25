@@ -47,7 +47,6 @@ import javax.swing.JToggleButton;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import lombok.Getter;
-import net.runelite.client.externalplugins.ExternalPluginManifest;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.util.ImageUtil;
@@ -55,8 +54,6 @@ import net.runelite.client.util.SwingUtil;
 
 class PluginListItem extends JPanel implements SearchablePlugin
 {
-	private static final ImageIcon CONFIG_ICON;
-	private static final ImageIcon CONFIG_ICON_HOVER;
 	private static final ImageIcon ON_STAR;
 	private static final ImageIcon OFF_STAR;
 
@@ -73,11 +70,8 @@ class PluginListItem extends JPanel implements SearchablePlugin
 
 	static
 	{
-		BufferedImage configIcon = ImageUtil.loadImageResource(ConfigPanel.class, "config_edit_icon.png");
 		BufferedImage onStar = ImageUtil.loadImageResource(ConfigPanel.class, "star_on.png");
-		CONFIG_ICON = new ImageIcon(configIcon);
 		ON_STAR = new ImageIcon(onStar);
-		CONFIG_ICON_HOVER = new ImageIcon(ImageUtil.luminanceOffset(configIcon, -100));
 
 		BufferedImage offStar = ImageUtil.luminanceScale(
 			ImageUtil.grayscaleImage(onStar),
@@ -94,11 +88,11 @@ class PluginListItem extends JPanel implements SearchablePlugin
 		Collections.addAll(keywords, pluginConfig.getName().toLowerCase().split(" "));
 		Collections.addAll(keywords, pluginConfig.getDescription().toLowerCase().split(" "));
 		Collections.addAll(keywords, pluginConfig.getTags());
-		ExternalPluginManifest mf = pluginConfig.getExternalPluginManifest();
-		if (mf != null)
+		String internalName = pluginConfig.getInternalPluginHubName();
+		if (internalName != null)
 		{
 			keywords.add("pluginhub");
-			keywords.add(mf.getInternalName());
+			keywords.add(internalName);
 		}
 		else
 		{
@@ -134,10 +128,9 @@ class PluginListItem extends JPanel implements SearchablePlugin
 		add(buttonPanel, BorderLayout.LINE_END);
 
 		JMenuItem configMenuItem = null;
-		if (pluginConfig.hasConfigurables())
+		if (pluginConfig.getConfigDescriptor() != null)
 		{
-			JButton configButton = new JButton(CONFIG_ICON);
-			configButton.setRolloverIcon(CONFIG_ICON_HOVER);
+			JButton configButton = new JButton(ConfigPanel.CONFIG_ICON);
 			SwingUtil.removeButtonDecorations(configButton);
 			configButton.setPreferredSize(new Dimension(25, 0));
 			configButton.setVisible(false);
@@ -145,7 +138,7 @@ class PluginListItem extends JPanel implements SearchablePlugin
 
 			configButton.addActionListener(e ->
 			{
-				configButton.setIcon(CONFIG_ICON);
+				configButton.setIcon(ConfigPanel.CONFIG_ICON);
 				openGroupConfigPanel();
 			});
 
@@ -157,10 +150,10 @@ class PluginListItem extends JPanel implements SearchablePlugin
 		}
 
 		JMenuItem uninstallItem = null;
-		if (mf != null)
+		if (internalName != null)
 		{
 			uninstallItem = new JMenuItem("Uninstall");
-			uninstallItem.addActionListener(ev -> pluginListPanel.getExternalPluginManager().remove(mf.getInternalName()));
+			uninstallItem.addActionListener(ev -> pluginListPanel.getExternalPluginManager().remove(internalName));
 		}
 
 		addLabelPopupMenu(nameLabel, configMenuItem, pluginConfig.createSupportMenuItem(), uninstallItem);

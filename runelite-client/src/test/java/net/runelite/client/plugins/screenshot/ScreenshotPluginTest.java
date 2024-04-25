@@ -39,12 +39,9 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.widgets.InterfaceID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
-import static net.runelite.api.widgets.WidgetID.DIALOG_SPRITE_GROUP_ID;
-import static net.runelite.api.widgets.WidgetID.LEVEL_UP_GROUP_ID;
-import static net.runelite.api.widgets.WidgetInfo.DIALOG_SPRITE_TEXT;
-import static net.runelite.api.widgets.WidgetInfo.LEVEL_UP_LEVEL;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.ui.ClientUI;
@@ -57,7 +54,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
 import org.mockito.Mock;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -81,6 +77,8 @@ public class ScreenshotPluginTest
 	private static final String UNTRADEABLE_DROP = "<col=ef1020>Untradeable drop: Rusty sword";
 	private static final String BA_HIGH_GAMBLE_REWARD = "Raw shark (x 300)!<br>High level gamble count: <col=7f0000>100</col>";
 	private static final String HUNTER_LEVEL_2_TEXT = "<col=000080>Congratulations, you've just advanced a Hunter level.<col=000000><br><br>Your Hunter level is now 2.";
+	private static final String CRAFTING_LEVEL_96_MESSAGE = "Congratulations, you've just advanced your Crafting level. You are now level 96.";
+	private static final String STRENGTH_LEVEL_99_MESSAGE = "Congratulations, you've reached the highest possible Strength level of 99.";
 	private static final String COLLECTION_LOG_CHAT = "New item added to your collection log: <col=ef1020>Chompy bird hat</col>";
 
 	@Mock
@@ -179,7 +177,7 @@ public class ScreenshotPluginTest
 		assertEquals(ScreenshotPlugin.KillType.TOB, screenshotPlugin.getKillType());
 
 		WidgetLoaded widgetLoaded = new WidgetLoaded();
-		widgetLoaded.setGroupId(WidgetID.THEATRE_OF_BLOOD_REWARD_GROUP_ID);
+		widgetLoaded.setGroupId(InterfaceID.TOB_REWARD);
 		screenshotPlugin.onWidgetLoaded(widgetLoaded);
 
 		verify(screenshotPlugin).takeScreenshot("Theatre of Blood(73)", "Boss Kills");
@@ -197,7 +195,7 @@ public class ScreenshotPluginTest
 		assertEquals(ScreenshotPlugin.KillType.TOB_SM, screenshotPlugin.getKillType());
 
 		WidgetLoaded widgetLoaded = new WidgetLoaded();
-		widgetLoaded.setGroupId(WidgetID.THEATRE_OF_BLOOD_REWARD_GROUP_ID);
+		widgetLoaded.setGroupId(InterfaceID.TOB_REWARD);
 		screenshotPlugin.onWidgetLoaded(widgetLoaded);
 
 		verify(screenshotPlugin).takeScreenshot("Theatre of Blood Story Mode(73)", "Boss Kills");
@@ -215,7 +213,7 @@ public class ScreenshotPluginTest
 		assertEquals(ScreenshotPlugin.KillType.TOB_HM, screenshotPlugin.getKillType());
 
 		WidgetLoaded widgetLoaded = new WidgetLoaded();
-		widgetLoaded.setGroupId(WidgetID.THEATRE_OF_BLOOD_REWARD_GROUP_ID);
+		widgetLoaded.setGroupId(InterfaceID.TOB_REWARD);
 		screenshotPlugin.onWidgetLoaded(widgetLoaded);
 
 		verify(screenshotPlugin).takeScreenshot("Theatre of Blood Hard Mode(73)", "Boss Kills");
@@ -263,14 +261,14 @@ public class ScreenshotPluginTest
 	public void testHitpointsLevel99()
 	{
 		Widget levelChild = mock(Widget.class);
-		when(client.getWidget(eq(LEVEL_UP_LEVEL))).thenReturn(levelChild);
+		when(client.getWidget(ComponentID.LEVEL_UP_LEVEL)).thenReturn(levelChild);
 
 		when(levelChild.getText()).thenReturn("Your Hitpoints are now 99.");
 
-		assertEquals("Hitpoints(99)", screenshotPlugin.parseLevelUpWidget(LEVEL_UP_LEVEL));
+		assertEquals("Hitpoints(99)", screenshotPlugin.parseLevelUpWidget(ComponentID.LEVEL_UP_LEVEL));
 
 		WidgetLoaded event = new WidgetLoaded();
-		event.setGroupId(LEVEL_UP_GROUP_ID);
+		event.setGroupId(InterfaceID.LEVEL_UP);
 		screenshotPlugin.onWidgetLoaded(event);
 
 		GameTick tick = new GameTick();
@@ -283,14 +281,14 @@ public class ScreenshotPluginTest
 	public void testFiremakingLevel9()
 	{
 		Widget levelChild = mock(Widget.class);
-		when(client.getWidget(eq(LEVEL_UP_LEVEL))).thenReturn(levelChild);
+		when(client.getWidget(ComponentID.LEVEL_UP_LEVEL)).thenReturn(levelChild);
 
 		when(levelChild.getText()).thenReturn("Your Firemaking level is now 9.");
 
-		assertEquals("Firemaking(9)", screenshotPlugin.parseLevelUpWidget(LEVEL_UP_LEVEL));
+		assertEquals("Firemaking(9)", screenshotPlugin.parseLevelUpWidget(ComponentID.LEVEL_UP_LEVEL));
 
 		WidgetLoaded event = new WidgetLoaded();
-		event.setGroupId(LEVEL_UP_GROUP_ID);
+		event.setGroupId(InterfaceID.LEVEL_UP);
 		screenshotPlugin.onWidgetLoaded(event);
 
 		GameTick tick = new GameTick();
@@ -303,14 +301,14 @@ public class ScreenshotPluginTest
 	public void testAttackLevel70()
 	{
 		Widget levelChild = mock(Widget.class);
-		when(client.getWidget(eq(LEVEL_UP_LEVEL))).thenReturn(levelChild);
+		when(client.getWidget(ComponentID.LEVEL_UP_LEVEL)).thenReturn(levelChild);
 
 		when(levelChild.getText()).thenReturn("Your Attack level is now 70.");
 
-		assertEquals("Attack(70)", screenshotPlugin.parseLevelUpWidget(LEVEL_UP_LEVEL));
+		assertEquals("Attack(70)", screenshotPlugin.parseLevelUpWidget(ComponentID.LEVEL_UP_LEVEL));
 
 		WidgetLoaded event = new WidgetLoaded();
-		event.setGroupId(LEVEL_UP_GROUP_ID);
+		event.setGroupId(InterfaceID.LEVEL_UP);
 		screenshotPlugin.onWidgetLoaded(event);
 
 		GameTick tick = new GameTick();
@@ -323,20 +321,54 @@ public class ScreenshotPluginTest
 	public void testHunterLevel2()
 	{
 		Widget levelChild = mock(Widget.class);
-		when(client.getWidget(eq(DIALOG_SPRITE_TEXT))).thenReturn(levelChild);
+		when(client.getWidget(ComponentID.DIALOG_SPRITE_TEXT)).thenReturn(levelChild);
 
 		when(levelChild.getText()).thenReturn(HUNTER_LEVEL_2_TEXT);
 
-		assertEquals("Hunter(2)", screenshotPlugin.parseLevelUpWidget(DIALOG_SPRITE_TEXT));
+		assertEquals("Hunter(2)", screenshotPlugin.parseLevelUpWidget(ComponentID.DIALOG_SPRITE_TEXT));
 
 		WidgetLoaded event = new WidgetLoaded();
-		event.setGroupId(DIALOG_SPRITE_GROUP_ID);
+		event.setGroupId(InterfaceID.DIALOG_SPRITE);
 		screenshotPlugin.onWidgetLoaded(event);
 
 		GameTick tick = new GameTick();
 		screenshotPlugin.onGameTick(tick);
 
 		verify(screenshotPlugin).takeScreenshot("Hunter(2)", "Levels");
+	}
+
+	@Test
+	public void testCraftingLevel96NoInterface()
+	{
+		when(client.getVarbitValue(Varbits.DISABLE_LEVEL_UP_INTERFACE)).thenReturn(1);
+
+		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", CRAFTING_LEVEL_96_MESSAGE, null, 0);
+		screenshotPlugin.onChatMessage(chatMessageEvent);
+
+		verify(screenshotPlugin).takeScreenshot("Crafting(96)", "Levels");
+		reset(screenshotPlugin);
+
+		when(client.getVarbitValue(Varbits.DISABLE_LEVEL_UP_INTERFACE)).thenReturn(0);
+
+		screenshotPlugin.onChatMessage(chatMessageEvent);
+		verify(screenshotPlugin, never()).takeScreenshot(anyString(), anyString());
+	}
+
+	@Test
+	public void testStrengthLevel99NoInterface()
+	{
+		when(client.getVarbitValue(Varbits.DISABLE_LEVEL_UP_INTERFACE)).thenReturn(1);
+
+		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", STRENGTH_LEVEL_99_MESSAGE, null, 0);
+		screenshotPlugin.onChatMessage(chatMessageEvent);
+
+		verify(screenshotPlugin).takeScreenshot("Strength(99)", "Levels");
+		reset(screenshotPlugin);
+
+		when(client.getVarbitValue(Varbits.DISABLE_LEVEL_UP_INTERFACE)).thenReturn(0);
+
+		screenshotPlugin.onChatMessage(chatMessageEvent);
+		verify(screenshotPlugin, never()).takeScreenshot(anyString(), anyString());
 	}
 
 	@Test
@@ -377,10 +409,10 @@ public class ScreenshotPluginTest
 		when(screenshotConfig.screenshotHighGamble()).thenReturn(true);
 		Widget dialogChild = mock(Widget.class);
 		when(dialogChild.getText()).thenReturn(HUNTER_LEVEL_2_TEXT);
-		when(client.getWidget(DIALOG_SPRITE_TEXT)).thenReturn(dialogChild);
+		when(client.getWidget(ComponentID.DIALOG_SPRITE_TEXT)).thenReturn(dialogChild);
 
 		WidgetLoaded event = new WidgetLoaded();
-		event.setGroupId(DIALOG_SPRITE_GROUP_ID);
+		event.setGroupId(InterfaceID.DIALOG_SPRITE);
 		screenshotPlugin.onWidgetLoaded(event);
 
 		screenshotPlugin.onGameTick(new GameTick());
@@ -396,10 +428,10 @@ public class ScreenshotPluginTest
 		when(screenshotConfig.screenshotHighGamble()).thenReturn(false);
 		Widget dialogChild = mock(Widget.class);
 		when(dialogChild.getText()).thenReturn(BA_HIGH_GAMBLE_REWARD);
-		when(client.getWidget(DIALOG_SPRITE_TEXT)).thenReturn(dialogChild);
+		when(client.getWidget(ComponentID.DIALOG_SPRITE_TEXT)).thenReturn(dialogChild);
 
 		WidgetLoaded event = new WidgetLoaded();
-		event.setGroupId(DIALOG_SPRITE_GROUP_ID);
+		event.setGroupId(InterfaceID.DIALOG_SPRITE);
 		screenshotPlugin.onWidgetLoaded(event);
 
 		screenshotPlugin.onGameTick(new GameTick());
@@ -477,7 +509,7 @@ public class ScreenshotPluginTest
 		screenshotPlugin.onScriptPreFired(notificationStart);
 
 		when(client.getVarcStrValue(VarClientStr.NOTIFICATION_TOP_TEXT)).thenReturn("Combat Task Completed!");
-		when(client.getVarcStrValue(VarClientStr.NOTIFICATION_BOTTOM_TEXT)).thenReturn("Task Completed: <col=ffffff>Handyman</col>");
+		when(client.getVarcStrValue(VarClientStr.NOTIFICATION_BOTTOM_TEXT)).thenReturn("Task Completed: <col=ffffff>Handyman</col> (6 points)");
 
 		ScriptPreFired notificationDelay = new ScriptPreFired(ScriptID.NOTIFICATION_DELAY);
 		screenshotPlugin.onScriptPreFired(notificationDelay);
@@ -493,9 +525,21 @@ public class ScreenshotPluginTest
 		when(client.getVarbitValue(Varbits.COMBAT_ACHIEVEMENTS_POPUP)).thenReturn(1);
 
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "",
-			"Congratulations, you've completed an easy combat task: <col=06600c>Handyman</col>.", null, 0);
+			"Congratulations, you've completed a grandmaster combat task: <col=06600c>Egniol Diet II</col> (6 points).", null, 0);
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
-		verify(screenshotPlugin).takeScreenshot("Combat task (Handyman)", "Combat Achievements");
+		verify(screenshotPlugin).takeScreenshot("Combat task (Egniol Diet II)", "Combat Achievements");
+	}
+
+	@Test
+	public void testWildernessLootChest()
+	{
+		when(screenshotConfig.screenshotWildernessLootChest()).thenReturn(true);
+
+		WidgetLoaded widgetLoaded = new WidgetLoaded();
+		widgetLoaded.setGroupId(InterfaceID.WILDERNESS_LOOT_CHEST);
+		screenshotPlugin.onWidgetLoaded(widgetLoaded);
+
+		verify(screenshotPlugin).takeScreenshot("Loot key", "Wilderness Loot Chest");
 	}
 }

@@ -25,10 +25,10 @@
 package net.runelite.api.widgets;
 
 import java.awt.Rectangle;
-import java.util.Collection;
 import javax.annotation.Nullable;
 import net.runelite.api.FontTypeFace;
 import net.runelite.api.Point;
+import net.runelite.api.annotations.Component;
 import org.intellij.lang.annotations.MagicConstant;
 import org.jetbrains.annotations.Range;
 
@@ -54,6 +54,7 @@ public interface Widget
 	 *
 	 * @see WidgetID
 	 */
+	@Component
 	int getId();
 
 	/**
@@ -111,9 +112,8 @@ public interface Widget
 
 	/**
 	 * Gets a dynamic child by index
-	 *
-	 * @throws IndexOutOfBoundsException if the index is outside of the child array
 	 */
+	@Nullable
 	Widget getChild(int index);
 
 	/**
@@ -468,25 +468,6 @@ public interface Widget
 	 * @return the occupied area of the widget
 	 */
 	Rectangle getBounds();
-
-	/**
-	 * Gets any items that are being displayed in the widget.
-	 *
-	 * @return any items displayed, or null if there are no items
-	 */
-	@Deprecated
-	Collection<WidgetItem> getWidgetItems();
-
-	/**
-	 * Gets a widget item at a specific index.
-	 *
-	 * @param index index of the item
-	 * @return the widget item at index, or null if an item at index
-	 * does not exist
-	 * @throws IndexOutOfBoundsException if the index is out of bounds
-	 */
-	@Deprecated
-	WidgetItem getWidgetItem(int index);
 
 	/**
 	 * Gets the item ID displayed by the widget.
@@ -1047,6 +1028,13 @@ public interface Widget
 	 * @param args A ScriptID, then the args for the script
 	 */
 	void setOnDragListener(Object ...args);
+
+	/**
+	 * Sets a script to be ran when the mouse is scrolled when on the widget
+	 *
+	 * @param args A ScriptID, then the args for the script
+	 */
+	void setOnScrollWheelListener(Object ...args);
 
 	/**
 	 * Container this can be dragged in

@@ -61,8 +61,8 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.widgets.InterfaceID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
@@ -295,14 +295,14 @@ public class AlchemyRoom extends MTARoom
 	{
 		for (int i = 0; i < INFO_LENGTH; i++)
 		{
-			Widget textWidget = client.getWidget(WidgetID.MTA_ALCHEMY_GROUP_ID, INFO_ITEM_START + i);
+			Widget textWidget = client.getWidget(InterfaceID.MTA_ALCHEMY, INFO_ITEM_START + i);
 			if (textWidget == null)
 			{
 				return null;
 			}
 
 			String item = textWidget.getText();
-			Widget pointsWidget = client.getWidget(WidgetID.MTA_ALCHEMY_GROUP_ID, INFO_POINT_START + i);
+			Widget pointsWidget = client.getWidget(InterfaceID.MTA_ALCHEMY, INFO_POINT_START + i);
 			int points = Integer.parseInt(pointsWidget.getText());
 
 			if (points == BEST_POINTS)

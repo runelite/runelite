@@ -35,4 +35,22 @@ public interface Animation
 	 * @return
 	 */
 	int getId();
+
+	/**
+	 * Get how many distinct frames this animation has.
+	 *
+	 * For animaya animations, this is the duration in client ticks. For classic
+	 * animations, this is how many keyframes it has, not it's duration in ticks.
+	 */
+	int getNumFrames();
+
+	/**
+	 * How this animation behaves when its restarted during playback
+	 */
+	int getRestartMode();
+
+	/**
+	 * @see #getRestartMode()
+	 */
+	void setRestartMode(int restartMode);
 }

@@ -29,6 +29,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.List;
 import javax.annotation.Nullable;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import net.runelite.api.NPC;
@@ -157,7 +158,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		AnagramClue.builder()
 			.text("BY LOOK")
 			.npc("Bolkoy")
-			.location(new WorldPoint(2529, 3162, 0))
+			.location(new WorldPoint(2526, 3162, 0))
 			.area("Tree Gnome Village general store")
 			.question("How many flowers are there in the clearing below this platform?")
 			.answer("13")
@@ -337,7 +338,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		AnagramClue.builder()
 			.text("HEORIC")
 			.npc("Eohric")
-			.location(new WorldPoint(2900, 3565, 0))
+			.location(new WorldPoint(2897, 3565, 0))
 			.area("Top floor of Burthorpe Castle")
 			.question("King Arthur and Merlin sit down at the Round Table with 8 knights. How many degrees does each get?")
 			.answer("36")
@@ -414,7 +415,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("LOW LAG")
 			.npc("Gallow")
 			.location(new WorldPoint(1805, 3566, 0))
-			.area("Vinery in the Great Kourend")
+			.area("Vinery southeast of Hosidius")
 			.question("How many vine patches can you find in this vinery?")
 			.answer("12")
 			.build(),
@@ -475,7 +476,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		AnagramClue.builder()
 			.text("NO OWNER")
 			.npc("Oronwen")
-			.location(new WorldPoint(1162, 3178, 0))
+			.location(new WorldPoint(2326, 3178, 0))
 			.area("Lletya Seamstress shop in Lletya")
 			.question("What is the minimum amount of quest points required to reach Lletya?")
 			.answer("20")
@@ -547,7 +548,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.npc("Squire")
 			.location(new WorldPoint(2975, 3343, 0))
 			.area("Falador Castle Courtyard")
-			.question("White knights are superior to black knights. 2 white knights can handle 3 black knights. How many knights do we need for an army of 981 black knights?")
+			.question("White Knights of Falador are stronger than the Black Knights of the Kinshra. 2 White Knights can handle 3 Kinshra. How many White Knights would we need against an army of 981 Kinshra?")
 			.answer("654")
 			.build(),
 		AnagramClue.builder()
@@ -758,8 +759,8 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		AnagramClue.builder()
 			.text("BRUCIE CATNAP")
 			.npc("Captain Bruce")
-			.location(new WorldPoint(1520, 3558, 0))
-			.area("Graveyard of Heroes")
+			.location(new WorldPoint(1529, 3567, 0))
+			.area("East of Shayzien Graveyard")
 			.build(),
 		AnagramClue.builder()
 			.text("UESNKRL NRIEDDO")
@@ -768,11 +769,18 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.area("Shayzien pub")
 			.question("If 13 Shayzien Soldiers kill 46 Lizardmen each in a day, how many Lizardmen have they killed in total in a single day?")
 			.answer("598")
+			.build(),
+		AnagramClue.builder()
+			.text("LAME T")
+			.npc("Metla")
+			.location(new WorldPoint(1742, 2977, 0))
+			.area("Stonecutter Outpost")
 			.build()
 	);
 
 	private final String text;
 	private final String npc;
+	@Getter(AccessLevel.PRIVATE)
 	private final WorldPoint location;
 	private final String area;
 	@Nullable
@@ -781,6 +789,12 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 	private final String answer;
 	@Builder.Default
 	private final int objectId = -1;
+
+	@Override
+	public WorldPoint getLocation(ClueScrollPlugin plugin)
+	{
+		return location;
+	}
 
 	@Override
 	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin)
@@ -813,7 +827,7 @@ public class AnagramClue extends ClueScroll implements NpcClueScroll, ObjectClue
 	@Override
 	public void makeWorldOverlayHint(Graphics2D graphics, ClueScrollPlugin plugin)
 	{
-		if (!getLocation().isInScene(plugin.getClient()))
+		if (!getLocation(plugin).isInScene(plugin.getClient()))
 		{
 			return;
 		}

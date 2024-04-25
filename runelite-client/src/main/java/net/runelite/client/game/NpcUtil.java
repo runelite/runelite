@@ -34,6 +34,7 @@ import net.runelite.api.AnimationID;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.NpcID;
+import net.runelite.api.ParamID;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.NpcChanged;
 import net.runelite.client.RuntimeConfig;
@@ -85,6 +86,7 @@ public class NpcUtil
 			case NpcID.SMALL_LIZARD:
 			case NpcID.SMALL_LIZARD_463:
 			case NpcID.GROWTHLING:
+			case NpcID.BEE_SWARM:
 			// These NPCs die, but transform into forms which are attackable or interactable, so it would be jarring for
 			// them to be considered dead when reaching 0hp.
 			case NpcID.KALPHITE_QUEEN_963:
@@ -126,7 +128,15 @@ public class NpcUtil
 			case NpcID.HOPELESS_CREATURE_1073:
 			case NpcID.GADDERANKS_4484:
 			case NpcID.WALL_BEAST:
+			case NpcID.RUNITE_GOLEM:
+			case NpcID.RUNITE_ROCKS:
 			case NpcID.STRANGE_CREATURE_12076: // Secrets of the North transitioning to Jhallan
+			case NpcID.BOUNCER_3509:
+			// Tutorial island giant rats respawn instantly.
+			case NpcID.GIANT_RAT_3313:
+			// Agrith Naar restores health upon reaching 0hp if the player does not have Silverlight
+			// equipped, or moved away immediately after applying the killing blow.
+			case NpcID.AGRITH_NAAR:
 				return false;
 			// These NPCs have no attack options, but are the dead and uninteractable form of otherwise attackable NPCs,
 			// thus should not be considered alive.
@@ -170,8 +180,23 @@ public class NpcUtil
 				}
 
 				final NPCComposition npcComposition = npc.getTransformedComposition();
-				boolean hasAttack = npcComposition != null && ArrayUtils.contains(npcComposition.getActions(), "Attack");
-				return hasAttack && npc.isDead();
+				if (npcComposition == null)
+				{
+					return false;
+				}
+
+				boolean hasAttack = ArrayUtils.contains(npcComposition.getActions(), "Attack");
+				if (!hasAttack || !npc.isDead())
+				{
+					return false;
+				}
+
+				if (npcComposition.getIntValue(ParamID.NPC_DEATH_HIDER_EXCLUDE) != 0)
+				{
+					return false;
+				}
+
+				return true;
 		}
 	}
 
@@ -210,6 +235,7 @@ public class NpcUtil
 			case NpcID.AWAKENED_ALTAR_7290:
 			case NpcID.AWAKENED_ALTAR_7292:
 			case NpcID.AWAKENED_ALTAR_7294:
+			case NpcID.BOUNCER_3508:
 				npc.setDead(false);
 				break;
 			default:

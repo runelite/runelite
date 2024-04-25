@@ -29,6 +29,15 @@ package net.runelite.api;
  */
 public final class ParamID
 {
+	public static final int OC_ITEM_OP1 = 451;
+	public static final int OC_ITEM_OP2 = 452;
+	public static final int OC_ITEM_OP3 = 453;
+	public static final int OC_ITEM_OP4 = 454;
+	public static final int OC_ITEM_OP5 = 455;
+	public static final int OC_ITEM_OP6 = 456;
+	public static final int OC_ITEM_OP7 = 457;
+	public static final int OC_ITEM_OP8 = 458;
+
 	/**
 	 * Long name for NPCs used in the HP hud
 	 */
@@ -50,12 +59,16 @@ public final class ParamID
 	public static final int SETTING_SLIDER_DEADZONE = 1109;
 	public static final int SETTING_SLIDER_DEADTIME = 1110;
 
-	public static final int OC_ITEM_OP1 = 451;
-	public static final int OC_ITEM_OP2 = 452;
-	public static final int OC_ITEM_OP3 = 453;
-	public static final int OC_ITEM_OP4 = 454;
-	public static final int OC_ITEM_OP5 = 455;
-	public static final int OC_ITEM_OP6 = 456;
-	public static final int OC_ITEM_OP7 = 457;
-	public static final int OC_ITEM_OP8 = 458;
+	public static final int OC_PRAYER_COMPONENT = 1751;
+	public static final int OC_PRAYER_LEVEL = 1753;
+
+	public static final int NPC_DEATH_HIDER_EXCLUDE = 1799;
+
+	public static final int SLAYER_TASK_NAME = 1801;
+
+	public static final int ATTACK_STYLE_NAME = 1407;
+
+	public static final int SPELL_BUTTON = 596;
+	public static final int SPELL_NAME = 601;
+	public static final int SPELL_LEVELREQ = 604;
 }

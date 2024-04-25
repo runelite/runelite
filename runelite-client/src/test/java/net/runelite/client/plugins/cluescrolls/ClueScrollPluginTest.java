@@ -43,6 +43,7 @@ import net.runelite.api.ItemID;
 import net.runelite.api.NPC;
 import net.runelite.api.NullObjectID;
 import net.runelite.api.Player;
+import net.runelite.api.Scene;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
@@ -50,9 +51,9 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.widgets.InterfaceID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
@@ -85,6 +86,10 @@ public class ClueScrollPluginTest
 	@Mock
 	@Bind
 	Client client;
+
+	@Mock
+	@Bind
+	Scene scene;
 
 	@Mock
 	@Bind
@@ -136,7 +141,7 @@ public class ClueScrollPluginTest
 		hotColdMessage.setType(ChatMessageType.GAMEMESSAGE);
 		final Player localPlayer = mock(Player.class);
 
-		when(client.getWidget(WidgetInfo.CLUE_SCROLL_TEXT)).thenReturn(clueWidget);
+		when(client.getWidget(ComponentID.CLUESCROLL_TEXT)).thenReturn(clueWidget);
 		when(client.getLocalPlayer()).thenReturn(localPlayer);
 		when(client.getPlane()).thenReturn(0);
 		when(client.getCachedNPCs()).thenReturn(new NPC[] {});
@@ -148,7 +153,7 @@ public class ClueScrollPluginTest
 
 		// Initialize a beginner hot-cold clue (which will have an end point of LUMBRIDGE_COW_FIELD)
 		WidgetLoaded widgetLoaded = new WidgetLoaded();
-		widgetLoaded.setGroupId(WidgetID.CLUE_SCROLL_GROUP_ID);
+		widgetLoaded.setGroupId(InterfaceID.CLUESCROLL);
 		plugin.onWidgetLoaded(widgetLoaded);
 
 		// clientthread callback
@@ -190,11 +195,11 @@ public class ClueScrollPluginTest
 		// Set up emote clue
 		final Widget clueWidget = mock(Widget.class);
 		when(clueWidget.getText()).thenReturn("Spin in the Varrock Castle courtyard. Equip a black axe, a coif and a ruby ring.");
-		when(client.getWidget(WidgetInfo.CLUE_SCROLL_TEXT)).thenReturn(clueWidget);
+		when(client.getWidget(ComponentID.CLUESCROLL_TEXT)).thenReturn(clueWidget);
 
 		// open clue
 		WidgetLoaded widgetLoaded = new WidgetLoaded();
-		widgetLoaded.setGroupId(WidgetID.CLUE_SCROLL_GROUP_ID);
+		widgetLoaded.setGroupId(InterfaceID.CLUESCROLL);
 		plugin.onWidgetLoaded(widgetLoaded);
 
 		// clientthread callback
@@ -221,7 +226,7 @@ public class ClueScrollPluginTest
 
 		// open clue
 		reset(clientThread);
-		widgetLoaded.setGroupId(WidgetID.CLUE_SCROLL_GROUP_ID);
+		widgetLoaded.setGroupId(InterfaceID.CLUESCROLL);
 		plugin.onWidgetLoaded(widgetLoaded);
 
 		// clientthread callback

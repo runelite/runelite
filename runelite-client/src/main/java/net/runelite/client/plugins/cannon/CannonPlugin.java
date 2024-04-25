@@ -187,7 +187,7 @@ public class CannonPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{
-		if (varbitChanged.getVarpId() == VarPlayer.CANNON_AMMO.getId())
+		if (varbitChanged.getVarpId() == VarPlayer.CANNON_AMMO)
 		{
 			int previousAmmoCount = cballsLeft;
 			cballsLeft = varbitChanged.getValue();
@@ -209,7 +209,7 @@ public class CannonPlugin extends Plugin
 			}
 		}
 
-		if (varbitChanged.getVarpId() == VarPlayer.DWARF_CANNON_PARTS_ASSEMBLED.getId())
+		if (varbitChanged.getVarpId() == VarPlayer.DWARF_CANNON_PARTS_ASSEMBLED)
 		{
 			int partsAssembled = varbitChanged.getValue();
 
@@ -229,7 +229,7 @@ public class CannonPlugin extends Plugin
 			}
 		}
 
-		if (varbitChanged.getVarpId() == VarPlayer.DWARF_CANNON_LOCATION.getId())
+		if (varbitChanged.getVarpId() == VarPlayer.DWARF_CANNON_LOCATION)
 		{
 			cannonWorldPoint = worldPointFromVar();
 
@@ -308,7 +308,7 @@ public class CannonPlugin extends Plugin
 
 	private WorldPoint worldPointFromVar()
 	{
-		int var = client.getVarpValue(VarPlayer.DWARF_CANNON_LOCATION.getId());
+		int var = client.getVarpValue(VarPlayer.DWARF_CANNON_LOCATION);
 
 		if (var == -1)
 		{

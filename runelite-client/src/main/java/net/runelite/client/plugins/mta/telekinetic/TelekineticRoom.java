@@ -59,7 +59,7 @@ import net.runelite.api.events.GroundObjectSpawned;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.WallObjectSpawned;
-import net.runelite.api.widgets.WidgetID;
+import net.runelite.api.widgets.InterfaceID;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.mta.MTAConfig;
 import net.runelite.client.plugins.mta.MTARoom;
@@ -81,7 +81,7 @@ public class TelekineticRoom extends MTARoom
 	private WorldPoint finishLocation;
 	private Rectangle bounds;
 	private NPC guardian;
-	private Maze maze;
+	private int numMazeWalls;
 
 	@Inject
 	private TelekineticRoom(MTAConfig config, Client client)
@@ -132,19 +132,17 @@ public class TelekineticRoom extends MTARoom
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (!config.telekinetic()
-				|| !inside()
-				|| client.getGameState() != GameState.LOGGED_IN)
+		if (!inside() || !config.telekinetic())
 		{
-			maze = null;
+			numMazeWalls = 0;
 			moves.clear();
 			return;
 		}
 
-		if (maze == null || telekineticWalls.size() != maze.getWalls())
+		if (telekineticWalls.size() != numMazeWalls)
 		{
 			bounds = getBounds(telekineticWalls.toArray(new WallObject[0]));
-			maze = Maze.fromWalls(telekineticWalls.size());
+			numMazeWalls = telekineticWalls.size();
 			client.clearHintArrow();
 		}
 		else if (guardian != null)
@@ -214,13 +212,13 @@ public class TelekineticRoom extends MTARoom
 	@Override
 	public boolean inside()
 	{
-		return client.getWidget(WidgetID.MTA_TELEKINETIC_GROUP_ID, 0) != null;
+		return client.getWidget(InterfaceID.MTA_TELEKINETIC, 0) != null;
 	}
 
 	@Override
 	public void under(Graphics2D graphics2D)
 	{
-		if (inside() && maze != null && guardian != null)
+		if (inside() && numMazeWalls > 0 && guardian != null)
 		{
 			if (destination != null)
 			{

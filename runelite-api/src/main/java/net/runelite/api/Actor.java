@@ -55,6 +55,14 @@ public interface Actor extends Renderable
 	String getName();
 
 	/**
+	 * Gets if the actor is interacting with another actor.
+	 * {@link #getInteracting()} will return the interacting actor,
+	 * unless they are outside of the visibility range.
+	 * @return
+	 */
+	boolean isInteracting();
+
+	/**
 	 * Gets the actor being interacted with.
 	 * <p>
 	 * Examples of interaction include:
@@ -269,11 +277,53 @@ public interface Actor extends Renderable
 	void setAnimationFrame(int frame);
 
 	/**
+	 * Get the spotanims on the actor.
+	 * It is important to not modify the table directly or indirectly via
+	 * eg. iterator remove().
+	 * @see #createSpotAnim(int, int, int, int)
+	 * @see #removeSpotAnim(int)
+	 * @see #clearSpotAnims()
+	 * @return
+	 */
+	IterableHashTable<ActorSpotAnim> getSpotAnims();
+
+	/**
+	 * Check if the actor has a spotanim
+	 * @param spotAnimId the spot anim id
+	 * @see GraphicID
+	 * @return
+	 */
+	boolean hasSpotAnim(int spotAnimId);
+
+	/**
+	 * Create an actor spotanim
+	 * @param id key for the {@link #getSpotAnims()} table
+	 * @param spotAnimId spotanim id {@link GraphicID}
+	 * @param height height offspot for spot anim
+	 * @param delay initial delay, in client ticks, before spotanim is active
+	 */
+	void createSpotAnim(int id, int spotAnimId, int height, int delay);
+
+	/**
+	 * Remove an actor spotanim
+	 * @param id key for the {@link #getSpotAnims()} table
+	 */
+	void removeSpotAnim(int id);
+
+	/**
+	 * Remove all actor spotanims
+	 */
+	void clearSpotAnims();
+
+	/**
 	 * Get the graphic/spotanim that is currently on the actor.
+	 * Actors can have multiple spotanims, this gets only one of them. Use {@link #hasSpotAnim(int)} instead.
 	 *
 	 * @return the spotanim of the actor
 	 * @see GraphicID
+	 * @deprecated see {@link #hasSpotAnim(int)}
 	 */
+	@Deprecated
 	int getGraphic();
 
 	/**
@@ -281,33 +331,43 @@ public interface Actor extends Renderable
 	 *
 	 * @param graphic The spotanim id
 	 * @see GraphicID
+	 * @deprecated see {@link #createSpotAnim(int, int, int, int)}
 	 */
+	@Deprecated
 	void setGraphic(int graphic);
 
 	/**
 	 * Get the height of the graphic/spotanim on the actor
 	 * @return
+	 * @deprecated see {@link ActorSpotAnim#getHeight()}
 	 */
+	@Deprecated
 	int getGraphicHeight();
 
 	/**
 	 * Set the height of the graphic/spotanim on the actor
 	 * @param height
+	 * @deprecated see {@link ActorSpotAnim#setHeight(int)}
 	 */
+	@Deprecated
 	void setGraphicHeight(int height);
 
 	/**
 	 * Get the frame of the currently playing spotanim
 	 *
 	 * @return
+	 * @deprecated see {@link ActorSpotAnim#getFrame()}
 	 */
+	@Deprecated
 	int getSpotAnimFrame();
 
 	/**
 	 * Set the frame of the currently playing spotanim
 	 *
 	 * @param spotAnimFrame
+	 * @deprecated see {@link ActorSpotAnim#setFrame(int)}
 	 */
+	@Deprecated
 	void setSpotAnimFrame(int spotAnimFrame);
 
 	/**

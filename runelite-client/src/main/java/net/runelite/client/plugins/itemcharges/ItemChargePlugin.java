@@ -52,9 +52,9 @@ import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.widgets.InterfaceID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -186,6 +186,7 @@ public class ItemChargePlugin extends Plugin
 	// Limits destroy callback to once per tick
 	private int lastCheckTick;
 	private final Map<EquipmentInventorySlot, ItemChargeInfobox> infoboxes = new EnumMap<>(EquipmentInventorySlot.class);
+	private boolean loginFlag;
 
 	@Provides
 	ItemChargeConfig getConfig(ConfigManager configManager)
@@ -197,6 +198,10 @@ public class ItemChargePlugin extends Plugin
 	protected void startUp()
 	{
 		overlayManager.add(overlay);
+		if (client.getGameState() == GameState.LOGGED_IN)
+		{
+			clientThread.invokeLater(() -> updateExplorerRingCharges(client.getVarbitValue(Varbits.EXPLORER_RING_ALCHS)));
+		}
 	}
 
 	@Override
@@ -212,11 +217,19 @@ public class ItemChargePlugin extends Plugin
 	public void onGameStateChanged(GameStateChanged e)
 	{
 		// No VarbitChanged event fires on login if the explorer's ring is full (varbit value 0).
-		// So, set the value to 0 when LOGGING_IN. This is before the VarbitChanged event would fire, so if it shouldn't
-		// be 0 it will be updated later.
-		if (e.getGameState() == GameState.LOGGING_IN)
+		// So, set the value to 0 when LOGGED_IN. This is before the VarbitChanged event would fire,
+		// so if it shouldn't be 0 it will be updated later.
+		switch (e.getGameState())
 		{
-			updateExplorerRingCharges(0);
+			case LOGGING_IN:
+				loginFlag = true;
+				break;
+			case LOGGED_IN:
+				if (loginFlag)
+				{
+					loginFlag = false;
+					updateExplorerRingCharges(0);
+				}
 		}
 	}
 
@@ -258,16 +271,13 @@ public class ItemChargePlugin extends Plugin
 			Matcher bloodEssenceExtractMatcher = BLOOD_ESSENCE_EXTRACT_PATTERN.matcher(message);
 			Matcher braceletOfClayCheckMatcher = BRACELET_OF_CLAY_CHECK_PATTERN.matcher(message);
 
-			if (config.recoilNotification() && message.contains(RING_OF_RECOIL_BREAK_MESSAGE))
+			if (message.contains(RING_OF_RECOIL_BREAK_MESSAGE))
 			{
-				notifier.notify("Your Ring of Recoil has shattered");
+				notifier.notify(config.recoilNotification(), "Your Ring of Recoil has shattered");
 			}
 			else if (dodgyBreakMatcher.find())
 			{
-				if (config.dodgyNotification())
-				{
-					notifier.notify("Your dodgy necklace has crumbled to dust.");
-				}
+				notifier.notify(config.dodgyNotification(), "Your dodgy necklace has crumbled to dust.");
 
 				updateDodgyNecklaceCharges(MAX_DODGY_CHARGES);
 			}
@@ -297,6 +307,8 @@ public class ItemChargePlugin extends Plugin
 			}
 			else if (amuletOfChemistryBreakMatcher.find())
 			{
+				notifier.notify(config.amuletOfChemistryNotification(), "Your Amulet of Chemistry has crumbled to dust.");
+
 				updateAmuletOfChemistryCharges(MAX_AMULET_OF_CHEMISTRY_CHARGES);
 			}
 			else if (amuletOfBountyCheckMatcher.find())
@@ -313,10 +325,7 @@ public class ItemChargePlugin extends Plugin
 			}
 			else if (message.contains(BINDING_BREAK_TEXT))
 			{
-				if (config.bindingNotification())
-				{
-					notifier.notify(BINDING_BREAK_TEXT);
-				}
+				notifier.notify(config.bindingNotification(), BINDING_BREAK_TEXT);
 
 				// This chat message triggers before the used message so add 1 to the max charges to ensure proper sync
 				updateBindingNecklaceCharges(MAX_BINDING_CHARGES + 1);
@@ -371,12 +380,10 @@ public class ItemChargePlugin extends Plugin
 			}
 			else if (message.equals(RING_OF_FORGING_BREAK_TEXT))
 			{
-				if (config.ringOfForgingNotification())
-				{
-					notifier.notify("Your ring of forging has melted.");
-				}
+				notifier.notify(config.ringOfForgingNotification(), "Your ring of forging has melted.");
 
-				updateRingOfForgingCharges(MAX_RING_OF_FORGING_CHARGES);
+				// This chat message triggers before the used message so add 1 to the max charges to ensure proper sync
+				updateRingOfForgingCharges(MAX_RING_OF_FORGING_CHARGES + 1);
 			}
 			else if (chronicleAddMatcher.find())
 			{
@@ -413,10 +420,7 @@ public class ItemChargePlugin extends Plugin
 				if (found == null)
 				{
 					updateBraceletOfSlaughterCharges(MAX_SLAYER_BRACELET_CHARGES);
-					if (config.slaughterNotification())
-					{
-						notifier.notify(BRACELET_OF_SLAUGHTER_BREAK_TEXT);
-					}
+					notifier.notify(config.slaughterNotification(), BRACELET_OF_SLAUGHTER_BREAK_TEXT);
 				}
 				else
 				{
@@ -433,10 +437,7 @@ public class ItemChargePlugin extends Plugin
 				if (found == null)
 				{
 					updateExpeditiousBraceletCharges(MAX_SLAYER_BRACELET_CHARGES);
-					if (config.expeditiousNotification())
-					{
-						notifier.notify(EXPEDITIOUS_BRACELET_BREAK_TEXT);
-					}
+					notifier.notify(config.expeditiousNotification(), EXPEDITIOUS_BRACELET_BREAK_TEXT);
 				}
 				else
 				{
@@ -470,16 +471,23 @@ public class ItemChargePlugin extends Plugin
 				// Determine if the player mined with a Bracelet of Clay equipped.
 				if (equipment != null && equipment.contains(ItemID.BRACELET_OF_CLAY))
 				{
-					int charges = Ints.constrainToRange(getItemCharges(ItemChargeConfig.KEY_BRACELET_OF_CLAY) - 1, 0, MAX_BRACELET_OF_CLAY_CHARGES);
-					updateBraceletOfClayCharges(charges);
+					final ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
+
+					// Charge is not used if only 1 inventory slot is available when mining in Prifddinas
+					boolean ignore = inventory != null
+						&& inventory.count() == 27
+						&& message.equals(BRACELET_OF_CLAY_USE_TEXT_TRAHAEARN);
+
+					if (!ignore)
+					{
+						int charges = Ints.constrainToRange(getItemCharges(ItemChargeConfig.KEY_BRACELET_OF_CLAY) - 1, 0, MAX_BRACELET_OF_CLAY_CHARGES);
+						updateBraceletOfClayCharges(charges);
+					}
 				}
 			}
 			else if (message.equals(BRACELET_OF_CLAY_BREAK_TEXT))
 			{
-				if (config.braceletOfClayNotification())
-				{
-					notifier.notify("Your bracelet of clay has crumbled to dust");
-				}
+				notifier.notify(config.braceletOfClayNotification(), "Your bracelet of clay has crumbled to dust");
 				updateBraceletOfClayCharges(MAX_BRACELET_OF_CLAY_CHARGES);
 			}
 		}
@@ -523,11 +531,11 @@ public class ItemChargePlugin extends Plugin
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded widgetLoaded)
 	{
-		if (widgetLoaded.getGroupId() == WidgetID.DIALOG_SPRITE_GROUP_ID)
+		if (widgetLoaded.getGroupId() == InterfaceID.DIALOG_SPRITE)
 		{
 			clientThread.invokeLater(() ->
 			{
-				Widget sprite = client.getWidget(WidgetInfo.DIALOG_SPRITE_SPRITE);
+				Widget sprite = client.getWidget(ComponentID.DIALOG_SPRITE_SPRITE);
 				if (sprite != null)
 				{
 					switch (sprite.getItemId())
@@ -628,7 +636,7 @@ public class ItemChargePlugin extends Plugin
 		}
 		lastCheckTick = currentTick;
 
-		final Widget widgetDestroyItemName = client.getWidget(WidgetInfo.DESTROY_ITEM_NAME);
+		final Widget widgetDestroyItemName = client.getWidget(ComponentID.DESTROY_ITEM_NAME);
 		if (widgetDestroyItemName == null)
 		{
 			return;

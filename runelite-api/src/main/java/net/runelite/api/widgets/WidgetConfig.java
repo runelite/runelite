@@ -24,7 +24,7 @@
  */
 package net.runelite.api.widgets;
 
-import net.runelite.api.MenuAction;
+import org.intellij.lang.annotations.MagicConstant;
 
 /**
  * Utility class used for defining options to be used on the click mask
@@ -62,6 +62,7 @@ public final class WidgetConfig
 	/**
 	 * Can this widget be used on a item in your inventory
 	 */
+	@Deprecated
 	public static final int USE_ITEM = 16 << 11;
 
 	/**
@@ -70,14 +71,14 @@ public final class WidgetConfig
 	public static final int USE_WIDGET = 32 << 11;
 
 	/**
-	 * Controls whether or not a widget can have another dragged onto it.
+	 * Controls whether this widget can be dragged around.
 	 */
-	public static final int DRAG_ON = 1 << 17;
+	public static final int DRAG = 1 << 17;
 
 	/**
-	 * Controls whether or not a widget can be dragged around.
+	 * Controls whether this widget can have other widgets dragged onto it.
 	 */
-	public static final int DRAG = 1 << 20;
+	public static final int DRAG_ON = 1 << 20;
 
 	/**
 	 * Can widgets with USE_WIDGET be used on this widget
@@ -85,14 +86,13 @@ public final class WidgetConfig
 	public static final int WIDGET_USE_TARGET = 1 << 21;
 
 	/**
-	 * Is the widget an (inventory?) item
+	 * Does the action (zero bosed) get transmitted to the server
+	 * when clicked
 	 */
-	public static final int ITEM = 1 << 30;
-
-	/**
-	 * Add a USE option
-	 *
-	 * @see MenuAction#ITEM_USE
-	 */
-	public static final int ITEM_USE_OP = 1 << 31;
+	@SuppressWarnings("MagicConstant")
+	@MagicConstant(flagsFromClass = WidgetConfig.class)
+	public static int transmitAction(int action)
+	{
+		return 1 << (action + 1);
+	}
 }

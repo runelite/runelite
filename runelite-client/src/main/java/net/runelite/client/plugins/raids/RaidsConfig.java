@@ -28,7 +28,6 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.Keybind;
-import net.runelite.client.util.ImageUploadStyle;
 
 @ConfigGroup("raids")
 public interface RaidsConfig extends Config
@@ -189,12 +188,12 @@ public interface RaidsConfig extends Config
 
 	@ConfigItem(
 		position = 14,
-		keyName = "uploadScreenshot",
-		name = "Upload screenshot",
-		description = "Uploads the scouting screenshot to Imgur or the clipboard"
+		keyName = "copyToClipboard",
+		name = "Copy to clipboard",
+		description = "Copies the scouting screenshot to clipboard"
 	)
-	default ImageUploadStyle uploadScreenshot()
+	default boolean copyToClipboard()
 	{
-		return ImageUploadStyle.CLIPBOARD;
+		return true;
 	}
 }

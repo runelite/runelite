@@ -40,7 +40,7 @@ public class ItemLoader
 	{
 		ItemDefinition def = new ItemDefinition(id);
 		InputStream is = new InputStream(b);
-		
+
 		while (true)
 		{
 			int opcode = is.readUnsignedByte();
@@ -66,6 +66,10 @@ public class ItemLoader
 		else if (opcode == 2)
 		{
 			def.name = stream.readString();
+		}
+		else if (opcode == 3)
+		{
+			def.examine = stream.readString();
 		}
 		else if (opcode == 4)
 		{

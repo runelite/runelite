@@ -36,12 +36,11 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
-import net.runelite.api.EnumComposition;
-import net.runelite.api.EnumID;
 import net.runelite.api.Quest;
 import net.runelite.api.ScriptID;
 import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.dbtable.DBTableID;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.StatChanged;
@@ -105,45 +104,49 @@ public class WorldMapPlugin extends Plugin
 	static final String CONFIG_KEY_DUNGEON_TOOLTIPS = "dungeonTooltips";
 	static final String CONFIG_KEY_HUNTER_AREA_TOOLTIPS = "hunterAreaTooltips";
 	static final String CONFIG_KEY_FISHING_SPOT_TOOLTIPS = "fishingSpotTooltips";
-	static final String CONFIG_KEY_KOUREND_TASK_TOOLTIPS = "kourendTaskTooltips";
 
 	static
 	{
+		// Original size of world map icons
+		final int worldMapIconSize = 15;
 		//A size of 17 gives us a buffer when triggering tooltips
-		final int iconBufferSize = 17;
-
-		//Quest icons are a bit bigger.
-		final int questIconBufferSize = 22;
+		final int iconOffset = 1;
+		final int iconBufferSize = worldMapIconSize + iconOffset * 2;
+		// Quest icons are a bit bigger than regular icons
+		// A size of 25 aligns the quest icons when converting the world map point to pixel coordinates
+		// The new quest icons must be offset by 5, for a size of 25, to align when drawing on top of the original icon
+		final int questIconOffset = 5;
+		final int questIconBufferSize = worldMapIconSize + questIconOffset * 2;
 
 		BLANK_ICON = new BufferedImage(iconBufferSize, iconBufferSize, BufferedImage.TYPE_INT_ARGB);
 
 		FAIRY_TRAVEL_ICON = new BufferedImage(iconBufferSize, iconBufferSize, BufferedImage.TYPE_INT_ARGB);
 		final BufferedImage fairyTravelIcon = ImageUtil.loadImageResource(WorldMapPlugin.class, "fairy_ring_travel.png");
-		FAIRY_TRAVEL_ICON.getGraphics().drawImage(fairyTravelIcon, 1, 1, null);
+		FAIRY_TRAVEL_ICON.getGraphics().drawImage(fairyTravelIcon, iconOffset, iconOffset, null);
 
 		NOPE_ICON = new BufferedImage(iconBufferSize, iconBufferSize, BufferedImage.TYPE_INT_ARGB);
 		final BufferedImage nopeImage = ImageUtil.loadImageResource(WorldMapPlugin.class, "nope_icon.png");
-		NOPE_ICON.getGraphics().drawImage(nopeImage, 1, 1, null);
+		NOPE_ICON.getGraphics().drawImage(nopeImage, iconOffset, iconOffset, null);
 
 		NOT_STARTED_ICON = new BufferedImage(questIconBufferSize, questIconBufferSize, BufferedImage.TYPE_INT_ARGB);
 		final BufferedImage notStartedIcon = ImageUtil.loadImageResource(WorldMapPlugin.class, "quest_not_started_icon.png");
-		NOT_STARTED_ICON.getGraphics().drawImage(notStartedIcon, 4, 4, null);
+		NOT_STARTED_ICON.getGraphics().drawImage(notStartedIcon, questIconOffset, questIconOffset, null);
 
 		STARTED_ICON = new BufferedImage(questIconBufferSize, questIconBufferSize, BufferedImage.TYPE_INT_ARGB);
 		final BufferedImage startedIcon = ImageUtil.loadImageResource(WorldMapPlugin.class, "quest_started_icon.png");
-		STARTED_ICON.getGraphics().drawImage(startedIcon, 4, 4, null);
+		STARTED_ICON.getGraphics().drawImage(startedIcon, questIconOffset, questIconOffset, null);
 
 		FINISHED_ICON = new BufferedImage(questIconBufferSize, questIconBufferSize, BufferedImage.TYPE_INT_ARGB);
 		final BufferedImage finishedIcon = ImageUtil.loadImageResource(WorldMapPlugin.class, "quest_completed_icon.png");
-		FINISHED_ICON.getGraphics().drawImage(finishedIcon, 4, 4, null);
+		FINISHED_ICON.getGraphics().drawImage(finishedIcon, questIconOffset, questIconOffset, null);
 
 		MINING_SITE_ICON = new BufferedImage(iconBufferSize, iconBufferSize, BufferedImage.TYPE_INT_ARGB);
 		final BufferedImage miningSiteIcon = ImageUtil.loadImageResource(WorldMapPlugin.class, "mining_site_icon.png");
-		MINING_SITE_ICON.getGraphics().drawImage(miningSiteIcon, 1, 1, null);
+		MINING_SITE_ICON.getGraphics().drawImage(miningSiteIcon, iconOffset, iconOffset, null);
 
 		ROOFTOP_COURSE_ICON = new BufferedImage(iconBufferSize, iconBufferSize, BufferedImage.TYPE_INT_ARGB);
 		final BufferedImage rooftopCourseIcon = ImageUtil.loadImageResource(WorldMapPlugin.class, "rooftop_course_icon.png");
-		ROOFTOP_COURSE_ICON.getGraphics().drawImage(rooftopCourseIcon, 1, 1, null);
+		ROOFTOP_COURSE_ICON.getGraphics().drawImage(rooftopCourseIcon, iconOffset, iconOffset, null);
 	}
 
 	@Inject
@@ -256,7 +259,6 @@ public class WorldMapPlugin extends Plugin
 		// WorldMapRenderer only loads icons that are visible, so lazy load the quest start locations by checking
 		// what icons are loaded each tick.
 		WorldMapRegion[][] regions = wmm.getMapRegions();
-		EnumComposition mapElementToQuest = client.getEnum(EnumID.MAPELEMENT_TO_QUEST);
 		Map<Integer, Quest> questMap = Arrays.stream(Quest.values())
 			.collect(Collectors.toMap(Quest::getId, Function.identity()));
 		for (int i = 0; i < regions.length; ++i) // NOPMD: ForLoopCanBeForeach
@@ -269,20 +271,27 @@ public class WorldMapPlugin extends Plugin
 					MapElementConfig config = client.getMapElementConfig(icon.getType());
 					if (config.getCategory() == CATEGORY_QUEST)
 					{
-						int questDbRowId = mapElementToQuest.getIntValue(icon.getType());
-
-						// our quest ids are actually dbrow ids
-						Quest quest = questMap.get(questDbRowId);
-						if (quest == null)
+						var quests = client.getDBRowsByValue(DBTableID.Quest.TABLE, DBTableID.Quest.MAP_ELEMENT, 0, icon.getType());
+						for (int questID : quests)
 						{
-							continue;
-						}
+							if (client.getDBTableField(questID, DBTableID.Quest.MAIN_QUEST, 0).length > 0)
+							{
+								// rfd subquests all have the same map element
+								continue;
+							}
+							// our quest ids are actually dbrow ids
+							Quest quest = questMap.get(questID);
+							if (quest == null)
+							{
+								continue;
+							}
 
-						if (!questStartLocations.containsKey(quest))
-						{
-							log.debug("Found quest start location {} for {}", icon.getCoordinate(), quest);
-							questStartLocations.put(quest, icon.getCoordinate());
-							worldMapPointManager.add(createQuestStartPoint(quest, icon));
+							if (!questStartLocations.containsKey(quest))
+							{
+								log.debug("Found quest start location {} for {}", icon.getCoordinate(), quest);
+								questStartLocations.put(quest, icon.getCoordinate());
+								worldMapPointManager.add(createQuestStartPoint(quest, icon));
+							}
 						}
 					}
 				}
@@ -532,21 +541,6 @@ public class WorldMapPlugin extends Plugin
 					)
 					.forEach(worldMapPointManager::add)
 			);
-		}
-
-		worldMapPointManager.removeIf(isType(MapPoint.Type.KOUREND_TASK));
-		if (config.kourendTaskTooltips())
-		{
-			Arrays.stream(KourendTaskLocation.values())
-				.map(l ->
-					MapPoint.builder()
-						.type(MapPoint.Type.KOUREND_TASK)
-						.worldPoint(l.getLocation())
-						.image(BLANK_ICON)
-						.tooltip(l.getTooltip())
-						.build()
-				)
-				.forEach(worldMapPointManager::add);
 		}
 	}
 

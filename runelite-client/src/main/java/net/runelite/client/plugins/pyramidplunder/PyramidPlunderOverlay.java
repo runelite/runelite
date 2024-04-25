@@ -35,8 +35,8 @@ import net.runelite.api.ObjectComposition;
 import net.runelite.api.Point;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import static net.runelite.client.plugins.pyramidplunder.PyramidPlunderPlugin.GRAND_GOLD_CHEST_CLOSED_ID;
 import static net.runelite.client.plugins.pyramidplunder.PyramidPlunderPlugin.GRAND_GOLD_CHEST_ID;
 import static net.runelite.client.plugins.pyramidplunder.PyramidPlunderPlugin.SARCOPHAGUS_CLOSED_ID;
@@ -74,7 +74,7 @@ class PyramidPlunderOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		Widget ppWidget = client.getWidget(WidgetInfo.PYRAMID_PLUNDER_DATA);
+		Widget ppWidget = client.getWidget(ComponentID.PYRAMID_PLUNDER_DATA);
 		if (ppWidget == null)
 		{
 			return null;

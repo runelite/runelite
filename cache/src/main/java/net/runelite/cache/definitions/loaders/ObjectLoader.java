@@ -26,14 +26,26 @@ package net.runelite.cache.definitions.loaders;
 
 import java.util.HashMap;
 import java.util.Map;
+import lombok.Data;
+import lombok.experimental.Accessors;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.cache.definitions.ObjectDefinition;
 import net.runelite.cache.io.InputStream;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@Accessors(chain = true)
+@Data
+@Slf4j
 public class ObjectLoader
 {
-	private static final Logger logger = LoggerFactory.getLogger(ObjectLoader.class);
+	public static final int REV_220_OBJ_ARCHIVE_REV = 1673;
+
+	private boolean rev220SoundData = true;
+
+	public ObjectLoader configureForRevision(int rev)
+	{
+		this.rev220SoundData = rev >= REV_220_OBJ_ARCHIVE_REV;
+		return this;
+	}
 
 	public ObjectDefinition load(int id, byte[] b)
 	{
@@ -285,22 +297,30 @@ public class ObjectLoader
 		else if (opcode == 78)
 		{
 			def.setAmbientSoundId(is.readUnsignedShort());
-			def.setAnInt2083(is.readUnsignedByte());
+			def.setAmbientSoundDistance(is.readUnsignedByte());
+			if (rev220SoundData)
+			{
+				def.setAmbientSoundRetain(is.readUnsignedByte());
+			}
 		}
 		else if (opcode == 79)
 		{
-			def.setAnInt2112(is.readUnsignedShort());
-			def.setAnInt2113(is.readUnsignedShort());
-			def.setAnInt2083(is.readUnsignedByte());
+			def.setAmbientSoundChangeTicksMin(is.readUnsignedShort());
+			def.setAmbientSoundChangeTicksMax(is.readUnsignedShort());
+			def.setAmbientSoundDistance(is.readUnsignedByte());
+			if (rev220SoundData)
+			{
+				def.setAmbientSoundRetain(is.readUnsignedByte());
+			}
 			int length = is.readUnsignedByte();
-			int[] anIntArray2084 = new int[length];
+			int[] ambientSoundIds = new int[length];
 
 			for (int index = 0; index < length; ++index)
 			{
-				anIntArray2084[index] = is.readUnsignedShort();
+				ambientSoundIds[index] = is.readUnsignedShort();
 			}
 
-			def.setAmbientSoundIds(anIntArray2084);
+			def.setAmbientSoundIds(ambientSoundIds);
 		}
 		else if (opcode == 81)
 		{
@@ -381,7 +401,7 @@ public class ObjectLoader
 		}
 		else
 		{
-			logger.warn("Unrecognized opcode {}", opcode);
+			log.warn("Unrecognized opcode {}", opcode);
 		}
 	}
 

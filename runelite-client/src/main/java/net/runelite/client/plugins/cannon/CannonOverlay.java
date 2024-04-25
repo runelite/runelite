@@ -36,12 +36,11 @@ import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
+import static net.runelite.client.plugins.cannon.CannonPlugin.MAX_OVERLAY_DISTANCE;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.components.TextComponent;
-import static net.runelite.client.plugins.cannon.CannonPlugin.MAX_OVERLAY_DISTANCE;
 
 class CannonOverlay extends Overlay
 {
@@ -54,7 +53,7 @@ class CannonOverlay extends Overlay
 	CannonOverlay(Client client, CannonConfig config, CannonPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
-		setPriority(OverlayPriority.MED);
+		setPriority(PRIORITY_MED);
 		this.client = client;
 		this.config = config;
 		this.plugin = plugin;

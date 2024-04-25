@@ -61,8 +61,6 @@ public class RegenMeterPlugin extends Plugin
 	private static final int SPEC_REGEN_TICKS = 50;
 	private static final int NORMAL_HP_REGEN_TICKS = 100;
 
-	private static final int TRAILBLAZER_LEAGUE_FLUID_STRIKES_RELIC = 2;
-
 	@Inject
 	private Client client;
 
@@ -132,7 +130,9 @@ public class RegenMeterPlugin extends Plugin
 			return;
 		}
 
-		ticksSinceSpecRegen = 0;
+		// Lightbearer switch preserves time until next spec regen if <25 ticks remain
+		// If unequipping Lightbearer, this will always evaluate to 0
+		ticksSinceSpecRegen = Math.max(0, ticksSinceSpecRegen - 25);
 		wearingLightbearer = hasLightbearer;
 	}
 
@@ -166,11 +166,6 @@ public class RegenMeterPlugin extends Plugin
 		if (client.isPrayerActive(Prayer.RAPID_HEAL))
 		{
 			ticksPerHPRegen /= 2;
-		}
-
-		if (client.getVarbitValue(Varbits.LEAGUE_RELIC_3) == TRAILBLAZER_LEAGUE_FLUID_STRIKES_RELIC)
-		{
-			ticksPerHPRegen /= 4;
 		}
 
 		ticksSinceHPRegen = (ticksSinceHPRegen + 1) % ticksPerHPRegen;

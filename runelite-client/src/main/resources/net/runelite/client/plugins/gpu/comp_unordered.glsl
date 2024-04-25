@@ -25,7 +25,7 @@
 
 #include version_header
 
-#include comp_common.glsl
+#include "comp_common.glsl"
 
 layout(local_size_x = 6) in;
 
@@ -37,9 +37,8 @@ void main() {
   int offset = minfo.offset;
   int size = minfo.size;
   int outOffset = minfo.idx;
-  int uvOffset = minfo.uvOffset;
+  int toffset = minfo.toffset;
   int flags = minfo.flags;
-  ivec4 pos = ivec4(minfo.x, minfo.y, minfo.z, 0);
 
   if (localId >= size) {
     return;
@@ -50,33 +49,35 @@ void main() {
 
   // Grab triangle vertices from the correct buffer
   if (flags < 0) {
-    thisA = vb[offset + ssboOffset * 3    ];
+    thisA = vb[offset + ssboOffset * 3];
     thisB = vb[offset + ssboOffset * 3 + 1];
     thisC = vb[offset + ssboOffset * 3 + 2];
   } else {
-    thisA = tempvb[offset + ssboOffset * 3    ];
+    thisA = tempvb[offset + ssboOffset * 3];
     thisB = tempvb[offset + ssboOffset * 3 + 1];
     thisC = tempvb[offset + ssboOffset * 3 + 2];
   }
 
   uint myOffset = localId;
+  ivec4 pos = ivec4(minfo.x, minfo.y, minfo.z, 0);
+  ivec4 texPos = pos.wxyz;
 
   // position vertices in scene and write to out buffer
-  vout[outOffset + myOffset * 3]     = pos + thisA;
+  vout[outOffset + myOffset * 3] = pos + thisA;
   vout[outOffset + myOffset * 3 + 1] = pos + thisB;
   vout[outOffset + myOffset * 3 + 2] = pos + thisC;
 
-  if (uvOffset < 0) {
-    uvout[outOffset + myOffset * 3]     = vec4(0, 0, 0, 0);
-    uvout[outOffset + myOffset * 3 + 1] = vec4(0, 0, 0, 0);
-    uvout[outOffset + myOffset * 3 + 2] = vec4(0, 0, 0, 0);
+  if (toffset < 0) {
+    uvout[outOffset + myOffset * 3] = vec4(0);
+    uvout[outOffset + myOffset * 3 + 1] = vec4(0);
+    uvout[outOffset + myOffset * 3 + 2] = vec4(0);
   } else if (flags >= 0) {
-    uvout[outOffset + myOffset * 3]     = tempuv[uvOffset + localId * 3];
-    uvout[outOffset + myOffset * 3 + 1] = tempuv[uvOffset + localId * 3 + 1];
-    uvout[outOffset + myOffset * 3 + 2] = tempuv[uvOffset + localId * 3 + 2];
+    uvout[outOffset + myOffset * 3] = texPos + temptexb[toffset + localId * 3];
+    uvout[outOffset + myOffset * 3 + 1] = texPos + temptexb[toffset + localId * 3 + 1];
+    uvout[outOffset + myOffset * 3 + 2] = texPos + temptexb[toffset + localId * 3 + 2];
   } else {
-    uvout[outOffset + myOffset * 3]     = uv[uvOffset + localId * 3];
-    uvout[outOffset + myOffset * 3 + 1] = uv[uvOffset + localId * 3 + 1];
-    uvout[outOffset + myOffset * 3 + 2] = uv[uvOffset + localId * 3 + 2];
+    uvout[outOffset + myOffset * 3] = texPos + texb[toffset + localId * 3];
+    uvout[outOffset + myOffset * 3 + 1] = texPos + texb[toffset + localId * 3 + 1];
+    uvout[outOffset + myOffset * 3 + 2] = texPos + texb[toffset + localId * 3 + 2];
   }
 }

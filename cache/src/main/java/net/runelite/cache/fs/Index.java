@@ -169,6 +169,11 @@ public class Index
 		return null;
 	}
 
+	public boolean removeArchive(Archive archive)
+	{
+		return archives.remove(archive);
+	}
+
 	public Archive findArchiveByName(String name)
 	{
 		int hash = Djb2.hash(name);

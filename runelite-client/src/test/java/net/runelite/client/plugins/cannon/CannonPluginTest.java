@@ -34,6 +34,7 @@ import net.runelite.api.VarPlayer;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.Notifier;
+import net.runelite.client.config.Notification;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
@@ -92,14 +93,14 @@ public class CannonPluginTest
 	public void before()
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
-		cannonAmmoChanged.setVarpId(VarPlayer.CANNON_AMMO.getId());
+		cannonAmmoChanged.setVarpId(VarPlayer.CANNON_AMMO);
 		plugin.setCannonWorldPoint(new WorldPoint(1, 1, 1));
 	}
 
 	@Test
 	public void testThresholdNotificationShouldNotifyOnce()
 	{
-		when(config.showCannonNotifications()).thenReturn(true);
+		when(config.showCannonNotifications()).thenReturn(Notification.ON);
 		when(config.lowWarningThreshold()).thenReturn(10);
 
 		for (int cballs = 15; cballs >= 8; --cballs)
@@ -108,7 +109,7 @@ public class CannonPluginTest
 			plugin.onVarbitChanged(cannonAmmoChanged);
 		}
 
-		verify(notifier, times(1)).notify("Your cannon has 10 cannon balls remaining!");
+		verify(notifier, times(1)).notify(Notification.ON, "Your cannon has 10 cannon balls remaining!");
 	}
 
 	@Test
@@ -133,6 +134,6 @@ public class CannonPluginTest
 		cannonAmmoChanged.setValue(0);
 		plugin.onVarbitChanged(cannonAmmoChanged);
 
-		verify(notifier, times(1)).notify("Your cannon is out of ammo!");
+		verify(notifier, times(1)).notify(Notification.ON, "Your cannon is out of ammo!");
 	}
 }

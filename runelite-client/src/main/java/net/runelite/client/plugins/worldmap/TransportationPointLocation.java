@@ -104,12 +104,15 @@ enum TransportationPointLocation
 	ROW_BOAT_PORT_PHASMATYS_EAST("Rowboat to Braindeath Island", new WorldPoint(3680, 3538, 0), new WorldPoint(2161, 5117, 0)),
 	ROW_BOAT_SHAYZIEN("Rowboat to Molch/Molch Island/Battlefront", new WorldPoint(1405, 3612, 0)),
 	ROW_BOAT_SLEPE("Rowboat to Port Phasmatys", new WorldPoint(3661, 3279, 0), new WorldPoint(3670, 3545, 0)),
+	ROW_BOAT_MOUNT_QUIDAMORTEM("Rowboat to The Stranglewood", new WorldPoint(1228, 3470, 0), new WorldPoint(1193, 3452, 0)),
+	ROW_BOAT_STRANGLEWOOD("Rowboat to Mount Quidamortem", new WorldPoint(1193, 3452, 0), new WorldPoint(1228, 3470, 0)),
 	OGRE_BOAT_FELDIP("Ogre Boat to Karamja", new WorldPoint(2653, 2964, 0), new WorldPoint(2757, 3085, 0)),
 	OGRE_BOAT_KARAMJA("Ogre Boat to Feldip", new WorldPoint(2757, 3085, 0), new WorldPoint(2653, 2964, 0)),
 
 	//Charter ships
 	CHARTER_BRIMHAVEN("Charter Ship", new WorldPoint(2760, 3238, 0)),
 	CHARTER_CATHERBY("Charter Ship", new WorldPoint(2791, 3415, 0)),
+	CHARTER_CIVITAS_ILLA_FORTIS("Charter Ship", new WorldPoint(1743, 3136, 0)),
 	CHARTER_CORSAIR_("Charter Ship", new WorldPoint(2589, 2851, 0)),
 	CHARTER_KARAMJA_NORTH("Charter Ship", new WorldPoint(2954, 3158, 0)),
 	CHARTER_KARAMJA_EAST("Charter Ship", new WorldPoint(2999, 3032, 0)),
@@ -120,6 +123,7 @@ enum TransportationPointLocation
 	CHARTER_TYRAS("Charter Ship", new WorldPoint(2141, 3123, 0)),
 	CHARTER_PRIFDDINAS("Charter Ship", new WorldPoint(2156, 3331, 0)),
 	CHARTER_PRIFDDINAS_INSTANCE("Charter Ship", new WorldPoint(3180, 6083, 0)),
+	CHARTER_SUNSET_COAST("Charter Ship", new WorldPoint(1513, 2970, 0)),
 
 	//Ferries
 	FERRY_AL_KHARID("Ferry to Ruins of Unkah", new WorldPoint(3269, 3142, 0), new WorldPoint(3145, 2843, 0)),
@@ -127,14 +131,20 @@ enum TransportationPointLocation
 
 	//Minecarts/Carts
 	MINE_CART_ARCEUUS("Lovakengj Minecart Network", new WorldPoint(1673, 3832, 0)),
+	MINE_CART_FARMING_GUILD("Lovakengj Minecart Network", new WorldPoint(1219, 3738, 0)),
 	MINE_CART_GRANDEXCHANGE("Minecart to Keldagrim", new WorldPoint(3139, 3504, 0)),
-	MINE_CART_HOSIDIUS("Lovakengj Minecart Network", new WorldPoint(1656, 3542, 0)),
+	MINE_CART_HOSIDIUS_SOUTH("Lovakengj Minecart Network", new WorldPoint(1805, 3480, 0)),
+	MINE_CART_HOSIDIUS_WEST("Lovakengj Minecart Network", new WorldPoint(1656, 3542, 0)),
 	MINE_CART_ICE_MOUNTAIN("Minecart to Keldagrim", new WorldPoint(2995, 9836, 0)),
 	MINE_CART_KELDAGRIM("Keldagrim Minecart System", new WorldPoint(2908, 10170, 0)),
-	MINE_CART_LOVAKENGJ("Lovakengj Minecart Network", new WorldPoint(1524, 3721, 0)),
+	MINE_CART_KINGSTOWN("Lovakengj Minecart Network", new WorldPoint(1697, 3658, 0)),
+	MINE_CART_KOUREND_WOODLAND("Lovakengj Minecart Network", new WorldPoint(1570, 3464, 0)),
+	MINE_CART_LOVAKENGJ("Lovakengj Minecart Network", new WorldPoint(1524, 3725, 0)),
+	MINE_CART_MOUNT_QUIDAMORTEM("Lovakengj Minecart Network", new WorldPoint(1253, 3550, 0)),
+	MINE_CART_NORTHERN_TUNDRAS("Lovakengj Minecart Network", new WorldPoint(1646, 3930, 0)),
 	MINE_CART_PORT_PISCARILIUS("Lovakengj Minecart Network", new WorldPoint(1760, 3708, 0)),
-	MINE_CART_QUIDAMORTEM("Lovakengj Minecart Network", new WorldPoint(1253, 3550, 0)),
-	MINE_CART_SHAYZIEN("Lovakengj Minecart Network", new WorldPoint(1586, 3622, 0)),
+	MINE_CART_SHAYZIEN_EAST("Lovakengj Minecart Network", new WorldPoint(1586, 3622, 0)),
+	MINE_CART_SHAYZIEN_WEST("Lovakengj Minecart Network", new WorldPoint(1413, 3579, 0)),
 	MINE_CART_WHITE_WOLF_MOUNTAIN("Minecart to Keldagrim", new WorldPoint(2874, 9870, 0)),
 	CART_TO_BRIMHAVEN("Cart to Brimhaven", new WorldPoint(2833, 2958, 0), new WorldPoint(2780, 3214, 0)),
 	CART_TO_SHILO("Cart to Shilo Village", new WorldPoint(2780, 3214, 0), new WorldPoint(2833, 2958, 0)),
@@ -192,16 +202,36 @@ enum TransportationPointLocation
 	FAIRY_RING_ZANARIS_TO_KHARID("Fairy Ring to Al Kharid", new WorldPoint(2483, 4471, 0)),
 	FAIRY_RING_ZANARIS_TO_SHACK("Fairy Ring to Shack", new WorldPoint(2451, 4471, 0)),
 	MOUNTAIN_GUIDE_QUIDAMORTEM("Mountain Guide", new WorldPoint(1275, 3559, 0)),
+	MOUNTAIN_GUIDE_QUIDAMORTEM_SOUTH("Mountain Guide", new WorldPoint(1270, 3477, 0)),
 	MOUNTAIN_GUIDE_WALL("Mountain Guide", new WorldPoint(1400, 3538, 0)),
 	MUSHTREE_MUSHROOM_FOREST("Mushtree", new WorldPoint(3674, 3871, 0)),
 	MUSHTREE_TAR_SWAMP("Mushtree", new WorldPoint(3676, 3755, 0)),
 	MUSHTREE_VERDANT_VALLEY("Mushtree", new WorldPoint(3757, 3756, 0)),
 	MYTHS_GUILD_PORTAL("Portal to Guilds", new WorldPoint(2456, 2856, 0)),
 	SOUL_WARS_PORTAL("Portal to Edgeville/Ferox Enclave", new WorldPoint(2204, 2858, 0)),
+	TELEPORTER_THE_PALACE("Teleporter - The Palace", new WorldPoint(2592, 6424, 0)),
+	TELEPORTER_THE_PLAZA("Teleporter - The Plaza", new WorldPoint(2616, 6417, 0)),
+	TELEPORTER_THE_CATHEDRAL("Teleporter - The Cathedral", new WorldPoint(2651, 6405, 0)),
+	TELEPORTER_WESTERN_RESIDENTIAL_DISTRICT("Teleporter - Western Residential District", new WorldPoint(2642, 6434, 0)),
+	TELEPORTER_EASTERN_RESIDENTIAL_DISTRICT("Teleporter - Eastern Residential District", new WorldPoint(2690, 6415, 0)),
+	TELEPORTER_NORTHERN_SCIENCE_DISTRICT("Teleporter - Northern Science District", new WorldPoint(2610, 6379, 0)),
+	TELEPORTER_SOUTHERN_SCIENCE_DISTRICT("Teleporter - Southern Science District", new WorldPoint(2598, 6341, 0)),
 	TRAIN_KELDAGRIM("Railway Station", new WorldPoint(2941, 10179, 0)),
 	WILDERNESS_LEVER_ARDOUGNE("Wilderness Lever to Deserted Keep", new WorldPoint(2559, 3309, 0), new WorldPoint(3154, 3924, 0)),
 	WILDERNESS_LEVER_EDGEVILLE("Wilderness Lever to Deserted Keep", new WorldPoint(3088, 3474, 0), new WorldPoint(3154, 3924, 0)),
-	WILDERNESS_LEVER_WILDERNESS("Wilderness Lever to Ardougne/Edgeville", new WorldPoint(3154, 3924, 0));
+	WILDERNESS_LEVER_WILDERNESS("Wilderness Lever to Ardougne/Edgeville", new WorldPoint(3154, 3924, 0)),
+
+	//Queztals
+	QUETZAL_AVIUM_SAVANNAH_NORTH_EAST("Quetzal", new WorldPoint(1701, 3037, 0)),
+	QUETZAL_AVIUM_SAVANNAH_SOUTH("Quetzal", new WorldPoint(1671, 2933, 0)),
+	QUETZAL_CAM_TORUM("Quetzal", new WorldPoint(1447, 3108, 0)),
+	QUETZAL_EAST_CIVITAS_ILLA_FORTIS("Quetzal", new WorldPoint(1776, 3111, 0)),
+	QUETZAL_HUNTER_GUILD("Quetzal", new WorldPoint(1584, 3055, 0)),
+	QUETZAL_SUNSET_COAST("Quetzal", new WorldPoint(1547, 2997, 0)),
+	QUETZAL_RALOS_RISE("Quetzal", new WorldPoint(1436, 3169, 0)),
+	QUETZAL_VARLAMORE_VARROCK("Quetzal to Varrock", new WorldPoint(1699, 3142, 0), new WorldPoint(3279, 3413, 0)),
+	QUETZAL_VARROCK_VARLAMORE("Quetzal to Varlamore", new WorldPoint(3279, 3413, 0), new WorldPoint(1699, 3142, 0)),
+	;
 
 	private final String tooltip;
 	private final WorldPoint location;

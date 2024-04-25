@@ -30,9 +30,11 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
-@ConfigGroup("prayer")
+@ConfigGroup(PrayerConfig.GROUP)
 public interface PrayerConfig extends Config
 {
+	String GROUP = "prayer";
+
 	@ConfigItem(
 		position = 0,
 		keyName = "prayerFlickLocation",

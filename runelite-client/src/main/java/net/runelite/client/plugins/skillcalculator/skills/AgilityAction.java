@@ -24,10 +24,15 @@
  */
 package net.runelite.client.plugins.skillcalculator.skills;
 
+import java.util.EnumSet;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.ItemID;
 import net.runelite.client.game.ItemManager;
+import static net.runelite.client.plugins.skillcalculator.skills.AgilityBonus.WILDERNESS_AGILITY_TICKET_101_PLUS;
+import static net.runelite.client.plugins.skillcalculator.skills.AgilityBonus.WILDERNESS_AGILITY_TICKET_11_TO_50;
+import static net.runelite.client.plugins.skillcalculator.skills.AgilityBonus.WILDERNESS_AGILITY_TICKET_51_TO_100;
 
 @AllArgsConstructor
 @Getter
@@ -38,21 +43,23 @@ public enum AgilityAction implements NamedSkillAction
 	DRAYNOR_VILLAGE_ROOFTOP("Draynor Village Rooftop", 10, 120, ItemID.MARK_OF_GRACE),
 	LEAPING_TROUT("Leaping trout", 15, 5, ItemID.LEAPING_TROUT),
 	AL_KHARID_ROOFTOP("Al Kharid Rooftop", 20, 180, ItemID.MARK_OF_GRACE),
+	LEAPING_SALMON("Leaping salmon", 30, 6, ItemID.LEAPING_SALMON),
 	VARROCK_ROOFTOP("Varrock Rooftop", 30, 238, ItemID.MARK_OF_GRACE),
 	PENGUIN_AGILITY_COURSE("Penguin Agility Course", 30, 540, ItemID.CLOCKWORK_SUIT),
-	LEAPING_SALMON("Leaping salmon", 30, 6, ItemID.LEAPING_SALMON),
 	BARBARIAN_OUTPOST("Barbarian Outpost", 35, 152.5f, ItemID.STEEL_BATTLEAXE),
 	CANIFIS_ROOFTOP("Canifis Rooftop", 40, 240, ItemID.MARK_OF_GRACE),
 	LEAPING_STURGEON("Leaping sturgeon", 45, 7, ItemID.LEAPING_STURGEON),
-	APE_ATOLL_COURSE("Ape Atoll", 48, 580, ItemID.GORILLA_GREEGREE),
 	SHAYZIEN_ADVANCED_COURSE("Shayzien Advanced Course", 48, 474.3f, ItemID.SHAYZIEN_HELM_5),
+	APE_ATOLL_COURSE("Ape Atoll", 48, 580, ItemID.GORILLA_GREEGREE),
 	FALADOR_ROOFTOP("Falador Rooftop", 50, 440, ItemID.MARK_OF_GRACE),
-	WILDERNESS_AGILITY_COURSE("Wilderness Agility Course", 52, 571, ItemID.SKULL),
+	WILDERNESS_AGILITY_COURSE_TICKET("Wilderness Agility Ticket", 52, 200, ItemID.WILDERNESS_AGILITY_TICKET),
+	WILDERNESS_AGILITY_COURSE("Wilderness Agility Course", 52, 571.4f, ItemID.SKULL),
 	HALLOWED_SEPULCHRE_FLOOR_1("Hallowed Sepulchre Floor 1", 52, 575, ItemID.RING_OF_ENDURANCE),
 	SEERS_VILLAGE_ROOFTOP("Seers' Village Rooftop", 60, 570, ItemID.MARK_OF_GRACE),
 	WEREWOLF_AGILITY_COURSE("Werewolf Agility Course", 60, 730, ItemID.STICK),
 	HALLOWED_SEPULCHRE_FLOOR_2("Hallowed Sepulchre Floor 2", 62, 925, ItemID.RING_OF_ENDURANCE),
 	POLLNIVNEACH_ROOFTOP("Pollnivneach Rooftop", 70, 890, ItemID.MARK_OF_GRACE),
+	DORGESH_KAAN_AGILITY_COURSE("Dorgesh-Kaan Agility Course", 70, 2750, ItemID.POWERBOX),
 	HALLOWED_SEPULCHRE_FLOOR_3("Hallowed Sepulchre Floor 3", 72, 1500, ItemID.RING_OF_ENDURANCE),
 	PRIFDDINAS_AGILITY_COURSE("Prifddinas Agility Course", 75, 1337, ItemID.CRYSTAL_SHARD),
 	RELLEKKA_ROOFTOP("Rellekka Rooftop", 80, 780, ItemID.MARK_OF_GRACE),
@@ -70,5 +77,20 @@ public enum AgilityAction implements NamedSkillAction
 	public boolean isMembers(final ItemManager itemManager)
 	{
 		return true;
+	}
+
+	@Override
+	public Set<AgilityBonus> getExcludedSkillBonuses()
+	{
+		final EnumSet<AgilityBonus> others = EnumSet.allOf(AgilityBonus.class);
+
+		if (this == WILDERNESS_AGILITY_COURSE_TICKET)
+		{
+			others.remove(WILDERNESS_AGILITY_TICKET_11_TO_50);
+			others.remove(WILDERNESS_AGILITY_TICKET_51_TO_100);
+			others.remove(WILDERNESS_AGILITY_TICKET_101_PLUS);
+		}
+
+		return others;
 	}
 }

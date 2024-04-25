@@ -425,6 +425,17 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "teleportSubmenus",
+		name = "Teleport submenus",
+		description = "Use submenus for max, construction, and diary cape teleports",
+		section = itemSection
+	)
+	default boolean teleportSubmenus()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "swapTeleToPoh",
 		name = "Tele to POH",
 		description = "Swap Wear with Tele to POH on the construction cape",
@@ -471,7 +482,7 @@ public interface MenuEntrySwapperConfig extends Config
 	@ConfigItem(
 		keyName = "swapMorytaniaLegs",
 		name = "Morytania Legs",
-		description = "Swap Wear with the Ectofunctus or Burgh de Rott teleport on the Morytania Legs.",
+		description = "Swap Wear with the Ectofuntus or Burgh de Rott teleport on the Morytania Legs.",
 		section = itemSection
 	)
 	default MorytaniaLegsMode swapMorytaniaLegsMode()

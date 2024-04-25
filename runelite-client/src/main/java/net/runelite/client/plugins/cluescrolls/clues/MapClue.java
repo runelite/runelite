@@ -28,6 +28,7 @@ import com.google.common.collect.ImmutableList;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.List;
+import lombok.AccessLevel;
 import lombok.Getter;
 import static net.runelite.api.ItemID.*;
 import net.runelite.api.ObjectComposition;
@@ -55,7 +56,7 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 	public static final String CHAMPIONS_GUILD = "West of the Champions' Guild";
 	public static final String VARROCK_EAST_MINE = "Outside Varrock East Mine";
 	public static final String STANDING_STONES = "At the standing stones north of Falador";
-	public static final String WIZARDS_TOWER_DIS = "On the south side of the Wizard's Tower (DIS)";
+	public static final String WIZARDS_TOWER_DIS = "On the south side of the Wizards' Tower (DIS)";
 	public static final String SOUTH_OF_DRAYNOR_BANK = "South of Draynor Village Bank";
 
 	static final List<MapClue> CLUES = ImmutableList.of(
@@ -95,6 +96,7 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 	);
 
 	private final int itemId;
+	@Getter(AccessLevel.PRIVATE)
 	private final WorldPoint location;
 	private final int objectId;
 	private final String description;
@@ -116,6 +118,12 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 		this.objectId = objectId;
 		this.description = description;
 		setRequiresSpade(objectId == -1);
+	}
+
+	@Override
+	public WorldPoint getLocation(ClueScrollPlugin plugin)
+	{
+		return location;
 	}
 
 	@Override

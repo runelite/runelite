@@ -37,6 +37,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -428,6 +429,10 @@ public class PartyPlugin extends Plugin
 		{
 			partyData.setVengeanceActive(event.getVengeanceActive());
 		}
+		if (event.getMemberColor() != null)
+		{
+			partyData.setColor(event.getMemberColor());
+		}
 
 		final PartyMember member = party.getMemberById(event.getMemberId());
 		if (event.getCharacterName() != null)
@@ -437,12 +442,10 @@ public class PartyPlugin extends Plugin
 			{
 				member.setDisplayName(name);
 				member.setLoggedIn(true);
-				partyData.setColor(ColorUtil.fromObject(name));
 			}
 			else
 			{
 				member.setLoggedIn(false);
-				partyData.setColor(Color.WHITE);
 			}
 		}
 
@@ -488,11 +491,6 @@ public class PartyPlugin extends Plugin
 			return;
 		}
 
-		if (client.getTickCount() % messageFreq(party.getMembers().size()) != 0)
-		{
-			return;
-		}
-
 		final int healthCurrent = client.getBoostedSkillLevel(Skill.HITPOINTS);
 		final int prayerCurrent = client.getBoostedSkillLevel(Skill.PRAYER);
 		final int healthMax = client.getRealSkillLevel(Skill.HITPOINTS);
@@ -500,54 +498,67 @@ public class PartyPlugin extends Plugin
 		final int runEnergy = (int) Math.ceil(client.getEnergy() / 1000.0) * 10; // flatten to reduce network load
 		final int specEnergy = client.getVarpValue(VarPlayer.SPECIAL_ATTACK_PERCENT) / 10;
 		final boolean vengActive = client.getVarbitValue(Varbits.VENGEANCE_ACTIVE) == 1;
+		final Color memberColor = getLocalMemberColor();
 
 		final Player localPlayer = client.getLocalPlayer();
 		final String characterName = Strings.nullToEmpty(localPlayer != null && client.getGameState().getState() >= GameState.LOADING.getState() ? localPlayer.getName() : null);
 
-		boolean shouldSend = false;
+		boolean hasChange = false;
+		boolean canDelay = !forceSend;
 		final StatusUpdate update = new StatusUpdate();
 		if (forceSend || !characterName.equals(lastStatus.getCharacterName()))
 		{
-			shouldSend = true;
+			hasChange = true;
 			update.setCharacterName(characterName);
 		}
 		if (forceSend || healthCurrent != lastStatus.getHealthCurrent())
 		{
-			shouldSend = true;
+			hasChange = true;
 			update.setHealthCurrent(healthCurrent);
 		}
 		if (forceSend || healthMax != lastStatus.getHealthMax())
 		{
-			shouldSend = true;
+			hasChange = true;
 			update.setHealthMax(healthMax);
 		}
 		if (forceSend || prayerCurrent != lastStatus.getPrayerCurrent())
 		{
-			shouldSend = true;
+			hasChange = true;
 			update.setPrayerCurrent(prayerCurrent);
 		}
 		if (forceSend || prayerMax != lastStatus.getPrayerMax())
 		{
-			shouldSend = true;
+			hasChange = true;
 			update.setPrayerMax(prayerMax);
 		}
 		if (forceSend || runEnergy != lastStatus.getRunEnergy())
 		{
-			shouldSend = true;
+			hasChange = true;
 			update.setRunEnergy(runEnergy);
 		}
 		if (forceSend || specEnergy != lastStatus.getSpecEnergy())
 		{
-			shouldSend = true;
+			hasChange = true;
+			canDelay = !forceSend && specEnergy - lastStatus.getSpecEnergy() == 10; // delay regen
 			update.setSpecEnergy(specEnergy);
 		}
 		if (forceSend || vengActive != lastStatus.getVengeanceActive())
 		{
-			shouldSend = true;
+			hasChange = true;
 			update.setVengeanceActive(vengActive);
 		}
+		if (forceSend || !Objects.equals(memberColor, lastStatus.getMemberColor()))
+		{
+			hasChange = true;
+			update.setMemberColor(memberColor);
+		}
 
-		if (shouldSend)
+		if (canDelay && client.getTickCount() % messageFreq(party.getMembers().size()) != 0)
+		{
+			return;
+		}
+
+		if (hasChange)
 		{
 			party.send(update);
 			// non-null values for next-tick comparison
@@ -559,7 +570,8 @@ public class PartyPlugin extends Plugin
 				prayerMax,
 				runEnergy,
 				specEnergy,
-				vengActive
+				vengActive,
+				memberColor
 			);
 		}
 	}
@@ -647,6 +659,26 @@ public class PartyPlugin extends Plugin
 			SwingUtilities.invokeLater(() -> panel.addMember(partyData));
 			return partyData;
 		});
+	}
+
+	private Color getLocalMemberColor()
+	{
+		Color memberColor = config.memberColor();
+		if (memberColor == null)
+		{
+			PartyMember local = party.getLocalMember();
+			if (local == null)
+			{
+				return null;
+			}
+
+			String localName = local.getDisplayName();
+			memberColor = ColorUtil.fromObject(localName);
+			log.debug("Computed member color {} for {}", memberColor, localName);
+			config.setMemberColor(memberColor);
+		}
+
+		return memberColor;
 	}
 
 	private static int messageFreq(int partySize)

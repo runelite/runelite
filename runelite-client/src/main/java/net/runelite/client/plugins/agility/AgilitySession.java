@@ -94,12 +94,4 @@ class AgilitySession
 
 		lastLapCompleted = now;
 	}
-
-	void resetLapCount()
-	{
-		totalLaps = 0;
-		lapsTillGoal = 0;
-		lastLapTimes.clear();
-		lapsPerHour = 0;
-	}
 }

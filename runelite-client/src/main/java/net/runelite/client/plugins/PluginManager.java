@@ -71,8 +71,7 @@ import net.runelite.client.config.RuneLiteConfig;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.PluginChanged;
-import net.runelite.client.events.SessionClose;
-import net.runelite.client.events.SessionOpen;
+import net.runelite.client.events.ProfileChanged;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.task.ScheduledMethod;
 import net.runelite.client.task.Scheduler;
@@ -121,13 +120,7 @@ public class PluginManager
 	}
 
 	@Subscribe
-	public void onSessionOpen(SessionOpen event)
-	{
-		refreshPlugins();
-	}
-
-	@Subscribe
-	public void onSessionClose(SessionClose event)
+	public void onProfileChanged(ProfileChanged profileChanged)
 	{
 		refreshPlugins();
 	}
@@ -218,7 +211,7 @@ public class PluginManager
 	{
 		try
 		{
-			for (Object config : getPluginConfigProxies(plugins))
+			for (Config config : getPluginConfigProxies(plugins))
 			{
 				configManager.setDefaultConfiguration(config, false);
 			}
@@ -271,7 +264,7 @@ public class PluginManager
 
 	public void loadCorePlugins() throws IOException, PluginInstantiationException
 	{
-		SplashScreen.stage(.59, null, "Loading Plugins");
+		SplashScreen.stage(.59, null, "Loading plugins");
 		ClassPath classPath = ClassPath.from(getClass().getClassLoader());
 
 		List<Class<?>> plugins = classPath.getTopLevelClassesRecursive(PLUGIN_PACKAGE).stream()
@@ -279,7 +272,7 @@ public class PluginManager
 			.collect(Collectors.toList());
 
 		loadPlugins(plugins, (loaded, total) ->
-			SplashScreen.stage(.60, .70, null, "Loading Plugins", loaded, total, false));
+			SplashScreen.stage(.60, .70, null, "Loading plugins", loaded, total, false));
 	}
 
 	public void loadSideLoadPlugins()

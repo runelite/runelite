@@ -32,7 +32,7 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import javax.inject.Inject;
-import net.runelite.api.widgets.WidgetID;
+import net.runelite.api.widgets.InterfaceID;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.ui.overlay.WidgetItemOverlay;
@@ -46,6 +46,7 @@ class InventoryTagsOverlay extends WidgetItemOverlay
 	private final InventoryTagsConfig config;
 	private final Cache<Long, Image> fillCache;
 	private final Cache<Integer, Tag> tagCache;
+	private final Tag NONE = new Tag();
 
 	@Inject
 	private InventoryTagsOverlay(ItemManager itemManager, InventoryTagsPlugin plugin, InventoryTagsConfig config)
@@ -56,10 +57,10 @@ class InventoryTagsOverlay extends WidgetItemOverlay
 		showOnEquipment();
 		showOnInventory();
 		showOnInterfaces(
-			WidgetID.CHAMBERS_OF_XERIC_STORAGE_UNIT_INVENTORY_GROUP_ID,
-			WidgetID.CHAMBERS_OF_XERIC_STORAGE_UNIT_PRIVATE_GROUP_ID,
-			WidgetID.CHAMBERS_OF_XERIC_STORAGE_UNIT_SHARED_GROUP_ID,
-			WidgetID.GRAVESTONE_GROUP_ID
+			InterfaceID.CHAMBERS_OF_XERIC_INVENTORY,
+			InterfaceID.CHAMBERS_OF_XERIC_STORAGE_UNIT_PRIVATE,
+			InterfaceID.CHAMBERS_OF_XERIC_STORAGE_UNIT_SHARED,
+			InterfaceID.GRAVESTONE
 		);
 		fillCache = CacheBuilder.newBuilder()
 			.concurrencyLevel(1)
@@ -67,7 +68,7 @@ class InventoryTagsOverlay extends WidgetItemOverlay
 			.build();
 		tagCache = CacheBuilder.newBuilder()
 			.concurrencyLevel(1)
-			.maximumSize(32)
+			.maximumSize(39)
 			.build();
 	}
 
@@ -110,6 +111,12 @@ class InventoryTagsOverlay extends WidgetItemOverlay
 		{
 			tag = plugin.getTag(itemId);
 			if (tag == null)
+			{
+				tagCache.put(itemId, NONE);
+				return null;
+			}
+
+			if (tag == NONE)
 			{
 				return null;
 			}

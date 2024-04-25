@@ -33,6 +33,7 @@ import net.runelite.client.ui.overlay.infobox.Timer;
 class TimerTimer extends Timer
 {
 	private final GameTimer timer;
+	int ticks;
 
 	TimerTimer(GameTimer timer, Duration duration, Plugin plugin)
 	{

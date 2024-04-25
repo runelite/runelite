@@ -33,6 +33,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.AccessLevel;
@@ -57,9 +58,9 @@ import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.widgets.InterfaceID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -83,6 +84,9 @@ public class FishingPlugin extends Plugin
 	private static final int TRAWLER_SHIP_REGION_NORMAL = 7499;
 	private static final int TRAWLER_SHIP_REGION_SINKING = 8011;
 	private static final int TRAWLER_TIME_LIMIT_IN_SECONDS = 314;
+
+	private static final Pattern FISHING_CATCH_REGEX = Pattern.compile(
+		"You catch (?:a|an|some) |Your cormorant returns with its catch.|You catch .* Karambwanji");
 
 	private Instant trawlerStartTime;
 
@@ -193,17 +197,17 @@ public class FishingPlugin extends Plugin
 			return;
 		}
 
-		if (event.getMessage().contains("You catch a") || event.getMessage().contains("You catch some") ||
-			event.getMessage().equals("Your cormorant returns with its catch."))
+		var message = event.getMessage();
+		if (FISHING_CATCH_REGEX.matcher(message).find())
 		{
 			session.setLastFishCaught(Instant.now());
 			spotOverlay.setHidden(false);
 			fishingSpotMinimapOverlay.setHidden(false);
 		}
 
-		if (event.getMessage().equals("A flying fish jumps up and eats some of your minnows!") && config.flyingFishNotification())
+		if (message.equals("A flying fish jumps up and eats some of your minnows!"))
 		{
-			notifier.notify("A flying fish is eating your minnows!");
+			notifier.notify(config.flyingFishNotification(), "A flying fish is eating your minnows!");
 		}
 	}
 
@@ -348,7 +352,7 @@ public class FishingPlugin extends Plugin
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded event)
 	{
-		if (event.getGroupId() == WidgetID.FISHING_TRAWLER_GROUP_ID)
+		if (event.getGroupId() == InterfaceID.TRAWLER)
 		{
 			trawlerStartTime = Instant.now();
 			log.debug("Trawler session started");
@@ -371,7 +375,7 @@ public class FishingPlugin extends Plugin
 			return;
 		}
 
-		Widget trawlerContributionWidget = client.getWidget(WidgetInfo.FISHING_TRAWLER_CONTRIBUTION);
+		Widget trawlerContributionWidget = client.getWidget(ComponentID.TRAWLER_CONTRIBUTION);
 		if (trawlerContributionWidget == null)
 		{
 			return;
@@ -404,7 +408,7 @@ public class FishingPlugin extends Plugin
 			return;
 		}
 
-		Widget trawlerTimerWidget = client.getWidget(WidgetInfo.FISHING_TRAWLER_TIMER);
+		Widget trawlerTimerWidget = client.getWidget(ComponentID.TRAWLER_TIMER);
 		if (trawlerTimerWidget == null)
 		{
 			return;

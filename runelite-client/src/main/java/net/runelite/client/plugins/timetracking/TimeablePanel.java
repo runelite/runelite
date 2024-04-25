@@ -52,7 +52,7 @@ public class TimeablePanel<T> extends JPanel
 	private static final ImageIcon NOTIFY_ICON = new ImageIcon(ImageUtil.loadImageResource(TimeTrackingPlugin.class, "notify_icon.png"));
 	private static final ImageIcon NOTIFY_SELECTED_ICON = new ImageIcon(ImageUtil.loadImageResource(TimeTrackingPlugin.class, "notify_selected_icon.png"));
 	private static final Rectangle OVERLAY_ICON_BOUNDS;
-	
+
 	static
 	{
 		int width = Constants.ITEM_SPRITE_WIDTH * 2 / 3;
@@ -137,7 +137,7 @@ public class TimeablePanel<T> extends JPanel
 		add(topContainer, BorderLayout.NORTH);
 		add(progress, BorderLayout.SOUTH);
 	}
-	
+
 	public void setOverlayIconImage(BufferedImage overlayImg)
 	{
 		if (overlayImg == null)
@@ -145,7 +145,7 @@ public class TimeablePanel<T> extends JPanel
 			overlayIcon.setIcon(null);
 			return;
 		}
-		
+
 		if (OVERLAY_ICON_BOUNDS.width != overlayImg.getWidth() || OVERLAY_ICON_BOUNDS.height != overlayImg.getHeight())
 		{
 			overlayImg = ImageUtil.resizeImage(overlayImg, OVERLAY_ICON_BOUNDS.width, OVERLAY_ICON_BOUNDS.height);

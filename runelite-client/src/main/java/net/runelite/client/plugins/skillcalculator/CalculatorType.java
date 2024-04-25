@@ -35,8 +35,8 @@ import net.runelite.client.plugins.skillcalculator.skills.*;
 enum CalculatorType
 {
 	MINING(Skill.MINING, MiningBonus.values(), MiningAction.values()),
-	AGILITY(Skill.AGILITY, null, AgilityAction.values()),
-	SMITHING(Skill.SMITHING, null, SmithingAction.values()),
+	AGILITY(Skill.AGILITY, AgilityBonus.values(), AgilityAction.values()),
+	SMITHING(Skill.SMITHING, SmithingBonus.values(), SmithingAction.values()),
 	HERBLORE(Skill.HERBLORE, null, HerbloreAction.values()),
 	FISHING(Skill.FISHING, FishingBonus.values(), FishingAction.values()),
 	THIEVING(Skill.THIEVING, null, ThievingAction.values()),

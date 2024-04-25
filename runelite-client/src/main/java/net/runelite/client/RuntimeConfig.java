@@ -25,8 +25,8 @@
 package net.runelite.client;
 
 import com.google.common.base.Strings;
+import java.time.Instant;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.swing.SwingUtilities;
@@ -42,6 +42,8 @@ public class RuntimeConfig
 
 	private String outageMessage;
 	private Map<String, String> outageLinks;
+	private Instant outageStart;
+	private Instant outageEnd;
 
 	private Set<Integer> ignoreDeadNpcs;
 	private Set<Integer> forceDeadNpcs;
@@ -49,11 +51,15 @@ public class RuntimeConfig
 	private Set<Integer> forceDeadAnimations;
 	private Set<Integer> nonAttackNpcs;
 
-	private Map<String, List<String>> hiscoreMapping;
+	private Set<String> outdatedClientVersions;
+	private String[] updateLauncherWinVers;
+	private double updateRollout;
 
 	public boolean showOutageMessage()
 	{
-		if (Strings.isNullOrEmpty(getOutageMessage()))
+		if (Strings.isNullOrEmpty(getOutageMessage())
+			|| (outageStart != null && Instant.now().isBefore(outageStart))
+			|| (outageEnd != null && Instant.now().isAfter(outageEnd)))
 		{
 			return false;
 		}
@@ -75,5 +81,16 @@ public class RuntimeConfig
 			fed.open();
 		});
 		return true;
+	}
+
+	void refresh(RuntimeConfig config)
+	{
+		ignoreDeadNpcs = config.ignoreDeadNpcs;
+		forceDeadNpcs = config.forceDeadNpcs;
+		resetDeadOnChangeNpcs = config.resetDeadOnChangeNpcs;
+		forceDeadAnimations = config.forceDeadAnimations;
+		nonAttackNpcs = config.nonAttackNpcs;
+
+		outdatedClientVersions = config.outdatedClientVersions;
 	}
 }

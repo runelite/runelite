@@ -26,6 +26,7 @@
 package net.runelite.client.plugins.combatlevel;
 
 import com.google.inject.Provides;
+import java.awt.Color;
 import java.text.DecimalFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -38,14 +39,17 @@ import net.runelite.api.Skill;
 import net.runelite.api.WorldType;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptPostFired;
+import net.runelite.api.events.ScriptPreFired;
+import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.ColorUtil;
+import net.runelite.client.util.Text;
 
 @PluginDescriptor(
 	name = "Combat Level",
@@ -59,6 +63,8 @@ public class CombatLevelPlugin extends Plugin
 	private static final String ATTACK_RANGE_CONFIG_KEY = "wildernessAttackLevelRange";
 	private static final Pattern WILDERNESS_LEVEL_PATTERN = Pattern.compile("^Level: (\\d+)$");
 	private static final int MIN_COMBAT_LEVEL = 3;
+	private static final String COMBAT_LEVEL_SECTION_TEXT = "Combat Level:";
+	private static final Color CHARACTER_SUMMARY_GREEN = Color.decode("#0dc10d");
 
 	@Inject
 	private Client client;
@@ -93,7 +99,7 @@ public class CombatLevelPlugin extends Plugin
 	protected void shutDown() throws Exception
 	{
 		overlayManager.remove(overlay);
-		Widget combatLevelWidget = client.getWidget(WidgetInfo.COMBAT_LEVEL);
+		Widget combatLevelWidget = client.getWidget(ComponentID.COMBAT_LEVEL);
 
 		if (combatLevelWidget != null)
 		{
@@ -116,7 +122,7 @@ public class CombatLevelPlugin extends Plugin
 			return;
 		}
 
-		Widget combatLevelWidget = client.getWidget(WidgetInfo.COMBAT_LEVEL);
+		Widget combatLevelWidget = client.getWidget(ComponentID.COMBAT_LEVEL);
 		if (combatLevelWidget == null || !config.showPreciseCombatLevel())
 		{
 			return;
@@ -154,6 +160,50 @@ public class CombatLevelPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onScriptPreFired(ScriptPreFired scriptPreFired)
+	{
+		final int scriptId = scriptPreFired.getScriptId();
+		if (scriptId != ScriptID.ACCOUNT_SUMMARY_TEXT_FORMAT && scriptId != ScriptID.ACCOUNT_SUMMARY_SECTION_FORMAT || !config.showPreciseCombatLevel())
+		{
+			return;
+		}
+
+		final String[] stringStack = client.getStringStack();
+		final int stringStackSize = client.getStringStackSize();
+
+		if (scriptId == ScriptID.ACCOUNT_SUMMARY_TEXT_FORMAT)
+		{
+			// This script is used for both total level and combat level, so verify the script is modifying the combat level
+			final String levelText = Text.removeTags(stringStack[stringStackSize - 1]); // first argument
+			if (client.getLocalPlayer().getCombatLevel() != Integer.parseInt(levelText))
+			{
+				return;
+			}
+		}
+		else // scriptId == ScriptID.ACCOUNT_SUMMARY_SECTION_FORMAT
+		{
+			// This script is used for all account summary sections, so verify the script is running for the combat level section
+			final String sectionText = Text.removeTags(stringStack[stringStackSize - 3]); // third argument
+			if (!COMBAT_LEVEL_SECTION_TEXT.equals(sectionText))
+			{
+				return;
+			}
+		}
+
+		double combatLevelPrecise = Experience.getCombatLevelPrecise(
+			client.getRealSkillLevel(Skill.ATTACK),
+			client.getRealSkillLevel(Skill.STRENGTH),
+			client.getRealSkillLevel(Skill.DEFENCE),
+			client.getRealSkillLevel(Skill.HITPOINTS),
+			client.getRealSkillLevel(Skill.MAGIC),
+			client.getRealSkillLevel(Skill.RANGED),
+			client.getRealSkillLevel(Skill.PRAYER)
+		);
+
+		stringStack[stringStackSize - 1] = ColorUtil.wrapWithColorTag(DECIMAL_FORMAT.format(combatLevelPrecise), CHARACTER_SUMMARY_GREEN);
+	}
+
+	@Subscribe
 	public void onScriptPostFired(ScriptPostFired scriptPostFired)
 	{
 		if (scriptPostFired.getScriptId() == ScriptID.PVP_WIDGET_BUILDER && config.wildernessAttackLevelRange())
@@ -164,7 +214,7 @@ public class CombatLevelPlugin extends Plugin
 
 	private void appendAttackLevelRangeText()
 	{
-		final Widget wildernessLevelWidget = client.getWidget(WidgetInfo.PVP_WILDERNESS_LEVEL);
+		final Widget wildernessLevelWidget = client.getWidget(ComponentID.PVP_WILDERNESS_LEVEL);
 		if (wildernessLevelWidget == null)
 		{
 			return;
@@ -191,7 +241,7 @@ public class CombatLevelPlugin extends Plugin
 			return;
 		}
 
-		final Widget wildernessLevelWidget = client.getWidget(WidgetInfo.PVP_WILDERNESS_LEVEL);
+		final Widget wildernessLevelWidget = client.getWidget(ComponentID.PVP_WILDERNESS_LEVEL);
 		if (wildernessLevelWidget != null)
 		{
 			String wildernessLevelText = wildernessLevelWidget.getText();

@@ -28,7 +28,7 @@
 
 	<groupId>net.runelite</groupId>
 	<artifactId>runelite-parent</artifactId>
-	<version>1.9.10-SNAPSHOT</version>
+	<version>1.10.29-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>RuneLite</name>
@@ -38,16 +38,16 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.build.outputTimestamp>1</project.build.outputTimestamp>
-		<java.release>8</java.release>
-		<lombok.version>1.18.20</lombok.version>
+		<lombok.version>1.18.30</lombok.version>
 		<logback.version>1.2.9</logback.version>
 		<slf4j.version>1.7.25</slf4j.version>
+		<flatlaf.version>3.2.5-rl4</flatlaf.version>
 
 		<maven.javadoc.skip>true</maven.javadoc.skip>
 		<checkstyle.skip>true</checkstyle.skip>
 		<glslang.path></glslang.path>
 
-		<rs.version>210</rs.version>
+		<rs.version>221</rs.version>
 	</properties>
 
 	<licenses>
@@ -123,12 +123,10 @@
 
 	<modules>
 		<module>cache</module>
-		<module>cache-client</module>
-		<module>cache-updater</module>
 		<module>runelite-api</module>
 		<module>runelite-client</module>
 		<module>runelite-jshell</module>
-		<module>runelite-script-assembler-plugin</module>
+		<module>runelite-maven-plugin</module>
 	</modules>
 
 	<dependencyManagement>
@@ -190,7 +188,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<release>${java.release}</release>
+					<release>11</release>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -199,7 +197,7 @@
 				<version>2.22.2</version>
 				<configuration>
 					<enableAssertions>true</enableAssertions>
-					<argLine>-Xmx512m</argLine>
+					<argLine>-Xmx512m -Duser.language=en -Duser.region=US</argLine>
 					<systemProperties>
 						<glslang.path>${glslang.path}</glslang.path>
 					</systemProperties>
@@ -237,12 +235,8 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>3.0.0-M1</version>
+				<version>3.5.0</version>
 				<configuration>
-					<!-- Fix Javadoc on Java 11+ - JDK-8212233 -->
-					<source>8</source>
-					<!-- Fix Javadoc search feature to work without modules - https://stackoverflow.com/a/52603413 -->
-					<additionalJOption>--no-module-directories</additionalJOption>
 					<!-- Javadoc the delombok sources -->
 					<sourcepath>${project.build.directory}/delombok</sourcepath>
 				</configuration>

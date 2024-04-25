@@ -31,16 +31,26 @@ int priority_map(int p, int distance, int _min10, int avg1, int avg2, int avg3) 
   // (10, 11)  0  1  2  (10, 11)  3  4  (10, 11)  5  6  7  8  9  (10, 11)
   //   0   1   2  3  4    5   6   7  8    9  10  11 12 13 14 15   16  17
   switch (p) {
-    case 0: return 2;
-    case 1: return 3;
-    case 2: return 4;
-    case 3: return 7;
-    case 4: return 8;
-    case 5: return 11;
-    case 6: return 12;
-    case 7: return 13;
-    case 8: return 14;
-    case 9: return 15;
+    case 0:
+      return 2;
+    case 1:
+      return 3;
+    case 2:
+      return 4;
+    case 3:
+      return 7;
+    case 4:
+      return 8;
+    case 5:
+      return 11;
+    case 6:
+      return 12;
+    case 7:
+      return 13;
+    case 8:
+      return 14;
+    case 9:
+      return 15;
     case 10:
       if (distance > avg1) {
         return 0;
@@ -79,13 +89,9 @@ int count_prio_offset(__local struct shared_data *shared, int priority) {
   return total;
 }
 
-void get_face(
-  __local struct shared_data *shared,
-  __constant struct uniform *uni,
-  __global const int4 *vb,
-  __global const int4 *tempvb,
-  uint localId, struct modelinfo minfo, int cameraYaw, int cameraPitch,
-  /* out */ int *prio, int *dis, int4 *o1, int4 *o2, int4 *o3) {
+void get_face(__local struct shared_data *shared, __constant struct uniform *uni, __global const int4 *vb, __global const int4 *tempvb, uint localId,
+              struct modelinfo minfo, float cameraYaw, float cameraPitch,
+              /* out */ int *prio, int *dis, int4 *o1, int4 *o2, int4 *o3) {
   int size = minfo.size;
   int offset = minfo.offset;
   int flags = minfo.flags;
@@ -113,7 +119,6 @@ void get_face(
   }
 
   if (localId < size) {
-    int radius = (flags & 0x7fffffff) >> 12;
     int orientation = flags & 0x7ff;
 
     // rotate for model orientation
@@ -122,13 +127,8 @@ void get_face(
     int4 thisrvC = rotate_vertex(uni, thisC, orientation);
 
     // calculate distance to face
-    int thisPriority = (thisA.w >> 16) & 0xff;// all vertices on the face have the same priority
-    int thisDistance;
-    if (radius == 0) {
-      thisDistance = 0;
-    } else {
-      thisDistance = face_distance(thisrvA, thisrvB, thisrvC, cameraYaw, cameraPitch) + radius;
-    }
+    int thisPriority = (thisA.w >> 16) & 0xff;  // all vertices on the face have the same priority
+    int thisDistance = face_distance(thisrvA, thisrvB, thisrvC, cameraYaw, cameraPitch);
 
     *o1 = thisrvA;
     *o2 = thisrvB;
@@ -145,10 +145,8 @@ void get_face(
   }
 }
 
-void add_face_prio_distance(
-  __local struct shared_data *shared,
-  __constant struct uniform *uni,
-  uint localId, struct modelinfo minfo, int4 thisrvA, int4 thisrvB, int4 thisrvC, int thisPriority, int thisDistance, int4 pos) {
+void add_face_prio_distance(__local struct shared_data *shared, __constant struct uniform *uni, uint localId, struct modelinfo minfo, int4 thisrvA,
+                            int4 thisrvB, int4 thisrvC, int thisPriority, int thisDistance, int4 pos) {
   if (localId < minfo.size) {
     // if the face is not culled, it is calculated into priority distance averages
     if (face_visible(uni, thisrvA, thisrvB, thisrvC, pos)) {
@@ -196,72 +194,137 @@ int map_face_priority(__local struct shared_data *shared, uint localId, struct m
   return 0;
 }
 
-void insert_dfs(__local struct shared_data *shared, uint localId, struct modelinfo minfo, int adjPrio, int distance, int prioIdx) {
+void insert_face(__local struct shared_data *shared, uint localId, struct modelinfo minfo, int adjPrio, int distance, int prioIdx) {
   int size = minfo.size;
 
   if (localId < size) {
-    // calculate base offset into dfs based on number of faces with a lower priority
+    // calculate base offset into renderPris based on number of faces with a lower priority
     int baseOff = count_prio_offset(shared, adjPrio);
-    // store into face array offset array by unique index
-    shared->dfs[baseOff + prioIdx] = ((int) localId << 16) | distance;
+    // the furthest faces draw first, and have the highest priority.
+    // if two faces have the same distance, the one with the
+    // lower id draws first.
+    shared->renderPris[baseOff + prioIdx] = distance << 16 | (int)(~localId & 0xffffu);
   }
 }
 
-void sort_and_insert(
-  __local struct shared_data *shared,
-  __global const float4 *uv,
-  __global const float4 *tempuv,
-  __global int4 *vout,
-  __global float4 *uvout,
-  uint localId, struct modelinfo minfo, int thisPriority, int thisDistance, int4 thisrvA, int4 thisrvB, int4 thisrvC) {
-  /* compute face distance */
+int tile_height(read_only image3d_t tileHeightImage, int z, int x, int y) {
+#define ESCENE_OFFSET 40  // (184-104)/2
+  const sampler_t tileHeightSampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_TO_EDGE;
+  int4 coord = (int4)(x + ESCENE_OFFSET, y + ESCENE_OFFSET, z, 0);
+  return read_imagei(tileHeightImage, tileHeightSampler, coord).x << 3;
+}
+
+int4 hillskew_vertex(read_only image3d_t tileHeightImage, int4 v, int hillskew, int y, int plane) {
+  if (hillskew == 1) {
+    int px = v.x & 127;
+    int pz = v.z & 127;
+    int sx = v.x >> 7;
+    int sz = v.z >> 7;
+    int h1 = px * tile_height(tileHeightImage, plane, sx + 1, sz) + (128 - px) * tile_height(tileHeightImage, plane, sx, sz) >> 7;
+    int h2 = px * tile_height(tileHeightImage, plane, sx + 1, sz + 1) + (128 - px) * tile_height(tileHeightImage, plane, sx, sz + 1) >> 7;
+    int h3 = pz * h2 + (128 - pz) * h1 >> 7;
+    return (int4)(v.x, v.y + h3 - y, v.z, v.w);
+  } else {
+    return v;
+  }
+}
+
+float4 hillskew_vertexf(read_only image3d_t tileHeightImage, float4 v, int hillskew, int y, int plane) {
+  if (hillskew == 1) {
+    float fx = v.x / 128;
+    float fz = v.z / 128;
+    int sx = (int)(floor(fx));
+    int sz = (int)(floor(fz));
+    float it;
+    float h1 = mix((float)tile_height(tileHeightImage, plane, sx, sz), (float)tile_height(tileHeightImage, plane, sx + 1, sz), fract(fx, &it));
+    float h2 = mix((float)tile_height(tileHeightImage, plane, sx, sz + 1), (float)tile_height(tileHeightImage, plane, sx + 1, sz + 1), fract(fx, &it));
+    float h3 = mix(h1, h2, fract(fz, &it));
+    return (float4)(v.x, v.y + h3 - y, v.z, v.w);
+  } else {
+    return v;
+  }
+}
+
+void sort_and_insert(__local struct shared_data *shared, __constant struct uniform *uni, __global const float4 *texb, __global const float4 *temptexb,
+                     __global int4 *vout, __global float4 *uvout, uint localId, struct modelinfo minfo, int thisPriority, int thisDistance, int4 thisrvA,
+                     int4 thisrvB, int4 thisrvC, read_only image3d_t tileHeightImage) {
   int size = minfo.size;
 
   if (localId < size) {
     int outOffset = minfo.idx;
-    int uvOffset = minfo.uvOffset;
+    int toffset = minfo.toffset;
     int flags = minfo.flags;
-    int4 pos = (int4)(minfo.x, minfo.y, minfo.z, 0);
-
-    const int priorityOffset = count_prio_offset(shared, thisPriority);
-    const int numOfPriority = shared->totalMappedNum[thisPriority];
-    int start = priorityOffset; // index of first face with this priority
-    int end = priorityOffset + numOfPriority; // index of last face with this priority
-    int myOffset = priorityOffset;
 
     // we only have to order faces against others of the same priority
+    const int priorityOffset = count_prio_offset(shared, thisPriority);
+    const int numOfPriority = shared->totalMappedNum[thisPriority];
+    const int start = priorityOffset;                // index of first face with this priority
+    const int end = priorityOffset + numOfPriority;  // index of last face with this priority
+    const int renderPriority = thisDistance << 16 | (int)(~localId & 0xffffu);
+    int myOffset = priorityOffset;
+
     // calculate position this face will be in
     for (int i = start; i < end; ++i) {
-      int d1 = shared->dfs[i];
-      int theirId = d1 >> 16;
-      int theirDistance = d1 & 0xffff;
-
-      // the closest faces draw last, so have the highest index
-      // if two faces have the same distance, the one with the
-      // higher id draws last
-      if ((theirDistance > thisDistance)
-        || (theirDistance == thisDistance && theirId < localId)) {
+      if (renderPriority < shared->renderPris[i]) {
         ++myOffset;
       }
     }
 
-    // position vertices in scene and write to out buffer
-    vout[outOffset + myOffset * 3]     = pos + thisrvA;
-    vout[outOffset + myOffset * 3 + 1] = pos + thisrvB;
-    vout[outOffset + myOffset * 3 + 2] = pos + thisrvC;
+    // position into scene
+    int4 pos = (int4)(minfo.x, minfo.y, minfo.z, 0);
+    thisrvA += pos;
+    thisrvB += pos;
+    thisrvC += pos;
 
-    if (uvOffset < 0) {
-      uvout[outOffset + myOffset * 3]     = (float4)(0, 0, 0, 0);
+    // apply hillskew
+    int plane = (flags >> 24) & 3;
+    int hillskew = (flags >> 26) & 1;
+    thisrvA = hillskew_vertex(tileHeightImage, thisrvA, hillskew, minfo.y, plane);
+    thisrvB = hillskew_vertex(tileHeightImage, thisrvB, hillskew, minfo.y, plane);
+    thisrvC = hillskew_vertex(tileHeightImage, thisrvC, hillskew, minfo.y, plane);
+
+    // write to out buffer
+    vout[outOffset + myOffset * 3] = thisrvA;
+    vout[outOffset + myOffset * 3 + 1] = thisrvB;
+    vout[outOffset + myOffset * 3 + 2] = thisrvC;
+
+    if (toffset < 0) {
+      uvout[outOffset + myOffset * 3] = (float4)(0, 0, 0, 0);
       uvout[outOffset + myOffset * 3 + 1] = (float4)(0, 0, 0, 0);
       uvout[outOffset + myOffset * 3 + 2] = (float4)(0, 0, 0, 0);
-    } else if (flags >= 0) {
-      uvout[outOffset + myOffset * 3]     = tempuv[uvOffset + localId * 3];
-      uvout[outOffset + myOffset * 3 + 1] = tempuv[uvOffset + localId * 3 + 1];
-      uvout[outOffset + myOffset * 3 + 2] = tempuv[uvOffset + localId * 3 + 2];
     } else {
-      uvout[outOffset + myOffset * 3]     = uv[uvOffset + localId * 3];
-      uvout[outOffset + myOffset * 3 + 1] = uv[uvOffset + localId * 3 + 1];
-      uvout[outOffset + myOffset * 3 + 2] = uv[uvOffset + localId * 3 + 2];
+      float4 texA, texB, texC;
+
+      if (flags >= 0) {
+        texA = temptexb[toffset + localId * 3];
+        texB = temptexb[toffset + localId * 3 + 1];
+        texC = temptexb[toffset + localId * 3 + 2];
+      } else {
+        texA = texb[toffset + localId * 3];
+        texB = texb[toffset + localId * 3 + 1];
+        texC = texb[toffset + localId * 3 + 2];
+      }
+
+      int orientation = flags & 0x7ff;
+      // swizzle from (tex,x,y,z) to (x,y,z,tex) for rotate and hillskew
+      texA = texA.yzwx;
+      texB = texB.yzwx;
+      texC = texC.yzwx;
+      // rotate
+      texA = rotatef_vertex(texA, orientation);
+      texB = rotatef_vertex(texB, orientation);
+      texC = rotatef_vertex(texC, orientation);
+      // position
+      texA += convert_float4(pos);
+      texB += convert_float4(pos);
+      texC += convert_float4(pos);
+      // hillskew
+      texA = hillskew_vertexf(tileHeightImage, texA, hillskew, minfo.y, plane);
+      texB = hillskew_vertexf(tileHeightImage, texB, hillskew, minfo.y, plane);
+      texC = hillskew_vertexf(tileHeightImage, texC, hillskew, minfo.y, plane);
+      uvout[outOffset + myOffset * 3] = texA.wxyz;
+      uvout[outOffset + myOffset * 3 + 1] = texB.wxyz;
+      uvout[outOffset + myOffset * 3 + 2] = texC.wxyz;
     }
   }
 }

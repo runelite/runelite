@@ -48,6 +48,7 @@ import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.config.Notification;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.party.PartyService;
 import net.runelite.client.party.WSClient;
@@ -133,12 +134,12 @@ public class SpecialCounterPluginTest
 
 		// Set up special attack energy
 		VarbitChanged varbitChanged = new VarbitChanged();
-		varbitChanged.setVarpId(VarPlayer.SPECIAL_ATTACK_PERCENT.getId());
+		varbitChanged.setVarpId(VarPlayer.SPECIAL_ATTACK_PERCENT);
 		varbitChanged.setValue(100);
 		specialCounterPlugin.onVarbitChanged(varbitChanged);
 
 		// Set up item image for spec info drop
-		when(itemManager.getImage(anyInt())).thenReturn(new AsyncBufferedImage(24, 24, BufferedImage.TYPE_INT_ARGB));
+		when(itemManager.getImage(anyInt())).thenReturn(new AsyncBufferedImage(clientThread, 24, 24, BufferedImage.TYPE_INT_ARGB));
 	}
 
 	private static HitsplatApplied hitsplat(Actor target, @HitsplatType int type)
@@ -163,7 +164,7 @@ public class SpecialCounterPluginTest
 
 		// spec npc
 		VarbitChanged varbitChanged = new VarbitChanged();
-		varbitChanged.setVarpId(VarPlayer.SPECIAL_ATTACK_PERCENT.getId());
+		varbitChanged.setVarpId(VarPlayer.SPECIAL_ATTACK_PERCENT);
 		varbitChanged.setValue(50);
 		specialCounterPlugin.onVarbitChanged(varbitChanged);
 
@@ -194,13 +195,13 @@ public class SpecialCounterPluginTest
 
 		when(client.getLocalPlayer()).thenReturn(player);
 		when(specialCounterConfig.bandosGodswordThreshold()).thenReturn(2);
-		when(specialCounterConfig.thresholdNotification()).thenReturn(true);
+		when(specialCounterConfig.thresholdNotification()).thenReturn(Notification.ON);
 
 		when(client.getTickCount()).thenReturn(0);
 
 		// First special attack
 		VarbitChanged varbitChanged = new VarbitChanged();
-		varbitChanged.setVarpId(VarPlayer.SPECIAL_ATTACK_PERCENT.getId());
+		varbitChanged.setVarpId(VarPlayer.SPECIAL_ATTACK_PERCENT);
 		varbitChanged.setValue(50);
 		specialCounterPlugin.onVarbitChanged(varbitChanged);
 
@@ -225,7 +226,7 @@ public class SpecialCounterPluginTest
 		// Second special attack
 		reset(clientThread);
 		varbitChanged = new VarbitChanged();
-		varbitChanged.setVarpId(VarPlayer.SPECIAL_ATTACK_PERCENT.getId());
+		varbitChanged.setVarpId(VarPlayer.SPECIAL_ATTACK_PERCENT);
 		varbitChanged.setValue(0);
 		specialCounterPlugin.onVarbitChanged(varbitChanged);
 
@@ -240,7 +241,7 @@ public class SpecialCounterPluginTest
 
 		specialCounterPlugin.onGameTick(new GameTick());
 
-		verify(notifier).notify("Bandos Godsword special attack threshold reached!");
+		verify(notifier).notify(Notification.ON, "Bandos Godsword special attack threshold reached!");
 	}
 
 	@Test
@@ -253,13 +254,13 @@ public class SpecialCounterPluginTest
 		when(client.getLocalPlayer()).thenReturn(player);
 		when(player.getInteracting()).thenReturn(target);
 		when(specialCounterConfig.bandosGodswordThreshold()).thenReturn(3);
-		lenient().when(specialCounterConfig.thresholdNotification()).thenReturn(true);
+		lenient().when(specialCounterConfig.thresholdNotification()).thenReturn(Notification.ON);
 
 		when(client.getTickCount()).thenReturn(0);
 
 		// First special attack
 		VarbitChanged varbitChanged = new VarbitChanged();
-		varbitChanged.setVarpId(VarPlayer.SPECIAL_ATTACK_PERCENT.getId());
+		varbitChanged.setVarpId(VarPlayer.SPECIAL_ATTACK_PERCENT);
 		varbitChanged.setValue(50);
 		specialCounterPlugin.onVarbitChanged(varbitChanged);
 
@@ -279,7 +280,7 @@ public class SpecialCounterPluginTest
 		reset(clientThread);
 		// Second special attack
 		varbitChanged = new VarbitChanged();
-		varbitChanged.setVarpId(VarPlayer.SPECIAL_ATTACK_PERCENT.getId());
+		varbitChanged.setVarpId(VarPlayer.SPECIAL_ATTACK_PERCENT);
 		varbitChanged.setValue(0);
 		specialCounterPlugin.onVarbitChanged(varbitChanged);
 

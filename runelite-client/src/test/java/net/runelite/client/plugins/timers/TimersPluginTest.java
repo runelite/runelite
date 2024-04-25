@@ -34,10 +34,13 @@ import java.util.List;
 import java.util.function.Predicate;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.ui.overlay.infobox.InfoBox;
@@ -55,6 +58,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.nullable;
 import org.mockito.Mock;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -91,6 +95,21 @@ public class TimersPluginTest
 	public void before()
 	{
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
+	}
+
+	@Test
+	public void removeTimersOnConfigChanged()
+	{
+		timersPlugin = spy(timersPlugin);
+		final ConfigChanged configChanged = new ConfigChanged();
+		configChanged.setGroup(TimersConfig.GROUP);
+
+		timersPlugin.onConfigChanged(configChanged);
+
+		for (GameTimer timer : GameTimer.values())
+		{
+			verify(timersPlugin).removeGameTimer(timer);
+		}
 	}
 
 	@Test
@@ -284,7 +303,11 @@ public class TimersPluginTest
 
 		// test timer remove: verify the infobox was removed (and no more were added)
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "You have been defeated!", "", 0);
+		final GameStateChanged gameStateChanged = new GameStateChanged();
+		gameStateChanged.setGameState(GameState.LOADING);
+		when(client.getMapRegions()).thenReturn(new int[0]);
 		timersPlugin.onChatMessage(chatMessage);
+		timersPlugin.onGameStateChanged(gameStateChanged);
 		verify(infoBoxManager, times(3)).removeInfoBox(captor.capture());
 		verify(infoBoxManager, times(3)).addInfoBox(captor.capture());
 	}
@@ -406,10 +429,8 @@ public class TimersPluginTest
 		when(timersConfig.showArceuus()).thenReturn(true);
 		when(client.getRealSkillLevel(Skill.MAGIC)).thenReturn(57);
 
-		VarbitChanged varbitChanged = new VarbitChanged();
-		varbitChanged.setVarbitId(Varbits.SHADOW_VEIL);
-		varbitChanged.setValue(1);
-		timersPlugin.onVarbitChanged(varbitChanged);
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=6800bf>Your thieving abilities have been enhanced.</col>", "", 0);
+		timersPlugin.onChatMessage(chatMessage);
 
 		ArgumentCaptor<InfoBox> captor = ArgumentCaptor.forClass(InfoBox.class);
 		verify(infoBoxManager).addInfoBox(captor.capture());
@@ -439,10 +460,8 @@ public class TimersPluginTest
 		when(timersConfig.showArceuus()).thenReturn(true);
 		when(client.getBoostedSkillLevel(Skill.MAGIC)).thenReturn(60);
 
-		VarbitChanged varbitChanged = new VarbitChanged();
-		varbitChanged.setVarbitId(Varbits.RESURRECT_THRALL);
-		varbitChanged.setValue(1);
-		timersPlugin.onVarbitChanged(varbitChanged);
+		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "<col=ef0083>You resurrect a greater zombified thrall.</col>", "", 0);
+		timersPlugin.onChatMessage(chatMessage);
 
 		ArgumentCaptor<InfoBox> ibcaptor = ArgumentCaptor.forClass(InfoBox.class);
 		verify(infoBoxManager).addInfoBox(ibcaptor.capture());

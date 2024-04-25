@@ -120,7 +120,6 @@ public class DiscordPlugin extends Plugin
 		final BufferedImage icon = ImageUtil.loadImageResource(getClass(), "discord.png");
 
 		discordButton = NavigationButton.builder()
-			.tab(false)
 			.tooltip("Join Discord")
 			.icon(icon)
 			.onClick(() -> LinkBrowser.browse(discordInvite))

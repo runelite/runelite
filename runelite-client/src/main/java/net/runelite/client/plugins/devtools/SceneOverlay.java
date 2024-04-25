@@ -97,6 +97,11 @@ public class SceneOverlay extends Overlay
 			renderMapSquares(graphics);
 		}
 
+		if (plugin.getLoadingLines().isActive())
+		{
+			renderLoadingLines(graphics);
+		}
+
 		if (plugin.getLineOfSight().isActive())
 		{
 			renderLineOfSight(graphics);
@@ -178,6 +183,35 @@ public class SceneOverlay extends Overlay
 			}
 		}
 		graphics.draw(path);
+	}
+
+	private void renderLoadingLines(Graphics2D graphics)
+	{
+		graphics.setStroke(new BasicStroke(STROKE_WIDTH));
+		graphics.setColor(CHUNK_BORDER_COLOR);
+
+		int off = 16 * Perspective.LOCAL_TILE_SIZE;
+		int max = Perspective.SCENE_SIZE * Perspective.LOCAL_TILE_SIZE;
+		LocalPoint[] points =
+		{
+			new LocalPoint(off, off),
+			new LocalPoint(off, max - off),
+			new LocalPoint(max - off, max - off),
+			new LocalPoint(max - off, off),
+		};
+
+		for (int i = 0; i < 4; ++i)
+		{
+			LocalPoint lp0 = points[i];
+			LocalPoint lp1 = points[(i + 1) % 4];
+
+			Point p0 = Perspective.localToCanvas(client, lp0, client.getPlane());
+			Point p1 = Perspective.localToCanvas(client, lp1, client.getPlane());
+			if (p0 != null && p1 != null)
+			{
+				graphics.drawLine(p0.getX(), p0.getY(), p1.getX(), p1.getY());
+			}
+		}
 	}
 
 	private void renderMapSquares(Graphics2D graphics)

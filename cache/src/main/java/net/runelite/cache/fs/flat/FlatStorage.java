@@ -179,9 +179,6 @@ public class FlatStorage implements Storage
 								case "crc":
 									archive.setCrc(Integer.parseInt(value));
 									continue;
-								case "hash":
-									archive.setHash(Base64.getDecoder().decode(value));
-									continue;
 								case "compression":
 									archive.setCompression(Integer.parseInt(value));
 									continue;
@@ -230,13 +227,6 @@ public class FlatStorage implements Storage
 					br.printf("revision=%d\n", archive.getRevision());
 					br.printf("crc=%d\n", archive.getCrc());
 
-					if (archive.getHash() != null)
-					{
-						br.append("hash=");
-						br.write(Base64.getEncoder().encode(archive.getHash()));
-						br.append("\n");
-					}
-
 					byte[] contents = store.getStorage().loadArchive(archive);
 					if (contents != null)
 					{
@@ -256,14 +246,14 @@ public class FlatStorage implements Storage
 	}
 
 	@Override
-	public byte[] loadArchive(Archive archive) throws IOException
+	public byte[] load(int index, int archive)
 	{
-		return data.get((long) archive.getIndex().getId() << 32 | archive.getArchiveId());
+		return data.get((long) index << 32 | archive);
 	}
 
 	@Override
-	public void saveArchive(Archive archive, byte[] bytes) throws IOException
+	public void store(int index, int archive, byte[] bytes)
 	{
-		data.put((long) archive.getIndex().getId() << 32 | archive.getArchiveId(), bytes);
+		data.put((long) index << 32 | archive, bytes);
 	}
 }

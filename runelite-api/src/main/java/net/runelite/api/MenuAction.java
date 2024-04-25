@@ -170,6 +170,7 @@ public enum MenuAction
 	/**
 	 * Menu action when using a component on an item
 	 */
+	@Deprecated
 	WIDGET_USE_ON_ITEM(32),
 
 	/**
@@ -242,6 +243,12 @@ public enum MenuAction
 	 * Using a widget on another widget
 	 */
 	WIDGET_TARGET_ON_WIDGET(58),
+
+	/**
+	 * Submenu parent that is also a widget.
+	 * see {@link #RUNELITE_SUBMENU}
+	 */
+	RUNELITE_SUBMENU_WIDGET(998),
 
 	/**
 	 * Menu action for high priority runelite options
