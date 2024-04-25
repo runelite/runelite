@@ -114,7 +114,8 @@ public class KeyRemappingPlugin extends Plugin
 	boolean chatboxFocused()
 	{
 		Widget chatboxParent = client.getWidget(ComponentID.CHATBOX_PARENT);
-		if (chatboxParent == null || chatboxParent.getOnKeyListener() == null)
+		Widget reportForm = client.getWidget(ComponentID.REPORT_FORM_CONTAINER);
+		if (chatboxParent == null || chatboxParent.getOnKeyListener() == null || reportForm != null)
 		{
 			return false;
 		}

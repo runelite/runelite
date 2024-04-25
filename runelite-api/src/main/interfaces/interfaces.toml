@@ -671,6 +671,10 @@ points_infobox=3
 [raiding_party]
 id=500
 
+[report_form]
+id=875
+container=0
+
 [resizable_viewport]
 id=161
 resizable_viewport_old_school_box=15
