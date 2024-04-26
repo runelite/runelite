@@ -142,7 +142,7 @@ public class PoisonPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onVarbitChanged(VarbitChanged event)
+	private void onVarbitChanged(VarbitChanged event)
 	{
 		if (event.getVarpId() == VarPlayer.POISON)
 		{
@@ -192,7 +192,7 @@ public class PoisonPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals(PoisonConfig.GROUP))
 		{

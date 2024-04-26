@@ -97,7 +97,7 @@ public class TelekineticRoom extends MTARoom
 	}
 
 	@Subscribe
-	public void onWallObjectSpawned(WallObjectSpawned event)
+	private void onWallObjectSpawned(WallObjectSpawned event)
 	{
 		final WallObject wall = event.getWallObject();
 		if (wall.getId() != TELEKINETIC_WALL)
@@ -109,7 +109,7 @@ public class TelekineticRoom extends MTARoom
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOADING)
 		{
@@ -120,7 +120,7 @@ public class TelekineticRoom extends MTARoom
 	}
 
 	@Subscribe
-	public void onGroundObjectSpawned(GroundObjectSpawned event)
+	private void onGroundObjectSpawned(GroundObjectSpawned event)
 	{
 		final GroundObject object = event.getGroundObject();
 		if (object.getId() == TELEKINETIC_FINISH)
@@ -130,7 +130,7 @@ public class TelekineticRoom extends MTARoom
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick event)
+	private void onGameTick(GameTick event)
 	{
 		if (!inside() || !config.telekinetic())
 		{
@@ -188,7 +188,7 @@ public class TelekineticRoom extends MTARoom
 	}
 
 	@Subscribe
-	public void onNpcSpawned(NpcSpawned event)
+	private void onNpcSpawned(NpcSpawned event)
 	{
 		NPC npc = event.getNpc();
 
@@ -199,7 +199,7 @@ public class TelekineticRoom extends MTARoom
 	}
 
 	@Subscribe
-	public void onNpcDespawned(NpcDespawned event)
+	private void onNpcDespawned(NpcDespawned event)
 	{
 		NPC npc = event.getNpc();
 

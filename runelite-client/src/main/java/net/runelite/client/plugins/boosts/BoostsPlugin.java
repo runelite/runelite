@@ -157,7 +157,7 @@ public class BoostsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		switch (event.getGameState())
 		{
@@ -170,7 +170,7 @@ public class BoostsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("boosts"))
 		{
@@ -191,7 +191,7 @@ public class BoostsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onStatChanged(StatChanged statChanged)
+	private void onStatChanged(StatChanged statChanged)
 	{
 		Skill skill = statChanged.getSkill();
 
@@ -234,7 +234,7 @@ public class BoostsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick event)
+	private void onGameTick(GameTick event)
 	{
 		lastTickMillis = System.currentTimeMillis();
 

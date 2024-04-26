@@ -94,7 +94,7 @@ public class PuzzleSolverPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded widget)
+	private void onWidgetLoaded(WidgetLoaded widget)
 	{
 		if (widget.getGroupId() != InterfaceID.VARROCK_MUSEUM)
 		{
@@ -128,7 +128,7 @@ public class PuzzleSolverPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
+	private void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
 	{
 		int widgetId = menuOptionClicked.getParam1();
 		if (WidgetUtil.componentToInterface(widgetId) != InterfaceID.LIGHT_BOX)
@@ -185,7 +185,7 @@ public class PuzzleSolverPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick event)
+	private void onGameTick(GameTick event)
 	{
 		Widget lightboxWidget = client.getWidget(ComponentID.LIGHT_BOX_LIGHT_BULB_CONTAINER);
 		if (lightboxWidget == null)

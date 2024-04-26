@@ -78,7 +78,7 @@ public class GraveyardRoom extends MTARoom
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick tick)
+	private void onGameTick(GameTick tick)
 	{
 		if (!inside() || !config.graveyard())
 		{
@@ -91,7 +91,7 @@ public class GraveyardRoom extends MTARoom
 	}
 
 	@Subscribe
-	public void onItemContainerChanged(ItemContainerChanged event)
+	private void onItemContainerChanged(ItemContainerChanged event)
 	{
 		if (!inside())
 		{

@@ -229,7 +229,7 @@ public class NpcIndicatorsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGIN_SCREEN ||
 			event.getGameState() == GameState.HOPPING)
@@ -243,7 +243,7 @@ public class NpcIndicatorsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged configChanged)
+	private void onConfigChanged(ConfigChanged configChanged)
 	{
 		if (!configChanged.getGroup().equals(NpcIndicatorsConfig.GROUP))
 		{
@@ -254,7 +254,8 @@ public class NpcIndicatorsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded event)
+	@VisibleForTesting
+	void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		final MenuEntry menuEntry = event.getMenuEntry();
 		final MenuAction menuAction = menuEntry.getType();
@@ -480,7 +481,8 @@ public class NpcIndicatorsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onNpcSpawned(NpcSpawned npcSpawned)
+	@VisibleForTesting
+	void onNpcSpawned(NpcSpawned npcSpawned)
 	{
 		final NPC npc = npcSpawned.getNpc();
 		final String npcName = npc.getName();
@@ -510,7 +512,7 @@ public class NpcIndicatorsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onNpcDespawned(NpcDespawned npcDespawned)
+	private void onNpcDespawned(NpcDespawned npcDespawned)
 	{
 		final NPC npc = npcDespawned.getNpc();
 
@@ -523,7 +525,8 @@ public class NpcIndicatorsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onNpcChanged(NpcChanged event)
+	@VisibleForTesting
+	void onNpcChanged(NpcChanged event)
 	{
 		final NPC npc = event.getNpc();
 		final String npcName = npc.getName();
@@ -543,7 +546,7 @@ public class NpcIndicatorsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGraphicsObjectCreated(GraphicsObjectCreated event)
+	private void onGraphicsObjectCreated(GraphicsObjectCreated event)
 	{
 		final GraphicsObject go = event.getGraphicsObject();
 
@@ -554,7 +557,7 @@ public class NpcIndicatorsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick event)
+	private void onGameTick(GameTick event)
 	{
 		removeOldHighlightedRespawns();
 		validateSpawnedNpcs();

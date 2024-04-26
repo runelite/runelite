@@ -90,7 +90,7 @@ public class CustomCursorPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("customcursor") && event.getKey().equals("cursorStyle"))
 		{
@@ -99,7 +99,7 @@ public class CustomCursorPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onItemContainerChanged(ItemContainerChanged event)
+	private void onItemContainerChanged(ItemContainerChanged event)
 	{
 		if (config.selectedCursor() == CustomCursor.EQUIPPED_WEAPON && event.getContainerId() == InventoryID.EQUIPMENT.getId())
 		{

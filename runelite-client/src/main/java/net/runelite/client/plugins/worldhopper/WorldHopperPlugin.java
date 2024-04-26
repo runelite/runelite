@@ -249,7 +249,7 @@ public class WorldHopperPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onConfigChanged(final ConfigChanged event)
+	private void onConfigChanged(final ConfigChanged event)
 	{
 		if (event.getGroup().equals(WorldHopperConfig.GROUP))
 		{
@@ -292,7 +292,7 @@ public class WorldHopperPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onCommandExecuted(CommandExecuted commandExecuted)
+	private void onCommandExecuted(CommandExecuted commandExecuted)
 	{
 		if ("hop".equalsIgnoreCase(commandExecuted.getCommand()))
 		{
@@ -367,7 +367,7 @@ public class WorldHopperPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onVarbitChanged(VarbitChanged varbitChanged)
+	private void onVarbitChanged(VarbitChanged varbitChanged)
 	{
 		if (varbitChanged.getVarbitId() == Varbits.WORLDHOPPER_FAVORITE_1
 			|| varbitChanged.getVarbitId() == Varbits.WORLDHOPPER_FAVORITE_2)
@@ -379,7 +379,7 @@ public class WorldHopperPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded event)
+	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		if (!config.menuOption())
 		{
@@ -444,7 +444,7 @@ public class WorldHopperPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		// If the player has disabled the side bar plugin panel, do not update the UI
 		if (config.showSidebar() && gameStateChanged.getGameState() == GameState.LOGGED_IN)
@@ -459,7 +459,7 @@ public class WorldHopperPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onWorldListLoad(WorldListLoad worldListLoad)
+	private void onWorldListLoad(WorldListLoad worldListLoad)
 	{
 		if (!config.showSidebar())
 		{
@@ -491,7 +491,7 @@ public class WorldHopperPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onWorldsFetch(WorldsFetch worldsFetch)
+	private void onWorldsFetch(WorldsFetch worldsFetch)
 	{
 		updateList();
 	}
@@ -704,7 +704,7 @@ public class WorldHopperPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick event)
+	private void onGameTick(GameTick event)
 	{
 		if (quickHopTargetWorld == null)
 		{
@@ -743,7 +743,7 @@ public class WorldHopperPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onChatMessage(ChatMessage event)
+	private void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() != ChatMessageType.GAMEMESSAGE)
 		{

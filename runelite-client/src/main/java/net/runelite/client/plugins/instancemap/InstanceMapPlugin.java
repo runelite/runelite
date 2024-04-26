@@ -111,7 +111,7 @@ public class InstanceMapPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		overlay.onGameStateChange(event);
 	}

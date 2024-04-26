@@ -114,7 +114,7 @@ public class OverlayManager
 	}
 
 	@Subscribe
-	public void onConfigChanged(final ConfigChanged event)
+	private void onConfigChanged(final ConfigChanged event)
 	{
 		if (!RuneLiteConfig.GROUP_NAME.equals(event.getGroup()) || !"overlayBackgroundColor".equals(event.getKey()))
 		{
@@ -125,7 +125,7 @@ public class OverlayManager
 	}
 
 	@Subscribe
-	public void onProfileChanged(ProfileChanged event)
+	private void onProfileChanged(ProfileChanged event)
 	{
 		synchronized (this)
 		{

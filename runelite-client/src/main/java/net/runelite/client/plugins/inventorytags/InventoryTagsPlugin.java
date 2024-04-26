@@ -154,7 +154,7 @@ public class InventoryTagsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged configChanged)
+	private void onConfigChanged(ConfigChanged configChanged)
 	{
 		if (configChanged.getGroup().equals(InventoryTagsConfig.GROUP))
 		{
@@ -163,7 +163,7 @@ public class InventoryTagsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onMenuOpened(final MenuOpened event)
+	private void onMenuOpened(final MenuOpened event)
 	{
 		if (!client.isKeyPressed(KeyCode.KC_SHIFT))
 		{

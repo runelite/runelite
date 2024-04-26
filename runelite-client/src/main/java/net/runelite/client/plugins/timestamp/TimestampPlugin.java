@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.timestamp;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Provides;
 import java.awt.Color;
 import java.text.SimpleDateFormat;
@@ -86,7 +87,8 @@ public class TimestampPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	@VisibleForTesting
+	void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals(TimestampConfig.GROUP))
 		{
