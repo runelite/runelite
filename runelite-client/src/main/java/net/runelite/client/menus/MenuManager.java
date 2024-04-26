@@ -24,6 +24,7 @@
  */
 package net.runelite.client.menus;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
@@ -104,7 +105,8 @@ public class MenuManager
 	}
 
 	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded event)
+	@VisibleForTesting
+	void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		if (client.isWidgetSelected() || event.getType() != MenuAction.CC_OP.getId())
 		{
@@ -168,7 +170,7 @@ public class MenuManager
 	}
 
 	@Subscribe
-	public void onPlayerMenuOptionsChanged(PlayerMenuOptionsChanged event)
+	private void onPlayerMenuOptionsChanged(PlayerMenuOptionsChanged event)
 	{
 		int idx = event.getIndex();
 

@@ -194,7 +194,7 @@ public class InfoBoxOverlay extends OverlayPanel
 	}
 
 	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
+	private void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
 	{
 		if (menuOptionClicked.getMenuAction() != MenuAction.RUNELITE_INFOBOX || hoveredComponent == null)
 		{

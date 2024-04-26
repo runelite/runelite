@@ -243,7 +243,8 @@ public class ScreenshotPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick event)
+	@VisibleForTesting
+	void onGameTick(GameTick event)
 	{
 		if (!shouldTakeScreenshot)
 		{
@@ -293,7 +294,7 @@ public class ScreenshotPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onActorDeath(ActorDeath actorDeath)
+	private void onActorDeath(ActorDeath actorDeath)
 	{
 		Actor actor = actorDeath.getActor();
 		if (actor instanceof Player)
@@ -314,7 +315,7 @@ public class ScreenshotPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onPlayerLootReceived(final PlayerLootReceived playerLootReceived)
+	private void onPlayerLootReceived(final PlayerLootReceived playerLootReceived)
 	{
 		if (config.screenshotKills())
 		{
@@ -326,7 +327,7 @@ public class ScreenshotPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onScriptCallbackEvent(ScriptCallbackEvent e)
+	private void onScriptCallbackEvent(ScriptCallbackEvent e)
 	{
 		if (!"confirmFriendsChatKick".equals(e.getEventName()))
 		{
@@ -339,7 +340,8 @@ public class ScreenshotPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onChatMessage(ChatMessage event)
+	@VisibleForTesting
+	void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() != ChatMessageType.GAMEMESSAGE
 			&& event.getType() != ChatMessageType.SPAM
@@ -543,7 +545,8 @@ public class ScreenshotPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded event)
+	@VisibleForTesting
+	void onWidgetLoaded(WidgetLoaded event)
 	{
 		String fileName;
 		String screenshotSubDir;
@@ -746,7 +749,8 @@ public class ScreenshotPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onScriptPreFired(ScriptPreFired scriptPreFired)
+	@VisibleForTesting
+	void onScriptPreFired(ScriptPreFired scriptPreFired)
 	{
 		switch (scriptPreFired.getScriptId())
 		{

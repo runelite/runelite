@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.idlenotifier;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
@@ -125,7 +126,8 @@ public class IdleNotifierPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onAnimationChanged(AnimationChanged event)
+	@VisibleForTesting
+	void onAnimationChanged(AnimationChanged event)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)
 		{
@@ -429,7 +431,8 @@ public class IdleNotifierPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onInteractingChanged(InteractingChanged event)
+	@VisibleForTesting
+	void onInteractingChanged(InteractingChanged event)
 	{
 		final Actor source = event.getSource();
 		if (source != client.getLocalPlayer())
@@ -461,7 +464,7 @@ public class IdleNotifierPlugin extends Plugin
 	// this event is needed to handle some rare npcs where "Attack" is not used to initiate combat
 	// for example, kraken starts the fight with "Disturb" then changes into another form with "Attack"
 	@Subscribe
-	public void onNpcChanged(NpcChanged event)
+	private void onNpcChanged(NpcChanged event)
 	{
 		NPC npc = event.getNpc();
 		if (client.getLocalPlayer().getInteracting() != npc)
@@ -473,7 +476,8 @@ public class IdleNotifierPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	@VisibleForTesting
+	void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		lastInteracting = null;
 
@@ -502,7 +506,8 @@ public class IdleNotifierPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onHitsplatApplied(HitsplatApplied event)
+	@VisibleForTesting
+	void onHitsplatApplied(HitsplatApplied event)
 	{
 		if (event.getActor() != client.getLocalPlayer())
 		{
@@ -517,7 +522,7 @@ public class IdleNotifierPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGraphicChanged(GraphicChanged event)
+	private void onGraphicChanged(GraphicChanged event)
 	{
 		Actor actor = event.getActor();
 
@@ -533,7 +538,8 @@ public class IdleNotifierPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick event)
+	@VisibleForTesting
+	void onGameTick(GameTick event)
 	{
 		final Player local = client.getLocalPlayer();
 		final Duration waitDuration = Duration.ofMillis(config.getIdleNotificationDelay());
@@ -612,7 +618,7 @@ public class IdleNotifierPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onVarbitChanged(VarbitChanged event)
+	private void onVarbitChanged(VarbitChanged event)
 	{
 		if (event.getVarpId() == VarPlayerID.GROUP_GATHERING_ACTIVE_BUFF && event.getValue() == BUFF_BAR_NOT_DISPLAYED)
 		{
