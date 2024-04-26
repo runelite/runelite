@@ -181,6 +181,7 @@ public class LootTrackerPlugin extends Plugin
 		put(7827, "Dark Chest").
 		put(13117, "Rogues' Chest").
 		put(13156, "Chest (Ancient Vault)").
+		put(12348, "Muddy Chest").
 		build();
 
 	// Chests opened with keys from slayer tasks
