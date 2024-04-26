@@ -158,7 +158,7 @@ public class ChatChannelPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged configChanged)
+	private void onConfigChanged(ConfigChanged configChanged)
 	{
 		if (configChanged.getGroup().equals(ChatChannelConfig.GROUP))
 		{
@@ -175,7 +175,7 @@ public class ChatChannelPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onFriendsChatMemberJoined(FriendsChatMemberJoined event)
+	private void onFriendsChatMemberJoined(FriendsChatMemberJoined event)
 	{
 		final FriendsChatMember member = event.getMember();
 
@@ -196,7 +196,7 @@ public class ChatChannelPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onFriendsChatMemberLeft(FriendsChatMemberLeft event)
+	private void onFriendsChatMemberLeft(FriendsChatMemberLeft event)
 	{
 		final FriendsChatMember member = event.getMember();
 
@@ -210,7 +210,8 @@ public class ChatChannelPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onClanMemberJoined(ClanMemberJoined clanMemberJoined)
+	@VisibleForTesting
+	void onClanMemberJoined(ClanMemberJoined clanMemberJoined)
 	{
 		MemberActivity.ChatType chatType = clanChannelToChatType(clanMemberJoined.getClanChannel());
 		if (chatType != null && clanChannelJoinLeaveEnabled(chatType))
@@ -220,7 +221,8 @@ public class ChatChannelPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onClanMemberLeft(ClanMemberLeft clanMemberLeft)
+	@VisibleForTesting
+	void onClanMemberLeft(ClanMemberLeft clanMemberLeft)
 	{
 		MemberActivity.ChatType chatType = clanChannelToChatType(clanMemberLeft.getClanChannel());
 		if (chatType != null && clanChannelJoinLeaveEnabled(chatType))
@@ -286,7 +288,7 @@ public class ChatChannelPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick gameTick)
+	private void onGameTick(GameTick gameTick)
 	{
 		if (client.getGameState() != GameState.LOGGED_IN)
 		{
@@ -491,7 +493,7 @@ public class ChatChannelPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onVarClientStrChanged(VarClientStrChanged strChanged)
+	private void onVarClientStrChanged(VarClientStrChanged strChanged)
 	{
 		if (strChanged.getIndex() == VarClientStr.RECENT_FRIENDS_CHAT && config.recentChats())
 		{
@@ -500,7 +502,7 @@ public class ChatChannelPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged state)
+	private void onGameStateChanged(GameStateChanged state)
 	{
 		GameState gameState = state.getGameState();
 
@@ -511,7 +513,7 @@ public class ChatChannelPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onFriendsChatChanged(FriendsChatChanged event)
+	private void onFriendsChatChanged(FriendsChatChanged event)
 	{
 		if (event.isJoined())
 		{
@@ -522,7 +524,7 @@ public class ChatChannelPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onScriptCallbackEvent(ScriptCallbackEvent scriptCallbackEvent)
+	private void onScriptCallbackEvent(ScriptCallbackEvent scriptCallbackEvent)
 	{
 		switch (scriptCallbackEvent.getEventName())
 		{
@@ -598,7 +600,7 @@ public class ChatChannelPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onScriptPostFired(ScriptPostFired event)
+	private void onScriptPostFired(ScriptPostFired event)
 	{
 		if (event.getScriptId() == ScriptID.FRIENDS_CHAT_CHANNEL_REBUILD)
 		{

@@ -234,7 +234,7 @@ public class PartyPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onFocusChanged(FocusChanged focusChanged)
+	private void onFocusChanged(FocusChanged focusChanged)
 	{
 		if (!focusChanged.isFocused())
 		{
@@ -248,7 +248,7 @@ public class PartyPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals(PartyConfig.GROUP))
 		{
@@ -259,7 +259,7 @@ public class PartyPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked event)
+	private void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		if (!hotkeyPressed || client.isMenuOpen() || !party.isInParty() || !config.pings())
 		{
@@ -298,7 +298,7 @@ public class PartyPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGIN_SCREEN)
 		{
@@ -309,7 +309,7 @@ public class PartyPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onTilePing(TilePing event)
+	private void onTilePing(TilePing event)
 	{
 		if (config.pings())
 		{
@@ -377,7 +377,7 @@ public class PartyPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(final GameTick event)
+	private void onGameTick(final GameTick event)
 	{
 		checkStateChanged(false);
 	}
@@ -393,7 +393,7 @@ public class PartyPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onStatusUpdate(final StatusUpdate event)
+	private void onStatusUpdate(final StatusUpdate event)
 	{
 		final PartyData partyData = getPartyData(event.getMemberId());
 		if (partyData == null)
@@ -453,7 +453,7 @@ public class PartyPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onLocationUpdate(final LocationUpdate event)
+	private void onLocationUpdate(final LocationUpdate event)
 	{
 		final PartyData partyData = getPartyData(event.getMemberId());
 
@@ -466,14 +466,14 @@ public class PartyPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onUserJoin(final UserJoin event)
+	private void onUserJoin(final UserJoin event)
 	{
 		// this has a side effect of creating the party data
 		getPartyData(event.getMemberId());
 	}
 
 	@Subscribe
-	public void onUserSync(final UserSync event)
+	private void onUserSync(final UserSync event)
 	{
 		clientThread.invokeLater(() -> checkStateChanged(true));
 		lastLocation = null;
@@ -577,7 +577,7 @@ public class PartyPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onUserPart(final UserPart event)
+	private void onUserPart(final UserPart event)
 	{
 		final PartyData removed = partyDataMap.remove(event.getMemberId());
 
@@ -590,7 +590,7 @@ public class PartyPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onPartyChanged(final PartyChanged event)
+	private void onPartyChanged(final PartyChanged event)
 	{
 		// Reset party
 		partyDataMap.clear();
@@ -606,7 +606,7 @@ public class PartyPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onCommandExecuted(CommandExecuted commandExecuted)
+	private void onCommandExecuted(CommandExecuted commandExecuted)
 	{
 		if (!developerMode || !commandExecuted.getCommand().equalsIgnoreCase("partyinfo"))
 		{
@@ -622,7 +622,7 @@ public class PartyPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onPartyMemberAvatar(PartyMemberAvatar event)
+	private void onPartyMemberAvatar(PartyMemberAvatar event)
 	{
 		SwingUtilities.invokeLater(() -> panel.updateMember(event.getMemberId()));
 	}

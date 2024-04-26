@@ -121,7 +121,7 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 	}
 
 	@Subscribe
-	public void onChatMessage(ChatMessage chatMessage)
+	private void onChatMessage(ChatMessage chatMessage)
 	{
 		// Start sending old messages right after the welcome message, as that is most reliable source
 		// of information that chat history was reset
@@ -180,7 +180,7 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 	}
 
 	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked event)
+	private void onMenuOptionClicked(MenuOptionClicked event)
 	{
 		final String menuOption = event.getMenuOption();
 
@@ -192,7 +192,7 @@ public class ChatHistoryPlugin extends Plugin implements KeyListener
 	}
 
 	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded entry)
+	private void onMenuEntryAdded(MenuEntryAdded entry)
 	{
 		if (entry.getType() != MenuAction.CC_OP.getId() && entry.getType() != MenuAction.CC_OP_LOW_PRIORITY.getId())
 		{

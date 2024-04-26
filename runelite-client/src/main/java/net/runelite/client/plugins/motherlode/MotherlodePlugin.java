@@ -26,6 +26,7 @@
  */
 package net.runelite.client.plugins.motherlode;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multiset;
@@ -155,7 +156,8 @@ public class MotherlodePlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onVarbitChanged(VarbitChanged event)
+	@VisibleForTesting
+	void onVarbitChanged(VarbitChanged event)
 	{
 		if (inMlm)
 		{
@@ -178,7 +180,7 @@ public class MotherlodePlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onChatMessage(ChatMessage event)
+	private void onChatMessage(ChatMessage event)
 	{
 		if (!inMlm || event.getType() != ChatMessageType.SPAM)
 		{
@@ -271,7 +273,7 @@ public class MotherlodePlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onWallObjectSpawned(WallObjectSpawned event)
+	private void onWallObjectSpawned(WallObjectSpawned event)
 	{
 		if (!inMlm)
 		{
@@ -286,7 +288,7 @@ public class MotherlodePlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onWallObjectDespawned(WallObjectDespawned event)
+	private void onWallObjectDespawned(WallObjectDespawned event)
 	{
 		if (!inMlm)
 		{
@@ -298,7 +300,7 @@ public class MotherlodePlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameObjectSpawned(GameObjectSpawned event)
+	private void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		if (!inMlm)
 		{
@@ -309,7 +311,7 @@ public class MotherlodePlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameObjectDespawned(GameObjectDespawned event)
+	private void onGameObjectDespawned(GameObjectDespawned event)
 	{
 		if (!inMlm)
 		{
@@ -320,7 +322,8 @@ public class MotherlodePlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	@VisibleForTesting
+	void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOADING)
 		{
@@ -339,7 +342,8 @@ public class MotherlodePlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onItemContainerChanged(ItemContainerChanged event)
+	@VisibleForTesting
+	void onItemContainerChanged(ItemContainerChanged event)
 	{
 		if (!inMlm)
 		{

@@ -112,7 +112,7 @@ public class ImplingsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onNpcSpawned(NpcSpawned npcSpawned)
+	private void onNpcSpawned(NpcSpawned npcSpawned)
 	{
 		NPC npc = npcSpawned.getNpc();
 		Impling impling = Impling.findImpling(npc.getId());
@@ -127,7 +127,7 @@ public class ImplingsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onNpcChanged(NpcChanged npcCompositionChanged)
+	private void onNpcChanged(NpcChanged npcCompositionChanged)
 	{
 		NPC npc = npcCompositionChanged.getNpc();
 		Impling impling = Impling.findImpling(npc.getId());

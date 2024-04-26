@@ -212,7 +212,7 @@ public class BankPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onMenuShouldLeftClick(MenuShouldLeftClick event)
+	private void onMenuShouldLeftClick(MenuShouldLeftClick event)
 	{
 		if (!forceRightClickFlag)
 		{
@@ -237,7 +237,7 @@ public class BankPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded event)
+	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		if ((event.getOption().equals(DEPOSIT_WORN) && config.rightClickBankEquip())
 			|| (event.getOption().equals(DEPOSIT_INVENTORY) && config.rightClickBankInventory())
@@ -249,7 +249,7 @@ public class BankPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onScriptCallbackEvent(ScriptCallbackEvent event)
+	private void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
 		int[] intStack = client.getIntStack();
 		Object[] objectStack = client.getObjectStack();
@@ -302,7 +302,7 @@ public class BankPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded event)
+	private void onWidgetLoaded(WidgetLoaded event)
 	{
 		if (event.getGroupId() == InterfaceID.SEED_VAULT && config.seedVaultValue())
 		{
@@ -311,7 +311,7 @@ public class BankPlugin extends Plugin
 	}
 
 	@Subscribe(priority = 1) // run prior to bank tags
-	public void onScriptPreFired(ScriptPreFired event)
+	private void onScriptPreFired(ScriptPreFired event)
 	{
 		if (event.getScriptId() == ScriptID.BANKMAIN_FINISHBUILDING)
 		{
@@ -338,7 +338,7 @@ public class BankPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onScriptPostFired(ScriptPostFired event)
+	private void onScriptPostFired(ScriptPostFired event)
 	{
 		int scriptId = event.getScriptId();
 		if (scriptId == ScriptID.POTIONSTORE_BUILD || scriptId == ScriptID.POTIONSTORE_DOSE_CHANGE)
@@ -383,7 +383,7 @@ public class BankPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onItemContainerChanged(ItemContainerChanged event)
+	private void onItemContainerChanged(ItemContainerChanged event)
 	{
 		int containerId = event.getContainerId();
 

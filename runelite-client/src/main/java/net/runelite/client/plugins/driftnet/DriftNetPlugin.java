@@ -154,7 +154,7 @@ public class DriftNetPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() != GameState.LOGGED_IN)
 		{
@@ -183,7 +183,7 @@ public class DriftNetPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onVarbitChanged(VarbitChanged event)
+	private void onVarbitChanged(VarbitChanged event)
 	{
 		updateDriftNetVarbits();
 	}
@@ -206,7 +206,7 @@ public class DriftNetPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onInteractingChanged(InteractingChanged event)
+	private void onInteractingChanged(InteractingChanged event)
 	{
 		if (armInteraction
 			&& event.getSource() == client.getLocalPlayer()
@@ -230,7 +230,7 @@ public class DriftNetPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick tick)
+	private void onGameTick(GameTick tick)
 	{
 		if (!inDriftNetArea)
 		{
@@ -252,7 +252,7 @@ public class DriftNetPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onChatMessage(ChatMessage event)
+	private void onChatMessage(ChatMessage event)
 	{
 		if (!inDriftNetArea)
 		{
@@ -283,7 +283,7 @@ public class DriftNetPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onNpcSpawned(NpcSpawned event)
+	private void onNpcSpawned(NpcSpawned event)
 	{
 		final NPC npc = event.getNpc();
 		if (npc.getId() == NpcID.FOSSIL_FISH_SHOAL)
@@ -293,7 +293,7 @@ public class DriftNetPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onNpcDespawned(NpcDespawned event)
+	private void onNpcDespawned(NpcDespawned event)
 	{
 		final NPC npc = event.getNpc();
 		fish.remove(npc);
@@ -301,7 +301,7 @@ public class DriftNetPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameObjectSpawned(GameObjectSpawned event)
+	private void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		GameObject object = event.getGameObject();
 		if (object.getId() == ObjectID.FOSSIL_MERMAID_DRIFTNETS)
@@ -319,7 +319,7 @@ public class DriftNetPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameObjectDespawned(GameObjectDespawned event)
+	private void onGameObjectDespawned(GameObjectDespawned event)
 	{
 		GameObject object = event.getGameObject();
 		if (object == annette)
@@ -337,7 +337,7 @@ public class DriftNetPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onItemContainerChanged(final ItemContainerChanged event)
+	private void onItemContainerChanged(final ItemContainerChanged event)
 	{
 		final ItemContainer itemContainer = event.getItemContainer();
 		if (itemContainer != client.getItemContainer(InventoryID.INV))

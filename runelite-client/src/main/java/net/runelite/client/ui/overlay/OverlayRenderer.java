@@ -161,7 +161,7 @@ public class OverlayRenderer extends MouseAdapter
 	}
 
 	@Subscribe
-	public void onFocusChanged(FocusChanged event)
+	private void onFocusChanged(FocusChanged event)
 	{
 		if (!event.isFocused())
 		{
@@ -212,7 +212,7 @@ public class OverlayRenderer extends MouseAdapter
 	}
 
 	@Subscribe
-	public void onBeforeRender(BeforeRender event)
+	private void onBeforeRender(BeforeRender event)
 	{
 		curHoveredOverlay = null;
 

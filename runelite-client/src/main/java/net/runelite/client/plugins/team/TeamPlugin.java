@@ -138,7 +138,7 @@ public class TeamPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged configChanged)
+	private void onConfigChanged(ConfigChanged configChanged)
 	{
 		if (configChanged.getGroup().equals(TeamConfig.GROUP))
 		{
@@ -163,7 +163,7 @@ public class TeamPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged state)
+	private void onGameStateChanged(GameStateChanged state)
 	{
 		GameState gameState = state.getGameState();
 
@@ -176,7 +176,7 @@ public class TeamPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onPlayerSpawned(PlayerSpawned event)
+	private void onPlayerSpawned(PlayerSpawned event)
 	{
 		final Player local = client.getLocalPlayer();
 		final Player player = event.getPlayer();
@@ -200,7 +200,7 @@ public class TeamPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onPlayerDespawned(PlayerDespawned playerDespawned)
+	private void onPlayerDespawned(PlayerDespawned playerDespawned)
 	{
 		Player player = playerDespawned.getPlayer();
 		Integer team = playerTeam.remove(player);
@@ -236,7 +236,7 @@ public class TeamPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onPlayerChanged(PlayerChanged playerChanged)
+	private void onPlayerChanged(PlayerChanged playerChanged)
 	{
 		Player player = playerChanged.getPlayer();
 		updateTeam(player);
@@ -279,7 +279,7 @@ public class TeamPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onFriendsChatChanged(FriendsChatChanged event)
+	private void onFriendsChatChanged(FriendsChatChanged event)
 	{
 		if (!event.isJoined())
 		{
@@ -289,7 +289,7 @@ public class TeamPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onClanChannelChanged(ClanChannelChanged event)
+	private void onClanChannelChanged(ClanChannelChanged event)
 	{
 		if (event.getClanId() == ClanID.CLAN)
 		{
@@ -316,7 +316,7 @@ public class TeamPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onFriendsChatMemberJoined(FriendsChatMemberJoined event)
+	private void onFriendsChatMemberJoined(FriendsChatMemberJoined event)
 	{
 		final FriendsChatMember member = event.getMember();
 
@@ -334,7 +334,7 @@ public class TeamPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onFriendsChatMemberLeft(FriendsChatMemberLeft event)
+	private void onFriendsChatMemberLeft(FriendsChatMemberLeft event)
 	{
 		final FriendsChatMember member = event.getMember();
 
@@ -356,7 +356,7 @@ public class TeamPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onClanMemberJoined(ClanMemberJoined clanMemberJoined)
+	private void onClanMemberJoined(ClanMemberJoined clanMemberJoined)
 	{
 		final ClanChannelMember member = clanMemberJoined.getClanMember();
 
@@ -374,7 +374,7 @@ public class TeamPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onClanMemberLeft(ClanMemberLeft clanMemberLeft)
+	private void onClanMemberLeft(ClanMemberLeft clanMemberLeft)
 	{
 		final ClanChannelMember member = clanMemberLeft.getClanMember();
 

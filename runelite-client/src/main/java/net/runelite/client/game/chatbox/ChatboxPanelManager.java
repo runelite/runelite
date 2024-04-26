@@ -154,7 +154,7 @@ public class ChatboxPanelManager
 	}
 
 	@Subscribe
-	public void onScriptPreFired(ScriptPreFired ev)
+	private void onScriptPreFired(ScriptPreFired ev)
 	{
 		if (currentInput != null && ev.getScriptId() == ScriptID.MESSAGE_LAYER_CLOSE)
 		{

@@ -104,7 +104,7 @@ public class ReportButtonPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		GameState state = event.getGameState();
 
@@ -126,7 +126,7 @@ public class ReportButtonPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick tick)
+	private void onGameTick(GameTick tick)
 	{
 		ticksSinceLogin++;
 
@@ -137,7 +137,7 @@ public class ReportButtonPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("reportButton") && event.getKey().equals("switchTimeFormat"))
 		{

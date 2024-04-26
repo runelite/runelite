@@ -26,6 +26,7 @@
  */
 package net.runelite.client.plugins.cluescrolls;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
 import com.google.inject.Binder;
@@ -289,7 +290,8 @@ public class ClueScrollPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onChatMessage(ChatMessage event)
+	@VisibleForTesting
+	void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() != ChatMessageType.GAMEMESSAGE && event.getType() != ChatMessageType.SPAM)
 		{
@@ -333,7 +335,8 @@ public class ClueScrollPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onMenuOptionClicked(final MenuOptionClicked event)
+	@VisibleForTesting
+	void onMenuOptionClicked(final MenuOptionClicked event)
 	{
 		if (event.getMenuOption() == null)
 		{
@@ -365,7 +368,8 @@ public class ClueScrollPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onItemContainerChanged(final ItemContainerChanged event)
+	@VisibleForTesting
+	void onItemContainerChanged(final ItemContainerChanged event)
 	{
 		final ItemContainer itemContainer = event.getItemContainer();
 		if (event.getContainerId() == InventoryID.WORN)
@@ -507,14 +511,14 @@ public class ClueScrollPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onNpcSpawned(final NpcSpawned event)
+	private void onNpcSpawned(final NpcSpawned event)
 	{
 		final NPC npc = event.getNpc();
 		checkClueNPCs(clue, Collections.singletonList(npc));
 	}
 
 	@Subscribe
-	public void onNpcDespawned(final NpcDespawned event)
+	private void onNpcDespawned(final NpcDespawned event)
 	{
 		final boolean removed = npcsToMark.remove(event.getNpc());
 
@@ -533,49 +537,49 @@ public class ClueScrollPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onDecorativeObjectDespawned(final DecorativeObjectDespawned event)
+	private void onDecorativeObjectDespawned(final DecorativeObjectDespawned event)
 	{
 		tileObjectDespawnedHandler(event.getDecorativeObject());
 	}
 
 	@Subscribe
-	public void onDecorativeObjectSpawned(final DecorativeObjectSpawned event)
+	private void onDecorativeObjectSpawned(final DecorativeObjectSpawned event)
 	{
 		tileObjectSpawnedHandler(event.getDecorativeObject());
 	}
 
 	@Subscribe
-	public void onGameObjectDespawned(final GameObjectDespawned event)
+	private void onGameObjectDespawned(final GameObjectDespawned event)
 	{
 		tileObjectDespawnedHandler(event.getGameObject());
 	}
 
 	@Subscribe
-	public void onGameObjectSpawned(final GameObjectSpawned event)
+	private void onGameObjectSpawned(final GameObjectSpawned event)
 	{
 		tileObjectSpawnedHandler(event.getGameObject());
 	}
 
 	@Subscribe
-	public void onGroundObjectDespawned(final GroundObjectDespawned event)
+	private void onGroundObjectDespawned(final GroundObjectDespawned event)
 	{
 		tileObjectDespawnedHandler(event.getGroundObject());
 	}
 
 	@Subscribe
-	public void onGroundObjectSpawned(final GroundObjectSpawned event)
+	private void onGroundObjectSpawned(final GroundObjectSpawned event)
 	{
 		tileObjectSpawnedHandler(event.getGroundObject());
 	}
 
 	@Subscribe
-	public void onWallObjectDespawned(final WallObjectDespawned event)
+	private void onWallObjectDespawned(final WallObjectDespawned event)
 	{
 		tileObjectDespawnedHandler(event.getWallObject());
 	}
 
 	@Subscribe
-	public void onWallObjectSpawned(final WallObjectSpawned event)
+	private void onWallObjectSpawned(final WallObjectSpawned event)
 	{
 		tileObjectSpawnedHandler(event.getWallObject());
 	}
@@ -591,7 +595,7 @@ public class ClueScrollPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals(ClueScrollConfig.GROUP) && !config.displayHintArrows())
 		{
@@ -600,7 +604,7 @@ public class ClueScrollPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(final GameStateChanged event)
+	private void onGameStateChanged(final GameStateChanged event)
 	{
 		final GameState state = event.getGameState();
 
@@ -620,7 +624,8 @@ public class ClueScrollPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(final GameTick event)
+	@VisibleForTesting
+	void onGameTick(final GameTick event)
 	{
 		objectsToMark.clear();
 
@@ -708,7 +713,8 @@ public class ClueScrollPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded event)
+	@VisibleForTesting
+	void onWidgetLoaded(WidgetLoaded event)
 	{
 		if (event.getGroupId() >= InterfaceID.TRAIL_MAP01
 			&& event.getGroupId() <= InterfaceID.TRAIL_MAP11)
@@ -738,7 +744,7 @@ public class ClueScrollPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onCommandExecuted(CommandExecuted commandExecuted)
+	private void onCommandExecuted(CommandExecuted commandExecuted)
 	{
 		if (developerMode && commandExecuted.getCommand().equalsIgnoreCase("clue"))
 		{

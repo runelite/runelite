@@ -74,7 +74,7 @@ public class CrowdsourcingZMI
 	}
 
 	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
+	private void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
 	{
 		MenuAction action = menuOptionClicked.getMenuAction();
 		if (menuOptionClicked.isItemOp())
@@ -100,7 +100,7 @@ public class CrowdsourcingZMI
 	}
 
 	@Subscribe
-	public void onChatMessage(ChatMessage chatMessage)
+	private void onChatMessage(ChatMessage chatMessage)
 	{
 		if (chatMessage.getMessage().equals(CHAT_MESSAGE_ZMI))
 		{
@@ -111,7 +111,7 @@ public class CrowdsourcingZMI
 	}
 
 	@Subscribe
-	public void onStatChanged(StatChanged statChanged)
+	private void onStatChanged(StatChanged statChanged)
 	{
 		if (gameTickZMI == client.getTickCount())
 		{
@@ -121,7 +121,7 @@ public class CrowdsourcingZMI
 	}
 
 	@Subscribe
-	public void onItemContainerChanged(ItemContainerChanged event)
+	private void onItemContainerChanged(ItemContainerChanged event)
 	{
 		int itemContainerChangedTick = client.getTickCount();
 

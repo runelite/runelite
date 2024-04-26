@@ -71,7 +71,7 @@ public class VirtualLevelsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onPluginChanged(PluginChanged pluginChanged)
+	private void onPluginChanged(PluginChanged pluginChanged)
 	{
 		// this is guaranteed to be called after the plugin has been registered by the eventbus. startUp is not.
 		if (pluginChanged.getPlugin() == this)
@@ -81,7 +81,7 @@ public class VirtualLevelsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged configChanged)
+	private void onConfigChanged(ConfigChanged configChanged)
 	{
 		if (!configChanged.getGroup().equals("virtuallevels"))
 		{
@@ -92,7 +92,7 @@ public class VirtualLevelsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onScriptCallbackEvent(ScriptCallbackEvent e)
+	private void onScriptCallbackEvent(ScriptCallbackEvent e)
 	{
 		final String eventName = e.getEventName();
 
