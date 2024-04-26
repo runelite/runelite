@@ -80,7 +80,8 @@ public class ChatMessageManager
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	@VisibleForTesting
+	void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals("textrecolor"))
 		{
@@ -90,7 +91,7 @@ public class ChatMessageManager
 	}
 
 	@Subscribe
-	public void onProfileChanged(ProfileChanged profileChanged)
+	private void onProfileChanged(ProfileChanged profileChanged)
 	{
 		loadColors();
 		clientThread.invokeLater(client::refreshChat);
@@ -205,7 +206,7 @@ public class ChatMessageManager
 	}
 
 	@Subscribe
-	public void onScriptCallbackEvent(ScriptCallbackEvent scriptCallbackEvent)
+	private void onScriptCallbackEvent(ScriptCallbackEvent scriptCallbackEvent)
 	{
 		final String eventName = scriptCallbackEvent.getEventName();
 

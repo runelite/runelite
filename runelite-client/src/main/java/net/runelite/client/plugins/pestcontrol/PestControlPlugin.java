@@ -86,7 +86,7 @@ public class PestControlPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		GameState gameState = event.getGameState();
 		if (gameState == GameState.CONNECTION_LOST || gameState == GameState.LOGIN_SCREEN || gameState == GameState.HOPPING)
@@ -96,7 +96,7 @@ public class PestControlPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onChatMessage(ChatMessage chatMessage)
+	private void onChatMessage(ChatMessage chatMessage)
 	{
 		if (overlay.getGame() != null && chatMessage.getType() == ChatMessageType.GAMEMESSAGE)
 		{
@@ -109,7 +109,7 @@ public class PestControlPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onNpcSpawned(NpcSpawned event)
+	private void onNpcSpawned(NpcSpawned event)
 	{
 		final NPC npc = event.getNpc();
 		if (SPINNER_IDS.contains(npc.getId()))
@@ -119,7 +119,7 @@ public class PestControlPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onNpcDespawned(NpcDespawned event)
+	private void onNpcDespawned(NpcDespawned event)
 	{
 		spinners.remove(event.getNpc());
 	}
