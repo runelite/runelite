@@ -185,7 +185,7 @@ class PrayerReorder
 	}
 
 	@Subscribe
-	public void onDraggingWidgetChanged(DraggingWidgetChanged event)
+	private void onDraggingWidgetChanged(DraggingWidgetChanged event)
 	{
 		// is dragging widget and mouse button released
 		if (event.isDraggingWidget() && client.getMouseCurrentButton() == 0)
@@ -234,7 +234,7 @@ class PrayerReorder
 	}
 
 	@Subscribe
-	public void onScriptPostFired(ScriptPostFired scriptPostFired)
+	private void onScriptPostFired(ScriptPostFired scriptPostFired)
 	{
 		int scriptId = scriptPostFired.getScriptId();
 		if (
@@ -504,7 +504,7 @@ class PrayerReorder
 	}
 
 	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
+	private void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
 	{
 		if (reordering
 			&& menuOptionClicked.getMenuAction() == MenuAction.CC_OP
@@ -537,7 +537,7 @@ class PrayerReorder
 	}
 
 	@Subscribe
-	public void onProfileChanged(ProfileChanged e)
+	private void onProfileChanged(ProfileChanged e)
 	{
 		clientThread.invokeLater(this::redrawPrayers);
 	}

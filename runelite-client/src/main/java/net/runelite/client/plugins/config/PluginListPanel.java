@@ -346,7 +346,7 @@ class PluginListPanel extends PluginPanel
 	}
 
 	@Subscribe
-	public void onPluginChanged(PluginChanged event)
+	private void onPluginChanged(PluginChanged event)
 	{
 		SwingUtilities.invokeLater(this::refresh);
 	}

@@ -26,6 +26,7 @@
  */
 package net.runelite.client.plugins.wintertodt;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
@@ -148,7 +149,8 @@ public class WintertodtPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick gameTick)
+	@VisibleForTesting
+	void onGameTick(GameTick gameTick)
 	{
 		if (!isInWintertodtRegion())
 		{
@@ -173,7 +175,8 @@ public class WintertodtPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onVarbitChanged(VarbitChanged varbitChanged)
+	@VisibleForTesting
+	void onVarbitChanged(VarbitChanged varbitChanged)
 	{
 		if (varbitChanged.getVarbitId() == VarbitID.WINT_TRANSMIT_RESPAWNDELAY)
 		{
@@ -222,7 +225,7 @@ public class WintertodtPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onChatMessage(ChatMessage chatMessage)
+	private void onChatMessage(ChatMessage chatMessage)
 	{
 		if (!isInWintertodt)
 		{
@@ -374,7 +377,7 @@ public class WintertodtPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onAnimationChanged(final AnimationChanged event)
+	private void onAnimationChanged(final AnimationChanged event)
 	{
 		if (!isInWintertodt)
 		{
@@ -442,7 +445,7 @@ public class WintertodtPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onItemContainerChanged(ItemContainerChanged event)
+	private void onItemContainerChanged(ItemContainerChanged event)
 	{
 		final ItemContainer container = event.getItemContainer();
 
