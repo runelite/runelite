@@ -65,7 +65,7 @@ public class PaymentTracker
 	private int lastSelectedOption;
 
 	@Subscribe
-	public void onGameTick(GameTick gameTick)
+	private void onGameTick(GameTick gameTick)
 	{
 		Widget text = client.getWidget(ComponentID.DIALOG_NPC_TEXT);
 		if (text == null || !PAYMENT_TEXT.contains(text.getText()))
@@ -97,7 +97,7 @@ public class PaymentTracker
 	}
 
 	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked opt)
+	private void onMenuOptionClicked(MenuOptionClicked opt)
 	{
 		var action = opt.getMenuAction();
 		// look for resume_pausebutton from click
@@ -119,7 +119,7 @@ public class PaymentTracker
 	}
 
 	@Subscribe
-	public void onScriptPreFired(ScriptPreFired scriptPreFired)
+	private void onScriptPreFired(ScriptPreFired scriptPreFired)
 	{
 		// look for resume_pausebutton from keypress
 		if (scriptPreFired.getScriptId() == ScriptID.CHATBOX_KEYINPUT_MATCHED)

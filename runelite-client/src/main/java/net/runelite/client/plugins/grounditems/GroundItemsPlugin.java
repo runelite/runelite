@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.grounditems;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.MoreObjects;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.LoadingCache;
@@ -229,7 +230,8 @@ public class GroundItemsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	@VisibleForTesting
+	void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals(GroundItemsConfig.GROUP))
 		{
@@ -238,7 +240,7 @@ public class GroundItemsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onProfileChanged(ProfileChanged profileChanged)
+	private void onProfileChanged(ProfileChanged profileChanged)
 	{
 		migrate();
 	}
@@ -259,7 +261,7 @@ public class GroundItemsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(final GameStateChanged event)
+	private void onGameStateChanged(final GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOADING)
 		{
@@ -269,7 +271,8 @@ public class GroundItemsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onItemSpawned(ItemSpawned itemSpawned)
+	@VisibleForTesting
+	void onItemSpawned(ItemSpawned itemSpawned)
 	{
 		TileItem item = itemSpawned.getItem();
 		Tile tile = itemSpawned.getTile();
@@ -311,7 +314,7 @@ public class GroundItemsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onItemDespawned(ItemDespawned itemDespawned)
+	private void onItemDespawned(ItemDespawned itemDespawned)
 	{
 		TileItem item = itemDespawned.getItem();
 		Tile tile = itemDespawned.getTile();
@@ -340,7 +343,7 @@ public class GroundItemsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onItemQuantityChanged(ItemQuantityChanged itemQuantityChanged)
+	private void onItemQuantityChanged(ItemQuantityChanged itemQuantityChanged)
 	{
 		TileItem item = itemQuantityChanged.getItem();
 		Tile tile = itemQuantityChanged.getTile();
@@ -359,7 +362,7 @@ public class GroundItemsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onClientTick(ClientTick event)
+	private void onClientTick(ClientTick event)
 	{
 		if (!config.collapseEntries())
 		{
@@ -496,7 +499,7 @@ public class GroundItemsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded event)
+	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		MenuAction type = MenuAction.of(event.getType());
 		final boolean hotKeyPressed = client.isKeyPressed(KeyCode.KC_SHIFT);
@@ -689,7 +692,7 @@ public class GroundItemsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onFocusChanged(FocusChanged focusChanged)
+	private void onFocusChanged(FocusChanged focusChanged)
 	{
 		if (!focusChanged.isFocused())
 		{

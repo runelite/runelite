@@ -138,7 +138,8 @@ public class EntityHiderPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged e)
+	@VisibleForTesting
+	void onConfigChanged(ConfigChanged e)
 	{
 		if (e.getGroup().equals(EntityHiderConfig.GROUP))
 		{

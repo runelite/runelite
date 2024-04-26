@@ -407,7 +407,8 @@ public class ChatCommandsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onChatMessage(ChatMessage chatMessage)
+	@VisibleForTesting
+	void onChatMessage(ChatMessage chatMessage)
 	{
 		if (chatMessage.getType() != ChatMessageType.TRADE
 			&& chatMessage.getType() != ChatMessageType.GAMEMESSAGE
@@ -697,7 +698,8 @@ public class ChatCommandsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick event)
+	@VisibleForTesting
+	void onGameTick(GameTick event)
 	{
 		if (client.getLocalPlayer() == null)
 		{
@@ -814,7 +816,8 @@ public class ChatCommandsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onScriptPostFired(ScriptPostFired scriptPostFired)
+	@VisibleForTesting
+	void onScriptPostFired(ScriptPostFired scriptPostFired)
 	{
 		if (scriptPostFired.getScriptId() != ScriptID.COLLECTION_DRAW_LIST)
 		{
@@ -851,7 +854,8 @@ public class ChatCommandsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded widget)
+	@VisibleForTesting
+	void onWidgetLoaded(WidgetLoaded widget)
 	{
 		switch (widget.getGroupId())
 		{
@@ -868,7 +872,7 @@ public class ChatCommandsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		switch (event.getGameState())
 		{
@@ -890,7 +894,7 @@ public class ChatCommandsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onVarbitChanged(VarbitChanged varbitChanged)
+	private void onVarbitChanged(VarbitChanged varbitChanged)
 	{
 		hiscoreEndpoint = getLocalHiscoreEndpointType();
 	}

@@ -129,7 +129,7 @@ public class ZalcanoPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGraphicsObjectCreated(GraphicsObjectCreated graphicsObjectCreated)
+	private void onGraphicsObjectCreated(GraphicsObjectCreated graphicsObjectCreated)
 	{
 		GraphicsObject graphicsObject = graphicsObjectCreated.getGraphicsObject();
 		if (graphicsObject.getId() == GRAPHICS_OBJECT_ROCKFALL)
@@ -139,7 +139,7 @@ public class ZalcanoPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		GameState gameState = event.getGameState();
 		if (gameState == GameState.LOADING)
@@ -149,7 +149,7 @@ public class ZalcanoPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onVarbitChanged(VarbitChanged event)
+	private void onVarbitChanged(VarbitChanged event)
 	{
 		if (event.getVarpId() == VarPlayer.HP_HUD_NPC_ID)
 		{
@@ -164,7 +164,7 @@ public class ZalcanoPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onNpcSpawned(NpcSpawned event)
+	private void onNpcSpawned(NpcSpawned event)
 	{
 		final NPC npc = event.getNpc();
 
@@ -175,7 +175,7 @@ public class ZalcanoPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onNpcDespawned(NpcDespawned event)
+	private void onNpcDespawned(NpcDespawned event)
 	{
 		final NPC npc = event.getNpc();
 
@@ -199,7 +199,7 @@ public class ZalcanoPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameObjectSpawned(GameObjectSpawned event)
+	private void onGameObjectSpawned(GameObjectSpawned event)
 	{
 		final GameObject gameObject = event.getGameObject();
 
@@ -211,7 +211,7 @@ public class ZalcanoPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onNpcChanged(NpcChanged event)
+	private void onNpcChanged(NpcChanged event)
 	{
 		final NPC npc = event.getNpc();
 
@@ -229,7 +229,7 @@ public class ZalcanoPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onProjectileMoved(ProjectileMoved event)
+	private void onProjectileMoved(ProjectileMoved event)
 	{
 		final Projectile projectile = event.getProjectile();
 
@@ -241,7 +241,7 @@ public class ZalcanoPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onHitsplatApplied(HitsplatApplied event)
+	private void onHitsplatApplied(HitsplatApplied event)
 	{
 		final Actor actor = event.getActor();
 

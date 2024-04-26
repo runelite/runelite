@@ -137,7 +137,7 @@ public class RoofRemovalPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged e)
+	private void onGameStateChanged(GameStateChanged e)
 	{
 		if (e.getGameState() == GameState.LOGGED_IN)
 		{
@@ -146,7 +146,7 @@ public class RoofRemovalPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged e)
+	private void onConfigChanged(ConfigChanged e)
 	{
 		if (!e.getGroup().equals(RoofRemovalConfig.CONFIG_GROUP))
 		{
