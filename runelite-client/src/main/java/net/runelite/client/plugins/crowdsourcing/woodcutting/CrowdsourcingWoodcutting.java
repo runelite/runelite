@@ -214,7 +214,7 @@ public class CrowdsourcingWoodcutting
 	}
 
 	@Subscribe
-	public void onChatMessage(ChatMessage event)
+	private void onChatMessage(ChatMessage event)
 	{
 		final String message = event.getMessage();
 		final ChatMessageType type = event.getType();
@@ -238,7 +238,7 @@ public class CrowdsourcingWoodcutting
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick tick)
+	private void onGameTick(GameTick tick)
 	{
 		int animId = client.getLocalPlayer().getAnimation();
 		if (state == SkillingState.CUTTING)
@@ -267,7 +267,7 @@ public class CrowdsourcingWoodcutting
 	}
 
 	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
+	private void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
 	{
 		MenuAction menuAction = menuOptionClicked.getMenuAction();
 		int id = menuOptionClicked.getId();
@@ -285,7 +285,7 @@ public class CrowdsourcingWoodcutting
 	}
 
 	@Subscribe
-	public void onGameObjectDespawned(GameObjectDespawned event)
+	private void onGameObjectDespawned(GameObjectDespawned event)
 	{
 		if (state != SkillingState.CUTTING)
 		{

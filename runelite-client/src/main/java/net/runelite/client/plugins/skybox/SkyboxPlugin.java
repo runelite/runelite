@@ -96,7 +96,7 @@ public class SkyboxPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onBeforeRender(BeforeRender r)
+	private void onBeforeRender(BeforeRender r)
 	{
 		if (skybox == null || client.getGameState() != GameState.LOGGED_IN)
 		{
@@ -149,7 +149,7 @@ public class SkyboxPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		if (gameStateChanged.getGameState() == GameState.LOGIN_SCREEN)
 		{
