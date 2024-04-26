@@ -138,7 +138,7 @@ public class FriendNotesPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals(CONFIG_GROUP))
 		{
@@ -223,7 +223,7 @@ public class FriendNotesPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded event)
+	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		final int groupId = WidgetUtil.componentToInterface(event.getActionParam1());
 
@@ -268,7 +268,7 @@ public class FriendNotesPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onNameableNameChanged(NameableNameChanged event)
+	private void onNameableNameChanged(NameableNameChanged event)
 	{
 		final Nameable nameable = event.getNameable();
 
@@ -289,7 +289,7 @@ public class FriendNotesPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onRemovedFriend(RemovedFriend event)
+	private void onRemovedFriend(RemovedFriend event)
 	{
 		// Delete a friend's note if they are removed
 		final String displayName = Text.toJagexName(event.getNameable().getName());
@@ -298,7 +298,7 @@ public class FriendNotesPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onScriptCallbackEvent(ScriptCallbackEvent event)
+	private void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
 		if (!config.showIcons() || iconId == -1)
 		{

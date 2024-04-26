@@ -82,7 +82,7 @@ public class LowMemoryPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		if (gameStateChanged.getGameState() == GameState.STARTING)
 		{
@@ -95,7 +95,7 @@ public class LowMemoryPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged configChanged)
+	private void onConfigChanged(ConfigChanged configChanged)
 	{
 		if (configChanged.getGroup().equals(LowMemoryConfig.GROUP))
 		{
@@ -110,7 +110,7 @@ public class LowMemoryPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onBeforeRender(BeforeRender beforeRender)
+	private void onBeforeRender(BeforeRender beforeRender)
 	{
 		// This needs to be set to the current plane, but there is no event for plane change, so
 		// just set it each render.

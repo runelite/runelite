@@ -93,7 +93,7 @@ public class PuzzleSolverPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded widget)
+	private void onWidgetLoaded(WidgetLoaded widget)
 	{
 		if (widget.getGroupId() != InterfaceID.VM_NATURAL_HISTORY)
 		{
@@ -127,7 +127,7 @@ public class PuzzleSolverPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
+	private void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
 	{
 		int widgetId = menuOptionClicked.getParam1();
 		if (WidgetUtil.componentToInterface(widgetId) != InterfaceID.LIGHT_PUZZLE)
@@ -184,7 +184,7 @@ public class PuzzleSolverPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick event)
+	private void onGameTick(GameTick event)
 	{
 		Widget lightboxWidget = client.getWidget(InterfaceID.LightPuzzle.LIGHTS);
 		if (lightboxWidget == null)
