@@ -398,7 +398,7 @@ public class MiningPlugin extends Plugin
 				case DEPLETED_VEIN_26667: // Depleted motherlode vein
 				case DEPLETED_VEIN_26668: // Depleted motherlode vein
 				{
-					WorldPoint worldPoint = new WorldPoint((locCoord >>> 14) & 0x3FFF, locCoord & 0x3FFF, (locCoord >>> 28) & 0x3);
+					WorldPoint worldPoint = WorldPoint.fromCoord(locCoord);
 					Rock rock = Rock.ORE_VEIN;
 					RockRespawn rockRespawn = new RockRespawn(rock, worldPoint, Instant.now(), ticks * Constants.GAME_TICK_LENGTH, rock.getZOffset());
 					respawns.add(rockRespawn);
