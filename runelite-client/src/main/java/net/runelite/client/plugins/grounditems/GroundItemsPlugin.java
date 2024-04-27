@@ -28,7 +28,6 @@ package net.runelite.client.plugins.grounditems;
 import com.google.common.base.MoreObjects;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.LoadingCache;
-import com.google.common.collect.EvictingQueue;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Table;
@@ -47,7 +46,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Queue;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -76,8 +74,6 @@ import net.runelite.api.events.ItemDespawned;
 import net.runelite.api.events.ItemQuantityChanged;
 import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.MenuEntryAdded;
-import net.runelite.api.events.MenuOptionClicked;
-import net.runelite.api.widgets.ComponentID;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -194,8 +190,6 @@ public class GroundItemsPlugin extends Plugin
 	private List<PriceHighlight> priceChecks = ImmutableList.of();
 	private LoadingCache<NamedQuantity, Boolean> highlightedItems;
 	private LoadingCache<NamedQuantity, Boolean> hiddenItems;
-	private final Queue<Integer> droppedItemQueue = EvictingQueue.create(16); // recently dropped items
-	private int lastUsedItem;
 	private final Map<WorldPoint, Lootbeam> lootbeams = new HashMap<>();
 
 	@Provides
@@ -211,7 +205,6 @@ public class GroundItemsPlugin extends Plugin
 		mouseManager.registerMouseListener(mouseAdapter);
 		keyManager.registerKeyListener(hotkeyListener);
 		executor.execute(this::reset);
-		lastUsedItem = -1;
 	}
 
 	@Override
@@ -268,7 +261,7 @@ public class GroundItemsPlugin extends Plugin
 			collectedGroundItems.put(tile.getWorldLocation(), item.getId(), groundItem);
 		}
 
-		if (!config.onlyShowLoot())
+		if (!config.onlyShowOwnItems())
 		{
 			notifyHighlightedItem(groundItem);
 		}
@@ -343,14 +336,14 @@ public class GroundItemsPlugin extends Plugin
 	public void onNpcLootReceived(NpcLootReceived npcLootReceived)
 	{
 		Collection<ItemStack> items = npcLootReceived.getItems();
-		lootReceived(items, LootType.PVM);
+		lootReceived(items);
 	}
 
 	@Subscribe
 	public void onPlayerLootReceived(PlayerLootReceived playerLootReceived)
 	{
 		Collection<ItemStack> items = playerLootReceived.getItems();
-		lootReceived(items, LootType.PVP);
+		lootReceived(items);
 	}
 
 	@Subscribe
@@ -402,7 +395,7 @@ public class GroundItemsPlugin extends Plugin
 		}).toArray(MenuEntry[]::new));
 	}
 
-	private void lootReceived(Collection<ItemStack> items, LootType lootType)
+	private void lootReceived(Collection<ItemStack> items)
 	{
 		for (ItemStack itemStack : items)
 		{
@@ -410,9 +403,7 @@ public class GroundItemsPlugin extends Plugin
 			GroundItem groundItem = collectedGroundItems.get(location, itemStack.getId());
 			if (groundItem != null)
 			{
-				groundItem.setLootType(lootType);
-
-				if (config.onlyShowLoot())
+				if (config.onlyShowOwnItems())
 				{
 					notifyHighlightedItem(groundItem);
 				}
@@ -434,8 +425,8 @@ public class GroundItemsPlugin extends Plugin
 		final ItemComposition itemComposition = itemManager.getItemComposition(itemId);
 		final int realItemId = itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemId;
 		final int alchPrice = itemComposition.getHaPrice();
-		final boolean dropped = tile.getWorldLocation().equals(client.getLocalPlayer().getWorldLocation()) && droppedItemQueue.remove(itemId);
-		final boolean table = itemId == lastUsedItem && tile.getItemLayer().getHeight() > 0;
+		final int despawnTime = item.getDespawnTime() - client.getTickCount();
+		final int visibleTime = item.getVisibleTime() - client.getTickCount();
 
 		final GroundItem groundItem = GroundItem.builder()
 			.id(itemId)
@@ -446,11 +437,12 @@ public class GroundItemsPlugin extends Plugin
 			.haPrice(alchPrice)
 			.height(tile.getItemLayer().getHeight())
 			.tradeable(itemComposition.isTradeable())
-			.lootType(dropped ? LootType.DROPPED : (table ? LootType.TABLE : LootType.UNKNOWN))
+			.ownership(item.getOwnership())
+			.isPrivate(item.isPrivate())
 			.spawnTime(Instant.now())
 			.stackable(itemComposition.isStackable())
-			.despawnTime(Duration.of(item.getDespawnTime(), RSTimeUnit.GAME_TICKS))
-			.visibleTime(item.getVisibleTime() > 0 ? Duration.of(item.getVisibleTime(), RSTimeUnit.GAME_TICKS) : null)
+			.despawnTime(Duration.of(despawnTime, RSTimeUnit.GAME_TICKS))
+			.visibleTime(Duration.of(visibleTime, RSTimeUnit.GAME_TICKS))
 			.build();
 
 		// Update item price in case it is coins
@@ -770,24 +762,6 @@ public class GroundItemsPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
-	{
-		if (menuOptionClicked.isItemOp() && menuOptionClicked.getMenuOption().equals("Drop"))
-		{
-			int itemId = menuOptionClicked.getItemId();
-			// Keep a queue of recently dropped items to better detect
-			// item spawns that are drops
-			droppedItemQueue.add(itemId);
-		}
-		else if (menuOptionClicked.getMenuAction() == MenuAction.WIDGET_TARGET_ON_GAME_OBJECT
-			&& client.getSelectedWidget() != null
-			&& client.getSelectedWidget().getId() == ComponentID.INVENTORY_CONTAINER)
-		{
-			lastUsedItem = client.getSelectedWidget().getItemId();
-		}
-	}
-
 	private void handleLootbeam(WorldPoint worldPoint)
 	{
 		/*
@@ -805,7 +779,7 @@ public class GroundItemsPlugin extends Plugin
 		Collection<GroundItem> groundItems = collectedGroundItems.row(worldPoint).values();
 		for (GroundItem groundItem : groundItems)
 		{
-			if ((config.onlyShowLoot() && !groundItem.isMine()))
+			if ((config.onlyShowOwnItems() && !groundItem.isMine()))
 			{
 				continue;
 			}

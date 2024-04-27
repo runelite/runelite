@@ -363,11 +363,11 @@ public interface GroundItemsConfig extends Config
 
 	@ConfigItem(
 		keyName = "onlyShowLoot",
-		name = "Only show loot",
-		description = "Only shows drops from NPCs and players",
+		name = "Only show own items",
+		description = "Only shows items that are yours or you can pick up",
 		position = 25
 	)
-	default boolean onlyShowLoot()
+	default boolean onlyShowOwnItems()
 	{
 		return false;
 	}

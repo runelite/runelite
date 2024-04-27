@@ -168,7 +168,7 @@ public class GroundItemsOverlay extends Overlay
 		plugin.setHiddenBoxBounds(null);
 		plugin.setHighlightBoxBounds(null);
 
-		final boolean onlyShowLoot = config.onlyShowLoot();
+		final boolean onlyShowLoot = config.onlyShowOwnItems();
 		final DespawnTimerMode groundItemTimers = config.groundItemTimers();
 		final boolean outline = config.textOutline();
 
@@ -406,9 +406,8 @@ public class GroundItemsOverlay extends Overlay
 		final Instant now = Instant.now();
 		final Instant despawnTime = spawnTime.plus(groundItem.getDespawnTime());
 
-		if (groundItem.getVisibleTime() == null)
+		if (groundItem.isPrivate())
 		{
-			// if there is no visible time, it is always private
 			if (despawnTime.isAfter(now))
 			{
 				return PRIVATE_TIMER_COLOR;
