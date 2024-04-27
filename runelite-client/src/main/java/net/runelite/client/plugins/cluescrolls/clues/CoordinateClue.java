@@ -209,7 +209,7 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 		.put(new WorldPoint(3369, 3894, 0), new CoordinateClueInfo("Wilderness. Fountain of Rune.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
 		.put(new WorldPoint(2065, 3923, 0), new CoordinateClueInfo("Outside the western wall on Lunar Isle.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
 		.put(new WorldPoint(3188, 3933, 0), new CoordinateClueInfo("Wilderness. Resource Area.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
-		.put(new WorldPoint(2997, 3953, 0), new CoordinateClueInfo("Wilderness. Inside Agility Training Area.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
+		.put(new WorldPoint(3043, 3940, 0), new CoordinateClueInfo("Wilderness. South of Pirates' Hideout.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
 		.put(new WorldPoint(3380, 3963, 0), new CoordinateClueInfo("Wilderness. North of Volcano.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
 		.put(new WorldPoint(3051, 3736, 0), new CoordinateClueInfo("East of the Wilderness Obelisk in 28 Wilderness.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
 		.put(new WorldPoint(2316, 3814, 0), new CoordinateClueInfo("West of Neitiznot, near the bridge.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
