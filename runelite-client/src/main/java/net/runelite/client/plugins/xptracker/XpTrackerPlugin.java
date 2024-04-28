@@ -40,12 +40,15 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
+import net.runelite.api.EnumID;
 import net.runelite.api.Experience;
 import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import net.runelite.api.NPC;
+import net.runelite.api.ParamID;
 import net.runelite.api.Player;
 import net.runelite.api.Skill;
+import net.runelite.api.StructComposition;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
 import net.runelite.api.WorldType;
@@ -56,7 +59,6 @@ import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.StatChanged;
 import net.runelite.api.events.VarbitChanged;
-import net.runelite.api.widgets.InterfaceID;
 import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -66,9 +68,8 @@ import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.attackstyles.AttackStyle;
-import net.runelite.client.plugins.attackstyles.WeaponType;
-import static net.runelite.client.plugins.attackstyles.WeaponType.TYPE_28;
 import static net.runelite.client.plugins.attackstyles.AttackStyle.CASTING;
+import static net.runelite.client.plugins.attackstyles.AttackStyle.DEFENSIVE;
 import static net.runelite.client.plugins.attackstyles.AttackStyle.DEFENSIVE_CASTING;
 import static net.runelite.client.plugins.attackstyles.AttackStyle.OTHER;
 import static net.runelite.client.plugins.xptracker.XpWorldType.NORMAL;
@@ -147,7 +148,6 @@ public class XpTrackerPlugin extends Plugin
 	private long lastXp = 0;
 	private boolean initializeTracker;
 	private AttackStyle attackStyle;
-	private WeaponType equippedWeaponType;
 
 	private final XpPauseState xpPauseState = new XpPauseState();
 
@@ -194,9 +194,7 @@ public class XpTrackerPlugin extends Plugin
 				int weaponTypeVarbit = client.getVarbitValue(Varbits.EQUIPPED_WEAPON_TYPE);
 				int castingModeVarbit = client.getVarbitValue(Varbits.DEFENSIVE_CASTING_MODE);
 
-				equippedWeaponType = WeaponType.getWeaponType(weaponTypeVarbit);
-
-				updateAttackStyle(attackStyleVarbit, castingModeVarbit);
+				updateAttackStyle(weaponTypeVarbit, attackStyleVarbit, castingModeVarbit);
 			}
 		});
 	}
@@ -264,19 +262,55 @@ public class XpTrackerPlugin extends Plugin
 		}
 	}
 
-	private void updateAttackStyle(int attackStyleIndex, int castingMode)
+	private AttackStyle[] getWeaponTypeStyles(int weaponType)
 	{
-		AttackStyle[] attackStyles = equippedWeaponType.getAttackStyles();
+		// from script4525
+		int weaponStyleEnum = client.getEnum(EnumID.WEAPON_STYLES).getIntValue(weaponType);
+		int[] weaponStyleStructs = client.getEnum(weaponStyleEnum).getIntVals();
+
+		AttackStyle[] styles = new AttackStyle[weaponStyleStructs.length];
+		int i = 0;
+		for (int style : weaponStyleStructs)
+		{
+			StructComposition attackStyleStruct = client.getStructComposition(style);
+			String attackStyleName = attackStyleStruct.getStringValue(ParamID.ATTACK_STYLE_NAME);
+
+			AttackStyle attackStyle = AttackStyle.valueOf(attackStyleName.toUpperCase());
+			if (attackStyle == OTHER)
+			{
+				// "Other" is used for no style
+				++i;
+				continue;
+			}
+
+			// "Defensive" is used for Defensive and also Defensive casting
+			if (i == 5 && attackStyle == DEFENSIVE)
+			{
+				attackStyle = DEFENSIVE_CASTING;
+			}
+
+			styles[i++] = attackStyle;
+		}
+		return styles;
+	}
+
+	private void updateAttackStyle(int equippedWeaponType, int attackStyleIndex, int castingMode)
+	{
+		AttackStyle[] attackStyles = getWeaponTypeStyles(equippedWeaponType);
 		if (attackStyleIndex < attackStyles.length)
 		{
+			// from script4525
+			// Even though the client has 5 attack styles for Staffs, only attack styles 0-4 are used, with an additional
+			// casting mode set for defensive casting
+			if (attackStyleIndex == 4)
+			{
+				attackStyleIndex += castingMode;
+			}
+
 			attackStyle = attackStyles[attackStyleIndex];
 			if (attackStyle == null)
 			{
 				attackStyle = OTHER;
-			}
-			else if ((attackStyle == CASTING) && (castingMode == 1))
-			{
-				attackStyle = DEFENSIVE_CASTING;
 			}
 		}
 	}
@@ -423,9 +457,7 @@ public class XpTrackerPlugin extends Plugin
 			final int weaponTypeVarbit = client.getVarbitValue(Varbits.EQUIPPED_WEAPON_TYPE);
 			final int castingModeVarbit = client.getVarbitValue(Varbits.DEFENSIVE_CASTING_MODE);
 
-			equippedWeaponType = WeaponType.getWeaponType(weaponTypeVarbit);
-
-			updateAttackStyle(attackStyleVarbit, castingModeVarbit);
+			updateAttackStyle(weaponTypeVarbit, attackStyleVarbit, castingModeVarbit);
 		}
 	}
 
@@ -615,7 +647,14 @@ public class XpTrackerPlugin extends Plugin
 	 */
 	private double getCombatXpModifier(Skill skill)
 	{
-		if (equippedWeaponType == TYPE_28)
+		final int weaponTypeVarbit = client.getVarbitValue(Varbits.EQUIPPED_WEAPON_TYPE);
+		AttackStyle[] attackStyles = getWeaponTypeStyles(weaponTypeVarbit);
+
+		// Powered staves
+		if (attackStyles.length == 3 &&
+			attackStyles[0] == AttackStyle.ACCURATE &&
+			attackStyles[1] == AttackStyle.ACCURATE &&
+			attackStyles[2] == AttackStyle.LONGRANGE)
 		{
 			return HALF_XP_MODIFIER;
 		}
