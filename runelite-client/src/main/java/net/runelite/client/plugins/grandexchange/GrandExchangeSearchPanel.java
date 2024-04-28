@@ -80,8 +80,6 @@ class GrandExchangeSearchPanel extends JPanel
 	/*  The error panel, this displays an error message */
 	private final PluginErrorPanel errorPanel = new PluginErrorPanel();
 
-	private final List<GrandExchangeItems> itemsList = new ArrayList<>();
-
 	@Inject
 	private GrandExchangeSearchPanel(ClientThread clientThread, ItemManager itemManager,
 		ScheduledExecutorService executor, RuneLiteConfig runeLiteConfig, GrandExchangePlugin grandExchangePlugin)
@@ -195,7 +193,7 @@ class GrandExchangeSearchPanel extends JPanel
 
 	private void processResult(List<ItemPrice> result, String lookup, boolean exactMatch)
 	{
-		itemsList.clear();
+		final List<GrandExchangeItems> itemsList = new ArrayList<>();
 
 		cardLayout.show(centerPanel, RESULTS_PANEL);
 
