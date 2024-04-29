@@ -25,6 +25,7 @@
 #version 330
 
 //#define FRAG_UVS
+//#define ZBUF
 
 uniform sampler2DArray textures;
 uniform float brightness;
@@ -38,11 +39,22 @@ noperspective centroid in float fHsl;
 flat in int fTextureId;
 in vec2 fUv;
 in float fFogAmount;
+#ifdef ZBUF
+in float fDepth;
+#endif
 
 out vec4 FragColor;
 
 #include "hsl_to_rgb.glsl"
 #include "colorblind.glsl"
+
+#ifdef ZBUF
+float linear_depth(float depth) {
+  // depth is computed as 100/z, solve for z
+  float z = 100 / depth;
+  return 1 - z / 10000;  // we don't have a far plane, but the client uses 10000
+}
+#endif
 
 void main() {
   vec4 c;
@@ -68,13 +80,24 @@ void main() {
   }
 
   vec3 mixedColor = mix(c.rgb, fogColor.rgb, fFogAmount);
+  FragColor = vec4(mixedColor, c.a);
+
 #ifdef FRAG_UVS
   if (fTextureId > 0) {
     FragColor = vec4(fUv.x, 0, fUv.y, 1);
-  } else {
+  }
 #endif
-    FragColor = vec4(mixedColor, c.a);
-#ifdef FRAG_UVS
+
+#ifdef ZBUF
+  float dc = linear_depth(fDepth);
+  if (dc > 1.0) {
+    FragColor = vec4(1, 0, 0, 1);
+  } else if (dc < -1.0) {
+    FragColor = vec4(0, 0, 1, 1);
+  } else if (dc < 0.0) {
+    FragColor = vec4(0, 1, 0, 1);
+  } else {
+    FragColor = vec4(dc, dc, dc, 1);
   }
 #endif
 }

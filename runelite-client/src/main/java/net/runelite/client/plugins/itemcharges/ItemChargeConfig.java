@@ -31,6 +31,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
+import net.runelite.client.config.Notification;
 
 @ConfigGroup(ItemChargeConfig.GROUP)
 public interface ItemChargeConfig extends Config
@@ -138,9 +139,9 @@ public interface ItemChargeConfig extends Config
 		position = 7,
 		section = notificationSection
 	)
-	default boolean dodgyNotification()
+	default Notification dodgyNotification()
 	{
-		return true;
+		return Notification.ON;
 	}
 
 	@ConfigItem(
@@ -270,9 +271,9 @@ public interface ItemChargeConfig extends Config
 		position = 18,
 		section = notificationSection
 	)
-	default boolean recoilNotification()
+	default Notification recoilNotification()
 	{
-		return false;
+		return Notification.OFF;
 	}
 
 	@ConfigItem(
@@ -294,9 +295,9 @@ public interface ItemChargeConfig extends Config
 		position = 20,
 		section = notificationSection
 	)
-	default boolean bindingNotification()
+	default Notification bindingNotification()
 	{
-		return true;
+		return Notification.ON;
 	}
 
 	@ConfigItem(
@@ -330,9 +331,9 @@ public interface ItemChargeConfig extends Config
 		position = 23,
 		section = notificationSection
 	)
-	default boolean ringOfForgingNotification()
+	default Notification ringOfForgingNotification()
 	{
-		return true;
+		return Notification.ON;
 	}
 
 	@ConfigItem(
@@ -377,9 +378,9 @@ public interface ItemChargeConfig extends Config
 		position = 27,
 		section = notificationSection
 	)
-	default boolean slaughterNotification()
+	default Notification slaughterNotification()
 	{
-		return true;
+		return Notification.ON;
 	}
 
 	@ConfigItem(
@@ -401,9 +402,9 @@ public interface ItemChargeConfig extends Config
 		position = 29,
 		section = notificationSection
 	)
-	default boolean expeditiousNotification()
+	default Notification expeditiousNotification()
 	{
-		return true;
+		return Notification.ON;
 	}
 
 	@ConfigItem(
@@ -449,8 +450,20 @@ public interface ItemChargeConfig extends Config
 		position = 32,
 		section = notificationSection
 	)
-	default boolean braceletOfClayNotification()
+	default Notification braceletOfClayNotification()
 	{
-		return true;
+		return Notification.ON;
+	}
+
+	@ConfigItem(
+		keyName = "amuletOfChemistryNotification",
+		name = "Amulet of Chemistry Notification",
+		description = "Send a notification when an Amulet of Chemistry breaks",
+		position = 33,
+		section = notificationSection
+	)
+	default Notification amuletOfChemistryNotification()
+	{
+		return Notification.ON;
 	}
 }

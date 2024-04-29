@@ -101,9 +101,6 @@ public class NpcAggroAreaPlugin extends Plugin
 	private NpcAggroAreaOverlay overlay;
 
 	@Inject
-	private NpcAggroAreaNotWorkingOverlay notWorkingOverlay;
-
-	@Inject
 	private OverlayManager overlayManager;
 
 	@Inject
@@ -150,8 +147,8 @@ public class NpcAggroAreaPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(overlay);
-		overlayManager.add(notWorkingOverlay);
 		npcNamePatterns = NAME_SPLITTER.splitToList(config.npcNamePatterns());
+		infoBoxManager.addInfoBox(new UncalibratedInfobox(itemManager.getImage(ItemID.ENSOULED_DEMON_HEAD), this));
 		recheckActive();
 	}
 
@@ -160,7 +157,7 @@ public class NpcAggroAreaPlugin extends Plugin
 	{
 		removeTimer();
 		overlayManager.remove(overlay);
-		overlayManager.remove(notWorkingOverlay);
+		infoBoxManager.removeIf(UncalibratedInfobox.class::isInstance);
 		Arrays.fill(safeCenters, null);
 		lastPlayerLocation = null;
 		endTime = null;
@@ -299,17 +296,20 @@ public class NpcAggroAreaPlugin extends Plugin
 
 	private void checkAreaNpcs(final NPC... npcs)
 	{
-		for (NPC npc : npcs)
+		if (!active)
 		{
-			if (npc == null)
+			for (NPC npc : npcs)
 			{
-				continue;
-			}
+				if (npc == null)
+				{
+					continue;
+				}
 
-			if (isNpcMatch(npc))
-			{
-				active = true;
-				break;
+				if (isNpcMatch(npc))
+				{
+					active = true;
+					break;
+				}
 			}
 		}
 
@@ -325,7 +325,7 @@ public class NpcAggroAreaPlugin extends Plugin
 	@Subscribe(priority = -1) // run after slayer plugin so targets has time to populate
 	public void onNpcSpawned(NpcSpawned event)
 	{
-		if (config.alwaysActive())
+		if (active)
 		{
 			return;
 		}
@@ -340,10 +340,7 @@ public class NpcAggroAreaPlugin extends Plugin
 
 		if (active && notifyOnce && Instant.now().isAfter(endTime))
 		{
-			if (config.notifyExpire())
-			{
-				notifier.notify("NPC aggression has expired!");
-			}
+			notifier.notify(config.notifyExpire(), "NPC aggression has expired!");
 
 			notifyOnce = false;
 		}

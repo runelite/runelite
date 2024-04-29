@@ -29,7 +29,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.10.11-SNAPSHOT</version>
+		<version>1.10.29-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>cache</artifactId>
@@ -38,7 +38,7 @@
 	<properties>
 		<cache.version>165</cache.version>
 		
-		<antlr4.version>4.6</antlr4.version>
+		<antlr4.version>4.13.1</antlr4.version>
 	</properties>
 
 	<dependencies>

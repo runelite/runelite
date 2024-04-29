@@ -80,9 +80,10 @@ import net.runelite.api.events.GrandExchangeSearched;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.ScriptPostFired;
+import net.runelite.api.widgets.ComponentID;
+import net.runelite.api.widgets.InterfaceID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetID;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.Notifier;
 import net.runelite.client.account.AccountSession;
 import net.runelite.client.account.SessionManager;
@@ -139,10 +140,8 @@ public class GrandExchangePlugin extends Plugin
 	private static final int MAX_TRADE_HISTORY = 1024;
 	private static final int MAX_TRADE_DAYS = 365;
 
-	@Getter(AccessLevel.PACKAGE)
 	private NavigationButton button;
 
-	@Getter(AccessLevel.PACKAGE)
 	@Setter(AccessLevel.PACKAGE)
 	private GrandExchangePanel panel;
 
@@ -362,6 +361,16 @@ public class GrandExchangePlugin extends Plugin
 		tradeSeq = 0;
 	}
 
+	void search(final String itemName)
+	{
+		SwingUtilities.invokeLater(() ->
+		{
+			panel.showSearch();
+			clientToolbar.openPanel(button);
+			panel.getSearchPanel().priceLookup(itemName);
+		});
+	}
+
 	@Subscribe
 	public void onSessionOpen(SessionOpen sessionOpen)
 	{
@@ -550,6 +559,10 @@ public class GrandExchangePlugin extends Plugin
 		{
 			return WorldType.FRESH_START_WORLD;
 		}
+		else if (worldTypes.contains(net.runelite.api.WorldType.BETA_WORLD))
+		{
+			return WorldType.BETA_WORLD;
+		}
 		else
 		{
 			return null;
@@ -593,13 +606,13 @@ public class GrandExchangePlugin extends Plugin
 
 		String message = Text.removeTags(event.getMessage());
 
-		if (message.startsWith("Grand Exchange:") && config.enableNotifications())
+		if (message.startsWith("Grand Exchange: Finished"))
 		{
-			notifier.notify(message);
+			notifier.notify(config.notifyOnOfferComplete(), message);
 		}
-		else if (message.startsWith("Grand Exchange: Finished") && config.notifyOnOfferComplete())
+		else if (message.startsWith("Grand Exchange:"))
 		{
-			notifier.notify(message);
+			notifier.notify(config.enableNotifications(), message);
 		}
 	}
 
@@ -636,20 +649,20 @@ public class GrandExchangePlugin extends Plugin
 		final MenuEntry[] entries = client.getMenuEntries();
 		final MenuEntry menuEntry = entries[entries.length - 1];
 		final int widgetId = menuEntry.getParam1();
-		final int groupId = WidgetInfo.TO_GROUP(widgetId);
+		final int groupId = WidgetUtil.componentToInterface(widgetId);
 
 		switch (groupId)
 		{
-			case WidgetID.BANK_GROUP_ID:
+			case InterfaceID.BANK:
 				// Don't show for view tabs and such
-				if (WidgetInfo.TO_CHILD(widgetId) != WidgetInfo.BANK_ITEM_CONTAINER.getChildId())
+				if (widgetId != ComponentID.BANK_ITEM_CONTAINER)
 				{
 					break;
 				}
-			case WidgetID.INVENTORY_GROUP_ID:
-			case WidgetID.BANK_INVENTORY_GROUP_ID:
-			case WidgetID.GRAND_EXCHANGE_INVENTORY_GROUP_ID:
-			case WidgetID.SHOP_INVENTORY_GROUP_ID:
+			case InterfaceID.INVENTORY:
+			case InterfaceID.BANK_INVENTORY:
+			case InterfaceID.GRAND_EXCHANGE_INVENTORY:
+			case InterfaceID.SHOP_INVENTORY:
 				menuEntry.setOption(SEARCH_GRAND_EXCHANGE);
 				menuEntry.setType(MenuAction.RUNELITE);
 		}
@@ -683,7 +696,7 @@ public class GrandExchangePlugin extends Plugin
 
 		String underlineTag = "<u=" + ColorUtil.colorToHexCode(FUZZY_HIGHLIGHT_COLOR) + ">";
 
-		Widget results = client.getWidget(WidgetInfo.CHATBOX_GE_SEARCH_RESULTS);
+		Widget results = client.getWidget(ComponentID.CHATBOX_GE_SEARCH_RESULTS);
 		Widget[] children = results.getDynamicChildren();
 		int resultCount = children.length / 3;
 

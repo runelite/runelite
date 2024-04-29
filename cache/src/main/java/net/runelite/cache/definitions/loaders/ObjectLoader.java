@@ -26,14 +26,26 @@ package net.runelite.cache.definitions.loaders;
 
 import java.util.HashMap;
 import java.util.Map;
+import lombok.Data;
+import lombok.experimental.Accessors;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.cache.definitions.ObjectDefinition;
 import net.runelite.cache.io.InputStream;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@Accessors(chain = true)
+@Data
+@Slf4j
 public class ObjectLoader
 {
-	private static final Logger logger = LoggerFactory.getLogger(ObjectLoader.class);
+	public static final int REV_220_OBJ_ARCHIVE_REV = 1673;
+
+	private boolean rev220SoundData = true;
+
+	public ObjectLoader configureForRevision(int rev)
+	{
+		this.rev220SoundData = rev >= REV_220_OBJ_ARCHIVE_REV;
+		return this;
+	}
 
 	public ObjectDefinition load(int id, byte[] b)
 	{
@@ -286,12 +298,20 @@ public class ObjectLoader
 		{
 			def.setAmbientSoundId(is.readUnsignedShort());
 			def.setAmbientSoundDistance(is.readUnsignedByte());
+			if (rev220SoundData)
+			{
+				def.setAmbientSoundRetain(is.readUnsignedByte());
+			}
 		}
 		else if (opcode == 79)
 		{
 			def.setAmbientSoundChangeTicksMin(is.readUnsignedShort());
 			def.setAmbientSoundChangeTicksMax(is.readUnsignedShort());
 			def.setAmbientSoundDistance(is.readUnsignedByte());
+			if (rev220SoundData)
+			{
+				def.setAmbientSoundRetain(is.readUnsignedByte());
+			}
 			int length = is.readUnsignedByte();
 			int[] ambientSoundIds = new int[length];
 
@@ -381,7 +401,7 @@ public class ObjectLoader
 		}
 		else
 		{
-			logger.warn("Unrecognized opcode {}", opcode);
+			log.warn("Unrecognized opcode {}", opcode);
 		}
 	}
 

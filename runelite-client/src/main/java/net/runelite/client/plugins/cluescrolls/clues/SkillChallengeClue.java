@@ -92,27 +92,40 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 		item(ItemID.GILDED_PICKAXE),
 		item(ItemID._3RD_AGE_PICKAXE),
 		item(ItemID.CRYSTAL_PICKAXE),
-		item(ItemID.CRYSTAL_PICKAXE_INACTIVE)
+		item(ItemID.CRYSTAL_PICKAXE_INACTIVE),
+		item(ItemID.TRAILBLAZER_PICKAXE)
 	);
 
 	private static final AnyRequirementCollection ANY_AXE = any("Any Axe",
 		item(ItemID.BRONZE_AXE),
+		item(ItemID.BRONZE_FELLING_AXE),
 		item(ItemID.IRON_AXE),
+		item(ItemID.IRON_FELLING_AXE),
 		item(ItemID.STEEL_AXE),
+		item(ItemID.STEEL_FELLING_AXE),
 		item(ItemID.BLACK_AXE),
+		item(ItemID.BLACK_FELLING_AXE),
 		item(ItemID.MITHRIL_AXE),
+		item(ItemID.MITHRIL_FELLING_AXE),
 		item(ItemID.ADAMANT_AXE),
+		item(ItemID.ADAMANT_FELLING_AXE),
 		item(ItemID.RUNE_AXE),
+		item(ItemID.RUNE_FELLING_AXE),
 		item(ItemID.DRAGON_AXE),
 		item(ItemID.DRAGON_AXE_OR),
+		item(ItemID.DRAGON_FELLING_AXE),
 		item(ItemID.INFERNAL_AXE),
 		item(ItemID.INFERNAL_AXE_OR),
 		item(ItemID.INFERNAL_AXE_UNCHARGED),
 		item(ItemID.INFERNAL_AXE_UNCHARGED_25371),
 		item(ItemID.GILDED_AXE),
 		item(ItemID._3RD_AGE_AXE),
+		item(ItemID._3RD_AGE_FELLING_AXE),
 		item(ItemID.CRYSTAL_AXE),
-		item(ItemID.CRYSTAL_AXE_INACTIVE)
+		item(ItemID.CRYSTAL_AXE_INACTIVE),
+		item(ItemID.CRYSTAL_FELLING_AXE),
+		item(ItemID.CRYSTAL_FELLING_AXE_INACTIVE),
+		item(ItemID.TRAILBLAZER_AXE)
 	);
 
 	private static final AnyRequirementCollection ANY_HARPOON = any("Harpoon",
@@ -125,7 +138,8 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 		item(ItemID.INFERNAL_HARPOON_UNCHARGED),
 		item(ItemID.INFERNAL_HARPOON_UNCHARGED_25367),
 		item(ItemID.CRYSTAL_HARPOON),
-		item(ItemID.CRYSTAL_HARPOON_INACTIVE)
+		item(ItemID.CRYSTAL_HARPOON_INACTIVE),
+		item(ItemID.TRAILBLAZER_HARPOON)
 	);
 
 	private static final AnyRequirementCollection ANY_HAMMER = any("Hammer",
@@ -182,7 +196,7 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 					.orElseGet(Stream::empty)
 					.map(ItemRequirements::item)
 					.toArray(SingleItemRequirement[]::new))),
-		new SkillChallengeClue("Catch a black warlock.", item(ItemID.BUTTERFLY_JAR), any("Butterfly Net", item(ItemID.BUTTERFLY_NET), item(ItemID.MAGIC_BUTTERFLY_NET))),
+		new SkillChallengeClue("Catch a black warlock.", any("Butterfly Net", item(ItemID.BUTTERFLY_NET), item(ItemID.MAGIC_BUTTERFLY_NET))),
 		new SkillChallengeClue("Catch a red chinchompa.", item(ItemID.BOX_TRAP)),
 		new SkillChallengeClue("Mine a mithril ore.", ANY_PICKAXE),
 		new SkillChallengeClue("Smith a mithril 2h sword.", ANY_HAMMER, xOfItem(ItemID.MITHRIL_BAR, 3)),
@@ -194,7 +208,7 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 		new SkillChallengeClue("Craft multiple cosmic runes from a single essence.", any("Pure essence or Daeyalt essence", item(ItemID.PURE_ESSENCE), item(ItemID.DAEYALT_ESSENCE))),
 		new SkillChallengeClue("Plant a watermelon seed.", item(ItemID.RAKE), item(ItemID.SEED_DIBBER), xOfItem(ItemID.WATERMELON_SEED, 3)),
 		new SkillChallengeClue("Activate the Chivalry prayer."),
-		new SkillChallengeClue("Hand in a Tier 2 or higher set of Shayzien supply armour. (Requires 11 lovakite bars)", "take the lovakengj armourers a boxed set of shayzien supply armour at tier 2 or above.", any("Shayzien Supply Set (Tier 2 or higher)", item(ItemID.SHAYZIEN_SUPPLY_SET_2), item(ItemID.SHAYZIEN_SUPPLY_SET_3), item(ItemID.SHAYZIEN_SUPPLY_SET_4), item(ItemID.SHAYZIEN_SUPPLY_SET_5))),
+		new SkillChallengeClue("Smith a tier 2 or above Shayzien platebody.", "smith a tier 2 or above shayzien platebody.", ANY_HAMMER, xOfItem(ItemID.LOVAKITE_BAR, 4)),
 		// Master Sherlock Tasks
 		new SkillChallengeClue("Equip an abyssal whip in front of the abyssal demons of the Slayer Tower.", true, any("Abyssal Whip", item(ItemID.ABYSSAL_WHIP), item(ItemID.FROZEN_ABYSSAL_WHIP), item(ItemID.VOLCANIC_ABYSSAL_WHIP), item(ItemID.ABYSSAL_WHIP_OR), item(ItemID.ABYSSAL_TENTACLE), item(ItemID.ABYSSAL_TENTACLE_OR))),
 		new SkillChallengeClue("Smith a runite med helm.", ANY_HAMMER, item(ItemID.RUNITE_BAR)),
@@ -238,7 +252,8 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 		new SkillChallengeClue("Kill a Fiyr shade inside Mort'tons shade catacombs.",
 			any("Any Gold or Silver Shade Key",
 				item(ItemID.GOLD_KEY_RED), item(ItemID.GOLD_KEY_BROWN), item(ItemID.GOLD_KEY_CRIMSON), item(ItemID.GOLD_KEY_BLACK), item(ItemID.GOLD_KEY_PURPLE),
-				item(ItemID.SILVER_KEY_RED), item(ItemID.SILVER_KEY_BROWN), item(ItemID.SILVER_KEY_CRIMSON), item(ItemID.SILVER_KEY_BLACK), item(ItemID.SILVER_KEY_PURPLE)))
+				item(ItemID.SILVER_KEY_RED), item(ItemID.SILVER_KEY_BROWN), item(ItemID.SILVER_KEY_CRIMSON), item(ItemID.SILVER_KEY_BLACK), item(ItemID.SILVER_KEY_PURPLE))),
+		new SkillChallengeClue("Catch a tecu salamander.", item(ItemID.ROPE), item(ItemID.SMALL_FISHING_NET))
 	);
 
 	private final ChallengeType type;

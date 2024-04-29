@@ -26,19 +26,22 @@ package net.runelite.client.plugins.barbarianassault;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.api.annotations.Component;
+import net.runelite.api.widgets.ComponentID;
 
 @AllArgsConstructor
 @Getter
 enum Role
 {
-	ATTACKER(WidgetInfo.BA_ATK_ROLE_TEXT, WidgetInfo.BA_ATK_ROLE_SPRITE),
-	DEFENDER(WidgetInfo.BA_DEF_ROLE_TEXT, WidgetInfo.BA_DEF_ROLE_SPRITE),
-	COLLECTOR(WidgetInfo.BA_COLL_ROLE_TEXT, WidgetInfo.BA_COLL_ROLE_SPRITE),
-	HEALER(WidgetInfo.BA_HEAL_ROLE_TEXT, WidgetInfo.BA_HEAL_ROLE_SPRITE);
+	ATTACKER(ComponentID.BA_ATTACKER_ROLE, ComponentID.BA_ATTACKER_ROLE_SPRITE),
+	DEFENDER(ComponentID.BA_DEFENDER_ROLE, ComponentID.BA_DEFENDER_ROLE_SPRITE),
+	COLLECTOR(ComponentID.BA_COLLECTOR_ROLE, ComponentID.BA_COLLECTOR_ROLE_SPRITE),
+	HEALER(ComponentID.BA_HEALER_ROLE, ComponentID.BA_HEALER_ROLE_SPRITE);
 
-	private final WidgetInfo roleText;
-	private final WidgetInfo roleSprite;
+	@Component
+	private final int roleText;
+	@Component
+	private final int roleSprite;
 
 	@Override
 	public String toString()

@@ -70,6 +70,7 @@ import net.runelite.client.party.PartyService;
 import net.runelite.client.party.WSClient;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import static net.runelite.client.plugins.specialcounter.SpecialWeapon.TONALZTICS_OF_RALOS;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.ImageUtil;
@@ -99,7 +100,9 @@ public class SpecialCounterPlugin extends Plugin
 	private int hitsplatTick;
 	// most recent hitsplat and the target it was on
 	private Hitsplat lastSpecHitsplat;
+	private Hitsplat secondToLastSpecHitsplat;
 	private NPC lastSpecTarget;
+	private int specialAttackHits = 0;
 
 	private final Set<Integer> interactedNpcIndexes = new HashSet<>();
 	private final SpecialCounter[] specialCounter = new SpecialCounter[SpecialWeapon.values().length];
@@ -163,6 +166,7 @@ public class SpecialCounterPlugin extends Plugin
 		specialWeapon = null;
 		lastSpecTarget = null;
 		lastSpecHitsplat = null;
+		secondToLastSpecHitsplat = null;
 		removeCounters();
 		overlayManager.remove(playerInfoDropOverlay);
 		wsClient.unregisterMessage(SpecialCounterUpdate.class);
@@ -185,12 +189,25 @@ public class SpecialCounterPlugin extends Plugin
 		{
 			if (lastSpecHitsplat.getAmount() > 0)
 			{
-				specialAttackHit(specialWeapon, lastSpecHitsplat, lastSpecTarget);
+				specialAttackHits++;
+			}
+			if (specialWeapon == TONALZTICS_OF_RALOS && secondToLastSpecHitsplat != null
+				&& secondToLastSpecHitsplat.getAmount() > 0)
+			{
+				specialAttackHits++;
+			}
+
+			if (specialAttackHits > 0)
+			{
+				int hit = specialWeapon == TONALZTICS_OF_RALOS ? specialAttackHits : getHit(specialWeapon, lastSpecHitsplat);
+				specialAttackHit(specialWeapon, hit, lastSpecTarget);
 			}
 
 			specialWeapon = null;
 			lastSpecHitsplat = null;
+			secondToLastSpecHitsplat = null;
 			lastSpecTarget = null;
+			specialAttackHits = 0;
 		}
 	}
 
@@ -286,16 +303,16 @@ public class SpecialCounterPlugin extends Plugin
 		// venge or thralls.
 		if (hitsplatTick == client.getTickCount())
 		{
+			secondToLastSpecHitsplat = lastSpecHitsplat;
 			lastSpecHitsplat = hitsplat;
 		}
 	}
 
-	private void specialAttackHit(SpecialWeapon specialWeapon, Hitsplat hitsplat, NPC target)
+	private void specialAttackHit(SpecialWeapon specialWeapon, int hit, NPC target)
 	{
-		int hit = getHit(specialWeapon, hitsplat);
 		int localPlayerId = client.getLocalPlayer().getId();
 
-		log.debug("Special attack hit {} hitsplat {}", specialWeapon, hitsplat.getAmount());
+		log.debug("Special attack hit {} hitsplat {}", specialWeapon, hit);
 
 		if (config.infobox())
 		{
@@ -446,9 +463,9 @@ public class SpecialCounterPlugin extends Plugin
 	private void sendNotification(SpecialWeapon weapon, SpecialCounter counter)
 	{
 		int threshold = weapon.getThreshold().apply(config);
-		if (threshold > 0 && counter.getCount() >= threshold && config.thresholdNotification())
+		if (threshold > 0 && counter.getCount() >= threshold)
 		{
-			notifier.notify(weapon.getName() + " special attack threshold reached!");
+			notifier.notify(config.thresholdNotification(), weapon.getName() + " special attack threshold reached!");
 		}
 	}
 
@@ -488,8 +505,7 @@ public class SpecialCounterPlugin extends Plugin
 
 	private int getHitDelay(SpecialWeapon specialWeapon, Actor target)
 	{
-		// DORGESHUUN_CROSSBOW is the only ranged wep we support, so everything else is just melee and delay 1
-		if (specialWeapon != SpecialWeapon.DORGESHUUN_CROSSBOW || target == null)
+		if (target == null)
 			return 1;
 
 		Player player = client.getLocalPlayer();
@@ -505,13 +521,13 @@ public class SpecialCounterPlugin extends Plugin
 			return 1;
 
 		final int distance = targetArea.distanceTo(playerWp);
-		// Dorgeshuun special attack projectile, anim delay, and hitsplat is 60 + distance * 3 with the projectile
-		// starting at 41 cycles. Since we are computing the delay when the spec var changes, and not when the
-		// projectile first moves, this should be 60 and not 19
-		final int cycles = 60 + distance * 3;
-		// The server performs no rounding and instead delays (cycles / 30) cycles from the next cycle
-		final int serverCycles = (cycles / 30) + 1;
-		log.debug("Projectile distance {} cycles {} server cycles {}", distance, cycles, serverCycles);
+		final int serverCycles = specialWeapon.getHitDelay(distance);
+
+		if (serverCycles != 1)
+		{
+			log.debug("Projectile distance {} server cycles {}", distance, serverCycles);
+		}
+
 		return serverCycles;
 	}
 }

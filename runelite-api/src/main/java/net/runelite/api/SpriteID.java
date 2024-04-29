@@ -380,7 +380,9 @@ public final class SpriteID
 	public static final int SPELL_WATER_SURGE = 363;
 	public static final int SPELL_EARTH_SURGE = 364;
 	public static final int SPELL_FIRE_SURGE = 365;
-	/* Unmapped: 366, 367, 368 */
+	/* Unmapped: 366 */
+	public static final int SPELL_CIVITAS_ILLA_FORTIS_TELEPORT = 367;
+	/* Unmapped: 368 */
 	public static final int SPELL_BIND_DISABLED = 369;
 	public static final int SPELL_SNARE_DISABLED = 370;
 	public static final int SPELL_ENTANGLE_DISABLED = 371;
@@ -1253,7 +1255,8 @@ public final class SpriteID
 	public static final int SPELL_DARK_LURE = 1316;
 	public static final int SPELL_VILE_VIGOUR = 1317;
 	public static final int SPELL_DEGRIME = 1318;
-	/* Unmapped: 1319~1324 */
+	/* Unmapped: 1319~1323 */
+	public static final int SPELL_MARK_OF_DARKNESS_DISABLED = 1324;
 	public static final int SPELL_WARD_OF_ARCEUUS_DISABLED = 1325;
 	/* Unmapped: 1326 */
 	public static final int SPELL_GREATER_CORRUPTION_DISABLED = 1327;
@@ -1682,5 +1685,31 @@ public final class SpriteID
 	public static final int HEALTHBAR_PURPLE_BACK_140PX = 4725;
 	public static final int HEALTHBAR_PURPLE_FRONT_160PX = 4726;
 	public static final int HEALTHBAR_PURPLE_BACK_160PX = 4727;
+	public static final int PRAYER_RP_ANCIENT_STRENGTH = 4843;
+	public static final int PRAYER_RP_ANCIENT_SIGHT = 4844;
+	public static final int PRAYER_RP_ANCIENT_WILL = 4845;
+	public static final int PRAYER_RP_TRINITAS = 4850;
+	public static final int PRAYER_RP_DECIMATE = 4854;
+	public static final int PRAYER_RP_ANNIHILATE = 4855;
+	public static final int PRAYER_RP_VAPORISE = 4856;
+	public static final int PRAYER_RP_DAMPEN_MELEE = 4849;
+	public static final int PRAYER_RP_DAMPEN_RANGED = 4848;
+	public static final int PRAYER_RP_DAMPEN_MAGIC = 4847;
+	public static final int PRAYER_RP_PURGE = 4852;
+	public static final int PRAYER_RP_REJUVENATION = 4842;
+	public static final int PRAYER_RP_RUINOUS_GRACE = 4846;
+	public static final int PRAYER_RP_WRATH = 4862;
+	public static final int PRAYER_RP_METABOLISE = 4853;
+	public static final int PRAYER_RP_BERSERKER = 4851;
+	public static final int PRAYER_RP_FUMUS_VOW = 4858;
+	public static final int PRAYER_RP_CRUORS_VOW = 4860;
+	public static final int PRAYER_RP_UMBRAS_VOW = 4859;
+	public static final int PRAYER_RP_GLACIES_VOW = 4861;
+	public static final int PRAYER_RP_INTENSIFY = 4864;
+	public static final int PRAYER_RP_REBUKE = 4857;
+	public static final int PRAYER_RP_VINDICATION = 4863;
+	public static final int PRAYER_RP_PROTECT_ITEM = 4865;
 	public static final int ACTIVATED_PRAYER_BACKGROUND = 4892;
+	/* Unmapped: 4893~5250 */
+	public static final int EMOTE_FORTIS_SALUTE = 5251;
 }

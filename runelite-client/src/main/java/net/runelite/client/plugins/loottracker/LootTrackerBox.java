@@ -334,13 +334,11 @@ class LootTrackerBox extends JPanel
 
 				if (item.isIgnored())
 				{
-					Runnable addTransparency = () ->
+					itemImage.onLoaded(() ->
 					{
 						BufferedImage transparentImage = ImageUtil.alphaOffset(itemImage, .3f);
 						imageLabel.setIcon(new ImageIcon(transparentImage));
-					};
-					itemImage.onLoaded(addTransparency);
-					addTransparency.run();
+					});
 				}
 				else
 				{

@@ -36,8 +36,8 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
@@ -84,7 +84,7 @@ public class BlastMinePlugin extends Plugin
 	{
 		overlayManager.remove(blastMineRockOverlay);
 		overlayManager.remove(blastMineOreCountOverlay);
-		final Widget blastMineWidget = client.getWidget(WidgetInfo.BLAST_MINE);
+		final Widget blastMineWidget = client.getWidget(ComponentID.BLAST_MINE_CONTAINER);
 
 		if (blastMineWidget != null)
 		{

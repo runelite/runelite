@@ -176,8 +176,8 @@ public class WorldPoint
 	public static WorldPoint fromLocal(Scene scene, int x, int y, int plane)
 	{
 		return new WorldPoint(
-			(x >>> Perspective.LOCAL_COORD_BITS) + scene.getBaseX(),
-			(y >>> Perspective.LOCAL_COORD_BITS) + scene.getBaseY(),
+			(x >> Perspective.LOCAL_COORD_BITS) + scene.getBaseX(),
+			(y >> Perspective.LOCAL_COORD_BITS) + scene.getBaseY(),
 			plane
 		);
 	}
@@ -194,8 +194,8 @@ public class WorldPoint
 	public static WorldPoint fromLocal(Client client, int x, int y, int plane)
 	{
 		return new WorldPoint(
-			(x >>> Perspective.LOCAL_COORD_BITS) + client.getBaseX(),
-			(y >>> Perspective.LOCAL_COORD_BITS) + client.getBaseY(),
+			(x >> Perspective.LOCAL_COORD_BITS) + client.getBaseX(),
+			(y >> Perspective.LOCAL_COORD_BITS) + client.getBaseY(),
 			plane
 		);
 	}
@@ -542,5 +542,13 @@ public class WorldPoint
 	public WorldArea toWorldArea()
 	{
 		return new WorldArea(this, 1, 1);
+	}
+
+	/**
+	 * Create a WorldPoint from a packed Jagex coordinate
+	 */
+	public static WorldPoint fromCoord(int c)
+	{
+		return new WorldPoint((c >>> 14) & 0x3FFF, c & 0x3FFF, (c >>> 28) & 0x3);
 	}
 }

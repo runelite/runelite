@@ -53,6 +53,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.WeakHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -95,9 +96,9 @@ import net.runelite.http.api.config.Profile;
 public class ConfigManager
 {
 	public static final String RSPROFILE_GROUP = "rsprofile";
+	public static final String RSPROFILE_DISPLAY_NAME = "displayName";
+	public static final String RSPROFILE_TYPE = "type";
 
-	private static final String RSPROFILE_DISPLAY_NAME = "displayName";
-	private static final String RSPROFILE_TYPE = "type";
 	private static final String RSPROFILE_ACCOUNT_HASH = "accountHash";
 
 	private static final long RSPROFILE_ID = -1L;
@@ -130,6 +131,8 @@ public class ConfigManager
 	@Nullable
 	private String rsProfileKey;
 
+	private final Map<Type, Serializer<?>> serializers = Collections.synchronizedMap(new WeakHashMap<>());
+
 	@Inject
 	private ConfigManager(
 		@Nullable @Named("profile") String profile,
@@ -157,14 +160,14 @@ public class ConfigManager
 	{
 		if (newProfile.getId() == profile.getId())
 		{
-			log.warn("switching to existing profile!");
+			log.warn("switching to already-active profile!");
 			return;
 		}
 
 		// Ensure existing config is saved
 		sendConfig();
 
-		log.info("Switching profile to: {}", newProfile.getName());
+		log.info("Switching profile to: {} ({})", newProfile.getName(), newProfile.getId());
 
 		// sync the latest config revision from the server
 		if (sessionManager.getAccountSession() != null && newProfile.isSync())
@@ -524,7 +527,7 @@ public class ConfigManager
 			{
 				if (p.isInternal())
 				{
-					log.debug("Profile '{}' (sync: {}, active: {}, internal)", p.getName(), p.isSync(), p.isActive());
+					log.debug("Profile '{}' (sync: {}, active: {}, id: {}, internal)", p.getName(), p.isSync(), p.getId(), p.isActive());
 
 					if (p.getName().equals(RSPROFILE_NAME))
 					{
@@ -534,7 +537,7 @@ public class ConfigManager
 					continue;
 				}
 
-				log.info("Profile '{}' (sync: {}, active: {})", p.getName(), p.isSync(), p.isActive());
+				log.info("Profile '{}' (sync: {}, active: {}, id: {})", p.getName(), p.isSync(), p.isActive(), p.getId());
 
 				// --profile
 				if (configProfileName != null)
@@ -556,7 +559,7 @@ public class ConfigManager
 
 			if (profile != null)
 			{
-				log.info("Using profile: {}", profile.getName());
+				log.info("Using profile: {} ({})", profile.getName(), profile.getId());
 			}
 			else
 			{
@@ -568,7 +571,7 @@ public class ConfigManager
 					profile.setActive(true);
 				}
 
-				log.info("Creating profile: {}", profile.getName());
+				log.info("Creating profile: {} ({})", profile.getName(), profile.getId());
 			}
 
 			if (rsProfile == null)
@@ -1192,6 +1195,27 @@ public class ConfigManager
 				return gson.fromJson(str, parameterizedType);
 			}
 		}
+		if (type instanceof Class)
+		{
+			Class<?> clazz = (Class<?>) type;
+			ConfigSerializer configSerializer = clazz.getAnnotation(ConfigSerializer.class);
+			if (configSerializer != null)
+			{
+				Class<? extends Serializer<?>> serializerClass = configSerializer.value();
+				Serializer<?> serializer = serializers.get(type);
+				if (serializer == null)
+				{
+					// Guice holds references to all jitted types.
+					// To allow class unloading, use a temporary child injector
+					// and use it to get the instance, and cache it a weak map.
+					serializer = RuneLite.getInjector()
+						.createChildInjector()
+						.getInstance(serializerClass);
+					serializers.put(type, serializer);
+				}
+				return serializer.deserialize(str);
+			}
+		}
 		return str;
 	}
 
@@ -1246,6 +1270,23 @@ public class ConfigManager
 		if (object instanceof Set)
 		{
 			return gson.toJson(object, Set.class);
+		}
+		if (object != null)
+		{
+			ConfigSerializer configSerializer = object.getClass().getAnnotation(ConfigSerializer.class);
+			if (configSerializer != null)
+			{
+				Class<? extends Serializer<?>> serializerClass = configSerializer.value();
+				Serializer serializer = serializers.get(serializerClass);
+				if (serializer == null)
+				{
+					serializer = RuneLite.getInjector()
+						.createChildInjector()
+						.getInstance(serializerClass);
+					serializers.put(serializerClass, serializer);
+				}
+				return serializer.serialize(object);
+			}
 		}
 		return object == null ? null : object.toString();
 	}
@@ -1500,6 +1541,35 @@ public class ConfigManager
 		{
 			String name = ev.getPlayer().getName();
 			setRSProfileConfiguration(RSPROFILE_GROUP, RSPROFILE_DISPLAY_NAME, name);
+		}
+	}
+
+	@Subscribe
+	private void onRuneScapeProfileChanged(RuneScapeProfileChanged ev)
+	{
+		ConfigProfile switchToProfile = null;
+		try (ProfileManager.Lock lock = profileManager.lock())
+		{
+			for (final ConfigProfile lockProfile : lock.getProfiles())
+			{
+				final List<String> get = lockProfile.getDefaultForRsProfiles();
+				if (get != null && get.contains(rsProfileKey))
+				{
+					switchToProfile = lockProfile;
+
+					// change active profile
+					lock.getProfiles().forEach(p -> p.setActive(false));
+					switchToProfile.setActive(true);
+					lock.dirty();
+					break;
+				}
+			}
+		}
+
+		if (switchToProfile != null)
+		{
+			log.debug("Switching to default profile {} for rsprofile {}", switchToProfile.getName(), rsProfileKey);
+			switchProfile(switchToProfile);
 		}
 	}
 

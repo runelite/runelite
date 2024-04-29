@@ -57,7 +57,7 @@ public interface DiscordConfig extends Config
 	)
 	default ElapsedTimeType elapsedTimeType()
 	{
-		return ElapsedTimeType.ACTIVITY;
+		return ElapsedTimeType.TOTAL;
 	}
 
 	@ConfigItem(

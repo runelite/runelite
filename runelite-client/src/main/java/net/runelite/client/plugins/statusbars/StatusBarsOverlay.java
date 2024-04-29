@@ -42,8 +42,8 @@ import net.runelite.api.Skill;
 import net.runelite.api.SpriteID;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.Varbits;
+import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.game.AlternateSprites;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.game.SpriteManager;
@@ -303,7 +303,7 @@ class StatusBarsOverlay extends Overlay
 		final Widget widget = entry.getWidget();
 		int restoreValue = 0;
 
-		if (widget != null && widget.getId() == WidgetInfo.INVENTORY.getId())
+		if (widget != null && widget.getId() == ComponentID.INVENTORY_CONTAINER)
 		{
 			final Effect change = itemStatService.getItemStatChanges(widget.getItemId());
 
@@ -353,6 +353,6 @@ class StatusBarsOverlay extends Overlay
 
 	private boolean inLms()
 	{
-		return client.getWidget(WidgetInfo.LMS_KDA) != null;
+		return client.getWidget(ComponentID.LMS_INGAME_INFO) != null;
 	}
 }

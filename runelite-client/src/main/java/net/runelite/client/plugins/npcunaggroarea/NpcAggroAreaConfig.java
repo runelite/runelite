@@ -29,6 +29,7 @@ import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Notification;
 
 @ConfigGroup("npcUnaggroArea")
 public interface NpcAggroAreaConfig extends Config
@@ -110,12 +111,12 @@ public interface NpcAggroAreaConfig extends Config
 	@ConfigItem(
 		keyName = "notifyExpire",
 		name = "Notify Expiration",
-		description = "Send a notifcation when the unaggressive timer expires",
+		description = "Send a notification when the unaggressive timer expires",
 		position = 7
 	)
-	default boolean notifyExpire()
+	default Notification notifyExpire()
 	{
-		return false;
+		return Notification.OFF;
 	}
 
 	@ConfigItem(

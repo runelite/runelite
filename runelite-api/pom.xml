@@ -29,7 +29,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.10.11-SNAPSHOT</version>
+		<version>1.10.29-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>runelite-api</artifactId>
@@ -94,8 +94,9 @@
 								<exclude>net/runelite/api/annotations/*.class</exclude>
 								<exclude>net/runelite/api/clan/ClanID.class</exclude>
 								<exclude>net/runelite/api/dbtable/DBTableID*.class</exclude>
+								<exclude>net/runelite/api/widgets/ComponentID.class</exclude>
+								<exclude>net/runelite/api/widgets/InterfaceID.class</exclude>
 								<exclude>net/runelite/api/widgets/ItemQuantityMode.class</exclude>
-								<exclude>net/runelite/api/widgets/WidgetConfig.class</exclude>
 								<exclude>net/runelite/api/widgets/WidgetID*.class</exclude>
 								<exclude>net/runelite/api/widgets/WidgetModalMode.class</exclude>
 								<exclude>net/runelite/api/widgets/WidgetModelType.class</exclude>
@@ -130,6 +131,31 @@
 								<exclude>net/runelite/api/VarClientStr.class</exclude>
 								<exclude>net/runelite/api/VarPlayer.class</exclude>
 							</excludes>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<configuration>
+					<!-- include generated sources in javadoc -->
+					<sourcepath>${project.build.directory}/delombok;${project.build.directory}/generated-sources</sourcepath>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>net.runelite</groupId>
+				<artifactId>runelite-maven-plugin</artifactId>
+				<version>${project.version}</version>
+				<executions>
+					<execution>
+						<id>pack-components</id>
+						<goals>
+							<goal>pack-components</goal>
+						</goals>
+						<configuration>
+							<inputDirectory>src/main/interfaces</inputDirectory>
+							<outputDirectory>${project.build.directory}/generated-sources</outputDirectory>
 						</configuration>
 					</execution>
 				</executions>
