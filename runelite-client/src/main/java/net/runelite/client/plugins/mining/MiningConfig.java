@@ -25,18 +25,28 @@
  */
 package net.runelite.client.plugins.mining;
 
+import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.ConfigSection;
 import net.runelite.client.config.Units;
 
 @ConfigGroup("mining")
 public interface MiningConfig extends Config
 {
+	@ConfigSection(
+		name = "Cam Torum Mine",
+		description = "Configuration for Cam Torum Mine",
+		position = 10
+	)
+	String camTorumMineSection = "camTorumMineSection";
+
 	@ConfigItem(
 		keyName = "statTimeout",
 		name = "Reset stats",
-		description = "Duration the mining indicator and session stats are displayed before being reset"
+		description = "Duration the mining indicator and session stats are displayed before being reset",
+		position = 0
 	)
 	@Units(Units.MINUTES)
 	default int statTimeout()
@@ -47,9 +57,34 @@ public interface MiningConfig extends Config
 	@ConfigItem(
 		keyName = "showMiningStats",
 		name = "Show session stats",
-		description = "Configures whether to display mining session stats"
+		description = "Configures whether to display mining session stats",
+		position = 1
 	)
 	default boolean showMiningStats()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "waterOverlayColor",
+		name = "Water Overlay Color",
+		description = "Color of water overlay",
+		position = 2,
+		section = camTorumMineSection
+	)
+	default Color camTorumWaterOverlayColor()
+	{
+		return Color.GREEN;
+	}
+
+	@ConfigItem(
+		keyName = "notifyWater",
+		name = "Notify Water Spawn",
+		description = "Notifies you when watery rocks spawn",
+		position = 3,
+		section = camTorumMineSection
+	)
+	default boolean camTorumNotifyWaterSpawn()
 	{
 		return true;
 	}

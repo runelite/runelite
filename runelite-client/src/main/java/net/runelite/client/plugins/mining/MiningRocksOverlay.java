@@ -27,17 +27,22 @@ package net.runelite.client.plugins.mining;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Shape;
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
+import net.runelite.api.Tile;
+import net.runelite.api.TileObject;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.ProgressPieComponent;
+import net.runelite.client.util.ColorUtil;
 
 class MiningRocksOverlay extends Overlay
 {
@@ -54,13 +59,15 @@ class MiningRocksOverlay extends Overlay
 
 	private final Client client;
 	private final MiningPlugin plugin;
+	private final MiningConfig config;
 
 	@Inject
-	private MiningRocksOverlay(Client client, MiningPlugin plugin)
+	private MiningRocksOverlay(Client client, MiningConfig config, MiningPlugin plugin)
 	{
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
 		this.plugin = plugin;
+		this.config = config;
 		this.client = client;
 	}
 
@@ -68,11 +75,23 @@ class MiningRocksOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		List<RockRespawn> respawns = plugin.getRespawns();
-		if (respawns.isEmpty())
+		Map<TileObject, Tile> camTorumStreams = plugin.getCamTorumStreams();
+
+		if (!respawns.isEmpty())
 		{
-			return null;
+			handleRockRespawnTimers(graphics, respawns);
 		}
 
+		if (!camTorumStreams.isEmpty())
+		{
+			handleCamTorumWaterStreamHighlights(graphics, camTorumStreams);
+		}
+
+		return null;
+	}
+
+	public void handleRockRespawnTimers(Graphics2D graphics, List<RockRespawn> respawns)
+	{
 		Instant now = Instant.now();
 		for (RockRespawn rockRespawn : respawns)
 		{
@@ -116,13 +135,28 @@ class MiningRocksOverlay extends Overlay
 			ppc.setProgress(percent);
 			ppc.render(graphics);
 		}
-		return null;
+	}
+
+	public void handleCamTorumWaterStreamHighlights(Graphics2D graphics, Map<TileObject, Tile> streams)
+	{
+		streams.forEach((object, tile) ->
+		{
+			Shape objectClickbox = object.getClickbox();
+			if (objectClickbox != null)
+			{
+				Color overlayColor = config.camTorumWaterOverlayColor();
+				graphics.setColor(overlayColor);
+				graphics.draw(objectClickbox);
+				graphics.setColor(ColorUtil.colorWithAlpha(overlayColor, overlayColor.getAlpha() / 12));
+				graphics.fill(objectClickbox);
+			}
+		});
 	}
 
 	/**
 	 * Checks if the given point is "upstairs" in the mlm.
 	 * The upper floor is actually on z=0.
-	 *
+	 * <p>
 	 * This method assumes that the given point is already in the mlm
 	 * and is not meaningful when outside the mlm.
 	 *
