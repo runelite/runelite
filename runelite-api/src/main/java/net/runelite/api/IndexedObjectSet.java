@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2024 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,66 +24,68 @@
  */
 package net.runelite.api;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.Spliterator;
+import java.util.Spliterators;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 import javax.annotation.Nonnull;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-/**
- * Represents the model of an object.
- */
-public interface Model extends Mesh<Model>, Renderable
+@RequiredArgsConstructor
+public class IndexedObjectSet<T> implements Iterable<T>
 {
-	int[] getFaceColors1();
+	@Getter
+	private final T[] sparse;
 
-	int[] getFaceColors2();
+	private final int[] indexes;
 
-	int[] getFaceColors3();
+	@Getter
+	private final int size;
 
-	int getSceneId();
-	void setSceneId(int sceneId);
+	public T byIndex(int index)
+	{
+		return sparse[index];
+	}
 
-	int getBufferOffset();
-	void setBufferOffset(int bufferOffset);
+	public Stream<T> stream()
+	{
+		return StreamSupport.stream(this.spliterator(), false);
+	}
 
-	int getUvBufferOffset();
-	void setUvBufferOffset(int bufferOffset);
-
-	int getBottomY();
-
-	void calculateBoundsCylinder();
-
-	byte[] getFaceRenderPriorities();
-
-	int getRadius();
-	int getDiameter();
-
-	/**
-	 * @see #getAABB(int)
-	 */
-	@Deprecated
-	void calculateExtreme(int orientation);
+	@Override
+	public Spliterator<T> spliterator()
+	{
+		return Spliterators.spliterator(this.iterator(), this.size,
+			Spliterator.SIZED | Spliterator.DISTINCT | Spliterator.ORDERED);
+	}
 
 	@Nonnull
-	AABB getAABB(int orientation);
+	@Override
+	public Iterator<T> iterator()
+	{
+		return new Iterator<T>()
+		{
+			int i;
 
-	int getXYZMag();
-	boolean useBoundingBox();
+			@Override
+			public boolean hasNext()
+			{
+				return i < size;
+			}
 
-	int[] getVertexNormalsX();
-	int[] getVertexNormalsY();
-	int[] getVertexNormalsZ();
+			@Override
+			public T next()
+			{
+				if (!hasNext())
+				{
+					throw new NoSuchElementException();
+				}
 
-	byte getOverrideAmount();
-	byte getOverrideHue();
-	byte getOverrideSaturation();
-	byte getOverrideLuminance();
-
-	byte[] getTextureFaces();
-
-	int[] getTexIndices1();
-	int[] getTexIndices2();
-	int[] getTexIndices3();
-
-	Model getUnskewedModel();
-
-	void drawFrustum(int zero, int xRotate, int yRotate, int zRotate, int xCamera, int yCamera, int zCamera);
-	void drawOrtho(int zero, int xRotate, int yRotate, int zRotate, int xCamera, int yCamera, int zCamera, int zoom);
+				return sparse[indexes[i++]];
+			}
+		};
+	}
 }

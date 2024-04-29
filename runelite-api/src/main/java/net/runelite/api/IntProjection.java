@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2024, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,66 +24,15 @@
  */
 package net.runelite.api;
 
-import javax.annotation.Nonnull;
-
-/**
- * Represents the model of an object.
- */
-public interface Model extends Mesh<Model>, Renderable
+public interface IntProjection extends Projection
 {
-	int[] getFaceColors1();
+	int getCameraX();
+	int getCameraY();
+	int getCameraZ();
 
-	int[] getFaceColors2();
+	int getPitchSin();
+	int getPitchCos();
 
-	int[] getFaceColors3();
-
-	int getSceneId();
-	void setSceneId(int sceneId);
-
-	int getBufferOffset();
-	void setBufferOffset(int bufferOffset);
-
-	int getUvBufferOffset();
-	void setUvBufferOffset(int bufferOffset);
-
-	int getBottomY();
-
-	void calculateBoundsCylinder();
-
-	byte[] getFaceRenderPriorities();
-
-	int getRadius();
-	int getDiameter();
-
-	/**
-	 * @see #getAABB(int)
-	 */
-	@Deprecated
-	void calculateExtreme(int orientation);
-
-	@Nonnull
-	AABB getAABB(int orientation);
-
-	int getXYZMag();
-	boolean useBoundingBox();
-
-	int[] getVertexNormalsX();
-	int[] getVertexNormalsY();
-	int[] getVertexNormalsZ();
-
-	byte getOverrideAmount();
-	byte getOverrideHue();
-	byte getOverrideSaturation();
-	byte getOverrideLuminance();
-
-	byte[] getTextureFaces();
-
-	int[] getTexIndices1();
-	int[] getTexIndices2();
-	int[] getTexIndices3();
-
-	Model getUnskewedModel();
-
-	void drawFrustum(int zero, int xRotate, int yRotate, int zRotate, int xCamera, int yCamera, int zCamera);
-	void drawOrtho(int zero, int xRotate, int yRotate, int zRotate, int xCamera, int yCamera, int zCamera, int zoom);
+	int getYawSin();
+	int getYawCos();
 }

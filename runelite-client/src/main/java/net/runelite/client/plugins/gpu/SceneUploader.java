@@ -38,6 +38,7 @@ import net.runelite.api.GroundObject;
 import net.runelite.api.Model;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
+import net.runelite.api.Projection;
 import net.runelite.api.Renderable;
 import net.runelite.api.Scene;
 import net.runelite.api.SceneTileModel;
@@ -611,7 +612,7 @@ class SceneUploader
 		orderedFaces = null;
 	}
 
-	int pushSortedModel(Model model, int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z, GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer)
+	int pushSortedModel(Projection proj, Model model, int orientation, int x, int y, int z, GpuIntBuffer vertexBuffer, GpuFloatBuffer uvBuffer)
 	{
 		final int vertexCount = model.getVerticesCount();
 		final int[] verticesX = model.getVerticesX();
@@ -630,15 +631,6 @@ class SceneUploader
 		final int centerY = client.getCenterY();
 		final int zoom = client.get3dZoom();
 
-		final int cameraX = client.getCameraX2();
-		final int cameraY = client.getCameraY2();
-		final int cameraZ = client.getCameraZ2();
-
-		// remove camera offset from model
-		x += cameraX;
-		y += cameraY;
-		z += cameraZ;
-
 		int orientSine = 0;
 		int orientCosine = 0;
 		if (orientation != 0)
@@ -646,6 +638,9 @@ class SceneUploader
 			orientSine = Perspective.SINE[orientation];
 			orientCosine = Perspective.COSINE[orientation];
 		}
+
+		float[] p = proj.project(x, y, z);
+		int zero = (int) p[2];
 
 		for (int v = 0; v < vertexCount; ++v)
 		{
@@ -660,10 +655,6 @@ class SceneUploader
 				vertexX = i;
 			}
 
-			int d = yawCos * vertexZ - vertexX * yawSin >> 16;
-			d = pitchCos * d + vertexY * pitchSin >> 16;
-			distances[v] = d;
-
 			// move to local position
 			vertexX += x;
 			vertexY += y;
@@ -673,25 +664,10 @@ class SceneUploader
 			modelLocalY[v] = vertexY;
 			modelLocalZ[v] = vertexZ;
 
-			// adjust for camera
-			vertexX -= cameraX;
-			vertexY -= cameraY;
-			vertexZ -= cameraZ;
-
-			final float fpitchSin = pitchSin / 65536f;
-			final float fpitchCos = pitchCos / 65536f;
-
-			final float fyawSin = yawSin / 65536f;
-			final float fyawCos = yawCos / 65536f;
-
-			final float rotatedX = (vertexZ * fyawSin) + (vertexX * fyawCos);
-			final float rotatedZ = (vertexZ * fyawCos) - (vertexX * fyawSin);
-
-			final float var13 = (vertexY * fpitchCos) - (rotatedZ * fpitchSin);
-			final float var12 = (vertexY * fpitchSin) + (rotatedZ * fpitchCos);
-
-			modelCanvasX[v] = rotatedX * zoom / var12 + centerX;
-			modelCanvasY[v] = var13 * zoom / var12 + centerY;
+			p = proj.project(vertexX, vertexY, vertexZ);
+			modelCanvasX[v] = centerX + p[0] * zoom / p[2];
+			modelCanvasY[v] = centerY + p[1] * zoom / p[2];
+			distances[v] = (int) p[2] - zero;
 		}
 
 		final int diameter = model.getDiameter();
