@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Jasper Ketelaar <Jasper0781@gmail.com>
+ * Copyright (c) 2024, Christopher Brown <christoabrown@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,52 +22,26 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.mta.telekinetic;
+package net.runelite.cache;
 
-import net.runelite.api.coords.LocalPoint;
-
-public enum Maze
+public enum FontName
 {
-	MAZE_1(100, new LocalPoint(6848, 3904)),
-	MAZE_2(124, new LocalPoint(4928, 6848)),
-	MAZE_3(129, new LocalPoint(7104, 5312)),
-	MAZE_4(53, new LocalPoint(6208, 4928)),
-	MAZE_5(108, new LocalPoint(5056, 5184)),
-	MAZE_6(121, new LocalPoint(3648, 5440)),
-	MAZE_7(71, new LocalPoint(6080, 5696)),
-	MAZE_8(98, new LocalPoint(5952, 7360)),
-	MAZE_9(87, new LocalPoint(5184, 6208)),
-	MAZE_10(91, new LocalPoint(5440, 9024));
+	PLAIN_11("p11_full"),
+	PLAIN_12("p12_full"),
+	BOLD_12("b12_full"),
+	VERDANA_11("verdana_11pt_regular"),
+	VERDANA_13("verdana_13pt_regular"),
+	VERDANA_15("verdana_15pt_regular");
 
-	private final int walls;
-	private final LocalPoint start;
+	private String name;
 
-	Maze(int walls, LocalPoint start)
+	FontName(String name)
 	{
-		this.walls = walls;
-		this.start = start;
+		this.name = name;
 	}
 
-	public static Maze fromWalls(int walls)
+	public String getName()
 	{
-		for (Maze maze : values())
-		{
-			if (maze.getWalls() == walls)
-			{
-				return maze;
-			}
-		}
-
-		return null;
-	}
-
-	public int getWalls()
-	{
-		return walls;
-	}
-
-	public LocalPoint getStart()
-	{
-		return start;
+		return this.name;
 	}
 }

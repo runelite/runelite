@@ -29,6 +29,7 @@ import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Notification;
 import net.runelite.client.config.Range;
 
 @ConfigGroup("cannon")
@@ -40,9 +41,9 @@ public interface CannonConfig extends Config
 		description = "Configures whether to notify you when your cannon is low on cannonballs",
 		position = 1
 	)
-	default boolean showCannonNotifications()
+	default Notification showCannonNotifications()
 	{
-		return true;
+		return Notification.ON;
 	}
 
 	@Range(

@@ -200,9 +200,9 @@ public class HunterPlugin extends Plugin
 					myTrap.setState(HunterTrap.State.FULL);
 					myTrap.resetTimer();
 
-					if (config.maniacalMonkeyNotify() && myTrap.getObjectId() == ObjectID.MONKEY_TRAP)
+					if (myTrap.getObjectId() == ObjectID.MONKEY_TRAP)
 					{
-						notifier.notify("You've caught part of a monkey's tail.");
+						notifier.notify(config.maniacalMonkeyNotify(), "You've caught part of a monkey's tail.");
 					}
 				}
 
@@ -375,10 +375,10 @@ public class HunterPlugin extends Plugin
 				log.debug("Special trap removed from personal trap collection, {} left", traps.size());
 
 				// Case we have notifications enabled and the action was not manual, throw notification
-				if (config.maniacalMonkeyNotify() && trap.getObjectId() == ObjectID.MONKEY_TRAP &&
+				if (trap.getObjectId() == ObjectID.MONKEY_TRAP &&
 					!trap.getState().equals(HunterTrap.State.FULL) && !trap.getState().equals(HunterTrap.State.OPEN))
 				{
-					notifier.notify("The monkey escaped.");
+					notifier.notify(config.maniacalMonkeyNotify(), "The monkey escaped.");
 				}
 			}
 		}

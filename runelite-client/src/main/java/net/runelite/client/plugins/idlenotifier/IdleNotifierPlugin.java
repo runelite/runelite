@@ -52,6 +52,7 @@ import net.runelite.api.events.GraphicChanged;
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.InteractingChanged;
 import net.runelite.api.events.NpcChanged;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -103,6 +104,7 @@ public class IdleNotifierPlugin extends Plugin
 	private Instant sixHourWarningTime;
 	private boolean ready;
 	private boolean lastInteractWasCombat;
+	private static final int BUFF_BAR_NOT_DISPLAYED = -1;
 
 	@Provides
 	IdleNotifierConfig provideConfig(ConfigManager configManager)
@@ -161,6 +163,34 @@ public class IdleNotifierPlugin extends Plugin
 			case WOODCUTTING_2H_CRYSTAL:
 			case WOODCUTTING_2H_CRYSTAL_INACTIVE:
 			case WOODCUTTING_2H_3A:
+			/* Woodcutting: Ents & Canoes */
+			case WOODCUTTING_ENT_BRONZE:
+			case WOODCUTTING_ENT_IRON:
+			case WOODCUTTING_ENT_STEEL:
+			case WOODCUTTING_ENT_BLACK:
+			case WOODCUTTING_ENT_MITHRIL:
+			case WOODCUTTING_ENT_ADAMANT:
+			case WOODCUTTING_ENT_RUNE:
+			case WOODCUTTING_ENT_GILDED:
+			case WOODCUTTING_ENT_DRAGON:
+			case WOODCUTTING_ENT_DRAGON_OR:
+			case WOODCUTTING_ENT_INFERNAL:
+			case WOODCUTTING_ENT_INFERNAL_OR:
+			case WOODCUTTING_ENT_3A:
+			case WOODCUTTING_ENT_CRYSTAL:
+			case WOODCUTTING_ENT_CRYSTAL_INACTIVE:
+			case WOODCUTTING_ENT_TRAILBLAZER:
+			case WOODCUTTING_ENT_2H_BRONZE:
+			case WOODCUTTING_ENT_2H_IRON:
+			case WOODCUTTING_ENT_2H_STEEL:
+			case WOODCUTTING_ENT_2H_BLACK:
+			case WOODCUTTING_ENT_2H_MITHRIL:
+			case WOODCUTTING_ENT_2H_ADAMANT:
+			case WOODCUTTING_ENT_2H_RUNE:
+			case WOODCUTTING_ENT_2H_DRAGON:
+			case WOODCUTTING_ENT_2H_CRYSTAL:
+			case WOODCUTTING_ENT_2H_CRYSTAL_INACTIVE:
+			case WOODCUTTING_ENT_2H_3A:
 			case BLISTERWOOD_JUMP_SCARE:
 			/* Firemaking */
 			case FIREMAKING_FORESTERS_CAMPFIRE_ARCTIC_PINE:
@@ -484,9 +514,9 @@ public class IdleNotifierPlugin extends Plugin
 			return;
 		}
 
-		if (config.logoutIdle() && checkIdleLogout())
+		if (checkIdleLogout())
 		{
-			notifier.notify("You are about to log out from idling too long!");
+			notifier.notify(config.logoutIdle(), "You are about to log out from idling too long!");
 		}
 
 		if (check6hrLogout())
@@ -494,25 +524,25 @@ public class IdleNotifierPlugin extends Plugin
 			notifier.notify("You are about to log out from being online for 6 hours!");
 		}
 
-		if (config.animationIdle() && checkAnimationIdle(waitDuration, local))
+		if (checkAnimationIdle(waitDuration, local))
 		{
-			notifier.notify("You are now idle!");
+			notifier.notify(config.animationIdle(), "You are now idle!");
 		}
 
-		if (config.movementIdle() && checkMovementIdle(waitDuration, local))
+		if (checkMovementIdle(waitDuration, local))
 		{
-			notifier.notify("You have stopped moving!");
+			notifier.notify(config.movementIdle(), "You have stopped moving!");
 		}
 
-		if (config.interactionIdle() && checkInteractionIdle(waitDuration, local))
+		if (checkInteractionIdle(waitDuration, local))
 		{
 			if (lastInteractWasCombat)
 			{
-				notifier.notify("You are now out of combat!");
+				notifier.notify(config.interactionIdle(), "You are now out of combat!");
 			}
 			else
 			{
-				notifier.notify("You are now idle!");
+				notifier.notify(config.interactionIdle(), "You are now idle!");
 			}
 		}
 
@@ -544,6 +574,17 @@ public class IdleNotifierPlugin extends Plugin
 		if (checkFullSpecEnergy())
 		{
 			notifier.notify("You have restored spec energy!");
+		}
+	}
+
+	@Subscribe
+	public void onVarbitChanged(VarbitChanged event)
+	{
+		if (event.getVarpId() == VarPlayer.BUFF_BAR_WC_GROUP_BONUS && event.getValue() == BUFF_BAR_NOT_DISPLAYED)
+		{
+			resetTimers();
+			lastAnimation = WOODCUTTING_RUNE;
+			lastAnimating = Instant.now();
 		}
 	}
 

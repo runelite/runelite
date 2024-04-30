@@ -205,9 +205,9 @@ public class FishingPlugin extends Plugin
 			fishingSpotMinimapOverlay.setHidden(false);
 		}
 
-		if (message.equals("A flying fish jumps up and eats some of your minnows!") && config.flyingFishNotification())
+		if (message.equals("A flying fish jumps up and eats some of your minnows!"))
 		{
-			notifier.notify("A flying fish is eating your minnows!");
+			notifier.notify(config.flyingFishNotification(), "A flying fish is eating your minnows!");
 		}
 	}
 

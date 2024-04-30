@@ -27,6 +27,7 @@ package net.runelite.client.plugins.idlenotifier;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Notification;
 import net.runelite.client.config.Range;
 import net.runelite.client.config.Units;
 
@@ -39,9 +40,9 @@ public interface IdleNotifierConfig extends Config
 		description = "Configures if idle animation notifications are enabled",
 		position = 1
 	)
-	default boolean animationIdle()
+	default Notification animationIdle()
 	{
-		return true;
+		return Notification.ON;
 	}
 
 	@ConfigItem(
@@ -50,9 +51,9 @@ public interface IdleNotifierConfig extends Config
 		description = "Configures if idle interaction notifications are enabled e.g. combat, fishing",
 		position = 2
 	)
-	default boolean interactionIdle()
+	default Notification interactionIdle()
 	{
-		return true;
+		return Notification.ON;
 	}
 
 	@ConfigItem(
@@ -61,9 +62,9 @@ public interface IdleNotifierConfig extends Config
 		description = "Configures if idle movement notifications are enabled e.g. running, walking",
 		position = 3
 	)
-	default boolean movementIdle()
+	default Notification movementIdle()
 	{
-		return false;
+		return Notification.OFF;
 	}
 
 	@ConfigItem(
@@ -72,9 +73,9 @@ public interface IdleNotifierConfig extends Config
 		description = "Configures if the idle logout notifications are enabled",
 		position = 4
 	)
-	default boolean logoutIdle()
+	default Notification logoutIdle()
 	{
-		return true;
+		return Notification.ON;
 	}
 
 	@ConfigItem(

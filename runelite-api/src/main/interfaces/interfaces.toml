@@ -7,9 +7,11 @@ id=741
 title=2
 text=3
 
+# this is actually just a generic menu
 [adventure_log]
 id=187
 container=0
+options=3
 
 [agility_arena]
 id=5
@@ -295,6 +297,7 @@ emote_scrollbar=4
 [equipment]
 id=387
 inventory_item_container=0
+cape=16
 
 [equipment_bonuses]
 id=84
@@ -723,6 +726,7 @@ emote_icon=48
 music_icon=49
 inventory_tab=55
 prayer_tab=57
+magic_tab=58
 cmb_icon=59
 skills_icon=60
 quests_icon=61
@@ -800,6 +804,7 @@ inventory_item_container=0
 
 [spellbook]
 id=218
+parent=0
 kourend_home_teleport=4
 catherby_home_teleport=5
 lumbridge_home_teleport=7

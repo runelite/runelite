@@ -2190,6 +2190,11 @@ public class ChatCommandsPlugin extends Plugin
 
 			// Tombs of Amascut
 			case "toa":
+			case "tombs":
+			case "amascut":
+			case "warden":
+			case "wardens":
+			case "raids 3":
 				return "Tombs of Amascut";
 			case "toa 1":
 			case "toa solo":
@@ -2496,6 +2501,13 @@ public class ChatCommandsPlugin extends Plugin
 			case "vardorvis awakened":
 			case "vard awakened":
 				return "Vardorvis (awakened)";
+
+			// lunar chest variants
+			case "lunar chests":
+			case "perilous moons":
+			case "perilous moon":
+			case "moons of peril":
+				return "Lunar Chest";
 
 			default:
 				return WordUtils.capitalize(boss);
