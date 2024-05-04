@@ -45,6 +45,8 @@ import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.PluginInstantiationException;
+import net.runelite.client.plugins.PluginManager;
 
 @PluginDescriptor(
 	name = "Anti Drag",
@@ -71,6 +73,9 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 	@Inject
 	private KeyManager keyManager;
 
+	@Inject
+	private PluginManager pluginManager;
+
 	private boolean shiftHeld;
 	private boolean ctrlHeld;
 
@@ -93,6 +98,22 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 				}
 			});
 		}
+
+		// Ensure that the Key Remapping Plugin has already started
+		pluginManager.getPlugins().forEach(plugin ->
+		{
+			if (plugin.getName().equals("Key Remapping"))
+			{
+				try
+				{
+					pluginManager.startPlugin(plugin);
+				}
+				catch (PluginInstantiationException e)
+				{
+					throw new RuntimeException(e);
+				}
+			}
+		});
 
 		keyManager.registerKeyListener(this);
 	}
