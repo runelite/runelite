@@ -430,7 +430,9 @@ public final class SpriteID
 	public static final int SPELL_WATER_SURGE_DISABLED = 413;
 	public static final int SPELL_EARTH_SURGE_DISABLED = 414;
 	public static final int SPELL_FIRE_SURGE_DISABLED = 415;
-	/* Unmapped: 416, 417, 418 */
+	/* Unmapped: 416 */
+	public static final int SPELL_CIVITAS_ILLA_FORTIS_TELEPORT_DISABLED = 417;
+	/* Unmapped: 418 */
 	public static final int UNKNOWN_STANCE_ICON_1 = 419;
 	public static final int UNKNOWN_STANCE_ICON_2 = 420;
 	public static final int UNKNOWN_STANCE_ICON_3 = 421;
