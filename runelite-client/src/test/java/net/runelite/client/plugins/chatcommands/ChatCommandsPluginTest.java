@@ -1273,6 +1273,24 @@ public class ChatCommandsPluginTest
 	}
 
 	@Test
+	public void testHunterRumours()
+	{
+		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", "You have completed <col=ff3045>77</col> rumours for the Hunter Guild.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessageEvent);
+
+		verify(configManager).setRSProfileConfiguration("killcount", "hunter rumours", 77);
+	}
+
+	@Test
+	public void testHunterRumoursOver1k()
+	{
+		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", "You have completed <col=ff3045>1,032</col> rumours for the Hunter Guild.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessageEvent);
+
+		verify(configManager).setRSProfileConfiguration("killcount", "hunter rumours", 1032);
+	}
+
+	@Test
 	public void testReward()
 	{
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your reward is: <col=ff0000>1</col> x <col=ff0000>Kebab</col>.", null, 0);

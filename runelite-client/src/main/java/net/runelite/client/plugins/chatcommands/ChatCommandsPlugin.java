@@ -123,6 +123,7 @@ public class ChatCommandsPlugin extends Plugin
 	private static final Pattern HS_KC_GHC_PATTERN = Pattern.compile("You have opened the Grand Hallowed Coffin <col=ff0000>([0-9,]+)</col> times?!");
 	private static final Pattern COLLECTION_LOG_ITEM_PATTERN = Pattern.compile("New item added to your collection log: (.*)");
 	private static final Pattern GUARDIANS_OF_THE_RIFT_PATTERN = Pattern.compile("Amount of Rifts you have closed: <col=ff0000>([0-9,]+)</col>.", Pattern.CASE_INSENSITIVE);
+	private static final Pattern HUNTER_RUMOUR_KC_PATTERN = Pattern.compile("You have completed <col=ff3045>([0-9,]+)</col> rumours for the Hunter Guild.");
 
 	private static final String TOTAL_LEVEL_COMMAND_STRING = "!total";
 	private static final String PRICE_COMMAND_STRING = "!price";
@@ -585,6 +586,13 @@ public class ChatCommandsPlugin extends Plugin
 		{
 			int kc = Integer.parseInt(matcher.group(1).replaceAll(",", ""));
 			setKc("Hallowed Sepulchre", kc);
+		}
+
+		matcher = HUNTER_RUMOUR_KC_PATTERN.matcher(message);
+		if (matcher.find())
+		{
+			int kc = Integer.parseInt(matcher.group(1).replaceAll(",", ""));
+			setKc("Hunter Rumours", kc);
 		}
 
 		if (lastBossKill != null && lastBossTime != client.getTickCount())
@@ -2508,6 +2516,16 @@ public class ChatCommandsPlugin extends Plugin
 			case "perilous moon":
 			case "moons of peril":
 				return "Lunar Chest";
+
+			// hunter rumour variants
+			case "hunterrumour":
+			case "hunter contract":
+			case "hunter contracts":
+			case "hunter tasks":
+			case "hunter task":
+			case "rumours":
+			case "rumour":
+				return "Hunter Rumours";
 
 			default:
 				return WordUtils.capitalize(boss);
