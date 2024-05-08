@@ -3149,6 +3149,10 @@
     2994,
     2995
   ],
+  "agility arena ticket": [
+    2996,
+    29480
+  ],
   "energy potion": [
     3008,
     3010,
@@ -8017,6 +8021,22 @@
     12010,
     24851,
     25533
+  ],
+  "prospector helmet": [
+    12013,
+    29472
+  ],
+  "prospector jacket": [
+    12014,
+    29474
+  ],
+  "prospector legs": [
+    12015,
+    29476
+  ],
+  "prospector boots": [
+    12016,
+    29478
   ],
   "black wizard robe": [
     12449,
