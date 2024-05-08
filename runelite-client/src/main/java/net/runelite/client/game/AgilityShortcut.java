@@ -45,6 +45,8 @@ import static net.runelite.api.NullObjectID.NULL_33327;
 import static net.runelite.api.NullObjectID.NULL_33328;
 import static net.runelite.api.NullObjectID.NULL_39541;
 import static net.runelite.api.NullObjectID.NULL_39542;
+import static net.runelite.api.NullObjectID.NULL_40960;
+import static net.runelite.api.NullObjectID.NULL_40962;
 import static net.runelite.api.NullObjectID.NULL_43840;
 import static net.runelite.api.ObjectID.*;
 import net.runelite.api.TileObject;
@@ -91,7 +93,9 @@ public enum AgilityShortcut
 			// Witchaven Dungeon
 			SHORTCUT,
 			// Nature Grotto bridge
-			BRIDGE_3522),
+			BRIDGE_3522,
+			// Rocky Ledges Viyeldi cave
+			ROCKY_LEDGE, ROCKY_LEDGE_2960, ROCKY_LEDGE_2961, ROCKS_2962, ROCKS_2963, ROCKS_2964),
 	WEISS_BROKEN_FENCE(1, "Shortcut", null, /* base id */ NullObjectID.NULL_46815)
 	{
 		@Override
