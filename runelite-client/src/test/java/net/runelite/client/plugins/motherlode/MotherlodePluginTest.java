@@ -36,9 +36,7 @@ import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
-import net.runelite.api.Player;
 import net.runelite.api.Varbits;
-import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.api.events.VarbitChanged;
@@ -102,10 +100,6 @@ public class MotherlodePluginTest
 
 		when(client.getGameState()).thenReturn(GameState.LOGGED_IN);
 		when(client.getMapRegions()).thenReturn(new int[]{14679});
-
-		Player local = mock(Player.class);
-		when(local.getLocalLocation()).thenReturn(new LocalPoint(0, 0));
-		when(client.getLocalPlayer()).thenReturn(local);
 	}
 
 	@Test
@@ -166,10 +160,10 @@ public class MotherlodePluginTest
 		verify(eventBus).post(captor.capture());
 		PluginLootReceived event = captor.getValue();
 		assertEquals(Arrays.asList(
-			new ItemStack(ItemID.ADAMANTITE_ORE, 1, new LocalPoint(0, 0)),
-			new ItemStack(ItemID.RUNITE_ORE, 1, new LocalPoint(0, 0)),
-			new ItemStack(ItemID.COAL, 2, new LocalPoint(0, 0)),
-			new ItemStack(ItemID.GOLDEN_NUGGET, 4, new LocalPoint(0, 0))
+			new ItemStack(ItemID.ADAMANTITE_ORE, 1),
+			new ItemStack(ItemID.RUNITE_ORE, 1),
+			new ItemStack(ItemID.COAL, 2),
+			new ItemStack(ItemID.GOLDEN_NUGGET, 4)
 		), event.getItems());
 	}
 

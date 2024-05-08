@@ -399,7 +399,7 @@ public class MotherlodePlugin extends Plugin
 			.name("Motherlode Mine")
 			.type(LootRecordType.EVENT)
 			.items(delta.entrySet().stream()
-				.map(e -> new ItemStack(e.getElement(), e.getCount(), client.getLocalPlayer().getLocalLocation()))
+				.map(e -> new ItemStack(e.getElement(), e.getCount()))
 				.collect(Collectors.toList()))
 			.build();
 		if (config.trackOresFound())

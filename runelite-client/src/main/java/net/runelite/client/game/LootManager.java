@@ -179,7 +179,7 @@ public class LootManager
 		final Tile tile = itemSpawned.getTile();
 		final LocalPoint location = tile.getLocalLocation();
 		final int packed = location.getSceneX() << 8 | location.getSceneY();
-		itemSpawns.put(packed, new ItemStack(item.getId(), item.getQuantity(), location));
+		itemSpawns.put(packed, new ItemStack(item.getId(), item.getQuantity()));
 		log.debug("Item spawn {} ({}) location {}", item.getId(), item.getQuantity(), location);
 	}
 
@@ -205,7 +205,7 @@ public class LootManager
 			return;
 		}
 
-		itemSpawns.put(packed, new ItemStack(item.getId(), diff, location));
+		itemSpawns.put(packed, new ItemStack(item.getId(), diff));
 	}
 
 	@Subscribe

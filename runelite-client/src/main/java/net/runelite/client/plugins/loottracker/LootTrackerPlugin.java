@@ -395,7 +395,7 @@ public class LootTrackerPlugin extends Plugin
 			}
 			if (quantity > 0)
 			{
-				list.add(new ItemStack(item.getId(), item.getQuantity() + quantity, item.getLocation()));
+				list.add(new ItemStack(item.getId(), item.getQuantity() + quantity));
 			}
 			else
 			{
@@ -744,7 +744,7 @@ public class LootTrackerPlugin extends Plugin
 
 			// convert to item stack
 			var items = diff.entrySet().stream()
-				.map(e -> new ItemStack(e.getElement(), e.getCount(), client.getLocalPlayer().getLocalLocation())) // made up location
+				.map(e -> new ItemStack(e.getElement(), e.getCount()))
 				.collect(Collectors.toList());
 			addLoot(groundSnapshotName, groundSnapshotCombatLevel, LootRecordType.NPC, null, items);
 
@@ -927,7 +927,7 @@ public class LootTrackerPlugin extends Plugin
 		// Convert container items to array of ItemStack
 		final Collection<ItemStack> items = Arrays.stream(container.getItems())
 			.filter(item -> item.getId() > 0)
-			.map(item -> new ItemStack(item.getId(), item.getQuantity(), client.getLocalPlayer().getLocalLocation()))
+			.map(item -> new ItemStack(item.getId(), item.getQuantity()))
 			.collect(Collectors.toList());
 
 		if (config.showRaidsLootValue() && (event.equals(THEATRE_OF_BLOOD) || event.equals(CHAMBERS_OF_XERIC) || event.equals(TOMBS_OF_AMASCUT)))
@@ -1160,7 +1160,7 @@ public class LootTrackerPlugin extends Plugin
 		final Multiset<Integer> diffr = Multisets.difference(inventorySnapshot, currentInventory);
 
 		final List<ItemStack> items = diff.entrySet().stream()
-			.map(e -> new ItemStack(e.getElement(), e.getCount(), client.getLocalPlayer().getLocalLocation()))
+			.map(e -> new ItemStack(e.getElement(), e.getCount()))
 			.collect(Collectors.toList());
 
 		log.debug("Inv change: {} Ground items: {}", items, groundItems);
@@ -1426,7 +1426,7 @@ public class LootTrackerPlugin extends Plugin
 			Matcher matcher = HERBIBOAR_HERB_SACK_PATTERN.matcher(messageNode.getValue());
 			if (matcher.matches())
 			{
-				herbs.add(new ItemStack(itemManager.search(matcher.group(1)).get(0).getId(), 1, client.getLocalPlayer().getLocalLocation()));
+				herbs.add(new ItemStack(itemManager.search(matcher.group(1)).get(0).getId(), 1));
 			}
 		}
 
