@@ -89,7 +89,9 @@ public enum AgilityShortcut
 			// Trollweiss Mountain Cave
 			ROCKY_HANDHOLDS, ROCKY_HANDHOLDS_19847,
 			// Witchaven Dungeon
-			SHORTCUT),
+			SHORTCUT,
+			// Nature Grotto bridge
+			BRIDGE_3522),
 	WEISS_BROKEN_FENCE(1, "Shortcut", null, /* base id */ NullObjectID.NULL_46815)
 	{
 		@Override
