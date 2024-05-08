@@ -131,9 +131,8 @@ public class Keybind
 			{
 				return this.keyCode == keyCode;
 			}
-			else
+			else if (mf != null)
 			{
-				assert mf != null;
 				return this.keyCode == keyCode && (this.modifiers & modifiers) == this.modifiers && ((mf & this.modifiers) == mf);
 			}
 		}

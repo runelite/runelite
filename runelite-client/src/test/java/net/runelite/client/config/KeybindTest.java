@@ -31,6 +31,7 @@ import static java.awt.event.KeyEvent.KEY_PRESSED;
 import static java.awt.event.KeyEvent.KEY_RELEASED;
 import static java.awt.event.KeyEvent.VK_CONTROL;
 import static java.awt.event.KeyEvent.VK_SHIFT;
+import static java.awt.event.KeyEvent.VK_UNDEFINED;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -51,6 +52,13 @@ public class KeybindTest
 		Assert.assertFalse(keybind.matches(createKeyEvent(KEY_PRESSED, SHIFT_DOWN_MASK | CTRL_DOWN_MASK, VK_SHIFT)));
 		Assert.assertTrue(keybind.matches(createKeyEvent(KEY_RELEASED, SHIFT_DOWN_MASK, VK_CONTROL)));
 		Assert.assertFalse(keybind.matches(createKeyEvent(KEY_RELEASED, 0, VK_SHIFT)));
+	}
+
+	@Test
+	public void testUnknownKey()
+	{
+		Keybind keybind = new Keybind(VK_UNDEFINED, CTRL_DOWN_MASK);
+		keybind.matches(createKeyEvent(KEY_RELEASED, 0, VK_UNDEFINED));
 	}
 
 	private KeyEvent createKeyEvent(int id, int modifiersEx, int extendedKeyCode)
