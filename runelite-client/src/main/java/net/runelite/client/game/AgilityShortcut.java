@@ -112,6 +112,7 @@ public enum AgilityShortcut
 	CAIRN_ISLE_CLIMBING_ROCKS(1, "Rocks", null, CLIMBING_ROCKS),
 	KARAMJA_GLIDER_LOG(1, "Log Balance", new WorldPoint(2906, 3050, 0), A_WOODEN_LOG),
 	FALADOR_CRUMBLING_WALL(5, "Crumbling Wall", new WorldPoint(2936, 3357, 0), CRUMBLING_WALL_24222),
+	YANILLE_CLIMBING_ROCKS(5, "Climbing rocks", null, CLIMBING_ROCKS_23543),
 	RIVER_LUM_GRAPPLE_WEST(8, "Grapple Broken Raft", new WorldPoint(3245, 3179, 0), BROKEN_RAFT),
 	RIVER_LUM_GRAPPLE_EAST(8, "Grapple Broken Raft", new WorldPoint(3258, 3179, 0), BROKEN_RAFT),
 	CORSAIR_COVE_ROCKS(10, "Rocks", new WorldPoint(2545, 2871, 0), ROCKS_31757),
