@@ -48,6 +48,7 @@ import static net.runelite.api.NullObjectID.NULL_39542;
 import static net.runelite.api.NullObjectID.NULL_40960;
 import static net.runelite.api.NullObjectID.NULL_40962;
 import static net.runelite.api.NullObjectID.NULL_43840;
+import static net.runelite.api.NullObjectID.NULL_47325;
 import static net.runelite.api.ObjectID.*;
 import net.runelite.api.TileObject;
 import net.runelite.api.coords.WorldPoint;
@@ -207,7 +208,7 @@ public enum AgilityShortcut
 	WILDERNESS_GWD_CLIMB_WEST(60, "Rocks", new WorldPoint(2928, 3760, 0), ROCKY_HANDHOLDS_26400, ROCKY_HANDHOLDS_26401, ROCKY_HANDHOLDS_26402, ROCKY_HANDHOLDS_26404, ROCKY_HANDHOLDS_26405, ROCKY_HANDHOLDS_26406),
 	MOS_LEHARMLESS_STEPPING_STONE(60, "Stepping Stone", new WorldPoint(3710, 2970, 0), STEPPING_STONE_19042),
 	WINTERTODT_GAP(60, "Gap", new WorldPoint(1629, 4023, 0), GAP_29326),
-	UNGAEL_ICE(60, "Ice Chunks", null, NULL_25337, NULL_29868, NULL_29869, NULL_29870, ICE_CHUNKS_31822, NULL_31823, ICE_CHUNKS_31990),
+	UNGAEL_ICE(60, "Ice Chunks", new WorldPoint(2262, 4044, 0), NULL_25337, NULL_29868, NULL_29869, NULL_29870, ICE_CHUNKS_31822, NULL_31823, ICE_CHUNKS_31990, ICE_CHUNKS_47324, NULL_47325),
 	GWD_LITTLE_CRACK(60, "Little Crack", new WorldPoint(2900, 3712, 0), LITTLE_CRACK),
 	SLAYER_TOWER_MEDIUM_CHAIN_FIRST(61, "Spikey Chain (Floor 1)", new WorldPoint(3421, 3550, 0), SPIKEY_CHAIN),
 	SLAYER_TOWER_MEDIUM_CHAIN_SECOND(61, "Spikey Chain (Floor 2)", new WorldPoint(3420, 3551, 0), SPIKEY_CHAIN_16538),
