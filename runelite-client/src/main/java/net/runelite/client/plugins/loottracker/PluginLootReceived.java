@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2024, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,21 +25,33 @@
 package net.runelite.client.plugins.loottracker;
 
 import java.util.Collection;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import javax.annotation.Nullable;
+import lombok.Builder;
+import lombok.NonNull;
+import lombok.Value;
 import net.runelite.client.game.ItemStack;
+import net.runelite.client.plugins.Plugin;
 import net.runelite.http.api.loottracker.LootRecordType;
 
 /**
- * Event published by the loot tracker when new loot is received
+ * Event for plugins to publish new loot to the loot tracker
  */
-@Data
-@AllArgsConstructor
-public class LootReceived
+@Builder
+@Value
+public class PluginLootReceived
 {
-	private String name;
-	private int combatLevel;
-	private LootRecordType type;
-	private Collection<ItemStack> items;
-	private int amount;
+	@NonNull
+	Plugin source;
+	@NonNull
+	String name;
+	@Builder.Default
+	int combatLevel = -1;
+	@NonNull
+	LootRecordType type;
+	@NonNull
+	Collection<ItemStack> items;
+	@Builder.Default
+	int amount = 1;
+	@Nullable
+	Object metadata;
 }
