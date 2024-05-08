@@ -108,11 +108,6 @@
 			<version>1.2</version>
 		</dependency>
 		<dependency>
-			<groupId>net.runelite.archive-patcher</groupId>
-			<artifactId>archive-patcher-applier</artifactId>
-			<version>1.2</version>
-		</dependency>
-		<dependency>
 			<groupId>net.java.dev.jna</groupId>
 			<artifactId>jna</artifactId>
 			<version>5.9.0</version>
@@ -246,7 +241,7 @@
 		</dependency>
 		<dependency>
 			<groupId>net.runelite</groupId>
-			<artifactId>client-patch</artifactId>
+			<artifactId>injected-client</artifactId>
 			<version>${project.version}</version>
 			<scope>runtime</scope>
 		</dependency>
