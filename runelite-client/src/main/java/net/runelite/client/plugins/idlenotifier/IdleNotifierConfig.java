@@ -91,21 +91,10 @@ public interface IdleNotifierConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "customizableHitpointsNotification",
-		name = "Customize Hitpoints Notification",
-		description = "Configures if hitpoints notifications are customizable",
-		position = 6
-	)
-	default Notification getCustomizableHitpointsNotification()
-	{
-		return Notification.OFF;
-	}
-
-	@ConfigItem(
 		keyName = "hitpoints",
 		name = "Hitpoints Threshold",
 		description = "The amount of hitpoints to send a notification at. A value of 0 will disable notification.",
-		position = 7
+		position = 6
 	)
 	default int getHitpointsThreshold()
 	{
@@ -113,12 +102,12 @@ public interface IdleNotifierConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "customizablePrayerNotification",
-		name = "Customize Prayer Notification",
-		description = "Configures if prayer notifications are customizable",
-		position = 8
+		keyName = "customizableHitpointsNotification",
+		name = "Customize Hitpoints Notification",
+		description = "Configures if hitpoints notifications are customizable",
+		position = 7
 	)
-	default Notification getCustomizablePrayerNotification()
+	default Notification getCustomizableHitpointsNotification()
 	{
 		return Notification.OFF;
 	}
@@ -127,7 +116,7 @@ public interface IdleNotifierConfig extends Config
 		keyName = "prayer",
 		name = "Prayer Threshold",
 		description = "The amount of prayer points to send a notification at. A value of 0 will disable notification.",
-		position = 9
+		position = 8
 	)
 	default int getPrayerThreshold()
 	{
@@ -135,12 +124,12 @@ public interface IdleNotifierConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "customizableLowEnergyNotification",
-		name = "Customize Low Energy Notification",
-		description = "Configures if low energy notifications are customizable",
-		position = 10
+		keyName = "customizablePrayerNotification",
+		name = "Customize Prayer Notification",
+		description = "Configures if prayer notifications are customizable",
+		position = 9
 	)
-	default Notification getCustomizableLowEnergyNotification()
+	default Notification getCustomizablePrayerNotification()
 	{
 		return Notification.OFF;
 	}
@@ -149,7 +138,7 @@ public interface IdleNotifierConfig extends Config
 		keyName = "lowEnergy",
 		name = "Low Energy Threshold",
 		description = "The amount of energy points remaining to send a notification at. A value of 100 will disable notification.",
-		position = 11
+		position = 10
 	)
 	@Units(Units.PERCENT)
 	@Range(max = 100)
@@ -159,12 +148,12 @@ public interface IdleNotifierConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "customizableHighEnergyNotification",
-		name = "Customize High Energy Notification",
-		description = "Configures if high energy notifications are customizable",
-		position = 12
+		keyName = "customizableLowEnergyNotification",
+		name = "Customize Low Energy Notification",
+		description = "Configures if low energy notifications are customizable",
+		position = 11
 	)
-	default Notification getCustomizableHighEnergyNotification()
+	default Notification getCustomizableLowEnergyNotification()
 	{
 		return Notification.OFF;
 	}
@@ -173,7 +162,7 @@ public interface IdleNotifierConfig extends Config
 		keyName = "highEnergy",
 		name = "High Energy Threshold",
 		description = "The amount of energy points reached to send a notification. A value of 0 will disable notification.",
-		position = 13
+		position = 12
 	)
 	@Units(Units.PERCENT)
 	@Range(max = 100)
@@ -183,12 +172,12 @@ public interface IdleNotifierConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "customizableOxygenNotification",
-		name = "Customize Oxygen Notification",
-		description = "Configures if oxygen notifications are customizable",
-		position = 14
+		keyName = "customizableHighEnergyNotification",
+		name = "Customize High Energy Notification",
+		description = "Configures if high energy notifications are customizable",
+		position = 13
 	)
-	default Notification getCustomizableOxygenNotification()
+	default Notification getCustomizableHighEnergyNotification()
 	{
 		return Notification.OFF;
 	}
@@ -196,7 +185,7 @@ public interface IdleNotifierConfig extends Config
 	@ConfigItem(
 		keyName = "oxygen",
 		name = "Oxygen Threshold",
-		position = 15,
+		position = 14,
 		description = "The amount of remaining oxygen to send a notification at. A value of 0 will disable notification."
 	)
 	@Units(Units.PERCENT)
@@ -206,12 +195,12 @@ public interface IdleNotifierConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "customizableSpecNotification",
-		name = "Customize Spec Notification",
-		description = "Configures if spec notifications are customizable",
-		position = 16
+		keyName = "customizableOxygenNotification",
+		name = "Customize Oxygen Notification",
+		description = "Configures if oxygen notifications are customizable",
+		position = 15
 	)
-	default Notification getCustomizableSpecNotification()
+	default Notification getCustomizableOxygenNotification()
 	{
 		return Notification.OFF;
 	}
@@ -219,12 +208,23 @@ public interface IdleNotifierConfig extends Config
 	@ConfigItem(
 		keyName = "spec",
 		name = "Spec Threshold",
-		position = 17,
+		position = 16,
 		description = "The amount of special attack energy reached to send a notification at. A value of 0 will disable notification."
 	)
 	@Units(Units.PERCENT)
 	default int getSpecEnergyThreshold()
 	{
 		return 0;
+	}
+
+	@ConfigItem(
+		keyName = "customizableSpecNotification",
+		name = "Customize Spec Notification",
+		description = "Configures if spec notifications are customizable",
+		position = 17
+	)
+	default Notification getCustomizableSpecNotification()
+	{
+		return Notification.OFF;
 	}
 }
