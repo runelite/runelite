@@ -33,6 +33,7 @@ import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.Notification;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.npcoverlay.HighlightedNpc;
@@ -136,7 +137,7 @@ public class ImplingsPlugin extends Plugin
 		{
 			if (showImplingType(impling.getImplingType()) == ImplingsConfig.ImplingMode.NOTIFY)
 			{
-				notifier.notify(impling.getImplingType().getName() + " impling is in the area");
+				notify(impling.getImplingType());
 			}
 		}
 	}
@@ -211,5 +212,57 @@ public class ImplingsPlugin extends Plugin
 			default:
 				throw new IllegalArgumentException();
 		}
+	}
+
+	private void notify(final ImplingType implingType)
+	{
+		Notification customNotification;
+		switch (implingType)
+		{
+			case BABY:
+				customNotification = config.getCustomizableBabyImplingNotification();
+				break;
+			case YOUNG:
+				customNotification = config.getCustomizableYoungImplingNotification();
+				break;
+			case GOURMET:
+				customNotification = config.getCustomizableGourmetImplingNotification();
+				break;
+			case EARTH:
+				customNotification = config.getCustomizableEarthImplingNotification();
+				break;
+			case ESSENCE:
+				customNotification = config.getCustomizableEssenceImplingNotification();
+				break;
+			case ECLECTIC:
+				customNotification = config.getCustomizableEclecticImplingNotification();
+				break;
+			case NATURE:
+				customNotification = config.getCustomizableNatureImplingNotification();
+				break;
+			case MAGPIE:
+				customNotification = config.getCustomizableMagpieImplingNotification();
+				break;
+			case NINJA:
+				customNotification = config.getCustomizableNinjaImplingNotification();
+				break;
+			case CRYSTAL:
+				customNotification = config.getCustomizableCrystalImplingNotification();
+				break;
+			case DRAGON:
+				customNotification = config.getCustomizableDragonImplingNotification();
+				break;
+			case LUCKY:
+				customNotification = config.getCustomizableLuckyImplingNotification();
+				break;
+			default:
+				throw new IllegalArgumentException();
+		}
+		if (customNotification.isEnabled())
+		{
+			notifier.notify(customNotification, implingType.getName() + " impling is in the area");
+			return;
+		}
+		notifier.notify(implingType.getName() + " impling is in the area");
 	}
 }

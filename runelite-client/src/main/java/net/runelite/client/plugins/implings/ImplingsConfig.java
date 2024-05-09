@@ -30,6 +30,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
+import net.runelite.client.config.Notification;
 
 @ConfigGroup(ImplingsConfig.GROUP)
 public interface ImplingsConfig extends Config
@@ -77,6 +78,18 @@ public interface ImplingsConfig extends Config
 
 	@ConfigItem(
 		position = 3,
+		keyName = "customizableBabyImplingNotification",
+		name = "Customize Baby impling notification",
+		description = "Configures whether or not the notification is customizable",
+		section = implingSection
+	)
+	default Notification getCustomizableBabyImplingNotification()
+	{
+		return Notification.OFF;
+	}
+
+	@ConfigItem(
+		position = 4,
 		keyName = "showyoung",
 		name = "Young implings",
 		description = "Configures whether or not Young impling tags are displayed",
@@ -89,7 +102,7 @@ public interface ImplingsConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-		position = 4,
+		position = 5,
 		keyName = "youngColor",
 		name = "Young impling color",
 		description = "Text color for Young implings",
@@ -101,7 +114,19 @@ public interface ImplingsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 5,
+		position = 6,
+		keyName = "customizableYoungImplingNotification",
+		name = "Customize Young impling notification",
+		description = "Configures whether or not the notification is customizable",
+		section = implingSection
+	)
+	default Notification getCustomizableYoungImplingNotification()
+	{
+		return Notification.OFF;
+	}
+
+	@ConfigItem(
+		position = 7,
 		keyName = "showgourmet",
 		name = "Gourmet implings",
 		description = "Configures whether or not Gourmet impling tags are displayed",
@@ -114,7 +139,7 @@ public interface ImplingsConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-		position = 6,
+		position = 8,
 		keyName = "gourmetColor",
 		name = "Gourmet impling color",
 		description = "Text color for Gourmet implings",
@@ -126,7 +151,19 @@ public interface ImplingsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 7,
+		position = 9,
+		keyName = "customizableGourmetImplingNotification",
+		name = "Customize Gourmet impling notification",
+		description = "Configures whether or not the notification is customizable",
+		section = implingSection
+	)
+	default Notification getCustomizableGourmetImplingNotification()
+	{
+		return Notification.OFF;
+	}
+
+	@ConfigItem(
+		position = 10,
 		keyName = "showearth",
 		name = "Earth implings",
 		description = "Configures whether or not Earth impling tags are displayed",
@@ -139,7 +176,7 @@ public interface ImplingsConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-		position = 8,
+		position = 11,
 		keyName = "earthColor",
 		name = "Earth impling color",
 		description = "Text color for Earth implings",
@@ -151,7 +188,19 @@ public interface ImplingsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 9,
+		position = 12,
+		keyName = "customizableEarthImplingNotification",
+		name = "Customize Earth impling notification",
+		description = "Configures whether or not the notification is customizable",
+		section = implingSection
+	)
+	default Notification getCustomizableEarthImplingNotification()
+	{
+		return Notification.OFF;
+	}
+
+	@ConfigItem(
+		position = 13,
 		keyName = "showessence",
 		name = "Essence implings",
 		description = "Configures whether or not Essence impling tags are displayed",
@@ -164,7 +213,7 @@ public interface ImplingsConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-		position = 10,
+		position = 14,
 		keyName = "essenceColor",
 		name = "Essence impling color",
 		description = "Text color for Essence implings",
@@ -176,7 +225,19 @@ public interface ImplingsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 11,
+		position = 15,
+		keyName = "customizableEssenceImplingNotification",
+		name = "Customize Essence impling notification",
+		description = "Configures whether or not the notification is customizable",
+		section = implingSection
+	)
+	default Notification getCustomizableEssenceImplingNotification()
+	{
+		return Notification.OFF;
+	}
+
+	@ConfigItem(
+		position = 16,
 		keyName = "showeclectic",
 		name = "Eclectic implings",
 		description = "Configures whether or not Eclectic impling tags are displayed",
@@ -189,7 +250,7 @@ public interface ImplingsConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-		position = 12,
+		position = 17,
 		keyName = "eclecticColor",
 		name = "Eclectic impling color",
 		description = "Text color for Eclectic implings",
@@ -201,7 +262,19 @@ public interface ImplingsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 13,
+		position = 18,
+		keyName = "customizableEclecticImplingNotification",
+		name = "Customize Eclectic impling notification",
+		description = "Configures whether or not the notification is customizable",
+		section = implingSection
+	)
+	default Notification getCustomizableEclecticImplingNotification()
+	{
+		return Notification.OFF;
+	}
+
+	@ConfigItem(
+		position = 19,
 		keyName = "shownature",
 		name = "Nature implings",
 		description = "Configures whether or not Nature impling tags are displayed",
@@ -214,7 +287,7 @@ public interface ImplingsConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-		position = 14,
+		position = 20,
 		keyName = "natureColor",
 		name = "Nature impling color",
 		description = "Text color for Nature implings",
@@ -226,7 +299,19 @@ public interface ImplingsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 15,
+		position = 21,
+		keyName = "customizableNatureImplingNotification",
+		name = "Customize Nature impling notification",
+		description = "Configures whether or not the notification is customizable",
+		section = implingSection
+	)
+	default Notification getCustomizableNatureImplingNotification()
+	{
+		return Notification.OFF;
+	}
+
+	@ConfigItem(
+		position = 22,
 		keyName = "showmagpie",
 		name = "Magpie implings",
 		description = "Configures whether or not Magpie impling tags are displayed",
@@ -239,7 +324,7 @@ public interface ImplingsConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-		position = 16,
+		position = 23,
 		keyName = "magpieColor",
 		name = "Magpie impling color",
 		description = "Text color for Magpie implings",
@@ -251,7 +336,19 @@ public interface ImplingsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 17,
+		position = 24,
+		keyName = "customizableMagpieImplingNotification",
+		name = "Customize Magpie impling notification",
+		description = "Configures whether or not the notification is customizable",
+		section = implingSection
+	)
+	default Notification getCustomizableMagpieImplingNotification()
+	{
+		return Notification.OFF;
+	}
+
+	@ConfigItem(
+		position = 25,
 		keyName = "showninja",
 		name = "Ninja implings",
 		description = "Configures whether or not Ninja impling tags are displayed",
@@ -264,7 +361,7 @@ public interface ImplingsConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-		position = 18,
+		position = 26,
 		keyName = "ninjaColor",
 		name = "Ninja impling color",
 		description = "Text color for Ninja implings",
@@ -276,7 +373,19 @@ public interface ImplingsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 19,
+		position = 27,
+		keyName = "customizableNinjaImplingNotification",
+		name = "Customize Ninja impling notification",
+		description = "Configures whether or not the notification is customizable",
+		section = implingSection
+	)
+	default Notification getCustomizableNinjaImplingNotification()
+	{
+		return Notification.OFF;
+	}
+
+	@ConfigItem(
+		position = 28,
 		keyName = "showCrystal",
 		name = "Crystal implings",
 		description = "Configures whether or not Crystal implings are displayed",
@@ -289,7 +398,7 @@ public interface ImplingsConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-		position = 20,
+		position = 29,
 		keyName = "crystalColor",
 		name = "Crystal impling color",
 		description = "Text color for Crystal implings",
@@ -301,7 +410,19 @@ public interface ImplingsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 21,
+		position = 30,
+		keyName = "customizableCrystalImplingNotification",
+		name = "Customize Crystal impling notification",
+		description = "Configures whether or not the notification is customizable",
+		section = implingSection
+	)
+	default Notification getCustomizableCrystalImplingNotification()
+	{
+		return Notification.OFF;
+	}
+
+	@ConfigItem(
+		position = 31,
 		keyName = "showdragon",
 		name = "Dragon implings",
 		description = "Configures whether or not Dragon impling tags are displayed",
@@ -314,7 +435,7 @@ public interface ImplingsConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-		position = 22,
+		position = 32,
 		keyName = "dragonColor",
 		name = "Dragon impling color",
 		description = "Text color for Dragon implings",
@@ -326,7 +447,19 @@ public interface ImplingsConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 23,
+		position = 33,
+		keyName = "customizableDragonImplingNotification",
+		name = "Customize Dragon impling notification",
+		description = "Configures whether or not the notification is customizable",
+		section = implingSection
+	)
+	default Notification getCustomizableDragonImplingNotification()
+	{
+		return Notification.OFF;
+	}
+
+	@ConfigItem(
+		position = 34,
 		keyName = "showlucky",
 		name = "Lucky implings",
 		description = "Configures whether or not Lucky impling tags are displayed",
@@ -339,7 +472,7 @@ public interface ImplingsConfig extends Config
 
 	@Alpha
 	@ConfigItem(
-		position = 24,
+		position = 35,
 		keyName = "luckyColor",
 		name = "Lucky impling color",
 		description = "Text color for Lucky implings",
@@ -348,6 +481,18 @@ public interface ImplingsConfig extends Config
 	default Color getLuckyColor()
 	{
 		return new Color(102, 7, 101);
+	}
+
+	@ConfigItem(
+		position = 36,
+		keyName = "customizableLuckyImplingNotification",
+		name = "Customize Lucky impling notification",
+		description = "Configures whether or not the notification is customizable",
+		section = implingSection
+	)
+	default Notification getCustomizableLuckyImplingNotification()
+	{
+		return Notification.OFF;
 	}
 
 	@ConfigItem(
