@@ -27,6 +27,7 @@ package net.runelite.client.plugins.devtools;
 import java.awt.Color;
 import javax.swing.JButton;
 import lombok.Getter;
+import net.runelite.client.ui.ColorScheme;
 
 public class DevToolsButton extends JButton
 {
@@ -50,7 +51,7 @@ public class DevToolsButton extends JButton
 		}
 		else
 		{
-			setBackground(null);
+			setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		}
 	}
 

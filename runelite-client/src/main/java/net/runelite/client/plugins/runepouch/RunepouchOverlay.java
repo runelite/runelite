@@ -82,7 +82,8 @@ class RunepouchOverlay extends WidgetItemOverlay
 		ImageUtil.loadImageResource(RunepouchOverlay.class, "lava_rune.png"),
 		ImageUtil.loadImageResource(RunepouchOverlay.class, "steam_rune.png"),
 		ImageUtil.loadImageResource(RunepouchOverlay.class, "smoke_rune.png"),
-		ImageUtil.loadImageResource(RunepouchOverlay.class, "wrath_rune.png")
+		ImageUtil.loadImageResource(RunepouchOverlay.class, "wrath_rune.png"),
+		ImageUtil.loadImageResource(RunepouchOverlay.class, "sunfire_rune.png")
 	};
 
 	private final Client client;

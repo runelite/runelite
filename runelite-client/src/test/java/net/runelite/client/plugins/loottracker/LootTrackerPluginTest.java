@@ -184,7 +184,7 @@ public class LootTrackerPluginTest
 		lootTrackerPlugin.onChatMessage(chatMessage);
 
 		List<ItemStack> items = Collections.singletonList(
-			new ItemStack(ItemID.COINS_995, 1, null)
+			new ItemStack(ItemID.COINS_995, 1)
 		);
 		sendInvChange(InventoryID.INVENTORY, items);
 
@@ -198,7 +198,7 @@ public class LootTrackerPluginTest
 		lootTrackerPlugin.onChatMessage(chatMessage);
 
 		List<ItemStack> items = Collections.singletonList(
-			new ItemStack(ItemID.COINS_995, 1, null)
+			new ItemStack(ItemID.COINS_995, 1)
 		);
 		sendInvChange(InventoryID.BARROWS_REWARD, items);
 
@@ -241,8 +241,8 @@ public class LootTrackerPluginTest
 			lootTrackerPlugin.onChatMessage(chatMessage);
 
 			verify(lootTrackerPlugin).addLoot("Herbiboar", -1, LootRecordType.EVENT, 42, Arrays.asList(
-				new ItemStack(id, 1, null),
-				new ItemStack(id, 1, null)
+				new ItemStack(id, 1),
+				new ItemStack(id, 1)
 			));
 		}
 	}
@@ -320,7 +320,7 @@ public class LootTrackerPluginTest
 	{
 		when(client.getBoostedSkillLevel(Skill.HUNTER)).thenReturn(42);
 		List<ItemStack> items = Collections.singletonList(
-			new ItemStack(ItemID.BIRD_NEST, 42, null)
+			new ItemStack(ItemID.BIRD_NEST, 42)
 		);
 
 		// No bird nests
@@ -384,7 +384,7 @@ public class LootTrackerPluginTest
 		lootTrackerPluginSpy.onItemContainerChanged(new ItemContainerChanged(InventoryID.INVENTORY.getId(), itemContainer));
 
 		verify(lootTrackerPluginSpy).addLoot("Grubby Chest", -1, LootRecordType.EVENT, null, Arrays.asList(
-			new ItemStack(ItemID.SHARK, 42, null)
+			new ItemStack(ItemID.SHARK, 42)
 		));
 	}
 
@@ -416,7 +416,7 @@ public class LootTrackerPluginTest
 		lootTrackerPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.INVENTORY.getId(), itemContainer));
 
 		verify(lootTrackerPlugin).addLoot("Reward pool (Tempoross)", -1, LootRecordType.EVENT, 69, Arrays.asList(
-			new ItemStack(ItemID.RAW_TUNA, 30, null)
+			new ItemStack(ItemID.RAW_TUNA, 30)
 		));
 
 		chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", "You found some loot: <col=ef1020>Tome of water (empty)</col>", "", 0);
@@ -431,7 +431,7 @@ public class LootTrackerPluginTest
 		lootTrackerPlugin.onItemContainerChanged(new ItemContainerChanged(InventoryID.INVENTORY.getId(), itemContainer));
 
 		verify(lootTrackerPlugin).addLoot("Reward pool (Tempoross)", -1, LootRecordType.EVENT, 69, Arrays.asList(
-			new ItemStack(ItemID.TOME_OF_WATER_EMPTY, 1, null)
+			new ItemStack(ItemID.TOME_OF_WATER_EMPTY, 1)
 		));
 	}
 
@@ -460,7 +460,7 @@ public class LootTrackerPluginTest
 		spyPlugin.onWidgetLoaded(widgetLoaded);
 
 		verify(spyPlugin).addLoot("Theatre of Blood", -1, LootRecordType.EVENT, null, Collections.singletonList(
-			new ItemStack(ItemID.SCYTHE_OF_VITUR_UNCHARGED, 1, null)
+			new ItemStack(ItemID.SCYTHE_OF_VITUR_UNCHARGED, 1)
 		));
 	}
 
@@ -489,7 +489,7 @@ public class LootTrackerPluginTest
 		spyPlugin.onWidgetLoaded(widgetLoaded);
 
 		verify(spyPlugin).addLoot("Theatre of Blood", -1, LootRecordType.EVENT, null, Collections.singletonList(
-			new ItemStack(ItemID.SCYTHE_OF_VITUR_UNCHARGED, 1, null)
+			new ItemStack(ItemID.SCYTHE_OF_VITUR_UNCHARGED, 1)
 		));
 	}
 
@@ -518,7 +518,7 @@ public class LootTrackerPluginTest
 		spyPlugin.onWidgetLoaded(widgetLoaded);
 
 		verify(spyPlugin).addLoot("Theatre of Blood", -1, LootRecordType.EVENT, null, Collections.singletonList(
-			new ItemStack(ItemID.SCYTHE_OF_VITUR_UNCHARGED, 1, null)
+			new ItemStack(ItemID.SCYTHE_OF_VITUR_UNCHARGED, 1)
 		));
 
 		when(itemContainer.getItems()).thenReturn(new Item[]{
@@ -529,7 +529,7 @@ public class LootTrackerPluginTest
 		spyPlugin.onWidgetLoaded(widgetLoaded);
 
 		verify(spyPlugin).addLoot("Theatre of Blood", -1, LootRecordType.EVENT, null, Collections.singletonList(
-			new ItemStack(ItemID.SANGUINESTI_STAFF_UNCHARGED, 1, null)
+			new ItemStack(ItemID.SANGUINESTI_STAFF_UNCHARGED, 1)
 		));
 	}
 }

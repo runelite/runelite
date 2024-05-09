@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2024, DapperMickie <rustenhovenmick@gmail.com>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,13 +22,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.grounditems;
+package net.runelite.client.plugins.skillcalculator.skills;
 
-enum LootType
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@AllArgsConstructor
+@Getter(onMethod_ = @Override)
+public enum SmithingBonus implements SkillBonus
 {
-	UNKNOWN,
-	TABLE,
-	DROPPED,
-	PVP,
-	PVM;
+	GOLDSMITH_GAUNTLETS("Goldsmith Gauntlets", 2.5f),
+	;
+
+	private final String name;
+	private final float value;
 }

@@ -36,7 +36,6 @@ import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.NPC;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
@@ -55,7 +54,6 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 
 @EqualsAndHashCode(callSuper = false, exclude = { "hotColdSolver", "location" })
 @Getter
-@Slf4j
 public class HotColdClue extends ClueScroll implements LocationClueScroll, LocationsClueScroll, NpcClueScroll
 {
 	private static final HotColdClue BEGINNER_CLUE = new HotColdClue("Buried beneath the ground, who knows where it's found. Lucky for you, A man called Reldo may have a clue.",

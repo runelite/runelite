@@ -111,6 +111,10 @@ public class KeyRemappingPlugin extends Plugin
 		return configManager.getConfig(KeyRemappingConfig.class);
 	}
 
+	/**
+	 * Check if something other than the chatbox is accepting key input.
+	 * @return
+	 */
 	boolean chatboxFocused()
 	{
 		Widget chatboxParent = client.getWidget(ComponentID.CHATBOX_PARENT);
@@ -119,10 +123,22 @@ public class KeyRemappingPlugin extends Plugin
 			return false;
 		}
 
-		// the search box on the world map can be focused, and chat input goes there, even
-		// though the chatbox still has its key listener.
+		// If the search box on the world map is open and focused, ~keypress_permit blocks the keypress
 		Widget worldMapSearch = client.getWidget(ComponentID.WORLD_MAP_SEARCH);
-		return worldMapSearch == null || client.getVarcIntValue(VarClientInt.WORLD_MAP_SEARCH_FOCUSED) != 1;
+		if (worldMapSearch != null && client.getVarcIntValue(VarClientInt.WORLD_MAP_SEARCH_FOCUSED) == 1)
+		{
+			return false;
+		}
+
+		// The report interface blocks input due to 162:54 being hidden, however player/npc dialog and
+		// options do this too, and so we can't disable remapping just due to 162:54 being hidden.
+		Widget report = client.getWidget(ComponentID.REPORT_ABUSE_PARENT);
+		if (report != null)
+		{
+			return false;
+		}
+
+		return true;
 	}
 
 	/**

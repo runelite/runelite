@@ -113,8 +113,7 @@ public class ImageCapture
 	public BufferedImage addClientFrame(Image image)
 	{
 		// create a new image, paint the client ui to it, and then draw the screenshot to that
-		final AffineTransform transform = OSType.getOSType() == OSType.MacOS ? new AffineTransform() :
-			clientUi.getGraphicsConfiguration().getDefaultTransform();
+		final AffineTransform transform = clientUi.getGraphicsConfiguration().getDefaultTransform();
 
 		// on Windows the insets are the window border
 		Insets insets = clientUi.getInsets();

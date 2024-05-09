@@ -106,20 +106,20 @@ public interface MotherlodeConfig extends Config
 
 	@ConfigItem(
 		keyName = "showGemsFound",
-		name = "Show gems found",
-		description = "Shows gems found during current mining session"
+		name = "Track gems found",
+		description = "Tracks gems found from mining in the loot tracker"
 	)
-	default boolean showGemsFound()
+	default boolean trackGemsFound()
 	{
 		return true;
 	}
 
 	@ConfigItem(
 		keyName = "showOresFound",
-		name = "Show ores found",
-		description = "Shows the ores found during current mining session"
+		name = "Track ores found",
+		description = "Tracks ores found from mining in the loot tracker"
 	)
-	default boolean showOresFound()
+	default boolean trackOresFound()
 	{
 		return true;
 	}
@@ -132,15 +132,5 @@ public interface MotherlodeConfig extends Config
 	default boolean showBrokenStruts()
 	{
 		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showLootIcons",
-		name = "Show ore icons",
-		description = "Display collected ores and gems as item images instead of text"
-	)
-	default boolean showLootIcons()
-	{
-		return false;
 	}
 }

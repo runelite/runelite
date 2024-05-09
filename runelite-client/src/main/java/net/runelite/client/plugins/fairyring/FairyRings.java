@@ -33,6 +33,7 @@ public enum FairyRings
 	// A
 	AIQ("Mudskipper Point"),
 	AIR("(Island) South-east of Ardougne"),
+	AJP("Avium Savannah"),
 	AJQ("Cave south of Dorgesh-Kaan"),
 	AJR("Slayer cave"),
 	AJS("Penguins near Miscellania"),
@@ -64,8 +65,8 @@ public enum FairyRings
 	// C
 	CIP("(Island) Miscellania"),
 	CIQ("North-west of Yanille"),
-	CIS("North of the Arceuus Library"),
 	CIR("North-east of the Farming Guild", "mount karuulm konar"),
+	CIS("North of the Arceuus Library"),
 	CJR("Sinclair Mansion", "falo bard"),
 	CKP("Cosmic entity's plane"),
 	CKR("South of Tai Bwo Wannai Village"),
@@ -76,8 +77,8 @@ public enum FairyRings
 
 	// D
 	DIP("(Sire Boss) Abyssal Nexus"),
-	DIR("Gorak's Plane"),
 	DIQ("Player-owned house", "poh home"),
+	DIR("Gorak's Plane"),
 	DIS("Wizards' Tower"),
 	DJP("Tower of Life"),
 	DJR("Chasm of Fire"),

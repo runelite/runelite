@@ -35,8 +35,10 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -71,11 +73,15 @@ import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.game.ItemStack;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.loottracker.PluginLootReceived;
 import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.http.api.loottracker.LootRecordType;
 
 @PluginDescriptor(
 	name = "Motherlode Mine",
@@ -102,19 +108,13 @@ public class MotherlodePlugin extends Plugin
 	private OverlayManager overlayManager;
 
 	@Inject
-	private MotherlodeOverlay overlay;
+	private MiningOverlay miningOverlay;
 
 	@Inject
 	private MotherlodeSceneOverlay sceneOverlay;
 
 	@Inject
 	private MotherlodeSackOverlay motherlodeSackOverlay;
-
-	@Inject
-	private MotherlodeGemOverlay motherlodeGemOverlay;
-
-	@Inject
-	private MotherlodeOreOverlay motherlodeOreOverlay;
 
 	@Inject
 	private MotherlodeConfig config;
@@ -124,6 +124,9 @@ public class MotherlodePlugin extends Plugin
 
 	@Inject
 	private ClientThread clientThread;
+
+	@Inject
+	private EventBus eventBus;
 
 	@Getter(AccessLevel.PACKAGE)
 	private boolean inMlm;
@@ -156,10 +159,8 @@ public class MotherlodePlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
-		overlayManager.add(overlay);
+		overlayManager.add(miningOverlay);
 		overlayManager.add(sceneOverlay);
-		overlayManager.add(motherlodeGemOverlay);
-		overlayManager.add(motherlodeOreOverlay);
 		overlayManager.add(motherlodeSackOverlay);
 
 		inMlm = checkInMlm();
@@ -173,10 +174,8 @@ public class MotherlodePlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
-		overlayManager.remove(overlay);
+		overlayManager.remove(miningOverlay);
 		overlayManager.remove(sceneOverlay);
-		overlayManager.remove(motherlodeGemOverlay);
-		overlayManager.remove(motherlodeOreOverlay);
 		overlayManager.remove(motherlodeSackOverlay);
 		veins.clear();
 		rocks.clear();
@@ -238,21 +237,44 @@ public class MotherlodePlugin extends Plugin
 				break;
 
 			case "You just found a Diamond!":
-				session.incrementGemFound(ItemID.UNCUT_DIAMOND);
+				if (config.trackGemsFound())
+				{
+					broadcastLootItem(ItemID.UNCUT_DIAMOND);
+				}
 				break;
 
 			case "You just found a Ruby!":
-				session.incrementGemFound(ItemID.UNCUT_RUBY);
+				if (config.trackGemsFound())
+				{
+					broadcastLootItem(ItemID.UNCUT_RUBY);
+				}
 				break;
 
 			case "You just found an Emerald!":
-				session.incrementGemFound(ItemID.UNCUT_EMERALD);
+				if (config.trackGemsFound())
+				{
+					broadcastLootItem(ItemID.UNCUT_EMERALD);
+				}
 				break;
 
 			case "You just found a Sapphire!":
-				session.incrementGemFound(ItemID.UNCUT_SAPPHIRE);
+				if (config.trackGemsFound())
+				{
+					broadcastLootItem(ItemID.UNCUT_SAPPHIRE);
+				}
 				break;
 		}
+	}
+
+	private void broadcastLootItem(int itemId)
+	{
+		var lootEvent = PluginLootReceived.builder()
+			.source(this)
+			.name("Motherlode Mine")
+			.type(LootRecordType.EVENT)
+			.items(Collections.singleton(new ItemStack(itemId, 1, client.getLocalPlayer().getLocalLocation())))
+			.build();
+		eventBus.post(lootEvent);
 	}
 
 	@Schedule(
@@ -357,7 +379,7 @@ public class MotherlodePlugin extends Plugin
 	{
 		final ItemContainer container = event.getItemContainer();
 
-		if (!inMlm || !shouldUpdateOres || inventorySnapshot == null || container != client.getItemContainer(InventoryID.INVENTORY))
+		if (!inMlm || !shouldUpdateOres || inventorySnapshot == null || container.getId() != InventoryID.INVENTORY.getId())
 		{
 			return;
 		}
@@ -371,8 +393,20 @@ public class MotherlodePlugin extends Plugin
 		// Take the difference
 		Multiset<Integer> delta = Multisets.difference(current, inventorySnapshot);
 
-		// Update the session
-		delta.forEachEntry(session::updateOreFound);
+		// Advertise the loot
+		var lootEvent = PluginLootReceived.builder()
+			.source(this)
+			.name("Motherlode Mine")
+			.type(LootRecordType.EVENT)
+			.items(delta.entrySet().stream()
+				.map(e -> new ItemStack(e.getElement(), e.getCount()))
+				.collect(Collectors.toList()))
+			.build();
+		if (config.trackOresFound())
+		{
+			eventBus.post(lootEvent);
+		}
+
 		inventorySnapshot = null;
 		shouldUpdateOres = false;
 	}

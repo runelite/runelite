@@ -229,7 +229,8 @@ class OpponentInfoOverlay extends OverlayPanel
 		if (settingEnabled && opponent instanceof NPC)
 		{
 			int opponentId = client.getVarpValue(VarPlayer.HP_HUD_NPC_ID);
-			return opponentId != -1 && opponentId == ((NPC) opponent).getId();
+			NPC npc = (NPC) opponent;
+			return opponentId != -1 && npc.getComposition() != null && opponentId == npc.getComposition().getId();
 		}
 		return false;
 	}

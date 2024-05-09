@@ -29,6 +29,7 @@ import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Notification;
 
 @ConfigGroup("specialcounter")
 public interface SpecialCounterConfig extends Config
@@ -39,9 +40,9 @@ public interface SpecialCounterConfig extends Config
 		name = "Threshold Notifications",
 		description = "Sends a notification when your special attack counter exceeds the threshold"
 	)
-	default boolean thresholdNotification()
+	default Notification thresholdNotification()
 	{
-		return false;
+		return Notification.OFF;
 	}
 
 	@ConfigItem(

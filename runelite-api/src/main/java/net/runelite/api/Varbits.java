@@ -886,4 +886,7 @@ public final class Varbits
 	 * 1 = active
 	 */
 	public static final int SPELLBOOK_SWAP = 3617;
+
+	public static final int SPELLBOOK = 4070;
+	public static final int SPELLBOOK_SUBMENU = 9730;
 }

@@ -25,26 +25,74 @@
 package net.runelite.client.plugins.skillcalculator;
 
 import net.runelite.client.plugins.skillcalculator.skills.SkillAction;
+import net.runelite.client.plugins.skillcalculator.skills.SkillBonus;
 import static org.junit.Assert.fail;
 import org.junit.Test;
 
 public class CalculatorTypeTest
 {
+
 	@Test
-	public void skillActionsInLevelOrder()
+	public void skillActionsInOrder()
 	{
 		for (final CalculatorType calculatorType : CalculatorType.values())
 		{
-			int level = 1;
+			final String skillName = calculatorType.getSkill().getName();
+			int prevLevel = 0;
+			float prevXP = 0.0f;
+			String prevName = "";
 
 			for (final SkillAction skillAction : calculatorType.getSkillActions())
 			{
-				if (skillAction.getLevel() < level)
+				int currentLevel = skillAction.getLevel();
+				float currentXP = skillAction.getXp();
+				String currentName = skillAction.toString();
+
+				if (currentLevel < prevLevel)
 				{
-					fail("Skill action " + skillAction + " is out of order for " + calculatorType.getSkill().getName());
+					fail(skillName + " skill action " + skillAction + " is not ordered by level.");
+				}
+				else if (currentLevel == prevLevel)
+				{
+					if (currentXP < prevXP)
+					{
+						fail(skillName + " skill action " + skillAction + " is not ordered by xp among level " + currentLevel + " actions.");
+					}
+					else if (currentXP == prevXP && currentName.compareTo(prevName) < 0)
+					{
+						fail(skillName + " skill action " + skillAction + " is not ordered alphabetically among " + currentXP + "xp skills at level " + currentLevel + '.');
+					}
 				}
 
-				level = skillAction.getLevel();
+				prevLevel = currentLevel;
+				prevXP = currentXP;
+				prevName = currentName;
+			}
+		}
+	}
+
+	@Test
+	public void testSkillBonusesMutuallyStack()
+	{
+		for (final CalculatorType calculatorType : CalculatorType.values())
+		{
+			final SkillBonus[] skillBonuses = calculatorType.getSkillBonuses();
+			if (skillBonuses == null)
+			{
+				continue;
+			}
+
+			final String skillName = calculatorType.getSkill().getName();
+
+			for (final SkillBonus skillBonus : skillBonuses)
+			{
+				for (final SkillBonus stackedSkillBonus : skillBonus.getCanBeStackedWith())
+				{
+					if (!stackedSkillBonus.getCanBeStackedWith().contains(skillBonus))
+					{
+						fail(skillName + " skill bonus " + skillBonus + " is not mutually stacked with skill bonus " + stackedSkillBonus);
+					}
+				}
 			}
 		}
 	}

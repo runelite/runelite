@@ -430,7 +430,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.npc("Man")
 			.npcRegion(10288)
 			.objectId(ObjectID.CLOSED_CHEST_375)
-			.solution("Search the chest upstairs in the house north of Yanille Wizard's Guild. Kill a man for the key.")
+			.solution("Search the chest upstairs in the house north of Yanille Wizards' Guild. Kill a man for the key.")
 			.build(),
 		CrypticClue.builder()
 			.text("Probably filled with wizards socks.")
@@ -439,7 +439,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.npcRegion(12337)
 			.npcRegion(12437)
 			.objectId(ObjectID.DRAWERS_350)
-			.solution("Search the drawers in the basement of the Wizard's Tower south of Draynor Village. Kill one of the Wizards for the key. Fairy ring DIS.")
+			.solution("Search the drawers in the basement of the Wizards' Tower south of Draynor Village. Kill one of the Wizards for the key. Fairy ring DIS.")
 			.build(),
 		CrypticClue.builder()
 			.text("Even the seers say this clue goes right over their heads.")
@@ -855,7 +855,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("The magic of 4 colours, an early experience you could learn. The large beast caged up top, rages, as his demised kin's loot now returns.")
 			.location(new WorldPoint(3103, 3163, 2))
 			.npc("Wizard Mizgog")
-			.solution("Speak to Wizard Mizgog at the top of the Wizard's Tower south of Draynor.")
+			.solution("Speak to Wizard Mizgog at the top of the Wizards' Tower south of Draynor.")
 			.build(),
 		CrypticClue.builder()
 			.text("Aggie I see. Lonely and southern I feel. I am neither inside nor outside the house, yet no home would be complete without me. The treasure lies beneath me!")
@@ -1690,6 +1690,24 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("The Big High War God left his mark on this place.")
 			.location(new WorldPoint(3572, 4372, 0))
 			.solution("Dig anywhere in Yu'biusk. Fairy ring BLQ.")
+			.build(),
+		CrypticClue.builder()
+			.text("Search the Bookshelf with a skull on it inside the Burrow.")
+			.location(new WorldPoint(1569, 9460, 0))
+			.objectId(ObjectID.BOOKSHELF_51736)
+			.solution("Search the bookshelf in the basement of the Hunter Guild.")
+			.build(),
+		CrypticClue.builder()
+			.text("Are you somewhat entertained?")
+			.location(new WorldPoint(1802, 9504, 0))
+			.npc("Gloria")
+			.solution("Speak to Gloria inside the Fortis Colosseum")
+			.build(),
+		CrypticClue.builder()
+			.text("With drinks and dwarves I make my way, upon my head a glass will stay.")
+			.location(new WorldPoint(1432, 9584, 0))
+			.npc("Funbo")
+			.solution("Speak to Funbo inside Cam Torum's pub.")
 			.build()
 	);
 

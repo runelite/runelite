@@ -55,7 +55,7 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.components.LineComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
 
-class MotherlodeOverlay extends OverlayPanel
+class MiningOverlay extends OverlayPanel
 {
 	private static final Set<Integer> MINING_ANIMATION_IDS = ImmutableSet.of(
 		MINING_MOTHERLODE_BRONZE, MINING_MOTHERLODE_IRON, MINING_MOTHERLODE_STEEL,
@@ -72,8 +72,10 @@ class MotherlodeOverlay extends OverlayPanel
 	private final MotherlodeSession motherlodeSession;
 	private final MotherlodeConfig config;
 
+	private Instant last = Instant.MIN;
+
 	@Inject
-	MotherlodeOverlay(Client client, MotherlodePlugin plugin, MotherlodeSession motherlodeSession, MotherlodeConfig config)
+	MiningOverlay(Client client, MotherlodePlugin plugin, MotherlodeSession motherlodeSession, MotherlodeConfig config)
 	{
 		super(plugin);
 		setPosition(OverlayPosition.TOP_LEFT);
@@ -109,7 +111,14 @@ class MotherlodeOverlay extends OverlayPanel
 
 		if (config.showMiningState())
 		{
+			Instant now = Instant.now();
 			if (MINING_ANIMATION_IDS.contains(client.getLocalPlayer().getAnimation()))
+			{
+				last = now;
+			}
+
+			// Anim regularly goes to -1 when mining, add a small delay after the last anim
+			if (last.isAfter(now.minusMillis(1500)))
 			{
 				panelComponent.getChildren().add(TitleComponent.builder()
 					.text("Mining")
@@ -130,10 +139,13 @@ class MotherlodeOverlay extends OverlayPanel
 			.right(Integer.toString(session.getTotalMined()))
 			.build());
 
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left("Pay-dirt/hr:")
-			.right(session.getRecentMined() > 2 ? Integer.toString(session.getPerHour()) : "")
-			.build());
+		if (session.getRecentMined() > 2)
+		{
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left("Pay-dirt/hr:")
+				.right(Integer.toString(session.getPerHour()))
+				.build());
+		}
 
 		return super.render(graphics);
 	}

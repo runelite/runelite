@@ -29,7 +29,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.10.24-SNAPSHOT</version>
+		<version>1.10.29-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>client</artifactId>
@@ -140,7 +140,7 @@
 		<dependency>
 			<groupId>net.runelite</groupId>
 			<artifactId>rlawt</artifactId>
-			<version>1.4</version>
+			<version>1.5</version>
 		</dependency>
 
 		<!-- lwjgl core -->

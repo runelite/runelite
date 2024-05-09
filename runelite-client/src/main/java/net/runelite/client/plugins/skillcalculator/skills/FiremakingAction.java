@@ -32,8 +32,8 @@ import net.runelite.api.ItemID;
 @Getter
 public enum FiremakingAction implements ItemSkillAction
 {
-	LOGS(ItemID.LOGS, 1, 40),
 	ACHEY_TREE_LOGS(ItemID.ACHEY_TREE_LOGS, 1, 40),
+	LOGS(ItemID.LOGS, 1, 40),
 	OAK_LOGS(ItemID.OAK_LOGS, 15, 60),
 	WILLOW_LOGS(ItemID.WILLOW_LOGS, 30, 90),
 	TEAK_LOGS(ItemID.TEAK_LOGS, 35, 105),

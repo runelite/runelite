@@ -285,7 +285,7 @@ public class NpcAggroAreaPlugin extends Plugin
 
 		for (String pattern : npcNamePatterns)
 		{
-			if (npc.getCombatLevel() != 0 && WildcardMatcher.matches(pattern, npcName))
+			if (WildcardMatcher.matches(pattern, npcName))
 			{
 				return true;
 			}
@@ -340,10 +340,7 @@ public class NpcAggroAreaPlugin extends Plugin
 
 		if (active && notifyOnce && Instant.now().isAfter(endTime))
 		{
-			if (config.notifyExpire())
-			{
-				notifier.notify("NPC aggression has expired!");
-			}
+			notifier.notify(config.notifyExpire(), "NPC aggression has expired!");
 
 			notifyOnce = false;
 		}

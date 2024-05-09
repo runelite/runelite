@@ -56,7 +56,7 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 	public static final String CHAMPIONS_GUILD = "West of the Champions' Guild";
 	public static final String VARROCK_EAST_MINE = "Outside Varrock East Mine";
 	public static final String STANDING_STONES = "At the standing stones north of Falador";
-	public static final String WIZARDS_TOWER_DIS = "On the south side of the Wizard's Tower (DIS)";
+	public static final String WIZARDS_TOWER_DIS = "On the south side of the Wizards' Tower (DIS)";
 	public static final String SOUTH_OF_DRAYNOR_BANK = "South of Draynor Village Bank";
 
 	static final List<MapClue> CLUES = ImmutableList.of(
