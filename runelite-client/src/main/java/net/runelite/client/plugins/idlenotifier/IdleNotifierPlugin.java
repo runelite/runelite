@@ -548,32 +548,74 @@ public class IdleNotifierPlugin extends Plugin
 
 		if (checkLowHitpoints())
 		{
-			notifier.notify("You have low hitpoints!");
+			if (config.getCustomizableHitpointsNotification().isEnabled())
+			{
+				notifier.notify(config.getCustomizableHitpointsNotification(), "You have low hitpoints!");
+			}
+			else
+			{
+				notifier.notify("You have low hitpoints!");
+			}
 		}
 
 		if (checkLowPrayer())
 		{
-			notifier.notify("You have low prayer!");
+			if (config.getCustomizablePrayerNotification().isEnabled())
+			{
+				notifier.notify(config.getCustomizablePrayerNotification(), "You have low prayer!");
+			}
+			else
+			{
+				notifier.notify("You have low prayer!");
+			}
 		}
 
 		if (checkLowEnergy())
 		{
-			notifier.notify("You have low run energy!");
+			if (config.getCustomizableLowEnergyNotification().isEnabled())
+			{
+				notifier.notify(config.getCustomizableLowEnergyNotification(), "You have low run energy!");
+			}
+			else
+			{
+				notifier.notify("You have low run energy!");
+			}
 		}
 
 		if (checkHighEnergy())
 		{
-			notifier.notify("You have restored run energy!");
+			if (config.getCustomizableHighEnergyNotification().isEnabled())
+			{
+				notifier.notify(config.getCustomizableHighEnergyNotification(), "You have restored run energy!");
+			}
+			else
+			{
+				notifier.notify("You have restored run energy!");
+			}
 		}
 
 		if (checkLowOxygen())
 		{
-			notifier.notify("You have low oxygen!");
+			if (config.getCustomizableOxygenNotification().isEnabled())
+			{
+				notifier.notify(config.getCustomizableOxygenNotification(), "You have low oxygen!");
+			}
+			else
+			{
+				notifier.notify("You have low oxygen!");
+			}
 		}
 
 		if (checkFullSpecEnergy())
 		{
-			notifier.notify("You have restored spec energy!");
+			if (config.getCustomizableSpecNotification().isEnabled())
+			{
+				notifier.notify(config.getCustomizableSpecNotification(), "You have restored spec energy!");
+			}
+			else
+			{
+				notifier.notify("You have restored spec energy!");
+			}
 		}
 	}
 
