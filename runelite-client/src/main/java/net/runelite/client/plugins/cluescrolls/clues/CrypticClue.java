@@ -1108,7 +1108,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("If you're feeling brave, dig beneath the dragon's eye.")
 			.location(new WorldPoint(2410, 4714, 0))
-			.solution("Dig below the mossy rock under the Viyeldi caves (Legend's Quest). Items needed: Pickaxe, unpowered orb, lockpick, spade, any charge orb spell, and either 79 agility or an axe and machete.")
+			.solution("Dig below the mossy rock under the Viyeldi caves (Legend's Quest). Items needed: Pickaxe, unpowered orb, lockpick, spade, any charge orb spell, and either 79 agility or an axe and machete. With 96 agility no items are needed.")
 			.build(),
 		CrypticClue.builder()
 			.text("Search the tents in the Imperial Guard camp in Burthorpe for some boxes.")
