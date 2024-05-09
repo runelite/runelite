@@ -39,7 +39,9 @@ import net.runelite.api.HitsplatID;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.Player;
+import net.runelite.api.Skill;
 import net.runelite.api.VarPlayer;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GameStateChanged;
@@ -128,8 +130,12 @@ public class IdleNotifierPluginTest
 		when(config.animationIdle()).thenReturn(Notification.ON);
 		when(config.interactionIdle()).thenReturn(Notification.ON);
 		when(config.getIdleNotificationDelay()).thenReturn(0);
+		when(config.getCustomizableHitpointsNotification()).thenReturn(Notification.ON);
 		when(config.getHitpointsThreshold()).thenReturn(42);
+		when(config.getCustomizablePrayerNotification()).thenReturn(Notification.ON);
 		when(config.getPrayerThreshold()).thenReturn(42);
+		when(config.getCustomizableLowEnergyNotification()).thenReturn(Notification.ON);
+		when(config.getCustomizableSpecNotification()).thenReturn(Notification.ON);
 
 		// Mock client
 		when(client.getGameState()).thenReturn(GameState.LOGGED_IN);
@@ -224,6 +230,7 @@ public class IdleNotifierPluginTest
 	@Test
 	public void checkCombatLogout()
 	{
+
 		plugin.onInteractingChanged(new InteractingChanged(player, monster));
 		when(player.getInteracting()).thenReturn(mock(Actor.class));
 		plugin.onGameTick(new GameTick());
@@ -304,13 +311,247 @@ public class IdleNotifierPluginTest
 	{
 		when(config.getSpecEnergyThreshold()).thenReturn(50);
 
+		// Reset values
+		resetSpecRegenRelatedValuesAndTick();
+
+		// Turn ON customizable notification
+		when(config.getCustomizableSpecNotification()).thenReturn(Notification.ON);
+
+		// Tick to 50% spec
+		when(client.getVarpValue(eq(VarPlayer.SPECIAL_ATTACK_PERCENT))).thenReturn(500); // 50%
+		plugin.onGameTick(new GameTick());
+
+		// Test that notify uses the custom notification settings
+		verify(notifier).notify(Notification.ON, "You have restored spec energy!");
+
+		// Reset values
+		resetSpecRegenRelatedValuesAndTick();
+
+		// Turn OFF customizable notification
+		when(config.getCustomizableSpecNotification()).thenReturn(Notification.OFF);
+
+		// Tick to 50% spec
+		when(client.getVarpValue(eq(VarPlayer.SPECIAL_ATTACK_PERCENT))).thenReturn(500);
+		plugin.onGameTick(new GameTick());
+
+		// Verify that notify only uses text
+		verify(notifier).notify(eq("You have restored spec energy!"));
+	}
+
+	private void resetSpecRegenRelatedValuesAndTick()
+	{
 		when(client.getVarpValue(eq(VarPlayer.SPECIAL_ATTACK_PERCENT))).thenReturn(400); // 40%
 		plugin.onGameTick(new GameTick()); // once to set lastSpecEnergy to 400
 		verify(notifier, never()).notify(any());
+	}
 
-		when(client.getVarpValue(eq(VarPlayer.SPECIAL_ATTACK_PERCENT))).thenReturn(500); // 50%
+	@Test
+	public void testHitpointsThreshold()
+	{
+		// Reset values
+		resetHpThresholdRelatedValuesAndTick();
+
+		// Turn ON customizable notification
+		when(config.getCustomizableHitpointsNotification()).thenReturn(Notification.ON);
+
+		// Tick to 30 hp
+		when(client.getBoostedSkillLevel(Skill.HITPOINTS)).thenReturn(30);
 		plugin.onGameTick(new GameTick());
-		verify(notifier).notify(eq("You have restored spec energy!"));
+
+		// Test that notify uses the custom notification settings
+		verify(notifier).notify(Notification.ON, "You have low hitpoints!");
+
+		// Reset values
+		resetHpThresholdRelatedValuesAndTick();
+
+		// Turn OFF customizable notification
+		when(config.getCustomizableHitpointsNotification()).thenReturn(Notification.OFF);
+
+		// Tick to 30 hp
+		when(client.getBoostedSkillLevel(Skill.HITPOINTS)).thenReturn(30);
+		plugin.onGameTick(new GameTick());
+
+		// Verify that notify only uses text
+		verify(notifier).notify(eq("You have low hitpoints!"));
+	}
+
+	private void resetHpThresholdRelatedValuesAndTick()
+	{
+		when(client.getRealSkillLevel(Skill.HITPOINTS)).thenReturn(99);
+		when(client.getBoostedSkillLevel(Skill.HITPOINTS)).thenReturn(31);
+		when(client.getVarbitValue(Varbits.NMZ_ABSORPTION)).thenReturn(0);
+		when(config.getHitpointsThreshold()).thenReturn(30);
+
+		// Make sure the notifier doesn't notify
+		plugin.onGameTick(new GameTick());
+		verify(notifier, never()).notify(any());
+	}
+
+	@Test
+	public void testPrayerThreshold()
+	{
+		when(config.getPrayerThreshold()).thenReturn(30);
+
+		// Reset values
+		resetPrayerThresholdRelatedValuesAndTick();
+
+		// Turn ON customizable notification
+		when(config.getCustomizablePrayerNotification()).thenReturn(Notification.ON);
+
+		// Tick to 30 prayer
+		when(client.getBoostedSkillLevel(Skill.PRAYER)).thenReturn(30);
+		plugin.onGameTick(new GameTick());
+
+		// Test that notify uses the custom notification settings
+		verify(notifier).notify(Notification.ON, "You have low prayer!");
+
+		// Reset values
+		resetPrayerThresholdRelatedValuesAndTick();
+
+		// Turn OFF customizable notification
+		when(config.getCustomizablePrayerNotification()).thenReturn(Notification.OFF);
+
+		// Tick to 30 prayer
+		when(client.getBoostedSkillLevel(Skill.PRAYER)).thenReturn(30);
+		plugin.onGameTick(new GameTick());
+
+		// Verify that notify only uses text
+		verify(notifier).notify(eq("You have low prayer!"));
+	}
+
+	private void resetPrayerThresholdRelatedValuesAndTick()
+	{
+		when(client.getRealSkillLevel(Skill.PRAYER)).thenReturn(99);
+		when(client.getBoostedSkillLevel(Skill.PRAYER)).thenReturn(31);
+
+		// Make sure the notifier doesn't notify
+		plugin.onGameTick(new GameTick());
+		verify(notifier, never()).notify(any());
+	}
+
+	@Test
+	public void testLowEnergyThreshold()
+	{
+		when(config.getLowEnergyThreshold()).thenReturn(30);
+		when(config.getHighEnergyThreshold()).thenReturn(0);
+
+		// Reset values
+		resetLowEnergyThresholdRelatedValuesAndTick();
+
+		// Turn ON customizable notification
+		when(config.getCustomizableLowEnergyNotification()).thenReturn(Notification.ON);
+
+		// Tick to 30% energy
+		when(client.getEnergy()).thenReturn(30 * 100);
+		plugin.onGameTick(new GameTick());
+
+		// Test that notify uses the custom notification settings
+		verify(notifier).notify(Notification.ON, "You have low run energy!");
+
+		// Reset values
+		resetLowEnergyThresholdRelatedValuesAndTick();
+
+		// Turn OFF customizable notification
+		when(config.getCustomizableLowEnergyNotification()).thenReturn(Notification.OFF);
+
+		// Tick to 30% energy
+		when(client.getEnergy()).thenReturn(30 * 100);
+		plugin.onGameTick(new GameTick());
+
+		// Verify that notify only uses text
+		verify(notifier).notify(eq("You have low run energy!"));
+	}
+
+	private void resetLowEnergyThresholdRelatedValuesAndTick()
+	{
+		when(client.getEnergy()).thenReturn(31 * 100); // 31%
+
+		// Make sure the notifier doesn't notify
+		plugin.onGameTick(new GameTick());
+		verify(notifier, never()).notify(any());
+	}
+
+	@Test
+	public void testHighEnergyThreshold()
+	{
+		when(config.getHighEnergyThreshold()).thenReturn(31);
+		when(config.getLowEnergyThreshold()).thenReturn(100);
+
+		// Reset values
+		resetHighEnergyThresholdRelatedValuesAndTick();
+
+		// Turn ON customizable notification
+		when(config.getCustomizableHighEnergyNotification()).thenReturn(Notification.ON);
+
+		// Tick to 31% energy
+		when(client.getEnergy()).thenReturn(31 * 100);
+		plugin.onGameTick(new GameTick());
+
+		// Test that notify uses the custom notification settings
+		verify(notifier).notify(Notification.ON, "You have restored run energy!");
+
+		// Reset values
+		resetHighEnergyThresholdRelatedValuesAndTick();
+
+		// Turn OFF customizable notification
+		when(config.getCustomizableHighEnergyNotification()).thenReturn(Notification.OFF);
+
+		// Tick to 31% energy
+		when(client.getEnergy()).thenReturn(31 * 100);
+		plugin.onGameTick(new GameTick());
+
+		// Verify that notify only uses text
+		verify(notifier).notify(eq("You have restored run energy!"));
+	}
+
+	private void resetHighEnergyThresholdRelatedValuesAndTick()
+	{
+		when(client.getEnergy()).thenReturn(30 * 100); // 30%
+
+		// Make sure the notifier doesn't notify
+		plugin.onGameTick(new GameTick());
+		verify(notifier, never()).notify(any());
+	}
+
+	@Test
+	public void testOxygenThreshold()
+	{
+		when(config.getOxygenThreshold()).thenReturn(30);
+
+		// Reset values
+		resetOxygenThresholdRelatedValuesAndTick();
+
+		// Turn ON customizable notification
+		when(config.getCustomizableOxygenNotification()).thenReturn(Notification.ON);
+
+		// Tick to 30% oxygen
+		when(client.getVarbitValue(Varbits.OXYGEN_LEVEL)).thenReturn(30 * 10);
+		plugin.onGameTick(new GameTick());
+
+		// Test that notify uses the custom notification settings
+		verify(notifier).notify(Notification.ON, "You have low oxygen!");
+
+		// Reset values
+		resetOxygenThresholdRelatedValuesAndTick();
+
+		// Turn OFF customizable notification
+		when(config.getCustomizableOxygenNotification()).thenReturn(Notification.OFF);
+
+		// Tick to 30% oxygen
+		when(client.getVarbitValue(Varbits.OXYGEN_LEVEL)).thenReturn(30 * 10);
+		plugin.onGameTick(new GameTick());
+
+		// Verify that notify only uses text
+		verify(notifier).notify(eq("You have low oxygen!"));
+	}
+
+	private void resetOxygenThresholdRelatedValuesAndTick()
+	{
+		when(client.getVarbitValue(Varbits.OXYGEN_LEVEL)).thenReturn(31 * 10); // 31%
+
+		// Make sure the notifier doesn't notify
+		plugin.onGameTick(new GameTick());
+		verify(notifier, never()).notify(any());
 	}
 
 	@Test
