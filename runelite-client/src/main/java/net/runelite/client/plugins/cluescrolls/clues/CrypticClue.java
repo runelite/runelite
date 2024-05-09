@@ -1070,7 +1070,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("A ring of water surrounds 4 powerful rings, dig above the ladder located there.")
 			.location(new WorldPoint(1910, 4367, 0))
-			.solution("Dig by the ladder leading to the Dagannoth Kings room in the Waterbirth Island Dungeon. Bring a pet rock and rune thrownaxe.")
+			.solution("Dig by the ladder leading to the Dagannoth Kings room in the Waterbirth Island Dungeon. Bring a pet rock and rune thrownaxe OR have 85 agility.")
 			.build(),
 		CrypticClue.builder()
 			.text("This place sure is a mess.")
