@@ -29,6 +29,7 @@ import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.TypeSpec;
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
 import javax.lang.model.element.Modifier;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -118,7 +119,7 @@ public class ComponentMojo extends AbstractMojo
 				throw new MojoExecutionException("interface id out of range for " + interfaceName);
 			}
 
-			addField(interfaceType, interfaceName.toUpperCase(), interfaceId, null);
+			addField(interfaceType, interfaceName.toUpperCase(Locale.ENGLISH), interfaceId, null);
 
 			for (var entry2 : tbl.entrySet())
 			{
@@ -134,7 +135,7 @@ public class ComponentMojo extends AbstractMojo
 					throw new MojoExecutionException("component id out of range for " + componentName);
 				}
 
-				var fullName = interfaceName.toUpperCase() + "_" + componentName.toUpperCase();
+				var fullName = interfaceName.toUpperCase(Locale.ENGLISH) + "_" + componentName.toUpperCase(Locale.ENGLISH);
 				var comment = interfaceId + ":" + id;
 				int componentId = (interfaceId << 16) | id;
 

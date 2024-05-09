@@ -105,7 +105,8 @@ public class WidgetOverlay extends Overlay
 			new WidgetOverlay(client, ComponentID.MTA_GRAVEYARD_POINTS, "MTA_GRAVEYARD_POINTS", OverlayPosition.TOP_RIGHT),
 			new WidgetOverlay(client, ComponentID.MTA_GRAVEYARD_VALUES, "MTA_GRAVEYARD_VALUES", OverlayPosition.BOTTOM_RIGHT),
 			new WidgetOverlay(client, ComponentID.STRANGLER_OVERLAY, "STRANGLER_INFECTION_OVERLAY", OverlayPosition.TOP_LEFT),
-			new WidgetOverlay(client, ComponentID.SANITY_OVERLAY, "SANITY_OVERLAY", OverlayPosition.TOP_LEFT)
+			new WidgetOverlay(client, ComponentID.SANITY_OVERLAY, "SANITY_OVERLAY", OverlayPosition.TOP_LEFT),
+			new WidgetOverlay(client, ComponentID.MOONS_OF_PERIL_LAYER, "MOONS_OF_PERIL", OverlayPosition.BOTTOM_RIGHT)
 		);
 	}
 
@@ -118,10 +119,10 @@ public class WidgetOverlay extends Overlay
 
 	private WidgetOverlay(final Client client, @Component final int componentId, final String name, final OverlayPosition overlayPosition)
 	{
-		this(client, componentId, name, overlayPosition, OverlayPriority.HIGHEST);
+		this(client, componentId, name, overlayPosition, Overlay.PRIORITY_HIGHEST);
 	}
 
-	private WidgetOverlay(final Client client, @Component final int componentId, final String name, final OverlayPosition overlayPosition, final OverlayPriority overlayPriority)
+	private WidgetOverlay(final Client client, @Component final int componentId, final String name, final OverlayPosition overlayPosition, final float overlayPriority)
 	{
 		this.client = client;
 		this.componentId = componentId;

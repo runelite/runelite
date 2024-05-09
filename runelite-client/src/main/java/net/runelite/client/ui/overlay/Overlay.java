@@ -47,6 +47,12 @@ import net.runelite.client.ui.overlay.components.LayoutableRenderableEntity;
 @Setter
 public abstract class Overlay implements LayoutableRenderableEntity
 {
+	public static final float PRIORITY_LOW = 0f;
+	public static final float PRIORITY_DEFAULT = 0.25f;
+	public static final float PRIORITY_MED = 0.5f;
+	public static final float PRIORITY_HIGH = 0.75f;
+	public static final float PRIORITY_HIGHEST = 1f;
+
 	@Nullable
 	private final Plugin plugin;
 	private Point preferredLocation;
@@ -54,7 +60,11 @@ public abstract class Overlay implements LayoutableRenderableEntity
 	private OverlayPosition preferredPosition;
 	private Rectangle bounds = new Rectangle();
 	private OverlayPosition position = OverlayPosition.TOP_LEFT;
-	private OverlayPriority priority = OverlayPriority.NONE;
+	/**
+	 * The overlay priority, which determines the order the overlay renders in relative
+	 * to other overlays.
+	 */
+	private float priority = PRIORITY_DEFAULT;
 	private OverlayLayer layer = OverlayLayer.UNDER_WIDGETS;
 	private final List<Integer> drawHooks = new ArrayList<>();
 	private final List<OverlayMenuEntry> menuEntries = new ArrayList<>();
@@ -90,6 +100,33 @@ public abstract class Overlay implements LayoutableRenderableEntity
 	protected Overlay(@Nullable Plugin plugin)
 	{
 		this.plugin = plugin;
+	}
+
+	public void setPriority(float priority)
+	{
+		this.priority = priority;
+	}
+
+	public void setPriority(OverlayPriority overlayPriority)
+	{
+		switch (overlayPriority)
+		{
+			case LOW:
+				priority = PRIORITY_LOW;
+				break;
+			case NONE:
+				priority = PRIORITY_DEFAULT;
+				break;
+			case MED:
+				priority = PRIORITY_MED;
+				break;
+			case HIGH:
+				priority = PRIORITY_HIGH;
+				break;
+			case HIGHEST:
+				priority = PRIORITY_HIGHEST;
+				break;
+		}
 	}
 
 	/**

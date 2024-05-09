@@ -57,11 +57,6 @@ class PluginConfigurationDescriptor
 	@Nullable
 	private final List<String> conflicts;
 
-	boolean hasConfigurables()
-	{
-		return configDescriptor != null && !configDescriptor.getItems().stream().allMatch(item -> item.getItem().hidden());
-	}
-
 	PluginConfigurationDescriptor(String name, String description, String[] tags, Config config, ConfigDescriptor configDescriptor)
 	{
 		this(name, description, tags, null, config, configDescriptor, null);

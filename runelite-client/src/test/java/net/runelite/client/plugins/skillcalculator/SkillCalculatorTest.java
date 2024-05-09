@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2024, Jordan Atwood <nightfirecat@nightfirec.at>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,13 +22,29 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.grounditems;
+package net.runelite.client.plugins.skillcalculator;
 
-enum LootType
+import static net.runelite.client.plugins.skillcalculator.SkillCalculator.formatBonusPercentage;
+import static org.junit.Assert.assertEquals;
+import org.junit.Test;
+
+public class SkillCalculatorTest
 {
-	UNKNOWN,
-	TABLE,
-	DROPPED,
-	PVP,
-	PVM;
+	@Test
+	public void testFormatBonusPercentage()
+	{
+		assertEquals("33.33", formatBonusPercentage(0.33333333f));
+		assertEquals("50", formatBonusPercentage(0.5f));
+		assertEquals("102.5", formatBonusPercentage(1.025f));
+		assertEquals("105", formatBonusPercentage(1.05f));
+		assertEquals("110", formatBonusPercentage(1.1f));
+		assertEquals("115", formatBonusPercentage(1.15f));
+		assertEquals("120", formatBonusPercentage(1.2f));
+		assertEquals("150", formatBonusPercentage(1.5f));
+		assertEquals("250", formatBonusPercentage(2.5f));
+		assertEquals("300", formatBonusPercentage(3f));
+		assertEquals("350", formatBonusPercentage(3.5f));
+		assertEquals("400", formatBonusPercentage(4f));
+		assertEquals("700", formatBonusPercentage(7f));
+	}
 }

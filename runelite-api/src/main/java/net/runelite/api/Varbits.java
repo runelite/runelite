@@ -878,4 +878,15 @@ public final class Varbits
 	 * This varbit determines which location he will appear in, which is useful for a master clue step.
 	 */
 	public static final int VIGGORA_LOCATION = 815;
+
+	/**
+	 * If the player has a spellbook swap active
+	 * <p>
+	 * 0 = inactive
+	 * 1 = active
+	 */
+	public static final int SPELLBOOK_SWAP = 3617;
+
+	public static final int SPELLBOOK = 4070;
+	public static final int SPELLBOOK_SUBMENU = 9730;
 }

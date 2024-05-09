@@ -81,7 +81,7 @@ public abstract class HotkeyListener implements KeyListener
 	@Override
 	public void keyReleased(KeyEvent e)
 	{
-		if (keybind.get().matches(e))
+		if (keybind.get().matches(e) && isPressed)
 		{
 			isPressed = false;
 			isConsumingTyped = false;

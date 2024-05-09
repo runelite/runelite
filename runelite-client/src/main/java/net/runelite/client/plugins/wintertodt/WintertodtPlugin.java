@@ -44,6 +44,7 @@ import static net.runelite.api.AnimationID.WOODCUTTING_2H_ADAMANT;
 import static net.runelite.api.AnimationID.WOODCUTTING_2H_BLACK;
 import static net.runelite.api.AnimationID.WOODCUTTING_2H_BRONZE;
 import static net.runelite.api.AnimationID.WOODCUTTING_2H_CRYSTAL;
+import static net.runelite.api.AnimationID.WOODCUTTING_2H_CRYSTAL_INACTIVE;
 import static net.runelite.api.AnimationID.WOODCUTTING_2H_DRAGON;
 import static net.runelite.api.AnimationID.WOODCUTTING_2H_IRON;
 import static net.runelite.api.AnimationID.WOODCUTTING_2H_MITHRIL;
@@ -444,6 +445,7 @@ public class WintertodtPlugin extends Plugin
 			case WOODCUTTING_2H_RUNE:
 			case WOODCUTTING_2H_DRAGON:
 			case WOODCUTTING_2H_CRYSTAL:
+			case WOODCUTTING_2H_CRYSTAL_INACTIVE:
 			case WOODCUTTING_2H_3A:
 				setActivity(WintertodtActivity.WOODCUTTING);
 				break;

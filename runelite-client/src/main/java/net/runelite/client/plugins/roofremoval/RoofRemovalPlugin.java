@@ -47,6 +47,7 @@ import static net.runelite.api.Constants.ROOF_FLAG_DESTINATION;
 import static net.runelite.api.Constants.ROOF_FLAG_HOVERED;
 import static net.runelite.api.Constants.ROOF_FLAG_POSITION;
 import net.runelite.api.GameState;
+import net.runelite.api.Scene;
 import net.runelite.api.Tile;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.GameStateChanged;
@@ -103,11 +104,20 @@ public class RoofRemovalPlugin extends Plugin
 		loadRoofOverrides();
 		clientThread.invoke(() ->
 		{
+			Scene scene = client.getScene();
+			if (scene == null)
+			{
+				// this races with client startup which may not have the scene initialized yet
+				return false;
+			}
+
+			scene.setRoofRemovalMode(buildRoofRemovalFlags());
+
 			if (client.getGameState() == GameState.LOGGED_IN)
 			{
 				performRoofRemoval();
 			}
-			client.getScene().setRoofRemovalMode(buildRoofRemovalFlags());
+			return true;
 		});
 	}
 

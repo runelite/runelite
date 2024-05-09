@@ -36,9 +36,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public class Regions
 {
 	private static final Pattern PATTERN = Pattern.compile("^[ \\t]*(?<expr>" +

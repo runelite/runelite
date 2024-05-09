@@ -491,11 +491,6 @@ public class PartyPlugin extends Plugin
 			return;
 		}
 
-		if (!forceSend && client.getTickCount() % messageFreq(party.getMembers().size()) != 0)
-		{
-			return;
-		}
-
 		final int healthCurrent = client.getBoostedSkillLevel(Skill.HITPOINTS);
 		final int prayerCurrent = client.getBoostedSkillLevel(Skill.PRAYER);
 		final int healthMax = client.getRealSkillLevel(Skill.HITPOINTS);
@@ -508,55 +503,62 @@ public class PartyPlugin extends Plugin
 		final Player localPlayer = client.getLocalPlayer();
 		final String characterName = Strings.nullToEmpty(localPlayer != null && client.getGameState().getState() >= GameState.LOADING.getState() ? localPlayer.getName() : null);
 
-		boolean shouldSend = false;
+		boolean hasChange = false;
+		boolean canDelay = !forceSend;
 		final StatusUpdate update = new StatusUpdate();
 		if (forceSend || !characterName.equals(lastStatus.getCharacterName()))
 		{
-			shouldSend = true;
+			hasChange = true;
 			update.setCharacterName(characterName);
 		}
 		if (forceSend || healthCurrent != lastStatus.getHealthCurrent())
 		{
-			shouldSend = true;
+			hasChange = true;
 			update.setHealthCurrent(healthCurrent);
 		}
 		if (forceSend || healthMax != lastStatus.getHealthMax())
 		{
-			shouldSend = true;
+			hasChange = true;
 			update.setHealthMax(healthMax);
 		}
 		if (forceSend || prayerCurrent != lastStatus.getPrayerCurrent())
 		{
-			shouldSend = true;
+			hasChange = true;
 			update.setPrayerCurrent(prayerCurrent);
 		}
 		if (forceSend || prayerMax != lastStatus.getPrayerMax())
 		{
-			shouldSend = true;
+			hasChange = true;
 			update.setPrayerMax(prayerMax);
 		}
 		if (forceSend || runEnergy != lastStatus.getRunEnergy())
 		{
-			shouldSend = true;
+			hasChange = true;
 			update.setRunEnergy(runEnergy);
 		}
 		if (forceSend || specEnergy != lastStatus.getSpecEnergy())
 		{
-			shouldSend = true;
+			hasChange = true;
+			canDelay = !forceSend && specEnergy - lastStatus.getSpecEnergy() == 10; // delay regen
 			update.setSpecEnergy(specEnergy);
 		}
 		if (forceSend || vengActive != lastStatus.getVengeanceActive())
 		{
-			shouldSend = true;
+			hasChange = true;
 			update.setVengeanceActive(vengActive);
 		}
 		if (forceSend || !Objects.equals(memberColor, lastStatus.getMemberColor()))
 		{
-			shouldSend = true;
+			hasChange = true;
 			update.setMemberColor(memberColor);
 		}
 
-		if (shouldSend)
+		if (canDelay && client.getTickCount() % messageFreq(party.getMembers().size()) != 0)
+		{
+			return;
+		}
+
+		if (hasChange)
 		{
 			party.send(update);
 			// non-null values for next-tick comparison

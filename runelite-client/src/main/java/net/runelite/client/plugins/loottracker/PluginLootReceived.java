@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2024, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,25 +22,36 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache.definitions;
+package net.runelite.client.plugins.loottracker;
 
-import java.util.List;
-import lombok.Data;
-import net.runelite.cache.region.Position;
+import java.util.Collection;
+import javax.annotation.Nullable;
+import lombok.Builder;
+import lombok.NonNull;
+import lombok.Value;
+import net.runelite.client.game.ItemStack;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.http.api.loottracker.LootRecordType;
 
-@Data
-public class WorldMapDefinition
+/**
+ * Event for plugins to publish new loot to the loot tracker
+ */
+@Builder
+@Value
+public class PluginLootReceived
 {
-	public String name;
-	public int field450;
-	public int defaultZoom;
-	public int fileId;
-	public int field453;
-	public int field454;
-	public int field456;
-	public boolean isSurface;
-	public List regionList;
-	public String safeName;
-	public Position position;
-	public int field463;
+	@NonNull
+	Plugin source;
+	@NonNull
+	String name;
+	@Builder.Default
+	int combatLevel = -1;
+	@NonNull
+	LootRecordType type;
+	@NonNull
+	Collection<ItemStack> items;
+	@Builder.Default
+	int amount = 1;
+	@Nullable
+	Object metadata;
 }

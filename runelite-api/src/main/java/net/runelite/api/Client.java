@@ -558,7 +558,7 @@ public interface Client extends OAuthApi, GameEngine
 	/**
 	 * Gets the widget that is being dragged on.
 	 * <p>
-	 * The widget being dragged has the {@link net.runelite.api.widgets.WidgetConfig#DRAG_ON}
+	 * The widget being dragged has the {@link net.runelite.api.widgets.WidgetConfig#DRAG}
 	 * flag set, and is the widget currently under the dragged widget.
 	 *
 	 * @return the dragged on widget, null if not dragging any widget
@@ -1416,6 +1416,21 @@ public interface Client extends OAuthApi, GameEngine
 	String[] getStringStack();
 
 	/**
+	 * Get the size of one of the cs2 vm's arrays.
+	 * @param arrayId the array id
+	 * @return
+	 */
+	int getArraySizes(int arrayId);
+
+	/**
+	 * Get one of the cs2 vm's arrays. Use {@link #getArraySizes(int)} to get
+	 * the array length.
+	 * @param arrayId the array id
+	 * @return
+	 */
+	int[] getArray(int arrayId);
+
+	/**
 	 * Gets the cs2 vm's active widget
 	 *
 	 * This is used for all {@code cc_*} operations with a {@code 0} operand
@@ -1500,6 +1515,19 @@ public interface Client extends OAuthApi, GameEngine
 	 * @param cameraPitchTarget target camera pitch
 	 */
 	void setCameraPitchTarget(int cameraPitchTarget);
+
+	/**
+	 * Sets the camera speed
+	 * @param speed
+	 */
+	void setCameraSpeed(float speed);
+
+	/**
+	 * Sets the mask for which mouse buttons control the camera.
+	 * Use 0 for the default behavior of mouse button 4 if "middle mouse moves camera" is on.
+	 * @param mask
+	 */
+	void setCameraMouseButtonMask(int mask);
 
 	/**
 	 * Sets whether the camera pitch can exceed the normal limits set
@@ -2134,4 +2162,6 @@ public interface Client extends OAuthApi, GameEngine
 	void setMinimapTileDrawer(TileFunction drawTile);
 
 	Rasterizer getRasterizer();
+
+	void menuAction(int p0, int p1, MenuAction action, int id, int itemId, String option, String target);
 }

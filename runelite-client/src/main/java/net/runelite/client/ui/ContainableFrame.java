@@ -35,6 +35,7 @@ import javax.swing.JFrame;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.client.util.OSType;
+import net.runelite.client.util.WinUtil;
 
 @Slf4j
 public class ContainableFrame extends JFrame
@@ -51,133 +52,82 @@ public class ContainableFrame extends JFrame
 	@Setter
 	private Mode containedInScreen;
 	private boolean rightSideSuction;
-	private boolean boundsOpSet;
 	private boolean scaleMinSize = false;
 	private boolean overrideUndecorated;
-
-	@Override
-	@SuppressWarnings("deprecation")
-	public void resize(int width, int height)
-	{
-		reshape(getX(), getY(), width, height);
-	}
-
-	@Override
-	@SuppressWarnings("deprecation")
-	public void move(int x, int y)
-	{
-		reshape(x, y, getWidth(), getHeight());
-	}
-
-	@Override
-	@SuppressWarnings("deprecation")
-	public void reshape(int x, int y, int width, int height)
-	{
-		// Component has stateful behavior so that setLocation can call reshape without
-		// reshape attempting to update it's x/y components.
-		if (boundsOpSet)
-		{
-			super.reshape(x, y, width, height);
-			return;
-		}
-
-		applyChange(x, y, width, height, getX(), getY(), getWidth(), false);
-	}
-
-	@Override
-	public void pack()
-	{
-		try
-		{
-			boundsOpSet = true;
-			super.pack();
-		}
-		finally
-		{
-			boundsOpSet = false;
-		}
-	}
 
 	// we must use the deprecated variants since that it what Component ultimately delegates to
 	@SuppressWarnings("deprecation")
 	private void applyChange(int wX, int wY, int wWidth, int wHeight, int wOldx, int wOldY, int wOldWidth, boolean contain)
 	{
-		try
+		boolean isSnapped = WinUtil.isWindowArranged(this);
+
+		if ((contain || isSnapped) && !isFullScreen())
 		{
-			boundsOpSet = true;
+			Rectangle cDpyBounds = this.getGraphicsConfiguration().getBounds();
+			Insets insets = this.getInsets();
+			Rectangle cRect = new Rectangle(wX + insets.left, wY + insets.top, wWidth - (insets.left + insets.right), wHeight - (insets.top + insets.bottom));
 
-			if (contain && !isFullScreen())
+			if (rightSideSuction || isSnapped)
 			{
-				Rectangle cDpyBounds = this.getGraphicsConfiguration().getBounds();
-				Insets insets = this.getInsets();
-				Rectangle cRect = new Rectangle(wX + insets.left, wY + insets.top, wWidth - (insets.left + insets.right), wHeight - (insets.top + insets.bottom));
-
-				if (rightSideSuction)
-				{
-					// only keep suction while where are near the screen edge
-					rightSideSuction = wOldx + wOldWidth - insets.right + SCREEN_EDGE_CLOSE_DISTANCE >= cDpyBounds.getMaxX();
-				}
-
-				if (rightSideSuction && wWidth < wOldWidth)
-				{
-					// shift the window so the right side is near the edge again
-					cRect.x += wOldWidth - wWidth;
-				}
-
-				if (wWidth > wOldWidth
-					&& cRect.getMaxX() > cDpyBounds.getMaxX()
-					&& (wOldx + insets.left) + (wOldWidth - (insets.left + insets.right)) + SCREEN_EDGE_CLOSE_DISTANCE > cDpyBounds.getMaxX()
-					&& (wOldx + insets.left) + (wOldWidth - (insets.left + insets.right)) <= cDpyBounds.getMaxX())
-				{
-					// attempt to retain the distance between us and the edge when shifting left
-					cRect.x -= wWidth - wOldWidth;
-				}
-
-				cRect.x -= Math.max(0, cRect.getMaxX() - cDpyBounds.getMaxX());
-				cRect.y -= Math.max(0, cRect.getMaxY() - cDpyBounds.getMaxY());
-
-				// if we are just resizing don't try to move the left side out
-				if (cRect.x != wOldx + insets.left)
-				{
-					cRect.x = Math.max(cRect.x, cDpyBounds.x);
-				}
-
-				if (cRect.y != wOldY + insets.top)
-				{
-					cRect.y = Math.max(cRect.y, cDpyBounds.y);
-				}
-
-				if (wWidth > wOldWidth && cRect.x < wOldx + insets.left)
-				{
-					// we have shifted the window left to avoid the right side going oob
-					rightSideSuction = true;
-				}
-
-				wX = cRect.x - insets.left;
-				wY = cRect.y - insets.top;
-				wWidth = cRect.width + insets.left + insets.right;
-				wHeight = cRect.height + insets.top + insets.bottom;
+				// only keep suction while where are near the screen edge
+				rightSideSuction = wOldx + wOldWidth - insets.right + SCREEN_EDGE_CLOSE_DISTANCE >= cDpyBounds.getMaxX();
 			}
 
-			boolean xyDifferent = getX() != wX || getY() != wY;
-			boolean whDifferent = getWidth() != wWidth || getHeight() != wHeight;
+			if (rightSideSuction && wWidth < wOldWidth)
+			{
+				// shift the window so the right side is near the edge again
+				cRect.x += wOldWidth - wWidth;
+			}
 
-			if (xyDifferent && whDifferent)
+			if (wWidth > wOldWidth
+				&& cRect.getMaxX() > cDpyBounds.getMaxX()
+				&& (wOldx + insets.left) + (wOldWidth - (insets.left + insets.right)) + SCREEN_EDGE_CLOSE_DISTANCE > cDpyBounds.getMaxX()
+				&& (wOldx + insets.left) + (wOldWidth - (insets.left + insets.right)) <= cDpyBounds.getMaxX())
 			{
-				super.reshape(wX, wY, wWidth, wHeight);
+				// attempt to retain the distance between us and the edge when shifting left
+				cRect.x -= wWidth - wOldWidth;
 			}
-			else if (xyDifferent)
+
+			cRect.x -= Math.max(0, cRect.getMaxX() - cDpyBounds.getMaxX());
+			cRect.y -= Math.max(0, cRect.getMaxY() - cDpyBounds.getMaxY());
+
+			// if we are just resizing don't try to move the left side out
+			if (cRect.x != wOldx + insets.left)
 			{
-				super.move(wX, wY);
+				cRect.x = Math.max(cRect.x, cDpyBounds.x);
 			}
-			else if (whDifferent)
+
+			if (cRect.y != wOldY + insets.top)
 			{
-				super.resize(wWidth, wHeight);
+				cRect.y = Math.max(cRect.y, cDpyBounds.y);
 			}
+
+			if (wWidth > wOldWidth && cRect.x < wOldx + insets.left)
+			{
+				// we have shifted the window left to avoid the right side going oob
+				rightSideSuction = true;
+			}
+
+			wX = cRect.x - insets.left;
+			wY = cRect.y - insets.top;
+			wWidth = cRect.width + insets.left + insets.right;
+			wHeight = cRect.height + insets.top + insets.bottom;
 		}
-		finally
+
+		boolean xyDifferent = getX() != wX || getY() != wY;
+		boolean whDifferent = getWidth() != wWidth || getHeight() != wHeight;
+
+		if (xyDifferent && whDifferent)
 		{
-			boundsOpSet = false;
+			super.reshape(wX, wY, wWidth, wHeight);
+		}
+		else if (xyDifferent)
+		{
+			super.move(wX, wY);
+		}
+		else if (whDifferent)
+		{
+			super.resize(wWidth, wHeight);
 		}
 	}
 

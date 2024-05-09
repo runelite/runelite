@@ -26,6 +26,7 @@
  */
 package net.runelite.client.plugins.timers;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.time.Duration;
@@ -129,7 +130,6 @@ public class TimersPlugin extends Plugin
 	static final int FIGHT_CAVES_REGION_ID = 9551;
 	static final int INFERNO_REGION_ID = 9043;
 	private static final Pattern TZHAAR_WAVE_MESSAGE = Pattern.compile("Wave: (\\d+)");
-	private static final String TZHAAR_DEFEATED_MESSAGE = "You have been defeated!";
 	private static final Pattern TZHAAR_PAUSED_MESSAGE = Pattern.compile("The (?:Inferno|Fight Cave) has been paused. You may now log out.");
 
 	private TimerTimer freezeTimer;
@@ -206,6 +206,18 @@ public class TimersPlugin extends Plugin
 			else
 			{
 				removeGameTimer(VENGEANCE);
+			}
+		}
+
+		if (event.getVarbitId() == Varbits.SPELLBOOK_SWAP && config.showSpellbookSwap())
+		{
+			if (event.getValue() == 1)
+			{
+				createGameTimer(SPELLBOOK_SWAP);
+			}
+			else
+			{
+				removeGameTimer(SPELLBOOK_SWAP);
 			}
 		}
 
@@ -622,6 +634,7 @@ public class TimersPlugin extends Plugin
 		if (!config.showCannon())
 		{
 			removeGameTimer(CANNON);
+			removeGameTimer(CANNON_REPAIR);
 		}
 
 		if (!config.showMagicImbue())
@@ -742,6 +755,21 @@ public class TimersPlugin extends Plugin
 		if (!config.showBlessedCrystalScarab())
 		{
 			removeGameTimer(BLESSED_CRYSTAL_SCARAB);
+		}
+
+		if (!config.showAbyssalSireStun())
+		{
+			removeGameTimer(ABYSSAL_SIRE_STUN);
+		}
+
+		if (!config.showPickpocketStun())
+		{
+			removeGameTimer(PICKPOCKET_STUN);
+		}
+
+		if (!config.showSpellbookSwap())
+		{
+			removeGameTimer(SPELLBOOK_SWAP);
 		}
 	}
 
@@ -864,15 +892,6 @@ public class TimersPlugin extends Plugin
 			{
 				createGameTimer(MARK_OF_DARKNESS_COOLDOWN, Duration.of(magicLevel - 10, RSTimeUnit.GAME_TICKS));
 			}
-		}
-
-		if (message.equals(TZHAAR_DEFEATED_MESSAGE))
-		{
-			log.debug("Stopping tzhaar timer");
-			removeTzhaarTimer();
-			config.tzhaarStartTime(null);
-			config.tzhaarLastTime(null);
-			return;
 		}
 
 		if (TZHAAR_PAUSED_MESSAGE.matcher(message).find())
@@ -1186,7 +1205,8 @@ public class TimersPlugin extends Plugin
 		return t;
 	}
 
-	private void removeGameTimer(GameTimer timer)
+	@VisibleForTesting
+	void removeGameTimer(GameTimer timer)
 	{
 		infoBoxManager.removeIf(t -> t instanceof TimerTimer && ((TimerTimer) t).getTimer() == timer);
 	}

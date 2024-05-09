@@ -28,6 +28,7 @@ import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 import net.runelite.client.config.ConfigSection;
+import net.runelite.client.config.Notification;
 import net.runelite.client.config.Units;
 import net.runelite.client.plugins.woodcutting.config.ClueNestTier;
 
@@ -59,9 +60,9 @@ public interface WoodcuttingConfig extends Config
 		name = "Bird nest notification",
 		description = "Configures whether to notify you of a bird nest spawn"
 	)
-	default boolean showNestNotification()
+	default Notification showNestNotification()
 	{
-		return true;
+		return Notification.ON;
 	}
 
 	@ConfigItem(
@@ -127,9 +128,9 @@ public interface WoodcuttingConfig extends Config
 		description = "Configures whether to notify you of a Rising Roots event",
 		section = forestrySection
 	)
-	default boolean forestryRisingRootsNotification()
+	default Notification forestryRisingRootsNotification()
 	{
-		return true;
+		return Notification.ON;
 	}
 
 	@ConfigItem(
@@ -139,9 +140,9 @@ public interface WoodcuttingConfig extends Config
 		description = "Configures whether to notify you of a Struggling Sapling event",
 		section = forestrySection
 	)
-	default boolean forestryStrugglingSaplingNotification()
+	default Notification forestryStrugglingSaplingNotification()
 	{
-		return true;
+		return Notification.ON;
 	}
 
 	@ConfigItem(
@@ -151,9 +152,9 @@ public interface WoodcuttingConfig extends Config
 		description = "Configures whether to notify you of a Flowering Tree event",
 		section = forestrySection
 	)
-	default boolean forestryFloweringTreeNotification()
+	default Notification forestryFloweringTreeNotification()
 	{
-		return true;
+		return Notification.ON;
 	}
 
 	@ConfigItem(
@@ -163,9 +164,9 @@ public interface WoodcuttingConfig extends Config
 		description = "Configures whether to notify you of a Poachers event",
 		section = forestrySection
 	)
-	default boolean forestryPoachersNotification()
+	default Notification forestryPoachersNotification()
 	{
-		return true;
+		return Notification.ON;
 	}
 
 	@ConfigItem(
@@ -175,9 +176,9 @@ public interface WoodcuttingConfig extends Config
 		description = "Configures whether to notify you of a Pheasant Control event",
 		section = forestrySection
 	)
-	default boolean forestryPheasantControlNotification()
+	default Notification forestryPheasantControlNotification()
 	{
-		return true;
+		return Notification.ON;
 	}
 
 	@ConfigItem(
@@ -187,9 +188,9 @@ public interface WoodcuttingConfig extends Config
 		description = "Configures whether to notify you of a Bee Hive event",
 		section = forestrySection
 	)
-	default boolean forestryBeeHiveNotification()
+	default Notification forestryBeeHiveNotification()
 	{
-		return true;
+		return Notification.ON;
 	}
 
 	@ConfigItem(
@@ -199,9 +200,9 @@ public interface WoodcuttingConfig extends Config
 		description = "Configures whether to notify you of an Enchantment Ritual event",
 		section = forestrySection
 	)
-	default boolean forestryEnchantmentRitualNotification()
+	default Notification forestryEnchantmentRitualNotification()
 	{
-		return true;
+		return Notification.ON;
 	}
 
 	@ConfigItem(
@@ -211,9 +212,9 @@ public interface WoodcuttingConfig extends Config
 		description = "Configures whether to notify you of a Friendly Ent event",
 		section = forestrySection
 	)
-	default boolean forestryFriendlyEntNotification()
+	default Notification forestryFriendlyEntNotification()
 	{
-		return true;
+		return Notification.ON;
 	}
 
 	@ConfigItem(

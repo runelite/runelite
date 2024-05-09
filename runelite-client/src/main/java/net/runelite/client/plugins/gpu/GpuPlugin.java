@@ -183,8 +183,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	private int vaoUiHandle;
 	private int vboUiHandle;
 
-	private int fboSceneHandle;
-	private int rboSceneHandle;
+	private int fboScene;
+	private int rboColorBuffer;
 
 	private final GLBuffer sceneVertexBuffer = new GLBuffer("scene vertex buffer");
 	private final GLBuffer sceneUvBuffer = new GLBuffer("scene tex buffer");
@@ -286,7 +286,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		{
 			try
 			{
-				fboSceneHandle = rboSceneHandle = -1; // AA FBO
+				fboScene = rboColorBuffer = -1;
 				targetBufferOffset = 0;
 				unorderedModels = smallModels = largeModels = 0;
 
@@ -465,7 +465,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				shutdownProgram();
 				shutdownVao();
 				shutdownBuffers();
-				shutdownAAFbo();
+				shutdownFbo();
 			}
 
 			// this must shutdown after the clgl buffers are freed
@@ -663,11 +663,15 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 		GL43C.glEnableVertexAttribArray(0);
 		GL43C.glBindBuffer(GL43C.GL_ARRAY_BUFFER, tmpOutBuffer.glBufferId);
-		GL43C.glVertexAttribIPointer(0, 4, GL43C.GL_INT, 0, 0);
+		GL43C.glVertexAttribPointer(0, 3, GL43C.GL_FLOAT, false, 16, 0);
 
 		GL43C.glEnableVertexAttribArray(1);
+		GL43C.glBindBuffer(GL43C.GL_ARRAY_BUFFER, tmpOutBuffer.glBufferId);
+		GL43C.glVertexAttribIPointer(1, 1, GL43C.GL_INT, 16, 12);
+
+		GL43C.glEnableVertexAttribArray(2);
 		GL43C.glBindBuffer(GL43C.GL_ARRAY_BUFFER, tmpOutUvBuffer.glBufferId);
-		GL43C.glVertexAttribPointer(1, 4, GL43C.GL_FLOAT, false, 0, 0);
+		GL43C.glVertexAttribPointer(2, 4, GL43C.GL_FLOAT, false, 0, 0);
 
 		// Create temp VAO
 		vaoTemp = GL43C.glGenVertexArrays();
@@ -675,11 +679,15 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 		GL43C.glEnableVertexAttribArray(0);
 		GL43C.glBindBuffer(GL43C.GL_ARRAY_BUFFER, tmpVertexBuffer.glBufferId);
-		GL43C.glVertexAttribIPointer(0, 4, GL43C.GL_INT, 0, 0);
+		GL43C.glVertexAttribPointer(0, 3, GL43C.GL_FLOAT, false, 16, 0);
 
 		GL43C.glEnableVertexAttribArray(1);
+		GL43C.glBindBuffer(GL43C.GL_ARRAY_BUFFER, tmpVertexBuffer.glBufferId);
+		GL43C.glVertexAttribIPointer(1, 1, GL43C.GL_INT, 16, 12);
+
+		GL43C.glEnableVertexAttribArray(2);
 		GL43C.glBindBuffer(GL43C.GL_ARRAY_BUFFER, tmpUvBuffer.glBufferId);
-		GL43C.glVertexAttribPointer(1, 4, GL43C.GL_FLOAT, false, 0, 0);
+		GL43C.glVertexAttribPointer(2, 4, GL43C.GL_FLOAT, false, 0, 0);
 
 		// Create UI VAO
 		vaoUiHandle = GL43C.glGenVertexArrays();
@@ -798,41 +806,36 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	{
 		initGlBuffer(uniformBuffer);
 
-		IntBuffer uniformBuf = GpuIntBuffer.allocateDirect(8 + 2048 * 4);
-		uniformBuf.put(new int[8]); // uniform block
-		final int[] pad = new int[2];
-		for (int i = 0; i < 2048; i++)
-		{
-			uniformBuf.put(Perspective.SINE[i]);
-			uniformBuf.put(Perspective.COSINE[i]);
-			uniformBuf.put(pad); // ivec2 alignment in std140 is 16 bytes
-		}
-		uniformBuf.flip();
-
-		updateBuffer(uniformBuffer, GL43C.GL_UNIFORM_BUFFER, uniformBuf, GL43C.GL_DYNAMIC_DRAW, CL12.CL_MEM_READ_ONLY);
+		updateBuffer(uniformBuffer, GL43C.GL_UNIFORM_BUFFER, 8 * Integer.BYTES, GL43C.GL_DYNAMIC_DRAW, CL12.CL_MEM_READ_ONLY);
 		GL43C.glBindBuffer(GL43C.GL_UNIFORM_BUFFER, 0);
 	}
 
-	private void initAAFbo(int width, int height, int aaSamples)
+	private void initFbo(int width, int height, int aaSamples)
 	{
-		if (OSType.getOSType() != OSType.MacOS)
-		{
-			final GraphicsConfiguration graphicsConfiguration = clientUI.getGraphicsConfiguration();
-			final AffineTransform transform = graphicsConfiguration.getDefaultTransform();
+		final GraphicsConfiguration graphicsConfiguration = clientUI.getGraphicsConfiguration();
+		final AffineTransform transform = graphicsConfiguration.getDefaultTransform();
 
-			width = getScaledValue(transform.getScaleX(), width);
-			height = getScaledValue(transform.getScaleY(), height);
+		width = getScaledValue(transform.getScaleX(), width);
+		height = getScaledValue(transform.getScaleY(), height);
+
+		if (aaSamples > 0)
+		{
+			GL43C.glEnable(GL43C.GL_MULTISAMPLE);
+		}
+		else
+		{
+			GL43C.glDisable(GL43C.GL_MULTISAMPLE);
 		}
 
 		// Create and bind the FBO
-		fboSceneHandle = GL43C.glGenFramebuffers();
-		GL43C.glBindFramebuffer(GL43C.GL_FRAMEBUFFER, fboSceneHandle);
+		fboScene = GL43C.glGenFramebuffers();
+		GL43C.glBindFramebuffer(GL43C.GL_FRAMEBUFFER, fboScene);
 
 		// Create color render buffer
-		rboSceneHandle = GL43C.glGenRenderbuffers();
-		GL43C.glBindRenderbuffer(GL43C.GL_RENDERBUFFER, rboSceneHandle);
+		rboColorBuffer = GL43C.glGenRenderbuffers();
+		GL43C.glBindRenderbuffer(GL43C.GL_RENDERBUFFER, rboColorBuffer);
 		GL43C.glRenderbufferStorageMultisample(GL43C.GL_RENDERBUFFER, aaSamples, GL43C.GL_RGBA, width, height);
-		GL43C.glFramebufferRenderbuffer(GL43C.GL_FRAMEBUFFER, GL43C.GL_COLOR_ATTACHMENT0, GL43C.GL_RENDERBUFFER, rboSceneHandle);
+		GL43C.glFramebufferRenderbuffer(GL43C.GL_FRAMEBUFFER, GL43C.GL_COLOR_ATTACHMENT0, GL43C.GL_RENDERBUFFER, rboColorBuffer);
 
 		int status = GL43C.glCheckFramebufferStatus(GL43C.GL_FRAMEBUFFER);
 		if (status != GL43C.GL_FRAMEBUFFER_COMPLETE)
@@ -845,18 +848,18 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		GL43C.glBindRenderbuffer(GL43C.GL_RENDERBUFFER, 0);
 	}
 
-	private void shutdownAAFbo()
+	private void shutdownFbo()
 	{
-		if (fboSceneHandle != -1)
+		if (fboScene != -1)
 		{
-			GL43C.glDeleteFramebuffers(fboSceneHandle);
-			fboSceneHandle = -1;
+			GL43C.glDeleteFramebuffers(fboScene);
+			fboScene = -1;
 		}
 
-		if (rboSceneHandle != -1)
+		if (rboColorBuffer != -1)
 		{
-			GL43C.glDeleteRenderbuffers(rboSceneHandle);
-			rboSceneHandle = -1;
+			GL43C.glDeleteRenderbuffers(rboColorBuffer);
+			rboColorBuffer = -1;
 		}
 	}
 
@@ -880,7 +883,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		// viewport buffer.
 		targetBufferOffset = 0;
 
-		// UBO. Only the first 32 bytes get modified here, the rest is the constant sin/cos table.
+		// UBO.
 		// We can reuse the vertex buffer since it isn't used yet.
 		vertexBuffer.clear();
 		vertexBuffer.ensureCapacity(32);
@@ -896,8 +899,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			.put(Float.floatToIntBits((float) cameraZ));
 		uniformBuf.flip();
 
-		GL43C.glBindBuffer(GL43C.GL_UNIFORM_BUFFER, uniformBuffer.glBufferId);
-		GL43C.glBufferSubData(GL43C.GL_UNIFORM_BUFFER, 0, uniformBuf);
+		updateBuffer(uniformBuffer, GL43C.GL_UNIFORM_BUFFER, uniformBuf, GL43C.GL_DYNAMIC_DRAW, CL12.CL_MEM_READ_ONLY);
 		GL43C.glBindBuffer(GL43C.GL_UNIFORM_BUFFER, 0);
 
 		GL43C.glBindBufferBase(GL43C.GL_UNIFORM_BUFFER, 0, uniformBuffer.glBufferId);
@@ -1149,14 +1151,9 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 		prepareInterfaceTexture(canvasWidth, canvasHeight);
 
-		// Setup anti-aliasing
-		final AntiAliasingMode antiAliasingMode = config.antiAliasingMode();
-		final boolean aaEnabled = antiAliasingMode != AntiAliasingMode.DISABLED;
-
-		if (aaEnabled)
+		// Setup FBO and anti-aliasing
 		{
-			GL43C.glEnable(GL43C.GL_MULTISAMPLE);
-
+			final AntiAliasingMode antiAliasingMode = config.antiAliasingMode();
 			final Dimension stretchedDimensions = client.getStretchedDimensions();
 
 			final int stretchedCanvasWidth = client.isStretchedEnabled() ? stretchedDimensions.width : canvasWidth;
@@ -1167,7 +1164,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				|| lastStretchedCanvasHeight != stretchedCanvasHeight
 				|| lastAntiAliasingMode != antiAliasingMode)
 			{
-				shutdownAAFbo();
+				shutdownFbo();
 
 				// Bind default FBO to check whether anti-aliasing is forced
 				GL43C.glBindFramebuffer(GL43C.GL_FRAMEBUFFER, awtContext.getFramebuffer(false));
@@ -1178,21 +1175,15 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 				log.debug("AA samples: {}, max samples: {}, forced samples: {}", samples, maxSamples, forcedAASamples);
 
-				initAAFbo(stretchedCanvasWidth, stretchedCanvasHeight, samples);
+				initFbo(stretchedCanvasWidth, stretchedCanvasHeight, samples);
 
 				lastStretchedCanvasWidth = stretchedCanvasWidth;
 				lastStretchedCanvasHeight = stretchedCanvasHeight;
+				lastAntiAliasingMode = antiAliasingMode;
 			}
 
-			GL43C.glBindFramebuffer(GL43C.GL_DRAW_FRAMEBUFFER, fboSceneHandle);
+			GL43C.glBindFramebuffer(GL43C.GL_DRAW_FRAMEBUFFER, fboScene);
 		}
-		else
-		{
-			GL43C.glDisable(GL43C.GL_MULTISAMPLE);
-			shutdownAAFbo();
-		}
-
-		lastAntiAliasingMode = antiAliasingMode;
 
 		// Clear scene
 		int sky = client.getSkyboxColor();
@@ -1273,7 +1264,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			if (gameState == GameState.LOGGED_IN)
 			{
 				// avoid textures animating during loading
-				GL43C.glUniform1i(uniTick, client.getGameCycle());
+				GL43C.glUniform1i(uniTick, client.getGameCycle() & 127);
 			}
 
 			// Calculate projection matrix
@@ -1327,21 +1318,18 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			GL43C.glUseProgram(0);
 		}
 
-		if (aaEnabled)
+		// Blit FBO
 		{
 			int width = lastStretchedCanvasWidth;
 			int height = lastStretchedCanvasHeight;
 
-			if (OSType.getOSType() != OSType.MacOS)
-			{
-				final GraphicsConfiguration graphicsConfiguration = clientUI.getGraphicsConfiguration();
-				final AffineTransform transform = graphicsConfiguration.getDefaultTransform();
+			final GraphicsConfiguration graphicsConfiguration = clientUI.getGraphicsConfiguration();
+			final AffineTransform transform = graphicsConfiguration.getDefaultTransform();
 
-				width = getScaledValue(transform.getScaleX(), width);
-				height = getScaledValue(transform.getScaleY(), height);
-			}
+			width = getScaledValue(transform.getScaleX(), width);
+			height = getScaledValue(transform.getScaleY(), height);
 
-			GL43C.glBindFramebuffer(GL43C.GL_READ_FRAMEBUFFER, fboSceneHandle);
+			GL43C.glBindFramebuffer(GL43C.GL_READ_FRAMEBUFFER, fboScene);
 			GL43C.glBindFramebuffer(GL43C.GL_DRAW_FRAMEBUFFER, awtContext.getFramebuffer(false));
 			GL43C.glBlitFramebuffer(0, 0, width, height, 0, 0, width, height,
 				GL43C.GL_COLOR_BUFFER_BIT, GL43C.GL_NEAREST);
@@ -1421,13 +1409,10 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		// Set the sampling function used when stretching the UI.
 		// This is probably better done with sampler objects instead of texture parameters, but this is easier and likely more portable.
 		// See https://www.khronos.org/opengl/wiki/Sampler_Object for details.
-		if (client.isStretchedEnabled())
-		{
-			// GL_NEAREST makes sampling for bicubic/xBR simpler, so it should be used whenever linear isn't
-			final int function = uiScalingMode == UIScalingMode.LINEAR ? GL43C.GL_LINEAR : GL43C.GL_NEAREST;
-			GL43C.glTexParameteri(GL43C.GL_TEXTURE_2D, GL43C.GL_TEXTURE_MIN_FILTER, function);
-			GL43C.glTexParameteri(GL43C.GL_TEXTURE_2D, GL43C.GL_TEXTURE_MAG_FILTER, function);
-		}
+		// GL_NEAREST makes sampling for bicubic/xBR simpler, so it should be used whenever linear isn't
+		final int function = uiScalingMode == UIScalingMode.LINEAR ? GL43C.GL_LINEAR : GL43C.GL_NEAREST;
+		GL43C.glTexParameteri(GL43C.GL_TEXTURE_2D, GL43C.GL_TEXTURE_MIN_FILTER, function);
+		GL43C.glTexParameteri(GL43C.GL_TEXTURE_2D, GL43C.GL_TEXTURE_MAG_FILTER, function);
 
 		// Texture on UI
 		GL43C.glBindVertexArray(vaoUiHandle);
@@ -1458,13 +1443,10 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			height = dim.height;
 		}
 
-		if (OSType.getOSType() != OSType.MacOS)
-		{
-			final GraphicsConfiguration graphicsConfiguration = clientUI.getGraphicsConfiguration();
-			final AffineTransform t = graphicsConfiguration.getDefaultTransform();
-			width = getScaledValue(t.getScaleX(), width);
-			height = getScaledValue(t.getScaleY(), height);
-		}
+		final GraphicsConfiguration graphicsConfiguration = clientUI.getGraphicsConfiguration();
+		final AffineTransform t = graphicsConfiguration.getDefaultTransform();
+		width = getScaledValue(t.getScaleX(), width);
+		height = getScaledValue(t.getScaleY(), height);
 
 		ByteBuffer buffer = ByteBuffer.allocateDirect(width * height * 4)
 			.order(ByteOrder.nativeOrder());
@@ -1852,21 +1834,13 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	private void glDpiAwareViewport(final int x, final int y, final int width, final int height)
 	{
-		if (OSType.getOSType() == OSType.MacOS)
-		{
-			// macos handles DPI scaling for us already
-			GL43C.glViewport(x, y, width, height);
-		}
-		else
-		{
-			final GraphicsConfiguration graphicsConfiguration = clientUI.getGraphicsConfiguration();
-			final AffineTransform t = graphicsConfiguration.getDefaultTransform();
-			GL43C.glViewport(
-				getScaledValue(t.getScaleX(), x),
-				getScaledValue(t.getScaleY(), y),
-				getScaledValue(t.getScaleX(), width),
-				getScaledValue(t.getScaleY(), height));
-		}
+		final GraphicsConfiguration graphicsConfiguration = clientUI.getGraphicsConfiguration();
+		final AffineTransform t = graphicsConfiguration.getDefaultTransform();
+		GL43C.glViewport(
+			getScaledValue(t.getScaleX(), x),
+			getScaledValue(t.getScaleY(), y),
+			getScaledValue(t.getScaleX(), width),
+			getScaledValue(t.getScaleY(), height));
 	}
 
 	private int getDrawDistance()

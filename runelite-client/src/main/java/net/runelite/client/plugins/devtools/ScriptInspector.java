@@ -32,6 +32,7 @@ import java.awt.FlowLayout;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
@@ -95,11 +96,12 @@ public class ScriptInspector extends DevToolsFrame
 	}
 
 	@Data
-	private class ScriptTreeNode extends DefaultMutableTreeNode
+	private static class ScriptTreeNode extends DefaultMutableTreeNode
 	{
 		private final int scriptId;
 		private Widget source;
 		private int duplicateNumber = 1;
+		private Object[] args;
 
 		@Override
 		public String toString()
@@ -126,6 +128,11 @@ public class ScriptInspector extends DevToolsFrame
 				{
 					output += " " + name;
 				}
+			}
+
+			if (args != null)
+			{
+				output += " args: " + Arrays.toString(args);
 			}
 
 			return output;
@@ -276,6 +283,7 @@ public class ScriptInspector extends DevToolsFrame
 		if (event.getScriptEvent() != null)
 		{
 			newNode.setSource(event.getScriptEvent().getSource());
+			newNode.setArgs(event.getScriptEvent().getArguments());
 		}
 
 		if (currentNode == null)

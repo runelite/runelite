@@ -67,6 +67,10 @@ public class ItemLoader
 		{
 			def.name = stream.readString();
 		}
+		else if (opcode == 3)
+		{
+			def.examine = stream.readString();
+		}
 		else if (opcode == 4)
 		{
 			def.zoom2d = stream.readUnsignedShort();

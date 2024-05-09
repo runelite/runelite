@@ -42,6 +42,14 @@ class GpuIntBuffer
 		buffer.put(x).put(y).put(z).put(c);
 	}
 
+	void put(float x, float y, float z, int w)
+	{
+		buffer.put(Float.floatToIntBits(x))
+			.put(Float.floatToIntBits(y))
+			.put(Float.floatToIntBits(z))
+			.put(w);
+	}
+
 	void flip()
 	{
 		buffer.flip();
