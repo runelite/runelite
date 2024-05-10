@@ -455,4 +455,7 @@ public final class ScriptID
 
 	@ScriptArguments(integer = 12, string = 2)
 	public static final int MAGIC_SPELLBOOK_INITIALISESPELLS = 2616;
+
+	@ScriptArguments(integer = 2)
+	public static final int MOTHERLODE_HUD_UPDATE = 1634;
 }

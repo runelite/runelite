@@ -559,6 +559,8 @@ worldmap_options=53
 [mlm]
 id=382
 container=0
+sack_size_text=5
+space_text=6
 
 [moons_of_peril]
 id=869
