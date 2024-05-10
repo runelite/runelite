@@ -53,14 +53,14 @@ public interface ImplingsConfig extends Config
 
 	@ConfigItem(
 		position = 1,
-		keyName = "showbaby",
-		name = "Baby implings",
+		keyName = "highlightBaby",
+		name = "Baby impling highlight",
 		description = "Configures whether or not Baby impling tags are displayed",
 		section = implingSection
 	)
-	default ImplingMode showBaby()
+	default boolean highlightBaby()
 	{
-		return ImplingMode.NONE;
+		return false;
 	}
 
 	@Alpha
@@ -78,26 +78,26 @@ public interface ImplingsConfig extends Config
 
 	@ConfigItem(
 		position = 3,
-		keyName = "customizableBabyImplingNotification",
-		name = "Customize Baby impling notification",
-		description = "Configures whether or not the notification is customizable",
+		keyName = "babyNotification",
+		name = "Baby impling notification",
+		description = "Configures whether or not the notification is enabled.",
 		section = implingSection
 	)
-	default Notification getCustomizableBabyImplingNotification()
+	default Notification getBabyNotification()
 	{
 		return Notification.OFF;
 	}
 
 	@ConfigItem(
 		position = 4,
-		keyName = "showyoung",
-		name = "Young implings",
+		keyName = "highlightYoung",
+		name = "Young impling highlight",
 		description = "Configures whether or not Young impling tags are displayed",
 		section = implingSection
 	)
-	default ImplingMode showYoung()
+	default boolean highlightYoung()
 	{
-		return ImplingMode.NONE;
+		return false;
 	}
 
 	@Alpha
@@ -115,26 +115,26 @@ public interface ImplingsConfig extends Config
 
 	@ConfigItem(
 		position = 6,
-		keyName = "customizableYoungImplingNotification",
-		name = "Customize Young impling notification",
-		description = "Configures whether or not the notification is customizable",
+		keyName = "youngNotification",
+		name = "Young impling notification",
+		description = "Configures whether or not the notification is enabled.",
 		section = implingSection
 	)
-	default Notification getCustomizableYoungImplingNotification()
+	default Notification getYoungNotification()
 	{
 		return Notification.OFF;
 	}
 
 	@ConfigItem(
 		position = 7,
-		keyName = "showgourmet",
-		name = "Gourmet implings",
+		keyName = "highlightGourmet",
+		name = "Gourmet impling highlight",
 		description = "Configures whether or not Gourmet impling tags are displayed",
 		section = implingSection
 	)
-	default ImplingMode showGourmet()
+	default boolean highlightGourmet()
 	{
-		return ImplingMode.NONE;
+		return false;
 	}
 
 	@Alpha
@@ -152,26 +152,26 @@ public interface ImplingsConfig extends Config
 
 	@ConfigItem(
 		position = 9,
-		keyName = "customizableGourmetImplingNotification",
-		name = "Customize Gourmet impling notification",
-		description = "Configures whether or not the notification is customizable",
+		keyName = "gourmetNotification",
+		name = "Gourmet impling notification",
+		description = "Configures whether or not the notification is enabled.",
 		section = implingSection
 	)
-	default Notification getCustomizableGourmetImplingNotification()
+	default Notification getGourmetNotification()
 	{
 		return Notification.OFF;
 	}
 
 	@ConfigItem(
 		position = 10,
-		keyName = "showearth",
-		name = "Earth implings",
+		keyName = "highlightEarth",
+		name = "Earth impling highlight",
 		description = "Configures whether or not Earth impling tags are displayed",
 		section = implingSection
 	)
-	default ImplingMode showEarth()
+	default boolean highlightEarth()
 	{
-		return ImplingMode.NONE;
+		return false;
 	}
 
 	@Alpha
@@ -189,26 +189,26 @@ public interface ImplingsConfig extends Config
 
 	@ConfigItem(
 		position = 12,
-		keyName = "customizableEarthImplingNotification",
-		name = "Customize Earth impling notification",
-		description = "Configures whether or not the notification is customizable",
+		keyName = "earthNotification",
+		name = "Earth impling notification",
+		description = "Configures whether or not the notification is enabled.",
 		section = implingSection
 	)
-	default Notification getCustomizableEarthImplingNotification()
+	default Notification getEarthNotification()
 	{
 		return Notification.OFF;
 	}
 
 	@ConfigItem(
 		position = 13,
-		keyName = "showessence",
-		name = "Essence implings",
+		keyName = "highlightEssence",
+		name = "Essence impling highlight",
 		description = "Configures whether or not Essence impling tags are displayed",
 		section = implingSection
 	)
-	default ImplingMode showEssence()
+	default boolean highlightEssence()
 	{
-		return ImplingMode.NONE;
+		return false;
 	}
 
 	@Alpha
@@ -226,26 +226,26 @@ public interface ImplingsConfig extends Config
 
 	@ConfigItem(
 		position = 15,
-		keyName = "customizableEssenceImplingNotification",
-		name = "Customize Essence impling notification",
-		description = "Configures whether or not the notification is customizable",
+		keyName = "essenceNotification",
+		name = "Essence impling notification",
+		description = "Configures whether or not the notification is enabled.",
 		section = implingSection
 	)
-	default Notification getCustomizableEssenceImplingNotification()
+	default Notification getEssenceNotification()
 	{
 		return Notification.OFF;
 	}
 
 	@ConfigItem(
 		position = 16,
-		keyName = "showeclectic",
-		name = "Eclectic implings",
+		keyName = "highlightEclectic",
+		name = "Eclectic impling highlight",
 		description = "Configures whether or not Eclectic impling tags are displayed",
 		section = implingSection
 	)
-	default ImplingMode showEclectic()
+	default boolean highlightEclectic()
 	{
-		return ImplingMode.NONE;
+		return false;
 	}
 
 	@Alpha
@@ -263,26 +263,26 @@ public interface ImplingsConfig extends Config
 
 	@ConfigItem(
 		position = 18,
-		keyName = "customizableEclecticImplingNotification",
-		name = "Customize Eclectic impling notification",
-		description = "Configures whether or not the notification is customizable",
+		keyName = "eclecticNotification",
+		name = "Eclectic impling notification",
+		description = "Configures whether or not the notification is enabled.",
 		section = implingSection
 	)
-	default Notification getCustomizableEclecticImplingNotification()
+	default Notification getEclecticNotification()
 	{
 		return Notification.OFF;
 	}
 
 	@ConfigItem(
 		position = 19,
-		keyName = "shownature",
-		name = "Nature implings",
+		keyName = "highlightNature",
+		name = "Nature impling highlight",
 		description = "Configures whether or not Nature impling tags are displayed",
 		section = implingSection
 	)
-	default ImplingMode showNature()
+	default boolean highlightNature()
 	{
-		return ImplingMode.NONE;
+		return false;
 	}
 
 	@Alpha
@@ -300,26 +300,26 @@ public interface ImplingsConfig extends Config
 
 	@ConfigItem(
 		position = 21,
-		keyName = "customizableNatureImplingNotification",
-		name = "Customize Nature impling notification",
-		description = "Configures whether or not the notification is customizable",
+		keyName = "natureNotification",
+		name = "Nature impling notification",
+		description = "Configures whether or not the notification is enabled.",
 		section = implingSection
 	)
-	default Notification getCustomizableNatureImplingNotification()
+	default Notification getNatureNotification()
 	{
 		return Notification.OFF;
 	}
 
 	@ConfigItem(
 		position = 22,
-		keyName = "showmagpie",
-		name = "Magpie implings",
+		keyName = "highlightMagpie",
+		name = "Magpie impling highlight",
 		description = "Configures whether or not Magpie impling tags are displayed",
 		section = implingSection
 	)
-	default ImplingMode showMagpie()
+	default boolean highlightMagpie()
 	{
-		return ImplingMode.NONE;
+		return false;
 	}
 
 	@Alpha
@@ -337,26 +337,26 @@ public interface ImplingsConfig extends Config
 
 	@ConfigItem(
 		position = 24,
-		keyName = "customizableMagpieImplingNotification",
-		name = "Customize Magpie impling notification",
-		description = "Configures whether or not the notification is customizable",
+		keyName = "magpieNotification",
+		name = "Magpie impling notification",
+		description = "Configures whether or not the notification is enabled.",
 		section = implingSection
 	)
-	default Notification getCustomizableMagpieImplingNotification()
+	default Notification getMagpieNotification()
 	{
 		return Notification.OFF;
 	}
 
 	@ConfigItem(
 		position = 25,
-		keyName = "showninja",
-		name = "Ninja implings",
+		keyName = "highlightNinja",
+		name = "Ninja impling highlight",
 		description = "Configures whether or not Ninja impling tags are displayed",
 		section = implingSection
 	)
-	default ImplingMode showNinja()
+	default boolean highlightNinja()
 	{
-		return ImplingMode.NONE;
+		return false;
 	}
 
 	@Alpha
@@ -374,26 +374,26 @@ public interface ImplingsConfig extends Config
 
 	@ConfigItem(
 		position = 27,
-		keyName = "customizableNinjaImplingNotification",
-		name = "Customize Ninja impling notification",
-		description = "Configures whether or not the notification is customizable",
+		keyName = "ninjaNotification",
+		name = "Ninja impling notification",
+		description = "Configures whether or not the notification is enabled.",
 		section = implingSection
 	)
-	default Notification getCustomizableNinjaImplingNotification()
+	default Notification getNinjaNotification()
 	{
 		return Notification.OFF;
 	}
 
 	@ConfigItem(
 		position = 28,
-		keyName = "showCrystal",
-		name = "Crystal implings",
+		keyName = "highlightCrystal",
+		name = "Crystal impling highlight",
 		description = "Configures whether or not Crystal implings are displayed",
 		section = implingSection
 	)
-	default ImplingMode showCrystal()
+	default boolean highlightCrystal()
 	{
-		return ImplingMode.NONE;
+		return false;
 	}
 
 	@Alpha
@@ -411,26 +411,26 @@ public interface ImplingsConfig extends Config
 
 	@ConfigItem(
 		position = 30,
-		keyName = "customizableCrystalImplingNotification",
-		name = "Customize Crystal impling notification",
-		description = "Configures whether or not the notification is customizable",
+		keyName = "crystalNotification",
+		name = "Crystal impling notification",
+		description = "Configures whether or not the notification is enabled.",
 		section = implingSection
 	)
-	default Notification getCustomizableCrystalImplingNotification()
+	default Notification getCrystalNotification()
 	{
 		return Notification.OFF;
 	}
 
 	@ConfigItem(
 		position = 31,
-		keyName = "showdragon",
-		name = "Dragon implings",
+		keyName = "highlightDragon",
+		name = "Dragon impling highlight",
 		description = "Configures whether or not Dragon impling tags are displayed",
 		section = implingSection
 	)
-	default ImplingMode showDragon()
+	default boolean highlightDragon()
 	{
-		return ImplingMode.HIGHLIGHT;
+		return true;
 	}
 
 	@Alpha
@@ -448,26 +448,26 @@ public interface ImplingsConfig extends Config
 
 	@ConfigItem(
 		position = 33,
-		keyName = "customizableDragonImplingNotification",
-		name = "Customize Dragon impling notification",
-		description = "Configures whether or not the notification is customizable",
+		keyName = "dragonNotification",
+		name = "Dragon impling notification",
+		description = "Configures whether or not the notification is enabled.",
 		section = implingSection
 	)
-	default Notification getCustomizableDragonImplingNotification()
+	default Notification getDragonNotification()
 	{
-		return Notification.OFF;
+		return Notification.ON;
 	}
 
 	@ConfigItem(
 		position = 34,
-		keyName = "showlucky",
-		name = "Lucky implings",
+		keyName = "highlightLucky",
+		name = "Lucky impling highlight",
 		description = "Configures whether or not Lucky impling tags are displayed",
 		section = implingSection
 	)
-	default ImplingMode showLucky()
+	default boolean highlightLucky()
 	{
-		return ImplingMode.HIGHLIGHT;
+		return true;
 	}
 
 	@Alpha
@@ -485,14 +485,14 @@ public interface ImplingsConfig extends Config
 
 	@ConfigItem(
 		position = 36,
-		keyName = "customizableLuckyImplingNotification",
-		name = "Customize Lucky impling notification",
-		description = "Configures whether or not the notification is customizable",
+		keyName = "luckyNotification",
+		name = "Lucky impling notification",
+		description = "Configures whether or not the notification is enabled.",
 		section = implingSection
 	)
-	default Notification getCustomizableLuckyImplingNotification()
+	default Notification getLuckyNotification()
 	{
-		return Notification.OFF;
+		return Notification.ON;
 	}
 
 	@ConfigItem(
