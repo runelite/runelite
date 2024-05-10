@@ -2527,6 +2527,13 @@ public class ChatCommandsPlugin extends Plugin
 			case "rumour":
 				return "Hunter Rumours";
 
+			// sol heredit
+			case "sol":
+			case "colo":
+			case "colosseum":
+			case "fortis colosseum":
+				return "Sol Heredit";
+
 			default:
 				return WordUtils.capitalize(boss);
 		}
