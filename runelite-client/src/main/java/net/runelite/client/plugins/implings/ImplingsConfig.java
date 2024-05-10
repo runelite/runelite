@@ -455,7 +455,7 @@ public interface ImplingsConfig extends Config
 	)
 	default Notification getDragonNotification()
 	{
-		return Notification.ON;
+		return Notification.OFF;
 	}
 
 	@ConfigItem(
@@ -492,7 +492,7 @@ public interface ImplingsConfig extends Config
 	)
 	default Notification getLuckyNotification()
 	{
-		return Notification.ON;
+		return Notification.OFF;
 	}
 
 	@ConfigItem(
