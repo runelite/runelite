@@ -163,6 +163,13 @@ public class KeyRemappingPlugin extends Plugin
 		return client.getWidget(ComponentID.DIALOG_OPTION_OPTIONS) != null;
 	}
 
+	boolean isClickToContinueVisible()
+	{
+		return client.getWidget(ComponentID.DIALOG_PLAYER_CONTINUE) != null ||
+				client.getWidget(ComponentID.DIALOG_NPC_CONTINUE) != null ||
+				client.getWidget(ComponentID.DIALOG_SPRITE_CONTINUE) != null;
+	}
+
 	private boolean isHidden(int component)
 	{
 		Widget w = client.getWidget(component);

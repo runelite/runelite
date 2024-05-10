@@ -258,6 +258,7 @@ sprite2=3
 id=231
 head_model=2
 name=4
+continue=5
 text=6
 
 [dialog_option]
@@ -266,10 +267,12 @@ options=1
 
 [dialog_player]
 id=217
+continue=5
 text=6
 
 [dialog_sprite]
 id=193
+continue=0
 sprite=1
 text=2
 
