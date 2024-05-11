@@ -129,7 +129,7 @@ public interface IdleNotifierConfig extends Config
 	@ConfigItem(
 		keyName = "prayer",
 		name = "Prayer Threshold",
-		description = "The amount of prayer points to send a notification at. A value of 0 will disable notification.",
+		description = "The amount of prayer points to send a notification at.",
 		position = 9
 	)
 	@Range(min = 1)
@@ -152,7 +152,7 @@ public interface IdleNotifierConfig extends Config
 	@ConfigItem(
 		keyName = "lowEnergy",
 		name = "Low Energy Threshold",
-		description = "The amount of energy points remaining to send a notification at. A value of 100 will disable notification.",
+		description = "The amount of energy points remaining to send a notification at.",
 		position = 11
 	)
 	@Units(Units.PERCENT)
@@ -225,7 +225,7 @@ public interface IdleNotifierConfig extends Config
 		keyName = "spec",
 		name = "Spec Threshold",
 		position = 17,
-		description = "The amount of special attack energy reached to send a notification at. A value of 0 will disable notification."
+		description = "The amount of special attack energy reached to send a notification at."
 	)
 	@Units(Units.PERCENT)
 	@Range(min = 1)
