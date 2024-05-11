@@ -588,7 +588,7 @@ public class ConfigManager
 							}
 
 							final String profileDisplayName = getConfiguration(RSPROFILE_GROUP, defaultRsProfile, RSPROFILE_DISPLAY_NAME);
-							if (profileDisplayName.equals(launcherDisplayName))
+							if (launcherDisplayName.equals(profileDisplayName))
 							{
 								return true;
 							}
