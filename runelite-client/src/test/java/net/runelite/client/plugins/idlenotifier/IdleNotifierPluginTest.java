@@ -49,6 +49,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.InteractingChanged;
 import net.runelite.client.Notifier;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.Notification;
 import org.junit.Before;
 import org.junit.Test;
@@ -77,6 +78,10 @@ public class IdleNotifierPluginTest
 	@Mock
 	@Bind
 	private IdleNotifierConfig config;
+
+	@Mock
+	@Bind
+	private ConfigManager configManger;
 
 	@Mock
 	@Bind
