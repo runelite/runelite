@@ -135,7 +135,7 @@ public class IdleNotifierPluginTest
 		when(config.getPrayerNotification()).thenReturn(Notification.ON);
 		when(config.getPrayerThreshold()).thenReturn(42);
 		when(config.getLowEnergyNotification()).thenReturn(Notification.ON);
-		when(config.getCustomizableSpecNotification()).thenReturn(Notification.ON);
+		when(config.getSpecNotification()).thenReturn(Notification.ON);
 
 		// Mock client
 		when(client.getGameState()).thenReturn(GameState.LOGGED_IN);
@@ -315,7 +315,7 @@ public class IdleNotifierPluginTest
 		resetSpecRegenRelatedValuesAndTick();
 
 		// Turn ON customizable notification
-		when(config.getCustomizableSpecNotification()).thenReturn(Notification.ON);
+		when(config.getSpecNotification()).thenReturn(Notification.ON);
 
 		// Tick to 50% spec
 		when(client.getVarpValue(eq(VarPlayer.SPECIAL_ATTACK_PERCENT))).thenReturn(500); // 50%
@@ -328,7 +328,7 @@ public class IdleNotifierPluginTest
 		resetSpecRegenRelatedValuesAndTick();
 
 		// Turn OFF customizable notification
-		when(config.getCustomizableSpecNotification()).thenReturn(Notification.OFF);
+		when(config.getSpecNotification()).thenReturn(Notification.OFF);
 
 		// Tick to 50% spec
 		when(client.getVarpValue(eq(VarPlayer.SPECIAL_ATTACK_PERCENT))).thenReturn(500);
@@ -473,7 +473,7 @@ public class IdleNotifierPluginTest
 		resetHighEnergyThresholdRelatedValuesAndTick();
 
 		// Turn ON customizable notification
-		when(config.getCustomizableHighEnergyNotification()).thenReturn(Notification.ON);
+		when(config.getHighEnergyNotification()).thenReturn(Notification.ON);
 
 		// Tick to 31% energy
 		when(client.getEnergy()).thenReturn(31 * 100);
@@ -486,7 +486,7 @@ public class IdleNotifierPluginTest
 		resetHighEnergyThresholdRelatedValuesAndTick();
 
 		// Turn OFF customizable notification
-		when(config.getCustomizableHighEnergyNotification()).thenReturn(Notification.OFF);
+		when(config.getHighEnergyNotification()).thenReturn(Notification.OFF);
 
 		// Tick to 31% energy
 		when(client.getEnergy()).thenReturn(31 * 100);
@@ -512,7 +512,7 @@ public class IdleNotifierPluginTest
 		resetOxygenThresholdRelatedValuesAndTick();
 
 		// Turn ON customizable notification
-		when(config.getCustomizableOxygenNotification()).thenReturn(Notification.ON);
+		when(config.getOxygenNotification()).thenReturn(Notification.ON);
 
 		// Tick to 30% oxygen
 		when(client.getVarbitValue(Varbits.OXYGEN_LEVEL)).thenReturn(30 * 10);
@@ -525,7 +525,7 @@ public class IdleNotifierPluginTest
 		resetOxygenThresholdRelatedValuesAndTick();
 
 		// Turn OFF customizable notification
-		when(config.getCustomizableOxygenNotification()).thenReturn(Notification.OFF);
+		when(config.getOxygenNotification()).thenReturn(Notification.OFF);
 
 		// Tick to 30% oxygen
 		when(client.getVarbitValue(Varbits.OXYGEN_LEVEL)).thenReturn(30 * 10);

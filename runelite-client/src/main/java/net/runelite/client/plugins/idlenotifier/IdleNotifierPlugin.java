@@ -568,17 +568,17 @@ public class IdleNotifierPlugin extends Plugin
 
 		if (checkHighEnergy())
 		{
-			notifier.notify(config.getCustomizableHighEnergyNotification(), "You have restored run energy!");
+			notifier.notify(config.getHighEnergyNotification(), "You have restored run energy!");
 		}
 
 		if (checkLowOxygen())
 		{
-			notifier.notify(config.getCustomizableOxygenNotification(), "You have low oxygen!");
+			notifier.notify(config.getOxygenNotification(), "You have low oxygen!");
 		}
 
 		if (checkFullSpecEnergy())
 		{
-			notifier.notify(config.getCustomizableSpecNotification(), "You have restored spec energy!");
+			notifier.notify(config.getSpecNotification(), "You have restored spec energy!");
 		}
 	}
 

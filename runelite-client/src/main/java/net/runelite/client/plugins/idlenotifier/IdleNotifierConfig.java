@@ -168,7 +168,7 @@ public interface IdleNotifierConfig extends Config
 		description = "Configures if high energy notifications are enabled",
 		position = 12
 	)
-	default Notification getCustomizableHighEnergyNotification()
+	default Notification getHighEnergyNotification()
 	{
 		return Notification.OFF;
 	}
@@ -192,7 +192,7 @@ public interface IdleNotifierConfig extends Config
 		description = "Configures if oxygen notifications are enabled",
 		position = 14
 	)
-	default Notification getCustomizableOxygenNotification()
+	default Notification getOxygenNotification()
 	{
 		return Notification.OFF;
 	}
@@ -216,7 +216,7 @@ public interface IdleNotifierConfig extends Config
 		description = "Configures if special attack notifications are enabled",
 		position = 16
 	)
-	default Notification getCustomizableSpecNotification()
+	default Notification getSpecNotification()
 	{
 		return Notification.OFF;
 	}
