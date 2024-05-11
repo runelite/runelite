@@ -99,7 +99,7 @@ class KeyRemappingListener implements KeyListener
 			// In addition to the above checks, the F-key remapping shouldn't
 			// activate when dialogs are open which listen for number keys
 			// to select options
-			if (config.fkeyRemap() && (plugin.isClickToContinueVisible() || !plugin.isDialogOpen()))
+			if (config.fkeyRemap() && !plugin.isInputExpected())
 			{
 				if (config.f1().matches(e))
 				{
