@@ -183,7 +183,7 @@ public interface IdleNotifierConfig extends Config
 	@Range(min = 1, max = 100)
 	default int getHighEnergyThreshold()
 	{
-		return 99;
+		return 100;
 	}
 
 	@ConfigItem(
