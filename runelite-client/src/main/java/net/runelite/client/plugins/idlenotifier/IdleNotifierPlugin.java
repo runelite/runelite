@@ -55,6 +55,7 @@ import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.Notification;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -84,6 +85,9 @@ public class IdleNotifierPlugin extends Plugin
 
 	@Inject
 	private IdleNotifierConfig config;
+
+	@Inject
+	private ConfigManager configManager;
 
 	private Instant lastAnimating;
 	private int lastAnimation = IDLE;
@@ -117,6 +121,7 @@ public class IdleNotifierPlugin extends Plugin
 	{
 		// can't tell when 6hr will be if enabled while already logged in
 		sixHourWarningTime = null;
+		migrateConfig();
 	}
 
 	@Subscribe
@@ -548,74 +553,32 @@ public class IdleNotifierPlugin extends Plugin
 
 		if (checkLowHitpoints())
 		{
-			if (config.getCustomizableHitpointsNotification().isEnabled())
-			{
-				notifier.notify(config.getCustomizableHitpointsNotification(), "You have low hitpoints!");
-			}
-			else
-			{
-				notifier.notify("You have low hitpoints!");
-			}
+			notifier.notify(config.getHitpointsNotification(), "You have low hitpoints!");
 		}
 
 		if (checkLowPrayer())
 		{
-			if (config.getCustomizablePrayerNotification().isEnabled())
-			{
-				notifier.notify(config.getCustomizablePrayerNotification(), "You have low prayer!");
-			}
-			else
-			{
-				notifier.notify("You have low prayer!");
-			}
+			notifier.notify(config.getPrayerNotification(), "You have low prayer!");
 		}
 
 		if (checkLowEnergy())
 		{
-			if (config.getCustomizableLowEnergyNotification().isEnabled())
-			{
-				notifier.notify(config.getCustomizableLowEnergyNotification(), "You have low run energy!");
-			}
-			else
-			{
-				notifier.notify("You have low run energy!");
-			}
+			notifier.notify(config.getLowEnergyNotification(), "You have low run energy!");
 		}
 
 		if (checkHighEnergy())
 		{
-			if (config.getCustomizableHighEnergyNotification().isEnabled())
-			{
-				notifier.notify(config.getCustomizableHighEnergyNotification(), "You have restored run energy!");
-			}
-			else
-			{
-				notifier.notify("You have restored run energy!");
-			}
+			notifier.notify(config.getCustomizableHighEnergyNotification(), "You have restored run energy!");
 		}
 
 		if (checkLowOxygen())
 		{
-			if (config.getCustomizableOxygenNotification().isEnabled())
-			{
-				notifier.notify(config.getCustomizableOxygenNotification(), "You have low oxygen!");
-			}
-			else
-			{
-				notifier.notify("You have low oxygen!");
-			}
+			notifier.notify(config.getCustomizableOxygenNotification(), "You have low oxygen!");
 		}
 
 		if (checkFullSpecEnergy())
 		{
-			if (config.getCustomizableSpecNotification().isEnabled())
-			{
-				notifier.notify(config.getCustomizableSpecNotification(), "You have restored spec energy!");
-			}
-			else
-			{
-				notifier.notify("You have restored spec energy!");
-			}
+			notifier.notify(config.getCustomizableSpecNotification(), "You have restored spec energy!");
 		}
 	}
 
@@ -628,6 +591,83 @@ public class IdleNotifierPlugin extends Plugin
 			lastAnimation = WOODCUTTING_RUNE;
 			lastAnimating = Instant.now();
 		}
+	}
+
+	private void migrateConfig()
+	{
+		String migrated = configManager.getConfiguration(IdleNotifierConfig.GROUP, "migrated");
+		if (migrated != null && !"1".equals(migrated))
+		{
+			return;
+		}
+
+		int hitpointsThreshold = configManager.getConfiguration(IdleNotifierConfig.GROUP, "hitpoints", int.class);
+		if (hitpointsThreshold == 0)
+		{
+			configManager.setConfiguration(IdleNotifierConfig.GROUP, "hitpoints", 1);
+			configManager.setConfiguration(IdleNotifierConfig.GROUP, "hitpointsNotification", Notification.OFF);
+		}
+		else
+		{
+			configManager.setConfiguration(IdleNotifierConfig.GROUP, "hitpointsNotification", Notification.ON);
+		}
+
+		int prayerThreshold = configManager.getConfiguration(IdleNotifierConfig.GROUP, "prayer", int.class);
+		if (prayerThreshold == 0)
+		{
+			configManager.setConfiguration(IdleNotifierConfig.GROUP, "prayer", 1);
+			configManager.setConfiguration(IdleNotifierConfig.GROUP, "prayerNotification", Notification.OFF);
+		}
+		else
+		{
+			configManager.setConfiguration(IdleNotifierConfig.GROUP, "prayerNotification", Notification.ON);
+		}
+
+		int lowEnergyThreshold = configManager.getConfiguration(IdleNotifierConfig.GROUP, "lowEnergy", int.class);
+		if (lowEnergyThreshold == 100)
+		{
+			configManager.setConfiguration(IdleNotifierConfig.GROUP, "lowEnergy", 0);
+			configManager.setConfiguration(IdleNotifierConfig.GROUP, "lowEnergyNotification", Notification.OFF);
+		}
+		else
+		{
+			configManager.setConfiguration(IdleNotifierConfig.GROUP, "lowEnergyNotification", Notification.ON);
+		}
+
+		int highEnergyThreshold = configManager.getConfiguration(IdleNotifierConfig.GROUP, "highEnergy", int.class);
+		if (highEnergyThreshold == 0)
+		{
+			configManager.setConfiguration(IdleNotifierConfig.GROUP, "highEnergy", 100);
+			configManager.setConfiguration(IdleNotifierConfig.GROUP, "highEnergyNotification", Notification.OFF);
+		}
+		else
+		{
+			configManager.setConfiguration(IdleNotifierConfig.GROUP, "highEnergyNotification", Notification.ON);
+		}
+
+		int oxygenThreshold = configManager.getConfiguration(IdleNotifierConfig.GROUP, "oxygen", int.class);
+		if (oxygenThreshold == 0)
+		{
+			configManager.setConfiguration(IdleNotifierConfig.GROUP, "oxygen", 1);
+			configManager.setConfiguration(IdleNotifierConfig.GROUP, "oxygenNotification", Notification.OFF);
+		}
+		else
+		{
+			configManager.setConfiguration(IdleNotifierConfig.GROUP, "oxygenNotification", Notification.ON);
+		}
+
+		int specThreshold = configManager.getConfiguration(IdleNotifierConfig.GROUP, "spec", int.class);
+		if (specThreshold == 0)
+		{
+			configManager.setConfiguration(IdleNotifierConfig.GROUP, "spec", 1);
+			configManager.setConfiguration(IdleNotifierConfig.GROUP, "specNotification", Notification.OFF);
+		}
+		else
+		{
+			configManager.setConfiguration(IdleNotifierConfig.GROUP, "specNotification", Notification.ON);
+		}
+
+		configManager.setConfiguration(IdleNotifierConfig.GROUP, "migrated", 2);
 	}
 
 	private void checkNpcInteraction(final NPC target)
