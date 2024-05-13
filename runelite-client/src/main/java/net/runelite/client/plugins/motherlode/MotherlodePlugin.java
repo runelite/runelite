@@ -86,7 +86,7 @@ import net.runelite.http.api.loottracker.LootRecordType;
 
 @PluginDescriptor(
 	name = "Motherlode Mine",
-	description = "Show helpful information inside the Motherload Mine",
+	description = "Show helpful information inside the Motherlode Mine",
 	tags = {"pay", "dirt", "mining", "mlm", "skilling", "overlay"},
 	enabledByDefault = false
 )
