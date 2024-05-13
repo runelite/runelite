@@ -66,6 +66,7 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.FocusChanged;
@@ -387,6 +388,16 @@ public class GroundItemsPlugin extends Plugin
 		final int alchPrice = itemComposition.getHaPrice();
 		final int despawnTime = item.getDespawnTime() - client.getTickCount();
 		final int visibleTime = item.getVisibleTime() - client.getTickCount();
+		int ownership = item.getOwnership();
+		final int accountType = client.getVarbitValue(Varbits.ACCOUNT_TYPE);
+		boolean isGim = accountType >= 4 && accountType <= 6; // ~is_group_iron
+
+		// from ~script7240
+		if (ownership == TileItem.OWNERSHIP_GROUP && !isGim)
+		{
+			// non-gims see loot from other people as "group" loop since they are both group -1.
+			ownership = TileItem.OWNERSHIP_OTHER;
+		}
 
 		final GroundItem groundItem = GroundItem.builder()
 			.id(itemId)
@@ -397,7 +408,7 @@ public class GroundItemsPlugin extends Plugin
 			.haPrice(alchPrice)
 			.height(tile.getItemLayer().getHeight())
 			.tradeable(itemComposition.isTradeable())
-			.ownership(item.getOwnership())
+			.ownership(ownership)
 			.isPrivate(item.isPrivate())
 			.spawnTime(Instant.now())
 			.stackable(itemComposition.isStackable())
