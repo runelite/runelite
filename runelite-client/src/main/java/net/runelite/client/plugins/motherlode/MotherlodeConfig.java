@@ -65,31 +65,11 @@ public interface MotherlodeConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "showSack",
-		name = "Show pay-dirt sack",
-		description = "Configures whether the pay-dirt sack is displayed or not."
-	)
-	default boolean showSack()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "showMiningStats",
 		name = "Show mining session stats",
 		description = "Configures whether to display mining session stats"
 	)
 	default boolean showMiningStats()
-	{
-		return true;
-	}
-
-	@ConfigItem(
-		keyName = "showDepositsLeft",
-		name = "Show deposits left",
-		description = "Displays deposits left before sack is full"
-	)
-	default boolean showDepositsLeft()
 	{
 		return true;
 	}
