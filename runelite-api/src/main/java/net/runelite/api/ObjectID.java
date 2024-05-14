@@ -12676,6 +12676,8 @@ public final class ObjectID
 	public static final int CUPBOARD_23687 = 23687;
 	public static final int CUPBOARD_23688 = 23688;
 	public static final int CUPBOARD_23689 = 23689;
+	public static final int FOOD_BARREL = 23690;
+	public static final int GANGPLANK_23691 = 23691;
 	public static final int CUBE_PILE = 23694;
 	public static final int CYLINDER_PILE = 23695;
 	public static final int ICOSAHEDRON_PILE = 23696;
@@ -15179,7 +15181,7 @@ public final class ObjectID
 	public static final int VINE_28856 = 28856;
 	public static final int ROPE_LADDER_28857 = 28857;
 	public static final int ROPE_LADDER_28858 = 28858;
-	public static final int SERVANTS_MONEYBAG = 28859;
+	public static final int SERVANTS_MONEY_BAG = 28859;
 	public static final int BANK_CHEST_28861 = 28861;
 	public static final int TABLE_28862 = 28862;
 	public static final int TABLE_28863 = 28863;
@@ -25152,7 +25154,7 @@ public final class ObjectID
 	public static final int EMPTY_FOOD_BASKET = 51749;
 	public static final int FOOD_BASKET_51750 = 51750;
 	public static final int EMPTY_FOOD_POT = 51751;
-	public static final int FOOD_BARREL = 51752;
+	public static final int FOOD_BARREL_51752 = 51752;
 	public static final int EMPTY_FOOD_BARREL = 51753;
 	public static final int FOOD_BASKET_51754 = 51754;
 	public static final int EMPTY_FOOD_BASKET_51755 = 51755;
