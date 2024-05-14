@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.timetracking.clocks;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Comparators;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -34,7 +35,6 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import javax.inject.Inject;
 import javax.swing.SwingUtilities;
-import joptsimple.internal.Strings;
 import lombok.Getter;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
