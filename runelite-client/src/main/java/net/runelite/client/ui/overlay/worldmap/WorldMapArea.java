@@ -76,7 +76,9 @@ public enum WorldMapArea
 	THE_ABYSS("The Abyss"),
 	KHARIDIAN_DESERT_UNDERGROUND("Kharidian Desert Underground"),
 	GHORROCK_PRISON("Ghorrock Prison"),
-	LASSAR_UNDERCITY("Lassar Undercity");
+	LASSAR_UNDERCITY("Lassar Undercity"),
+	CAM_TORUM("Cam Torum"),
+	NEYPOTZLI("Neypotzli");
 
 	private static final WorldMapArea[] AREAS = values();
 
