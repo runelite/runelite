@@ -697,9 +697,9 @@ public final class Varbits
 	/**
 	 * Muted volume restore values
 	 */
-	public static final int MUTED_MUSIC_VOLUME = 9666;
-	public static final int MUTED_SOUND_EFFECT_VOLUME = 9674;
-	public static final int MUTED_AREA_EFFECT_VOLUME = 9675;
+	public static final int MUTED_MUSIC_VOLUME = 12426;
+	public static final int MUTED_SOUND_EFFECT_VOLUME = 12427;
+	public static final int MUTED_AREA_EFFECT_VOLUME = 12428;
 
 	/**
 	 * Parasite infection status during nightmare of ashihama bossfight
