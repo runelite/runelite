@@ -1692,10 +1692,10 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.solution("Dig anywhere in Yu'biusk. Fairy ring BLQ.")
 			.build(),
 		CrypticClue.builder()
-			.text("Search the Bookshelf with a skull on it inside the Burrow.")
-			.location(new WorldPoint(1569, 9460, 0))
-			.objectId(ObjectID.BOOKSHELF_51736)
-			.solution("Search the bookshelf in the basement of the Hunter Guild.")
+			.text("Search the food barrel at the top of the Hunter Guild.")
+			.location(new WorldPoint(1560, 3048, 2))
+			.objectId(ObjectID.FOOD_BARREL)
+			.solution("Search the food barrel at the top of the Hunter Guild.")
 			.build(),
 		CrypticClue.builder()
 			.text("Are you somewhat entertained?")
