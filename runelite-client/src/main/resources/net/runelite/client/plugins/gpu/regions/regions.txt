@@ -239,3 +239,7 @@ r 45 71
 // pyramid plunder
 n
 r 30 69
+
+// waterbirth dungeon
+n
+R 28 68 30 68
