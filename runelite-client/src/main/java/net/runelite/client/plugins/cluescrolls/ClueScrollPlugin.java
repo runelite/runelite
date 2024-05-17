@@ -693,7 +693,7 @@ public class ClueScrollPlugin extends Plugin
 	@Subscribe
 	public void onCommandExecuted(CommandExecuted commandExecuted)
 	{
-		if (developerMode && commandExecuted.getCommand().equals("clue"))
+		if (developerMode && commandExecuted.getCommand().equalsIgnoreCase("clue"))
 		{
 			var text = String.join(" ", commandExecuted.getArguments());
 

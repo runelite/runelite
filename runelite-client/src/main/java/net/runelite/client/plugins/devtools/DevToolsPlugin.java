@@ -316,7 +316,7 @@ public class DevToolsPlugin extends Plugin
 	{
 		String[] args = commandExecuted.getArguments();
 
-		switch (commandExecuted.getCommand())
+		switch (commandExecuted.getCommand().toLowerCase())
 		{
 			case "logger":
 			{
