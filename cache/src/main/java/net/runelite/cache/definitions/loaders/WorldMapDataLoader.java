@@ -67,7 +67,7 @@ public class WorldMapDataLoader
 		zoneDefinition.displaySquareX = in.readUnsignedShort();
 		zoneDefinition.displaySquareZ = in.readUnsignedShort();
 		zoneDefinition.displayZoneX = in.readUnsignedByte();
-		zoneDefinition.displayZoneY = in.readUnsignedByte();
+		zoneDefinition.displayZoneZ = in.readUnsignedByte();
 		zoneDefinition.sourceSquareX = in.readUnsignedShort();
 		zoneDefinition.sourceSquareZ = in.readUnsignedShort();
 		zoneDefinition.sourceZoneX = in.readUnsignedByte();

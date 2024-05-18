@@ -32,7 +32,7 @@ import lombok.ToString;
 public class ZoneDefinition extends AbstractWorldMapDataDefinition
 {
 	public int displayZoneX;
-	public int displayZoneY;
+	public int displayZoneZ;
 	public int sourceZoneX;
 	public int sourceZoneZ;
 

@@ -61,7 +61,7 @@ public class WorldMapCompositeDefinition
 			if (squareX == zone.sourceSquareX && squareZ == zone.sourceSquareZ && zoneX == zone.sourceZoneX && zoneZ == zone.sourceZoneZ)
 			{
 				int shiftX = ((zone.displaySquareX - zone.sourceSquareX) * 64) + ((zone.displayZoneX - zone.sourceZoneX) * 8);
-				int shiftZ = ((zone.displaySquareZ - zone.sourceSquareZ) * 64) + ((zone.displayZoneY - zone.sourceZoneZ) * 8);
+				int shiftZ = ((zone.displaySquareZ - zone.sourceSquareZ) * 64) + ((zone.displayZoneZ - zone.sourceZoneZ) * 8);
 				offset = new Position(shiftX, shiftZ, zone.getMinLevel());
 			}
 		}
