@@ -43,7 +43,14 @@ public class WorldPointMapper
 			{
 				continue;
 			}
-			PROCESSED_MAPPINGS.computeIfAbsent(mapping.getMapChunkID(), k -> new ArrayList<>()).add(mapping);
+			for (int x = mapping.getMinRegionXMap(); x <= mapping.getMaxRegionXMap(); x++)
+			{
+				for (int y = mapping.getMinRegionYMap(); y <= mapping.getMaxRegionYMap(); y++)
+				{
+					int mapRegionID = (x << 8) | y;
+					PROCESSED_MAPPINGS.computeIfAbsent(mapRegionID, k -> new ArrayList<>()).add(mapping);
+				}
+			}
 		}
 	}
 
@@ -67,8 +74,7 @@ public class WorldPointMapper
 	public static WorldPointWithWorldMapArea getMapWorldPointFromRealWorldPoint(WorldPoint realWorldPoint)
 	{
 		return Arrays.stream(WorldMapPointMapping.values())
-			.filter(mapping -> mapping.getWorldChunkID() == realWorldPoint.getRegionID())
-			.filter(mapping -> isRealWorldPointInMappingArea(mapping, realWorldPoint))
+			.filter(mapping -> mapping.worldContainsWorldPoint(realWorldPoint))
 			.findFirst()
 			.map(mapping -> convertToMapWorldPointWithWorldMapArea(mapping, realWorldPoint))
 			.orElse(new WorldPointWithWorldMapArea(realWorldPoint, WorldMapArea.ANY));
@@ -86,7 +92,7 @@ public class WorldPointMapper
 		return Arrays.stream(WorldMapPointMapping.values())
 			.filter(mapping -> mapping.getArea() == worldMapArea || worldMapArea == WorldMapArea.ANY)
 			.filter(mapping -> !mapping.isMirror())
-			.filter(mapping -> isWorldMapPointInMappingArea(mapping, mapWorldPoint))
+			.filter(mapping -> mapping.mapContainsWorldPoint(mapWorldPoint))
 			.findFirst()
 			.map(mapping -> convertToRealWorldPointWithWorldMapArea(mapping, mapWorldPoint))
 			.orElse(new WorldPointWithWorldMapArea(mapWorldPoint, WorldMapArea.ANY));
@@ -106,7 +112,7 @@ public class WorldPointMapper
 			return false;
 		}
 
-		return isInMappingArea(mapping, realWorldPoint);
+		return mapping.worldContainsWorldPoint(realWorldPoint);
 	}
 
 	/**
@@ -118,22 +124,7 @@ public class WorldPointMapper
 	 */
 	private static boolean isWorldMapPointInMappingArea(WorldMapPointMapping mapping, WorldPoint mapWorldPoint)
 	{
-		int shiftedWorldX = mapWorldPoint.getX() - mapping.getShiftX();
-		int shiftedWorldY = mapWorldPoint.getY() - mapping.getShiftY();
-		WorldPoint shiftedWorldPoint = new WorldPoint(shiftedWorldX, shiftedWorldY, mapWorldPoint.getPlane());
-
-		if (shiftedWorldPoint.getRegionID() != mapping.getMapChunkID())
-		{
-			return false;
-		}
-
-		return isInMappingArea(mapping, shiftedWorldPoint);
-	}
-
-	private static boolean isInMappingArea(WorldMapPointMapping mapping, WorldPoint worldPoint)
-	{
-		return worldPoint.getRegionX() >= mapping.getMinX() && worldPoint.getRegionX() < mapping.getMaxX() &&
-			worldPoint.getRegionY() >= mapping.getMinY() && worldPoint.getRegionY() < mapping.getMaxY();
+		return mapping.mapContainsRegion(mapWorldPoint.getRegionID());
 	}
 
 	/**
@@ -145,9 +136,16 @@ public class WorldPointMapper
 	 */
 	private static WorldPointWithWorldMapArea convertToMapWorldPointWithWorldMapArea(WorldMapPointMapping mapping, WorldPoint realWorldPoint)
 	{
-		WorldPoint mappedPoint = WorldPoint.fromRegion(mapping.getMapChunkID(),
-			realWorldPoint.getRegionX() + mapping.getShiftX(),
-			realWorldPoint.getRegionY() + mapping.getShiftY(),
+		int shiftedX = realWorldPoint.getRegionX() + (mapping.getMinChunkXMap() - mapping.getMinChunkXWorld());
+		int shiftedY = realWorldPoint.getRegionY() + (mapping.getMinChunkYMap() - mapping.getMinChunkYWorld());
+		int x = realWorldPoint.getRegionID() >> 8;
+		int y = realWorldPoint.getRegionID() & 0xFF;
+		int shiftedRegionX = mapping.getMinRegionXMap() + (x - mapping.getMinRegionXWorld());
+		int shiftedRegionY = mapping.getMinRegionYMap() + (y - mapping.getMinRegionYWorld());
+		int shiftedRegionId = (shiftedRegionX << 8) | shiftedRegionY;
+		WorldPoint mappedPoint = WorldPoint.fromRegion(shiftedRegionId,
+			shiftedX,
+			shiftedY,
 			realWorldPoint.getPlane());
 		return new WorldPointWithWorldMapArea(mappedPoint, mapping.getArea());
 	}
@@ -161,11 +159,17 @@ public class WorldPointMapper
 	 */
 	private static WorldPointWithWorldMapArea convertToRealWorldPointWithWorldMapArea(WorldMapPointMapping mapping, WorldPoint mapWorldPoint)
 	{
-		int shiftedWorldX = mapWorldPoint.getX() - mapping.getShiftX();
-		int shiftedWorldY = mapWorldPoint.getY() - mapping.getShiftY();
-		WorldPoint shiftedWorldPoint = new WorldPoint(shiftedWorldX, shiftedWorldY, mapWorldPoint.getPlane());
-		WorldPoint realWorldPoint = WorldPoint.fromRegion(mapping.getWorldChunkID(), shiftedWorldPoint.getRegionX(), shiftedWorldPoint.getRegionY(), mapping.getPlane());
-
-		return new WorldPointWithWorldMapArea(realWorldPoint, mapping.getArea());
+		int shiftedX = mapWorldPoint.getRegionX() + (mapping.getMinChunkXWorld() - mapping.getMinChunkXMap());
+		int shiftedY = mapWorldPoint.getRegionY() + (mapping.getMinChunkYWorld() - mapping.getMinChunkYMap());
+		int x = mapWorldPoint.getRegionID() >> 8;
+		int y = mapWorldPoint.getRegionID() & 0xFF;
+		int shiftedRegionX = mapping.getMinRegionXWorld() + (x - mapping.getMinRegionXMap());
+		int shiftedRegionY = mapping.getMinRegionYWorld() + (y - mapping.getMinRegionYMap());
+		int shiftedRegionId = (shiftedRegionX << 8) | shiftedRegionY;
+		WorldPoint mappedPoint = WorldPoint.fromRegion(shiftedRegionId,
+			shiftedX,
+			shiftedY,
+			mapping.getPlane());
+		return new WorldPointWithWorldMapArea(mappedPoint, mapping.getArea());
 	}
 }

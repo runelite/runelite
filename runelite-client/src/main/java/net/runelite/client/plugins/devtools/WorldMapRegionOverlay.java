@@ -150,12 +150,12 @@ class WorldMapRegionOverlay extends Overlay
 			}
 			regionMappedForArea = true;
 
-			graphics.setColor(YELLOW_TRANSLUCENT);
+			graphics.setColor(Color.RED);
 
-			int pixelShiftMinX = (int) ((mapping.getMinX() + mapping.getShiftX()) * pixelsPerTile);
-			int pixelShiftMaxX = (int) ((mapping.getMaxX() + mapping.getShiftX()) * pixelsPerTile);
-			int pixelShiftMinY = (int) ((mapping.getMinY() + mapping.getShiftY()) * pixelsPerTile);
-			int pixelShiftMaxY = (int) ((mapping.getMaxY() + mapping.getShiftY()) * pixelsPerTile);
+			int pixelShiftMinX = (int) (mapping.getMinChunkXMap() * pixelsPerTile);
+			int pixelShiftMaxX = (int) (mapping.getMaxChunkXMap() * pixelsPerTile);
+			int pixelShiftMinY = (int) (mapping.getMinChunkYMap() * pixelsPerTile);
+			int pixelShiftMaxY = (int) (mapping.getMaxChunkYMap() * pixelsPerTile);
 
 			int rectX = ((int) (xTileOffset * pixelsPerTile)) + pixelShiftMinX + (int) worldMapRect.getX();
 			int rectY = (worldMapRect.height - (int) (yTileOffset * pixelsPerTile)) - pixelShiftMaxY + (int) worldMapRect.getY();
@@ -165,7 +165,7 @@ class WorldMapRegionOverlay extends Overlay
 
 			graphics.drawRect(rectX, rectY, rectWidth, rectHeight);
 
-			String mappingLabel = "M:" + mapping.getWorldChunkID();
+			String mappingLabel = "M:" + mapping.name();
 			drawRegionText(graphics, mappingLabel, rectX, rectY);
 		}
 
