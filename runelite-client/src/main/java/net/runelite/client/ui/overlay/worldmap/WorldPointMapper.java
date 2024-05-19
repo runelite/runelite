@@ -112,35 +112,6 @@ public class WorldPointMapper
 	}
 
 	/**
-	 * Checks if a given mapping applies to the specified real {@link WorldPoint}.
-	 *
-	 * @param mapping        The world map mapping to check.
-	 * @param realWorldPoint The real WorldPoint to be checked against the mapping.
-	 * @return {@code true} if the mapping applies to the real WorldPoint; {@code false} otherwise.
-	 */
-	private static boolean isRealWorldPointInMappingArea(WorldMapPointMapping mapping, WorldPoint realWorldPoint)
-	{
-		if (mapping.getPlane() != -1 && mapping.getPlane() != realWorldPoint.getPlane())
-		{
-			return false;
-		}
-
-		return mapping.worldContainsWorldPoint(realWorldPoint);
-	}
-
-	/**
-	 * Checks if a given mapping applies to the specified world map {@link WorldPoint}.
-	 *
-	 * @param mapping       The mapping to check.
-	 * @param mapWorldPoint The map point to be checked against the mapping.
-	 * @return {@code true} if the mapping matches the map point; {@code false} otherwise.
-	 */
-	private static boolean isWorldMapPointInMappingArea(WorldMapPointMapping mapping, WorldPoint mapWorldPoint)
-	{
-		return mapping.mapContainsRegion(mapWorldPoint.getRegionID());
-	}
-
-	/**
 	 * Converts the given mapping and real WorldPoint to a {@link WorldPointWithWorldMapArea}.
 	 *
 	 * @param mapping        The mapping to use for conversion.
