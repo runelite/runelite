@@ -173,6 +173,14 @@ public interface Client extends OAuthApi, GameEngine
 	void stopNow();
 
 	/**
+	 * Gets the display name of the active account when launched from the Jagex launcher.
+	 *
+	 * @return The active account's display name, or {@code null} if not launched from the Jagex launcher
+	 */
+	@Nullable
+	String getLauncherDisplayName();
+
+	/**
 	 * DEPRECATED. See getAccountHash instead.
 	 * Gets the current logged in username.
 	 *
@@ -1878,8 +1886,65 @@ public interface Client extends OAuthApi, GameEngine
 	EnumSet<WorldType> getWorldType();
 
 	/**
+	 * Get the camera mode
+	 * @return 0 for normal, 1 for free camera
+	 */
+	int getCameraMode();
+
+	/**
+	 * Set the camera mode
+	 * @param mode 0 for normal, 1 for free camera
+	 */
+	void setCameraMode(int mode);
+
+	/**
+	 * Get the camera focus point x
+	 * Typically this is the player position, but can be other points in cutscenes or in free camera mode.
+	 * @return
+	 */
+	double getCameraFocalPointX();
+
+	/**
+	 * Sets the camera focus point x. Requires the {@link #getCameraMode()} to be free camera.
+	 * @param x
+	 */
+	void setCameraFocalPointX(double x);
+
+	/**
+	 * Get the camera focus point y
+	 * Typically this is the player position, but can be other points in cutscenes or in free camera mode.
+	 * @return
+	 */
+	double getCameraFocalPointY();
+
+	/**
+	 * Sets the camera focus point y. Requires the {@link #getCameraMode()} to be free camera.
+	 * @param y
+	 */
+	void setCameraFocalPointY(double y);
+
+	/**
+	 * Get the camera focus point z
+	 * Typically this is the player position, but can be other points in cutscenes or in free camera mode.
+	 * @return
+	 */
+	double getCameraFocalPointZ();
+
+	/**
+	 * Sets the camera focus point z. Requires the {@link #getCameraMode()} to be free camera.
+	 * @param z
+	 */
+	void setCameraFocalPointZ(double z);
+
+	/**
+	 * Sets the normal moving speed when using oculus orb (default value is 12)
+	 */
+	void setFreeCameraSpeed(int speed);
+
+	/**
 	 * Gets the enabled state for the Oculus orb mode
 	 */
+	@Deprecated
 	int getOculusOrbState();
 
 	/**
@@ -1887,21 +1952,25 @@ public interface Client extends OAuthApi, GameEngine
 	 *
 	 * @param state boolean enabled value
 	 */
+	@Deprecated
 	void setOculusOrbState(int state);
 
 	/**
 	 * Sets the normal moving speed when using oculus orb (default value is 12)
 	 */
+	@Deprecated
 	void setOculusOrbNormalSpeed(int speed);
 
 	/**
 	 * Gets local X coord where the camera is pointing when the Oculus orb is active
 	 */
+	@Deprecated
 	int getOculusOrbFocalPointX();
 
 	/**
 	 * Gets local Y coord where the camera is pointing when the Oculus orb is active
 	 */
+	@Deprecated
 	int getOculusOrbFocalPointY();
 
 	/**

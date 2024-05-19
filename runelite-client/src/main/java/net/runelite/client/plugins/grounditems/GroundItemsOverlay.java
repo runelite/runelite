@@ -39,6 +39,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
 import net.runelite.api.Client;
+import net.runelite.api.ItemID;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
@@ -168,7 +169,7 @@ public class GroundItemsOverlay extends Overlay
 		plugin.setHiddenBoxBounds(null);
 		plugin.setHighlightBoxBounds(null);
 
-		final boolean onlyShowLoot = config.onlyShowLoot();
+		final boolean onlyShowLoot = config.onlyShowOwnItems();
 		final DespawnTimerMode groundItemTimers = config.groundItemTimers();
 		final boolean outline = config.textOutline();
 
@@ -225,34 +226,38 @@ public class GroundItemsOverlay extends Overlay
 					.append(')');
 			}
 
-			if (config.priceDisplayMode() == PriceDisplayMode.BOTH)
+			if (item.getId() != ItemID.COINS_995)
 			{
-				if (item.getGePrice() > 0)
+				PriceDisplayMode displayMode = config.priceDisplayMode();
+				if (displayMode == PriceDisplayMode.BOTH)
 				{
-					itemStringBuilder.append(" (GE: ")
-						.append(QuantityFormatter.quantityToStackSize(item.getGePrice()))
-						.append(" gp)");
-				}
+					if (item.getGePrice() > 0)
+					{
+						itemStringBuilder.append(" (GE: ")
+							.append(QuantityFormatter.quantityToStackSize(item.getGePrice()))
+							.append(" gp)");
+					}
 
-				if (item.getHaPrice() > 0)
-				{
-					itemStringBuilder.append(" (HA: ")
-						.append(QuantityFormatter.quantityToStackSize(item.getHaPrice()))
-						.append(" gp)");
+					if (item.getHaPrice() > 0)
+					{
+						itemStringBuilder.append(" (HA: ")
+							.append(QuantityFormatter.quantityToStackSize(item.getHaPrice()))
+							.append(" gp)");
+					}
 				}
-			}
-			else if (config.priceDisplayMode() != PriceDisplayMode.OFF)
-			{
-				final int price = config.priceDisplayMode() == PriceDisplayMode.GE
-					? item.getGePrice()
-					: item.getHaPrice();
-
-				if (price > 0)
+				else if (displayMode != PriceDisplayMode.OFF)
 				{
-					itemStringBuilder
-						.append(" (")
-						.append(QuantityFormatter.quantityToStackSize(price))
-						.append(" gp)");
+					final int price = displayMode == PriceDisplayMode.GE
+						? item.getGePrice()
+						: item.getHaPrice();
+
+					if (price > 0)
+					{
+						itemStringBuilder
+							.append(" (")
+							.append(QuantityFormatter.quantityToStackSize(price))
+							.append(" gp)");
+					}
 				}
 			}
 
@@ -406,9 +411,8 @@ public class GroundItemsOverlay extends Overlay
 		final Instant now = Instant.now();
 		final Instant despawnTime = spawnTime.plus(groundItem.getDespawnTime());
 
-		if (groundItem.getVisibleTime() == null)
+		if (groundItem.isPrivate())
 		{
-			// if there is no visible time, it is always private
 			if (despawnTime.isAfter(now))
 			{
 				return PRIVATE_TIMER_COLOR;

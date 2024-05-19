@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,26 +22,22 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.mining;
+package net.runelite.cache.definitions;
 
-import lombok.AccessLevel;
-import lombok.Getter;
+import java.util.List;
+import lombok.Data;
+import net.runelite.cache.region.Position;
 
-enum Rock
+@Data
+public class WorldMapDefinition
 {
-	ROCK(0),
-	MLM_ORE_VEIN(150),
-	ORE_VEIN(150),
-	AMETHYST(120),
-	DAEYALT_ESSENCE(0),
-	BARRONITE(140),
-	;
-
-	@Getter(AccessLevel.PACKAGE)
-	private final int zOffset;
-
-	Rock(int zOffset)
-	{
-		this.zOffset = zOffset;
-	}
+	public String safeName;
+	public String name;
+	public int emptyTileColor;
+	public int backgroundColor;
+	public int defaultZoom;
+	public int fileId;
+	public boolean isSurface;
+	public List<WorldMapTypeBase> regionList;
+	public Position position;
 }

@@ -538,22 +538,72 @@ public class ConfigManager
 				}
 
 				log.info("Profile '{}' (sync: {}, active: {}, id: {})", p.getName(), p.isSync(), p.isActive(), p.getId());
+			}
 
-				// --profile
-				if (configProfileName != null)
+			if (rsProfile == null)
+			{
+				rsProfile = lock.createProfile(RSPROFILE_NAME, RSPROFILE_ID);
+			}
+			rsProfile.setSync(true);
+
+			// synced rsprofile need to be fetched if outdated
+			syncRemote(lock, rsProfile, remoteProfiles);
+
+			this.rsProfile = rsProfile;
+			rsProfileConfigProfile = new ConfigData(ProfileManager.profileConfigFile(rsProfile));
+
+			final String launcherDisplayName = client != null ? client.getLauncherDisplayName() : null;
+			// --profile
+			if (configProfileName != null)
+			{
+				profile = lock.findProfile(p -> !p.isInternal() && configProfileName.equals(p.getName()));
+			}
+			else
+			{
+				// select a config profile associated with the display name from the jagex launcher, if available
+				if (launcherDisplayName != null)
 				{
-					if (p.getName().equals(configProfileName))
+					profile = lock.findProfile(p ->
 					{
-						profile = p;
-					}
+						if (p.isInternal())
+						{
+							return false;
+						}
+
+						final List<String> defaultRsProfilesForProfile = p.getDefaultForRsProfiles();
+						if (defaultRsProfilesForProfile == null)
+						{
+							return false;
+						}
+
+						// Calling getConfiguration before a profile has been loaded is usually invalid. Because
+						// rsProfile is loaded above before this is run and we are only attempting to load rsProfile
+						// keys, it is safe to be called.
+						for (final String defaultRsProfile : defaultRsProfilesForProfile)
+						{
+							final RuneScapeProfileType rsProfileType = getConfiguration(RSPROFILE_GROUP, defaultRsProfile, RSPROFILE_TYPE, RuneScapeProfileType.class);
+							if (rsProfileType != RuneScapeProfileType.STANDARD)
+							{
+								continue;
+							}
+
+							final String profileDisplayName = getConfiguration(RSPROFILE_GROUP, defaultRsProfile, RSPROFILE_DISPLAY_NAME);
+							if (launcherDisplayName.equals(profileDisplayName))
+							{
+								return true;
+							}
+						}
+
+						return false;
+					});
 				}
-				else if (p.isActive())
+				if (profile == null)
 				{
-					profile = p;
+					profile = lock.findProfile(p -> !p.isInternal() && p.isActive());
 				}
-				else if (profile == null)
+				if (profile == null)
 				{
-					profile = p;
+					profile = lock.findProfile(p -> !p.isInternal());
 				}
 			}
 
@@ -574,20 +624,11 @@ public class ConfigManager
 				log.info("Creating profile: {} ({})", profile.getName(), profile.getId());
 			}
 
-			if (rsProfile == null)
-			{
-				rsProfile = lock.createProfile(RSPROFILE_NAME, RSPROFILE_ID);
-			}
-			rsProfile.setSync(true);
-
-			// synced profiles need to be fetched if outdated
+			// synced profile need to be fetched if outdated
 			syncRemote(lock, profile, remoteProfiles);
-			syncRemote(lock, rsProfile, remoteProfiles);
 
 			this.profile = profile;
-			this.rsProfile = rsProfile;
 			configProfile = new ConfigData(ProfileManager.profileConfigFile(profile));
-			rsProfileConfigProfile = new ConfigData(ProfileManager.profileConfigFile(rsProfile));
 		}
 
 		eventBus.post(new ProfileChanged());

@@ -52,7 +52,7 @@ import net.runelite.client.util.ColorUtil;
 public class BlastMineRockOverlay extends Overlay
 {
 	private static final int MAX_DISTANCE = 16;
-	private static final int WARNING_DISTANCE = 2;
+	private static final int WARNING_DISTANCE = 1;
 	private static final ImmutableSet<Integer> WALL_OBJECTS = ImmutableSet.of(
 		NullObjectID.NULL_28570, NullObjectID.NULL_28571, NullObjectID.NULL_28572, NullObjectID.NULL_28573, NullObjectID.NULL_28574,
 		NullObjectID.NULL_28575, NullObjectID.NULL_28576, NullObjectID.NULL_28577, NullObjectID.NULL_28578,

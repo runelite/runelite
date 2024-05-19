@@ -542,7 +542,7 @@ public class WoodcuttingPlugin extends Plugin
 				case NullObjectID.NULL_34637:
 				case NullObjectID.NULL_34639:
 				{
-					WorldPoint worldPoint = new WorldPoint((locCoord >>> 14) & 0x3FFF, locCoord & 0x3FFF, (locCoord >>> 28) & 0x3);
+					WorldPoint worldPoint = WorldPoint.fromCoord(locCoord);
 					GameObject gameObject = findObject(worldPoint);
 					if (gameObject == null)
 					{

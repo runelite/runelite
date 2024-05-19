@@ -34,7 +34,9 @@ package net.runelite.api;
  */
 public final class VarPlayer
 {
+	public static final int CANNON_STATE = 2;
 	public static final int CANNON_AMMO = 3;
+	public static final int CANNON_COORD = 4;
 	public static final int ATTACK_STYLE = 43;
 	public static final int QUEST_POINTS = 101;
 	/**

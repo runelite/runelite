@@ -2533,8 +2533,7 @@
     11028,
     11029,
     11030,
-    26926,
-    29445
+    26926
   ],
   "banana": [
     1963,
@@ -3149,6 +3148,10 @@
     2993,
     2994,
     2995
+  ],
+  "agility arena ticket": [
+    2996,
+    29480
   ],
   "energy potion": [
     3008,
@@ -8019,6 +8022,22 @@
     24851,
     25533
   ],
+  "prospector helmet": [
+    12013,
+    29472
+  ],
+  "prospector jacket": [
+    12014,
+    29474
+  ],
+  "prospector legs": [
+    12015,
+    29476
+  ],
+  "prospector boots": [
+    12016,
+    29478
+  ],
   "black wizard robe": [
     12449,
     12451
@@ -10984,11 +11003,11 @@
     26146,
     26147
   ],
-  "group iron helm": [
+  "group ironman helm": [
     26156,
     27042
   ],
-  "group iron platebody": [
+  "group ironman platebody": [
     26158,
     26160,
     26162,
@@ -10998,15 +11017,15 @@
     27052,
     27054
   ],
-  "group iron platelegs": [
+  "group ironman platelegs": [
     26166,
     27044
   ],
-  "group iron bracers": [
+  "group ironman bracers": [
     26168,
     27046
   ],
-  "hardcore group iron platebody": [
+  "hardcore group ironman platebody": [
     26172,
     26174,
     26176,
@@ -11921,6 +11940,26 @@
     29246,
     29248,
     29250
+  ],
+  "small meat pouch": [
+    29295,
+    29462
+  ],
+  "large meat pouch": [
+    29297,
+    29464
+  ],
+  "small fur pouch": [
+    29299,
+    29466
+  ],
+  "medium fur pouch": [
+    29301,
+    29468
+  ],
+  "large fur pouch": [
+    29303,
+    29470
   ],
   "blessed bone statuette": [
     29338,

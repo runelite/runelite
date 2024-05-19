@@ -543,4 +543,12 @@ public class WorldPoint
 	{
 		return new WorldArea(this, 1, 1);
 	}
+
+	/**
+	 * Create a WorldPoint from a packed Jagex coordinate
+	 */
+	public static WorldPoint fromCoord(int c)
+	{
+		return new WorldPoint((c >>> 14) & 0x3FFF, c & 0x3FFF, (c >>> 28) & 0x3);
+	}
 }

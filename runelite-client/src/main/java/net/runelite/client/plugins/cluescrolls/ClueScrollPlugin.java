@@ -27,6 +27,7 @@
 package net.runelite.client.plugins.cluescrolls;
 
 import com.google.common.base.MoreObjects;
+import com.google.common.base.Strings;
 import com.google.inject.Binder;
 import com.google.inject.Provides;
 import java.awt.Color;
@@ -47,7 +48,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Named;
-import joptsimple.internal.Strings;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
@@ -695,7 +695,7 @@ public class ClueScrollPlugin extends Plugin
 	{
 		if (developerMode && commandExecuted.getCommand().equals("clue"))
 		{
-			String text = Strings.join(commandExecuted.getArguments(), " ");
+			var text = String.join(" ", commandExecuted.getArguments());
 
 			if (text.isEmpty())
 			{

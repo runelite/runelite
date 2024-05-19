@@ -32,7 +32,6 @@ struct uniform {
   float cameraX;
   float cameraY;
   float cameraZ;
-  int4 sinCosTable[2048];
 };
 
 struct shared_data {
@@ -52,4 +51,11 @@ struct modelinfo {
   int x;        // scene position x
   int y;        // scene position y
   int z;        // scene position z
+};
+
+struct vert {
+  float x;
+  float y;
+  float z;
+  int ahsl;
 };

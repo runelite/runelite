@@ -28,7 +28,6 @@ import java.awt.image.BufferedImage;
 import java.util.regex.Pattern;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
-import joptsimple.internal.Strings;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
 import net.runelite.api.events.ChatMessage;
@@ -160,6 +159,6 @@ public class EmojiPlugin extends Plugin
 			return null;
 		}
 
-		return Strings.join(messageWords, " ");
+		return String.join(" ", messageWords);
 	}
 }
