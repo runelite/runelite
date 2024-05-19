@@ -68,7 +68,7 @@ public class WorldMapLocationOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		if (!plugin.getWorldMapLocation().isActive())
+		if (!plugin.getWorldMapLocation().isActive() && !plugin.getWorldMapMapping().isActive())
 		{
 			return null;
 		}
@@ -105,7 +105,12 @@ public class WorldMapLocationOverlay extends Overlay
 			graphics.drawRect(trueFocusPoint.getX() - 5, trueFocusPoint.getY() - 5, 10, 10);
 		}
 
-		String output = "Center: " + mapCenterWorldPoint.getX() + ", " + mapCenterWorldPoint.getY() + ", " + mapCenterWorldPoint.getPlane();
+		String output = "Center: " + mapWorldPointMapFocus.getX() + ", " + mapWorldPointMapFocus.getY();
+		if (mapCenterWorldPoint.distanceTo2D(mapWorldPointMapFocus) != 0)
+		{
+			output += ". World center: " + mapCenterWorldPoint.getX() + ", " + mapCenterWorldPoint.getY() + ", " + mapCenterWorldPoint.getPlane();
+		}
+
 		graphics.setColor(Color.white);
 		FontMetrics fm = graphics.getFontMetrics();
 		int height = fm.getHeight();

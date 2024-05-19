@@ -65,6 +65,19 @@ public class WorldPointMapper
 		return PROCESSED_MAPPINGS.get(regionId);
 	}
 
+	public static int getWorldRegionIDFromMapRegionID(int worldRegionID, WorldMapPointMapping mapping)
+	{
+		if (!mapping.mapContainsRegion(worldRegionID)) return worldRegionID;
+		// Work out relative shift of X and Y based on shift
+		int x = worldRegionID >> 8;
+		int y = worldRegionID & 0xFF;
+
+		int xShift = x - mapping.getMinRegionXMap();
+		int yShift = y - mapping.getMinRegionYMap();
+
+		return (mapping.getMinRegionXWorld() + xShift) << 8 | (mapping.getMinRegionYWorld() + yShift);
+	}
+
 	/**
 	 * Converts a real {@link WorldPoint} to its corresponding world map WorldPoint.
 	 *
