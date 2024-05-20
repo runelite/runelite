@@ -65,7 +65,7 @@ public class WorldPointMapper
 
 	public static int getWorldRegionIDFromMapRegionID(int worldRegionID, WorldMapPointMapping mapping)
 	{
-		if (!mapContainsRegion(worldRegionID, mapping)) return worldRegionID;
+		if (!mapContainsRegion(mapping, worldRegionID)) return worldRegionID;
 		// Work out relative shift of X and Y based on shift
 		int x = worldRegionID >> 8;
 		int y = worldRegionID & 0xFF;
