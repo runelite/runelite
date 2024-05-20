@@ -31,7 +31,7 @@ import java.util.HashMap;
 import java.util.Map;
 import net.runelite.cache.definitions.FluDefinition;
 import net.runelite.cache.definitions.loaders.FluLoader;
-import net.runelite.cache.definitions.providers.UnderlayProvider;
+import net.runelite.cache.definitions.providers.FluProvider;
 import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.ArchiveFiles;
 import net.runelite.cache.fs.FSFile;
@@ -39,12 +39,12 @@ import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Storage;
 import net.runelite.cache.fs.Store;
 
-public class UnderlayManager implements UnderlayProvider
+public class FluManager implements FluProvider
 {
 	private final Store store;
 	private final Map<Integer, FluDefinition> underlays = new HashMap<>();
 
-	public UnderlayManager(Store store)
+	public FluManager(Store store)
 	{
 		this.store = store;
 	}

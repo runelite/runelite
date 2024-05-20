@@ -31,7 +31,7 @@ import java.util.HashMap;
 import java.util.Map;
 import net.runelite.cache.definitions.FloDefinition;
 import net.runelite.cache.definitions.loaders.FloLoader;
-import net.runelite.cache.definitions.providers.OverlayProvider;
+import net.runelite.cache.definitions.providers.FloProvider;
 import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.ArchiveFiles;
 import net.runelite.cache.fs.FSFile;
@@ -39,7 +39,7 @@ import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Storage;
 import net.runelite.cache.fs.Store;
 
-public class OverlayManager implements OverlayProvider
+public class OverlayManager implements FloProvider
 {
 	private final Store store;
 	private final Map<Integer, FloDefinition> overlays = new HashMap<>();

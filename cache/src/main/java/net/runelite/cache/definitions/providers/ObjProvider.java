@@ -24,9 +24,9 @@
  */
 package net.runelite.cache.definitions.providers;
 
-import net.runelite.cache.definitions.FluDefinition;
+import net.runelite.cache.definitions.ObjDefinition;
 
-public interface UnderlayProvider
+public interface ObjProvider
 {
-	FluDefinition provide(int underlayId);
+	ObjDefinition provide(int itemId);
 }
