@@ -30,8 +30,8 @@ import com.google.gson.GsonBuilder;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import net.runelite.cache.definitions.OverlayDefinition;
-import net.runelite.cache.definitions.loaders.OverlayLoader;
+import net.runelite.cache.definitions.FloDefinition;
+import net.runelite.cache.definitions.loaders.FloLoader;
 import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.ArchiveFiles;
 import net.runelite.cache.fs.FSFile;
@@ -74,8 +74,8 @@ public class OverlayDumper
 
 			for (FSFile file : files.getFiles())
 			{
-				OverlayLoader loader = new OverlayLoader();
-				OverlayDefinition overlay = loader.load(file.getFileId(), file.getContents());
+				FloLoader loader = new FloLoader();
+				FloDefinition overlay = loader.load(file.getFileId(), file.getContents());
 
 				Files.asCharSink(new File(outDir, file.getFileId() + ".json"), Charset.defaultCharset()).write(gson.toJson(overlay));
 				++count;

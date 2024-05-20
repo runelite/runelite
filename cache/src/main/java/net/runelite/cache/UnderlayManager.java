@@ -29,8 +29,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import net.runelite.cache.definitions.UnderlayDefinition;
-import net.runelite.cache.definitions.loaders.UnderlayLoader;
+import net.runelite.cache.definitions.FluDefinition;
+import net.runelite.cache.definitions.loaders.FluLoader;
 import net.runelite.cache.definitions.providers.UnderlayProvider;
 import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.ArchiveFiles;
@@ -42,7 +42,7 @@ import net.runelite.cache.fs.Store;
 public class UnderlayManager implements UnderlayProvider
 {
 	private final Store store;
-	private final Map<Integer, UnderlayDefinition> underlays = new HashMap<>();
+	private final Map<Integer, FluDefinition> underlays = new HashMap<>();
 
 	public UnderlayManager(Store store)
 	{
@@ -60,20 +60,20 @@ public class UnderlayManager implements UnderlayProvider
 
 		for (FSFile file : files.getFiles())
 		{
-			UnderlayLoader loader = new UnderlayLoader();
-			UnderlayDefinition underlay = loader.load(file.getFileId(), file.getContents());
+			FluLoader loader = new FluLoader();
+			FluDefinition underlay = loader.load(file.getFileId(), file.getContents());
 
 			underlays.put(underlay.getId(), underlay);
 		}
 	}
 
-	public Collection<UnderlayDefinition> getUnderlays()
+	public Collection<FluDefinition> getUnderlays()
 	{
 		return Collections.unmodifiableCollection(underlays.values());
 	}
 
 	@Override
-	public UnderlayDefinition provide(int underlayId)
+	public FluDefinition provide(int underlayId)
 	{
 		return underlays.get(underlayId);
 	}

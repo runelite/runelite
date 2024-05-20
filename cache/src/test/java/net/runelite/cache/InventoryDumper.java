@@ -30,8 +30,8 @@ import com.google.gson.GsonBuilder;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import net.runelite.cache.definitions.InventoryDefinition;
-import net.runelite.cache.definitions.loaders.InventoryLoader;
+import net.runelite.cache.definitions.InvDefinition;
+import net.runelite.cache.definitions.loaders.InvLoader;
 import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.ArchiveFiles;
 import net.runelite.cache.fs.FSFile;
@@ -74,8 +74,8 @@ public class InventoryDumper
 
 			for (FSFile file : files.getFiles())
 			{
-				InventoryLoader loader = new InventoryLoader();
-				InventoryDefinition inv = loader.load(file.getFileId(), file.getContents());
+				InvLoader loader = new InvLoader();
+				InvDefinition inv = loader.load(file.getFileId(), file.getContents());
 
 				Files.asCharSink(new File(outDir, inv.id + ".json"), Charset.defaultCharset()).write(gson.toJson(inv));
 				++count;

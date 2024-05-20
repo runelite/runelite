@@ -57,19 +57,19 @@ public class SpotAnimLoader
 	{
 		if (opcode == 1)
 		{
-			def.modelId = stream.readUnsignedShort();
+			def.model = stream.readUnsignedShort();
 		}
 		else if (opcode == 2)
 		{
-			def.animationId = stream.readUnsignedShort();
+			def.anim = stream.readUnsignedShort();
 		}
 		else if (opcode == 4)
 		{
-			def.resizeX = stream.readUnsignedShort();
+			def.resizeh = stream.readUnsignedShort();
 		}
 		else if (opcode == 5)
 		{
-			def.resizeY = stream.readUnsignedShort();
+			def.resizev = stream.readUnsignedShort();
 		}
 		else if (opcode == 6)
 		{
@@ -86,25 +86,25 @@ public class SpotAnimLoader
 		else if (opcode == 40)
 		{
 			int var3 = stream.readUnsignedByte();
-			def.recolorToFind = new short[var3];
-			def.recolorToReplace = new short[var3];
+			def.recol_s = new short[var3];
+			def.recol_d = new short[var3];
 
 			for (int var4 = 0; var4 < var3; ++var4)
 			{
-				def.recolorToFind[var4] = (short) stream.readUnsignedShort();
-				def.recolorToReplace[var4] = (short) stream.readUnsignedShort();
+				def.recol_s[var4] = (short) stream.readUnsignedShort();
+				def.recol_d[var4] = (short) stream.readUnsignedShort();
 			}
 		}
 		else if (opcode == 41)
 		{
 			int var3 = stream.readUnsignedByte();
-			def.textureToFind = new short[var3];
-			def.textureToReplace = new short[var3];
+			def.retex_s = new short[var3];
+			def.retex_d = new short[var3];
 
 			for (int var4 = 0; var4 < var3; ++var4)
 			{
-				def.textureToFind[var4] = (short) stream.readUnsignedShort();
-				def.textureToReplace[var4] = (short) stream.readUnsignedShort();
+				def.retex_s[var4] = (short) stream.readUnsignedShort();
+				def.retex_d[var4] = (short) stream.readUnsignedShort();
 			}
 		}
 	}

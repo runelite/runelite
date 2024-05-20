@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,21 +24,19 @@
  */
 package net.runelite.cache.definitions.loaders;
 
-import net.runelite.cache.definitions.UnderlayDefinition;
+import net.runelite.cache.definitions.IdkDefinition;
 import net.runelite.cache.io.InputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class UnderlayLoader
+public class IdkLoader
 {
-	private static final Logger logger = LoggerFactory.getLogger(UnderlayLoader.class);
+	private static final Logger logger = LoggerFactory.getLogger(IdkLoader.class);
 
-	public UnderlayDefinition load(int id, byte[] b)
+	public IdkDefinition load(int id, byte[] b)
 	{
-		UnderlayDefinition def = new UnderlayDefinition();
+		IdkDefinition def = new IdkDefinition(id);
 		InputStream is = new InputStream(b);
-
-		def.setId(id);
 
 		for (;;)
 		{
@@ -50,12 +48,51 @@ public class UnderlayLoader
 
 			if (opcode == 1)
 			{
-				int color = is.read24BitInt();
-				def.setColor(color);
+				def.type = is.readUnsignedByte();
+			}
+			else if (opcode == 2)
+			{
+				int length = is.readUnsignedByte();
+				def.models = new int[length];
+
+				for (int index = 0; index < length; ++index)
+				{
+					def.models[index] = is.readUnsignedShort();
+				}
+			}
+			else if (opcode == 3)
+			{
+				def.disable = true;
+			}
+			else if (opcode == 40)
+			{
+				int length = is.readUnsignedByte();
+				def.recol_s = new short[length];
+				def.recol_d = new short[length];
+
+				for (int index = 0; index < length; ++index)
+				{
+					def.recol_s[index] = is.readShort();
+					def.recol_d[index] = is.readShort();
+				}
+			}
+			else if (opcode == 41)
+			{
+				int length = is.readUnsignedByte();
+				def.retex_s = new short[length];
+				def.retex_d = new short[length];
+
+				for (int index = 0; index < length; ++index)
+				{
+					def.retex_s[index] = is.readShort();
+					def.retex_d[index] = is.readShort();
+				}
+			}
+			else if (opcode >= 60 && opcode < 70)
+			{
+				def.heads[opcode - 60] = is.readUnsignedShort();
 			}
 		}
-
-		def.calculateHsl();
 
 		return def;
 	}

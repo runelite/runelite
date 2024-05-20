@@ -31,7 +31,7 @@ import net.runelite.cache.util.ScriptVarType;
 public class ParamDefinition
 {
 	private ScriptVarType type;
-	private boolean isMembers = true;
+	private boolean autodisable = true;
 	private int defaultInt;
 	private String defaultString;
 }

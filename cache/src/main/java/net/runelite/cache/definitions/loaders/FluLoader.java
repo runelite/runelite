@@ -24,18 +24,18 @@
  */
 package net.runelite.cache.definitions.loaders;
 
-import net.runelite.cache.definitions.OverlayDefinition;
+import net.runelite.cache.definitions.FluDefinition;
 import net.runelite.cache.io.InputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class OverlayLoader
+public class FluLoader
 {
-	private static final Logger logger = LoggerFactory.getLogger(OverlayLoader.class);
+	private static final Logger logger = LoggerFactory.getLogger(FluLoader.class);
 
-	public OverlayDefinition load(int id, byte[] b)
+	public FluDefinition load(int id, byte[] b)
 	{
-		OverlayDefinition def = new OverlayDefinition();
+		FluDefinition def = new FluDefinition();
 		InputStream is = new InputStream(b);
 
 		def.setId(id);
@@ -51,21 +51,7 @@ public class OverlayLoader
 			if (opcode == 1)
 			{
 				int color = is.read24BitInt();
-				def.setRgbColor(color);
-			}
-			else if (opcode == 2)
-			{
-				int texture = is.readUnsignedByte();
-				def.setTexture(texture);
-			}
-			else if (opcode == 5)
-			{
-				def.setHideUnderlay(false);
-			}
-			else if (opcode == 7)
-			{
-				int secondaryColor = is.read24BitInt();
-				def.setSecondaryRgbColor(secondaryColor);
+				def.setColor(color);
 			}
 		}
 

@@ -33,8 +33,8 @@ public class EnumDefinition
 {
 	private int id;
 	private int[] intVals;
-	private ScriptVarType keyType;
-	private ScriptVarType valType;
+	private ScriptVarType inputtype;
+	private ScriptVarType outputtype;
 	private String defaultString = "null";
 	private int defaultInt;
 	private int size;

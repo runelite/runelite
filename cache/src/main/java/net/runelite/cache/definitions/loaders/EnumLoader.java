@@ -65,10 +65,10 @@ public class EnumLoader
 		switch (opcode)
 		{
 			case 1:
-				def.setKeyType(ScriptVarType.forCharKey((char) is.readUnsignedByte()));
+				def.setInputtype(ScriptVarType.forCharKey((char) is.readUnsignedByte()));
 				break;
 			case 2:
-				def.setValType(ScriptVarType.forCharKey((char) is.readUnsignedByte()));
+				def.setOutputtype(ScriptVarType.forCharKey((char) is.readUnsignedByte()));
 				break;
 			case 3:
 				def.setDefaultString(is.readString());

@@ -24,9 +24,9 @@
  */
 package net.runelite.cache.definitions.providers;
 
-import net.runelite.cache.definitions.ItemDefinition;
+import net.runelite.cache.definitions.ObjDefinition;
 
 public interface ItemProvider
 {
-	ItemDefinition provide(int itemId);
+	ObjDefinition provide(int itemId);
 }

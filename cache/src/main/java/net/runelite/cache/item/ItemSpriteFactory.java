@@ -26,7 +26,7 @@ package net.runelite.cache.item;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import net.runelite.cache.definitions.ItemDefinition;
+import net.runelite.cache.definitions.ObjDefinition;
 import net.runelite.cache.definitions.ModelDefinition;
 import net.runelite.cache.definitions.providers.ItemProvider;
 import net.runelite.cache.definitions.providers.ModelProvider;
@@ -53,7 +53,7 @@ public class ItemSpriteFactory
 		int itemId, int quantity, int border, int shadowColor,
 		boolean noted) throws IOException
 	{
-		ItemDefinition item = itemProvider.provide(itemId);
+		ObjDefinition item = itemProvider.provide(itemId);
 
 		if (quantity > 1 && item.countObj != null)
 		{
@@ -80,28 +80,28 @@ public class ItemSpriteFactory
 		}
 
 		SpritePixels auxSpritePixels = null;
-		if (item.notedTemplate != -1)
+		if (item.certtemplate != -1)
 		{
 			auxSpritePixels = createSpritePixels(itemProvider, modelProvider, spriteProvider, textureProvider,
-				item.notedID, 10, 1, 0, true);
+				item.certlink, 10, 1, 0, true);
 			if (auxSpritePixels == null)
 			{
 				return null;
 			}
 		}
-		else if (item.boughtTemplateId != -1)
+		else if (item.boughttemplate != -1)
 		{
 			auxSpritePixels = createSpritePixels(itemProvider, modelProvider, spriteProvider, textureProvider,
-				item.boughtId, quantity, border, 0, false);
+				item.boughtlink, quantity, border, 0, false);
 			if (auxSpritePixels == null)
 			{
 				return null;
 			}
 		}
-		else if (item.placeholderTemplateId != -1)
+		else if (item.placeholdertemplate != -1)
 		{
 			auxSpritePixels = createSpritePixels(itemProvider, modelProvider, spriteProvider, textureProvider,
-				item.placeholderId, quantity, 0, 0, false);
+				item.placeholderlink, quantity, 0, 0, false);
 			if (auxSpritePixels == null)
 			{
 				return null;
@@ -119,7 +119,7 @@ public class ItemSpriteFactory
 		graphics.setRasterClipping();
 		graphics.setOffset(16, 16);
 		graphics.rasterGouraudLowRes = false;
-		if (item.placeholderTemplateId != -1)
+		if (item.placeholdertemplate != -1)
 		{
 			auxSpritePixels.drawAtOn(graphics, 0, 0);
 		}
@@ -142,10 +142,10 @@ public class ItemSpriteFactory
 			item.yan2d,
 			item.zan2d,
 			item.xan2d,
-			item.xOffset2d,
-			itemModel.modelHeight / 2 + var17 + item.yOffset2d,
-			var18 + item.yOffset2d);
-		if (item.boughtTemplateId != -1)
+			item.xof2d,
+			itemModel.modelHeight / 2 + var17 + item.yof2d,
+			var18 + item.yof2d);
+		if (item.boughttemplate != -1)
 		{
 			auxSpritePixels.drawAtOn(graphics, 0, 0);
 		}
@@ -166,7 +166,7 @@ public class ItemSpriteFactory
 		}
 
 		graphics.setRasterBuffer(spritePixels.pixels, 36, 32);
-		if (item.notedTemplate != -1)
+		if (item.certtemplate != -1)
 		{
 			auxSpritePixels.drawAtOn(graphics, 0, 0);
 		}
@@ -180,33 +180,33 @@ public class ItemSpriteFactory
 		return spritePixels;
 	}
 
-	private static Model getModel(ModelProvider modelProvider, ItemDefinition item) throws IOException
+	private static Model getModel(ModelProvider modelProvider, ObjDefinition item) throws IOException
 	{
 		Model itemModel;
-		ModelDefinition inventoryModel = modelProvider.provide(item.inventoryModel);
+		ModelDefinition inventoryModel = modelProvider.provide(item.model);
 		if (inventoryModel == null)
 		{
 			return null;
 		}
 
-		if (item.resizeX != 128 || item.resizeY != 128 || item.resizeZ != 128)
+		if (item.resizex != 128 || item.resizey != 128 || item.resizez != 128)
 		{
-			inventoryModel.resize(item.resizeX, item.resizeY, item.resizeZ);
+			inventoryModel.resize(item.resizex, item.resizey, item.resizez);
 		}
 
-		if (item.colorFind != null)
+		if (item.recol_s != null)
 		{
-			for (int i = 0; i < item.colorFind.length; ++i)
+			for (int i = 0; i < item.recol_s.length; ++i)
 			{
-				inventoryModel.recolor(item.colorFind[i], item.colorReplace[i]);
+				inventoryModel.recolor(item.recol_s[i], item.recol_d[i]);
 			}
 		}
 
-		if (item.textureFind != null)
+		if (item.retex_s != null)
 		{
-			for (int i = 0; i < item.textureFind.length; ++i)
+			for (int i = 0; i < item.retex_s.length; ++i)
 			{
-				inventoryModel.retexture(item.textureFind[i], item.textureReplace[i]);
+				inventoryModel.retexture(item.retex_s[i], item.retex_d[i]);
 			}
 		}
 

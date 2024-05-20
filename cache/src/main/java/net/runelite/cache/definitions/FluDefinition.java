@@ -22,43 +22,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.cache.definitions;
 
 import lombok.Data;
 
 @Data
-public class OverlayDefinition
+public class FluDefinition
 {
 	private int id;
-	private int rgbColor = 0;
-	private int texture = -1;
-	private int secondaryRgbColor = -1;
-	private boolean hideUnderlay = true;
+	private int color;
 
 	private transient int hue;
 	private transient int saturation;
 	private transient int lightness;
-
-	private transient int otherHue;
-	private transient int otherSaturation;
-	private transient int otherLightness;
+	private transient int hueMultiplier;
 
 	public void calculateHsl()
 	{
-		if (secondaryRgbColor != -1)
-		{
-			calculateHsl(secondaryRgbColor);
-			otherHue = hue;
-			otherSaturation = saturation;
-			otherLightness = lightness;
-		}
-
-		calculateHsl(rgbColor);
-	}
-
-	private void calculateHsl(int var1)
-	{
+		int var1 = color;
 		double var2 = (double) (var1 >> 16 & 255) / 256.0D;
 		double var4 = (double) (var1 >> 8 & 255) / 256.0D;
 		double var6 = (double) (var1 & 255) / 256.0D;
@@ -86,12 +67,12 @@ public class OverlayDefinition
 
 		double var12 = 0.0D;
 		double var14 = 0.0D;
-		double var16 = (var8 + var10) / 2.0D;
-		if (var10 != var8)
+		double var16 = (var10 + var8) / 2.0D;
+		if (var8 != var10)
 		{
 			if (var16 < 0.5D)
 			{
-				var14 = (var10 - var8) / (var10 + var8);
+				var14 = (var10 - var8) / (var8 + var10);
 			}
 
 			if (var16 >= 0.5D)
@@ -103,7 +84,7 @@ public class OverlayDefinition
 			{
 				var12 = (var4 - var6) / (var10 - var8);
 			}
-			else if (var4 == var10)
+			else if (var10 == var4)
 			{
 				var12 = 2.0D + (var6 - var2) / (var10 - var8);
 			}
@@ -114,7 +95,6 @@ public class OverlayDefinition
 		}
 
 		var12 /= 6.0D;
-		this.hue = (int) (256.0D * var12);
 		this.saturation = (int) (var14 * 256.0D);
 		this.lightness = (int) (var16 * 256.0D);
 		if (this.saturation < 0)
@@ -135,5 +115,20 @@ public class OverlayDefinition
 			this.lightness = 255;
 		}
 
+		if (var16 > 0.5D)
+		{
+			this.hueMultiplier = (int) (var14 * (1.0D - var16) * 512.0D);
+		}
+		else
+		{
+			this.hueMultiplier = (int) (var14 * var16 * 512.0D);
+		}
+
+		if (this.hueMultiplier < 1)
+		{
+			this.hueMultiplier = 1;
+		}
+
+		this.hue = (int) ((double) this.hueMultiplier * var12);
 	}
 }

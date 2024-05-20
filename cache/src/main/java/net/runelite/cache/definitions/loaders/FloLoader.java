@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,19 +24,21 @@
  */
 package net.runelite.cache.definitions.loaders;
 
-import net.runelite.cache.definitions.KitDefinition;
+import net.runelite.cache.definitions.FloDefinition;
 import net.runelite.cache.io.InputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class KitLoader
+public class FloLoader
 {
-	private static final Logger logger = LoggerFactory.getLogger(KitLoader.class);
+	private static final Logger logger = LoggerFactory.getLogger(FloLoader.class);
 
-	public KitDefinition load(int id, byte[] b)
+	public FloDefinition load(int id, byte[] b)
 	{
-		KitDefinition def = new KitDefinition(id);
+		FloDefinition def = new FloDefinition();
 		InputStream is = new InputStream(b);
+
+		def.setId(id);
 
 		for (;;)
 		{
@@ -48,51 +50,26 @@ public class KitLoader
 
 			if (opcode == 1)
 			{
-				def.bodyPartId = is.readUnsignedByte();
+				int color = is.read24BitInt();
+				def.setRgbColor(color);
 			}
 			else if (opcode == 2)
 			{
-				int length = is.readUnsignedByte();
-				def.models = new int[length];
-
-				for (int index = 0; index < length; ++index)
-				{
-					def.models[index] = is.readUnsignedShort();
-				}
+				int texture = is.readUnsignedByte();
+				def.setTexture(texture);
 			}
-			else if (opcode == 3)
+			else if (opcode == 5)
 			{
-				def.nonSelectable = true;
+				def.setOcclude(false);
 			}
-			else if (opcode == 40)
+			else if (opcode == 7)
 			{
-				int length = is.readUnsignedByte();
-				def.recolorToFind = new short[length];
-				def.recolorToReplace = new short[length];
-
-				for (int index = 0; index < length; ++index)
-				{
-					def.recolorToFind[index] = is.readShort();
-					def.recolorToReplace[index] = is.readShort();
-				}
-			}
-			else if (opcode == 41)
-			{
-				int length = is.readUnsignedByte();
-				def.retextureToFind = new short[length];
-				def.retextureToReplace = new short[length];
-
-				for (int index = 0; index < length; ++index)
-				{
-					def.retextureToFind[index] = is.readShort();
-					def.retextureToReplace[index] = is.readShort();
-				}
-			}
-			else if (opcode >= 60 && opcode < 70)
-			{
-				def.chatheadModels[opcode - 60] = is.readUnsignedShort();
+				int secondaryColor = is.read24BitInt();
+				def.setAveragecolour(secondaryColor);
 			}
 		}
+
+		def.calculateHsl();
 
 		return def;
 	}

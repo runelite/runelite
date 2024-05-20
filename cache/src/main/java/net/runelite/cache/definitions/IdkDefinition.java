@@ -22,33 +22,23 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache.definitions.loaders;
+package net.runelite.cache.definitions;
 
-import net.runelite.cache.definitions.InventoryDefinition;
-import net.runelite.cache.io.InputStream;
+import lombok.Data;
 
-public class InventoryLoader
+@Data
+public class IdkDefinition
 {
-	public InventoryDefinition load(int id, byte[] b)
+	private final int id;
+	public short[] recol_d;
+	public short[] recol_s;
+	public short[] retex_s;
+	public short[] retex_d;
+	public int type = -1;
+	public int[] models;
+	public int[] heads = new int[]
 	{
-		InventoryDefinition def = new InventoryDefinition();
-		def.id = id;
-		InputStream is = new InputStream(b);
-
-		while (true)
-		{
-			int opcode = is.readUnsignedByte();
-			if (opcode == 0)
-			{
-				break;
-			}
-
-			if (opcode == 2)
-			{
-				def.size = is.readUnsignedShort();
-			}
-		}
-
-		return def;
-	}
+		-1, -1, -1, -1, -1
+	};
+	public boolean disable = false;
 }

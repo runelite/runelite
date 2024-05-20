@@ -30,9 +30,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import net.runelite.cache.definitions.ItemDefinition;
+import net.runelite.cache.definitions.ObjDefinition;
 import net.runelite.cache.definitions.exporters.ItemExporter;
-import net.runelite.cache.definitions.loaders.ItemLoader;
+import net.runelite.cache.definitions.loaders.ObjLoader;
 import net.runelite.cache.definitions.providers.ItemProvider;
 import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.ArchiveFiles;
@@ -42,64 +42,64 @@ import net.runelite.cache.fs.Storage;
 import net.runelite.cache.fs.Store;
 import net.runelite.cache.util.IDClass;
 
-public class ItemManager implements ItemProvider
+public class ObjManager implements ItemProvider
 {
 	private final Store store;
-	private final Map<Integer, ItemDefinition> items = new HashMap<>();
+	private final Map<Integer, ObjDefinition> items = new HashMap<>();
 
-	public ItemManager(Store store)
+	public ObjManager(Store store)
 	{
 		this.store = store;
 	}
 
 	public void load() throws IOException
 	{
-		ItemLoader loader = new ItemLoader();
+		ObjLoader loader = new ObjLoader();
 
 		Storage storage = store.getStorage();
 		Index index = store.getIndex(IndexType.CONFIGS);
-		Archive archive = index.getArchive(ConfigType.ITEM.getId());
+		Archive archive = index.getArchive(ConfigType.OBJ.getId());
 
 		byte[] archiveData = storage.loadArchive(archive);
 		ArchiveFiles files = archive.getFiles(archiveData);
 
 		for (FSFile f : files.getFiles())
 		{
-			ItemDefinition def = loader.load(f.getFileId(), f.getContents());
+			ObjDefinition def = loader.load(f.getFileId(), f.getContents());
 			items.put(f.getFileId(), def);
 		}
 	}
 
 	public void link()
 	{
-		for (ItemDefinition oc : items.values())
+		for (ObjDefinition oc : items.values())
 		{
 			link(oc);
 		}
 	}
 
-	private void link(ItemDefinition item)
+	private void link(ObjDefinition item)
 	{
-		if (item.notedTemplate != -1)
+		if (item.certtemplate != -1)
 		{
-			item.linkNote(getItem(item.notedTemplate), getItem(item.notedID));
+			item.linkNote(getItem(item.certtemplate), getItem(item.certlink));
 		}
-		if (item.boughtTemplateId != -1)
+		if (item.boughttemplate != -1)
 		{
-			item.linkBought(getItem(item.boughtTemplateId), getItem(item.boughtId));
+			item.linkBought(getItem(item.boughttemplate), getItem(item.boughtlink));
 		}
-		if (item.placeholderTemplateId != -1)
+		if (item.placeholdertemplate != -1)
 		{
-			item.linkPlaceholder(getItem(item.placeholderTemplateId), getItem(item.placeholderId));
+			item.linkPlaceholder(getItem(item.placeholdertemplate), getItem(item.placeholderlink));
 		}
 	}
 
-	public Collection<ItemDefinition> getItems()
+	public Collection<ObjDefinition> getItems()
 	{
 		return Collections.unmodifiableCollection(items.values());
 	}
 
-	public ItemDefinition getItem(int itemId)
+	public ObjDefinition getItem(int itemId)
 	{
 		return items.get(itemId);
 	}
@@ -108,7 +108,7 @@ public class ItemManager implements ItemProvider
 	{
 		out.mkdirs();
 
-		for (ItemDefinition def : items.values())
+		for (ObjDefinition def : items.values())
 		{
 			ItemExporter exporter = new ItemExporter(def);
 
@@ -123,7 +123,7 @@ public class ItemManager implements ItemProvider
 		try (IDClass ids = IDClass.create(java, "ItemID");
 			IDClass nulls = IDClass.create(java, "NullItemID"))
 		{
-			for (ItemDefinition def : items.values())
+			for (ObjDefinition def : items.values())
 			{
 				if (def.name.equalsIgnoreCase("NULL"))
 				{
@@ -138,7 +138,7 @@ public class ItemManager implements ItemProvider
 	}
 
 	@Override
-	public ItemDefinition provide(int itemId)
+	public ObjDefinition provide(int itemId)
 	{
 		return getItem(itemId);
 	}

@@ -30,15 +30,15 @@ import lombok.Data;
 public class SpotAnimDefinition
 {
 	public int rotaton = 0;
-	public short[] textureToReplace;
+	public short[] retex_d;
 	public int id;
-	public short[] textureToFind;
-	public int resizeY = 128;
-	public int animationId = -1;
-	public short[] recolorToFind;
-	public short[] recolorToReplace;
-	public int resizeX = 128;
-	public int modelId;
+	public short[] retex_s;
+	public int resizev = 128;
+	public int anim = -1;
+	public short[] recol_s;
+	public short[] recol_d;
+	public int resizeh = 128;
+	public int model;
 	public int ambient = 0;
 	public int contrast = 0;
 }

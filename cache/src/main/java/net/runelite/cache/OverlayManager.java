@@ -29,8 +29,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import net.runelite.cache.definitions.OverlayDefinition;
-import net.runelite.cache.definitions.loaders.OverlayLoader;
+import net.runelite.cache.definitions.FloDefinition;
+import net.runelite.cache.definitions.loaders.FloLoader;
 import net.runelite.cache.definitions.providers.OverlayProvider;
 import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.ArchiveFiles;
@@ -42,7 +42,7 @@ import net.runelite.cache.fs.Store;
 public class OverlayManager implements OverlayProvider
 {
 	private final Store store;
-	private final Map<Integer, OverlayDefinition> overlays = new HashMap<>();
+	private final Map<Integer, FloDefinition> overlays = new HashMap<>();
 
 	public OverlayManager(Store store)
 	{
@@ -60,20 +60,20 @@ public class OverlayManager implements OverlayProvider
 
 		for (FSFile file : files.getFiles())
 		{
-			OverlayLoader loader = new OverlayLoader();
-			OverlayDefinition overlay = loader.load(file.getFileId(), file.getContents());
+			FloLoader loader = new FloLoader();
+			FloDefinition overlay = loader.load(file.getFileId(), file.getContents());
 
 			overlays.put(overlay.getId(), overlay);
 		}
 	}
 
-	public Collection<OverlayDefinition> getOverlays()
+	public Collection<FloDefinition> getOverlays()
 	{
 		return Collections.unmodifiableCollection(overlays.values());
 	}
 
 	@Override
-	public OverlayDefinition provide(int overlayId)
+	public FloDefinition provide(int overlayId)
 	{
 		return overlays.get(overlayId);
 	}

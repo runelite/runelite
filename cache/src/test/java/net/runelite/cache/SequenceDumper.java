@@ -30,8 +30,8 @@ import com.google.gson.GsonBuilder;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import net.runelite.cache.definitions.SequenceDefinition;
-import net.runelite.cache.definitions.loaders.SequenceLoader;
+import net.runelite.cache.definitions.SeqDefinition;
+import net.runelite.cache.definitions.loaders.SeqLoader;
 import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.ArchiveFiles;
 import net.runelite.cache.fs.FSFile;
@@ -76,9 +76,9 @@ public class SequenceDumper
 
 			for (FSFile file : files.getFiles())
 			{
-				SequenceLoader loader = new SequenceLoader();
+				SeqLoader loader = new SeqLoader();
 				loader.configureForRevision(archive.getRevision());
-				SequenceDefinition seq = loader.load(file.getFileId(), file.getContents());
+				SeqDefinition seq = loader.load(file.getFileId(), file.getContents());
 
 				Files.asCharSink(new File(outDir, file.getFileId() + ".json"), Charset.defaultCharset()).write(gson.toJson(seq));
 				++count;

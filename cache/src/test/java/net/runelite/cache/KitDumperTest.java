@@ -30,8 +30,8 @@ import com.google.gson.GsonBuilder;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import net.runelite.cache.definitions.KitDefinition;
-import net.runelite.cache.definitions.loaders.KitLoader;
+import net.runelite.cache.definitions.IdkDefinition;
+import net.runelite.cache.definitions.loaders.IdkLoader;
 import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.ArchiveFiles;
 import net.runelite.cache.fs.FSFile;
@@ -67,7 +67,7 @@ public class KitDumperTest
 			Index index = store.getIndex(IndexType.CONFIGS);
 			Archive archive = index.getArchive(ConfigType.IDENTKIT.getId());
 
-			KitLoader loader = new KitLoader();
+			IdkLoader loader = new IdkLoader();
 
 			byte[] archiveData = storage.loadArchive(archive);
 			ArchiveFiles files = archive.getFiles(archiveData);
@@ -76,7 +76,7 @@ public class KitDumperTest
 			{
 				byte[] b = file.getContents();
 
-				KitDefinition def = loader.load(file.getFileId(), b);
+				IdkDefinition def = loader.load(file.getFileId(), b);
 
 				Files.asCharSink(new File(dumpDir, file.getFileId() + ".json"), Charset.defaultCharset()).write(gson.toJson(def));
 				++count;

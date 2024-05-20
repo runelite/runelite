@@ -27,7 +27,7 @@ package net.runelite.cache.definitions;
 import lombok.Data;
 
 @Data
-public class InventoryDefinition
+public class InvDefinition
 {
 	public int id;
 	public int size;

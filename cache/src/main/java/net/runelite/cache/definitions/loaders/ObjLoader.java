@@ -25,20 +25,20 @@
 
 package net.runelite.cache.definitions.loaders;
 
-import net.runelite.cache.definitions.ItemDefinition;
+import net.runelite.cache.definitions.ObjDefinition;
 import net.runelite.cache.io.InputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 
-public class ItemLoader
+public class ObjLoader
 {
-	private static final Logger logger = LoggerFactory.getLogger(ItemLoader.class);
+	private static final Logger logger = LoggerFactory.getLogger(ObjLoader.class);
 
-	public ItemDefinition load(int id, byte[] b)
+	public ObjDefinition load(int id, byte[] b)
 	{
-		ItemDefinition def = new ItemDefinition(id);
+		ObjDefinition def = new ObjDefinition(id);
 		InputStream is = new InputStream(b);
 
 		while (true)
@@ -57,11 +57,11 @@ public class ItemLoader
 		return def;
 	}
 
-	private void decodeValues(int opcode, ItemDefinition def, InputStream stream)
+	private void decodeValues(int opcode, ObjDefinition def, InputStream stream)
 	{
 		if (opcode == 1)
 		{
-			def.inventoryModel = stream.readUnsignedShort();
+			def.model = stream.readUnsignedShort();
 		}
 		else if (opcode == 2)
 		{
@@ -69,7 +69,7 @@ public class ItemLoader
 		}
 		else if (opcode == 3)
 		{
-			def.examine = stream.readString();
+			def.desc = stream.readString();
 		}
 		else if (opcode == 4)
 		{
@@ -85,18 +85,18 @@ public class ItemLoader
 		}
 		else if (opcode == 7)
 		{
-			def.xOffset2d = stream.readUnsignedShort();
-			if (def.xOffset2d > 32767)
+			def.xof2d = stream.readUnsignedShort();
+			if (def.xof2d > 32767)
 			{
-				def.xOffset2d -= 65536;
+				def.xof2d -= 65536;
 			}
 		}
 		else if (opcode == 8)
 		{
-			def.yOffset2d = stream.readUnsignedShort();
-			if (def.yOffset2d > 32767)
+			def.yof2d = stream.readUnsignedShort();
+			if (def.yof2d > 32767)
 			{
-				def.yOffset2d -= 65536;
+				def.yof2d -= 65536;
 			}
 		}
 		else if (opcode == 9)
@@ -113,11 +113,11 @@ public class ItemLoader
 		}
 		else if (opcode == 13)
 		{
-			def.wearPos1 = stream.readByte();
+			def.wearpos = stream.readByte();
 		}
 		else if (opcode == 14)
 		{
-			def.wearPos2 = stream.readByte();
+			def.wearpos2 = stream.readByte();
 		}
 		else if (opcode == 16)
 		{
@@ -125,71 +125,72 @@ public class ItemLoader
 		}
 		else if (opcode == 23)
 		{
-			def.maleModel0 = stream.readUnsignedShort();
-			def.maleOffset = stream.readUnsignedByte();
+			def.manwear = stream.readUnsignedShort();
+			def.manwearOffsetY = stream.readUnsignedByte();
 		}
 		else if (opcode == 24)
 		{
-			def.maleModel1 = stream.readUnsignedShort();
+			def.manwear2 = stream.readUnsignedShort();
 		}
 		else if (opcode == 25)
 		{
-			def.femaleModel0 = stream.readUnsignedShort();
-			def.femaleOffset = stream.readUnsignedByte();
+			def.womanwear = stream.readUnsignedShort();
+			def.womanwearOffsetY = stream.readUnsignedByte();
 		}
 		else if (opcode == 26)
 		{
-			def.femaleModel1 = stream.readUnsignedShort();
+			def.womanwear2 = stream.readUnsignedShort();
 		}
 		else if (opcode == 27)
 		{
-			def.wearPos3 = stream.readByte();
+			def.wearpos3 = stream.readByte();
 		}
 		else if (opcode >= 30 && opcode < 35)
 		{
-			def.options[opcode - 30] = stream.readString();
-			if (def.options[opcode - 30].equalsIgnoreCase("Hidden"))
+			def.op[opcode - 30] = stream.readString();
+			if (def.op[opcode - 30].equalsIgnoreCase("Hidden"))
 			{
-				def.options[opcode - 30] = null;
+				def.op[opcode - 30] = null;
 			}
 		}
 		else if (opcode >= 35 && opcode < 40)
 		{
-			def.interfaceOptions[opcode - 35] = stream.readString();
+			def.iop[opcode - 35] = stream.readString();
 		}
 		else if (opcode == 40)
 		{
 			int var5 = stream.readUnsignedByte();
-			def.colorFind = new short[var5];
-			def.colorReplace = new short[var5];
+			def.recol_s = new short[var5];
+			def.recol_d = new short[var5];
 
 			for (int var4 = 0; var4 < var5; ++var4)
 			{
-				def.colorFind[var4] = (short) stream.readUnsignedShort();
-				def.colorReplace[var4] = (short) stream.readUnsignedShort();
+				def.recol_s[var4] = (short) stream.readUnsignedShort();
+				def.recol_d[var4] = (short) stream.readUnsignedShort();
 			}
 
 		}
 		else if (opcode == 41)
 		{
 			int var5 = stream.readUnsignedByte();
-			def.textureFind = new short[var5];
-			def.textureReplace = new short[var5];
+			def.retex_s = new short[var5];
+			def.retex_d = new short[var5];
 
 			for (int var4 = 0; var4 < var5; ++var4)
 			{
-				def.textureFind[var4] = (short) stream.readUnsignedShort();
-				def.textureReplace[var4] = (short) stream.readUnsignedShort();
+				def.retex_s[var4] = (short) stream.readUnsignedShort();
+				def.retex_d[var4] = (short) stream.readUnsignedShort();
 			}
 
 		}
 		else if (opcode == 42)
 		{
+			// unknown jagex name
 			def.shiftClickDropIndex = stream.readByte();
 		}
 		else if (opcode == 65)
 		{
-			def.isTradeable = true;
+			def.stockmarket = true;
 		}
 		else if (opcode == 75)
 		{
@@ -197,27 +198,27 @@ public class ItemLoader
 		}
 		else if (opcode == 78)
 		{
-			def.maleModel2 = stream.readUnsignedShort();
+			def.manwear3 = stream.readUnsignedShort();
 		}
 		else if (opcode == 79)
 		{
-			def.femaleModel2 = stream.readUnsignedShort();
+			def.womanwear3 = stream.readUnsignedShort();
 		}
 		else if (opcode == 90)
 		{
-			def.maleHeadModel = stream.readUnsignedShort();
+			def.manhead = stream.readUnsignedShort();
 		}
 		else if (opcode == 91)
 		{
-			def.femaleHeadModel = stream.readUnsignedShort();
+			def.womanhead = stream.readUnsignedShort();
 		}
 		else if (opcode == 92)
 		{
-			def.maleHeadModel2 = stream.readUnsignedShort();
+			def.manhead2 = stream.readUnsignedShort();
 		}
 		else if (opcode == 93)
 		{
-			def.femaleHeadModel2 = stream.readUnsignedShort();
+			def.womanhead2 = stream.readUnsignedShort();
 		}
 		else if (opcode == 94)
 		{
@@ -229,11 +230,11 @@ public class ItemLoader
 		}
 		else if (opcode == 97)
 		{
-			def.notedID = stream.readUnsignedShort();
+			def.certlink = stream.readUnsignedShort();
 		}
 		else if (opcode == 98)
 		{
-			def.notedTemplate = stream.readUnsignedShort();
+			def.certtemplate = stream.readUnsignedShort();
 		}
 		else if (opcode >= 100 && opcode < 110)
 		{
@@ -248,15 +249,15 @@ public class ItemLoader
 		}
 		else if (opcode == 110)
 		{
-			def.resizeX = stream.readUnsignedShort();
+			def.resizex = stream.readUnsignedShort();
 		}
 		else if (opcode == 111)
 		{
-			def.resizeY = stream.readUnsignedShort();
+			def.resizey = stream.readUnsignedShort();
 		}
 		else if (opcode == 112)
 		{
-			def.resizeZ = stream.readUnsignedShort();
+			def.resizez = stream.readUnsignedShort();
 		}
 		else if (opcode == 113)
 		{
@@ -272,19 +273,19 @@ public class ItemLoader
 		}
 		else if (opcode == 139)
 		{
-			def.boughtId = stream.readUnsignedShort();
+			def.boughtlink = stream.readUnsignedShort();
 		}
 		else if (opcode == 140)
 		{
-			def.boughtTemplateId = stream.readUnsignedShort();
+			def.boughttemplate = stream.readUnsignedShort();
 		}
 		else if (opcode == 148)
 		{
-			def.placeholderId = stream.readUnsignedShort();
+			def.placeholderlink = stream.readUnsignedShort();
 		}
 		else if (opcode == 149)
 		{
-			def.placeholderTemplateId = stream.readUnsignedShort();
+			def.placeholdertemplate = stream.readUnsignedShort();
 		}
 		else if (opcode == 249)
 		{
@@ -317,7 +318,7 @@ public class ItemLoader
 		}
 	}
 
-	private void post(ItemDefinition def)
+	private void post(ObjDefinition def)
 	{
 		if (def.stackable == 1)
 		{

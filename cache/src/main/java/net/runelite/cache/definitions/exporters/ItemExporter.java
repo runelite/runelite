@@ -29,14 +29,14 @@ import com.google.gson.GsonBuilder;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import net.runelite.cache.definitions.ItemDefinition;
+import net.runelite.cache.definitions.ObjDefinition;
 
 public class ItemExporter
 {
-	private final ItemDefinition item;
+	private final ObjDefinition item;
 	private final Gson gson;
 
-	public ItemExporter(ItemDefinition item)
+	public ItemExporter(ObjDefinition item)
 	{
 		this.item = item;
 

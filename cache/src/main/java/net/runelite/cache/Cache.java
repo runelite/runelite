@@ -130,7 +130,7 @@ public class Cache
 
 	private static void dumpItems(Store store, File itemdir) throws IOException
 	{
-		ItemManager dumper = new ItemManager(store);
+		ObjManager dumper = new ObjManager(store);
 		dumper.load();
 		dumper.export(itemdir);
 		dumper.java(itemdir);
@@ -146,7 +146,7 @@ public class Cache
 
 	private static void dumpObjects(Store store, File objectdir) throws IOException
 	{
-		ObjectManager dumper = new ObjectManager(store);
+		LocManager dumper = new LocManager(store);
 		dumper.load();
 		dumper.dump(objectdir);
 		dumper.java(objectdir);

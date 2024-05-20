@@ -30,8 +30,8 @@ import com.google.gson.GsonBuilder;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import net.runelite.cache.definitions.UnderlayDefinition;
-import net.runelite.cache.definitions.loaders.UnderlayLoader;
+import net.runelite.cache.definitions.FluDefinition;
+import net.runelite.cache.definitions.loaders.FluLoader;
 import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.ArchiveFiles;
 import net.runelite.cache.fs.FSFile;
@@ -74,8 +74,8 @@ public class UnderlayDumper
 
 			for (FSFile file : files.getFiles())
 			{
-				UnderlayLoader loader = new UnderlayLoader();
-				UnderlayDefinition underlay = loader.load(file.getFileId(), file.getContents());
+				FluLoader loader = new FluLoader();
+				FluDefinition underlay = loader.load(file.getFileId(), file.getContents());
 
 				Files.asCharSink(new File(outDir, file.getFileId() + ".json"), Charset.defaultCharset()).write(gson.toJson(underlay));
 				++count;

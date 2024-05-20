@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,93 +24,61 @@
  */
 package net.runelite.cache;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import net.runelite.cache.definitions.ObjectDefinition;
-import net.runelite.cache.definitions.exporters.ObjectExporter;
-import net.runelite.cache.definitions.loaders.ObjectLoader;
+import java.util.List;
+import net.runelite.cache.definitions.InvDefinition;
+import net.runelite.cache.definitions.loaders.InvLoader;
 import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.ArchiveFiles;
 import net.runelite.cache.fs.FSFile;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Storage;
 import net.runelite.cache.fs.Store;
-import net.runelite.cache.util.IDClass;
 
-public class ObjectManager
+public class InvManager
 {
 	private final Store store;
-	private final Map<Integer, ObjectDefinition> objects = new HashMap<>();
+	private final List<InvDefinition> inventories = new ArrayList<>();
 
-	public ObjectManager(Store store)
+	public InvManager(Store store)
 	{
 		this.store = store;
 	}
 
 	public void load() throws IOException
 	{
-		ObjectLoader loader = new ObjectLoader();
+		InvLoader loader = new InvLoader();
 
 		Storage storage = store.getStorage();
 		Index index = store.getIndex(IndexType.CONFIGS);
-		Archive archive = index.getArchive(ConfigType.OBJECT.getId());
-
-		loader.configureForRevision(archive.getRevision());
+		Archive archive = index.getArchive(ConfigType.INV.getId());
 
 		byte[] archiveData = storage.loadArchive(archive);
 		ArchiveFiles files = archive.getFiles(archiveData);
 
-		for (FSFile f : files.getFiles())
+		for (FSFile file : files.getFiles())
 		{
-			ObjectDefinition def = loader.load(f.getFileId(), f.getContents());
-			objects.put(f.getFileId(), def);
+			InvDefinition inv = loader.load(file.getFileId(), file.getContents());
+			inventories.add(inv);
 		}
 	}
 
-	public Collection<ObjectDefinition> getObjects()
+	public List<InvDefinition> getInventories()
 	{
-		return Collections.unmodifiableCollection(objects.values());
+		return Collections.unmodifiableList(inventories);
 	}
 
-	public ObjectDefinition getObject(int id)
+	public InvDefinition findInventory(int id)
 	{
-		return objects.get(id);
-	}
-
-	public void dump(File out) throws IOException
-	{
-		out.mkdirs();
-
-		for (ObjectDefinition def : objects.values())
+		for (InvDefinition def : inventories)
 		{
-			ObjectExporter exporter = new ObjectExporter(def);
-
-			File targ = new File(out, def.getId() + ".json");
-			exporter.exportTo(targ);
-		}
-	}
-
-	public void java(File java) throws IOException
-	{
-		java.mkdirs();
-		try (IDClass ids = IDClass.create(java, "ObjectID");
-			IDClass nulls = IDClass.create(java, "NullObjectID"))
-		{
-			for (ObjectDefinition def : objects.values())
+			if (def.id == id)
 			{
-				if ("null".equals(def.getName()))
-				{
-					nulls.add(def.getName(), def.getId());
-				}
-				else
-				{
-					ids.add(def.getName(), def.getId());
-				}
+				return def;
 			}
 		}
+		return null;
 	}
 }

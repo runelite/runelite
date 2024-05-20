@@ -42,14 +42,14 @@ import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.cache.definitions.AreaDefinition;
 import net.runelite.cache.definitions.FontDefinition;
-import net.runelite.cache.definitions.ObjectDefinition;
-import net.runelite.cache.definitions.OverlayDefinition;
+import net.runelite.cache.definitions.LocDefinition;
+import net.runelite.cache.definitions.FloDefinition;
 import net.runelite.cache.definitions.SpriteDefinition;
-import net.runelite.cache.definitions.UnderlayDefinition;
+import net.runelite.cache.definitions.FluDefinition;
 import net.runelite.cache.definitions.WorldMapElementDefinition;
-import net.runelite.cache.definitions.loaders.OverlayLoader;
+import net.runelite.cache.definitions.loaders.FloLoader;
 import net.runelite.cache.definitions.loaders.SpriteLoader;
-import net.runelite.cache.definitions.loaders.UnderlayLoader;
+import net.runelite.cache.definitions.loaders.FluLoader;
 import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.ArchiveFiles;
 import net.runelite.cache.fs.FSFile;
@@ -89,8 +89,8 @@ public class MapImageDumper
 
 	private final Store store;
 
-	private final Map<Integer, UnderlayDefinition> underlays = new HashMap<>();
-	private final Map<Integer, OverlayDefinition> overlays = new HashMap<>();
+	private final Map<Integer, FluDefinition> underlays = new HashMap<>();
+	private final Map<Integer, FloDefinition> overlays = new HashMap<>();
 	private SpriteDefinition[] mapDecorations;
 
 	private final RegionLoader regionLoader;
@@ -99,7 +99,7 @@ public class MapImageDumper
 	private final FontManager fonts;
 	private final WorldMapManager worldMapManager;
 	private RSTextureProvider rsTextureProvider;
-	private final ObjectManager objectManager;
+	private final LocManager objectManager;
 
 	@Getter
 	@Setter
@@ -146,7 +146,7 @@ public class MapImageDumper
 		this.sprites = new SpriteManager(store);
 		this.fonts = new FontManager(store);
 		this.worldMapManager = new WorldMapManager(store);
-		this.objectManager = new ObjectManager(store);
+		this.objectManager = new LocManager(store);
 	}
 
 	public static void main(String[] args) throws IOException
@@ -419,7 +419,7 @@ public class MapImageDumper
 						int underlayId = r.getUnderlayId(z, convert(xr), convert(yi));
 						if (underlayId > 0)
 						{
-							UnderlayDefinition underlay = findUnderlay(underlayId - 1);
+							FluDefinition underlay = findUnderlay(underlayId - 1);
 							hues[yi + BLEND] += underlay.getHue();
 							sats[yi + BLEND] += underlay.getSaturation();
 							light[yi + BLEND] += underlay.getLightness();
@@ -438,7 +438,7 @@ public class MapImageDumper
 						int underlayId = r.getUnderlayId(z, convert(xl), convert(yi));
 						if (underlayId > 0)
 						{
-							UnderlayDefinition underlay = findUnderlay(underlayId - 1);
+							FluDefinition underlay = findUnderlay(underlayId - 1);
 							hues[yi + BLEND] -= underlay.getHue();
 							sats[yi + BLEND] -= underlay.getSaturation();
 							light[yi + BLEND] -= underlay.getLightness();
@@ -527,7 +527,7 @@ public class MapImageDumper
 									shape = r.getOverlayPath(z, convert(xi), convert(yi)) + 1;
 									rotation = r.getOverlayRotation(z, convert(xi), convert(yi));
 
-									OverlayDefinition overlayDefinition = findOverlay(overlayId - 1);
+									FloDefinition overlayDefinition = findOverlay(overlayId - 1);
 									int overlayTexture = overlayDefinition.getTexture();
 									int hsl;
 
@@ -552,7 +552,7 @@ public class MapImageDumper
 										overlayRgb = colorPalette[var0] | 0xFF000000;
 									}
 
-									if (overlayDefinition.getSecondaryRgbColor() != -1)
+									if (overlayDefinition.getAveragecolour() != -1)
 									{
 										int hue = overlayDefinition.getOtherHue();
 										int sat = overlayDefinition.getOtherSaturation();
@@ -700,19 +700,19 @@ public class MapImageDumper
 						{
 							int rotation = location.getOrientation();
 
-							ObjectDefinition object = findObject(location.getId());
+							LocDefinition object = findObject(location.getId());
 
 							int drawX = (drawBaseX + localX) * MAP_SCALE;
-							int drawY = (drawBaseY + (Region.Y - object.getSizeY() - localY)) * MAP_SCALE;
+							int drawY = (drawBaseY + (Region.Y - object.getLength() - localY)) * MAP_SCALE;
 
 							int rgb = wallColor;
-							if (object.getWallOrDoor() != 0)
+							if (object.getActive() != 0)
 							{
 								rgb = doorColor;
 							}
 							rgb |= 0xFF000000;
 
-							if (object.getMapSceneID() != -1)
+							if (object.getMapscene() != -1)
 							{
 								blitMapDecoration(image, drawX, drawY, object);
 							}
@@ -812,12 +812,12 @@ public class MapImageDumper
 						{
 							int rotation = location.getOrientation();
 
-							ObjectDefinition object = findObject(location.getId());
+							LocDefinition object = findObject(location.getId());
 
 							int drawX = (drawBaseX + localX) * MAP_SCALE;
-							int drawY = (drawBaseY + (Region.Y - object.getSizeY() - localY)) * MAP_SCALE;
+							int drawY = (drawBaseY + (Region.Y - object.getLength() - localY)) * MAP_SCALE;
 
-							if (object.getMapSceneID() != -1)
+							if (object.getMapscene() != -1)
 							{
 								blitMapDecoration(image, drawX, drawY, object);
 								continue;
@@ -826,7 +826,7 @@ public class MapImageDumper
 							if (drawX >= 0 && drawY >= 0 && drawX < image.getWidth() && drawY < image.getHeight())
 							{
 								int rgb = 0xFFEE_EEEE;
-								if (object.getWallOrDoor() != 0)
+								if (object.getActive() != 0)
 								{
 									rgb = 0xFFEE_0000;
 								}
@@ -854,12 +854,12 @@ public class MapImageDumper
 						int type = location.getType();
 						if (type == 22 || (type >= 9 && type <= 11))
 						{
-							ObjectDefinition object = findObject(location.getId());
+							LocDefinition object = findObject(location.getId());
 
 							int drawX = (drawBaseX + localX) * MAP_SCALE;
-							int drawY = (drawBaseY + (Region.Y - object.getSizeY() - localY)) * MAP_SCALE;
+							int drawY = (drawBaseY + (Region.Y - object.getLength() - localY)) * MAP_SCALE;
 
-							if (object.getMapSceneID() != -1)
+							if (object.getMapscene() != -1)
 							{
 								blitMapDecoration(image, drawX, drawY, object);
 							}
@@ -983,7 +983,7 @@ public class MapImageDumper
 		}
 	}
 
-	private ObjectDefinition findObject(int id)
+	private LocDefinition findObject(int id)
 	{
 		return objectManager.getObject(id);
 	}
@@ -1102,7 +1102,7 @@ public class MapImageDumper
 				continue;
 			}
 
-			ObjectDefinition od = findObject(location.getId());
+			LocDefinition od = findObject(location.getId());
 
 			assert od != null;
 
@@ -1172,14 +1172,14 @@ public class MapImageDumper
 
 		for (FSFile file : files.getFiles())
 		{
-			UnderlayLoader loader = new UnderlayLoader();
-			UnderlayDefinition underlay = loader.load(file.getFileId(), file.getContents());
+			FluLoader loader = new FluLoader();
+			FluDefinition underlay = loader.load(file.getFileId(), file.getContents());
 
 			underlays.put(underlay.getId(), underlay);
 		}
 	}
 
-	private UnderlayDefinition findUnderlay(int id)
+	private FluDefinition findUnderlay(int id)
 	{
 		return underlays.get(id);
 	}
@@ -1195,14 +1195,14 @@ public class MapImageDumper
 
 		for (FSFile file : files.getFiles())
 		{
-			OverlayLoader loader = new OverlayLoader();
-			OverlayDefinition overlay = loader.load(file.getFileId(), file.getContents());
+			FloLoader loader = new FloLoader();
+			FloDefinition overlay = loader.load(file.getFileId(), file.getContents());
 
 			overlays.put(overlay.getId(), overlay);
 		}
 	}
 
-	private OverlayDefinition findOverlay(int id)
+	private FloDefinition findOverlay(int id)
 	{
 		return overlays.get(id);
 	}
@@ -1218,11 +1218,11 @@ public class MapImageDumper
 		mapDecorations = loader.load(a.getArchiveId(), contents);
 	}
 
-	private void blitMapDecoration(BufferedImage dst, int x, int y, ObjectDefinition object)
+	private void blitMapDecoration(BufferedImage dst, int x, int y, LocDefinition object)
 	{
-		SpriteDefinition sprite = mapDecorations[object.getMapSceneID()];
-		int ox = (object.getSizeX() * MAP_SCALE - sprite.getWidth()) / 2;
-		int oy = (object.getSizeY() * MAP_SCALE - sprite.getHeight()) / 2;
+		SpriteDefinition sprite = mapDecorations[object.getMapscene()];
+		int ox = (object.getWidth() * MAP_SCALE - sprite.getWidth()) / 2;
+		int oy = (object.getLength() * MAP_SCALE - sprite.getHeight()) / 2;
 		blitIcon(dst, x + ox, y + oy, sprite);
 	}
 

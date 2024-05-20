@@ -22,23 +22,33 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache.definitions;
+package net.runelite.cache.definitions.loaders;
 
-import lombok.Data;
+import net.runelite.cache.definitions.InvDefinition;
+import net.runelite.cache.io.InputStream;
 
-@Data
-public class KitDefinition
+public class InvLoader
 {
-	private final int id;
-	public short[] recolorToReplace;
-	public short[] recolorToFind;
-	public short[] retextureToFind;
-	public short[] retextureToReplace;
-	public int bodyPartId = -1;
-	public int[] models;
-	public int[] chatheadModels = new int[]
+	public InvDefinition load(int id, byte[] b)
 	{
-		-1, -1, -1, -1, -1
-	};
-	public boolean nonSelectable = false;
+		InvDefinition def = new InvDefinition();
+		def.id = id;
+		InputStream is = new InputStream(b);
+
+		while (true)
+		{
+			int opcode = is.readUnsignedByte();
+			if (opcode == 0)
+			{
+				break;
+			}
+
+			if (opcode == 2)
+			{
+				def.size = is.readUnsignedShort();
+			}
+		}
+
+		return def;
+	}
 }

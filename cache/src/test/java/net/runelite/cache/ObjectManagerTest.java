@@ -52,7 +52,7 @@ public class ObjectManagerTest
 		{
 			store.load();
 
-			ObjectManager dumper = new ObjectManager(
+			LocManager dumper = new LocManager(
 				store
 			);
 			dumper.load();

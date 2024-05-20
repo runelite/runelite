@@ -24,9 +24,9 @@
  */
 package net.runelite.cache.definitions.providers;
 
-import net.runelite.cache.definitions.OverlayDefinition;
+import net.runelite.cache.definitions.FloDefinition;
 
 public interface OverlayProvider
 {
-	OverlayDefinition provide(int overlayId);
+	FloDefinition provide(int overlayId);
 }

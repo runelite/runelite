@@ -29,27 +29,27 @@ import java.util.Map;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.cache.definitions.ObjectDefinition;
+import net.runelite.cache.definitions.LocDefinition;
 import net.runelite.cache.io.InputStream;
 
 @Accessors(chain = true)
 @Data
 @Slf4j
-public class ObjectLoader
+public class LocLoader
 {
-	public static final int REV_220_OBJ_ARCHIVE_REV = 1673;
+	public static final int REV_220_LOC_ARCHIVE_REV = 1673;
 
 	private boolean rev220SoundData = true;
 
-	public ObjectLoader configureForRevision(int rev)
+	public LocLoader configureForRevision(int rev)
 	{
-		this.rev220SoundData = rev >= REV_220_OBJ_ARCHIVE_REV;
+		this.rev220SoundData = rev >= REV_220_LOC_ARCHIVE_REV;
 		return this;
 	}
 
-	public ObjectDefinition load(int id, byte[] b)
+	public LocDefinition load(int id, byte[] b)
 	{
-		ObjectDefinition def = new ObjectDefinition();
+		LocDefinition def = new LocDefinition();
 		InputStream is = new InputStream(b);
 
 		def.setId(id);
@@ -70,24 +70,24 @@ public class ObjectLoader
 		return def;
 	}
 
-	private void processOp(int opcode, ObjectDefinition def, InputStream is)
+	private void processOp(int opcode, LocDefinition def, InputStream is)
 	{
 		if (opcode == 1)
 		{
 			int length = is.readUnsignedByte();
 			if (length > 0)
 			{
-				int[] objectTypes = new int[length];
-				int[] objectModels = new int[length];
+				int[] shapes = new int[length];
+				int[] models = new int[length];
 
 				for (int index = 0; index < length; ++index)
 				{
-					objectModels[index] = is.readUnsignedShort();
-					objectTypes[index] = is.readUnsignedByte();
+					models[index] = is.readUnsignedShort();
+					shapes[index] = is.readUnsignedByte();
 				}
 
-				def.setObjectTypes(objectTypes);
-				def.setObjectModels(objectModels);
+				def.setShapes(shapes);
+				def.setModels(models);
 			}
 		}
 		else if (opcode == 2)
@@ -99,65 +99,65 @@ public class ObjectLoader
 			int length = is.readUnsignedByte();
 			if (length > 0)
 			{
-				def.setObjectTypes(null);
-				int[] objectModels = new int[length];
+				def.setShapes(null);
+				int[] models = new int[length];
 
 				for (int index = 0; index < length; ++index)
 				{
-					objectModels[index] = is.readUnsignedShort();
+					models[index] = is.readUnsignedShort();
 				}
 
-				def.setObjectModels(objectModels);
+				def.setModels(models);
 			}
 		}
 		else if (opcode == 14)
 		{
-			def.setSizeX(is.readUnsignedByte());
+			def.setWidth(is.readUnsignedByte());
 		}
 		else if (opcode == 15)
 		{
-			def.setSizeY(is.readUnsignedByte());
+			def.setLength(is.readUnsignedByte());
 		}
 		else if (opcode == 17)
 		{
-			def.setInteractType(0);
-			def.setBlocksProjectile(false);
+			def.setBlockwalk(0);
+			def.setBlockrange(false);
 		}
 		else if (opcode == 18)
 		{
-			def.setBlocksProjectile(false);
+			def.setBlockrange(false);
 		}
 		else if (opcode == 19)
 		{
-			def.setWallOrDoor(is.readUnsignedByte());
+			def.setActive(is.readUnsignedByte());
 		}
 		else if (opcode == 21)
 		{
-			def.setContouredGround(0);
+			def.setHillchange(0);
 		}
 		else if (opcode == 22)
 		{
-			def.setMergeNormals(true);
+			def.setSharelight(true);
 		}
 		else if (opcode == 23)
 		{
-			def.setABool2111(true);
+			def.setOcclude(true);
 		}
 		else if (opcode == 24)
 		{
-			def.setAnimationID(is.readUnsignedShort());
-			if (def.getAnimationID() == 0xFFFF)
+			def.setAnim(is.readUnsignedShort());
+			if (def.getAnim() == 0xFFFF)
 			{
-				def.setAnimationID(-1);
+				def.setAnim(-1);
 			}
 		}
 		else if (opcode == 27)
 		{
-			def.setInteractType(1);
+			def.setBlockwalk(1);
 		}
 		else if (opcode == 28)
 		{
-			def.setDecorDisplacement(is.readUnsignedByte());
+			def.setWallwidth(is.readUnsignedByte());
 		}
 		else if (opcode == 29)
 		{
@@ -169,42 +169,42 @@ public class ObjectLoader
 		}
 		else if (opcode >= 30 && opcode < 35)
 		{
-			String[] actions = def.getActions();
-			actions[opcode - 30] = is.readString();
-			if (actions[opcode - 30].equalsIgnoreCase("Hidden"))
+			String[] op = def.getOp();
+			op[opcode - 30] = is.readString();
+			if (op[opcode - 30].equalsIgnoreCase("Hidden"))
 			{
-				actions[opcode - 30] = null;
+				op[opcode - 30] = null;
 			}
 		}
 		else if (opcode == 40)
 		{
 			int length = is.readUnsignedByte();
-			short[] recolorToFind = new short[length];
-			short[] recolorToReplace = new short[length];
+			short[] recol_s = new short[length];
+			short[] recol_d = new short[length];
 
 			for (int index = 0; index < length; ++index)
 			{
-				recolorToFind[index] = is.readShort();
-				recolorToReplace[index] = is.readShort();
+				recol_s[index] = is.readShort();
+				recol_d[index] = is.readShort();
 			}
 
-			def.setRecolorToFind(recolorToFind);
-			def.setRecolorToReplace(recolorToReplace);
+			def.setRecol_s(recol_s);
+			def.setRecol_d(recol_d);
 		}
 		else if (opcode == 41)
 		{
 			int length = is.readUnsignedByte();
-			short[] retextureToFind = new short[length];
-			short[] textureToReplace = new short[length];
+			short[] retex_s = new short[length];
+			short[] retex_d = new short[length];
 
 			for (int index = 0; index < length; ++index)
 			{
-				retextureToFind[index] = is.readShort();
-				textureToReplace[index] = is.readShort();
+				retex_s[index] = is.readShort();
+				retex_d[index] = is.readShort();
 			}
 
-			def.setRetextureToFind(retextureToFind);
-			def.setTextureToReplace(textureToReplace);
+			def.setRetex_s(retex_s);
+			def.setRetex_d(retex_d);
 		}
 		else if (opcode == 61)
 		{
@@ -212,7 +212,7 @@ public class ObjectLoader
 		}
 		else if (opcode == 62)
 		{
-			def.setRotated(true);
+			def.setMirror(true);
 		}
 		else if (opcode == 64)
 		{
@@ -220,47 +220,47 @@ public class ObjectLoader
 		}
 		else if (opcode == 65)
 		{
-			def.setModelSizeX(is.readUnsignedShort());
+			def.setResizex(is.readUnsignedShort());
 		}
 		else if (opcode == 66)
 		{
-			def.setModelSizeHeight(is.readUnsignedShort());
+			def.setResizey(is.readUnsignedShort());
 		}
 		else if (opcode == 67)
 		{
-			def.setModelSizeY(is.readUnsignedShort());
+			def.setResizez(is.readUnsignedShort());
 		}
 		else if (opcode == 68)
 		{
-			def.setMapSceneID(is.readUnsignedShort());
+			def.setMapscene(is.readUnsignedShort());
 		}
 		else if (opcode == 69)
 		{
-			def.setBlockingMask(is.readByte());
+			def.setForceapproach(is.readByte());
 		}
 		else if (opcode == 70)
 		{
-			def.setOffsetX(is.readUnsignedShort());
+			def.setXoff(is.readUnsignedShort());
 		}
 		else if (opcode == 71)
 		{
-			def.setOffsetHeight(is.readUnsignedShort());
+			def.setYoff(is.readUnsignedShort());
 		}
 		else if (opcode == 72)
 		{
-			def.setOffsetY(is.readUnsignedShort());
+			def.setZoff(is.readUnsignedShort());
 		}
 		else if (opcode == 73)
 		{
-			def.setObstructsGround(true);
+			def.setForcedecor(true);
 		}
 		else if (opcode == 74)
 		{
-			def.setHollow(true);
+			def.setBreakroutefinding(true);
 		}
 		else if (opcode == 75)
 		{
-			def.setSupportsItems(is.readUnsignedByte());
+			def.setRaiseobject(is.readUnsignedByte());
 		}
 		else if (opcode == 77)
 		{
@@ -269,14 +269,14 @@ public class ObjectLoader
 			{
 				varpID = -1;
 			}
-			def.setVarbitID(varpID);
+			def.setMultivarbit(varpID);
 
 			int configId = is.readUnsignedShort();
 			if (configId == 0xFFFF)
 			{
 				configId = -1;
 			}
-			def.setVarpID(configId);
+			def.setMultivarp(configId);
 
 			int length = is.readUnsignedByte();
 			int[] configChangeDest = new int[length + 2];
@@ -292,12 +292,12 @@ public class ObjectLoader
 
 			configChangeDest[length + 1] = -1;
 
-			def.setConfigChangeDest(configChangeDest);
+			def.setMultiloc(configChangeDest);
 		}
 		else if (opcode == 78)
 		{
-			def.setAmbientSoundId(is.readUnsignedShort());
-			def.setAmbientSoundDistance(is.readUnsignedByte());
+			def.setBgsound_sound(is.readUnsignedShort());
+			def.setBgsound_range(is.readUnsignedByte());
 			if (rev220SoundData)
 			{
 				def.setAmbientSoundRetain(is.readUnsignedByte());
@@ -305,9 +305,9 @@ public class ObjectLoader
 		}
 		else if (opcode == 79)
 		{
-			def.setAmbientSoundChangeTicksMin(is.readUnsignedShort());
-			def.setAmbientSoundChangeTicksMax(is.readUnsignedShort());
-			def.setAmbientSoundDistance(is.readUnsignedByte());
+			def.setBgsound_mindelay(is.readUnsignedShort());
+			def.setBgsound_maxdelay(is.readUnsignedShort());
+			def.setBgsound_range(is.readUnsignedByte());
 			if (rev220SoundData)
 			{
 				def.setAmbientSoundRetain(is.readUnsignedByte());
@@ -320,11 +320,11 @@ public class ObjectLoader
 				ambientSoundIds[index] = is.readUnsignedShort();
 			}
 
-			def.setAmbientSoundIds(ambientSoundIds);
+			def.setBgsound_random(ambientSoundIds);
 		}
 		else if (opcode == 81)
 		{
-			def.setContouredGround(is.readUnsignedByte() * 256);
+			def.setHillchange(is.readUnsignedByte() * 256);
 		}
 		else if (opcode == 82)
 		{
@@ -332,7 +332,7 @@ public class ObjectLoader
 		}
 		else if (opcode == 89)
 		{
-			def.setRandomizeAnimStart(true);
+			def.setRandomanimframe(true);
 		}
 		else if (opcode == 92)
 		{
@@ -341,14 +341,14 @@ public class ObjectLoader
 			{
 				varpID = -1;
 			}
-			def.setVarbitID(varpID);
+			def.setMultivarbit(varpID);
 
 			int configId = is.readUnsignedShort();
 			if (configId == 0xFFFF)
 			{
 				configId = -1;
 			}
-			def.setVarpID(configId);
+			def.setMultivarp(configId);
 
 
 			int var = is.readUnsignedShort();
@@ -371,7 +371,7 @@ public class ObjectLoader
 
 			configChangeDest[length + 1] = var;
 
-			def.setConfigChangeDest(configChangeDest);
+			def.setMultiloc(configChangeDest);
 		}
 		else if (opcode == 249)
 		{
@@ -406,28 +406,28 @@ public class ObjectLoader
 	}
 
 
-	private void post(ObjectDefinition def)
+	private void post(LocDefinition def)
 	{
-		if (def.getWallOrDoor() == -1)
+		if (def.getActive() == -1)
 		{
-			def.setWallOrDoor(0);
-			if (def.getObjectModels() != null && (def.getObjectTypes() == null || def.getObjectTypes()[0] == 10))
+			def.setActive(0);
+			if (def.getModels() != null && (def.getShapes() == null || def.getShapes()[0] == 10))
 			{
-				def.setWallOrDoor(1);
+				def.setActive(1);
 			}
 
 			for (int var1 = 0; var1 < 5; ++var1)
 			{
-				if (def.getActions()[var1] != null)
+				if (def.getOp()[var1] != null)
 				{
-					def.setWallOrDoor(1);
+					def.setActive(1);
 				}
 			}
 		}
 
-		if (def.getSupportsItems() == -1)
+		if (def.getRaiseobject() == -1)
 		{
-			def.setSupportsItems(def.getInteractType() != 0 ? 1 : 0);
+			def.setRaiseobject(def.getBlockwalk() != 0 ? 1 : 0);
 		}
 	}
 }

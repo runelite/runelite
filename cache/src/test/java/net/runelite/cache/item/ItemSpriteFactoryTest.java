@@ -30,11 +30,11 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.cache.IndexType;
-import net.runelite.cache.ItemManager;
+import net.runelite.cache.ObjManager;
 import net.runelite.cache.SpriteManager;
 import net.runelite.cache.StoreLocation;
 import net.runelite.cache.TextureManager;
-import net.runelite.cache.definitions.ItemDefinition;
+import net.runelite.cache.definitions.ObjDefinition;
 import net.runelite.cache.definitions.ModelDefinition;
 import net.runelite.cache.definitions.loaders.ModelLoader;
 import net.runelite.cache.definitions.providers.ModelProvider;
@@ -65,7 +65,7 @@ public class ItemSpriteFactoryTest
 		{
 			store.load();
 
-			ItemManager itemManager = new ItemManager(store);
+			ObjManager itemManager = new ObjManager(store);
 			itemManager.load();
 			itemManager.link();
 
@@ -89,7 +89,7 @@ public class ItemSpriteFactoryTest
 			TextureManager textureManager = new TextureManager(store);
 			textureManager.load();
 
-			for (ItemDefinition itemDef : itemManager.getItems())
+			for (ObjDefinition itemDef : itemManager.getItems())
 			{
 				if (itemDef.name == null || itemDef.name.equalsIgnoreCase("null"))
 				{

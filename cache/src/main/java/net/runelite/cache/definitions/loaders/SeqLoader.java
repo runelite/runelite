@@ -28,27 +28,27 @@ import java.util.HashMap;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.cache.definitions.SequenceDefinition;
+import net.runelite.cache.definitions.SeqDefinition;
 import net.runelite.cache.io.InputStream;
 
 @Accessors(chain = true)
 @Data
 @Slf4j
-public class SequenceLoader
+public class SeqLoader
 {
 	public static final int REV_220_SEQ_ARCHIVE_REV = 1141;
 
 	private boolean rev220FrameSounds = true;
 
-	public SequenceLoader configureForRevision(int rev)
+	public SeqLoader configureForRevision(int rev)
 	{
 		this.rev220FrameSounds = rev > REV_220_SEQ_ARCHIVE_REV;
 		return this;
 	}
 
-	public SequenceDefinition load(int id, byte[] b)
+	public SeqDefinition load(int id, byte[] b)
 	{
-		SequenceDefinition def = new SequenceDefinition(id);
+		SeqDefinition def = new SeqDefinition(id);
 		InputStream is = new InputStream(b);
 
 		while (true)
@@ -65,47 +65,47 @@ public class SequenceLoader
 		return def;
 	}
 
-	private void decodeValues(int opcode, SequenceDefinition def, InputStream stream)
+	private void decodeValues(int opcode, SeqDefinition def, InputStream stream)
 	{
 		int var3;
 		int var4;
 		if (opcode == 1)
 		{
 			var3 = stream.readUnsignedShort();
-			def.frameLenghts = new int[var3];
+			def.frames = new int[var3];
 
 			for (var4 = 0; var4 < var3; ++var4)
 			{
-				def.frameLenghts[var4] = stream.readUnsignedShort();
+				def.frames[var4] = stream.readUnsignedShort();
 			}
 
-			def.frameIDs = new int[var3];
+			def.iframes = new int[var3];
 
 			for (var4 = 0; var4 < var3; ++var4)
 			{
-				def.frameIDs[var4] = stream.readUnsignedShort();
+				def.iframes[var4] = stream.readUnsignedShort();
 			}
 
 			for (var4 = 0; var4 < var3; ++var4)
 			{
-				def.frameIDs[var4] += stream.readUnsignedShort() << 16;
+				def.iframes[var4] += stream.readUnsignedShort() << 16;
 			}
 		}
 		else if (opcode == 2)
 		{
-			def.frameStep = stream.readUnsignedShort();
+			def.replayoff = stream.readUnsignedShort();
 		}
 		else if (opcode == 3)
 		{
 			var3 = stream.readUnsignedByte();
-			def.interleaveLeave = new int[1 + var3];
+			def.walkmerge = new int[1 + var3];
 
 			for (var4 = 0; var4 < var3; ++var4)
 			{
-				def.interleaveLeave[var4] = stream.readUnsignedByte();
+				def.walkmerge[var4] = stream.readUnsignedByte();
 			}
 
-			def.interleaveLeave[var3] = 9999999;
+			def.walkmerge[var3] = 9999999;
 		}
 		else if (opcode == 4)
 		{
@@ -113,19 +113,19 @@ public class SequenceLoader
 		}
 		else if (opcode == 5)
 		{
-			def.forcedPriority = stream.readUnsignedByte();
+			def.priority = stream.readUnsignedByte();
 		}
 		else if (opcode == 6)
 		{
-			def.leftHandItem = stream.readUnsignedShort();
+			def.mainhand = stream.readUnsignedShort();
 		}
 		else if (opcode == 7)
 		{
-			def.rightHandItem = stream.readUnsignedShort();
+			def.offhand = stream.readUnsignedShort();
 		}
 		else if (opcode == 8)
 		{
-			def.maxLoops = stream.readUnsignedByte();
+			def.replaycount = stream.readUnsignedByte();
 		}
 		else if (opcode == 9)
 		{
@@ -133,7 +133,7 @@ public class SequenceLoader
 		}
 		else if (opcode == 10)
 		{
-			def.priority = stream.readUnsignedByte();
+			def.unknown1 = stream.readUnsignedByte();
 		}
 		else if (opcode == 11)
 		{
@@ -157,11 +157,11 @@ public class SequenceLoader
 		else if (opcode == 13)
 		{
 			var3 = stream.readUnsignedByte();
-			def.frameSounds = new SequenceDefinition.Sound[var3];
+			def.sound = new SeqDefinition.Sound[var3];
 
 			for (var4 = 0; var4 < var3; ++var4)
 			{
-				def.frameSounds[var4] = this.readFrameSound(stream);
+				def.sound[var4] = this.readFrameSound(stream);
 			}
 		}
 		else if (opcode == 14)
@@ -201,7 +201,7 @@ public class SequenceLoader
 		}
 	}
 
-	private SequenceDefinition.Sound readFrameSound(InputStream stream)
+	private SeqDefinition.Sound readFrameSound(InputStream stream)
 	{
 		int id;
 		int loops;
@@ -225,7 +225,7 @@ public class SequenceLoader
 
 		if (id >= 1 && loops >= 1 && location >= 0 && retain >= 0)
 		{
-			return new SequenceDefinition.Sound(id, loops, location, retain);
+			return new SeqDefinition.Sound(id, loops, location, retain);
 		}
 		else
 		{

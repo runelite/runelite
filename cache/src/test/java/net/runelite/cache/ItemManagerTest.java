@@ -52,7 +52,7 @@ public class ItemManagerTest
 		Store store = new Store(StoreLocation.LOCATION);
 		store.load();
 
-		ItemManager dumper = new ItemManager(
+		ObjManager dumper = new ObjManager(
 			store
 		);
 		dumper.load();

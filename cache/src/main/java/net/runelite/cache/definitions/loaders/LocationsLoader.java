@@ -51,22 +51,22 @@ public class LocationsLoader
 		{
 			id += idOffset;
 
-			int position = 0;
-			int positionOffset;
+			int coord = 0;
+			int coordOffset;
 
-			while ((positionOffset = buf.readUnsignedShortSmart()) != 0)
+			while ((coordOffset = buf.readUnsignedShortSmart()) != 0)
 			{
-				position += positionOffset - 1;
+				coord += coordOffset - 1;
 
-				int localY = position & 0x3F;
-				int localX = position >> 6 & 0x3F;
-				int height = position >> 12 & 0x3;
+				int z = coord & 0x3F;
+				int x = coord >> 6 & 0x3F;
+				int level = coord >> 12 & 0x3;
 
-				int attributes = buf.readUnsignedByte();
-				int type = attributes >> 2;
-				int orientation = attributes & 0x3;
+				int info = buf.readUnsignedByte();
+				int shape = info >> 2;
+				int angle = info & 0x3;
 
-				loc.getLocations().add(new Location(id, type, orientation, new Position(localX, localY, height)));
+				loc.getLocations().add(new Location(id, shape, angle, new Position(x, z, level)));
 			}
 		}
 	}

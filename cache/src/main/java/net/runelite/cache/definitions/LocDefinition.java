@@ -22,42 +22,61 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
 package net.runelite.cache.definitions;
 
 import java.util.Map;
 import lombok.Data;
-import lombok.Value;
 
 @Data
-public class SequenceDefinition
+public class LocDefinition
 {
-	private final int id;
-	public int[] frameIDs; // top 16 bits are FrameDefinition ids
-	public int[] chatFrameIds;
-	public int[] frameLenghts;
-	public Sound[] frameSounds;
-	public int frameStep = -1;
-	public int[] interleaveLeave;
-	public boolean stretches = false;
-	public int forcedPriority = 5;
-	public int leftHandItem = -1;
-	public int rightHandItem = -1;
-	public int maxLoops = 99;
-	public int precedenceAnimating = -1;
-	public int priority = -1;
-	public int replyMode = 2;
-	public int animMayaID = -1;
-	public Map<Integer, Sound> animMayaFrameSounds;
-	public int animMayaStart;
-	public int animMayaEnd;
-	public boolean[] animMayaMasks;
-
-	@Value
-	public static class Sound
-	{
-		public int id;
-		public int loops;
-		public int location;
-		public int retain;
-	}
+	private int id;
+	private short[] retex_s;
+	private int wallwidth = 16;
+	private boolean breakroutefinding = false;
+	private String name = "null";
+	private int[] models;
+	private int[] shapes;
+	private short[] recol_s;
+	private int mapAreaId = -1;
+	private short[] retex_d;
+	private int width = 1;
+	private int length = 1;
+	private int bgsound_range = 0;
+	private int[] bgsound_random;
+	private int ambientSoundRetain;
+	private int xoff = 0;
+	private boolean sharelight = false;
+	private int active = -1;
+	private int anim = -1;
+	private int multivarbit = -1;
+	private int ambient = 0;
+	private int contrast = 0;
+	private String[] op = new String[5];
+	private int blockwalk = 2;
+	private int mapscene = -1;
+	private int forceapproach = 0;
+	private short[] recol_d;
+	private boolean shadow = true;
+	private int resizex = 128;
+	private int resizey = 128;
+	private int resizez = 128;
+	private int objectID;
+	private int yoff = 0;
+	private int zoff = 0;
+	private boolean forcedecor = false;
+	private int hillchange = -1;
+	private int raiseobject = -1;
+	private int[] multiloc;
+	private int category;
+	private boolean mirror = false;
+	private int multivarp = -1;
+	private int bgsound_sound = -1;
+	private boolean occlude = false;
+	private int bgsound_mindelay = 0;
+	private int bgsound_maxdelay = 0;
+	private boolean blockrange = true;
+	private boolean randomanimframe;
+	private Map<Integer, Object> params = null;
 }

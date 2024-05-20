@@ -53,7 +53,7 @@ public class ParamLoader
 					def.setDefaultInt(b.readInt());
 					break;
 				case 4:
-					def.setMembers(false);
+					def.setAutodisable(false);
 					break;
 				case 5:
 					def.setDefaultString(b.readString());
