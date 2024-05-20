@@ -69,7 +69,7 @@ public class SequenceDumper
 
 			Storage storage = store.getStorage();
 			Index index = store.getIndex(IndexType.CONFIGS);
-			Archive archive = index.getArchive(ConfigType.SEQUENCE.getId());
+			Archive archive = index.getArchive(ConfigType.SEQ.getId());
 
 			byte[] archiveData = storage.loadArchive(archive);
 			ArchiveFiles files = archive.getFiles(archiveData);

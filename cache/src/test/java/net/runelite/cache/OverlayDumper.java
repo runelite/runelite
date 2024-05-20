@@ -67,7 +67,7 @@ public class OverlayDumper
 
 			Storage storage = store.getStorage();
 			Index index = store.getIndex(IndexType.CONFIGS);
-			Archive archive = index.getArchive(ConfigType.OVERLAY.getId());
+			Archive archive = index.getArchive(ConfigType.FLO.getId());
 
 			byte[] archiveData = storage.loadArchive(archive);
 			ArchiveFiles files = archive.getFiles(archiveData);

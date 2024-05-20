@@ -65,7 +65,7 @@ public class KitDumperTest
 
 			Storage storage = store.getStorage();
 			Index index = store.getIndex(IndexType.CONFIGS);
-			Archive archive = index.getArchive(ConfigType.IDENTKIT.getId());
+			Archive archive = index.getArchive(ConfigType.IDK.getId());
 
 			IdkLoader loader = new IdkLoader();
 

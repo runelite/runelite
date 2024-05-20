@@ -53,7 +53,7 @@ public class UnderlayManager implements UnderlayProvider
 	{
 		Storage storage = store.getStorage();
 		Index index = store.getIndex(IndexType.CONFIGS);
-		Archive archive = index.getArchive(ConfigType.UNDERLAY.getId());
+		Archive archive = index.getArchive(ConfigType.FLU.getId());
 
 		byte[] archiveData = storage.loadArchive(archive);
 		ArchiveFiles files = archive.getFiles(archiveData);

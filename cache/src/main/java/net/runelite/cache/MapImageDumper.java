@@ -1165,7 +1165,7 @@ public class MapImageDumper
 	{
 		Storage storage = store.getStorage();
 		Index index = store.getIndex(IndexType.CONFIGS);
-		Archive archive = index.getArchive(ConfigType.UNDERLAY.getId());
+		Archive archive = index.getArchive(ConfigType.FLU.getId());
 
 		byte[] archiveData = storage.loadArchive(archive);
 		ArchiveFiles files = archive.getFiles(archiveData);
@@ -1188,7 +1188,7 @@ public class MapImageDumper
 	{
 		Storage storage = store.getStorage();
 		Index index = store.getIndex(IndexType.CONFIGS);
-		Archive archive = index.getArchive(ConfigType.OVERLAY.getId());
+		Archive archive = index.getArchive(ConfigType.FLO.getId());
 
 		byte[] archiveData = storage.loadArchive(archive);
 		ArchiveFiles files = archive.getFiles(archiveData);

@@ -65,7 +65,7 @@ public class ParamDumper
 
 			Storage storage = store.getStorage();
 			Index index = store.getIndex(IndexType.CONFIGS);
-			Archive archive = index.getArchive(ConfigType.PARAMS.getId());
+			Archive archive = index.getArchive(ConfigType.PARAM.getId());
 
 			ParamLoader loader = new ParamLoader();
 
