@@ -41,10 +41,6 @@ public class WorldPointMapper
 	{
 		for (WorldMapPointMapping mapping : WorldMapPointMapping.values())
 		{
-			if (mapping.isMirror())
-			{
-				continue;
-			}
 			for (int x = mapping.getMinRegionXMap(); x <= mapping.getMaxRegionXMap(); x++)
 			{
 				for (int y = mapping.getMinRegionYMap(); y <= mapping.getMaxRegionYMap(); y++)
