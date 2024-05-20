@@ -104,9 +104,8 @@ public class WorldPointMapper
 	 */
 	public static WorldPointWithWorldMapArea getRealWorldPointFromMapPoint(WorldPoint mapWorldPoint, WorldMapArea worldMapArea)
 	{
-		return Arrays.stream(WorldMapPointMapping.values())
+		return PROCESSED_MAPPINGS.get(mapWorldPoint.getRegionID()).stream()
 			.filter(mapping -> mapping.getArea() == worldMapArea || worldMapArea == WorldMapArea.ANY)
-			.filter(mapping -> !mapping.isMirror())
 			.filter(mapping -> mapping.mapContainsWorldPoint(mapWorldPoint))
 			.findFirst()
 			.map(mapping -> convertToRealWorldPointWithWorldMapArea(mapping, mapWorldPoint))
@@ -155,7 +154,7 @@ public class WorldPointMapper
 		WorldPoint mappedPoint = WorldPoint.fromRegion(shiftedRegionId,
 			shiftedX,
 			shiftedY,
-			mapping.getPlane());
+			mapping.getMinPlane());
 		return new WorldPointWithWorldMapArea(mappedPoint, mapping.getArea());
 	}
 }
