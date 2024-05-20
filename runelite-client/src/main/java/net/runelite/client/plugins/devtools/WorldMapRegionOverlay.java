@@ -105,12 +105,11 @@ class WorldMapRegionOverlay extends Overlay
 		{
 			for (int y = yRegionMin; y < yRegionMax; y += REGION_SIZE)
 			{
+				graphics.setColor(WHITE_TRANSLUCENT);
+
 				int yTileOffset = -(yTileMin - y);
 				int xTileOffset = x + widthInTiles / 2 - worldMapPosition.getX();
 
-				int regionId = ((x >> 6) << 8) | (y >> 6);
-
-				graphics.setColor(WHITE_TRANSLUCENT);
 				int xPos = ((int) (xTileOffset * pixelsPerTile)) + (int) worldMapRect.getX();
 				int yPos = (worldMapRect.height - (int) (yTileOffset * pixelsPerTile)) + (int) worldMapRect.getY();
 				// Offset y-position by a single region to correct for drawRect starting from the top
@@ -118,20 +117,16 @@ class WorldMapRegionOverlay extends Overlay
 
 				graphics.drawRect(xPos, yPos, regionPixelSize, regionPixelSize);
 
-				drawRegionText(graphics, String.valueOf(regionId), xPos, yPos);
-
+				int regionId = ((x >> 6) << 8) | (y >> 6);
+				String regionText = String.valueOf(regionId);
+				FontMetrics fm = graphics.getFontMetrics();
+				Rectangle2D textBounds = fm.getStringBounds(regionText, graphics);
+				int labelWidth = (int) textBounds.getWidth() + 2 * LABEL_PADDING;
+				int labelHeight = (int) textBounds.getHeight() + 2 * LABEL_PADDING;
+				graphics.fillRect(xPos, yPos, labelWidth, labelHeight);
+				graphics.setColor(Color.BLACK);
+				graphics.drawString(regionText, xPos + LABEL_PADDING, yPos + (int) textBounds.getHeight() + LABEL_PADDING);
 			}
 		}
-	}
-
-	private void drawRegionText(Graphics2D graphics, String regionText, int x, int y)
-	{
-		FontMetrics fm = graphics.getFontMetrics();
-		Rectangle2D textBounds = fm.getStringBounds(regionText, graphics);
-		int labelWidth = (int) textBounds.getWidth() + 2 * LABEL_PADDING;
-		int labelHeight = (int) textBounds.getHeight() + 2 * LABEL_PADDING;
-		graphics.fillRect(x, y, labelWidth, labelHeight);
-		graphics.setColor(Color.BLACK);
-		graphics.drawString(regionText, x + LABEL_PADDING, y + (int) textBounds.getHeight() + LABEL_PADDING);
 	}
 }
