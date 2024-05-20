@@ -26,6 +26,7 @@ package net.runelite.client.ui.overlay.worldmap;
 
 import lombok.Value;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.worldmap.WorldMapArea;
 
 /**
  * This class is useful for dealing with the world map, where the viewed area is relevant to the placement of a {@link WorldPoint}.

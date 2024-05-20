@@ -30,6 +30,7 @@ import lombok.Data;
 import lombok.experimental.SuperBuilder;
 import net.runelite.api.Point;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.worldmap.WorldMapArea;
 
 @Data
 @SuperBuilder

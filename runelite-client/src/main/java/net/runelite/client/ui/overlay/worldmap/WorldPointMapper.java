@@ -30,6 +30,8 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import net.runelite.api.worldmap.WorldMapArea;
+import net.runelite.api.worldmap.WorldMapPointMapping;
 
 public class WorldPointMapper
 {
