@@ -38,20 +38,43 @@ import net.runelite.cache.models.VertexNormal;
 
 public class ItemSpriteFactory
 {
-	public static BufferedImage createSprite(ObjProvider itemProvider, ModelProvider modelProvider,
-                                             SpriteProvider spriteProvider, TextureProvider textureProvider,
-                                             int itemId, int quantity, int border, int shadowColor,
-                                             boolean noted) throws IOException
+	public static BufferedImage createSprite(
+		ObjProvider itemProvider,
+		ModelProvider modelProvider,
+		SpriteProvider spriteProvider,
+		TextureProvider textureProvider,
+		int itemId,
+		int quantity,
+		int border,
+		int shadowColor,
+		boolean noted
+	) throws IOException
 	{
-		SpritePixels spritePixels = createSpritePixels(itemProvider, modelProvider, spriteProvider, textureProvider,
-			itemId, quantity, border, shadowColor, noted);
+		SpritePixels spritePixels = createSpritePixels(
+			itemProvider,
+			modelProvider,
+			spriteProvider,
+			textureProvider,
+			itemId,
+			quantity,
+			border,
+			shadowColor,
+			noted
+		);
 		return spritePixels == null ? null : spritePixels.toBufferedImage();
 	}
 
-	private static SpritePixels createSpritePixels(ObjProvider itemProvider, ModelProvider modelProvider,
-                                                   SpriteProvider spriteProvider, TextureProvider textureProvider,
-                                                   int itemId, int quantity, int border, int shadowColor,
-                                                   boolean noted) throws IOException
+	private static SpritePixels createSpritePixels(
+		ObjProvider itemProvider,
+		ModelProvider modelProvider,
+		SpriteProvider spriteProvider,
+		TextureProvider textureProvider,
+		int itemId,
+		int quantity,
+		int border,
+		int shadowColor,
+		boolean noted
+	) throws IOException
 	{
 		ObjDefinition item = itemProvider.provide(itemId);
 
