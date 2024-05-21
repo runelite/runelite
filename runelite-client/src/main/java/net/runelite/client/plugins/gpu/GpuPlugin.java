@@ -95,7 +95,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	static final int MAX_TRIANGLE = 6144;
 	static final int SMALL_TRIANGLE_COUNT = 512;
 	private static final int FLAG_SCENE_BUFFER = Integer.MIN_VALUE;
-	private static final int DEFAULT_DISTANCE = 25;
 	static final int MAX_DISTANCE = 184;
 	static final int MAX_FOG_DEPTH = 100;
 	static final int SCENE_OFFSET = (Constants.EXTENDED_SCENE_SIZE - Constants.SCENE_SIZE) / 2; // offset for sxy -> msxy
@@ -1845,8 +1844,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 
 	private int getDrawDistance()
 	{
-		final int limit = computeMode != ComputeMode.NONE ? MAX_DISTANCE : DEFAULT_DISTANCE;
-		return Ints.constrainToRange(config.drawDistance(), 0, limit);
+		return Ints.constrainToRange(config.drawDistance(), 0, MAX_DISTANCE);
 	}
 
 	private void updateBuffer(@Nonnull GLBuffer glBuffer, int target, @Nonnull IntBuffer data, int usage, long clFlags)
