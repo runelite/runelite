@@ -3,7 +3,6 @@ package net.runelite.api.worldmap;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import net.runelite.api.coords.WorldPoint;
 
 @RequiredArgsConstructor
 @Getter
