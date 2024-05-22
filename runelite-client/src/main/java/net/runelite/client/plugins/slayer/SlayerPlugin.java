@@ -275,7 +275,7 @@ public class SlayerPlugin extends Plugin
 	@Subscribe
 	public void onCommandExecuted(CommandExecuted commandExecuted)
 	{
-		if (developerMode && commandExecuted.getCommand().equals("task"))
+		if (developerMode && commandExecuted.getCommand().equalsIgnoreCase("task"))
 		{
 			var task = String.join(" ", commandExecuted.getArguments());
 			setTask(task, 42, 42);

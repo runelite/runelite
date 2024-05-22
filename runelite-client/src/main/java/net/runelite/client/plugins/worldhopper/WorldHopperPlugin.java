@@ -294,7 +294,7 @@ public class WorldHopperPlugin extends Plugin
 	@Subscribe
 	public void onCommandExecuted(CommandExecuted commandExecuted)
 	{
-		if ("hop".equals(commandExecuted.getCommand()))
+		if ("hop".equalsIgnoreCase(commandExecuted.getCommand()))
 		{
 			int worldNumber;
 			try
