@@ -157,6 +157,23 @@ public class LocalPoint
 	 * @param y      y-axis coordinate of the tile in Scene coords
 	 * @return true coordinate of the tile
 	 */
+	@Deprecated
+	public static LocalPoint fromScene(int x, int y)
+	{
+		return new LocalPoint(
+			(x << Perspective.LOCAL_COORD_BITS) + (1 << Perspective.LOCAL_COORD_BITS - 1),
+			(y << Perspective.LOCAL_COORD_BITS) + (1 << Perspective.LOCAL_COORD_BITS - 1)
+		);
+	}
+
+	/**
+	 * Gets the coordinate at the center of the passed tile.
+	 *
+	 * @param x      x-axis coordinate of the tile in Scene coords
+	 * @param y      y-axis coordinate of the tile in Scene coords
+	 * @param scene  scene containing the tile
+	 * @return true coordinate of the tile
+	 */
 	public static LocalPoint fromScene(int x, int y, Scene scene)
 	{
 		return new LocalPoint(
