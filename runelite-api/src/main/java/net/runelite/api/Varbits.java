@@ -320,6 +320,12 @@ public final class Varbits
 	public static final int IN_WILDERNESS = 5963;
 
 	/**
+	 * 0 = Have not paid 150k into dispenser
+	 * 1 = Paid 150k into dispenser
+	 */
+	public static final int AGILITY_DISPENSER = 10674;
+
+	/**
 	 * Fishing Trawler
 	 * FISHING_TRAWLER_ACTIVITY Expected values: 0-255
 	 */

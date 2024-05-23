@@ -155,6 +155,10 @@ public class LootTrackerPlugin extends Plugin
 	private static final String HESPORI_EVENT = "Hespori";
 	private static final int HESPORI_REGION = 5021;
 
+	//Wilderness Agility dispenser loot handling
+	private static final String AGILITY_DISPENSER_EVENT = "Agility Dispenser";
+	private static final Pattern AGILITY_DISPENSER_PATTERN = Pattern.compile("You have been awarded (a clue scroll)?.+>(\\d+) x (.+?)<.+>(\\d+) x (.+?)(<.+>(.+))?<.+from the Agility dispenser.?");
+
 	// Chest loot handling
 	private static final String CHEST_LOOTED_MESSAGE = "You find some treasure in the chest!";
 	private static final Pattern ROGUES_CHEST_PATTERN = Pattern.compile("You find (a|some)([a-z\\s]*) inside.");
@@ -1017,6 +1021,16 @@ public class LootTrackerPlugin extends Plugin
 			return;
 		}
 
+		if (client.getVarbitValue(Varbits.AGILITY_DISPENSER) == 1)
+		{
+			final Matcher agilityDispenserMatcher = AGILITY_DISPENSER_PATTERN.matcher(message);
+			if (agilityDispenserMatcher.matches())
+			{
+				processAgilityDispenserLoot(agilityDispenserMatcher);
+				return;
+			}
+		}
+
 		final int regionID = client.getLocalPlayer().getWorldLocation().getRegionID();
 		if (HESPORI_REGION == regionID && message.equals(HESPORI_LOOTED_MESSAGE))
 		{
@@ -1438,6 +1452,29 @@ public class LootTrackerPlugin extends Plugin
 		int herbloreLevel = client.getBoostedSkillLevel(Skill.HERBLORE);
 		addLoot(HERBIBOAR_EVENT, -1, LootRecordType.EVENT, herbloreLevel, herbs);
 		return true;
+	}
+
+	private void processAgilityDispenserLoot(Matcher matcher)
+	{
+		List<ItemStack> drops = new ArrayList<>();
+		if (matcher.matches())
+		{
+			if (matcher.group(1) != null)
+			{
+				drops.add(new ItemStack(ItemID.CLUE_SCROLL_MEDIUM, 1, client.getLocalPlayer().getLocalLocation()));
+			}
+			if (matcher.group(7) != null)
+			{
+				drops.add(new ItemStack(itemManager.search(matcher.group(7)).get(0).getId(), 1, client.getLocalPlayer().getLocalLocation()));
+			}
+			drops.add(new ItemStack(itemManager.search(matcher.group(3)).get(0).getId(), Integer.parseInt(matcher.group(2)), client.getLocalPlayer().getLocalLocation()));
+			drops.add(new ItemStack(itemManager.search(matcher.group(5)).get(0).getId(), Integer.parseInt(matcher.group(4)), client.getLocalPlayer().getLocalLocation()));
+		}
+		else
+		{
+			return;
+		}
+		addLoot(AGILITY_DISPENSER_EVENT, -1, LootRecordType.EVENT, null, drops);
 	}
 
 	@VisibleForTesting
