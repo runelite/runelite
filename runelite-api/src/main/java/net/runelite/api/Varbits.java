@@ -369,11 +369,11 @@ public final class Varbits
 	/**
 	 * Blast Mine
 	 */
-	public static final int BLAST_MINE_COAL = 4924;
-	public static final int BLAST_MINE_GOLD = 4925;
-	public static final int BLAST_MINE_MITHRIL = 4926;
-	public static final int BLAST_MINE_ADAMANTITE = 4921;
-	public static final int BLAST_MINE_RUNITE = 4922;
+	public static final int BLAST_MINE_COAL = 10698;
+	public static final int BLAST_MINE_GOLD = 10699;
+	public static final int BLAST_MINE_MITHRIL = 10700;
+	public static final int BLAST_MINE_ADAMANTITE = 10701;
+	public static final int BLAST_MINE_RUNITE = 10702;
 
 	/**
 	 * Raids
@@ -697,9 +697,9 @@ public final class Varbits
 	/**
 	 * Muted volume restore values
 	 */
-	public static final int MUTED_MUSIC_VOLUME = 9666;
-	public static final int MUTED_SOUND_EFFECT_VOLUME = 9674;
-	public static final int MUTED_AREA_EFFECT_VOLUME = 9675;
+	public static final int MUTED_MUSIC_VOLUME = 12426;
+	public static final int MUTED_SOUND_EFFECT_VOLUME = 12427;
+	public static final int MUTED_AREA_EFFECT_VOLUME = 12428;
 
 	/**
 	 * Parasite infection status during nightmare of ashihama bossfight

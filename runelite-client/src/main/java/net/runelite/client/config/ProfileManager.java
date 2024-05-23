@@ -41,6 +41,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Predicate;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.RequiredArgsConstructor;
@@ -164,21 +165,19 @@ public class ProfileManager
 
 		public ConfigProfile findProfile(String name)
 		{
-			for (ConfigProfile configProfile : profiles)
-			{
-				if (configProfile.getName().equals(name))
-				{
-					return configProfile;
-				}
-			}
-			return null;
+			return findProfile((profile) -> profile.getName().equals(name));
 		}
 
 		public ConfigProfile findProfile(long id)
 		{
-			for (ConfigProfile configProfile : profiles)
+			return findProfile((profile) -> profile.getId() == id);
+		}
+
+		public ConfigProfile findProfile(Predicate<ConfigProfile> condition)
+		{
+			for (ConfigProfile configProfile: profiles)
 			{
-				if (configProfile.getId() == id)
+				if (condition.test(configProfile))
 				{
 					return configProfile;
 				}

@@ -7,7 +7,7 @@
 .id                 5730
 .int_stack_count    2
 .string_stack_count 2
-.int_var_count      5
+.int_var_count      6
 .string_var_count   3
    sconst                 ""
    sstore                 2
@@ -17,46 +17,48 @@
    istore                 3
    iconst                 0
    istore                 4
+   iconst                 5
+   istore                 5
    sload                  1
    string_length         
    iconst                 0
-   if_icmpgt              LABEL13
-   jump                   LABEL146
-LABEL13:
+   if_icmpgt              LABEL15
+   jump                   LABEL148
+LABEL15:
    iload                  0
    if_getwidth           
    istore                 2
    invoke                 6811
    iconst                 1
-   if_icmpeq              LABEL20
-   jump                   LABEL23
-LABEL20:
+   if_icmpeq              LABEL22
+   jump                   LABEL25
+LABEL22:
    sload                  0
    sstore                 2
-   jump                   LABEL42
-LABEL23:
+   jump                   LABEL44
+LABEL25:
    sload                  0
    iload                  2
    iconst                 494
    paraheight            
    iconst                 2
-   if_icmple              LABEL30
-   jump                   LABEL37
-LABEL30:
+   if_icmple              LABEL32
+   jump                   LABEL39
+LABEL32:
    sload                  0
    sconst                 "<br>"
    sconst                 "<br>"
    sload                  1
    join_string            4
    sstore                 2
-   jump                   LABEL42
-LABEL37:
+   jump                   LABEL44
+LABEL39:
    sload                  0
    sconst                 "<br>"
    sload                  1
    join_string            3
    sstore                 2
-LABEL42:
+LABEL44:
 
    sload                  0 ; examine
    sload                  1 ; Convenience fee
@@ -92,7 +94,7 @@ LABEL42:
    iload                  3
    iload                  1
    if_getwidth           
-   iconst                 15
+   iload                  5
    sub                   
    iconst                 2
    div                   
@@ -115,14 +117,14 @@ LABEL42:
    if_setposition        
    invoke                 6811
    iconst                 1
-   if_icmpeq              LABEL92
-   jump                   LABEL96
-LABEL92:
+   if_icmpeq              LABEL94
+   jump                   LABEL98
+LABEL94:
    iconst                 1
    iload                  1
    if_sethide            
-   jump                   LABEL145
-LABEL96:
+   jump                   LABEL147
+LABEL98:
    iconst                 0
    iload                  1
    if_sethide            
@@ -172,9 +174,9 @@ LABEL96:
    sconst                 "Info"
    iload                  1
    if_setop              
-LABEL145:
-   jump                   LABEL167
-LABEL146:
+LABEL147:
+   jump                   LABEL169
+LABEL148:
    sload                  0
    sstore                 2
 
@@ -206,7 +208,7 @@ LABEL146:
    if_setonop            
    iload                  1
    if_clearops           
-LABEL167:
+LABEL169:
    sload                  2
    iload                  0
    if_settext            

@@ -42,10 +42,10 @@ public class WorldMapDataLoader
 		MapSquareDefinition mapSquareDefinition = new MapSquareDefinition();
 		mapSquareDefinition.minLevel = in.readUnsignedByte();
 		mapSquareDefinition.levels = in.readUnsignedByte();
-		mapSquareDefinition.displaySquareX = in.readUnsignedShort();
-		mapSquareDefinition.displaySquareZ = in.readUnsignedShort();
 		mapSquareDefinition.sourceSquareX = in.readUnsignedShort();
 		mapSquareDefinition.sourceSquareZ = in.readUnsignedShort();
+		mapSquareDefinition.displaySquareX = in.readUnsignedShort();
+		mapSquareDefinition.displaySquareZ = in.readUnsignedShort();
 		mapSquareDefinition.groupId = in.readBigSmart2();
 		mapSquareDefinition.fileId = in.readBigSmart2();
 
@@ -64,14 +64,14 @@ public class WorldMapDataLoader
 		ZoneDefinition zoneDefinition = new ZoneDefinition();
 		zoneDefinition.minLevel = in.readUnsignedByte();
 		zoneDefinition.levels = in.readUnsignedByte();
-		zoneDefinition.displaySquareX = in.readUnsignedShort();
-		zoneDefinition.displaySquareZ = in.readUnsignedShort();
-		zoneDefinition.displayZoneX = in.readUnsignedByte();
-		zoneDefinition.displayZoneY = in.readUnsignedByte();
 		zoneDefinition.sourceSquareX = in.readUnsignedShort();
 		zoneDefinition.sourceSquareZ = in.readUnsignedShort();
 		zoneDefinition.sourceZoneX = in.readUnsignedByte();
 		zoneDefinition.sourceZoneZ = in.readUnsignedByte();
+		zoneDefinition.displaySquareX = in.readUnsignedShort();
+		zoneDefinition.displaySquareZ = in.readUnsignedShort();
+		zoneDefinition.displayZoneX = in.readUnsignedByte();
+		zoneDefinition.displayZoneZ = in.readUnsignedByte();
 		zoneDefinition.groupId = in.readBigSmart2();
 		zoneDefinition.fileId = in.readBigSmart2();
 

@@ -427,7 +427,7 @@ public interface MenuEntrySwapperConfig extends Config
 	@ConfigItem(
 		keyName = "teleportSubmenus",
 		name = "Teleport submenus",
-		description = "Use submenus for max, construction, and diary cape teleports",
+		description = "Use submenus for max, construction, hunter, and diary cape teleports",
 		section = itemSection
 	)
 	default boolean teleportSubmenus()

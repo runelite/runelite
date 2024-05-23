@@ -29,7 +29,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.10.29-SNAPSHOT</version>
+		<version>1.10.32-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>client</artifactId>
@@ -253,7 +253,7 @@
 		<dependency>
 			<groupId>net.runelite.arn</groupId>
 			<artifactId>http-api</artifactId>
-			<version>1.2.12</version>
+			<version>1.2.16</version>
 		</dependency>
 		<dependency>
 			<groupId>net.runelite</groupId>

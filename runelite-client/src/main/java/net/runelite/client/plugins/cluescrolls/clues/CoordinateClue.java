@@ -237,7 +237,7 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 		.put(new WorldPoint(3085, 3569, 0), new CoordinateClueInfo("Wilderness. Obelisk of Air.", BRASSICAN_MAGE))
 		.put(new WorldPoint(2934, 2727, 0), new CoordinateClueInfo("Eastern shore of Crash Island.", BRASSICAN_MAGE))
 		.put(new WorldPoint(1451, 3695, 0), new CoordinateClueInfo("West side of Lizardman Canyon with Lizardman shaman.", ANCIENT_WIZARDS))
-		.put(new WorldPoint(2538, 3739, 0), new CoordinateClueInfo("Waterbirth Island. Bring a pet rock and rune thrownaxe.", BRASSICAN_MAGE))
+		.put(new WorldPoint(2538, 3739, 0), new CoordinateClueInfo("Waterbirth Island. Bring a pet rock and rune thrownaxe OR have 85 agility.", BRASSICAN_MAGE))
 		.put(new WorldPoint(1248, 3751, 0), new CoordinateClueInfo("In the north wing of the Farming Guild.", BRASSICAN_MAGE))
 		.put(new WorldPoint(1698, 3792, 0), new CoordinateClueInfo("Arceuus church.", ANCIENT_WIZARDS))
 		.put(new WorldPoint(2951, 3820, 0), new CoordinateClueInfo("Wilderness. Chaos Temple (level 38).", ANCIENT_WIZARDS))

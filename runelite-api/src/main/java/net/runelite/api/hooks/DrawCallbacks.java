@@ -25,6 +25,7 @@
 package net.runelite.api.hooks;
 
 import net.runelite.api.Model;
+import net.runelite.api.Projection;
 import net.runelite.api.Renderable;
 import net.runelite.api.Scene;
 import net.runelite.api.SceneTileModel;
@@ -48,16 +49,11 @@ public interface DrawCallbacks
 	 */
 	int NORMALS = 4;
 
-	void draw(Renderable renderable, int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z, long hash);
+	void draw(Projection projection, Scene scene, Renderable renderable, int orientation, int x, int y, int z, long hash);
 
-	void drawScenePaint(int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z,
-						SceneTilePaint paint, int tileZ, int tileX, int tileY,
-						int zoom, int centerX, int centerY);
+	void drawScenePaint(Scene scene, SceneTilePaint paint, int plane, int tileX, int tileZ);
 
-
-	void drawSceneModel(int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z,
-						SceneTileModel model, int tileZ, int tileX, int tileY,
-						int zoom, int centerX, int centerY);
+	void drawSceneTileModel(Scene scene, SceneTileModel model, int tileX, int tileZ);
 
 	/**
 	 * Called when a frame should be drawn.
@@ -69,16 +65,7 @@ public interface DrawCallbacks
 	/**
 	 * Called before the scene is drawn
 	 */
-	default void drawScene(double cameraX, double cameraY, double cameraZ, double cameraPitch, double cameraYaw, int plane)
-	{
-	}
-
-	/**
-	 * Called before the scene is drawn
-	 */
-	default void drawScene(int cameraX, int cameraY, int cameraZ, int cameraPitch, int cameraYaw, int plane)
-	{
-	}
+	void drawScene(double cameraX, double cameraY, double cameraZ, double cameraPitch, double cameraYaw, int plane);
 
 	/**
 	 * Called after the scene has been drawn
