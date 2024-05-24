@@ -202,15 +202,19 @@ class GrandExchangeSearchPanel extends JPanel
 
 		for (ItemPrice item : result)
 		{
+			int itemId = item.getId();
+			ItemComposition itemComp = itemManager.getItemComposition(itemId);
+			if (!itemComp.isTradeable())
+			{
+				continue;
+			}
+
 			if (count++ > MAX_SEARCH_ITEMS)
 			{
 				// Cap search
 				break;
 			}
 
-			int itemId = item.getId();
-
-			ItemComposition itemComp = itemManager.getItemComposition(itemId);
 			ItemStats itemStats = itemManager.getItemStats(itemId, false);
 
 			int itemPrice = useActivelyTradedPrice ? itemManager.getWikiPrice(item) : item.getPrice();
