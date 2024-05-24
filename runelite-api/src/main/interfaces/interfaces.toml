@@ -558,7 +558,9 @@ worldmap_options=53
 
 [mlm]
 id=382
-container=0
+layer=3
+sack_size_text=5
+space_text=6
 
 [moons_of_peril]
 id=869
@@ -670,6 +672,10 @@ points_infobox=3
 
 [raiding_party]
 id=500
+
+[report_abuse]
+id=875
+parent=0
 
 [resizable_viewport]
 id=161

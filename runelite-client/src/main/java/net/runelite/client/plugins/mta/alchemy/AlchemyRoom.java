@@ -49,10 +49,6 @@ import static net.runelite.api.ObjectID.CUPBOARD_23686;
 import static net.runelite.api.ObjectID.CUPBOARD_23687;
 import static net.runelite.api.ObjectID.CUPBOARD_23688;
 import static net.runelite.api.ObjectID.CUPBOARD_23689;
-import static net.runelite.api.ObjectID.CUPBOARD_23690;
-import static net.runelite.api.ObjectID.CUPBOARD_23691;
-import static net.runelite.api.ObjectID.CUPBOARD_23692;
-import static net.runelite.api.ObjectID.CUPBOARD_23693;
 import net.runelite.api.Perspective;
 import net.runelite.api.Player;
 import net.runelite.api.Point;
@@ -77,7 +73,7 @@ public class AlchemyRoom extends MTARoom
 	private static final int MTA_ALCH_REGION = 13462;
 
 	private static final int IMAGE_Z_OFFSET = 150;
-	private static final int NUM_CUPBOARDS = 8;
+	private static final int NUM_CUPBOARDS = 6;
 	private static final int INFO_ITEM_START = 7;
 	private static final int INFO_POINT_START = 12;
 	private static final int INFO_LENGTH = 5;
@@ -131,13 +127,11 @@ public class AlchemyRoom extends MTARoom
 			Arrays.stream(cupboards)
 				.filter(Objects::nonNull)
 				.forEach(e -> e.alchemyItem = AlchemyItem.UNKNOWN);
+
+			client.clearHintArrow();
 		}
 
-		Cupboard newSuggestion = getSuggestion();
-		if (suggestion == null || newSuggestion == null || suggestion.alchemyItem != newSuggestion.alchemyItem)
-		{
-			suggestion = newSuggestion;
-		}
+		suggestion = getSuggestion();
 	}
 
 
@@ -183,16 +177,6 @@ public class AlchemyRoom extends MTARoom
 			case CUPBOARD_23688:
 			case CUPBOARD_23689:
 				cupboardId = 5;
-				break;
-
-			case CUPBOARD_23690:
-			case CUPBOARD_23691:
-				cupboardId = 6;
-				break;
-
-			case CUPBOARD_23692:
-			case CUPBOARD_23693:
-				cupboardId = 7;
 				break;
 
 			default:
@@ -255,24 +239,10 @@ public class AlchemyRoom extends MTARoom
 			else if (message.equals(EMPTY))
 			{
 				Cupboard clicked = getClicked();
-
-				int idx = Arrays.asList(cupboards).indexOf(clicked);
-				for (int i = -2; i <= 2; ++i)
+				if (clicked.alchemyItem != AlchemyItem.EMPTY)
 				{
-					int j = (idx + i) % 8;
-					if (j < 0)
-					{
-						j = 8 + j;
-					}
-
-					Cupboard cupboard = cupboards[j];
-					if (cupboard != null && cupboard.alchemyItem == AlchemyItem.UNKNOWN)
-					{
-						cupboard.alchemyItem = AlchemyItem.POSSIBLY_EMPTY;
-					}
+					fill(clicked, AlchemyItem.EMPTY);
 				}
-
-				clicked.alchemyItem = AlchemyItem.EMPTY;
 			}
 		}
 	}
@@ -420,29 +390,7 @@ public class AlchemyRoom extends MTARoom
 			}
 		}
 
-		// otherwise find the closest cupboard which can not be empty
-		Cupboard nearest = null;
-		int distance = -1;
-
-		WorldPoint mine = client.getLocalPlayer().getWorldLocation();
-
-		for (Cupboard cupboard : cupboards)
-		{
-			if (cupboard == null || cupboard.alchemyItem == AlchemyItem.EMPTY || cupboard.alchemyItem == AlchemyItem.POSSIBLY_EMPTY)
-			{
-				continue;
-			}
-
-			int objectDistance = cupboard.gameObject.getWorldLocation().distanceTo(mine);
-
-			if (nearest == null || objectDistance < distance)
-			{
-				nearest = cupboard;
-				distance = objectDistance;
-			}
-		}
-
-		return nearest;
+		return null;
 	}
 
 

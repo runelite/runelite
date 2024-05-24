@@ -216,6 +216,7 @@ public class ChatFilterPlugin extends Plugin
 				break;
 			case GAMEMESSAGE:
 			case ENGINE:
+			case FRIENDSCHATNOTIFICATION:
 			case ITEM_EXAMINE:
 			case NPC_EXAMINE:
 			case OBJECT_EXAMINE:

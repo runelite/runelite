@@ -58,7 +58,7 @@ import net.runelite.client.util.ImageUtil;
 @PluginDescriptor(
 	name = "Interface Styles",
 	description = "Change the interface style to the 2005/2010 interface",
-	tags = {"2005", "2010", "skin", "theme", "ui"},
+	tags = {"2005", "2010", "skin", "theme", "ui", "hp", "bar"},
 	enabledByDefault = false
 )
 public class InterfaceStylesPlugin extends Plugin

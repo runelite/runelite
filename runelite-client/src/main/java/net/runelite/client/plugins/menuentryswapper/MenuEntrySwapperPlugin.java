@@ -65,7 +65,6 @@ import net.runelite.api.annotations.Component;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOpened;
-import net.runelite.api.events.PostItemComposition;
 import net.runelite.api.events.PostMenuSort;
 import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.InterfaceID;
@@ -78,7 +77,6 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemVariationMapping;
 import net.runelite.client.game.NpcUtil;
@@ -166,6 +164,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private final Multimap<String, Swap> swaps = LinkedHashMultimap.create();
 	private final ArrayListMultimap<String, Integer> optionIndexes = ArrayListMultimap.create();
 	private final Multimap<Integer, TeleportSwap> teleportSwaps = HashMultimap.create();
+	private boolean lastShift, curShift;
 
 	@Provides
 	MenuEntrySwapperConfig provideConfig(ConfigManager configManager)
@@ -420,24 +419,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private void swapContains(String option, Predicate<String> targetPredicate, String swappedOption, Supplier<Boolean> enabled)
 	{
 		swaps.put(option, new Swap(alwaysTrue(), targetPredicate, swappedOption, enabled, false));
-	}
-
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
-	{
-		if (event.getGroup().equals(MenuEntrySwapperConfig.GROUP) && event.getKey().equals("shiftClickCustomization"))
-		{
-			clientThread.invoke(this::resetItemCompositionCache);
-		}
-		else if (event.getGroup().equals(SHIFTCLICK_CONFIG_GROUP) && event.getKey().startsWith(ITEM_KEY_PREFIX))
-		{
-			clientThread.invoke(this::resetItemCompositionCache);
-		}
-	}
-
-	private void resetItemCompositionCache()
-	{
-		client.getItemCompositionCache().reset();
 	}
 
 	private Integer getItemSwapConfig(boolean shift, int itemId)
@@ -1480,36 +1461,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 		final String target = Text.removeTags(menuEntry.getTarget()).toLowerCase();
 
 		final Widget w = menuEntry.getParent() != null ? menuEntry.getParent().getWidget() : menuEntry.getWidget();
-		// Custom shift-click item swap
-		if (shiftModifier() && w != null && WidgetUtil.componentToInterface(w.getId()) == InterfaceID.INVENTORY)
-		{
-			if (config.shiftClickCustomization() && !option.equals("use"))
-			{
-				Integer customOption = getItemSwapConfig(true, w.getItemId());
-
-				// Special case use shift click due to items not actually containing a "Use" option, making
-				// the client unable to perform the swap itself.
-				if (customOption != null && customOption == -1)
-				{
-					swap(menuEntries, "use", target, index, true);
-				}
-				else if (customOption != null && menuEntry.getParent() != null && menuEntry.getOption().hashCode() == customOption)
-				{
-					swap(optionIndexes, menuEntries, index, menuEntries.length - 1);
-					menuEntry.setParent(null);
-				}
-			}
-
-			// don't perform swaps on items when shift is held; instead prefer the client menu swap, which
-			// we may have overwrote
-			return;
-		}
-
-		// Custom left-click item swap
+		// Custom item swap
 		if (w != null && WidgetUtil.componentToInterface(w.getId()) == InterfaceID.INVENTORY
-			&& config.leftClickCustomization())
+			&& (lastShift ? config.shiftClickCustomization() : config.leftClickCustomization()))
 		{
-			Integer swapIndex = getItemSwapConfig(false, w.getItemId());
+			Integer swapIndex = getItemSwapConfig(lastShift, w.getItemId());
 			if (swapIndex != null)
 			{
 				if (swapIndex == -1)
@@ -1649,6 +1605,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 	@Subscribe
 	public void onClientTick(ClientTick clientTick)
 	{
+		lastShift = curShift;
+		curShift = shiftModifier();
+
 		if (client.isMenuOpen())
 		{
 			return;
@@ -1761,25 +1720,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		if (oldEntries.length != newEntries.length)
 		{
 			client.setMenuEntries(newEntries);
-		}
-	}
-
-	@Subscribe
-	public void onPostItemComposition(PostItemComposition event)
-	{
-		if (!config.shiftClickCustomization())
-		{
-			// since shift-click is done by the client we have to check if our shift click customization is on
-			// prior to altering the item shift click action index.
-			return;
-		}
-
-		ItemComposition itemComposition = event.getItemComposition();
-		Integer option = getItemSwapConfig(true, itemComposition.getId());
-
-		if (option != null && option >= 0 && option < itemComposition.getInventoryActions().length)
-		{
-			itemComposition.setShiftClickActionIndex(option);
 		}
 	}
 
@@ -2154,6 +2094,15 @@ public class MenuEntrySwapperPlugin extends Plugin
 			.addSub("Lesser Fanatic", () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 13))
 			.addSub("Elder Gnome child", () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 14))
 			.addSub("Twiggy O'Korn", () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 15));
+		// endregion
+
+		// region Hunter cape
+		teleportSwap("Teleport", ItemID.HUNTER_CAPE, ItemID.HUNTER_CAPET)
+			.worn()
+			.held()
+			.addSub("Carnivorous Chinchompas", () -> pauseresume(ComponentID.DIALOG_OPTION_OPTIONS, 1))
+			.addSub("Black Chinchompas", () -> pauseresume(ComponentID.DIALOG_OPTION_OPTIONS, 2))
+			.addSub("Hunter Guild", () -> pauseresume(ComponentID.DIALOG_OPTION_OPTIONS, 3));
 		// endregion
 	}
 

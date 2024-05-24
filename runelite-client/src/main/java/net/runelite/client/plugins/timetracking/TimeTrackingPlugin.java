@@ -203,7 +203,7 @@ public class TimeTrackingPlugin extends Plugin
 	@Subscribe
 	public void onCommandExecuted(CommandExecuted commandExecuted)
 	{
-		if (commandExecuted.getCommand().equals("resetfarmtick"))
+		if (commandExecuted.getCommand().equalsIgnoreCase("resetfarmtick"))
 		{
 			configManager.unsetRSProfileConfiguration(CONFIG_GROUP, TimeTrackingConfig.FARM_TICK_OFFSET_PRECISION);
 			configManager.unsetRSProfileConfiguration(CONFIG_GROUP, TimeTrackingConfig.FARM_TICK_OFFSET);

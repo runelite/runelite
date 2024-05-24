@@ -305,7 +305,7 @@ public final class NpcID
 	public static final int EMBLEM_TRADER = 308;
 	public static final int REACHER = 309;
 	public static final int AYESHA = 310;
-	public static final int IRON_MAN_TUTOR = 311;
+	public static final int IRONMAN_TUTOR = 311;
 	public static final int FROG = 312;
 	public static final int REACHER_313 = 313;
 	public static final int DR_JEKYLL_314 = 314;
@@ -7094,7 +7094,7 @@ public final class NpcID
 	public static final int REVENANT_DARK_BEAST = 7938;
 	public static final int REVENANT_KNIGHT = 7939;
 	public static final int REVENANT_DRAGON = 7940;
-	public static final int IRON_MAN_TUTOR_7941 = 7941;
+	public static final int IRONMAN_TUTOR_7941 = 7941;
 	public static final int EMBLEM_TRADER_7943 = 7943;
 	public static final int FISHING_SPOT_7946 = 7946;
 	public static final int FISHING_SPOT_7947 = 7947;
@@ -8384,7 +8384,7 @@ public final class NpcID
 	public static final int GIANT_RAT_9483 = 9483;
 	public static final int BANKER_9484 = 9484;
 	public static final int BROTHER_BRACE_9485 = 9485;
-	public static final int IRON_MAN_TUTOR_9486 = 9486;
+	public static final int IRONMAN_TUTOR_9486 = 9486;
 	public static final int MAGIC_INSTRUCTOR_9487 = 9487;
 	public static final int CHICKEN_9488 = 9488;
 	public static final int VELIAF_HURTZ_9489 = 9489;
@@ -9411,7 +9411,7 @@ public final class NpcID
 	public static final int R0CK_5MASHER = 11228;
 	public static final int REGENT = 11229;
 	public static final int GROUP_STORAGE_TUTOR = 11230;
-	public static final int GROUP_IRON_TUTOR = 11231;
+	public static final int GROUP_IRONMAN_TUTOR = 11231;
 	public static final int THE_SAGE = 11232;
 	public static final int LEAGUE_TUTOR = 11233;
 	public static final int LEAGUES_ASSISTANT_11234 = 11234;

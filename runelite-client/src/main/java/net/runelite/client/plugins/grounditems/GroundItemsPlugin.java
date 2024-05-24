@@ -66,6 +66,7 @@ import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.FocusChanged;
@@ -79,10 +80,7 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
-import net.runelite.client.events.NpcLootReceived;
-import net.runelite.client.events.PlayerLootReceived;
 import net.runelite.client.game.ItemManager;
-import net.runelite.client.game.ItemStack;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.input.MouseManager;
 import net.runelite.client.plugins.Plugin;
@@ -261,7 +259,7 @@ public class GroundItemsPlugin extends Plugin
 			collectedGroundItems.put(tile.getWorldLocation(), item.getId(), groundItem);
 		}
 
-		if (!config.onlyShowOwnItems())
+		if (groundItem.isMine() || !config.onlyShowOwnItems())
 		{
 			notifyHighlightedItem(groundItem);
 		}
@@ -333,20 +331,6 @@ public class GroundItemsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onNpcLootReceived(NpcLootReceived npcLootReceived)
-	{
-		Collection<ItemStack> items = npcLootReceived.getItems();
-		lootReceived(items);
-	}
-
-	@Subscribe
-	public void onPlayerLootReceived(PlayerLootReceived playerLootReceived)
-	{
-		Collection<ItemStack> items = playerLootReceived.getItems();
-		lootReceived(items);
-	}
-
-	@Subscribe
 	public void onClientTick(ClientTick event)
 	{
 		if (!config.collapseEntries())
@@ -395,29 +379,6 @@ public class GroundItemsPlugin extends Plugin
 		}).toArray(MenuEntry[]::new));
 	}
 
-	private void lootReceived(Collection<ItemStack> items)
-	{
-		for (ItemStack itemStack : items)
-		{
-			WorldPoint location = WorldPoint.fromLocal(client, itemStack.getLocation());
-			GroundItem groundItem = collectedGroundItems.get(location, itemStack.getId());
-			if (groundItem != null)
-			{
-				if (config.onlyShowOwnItems())
-				{
-					notifyHighlightedItem(groundItem);
-				}
-			}
-		}
-
-		// Since the loot can potentially be over multiple tiles, make sure to process lootbeams on all those tiles
-		items.stream()
-			.map(ItemStack::getLocation)
-			.map(l -> WorldPoint.fromLocal(client, l))
-			.distinct()
-			.forEach(this::handleLootbeam);
-	}
-
 	private GroundItem buildGroundItem(final Tile tile, final TileItem item)
 	{
 		// Collect the data for the item
@@ -427,6 +388,16 @@ public class GroundItemsPlugin extends Plugin
 		final int alchPrice = itemComposition.getHaPrice();
 		final int despawnTime = item.getDespawnTime() - client.getTickCount();
 		final int visibleTime = item.getVisibleTime() - client.getTickCount();
+		int ownership = item.getOwnership();
+		final int accountType = client.getVarbitValue(Varbits.ACCOUNT_TYPE);
+		boolean isGim = accountType >= 4 && accountType <= 6; // ~is_group_iron
+
+		// from ~script7240
+		if (ownership == TileItem.OWNERSHIP_GROUP && !isGim)
+		{
+			// non-gims see loot from other people as "group" loop since they are both group -1.
+			ownership = TileItem.OWNERSHIP_OTHER;
+		}
 
 		final GroundItem groundItem = GroundItem.builder()
 			.id(itemId)
@@ -437,7 +408,7 @@ public class GroundItemsPlugin extends Plugin
 			.haPrice(alchPrice)
 			.height(tile.getItemLayer().getHeight())
 			.tradeable(itemComposition.isTradeable())
-			.ownership(item.getOwnership())
+			.ownership(ownership)
 			.isPrivate(item.isPrivate())
 			.spawnTime(Instant.now())
 			.stackable(itemComposition.isStackable())

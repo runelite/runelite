@@ -31,10 +31,10 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class ZoneDefinition extends AbstractWorldMapDataDefinition
 {
-	public int displayZoneX;
-	public int displayZoneY;
 	public int sourceZoneX;
 	public int sourceZoneZ;
+	public int displayZoneX;
+	public int displayZoneZ;
 
 	public boolean equals(Object obj)
 	{
@@ -45,13 +45,13 @@ public class ZoneDefinition extends AbstractWorldMapDataDefinition
 		else
 		{
 			ZoneDefinition other = (ZoneDefinition) obj;
-			return other.sourceSquareX == this.sourceSquareX && other.sourceSquareZ == this.sourceSquareZ
-					&& other.sourceZoneX == this.sourceZoneX && other.sourceZoneZ == this.sourceZoneZ;
+			return other.displaySquareX == this.displaySquareX && other.displaySquareZ == this.displaySquareZ
+					&& other.displayZoneX == this.displayZoneX && other.displayZoneZ == this.displayZoneZ;
 		}
 	}
 
 	public int hashCode()
 	{
-		return this.sourceSquareX | this.sourceSquareZ << 8 | this.sourceZoneX << 16 | this.sourceZoneZ << 24;
+		return this.displaySquareX | this.displaySquareZ << 8 | this.displayZoneX << 16 | this.displayZoneZ << 24;
 	}
 }
