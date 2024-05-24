@@ -28,6 +28,7 @@ import com.jagex.oldscape.pub.OAuthApi;
 import java.awt.Canvas;
 import java.awt.Dimension;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
@@ -2074,10 +2075,7 @@ public interface Client extends OAuthApi, GameEngine
 	 * @see InstanceTemplates
 	 */
 	@Deprecated
-	default int[][][] getInstanceTemplateChunks()
-	{
-		return getTopLevelWorldView().getScene().getInstanceTemplateChunks();
-	}
+	int[][][] getInstanceTemplateChunks();
 
 	/**
 	 * Returns a 2D array containing XTEA encryption keys used to decrypt
@@ -2125,7 +2123,8 @@ public interface Client extends OAuthApi, GameEngine
 	@Deprecated
 	default List<Player> getPlayers()
 	{
-		return getTopLevelWorldView().players()
+		var wv = getTopLevelWorldView();
+		return wv == null ? Collections.emptyList() : wv.players()
 			.stream()
 			.collect(Collectors.toCollection(ArrayList::new));
 	}
@@ -2138,7 +2137,8 @@ public interface Client extends OAuthApi, GameEngine
 	@Deprecated
 	default List<NPC> getNpcs()
 	{
-		return getTopLevelWorldView().npcs()
+		var wv = getTopLevelWorldView();
+		return wv == null ? Collections.emptyList() : wv.npcs()
 			.stream()
 			.collect(Collectors.toCollection(ArrayList::new));
 	}
@@ -2151,7 +2151,8 @@ public interface Client extends OAuthApi, GameEngine
 	@Deprecated
 	default NPC[] getCachedNPCs()
 	{
-		return getTopLevelWorldView().npcs().getSparse();
+		var wv = getTopLevelWorldView();
+		return wv == null ? new NPC[0] : wv.npcs().getSparse();
 	}
 
 	/**
@@ -2162,7 +2163,8 @@ public interface Client extends OAuthApi, GameEngine
 	@Deprecated
 	default Player[] getCachedPlayers()
 	{
-		return getTopLevelWorldView().players().getSparse();
+		var wv = getTopLevelWorldView();
+		return wv == null ? new Player[0] : wv.players().getSparse();
 	}
 
 	/**

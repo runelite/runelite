@@ -39,6 +39,7 @@ import net.runelite.api.ObjectComposition;
 import net.runelite.api.Player;
 import net.runelite.api.Scene;
 import net.runelite.api.Tile;
+import net.runelite.api.WorldView;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.MenuOptionClicked;
@@ -120,9 +121,11 @@ public class CompostTrackerTest
 		Guice.createInjector(BoundFieldModule.of(this)).injectMembers(this);
 		compostTracker.pendingCompostActions.clear();
 
-		when(client.getBaseX()).thenReturn(0);
-		when(client.getBaseY()).thenReturn(0);
-		when(client.getPlane()).thenReturn(0);
+		WorldView wv = mock(WorldView.class);
+		when(wv.getSizeX()).thenReturn(104);
+		when(wv.getSizeY()).thenReturn(104);
+		when(client.getTopLevelWorldView()).thenReturn(wv);
+
 		when(client.getLocalPlayer()).thenReturn(player);
 		when(player.getWorldLocation()).thenReturn(worldPoint);
 		when(client.getScene()).thenReturn(scene);
