@@ -132,7 +132,26 @@ public class WorldPoint
 	@Deprecated
 	public static boolean isInScene(Client client, int x, int y)
 	{
-		return isInScene(client.getTopLevelWorldView().getScene(), x, y);
+		return isInScene(client.getTopLevelWorldView(), x, y);
+	}
+
+	/**
+	 * Checks whether a tile is located in the current scene.
+	 *
+	 * @param wv the client
+	 * @param x the tiles x coordinate
+	 * @param y the tiles y coordinate
+	 * @return true if the tile is in the scene, false otherwise
+	 */
+	public static boolean isInScene(WorldView wv, int x, int y)
+	{
+		int baseX = wv.getBaseX();
+		int baseY = wv.getBaseY();
+
+		int maxX = baseX + wv.getSizeX();
+		int maxY = baseY + wv.getSizeY();
+
+		return x >= baseX && x < maxX && y >= baseY && y < maxY;
 	}
 
 	/**
@@ -144,18 +163,7 @@ public class WorldPoint
 	@Deprecated
 	public boolean isInScene(Client client)
 	{
-		return isInScene(client.getTopLevelWorldView());
-	}
-
-	/**
-	 * Checks whether this tile is located in the scene.
-	 *
-	 * @param worldView the scene to check
-	 * @return true if this tile is in the scene, false otherwise
-	 */
-	public boolean isInScene(WorldView worldView)
-	{
-		return worldView.getPlane() == plane && isInScene(worldView.getScene(), x, y);
+		return client.getPlane() == plane && isInScene(client, x, y);
 	}
 
 	/**
@@ -182,7 +190,11 @@ public class WorldPoint
 	 */
 	public static WorldPoint fromLocal(WorldView wv, int x, int y, int plane)
 	{
-		return fromLocal(wv.getScene(), x, y, plane);
+		return new WorldPoint(
+			(x >> Perspective.LOCAL_COORD_BITS) + wv.getBaseX(),
+			(y >> Perspective.LOCAL_COORD_BITS) + wv.getBaseY(),
+			plane
+		);
 	}
 
 	/**
@@ -245,9 +257,9 @@ public class WorldPoint
 	{
 		var wv = client.getWorldView(localPoint.getWorldView());
 
-		if (wv.getScene().isInstance())
+		if (wv.isInstance())
 		{
-			return fromLocalInstance(wv.getScene().getInstanceTemplateChunks(), localPoint, plane);
+			return fromLocalInstance(wv.getInstanceTemplateChunks(), localPoint, plane);
 		}
 		else
 		{
@@ -309,7 +321,23 @@ public class WorldPoint
 	@Deprecated
 	public static Collection<WorldPoint> toLocalInstance(Client client, WorldPoint worldPoint)
 	{
-		return toLocalInstance(client.getTopLevelWorldView().getScene(), worldPoint);
+		return toLocalInstance(client.getTopLevelWorldView(), worldPoint);
+	}
+
+	/**
+	 * Get occurrences of a tile on the scene, accounting for instances. There may be
+	 * more than one if the same template chunk occurs more than once on the scene.
+	 */
+	public static Collection<WorldPoint> toLocalInstance(WorldView wv, WorldPoint worldPoint)
+	{
+		if (wv.isInstance())
+		{
+			return toLocalInstance(wv.getInstanceTemplateChunks(), wv.getBaseX(), wv.getBaseY(), worldPoint);
+		}
+		else
+		{
+			return Collections.singleton(worldPoint);
+		}
 	}
 
 	/**
@@ -432,7 +460,7 @@ public class WorldPoint
 	@Deprecated
 	public static WorldPoint fromScene(Client client, int x, int y, int plane)
 	{
-		return fromScene(client.getTopLevelWorldView().getScene(), x, y, plane);
+		return fromScene(client.getTopLevelWorldView(), x, y, plane);
 	}
 
 	/**
@@ -440,7 +468,11 @@ public class WorldPoint
 	 */
 	public static WorldPoint fromScene(WorldView wv, int x, int y, int plane)
 	{
-		return fromScene(wv.getScene(), x, y , plane);
+		return new WorldPoint(
+			x + wv.getBaseX(),
+			y + wv.getBaseY(),
+			plane
+		);
 	}
 
 	/**

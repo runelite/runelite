@@ -122,8 +122,9 @@ public class CompostTrackerTest
 		compostTracker.pendingCompostActions.clear();
 
 		WorldView wv = mock(WorldView.class);
+		when(wv.getSizeX()).thenReturn(104);
+		when(wv.getSizeY()).thenReturn(104);
 		when(client.getTopLevelWorldView()).thenReturn(wv);
-		when(wv.getScene()).thenReturn(scene);
 
 		when(client.getLocalPlayer()).thenReturn(player);
 		when(player.getWorldLocation()).thenReturn(worldPoint);

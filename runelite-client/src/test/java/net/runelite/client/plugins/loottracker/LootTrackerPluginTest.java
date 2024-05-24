@@ -47,7 +47,6 @@ import net.runelite.api.ItemID;
 import net.runelite.api.IterableHashTable;
 import net.runelite.api.MessageNode;
 import net.runelite.api.Player;
-import net.runelite.api.Scene;
 import net.runelite.api.Skill;
 import net.runelite.api.WorldView;
 import net.runelite.api.coords.LocalPoint;
@@ -149,7 +148,6 @@ public class LootTrackerPluginTest
 	@Bind
 	private ClientToolbar clientToolbar;
 
-	private Scene scene;
 	private WorldView wv;
 
 	@Before
@@ -161,9 +159,7 @@ public class LootTrackerPluginTest
 		when(player.getWorldLocation()).thenReturn(new WorldPoint(0, 0, 0));
 		when(client.getLocalPlayer()).thenReturn(player);
 
-		scene = mock(Scene.class);
 		wv = mock(WorldView.class);
-		when(wv.getScene()).thenReturn(scene);
 		when(client.getTopLevelWorldView()).thenReturn(wv);
 
 		when(client.getWorldView(anyInt())).thenReturn(wv);
@@ -306,8 +302,8 @@ public class LootTrackerPluginTest
 		when(itemManager.getItemComposition(ItemID.MAHOGANY_SEED)).thenReturn(compSeed);
 		when(compSeed.getHaPrice()).thenReturn(2_102);
 
-		when(scene.getBaseX()).thenReturn(3232);
-		when(scene.getBaseY()).thenReturn(4320);
+		when(wv.getBaseX()).thenReturn(3232);
+		when(wv.getBaseY()).thenReturn(4320);
 		LocalPoint localPoint = new LocalPoint(0, 0);
 		when(client.getLocalPlayer().getLocalLocation()).thenReturn(localPoint);
 
