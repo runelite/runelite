@@ -31,7 +31,12 @@ import javax.inject.Inject;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import static net.runelite.api.AnimationID.*;
+import net.runelite.api.Client;
 import net.runelite.api.ChatMessageType;
+import net.runelite.api.GameState;
+import net.runelite.api.Player;
+import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.client.config.ConfigManager;
@@ -50,6 +55,9 @@ import net.runelite.client.ui.overlay.OverlayManager;
 @PluginDependency(XpTrackerPlugin.class)
 public class SmeltingPlugin extends Plugin
 {
+	@Inject
+	private Client client;
+
 	@Inject
 	private SmeltingConfig config;
 
@@ -85,6 +93,31 @@ public class SmeltingPlugin extends Plugin
 		overlayManager.remove(overlay);
 		session = null;
 		cannonBallsMade = 0;
+	}
+
+	@Subscribe
+	public void onAnimationChanged(AnimationChanged event) {
+		if (client.getGameState() != GameState.LOGGED_IN)
+		{
+			return;
+		}
+
+		Player localPlayer = client.getLocalPlayer();
+		if (localPlayer != event.getActor())
+		{
+			return;
+		}
+
+		int animation = localPlayer.getAnimation();
+		switch (animation)
+		{
+			case SMITHING_SMELTING:
+			case SMITHING_CANNONBALL:
+				if (session == null)
+				{
+					session = new SmeltingSession();
+				}
+		}
 	}
 
 	@Subscribe
