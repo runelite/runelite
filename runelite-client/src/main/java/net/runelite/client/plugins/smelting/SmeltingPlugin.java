@@ -96,7 +96,8 @@ public class SmeltingPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onAnimationChanged(AnimationChanged event) {
+	public void onAnimationChanged(AnimationChanged event)
+	{
 		if (client.getGameState() != GameState.LOGGED_IN)
 		{
 			return;
