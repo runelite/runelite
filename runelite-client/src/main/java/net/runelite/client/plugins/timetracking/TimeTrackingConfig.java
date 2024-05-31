@@ -40,6 +40,8 @@ public interface TimeTrackingConfig extends Config
 	String BIRD_HOUSE = "birdhouse";
 	String TIMERS = "timers";
 	String STOPWATCHES = "stopwatches";
+	String FAVOURITETIMERS = "favouriteTimers";
+	String FAVOURITESTOPWATCHES = "favouriteStopwatches";
 	String PREFER_SOONEST = "preferSoonest";
 	String NOTIFY = "notify";
 	String BIRDHOUSE_NOTIFY = "birdHouseNotification";

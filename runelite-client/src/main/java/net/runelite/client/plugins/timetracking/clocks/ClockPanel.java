@@ -48,8 +48,8 @@ import net.runelite.client.util.SwingUtil;
 abstract class ClockPanel extends JPanel
 {
 	private static final Border NAME_BOTTOM_BORDER = new CompoundBorder(
-		BorderFactory.createMatteBorder(0, 0, 1, 0, ColorScheme.DARK_GRAY_COLOR),
-		BorderFactory.createLineBorder(ColorScheme.DARKER_GRAY_COLOR));
+			BorderFactory.createMatteBorder(0, 0, 1, 0, ColorScheme.DARK_GRAY_COLOR),
+			BorderFactory.createLineBorder(ColorScheme.DARKER_GRAY_COLOR));
 
 	private static final Color ACTIVE_CLOCK_COLOR = ColorScheme.LIGHT_GRAY_COLOR.brighter();
 	private static final Color INACTIVE_CLOCK_COLOR = ColorScheme.LIGHT_GRAY_COLOR.darker();
@@ -154,6 +154,7 @@ abstract class ClockPanel extends JPanel
 				updateDisplayInput();
 				updateActivityStatus();
 				clockManager.saveTimers();
+				clockManager.saveFavouriteTimers();
 			}
 		});
 

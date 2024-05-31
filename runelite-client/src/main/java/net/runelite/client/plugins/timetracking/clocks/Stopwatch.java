@@ -42,6 +42,9 @@ class Stopwatch extends Clock
 	// a list of lap times (recorded as seconds since epoch)
 	private List<Long> laps = new ArrayList<>();
 
+	//whether this stopwatch belongs to favourites or not
+	private boolean favourite;
+
 	Stopwatch(String name)
 	{
 		super(name);
