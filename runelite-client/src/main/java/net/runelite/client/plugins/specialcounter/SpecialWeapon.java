@@ -59,7 +59,13 @@ public enum SpecialWeapon
 		new int[]{ItemID.TONALZTICS_OF_RALOS},
 		false,
 		(distance) -> 50, //The hitsplat is always applied 2t after spec regardless of distance
-		(c) -> 0);
+		(c) -> 0
+	),
+	ELDER_MAUL("Elder Maul",
+		new int[]{ItemID.ELDER_MAUL, ItemID.ELDER_MAUL_OR},
+		false,
+		(distance) -> 50, //The hitsplat is applied 2t after spec unlike most melee weapons
+		SpecialCounterConfig::elderMaulThreshold);
 
 	private final String name;
 	private final int[] itemID;

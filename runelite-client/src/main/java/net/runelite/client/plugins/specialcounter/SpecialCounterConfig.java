@@ -90,6 +90,17 @@ public interface SpecialCounterConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 15,
+		keyName = "elderMaulThreshold",
+		name = "Elder Maul",
+		description = "Threshold for Elder Maul (0 to disable)"
+	)
+	default int elderMaulThreshold()
+	{
+		return 0;
+	}
+
+	@ConfigItem(
 		position = 20,
 		keyName = "arclightThreshold",
 		name = "Arclight",
