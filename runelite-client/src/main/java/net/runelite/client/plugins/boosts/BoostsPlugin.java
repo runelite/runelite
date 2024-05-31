@@ -220,8 +220,9 @@ public class BoostsPlugin extends Plugin
 		updateBoostedStats();
 
 		int boostThreshold = config.boostThreshold();
+		boolean enableBoostThreshold = config.enableBoostThreshold();
 
-		if (boostThreshold != 0)
+		if (enableBoostThreshold)
 		{
 			int real = client.getRealSkillLevel(skill);
 			int lastBoost = last - real;
