@@ -58,10 +58,10 @@ import java.awt.desktop.QuitStrategy;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 import java.awt.image.BufferedImage;
 import java.time.Duration;
 import java.util.ArrayDeque;
@@ -120,6 +120,7 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.input.MouseAdapter;
 import net.runelite.client.input.MouseListener;
 import net.runelite.client.input.MouseManager;
+import net.runelite.client.input.KeyListener;
 import net.runelite.client.ui.laf.RuneLiteLAF;
 import net.runelite.client.ui.laf.RuneLiteRootPaneUI;
 import net.runelite.client.util.HotkeyListener;
@@ -499,6 +500,23 @@ public class ClientUI
 					}
 				});
 			KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(this::dispatchWindowKeyEvent);
+
+			frame.addWindowFocusListener(new WindowFocusListener()
+			{
+				@Override
+				public void windowGainedFocus(WindowEvent e)
+				{
+				}
+
+				@Override
+				public void windowLostFocus(WindowEvent e)
+				{
+					for (KeyListener keyListener : keyListeners)
+					{
+						keyListener.focusLost();
+					}
+				}
+			});
 
 			// Add mouse listener
 			final MouseListener mouseListener = new MouseAdapter()
