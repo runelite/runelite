@@ -25,7 +25,6 @@
 package net.runelite.client.plugins.config;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Strings;
 import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.Sets;
 import com.google.common.primitives.Ints;
@@ -633,6 +632,7 @@ class ConfigPanel extends PluginPanel
 		{
 			if (e.getStateChange() == ItemEvent.SELECTED)
 			{
+				box.hidePopup();
 				changeConfiguration(box, cd, cid);
 				box.setToolTipText(Text.titleCase((Enum<?>) box.getSelectedItem()));
 			}
@@ -728,57 +728,49 @@ class ConfigPanel extends PluginPanel
 
 	private void changeConfiguration(Component component, ConfigDescriptor cd, ConfigItemDescriptor cid)
 	{
-		final ConfigItem configItem = cid.getItem();
-
-		if (!Strings.isNullOrEmpty(configItem.warning()))
-		{
-			final int result = JOptionPane.showOptionDialog(component, configItem.warning(),
-				"Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
-				null, new String[]{"Yes", "No"}, "No");
-
-			if (result != JOptionPane.YES_OPTION)
-			{
-				rebuild();
-				return;
-			}
-		}
+		Object obj = null;
 
 		if (component instanceof JCheckBox)
 		{
 			JCheckBox checkbox = (JCheckBox) component;
-			configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), "" + checkbox.isSelected());
+			obj = checkbox.isSelected();
 		}
 		else if (component instanceof JSpinner)
 		{
 			JSpinner spinner = (JSpinner) component;
-			configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), "" + spinner.getValue());
+			obj = spinner.getValue();
 		}
 		else if (component instanceof JTextComponent)
 		{
 			JTextComponent textField = (JTextComponent) component;
-			configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), textField.getText());
+			obj = textField.getText();
 		}
 		else if (component instanceof RuneliteColorPicker)
 		{
 			RuneliteColorPicker colorPicker = (RuneliteColorPicker) component;
-			configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), colorPicker.getSelectedColor().getRGB() + "");
+			obj = colorPicker.getSelectedColor().getRGB();
 		}
 		else if (component instanceof JComboBox)
 		{
 			JComboBox jComboBox = (JComboBox) component;
-			configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), ((Enum) jComboBox.getSelectedItem()).name());
+			obj = jComboBox.getSelectedItem();
 		}
 		else if (component instanceof HotkeyButton)
 		{
-			HotkeyButton hotkeyButton = (HotkeyButton) component;
-			configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), hotkeyButton.getValue());
+			obj = component;
 		}
 		else if (component instanceof JList)
 		{
 			JList<?> list = (JList<?>) component;
 			List<?> selectedValues = list.getSelectedValuesList();
+			obj = Sets.newHashSet(selectedValues);
+		}
 
-			configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), Sets.newHashSet(selectedValues));
+		if (!containsWarnedValues(obj, cid))
+		{
+			// Has to be recast else may fail marshalling
+			obj = obj instanceof HotkeyButton ? ((HotkeyButton) obj).getValue() : obj;
+			configManager.setConfiguration(cd.getGroup().value(), cid.getItem().keyName(), obj);
 		}
 	}
 
@@ -831,5 +823,39 @@ class ConfigPanel extends PluginPanel
 			rebuild();
 		});
 		return menuItem;
+	}
+
+	/**
+	 * Checks if the newly applied setting
+	 * is marked as discouraged by the
+	 * warning annotation
+	 *
+	 * @param object The new setting
+	 * @param cid ConfigItemDescriptor
+	 * @return True if the new setting violates any warnings
+	 *
+	 * @see net.runelite.client.config.Warn
+	 */
+	private boolean containsWarnedValues(Object object, ConfigItemDescriptor cid)
+	{
+		if (cid.getWarn() != null && cid.isUnsafeParameter(object, cid))
+		{
+			final int option = createConfirmationPrompt(cid.getWarn().message());
+
+			if (option != JOptionPane.YES_OPTION)
+			{
+				rebuild();
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private int createConfirmationPrompt(String message)
+	{
+		return JOptionPane.showOptionDialog(this.getParent(), message,
+				"Warning - confirm choice", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
+				null, new String[]{"Yes", "No"}, "No");
 	}
 }
