@@ -125,21 +125,10 @@ public interface BoostsConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "enableBoostThreshold",
-		name = "Enable boost threshold",
-		description = "When enabled, boosted levels will show in yellow when below the threshold defined in the Boost threshold parameter",
-		position = 12
-	)
-	default boolean enableBoostThreshold()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "boostThreshold",
 		name = "Boost threshold",
 		description = "Number of levels above your base level at which boosted levels will be displayed in a different color.",
-		position = 13
+		position = 12
 	)
 	default int boostThreshold()
 	{
@@ -149,8 +138,8 @@ public interface BoostsConfig extends Config
 	@ConfigItem(
 		keyName = "notifyOnBoost",
 		name = "Notify on boost threshold",
-		description = "Configures whether or not a notification will be sent for boosted stats.",
-		position = 14
+		description = "Configures whether or not a notification will be sent when boosted stats drain to the boost threshold.",
+		position = 13
 	)
 	default Notification notifyOnBoost()
 	{
