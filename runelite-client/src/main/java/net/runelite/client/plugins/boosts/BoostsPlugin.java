@@ -222,15 +222,12 @@ public class BoostsPlugin extends Plugin
 		int boostThreshold = config.boostThreshold();
 		boolean enableBoostThreshold = config.enableBoostThreshold();
 
-		if (enableBoostThreshold)
+		int real = client.getRealSkillLevel(skill);
+		int lastBoost = last - real;
+		int boost = cur - real;
+		if (boost <= boostThreshold && boostThreshold < lastBoost)
 		{
-			int real = client.getRealSkillLevel(skill);
-			int lastBoost = last - real;
-			int boost = cur - real;
-			if (boost <= boostThreshold && boostThreshold < lastBoost)
-			{
-				notifier.notify(config.notifyOnBoost(), skill.getName() + " level is getting low!");
-			}
+			notifier.notify(config.notifyOnBoost(), skill.getName() + " level is getting low!");
 		}
 	}
 
