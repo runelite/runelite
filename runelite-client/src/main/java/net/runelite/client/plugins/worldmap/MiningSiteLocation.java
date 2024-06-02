@@ -54,7 +54,7 @@ enum MiningSiteLocation
 	ASGARNIA_ICE_DUNGEON_WEST(new WorldPoint(3049, 9568, 0), new Rock(2, Ore.BLURITE)),
 	AVIUM_SAVANNAH(new WorldPoint(1618, 2991, 0), new Rock(6, Ore.IRON)),
 	BANDIT_CAMP_MINE(new WorldPoint(3086, 3763, 0), new Rock(16, Ore.IRON), new Rock(20, Ore.COAL), new Rock(22, Ore.MITHRIL), new Rock(8, Ore.ADAMANTITE)),
-	BANDIT_CAMP_QUARRY(new WorldPoint(3171, 2912, 0), new Rock(4, Ore.CLAY), new Rock(2, Ore.COAL), new Rock(32, Ore.SANDSTONE), new Rock(28, Ore.GRANITE)),
+	BANDIT_CAMP_QUARRY(new WorldPoint(3171, 2912, 0), new Rock(2, Ore.CLAY), new Rock(2, Ore.COAL), new Rock(36, Ore.SANDSTONE), new Rock(34, Ore.GRANITE)),
 	BARBARIAN_VILLAGE(new WorldPoint(3078, 3421, 0), new Rock(5, Ore.TIN), new Rock(4, Ore.COAL)),
 	BATTLEFIELD(new WorldPoint(2471, 3255, 0), new Rock(3, Ore.COPPER), new Rock(1, Ore.TIN)),
 	BLAST_MINE_EAST(new WorldPoint(1502, 3869, 0), new Rock(20, Ore.HARD_ROCK)),

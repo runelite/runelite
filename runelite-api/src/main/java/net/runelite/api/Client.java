@@ -2234,7 +2234,8 @@ public interface Client extends OAuthApi, GameEngine
 	@Deprecated
 	default int getBaseX()
 	{
-		return getTopLevelWorldView().getBaseX();
+		var wv = getTopLevelWorldView();
+		return wv == null ? 0 : wv.getBaseX();
 	}
 
 	/**
@@ -2248,7 +2249,8 @@ public interface Client extends OAuthApi, GameEngine
 	@Deprecated
 	default int getBaseY()
 	{
-		return getTopLevelWorldView().getBaseY();
+		var wv = getTopLevelWorldView();
+		return wv == null ? 0 : wv.getBaseY();
 	}
 
 	/**

@@ -66,7 +66,7 @@ public class WidgetOverlay extends Overlay
 			new WidgetOverlay(client, ComponentID.ZEAH_MESS_HALL_COOKING_DISPLAY, "ZEAH_MESS_HALL_COOKING_DISPLAY", OverlayPosition.TOP_LEFT),
 			new PvpKDRWidgetOverlay(client, ComponentID.PVP_KILLDEATH_RATIO, "PVP_KILLDEATH_COUNTER", OverlayPosition.TOP_LEFT),
 			new WidgetOverlay(client, ComponentID.SKOTIZO_CONTAINER, "SKOTIZO_CONTAINER", OverlayPosition.TOP_LEFT),
-			new WidgetOverlay(client, ComponentID.PYRAMID_PLUNDER_DATA, "PYRAMID_PLUNDER_DATA", OverlayPosition.TOP_CENTER),
+			new WidgetOverlay(client, ComponentID.PYRAMID_PLUNDER_DATA, "PYRAMID_PLUNDER_DATA", OverlayPosition.ABOVE_CHATBOX_RIGHT),
 			new WidgetOverlay(client, ComponentID.LMS_INFO, "LMS_INFO", OverlayPosition.TOP_RIGHT),
 			new WidgetOverlay(client, ComponentID.LMS_INGAME_INFO, "LMS_KDA", OverlayPosition.TOP_RIGHT),
 			new WidgetOverlay(client, ComponentID.GAUNTLET_TIMER_CONTAINER, "GAUNTLET_TIMER_CONTAINER", OverlayPosition.TOP_LEFT),

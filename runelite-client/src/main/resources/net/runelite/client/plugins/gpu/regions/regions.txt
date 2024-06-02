@@ -243,3 +243,11 @@ r 30 69
 // waterbirth dungeon
 n
 R 28 68 30 68
+
+// blast furnace
+n
+r 30 77
+
+// paterdomus
+n
+r 53 154
