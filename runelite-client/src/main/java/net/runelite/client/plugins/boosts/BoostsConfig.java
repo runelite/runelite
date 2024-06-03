@@ -143,6 +143,6 @@ public interface BoostsConfig extends Config
 	)
 	default Notification notifyOnBoost()
 	{
-		return Notification.ON;
+		return Notification.OFF;
 	}
 }
