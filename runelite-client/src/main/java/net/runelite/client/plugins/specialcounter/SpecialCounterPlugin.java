@@ -329,7 +329,10 @@ public class SpecialCounterPlugin extends Plugin
 
 		if (config.infobox())
 		{
-			updateCounter(specialWeapon, null, hit);
+			if (hit != 0) //do not update the infobox if a DWH or EM spec is missed on Tekton
+			{
+				updateCounter(specialWeapon, null, hit);
+			}
 		}
 
 		if (party.isInParty())
@@ -398,7 +401,10 @@ public class SpecialCounterPlugin extends Plugin
 			{
 				if (config.infobox())
 				{
-					updateCounter(event.getWeapon(), name, event.getHit());
+					if (event.getHit() != 0) //do not update the infobox if a DWH or EM spec is missed on Tekton
+					{
+						updateCounter(event.getWeapon(), name, event.getHit());
+					}
 				}
 			}
 
