@@ -46,6 +46,8 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
+import lombok.extern.slf4j.Slf4j;
+import net.runelite.client.config.Notification;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
@@ -172,7 +174,7 @@ public class BoostsPlugin extends Plugin
 
 	private void convertConfig()
 	{
-		String migrated = configManager.getConfiguration(BoostsConfig.GROUP, "migrated");
+		String migrated = configManager.getConfiguration("boosts", "migrated");
 		if (migrated != null)
 		{
 			return;
@@ -181,11 +183,11 @@ public class BoostsPlugin extends Plugin
 		int boostThreshold = config.boostThreshold();
 		if (boostThreshold == 0)
 		{
-			configManager.setConfiguration(BoostsConfig.GROUP, "notifyOnBoost", Notification.OFF);
+			configManager.setConfiguration("boosts", "notifyOnBoost", Notification.OFF);
 		}
 
 		log.debug("Disabled boosts notification due to config migration");
-		configManager.setConfiguration(BoostsConfig.GROUP, "migrated", "1");
+		configManager.setConfiguration("boosts", "migrated", "1");
 	}
 
 	@Subscribe
