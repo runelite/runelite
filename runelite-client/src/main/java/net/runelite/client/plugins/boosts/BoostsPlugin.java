@@ -119,6 +119,7 @@ public class BoostsPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		convertConfig();
 		OverlayMenuEntry menuEntry = new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Boosts overlay");
 
 		boostsOverlay.getMenuEntries().add(menuEntry);
@@ -167,6 +168,24 @@ public class BoostsPlugin extends Plugin
 				lastChangeDown = -1;
 				lastChangeUp = -1;
 		}
+	}
+
+	private void convertConfig()
+	{
+		String migrated = configManager.getConfiguration(BoostsConfig.GROUP, "migrated");
+		if (migrated != null)
+		{
+			return;
+		}
+
+		int boostThreshold = config.boostThreshold();
+		if (boostThreshold == 0)
+		{
+			configManager.setConfiguration(BoostsConfig.GROUP, "notifyOnBoost", Notification.OFF);
+		}
+
+		log.debug("Disabled boosts notification due to config migration");
+		configManager.setConfiguration(BoostsConfig.GROUP, "migrated", "1");
 	}
 
 	@Subscribe
