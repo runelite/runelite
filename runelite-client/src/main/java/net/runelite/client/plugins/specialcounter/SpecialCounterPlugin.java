@@ -411,7 +411,7 @@ public class SpecialCounterPlugin extends Plugin
 	{
 		if (developerMode && commandExecuted.getCommand().equalsIgnoreCase("spec"))
 		{
-			playerInfoDrops.add(createSpecInfoDrop(SpecialWeapon.BANDOS_GODSWORD, 42, client.getLocalPlayer().getId()));
+			playerInfoDrops.add(createSpecInfoDrop(BANDOS_GODSWORD, 42, client.getLocalPlayer().getId()));
 		}
 	}
 
