@@ -188,9 +188,9 @@ public class BoostsPlugin extends Plugin
 		if (boostThreshold == 0)
 		{
 			configManager.setConfiguration("boosts", "notifyOnBoost", Notification.OFF);
+			log.debug("Disabled boosts notification due to config migration");
 		}
 
-		log.debug("Disabled boosts notification due to config migration");
 		configManager.setConfiguration("boosts", "migrated", "1");
 	}
 
