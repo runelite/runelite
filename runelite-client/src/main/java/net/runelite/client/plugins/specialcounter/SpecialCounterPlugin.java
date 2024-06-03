@@ -205,12 +205,13 @@ public class SpecialCounterPlugin extends Plugin
 			{
 				int hit = specialWeapon == TONALZTICS_OF_RALOS ? specialAttackHits : getHit(specialWeapon, lastSpecHitsplat);
 				specialAttackHit(specialWeapon, hit, lastSpecTarget);
-			} else if (lastSpecHitsplat.getAmount() == 0
-					&& (specialWeapon == ELDER_MAUL || specialWeapon == DRAGON_WARHAMMER || specialWeapon == BANDOS_GODSWORD)
-					&& Objects.requireNonNull(lastSpecTarget.getName()).contains("Tekton"))
-					//Condition to call specialAttackHit when a spec from EM, DWH or BGS is missed on Tekton
-					//as the defence is drained by 5% on a miss from EM/DWH and -10 defence on BGS miss.
-					//Sending the 0 will support the Party Defense Tracker Plugin
+			}
+			//Condition to call specialAttackHit when a spec from EM, DWH or BGS is missed on Tekton
+			//as the defence is drained by 5% on a miss from EM/DWH and -10 defence on BGS miss.
+			//Sending the 0 will support the Party Defense Tracker Plugin
+			else if (lastSpecHitsplat.getAmount() == 0
+				&& (specialWeapon == ELDER_MAUL || specialWeapon == DRAGON_WARHAMMER || specialWeapon == BANDOS_GODSWORD)
+				&& Objects.requireNonNull(lastSpecTarget.getName()).contains("Tekton"))
 			{
 				specialAttackHit(specialWeapon, 0, lastSpecTarget);
 			}
@@ -518,19 +519,27 @@ public class SpecialCounterPlugin extends Plugin
 	private int getHitDelay(SpecialWeapon specialWeapon, Actor target)
 	{
 		if (target == null)
+		{
 			return 1;
+		}
 
 		Player player = client.getLocalPlayer();
 		if (player == null)
+		{
 			return 1;
+		}
 
 		WorldPoint playerWp = player.getWorldLocation();
 		if (playerWp == null)
+		{
 			return 1;
+		}
 
 		WorldArea targetArea = target.getWorldArea();
 		if (targetArea == null)
+		{
 			return 1;
+		}
 
 		final int distance = targetArea.distanceTo(playerWp);
 		final int serverCycles = specialWeapon.getHitDelay(distance);
