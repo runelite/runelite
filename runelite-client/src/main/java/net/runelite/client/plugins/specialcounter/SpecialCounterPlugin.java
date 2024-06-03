@@ -209,7 +209,7 @@ public class SpecialCounterPlugin extends Plugin
 					&& (specialWeapon == ELDER_MAUL || specialWeapon == DRAGON_WARHAMMER || specialWeapon == BANDOS_GODSWORD)
 					&& Objects.requireNonNull(lastSpecTarget.getName()).contains("Tekton"))
 					//Condition to call specialAttackHit when a spec from EM, DWH or BGS is missed on Tekton
-					// as the defence is drained by 5% on a miss from EM/DWH and -10 defence on BGS miss.
+					//as the defence is drained by 5% on a miss from EM/DWH and -10 defence on BGS miss.
 					//Sending the 0 will support the Party Defense Tracker Plugin
 			{
 				specialAttackHit(specialWeapon, 0, lastSpecTarget);
