@@ -33,6 +33,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Objects;
 import javax.inject.Inject;
 import javax.inject.Named;
 import lombok.AccessLevel;
@@ -71,6 +72,9 @@ import net.runelite.client.party.WSClient;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import static net.runelite.client.plugins.specialcounter.SpecialWeapon.TONALZTICS_OF_RALOS;
+import static net.runelite.client.plugins.specialcounter.SpecialWeapon.BANDOS_GODSWORD;
+import static net.runelite.client.plugins.specialcounter.SpecialWeapon.DRAGON_WARHAMMER;
+import static net.runelite.client.plugins.specialcounter.SpecialWeapon.ELDER_MAUL;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 import net.runelite.client.util.ImageUtil;
@@ -201,6 +205,14 @@ public class SpecialCounterPlugin extends Plugin
 			{
 				int hit = specialWeapon == TONALZTICS_OF_RALOS ? specialAttackHits : getHit(specialWeapon, lastSpecHitsplat);
 				specialAttackHit(specialWeapon, hit, lastSpecTarget);
+			} else if (lastSpecHitsplat.getAmount() == 0
+					&& (specialWeapon == ELDER_MAUL || specialWeapon == DRAGON_WARHAMMER || specialWeapon == BANDOS_GODSWORD)
+					&& Objects.requireNonNull(lastSpecTarget.getName()).contains("Tekton"))
+					//Condition to call specialAttackHit when a spec from EM, DWH or BGS is missed on Tekton
+				    //as the defence is drained by 5% on a miss from EM/DWH and -10 defence on BGS miss.
+					//Sending the 0 will support the Party Defense Tracker Plugin
+			{
+				specialAttackHit(specialWeapon, 0, lastSpecTarget);
 			}
 
 			specialWeapon = null;
