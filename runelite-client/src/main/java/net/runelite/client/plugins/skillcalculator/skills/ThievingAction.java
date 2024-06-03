@@ -50,7 +50,7 @@ public enum ThievingAction implements NamedSkillAction
 	SPRING_SQIRKJUICE("Spring Sq'irkjuice", 25, 1350, ItemID.SPRING_SQIRKJUICE),
 	SEED_STALL("Seed Stall", 27, 10, ItemID.POTATO_SEED),
 	NATURE_RUNE_CHEST("Nature Rune Chest", 28, 25, ItemID.NATURE_RUNE),
-	ROGUE("Rogue", 32, 35.5f, ItemID.ROGUE),
+	ROGUE("Rogue", 32, 36.5f, ItemID.ROGUE),
 	FUR_STALL("Fur Stall", 35, 45, ItemID.GREY_WOLF_FUR),
 	CAVE_GOBLIN("Cave Goblin", 36, 40, ItemID.CAVE_GOBLIN),
 	MASTER_FARMER("Master Farmer", 38, 43, ItemID.MASTER_FARMER),
@@ -63,7 +63,7 @@ public enum ThievingAction implements NamedSkillAction
 	WALL_SAFE("Wall Safe", 50, 70, ItemID.STETHOSCOPE),
 	WEALTHY_CITIZEN("Wealthy Citizen", 50, 96, ItemID.WEALTHY_CITIZEN),
 	SILVER_STALL("Silver Stall", 50, 205, ItemID.SILVER_BAR),
-	DESERT_BANDIT("Desert Bandit", 53, 79.5f, ItemID.BANDIT),
+	DESERT_BANDIT("Desert Bandit", 53, 79.4f, ItemID.BANDIT),
 	KNIGHT("Knight", 55, 84.3f, ItemID.KNIGHT),
 	POLLNIVNIAN_BANDIT("Pollnivnian Bandit", 55, 84.3f, ItemID.BANDIT_6781),
 	STONE_CHEST("Stone Chest", 64, 280, ItemID.XERICIAN_FABRIC),
@@ -81,7 +81,7 @@ public enum ThievingAction implements NamedSkillAction
 	VYRE("Vyre", 82, 306.9f, ItemID.VYRE),
 	ORE_STALL("Ore Stall", 82, 350, ItemID.RUNITE_ORE),
 	ROGUES_CASTLE_CHEST("Wilderness Rogues' Chest", 84, 701.7f, ItemID.DRAGONSTONE),
-	ELF("Elf", 85, 353, ItemID.ELF),
+	ELF("Elf", 85, 353.3f, ItemID.ELF),
 	TZHAAR_HUR("TzHaar-Hur", 90, 103.4f, ItemID.TZHAARHUR),
 	;
 
