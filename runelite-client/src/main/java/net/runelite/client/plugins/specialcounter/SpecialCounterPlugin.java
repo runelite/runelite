@@ -33,7 +33,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Objects;
 import javax.inject.Inject;
 import javax.inject.Named;
 import lombok.AccessLevel;
@@ -211,7 +210,7 @@ public class SpecialCounterPlugin extends Plugin
 			//Sending the 0 will support the Party Defense Tracker Plugin
 			else if (lastSpecHitsplat.getAmount() == 0
 				&& (specialWeapon == ELDER_MAUL || specialWeapon == DRAGON_WARHAMMER || specialWeapon == BANDOS_GODSWORD)
-				&& Objects.requireNonNull(lastSpecTarget.getName()).contains("Tekton"))
+				&& lastSpecTarget.getName() != null && lastSpecTarget.getName().contains("Tekton"))
 			{
 				specialAttackHit(specialWeapon, 0, lastSpecTarget);
 			}
