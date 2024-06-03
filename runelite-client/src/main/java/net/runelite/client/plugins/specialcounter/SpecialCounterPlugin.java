@@ -212,7 +212,8 @@ public class SpecialCounterPlugin extends Plugin
 				&& (specialWeapon == ELDER_MAUL || specialWeapon == DRAGON_WARHAMMER || specialWeapon == BANDOS_GODSWORD)
 				&& (lastSpecTarget.getId() == NpcID.TEKTON || lastSpecTarget.getId() == NpcID.TEKTON_7541 || lastSpecTarget.getId() == NpcID.TEKTON_7542 || lastSpecTarget.getId() == NpcID.TEKTON_7545 || lastSpecTarget.getId() == NpcID.TEKTON_ENRAGED || lastSpecTarget.getId() == NpcID.TEKTON_ENRAGED_7544))
 			{
-				specialAttackHit(specialWeapon, 0, lastSpecTarget);
+				int hit = specialWeapon == BANDOS_GODSWORD ? 10 : 0;
+				specialAttackHit(specialWeapon, hit, lastSpecTarget);
 			}
 
 			specialWeapon = null;
