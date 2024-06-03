@@ -32,6 +32,7 @@ import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
@@ -42,12 +43,11 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.StatChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.Notification;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
-import lombok.extern.slf4j.Slf4j;
-import net.runelite.client.config.Notification;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
@@ -61,6 +61,7 @@ import net.runelite.client.util.ImageUtil;
 	tags = {"combat", "notifications", "skilling", "overlay"}
 )
 @Singleton
+@Slf4j
 public class BoostsPlugin extends Plugin
 {
 	private static final Set<Skill> BOOSTABLE_COMBAT_SKILLS = ImmutableSet.of(
@@ -95,6 +96,9 @@ public class BoostsPlugin extends Plugin
 
 	@Inject
 	private BoostsConfig config;
+
+	@Inject
+	private ConfigManager configManager;
 
 	@Inject
 	private SkillIconManager skillIconManager;
