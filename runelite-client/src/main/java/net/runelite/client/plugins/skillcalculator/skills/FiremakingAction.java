@@ -26,14 +26,19 @@ package net.runelite.client.plugins.skillcalculator.skills;
 
 import java.util.EnumSet;
 import java.util.Set;
+import javax.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.runelite.api.ItemID;
+import net.runelite.client.game.ItemManager;
 
 @AllArgsConstructor
 @Getter
 public enum FiremakingAction implements ItemSkillAction
 {
+	SACRED_OIL_2(ItemID.SACRED_OIL2, "Applying Sacred oil(2)", 1, 10, FiremakingMethod.SACRED_OIL),
+	SACRED_OIL_3(ItemID.SACRED_OIL3, "Applying Sacred oil(3)", 1, 12, FiremakingMethod.SACRED_OIL),
+	SACRED_OIL_4(ItemID.SACRED_OIL4, "Applying Sacred oil(4)", 1, 16, FiremakingMethod.SACRED_OIL),
 	ACHEY_TREE_LOGS(ItemID.ACHEY_TREE_LOGS, 1, 40, FiremakingMethod.NORMAL_LOGS),
 	LOGS(ItemID.LOGS, 1, 40, FiremakingMethod.NORMAL_LOGS),
 	PYRE_LOGS(ItemID.PYRE_LOGS, 5, 50, FiremakingMethod.PYRE_LOGS),
@@ -59,14 +64,33 @@ public enum FiremakingAction implements ItemSkillAction
 	;
 
 	private final int itemId;
+	@Nullable
+	private final String nameOverride;
 	private final int level;
 	private final float xp;
 	private final FiremakingMethod firemakingMethod;
+
+	FiremakingAction(final int itemId, final int level, final float xp, final FiremakingMethod firemakingMethod)
+	{
+		this(itemId, null, level, xp, firemakingMethod);
+	}
+
+	@Override
+	public String getName(final ItemManager itemManager)
+	{
+		if (nameOverride != null)
+		{
+			return nameOverride;
+		}
+
+		return ItemSkillAction.super.getName(itemManager);
+	}
 
 	private enum FiremakingMethod
 	{
 		NORMAL_LOGS,
 		PYRE_LOGS,
+		SACRED_OIL,
 	}
 
 	@Override
