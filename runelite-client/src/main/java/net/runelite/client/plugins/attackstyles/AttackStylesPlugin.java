@@ -285,6 +285,17 @@ public class AttackStylesPlugin extends Plugin
 	{
 		// from script4525
 		int weaponStyleEnum = client.getEnum(EnumID.WEAPON_STYLES).getIntValue(weaponType);
+		if (weaponStyleEnum == -1)
+		{
+			if (weaponType == 30)
+			{
+				// Partisan
+				return new AttackStyle[]{
+					AttackStyle.ACCURATE, AttackStyle.AGGRESSIVE, AttackStyle.AGGRESSIVE, DEFENSIVE
+				};
+			}
+			return new AttackStyle[0];
+		}
 		int[] weaponStyleStructs = client.getEnum(weaponStyleEnum).getIntVals();
 
 		AttackStyle[] styles = new AttackStyle[weaponStyleStructs.length];
