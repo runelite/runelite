@@ -87,7 +87,7 @@ public class TitheFarmPlantOverlay extends Overlay
 	{
 		for (TitheFarmPlant plant : plugin.getPlants())
 		{
-			if (plant.getState() == TitheFarmPlantState.DEAD)
+			if (plant.getState() == TitheFarmPlantState.DEAD || plant.getState() == TitheFarmPlantState.GROWN)
 			{
 				continue;
 			}
