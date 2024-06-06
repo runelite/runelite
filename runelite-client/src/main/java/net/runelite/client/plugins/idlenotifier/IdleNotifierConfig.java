@@ -93,10 +93,22 @@ public interface IdleNotifierConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "sixhourlogwarningdelay",
+			name = "Six Hour Logout Warning Time",
+			description = "The number of minutes before a six hour logout to send a notification at. A value of 0 will disable notification.",
+			position = 6
+	)
+	@Units(Units.MINUTES)
+	default int getSixHourLogoutWarningTime()
+	{
+		return 20;
+	}
+
+	@ConfigItem(
 		keyName = "hitpointsNotification",
 		name = "Hitpoints Notification",
 		description = "Configures if hitpoints notifications are enabled",
-		position = 6
+		position = 7
 	)
 	default Notification getHitpointsNotification()
 	{
@@ -107,7 +119,7 @@ public interface IdleNotifierConfig extends Config
 		keyName = "hitpoints",
 		name = "Hitpoints Threshold",
 		description = "The amount of hitpoints to send a notification at.",
-		position = 7
+		position = 8
 	)
 	@Range(min = 1)
 	default int getHitpointsThreshold()
@@ -119,7 +131,7 @@ public interface IdleNotifierConfig extends Config
 		keyName = "prayerNotification",
 		name = "Prayer Notification",
 		description = "Configures if prayer notifications are enabled.",
-		position = 8
+		position = 9
 	)
 	default Notification getPrayerNotification()
 	{
@@ -130,7 +142,7 @@ public interface IdleNotifierConfig extends Config
 		keyName = "prayer",
 		name = "Prayer Threshold",
 		description = "The amount of prayer points to send a notification at.",
-		position = 9
+		position = 10
 	)
 	@Range(min = 1)
 	default int getPrayerThreshold()
@@ -142,7 +154,7 @@ public interface IdleNotifierConfig extends Config
 		keyName = "lowEnergyNotification",
 		name = "Low Energy Notification",
 		description = "Configures if low energy notifications are enabled",
-		position = 10
+		position = 11
 	)
 	default Notification getLowEnergyNotification()
 	{
@@ -153,7 +165,7 @@ public interface IdleNotifierConfig extends Config
 		keyName = "lowEnergy",
 		name = "Low Energy Threshold",
 		description = "The amount of energy points remaining to send a notification at.",
-		position = 11
+		position = 12
 	)
 	@Units(Units.PERCENT)
 	@Range(max = 99)
@@ -166,7 +178,7 @@ public interface IdleNotifierConfig extends Config
 		keyName = "highEnergyNotification",
 		name = "High Energy Notification",
 		description = "Configures if high energy notifications are enabled",
-		position = 12
+		position = 13
 	)
 	default Notification getHighEnergyNotification()
 	{
@@ -177,7 +189,7 @@ public interface IdleNotifierConfig extends Config
 		keyName = "highEnergy",
 		name = "High Energy Threshold",
 		description = "The amount of energy points reached to send a notification.",
-		position = 13
+		position = 14
 	)
 	@Units(Units.PERCENT)
 	@Range(min = 1, max = 100)
@@ -190,7 +202,7 @@ public interface IdleNotifierConfig extends Config
 		keyName = "oxygenNotification",
 		name = "Oxygen Notification",
 		description = "Configures if oxygen notifications are enabled",
-		position = 14
+		position = 15
 	)
 	default Notification getOxygenNotification()
 	{
@@ -200,7 +212,7 @@ public interface IdleNotifierConfig extends Config
 	@ConfigItem(
 		keyName = "oxygen",
 		name = "Oxygen Threshold",
-		position = 15,
+		position = 16,
 		description = "The amount of remaining oxygen to send a notification at."
 	)
 	@Units(Units.PERCENT)
@@ -214,7 +226,7 @@ public interface IdleNotifierConfig extends Config
 		keyName = "specNotification",
 		name = "Spec Notification",
 		description = "Configures if special attack notifications are enabled",
-		position = 16
+		position = 17
 	)
 	default Notification getSpecNotification()
 	{
@@ -224,7 +236,7 @@ public interface IdleNotifierConfig extends Config
 	@ConfigItem(
 		keyName = "spec",
 		name = "Spec Threshold",
-		position = 17,
+		position = 18,
 		description = "The amount of special attack energy reached to send a notification at."
 	)
 	@Units(Units.PERCENT)
