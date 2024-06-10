@@ -255,3 +255,19 @@ r 53 154
 // keldagrim
 n
 R 44 158 45 159
+
+// abyss and abyssal nexus
+n
+R 46 74 48 75
+
+// abyssal area
+n
+r 47 76
+
+// temple of ikov
+n
+R 41 152 41 154
+m 42 153
+C 0 1 1 7
+C 2 5 7 7
+C 6 3 7 4
