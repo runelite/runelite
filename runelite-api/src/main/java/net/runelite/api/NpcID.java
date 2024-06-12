@@ -382,8 +382,7 @@ public final class NpcID
 	public static final int REACHER_389 = 389;
 	public static final int EVIL_BOB = 390;
 	public static final int EVIL_BOB_391 = 391;
-	public static final int SERVANT = 392;
-	public static final int SERVANT_393 = 393;
+	public static final int SERVANT = 393;
 	public static final int ROD_FISHING_SPOT = 394;
 	public static final int CAT = 395;
 	public static final int JON = 396;
@@ -9755,7 +9754,6 @@ public final class NpcID
 	public static final int APMEKEN_11655 = 11655;
 	public static final int APMEKEN_11656 = 11656;
 	public static final int CRONDIS = 11657;
-	public static final int GILBERT = 11658;
 	public static final int CRONDIS_11659 = 11659;
 	public static final int CRONDIS_11660 = 11660;
 	public static final int SCABARAS = 11661;
@@ -11286,6 +11284,16 @@ public final class NpcID
 	public static final int GUILD_HUNTER_FOX_13426 = 13426;
 	public static final int RED_SKINK = 13427;
 	public static final int RED_SKINK_13428 = 13428;
+	public static final int GILBERT = 13429;
+	public static final int GILBERT_13430 = 13430;
+	public static final int KIT_BREAKER = 13431;
+	public static final int KIT_BREAKER_13432 = 13432;
+	public static final int KIT_BREAKER_13433 = 13433;
+	public static final int KIT_BREAKER_13434 = 13434;
+	public static final int KIT_BREAKER_13435 = 13435;
+	public static final int KIT_BREAKER_13436 = 13436;
+	public static final int SIR_KIT_BREAKER = 13437;
+	public static final int SIR_KIT_BREAKER_13438 = 13438;
 	public static final int ENRAGED_BLOOD_MOON = 13485;
 	public static final int ENRAGED_BLUE_MOON = 13486;
 	public static final int ENRAGED_ECLIPSE_MOON = 13487;
