@@ -52,6 +52,7 @@ import net.runelite.api.Player;
 import net.runelite.api.ScriptID;
 import net.runelite.api.SpriteID;
 import net.runelite.api.VarPlayer;
+import net.runelite.api.Skill;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.CommandExecuted;
@@ -62,6 +63,8 @@ import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.VarbitChanged;
+import net.runelite.api.events.FakeXpDrop;
+import net.runelite.api.events.StatChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -108,6 +111,10 @@ public class SpecialCounterPlugin extends Plugin
 
 	private int currentWorld;
 	private int specialPercentage;
+	private int lastHitPointsExperience;
+
+	private boolean specialAttempted;
+	private boolean hitpointsChanged;
 
 	private SpecialWeapon specialWeapon;
 	// expected tick the hitsplat will happen on
@@ -175,6 +182,7 @@ public class SpecialCounterPlugin extends Plugin
 		wsClient.registerMessage(SpecialCounterUpdate.class);
 		currentWorld = -1;
 		specialPercentage = -1;
+		lastHitPointsExperience = -1;
 		interactedNpcIndexes.clear();
 	}
 
@@ -185,6 +193,8 @@ public class SpecialCounterPlugin extends Plugin
 		lastSpecTarget = null;
 		lastSpecHitsplat = null;
 		secondToLastSpecHitsplat = null;
+		specialAttempted = false;
+		hitpointsChanged = false;
 		removeCounters();
 		overlayManager.remove(playerInfoDropOverlay);
 		wsClient.unregisterMessage(SpecialCounterUpdate.class);
@@ -201,10 +211,54 @@ public class SpecialCounterPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onFakeXpDrop(FakeXpDrop event)
+	{
+		if (event.getXp() >= 20000000)
+		{
+			return;
+		}
+
+		if (event.getSkill() != Skill.HITPOINTS)
+		{
+			return;
+		}
+
+		hitpointsChanged = true;
+	}
+
+	@Subscribe
+	public void onStatChanged(StatChanged event)
+	{
+		if (event.getSkill() != Skill.HITPOINTS)
+		{
+			return;
+		}
+
+		if (event.getXp() > lastHitPointsExperience)
+		{
+			hitpointsChanged = true;
+		}
+
+		lastHitPointsExperience = event.getXp();
+	}
+
+	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		if (lastSpecHitsplat != null && specialWeapon != null && lastSpecTarget != null)
+		if (specialWeapon == null || lastSpecTarget == null)
 		{
+			return;
+		}
+
+		//due to fringe cases with thrall distance changing hitsplat order, hitsplat should only be used in cases where we cannot reliably verify the hit from xp
+		boolean splatCheckRequired = (specialWeapon != SpecialWeapon.ELDER_MAUL && specialWeapon != SpecialWeapon.DRAGON_WARHAMMER);
+
+		if (splatCheckRequired)
+		{
+			if (lastSpecHitsplat == null)
+			{
+				return;
+			}
 			if (lastSpecHitsplat.getAmount() > 0)
 			{
 				specialAttackHits++;
@@ -220,9 +274,9 @@ public class SpecialCounterPlugin extends Plugin
 				int hit = specialWeapon == TONALZTICS_OF_RALOS ? specialAttackHits : getHit(specialWeapon, lastSpecHitsplat);
 				specialAttackHit(specialWeapon, hit, lastSpecTarget);
 			}
-			else if ((specialWeapon == SpecialWeapon.BANDOS_GODSWORD || specialWeapon == SpecialWeapon.ELDER_MAUL || specialWeapon == SpecialWeapon.DRAGON_WARHAMMER) && TEKTON_VARIANTS.contains(lastSpecTarget.getId()))
+			else if (specialWeapon == SpecialWeapon.BANDOS_GODSWORD && TEKTON_VARIANTS.contains(lastSpecTarget.getId()))
 			{
-				specialAttackHit(specialWeapon, specialWeapon == SpecialWeapon.BANDOS_GODSWORD ? 10 : 0, lastSpecTarget);
+				specialAttackHit(specialWeapon, 10, lastSpecTarget);
 			}
 
 			specialWeapon = null;
@@ -230,6 +284,28 @@ public class SpecialCounterPlugin extends Plugin
 			secondToLastSpecHitsplat = null;
 			lastSpecTarget = null;
 			specialAttackHits = 0;
+			specialAttempted = false;
+			hitpointsChanged = false;
+
+		}
+		else if (specialAttempted)
+		{
+			if (hitpointsChanged)
+			{
+				specialAttackHit(specialWeapon, 1, lastSpecTarget);
+			}
+			else if (TEKTON_VARIANTS.contains(lastSpecTarget.getId()))
+			{
+				specialAttackHit(specialWeapon, 0, lastSpecTarget);
+			}
+
+			specialWeapon = null;
+			lastSpecHitsplat = null;
+			secondToLastSpecHitsplat = null;
+			lastSpecTarget = null;
+			specialAttackHits = 0;
+			specialAttempted = false;
+			hitpointsChanged = false;
 		}
 	}
 
@@ -281,9 +357,26 @@ public class SpecialCounterPlugin extends Plugin
 				return;
 			}
 
+			specialAttempted = true;
 			Actor target = client.getLocalPlayer().getInteracting();
 			lastSpecTarget = target instanceof NPC ? (NPC) target : null;
 			hitsplatTick = serverTicks + getHitDelay(specialWeapon, target);
+
+			int interactingId = lastSpecTarget.getId();
+			int npcIndex = lastSpecTarget.getIndex();
+
+			if (IGNORED_NPCS.contains(interactingId))
+			{
+				return;
+			}
+
+			// If this is a new NPC reset the counters
+			if (!interactedNpcIndexes.contains(npcIndex))
+			{
+				removeCounters();
+				interactedNpcIndexes.add(npcIndex);
+			}
+
 			log.debug("Special attack used - percent: {} weapon: {} server cycle {} hitsplat cycle {}", specialPercentage, specialWeapon, serverTicks, hitsplatTick);
 		});
 	}
@@ -303,22 +396,6 @@ public class SpecialCounterPlugin extends Plugin
 		if (lastSpecTarget == null || target != lastSpecTarget)
 		{
 			return;
-		}
-
-		NPC npc = (NPC) target;
-		int interactingId = npc.getId();
-		int npcIndex = npc.getIndex();
-
-		if (IGNORED_NPCS.contains(interactingId))
-		{
-			return;
-		}
-
-		// If this is a new NPC reset the counters
-		if (!interactedNpcIndexes.contains(npcIndex))
-		{
-			removeCounters();
-			interactedNpcIndexes.add(npcIndex);
 		}
 
 		// The weapon hitsplat is always last, after other hitsplats which occur on the same tick such as from
