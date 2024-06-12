@@ -103,6 +103,7 @@ public class XpTrackerPluginTest
 		when(client.getSkillExperience(Skill.ATTACK)).thenReturn(42);
 		// Initialize tracker
 		xpTrackerPlugin.onGameTick(new GameTick());
+		xpTrackerPlugin.onGameTick(new GameTick());
 
 		// Gain attack xp
 		StatChanged statChanged = new StatChanged(
@@ -118,6 +119,7 @@ public class XpTrackerPluginTest
 		// Flag initialization of tracker
 		xpTrackerPlugin.onGameStateChanged(gameStateChanged);
 		// Initialize tracker
+		xpTrackerPlugin.onGameTick(new GameTick());
 		xpTrackerPlugin.onGameTick(new GameTick());
 
 		// Start at 42 xp, gain of 58 xp, offline gain of 41900 xp - offset start XP: 42 + 41900
