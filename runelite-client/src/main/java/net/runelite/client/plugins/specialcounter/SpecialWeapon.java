@@ -33,7 +33,7 @@ import net.runelite.api.ItemID;
 @Getter
 public enum SpecialWeapon
 {
-	DRAGON_WARHAMMER("Dragon Warhammer", new int[]{ItemID.DRAGON_WARHAMMER, ItemID.DRAGON_WARHAMMER_CR}, false, SpecialCounterConfig::dragonWarhammerThreshold),
+	DRAGON_WARHAMMER("Dragon Warhammer", new int[]{ItemID.DRAGON_WARHAMMER, ItemID.DRAGON_WARHAMMER_CR}, false, SpecialCounterConfig::defencePercentageThreshold),
 	ARCLIGHT("Arclight", new int[]{ItemID.ARCLIGHT}, false, SpecialCounterConfig::arclightThreshold),
 	DARKLIGHT("Darklight", new int[]{ItemID.DARKLIGHT}, false, SpecialCounterConfig::darklightThreshold),
 	BANDOS_GODSWORD("Bandos Godsword", new int[]{ItemID.BANDOS_GODSWORD, ItemID.BANDOS_GODSWORD_OR}, true, SpecialCounterConfig::bandosGodswordThreshold),
@@ -65,8 +65,7 @@ public enum SpecialWeapon
 		new int[]{ItemID.ELDER_MAUL, ItemID.ELDER_MAUL_OR},
 		false,
 		(distance) -> 50, //The hitsplat is applied 2t after spec unlike most melee weapons
-		SpecialCounterConfig::elderMaulThreshold),
-	SEERCULL("Seercull", new int[]{ItemID.SEERCULL}, true, (d) -> 46 + (d * 5), (c) -> 0);
+		SpecialCounterConfig::defencePercentageThreshold);
 
 	private final String name;
 	private final int[] itemID;

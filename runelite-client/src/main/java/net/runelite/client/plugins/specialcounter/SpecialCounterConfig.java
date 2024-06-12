@@ -81,21 +81,10 @@ public interface SpecialCounterConfig extends Config
 	@ConfigItem(
 		position = 10,
 		keyName = "dragonWarhammerThreshold",
-		name = "Dragon Warhammer",
-		description = "Threshold for Dragon Warhammer (0 to disable)"
+		name = "Defence Percentage",
+		description = "Threshold for Dragon Warhammer/Elder maul's percentage drain (0 to disable)"
 	)
-	default int dragonWarhammerThreshold()
-	{
-		return 0;
-	}
-
-	@ConfigItem(
-		position = 15,
-		keyName = "elderMaulThreshold",
-		name = "Elder Maul",
-		description = "Threshold for Elder Maul (0 to disable)"
-	)
-	default int elderMaulThreshold()
+	default int defencePercentageThreshold()
 	{
 		return 0;
 	}

@@ -50,6 +50,7 @@ import net.runelite.api.NPC;
 import net.runelite.api.NpcID;
 import net.runelite.api.Player;
 import net.runelite.api.ScriptID;
+import net.runelite.api.SpriteID;
 import net.runelite.api.VarPlayer;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
@@ -66,6 +67,7 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.game.SpriteManager;
 import net.runelite.client.party.PartyService;
 import net.runelite.client.party.WSClient;
 import net.runelite.client.plugins.Plugin;
@@ -91,6 +93,18 @@ public class SpecialCounterPlugin extends Plugin
 		NpcID.SKELETON_HELLHOUND_6613, NpcID.GREATER_SKELETON_HELLHOUND, // vetion
 		NpcID.SPAWN, NpcID.SCION // abyssal sire
 	);
+	private static final Set<Integer> TEKTON_VARIANTS = ImmutableSet.of(
+			NpcID.TEKTON,
+			NpcID.TEKTON_7541,
+			NpcID.TEKTON_7542,
+			NpcID.TEKTON_7545,
+			NpcID.TEKTON_ENRAGED,
+			NpcID.TEKTON_ENRAGED_7544
+	);
+	private static final Set<SpecialWeapon> PERCENTAGE_INFOBOXES = ImmutableSet.of(
+			SpecialWeapon.DRAGON_WARHAMMER,
+			SpecialWeapon.ELDER_MAUL
+	);
 
 	private int currentWorld;
 	private int specialPercentage;
@@ -106,6 +120,7 @@ public class SpecialCounterPlugin extends Plugin
 
 	private final Set<Integer> interactedNpcIndexes = new HashSet<>();
 	private final SpecialCounter[] specialCounter = new SpecialCounter[SpecialWeapon.values().length];
+	private SpecialCounterPercentage specialCounterPercentage;
 
 	@Getter(AccessLevel.PACKAGE)
 	private final List<PlayerInfoDrop> playerInfoDrops = new ArrayList<>();
@@ -127,6 +142,9 @@ public class SpecialCounterPlugin extends Plugin
 
 	@Inject
 	private ItemManager itemManager;
+
+	@Inject
+	private SpriteManager spriteManager;
 
 	@Inject
 	private Notifier notifier;
@@ -201,6 +219,10 @@ public class SpecialCounterPlugin extends Plugin
 			{
 				int hit = specialWeapon == TONALZTICS_OF_RALOS ? specialAttackHits : getHit(specialWeapon, lastSpecHitsplat);
 				specialAttackHit(specialWeapon, hit, lastSpecTarget);
+			}
+			else if ((specialWeapon == SpecialWeapon.BANDOS_GODSWORD || specialWeapon == SpecialWeapon.ELDER_MAUL || specialWeapon == SpecialWeapon.DRAGON_WARHAMMER) && TEKTON_VARIANTS.contains(lastSpecTarget.getId()))
+			{
+				specialAttackHit(specialWeapon, specialWeapon == SpecialWeapon.BANDOS_GODSWORD ? 10 : 0, lastSpecTarget);
 			}
 
 			specialWeapon = null;
@@ -429,17 +451,47 @@ public class SpecialCounterPlugin extends Plugin
 	private void updateCounter(SpecialWeapon specialWeapon, String name, int hit)
 	{
 		SpecialCounter counter = specialCounter[specialWeapon.ordinal()];
-
+		boolean isDefenceCounter = PERCENTAGE_INFOBOXES.contains(specialWeapon);
 		if (counter == null)
 		{
 			counter = new SpecialCounter(itemManager.getImage(specialWeapon.getItemID()[0]), this, config,
 				hit, specialWeapon);
-			infoBoxManager.addInfoBox(counter);
 			specialCounter[specialWeapon.ordinal()] = counter;
+			if (isDefenceCounter)
+			{
+				if (specialCounterPercentage == null)
+				{
+					specialCounterPercentage = new SpecialCounterPercentage(itemManager.getImage(specialWeapon.getItemID()[0]), this, config, counter, hit);
+					infoBoxManager.addInfoBox(specialCounterPercentage);
+				}
+				else
+				{
+					specialCounterPercentage.setCounter(counter, hit);
+				}
+			}
+			else
+			{
+				infoBoxManager.addInfoBox(counter);
+			}
 		}
 		else
 		{
-			counter.addHits(hit);
+			if (isDefenceCounter)
+			{
+				if (hit > 0)
+				{
+					counter.addHits(hit);
+				}
+				else
+				{
+					specialCounterPercentage.incrementZeros();
+				}
+				specialCounterPercentage.recalculateSpecs();
+			}
+			else
+			{
+				counter.addHits(hit);
+			}
 		}
 
 		// Display a notification if special attack thresholds are met
@@ -463,9 +515,19 @@ public class SpecialCounterPlugin extends Plugin
 	private void sendNotification(SpecialWeapon weapon, SpecialCounter counter)
 	{
 		int threshold = weapon.getThreshold().apply(config);
-		if (threshold > 0 && counter.getCount() >= threshold)
+		String message = "";
+		if (PERCENTAGE_INFOBOXES.contains(weapon) && specialCounterPercentage.getDefenceDrainPercentage() >= threshold)
 		{
-			notifier.notify(config.thresholdNotification(), weapon.getName() + " special attack threshold reached!");
+			message = "Defence Percentage threshold reached!";
+		}
+		else if (threshold > 0 && counter.getCount() >= threshold)
+		{
+			message = weapon.getName() + " special attack threshold reached!";
+		}
+
+		if (!message.isEmpty())
+		{
+			notifier.notify(config.thresholdNotification(), message);
 		}
 	}
 
@@ -483,6 +545,9 @@ public class SpecialCounterPlugin extends Plugin
 				specialCounter[i] = null;
 			}
 		}
+
+		infoBoxManager.removeInfoBox(specialCounterPercentage);
+		specialCounterPercentage = null;
 	}
 
 	private int getHit(SpecialWeapon specialWeapon, Hitsplat hitsplat)
@@ -493,7 +558,7 @@ public class SpecialCounterPlugin extends Plugin
 	private PlayerInfoDrop createSpecInfoDrop(SpecialWeapon weapon, int hit, int playerId)
 	{
 		int cycle = client.getGameCycle();
-		BufferedImage image = ImageUtil.resizeImage(itemManager.getImage(weapon.getItemID()[0]), 24, 24);
+		BufferedImage image = ImageUtil.resizeImage(hit == 0 ? spriteManager.getSprite(SpriteID.HITSPLAT_BLUE_MISS, 0) : itemManager.getImage(weapon.getItemID()[0]), 24, 24);
 
 		return PlayerInfoDrop.builder(cycle, cycle + 100, playerId, Integer.toString(hit))
 			.color(config.specDropColor())

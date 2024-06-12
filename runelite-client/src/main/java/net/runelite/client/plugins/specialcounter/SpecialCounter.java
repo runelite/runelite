@@ -34,6 +34,7 @@ import net.runelite.client.ui.overlay.infobox.Counter;
 
 class SpecialCounter extends Counter
 {
+	@Getter(AccessLevel.PACKAGE)
 	private final SpecialWeapon weapon;
 	private final SpecialCounterConfig config;
 	@Getter(AccessLevel.PACKAGE)
