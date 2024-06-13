@@ -113,7 +113,6 @@ public class SpecialCounterPlugin extends Plugin
 	private int specialPercentage;
 	private int lastHitPointsExperience;
 
-	private boolean specialAttempted;
 	private boolean hitpointsChanged;
 
 	private SpecialWeapon specialWeapon;
@@ -193,7 +192,6 @@ public class SpecialCounterPlugin extends Plugin
 		lastSpecTarget = null;
 		lastSpecHitsplat = null;
 		secondToLastSpecHitsplat = null;
-		specialAttempted = false;
 		hitpointsChanged = false;
 		removeCounters();
 		overlayManager.remove(playerInfoDropOverlay);
@@ -223,7 +221,11 @@ public class SpecialCounterPlugin extends Plugin
 			return;
 		}
 
-		hitpointsChanged = true;
+		//specialweapon is set on the subsequent tick, as such we need to defer setting this variable to the next gametick
+		clientThread.invokeLater(() ->
+		{
+			hitpointsChanged = true;
+		});
 	}
 
 	@Subscribe
@@ -236,7 +238,10 @@ public class SpecialCounterPlugin extends Plugin
 
 		if (event.getXp() > lastHitPointsExperience)
 		{
-			hitpointsChanged = true;
+			clientThread.invokeLater(() ->
+			{
+				hitpointsChanged = true;
+			});
 		}
 
 		lastHitPointsExperience = event.getXp();
@@ -247,6 +252,7 @@ public class SpecialCounterPlugin extends Plugin
 	{
 		if (specialWeapon == null || lastSpecTarget == null)
 		{
+			hitpointsChanged = false;
 			return;
 		}
 
@@ -284,11 +290,10 @@ public class SpecialCounterPlugin extends Plugin
 			secondToLastSpecHitsplat = null;
 			lastSpecTarget = null;
 			specialAttackHits = 0;
-			specialAttempted = false;
 			hitpointsChanged = false;
 
 		}
-		else if (specialAttempted)
+		else
 		{
 			if (hitpointsChanged)
 			{
@@ -304,7 +309,6 @@ public class SpecialCounterPlugin extends Plugin
 			secondToLastSpecHitsplat = null;
 			lastSpecTarget = null;
 			specialAttackHits = 0;
-			specialAttempted = false;
 			hitpointsChanged = false;
 		}
 	}
@@ -357,7 +361,6 @@ public class SpecialCounterPlugin extends Plugin
 				return;
 			}
 
-			specialAttempted = true;
 			Actor target = client.getLocalPlayer().getInteracting();
 			lastSpecTarget = target instanceof NPC ? (NPC) target : null;
 			hitsplatTick = serverTicks + getHitDelay(specialWeapon, target);
