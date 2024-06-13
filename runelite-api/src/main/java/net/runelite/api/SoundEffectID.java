@@ -48,6 +48,7 @@ public final class SoundEffectID
 	public final static int TREE_FALLING = 2734;
 	public final static int TREE_CHOP = 2735;
 	public final static int MINING_TINK = 3220;
+	public final static int MINING_TINK_ALT = 3221;
 	public final static int COOK_WOOSH = 2577;
 	public final static int MAGIC_SPLASH_BOING = 227;
 	public final static int SMITH_ANVIL_TINK = 3790;
