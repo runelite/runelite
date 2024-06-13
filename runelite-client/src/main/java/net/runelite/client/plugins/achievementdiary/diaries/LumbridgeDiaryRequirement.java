@@ -37,8 +37,6 @@ public class LumbridgeDiaryRequirement extends GenericDiaryRequirement
 	public LumbridgeDiaryRequirement()
 	{
 		// EASY
-		add("Complete a lap of the Draynor Village agility course.",
-			new SkillRequirement(Skill.AGILITY, 10));
 		add("Slay a Cave bug beneath Lumbridge Swamp.",
 			new SkillRequirement(Skill.SLAYER, 7));
 		add("Have Sedridor teleport you to the Essence Mine.",
