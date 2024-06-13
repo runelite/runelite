@@ -114,7 +114,7 @@ public class BoostsPlugin extends Plugin
 	private int lastChangeDown = -1;
 	private int lastChangeUp = -1;
 	private boolean preserveBeenActive = false;
-	private long lastTickMillis;
+	private long lastTickNanoTime;
 
 	@Provides
 	BoostsConfig provideConfig(ConfigManager configManager)
@@ -129,7 +129,7 @@ public class BoostsPlugin extends Plugin
 		OverlayMenuEntry menuEntry = new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Boosts overlay");
 
 		boostsOverlay.getMenuEntries().add(menuEntry);
-		compactBoostsOverlay.getMenuEntries().add(menuEntry);;
+		compactBoostsOverlay.getMenuEntries().add(menuEntry);
 
 		overlayManager.add(boostsOverlay);
 		overlayManager.add(compactBoostsOverlay);
@@ -258,7 +258,7 @@ public class BoostsPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		lastTickMillis = System.currentTimeMillis();
+		lastTickNanoTime = System.nanoTime();
 
 		if (getChangeUpTicks() <= 0)
 		{
@@ -411,7 +411,6 @@ public class BoostsPlugin extends Plugin
 		return 100 - ticksSinceChange;
 	}
 
-
 	/**
 	 * Converts tick-based time to accurate second time
 	 * @param time tick-based time
@@ -419,7 +418,7 @@ public class BoostsPlugin extends Plugin
 	 */
 	int getChangeTime(final int time)
 	{
-		final long diff = System.currentTimeMillis() - lastTickMillis;
-		return time != -1 ? (int)((time * Constants.GAME_TICK_LENGTH - diff) / 1000d) : time;
+		final long diff = System.nanoTime() - lastTickNanoTime;
+		return time != -1 ? (int)((time * Constants.GAME_TICK_LENGTH * 1000000d - diff) / 1000000000d) : time;
 	}
 }
