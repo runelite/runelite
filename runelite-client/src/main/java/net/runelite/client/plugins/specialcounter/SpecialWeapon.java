@@ -33,43 +33,44 @@ import net.runelite.api.ItemID;
 @Getter
 public enum SpecialWeapon
 {
-	DRAGON_WARHAMMER("Dragon Warhammer", new int[]{ItemID.DRAGON_WARHAMMER, ItemID.DRAGON_WARHAMMER_CR}, false, SpecialCounterConfig::defencePercentageThreshold),
-	ARCLIGHT("Arclight", new int[]{ItemID.ARCLIGHT}, false, SpecialCounterConfig::arclightThreshold),
-	DARKLIGHT("Darklight", new int[]{ItemID.DARKLIGHT}, false, SpecialCounterConfig::darklightThreshold),
-	BANDOS_GODSWORD("Bandos Godsword", new int[]{ItemID.BANDOS_GODSWORD, ItemID.BANDOS_GODSWORD_OR}, true, SpecialCounterConfig::bandosGodswordThreshold),
-	BARRELCHEST_ANCHOR("Barrelchest Anchor", new int[]{ItemID.BARRELCHEST_ANCHOR}, true, (c) -> 0),
-	BONE_DAGGER("Bone Dagger", new int[]{ItemID.BONE_DAGGER, ItemID.BONE_DAGGER_P, ItemID.BONE_DAGGER_P_8876, ItemID.BONE_DAGGER_P_8878}, true, (c) -> 0),
+	DRAGON_WARHAMMER("Dragon Warhammer", new int[]{ItemID.DRAGON_WARHAMMER, ItemID.DRAGON_WARHAMMER_CR}, false, true, SpecialCounterConfig::defencePercentageThreshold),
+	ARCLIGHT("Arclight", new int[]{ItemID.ARCLIGHT}, false, false, SpecialCounterConfig::arclightThreshold),
+	DARKLIGHT("Darklight", new int[]{ItemID.DARKLIGHT}, false, false, SpecialCounterConfig::darklightThreshold),
+	BANDOS_GODSWORD("Bandos Godsword", new int[]{ItemID.BANDOS_GODSWORD, ItemID.BANDOS_GODSWORD_OR}, true, false, SpecialCounterConfig::bandosGodswordThreshold),
+	BARRELCHEST_ANCHOR("Barrelchest Anchor", new int[]{ItemID.BARRELCHEST_ANCHOR}, true, false, (c) -> 0),
+	BONE_DAGGER("Bone Dagger", new int[]{ItemID.BONE_DAGGER, ItemID.BONE_DAGGER_P, ItemID.BONE_DAGGER_P_8876, ItemID.BONE_DAGGER_P_8878}, true, false, (c) -> 0),
 	DORGESHUUN_CROSSBOW(
 		"Dorgeshuun Crossbow",
 		new int[]{ItemID.DORGESHUUN_CROSSBOW},
-		true,
+		true, false,
 		(distance) -> 60 + distance * 3,
 		(c) -> 0
 	),
-	BULWARK("Dinh's Bulwark", new int[]{ItemID.DINHS_BULWARK}, false, SpecialCounterConfig::bulwarkThreshold),
+	BULWARK("Dinh's Bulwark", new int[]{ItemID.DINHS_BULWARK}, false, false, SpecialCounterConfig::bulwarkThreshold),
 	ACCURSED_SCEPTRE(
 		"Accursed Sceptre",
 		new int[]{ItemID.ACCURSED_SCEPTRE, ItemID.ACCURSED_SCEPTRE_A},
-		false,
+		false, false,
 		(distance) -> 46 + distance * 10,
 		(c) -> 0
 	),
 	TONALZTICS_OF_RALOS(
 		"Tonalztics of Ralos",
 		new int[]{ItemID.TONALZTICS_OF_RALOS},
-		false,
+		false, false,
 		(distance) -> 50, //The hitsplat is always applied 2t after spec regardless of distance
 		(c) -> 0
 	),
 	ELDER_MAUL("Elder Maul",
 		new int[]{ItemID.ELDER_MAUL, ItemID.ELDER_MAUL_OR},
-		false,
+		false, true,
 		(distance) -> 50, //The hitsplat is applied 2t after spec unlike most melee weapons
 		SpecialCounterConfig::defencePercentageThreshold);
 
 	private final String name;
 	private final int[] itemID;
 	private final boolean damage;
+	private final boolean percentageHandle;
 	/**
 	 * Accepts an int representing distance in tiles to the target, and returns an int representing client cycles of
 	 * delay until the hitsplat is applied.
@@ -86,9 +87,9 @@ public enum SpecialWeapon
 	private final Function<Integer, Integer> clientCycleHitDelay;
 	private final Function<SpecialCounterConfig, Integer> threshold;
 
-	SpecialWeapon(final String name, final int[] itemID, final boolean damage, final Function<SpecialCounterConfig, Integer> threshold)
+	SpecialWeapon(final String name, final int[] itemID, final boolean damage, final boolean percentageHandle, final Function<SpecialCounterConfig, Integer> threshold)
 	{
-		this(name, itemID, damage, (distance) -> 0, threshold);
+		this(name, itemID, damage, percentageHandle, (distance) -> 0, threshold);
 	}
 
 	/**

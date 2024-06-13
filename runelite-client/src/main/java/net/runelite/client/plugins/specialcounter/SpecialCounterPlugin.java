@@ -104,10 +104,6 @@ public class SpecialCounterPlugin extends Plugin
 			NpcID.TEKTON_ENRAGED,
 			NpcID.TEKTON_ENRAGED_7544
 	);
-	private static final Set<SpecialWeapon> PERCENTAGE_INFOBOXES = ImmutableSet.of(
-			SpecialWeapon.DRAGON_WARHAMMER,
-			SpecialWeapon.ELDER_MAUL
-	);
 
 	private int currentWorld;
 	private int specialPercentage;
@@ -257,7 +253,7 @@ public class SpecialCounterPlugin extends Plugin
 		}
 
 		//due to fringe cases with thrall distance changing hitsplat order, hitsplat should only be used in cases where we cannot reliably verify the hit from xp
-		boolean splatCheckRequired = (specialWeapon != SpecialWeapon.ELDER_MAUL && specialWeapon != SpecialWeapon.DRAGON_WARHAMMER);
+		boolean splatCheckRequired = !specialWeapon.isPercentageHandle();
 
 		if (splatCheckRequired)
 		{
@@ -531,7 +527,7 @@ public class SpecialCounterPlugin extends Plugin
 	private void updateCounter(SpecialWeapon specialWeapon, String name, int hit)
 	{
 		SpecialCounter counter = specialCounter[specialWeapon.ordinal()];
-		boolean isDefenceCounter = PERCENTAGE_INFOBOXES.contains(specialWeapon);
+		boolean isDefenceCounter = specialWeapon.isPercentageHandle();
 		if (counter == null)
 		{
 			counter = new SpecialCounter(itemManager.getImage(specialWeapon.getItemID()[0]), this, config,
@@ -596,7 +592,7 @@ public class SpecialCounterPlugin extends Plugin
 	{
 		int threshold = weapon.getThreshold().apply(config);
 		String message = "";
-		if (PERCENTAGE_INFOBOXES.contains(weapon) && specialCounterPercentage.getDefenceDrainPercentage() >= threshold)
+		if (weapon.isPercentageHandle() && specialCounterPercentage.getDefenceDrainPercentage() >= threshold)
 		{
 			message = "Defence Percentage threshold reached!";
 		}
