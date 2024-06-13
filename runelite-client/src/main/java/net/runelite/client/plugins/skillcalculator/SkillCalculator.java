@@ -476,8 +476,13 @@ class SkillCalculator extends JPanel
 
 	private void onFieldCurrentLevelUpdated()
 	{
-		currentLevel = enforceSkillBounds(uiInput.getCurrentLevelInput());
-		currentXP = Experience.getXpForLevel(currentLevel);
+		int newCurrentLevel = enforceSkillBounds(uiInput.getCurrentLevelInput());
+		if (newCurrentLevel == currentLevel)
+		{
+			return;
+		}
+		currentLevel = newCurrentLevel;
+		currentXP = Experience.getXpForLevel(this.currentLevel);
 		updateInputFields();
 	}
 
@@ -490,8 +495,13 @@ class SkillCalculator extends JPanel
 
 	private void onFieldTargetLevelUpdated()
 	{
-		targetLevel = enforceSkillBounds(uiInput.getTargetLevelInput());
-		targetXP = Experience.getXpForLevel(targetLevel);
+		int newTargetLevel = enforceSkillBounds(uiInput.getTargetLevelInput());
+		if (newTargetLevel == targetLevel)
+		{
+			return;
+		}
+		targetLevel = newTargetLevel;
+		targetXP = Experience.getXpForLevel(this.targetLevel);
 		updateInputFields();
 	}
 
