@@ -57,6 +57,17 @@ public interface SpecialCounterConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 1,
+		keyName = "specDropMisses",
+		name = "Spec Drops Misses",
+		description = "Draws an overlay over the player when a special attack misses"
+	)
+	default boolean specDropMisses()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		position = 2,
 		keyName = "specDropColor",
 		name = "Spec Drop Color",

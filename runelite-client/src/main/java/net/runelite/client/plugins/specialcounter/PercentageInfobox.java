@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2022, Hexagon <hexagon@fking.work>
+ * Copyright (c) 2024, 1Defence
+ * Copyright (c) 2024, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,31 +26,38 @@
 package net.runelite.client.plugins.specialcounter;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.image.BufferedImage;
-import javax.annotation.Nullable;
-import lombok.Builder;
-import lombok.NonNull;
-import lombok.Value;
-import net.runelite.client.ui.FontManager;
+import net.runelite.client.ui.overlay.infobox.InfoBox;
 
-@Builder
-@Value
-class PlayerInfoDrop
+class PercentageInfobox extends InfoBox
 {
-	int startCycle;
-	int endCycle;
-	int playerIdx;
-	String text;
-	@Nullable
-	BufferedImage textBackground;
-	int startHeightOffset;
-	@Builder.Default
-	int endHeightOffset = 200;
-	@Builder.Default
-	Font font = FontManager.getRunescapeBoldFont();
-	@Builder.Default
-	Color color = Color.WHITE;
-	@NonNull
-	BufferedImage image;
+	private float percent = 1f;
+
+	PercentageInfobox(BufferedImage image, SpecialCounterPlugin plugin)
+	{
+		super(image, plugin);
+	}
+
+	void mul(float p)
+	{
+		percent *= p;
+	}
+
+	@Override
+	public String getTooltip()
+	{
+		return "Opponent defence has been reduced by " + getText() + ".";
+	}
+
+	@Override
+	public Color getTextColor()
+	{
+		return Color.WHITE;
+	}
+
+	@Override
+	public String getText()
+	{
+		return (int) (percent * 100) + "%";
+	}
 }

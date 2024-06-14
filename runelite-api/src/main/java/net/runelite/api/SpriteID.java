@@ -1282,7 +1282,8 @@ public final class SpriteID
 	public static final int EMOTE_SMOOTH_DANCE_LOCKED = 1355;
 	public static final int EMOTE_CRAZY_DANCE_LOCKED = 1356;
 	public static final int EMOTE_PREMIER_SHIELD_LOCKED = 1357;
-	/* Unmapped: 1358~1359 */
+	public static final int HITSPLAT_BLUE_MISS = 1358;
+	/* Unmapped: 1359 */
 	public static final int HITSPLAT_GREEN_POISON = 1360;
 	/* Unmapped: 1361~1363 */
 	public static final int BOUNTY_HUNTER_SKIP_TARGET = 1364;
