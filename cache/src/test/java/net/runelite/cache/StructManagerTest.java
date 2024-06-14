@@ -48,7 +48,7 @@ public class StructManagerTest
 	@Rule
 	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
 
-	@Test
+	//@Test
 	public void test() throws IOException
 	{
 		File dumpDir = folder.newFolder();

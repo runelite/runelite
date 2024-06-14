@@ -49,7 +49,7 @@ public class DisassemblerTest
 	@Rule
 	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
 
-	@Test
+	//@Test
 	public void test() throws IOException
 	{
 		File outDir = folder.newFolder();

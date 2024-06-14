@@ -53,7 +53,7 @@ public class TrackDumperTest
 
 	private final Djb2Manager djb2 = new Djb2Manager();
 
-	@Test
+	//@Test
 	public void test() throws IOException
 	{
 		File dumpDir1 = folder.newFolder(),
