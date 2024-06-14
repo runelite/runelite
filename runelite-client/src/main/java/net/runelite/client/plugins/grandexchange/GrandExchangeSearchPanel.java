@@ -80,8 +80,6 @@ class GrandExchangeSearchPanel extends JPanel
 	/*  The error panel, this displays an error message */
 	private final PluginErrorPanel errorPanel = new PluginErrorPanel();
 
-	private final List<GrandExchangeItems> itemsList = new ArrayList<>();
-
 	@Inject
 	private GrandExchangeSearchPanel(ClientThread clientThread, ItemManager itemManager,
 		ScheduledExecutorService executor, RuneLiteConfig runeLiteConfig, GrandExchangePlugin grandExchangePlugin)
@@ -195,7 +193,7 @@ class GrandExchangeSearchPanel extends JPanel
 
 	private void processResult(List<ItemPrice> result, String lookup, boolean exactMatch)
 	{
-		itemsList.clear();
+		final List<GrandExchangeItems> itemsList = new ArrayList<>();
 
 		cardLayout.show(centerPanel, RESULTS_PANEL);
 
@@ -204,15 +202,19 @@ class GrandExchangeSearchPanel extends JPanel
 
 		for (ItemPrice item : result)
 		{
+			int itemId = item.getId();
+			ItemComposition itemComp = itemManager.getItemComposition(itemId);
+			if (!itemComp.isTradeable())
+			{
+				continue;
+			}
+
 			if (count++ > MAX_SEARCH_ITEMS)
 			{
 				// Cap search
 				break;
 			}
 
-			int itemId = item.getId();
-
-			ItemComposition itemComp = itemManager.getItemComposition(itemId);
 			ItemStats itemStats = itemManager.getItemStats(itemId, false);
 
 			int itemPrice = useActivelyTradedPrice ? itemManager.getWikiPrice(item) : item.getPrice();

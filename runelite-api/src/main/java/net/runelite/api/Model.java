@@ -65,7 +65,7 @@ public interface Model extends Mesh<Model>, Renderable
 	AABB getAABB(int orientation);
 
 	int getXYZMag();
-	boolean isClickable();
+	boolean useBoundingBox();
 
 	int[] getVertexNormalsX();
 	int[] getVertexNormalsY();

@@ -72,7 +72,7 @@ public abstract class PluginPanel extends JPanel implements Activatable
 			wrappedPanel = new JPanel();
 
 			// Adjust the preferred size to expand to width of scrollbar to
-			// to preven scrollbar overlapping over contents
+			// prevent scrollbar overlapping over contents
 			wrappedPanel.setPreferredSize(OUTER_PREFERRED_SIZE);
 			wrappedPanel.setLayout(new BorderLayout());
 			wrappedPanel.add(scrollPane, BorderLayout.CENTER);

@@ -356,15 +356,6 @@ class PrayerReorder
 
 				assert prayerWidget != null;
 
-				boolean hidden = isHidden(prayerbook, prayerId);
-				// in unlocked mode we show the prayers, but they have opacity set
-				if (hidden && !unlocked)
-				{
-					prayerWidget.setHidden(true);
-					++index;
-					continue;
-				}
-
 				int widgetConfig = prayerWidget.getClickMask();
 				if (unlocked)
 				{
@@ -377,6 +368,15 @@ class PrayerReorder
 					widgetConfig &= ~(DRAG | DRAG_ON);
 				}
 				prayerWidget.setClickMask(widgetConfig);
+
+				boolean hidden = isHidden(prayerbook, prayerId);
+				// in unlocked mode we show the prayers, but they have opacity set
+				if (hidden && !unlocked)
+				{
+					prayerWidget.setHidden(true);
+					++index;
+					continue;
+				}
 
 				if (unlocked)
 				{

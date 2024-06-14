@@ -41,6 +41,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.config.Notification;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
@@ -144,9 +145,13 @@ class DevToolsPanel extends PluginPanel
 
 		final JButton notificationBtn = new JButton("Notification");
 		notificationBtn.addActionListener(e ->
-		{
-			scheduledExecutorService.schedule(() -> notifier.notify("Wow!", TrayIcon.MessageType.ERROR), 3, TimeUnit.SECONDS);
-		});
+			scheduledExecutorService.schedule(() ->
+			{
+				var notif = new Notification()
+					.withEnabled(true)
+					.withTrayIconType(TrayIcon.MessageType.ERROR);
+				notifier.notify(notif, "Wow!");
+			}, 3, TimeUnit.SECONDS));
 		container.add(notificationBtn);
 
 		container.add(plugin.getScriptInspector());

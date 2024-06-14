@@ -64,13 +64,21 @@ public enum MiningAction implements ItemSkillAction
 	SANDSTONE_5KG(ItemID.SANDSTONE_5KG, 35, 50),
 	SANDSTONE_10KG(ItemID.SANDSTONE_10KG, 35, 60),
 	DENSE_ESSENCE_BLOCK(ItemID.DENSE_ESSENCE_BLOCK, 38, 12),
-	GOLD_ORE(ItemID.GOLD_ORE, 40, 65),
 	GEM_ROCKS(ItemID.UNCUT_RED_TOPAZ, 40, 65)
+		{
+			@Override
+			public String getName(final ItemManager itemManager)
+			{
+				return "Gem rocks";
+			}
+		},
+	GOLD_ORE(ItemID.GOLD_ORE, 40, 65),
+	CALCIFIED_ROCKS(ItemID.BLESSED_BONE_SHARDS, 41, 33)
 	{
 		@Override
 		public String getName(final ItemManager itemManager)
 		{
-			return "Gem rocks";
+			return "Calcified Rocks";
 		}
 	},
 	GRANITE_500G(ItemID.GRANITE_500G, 45, 50),

@@ -136,6 +136,7 @@ public class ScreenshotPlugin extends Plugin
 		BARROWS,
 		COX,
 		COX_CM,
+		MOONS_OF_PERIL,
 		TOB,
 		TOB_SM,
 		TOB_HM,
@@ -416,6 +417,17 @@ public class ScreenshotPlugin extends Plugin
 			}
 		}
 
+		if (chatMessage.startsWith("Your Lunar Chest count is"))
+		{
+			Matcher m = NUMBER_PATTERN.matcher(Text.removeTags(chatMessage));
+			if (m.find())
+			{
+				killType = KillType.MOONS_OF_PERIL;
+				killCountNumber = Integer.valueOf(m.group());
+				return;
+			}
+		}
+
 		if (config.screenshotKick() && chatMessage.equals("Your request to kick/ban this user was successful."))
 		{
 			if (kickPlayerName == null)
@@ -538,6 +550,7 @@ public class ScreenshotPlugin extends Plugin
 			case InterfaceID.TOB_REWARD:
 			case InterfaceID.TOA_REWARD:
 			case InterfaceID.BARROWS_REWARD:
+			case InterfaceID.LUNAR_CHEST:
 				if (!config.screenshotRewards())
 				{
 					return;
@@ -659,6 +672,19 @@ public class ScreenshotPlugin extends Plugin
 				}
 
 				fileName = "Barrows(" + killCountNumber + ")";
+				screenshotSubDir = SD_BOSS_KILLS;
+				killType = null;
+				killCountNumber = 0;
+				break;
+			}
+			case InterfaceID.LUNAR_CHEST:
+			{
+				if (killType != KillType.MOONS_OF_PERIL)
+				{
+					return;
+				}
+
+				fileName = "Moons of Peril(" + killCountNumber + ")";
 				screenshotSubDir = SD_BOSS_KILLS;
 				killType = null;
 				killCountNumber = 0;

@@ -122,6 +122,7 @@ public class MinimapPlugin extends Plugin
 			return;
 		}
 
+		restoreOriginalDots();
 		replaceMapDots();
 	}
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2024, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,13 +22,36 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.grounditems;
+package net.runelite.client.plugins.loottracker;
 
-enum LootType
+import java.util.Collection;
+import javax.annotation.Nullable;
+import lombok.Builder;
+import lombok.NonNull;
+import lombok.Value;
+import net.runelite.client.game.ItemStack;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.http.api.loottracker.LootRecordType;
+
+/**
+ * Event for plugins to publish new loot to the loot tracker
+ */
+@Builder
+@Value
+public class PluginLootReceived
 {
-	UNKNOWN,
-	TABLE,
-	DROPPED,
-	PVP,
-	PVM;
+	@NonNull
+	Plugin source;
+	@NonNull
+	String name;
+	@Builder.Default
+	int combatLevel = -1;
+	@NonNull
+	LootRecordType type;
+	@NonNull
+	Collection<ItemStack> items;
+	@Builder.Default
+	int amount = 1;
+	@Nullable
+	Object metadata;
 }

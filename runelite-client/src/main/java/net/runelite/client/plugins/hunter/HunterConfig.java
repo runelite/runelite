@@ -29,6 +29,7 @@ import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Notification;
 
 @ConfigGroup("hunterplugin")
 public interface HunterConfig extends Config
@@ -87,8 +88,8 @@ public interface HunterConfig extends Config
 		name = "Maniacal monkey notification",
 		description = "Send notification when maniacal monkey is caught or you fail to catch."
 	)
-	default boolean maniacalMonkeyNotify()
+	default Notification maniacalMonkeyNotify()
 	{
-		return false;
+		return Notification.OFF;
 	}
 }

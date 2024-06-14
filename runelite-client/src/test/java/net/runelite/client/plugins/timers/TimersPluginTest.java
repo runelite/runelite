@@ -34,9 +34,11 @@ import java.util.List;
 import java.util.function.Predicate;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.Skill;
 import net.runelite.api.Varbits;
 import net.runelite.api.events.ChatMessage;
+import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
@@ -301,7 +303,11 @@ public class TimersPluginTest
 
 		// test timer remove: verify the infobox was removed (and no more were added)
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "You have been defeated!", "", 0);
+		final GameStateChanged gameStateChanged = new GameStateChanged();
+		gameStateChanged.setGameState(GameState.LOADING);
+		when(client.getMapRegions()).thenReturn(new int[0]);
 		timersPlugin.onChatMessage(chatMessage);
+		timersPlugin.onGameStateChanged(gameStateChanged);
 		verify(infoBoxManager, times(3)).removeInfoBox(captor.capture());
 		verify(infoBoxManager, times(3)).addInfoBox(captor.capture());
 	}

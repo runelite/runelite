@@ -67,4 +67,8 @@ public final class ParamID
 	public static final int SLAYER_TASK_NAME = 1801;
 
 	public static final int ATTACK_STYLE_NAME = 1407;
+
+	public static final int SPELL_BUTTON = 596;
+	public static final int SPELL_NAME = 601;
+	public static final int SPELL_LEVELREQ = 604;
 }

@@ -509,7 +509,15 @@ public class XpTrackerPlugin extends Plugin
 
 		// Get skill from menu option, eg. "View <col=ff981f>Attack</col> guide"
 		final String skillText = event.getOption().split(" ")[1];
-		final Skill skill = Skill.valueOf(Text.removeTags(skillText).toUpperCase());
+		final Skill skill;
+		try
+		{
+			skill = Skill.valueOf(Text.removeTags(skillText).toUpperCase());
+		}
+		catch (IllegalArgumentException ignored)
+		{
+			return;
+		}
 
 		client.createMenuEntry(-1)
 			.setTarget(skillText)

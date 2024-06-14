@@ -452,4 +452,10 @@ public final class ScriptID
 
 	@ScriptArguments(integer = 6)
 	public static final int EQUIPMENT_SET_STAT_BONUS_SETUP = 3517;
+
+	@ScriptArguments(integer = 12, string = 2)
+	public static final int MAGIC_SPELLBOOK_INITIALISESPELLS = 2616;
+
+	@ScriptArguments(integer = 2)
+	public static final int MOTHERLODE_HUD_UPDATE = 1634;
 }
