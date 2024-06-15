@@ -58,6 +58,6 @@ class PercentageInfobox extends InfoBox
 	@Override
 	public String getText()
 	{
-		return (int) (percent * 100) + "%";
+		return (int) ((1 - percent) * 100) + "%";
 	}
 }
