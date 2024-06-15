@@ -48,19 +48,19 @@ class StatChangeIndicator extends InfoBox
 	@Override
 	public String getText()
 	{
-		return String.format("%02d", plugin.getChangeTime(up ? plugin.getChangeUpTicks() : plugin.getChangeDownTicks()));
+		return String.format("%02d", plugin.getChangeTime(up ? plugin.getDebuffRestorationTicks() : plugin.getNonCbBuffDrainTicks()));
 	}
 
 	@Override
 	public Color getTextColor()
 	{
-		return (up ? plugin.getChangeUpTicks() : plugin.getChangeDownTicks()) < 10 ? Color.RED.brighter() : Color.WHITE;
+		return (up ? plugin.getDebuffRestorationTicks() : plugin.getNonCbBuffDrainTicks()) < 10 ? Color.RED.brighter() : Color.WHITE;
 	}
 
 	@Override
 	public boolean render()
 	{
-		final int time = up ? plugin.getChangeUpTicks() : plugin.getChangeDownTicks();
+		final int time = up ? plugin.getDebuffRestorationTicks() : plugin.getNonCbBuffDrainTicks();
 		return time != -1 && config.displayInfoboxes();
 	}
 }

@@ -62,7 +62,7 @@ class BoostsOverlay extends OverlayPanel
 			return null;
 		}
 
-		int nextChange = plugin.getChangeDownTicks();
+		int nextChange = plugin.getNonCbBuffDrainTicks();
 		if (nextChange != -1)
 		{
 			panelComponent.getChildren().add(LineComponent.builder()
@@ -71,7 +71,7 @@ class BoostsOverlay extends OverlayPanel
 				.build());
 		}
 
-		nextChange = plugin.getChangeUpTicks();
+		nextChange = plugin.getDebuffRestorationTicks();
 		if (nextChange != -1)
 		{
 			panelComponent.getChildren().add(LineComponent.builder()
