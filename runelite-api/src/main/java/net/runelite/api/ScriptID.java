@@ -462,6 +462,32 @@ public final class ScriptID
 	@ScriptArguments(integer = 2)
 	public static final int MOTHERLODE_HUD_UPDATE = 1634;
 
+	/**
+	 * Transmits the non-combat buff drain timer.
+	 * This timer is in 100 tick cycles (up to 150 with preserve active), and is transmitted every section (25 ticks).
+	 * When not buffed, the value will keep looping the first section, e.g. with preserve disabled: 100, 100, 100.
+	 * The timer does start ticking when only a combat buff is applied, but does NOT start ticking when the player
+	 * is only debuffed.
+	 * The preserve boost of 50 ticks gets applied to the var value when preserve has been active for a full section of
+	 * 25 ticks. Since the var is transmitted every 25 ticks, this results in a difference of +25 ticks compared to the
+	 * previous transmission, or starting the cycle at 150 ticks.
+	 * When preserve is disabled, the var value is immediately updated at the next transmission (start of next section).
+	 * If there are less than 75 ticks left, the remaining ticks will be removed at the next transmission, thus ending
+	 * the cycle and draining the buffed stat. Since the var is transmitted every 25 ticks, deactivating preserve
+	 * results in a difference of -75 ticks, or starting the next cycle at 100 ticks.
+	 */
+	@ScriptArguments(integer = 2)
+	public static final int NON_CB_BUFF_DRAIN_TIMER_TRANSMIT = 4518;
+
+	/**
+	 * Transmits the debuff restoration timer.
+	 * Combat and non-combat debuff restoration timers are not split. This timer is always in 100 tick cycles, and is
+	 * transmitted every 25 game ticks.
+	 * The timer keeps ticking while not debuffed, i.e. it does not reset from 75 to 100 ticks when not debuffed.
+	 */
+	@ScriptArguments(integer = 3)
+	public static final int DEBUFF_RESTORATION_BOOST_TIMER_TRANSMIT = 4517;
+
 	@ScriptArguments(integer = 1)
 	public static final int POTIONSTORE_DOSES = 3750;
 

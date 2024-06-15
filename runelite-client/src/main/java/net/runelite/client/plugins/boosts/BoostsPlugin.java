@@ -35,12 +35,17 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
+import net.runelite.api.GameState;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
 import net.runelite.api.Prayer;
+import net.runelite.api.ScriptID;
 import net.runelite.api.Skill;
+import net.runelite.api.Varbits;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.StatChanged;
+import net.runelite.api.events.VarbitChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.Notification;
@@ -108,12 +113,17 @@ public class BoostsPlugin extends Plugin
 
 	private final Set<Skill> shownSkills = EnumSet.noneOf(Skill.class);
 
-	private boolean isChangedDown = false;
-	private boolean isChangedUp = false;
+	private boolean isCbBuffed;
+	private boolean isNonCbBuffed;
+	private boolean isDebuffed;
 	private final int[] lastSkillLevels = new int[Skill.values().length];
-	private int lastChangeDown = -1;
-	private int lastChangeUp = -1;
-	private boolean preserveBeenActive = false;
+	private int lastNonCbBuffDrainUpdate = -1;
+	private int nonCbBuffDrainBase = -1;
+	private int previousNonCbBuffDrainBase = -1;
+	private boolean preserveBoostApplied;
+	private int lastDebuffRestorationUpdate = -1;
+	private int debuffRestorationBase = -1;
+	private boolean preserveBeenActive;
 	private long lastTickNanoTime;
 
 	@Provides
@@ -155,24 +165,17 @@ public class BoostsPlugin extends Plugin
 		overlayManager.remove(boostsOverlay);
 		overlayManager.remove(compactBoostsOverlay);
 		infoBoxManager.removeIf(t -> t instanceof BoostIndicator || t instanceof StatChangeIndicator);
-		preserveBeenActive = false;
-		lastChangeDown = -1;
-		lastChangeUp = -1;
-		isChangedUp = false;
-		isChangedDown = false;
+		reset();
 		skillsToDisplay.clear();
 	}
 
 	@Subscribe
 	public void onGameStateChanged(GameStateChanged event)
 	{
-		switch (event.getGameState())
+		if (event.getGameState() == GameState.LOGIN_SCREEN || event.getGameState() == GameState.HOPPING)
 		{
-			case LOGIN_SCREEN:
-			case HOPPING:
-				// After world hop and log out timers are in undefined state so just reset
-				lastChangeDown = -1;
-				lastChangeUp = -1;
+			// After world hop and log out timers are in undefined state so just reset
+			reset();
 		}
 	}
 
@@ -203,55 +206,40 @@ public class BoostsPlugin extends Plugin
 		}
 
 		updateShownSkills();
-
-		if (config.displayNextBuffChange() == BoostsConfig.DisplayChangeMode.NEVER)
-		{
-			lastChangeDown = -1;
-		}
-
-		if (config.displayNextDebuffChange() == BoostsConfig.DisplayChangeMode.NEVER)
-		{
-			lastChangeUp = -1;
-		}
 	}
 
 	@Subscribe
 	public void onStatChanged(StatChanged statChanged)
 	{
-		Skill skill = statChanged.getSkill();
+		final Skill skill = statChanged.getSkill();
 
 		if (!BOOSTABLE_COMBAT_SKILLS.contains(skill) && !BOOSTABLE_NON_COMBAT_SKILLS.contains(skill))
 		{
 			return;
 		}
 
-		int skillIdx = skill.ordinal();
-		int last = lastSkillLevels[skillIdx];
-		int cur = client.getBoostedSkillLevel(skill);
-
-		if (cur == last - 1)
-		{
-			// Stat was restored down (from buff)
-			lastChangeDown = client.getTickCount();
-		}
-
-		if (cur == last + 1)
-		{
-			// Stat was restored up (from debuff)
-			lastChangeUp = client.getTickCount();
-		}
+		final int skillIdx = skill.ordinal();
+		final int last = lastSkillLevels[skillIdx];
+		final int cur = client.getBoostedSkillLevel(skill);
+		final boolean wasBuffed = isCbBuffed || isNonCbBuffed;
 
 		lastSkillLevels[skillIdx] = cur;
 		updateBoostedStats();
 
-		int boostThreshold = config.boostThreshold();
+		final int boostThreshold = config.boostThreshold();
 
-		int real = client.getRealSkillLevel(skill);
-		int lastBoost = last - real;
-		int boost = cur - real;
+		final int real = client.getRealSkillLevel(skill);
+		final int lastBoost = last - real;
+		final int boost = cur - real;
 		if (boost <= boostThreshold && boostThreshold < lastBoost)
 		{
 			notifier.notify(config.notifyOnBoost(), skill.getName() + " level is getting low!");
+		}
+
+		// reset non-cb buff drain timer to unbuffed state since var is transmitted every 25 gameticks
+		if (wasBuffed && !isCbBuffed && !isNonCbBuffed)
+		{
+			nonCbBuffDrainBase = client.isPrayerActive(Prayer.PRESERVE) ? 150 : 100;
 		}
 	}
 
@@ -259,40 +247,68 @@ public class BoostsPlugin extends Plugin
 	public void onGameTick(GameTick event)
 	{
 		lastTickNanoTime = System.nanoTime();
+	}
 
-		if (getChangeUpTicks() <= 0)
+	@Subscribe
+	public void onScriptPreFired(ScriptPreFired scriptPreFired)
+	{
+		final int scriptId = scriptPreFired.getScriptId();
+
+		if (scriptId == ScriptID.NON_CB_BUFF_DRAIN_TIMER_TRANSMIT)
 		{
-			switch (config.displayNextDebuffChange())
-			{
-				case ALWAYS:
-					if (lastChangeUp != -1)
-					{
-						lastChangeUp = client.getTickCount();
-					}
+			final Object[] scriptArguments = scriptPreFired.getScriptEvent().getArguments();
+			nonCbBuffDrainBase = (int) scriptArguments[scriptArguments.length - 1];
+			lastNonCbBuffDrainUpdate = client.getTickCount();
 
-					break;
-				case BOOSTED:
-				case NEVER:
-					lastChangeUp = -1;
-					break;
+			// detect if the preserve boost has been applied to the var value or not
+			if (previousNonCbBuffDrainBase != -1)
+			{
+				final int diff = nonCbBuffDrainBase - previousNonCbBuffDrainBase;
+				// A var value change of 75 -> 100 is problematic. This could be preserve being deactivated at
+				// 75-50 ticks, preserve being activated at 100-75 ticks, or with preserve disabled when not
+				// buffed. Thus, check if the preserve boost hasn't been applied yet and if a skill is buffed.
+				if (nonCbBuffDrainBase > 100 || (diff == 25 && !preserveBoostApplied && (isCbBuffed || isNonCbBuffed)))
+				{
+					preserveBoostApplied = true;
+				}
+				else if ((previousNonCbBuffDrainBase < 100 && nonCbBuffDrainBase == 100) || diff == -75)
+				{
+					preserveBoostApplied = false;
+				}
+			}
+
+			previousNonCbBuffDrainBase = nonCbBuffDrainBase;
+
+			// A section always starts with at least 25 ticks left of the cycle, so there is no need to check if
+			// preserve can be active for a whole section before the next cycle starts.
+			if (client.isPrayerActive(Prayer.PRESERVE) && !preserveBoostApplied)
+			{
+				nonCbBuffDrainBase += 50;
 			}
 		}
 
-		if (getChangeDownTicks() <= 0)
+		if (scriptId == ScriptID.DEBUFF_RESTORATION_BOOST_TIMER_TRANSMIT)
 		{
-			switch (config.displayNextBuffChange())
-			{
-				case ALWAYS:
-					if (lastChangeDown != -1)
-					{
-						lastChangeDown = client.getTickCount();
-					}
+			final Object[] scriptArguments = scriptPreFired.getScriptEvent().getArguments();
+			debuffRestorationBase = (int) scriptArguments[scriptArguments.length - 1];
+			lastDebuffRestorationUpdate = client.getTickCount();
+		}
+	}
 
-					break;
-				case BOOSTED:
-				case NEVER:
-					lastChangeDown = -1;
-					break;
+	@Subscribe
+	public void onVarbitChanged(VarbitChanged varbitChanged)
+	{
+		if (varbitChanged.getVarbitId() == Varbits.PRAYER_PRESERVE)
+		{
+			if (varbitChanged.getValue() == 0)
+			{
+				nonCbBuffDrainBase = Math.max(25, nonCbBuffDrainBase - 50);
+			}
+			// Check if preserve can be active for the final section.
+			// At this point, preserveBoostApplied is always false.
+			else if (nonCbBuffDrainBase > 25)
+			{
+				nonCbBuffDrainBase += 50;
 			}
 		}
 	}
@@ -324,8 +340,9 @@ public class BoostsPlugin extends Plugin
 	private void updateBoostedStats()
 	{
 		// Reset is boosted
-		isChangedDown = false;
-		isChangedUp = false;
+		isCbBuffed = false;
+		isNonCbBuffed = false;
+		isDebuffed = false;
 		skillsToDisplay.clear();
 
 		// Check if we are still boosted
@@ -341,11 +358,18 @@ public class BoostsPlugin extends Plugin
 
 			if (boosted > base)
 			{
-				isChangedUp = true;
+				if (BOOSTABLE_COMBAT_SKILLS.contains(skill))
+				{
+					isCbBuffed = true;
+				}
+				else if (BOOSTABLE_NON_COMBAT_SKILLS.contains(skill))
+				{
+					isNonCbBuffed = true;
+				}
 			}
 			else if (boosted < base)
 			{
-				isChangedDown = true;
+				isDebuffed = true;
 			}
 
 			if (boosted != base)
@@ -355,60 +379,44 @@ public class BoostsPlugin extends Plugin
 		}
 	}
 
-	/**
-	 * Calculates the amount of time until boosted stats decay,
-	 * accounting for the effect of preserve prayer.
-	 * Preserve extends the time of boosted stats by 50% while active.
-	 * The length of a boost is split into 4 sections of 15 seconds each.
-	 * If the preserve prayer is active for the entire duration of the final
-	 * section it will "activate" adding an additional 15 second section
-	 * to the boost timing. If again the preserve prayer is active for that
-	 * entire section a second 15 second section will be added.
-	 *
-	 * Preserve is only required to be on for the 4th and 5th sections of the boost timer
-	 * to gain full effect (seconds 45-75).
-	 *
-	 * @return integer value in ticks until next boost change
-	 */
-	int getChangeDownTicks()
+	private void reset()
 	{
-		if (lastChangeDown == -1 ||
-				config.displayNextBuffChange() == BoostsConfig.DisplayChangeMode.NEVER ||
-				(config.displayNextBuffChange() == BoostsConfig.DisplayChangeMode.BOOSTED && !isChangedUp))
-		{
-			return -1;
-		}
-
-		int ticksSinceChange = client.getTickCount() - lastChangeDown;
-		boolean isPreserveActive = client.isPrayerActive(Prayer.PRESERVE);
-
-		if ((isPreserveActive && (ticksSinceChange < 75 || preserveBeenActive)) || ticksSinceChange > 125)
-		{
-			preserveBeenActive = true;
-			return 150 - ticksSinceChange;
-		}
-
 		preserveBeenActive = false;
-		return (ticksSinceChange > 100) ? 125 - ticksSinceChange : 100 - ticksSinceChange;
+		lastNonCbBuffDrainUpdate = -1;
+		nonCbBuffDrainBase = -1;
+		previousNonCbBuffDrainBase = -1;
+		preserveBoostApplied = false;
+		lastDebuffRestorationUpdate = -1;
+		debuffRestorationBase = -1;
+		isCbBuffed = false;
+		isNonCbBuffed = false;
+		isDebuffed = false;
 	}
 
-	/**
-	 * Restoration from debuff is separate timer as restoration from buff because of preserve messing up the buff timer.
-	 * Restoration timer is always in 100 tick cycles.
-	 *
-	 * @return integer value in ticks until next stat restoration up
-	 */
-	int getChangeUpTicks()
+	int getNonCbBuffDrainTicks()
 	{
-		if (lastChangeUp == -1 ||
-				config.displayNextDebuffChange() == BoostsConfig.DisplayChangeMode.NEVER ||
-				(config.displayNextDebuffChange() == BoostsConfig.DisplayChangeMode.BOOSTED && !isChangedDown))
+		if (lastNonCbBuffDrainUpdate == -1 ||
+			config.displayNextBuffChange() == BoostsConfig.DisplayChangeMode.NEVER ||
+			(!isNonCbBuffed && config.displayNextBuffChange() == BoostsConfig.DisplayChangeMode.BOOSTED))
 		{
 			return -1;
 		}
 
-		int ticksSinceChange = client.getTickCount() - lastChangeUp;
-		return 100 - ticksSinceChange;
+		final int ticksSinceChange = client.getTickCount() - lastNonCbBuffDrainUpdate;
+		return nonCbBuffDrainBase - ticksSinceChange;
+	}
+
+	int getDebuffRestorationTicks()
+	{
+		if (lastDebuffRestorationUpdate == -1 ||
+			config.displayNextDebuffChange() == BoostsConfig.DisplayChangeMode.NEVER ||
+			(!isDebuffed && config.displayNextDebuffChange() == BoostsConfig.DisplayChangeMode.BOOSTED))
+		{
+			return -1;
+		}
+
+		final int ticksSinceChange = client.getTickCount() - lastDebuffRestorationUpdate;
+		return debuffRestorationBase - ticksSinceChange;
 	}
 
 	/**

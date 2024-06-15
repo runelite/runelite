@@ -98,7 +98,7 @@ class CompactBoostsOverlay extends Overlay
 				getBoostText(boost, base, boosted));
 		}
 
-		int time = plugin.getChangeUpTicks();
+		int time = plugin.getDebuffRestorationTicks();
 		if (time != -1)
 		{
 			drawBoost(graphics, fontMetrics, fontHeight,
@@ -107,7 +107,7 @@ class CompactBoostsOverlay extends Overlay
 				Integer.toString(plugin.getChangeTime(time)));
 		}
 
-		time = plugin.getChangeDownTicks();
+		time = plugin.getNonCbBuffDrainTicks();
 		if (time != -1)
 		{
 			drawBoost(graphics, fontMetrics, fontHeight,
