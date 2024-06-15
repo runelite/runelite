@@ -217,4 +217,15 @@ public interface GpuPluginConfig extends Config
 	{
 		return 60;
 	}
+
+	@ConfigItem(
+		keyName = "removeVertexSnapping",
+		name = "Remove vertex snapping",
+		description = "Removes vertex snapping from most animations",
+		position = 13
+	)
+	default boolean removeVertexSnapping()
+	{
+		return true;
+	}
 }
