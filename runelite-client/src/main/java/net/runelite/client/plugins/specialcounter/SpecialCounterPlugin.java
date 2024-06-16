@@ -512,7 +512,7 @@ public class SpecialCounterPlugin extends Plugin
 
 	private void updateCounter(SpecialWeapon specialWeapon, String name, int hit, float defenceDrain)
 	{
-		if (defenceDrain > 0)
+		if (defenceDrain > 0 && config.defenceDrainInfobox())
 		{
 			if (percentageInfobox == null)
 			{

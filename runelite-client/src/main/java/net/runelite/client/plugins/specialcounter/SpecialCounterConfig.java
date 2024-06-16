@@ -59,7 +59,7 @@ public interface SpecialCounterConfig extends Config
 	@ConfigItem(
 		position = 1,
 		keyName = "specDropMisses",
-		name = "Spec Drops Misses",
+		name = "Spec Drop Misses",
 		description = "Draws an overlay over the player when a special attack misses"
 	)
 	default boolean specDropMisses()
@@ -85,6 +85,17 @@ public interface SpecialCounterConfig extends Config
 		description = "Adds an infobox counting special attacks"
 	)
 	default boolean infobox()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		position = 3,
+		keyName = "defenceDrainInfobox",
+		name = "Show defence drain infobox",
+		description = "If infoboxes are enabled, adds a defence drain percentage infobox for Dragon warhammer and Elder maul"
+	)
+	default boolean defenceDrainInfobox()
 	{
 		return true;
 	}
