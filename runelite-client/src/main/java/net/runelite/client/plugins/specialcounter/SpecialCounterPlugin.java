@@ -450,6 +450,8 @@ public class SpecialCounterPlugin extends Plugin
 		clientThread.invoke(() ->
 		{
 			NPC target = client.getCachedNPCs()[event.getNpcIndex()];
+			SpecialWeapon specialWeapon = event.getWeapon();
+			int counterHit = specialWeapon.isDamage() ? specialWeapon.computeHit(event.getHit(), target) : Math.min(event.getHit(), 1);
 			float defenceDrain = event.getWeapon().computeDrainPercent(event.getHit(), target);
 
 			// If not interacting with any npcs currently, add to interacting list
@@ -463,13 +465,13 @@ public class SpecialCounterPlugin extends Plugin
 			{
 				if (config.infobox())
 				{
-					updateCounter(event.getWeapon(), name, event.getHit(), defenceDrain);
+					updateCounter(event.getWeapon(), name, counterHit, defenceDrain);
 				}
 			}
 
-			if (event.getHit() > 0 || defenceDrain > 0 || config.specDropMisses())
+			if (counterHit > 0 || defenceDrain > 0 || config.specDropMisses())
 			{
-				playerInfoDrops.add(createSpecInfoDrop(event.getWeapon(), event.getHit(), event.getPlayerId()));
+				playerInfoDrops.add(createSpecInfoDrop(event.getWeapon(), counterHit, event.getPlayerId()));
 			}
 		});
 	}
