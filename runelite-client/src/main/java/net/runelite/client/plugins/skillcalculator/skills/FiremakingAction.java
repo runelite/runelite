@@ -60,7 +60,7 @@ public enum FiremakingAction implements ItemSkillAction
 	MAGIC_LOGS(ItemID.MAGIC_LOGS, 75, 303.8f, FiremakingMethod.NORMAL_LOGS),
 	MAGIC_PYRE_LOGS(ItemID.MAGIC_PYRE_LOGS, 80, 404.5f, FiremakingMethod.PYRE_LOGS),
 	REDWOOD_LOGS(ItemID.REDWOOD_LOGS, 90, 350, FiremakingMethod.NORMAL_LOGS),
-	REDWOOD_PYRE_LOGS(ItemID.REDWOOD_LOGS, 95, 500, FiremakingMethod.PYRE_LOGS),
+	REDWOOD_PYRE_LOGS(ItemID.REDWOOD_PYRE_LOGS, 95, 500, FiremakingMethod.PYRE_LOGS),
 	;
 
 	private final int itemId;
