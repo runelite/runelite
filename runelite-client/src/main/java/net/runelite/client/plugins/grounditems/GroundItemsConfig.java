@@ -186,7 +186,7 @@ public interface GroundItemsConfig extends Config
 	)
 	default PriceDisplayMode priceDisplayMode()
 	{
-		return PriceDisplayMode.BOTH;
+		return PriceDisplayMode.GE;
 	}
 
 	@ConfigItem(
