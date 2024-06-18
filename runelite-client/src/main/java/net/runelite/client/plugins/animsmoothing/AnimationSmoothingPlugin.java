@@ -25,6 +25,7 @@
 package net.runelite.client.plugins.animsmoothing;
 
 import javax.inject.Inject;
+import net.runelite.api.AnimationID;
 import net.runelite.api.Client;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -54,6 +55,33 @@ public class AnimationSmoothingPlugin extends Plugin
 
 	private void update()
 	{
-		client.setAnimationInterpolationFilter(i -> true);
+		client.setAnimationInterpolationFilter(AnimationSmoothingPlugin::isAnimationInterpolatable);
+	}
+
+	private static boolean isAnimationInterpolatable(int animId)
+	{
+		switch (animId)
+		{
+			case AnimationID.HELLHOUND_DEFENCE:
+
+			case AnimationID.WYRM_IDLE_DORMANT:
+			case AnimationID.WYRM_IDLE_ACTIVE:
+			case AnimationID.WYRM_ATTACK_MELEE:
+			case AnimationID.WYRM_ATTACK_MAGE:
+
+			case AnimationID.TREE_SPIRIT_IDLE:
+			case AnimationID.TREE_SPIRIT_WALK:
+
+			case AnimationID.SIGN_HOLDING_ZOMBIE_PROTESTOR_WALK:
+
+			case AnimationID.VIGGORAS_CHAINMACE_IDLE:
+
+			case AnimationID.MLM_WATER_WHEEL_SPINNING:
+			case AnimationID.GIANTS_FOUNDRY_WATER_WHEEL_SPINNING:
+				return false;
+
+			default:
+				return true;
+		}
 	}
 }
