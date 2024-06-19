@@ -27,6 +27,7 @@ package net.runelite.client.plugins.grandexchange;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Notification;
 
 @ConfigGroup(GrandExchangeConfig.CONFIG_GROUP)
 public interface GrandExchangeConfig extends Config
@@ -50,9 +51,9 @@ public interface GrandExchangeConfig extends Config
 		name = "Notify on offer update",
 		description = "Configures whether to enable notifications when an offer updates"
 	)
-	default boolean enableNotifications()
+	default Notification enableNotifications()
 	{
-		return true;
+		return Notification.ON;
 	}
 
 	@ConfigItem(
@@ -61,9 +62,9 @@ public interface GrandExchangeConfig extends Config
 		name = "Notify on offer complete",
 		description = "Configures whether to enable notifications when an offer completes"
 	)
-	default boolean notifyOnOfferComplete()
+	default Notification notifyOnOfferComplete()
 	{
-		return false;
+		return Notification.OFF;
 	}
 
 	@ConfigItem(

@@ -29,6 +29,7 @@ import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Notification;
 
 @ConfigGroup("specialcounter")
 public interface SpecialCounterConfig extends Config
@@ -39,9 +40,9 @@ public interface SpecialCounterConfig extends Config
 		name = "Threshold Notifications",
 		description = "Sends a notification when your special attack counter exceeds the threshold"
 	)
-	default boolean thresholdNotification()
+	default Notification thresholdNotification()
 	{
-		return false;
+		return Notification.OFF;
 	}
 
 	@ConfigItem(
@@ -53,6 +54,17 @@ public interface SpecialCounterConfig extends Config
 	default boolean specDrops()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		position = 1,
+		keyName = "specDropMisses",
+		name = "Spec Drop Misses",
+		description = "Draws an overlay over the player when a special attack misses"
+	)
+	default boolean specDropMisses()
+	{
+		return false;
 	}
 
 	@ConfigItem(
@@ -78,12 +90,34 @@ public interface SpecialCounterConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 3,
+		keyName = "defenceDrainInfobox",
+		name = "Show defence drain infobox",
+		description = "If infoboxes are enabled, adds a defence drain percentage infobox for Dragon warhammer and Elder maul"
+	)
+	default boolean defenceDrainInfobox()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		position = 10,
 		keyName = "dragonWarhammerThreshold",
 		name = "Dragon Warhammer",
 		description = "Threshold for Dragon Warhammer (0 to disable)"
 	)
 	default int dragonWarhammerThreshold()
+	{
+		return 0;
+	}
+
+	@ConfigItem(
+		position = 15,
+		keyName = "elderMaulThreshold",
+		name = "Elder Maul",
+		description = "Threshold for Elder Maul (0 to disable)"
+	)
+	default int elderMaulThreshold()
 	{
 		return 0;
 	}

@@ -35,6 +35,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -53,7 +54,6 @@ import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ItemDespawned;
-import net.runelite.api.events.ItemQuantityChanged;
 import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcDespawned;
@@ -74,7 +74,7 @@ public class LootManager
 	private final EventBus eventBus;
 	private final Client client;
 	private final NpcUtil npcUtil;
-	private final ListMultimap<Integer, ItemStack> itemSpawns = ArrayListMultimap.create();
+	private final ListMultimap<Integer, TileItem> itemSpawns = ArrayListMultimap.create();
 	private final Set<WorldPoint> killPoints = new HashSet<>();
 	private WorldPoint playerLocationLastTick;
 	private WorldPoint krakenPlayerLocation;
@@ -161,7 +161,9 @@ public class LootManager
 		final int x = location.getSceneX();
 		final int y = location.getSceneY();
 		final int packed = x << 8 | y;
-		final Collection<ItemStack> items = itemSpawns.get(packed);
+		final Collection<ItemStack> items = itemSpawns.get(packed).stream()
+			.map(i -> new ItemStack(i.getId(), i.getQuantity()))
+			.collect(Collectors.toList());
 
 		if (items.isEmpty())
 		{
@@ -179,7 +181,7 @@ public class LootManager
 		final Tile tile = itemSpawned.getTile();
 		final LocalPoint location = tile.getLocalLocation();
 		final int packed = location.getSceneX() << 8 | location.getSceneY();
-		itemSpawns.put(packed, new ItemStack(item.getId(), item.getQuantity(), location));
+		itemSpawns.put(packed, item);
 		log.debug("Item spawn {} ({}) location {}", item.getId(), item.getQuantity(), location);
 	}
 
@@ -189,23 +191,6 @@ public class LootManager
 		final TileItem item = itemDespawned.getItem();
 		final LocalPoint location = itemDespawned.getTile().getLocalLocation();
 		log.debug("Item despawn {} ({}) location {}", item.getId(), item.getQuantity(), location);
-	}
-
-	@Subscribe
-	public void onItemQuantityChanged(ItemQuantityChanged itemQuantityChanged)
-	{
-		final TileItem item = itemQuantityChanged.getItem();
-		final Tile tile = itemQuantityChanged.getTile();
-		final LocalPoint location = tile.getLocalLocation();
-		final int packed = location.getSceneX() << 8 | location.getSceneY();
-		final int diff = itemQuantityChanged.getNewQuantity() - itemQuantityChanged.getOldQuantity();
-
-		if (diff <= 0)
-		{
-			return;
-		}
-
-		itemSpawns.put(packed, new ItemStack(item.getId(), diff, location));
 	}
 
 	@Subscribe
@@ -334,8 +319,8 @@ public class LootManager
 					}
 
 					final int packed = (x + i) << 8 | (y + j);
-					final Collection<ItemStack> items = itemSpawns.get(packed);
-					allItems.addAll(items);
+					final Collection<TileItem> items = itemSpawns.get(packed);
+					items.forEach(item -> allItems.add(new ItemStack(item.getId(), item.getQuantity())));
 				}
 			}
 		}
@@ -356,7 +341,7 @@ public class LootManager
 			case NpcID.ZULRAH:      // Green
 			case NpcID.ZULRAH_2043: // Red
 			case NpcID.ZULRAH_2044: // Blue
-				for (Map.Entry<Integer, ItemStack> entry : itemSpawns.entries())
+				for (Map.Entry<Integer, TileItem> entry : itemSpawns.entries())
 				{
 					if (entry.getValue().getId() == ItemID.ZULRAHS_SCALES)
 					{
@@ -503,8 +488,10 @@ public class LootManager
 		final int sceneX = localPoint.getSceneX();
 		final int sceneY = localPoint.getSceneY();
 		final int packed = sceneX << 8 | sceneY;
-		final List<ItemStack> itemStacks = itemSpawns.get(packed);
-		return Collections.unmodifiableList(itemStacks);
+		final List<TileItem> itemStacks = itemSpawns.get(packed);
+		return itemStacks.stream()
+			.map(ti -> new ItemStack(ti.getId(), ti.getQuantity()))
+			.collect(Collectors.toList());
 	}
 
 	private void clearDelayedLootNpc()

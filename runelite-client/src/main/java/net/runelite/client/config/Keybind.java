@@ -125,9 +125,16 @@ public class Keybind
 			keyCode = KeyEvent.VK_UNDEFINED;
 		}
 
-		if (e.getID() == KeyEvent.KEY_RELEASED && keyCode != KeyEvent.VK_UNDEFINED)
+		if (e.getID() == KeyEvent.KEY_RELEASED)
 		{
-			return this.keyCode == keyCode;
+			if (keyCode != KeyEvent.VK_UNDEFINED)
+			{
+				return this.keyCode == keyCode;
+			}
+			else if (mf != null)
+			{
+				return this.keyCode == keyCode && (this.modifiers & modifiers) == this.modifiers && ((mf & this.modifiers) == mf);
+			}
 		}
 
 		if (ignoreModifiers && keyCode != KeyEvent.VK_UNDEFINED)

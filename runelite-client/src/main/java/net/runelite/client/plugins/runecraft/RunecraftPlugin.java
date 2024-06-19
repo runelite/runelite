@@ -130,12 +130,9 @@ public class RunecraftPlugin extends Plugin
 			return;
 		}
 
-		if (config.degradingNotification())
+		if (event.getMessage().contains(POUCH_DECAYED_MESSAGE))
 		{
-			if (event.getMessage().contains(POUCH_DECAYED_MESSAGE))
-			{
-				notifier.notify(POUCH_DECAYED_NOTIFICATION_MESSAGE);
-			}
+			notifier.notify(config.degradingNotification(), POUCH_DECAYED_NOTIFICATION_MESSAGE);
 		}
 	}
 

@@ -90,7 +90,7 @@ public class FaladorDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.SLAYER, 72));
 		add("Complete a lap of the Falador rooftop agility course.",
 			new SkillRequirement(Skill.AGILITY, 50));
-		add("Enter the mining guild wearing full prospector.",
+		add("Enter the mining guild wearing a Prospector helmet.",
 			new SkillRequirement(Skill.MINING, 60));
 		add("Kill the Blue Dragon under the Heroes' Guild.",
 			new QuestRequirement(Quest.HEROES_QUEST));

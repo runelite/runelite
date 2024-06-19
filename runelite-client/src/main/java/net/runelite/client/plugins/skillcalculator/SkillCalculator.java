@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.skillcalculator;
 
+import com.google.common.annotations.VisibleForTesting;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -36,7 +37,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
@@ -84,7 +89,7 @@ class SkillCalculator extends JPanel
 	private final List<UIActionSlot> uiActionSlots = new ArrayList<>();
 	private final UICombinedActionSlot combinedActionSlot;
 	private final ArrayList<UIActionSlot> combinedActionSlots = new ArrayList<>();
-	private final List<JCheckBox> bonusCheckBoxes = new ArrayList<>();
+	private final Map<SkillBonus, JCheckBox> bonusCheckBoxes = new HashMap<>();
 	private final IconTextField searchBar = new IconTextField();
 
 	private CalculatorType currentCalculator;
@@ -92,7 +97,7 @@ class SkillCalculator extends JPanel
 	private int currentXP = Experience.getXpForLevel(currentLevel);
 	private int targetLevel = currentLevel + 1;
 	private int targetXP = Experience.getXpForLevel(targetLevel);
-	private SkillBonus currentBonus = null;
+	private final Set<SkillBonus> currentBonuses = new HashSet<>();
 
 	@Inject
 	SkillCalculator(Client client, ClientThread clientThread, UICalculatorInputArea uiInput, SpriteManager spriteManager, ItemManager itemManager)
@@ -153,7 +158,7 @@ class SkillCalculator extends JPanel
 		if (forceReload || currentCalculator != calculatorType)
 		{
 			currentCalculator = calculatorType;
-			currentBonus = null;
+			currentBonuses.clear();
 
 			@Varp int endGoalVarp = endGoalVarpForSkill(calculatorType.getSkill());
 			int endGoal = client.getVarpValue(endGoalVarp);
@@ -268,7 +273,7 @@ class SkillCalculator extends JPanel
 	private JPanel buildCheckboxPanel(SkillBonus bonus)
 	{
 		JPanel uiOption = new JPanel(new BorderLayout());
-		JLabel uiLabel = new JLabel(bonus.getName());
+		JLabel uiLabel = new JLabel(generateDisplayNameForBonus(bonus));
 		JCheckBox uiCheckbox = new JCheckBox();
 
 		uiLabel.setForeground(Color.WHITE);
@@ -281,22 +286,54 @@ class SkillCalculator extends JPanel
 
 		uiOption.add(uiLabel, BorderLayout.WEST);
 		uiOption.add(uiCheckbox, BorderLayout.EAST);
-		bonusCheckBoxes.add(uiCheckbox);
+		bonusCheckBoxes.put(bonus, uiCheckbox);
 
 		return uiOption;
 	}
 
+	private static String generateDisplayNameForBonus(SkillBonus bonus)
+	{
+		return bonus.getName() + " (" + formatBonusPercentage(bonus.getValue()) + "%)";
+	}
+
+	@VisibleForTesting
+	static String formatBonusPercentage(float bonus)
+	{
+		final int bonusValue = Math.round(10_000 * bonus);
+		final float bonusPercent = bonusValue / 100f;
+		final int bonusPercentInt = (int) bonusPercent;
+
+		if (bonusPercent == bonusPercentInt)
+		{
+			return String.valueOf(bonusPercentInt);
+		}
+		else
+		{
+			return String.valueOf(bonusPercent);
+		}
+	}
+
 	private void adjustCheckboxes(JCheckBox target, SkillBonus bonus)
 	{
-		for (JCheckBox otherSelectedCheckbox : bonusCheckBoxes)
+		// Check if target is stackable with any other bonuses
+		for (Map.Entry<SkillBonus, JCheckBox> entry : bonusCheckBoxes.entrySet())
 		{
-			if (otherSelectedCheckbox != target)
+			if (entry.getValue() != target && !entry.getKey().getCanBeStackedWith().contains(bonus))
 			{
-				otherSelectedCheckbox.setSelected(false);
+				currentBonuses.remove(entry.getKey());
+				entry.getValue().setSelected(false);
 			}
 		}
 
-		adjustXPBonus(target.isSelected() ? bonus : null);
+		if (target.isSelected())
+		{
+			currentBonuses.add(bonus);
+		}
+		else
+		{
+			currentBonuses.remove(bonus);
+		}
+		calculate();
 	}
 
 	private void renderActionSlots()
@@ -387,11 +424,14 @@ class SkillCalculator extends JPanel
 			int neededXP = targetXP - currentXP;
 			SkillAction action = slot.getAction();
 			float bonus = 1f;
-			if (currentBonus != null && action.isBonusApplicable(currentBonus))
+			for (SkillBonus skillBonus : currentBonuses)
 			{
-				bonus = currentBonus.getValue();
+				if (action.isBonusApplicable(skillBonus))
+				{
+					bonus *= skillBonus.getValue();
+				}
 			}
-			final int xp = Math.round(action.getXp() * bonus * 10f);
+			final int xp = (int) Math.floor(action.getXp() * 10f * bonus);
 
 			if (neededXP > 0)
 			{
@@ -431,12 +471,6 @@ class SkillCalculator extends JPanel
 		uiInput.setTargetLevelInput(targetLevel);
 		uiInput.setTargetXPInput(tXP);
 		uiInput.setNeededXP(nXP + " XP required to reach target XP");
-		calculate();
-	}
-
-	private void adjustXPBonus(SkillBonus bonus)
-	{
-		currentBonus = bonus;
 		calculate();
 	}
 

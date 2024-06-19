@@ -608,7 +608,7 @@ public class PartyPlugin extends Plugin
 	@Subscribe
 	public void onCommandExecuted(CommandExecuted commandExecuted)
 	{
-		if (!developerMode || !commandExecuted.getCommand().equals("partyinfo"))
+		if (!developerMode || !commandExecuted.getCommand().equalsIgnoreCase("partyinfo"))
 		{
 			return;
 		}

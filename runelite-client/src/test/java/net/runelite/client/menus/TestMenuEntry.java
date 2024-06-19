@@ -27,6 +27,7 @@ package net.runelite.client.menus;
 import java.util.function.Consumer;
 import javax.annotation.Nullable;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Actor;
 import net.runelite.api.MenuAction;
@@ -53,6 +54,9 @@ public class TestMenuEntry implements MenuEntry
 	private Widget widget;
 	@Setter
 	private Actor actor;
+	@Getter
+	@Setter
+	private int worldViewId;
 
 	@Override
 	public String getOption()
@@ -90,6 +94,13 @@ public class TestMenuEntry implements MenuEntry
 	public MenuEntry setIdentifier(int identifier)
 	{
 		this.identifier = identifier;
+		return this;
+	}
+
+	@Override
+	public MenuEntry setWorldViewId(int wvId)
+	{
+		this.worldViewId = wvId;
 		return this;
 	}
 

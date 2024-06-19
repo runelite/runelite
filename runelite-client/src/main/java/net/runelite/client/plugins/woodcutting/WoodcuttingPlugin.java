@@ -263,11 +263,11 @@ public class WoodcuttingPlugin extends Plugin
 			session.incrementBark(num);
 		}
 
-		if (msg.contains("A bird's nest falls out of the tree") && config.showNestNotification())
+		if (msg.contains("A bird's nest falls out of the tree"))
 		{
 			if (clueTierSpawned == null || clueTierSpawned.ordinal() >= config.clueNestNotifyTier().ordinal())
 			{
-				notifier.notify("A bird nest has spawned!");
+				notifier.notify(config.showNestNotification(), "A bird nest has spawned!");
 			}
 			// Clear the clue tier that has previously spawned
 			clueTierSpawned = null;
@@ -340,9 +340,9 @@ public class WoodcuttingPlugin extends Plugin
 
 			case ObjectID.TREE_ROOTS:
 			case ObjectID.ANIMAINFUSED_TREE_ROOTS:
-				if (roots.isEmpty() && config.forestryRisingRootsNotification())
+				if (roots.isEmpty())
 				{
-					notifier.notify("A Rising Roots Forestry event spawned!");
+					notifier.notify(config.forestryRisingRootsNotification(), "A Rising Roots Forestry event spawned!");
 				}
 
 				roots.add(gameObject);
@@ -353,10 +353,7 @@ public class WoodcuttingPlugin extends Plugin
 			case ObjectID.STRUGGLING_SAPLING_47488:
 			case ObjectID.STRUGGLING_SAPLING_47490:
 			case ObjectID.STRUGGLING_SAPLING_47491:
-				if (config.forestryStrugglingSaplingNotification())
-				{
-					notifier.notify("A Struggling Sapling Forestry event spawned!");
-				}
+				notifier.notify(config.forestryStrugglingSaplingNotification(), "A Struggling Sapling Forestry event spawned!");
 				break;
 			case ObjectID.ROTTING_LEAVES:
 			case ObjectID.GREEN_LEAVES:
@@ -545,7 +542,7 @@ public class WoodcuttingPlugin extends Plugin
 				case NullObjectID.NULL_34637:
 				case NullObjectID.NULL_34639:
 				{
-					WorldPoint worldPoint = new WorldPoint((locCoord >>> 14) & 0x3FFF, locCoord & 0x3FFF, (locCoord >>> 28) & 0x3);
+					WorldPoint worldPoint = WorldPoint.fromCoord(locCoord);
 					GameObject gameObject = findObject(worldPoint);
 					if (gameObject == null)
 					{
@@ -641,9 +638,9 @@ public class WoodcuttingPlugin extends Plugin
 		var id = npc.getId();
 		if (isFloweringBush(id))
 		{
-			if (flowers.isEmpty() && config.forestryFloweringTreeNotification())
+			if (flowers.isEmpty())
 			{
-				notifier.notify("A Flowering Tree Forestry event spawned!");
+				notifier.notify(config.forestryFloweringTreeNotification(), "A Flowering Tree Forestry event spawned!");
 			}
 
 			flowers.add(npc);
@@ -652,9 +649,9 @@ public class WoodcuttingPlugin extends Plugin
 		{
 			notifier.notify("A Leprechaun event spawned!");
 		}
-		else if ((id == NpcID.FRIGHTENED_FOX || id == NpcID.FRIGHTENED_FOX_12560) && config.forestryPoachersNotification())
+		else if ((id == NpcID.FRIGHTENED_FOX || id == NpcID.FRIGHTENED_FOX_12560))
 		{
-			notifier.notify("A Poachers event spawned!");
+			notifier.notify(config.forestryPoachersNotification(), "A Poachers event spawned!");
 		}
 		else if (id == NpcID.FOX_TRAP)
 		{
@@ -664,17 +661,11 @@ public class WoodcuttingPlugin extends Plugin
 		{
 			freakyForester = npc;
 
-			if (config.forestryPheasantControlNotification())
-			{
-				notifier.notify("A Pheasant Control event has spawned!");
-			}
+			notifier.notify(config.forestryPheasantControlNotification(), "A Pheasant Control event has spawned!");
 		}
 		else if (id == NpcID.WILD_BEEHIVE)
 		{
-			if (config.forestryBeeHiveNotification())
-			{
-				notifier.notify("A Bee Hive event has spawned!");
-			}
+			notifier.notify(config.forestryBeeHiveNotification(), "A Bee Hive event has spawned!");
 		}
 		else if (id == NpcID.UNFINISHED_BEEHIVE || id == NpcID.UNFINISHED_BEEHIVE_12516)
 		{
@@ -686,17 +677,14 @@ public class WoodcuttingPlugin extends Plugin
 		}
 		else if (id == NpcID.DRYAD_12519)
 		{
-			if (config.forestryEnchantmentRitualNotification())
-			{
-				notifier.notify("An Enchantment Ritual event has spawned!");
-			}
+			notifier.notify(config.forestryEnchantmentRitualNotification(), "An Enchantment Ritual event has spawned!");
 		}
 		else if (id == NpcID.ENTLING)
 		{
 			entlings.add(npc);
-			if (entlings.size() == 1 && config.forestryFriendlyEntNotification())
+			if (entlings.size() == 1)
 			{
-				notifier.notify("A Friendly Ent event has spawned!");
+				notifier.notify(config.forestryFriendlyEntNotification(), "A Friendly Ent event has spawned!");
 			}
 		}
 	}

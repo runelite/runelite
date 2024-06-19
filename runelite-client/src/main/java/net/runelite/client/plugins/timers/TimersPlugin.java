@@ -130,7 +130,6 @@ public class TimersPlugin extends Plugin
 	static final int FIGHT_CAVES_REGION_ID = 9551;
 	static final int INFERNO_REGION_ID = 9043;
 	private static final Pattern TZHAAR_WAVE_MESSAGE = Pattern.compile("Wave: (\\d+)");
-	private static final String TZHAAR_DEFEATED_MESSAGE = "You have been defeated!";
 	private static final Pattern TZHAAR_PAUSED_MESSAGE = Pattern.compile("The (?:Inferno|Fight Cave) has been paused. You may now log out.");
 
 	private TimerTimer freezeTimer;
@@ -893,15 +892,6 @@ public class TimersPlugin extends Plugin
 			{
 				createGameTimer(MARK_OF_DARKNESS_COOLDOWN, Duration.of(magicLevel - 10, RSTimeUnit.GAME_TICKS));
 			}
-		}
-
-		if (message.equals(TZHAAR_DEFEATED_MESSAGE))
-		{
-			log.debug("Stopping tzhaar timer");
-			removeTzhaarTimer();
-			config.tzhaarStartTime(null);
-			config.tzhaarLastTime(null);
-			return;
 		}
 
 		if (TZHAAR_PAUSED_MESSAGE.matcher(message).find())

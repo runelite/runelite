@@ -37,10 +37,13 @@ import net.runelite.api.coords.WorldPoint;
  */
 public interface TileObject
 {
+	int HASH_PLANE_SHIFT = 60;
+
 	/**
 	 * A bitfield containing various flags:
 	 * <pre>{@code
-	 * (RL) plane = bits >> 49 & 3
+	 * (RL) plane = bits >> 60 & 3
+	 * worldView = bits >> 49 & 2047
 	 * id = bits >> 17 & 0xffffffff
 	 * wall = bits >> 16 & 1
 	 * type = bits >> 14 & 3
@@ -74,6 +77,11 @@ public interface TileObject
 	 * Gets the plane of the tile that the object is on.
 	 */
 	int getPlane();
+
+	/**
+	 * Gets the WorldView this TileObject is a part of.
+	 */
+	WorldView getWorldView();
 
 	/**
 	 * Gets the ID of the object.

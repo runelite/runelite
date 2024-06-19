@@ -380,7 +380,9 @@ public final class SpriteID
 	public static final int SPELL_WATER_SURGE = 363;
 	public static final int SPELL_EARTH_SURGE = 364;
 	public static final int SPELL_FIRE_SURGE = 365;
-	/* Unmapped: 366, 367, 368 */
+	/* Unmapped: 366 */
+	public static final int SPELL_CIVITAS_ILLA_FORTIS_TELEPORT = 367;
+	/* Unmapped: 368 */
 	public static final int SPELL_BIND_DISABLED = 369;
 	public static final int SPELL_SNARE_DISABLED = 370;
 	public static final int SPELL_ENTANGLE_DISABLED = 371;
@@ -534,8 +536,6 @@ public final class SpriteID
 	public static final int FIGHT_PITS_WINNER_SKULL_RED = 524;
 	public static final int BOUNTY_HUNTER_TARGET_WEALTH_5_VERY_HIGH = 525;
 	public static final int BOUNTY_HUNTER_TARGET_WEALTH_4_HIGH = 526;
-	public static final int BOUNTY_HUNTER_TARGET_WEALTH_3_MEDIUM = 527;
-	public static final int BOUNTY_HUNTER_TARGET_WEALTH_2_LOW = 528;
 	public static final int HOUSE_LOADING_SCREEN = 529;
 	public static final int TEXTURE_ROUGH_STONE = 530;
 	public static final int TEXTURE_WATER_531 = 531;
@@ -1058,7 +1058,6 @@ public final class SpriteID
 	public static final int MINIMAP_ORB_RUN_ICON_SLOWED_DEPLETION = 1092;
 	public static final int FRIENDS_PREVIOUS_USERNAME = 1093;
 	public static final int UNKNOWN_MAP_ICON_INFORMATION_I = 1094;
-	public static final int BOUNTY_HUNTER_TARGET_NONE = 1095;
 	public static final int BOUNTY_HUNTER_TARGET_WEALTH_1_VERY_LOW = 1096;
 	public static final int DEADMAN_BANK_KEYS_5 = 1097;
 	public static final int ABLEGAMERS_PROMO_BANNER = 1098;
@@ -1283,7 +1282,8 @@ public final class SpriteID
 	public static final int EMOTE_SMOOTH_DANCE_LOCKED = 1355;
 	public static final int EMOTE_CRAZY_DANCE_LOCKED = 1356;
 	public static final int EMOTE_PREMIER_SHIELD_LOCKED = 1357;
-	/* Unmapped: 1358~1359 */
+	public static final int HITSPLAT_BLUE_MISS = 1358;
+	/* Unmapped: 1359 */
 	public static final int HITSPLAT_GREEN_POISON = 1360;
 	/* Unmapped: 1361~1363 */
 	public static final int BOUNTY_HUNTER_SKIP_TARGET = 1364;

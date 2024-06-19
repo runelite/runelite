@@ -30,18 +30,16 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.annotation.Nullable;
 import lombok.Setter;
 import net.runelite.client.ui.overlay.RenderableEntity;
-import net.runelite.client.util.ColorUtil;
-import net.runelite.client.util.Text;
 
 @Setter
 public class TextComponent implements RenderableEntity
 {
-	private static final String COL_TAG_REGEX = "(<col=([0-9a-fA-F]){2,6}>)";
-	private static final Pattern COL_TAG_PATTERN_W_LOOKAHEAD = Pattern.compile("(?=" + COL_TAG_REGEX + ")");
+	private static final Pattern COL_TAG_PATTERN = Pattern.compile("<col=([0-9a-fA-F]{2,6})>");
 
 	private String text;
 	private Point position = new Point();
@@ -65,61 +63,28 @@ public class TextComponent implements RenderableEntity
 
 		final FontMetrics fontMetrics = graphics.getFontMetrics();
 
-		if (COL_TAG_PATTERN_W_LOOKAHEAD.matcher(text).find())
+		Matcher matcher = COL_TAG_PATTERN.matcher(text);
+		Color textColor = color;
+		int idx = 0;
+		int width = 0;
+		while (matcher.find())
 		{
-			final String[] parts = COL_TAG_PATTERN_W_LOOKAHEAD.split(text);
-			int x = position.x;
+			String color = matcher.group(1);
+			String s = text.substring(idx, matcher.start());
+			idx = matcher.end();
 
-			for (String textSplitOnCol : parts)
-			{
-				final String textWithoutCol = Text.removeTags(textSplitOnCol);
-				final String colColor = textSplitOnCol.substring(textSplitOnCol.indexOf("=") + 1, textSplitOnCol.indexOf(">"));
+			renderText(graphics, textColor, position.x + width, position.y, s);
+			width += fontMetrics.stringWidth(s);
 
-				graphics.setColor(Color.BLACK);
-
-				if (outline)
-				{
-					graphics.drawString(textWithoutCol, x, position.y + 1);
-					graphics.drawString(textWithoutCol, x, position.y - 1);
-					graphics.drawString(textWithoutCol, x + 1, position.y);
-					graphics.drawString(textWithoutCol, x - 1, position.y);
-				}
-				else
-				{
-					// shadow
-					graphics.drawString(textWithoutCol, x + 1, position.y + 1);
-				}
-
-				// actual text
-				graphics.setColor(Color.decode("#" + colColor));
-				graphics.drawString(textWithoutCol, x, position.y);
-
-				x += fontMetrics.stringWidth(textWithoutCol);
-			}
-		}
-		else
-		{
-			graphics.setColor(Color.BLACK);
-
-			if (outline)
-			{
-				graphics.drawString(text, position.x, position.y + 1);
-				graphics.drawString(text, position.x, position.y - 1);
-				graphics.drawString(text, position.x + 1, position.y);
-				graphics.drawString(text, position.x - 1, position.y);
-			}
-			else
-			{
-				// shadow
-				graphics.drawString(text, position.x + 1, position.y + 1);
-			}
-
-			// actual text
-			graphics.setColor(ColorUtil.colorWithAlpha(color, 0xFF));
-			graphics.drawString(text, position.x, position.y);
+			textColor = Color.decode("#" + color);
 		}
 
-		int width = fontMetrics.stringWidth(text);
+		{
+			String s = text.substring(idx);
+			renderText(graphics, textColor, position.x + width, position.y, s);
+			width += fontMetrics.stringWidth(s);
+		}
+
 		int height = fontMetrics.getHeight();
 
 		if (originalFont != null)
@@ -128,5 +93,32 @@ public class TextComponent implements RenderableEntity
 		}
 
 		return new Dimension(width, height);
+	}
+
+	private void renderText(Graphics2D graphics, Color color, int x, int y, String text)
+	{
+		if (text.isEmpty())
+		{
+			return;
+		}
+
+		graphics.setColor(Color.BLACK);
+
+		if (outline)
+		{
+			graphics.drawString(text, x, y + 1);
+			graphics.drawString(text, x, y - 1);
+			graphics.drawString(text, x + 1, y);
+			graphics.drawString(text, x - 1, y);
+		}
+		else
+		{
+			// shadow
+			graphics.drawString(text, x + 1, y + 1);
+		}
+
+		// actual text
+		graphics.setColor(color);
+		graphics.drawString(text, x, y);
 	}
 }

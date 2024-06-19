@@ -559,6 +559,10 @@ public class GrandExchangePlugin extends Plugin
 		{
 			return WorldType.FRESH_START_WORLD;
 		}
+		else if (worldTypes.contains(net.runelite.api.WorldType.BETA_WORLD))
+		{
+			return WorldType.BETA_WORLD;
+		}
 		else
 		{
 			return null;
@@ -602,13 +606,13 @@ public class GrandExchangePlugin extends Plugin
 
 		String message = Text.removeTags(event.getMessage());
 
-		if (message.startsWith("Grand Exchange:") && config.enableNotifications())
+		if (message.startsWith("Grand Exchange: Finished"))
 		{
-			notifier.notify(message);
+			notifier.notify(config.notifyOnOfferComplete(), message);
 		}
-		else if (message.startsWith("Grand Exchange: Finished") && config.notifyOnOfferComplete())
+		else if (message.startsWith("Grand Exchange:"))
 		{
-			notifier.notify(message);
+			notifier.notify(config.enableNotifications(), message);
 		}
 	}
 

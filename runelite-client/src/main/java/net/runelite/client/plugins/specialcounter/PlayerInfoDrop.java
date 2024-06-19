@@ -27,59 +27,29 @@ package net.runelite.client.plugins.specialcounter;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.image.BufferedImage;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.experimental.Accessors;
+import javax.annotation.Nullable;
+import lombok.Builder;
+import lombok.NonNull;
+import lombok.Value;
 import net.runelite.client.ui.FontManager;
 
-@Data
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder
+@Value
 class PlayerInfoDrop
 {
-	private final int startCycle;
-	private final int endCycle;
-	private final int playerIdx;
-	private final String text;
-	private final int startHeightOffset;
-	private final int endHeightOffset;
-	private final Font font;
-	private final Color color;
-	private final BufferedImage image;
-
-	public static Builder builder(int startCycle, int endCycle, int playerIdx, String text)
-	{
-		return new Builder(startCycle, endCycle, playerIdx, text);
-	}
-
-	@RequiredArgsConstructor
-	@Accessors(fluent = true)
-	@Setter
-	static class Builder
-	{
-		private final int startCycle;
-		private final int endCycle;
-		private final int playerIdx;
-		private final String text;
-		private int startHeightOffset = 0;
-		private int endHeightOffset = 200;
-		private Font font = FontManager.getRunescapeBoldFont();
-		private Color color = Color.WHITE;
-		private BufferedImage image;
-
-		public PlayerInfoDrop build()
-		{
-			if (startCycle > endCycle)
-			{
-				throw new IllegalArgumentException("endCycle must be after startCycle");
-			}
-			if (playerIdx < 0 || playerIdx > 2047)
-			{
-				throw new IllegalArgumentException("playerIdx must be between 0-2047");
-			}
-			return new PlayerInfoDrop(startCycle, endCycle, playerIdx, text, startHeightOffset, endHeightOffset, font, color, image);
-		}
-	}
+	int startCycle;
+	int endCycle;
+	int playerIdx;
+	String text;
+	@Nullable
+	BufferedImage textBackground;
+	int startHeightOffset;
+	@Builder.Default
+	int endHeightOffset = 200;
+	@Builder.Default
+	Font font = FontManager.getRunescapeBoldFont();
+	@Builder.Default
+	Color color = Color.WHITE;
+	@NonNull
+	BufferedImage image;
 }
