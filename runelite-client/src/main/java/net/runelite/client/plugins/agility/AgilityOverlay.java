@@ -59,10 +59,10 @@ class AgilityOverlay extends Overlay
 	{
 		super(plugin);
 		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.ABOVE_SCENE);
 		this.client = client;
 		this.plugin = plugin;
 		this.config = config;
+		this.updateLayer();
 	}
 
 	@Override
@@ -76,10 +76,10 @@ class AgilityOverlay extends Overlay
 		plugin.getObstacles().forEach((object, obstacle) ->
 		{
 			if (Obstacles.SHORTCUT_OBSTACLE_IDS.containsKey(object.getId()) && !config.highlightShortcuts() ||
-					Obstacles.TRAP_OBSTACLE_IDS.contains(object.getId()) && !config.showTrapOverlay() ||
-					Obstacles.OBSTACLE_IDS.contains(object.getId()) && !config.showClickboxes() ||
-					Obstacles.SEPULCHRE_OBSTACLE_IDS.contains(object.getId()) && !config.highlightSepulchreObstacles() ||
-					Obstacles.SEPULCHRE_SKILL_OBSTACLE_IDS.contains(object.getId()) && !config.highlightSepulchreSkilling())
+				Obstacles.TRAP_OBSTACLE_IDS.contains(object.getId()) && !config.showTrapOverlay() ||
+				Obstacles.OBSTACLE_IDS.contains(object.getId()) && !config.showClickboxes() ||
+				Obstacles.SEPULCHRE_OBSTACLE_IDS.contains(object.getId()) && !config.highlightSepulchreObstacles() ||
+				Obstacles.SEPULCHRE_SKILL_OBSTACLE_IDS.contains(object.getId()) && !config.highlightSepulchreSkilling())
 			{
 				return;
 			}
@@ -177,6 +177,18 @@ class AgilityOverlay extends Overlay
 			{
 				OverlayUtil.renderPolygon(graphics, poly, color);
 			}
+		}
+	}
+
+	public void updateLayer()
+	{
+		if (config != null && config.overlayOnTop())
+		{
+			setLayer(OverlayLayer.ALWAYS_ON_TOP);
+		}
+		else
+		{
+			setLayer(OverlayLayer.ABOVE_SCENE);
 		}
 	}
 }
