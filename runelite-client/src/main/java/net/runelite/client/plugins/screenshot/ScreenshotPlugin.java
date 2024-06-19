@@ -51,6 +51,7 @@ import net.runelite.api.ScriptID;
 import net.runelite.api.SpriteID;
 import net.runelite.api.VarClientStr;
 import net.runelite.api.Varbits;
+import net.runelite.api.WorldType;
 import net.runelite.api.annotations.Component;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ActorDeath;
@@ -79,6 +80,7 @@ import net.runelite.client.util.ImageCapture;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.LinkBrowser;
 import net.runelite.client.util.Text;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 @PluginDescriptor(
@@ -94,7 +96,7 @@ public class ScreenshotPlugin extends Plugin
 	private static final Map<Integer, String> CHEST_LOOT_EVENTS = ImmutableMap.of(12127, "The Gauntlet");
 	private static final int GAUNTLET_REGION = 7512;
 	private static final int CORRUPTED_GAUNTLET_REGION = 7768;
-	private static final Set<Integer> LAST_MAN_STANDING_REGIONS = ImmutableSet.of(13658, 13659, 13160, 13914, 13915, 13916, 13918, 13919, 13920, 14174, 14175, 14176, 14430, 14431, 14432);
+	private static final Set<Integer> CLAN_WARS_REGIONS = ImmutableSet.of(12621, 12622, 12623, 13130, 13131, 13133, 13134, 13135, 13386, 13387, 13390, 13641, 13642, 13543, 13644, 13645, 13646, 13647, 13898, 14154, 13899, 13900, 14155, 14156);
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("([0-9]+)");
 	private static final Pattern LEVEL_UP_PATTERN = Pattern.compile(".*Your ([a-zA-Z]+) (?:level is|are)? now (\\d+)\\.");
 	private static final Pattern LEVEL_UP_MESSAGE_PATTERN = Pattern.compile("Congratulations, you've (just advanced your (?<skill>[a-zA-Z]+) level\\. You are now level (?<level>\\d+)|reached the highest possible (?<skill99>[a-zA-Z]+) level of 99)\\.");
@@ -298,13 +300,9 @@ public class ScreenshotPlugin extends Plugin
 		if (actor instanceof Player)
 		{
 			Player player = (Player) actor;
-			if (player == client.getLocalPlayer() && config.screenshotPlayerDeath())
+			if (player == client.getLocalPlayer() && config.screenshotPlayerDeath() && !(config.ignoreSafePvPDeaths() && isInSafePvP()))
 			{
-				final int regionID = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID();
-				if (!(config.ignoreLMSDeaths() && LAST_MAN_STANDING_REGIONS.contains(regionID)))
-				{
-					takeScreenshot("Death", SD_DEATHS);
-				}
+				takeScreenshot("Death", SD_DEATHS);
 			}
 			else if (player != client.getLocalPlayer()
 				&& player.getCanvasTilePoly() != null
@@ -319,7 +317,7 @@ public class ScreenshotPlugin extends Plugin
 	@Subscribe
 	public void onPlayerLootReceived(final PlayerLootReceived playerLootReceived)
 	{
-		if (config.screenshotKills())
+		if (config.screenshotKills() && !(config.ignoreSafePvPKills() && isInSafePvP()))
 		{
 			final Player player = playerLootReceived.getPlayer();
 			final String name = player.getName();
@@ -901,6 +899,22 @@ public class ScreenshotPlugin extends Plugin
 			&& this.client.getMapRegions().length > 0
 			&& (this.client.getMapRegions()[0] == GAUNTLET_REGION
 			|| this.client.getMapRegions()[0] == CORRUPTED_GAUNTLET_REGION);
+	}
+
+	private boolean isInSafePvP()
+	{
+		String[] playerOptions = client.getPlayerOptions();
+		final boolean inPvPArea = (ArrayUtils.contains(playerOptions, "Attack")
+			|| ArrayUtils.contains(playerOptions, "Fight"));
+		final int regionID = WorldPoint.fromLocalInstance(client, client.getLocalPlayer().getLocalLocation()).getRegionID();
+		boolean inUnsafePvPArea = false;
+		if (client.getWidget(ComponentID.PVP_SKULL_CONTAINER) != null)
+		{
+			inUnsafePvPArea = !((client.getWidget(ComponentID.PVP_SKULL_CONTAINER).isHidden())
+				|| (client.getWorldType().contains(WorldType.PVP_ARENA))
+				|| (CLAN_WARS_REGIONS.contains(regionID)));
+		}
+		return (inPvPArea && !inUnsafePvPArea);
 	}
 
 	@VisibleForTesting
