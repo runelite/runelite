@@ -114,19 +114,19 @@ public enum AgilityShortcut
 		BRIDGE_3522,
 		// Rocky Ledges Viyeldi cave
 		ROCKY_LEDGE, ROCKY_LEDGE_2960, ROCKY_LEDGE_2961, ROCKS_2962, ROCKS_2963, ROCKS_2964),
-KARAMJA_GLIDER_LOG(1, "Log Balance", new WorldPoint(2906, 3050, 0), A_WOODEN_LOG),
-WEISS_BROKEN_FENCE(1, "Shortcut", null, /* base id */ NullObjectID.NULL_46815)
-{
-	@Override
-	public boolean matches(Client client, TileObject object)
+	KARAMJA_GLIDER_LOG(1, "Log Balance", new WorldPoint(2906, 3050, 0), A_WOODEN_LOG),
+	WEISS_BROKEN_FENCE(1, "Shortcut", null, /* base id */ NullObjectID.NULL_46815)
 	{
-		assert object.getId() == NullObjectID.NULL_46815;
-		int multilocId = client.getObjectDefinition(object.getId())
-			.getImpostor()
-			.getId();
-		return multilocId == BROKEN_FENCE_46817;
-	}
-},
+		@Override
+		public boolean matches(Client client, TileObject object)
+		{
+			assert object.getId() == NullObjectID.NULL_46815;
+			int multilocId = client.getObjectDefinition(object.getId())
+				.getImpostor()
+				.getId();
+			return multilocId == BROKEN_FENCE_46817;
+		}
+	},
 	FALADOR_CRUMBLING_WALL(5, "Crumbling Wall", new WorldPoint(2936, 3357, 0), CRUMBLING_WALL_24222),
 	RIVER_LUM_GRAPPLE_EAST(8, "Grapple Broken Raft", new WorldPoint(3258, 3179, 0), BROKEN_RAFT),
 	RIVER_LUM_GRAPPLE_WEST(8, "Grapple Broken Raft", new WorldPoint(3245, 3179, 0), BROKEN_RAFT),
