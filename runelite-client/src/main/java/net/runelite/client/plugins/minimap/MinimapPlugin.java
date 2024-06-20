@@ -78,6 +78,11 @@ public class MinimapPlugin extends Plugin
 		storeOriginalDots();
 		replaceMapDots();
 		client.setMinimapZoom(config.zoom());
+
+		if (config.rememberZoom())
+		{
+			client.setMinimapZoom(config.zoomAmount());
+		}
 	}
 
 	@Override
@@ -100,6 +105,11 @@ public class MinimapPlugin extends Plugin
 		{
 			storeOriginalDots();
 			replaceMapDots();
+		}
+
+		if (event.getGameState() == GameState.LOGGED_IN)
+		{
+			config.zoomAmount(client.getMinimapZoom());
 		}
 	}
 

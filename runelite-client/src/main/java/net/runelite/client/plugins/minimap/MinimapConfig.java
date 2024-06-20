@@ -38,19 +38,49 @@ public interface MinimapConfig extends Config
 	@ConfigSection(
 		name = "Minimap dot colors",
 		description = "The colors of dots on the minimap.",
-		position = 0
+		position = 3
 	)
 	String minimapDotSection = "minimapDotSection";
 
 	@ConfigItem(
 		keyName = "zoom",
 		name = "Zoom",
-		description = "Enables zooming on the minimap"
+		description = "Enables zooming on the minimap",
+		position = 1
 	)
 	default boolean zoom()
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "rememberZoom",
+		name = "Remember Zoom",
+		description = "Remember zoom between sessions",
+		position = 2
+	)
+	default boolean rememberZoom()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "zoomAmount",
+		name = "",
+		description = "",
+		hidden = true
+	)
+	default double zoomAmount()
+	{
+		return 4.0;
+	}
+
+	@ConfigItem(
+		keyName = "zoomAmount",
+		name = "",
+		description = ""
+	)
+	void zoomAmount(double zoomAmount);
 
 	@ConfigItem(
 		keyName = "hideMinimap",
