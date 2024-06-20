@@ -133,6 +133,13 @@ public interface MenuEntry
 	int getItemId();
 
 	/**
+	 * Set the item id
+	 * @param itemId
+	 * @return
+	 */
+	MenuEntry setItemId(int itemId);
+
+	/**
 	 * Get the widget this menu entry is on, if this is a menu entry
 	 * with an associated widget. Such as eg, CC_OP.
 	 * @return
