@@ -28,6 +28,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import javax.inject.Inject;
+
+import net.runelite.api.AmbientSoundEffect;
 import net.runelite.api.Client;
 import net.runelite.api.Player;
 import net.runelite.api.coords.LocalPoint;
@@ -67,6 +69,47 @@ class SoundEffectOverlay extends OverlayPanel
 		if (!plugin.getSoundEffects().isActive())
 		{
 			return null;
+		}
+
+		Color textColor = COLOR_SILENT_SOUND_EFFECT;
+		// Check if the player is within range to hear the sound
+		Player localPlayer = client.getLocalPlayer();
+		LocalPoint lp;
+		int sceneX = 0;
+		int sceneY = 0;
+		if (localPlayer != null)
+		{
+			lp = localPlayer.getLocalLocation();
+
+			if (lp != null)
+			{
+				sceneX = lp.getX();
+				sceneY = lp.getY();
+			}
+		}
+
+		for (AmbientSoundEffect ambientSoundEffect : client.getAmbientSoundEffects())
+		{
+			if ((ambientSoundEffect.getMinPosition().getX() < sceneX
+				&& sceneX < ambientSoundEffect.getMaxPosition().getX())
+				||
+				(ambientSoundEffect.getMinPosition().getY() < sceneY
+					&& sceneY < ambientSoundEffect.getMaxPosition().getY())
+			)
+			{
+				textColor = COLOR_AREA_SOUND_EFFECT;
+			}
+			String text =
+				"Id: " + ambientSoundEffect.getSoundEffectId() +
+					" - Max: " + ambientSoundEffect.getMaxPosition() +
+					" - Min: " + ambientSoundEffect.getMinPosition();
+
+			panelComponent.getChildren().add(LineComponent.builder()
+				.left(text)
+				.leftColor(textColor)
+				.build());
+
+			checkMaxLines();
 		}
 
 		return super.render(graphics);
