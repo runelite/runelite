@@ -34,6 +34,9 @@ import java.awt.FontMetrics;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import net.runelite.api.FontID;
@@ -57,6 +60,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.FontManager;
@@ -95,6 +99,16 @@ public class ItemStatPlugin extends Plugin
 	@Inject
 	private ClientThread clientThread;
 
+	@Inject
+	private ItemStatKeyListener inputListener;
+
+	@Inject
+	private KeyManager keyManager;
+
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
+	private boolean toggleableDown;
+
 	private Widget itemInformationTitle;
 
 	@Provides
@@ -112,6 +126,11 @@ public class ItemStatPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		toggleableDown = false;
+		if (config.toggleableItemStats())
+		{
+			keyManager.registerKeyListener(inputListener);
+		}
 		overlayManager.add(overlay);
 	}
 
@@ -120,6 +139,10 @@ public class ItemStatPlugin extends Plugin
 	{
 		overlayManager.remove(overlay);
 		clientThread.invokeLater(this::resetGEInventory);
+		if (config.toggleableItemStats())
+		{
+			keyManager.unregisterKeyListener(inputListener);
+		}
 	}
 
 	@Subscribe
@@ -128,6 +151,18 @@ public class ItemStatPlugin extends Plugin
 		if (event.getKey().equals("geStats"))
 		{
 			clientThread.invokeLater(this::resetGEInventory);
+		}
+
+		if (event.getKey().equals("toggleableItemStats"))
+		{
+			if (config.toggleableItemStats())
+			{
+				keyManager.registerKeyListener(inputListener);
+			}
+			else
+			{
+				keyManager.unregisterKeyListener(inputListener);
+			}
 		}
 	}
 
