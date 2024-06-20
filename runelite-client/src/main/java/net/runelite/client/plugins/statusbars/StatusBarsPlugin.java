@@ -28,12 +28,9 @@ import javax.inject.Inject;
 import com.google.inject.Provides;
 import lombok.AccessLevel;
 import lombok.Getter;
-import net.runelite.api.Actor;
-import net.runelite.api.Client;
-import net.runelite.api.NPC;
-import net.runelite.api.Player;
-import net.runelite.api.Varbits;
+import net.runelite.api.*;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.HitsplatApplied;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
@@ -73,6 +70,8 @@ public class StatusBarsPlugin extends Plugin
 
 	private int lastCombatActionTickCount;
 
+	private int lastHitsplatTickCount;
+
 	@Override
 	protected void startUp() throws Exception
 	{
@@ -102,10 +101,21 @@ public class StatusBarsPlugin extends Plugin
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (StatusBarsConfig.GROUP.equals(event.getGroup()) && event.getKey().equals("hideAfterCombatDelay"))
+		if (StatusBarsConfig.GROUP.equals(event.getGroup()) && (event.getKey().equals("combatDelay") || event.getKey().equals("hitDelay")))
 		{
 			clientThread.invokeLater(this::checkStatusBars);
 		}
+	}
+
+	@Subscribe
+	public void onHitsplatApplied(HitsplatApplied hitsplatApplied)
+	{
+		Hitsplat hitsplat = hitsplatApplied.getHitsplat();
+		if(!hitsplat.isMine())
+		{
+			return;
+		}
+		lastHitsplatTickCount = client.getTickCount();
 	}
 
 	private void checkStatusBars()
@@ -115,22 +125,20 @@ public class StatusBarsPlugin extends Plugin
 		{
 			return;
 		}
-
-		final Actor interacting = localPlayer.getInteracting();
-
-		if (config.hideAfterCombatDelay() == 0)
+		if(config.alwaysVisible())
 		{
 			barsDisplayed = true;
-		}
-		else if ((interacting instanceof NPC && ArrayUtils.contains(((NPC) interacting).getComposition().getActions(), "Attack"))
-			|| (interacting instanceof Player && client.getVarbitValue(Varbits.PVP_SPEC_ORB) == 1))
-		{
-			lastCombatActionTickCount = client.getTickCount();
-			barsDisplayed = true;
-		}
-		else if (client.getTickCount() - lastCombatActionTickCount >= config.hideAfterCombatDelay())
-		{
-			barsDisplayed = false;
+		} else {
+			final Actor interacting = localPlayer.getInteracting();
+			if((interacting instanceof NPC && ArrayUtils.contains(((NPC) interacting).getComposition().getActions(), "Attack"))
+				|| (interacting instanceof Player && client.getVarbitValue(Varbits.PVP_SPEC_ORB) == 1))
+			{
+				lastCombatActionTickCount = client.getTickCount();
+			}
+			boolean shouldDisplayForCombat = client.getTickCount() - lastCombatActionTickCount < config.combatDelay();
+			boolean shouldDisplayForPlayerHit = client.getTickCount() - lastHitsplatTickCount < config.hitDelay();
+
+			barsDisplayed = shouldDisplayForCombat || shouldDisplayForPlayerHit;
 		}
 	}
 }
