@@ -30,6 +30,7 @@ import lombok.Data;
 import lombok.experimental.SuperBuilder;
 import net.runelite.api.Point;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.worldmap.WorldMapArea;
 
 @Data
 @SuperBuilder
@@ -38,6 +39,17 @@ public class WorldMapPoint
 	private BufferedImage image;
 
 	private WorldPoint worldPoint;
+
+	/**
+	 * The WorldPoint that {@link #worldPoint} should map to on the world map to be located correctly
+	 */
+	@Nullable
+	private WorldPoint mapWorldPoint;
+
+	/**
+	 * The {@link WorldMapArea} the WorldMapPoint should appear in on the world map
+	 */
+	private WorldMapArea worldMapArea;
 
 	/**
 	 * The WorldPoint which the worldmap will jump to when clicked
@@ -50,6 +62,8 @@ public class WorldMapPoint
 	 * WorldMapPointManager will center the image if imagePoint is null
 	 */
 	private Point imagePoint;
+
+	private boolean castToRealWorldPoint;
 
 	private boolean snapToEdge;
 
@@ -69,8 +83,67 @@ public class WorldMapPoint
 
 	public WorldMapPoint(WorldPoint worldPoint, BufferedImage image)
 	{
-		this.worldPoint = worldPoint;
+		setWorldPoint(worldPoint);
 		this.image = image;
+	}
+
+	public WorldMapPoint(WorldPoint worldPoint, BufferedImage image, boolean castToRealWorldPoint)
+	{
+		setWorldPoint(worldPoint);
+		this.image = image;
+		this.castToRealWorldPoint = castToRealWorldPoint;
+	}
+
+	/**
+	 * Gets the {@link WorldPoint} that this WorldMapPoint should map to on the world map.
+	 *
+	 * @return The WorldPoint that this WorldMapPoint maps to on the world map.
+	 */
+	public WorldPoint getMapWorldPoint()
+	{
+		if (castToRealWorldPoint)
+		{
+			ensureMapPointAndAreaCalculated();
+			return mapWorldPoint;
+		}
+		return worldPoint;
+	}
+
+	/**
+	 * Gets the {@link WorldMapArea} that this WorldMapPoint should be associated with on the world map.
+	 *
+	 * @return The WorldMapArea that this WorldMapPoint maps to on the world map.
+	 */
+	public WorldMapArea getWorldMapArea()
+	{
+		ensureMapPointAndAreaCalculated();
+		return worldMapArea;
+	}
+
+	/**
+	 * Ensures the {@link #mapWorldPoint} and {@link #worldMapArea} are updated based on the current {@link #worldPoint}.
+	 * This method acts as a lazy loader, only recalculating mapWorldPoint and worldMapArea when necessary.
+	 */
+	private void ensureMapPointAndAreaCalculated()
+	{
+		if (mapWorldPoint == null)
+		{
+			WorldPointWithWorldMapArea wpWithArea = WorldPointMapper.getMapWorldPointFromRealWorldPoint(worldPoint);
+			this.mapWorldPoint = wpWithArea.getWorldPoint();
+			this.worldMapArea = wpWithArea.getWorldMapArea();
+		}
+	}
+
+	/**
+	 * Sets the world point and invalidates the cached mapWorldPoint and worldMapArea to ensure they are recalculated.
+	 *
+	 * @param worldPoint The new WorldPoint to set.
+	 */
+	public void setWorldPoint(WorldPoint worldPoint)
+	{
+		this.worldPoint = worldPoint;
+		this.mapWorldPoint = null;
+		this.worldMapArea = WorldMapArea.ANY;
 	}
 
 	public void onEdgeSnap()

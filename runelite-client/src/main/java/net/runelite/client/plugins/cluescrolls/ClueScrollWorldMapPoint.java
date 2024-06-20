@@ -38,7 +38,7 @@ class ClueScrollWorldMapPoint extends WorldMapPoint
 
 	ClueScrollWorldMapPoint(final WorldPoint worldPoint, ClueScrollPlugin plugin)
 	{
-		super(worldPoint, null);
+		super(worldPoint, null, true);
 
 		clueScrollWorldImage = new BufferedImage(plugin.getMapArrow().getWidth(), plugin.getMapArrow().getHeight(), BufferedImage.TYPE_INT_ARGB);
 		Graphics graphics = clueScrollWorldImage.getGraphics();
