@@ -282,6 +282,7 @@ public class SlayerPluginTest
 		assertFalse(matches("Wolf", Task.WEREWOLVES));
 		assertFalse(matches("Scorpia's offspring", Task.SCORPIA));
 		assertFalse(matches("Jonny the beard", Task.BEARS));
+		assertFalse(matches("Corrupted Rat", Task.RATS));
 	}
 
 	private boolean matches(final String npcName, final Task task)
