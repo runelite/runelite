@@ -928,6 +928,7 @@ public class ClientUI
 				WinUtil.requestForeground(frame);
 				break;
 			default:
+				frame.toFront();
 				frame.requestFocus();
 				break;
 		}
