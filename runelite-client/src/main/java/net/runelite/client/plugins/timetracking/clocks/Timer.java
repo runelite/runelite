@@ -29,6 +29,8 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import net.runelite.api.annotations.Component;
+import net.runelite.client.config.ConfigItem;
 
 @Getter
 @Setter
@@ -47,6 +49,9 @@ class Timer extends Clock
 
 	// whether this timer should loop or not
 	private boolean loop;
+
+	//whether this timer belongs to favourites or not
+	private boolean favourite;
 
 	Timer(String name, long duration)
 	{

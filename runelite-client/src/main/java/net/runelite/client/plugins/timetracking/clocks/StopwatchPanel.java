@@ -30,10 +30,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.List;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.FontManager;
@@ -57,6 +54,39 @@ class StopwatchPanel extends ClockPanel
 		rebuildLapList();
 
 		contentContainer.add(lapsContainer);
+
+		if (stopwatch.isFavourite())
+		{
+			JButton favouriteButton = new JButton(ClockTabPanel.ON_STAR_ICON);
+			favouriteButton.setRolloverIcon(ClockTabPanel.ON_STAR_ICON_HOVER);
+			SwingUtil.removeButtonDecorations(favouriteButton);
+			favouriteButton.setPreferredSize(new Dimension(16, 14));
+			favouriteButton.setToolTipText("Unfavourite stopwatch");
+
+			favouriteButton.addActionListener(e ->
+			{
+				stopwatch.setFavourite(!stopwatch.isFavourite());
+				clockManager.favouriteStopwatch(stopwatch);
+			});
+
+			leftActions.add(favouriteButton);
+		}
+		else
+		{
+			JButton favouriteButton = new JButton(ClockTabPanel.OFF_STAR_ICON);
+			favouriteButton.setRolloverIcon(ClockTabPanel.OFF_STAR_ICON_HOVER);
+			SwingUtil.removeButtonDecorations(favouriteButton);
+			favouriteButton.setPreferredSize(new Dimension(16, 14));
+			favouriteButton.setToolTipText("Favourite stopwatch");
+
+			favouriteButton.addActionListener(e ->
+			{
+				stopwatch.setFavourite(!stopwatch.isFavourite());
+				clockManager.favouriteStopwatch(stopwatch);
+			});
+
+			leftActions.add(favouriteButton);
+		}
 
 		JButton lapButton = new JButton(ClockTabPanel.LAP_ICON);
 		lapButton.setRolloverIcon(ClockTabPanel.LAP_ICON_HOVER);

@@ -39,6 +39,41 @@ class TimerPanel extends ClockPanel
 	{
 		super(clockManager, timer, "timer", true);
 
+
+
+		if (timer.isFavourite())
+		{
+			JButton favouriteButton = new JButton(ClockTabPanel.ON_STAR_ICON);
+			favouriteButton.setRolloverIcon(ClockTabPanel.ON_STAR_ICON_HOVER);
+			SwingUtil.removeButtonDecorations(favouriteButton);
+			favouriteButton.setPreferredSize(new Dimension(16, 14));
+			favouriteButton.setToolTipText("Unfavourite timer");
+
+			favouriteButton.addActionListener(e ->
+			{
+				timer.setFavourite(!timer.isFavourite());
+				clockManager.favouriteTimer(timer);
+			});
+
+			leftActions.add(favouriteButton);
+		}
+		else
+		{
+			JButton favouriteButton = new JButton(ClockTabPanel.OFF_STAR_ICON);
+			favouriteButton.setRolloverIcon(ClockTabPanel.OFF_STAR_ICON_HOVER);
+			SwingUtil.removeButtonDecorations(favouriteButton);
+			favouriteButton.setPreferredSize(new Dimension(16, 14));
+			favouriteButton.setToolTipText("Favourite timer");
+
+			favouriteButton.addActionListener(e ->
+			{
+				timer.setFavourite(!timer.isFavourite());
+				clockManager.favouriteTimer(timer);
+			});
+
+			leftActions.add(favouriteButton);
+		}
+
 		JToggleButton loopButton = new JToggleButton(ClockTabPanel.LOOP_ICON);
 		loopButton.setRolloverIcon(ClockTabPanel.LOOP_ICON_HOVER);
 		loopButton.setSelectedIcon(ClockTabPanel.LOOP_SELECTED_ICON);

@@ -61,6 +61,10 @@ public class ClockTabPanel extends TabContentPanel
 	static final ImageIcon LOOP_ICON_HOVER;
 	static final ImageIcon LOOP_SELECTED_ICON;
 	static final ImageIcon LOOP_SELECTED_ICON_HOVER;
+	static final ImageIcon ON_STAR_ICON;
+	static final ImageIcon OFF_STAR_ICON;
+	static final ImageIcon ON_STAR_ICON_HOVER;
+	static final ImageIcon OFF_STAR_ICON_HOVER;
 
 	private static final ImageIcon ADD_ICON;
 	private static final ImageIcon ADD_ICON_HOVER;
@@ -79,6 +83,8 @@ public class ClockTabPanel extends TabContentPanel
 		BufferedImage addIcon = ImageUtil.loadImageResource(TimeTrackingPlugin.class, "add_icon.png");
 		BufferedImage loopIcon = ImageUtil.loadImageResource(TimeTrackingPlugin.class, "loop_icon.png");
 		BufferedImage loopSelectedIcon = ImageUtil.loadImageResource(TimeTrackingPlugin.class, "loop_selected_icon.png");
+		BufferedImage onStar = ImageUtil.loadImageResource(TimeTrackingPlugin.class, "star_on.png");
+		// BufferedImage offStar = ImageUtil.loadImageResource(TimeTrackingPlugin.class, "star_on.png");
 
 		DELETE_ICON = new ImageIcon(deleteIcon);
 		DELETE_ICON_HOVER = new ImageIcon(ImageUtil.luminanceOffset(deleteIcon, -80));
@@ -96,6 +102,16 @@ public class ClockTabPanel extends TabContentPanel
 		LOOP_ICON_HOVER = new ImageIcon(ImageUtil.luminanceOffset(loopIcon, -80));
 		LOOP_SELECTED_ICON = new ImageIcon(loopSelectedIcon);
 		LOOP_SELECTED_ICON_HOVER = new ImageIcon(ImageUtil.luminanceOffset(loopSelectedIcon, -80));
+		ON_STAR_ICON = new ImageIcon(onStar);
+		ON_STAR_ICON_HOVER = new ImageIcon(ImageUtil.luminanceOffset(onStar, -80));
+
+		BufferedImage offStar = ImageUtil.luminanceScale(
+				ImageUtil.grayscaleImage(onStar),
+				0.77f
+		);
+
+		OFF_STAR_ICON = new ImageIcon(offStar);
+		OFF_STAR_ICON_HOVER = new ImageIcon(ImageUtil.luminanceOffset(offStar, -40));
 	}
 
 	ClockTabPanel(ClockManager clockManager)
@@ -116,6 +132,30 @@ public class ClockTabPanel extends TabContentPanel
 	{
 		removeAll();
 		clockPanels.clear();
+
+		add(createFavouritePanel("Favourites", "favourite", true));
+
+		for (Timer timer : clockManager.getFavouriteTimers())
+		{
+			TimerPanel panel = new TimerPanel(clockManager, timer);
+
+			clockPanels.add(panel);
+			add(panel);
+
+		}
+
+		for (Stopwatch stopwatch : clockManager.getFavouriteStopwatches())
+		{
+			StopwatchPanel panel = new StopwatchPanel(clockManager, stopwatch);
+
+			clockPanels.add(panel);
+			add(panel);
+		}
+
+		if (clockManager.getFavouriteTimers().isEmpty() && clockManager.getFavouriteStopwatches().isEmpty())
+		{
+			add(createInfoPanel("Click the star button on a clock"));
+		}
 
 		add(createHeaderPanel("Timers", "timer", false, e -> clockManager.addTimer()));
 
@@ -168,6 +208,20 @@ public class ClockTabPanel extends TabContentPanel
 		addButton.setToolTipText("Add a " + type);
 		addButton.addActionListener(actionListener);
 		panel.add(addButton, BorderLayout.EAST);
+
+		return panel;
+	}
+
+	private JPanel createFavouritePanel(String title, String type, boolean largePadding)
+	{
+		JPanel panel = new JPanel(new BorderLayout());
+		panel.setBorder(new EmptyBorder(largePadding ? 11 : 0, 0, 0, 0));
+		panel.setBackground(ColorScheme.DARK_GRAY_COLOR);
+
+		JLabel headerLabel = new JLabel(title);
+		headerLabel.setForeground(Color.WHITE);
+		headerLabel.setFont(FontManager.getRunescapeSmallFont());
+		panel.add(headerLabel, BorderLayout.CENTER);
 
 		return panel;
 	}
