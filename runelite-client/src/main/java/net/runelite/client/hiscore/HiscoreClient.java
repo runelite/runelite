@@ -90,13 +90,9 @@ public class HiscoreClient
 			@Override
 			public void onResponse(Call call, Response response) throws IOException
 			{
-				try // NOPMD: UseTryWithResources
+				try (response)
 				{
 					future.complete(processResponse(username, response));
-				}
-				finally
-				{
-					response.close();
 				}
 			}
 		});
