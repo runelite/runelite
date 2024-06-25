@@ -50,6 +50,7 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Consumer;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -108,7 +109,7 @@ public class RuneliteColorPicker extends JDialog
 
 		RecentColors recentColors = new RecentColors(configManager);
 
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setResizable(false);
 		setSize(FRAME_WIDTH, FRAME_HEIGHT);
 		setBackground(ColorScheme.PROGRESS_COMPLETE_COLOR);
@@ -253,7 +254,7 @@ public class RuneliteColorPicker extends JDialog
 				throws BadLocationException
 			{
 				str = str.replaceAll("#|0x", "");
-				String text = getReplacedText(fb, offset, length, str);
+				String text = RuneliteColorPicker.getReplacedText(fb, offset, length, str);
 
 				if (!ColorUtil.isHex(text))
 				{

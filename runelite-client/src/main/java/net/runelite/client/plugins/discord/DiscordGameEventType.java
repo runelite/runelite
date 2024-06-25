@@ -479,7 +479,7 @@ enum DiscordGameEventType
 	static
 	{
 		ImmutableMap.Builder<Integer, DiscordGameEventType> regionMapBuilder = new ImmutableMap.Builder<>();
-		for (DiscordGameEventType discordGameEventType : values())
+		for (DiscordGameEventType discordGameEventType : DiscordGameEventType.values())
 		{
 			if (discordGameEventType.getRegionIds() == null)
 			{

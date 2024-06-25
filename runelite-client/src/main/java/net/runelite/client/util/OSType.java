@@ -44,19 +44,19 @@ public enum OSType
 
 		if ((OS.contains("mac")) || (OS.contains("darwin")))
 		{
-			OS_TYPE = MacOS;
+			OS_TYPE = OSType.MacOS;
 		}
 		else if (OS.contains("win"))
 		{
-			OS_TYPE = Windows;
+			OS_TYPE = OSType.Windows;
 		}
 		else if (OS.contains("nux"))
 		{
-			OS_TYPE = Linux;
+			OS_TYPE = OSType.Linux;
 		}
 		else
 		{
-			OS_TYPE = Other;
+			OS_TYPE = OSType.Other;
 		}
 	}
 

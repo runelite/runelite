@@ -207,7 +207,7 @@ public enum Produce
 	@Nullable
 	static Produce getByItemID(int itemId)
 	{
-		for (Produce produce : values())
+		for (Produce produce : Produce.values())
 		{
 			if (produce.getItemID() == itemId)
 			{
@@ -220,7 +220,7 @@ public enum Produce
 	@Nullable
 	static Produce getByContractName(String contractName)
 	{
-		for (Produce produce : values())
+		for (Produce produce : Produce.values())
 		{
 			if (produce.getContractName().equalsIgnoreCase(contractName))
 			{

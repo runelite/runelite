@@ -141,7 +141,7 @@ enum VarrockMuseumAnswer
 	{
 		ImmutableMap.Builder<String, String> builder = new ImmutableMap.Builder<>();
 
-		for (VarrockMuseumAnswer varrockMuseumAnswer : values())
+		for (VarrockMuseumAnswer varrockMuseumAnswer : VarrockMuseumAnswer.values())
 		{
 			builder.put(varrockMuseumAnswer.question, varrockMuseumAnswer.answer);
 		}
