@@ -198,7 +198,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("His bark is worse than his bite.")
 			.location(new WorldPoint(3499, 3503, 0))
 			.npc("Barker")
-			.solution("Speak to the Barker at Canifis's Barkers' Haberdashery.")
+			.solution("Speak to Barker at Canifis's Barkers' Haberdashery.")
 			.build(),
 		CrypticClue.builder()
 			.text("The beasts to my east snap claws and tails, The rest to my west can slide and eat fish. The force to my north will jump and they'll wail, Come dig by my fire and make a wish.")
