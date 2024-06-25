@@ -382,6 +382,7 @@ public final class NpcID
 	public static final int REACHER_389 = 389;
 	public static final int EVIL_BOB = 390;
 	public static final int EVIL_BOB_391 = 391;
+	public static final int TROTTERS = 392;
 	public static final int SERVANT = 393;
 	public static final int ROD_FISHING_SPOT = 394;
 	public static final int CAT = 395;
@@ -749,8 +750,8 @@ public final class NpcID
 	public static final int SKRAELING_774 = 774;
 	public static final int FISHMONGER = 775;
 	public static final int GREENGROCER = 776;
-	public static final int ETHEREAL_MAN = 777;
-	public static final int ETHEREAL_LADY = 778;
+	public static final int ETHEREAL_BEING = 777;
+	public static final int ETHEREAL_BEING_778 = 778;
 	public static final int ETHEREAL_NUMERATOR = 779;
 	public static final int ETHEREAL_EXPERT = 780;
 	public static final int ETHEREAL_PERCEPTIVE = 781;
@@ -5038,8 +5039,6 @@ public final class NpcID
 	public static final int FROG_5431 = 5431;
 	public static final int FROG_5432 = 5432;
 	public static final int CALEB_5433 = 5433;
-	public static final int FROG_PRINCE = 5434;
-	public static final int FROG_PRINCESS = 5435;
 	public static final int NILES = 5436;
 	public static final int MILES = 5437;
 	public static final int GILES = 5438;
@@ -11294,6 +11293,10 @@ public final class NpcID
 	public static final int KIT_BREAKER_13436 = 13436;
 	public static final int SIR_KIT_BREAKER = 13437;
 	public static final int SIR_KIT_BREAKER_13438 = 13438;
+	public static final int FROG_PRIN = 13443;
+	public static final int FROG_PRIN_13444 = 13444;
+	public static final int FROG_PRINCE = 13445;
+	public static final int FROG_PRINCESS = 13446;
 	public static final int ENRAGED_BLOOD_MOON = 13485;
 	public static final int ENRAGED_BLUE_MOON = 13486;
 	public static final int ENRAGED_ECLIPSE_MOON = 13487;
