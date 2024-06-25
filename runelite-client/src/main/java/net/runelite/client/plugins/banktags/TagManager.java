@@ -112,7 +112,15 @@ public class TagManager
 		setTagString(itemId, Text.toCSV(tags), variation);
 	}
 
-	boolean findTag(int itemId, String search)
+	/**
+	 * Looks for a tag in an item, if `strict` is specified the
+	 * tag needs to be exact.
+	 * @param itemId ID of the item to look in
+	 * @param search Tag in question
+	 * @param strict Whether the search should look for an exact match
+	 * @return `true` if it found a tag otherwise `false`
+	 */
+	boolean findTag(int itemId, String search, boolean strict)
 	{
 		BankTag bankTag = customTags.get(search);
 		if (bankTag != null && bankTag.contains(itemId))
@@ -122,6 +130,10 @@ public class TagManager
 
 		Collection<String> tags = getTags(itemId, false);
 		tags.addAll(getTags(itemId, true));
+		if (strict)
+		{
+			return tags.stream().anyMatch(tag -> tag.equals(Text.standardize(search)));
+		}
 		return tags.stream().anyMatch(tag -> tag.startsWith(Text.standardize(search)));
 	}
 

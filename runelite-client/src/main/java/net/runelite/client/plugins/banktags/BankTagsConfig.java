@@ -76,6 +76,17 @@ public interface BankTagsConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "explicitSearch",
+		name = "Explicit search",
+		description = "When searching, do not recognize the search until an exact match is found",
+		position = 5
+	)
+	default boolean explicitSearch()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "position",
 		name = "",
 		description = "",

@@ -94,6 +94,7 @@ public class BankTagsPluginTest
 		when(itemManager.canonicalize(ABYSSAL_WHIP)).thenReturn(ABYSSAL_WHIP);
 		when(client.getIntStackSize()).thenReturn(2);
 		when(client.getStringStackSize()).thenReturn(1);
+		when(bankTagsPlugin.getConfig(configManager)).thenReturn(bankTagsConfig);
 	}
 
 	@Test
@@ -131,7 +132,7 @@ public class BankTagsPluginTest
 		when(configManager.getConfiguration(BankTagsPlugin.CONFIG_GROUP,
 			TagManager.ITEM_KEY_PREFIX + ABYSSAL_WHIP)).thenReturn("herb,bossing");
 
-		assertFalse(tagManager.findTag(ABYSSAL_WHIP, "whip"));
+		assertFalse(tagManager.findTag(ABYSSAL_WHIP, "whip", false));
 		bankTagsPlugin.onScriptCallbackEvent(EVENT);
 		assertEquals(1, client.getIntStack()[0]);
 	}
