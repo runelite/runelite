@@ -3715,10 +3715,10 @@ public final class ItemID
 	public static final int LEDERHOSEN_SHORTS = 6181;
 	public static final int LEDERHOSEN_HAT = 6182;
 	public static final int FROG_TOKEN = 6183;
-	public static final int PRINCE_TUNIC = 6184;
-	public static final int PRINCE_LEGGINGS = 6185;
-	public static final int PRINCESS_BLOUSE = 6186;
-	public static final int PRINCESS_SKIRT = 6187;
+	public static final int ROYAL_FROG_TUNIC = 6184;
+	public static final int ROYAL_FROG_LEGGINGS = 6185;
+	public static final int ROYAL_FROG_BLOUSE = 6186;
+	public static final int ROYAL_FROG_SKIRT = 6187;
 	public static final int FROG_MASK = 6188;
 	public static final int MYSTERY_BOX = 6199;
 	public static final int RAW_FISHLIKE_THING = 6200;
