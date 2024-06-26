@@ -407,8 +407,12 @@ public class TabInterface
 		activeTab = null;
 
 		upButton = downButton = newTab = scrollComponent = null;
-		parent.deleteAllChildren();
-		parent = null;
+
+		if (parent != null)
+		{
+			parent.deleteAllChildren();
+			parent = null;
+		}
 
 		tabManager.clear();
 	}
