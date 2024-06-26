@@ -69,6 +69,7 @@ import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.AgilityShortcut;
+import net.runelite.client.game.GameArea;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
@@ -87,7 +88,6 @@ import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 @Slf4j
 public class AgilityPlugin extends Plugin
 {
-	private static final int AGILITY_ARENA_REGION_ID = 11157;
 	private static final Set<Integer> SEPULCHRE_NPCS = ImmutableSet.of(
 		NullNpcID.NULL_9672, NullNpcID.NULL_9673, NullNpcID.NULL_9674,  // arrows
 		NullNpcID.NULL_9669, NullNpcID.NULL_9670, NullNpcID.NULL_9671   // swords
@@ -309,7 +309,7 @@ public class AgilityPlugin extends Plugin
 		}
 
 		WorldPoint location = local.getWorldLocation();
-		return location.getRegionID() == AGILITY_ARENA_REGION_ID;
+		return GameArea.BRIMHAVEN_AGILITY_ARENA.containsRegion(location.getRegionID());
 	}
 
 	private void removeAgilityArenaTimer()
@@ -383,7 +383,7 @@ public class AgilityPlugin extends Plugin
 		if (Obstacles.OBSTACLE_IDS.contains(newObject.getId()) ||
 			Obstacles.PORTAL_OBSTACLE_IDS.contains(newObject.getId()) ||
 			(Obstacles.TRAP_OBSTACLE_IDS.contains(newObject.getId())
-				&& Obstacles.TRAP_OBSTACLE_REGIONS.contains(newObject.getWorldLocation().getRegionID())) ||
+				&& GameArea.AGILITY_PYRAMID.containsRegion(newObject.getWorldLocation().getRegionID())) ||
 			Obstacles.SEPULCHRE_OBSTACLE_IDS.contains(newObject.getId()) ||
 			Obstacles.SEPULCHRE_SKILL_OBSTACLE_IDS.contains(newObject.getId()))
 		{

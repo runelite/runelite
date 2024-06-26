@@ -27,7 +27,8 @@ package net.runelite.api.coords;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Value;
 import net.runelite.api.CollisionData;
 import net.runelite.api.CollisionDataFlag;
 import net.runelite.api.Point;
@@ -37,46 +38,34 @@ import net.runelite.api.WorldView;
 /**
  * Represents an area on the world.
  */
+@AllArgsConstructor
+@Value
 public class WorldArea
 {
 	/**
 	 * The western most point of the area.
 	 */
-	@Getter
-	private int x;
+	private final int x;
 
 	/**
 	 * The southern most point of the area.
 	 */
-	@Getter
-	private int y;
+	private final int y;
 
 	/**
 	 * The width of the area.
 	 */
-	@Getter
-	private int width;
+	private final int width;
 
 	/**
 	 * The height of the area.
 	 */
-	@Getter
-	private int height;
+	private final int height;
 
 	/**
 	 * The plane the area is on.
 	 */
-	@Getter
-	private int plane;
-
-	public WorldArea(int x, int y, int width, int height, int plane)
-	{
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
-		this.plane = plane;
-	}
+	private final int plane;
 
 	public WorldArea(WorldPoint location, int width, int height)
 	{
@@ -216,6 +205,17 @@ public class WorldArea
 			return false;
 		}
 
+		return intersectsWith2D(other);
+	}
+
+	/**
+	 * Checks whether this area intersects with another while ignoring the plane.
+	 *
+	 * @param other the other area
+	 * @return true if the areas intersect, false otherwise
+	 */
+	public boolean intersectsWith2D(WorldArea other)
+	{
 		Point distances = getAxisDistances(other);
 		return distances.getX() + distances.getY() == 0;
 	}
