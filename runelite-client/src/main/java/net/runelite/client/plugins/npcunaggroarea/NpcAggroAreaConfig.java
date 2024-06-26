@@ -54,7 +54,7 @@ public interface NpcAggroAreaConfig extends Config
 	@ConfigItem(
 		keyName = "npcUnaggroNames",
 		name = "NPC names",
-		description = "Enter names of NPCs where you wish to use this plugin",
+		description = "Enter the names of NPCs, separated by commas, in the presence of which you would like to see NPC aggression timers.<br>You can use wildcards e.g. *wyvern, *dragon to have the timers show in the presence of all wyverns and dragons.",
 		position = 2
 	)
 	default String npcNamePatterns()
