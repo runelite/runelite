@@ -63,4 +63,11 @@ public final class VarClientInt
 	public static final int BLOCK_KEYPRESS = 187;
 
 	public static final int WORLD_MAP_SEARCH_FOCUSED = 190;
+
+	/**
+	 * The player's special attack regeneration interval in ticks
+	 * <p>
+	 * Ticks = {@code (VALUE & ((1 << 22) - 1)) >> 11}
+	 */
+	public static final int SPEC_REGEN_INTERVAL = 987;
 }
