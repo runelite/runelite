@@ -24,12 +24,8 @@
  */
 package net.runelite.client.plugins.animsmoothing;
 
-import com.google.inject.Provides;
 import javax.inject.Inject;
 import net.runelite.api.Client;
-import net.runelite.client.events.ConfigChanged;
-import net.runelite.client.config.ConfigManager;
-import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
@@ -41,19 +37,8 @@ import net.runelite.client.plugins.PluginDescriptor;
 )
 public class AnimationSmoothingPlugin extends Plugin
 {
-	static final String CONFIG_GROUP = "animationSmoothing";
-
 	@Inject
 	private Client client;
-
-	@Inject
-	private AnimationSmoothingConfig config;
-
-	@Provides
-	AnimationSmoothingConfig getConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(AnimationSmoothingConfig.class);
-	}
 
 	@Override
 	protected void startUp() throws Exception
@@ -64,24 +49,11 @@ public class AnimationSmoothingPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception
 	{
-		client.setInterpolatePlayerAnimations(false);
-		client.setInterpolateNpcAnimations(false);
-		client.setInterpolateObjectAnimations(false);
-	}
-
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
-	{
-		if (event.getGroup().equals(CONFIG_GROUP))
-		{
-			update();
-		}
+		client.setAnimationInterpolationFilter(null);
 	}
 
 	private void update()
 	{
-		client.setInterpolatePlayerAnimations(config.smoothPlayerAnimations());
-		client.setInterpolateNpcAnimations(config.smoothNpcAnimations());
-		client.setInterpolateObjectAnimations(config.smoothObjectAnimations());
+		client.setAnimationInterpolationFilter(i -> true);
 	}
 }
