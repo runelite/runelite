@@ -33,10 +33,13 @@ import java.awt.Shape;
 import java.util.List;
 import java.util.Set;
 import javax.inject.Inject;
+
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.Point;
 import net.runelite.api.Tile;
+import net.runelite.api.NPCComposition;
+import net.runelite.api.Perspective;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.game.AgilityShortcut;
 import net.runelite.client.ui.overlay.Overlay;
@@ -76,10 +79,10 @@ class AgilityOverlay extends Overlay
 		plugin.getObstacles().forEach((object, obstacle) ->
 		{
 			if (Obstacles.SHORTCUT_OBSTACLE_IDS.containsKey(object.getId()) && !config.highlightShortcuts() ||
-					Obstacles.TRAP_OBSTACLE_IDS.contains(object.getId()) && !config.showTrapOverlay() ||
-					Obstacles.OBSTACLE_IDS.contains(object.getId()) && !config.showClickboxes() ||
-					Obstacles.SEPULCHRE_OBSTACLE_IDS.contains(object.getId()) && !config.highlightSepulchreObstacles() ||
-					Obstacles.SEPULCHRE_SKILL_OBSTACLE_IDS.contains(object.getId()) && !config.highlightSepulchreSkilling())
+				Obstacles.TRAP_OBSTACLE_IDS.contains(object.getId()) && !config.showTrapOverlay() ||
+				Obstacles.OBSTACLE_IDS.contains(object.getId()) && !config.showClickboxes() ||
+				Obstacles.SEPULCHRE_OBSTACLE_IDS.contains(object.getId()) && !config.highlightSepulchreObstacles() ||
+				Obstacles.SEPULCHRE_SKILL_OBSTACLE_IDS.contains(object.getId()) && !config.highlightSepulchreSkilling())
 			{
 				return;
 			}
@@ -150,12 +153,42 @@ class AgilityOverlay extends Overlay
 		}
 
 		Set<NPC> npcs = plugin.getNpcs();
+//		if (!npcs.isEmpty() && config.highlightSepulchreNpcs())
+//		{
+//			Color color = config.sepulchreHighlightColor();
+//			for (NPC npc : npcs)
+//			{
+//				Polygon tilePoly = npc.getCanvasTilePoly();
+//				if (tilePoly != null)
+//				{
+//					OverlayUtil.renderPolygon(graphics, tilePoly, color);
+//				}
+//			}
+//		}
 		if (!npcs.isEmpty() && config.highlightSepulchreNpcs())
 		{
 			Color color = config.sepulchreHighlightColor();
 			for (NPC npc : npcs)
 			{
-				Polygon tilePoly = npc.getCanvasTilePoly();
+				Polygon tilePoly = null;
+				if (config.sepulchreTrueTile())
+				{
+					NPCComposition npcComposition = npc.getTransformedComposition();
+					LocalPoint lp = LocalPoint.fromWorld(client, npc.getWorldLocation()); // centered on sw tile
+					if (lp != null)
+					{
+						final int size = npcComposition.getSize();
+						final LocalPoint centerLp = lp.plus(
+							Perspective.LOCAL_TILE_SIZE * (size - 1) / 2,
+							Perspective.LOCAL_TILE_SIZE * (size - 1) / 2);
+						tilePoly = Perspective.getCanvasTileAreaPoly(client, centerLp, size);
+					}
+				}
+				else
+				{
+					tilePoly = npc.getCanvasTilePoly();
+				}
+
 				if (tilePoly != null)
 				{
 					OverlayUtil.renderPolygon(graphics, tilePoly, color);
