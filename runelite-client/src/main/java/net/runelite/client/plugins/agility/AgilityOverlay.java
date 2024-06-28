@@ -153,18 +153,6 @@ class AgilityOverlay extends Overlay
 		}
 
 		Set<NPC> npcs = plugin.getNpcs();
-//		if (!npcs.isEmpty() && config.highlightSepulchreNpcs())
-//		{
-//			Color color = config.sepulchreHighlightColor();
-//			for (NPC npc : npcs)
-//			{
-//				Polygon tilePoly = npc.getCanvasTilePoly();
-//				if (tilePoly != null)
-//				{
-//					OverlayUtil.renderPolygon(graphics, tilePoly, color);
-//				}
-//			}
-//		}
 		if (!npcs.isEmpty() && config.highlightSepulchreNpcs())
 		{
 			Color color = config.sepulchreHighlightColor();
