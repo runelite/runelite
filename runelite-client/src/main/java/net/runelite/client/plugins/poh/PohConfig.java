@@ -170,4 +170,14 @@ public interface PohConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+			keyName = "showPortalLabels",
+			name = "Show Portal Labels",
+			description = "Configures whether or not to display text labels on portals"
+	)
+	default boolean showPortalLabels()
+	{
+		return false;
+	}
 }
