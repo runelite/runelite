@@ -136,6 +136,20 @@ class XpStateSingle
 		return Integer.MAX_VALUE;
 	}
 
+	private int getXpPerAction()
+	{
+		int actionsRemaining = getActionsRemaining();
+		int xpRemaining = getXpRemaining();
+
+		if (actionsRemaining > 0 && xpRemaining > 0)
+		{
+			long remainder = xpRemaining % actionsRemaining;
+			long quotient = xpRemaining / actionsRemaining;
+			return Math.toIntExact(quotient + (remainder > 0 ? 1 : 0));
+		}
+		return Integer.MAX_VALUE;
+	}
+
 	private double getSkillProgress()
 	{
 		double xpGained = getCurrentXp() - startLevelExp;
@@ -318,6 +332,7 @@ class XpStateSingle
 			.actionsInSession(getXpAction(actionType).getActions() + getXpAction(actionType).getActionsSinceReset())
 			.actionsRemainingToGoal(getActionsRemaining())
 			.actionsPerHour(getActionsHr())
+			.xpPerAction(getXpPerAction())
 			.timeTillGoal(getTimeTillLevel(XpGoalTimeType.DAYS))
 			.timeTillGoalHours(getTimeTillLevel(XpGoalTimeType.HOURS))
 			.timeTillGoalShort(getTimeTillLevel(XpGoalTimeType.SHORT))
