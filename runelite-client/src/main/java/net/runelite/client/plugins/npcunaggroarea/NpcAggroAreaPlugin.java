@@ -133,6 +133,7 @@ public class NpcAggroAreaPlugin extends Plugin
 	private WorldPoint lastPlayerLocation;
 	private WorldPoint previousUnknownCenter;
 	private boolean loggingIn;
+	private boolean shouldRecheck;
 	private boolean notifyOnce;
 
 	private List<String> npcNamePatterns;
@@ -336,6 +337,12 @@ public class NpcAggroAreaPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
+		if (shouldRecheck)
+		{
+			shouldRecheck = false;
+			recheckActive();
+		}
+
 		WorldPoint newLocation = client.getLocalPlayer().getWorldLocation();
 
 		if (active && notifyOnce && Instant.now().isAfter(endTime))
@@ -479,7 +486,7 @@ public class NpcAggroAreaPlugin extends Plugin
 					onLogin();
 				}
 
-				recheckActive();
+				shouldRecheck = true;
 				break;
 
 			case LOGGING_IN:
