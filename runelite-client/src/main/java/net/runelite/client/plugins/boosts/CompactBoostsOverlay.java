@@ -45,8 +45,9 @@ class CompactBoostsOverlay extends Overlay
 	private static final int H_PADDING = 2;
 	private static final int V_PADDING = 1;
 	private static final int TEXT_WIDTH = 22;
-	private static final BufferedImage BUFFED = ImageUtil.loadImageResource(CompactBoostsOverlay.class, "buffedsmall.png");
-	private static final BufferedImage DEBUFFED = ImageUtil.loadImageResource(CompactBoostsOverlay.class, "debuffedsmall.png");
+	private static final BufferedImage COMBAT_BUFFED = ImageUtil.loadImageResource(CompactBoostsOverlay.class, "buffed_cb_small.png");
+	private static final BufferedImage NON_COMBAT_BUFFED = ImageUtil.loadImageResource(CompactBoostsOverlay.class, "buffed_non_cb_small.png");
+	private static final BufferedImage DEBUFFED = ImageUtil.loadImageResource(CompactBoostsOverlay.class, "debuffed_small.png");
 
 	private final Client client;
 	private final BoostsConfig config;
@@ -95,26 +96,12 @@ class CompactBoostsOverlay extends Overlay
 			drawBoost(graphics, fontMetrics, fontHeight,
 				skillIconManager.getSkillImage(skill, true),
 				getTextColor(boost),
-				getBoostText(boost, base, boosted));
+				getBoostText(boost, boosted));
 		}
 
-		int time = plugin.getDebuffRestorationTicks();
-		if (time != -1)
-		{
-			drawBoost(graphics, fontMetrics, fontHeight,
-				DEBUFFED,
-				time < 10 ? Color.RED.brighter() : Color.WHITE,
-				Integer.toString(plugin.getChangeTime(time)));
-		}
-
-		time = plugin.getNonCbBuffDrainTicks();
-		if (time != -1)
-		{
-			drawBoost(graphics, fontMetrics, fontHeight,
-				BUFFED,
-				time < 10 ? Color.RED.brighter() : Color.WHITE,
-				Integer.toString(plugin.getChangeTime(time)));
-		}
+		drawBoostTimer(plugin.getCbBuffDrainTicks(), graphics, fontMetrics, fontHeight, COMBAT_BUFFED);
+		drawBoostTimer(plugin.getNonCbBuffDrainTicks(), graphics, fontMetrics, fontHeight, NON_COMBAT_BUFFED);
+		drawBoostTimer(plugin.getDebuffRestorationTicks(), graphics, fontMetrics, fontHeight, DEBUFFED);
 
 		return new Dimension(maxX, curY);
 	}
@@ -142,7 +129,7 @@ class CompactBoostsOverlay extends Overlay
 		maxX = Math.max(maxX, image.getWidth() + H_PADDING + TEXT_WIDTH);
 	}
 
-	private String getBoostText(int boost, int base, int boosted)
+	private String getBoostText(int boost, int boosted)
 	{
 		if (config.useRelativeBoost())
 		{
@@ -162,5 +149,16 @@ class CompactBoostsOverlay extends Overlay
 		}
 
 		return boost <= config.boostThreshold() ? Color.YELLOW : Color.GREEN;
+	}
+
+	private void drawBoostTimer(int time, Graphics2D graphics, FontMetrics fontMetrics, int fontHeight, BufferedImage image)
+	{
+		if (time != -1)
+		{
+			drawBoost(graphics, fontMetrics, fontHeight,
+				image,
+				time < 10 ? Color.RED.brighter() : Color.WHITE,
+				Integer.toString(plugin.getChangeTime(time)));
+		}
 	}
 }

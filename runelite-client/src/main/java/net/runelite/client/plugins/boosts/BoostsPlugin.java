@@ -117,6 +117,7 @@ public class BoostsPlugin extends Plugin
 	private boolean isNonCbBuffed;
 	private boolean isDebuffed;
 	private final int[] lastSkillLevels = new int[Skill.values().length];
+	private int lastCbBuffDrainUpdate = -1;
 	private int lastNonCbBuffDrainUpdate = -1;
 	private int nonCbBuffDrainBase = -1;
 	private int previousNonCbBuffDrainBase = -1;
@@ -148,8 +149,9 @@ public class BoostsPlugin extends Plugin
 		Arrays.fill(lastSkillLevels, -1);
 
 		// Add infoboxes for everything at startup and then determine inside if it will be rendered
-		infoBoxManager.addInfoBox(new StatChangeIndicator(true, ImageUtil.loadImageResource(getClass(), "debuffed.png"), this, config));
-		infoBoxManager.addInfoBox(new StatChangeIndicator(false, ImageUtil.loadImageResource(getClass(), "buffed.png"), this, config));
+		infoBoxManager.addInfoBox(new StatChangeIndicator(StatChangeIndicator.BoostType.COMBAT_BUFFED, ImageUtil.loadImageResource(getClass(), "buffed_cb.png"), this, config));
+		infoBoxManager.addInfoBox(new StatChangeIndicator(StatChangeIndicator.BoostType.NON_COMBAT_BUFFED, ImageUtil.loadImageResource(getClass(), "buffed_non_cb.png"), this, config));
+		infoBoxManager.addInfoBox(new StatChangeIndicator(StatChangeIndicator.BoostType.DEBUFFED, ImageUtil.loadImageResource(getClass(), "debuffed.png"), this, config));
 
 		for (final Skill skill : Skill.values())
 		{
@@ -223,6 +225,12 @@ public class BoostsPlugin extends Plugin
 		final int cur = client.getBoostedSkillLevel(skill);
 		final boolean wasBuffed = isCbBuffed || isNonCbBuffed;
 
+		if (BOOSTABLE_COMBAT_SKILLS.contains(skill) && cur == last - 1)
+		{
+			// combat buff was drained
+			lastCbBuffDrainUpdate = client.getTickCount();
+		}
+
 		lastSkillLevels[skillIdx] = cur;
 		updateBoostedStats();
 
@@ -236,7 +244,8 @@ public class BoostsPlugin extends Plugin
 			notifier.notify(config.notifyOnBoost(), skill.getName() + " level is getting low!");
 		}
 
-		// reset non-cb buff drain timer to unbuffed state since var is transmitted every 25 gameticks
+		// reset non-cb buff drain timer to unbuffed state in case of death/stat reset, since var is transmitted every
+		// 25 gameticks
 		if (wasBuffed && !isCbBuffed && !isNonCbBuffed)
 		{
 			nonCbBuffDrainBase = client.isPrayerActive(Prayer.PRESERVE) ? 150 : 100;
@@ -284,6 +293,20 @@ public class BoostsPlugin extends Plugin
 			if (client.isPrayerActive(Prayer.PRESERVE) && !preserveBoostApplied)
 			{
 				nonCbBuffDrainBase += 50;
+			}
+
+			// The cb & non-cb buff drain timers tick at the same time. The cb RL timer can get slightly desynced in
+			// very specific scenarios, e.g. teleporting around, in which case getCbBuffDrainTicks() for example
+			// returns 3 instead of 0. The actual ingame timer does not get desynced, i.e. the buff drain actually
+			// happens when the script is fired. Resync the timer.
+			if (lastCbBuffDrainUpdate != -1)
+			{
+				lastCbBuffDrainUpdate -= getCbBuffDrainTicks() % 25;
+			}
+
+			if (getCbBuffDrainTicks() == 0)
+			{
+				lastCbBuffDrainUpdate = client.getTickCount();
 			}
 		}
 
@@ -382,6 +405,7 @@ public class BoostsPlugin extends Plugin
 	private void reset()
 	{
 		preserveBeenActive = false;
+		lastCbBuffDrainUpdate = -1;
 		lastNonCbBuffDrainUpdate = -1;
 		nonCbBuffDrainBase = -1;
 		previousNonCbBuffDrainBase = -1;
@@ -391,6 +415,47 @@ public class BoostsPlugin extends Plugin
 		isCbBuffed = false;
 		isNonCbBuffed = false;
 		isDebuffed = false;
+	}
+
+	/**
+	 * Calculates the amount of time until boosted combat stats decay,
+	 * accounting for the effect of preserve prayer.
+	 * Preserve extends the time of boosted stats by 50% while active.
+	 * The length of a boost is split into 4 sections of 15 seconds each.
+	 * If the preserve prayer is active for the entire duration of the final
+	 * section it will "activate" adding an additional 15 second section
+	 * to the boost timing. If again the preserve prayer is active for that
+	 * entire section a second 15 second section will be added.
+	 * <p>
+	 * Preserve is only required to be on for the 4th and 5th sections of the boost timer
+	 * to gain full effect (seconds 45-75).
+	 * <p>
+	 * The combat buff drain timer is separate from the non-cb buff drain timer.
+	 * The timers are often not synced, but do tick at the same time.
+	 * The cb buff drain timer does not loop the first section while unboosted.
+	 *
+	 * @return integer value in ticks until next combat buff drain
+	 */
+	int getCbBuffDrainTicks()
+	{
+		if (lastCbBuffDrainUpdate == -1 ||
+			config.displayNextBuffChange() == BoostsConfig.DisplayChangeMode.NEVER ||
+			(!isCbBuffed && config.displayNextBuffChange() == BoostsConfig.DisplayChangeMode.BOOSTED))
+		{
+			return -1;
+		}
+
+		final int ticksSinceChange = client.getTickCount() - lastCbBuffDrainUpdate;
+
+		if ((client.isPrayerActive(Prayer.PRESERVE) && (ticksSinceChange < 75 || preserveBeenActive))
+			|| ticksSinceChange > 125)
+		{
+			preserveBeenActive = true;
+			return 150 - ticksSinceChange;
+		}
+
+		preserveBeenActive = false;
+		return ticksSinceChange > 100 ? 125 - ticksSinceChange : 100 - ticksSinceChange;
 	}
 
 	int getNonCbBuffDrainTicks()

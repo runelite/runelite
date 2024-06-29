@@ -26,41 +26,65 @@ package net.runelite.client.plugins.boosts;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import lombok.AllArgsConstructor;
 import net.runelite.client.ui.overlay.infobox.InfoBox;
 import net.runelite.client.ui.overlay.infobox.InfoBoxPriority;
 
 class StatChangeIndicator extends InfoBox
 {
-	private final boolean up;
+	private final BoostType boostType;
 	private final BoostsPlugin plugin;
 	private final BoostsConfig config;
 
-	StatChangeIndicator(boolean up, BufferedImage image, BoostsPlugin plugin, BoostsConfig config)
+	StatChangeIndicator(BoostType boostType, BufferedImage image, BoostsPlugin plugin, BoostsConfig config)
 	{
 		super(image, plugin);
-		this.up = up;
+		this.boostType = boostType;
 		this.plugin = plugin;
 		this.config = config;
 		setPriority(InfoBoxPriority.MED);
-		setTooltip(up ? "Next debuff change" : "Next buff change");
+		setTooltip(boostType.tooltipText);
 	}
 
 	@Override
 	public String getText()
 	{
-		return String.format("%02d", plugin.getChangeTime(up ? plugin.getDebuffRestorationTicks() : plugin.getNonCbBuffDrainTicks()));
+		return String.format("%02d", plugin.getChangeTime(ticksRemaining(boostType)));
 	}
 
 	@Override
 	public Color getTextColor()
 	{
-		return (up ? plugin.getDebuffRestorationTicks() : plugin.getNonCbBuffDrainTicks()) < 10 ? Color.RED.brighter() : Color.WHITE;
+		return ticksRemaining(boostType) < 10 ? Color.RED.brighter() : Color.WHITE;
 	}
 
 	@Override
 	public boolean render()
 	{
-		final int time = up ? plugin.getDebuffRestorationTicks() : plugin.getNonCbBuffDrainTicks();
-		return time != -1 && config.displayInfoboxes();
+		return ticksRemaining(boostType) != -1 && config.displayInfoboxes();
+	}
+
+	private int ticksRemaining(BoostType boostType)
+	{
+		switch (boostType)
+		{
+			case COMBAT_BUFFED:
+				return plugin.getCbBuffDrainTicks();
+			case NON_COMBAT_BUFFED:
+				return plugin.getNonCbBuffDrainTicks();
+			case DEBUFFED:
+				return plugin.getDebuffRestorationTicks();
+		}
+		return -1;
+	}
+
+	@AllArgsConstructor
+	enum BoostType
+	{
+		COMBAT_BUFFED("Next combat buff change"),
+		NON_COMBAT_BUFFED("Next non-combat buff change"),
+		DEBUFFED("Next debuff change");
+
+		final String tooltipText;
 	}
 }
