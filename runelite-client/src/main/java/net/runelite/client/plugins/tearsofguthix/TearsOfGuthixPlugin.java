@@ -83,7 +83,7 @@ public class TearsOfGuthixPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		switch (event.getGameState())
 		{
@@ -95,7 +95,7 @@ public class TearsOfGuthixPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onDecorativeObjectSpawned(DecorativeObjectSpawned event)
+	private void onDecorativeObjectSpawned(DecorativeObjectSpawned event)
 	{
 		DecorativeObject object = event.getDecorativeObject();
 
@@ -112,7 +112,7 @@ public class TearsOfGuthixPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onDecorativeObjectDespawned(DecorativeObjectDespawned event)
+	private void onDecorativeObjectDespawned(DecorativeObjectDespawned event)
 	{
 		if (streams.isEmpty())
 		{

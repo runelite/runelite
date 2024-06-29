@@ -323,7 +323,7 @@ public class NpcAggroAreaPlugin extends Plugin
 	}
 
 	@Subscribe(priority = -1) // run after slayer plugin so targets has time to populate
-	public void onNpcSpawned(NpcSpawned event)
+	private void onNpcSpawned(NpcSpawned event)
 	{
 		if (active)
 		{
@@ -334,7 +334,7 @@ public class NpcAggroAreaPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick event)
+	private void onGameTick(GameTick event)
 	{
 		WorldPoint newLocation = client.getLocalPlayer().getWorldLocation();
 
@@ -388,7 +388,7 @@ public class NpcAggroAreaPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		String key = event.getKey();
 		switch (key)
@@ -468,7 +468,7 @@ public class NpcAggroAreaPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		switch (event.getGameState())
 		{

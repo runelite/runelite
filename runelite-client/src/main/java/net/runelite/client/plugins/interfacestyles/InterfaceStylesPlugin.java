@@ -102,7 +102,7 @@ public class InterfaceStylesPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		if (gameStateChanged.getGameState() == GameState.STARTING)
 		{
@@ -125,7 +125,7 @@ public class InterfaceStylesPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged config)
+	private void onConfigChanged(ConfigChanged config)
 	{
 		if (config.getGroup().equals("interfaceStyles"))
 		{
@@ -135,7 +135,7 @@ public class InterfaceStylesPlugin extends Plugin
 
 	// Use a higher priority so that player menu entries added by other sources are added to the player's submenu
 	@Subscribe(priority = 1)
-	public void onMenuOpened(MenuOpened event)
+	private void onMenuOpened(MenuOpened event)
 	{
 		if (config.condensePlayerOptions())
 		{
@@ -185,7 +185,7 @@ public class InterfaceStylesPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onScriptCallbackEvent(ScriptCallbackEvent event)
+	private void onScriptCallbackEvent(ScriptCallbackEvent event)
 	{
 		if ("forceStackStones".equals(event.getEventName()) && config.alwaysStack())
 		{
@@ -196,13 +196,13 @@ public class InterfaceStylesPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onPostClientTick(PostClientTick event)
+	private void onPostClientTick(PostClientTick event)
 	{
 		adjustWidgetDimensions();
 	}
 
 	@Subscribe
-	public void onPostHealthBar(PostHealthBar postHealthBar)
+	private void onPostHealthBar(PostHealthBar postHealthBar)
 	{
 		if (!config.hdHealthBars())
 		{
@@ -232,7 +232,7 @@ public class InterfaceStylesPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onBeforeMenuRender(BeforeMenuRender event)
+	private void onBeforeMenuRender(BeforeMenuRender event)
 	{
 		if (config.hdMenu())
 		{

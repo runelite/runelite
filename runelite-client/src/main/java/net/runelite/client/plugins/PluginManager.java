@@ -120,7 +120,7 @@ public class PluginManager
 	}
 
 	@Subscribe
-	public void onProfileChanged(ProfileChanged profileChanged)
+	private void onProfileChanged(ProfileChanged profileChanged)
 	{
 		refreshPlugins();
 	}

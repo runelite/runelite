@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.prayer;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Provides;
 import java.time.Duration;
 import java.time.Instant;
@@ -161,7 +162,8 @@ public class PrayerPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onItemContainerChanged(final ItemContainerChanged event)
+	@VisibleForTesting
+	void onItemContainerChanged(final ItemContainerChanged event)
 	{
 		final int id = event.getContainerId();
 		if (id == InventoryID.INVENTORY.getId())
@@ -176,7 +178,7 @@ public class PrayerPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick tick)
+	private void onGameTick(GameTick tick)
 	{
 		prayersActive = isAnyPrayerActive();
 

@@ -74,7 +74,7 @@ public class FpsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals(CONFIG_GROUP_KEY))
 		{
@@ -83,7 +83,7 @@ public class FpsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onFocusChanged(FocusChanged event)
+	private void onFocusChanged(FocusChanged event)
 	{
 		drawListener.onFocusChanged(event);
 		overlay.onFocusChanged(event);

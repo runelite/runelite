@@ -186,7 +186,8 @@ public class XpTrackerPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	@VisibleForTesting
+	void onGameStateChanged(GameStateChanged event)
 	{
 		GameState state = event.getGameState();
 		if (state == GameState.LOGGED_IN)
@@ -372,7 +373,8 @@ public class XpTrackerPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onStatChanged(StatChanged statChanged)
+	@VisibleForTesting
+	void onStatChanged(StatChanged statChanged)
 	{
 		final Skill skill = statChanged.getSkill();
 		final int currentXp = statChanged.getXp();
@@ -415,7 +417,7 @@ public class XpTrackerPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onNpcDespawned(NpcDespawned event)
+	private void onNpcDespawned(NpcDespawned event)
 	{
 		final NPC npc = event.getNpc();
 
@@ -435,7 +437,8 @@ public class XpTrackerPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick event)
+	@VisibleForTesting
+	void onGameTick(GameTick event)
 	{
 		if (initializeTracker)
 		{
@@ -496,7 +499,7 @@ public class XpTrackerPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onMenuEntryAdded(final MenuEntryAdded event)
+	private void onMenuEntryAdded(final MenuEntryAdded event)
 	{
 		int widgetID = event.getActionParam1();
 
