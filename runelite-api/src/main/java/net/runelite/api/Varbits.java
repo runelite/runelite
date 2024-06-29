@@ -892,4 +892,9 @@ public final class Varbits
 
 	public static final int SPELLBOOK = 4070;
 	public static final int SPELLBOOK_SUBMENU = 9730;
+
+	/**
+	 * Counts up from 0 while in Sepulchre and doesn't reset until you leave the arena
+	 */
+	public static final int SEPULCHRE_TOTAL_TIME = 10393;
 }
