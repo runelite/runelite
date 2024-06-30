@@ -62,9 +62,16 @@ class BoostsOverlay extends OverlayPanel
 			return null;
 		}
 
-		addChild(plugin.getCbBuffDrainTicks(), "Next cb + restore");
-		addChild(plugin.getNonCbBuffDrainTicks(), "Next non-cb + restore");
-		addChild(plugin.getDebuffRestorationTicks(), "Next - restore");
+		for (BoostTimer boostTimer : BoostTimer.values())
+		{
+			if (plugin.getTicksRemaining(boostTimer) != -1)
+			{
+				panelComponent.getChildren().add(LineComponent.builder()
+					.left(boostTimer.overlayText)
+					.right(String.valueOf(plugin.getChangeTime(plugin.getTicksRemaining(boostTimer))))
+					.build());
+			}
+		}
 
 		for (Skill skill : boostedSkills)
 		{
@@ -96,17 +103,6 @@ class BoostsOverlay extends OverlayPanel
 		}
 
 		return super.render(graphics);
-	}
-
-	private void addChild(int nextChange, String text)
-	{
-		if (nextChange != -1)
-		{
-			panelComponent.getChildren().add(LineComponent.builder()
-				.left(text)
-				.right(String.valueOf(plugin.getChangeTime(nextChange)))
-				.build());
-		}
 	}
 
 	private Color getTextColor(int boost)
