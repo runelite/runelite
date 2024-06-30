@@ -58,7 +58,6 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
-import net.runelite.client.util.ImageUtil;
 
 @PluginDescriptor(
 	name = "Boosts Information",
@@ -149,9 +148,10 @@ public class BoostsPlugin extends Plugin
 		Arrays.fill(lastSkillLevels, -1);
 
 		// Add infoboxes for everything at startup and then determine inside if it will be rendered
-		infoBoxManager.addInfoBox(new StatChangeIndicator(StatChangeIndicator.BoostType.COMBAT_BUFFED, ImageUtil.loadImageResource(getClass(), "buffed_cb.png"), this, config));
-		infoBoxManager.addInfoBox(new StatChangeIndicator(StatChangeIndicator.BoostType.NON_COMBAT_BUFFED, ImageUtil.loadImageResource(getClass(), "buffed_non_cb.png"), this, config));
-		infoBoxManager.addInfoBox(new StatChangeIndicator(StatChangeIndicator.BoostType.DEBUFFED, ImageUtil.loadImageResource(getClass(), "debuffed.png"), this, config));
+		for (BoostTimer boostTimer : BoostTimer.values())
+		{
+			infoBoxManager.addInfoBox(new StatChangeIndicator(boostTimer, this, config));
+		}
 
 		for (final Skill skill : Skill.values())
 		{
@@ -436,7 +436,7 @@ public class BoostsPlugin extends Plugin
 	 *
 	 * @return integer value in ticks until next combat buff drain
 	 */
-	int getCbBuffDrainTicks()
+	private int getCbBuffDrainTicks()
 	{
 		if (lastCbBuffDrainUpdate == -1 ||
 			config.displayNextBuffChange() == BoostsConfig.DisplayChangeMode.NEVER ||
@@ -458,7 +458,7 @@ public class BoostsPlugin extends Plugin
 		return ticksSinceChange > 100 ? 125 - ticksSinceChange : 100 - ticksSinceChange;
 	}
 
-	int getNonCbBuffDrainTicks()
+	private int getNonCbBuffDrainTicks()
 	{
 		if (lastNonCbBuffDrainUpdate == -1 ||
 			config.displayNextBuffChange() == BoostsConfig.DisplayChangeMode.NEVER ||
@@ -471,7 +471,7 @@ public class BoostsPlugin extends Plugin
 		return nonCbBuffDrainBase - ticksSinceChange;
 	}
 
-	int getDebuffRestorationTicks()
+	private int getDebuffRestorationTicks()
 	{
 		if (lastDebuffRestorationUpdate == -1 ||
 			config.displayNextDebuffChange() == BoostsConfig.DisplayChangeMode.NEVER ||
@@ -482,6 +482,20 @@ public class BoostsPlugin extends Plugin
 
 		final int ticksSinceChange = client.getTickCount() - lastDebuffRestorationUpdate;
 		return debuffRestorationBase - ticksSinceChange;
+	}
+
+	int getTicksRemaining(BoostTimer boostTimer)
+	{
+		switch (boostTimer)
+		{
+			case COMBAT_BUFFED:
+				return getCbBuffDrainTicks();
+			case NON_COMBAT_BUFFED:
+				return getNonCbBuffDrainTicks();
+			case DEBUFFED:
+				return getDebuffRestorationTicks();
+		}
+		return -1;
 	}
 
 	/**
