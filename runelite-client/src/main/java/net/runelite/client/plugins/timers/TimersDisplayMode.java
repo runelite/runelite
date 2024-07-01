@@ -27,7 +27,7 @@ package net.runelite.client.plugins.timers;
 
 public enum TimersDisplayMode
 {
-	TICKS,
 	SECONDS,
+	TICKS,
 	DECIMALS
 }
