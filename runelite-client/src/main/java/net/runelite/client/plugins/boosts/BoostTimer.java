@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Seth <http://github.com/sethtroll>
+ * Copyright (c) 2024, YvesW <https://github.com/YvesW>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,41 +24,30 @@
  */
 package net.runelite.client.plugins.boosts;
 
-import java.awt.Color;
-import net.runelite.client.ui.overlay.infobox.InfoBox;
-import net.runelite.client.ui.overlay.infobox.InfoBoxPriority;
+import java.awt.image.BufferedImage;
+import lombok.AllArgsConstructor;
+import net.runelite.client.util.ImageUtil;
 
-class StatChangeIndicator extends InfoBox
+@AllArgsConstructor
+enum BoostTimer
 {
-	private final BoostTimer boostTimer;
-	private final BoostsPlugin plugin;
-	private final BoostsConfig config;
+	COMBAT_BUFFED("Next combat buff change", "buffed_cb.png", "Next cb + restore"),
+	NON_COMBAT_BUFFED("Next non-combat buff change", "buffed_non_cb.png", "Next non-cb + restore"),
+	DEBUFFED("Next debuff change", "debuffed.png", "Next - restore");
 
-	StatChangeIndicator(BoostTimer boostTimer, BoostsPlugin plugin, BoostsConfig config)
+	final String indicatorTooltipText;
+	final String indicatorImagePath;
+	final String overlayText;
+
+	BufferedImage indicatorImage()
 	{
-		super(boostTimer.indicatorImage(), plugin);
-		this.boostTimer = boostTimer;
-		this.plugin = plugin;
-		this.config = config;
-		setPriority(InfoBoxPriority.MED);
-		setTooltip(boostTimer.indicatorTooltipText);
+		return ImageUtil.loadImageResource(BoostsPlugin.class, indicatorImagePath);
 	}
 
-	@Override
-	public String getText()
+	BufferedImage compactImage()
 	{
-		return String.format("%02d", plugin.getChangeTime(plugin.getTicksRemaining(boostTimer)));
-	}
-
-	@Override
-	public Color getTextColor()
-	{
-		return plugin.getTicksRemaining(boostTimer) < 10 ? Color.RED.brighter() : Color.WHITE;
-	}
-
-	@Override
-	public boolean render()
-	{
-		return plugin.getTicksRemaining(boostTimer) != -1 && config.displayInfoboxes();
+		String extension = ".png";
+		String path = indicatorImagePath.substring(0, indicatorImagePath.indexOf(extension)) + "_small" + extension;
+		return ImageUtil.loadImageResource(BoostsPlugin.class, path);
 	}
 }
