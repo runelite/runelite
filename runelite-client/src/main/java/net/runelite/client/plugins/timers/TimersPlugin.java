@@ -201,7 +201,7 @@ public class TimersPlugin extends Plugin
 		{
 			if (event.getValue() == 1)
 			{
-				createGameTimer(VENGEANCE);
+				createGameTimer(VENGEANCE, config.displayMode());
 			}
 			else
 			{
@@ -213,7 +213,7 @@ public class TimersPlugin extends Plugin
 		{
 			if (event.getValue() == 1)
 			{
-				createGameTimer(SPELLBOOK_SWAP);
+				createGameTimer(SPELLBOOK_SWAP, config.displayMode());
 			}
 			else
 			{
@@ -225,7 +225,7 @@ public class TimersPlugin extends Plugin
 		{
 			if (event.getValue() == 1)
 			{
-				createGameTimer(HEAL_GROUP);
+				createGameTimer(HEAL_GROUP, config.displayMode());
 			}
 			else
 			{
@@ -237,7 +237,7 @@ public class TimersPlugin extends Plugin
 		{
 			if (event.getValue() == 1)
 			{
-				createGameTimer(DEATH_CHARGE_COOLDOWN);
+				createGameTimer(DEATH_CHARGE_COOLDOWN, config.displayMode());
 			}
 			else
 			{
@@ -249,7 +249,7 @@ public class TimersPlugin extends Plugin
 		{
 			if (event.getValue() == 1)
 			{
-				createGameTimer(CORRUPTION_COOLDOWN);
+				createGameTimer(CORRUPTION_COOLDOWN, config.displayMode());
 			}
 			else
 			{
@@ -261,7 +261,7 @@ public class TimersPlugin extends Plugin
 		{
 			if (event.getValue() == 1)
 			{
-				createGameTimer(RESURRECT_THRALL_COOLDOWN);
+				createGameTimer(RESURRECT_THRALL_COOLDOWN, config.displayMode());
 			}
 			else
 			{
@@ -273,7 +273,7 @@ public class TimersPlugin extends Plugin
 		{
 			if (event.getValue() == 1)
 			{
-				createGameTimer(SHADOW_VEIL_COOLDOWN);
+				createGameTimer(SHADOW_VEIL_COOLDOWN, config.displayMode());
 			}
 			else
 			{
@@ -285,7 +285,7 @@ public class TimersPlugin extends Plugin
 		{
 			if (event.getValue() == 1)
 			{
-				createGameTimer(WARD_OF_ARCEUUS_COOLDOWN);
+				createGameTimer(WARD_OF_ARCEUUS_COOLDOWN, config.displayMode());
 			}
 			else
 			{
@@ -309,7 +309,7 @@ public class TimersPlugin extends Plugin
 		{
 			if (event.getValue() == 1)
 			{
-				createGameTimer(DEATH_CHARGE, Duration.of(client.getRealSkillLevel(Skill.MAGIC), RSTimeUnit.GAME_TICKS));
+				createGameTimer(DEATH_CHARGE, Duration.of(client.getRealSkillLevel(Skill.MAGIC), RSTimeUnit.GAME_TICKS), config.displayMode());
 			}
 			else
 			{
@@ -791,17 +791,17 @@ public class TimersPlugin extends Plugin
 		{
 			if (message.contains("hero") || message.contains("elf"))
 			{
-				createGameTimer(PICKPOCKET_STUN, Duration.ofSeconds(6));
+				createGameTimer(PICKPOCKET_STUN, Duration.ofSeconds(6), config.displayMode());
 			}
 			else
 			{
-				createGameTimer(PICKPOCKET_STUN, Duration.ofSeconds(5));
+				createGameTimer(PICKPOCKET_STUN, Duration.ofSeconds(5), config.displayMode());
 			}
 		}
 
 		if (message.equals(ABYSSAL_SIRE_STUN_MESSAGE) && config.showAbyssalSireStun())
 		{
-			createGameTimer(ABYSSAL_SIRE_STUN);
+			createGameTimer(ABYSSAL_SIRE_STUN, config.displayMode());
 		}
 
 		if (config.showCannon())
@@ -811,13 +811,13 @@ public class TimersPlugin extends Plugin
 				|| message.contains(CANNON_REPAIR_MESSAGE))
 			{
 				removeGameTimer(CANNON_REPAIR);
-				TimerTimer cannonTimer = createGameTimer(CANNON);
+				TimerTimer cannonTimer = createGameTimer(CANNON, config.displayMode());
 				cannonTimer.setTooltip(cannonTimer.getTooltip() + " - World " + client.getWorld());
 			}
 			else if (message.equals(CANNON_BROKEN_MESSAGE))
 			{
 				removeGameTimer(CANNON);
-				TimerTimer cannonTimer = createGameTimer(CANNON_REPAIR);
+				TimerTimer cannonTimer = createGameTimer(CANNON_REPAIR, config.displayMode());
 				cannonTimer.setTooltip(cannonTimer.getTooltip() + " - World " + client.getWorld());
 			}
 			else if (message.equals(CANNON_PICKUP_MESSAGE) || message.equals(CANNON_DESTROYED_MESSAGE))
@@ -829,7 +829,7 @@ public class TimersPlugin extends Plugin
 
 		if (config.showPrayerEnhance() && message.startsWith("You drink some of your") && message.contains("prayer enhance"))
 		{
-			createGameTimer(PRAYER_ENHANCE);
+			createGameTimer(PRAYER_ENHANCE, config.displayMode());
 		}
 
 		if (config.showPrayerEnhance() && message.equals(PRAYER_ENHANCE_EXPIRED))
@@ -839,7 +839,8 @@ public class TimersPlugin extends Plugin
 
 		if (config.showStaffOfTheDead() && message.contains(STAFF_OF_THE_DEAD_SPEC_MESSAGE))
 		{
-			createGameTimer(STAFF_OF_THE_DEAD);
+			System.out.println(config);
+			createGameTimer(STAFF_OF_THE_DEAD, config.displayMode());
 		}
 
 		if (config.showStaffOfTheDead() && message.contains(STAFF_OF_THE_DEAD_SPEC_EXPIRED_MESSAGE))
@@ -849,7 +850,7 @@ public class TimersPlugin extends Plugin
 
 		if (config.showFreezes() && message.equals(FROZEN_MESSAGE))
 		{
-			freezeTimer = createGameTimer(ICEBARRAGE);
+			freezeTimer = createGameTimer(ICEBARRAGE, config.displayMode());
 			freezeTime = client.getTickCount();
 		}
 
@@ -858,15 +859,15 @@ public class TimersPlugin extends Plugin
 			final int magicLevel = client.getRealSkillLevel(Skill.MAGIC);
 			if (message.endsWith(SHADOW_VEIL_MESSAGE))
 			{
-				createGameTimer(SHADOW_VEIL, Duration.of(magicLevel, RSTimeUnit.GAME_TICKS));
+				createGameTimer(SHADOW_VEIL, Duration.of(magicLevel, RSTimeUnit.GAME_TICKS), config.displayMode());
 			}
 			else if (message.endsWith(WARD_OF_ARCEUUS_MESSAGE))
 			{
-				createGameTimer(WARD_OF_ARCEUUS, Duration.of(magicLevel, RSTimeUnit.GAME_TICKS));
+				createGameTimer(WARD_OF_ARCEUUS, Duration.of(magicLevel, RSTimeUnit.GAME_TICKS), config.displayMode());
 			}
 			else if (message.endsWith(MARK_OF_DARKNESS_MESSAGE))
 			{
-				createGameTimer(MARK_OF_DARKNESS, Duration.of(magicLevel, RSTimeUnit.GAME_TICKS));
+				createGameTimer(MARK_OF_DARKNESS, Duration.of(magicLevel, RSTimeUnit.GAME_TICKS), config.displayMode());
 			}
 			else if (message.contains(RESURRECT_THRALL_MESSAGE_START) && message.endsWith(RESURRECT_THRALL_MESSAGE_END))
 			{
@@ -881,7 +882,7 @@ public class TimersPlugin extends Plugin
 				{
 					t += t / 2; // 50% boost
 				}
-				createGameTimer(RESURRECT_THRALL, Duration.of(t, RSTimeUnit.GAME_TICKS));
+				createGameTimer(RESURRECT_THRALL, Duration.of(t, RSTimeUnit.GAME_TICKS), config.displayMode());
 			}
 		}
 
@@ -890,7 +891,7 @@ public class TimersPlugin extends Plugin
 			final int magicLevel = client.getRealSkillLevel(Skill.MAGIC);
 			if (message.endsWith(MARK_OF_DARKNESS_MESSAGE))
 			{
-				createGameTimer(MARK_OF_DARKNESS_COOLDOWN, Duration.of(magicLevel - 10, RSTimeUnit.GAME_TICKS));
+				createGameTimer(MARK_OF_DARKNESS_COOLDOWN, Duration.of(magicLevel - 10, RSTimeUnit.GAME_TICKS), config.displayMode());
 			}
 		}
 
@@ -949,17 +950,17 @@ public class TimersPlugin extends Plugin
 
 		if (message.equals(SILK_DRESSING_MESSAGE) && config.showSilkDressing())
 		{
-			createGameTimer(SILK_DRESSING);
+			createGameTimer(SILK_DRESSING, config.displayMode());
 		}
 
 		if (message.equals(BLESSED_CRYSTAL_SCARAB_MESSAGE) && config.showBlessedCrystalScarab())
 		{
-			createGameTimer(BLESSED_CRYSTAL_SCARAB);
+			createGameTimer(BLESSED_CRYSTAL_SCARAB, config.displayMode());
 		}
 
 		if (message.equals(LIQUID_ADRENALINE_MESSAGE) && config.showLiquidAdrenaline())
 		{
-			createGameTimer(LIQUID_ADRENALINE);
+			createGameTimer(LIQUID_ADRENALINE, config.displayMode());
 		}
 	}
 
@@ -1019,7 +1020,7 @@ public class TimersPlugin extends Plugin
 
 		if (remainingTime.getSeconds() > 0)
 		{
-			createGameTimer(teleport, remainingTime);
+			createGameTimer(teleport, remainingTime, config.displayMode());
 		}
 		else
 		{
@@ -1091,17 +1092,17 @@ public class TimersPlugin extends Plugin
 		{
 			if (actor.getGraphic() == BIND.getGraphicId())
 			{
-				createGameTimer(BIND);
+				createGameTimer(BIND, config.displayMode());
 			}
 
 			if (actor.getGraphic() == SNARE.getGraphicId())
 			{
-				createGameTimer(SNARE);
+				createGameTimer(SNARE, config.displayMode());
 			}
 
 			if (actor.getGraphic() == ENTANGLE.getGraphicId())
 			{
-				createGameTimer(ENTANGLE);
+				createGameTimer(ENTANGLE, config.displayMode());
 			}
 
 			// downgrade freeze based on graphic, if at the same tick as the freeze message
@@ -1110,19 +1111,19 @@ public class TimersPlugin extends Plugin
 				if (actor.getGraphic() == ICERUSH.getGraphicId())
 				{
 					removeGameTimer(ICEBARRAGE);
-					freezeTimer = createGameTimer(ICERUSH);
+					freezeTimer = createGameTimer(ICERUSH, config.displayMode());
 				}
 
 				if (actor.getGraphic() == ICEBURST.getGraphicId())
 				{
 					removeGameTimer(ICEBARRAGE);
-					freezeTimer = createGameTimer(ICEBURST);
+					freezeTimer = createGameTimer(ICEBURST, config.displayMode());
 				}
 
 				if (actor.getGraphic() == ICEBLITZ.getGraphicId())
 				{
 					removeGameTimer(ICEBARRAGE);
-					freezeTimer = createGameTimer(ICEBLITZ);
+					freezeTimer = createGameTimer(ICEBLITZ, config.displayMode());
 				}
 			}
 		}
@@ -1177,20 +1178,20 @@ public class TimersPlugin extends Plugin
 		}
 	}
 
-	private TimerTimer createGameTimer(final GameTimer timer)
+	private TimerTimer createGameTimer(final GameTimer timer, TimersDisplayMode displayMode)
 	{
 		if (timer.getDuration() == null)
 		{
 			throw new IllegalArgumentException("Timer with no duration");
 		}
-		return createGameTimer(timer, timer.getDuration());
+		return createGameTimer(timer, timer.getDuration(), displayMode);
 	}
 
-	private TimerTimer createGameTimer(final GameTimer timer, Duration duration)
+	private TimerTimer createGameTimer(final GameTimer timer, Duration duration, TimersDisplayMode displayMode)
 	{
 		removeGameTimer(timer);
 
-		TimerTimer t = new TimerTimer(timer, duration, this);
+		TimerTimer t = new TimerTimer(timer, duration, this, displayMode);
 		switch (timer.getImageType())
 		{
 			case SPRITE:
@@ -1254,7 +1255,7 @@ public class TimersPlugin extends Plugin
 		// Reset the timer when its duration increases in order to allow it to turn red at the correct time even when refreshed early
 		else if (timer == null || ticks > timer.ticks)
 		{
-			timer = createGameTimer(gameTimer, duration);
+			timer = createGameTimer(gameTimer, duration, config.displayMode());
 			timer.ticks = ticks;
 			varTimers.put(gameTimer, timer);
 		}

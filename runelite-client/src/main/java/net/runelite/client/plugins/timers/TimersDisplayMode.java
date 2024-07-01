@@ -28,7 +28,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 
 @Getter(AccessLevel.PACKAGE)
-enum TimerDisplayMode
+enum TimersDisplayMode
 {
 	TICKS,
 	SECONDS,

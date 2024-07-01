@@ -38,7 +38,7 @@ public interface TimersConfig extends Config
 		description = "General settings for all timers",
 		position = 0
 	)
-	String generalSection = "Hallowed Sepulchre";
+	String generalSection = "general";
 
 	@ConfigSection(
 		name = "Timers",
@@ -48,14 +48,14 @@ public interface TimersConfig extends Config
 	String GROUP = "timers";
 
 	@ConfigItem(
-		keyName = "overloadMode",
+		keyName = "displayMode",
 		name = "Display mode",
 		description = "Configures the display mode for all timers",
 		section = generalSection
 	)
-	default TimerDisplayMode displayMode()
+	default TimersDisplayMode displayMode()
 	{
-		return TimerDisplayMode.SECONDS;
+		return TimersDisplayMode.SECONDS;
 	}
 
 	@ConfigItem(
