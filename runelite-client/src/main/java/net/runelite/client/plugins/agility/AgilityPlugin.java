@@ -323,9 +323,9 @@ public class AgilityPlugin extends Plugin
 			return;
 		}
 
-		if (event.getVarbitId() == Varbits.AGILITY_ARENA_DISPENSER_STATE)
+		if (event.getVarbitId() == Varbits.HINT_ARROW)
 		{
-			if (event.getValue() != 0)
+			if (event.getValue() == 6)
 			{
 				notifier.notify(config.notifyAgilityArena(), "Ticket location changed");
 

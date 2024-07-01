@@ -894,14 +894,11 @@ public final class Varbits
 	public static final int SPELLBOOK_SUBMENU = 9730;
 
 	/**
-	 * When ticket dispensers rotate, switches to `0` and then to `6` in one game tick
-	 * <p>
-	 * 0 = there is no ticket dispenser active
-	 * 6 = there is a ticket dispenser active
-	 * <p>
-	 * Due to the gap in values, it could be that this varbit is re-used in other places
+	 * 0 = the arrow is not currently being used
+	 * 5 = while using Matthias' Falcon
+	 * 6 = while Stealing valuables and playing the Brimhaven Agility Arena minigame
 	 */
-	public static final int AGILITY_ARENA_DISPENSER_STATE = 14192;
+	public static final int HINT_ARROW = 14192;
 
 	/**
 	 * 0 = a ticket has already been obtained from the active ticket dispenser
