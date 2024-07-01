@@ -32,6 +32,7 @@ import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Constants;
 import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
@@ -42,6 +43,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.StatChanged;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.Notification;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.SkillIconManager;
@@ -59,6 +61,7 @@ import net.runelite.client.util.ImageUtil;
 	tags = {"combat", "notifications", "skilling", "overlay"}
 )
 @Singleton
+@Slf4j
 public class BoostsPlugin extends Plugin
 {
 	private static final Set<Skill> BOOSTABLE_COMBAT_SKILLS = ImmutableSet.of(
@@ -95,6 +98,9 @@ public class BoostsPlugin extends Plugin
 	private BoostsConfig config;
 
 	@Inject
+	private ConfigManager configManager;
+
+	@Inject
 	private SkillIconManager skillIconManager;
 
 	@Getter
@@ -119,6 +125,7 @@ public class BoostsPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
+		convertConfig();
 		OverlayMenuEntry menuEntry = new OverlayMenuEntry(RUNELITE_OVERLAY_CONFIG, OPTION_CONFIGURE, "Boosts overlay");
 
 		boostsOverlay.getMenuEntries().add(menuEntry);
@@ -167,6 +174,24 @@ public class BoostsPlugin extends Plugin
 				lastChangeDown = -1;
 				lastChangeUp = -1;
 		}
+	}
+
+	private void convertConfig()
+	{
+		String migrated = configManager.getConfiguration("boosts", "migrated");
+		if (migrated != null)
+		{
+			return;
+		}
+
+		int boostThreshold = config.boostThreshold();
+		if (boostThreshold == 0)
+		{
+			configManager.setConfiguration("boosts", "notifyOnBoost", Notification.OFF);
+			log.debug("Disabled boosts notification due to config migration");
+		}
+
+		configManager.setConfiguration("boosts", "migrated", "1");
 	}
 
 	@Subscribe
@@ -221,15 +246,12 @@ public class BoostsPlugin extends Plugin
 
 		int boostThreshold = config.boostThreshold();
 
-		if (boostThreshold != 0)
+		int real = client.getRealSkillLevel(skill);
+		int lastBoost = last - real;
+		int boost = cur - real;
+		if (boost <= boostThreshold && boostThreshold < lastBoost)
 		{
-			int real = client.getRealSkillLevel(skill);
-			int lastBoost = last - real;
-			int boost = cur - real;
-			if (boost <= boostThreshold && boostThreshold < lastBoost)
-			{
-				notifier.notify(config.notifyOnBoost(), skill.getName() + " level is getting low!");
-			}
+			notifier.notify(config.notifyOnBoost(), skill.getName() + " level is getting low!");
 		}
 	}
 
