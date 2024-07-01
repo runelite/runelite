@@ -36,13 +36,6 @@ import net.runelite.client.config.Units;
 @ConfigGroup("agility")
 public interface AgilityConfig extends Config
 {
-	@ConfigSection(
-		name = "Hallowed Sepulchre",
-		description = "Settings for Hallowed Sepulchre highlights",
-		position = 17
-	)
-	String sepulchreSection = "Hallowed Sepulchre";
-
 	@ConfigItem(
 		keyName = "showClickboxes",
 		name = "Show Clickboxes",
@@ -192,32 +185,10 @@ public interface AgilityConfig extends Config
 	}
 
 	@ConfigItem(
-		keyName = "agilityArenaNotifier",
-		name = "Agility Arena notifier",
-		description = "Notify on ticket location change in Agility Arena",
-		position = 13
-	)
-	default Notification notifyAgilityArena()
-	{
-		return Notification.ON;
-	}
-
-	@ConfigItem(
-		keyName = "agilityArenaTimer",
-		name = "Agility Arena timer",
-		description = "Configures whether Agility Arena timer is displayed",
-		position = 14
-	)
-	default boolean showAgilityArenaTimer()
-	{
-		return true;
-	}
-
-	@ConfigItem(
 		keyName = "highlightStick",
 		name = "Highlight Stick",
 		description = "Highlight the retrievable stick in the Werewolf Agility Course",
-		position = 15
+		position = 13
 	)
 	default boolean highlightStick()
 	{
@@ -229,18 +200,25 @@ public interface AgilityConfig extends Config
 		keyName = "stickHighlightColor",
 		name = "Stick Highlight Color",
 		description = "Color of highlighted stick",
-		position = 16
+		position = 14
 	)
 	default Color stickHighlightColor()
 	{
 		return Color.RED;
 	}
 
+	@ConfigSection(
+		name = "Hallowed Sepulchre",
+		description = "Settings for Hallowed Sepulchre highlights",
+		position = 15
+	)
+	String sepulchreSection = "Hallowed Sepulchre";
+
 	@ConfigItem(
 		keyName = "highlightSepulchreNpcs",
 		name = "Highlight Projectiles",
 		description = "Highlights arrows and swords in the Sepulchre",
-		position = 17,
+		position = 0,
 		section = sepulchreSection
 	)
 	default boolean highlightSepulchreNpcs()
@@ -253,7 +231,7 @@ public interface AgilityConfig extends Config
 		keyName = "sepulchreHighlightColor",
 		name = "Projectile Color",
 		description = "Overlay color for arrows and swords",
-		position = 18,
+		position = 1,
 		section = sepulchreSection
 	)
 	default Color sepulchreHighlightColor()
@@ -265,7 +243,7 @@ public interface AgilityConfig extends Config
 		keyName = "highlightSepulchreObstacles",
 		name = "Highlight Obstacles",
 		description = "Highlights pillars and stairs in the Sepulchre",
-		position = 19,
+		position = 2,
 		section = sepulchreSection
 	)
 	default boolean highlightSepulchreObstacles()
@@ -277,11 +255,67 @@ public interface AgilityConfig extends Config
 		keyName = "highlightSepulchreSkilling",
 		name = "Highlight Skill Challenges",
 		description = "Highlights skilling challenges in the Sepulchre",
-		position = 20,
+		position = 3,
 		section = sepulchreSection
 	)
 	default boolean highlightSepulchreSkilling()
 	{
 		return true;
+	}
+
+	@ConfigSection(
+		name = "Agility Arena",
+		description = "Settings for Brimhaven Agility Arena highlights",
+		position = 16
+	)
+	String arenaSection = "Agility Arena";
+
+	@ConfigItem(
+		keyName = "agilityArenaNotifier",
+		name = "Agility Arena notifier",
+		description = "Notify on ticket location change in Agility Arena",
+		position = 0,
+		section = arenaSection
+	)
+	default Notification notifyAgilityArena()
+	{
+		return Notification.ON;
+	}
+
+	@ConfigItem(
+		keyName = "agilityArenaTimer",
+		name = "Show timer",
+		description = "Configures whether Agility Arena timer is displayed",
+		position = 1,
+		section = arenaSection
+	)
+	default boolean showAgilityArenaTimer()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+		keyName = "highlightDispenser",
+		name = "Highlight Dispenser",
+		description = "Enable/disable the highlighting of the active Ticket Dispenser",
+		position = 2,
+		section = arenaSection
+	)
+	default boolean highlightDispenser()
+	{
+		return true;
+	}
+
+	@Alpha
+	@ConfigItem(
+		keyName = "dispenserColor",
+		name = "Dispenser Color",
+		description = "Color of highlighted active Ticket Dispenser",
+		position = 3,
+		section = arenaSection
+	)
+	default Color dispenserColor()
+	{
+		return Color.BLUE;
 	}
 }
