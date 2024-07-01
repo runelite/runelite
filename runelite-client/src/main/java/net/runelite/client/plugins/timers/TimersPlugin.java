@@ -839,7 +839,6 @@ public class TimersPlugin extends Plugin
 
 		if (config.showStaffOfTheDead() && message.contains(STAFF_OF_THE_DEAD_SPEC_MESSAGE))
 		{
-			System.out.println(config);
 			createGameTimer(STAFF_OF_THE_DEAD, config.displayMode());
 		}
 

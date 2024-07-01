@@ -24,11 +24,8 @@
  */
 package net.runelite.client.plugins.timers;
 
-import lombok.AccessLevel;
-import lombok.Getter;
 
-@Getter(AccessLevel.PACKAGE)
-enum TimersDisplayMode
+public enum TimersDisplayMode
 {
 	TICKS,
 	SECONDS,

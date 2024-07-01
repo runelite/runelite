@@ -58,21 +58,21 @@ class TimerTimer extends Timer
 		int minutes = (durationInSeconds % 3600) / 60;
 		int secs = durationInSeconds % 60;
 
-		if (displayMode == TimersDisplayMode.SECONDS)
-		{
-			return minutes + (secs < 10 ? ":0" : ":") + secs;
-		}
-		else if (displayMode == TimersDisplayMode.TICKS)
+		if (displayMode == TimersDisplayMode.TICKS)
 		{
 			return durationInTicks + "";
 		}
-		else // DECIMALS
+		else if (displayMode == TimersDisplayMode.DECIMALS)
 		{
 			int min = durationInTicks / 100;
 			int tmp = (durationInTicks - min * 100) * 6;
 			int sec = tmp / 10;
 			int sec_tenth = tmp - sec * 10;
 			return min + (sec < 10 ? ":0" : ":") + sec + "." + sec_tenth;
+		}
+		else
+		{
+			return minutes + (secs < 10 ? ":0" : ":") + secs;
 		}
 //		return String.format("%d:%02d", minutes, secs);
 	}
