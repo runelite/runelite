@@ -36,7 +36,6 @@ import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.Experience;
 import net.runelite.api.MenuEntry;
-import net.runelite.api.Point;
 import net.runelite.api.Prayer;
 import net.runelite.api.Skill;
 import net.runelite.api.SpriteID;
@@ -50,6 +49,7 @@ import net.runelite.client.game.SpriteManager;
 import net.runelite.client.plugins.itemstats.Effect;
 import net.runelite.client.plugins.itemstats.ItemStatChangesService;
 import net.runelite.client.plugins.itemstats.StatChange;
+import net.runelite.client.plugins.itemstats.stats.Stats;
 import net.runelite.client.plugins.statusbars.config.BarMode;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -65,57 +65,64 @@ class StatusBarsOverlay extends Overlay
 	private static final Color VENOMED_COLOR = new Color(0, 65, 0, 150);
 	private static final Color HEAL_COLOR = new Color(255, 112, 6, 150);
 	private static final Color PRAYER_HEAL_COLOR = new Color(57, 255, 186, 75);
-	private static final Color ENERGY_HEAL_COLOR = new Color (199,  118, 0, 218);
+	private static final Color ENERGY_HEAL_COLOR = new Color(199, 118, 0, 218);
 	private static final Color RUN_STAMINA_COLOR = new Color(160, 124, 72, 255);
 	private static final Color SPECIAL_ATTACK_COLOR = new Color(3, 153, 0, 195);
 	private static final Color ENERGY_COLOR = new Color(199, 174, 0, 220);
 	private static final Color DISEASE_COLOR = new Color(255, 193, 75, 181);
 	private static final Color PARASITE_COLOR = new Color(196, 62, 109, 181);
-	private static final int HEIGHT = 252;
-	private static final int RESIZED_BOTTOM_HEIGHT = 272;
-	private static final int IMAGE_SIZE = 17;
-	private static final Dimension ICON_DIMENSIONS = new Dimension(26, 25);
-	private static final int RESIZED_BOTTOM_OFFSET_Y = 12;
-	private static final int RESIZED_BOTTOM_OFFSET_X = 10;
+
 	private static final int MAX_SPECIAL_ATTACK_VALUE = 100;
 	private static final int MAX_RUN_ENERGY_VALUE = 100;
 
 	private final Client client;
+	private StatusBarsConfig config;
 	private final StatusBarsPlugin plugin;
-	private final StatusBarsConfig config;
 	private final ItemStatChangesService itemStatService;
 	private final SpriteManager spriteManager;
 
-	private final Image prayerIcon;
-	private final Image heartDisease;
-	private final Image heartPoison;
-	private final Image heartVenom;
+	private boolean iconsNeedRefresh = true; // Ensure this runs on the first check
 	private Image heartIcon;
 	private Image specialIcon;
 	private Image energyIcon;
-	private final Map<BarMode, BarRenderer> barRenderers = new EnumMap<>(BarMode.class);
+	private Image prayerIcon;
+	private Image heartDisease;
+	private Image heartPoison;
+	private Image heartVenom;
+
+	private final BarGroupRenderer barGroupRenderer = new BarGroupRenderer();
 
 	@Inject
 	private StatusBarsOverlay(Client client, StatusBarsPlugin plugin, StatusBarsConfig config, SkillIconManager skillIconManager, ItemStatChangesService itemstatservice, SpriteManager spriteManager)
 	{
-		setPosition(OverlayPosition.DYNAMIC);
-		setLayer(OverlayLayer.ABOVE_WIDGETS);
+
 		this.client = client;
 		this.plugin = plugin;
-		this.config = config;
 		this.itemStatService = itemstatservice;
 		this.spriteManager = spriteManager;
 
-		prayerIcon = ImageUtil.resizeCanvas(ImageUtil.resizeImage(skillIconManager.getSkillImage(Skill.PRAYER, true), IMAGE_SIZE, IMAGE_SIZE), ICON_DIMENSIONS.width, ICON_DIMENSIONS.height);
-		heartDisease = ImageUtil.resizeCanvas(ImageUtil.loadImageResource(AlternateSprites.class, AlternateSprites.DISEASE_HEART), ICON_DIMENSIONS.width, ICON_DIMENSIONS.height);
-		heartPoison = ImageUtil.resizeCanvas(ImageUtil.loadImageResource(AlternateSprites.class, AlternateSprites.POISON_HEART), ICON_DIMENSIONS.width, ICON_DIMENSIONS.height);
-		heartVenom = ImageUtil.resizeCanvas(ImageUtil.loadImageResource(AlternateSprites.class, AlternateSprites.VENOM_HEART), ICON_DIMENSIONS.width, ICON_DIMENSIONS.height);
+		setLayer(OverlayLayer.ABOVE_WIDGETS);
 
 		initRenderers();
+
+		updateConfig(config);
+	}
+
+	public void updateConfig(StatusBarsConfig updatedConfig)
+	{
+		config = updatedConfig;
+		barGroupRenderer.updateConfig(updatedConfig);
+
+		setPosition(OverlayPosition.DYNAMIC);
+
+		// Mark that icons likely changed, and need to be re-built
+		iconsNeedRefresh = true;
 	}
 
 	private void initRenderers()
 	{
+		Map<BarMode, BarRenderer> barRenderers = new EnumMap<>(BarMode.class);
+
 		barRenderers.put(BarMode.DISABLED, null);
 		barRenderers.put(BarMode.HITPOINTS, new BarRenderer(
 			() -> inLms() ? Experience.MAX_REAL_LEVEL : client.getRealSkillLevel(Skill.HITPOINTS),
@@ -195,7 +202,7 @@ class StatusBarsOverlay extends Overlay
 		barRenderers.put(BarMode.RUN_ENERGY, new BarRenderer(
 			() -> MAX_RUN_ENERGY_VALUE,
 			() -> client.getEnergy() / 100,
-			() -> getRestoreValue("Run Energy"),
+			() -> getRestoreValue(Stats.RUN_ENERGY.getName()),
 			() ->
 			{
 				if (client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE) != 0)
@@ -218,6 +225,8 @@ class StatusBarsOverlay extends Overlay
 			() -> SPECIAL_ATTACK_COLOR,
 			() -> specialIcon
 		));
+
+		barGroupRenderer.attachRenderers(barRenderers);
 	}
 
 	@Override
@@ -228,74 +237,53 @@ class StatusBarsOverlay extends Overlay
 			return null;
 		}
 
-		Viewport curViewport = null;
-		Widget curWidget = null;
+		// Ensure we have the images we need. Can't be done in the constructor as the sprites aren't
+		// loaded when this plugin mounts
+		ensureImagesAreLoaded();
 
-		for (Viewport viewport : Viewport.values())
+		PossibleViewports currentViewport = null;
+		Widget currentWidget = null;
+
+		for (PossibleViewports vp : PossibleViewports.values())
 		{
-			final Widget viewportWidget = client.getWidget(viewport.getViewport());
-			if (viewportWidget != null && !viewportWidget.isHidden())
+			// Find one of our targeted widgets to attach to
+			final Widget targetWidget = client.getWidget(vp.getTargetWidget());
+
+			if (targetWidget != null && !targetWidget.isHidden())
 			{
-				curViewport = viewport;
-				curWidget = viewportWidget;
+				currentViewport = vp;
+				currentWidget = targetWidget;
+
 				break;
 			}
 		}
 
-		if (curViewport == null)
+		if (currentViewport == null)
 		{
+			// Unable to find a matching Possible Viewport, so there's no place for us
+			// to attach the bars to
 			return null;
 		}
 
-		final Point offsetLeft = curViewport.getOffsetLeft();
-		final Point offsetRight = curViewport.getOffsetRight();
-		final Point location = curWidget.getCanvasLocation();
-		final int width, height, offsetLeftBarX, offsetLeftBarY, offsetRightBarX, offsetRightBarY;
-
-		if (curViewport == Viewport.RESIZED_BOTTOM)
-		{
-			width = config.barWidth();
-			height = RESIZED_BOTTOM_HEIGHT;
-			final int barWidthOffset = width - BarRenderer.DEFAULT_WIDTH;
-			offsetLeftBarX = (location.getX() + RESIZED_BOTTOM_OFFSET_X - offsetLeft.getX() - 2 * barWidthOffset);
-			offsetLeftBarY = (location.getY() - RESIZED_BOTTOM_OFFSET_Y - offsetLeft.getY());
-			offsetRightBarX = (location.getX() + RESIZED_BOTTOM_OFFSET_X - offsetRight.getX() - barWidthOffset);
-			offsetRightBarY = (location.getY() - RESIZED_BOTTOM_OFFSET_Y - offsetRight.getY());
-		}
-		else
-		{
-			width = BarRenderer.DEFAULT_WIDTH;
-			height = HEIGHT;
-			offsetLeftBarX = (location.getX() - offsetLeft.getX());
-			offsetLeftBarY = (location.getY() - offsetLeft.getY());
-			offsetRightBarX = (location.getX() - offsetRight.getX()) + curWidget.getWidth();
-			offsetRightBarY = (location.getY() - offsetRight.getY());
-		}
-
-		buildIcons();
-
-		BarRenderer left = barRenderers.get(config.leftBarMode());
-		BarRenderer right = barRenderers.get(config.rightBarMode());
-
-		if (left != null)
-		{
-			left.renderBar(config, g, offsetLeftBarX, offsetLeftBarY, width, height);
-		}
-
-		if (right != null)
-		{
-			right.renderBar(config, g, offsetRightBarX, offsetRightBarY, width, height);
-		}
+		barGroupRenderer.drawBars(g, currentWidget, currentViewport);
 
 		return null;
 	}
 
+	/**
+	 * For the given skill name, checks to see the potential amount to be restored by
+	 * the user interacting with an item in their inventory.
+	 *
+	 * @param skill String identifier for the stat to check
+	 * @return Points that would be restored if the item used
+	 */
 	private int getRestoreValue(String skill)
 	{
 		final MenuEntry[] menu = client.getMenuEntries();
 		final int menuSize = menu.length;
 		if (menuSize == 0)
 		{
+			// When no menus are present, there's no chance of restoring a stat
 			return 0;
 		}
 
@@ -303,6 +291,7 @@ class StatusBarsOverlay extends Overlay
 		final Widget widget = entry.getWidget();
 		int restoreValue = 0;
 
+		// Make sure we're interacting with something in the inventory widget
 		if (widget != null && widget.getId() == ComponentID.INVENTORY_CONTAINER)
 		{
 			final Effect change = itemStatService.getItemStatChanges(widget.getItemId());
@@ -324,33 +313,58 @@ class StatusBarsOverlay extends Overlay
 		return restoreValue;
 	}
 
-	private void buildIcons()
+	/**
+	 * Loads necessary icons for all possible Status Bar types
+	 */
+	private void ensureImagesAreLoaded()
 	{
-		if (heartIcon == null)
+		if (iconsNeedRefresh)
 		{
-			heartIcon = loadAndResize(SpriteID.MINIMAP_ORB_HITPOINTS_ICON);
-		}
-		if (energyIcon == null)
-		{
-			energyIcon = loadAndResize(SpriteID.MINIMAP_ORB_WALK_ICON);
-		}
-		if (specialIcon == null)
-		{
-			specialIcon = loadAndResize(SpriteID.MINIMAP_ORB_SPECIAL_ICON);
+			iconsNeedRefresh = false;
+
+			heartIcon = resizeIcon(loadSprite(SpriteID.MINIMAP_ORB_HITPOINTS_ICON));
+			energyIcon = resizeIcon(loadSprite(SpriteID.MINIMAP_ORB_WALK_ICON));
+			specialIcon = resizeIcon(loadSprite(SpriteID.MINIMAP_ORB_SPECIAL_ICON));
+			prayerIcon = resizeIcon(loadSprite(SpriteID.MINIMAP_ORB_PRAYER_ICON));
+
+			heartDisease = resizeIcon(loadAltSprite(AlternateSprites.DISEASE_HEART));
+			heartPoison = resizeIcon(loadAltSprite(AlternateSprites.POISON_HEART));
+			heartVenom = resizeIcon(loadAltSprite(AlternateSprites.VENOM_HEART));
 		}
 	}
 
-	private BufferedImage loadAndResize(int spriteId)
+	private BufferedImage resizeIcon(BufferedImage originalImage)
 	{
-		BufferedImage image = spriteManager.getSprite(spriteId, 0);
-		if (image == null)
+		if (originalImage == null)
 		{
 			return null;
 		}
 
-		return ImageUtil.resizeCanvas(image, ICON_DIMENSIONS.width, ICON_DIMENSIONS.height);
+		final int iconSize = config.iconSize();
+
+		// Double resizing is necessary so positioning/cropping is correct
+		return ImageUtil.resizeCanvas(
+			ImageUtil.resizeImage(originalImage,
+				iconSize, iconSize
+			),
+			iconSize, iconSize
+		);
 	}
 
+	private BufferedImage loadSprite(int spriteId)
+	{
+		return spriteManager.getSprite(spriteId, 0);
+	}
+
+	private BufferedImage loadAltSprite(String resourceName)
+	{
+		return ImageUtil.loadImageResource(AlternateSprites.class, resourceName);
+	}
+
+	/**
+	 * Indicates if the user is currently in an LMS mini-game.
+	 * Useful as stats are modified within.
+	 */
 	private boolean inLms()
 	{
 		return client.getWidget(ComponentID.LMS_INGAME_INFO) != null;
