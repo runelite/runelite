@@ -1144,7 +1144,7 @@ public class ConfigManager
 
 			log.debug("Setting default configuration value for {}.{} to {}", group.value(), item.keyName(), defaultValue);
 
-			setConfiguration(group.value(), item.keyName(), valueString);
+			setConfiguration(group.value(), item.keyName(), valueString == null ? "" : valueString);
 		}
 	}
 
