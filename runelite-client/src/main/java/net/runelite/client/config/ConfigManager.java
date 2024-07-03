@@ -1147,7 +1147,8 @@ public class ConfigManager
 			if (Strings.isNullOrEmpty(valueString))
 			{
 				unsetConfiguration(group.value(), item.keyName());
-			} else
+			}
+			else
 			{
 				setConfiguration(group.value(), item.keyName(), valueString);
 			}
