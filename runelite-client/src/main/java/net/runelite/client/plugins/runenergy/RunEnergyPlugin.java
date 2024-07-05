@@ -175,8 +175,8 @@ public class RunEnergyPlugin extends Plugin
 	{
 		localPlayerRunningToDestination =
 			prevLocalPlayerLocation != null &&
-			client.getLocalDestinationLocation() != null &&
-			prevLocalPlayerLocation.distanceTo(client.getLocalPlayer().getWorldLocation()) > 1;
+				client.getLocalDestinationLocation() != null &&
+				prevLocalPlayerLocation.distanceTo(client.getLocalPlayer().getWorldLocation()) > 1;
 
 		prevLocalPlayerLocation = client.getLocalPlayer().getWorldLocation();
 	}
@@ -184,18 +184,18 @@ public class RunEnergyPlugin extends Plugin
 	@Subscribe
 	public void onScriptPostFired(ScriptPostFired scriptPostFired)
 	{
-		if (scriptPostFired.getScriptId() == ScriptID.ORBS_UPDATE_RUNENERGY && energyConfig.replaceOrbText())
+		if (scriptPostFired.getScriptId() == ScriptID.ORBS_UPDATE_RUNENERGY)
 		{
-			setRunOrbText(getEstimatedRunTimeRemaining(true));
+			setRunOrbText(getFormattedRunOrbText(energyConfig.runEnergyDisplayMode()));
 		}
 	}
 
 	@Subscribe
 	public void onConfigChanged(ConfigChanged event)
 	{
-		if (event.getGroup().equals(RunEnergyConfig.GROUP_NAME) && !energyConfig.replaceOrbText())
+		if (event.getGroup().equals(RunEnergyConfig.GROUP_NAME))
 		{
-			resetRunOrbText();
+			setRunOrbText(getFormattedRunOrbText(energyConfig.runEnergyDisplayMode()));
 		}
 	}
 
@@ -285,7 +285,7 @@ public class RunEnergyPlugin extends Plugin
 		setRunOrbText(Integer.toString(client.getEnergy() / 100));
 	}
 
-	String getEstimatedRunTimeRemaining(boolean inSeconds)
+	int getEstimatedTicksRemaining()
 	{
 		// Calculate the amount of energy lost every tick.
 		// Negative weight has the same depletion effect as 0 kg. >64kg counts as 64kg.
@@ -303,7 +303,7 @@ public class RunEnergyPlugin extends Plugin
 			Integer charges = getRingOfEnduranceCharges();
 			if (charges == null)
 			{
-				return "?";
+				return -1;
 			}
 
 			if (charges >= RING_OF_ENDURANCE_PASSIVE_EFFECT)
@@ -314,18 +314,43 @@ public class RunEnergyPlugin extends Plugin
 
 		// Math.ceil is correct here - only need 1 energy unit to run
 		final double ticksLeft = Math.ceil(client.getEnergy() / (double) energyUnitsLost);
+		return (int) ticksLeft;
+	}
+
+	String getFormattedRunOrbText(RunEnergyConfig.EnergyDisplayMode dispMode)
+	{
+		final int ticksLeft = getEstimatedTicksRemaining();
+
+		if (dispMode == RunEnergyConfig.EnergyDisplayMode.PERCENT)
+		{
+			return String.valueOf(client.getEnergy() / 100);
+		}
+
+		if (ticksLeft == -1)
+		{
+			return "Unknown";
+		}
+
 		final double secondsLeft = ticksLeft * Constants.GAME_TICK_LENGTH / 1000.0;
 
 		// Return the text
-		if (inSeconds)
+		if (dispMode == RunEnergyConfig.EnergyDisplayMode.SECONDS)
 		{
 			return (int) Math.floor(secondsLeft) + "s";
 		}
-		else
+		else if (dispMode == RunEnergyConfig.EnergyDisplayMode.TICKS)
+		{
+			return String.valueOf((int) ticksLeft);
+		}
+		else if (dispMode == RunEnergyConfig.EnergyDisplayMode.MINUTES_AND_SECONDS)
 		{
 			final int minutes = (int) Math.floor(secondsLeft / 60.0);
 			final int seconds = (int) Math.floor(secondsLeft - (minutes * 60.0));
 			return minutes + ":" + StringUtils.leftPad(Integer.toString(seconds), 2, "0");
+		}
+		else
+		{
+			throw new RuntimeException("Unexpected value");
 		}
 	}
 
