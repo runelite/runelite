@@ -25,10 +25,10 @@
 package net.runelite.api.events;
 
 import lombok.Data;
-import net.runelite.api.HealthBar;
+import net.runelite.api.HealthBarConfig;
 
 @Data
-public class PostHealthBar
+public class PostHealthBarConfig
 {
-	private HealthBar healthBar;
+	private HealthBarConfig healthBarConfig;
 }

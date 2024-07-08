@@ -32,7 +32,7 @@ import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.HealthBar;
+import net.runelite.api.HealthBarConfig;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Player;
@@ -42,7 +42,7 @@ import net.runelite.api.events.BeforeMenuRender;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.MenuOpened;
 import net.runelite.api.events.PostClientTick;
-import net.runelite.api.events.PostHealthBar;
+import net.runelite.api.events.PostHealthBarConfig;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
@@ -202,14 +202,14 @@ public class InterfaceStylesPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onPostHealthBar(PostHealthBar postHealthBar)
+	public void onPostHealthBarConfig(PostHealthBarConfig postHealthBar)
 	{
 		if (!config.hdHealthBars())
 		{
 			return;
 		}
 
-		HealthBar healthBar = postHealthBar.getHealthBar();
+		HealthBarConfig healthBar = postHealthBar.getHealthBarConfig();
 		HealthbarOverride override = HealthbarOverride.get(healthBar.getHealthBarFrontSpriteId());
 
 		// Check if this is the health bar we are replacing
