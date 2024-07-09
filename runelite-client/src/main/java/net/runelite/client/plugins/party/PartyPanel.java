@@ -159,6 +159,7 @@ class PartyPanel extends PluginPanel
 					null,
 					null,
 					"");
+				s = s.toLowerCase()
 
 				if (s == null)
 				{
