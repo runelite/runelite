@@ -160,12 +160,13 @@ class PartyPanel extends PluginPanel
 					null,
 					null,
 					"");
-				s = s.toLowerCase(Locale.US);
 
 				if (s == null)
 				{
 					return;
 				}
+
+				s = s.toLowerCase(Locale.US);
 
 				for (int i = 0; i < s.length(); ++i)
 				{
