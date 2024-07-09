@@ -33,6 +33,7 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -164,6 +165,8 @@ class PartyPanel extends PluginPanel
 				{
 					return;
 				}
+
+				s = s.toLowerCase(Locale.US);
 
 				for (int i = 0; i < s.length(); ++i)
 				{
