@@ -160,7 +160,7 @@ class PartyPanel extends PluginPanel
 					null,
 					null,
 					"");
-				s = s.toLowerCase(Locale.US)
+				s = s.toLowerCase(Locale.US);
 
 				if (s == null)
 				{
