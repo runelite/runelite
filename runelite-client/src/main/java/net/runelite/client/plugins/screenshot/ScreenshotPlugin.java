@@ -417,6 +417,11 @@ public class ScreenshotPlugin extends Plugin
 			}
 		}
 
+		if (chatMessage.equals("You have been doomed!") && config.screenshotPlayerDeath())
+		{
+			takeScreenshot("Death", SD_DEATHS);
+		}
+
 		if (chatMessage.startsWith("Your Lunar Chest count is"))
 		{
 			Matcher m = NUMBER_PATTERN.matcher(Text.removeTags(chatMessage));

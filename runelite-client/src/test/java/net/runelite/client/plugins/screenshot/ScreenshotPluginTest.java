@@ -68,6 +68,7 @@ public class ScreenshotPluginTest
 {
 	private static final String CLUE_SCROLL = "<col=3300ff>You have completed 28 medium Treasure Trails</col>";
 	private static final String BARROWS_CHEST = "Your Barrows chest count is <col=ff0000>310</col>";
+	private static final String FORTIS_COLOSSEUM = "You have been doomed!";
 	private static final String CHAMBERS_OF_XERIC_CHEST = "Your completed Chambers of Xeric count is: <col=ff0000>489</col>.";
 	private static final String THEATRE_OF_BLOOD_CHEST = "Your completed Theatre of Blood count is: <col=ff0000>73</col>.";
 	private static final String THREATRE_OF_BLOOD_SM_CHEST = "Your completed Theatre of Blood: Story Mode count is: <col=ff0000>73</col>.";
@@ -163,6 +164,15 @@ public class ScreenshotPluginTest
 		screenshotPlugin.onChatMessage(chatMessageEvent);
 
 		assertEquals(489, screenshotPlugin.getKillCountNumber());
+	}
+
+	@Test
+	public void testFortisColosseumDeath()
+	{
+		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "Seth", FORTIS_COLOSSEUM, null, 0);
+		when(screenshotConfig.screenshotPlayerDeath()).thenReturn(true);
+		screenshotPlugin.onChatMessage(chatMessageEvent);
+		verify(screenshotPlugin).takeScreenshot("Death", "Deaths");
 	}
 
 	@Test
