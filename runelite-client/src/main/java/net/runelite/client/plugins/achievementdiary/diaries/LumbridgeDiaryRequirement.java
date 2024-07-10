@@ -115,7 +115,7 @@ public class LumbridgeDiaryRequirement extends GenericDiaryRequirement
 		add("Steal from a Dorgesh-Kaan rich chest.",
 			new SkillRequirement(Skill.THIEVING, 78),
 			new QuestRequirement(Quest.DEATH_TO_THE_DORGESHUUN));
-		add("Pickpocket Movario on the Dorgesh-Kaan Agility course.",
+		add("Grapple across a pylon on the Dorgesh-Kaan Agility Course.",
 			new SkillRequirement(Skill.AGILITY, 70),
 			new SkillRequirement(Skill.RANGED, 70),
 			new SkillRequirement(Skill.STRENGTH, 70),
