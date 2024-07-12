@@ -100,6 +100,9 @@ public class GroundMarkerPlugin extends Plugin
 	private GroundMarkerMinimapOverlay minimapOverlay;
 
 	@Inject
+	private GroundMarkerWorldmapOverlay worldmapOverlay;
+
+	@Inject
 	private ChatboxPanelManager chatboxPanelManager;
 
 	@Inject
@@ -149,7 +152,7 @@ public class GroundMarkerPlugin extends Plugin
 	{
 		points.clear();
 
-		int[] regions = client.getMapRegions();
+		int[] regions = getMarkerRegions();
 
 		if (regions == null)
 		{
@@ -164,6 +167,13 @@ public class GroundMarkerPlugin extends Plugin
 			Collection<ColorTileMarker> colorTileMarkers = translateToColorTileMarker(regionPoints);
 			points.addAll(colorTileMarkers);
 		}
+	}
+
+	private int[] getMarkerRegions()
+	{
+		final String prefix = ConfigManager.getWholeKey(CONFIG_GROUP, null, REGION_PREFIX);
+		List<String> keys = configManager.getConfigurationKeys(prefix);
+		return keys.stream().map(k -> k.substring(prefix.length())).mapToInt(Integer::parseInt).toArray();
 	}
 
 	/**
@@ -197,6 +207,7 @@ public class GroundMarkerPlugin extends Plugin
 	{
 		overlayManager.add(overlay);
 		overlayManager.add(minimapOverlay);
+		overlayManager.add(worldmapOverlay);
 		if (config.showImportExport())
 		{
 			sharingManager.addImportExportMenuOptions();
@@ -212,6 +223,7 @@ public class GroundMarkerPlugin extends Plugin
 		eventBus.unregister(sharingManager);
 		overlayManager.remove(overlay);
 		overlayManager.remove(minimapOverlay);
+		overlayManager.remove(worldmapOverlay);
 		sharingManager.removeMenuOptions();
 		points.clear();
 	}
