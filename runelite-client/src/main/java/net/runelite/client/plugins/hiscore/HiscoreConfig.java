@@ -27,6 +27,8 @@ package net.runelite.client.plugins.hiscore;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import static net.runelite.client.plugins.hiscore.MaxedSkillsStyle.SHOW_99;
+import static net.runelite.client.plugins.hiscore.MaxedSkillsStyle.VIRTUAL_LEVELS;
 
 @ConfigGroup("hiscore")
 public interface HiscoreConfig extends Config
@@ -53,8 +55,12 @@ public interface HiscoreConfig extends Config
 		return true;
 	}
 
+	/**
+	 * This has been replaced by maxedSkillsStyle, and exists to let
+	 * maxedSkillsStyle set itself to the right initial value.
+	 */
 	@ConfigItem(
-		position = 3,
+		hidden = true,
 		keyName = "virtualLevels",
 		name = "Display virtual levels",
 		description = "Display levels over 99 in the hiscore panel"
@@ -62,6 +68,17 @@ public interface HiscoreConfig extends Config
 	default boolean virtualLevels()
 	{
 		return true;
+	}
+
+	@ConfigItem(
+		position = 3,
+		keyName = "post99SkillDisplayStyle",
+		name = "Maxed skills",
+		description = "How to display skills that are level 99."
+	)
+	default MaxedSkillsStyle maxedSkillsStyle()
+	{
+		return virtualLevels() ? VIRTUAL_LEVELS : SHOW_99;
 	}
 
 	@ConfigItem(
