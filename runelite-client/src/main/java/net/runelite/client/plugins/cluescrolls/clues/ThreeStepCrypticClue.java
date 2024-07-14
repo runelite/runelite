@@ -24,14 +24,15 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.runelite.api.InventoryID;
@@ -51,16 +52,32 @@ import net.runelite.client.util.Text;
 @RequiredArgsConstructor
 public class ThreeStepCrypticClue extends ClueScroll implements ObjectClueScroll, NpcClueScroll, LocationsClueScroll
 {
+	@Data
+	@AllArgsConstructor
+	private static class Step
+	{
+		final CrypticClue clue;
+		final boolean unrecognized;
+		boolean complete;
+
+		public boolean shouldShowHelp()
+		{
+			return !complete && !unrecognized;
+		}
+	}
+
 	public static ThreeStepCrypticClue forText(String plainText, String text)
 	{
 		final String[] split = text.split("<br>\\s*<br>");
-		final List<Map.Entry<CrypticClue, Boolean>> steps = new ArrayList<>(split.length);
+		final List<Step> steps = new ArrayList<>(split.length);
 
+		boolean atLeastOneMatch = false;
 		for (String part : split)
 		{
 			boolean isDone = part.contains("<str>");
 			final String rawText = Text.sanitizeMultilineText(part);
 
+			boolean matchFound = false;
 			for (CrypticClue clue : CrypticClue.CLUES)
 			{
 				if (!rawText.equalsIgnoreCase(clue.getText()))
@@ -68,12 +85,15 @@ public class ThreeStepCrypticClue extends ClueScroll implements ObjectClueScroll
 					continue;
 				}
 
-				steps.add(new AbstractMap.SimpleEntry<>(clue, isDone));
+				steps.add(new Step(clue, false, isDone));
+				atLeastOneMatch = true;
+				matchFound = true;
 				break;
 			}
+			if (!matchFound) steps.add(new Step(CrypticClue.builder().text(rawText).build(), true, isDone)); // The correct text allows notes to be set on it.
 		}
 
-		if (steps.isEmpty() || steps.size() < 3)
+		if (!atLeastOneMatch)
 		{
 			return null;
 		}
@@ -81,7 +101,7 @@ public class ThreeStepCrypticClue extends ClueScroll implements ObjectClueScroll
 		return new ThreeStepCrypticClue(steps, plainText);
 	}
 
-	private final List<Map.Entry<CrypticClue, Boolean>> clueSteps;
+	private final List<Step> clueSteps;
 	private final String text;
 
 	@Override
@@ -91,32 +111,39 @@ public class ThreeStepCrypticClue extends ClueScroll implements ObjectClueScroll
 
 		for (int i = 0; i < clueSteps.size(); i++)
 		{
-			final Map.Entry<CrypticClue, Boolean> e = clueSteps.get(i);
+			final Step step = clueSteps.get(i);
 
-			if (!e.getValue())
+			if (step.isComplete())
 			{
-				CrypticClue c = e.getKey();
+				continue;
+			}
 
-				panelComponent.getChildren().add(TitleComponent.builder().text("Cryptic Clue #" + (i + 1)).build());
+			panelComponent.getChildren().add(TitleComponent.builder().text("Cryptic Clue #" + (i + 1)).build());
+			CrypticClue c = step.getClue();
+			if (step.isUnrecognized())
+			{
+				panelComponent.getChildren().add(LineComponent.builder().left("This clue isn't supported yet.").leftColor(Color.RED).build());
+			}
+			else
+			{
 				panelComponent.getChildren().add(LineComponent.builder().left("Solution:").build());
 				panelComponent.getChildren().add(LineComponent.builder()
 					.left(c.getSolution())
 					.leftColor(TITLED_CONTENT_COLOR)
 					.build());
-
-				c.renderOverlayNote(panelComponent, plugin);
 			}
+			c.renderOverlayNote(panelComponent, plugin);
 		}
 	}
 
 	@Override
 	public void makeWorldOverlayHint(Graphics2D graphics, ClueScrollPlugin plugin)
 	{
-		for (Map.Entry<CrypticClue, Boolean> e : clueSteps)
+		for (Step step : clueSteps)
 		{
-			if (!e.getValue())
+			if (step.shouldShowHelp())
 			{
-				e.getKey().makeWorldOverlayHint(graphics, plugin);
+				step.getClue().makeWorldOverlayHint(graphics, plugin);
 			}
 		}
 	}
@@ -138,11 +165,11 @@ public class ThreeStepCrypticClue extends ClueScroll implements ObjectClueScroll
 		// If we have the part then that step is done
 		if (itemContainer.contains(clueScrollPart))
 		{
-			final Map.Entry<CrypticClue, Boolean> entry = clueSteps.get(index);
+			final Step step = clueSteps.get(index);
 
-			if (!entry.getValue())
+			if (!step.isComplete())
 			{
-				entry.setValue(true);
+				step.setComplete(true);
 				return true;
 			}
 		}
@@ -153,9 +180,9 @@ public class ThreeStepCrypticClue extends ClueScroll implements ObjectClueScroll
 	@Override
 	public void reset()
 	{
-		for (Map.Entry<CrypticClue, Boolean> clueStep : clueSteps)
+		for (Step step : clueSteps)
 		{
-			clueStep.setValue(false);
+			step.setComplete(false);
 		}
 	}
 
@@ -169,8 +196,8 @@ public class ThreeStepCrypticClue extends ClueScroll implements ObjectClueScroll
 	public WorldPoint[] getLocations(ClueScrollPlugin plugin)
 	{
 		return clueSteps.stream()
-			.filter(s -> !s.getValue())
-			.map(s -> s.getKey().getLocation(plugin))
+			.filter(Step::shouldShowHelp)
+			.map(s -> s.getClue().getLocation(plugin))
 			.filter(Objects::nonNull)
 			.toArray(WorldPoint[]::new);
 	}
@@ -179,8 +206,8 @@ public class ThreeStepCrypticClue extends ClueScroll implements ObjectClueScroll
 	public String[] getNpcs(ClueScrollPlugin plugin)
 	{
 		return clueSteps.stream()
-			.filter(s -> !s.getValue())
-			.map(s -> s.getKey().getNpc())
+			.filter(Step::shouldShowHelp)
+			.map(s -> s.getClue().getNpc())
 			.toArray(String[]::new);
 	}
 
@@ -188,8 +215,8 @@ public class ThreeStepCrypticClue extends ClueScroll implements ObjectClueScroll
 	public int[] getObjectIds()
 	{
 		return clueSteps.stream()
-			.filter(s -> !s.getValue())
-			.mapToInt(s -> s.getKey().getObjectId())
+			.filter(Step::shouldShowHelp)
+			.mapToInt(s -> s.getClue().getObjectId())
 			.toArray();
 	}
 
@@ -197,8 +224,7 @@ public class ThreeStepCrypticClue extends ClueScroll implements ObjectClueScroll
 	public int[] getConfigKeys()
 	{
 		return clueSteps.stream()
-			.map(Map.Entry::getKey)
-			.flatMapToInt(c -> Arrays.stream(c.getConfigKeys()))
+			.flatMapToInt(s -> Arrays.stream(s.getClue().getConfigKeys()))
 			.toArray();
 	}
 }
