@@ -1393,7 +1393,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Desert insects is what I see. Taking care of them was my responsibility. Your solution is found by digging near me.")
 			.location(new WorldPoint(3307, 9505, 0))
-			.solution("Dig next to the Entomologist, Kalphite area, near Shantay Pass.")
+			.solution("Dig next to the Entomologist, Kalphite Cave, east of Shantay Pass.")
 			.build(),
 		CrypticClue.builder()
 			.text("Search the crates in the most north-western house in Al Kharid.")
