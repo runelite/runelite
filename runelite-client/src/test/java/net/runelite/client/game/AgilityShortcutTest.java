@@ -27,11 +27,10 @@ package net.runelite.client.game;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.stream.Collectors;
-import junit.framework.TestCase;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class AgilityShortcutTest extends TestCase
+public class AgilityShortcutTest
 {
 	@Test
 	public void testAgilityShortcutsSorted()
