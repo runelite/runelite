@@ -329,7 +329,7 @@ LABEL253:
    istore                36           ; whether to use the single tab building mode instead of the whole bank
    iload                 36           ;
    iconst                    1        ;
-   if_icmpeq                 LABEL750 ;
+   if_icmpeq                 singletabbuildmode ;
    get_varbit             4150
    iconst                 0
    if_icmple              LABEL297
@@ -832,8 +832,31 @@ LABEL729:
    iload                  15
    iload                  16
    invoke                 505 ; [proc,bankmain_finishbuilding]
-   return                
+   return
+singletabbuildmode:
+  ; single tab mode loops items from 0-1220, which usually works due to only viewing a single tab range,
+  ; but since items that are not in a tab are stored at the *end* of the bank it causes them to appear
+  ; out of order. So iterate from the end of the tab ranges and loop back around
+   get_varbit             4171  ;
+   get_varbit             4172  ;
+   add                          ;
+   get_varbit             4173  ;
+   add                          ;
+   get_varbit             4174  ;
+   add                          ;
+   get_varbit             4175  ;
+   add                          ;
+   get_varbit             4176  ;
+   add                          ;
+   get_varbit             4177  ;
+   add                          ;
+   get_varbit             4178  ;
+   add                          ;
+   get_varbit             4179  ;
+   add                          ;
+   istore                 31    ; store start to the first item in the "All items" tab
 LABEL750:
+  ; if (~bankmain_searching = 1) {
    invoke                 514
    iconst                 1
    if_icmpeq              LABEL754
@@ -844,6 +867,7 @@ LABEL754:
    iconst                 1
    invoke                 299
 LABEL758:
+  ; after ~meslayer close
    iconst                 -1
    istore                 32
    iconst                 -1
@@ -862,15 +886,22 @@ LABEL770:
    if_icmplt              LABEL774
    jump                   LABEL854
 LABEL774:
+   ; item index = (loop index + offset) % bank size
+   iload                  20   ; loop index
+   iload                  31   ; offset
+   add                         ;
+   iconst                 1220 ; bank size
+   mod                         ;
+   istore                 30   ; store index
    iload                  2
-   iload                  20
+   iload                  30   ; use item index instead of loop index
    cc_find               
    iconst                 1
    if_icmpeq              LABEL780
    jump                   LABEL849
 LABEL780:
    iconst                 95
-   iload                  20
+   iload                  30   ; use item index instead of loop index
    inv_getobj            
    istore                 25
    iload                  25
@@ -905,7 +936,7 @@ LABEL800:
    cc_sethide            
    iload                  25
    iconst                 95
-   iload                  20
+   iload                  30        ; use item index instead of loop index
    inv_getnum            
    iload                  2
    iload                  3
