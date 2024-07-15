@@ -24,16 +24,17 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues;
 
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.ImmutableMap;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.annotation.Nullable;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import net.runelite.api.InventoryID;
 import net.runelite.api.ItemContainer;
 import static net.runelite.api.ItemID.TORN_CLUE_SCROLL_PART_1;
@@ -48,29 +49,44 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 import net.runelite.client.util.Text;
 
 @Getter
-@RequiredArgsConstructor
 public class ThreeStepCrypticClue extends ClueScroll implements ObjectClueScroll, NpcClueScroll, LocationsClueScroll
 {
+	@VisibleForTesting
+	static final Map<Integer, Integer> STEP_TO_CLUE_PART = ImmutableMap.of(
+		1, TORN_CLUE_SCROLL_PART_1,
+		2, TORN_CLUE_SCROLL_PART_2,
+		3, TORN_CLUE_SCROLL_PART_3
+	);
+
+	@VisibleForTesting
+	final List<ThreeStepCrypticClueStep> clueSteps;
+	private final String text;
+
+	private ThreeStepCrypticClue(List<ThreeStepCrypticClueStep> clueSteps, String text)
+	{
+		this.clueSteps = clueSteps;
+		this.text = text;
+
+		clueSteps.forEach(this::propagateRequirements);
+	}
+
 	public static ThreeStepCrypticClue forText(String plainText, String text)
 	{
 		final String[] split = text.split("<br>\\s*<br>");
-		final List<Map.Entry<CrypticClue, Boolean>> steps = new ArrayList<>(split.length);
+		final List<ThreeStepCrypticClueStep> steps = new ArrayList<>(split.length);
 
 		for (String part : split)
 		{
 			boolean isDone = part.contains("<str>");
 			final String rawText = Text.sanitizeMultilineText(part);
 
-			for (CrypticClue clue : CrypticClue.CLUES)
+			final CrypticClue crypticClue = getCrypticFromText(rawText);
+			if (crypticClue == null)
 			{
-				if (!rawText.equalsIgnoreCase(clue.getText()))
-				{
-					continue;
-				}
-
-				steps.add(new AbstractMap.SimpleEntry<>(clue, isDone));
-				break;
+				continue;
 			}
+
+			steps.add(new ThreeStepCrypticClueStep(crypticClue, isDone));
 		}
 
 		if (steps.isEmpty() || steps.size() < 3)
@@ -81,8 +97,21 @@ public class ThreeStepCrypticClue extends ClueScroll implements ObjectClueScroll
 		return new ThreeStepCrypticClue(steps, plainText);
 	}
 
-	private final List<Map.Entry<CrypticClue, Boolean>> clueSteps;
-	private final String text;
+	@Nullable
+	@VisibleForTesting
+	static CrypticClue getCrypticFromText(final String rawText)
+	{
+		for (CrypticClue clue : CrypticClue.CLUES)
+		{
+			if (!rawText.equalsIgnoreCase(clue.getText()))
+			{
+				continue;
+			}
+
+			return clue;
+		}
+		return null;
+	}
 
 	@Override
 	public void makeOverlayHint(PanelComponent panelComponent, ClueScrollPlugin plugin)
@@ -91,11 +120,11 @@ public class ThreeStepCrypticClue extends ClueScroll implements ObjectClueScroll
 
 		for (int i = 0; i < clueSteps.size(); i++)
 		{
-			final Map.Entry<CrypticClue, Boolean> e = clueSteps.get(i);
+			final ThreeStepCrypticClueStep step = clueSteps.get(i);
 
-			if (!e.getValue())
+			if (!step.isCompleted())
 			{
-				CrypticClue c = e.getKey();
+				CrypticClue c = step.getClue();
 
 				panelComponent.getChildren().add(TitleComponent.builder().text("Cryptic Clue #" + (i + 1)).build());
 				panelComponent.getChildren().add(LineComponent.builder().left("Solution:").build());
@@ -112,11 +141,11 @@ public class ThreeStepCrypticClue extends ClueScroll implements ObjectClueScroll
 	@Override
 	public void makeWorldOverlayHint(Graphics2D graphics, ClueScrollPlugin plugin)
 	{
-		for (Map.Entry<CrypticClue, Boolean> e : clueSteps)
+		for (ThreeStepCrypticClueStep step : clueSteps)
 		{
-			if (!e.getValue())
+			if (!step.isCompleted())
 			{
-				e.getKey().makeWorldOverlayHint(graphics, plugin);
+				step.getClue().makeWorldOverlayHint(graphics, plugin);
 			}
 		}
 	}
@@ -125,9 +154,17 @@ public class ThreeStepCrypticClue extends ClueScroll implements ObjectClueScroll
 	{
 		if (containerId == InventoryID.INVENTORY.getId())
 		{
-			return checkForPart(itemContainer, TORN_CLUE_SCROLL_PART_1, 0) ||
-				checkForPart(itemContainer, TORN_CLUE_SCROLL_PART_2, 1) ||
-				checkForPart(itemContainer, TORN_CLUE_SCROLL_PART_3, 2);
+			resetRequirements();
+			final boolean inventoryContainsTornScroll = STEP_TO_CLUE_PART.entrySet().stream()
+				.anyMatch(entry ->
+				{
+					final int index = entry.getKey() - 1;
+					final int itemId = entry.getValue();
+					return checkForPart(itemContainer, itemId, index);
+				});
+			clueSteps.forEach(this::propagateRequirements);
+
+			return inventoryContainsTornScroll;
 		}
 
 		return false;
@@ -138,11 +175,11 @@ public class ThreeStepCrypticClue extends ClueScroll implements ObjectClueScroll
 		// If we have the part then that step is done
 		if (itemContainer.contains(clueScrollPart))
 		{
-			final Map.Entry<CrypticClue, Boolean> entry = clueSteps.get(index);
+			final ThreeStepCrypticClueStep step = clueSteps.get(index);
 
-			if (!entry.getValue())
+			if (!step.isCompleted())
 			{
-				entry.setValue(true);
+				step.setCompleted(true);
 				return true;
 			}
 		}
@@ -150,12 +187,42 @@ public class ThreeStepCrypticClue extends ClueScroll implements ObjectClueScroll
 		return false;
 	}
 
+	private void propagateRequirements(final ThreeStepCrypticClueStep clueStep)
+	{
+		// Don't consider requirements of completed steps
+		if (clueStep.isCompleted())
+		{
+			return;
+		}
+
+		final CrypticClue clue = clueStep.getClue();
+		if (clue.isRequiresLight())
+		{
+			setRequiresLight(true);
+		}
+		if (clue.isRequiresSpade())
+		{
+			setRequiresSpade(true);
+		}
+		if (getFirePitVarbitId() < clue.getFirePitVarbitId())
+		{
+			setFirePitVarbitId(clue.getFirePitVarbitId());
+		}
+	}
+
+	private void resetRequirements()
+	{
+		setRequiresLight(false);
+		setRequiresSpade(false);
+		setFirePitVarbitId(-1);
+	}
+
 	@Override
 	public void reset()
 	{
-		for (Map.Entry<CrypticClue, Boolean> clueStep : clueSteps)
+		for (ThreeStepCrypticClueStep clueStep : clueSteps)
 		{
-			clueStep.setValue(false);
+			clueStep.setCompleted(false);
 		}
 	}
 
@@ -169,8 +236,8 @@ public class ThreeStepCrypticClue extends ClueScroll implements ObjectClueScroll
 	public WorldPoint[] getLocations(ClueScrollPlugin plugin)
 	{
 		return clueSteps.stream()
-			.filter(s -> !s.getValue())
-			.map(s -> s.getKey().getLocation(plugin))
+			.filter(s -> !s.isCompleted())
+			.map(s -> s.getClue().getLocation(plugin))
 			.filter(Objects::nonNull)
 			.toArray(WorldPoint[]::new);
 	}
@@ -179,8 +246,8 @@ public class ThreeStepCrypticClue extends ClueScroll implements ObjectClueScroll
 	public String[] getNpcs(ClueScrollPlugin plugin)
 	{
 		return clueSteps.stream()
-			.filter(s -> !s.getValue())
-			.map(s -> s.getKey().getNpc())
+			.filter(s -> !s.isCompleted())
+			.map(s -> s.getClue().getNpc())
 			.toArray(String[]::new);
 	}
 
@@ -188,8 +255,8 @@ public class ThreeStepCrypticClue extends ClueScroll implements ObjectClueScroll
 	public int[] getObjectIds()
 	{
 		return clueSteps.stream()
-			.filter(s -> !s.getValue())
-			.mapToInt(s -> s.getKey().getObjectId())
+			.filter(s -> !s.isCompleted())
+			.mapToInt(s -> s.getClue().getObjectId())
 			.toArray();
 	}
 
@@ -197,8 +264,7 @@ public class ThreeStepCrypticClue extends ClueScroll implements ObjectClueScroll
 	public int[] getConfigKeys()
 	{
 		return clueSteps.stream()
-			.map(Map.Entry::getKey)
-			.flatMapToInt(c -> Arrays.stream(c.getConfigKeys()))
+			.flatMapToInt(s -> Arrays.stream(s.getClue().getConfigKeys()))
 			.toArray();
 	}
 }
