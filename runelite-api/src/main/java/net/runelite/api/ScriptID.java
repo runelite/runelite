@@ -275,6 +275,9 @@ public final class ScriptID
 	@ScriptArguments(integer = 17)
 	public static final int BANKMAIN_SEARCH_REFRESH = 283;
 
+	@ScriptArguments(integer = 6)
+	public static final int BANKMAIN_DRAGSCROLL = 284;
+
 	/**
 	 * Called to update the PVP widget (wilderness level/protection)
 	 */

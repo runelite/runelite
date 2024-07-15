@@ -273,3 +273,38 @@ m 42 153
 C 0 1 1 7
 C 2 5 7 7
 C 6 3 7 4
+
+// rogue's den
+n
+R 46 78 47 79
+r 47 77
+
+// castle wars underground
+n
+r 37 148
+
+// viyeldi caves
+n
+r 37 73
+
+// baba yaga's hut
+n
+m 38 72
+C 2 4 2 5
+
+// vyre mines
+n
+m 37 72
+C 1 1 3 3
+
+// jiggig
+n
+R 38 146 38 147
+
+// smoke devil dungeon
+n
+R 36 147 37 147
+
+// observatory dungeon
+n
+r 36 146

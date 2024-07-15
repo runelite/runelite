@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Adam <Adam@sigterm.info>
+ * Copyright (c) 2024, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,33 +25,19 @@
  */
 package net.runelite.client.plugins.banktags;
 
-import net.runelite.client.plugins.banktags.tabs.Layout;
+import net.runelite.client.plugins.banktags.tabs.TagTab;
 
-/**
- * A bank tag. Plugins may implement this interface to define custom bank tags.
- * You may register a BankTag with {@link TagManager#registerTag(String, BankTag)} to
- * make it searchable in the bank UI and tab interface. You may also set the active bank tag
- * via {@link BankTagsService#openBankTag(BankTag)}, regardless of if the banktag is registered.
- *
- * @see TagManager#registerTag(String, BankTag)
- * @see TagManager#unregisterTag(String)
- * @see BankTagsService#openBankTag(BankTag)
- */
-public interface BankTag
+public interface BankTagsService
 {
 	/**
-	 * Test if an item is in the tag
-	 * @param itemId
-	 * @return
+	 * Open the given tag tab.
+	 * @param tagTab
 	 */
-	boolean contains(int itemId);
+	void openTagTab(TagTab tagTab);
 
 	/**
-	 * The tag layout
-	 * @return the layout for the tag, or null for no layout
+	 * Open the given bank tag.
+	 * @param bankTag
 	 */
-	default Layout layout()
-	{
-		return null;
-	}
+	void openBankTag(BankTag bankTag);
 }

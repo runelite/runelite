@@ -68,16 +68,12 @@ deposit_inventory=42
 deposit_equipment=44
 incinerator=46
 incinerator_confirm=47
-equipment_content_container=69
+equipment_parent=69
+equipment_set_bonus=110
 settings_button=114
 equipment_button=115
 popup=117
-
-[bank_equipment]
-id=12
-parent=69
-set_bonus=110
-stat_bonus=122
+equipment_stat_bonus=122
 
 [bank_inventory]
 id=15
@@ -284,9 +280,6 @@ id=607
 [duel_inventory]
 id=421
 
-[duel_inventory_other]
-id=481
-
 [emotes]
 id=216
 window=0
@@ -298,6 +291,7 @@ emote_scrollbar=4
 id=387
 inventory_item_container=0
 cape=16
+dizanas_quiver_item_container=28
 
 [equipment_bonuses]
 id=84
@@ -515,10 +509,6 @@ info=2
 id=328
 info=4
 
-[lms_kda]
-id=333
-info=4
-
 [login_click_to_play_screen]
 id=378
 message_of_the_day=6
@@ -534,10 +524,6 @@ looting_bag_inventory=5
 
 [lunar_chest]
 id=868
-
-[minigames]
-id=160
-teleport_button=30
 
 [minimap]
 id=160

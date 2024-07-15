@@ -114,12 +114,6 @@ public class TagManager
 
 	boolean findTag(int itemId, String search)
 	{
-		BankTag bankTag = customTags.get(search);
-		if (bankTag != null && bankTag.contains(itemId))
-		{
-			return true;
-		}
-
 		Collection<String> tags = getTags(itemId, false);
 		tags.addAll(getTags(itemId, true));
 		return tags.stream().anyMatch(tag -> tag.startsWith(Text.standardize(search)));
@@ -194,5 +188,10 @@ public class TagManager
 	public void unregisterTag(String name)
 	{
 		customTags.remove(name);
+	}
+
+	BankTag findTag(String name)
+	{
+		return customTags.get(name);
 	}
 }

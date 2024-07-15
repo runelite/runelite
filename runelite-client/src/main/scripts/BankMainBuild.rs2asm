@@ -1,7 +1,7 @@
 .id                 277
 .int_stack_count    17
 .string_stack_count 0
-.int_var_count      36
+.int_var_count      37 ; +1
 .string_var_count   1
    get_varbit             5102
    iconst                 1
@@ -323,6 +323,13 @@ LABEL253:
    istore                 31
    sconst                 ""
    sstore                 0
+   iconst                 0           ;
+   sconst "bankBuildTab"              ;
+   runelite_callback                  ;
+   istore                36           ; whether to use the single tab building mode instead of the whole bank
+   iload                 36           ;
+   iconst                    1        ;
+   if_icmpeq                 LABEL750 ;
    get_varbit             4150
    iconst                 0
    if_icmple              LABEL297
@@ -876,6 +883,9 @@ LABEL788:
    add                   
    istore                 29
 LABEL792:
+   iload 36                          ; overriding single tab building mode?
+   iconst 1                          ;
+   if_icmpeq              filtertest ;
    iload                  20
    iload                  32
    if_icmpge              LABEL796
@@ -885,6 +895,11 @@ LABEL796:
    iload                  33
    if_icmplt              LABEL800
    jump                   LABEL847
+filtertest:
+   iload 25                         ; obj
+   invoke 279                       ; ~bankmain_filtertest
+   iconst 1                         ;
+   if_icmpne              LABEL847  ;
 LABEL800:
    iconst                 0
    cc_sethide            
@@ -946,6 +961,14 @@ LABEL849:
    istore                 20
    jump                   LABEL770
 LABEL854:
+   iload 36                                      ; overriding single tab building mode?
+   iconst 1                                      ;
+   if_icmpne              tabtitle               ; set normal "Tab" title
+   sconst                 "The Bank of Gielinor" ; bank title
+   iload                  5                      ; bank title component
+   if_settext                                    ;
+   jump FinishBuilding                           ;
+tabtitle:                                        ;
    get_varbit             4170
    iconst                 2
    if_icmpeq              LABEL858

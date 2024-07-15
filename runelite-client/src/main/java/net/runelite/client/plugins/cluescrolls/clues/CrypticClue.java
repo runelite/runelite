@@ -1350,10 +1350,10 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.solution("Horvik's in Varrock.")
 			.build(),
 		CrypticClue.builder()
-			.text("Ghommal wishes to be impressed by how strong your equipment is.")
+			.text("The doorman of the Warriors' Guild wishes to be impressed by how strong your equipment is.")
 			.location(new WorldPoint(2878, 3546, 0))
 			.npc("Ghommal")
-			.solution("Speak to Ghommal at the Warriors' Guild with a total Melee Strength bonus of over 100.")
+			.solution("Speak to the doorman of the Warriors' Guild with a total Melee Strength bonus of over 100.")
 			.build(),
 		CrypticClue.builder()
 			.text("Shhhh!")
@@ -1503,10 +1503,10 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.solution("Search the drawers upstairs in Varrock east bank.")
 			.build(),
 		CrypticClue.builder()
-			.text("Speak to Hazelmere.")
-			.location(new WorldPoint(2677, 3088, 0))
-			.npc("Hazelmere")
-			.solution("Located upstairs in the house east of Yanille, north of fairy ring CLS. Answer: 6859")
+			.text("Speak to Uglug Nar.")
+			.location(new WorldPoint(2444, 3049, 0))
+			.npc("Uglug Nar")
+			.solution("Outside Jiggig, south of Castle Wars. Answer: 6859")
 			.questionText("What is 19 to the power of 3?")
 			.build(),
 		CrypticClue.builder()
@@ -1614,10 +1614,10 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.solution("The Crystal chest can be found in the house directly south of the Witch's house in Taverley.")
 			.build(),
 		CrypticClue.builder()
-			.text("Talk to Turael in Burthorpe.")
+			.text("Talk to the Slayer Master in Burthorpe.")
 			.location(new WorldPoint(2930, 3536, 0))
 			.npc("Turael")
-			.solution("Turael is located in the small house east of the Toad and Chicken inn in Burthorpe.")
+			.solution("The Slayer Master is located in the small house east of the Toad and Chicken inn in Burthorpe.")
 			.build(),
 		CrypticClue.builder()
 			.text("More resources than I can handle, but in a very dangerous area. Can't wait to strike gold!")
