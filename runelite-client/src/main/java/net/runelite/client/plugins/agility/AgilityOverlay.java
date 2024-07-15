@@ -25,18 +25,12 @@
  */
 package net.runelite.client.plugins.agility;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Polygon;
-import java.awt.Shape;
-import java.util.List;
-import java.util.Set;
-import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.Point;
 import net.runelite.api.Tile;
+import net.runelite.api.NPCComposition;
+import net.runelite.api.Perspective;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.client.game.AgilityShortcut;
 import net.runelite.client.ui.overlay.Overlay;
@@ -44,6 +38,11 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.util.ColorUtil;
+
+import javax.inject.Inject;
+import java.awt.*;
+import java.util.List;
+import java.util.Set;
 
 class AgilityOverlay extends Overlay
 {
@@ -150,15 +149,41 @@ class AgilityOverlay extends Overlay
 		}
 
 		Set<NPC> npcs = plugin.getNpcs();
-		if (!npcs.isEmpty() && config.highlightSepulchreNpcs())
+		if (!npcs.isEmpty() && (config.highlightSepulchreNpcs() || config.highlightSepulchreNpcsTrueTile()))
 		{
-			Color color = config.sepulchreHighlightColor();
 			for (NPC npc : npcs)
 			{
-				Polygon tilePoly = npc.getCanvasTilePoly();
-				if (tilePoly != null)
+				if (config.highlightSepulchreNpcsTrueTile())
 				{
-					OverlayUtil.renderPolygon(graphics, tilePoly, color);
+					NPCComposition npcComposition = npc.getTransformedComposition();
+					Color color = config.sepulchreHighlightTrueTileColor();
+
+					if (npcComposition != null)
+					{
+						LocalPoint lp = LocalPoint.fromWorld(client, npc.getWorldLocation());
+						if (lp != null)
+						{
+							final int size = npcComposition.getSize();
+							final LocalPoint centerLp = new LocalPoint(
+									lp.getX() + Perspective.LOCAL_TILE_SIZE * (size - 1) / 2,
+									lp.getY() + Perspective.LOCAL_TILE_SIZE * (size - 1) / 2);
+							Polygon tilePoly = Perspective.getCanvasTileAreaPoly(client, centerLp, size);
+							if (tilePoly != null)
+							{
+								OverlayUtil.renderPolygon(graphics, tilePoly, color);
+							}
+						}
+					}
+				}
+
+				if (config.highlightSepulchreNpcs())
+				{
+					Color color = config.sepulchreHighlightColor();
+					Polygon tilePoly = npc.getCanvasTilePoly();
+					if (tilePoly != null)
+					{
+						OverlayUtil.renderPolygon(graphics, tilePoly, color);
+					}
 				}
 			}
 		}
