@@ -906,7 +906,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.build(),
 		CrypticClue.builder()
 			.text("Surround my bones in fire, ontop the wooden pyre. Finally lay me to rest, before my one last test.")
-			.solution("Kill a confused/lost barbarian to receive mangled bones. Construct and burn a pyre ship. Kill the ferocious barbarian spirit that spawns to receive a clue casket.")
+			.solution("Kill a Confused or Lost barbarian in the Ancient Cavern to receive mangled bones. Construct and burn a pyre ship with logs, a tinderbox, and an axe. Kill the Ferocious barbarian spirit that spawns.")
 			.build(),
 		CrypticClue.builder()
 			.text("Fiendish cooks probably won't dig the dirty dishes.")
