@@ -33,11 +33,14 @@ import static net.runelite.api.ChatMessageType.GAMEMESSAGE;
 import static net.runelite.api.ChatMessageType.TRADE;
 import net.runelite.api.Client;
 import net.runelite.api.ScriptID;
+import net.runelite.api.Player;
 import net.runelite.api.VarClientStr;
+import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.gameval.AnimationID;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
@@ -540,6 +543,22 @@ public class ScreenshotPluginTest
 		screenshotPlugin.onWidgetLoaded(widgetLoaded);
 
 		verify(screenshotPlugin).takeScreenshot("Loot key", "Wilderness Loot Chest");
+	}
+
+	@Test
+	public void testDoomDeath()
+	{
+		when(screenshotConfig.screenshotPlayerDeath()).thenReturn(true);
+
+		Player player = mock(Player.class);
+		when(player.getAnimation()).thenReturn(AnimationID.HUMAN_DOOM_SCORPION_01_PLAYER_DEATH_01);
+		when(client.getLocalPlayer()).thenReturn(player);
+
+		AnimationChanged animationChanged = new AnimationChanged();
+		animationChanged.setActor(player);
+		screenshotPlugin.onAnimationChanged(animationChanged);
+
+		verify(screenshotPlugin).takeScreenshot("Death", "Deaths");
 	}
 
 	@Test
