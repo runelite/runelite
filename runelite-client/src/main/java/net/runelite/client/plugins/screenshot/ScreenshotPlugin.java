@@ -51,11 +51,13 @@ import net.runelite.api.ScriptID;
 import net.runelite.api.VarClientStr;
 import net.runelite.api.annotations.Component;
 import net.runelite.api.events.ActorDeath;
+import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.gameval.AnimationID;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.gameval.SpriteID;
 import net.runelite.api.gameval.VarbitID;
@@ -311,6 +313,23 @@ public class ScreenshotPlugin extends Plugin
 				takeScreenshot("Death " + player.getName(), SD_DEATHS);
 			}
 		}
+	}
+
+	@Subscribe
+	public void onAnimationChanged(AnimationChanged animationChanged)
+	{
+		Actor actor = animationChanged.getActor();
+		if (actor instanceof Player)
+		{
+			Player player = (Player) actor;
+			if (player == client.getLocalPlayer()
+				&& player.getAnimation() == AnimationID.HUMAN_DOOM_SCORPION_01_PLAYER_DEATH_01
+				&& config.screenshotPlayerDeath())
+			{
+				takeScreenshot("Death", SD_DEATHS);
+			}
+		}
+
 	}
 
 	@Subscribe
