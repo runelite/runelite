@@ -1919,7 +1919,8 @@
     26979,
     27781,
     28678,
-    28680
+    28680,
+    29646
   ],
   "empty cup": [
     1980,
@@ -7281,7 +7282,8 @@
     12767,
     12768,
     20408,
-    27853
+    27853,
+    29611
   ],
   "dragonfire shield": [
     11283,
@@ -7569,7 +7571,8 @@
     11802,
     20368,
     20593,
-    22665
+    22665,
+    29605
   ],
   "bandos godsword": [
     11804,
@@ -9397,19 +9400,22 @@
     21791,
     23607,
     24236,
-    24248
+    24248,
+    29617
   ],
   "imbued guthix cape": [
     21793,
     23603,
     24240,
-    24249
+    24249,
+    29615
   ],
   "imbued zamorak cape": [
     21795,
     23605,
     24244,
-    24250
+    24250,
+    29613
   ],
   "bracelet of ethereum": [
     21816,
@@ -10324,7 +10330,8 @@
   ],
   "volatile nightmare staff": [
     24424,
-    25517
+    25517,
+    29609
   ],
   "iced gingerbread shield": [
     24438,
@@ -11534,7 +11541,8 @@
   ],
   "voidwaker": [
     27690,
-    27869
+    27869,
+    29607
   ],
   "oldschool jumper": [
     27822,
@@ -12033,5 +12041,55 @@
   "teleorb": [
     29536,
     29537
+  ],
+  "blighted overload": [
+    29631,
+    29634,
+    29637,
+    29640
+  ],
+  "sigil of meticulousness": [
+    29648,
+    29649
+  ],
+  "sigil of revoked limitation": [
+    29651,
+    29652
+  ],
+  "sigil of rampart": [
+    29654,
+    29655
+  ],
+  "sigil of deception": [
+    29657,
+    29658
+  ],
+  "sigil of lithe": [
+    29660,
+    29661
+  ],
+  "sigil of adroit": [
+    29663,
+    29664
+  ],
+  "sigil of onslaught": [
+    29666,
+    29667
+  ],
+  "sigil of restoration": [
+    29669,
+    29670
+  ],
+  "sigil of swashbuckler": [
+    29672,
+    29673
+  ],
+  "sigil of gunslinger": [
+    29675,
+    29676
+  ],
+  "sigil of arcane swiftness": [
+    29678,
+    29679
   ]
 }
