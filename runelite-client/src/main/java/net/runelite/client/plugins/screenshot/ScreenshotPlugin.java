@@ -43,6 +43,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
+import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -53,6 +54,7 @@ import net.runelite.api.VarClientStr;
 import net.runelite.api.Varbits;
 import net.runelite.api.annotations.Component;
 import net.runelite.api.events.ActorDeath;
+import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptCallbackEvent;
@@ -288,6 +290,22 @@ public class ScreenshotPlugin extends Plugin
 		{
 			takeScreenshot(fileName, screenshotSubDir);
 		}
+	}
+
+	@Subscribe
+	public void onAnimationChanged(AnimationChanged animationChanged) {
+		Actor actor = animationChanged.getActor();
+		if (actor instanceof Player)
+		{
+			Player player = (Player) actor;
+			if (player == client.getLocalPlayer()
+					&& config.screenshotPlayerDeath()
+					&& player.getAnimation() == AnimationID.DOOM_DEATH)
+			{
+				takeScreenshot("Death", SD_DEATHS);
+			}
+		}
+
 	}
 
 	@Subscribe
