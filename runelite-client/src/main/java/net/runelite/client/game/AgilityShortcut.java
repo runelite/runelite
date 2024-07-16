@@ -50,8 +50,10 @@ import static net.runelite.api.NullObjectID.NULL_40960;
 import static net.runelite.api.NullObjectID.NULL_40962;
 import static net.runelite.api.NullObjectID.NULL_43840;
 import static net.runelite.api.NullObjectID.NULL_47325;
+import static net.runelite.api.NullObjectID.NULL_49908;
 import static net.runelite.api.ObjectID.*;
 import net.runelite.api.TileObject;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 
 @Getter
@@ -120,11 +122,8 @@ public enum AgilityShortcut
 		@Override
 		public boolean matches(Client client, TileObject object)
 		{
-			assert object.getId() == NullObjectID.NULL_46815;
-			int multilocId = client.getObjectDefinition(object.getId())
-				.getImpostor()
-				.getId();
-			return multilocId == BROKEN_FENCE_46817;
+			// This is the point in the quest when the shortcut is unlocked
+			return client.getVarbitValue(Varbits.QUEST_MAKING_FRIENDS_WITH_MY_ARM) > 199;
 		}
 	},
 	FALADOR_CRUMBLING_WALL(5, "Crumbling Wall", new WorldPoint(2936, 3357, 0), CRUMBLING_WALL_24222),
@@ -149,7 +148,20 @@ public enum AgilityShortcut
 	COAL_TRUCKS_LOG_BALANCE(20, "Log Balance", new WorldPoint(2598, 3475, 0), LOG_BALANCE_23274),
 	GRAND_EXCHANGE_UNDERWALL_TUNNEL(21, "Underwall Tunnel", new WorldPoint(3139, 3515, 0), UNDERWALL_TUNNEL_16529, UNDERWALL_TUNNEL_16530),
 	BRIMHAVEN_DUNGEON_PIPE(22, "Pipe Squeeze", new WorldPoint(2654, 9569, 0), PIPE_21728),
-	OBSERVATORY_SCALE_CLIFF(23, "Grapple Rocks", new WorldPoint(2447, 3155, 0), NULL_31849, NULL_31852),
+	OBSERVATORY_SCALE_CLIFF(23, "Grapple Rocks", new WorldPoint(2447, 3155, 0), NULL_31849, NULL_31852, DOOR_25526, DOOR_25527)
+	{
+		@Override
+		public boolean matches(Client client, TileObject object)
+		{
+			if (client.getVarbitValue(Varbits.OBSERVATORY_SHORTCUT_UNLOCKED) == 0)
+			{
+				// If the full shortcut has not been unlocked yet,
+				// only the 'Grapple Rocks' shortcut should be highlighted
+				return object.getId() == NULL_31852;
+			}
+			return true;
+		}
+	},
 	EAGLES_PEAK_ROCK_CLIMB(25, "Rock Climb", new WorldPoint(2320, 3499, 0), ROCKS_19849),
 	FALADOR_UNDERWALL_TUNNEL(26, "Underwall Tunnel", new WorldPoint(2947, 3313, 0), UNDERWALL_TUNNEL, UNDERWALL_TUNNEL_16528),
 	KOUREND_CATACOMBS_STONES_NORTH(28, "Stones", new WorldPoint(1613, 10071, 0), STONE_28893),
@@ -183,7 +195,15 @@ public enum AgilityShortcut
 	TROLLHEIM_MEDIUM_CLIFF_SCRAMBLE_SOUTH(43, "Rocks", new WorldPoint(2876, 3666, 0), ROCKS_3803, ROCKS_3804, ROCKS_16522),
 	TROLLHEIM_ADVANCED_CLIFF_SCRAMBLE(44, "Rocks", new WorldPoint(2907, 3686, 0), ROCKS_16523, ROCKS_3748),
 	KOUREND_RIVER_STEPPING_STONES(45, "Stepping Stones", new WorldPoint(1720, 3551, 0), STEPPING_STONE_29728),
-	POISON_WASTE_GRAPPLE(45, "Grapple Tree", null, TREE_49590),
+	POISON_WASTE_GRAPPLE(45, "Grapple Tree", null, NULL_49908)
+	{
+		@Override
+		public boolean matches(Client client, TileObject object)
+		{
+			// This is the point in the quest when the shortcut is unlocked
+			return client.getVarbitValue(Varbits.QUEST_PATH_OF_GLOUPHRIE) > 24;
+		}
+	},
 	TIRANNWN_LOG_BALANCE(45, "Log Balance", null, LOG_BALANCE_3933, LOG_BALANCE_3931, LOG_BALANCE_3930, LOG_BALANCE_3929, LOG_BALANCE_3932),
 	COSMIC_ALTAR_MEDIUM_WALKWAY(46, "Narrow Walkway", new WorldPoint(2399, 4403, 0), JUTTING_WALL_17002),
 	DEEP_WILDERNESS_DUNGEON_CREVICE_NORTH(46, "Narrow Crevice", new WorldPoint(3047, 10335, 0), CREVICE_19043),
@@ -200,6 +220,8 @@ public enum AgilityShortcut
 	KARAMJA_VOLCANO_GRAPPLE_NORTH(53, "Grapple Rock", new WorldPoint(2873, 3143, 0), STRONG_TREE_17074),
 	KARAMJA_VOLCANO_GRAPPLE_SOUTH(53, "Grapple Rock", new WorldPoint(2874, 3128, 0), STRONG_TREE_17074),
 	MOTHERLODE_MINE_WALL_EAST(54, "Wall", new WorldPoint(3124, 9703, 0), DARK_TUNNEL_10047),
+	MOTHERLODE_MINE_WALL_NORTH(54, "Wall", new WorldPoint(3104, 9678, 0), DARK_TUNNEL_10047),
+	MOTHERLODE_MINE_WALL_SOUTH(54, "Wall", new WorldPoint(3103, 9673, 0), DARK_TUNNEL_10047),
 	MOTHERLODE_MINE_WALL_WEST(54, "Wall", new WorldPoint(3118, 9702, 0), DARK_TUNNEL_10047),
 	MISCELLANIA_DOCK_STEPPING_STONE(55, "Stepping Stone", new WorldPoint(2572, 3862, 0), STEPPING_STONE_11768),
 	BRIMHAVEN_DUNGEON_EAST_STEPPING_STONES_NORTH(56, "Stepping Stones", new WorldPoint(2685, 9547, 0), STEPPING_STONE_19040),
@@ -223,7 +245,15 @@ public enum AgilityShortcut
 	MOUNT_KARUULM_UPPER(62, "Rocks", new WorldPoint(1322, 3791, 0), ROCKS_34396),
 	NECROPOLIS_STEPPING_STONES_NORTH(62, "Stepping Stone", new WorldPoint(3293, 2706, 0), STEPPING_STONE_43990),
 	NECROPOLIS_STEPPING_STONES_SOUTH(62, "Stepping Stones", new WorldPoint(3291, 2700, 0), STEPPING_STONE_43989),
-	DARKMEYER_WALL(63, "Wall (Long rope)", new WorldPoint(3669, 3375, 0), NULL_39541, NULL_39542),
+	DARKMEYER_WALL(63, "Wall (Long rope)", new WorldPoint(3669, 3375, 0), NULL_39541, NULL_39542)
+	{
+		@Override
+		public boolean matches(Client client, TileObject object)
+		{
+			return (object.getId() == NULL_39542 && client.getVarbitValue(Varbits.DARKMEYER_WALL_SHORTCUT_WEST) == 1)
+				|| object.getId() == NULL_39541 && client.getVarbitValue(Varbits.DARKMEYER_WALL_SHORTCUT_EAST) == 1;
+		}
+	},
 	FORTHOS_DUNGEON_SPIKED_BLADES(63, "Spiked Blades", new WorldPoint(1819, 9946, 0), STRANGE_FLOOR_34834),
 	TAVERLEY_DUNGEON_RAILING(63, "Loose Railing", new WorldPoint(2935, 9811, 0), LOOSE_RAILING_28849),
 	FOSSIL_ISLAND_VOLCANO(64, "Rope", new WorldPoint(3780, 3822, 0), ROPE_ANCHOR, ROPE_ANCHOR_30917),
@@ -253,8 +283,22 @@ public enum AgilityShortcut
 	},
 	FOSSIL_ISLAND_HARDWOOD_NORTH(70, "Hole" , new WorldPoint(3712, 3828, 0), HOLE_31481, HOLE_31482),
 	FOSSIL_ISLAND_HARDWOOD_SOUTH(70, "Hole" , new WorldPoint(3714, 3816, 0), HOLE_31481, HOLE_31482),
-	GWD_SARADOMIN_ROPE_NORTH(70, "Rope Descent", new WorldPoint(2912, 5300, 0), NULL_26371, NULL_26561),
-	GWD_SARADOMIN_ROPE_SOUTH(70, "Rope Descent", new WorldPoint(2951, 5267, 0), NULL_26375, NULL_26562),
+	GWD_SARADOMIN_ROPE_NORTH(70, "Rope Descent", new WorldPoint(2912, 5300, 0), NULL_26371, NULL_26561)
+	{
+		@Override
+		public boolean matches(Client client, TileObject object)
+		{
+			return client.getVarbitValue(Varbits.GWD_SARADOMIN_ROPE_1) == 1;
+		}
+	},
+	GWD_SARADOMIN_ROPE_SOUTH(70, "Rope Descent", new WorldPoint(2951, 5267, 0), NULL_26375, NULL_26562)
+	{
+		@Override
+		public boolean matches(Client client, TileObject object)
+		{
+			return client.getVarbitValue(Varbits.GWD_SARADOMIN_ROPE_2) == 1;
+		}
+	},
 	TAVERLEY_DUNGEON_PIPE_BLUE_DRAGON(70, "Pipe Squeeze", new WorldPoint(2886, 9798, 0), OBSTACLE_PIPE_16509),
 	TAVERLEY_DUNGEON_ROCKS_NORTH(70, "Rocks", new WorldPoint(2887, 9823, 0), ROCKS, ROCKS_14106),
 	TAVERLEY_DUNGEON_ROCKS_SOUTH(70, "Rocks", new WorldPoint(2887, 9631, 0), ROCKS, ROCKS_14106),
@@ -301,9 +345,23 @@ public enum AgilityShortcut
 	MOUNT_KARUULM_PIPE_NORTH(88, "Pipe", new WorldPoint(1345, 10230, 0), MYSTERIOUS_PIPE),
 	MOUNT_KARUULM_PIPE_SOUTH(88, "Pipe", new WorldPoint(1316, 10214, 0), MYSTERIOUS_PIPE),
 	REVENANT_CAVES_CHAMBER_JUMP(89, "Jump", new WorldPoint(3240, 10144, 0), PILLAR_31561),
-	VIYELDI_ROCK_CLIMB(91, "Rocks", null, NULL_40960, NULL_40962),
+	VIYELDI_ROCK_CLIMB(91, "Rocks", null, NULL_40960, NULL_40962)
+	{
+		@Override
+		public boolean matches(Client client, TileObject object)
+		{
+			return client.getVarbitValue(Varbits.VIYELDI_CAVES_ROPE_SHORTCUT) == 1;
+		}
+	},
 	MEIYERDITCH_LAB_ADVANCED_TUNNELS_EAST(93, "Cave", new WorldPoint(3604, 9772, 0), CAVE_43762, CAVE_43763),
-	MEIYERDITCH_LAB_ADVANCED_TUNNELS_MIDDLE(93, "Cave", new WorldPoint(3597, 9768, 0), NULL_43840),
+	MEIYERDITCH_LAB_ADVANCED_TUNNELS_MIDDLE(93, "Cave", new WorldPoint(3597, 9768, 0), NULL_43840)
+	{
+		@Override
+		public boolean matches(Client client, TileObject object)
+		{
+			return client.getVarbitValue(Varbits.MEIYERDITCH_LAB_ADVANCED_TUNNELS_SHORTCUT) == 1;
+		}
+	},
 	MEIYERDITCH_LAB_ADVANCED_TUNNELS_WEST(93, "Cave", new WorldPoint(3499, 9802, 0), CAVE_43759),
 	VIYELDI_CAVES_CREVICE(96, "Crevice", null, CREVICE_53242);
 
