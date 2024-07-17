@@ -35,6 +35,7 @@ import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.NpcID;
 import net.runelite.api.ParamID;
+import net.runelite.api.events.ActorDeath;
 import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.NpcChanged;
 import net.runelite.client.RuntimeConfig;
@@ -271,6 +272,7 @@ public class NpcUtil
 			case AnimationID.VERZIK_P2_WHITE_NYLO_EXPLOSION:
 			case AnimationID.VERZIK_P2_PURPLE_NYLO_EXPLOSION:
 			case AnimationID.VERZIK_P2_RED_NYLO_EXPLOSION:
+			case AnimationID.KALPHITE_QUEEN_P2_DEATH:
 				actor.setDead(true);
 				break;
 			default:
@@ -283,6 +285,23 @@ public class NpcUtil
 					}
 				}
 				break;
+		}
+	}
+
+	@Subscribe
+	public void onActorDeath(ActorDeath e)
+	{
+		final Actor actor = e.getActor();
+
+		if (!(actor instanceof NPC))
+		{
+			return;
+		}
+
+		// Kalphite Queen phase 2
+		if (((NPC) actor).getId() == NpcID.KALPHITE_QUEEN_965)
+		{
+			actor.setDead(false);
 		}
 	}
 }
