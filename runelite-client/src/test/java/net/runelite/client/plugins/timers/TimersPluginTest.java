@@ -58,6 +58,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.nullable;
 import org.mockito.Mock;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -250,7 +251,8 @@ public class TimersPluginTest
 	public void testTzhaarTimer()
 	{
 		when(timersConfig.showTzhaarTimers()).thenReturn(true);
-		when(client.getMapRegions()).thenReturn(new int[]{TimersPlugin.FIGHT_CAVES_REGION_ID});
+		timersPlugin = spy(timersPlugin);
+		doReturn(true).when(timersPlugin).isInFightCaves();
 
 		class InstantRef
 		{
@@ -305,7 +307,7 @@ public class TimersPluginTest
 		chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", "You have been defeated!", "", 0);
 		final GameStateChanged gameStateChanged = new GameStateChanged();
 		gameStateChanged.setGameState(GameState.LOADING);
-		when(client.getMapRegions()).thenReturn(new int[0]);
+		doReturn(false).when(timersPlugin).isInFightCaves();
 		timersPlugin.onChatMessage(chatMessage);
 		timersPlugin.onGameStateChanged(gameStateChanged);
 		verify(infoBoxManager, times(3)).removeInfoBox(captor.capture());
@@ -316,7 +318,8 @@ public class TimersPluginTest
 	public void testInfernoTimerStartOffset()
 	{
 		when(timersConfig.showTzhaarTimers()).thenReturn(true);
-		when(client.getMapRegions()).thenReturn(new int[]{TimersPlugin.INFERNO_REGION_ID});
+		timersPlugin = spy(timersPlugin);
+		doReturn(true).when(timersPlugin).isInInferno();
 
 		class InstantRef
 		{
