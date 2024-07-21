@@ -1633,7 +1633,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("A general who sets a 'shining' example.")
 			.location(new WorldPoint(2186, 3148, 0))
 			.npc("General Hining")
-			.solution("Talk to General Hining in Tyras Camp.")
+			.solution("Talk to General Hining in Tyras Camp  (BJS if 76 Agility).")
 			.build(),
 		CrypticClue.builder()
 			.text("Has no one told you it is rude to ask a lady her age?")
