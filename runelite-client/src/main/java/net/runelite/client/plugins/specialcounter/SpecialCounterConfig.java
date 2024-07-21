@@ -145,6 +145,17 @@ public interface SpecialCounterConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 31,
+		keyName = "emberlightThreshold",
+		name = "Emberlight",
+		description = "Threshold for Emberlight (0 to disable)"
+	)
+	default int emberlightThreshold()
+	{
+		return 0;
+	}
+
+	@ConfigItem(
 		position = 40,
 		keyName = "bandosGodswordThreshold",
 		name = "Bandos Godsword",

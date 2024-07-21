@@ -112,7 +112,8 @@ public enum SpecialWeapon
 				return 0;
 			}
 		},
-	SEERCULL("Seercull", new int[]{ItemID.SEERCULL}, true, (d) -> 46 + (d * 5), (c) -> 0);
+	SEERCULL("Seercull", new int[]{ItemID.SEERCULL}, true, (d) -> 46 + (d * 5), (c) -> 0),
+	EMBERLIGHT("Emberlight", new int[]{ItemID.EMBERLIGHT}, false, SpecialCounterConfig::emberlightThreshold);
 
 	private static final Set<Integer> TEKTON_VARIANTS = ImmutableSet.of(
 		NpcID.TEKTON,
