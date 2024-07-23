@@ -27,7 +27,6 @@ package net.runelite.client.plugins.itemstats.potions;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
 
-import static java.util.Comparator.naturalOrder;
 import static net.runelite.client.plugins.itemstats.Builders.boost;
 import static net.runelite.client.plugins.itemstats.Builders.perc;
 
@@ -35,8 +34,8 @@ import net.runelite.client.plugins.itemstats.Effect;
 import net.runelite.client.plugins.itemstats.StatChange;
 import net.runelite.client.plugins.itemstats.StatsChanges;
 
-import java.util.Comparator;
 import java.util.stream.Stream;
+import static java.util.Comparator.naturalOrder;
 
 import static net.runelite.client.plugins.itemstats.stats.Stats.ATTACK;
 import static net.runelite.client.plugins.itemstats.stats.Stats.STRENGTH;
