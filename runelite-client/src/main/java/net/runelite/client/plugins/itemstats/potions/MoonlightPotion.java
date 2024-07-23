@@ -43,64 +43,69 @@ import static net.runelite.client.plugins.itemstats.stats.Stats.DEFENCE;
 
 public class MoonlightPotion implements Effect
 {
-    @Override
-    public StatsChanges calculate(Client client)
-    {
-        // Player Stats
-        final int playerHerblore = client.getRealSkillLevel(Skill.HERBLORE);
-        final int playerPrayer = client.getRealSkillLevel(Skill.PRAYER);
-        PrayerPotion prayerChange;
-        StatChange attackChange;
-        StatChange strengthChange;
-        StatChange defenceChange;
+	@Override
+	public StatsChanges calculate(Client client)
+	{
+		// Player Stats
+		final int playerHerblore = client.getRealSkillLevel(Skill.HERBLORE);
+		final int playerPrayer = client.getRealSkillLevel(Skill.PRAYER);
+		PrayerPotion prayerChange;
+		StatChange attackChange;
+		StatChange strengthChange;
+		StatChange defenceChange;
 
-        // Prayer boost:
-        if(playerPrayer*0.25 > playerHerblore*0.3)
-        {
-            prayerChange = new PrayerPotion(7, 0.25);
-        }else
-        {
-            prayerChange = new PrayerPotion((int) (playerHerblore*0.3+7), 0.0);
-        }
+		// Prayer boost:
+		if (playerPrayer * 0.25 > playerHerblore * 0.3)
+		{
+			prayerChange = new PrayerPotion(7, 0.25);
+		}
+		else
+		{
+			prayerChange = new PrayerPotion((int) (playerHerblore * 0.3 + 7), 0.0);
+		}
 
-        // Attack boost:
-        if(playerHerblore>= 45)
-        {
-            attackChange = boost(ATTACK, perc(0.15,5)).effect(client);
-        }else
-        {
-            attackChange = boost(ATTACK, perc(0.1,3)).effect(client);
-        }
+		// Attack boost:
+		if (playerHerblore >= 45)
+		{
+			attackChange = boost(ATTACK, perc(0.15, 5)).effect(client);
+		}
+		else
+		{
+			attackChange = boost(ATTACK, perc(0.1, 3)).effect(client);
+		}
 
-        // Strength boost:
-        if(playerHerblore>=55)
-        {
-            strengthChange = boost(STRENGTH, perc(0.15,5)).effect(client);
-        }else
-        {
-            strengthChange = boost(STRENGTH, perc(0.1,3)).effect(client);
-        }
+		// Strength boost:
+		if (playerHerblore >= 55)
+		{
+			strengthChange = boost(STRENGTH, perc(0.15, 5)).effect(client);
+		}
+		else
+		{
+			strengthChange = boost(STRENGTH, perc(0.1, 3)).effect(client);
+		}
 
-        //Defence boost:
-        if(playerHerblore>=0 && playerHerblore<=65)
-        {
-            defenceChange = boost(DEFENCE, perc(0.1,3)).effect(client);
-        }else if(playerHerblore>=66 && playerHerblore<=69)
-        {
-            defenceChange = boost(DEFENCE, perc(0.15,5)).effect(client);
-        } else
-        {
-            defenceChange = boost(DEFENCE, perc(0.2,7)).effect(client);
-        }
+		//Defence boost:
+		if (playerHerblore >= 0 && playerHerblore <= 65)
+		{
+			defenceChange = boost(DEFENCE, perc(0.1, 3)).effect(client);
+		}
+		else if (playerHerblore >= 66 && playerHerblore <= 69)
+		{
+			defenceChange = boost(DEFENCE, perc(0.15, 5)).effect(client);
+		}
+		else
+		{
+			defenceChange = boost(DEFENCE, perc(0.2, 7)).effect(client);
+		}
 
-        final StatsChanges changes = new StatsChanges(4);
+		final StatsChanges changes = new StatsChanges(4);
 
-        changes.setStatChanges(new StatChange[]{ prayerChange.effect(client), attackChange, strengthChange, defenceChange });
+		changes.setStatChanges(new StatChange[]{ prayerChange.effect(client), attackChange, strengthChange, defenceChange });
 
-        changes.setPositivity(Stream.of(changes.getStatChanges())
-                .map(StatChange::getPositivity)
-                .max(naturalOrder()).get());
+		changes.setPositivity(Stream.of(changes.getStatChanges())
+				.map(StatChange::getPositivity)
+				.max(naturalOrder()).get());
 
-        return changes;
-    }
+		return changes;
+	}
 }
