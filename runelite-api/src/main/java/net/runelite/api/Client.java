@@ -2017,6 +2017,18 @@ public interface Client extends OAuthApi, GameEngine
 	WorldView getTopLevelWorldView();
 
 	/**
+	 * Whether camera shaking effects are disabled at e.g. Barrows, ToA
+	 * @return
+	 */
+	boolean isCameraShakeDisabled();
+
+	/**
+	 * Set whether to disable camera shaking effects at e.g. Barrows, ToA
+	 * @param disabled
+	 */
+	void setCameraShakeDisabled(boolean disabled);
+
+	/**
 	 * Contains a 3D array of template chunks for instanced areas.
 	 * <p>
 	 * The array returned is of format [z][x][y], where z is the
