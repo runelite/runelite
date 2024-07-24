@@ -113,7 +113,9 @@ public enum AgilityShortcut
 		// Nature Grotto bridge
 		BRIDGE_3522,
 		// Rocky Ledges Viyeldi cave
-		ROCKY_LEDGE, ROCKY_LEDGE_2960, ROCKY_LEDGE_2961, ROCKS_2962, ROCKS_2963, ROCKS_2964),
+		ROCKY_LEDGE, ROCKY_LEDGE_2960, ROCKY_LEDGE_2961, ROCKS_2962, ROCKS_2963, ROCKS_2964,
+		// Abandoned Mine
+		CART_TUNNEL_29332, CART_TUNNEL_29333),
 	KARAMJA_GLIDER_LOG(1, "Log Balance", new WorldPoint(2906, 3050, 0), A_WOODEN_LOG),
 	WEISS_BROKEN_FENCE(1, "Shortcut", null, /* base id */ NullObjectID.NULL_46815)
 	{
@@ -135,6 +137,7 @@ public enum AgilityShortcut
 	GOBLIN_VILLAGE_WALL(14, "Wall", new WorldPoint(2925, 3523, 0), TIGHTGAP),
 	CORSAIR_COVE_DUNGEON_PILLAR(15, "Pillar Jump", new WorldPoint(1980, 8996, 0), PILLAR_31809),
 	EDGEVILLE_DUNGEON_MONKEYBARS(15, "Monkey Bars", null, MONKEYBARS_23566),
+	MINE_CART(15, "Mine cart", null, MINE_CART_4918),
 	TROLLHEIM_ROCKS(15, "Rocks", null, new WorldPoint(2838, 3614, 0), ROCKS_3748), // No fixed world map location, but rocks near death plateau have a requirement of 15
 	YANILLE_UNDERWALL_TUNNEL(16, "Underwall Tunnel", new WorldPoint(2574, 3109, 0), HOLE_16520, CASTLE_WALL),
 	KOUREND_CATACOMBS_SOUTH_WEST_CRACK_NORTH(17, "Crack", new WorldPoint(1647, 10008, 0), CRACK_28892),
