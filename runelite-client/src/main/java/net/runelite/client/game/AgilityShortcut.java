@@ -94,8 +94,6 @@ public enum AgilityShortcut
 		TUNNEL_30959, HOLE_30966, OBSTACLE, OBSTACLE_30767, OBSTACLE_30964, OBSTACLE_30962, PLANT_DOOR_30961,
 		// Tree Gnome Village
 		LOOSE_RAILING_2186,
-		// Burgh de Rott
-		LOW_FENCE,
 		// Taverley
 		STILE,
 		// Asgarnian Ice Dungeon
@@ -162,6 +160,7 @@ public enum AgilityShortcut
 			return true;
 		}
 	},
+	BURGH_DE_ROTT_LOW_FENCE(25, "Low fence", new WorldPoint(3470, 3219, 0), LOW_FENCE),
 	EAGLES_PEAK_ROCK_CLIMB(25, "Rock Climb", new WorldPoint(2320, 3499, 0), ROCKS_19849),
 	FALADOR_UNDERWALL_TUNNEL(26, "Underwall Tunnel", new WorldPoint(2947, 3313, 0), UNDERWALL_TUNNEL, UNDERWALL_TUNNEL_16528),
 	KOUREND_CATACOMBS_STONES_NORTH(28, "Stones", new WorldPoint(1613, 10071, 0), STONE_28893),
