@@ -450,7 +450,7 @@ public class TelekineticRoom extends MTARoom
 				throw new IllegalStateException();
 		}
 
-		while (area.canTravelInDirection(client, dx, dy))
+		while (area.canTravelInDirection(client.getTopLevelWorldView(), dx, dy))
 		{
 			worldPoint = area.toWorldPoint()
 				.dx(dx)

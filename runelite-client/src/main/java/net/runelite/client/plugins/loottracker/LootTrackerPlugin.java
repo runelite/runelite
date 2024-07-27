@@ -266,6 +266,10 @@ public class LootTrackerPlugin extends Plugin
 
 	private static final String WINTERTODT_SUPPLY_CRATE_EVENT = "Supply crate (Wintertodt)";
 
+	private static final String BAG_FULL_OF_GEMS_PERCY_EVENT = "Bag full of gems (Percy)";
+	private static final String BAG_FULL_OF_GEMS_BELONA_EVENT = "Bag full of gems (Belona)";
+	private static final String BAG_FULL_OF_GEMS_DUSURI_EVENT = "Bag full of gems (Dusuri)";
+
 	// Soul Wars
 	private static final String SPOILS_OF_WAR_EVENT = "Spoils of war";
 	private static final Set<Integer> SOUL_WARS_REGIONS = ImmutableSet.of(8493, 8749, 9005);
@@ -635,7 +639,7 @@ public class LootTrackerPlugin extends Plugin
 		final LootTrackerItem[] entries = buildEntries(stack(items));
 		SwingUtilities.invokeLater(() -> panel.add(name, type, combatLevel, entries, amount));
 
-		LootRecord lootRecord = new LootRecord(name, type, metadata, toGameItems(items), Instant.now(), getLootWorldId());
+		LootRecord lootRecord = new LootRecord(name, type, metadata, toGameItems(items), Instant.now(), getLootWorldId(), amount, null);
 		synchronized (queuedLoots)
 		{
 			queuedLoots.add(lootRecord);
@@ -1205,6 +1209,15 @@ public class LootTrackerPlugin extends Plugin
 					case ItemID.CASKET:
 						onInvChange(collectInvItems(LootRecordType.EVENT, CASKET_EVENT));
 						break;
+					case ItemID.BAG_FULL_OF_GEMS:
+						onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, BAG_FULL_OF_GEMS_PERCY_EVENT));
+						break;
+					case ItemID.BAG_FULL_OF_GEMS_24853:
+						onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, BAG_FULL_OF_GEMS_BELONA_EVENT));
+						break;
+					case ItemID.BAG_FULL_OF_GEMS_25537:
+						onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, BAG_FULL_OF_GEMS_DUSURI_EVENT));
+						break;
 					case ItemID.SUPPLY_CRATE:
 					case ItemID.EXTRA_SUPPLY_CRATE:
 						onInvChange(collectInvAndGroundItems(LootRecordType.EVENT, WINTERTODT_SUPPLY_CRATE_EVENT));
@@ -1319,7 +1332,7 @@ public class LootTrackerPlugin extends Plugin
 		{
 			ConfigLoot key = new ConfigLoot(record.getType(), record.getEventId());
 			ConfigLoot loot = map.computeIfAbsent(key, k -> key);
-			loot.kills++;
+			loot.kills += record.getAmount();
 			for (GameItem item : record.getDrops())
 			{
 				loot.add(item.getId(), item.getQty());

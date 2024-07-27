@@ -160,7 +160,7 @@ public class ConfigClient
 			@Override
 			public void onResponse(Call call, Response response)
 			{
-				try // NOPMD: UseTryWithResources
+				try (response)
 				{
 					if (response.code() != 200)
 					{
@@ -187,10 +187,6 @@ public class ConfigClient
 				catch (Exception ex)
 				{
 					future.completeExceptionally(ex);
-				}
-				finally
-				{
-					response.close();
 				}
 			}
 		});

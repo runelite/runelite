@@ -81,6 +81,9 @@ public interface MenuEntry
 	boolean isForceLeftClick();
 	MenuEntry setForceLeftClick(boolean forceLeftClick);
 
+	int getWorldViewId();
+	MenuEntry setWorldViewId(int worldViewId);
+
 	/**
 	 * Deprioritized menus are sorted in the menu to be below the other menu entries.
 	 * @return
@@ -128,6 +131,13 @@ public interface MenuEntry
 	 * @see NullItemID
 	 */
 	int getItemId();
+
+	/**
+	 * Set the item id
+	 * @param itemId
+	 * @return
+	 */
+	MenuEntry setItemId(int itemId);
 
 	/**
 	 * Get the widget this menu entry is on, if this is a menu entry

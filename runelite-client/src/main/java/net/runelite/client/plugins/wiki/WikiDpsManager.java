@@ -145,7 +145,7 @@ class WikiDpsManager
 
 			if (!setBonus)
 			{
-				if (interfaceId == InterfaceID.BANK_EQUIPMENT)
+				if (interfaceId == InterfaceID.BANK)
 				{
 					clientThread.invokeLater(() -> addButton(Screen.BANK_EQUIPMENT, this::launch));
 				}

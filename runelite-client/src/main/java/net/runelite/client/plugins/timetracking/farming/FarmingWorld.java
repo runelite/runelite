@@ -51,6 +51,7 @@ class FarmingWorld
 	private Multimap<Integer, FarmingRegion> regions = HashMultimap.create();
 
 	@Getter
+	@SuppressWarnings("PMD.ImmutableField")
 	private Map<Tab, Set<FarmingPatch>> tabs = new HashMap<>();
 
 	private final Comparator<FarmingPatch> tabSorter = Comparator

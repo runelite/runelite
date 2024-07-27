@@ -89,4 +89,11 @@ public interface ItemContainer extends Node
 	 * @return
 	 */
 	int count();
+
+	/**
+	 * Find the first index of an item in the container
+	 * @param itemId the item
+	 * @return the item index, or -1 if not found
+	 */
+	int find(int itemId);
 }

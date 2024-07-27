@@ -33,6 +33,9 @@ import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
+import net.runelite.api.events.FocusChanged;
+import net.runelite.client.eventbus.EventBus;
+import net.runelite.client.eventbus.Subscribe;
 
 @Singleton
 @Slf4j
@@ -41,9 +44,10 @@ public class KeyManager
 	private final Client client;
 
 	@Inject
-	private KeyManager(@Nullable final Client client)
+	private KeyManager(@Nullable final Client client, final EventBus eventBus)
 	{
 		this.client = client;
+		eventBus.register(this);
 	}
 
 	private final List<KeyListener> keyListeners = new CopyOnWriteArrayList<>();
@@ -156,5 +160,17 @@ public class KeyManager
 		}
 
 		return true;
+	}
+
+	@Subscribe
+	private void onFocusChanged(FocusChanged event)
+	{
+		if (!event.isFocused())
+		{
+			for (KeyListener keyListener : keyListeners)
+			{
+				keyListener.focusLost();
+			}
+		}
 	}
 }

@@ -169,7 +169,7 @@ public class DevToolsPlugin extends Plugin
 	private DevToolsButton uiDefaultsInspector;
 	private NavigationButton navButton;
 
-	private HotkeyListener swingInspectorHotkeyListener = new HotkeyListener(() -> config.swingInspectorHotkey())
+	private final HotkeyListener swingInspectorHotkeyListener = new HotkeyListener(() -> config.swingInspectorHotkey())
 	{
 		Object inspector;
 
@@ -206,7 +206,7 @@ public class DevToolsPlugin extends Plugin
 		}
 	};
 
-	private AWTEventListener swingInspectorKeyListener = rawEv ->
+	private final AWTEventListener swingInspectorKeyListener = rawEv ->
 	{
 		if (rawEv instanceof KeyEvent)
 		{
@@ -316,7 +316,7 @@ public class DevToolsPlugin extends Plugin
 	{
 		String[] args = commandExecuted.getArguments();
 
-		switch (commandExecuted.getCommand())
+		switch (commandExecuted.getCommand().toLowerCase())
 		{
 			case "logger":
 			{
@@ -466,6 +466,22 @@ public class DevToolsPlugin extends Plugin
 				Player player = client.getLocalPlayer();
 				player.getPlayerComposition().getEquipmentIds()[KitType.CAPE.getIndex()] = ItemID.FIRE_CAPE + 512;
 				player.getPlayerComposition().getEquipmentIds()[KitType.SHIELD.getIndex()] = ItemID.MIRROR_SHIELD + 512;
+				player.getPlayerComposition().setHash();
+				break;
+			}
+			case "alpha":
+			{
+				Player player = client.getLocalPlayer();
+				player.getPlayerComposition().getEquipmentIds()[KitType.HEAD.getIndex()] = ItemID.GHOSTLY_HOOD + 512;
+				player.getPlayerComposition().getEquipmentIds()[KitType.AMULET.getIndex()] = ItemID.AMULET_OF_TORTURE_OR + 512;
+				player.getPlayerComposition().getEquipmentIds()[KitType.CAPE.getIndex()] = ItemID.GHOSTLY_CLOAK + 512;
+				player.getPlayerComposition().getEquipmentIds()[KitType.TORSO.getIndex()] = ItemID.GHOSTLY_ROBE + 512;
+				player.getPlayerComposition().getEquipmentIds()[KitType.SHIELD.getIndex()] = ItemID.ELYSIAN_SPIRIT_SHIELD + 512;
+				player.getPlayerComposition().getEquipmentIds()[KitType.ARMS.getIndex()] = -1;
+				player.getPlayerComposition().getEquipmentIds()[KitType.LEGS.getIndex()] = ItemID.GHOSTLY_ROBE_6108 + 512;
+				player.getPlayerComposition().getEquipmentIds()[KitType.HAIR.getIndex()] = -1;
+				player.getPlayerComposition().getEquipmentIds()[KitType.HANDS.getIndex()] = ItemID.GHOSTLY_GLOVES;
+				player.getPlayerComposition().getEquipmentIds()[KitType.BOOTS.getIndex()] = ItemID.GHOSTLY_BOOTS;
 				player.getPlayerComposition().setHash();
 				break;
 			}

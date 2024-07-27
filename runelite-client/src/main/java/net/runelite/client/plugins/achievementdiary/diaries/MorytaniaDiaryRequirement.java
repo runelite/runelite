@@ -42,7 +42,7 @@ public class MorytaniaDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.CRAFTING, 15));
 		add("Cook a thin Snail on the Port Phasmatys range.",
 			new SkillRequirement(Skill.COOKING, 12));
-		add("Get a slayer task from Mazchna.",
+		add("Get a slayer task from the Slayer Master in Canifis.",
 			new CombatLevelRequirement(20));
 		add("Kill a Banshee in the Slayer Tower.",
 			new SkillRequirement(Skill.SLAYER, 15));

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2024, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,13 +22,9 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api.events;
+package net.runelite.api;
 
-import lombok.Data;
-import net.runelite.api.HealthBar;
-
-@Data
-public class PostHealthBar
+public interface Projection
 {
-	private HealthBar healthBar;
+	float[] project(float x, float y, float z);
 }

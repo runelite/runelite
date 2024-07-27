@@ -60,7 +60,7 @@ class Bookcase
 	 * Books that can be in this slot. Will only be populated if library.state != SolvedState.NO_DATA
 	 */
 	@Getter
-	private Set<Book> possibleBooks = new HashSet<>();
+	private final Set<Book> possibleBooks = new HashSet<>();
 
 	void clearBook()
 	{

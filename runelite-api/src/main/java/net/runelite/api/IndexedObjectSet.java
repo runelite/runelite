@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Adam <Adam@sigterm.info>
+ * Copyright (c) 2024 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,47 +22,70 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.animsmoothing;
+package net.runelite.api;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.Spliterator;
+import java.util.Spliterators;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+import javax.annotation.Nonnull;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-@ConfigGroup(AnimationSmoothingPlugin.CONFIG_GROUP)
-public interface AnimationSmoothingConfig extends Config
+@RequiredArgsConstructor
+public class IndexedObjectSet<T> implements Iterable<T>
 {
+	@Getter
+	private final T[] sparse;
 
-	@ConfigItem(
-		keyName = "smoothPlayerAnimations",
-		name = "Smooth Player Animations",
-		description = "Configures whether the player animations are smooth or not",
-		position = 1
-	)
-	default boolean smoothPlayerAnimations()
+	private final int[] indexes;
+
+	@Getter
+	private final int size;
+
+	public T byIndex(int index)
 	{
-		return true;
+		return sparse[index];
 	}
 
-	@ConfigItem(
-		keyName = "smoothNpcAnimations",
-		name = "Smooth NPC Animations",
-		description = "Configures whether the npc animations are smooth or not",
-		position = 2
-	)
-	default boolean smoothNpcAnimations()
+	public Stream<T> stream()
 	{
-		return true;
+		return StreamSupport.stream(this.spliterator(), false);
 	}
 
-	@ConfigItem(
-		keyName = "smoothObjectAnimations",
-		name = "Smooth Object Animations",
-		description = "Configures whether the object animations are smooth or not",
-		position = 3
-	)
-	default boolean smoothObjectAnimations()
+	@Override
+	public Spliterator<T> spliterator()
 	{
-		return true;
+		return Spliterators.spliterator(this.iterator(), this.size,
+			Spliterator.SIZED | Spliterator.DISTINCT | Spliterator.ORDERED);
 	}
 
+	@Nonnull
+	@Override
+	public Iterator<T> iterator()
+	{
+		return new Iterator<T>()
+		{
+			int i;
+
+			@Override
+			public boolean hasNext()
+			{
+				return i < size;
+			}
+
+			@Override
+			public T next()
+			{
+				if (!hasNext())
+				{
+					throw new NoSuchElementException();
+				}
+
+				return sparse[indexes[i++]];
+			}
+		};
+	}
 }

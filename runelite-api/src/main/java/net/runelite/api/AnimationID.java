@@ -347,4 +347,21 @@ public final class AnimationID
 
 	// POH Animations
 	public static final int INCENSE_BURNER = 3687;
+
+	// Wyrms
+	public static final int WYRM_IDLE_DORMANT = 8266;
+	public static final int WYRM_IDLE_ACTIVE = 8267;
+	public static final int WYRM_ATTACK_MELEE = 8270;
+	public static final int WYRM_ATTACK_MAGE = 8271;
+
+	// Lost City's Tree spirit
+	public static final int TREE_SPIRIT_IDLE = 5530;
+	public static final int TREE_SPIRIT_WALK = 5531;
+
+	public static final int SIGN_HOLDING_ZOMBIE_PROTESTOR_WALK = 5583;
+
+	public static final int VIGGORAS_CHAINMACE_IDLE = 244;
+
+	public static final int MLM_WATER_WHEEL_SPINNING = 1051;
+	public static final int GIANTS_FOUNDRY_WATER_WHEEL_SPINNING = 9450;
 }

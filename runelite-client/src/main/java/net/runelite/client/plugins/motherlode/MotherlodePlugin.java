@@ -47,7 +47,6 @@ import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
 import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import static net.runelite.api.ObjectID.BROKEN_STRUT;
@@ -58,6 +57,7 @@ import static net.runelite.api.ObjectID.ORE_VEIN_26664;
 import static net.runelite.api.ObjectID.ROCKFALL;
 import static net.runelite.api.ObjectID.ROCKFALL_26680;
 import net.runelite.api.Perspective;
+import net.runelite.api.ScriptID;
 import net.runelite.api.Varbits;
 import net.runelite.api.WallObject;
 import net.runelite.api.coords.LocalPoint;
@@ -66,6 +66,7 @@ import net.runelite.api.events.GameObjectDespawned;
 import net.runelite.api.events.GameObjectSpawned;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.VarbitChanged;
 import net.runelite.api.events.WallObjectDespawned;
 import net.runelite.api.events.WallObjectSpawned;
@@ -85,7 +86,7 @@ import net.runelite.http.api.loottracker.LootRecordType;
 
 @PluginDescriptor(
 	name = "Motherlode Mine",
-	description = "Show helpful information inside the Motherload Mine",
+	description = "Show helpful information inside the Motherlode Mine",
 	tags = {"pay", "dirt", "mining", "mlm", "skilling", "overlay"},
 	enabledByDefault = false
 )
@@ -97,10 +98,8 @@ public class MotherlodePlugin extends Plugin
 		ItemID.MITHRIL_ORE, ItemID.GOLD_ORE, ItemID.COAL, ItemID.GOLDEN_NUGGET);
 	private static final Set<Integer> ROCK_OBSTACLES = ImmutableSet.of(ROCKFALL, ROCKFALL_26680);
 
-	private static final int MAX_INVENTORY_SIZE = 28;
-
-	private static final int SACK_LARGE_SIZE = 162;
-	private static final int SACK_SIZE = 81;
+	private static final int SACK_LARGE_SIZE = 189;
+	private static final int SACK_SIZE = 108;
 
 	private static final int UPPER_FLOOR_HEIGHT = -490;
 
@@ -112,9 +111,6 @@ public class MotherlodePlugin extends Plugin
 
 	@Inject
 	private MotherlodeSceneOverlay sceneOverlay;
-
-	@Inject
-	private MotherlodeSackOverlay motherlodeSackOverlay;
 
 	@Inject
 	private MotherlodeConfig config;
@@ -131,12 +127,7 @@ public class MotherlodePlugin extends Plugin
 	@Getter(AccessLevel.PACKAGE)
 	private boolean inMlm;
 
-	@Getter(AccessLevel.PACKAGE)
 	private int curSackSize;
-	@Getter(AccessLevel.PACKAGE)
-	private int maxSackSize;
-	@Getter(AccessLevel.PACKAGE)
-	private Integer depositsLeft;
 
 	@Inject
 	private MotherlodeSession session;
@@ -161,7 +152,6 @@ public class MotherlodePlugin extends Plugin
 	{
 		overlayManager.add(miningOverlay);
 		overlayManager.add(sceneOverlay);
-		overlayManager.add(motherlodeSackOverlay);
 
 		inMlm = checkInMlm();
 
@@ -176,20 +166,9 @@ public class MotherlodePlugin extends Plugin
 	{
 		overlayManager.remove(miningOverlay);
 		overlayManager.remove(sceneOverlay);
-		overlayManager.remove(motherlodeSackOverlay);
 		veins.clear();
 		rocks.clear();
 		brokenStruts.clear();
-
-		Widget sack = client.getWidget(ComponentID.MLM_CONTAINER);
-
-		clientThread.invokeLater(() ->
-		{
-			if (sack != null && sack.isHidden())
-			{
-				sack.setHidden(false);
-			}
-		});
 	}
 
 	void reset()
@@ -288,8 +267,6 @@ public class MotherlodePlugin extends Plugin
 			return;
 		}
 
-		depositsLeft = calculateDepositsLeft();
-
 		Instant lastPayDirtMined = session.getLastPayDirtMined();
 		if (lastPayDirtMined == null)
 		{
@@ -303,6 +280,45 @@ public class MotherlodePlugin extends Plugin
 		if (sinceMined.compareTo(statTimeout) >= 0)
 		{
 			session.resetRecent();
+		}
+	}
+
+	@Subscribe
+	private void onScriptPostFired(ScriptPostFired event)
+	{
+		if (event.getScriptId() == ScriptID.MOTHERLODE_HUD_UPDATE)
+		{
+			recolorSackOverlay();
+		}
+	}
+
+	private void recolorSackOverlay()
+	{
+		ItemContainer inv = client.getItemContainer(InventoryID.INVENTORY);
+		if (inv == null)
+		{
+			return;
+		}
+
+		int sackSize = client.getVarbitValue(Varbits.SACK_NUMBER);
+		boolean sackUpgraded = client.getVarbitValue(Varbits.SACK_UPGRADED) == 1;
+		int sackCapacity = sackUpgraded ? SACK_LARGE_SIZE : SACK_SIZE;
+		int payDir = inv.count(ItemID.PAYDIRT);
+
+		Widget sackSizeWidget = client.getWidget(ComponentID.MLM_SACK_SIZE_TEXT);
+		Widget spaceTextWidget = client.getWidget(ComponentID.MLM_SPACE_TEXT);
+		if (sackSizeWidget != null && spaceTextWidget != null)
+		{
+			if (payDir >= sackCapacity - sackSize)
+			{
+				sackSizeWidget.setTextColor(0xff0000);
+				spaceTextWidget.setTextColor(0xff0000);
+			}
+			else
+			{
+				sackSizeWidget.setTextColor(0xc8c8c8);
+				spaceTextWidget.setTextColor(0xffffff);
+			}
 		}
 	}
 
@@ -377,12 +393,19 @@ public class MotherlodePlugin extends Plugin
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
-		final ItemContainer container = event.getItemContainer();
-
-		if (!inMlm || !shouldUpdateOres || inventorySnapshot == null || container.getId() != InventoryID.INVENTORY.getId())
+		if (!inMlm)
 		{
 			return;
 		}
+
+		recolorSackOverlay();
+
+		if (!shouldUpdateOres || inventorySnapshot == null || event.getContainerId() != InventoryID.INVENTORY.getId())
+		{
+			return;
+		}
+
+		final ItemContainer container = event.getItemContainer();
 
 		// Build set of current inventory
 		Multiset<Integer> current = HashMultiset.create();
@@ -411,52 +434,6 @@ public class MotherlodePlugin extends Plugin
 		shouldUpdateOres = false;
 	}
 
-	private Integer calculateDepositsLeft()
-	{
-		if (maxSackSize == 0) // check if maxSackSize has been initialized
-		{
-			refreshSackValues();
-		}
-
-		double depositsLeft = 0;
-		int nonPayDirtItems = 0;
-
-		ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
-		if (inventory == null)
-		{
-			return null;
-		}
-
-		Item[] result = inventory.getItems();
-		assert result != null;
-
-		for (Item item : result)
-		{
-			// Assume that MLM ores are being banked and exclude them from the check,
-			// so the user doesn't see the Overlay switch between deposits left and N/A.
-			//
-			// Count other items at nonPayDirtItems so depositsLeft is calculated accordingly.
-			if (item.getId() != ItemID.PAYDIRT && item.getId() != -1 && !MLM_ORE_TYPES.contains(item.getId()))
-			{
-				nonPayDirtItems += 1;
-			}
-		}
-
-		double inventorySpace = MAX_INVENTORY_SIZE - nonPayDirtItems;
-		double sackSizeRemaining = maxSackSize - curSackSize;
-
-		if (inventorySpace > 0 && sackSizeRemaining > 0)
-		{
-			depositsLeft = Math.ceil(sackSizeRemaining / inventorySpace);
-		}
-		else if (inventorySpace == 0)
-		{
-			return null;
-		}
-
-		return (int) depositsLeft;
-	}
-
 	private boolean checkInMlm()
 	{
 		GameState gameState = client.getGameState();
@@ -483,8 +460,6 @@ public class MotherlodePlugin extends Plugin
 	private void refreshSackValues()
 	{
 		curSackSize = client.getVarbitValue(Varbits.SACK_NUMBER);
-		boolean sackUpgraded = client.getVarbitValue(Varbits.SACK_UPGRADED) == 1;
-		maxSackSize = sackUpgraded ? SACK_LARGE_SIZE : SACK_SIZE;
 	}
 
 	/**

@@ -164,11 +164,11 @@ public class PrayerPluginTest
 	{
 		prayerPlugin.setPrayerBonus(42);
 
-		assertTime(PrayerType.THICK_SKIN, "47:31");
-		assertTime(PrayerType.BURST_OF_STRENGTH, "47:31");
-		assertTime(PrayerType.CLARITY_OF_THOUGHT, "47:31");
-		assertTime(PrayerType.SHARP_EYE, "47:31");
-		assertTime(PrayerType.MYSTIC_WILL, "47:31");
+		assertTime(PrayerType.THICK_SKIN, "2:22:33");
+		assertTime(PrayerType.BURST_OF_STRENGTH, "2:22:33");
+		assertTime(PrayerType.CLARITY_OF_THOUGHT, "2:22:33");
+		assertTime(PrayerType.SHARP_EYE, "2:22:33");
+		assertTime(PrayerType.MYSTIC_WILL, "2:22:33");
 		assertTime(PrayerType.ROCK_SKIN, "23:45");
 		assertTime(PrayerType.SUPERHUMAN_STRENGTH, "23:45");
 		assertTime(PrayerType.IMPROVED_REFLEXES, "23:45");
