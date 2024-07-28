@@ -351,3 +351,7 @@ C 0 0 2 6
 // kalphite lair
 n
 r 54 148
+
+// chasm of tears
+n
+r 50 148
