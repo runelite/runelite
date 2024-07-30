@@ -72,7 +72,7 @@ class BlastMineExperienceOverlay extends OverlayPanel
 			int totalWithMultiplier = ((int) Math.round(total + (total * (multiplier / 100))));
 
 			panelComponent.getChildren().add(LineComponent.builder()
-					.left("Stored XP")
+					.left("XP")
 					.right(NumberFormat.getIntegerInstance(Locale.getDefault()).format(totalWithMultiplier))
 					.build());
 

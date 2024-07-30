@@ -117,8 +117,8 @@ public interface BlastMinePluginConfig extends Config
 	@ConfigItem(
 			position = 7,
 			keyName = "experienceMultiplier",
-			name = "Experience multiplier (%)",
-			description = "Configures experience multiplier for total xp stored in the blast mine sack (2.5 for full prospector outfit)"
+			name = "Bonus XP as %",
+			description = "Configures bonus for total xp stored in the blast mine sack (2.5 for full prospector outfit)"
 	)
 	default double experienceMultiplier()
 	{
