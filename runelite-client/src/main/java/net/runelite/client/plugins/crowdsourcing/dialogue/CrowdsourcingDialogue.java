@@ -38,6 +38,7 @@ import net.runelite.client.plugins.crowdsourcing.CrowdsourcingManager;
 public class CrowdsourcingDialogue
 {
 	private static final String USERNAME_TOKEN = "%USERNAME%";
+	private static final String NULL_USERNAME = "NULL_USERNAME";
 
 	@Inject
 	private Client client;
@@ -55,7 +56,7 @@ public class CrowdsourcingDialogue
 	{
 		String username = client.getLocalPlayer().getName();
 		if(username == null)
-			return dialogue.replaceAll(" ", " ");
+			return NULL_USERNAME;
 		else
 			return dialogue.replaceAll(" ", " ").replaceAll(username, USERNAME_TOKEN);
 	}
@@ -143,6 +144,8 @@ public class CrowdsourcingDialogue
 		|| chatMessage.getType() == ChatMessageType.MESBOX)
 		{
 			ChatMessageData data = new ChatMessageData(sanitize(chatMessage.getMessage()), chatMessage.getType());
+			if(data.getMessage().equals(NULL_USERNAME))
+				return;
 			manager.storeEvent(data);
 		}
 	}
