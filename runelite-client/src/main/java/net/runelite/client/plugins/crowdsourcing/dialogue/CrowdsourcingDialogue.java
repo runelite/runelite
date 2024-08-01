@@ -55,7 +55,7 @@ public class CrowdsourcingDialogue
 	private String sanitize(String dialogue)
 	{
 		String username = client.getLocalPlayer().getName();
-		if(username == null)
+		if (username == null)
 			return NULL_USERNAME;
 		else
 			return dialogue.replaceAll(" ", " ").replaceAll(username, USERNAME_TOKEN);
@@ -144,7 +144,7 @@ public class CrowdsourcingDialogue
 		|| chatMessage.getType() == ChatMessageType.MESBOX)
 		{
 			ChatMessageData data = new ChatMessageData(sanitize(chatMessage.getMessage()), chatMessage.getType());
-			if(data.getMessage().equals(NULL_USERNAME))
+			if (data.getMessage().equals(NULL_USERNAME))
 				return;
 			manager.storeEvent(data);
 		}
