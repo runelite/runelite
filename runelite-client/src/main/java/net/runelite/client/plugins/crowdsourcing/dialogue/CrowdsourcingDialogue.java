@@ -55,8 +55,9 @@ public class CrowdsourcingDialogue
 	{
 		String username = client.getLocalPlayer().getName();
 		if(username == null)
-			return dialogue;
-		return dialogue.replaceAll(" ", " ").replaceAll(username, USERNAME_TOKEN);
+			return dialogue.replaceAll(" ", " ");
+		else
+			return dialogue.replaceAll(" ", " ").replaceAll(username, USERNAME_TOKEN);
 	}
 
 	@Subscribe
