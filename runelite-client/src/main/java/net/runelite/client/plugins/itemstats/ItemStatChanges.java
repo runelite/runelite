@@ -34,9 +34,12 @@ import static net.runelite.api.ItemID.*;
 import static net.runelite.client.plugins.itemstats.Builders.*;
 import net.runelite.client.plugins.itemstats.delta.DeltaPercentage;
 import net.runelite.client.plugins.itemstats.food.Anglerfish;
+import net.runelite.client.plugins.itemstats.food.Bream;
+import net.runelite.client.plugins.itemstats.food.MossLizard;
 import net.runelite.client.plugins.itemstats.potions.Ambrosia;
 import net.runelite.client.plugins.itemstats.potions.AncientBrew;
 import net.runelite.client.plugins.itemstats.potions.MixedPotion;
+import net.runelite.client.plugins.itemstats.potions.MoonlightPotion;
 import net.runelite.client.plugins.itemstats.potions.PrayerPotion;
 import net.runelite.client.plugins.itemstats.potions.SaradominBrew;
 import net.runelite.client.plugins.itemstats.potions.StaminaPotion;
@@ -357,6 +360,11 @@ public class ItemStatChanges
 		// Soul Wars
 		add(combo(heal(HITPOINTS, perc(.15, 1)), heal(RUN_ENERGY, 100)), BANDAGES_25202);
 		add(combo(boost(ATTACK, perc(.15, 5)), boost(STRENGTH, perc(.15, 5)), boost(DEFENCE, perc(.15, 5)), boost(RANGED, perc(.15, 5)), boost(MAGIC, perc(.15, 5)), heal(PRAYER, perc(.25, 8))), POTION_OF_POWER1, POTION_OF_POWER2, POTION_OF_POWER3, POTION_OF_POWER4);
+
+		// Moons of Peril
+		add(new Bream(), COOKED_BREAM);
+		add(new MossLizard(), COOKED_MOSS_LIZARD);
+		add(new MoonlightPotion(attackPot, superAttackPot, strengthPot, superStrengthPot, defencePot, superDefencePot), MOONLIGHT_POTION1, MOONLIGHT_POTION2, MOONLIGHT_POTION3, MOONLIGHT_POTION4);
 
 		log.debug("{} items; {} behaviours loaded", effects.size(), new HashSet<>(effects.values()).size());
 	}
