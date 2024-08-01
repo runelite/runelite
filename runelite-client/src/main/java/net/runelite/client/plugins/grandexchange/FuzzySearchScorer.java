@@ -29,6 +29,7 @@ import java.util.function.ToDoubleFunction;
 import javax.inject.Singleton;
 import net.runelite.api.ItemComposition;
 import org.apache.commons.text.similarity.JaroWinklerDistance;
+import org.apache.commons.text.similarity.LongestCommonSubsequence;
 import org.apache.commons.text.similarity.SimilarityScore;
 
 @Singleton
@@ -44,18 +45,24 @@ public class FuzzySearchScorer
 		query = query.toLowerCase().replace('-', ' ');
 		itemName = itemName.toLowerCase().replace('-', ' ');
 
-		// we raise the score for items that share a prefix with the query
-		int prefixLen = 0;
-		int maxLen = Math.min(query.length(), itemName.length());
-		while (prefixLen < maxLen && query.charAt(prefixLen) == itemName.charAt(prefixLen))
+		// we raise the score for longest substring of a word, scoring within [0,1]
+		String[] queryWords = query.split(" ");
+		String[] itemWords = itemName.split(" ");
+		double lcsScore = 0.0;
+		for (String queryWord : queryWords)
 		{
-			prefixLen++;
+			for (String itemWord : itemWords)
+			{
+				int lcsLen = new LongestCommonSubsequence().longestCommonSubsequence(queryWord, itemWord).length();
+				lcsScore = Math.max(lcsScore, ((double) lcsLen) / queryWord.length());
+			}
 		}
-		double prefixScore = ((double) prefixLen) / query.length() - 0.25;
 
-		// and also raise the score for string "closeness"
-		double proximityScore = baseAlgorithm.apply(query, itemName) - 0.25;
-		return prefixScore + proximityScore;
+		// and also raise the score for string "closeness", but strongly prefer high closeness, scoring within [-0.5,0.5]
+		double proximityScore = Math.log10(10 * baseAlgorithm.apply(query, itemName)) - 0.5;
+
+		// subtract 1.0 to filter out low-scoring results
+		return lcsScore + proximityScore - 1.0;
 	}
 
 	public ToDoubleFunction<ItemComposition> comparator(String query)
