@@ -47,11 +47,22 @@ public interface KingdomConfig extends Config
 		return false;
 	}
 
+	@ConfigItem(
+		position = 2,
+		keyName = "lastCollected",
+		name = "Show Last Collected",
+		description = "Send chat notifications upon login showing when the last time resources were collected"
+	)
+	default boolean shouldSendCollectedNotifications()
+	{
+		return false;
+	}
+
 	@Range(
 		max = MAX_COFFER
 	)
 	@ConfigItem(
-		position = 2,
+		position = 3,
 		keyName = "cofferThreshold",
 		name = "Coffer Threshold",
 		description = "Send notifications if coffer is below this value"
@@ -65,7 +76,7 @@ public interface KingdomConfig extends Config
 		max = MAX_APPROVAL_PERCENT
 	)
 	@ConfigItem(
-		position = 3,
+		position = 4,
 		keyName = "approvalThreshold",
 		name = "Approval Threshold",
 		description = "Send notifications if approval percentage is below this value"
