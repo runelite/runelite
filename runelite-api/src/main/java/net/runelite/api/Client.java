@@ -598,10 +598,17 @@ public interface Client extends OAuthApi, GameEngine
 	World[] getWorldList();
 
 	/**
+	 * Get the client menu.
+	 */
+	@Nonnull
+	Menu getMenu();
+
+	/**
 	 * Create a new menu entry
 	 * @param idx the index to create the menu entry at. Accepts negative indexes eg. -1 inserts at the end.
 	 * @return the newly created menu entry
 	 */
+	@Deprecated
 	MenuEntry createMenuEntry(int idx);
 
 	/**
@@ -610,6 +617,7 @@ public interface Client extends OAuthApi, GameEngine
 	 *
 	 * @return array of open menu entries
 	 */
+	@Deprecated
 	MenuEntry[] getMenuEntries();
 
 	/**
@@ -620,6 +628,7 @@ public interface Client extends OAuthApi, GameEngine
 	 *
 	 * @param entries new array of open menu entries
 	 */
+	@Deprecated
 	void setMenuEntries(MenuEntry[] entries);
 
 	/**
@@ -652,6 +661,7 @@ public interface Client extends OAuthApi, GameEngine
 	 *
 	 * @return the menu x location
 	 */
+	@Deprecated
 	int getMenuX();
 
 	/**
@@ -659,6 +669,7 @@ public interface Client extends OAuthApi, GameEngine
 	 *
 	 * @return the menu y location
 	 */
+	@Deprecated
 	int getMenuY();
 
 	/**
@@ -666,6 +677,7 @@ public interface Client extends OAuthApi, GameEngine
 	 *
 	 * @return the menu height
 	 */
+	@Deprecated
 	int getMenuHeight();
 
 	/**
@@ -673,6 +685,7 @@ public interface Client extends OAuthApi, GameEngine
 	 *
 	 * @return the menu width
 	 */
+	@Deprecated
 	int getMenuWidth();
 
 	/**
