@@ -211,12 +211,15 @@ public class EntityHiderPlugin extends Plugin
 			{
 				return !hideClanMembers;
 			}
+			if ((drawingUI && hideOthers2D) || hideOthers)
+			{
+				return false;
+			}
 			if (client.getIgnoreContainer().findByName(player.getName()) != null)
 			{
 				return !hideIgnoredPlayers;
 			}
-
-			return !(drawingUI ? hideOthers2D : hideOthers);
+			return true;
 		}
 		else if (renderable instanceof NPC)
 		{
