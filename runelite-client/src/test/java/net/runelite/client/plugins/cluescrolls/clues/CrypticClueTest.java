@@ -29,6 +29,7 @@ import net.runelite.api.Varbits;
 import net.runelite.client.plugins.cluescrolls.ClueScrollPlugin;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -64,5 +65,24 @@ public class CrypticClueTest
 		assertNotNull(clue.getLocation(plugin));
 		assertNotNull(clue.getLocation(plugin));
 		assertNull(clue.getLocation(plugin));
+	}
+
+	@Test
+	public void forResourceAreaCosts()
+	{
+		when(plugin.getClient()).thenReturn(client);
+		when(client.getVarbitValue(Varbits.DIARY_WILDERNESS_ELITE)).thenReturn(1, 0, 0, 0, 0);
+		when(client.getVarbitValue(Varbits.DIARY_WILDERNESS_HARD)).thenReturn(1,  0, 0, 0);
+		when(client.getVarbitValue(Varbits.DIARY_WILDERNESS_MEDIUM)).thenReturn(1,  0, 0);
+		when(client.getVarbitValue(Varbits.DIARY_WILDERNESS_EASY)).thenReturn(1,  0);
+
+		CrypticClue clue = CrypticClue.forText("One of several rhyming brothers, in business attire with an obsession for paper work.");
+		assert clue != null;
+
+		assertTrue(clue.getSolution(plugin).contains("No entry fee required."));
+		assertTrue(clue.getSolution(plugin).contains("An entry fee of 3,750 coins is required."));
+		assertTrue(clue.getSolution(plugin).contains("An entry fee of 6,000 coins is required."));
+		assertTrue(clue.getSolution(plugin).contains("An entry fee of 7,500 coins is required."));
+		assertTrue(clue.getSolution(plugin).contains("An entry fee of 7,500 coins is required."));
 	}
 }
