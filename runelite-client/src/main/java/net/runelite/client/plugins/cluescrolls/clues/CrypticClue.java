@@ -1912,11 +1912,13 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		}
 	}
 
+	@SuppressWarnings("PMD.UnusedPrivateMethod")
 	private static String getGoldOreResourceAreaSolution(ClueScrollPlugin plugin)
 	{
 		return "Dig between the three gold ores in the Wilderness Resource Area. ".concat(getResourceAreaCost(plugin));
 	}
 
+	@SuppressWarnings("PMD.UnusedPrivateMethod")
 	private static String getSpeakToPilesSolution(ClueScrollPlugin plugin)
 	{
 		return "Speak to Piles in the Wilderness Resource Area.".concat(getResourceAreaCost(plugin));

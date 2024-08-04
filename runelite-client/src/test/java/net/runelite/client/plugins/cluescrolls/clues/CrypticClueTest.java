@@ -72,8 +72,8 @@ public class CrypticClueTest
 	{
 		when(plugin.getClient()).thenReturn(client);
 		when(client.getVarbitValue(Varbits.DIARY_WILDERNESS_ELITE)).thenReturn(1, 0, 0, 0, 0);
-		when(client.getVarbitValue(Varbits.DIARY_WILDERNESS_HARD)).thenReturn(1,  0, 0, 0);
-		when(client.getVarbitValue(Varbits.DIARY_WILDERNESS_MEDIUM)).thenReturn(1,  0, 0);
+		when(client.getVarbitValue(Varbits.DIARY_WILDERNESS_HARD)).thenReturn(1, 0, 0, 0);
+		when(client.getVarbitValue(Varbits.DIARY_WILDERNESS_MEDIUM)).thenReturn(1, 0, 0);
 
 		CrypticClue clue = CrypticClue.forText("One of several rhyming brothers, in business attire with an obsession for paper work.");
 		assert clue != null;
