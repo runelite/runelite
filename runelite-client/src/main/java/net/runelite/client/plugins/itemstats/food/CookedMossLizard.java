@@ -36,11 +36,12 @@ public class CookedMossLizard extends FoodBase
 	}
 
 	@Override
-	public int heals(Client client) {
+	public int heals(Client client)
+	{
 		final int cooking = client.getBoostedSkillLevel(Skill.COOKING);
 		final int hunter = client.getBoostedSkillLevel(Skill.HUNTER);
 		return Math.min(
-				(int) (cooking / 3),
-				(int) (hunter / 2));
+			(int) (cooking / 3),
+			(int) (hunter / 2));
 	}
 }

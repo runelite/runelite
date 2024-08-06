@@ -28,17 +28,20 @@ import net.runelite.api.Client;
 import net.runelite.api.Skill;
 import net.runelite.client.plugins.itemstats.FoodBase;
 
-public class CookedBream extends FoodBase {
-    public CookedBream() {
-        setBoost(false);
-    }
+public class CookedBream extends FoodBase
+{
+	public CookedBream()
+	{
+		setBoost(false);
+	}
 
-    @Override
-    public int heals(Client client) {
-        final int cooking = client.getBoostedSkillLevel(Skill.COOKING);
-        final int fishing = client.getBoostedSkillLevel(Skill.FISHING);
-        return Math.min(
-                (int) (cooking / 3),
-                (int) (fishing / 3));
-    }
+	@Override
+	public int heals(Client client)
+	{
+		final int cooking = client.getBoostedSkillLevel(Skill.COOKING);
+		final int fishing = client.getBoostedSkillLevel(Skill.FISHING);
+		return Math.min(
+			(int) (cooking / 3),
+			(int) (fishing / 3));
+	}
 }
