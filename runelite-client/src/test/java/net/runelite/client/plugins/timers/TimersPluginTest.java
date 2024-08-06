@@ -515,8 +515,8 @@ public class TimersPluginTest
 		timersPlugin.onVarbitChanged(varbitChanged); // Calls removeIf once (on createGameTimer)
 
 		ArgumentCaptor<Predicate<InfoBox>> prcaptor = ArgumentCaptor.forClass(Predicate.class);
-		TimerTimer imbuedHeartInfoBox = new TimerTimer(GameTimer.IMBUEDHEART, Duration.ofSeconds(420), timersPlugin);
-		verify(infoBoxManager, times (1)).addInfoBox(any());
+		TimerTimer imbuedHeartInfoBox = new TimerTimer(GameTimer.IMBUEDHEART, Duration.ofSeconds(420), timersPlugin, timersConfig.displayMode());
+		verify(infoBoxManager, times(1)).addInfoBox(any());
 		verify(infoBoxManager, times(1)).removeIf(prcaptor.capture());
 		Predicate<InfoBox> pred = prcaptor.getValue();
 		assertTrue(pred.test(imbuedHeartInfoBox));
@@ -558,7 +558,7 @@ public class TimersPluginTest
 		varbitChanged.setValue(15);
 		timersPlugin.onVarbitChanged(varbitChanged);
 
-		TimerTimer overloadInfobox = new TimerTimer(GameTimer.OVERLOAD_RAID, Duration.ofSeconds(225), timersPlugin);
+		TimerTimer overloadInfobox = new TimerTimer(GameTimer.OVERLOAD_RAID, Duration.ofSeconds(225), timersPlugin, timersConfig.displayMode());
 		verify(infoBoxManager).addInfoBox(any());
 		verify(infoBoxManager).removeIf(prcaptor.capture());
 		Predicate<InfoBox> pred = prcaptor.getValue();
@@ -583,7 +583,7 @@ public class TimersPluginTest
 		varbitChanged.setValue(9);
 		timersPlugin.onVarbitChanged(varbitChanged);
 
-		TimerTimer overloadInfobox = new TimerTimer(GameTimer.OVERLOAD, Duration.ofSeconds(135), timersPlugin);
+		TimerTimer overloadInfobox = new TimerTimer(GameTimer.OVERLOAD, Duration.ofSeconds(135), timersPlugin, timersConfig.displayMode());
 		verify(infoBoxManager).addInfoBox(any());
 		verify(infoBoxManager).removeIf(prcaptor.capture());
 		Predicate<InfoBox> pred = prcaptor.getValue();
