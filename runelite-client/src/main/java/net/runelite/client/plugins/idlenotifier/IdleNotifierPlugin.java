@@ -73,7 +73,7 @@ public class IdleNotifierPlugin extends Plugin
 	private static final int COMBAT_WARNING_CLIENT_TICKS = COMBAT_WARNING_MILLIS / Constants.CLIENT_TICK_LENGTH;
 
 	private static final int HIGHEST_MONSTER_ATTACK_SPEED = 8; // Except Scarab Mage, but they are with other monsters
-	private static final Duration SIX_HOUR_LOGOUT_WARNING_AFTER_DURATION = Duration.ofMinutes(340);
+	private static final int SIX_HOURS_MINS = 360;
 
 	private static final String FISHING_SPOT = "Fishing spot";
 
@@ -105,7 +105,7 @@ public class IdleNotifierPlugin extends Plugin
 	private boolean notify6HourLogout = true;
 	private int lastSpecEnergy = 1000;
 	private int lastCombatCountdown = 0;
-	private Instant sixHourWarningTime;
+	private Instant logInTime;
 	private boolean ready;
 	private boolean lastInteractWasCombat;
 	private static final int BUFF_BAR_NOT_DISPLAYED = -1;
@@ -119,9 +119,8 @@ public class IdleNotifierPlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
-		// can't tell when 6hr will be if enabled while already logged in
-		sixHourWarningTime = null;
 		migrateConfig();
+		logInTime = null;
 	}
 
 	@Subscribe
@@ -462,7 +461,7 @@ public class IdleNotifierPlugin extends Plugin
 			case LOGGED_IN:
 				if (ready)
 				{
-					sixHourWarningTime = Instant.now().plus(SIX_HOUR_LOGOUT_WARNING_AFTER_DURATION);
+					logInTime = Instant.now();
 					ready = false;
 					resetTimers();
 				}
@@ -898,12 +897,19 @@ public class IdleNotifierPlugin extends Plugin
 
 	private boolean check6hrLogout()
 	{
-		if (sixHourWarningTime == null)
+		if (logInTime == null)
 		{
 			return false;
 		}
 
-		if (Instant.now().compareTo(sixHourWarningTime) >= 0)
+		if (config.getSixHourLogoutWarningTime() == 0)
+		{
+			return false;
+		}
+
+		final Instant warningTime = logInTime.plus(
+				Duration.ofMinutes(SIX_HOURS_MINS - config.getSixHourLogoutWarningTime()));
+		if (Instant.now().compareTo(warningTime) >= 0)
 		{
 			if (notify6HourLogout)
 			{
