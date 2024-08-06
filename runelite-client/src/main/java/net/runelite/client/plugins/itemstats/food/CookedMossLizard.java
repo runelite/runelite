@@ -41,7 +41,7 @@ public class CookedMossLizard extends FoodBase
 		final int cooking = client.getBoostedSkillLevel(Skill.COOKING);
 		final int hunter = client.getBoostedSkillLevel(Skill.HUNTER);
 		return Math.min(
-			(int) (cooking / 3),
-			(int) (hunter / 2));
+			cooking / 3,
+			hunter / 2);
 	}
 }

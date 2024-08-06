@@ -41,7 +41,7 @@ public class CookedBream extends FoodBase
 		final int cooking = client.getBoostedSkillLevel(Skill.COOKING);
 		final int fishing = client.getBoostedSkillLevel(Skill.FISHING);
 		return Math.min(
-			(int) (cooking / 3),
-			(int) (fishing / 3));
+			cooking / 3,
+			fishing / 3);
 	}
 }
