@@ -77,7 +77,7 @@ class AgilityOverlay extends Overlay
 		{
 			if (Obstacles.SHORTCUT_OBSTACLE_IDS.containsKey(object.getId()) && !config.highlightShortcuts() ||
 					Obstacles.TRAP_OBSTACLE_IDS.contains(object.getId()) && !config.showTrapOverlay() ||
-					Obstacles.OBSTACLE_IDS.contains(object.getId()) && !config.showClickboxes() ||
+					Obstacles.AGILITY_OBSTACLES.build().entries().stream().anyMatch(entry -> entry.getValue().contains(object.getId())) && !config.showClickboxes() ||
 					Obstacles.SEPULCHRE_OBSTACLE_IDS.contains(object.getId()) && !config.highlightSepulchreObstacles() ||
 					Obstacles.SEPULCHRE_SKILL_OBSTACLE_IDS.contains(object.getId()) && !config.highlightSepulchreSkilling())
 			{
@@ -102,7 +102,21 @@ class AgilityOverlay extends Overlay
 				if (objectClickbox != null)
 				{
 					AgilityShortcut agilityShortcut = obstacle.getShortcut();
-					Color configColor = agilityShortcut == null || agilityShortcut.getLevel() <= plugin.getAgilityLevel() ? config.getOverlayColor() : SHORTCUT_HIGH_LEVEL_COLOR;
+
+					Color configColor;
+					if (agilityShortcut == null)
+					{
+						configColor = Obstacles.AGILITY_OBSTACLES.build()
+							.entries()
+							.stream()
+							.anyMatch(entry -> entry.getValue().contains(object.getId()) && entry.getKey() > plugin.getAgilityLevel())
+							? SHORTCUT_HIGH_LEVEL_COLOR : config.getOverlayColor();
+					}
+					else
+					{
+						configColor = agilityShortcut.getLevel() <= plugin.getAgilityLevel() ? config.getOverlayColor() : SHORTCUT_HIGH_LEVEL_COLOR;
+					}
+
 					if (config.highlightMarks() && !marksOfGrace.isEmpty())
 					{
 						configColor = config.getMarkColor();
