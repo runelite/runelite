@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tyler <https://github.com/tylerthardy>
+ * Copyright (c) 2019, winterdaze
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,35 +22,58 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.timers;
+package net.runelite.client.plugins.timersandbuffs;
 
-import java.awt.Color;
 import lombok.Getter;
-import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.infobox.InfoBox;
-import net.runelite.client.ui.overlay.infobox.InfoBoxPriority;
+import java.awt.image.BufferedImage;
+import java.awt.Color;
+import java.time.Duration;
+import java.time.Instant;
+import org.apache.commons.lang3.time.DurationFormatUtils;
 
-public class IndicatorIndicator extends InfoBox
+@Getter
+class ElapsedTimer extends InfoBox
 {
-	@Getter
-	private final GameIndicator indicator;
+	private final Instant startTime;
+	private final Instant lastTime;
 
-	IndicatorIndicator(GameIndicator indicator, Plugin plugin)
+	// Creates a timer that counts up if lastTime is null, or a paused timer if lastTime is defined
+	ElapsedTimer(BufferedImage image, TimersAndBuffsPlugin plugin, Instant startTime, Instant lastTime)
 	{
-		super(null, plugin);
-		this.indicator = indicator;
-		setPriority(InfoBoxPriority.MED);
+		super(image, plugin);
+		this.startTime = startTime;
+		this.lastTime = lastTime;
 	}
 
 	@Override
 	public String getText()
 	{
-		return indicator.getText();
+		if (startTime == null)
+		{
+			return null;
+		}
+
+		Duration time = Duration.between(startTime, lastTime == null ? Instant.now() : lastTime);
+		final String formatString = "mm:ss";
+		return DurationFormatUtils.formatDuration(time.toMillis(), formatString, true);
 	}
 
 	@Override
 	public Color getTextColor()
 	{
-		return indicator.getTextColor();
+		return Color.WHITE;
+	}
+
+	@Override
+	public String getTooltip()
+	{
+		if (startTime == null)
+		{
+			return null;
+		}
+
+		Duration time = Duration.between(startTime, lastTime == null ? Instant.now() : lastTime);
+		return "Elapsed time: " +  DurationFormatUtils.formatDuration(time.toMillis(), "HH:mm:ss", true);
 	}
 }

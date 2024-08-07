@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Jordan Atwood <jordan.atwood423@gmail.com>
+ * Copyright (c) 2024, YvesW <https://github.com/YvesW>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,10 +22,38 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.timers;
+package net.runelite.client.plugins.timersandbuffs;
 
-enum GameTimerImageType
+import java.awt.Color;
+import lombok.AccessLevel;
+import lombok.Getter;
+import net.runelite.client.ui.overlay.infobox.Counter;
+
+@Getter(AccessLevel.PACKAGE)
+class BuffCounter extends Counter
 {
-	ITEM,
-	SPRITE
+	private final TimersAndBuffsPlugin plugin;
+	private final GameCounter gameCounter;
+
+	BuffCounter(
+		TimersAndBuffsPlugin plugin,
+		GameCounter gameCounter,
+		int count)
+	{
+		super(null, plugin, count);
+		this.plugin = plugin;
+		this.gameCounter = gameCounter;
+	}
+
+	@Override
+	public String getText()
+	{
+		return gameCounter.isShouldDisplayCount() ? Integer.toString(getCount()) : "";
+	}
+
+	@Override
+	public Color getTextColor()
+	{
+		return gameCounter.getColorBoundaryType().shouldRecolor(getCount(), gameCounter.getBoundary()) ? gameCounter.getColor() : Color.WHITE;
+	}
 }
