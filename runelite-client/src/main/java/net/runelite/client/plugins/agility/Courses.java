@@ -49,7 +49,8 @@ enum Courses
 	POLLNIVNEACH(1016.0, 13358, new WorldPoint(3363, 2998, 0)),
 	RELLEKA(920.0, 10553, new WorldPoint(2653, 3676, 0)),
 	PRIFDDINAS(1337.0, 12895, new WorldPoint(3240, 6109, 0)),
-	ARDOUGNE(889.0, 10547, new WorldPoint(2668, 3297, 0));
+	ARDOUGNE(889.0, 10547, new WorldPoint(2668, 3297, 0)),
+	SEPULCHRE(-1, -1, new WorldPoint(2400, 5982, 0));
 
 	private final static Map<Integer, Courses> coursesByRegion;
 
