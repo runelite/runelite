@@ -197,7 +197,7 @@ enum TeleportLocationData
 	PISCATORIS_SCROLL(TeleportType.SCROLL, "Piscatoris Teleport", new WorldPoint(2339, 3648, 0), "scroll_teleport_icon.png"),
 	TAI_BWO_WANNAI_SCROLL(TeleportType.SCROLL, "Tai Bwo Wannai Teleport", new WorldPoint(2788, 3066, 0), "scroll_teleport_icon.png"),
 	ZULANDRA_SCROLL(TeleportType.SCROLL, "Zul-Andra Teleport", new WorldPoint(2197, 3056, 0), "scroll_teleport_icon.png"),
-	KEY_MASTER_SCROLL(TeleportType.SCROLL, "Key Master Teleport", new WorldPoint(2686, 9882, 0), "scroll_teleport_icon.png"),
+	KEY_MASTER_SCROLL(TeleportType.SCROLL, "Key Master Teleport", new WorldPoint(1310, 1250, 0), "scroll_teleport_icon.png"),
 	REVENANT_CAVE_SCROLL(TeleportType.SCROLL, "Revenant Cave Teleport", new WorldPoint(3127, 3833, 0), "scroll_teleport_icon.png"),
 	WATSON_SCROLL(TeleportType.SCROLL, "Watson Teleport", new WorldPoint(1645, 3579, 0), "scroll_teleport_icon.png"),
 

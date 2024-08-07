@@ -46,6 +46,7 @@ import net.runelite.api.widgets.InterfaceID;
 import net.runelite.api.widgets.JavaScriptCallback;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.worldmap.WorldMap;
+import net.runelite.api.worldmap.WorldMapArea;
 import net.runelite.client.ui.FontManager;
 import net.runelite.client.ui.JagexColors;
 import net.runelite.client.ui.overlay.Overlay;
@@ -67,6 +68,7 @@ public class WorldMapOverlay extends Overlay
 	private static final Splitter TOOLTIP_SPLITTER = Splitter.on("<br>").trimResults().omitEmptyStrings();
 
 	private final WorldMapPointManager worldMapPointManager;
+	private final WorldMapAreaManager worldMapAreaManager;
 	private final Client client;
 
 	private WorldMapPoint hoveredPoint;
@@ -74,9 +76,11 @@ public class WorldMapOverlay extends Overlay
 	@Inject
 	private WorldMapOverlay(
 		Client client,
+		WorldMapAreaManager worldMapAreaManager,
 		WorldMapPointManager worldMapPointManager)
 	{
 		this.client = client;
+		this.worldMapAreaManager = worldMapAreaManager;
 		this.worldMapPointManager = worldMapPointManager;
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(PRIORITY_HIGHEST);
@@ -114,7 +118,7 @@ public class WorldMapOverlay extends Overlay
 				.setOption(FOCUS_ON)
 				.setType(MenuAction.RUNELITE)
 				.onClick(m -> client.getWorldMap().setWorldMapPositionTarget(
-					MoreObjects.firstNonNull(worldPoint.getTarget(), worldPoint.getWorldPoint())));
+					MoreObjects.firstNonNull(worldPoint.getTarget(), worldPoint.getMapWorldPoint())));
 		});
 		bottomBar.setHasListener(true);
 
@@ -136,8 +140,15 @@ public class WorldMapOverlay extends Overlay
 
 		for (WorldMapPoint worldPoint : points)
 		{
+			if (worldPoint.getWorldMapArea() != null &&
+				worldPoint.getWorldMapArea() != WorldMapArea.ANY &&
+				worldPoint.getWorldMapArea() != worldMapAreaManager.getWorldMapArea())
+			{
+				continue;
+			}
+
 			BufferedImage image = worldPoint.getImage();
-			WorldPoint point = worldPoint.getWorldPoint();
+			WorldPoint point = worldPoint.getMapWorldPoint();
 
 			if (image != null && point != null)
 			{
@@ -257,6 +268,19 @@ public class WorldMapOverlay extends Overlay
 			return null;
 		}
 
+		return mapWorldPointToGraphicsPointIncludingNonSurfaces(worldPoint);
+	}
+
+	/**
+	 * Get the screen coordinates for a WorldPoint on the world map
+	 *
+	 * @param worldPoint WorldPoint to get screen coordinates of
+	 * @return Point of screen coordinates of the center of the world point
+	 */
+	public Point mapWorldPointToGraphicsPointIncludingNonSurfaces(WorldPoint worldPoint)
+	{
+		WorldMap worldMap = client.getWorldMap();
+
 		float pixelsPerTile = worldMap.getWorldMapZoom();
 
 		Widget map = client.getWidget(ComponentID.WORLD_MAP_MAPVIEW);
@@ -325,7 +349,7 @@ public class WorldMapOverlay extends Overlay
 	private void drawTooltip(Graphics2D graphics, WorldMapPoint worldPoint)
 	{
 		String tooltip = worldPoint.getTooltip();
-		Point drawPoint = mapWorldPointToGraphicsPoint(worldPoint.getWorldPoint());
+		Point drawPoint = mapWorldPointToGraphicsPoint(worldPoint.getMapWorldPoint());
 		if (tooltip == null || tooltip.length() <= 0 || drawPoint == null)
 		{
 			return;

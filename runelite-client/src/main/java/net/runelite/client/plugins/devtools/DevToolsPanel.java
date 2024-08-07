@@ -115,6 +115,7 @@ class DevToolsPanel extends PluginPanel
 
 		container.add(plugin.getLocation());
 		container.add(plugin.getWorldMapLocation());
+		container.add(plugin.getWorldMapMapping());
 		container.add(plugin.getTileLocation());
 		container.add(plugin.getCameraPosition());
 
