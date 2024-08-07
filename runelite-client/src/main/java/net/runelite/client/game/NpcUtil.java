@@ -252,7 +252,7 @@ public class NpcUtil
 	}
 
 	@Subscribe
-	public void onAnimationChanged(AnimationChanged animationChanged)
+	private void onAnimationChanged(AnimationChanged animationChanged)
 	{
 		final Actor actor = animationChanged.getActor();
 		final int anim = actor.getAnimation();

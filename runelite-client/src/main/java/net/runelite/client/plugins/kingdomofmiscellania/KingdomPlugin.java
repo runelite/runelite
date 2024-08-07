@@ -109,7 +109,7 @@ public class KingdomPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onVarbitChanged(VarbitChanged event)
+	private void onVarbitChanged(VarbitChanged event)
 	{
 		if (event.getVarbitId() == Varbits.KINGDOM_COFFER || event.getVarbitId() == Varbits.KINGDOM_APPROVAL)
 		{
@@ -132,7 +132,7 @@ public class KingdomPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (event.getGameState() == GameState.LOGGED_IN)
 		{
@@ -145,7 +145,7 @@ public class KingdomPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick gameTick)
+	private void onGameTick(GameTick gameTick)
 	{
 		if (loggingIn)
 		{

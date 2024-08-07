@@ -226,7 +226,7 @@ public class RaidsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (!event.getGroup().equals("raids"))
 		{
@@ -243,7 +243,7 @@ public class RaidsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onVarbitChanged(VarbitChanged event)
+	private void onVarbitChanged(VarbitChanged event)
 	{
 		// if the player's party state has changed
 		if (event.getVarpId() == VarPlayer.IN_RAID_PARTY)
@@ -286,7 +286,7 @@ public class RaidsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onChatMessage(ChatMessage event)
+	private void onChatMessage(ChatMessage event)
 	{
 		if (inRaidChambers && event.getType() == ChatMessageType.FRIENDSCHATNOTIFICATION)
 		{
@@ -346,7 +346,7 @@ public class RaidsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
+	private void onGameStateChanged(GameStateChanged event)
 	{
 		if (client.getGameState() == GameState.LOGGED_IN)
 		{

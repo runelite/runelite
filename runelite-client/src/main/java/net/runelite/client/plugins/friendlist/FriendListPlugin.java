@@ -25,6 +25,7 @@
  */
 package net.runelite.client.plugins.friendlist;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.inject.Provides;
 import java.time.temporal.ChronoUnit;
 import java.util.Iterator;
@@ -100,7 +101,7 @@ public class FriendListPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onScriptPostFired(ScriptPostFired event)
+	private void onScriptPostFired(ScriptPostFired event)
 	{
 		if (event.getScriptId() == ScriptID.FRIENDS_UPDATE)
 		{
@@ -147,7 +148,8 @@ public class FriendListPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onChatMessage(ChatMessage message)
+	@VisibleForTesting
+	void onChatMessage(ChatMessage message)
 	{
 		if (message.getType() == ChatMessageType.LOGINLOGOUTNOTIFICATION && config.showWorldOnLogin())
 		{
@@ -166,7 +168,7 @@ public class FriendListPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded event)
+	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		final int groupId = WidgetUtil.componentToInterface(event.getActionParam1());
 

@@ -58,7 +58,7 @@ public class CrowdsourcingDialogue
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick tick)
+	private void onGameTick(GameTick tick)
 	{
 		Widget npcDialogueTextWidget = client.getWidget(ComponentID.DIALOG_NPC_TEXT);
 		Widget playerDialogueTextWidget = client.getWidget(ComponentID.DIALOG_PLAYER_TEXT);
@@ -134,7 +134,7 @@ public class CrowdsourcingDialogue
 	}
 
 	@Subscribe
-	public void onChatMessage(ChatMessage chatMessage)
+	private void onChatMessage(ChatMessage chatMessage)
 	{
 		if (chatMessage.getType() == ChatMessageType.DIALOG
 		|| chatMessage.getType() == ChatMessageType.MESBOX)

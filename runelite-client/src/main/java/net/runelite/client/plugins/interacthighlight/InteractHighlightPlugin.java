@@ -98,7 +98,7 @@ public class InteractHighlightPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		if (gameStateChanged.getGameState() == GameState.LOADING)
 		{
@@ -107,7 +107,7 @@ public class InteractHighlightPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onNpcDespawned(NpcDespawned npcDespawned)
+	private void onNpcDespawned(NpcDespawned npcDespawned)
 	{
 		if (npcDespawned.getNpc() == interactedNpc)
 		{
@@ -116,7 +116,7 @@ public class InteractHighlightPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick gameTick)
+	private void onGameTick(GameTick gameTick)
 	{
 		if (client.getTickCount() > clickTick && client.getLocalDestinationLocation() == null)
 		{
@@ -127,7 +127,7 @@ public class InteractHighlightPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onInteractingChanged(InteractingChanged interactingChanged)
+	private void onInteractingChanged(InteractingChanged interactingChanged)
 	{
 		if (interactingChanged.getSource() == client.getLocalPlayer()
 				&& client.getTickCount() > clickTick && interactingChanged.getTarget() != interactedNpc)
@@ -138,7 +138,7 @@ public class InteractHighlightPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
+	private void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
 	{
 		switch (menuOptionClicked.getMenuAction())
 		{

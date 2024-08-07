@@ -217,13 +217,13 @@ public class GroundMarkerPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onProfileChanged(ProfileChanged profileChanged)
+	private void onProfileChanged(ProfileChanged profileChanged)
 	{
 		loadPoints();
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		if (gameStateChanged.getGameState() != GameState.LOGGED_IN)
 		{
@@ -235,7 +235,7 @@ public class GroundMarkerPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded event)
+	private void onMenuEntryAdded(MenuEntryAdded event)
 	{
 		final boolean hotKeyPressed = client.isKeyPressed(KeyCode.KC_SHIFT);
 		if (hotKeyPressed && event.getOption().equals(WALK_HERE))
@@ -338,7 +338,7 @@ public class GroundMarkerPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
+	private void onConfigChanged(ConfigChanged event)
 	{
 		if (event.getGroup().equals(GroundMarkerConfig.GROUND_MARKER_CONFIG_GROUP)
 			&& event.getKey().equals(GroundMarkerConfig.SHOW_IMPORT_EXPORT_KEY_NAME))

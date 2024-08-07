@@ -49,7 +49,7 @@ public class CrowdsourcingMusic
 	private CrowdsourcingManager manager;
 
 	@Subscribe
-	public void onChatMessage(ChatMessage event)
+	private void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() == ChatMessageType.GAMEMESSAGE)
 		{

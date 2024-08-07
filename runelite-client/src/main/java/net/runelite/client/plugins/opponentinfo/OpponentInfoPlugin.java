@@ -113,7 +113,7 @@ public class OpponentInfoPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
+	private void onGameStateChanged(GameStateChanged gameStateChanged)
 	{
 		if (gameStateChanged.getGameState() != GameState.LOGGED_IN)
 		{
@@ -124,7 +124,8 @@ public class OpponentInfoPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onInteractingChanged(InteractingChanged event)
+	@VisibleForTesting
+	void onInteractingChanged(InteractingChanged event)
 	{
 		if (event.getSource() != client.getLocalPlayer())
 		{
@@ -143,7 +144,7 @@ public class OpponentInfoPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick gameTick)
+	private void onGameTick(GameTick gameTick)
 	{
 		if (lastOpponent != null
 			&& lastTime != null
@@ -157,7 +158,7 @@ public class OpponentInfoPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
+	private void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
 	{
 		if (menuEntryAdded.getType() != MenuAction.NPC_SECOND_OPTION.getId()
 			|| !menuEntryAdded.getOption().equals("Attack")
@@ -180,7 +181,7 @@ public class OpponentInfoPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onScriptPostFired(ScriptPostFired event)
+	private void onScriptPostFired(ScriptPostFired event)
 	{
 		if (event.getScriptId() == ScriptID.HP_HUD_UPDATE)
 		{

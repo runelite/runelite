@@ -24,6 +24,7 @@
  */
 package net.runelite.client.plugins.woodcutting;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.time.Duration;
@@ -200,7 +201,8 @@ public class WoodcuttingPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameTick(GameTick gameTick)
+	@VisibleForTesting
+	void onGameTick(GameTick gameTick)
 	{
 		clueTierSpawned = null;
 
@@ -227,7 +229,8 @@ public class WoodcuttingPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onChatMessage(ChatMessage event)
+	@VisibleForTesting
+	void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() != ChatMessageType.SPAM
 			&& event.getType() != ChatMessageType.GAMEMESSAGE
@@ -308,7 +311,8 @@ public class WoodcuttingPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onItemSpawned(ItemSpawned itemSpawned)
+	@VisibleForTesting
+	void onItemSpawned(ItemSpawned itemSpawned)
 	{
 		if (clueTierSpawned == null)
 		{
@@ -318,7 +322,8 @@ public class WoodcuttingPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameObjectSpawned(final GameObjectSpawned event)
+	@VisibleForTesting
+	void onGameObjectSpawned(final GameObjectSpawned event)
 	{
 		GameObject gameObject = event.getGameObject();
 
@@ -372,7 +377,7 @@ public class WoodcuttingPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameObjectDespawned(final GameObjectDespawned event)
+	private void onGameObjectDespawned(final GameObjectDespawned event)
 	{
 		final GameObject object = event.getGameObject();
 
@@ -422,7 +427,7 @@ public class WoodcuttingPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onScriptPreFired(ScriptPreFired scriptPreFired)
+	private void onScriptPreFired(ScriptPreFired scriptPreFired)
 	{
 		if (scriptPreFired.getScriptId() == ScriptID.ADD_OVERLAYTIMER_LOC)
 		{
@@ -585,7 +590,7 @@ public class WoodcuttingPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(final GameStateChanged event)
+	private void onGameStateChanged(final GameStateChanged event)
 	{
 		switch (event.getGameState())
 		{
@@ -611,7 +616,7 @@ public class WoodcuttingPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onAnimationChanged(final AnimationChanged event)
+	private void onAnimationChanged(final AnimationChanged event)
 	{
 		var actor = event.getActor();
 		if (actor.getAnimation() == AnimationID.LOOKING_INTO && flowers.contains(actor.getInteracting()))
@@ -632,7 +637,7 @@ public class WoodcuttingPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onNpcSpawned(NpcSpawned event)
+	private void onNpcSpawned(NpcSpawned event)
 	{
 		NPC npc = event.getNpc();
 		var id = npc.getId();
@@ -690,7 +695,7 @@ public class WoodcuttingPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onNpcDespawned(NpcDespawned event)
+	private void onNpcDespawned(NpcDespawned event)
 	{
 		NPC npc = event.getNpc();
 		if (flowers.remove(npc))
@@ -721,7 +726,7 @@ public class WoodcuttingPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onInteractingChanged(InteractingChanged event)
+	private void onInteractingChanged(InteractingChanged event)
 	{
 		if (event.getSource() != client.getLocalPlayer()
 			|| !(event.getTarget() instanceof NPC)

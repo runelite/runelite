@@ -113,7 +113,7 @@ public class BarbarianAssaultPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onWidgetLoaded(WidgetLoaded event)
+	private void onWidgetLoaded(WidgetLoaded event)
 	{
 		switch (event.getGroupId())
 		{
@@ -153,7 +153,7 @@ public class BarbarianAssaultPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onVarbitChanged(VarbitChanged event)
+	private void onVarbitChanged(VarbitChanged event)
 	{
 		if (event.getVarbitId() == Varbits.IN_GAME_BA && event.getValue() == 0)
 		{
@@ -170,7 +170,7 @@ public class BarbarianAssaultPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onChatMessage(ChatMessage event)
+	private void onChatMessage(ChatMessage event)
 	{
 		if (event.getType() == ChatMessageType.GAMEMESSAGE
 			&& event.getMessage().startsWith("---- Wave:"))
