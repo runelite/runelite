@@ -43,6 +43,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Actor;
+import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
@@ -53,6 +54,7 @@ import net.runelite.api.VarClientStr;
 import net.runelite.api.Varbits;
 import net.runelite.api.annotations.Component;
 import net.runelite.api.events.ActorDeath;
+import net.runelite.api.events.AnimationChanged;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.ScriptCallbackEvent;
@@ -291,6 +293,23 @@ public class ScreenshotPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onAnimationChanged(AnimationChanged animationChanged)
+	{
+		Actor actor = animationChanged.getActor();
+		if (actor instanceof Player)
+		{
+			Player player = (Player) actor;
+			if (player == client.getLocalPlayer()
+				&& config.screenshotPlayerDeath()
+				&& player.getAnimation() == AnimationID.DOOM_DEATH)
+			{
+				takeScreenshot("Death", SD_DEATHS);
+			}
+		}
+
+	}
+
+	@Subscribe
 	public void onActorDeath(ActorDeath actorDeath)
 	{
 		Actor actor = actorDeath.getActor();
@@ -304,7 +323,7 @@ public class ScreenshotPlugin extends Plugin
 			else if (player != client.getLocalPlayer()
 				&& player.getCanvasTilePoly() != null
 				&& (((player.isFriendsChatMember() || player.isFriend()) && config.screenshotFriendDeath())
-					|| (player.isClanMember() && config.screenshotClanDeath())))
+				|| (player.isClanMember() && config.screenshotClanDeath())))
 			{
 				takeScreenshot("Death " + player.getName(), SD_DEATHS);
 			}
@@ -852,7 +871,7 @@ public class ScreenshotPlugin extends Plugin
 	 *
 	 * @param text A received chat message which may or may not be from completing a combat achievement.
 	 * @return A formatted string of the achieved combat task name, or the empty string if the passed message
-	 *         is not a combat achievement completion message.
+	 * is not a combat achievement completion message.
 	 */
 	@VisibleForTesting
 	static String parseCombatAchievementWidget(final String text)
