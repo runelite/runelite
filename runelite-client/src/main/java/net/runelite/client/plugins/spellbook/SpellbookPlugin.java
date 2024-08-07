@@ -53,6 +53,7 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.events.ProfileChanged;
 import net.runelite.client.menus.MenuManager;
 import net.runelite.client.menus.WidgetMenuOption;
@@ -105,6 +106,9 @@ public class SpellbookPlugin extends Plugin
 	@Inject
 	private ConfigManager configManager;
 
+	@Inject
+	private SpellbookConfig config;
+
 	private boolean reordering;
 
 	@Provides
@@ -148,6 +152,17 @@ public class SpellbookPlugin extends Plugin
 		clientThread.invokeLater(this::redrawSpellbook);
 
 		log.debug("Reset spellbook");
+	}
+
+	@Subscribe
+	public void onConfigChanged(ConfigChanged event)
+	{
+		if (!event.getGroup().equals(SpellbookConfig.GROUP))
+		{
+			return;
+		}
+
+		clientThread.invokeLater(this::reinitializeSpellbook);
 	}
 
 	private void clearReoderMenus()
@@ -331,6 +346,11 @@ public class SpellbookPlugin extends Plugin
 				if (hidden)
 				{
 					w.setHidden(true);
+
+					if (config.spellbookGaps())
+					{
+						newSpells[numNewSpells++] = spells[i];
+					}
 				}
 				else
 				{
