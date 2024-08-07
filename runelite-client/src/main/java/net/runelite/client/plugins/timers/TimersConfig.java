@@ -363,4 +363,14 @@ public interface TimersConfig extends Config
 	{
 		return true;
 	}
+
+	@ConfigItem(
+		keyName = "showDelayedFoodHeal",
+		name = "Delayed Food Heal",
+		description = "Configures whether the delayed healing from special foods is displayed"
+	)
+	default boolean showDelayedFoodHeal()
+	{
+		return true;
+	}
 }
