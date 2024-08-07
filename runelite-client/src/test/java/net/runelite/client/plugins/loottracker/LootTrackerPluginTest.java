@@ -105,6 +105,33 @@ public class LootTrackerPluginTest
 		.put(ItemID.GRIMY_TORSTOL, "Grimy torstol")
 		.build();
 
+	private static final Map<Integer, String> ZOMBIE_PIRATE_LOCKER_IDS_TO_NAMES = ImmutableMap.<Integer, String>builder()
+			.put(ItemID.BLOOD_RUNE, "Blood rune")
+			.put(ItemID.DEATH_RUNE, "Death rune")
+			.put(ItemID.CHAOS_RUNE, "Chaos rune")
+			.put(ItemID.MIND_RUNE, "Mind rune")
+			.put(ItemID.BATTLESTAFF, "Battlestaff")
+			.put(ItemID.ADAMANT_PLATEBODY, "Adamant platebody")
+			.put(ItemID.RUNE_MED_HELM, "Rune med helm")
+			.put(ItemID.RUNE_WARHAMMER, "Rune warhammer")
+			.put(ItemID.RUNE_BATTLEAXE, "Rune battleaxe")
+			.put(ItemID.RUNE_LONGSWORD, "Rune longsword")
+			.put(ItemID.RUNE_SWORD, "Rune sword")
+			.put(ItemID.RUNE_MACE, "Rune mace")
+			.put(ItemID.DRAGON_DAGGER, "Dragon dagger")
+			.put(ItemID.DRAGON_LONGSWORD, "Dragon longsword")
+			.put(ItemID.DRAGON_SCIMITAR, "Dragon scimtar")
+			.put(ItemID.BLIGHTED_ANCIENT_ICE_SACK, "Blighted ancient ice sack")
+			.put(ItemID.BLIGHTED_ANGLERFISH, "Blighted anglerfish")
+			.put(ItemID.BLIGHTED_MANTA_RAY, "Blighted manta ray")
+			.put(ItemID.BLIGHTED_KARAMBWAN, "Blighted karambwan")
+			.put(ItemID.BLIGHTED_SUPER_RESTORE4, "Blighted super restore(4)")
+			.put(ItemID.CANNONBALL, "Cannonball")
+			.put(ItemID.GOLD_ORE, "Gold ore")
+			.put(ItemID.ADAMANT_SEEDS, "Adamant seeds")
+			.put(ItemID.LARRANS_KEY, "Larran's key")
+			.put(ItemID.TELEPORT_ANCHORING_SCROLL, "Teleport anchoring scroll")
+			.build();
 	@Mock
 	@Bind
 	private ScheduledExecutorService scheduledExecutorService;
@@ -180,6 +207,43 @@ public class LootTrackerPluginTest
 		lootTrackerPlugin.onItemContainerChanged(event);
 	}
 
+	@Test
+	public void testZombiePirateLockerLoot()
+	{
+		for (Map.Entry<Integer, String> loot: ZOMBIE_PIRATE_LOCKER_IDS_TO_NAMES.entrySet())
+		{
+			final int id = loot.getKey();
+			final String name = loot.getValue();
+			final ItemPrice price = new ItemPrice();
+			price.setId(id);
+			price.setName(name);
+			when(itemManager.search(name)).thenReturn(Collections.singletonList(price));
+
+			for (int quantity = 1; quantity <= 120; quantity++)
+			{
+				final String lockerMessage = String.format("You loot the locker and receive <col=ef1020>%d x %s</col>.", quantity, name);
+				ChatMessage chatMessage_loot = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", lockerMessage, "", 0);
+				lootTrackerPlugin.onChatMessage(chatMessage_loot);
+				verify(lootTrackerPlugin).addLoot("Zombie Pirate's Locker", -1, LootRecordType.EVENT, null, Arrays.asList(
+						new ItemStack(id, quantity, null)
+				));
+			}
+		}
+		//commas in coin quantities > 1000
+		final ItemPrice coinsPrice = new ItemPrice();
+		coinsPrice.setId(ItemID.COINS);
+		coinsPrice.setName("Coins");
+		when(itemManager.search("Coins")).thenReturn(Collections.singletonList(coinsPrice));
+		for (int coinQuantity = 1; coinQuantity <= 16001; coinQuantity += 1000)
+		{
+			final String coinLockerMessage = String.format("You loot the locker and receive <col=ef1020>%,d x Coins</col>.", coinQuantity);
+			ChatMessage chatMessage_coinLoot = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", coinLockerMessage, "", 0);
+			lootTrackerPlugin.onChatMessage(chatMessage_coinLoot);
+			verify(lootTrackerPlugin).addLoot("Zombie Pirate's Locker", -1, LootRecordType.EVENT, null, Arrays.asList(
+					new ItemStack(ItemID.COINS, coinQuantity, null)
+			));
+		}
+	}
 	@Test
 	public void testPickPocket()
 	{
