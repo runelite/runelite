@@ -33,6 +33,7 @@ import net.runelite.api.events.NpcChanged;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.Notification;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.npcoverlay.HighlightedNpc;
@@ -48,6 +49,9 @@ import net.runelite.client.ui.overlay.OverlayManager;
 )
 public class ImplingsPlugin extends Plugin
 {
+	@Inject
+	private ConfigManager configManager;
+
 	@Inject
 	private OverlayManager overlayManager;
 
@@ -66,7 +70,7 @@ public class ImplingsPlugin extends Plugin
 	public final Function<NPC, HighlightedNpc> isTarget = (npc) ->
 	{
 		Impling impling = Impling.findImpling(npc.getId());
-		if (impling != null && showImpling(impling))
+		if (impling != null && implingHighlighted(impling.getImplingType()))
 		{
 			Color color = implingColor(impling);
 			return HighlightedNpc.builder()
@@ -90,6 +94,7 @@ public class ImplingsPlugin extends Plugin
 	protected void startUp()
 	{
 		overlayManager.add(overlay);
+		migrateConfig();
 		npcOverlayService.registerHighlighter(isTarget);
 	}
 
@@ -119,10 +124,9 @@ public class ImplingsPlugin extends Plugin
 
 		if (impling != null)
 		{
-			if (showImplingType(impling.getImplingType()) == ImplingsConfig.ImplingMode.NOTIFY)
-			{
-				notifier.notify(impling.getImplingType().getName() + " impling is in the area");
-			}
+			final ImplingType implingType = impling.getImplingType();
+			final Notification notification = implingNotification(implingType);
+			notifier.notify(notification, implingType.getName() + " impling is in the area");
 		}
 	}
 
@@ -134,49 +138,120 @@ public class ImplingsPlugin extends Plugin
 
 		if (impling != null)
 		{
-			if (showImplingType(impling.getImplingType()) == ImplingsConfig.ImplingMode.NOTIFY)
-			{
-				notifier.notify(impling.getImplingType().getName() + " impling is in the area");
-			}
+			final ImplingType implingType = impling.getImplingType();
+			final Notification notification = implingNotification(implingType);
+			notifier.notify(notification, implingType.getName() + " impling is in the area");
 		}
 	}
 
-	private boolean showImpling(Impling impling)
+	private void migrateConfig()
 	{
-		ImplingsConfig.ImplingMode impMode = showImplingType(impling.getImplingType());
-		return impMode == ImplingsConfig.ImplingMode.HIGHLIGHT || impMode == ImplingsConfig.ImplingMode.NOTIFY;
+		String migrated = configManager.getConfiguration(ImplingsConfig.GROUP, "migrated");
+		if (migrated != null && !"1".equals(migrated))
+		{
+			return;
+		}
+
+		ImplingsConfig.ImplingMode babyImplingMode = configManager.getConfiguration(ImplingsConfig.GROUP, "showbaby", ImplingsConfig.ImplingMode.class);
+		setConfigsForImplingMode(babyImplingMode, "highlightBaby", "babyNotification");
+		configManager.unsetConfiguration(ImplingsConfig.GROUP, "showbaby");
+
+		ImplingsConfig.ImplingMode youngImplingMode = configManager.getConfiguration(ImplingsConfig.GROUP, "showyoung", ImplingsConfig.ImplingMode.class);
+		setConfigsForImplingMode(youngImplingMode, "highlightYoung", "youngNotification");
+		configManager.unsetConfiguration(ImplingsConfig.GROUP, "showyoung");
+
+		ImplingsConfig.ImplingMode earthImplingMode = configManager.getConfiguration(ImplingsConfig.GROUP, "showearth", ImplingsConfig.ImplingMode.class);
+		setConfigsForImplingMode(earthImplingMode, "highlightEarth", "earthNotification");
+		configManager.unsetConfiguration(ImplingsConfig.GROUP, "showearth");
+
+		ImplingsConfig.ImplingMode gourmetImplingMode = configManager.getConfiguration(ImplingsConfig.GROUP, "showgourmet", ImplingsConfig.ImplingMode.class);
+		setConfigsForImplingMode(gourmetImplingMode, "highlightGourmet", "gourmetNotification");
+		configManager.unsetConfiguration(ImplingsConfig.GROUP, "showgourmet");
+
+		ImplingsConfig.ImplingMode essenceImplingMode = configManager.getConfiguration(ImplingsConfig.GROUP, "showessence", ImplingsConfig.ImplingMode.class);
+		setConfigsForImplingMode(essenceImplingMode, "highlightEssence", "essenceNotification");
+		configManager.unsetConfiguration(ImplingsConfig.GROUP, "showessence");
+
+		ImplingsConfig.ImplingMode eclecticImplingMode = configManager.getConfiguration(ImplingsConfig.GROUP, "showeclectic", ImplingsConfig.ImplingMode.class);
+		setConfigsForImplingMode(eclecticImplingMode, "highlightEclectic", "eclecticNotification");
+		configManager.unsetConfiguration(ImplingsConfig.GROUP, "showeclectic");
+
+		ImplingsConfig.ImplingMode natureImplingMode = configManager.getConfiguration(ImplingsConfig.GROUP, "shownature", ImplingsConfig.ImplingMode.class);
+		setConfigsForImplingMode(natureImplingMode, "highlightNature", "natureNotification");
+		configManager.unsetConfiguration(ImplingsConfig.GROUP, "shownature");
+
+		ImplingsConfig.ImplingMode magpieImplingMode = configManager.getConfiguration(ImplingsConfig.GROUP, "showmagpie", ImplingsConfig.ImplingMode.class);
+		setConfigsForImplingMode(magpieImplingMode, "highlightMagpie", "magpieNotification");
+		configManager.unsetConfiguration(ImplingsConfig.GROUP, "showmagpie");
+
+		ImplingsConfig.ImplingMode ninjaImplingMode = configManager.getConfiguration(ImplingsConfig.GROUP, "showninja", ImplingsConfig.ImplingMode.class);
+		setConfigsForImplingMode(ninjaImplingMode, "highlightNinja", "ninjaNotification");
+		configManager.unsetConfiguration(ImplingsConfig.GROUP, "showninja");
+
+		ImplingsConfig.ImplingMode crystalImplingMode = configManager.getConfiguration(ImplingsConfig.GROUP, "showCrystal", ImplingsConfig.ImplingMode.class);
+		setConfigsForImplingMode(crystalImplingMode, "highlightCrystal", "crystalNotification");
+		configManager.unsetConfiguration(ImplingsConfig.GROUP, "showCrystal");
+
+		ImplingsConfig.ImplingMode dragonImplingMode = configManager.getConfiguration(ImplingsConfig.GROUP, "showdragon", ImplingsConfig.ImplingMode.class);
+		setConfigsForImplingMode(dragonImplingMode, "highlightDragon", "dragonNotification");
+		configManager.unsetConfiguration(ImplingsConfig.GROUP, "showdragon");
+
+		ImplingsConfig.ImplingMode luckyImplingMode = configManager.getConfiguration(ImplingsConfig.GROUP, "showlucky", ImplingsConfig.ImplingMode.class);
+		setConfigsForImplingMode(luckyImplingMode, "highlightLucky", "luckyNotification");
+		configManager.unsetConfiguration(ImplingsConfig.GROUP, "showlucky");
+
+		configManager.setConfiguration(ImplingsConfig.GROUP, "migrated", "2");
 	}
 
-	ImplingsConfig.ImplingMode showImplingType(ImplingType implingType)
+	private void setConfigsForImplingMode(ImplingsConfig.ImplingMode implingMode, String highlightKey, String notificationKey)
+	{
+		if (implingMode == ImplingsConfig.ImplingMode.NONE)
+		{
+			configManager.setConfiguration(ImplingsConfig.GROUP, highlightKey, false);
+			configManager.setConfiguration(ImplingsConfig.GROUP, notificationKey, Notification.OFF);
+		}
+		else if (implingMode == ImplingsConfig.ImplingMode.HIGHLIGHT)
+		{
+			configManager.setConfiguration(ImplingsConfig.GROUP, highlightKey, true);
+			configManager.setConfiguration(ImplingsConfig.GROUP, notificationKey, Notification.OFF);
+		}
+		else
+		{
+			configManager.setConfiguration(ImplingsConfig.GROUP, highlightKey, true);
+			configManager.setConfiguration(ImplingsConfig.GROUP, notificationKey, Notification.ON);
+		}
+	}
+
+	public boolean implingHighlighted(final ImplingType implingType)
 	{
 		switch (implingType)
 		{
 			case BABY:
-				return config.showBaby();
+				return config.highlightBaby();
 			case YOUNG:
-				return config.showYoung();
+				return config.highlightYoung();
 			case GOURMET:
-				return config.showGourmet();
+				return config.highlightGourmet();
 			case EARTH:
-				return config.showEarth();
+				return config.highlightEarth();
 			case ESSENCE:
-				return config.showEssence();
+				return config.highlightEssence();
 			case ECLECTIC:
-				return config.showEclectic();
+				return config.highlightEclectic();
 			case NATURE:
-				return config.showNature();
+				return config.highlightNature();
 			case MAGPIE:
-				return config.showMagpie();
+				return config.highlightMagpie();
 			case NINJA:
-				return config.showNinja();
+				return config.highlightNinja();
 			case CRYSTAL:
-				return config.showCrystal();
+				return config.highlightCrystal();
 			case DRAGON:
-				return config.showDragon();
+				return config.highlightDragon();
 			case LUCKY:
-				return config.showLucky();
+				return config.highlightLucky();
 			default:
-				return ImplingsConfig.ImplingMode.NONE;
+				throw new IllegalArgumentException();
 		}
 	}
 
@@ -208,6 +283,39 @@ public class ImplingsPlugin extends Plugin
 				return config.getDragonColor();
 			case LUCKY:
 				return config.getLuckyColor();
+			default:
+				throw new IllegalArgumentException();
+		}
+	}
+
+	private Notification implingNotification(final ImplingType implingType)
+	{
+		switch (implingType)
+		{
+			case BABY:
+				return config.getBabyNotification();
+			case YOUNG:
+				return config.getYoungNotification();
+			case GOURMET:
+				return config.getGourmetNotification();
+			case EARTH:
+				return config.getEarthNotification();
+			case ESSENCE:
+				return config.getEssenceNotification();
+			case ECLECTIC:
+				return config.getEclecticNotification();
+			case NATURE:
+				return config.getNatureNotification();
+			case MAGPIE:
+				return config.getMagpieNotification();
+			case NINJA:
+				return config.getNinjaNotification();
+			case CRYSTAL:
+				return config.getCrystalNotification();
+			case DRAGON:
+				return config.getDragonNotification();
+			case LUCKY:
+				return config.getLuckyNotification();
 			default:
 				throw new IllegalArgumentException();
 		}

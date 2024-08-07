@@ -62,7 +62,7 @@ class ImplingsOverlay extends Overlay
 		{
 			for (ImplingSpawn spawn : ImplingSpawn.values())
 			{
-				if (plugin.showImplingType(spawn.getType()) == ImplingsConfig.ImplingMode.NONE)
+				if (!plugin.implingHighlighted(spawn.getType()))
 				{
 					continue;
 				}
