@@ -30,7 +30,6 @@ import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
-import net.runelite.client.config.Range;
 
 @ConfigGroup(GroundMarkerConfig.GROUND_MARKER_CONFIG_GROUP)
 public interface GroundMarkerConfig extends Config
@@ -40,16 +39,41 @@ public interface GroundMarkerConfig extends Config
 
 	@Alpha
 	@ConfigItem(
+		position = 0,
 		keyName = "markerColor",
-		name = "Tile color",
-		description = "The default color for marked tiles"
+		name = "Border color",
+		description = "The default border color for marked tiles"
 	)
-	default Color markerColor()
+	default Color borderColor()
 	{
 		return Color.YELLOW;
 	}
 
+	@Alpha
 	@ConfigItem(
+			position = 1,
+			keyName = "fillColor",
+			name = "Fill color",
+			description = "The default fill color for marked tiles"
+	)
+	default Color fillColor()
+	{
+		return new Color(0, 0, 0, 50);
+	}
+
+	@ConfigItem(
+			position = 2,
+			keyName = "borderWidth",
+			name = "Border Width",
+			description = "Width of the marked tile border"
+	)
+	default double borderWidth()
+	{
+		return 2;
+	}
+
+	@ConfigItem(
+		position = 3,
 		keyName = "drawOnMinimap",
 		name = "Draw tiles on minimap",
 		description = "Configures whether marked tiles should be drawn on minimap"
@@ -60,6 +84,7 @@ public interface GroundMarkerConfig extends Config
 	}
 
 	@ConfigItem(
+		position = 4,
 		keyName = SHOW_IMPORT_EXPORT_KEY_NAME,
 		name = "Show Import/Export/Clear options",
 		description = "Show the Import, Export, and Clear options on the world map right-click menu"
@@ -67,28 +92,5 @@ public interface GroundMarkerConfig extends Config
 	default boolean showImportExport()
 	{
 		return true;
-	}
-
-	@ConfigItem(
-		keyName = "borderWidth",
-		name = "Border Width",
-		description = "Width of the marked tile border"
-	)
-	default double borderWidth()
-	{
-		return 2;
-	}
-
-	@ConfigItem(
-		keyName = "fillOpacity",
-		name = "Fill Opacity",
-		description = "Opacity of the tile fill color"
-	)
-	@Range(
-		max = 255
-	)
-	default int fillOpacity()
-	{
-		return 50;
 	}
 }
