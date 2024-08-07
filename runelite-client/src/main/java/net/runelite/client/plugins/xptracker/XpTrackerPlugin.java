@@ -132,6 +132,7 @@ public class XpTrackerPlugin extends Plugin
 	private boolean fetchXp; // fetch lastXp for the online xp tracker
 	private long lastXp = 0;
 	private boolean initializeTracker;
+	private boolean waitToInit;
 
 	private final XpPauseState xpPauseState = new XpPauseState();
 
@@ -166,6 +167,7 @@ public class XpTrackerPlugin extends Plugin
 		// Initialize the tracker & last xp if already logged in
 		fetchXp = true;
 		initializeTracker = true;
+		waitToInit = true;
 		lastAccount = -1L;
 		clientThread.invokeLater(() ->
 		{
@@ -215,6 +217,7 @@ public class XpTrackerPlugin extends Plugin
 		else if (state == GameState.LOGGING_IN || state == GameState.HOPPING)
 		{
 			initializeTracker = true;
+			waitToInit = true;
 		}
 		else if (state == GameState.LOGIN_SCREEN)
 		{
@@ -439,52 +442,59 @@ public class XpTrackerPlugin extends Plugin
 	{
 		if (initializeTracker)
 		{
-			initializeTracker = false;
-
-			// Check for xp gained while logged out
-			for (Skill skill : Skill.values())
+			if (waitToInit)
 			{
-				if (!xpState.isInitialized(skill))
-				{
-					continue;
-				}
+				waitToInit = false;
+			}
+			else
+			{
+				initializeTracker = false;
 
-				XpStateSingle skillState = xpState.getSkill(skill);
-				final int currentXp = client.getSkillExperience(skill);
-				if (skillState.getCurrentXp() != currentXp)
+				// Check for xp gained while logged out
+				for (Skill skill : Skill.values())
 				{
-					if (currentXp < skillState.getCurrentXp())
+					if (!xpState.isInitialized(skill))
 					{
-						log.debug("Xp is going backwards! {} {} -> {}", skill, skillState.getCurrentXp(), currentXp);
-						resetState();
-						break;
+						continue;
 					}
 
-					log.debug("Skill xp for {} changed when offline: {} -> {}", skill, skillState.getCurrentXp(), currentXp);
-					// Offset start xp for offline gains
-					long diff = currentXp - skillState.getCurrentXp();
-					skillState.setStartXp(skillState.getStartXp() + diff);
-				}
-			}
-
-			// Initialize the tracker with the initial xp if not already initialized
-			for (Skill skill : Skill.values())
-			{
-				if (!xpState.isInitialized(skill))
-				{
+					XpStateSingle skillState = xpState.getSkill(skill);
 					final int currentXp = client.getSkillExperience(skill);
-					// goal exps are not necessary for skill initialization
-					XpUpdateResult xpUpdateResult = xpState.updateSkill(skill, currentXp, -1, -1);
-					assert xpUpdateResult == XpUpdateResult.INITIALIZED;
-				}
-			}
+					if (skillState.getCurrentXp() != currentXp)
+					{
+						if (currentXp < skillState.getCurrentXp())
+						{
+							log.debug("Xp is going backwards! {} {} -> {}", skill, skillState.getCurrentXp(), currentXp);
+							resetState();
+							break;
+						}
 
-			// Initialize the overall xp
-			if (!xpState.isOverallInitialized())
-			{
-				long overallXp = client.getOverallExperience();
-				log.debug("Initializing XP tracker with {} overall exp", overallXp);
-				xpState.initializeOverall(overallXp);
+						log.debug("Skill xp for {} changed when offline: {} -> {}", skill, skillState.getCurrentXp(), currentXp);
+						// Offset start xp for offline gains
+						long diff = currentXp - skillState.getCurrentXp();
+						skillState.setStartXp(skillState.getStartXp() + diff);
+					}
+				}
+
+				// Initialize the tracker with the initial xp if not already initialized
+				for (Skill skill : Skill.values())
+				{
+					if (!xpState.isInitialized(skill))
+					{
+						final int currentXp = client.getSkillExperience(skill);
+						// goal exps are not necessary for skill initialization
+						XpUpdateResult xpUpdateResult = xpState.updateSkill(skill, currentXp, -1, -1);
+						assert xpUpdateResult == XpUpdateResult.INITIALIZED;
+					}
+				}
+
+				// Initialize the overall xp
+				if (!xpState.isOverallInitialized())
+				{
+					long overallXp = client.getOverallExperience();
+					log.debug("Initializing XP tracker with {} overall exp", overallXp);
+					xpState.initializeOverall(overallXp);
+				}
 			}
 		}
 
