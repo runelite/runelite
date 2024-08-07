@@ -72,7 +72,6 @@ public class GroundItemsOverlay extends Overlay
 	private static final Color PUBLIC_TIMER_COLOR = Color.YELLOW;
 	private static final Color PRIVATE_TIMER_COLOR = Color.GREEN;
 	private static final Color DESPAWN_TIMER_COLOR = Color.RED;
-	private static final Duration DESPAWN_WARNING = Duration.ofSeconds(30);
 	private static final int TIMER_OVERLAY_DIAMETER = 10;
 
 	private final Client client;
