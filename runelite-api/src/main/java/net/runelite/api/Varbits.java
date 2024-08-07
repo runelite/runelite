@@ -892,4 +892,17 @@ public final class Varbits
 
 	public static final int SPELLBOOK = 4070;
 	public static final int SPELLBOOK_SUBMENU = 9730;
+
+	/**
+	 * 0 = the arrow is not currently being used
+	 * 5 = while using Matthias' Falcon
+	 * 6 = while Stealing valuables and playing the Brimhaven Agility Arena minigame
+	 */
+	public static final int HINT_ARROW = 14192;
+
+	/**
+	 * 0 = a ticket has already been obtained from the active ticket dispenser
+	 * 1 = a ticket can be obtained from the active ticket dispenser
+	 */
+	public static final int AGILITY_ARENA_TICKET_AVAILABLE = 5962;
 }
