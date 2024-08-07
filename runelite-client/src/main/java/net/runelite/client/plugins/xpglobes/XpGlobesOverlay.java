@@ -327,6 +327,20 @@ public class XpGlobesOverlay extends Overlay
 				}
 			}
 
+			if (config.showXpPerAction())
+			{
+				int xpPerAction = xpTrackerService.getXpPerAction(mouseOverSkill.getSkill());
+				if (xpPerAction != Integer.MAX_VALUE)
+				{
+					String xpPerActionString = decimalFormat.format(xpPerAction);
+					xpTooltip.getChildren().add(LineComponent.builder()
+							.left("Xp/" + xpActionType.getLabel().substring(0, xpActionType.getLabel().length() - 1)  + ":")
+							.leftColor(Color.ORANGE)
+							.right(xpPerActionString)
+							.build());
+				}
+			}
+
 			if (config.showXpLeft())
 			{
 				int xpLeft = goalXp - mouseOverSkill.getCurrentXp();
