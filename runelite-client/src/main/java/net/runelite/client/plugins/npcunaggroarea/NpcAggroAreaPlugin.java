@@ -464,6 +464,7 @@ public class NpcAggroAreaPlugin extends Plugin
 			safeCenters[0] = null;
 			safeCenters[1] = null;
 			lastPlayerLocation = newLocation;
+			infoBoxManager.removeIf(AggressionTimer.class::isInstance);
 		}
 	}
 
