@@ -31,6 +31,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Rectangle;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
@@ -70,6 +71,7 @@ public class GroundItemsOverlay extends Overlay
 	private static final int RECTANGLE_SIZE = 8;
 	private static final Color PUBLIC_TIMER_COLOR = Color.YELLOW;
 	private static final Color PRIVATE_TIMER_COLOR = Color.GREEN;
+	private static final Color DESPAWN_TIMER_COLOR = Color.RED;
 	private static final int TIMER_OVERLAY_DIAMETER = 10;
 
 	private final Client client;
@@ -409,13 +411,19 @@ public class GroundItemsOverlay extends Overlay
 		}
 
 		final Instant now = Instant.now();
+		final Instant warningTime = spawnTime.plus(groundItem.getDespawnTime().minus(Duration.ofSeconds(config.despawnTimer())));
 		final Instant despawnTime = spawnTime.plus(groundItem.getDespawnTime());
 
 		if (groundItem.isPrivate())
 		{
-			if (despawnTime.isAfter(now))
+			if (warningTime.isAfter(now))
 			{
 				return PRIVATE_TIMER_COLOR;
+			}
+
+			if (despawnTime.isAfter(now))
+			{
+				return DESPAWN_TIMER_COLOR;
 			}
 
 			return null;
@@ -427,9 +435,13 @@ public class GroundItemsOverlay extends Overlay
 		{
 			return PRIVATE_TIMER_COLOR;
 		}
-		if (despawnTime.isAfter(now))
+		if (warningTime.isAfter(now))
 		{
 			return PUBLIC_TIMER_COLOR;
+		}
+		if (despawnTime.isAfter(now))
+		{
+			return DESPAWN_TIMER_COLOR;
 		}
 
 		return null;
