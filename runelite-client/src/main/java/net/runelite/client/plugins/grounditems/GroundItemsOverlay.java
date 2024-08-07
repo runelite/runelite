@@ -412,14 +412,19 @@ public class GroundItemsOverlay extends Overlay
 		}
 
 		final Instant now = Instant.now();
-		final Instant warningTime = spawnTime.plus(groundItem.getDespawnTime().minus(DESPAWN_WARNING));
+		final Instant warningTime = spawnTime.plus(groundItem.getDespawnTime().minus(Duration.ofSeconds(config.despawnTimer())));
 		final Instant despawnTime = spawnTime.plus(groundItem.getDespawnTime());
 
 		if (groundItem.isPrivate())
 		{
-			if (despawnTime.isAfter(now))
+			if (warningTime.isAfter(now))
 			{
 				return PRIVATE_TIMER_COLOR;
+			}
+
+			if (despawnTime.isAfter(now))
+			{
+				return DESPAWN_TIMER_COLOR;
 			}
 
 			return null;
