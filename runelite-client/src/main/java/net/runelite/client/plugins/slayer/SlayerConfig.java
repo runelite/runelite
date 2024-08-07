@@ -44,7 +44,9 @@ public interface SlayerConfig extends Config
 	String INIT_AMOUNT_KEY = "initialAmount";
 	String TASK_LOC_KEY = "taskLocation";
 	String STREAK_KEY = "streak";
+	String WILDERNESS_STREAK_KEY = "wildernessStreak";
 	String POINTS_KEY = "points";
+	String SLAYER_MASTER_KEY = "slayerMaster";
 
 	@ConfigItem(
 		position = 1,
