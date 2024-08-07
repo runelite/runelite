@@ -774,6 +774,13 @@ public class ConfigManager
 			.collect(Collectors.toList());
 	}
 
+	public List<Map.Entry<String, String>> getConfigurationEntries(String prefix)
+	{
+		return configProfile.get().entrySet().stream()
+			.filter(e -> e.getKey().startsWith(prefix))
+			.collect(Collectors.toList());
+	}
+
 	public List<String> getRSProfileConfigurationKeys(String group, String profile, String keyPrefix)
 	{
 		if (profile == null)
