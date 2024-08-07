@@ -318,7 +318,7 @@ class ConfigPanel extends PluginPanel
 			final MouseAdapter adapter = new MouseAdapter()
 			{
 				@Override
-				public void mouseClicked(MouseEvent e)
+				public void mousePressed(MouseEvent e)
 				{
 					toggleSection(csd, sectionToggle, sectionContents);
 				}
