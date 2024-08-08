@@ -58,19 +58,6 @@ import net.runelite.client.util.ImageUtil;
 
 class StatusBarsOverlay extends Overlay
 {
-	private static final Color PRAYER_COLOR = new Color(50, 200, 200, 175);
-	private static final Color ACTIVE_PRAYER_COLOR = new Color(57, 255, 186, 225);
-	private static final Color HEALTH_COLOR = new Color(225, 35, 0, 125);
-	private static final Color POISONED_COLOR = new Color(0, 145, 0, 150);
-	private static final Color VENOMED_COLOR = new Color(0, 65, 0, 150);
-	private static final Color HEAL_COLOR = new Color(255, 112, 6, 150);
-	private static final Color PRAYER_HEAL_COLOR = new Color(57, 255, 186, 75);
-	private static final Color ENERGY_HEAL_COLOR = new Color (199,  118, 0, 218);
-	private static final Color RUN_STAMINA_COLOR = new Color(160, 124, 72, 255);
-	private static final Color SPECIAL_ATTACK_COLOR = new Color(3, 153, 0, 195);
-	private static final Color ENERGY_COLOR = new Color(199, 174, 0, 220);
-	private static final Color DISEASE_COLOR = new Color(255, 193, 75, 181);
-	private static final Color PARASITE_COLOR = new Color(196, 62, 109, 181);
 	private static final int HEIGHT = 252;
 	private static final int RESIZED_BOTTOM_HEIGHT = 272;
 	private static final int IMAGE_SIZE = 17;
@@ -127,27 +114,27 @@ class StatusBarsOverlay extends Overlay
 
 				if (poisonState >= 1000000)
 				{
-					return VENOMED_COLOR;
+					return config.getEnvenomedColor();
 				}
 
 				if (poisonState > 0)
 				{
-					return POISONED_COLOR;
+					return config.getPoisonedColor();
 				}
 
 				if (client.getVarpValue(VarPlayer.DISEASE_VALUE) > 0)
 				{
-					return DISEASE_COLOR;
+					return config.getDiseasedColor();
 				}
 
 				if (client.getVarbitValue(Varbits.PARASITE) >= 1)
 				{
-					return PARASITE_COLOR;
+					return config.getParasiteColor();
 				}
 
-				return HEALTH_COLOR;
+				return config.getHealthColor();
 			},
-			() -> HEAL_COLOR,
+			config::getHealColor,
 			() ->
 			{
 				final int poisonState = client.getVarpValue(VarPlayer.POISON);
@@ -176,20 +163,20 @@ class StatusBarsOverlay extends Overlay
 			() -> getRestoreValue(Skill.PRAYER.getName()),
 			() ->
 			{
-				Color prayerColor = PRAYER_COLOR;
+				Color prayerColor = config.getPrayerColor();
 
 				for (Prayer pray : Prayer.values())
 				{
 					if (client.isPrayerActive(pray))
 					{
-						prayerColor = ACTIVE_PRAYER_COLOR;
+						prayerColor = config.getActivePrayerColor();
 						break;
 					}
 				}
 
 				return prayerColor;
 			},
-			() -> PRAYER_HEAL_COLOR,
+			config::getPrayerRestoreColor,
 			() -> prayerIcon
 		));
 		barRenderers.put(BarMode.RUN_ENERGY, new BarRenderer(
@@ -200,22 +187,22 @@ class StatusBarsOverlay extends Overlay
 			{
 				if (client.getVarbitValue(Varbits.RUN_SLOWED_DEPLETION_ACTIVE) != 0)
 				{
-					return RUN_STAMINA_COLOR;
+					return config.getStaminaPotColor();
 				}
 				else
 				{
-					return ENERGY_COLOR;
+					return config.getEnergyColor();
 				}
 			},
-			() -> ENERGY_HEAL_COLOR,
+			config::getEnergyRestoreColor,
 			() -> energyIcon
 		));
 		barRenderers.put(BarMode.SPECIAL_ATTACK, new BarRenderer(
 			() -> MAX_SPECIAL_ATTACK_VALUE,
 			() -> client.getVarpValue(VarPlayer.SPECIAL_ATTACK_PERCENT) / 10,
 			() -> 0,
-			() -> SPECIAL_ATTACK_COLOR,
-			() -> SPECIAL_ATTACK_COLOR,
+			config::getSpecialAttackColor,
+			config::getSpecialAttackColor,
 			() -> specialIcon
 		));
 	}

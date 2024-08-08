@@ -37,8 +37,6 @@ import net.runelite.client.ui.overlay.components.TextComponent;
 @RequiredArgsConstructor
 class BarRenderer
 {
-	private static final Color BACKGROUND = new Color(0, 0, 0, 150);
-	private static final Color OVERHEAL_COLOR = new Color(216, 255, 139, 150);
 	private static final int SKILL_ICON_HEIGHT = 35;
 	private static final int COUNTER_ICON_HEIGHT = 18;
 	private static final int BORDER_SIZE = 1;
@@ -76,7 +74,7 @@ class BarRenderer
 		final Color fill = colorSupplier.get();
 		refreshSkills();
 
-		graphics.setColor(BACKGROUND);
+		graphics.setColor(config.getBackgroundColor());
 		graphics.drawRect(x, y, width - BORDER_SIZE, height - BORDER_SIZE);
 		graphics.fillRect(x, y, width, height);
 
@@ -88,7 +86,7 @@ class BarRenderer
 
 		if (config.enableRestorationBars())
 		{
-			renderRestore(graphics, x, y, width, height);
+			renderRestore(config, graphics, x, y, width, height);
 		}
 
 		if (config.enableSkillIcon() || config.enableCounter())
@@ -129,7 +127,7 @@ class BarRenderer
 		}
 	}
 
-	private void renderRestore(Graphics2D graphics, int x, int y, int width, int height)
+	private void renderRestore(StatusBarsConfig config, Graphics2D graphics, int x, int y, int width, int height)
 	{
 		final Color color = healColorSupplier.get();
 		final int heal = healSupplier.get();
@@ -146,7 +144,7 @@ class BarRenderer
 
 		if (filledHealHeight + filledCurrentHeight > height)
 		{
-			graphics.setColor(OVERHEAL_COLOR);
+			graphics.setColor(config.getOverhealColor());
 			fillY = y + BORDER_SIZE;
 			fillHeight = height - filledCurrentHeight - BORDER_SIZE;
 		}
