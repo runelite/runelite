@@ -78,6 +78,8 @@ public class AnimationSmoothingPlugin extends Plugin
 
 			case AnimationID.MLM_WATER_WHEEL_SPINNING:
 			case AnimationID.GIANTS_FOUNDRY_WATER_WHEEL_SPINNING:
+
+			case AnimationID.MAGIC_ARCEUUS_DEMONBANE:
 				return false;
 
 			default:

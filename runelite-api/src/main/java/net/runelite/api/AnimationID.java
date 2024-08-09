@@ -324,6 +324,7 @@ public final class AnimationID
 
 	// Arceuus spellbook
 	public static final int MAGIC_ARCEUUS_RESURRECT_CROPS = 7118;
+	public static final int MAGIC_ARCEUUS_DEMONBANE = 8977;    // Shared by all 3 Demonbane spells
 
 	// Battlestaff Crafting
 	public static final int CRAFTING_BATTLESTAVES = 7531;
