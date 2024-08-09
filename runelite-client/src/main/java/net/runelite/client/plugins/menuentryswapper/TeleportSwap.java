@@ -26,6 +26,8 @@ package net.runelite.client.plugins.menuentryswapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 class TeleportSwap
 {
@@ -34,12 +36,28 @@ class TeleportSwap
 	String option;
 	List<TeleportSub> subs = new ArrayList<>();
 
+	Set<TeleportSub> shorthands = new TreeSet<>();
+
 	TeleportSwap addSub(String option, Runnable r)
 	{
 		var sub = new TeleportSub();
 		sub.option = option;
 		sub.execute = r;
 		subs.add(sub);
+		return this;
+	}
+
+	void clearShorthands()
+	{
+		shorthands.clear();
+	}
+
+	TeleportSwap addOption(String option, Runnable r)
+	{
+		var sub = new TeleportSub();
+		sub.option = option;
+		sub.execute = r;
+		shorthands.add(sub);
 		return this;
 	}
 
@@ -56,8 +74,14 @@ class TeleportSwap
 	}
 }
 
-class TeleportSub
+class TeleportSub implements Comparable<TeleportSub>
 {
 	String option;
 	Runnable execute;
+
+	@Override
+	public int compareTo(TeleportSub other)
+	{
+		return option.compareTo(other.option);
+	}
 }
