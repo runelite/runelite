@@ -306,6 +306,10 @@ public enum MenuAction
 	 * Parent menu of submenus
 	 */
 	RUNELITE_SUBMENU(1505),
+	/**
+	 * Like {@link #RUNELITE}, except clicking always forces the menu open.
+	 */
+	RUNELITE_LOW_PRIORITY(1506),
 
 	/**
 	 * Menu action triggered when the id is not defined in this class.
