@@ -77,6 +77,7 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemVariationMapping;
 import net.runelite.client.game.NpcUtil;
@@ -185,6 +186,24 @@ public class MenuEntrySwapperPlugin extends Plugin
 	{
 		swaps.clear();
 		teleportSwaps.clear();
+	}
+
+	@Subscribe
+	void onConfigChanged(ConfigChanged event)
+	{
+		if (event.getKey().equals("teleportShorthands"))
+		{
+			Collection<TeleportSwap> swaps = teleportSwaps.get(ItemID.MAX_CAPE);
+			for (TeleportSwap swap : swaps)
+			{
+				swap.clearShorthands();
+				for (MenuEntrySwapperConfig.Teleports teleport : config.teleportShorthands())
+				{
+					swap.addOption(teleport.toString(), () -> Arrays.stream(teleport.ops)
+							.forEach(op -> pauseresume(teleport.id, op)));
+				}
+			}
+		}
 	}
 
 	@VisibleForTesting
@@ -843,6 +862,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		{
 			final MenuEntry entry = entries[idx];
 			Widget w = entry.getWidget();
+			System.out.println("menu entry: " + entry.getOption());
 
 			if (w != null && WidgetUtil.componentToInterface(w.getId()) == InterfaceID.EQUIPMENT
 				&& "Examine".equals(entry.getOption()) && entry.getIdentifier() == 10)
@@ -1000,6 +1020,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		}
 
 		final MenuEntry[] entries = event.getMenuEntries();
+
 		for (int idx = entries.length - 1; idx >= 0; --idx)
 		{
 			final MenuEntry entry = entries[idx];
@@ -2132,6 +2153,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 				.filter(ts -> ts.option.equals(me.getOption()))
 				.findAny()
 				.orElse(null);
+
 			if (swap != null && config.teleportSubmenus())
 			{
 				me.setType(MenuAction.RUNELITE_SUBMENU_WIDGET);
@@ -2145,6 +2167,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 				final int itemId = me.getItemId();
 				final String option = me.getOption();
 				final String target = me.getTarget();
+
 				for (TeleportSub sub : swap.subs)
 				{
 					client.createMenuEntry(-2 - off++)
@@ -2170,6 +2193,37 @@ public class MenuEntrySwapperPlugin extends Plugin
 				.filter(ts -> ts.option.equals(me.getOption()))
 				.findAny()
 				.orElse(null);
+
+
+			var shorthands = teleportSwaps.get(me.getItemId())
+				.stream()
+				.filter(ts -> ts.held)
+				.filter(ts -> ts.option.equals(me.getOption()))
+				.findAny()
+				.orElse(null);
+
+
+
+			if (shorthands != null && !shorthands.shorthands.isEmpty())
+			{
+				int offset = 0;
+
+				for (TeleportSub sub : shorthands.shorthands)
+				{
+					client.createMenuEntry(1 + offset++)
+						.setOption(sub.option)
+						.setTarget(me.getTarget())
+						.setParam0(me.getParam0())
+						.setParam1(me.getParam1())
+						.setType(MenuAction.RUNELITE)
+						.onClick(e -> clientThread.invokeLater(() ->
+						{
+							client.menuAction(me.getParam0(), me.getParam1(), MenuAction.CC_OP, me.getIdentifier(), me.getItemId(), me.getOption(), me.getTarget());
+							sub.execute.run();
+						}));
+				}
+			}
+
 			if (swap != null && config.teleportSubmenus())
 			{
 				me.setType(MenuAction.RUNELITE_SUBMENU_WIDGET);

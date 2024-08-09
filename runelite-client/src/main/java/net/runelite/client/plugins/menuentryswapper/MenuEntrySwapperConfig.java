@@ -24,6 +24,9 @@
  */
 package net.runelite.client.plugins.menuentryswapper;
 
+import java.util.Collections;
+import java.util.Set;
+import net.runelite.api.widgets.ComponentID;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -433,6 +436,41 @@ public interface MenuEntrySwapperConfig extends Config
 	default boolean teleportSubmenus()
 	{
 		return false;
+	}
+
+	enum Teleports
+	{
+		HOME("Home", ComponentID.ADVENTURE_LOG_OPTIONS, 6, 0),
+		CRAFTING_GUILD("Crafting Guild", ComponentID.ADVENTURE_LOG_OPTIONS, 2),
+		WARRIORS_GUILD("Warriors' Guild", ComponentID.ADVENTURE_LOG_OPTIONS, 0),
+		;
+
+		final String name;
+		final int id;
+		final int []ops;
+		Teleports(String name, int id, int ...ops)
+		{
+			this.name = name;
+			this.id = id;
+			this.ops = new int[ops.length];
+			System.arraycopy(ops, 0,this.ops, 0, ops.length);
+		}
+
+		@Override
+		public String toString()
+		{
+			return name;
+		}
+	}
+	@ConfigItem(
+		keyName = "teleportShorthands",
+		name = "Non submenu teleports",
+		description = "TODO",
+		section = itemSection
+	)
+	default Set<Teleports> teleportShorthands()
+	{
+		return Collections.emptySet();
 	}
 
 	@ConfigItem(
