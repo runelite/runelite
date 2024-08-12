@@ -166,7 +166,7 @@ enum Task
 	THE_LEVIATHAN("The Leviathan", ItemID.LILVIATHAN),
 	THE_WHISPERER("The Whisperer", ItemID.WISP),
 	THERMONUCLEAR_SMOKE_DEVIL("The Thermonuclear Smoke Devil", ItemID.PET_SMOKE_DEVIL),
-	TROLLS("Trolls", ItemID.TROLL_GUARD, "Dad", "Arrg"),
+	TROLLS("Trolls", ItemID.TROLL_GUARD, "Dad", "Arrg", "Stick", "Kraka", "Pee Hat", "Rock", "Twig", "Berry"),
 	TUROTH("Turoth", ItemID.TUROTH),
 	TZHAAR("Tzhaar", ItemID.ENSOULED_TZHAAR_HEAD),
 	VAMPYRES("Vampyres", ItemID.STAKE, "Vyrewatch", "Vampire"),
