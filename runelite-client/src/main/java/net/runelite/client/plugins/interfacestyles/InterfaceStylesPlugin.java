@@ -155,9 +155,8 @@ public class InterfaceStylesPlugin extends Plugin
 		Player prev = null;
 		boolean changed = false;
 
-		for (int i = 0; i < menuEntries.length; ++i)
+		for (MenuEntry menuEntry : menuEntries)
 		{
-			MenuEntry menuEntry = menuEntries[i];
 			MenuAction type = menuEntry.getType();
 
 			Player player = menuEntry.getPlayer();

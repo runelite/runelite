@@ -36,7 +36,6 @@ import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.Player;
 import net.runelite.api.widgets.Widget;
-import org.jetbrains.annotations.NotNull;
 
 @EqualsAndHashCode
 public class TestMenuEntry implements MenuEntry
