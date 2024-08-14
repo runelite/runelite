@@ -1206,7 +1206,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 							.setOption("Swap left click")
 							.setType(MenuAction.RUNELITE);
 						swapShiftClick = client.createMenuEntry(2)
-							.setOption("Swap left click")
+							.setOption("Swap shift click")
 							.setType(MenuAction.RUNELITE);
 						subLeft = swapLeftClick.createSubMenu();
 						subShift = swapShiftClick.createSubMenu();
