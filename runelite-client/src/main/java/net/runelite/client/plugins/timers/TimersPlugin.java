@@ -1142,7 +1142,7 @@ public class TimersPlugin extends Plugin
 		ItemContainer container = itemContainerChanged.getItemContainer();
 
 		Item weapon = container.getItem(EquipmentInventorySlot.WEAPON.getSlotIdx());
-		if (weapon == null || STAVES_OF_THE_DEAD.contains(weapon.getId()))
+		if (weapon == null || !STAVES_OF_THE_DEAD.contains(weapon.getId()))
 		{
 			// remove sotd timer if the staff has been unwielded
 			removeGameTimer(STAFF_OF_THE_DEAD);
