@@ -41,7 +41,7 @@ public class BankOverlay extends WidgetItemOverlay
 		{
 			long gePrice = 0, haPrice = 0, priceToShow;
 			String priceText = "";
-			final net.runelite.client.ui.overlay.components.TextComponent textComponent = new TextComponent();
+			final TextComponent textComponent = new TextComponent();
 			// Positions text in the middle of the items bounds
 			textComponent.setPosition(new Point(bounds.x - 1, (bounds.y + bounds.height / 2) + 5));
 
