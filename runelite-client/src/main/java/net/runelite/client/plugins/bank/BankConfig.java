@@ -108,7 +108,7 @@ public interface BankConfig extends Config
 	@ConfigItem(
 		keyName = "showPriceOnItemKeybind",
 		name = "Price on Item shortcut",
-		description = "Keyboard shortcut for showing GE/HA value on item",
+		description = "Keyboard shortcut for initiating GE/HA values on item",
 		position = 7
 	)
 	default Keybind showItemPriceKeybind()

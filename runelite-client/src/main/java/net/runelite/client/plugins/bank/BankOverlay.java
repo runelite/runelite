@@ -45,12 +45,12 @@ public class BankOverlay extends WidgetItemOverlay
 			// Positions text in the middle of the items bounds
 			textComponent.setPosition(new Point(bounds.x - 1, (bounds.y + bounds.height / 2) + 5));
 
-			if (config.showGEPerItem())
+			if (config.showHAPerItem())
 			{
 				haPrice = getHaPrice(iden.getId());
 			}
 
-			if (config.showHAPerItem())
+			if (config.showGEPerItem())
 			{
 				gePrice = itemManager.getItemPrice(iden.getId());
 			}
@@ -67,10 +67,13 @@ public class BankOverlay extends WidgetItemOverlay
 				textComponent.setColor(config.gePerItemColor());
 			}
 
-			priceText += QuantityFormatter.quantityToStackSize(priceToShow * iden.getQuantity());
+			if (priceToShow > 0)
+			{
+				priceText += QuantityFormatter.quantityToStackSize(priceToShow * iden.getQuantity());
 
-			textComponent.setText(priceText);
-			textComponent.render(graphics);
+				textComponent.setText(priceText);
+				textComponent.render(graphics);
+			}
 		}
 	}
 
