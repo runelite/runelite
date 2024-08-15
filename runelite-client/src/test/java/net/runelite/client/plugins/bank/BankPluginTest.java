@@ -37,6 +37,7 @@ import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.client.game.ItemManager;
+import net.runelite.client.ui.overlay.OverlayManager;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -65,6 +66,14 @@ public class BankPluginTest
 
 	@Inject
 	private BankPlugin bankPlugin;
+
+	@Mock
+	@Bind
+	private OverlayManager overlayManager;
+
+	@Mock
+	@Bind
+	private BankOverlay bankOverlay;
 
 	@Before
 	public void before()

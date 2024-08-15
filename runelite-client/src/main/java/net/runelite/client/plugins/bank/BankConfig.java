@@ -25,8 +25,10 @@
  */
 package net.runelite.client.plugins.bank;
 
+import java.awt.Color;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import net.runelite.client.config.Alpha;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
@@ -38,7 +40,7 @@ public interface BankConfig extends Config
 	@ConfigItem(
 		keyName = "showGE",
 		name = "Show Grand Exchange price",
-		description = "Show grand exchange price total (GE)",
+		description = "Show Grand Exchange price total (GE)",
 		position = 1
 	)
 	default boolean showGE()
@@ -47,10 +49,33 @@ public interface BankConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showGEPerItem",
+		name = "Show Grand Exchange price on Item",
+		description = "Show Grand Exchange price total (GE) on the item. When GE and HA are both enabled, greater of the two is shown.",
+		position = 2
+	)
+	default boolean showGEPerItem()
+	{
+		return false;
+	}
+
+	@Alpha
+	@ConfigItem(
+		keyName = "gePerItemColor",
+		name = "Color for Grand Exchange price on Item",
+		description = "Configures the color for Grand Exchange value shown on the item",
+		position = 3
+	)
+	default Color gePerItemColor()
+	{
+		return Color.ORANGE;
+	}
+
+	@ConfigItem(
 		keyName = "showHA",
 		name = "Show high alchemy price",
 		description = "Show high alchemy price total (HA)",
-		position = 2
+		position = 4
 	)
 	default boolean showHA()
 	{
@@ -58,10 +83,44 @@ public interface BankConfig extends Config
 	}
 
 	@ConfigItem(
+		keyName = "showHAPerItem",
+		name = "Show high alchemy price on Item",
+		description = "Show high alchemy price total (HA) on the item. When GE and HA are both enabled, greater of the two is shown.",
+		position = 5
+	)
+	default boolean showHAPerItem()
+	{
+		return false;
+	}
+
+	@Alpha
+	@ConfigItem(
+		keyName = "haPerItemColor",
+		name = "Color for High alchemy price on Item",
+		description = "Configures the color for high alchemy value shown on the item",
+		position = 6
+	)
+	default Color haPerItemColor()
+	{
+		return Color.CYAN;
+	}
+
+	@ConfigItem(
+		keyName = "showPriceOnItemKeybind",
+		name = "Price on Item shortcut",
+		description = "Keyboard shortcut for showing GE/HA value on item",
+		position = 7
+	)
+	default Keybind showItemPriceKeybind()
+	{
+		return new Keybind(KeyEvent.VK_UNDEFINED, InputEvent.ALT_DOWN_MASK);
+	}
+
+	@ConfigItem(
 		keyName = "showExact",
 		name = "Show exact bank value",
 		description = "Show exact bank value",
-		position = 3
+		position = 8
 	)
 	default boolean showExact()
 	{
@@ -72,7 +131,7 @@ public interface BankConfig extends Config
 		keyName = "rightClickBankInventory",
 		name = "Disable left click bank inventory",
 		description = "Configures whether the bank inventory button will bank your inventory on left click",
-		position = 4
+		position = 9
 	)
 	default boolean rightClickBankInventory()
 	{
@@ -83,7 +142,7 @@ public interface BankConfig extends Config
 		keyName = "rightClickBankEquip",
 		name = "Disable left click bank equipment",
 		description = "Configures whether the bank equipment button will bank your equipment on left click",
-		position = 5
+		position = 10
 	)
 	default boolean rightClickBankEquip()
 	{
@@ -94,7 +153,7 @@ public interface BankConfig extends Config
 		keyName = "rightClickBankLoot",
 		name = "Disable left click bank looting bag",
 		description = "Configures whether the bank looting bag button will bank your looting bag contents on left click",
-		position = 6
+		position = 11
 	)
 	default boolean rightClickBankLoot()
 	{
@@ -105,7 +164,7 @@ public interface BankConfig extends Config
 		keyName = "rightClickPlaceholders",
 		name = "Disable left click placeholders button",
 		description = "Configures whether the placeholders button will be toggled on left click",
-		position = 7
+		position = 12
 	)
 	default boolean rightClickPlaceholders()
 	{
@@ -116,7 +175,7 @@ public interface BankConfig extends Config
 		keyName = "seedVaultValue",
 		name = "Show seed vault value",
 		description = "Adds the total value of all seeds inside the seed vault to the title",
-		position = 8
+		position = 13
 	)
 	default boolean seedVaultValue()
 	{
@@ -127,7 +186,7 @@ public interface BankConfig extends Config
 		keyName = "bankPinKeyboard",
 		name = "Keyboard Bankpin",
 		description = "Allows using the keyboard keys for bank pin input",
-		position = 9
+		position = 14
 	)
 	default boolean bankPinKeyboard()
 	{
@@ -138,7 +197,7 @@ public interface BankConfig extends Config
 		keyName = "searchKeybind",
 		name = "Search Shortcut",
 		description = "Keyboard shortcut for initiating a bank or seed vault search",
-		position = 10
+		position = 15
 	)
 	default Keybind searchKeybind()
 	{
@@ -149,7 +208,7 @@ public interface BankConfig extends Config
 		keyName = "blockJagexAccountAd",
 		name = "Block Jagex Account popup",
 		description = "Blocks the weekly reminder to migrate to a Jagex account",
-		position = 11
+		position = 16
 	)
 	default boolean blockJagexAccountAd()
 	{

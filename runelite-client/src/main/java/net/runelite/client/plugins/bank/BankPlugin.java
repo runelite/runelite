@@ -31,12 +31,16 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import com.google.inject.Provides;
+
 import java.awt.event.KeyEvent;
 import java.text.ParseException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.InventoryID;
@@ -56,10 +60,9 @@ import net.runelite.api.events.ScriptCallbackEvent;
 import net.runelite.api.events.ScriptPostFired;
 import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.widgets.*;
 import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.InterfaceID;
-import net.runelite.api.widgets.JavaScriptCallback;
-import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.config.Keybind;
@@ -69,6 +72,7 @@ import net.runelite.client.input.KeyListener;
 import net.runelite.client.input.KeyManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.QuantityFormatter;
 
 @PluginDescriptor(
@@ -109,6 +113,16 @@ public class BankPlugin extends Plugin
 	@Inject
 	private KeyManager keyManager;
 
+	@Inject
+	private OverlayManager overlayManager;
+
+	@Inject
+	private BankOverlay bankOverlay;
+
+	@Getter(AccessLevel.PACKAGE)
+	@Setter(AccessLevel.PACKAGE)
+	private boolean hotKeyPressed;
+
 	private boolean forceRightClickFlag;
 	private Multiset<Integer> itemQuantities; // bank item quantities for bank value search
 	private String searchString;
@@ -125,6 +139,8 @@ public class BankPlugin extends Plugin
 		public void keyPressed(KeyEvent e)
 		{
 			Keybind keybind = config.searchKeybind();
+			Keybind keybindItemPrice = config.showItemPriceKeybind();
+
 			if (keybind.matches(e))
 			{
 				Widget bankContainer = client.getWidget(ComponentID.BANK_ITEM_CONTAINER);
@@ -176,11 +192,16 @@ public class BankPlugin extends Plugin
 					e.consume();
 				}
 			}
+
+			if (keybindItemPrice.matches(e)) {
+				setHotKeyPressed(true);
+			}
 		}
 
 		@Override
 		public void keyReleased(KeyEvent e)
 		{
+			setHotKeyPressed(false);
 		}
 	};
 
@@ -194,12 +215,14 @@ public class BankPlugin extends Plugin
 	protected void startUp()
 	{
 		keyManager.registerKeyListener(searchHotkeyListener);
+		overlayManager.add(bankOverlay);
 	}
 
 	@Override
 	protected void shutDown()
 	{
 		keyManager.unregisterKeyListener(searchHotkeyListener);
+		overlayManager.remove(bankOverlay);
 		clientThread.invokeLater(() -> bankSearch.reset(false));
 		forceRightClickFlag = false;
 		itemQuantities = null;
