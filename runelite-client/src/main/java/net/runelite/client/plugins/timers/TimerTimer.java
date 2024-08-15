@@ -25,26 +25,57 @@
 package net.runelite.client.plugins.timers;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import lombok.Getter;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.infobox.InfoBoxPriority;
 import net.runelite.client.ui.overlay.infobox.Timer;
 
 class TimerTimer extends Timer
 {
+	@Getter
 	private final GameTimer timer;
 	int ticks;
+	private final Duration buffDuration;
+	private final TimersDisplayMode displayMode;
+	private final Instant startTime;
 
-	TimerTimer(GameTimer timer, Duration duration, Plugin plugin)
+	TimerTimer(GameTimer timer, Duration duration, Plugin plugin, TimersDisplayMode displayMode)
 	{
 		super(duration.toMillis(), ChronoUnit.MILLIS, null, plugin);
 		this.timer = timer;
+		this.buffDuration = duration;
+		this.startTime = Instant.now();
+		this.displayMode = displayMode;
 		setPriority(InfoBoxPriority.MED);
 	}
 
-	public GameTimer getTimer()
+	@Override
+	public String getText()
 	{
-		return timer;
+		Duration timeLeft = Duration.between(Instant.now(), startTime.plus(buffDuration));
+		int durationInTicks = (int) (timeLeft.toMillis() / 600L);
+		int durationInSeconds = (int) (timeLeft.toMillis() / 1000L);
+		int minutes = (durationInSeconds % 3600) / 60;
+		int secs = durationInSeconds % 60;
+
+		if (displayMode == TimersDisplayMode.TICKS)
+		{
+			return durationInTicks + "";
+		}
+		else if (displayMode == TimersDisplayMode.DECIMALS)
+		{
+			int min = durationInTicks / 100;
+			int tmp = (durationInTicks - min * 100) * 6;
+			int sec = tmp / 10;
+			int sec_tenth = tmp - sec * 10;
+			return min + (sec < 10 ? ":0" : ":") + sec + "." + sec_tenth;
+		}
+		else
+		{
+			return minutes + (secs < 10 ? ":0" : ":") + secs;
+		}
 	}
 
 	@Override
