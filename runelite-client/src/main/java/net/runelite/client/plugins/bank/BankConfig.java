@@ -96,7 +96,7 @@ public interface BankConfig extends Config
 	@Alpha
 	@ConfigItem(
 		keyName = "haPerItemColor",
-		name = "Color for High alchemy price on Item",
+		name = "Color for high alchemy price on Item",
 		description = "Configures the color for high alchemy value shown on the item",
 		position = 6
 	)

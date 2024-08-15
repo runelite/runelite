@@ -193,7 +193,8 @@ public class BankPlugin extends Plugin
 				}
 			}
 
-			if (keybindItemPrice.matches(e)) {
+			if (keybindItemPrice.matches(e))
+			{
 				setHotKeyPressed(true);
 			}
 		}
@@ -486,7 +487,6 @@ public class BankPlugin extends Plugin
 
 		return itemContainer.getItems();
 	}
-
 
 	@VisibleForTesting
 	boolean valueSearch(final int itemId, final String str)
