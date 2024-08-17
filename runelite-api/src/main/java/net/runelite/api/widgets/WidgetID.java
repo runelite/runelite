@@ -121,13 +121,11 @@ public final class WidgetID
 	public static final int DIALOG_PLAYER_GROUP_ID = InterfaceID.DIALOG_PLAYER;
 	public static final int DRIFT_NET_FISHING_REWARD_GROUP_ID = InterfaceID.DRIFT_NET_FISHING_REWARD;
 	public static final int FOSSIL_ISLAND_OXYGENBAR_ID = InterfaceID.FOSSIL_ISLAND_OXYGEN_BAR;
-	public static final int MINIGAME_TAB_ID = InterfaceID.MINIGAMES;
 	public static final int SPELLBOOK_GROUP_ID = InterfaceID.SPELLBOOK;
 	public static final int PVP_GROUP_ID = InterfaceID.PVP;
 	public static final int FISHING_TRAWLER_GROUP_ID = InterfaceID.TRAWLER;
 	public static final int FISHING_TRAWLER_REWARD_GROUP_ID = InterfaceID.TRAWLER_REWARD;
 	public static final int ZEAH_MESS_HALL_GROUP_ID = InterfaceID.ZEAH_MESS_HALL;
-	public static final int KOUREND_FAVOUR_GROUP_ID = InterfaceID.KOUREND_FAVOUR;
 	public static final int LOOTING_BAG_GROUP_ID = InterfaceID.LOOTING_BAG;
 	public static final int SKOTIZO_GROUP_ID = InterfaceID.SKOTIZO;
 	public static final int FULLSCREEN_CONTAINER_TLI = InterfaceID.FULLSCREEN_CONTAINER_TLI;
@@ -163,7 +161,6 @@ public final class WidgetID
 	public static final int CHAMBERS_OF_XERIC_STORAGE_UNIT_SHARED_GROUP_ID = InterfaceID.CHAMBERS_OF_XERIC_STORAGE_UNIT_SHARED;
 	public static final int CHAMBERS_OF_XERIC_STORAGE_UNIT_INVENTORY_GROUP_ID = InterfaceID.CHAMBERS_OF_XERIC_INVENTORY;
 	public static final int DUEL_INVENTORY_GROUP_ID = InterfaceID.DUEL_INVENTORY;
-	public static final int DUEL_INVENTORY_OTHER_GROUP_ID = InterfaceID.DUEL_INVENTORY_OTHER;
 	public static final int TRAILBLAZER_AREAS_GROUP_ID = InterfaceID.TRAILBLAZER_AREAS;
 	public static final int TEMPOROSS_GROUP_ID = InterfaceID.TEMPOROSS;
 	public static final int TEMPOROSS_LOBBY_GROUP_ID = InterfaceID.TEMPOROSS_LOBBY;

@@ -40,9 +40,11 @@ import net.runelite.client.plugins.grounditems.config.MenuHighlightMode;
 import net.runelite.client.plugins.grounditems.config.PriceDisplayMode;
 import net.runelite.client.plugins.grounditems.config.ValueCalculationMode;
 
-@ConfigGroup("grounditems")
+@ConfigGroup(GroundItemsConfig.GROUP)
 public interface GroundItemsConfig extends Config
 {
+	String GROUP = "grounditems";
+
 	@ConfigSection(
 		name = "Item Lists",
 		description = "The highlighted and hidden item lists",
@@ -361,11 +363,11 @@ public interface GroundItemsConfig extends Config
 
 	@ConfigItem(
 		keyName = "onlyShowLoot",
-		name = "Only show loot",
-		description = "Only shows drops from NPCs and players",
+		name = "Only show own items",
+		description = "Only shows items that are yours or you can pick up",
 		position = 25
 	)
-	default boolean onlyShowLoot()
+	default boolean onlyShowOwnItems()
 	{
 		return false;
 	}

@@ -58,7 +58,7 @@ public class FaloTheBardClue extends ClueScroll implements NpcClueScroll
 		new FaloTheBardClue("A mark used to increase one's grace, found atop a seer's place.", item(MARK_OF_GRACE)),
 		new FaloTheBardClue("A molten beast with fiery breath, you acquire these with its death.", item(LAVA_DRAGON_BONES)),
 		new FaloTheBardClue("A shiny helmet of flight, to obtain this with melee, struggle you might.", item(ARMADYL_HELMET)),
-		new FaloTheBardClue("A sword held in the other hand, red its colour, Cyclops strength you must withstand.", any("Dragon or Avernic Defender", item(DRAGON_DEFENDER), item(DRAGON_DEFENDER_T), item(DRAGON_DEFENDER_L), item(AVERNIC_DEFENDER), item(AVERNIC_DEFENDER_L), item(GHOMMALS_AVERNIC_DEFENDER_5), item(GHOMMALS_AVERNIC_DEFENDER_5_L), item(GHOMMALS_AVERNIC_DEFENDER_6), item(GHOMMALS_AVERNIC_DEFENDER_6_L))),
+		new FaloTheBardClue("A sword held in the other hand, red its colour, Cyclops strength you must withstand.", any("Dragon or Avernic Defender", item(DRAGON_DEFENDER), item(DRAGON_DEFENDER_T), item(DRAGON_DEFENDER_L), item(DRAGON_DEFENDER_LT), item(AVERNIC_DEFENDER), item(AVERNIC_DEFENDER_L), item(GHOMMALS_AVERNIC_DEFENDER_5), item(GHOMMALS_AVERNIC_DEFENDER_5_L), item(GHOMMALS_AVERNIC_DEFENDER_6), item(GHOMMALS_AVERNIC_DEFENDER_6_L))),
 		new FaloTheBardClue("A token used to kill mythical beasts, in hopes of a blade or just for an xp feast.", item(WARRIOR_GUILD_TOKEN)),
 		new FaloTheBardClue("Green is my favourite, mature ale I do love, this takes your herblore above.", item(GREENMANS_ALEM)),
 		new FaloTheBardClue("It can hold down a boat or crush a goat, this object, you see, is quite heavy.", any("Barrelchest anchor", item(BARRELCHEST_ANCHOR), item(BARRELCHEST_ANCHOR_BH))),

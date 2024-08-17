@@ -81,8 +81,8 @@ public class OverlayManager
 		// draw *earlier* so that they are closer to their
 		// defined position.
 		return aPos == OverlayPosition.DYNAMIC || aPos == OverlayPosition.DETACHED
-			? a.getPriority().compareTo(b.getPriority())
-			: b.getPriority().compareTo(a.getPriority());
+			? Float.compare(a.getPriority(), b.getPriority())
+			: Float.compare(b.getPriority(), a.getPriority());
 	};
 
 	/**
@@ -129,7 +129,11 @@ public class OverlayManager
 	{
 		synchronized (this)
 		{
-			overlays.forEach(this::loadOverlay);
+			overlays.forEach((o) ->
+			{
+				loadOverlay(o);
+				o.revalidate();
+			});
 		}
 		rebuildOverlayLayers();
 	}

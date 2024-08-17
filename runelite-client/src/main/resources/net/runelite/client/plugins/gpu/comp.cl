@@ -30,9 +30,10 @@
 #include "priority_render.cl"
 
 __kernel __attribute__((work_group_size_hint(256, 1, 1))) void computeLarge(__local struct shared_data *shared, __global const struct modelinfo *ol,
-                                                                            __global const int4 *vb, __global const int4 *tempvb, __global const float4 *texb,
-                                                                            __global const float4 *temptexb, __global int4 *vout, __global float4 *uvout,
-                                                                            __constant struct uniform *uni, read_only image3d_t tileHeightImage) {
+                                                                            __global const struct vert *vb, __global const struct vert *tempvb,
+                                                                            __global const float4 *texb, __global const float4 *temptexb,
+                                                                            __global struct vert *vout, __global float4 *uvout, __constant struct uniform *uni,
+                                                                            read_only image3d_t tileHeightImage) {
   size_t groupId = get_group_id(0);
   size_t localId = get_local_id(0) * FACE_COUNT;
   struct modelinfo minfo = ol[groupId];
@@ -51,12 +52,12 @@ __kernel __attribute__((work_group_size_hint(256, 1, 1))) void computeLarge(__lo
 
   int prio[FACE_COUNT];
   int dis[FACE_COUNT];
-  int4 v1[FACE_COUNT];
-  int4 v2[FACE_COUNT];
-  int4 v3[FACE_COUNT];
+  struct vert v1[FACE_COUNT];
+  struct vert v2[FACE_COUNT];
+  struct vert v3[FACE_COUNT];
 
   for (int i = 0; i < FACE_COUNT; i++) {
-    get_face(shared, uni, vb, tempvb, localId + i, minfo, uni->cameraYaw, uni->cameraPitch, &prio[i], &dis[i], &v1[i], &v2[i], &v3[i]);
+    get_face(shared, vb, tempvb, localId + i, minfo, uni->cameraYaw, uni->cameraPitch, &prio[i], &dis[i], &v1[i], &v2[i], &v3[i]);
   }
 
   barrier(CLK_LOCAL_MEM_FENCE);

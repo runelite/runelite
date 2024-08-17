@@ -29,7 +29,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.10.18-SNAPSHOT</version>
+		<version>1.10.37-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>client</artifactId>
@@ -93,15 +93,9 @@
 			<artifactId>gson</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>net.runelite.pushingpixels</groupId>
-			<artifactId>substance</artifactId>
-			<version>8.0.02</version>
-		</dependency>
-		<dependency>
-			<groupId>net.runelite.pushingpixels</groupId>
-			<artifactId>trident</artifactId>
-			<version>1.5.00</version>
-			<scope>runtime</scope>
+			<groupId>net.runelite</groupId>
+			<artifactId>flatlaf</artifactId>
+			<version>${flatlaf.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -111,11 +105,6 @@
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-text</artifactId>
-			<version>1.2</version>
-		</dependency>
-		<dependency>
-			<groupId>net.runelite.archive-patcher</groupId>
-			<artifactId>archive-patcher-applier</artifactId>
 			<version>1.2</version>
 		</dependency>
 		<dependency>
@@ -146,7 +135,7 @@
 		<dependency>
 			<groupId>net.runelite</groupId>
 			<artifactId>rlawt</artifactId>
-			<version>1.4</version>
+			<version>1.5</version>
 		</dependency>
 
 		<!-- lwjgl core -->
@@ -252,14 +241,14 @@
 		</dependency>
 		<dependency>
 			<groupId>net.runelite</groupId>
-			<artifactId>client-patch</artifactId>
+			<artifactId>injected-client</artifactId>
 			<version>${project.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>net.runelite.arn</groupId>
 			<artifactId>http-api</artifactId>
-			<version>1.2.12</version>
+			<version>1.2.16</version>
 		</dependency>
 		<dependency>
 			<groupId>net.runelite</groupId>
@@ -454,19 +443,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-pmd-plugin</artifactId>
-				<version>3.16.0</version>
-				<dependencies>
-					<dependency>
-						<groupId>net.sourceforge.pmd</groupId>
-						<artifactId>pmd-core</artifactId>
-						<version>6.44.0</version>
-					</dependency>
-					<dependency>
-						<groupId>net.sourceforge.pmd</groupId>
-						<artifactId>pmd-java</artifactId>
-						<version>6.44.0</version>
-					</dependency>
-				</dependencies>
 				<configuration>
 					<failOnViolation>true</failOnViolation>
 					<printFailingErrors>true</printFailingErrors>

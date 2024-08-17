@@ -40,6 +40,7 @@ public class SpecialWeaponTest
 		assertRangeDelayEquals(1, BARRELCHEST_ANCHOR, 1);
 		assertRangeDelayEquals(1, BONE_DAGGER, 1);
 		assertRangeDelayEquals(1, BULWARK, 1);
+		assertRangeDelayEquals(2, ELDER_MAUL, 1);
 	}
 
 	@Test

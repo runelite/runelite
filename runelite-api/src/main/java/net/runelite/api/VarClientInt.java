@@ -47,6 +47,8 @@ public final class VarClientInt
 	 */
 	public static final int INPUT_TYPE = 5;
 
+	public static final int BANK_SCROLL = 51;
+
 	/**
 	 * The game sets this to the same value as {@link #CAMERA_ZOOM_RESIZABLE_VIEWPORT}
 	 */

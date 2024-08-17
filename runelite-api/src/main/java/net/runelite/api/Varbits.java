@@ -369,11 +369,11 @@ public final class Varbits
 	/**
 	 * Blast Mine
 	 */
-	public static final int BLAST_MINE_COAL = 4924;
-	public static final int BLAST_MINE_GOLD = 4925;
-	public static final int BLAST_MINE_MITHRIL = 4926;
-	public static final int BLAST_MINE_ADAMANTITE = 4921;
-	public static final int BLAST_MINE_RUNITE = 4922;
+	public static final int BLAST_MINE_COAL = 10698;
+	public static final int BLAST_MINE_GOLD = 10699;
+	public static final int BLAST_MINE_MITHRIL = 10700;
+	public static final int BLAST_MINE_ADAMANTITE = 10701;
+	public static final int BLAST_MINE_RUNITE = 10702;
 
 	/**
 	 * Raids
@@ -610,9 +610,12 @@ public final class Varbits
 
 	public static final int BANK_REARRANGE_MODE = 3959;
 	public static final int CURRENT_BANK_TAB = 4150;
+	public static final int BANK_QUANTITY_TYPE = 6590;
+	public static final int BANK_REQUESTEDQUANTITY = 3960;
+	public static final int BANK_LEAVEPLACEHOLDERS = 3755;
 
-	public static final int WORLDHOPPER_FAVROITE_1 = 4597;
-	public static final int WORLDHOPPER_FAVROITE_2 = 4598;
+	public static final int WORLDHOPPER_FAVORITE_1 = 4597;
+	public static final int WORLDHOPPER_FAVORITE_2 = 4598;
 
 	/**
 	 * Spell activeness
@@ -697,9 +700,9 @@ public final class Varbits
 	/**
 	 * Muted volume restore values
 	 */
-	public static final int MUTED_MUSIC_VOLUME = 9666;
-	public static final int MUTED_SOUND_EFFECT_VOLUME = 9674;
-	public static final int MUTED_AREA_EFFECT_VOLUME = 9675;
+	public static final int MUTED_MUSIC_VOLUME = 12426;
+	public static final int MUTED_SOUND_EFFECT_VOLUME = 12427;
+	public static final int MUTED_AREA_EFFECT_VOLUME = 12428;
 
 	/**
 	 * Parasite infection status during nightmare of ashihama bossfight
@@ -790,6 +793,13 @@ public final class Varbits
 	public static final int TELEBLOCK = 4163;
 
 	/**
+	 * Cooldown timer remaining before eligible to restore at a god wars dungeon altar.
+	 * Number of game ticks remaining is in intervals of 100; for a value X there are 100 * X game ticks remaining.
+	 * A player can pray at a god wars altar once this reaches 0.
+	 */
+	public static final int GOD_WARS_ALTAR_COOLDOWN = 4099;
+
+	/**
 	 * Farmer's Affinity effect timer
 	 * Number of game ticks remaining on Farmer's Affinity effect in intervals of 20; for a value X there are 20 * X game ticks remaining.
 	 * The Farmer's Affinity expires once this reaches 0.
@@ -871,4 +881,15 @@ public final class Varbits
 	 * This varbit determines which location he will appear in, which is useful for a master clue step.
 	 */
 	public static final int VIGGORA_LOCATION = 815;
+
+	/**
+	 * If the player has a spellbook swap active
+	 * <p>
+	 * 0 = inactive
+	 * 1 = active
+	 */
+	public static final int SPELLBOOK_SWAP = 3617;
+
+	public static final int SPELLBOOK = 4070;
+	public static final int SPELLBOOK_SUBMENU = 9730;
 }

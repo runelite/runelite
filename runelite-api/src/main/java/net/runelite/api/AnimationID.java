@@ -57,7 +57,35 @@ public final class AnimationID
 	public static final int WOODCUTTING_2H_RUNE = 10070;
 	public static final int WOODCUTTING_2H_DRAGON = 10071;
 	public static final int WOODCUTTING_2H_CRYSTAL = 10072;
+	public static final int WOODCUTTING_2H_CRYSTAL_INACTIVE = 10073;
 	public static final int WOODCUTTING_2H_3A = 10074;
+	public static final int WOODCUTTING_ENT_BRONZE = 3291;
+	public static final int WOODCUTTING_ENT_IRON = 3290;
+	public static final int WOODCUTTING_ENT_STEEL = 3289;
+	public static final int WOODCUTTING_ENT_BLACK = 3288;
+	public static final int WOODCUTTING_ENT_MITHRIL = 3287;
+	public static final int WOODCUTTING_ENT_ADAMANT = 3286;
+	public static final int WOODCUTTING_ENT_RUNE = 3285;
+	public static final int WOODCUTTING_ENT_GILDED = 8305;
+	public static final int WOODCUTTING_ENT_DRAGON = 3292;
+	public static final int WOODCUTTING_ENT_DRAGON_OR = 23;
+	public static final int WOODCUTTING_ENT_INFERNAL = 2116;
+	public static final int WOODCUTTING_ENT_INFERNAL_OR = 8777;
+	public static final int WOODCUTTING_ENT_3A = 7266;
+	public static final int WOODCUTTING_ENT_CRYSTAL = 8323;
+	public static final int WOODCUTTING_ENT_CRYSTAL_INACTIVE = 8327;
+	public static final int WOODCUTTING_ENT_TRAILBLAZER = 8780;
+	public static final int WOODCUTTING_ENT_2H_BRONZE = 10517;
+	public static final int WOODCUTTING_ENT_2H_IRON = 10518;
+	public static final int WOODCUTTING_ENT_2H_STEEL = 10519;
+	public static final int WOODCUTTING_ENT_2H_BLACK = 10520;
+	public static final int WOODCUTTING_ENT_2H_MITHRIL = 10521;
+	public static final int WOODCUTTING_ENT_2H_ADAMANT = 10522;
+	public static final int WOODCUTTING_ENT_2H_RUNE = 10523;
+	public static final int WOODCUTTING_ENT_2H_DRAGON = 10524;
+	public static final int WOODCUTTING_ENT_2H_CRYSTAL = 10525;
+	public static final int WOODCUTTING_ENT_2H_CRYSTAL_INACTIVE = 10526;
+	public static final int WOODCUTTING_ENT_2H_3A = 10527;
 	public static final int CONSUMING = 829; // consuming consumables
 	public static final int FIREMAKING = 733;
 	public static final int FIREMAKING_FORESTERS_CAMPFIRE_ARCTIC_PINE = 10563;
@@ -257,6 +285,12 @@ public final class AnimationID
 	public static final int PISCARILIUS_CRANE_REPAIR = 7199;
 	public static final int HOME_MAKE_TABLET = 4067;
 	public static final int DRAGONFIRE_SHIELD_SPECIAL = 6696;
+	public static final int MILKING_COW = 2305;
+	public static final int CHURN_MILK_SHORT = 2793;
+	public static final int CHURN_MILK_MEDIUM = 2794;
+	public static final int CHURN_MILK_LONG = 2795;
+	public static final int CLEANING_SPECIMENS_1 = 6217;
+	public static final int CLEANING_SPECIMENS_2 = 6459;
 
 	// Ectofuntus animations
 	public static final int ECTOFUNTUS_FILL_SLIME_BUCKET = 4471;
@@ -313,4 +347,21 @@ public final class AnimationID
 
 	// POH Animations
 	public static final int INCENSE_BURNER = 3687;
+
+	// Wyrms
+	public static final int WYRM_IDLE_DORMANT = 8266;
+	public static final int WYRM_IDLE_ACTIVE = 8267;
+	public static final int WYRM_ATTACK_MELEE = 8270;
+	public static final int WYRM_ATTACK_MAGE = 8271;
+
+	// Lost City's Tree spirit
+	public static final int TREE_SPIRIT_IDLE = 5530;
+	public static final int TREE_SPIRIT_WALK = 5531;
+
+	public static final int SIGN_HOLDING_ZOMBIE_PROTESTOR_WALK = 5583;
+
+	public static final int VIGGORAS_CHAINMACE_IDLE = 244;
+
+	public static final int MLM_WATER_WHEEL_SPINNING = 1051;
+	public static final int GIANTS_FOUNDRY_WATER_WHEEL_SPINNING = 9450;
 }

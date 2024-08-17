@@ -200,9 +200,9 @@ public class ScreenMarkerPlugin extends Plugin
 		currentMarker = new ScreenMarker(
 			Instant.now().toEpochMilli(),
 			DEFAULT_MARKER_NAME + " " + (screenMarkers.size() + 1),
-			pluginPanel.getSelectedBorderThickness(),
-			pluginPanel.getSelectedColor(),
-			pluginPanel.getSelectedFillColor(),
+			ScreenMarkerPluginPanel.SELECTED_BORDER_THICKNESS,
+			ScreenMarkerPluginPanel.SELECTED_COLOR,
+			ScreenMarkerPluginPanel.SELECTED_FILL_COLOR,
 			true,
 			false
 		);

@@ -27,7 +27,7 @@ package net.runelite.client.plugins.mta.alchemy;
 import lombok.Getter;
 import net.runelite.api.ItemID;
 
-public enum AlchemyItem
+enum AlchemyItem
 {
 	LEATHER_BOOTS("Leather Boots", ItemID.LEATHER_BOOTS_6893),
 	ADAMANT_KITESHIELD("Adamant Kiteshield", ItemID.ADAMANT_KITESHIELD_6894),
@@ -35,7 +35,6 @@ public enum AlchemyItem
 	EMERALD("Emerald", ItemID.EMERALD_6896),
 	RUNE_LONGSWORD("Rune Longsword", ItemID.RUNE_LONGSWORD_6897),
 	EMPTY("", -1),
-	POSSIBLY_EMPTY("", ItemID.CAKE_OF_GUIDANCE),
 	UNKNOWN("Unknown", ItemID.CAKE_OF_GUIDANCE);
 
 	@Getter

@@ -26,6 +26,7 @@
  */
 package net.runelite.client.plugins.timers;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableSet;
 import com.google.inject.Provides;
 import java.time.Duration;
@@ -99,7 +100,6 @@ public class TimersPlugin extends Plugin
 	private static final String CANNON_DESTROYED_MESSAGE = "Your cannon has been destroyed!";
 	private static final String CANNON_BROKEN_MESSAGE = "<col=ef1020>Your cannon has broken!";
 	private static final String FROZEN_MESSAGE = "<col=ef1020>You have been frozen!</col>";
-	private static final String GOD_WARS_ALTAR_MESSAGE = "you recharge your prayer.";
 	private static final String STAFF_OF_THE_DEAD_SPEC_EXPIRED_MESSAGE = "Your protection fades away";
 	private static final String STAFF_OF_THE_DEAD_SPEC_MESSAGE = "Spirits of deceased evildoers offer you their protection";
 	private static final String PRAYER_ENHANCE_EXPIRED = "<col=ff0000>Your prayer enhance effect has worn off.</col>";
@@ -130,7 +130,6 @@ public class TimersPlugin extends Plugin
 	static final int FIGHT_CAVES_REGION_ID = 9551;
 	static final int INFERNO_REGION_ID = 9043;
 	private static final Pattern TZHAAR_WAVE_MESSAGE = Pattern.compile("Wave: (\\d+)");
-	private static final String TZHAAR_DEFEATED_MESSAGE = "You have been defeated!";
 	private static final Pattern TZHAAR_PAUSED_MESSAGE = Pattern.compile("The (?:Inferno|Fight Cave) has been paused. You may now log out.");
 
 	private TimerTimer freezeTimer;
@@ -207,6 +206,18 @@ public class TimersPlugin extends Plugin
 			else
 			{
 				removeGameTimer(VENGEANCE);
+			}
+		}
+
+		if (event.getVarbitId() == Varbits.SPELLBOOK_SWAP && config.showSpellbookSwap())
+		{
+			if (event.getValue() == 1)
+			{
+				createGameTimer(SPELLBOOK_SWAP);
+			}
+			else
+			{
+				removeGameTimer(SPELLBOOK_SWAP);
 			}
 		}
 
@@ -559,6 +570,11 @@ public class TimersPlugin extends Plugin
 		{
 			updateVarTimer(FARMERS_AFFINITY, event.getValue(), i -> i * 20);
 		}
+
+		if (event.getVarbitId() == Varbits.GOD_WARS_ALTAR_COOLDOWN && config.showGodWarsAltar())
+		{
+			updateVarTimer(GOD_WARS_ALTAR, event.getValue(), i -> i * 100);
+		}
 	}
 
 	@Subscribe
@@ -618,6 +634,7 @@ public class TimersPlugin extends Plugin
 		if (!config.showCannon())
 		{
 			removeGameTimer(CANNON);
+			removeGameTimer(CANNON_REPAIR);
 		}
 
 		if (!config.showMagicImbue())
@@ -715,6 +732,11 @@ public class TimersPlugin extends Plugin
 			removeVarTimer(FARMERS_AFFINITY);
 		}
 
+		if (!config.showGodWarsAltar())
+		{
+			removeVarTimer(GOD_WARS_ALTAR);
+		}
+
 		if (!config.showLiquidAdrenaline())
 		{
 			removeGameTimer(LIQUID_ADRENALINE);
@@ -733,6 +755,21 @@ public class TimersPlugin extends Plugin
 		if (!config.showBlessedCrystalScarab())
 		{
 			removeGameTimer(BLESSED_CRYSTAL_SCARAB);
+		}
+
+		if (!config.showAbyssalSireStun())
+		{
+			removeGameTimer(ABYSSAL_SIRE_STUN);
+		}
+
+		if (!config.showPickpocketStun())
+		{
+			removeGameTimer(PICKPOCKET_STUN);
+		}
+
+		if (!config.showSpellbookSwap())
+		{
+			removeGameTimer(SPELLBOOK_SWAP);
 		}
 	}
 
@@ -765,11 +802,6 @@ public class TimersPlugin extends Plugin
 		if (message.equals(ABYSSAL_SIRE_STUN_MESSAGE) && config.showAbyssalSireStun())
 		{
 			createGameTimer(ABYSSAL_SIRE_STUN);
-		}
-
-		if (config.showGodWarsAltar() && message.equalsIgnoreCase(GOD_WARS_ALTAR_MESSAGE))//Normal altars are "You recharge your Prayer points." while gwd is "You recharge your Prayer."
-		{
-			createGameTimer(GOD_WARS_ALTAR);
 		}
 
 		if (config.showCannon())
@@ -860,15 +892,6 @@ public class TimersPlugin extends Plugin
 			{
 				createGameTimer(MARK_OF_DARKNESS_COOLDOWN, Duration.of(magicLevel - 10, RSTimeUnit.GAME_TICKS));
 			}
-		}
-
-		if (message.equals(TZHAAR_DEFEATED_MESSAGE))
-		{
-			log.debug("Stopping tzhaar timer");
-			removeTzhaarTimer();
-			config.tzhaarStartTime(null);
-			config.tzhaarLastTime(null);
-			return;
 		}
 
 		if (TZHAAR_PAUSED_MESSAGE.matcher(message).find())
@@ -1119,7 +1142,7 @@ public class TimersPlugin extends Plugin
 		ItemContainer container = itemContainerChanged.getItemContainer();
 
 		Item weapon = container.getItem(EquipmentInventorySlot.WEAPON.getSlotIdx());
-		if (weapon == null || STAVES_OF_THE_DEAD.contains(weapon.getId()))
+		if (weapon == null || !STAVES_OF_THE_DEAD.contains(weapon.getId()))
 		{
 			// remove sotd timer if the staff has been unwielded
 			removeGameTimer(STAFF_OF_THE_DEAD);
@@ -1182,7 +1205,8 @@ public class TimersPlugin extends Plugin
 		return t;
 	}
 
-	private void removeGameTimer(GameTimer timer)
+	@VisibleForTesting
+	void removeGameTimer(GameTimer timer)
 	{
 		infoBoxManager.removeIf(t -> t instanceof TimerTimer && ((TimerTimer) t).getTimer() == timer);
 	}

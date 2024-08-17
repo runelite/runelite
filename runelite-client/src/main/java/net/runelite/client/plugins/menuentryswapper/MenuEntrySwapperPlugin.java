@@ -27,16 +27,17 @@
 package net.runelite.client.plugins.menuentryswapper;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Preconditions;
 import static com.google.common.base.Predicates.alwaysTrue;
 import static com.google.common.base.Predicates.equalTo;
 import com.google.common.base.Strings;
 import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 import com.google.inject.Provides;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -45,24 +46,30 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.ItemComposition;
+import net.runelite.api.ItemID;
 import net.runelite.api.KeyCode;
+import net.runelite.api.Menu;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
 import net.runelite.api.NPCComposition;
 import net.runelite.api.ObjectComposition;
 import net.runelite.api.ParamID;
+import net.runelite.api.annotations.Component;
 import net.runelite.api.events.ClientTick;
+import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOpened;
-import net.runelite.api.events.PostItemComposition;
 import net.runelite.api.events.PostMenuSort;
+import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.InterfaceID;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetConfig;
 import net.runelite.api.widgets.WidgetUtil;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatMessageBuilder;
@@ -70,7 +77,6 @@ import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.ItemVariationMapping;
 import net.runelite.client.game.NpcUtil;
@@ -157,6 +163,8 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 	private final Multimap<String, Swap> swaps = LinkedHashMultimap.create();
 	private final ArrayListMultimap<String, Integer> optionIndexes = ArrayListMultimap.create();
+	private final Multimap<Integer, TeleportSwap> teleportSwaps = HashMultimap.create();
+	private boolean lastShift, curShift;
 
 	@Provides
 	MenuEntrySwapperConfig provideConfig(ConfigManager configManager)
@@ -168,6 +176,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	public void startUp()
 	{
 		setupSwaps();
+		setupTeleportSwaps();
 		removeOldSwaps();
 	}
 
@@ -175,6 +184,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 	public void shutDown()
 	{
 		swaps.clear();
+		teleportSwaps.clear();
 	}
 
 	@VisibleForTesting
@@ -262,9 +272,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("admire", "spellbook", config::swapAdmire);
 		swap("admire", "perks", config::swapAdmire);
 
-		swap("teleport menu", "pvp arena", config::swapJewelleryBox);
+		swap("teleport menu", "emir's arena", config::swapJewelleryBox);
 		swap("teleport menu", "castle wars", config::swapJewelleryBox);
 		swap("teleport menu", "ferox enclave", config::swapJewelleryBox);
+		swap("teleport menu", "fortis colosseum", config::swapJewelleryBox);
 		swap("teleport menu", "burthorpe", config::swapJewelleryBox);
 		swap("teleport menu", "barbarian outpost", config::swapJewelleryBox);
 		swap("teleport menu", "corporeal beast", config::swapJewelleryBox);
@@ -325,7 +336,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("wear", "monastery teleport", () -> config.swapArdougneCloakMode() == ArdougneCloakMode.MONASTERY);
 
 		swap("wear", "gem mine", () -> config.swapKaramjaGlovesMode() == KaramjaGlovesMode.GEM_MINE);
-		swap("wear", "duradel", () -> config.swapKaramjaGlovesMode() == KaramjaGlovesMode.DURADEL);
+		swap("wear", "slayer master", () -> config.swapKaramjaGlovesMode() == KaramjaGlovesMode.SLAYER_MASTER);
 
 		swap("equip", "kourend woodland", () -> config.swapRadasBlessingMode() == RadasBlessingMode.KOUREND_WOODLAND);
 		swap("equip", "mount karuulm", () -> config.swapRadasBlessingMode() == RadasBlessingMode.MOUNT_KARUULM);
@@ -408,24 +419,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 	private void swapContains(String option, Predicate<String> targetPredicate, String swappedOption, Supplier<Boolean> enabled)
 	{
 		swaps.put(option, new Swap(alwaysTrue(), targetPredicate, swappedOption, enabled, false));
-	}
-
-	@Subscribe
-	public void onConfigChanged(ConfigChanged event)
-	{
-		if (event.getGroup().equals(MenuEntrySwapperConfig.GROUP) && event.getKey().equals("shiftClickCustomization"))
-		{
-			clientThread.invoke(this::resetItemCompositionCache);
-		}
-		else if (event.getGroup().equals(SHIFTCLICK_CONFIG_GROUP) && event.getKey().startsWith(ITEM_KEY_PREFIX))
-		{
-			clientThread.invoke(this::resetItemCompositionCache);
-		}
-	}
-
-	private void resetItemCompositionCache()
-	{
-		client.getItemCompositionCache().reset();
 	}
 
 	private Integer getItemSwapConfig(boolean shift, int itemId)
@@ -513,8 +506,16 @@ public class MenuEntrySwapperPlugin extends Plugin
 				final MenuAction currentShiftAction = shiftSwapConfig == null ? defaultAction(composition) :
 					(shiftSwapConfig == -1 ? MenuAction.WALK : OBJECT_MENU_TYPES.get(shiftSwapConfig));
 
-				List<MenuEntry> leftClickMenus = new ArrayList<>(actions.length + 2);
-				List<MenuEntry> shiftClickMenus = new ArrayList<>(actions.length + 2);
+				MenuEntry swapLeftClick = client.createMenuEntry(idx)
+					.setOption("Swap left click")
+					.setTarget(entry.getTarget())
+					.setType(MenuAction.RUNELITE);
+				MenuEntry swapShiftClick = client.createMenuEntry(idx)
+					.setOption("Swap shift click")
+					.setTarget(entry.getTarget())
+					.setType(MenuAction.RUNELITE);
+				Menu subLeft = swapLeftClick.createSubMenu();
+				Menu subShift = swapShiftClick.createSubMenu();
 
 				for (int actionIdx = 0; actionIdx < OBJECT_MENU_TYPES.size(); ++actionIdx)
 				{
@@ -523,81 +524,56 @@ public class MenuEntrySwapperPlugin extends Plugin
 						continue;
 					}
 
-					if ("Build".equals(actions[actionIdx])
-						|| "Remove".equals(actions[actionIdx]))
-					{
-						// https://secure.runescape.com/m=news/third-party-client-guidelines?oldschool=1
-						continue;
-					}
-
 					final MenuAction menuAction = OBJECT_MENU_TYPES.get(actionIdx);
 					if (menuAction != currentAction)
 					{
-						leftClickMenus.add(client.createMenuEntry(idx)
+						subLeft.createMenuEntry(0)
 							.setOption(actions[actionIdx])
 							.setType(MenuAction.RUNELITE)
-							.onClick(objectConsumer(composition, actions, actionIdx, menuAction, false)));
+							.onClick(objectConsumer(composition, actions, actionIdx, menuAction, false));
 					}
 
 					if (menuAction != currentShiftAction && menuAction != currentAction)
 					{
-						shiftClickMenus.add(client.createMenuEntry(idx)
+						subShift.createMenuEntry(0)
 							.setOption(actions[actionIdx])
 							.setType(MenuAction.RUNELITE)
-							.onClick(objectConsumer(composition, actions, actionIdx, menuAction, true)));
+							.onClick(objectConsumer(composition, actions, actionIdx, menuAction, true));
 					}
 				}
 
 				// Walk here
 				if (currentAction != MenuAction.WALK)
 				{
-					leftClickMenus.add(client.createMenuEntry(idx)
+					subLeft.createMenuEntry(0)
 						.setOption("Walk here")
 						.setType(MenuAction.RUNELITE)
-						.onClick(walkHereConsumer(false, composition)));
+						.onClick(walkHereConsumer(false, composition));
 				}
 
 				if (currentShiftAction != MenuAction.WALK)
 				{
-					shiftClickMenus.add(client.createMenuEntry(idx)
+					subShift.createMenuEntry(0)
 						.setOption("Walk here")
 						.setType(MenuAction.RUNELITE)
-						.onClick(walkHereConsumer(true, composition)));
+						.onClick(walkHereConsumer(true, composition));
 				}
 
 				// Reset
 				if (swapConfig != null)
 				{
-					leftClickMenus.add(client.createMenuEntry(idx)
+					subLeft.createMenuEntry(0)
 						.setOption("Reset")
 						.setType(MenuAction.RUNELITE)
-						.onClick(objectResetConsumer(composition, false)));
+						.onClick(objectResetConsumer(composition, false));
 				}
 
 				if (shiftSwapConfig != null)
 				{
-					shiftClickMenus.add(client.createMenuEntry(idx)
+					subShift.createMenuEntry(0)
 						.setOption("Reset")
 						.setType(MenuAction.RUNELITE)
-						.onClick(objectResetConsumer(composition, true)));
-				}
-
-				if (!leftClickMenus.isEmpty())
-				{
-					MenuEntry sub = client.createMenuEntry(idx)
-						.setOption("Swap left click")
-						.setTarget(entry.getTarget())
-						.setType(MenuAction.RUNELITE_SUBMENU);
-					leftClickMenus.forEach(menu -> menu.setParent(sub));
-				}
-
-				if (!shiftClickMenus.isEmpty())
-				{
-					MenuEntry sub = client.createMenuEntry(idx)
-						.setOption("Swap shift click")
-						.setTarget(entry.getTarget())
-						.setType(MenuAction.RUNELITE_SUBMENU);
-					shiftClickMenus.forEach(menu -> menu.setParent(sub));
+						.onClick(objectResetConsumer(composition, true));
 				}
 			}
 		}
@@ -719,8 +695,16 @@ public class MenuEntrySwapperPlugin extends Plugin
 					(hasAttack ? null : defaultAction(composition)) :
 					(shiftSwapConfig == -1 ? MenuAction.WALK : NPC_MENU_TYPES.get(shiftSwapConfig));
 
-				List<MenuEntry> leftClickMenus = new ArrayList<>(actions.length + 2);
-				List<MenuEntry> shiftClickMenus = new ArrayList<>(actions.length + 2);
+				MenuEntry swapLeftClick = client.createMenuEntry(idx)
+					.setOption("Swap left click")
+					.setTarget(entry.getTarget())
+					.setType(MenuAction.RUNELITE);
+				MenuEntry swapShiftClick = client.createMenuEntry(idx)
+					.setOption("Swap shift click")
+					.setTarget(entry.getTarget())
+					.setType(MenuAction.RUNELITE);
+				Menu subLeft = swapLeftClick.createSubMenu();
+				Menu subShift = swapShiftClick.createSubMenu();
 
 				for (int actionIdx = 0; actionIdx < NPC_MENU_TYPES.size(); ++actionIdx)
 				{
@@ -742,64 +726,46 @@ public class MenuEntrySwapperPlugin extends Plugin
 					final MenuAction menuAction = NPC_MENU_TYPES.get(actionIdx);
 					if (menuAction != currentAction)
 					{
-						leftClickMenus.add(client.createMenuEntry(idx)
+						subLeft.createMenuEntry(0)
 							.setOption(actions[actionIdx])
 							.setType(MenuAction.RUNELITE)
-							.onClick(npcConsumer(composition, actions, actionIdx, menuAction, false)));
+							.onClick(npcConsumer(composition, actions, actionIdx, menuAction, false));
 					}
 
 					if (menuAction != currentShiftAction)
 					{
-						shiftClickMenus.add(client.createMenuEntry(idx)
+						subShift.createMenuEntry(0)
 							.setOption(actions[actionIdx])
 							.setType(MenuAction.RUNELITE)
-							.onClick(npcConsumer(composition, actions, actionIdx, menuAction, true)));
+							.onClick(npcConsumer(composition, actions, actionIdx, menuAction, true));
 					}
 				}
 
 				// Walk here swap
-				leftClickMenus.add(client.createMenuEntry(idx)
+				subLeft.createMenuEntry(0)
 					.setOption("Walk here")
 					.setType(MenuAction.RUNELITE)
-					.onClick(walkHereConsumer(false, composition)));
+					.onClick(walkHereConsumer(false, composition));
 
-				shiftClickMenus.add(client.createMenuEntry(idx)
+				subShift.createMenuEntry(0)
 					.setOption("Walk here")
 					.setType(MenuAction.RUNELITE)
-					.onClick(walkHereConsumer(true, composition)));
+					.onClick(walkHereConsumer(true, composition));
 
 				if (getNpcSwapConfig(false, composition.getId()) != null)
 				{
-					leftClickMenus.add(client.createMenuEntry(idx)
+					subLeft.createMenuEntry(0)
 						.setOption("Reset")
 						.setType(MenuAction.RUNELITE)
-						.onClick(npcResetConsumer(composition, false)));
+						.onClick(npcResetConsumer(composition, false));
 				}
 
 				if (getNpcSwapConfig(true, composition.getId()) != null)
 				{
-					shiftClickMenus.add(client.createMenuEntry(idx)
+					subShift.createMenuEntry(0)
 						.setOption("Reset")
 						.setType(MenuAction.RUNELITE)
-						.onClick(npcResetConsumer(composition, true)));
-				}
-
-				if (!leftClickMenus.isEmpty())
-				{
-					MenuEntry sub = client.createMenuEntry(idx)
-						.setOption("Swap left click")
-						.setTarget(entry.getTarget())
-						.setType(MenuAction.RUNELITE_SUBMENU);
-					leftClickMenus.forEach(menu -> menu.setParent(sub));
-				}
-
-				if (!shiftClickMenus.isEmpty())
-				{
-					MenuEntry sub = client.createMenuEntry(idx)
-						.setOption("Swap shift click")
-						.setTarget(entry.getTarget())
-						.setType(MenuAction.RUNELITE_SUBMENU);
-					shiftClickMenus.forEach(menu -> menu.setParent(sub));
+						.onClick(npcResetConsumer(composition, true));
 				}
 			}
 		}
@@ -868,8 +834,16 @@ public class MenuEntrySwapperPlugin extends Plugin
 					final Integer leftClickOp = getWornItemSwapConfig(false, itemComposition.getId());
 					final Integer shiftClickOp = getWornItemSwapConfig(true, itemComposition.getId());
 
-					List<MenuEntry> leftClickMenus = new ArrayList<>();
-					List<MenuEntry> shiftClickMenus = new ArrayList<>();
+					MenuEntry swapLeftClick = client.createMenuEntry(idx)
+						.setOption("Swap left click")
+						.setTarget(entry.getTarget())
+						.setType(MenuAction.RUNELITE);
+					MenuEntry swapShiftClick = client.createMenuEntry(idx)
+						.setOption("Swap shift click")
+						.setTarget(entry.getTarget())
+						.setType(MenuAction.RUNELITE);
+					Menu subLeft = swapLeftClick.createSubMenu();
+					Menu subShift = swapShiftClick.createSubMenu();
 
 					for (int paramId = ParamID.OC_ITEM_OP1, opId = 2; paramId <= ParamID.OC_ITEM_OP8; ++paramId, ++opId)
 					{
@@ -878,24 +852,52 @@ public class MenuEntrySwapperPlugin extends Plugin
 						{
 							if (leftClickOp == null || leftClickOp != opId)
 							{
-								leftClickMenus.add(client.createMenuEntry(idx)
+								subLeft.createMenuEntry(0)
 									.setOption(opName)
 									.setType(MenuAction.RUNELITE)
-									.onClick(wornItemConsumer(itemComposition, opName, opId, false)));
+									.onClick(wornItemConsumer(itemComposition, opName, opId, false));
 							}
 							if (shiftClickOp == null || shiftClickOp != opId)
 							{
-								shiftClickMenus.add(client.createMenuEntry(idx)
+								subShift.createMenuEntry(0)
 									.setOption(opName)
 									.setType(MenuAction.RUNELITE)
-									.onClick(wornItemConsumer(itemComposition, opName, opId, true)));
+									.onClick(wornItemConsumer(itemComposition, opName, opId, true));
+							}
+						}
+					}
+
+					if (config.teleportSubmenus())
+					{
+						var subSwaps = teleportSwaps.get(itemComposition.getId())
+							.stream()
+							.filter(ts -> ts.worn)
+							.collect(Collectors.toList());
+						for (TeleportSwap top : subSwaps)
+						{
+							for (TeleportSub sub : top.subs)
+							{
+								if (leftClickOp == null || leftClickOp != sub.option.hashCode())
+								{
+									subLeft.createMenuEntry(idx)
+										.setOption(sub.option)
+										.setType(MenuAction.RUNELITE)
+										.onClick(wornItemConsumer(itemComposition, sub.option, sub.option.hashCode(), false));
+								}
+								if (shiftClickOp == null || shiftClickOp != sub.option.hashCode())
+								{
+									subShift.createMenuEntry(idx)
+										.setOption(sub.option)
+										.setType(MenuAction.RUNELITE)
+										.onClick(wornItemConsumer(itemComposition, sub.option, sub.option.hashCode(), true));
+								}
 							}
 						}
 					}
 
 					if (leftClickOp != null)
 					{
-						leftClickMenus.add(client.createMenuEntry(idx)
+						subLeft.createMenuEntry(0)
 							.setOption("Reset")
 							.setType(MenuAction.RUNELITE)
 							.onClick(e ->
@@ -912,11 +914,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 								log.debug("Unset worn item left swap for {}", itemComposition.getMembersName());
 								unsetWornItemSwapConfig(false, itemComposition.getId());
-							}));
+							});
 					}
 					if (shiftClickOp != null)
 					{
-						shiftClickMenus.add(client.createMenuEntry(idx)
+						subShift.createMenuEntry(0)
 							.setOption("Reset")
 							.setType(MenuAction.RUNELITE)
 							.onClick(e ->
@@ -933,25 +935,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 								log.debug("Unset worn item shift swap for {}", itemComposition.getMembersName());
 								unsetWornItemSwapConfig(true, itemComposition.getId());
-							}));
-					}
-
-					if (!leftClickMenus.isEmpty())
-					{
-						MenuEntry sub = client.createMenuEntry(idx)
-							.setOption("Swap left click")
-							.setTarget(entry.getTarget())
-							.setType(MenuAction.RUNELITE_SUBMENU);
-						leftClickMenus.forEach(menu -> menu.setParent(sub));
-					}
-
-					if (!shiftClickMenus.isEmpty())
-					{
-						MenuEntry sub = client.createMenuEntry(idx)
-							.setOption("Swap shift click")
-							.setTarget(entry.getTarget())
-							.setType(MenuAction.RUNELITE_SUBMENU);
-						shiftClickMenus.forEach(menu -> menu.setParent(sub));
+							});
 					}
 				}
 				break;
@@ -1001,8 +985,16 @@ public class MenuEntrySwapperPlugin extends Plugin
 				final int defaultLeftClickOp = defaultOp(itemComposition, false);
 				final int defaultShiftClickOp = defaultOp(itemComposition, true);
 
-				List<MenuEntry> leftClickMenus = new ArrayList<>(actions.length + 2);
-				List<MenuEntry> shiftClickMenus = new ArrayList<>(actions.length + 2);
+				MenuEntry swapLeftClick = client.createMenuEntry(idx)
+					.setOption("Swap left click")
+					.setTarget(entry.getTarget())
+					.setType(MenuAction.RUNELITE);
+				MenuEntry swapShiftClick = client.createMenuEntry(idx)
+					.setOption("Swap shift click")
+					.setTarget(entry.getTarget())
+					.setType(MenuAction.RUNELITE);
+				Menu subLeft = swapLeftClick.createSubMenu();
+				Menu subShift = swapShiftClick.createSubMenu();
 
 				for (int actionIdx = 0; actionIdx < actions.length; ++actionIdx)
 				{
@@ -1013,20 +1005,20 @@ public class MenuEntrySwapperPlugin extends Plugin
 						{
 							if (defaultLeftClickOp != actionIdx && (leftClickOp == null || leftClickOp != actionIdx))
 							{
-								leftClickMenus.add(client.createMenuEntry(idx)
+								subLeft.createMenuEntry(0)
 									.setOption(opName)
 									.setType(MenuAction.RUNELITE)
-									.onClick(heldItemConsumer(itemComposition, opName, actionIdx, false)));
+									.onClick(heldItemConsumer(itemComposition, opName, actionIdx, false));
 							}
 						}
 						if (config.shiftClickCustomization())
 						{
 							if (defaultShiftClickOp != actionIdx && (shiftClickOp == null || shiftClickOp != actionIdx))
 							{
-								shiftClickMenus.add(client.createMenuEntry(idx)
+								subShift.createMenuEntry(0)
 									.setOption(opName)
 									.setType(MenuAction.RUNELITE)
-									.onClick(heldItemConsumer(itemComposition, opName, actionIdx, true)));
+									.onClick(heldItemConsumer(itemComposition, opName, actionIdx, true));
 							}
 						}
 					}
@@ -1036,24 +1028,52 @@ public class MenuEntrySwapperPlugin extends Plugin
 						// Use
 						if (defaultLeftClickOp != -1 && config.leftClickCustomization())
 						{
-							leftClickMenus.add(client.createMenuEntry(idx)
+							subLeft.createMenuEntry(0)
 								.setOption("Use")
 								.setType(MenuAction.RUNELITE)
-								.onClick(heldItemConsumer(itemComposition, "Use", -1, false)));
+								.onClick(heldItemConsumer(itemComposition, "Use", -1, false));
 						}
 						if (defaultShiftClickOp != -1 && config.shiftClickCustomization())
 						{
-							shiftClickMenus.add(client.createMenuEntry(idx)
+							subShift.createMenuEntry(0)
 								.setOption("Use")
 								.setType(MenuAction.RUNELITE)
-								.onClick(heldItemConsumer(itemComposition, "Use", -1, true)));
+								.onClick(heldItemConsumer(itemComposition, "Use", -1, true));
+						}
+					}
+				}
+
+				if (config.teleportSubmenus())
+				{
+					var subSwaps = teleportSwaps.get(itemComposition.getId())
+						.stream()
+						.filter(ts -> ts.held)
+						.collect(Collectors.toList());
+					for (TeleportSwap top : subSwaps)
+					{
+						for (TeleportSub sub : top.subs)
+						{
+							if (leftClickOp == null || leftClickOp != sub.option.hashCode())
+							{
+								subLeft.createMenuEntry(0)
+									.setOption(sub.option)
+									.setType(MenuAction.RUNELITE)
+									.onClick(heldItemConsumer(itemComposition, sub.option, sub.option.hashCode(), false));
+							}
+							if (shiftClickOp == null || shiftClickOp != sub.option.hashCode())
+							{
+								subShift.createMenuEntry(0)
+									.setOption(sub.option)
+									.setType(MenuAction.RUNELITE)
+									.onClick(heldItemConsumer(itemComposition, sub.option, sub.option.hashCode(), true));
+							}
 						}
 					}
 				}
 
 				if (leftClickOp != null && config.leftClickCustomization())
 				{
-					leftClickMenus.add(client.createMenuEntry(idx)
+					subLeft.createMenuEntry(0)
 						.setOption("Reset")
 						.setType(MenuAction.RUNELITE)
 						.onClick(e ->
@@ -1070,11 +1090,11 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 							log.debug("Unset held item left swap for {}", itemComposition.getMembersName());
 							unsetItemSwapConfig(false, itemComposition.getId());
-						}));
+						});
 				}
 				if (shiftClickOp != null && config.shiftClickCustomization())
 				{
-					shiftClickMenus.add(client.createMenuEntry(idx)
+					subShift.createMenuEntry(0)
 						.setOption("Reset")
 						.setType(MenuAction.RUNELITE)
 						.onClick(e ->
@@ -1091,26 +1111,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 							log.debug("Unset held item shift swap for {}", itemComposition.getMembersName());
 							unsetItemSwapConfig(true, itemComposition.getId());
-						}));
+						});
 				}
 
-				if (!leftClickMenus.isEmpty())
-				{
-					MenuEntry sub = client.createMenuEntry(idx)
-						.setOption("Swap left click")
-						.setTarget(entry.getTarget())
-						.setType(MenuAction.RUNELITE_SUBMENU);
-					leftClickMenus.forEach(menu -> menu.setParent(sub));
-				}
-
-				if (!shiftClickMenus.isEmpty())
-				{
-					MenuEntry sub = client.createMenuEntry(idx)
-						.setOption("Swap shift click")
-						.setTarget(entry.getTarget())
-						.setType(MenuAction.RUNELITE_SUBMENU);
-					shiftClickMenus.forEach(menu -> menu.setParent(sub));
-				}
 				break;
 			}
 		}
@@ -1144,13 +1147,15 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 		final MenuEntry[] entries = event.getMenuEntries();
 
-		List<MenuEntry> leftClickMenus = new ArrayList<>();
-		List<MenuEntry> shiftClickMenus = new ArrayList<>();
+		MenuEntry swapLeftClick = null, swapShiftClick = null;
+		Menu subLeft = null, subShift = null;
+		boolean initialized = false;
 
 		for (int idx = entries.length - 1; idx >= 0; --idx)
 		{
 			final MenuEntry entry = entries[idx];
-			if (entry.getType() == MenuAction.CC_OP || entry.getType() == MenuAction.CC_OP_LOW_PRIORITY)
+			if (entry.getType() == MenuAction.CC_OP || entry.getType() == MenuAction.CC_OP_LOW_PRIORITY
+				|| entry.getType() == MenuAction.WIDGET_TARGET)
 			{
 				final Widget w = entry.getWidget();
 				if (w == null || w.getActions() == null)
@@ -1159,9 +1164,10 @@ public class MenuEntrySwapperPlugin extends Plugin
 				}
 
 				final int interId = WidgetUtil.componentToInterface(w.getId());
-				if (interId == InterfaceID.INVENTORY || interId == InterfaceID.EQUIPMENT)
+				if (interId == InterfaceID.INVENTORY || (interId == InterfaceID.EQUIPMENT && w.getId() != ComponentID.EQUIPMENT_DIZANAS_QUIVER_ITEM_CONTAINER))
 				{
 					// inventory and worn items have their own swap systems
+					// other than dizanas quiver, since it's not actually an inventory slot but some static widgets
 					continue;
 				}
 
@@ -1178,12 +1184,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 
 					// find lowest op from the widget actions, to prevent setting a swap to the default left click
 					// action regardless of what is swapped.
-					int lowestOp = 0;
-					while (lowestOp < w.getActions().length && Strings.isNullOrEmpty(w.getActions()[lowestOp]))
-					{
-						++lowestOp;
-					}
-					++lowestOp; // from 0-indexed to 1-indexed
+					final int lowestOp = findLowestOp(w);
 
 					// find highest op from the current menu, post any existing swaps, for inserting Reset
 					int highestOp = 10;
@@ -1198,27 +1199,40 @@ public class MenuEntrySwapperPlugin extends Plugin
 						highestOp = opEntry.getIdentifier();
 					}
 
+					if (!initialized)
+					{
+						initialized = true;
+						swapLeftClick = client.createMenuEntry(2)
+							.setOption("Swap left click")
+							.setType(MenuAction.RUNELITE);
+						swapShiftClick = client.createMenuEntry(2)
+							.setOption("Swap shift click")
+							.setType(MenuAction.RUNELITE);
+						subLeft = swapLeftClick.createSubMenu();
+						subShift = swapShiftClick.createSubMenu();
+					}
+
 					if (identifier != lowestOp && (leftClick == null || leftClick != identifier))
 					{
-						leftClickMenus.add(client.createMenuEntry(1)
+						subLeft.createMenuEntry(0)
 							.setOption(entry.getOption())
 							.setType(MenuAction.RUNELITE)
-							.onClick(uiConsumer(entry.getOption(), entry.getTarget(), false, componentId, itemId, identifier)));
+							.onClick(uiConsumer(entry.getOption(), entry.getTarget(), false, componentId, itemId, identifier));
 					}
 
 					if (identifier != lowestOp && (shiftClick == null || shiftClick != identifier))
 					{
-						shiftClickMenus.add(client.createMenuEntry(1)
+						subShift.createMenuEntry(0)
 							.setOption(entry.getOption())
 							.setType(MenuAction.RUNELITE)
-							.onClick(uiConsumer(entry.getOption(), entry.getTarget(), true, componentId, itemId, identifier)));
+							.onClick(uiConsumer(entry.getOption(), entry.getTarget(), true, componentId, itemId, identifier));
 					}
 
 					if (identifier == highestOp)
 					{
 						if (leftClick != null)
 						{
-							leftClickMenus.add(client.createMenuEntry(1)
+							subLeft.createMenuEntry(0)
 								.setOption("Reset")
 								.setType(MenuAction.RUNELITE)
 								.onClick(menuEntry ->
@@ -1236,12 +1250,12 @@ public class MenuEntrySwapperPlugin extends Plugin
 									log.debug("Unset ui left swap for {}/{}", componentId, menuEntry.getTarget());
 
 									unsetUiSwapConfig(false, componentId, itemId);
-								}));
+								});
 						}
 
 						if (shiftClick != null)
 						{
-							shiftClickMenus.add(client.createMenuEntry(1)
+							subShift.createMenuEntry(0)
 								.setOption("Reset")
 								.setType(MenuAction.RUNELITE)
 								.onClick(menuEntry ->
@@ -1259,30 +1273,49 @@ public class MenuEntrySwapperPlugin extends Plugin
 									log.debug("Unset ui shift swap for {}/{}", componentId, menuEntry.getTarget());
 
 									unsetUiSwapConfig(true, componentId, itemId);
-								}));
+								});
 						}
 
-						if (!leftClickMenus.isEmpty())
-						{
-							MenuEntry sub = client.createMenuEntry(2)
-								.setOption("Swap left click")
-								.setTarget(entry.getTarget())
-								.setType(MenuAction.RUNELITE_SUBMENU);
-							leftClickMenus.forEach(menu -> menu.setParent(sub));
-						}
-
-						if (!shiftClickMenus.isEmpty())
-						{
-							MenuEntry sub = client.createMenuEntry(1)
-								.setOption("Swap shift click")
-								.setTarget(entry.getTarget())
-								.setType(MenuAction.RUNELITE_SUBMENU);
-							shiftClickMenus.forEach(menu -> menu.setParent(sub));
-						}
+						swapLeftClick.setTarget(entry.getTarget());
+						swapShiftClick.setTarget(entry.getTarget());
 					}
 				}
 			}
 		}
+	}
+
+	private int findLowestOp(Widget w)
+	{
+		for (int i = 0; i <= 9; ++i)
+		{
+			if (i == 5)
+			{
+				if (isOpTarget(w) && !Strings.isNullOrEmpty(w.getTargetVerb()))
+				{
+					return 0;
+				}
+			}
+
+			if ((testOpMask(w, i) || w.getOnOpListener() != null) && !Strings.isNullOrEmpty(w.getActions()[i]))
+			{
+				return i + 1;
+			}
+		}
+		return -1;
+	}
+
+	private boolean testOpMask(Widget w, int op)
+	{
+		var n = client.getWidgetFlags().get((long) w.getId() << 32 | w.getIndex());
+		int mask = n != null ? n.getValue() : w.getClickMask();
+		return (mask >> op + 1 & 1) != 0;
+	}
+
+	private boolean isOpTarget(Widget w)
+	{
+		var n = client.getWidgetFlags().get((long) w.getId() << 32 | w.getIndex());
+		int mask = n != null ? n.getValue() : w.getClickMask();
+		return (mask & (WidgetConfig.USE_GROUND_ITEM | WidgetConfig.USE_NPC | WidgetConfig.USE_OBJECT | WidgetConfig.USE_PLAYER | WidgetConfig.USE_ITEM | WidgetConfig.USE_WIDGET)) != 0;
 	}
 
 	private Consumer<MenuEntry> uiConsumer(String option, String target, boolean shift, int componentId, int itemId, int opId)
@@ -1381,58 +1414,54 @@ public class MenuEntrySwapperPlugin extends Plugin
 		}
 	}
 
-	private void swapMenuEntry(MenuEntry[] menuEntries, int index, MenuEntry menuEntry)
+	private void swapMenuEntry(MenuEntry parent, MenuEntry[] menuEntries, int index, MenuEntry menuEntry)
 	{
+		Menu sub = menuEntry.getSubMenu();
+		if (sub != null)
+		{
+			int subidx = 0;
+			MenuEntry[] subEntries = sub.getMenuEntries();
+			for (MenuEntry subEntry : subEntries)
+			{
+				swapMenuEntry(menuEntry, subEntries, subidx++, subEntry);
+			}
+		}
+
 		final int eventId = menuEntry.getIdentifier();
 		final MenuAction menuAction = menuEntry.getType();
 		final String option = Text.removeTags(menuEntry.getOption()).toLowerCase();
 		final String target = Text.removeTags(menuEntry.getTarget()).toLowerCase();
 
-		final boolean itemOp = menuEntry.isItemOp();
-		// Custom shift-click item swap
-		if (shiftModifier() && itemOp)
+		final Widget w = parent != null ? parent.getWidget() : menuEntry.getWidget();
+		// Custom item swap
+		if (w != null && WidgetUtil.componentToInterface(w.getId()) == InterfaceID.INVENTORY
+			&& (lastShift ? config.shiftClickCustomization() : config.leftClickCustomization()))
 		{
-			// Special case use shift click due to items not actually containing a "Use" option, making
-			// the client unable to perform the swap itself.
-			if (config.shiftClickCustomization() && !option.equals("use"))
-			{
-				Integer customOption = getItemSwapConfig(true, menuEntry.getItemId());
-
-				if (customOption != null && customOption == -1)
-				{
-					swap(menuEntries, "use", target, index, true);
-				}
-			}
-
-			// don't perform swaps on items when shift is held; instead prefer the client menu swap, which
-			// we may have overwrote
-			return;
-		}
-
-		// Custom left-click item swap
-		if (itemOp && config.leftClickCustomization())
-		{
-			Integer swapIndex = getItemSwapConfig(false, menuEntry.getItemId());
+			Integer swapIndex = getItemSwapConfig(lastShift, w.getItemId());
 			if (swapIndex != null)
 			{
-				final int swapAction = swapIndex >= 0
-					? 1 + swapIndex
-					: -1;
-
-				if (swapAction == -1)
+				if (swapIndex == -1)
 				{
 					swap(menuEntries, "use", target, index, true);
 				}
-				else if (swapAction == menuEntry.getItemOp())
+				else if (swapIndex + 1 == menuEntry.getItemOp())
 				{
 					swap(optionIndexes, menuEntries, index, menuEntries.length - 1);
+				}
+				// Submenu swap. The swapIndex is actually the option hashCode.
+				else if (parent != null && menuEntry.getOption().hashCode() == swapIndex)
+				{
+					// Since it isn't possible to reparent the menu to the top level, just copy it
+					client.createMenuEntry(-1)
+						.setOption(menuEntry.getOption())
+						.setTarget(menuEntry.getTarget())
+						.onClick(menuEntry.onClick());
 				}
 				return;
 			}
 		}
 
 		// Worn items swap
-		final Widget w = menuEntry.getWidget();
 		if (w != null && WidgetUtil.componentToInterface(w.getId()) == InterfaceID.EQUIPMENT)
 		{
 			Widget child = w.getChild(1);
@@ -1444,6 +1473,15 @@ public class MenuEntrySwapperPlugin extends Plugin
 					if (wornItemSwapConfig == menuEntry.getIdentifier())
 					{
 						swap(optionIndexes, menuEntries, index, menuEntries.length - 1);
+					}
+					// Submenu swap.
+					else if (parent != null && menuEntry.getOption().hashCode() == wornItemSwapConfig)
+					{
+						// Since it isn't possible to reparent the menu to the top level, just copy it
+						client.createMenuEntry(-1)
+							.setOption(menuEntry.getOption())
+							.setTarget(menuEntry.getTarget())
+							.onClick(menuEntry.onClick());
 					}
 					return;
 				}
@@ -1500,22 +1538,15 @@ public class MenuEntrySwapperPlugin extends Plugin
 		}
 
 		// UI swaps
-		if ((menuAction == MenuAction.CC_OP || menuAction == MenuAction.CC_OP_LOW_PRIORITY)
+		if ((menuAction == MenuAction.CC_OP || menuAction == MenuAction.CC_OP_LOW_PRIORITY || menuAction == MenuAction.WIDGET_TARGET)
 			&& w != null && (w.getIndex() == -1 || w.getItemId() != -1)
 			&& w.getActions() != null
-			&& !itemOp && WidgetUtil.componentToInterface(w.getId()) != InterfaceID.EQUIPMENT)
+			&& WidgetUtil.componentToInterface(w.getId()) != InterfaceID.INVENTORY
+			&& (WidgetUtil.componentToInterface(w.getId()) != InterfaceID.EQUIPMENT || w.getId() == ComponentID.EQUIPMENT_DIZANAS_QUIVER_ITEM_CONTAINER))
 		{
-			int numActions = 0;
-			for (String action : w.getActions())
-			{
-				if (!Strings.isNullOrEmpty(action))
-				{
-					++numActions;
-				}
-			}
-
 			// fast check to avoid hitting config on components with single ops
-			if (numActions > 1)
+			if ((index > 0 && menuEntries[index - 1].getWidget() == w) ||
+				(index + 1 < menuEntries.length && menuEntries[index + 1].getWidget() == w))
 			{
 				final int componentId = w.getId(); // on dynamic components, this is the parent layer id
 				final int itemId = w.getIndex() == -1 ? -1 : ItemVariationMapping.map(w.getItemId());
@@ -1560,6 +1591,9 @@ public class MenuEntrySwapperPlugin extends Plugin
 	@Subscribe
 	public void onClientTick(ClientTick clientTick)
 	{
+		lastShift = curShift;
+		curShift = shiftModifier();
+
 		if (client.isMenuOpen())
 		{
 			return;
@@ -1650,7 +1684,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		idx = 0;
 		for (MenuEntry entry : menuEntries)
 		{
-			swapMenuEntry(menuEntries, idx++, entry);
+			swapMenuEntry(null, menuEntries, idx++, entry);
 		}
 
 		if (config.removeDeadNpcMenus())
@@ -1672,25 +1706,6 @@ public class MenuEntrySwapperPlugin extends Plugin
 		if (oldEntries.length != newEntries.length)
 		{
 			client.setMenuEntries(newEntries);
-		}
-	}
-
-	@Subscribe
-	public void onPostItemComposition(PostItemComposition event)
-	{
-		if (!config.shiftClickCustomization())
-		{
-			// since shift-click is done by the client we have to check if our shift click customization is on
-			// prior to altering the item shift click action index.
-			return;
-		}
-
-		ItemComposition itemComposition = event.getItemComposition();
-		Integer option = getItemSwapConfig(true, itemComposition.getId());
-
-		if (option != null && option < itemComposition.getInventoryActions().length)
-		{
-			itemComposition.setShiftClickActionIndex(option);
 		}
 	}
 
@@ -1790,7 +1805,7 @@ public class MenuEntrySwapperPlugin extends Plugin
 		sortedInsert(list2, index1);
 	}
 
-	private static <T extends Comparable<? super T>> void sortedInsert(List<T> list, T value) // NOPMD: UnusedPrivateMethod: false positive
+	private static <T extends Comparable<? super T>> void sortedInsert(List<T> list, T value)
 	{
 		int idx = Collections.binarySearch(list, value);
 		list.add(idx < 0 ? -idx - 1 : idx, value);
@@ -1920,5 +1935,258 @@ public class MenuEntrySwapperPlugin extends Plugin
 	{
 		configManager.unsetConfiguration(MenuEntrySwapperConfig.GROUP,
 			(shift ? UI_SHIFT_KEY_PREFIX : UI_KEY_PREFIX) + componentId + (itemId != -1 ? "_" + itemId : ""));
+	}
+
+	private void setupTeleportSwaps()
+	{
+		// region Max cape opworn
+		teleportSwap("Fishing Teleports", ItemID.MAX_CAPE_13342)
+			.worn()
+			.addSub("Fishing Guild", () -> pauseresume(ComponentID.DIALOG_OPTION_OPTIONS, 1))
+			.addSub("Otto's Grotto", () -> pauseresume(ComponentID.DIALOG_OPTION_OPTIONS, 2));
+		teleportSwap("POH Portals", ItemID.MAX_CAPE_13342)
+			.worn()
+			.addSub("Home", () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 0))
+			.addSub("Rimmington", () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 1))
+			.addSub("Taverley", () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 2))
+			.addSub("Pollnivneach", () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 3))
+			.addSub("Hosidius", () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 4))
+			.addSub("Rellekka", () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 5))
+			.addSub("Brimhaven", () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 6))
+			.addSub("Yanille", () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 7))
+			.addSub("Prifddinas", () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 8));
+		teleportSwap("Other Teleports", ItemID.MAX_CAPE_13342)
+			.worn()
+			.addSub("Feldip hills", () ->
+			{
+				pauseresume(ComponentID.DIALOG_OPTION_OPTIONS, 1); // Chinchompa Teleports
+				pauseresume(ComponentID.DIALOG_OPTION_OPTIONS, 1); // Carnivorous chinchompas (Feldip Hills)
+			})
+			.addSub("Black chinchompas", () ->
+			{
+				pauseresume(ComponentID.DIALOG_OPTION_OPTIONS, 1); // Chinchompa Teleports
+				pauseresume(ComponentID.DIALOG_OPTION_OPTIONS, 2); // Black chinchompas (Wilderness)
+			})
+			.addSub("Hunter Guild", () ->
+			{
+				pauseresume(ComponentID.DIALOG_OPTION_OPTIONS, 1); // Chinchompa Teleports
+				pauseresume(ComponentID.DIALOG_OPTION_OPTIONS, 3); // Hunter Guild
+			})
+			.addSub("Farming Guild", () -> pauseresume(ComponentID.DIALOG_OPTION_OPTIONS, 2));
+		// endregion
+
+		// region Max cape opheld
+		teleportSwap("Teleports", ItemID.MAX_CAPE)
+			.held()
+			.addSub("Warriors' Guild", () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 0))
+			.addSub("Fishing Guild", () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 1))
+			.addSub("Crafting Guild", () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 2))
+			.addSub("Farming Guild", () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 3))
+			.addSub("Otto's Grotto", () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 4))
+			.addSub("Feldip hills", () ->
+			{
+				pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 5); // Chinchompas
+				pauseresume(ComponentID.DIALOG_OPTION_OPTIONS, 1); // Carnivorous chinchompas (Feldip Hills)
+			})
+			.addSub("Black chinchompas", () ->
+			{
+				pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 5); // Chinchompas
+				pauseresume(ComponentID.DIALOG_OPTION_OPTIONS, 2); // Black chinchompas (Wilderness)
+			})
+			.addSub("Hunter Guild", () ->
+			{
+				pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 5); // Chinchompas
+				pauseresume(ComponentID.DIALOG_OPTION_OPTIONS, 3); // Hunter Guild
+			})
+			.addSub("Home", () ->
+			{
+				pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 6); // POH Portals
+				pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 0);
+			})
+			.addSub("Rimmington", () ->
+			{
+				pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 6); // POH Portals
+				pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 1);
+			})
+			.addSub("Taverley", () ->
+			{
+				pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 6); // POH Portals
+				pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 2);
+			})
+			.addSub("Pollnivneach", () ->
+			{
+				pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 6); // POH Portals
+				pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 3);
+			})
+			.addSub("Hosidius", () ->
+			{
+				pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 6); // POH Portals
+				pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 4);
+			})
+			.addSub("Rellekka", () ->
+			{
+				pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 6); // POH Portals
+				pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 5);
+			})
+			.addSub("Brimhaven", () ->
+			{
+				pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 6); // POH Portals
+				pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 6);
+			})
+			.addSub("Yanille", () ->
+			{
+				pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 6); // POH Portals
+				pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 7);
+			})
+			.addSub("Prifddinas", () ->
+			{
+				pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 6); // POH Portals
+				pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 8);
+			});
+		// endregion
+
+		// region Con cape
+		teleportSwap("Teleport", ItemID.CONSTRUCT_CAPE, ItemID.CONSTRUCT_CAPET)
+			.worn()
+			.held()
+			.addSub("Home", () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 0))
+			.addSub("Rimmington", () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 1))
+			.addSub("Taverley", () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 2))
+			.addSub("Pollnivneach", () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 3))
+			.addSub("Hosidius", () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 4))
+			.addSub("Rellekka", () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 5))
+			.addSub("Brimhaven", () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 6))
+			.addSub("Yanille", () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 7))
+			.addSub("Prifddinas", () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 8));
+		// endregion
+
+		// region Achievement diary cape
+		teleportSwap("Teleport", ItemID.ACHIEVEMENT_DIARY_CAPE, ItemID.ACHIEVEMENT_DIARY_CAPE_T)
+			.worn()
+			.held()
+			.addSub("Two-pints", () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 0))
+			.addSub("Jarr", () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 1))
+			.addSub("Sir Rebral",  () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 2))
+			.addSub("Thorodin",  () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 3))
+			.addSub("Flax keeper",  () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 4))
+			.addSub("Pirate Jackie the Fruit",  () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 5))
+			.addSub("Kaleb Paramaya",  () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 6))
+			.addSub("Jungle forester", () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 7))
+			.addSub("TzHaar-Mej", () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 8))
+			.addSub("Elise", () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 9))
+			.addSub("Hatius Cosaintus", () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 10))
+			.addSub("Le-sabrè", () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 11))
+			.addSub("Toby", () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 12))
+			.addSub("Lesser Fanatic", () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 13))
+			.addSub("Elder Gnome child", () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 14))
+			.addSub("Twiggy O'Korn", () -> pauseresume(ComponentID.ADVENTURE_LOG_OPTIONS, 15));
+		// endregion
+
+		// region Hunter cape
+		teleportSwap("Teleport", ItemID.HUNTER_CAPE, ItemID.HUNTER_CAPET)
+			.worn()
+			.held()
+			.addSub("Carnivorous Chinchompas", () -> pauseresume(ComponentID.DIALOG_OPTION_OPTIONS, 1))
+			.addSub("Black Chinchompas", () -> pauseresume(ComponentID.DIALOG_OPTION_OPTIONS, 2))
+			.addSub("Hunter Guild", () -> pauseresume(ComponentID.DIALOG_OPTION_OPTIONS, 3));
+		// endregion
+	}
+
+	private TeleportSwap teleportSwap(String option, int... items)
+	{
+		Preconditions.checkArgument(items.length > 0, "no items");
+		var ts = new TeleportSwap();
+		ts.option = option;
+		for (int item : items)
+		{
+			teleportSwaps.put(item, ts);
+		}
+		return ts;
+	}
+
+	@Subscribe
+	public void onMenuEntryAdded(MenuEntryAdded menuEntryAdded)
+	{
+		var me = menuEntryAdded.getMenuEntry();
+		if (me.getWidget() != null && me.getWidget().getId() == ComponentID.EQUIPMENT_CAPE)
+		{
+			var item = me.getWidget().getChild(1);
+			var swap = teleportSwaps.get(item.getItemId())
+				.stream()
+				.filter(ts -> ts.worn)
+				.filter(ts -> ts.option.equals(me.getOption()))
+				.findAny()
+				.orElse(null);
+			if (swap != null && config.teleportSubmenus())
+			{
+				me.setType(MenuAction.RUNELITE_WIDGET);
+				me.onClick(e -> client.menuAction(e.getParam0(), e.getParam1(), MenuAction.CC_OP,
+					e.getIdentifier(), e.getItemId(), e.getOption(), e.getTarget()));
+				Menu submenu = me.createSubMenu();
+
+				final int p0 = me.getParam0();
+				final int p1 = me.getParam1();
+				final int id = me.getIdentifier();
+				final int itemId = me.getItemId();
+				final String option = me.getOption();
+				final String target = me.getTarget();
+				for (TeleportSub sub : swap.subs)
+				{
+					submenu.createMenuEntry(0)
+						.setParam0(p0)
+						.setParam1(p1)
+						.setOption(sub.option)
+						.setTarget(target)
+						.setType(MenuAction.RUNELITE)
+						.onClick(e -> clientThread.invokeLater(() ->
+						{
+							client.menuAction(p0, p1, MenuAction.CC_OP, id, itemId, option, target);
+							sub.execute.run();
+						}));
+				}
+			}
+		}
+		else if (me.getWidget() != null && me.getWidget().getId() == ComponentID.INVENTORY_CONTAINER)
+		{
+			var swap = teleportSwaps.get(me.getItemId())
+				.stream()
+				.filter(ts -> ts.held)
+				.filter(ts -> ts.option.equals(me.getOption()))
+				.findAny()
+				.orElse(null);
+			if (swap != null && config.teleportSubmenus())
+			{
+				me.setType(MenuAction.RUNELITE_WIDGET);
+				me.onClick(e -> client.menuAction(e.getParam0(), e.getParam1(), MenuAction.CC_OP,
+					e.getIdentifier(), e.getItemId(), e.getOption(), e.getTarget()));
+				Menu submenu = me.createSubMenu();
+
+				final int p0 = me.getParam0();
+				final int p1 = me.getParam1();
+				final int id = me.getIdentifier();
+				final int itemId = me.getItemId();
+				final String option = me.getOption();
+				final String target = me.getTarget();
+				for (TeleportSub sub : swap.subs)
+				{
+					submenu.createMenuEntry(0)
+						.setParam0(p0)
+						.setParam1(p1)
+						.setOption(sub.option)
+						.setTarget(target)
+						.setType(MenuAction.RUNELITE)
+						.onClick(e -> clientThread.invokeLater(() ->
+						{
+							client.menuAction(p0, p1, MenuAction.CC_OP, id, itemId, option, target);
+							sub.execute.run();
+						}));
+				}
+			}
+		}
+	}
+
+	private void pauseresume(@Component int comp, int op)
+	{
+		client.menuAction(op, comp, MenuAction.WIDGET_CONTINUE, -1, -1, "", "");
 	}
 }

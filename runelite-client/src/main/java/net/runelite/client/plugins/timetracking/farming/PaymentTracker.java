@@ -24,13 +24,19 @@
  */
 package net.runelite.client.plugins.timetracking.farming;
 
+import com.google.common.collect.ImmutableSet;
+import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.MenuAction;
+import net.runelite.api.ScriptID;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.events.ScriptPreFired;
 import net.runelite.api.widgets.ComponentID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetModelType;
@@ -46,18 +52,23 @@ import net.runelite.client.plugins.timetracking.TimeTrackingConfig;
 @Singleton
 public class PaymentTracker
 {
-	private static final String PAYMENT_MALE = "That'll do nicely, sir. Leave it with me - I'll make sure<br>that patch grows for you.";
-	private static final String PAYMENT_FEMALE = "That'll do nicely, madam. Leave it with me - I'll make<br>sure that patch grows for you.";
+	private static final Set<String> PAYMENT_TEXT = ImmutableSet.of(
+		"That'll do nicely, sir. Leave it with me - I'll make sure<br>that patch grows for you.",
+		"That'll do nicely, madam. Leave it with me - I'll make<br>sure that patch grows for you.",
+		"That'll do nicely, iknami. Leave it with me - I'll make<br>sure that patch grows for you."
+	);
 
 	private final Client client;
 	private final ConfigManager configManager;
 	private final FarmingWorld farmingWorld;
 
+	private int lastSelectedOption;
+
 	@Subscribe
 	public void onGameTick(GameTick gameTick)
 	{
 		Widget text = client.getWidget(ComponentID.DIALOG_NPC_TEXT);
-		if (text == null || (!PAYMENT_MALE.equals(text.getText()) && !PAYMENT_FEMALE.equals(text.getText())))
+		if (text == null || !PAYMENT_TEXT.contains(text.getText()))
 		{
 			return;
 		}
@@ -81,8 +92,60 @@ public class PaymentTracker
 			return;
 		}
 
-		log.debug("Detected patch payment for {} ({})", name.getText(), npcId);
+		log.debug("Detected patch payment for {} ({}) patch {}", name.getText(), npcId, patch);
 		setProtectedState(patch, true);
+	}
+
+	@Subscribe
+	public void onMenuOptionClicked(MenuOptionClicked opt)
+	{
+		var action = opt.getMenuAction();
+		// look for resume_pausebutton from click
+		if (action == MenuAction.WIDGET_CONTINUE)
+		{
+			var w = opt.getWidget();
+			if (w != null && w.getId() == ComponentID.DIALOG_OPTION_OPTIONS && w.getIndex() > -1 && isPatchOption(w.getText()))
+			{
+				lastSelectedOption = w.getIndex() - 1; // subid 0 is "Select an Option"
+				log.debug("Selected option via click: {}", lastSelectedOption);
+			}
+		}
+		// look for selecting the Pay NPC option
+		else if ((action == MenuAction.NPC_THIRD_OPTION || action == MenuAction.NPC_FOURTH_OPTION) && opt.getMenuOption().startsWith("Pay"))
+		{
+			lastSelectedOption = action == MenuAction.NPC_THIRD_OPTION ? 0 : 1;
+			log.debug("Selected option via npc op: {}", lastSelectedOption);
+		}
+	}
+
+	@Subscribe
+	public void onScriptPreFired(ScriptPreFired scriptPreFired)
+	{
+		// look for resume_pausebutton from keypress
+		if (scriptPreFired.getScriptId() == ScriptID.CHATBOX_KEYINPUT_MATCHED)
+		{
+			int[] intStack = client.getIntStack();
+
+			int componentId = intStack[0];
+			int subId = intStack[1];
+
+			var w = client.getWidget(componentId).getChild(subId);
+			if (componentId == ComponentID.DIALOG_OPTION_OPTIONS && subId > -1 && isPatchOption(w.getText()))
+			{
+				lastSelectedOption = subId - 1; // subid 0 is "Select an Option"
+				log.debug("Selected option via keypress: {}", lastSelectedOption);
+			}
+		}
+	}
+
+	private static boolean isPatchOption(String name)
+	{
+		if (name == null)
+		{
+			return false;
+		}
+
+		return name.contains("Patch") || name.contains("allotment");
 	}
 
 	private static String configKey(FarmingPatch fp)
@@ -90,7 +153,7 @@ public class PaymentTracker
 		return fp.configKey() + "." + TimeTrackingConfig.PROTECTED;
 	}
 
-	public void setProtectedState(FarmingPatch fp, boolean state)
+	void setProtectedState(FarmingPatch fp, boolean state)
 	{
 		if (!state)
 		{
@@ -102,7 +165,7 @@ public class PaymentTracker
 		}
 	}
 
-	public boolean getProtectedState(FarmingPatch fp)
+	boolean getProtectedState(FarmingPatch fp)
 	{
 		return Boolean.TRUE.equals(configManager.getRSProfileConfiguration(
 			TimeTrackingConfig.CONFIG_GROUP,
@@ -119,13 +182,11 @@ public class PaymentTracker
 			{
 				if (patch.getFarmer() == npcId)
 				{
-					if (p != null)
+					// lastSelectedOption is only valid when interacting with multi-patch farmers.
+					if (patch.getPatchNumber() == -1 || patch.getPatchNumber() == lastSelectedOption)
 					{
-						log.debug("Ambiguous payment to {} between {} and {}", npcId, p, patch);
-						return null;
+						p = patch;
 					}
-
-					p = patch;
 				}
 			}
 		}

@@ -51,6 +51,7 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.chat.ChatClient;
 import net.runelite.client.chat.ChatCommandManager;
 import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.Notification;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.npcoverlay.NpcOverlayService;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -71,7 +72,6 @@ import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -181,13 +181,9 @@ public class SlayerPluginTest
 	{
 		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "Superior", SUPERIOR_MESSAGE, null, 0);
 
-		when(slayerConfig.showSuperiorNotification()).thenReturn(true);
+		when(slayerConfig.showSuperiorNotification()).thenReturn(Notification.ON);
 		slayerPlugin.onChatMessage(chatMessageEvent);
-		verify(notifier).notify(SUPERIOR_MESSAGE);
-
-		when(slayerConfig.showSuperiorNotification()).thenReturn(false);
-		slayerPlugin.onChatMessage(chatMessageEvent);
-		verifyNoMoreInteractions(notifier);
+		verify(notifier).notify(Notification.ON, SUPERIOR_MESSAGE);
 	}
 
 	@Test

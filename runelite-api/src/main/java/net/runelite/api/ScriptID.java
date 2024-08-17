@@ -175,6 +175,7 @@ public final class ScriptID
 	 * because you need an op listener attached to it for it to work
 	 */
 	@ScriptArguments()
+	@Deprecated
 	public static final int NULL = 10003;
 
 	/**
@@ -274,6 +275,9 @@ public final class ScriptID
 	@ScriptArguments(integer = 17)
 	public static final int BANKMAIN_SEARCH_REFRESH = 283;
 
+	@ScriptArguments(integer = 6)
+	public static final int BANKMAIN_DRAGSCROLL = 284;
+
 	/**
 	 * Called to update the PVP widget (wilderness level/protection)
 	 */
@@ -300,6 +304,9 @@ public final class ScriptID
 	 */
 	@ScriptArguments(integer = 4, string = 1)
 	public static final int XPDROPS_SETDROPSIZE = 996;
+
+	@ScriptArguments(integer = 34)
+	public static final int BANKMAIN_INIT = 274;
 
 	/**
 	 * Main layout script for the bank
@@ -329,6 +336,9 @@ public final class ScriptID
 	 */
 	@ScriptArguments(integer = 18)
 	public static final int BANKMAIN_SEARCH_TOGGLE = 281;
+
+	@ScriptArguments(integer = 6)
+	public static final int BANKMAIN_SIZE_CHECK = 840;
 
 	/**
 	 * Chooses the click handler for a {@link ParamID#SETTING_SLIDER_CUSTOM_ONOP} = 1 settings slider
@@ -439,4 +449,16 @@ public final class ScriptID
 
 	@ScriptArguments(integer = 10, string = 3)
 	public static final int ACCOUNT_SUMMARY_SECTION_FORMAT = 3950;
+
+	@ScriptArguments(integer = 6, string = 2)
+	public static final int CHATBOX_KEYINPUT_MATCHED = 2153;
+
+	@ScriptArguments(integer = 6)
+	public static final int EQUIPMENT_SET_STAT_BONUS_SETUP = 3517;
+
+	@ScriptArguments(integer = 12, string = 2)
+	public static final int MAGIC_SPELLBOOK_INITIALISESPELLS = 2616;
+
+	@ScriptArguments(integer = 2)
+	public static final int MOTHERLODE_HUD_UPDATE = 1634;
 }

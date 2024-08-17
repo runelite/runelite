@@ -33,12 +33,12 @@ import net.runelite.api.Client;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemID;
 import net.runelite.api.ItemLayer;
-import net.runelite.api.Player;
 import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ItemSpawned;
 import net.runelite.client.Notifier;
+import net.runelite.client.config.ConfigManager;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.input.KeyManager;
@@ -98,6 +98,10 @@ public class GroundItemsPluginTest
 	@Bind
 	private ScheduledExecutorService executor;
 
+	@Mock
+	@Bind
+	private ConfigManager configManager;
+
 	@Before
 	public void setUp()
 	{
@@ -109,7 +113,6 @@ public class GroundItemsPluginTest
 			return null;
 		}).when(executor).execute(any(Runnable.class));
 
-		when(client.getLocalPlayer()).thenReturn(mock(Player.class));
 		when(config.getHiddenItems()).thenReturn("");
 		when(config.showLootbeamForHighlighted()).thenReturn(false);
 		when(config.showLootbeamTier()).thenReturn(HighlightTier.OFF);

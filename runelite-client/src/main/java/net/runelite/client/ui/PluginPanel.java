@@ -33,7 +33,7 @@ import javax.swing.border.EmptyBorder;
 import lombok.AccessLevel;
 import lombok.Getter;
 
-public abstract class PluginPanel extends JPanel
+public abstract class PluginPanel extends JPanel implements Activatable
 {
 	public static final int PANEL_WIDTH = 225;
 	public static final int SCROLLBAR_WIDTH = 17;
@@ -72,7 +72,7 @@ public abstract class PluginPanel extends JPanel
 			wrappedPanel = new JPanel();
 
 			// Adjust the preferred size to expand to width of scrollbar to
-			// to preven scrollbar overlapping over contents
+			// prevent scrollbar overlapping over contents
 			wrappedPanel.setPreferredSize(OUTER_PREFERRED_SIZE);
 			wrappedPanel.setLayout(new BorderLayout());
 			wrappedPanel.add(scrollPane, BorderLayout.CENTER);
@@ -91,11 +91,10 @@ public abstract class PluginPanel extends JPanel
 		return new Dimension(width, super.getPreferredSize().height);
 	}
 
-	public void onActivate()
+	@Override
+	public Dimension getMinimumSize()
 	{
-	}
-
-	public void onDeactivate()
-	{
+		int width = this == wrappedPanel ? PANEL_WIDTH + SCROLLBAR_WIDTH : PANEL_WIDTH;
+		return new Dimension(width, super.getMinimumSize().height);
 	}
 }

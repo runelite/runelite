@@ -32,5 +32,23 @@ public class ItemStack
 {
 	private final int id;
 	private final int quantity;
-	private final LocalPoint location;
+
+	public ItemStack(int id, int quantity)
+	{
+		this.id = id;
+		this.quantity = quantity;
+	}
+
+	@Deprecated
+	public ItemStack(int id, int quantity, LocalPoint location)
+	{
+		this.id = id;
+		this.quantity = quantity;
+	}
+
+	@Deprecated
+	public LocalPoint getLocation()
+	{
+		return null;
+	}
 }

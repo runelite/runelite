@@ -69,9 +69,9 @@ public interface Callbacks
 	void frame();
 
 	/**
-	 * Called after receiving update NPCs packet from server.
+	 * Called each server tick
 	 */
-	void updateNpcs();
+	void serverTick();
 
 	/**
 	 * Called after the scene is drawn.
@@ -212,4 +212,11 @@ public interface Callbacks
 	 * @param url
 	 */
 	void openUrl(String url);
+
+	/**
+	 * Returns if the current runelite client is outdated or not
+	 *
+	 * @return
+	 */
+	boolean isRuneLiteClientOutdated();
 }

@@ -45,6 +45,7 @@ import net.runelite.api.NullObjectID;
 import net.runelite.api.Player;
 import net.runelite.api.Scene;
 import net.runelite.api.Varbits;
+import net.runelite.api.WorldView;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameTick;
@@ -58,6 +59,7 @@ import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.game.chatbox.ChatboxPanelManager;
+import net.runelite.client.plugins.banktags.BankTagsService;
 import net.runelite.client.plugins.banktags.TagManager;
 import net.runelite.client.plugins.cluescrolls.clues.hotcold.HotColdLocation;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -126,6 +128,10 @@ public class ClueScrollPluginTest
 	@Bind
 	ChatboxPanelManager chatboxPanelManager;
 
+	@Mock
+	@Bind
+	BankTagsService bankTagsService;
+
 	@Before
 	public void before()
 	{
@@ -170,8 +176,12 @@ public class ClueScrollPluginTest
 
 		// Move to SW of DRAYNOR_WHEAT_FIELD (hint arrow should be visible here)
 		when(localPlayer.getWorldLocation()).thenReturn(new WorldPoint(3105, 3265, 0));
-		when(client.getBaseX()).thenReturn(3056);
-		when(client.getBaseY()).thenReturn(3216);
+		WorldView wv = mock(WorldView.class);
+		when(wv.getBaseX()).thenReturn(3056);
+		when(wv.getBaseY()).thenReturn(3216);
+		when(wv.getSizeX()).thenReturn(104);
+		when(wv.getSizeY()).thenReturn(104);
+		when(client.getTopLevelWorldView()).thenReturn(wv);
 		plugin.onGameTick(new GameTick());
 		verify(client, times(++clueSetupHintArrowClears)).clearHintArrow();
 		verify(client).setHintArrow(HotColdLocation.DRAYNOR_WHEAT_FIELD.getWorldPoint());

@@ -171,14 +171,8 @@ public class XpDropPlugin extends Plugin
 				.distinct()
 				.collect(Collectors.toList());
 
-		if (xpDropTypes.contains(PrayerType.MELEE))
-		{
-			if (prayers.contains(PrayerType.MELEE))
-			{
-				xpdropColor = config.getMeleePrayerColor().getRGB();
-			}
-		}
-		else if (xpDropTypes.contains(PrayerType.RANGE))
+		// Check MELEE last to avoid defensive casting being categorized as melee
+		if (xpDropTypes.contains(PrayerType.RANGE))
 		{
 			if (prayers.contains(PrayerType.RANGE))
 			{
@@ -190,6 +184,13 @@ public class XpDropPlugin extends Plugin
 			if (prayers.contains(PrayerType.MAGIC))
 			{
 				xpdropColor = config.getMagePrayerColor().getRGB();
+			}
+		}
+		else if (xpDropTypes.contains(PrayerType.MELEE))
+		{
+			if (prayers.contains(PrayerType.MELEE))
+			{
+				xpdropColor = config.getMeleePrayerColor().getRGB();
 			}
 		}
 

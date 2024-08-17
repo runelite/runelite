@@ -25,7 +25,9 @@
  */
 package net.runelite.client.plugins.devtools;
 
+import com.formdev.flatlaf.extras.FlatUIDefaultsInspector;
 import com.google.inject.ProvisionException;
+import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.TrayIcon;
 import java.util.concurrent.ScheduledExecutorService;
@@ -39,6 +41,7 @@ import net.runelite.api.GameState;
 import net.runelite.api.MenuAction;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.config.Notification;
 import net.runelite.client.ui.ColorScheme;
 import net.runelite.client.ui.PluginPanel;
 import net.runelite.client.ui.overlay.OverlayMenuEntry;
@@ -91,6 +94,7 @@ class DevToolsPanel extends PluginPanel
 		add(createOptionsPanel());
 	}
 
+	@SuppressWarnings("PMD.DoubleBraceInitialization")
 	private JPanel createOptionsPanel()
 	{
 		final JPanel container = new JPanel();
@@ -141,9 +145,13 @@ class DevToolsPanel extends PluginPanel
 
 		final JButton notificationBtn = new JButton("Notification");
 		notificationBtn.addActionListener(e ->
-		{
-			scheduledExecutorService.schedule(() -> notifier.notify("Wow!", TrayIcon.MessageType.ERROR), 3, TimeUnit.SECONDS);
-		});
+			scheduledExecutorService.schedule(() ->
+			{
+				var notif = new Notification()
+					.withEnabled(true)
+					.withTrayIconType(TrayIcon.MessageType.ERROR);
+				notifier.notify(notif, "Wow!");
+			}, 3, TimeUnit.SECONDS));
 		container.add(notificationBtn);
 
 		container.add(plugin.getScriptInspector());
@@ -195,6 +203,24 @@ class DevToolsPanel extends PluginPanel
 		}
 
 		container.add(plugin.getMenus());
+
+		try
+		{
+			FlatUIDefaultsInspector.class.getName();
+
+			DevToolsButton uiDefaultsBtn = plugin.getUiDefaultsInspector();
+			uiDefaultsBtn.addFrame(new DevToolsFrame()
+			{
+				{
+					getContentPane().add(FlatUIDefaultsInspector.createInspectorPanel(), BorderLayout.CENTER);
+					pack();
+				}
+			});
+			container.add(uiDefaultsBtn);
+		}
+		catch (LinkageError e)
+		{
+		}
 
 		return container;
 	}

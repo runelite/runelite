@@ -32,7 +32,7 @@ import net.runelite.client.util.ImageUtil;
 
 public class AlchemyRoomTimer extends Timer
 {
-	private static final int RESET_PERIOD = 42;
+	private static final int RESET_PERIOD = 60;
 	private static BufferedImage image;
 
 	public AlchemyRoomTimer(Plugin plugin)

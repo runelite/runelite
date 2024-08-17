@@ -28,6 +28,8 @@ package net.runelite.client.util;
 import com.google.common.base.Strings;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Insets;
+import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.awt.datatransfer.Clipboard;
@@ -49,7 +51,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.Point;
 import net.runelite.client.Notifier;
 import static net.runelite.client.RuneLite.SCREENSHOT_DIR;
 import net.runelite.client.config.RuneScapeProfileType;
@@ -112,14 +113,17 @@ public class ImageCapture
 	public BufferedImage addClientFrame(Image image)
 	{
 		// create a new image, paint the client ui to it, and then draw the screenshot to that
-		final AffineTransform transform = OSType.getOSType() == OSType.MacOS ? new AffineTransform() :
-			clientUi.getGraphicsConfiguration().getDefaultTransform();
+		final AffineTransform transform = clientUi.getGraphicsConfiguration().getDefaultTransform();
+
+		// on Windows the insets are the window border
+		Insets insets = clientUi.getInsets();
+		transform.translate(-insets.left, -insets.top);
 
 		// scaled client dimensions
-		int clientWidth = getScaledValue(transform.getScaleX(), clientUi.getWidth());
-		int clientHeight = getScaledValue(transform.getScaleY(), clientUi.getHeight());
+		int screenshotWidth = getScaledValue(transform.getScaleX(), clientUi.getWidth() - insets.left - insets.right);
+		int screenshotHeight = getScaledValue(transform.getScaleY(), clientUi.getHeight() - insets.top - insets.bottom);
 
-		final BufferedImage screenshot = new BufferedImage(clientWidth, clientHeight, BufferedImage.TYPE_INT_ARGB);
+		final BufferedImage screenshot = new BufferedImage(screenshotWidth, screenshotHeight, BufferedImage.TYPE_INT_ARGB);
 
 		Graphics2D graphics = (Graphics2D) screenshot.getGraphics();
 		AffineTransform originalTransform = graphics.getTransform();
@@ -138,8 +142,11 @@ public class ImageCapture
 
 		// Find the position of the canvas inside the frame
 		final Point canvasOffset = clientUi.getCanvasOffset();
-		final int gameOffsetX = getScaledValue(transform.getScaleX(), canvasOffset.getX());
-		final int gameOffsetY = getScaledValue(transform.getScaleY(), canvasOffset.getY());
+		canvasOffset.x -= insets.left;
+		canvasOffset.y -= insets.top;
+
+		final int gameOffsetX = getScaledValue(transform.getScaleX(), (int) canvasOffset.getX());
+		final int gameOffsetY = getScaledValue(transform.getScaleY(), (int) canvasOffset.getY());
 
 		// Draw the original screenshot onto the new screenshot
 		graphics.setTransform(originalTransform); // the original screenshot is already scaled
@@ -151,7 +158,7 @@ public class ImageCapture
 
 	private static int getScaledValue(final double scale, final int value)
 	{
-		return (int) (value * scale + .5);
+		return (int) (value * scale);
 	}
 
 	/**

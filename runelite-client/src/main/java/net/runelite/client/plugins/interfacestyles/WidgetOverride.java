@@ -44,10 +44,10 @@ enum WidgetOverride
 	FIXED_BOTTOM_RIGHT_2005(Skin.AROUND_2005, "1030_bottom_middle", ComponentID.FIXED_VIEWPORT_LOGOUT_TAB),
 	FIXED_BOTTOM_MIDDLE_2005(Skin.AROUND_2005, "1030_bottom_right", ComponentID.FIXED_VIEWPORT_OPTIONS_TAB, ComponentID.FIXED_VIEWPORT_EMOTES_TAB);
 
-	private Skin skin;
-	private String name;
+	private final Skin skin;
+	private final String name;
 	@Component
-	private int[] widgetInfo;
+	private final int[] widgetInfo;
 
 	WidgetOverride(Skin skin, String name, @Component int... widgetInfo)
 	{

@@ -127,6 +127,7 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 		.put(new WorldPoint(2828, 3234, 0), new CoordinateClueInfo("Southern coast of Crandor."))
 		.put(new WorldPoint(1247, 3726, 0), new CoordinateClueInfo("Just inside the Farming Guild"))
 		.put(new WorldPoint(3770, 3898, 0), new CoordinateClueInfo("On the small island north-east of Fossil Island's mushroom forest."))
+		.put(new WorldPoint(1659, 3111, 0), new CoordinateClueInfo("Dig west of the Bazaar in Civitas illa Fortis."))
 		// Hard
 		.put(new WorldPoint(2209, 3161, 0), new CoordinateClueInfo("North-east of Tyras Camp (BJS if 76 Agility).", SARADOMIN_WIZARD))
 		.put(new WorldPoint(2181, 3206, 0), new CoordinateClueInfo("South of Iorwerth Camp.", SARADOMIN_WIZARD))
@@ -144,7 +145,7 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 		.put(new WorldPoint(3440, 3341, 0), new CoordinateClueInfo("Nature Spirit's grotto (BIP).", SARADOMIN_WIZARD))
 		.put(new WorldPoint(2763, 2974, 0), new CoordinateClueInfo("Cairn Isle, west of Shilo Village (CKR).", SARADOMIN_WIZARD))
 		.put(new WorldPoint(3138, 2969, 0), new CoordinateClueInfo("West of Bandit Camp in Kharidian Desert.", SARADOMIN_WIZARD))
-		.put(new WorldPoint(2924, 2963, 0), new CoordinateClueInfo("On the southern part of eastern Karamja.", SARADOMIN_WIZARD))
+		.put(new WorldPoint(2924, 2963, 0), new CoordinateClueInfo("On the southern part of eastern Karamja, west of the gnome glider.", SARADOMIN_WIZARD))
 		.put(new WorldPoint(2838, 2914, 0), new CoordinateClueInfo("Kharazi Jungle, near water pool (CKR).", SARADOMIN_WIZARD))
 		.put(new WorldPoint(3441, 3419, 0), new CoordinateClueInfo("Mort Myre Swamp (BKR).", SARADOMIN_WIZARD))
 		.put(new WorldPoint(2950, 2902, 0), new CoordinateClueInfo("South-east of Kharazi Jungle.", SARADOMIN_WIZARD))
@@ -153,9 +154,9 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 		.put(new WorldPoint(2892, 3675, 0), new CoordinateClueInfo("On the summit of Trollheim.", SARADOMIN_WIZARD))
 		.put(new WorldPoint(3168, 3677, 0), new CoordinateClueInfo("Wilderness. Graveyard of Shadows.", ZAMORAK_WIZARD))
 		.put(new WorldPoint(2853, 3690, 0), new CoordinateClueInfo("Entrance to the troll Stronghold.", SARADOMIN_WIZARD))
-		.put(new WorldPoint(3305, 3692, 0), new CoordinateClueInfo("Wilderness. West of eastern green dragon.", ZAMORAK_WIZARD))
+		.put(new WorldPoint(3305, 3692, 0), new CoordinateClueInfo("Wilderness. West of eastern green dragons.", ZAMORAK_WIZARD))
 		.put(new WorldPoint(3055, 3696, 0), new CoordinateClueInfo("Wilderness. Bandit Camp.", ZAMORAK_WIZARD))
-		.put(new WorldPoint(3302, 3696, 0), new CoordinateClueInfo("Wilderness. West of eastern green dragon.", ZAMORAK_WIZARD))
+		.put(new WorldPoint(3302, 3696, 0), new CoordinateClueInfo("Wilderness. West of eastern green dragons.", ZAMORAK_WIZARD))
 		.put(new WorldPoint(1479, 3699, 0), new CoordinateClueInfo("Lizardman Canyon (DJR).", SARADOMIN_WIZARD))
 		.put(new WorldPoint(2712, 3732, 0), new CoordinateClueInfo("North-east of Rellekka (DKS).", SARADOMIN_WIZARD))
 		.put(new WorldPoint(2970, 3749, 0), new CoordinateClueInfo("Wilderness. Forgotten Cemetery.", ZAMORAK_WIZARD))
@@ -178,7 +179,7 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 		.put(new WorldPoint(3189, 3963, 0), new CoordinateClueInfo("Wilderness. North of Resource Area, near magic axe hut.", ZAMORAK_WIZARD))
 		.put(new WorldPoint(2341, 3697, 0), new CoordinateClueInfo("North-east of the Piscatoris Fishing Colony bank.", SARADOMIN_WIZARD))
 		.put(new WorldPoint(3143, 3774, 0), new CoordinateClueInfo("In level 32 Wilderness, by the black chinchompa hunting area.", ZAMORAK_WIZARD))
-		.put(new WorldPoint(2992, 3941, 0), new CoordinateClueInfo("Wilderness Agility Course, past the log balance.", ZAMORAK_WIZARD))
+		.put(new WorldPoint(2970, 3913, 0), new CoordinateClueInfo("Frozen Waste Plateau, south-west of Wilderness Agility Course.", ZAMORAK_WIZARD))
 		.put(new WorldPoint(1410, 3611, 0), new CoordinateClueInfo("Lake Molch dock west of Shayzien Encampment.", SARADOMIN_WIZARD))
 		.put(new WorldPoint(1409, 3483, 0), new CoordinateClueInfo("South of Shayziens' Wall.", SARADOMIN_WIZARD))
 		// Elite
@@ -207,8 +208,8 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 		.put(new WorldPoint(3215, 3835, 0), new CoordinateClueInfo("Wilderness. Lava Dragon Isle.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
 		.put(new WorldPoint(3369, 3894, 0), new CoordinateClueInfo("Wilderness. Fountain of Rune.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
 		.put(new WorldPoint(2065, 3923, 0), new CoordinateClueInfo("Outside the western wall on Lunar Isle.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
-		.put(new WorldPoint(3188, 3933, 0), new CoordinateClueInfo("Wilderness. Resource Area.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
-		.put(new WorldPoint(2997, 3953, 0), new CoordinateClueInfo("Wilderness. Inside Agility Training Area.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
+		.put(new WorldPoint(3188, 3933, 0), new CoordinateClueInfo("Wilderness. Resource Area. An entry fee of 7,500 coins is required, or less if Wilderness Diaries have been completed.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
+		.put(new WorldPoint(3043, 3940, 0), new CoordinateClueInfo("Wilderness. South of Pirates' Hideout.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
 		.put(new WorldPoint(3380, 3963, 0), new CoordinateClueInfo("Wilderness. North of Volcano.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
 		.put(new WorldPoint(3051, 3736, 0), new CoordinateClueInfo("East of the Wilderness Obelisk in 28 Wilderness.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
 		.put(new WorldPoint(2316, 3814, 0), new CoordinateClueInfo("West of Neitiznot, near the bridge.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
@@ -220,6 +221,7 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 		.put(new WorldPoint(2094, 2889, 0), new CoordinateClueInfo("West side of the Isle of Souls.", ARMADYLEAN_GUARD))
 		.put(new WorldPoint(1451, 3509, 0), new CoordinateClueInfo("Ruins of Morra.", ARMADYLEAN_OR_BANDOSIAN_GUARD))
 		.put(new WorldPoint(3318, 2706, 0), new CoordinateClueInfo("Necropolis mine", ARMADYLEAN_OR_BANDOSIAN_GUARD))
+		.put(new WorldPoint(1557, 3183, 0), new CoordinateClueInfo("North of Ortus Farm", ARMADYLEAN_GUARD))
 		// Master
 		.put(new WorldPoint(2178, 3209, 0), new CoordinateClueInfo("South of Iorwerth Camp.", BRASSICAN_MAGE))
 		.put(new WorldPoint(2155, 3100, 0), new CoordinateClueInfo("South of Port Tyras (BJS if 76 Agility).", BRASSICAN_MAGE))
@@ -235,7 +237,7 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 		.put(new WorldPoint(3085, 3569, 0), new CoordinateClueInfo("Wilderness. Obelisk of Air.", BRASSICAN_MAGE))
 		.put(new WorldPoint(2934, 2727, 0), new CoordinateClueInfo("Eastern shore of Crash Island.", BRASSICAN_MAGE))
 		.put(new WorldPoint(1451, 3695, 0), new CoordinateClueInfo("West side of Lizardman Canyon with Lizardman shaman.", ANCIENT_WIZARDS))
-		.put(new WorldPoint(2538, 3739, 0), new CoordinateClueInfo("Waterbirth Island. Bring a pet rock and rune thrownaxe.", BRASSICAN_MAGE))
+		.put(new WorldPoint(2538, 3739, 0), new CoordinateClueInfo("Waterbirth Island. Bring a pet rock and rune thrownaxe OR have 85 agility.", BRASSICAN_MAGE))
 		.put(new WorldPoint(1248, 3751, 0), new CoordinateClueInfo("In the north wing of the Farming Guild.", BRASSICAN_MAGE))
 		.put(new WorldPoint(1698, 3792, 0), new CoordinateClueInfo("Arceuus church.", ANCIENT_WIZARDS))
 		.put(new WorldPoint(2951, 3820, 0), new CoordinateClueInfo("Wilderness. Chaos Temple (level 38).", ANCIENT_WIZARDS))
@@ -246,7 +248,7 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 		.put(new WorldPoint(3380, 3929, 0), new CoordinateClueInfo("Wilderness. Near Volcano.", ANCIENT_WIZARDS))
 		.put(new WorldPoint(3188, 3939, 0), new CoordinateClueInfo("Wilderness. Resource Area.", BRASSICAN_MAGE))
 		.put(new WorldPoint(3304, 3941, 0), new CoordinateClueInfo("Wilderness. East of Rogues' Castle.", ANCIENT_WIZARDS))
-		.put(new WorldPoint(2994, 3961, 0), new CoordinateClueInfo("Wilderness. Inside Agility Training Area.", BRASSICAN_MAGE))
+		.put(new WorldPoint(3028, 3928, 0), new CoordinateClueInfo("Wilderness. South-east of Agility Training Area.", BRASSICAN_MAGE))
 		.put(new WorldPoint(1769, 3418, 0), new CoordinateClueInfo("Crabclaw Isle", ANCIENT_WIZARDS))
 		.build();
 
@@ -254,7 +256,7 @@ public class CoordinateClue extends ClueScroll implements LocationClueScroll
 	@Getter(AccessLevel.PRIVATE)
 	private final WorldPoint location;
 	/**
-	 * For regions which are mirrored, the location of the the clue in the mirrored region.
+	 * For regions which are mirrored, the location of the clue in the mirrored region.
 	 */
 	@Nullable
 	private final WorldPoint mirrorLocation;

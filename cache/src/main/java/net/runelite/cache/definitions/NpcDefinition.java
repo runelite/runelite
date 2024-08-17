@@ -71,7 +71,10 @@ public class NpcDefinition
 	public int varpIndex = -1;
 	public boolean isInteractable = true;
 	public boolean rotationFlag = true;
-	public boolean isPet;
+	public boolean isFollower;
+	public boolean lowPriorityFollowerOps;
 	public Map<Integer, Object> params;
 	public int category;
+	public int height = -1;
+	public int[] stats = {1, 1, 1, 1, 1, 1};
 }

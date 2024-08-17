@@ -33,6 +33,7 @@ public class ItemDefinition
 	public final int id;
 
 	public String name = "null";
+	public String examine;
 	public String unknown1;
 
 	public int resizeX = 128;
@@ -70,6 +71,7 @@ public class ItemDefinition
 	public int[] countObj;
 
 	public String[] options = new String[]{null, null, "Take", null, null};
+	public String[][] subops;
 
 	public String[] interfaceOptions = new String[]{null, null, null, null, "Drop"};
 
