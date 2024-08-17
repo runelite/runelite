@@ -97,6 +97,9 @@ public class FarmingContractManager
 	@Getter
 	private long completionTime;
 
+	@Getter
+	private int contractCropStage;
+
 	public void setContract(@Nullable Produce contract)
 	{
 		this.contract = contract;
@@ -238,6 +241,7 @@ public class FarmingContractManager
 		boolean hasDeadPatch = false;
 		completionTime = Long.MAX_VALUE;
 		contractCropState = null;
+		contractCropStage = 0;
 		for (FarmingPatch patch : farmingWorld.getFarmingGuildRegion().getPatches())
 		{
 			if (patch.getImplementation() != patchImplementation)
@@ -298,6 +302,7 @@ public class FarmingContractManager
 				}
 
 				contractCropState = state;
+				contractCropStage = prediction.getStage();
 				if (contractCropState == CropState.DISEASED)
 				{
 					hasDiseasedPatch = true;
