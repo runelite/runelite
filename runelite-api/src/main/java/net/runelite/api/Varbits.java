@@ -892,4 +892,65 @@ public final class Varbits
 
 	public static final int SPELLBOOK = 4070;
 	public static final int SPELLBOOK_SUBMENU = 9730;
+
+	/**
+	 * Observatory agility shortcut state
+	 * <p>
+	 * 0 = locked,
+	 * 1 = unlocked
+	 */
+	public static final int OBSERVATORY_SHORTCUT_UNLOCKED = 5810;
+
+	/**
+	 * If the player has unlocked the Darkmeyer wall shortcut
+	 * <p>
+	 * 0 = locked,
+	 * 1 = unlocked
+	 */
+	public static final int DARKMEYER_WALL_SHORTCUT_WEST = 10449;
+	public static final int DARKMEYER_WALL_SHORTCUT_EAST = 10450;
+
+	/**
+	 * If the player has unlocked the Saradomin God wars area
+	 * <p>
+	 * 0 = locked,
+	 * 1 = unlocked
+	 */
+	public static final int GWD_SARADOMIN_ROPE_1 = 3967;
+	public static final int GWD_SARADOMIN_ROPE_2 = 3968;
+
+	/**
+	 * If the player has unlocked the Viyeldi Caves rope shortcut
+	 * <p>
+	 * 0 = locked,
+	 * 1 = unlocked
+	 */
+	public static final int VIYELDI_CAVES_ROPE_SHORTCUT = 11799;
+
+	/**
+	 * If the player has unlocked the Meiyerditch Laboratories advanced shortcut
+	 * <p>
+	 * 0 = locked,
+	 * 1 = unlocked
+	 */
+	public static final int MEIYERDITCH_LAB_ADVANCED_TUNNELS_SHORTCUT = 13719;
+
+	/**
+	 * The state of Path of Glouphrie quest
+	 * <p>
+	 * 0 = not started,
+	 * 0 &lt; value &lt; 50 = in progress,
+	 * 50 = complete
+	 */
+	public static final int QUEST_PATH_OF_GLOUPHRIE = 15288;
+
+	/**
+	 * The state of Making Friends With My Arm quest
+	 * <p>
+	 * 0 = not started,
+	 * 0 &lt; value &lt; 200 = in progress,
+	 * 200 = complete
+	 */
+	public static final int QUEST_MAKING_FRIENDS_WITH_MY_ARM = 6528;
+
 }
