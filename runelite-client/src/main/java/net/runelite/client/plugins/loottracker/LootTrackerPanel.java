@@ -94,42 +94,6 @@ class LootTrackerPanel extends PluginPanel
 	private static final String RESET_ONE_WARNING_TEXT =
 		"This will delete one kill.";
 
-	// When there is no loot, display this
-	private final PluginErrorPanel errorPanel = new PluginErrorPanel();
-
-	// Handle loot boxes
-	private final JPanel logsContainer = new JPanel();
-
-	// Handle overall session data
-	private final JPanel overallPanel;
-	private final JLabel overallKillsLabel = new JLabel();
-	private final JLabel overallGpLabel = new JLabel();
-	private final JLabel overallIcon = new JLabel();
-
-	// Details and navigation
-	private final JPanel actionsPanel;
-	private final JLabel detailsTitle = new JLabel();
-	private final JButton backBtn = new JButton();
-	private final JToggleButton viewHiddenBtn = new JToggleButton();
-	private final JRadioButton singleLootBtn = new JRadioButton();
-	private final JRadioButton groupedLootBtn = new JRadioButton();
-	private final JButton collapseBtn = new JButton();
-
-	// Aggregate of all kills
-	private final List<LootTrackerRecord> aggregateRecords = new ArrayList<>();
-	// Individual records for the individual kills this session
-	private final List<LootTrackerRecord> sessionRecords = new ArrayList<>();
-	private final List<LootTrackerBox> boxes = new ArrayList<>();
-
-	private final ItemManager itemManager;
-	private final LootTrackerPlugin plugin;
-	private final LootTrackerConfig config;
-
-	private boolean groupLoot;
-	private boolean hideIgnoredItems;
-	private String currentView;
-	private LootRecordType currentType;
-
 	static
 	{
 		final BufferedImage singleLootImg = ImageUtil.loadImageResource(LootTrackerPlugin.class, "single_loot_icon.png");
@@ -161,6 +125,36 @@ class LootTrackerPanel extends PluginPanel
 		EXPAND_ICON = new ImageIcon(expandedImg);
 	}
 
+	// When there is no loot, display this
+	private final PluginErrorPanel errorPanel = new PluginErrorPanel();
+	// Handle loot boxes
+	private final JPanel logsContainer = new JPanel();
+	// Handle overall session data
+	private final JPanel overallPanel;
+	private final JLabel overallKillsLabel = new JLabel();
+	private final JLabel overallGpLabel = new JLabel();
+	private final JLabel overallIcon = new JLabel();
+	// Details and navigation
+	private final JPanel actionsPanel;
+	private final JLabel detailsTitle = new JLabel();
+	private final JButton backBtn = new JButton();
+	private final JToggleButton viewHiddenBtn = new JToggleButton();
+	private final JRadioButton singleLootBtn = new JRadioButton();
+	private final JRadioButton groupedLootBtn = new JRadioButton();
+	private final JButton collapseBtn = new JButton();
+	// Aggregate of all kills
+	private final List<LootTrackerRecord> aggregateRecords = new ArrayList<>();
+	// Individual records for the individual kills this session
+	private final List<LootTrackerRecord> sessionRecords = new ArrayList<>();
+	private final List<LootTrackerBox> boxes = new ArrayList<>();
+	private final ItemManager itemManager;
+	private final LootTrackerPlugin plugin;
+	private final LootTrackerConfig config;
+	private boolean groupLoot;
+	private boolean hideIgnoredItems;
+	private String currentView;
+	private LootRecordType currentType;
+
 	LootTrackerPanel(final LootTrackerPlugin plugin, final ItemManager itemManager, final LootTrackerConfig config)
 	{
 		this.itemManager = itemManager;
@@ -189,6 +183,12 @@ class LootTrackerPanel extends PluginPanel
 		// Add error pane
 		errorPanel.setContent("Loot tracker", "You have not received any loot yet.");
 		add(errorPanel);
+	}
+
+	private static String htmlLabel(String key, long value)
+	{
+		final String valueStr = QuantityFormatter.quantityToStackSize(value);
+		return String.format(HTML_LABEL_TEMPLATE, ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR), key, valueStr);
 	}
 
 	/**
@@ -646,6 +646,7 @@ class LootTrackerPanel extends PluginPanel
 	{
 		long overallKills = 0;
 		long overallGe = 0;
+		long overallLa = 0;
 		long overallHa = 0;
 
 		Iterable<LootTrackerRecord> records = sessionRecords;
@@ -677,6 +678,7 @@ class LootTrackerPanel extends PluginPanel
 				}
 
 				overallGe += item.getTotalGePrice();
+				overallLa += item.getTotalLaPrice();
 				overallHa += item.getTotalHaPrice();
 			}
 
@@ -687,21 +689,31 @@ class LootTrackerPanel extends PluginPanel
 		}
 
 		String priceType = "";
-		if (config.showPriceType())
+		long overallValue = overallGe;
+		switch (config.priceType())
 		{
-			priceType = config.priceType() == LootTrackerPriceType.HIGH_ALCHEMY ? "HA " : "GE ";
+			case GRAND_EXCHANGE:
+				priceType = "GE ";
+				break;
+			case LOW_ALCHEMY:
+				priceType = "LA ";
+				overallValue = overallLa;
+				break;
+			case HIGH_ALCHEMY:
+				priceType = "HA ";
+				overallValue = overallHa;
+				break;
+		}
+		if (!config.showPriceType())
+		{
+			priceType = "";
 		}
 
 		overallKillsLabel.setText(htmlLabel("Total count: ", overallKills));
-		overallGpLabel.setText(htmlLabel("Total " + priceType + "value: ", config.priceType() == LootTrackerPriceType.HIGH_ALCHEMY ? overallHa : overallGe));
+		overallGpLabel.setText(htmlLabel("Total " + priceType + "value: ", overallValue));
 		overallGpLabel.setToolTipText("<html>Total GE price: " + QuantityFormatter.formatNumber(overallGe)
+			+ "<br>Total LA price: " + QuantityFormatter.formatNumber(overallLa)
 			+ "<br>Total HA price: " + QuantityFormatter.formatNumber(overallHa) + "</html>");
 		updateCollapseText();
-	}
-
-	private static String htmlLabel(String key, long value)
-	{
-		final String valueStr = QuantityFormatter.quantityToStackSize(value);
-		return String.format(HTML_LABEL_TEMPLATE, ColorUtil.toHexColor(ColorScheme.LIGHT_GRAY_COLOR), key, valueStr);
 	}
 }

@@ -76,14 +76,12 @@ class LootTrackerBox extends JPanel
 	private final LootRecordType lootRecordType;
 	private final LootTrackerPriceType priceType;
 	private final boolean showPriceType;
-
-	private int kills;
 	@Getter
 	private final List<LootTrackerItem> items = new ArrayList<>();
-
-	private long totalPrice;
 	private final boolean hideIgnoredItems;
 	private final BiConsumer<String, Boolean> onItemToggle;
+	private int kills;
+	private long totalPrice;
 
 	LootTrackerBox(
 		final ItemManager itemManager,
@@ -150,6 +148,49 @@ class LootTrackerBox extends JPanel
 		popupMenu.add(toggle);
 	}
 
+	private static String buildToolTip(LootTrackerItem item)
+	{
+		final String name = item.getName();
+		final int quantity = item.getQuantity();
+		final long gePrice = item.getTotalGePrice();
+		final long laPrice = item.getTotalLaPrice();
+		final long haPrice = item.getTotalHaPrice();
+		final String ignoredLabel = item.isIgnored() ? " - Ignored" : "";
+		final StringBuilder sb = new StringBuilder("<html>");
+		sb.append(name).append(" x ").append(QuantityFormatter.formatNumber(quantity)).append(ignoredLabel);
+		if (item.getId() == ItemID.COINS_995)
+		{
+			sb.append("</html>");
+			return sb.toString();
+		}
+
+		sb.append("<br>GE: ").append(QuantityFormatter.quantityToStackSize(gePrice));
+		if (quantity > 1)
+		{
+			sb.append(" (").append(QuantityFormatter.quantityToStackSize(item.getGePrice())).append(" ea)");
+		}
+
+		if (item.getId() == ItemID.PLATINUM_TOKEN)
+		{
+			sb.append("</html>");
+			return sb.toString();
+		}
+
+		sb.append("<br>LA: ").append(QuantityFormatter.quantityToStackSize(laPrice));
+		if (quantity > 1)
+		{
+			sb.append(" (").append(QuantityFormatter.quantityToStackSize(item.getLaPrice())).append(" ea)");
+		}
+
+		sb.append("<br>HA: ").append(QuantityFormatter.quantityToStackSize(haPrice));
+		if (quantity > 1)
+		{
+			sb.append(" (").append(QuantityFormatter.quantityToStackSize(item.getHaPrice())).append(" ea)");
+		}
+		sb.append("</html>");
+		return sb.toString();
+	}
+
 	/**
 	 * Returns total amount of kills
 	 *
@@ -174,7 +215,7 @@ class LootTrackerBox extends JPanel
 	/**
 	 * Checks if this box matches specified id and type
 	 *
-	 * @param id other record id
+	 * @param id   other record id
 	 * @param type other record type
 	 * @return true if match is made
 	 */
@@ -210,14 +251,14 @@ class LootTrackerBox extends JPanel
 				LootTrackerItem i = items.get(idx);
 				if (mappedItemId == i.getId())
 				{
-					items.set(idx, new LootTrackerItem(i.getId(), i.getName(), i.getQuantity() + item.getQuantity(), i.getGePrice(), i.getHaPrice(), i.isIgnored()));
+					items.set(idx, new LootTrackerItem(i.getId(), i.getName(), i.getQuantity() + item.getQuantity(), i.getGePrice(), i.getLaPrice(), i.getHaPrice(), i.isIgnored()));
 					continue outer;
 				}
 			}
 
 			final LootTrackerItem mappedItem = mappedItemId == item.getId()
 				? item // reuse existing item
-				: new LootTrackerItem(mappedItemId, item.getName(), item.getQuantity(), item.getGePrice(), item.getHaPrice(), item.isIgnored());
+				: new LootTrackerItem(mappedItemId, item.getName(), item.getQuantity(), item.getGePrice(), item.getLaPrice(), item.getHaPrice(), item.isIgnored());
 			items.add(mappedItem);
 		}
 	}
@@ -229,7 +270,18 @@ class LootTrackerBox extends JPanel
 		String priceTypeString = " ";
 		if (showPriceType)
 		{
-			priceTypeString = priceType == LootTrackerPriceType.HIGH_ALCHEMY ? "HA: " : "GE: ";
+			switch (priceType)
+			{
+				case GRAND_EXCHANGE:
+					priceTypeString = "GE: ";
+					break;
+				case HIGH_ALCHEMY:
+					priceTypeString = "HA: ";
+					break;
+				case LOW_ALCHEMY:
+					priceTypeString = "LA: ";
+					break;
+			}
 		}
 
 		priceLabel.setText(priceTypeString + QuantityFormatter.quantityToStackSize(totalPrice) + " gp");
@@ -300,9 +352,19 @@ class LootTrackerBox extends JPanel
 			return;
 		}
 
-		ToLongFunction<LootTrackerItem> getPrice = priceType == LootTrackerPriceType.HIGH_ALCHEMY
-			? LootTrackerItem::getTotalHaPrice
-			: LootTrackerItem::getTotalGePrice;
+		ToLongFunction<LootTrackerItem> getPrice = null;
+		switch (priceType)
+		{
+			case GRAND_EXCHANGE:
+				getPrice = LootTrackerItem::getTotalGePrice;
+				break;
+			case LOW_ALCHEMY:
+				getPrice = LootTrackerItem::getTotalLaPrice;
+				break;
+			case HIGH_ALCHEMY:
+				getPrice = LootTrackerItem::getTotalHaPrice;
+				break;
+		}
 
 		totalPrice = items.stream()
 			.mapToLong(getPrice)
@@ -366,41 +428,5 @@ class LootTrackerBox extends JPanel
 		}
 
 		itemContainer.revalidate();
-	}
-
-	private static String buildToolTip(LootTrackerItem item)
-	{
-		final String name = item.getName();
-		final int quantity = item.getQuantity();
-		final long gePrice = item.getTotalGePrice();
-		final long haPrice = item.getTotalHaPrice();
-		final String ignoredLabel = item.isIgnored() ? " - Ignored" : "";
-		final StringBuilder sb = new StringBuilder("<html>");
-		sb.append(name).append(" x ").append(QuantityFormatter.formatNumber(quantity)).append(ignoredLabel);
-		if (item.getId() == ItemID.COINS_995)
-		{
-			sb.append("</html>");
-			return sb.toString();
-		}
-
-		sb.append("<br>GE: ").append(QuantityFormatter.quantityToStackSize(gePrice));
-		if (quantity > 1)
-		{
-			sb.append(" (").append(QuantityFormatter.quantityToStackSize(item.getGePrice())).append(" ea)");
-		}
-
-		if (item.getId() == ItemID.PLATINUM_TOKEN)
-		{
-			sb.append("</html>");
-			return sb.toString();
-		}
-
-		sb.append("<br>HA: ").append(QuantityFormatter.quantityToStackSize(haPrice));
-		if (quantity > 1)
-		{
-			sb.append(" (").append(QuantityFormatter.quantityToStackSize(item.getHaPrice())).append(" ea)");
-		}
-		sb.append("</html>");
-		return sb.toString();
 	}
 }

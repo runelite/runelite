@@ -74,7 +74,7 @@ public interface LootTrackerConfig extends Config
 	@ConfigItem(
 		keyName = "showPriceType",
 		name = "Show Price Type",
-		description = "Whether to show a GE: or HA: next to the total values in the tracker"
+		description = "Whether to show a GE:, LA:, or HA: next to the total values in the tracker"
 	)
 	default boolean showPriceType()
 	{
