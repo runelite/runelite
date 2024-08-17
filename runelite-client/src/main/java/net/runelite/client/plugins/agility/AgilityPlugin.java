@@ -48,6 +48,7 @@ import static net.runelite.api.Skill.AGILITY;
 import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
 import net.runelite.api.TileObject;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.DecorativeObjectDespawned;
 import net.runelite.api.events.DecorativeObjectSpawned;
@@ -222,11 +223,29 @@ public class AgilityPlugin extends Plugin
 
 		log.debug("Gained {} xp at {}", skillGained, client.getLocalPlayer().getWorldLocation());
 
+		if (!config.showLapCount())
+		{
+			return;
+		}
+
 		// Get course
 		Courses course = Courses.getCourse(client.getLocalPlayer().getWorldLocation().getRegionID());
-		if (course == null
-			|| !config.showLapCount()
-			|| Arrays.stream(course.getCourseEndWorldPoints()).noneMatch(wp -> wp.equals(client.getLocalPlayer().getWorldLocation())))
+		if (course == null)
+		{
+			if (isInSepulcher())
+			{
+				if (session == null || session.getCourse() != Courses.SEPULCHRE)
+				{
+					session = new AgilitySession(Courses.SEPULCHRE);
+				}
+
+				session.addFloorXp(skillGained);
+			}
+
+			return;
+		}
+
+		if (Arrays.stream(course.getCourseEndWorldPoints()).noneMatch(wp -> wp.equals(client.getLocalPlayer().getWorldLocation())))
 		{
 			return;
 		}
@@ -277,7 +296,14 @@ public class AgilityPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick tick)
 	{
-		if (isInAgilityArena())
+		if (session != null && session.getCourse() == Courses.SEPULCHRE)
+		{
+			if (!isInSepulcher() && session.getFloorXp() > 0)
+			{
+				session.incrementLapCount(client, xpTrackerService);
+			}
+		}
+		else if (isInAgilityArena())
 		{
 			// Hint arrow has no plane, and always returns the current plane
 			WorldPoint newTicketPosition = client.getHintArrowPoint();
@@ -298,6 +324,11 @@ public class AgilityPlugin extends Plugin
 				}
 			}
 		}
+	}
+
+	private boolean isInSepulcher()
+	{
+		return client.getVarbitValue(Varbits.SEPULCHRE_TOTAL_TIME) > 0;
 	}
 
 	private boolean isInAgilityArena()

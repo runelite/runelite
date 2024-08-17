@@ -25,13 +25,13 @@
 package net.runelite.client.plugins.agility;
 
 import com.google.common.collect.EvictingQueue;
+import java.time.Duration;
+import java.time.Instant;
 import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
 import net.runelite.client.plugins.xptracker.XpTrackerService;
-import java.time.Duration;
-import java.time.Instant;
 
 @Getter
 @Setter
@@ -43,10 +43,16 @@ class AgilitySession
 	private int lapsTillGoal;
 	private final EvictingQueue<Duration> lastLapTimes = EvictingQueue.create(30);
 	private int lapsPerHour;
+	private int floorXp;
 
 	AgilitySession(Courses course)
 	{
 		this.course = course;
+	}
+
+	void addFloorXp(int xp)
+	{
+		floorXp += xp;
 	}
 
 	void incrementLapCount(Client client, XpTrackerService xpTrackerService)
@@ -64,6 +70,11 @@ class AgilitySession
 			// agility pyramid has a bonus exp drop on the last obstacle that scales with player level and caps at 1000
 			// the bonus is not already accounted for in the total exp number in the courses enum
 			courseTotalExp += Math.min(300 + 8 * client.getRealSkillLevel(Skill.AGILITY), 1000);
+		}
+		else if (floorXp > 0)
+		{
+			courseTotalExp = floorXp;
+			floorXp = 0;
 		}
 
 		lapsTillGoal = goalRemainingXp > 0 ? (int) Math.ceil(goalRemainingXp / courseTotalExp) : 0;
