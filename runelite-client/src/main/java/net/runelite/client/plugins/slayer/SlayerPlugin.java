@@ -177,6 +177,7 @@ public class SlayerPlugin extends Plugin
 	private Instant infoTimer;
 	private boolean loginFlag;
 	private final List<Pattern> targetNames = new ArrayList<>();
+	private final List<Pattern> excludeNames = new ArrayList<>();
 
 	private String[] taskLocations;
 
@@ -549,9 +550,19 @@ public class SlayerPlugin extends Plugin
 			.replace('\u00A0', ' ')
 			.toLowerCase();
 
+		for (Pattern exclude : excludeNames)
+		{
+			final Matcher targetMatcher = exclude.matcher(name);
+			if (targetMatcher.find())
+			{
+				return false;
+			}
+		}
+		
 		for (Pattern target : targetNames)
 		{
 			final Matcher targetMatcher = target.matcher(name);
+
 			if (targetMatcher.find()
 				&& (ArrayUtils.contains(composition.getActions(), "Attack")
 					// Pick action is for zygomite-fungi
@@ -566,6 +577,7 @@ public class SlayerPlugin extends Plugin
 	private void rebuildTargetNames(Task task)
 	{
 		targetNames.clear();
+		excludeNames.clear();
 
 		if (task != null)
 		{
@@ -574,6 +586,11 @@ public class SlayerPlugin extends Plugin
 				.forEach(targetNames::add);
 
 			targetNames.add(targetNamePattern(taskName.replaceAll("s$", "")));
+			
+			for (String exclude: task.getExcludeNames())
+			{
+				excludeNames.add(targetNamePattern(exclude));
+			}
 		}
 	}
 
