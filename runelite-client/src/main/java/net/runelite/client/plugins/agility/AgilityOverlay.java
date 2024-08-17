@@ -37,7 +37,9 @@ import net.runelite.api.Client;
 import net.runelite.api.NPC;
 import net.runelite.api.Point;
 import net.runelite.api.Tile;
+import net.runelite.api.TileObject;
 import net.runelite.api.coords.LocalPoint;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.game.AgilityShortcut;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -72,6 +74,27 @@ class AgilityOverlay extends Overlay
 		Point mousePosition = client.getMouseCanvasPosition();
 		final List<Tile> marksOfGrace = plugin.getMarksOfGrace();
 		final Tile stickTile = plugin.getStickTile();
+
+		if (config.highlightDispenser() && plugin.isAgilityArenaTicketAvailable())
+		{
+			WorldPoint dispenserPoint = plugin.getAgilityArenaTicketDispenser();
+			if (dispenserPoint != null)
+			{
+				TileObject dispenser = plugin.getAgilityArenaTicketDispensers().get(dispenserPoint);
+				if (dispenser != null)
+				{
+					Shape clickbox = dispenser.getClickbox();
+					if (clickbox != null)
+					{
+						Color color = config.dispenserColor();
+						graphics.setColor(color);
+						graphics.draw(clickbox);
+						graphics.setColor(ColorUtil.colorWithAlpha(color, color.getAlpha() / 5));
+						graphics.fill(clickbox);
+					}
+				}
+			}
+		}
 
 		plugin.getObstacles().forEach((object, obstacle) ->
 		{
