@@ -31,6 +31,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -97,10 +98,19 @@ public class FishingPlugin extends Plugin
 	private final Map<Integer, MinnowSpot> minnowSpots = new HashMap<>();
 
 	@Getter(AccessLevel.PACKAGE)
+	private final Map<Integer, TimerSpot> timerSpots = new HashMap<>();
+
+	@Getter(AccessLevel.PACKAGE)
 	private final List<NPC> fishingSpots = new ArrayList<>();
 
 	@Getter(AccessLevel.PACKAGE)
 	private FishingSpot currentSpot;
+
+	@Getter(AccessLevel.PACKAGE)
+	private final Duration TIMER_MAX = Duration.ofSeconds(318);
+
+	@Getter(AccessLevel.PACKAGE)
+	private final Duration TIMER_MIN = Duration.ofSeconds(168);
 
 	@Inject
 	private Client client;
@@ -147,6 +157,7 @@ public class FishingPlugin extends Plugin
 		overlayManager.remove(fishingSpotMinimapOverlay);
 		fishingSpots.clear();
 		minnowSpots.clear();
+		timerSpots.clear();
 		currentSpot = null;
 		trawlerStartTime = null;
 	}
@@ -159,6 +170,7 @@ public class FishingPlugin extends Plugin
 		{
 			fishingSpots.clear();
 			minnowSpots.clear();
+			timerSpots.clear();
 		}
 	}
 
@@ -315,6 +327,23 @@ public class FishingPlugin extends Plugin
 					minnowSpots.put(id, new MinnowSpot(npc.getWorldLocation(), Instant.now()));
 				}
 			}
+
+			if (FishingSpot.findSpot(npc.getId()) != FishingSpot.MINNOW &&
+				FishingSpot.findSpot(npc.getId()) != FishingSpot.KARAMBWAN &&
+				FishingSpot.findSpot(npc.getId()) != FishingSpot.ANGLERFISH &&
+				FishingSpot.findSpot(npc.getId()) != FishingSpot.COMMON_TENCH &&
+				FishingSpot.findSpot(npc.getId()) != FishingSpot.DARK_CRAB &&
+				config.showSpotTimers())
+			{
+
+				final int id = npc.getIndex();
+				final TimerSpot timerSpot = timerSpots.get(id);
+
+				if (timerSpot == null || !timerSpot.getLoc().equals(npc.getWorldLocation()))
+				{
+					timerSpots.put(id, new TimerSpot(npc.getWorldLocation(), Instant.now()));
+				}
+			}
 		}
 
 		updateTrawlerTimer();
@@ -346,6 +375,20 @@ public class FishingPlugin extends Plugin
 		if (minnowSpot != null)
 		{
 			log.debug("Minnow spot {} despawned", npc);
+		}
+
+		Iterator<Integer> it = timerSpots.keySet().iterator();
+		while (it.hasNext())
+		{
+			TimerSpot spot = timerSpots.get(it.next());
+			if (spot != null)
+			{
+				Duration duration = Duration.between(spot.getTime(), Instant.now());
+				if (duration.compareTo(TIMER_MAX) > 0)
+				{
+					it.remove();
+				}
+			}
 		}
 	}
 
