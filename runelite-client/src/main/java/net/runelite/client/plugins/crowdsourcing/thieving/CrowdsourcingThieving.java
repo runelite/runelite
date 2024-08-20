@@ -47,6 +47,8 @@ public class CrowdsourcingThieving
 	private static final String BLACKJACK_FAIL = "Your blow only glances off the bandit's head.";
 	private static final Pattern PICKPOCKET_SUCCESS = Pattern.compile("You pick .*'s pocket\\.");
 	private static final Pattern PICKPOCKET_FAIL = Pattern.compile("You fail to pick .*'s pocket\\.");
+	private static final String LOCKPICK_SUCCESS = "You manage to pick the lock.";
+	private static final String LOCKPICK_FAIL = "You fail to pick the lock.";
 
 	@Inject
 	private Client client;
@@ -80,6 +82,18 @@ public class CrowdsourcingThieving
 			equipmentContainer.contains(ItemID.MAX_CAPE);
 	}
 
+	private boolean hasLockpick()
+	{
+		ItemContainer inventoryContainer = client.getItemContainer(InventoryID.INVENTORY);
+		if (inventoryContainer == null)
+		{
+			return false;
+		}
+
+		return inventoryContainer.contains(ItemID.LOCKPICK) ||
+			inventoryContainer.contains(ItemID.LOCKPICK_28415);
+	}
+
 	private int getArdougneDiary()
 	{
 		int easy = client.getVarbitValue(Varbits.DIARY_ARDOUGNE_EASY);
@@ -109,6 +123,15 @@ public class CrowdsourcingThieving
 			boolean thievingCape = hasThievingCape();
 			int thievingLevel = client.getBoostedSkillLevel(Skill.THIEVING);
 			PickpocketData data = new PickpocketData(thievingLevel, lastPickpocketTarget, message, location, silence, thievingCape, ardougneDiary);
+			manager.storeEvent(data);
+		}
+
+		if (LOCKPICK_SUCCESS.equals(message) || LOCKPICK_FAIL.equals(message))
+		{
+			WorldPoint location = client.getLocalPlayer().getWorldLocation();
+			int thievingLevel = client.getBoostedSkillLevel(Skill.THIEVING);
+			boolean lockpick = hasLockpick();
+			LockpickData data = new LockpickData(thievingLevel, message, location, lockpick);
 			manager.storeEvent(data);
 		}
 	}
