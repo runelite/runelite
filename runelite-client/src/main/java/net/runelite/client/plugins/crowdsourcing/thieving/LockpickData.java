@@ -33,8 +33,8 @@ import net.runelite.api.coords.WorldPoint;
 @AllArgsConstructor
 public class LockpickData
 {
-    private final int level;
-    private final String message;
-    private final WorldPoint location;
-    private final boolean lockpick;
+	private final int level;
+	private final String message;
+	private final WorldPoint location;
+	private final boolean lockpick;
 }
