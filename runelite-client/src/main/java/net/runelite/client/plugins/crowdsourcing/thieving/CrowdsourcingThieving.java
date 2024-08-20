@@ -91,8 +91,7 @@ public class CrowdsourcingThieving
 			return false;
 		}
 
-		return inventoryContainer.contains(ItemID.LOCKPICK) ||
-			inventoryContainer.contains(ItemID.LOCKPICK_28415);
+		return inventoryContainer.contains(ItemID.LOCKPICK);
 	}
 
 	private int getArdougneDiary()
