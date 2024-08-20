@@ -49,6 +49,7 @@ public class CrowdsourcingThieving
 	private static final Pattern PICKPOCKET_FAIL = Pattern.compile("You fail to pick .*'s pocket\\.");
 	private static final String LOCKPICK_SUCCESS = "You manage to pick the lock.";
 	private static final String LOCKPICK_FAIL = "You fail to pick the lock.";
+	private static final String LOCKPICK_TRAP = "You have activated a trap on the lock.";
 
 	@Inject
 	private Client client;
@@ -106,7 +107,8 @@ public class CrowdsourcingThieving
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
-		if (event.getType() != ChatMessageType.SPAM)
+		ChatMessageType eventType = event.getType();
+		if ((eventType != ChatMessageType.SPAM) && (eventType != ChatMessageType.GAMEMESSAGE))
 		{
 			return;
 		}
@@ -126,7 +128,9 @@ public class CrowdsourcingThieving
 			manager.storeEvent(data);
 		}
 
-		if (LOCKPICK_SUCCESS.equals(message) || LOCKPICK_FAIL.equals(message))
+		if (LOCKPICK_SUCCESS.equals(message)
+			|| LOCKPICK_FAIL.equals(message)
+			|| LOCKPICK_TRAP.equals(message))
 		{
 			WorldPoint location = client.getLocalPlayer().getWorldLocation();
 			int thievingLevel = client.getBoostedSkillLevel(Skill.THIEVING);
