@@ -103,7 +103,8 @@ public class SmeltingPlugin extends Plugin
 			}
 			session.increaseBarsSmelted();
 		}
-		else if (event.getMessage().startsWith("The Varrock platebody enabled you to smelt your next ore")) {
+		else if (event.getMessage().startsWith("The Varrock platebody enabled you to smelt your next ore"))
+		{
 			if (session == null)
 			{
 				session = new SmeltingSession();
