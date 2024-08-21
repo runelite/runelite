@@ -130,6 +130,39 @@ public interface TimersAndBuffsConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "showOverloadBoost",
+			name = "Overload boost timer",
+			description = "Configures whether overload boost timer is displayed",
+			section = consumablesSection
+	)
+	default boolean showOverloadBoost()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "showSalts",
+			name = "Smelling salts timer",
+			description = "Configures whether smelling salts timer is displayed",
+			section = consumablesSection
+	)
+	default boolean showSalts()
+	{
+		return true;
+	}
+
+	@ConfigItem(
+			keyName = "showSmellingSaltBoost",
+			name = "Smelling Salt Boost Timer",
+			description = "Configures whether smelling salt boost timer is displayed",
+			section = consumablesSection
+	)
+	default boolean showSmellingSaltBoost()
+	{
+		return true;
+	}
+
+	@ConfigItem(
 		keyName = "showMenaphiteRemedy",
 		name = "Menaphite remedy timer",
 		description = "Configures whether Menaphite remedy timer is displayed",

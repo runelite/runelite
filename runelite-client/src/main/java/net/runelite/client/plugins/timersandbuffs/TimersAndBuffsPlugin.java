@@ -349,22 +349,30 @@ public class TimersAndBuffsPlugin extends Plugin
 		}
 
 		if ((event.getVarbitId() == Varbits.NMZ_OVERLOAD_REFRESHES_REMAINING
-			|| event.getVarbitId() == Varbits.COX_OVERLOAD_REFRESHES_REMAINING) && config.showOverload())
+			|| event.getVarbitId() == Varbits.COX_OVERLOAD_REFRESHES_REMAINING))
 		{
-			final int overloadVarb = event.getValue();
-			final int tickCount = client.getTickCount();
-
-			if (overloadVarb <= 0)
+			if(config.showOverloadBoost())
 			{
-				nextOverloadRefreshTick = -1;
-			}
-			else if (nextOverloadRefreshTick - tickCount <= 0)
-			{
-				nextOverloadRefreshTick = tickCount + OVERLOAD_TICK_LENGTH;
+				createGameTimer(OVERLOAD_BOOST, Duration.ofSeconds(15));
 			}
 
-			GameTimer overloadTimer = client.getVarbitValue(Varbits.IN_RAID) == 1 ? OVERLOAD_RAID : OVERLOAD;
-			updateVarTimer(overloadTimer, overloadVarb, i -> nextOverloadRefreshTick - tickCount + (i - 1) * OVERLOAD_TICK_LENGTH);
+			if(config.showOverload())
+			{
+				final int overloadVarb = event.getValue();
+				final int tickCount = client.getTickCount();
+
+				if (overloadVarb <= 0)
+				{
+					nextOverloadRefreshTick = -1;
+				}
+				else if (nextOverloadRefreshTick - tickCount <= 0)
+				{
+					nextOverloadRefreshTick = tickCount + OVERLOAD_TICK_LENGTH;
+				}
+
+				GameTimer overloadTimer = client.getVarbitValue(Varbits.IN_RAID) == 1 ? OVERLOAD_RAID : OVERLOAD;
+				updateVarTimer(overloadTimer, overloadVarb, i -> nextOverloadRefreshTick - tickCount + (i - 1) * OVERLOAD_TICK_LENGTH);
+			}
 		}
 
 		if (event.getVarbitId() == Varbits.TELEBLOCK && config.showTeleblock())
@@ -559,9 +567,14 @@ public class TimersAndBuffsPlugin extends Plugin
 			updateVarTimer(DIVINE_BATTLEMAGE, event.getValue(), IntUnaryOperator.identity());
 		}
 
-		if (event.getVarbitId() == Varbits.BUFF_STAT_BOOST && config.showOverload())
+		if (event.getVarbitId() == Varbits.BUFF_STAT_BOOST )
 		{
-			updateVarTimer(SMELLING_SALTS, event.getValue(), i -> i * 25);
+			if(config.showSmellingSaltBoost()){
+				createGameTimer(SMELLING_SALTS_BOOST, Duration.ofSeconds(15));
+			}
+			if(config.showSalts()) {
+				updateVarTimer(SMELLING_SALTS, event.getValue(), i -> i * 25);
+			}
 		}
 
 		if (event.getVarbitId() == Varbits.MENAPHITE_REMEDY && config.showMenaphiteRemedy())
@@ -646,11 +659,24 @@ public class TimersAndBuffsPlugin extends Plugin
 			removeVarTimer(STAMINA);
 		}
 
+		if(!config.showSalts()){
+			removeGameTimer(SMELLING_SALTS);
+		}
+
+		if(!config.showOverloadBoost())
+		{
+			removeGameTimer(OVERLOAD_BOOST);
+		}
+
+		if(!config.showSmellingSaltBoost())
+		{
+			removeGameTimer(SMELLING_SALTS_BOOST);
+		}
+
 		if (!config.showOverload())
 		{
 			removeGameTimer(OVERLOAD);
 			removeGameTimer(OVERLOAD_RAID);
-			removeGameTimer(SMELLING_SALTS);
 		}
 
 		if (!config.showPrayerEnhance())
