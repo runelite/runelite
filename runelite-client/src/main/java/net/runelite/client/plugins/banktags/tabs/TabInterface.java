@@ -1213,6 +1213,10 @@ public class TabInterface
 		parent.setChildren(Arrays.copyOf(parent.getChildren(), TAGTAB_CHILD_OFFSET));
 
 		var tabs = tabManager.getTabs();
+		if (config.sortTabsAlphabetically())
+		{
+			tabs.sort((t1, t2) -> t1.getTag().compareToIgnoreCase(t2.getTag()));
+		}
 		for (TagTab tab : tabs)
 		{
 			Widget background = createGraphic(parent, ColorUtil.wrapWithColorTag(tab.getTag(), HILIGHT_COLOR),

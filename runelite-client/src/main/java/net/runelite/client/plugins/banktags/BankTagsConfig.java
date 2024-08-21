@@ -76,6 +76,17 @@ public interface BankTagsConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "sortTabsAlphabetically",
+			name = "Sort Tag Tabs alphabetically",
+			description = "Sort Tabs Tabs alphabetically in ascending order (case-insensitive)",
+			position = 5
+	)
+	default boolean sortTabsAlphabetically()
+	{
+		return false;
+	}
+
+	@ConfigItem(
 		keyName = "position",
 		name = "",
 		description = "",
