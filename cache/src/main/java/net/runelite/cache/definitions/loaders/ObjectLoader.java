@@ -334,6 +334,10 @@ public class ObjectLoader
 		{
 			def.setRandomizeAnimStart(true);
 		}
+		else if (opcode == 90)
+		{
+			def.setDeferAnimChange(true);
+		}
 		else if (opcode == 92)
 		{
 			int varpID = is.readUnsignedShort();

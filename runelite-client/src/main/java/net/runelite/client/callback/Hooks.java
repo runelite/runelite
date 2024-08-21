@@ -52,7 +52,6 @@ import net.runelite.api.Renderable;
 import net.runelite.api.Skill;
 import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.FakeXpDrop;
-import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.PostClientTick;
 import net.runelite.api.events.ScriptCallbackEvent;
@@ -119,7 +118,6 @@ public class Hooks implements Callbacks
 	private Graphics2D stretchedGraphics;
 
 	private long lastCheck;
-	private boolean ignoreNextNpcUpdate;
 	private boolean shouldProcessGameTick;
 
 	private static MainBufferProvider lastMainBufferProvider;
@@ -516,34 +514,10 @@ public class Hooks implements Callbacks
 		}
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
-	{
-		switch (gameStateChanged.getGameState())
-		{
-			case LOGGING_IN:
-			case HOPPING:
-				ignoreNextNpcUpdate = true;
-		}
-	}
-
 	@Override
-	public void updateNpcs()
+	public void serverTick()
 	{
-		if (ignoreNextNpcUpdate)
-		{
-			// After logging in an NPC update happens outside of the normal game tick, which
-			// is sent prior to skills and vars being bursted, so ignore it.
-			ignoreNextNpcUpdate = false;
-			log.debug("Skipping login updateNpc");
-		}
-		else
-		{
-			// The NPC update event seem to run every server tick,
-			// but having the game tick event after all packets
-			// have been processed is typically more useful.
-			shouldProcessGameTick = true;
-		}
+		shouldProcessGameTick = true;
 	}
 
 	@Override

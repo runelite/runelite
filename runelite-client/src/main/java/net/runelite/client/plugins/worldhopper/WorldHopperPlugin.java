@@ -294,7 +294,7 @@ public class WorldHopperPlugin extends Plugin
 	@Subscribe
 	public void onCommandExecuted(CommandExecuted commandExecuted)
 	{
-		if ("hop".equals(commandExecuted.getCommand()))
+		if ("hop".equalsIgnoreCase(commandExecuted.getCommand()))
 		{
 			int worldNumber;
 			try
@@ -369,11 +369,11 @@ public class WorldHopperPlugin extends Plugin
 	@Subscribe
 	public void onVarbitChanged(VarbitChanged varbitChanged)
 	{
-		if (varbitChanged.getVarbitId() == Varbits.WORLDHOPPER_FAVROITE_1
-			|| varbitChanged.getVarbitId() == Varbits.WORLDHOPPER_FAVROITE_2)
+		if (varbitChanged.getVarbitId() == Varbits.WORLDHOPPER_FAVORITE_1
+			|| varbitChanged.getVarbitId() == Varbits.WORLDHOPPER_FAVORITE_2)
 		{
-			favoriteWorld1 = client.getVarbitValue(Varbits.WORLDHOPPER_FAVROITE_1);
-			favoriteWorld2 = client.getVarbitValue(Varbits.WORLDHOPPER_FAVROITE_2);
+			favoriteWorld1 = client.getVarbitValue(Varbits.WORLDHOPPER_FAVORITE_1);
+			favoriteWorld2 = client.getVarbitValue(Varbits.WORLDHOPPER_FAVORITE_2);
 			SwingUtilities.invokeLater(panel::updateList);
 		}
 	}

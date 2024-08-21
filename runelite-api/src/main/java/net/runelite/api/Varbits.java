@@ -90,6 +90,15 @@ public final class Varbits
 	public static final int DIVINE_BATTLEMAGE = 13665;
 
 	/**
+	 * Moonlight potion timer.
+	 * When at least 70 herblore, the moonlight potion's defense effect will be removed when this timer runs out.
+	 * If the player drinks a dose of moonlight potion while already under its effects, desync between
+	 * Varbits.MOONLIGHT_POTION and Varbits.DIVINE_SUPER_DEFENCE can occur, with the latter being 1 tick greater.
+	 * In case of desync, the moonlight defence effect will be removed once Varbits.DIVINE_SUPER_DEFENCE becomes 0.
+	 */
+	public static final int MOONLIGHT_POTION = 10029;
+
+	/**
 	 * Ring of endurance effect timer, stamina duration extended from using the ring of endurance
 	 * Number of game ticks remaining on ring of endurance effect in intervals of 10; for a value X there are 10 * X game ticks remaining.
 	 * Unequipping the ring of endurance will cause this to change to 0.
@@ -369,11 +378,11 @@ public final class Varbits
 	/**
 	 * Blast Mine
 	 */
-	public static final int BLAST_MINE_COAL = 4924;
-	public static final int BLAST_MINE_GOLD = 4925;
-	public static final int BLAST_MINE_MITHRIL = 4926;
-	public static final int BLAST_MINE_ADAMANTITE = 4921;
-	public static final int BLAST_MINE_RUNITE = 4922;
+	public static final int BLAST_MINE_COAL = 10698;
+	public static final int BLAST_MINE_GOLD = 10699;
+	public static final int BLAST_MINE_MITHRIL = 10700;
+	public static final int BLAST_MINE_ADAMANTITE = 10701;
+	public static final int BLAST_MINE_RUNITE = 10702;
 
 	/**
 	 * Raids
@@ -610,9 +619,12 @@ public final class Varbits
 
 	public static final int BANK_REARRANGE_MODE = 3959;
 	public static final int CURRENT_BANK_TAB = 4150;
+	public static final int BANK_QUANTITY_TYPE = 6590;
+	public static final int BANK_REQUESTEDQUANTITY = 3960;
+	public static final int BANK_LEAVEPLACEHOLDERS = 3755;
 
-	public static final int WORLDHOPPER_FAVROITE_1 = 4597;
-	public static final int WORLDHOPPER_FAVROITE_2 = 4598;
+	public static final int WORLDHOPPER_FAVORITE_1 = 4597;
+	public static final int WORLDHOPPER_FAVORITE_2 = 4598;
 
 	/**
 	 * Spell activeness
@@ -697,9 +709,9 @@ public final class Varbits
 	/**
 	 * Muted volume restore values
 	 */
-	public static final int MUTED_MUSIC_VOLUME = 9666;
-	public static final int MUTED_SOUND_EFFECT_VOLUME = 9674;
-	public static final int MUTED_AREA_EFFECT_VOLUME = 9675;
+	public static final int MUTED_MUSIC_VOLUME = 12426;
+	public static final int MUTED_SOUND_EFFECT_VOLUME = 12427;
+	public static final int MUTED_AREA_EFFECT_VOLUME = 12428;
 
 	/**
 	 * Parasite infection status during nightmare of ashihama bossfight
@@ -889,4 +901,19 @@ public final class Varbits
 
 	public static final int SPELLBOOK = 4070;
 	public static final int SPELLBOOK_SUBMENU = 9730;
+
+	/**
+	 * The amount of Curse of the Moons stacks received when fighting the Blue Moon or Eclipse Moon.
+	 * The varbit value remains 0 when fighting the Blood Moon.
+	 * When fighting the Blue Moon, the player's joints will lock up at 18 stacks, which causes their next attack to be
+	 * canceled and 18 stacks to be removed.
+	 * When fighting the Eclipse Moon, the stacks increase the chance of a player's attack glancing off the shield of
+	 * the Eclipse Moon. Glancing attacks reduce the player's max hit by two times the flat armour of the Eclipse Moon.
+	 */
+	public static final int CURSE_OF_THE_MOONS = 9853;
+
+	/**
+	 * The amount of Doom stacks received in the Fortis Colosseum.
+	 */
+	public static final int COLOSSEUM_DOOM = 9801;
 }

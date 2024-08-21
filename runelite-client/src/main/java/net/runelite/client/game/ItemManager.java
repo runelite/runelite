@@ -87,10 +87,12 @@ public class ItemManager
 
 	@Inject(optional = true)
 	@Named("activePriceThreshold")
+	@SuppressWarnings("PMD.ImmutableField")
 	private double activePriceThreshold = 5;
 
 	@Inject(optional = true)
 	@Named("lowPriceThreshold")
+	@SuppressWarnings("PMD.ImmutableField")
 	private int lowPriceThreshold = 1000;
 
 	private Map<Integer, ItemPrice> itemPrices = Collections.emptyMap();
@@ -194,7 +196,7 @@ public class ItemManager
 		itemImages = CacheBuilder.newBuilder()
 			.maximumSize(128L)
 			.expireAfterAccess(1, TimeUnit.HOURS)
-			.build(new CacheLoader<ImageKey, AsyncBufferedImage>()
+			.build(new CacheLoader<>()
 			{
 				@Override
 				public AsyncBufferedImage load(ImageKey key) throws Exception
@@ -206,7 +208,7 @@ public class ItemManager
 		itemOutlines = CacheBuilder.newBuilder()
 			.maximumSize(128L)
 			.expireAfterAccess(1, TimeUnit.HOURS)
-			.build(new CacheLoader<OutlineKey, BufferedImage>()
+			.build(new CacheLoader<>()
 			{
 				@Override
 				public BufferedImage load(OutlineKey key) throws Exception

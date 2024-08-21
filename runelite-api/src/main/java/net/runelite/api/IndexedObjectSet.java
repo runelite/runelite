@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Tyler <https://github.com/tylerthardy>
+ * Copyright (c) 2024 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,35 +22,70 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.timers;
+package net.runelite.api;
 
-import java.awt.Color;
-import lombok.AccessLevel;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.Spliterator;
+import java.util.Spliterators;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+import javax.annotation.Nonnull;
 import lombok.Getter;
-import net.runelite.api.SpriteID;
+import lombok.RequiredArgsConstructor;
 
-@Getter(AccessLevel.PACKAGE)
-enum GameIndicator
+@RequiredArgsConstructor
+public class IndexedObjectSet<T> implements Iterable<T>
 {
-	VENGEANCE_ACTIVE(SpriteID.SPELL_VENGEANCE_OTHER, GameTimerImageType.SPRITE, "Vengeance active");
+	@Getter
+	private final T[] sparse;
 
-	private final String description;
-	private String text;
-	private Color textColor;
-	private final int imageId;
-	private final GameTimerImageType imageType;
+	private final int[] indexes;
 
-	GameIndicator(int imageId, GameTimerImageType idType, String description, String text, Color textColor)
+	@Getter
+	private final int size;
+
+	public T byIndex(int index)
 	{
-		this.imageId = imageId;
-		this.imageType = idType;
-		this.description = description;
-		this.text = text;
-		this.textColor = textColor;
+		return sparse[index];
 	}
 
-	GameIndicator(int imageId, GameTimerImageType idType, String description)
+	public Stream<T> stream()
 	{
-		this(imageId, idType, description, "", null);
+		return StreamSupport.stream(this.spliterator(), false);
+	}
+
+	@Override
+	public Spliterator<T> spliterator()
+	{
+		return Spliterators.spliterator(this.iterator(), this.size,
+			Spliterator.SIZED | Spliterator.DISTINCT | Spliterator.ORDERED);
+	}
+
+	@Nonnull
+	@Override
+	public Iterator<T> iterator()
+	{
+		return new Iterator<T>()
+		{
+			int i;
+
+			@Override
+			public boolean hasNext()
+			{
+				return i < size;
+			}
+
+			@Override
+			public T next()
+			{
+				if (!hasNext())
+				{
+					throw new NoSuchElementException();
+				}
+
+				return sparse[indexes[i++]];
+			}
+		};
 	}
 }

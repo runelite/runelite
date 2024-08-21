@@ -60,8 +60,8 @@ public enum Emote
 	PUSH_UP("Push up", EMOTE_PUSH_UP),
 	FORTIS_SALUTE("Fortis Salute", EMOTE_FORTIS_SALUTE);
 
-	private String name;
-	private int spriteId;
+	private final String name;
+	private final int spriteId;
 
 	Emote(String name, int spriteId)
 	{

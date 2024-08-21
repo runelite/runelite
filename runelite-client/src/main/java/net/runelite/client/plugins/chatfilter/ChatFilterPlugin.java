@@ -95,7 +95,7 @@ public class ChatFilterPlugin extends Plugin
 		MODCHAT
 	);
 
-	private final CharMatcher jagexPrintableCharMatcher = Text.JAGEX_PRINTABLE_CHAR_MATCHER;
+	private static final CharMatcher jagexPrintableCharMatcher = Text.JAGEX_PRINTABLE_CHAR_MATCHER;
 	private List<Pattern> filteredPatterns = Collections.emptyList();
 	private List<Pattern> filteredNamePatterns = Collections.emptyList();
 
@@ -216,6 +216,7 @@ public class ChatFilterPlugin extends Plugin
 				break;
 			case GAMEMESSAGE:
 			case ENGINE:
+			case FRIENDSCHATNOTIFICATION:
 			case ITEM_EXAMINE:
 			case NPC_EXAMINE:
 			case OBJECT_EXAMINE:
@@ -269,7 +270,7 @@ public class ChatFilterPlugin extends Plugin
 	@Subscribe
 	public void onOverheadTextChanged(OverheadTextChanged event)
 	{
-		if (!(event.getActor() instanceof Player) || event.getActor().getName() == null || !canFilterPlayer(event.getActor().getName())) // NOPMD: SimplifyConditional
+		if (!(event.getActor() instanceof Player) || event.getActor().getName() == null || !canFilterPlayer(event.getActor().getName()))
 		{
 			return;
 		}

@@ -40,12 +40,12 @@ public class MapSquareDefinition extends AbstractWorldMapDataDefinition
 		else
 		{
 			MapSquareDefinition other = (MapSquareDefinition) obj;
-			return other.sourceSquareX == this.sourceSquareX && other.sourceSquareZ == this.sourceSquareZ;
+			return other.displaySquareX == this.displaySquareX && other.displaySquareZ == this.displaySquareZ;
 		}
 	}
 
 	public int hashCode()
 	{
-		return this.sourceSquareX | this.sourceSquareZ << 8;
+		return this.displaySquareX | this.displaySquareZ << 8;
 	}
 }

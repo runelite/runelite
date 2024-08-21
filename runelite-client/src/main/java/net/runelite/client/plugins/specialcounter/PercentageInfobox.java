@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2024, 1Defence
+ * Copyright (c) 2024, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,15 +23,41 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.specialcounter;
 
-public interface HealthBar
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+import net.runelite.client.ui.overlay.infobox.InfoBox;
+
+class PercentageInfobox extends InfoBox
 {
-	SpritePixels getHealthBarFrontSprite();
+	private float percent = 1f;
 
-	SpritePixels getHealthBarBackSprite();
+	PercentageInfobox(BufferedImage image, SpecialCounterPlugin plugin)
+	{
+		super(image, plugin);
+	}
 
-	int getHealthBarFrontSpriteId();
+	void mul(float p)
+	{
+		percent *= p;
+	}
 
-	void setPadding(int padding);
+	@Override
+	public String getTooltip()
+	{
+		return "Opponent defence has been reduced by " + getText() + ".";
+	}
+
+	@Override
+	public Color getTextColor()
+	{
+		return Color.WHITE;
+	}
+
+	@Override
+	public String getText()
+	{
+		return (int) ((1 - percent) * 100) + "%";
+	}
 }

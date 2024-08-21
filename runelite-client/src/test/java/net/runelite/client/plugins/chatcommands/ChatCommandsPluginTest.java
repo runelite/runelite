@@ -1275,19 +1275,21 @@ public class ChatCommandsPluginTest
 	@Test
 	public void testHunterRumours()
 	{
-		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", "You have completed <col=ff3045>77</col> rumours for the Hunter Guild.", null, 0);
-		chatCommandsPlugin.onChatMessage(chatMessageEvent);
-
-		verify(configManager).setRSProfileConfiguration("killcount", "hunter rumours", 77);
+		testHunterRumourChatMessage("You have completed <col=ff3045>77</col> rumours for the Hunter Guild.", 77);
+		// single kc has no s.
+		testHunterRumourChatMessage("You have completed <col=ff3045>1</col> rumour for the Hunter Guild.", 1);
+		// opaque chatbox has different color
+		testHunterRumourChatMessage("You have completed <col=e00a19>2</col> rumours for the Hunter Guild.", 2);
+		// with comma in number
+		testHunterRumourChatMessage("You have completed <col=ff3045>1,032</col> rumours for the Hunter Guild.", 1032);
 	}
 
-	@Test
-	public void testHunterRumoursOver1k()
+	private void testHunterRumourChatMessage(String message, int kc)
 	{
-		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", "You have completed <col=ff3045>1,032</col> rumours for the Hunter Guild.", null, 0);
+		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", message, null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessageEvent);
 
-		verify(configManager).setRSProfileConfiguration("killcount", "hunter rumours", 1032);
+		verify(configManager).setRSProfileConfiguration("killcount", "hunter rumours", kc);
 	}
 
 	@Test

@@ -85,8 +85,8 @@ public class ScriptInspector extends DevToolsFrame
 	private int lastTick;
 	private Set<Integer> blacklist;
 	private Set<Integer> highlights;
-	private final JList jList;
-	private final DefaultListModel listModel;
+	private final JList<Integer> jList;
+	private final DefaultListModel<Integer> listModel;
 	private ListState state = ListState.BLACKLIST;
 
 	private enum ListState
@@ -232,9 +232,9 @@ public class ScriptInspector extends DevToolsFrame
 		final JPanel rightSide = new JPanel();
 		rightSide.setLayout(new BorderLayout());
 
-		listModel = new DefaultListModel();
+		listModel = new DefaultListModel<>();
 		changeState(ListState.BLACKLIST);
-		jList = new JList(listModel);
+		jList = new JList<>(listModel);
 		jList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		JScrollPane listScrollPane = new JScrollPane(jList);
 
@@ -424,7 +424,7 @@ public class ScriptInspector extends DevToolsFrame
 			return;
 		}
 
-		int script = (Integer) listModel.get(index);
+		int script = listModel.get(index);
 		getSet().remove(script);
 		refreshList();
 	}

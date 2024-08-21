@@ -208,7 +208,7 @@ class OpponentInfoOverlay extends OverlayPanel
 			}
 			else
 			{
-				float floatRatio = (float) lastRatio / (float) lastHealthScale;
+				float floatRatio = lastRatio / (float) lastHealthScale;
 				progressBarComponent.setValue(floatRatio * 100d);
 			}
 

@@ -198,7 +198,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.text("His bark is worse than his bite.")
 			.location(new WorldPoint(3499, 3503, 0))
 			.npc("Barker")
-			.solution("Speak to the Barker at Canifis's Barkers' Haberdashery.")
+			.solution("Speak to Barker at Canifis's Barkers' Haberdashery.")
 			.build(),
 		CrypticClue.builder()
 			.text("The beasts to my east snap claws and tails, The rest to my west can slide and eat fish. The force to my north will jump and they'll wail, Come dig by my fire and make a wish.")
@@ -906,7 +906,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.build(),
 		CrypticClue.builder()
 			.text("Surround my bones in fire, ontop the wooden pyre. Finally lay me to rest, before my one last test.")
-			.solution("Kill a confused/lost barbarian to receive mangled bones. Construct and burn a pyre ship. Kill the ferocious barbarian spirit that spawns to receive a clue casket.")
+			.solution("Kill a Confused or Lost barbarian in the Ancient Cavern to receive mangled bones. Construct and burn a pyre ship with logs, a tinderbox, and an axe. Kill the Ferocious barbarian spirit that spawns.")
 			.build(),
 		CrypticClue.builder()
 			.text("Fiendish cooks probably won't dig the dirty dishes.")
@@ -1070,7 +1070,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("A ring of water surrounds 4 powerful rings, dig above the ladder located there.")
 			.location(new WorldPoint(1910, 4367, 0))
-			.solution("Dig by the ladder leading to the Dagannoth Kings room in the Waterbirth Island Dungeon. Bring a pet rock and rune thrownaxe.")
+			.solution("Dig by the ladder leading to the Dagannoth Kings room in the Waterbirth Island Dungeon. Bring a pet rock and rune thrownaxe OR have 85 agility.")
 			.build(),
 		CrypticClue.builder()
 			.text("This place sure is a mess.")
@@ -1108,7 +1108,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("If you're feeling brave, dig beneath the dragon's eye.")
 			.location(new WorldPoint(2410, 4714, 0))
-			.solution("Dig below the mossy rock under the Viyeldi caves (Legend's Quest). Items needed: Pickaxe, unpowered orb, lockpick, spade, any charge orb spell, and either 79 agility or an axe and machete.")
+			.solution("Dig below the mossy rock under the Viyeldi caves (Legend's Quest). Items needed: Pickaxe, unpowered orb, lockpick, spade, any charge orb spell, and either 79 agility or an axe and machete. With 96 agility no items are needed.")
 			.build(),
 		CrypticClue.builder()
 			.text("Search the tents in the Imperial Guard camp in Burthorpe for some boxes.")
@@ -1350,10 +1350,10 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.solution("Horvik's in Varrock.")
 			.build(),
 		CrypticClue.builder()
-			.text("Ghommal wishes to be impressed by how strong your equipment is.")
+			.text("The doorman of the Warriors' Guild wishes to be impressed by how strong your equipment is.")
 			.location(new WorldPoint(2878, 3546, 0))
 			.npc("Ghommal")
-			.solution("Speak to Ghommal at the Warriors' Guild with a total Melee Strength bonus of over 100.")
+			.solution("Speak to the doorman of the Warriors' Guild with a total Melee Strength bonus of over 100.")
 			.build(),
 		CrypticClue.builder()
 			.text("Shhhh!")
@@ -1393,7 +1393,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		CrypticClue.builder()
 			.text("Desert insects is what I see. Taking care of them was my responsibility. Your solution is found by digging near me.")
 			.location(new WorldPoint(3307, 9505, 0))
-			.solution("Dig next to the Entomologist, Kalphite area, near Shantay Pass.")
+			.solution("Dig next to the Entomologist, Kalphite Cave, east of Shantay Pass.")
 			.build(),
 		CrypticClue.builder()
 			.text("Search the crates in the most north-western house in Al Kharid.")
@@ -1503,10 +1503,10 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.solution("Search the drawers upstairs in Varrock east bank.")
 			.build(),
 		CrypticClue.builder()
-			.text("Speak to Hazelmere.")
-			.location(new WorldPoint(2677, 3088, 0))
-			.npc("Hazelmere")
-			.solution("Located upstairs in the house east of Yanille, north of fairy ring CLS. Answer: 6859")
+			.text("Speak to Uglug Nar.")
+			.location(new WorldPoint(2444, 3049, 0))
+			.npc("Uglug Nar")
+			.solution("Outside Jiggig, south of Castle Wars. Answer: 6859")
 			.questionText("What is 19 to the power of 3?")
 			.build(),
 		CrypticClue.builder()
@@ -1614,15 +1614,15 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.solution("The Crystal chest can be found in the house directly south of the Witch's house in Taverley.")
 			.build(),
 		CrypticClue.builder()
-			.text("Talk to Turael in Burthorpe.")
+			.text("Talk to the Slayer Master in Burthorpe.")
 			.location(new WorldPoint(2930, 3536, 0))
 			.npc("Turael")
-			.solution("Turael is located in the small house east of the Toad and Chicken inn in Burthorpe.")
+			.solution("The Slayer Master is located in the small house east of the Toad and Chicken inn in Burthorpe.")
 			.build(),
 		CrypticClue.builder()
 			.text("More resources than I can handle, but in a very dangerous area. Can't wait to strike gold!")
 			.location(new WorldPoint(3183, 3941, 0))
-			.solution("Dig between the three gold ores in the Wilderness Resource Area.")
+			.solution("Dig between the three gold ores in the Wilderness Resource Area. An entry fee of 7,500 coins is required, or less if Wilderness Diaries have been completed.")
 			.build(),
 		CrypticClue.builder()
 			.text("Observing someone in a swamp, under the telescope lies treasure.")
@@ -1692,10 +1692,10 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 			.solution("Dig anywhere in Yu'biusk. Fairy ring BLQ.")
 			.build(),
 		CrypticClue.builder()
-			.text("Search the Bookshelf with a skull on it inside the Burrow.")
-			.location(new WorldPoint(1569, 9460, 0))
-			.objectId(ObjectID.BOOKSHELF_51736)
-			.solution("Search the bookshelf in the basement of the Hunter Guild.")
+			.text("Search the food barrel at the top of the Hunter Guild.")
+			.location(new WorldPoint(1560, 3048, 2))
+			.objectId(ObjectID.FOOD_BARREL)
+			.solution("Search the food barrel at the top of the Hunter Guild.")
 			.build(),
 		CrypticClue.builder()
 			.text("Are you somewhat entertained?")
@@ -1879,6 +1879,7 @@ public class CrypticClue extends ClueScroll implements NpcClueScroll, ObjectClue
 		return new int[]{text.hashCode()};
 	}
 
+	@SuppressWarnings("PMD.UnusedPrivateMethod")
 	private static WorldPoint getViggoraLocation(ClueScrollPlugin plugin)
 	{
 		int varb = plugin.getClient().getVarbitValue(Varbits.VIGGORA_LOCATION);

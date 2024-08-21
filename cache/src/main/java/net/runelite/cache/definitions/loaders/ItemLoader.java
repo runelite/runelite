@@ -187,6 +187,35 @@ public class ItemLoader
 		{
 			def.shiftClickDropIndex = stream.readByte();
 		}
+		else if (opcode == 43)
+		{
+			int opId = stream.readUnsignedByte();
+			if (def.subops == null)
+			{
+				def.subops = new String[5][];
+			}
+
+			boolean valid = opId >= 0 && opId < 5;
+			if (valid && def.subops[opId] == null)
+			{
+				def.subops[opId] = new String[20];
+			}
+
+			while (true)
+			{
+				int subopId = stream.readUnsignedByte() - 1;
+				if (subopId == -1)
+				{
+					break;
+				}
+
+				String op = stream.readString();
+				if (valid && subopId >= 0 && subopId < 20)
+				{
+					def.subops[opId][subopId] = op;
+				}
+			}
+		}
 		else if (opcode == 65)
 		{
 			def.isTradeable = true;

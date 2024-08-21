@@ -62,10 +62,12 @@ import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.ItemID;
 import net.runelite.api.KeyCode;
+import net.runelite.api.Menu;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.Tile;
 import net.runelite.api.TileItem;
+import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.FocusChanged;
@@ -387,6 +389,16 @@ public class GroundItemsPlugin extends Plugin
 		final int alchPrice = itemComposition.getHaPrice();
 		final int despawnTime = item.getDespawnTime() - client.getTickCount();
 		final int visibleTime = item.getVisibleTime() - client.getTickCount();
+		int ownership = item.getOwnership();
+		final int accountType = client.getVarbitValue(Varbits.ACCOUNT_TYPE);
+		boolean isGim = accountType >= 4 && accountType <= 6; // ~is_group_iron
+
+		// from ~script7240
+		if (ownership == TileItem.OWNERSHIP_GROUP && !isGim)
+		{
+			// non-gims see loot from other people as "group" loop since they are both group -1.
+			ownership = TileItem.OWNERSHIP_OTHER;
+		}
 
 		final GroundItem groundItem = GroundItem.builder()
 			.id(itemId)
@@ -397,7 +409,7 @@ public class GroundItemsPlugin extends Plugin
 			.haPrice(alchPrice)
 			.height(tile.getItemLayer().getHeight())
 			.tradeable(itemComposition.isTradeable())
-			.ownership(item.getOwnership())
+			.ownership(ownership)
 			.isPrivate(item.isPrivate())
 			.spawnTime(Instant.now())
 			.stackable(itemComposition.isStackable())
@@ -526,23 +538,22 @@ public class GroundItemsPlugin extends Plugin
 			MenuEntry parent = client.createMenuEntry(-1)
 				.setOption("Color")
 				.setTarget(event.getTarget())
-				.setType(MenuAction.RUNELITE_SUBMENU);
+				.setType(MenuAction.RUNELITE);
+			Menu submenu = parent.createSubMenu();
 			final int itemId = event.getIdentifier();
 			Color color = getItemColor(itemId);
 
 			if (color != null)
 			{
-				client.createMenuEntry(-1)
+				submenu.createMenuEntry(-1)
 					.setOption("Reset")
 					.setType(MenuAction.RUNELITE)
-					.setParent(parent)
 					.onClick(e -> unsetItemColor(itemId));
 			}
 
-			client.createMenuEntry(-1)
+			submenu.createMenuEntry(-1)
 				.setOption("Pick")
 				.setType(MenuAction.RUNELITE)
-				.setParent(parent)
 				.onClick(e ->
 					SwingUtilities.invokeLater(() ->
 					{
@@ -565,10 +576,9 @@ public class GroundItemsPlugin extends Plugin
 
 			colors.stream()
 				.filter(c -> !c.equals(color))
-				.forEach(c -> client.createMenuEntry(-1)
+				.forEach(c -> submenu.createMenuEntry(-1)
 					.setOption(ColorUtil.prependColorTag("Color", c))
 					.setType(MenuAction.RUNELITE)
-					.setParent(parent)
 					.onClick(e -> setItemColor(itemId, c)));
 		}
 	}

@@ -79,10 +79,6 @@ public class MotherlodePluginTest
 
 	@Mock
 	@Bind
-	private MotherlodeSackOverlay motherlodeSackOverlay;
-
-	@Mock
-	@Bind
 	private ScheduledExecutorService scheduledExecutorService;
 
 	@Mock
@@ -150,7 +146,6 @@ public class MotherlodePluginTest
 		};
 		when(inventory.getItems())
 			.thenReturn(items);
-		when(inventory.getId()).thenReturn(InventoryID.INVENTORY.getId());
 
 		// Trigger comparison
 		when(motherlodeConfig.trackOresFound()).thenReturn(true);
