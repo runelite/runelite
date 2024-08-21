@@ -137,7 +137,7 @@ public interface TimersAndBuffsConfig extends Config
 	)
 	default boolean showOverloadBoost()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
@@ -159,7 +159,7 @@ public interface TimersAndBuffsConfig extends Config
 	)
 	default boolean showSmellingSaltBoost()
 	{
-		return true;
+		return false;
 	}
 
 	@ConfigItem(
