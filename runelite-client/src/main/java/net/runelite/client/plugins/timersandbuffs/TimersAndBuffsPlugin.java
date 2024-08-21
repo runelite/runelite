@@ -569,10 +569,12 @@ public class TimersAndBuffsPlugin extends Plugin
 
 		if (event.getVarbitId() == Varbits.BUFF_STAT_BOOST )
 		{
-			if(config.showSmellingSaltBoost()){
+			if(config.showSmellingSaltBoost())
+			{
 				createGameTimer(SMELLING_SALTS_BOOST, Duration.ofSeconds(15));
 			}
-			if(config.showSalts()) {
+			if(config.showSalts())
+			{
 				updateVarTimer(SMELLING_SALTS, event.getValue(), i -> i * 25);
 			}
 		}
@@ -659,7 +661,8 @@ public class TimersAndBuffsPlugin extends Plugin
 			removeVarTimer(STAMINA);
 		}
 
-		if(!config.showSalts()){
+		if(!config.showSalts())
+		{
 			removeGameTimer(SMELLING_SALTS);
 		}
 
