@@ -28,6 +28,7 @@ import java.awt.Color;
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
+import net.runelite.client.config.Notification;
 import net.runelite.client.config.Range;
 import net.runelite.client.config.Units;
 
@@ -51,9 +52,9 @@ public interface NightmareZoneConfig extends Config
 		description = "Toggles notifications when a power surge power-up appears",
 		position = 2
 	)
-	default boolean powerSurgeNotification()
+	default Notification powerSurgeNotification()
 	{
-		return false;
+		return Notification.OFF;
 	}
 
 	@ConfigItem(
@@ -62,9 +63,9 @@ public interface NightmareZoneConfig extends Config
 		description = "Toggles notifications when a recurrent damage power-up appears",
 		position = 3
 	)
-	default boolean recurrentDamageNotification()
+	default Notification recurrentDamageNotification()
 	{
-		return false;
+		return Notification.OFF;
 	}
 
 	@ConfigItem(
@@ -73,9 +74,9 @@ public interface NightmareZoneConfig extends Config
 		description = "Toggles notifications when a zapper power-up appears",
 		position = 4
 	)
-	default boolean zapperNotification()
+	default Notification zapperNotification()
 	{
-		return false;
+		return Notification.OFF;
 	}
 
 	@ConfigItem(
@@ -84,9 +85,9 @@ public interface NightmareZoneConfig extends Config
 		description = "Toggles notifications when an ultimate force power-up appears",
 		position = 5
 	)
-	default boolean ultimateForceNotification()
+	default Notification ultimateForceNotification()
 	{
-		return false;
+		return Notification.OFF;
 	}
 
 	@ConfigItem(
@@ -95,9 +96,9 @@ public interface NightmareZoneConfig extends Config
 		description = "Toggles notifications when your overload runs out",
 		position = 6
 	)
-	default boolean overloadNotification()
+	default Notification overloadNotification()
 	{
-		return true;
+		return Notification.ON;
 	}
 
 	@Range(
@@ -122,9 +123,9 @@ public interface NightmareZoneConfig extends Config
 		description = "Toggles notifications when your absorption points gets below your threshold",
 		position = 8
 	)
-	default boolean absorptionNotification()
+	default Notification absorptionNotification()
 	{
-		return true;
+		return Notification.ON;
 	}
 
 	@ConfigItem(

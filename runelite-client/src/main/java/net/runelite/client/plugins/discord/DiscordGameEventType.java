@@ -38,8 +38,8 @@ import net.runelite.api.Skill;
 enum DiscordGameEventType
 {
 
-	IN_MENU("In Menu", -3, true, true, true, false, true),
-	IN_GAME("In Game", -3, true, false, false, false, true),
+	IN_MENU("In Menu", -3, true, true, true, false),
+	IN_GAME("In Game", -3, true, false, false, false),
 	PLAYING_DEADMAN("Playing Deadman Mode", -3),
 	PLAYING_PVP("Playing in a PVP world", -3),
 	TRAINING_ATTACK(Skill.ATTACK),
@@ -108,8 +108,10 @@ enum DiscordGameEventType
 	CITY_BRIMHAVEN("Brimhaven" , DiscordAreaType.CITIES, 11057, 11058),
 	CITY_BURGH_DE_ROTT("Burgh de Rott" , DiscordAreaType.CITIES, 13874, 13873, 14130, 14129),
 	CITY_BURTHORPE("Burthorpe" , DiscordAreaType.CITIES, 11319, 11575),
+	CITY_CAM_TORUM("Cam Torum" , DiscordAreaType.CITIES, 5525, 5780, 5781, 6037),
 	CITY_CANIFIS("Canifis" , DiscordAreaType.CITIES, 13878),
 	CITY_CATHERBY("Catherby" , DiscordAreaType.CITIES, 11317, 11318, 11061),
+	CITY_CIVITAS_ILLA_FORTIS("Civitas Illa Fortis" , DiscordAreaType.CITIES, 6448, 6449, 6704, 6705, 6960, 6961),
 	CITY_CORSAIR_COVE("Corsair Cove" , DiscordAreaType.CITIES, 10028, 10284),
 	CITY_DARKMEYER("Darkmeyer", DiscordAreaType.CITIES, 14388, 14644),
 	CITY_DORGESH_KAAN("Dorgesh-Kaan" , DiscordAreaType.CITIES, 10835, 10834),
@@ -189,6 +191,7 @@ enum DiscordGameEventType
 	DUNGEON_CHASM_OF_FIRE("Chasm of Fire", DiscordAreaType.DUNGEONS, 5789),
 	DUNGEON_CHASM_OF_TEARS("Chasm of Tears", DiscordAreaType.DUNGEONS, 12948),
 	DUNGEON_CHINCHOMPA("Chinchompa Hunting Ground", DiscordAreaType.DUNGEONS, 10129),
+	DUNGEON_CIVITAS_ILLA_FORTIS("Civitas illa Fortis Underground", DiscordAreaType.DUNGEONS, 6549, 6804, 6805),
 	DUNGEON_CLOCK_TOWER("Clock Tower Basement", DiscordAreaType.DUNGEONS, 10390),
 	DUNGEON_CORSAIR_COVE("Corsair Cove Dungeon", DiscordAreaType.DUNGEONS, 8076, 8332),
 	DUNGEON_CRABCLAW_CAVES("Crabclaw Caves", DiscordAreaType.DUNGEONS, 6553, 6809),
@@ -266,6 +269,7 @@ enum DiscordGameEventType
 	DUNGEON_TEMPLE_OF_IKOV("Temple of Ikov", DiscordAreaType.DUNGEONS, 10649, 10905, 10650),
 	DUNGEON_TEMPLE_OF_LIGHT("Temple of Light", DiscordAreaType.DUNGEONS, 7496),
 	DUNGEON_TEMPLE_OF_MARIMBO("Temple of Marimbo", DiscordAreaType.DUNGEONS, 11151),
+	DUNGEON_THE_BURROW("The Burrow", DiscordAreaType.DUNGEONS, 6291),
 	DUNGEON_THE_WARRENS("The Warrens", DiscordAreaType.DUNGEONS, 7070, 7326),
 	DUNGEON_TOLNA("Dungeon of Tolna", DiscordAreaType.DUNGEONS, 13209),
 	DUNGEON_TOWER_OF_LIFE("Tower of Life Basement", DiscordAreaType.DUNGEONS, 12100),
@@ -297,6 +301,8 @@ enum DiscordGameEventType
 	MG_CLAN_WARS("Clan Wars", DiscordAreaType.MINIGAMES, 12621, 12622, 12623, 13130, 13131, 13133, 13134, 13135, 13386, 13387, 13390, 13641, 13642, 13643, 13644, 13645, 13646, 13647, 13899, 13900, 14155, 14156),
 	MG_PVP_ARENA("PvP Arena", DiscordAreaType.MINIGAMES, 13362, 13363),
 	MG_FISHING_TRAWLER("Fishing Trawler", DiscordAreaType.MINIGAMES, 7499),
+	MG_FORTIS_COLOSSEUM("Fortis Colosseum", DiscordAreaType.MINIGAMES, 7216),
+	MG_FORTIS_COLOSSEUM_LOBBY("Fortis Colosseum Lobby", DiscordAreaType.MINIGAMES, 7316),
 	MG_GAUNTLET("The Gauntlet", DiscordAreaType.MINIGAMES, 12127, 7512),
 	MG_CORRUPTED_GAUNTLET("Corrupted Gauntlet", DiscordAreaType.MINIGAMES, 7768),
 	MG_GIANTS_FOUNDRY("Giants' Foundry", DiscordAreaType.MINIGAMES, 13491),
@@ -339,6 +345,7 @@ enum DiscordGameEventType
 	REGION_APE_ATOLL("Ape Atoll" , DiscordAreaType.REGIONS, 10794, 10795, 10974, 11050),
 	REGION_ARANDAR("Arandar", DiscordAreaType.REGIONS, 9266, 9267, 9523),
 	REGION_ASGARNIA("Asgarnia", DiscordAreaType.REGIONS, 11825, 11829, 11830, 12085, 12086),
+	REGION_AVIUM_SAVANNAH("Avium Savannah", DiscordAreaType.REGIONS, 5935, 5936, 5937, 6189, 6445, 6446, 6447, 6701, 6702, 6703, 6957, 6958, 6959, 7215),
 	REGION_BATTLEFIELD("Battlefield", DiscordAreaType.REGIONS, 10034),
 	REGION_BATTLEFRONT("Battlefront", DiscordAreaType.REGIONS, 5433, 5434),
 	REGION_BLAST_MINE("Blast Mine", DiscordAreaType.REGIONS, 5948),
@@ -386,6 +393,7 @@ enum DiscordGameEventType
 	REGION_GWD("God Wars Dungeon", DiscordAreaType.REGIONS, 11578),
 	REGION_HARMONY("Harmony Island", DiscordAreaType.REGIONS, 15148),
 	REGION_HAZELMERE("Hazelmere's Island", DiscordAreaType.REGIONS, 10544),
+	REGION_HUNTER_GUILD("Hunter Guild", DiscordAreaType.REGIONS, 6191),
 	REGION_ICE_PATH("Ice Path", DiscordAreaType.REGIONS, 11322, 11323),
 	REGION_ICEBERG("Iceberg", DiscordAreaType.REGIONS, 10558, 10559),
 	REGION_ICYENE_GRAVEYARD("Icyene Graveyard", DiscordAreaType.REGIONS, 14641, 14897, 14898),
@@ -425,6 +433,7 @@ enum DiscordGameEventType
 	REGION_NORTHERN_TUNDRAS("Northern Tundras", DiscordAreaType.REGIONS, 6204, 6205, 6717),
 	REGION_OBSERVATORY("Observatory", DiscordAreaType.REGIONS, 9777),
 	REGION_ODD_ONE_OUT("Odd One Out", DiscordAreaType.REGIONS, 7754),
+	REGION_ORTUS_FARM("Ortus Farm", DiscordAreaType.REGIONS, 6192, 6193),
 	REGION_OTTOS_GROTTO("Otto's Grotto", DiscordAreaType.REGIONS, 10038),
 	REGION_OURANIA_HUNTER("Ourania Hunter Area", DiscordAreaType.REGIONS, 9778),
 	REGION_PIRATES_COVE("Pirates' Cove", DiscordAreaType.REGIONS, 8763),
@@ -434,6 +443,7 @@ enum DiscordGameEventType
 	REGION_PORT_TYRAS("Port Tyras", DiscordAreaType.REGIONS, 8496),
 	REGION_PURO_PURO("Puro Puro", DiscordAreaType.REGIONS, 10307),
 	REGION_QUARRY("Quarry", DiscordAreaType.REGIONS, 12589),
+	REGION_RALOS_RISE("Ralos' Rise", DiscordAreaType.REGIONS, 5424, 5425, 5679, 5680, 5681, 5682),
 	REGION_RANGING_GUILD("Ranging Guild", DiscordAreaType.REGIONS, 10549),
 	REGION_RATCATCHERS_MANSION("Ratcatchers Mansion", DiscordAreaType.REGIONS, 11343),
 	REGION_RUINS_OF_UNKAH("Ruins of Unkah", DiscordAreaType.REGIONS, 12588),
@@ -449,6 +459,7 @@ enum DiscordGameEventType
 	REGION_SLAYER_TOWER("Slayer Tower", DiscordAreaType.REGIONS, 13623, 13723),
 	REGION_SOUL_ALTAR("Soul Altar", DiscordAreaType.REGIONS, 7228),
 	REGION_STRANGLEWOOD_TEMPLE("Stranglewood Temple", DiscordAreaType.REGIONS, 4761),
+	REGION_SUNSET_COAST("Sunset Coast", DiscordAreaType.REGIONS, 5934, 6190),
 	REGION_THE_SCAR("The Scar", DiscordAreaType.REGIONS, 8036, 8292),
 	REGION_THE_STRANGLEWOOD("The Stranglewood", DiscordAreaType.REGIONS, 4403, 4404, 4659, 4660, 4661, 4916, 4917),
 	REGION_TROLL_ARENA("Troll Arena", DiscordAreaType.REGIONS, 11576),
@@ -493,11 +504,6 @@ enum DiscordGameEventType
 	private String details;
 
 	private int priority;
-
-	/**
-	 * Marks this event as root event. (eg. event that should be used for total time tracking)
-	 */
-	private boolean root;
 
 	/**
 	 * Determines if event should clear other clearable events when triggered
@@ -547,7 +553,7 @@ enum DiscordGameEventType
 		this.shouldClear = true;
 	}
 
-	DiscordGameEventType(String state, int priority, boolean shouldClear, boolean shouldTimeout, boolean shouldRestart, boolean shouldBeCleared, boolean root)
+	DiscordGameEventType(String state, int priority, boolean shouldClear, boolean shouldTimeout, boolean shouldRestart, boolean shouldBeCleared)
 	{
 		this.state = state;
 		this.priority = priority;
@@ -555,12 +561,11 @@ enum DiscordGameEventType
 		this.shouldTimeout = shouldTimeout;
 		this.shouldRestart = shouldRestart;
 		this.shouldBeCleared = shouldBeCleared;
-		this.root = root;
 	}
 
 	DiscordGameEventType(String state, int priority)
 	{
-		this(state, priority, true, false, false, true, false);
+		this(state, priority, true, false, false, true);
 	}
 
 	private static String training(final Skill skill)

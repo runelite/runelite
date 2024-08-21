@@ -31,16 +31,13 @@ import net.runelite.cache.region.Position;
 @Data
 public class WorldMapDefinition
 {
+	public String safeName;
 	public String name;
-	public int field450;
+	public int emptyTileColor;
+	public int backgroundColor;
 	public int defaultZoom;
 	public int fileId;
-	public int field453;
-	public int field454;
-	public int field456;
 	public boolean isSurface;
-	public List regionList;
-	public String safeName;
+	public List<WorldMapTypeBase> regionList;
 	public Position position;
-	public int field463;
 }

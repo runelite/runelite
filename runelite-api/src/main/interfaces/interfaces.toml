@@ -7,9 +7,11 @@ id=741
 title=2
 text=3
 
+# this is actually just a generic menu
 [adventure_log]
 id=187
 container=0
+options=3
 
 [agility_arena]
 id=5
@@ -66,10 +68,12 @@ deposit_inventory=42
 deposit_equipment=44
 incinerator=46
 incinerator_confirm=47
-equipment_content_container=69
-settings_button=113
-equipment_button=114
-popup=116
+equipment_parent=69
+equipment_set_bonus=110
+settings_button=114
+equipment_button=115
+popup=117
+equipment_stat_bonus=122
 
 [bank_inventory]
 id=15
@@ -276,9 +280,6 @@ id=607
 [duel_inventory]
 id=421
 
-[duel_inventory_other]
-id=481
-
 [emotes]
 id=216
 window=0
@@ -289,6 +290,14 @@ emote_scrollbar=4
 [equipment]
 id=387
 inventory_item_container=0
+cape=16
+dizanas_quiver_item_container=28
+
+[equipment_bonuses]
+id=84
+parent=1
+set_bonus=44
+stat_bonus=49
 
 [equipment_inventory]
 id=85
@@ -352,6 +361,9 @@ magic_icon=76
 bank_container=78
 interface_container=79
 inventory_container=83
+
+[fortis_colosseum_reward]
+id=864
 
 [fossil_island_oxygen_bar]
 id=609
@@ -497,10 +509,6 @@ info=2
 id=328
 info=4
 
-[lms_kda]
-id=333
-info=4
-
 [login_click_to_play_screen]
 id=378
 message_of_the_day=6
@@ -514,9 +522,8 @@ logout_button=6
 id=81
 looting_bag_inventory=5
 
-[minigames]
-id=160
-teleport_button=30
+[lunar_chest]
+id=868
 
 [minimap]
 id=160
@@ -537,7 +544,13 @@ worldmap_options=53
 
 [mlm]
 id=382
-container=0
+layer=3
+sack_size_text=5
+space_text=6
+
+[moons_of_peril]
+id=869
+layer=2
 
 [mortton_temple]
 id=171
@@ -646,6 +659,10 @@ points_infobox=3
 [raiding_party]
 id=500
 
+[report_abuse]
+id=875
+parent=0
+
 [resizable_viewport]
 id=161
 resizable_viewport_old_school_box=15
@@ -701,6 +718,7 @@ emote_icon=48
 music_icon=49
 inventory_tab=55
 prayer_tab=57
+magic_tab=58
 cmb_icon=59
 skills_icon=60
 quests_icon=61
@@ -778,13 +796,14 @@ inventory_item_container=0
 
 [spellbook]
 id=218
+parent=0
 kourend_home_teleport=4
 catherby_home_teleport=5
-lumbridge_home_teleport=6
-edgeville_home_teleport=100
-lunar_home_teleport=101
-arceuus_home_teleport=145
-fertile_soil=126
+lumbridge_home_teleport=7
+edgeville_home_teleport=103
+lunar_home_teleport=104
+arceuus_home_teleport=148
+fertile_soil=129
 
 [tempoross]
 id=437

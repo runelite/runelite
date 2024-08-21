@@ -45,6 +45,7 @@ public class ObjectDefinition
 	private int sizeY = 1;
 	private int ambientSoundDistance = 0;
 	private int[] ambientSoundIds;
+	private int ambientSoundRetain;
 	private int offsetX = 0;
 	private boolean mergeNormals = false;
 	private int wallOrDoor = -1;
@@ -77,5 +78,6 @@ public class ObjectDefinition
 	private int ambientSoundChangeTicksMax = 0;
 	private boolean blocksProjectile = true;
 	private boolean randomizeAnimStart;
+	private boolean deferAnimChange;
 	private Map<Integer, Object> params = null;
 }

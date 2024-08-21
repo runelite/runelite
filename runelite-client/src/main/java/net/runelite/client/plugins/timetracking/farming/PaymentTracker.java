@@ -24,6 +24,8 @@
  */
 package net.runelite.client.plugins.timetracking.farming;
 
+import com.google.common.collect.ImmutableSet;
+import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import lombok.AccessLevel;
@@ -50,8 +52,11 @@ import net.runelite.client.plugins.timetracking.TimeTrackingConfig;
 @Singleton
 public class PaymentTracker
 {
-	private static final String PAYMENT_MALE = "That'll do nicely, sir. Leave it with me - I'll make sure<br>that patch grows for you.";
-	private static final String PAYMENT_FEMALE = "That'll do nicely, madam. Leave it with me - I'll make<br>sure that patch grows for you.";
+	private static final Set<String> PAYMENT_TEXT = ImmutableSet.of(
+		"That'll do nicely, sir. Leave it with me - I'll make sure<br>that patch grows for you.",
+		"That'll do nicely, madam. Leave it with me - I'll make<br>sure that patch grows for you.",
+		"That'll do nicely, iknami. Leave it with me - I'll make<br>sure that patch grows for you."
+	);
 
 	private final Client client;
 	private final ConfigManager configManager;
@@ -63,7 +68,7 @@ public class PaymentTracker
 	public void onGameTick(GameTick gameTick)
 	{
 		Widget text = client.getWidget(ComponentID.DIALOG_NPC_TEXT);
-		if (text == null || (!PAYMENT_MALE.equals(text.getText()) && !PAYMENT_FEMALE.equals(text.getText())))
+		if (text == null || !PAYMENT_TEXT.contains(text.getText()))
 		{
 			return;
 		}

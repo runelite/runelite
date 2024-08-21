@@ -71,7 +71,7 @@ public class PuzzleSolverPlugin extends Plugin
 	private Client client;
 
 	private LightboxState lightbox;
-	private LightboxState[] changes = new LightboxState[LightBox.COMBINATIONS_POWER];
+	private final LightboxState[] changes = new LightboxState[LightBox.COMBINATIONS_POWER];
 	private Combination lastClick;
 	private boolean lastClickInvalid;
 

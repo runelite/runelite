@@ -26,6 +26,7 @@ package net.runelite.client.plugins.specialcounter;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.Iterator;
@@ -68,7 +69,7 @@ class PlayerInfoDropOverlay extends Overlay
 		}
 
 		final int cycle = client.getGameCycle();
-		for (Iterator<PlayerInfoDrop> iterator = infoDrops.iterator(); iterator.hasNext();)
+		for (Iterator<PlayerInfoDrop> iterator = infoDrops.iterator(); iterator.hasNext(); )
 		{
 			PlayerInfoDrop infoDrop = iterator.next();
 
@@ -100,26 +101,42 @@ class PlayerInfoDropOverlay extends Overlay
 			String text = infoDrop.getText();
 
 			graphics.setFont(infoDrop.getFont());
-			Point textLocation = player.getCanvasTextLocation(graphics, text, player.getLogicalHeight() + infoDrop.getStartHeightOffset() + currentHeight);
-			if (textLocation == null)
+			Point playerLocation = player.getCanvasTextLocation(graphics, text, player.getLogicalHeight() + infoDrop.getStartHeightOffset() + currentHeight);
+			if (playerLocation == null)
 			{
 				continue;
 			}
 
+			FontMetrics fontMetrics = graphics.getFontMetrics();
 			int alpha = 255 - (255 * percent / 100);
-			BufferedImage image = infoDrop.getImage();
-			if (image != null)
+
+			BufferedImage sprite = infoDrop.getImage();
+			int textHeight = fontMetrics.getHeight() - fontMetrics.getMaxDescent();
+			int textWidth = fontMetrics.stringWidth(text);
+			int textMargin = sprite.getWidth() / 2;
+
+			Point imageLocation = new Point(
+				playerLocation.getX() - textMargin - 1,
+				playerLocation.getY() - textHeight / 2 - sprite.getHeight() / 2
+			);
+			Point textLocation = new Point(playerLocation.getX() + textMargin, playerLocation.getY());
+
+			BufferedImage backgroundSprite = infoDrop.getTextBackground();
+			if (backgroundSprite != null)
 			{
-				int textHeight = graphics.getFontMetrics().getHeight() - graphics.getFontMetrics().getMaxDescent();
-				int textMargin = image.getWidth() / 2;
-				int x = textLocation.getX() - textMargin - 1;
-				int y = textLocation.getY() - textHeight / 2 - image.getHeight() / 2;
-				Point imageLocation = new Point(x, y);
+				int x = textLocation.getX();
+				int y = textLocation.getY();
 
-				textLocation = new Point(textLocation.getX() + textMargin, textLocation.getY());
+				y -= textHeight / 2;
+				y -= backgroundSprite.getHeight() / 2;
 
-				OverlayUtil.renderImageLocation(graphics, imageLocation, ImageUtil.alphaOffset(image, alpha - 255));
+				x += (textWidth + 1) / 2;
+				x -= backgroundSprite.getWidth() / 2;
+
+				OverlayUtil.renderImageLocation(graphics, new Point(x, y), ImageUtil.alphaOffset(backgroundSprite, alpha - 255));
 			}
+
+			OverlayUtil.renderImageLocation(graphics, imageLocation, ImageUtil.alphaOffset(sprite, alpha - 255));
 
 			drawText(graphics, textLocation, text, infoDrop.getColor(), alpha);
 		}

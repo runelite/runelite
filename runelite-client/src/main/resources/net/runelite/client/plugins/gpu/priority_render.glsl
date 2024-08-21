@@ -91,7 +91,7 @@ int count_prio_offset(int priority) {
   return total;
 }
 
-void get_face(uint localId, modelinfo minfo, float cameraYaw, float cameraPitch, out int prio, out int dis, out ivec4 o1, out ivec4 o2, out ivec4 o3) {
+void get_face(uint localId, modelinfo minfo, float cameraYaw, float cameraPitch, out int prio, out int dis, out vert o1, out vert o2, out vert o3) {
   int size = minfo.size;
   int offset = minfo.offset;
   int flags = minfo.flags;
@@ -103,9 +103,9 @@ void get_face(uint localId, modelinfo minfo, float cameraYaw, float cameraPitch,
     ssboOffset = 0;
   }
 
-  ivec4 thisA;
-  ivec4 thisB;
-  ivec4 thisC;
+  vert thisA;
+  vert thisB;
+  vert thisC;
 
   // Grab triangle vertices from the correct buffer
   if (flags < 0) {
@@ -122,33 +122,44 @@ void get_face(uint localId, modelinfo minfo, float cameraYaw, float cameraPitch,
     int orientation = flags & 0x7ff;
 
     // rotate for model orientation
-    ivec4 thisrvA = rotate(thisA, orientation);
-    ivec4 thisrvB = rotate(thisB, orientation);
-    ivec4 thisrvC = rotate(thisC, orientation);
+    vec4 thisrvA = rotate_vertex(vec4(thisA.pos, 0), orientation);
+    vec4 thisrvB = rotate_vertex(vec4(thisB.pos, 0), orientation);
+    vec4 thisrvC = rotate_vertex(vec4(thisC.pos, 0), orientation);
 
     // calculate distance to face
-    int thisPriority = (thisA.w >> 16) & 0xff;  // all vertices on the face have the same priority
+    int thisPriority = (thisA.ahsl >> 16) & 0xff;  // all vertices on the face have the same priority
     int thisDistance = face_distance(thisrvA, thisrvB, thisrvC, cameraYaw, cameraPitch);
 
-    o1 = thisrvA;
-    o2 = thisrvB;
-    o3 = thisrvC;
+    o1.pos = thisrvA.xyz;
+    o1.ahsl = thisA.ahsl;
+
+    o2.pos = thisrvB.xyz;
+    o2.ahsl = thisB.ahsl;
+
+    o3.pos = thisrvC.xyz;
+    o3.ahsl = thisC.ahsl;
 
     prio = thisPriority;
     dis = thisDistance;
   } else {
-    o1 = ivec4(0);
-    o2 = ivec4(0);
-    o3 = ivec4(0);
+    o1.pos = vec3(0);
+    o1.ahsl = 0;
+
+    o2.pos = vec3(0);
+    o2.ahsl = 0;
+
+    o3.pos = vec3(0);
+    o3.ahsl = 0;
+
     prio = 0;
     dis = 0;
   }
 }
 
-void add_face_prio_distance(uint localId, modelinfo minfo, ivec4 thisrvA, ivec4 thisrvB, ivec4 thisrvC, int thisPriority, int thisDistance, ivec4 pos) {
+void add_face_prio_distance(uint localId, modelinfo minfo, vert thisrvA, vert thisrvB, vert thisrvC, int thisPriority, int thisDistance, ivec4 pos) {
   if (localId < minfo.size) {
     // if the face is not culled, it is calculated into priority distance averages
-    if (face_visible(thisrvA, thisrvB, thisrvC, pos)) {
+    if (face_visible(thisrvA.pos, thisrvB.pos, thisrvC.pos, pos)) {
       atomicAdd(totalNum[thisPriority], 1);
       atomicAdd(totalDistance[thisPriority], thisDistance);
 
@@ -166,9 +177,9 @@ int map_face_priority(uint localId, modelinfo minfo, int thisPriority, int thisD
   // Compute average distances for 0/2, 3/4, and 6/8
 
   if (localId < size) {
-    int avg1 = 0;
-    int avg2 = 0;
-    int avg3 = 0;
+    int avg1 = -6000;
+    int avg2 = -6000;
+    int avg3 = -6000;
 
     if (totalNum[1] > 0 || totalNum[2] > 0) {
       avg1 = (totalDistance[1] + totalDistance[2]) / (totalNum[1] + totalNum[2]);
@@ -211,22 +222,22 @@ int tile_height(int z, int x, int y) {
   return texelFetch(tileHeightSampler, ivec3(x + ESCENE_OFFSET, y + ESCENE_OFFSET, z), 0).r << 3;
 }
 
-ivec4 hillskew_vertex(ivec4 v, int hillskew, int y, int plane) {
+vec4 hillskew_vertexf(vec4 v, int hillskew, int y, int plane) {
   if (hillskew == 1) {
-    int px = v.x & 127;
-    int pz = v.z & 127;
-    int sx = v.x >> 7;
-    int sz = v.z >> 7;
-    int h1 = px * tile_height(plane, sx + 1, sz) + (128 - px) * tile_height(plane, sx, sz) >> 7;
-    int h2 = px * tile_height(plane, sx + 1, sz + 1) + (128 - px) * tile_height(plane, sx, sz + 1) >> 7;
-    int h3 = pz * h2 + (128 - pz) * h1 >> 7;
-    return ivec4(v.x, v.y + h3 - y, v.z, v.w);
+    float fx = v.x / 128;
+    float fz = v.z / 128;
+    int sx = int(floor(fx));
+    int sz = int(floor(fz));
+    float h1 = mix(tile_height(plane, sx, sz), tile_height(plane, sx + 1, sz), fract(fx));
+    float h2 = mix(tile_height(plane, sx, sz + 1), tile_height(plane, sx + 1, sz + 1), fract(fx));
+    float h3 = mix(h1, h2, fract(fz));
+    return vec4(v.x, v.y + h3 - y, v.z, v.w);
   } else {
     return v;
   }
 }
 
-void sort_and_insert(uint localId, modelinfo minfo, int thisPriority, int thisDistance, ivec4 thisrvA, ivec4 thisrvB, ivec4 thisrvC) {
+void sort_and_insert(uint localId, modelinfo minfo, int thisPriority, int thisDistance, vert thisrvA, vert thisrvB, vert thisrvC) {
   int size = minfo.size;
 
   if (localId < size) {
@@ -250,22 +261,22 @@ void sort_and_insert(uint localId, modelinfo minfo, int thisPriority, int thisDi
     }
 
     // position into scene
-    ivec4 pos = ivec4(minfo.x, minfo.y, minfo.z, 0);
-    thisrvA += pos;
-    thisrvB += pos;
-    thisrvC += pos;
+    vec4 pos = vec4(minfo.x, minfo.y, minfo.z, 0);
+    vec4 vertA = vec4(thisrvA.pos, 0) + pos;
+    vec4 vertB = vec4(thisrvB.pos, 0) + pos;
+    vec4 vertC = vec4(thisrvC.pos, 0) + pos;
 
     // apply hillskew
     int plane = (flags >> 24) & 3;
     int hillskew = (flags >> 26) & 1;
-    thisrvA = hillskew_vertex(thisrvA, hillskew, minfo.y, plane);
-    thisrvB = hillskew_vertex(thisrvB, hillskew, minfo.y, plane);
-    thisrvC = hillskew_vertex(thisrvC, hillskew, minfo.y, plane);
+    vertA = hillskew_vertexf(vertA, hillskew, minfo.y, plane);
+    vertB = hillskew_vertexf(vertB, hillskew, minfo.y, plane);
+    vertC = hillskew_vertexf(vertC, hillskew, minfo.y, plane);
 
     // write to out buffer
-    vout[outOffset + myOffset * 3] = thisrvA;
-    vout[outOffset + myOffset * 3 + 1] = thisrvB;
-    vout[outOffset + myOffset * 3 + 2] = thisrvC;
+    vout[outOffset + myOffset * 3] = vert(vertA.xyz, thisrvA.ahsl);
+    vout[outOffset + myOffset * 3 + 1] = vert(vertB.xyz, thisrvB.ahsl);
+    vout[outOffset + myOffset * 3 + 2] = vert(vertC.xyz, thisrvC.ahsl);
 
     if (toffset < 0) {
       uvout[outOffset + myOffset * 3] = vec4(0);
@@ -285,9 +296,25 @@ void sort_and_insert(uint localId, modelinfo minfo, int thisPriority, int thisDi
       }
 
       int orientation = flags & 0x7ff;
-      uvout[outOffset + myOffset * 3] = vec4(texA.x, rotatef(texA.yzw, orientation) + pos.xyz);
-      uvout[outOffset + myOffset * 3 + 1] = vec4(texB.x, rotatef(texB.yzw, orientation) + pos.xyz);
-      uvout[outOffset + myOffset * 3 + 2] = vec4(texC.x, rotatef(texC.yzw, orientation) + pos.xyz);
+      // swizzle from (tex,x,y,z) to (x,y,z,tex) for rotate and hillskew
+      texA = texA.yzwx;
+      texB = texB.yzwx;
+      texC = texC.yzwx;
+      // rotate
+      texA = rotate_vertex(texA, orientation);
+      texB = rotate_vertex(texB, orientation);
+      texC = rotate_vertex(texC, orientation);
+      // position
+      texA += pos;
+      texB += pos;
+      texC += pos;
+      // hillskew
+      texA = hillskew_vertexf(texA, hillskew, minfo.y, plane);
+      texB = hillskew_vertexf(texB, hillskew, minfo.y, plane);
+      texC = hillskew_vertexf(texC, hillskew, minfo.y, plane);
+      uvout[outOffset + myOffset * 3] = texA.wxyz;
+      uvout[outOffset + myOffset * 3 + 1] = texB.wxyz;
+      uvout[outOffset + myOffset * 3 + 2] = texC.wxyz;
     }
   }
 }

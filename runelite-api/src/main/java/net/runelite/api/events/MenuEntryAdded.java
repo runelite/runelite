@@ -103,4 +103,11 @@ public class MenuEntryAdded
 	{
 		return menuEntry.getParam1();
 	}
+
+	@EqualsAndHashCode.Include
+	@ToString.Include
+	public int getItemId()
+	{
+		return menuEntry.getItemId();
+	}
 }

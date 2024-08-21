@@ -47,7 +47,6 @@ import net.runelite.api.Perspective;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.client.events.ConfigChanged;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcSpawned;
@@ -55,6 +54,7 @@ import net.runelite.api.geometry.Geometry;
 import net.runelite.client.Notifier;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDependency;
@@ -192,7 +192,7 @@ public class NpcAggroAreaPlugin extends Plugin
 
 	private void transformWorldToLocal(float[] coords)
 	{
-		final LocalPoint lp = LocalPoint.fromWorld(client, (int)coords[0], (int)coords[1]);
+		final LocalPoint lp = LocalPoint.fromWorld(client, (int) coords[0], (int) coords[1]);
 		coords[0] = lp.getX() - Perspective.LOCAL_TILE_SIZE / 2f;
 		coords[1] = lp.getY() - Perspective.LOCAL_TILE_SIZE / 2f;
 	}
@@ -285,7 +285,7 @@ public class NpcAggroAreaPlugin extends Plugin
 
 		for (String pattern : npcNamePatterns)
 		{
-			if (npc.getCombatLevel() != 0 && WildcardMatcher.matches(pattern, npcName))
+			if (WildcardMatcher.matches(pattern, npcName))
 			{
 				return true;
 			}
@@ -296,17 +296,20 @@ public class NpcAggroAreaPlugin extends Plugin
 
 	private void checkAreaNpcs(final NPC... npcs)
 	{
-		for (NPC npc : npcs)
+		if (!active)
 		{
-			if (npc == null)
+			for (NPC npc : npcs)
 			{
-				continue;
-			}
+				if (npc == null)
+				{
+					continue;
+				}
 
-			if (isNpcMatch(npc))
-			{
-				active = true;
-				break;
+				if (isNpcMatch(npc))
+				{
+					active = true;
+					break;
+				}
 			}
 		}
 
@@ -322,7 +325,7 @@ public class NpcAggroAreaPlugin extends Plugin
 	@Subscribe(priority = -1) // run after slayer plugin so targets has time to populate
 	public void onNpcSpawned(NpcSpawned event)
 	{
-		if (config.alwaysActive())
+		if (active)
 		{
 			return;
 		}
@@ -337,10 +340,7 @@ public class NpcAggroAreaPlugin extends Plugin
 
 		if (active && notifyOnce && Instant.now().isAfter(endTime))
 		{
-			if (config.notifyExpire())
-			{
-				notifier.notify("NPC aggression has expired!");
-			}
+			notifier.notify(config.notifyExpire(), "NPC aggression has expired!");
 
 			notifyOnce = false;
 		}
@@ -415,11 +415,11 @@ public class NpcAggroAreaPlugin extends Plugin
 
 	private void loadConfig()
 	{
-		safeCenters[0] = configManager.getConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_CENTER1, WorldPoint.class);
-		safeCenters[1] = configManager.getConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_CENTER2, WorldPoint.class);
-		lastPlayerLocation = configManager.getConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_LOCATION, WorldPoint.class);
+		safeCenters[0] = configManager.getRSProfileConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_CENTER1, WorldPoint.class);
+		safeCenters[1] = configManager.getRSProfileConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_CENTER2, WorldPoint.class);
+		lastPlayerLocation = configManager.getRSProfileConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_LOCATION, WorldPoint.class);
 
-		Duration timeLeft = configManager.getConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_DURATION, Duration.class);
+		Duration timeLeft = configManager.getRSProfileConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_DURATION, Duration.class);
 		if (timeLeft != null)
 		{
 			createTimer(timeLeft);
@@ -428,10 +428,10 @@ public class NpcAggroAreaPlugin extends Plugin
 
 	private void resetConfig()
 	{
-		configManager.unsetConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_CENTER1);
-		configManager.unsetConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_CENTER2);
-		configManager.unsetConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_LOCATION);
-		configManager.unsetConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_DURATION);
+		configManager.unsetRSProfileConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_CENTER1);
+		configManager.unsetRSProfileConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_CENTER2);
+		configManager.unsetRSProfileConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_LOCATION);
+		configManager.unsetRSProfileConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_DURATION);
 	}
 
 	private void saveConfig()
@@ -442,10 +442,10 @@ public class NpcAggroAreaPlugin extends Plugin
 		}
 		else
 		{
-			configManager.setConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_CENTER1, safeCenters[0]);
-			configManager.setConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_CENTER2, safeCenters[1]);
-			configManager.setConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_LOCATION, lastPlayerLocation);
-			configManager.setConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_DURATION, Duration.between(Instant.now(), endTime));
+			configManager.setRSProfileConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_CENTER1, safeCenters[0]);
+			configManager.setRSProfileConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_CENTER2, safeCenters[1]);
+			configManager.setRSProfileConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_LOCATION, lastPlayerLocation);
+			configManager.setRSProfileConfiguration(NpcAggroAreaConfig.CONFIG_GROUP, NpcAggroAreaConfig.CONFIG_DURATION, Duration.between(Instant.now(), endTime));
 		}
 	}
 
@@ -479,7 +479,7 @@ public class NpcAggroAreaPlugin extends Plugin
 					onLogin();
 				}
 
-				calculateLinesToDisplay(); // scene base has changed, so the lines need to be recomputed
+				recheckActive();
 				break;
 
 			case LOGGING_IN:

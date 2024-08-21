@@ -1273,6 +1273,26 @@ public class ChatCommandsPluginTest
 	}
 
 	@Test
+	public void testHunterRumours()
+	{
+		testHunterRumourChatMessage("You have completed <col=ff3045>77</col> rumours for the Hunter Guild.", 77);
+		// single kc has no s.
+		testHunterRumourChatMessage("You have completed <col=ff3045>1</col> rumour for the Hunter Guild.", 1);
+		// opaque chatbox has different color
+		testHunterRumourChatMessage("You have completed <col=e00a19>2</col> rumours for the Hunter Guild.", 2);
+		// with comma in number
+		testHunterRumourChatMessage("You have completed <col=ff3045>1,032</col> rumours for the Hunter Guild.", 1032);
+	}
+
+	private void testHunterRumourChatMessage(String message, int kc)
+	{
+		ChatMessage chatMessageEvent = new ChatMessage(null, GAMEMESSAGE, "", message, null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessageEvent);
+
+		verify(configManager).setRSProfileConfiguration("killcount", "hunter rumours", kc);
+	}
+
+	@Test
 	public void testReward()
 	{
 		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your reward is: <col=ff0000>1</col> x <col=ff0000>Kebab</col>.", null, 0);

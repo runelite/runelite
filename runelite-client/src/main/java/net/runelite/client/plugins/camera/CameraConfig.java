@@ -123,6 +123,28 @@ public interface CameraConfig extends Config
 		return 25;
 	}
 
+	@ConfigItem(
+		keyName = "cameraSpeed",
+		name = "Camera Speed",
+		description = "Speed which the camera moves from input",
+		position = 7
+	)
+	default double cameraSpeed()
+	{
+		return 1f;
+	}
+
+	@ConfigItem(
+		keyName = "disableCameraShake",
+		name = "Disable Camera Shake",
+		description = "Disables camera shake",
+		position = 8
+	)
+	default boolean disableCameraShake()
+	{
+		return false;
+	}
+
 	// region mouse settings
 	@ConfigItem(
 		keyName = "rightClickMovesCamera",
@@ -158,6 +180,19 @@ public interface CameraConfig extends Config
 	default boolean rightClickExamine()
 	{
 		return false;
+	}
+
+	@ConfigItem(
+		keyName = "rightClickMenuBlocksCamera",
+		name = "Right click menu blocks camera",
+		description = "Prevents camera movement when 'Right click moves camera' is on and the right click menu<br>" +
+			"is opened due to either 'Right click objects' or 'Right click examine' being on.",
+		position = 10,
+		section = mouseSettingsSection
+	)
+	default boolean rightClickMenuBlocksCamera()
+	{
+		return true;
 	}
 
 	@ConfigItem(

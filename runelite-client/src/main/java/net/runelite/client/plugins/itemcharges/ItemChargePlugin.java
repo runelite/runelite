@@ -271,16 +271,13 @@ public class ItemChargePlugin extends Plugin
 			Matcher bloodEssenceExtractMatcher = BLOOD_ESSENCE_EXTRACT_PATTERN.matcher(message);
 			Matcher braceletOfClayCheckMatcher = BRACELET_OF_CLAY_CHECK_PATTERN.matcher(message);
 
-			if (config.recoilNotification() && message.contains(RING_OF_RECOIL_BREAK_MESSAGE))
+			if (message.contains(RING_OF_RECOIL_BREAK_MESSAGE))
 			{
-				notifier.notify("Your Ring of Recoil has shattered");
+				notifier.notify(config.recoilNotification(), "Your Ring of Recoil has shattered");
 			}
 			else if (dodgyBreakMatcher.find())
 			{
-				if (config.dodgyNotification())
-				{
-					notifier.notify("Your dodgy necklace has crumbled to dust.");
-				}
+				notifier.notify(config.dodgyNotification(), "Your dodgy necklace has crumbled to dust.");
 
 				updateDodgyNecklaceCharges(MAX_DODGY_CHARGES);
 			}
@@ -310,6 +307,8 @@ public class ItemChargePlugin extends Plugin
 			}
 			else if (amuletOfChemistryBreakMatcher.find())
 			{
+				notifier.notify(config.amuletOfChemistryNotification(), "Your amulet of chemistry has crumbled to dust.");
+
 				updateAmuletOfChemistryCharges(MAX_AMULET_OF_CHEMISTRY_CHARGES);
 			}
 			else if (amuletOfBountyCheckMatcher.find())
@@ -326,10 +325,7 @@ public class ItemChargePlugin extends Plugin
 			}
 			else if (message.contains(BINDING_BREAK_TEXT))
 			{
-				if (config.bindingNotification())
-				{
-					notifier.notify(BINDING_BREAK_TEXT);
-				}
+				notifier.notify(config.bindingNotification(), BINDING_BREAK_TEXT);
 
 				// This chat message triggers before the used message so add 1 to the max charges to ensure proper sync
 				updateBindingNecklaceCharges(MAX_BINDING_CHARGES + 1);
@@ -384,10 +380,7 @@ public class ItemChargePlugin extends Plugin
 			}
 			else if (message.equals(RING_OF_FORGING_BREAK_TEXT))
 			{
-				if (config.ringOfForgingNotification())
-				{
-					notifier.notify("Your ring of forging has melted.");
-				}
+				notifier.notify(config.ringOfForgingNotification(), "Your ring of forging has melted.");
 
 				// This chat message triggers before the used message so add 1 to the max charges to ensure proper sync
 				updateRingOfForgingCharges(MAX_RING_OF_FORGING_CHARGES + 1);
@@ -427,10 +420,7 @@ public class ItemChargePlugin extends Plugin
 				if (found == null)
 				{
 					updateBraceletOfSlaughterCharges(MAX_SLAYER_BRACELET_CHARGES);
-					if (config.slaughterNotification())
-					{
-						notifier.notify(BRACELET_OF_SLAUGHTER_BREAK_TEXT);
-					}
+					notifier.notify(config.slaughterNotification(), BRACELET_OF_SLAUGHTER_BREAK_TEXT);
 				}
 				else
 				{
@@ -447,10 +437,7 @@ public class ItemChargePlugin extends Plugin
 				if (found == null)
 				{
 					updateExpeditiousBraceletCharges(MAX_SLAYER_BRACELET_CHARGES);
-					if (config.expeditiousNotification())
-					{
-						notifier.notify(EXPEDITIOUS_BRACELET_BREAK_TEXT);
-					}
+					notifier.notify(config.expeditiousNotification(), EXPEDITIOUS_BRACELET_BREAK_TEXT);
 				}
 				else
 				{
@@ -500,10 +487,7 @@ public class ItemChargePlugin extends Plugin
 			}
 			else if (message.equals(BRACELET_OF_CLAY_BREAK_TEXT))
 			{
-				if (config.braceletOfClayNotification())
-				{
-					notifier.notify("Your bracelet of clay has crumbled to dust");
-				}
+				notifier.notify(config.braceletOfClayNotification(), "Your bracelet of clay has crumbled to dust");
 				updateBraceletOfClayCharges(MAX_BRACELET_OF_CLAY_CHARGES);
 			}
 		}

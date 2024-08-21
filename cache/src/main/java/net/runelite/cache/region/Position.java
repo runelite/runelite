@@ -38,6 +38,19 @@ public class Position
 		this.z = z;
 	}
 
+	public static Position fromPacked(int packedPosition)
+	{
+		if (packedPosition == -1)
+		{
+			return new Position(-1, -1, -1);
+		}
+
+		int z = packedPosition >> 28 & 3;
+		int x = packedPosition >> 14 & 16383;
+		int y = packedPosition & 16383;
+		return new Position(x, y, z);
+	}
+
 	@Override
 	public String toString()
 	{

@@ -120,7 +120,7 @@ public class KandarinDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.AGILITY, 60));
 		add("Smith a Rune Hasta at Otto's Grotto.",
 			new SkillRequirement(Skill.SMITHING, 90));
-		add("Construct a Pyre ship from Magic Logs.",
+		add("Construct a Pyre ship from Magic Logs.(Requires Chewed Bones.)",
 			new SkillRequirement(Skill.FIREMAKING, 85),
 			new SkillRequirement(Skill.CRAFTING, 85));
 		add("Teleport to Catherby.",

@@ -47,6 +47,8 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.HitsplatApplied;
 import net.runelite.api.events.InteractingChanged;
 import net.runelite.client.Notifier;
+import net.runelite.client.config.ConfigManager;
+import net.runelite.client.config.Notification;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -78,6 +80,10 @@ public class IdleNotifierPluginTest
 	@Mock
 	@Bind
 	private Notifier notifier;
+
+	@Mock
+	@Bind
+	private ConfigManager configManager;
 
 	@Inject
 	private IdleNotifierPlugin plugin;
@@ -123,9 +129,9 @@ public class IdleNotifierPluginTest
 		when(client.getLocalPlayer()).thenReturn(player);
 
 		// Mock config
-		when(config.logoutIdle()).thenReturn(true);
-		when(config.animationIdle()).thenReturn(true);
-		when(config.interactionIdle()).thenReturn(true);
+		when(config.logoutIdle()).thenReturn(Notification.ON);
+		when(config.animationIdle()).thenReturn(Notification.ON);
+		when(config.interactionIdle()).thenReturn(Notification.ON);
 		when(config.getIdleNotificationDelay()).thenReturn(0);
 		when(config.getHitpointsThreshold()).thenReturn(42);
 		when(config.getPrayerThreshold()).thenReturn(42);
@@ -148,7 +154,7 @@ public class IdleNotifierPluginTest
 		when(player.getAnimation()).thenReturn(AnimationID.IDLE);
 		plugin.onAnimationChanged(animationChanged);
 		plugin.onGameTick(new GameTick());
-		verify(notifier).notify("You are now idle!");
+		verify(notifier).notify(Notification.ON, "You are now idle!");
 	}
 
 	@Test
@@ -204,7 +210,7 @@ public class IdleNotifierPluginTest
 		when(player.getInteracting()).thenReturn(null);
 		plugin.onInteractingChanged(new InteractingChanged(player, null));
 		plugin.onGameTick(new GameTick());
-		verify(notifier).notify("You are now out of combat!");
+		verify(notifier).notify(Notification.ON, "You are now out of combat!");
 	}
 
 	@Test
@@ -270,7 +276,7 @@ public class IdleNotifierPluginTest
 
 		plugin.onGameTick(new GameTick());
 		plugin.onGameTick(new GameTick());
-		verify(notifier, times(1)).notify(any());
+		verify(notifier, times(1)).notify(any(Notification.class), any());
 	}
 
 	@Test
@@ -295,12 +301,13 @@ public class IdleNotifierPluginTest
 		plugin.onInteractingChanged(new InteractingChanged(player, null));
 		plugin.onGameTick(new GameTick());
 
-		verify(notifier).notify("You are now idle!");
+		verify(notifier).notify(Notification.ON, "You are now idle!");
 	}
 
 	@Test
 	public void testSpecRegen()
 	{
+		when(config.getSpecNotification()).thenReturn(Notification.ON);
 		when(config.getSpecEnergyThreshold()).thenReturn(50);
 
 		when(client.getVarpValue(eq(VarPlayer.SPECIAL_ATTACK_PERCENT))).thenReturn(400); // 40%
@@ -309,13 +316,13 @@ public class IdleNotifierPluginTest
 
 		when(client.getVarpValue(eq(VarPlayer.SPECIAL_ATTACK_PERCENT))).thenReturn(500); // 50%
 		plugin.onGameTick(new GameTick());
-		verify(notifier).notify(eq("You have restored spec energy!"));
+		verify(notifier).notify(Notification.ON, "You have restored spec energy!");
 	}
 
 	@Test
 	public void testMovementIdle()
 	{
-		when(config.movementIdle()).thenReturn(true);
+		when(config.movementIdle()).thenReturn(Notification.ON);
 
 		when(player.getWorldLocation()).thenReturn(new WorldPoint(0, 0, 0));
 		plugin.onGameTick(new GameTick());
@@ -324,6 +331,6 @@ public class IdleNotifierPluginTest
 		// No movement here
 		plugin.onGameTick(new GameTick());
 
-		verify(notifier).notify(eq("You have stopped moving!"));
+		verify(notifier).notify(Notification.ON, "You have stopped moving!");
 	}
 }

@@ -27,9 +27,13 @@ package net.runelite.api;
 import com.jagex.oldscape.pub.OAuthApi;
 import java.awt.Canvas;
 import java.awt.Dimension;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
+import java.util.function.IntPredicate;
+import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import net.runelite.api.annotations.Component;
@@ -76,34 +80,6 @@ public interface Client extends OAuthApi, GameEngine
 	void setDrawCallbacks(DrawCallbacks drawCallbacks);
 
 	String getBuildID();
-
-	/**
-	 * Gets a list of all valid players from the player cache.
-	 *
-	 * @return a list of all players
-	 */
-	List<Player> getPlayers();
-
-	/**
-	 * Gets a list of all valid NPCs from the NPC cache.
-	 *
-	 * @return a list of all NPCs
-	 */
-	List<NPC> getNpcs();
-
-	/**
-	 * Gets an array of all cached NPCs.
-	 *
-	 * @return cached NPCs
-	 */
-	NPC[] getCachedNPCs();
-
-	/**
-	 * Gets an array of all cached players.
-	 *
-	 * @return cached players
-	 */
-	Player[] getCachedPlayers();
 
 	/**
 	 * Gets the current modified level of a skill.
@@ -171,6 +147,14 @@ public interface Client extends OAuthApi, GameEngine
 	 * This will call {@link System#exit} when it is done
 	 */
 	void stopNow();
+
+	/**
+	 * Gets the display name of the active account when launched from the Jagex launcher.
+	 *
+	 * @return The active account's display name, or {@code null} if not launched from the Jagex launcher
+	 */
+	@Nullable
+	String getLauncherDisplayName();
 
 	/**
 	 * DEPRECATED. See getAccountHash instead.
@@ -380,48 +364,6 @@ public interface Client extends OAuthApi, GameEngine
 	Point getMouseCanvasPosition();
 
 	/**
-	 * Gets a 3D array containing the heights of tiles in the
-	 * current scene.
-	 *
-	 * @return the tile heights
-	 */
-	int[][][] getTileHeights();
-
-	/**
-	 * Gets a 3D array containing the settings of tiles in the
-	 * current scene.
-	 *
-	 * @return the tile settings
-	 */
-	byte[][][] getTileSettings();
-
-	/**
-	 * Gets the current plane the player is on.
-	 * <p>
-	 * This value indicates the current map level above ground level, where
-	 * ground level is 0. For example, going up a ladder in Lumbridge castle
-	 * will put the player on plane 1.
-	 * <p>
-	 * Note: This value will never be below 0. Basements and caves below ground
-	 * level use a tile offset and are still considered plane 0 by the game.
-	 *
-	 * @return the plane
-	 */
-	int getPlane();
-
-	/**
-	 * Get the max plane being rendered on the scene. This is usually the max plane, 3, unless roofs are hidden,
-	 * where it will be the current plane.
-	 * @return
-	 */
-	int getSceneMaxPlane();
-
-	/**
-	 * Gets the current scene
-	 */
-	Scene getScene();
-
-	/**
 	 * Gets the logged in player instance.
 	 *
 	 * @return the logged in player
@@ -506,39 +448,11 @@ public interface Client extends OAuthApi, GameEngine
 	IndexDataBase getIndex(int id);
 
 	/**
-	 * Returns the x-axis base coordinate.
-	 * <p>
-	 * This value is the x-axis world coordinate of tile (0, 0) in
-	 * the current scene (ie. the bottom-left most coordinates in the scene).
-	 *
-	 * @return the base x-axis coordinate
-	 */
-	int getBaseX();
-
-	/**
-	 * Returns the y-axis base coordinate.
-	 * <p>
-	 * This value is the y-axis world coordinate of tile (0, 0) in
-	 * the current scene (ie. the bottom-left most coordinates in the scene).
-	 *
-	 * @return the base y-axis coordinate
-	 */
-	int getBaseY();
-
-	/**
 	 * Gets the current mouse button that is pressed.
 	 *
 	 * @return the pressed mouse button
 	 */
 	int getMouseCurrentButton();
-
-	/**
-	 * Gets the currently selected tile. (ie. last right clicked tile)
-	 *
-	 * @return the selected tile
-	 */
-	@Nullable
-	Tile getSelectedSceneTile();
 
 	/**
 	 * Checks whether a widget is currently being dragged.
@@ -558,7 +472,7 @@ public interface Client extends OAuthApi, GameEngine
 	/**
 	 * Gets the widget that is being dragged on.
 	 * <p>
-	 * The widget being dragged has the {@link net.runelite.api.widgets.WidgetConfig#DRAG_ON}
+	 * The widget being dragged has the {@link net.runelite.api.widgets.WidgetConfig#DRAG}
 	 * flag set, and is the widget currently under the dragged widget.
 	 *
 	 * @return the dragged on widget, null if not dragging any widget
@@ -684,10 +598,19 @@ public interface Client extends OAuthApi, GameEngine
 	World[] getWorldList();
 
 	/**
+	 * Get the client menu.
+	 */
+	@Nonnull
+	Menu getMenu();
+
+	/**
 	 * Create a new menu entry
 	 * @param idx the index to create the menu entry at. Accepts negative indexes eg. -1 inserts at the end.
 	 * @return the newly created menu entry
+	 * @see #getMenu()
+	 * @see Menu#createMenuEntry(int)
 	 */
+	@Deprecated
 	MenuEntry createMenuEntry(int idx);
 
 	/**
@@ -695,7 +618,10 @@ public interface Client extends OAuthApi, GameEngine
 	 * clicked and activated.
 	 *
 	 * @return array of open menu entries
+	 * @see #getMenu()
+	 * @see Menu#getMenuEntries()
 	 */
+	@Deprecated
 	MenuEntry[] getMenuEntries();
 
 	/**
@@ -705,7 +631,10 @@ public interface Client extends OAuthApi, GameEngine
 	 * event, since setting the menu entries will be overwritten the next frame
 	 *
 	 * @param entries new array of open menu entries
+	 * @see #getMenu()
+	 * @see Menu#setMenuEntries(MenuEntry[])
 	 */
+	@Deprecated
 	void setMenuEntries(MenuEntry[] entries);
 
 	/**
@@ -737,28 +666,36 @@ public interface Client extends OAuthApi, GameEngine
 	 * Get the menu x location. Only valid if the menu is open.
 	 *
 	 * @return the menu x location
+	 * @see Menu#getMenuX()
 	 */
+	@Deprecated
 	int getMenuX();
 
 	/**
 	 * Get the menu y location. Only valid if the menu is open.
 	 *
 	 * @return the menu y location
+	 * @see Menu#getMenuY()
 	 */
+	@Deprecated
 	int getMenuY();
 
 	/**
 	 * Get the menu height. Only valid if the menu is open.
 	 *
 	 * @return the menu height
+	 * @see Menu#getMenuHeight()
 	 */
+	@Deprecated
 	int getMenuHeight();
 
 	/**
 	 * Get the menu width. Only valid if the menu is open.
 	 *
 	 * @return the menu width
+	 * @see Menu#getMenuWidth()
 	 */
+	@Deprecated
 	int getMenuWidth();
 
 	/**
@@ -783,49 +720,6 @@ public interface Client extends OAuthApi, GameEngine
 	 * @return the revision
 	 */
 	int getRevision();
-
-	/**
-	 * Gets an array of map region IDs that are currently loaded.
-	 *
-	 * @return the map regions
-	 */
-	int[] getMapRegions();
-
-	/**
-	 * Contains a 3D array of template chunks for instanced areas.
-	 * <p>
-	 * The array returned is of format [z][x][y], where z is the
-	 * plane, x and y the x-axis and y-axis coordinates of a tile
-	 * divided by the size of a chunk.
-	 * <p>
-	 * The bits of the int value held by the coordinates are -1 if there is no data,
-	 * structured in the following format:
-	 * <pre>{@code
-	 *  0                   1                   2                   3
-	 *  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-	 * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-	 * | |rot|     y chunk coord     |    x chunk coord    |pln|       |
-	 * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-	 * }</pre>
-	 * @return the array of instance template chunks
-	 * @see Constants#CHUNK_SIZE
-	 * @see InstanceTemplates
-	 */
-	int[][][] getInstanceTemplateChunks();
-
-	/**
-	 * Returns a 2D array containing XTEA encryption keys used to decrypt
-	 * map region files.
-	 * <p>
-	 * The array maps the region keys at index {@code n} to the region
-	 * ID held in {@link #getMapRegions()} at {@code n}.
-	 * <p>
-	 * The array of keys for the region make up a 128-bit encryption key
-	 * spread across 4 integers.
-	 *
-	 * @return the XTEA encryption keys
-	 */
-	int[][] getXteaKeys();
 
 	/**
 	 * Gets an array of all client varplayers.
@@ -1181,40 +1075,6 @@ public interface Client extends OAuthApi, GameEngine
 	LocalPoint getLocalDestinationLocation();
 
 	/**
-	 * Create a projectile.
-	 * @param id projectile/spotanim id
-	 * @param plane plane the projectile is on
-	 * @param startX local x coordinate the projectile starts at
-	 * @param startY local y coordinate the projectile starts at
-	 * @param startZ local z coordinate the projectile starts at - includes tile height
-	 * @param startCycle cycle the project starts
-	 * @param endCycle cycle the projectile ends
-	 * @param slope
-	 * @param startHeight start height of projectile - excludes tile height
-	 * @param endHeight end height of projectile - excludes tile height
-	 * @param target optional actor target
-	 * @param targetX target x - if an actor target is supplied should be the target x
-	 * @param targetY target y - if an actor target is supplied should be the target y
-	 * @return the new projectile
-	 */
-	Projectile createProjectile(int id, int plane, int startX, int startY, int startZ, int startCycle, int endCycle,
-		int slope, int startHeight, int endHeight, @Nullable Actor target, int targetX, int targetY);
-
-	/**
-	 * Gets a list of all projectiles currently spawned.
-	 *
-	 * @return all projectiles
-	 */
-	Deque<Projectile> getProjectiles();
-
-	/**
-	 * Gets a list of all graphics objects currently drawn.
-	 *
-	 * @return all graphics objects
-	 */
-	Deque<GraphicsObject> getGraphicsObjects();
-
-	/**
 	 * Creates a RuneLiteObject, which is a modified {@link GraphicsObject}
 	 */
 	RuneLiteObject createRuneLiteObject();
@@ -1416,6 +1276,21 @@ public interface Client extends OAuthApi, GameEngine
 	String[] getStringStack();
 
 	/**
+	 * Get the size of one of the cs2 vm's arrays.
+	 * @param arrayId the array id
+	 * @return
+	 */
+	int getArraySizes(int arrayId);
+
+	/**
+	 * Get one of the cs2 vm's arrays. Use {@link #getArraySizes(int)} to get
+	 * the array length.
+	 * @param arrayId the array id
+	 * @return
+	 */
+	int[] getArray(int arrayId);
+
+	/**
 	 * Gets the cs2 vm's active widget
 	 *
 	 * This is used for all {@code cc_*} operations with a {@code 0} operand
@@ -1500,6 +1375,19 @@ public interface Client extends OAuthApi, GameEngine
 	 * @param cameraPitchTarget target camera pitch
 	 */
 	void setCameraPitchTarget(int cameraPitchTarget);
+
+	/**
+	 * Sets the camera speed
+	 * @param speed
+	 */
+	void setCameraSpeed(float speed);
+
+	/**
+	 * Sets the mask for which mouse buttons control the camera.
+	 * Use 0 for the default behavior of mouse button 4 if "middle mouse moves camera" is on.
+	 * @param mask
+	 */
+	void setCameraMouseButtonMask(int mask);
 
 	/**
 	 * Sets whether the camera pitch can exceed the normal limits set
@@ -1720,64 +1608,8 @@ public interface Client extends OAuthApi, GameEngine
 	 */
 	NPC getHintArrowNpc();
 
-	/**
-	 * Checks whether animation smoothing is enabled for players.
-	 *
-	 * @return true if player animation smoothing is enabled, false otherwise
-	 */
-	boolean isInterpolatePlayerAnimations();
-
-	/**
-	 * Sets the animation smoothing state for players.
-	 *
-	 * @param interpolate the new smoothing state
-	 */
-	void setInterpolatePlayerAnimations(boolean interpolate);
-
-	/**
-	 * Checks whether animation smoothing is enabled for NPC.
-	 *
-	 * @return true if NPC animation smoothing is enabled, false otherwise
-	 */
-	boolean isInterpolateNpcAnimations();
-
-	/**
-	 * Sets the animation smoothing state for NPCs.
-	 *
-	 * @param interpolate the new smoothing state
-	 */
-	void setInterpolateNpcAnimations(boolean interpolate);
-
-	/**
-	 * Checks whether animation smoothing is enabled for objects.
-	 *
-	 * @return true if object animation smoothing is enabled, false otherwise
-	 */
-	boolean isInterpolateObjectAnimations();
-
-	/**
-	 * Sets the animation smoothing state for objects.
-	 *
-	 * @param interpolate the new smoothing state
-	 */
-	void setInterpolateObjectAnimations(boolean interpolate);
-
-	/**
-	 * Checks whether the logged in player is in an instanced region.
-	 *
-	 * @return true if the player is in instanced region, false otherwise
-	 */
-	boolean isInInstancedRegion();
-
-	/**
-	 * Gets an array of tile collision data.
-	 * <p>
-	 * The index into the array is the plane/z-axis coordinate.
-	 *
-	 * @return the collision data
-	 */
-	@Nullable
-	CollisionData[] getCollisionMaps();
+	IntPredicate getAnimationInterpolationFilter();
+	void setAnimationInterpolationFilter(IntPredicate filter);
 
 	@VisibleForDevtools
 	int[] getBoostedSkillLevels();
@@ -1850,8 +1682,65 @@ public interface Client extends OAuthApi, GameEngine
 	EnumSet<WorldType> getWorldType();
 
 	/**
+	 * Get the camera mode
+	 * @return 0 for normal, 1 for free camera
+	 */
+	int getCameraMode();
+
+	/**
+	 * Set the camera mode
+	 * @param mode 0 for normal, 1 for free camera
+	 */
+	void setCameraMode(int mode);
+
+	/**
+	 * Get the camera focus point x
+	 * Typically this is the player position, but can be other points in cutscenes or in free camera mode.
+	 * @return
+	 */
+	double getCameraFocalPointX();
+
+	/**
+	 * Sets the camera focus point x. Requires the {@link #getCameraMode()} to be free camera.
+	 * @param x
+	 */
+	void setCameraFocalPointX(double x);
+
+	/**
+	 * Get the camera focus point y
+	 * Typically this is the player position, but can be other points in cutscenes or in free camera mode.
+	 * @return
+	 */
+	double getCameraFocalPointY();
+
+	/**
+	 * Sets the camera focus point y. Requires the {@link #getCameraMode()} to be free camera.
+	 * @param y
+	 */
+	void setCameraFocalPointY(double y);
+
+	/**
+	 * Get the camera focus point z
+	 * Typically this is the player position, but can be other points in cutscenes or in free camera mode.
+	 * @return
+	 */
+	double getCameraFocalPointZ();
+
+	/**
+	 * Sets the camera focus point z. Requires the {@link #getCameraMode()} to be free camera.
+	 * @param z
+	 */
+	void setCameraFocalPointZ(double z);
+
+	/**
+	 * Sets the normal moving speed when using oculus orb (default value is 12)
+	 */
+	void setFreeCameraSpeed(int speed);
+
+	/**
 	 * Gets the enabled state for the Oculus orb mode
 	 */
+	@Deprecated
 	int getOculusOrbState();
 
 	/**
@@ -1859,21 +1748,25 @@ public interface Client extends OAuthApi, GameEngine
 	 *
 	 * @param state boolean enabled value
 	 */
+	@Deprecated
 	void setOculusOrbState(int state);
 
 	/**
 	 * Sets the normal moving speed when using oculus orb (default value is 12)
 	 */
+	@Deprecated
 	void setOculusOrbNormalSpeed(int speed);
 
 	/**
 	 * Gets local X coord where the camera is pointing when the Oculus orb is active
 	 */
+	@Deprecated
 	int getOculusOrbFocalPointX();
 
 	/**
 	 * Gets local Y coord where the camera is pointing when the Oculus orb is active
 	 */
+	@Deprecated
 	int getOculusOrbFocalPointY();
 
 	/**
@@ -1907,10 +1800,6 @@ public interface Client extends OAuthApi, GameEngine
 	int getCenterX();
 	int getCenterY();
 
-	int getCameraX2();
-	int getCameraY2();
-	int getCameraZ2();
-
 	TextureProvider getTextureProvider();
 
 	int getRasterizer3D_clipMidX2();
@@ -1918,7 +1807,7 @@ public interface Client extends OAuthApi, GameEngine
 	int getRasterizer3D_clipNegativeMidY();
 	int getRasterizer3D_clipMidY2();
 
-	void checkClickbox(Model model, int orientation, int pitchSin, int pitchCos, int yawSin, int yawCos, int x, int y, int z, long hash);
+	void checkClickbox(Projection projection, Model model, int orientation, int x, int y, int z, long hash);
 
 	/**
 	 * Is a widget is in target mode?
@@ -2134,4 +2023,306 @@ public interface Client extends OAuthApi, GameEngine
 	void setMinimapTileDrawer(TileFunction drawTile);
 
 	Rasterizer getRasterizer();
+
+	void menuAction(int p0, int p1, MenuAction action, int id, int itemId, String option, String target);
+
+	/**
+	 * Get worldview by id
+	 * @param id id, or -1 for top level worldview
+	 * @return
+	 */
+	WorldView getWorldView(int id);
+
+	/**
+	 * Get the top level world view
+	 * @return
+	 */
+	WorldView getTopLevelWorldView();
+
+	/**
+	 * Whether camera shaking effects are disabled at e.g. Barrows, ToA
+	 * @return
+	 */
+	boolean isCameraShakeDisabled();
+
+	/**
+	 * Set whether to disable camera shaking effects at e.g. Barrows, ToA
+	 * @param disabled
+	 */
+	void setCameraShakeDisabled(boolean disabled);
+
+	/**
+	 * Contains a 3D array of template chunks for instanced areas.
+	 * <p>
+	 * The array returned is of format [z][x][y], where z is the
+	 * plane, x and y the x-axis and y-axis coordinates of a tile
+	 * divided by the size of a chunk.
+	 * <p>
+	 * The bits of the int value held by the coordinates are -1 if there is no data,
+	 * structured in the following format:
+	 * <pre>{@code
+	 *  0                   1                   2                   3
+	 *  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+	 * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+	 * | |rot|     y chunk coord     |    x chunk coord    |pln|       |
+	 * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+	 * }</pre>
+	 * @return the array of instance template chunks
+	 * @see Constants#CHUNK_SIZE
+	 * @see InstanceTemplates
+	 * @see WorldView#getInstanceTemplateChunks()
+	 */
+	@Deprecated
+	int[][][] getInstanceTemplateChunks();
+
+	/**
+	 * Returns a 2D array containing XTEA encryption keys used to decrypt
+	 * map region files.
+	 * <p>
+	 * The array maps the region keys at index {@code n} to the region
+	 * ID held in {@link #getMapRegions()} at {@code n}.
+	 * <p>
+	 * The array of keys for the region make up a 128-bit encryption key
+	 * spread across 4 integers.
+	 *
+	 * @return the XTEA encryption keys
+	 */
+	@Deprecated
+	int[][] getXteaKeys();
+
+	/**
+	 * Checks whether the scene is in an instanced region.
+	 * @see WorldView#isInstance()
+	 */
+	@Deprecated
+	boolean isInInstancedRegion();
+
+	/**
+	 * Gets an array of map region IDs that are currently loaded.
+	 *
+	 * @return the map regions
+	 */
+	@Deprecated
+	int[] getMapRegions();
+
+	/**
+	 * Gets the current scene
+	 * @see WorldView#getScene()
+	 */
+	@Deprecated
+	default Scene getScene()
+	{
+		var wv = getTopLevelWorldView();
+		return wv == null ? null : wv.getScene();
+	}
+
+	/**
+	 * Gets a list of all valid players from the player cache.
+	 *
+	 * @return a list of all players
+	 * @see WorldView#players()
+	 */
+	@Deprecated
+	default List<Player> getPlayers()
+	{
+		var wv = getTopLevelWorldView();
+		return wv == null ? Collections.emptyList() : wv.players()
+			.stream()
+			.collect(Collectors.toCollection(ArrayList::new));
+	}
+
+	/**
+	 * Gets a list of all valid NPCs from the NPC cache.
+	 *
+	 * @return a list of all NPCs
+	 * @see WorldView#npcs()
+	 */
+	@Deprecated
+	default List<NPC> getNpcs()
+	{
+		var wv = getTopLevelWorldView();
+		return wv == null ? Collections.emptyList() : wv.npcs()
+			.stream()
+			.collect(Collectors.toCollection(ArrayList::new));
+	}
+
+	/**
+	 * Gets an array of all cached NPCs.
+	 *
+	 * @return cached NPCs
+	 * @see WorldView#npcs()
+	 */
+	@Deprecated
+	default NPC[] getCachedNPCs()
+	{
+		var wv = getTopLevelWorldView();
+		return wv == null ? new NPC[0] : wv.npcs().getSparse();
+	}
+
+	/**
+	 * Gets an array of all cached players.
+	 *
+	 * @return cached players
+	 * @see WorldView#players()
+	 */
+	@Deprecated
+	default Player[] getCachedPlayers()
+	{
+		var wv = getTopLevelWorldView();
+		return wv == null ? new Player[0] : wv.players().getSparse();
+	}
+
+	/**
+	 * Gets an array of tile collision data.
+	 * <p>
+	 * The index into the array is the plane/z-axis coordinate.
+	 *
+	 * @return the collision data
+	 * @see WorldView#getCollisionMaps()
+	 */
+	@Nullable
+	@Deprecated
+	default CollisionData[] getCollisionMaps()
+	{
+		return getTopLevelWorldView().getCollisionMaps();
+	}
+
+	/**
+	 * Gets the current plane the player is on.
+	 * <p>
+	 * This value indicates the current map level above ground level, where
+	 * ground level is 0. For example, going up a ladder in Lumbridge castle
+	 * will put the player on plane 1.
+	 * <p>
+	 * Note: This value will never be below 0. Basements and caves below ground
+	 * level use a tile offset and are still considered plane 0 by the game.
+	 *
+	 * @return the plane
+	 * @see WorldView#getPlane()
+	 */
+	@Deprecated
+	default int getPlane()
+	{
+		return getTopLevelWorldView().getPlane();
+	}
+
+	/**
+	 * Gets a 3D array containing the heights of tiles in the
+	 * current scene.
+	 *
+	 * @return the tile heights
+	 * @see WorldView#getTileHeights()
+	 */
+	@Deprecated
+	default int[][][] getTileHeights()
+	{
+		return getTopLevelWorldView().getTileHeights();
+	}
+
+	/**
+	 * Gets a 3D array containing the settings of tiles in the
+	 * current scene.
+	 *
+	 * @return the tile settings
+	 * @see WorldView#getTileSettings()
+	 */
+	@Deprecated
+	default byte[][][] getTileSettings()
+	{
+		return getTopLevelWorldView().getTileSettings();
+	}
+
+	/**
+	 * Returns the x-axis base coordinate.
+	 * <p>
+	 * This value is the x-axis world coordinate of tile (0, 0) in
+	 * the current scene (ie. the bottom-left most coordinates in the scene).
+	 *
+	 * @return the base x-axis coordinate
+	 * @see WorldView#getBaseX()
+	 */
+	@Deprecated
+	default int getBaseX()
+	{
+		var wv = getTopLevelWorldView();
+		return wv == null ? 0 : wv.getBaseX();
+	}
+
+	/**
+	 * Returns the y-axis base coordinate.
+	 * <p>
+	 * This value is the y-axis world coordinate of tile (0, 0) in
+	 * the current scene (ie. the bottom-left most coordinates in the scene).
+	 *
+	 * @return the base y-axis coordinate
+	 * @see WorldView#getBaseY()
+	 */
+	@Deprecated
+	default int getBaseY()
+	{
+		var wv = getTopLevelWorldView();
+		return wv == null ? 0 : wv.getBaseY();
+	}
+
+	/**
+	 * Create a projectile.
+	 * @param id projectile/spotanim id
+	 * @param plane plane the projectile is on
+	 * @param startX local x coordinate the projectile starts at
+	 * @param startY local y coordinate the projectile starts at
+	 * @param startZ local z coordinate the projectile starts at - includes tile height
+	 * @param startCycle cycle the project starts
+	 * @param endCycle cycle the projectile ends
+	 * @param slope
+	 * @param startHeight start height of projectile - excludes tile height
+	 * @param endHeight end height of projectile - excludes tile height
+	 * @param target optional actor target
+	 * @param targetX target x - if an actor target is supplied should be the target x
+	 * @param targetY target y - if an actor target is supplied should be the target y
+	 * @return the new projectile
+	 * @see WorldView#createProjectile(int, int, int, int, int, int, int, int, int, int, Actor, int, int)
+	 */
+	@Deprecated
+	default Projectile createProjectile(int id, int plane, int startX, int startY, int startZ, int startCycle, int endCycle,
+		int slope, int startHeight, int endHeight, @Nullable Actor target, int targetX, int targetY)
+	{
+		return getTopLevelWorldView().createProjectile(id, plane, startX, startY, startZ, startCycle, endCycle, slope, startHeight, endHeight, target, targetX, targetY);
+	}
+
+	/**
+	 * Gets a list of all projectiles currently spawned.
+	 *
+	 * @return all projectiles
+	 * @see WorldView#getProjectiles()
+	 */
+	@Deprecated
+	default Deque<Projectile> getProjectiles()
+	{
+		return getTopLevelWorldView().getProjectiles();
+	}
+
+	/**
+	 * Gets a list of all graphics objects currently drawn.
+	 *
+	 * @return all graphics objects
+	 * @see WorldView#getGraphicsObjects()
+	 */
+	@Deprecated
+	default Deque<GraphicsObject> getGraphicsObjects()
+	{
+		return getTopLevelWorldView().getGraphicsObjects();
+	}
+
+	/**
+	 * Gets the currently selected tile. (ie. last right clicked tile)
+	 *
+	 * @return the selected tile
+	 * @see WorldView#getSelectedSceneTile()
+	 */
+	@Deprecated
+	@Nullable
+	default Tile getSelectedSceneTile()
+	{
+		return getTopLevelWorldView().getSelectedSceneTile();
+	}
 }
