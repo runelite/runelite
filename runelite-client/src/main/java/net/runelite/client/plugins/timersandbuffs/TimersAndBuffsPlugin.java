@@ -351,11 +351,6 @@ public class TimersAndBuffsPlugin extends Plugin
 		if ((event.getVarbitId() == Varbits.NMZ_OVERLOAD_REFRESHES_REMAINING
 			|| event.getVarbitId() == Varbits.COX_OVERLOAD_REFRESHES_REMAINING))
 		{
-			if (config.showOverloadBoost())
-			{
-				createGameTimer(OVERLOAD_BOOST, Duration.ofSeconds(15));
-			}
-
 			if (config.showOverload())
 			{
 				final int overloadVarb = event.getValue();
@@ -372,6 +367,11 @@ public class TimersAndBuffsPlugin extends Plugin
 
 				GameTimer overloadTimer = client.getVarbitValue(Varbits.IN_RAID) == 1 ? OVERLOAD_RAID : OVERLOAD;
 				updateVarTimer(overloadTimer, overloadVarb, i -> nextOverloadRefreshTick - tickCount + (i - 1) * OVERLOAD_TICK_LENGTH);
+			}
+
+			if (config.showOverloadBoost())
+			{
+				createGameTimer(OVERLOAD_BOOST, Duration.ofSeconds(15));
 			}
 		}
 
@@ -569,13 +569,13 @@ public class TimersAndBuffsPlugin extends Plugin
 
 		if (event.getVarbitId() == Varbits.BUFF_STAT_BOOST )
 		{
-			if (config.showSmellingSaltBoost())
-			{
-				createGameTimer(SMELLING_SALTS_BOOST, Duration.ofSeconds(15));
-			}
 			if (config.showSalts())
 			{
 				updateVarTimer(SMELLING_SALTS, event.getValue(), i -> i * 25);
+			}
+			if (config.showSmellingSaltBoost())
+			{
+				createGameTimer(SMELLING_SALTS_BOOST, Duration.ofSeconds(15));
 			}
 		}
 
