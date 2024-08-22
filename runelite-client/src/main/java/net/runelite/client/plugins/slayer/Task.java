@@ -169,7 +169,7 @@ enum Task
 	TROLLS("Trolls", ItemID.TROLL_GUARD, "Dad", "Arrg"),
 	TUROTH("Turoth", ItemID.TUROTH),
 	TZHAAR("Tzhaar", ItemID.ENSOULED_TZHAAR_HEAD, "TzTok-Jad", "TzKal-Zuk"),
-	VAMPYRES("Vampyres", ItemID.STAKE, "Vyrewatch", "Vampire"),
+	VAMPYRES("Vampyres", ItemID.STAKE, "Vyrewatch"),
 	VARDORVIS("Vardorvis", ItemID.BUTCH),
 	VENENATIS("Venenatis", ItemID.VENENATIS_SPIDERLING),
 	VETION("Vet'ion", ItemID.VETION_JR),
