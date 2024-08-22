@@ -113,10 +113,11 @@ public class CrowdsourcingThieving
 		}
 
 		String message = event.getMessage();
-		if (BLACKJACK_SUCCESS.equals(message)
+		if (eventType == ChatMessageType.SPAM
+			&& (BLACKJACK_SUCCESS.equals(message)
 			|| BLACKJACK_FAIL.equals(message)
 			|| PICKPOCKET_FAIL.matcher(message).matches()
-			|| PICKPOCKET_SUCCESS.matcher(message).matches())
+			|| PICKPOCKET_SUCCESS.matcher(message).matches()) )
 		{
 			WorldPoint location = client.getLocalPlayer().getWorldLocation();
 			int ardougneDiary = getArdougneDiary();
@@ -125,11 +126,13 @@ public class CrowdsourcingThieving
 			int thievingLevel = client.getBoostedSkillLevel(Skill.THIEVING);
 			PickpocketData data = new PickpocketData(thievingLevel, lastPickpocketTarget, message, location, silence, thievingCape, ardougneDiary);
 			manager.storeEvent(data);
+			return;
 		}
 
-		if (LOCKPICK_SUCCESS.equals(message)
+		if (eventType == ChatMessageType.GAMEMESSAGE
+			&& (LOCKPICK_SUCCESS.equals(message)
 			|| LOCKPICK_FAIL.equals(message)
-			|| LOCKPICK_TRAP.equals(message))
+			|| LOCKPICK_TRAP.equals(message)) )
 		{
 			WorldPoint location = client.getLocalPlayer().getWorldLocation();
 			int thievingLevel = client.getBoostedSkillLevel(Skill.THIEVING);
