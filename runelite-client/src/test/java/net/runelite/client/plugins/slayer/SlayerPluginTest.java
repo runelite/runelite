@@ -284,6 +284,7 @@ public class SlayerPluginTest
 		assertTrue(matches("Spiked Turoth", Task.TUROTH));
 		assertTrue(matches("Loar shade", Task.SHADES));
 		assertTrue(matches("Loar shadow", Task.SHADES));
+		assertTrue(matches("Urium shadow", Task.SHADES));
 
 		assertFalse(matches("Rat", Task.PIRATES));
 		assertFalse(matches("Wolf", Task.WEREWOLVES));
