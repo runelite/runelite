@@ -1504,9 +1504,8 @@ public class MapImageDumper
 							ObjectDefinition object = findObject(location.getId());
 
 							int drawX = (drawBaseX + localX) * MAP_SCALE;
-							//What is offsetY?
-							int objSizeOffset = Math.max(2, object.getOffsetY());
-							int drawY = (drawBaseY + (Region.Y - objSizeOffset - localY)) * MAP_SCALE;
+							int objSizeOffset = Math.max(object.getSizeX(), object.getSizeY()) / 2;
+							int drawY = (drawBaseY + (Region.Y - objSizeOffset - localY - 1)) * MAP_SCALE;
 							if (object.getMapSceneID() != -1)
 							{
 								blitMapDecoration(image, drawX, drawY, object);
