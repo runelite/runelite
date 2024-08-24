@@ -369,7 +369,7 @@ public class TimersAndBuffsPlugin extends Plugin
 				updateVarTimer(overloadTimer, overloadVarb, i -> nextOverloadRefreshTick - tickCount + (i - 1) * OVERLOAD_TICK_LENGTH);
 			}
 
-			if (config.showOverloadBoost())
+			if (config.showOverloadBoost() && event.getValue() > 1)
 			{
 				createGameTimer(OVERLOAD_BOOST, Duration.ofSeconds(15));
 			}
@@ -573,7 +573,7 @@ public class TimersAndBuffsPlugin extends Plugin
 			{
 				updateVarTimer(SMELLING_SALTS, event.getValue(), i -> i * 25);
 			}
-			if (config.showSmellingSaltBoost())
+			if (config.showSmellingSaltBoost() && event.getValue() > 1)
 			{
 				createGameTimer(SMELLING_SALTS_BOOST, Duration.ofSeconds(15));
 			}
