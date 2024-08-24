@@ -1835,7 +1835,7 @@ public class MapImageDumper
 	{
 		SpriteDefinition sprite = mapDecorations[object.getMapSceneID()];
 		float scale = MAP_SCALE / (float) 4;
-		blitIcon(dst, x, y + MAP_SCALE, sprite, scale);
+		blitIcon(dst, x, y, sprite, scale);
 	}
 
 	private void blitIcon(BufferedImage dst, int x, int y, SpriteDefinition sprite, float scale)
