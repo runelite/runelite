@@ -31,9 +31,6 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Multisets;
 import com.google.inject.Provides;
-import java.time.Duration;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -80,7 +77,6 @@ import net.runelite.client.game.ItemStack;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.plugins.loottracker.PluginLootReceived;
-import net.runelite.client.task.Schedule;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.http.api.loottracker.LootRecordType;
 
@@ -107,9 +103,6 @@ public class MotherlodePlugin extends Plugin
 	private OverlayManager overlayManager;
 
 	@Inject
-	private MiningOverlay miningOverlay;
-
-	@Inject
 	private MotherlodeSceneOverlay sceneOverlay;
 
 	@Inject
@@ -129,8 +122,6 @@ public class MotherlodePlugin extends Plugin
 
 	private int curSackSize;
 
-	@Inject
-	private MotherlodeSession session;
 	private boolean shouldUpdateOres;
 	private Multiset<Integer> inventorySnapshot;
 
@@ -150,7 +141,6 @@ public class MotherlodePlugin extends Plugin
 	@Override
 	protected void startUp()
 	{
-		overlayManager.add(miningOverlay);
 		overlayManager.add(sceneOverlay);
 
 		inMlm = checkInMlm();
@@ -164,16 +154,10 @@ public class MotherlodePlugin extends Plugin
 	@Override
 	protected void shutDown()
 	{
-		overlayManager.remove(miningOverlay);
 		overlayManager.remove(sceneOverlay);
 		veins.clear();
 		rocks.clear();
 		brokenStruts.clear();
-	}
-
-	void reset()
-	{
-		session.resetRecent();
 	}
 
 	@Subscribe
@@ -211,9 +195,6 @@ public class MotherlodePlugin extends Plugin
 
 		switch (chatMessage)
 		{
-			case "You manage to mine some pay-dirt.":
-				session.incrementPayDirtMined();
-				break;
 
 			case "You just found a Diamond!":
 				if (config.trackGemsFound())
@@ -254,33 +235,6 @@ public class MotherlodePlugin extends Plugin
 			.items(Collections.singleton(new ItemStack(itemId, 1, client.getLocalPlayer().getLocalLocation())))
 			.build();
 		eventBus.post(lootEvent);
-	}
-
-	@Schedule(
-		period = 1,
-		unit = ChronoUnit.SECONDS
-	)
-	public void checkMining()
-	{
-		if (!inMlm)
-		{
-			return;
-		}
-
-		Instant lastPayDirtMined = session.getLastPayDirtMined();
-		if (lastPayDirtMined == null)
-		{
-			return;
-		}
-
-		// reset recentPayDirtMined if you haven't mined anything recently
-		Duration statTimeout = Duration.ofMinutes(config.statTimeout());
-		Duration sinceMined = Duration.between(lastPayDirtMined, Instant.now());
-
-		if (sinceMined.compareTo(statTimeout) >= 0)
-		{
-			session.resetRecent();
-		}
 	}
 
 	@Subscribe
