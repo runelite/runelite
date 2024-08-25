@@ -74,11 +74,8 @@ import net.runelite.client.util.RSTimeUnit;
 public class MiningPlugin extends Plugin
 {
 	private static final Pattern MINING_PATTERN = Pattern.compile(
-		"You " +
-			"(?:manage to|just)" +
-			" (?:mined?|quarry) " +
-			"(?:some|an?) " +
-			"(?:copper|tin|clay|iron|silver|coal|gold|mithril|adamantite|runite|amethyst|sandstone|granite|barronite shards|barronite deposit|Opal|piece of Jade|Red Topaz|Emerald|Sapphire|Ruby|Diamond)" +
+		"You swing your pick at the " +
+			"(?:rock|star)" +
 			"(?:\\.|!)");
 
 	@Inject
@@ -107,6 +104,12 @@ public class MiningPlugin extends Plugin
 	@Getter
 	@Nullable
 	private Pickaxe pickaxe;
+
+	@Getter(AccessLevel.PACKAGE)
+	private Instant lastAnimationChange;
+
+	@Getter(AccessLevel.PACKAGE)
+	private int lastActionAnimationId;
 
 	@Provides
 	MiningConfig getConfig(ConfigManager configManager)
@@ -150,8 +153,14 @@ public class MiningPlugin extends Plugin
 		{
 			return;
 		}
+		lastAnimationChange = Instant.now();
 
 		int animId = local.getAnimation();
+		if (animId != -1)
+		{
+			lastActionAnimationId = animId;
+		}
+
 		if (animId == AnimationID.DENSE_ESSENCE_CHIPPING)
 		{
 			// Can't use chat messages to start mining session on Dense Essence as they don't have a chat message when mined,
