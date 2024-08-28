@@ -1683,6 +1683,9 @@ public final class SpriteID
 	public static final int HEALTHBAR_PURPLE_BACK_140PX = 4725;
 	public static final int HEALTHBAR_PURPLE_FRONT_160PX = 4726;
 	public static final int HEALTHBAR_PURPLE_BACK_160PX = 4727;
+	/* Unmapped: 4728~4765 */
+	public static final int COLOSSEUM_DOOM = 4766;
+	/* Unmapped: 4767~4842 */
 	public static final int PRAYER_RP_ANCIENT_STRENGTH = 4843;
 	public static final int PRAYER_RP_ANCIENT_SIGHT = 4844;
 	public static final int PRAYER_RP_ANCIENT_WILL = 4845;

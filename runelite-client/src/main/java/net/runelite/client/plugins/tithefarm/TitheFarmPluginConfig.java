@@ -56,16 +56,4 @@ public interface TitheFarmPluginConfig extends Config
 	{
 		return new Color(0, 153, 255);
 	}
-
-	@Alpha
-	@ConfigItem(
-		position = 3,
-		keyName = "hexColorGrown",
-		name = "Grown plant",
-		description = "Color of grown plant timer"
-	)
-	default Color getColorGrown()
-	{
-		return new Color(0, 217, 0);
-	}
 }

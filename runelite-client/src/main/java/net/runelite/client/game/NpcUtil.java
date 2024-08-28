@@ -154,6 +154,7 @@ public class NpcUtil
 			case NpcID.MARBLE_GARGOYLE_7408:
 			case NpcID.DAWN_7885:
 			case NpcID.DUSK_7889:
+			case NpcID.ARAXXOR_13669: // Harvestable version
 				return true;
 			case NpcID.ZALCANO_9050:
 				return npc.isDead();

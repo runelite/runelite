@@ -493,7 +493,8 @@ public class SlayerPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
 	{
-		if (menuOptionClicked.getMenuAction() == MenuAction.CC_OP && menuOptionClicked.getMenuOption().equals("Check"))
+		if ((menuOptionClicked.getMenuAction() == MenuAction.CC_OP || menuOptionClicked.getMenuAction() == MenuAction.CC_OP_LOW_PRIORITY)
+			&& menuOptionClicked.getMenuOption().equals("Check"))
 		{
 			Widget w = client.getWidget(menuOptionClicked.getParam1());
 			if (w == null)

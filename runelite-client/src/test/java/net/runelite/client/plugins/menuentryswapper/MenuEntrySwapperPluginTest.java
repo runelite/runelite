@@ -31,6 +31,7 @@ import com.google.inject.testing.fieldbinder.BoundFieldModule;
 import java.util.Arrays;
 import net.runelite.api.Client;
 import net.runelite.api.KeyCode;
+import net.runelite.api.Menu;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
 import net.runelite.api.NPC;
@@ -85,6 +86,7 @@ public class MenuEntrySwapperPluginTest
 	@Inject
 	MenuEntrySwapperPlugin menuEntrySwapperPlugin;
 
+	private Menu menu;
 	private NPC npc;
 	private MenuEntry[] entries;
 
@@ -99,7 +101,10 @@ public class MenuEntrySwapperPluginTest
 		NPCComposition composition = mock(NPCComposition.class);
 		when(npc.getTransformedComposition()).thenReturn(composition);
 
-		when(client.getMenuEntries()).thenAnswer((Answer<MenuEntry[]>) invocationOnMock ->
+		menu = mock(Menu.class);
+		when(client.getMenu()).thenReturn(menu);
+
+		when(menu.getMenuEntries()).thenAnswer((Answer<MenuEntry[]>) invocationOnMock ->
 		{
 			// The menu implementation returns a copy of the array, which causes swap() to not
 			// modify the same array being iterated in onClientTick
@@ -110,7 +115,7 @@ public class MenuEntrySwapperPluginTest
 			Object argument = invocationOnMock.getArguments()[0];
 			entries = (MenuEntry[]) argument;
 			return null;
-		}).when(client).setMenuEntries(any(MenuEntry[].class));
+		}).when(menu).setMenuEntries(any(MenuEntry[].class));
 
 		menuEntrySwapperPlugin.startUp();
 	}
@@ -153,7 +158,7 @@ public class MenuEntrySwapperPluginTest
 		menuEntrySwapperPlugin.onPostMenuSort(new PostMenuSort());
 
 		ArgumentCaptor<MenuEntry[]> argumentCaptor = ArgumentCaptor.forClass(MenuEntry[].class);
-		verify(client).setMenuEntries(argumentCaptor.capture());
+		verify(menu).setMenuEntries(argumentCaptor.capture());
 
 		// check the assignment swap is hit first instead of trade
 		assertArrayEquals(new MenuEntry[]{
@@ -190,7 +195,7 @@ public class MenuEntrySwapperPluginTest
 		menuEntrySwapperPlugin.onPostMenuSort(new PostMenuSort());
 
 		ArgumentCaptor<MenuEntry[]> argumentCaptor = ArgumentCaptor.forClass(MenuEntry[].class);
-		verify(client, times(2)).setMenuEntries(argumentCaptor.capture());
+		verify(menu, times(2)).setMenuEntries(argumentCaptor.capture());
 
 		assertArrayEquals(new MenuEntry[]{
 			menu("Cancel", "", MenuAction.CANCEL),
@@ -228,7 +233,7 @@ public class MenuEntrySwapperPluginTest
 		menuEntrySwapperPlugin.onPostMenuSort(new PostMenuSort());
 
 		ArgumentCaptor<MenuEntry[]> argumentCaptor = ArgumentCaptor.forClass(MenuEntry[].class);
-		verify(client).setMenuEntries(argumentCaptor.capture());
+		verify(menu).setMenuEntries(argumentCaptor.capture());
 
 		assertArrayEquals(new MenuEntry[]{
 			menu("Cancel", "", MenuAction.CANCEL),
@@ -259,7 +264,7 @@ public class MenuEntrySwapperPluginTest
 		menuEntrySwapperPlugin.onPostMenuSort(new PostMenuSort());
 
 		ArgumentCaptor<MenuEntry[]> argumentCaptor = ArgumentCaptor.forClass(MenuEntry[].class);
-		verify(client).setMenuEntries(argumentCaptor.capture());
+		verify(menu).setMenuEntries(argumentCaptor.capture());
 
 		assertArrayEquals(new MenuEntry[]{
 			menu("Cancel", "", MenuAction.CANCEL),
@@ -286,7 +291,7 @@ public class MenuEntrySwapperPluginTest
 		menuEntrySwapperPlugin.onPostMenuSort(new PostMenuSort());
 
 		ArgumentCaptor<MenuEntry[]> argumentCaptor = ArgumentCaptor.forClass(MenuEntry[].class);
-		verify(client).setMenuEntries(argumentCaptor.capture());
+		verify(menu).setMenuEntries(argumentCaptor.capture());
 
 		assertArrayEquals(new MenuEntry[]{
 			menu("Cancel", "", MenuAction.CANCEL),
@@ -311,7 +316,7 @@ public class MenuEntrySwapperPluginTest
 		menuEntrySwapperPlugin.onPostMenuSort(new PostMenuSort());
 
 		ArgumentCaptor<MenuEntry[]> argumentCaptor = ArgumentCaptor.forClass(MenuEntry[].class);
-		verify(client).setMenuEntries(argumentCaptor.capture());
+		verify(menu).setMenuEntries(argumentCaptor.capture());
 
 		assertArrayEquals(new MenuEntry[]{
 			menu("Cancel", "", MenuAction.CANCEL),
@@ -339,7 +344,7 @@ public class MenuEntrySwapperPluginTest
 		menuEntrySwapperPlugin.onPostMenuSort(new PostMenuSort());
 
 		ArgumentCaptor<MenuEntry[]> argumentCaptor = ArgumentCaptor.forClass(MenuEntry[].class);
-		verify(client).setMenuEntries(argumentCaptor.capture());
+		verify(menu).setMenuEntries(argumentCaptor.capture());
 
 		assertArrayEquals(new MenuEntry[]{
 			menu("Cancel", "", MenuAction.CANCEL),
@@ -369,7 +374,7 @@ public class MenuEntrySwapperPluginTest
 		menuEntrySwapperPlugin.onPostMenuSort(new PostMenuSort());
 
 		ArgumentCaptor<MenuEntry[]> argumentCaptor = ArgumentCaptor.forClass(MenuEntry[].class);
-		verify(client).setMenuEntries(argumentCaptor.capture());
+		verify(menu).setMenuEntries(argumentCaptor.capture());
 
 		assertArrayEquals(new MenuEntry[]{
 			menu("Cancel", "", MenuAction.CANCEL),

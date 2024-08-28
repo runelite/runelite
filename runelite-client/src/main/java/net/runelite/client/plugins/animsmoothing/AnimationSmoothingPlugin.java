@@ -77,7 +77,12 @@ public class AnimationSmoothingPlugin extends Plugin
 			case AnimationID.VIGGORAS_CHAINMACE_IDLE:
 
 			case AnimationID.MLM_WATER_WHEEL_SPINNING:
+			case AnimationID.HARMONY_ISLAND_WINDMILL_SPINNING:
+			case AnimationID.GWENITH_WINDMILL_SPINNING:
+			case AnimationID.LITHKREN_GENERATOR_SPINNING:
 			case AnimationID.GIANTS_FOUNDRY_WATER_WHEEL_SPINNING:
+
+			case AnimationID.MAGIC_ARCEUUS_DEMONBANE:
 				return false;
 
 			default:
