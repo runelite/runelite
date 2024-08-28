@@ -30,10 +30,12 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
 import java.util.Map;
+import lombok.Getter;
 import net.runelite.api.ItemID;
 import net.runelite.api.NpcID;
 import net.runelite.client.util.RSTimeUnit;
 
+@Getter
 enum Boss
 {
 	GENERAL_GRAARDOR(NpcID.GENERAL_GRAARDOR, 90, ChronoUnit.SECONDS, ItemID.PET_GENERAL_GRAARDOR),
@@ -69,6 +71,9 @@ enum Boss
 	ZALCANO(NpcID.ZALCANO_9050, 21600, ChronoUnit.MILLIS, ItemID.SMOLCANO),
 	PHANTOM_MUSPAH(NpcID.PHANTOM_MUSPAH_12080, 50, RSTimeUnit.GAME_TICKS, ItemID.MUPHIN),
 	THE_LEVIATHAN(NpcID.THE_LEVIATHAN, 30, RSTimeUnit.GAME_TICKS, ItemID.LILVIATHAN),
+	// Harvestable Araxxor is not marked dead so that it is always interactable and visible,
+	// but we still want the respawn timer to show when it despawns.
+	ARAXXOR(NpcID.ARAXXOR_13669, 15, RSTimeUnit.GAME_TICKS, ItemID.NID, true),
 	;
 
 	private static final Map<Integer, Boss> bosses;
@@ -76,6 +81,7 @@ enum Boss
 	private final int id;
 	private final Duration spawnTime;
 	private final int itemSpriteId;
+	private final boolean ignoreDead;
 
 	static
 	{
@@ -91,27 +97,18 @@ enum Boss
 
 	Boss(int id, long period, TemporalUnit unit, int itemSpriteId)
 	{
+		this(id, period, unit, itemSpriteId, false);
+	}
+
+	Boss(int id, long period, TemporalUnit unit, int itemSpriteId, boolean ignoreDead)
+	{
 		this.id = id;
 		this.spawnTime = Duration.of(period, unit);
 		this.itemSpriteId = itemSpriteId;
+		this.ignoreDead = ignoreDead;
 	}
 
-	public int getId()
-	{
-		return id;
-	}
-
-	public Duration getSpawnTime()
-	{
-		return spawnTime;
-	}
-
-	public int getItemSpriteId()
-	{
-		return itemSpriteId;
-	}
-
-	public static Boss find(int id)
+	static Boss find(int id)
 	{
 		return bosses.get(id);
 	}
