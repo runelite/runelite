@@ -68,6 +68,7 @@ enum DiscordGameEventType
 
 	// Bosses
 	BOSS_ABYSSAL_SIRE("Abyssal Sire", DiscordAreaType.BOSSES, 11851, 11850, 12363, 12362),
+	BOSS_ARAXXOR("Araxxor", DiscordAreaType.BOSSES, 14489),
 	BOSS_CERBERUS("Cerberus", DiscordAreaType.BOSSES, 4883, 5140, 5395),
 	BOSS_COMMANDER_ZILYANA("Commander Zilyana", DiscordAreaType.BOSSES, 11602),
 	BOSS_CORP("Corporeal Beast", DiscordAreaType.BOSSES, 11842, 11844),
