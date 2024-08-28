@@ -1311,7 +1311,7 @@ public class LootTrackerPlugin extends Plugin
 		if (actor == client.getLocalPlayer() && actor.getAnimation() == AnimationID.FARMING_HARVEST_HERB && inAraxxorRegion())
 		{
 			log.debug("Harvest Araxxor");
-			onInvChange(InventoryID.INVENTORY, collectInvItems(LootRecordType.NPC, "Araxxor"), 4);
+			onInvChange(InventoryID.INVENTORY, collectInvAndGroundItems(LootRecordType.NPC, "Araxxor"), 4);
 		}
 	}
 
