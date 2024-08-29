@@ -63,17 +63,9 @@ public class BossTimersPlugin extends Plugin
 	public void onNpcDespawned(NpcDespawned npcDespawned)
 	{
 		NPC npc = npcDespawned.getNpc();
+		Boss boss = Boss.find(npc.getId());
 
-		if (!npcUtil.isDying(npc))
-		{
-			return;
-		}
-
-		int npcId = npc.getId();
-
-		Boss boss = Boss.find(npcId);
-
-		if (boss == null)
+		if (boss == null || (!boss.isIgnoreDead() && !npcUtil.isDying(npc)))
 		{
 			return;
 		}
@@ -81,7 +73,7 @@ public class BossTimersPlugin extends Plugin
 		// remove existing timer
 		infoBoxManager.removeIf(t -> t instanceof RespawnTimer && ((RespawnTimer) t).getBoss() == boss);
 
-		log.debug("Creating spawn timer for {} ({} seconds)", npc.getName(), boss.getSpawnTime());
+		log.debug("Creating spawn timer for {} ({})", npc.getName(), boss.getSpawnTime());
 
 		RespawnTimer timer = new RespawnTimer(boss, itemManager.getImage(boss.getItemSpriteId()), this);
 		timer.setTooltip(npc.getName());

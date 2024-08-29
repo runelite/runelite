@@ -65,6 +65,28 @@ public class NpcUtil
 	public boolean isDying(final NPC npc)
 	{
 		final int id = npc.getId();
+
+		if (runtimeConfig != null)
+		{
+			Set<Integer> ignoredNpcs = runtimeConfig.getIgnoreDeadNpcs();
+			if (ignoredNpcs != null && ignoredNpcs.contains(id))
+			{
+				return false;
+			}
+
+			Set<Integer> forceDeadNpcs = runtimeConfig.getForceDeadNpcs();
+			if (forceDeadNpcs != null && forceDeadNpcs.contains(id))
+			{
+				return true;
+			}
+
+			Set<Integer> pureIsDeadNpcs = runtimeConfig.getNonAttackNpcs();
+			if (pureIsDeadNpcs != null && pureIsDeadNpcs.contains(id))
+			{
+				return npc.isDead();
+			}
+		}
+
 		switch (id)
 		{
 			// These NPCs hit 0hp but don't actually die
@@ -154,32 +176,10 @@ public class NpcUtil
 			case NpcID.MARBLE_GARGOYLE_7408:
 			case NpcID.DAWN_7885:
 			case NpcID.DUSK_7889:
-			case NpcID.ARAXXOR_13669: // Harvestable version
 				return true;
 			case NpcID.ZALCANO_9050:
 				return npc.isDead();
 			default:
-				if (runtimeConfig != null)
-				{
-					Set<Integer> ignoredNpcs = runtimeConfig.getIgnoreDeadNpcs();
-					if (ignoredNpcs != null && ignoredNpcs.contains(id))
-					{
-						return false;
-					}
-
-					Set<Integer> forceDeadNpcs = runtimeConfig.getForceDeadNpcs();
-					if (forceDeadNpcs != null && forceDeadNpcs.contains(id))
-					{
-						return true;
-					}
-
-					Set<Integer> pureIsDeadNpcs = runtimeConfig.getNonAttackNpcs();
-					if (pureIsDeadNpcs != null && pureIsDeadNpcs.contains(id))
-					{
-						return npc.isDead();
-					}
-				}
-
 				final NPCComposition npcComposition = npc.getTransformedComposition();
 				if (npcComposition == null)
 				{
