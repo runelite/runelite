@@ -338,6 +338,7 @@ public class ItemStatOverlay extends Overlay
 		{
 			b.append(buildStatRow("Prayer", currentEquipment.getPrayer(), e.getPrayer(), false, false));
 			b.append(buildStatRow("Speed", currentEquipment.getAspeed(), e.getAspeed(), true, false));
+			b.append(buildStatRow("Range", currentEquipment.getAttackRange(), e.getAttackRange(), false, false));
 			b.append(buildStatRow("Melee Str", currentEquipment.getStr(), e.getStr(), false, false));
 			b.append(buildStatRow("Range Str", currentEquipment.getRstr(), e.getRstr(), false, false));
 			b.append(buildStatRow("Magic Dmg", currentEquipment.getMdmg(), e.getMdmg(), false, true));
