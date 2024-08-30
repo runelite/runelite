@@ -54,6 +54,8 @@ public class ItemEquipmentStats
 	float mdmg;
 	int prayer;
 	int aspeed;
+	@SerializedName("attackrange")
+	private int attackRange;
 
 	net.runelite.http.api.item.ItemEquipmentStats toHttpApiFormat()
 	{
