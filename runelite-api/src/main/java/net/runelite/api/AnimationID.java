@@ -292,6 +292,7 @@ public final class AnimationID
 	public static final int CHURN_MILK_LONG = 2795;
 	public static final int CLEANING_SPECIMENS_1 = 6217;
 	public static final int CLEANING_SPECIMENS_2 = 6459;
+	public static final int SACRIFICE_BLESSED_BONE_SHARDS = 11002;
 	public static final int MAKING_SUNFIRE_WINE = 11095;
 
 	// Ectofuntus animations

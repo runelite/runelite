@@ -377,6 +377,7 @@ public class IdleNotifierPlugin extends Plugin
 			case CLEANING_SPECIMENS_1:
 			case CLEANING_SPECIMENS_2:
 			case LOOKING_INTO:
+			case SACRIFICE_BLESSED_BONE_SHARDS:
 			case MAKING_SUNFIRE_WINE:
 				resetTimers();
 				lastAnimation = animation;
