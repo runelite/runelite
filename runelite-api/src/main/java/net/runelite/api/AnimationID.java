@@ -147,6 +147,7 @@ public final class AnimationID
 	public static final int CRAFTING_POTTERS_WHEEL = 883;
 	public static final int CRAFTING_POTTERY_OVEN = 24975;
 	public static final int CRAFTING_LOOM = 2270;
+	public static final int CRAFTING_CRUSH_BLESSED_BONES = 11099;
 	public static final int SMITHING_SMELTING = 899;
 	public static final int SMITHING_CANNONBALL = 827; //cball smithing uses this and SMITHING_SMELTING
 	public static final int SMITHING_ANVIL = 898;
@@ -291,6 +292,7 @@ public final class AnimationID
 	public static final int CHURN_MILK_LONG = 2795;
 	public static final int CLEANING_SPECIMENS_1 = 6217;
 	public static final int CLEANING_SPECIMENS_2 = 6459;
+	public static final int MAKING_SUNFIRE_WINE = 11095;
 
 	// Ectofuntus animations
 	public static final int ECTOFUNTUS_FILL_SLIME_BUCKET = 4471;
