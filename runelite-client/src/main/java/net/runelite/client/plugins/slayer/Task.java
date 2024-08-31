@@ -156,7 +156,7 @@ enum Task
 	SHADES("Shades", ItemID.SHADE_ROBE_TOP, "Loar", "Phrin", "Riyl", "Asyn", "Fiyr", "Urium"),
 	SHADOW_WARRIORS("Shadow warriors", ItemID.BLACK_FULL_HELM),
 	SKELETAL_WYVERNS("Skeletal wyverns", ItemID.SKELETAL_WYVERN),
-	SKELETONS("Skeletons", ItemID.SKELETON_GUARD, "Vet'ion", "Calvar'ion"),
+	SKELETONS("Skeletons", ItemID.SKELETON_GUARD, "Vet'ion", "Calvar'ion", "Skeletal Mystic"),
 	SMOKE_DEVILS("Smoke devils", ItemID.SMOKE_DEVIL),
 	SOURHOGS("Sourhogs", ItemID.SOURHOG_FOOT),
 	SPIDERS("Spiders", ItemID.HUGE_SPIDER, "Kalrag", "Sarachnis", "Venenatis", "Spindel", "Araxxor", "Araxyte"),
