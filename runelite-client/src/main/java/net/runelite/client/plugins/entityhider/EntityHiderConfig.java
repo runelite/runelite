@@ -202,8 +202,8 @@ public interface EntityHiderConfig extends Config
 	@ConfigItem(
 		position = 16,
 		keyName = "hideRandomEvents",
-		name = "Hide Random Events",
-		description = "Configures whether or not Random events are hidden"
+		name = "Hide Others Players' Random Events",
+		description = "Configures whether or not other player random events are hidden"
 	)
 	default boolean hideRandomEvents()
 	{
