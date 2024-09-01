@@ -262,10 +262,35 @@ public interface AgilityConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "highlightSepulchreNpcsTrueTile",
+			name = "Highlight Projectiles True Tile",
+			description = "Highlights the true tiles of arrows and swords in the Sepulchre",
+			position = 19,
+			section = sepulchreSection
+	)
+	default boolean highlightSepulchreNpcsTrueTile()
+	{
+		return false;
+	}
+
+	@Alpha
+	@ConfigItem(
+			keyName = "sepulchreTrueTileHighlightColor",
+			name = "True Tile Projectile Color",
+			description = "Overlay color for true tile arrows and swords",
+			position = 20,
+			section = sepulchreSection
+	)
+	default Color sepulchreHighlightTrueTileColor()
+	{
+		return Color.GREEN;
+	}
+
+	@ConfigItem(
 		keyName = "highlightSepulchreObstacles",
 		name = "Highlight Obstacles",
 		description = "Highlights pillars and stairs in the Sepulchre",
-		position = 19,
+		position = 21,
 		section = sepulchreSection
 	)
 	default boolean highlightSepulchreObstacles()
@@ -277,7 +302,7 @@ public interface AgilityConfig extends Config
 		keyName = "highlightSepulchreSkilling",
 		name = "Highlight Skill Challenges",
 		description = "Highlights skilling challenges in the Sepulchre",
-		position = 20,
+		position = 22,
 		section = sepulchreSection
 	)
 	default boolean highlightSepulchreSkilling()
