@@ -294,6 +294,7 @@ public final class AnimationID
 	public static final int CLEANING_SPECIMENS_2 = 6459;
 	public static final int SACRIFICE_BLESSED_BONE_SHARDS = 11002;
 	public static final int MAKING_SUNFIRE_WINE = 11095;
+	public static final int THIEVING_VARLAMORE_STEALING_VALUABLES = 11075;
 
 	// Ectofuntus animations
 	public static final int ECTOFUNTUS_FILL_SLIME_BUCKET = 4471;

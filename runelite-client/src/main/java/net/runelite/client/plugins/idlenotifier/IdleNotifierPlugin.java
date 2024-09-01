@@ -379,6 +379,7 @@ public class IdleNotifierPlugin extends Plugin
 			case LOOKING_INTO:
 			case SACRIFICE_BLESSED_BONE_SHARDS:
 			case MAKING_SUNFIRE_WINE:
+			case THIEVING_VARLAMORE_STEALING_VALUABLES:
 				resetTimers();
 				lastAnimation = animation;
 				lastAnimating = Instant.now();
