@@ -317,7 +317,6 @@ public class ItemStatPlugin extends Plugin
 		final Map<String, Integer> miscStats = ImmutableMap.of(
 			"Strength", equipmentStats.getStr(),
 			"Ranged Strength", equipmentStats.getRstr(),
-			"Magic Damage", equipmentStats.getMdmg(),
 			"Prayer Bonus", equipmentStats.getPrayer()
 		);
 
@@ -335,6 +334,14 @@ public class ItemStatPlugin extends Plugin
 
 			yPos += TEXT_HEIGHT + 2;
 		}
+
+		final String mdmgLabel = "Magic Damage";
+		final String mdmgValue = String.valueOf(equipmentStats.getMdmg());
+		// Stat label
+		createText(invContainer, mdmgLabel, FontID.PLAIN_11, ORANGE_TEXT, 5, yPos, 50, -1);
+		// Stat bonus
+		int valueXPos = invContainer.getWidth() - (smallFM.stringWidth(mdmgValue) + 5);
+		createText(invContainer, mdmgValue, FontID.PLAIN_11, YELLOW_TEXT, valueXPos, yPos, 50, -1);
 
 		// COINS
 
