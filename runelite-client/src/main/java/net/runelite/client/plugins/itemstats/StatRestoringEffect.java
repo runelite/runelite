@@ -12,7 +12,7 @@ import static net.runelite.client.plugins.itemstats.Builders.perc;
 import static net.runelite.client.plugins.itemstats.stats.Stats.*;
 
 @RequiredArgsConstructor
-public class StatRestoringEffect implements Effect 
+public class StatRestoringEffect implements Effect
 {
 
 	private static final Stat[] superRestoreStats = {
@@ -26,9 +26,9 @@ public class StatRestoringEffect implements Effect
 	public final double percR; //percentage restored
 	private final int delta;
 	private final SingleEffect effect;
-	
+
 	@Override
-	public final StatsChanges calculate(Client client) 
+	public final StatsChanges calculate(Client client)
 	{
 		StatsChanges changes = new StatsChanges(0);
 		SimpleStatBoost calc = new SimpleStatBoost(null, false, perc(percR, delta));
