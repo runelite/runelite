@@ -635,7 +635,7 @@ public class ChatCommandsPlugin extends Plugin
 				? 1
 				: Integer.parseInt(kcString.replaceAll(",", ""));
 
-            setKc("Bird's egg offerings", kc);
+			setKc("Bird's egg offerings", kc);
 		}
 	}
 
