@@ -124,6 +124,7 @@ public class ChatCommandsPlugin extends Plugin
 	private static final Pattern COLLECTION_LOG_ITEM_PATTERN = Pattern.compile("New item added to your collection log: (.*)");
 	private static final Pattern GUARDIANS_OF_THE_RIFT_PATTERN = Pattern.compile("Amount of Rifts you have closed: <col=ff0000>([0-9,]+)</col>.", Pattern.CASE_INSENSITIVE);
 	private static final Pattern HUNTER_RUMOUR_KC_PATTERN = Pattern.compile("You have completed <col=[0-9a-f]{6}>([0-9,]+)</col> rumours? for the Hunter Guild.");
+	private static final Pattern SACRIFICECOUNT_PATTERN = Pattern.compile("You have made <col=ff0000>(?<sc>\\d+)</col> offerings.");
 
 	private static final String TOTAL_LEVEL_COMMAND_STRING = "!total";
 	private static final String PRICE_COMMAND_STRING = "!price";
@@ -624,6 +625,13 @@ public class ChatCommandsPlugin extends Plugin
 		{
 			int kc = Integer.parseInt(matcher.group(1));
 			setKc("Guardians of the Rift", kc);
+		}
+
+		matcher = SACRIFICECOUNT_PATTERN.matcher(message);
+		if (matcher.find())
+		{
+			int kc = Integer.parseInt(matcher.group(1).replaceAll(",", ""));
+			setKc("Bird's egg sacrifices", kc);
 		}
 	}
 
@@ -2533,6 +2541,17 @@ public class ChatCommandsPlugin extends Plugin
 			case "colosseum":
 			case "fortis colosseum":
 				return "Sol Heredit";
+
+			case "bird egg":
+			case "bird eggs":
+			case "bird's egg":
+			case "bird's eggs":
+			case "egg":
+			case "eggs":
+			case "evil chicken":
+			case "shrine":
+			case "sacrifices":
+				return "Bird's egg sacrifices";
 
 			default:
 				return WordUtils.capitalize(boss);
