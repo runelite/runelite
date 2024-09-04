@@ -631,7 +631,7 @@ public class ChatCommandsPlugin extends Plugin
 		if (matcher.find())
 		{
 			int kc = Integer.parseInt(matcher.group(1).replaceAll(",", ""));
-			setKc("Bird's egg sacrifices", kc);
+			setKc("Bird's egg offerings", kc);
 		}
 	}
 
@@ -2546,12 +2546,7 @@ public class ChatCommandsPlugin extends Plugin
 			case "bird eggs":
 			case "bird's egg":
 			case "bird's eggs":
-			case "egg":
-			case "eggs":
-			case "evil chicken":
-			case "shrine":
-			case "sacrifices":
-				return "Bird's egg sacrifices";
+				return "Bird's egg offerings";
 
 			default:
 				return WordUtils.capitalize(boss);
