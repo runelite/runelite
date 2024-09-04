@@ -1273,6 +1273,25 @@ public class ChatCommandsPluginTest
 	}
 
 	@Test
+	public void testBirdsEgg()
+	{
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "You have made <col=ff0000>one</col> offering.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("killcount", "bird's egg offerings", 1);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "You have made <col=ff0000>420</col> offerings.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("killcount", "bird's egg offerings", 420);
+
+		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "You have made <col=ff0000>10,000</col> offerings.", null, 0);
+		chatCommandsPlugin.onChatMessage(chatMessage);
+
+		verify(configManager).setRSProfileConfiguration("killcount", "bird's egg offerings", 10_000);
+	}
+
+	@Test
 	public void testHunterRumours()
 	{
 		testHunterRumourChatMessage("You have completed <col=ff3045>77</col> rumours for the Hunter Guild.", 77);
