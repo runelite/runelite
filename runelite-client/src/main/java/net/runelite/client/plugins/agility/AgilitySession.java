@@ -72,12 +72,22 @@ class AgilitySession
 			courseTotalExp = hasCompletedDesertHardDiary(client) ? 1016.0 : 890.0;
 		}
 
+		if (course == Courses.RELLEKA)
+		{
+			courseTotalExp = hasCompletedFremennikHardDiary(client) ? 920.0 : 780.0;
+		}
+
 		lapsTillGoal = goalRemainingXp > 0 ? (int) Math.ceil(goalRemainingXp / courseTotalExp) : 0;
 	}
 
 	boolean hasCompletedDesertHardDiary(Client client)
 	{
 		return client.getVarbitValue(Varbits.DIARY_DESERT_HARD) == 1;
+	}
+
+	boolean hasCompletedFremennikHardDiary(Client client)
+	{
+		return client.getVarbitValue(Varbits.DIARY_FREMENNIK_HARD) == 1;
 	}
 
 	void calculateLapsPerHour()
