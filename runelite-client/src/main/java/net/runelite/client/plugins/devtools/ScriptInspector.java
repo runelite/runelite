@@ -29,16 +29,26 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.inject.Inject;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
@@ -46,7 +56,9 @@ import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
@@ -410,6 +422,42 @@ public class ScriptInspector extends DevToolsFrame
 			}
 			DefaultTreeModel treeModel = new DefaultTreeModel(treeNode);
 			JTree tree = new JTree(treeModel);
+			tree.addMouseListener(new MouseAdapter()
+			{
+				@Override
+				public void mouseClicked(MouseEvent e)
+				{
+					if (e.getButton() == MouseEvent.BUTTON3)
+					{
+						int row = tree.getClosestRowForLocation(e.getX(), e.getY());
+						tree.setSelectionRow(row);
+						JPopupMenu popup = new JPopupMenu();
+						JMenuItem item = new JMenuItem("Copy args");
+						item.addActionListener(new ActionListener()
+						{
+							@Override
+							public void actionPerformed(ActionEvent e)
+							{
+								DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
+								// example entry: 69  -  378.62 args: [69, 0, 24772672]
+								Pattern argPattern = Pattern.compile("args: \\[(.*)]");
+								Matcher matcher = argPattern.matcher(node.toString());
+								if (matcher.find())
+								{
+									Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+									clipboard.setContents(new StringSelection(matcher.group(1)), null);
+								}
+							}
+						});
+						List<JMenuItem> menus =  List.of(item);
+
+
+						menus.forEach(popup::add);
+						popup.show(tree, e.getX(), e.getY());
+					}
+					super.mouseClicked(e);
+				}
+			});
 			tree.setRootVisible(true);
 			tree.setShowsRootHandles(true);
 			tree.collapsePath(new TreePath(treeNode));
