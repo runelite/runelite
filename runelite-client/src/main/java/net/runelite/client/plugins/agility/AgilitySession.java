@@ -29,6 +29,7 @@ import lombok.Getter;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.Skill;
+import net.runelite.api.Varbits;
 import net.runelite.client.plugins.xptracker.XpTrackerService;
 import java.time.Duration;
 import java.time.Instant;
@@ -66,7 +67,17 @@ class AgilitySession
 			courseTotalExp += Math.min(300 + 8 * client.getRealSkillLevel(Skill.AGILITY), 1000);
 		}
 
+		if (course == Courses.POLLNIVNEACH)
+		{
+			courseTotalExp = hasCompletedDesertHardDiary(client) ? 1016.0 : 890.0;
+		}
+
 		lapsTillGoal = goalRemainingXp > 0 ? (int) Math.ceil(goalRemainingXp / courseTotalExp) : 0;
+	}
+
+	boolean hasCompletedDesertHardDiary(Client client)
+	{
+		return client.getVarbitValue(Varbits.DIARY_DESERT_HARD) == 1;
 	}
 
 	void calculateLapsPerHour()
